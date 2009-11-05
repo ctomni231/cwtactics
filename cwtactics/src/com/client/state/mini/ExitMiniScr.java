@@ -39,8 +39,8 @@ public class ExitMiniScr {
         setLock = false;
         if(scrSwitch){
             menuLogo.setText(2, "");
-            menuLogo.setFinalPosition(0, 195, 100);
-            menuLogo.setFinalPosition(1, 120, 40);
+            menuLogo.setFinalPosition(0, 145, 50);
+            //menuLogo.setFinalPosition(1, 0, 0);
             menuLogo.setFinalPosition(2, 0, 480);
 
             exitScr.exitMenu.select = -1;

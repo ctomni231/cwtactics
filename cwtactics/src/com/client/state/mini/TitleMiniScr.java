@@ -33,8 +33,8 @@ public class TitleMiniScr {
             menuLogo.setText(2, " - ADVANCE WARS IS COPYRIGHT OF " +
                     "NINTENDO/INTELLIGENT SYSTEMS - " +
         "                                                               ");
-            menuLogo.setFinalPosition(0, 195, 100);
-            menuLogo.setFinalPosition(1, 120, 40);
+            menuLogo.setFinalPosition(0, 145, 30);
+            //menuLogo.setFinalPosition(1, 0, 0);
             menuLogo.setFinalPosition(2, 0, 460);
             scrSwitch = false;
         }

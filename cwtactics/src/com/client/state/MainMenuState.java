@@ -156,10 +156,10 @@ public class MainMenuState extends SlickScreen {
                 scr_getContainer().getHeight());
 
         menuLogo = new LogoDraw();
-        menuLogo.addPictureLogo("resources/image/menu/twLogo.png",
-                195, -100, 250, 75, 1);
-        menuLogo.addPictureLogo("resources/image/menu/twAim.png",
-                -195, 20, 150, 150, 1);
+        menuLogo.addPictureLogo("resources/image/menu/cwTactics.png",
+                145, -100, 350, 150, 1);
+        menuLogo.addPictureLogo("resources/image/menu/cwLogo.gif",
+                0, -100, 75, 75, 1);
         menuLogo.addScrollFontLogo(" - ", 0, 480, 640, 20, 1, 0.1);
         menuLogo.setShadowOffset(0, 2);
         menuLogo.setShadowOffset(1, 2);

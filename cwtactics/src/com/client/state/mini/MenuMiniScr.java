@@ -41,7 +41,7 @@ public class MenuMiniScr {
         menucolumn = -2;
         scr_scrollIndex = 0;
         counter = 0;
-        menuScr = new MenuDraw(MAX_ITEMS, 20, 0, 100, 0);
+        menuScr = new MenuDraw(MAX_ITEMS, 20, 0, 150, 0);
         info = new String[]{
             "VERSUS:3:Play a single player game against your friends.",
             "EXIT:2:Leave, we see how it is. ;)"};
@@ -68,8 +68,8 @@ public class MenuMiniScr {
         if(scrSwitch){
             menuLogo.setText(2, " - MAIN MENU -" +
         "                                                               ");
-            menuLogo.setFinalPosition(0, 195, 10);
-            menuLogo.setFinalPosition(1, 120, -200);
+            menuLogo.setFinalPosition(0, 145, 0);
+            //menuLogo.setFinalPosition(1, 0, 0);
             menuLogo.setFinalPosition(2, 0, 460);
             scrSwitch = false;
         }
