@@ -1,6 +1,7 @@
 package com.system.data.script;
 
 import com.client.logic.command.CommandList;
+import com.client.logic.command.MessageServer;
 import com.client.logic.command.commands.ingame.DecreaseFuel;
 import com.client.logic.command.commands.ingame.GiveFunds;
 import com.client.logic.command.commands.ingame.PayRepairCost;
@@ -71,10 +72,10 @@ public class SingleAction {
 			case DESTROY_UNIT :
 				switch( obj ){
 					case UNIT :
-						CommandList.addToFirstPosition( new SetDamage( unit , unit.getHealth() )  );
+						MessageServer.send( new SetDamage( unit , unit.getHealth() ) , true);
 						break;
 					case ENEMY_UNIT :
-						CommandList.addToFirstPosition( new SetDamage( unit2 , unit2.getHealth() )  );
+						MessageServer.send( new SetDamage( unit2 , unit2.getHealth() ), true);
 						break;
 				}
 				break;
@@ -83,10 +84,10 @@ public class SingleAction {
 			case GIVE_FUNDS :
 				switch( obj ){
 					case FIELD :
-						CommandList.addToFirstPosition( new GiveFunds( field.sheet().getFundsTable() , field ) );
+						MessageServer.send( new GiveFunds( field.sheet().getFundsTable() , field ), true);
 						break;
 					case ENEMY_FIELD :
-						CommandList.addToFirstPosition( new GiveFunds( field2.sheet().getFundsTable() , field2 ) );
+						MessageServer.send( new GiveFunds( field2.sheet().getFundsTable() , field2 ), true);
 						break;
 				}
 				break;
@@ -95,7 +96,7 @@ public class SingleAction {
 			case RESUPPLY_UNIT :
 				switch( obj ){
 					case UNIT :
-						CommandList.addToFirstPosition( new ResupplyUnit() );
+						MessageServer.send( new ResupplyUnit() , true);
 						break;
 				}
 				break;
@@ -104,7 +105,7 @@ public class SingleAction {
 			case PAY_REPAIR :
 			switch( obj ){
 				case UNIT :
-					CommandList.addToFirstPosition( new PayRepairCost( field.sheet().getRepairCost( unit.sheet() , 20 )  , unit ) );
+					MessageServer.send( new PayRepairCost( field.sheet().getRepairCost( unit.sheet() , 20 )  , unit ), true);
 					break;
 			}
 			break;
@@ -113,7 +114,7 @@ public class SingleAction {
 			case HEAL_UNIT :
 				switch( obj ){
 					case UNIT :
-						CommandList.addToFirstPosition( new RepairUnit( unit , 20 ) );
+						MessageServer.send( new RepairUnit( unit , 20 ), true);
 						break;
 				}
 				break;
@@ -123,7 +124,7 @@ public class SingleAction {
 			case DECREASE_FUEL :
 				switch( obj ){
 					case UNIT :
-						CommandList.addToFirstPosition( new DecreaseFuel( unit , 1) );
+						MessageServer.send(  new DecreaseFuel( unit , 1), true);
 						break;
 				}
 				break;

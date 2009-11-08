@@ -1,6 +1,8 @@
 package com.client.model.object;
 
 import com.client.logic.command.CommandList;
+import com.client.logic.command.MessageServer;
+import com.client.logic.command.commands.ingame.CheckTrigger;
 import com.system.ID;
 import com.system.data.script.ScriptFactory;
 import com.system.data.script.Trigger_Object;
@@ -61,13 +63,12 @@ public class Fight {
 			return;
 		}
 		
-		// check effects for the attacker
-		Trigger_Object.triggerCall(attackerTile,defenderTile);
-		ScriptFactory.checkAll( ID.Trigger.UNIT_ATTACK );
+		// check effects for the attacker ( local )
+		MessageServer.toCommandList( new CheckTrigger( attackerTile, defenderTile, ID.Trigger.UNIT_ATTACK), false );
 		
-		// check effects for the defender
-		Trigger_Object.triggerCall(defenderTile,attackerTile);
-		ScriptFactory.checkAll( ID.Trigger.UNIT_DEFEND );
+		// check effects for the defender ( local )
+		MessageServer.toCommandList( new CheckTrigger( defenderTile,attackerTile, ID.Trigger.UNIT_DEFEND), false );
+		
 	}
 	
 	/**

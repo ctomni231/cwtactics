@@ -1,11 +1,12 @@
 package com.client.logic.command.commands.ingame;
 
+import com.client.logic.command.Command;
 import com.client.model.object.Tile;
 import com.system.ID.Trigger;
 import com.system.data.script.ScriptFactory;
 import com.system.data.script.Trigger_Object;
 
-public class CheckTrigger {
+public class CheckTrigger implements Command{
 
 	/*
 	 *
