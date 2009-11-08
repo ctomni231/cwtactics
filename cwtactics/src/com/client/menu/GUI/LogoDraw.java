@@ -4,6 +4,7 @@ import com.client.menu.GUI.tools.MovingPix;
 import com.client.menu.GUI.tools.ScrollPix;
 import com.client.tools.TextImgLibrary;
 import java.util.ArrayList;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 /**
@@ -77,6 +78,14 @@ public class LogoDraw {
         if(index >= 0 && index < logoItems.size()){
             MovingPix tempLogo = logoItems.get(index);
             tempLogo.setShadowOffset(offset);
+            logoItems.set(index, tempLogo);
+        }
+    }
+
+    public void setShadowColor(int index, Color theColor){
+        if(index >= 0 && index < logoItems.size()){
+            MovingPix tempLogo = logoItems.get(index);
+            tempLogo.setShadowColor(theColor);
             logoItems.set(index, tempLogo);
         }
     }

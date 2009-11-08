@@ -31,20 +31,15 @@ public class ImgDataParser {
         preferItems = new HashMap<Integer, String>();
         allImg = new ArrayList<ImgData>();
         defColors = new ArrayList<Integer>();
-        decodeFiles();
-        //Get all data
-        //Search The code
-        //Then the type (might overwrite)
-        //Search the name (if type isn't preferred, skip it)
-        //Search everything else but the FileData
-        //If everything else matches, you have an animation
-        //Otherwise, you make a new item.
     }
     //This class will search drawn items for a type that matches it.
     public static void addForceType(String code, String type){
         preferItems.put((int)getCodeByte(code), type);
     }
-    
+
+    public static ArrayList<ImgData> getData(){
+        return allImg;
+    }
 
     public static void clearData(){
         if(allImg != null)
@@ -76,7 +71,7 @@ public class ImgDataParser {
         ArrayList<String> text = new ArrayList<String>();
         FileFind findFiles = new FileFind();
         findFiles.addAvoidDir(".svn");
-        findFiles.addType("txt");
+        findFiles.addForceType("txt");
         findFiles.refactor();
 
         for(FileIndex file: findFiles.getAllFiles()){
@@ -103,10 +98,9 @@ public class ImgDataParser {
     private static void fillData(ArrayList<String> gameData){
         //Give back a group of ImgData
         ImgData temp = new ImgData();
-        ImgFile tempFile = new ImgFile();
-        defColors = new ArrayList<Integer>();
+        ImgFile tempFile = new ImgFile();        
         for(String test: gameData){
-            System.out.println("PART:"+test);
+            //System.out.println("PART:"+test);
 
             if(!test.startsWith("{"))
                 continue;
@@ -118,9 +112,10 @@ public class ImgDataParser {
                 storeColors(part);
                 continue;
             }
-
             if(part[0].matches("END") || part[0].matches("COD.*")){
                 if(!temp.name.matches("")){
+                    //System.out.println(defColors);
+                    temp.dfltColors = defColors;
                     storeData(temp);
                     temp = new ImgData();
                 }
@@ -138,7 +133,8 @@ public class ImgDataParser {
                 continue;
             }else if(part[0].matches("NAM.*")){
                 temp.name = part[1];
-                temp.group = part[1];
+                if(temp.group.matches(""))
+                    temp.group = part[1];
                 continue;
             }else if(part[0].matches("TYP.*")){
                 temp.codeType = part[1];
@@ -165,19 +161,89 @@ public class ImgDataParser {
     //This stores animations and makes sure each item is stored once
     //in a database.
     private static void storeData(ImgData temp){
-        for(ImgData stored: allImg){
-            if(stored.map != temp.map &&
-               stored.grid != temp.grid &&
-               stored.weather != temp.weather &&
-               stored.direction != temp.direction &&
-               stored.army.matches(temp.army))
+        ImgData stored = null;
+        for(int i = 0; i < allImg.size(); i++){
+            stored = allImg.get(i);
+            if(stored.map != temp.map ||
+               stored.grid != temp.grid ||
+               stored.weather != temp.weather ||
+               stored.direction != temp.direction ||
+               !stored.army.matches(temp.army) ||
+               stored.code != temp.code ||
+               !stored.group.matches(temp.group))
                 continue;
             
-            if(stored.code != temp.code &&
-              !stored.codeType.matches(temp.codeType) &&
-              !stored.name.matches(temp.name))
+            //Checks for a preferred type of art for each type of
+            //art form.
+            if(preferItems != null){
+                if(preferItems.containsKey((int)temp.code)){
+                    if(stored.codeType.matches(
+                            preferItems.get((int)temp.code))){
+                        allImg.set(i, temp);
+                        break;
+                    }
+                }
+            }
+
+            //If there is nothing preferred and this doesn't match
+            //It skips storing.
+            if(!stored.codeType.matches(temp.codeType))
                 continue;
+
+            //Checks for animations. These are created when two
+            //items have exactly the same information except
+            //for the file and location.
+            boolean newAnim = false;
+            for(String tempPart: temp.tags){
+                if(tempPart.matches("O.?:.*") ||
+                    tempPart.matches("N.?:.*") ||
+                    tempPart.matches("S.?:.*") ||
+                    tempPart.matches("E.?:.*") ||
+                    tempPart.matches("W.?:.*") ||
+                    tempPart.matches("\\d*")){
+                    newAnim = false;
+                    for(String storedPart: stored.tags){
+                        if(storedPart.matches(tempPart)){
+                            newAnim = true;
+                            break;
+                        }
+                    }
+                    if(!newAnim)
+                        break;
+                }
+            }
+            //Makes a new animation
+            if(newAnim && (temp.tags.size() == stored.tags.size())){
+                //Makes sure only one file is saved per different animation
+                
+                for(ImgFile tempFile: temp.imgFileRef){
+                    boolean newFile = true;
+                    for(int j = 0; j < stored.imgFileRef.size(); j++){
+                        ImgFile storeFile = stored.imgFileRef.get(j);
+                        if(!storeFile.filename.matches(tempFile.filename) ||
+                           storeFile.flipEdit != tempFile.flipEdit ||
+                           storeFile.locx != tempFile.locx ||
+                           storeFile.locy != tempFile.locy ||
+                           storeFile.sizex != tempFile.sizex ||
+                           storeFile.sizey != tempFile.sizey ||
+                           storeFile.tilex != tempFile.tilex ||
+                           storeFile.tiley != tempFile.tiley)
+                            continue;
+                        
+                        stored.animRef.add((byte)j);
+                        newFile = false;
+                        break;
+                    }
+                    if(newFile){
+                        stored.animRef.add((byte)stored.imgFileRef.size());
+                        stored.imgFileRef.add(tempFile);
+                    }
+                }
+                allImg.set(i, stored);
+                return;
+            }
         }
+        temp.animRef.add((byte)0);
         allImg.add(temp);
     }
     

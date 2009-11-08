@@ -29,7 +29,7 @@ public class MovingPix {
         fposy = locy;
         this.speed = speed;
         shadeOff = 0;
-        shadow = Color.black;
+        shadow = null;
         logoPic = null;
         logoTxt = "";
     }
@@ -106,13 +106,15 @@ public class MovingPix {
     public void render(Graphics g){
         renderSpeed();
         if(logoPic != null){
-            if(shadeOff != 0)
+            if(shadeOff != 0 && shadow != null)
                 g.drawImage(logoPic, (int)posx+shadeOff, (int)posy+shadeOff,
                     shadow);
-            g.drawImage(logoPic, (int)posx, (int)posy);
+            if(shadeOff == 0 && shadow != null)
+                g.drawImage(logoPic, (int)posx, (int)posy, shadow);
+            else
+                g.drawImage(logoPic, (int)posx, (int)posy);
             
-        }
-        if(!logoTxt.matches(""))
+        }else if(!logoTxt.matches(""))
             g.drawString(logoTxt, (int)posx, (int)posy);
     }
 }

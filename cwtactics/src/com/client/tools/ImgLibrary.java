@@ -187,6 +187,9 @@ public class ImgLibrary extends Component{
     }
 
     //Gets an image or a cut image
+    public Image getImage(String ref){
+        return getImage(getIndex(ref));
+    }
     public Image getImage(int index){
         return index >= 0 && index < sortedImg.size() ?
             sortedImg.get(index).image : getColorBox(java.awt.Color.RED,1,1);
@@ -194,6 +197,22 @@ public class ImgLibrary extends Component{
     public Image getImage(int index, int cutlx, int cutly,
             int cutsx, int cutsy){
         return cutImage(getImage(index), cutlx, cutly, cutsx, cutsy);
+    }
+
+    public int[] getPixels(String ref){
+        return getPixels(getIndex(ref));
+    }
+    public int[] getPixels(int index){
+        int[] temp = (index >= 0 && index < sortedImg.size()) ?
+            sortedImg.get(index).pixels : new int[0];
+        if(index >= 0 && index < sortedImg.size() && temp == null){
+            ImgHolder heldImg = sortedImg.get(index);
+            heldImg.pixels = handlePixels(heldImg.image,
+                    0, 0, heldImg.sizex, heldImg.sizey);
+            sortedImg.set(index, heldImg);
+            temp = heldImg.pixels;
+        }
+        return temp;
     }
     //Gets a Slick img from the library: Stores the image... fast!
     public org.newdawn.slick.Image getSlickImage(String ref){

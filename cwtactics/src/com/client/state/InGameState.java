@@ -1,6 +1,7 @@
 package com.client.state;
 
 import com.client.logic.input.Controls;
+import com.client.menu.GUI.tools.PixAnimate;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
@@ -16,13 +17,19 @@ import org.newdawn.slick.Image;
  * @author Crecen
  */
 public class InGameState extends SlickScreen{
+    private final double BASE = 32;
 
     private ImgLibrary imgSort;
     private TextImgLibrary textSort;
     private Image textImg;
+    private PixAnimate testMap;
 
     public InGameState(){
-        
+        testMap = new PixAnimate();
+        testMap.BASE = (int)BASE;
+        testMap.addBuildingChange("resources/image/plugin/PlayerBuilding.png");
+        testMap.addUnitChange("resources/image/plugin/PlayerUnit.png");
+        testMap.loadData();
     }
 
     @Override
@@ -42,6 +49,21 @@ public class InGameState extends SlickScreen{
         textSort.addLetter('.', textSort.getImage(0), "", 6, 5, 26);
         textSort.setString("WELCOME TO TACTIC WARS", "", 0, 0, 0, 0);
         textImg = textSort.getSlickTextImage("TITLE");
+        for(int i = 0; i < 20*(32/BASE); i++){
+            for(int j = 0; j < 8*(32/BASE); j++){
+                testMap.addImgPart("FOREST", 0, 0, (int)(32*(BASE/32)*i),
+                        (int)(-32*(BASE/32)+(j*64*(BASE/32))));
+                testMap.addImgPart("PLAIN", 0, 0, (int)(32*(BASE/32)*i),
+                        (int)(j*64*(BASE/32)));
+            }
+        }
+        for(int i = 0; i < 20*(32/BASE); i++){
+            for(int j = 0; j < 16*(32/BASE); j++){
+                testMap.addImgPart("INFT", i, 3, 
+                        (int)((32*(BASE/32)*i)-16*(BASE/32)),
+                        (int)((32*(BASE/32)*j)-16*(BASE/32)));
+            }
+        }
     }
 
     @Override
@@ -50,6 +72,7 @@ public class InGameState extends SlickScreen{
         g.fillRect(0, 0, 100, 100);
         g.drawImage(imgSort.getSlickImage(0), 0, 0);
         g.drawImage(textImg, 0, 0);
+        testMap.render(g, scr_sysTime);
     }
     
     @Override

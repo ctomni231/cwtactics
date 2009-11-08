@@ -1,5 +1,7 @@
 package com.client.menu.GUI;
 
+import com.client.tools.FileFind;
+import com.client.tools.FileIndex;
 import com.client.tools.ImgLibrary;
 import java.util.Random;
 import org.newdawn.slick.Graphics;
@@ -31,6 +33,21 @@ public class BGPicture {
         setImage(pics[random]);
     }
 
+    public void setFileImage(String name){
+        FileFind finder = new FileFind();
+        finder.addForceType("png");
+        finder.addForceType("gif");
+        finder.addForceType("jpg");
+        finder.addForceType("bmp");
+        finder.addAvoidDir(".svn");
+        finder.refactor();
+        for(FileIndex index: finder.getAllFiles()){
+            if(index.prefix.matches(""+name+".*")){
+                setImage(index.fpath);
+                break;
+            }
+        }
+    }
     //Use in Slick init();
     public void setImage(String imgRef){
         ImgLibrary tempImg = new ImgLibrary();

@@ -8,6 +8,7 @@ import com.client.state.mini.ExitMiniScr;
 import com.client.state.mini.MenuMiniScr;
 import com.client.state.mini.TitleMiniScr;
 import com.client.tools.TextImgLibrary;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 /**
@@ -16,7 +17,7 @@ import org.newdawn.slick.Graphics;
  */
 public class MainMenuState extends SlickScreen {
 
-    private final int BG_IMG = 14;
+    private final int BG_IMG = 15;
     private final String ALPHA = "resources/image/menu/smallAlpha.png";
     private final int COL_START = 0;
 
@@ -154,6 +155,7 @@ public class MainMenuState extends SlickScreen {
             allImages[i] = "resources/image/menu/background"+(i+1)+".png";
         bgPicture = new BGPicture(allImages, scr_getContainer().getWidth(),
                 scr_getContainer().getHeight());
+        bgPicture.setFileImage("bg");
 
         menuLogo = new LogoDraw();
         menuLogo.addPictureLogo("resources/image/menu/cwTactics.png",
@@ -161,7 +163,9 @@ public class MainMenuState extends SlickScreen {
         menuLogo.addPictureLogo("resources/image/menu/cwLogo.gif",
                 0, -100, 75, 75, 1);
         menuLogo.addScrollFontLogo(" - ", 0, 480, 640, 20, 1, 0.1);
+        menuLogo.setShadowColor(0, Color.black);
         menuLogo.setShadowOffset(0, 2);
+        menuLogo.setShadowColor(1, Color.black);
         menuLogo.setShadowOffset(1, 2);
     }
 

@@ -29,6 +29,7 @@ public class ImgData {
     public boolean map;//Whether it is a map image, or a battle image
     //In pixels, where an image is located and the size
     public ArrayList<ImgFile> imgFileRef;
+    public ArrayList<Byte> animRef;
     public String codeType;//What group this image belongs to (CW, MW, etc.)
     public String name;//The name of this image (a.k.a BRIDGE)
     public String group;//The main group this image belongs to (a.k.a. ROAD)
@@ -36,6 +37,8 @@ public class ImgData {
     //Multipurpose variable used for terrain connections, explosion
     //types, and drawing minimap tiles.
     public ArrayList<String> tags;
+    //Stores the default colors for the color changes
+    public ArrayList<Integer> dfltColors;
 
     public ImgData(){
         code = -1;
@@ -44,6 +47,8 @@ public class ImgData {
         weather = 'c';
         map = true;
         imgFileRef = new ArrayList<ImgFile>();
+        animRef = new ArrayList<Byte>();
+        dfltColors = new ArrayList<Integer>();
         codeType = "";
         name = "";
         group = "";

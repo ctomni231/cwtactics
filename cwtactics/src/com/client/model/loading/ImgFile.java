@@ -13,7 +13,6 @@ package com.client.model.loading;
  */
 public class ImgFile {
     public String filename;
-    public short[] dfltColors;
     public short locx;//Location where to start a width cut in image
     public short locy;//Location where to start a height cut in image
     public short sizex;//The width of the cut (<1: for default)
@@ -24,7 +23,6 @@ public class ImgFile {
 
     public ImgFile(){
         filename = "";
-        dfltColors = new short[0];
         locx = 0;
         locy = 0;
         sizex = 0;

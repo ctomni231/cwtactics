@@ -30,7 +30,7 @@ public class FileFind {
     }
 
     //This forces the file finder to only find files of a certain suffix
-    public void addType(String suffix){
+    public void addForceType(String suffix){
         if(!suffix.matches(""))
             fileType.add(suffix);
     }

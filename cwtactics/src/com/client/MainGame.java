@@ -1,5 +1,6 @@
 package com.client;
 
+import com.client.model.loading.ImgDataParser;
 import com.client.state.InGameState;
 import com.client.state.MainMenuState;
 import com.client.state.SlickGame;
@@ -34,7 +35,9 @@ public class MainGame {
     	System.out.println("Version : "+Data.getVersion());
     	System.out.println( Data.getTileSheet( Data.getIntegerID("FACTORY") ).getFunds( Data.getRessourceSheet( Data.getIntegerID("RESSOURCE_0"))) );
     	System.out.println( Data.getUnitSheet( Data.getIntegerID("LTANK") ).getCost( Data.getRessourceSheet( Data.getIntegerID("RESSOURCE_0"))) );
-    	
+
+        ImgDataParser.init();
+
         //This holds all the Screens
         //Create a new game with a title
         SlickGame slickFrame = new SlickGame(GAME_TITLE);
