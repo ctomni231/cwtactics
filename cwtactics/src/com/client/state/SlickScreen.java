@@ -1,6 +1,6 @@
 package com.client.state;
 
-import com.client.logic.command.CommandStack;
+import com.client.logic.command.CommandList;
 import java.util.ArrayList;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -150,8 +150,8 @@ public abstract class SlickScreen extends BasicGameState{
      */
     private boolean scr_checkCommands(){
 
-    	if( ! CommandStack.isEmpty() ){
-    		CommandStack.getNext().doCommand();
+    	if( ! CommandList.isEmpty() ){
+    		CommandList.getNext().doCommand();
     		return true;
     	}
     	return false;

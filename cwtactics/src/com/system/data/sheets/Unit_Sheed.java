@@ -185,6 +185,13 @@ public class Unit_Sheed extends ObjectSheet {
 	}
 
 	/**
+	 * Returns the list of type that the unit can load
+	 */
+	public ArrayList<Weapon_Sheed> getAllWeapons(){
+		return weapons;
+	}
+	
+	/**
 	 * Adds a type of an unit that the transport unit can load
 	 */
 	public void addLoadType( Unit_Sheed sh ){

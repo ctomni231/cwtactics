@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <modification>
 
+	<!-- 
+		Version r5
+	
+		This version of modification file isn't complete
+		and need to be changed to the data of Advance Wars
+		Day of Ruin.
+	 -->
+
+
+
+
+
 	<!--  GAME BLOCK  --> 
-	<!--              
-		Description
-		 - getallaftercaphq
-			if on, a player gains all enemy building if he/she conquers the enemy hq
-		 - battleOnDefenderField
-			if on, the attacker get all field effects from defender field instead of the field
-			effects from it's own field
-		 - resupply_cost
-		    the apc decreases the ressources from the player if it resupply units
-			if an unit hasn't resupply_cost variables, the variables are from mod block are used
-			if the mod block hasn't resupply_cost variables, the resupply cost nothing
-	-->
 
     <mod ID="TACTICWARS" >
         <information   	name="TacticWars - Official modification"
@@ -307,7 +307,7 @@
 	 <unit ID="LTANK">
         <name GER="Panzerkompanie"
               ENG="Tank Company"     />
-        <cost ressource_GOLD="7000" />
+        <cost ressource_0="7000" />
         <movement range="6" type="3" vision="3" weight="2" />
         <fuel amount="70" />
         <tags>
@@ -345,7 +345,7 @@
     <unit ID="THUNT">
         <name GER="Jagdpanzer"
               ENG="Tank hunter"     />
-        <cost ressource_GOLD="9000" />
+        <cost ressource_0="9000" />
         <movement range="5" type="3" vision="3" weight="2" />
         <fuel amount="70" />
         <combat ammo="9" >
@@ -383,7 +383,7 @@
     <unit ID="PAK">
         <name GER="Panzerabwehr"
               ENG="Anti-Tank"     />
-        <cost ressource_GOLD="7000" />
+        <cost ressource_0="7000" />
         <movement range="5" type="2" vision="2" weight="2" />
         <fuel amount="40" />
         <tags>
@@ -692,7 +692,7 @@
         <movement range="5" type="5" vision="5" hide="1" weight="1" />
         <fuel amount="60" waste="1" removewithout="1" hidden="2" />
         <tags>
-        	<tag id="WATER"/> <tag id="SUB" /> <tag id="STEALTH"/> <tag id="ANTI_BOAT"/>
+        	<tag id="WATER"/> <tag id="SUB" /> <tag id="STEALTH"/> <tag id="ANTI_SHIP"/>
         </tags>
         <combat ammo="6" >
             <weapon_1  GER="Torpedo"
@@ -771,7 +771,7 @@
         <movement range="5" type="5" vision="5" weight="2" />
         <fuel amount="50" waste="1" removewithout="1" />
         <tags>
-        	<tag id="WATER"/> <tag id="BOAT"/> <tag id="ANTI_AIR"/> <tag id="ANTI_SUB" />
+        	<tag id="WATER"/> <tag id="SHIP"/> <tag id="ANTI_AIR"/> <tag id="ANTI_SUB" />
         </tags>
         <combat ammo="6"  >
             <weapon_1   GER="Wasserbomben"
@@ -882,7 +882,7 @@
         <movement range="5" type="5" vision="4" weight="3" />
         <fuel amount="99" waste="1" removewithout="1" />
         <tags>
-        	<tag id="WATER"/> <tag id="TRANSPORT"/> <tag id="BOAT"/> <tag id="ANTI_AIR" />
+        	<tag id="WATER"/> <tag id="TRANSPORT"/> <tag id="SHIP"/> <tag id="ANTI_AIR" />
         </tags>
         <combat ammo="9" >
 			<weapon_1  GER="Flak"
@@ -983,7 +983,7 @@
         <movement range="6" type="6" vision="1" weight="3" />
         <fuel amount="99" waste="1" removewithout="1" />
         <tags>
-        	<tag id="WATER"/> <tag id="TRANSPORT"/> <tag id="BOAT" />
+        	<tag id="WATER"/> <tag id="TRANSPORT"/> <tag id="SHIP" />
         </tags>
 		<loads amount="3" >
             <loadtarget id="LTANK"       />
@@ -1009,7 +1009,7 @@
         <fuel amount="99" waste="1" removewithout="1" />
         <resupply_cost ammo_ressource_0="100" />
         <tags>
-        	<tag id="WATER"/> <tag id="BOAT"/> <tag id="INDIRECT"/> <tag id="ANTI_TANK" /> <tag id="ANTI_FOOT" /> <tag id="ANTI_BOAT" />
+        	<tag id="WATER"/> <tag id="SHIP"/> <tag id="INDIRECT"/> <tag id="ANTI_TANK" /> <tag id="ANTI_FOOT" /> <tag id="ANTI_SHIP" />
         </tags>
         <combat ammo="5" >
             <weapon_1     GER="Haubitze"
@@ -1415,6 +1415,9 @@
         <name GER="Riff"
               ENG="Reef"     />
 		<stats  />
+		<tags>
+        	<tag id="NOT_CLEAR_WATER" />
+        </tags>
 		<hidden>
             <hiddentarget id="CRUISER" range="2" />
 		</hidden>
@@ -1432,6 +1435,9 @@
         <name GER="Kueste"
               ENG="Shoal"     />
 		<stats  />
+		<tags>
+        	<tag id="NOT_CLEAR_WATER" />
+        </tags>
 		<field_effect>
             <target_unit id="CRUISER"     defense="-10" attack="-10" />
             <target_unit id="SUB"         defense="-10" attack="-10" />

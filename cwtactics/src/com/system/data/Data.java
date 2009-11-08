@@ -173,14 +173,12 @@ public class Data {
 	 * @param ID
 	 */
 	public static Integer getIntegerID( String ID ){
-		
-		Integer i = idTable.get(ID); 
-		
-		if( i == null ){
-			System.err.println("ID "+ID+" not founded in the data core...");
+
+		if( !existIntegerID(ID) ){
+			System.err.println("ID "+ID+" not found in the data core...");
 			return -1; 
 		}
-		else return i; 
+		else return idTable.get(ID); 
 	}
 	
 	/**
@@ -192,16 +190,21 @@ public class Data {
 	 */
 	public static Integer getIntegerTagID( String ID ){
 		
-		Integer i = tagTable.get(ID); 
-		
-		if( i == null ){
+		if( !existTagID(ID) ){
 			tagTable.put( ID, tagTable.size() );
 			return getIntegerTagID(ID);
 		}
-		else return i; 
+		else return tagTable.get(ID); 
 	}
 	
-	
+	/**
+	 * Exist an integer Tag ID for a given String Tag ID ?
+	 */
+	public static boolean existTagID( String ID ) {
+		
+		if( tagTable.containsKey(ID) ) return true;
+		else return false;
+	}
 	
 	/*
 	 * 

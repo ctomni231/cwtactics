@@ -15,7 +15,7 @@ public class Weapon_Sheed {
 	private int		maxRange;
 	private int 	minRange;
 	private int		useAmmo;
-	private int		fireMode;
+	private int		fireMode;		// 0 direct , 1 indirect , 2 indirect+move
 	private int		rangePenalty;
 	private HashMap<Unit_Sheed, Integer>	damageTable;
 	

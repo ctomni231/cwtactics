@@ -52,6 +52,14 @@ public class Map {
 		return tiles[x][y];
 	}
 	
+	public int getSizeX(){
+		return tiles.length;
+	}
+	
+	public int getSizeY(){
+		return tiles[0].length;
+	}
+	
 	public void addPlayer( Player player ){
 		players.add(player);
 	}
@@ -64,7 +72,11 @@ public class Map {
 		return players.get(ID);
 	}
 	
-	public int getPlayerInt( Player player ){
+	public ArrayList<Player> getPlayers(){
+		return players;
+	}
+	
+	public int getPlayerID( Player player ){
 		return players.indexOf(player);
 	}
 	

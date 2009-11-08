@@ -1,0 +1,194 @@
+<scripts>
+
+	<!--
+		First version of a possible script file
+	 -->	
+
+	<!-- standard effects -->
+	
+	<script>
+    	<trigger id="TURNSTART_UNITS" />
+		<condition text="UNIT_TAG IS AIR" />
+		<action text="DECREASE_FUEL UNIT 1" />
+    </script>
+    	
+    <script>
+    	<trigger id="TURNSTART_UNITS" />
+    	<condition text="UNIT_TAG IS AIR %% FUEL_OF_UNIT LESS_THAN 1" />
+    	<action text="DESTROY_UNIT UNIT" />
+    </script>
+    	
+   	<script>
+   		<trigger id="TURNSTART_FIELDS" />
+   		<condition text="FIELD_TAG IS PROPERTY" />
+   		<action text="GIVE_FUNDS FIELD" />
+   	</script>
+    	
+   	<script>
+   		<trigger id="TURNSTART_FIELDS" />
+   		<condition text="FIELD_TAG IS PROPERTY %% FUEL_OF_UNIT IS_NOT FULL" />
+   		<!--  OR -->
+   		<condition text="FIELD_TAG IS PROPERTY %% AMMO_OF_UNIT IS_NOT FULL" />
+   		<action text="RESUPPLY UNIT" />
+   	</script>
+    	
+   	<script>
+   		<trigger id="TURNSTART_FIELDS" />
+   		<!--  FIELD_OWNER_IS_UNIT_OWNER IS -1 ( the -1 is not important , is means is same owner , is_not means is false statement ) -->
+   		<condition text="FIELD_TAG IS PROPERTY %% FIELD IS_OWNER_OF UNIT %% FIELD CAN_PAY_REPAIR UNIT %% HEALTH_OF_UNIT IS_NOT FULL" />
+   		<action text="HEAL_UNIT UNIT" />
+   	</script>
+   	
+   	
+   	<!-- field effects -->
+    	
+    	<!--  
+    	
+    		NOT READED YET BY SCRIPT READER  
+    	 -->
+    	 
+    	<script>
+	   		<trigger id="UNIT_ATTACK" />
+	   		<condition text="UNIT IS_OWNER_OF UNIT" />
+	   		<action text="INCREASE_ATTACK_BY_RANDOM UNIT 10" />
+	   	</script>
+	   	
+	   	<script>
+	   		<trigger id="UNIT_DEFEND" />
+	   		<condition text="UNIT IS_OWNER_OF UNIT" />
+	   		<action text="INCREASE_DEFENSE_BY_RANDOM UNIT 10" />
+	   	</script>
+    	
+    	<!-- SHIPS -->
+    	
+	    <script>
+	   		<trigger id="UNIT_ATTACK" />
+	   		<condition text="UNIT_TAG IS SHIP %% FIELD_TAG IS NOT_CLEAR_WATER" />
+	   		<action text="DECREASE_ATTACK UNIT 10" />
+	   	</script>
+	   	
+	   	<script>
+	   		<trigger id="UNIT_DEFEND" />
+	   		<condition text="UNIT_TAG IS SHIP %% FIELD_TAG IS NOT_CLEAR_WATER" />
+	   		<action text="DECREASE_DEFENSE UNIT 10" />
+	   	</script>	
+	   	
+	   	<script>
+	   		<trigger id="UNIT_ATTACK" />
+	   		<condition text="UNIT_TYPE IS SUB %% FIELD_TAG IS REEF" />
+	   		<action text="DECREASE_ATTACK UNIT 25" />
+	   	</script>
+	   	
+	   	<script>
+	   		<trigger id="UNIT_DEFEND" />
+	   		<condition text="UNIT_TYPE IS SUB %% FIELD_TAG IS REEF" />
+	   		<action text="DECREASE_DEFENSE UNIT 25" />
+	   	</script>	
+	   	
+   		<!-- TANKS -->
+	   	
+	   	<script>
+	   		<trigger id="UNIT_ATTACK" />
+	   		<condition text="UNIT_TAG IS TANK %% FIELD_TAG IS PROPERTY" />
+	   		<action text="DECREASE_ATTACK UNIT 20" />
+	   	</script>
+	   	
+	   	<script>
+	   		<trigger id="UNIT_DEFEND" />
+	   		<condition text="UNIT_TAG IS TANK %% FIELD_TAG IS PROPERTY" />
+	   		<action text="DECREASE_DEFENSE UNIT 10" />
+	   	</script>	
+	   	
+	   	<script>
+	   		<trigger id="UNIT_ATTACK" />
+	   		<condition text="UNIT_TAG IS TANK %% FIELD_TAG IS OPEN_TERRAIN" />
+	   		<action text="INCREASE_ATTACK UNIT 10" />
+	   	</script>
+	   	
+	   	<script>
+	   		<trigger id="UNIT_ATTACK" />
+	   		<condition text="UNIT_TAG IS TANK %% FIELD_TYPE IS WOOD" />
+	   		<action text="DECREASE_ATTACK UNIT 10" />
+	   	</script>
+	   	
+	   	<script>
+	   		<trigger id="UNIT_DEFEND" />
+	   		<condition text="UNIT_TAG IS TANK %% FIELD_TYPE IS WOOD" />
+	   		<action text="DECREASE_DEFENSE UNIT 10" />
+	   	</script>	
+   	
+   		<!-- FOOT -->
+	   	
+	   	<script>
+	   		<trigger id="UNIT_ATTACK" />
+	   		<condition text="UNIT_TAG IS FOOT %% FIELD_TAG IS PROPERTY" />
+	   		<action text="INCREASE_ATTACK UNIT 30" />
+	   	</script>
+	   	
+	   	<script>
+	   		<trigger id="UNIT_DEFEND" />
+	   		<condition text="UNIT_TAG IS FOOT %% FIELD_TAG IS PROPERTY" />
+	   		<action text="INCREASE_DEFENSE UNIT 20" />
+	   	</script>
+	   	
+	   	<script>
+	   		<trigger id="UNIT_ATTACK" />
+	   		<condition text="UNIT_TAG IS FOOT %% FIELD_TYPE IS MOUNTAIN" />
+	   		<action text="INCREASE_ATTACK UNIT 30" />
+	   	</script>
+	   	
+	   	<script>
+	   		<trigger id="UNIT_DEFEND" />
+	   		<condition text="UNIT_TAG IS FOOT %% FIELD_TYPE IS MOUNTAIN" />
+	   		<action text="INCREASE_DEFENSE UNIT 20" />
+	   	</script>
+	   	
+	   	<script>
+	   		<trigger id="VISION_UNIT" />
+	   		<condition text="UNIT_TAG IS FOOT %% FIELD_TYPE IS MOUNTAIN" />
+	   		<action text="INCREASE_SIGHT UNIT 2" />
+	   	</script>	
+	    	
+    	
+    <!-- CO and commander effects -->
+    	
+    	<!--
+    	
+    		NOT READED YET BY SCRIPT READER
+    		
+    		
+    	 
+    		Commander Tapsi
+    		
+    		Commander Tapsi is a smart commander from the old school.
+    		He is proud of every unit under his command and never woul'd
+    		sacrifice some of his units for bad school tactics.
+    		
+    		Because of this, all units in Tapsi's range are boosted by the 
+    		courage and get a attack and defense boost against all
+    		types of units. Furthermore due the this, all enemy units
+    		looses defense and attack power if they attack units which are in range
+    		of Tapsi's vehicle. 
+    		
+    		Power :	Power of courage
+    			All units gain Move +1 and Attack +15
+    		
+    		Super Power 1 : Power of tactics
+    			All units gain Move +2 and Attack +30
+    			
+    		Super Power 2 : Protect the country
+    			All units gain Attack+20 and Defense +30
+    	-->
+	    <script>
+	    	<trigger id="UNIT_ATTACK" />
+	    	<condition text="HAS_COMMANDER IS TAPSI_COMM" />
+	    	<action text="INCREASE_ATTACK UNIT 10 %% DECREASE_DEFENSE ENEMY_UNIT 10 " />
+	    </script>
+	    	
+	    <script>
+	    	<trigger id="UNIT_DEFEND" />
+	    	<condition text="HAS_COMMANDER IS TAPSI_COMM" />
+	    	<action text="INCREASE_DEFENSE UNIT 10 %% DECREASE_ATTACK ENEMY_UNIT 10" />
+	    </script>
+
+</scripts>

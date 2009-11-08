@@ -49,6 +49,8 @@ public class InGameState extends SlickScreen{
         textSort.addLetter('.', textSort.getImage(0), "", 6, 5, 26);
         textSort.setString("WELCOME TO TACTIC WARS", "", 0, 0, 0, 0);
         textImg = textSort.getSlickTextImage("TITLE");
+      
+
         for(int i = 0; i < 20*(32/BASE); i++){
             for(int j = 0; j < 8*(32/BASE); j++){
                 testMap.addImgPart("FOREST", 0, 0, (int)(32*(BASE/32)*i),
@@ -64,14 +66,13 @@ public class InGameState extends SlickScreen{
                         (int)((32*(BASE/32)*j)-16*(BASE/32)));
             }
         }
+
+        	
     }
 
     @Override
     public void render(Graphics g) {
-        g.setColor(Color.red);
-        g.fillRect(0, 0, 100, 100);
-        g.drawImage(imgSort.getSlickImage(0), 0, 0);
-        g.drawImage(textImg, 0, 0);
+
         testMap.render(g, scr_sysTime);
     }
     

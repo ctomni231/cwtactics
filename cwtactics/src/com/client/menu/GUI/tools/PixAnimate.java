@@ -7,6 +7,7 @@ import com.client.tools.ImgLibrary;
 import java.awt.Color;
 import java.util.ArrayList;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 
 /**
  * This class makes ImgData worth while by turning its data into
@@ -23,6 +24,8 @@ public class PixAnimate {
     private ArrayList<Integer> unitColors;
     private ArrayList<MovingPix> animParts;
     private String[] animStr;
+    
+    Image img;
 
     public PixAnimate(){
         storedImg = new ImgLibrary();
@@ -78,6 +81,13 @@ public class PixAnimate {
         }
     }
     public void render(Graphics g, int animTime){
+    	
+    	/*
+    	 * TO MANY STRINGS ARE CREATED AND MAKES THE DRAW ROUTINE HORROBLE
+    	 * SLOW
+    	 * 
+    	 * 
+    	 * 
         for(MovingPix item: animParts){
             animStr = item.logoTxt.split(":");
             if(animStr.length > 4){
@@ -94,7 +104,15 @@ public class PixAnimate {
                 g.drawImage(storedImg.getSlickImage(
                         ""+animStr[0]+"_"+animStr[1]+"_"+animStr[2]+"_0"),
                         (int)item.posx, (int)item.posy);
-        }
+        }*/
+    	if( img == null ){
+    		String[] animStr = animParts.get(0).logoTxt.split(":");
+        	img = storedImg.getSlickImage(""+animStr[0]+"_"+animStr[1]+"_"+animStr[2]+"_0");
+    	}
+    	for( MovingPix item : animParts ){
+    		g.drawImage( img ,  (int)item.posx, (int)item.posy);
+    	}
+    	
     }
     //We need a lot for this class, and it is the most important class.
     //1) ImgLibrary, to store the images.

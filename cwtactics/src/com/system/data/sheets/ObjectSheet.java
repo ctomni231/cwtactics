@@ -126,7 +126,9 @@ public class ObjectSheet extends Sheet {
 	 * Returns the cost of this unit
 	 */
 	public int getCost( Sheet resID ){
-		if( resID == null || !cost.containsKey(resID) ){ System.err.println("Ressource "+resID+" doesn'T exist in the database"); return -1; }
+		
+		if( resID == null ){ System.err.println("Ressource "+resID+" doesn'T exist in the database"); return 0; } 
+		if( !cost.containsKey(resID) ) return 0;
 		else return cost.get(resID);
 	}
 

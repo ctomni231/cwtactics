@@ -2,6 +2,9 @@ package com.system.data.sheets;
 
 import java.util.ArrayList;
 
+import com.client.model.object.Player;
+import com.system.data.Data;
+
 public class Tile_Sheet extends ObjectSheet{
 
 	/*
@@ -11,9 +14,11 @@ public class Tile_Sheet extends ObjectSheet{
 	 * 
 	 */
 	
+	private static final int repairExtra = 50;		// halves the repair price
+	
 	private int capturePoints;
 	private ArrayList<Unit_Sheed> builds;
-
+	private ArrayList<Unit_Sheed> repairs;
 	
 	
 	/*
@@ -27,8 +32,10 @@ public class Tile_Sheet extends ObjectSheet{
 		
 		capturePoints = -1;
 		builds = new ArrayList<Unit_Sheed>();
+		repairs = new ArrayList<Unit_Sheed>();
 		
 		builds.trimToSize();
+		repairs.trimToSize();
 	}
 	
 	
@@ -76,6 +83,59 @@ public class Tile_Sheet extends ObjectSheet{
 		if( sh != null && builds.indexOf(sh) != -1 ) return true;
 		return false;
 	}
+	
+	/**
+	 * Can a unit type repaired by the property
+	 */	
+	public boolean canRepair( Unit_Sheed sh ){
+		if( sh != null && repairs.indexOf(sh) != -1 ) return true;
+		return false;
+	}
+	
+	/**
+	 * get repair cost for repairing an unit with 
+	 * a given health.
+	 */
+	public int[] getRepairCost( Unit_Sheed sh , int health ){
+		
+		int length = Data.getRessourceTable().size();
+		int[] cost = new int[ length ];
+		
+		for( int i = 0 ; i < length ; i++ ){
+			cost[i] = ( sh.getCost( Data.getRessourceSheet(i) ) * health * repairExtra ) / 10000; 
+		}
+		
+		return cost;
+	}
+	
+	/**
+	 * get repair cost for repairing an unit with 
+	 * a given health.
+	 */
+	public int[] getFundsTable(){
+		
+		int length = Data.getRessourceTable().size();
+		int[] cost = new int[ length ];
+		
+		for( int i = 0 ; i < length ; i++ ){
+			cost[i] = getFunds( Data.getRessourceSheet(i) );
+		}
+		
+		return cost;
+	}
+	
+	/**
+	 * Can a player pay a given cost array?
+	 */
+	public boolean canPay( int[] cost , Player player ){
+		
+		for( int i = 0 ; i < cost.length ; i++ ){
+			if( player.getResourceValue(i) < cost[i] ) return false;
+		}
+		
+		return true;
+	}
+
 	
 
 }

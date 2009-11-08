@@ -17,6 +17,8 @@ public class Unit {
 	private int		morale;
 	private int		experience;
 	private int		rank;
+	private int		fuel;
+	private int		ammo;
 		
 	
 	
@@ -26,7 +28,7 @@ public class Unit {
 	 * ************
 	 * 
 	 */
-	
+
 	public Unit( Unit_Sheed type , Player owner ){
 		
 		this.sheet	= type;
@@ -50,6 +52,16 @@ public class Unit {
 
 	public void setHealth(int health) {
 		this.health = health;
+	}
+	
+	public void increaseHealth( int health ){
+		if( this.health + health > 99 ) this.health = 99;
+		else this.health += health; 
+	}
+	
+	public void decreaseHealth( int health ){
+		if( this.health - health < 0 ) this.health = 0;
+		else this.health -= health; 
 	}
 
 	public Player getOwner() {
@@ -86,6 +98,38 @@ public class Unit {
 	
 	public Unit_Sheed sheet(){
 		return sheet;
+	}
+
+	public int getFuel() {
+		return fuel;
+	}
+
+	public void setFuel(int fuel) {
+		this.fuel = fuel;
+	}
+	
+	public void decreaseFuel(){
+		if( this.fuel > 0 ) this.fuel--;
+	}
+
+	public void decreaseFuel( int fuel ){
+		if( this.fuel - fuel >= 0 ) this.fuel -= fuel;
+	}
+	
+	public int getAmmo() {
+		return ammo;
+	}
+
+	public void setAmmo(int ammo) {
+		this.ammo = ammo;
+	}
+	
+	public void decreaseAmmo(){
+		if( this.ammo > 0 ) this.ammo--;
+	}
+	
+	public int getID(){
+		return ( owner.getID() * 10000 ) + owner.getUnits().indexOf(this);
 	}
 	
 	

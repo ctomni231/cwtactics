@@ -99,6 +99,10 @@ public class Tile {
 		this.posY = posY;
 	}
 	
+	public int getID(){
+		return Game.getMap().getSizeX() * posY + posX;
+	}
+	
 	
 
 	/*

@@ -22,5 +22,64 @@ public interface ID {
 		
 	}
 
+	public enum Relationship{
+    	IS,
+    	IS_NOT,
+    	LESS_THAN,
+    	MORE_THAN,
+    	CAN_REPAIR,
+    	CAN_PAY_REPAIR,
+    	IS_OWNER_OF
+    }
+    
+    public enum TriggerTest{
+    	UNIT_TAG,
+    	FIELD_TAG,
+    	ENEMY_TAG,
+    	ENEMY_FIELD_TAG,
+    	FUEL_OF_UNIT,
+    	AMMO_OF_UNIT,
+    	HEALTH_OF_UNIT,
+    	FIELD,
+    	UNIT
+    }
+    
+    public enum TriggerAction{
+    	DESTROY_UNIT,
+    	GIVE_FUNDS,
+    	RESUPPLY_UNIT,
+    	HEAL_UNIT,
+    	PAY_REPAIR,
+    	PAY_RESUPPLY,
+    	DECREASE_FUEL
+    }
+    
+    public enum TriggerAction_Obj{
+    	FIELD,
+    	UNIT,
+    	ENEMY_FIELD,
+    	ENEMY_UNIT
+    }
+    
+    public enum Trigger{
+    	TURN_START_FIELDS,
+    	TURN_START_UNITS,
+    	WANT_TO_BUILD,
+    	UNIT_BUILDED,
+    	UNIT_WILL_MOVE,
+    	UNIT_MOVED,
+    	UNIT_ATTACK,
+    	UNIT_DEFEND,
+    	UNIT_DESTROYED,
+    	WEATHER_CHANGED,
+    	BUILDING_CAPTURED,
+    	PLAYER_LOOSED,
+    	TURN_END_FIELDS,
+    	TURN_END_UNITS
+    }
+    
+    public enum MessageMode{
+    	LOCAL,IRC_NETWORK
+    }
 }
 

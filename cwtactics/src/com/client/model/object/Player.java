@@ -1,6 +1,10 @@
 package com.client.model.object;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import com.system.data.Data;
+import com.system.data.sheets.Sheet;
 
 public class Player {
 
@@ -14,6 +18,7 @@ public class Player {
 	private String name;
 	private ArrayList<Unit> units;
 	private ArrayList<Tile> properties;
+	private int[] resourcePool;
 	
 	
 
@@ -29,6 +34,10 @@ public class Player {
 		this.name	= name;
 		units		= new ArrayList<Unit>();
 		properties	= new ArrayList<Tile>();
+		resourcePool = new int[ Data.getRessourceTable().size() ];
+		
+		units.trimToSize();
+		properties.trimToSize();
 	}
 	
 	
@@ -78,6 +87,18 @@ public class Player {
 	
 	public void removeProperty( Tile prop ){
 		properties.remove(prop);
+	}
+	
+	public void changeResource( int resID , int value ){
+		resourcePool[resID] += value;
+	}
+	
+	public int getResourceValue( int resID ){
+		return resourcePool[resID];
+	}
+	
+	public int getID(){
+		return Game.getMap().getPlayerID(this);
 	}
 	
 	

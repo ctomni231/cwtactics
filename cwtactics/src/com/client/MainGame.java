@@ -1,11 +1,15 @@
 package com.client;
 
+import com.client.logic.command.MessageServer;
 import com.client.model.loading.ImgDataParser;
+
 import com.client.state.InGameState;
 import com.client.state.MainMenuState;
 import com.client.state.SlickGame;
+import com.system.ID;
 import com.system.data.Data;
 import com.system.reader.ModReader;
+import com.system.reader.ScriptReader;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
@@ -28,14 +32,22 @@ public class MainGame {
     	
     	// load modification
     	new ModReader("data/mod.xml");
+    	new ScriptReader("data/scripts.xml");
+    	
+    	MessageServer.setMode( ID.MessageMode.LOCAL );
     	
     	// output some test information from database
     	System.out.println("Mod     : "+Data.getName());
     	System.out.println("Author  : "+Data.getAuthor());
     	System.out.println("Version : "+Data.getVersion());
+    
     	System.out.println( Data.getTileSheet( Data.getIntegerID("FACTORY") ).getFunds( Data.getRessourceSheet( Data.getIntegerID("RESSOURCE_0"))) );
     	System.out.println( Data.getUnitSheet( Data.getIntegerID("LTANK") ).getCost( Data.getRessourceSheet( Data.getIntegerID("RESSOURCE_0"))) );
-
+    	// end test
+    	
+    	// NOTE : ATM SCRIPT ENGINE OUTPUTS SOME ERRORS BECAUSE IT CANNOT hANDLE ALL SCRIPTS IN SCRIPT.XML
+    	// it's beta at the moment
+    	
         ImgDataParser.init();
 
         //This holds all the Screens
@@ -53,6 +65,7 @@ public class MainGame {
         MainGame game = new MainGame(slickFrame, 640, 480);
         //Sets the FPS: <=0 is default frameSpeed
         game.showSlickWindow(GAME_TARGET_FPS);
+    	
     }
 
     //The container used for this window

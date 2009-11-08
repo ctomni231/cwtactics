@@ -262,6 +262,27 @@ public class ModReader extends Parser {
 		}
 		
 		/*
+		 * 			  TAG
+		 ****************************
+		 */
+		else if( super.isAheader("tag") ){
+			
+			if( attributes.getValue("id") != null ) 		sh.addTag( Data.getIntegerTagID(attributes.getValue("id")) );
+		}
+		
+		/*
+		 * 			 FUNDS
+		 ****************************
+		 */
+		else if( super.isAheader("funds") ){
+			
+			// checks all resources and adds it to the sheet if a valiue is given
+			for( int i = 0 ; i < Data.getRessourceTable().size() ; i++ ){
+				if( attributes.getValue("ressource_"+i ) != null ) 		sh.setFunds( Data.getRessourceSheet(i) , Integer.parseInt( attributes.getValue("ressource_"+i) ) );
+			}
+		}
+		
+		/*
 		 * 		    STATUS
 		 ****************************
 		 */
