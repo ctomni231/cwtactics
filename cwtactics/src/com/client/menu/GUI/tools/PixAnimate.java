@@ -6,8 +6,8 @@ import com.client.model.loading.ImgFile;
 import com.client.tools.ImgLibrary;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 
 /**
  * This class makes ImgData worth while by turning its data into
@@ -17,22 +17,20 @@ import org.newdawn.slick.Image;
  * @author Crecen
  */
 public class PixAnimate {
-    public int BASE = 16;
+    public int BASE = 32;
 
     private ImgLibrary storedImg;
     private ArrayList<Integer> buildColors;
     private ArrayList<Integer> unitColors;
-    private ArrayList<MovingPix> animParts;
-    private String[] animStr;
-    
-    Image img;
+    private HashMap<Short, Integer> imgMap;
+    private ArrayList<AnimStore> animParts;
 
     public PixAnimate(){
         storedImg = new ImgLibrary();
         buildColors = new ArrayList<Integer>();
         unitColors = new ArrayList<Integer>();
-        animParts = new ArrayList<MovingPix>();
-        animStr = new String[0];
+        animParts = new ArrayList<AnimStore>();
+        imgMap = new HashMap<Short, Integer>();
         ImgDataParser.init();
     }
 
@@ -56,63 +54,40 @@ public class PixAnimate {
     public void addImgPart(String name, int player, int direction,
             int locx, int locy){
         int nameItem = -1;
-        String anim = "";
-        MovingPix item = new MovingPix(locx, locy, 0);
+        byte[] anim = new byte[0];
         for(int i = 0; i < ImgDataParser.getData().size(); i++){
             ImgData data = ImgDataParser.getData().get(i);
             if(data.group.matches(name) && data.direction == direction){
                 nameItem = i;
-                for(byte animPart: data.animRef)
-                    anim += ":"+animPart;
+                anim = new byte[data.animRef.size()];
+                for(int j = 0; j < anim.length; j++)
+                    anim[j] = data.animRef.get(j);
                 break;
             }
         }
         if(nameItem == -1)  return;
+        AnimStore item = new AnimStore(nameItem, player, direction,
+                anim, locx, locy);
         makeNewImage(nameItem, player, direction);
-        item.setText(""+nameItem+":"+player+":"+direction+""+anim);
         animParts.add(item);
     }
 
     //Checks to see if a certain image exists, if not, it adds it to
     //the list of the ImgLibrary
     public void update(int animTime){
-        for(MovingPix item: animParts){
-            
-        }
     }
     public void render(Graphics g, int animTime){
-    	
-    	/*
-    	 * TO MANY STRINGS ARE CREATED AND MAKES THE DRAW ROUTINE HORROBLE
-    	 * SLOW
-    	 * 
-    	 * 
-    	 * 
-        for(MovingPix item: animParts){
-            animStr = item.logoTxt.split(":");
-            if(animStr.length > 4){
-                int time = (int)(animTime/(1000/(animStr.length-3)));
-                //Keeps neutral steady if uncommented
-                if(time < 0) //|| animStr[1].matches("0"))
-                    time = 0;
-                else if(time >= animStr.length-3)
-                    time = animStr.length-4;
-                g.drawImage(storedImg.getSlickImage(""+animStr[0]+"_"
-                        +animStr[1]+"_"+animStr[2]+"_"+animStr[(3+time)]),
-                        (int)item.posx, (int)item.posy);
-            }else
+    	for(AnimStore item: animParts){
+            if(item.getSize() != 1)
                 g.drawImage(storedImg.getSlickImage(
-                        ""+animStr[0]+"_"+animStr[1]+"_"+animStr[2]+"_0"),
-                        (int)item.posx, (int)item.posy);
-        }*/
-    	if( img == null ){
-    		String[] animStr = animParts.get(0).logoTxt.split(":");
-        	img = storedImg.getSlickImage(""+animStr[0]+"_"+animStr[1]+"_"+animStr[2]+"_0");
-    	}
-    	for( MovingPix item : animParts ){
-    		g.drawImage( img ,  (int)item.posx, (int)item.posy);
-    	}
-    	
+                    imgMap.get(item.getAnimation((int)
+                    (animTime/(1000/item.getSize()))))),
+                    item.posx, item.posy);
+            else
+               g.drawImage(storedImg.getSlickImage(
+                    imgMap.get(item.getAnimation(0))),
+                    item.posx, item.posy);
+        }
     }
     //We need a lot for this class, and it is the most important class.
     //1) ImgLibrary, to store the images.
@@ -139,8 +114,8 @@ public class PixAnimate {
     }
 
     private void makeNewImage(int index, int player, int direction){
-        if(storedImg.getIndex(""+index+"_"+player+"_"+direction+"_0") != -1)
-            return;
+        short store = (short)((index*10000+player*100+direction)*100);
+        if(imgMap.containsKey(store))       return;
 
         ImgLibrary parseImg = new ImgLibrary();
         ImgData data = ImgDataParser.getData().get(index);
@@ -171,8 +146,8 @@ public class PixAnimate {
             storedImg.setImageSize(
                 (int)(file.sizex*(BASE/(double)file.sizex)*file.tilex),
                 (int)(file.sizey*(BASE/(double)file.sizex)*file.tiley));
-            storedImg.addImage(""+index+"_"+player+"_"+direction+"_"+i+"",
-                parseImg.getImage(0, file.locx, file.locy,
+            imgMap.put((short)(store+i), storedImg.length());
+            storedImg.addImage(parseImg.getImage(0, file.locx, file.locy,
                 file.sizex, file.sizey));
         }
     }

@@ -17,7 +17,7 @@ import org.newdawn.slick.Image;
  * @author Crecen
  */
 public class InGameState extends SlickScreen{
-    private final double BASE = 32;
+    private final double BASE = 16;
 
     private ImgLibrary imgSort;
     private TextImgLibrary textSort;
@@ -60,19 +60,16 @@ public class InGameState extends SlickScreen{
             }
         }
         for(int i = 0; i < 20*(32/BASE); i++){
-            for(int j = 0; j < 16*(32/BASE); j++){
-                testMap.addImgPart("INFT", i, 3, 
+           for(int j = 0; j < 16*(32/BASE); j++){
+                testMap.addImgPart("INFT", i, 3,
                         (int)((32*(BASE/32)*i)-16*(BASE/32)),
                         (int)((32*(BASE/32)*j)-16*(BASE/32)));
             }
-        }
-
-        	
+        }//*/
     }
 
     @Override
     public void render(Graphics g) {
-
         testMap.render(g, scr_sysTime);
     }
     
