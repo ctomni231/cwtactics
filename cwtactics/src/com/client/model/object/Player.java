@@ -98,7 +98,7 @@ public class Player {
 	}
 	
 	public int getID(){
-		return Game.getMap().getPlayerID(this);
+		return Game.getPlayerID(this);
 	}
 	
 	

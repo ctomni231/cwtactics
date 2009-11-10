@@ -2,6 +2,8 @@ package com.client.model.object;
 
 import java.util.ArrayList;
 
+import com.system.data.Data;
+
 public class Map {
 
 	/*
@@ -12,7 +14,8 @@ public class Map {
 	 */
 
 	private Tile[][] tiles;
-	private ArrayList<Player> players;
+	
+	
 	
 	/*
 	 *
@@ -23,8 +26,9 @@ public class Map {
 
 	public Map( int sizeX , int sizeY ){
 		tiles	= new Tile[sizeX][sizeY];
-		players	= new ArrayList<Player>();
 	}
+	
+	
 	
 	/*
 	 *
@@ -59,47 +63,25 @@ public class Map {
 	public int getSizeY(){
 		return tiles[0].length;
 	}
-	
-	public void addPlayer( Player player ){
-		players.add(player);
-	}
-	
-	public void removePlayer( Player player ){
-		players.remove(player);
-	}
-	
-	public Player getPlayer( int ID ){
-		return players.get(ID);
-	}
-	
-	public ArrayList<Player> getPlayers(){
-		return players;
-	}
-	
-	public int getPlayerID( Player player ){
-		return players.indexOf(player);
-	}
-	
-	/*
-	 *
-	 * WORK METHODS
-	 * ************
-	 * 
-	 */
 
-	/*
-	 *
-	 * INTERNAL METHODS
-	 * ****************
-	 * 
-	 */
 
+	
 	/*
 	 *
 	 * OUTPUT METHODS
 	 * **************
 	 * 
 	 */
-
+	
+	public void printMap(){
+		
+		System.out.println("Map shape :)");
+		for( int i = 0; i < 10 ; i++ ){
+			for( int j = 0 ; j < 10 ; j++ ){
+				System.out.print( tiles[i][j].sheet().getName() +" || " );
+    		}
+			System.out.println();
+    	}
+	}
 }
 

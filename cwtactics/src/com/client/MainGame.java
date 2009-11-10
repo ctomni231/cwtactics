@@ -1,7 +1,16 @@
 package com.client;
 
 import com.client.logic.command.MessageServer;
+import com.client.logic.command.commands.ingame.GenerateMove;
+import com.client.logic.command.commands.ingame.TestCommand;
+import com.client.model.Move;
+import com.client.model.Weather;
 import com.client.model.loading.ImgDataParser;
+import com.client.model.object.Game;
+import com.client.model.object.Map;
+import com.client.model.object.Player;
+import com.client.model.object.Tile;
+import com.client.model.object.Unit;
 
 import com.client.state.InGameState;
 import com.client.state.MainMenuState;
@@ -47,6 +56,24 @@ public class MainGame {
     	
     	// NOTE : ATM SCRIPT ENGINE OUTPUTS SOME ERRORS BECAUSE IT CANNOT hANDLE ALL SCRIPTS IN SCRIPT.XML
     	// it's beta at the moment
+    	
+    	Weather.setWeather( Data.getWeatherSheet( 0 ));
+    	
+    	Map map = new Map(10, 10);
+    	Game.setMap(map);
+    	for( int i = 0; i < 10 ; i++ ){
+    		
+    		for( int j = 0 ; j < 10 ; j++ ){
+    			map.setTile( new Tile( Data.getTileSheet( Data.getIntegerID("PLAIN")), i, j, 0, null), i, j);
+    		}
+    	}
+    	
+    	map.getTile(5, 5).setUnit( new Unit( Data.getUnitSheet( Data.getIntegerID("MECH")), new Player("Alex")));
+    	System.out.println("Test map 10x10 with plains... ");
+    	Move.initialize( map.getTile(5, 5), map.getTile(5, 5).getUnit());
+    	MessageServer.toCommandList( new GenerateMove() , false );
+    	MessageServer.toCommandList( new TestCommand() , false );
+    	
     	
         ImgDataParser.init();
 

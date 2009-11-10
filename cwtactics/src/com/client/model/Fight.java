@@ -1,11 +1,11 @@
-package com.client.model.object;
+package com.client.model;
 
 import com.client.logic.command.CommandList;
 import com.client.logic.command.MessageServer;
 import com.client.logic.command.commands.ingame.CheckTrigger;
+import com.client.model.object.Tile;
+import com.client.model.object.Unit;
 import com.system.ID;
-import com.system.data.script.ScriptFactory;
-import com.system.data.script.Trigger_Object;
 import com.system.data.sheets.Weapon_Sheed;
 
 public class Fight {
