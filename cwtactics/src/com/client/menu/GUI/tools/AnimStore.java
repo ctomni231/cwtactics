@@ -1,5 +1,7 @@
 package com.client.menu.GUI.tools;
 
+import org.newdawn.slick.Image;
+
 /**
  * A small class used to help store animations and help with speed
  * @author Crecen
@@ -7,6 +9,8 @@ package com.client.menu.GUI.tools;
 public class AnimStore {
     private short imgData;
     private byte[] animate;
+    
+    public Image img; 
 
     public int owner;
     public int posx;

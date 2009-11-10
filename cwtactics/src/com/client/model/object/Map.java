@@ -40,6 +40,19 @@ public class Map {
 	public Tile[][] getField(){
 		return tiles;
 	}
+	
+	public Tile findTile( Unit unit ){
+		
+		// try to find the unit on the map
+		for( Tile[] row : tiles ){
+			for( Tile tile : row ){
+				if( tile.getUnit() == unit ) return tile;
+			}
+		}
+		
+		System.err.println("Cannot find the field, where unit "+unit+" is.");
+		return null;
+	}
 
 	public boolean correctPos( int x , int y ){
 		if( x >= 0 && x < tiles[0].length && y >= 0 && y < tiles.length ) return true;

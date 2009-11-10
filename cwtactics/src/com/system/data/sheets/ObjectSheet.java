@@ -18,7 +18,7 @@ public class ObjectSheet extends Sheet {
 	private int vision;
 	private ArrayList<Integer> tags;
 	private HashMap<Sheet, Integer> cost;
-	private HashMap<Unit_Sheed,Integer>	hiddenRanges;
+	private HashMap<ObjectSheet,Integer>	hiddenRanges;
 	
 	
 
@@ -34,7 +34,7 @@ public class ObjectSheet extends Sheet {
 		vision = -1;
 		tags = new ArrayList<Integer>();
 		cost = new HashMap<Sheet, Integer>();
-		hiddenRanges = new HashMap<Unit_Sheed,Integer>();
+		hiddenRanges = new HashMap<ObjectSheet,Integer>();
 	}
 	
 	
@@ -89,17 +89,33 @@ public class ObjectSheet extends Sheet {
 	 * Adds a value for an unit type that can see this tile or unit ( hidden )
 	 * in a given range.
 	 */
-	public void addDetectRange( Unit_Sheed sh , int value ){
+	public void addDetectRange( ObjectSheet sh , int value ){
 		if( sh == null || value <= 1 || hiddenRanges.containsKey(sh) ){ System.err.println("Cannot add sheet for "+super.getName()+" special ranges, because sheed is null or allready in special ranges or value isn't correct"); return; }
 		else hiddenRanges.put(sh,value);
 	}
 	
 	/**
-	 * Returns the range that is needed to see the tile
-	 * or if it a unit, the unit at hidden status.
+	 * Returns the range that is needed to see the object.
 	 */
-	public int getDetectingRange( Unit_Sheed sh ){
+	public int getDetectingRange( ObjectSheet sh ){
+		
 		if( hiddenRanges.containsKey(sh) ) return hiddenRanges.get(sh);
+		
+		// all tiles are visible in any range, but hidden tiles like 
+		// forest, are only visible in a given range or less. 
+		else return -1;
+	}
+	
+	/**
+	 * Returns the range that is needed to see the object
+	 * in stealth mode.
+	 */
+	public int getStealthRange( ObjectSheet sh ){
+		
+		if( hiddenRanges.containsKey(sh) ) return hiddenRanges.get(sh);
+		
+		// all stealth units, not important how the situation is, are visible at 
+		// a range of 1.
 		else return 1;
 	}
 	

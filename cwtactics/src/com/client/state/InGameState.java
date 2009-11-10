@@ -1,12 +1,18 @@
 package com.client.state;
 
+import com.client.logic.command.MessageServer;
+import com.client.logic.command.commands.ingame.CheckTrigger;
 import com.client.logic.input.Controls;
 import com.client.menu.GUI.tools.PixAnimate;
+import com.client.model.object.Game;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import com.client.tools.ImgLibrary;
 import com.client.tools.TextImgLibrary;
+import com.system.ID;
+
 import org.newdawn.slick.Image;
 
 /**
@@ -17,7 +23,7 @@ import org.newdawn.slick.Image;
  * @author Crecen
  */
 public class InGameState extends SlickScreen{
-    private final double BASE = 16;
+    private final double BASE = 26;
 
     private ImgLibrary imgSort;
     private TextImgLibrary textSort;
@@ -63,7 +69,7 @@ public class InGameState extends SlickScreen{
         }
         for(int i = 0; i < 20*(32/BASE); i++){
            for(int j = 0; j < 16*(32/BASE); j++){
-                testMap.addImgPart("INFT", i, 3,
+        	   testMap.addImgPart("INFT", i, 0,
                         (int)((32*(BASE/32)*i)-16*(BASE/32)),
                         (int)((32*(BASE/32)*j)-16*(BASE/32)));
             }

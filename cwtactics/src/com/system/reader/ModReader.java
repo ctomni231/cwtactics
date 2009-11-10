@@ -304,11 +304,19 @@ public class ModReader extends Parser {
 		 * 		  HIDDENTARGET
 		 ****************************
 		 */
-		else if( super.isAheader("hiddentarget") ){
+		else if( super.isAheader("unittarget") ){
 			
 			// create new sheet if you arrive a new XML object body and the ID isn't in the database
 			if( ! Data.existIntegerID( attributes.getValue("id")  )) addUnitSheet( attributes.getValue("id") );
 			Unit_Sheed shDet = Data.getUnitSheet( Data.getIntegerID(attributes.getValue("id") ) );
+			
+			sh.addDetectRange(shDet, Integer.parseInt(attributes.getValue("range")) );
+		}
+		else if( super.isAheader("tiletarget") ){
+			
+			// create new sheet if you arrive a new XML object body and the ID isn't in the database
+			if( ! Data.existIntegerID( attributes.getValue("id")  )) addUnitSheet( attributes.getValue("id") );
+			Tile_Sheet shDet = Data.getTileSheet( Data.getIntegerID(attributes.getValue("id") ) );
 			
 			sh.addDetectRange(shDet, Integer.parseInt(attributes.getValue("range")) );
 		}

@@ -700,8 +700,8 @@
                        useAmmo="1"    />
         </combat>
 		<hidden>
-            <hiddentarget id="CRUISER"    range="2" />
-            <hiddentarget id="CARRIER"    range="2" />
+            <unittarget id="CRUISER"    range="2" />
+            <unittarget id="CARRIER"    range="2" />
 		</hidden>
         <damage>
             <enemy id="SUB"        wp1_damage="55" />
@@ -731,9 +731,9 @@
                        useAmmo="1"    />
         </combat>
 		<hidden>
-            <hiddentarget id="CRUISER"    range="2" />
-            <hiddentarget id="AAROCKET"   range="3" />
-            <hiddentarget id="CARRIER"    range="3" />
+            <unittarget id="CRUISER"    range="2" />
+            <unittarget id="AAROCKET"   range="3" />
+            <unittarget id="CARRIER"    range="3" />
 		</hidden>
         <damage>
             <enemy id="LTANK"      wp1_damage="75" />
@@ -1074,7 +1074,7 @@
               ENG="Forrest"     />
 		<stats />
 		<hidden>
-            <hiddentarget id="RECOON" range="2" />
+            <unittarget id="RECOON" range="2" />
 		</hidden>
         <sprite colored="0" sprites="1" variations="1" />
         <field_effect>

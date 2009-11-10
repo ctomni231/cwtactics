@@ -70,6 +70,7 @@ public abstract class SlickScreen extends BasicGameState{
     
     public final void update(GameContainer container, 
             StateBasedGame game, int timePassed) throws SlickException {
+    	
         scr_sysTime = SlickGame.timer.getTime();
         update(timePassed);
         //This switches screens internally

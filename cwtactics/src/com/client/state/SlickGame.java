@@ -90,6 +90,7 @@ public class SlickGame extends StateBasedGame{
     	
     	// setup game configurations
         container.setAlwaysRender(true);
+        container.setVSync(false);
         
         //Stores the states to the class
         for(int i = 0; i < storedStates.size(); i++)
