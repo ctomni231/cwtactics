@@ -23,13 +23,13 @@ public class PixAnimate {
     private ArrayList<Integer> buildColors;
     private ArrayList<Integer> unitColors;
     private HashMap<Short, Integer> imgMap;
-    private ArrayList<AnimStore> animParts;
+    private AnimStore[] animParts;
 
     public PixAnimate(){
         storedImg = new ImgLibrary();
         buildColors = new ArrayList<Integer>();
         unitColors = new ArrayList<Integer>();
-        animParts = new ArrayList<AnimStore>();
+        animParts = new AnimStore[0];
         imgMap = new HashMap<Short, Integer>();
         ImgDataParser.init();
     }
@@ -69,7 +69,12 @@ public class PixAnimate {
         AnimStore item = new AnimStore(nameItem, player, direction,
                 anim, locx, locy);
         makeNewImage(nameItem, player, direction);
-        animParts.add(item);
+        AnimStore[] temp = animParts;
+        animParts = new AnimStore[temp.length+1];
+        for(int i = 0; i < temp.length; i++)
+            animParts[i] = temp[i];
+        animParts[animParts.length-1] = item;
+
     }
 
     //Checks to see if a certain image exists, if not, it adds it to
@@ -77,17 +82,16 @@ public class PixAnimate {
     public void update(int animTime){
     }
     public void render(Graphics g, int animTime){
-    	for(AnimStore item: animParts){
-            if(item.getSize() != 1)
-                g.drawImage(storedImg.getSlickImage(
-                    imgMap.get(item.getAnimation((int)
-                    (animTime/(1000/item.getSize()))))),
-                    item.posx, item.posy);
+        for(int i = 0; i < animParts.length; i++){
+            if(animParts[i].getSize() != 1)
+                g.drawImage(storedImg.getSlickImage(imgMap.get(
+                    animParts[i].getAnimation(animTime))),
+                    animParts[i].posx, animParts[i].posy);
             else
-               g.drawImage(storedImg.getSlickImage(
-                    imgMap.get(item.getAnimation(0))),
-                    item.posx, item.posy);
-        }
+                g.drawImage(storedImg.getSlickImage(imgMap.get(
+                    animParts[i].getAnimation(0))),
+                    animParts[i].posx, animParts[i].posy);
+        }	
     }
     //We need a lot for this class, and it is the most important class.
     //1) ImgLibrary, to store the images.

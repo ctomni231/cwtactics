@@ -2,8 +2,8 @@ package com.client.model;
 
 import java.util.ArrayList;
 
-import object.Field;
-import object.Map;
+//import object.Field;
+//import object.Map;
 
 import com.client.model.object.Game;
 import com.client.model.object.Player;
@@ -11,7 +11,7 @@ import com.client.model.object.Tile;
 import com.client.model.object.Unit;
 import com.system.data.sheets.ObjectSheet;
 
-import core.Misc_Data;
+//import core.Misc_Data;
 
 public class Fog {
 
@@ -151,54 +151,54 @@ public class Fog {
         }
     }
 	
-	private static checkTile( Tile tile ){
+	//private static checkTile( Tile tile ){
 		
-		if( canSeeTile() ){
+	//	if( canSeeTile() ){
 			
-			Unit unit = tile.getUnit();
-			if( unit != null /* hidden */ ){
+	//		Unit unit = tile.getUnit();
+	//		if( unit != null /* hidden */ ){
 				
-			}
-		}
-	}
+	//		}
+	//	}
+	//}
 	
-	private static boolean canSee( int x , int y , ObjectSheet sh , Tile target ){
+	//private static boolean canSee( int x , int y , ObjectSheet sh , Tile target ){
 
-        int xR = target.getPosX() - x;
-        int yR = target.getPosY() - y;
-        if( xR < 0 ) xR = xR*(-1);
-        if( yR < 0 ) yR = yR*(-1);
-        int range = xR + yR;
-        int needR = 1;
+     //   int xR = target.getPosX() - x;
+     //   int yR = target.getPosY() - y;
+     //   if( xR < 0 ) xR = xR*(-1);
+    //    if( yR < 0 ) yR = yR*(-1);
+     //   int range = xR + yR;
+    //    int needR = 1;
         
-		if( target.sheet().getDetectingRange(sh) != -1 ){
-			needR = target.sheet().getDetectingRange(sh);
-		}
+	//	if( target.sheet().getDetectingRange(sh) != -1 ){
+	//		needR = target.sheet().getDetectingRange(sh);
+	//	}
 		
-        if ( id != -1 ) needR = Misc_Data.specialVisionRange(type, id);
+   //     if ( id != -1 ) needR = Misc_Data.specialVisionRange(type, id);
 
-        if ( range <= needR ) return true;
-        return false;
-    }
+   //     if ( range <= needR ) return true;
+   //     return false;
+   // }
 	
-	private static boolean canSeeStealth( int x , int y , ObjectSheet sh , Unit target ){
+	//private static boolean canSeeStealth( int x , int y , ObjectSheet sh , Unit target ){
     	
 		
 		
 		
 		
-        int range = 0;
-        int xR = field.getPos_x() - x;
-        int yR = field.getPos_y() - y;
-        if( xR < 0 ) xR = xR*(-1);
-        if( yR < 0 ) yR = yR*(-1);
-        range += xR + yR;
-        int needR = 1;
-        if ( id != -1 ) needR = Misc_Data.specialVisionRange(type, id);
+     //   int range = 0;
+     //   int xR = field.getPos_x() - x;
+     ///   int yR = field.getPos_y() - y;
+     //   if( xR < 0 ) xR = xR*(-1);
+     //   if( yR < 0 ) yR = yR*(-1);
+     //   range += xR + yR;
+    //    int needR = 1;
+    //    if ( id != -1 ) needR = Misc_Data.specialVisionRange(type, id);
 
-        if ( range <= needR ) return true;
-        return false;
-    }
+    //    if ( range <= needR ) return true;
+    //    return false;
+    //}
 	
 
 	/*

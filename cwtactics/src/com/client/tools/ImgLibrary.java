@@ -11,7 +11,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
 import org.newdawn.slick.Color;
@@ -29,7 +28,7 @@ public class ImgLibrary extends Component{
     //Helps with loading images
     private ImgLoader il;
     //Helps store a list of images by index
-    private ArrayList<ImgHolder> sortedImg;
+    private ImgHolder[] sortedImg;
     //Helps turn that list into a String reference
     private HashMap<String, Integer> hashImg;
     //Holds values so you can change colors within images
@@ -51,7 +50,7 @@ public class ImgLibrary extends Component{
 
     //Initializes all variables
     public ImgLibrary(){
-        sortedImg = new ArrayList<ImgHolder>();
+        sortedImg = new ImgHolder[0];
         hashImg = new HashMap<String, Integer>();
         il = new ImgLoader();
         colorChanger = new HashMap<Integer, Integer>();
@@ -144,15 +143,22 @@ public class ImgLibrary extends Component{
         //Makes image searchable by filename
         if(!filename.matches("") && storeFileRef){
             if(index == -1)
-                hashImg.put(filename, sortedImg.size());
+                hashImg.put(filename, sortedImg.length);
             else
                 hashImg.put(filename, index);
         }
         storeFileRef = true;
         //Either makes a new image or overwrites and older one.
-        return (index >= 0 && index < sortedImg.size()) ?
-            (sortedImg.set(index, storeImage()) != null) :
-            sortedImg.add(storeImage());
+        if(index >= 0 && index < sortedImg.length)
+            sortedImg[index] = storeImage();
+        else{
+            ImgHolder[] temp = sortedImg;
+            sortedImg = new ImgHolder[temp.length+1];
+            for(int i = 0; i < temp.length; i++)
+                sortedImg[i] = temp[i];
+            sortedImg[sortedImg.length-1] = storeImage();
+        }
+        return true;
     }
     //Adds references to images
     public boolean addReference(String imgName, String storedImg){
@@ -160,7 +166,7 @@ public class ImgLibrary extends Component{
             addReference(imgName, hashImg.get(storedImg)) : false;
     }
     public boolean addReference(String imgName, int index){
-        if(!imgName.matches("") && index >= 0 && index < sortedImg.size()){
+        if(!imgName.matches("") && index >= 0 && index < sortedImg.length){
             hashImg.put(imgName, index);
             return true;
         }
@@ -191,8 +197,8 @@ public class ImgLibrary extends Component{
         return getImage(getIndex(ref));
     }
     public Image getImage(int index){
-        return index >= 0 && index < sortedImg.size() ?
-            sortedImg.get(index).image : getColorBox(java.awt.Color.RED,1,1);
+        return index >= 0 && index < sortedImg.length ?
+            sortedImg[index].image : getColorBox(java.awt.Color.RED,1,1);
     }
     public Image getImage(int index, int cutlx, int cutly,
             int cutsx, int cutsy){
@@ -203,13 +209,13 @@ public class ImgLibrary extends Component{
         return getPixels(getIndex(ref));
     }
     public int[] getPixels(int index){
-        int[] temp = (index >= 0 && index < sortedImg.size()) ?
-            sortedImg.get(index).pixels : new int[0];
-        if(index >= 0 && index < sortedImg.size() && temp == null){
-            ImgHolder heldImg = sortedImg.get(index);
+        int[] temp = (index >= 0 && index < sortedImg.length) ?
+            sortedImg[index].pixels : new int[0];
+        if(index >= 0 && index < sortedImg.length && temp == null){
+            ImgHolder heldImg = sortedImg[index];
             heldImg.pixels = handlePixels(heldImg.image,
                     0, 0, heldImg.sizex, heldImg.sizey);
-            sortedImg.set(index, heldImg);
+            sortedImg[index] = heldImg;
             temp = heldImg.pixels;
         }
         return temp;
@@ -220,13 +226,14 @@ public class ImgLibrary extends Component{
     }
     public org.newdawn.slick.Image getSlickImage(int index){
         org.newdawn.slick.Image temp = (index >= 0 && index <
-                sortedImg.size()) ? sortedImg.get(index).sImage : null;
-        if(index >= 0 && index < sortedImg.size() && temp == null){
+                sortedImg.length) ? sortedImg[index].sImage : null;
+        if(index >= 0 && index < sortedImg.length && temp == null){
             temp = makeSlickImage(getImage(index), 
-                    sortedImg.get(index).toString());
-            ImgHolder heldImg = sortedImg.get(index);
+                    sortedImg[index].toString());
+            ImgHolder heldImg = sortedImg[index];
             heldImg.sImage = temp;
-            sortedImg.set(index, heldImg);
+            heldImg.image = null;
+            sortedImg[index] = heldImg;
         }
         return (temp != null) ? temp : makeSlickImage(getColorBox(
             java.awt.Color.RED,1,1), "EMPTY");
@@ -237,29 +244,29 @@ public class ImgLibrary extends Component{
         return getOrigX(getIndex(ref));
     }
     public int getOrigX(int index){
-        return index >= 0 && index < sortedImg.size() ?
-            sortedImg.get(index).origx : 0;
+        return index >= 0 && index < sortedImg.length ?
+            sortedImg[index].origx : 0;
     }
     public int getOrigY(String ref){
         return getOrigY(getIndex(ref));
     }
     public int getOrigY(int index){
-        return index >= 0 && index < sortedImg.size() ?
-            sortedImg.get(index).origy : 0;
+        return index >= 0 && index < sortedImg.length ?
+            sortedImg[index].origy : 0;
     }
     public int getX(String ref){
         return getX(getIndex(ref));
     }
     public int getX(int index){
-        return index >= 0 && index < sortedImg.size() ?
-            sortedImg.get(index).sizex : 0;
+        return index >= 0 && index < sortedImg.length ?
+            sortedImg[index].sizex : 0;
     }
     public int getY(String ref){
         return getY(getIndex(ref));
     }
     public int getY(int index){
-        return index >= 0 && index < sortedImg.size() ?
-            sortedImg.get(index).sizey : 0;
+        return index >= 0 && index < sortedImg.length ?
+            sortedImg[index].sizey : 0;
     }
 
     //Gets an index from a reference stored here
@@ -291,7 +298,7 @@ public class ImgLibrary extends Component{
     }
 
     public int length(){
-        return sortedImg.size();
+        return sortedImg.length;
     }
     public int hashSize(){
         return hashImg.size();

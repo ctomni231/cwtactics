@@ -1,13 +1,17 @@
 package com.client.state;
 
+import java.util.ArrayList;
+
 import com.client.logic.command.MessageServer;
 import com.client.logic.command.commands.ingame.CheckTrigger;
 import com.client.logic.input.Controls;
 import com.client.menu.GUI.tools.PixAnimate;
 import com.client.model.object.Game;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
 
 import com.client.tools.ImgLibrary;
 import com.client.tools.TextImgLibrary;
@@ -23,14 +27,17 @@ import org.newdawn.slick.Image;
  * @author Crecen
  */
 public class InGameState extends SlickScreen{
-    private final double BASE = 26;
+    private final double BASE = 16;
 
     private ImgLibrary imgSort;
     private TextImgLibrary textSort;
     private Image textImg;
     private PixAnimate testMap;
-    
+
     private int enterState;
+
+   private Animation[][] list = new Animation[40][32];
+   private ArrayList<Animation> list2 = new ArrayList<Animation>();
 
     public InGameState(){
         testMap = new PixAnimate();
@@ -57,7 +64,7 @@ public class InGameState extends SlickScreen{
         textSort.addLetter('.', textSort.getImage(0), "", 6, 5, 26);
         textSort.setString("WELCOME TO TACTIC WARS", "", 0, 0, 0, 0);
         textImg = textSort.getSlickTextImage("TITLE");
-      
+
 
         for(int i = 0; i < 20*(32/BASE); i++){
             for(int j = 0; j < 8*(32/BASE); j++){
@@ -67,18 +74,45 @@ public class InGameState extends SlickScreen{
                         (int)(j*64*(BASE/32)));
             }
         }
+
         for(int i = 0; i < 20*(32/BASE); i++){
-           for(int j = 0; j < 16*(32/BASE); j++){
-        	   testMap.addImgPart("INFT", i, 0,
-                        (int)((32*(BASE/32)*i)-16*(BASE/32)),
-                        (int)((32*(BASE/32)*j)-16*(BASE/32)));
-            }
-        }
+            for(int j = 0; j < 16*(32/BASE); j++){
+         	   testMap.addImgPart("INFT", i, 0,
+                         (int)((32*(BASE/32)*i)-16*(BASE/32)),
+                         (int)((32*(BASE/32)*j)-16*(BASE/32)));
+             }
+         }
+
+        Image img = null;
+        try {
+			img = new Image( "resources/image/plugin/AW1_INFT.png");
+		} catch (SlickException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        for(int i = 0; i < 40; i=i+2){
+            for(int j = 0; j < 32; j++){
+            	list[i][j] = new Animation( new Image[]{ img.getSubImage( 0 , 0 ,32 , 32),img.getSubImage( 32 , 32 ,32 , 32),img.getSubImage( 64 , 64 ,32 , 32) }, 250);
+            	list[i+1][j] = new Animation( new Image[]{ img.getSubImage( 96 , 96 ,32 , 32),img.getSubImage( 128 , 128 ,32 , 32),img.getSubImage( 160 , 160 ,32 , 32) }, 250);
+                list2.add(list[i][j]);
+                list2.add(list[i+1][j]);
+             }
+         }
+
+
     }
 
     @Override
     public void render(Graphics g) {
         testMap.render(g, scr_sysTime);
+    	//for(int i = 0; i < 40; i++){
+        //    for(int j = 0; j < 32; j++){
+        //    	g.drawAnimation( list[i][j], i*16, j*16);
+        //     }
+         //}
+        //for(Animation draw: list2){
+        //    g.drawAnimation( draw, 16, 16);
+        //}
     }
 
     //This is to quickly switch screens using F1 and F2 for testing
@@ -89,34 +123,34 @@ public class InGameState extends SlickScreen{
         else if(key == 60)
             enterState = (scr_ID+1);
     }
-    
 
-    
+
+
     /*
-     * 
+     *
      * WORK METHODS
      * ************
-     * 
+     *
      */
-    
+
     @Override
     /**
      * Updates the inGame logic after
      * a render call.
      */
     public void update(int timePassed) {
-        
+
     	if( checkupState( enterState ) ) return;
-    	
+
     	updateUI(timePassed);
     }
-    
+
     /**
      * Checks the state variable and changes the state
-     * if necessary. 
+     * if necessary.
      */
     private boolean checkupState( int state ){
-		
+
 		if( state != -1 ){
 			scr_switch.add( enterState );
 			enterState = -1;
@@ -124,21 +158,21 @@ public class InGameState extends SlickScreen{
 		}
 		return false;
 	}
-    
+
     /**
      * React on user inputs and changes logic
      * to fit with the user inputs.
      */
     private void updateUI( int timePassed ){
-    	
+
     	if(Controls.isUpClicked() ||
     	   Controls.isDownClicked() ||
     	   Controls.isLeftClicked() ||
     	   Controls.isRightClicked() ||
     	   Controls.isActionClicked() ||
-    	   Controls.isCancelClicked()) System.out.println("GAME ACTION: "); 
+    	   Controls.isCancelClicked()) System.out.println("GAME ACTION: ");
     }
-    
-    
-    
+
+
+
 }

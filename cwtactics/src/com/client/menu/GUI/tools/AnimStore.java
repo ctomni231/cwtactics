@@ -1,7 +1,5 @@
 package com.client.menu.GUI.tools;
 
-import org.newdawn.slick.Image;
-
 /**
  * A small class used to help store animations and help with speed
  * @author Crecen
@@ -9,8 +7,6 @@ import org.newdawn.slick.Image;
 public class AnimStore {
     private short imgData;
     private byte[] animate;
-    
-    public Image img; 
 
     public int owner;
     public int posx;
@@ -31,11 +27,11 @@ public class AnimStore {
         return animate.length;
     }
 
-    public short getAnimation(int index){
-        if(index >= animate.length) index = animate.length-1;
-        else if(index < 0)
-            index = 0;
-        return (short)((imgData*100)+(int)animate[index]);
+    public short getAnimation(int time){
+        time /= (1000.0/animate.length);
+        if(time >= animate.length)  time = animate.length-1;
+        else if(time < 0)           time = 0;
+        return (short)((imgData*100)+(int)animate[time]);
     }
 
 }
