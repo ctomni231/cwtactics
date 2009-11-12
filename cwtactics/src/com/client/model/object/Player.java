@@ -1,10 +1,7 @@
 package com.client.model.object;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import com.system.data.Data;
-import com.system.data.sheets.Sheet;
 
 public class Player {
 
@@ -18,6 +15,7 @@ public class Player {
 	private String name;
 	private ArrayList<Unit> units;
 	private ArrayList<Tile> properties;
+	private Team team;
 	private int[] resourcePool;
 	
 	
@@ -29,9 +27,10 @@ public class Player {
 	 * 
 	 */
 	
-	public Player( String name ){
+	public Player( String name , Team team ){
 		
 		this.name	= name;
+		this.team	= team;
 		units		= new ArrayList<Unit>();
 		properties	= new ArrayList<Tile>();
 		resourcePool = new int[ Data.getRessourceTable().size() ];
@@ -99,6 +98,15 @@ public class Player {
 	
 	public int getID(){
 		return Game.getPlayerID(this);
+	}
+	
+	public Team getTeam(){
+		return team;
+	}
+	
+	public boolean isAlive(){
+		if( team.isInTeam(this) ) return true;
+		else return false;
 	}
 	
 	

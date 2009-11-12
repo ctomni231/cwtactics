@@ -70,13 +70,10 @@ public class InGameState extends SlickScreen{
 
         Map game = Game.getMap();
 
-        System.out.println("MAP SIZE: "+game.getSizeX()+","+game.getSizeY());
         Tile[][] gameMap = game.getField();
         
         for(int i = 0; i < gameMap.length; i++){
             for(int j = 0; j < gameMap[i].length; j++){
-                System.out.println("MAP("+i+","+j+"):"+
-                        gameMap[i][j].sheet().getName());
                 testMap.addImgPart(
                   gameMap[i][j].sheet().getName().toUpperCase(),
                   0, 0, (int)(i*(BASE+1)), (int)(j*(BASE+1)));

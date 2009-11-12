@@ -19,6 +19,7 @@ public class Unit {
 	private int		rank;
 	private int		fuel;
 	private int		ammo;
+	private boolean isHidden;
 		
 	
 	
@@ -130,6 +131,14 @@ public class Unit {
 	
 	public int getID(){
 		return ( owner.getID() * 10000 ) + owner.getUnits().indexOf(this);
+	}
+	
+	public boolean isHidden() {
+		return isHidden;
+	}
+
+	public void setHidden(boolean isHidden) {
+		this.isHidden = isHidden;
 	}
 	
 	

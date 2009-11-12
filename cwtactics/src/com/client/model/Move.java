@@ -248,9 +248,9 @@ public class Move {
     	
     	if( neededFuel + cost <= Move.unit.sheet().getMoveRange() ){
     		if( unit == null ) return true;
-    		if( 1==2 /* If tile is in fog */ ) return true;
+    		if( Fog.inFog(tile) ) return true;
     		if( unit.getOwner() == Move.unit.getOwner() ) return true;
-    		if( /* + is hidden + not visible */ 1==2 ) return true;
+    		if( unit.isHidden() && !Fog.isVisible(unit) ) return true;
     	}
     	return false;
     }

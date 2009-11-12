@@ -52,6 +52,21 @@ public class Fog {
 	 */
 	
 	/**
+	 * Is no fog mode on ?
+	 */
+	public static boolean isFog(){
+		if( !noFog ) return true;
+		else return false;
+	}
+	
+	/**
+	 * Sets no fog mode on or off.
+	 */
+	public static void noFog( boolean fog ){
+		noFog = fog;
+	}
+	
+	/**
 	 * Is a hidden unit visible ?
 	 */
 	public static boolean isVisible( Unit unit ){
@@ -82,27 +97,31 @@ public class Fog {
 	 * WORK METHODS
 	 * ************
 	 * 
+	 */	
+	
+	/**
+	 * Processes all visions of a player and his
+	 * team.
+	 * 
+	 * ! Also in no fog mode is the fog checked to 
+	 *   check hidden units and tiles.
 	 */
-	
-	public static void noFog( boolean fog ){
-		clearTiles();
-		clearSteahlts();
-		noFog = fog;
-	}
-	
 	public static void processFog( Player player ){
     		
+		// clear old
+		clear();
+
     	// check up all visions from properties and units
-    	for( Player pl : Game.getPlayers() ){
-    		
-    		// TODO if( ! map.inTeam( p, player) ) continue;
-    		
+    	for( Player pl : player.getTeam().getMembers() ){
+    		    		
+    		// check property vision
     		for( Tile tile : pl.getProperties() ){
-        		vision(tile, tile.sheet() );
-        	}
+    			vision(tile, tile.sheet()); 
+    		}
     		
+    		// check unit vision 
     		for( Unit unit : pl.getUnits() ){
-    			vision( Game.getMap().findTile(unit) , unit.sheet() );
+    			vision( Game.getMap().findTile(unit), unit.sheet() );
     		}
     	}
     	
@@ -117,22 +136,9 @@ public class Fog {
 	 * 
 	 */
 	
-	private static void clearTiles(){
-		visibleTiles.clear();
-	}
-	
-	private static void clearSteahlts(){
-		visibleStealths.clear();
-	}
-	
-	private static void addTile( Tile tile ){
-		visibleTiles.add(tile);
-	}
-	
-	private static void addStealth( Unit unit ){
-		visibleStealths.add(unit);
-	}
-	
+	/**
+	 * Checks the vision on an object on a given tile. 
+	 */
 	private static void vision( Tile tile , ObjectSheet sh ){
 		
 		// variables
@@ -143,70 +149,107 @@ public class Fog {
 		// add tiles that the object can see
 		for( int i = 0 ; i <= range ; i++ ){
             for( int i2 = 0 ; i2 <= range-i ; i2++ ){
-                if ( x - i2 >= 0 && y - i >= 0                                             && !visibleTiles.contains( Game.getMap().getTile(x-i2, y-i )) ) ;
-                if ( x + i2 < Game.getMap().getSizeX() && y - i >= 0                       && !visibleTiles.contains( Game.getMap().getTile(x+i2, y-i )) ) ;
-                if ( x - i2 >= 0 && y + i < Game.getMap().getSizeY()                       && !visibleTiles.contains( Game.getMap().getTile(x-i2, y+i )) ) ;
-                if ( x + i2 < Game.getMap().getSizeX() && y + i < Game.getMap().getSizeY() && !visibleTiles.contains( Game.getMap().getTile(x+i2, y+i )) ) ;
+                if ( x - i2 >= 0 && y - i >= 0                                             ) checkTile( tile, sh , Game.getMap().getTile(x-i2, y-i ));
+                if ( x + i2 < Game.getMap().getSizeX() && y - i >= 0                       ) checkTile( tile, sh , Game.getMap().getTile(x+i2, y-i ));
+                if ( x - i2 >= 0 && y + i < Game.getMap().getSizeY()                       ) checkTile( tile, sh , Game.getMap().getTile(x-i2, y+i ));
+                if ( x + i2 < Game.getMap().getSizeX() && y + i < Game.getMap().getSizeY() ) checkTile( tile, sh , Game.getMap().getTile(x+i2, y+i ));
             }
         }
     }
 	
-	//private static checkTile( Tile tile ){
+	/**
+	 * Checks the vision status of an object 
+	 * on a given tile for a given target tile.  
+	 */
+	private static void checkTile( Tile start , ObjectSheet sh , Tile target ){
 		
-	//	if( canSeeTile() ){
+		Unit unit = target.getUnit();
+		
+		// check vision status, if the object can't see the tile,
+		// then don't check hidden unit 
+		if( !visibleTiles.contains(target) && canSeeTile(start, sh , target) ){
 			
-	//		Unit unit = tile.getUnit();
-	//		if( unit != null /* hidden */ ){
-				
-	//		}
-	//	}
-	//}
+			// add tile to visible list
+			addTile(target);
+			
+			// if there is a hidden unit on the tile, check vision status
+			if( unit != null && unit.isHidden() && !visibleStealths.contains(unit) && canSeeStealth(start, sh , target) ) addStealth(unit);
+		}
+	}
 	
-	//private static boolean canSee( int x , int y , ObjectSheet sh , Tile target ){
-
-     //   int xR = target.getPosX() - x;
-     //   int yR = target.getPosY() - y;
-     //   if( xR < 0 ) xR = xR*(-1);
-    //    if( yR < 0 ) yR = yR*(-1);
-     //   int range = xR + yR;
-    //    int needR = 1;
-        
-	//	if( target.sheet().getDetectingRange(sh) != -1 ){
-	//		needR = target.sheet().getDetectingRange(sh);
-	//	}
+	/**
+	 * Can an object see that tile from his position?
+	 */
+	private static boolean canSeeTile( Tile start , ObjectSheet sh , Tile target ){
 		
-   //     if ( id != -1 ) needR = Misc_Data.specialVisionRange(type, id);
+		int range = getRange(start, target);
+		int needed = target.sheet().getDetectingRange( sh );
+		
+		if( needed == -1 || range <= needed ) return true;
+		else return false;
+	}
 
-   //     if ( range <= needR ) return true;
-   //     return false;
-   // }
+	/**
+	 * Can an object see that stealth from his position?
+	 */
+	private static boolean canSeeStealth( Tile start , ObjectSheet sh , Tile target ){
+		
+		int range = getRange(start, target);
+		int needed = target.getUnit().sheet().getStealthRange( sh );
+		
+		if( range <= needed ) return true;
+		else return false;
+	}
 	
-	//private static boolean canSeeStealth( int x , int y , ObjectSheet sh , Unit target ){
-    	
-		
-		
-		
-		
-     //   int range = 0;
-     //   int xR = field.getPos_x() - x;
-     ///   int yR = field.getPos_y() - y;
-     //   if( xR < 0 ) xR = xR*(-1);
-     //   if( yR < 0 ) yR = yR*(-1);
-     //   range += xR + yR;
-    //    int needR = 1;
-    //    if ( id != -1 ) needR = Misc_Data.specialVisionRange(type, id);
+	/**
+	 * Clears fog class status.
+	 */
+	private static void clear(){
+		visibleTiles.clear();
+		visibleStealths.clear();
+	}
 
-    //    if ( range <= needR ) return true;
-    //    return false;
-    //}
+	/**
+	 * Adds a tile to the visible list.
+	 */
+	private static void addTile( Tile tile ){
+		visibleTiles.add(tile);
+	}
+
+	/**
+	 * Adds an unit to the visible list.
+	 */
+	private static void addStealth( Unit unit ){
+		visibleStealths.add(unit);
+	}
+
+	/**
+	 * Returns the range between two tiles.
+	 */
+	private static int getRange( Tile start , Tile target ){
+		return Math.abs( start.getPosX() - target.getPosX() ) + Math.abs( start.getPosY() - target.getPosY() );
+	}
 	
-
+	
+	
 	/*
-	 *
+	 * 
 	 * OUTPUT METHODS
 	 * **************
 	 * 
 	 */
-
+	
+	public static void printStatus(){
+		
+		System.out.println("YOU CAN SEE :");
+		for( Tile tile : visibleTiles ){
+			System.out.print( tile+" ; ");
+		}
+		System.out.println("");
+		System.out.println("YOU CAN SEE STEALTHS :");
+		for( Unit unit : visibleStealths ){
+			System.out.print( unit+" ; ");
+		}
+	}
 }
 

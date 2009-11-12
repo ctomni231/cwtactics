@@ -1,9 +1,5 @@
 package com.client.model.object;
 
-import java.util.ArrayList;
-
-import com.system.data.Data;
-
 public class Map {
 
 	/*
@@ -55,7 +51,7 @@ public class Map {
 	}
 
 	public boolean correctPos( int x , int y ){
-		if( x >= 0 && x < tiles[0].length && y >= 0 && y < tiles.length ) return true;
+		if( x >= 0 && x < tiles.length && y >= 0 && y < tiles[0].length ) return true;
 		return false;
 	}
 	

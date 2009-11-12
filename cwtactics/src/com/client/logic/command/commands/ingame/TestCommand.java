@@ -1,19 +1,21 @@
 package com.client.logic.command.commands.ingame;
 
 import com.client.logic.command.Command;
-import com.client.model.Move;
-import com.client.model.object.Game;
+import com.client.model.Fog;
+import com.client.model.object.Player;
 
 public class TestCommand implements Command{
+	
+	private Player p;
+	
+	public TestCommand( Player p ){
+		this.p = p;
+	}
 
 	public void doCommand(){
-		
-		Move.printMoveTiles();
-		
-		Move.toMoveWay( Game.getMap().getTile(4,5) );
-		Move.toMoveWay( Game.getMap().getTile(8,5) );
-		
-		Move.printMoveWay();
+		System.out.println("PRoCESS FOG");
+		Fog.processFog(p);
+		Fog.printStatus();
 	}
 }
 

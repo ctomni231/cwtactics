@@ -9,6 +9,7 @@ import com.client.model.loading.ImgDataParser;
 import com.client.model.object.Game;
 import com.client.model.object.Map;
 import com.client.model.object.Player;
+import com.client.model.object.Team;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
 
@@ -39,6 +40,10 @@ public class MainGame {
 
     public static void main(String args[]){
     	
+    	// TEST SECTION
+    	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    	
     	// load modification
     	new ModReader("data/mod.xml");
     	new ScriptReader("data/scripts.xml");
@@ -52,27 +57,31 @@ public class MainGame {
     
     	System.out.println( Data.getTileSheet( Data.getIntegerID("FACTORY") ).getFunds( Data.getRessourceSheet( Data.getIntegerID("RESSOURCE_0"))) );
     	System.out.println( Data.getUnitSheet( Data.getIntegerID("LTANK") ).getCost( Data.getRessourceSheet( Data.getIntegerID("RESSOURCE_0"))) );
-    	// end test
-    	
-    	// NOTE : ATM SCRIPT ENGINE OUTPUTS SOME ERRORS BECAUSE IT CANNOT hANDLE ALL SCRIPTS IN SCRIPT.XML
-    	// it's beta at the moment
     	
     	Weather.setWeather( Data.getWeatherSheet( 0 ));
     	
-    	Map map = new Map(10, 10);
-    	for( int i = 0; i < 10 ; i++ ){    		
-    		for( int j = 0 ; j < 10 ; j++ ){
+    	Map map = new Map(20, 14);
+    	Team t = new Team();
+    	Player p = new Player( "Alex", t );
+    	Game.addPlayer(p);
+    	t.addMember(p);
+    	for( int i = 0; i < 20 ; i++ ){    		
+    		for( int j = 0 ; j < 14 ; j++ ){
     			map.setTile( new Tile( Data.getTileSheet( Data.getIntegerID("PLAIN")), i, j, 0, null), i, j);
+    			if( i == 5 && j == 5 ){
+    				Unit unit = new Unit( Data.getUnitSheet( Data.getIntegerID("MECH")) , p );
+    				map.getTile(i,j).setUnit( unit );
+    				p.addUnit(unit);
+    			}
     		}
     	}
     	
-    	map.getTile(5, 5).setUnit( new Unit( Data.getUnitSheet( Data.getIntegerID("MECH")), new Player("Alex")));
-    	System.out.println("Test map 10x10 with plains... ");
     	Move.initialize( map.getTile(5, 5), map.getTile(5, 5).getUnit());
     	MessageServer.toCommandList( new GenerateMove() , false );
-    	MessageServer.toCommandList( new TestCommand() , false );
+    	MessageServer.toCommandList( new TestCommand(p) , false );
         Game.setMap(map);
-    	
+    	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     	
         ImgDataParser.init();
 
