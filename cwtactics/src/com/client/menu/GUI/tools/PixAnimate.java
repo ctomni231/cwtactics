@@ -57,7 +57,7 @@ public class PixAnimate {
         byte[] anim = new byte[0];
         for(int i = 0; i < ImgDataParser.getData().size(); i++){
             ImgData data = ImgDataParser.getData().get(i);
-            if(data.group.matches(name) && data.direction == direction){
+            if(name.matches(data.group+".*") && data.direction == direction){
                 nameItem = i;
                 anim = new byte[data.animRef.size()];
                 for(int j = 0; j < anim.length; j++)
@@ -74,7 +74,6 @@ public class PixAnimate {
         for(int i = 0; i < temp.length; i++)
             animParts[i] = temp[i];
         animParts[animParts.length-1] = item;
-
     }
 
     //Checks to see if a certain image exists, if not, it adds it to
@@ -85,13 +84,13 @@ public class PixAnimate {
         for(int i = 0; i < animParts.length; i++){
             if(animParts[i].getSize() != 1)
                 g.drawImage(storedImg.getSlickImage(imgMap.get(
-                    animParts[i].getAnimation(animTime))),
+                      animParts[i].getAnimation(animTime))),
                     animParts[i].posx, animParts[i].posy);
             else
                 g.drawImage(storedImg.getSlickImage(imgMap.get(
                     animParts[i].getAnimation(0))),
                     animParts[i].posx, animParts[i].posy);
-        }	
+        }
     }
     //We need a lot for this class, and it is the most important class.
     //1) ImgLibrary, to store the images.

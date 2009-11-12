@@ -60,9 +60,7 @@ public class MainGame {
     	Weather.setWeather( Data.getWeatherSheet( 0 ));
     	
     	Map map = new Map(10, 10);
-    	Game.setMap(map);
-    	for( int i = 0; i < 10 ; i++ ){
-    		
+    	for( int i = 0; i < 10 ; i++ ){    		
     		for( int j = 0 ; j < 10 ; j++ ){
     			map.setTile( new Tile( Data.getTileSheet( Data.getIntegerID("PLAIN")), i, j, 0, null), i, j);
     		}
@@ -73,6 +71,7 @@ public class MainGame {
     	Move.initialize( map.getTile(5, 5), map.getTile(5, 5).getUnit());
     	MessageServer.toCommandList( new GenerateMove() , false );
     	MessageServer.toCommandList( new TestCommand() , false );
+        Game.setMap(map);
     	
     	
         ImgDataParser.init();

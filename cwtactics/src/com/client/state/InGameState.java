@@ -8,6 +8,8 @@ import com.client.logic.input.Controls;
 import com.client.menu.GUI.tools.PixAnimate;
 import com.client.model.object.Game;
 
+import com.client.model.object.Map;
+import com.client.model.object.Tile;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -17,6 +19,7 @@ import com.client.tools.ImgLibrary;
 import com.client.tools.TextImgLibrary;
 import com.system.ID;
 
+import com.system.data.Data;
 import org.newdawn.slick.Image;
 
 /**
@@ -27,7 +30,7 @@ import org.newdawn.slick.Image;
  * @author Crecen
  */
 public class InGameState extends SlickScreen{
-    private final double BASE = 16;
+    private final double BASE = 32;
 
     private ImgLibrary imgSort;
     private TextImgLibrary textSort;
@@ -65,39 +68,62 @@ public class InGameState extends SlickScreen{
         textSort.setString("WELCOME TO TACTIC WARS", "", 0, 0, 0, 0);
         textImg = textSort.getSlickTextImage("TITLE");
 
+        Map game = Game.getMap();
 
-        for(int i = 0; i < 20*(32/BASE); i++){
-            for(int j = 0; j < 8*(32/BASE); j++){
-                testMap.addImgPart("FOREST", 0, 0, (int)(32*(BASE/32)*i),
-                        (int)(-32*(BASE/32)+(j*64*(BASE/32))));
-                testMap.addImgPart("PLAIN", 0, 0, (int)(32*(BASE/32)*i),
-                        (int)(j*64*(BASE/32)));
+        System.out.println("MAP SIZE: "+game.getSizeX()+","+game.getSizeY());
+        Tile[][] gameMap = game.getField();
+        
+        for(int i = 0; i < gameMap.length; i++){
+            for(int j = 0; j < gameMap[i].length; j++){
+                System.out.println("MAP("+i+","+j+"):"+
+                        gameMap[i][j].sheet().getName());
+                testMap.addImgPart(
+                  gameMap[i][j].sheet().getName().toUpperCase(),
+                  0, 0, (int)(i*(BASE+1)), (int)(j*(BASE+1)));
+                if(gameMap[i][j].getUnit() != null){
+                    System.out.println("UNIT("+i+","+j+"):"+
+                        gameMap[i][j].getUnit().sheet().getName());
+                    testMap.addImgPart(
+                        gameMap[i][j].getUnit().sheet().getName().toUpperCase(),
+                        1, 0,
+                        (int)((i*(BASE+1))-(BASE/2)),
+                        (int)((j*(BASE+1)+(BASE+1))-(BASE/2)));
+                }
             }
         }
 
-        for(int i = 0; i < 20*(32/BASE); i++){
-            for(int j = 0; j < 16*(32/BASE); j++){
-         	   testMap.addImgPart("INFT", i, 0,
-                         (int)((32*(BASE/32)*i)-16*(BASE/32)),
-                         (int)((32*(BASE/32)*j)-16*(BASE/32)));
-             }
-         }
+        //for(int i = 0; i < 20*(32/BASE); i++){
+        //    for(int j = 0; j < 8*(32/BASE); j++){
+        //        testMap.addImgPart("FOREST", 0, 0, (int)(32*(BASE/32)*i),
+        //                (int)(-32*(BASE/32)+(j*64*(BASE/32))));
+        //        testMap.addImgPart("PLAIN", 0, 0, (int)(32*(BASE/32)*i),
+         //               (int)(j*64*(BASE/32)));
+         //   }
+        //}
 
-        Image img = null;
-        try {
-			img = new Image( "resources/image/plugin/AW1_INFT.png");
-		} catch (SlickException e) {
+        //for(int i = 0; i < 20*(32/BASE); i++){
+        //    for(int j = 0; j < 16*(32/BASE); j++){
+        // 	   testMap.addImgPart("INFT", i, 0,
+        //                 (int)((32*(BASE/32)*i)-16*(BASE/32)),
+        //                 (int)((32*(BASE/32)*j)-16*(BASE/32)));
+        //     }
+        // }
+
+        //Image img = null;
+        //try {
+		//	img = new Image( "resources/image/plugin/AW1_INFT.png");
+		//} catch (SlickException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        for(int i = 0; i < 40; i=i+2){
-            for(int j = 0; j < 32; j++){
-            	list[i][j] = new Animation( new Image[]{ img.getSubImage( 0 , 0 ,32 , 32),img.getSubImage( 32 , 32 ,32 , 32),img.getSubImage( 64 , 64 ,32 , 32) }, 250);
-            	list[i+1][j] = new Animation( new Image[]{ img.getSubImage( 96 , 96 ,32 , 32),img.getSubImage( 128 , 128 ,32 , 32),img.getSubImage( 160 , 160 ,32 , 32) }, 250);
-                list2.add(list[i][j]);
-                list2.add(list[i+1][j]);
-             }
-         }
+		//	e.printStackTrace();
+		//}
+        //for(int i = 0; i < 40; i=i+2){
+        //    for(int j = 0; j < 32; j++){
+        //    	list[i][j] = new Animation( new Image[]{ img.getSubImage( 0 , 0 ,32 , 32),img.getSubImage( 32 , 32 ,32 , 32),img.getSubImage( 64 , 64 ,32 , 32) }, 250);
+        //    	list[i+1][j] = new Animation( new Image[]{ img.getSubImage( 96 , 96 ,32 , 32),img.getSubImage( 128 , 128 ,32 , 32),img.getSubImage( 160 , 160 ,32 , 32) }, 250);
+        //        list2.add(list[i][j]);
+        //        list2.add(list[i+1][j]);
+        //     }
+        // }
 
 
     }
@@ -105,14 +131,6 @@ public class InGameState extends SlickScreen{
     @Override
     public void render(Graphics g) {
         testMap.render(g, scr_sysTime);
-    	//for(int i = 0; i < 40; i++){
-        //    for(int j = 0; j < 32; j++){
-        //    	g.drawAnimation( list[i][j], i*16, j*16);
-        //     }
-         //}
-        //for(Animation draw: list2){
-        //    g.drawAnimation( draw, 16, 16);
-        //}
     }
 
     //This is to quickly switch screens using F1 and F2 for testing
