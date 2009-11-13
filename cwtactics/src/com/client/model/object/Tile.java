@@ -103,6 +103,17 @@ public class Tile {
 		return Game.getMap().getSizeX() * posY + posX;
 	}
 	
+	public void changeOwner( Player player ){
+		
+		// remove property from previous owners list
+		if( getOwner() != null ) getOwner().removeProperty(this);
+		
+		// set new owner and add property to the list
+		// of the new owner
+		setOwner(player);
+		player.addProperty(this);
+	}
+	
 	
 
 	/*

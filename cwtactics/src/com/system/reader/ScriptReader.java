@@ -65,6 +65,8 @@ public class ScriptReader extends Parser{
                 	else if( attributes.getValue( "id" ).equals("WEATHER_CHANGED")) 	trigger = ID.Trigger.WEATHER_CHANGED;
                 	else if( attributes.getValue( "id" ).equals("PLAYER_LOOSED")) 		trigger = ID.Trigger.PLAYER_LOOSED;
                 	else if( attributes.getValue( "id" ).equals("BUILDING_CAPTURED")) 	trigger = ID.Trigger.BUILDING_CAPTURED;
+                	else if( attributes.getValue( "id" ).equals("VISION_UNIT")) 		trigger = ID.Trigger.VISION_UNIT;
+                	else if( attributes.getValue( "id" ).equals("VISION_TILE")) 		trigger = ID.Trigger.VISION_TILE;
                 	
                 	if( trigger == null ) System.err.println( "Error , wrong trigger time -->"+attributes.getValue("id"));
                 	ScriptFactory.addScript(trigger, new Script() );

@@ -1,7 +1,13 @@
 package com.system;
 
 public interface ID {
-
+	
+	public final int ENEMY_TILE = 999995;
+	public final int ENEMY_UNIT = 999996;
+ 	public final int TILE = 999997;
+	public final int UNIT = 999998;
+	public final int FULL = 999999;
+	
 	/*
 	 * Keyboard values
 	 */
@@ -36,6 +42,8 @@ public interface ID {
     	UNIT_TAG,
     	FIELD_TAG,
     	ENEMY_TAG,
+    	FIELD_TYPE,
+    	UNIT_TYPE,
     	ENEMY_FIELD_TAG,
     	FUEL_OF_UNIT,
     	AMMO_OF_UNIT,
@@ -51,7 +59,17 @@ public interface ID {
     	HEAL_UNIT,
     	PAY_REPAIR,
     	PAY_RESUPPLY,
-    	DECREASE_FUEL
+    	DECREASE_FUEL,
+    	INCREASE_ATTACK_BY_RANDOM,
+    	INCREASE_DEFENSE_BY_RANDOM,
+    	DECREASE_ATTACK_BY_RANDOM,
+    	DECREASE_DEFENSE_BY_RANDOM,
+    	INCREASE_ATTACK,
+    	INCREASE_DEFENSE,
+    	DECREASE_ATTACK,
+    	DECREASE_DEFENSE,
+    	INCREASE_SIGHT,
+    	DECREASE_SIGHT
     }
     
     public enum TriggerAction_Obj{
@@ -75,7 +93,9 @@ public interface ID {
     	BUILDING_CAPTURED,
     	PLAYER_LOOSED,
     	TURN_END_FIELDS,
-    	TURN_END_UNITS
+    	TURN_END_UNITS,
+    	VISION_UNIT,
+    	VISION_TILE
     }
     
     public enum MessageMode{

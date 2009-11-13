@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<misc>
+
+	<mod ID="CUSTOM_TACTICWARS" >
+        <information   	name="Custom War - Tactics"
+						author="Tapsi(Alex); JSR(Crecen)"
+						modVersion="1.0 Pre Alpha"  />
+        <stats 			getallaftercaphq="1" 
+						language="ENG" />
+        <standart   	battleOnDefenderField="1"
+        				healthIndependentDamage="0"  />
+        <resupply_cost  fuel_ressource_0="10"
+                        ammo_ressource_0="10" />
+    </mod>
+	
+	
+	<!--                 --> 
+	<!--  WEATHER BLOCK  --> 
+	<!--                 --> 
+	
+	<weather ID="SUN" >
+		<name  GER="Sonnig"
+               ENG="Clear" />
+		<stats chance="55" />
+	</weather>
+
+	<weather ID="RAIN" >
+		<name  GER="Regen"
+               ENG="Rain" />
+		<stats chance="25" />
+	</weather>
+
+	<weather ID="SANDSTORM" >
+		<name  GER="Sandsturm"
+               ENG="Sandstorm" />
+		<stats chance="10" />
+	</weather>
+	
+	<weather ID="SNOW" >
+		<name  GER="Schnee"
+               ENG="Snow" />
+		<stats chance="10" />
+	</weather>
+	
+	<!--              --> 
+	<!--  RANK BLOCK  --> 
+	<!--              --> 
+	
+	<rank ID="RANK-0" >
+		<name  GER="Yankee"
+		       ENG="Yankee" />
+		<stats exp="150" />
+	</rank>
+	
+	<rank ID="RANK-1" >
+		<name  GER="Veteran"
+		       ENG="Veteran" />
+		<stats exp="300" />
+	</rank>
+	
+	<rank ID="RANK-2" >
+		<name  GER="Elite"
+		       ENG="Elite" />
+		<stats exp="500" />
+	</rank>
+	
+	<rank ID="RANK-3" >
+		<name  GER="Elite Garde"
+		       ENG="Elite Guard" />
+		<stats exp="800" />
+	</rank>
+    
+    <!--                   --> 
+	<!--  RESSOURCE BLOCK  --> 
+	<!--                   -->
+
+    <ressource ID="RESSOURCE_0" >
+        <name  GER="Geld"
+		       ENG="Gold" />
+    </ressource>
+
+
+</misc>

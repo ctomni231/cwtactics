@@ -1,5 +1,7 @@
 package com.client.model.object;
 
+import java.util.ArrayList;
+
 import com.system.data.sheets.Unit_Sheed;
 
 public class Unit {
@@ -20,6 +22,7 @@ public class Unit {
 	private int		fuel;
 	private int		ammo;
 	private boolean isHidden;
+	private ArrayList<Unit> loads;
 		
 	
 	
@@ -38,6 +41,10 @@ public class Unit {
 		morale		= 100;
 		experience	= 0;
 		rank		= 0;
+		
+		loads		= new ArrayList<Unit>();
+		
+		loads.trimToSize();
 	}
 
 	/*
@@ -139,6 +146,37 @@ public class Unit {
 
 	public void setHidden(boolean isHidden) {
 		this.isHidden = isHidden;
+	}
+	
+	public ArrayList<Unit> getLoadedUnits(){
+		return loads;
+	}
+	
+	public boolean hasLoads(){
+		if( getLoads() > 0 ) return true;
+		else return false;
+	}
+	
+	public int getLoads(){
+		return loads.size();
+	}
+	
+	public Unit getLoad( int pos ){
+		if( pos < 0 || pos >= getLoads() ) return null;
+		else return loads.get(pos);
+	}
+	
+	public void addLoad( Unit unit ){
+		if( unit != null ) loads.add(unit);
+	}
+	
+	public void destroy(){
+		
+		// first destroy loads
+		if( getLoads() > 0 ) for( Unit unit : loads ){ unit.destroy(); } 
+		
+		// remove this unit from owners unit list
+		getOwner().removeUnit(this);
 	}
 	
 	

@@ -96,6 +96,16 @@ public class ScriptFactory {
 		else if( text.equals("RESUPPLY")) 			return ID.TriggerAction.RESUPPLY_UNIT;
 		else if( text.equals("HEAL_UNIT")) 			return ID.TriggerAction.HEAL_UNIT;
 		else if( text.equals("DECREASE_FUEL")) 		return ID.TriggerAction.DECREASE_FUEL;
+		else if( text.equals("INCREASE_ATTACK_BY_RANDOM")) 	return ID.TriggerAction.INCREASE_ATTACK_BY_RANDOM;
+		else if( text.equals("DECREASE_ATTACK_BY_RANDOM")) 	return ID.TriggerAction.DECREASE_ATTACK_BY_RANDOM;
+		else if( text.equals("INCREASE_DEFENSE_BY_RANDOM")) return ID.TriggerAction.INCREASE_DEFENSE_BY_RANDOM;
+		else if( text.equals("DECREASE_DEFENSE_BY_RANDOM")) return ID.TriggerAction.DECREASE_DEFENSE_BY_RANDOM;
+		else if( text.equals("INCREASE_ATTACK")) 	return ID.TriggerAction.INCREASE_ATTACK;
+		else if( text.equals("DECREASE_ATTACK")) 	return ID.TriggerAction.DECREASE_ATTACK;
+		else if( text.equals("INCREASE_DEFENSE")) 	return ID.TriggerAction.INCREASE_DEFENSE;
+		else if( text.equals("DECREASE_DEFENSE")) 	return ID.TriggerAction.DECREASE_DEFENSE;
+		else if( text.equals("INCREASE_SIGHT")) 	return ID.TriggerAction.INCREASE_SIGHT;
+		else if( text.equals("DECREASE_SIGHT")) 	return ID.TriggerAction.DECREASE_SIGHT;
 		return null;
 	}
 	
@@ -116,8 +126,20 @@ public class ScriptFactory {
 	 */
 	public static int getActionValue( String text ){
 		
-		if( text == null ) return -1;
-		return -1;
+				if( Data.existTagID(text) ) 		return Data.getIntegerTagID(text);
+		else	if( Data.existIntegerID(text) ) 	return Data.getIntegerID(text);
+		else 	if( text == null )					return -1;
+				
+		// plain integer value
+		else{
+			try{
+				return Integer.parseInt( text ); 
+			}
+			catch( NumberFormatException e ){
+				System.err.println("Action VAlue : Found unknown script command ( "+text+" ) , no parser known and not a value integer value");
+				return -1;
+			}
+		}
 	}
 	
 	/**
@@ -128,6 +150,8 @@ public class ScriptFactory {
 			 if( text.equals("UNIT_TAG")) 					return ID.TriggerTest.UNIT_TAG;
 		else if( text.equals("FIELD_TAG")) 					return ID.TriggerTest.FIELD_TAG;
 		else if( text.equals("ENEMY_TAG"))	 				return ID.TriggerTest.ENEMY_TAG;
+		else if( text.equals("FIELD_TYPE"))					return ID.TriggerTest.FIELD_TYPE;
+		else if( text.equals("UNIT_TYPE"))	 				return ID.TriggerTest.UNIT_TYPE;
 		else if( text.equals("ENEMY_FIELD_TAG")) 			return ID.TriggerTest.ENEMY_FIELD_TAG;
 		else if( text.equals("FUEL_OF_UNIT"))	 			return ID.TriggerTest.FUEL_OF_UNIT;
 		else if( text.equals("AMMO_OF_UNIT")) 				return ID.TriggerTest.AMMO_OF_UNIT;
@@ -159,11 +183,11 @@ public class ScriptFactory {
 		
 				if( Data.existTagID(text) ) 		return Data.getIntegerTagID(text);
 		else	if( Data.existIntegerID(text) ) 	return Data.getIntegerID(text);
-		else	if( text.equals("ENEMY_FIELD"))		return 999995;
-		else	if( text.equals("ENEMY_UNIT"))		return 999996;
-		else	if( text.equals("FIELD"))			return 999997;
-		else	if( text.equals("UNIT"))			return 999998;
-		else	if( text.equals("FULL"))			return 999999;
+		else	if( text.equals("ENEMY_FIELD"))		return ID.ENEMY_TILE;
+		else	if( text.equals("ENEMY_UNIT"))		return ID.ENEMY_UNIT;
+		else	if( text.equals("FIELD"))			return ID.TILE;
+		else	if( text.equals("UNIT"))			return ID.UNIT;
+		else	if( text.equals("FULL"))			return ID.FULL;
 				
 		// plain integer value
 		else{

@@ -47,9 +47,9 @@ public class Script {
 		for( String s : text.split("#") ){
 				
 			cond = s.split(" ");
-				
+			if( cond.length == 2 ) cond = new String[]{ cond[0] , cond[1] , null };
 			actions.add( 
-				new SingleAction( ScriptFactory.getAction( cond[0] ), ScriptFactory.getActionObj( cond[1] ), ScriptFactory.getActionValue( null ) )
+				new SingleAction( ScriptFactory.getAction( cond[0] ), ScriptFactory.getActionObj( cond[1] ), ScriptFactory.getActionValue( cond[2] ) )
 			);
 		}
 	}

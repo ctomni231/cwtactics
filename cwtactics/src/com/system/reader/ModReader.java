@@ -177,10 +177,7 @@ public class ModReader extends Parser {
 			if( ! Data.existIntegerID( attributes.getValue("id")  )) addTileSheet( attributes.getValue("id") );
 			Tile_Sheet shTarget = Data.getTileSheet( Data.getIntegerID(attributes.getValue("id") ) );
 
-			//check for every weather sheet the values and add it if necessary
-			for( int i = 0 ; i < Data.getWeatherTable().size() ; i++ ){
-				if( attributes.getValue("weather_"+(i+1)) != null ) sh.addTileMoveCost( Data.getWeatherSheet(i) , shTarget, Integer.parseInt(attributes.getValue("weather_"+(i+1))) );
-			}
+			if( attributes.getValue("move") != null ) sh.addTileMoveCost( shTarget, Integer.parseInt(attributes.getValue("move")) );
 		}
 	}
 	
@@ -405,7 +402,7 @@ public class ModReader extends Parser {
 		else if( super.isAheader("movement") ){
 			
 			if( attributes.getValue("range") != null ) 		sh.setMoveRange( Integer.parseInt(attributes.getValue("range")) );
-			if( attributes.getValue("type") != null ) 		sh.setMoveType( Integer.parseInt(attributes.getValue("type")) );
+			if( attributes.getValue("type") != null ) 		sh.setMoveType( Data.getMoveSheet( Data.getIntegerID(attributes.getValue("type"))) );
 			if( attributes.getValue("vision") != null ) 	sh.setVision( Integer.parseInt(attributes.getValue("vision")) );
 			if( attributes.getValue("capture") != null ) 	sh.setCaptureValue( Integer.parseInt(attributes.getValue("capture")) );
 			if( attributes.getValue("weight") != null ) 	sh.setWeight( Integer.parseInt(attributes.getValue("weight")) );

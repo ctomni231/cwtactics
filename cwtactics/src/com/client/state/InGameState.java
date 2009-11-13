@@ -78,8 +78,6 @@ public class InGameState extends SlickScreen{
                   gameMap[i][j].sheet().getName().toUpperCase(),
                   0, 0, (int)(i*(BASE+1)), (int)(j*(BASE+1)));
                 if(gameMap[i][j].getUnit() != null){
-                    System.out.println("UNIT("+i+","+j+"):"+
-                        gameMap[i][j].getUnit().sheet().getName());
                     testMap.addImgPart(
                         gameMap[i][j].getUnit().sheet().getName().toUpperCase(),
                         1, 0,

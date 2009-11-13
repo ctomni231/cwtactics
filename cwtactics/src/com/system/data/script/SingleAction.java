@@ -8,6 +8,8 @@ import com.client.logic.command.commands.ingame.PayRepairCost;
 import com.client.logic.command.commands.ingame.RepairUnit;
 import com.client.logic.command.commands.ingame.ResupplyUnit;
 import com.client.logic.command.commands.ingame.SetDamage;
+import com.client.model.Fight;
+import com.client.model.Fog;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
 import com.system.ID;
@@ -128,7 +130,145 @@ public class SingleAction {
 						break;
 				}
 				break;
-					
+				
+			case INCREASE_ATTACK :
+				switch( obj ){
+					case UNIT :
+						//MessageServer.toCommandList(  new DecreaseFuel( unit , 1), true);
+						Fight.changeAttackerPenalty(value);
+						break;
+						
+					case ENEMY_UNIT :
+						Fight.changeDefenderPenalty(value);
+						break;
+				}
+				break;
+				
+			case DECREASE_ATTACK :
+				switch( obj ){
+					case UNIT :
+						//MessageServer.toCommandList(  new DecreaseFuel( unit , 1), true);
+						Fight.changeAttackerPenalty(-value);
+						break;
+						
+					case ENEMY_UNIT :
+						Fight.changeDefenderPenalty(-value);
+						break;
+				}
+				break;
+				
+			case INCREASE_DEFENSE :
+				switch( obj ){
+					case UNIT :
+						//MessageServer.toCommandList(  new DecreaseFuel( unit , 1), true);
+						Fight.changeDefenderPenalty(-value);
+						break;
+						
+					case ENEMY_UNIT :
+						Fight.changeAttackerPenalty(-value);
+						break;
+				}
+				break;
+				
+			case DECREASE_DEFENSE :
+				switch( obj ){
+					case UNIT :
+						//MessageServer.toCommandList(  new DecreaseFuel( unit , 1), true);
+						Fight.changeDefenderPenalty(value);
+						break;
+						
+					case ENEMY_UNIT :
+						Fight.changeAttackerPenalty(value);
+						break;
+				}
+				break;
+				
+				case INCREASE_ATTACK_BY_RANDOM :
+
+				value = ((int) Math.random() * value );
+				if( value == 0 ) return;
+				switch( obj ){
+					case UNIT :
+						//MessageServer.toCommandList(  new DecreaseFuel( unit , 1), true);
+						Fight.changeAttackerPenalty(value);
+						break;
+						
+					case ENEMY_UNIT :
+						Fight.changeDefenderPenalty(value);
+						break;
+				}
+				break;
+				
+			case DECREASE_ATTACK_BY_RANDOM :
+				
+				value = ((int) Math.random() * value );
+				if( value == 0 ) return;
+				switch( obj ){
+					case UNIT :
+						//MessageServer.toCommandList(  new DecreaseFuel( unit , 1), true);
+						Fight.changeAttackerPenalty(-value);
+						break;
+						
+					case ENEMY_UNIT :
+						Fight.changeDefenderPenalty(-value);
+						break;
+				}
+				break;
+				
+			case INCREASE_DEFENSE_BY_RANDOM :
+				
+				value = ((int) Math.random() * value );
+				if( value == 0 ) return;
+				switch( obj ){
+					case UNIT :
+						//MessageServer.toCommandList(  new DecreaseFuel( unit , 1), true);
+						Fight.changeDefenderPenalty(-value);
+						break;
+						
+					case ENEMY_UNIT :
+						Fight.changeAttackerPenalty(-value);
+						break;
+				}
+				break;
+				
+			case DECREASE_DEFENSE_BY_RANDOM :
+				
+				value = ((int) Math.random() * value );
+				if( value == 0 ) return;
+				switch( obj ){
+					case UNIT :
+						//MessageServer.toCommandList(  new DecreaseFuel( unit , 1), true);
+						Fight.changeDefenderPenalty(value);
+						break;
+						
+					case ENEMY_UNIT :
+						Fight.changeAttackerPenalty(value);
+						break;
+				}
+				break;
+				
+			case INCREASE_SIGHT :
+
+				switch( obj ){
+					case UNIT :
+						//MessageServer.toCommandList(  new DecreaseFuel( unit , 1), true);
+						Fog.changeSightAddon(value);
+						break;
+						
+				}
+				break;
+				
+			case DECREASE_SIGHT :
+
+				switch( obj ){
+					case UNIT :
+						//MessageServer.toCommandList(  new DecreaseFuel( unit , 1), true);
+						Fog.changeSightAddon(-value);
+						break;
+						
+				}
+				break;
+				
 			default:
 				System.err.println("Wrong Trigger action given , the id "+action+" is unknown..");
 				break;

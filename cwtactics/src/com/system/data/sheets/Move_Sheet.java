@@ -11,7 +11,7 @@ public class Move_Sheet extends Sheet{
 	 * 
 	 */
 	
-	private HashMap<Weather_Sheet, HashMap< Tile_Sheet , Integer > > moveTable;
+	private HashMap< Tile_Sheet , Integer > moveTable;
 
 	/*
 	 *
@@ -21,7 +21,7 @@ public class Move_Sheet extends Sheet{
 	 */
 	
 	public Move_Sheet(){
-		moveTable = new HashMap<Weather_Sheet, HashMap<Tile_Sheet, Integer>>();
+		moveTable = new HashMap<Tile_Sheet, Integer>();
 	}
 
 	/*
@@ -35,14 +35,13 @@ public class Move_Sheet extends Sheet{
 	 * Adds a cost for moving onto a given tile type at 
 	 * a given weather type.
 	 */
-	public void addTileMoveCost( Weather_Sheet wSh , Tile_Sheet tSh , int cost ){
+	public void addTileMoveCost( Tile_Sheet tSh , int cost ){
 		
-		if( !moveTable.containsKey(wSh) ) moveTable.put(wSh, new HashMap<Tile_Sheet, Integer>() );
-		if( moveTable.get(wSh).containsKey(tSh) ){
+		if( moveTable.containsKey(tSh) ){
 			System.err.println("Contains allready movecost for "+tSh.getName() );
 			return;
 		}
-		else moveTable.get(wSh).put(tSh, cost);
+		else moveTable.put(tSh, cost);
 	}
 	
 	/**
@@ -53,11 +52,10 @@ public class Move_Sheet extends Sheet{
 	 * @param tSh tile sheet
 	 * @return move costs to move onto this tile
 	 */
-	public int getMoveCost( Weather_Sheet wSh , Tile_Sheet tSh ){
+	public int getMoveCost( Tile_Sheet tSh ){
 		
-		if( ! moveTable.containsKey(wSh) ) return -1;
-		if( ! moveTable.get(wSh).containsKey(tSh) ) return -1;
-		return moveTable.get(wSh).get(tSh);
+		if( ! moveTable.containsKey(tSh) ) return -1;
+		return moveTable.get(tSh);
 	}
 
 }

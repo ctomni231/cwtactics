@@ -9,7 +9,12 @@ import com.client.model.object.Game;
 import com.client.model.object.Player;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
+import com.system.ID;
+import com.system.data.script.ScriptFactory;
+import com.system.data.script.Trigger_Object;
 import com.system.data.sheets.ObjectSheet;
+import com.system.data.sheets.Tile_Sheet;
+import com.system.data.sheets.Unit_Sheed;
 
 //import core.Misc_Data;
 
@@ -25,6 +30,7 @@ public class Fog {
 	private static ArrayList<Tile> visibleTiles;
 	private static ArrayList<Unit> visibleStealths;
 	private static boolean noFog;
+	private static int additionalSight;
 	
 
 	
@@ -90,6 +96,10 @@ public class Fog {
 		else return true;
 	}
 	
+	public static void changeSightAddon( int value ){
+		additionalSight += value;
+	}
+	
 
 	
 	/*
@@ -116,12 +126,22 @@ public class Fog {
     		    		
     		// check property vision
     		for( Tile tile : pl.getProperties() ){
+    			
+    			clearSightAddon();
+    			Trigger_Object.triggerCall(tile, null);
+    			ScriptFactory.checkAll( ID.Trigger.VISION_TILE );
     			vision(tile, tile.sheet()); 
     		}
     		
     		// check unit vision 
     		for( Unit unit : pl.getUnits() ){
-    			vision( Game.getMap().findTile(unit), unit.sheet() );
+    			
+    			Tile tile =  Game.getMap().findTile(unit);
+    			
+    			clearSightAddon();
+    			Trigger_Object.triggerCall( tile , null);
+    			ScriptFactory.checkAll( ID.Trigger.VISION_UNIT );
+    			vision( tile , unit.sheet() );
     		}
     	}
     	
@@ -142,7 +162,12 @@ public class Fog {
 	private static void vision( Tile tile , ObjectSheet sh ){
 		
 		// variables
-		int range = sh.getVision();
+		int range = sh.getVision() + additionalSight;
+		
+		// protect against incorrect scripts
+		if( sh instanceof Unit_Sheed && range < 1 ) range = 1;
+		else if ( sh instanceof Tile_Sheet && range < 0 ) range = 0;
+		
 		int x = tile.getPosX();
 		int y = tile.getPosY();
 		
@@ -228,6 +253,10 @@ public class Fog {
 	 */
 	private static int getRange( Tile start , Tile target ){
 		return Math.abs( start.getPosX() - target.getPosX() ) + Math.abs( start.getPosY() - target.getPosY() );
+	}
+	
+	private static void clearSightAddon(){
+		additionalSight = 0;
 	}
 	
 	

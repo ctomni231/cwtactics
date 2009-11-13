@@ -7,7 +7,6 @@ import java.util.Set;
 import com.client.model.object.Game;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
-import com.system.data.Data;
 
 public class Move {
 
@@ -139,7 +138,7 @@ public class Move {
 			// drop not move able fields
 			Set<Tile> set = moveTiles.keySet();
 			for( Tile tile : set ){
-				if( Data.getMoveSheet( Move.unit.sheet().getMoveType() ).getMoveCost( Weather.getWeather() , tile.sheet() ) == -1 ) moveTiles.remove(tile);
+				if( unit.sheet().getMoveType().getMoveCost( tile.sheet() ) == -1 ) moveTiles.remove(tile);
 			}
 		}
 
@@ -189,7 +188,7 @@ public class Move {
             	Tile crossed = crossWay(tile);
                 if( crossed != null ) clearTo(crossed);
 
-                if ( getMinorFuel() + Data.getMoveSheet( unit.sheet().getMoveType() ).getMoveCost( Weather.getWeather() ,  tile.sheet() ) <= unit.sheet().getMoveRange() ) moveWay.add(tile);
+                if ( getMinorFuel() + unit.sheet().getMoveType().getMoveCost( tile.sheet() ) <= unit.sheet().getMoveRange() ) moveWay.add(tile);
                 else findAlternativeWay(tile);     // IF THE UNIT HAVEN'T ENOUGH MOVEPOINTS
             }
             else findAlternativeWay(tile);
@@ -218,7 +217,7 @@ public class Move {
 		if( !start ){
 			
 			// variables
-	        movecost = Data.getMoveSheet( unit.sheet().getMoveType() ).getMoveCost( Weather.getWeather() , tile.sheet() );
+	        movecost = unit.sheet().getMoveType().getMoveCost( tile.sheet() );
 	        
 	        // can you move onto this tile?
 	        if( !checkTile( tile, points, movecost ) ) return;
@@ -244,6 +243,8 @@ public class Move {
 	  */
     private static boolean checkTile( Tile tile , int neededFuel , int cost ) {
         
+    	if( cost == -1 ) return false;
+    	
     	Unit unit = tile.getUnit();
     	
     	if( neededFuel + cost <= Move.unit.sheet().getMoveRange() ){
@@ -277,7 +278,7 @@ public class Move {
 		
 		int fuel = 0;
 		for( int i = startPos ; i < moveWay.size() ; i++ ){
-			fuel += Data.getMoveSheet( unit.sheet().getMoveType() ).getMoveCost( Weather.getWeather() , moveWay.get(i).sheet() );
+			fuel += unit.sheet().getMoveType().getMoveCost( moveWay.get(i).sheet() );
 		}
 		
 		return fuel;
@@ -386,7 +387,7 @@ public class Move {
 			
 	        // don't cross yourself and check tile
 	        if ( moveWay.contains(tile) ) return false;
-	        if( !checkTile(tile, getMinorFuel() ,  Data.getMoveSheet( unit.sheet().getMoveType() ).getMoveCost( Weather.getWeather() ,  tile.sheet() ) ) ) return false;
+	        if( !checkTile(tile, getMinorFuel() , unit.sheet().getMoveType().getMoveCost( tile.sheet() ) ) ) return false;
 	
 	        moveWay.add(tile);
 	

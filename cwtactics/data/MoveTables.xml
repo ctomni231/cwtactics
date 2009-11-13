@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<movetables>
+
+	<movetype ID="MV_INFANTRY" >
+        <name  GER="Fuss"
+		       ENG="Foot" />
+        <fieldtarget id="PLAIN"     move="1" />
+        <fieldtarget id="FOREST"   move="1" />
+        <fieldtarget id="MOUNTAIN"  move="2" />
+        <fieldtarget id="CITY"      move="1" />
+        <fieldtarget id="FACTORY"   move="1" />
+        <fieldtarget id="AIRPORT"   move="1" />
+        <fieldtarget id="PORT"      move="1" />
+        <fieldtarget id="SILO"      move="1" />
+        <fieldtarget id="HQ"        move="1" />
+        <fieldtarget id="RADAR"     move="1" />
+        <fieldtarget id="STREET"    move="1" />
+        <fieldtarget id="RIVER"     move="1" />
+        <fieldtarget id="WATER"     move="-1" />
+        <fieldtarget id="REEF"      move="-1" />
+        <fieldtarget id="SHOAL"     move="1" />
+    </movetype>
+
+    <movetype ID="MV_BAZOOKA" >
+        <name  GER="Mechanisiert"
+		       ENG="Mech" />
+        <fieldtarget id="PLAIN"     move="1" />
+        <fieldtarget id="FOREST"   move="1" />
+        <fieldtarget id="MOUNTAIN"  move="1" />
+        <fieldtarget id="CITY"      move="1" />
+        <fieldtarget id="FACTORY"   move="1" />
+        <fieldtarget id="AIRPORT"   move="1" />
+        <fieldtarget id="PORT"      move="1" />
+        <fieldtarget id="SILO"      move="1" />
+        <fieldtarget id="HQ"        move="1" />
+        <fieldtarget id="RADAR"     move="1" />
+        <fieldtarget id="STREET"    move="1" />
+        <fieldtarget id="RIVER"     move="1" />
+        <fieldtarget id="WATER"     move="-1" />
+        <fieldtarget id="REEF"      move="-1" />
+        <fieldtarget id="SHOAL"     move="1" />
+    </movetype>
+
+    <movetype ID="MV_TIRE_A" >
+        <name  GER="Raeder"
+		       ENG="Wheels" />
+        <fieldtarget id="PLAIN"     move="2" />
+        <fieldtarget id="FOREST"   move="3" />
+        <fieldtarget id="MOUNTAIN"  move="-1" />
+        <fieldtarget id="CITY"      move="1" />
+        <fieldtarget id="FACTORY"   move="1" />
+        <fieldtarget id="AIRPORT"   move="1" />
+        <fieldtarget id="PORT"      move="1" />
+        <fieldtarget id="SILO"      move="1" />
+        <fieldtarget id="HQ"        move="1" />
+        <fieldtarget id="RADAR"     move="1" />
+        <fieldtarget id="STREET"    move="1" />
+        <fieldtarget id="RIVER"     move="-1" />
+        <fieldtarget id="WATER"     move="-1" />
+        <fieldtarget id="REEF"      move="-1" />
+        <fieldtarget id="SHOAL"     move="1" />
+    </movetype>
+
+    <movetype ID="MV_TIRE_B" >
+        <name  GER="Bike"
+		       ENG="Bike" />
+        <fieldtarget id="PLAIN"     move="1" />
+        <fieldtarget id="FOREST"   move="3" />
+        <fieldtarget id="MOUNTAIN"  move="-1" />
+        <fieldtarget id="CITY"      move="1" />
+        <fieldtarget id="FACTORY"   move="1" />
+        <fieldtarget id="AIRPORT"   move="1" />
+        <fieldtarget id="PORT"      move="1" />
+        <fieldtarget id="SILO"      move="1" />
+        <fieldtarget id="HQ"        move="1" />
+        <fieldtarget id="RADAR"     move="1" />
+        <fieldtarget id="STREET"    move="1" />
+        <fieldtarget id="RIVER"     move="-1" />
+        <fieldtarget id="WATER"     move="-1" />
+        <fieldtarget id="REEF"      move="-1" />
+        <fieldtarget id="SHOAL"     move="1" />
+    </movetype>
+
+    <movetype ID="MV_TANK" >
+        <name  GER="Ketten"
+		       ENG="Treads" />
+        <fieldtarget id="PLAIN"     move="1" />
+        <fieldtarget id="FOREST"   move="2" />
+        <fieldtarget id="MOUNTAIN"  move="-1" />
+        <fieldtarget id="CITY"      move="1" />
+        <fieldtarget id="FACTORY"   move="1" />
+        <fieldtarget id="AIRPORT"   move="1" />
+        <fieldtarget id="PORT"      move="1" />
+        <fieldtarget id="SILO"      move="1" />
+        <fieldtarget id="HQ"        move="1" />
+        <fieldtarget id="RADAR"     move="1" />
+        <fieldtarget id="STREET"    move="1" />
+        <fieldtarget id="RIVER"     move="-1" />
+        <fieldtarget id="WATER"     move="-1" />
+        <fieldtarget id="REEF"      move="-1" />
+        <fieldtarget id="SHOAL"     move="1" />
+    </movetype>
+
+    <movetype ID="MV_AIR" >
+        <name  GER="Luft"
+		       ENG="Air" />
+        <fieldtarget id="PLAIN"     move="1" />
+        <fieldtarget id="FOREST"   move="1" />
+        <fieldtarget id="MOUNTAIN"  move="1" />
+        <fieldtarget id="CITY"      move="1" />
+        <fieldtarget id="FACTORY"   move="1" />
+        <fieldtarget id="AIRPORT"   move="1" />
+        <fieldtarget id="PORT"      move="1" />
+        <fieldtarget id="SILO"      move="1" />
+        <fieldtarget id="HQ"        move="1" />
+        <fieldtarget id="RADAR"     move="1" />
+        <fieldtarget id="STREET"    move="1" />
+        <fieldtarget id="RIVER"     move="1" />
+        <fieldtarget id="WATER"     move="1" />
+        <fieldtarget id="REEF"      move="1" />
+        <fieldtarget id="SHOAL"     move="1" />
+    </movetype>
+
+    <movetype ID="MV_SHIP" >
+        <name  GER="See"
+		       ENG="Sea" />
+        <fieldtarget id="PLAIN"     move="-1" />
+        <fieldtarget id="FOREST"   move="-1" />
+        <fieldtarget id="MOUNTAIN"  move="-1" />
+        <fieldtarget id="CITY"      move="-1" />
+        <fieldtarget id="FACTORY"   move="-1" />
+        <fieldtarget id="AIRPORT"   move="-1" />
+        <fieldtarget id="PORT"      move="1" />
+        <fieldtarget id="SILO"      move="-1" />
+        <fieldtarget id="HQ"        move="-1" />
+        <fieldtarget id="RADAR"     move="-1" />
+        <fieldtarget id="STREET"    move="-1" />
+        <fieldtarget id="RIVER"     move="1" />
+        <fieldtarget id="WATER"     move="1" />
+        <fieldtarget id="REEF"      move="2" />
+        <fieldtarget id="SHOAL"     move="-1" />
+    </movetype>
+
+    <movetype ID="MV_TRANSPORT" >
+        <name  GER="SeeTransport"
+		       ENG="SeaTransport" />
+        <fieldtarget id="PLAIN"     move="-1" />
+        <fieldtarget id="FOREST"   move="-1" />
+        <fieldtarget id="MOUNTAIN"  move="-1" />
+        <fieldtarget id="CITY"      move="-1" />
+        <fieldtarget id="FACTORY"   move="-1" />
+        <fieldtarget id="AIRPORT"   move="-1" />
+        <fieldtarget id="PORT"      move="1" />
+        <fieldtarget id="SILO"      move="-1" />
+        <fieldtarget id="HQ"        move="-1" />
+        <fieldtarget id="RADAR"     move="-1" />
+        <fieldtarget id="STREET"    move="-1" />
+        <fieldtarget id="RIVER"     move="1" />
+        <fieldtarget id="WATER"     move="1" />
+        <fieldtarget id="REEF"      move="2" />
+        <fieldtarget id="SHOAL"     move="1" />
+    </movetype>
+    
+
+</movetables>

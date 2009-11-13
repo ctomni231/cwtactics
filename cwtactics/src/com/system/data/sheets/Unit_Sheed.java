@@ -15,7 +15,7 @@ public class Unit_Sheed extends ObjectSheet {
 	private HashMap<Sheet, Integer> fuelResupplyCost;
 	private HashMap<Sheet, Integer> ammoResupplyCost;
 	
-	private int		moveType;
+	private Move_Sheet moveType;
 	private int 	moveRange;
 	private int 	captureValue;
 	private int 	weight;
@@ -25,7 +25,6 @@ public class Unit_Sheed extends ObjectSheet {
 	
 	private ArrayList<Weapon_Sheed> weapons;
 	private ArrayList<Unit_Sheed>	loads;
-	private ArrayList<Unit_Sheed>	supplies;
 	
 	
 	
@@ -44,14 +43,12 @@ public class Unit_Sheed extends ObjectSheet {
 		
 		weapons	 = new ArrayList<Weapon_Sheed>();
 		loads	 = new ArrayList<Unit_Sheed>();
-		supplies = new ArrayList<Unit_Sheed>();
 		
 		// memory saving operations
 		// reduce size for units that hasen't 
 		// loads, supply targets ...
 		weapons.trimToSize();
 		loads.trimToSize();
-		supplies.trimToSize();
 	}
 	
 	
@@ -66,14 +63,14 @@ public class Unit_Sheed extends ObjectSheet {
 	/**
 	 * Returns the movetype 
 	 */
-	public int getMoveType() {
+	public Move_Sheet getMoveType() {
 		return moveType;
 	}
 
 	/**
 	 * Sets the movetype
 	 */
-	public void setMoveType(int moveType) {
+	public void setMoveType( Move_Sheet moveType) {
 		this.moveType = moveType;
 	}
 
@@ -211,29 +208,6 @@ public class Unit_Sheed extends ObjectSheet {
 	 */
 	public boolean canLoad( Unit_Sheed sh ){
 		if( sh == null || loads.indexOf(sh) == -1 ) return false;
-		else return true;
-	}
-
-	/**
-	 * Adds a type of an unit to the supply table
-	 */
-	public void addSupplyType( Unit_Sheed sh ){
-		if( sh == null || supplies.indexOf(sh) != -1 ){ System.err.println("Cannot add sheed for "+super.getName()+" supplies, because sheed is null or allready in supplies"); return; }
-		else supplies.add(sh);
-	}
-	
-	/**
-	 * Returns a list of type that can be supplied by the unit 
-	 */
-	public ArrayList<Unit_Sheed> getAllPossibleSupplyTargets(){
-		return supplies;
-	}
-	
-	/**
-	 * Can a type of an unit supplied by this unit 
-	 */
-	public boolean canSupply( Unit_Sheed sh ){
-		if( sh == null || supplies.indexOf(sh) == -1 ) return false;
 		else return true;
 	}
 	

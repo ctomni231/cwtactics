@@ -5,6 +5,7 @@ import com.client.model.object.Unit;
 import com.system.ID;
 import com.system.ID.Relationship;
 import com.system.ID.TriggerTest;
+import com.system.data.Data;
 
 public class SingleCondition {
 
@@ -76,6 +77,42 @@ public class SingleCondition {
 				}
 				break;
 				
+			case FIELD_TYPE :
+				
+				if( Trigger_Object.getField1() == null ) break;
+				switch(relationship){
+				
+				// value is the integer ID of the tag
+				case IS :
+					if( Trigger_Object.getField1().sheet() == Data.getTileSheet(value) ) return true;
+					break;
+				case IS_NOT :
+					if( Trigger_Object.getField1().sheet() != Data.getTileSheet(value) ) return true;
+					break;
+				default :
+					System.err.println("Error , a single condition contains an unknown id ("+relationship+")");
+					break;
+				}
+				break;
+				
+			case UNIT_TYPE :
+				
+				if( Trigger_Object.getField1().getUnit() == null ) break;
+				switch(relationship){
+				
+				// value is the integer ID of the tag
+				case IS :
+					if( Trigger_Object.getField1().getUnit().sheet() == Data.getUnitSheet(value) ) return true;
+					break;
+				case IS_NOT :
+					if( Trigger_Object.getField1().getUnit().sheet() != Data.getUnitSheet(value) ) return true;
+					break;
+				default :
+					System.err.println("Error , a single condition contains an unknown id ("+relationship+")");
+					break;
+				}
+				break;
+				
 			// check a unit tag
 			case UNIT_TAG :
 				
@@ -136,8 +173,7 @@ public class SingleCondition {
 			case FUEL_OF_UNIT :
 				
 				if( Trigger_Object.getField1().getUnit() == null ) break;
-				// 999999 is the code for full fuel
-				if( value == 999999 ) value = Trigger_Object.getField1().getUnit().sheet().getFuel();
+				if( value == ID.FULL ) value = Trigger_Object.getField1().getUnit().sheet().getFuel();
 				
 				switch(relationship){
 					case IS :
@@ -162,8 +198,7 @@ public class SingleCondition {
 			case AMMO_OF_UNIT :
 
 				if( Trigger_Object.getField1().getUnit() == null ) break;
-				// 999999 is the code for full ammo
-				if( value == 999999 ) value = Trigger_Object.getField1().getUnit().sheet().getAmmo();
+				if( value == ID.FULL ) value = Trigger_Object.getField1().getUnit().sheet().getAmmo();
 				
 				switch(relationship){
 					case IS :
@@ -189,7 +224,7 @@ public class SingleCondition {
 
 				if( Trigger_Object.getField1().getUnit() == null ) break;
 				// 999999 is the code for full health
-				if( value == 999999 ) value = 99;
+				if( value == ID.FULL ) value = 99;
 				
 				switch(relationship){
 					case IS :
@@ -215,16 +250,16 @@ public class SingleCondition {
 				if( Trigger_Object.getField1().getUnit() == null ) break;
 				switch(relationship){
 					case CAN_PAY_REPAIR :
-						if( value == 999998 && field1.sheet().canPay( field1.sheet().getRepairCost( unit1.sheet() , 20 ), field1.getOwner() ) ) return true;
-						else if( value == 999996 && field1.sheet().canPay( field1.sheet().getRepairCost( unit2.sheet() , 20 ), field1.getOwner() ) ) return true;
+						if( value == ID.UNIT && field1.sheet().canPay( field1.sheet().getRepairCost( unit1.sheet() , 20 ), field1.getOwner() ) ) return true;
+						else if( value == ID.ENEMY_UNIT && field1.sheet().canPay( field1.sheet().getRepairCost( unit2.sheet() , 20 ), field1.getOwner() ) ) return true;
 						break;
 					case CAN_REPAIR :
-						if( value == 999998 && field1.sheet().canRepair( unit1.sheet() ) ) return true;
-						else if( value == 999996 && field1.sheet().canRepair( unit2.sheet() ) ) return true;
+						if( value == ID.UNIT && field1.sheet().canRepair( unit1.sheet() ) ) return true;
+						else if( value == ID.ENEMY_UNIT && field1.sheet().canRepair( unit2.sheet() ) ) return true;
 						break;
 					case IS_OWNER_OF :
-						if( value == 999998 && unit1.getOwner() != field1.getOwner() ) return true;
-						else if( value == 999996 && unit2.getOwner() != field1.getOwner() ) return true;
+						if( value == ID.UNIT && unit1.getOwner() != field1.getOwner() ) return true;
+						else if( value == ID.ENEMY_UNIT && unit2.getOwner() != field1.getOwner() ) return true;
 						break;
 				}
 				break;
@@ -234,8 +269,8 @@ public class SingleCondition {
 				if( Trigger_Object.getField1().getUnit() == null ) break;
 				switch(relationship){
 					case IS_OWNER_OF :
-						if( value == 999998 && unit1.getOwner() != field1.getOwner() ) return true;
-						else if( value == 999996 && unit2.getOwner() != field1.getOwner() ) return true;
+						if( value == ID.UNIT && unit1.getOwner() != field1.getOwner() ) return true;
+						else if( value == ID.ENEMY_UNIT && unit2.getOwner() != field1.getOwner() ) return true;
 						break;
 				}
 				break;

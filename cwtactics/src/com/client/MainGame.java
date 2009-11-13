@@ -45,8 +45,11 @@ public class MainGame {
     	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     	
     	// load modification
-    	new ModReader("data/mod.xml");
-    	new ScriptReader("data/scripts.xml");
+    	new ModReader("data/Misc.xml");
+    	new ModReader("data/MoveTables.xml");
+    	new ModReader("data/Tiles.xml");
+    	new ModReader("data/Units.xml");
+    	new ScriptReader("data/Scripts.xml");
     	
     	MessageServer.setMode( ID.MessageMode.LOCAL );
     	
@@ -67,12 +70,13 @@ public class MainGame {
     	t.addMember(p);
     	for( int i = 0; i < 20 ; i++ ){    		
     		for( int j = 0 ; j < 14 ; j++ ){
-    			map.setTile( new Tile( Data.getTileSheet( Data.getIntegerID("PLAIN")), i, j, 0, null), i, j);
     			if( i == 5 && j == 5 ){
+    				map.setTile( new Tile( Data.getTileSheet( Data.getIntegerID("FOREST")), i, j, 0, null), i, j);
     				Unit unit = new Unit( Data.getUnitSheet( Data.getIntegerID("MECH")) , p );
     				map.getTile(i,j).setUnit( unit );
     				p.addUnit(unit);
     			}
+    			else map.setTile( new Tile( Data.getTileSheet( Data.getIntegerID("PLAIN")), i, j, 0, null), i, j);
     		}
     	}
     	

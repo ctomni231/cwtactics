@@ -3,6 +3,8 @@ package com.system.data.sheets;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.system.data.Data;
+
 /**
  * Master class for unit and tile sheets
  */
@@ -19,6 +21,7 @@ public class ObjectSheet extends Sheet {
 	private ArrayList<Integer> tags;
 	private HashMap<Sheet, Integer> cost;
 	private HashMap<ObjectSheet,Integer>	hiddenRanges;
+	private ArrayList<Unit_Sheed>	supplies;
 	
 	
 
@@ -35,6 +38,10 @@ public class ObjectSheet extends Sheet {
 		tags = new ArrayList<Integer>();
 		cost = new HashMap<Sheet, Integer>();
 		hiddenRanges = new HashMap<ObjectSheet,Integer>();
+		supplies = new ArrayList<Unit_Sheed>();
+		
+		supplies.trimToSize();
+		tags.trimToSize();
 	}
 	
 	
@@ -117,6 +124,47 @@ public class ObjectSheet extends Sheet {
 		// all stealth units, not important how the situation is, are visible at 
 		// a range of 1.
 		else return 1;
+	}
+	
+	/**
+	 * Adds a type of an unit to the supply table
+	 */
+	public void addSupplyType( Unit_Sheed sh ){
+		if( sh == null || supplies.indexOf(sh) != -1 ){ System.err.println("Cannot add sheed for "+super.getName()+" supplies, because sheed is null or allready in supplies"); return; }
+		else supplies.add(sh);
+	}
+	
+	/**
+	 * Returns a list of type that can be supplied by the unit 
+	 */
+	public ArrayList<Unit_Sheed> getAllPossibleSupplyTargets(){
+		return supplies;
+	}
+	
+	/**
+	 * Can a type of an unit supplied by this unit 
+	 */
+	public boolean canSupply( Unit_Sheed sh ){
+		if( sh == null || supplies.indexOf(sh) == -1 ) return false;
+		else return true;
+	}
+	
+	/**
+	 * get repair cost for repairing an unit with 
+	 * a given health.
+	 */
+	public int[] getSupplyCost( Unit_Sheed sh , int amount ){
+		
+		//TODO search better configuration --> mod.xml settings for prices etc...
+		
+		int length = Data.getRessourceTable().size();
+		int[] cost = new int[ length ];
+		
+		for( int i = 0 ; i < length ; i++ ){
+			cost[i] = ( sh.getCost( Data.getRessourceSheet(i) ) * amount * 2 ) / 10000; 
+		}
+		
+		return cost;
 	}
 	
 	

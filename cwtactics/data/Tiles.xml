@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tiles>
+<field ID="PLAIN">
+        <name GER="Feld"
+              ENG="Plain"     />
+		<stats />
+		<tags>
+        	<tag id="OPEN_TERRAIN"/>
+        </tags>
+    </field>
+	
+	<field ID="FOREST">
+        <name GER="Wald"
+              ENG="Forrest"     />
+		<stats />
+		<tags>
+        	<tag id="WOOD"/>
+        </tags>
+		<hidden>
+            <unittarget id="RECOON" range="2" />
+		</hidden>
+    </field>
+	
+	<field ID="MOUNTAIN">
+        <name GER="Berg"
+              ENG="Mountain"     />
+		<stats />
+		<tags>
+        	<tag id="MOUNTAIN"/>
+        </tags>
+    </field>
+	
+	<field ID="CITY">
+        <name GER="Stadt"
+              ENG="City"     />
+		<stats vision="0" />
+		 <tags>
+        	<tag id="PROPERTY"/>
+        </tags>
+		<funds ressource_0="1000" />
+		<captureable points="20" />
+    </field>
+	
+	<field ID="FACTORY">
+        <name GER="Fabrik"
+              ENG="Factory"     />
+		<stats vision="0" />
+		<funds ressource_0="1000" />
+		<captureable points="20" />
+		<tags>
+        	<tag id="PROPERTY"/>
+        </tags>
+		<repair>
+		    <repairtarget id="LTANK"      amount="20" />
+            <repairtarget id="MDTANK"     amount="20" />
+            <repairtarget id="HTANK"      amount="20" />
+            <repairtarget id="INFANTRY"   amount="20" />
+            <repairtarget id="MECH"       amount="20" />
+            <repairtarget id="AATANK"     amount="20" />
+            <repairtarget id="ARTILLERY"  amount="20" />
+            <repairtarget id="APC"        amount="20" />
+            <repairtarget id="AAROCKET"   amount="20" />
+            <repairtarget id="RECOON"     amount="20" />
+            <repairtarget id="ROCKET"     amount="20" />
+		</repair>
+		<factory>
+            <buildtarget id="INFANTRY"   />
+            <buildtarget id="MECH"       />
+			<buildtarget id="RECOON"     />
+            <buildtarget id="APC"        />
+		    <buildtarget id="THUNT"      />
+		    <buildtarget id="PAK"        />
+		    <buildtarget id="LTANK"      />
+            <buildtarget id="MDTANK"     />
+            <buildtarget id="HTANK"      />
+            <buildtarget id="AATANK"     />
+            <buildtarget id="AAROCKET"   />
+            <buildtarget id="ARTILLERY"  />
+            <buildtarget id="ROCKET"     />
+		</factory>
+    </field>
+	
+	<field ID="AIRPORT">
+        <name GER="Flughafen"
+              ENG="Airport"     />
+		<stats vision="0" />
+		<funds ressource_0="500" />
+		<captureable points="20" />
+		<tags>
+        	<tag id="PROPERTY"/>
+        </tags>
+		<repair>
+		        <repairtarget id="BHELI"     amount="20" />
+            <repairtarget id="THELI"     amount="20"  />
+            <repairtarget id="BOMB"      amount="20"  />
+            <repairtarget id="STEALTH"   amount="20"  />
+		</repair>
+		<factory>
+            <buildtarget id="BHELI"    />
+            <buildtarget id="THELI"    />
+            <buildtarget id="MRF"      />
+            <buildtarget id="JET"      />
+			<buildtarget id="BOMB"     />
+			<buildtarget id="STEALTH"  />
+		</factory>
+    </field>
+	
+	<field ID="PORT">
+        <name GER="Hafen"
+              ENG="Port"     />
+		<stats vision="0" />
+		<funds ressource_0="500" />
+		<captureable points="20" />
+		<tags>
+        	<tag id="PROPERTY"/>
+        </tags>
+		<repair>
+		    <repairtarget id="CRUISER"  amount="20" />
+            <repairtarget id="SUB"      amount="20" />
+            <repairtarget id="CARRIER"  amount="20" />
+            <repairtarget id="BSHIP"    amount="20" />
+            <repairtarget id="LANDER"   amount="20" />
+		</repair>
+		<factory>
+            <buildtarget id="CRUISER" />
+            <buildtarget id="SUB"     />
+			<buildtarget id="CARRIER" />
+			<buildtarget id="BSHIP"   />
+			<buildtarget id="LANDER"  />
+		</factory>
+    </field>
+	
+	<field ID="SILO">
+        <name GER="Silo"
+              ENG="Silo"     />
+		<stats vision="0" />
+		<captureable points="20" />
+		<rocketsilo regeneration="5" />
+    </field>
+	
+	<field ID="HQ">
+        <name GER="Hauptquartier"
+              ENG="Headquarter"     />
+		<stats vision="1" />
+		<funds ressource_0="1000" />
+		<captureable points="20" changetyp="CITY" lostafterCaptured="1" />
+		<tags>
+        	<tag id="HQ" />
+        	<tag id="PROPERTY"/>
+        </tags>
+		<repair>
+		    <repairtarget id="LTANK"      amount="20" />
+            <repairtarget id="MDTANK"     amount="20" />
+            <repairtarget id="HTANK"      amount="20" />
+            <repairtarget id="INFANTRY"   amount="20" />
+            <repairtarget id="MECH"       amount="20" />
+            <repairtarget id="AATANK"     amount="20" />
+            <repairtarget id="ARTILLERY"  amount="20" />
+            <repairtarget id="APC"        amount="20" />
+            <repairtarget id="AAROCKET"   amount="20" />
+            <repairtarget id="RECOON"     amount="20" />
+            <repairtarget id="ROCKET"     amount="20" />
+		</repair>
+    </field>
+	
+	<field ID="RADAR">
+        <name GER="Radarstation"
+              ENG="Radarstation"     />
+		<stats vision="4" />
+		<captureable points="20" />
+    </field>
+	
+	<field ID="STREET">
+        <name GER="Strasse"
+              ENG="Street"     />
+		<stats  />
+    </field>
+	
+	<field ID="RIVER">
+        <name GER="Fluss"
+              ENG="River"     />
+		<stats  />
+    </field>
+	
+	<field ID="WATER">
+        <name GER="Wasser"
+              ENG="Water"     />
+		<stats  />
+    </field>
+	
+	<field ID="REEF">
+        <name GER="Riff"
+              ENG="Reef"     />
+		<stats  />
+		<tags>
+        	<tag id="NOT_CLEAR_WATER" />
+        </tags>
+		<hidden>
+            <hiddentarget id="CRUISER" range="2" />
+		</hidden>
+    </field>
+	
+	<field ID="SHOAL">
+        <name GER="Kueste"
+              ENG="Shoal"     />
+		<stats  />
+		<tags>
+        	<tag id="NOT_CLEAR_WATER" />
+        </tags>
+    </field>
+</tiles>
