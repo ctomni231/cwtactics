@@ -8,14 +8,18 @@ public class AnimStore {
     private short imgData;
     private byte[] animate;
 
+    public int ind;
     public int owner;
+    public int dir;
     public int posx;
     public int posy;
 
     public AnimStore(int index, int player, int direction, byte[] anim,
             int locx, int locy){
         imgData = (short)(index*10000+player*100+direction);
+        ind = index;
         owner = player;
+        dir = direction;
         animate = anim;
         posx = locx;
         posy = locy;

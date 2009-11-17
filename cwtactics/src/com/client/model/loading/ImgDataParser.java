@@ -102,7 +102,7 @@ public class ImgDataParser {
         for(String test: gameData){
             //System.out.println("PART:"+test);
 
-            if(!test.startsWith("{"))
+            if(!test.startsWith("{") || test.startsWith("{-"))
                 continue;
 
             test = test.substring(1, test.length()-1);
@@ -255,6 +255,8 @@ public class ImgDataParser {
             return temp.PROPERTY;
         else if(part.matches("UNI.*"))
             return temp.UNIT;
+        else if(part.matches("CUR.*"))
+            return temp.CURSOR;
         return 0;
     }
     

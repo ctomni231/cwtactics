@@ -49,7 +49,7 @@ public class ImgHolder {
 
     //Flips pixels along the x-axis (horizontal flip)
     public int[] setFlipX(){
-        int[] change = pixels;
+        int[] change = new int[pixels.length];
         for(int i = 0; i < origx; i++){
             for(int j = 0; j < origy; j++)
                 change[(origx-i-1)+(j*origx)] = pixels[i+j*origx];
@@ -59,7 +59,7 @@ public class ImgHolder {
 
     //Flips pixels along the y-axis (vertical flip)
     public int[] setFlipY(){
-        int[] change = pixels;
+        int[] change = new int[pixels.length];
         for(int i = 0; i < origx; i++)
             for(int j = 0; j < origx; j++)
                 change[i+((origy-j-1)*origx)] = pixels[i+j*origx];

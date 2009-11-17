@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 
 /**
  * This class makes ImgData worth while by turning its data into
@@ -17,19 +18,21 @@ import org.newdawn.slick.Graphics;
  * @author Crecen
  */
 public class PixAnimate {
-    public int BASE = 32;
+    private final int BASE = 32;
 
     private ImgLibrary storedImg;
     private ArrayList<Integer> buildColors;
     private ArrayList<Integer> unitColors;
     private HashMap<Short, Integer> imgMap;
     private AnimStore[] animParts;
+    private double scale;
 
     public PixAnimate(){
         storedImg = new ImgLibrary();
         buildColors = new ArrayList<Integer>();
         unitColors = new ArrayList<Integer>();
         animParts = new AnimStore[0];
+        scale = 1.0;
         imgMap = new HashMap<Short, Integer>();
         ImgDataParser.init();
     }
@@ -47,10 +50,51 @@ public class PixAnimate {
     }
 
     public void loadData(){
-        ImgDataParser.decodeFiles();
-        
+        ImgDataParser.decodeFiles();       
     }
 
+    public ArrayList<ImgData> getData(){
+        return ImgDataParser.getData();
+    }
+
+    public void changeScale(int tileBase){
+        if(tileBase > 0)
+            scale = (double)tileBase/BASE;
+        imgMap.clear();
+    }
+
+    public double getScale(){
+        return scale;
+    }
+
+    public AnimStore getImgPart(String name, int player, int direction){
+        int nameItem = -1;
+        byte[] anim = new byte[0];
+        for(int i = 0; i < ImgDataParser.getData().size(); i++){
+            ImgData data = ImgDataParser.getData().get(i);
+            if(name.matches(data.group+".*") && data.direction == direction){
+                nameItem = i;
+                anim = new byte[data.animRef.size()];
+                for(int j = 0; j < anim.length; j++)
+                    anim[j] = data.animRef.get(j);
+                break;
+            }
+        }
+        if(nameItem == -1)  return null;
+        return new AnimStore(nameItem, player, direction,
+                anim, 0, 0);
+    }
+
+    public Image getImage(AnimStore item, int animTime){
+        return storedImg.getSlickImage(imgMap.get(
+                item.getAnimation(animTime)));
+    }
+
+    public void makeNewImage(AnimStore item){
+        if(item != null)    makeNewImage(item.ind, item.owner, item.dir);
+    }
+
+    //UNEEDED CODE
     public void addImgPart(String name, int player, int direction,
             int locx, int locy){
         int nameItem = -1;
@@ -103,6 +147,8 @@ public class PixAnimate {
     //It will try and draw within the bounds of the screen only.
     //5) When I make the map class, I'll deal with screen shakes
 
+    //STOPS HERE
+
     private ArrayList<Integer> colorChange(String filePath){
         ArrayList<Integer> newColors = new ArrayList<Integer>();
         ImgLibrary temp = new ImgLibrary();
@@ -115,6 +161,7 @@ public class PixAnimate {
         }
         return newColors;
     }
+
 
     private void makeNewImage(int index, int player, int direction){
         short store = (short)((index*10000+player*100+direction)*100);
@@ -147,13 +194,11 @@ public class PixAnimate {
                 }
             }
             storedImg.setImageSize(
-                (int)(file.sizex*(BASE/(double)file.sizex)*file.tilex),
-                (int)(file.sizey*(BASE/(double)file.sizex)*file.tiley));
+                (int)(file.sizex*(BASE/(double)file.sizex)*file.tilex*scale),
+                (int)(file.sizey*(BASE/(double)file.sizex)*file.tiley*scale));
             imgMap.put((short)(store+i), storedImg.length());
             storedImg.addImage(parseImg.getImage(0, file.locx, file.locy,
                 file.sizex, file.sizey));
         }
     }
-
-
 }

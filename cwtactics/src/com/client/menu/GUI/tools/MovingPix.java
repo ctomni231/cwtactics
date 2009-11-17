@@ -86,6 +86,10 @@ public class MovingPix {
         speed = thisSpeed;
     }
 
+    public Image getImage(){
+        return logoPic;
+    }
+
     protected void renderSpeed(){
         if(posx == fposx && posy == fposy);
         else if(speed == 0){
