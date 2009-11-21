@@ -118,6 +118,8 @@ public class Parser extends DefaultHandler {
     @Override
     public void endElement (String namespaceURI, String sname, String qname) {
     	
+    	entryEnd();
+    	
     	// remove last XML tag
     	header.remove( header.size() - 1 ); 
     }
@@ -127,6 +129,9 @@ public class Parser extends DefaultHandler {
     
     // simple method for child classes.
     public void entry( Attributes attributes ){}
+    
+    // simple method for child classes.
+    public void entryEnd(){}
 
 	/*
 	 *

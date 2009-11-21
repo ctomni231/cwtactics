@@ -13,6 +13,8 @@ public class Condition {
 	
 	private ArrayList< SingleCondition > conditions;
 
+	
+	
 	/*
 	 *
 	 * CONSTRUCTORS
@@ -23,16 +25,16 @@ public class Condition {
 	public Condition( String condition_text ){
 		
 		conditions = new ArrayList< SingleCondition >();
-		setup(condition_text);
+		
+		// setup condition
+		if( condition_text != null ) setup(condition_text);
+		
+		// trim to size to save memory
+		conditions.trimToSize();
 	}
-
-	/*
-	 *
-	 * ACCESSING METHODS
-	 * *****************
-	 * 
-	 */
-
+	
+	
+	
 	/*
 	 *
 	 * WORK METHODS
@@ -40,14 +42,18 @@ public class Condition {
 	 * 
 	 */
 	
+	/**
+	 * Is the condition true?
+	 */
 	public boolean isTrue(){
 		
-		boolean value = false;
 		for( SingleCondition s : conditions ){
-			value =  s.checkCondition();
+			if( !s.checkCondition() ) return false;
 		}
-		return value;
+		return true;
 	}
+	
+	
 
 	/*
 	 *
@@ -80,6 +86,8 @@ public class Condition {
 		}
 	}
 
+	
+	
 	/*
 	 *
 	 * OUTPUT METHODS
@@ -87,5 +95,14 @@ public class Condition {
 	 * 
 	 */
 
+	/**
+	 * Print out content of this condition onto console.
+	 */
+	public void print(){
+		System.out.println("__CONDITION__");
+		for( SingleCondition cond : conditions ){
+			System.out.println("    "+cond);
+		}
+	}
 }
 

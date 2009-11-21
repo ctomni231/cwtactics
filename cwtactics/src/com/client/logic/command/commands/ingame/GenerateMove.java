@@ -7,6 +7,7 @@ public class GenerateMove implements Command {
 
 	public void doCommand() {
 		Move.move();
+		Move.printMoveTiles();
 	}
 
 }

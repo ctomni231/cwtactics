@@ -19,6 +19,8 @@ public class ScriptFactory {
 	private static HashMap< ID.Trigger , ArrayList<Script> > scripts;
 	private static Script script;
 
+	
+	
 	/*
 	 *
 	 * CONSTRUCTORS
@@ -29,6 +31,8 @@ public class ScriptFactory {
 	static{
 		scripts = new HashMap< ID.Trigger , ArrayList<Script>>();
 	}
+	
+	
 
 	/*
 	 *
@@ -106,6 +110,12 @@ public class ScriptFactory {
 		else if( text.equals("DECREASE_DEFENSE")) 	return ID.TriggerAction.DECREASE_DEFENSE;
 		else if( text.equals("INCREASE_SIGHT")) 	return ID.TriggerAction.INCREASE_SIGHT;
 		else if( text.equals("DECREASE_SIGHT")) 	return ID.TriggerAction.DECREASE_SIGHT;
+		else if( text.equals("DECREASE_MOVEPOINTS"))return ID.TriggerAction.INCREASE_MOVEPOINTS;
+		else if( text.equals("INCREASE_MOVEPOINTS"))return ID.TriggerAction.DECREASE_MOVEPOINTS;
+		else if( text.equals("INCREASE_MOVECOST")) 	return ID.TriggerAction.INCREASE_MOVECOST;
+		else if( text.equals("DECREASE_MOVECOST")) 	return ID.TriggerAction.DECREASE_MOVECOST;
+		else if( text.equals("SET_MOVECOST")) 		return ID.TriggerAction.SET_MOVECOST;
+		else if( text.equals("SET_SIGHT")) 			return ID.TriggerAction.SET_SIGHT;
 		return null;
 	}
 	
@@ -116,8 +126,8 @@ public class ScriptFactory {
 		
 			 if( text.equals("FIELD")) 			return ID.TriggerAction_Obj.FIELD;
 		else if( text.equals("UNIT")) 			return ID.TriggerAction_Obj.UNIT;
-		else if( text.equals("ENEMY_FIELD")) 	return ID.TriggerAction_Obj.ENEMY_FIELD;
-		else if( text.equals("ENEMY_UNIT")) 	return ID.TriggerAction_Obj.ENEMY_UNIT;
+		else if( text.equals("FIELD2")) 		return ID.TriggerAction_Obj.FIELD2;
+		else if( text.equals("UNIT1")) 			return ID.TriggerAction_Obj.UNIT2;
 		return null;
 	}
 	
@@ -149,10 +159,11 @@ public class ScriptFactory {
 		
 			 if( text.equals("UNIT_TAG")) 					return ID.TriggerTest.UNIT_TAG;
 		else if( text.equals("FIELD_TAG")) 					return ID.TriggerTest.FIELD_TAG;
-		else if( text.equals("ENEMY_TAG"))	 				return ID.TriggerTest.ENEMY_TAG;
+		else if( text.equals("UNIT2_TAG"))	 				return ID.TriggerTest.UNIT2_TAG;
 		else if( text.equals("FIELD_TYPE"))					return ID.TriggerTest.FIELD_TYPE;
+		else if( text.equals("WEATHER_TYPE"))				return ID.TriggerTest.WEATHER_TYPE;
 		else if( text.equals("UNIT_TYPE"))	 				return ID.TriggerTest.UNIT_TYPE;
-		else if( text.equals("ENEMY_FIELD_TAG")) 			return ID.TriggerTest.ENEMY_FIELD_TAG;
+		else if( text.equals("FIELD2_TAG"))		 			return ID.TriggerTest.FIELD2_TAG;
 		else if( text.equals("FUEL_OF_UNIT"))	 			return ID.TriggerTest.FUEL_OF_UNIT;
 		else if( text.equals("AMMO_OF_UNIT")) 				return ID.TriggerTest.AMMO_OF_UNIT;
 		else if( text.equals("HEALTH_OF_UNIT")) 			return ID.TriggerTest.HEALTH_OF_UNIT;
@@ -183,11 +194,12 @@ public class ScriptFactory {
 		
 				if( Data.existTagID(text) ) 		return Data.getIntegerTagID(text);
 		else	if( Data.existIntegerID(text) ) 	return Data.getIntegerID(text);
-		else	if( text.equals("ENEMY_FIELD"))		return ID.ENEMY_TILE;
-		else	if( text.equals("ENEMY_UNIT"))		return ID.ENEMY_UNIT;
+		else	if( text.equals("FIELD2"))			return ID.TILE2;
+		else	if( text.equals("UNIT2"))			return ID.UNIT2;
 		else	if( text.equals("FIELD"))			return ID.TILE;
 		else	if( text.equals("UNIT"))			return ID.UNIT;
 		else	if( text.equals("FULL"))			return ID.FULL;
+		else	if( text.equals("HIDDEN"))			return ID.HIDDEN;
 				
 		// plain integer value
 		else{
@@ -201,12 +213,7 @@ public class ScriptFactory {
 		}
 	}
 		
-	/*
-	 *
-	 * INTERNAL METHODS
-	 * ****************
-	 * 
-	 */
+	
 
 	/*
 	 *
@@ -214,6 +221,22 @@ public class ScriptFactory {
 	 * **************
 	 * 
 	 */
+	
+	/**
+	 * Prints out the complete content of the script database.
+	 */
+	public static void printDatabase(){
+		for( ID.Trigger trig : scripts.keySet() ){
+			System.out.println();
+			System.out.println("TRIGGER :: "+trig);
+			System.out.println();
+			for( Script script : scripts.get(trig) ){
+				System.out.println();
+				script.print();
+				System.out.println();
+			}
+		}
+	}
 
 }
 

@@ -100,6 +100,10 @@ public class Fog {
 		additionalSight += value;
 	}
 	
+	public static void setSightAddon( int value ){
+		additionalSight = value;
+	}
+	
 
 	
 	/*
@@ -163,6 +167,11 @@ public class Fog {
 		
 		// variables
 		int range = sh.getVision() + additionalSight;
+		
+		// check that range has more equals the minimum ranges of tiles and units !
+		if( sh instanceof Tile_Sheet && range < 0 ) range = 0;
+		else if( range < 1 ) range = 1;
+		
 		
 		// protect against incorrect scripts
 		if( sh instanceof Unit_Sheed && range < 1 ) range = 1;

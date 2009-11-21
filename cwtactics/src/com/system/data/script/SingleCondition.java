@@ -1,5 +1,6 @@
 package com.system.data.script;
 
+import com.client.model.Weather;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
 import com.system.ID;
@@ -53,14 +54,14 @@ public class SingleCondition {
 		int value 		= this.value;
 		Tile field1 	= Trigger_Object.getField1();
 		Unit unit1 		= Trigger_Object.getUnit1();
-		Tile field2 	= Trigger_Object.getField2();
+		//Tile field2 	= Trigger_Object.getField2();
 		Unit unit2 		= Trigger_Object.getUnit2();
-		
-		
+				
 		switch(condition){
 		
 			// check a field tag
 			case FIELD_TAG :
+				
 				
 				switch(relationship){
 				
@@ -133,7 +134,7 @@ public class SingleCondition {
 				break;
 				
 			// check a field tag
-			case ENEMY_FIELD_TAG :
+			case FIELD2_TAG :
 				
 				switch(relationship){
 				
@@ -151,7 +152,7 @@ public class SingleCondition {
 				break;
 				
 			// check a unit tag
-			case ENEMY_TAG :
+			case UNIT2_TAG :
 				
 				if( Trigger_Object.getField1().getUnit() == null ) break;
 				switch(relationship){
@@ -251,15 +252,15 @@ public class SingleCondition {
 				switch(relationship){
 					case CAN_PAY_REPAIR :
 						if( value == ID.UNIT && field1.sheet().canPay( field1.sheet().getRepairCost( unit1.sheet() , 20 ), field1.getOwner() ) ) return true;
-						else if( value == ID.ENEMY_UNIT && field1.sheet().canPay( field1.sheet().getRepairCost( unit2.sheet() , 20 ), field1.getOwner() ) ) return true;
+						else if( value == ID.UNIT2 && field1.sheet().canPay( field1.sheet().getRepairCost( unit2.sheet() , 20 ), field1.getOwner() ) ) return true;
 						break;
 					case CAN_REPAIR :
 						if( value == ID.UNIT && field1.sheet().canRepair( unit1.sheet() ) ) return true;
-						else if( value == ID.ENEMY_UNIT && field1.sheet().canRepair( unit2.sheet() ) ) return true;
+						else if( value == ID.UNIT2 && field1.sheet().canRepair( unit2.sheet() ) ) return true;
 						break;
 					case IS_OWNER_OF :
 						if( value == ID.UNIT && unit1.getOwner() != field1.getOwner() ) return true;
-						else if( value == ID.ENEMY_UNIT && unit2.getOwner() != field1.getOwner() ) return true;
+						else if( value == ID.UNIT2 && unit2.getOwner() != field1.getOwner() ) return true;
 						break;
 				}
 				break;
@@ -270,7 +271,19 @@ public class SingleCondition {
 				switch(relationship){
 					case IS_OWNER_OF :
 						if( value == ID.UNIT && unit1.getOwner() != field1.getOwner() ) return true;
-						else if( value == ID.ENEMY_UNIT && unit2.getOwner() != field1.getOwner() ) return true;
+						else if( value == ID.UNIT2 && unit2.getOwner() != field1.getOwner() ) return true;
+						break;
+				}
+				break;
+				
+			case WEATHER_TYPE :
+				
+				switch(relationship){
+					case IS :
+						if( Data.getWeatherSheet(value) == Weather.getWeather() ) return true;
+						break;
+					case IS_NOT :
+						if( Data.getWeatherSheet(value) != Weather.getWeather() ) return true;
 						break;
 				}
 				break;
@@ -296,6 +309,10 @@ public class SingleCondition {
 	 * **************
 	 * 
 	 */
+	
+	public String toString(){
+		return " SC:: COND:"+condition+" - REL:"+relationship+" VALUE:"+value;
+	}
 
 }
 

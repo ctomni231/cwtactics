@@ -1,13 +1,17 @@
 package com.client.model;
 
 import com.client.logic.command.CommandList;
-import com.client.logic.command.MessageServer;
-import com.client.logic.command.commands.ingame.CheckTrigger;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
 import com.system.ID;
+import com.system.data.script.ScriptFactory;
+import com.system.data.script.Trigger_Object;
 import com.system.data.sheets.Weapon_Sheed;
 
+/**
+ * 
+ * @author Tapsi [BcMk]
+ */
 public class Fight {
 
 	/*
@@ -64,11 +68,12 @@ public class Fight {
 		}
 		
 		// check effects for the attacker ( local )
-		MessageServer.toCommandList( new CheckTrigger( attackerTile, defenderTile, ID.Trigger.UNIT_ATTACK), false );
+		Trigger_Object.triggerCall( attackerTile , defenderTile);
+		ScriptFactory.checkAll( ID.Trigger.UNIT_ATTACK);
 		
 		// check effects for the defender ( local )
-		MessageServer.toCommandList( new CheckTrigger( defenderTile,attackerTile, ID.Trigger.UNIT_DEFEND), false );
-		
+		Trigger_Object.triggerCall( defenderTile , attackerTile);
+		ScriptFactory.checkAll( ID.Trigger.UNIT_DEFEND);
 	}
 	
 	/**
@@ -84,10 +89,8 @@ public class Fight {
 		}
 		
 		// get damage variables
-		int attack = attackWeapon.getDamage(defender.sheet()) + attackerPenalty;
-		int counter;
-		if( defenderWeapon != null ) counter = defenderWeapon.getDamage(attacker.sheet()) + defenderPenalty;
-		else counter = 0;
+		int attack = getAttackDamage();
+		int counter = getDefenderDamage();
 		
 		// set the damage on defender
 		if( attack > 0 ) CommandList.addToEndPosition( null );
@@ -115,7 +118,7 @@ public class Fight {
 		for( Weapon_Sheed defenseWeapon : defender.sheet().getAllWeapons() ){
 			
 			// counter only possible if weapon is direct, can attack attacker and if you have enough ammo
-			if( defenseWeapon.getFireMode() == 0 && defenseWeapon.getDamage( attacker.sheet() ) > 0 && defender.getAmmo() - defenseWeapon.getUseAmmo() >= 0 ) return defenseWeapon;
+			if( ( defenseWeapon.getFireMode() == 0 || defenseWeapon.getFireMode() == 3 ) && defenseWeapon.getDamage( attacker.sheet() ) > 0 && defender.getAmmo() - defenseWeapon.getUseAmmo() >= 0 ) return defenseWeapon;
 		}
 		
 		return null;
@@ -155,6 +158,21 @@ public class Fight {
 	 */
 	public static void changeDefenderPenalty( int value ){
 		defenderPenalty += value;
+	}
+
+	/**
+	 * Returns attacker damage.
+	 */
+	public static int getAttackDamage(){
+		 return attackWeapon.getDamage(defender.sheet()) + attackerPenalty;
+	}
+
+	/**
+	 * Returns counter damage from defender.
+	 */
+	public static int getDefenderDamage(){
+		if( defenderWeapon != null ) return defenderWeapon.getDamage(attacker.sheet()) + defenderPenalty;
+		return 0;
 	}
 	
 	

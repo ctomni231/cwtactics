@@ -147,6 +147,10 @@ public class Data {
 	public static ArrayList<Weather_Sheet> getWeatherTable(){
 		return weatherTable;
 	}
+	
+	public static ArrayList<Tile_Sheet> getTileTable(){
+		return tileTable;
+	}
 
 
 	

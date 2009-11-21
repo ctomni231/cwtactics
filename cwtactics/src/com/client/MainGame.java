@@ -5,7 +5,6 @@ import com.client.logic.command.commands.ingame.GenerateMove;
 import com.client.logic.command.commands.ingame.TestCommand;
 import com.client.model.Move;
 import com.client.model.Weather;
-import com.client.model.loading.ImgDataParser;
 import com.client.model.object.Game;
 import com.client.model.object.Map;
 import com.client.model.object.Player;
@@ -18,6 +17,7 @@ import com.client.state.MainMenuState;
 import com.client.state.SlickGame;
 import com.system.ID;
 import com.system.data.Data;
+import com.system.data.script.ScriptFactory;
 import com.system.reader.ModReader;
 import com.system.reader.ScriptReader;
 
@@ -84,6 +84,9 @@ public class MainGame {
     	MessageServer.toCommandList( new GenerateMove() , false );
     	MessageServer.toCommandList( new TestCommand(p) , false );
         Game.setMap(map);
+        
+        //ScriptFactory.printDatabase();
+        
     	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -2,11 +2,12 @@ package com.system;
 
 public interface ID {
 	
-	public final int ENEMY_TILE = 999995;
-	public final int ENEMY_UNIT = 999996;
+	public final int TILE2 = 999995;
+	public final int UNIT2 = 999996;
  	public final int TILE = 999997;
 	public final int UNIT = 999998;
 	public final int FULL = 999999;
+	public final int HIDDEN = 1000000;
 	
 	/*
 	 * Keyboard values
@@ -41,10 +42,11 @@ public interface ID {
     public enum TriggerTest{
     	UNIT_TAG,
     	FIELD_TAG,
-    	ENEMY_TAG,
+    	UNIT2_TAG,
     	FIELD_TYPE,
     	UNIT_TYPE,
-    	ENEMY_FIELD_TAG,
+    	WEATHER_TYPE,
+    	FIELD2_TAG,
     	FUEL_OF_UNIT,
     	AMMO_OF_UNIT,
     	HEALTH_OF_UNIT,
@@ -69,14 +71,20 @@ public interface ID {
     	DECREASE_ATTACK,
     	DECREASE_DEFENSE,
     	INCREASE_SIGHT,
-    	DECREASE_SIGHT
+    	DECREASE_SIGHT,
+    	DECREASE_MOVEPOINTS,
+    	INCREASE_MOVEPOINTS,
+    	INCREASE_MOVECOST,
+    	DECREASE_MOVECOST,
+    	SET_MOVECOST,
+    	SET_SIGHT
     }
     
     public enum TriggerAction_Obj{
     	FIELD,
     	UNIT,
-    	ENEMY_FIELD,
-    	ENEMY_UNIT
+    	FIELD2,
+    	UNIT2
     }
     
     public enum Trigger{
@@ -95,7 +103,8 @@ public interface ID {
     	TURN_END_FIELDS,
     	TURN_END_UNITS,
     	VISION_UNIT,
-    	VISION_TILE
+    	VISION_TILE,
+    	MOVE_ONTO
     }
     
     public enum MessageMode{

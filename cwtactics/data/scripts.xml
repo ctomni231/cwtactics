@@ -1,122 +1,104 @@
-<scripts>
+  <scripts>
 
-	<!-- standard effects -->
 
+	<!-- Decrease fuel of an unit if it is an AIR or SHIP type. -->
 	<script>
 		<trigger id="TURNSTART_UNITS" />
-		<condition text="UNIT_TAG IS AIR" />
-		<action text="DECREASE_FUEL UNIT 1" />
+		<main condition="UNIT_TAG IS AIR" />
+		<main condition="UNIT_TAG IS SHIP" />
+		<case condition="UNIT_TYPE IS STEALTH %% UNIT IS_NOT HIDDEN" action="DECREASE_FUEL UNIT 5" />
+		<case condition="UNIT_TYPE IS STEALTH %% UNIT IS HIDDEN"     action="DECREASE_FUEL UNIT 8" />
+		<case condition="UNIT_TYPE IS SUB %% UNIT IS_NOT HIDDEN"     action="DECREASE_FUEL UNIT 1" />
+		<case condition="UNIT_TYPE IS SUB %% UNIT IS HIDDEN"         action="DECREASE_FUEL UNIT 5" />
+		<case                                                        action="DECREASE_FUEL UNIT 1" />
 	</script>
-
+	
+	
+	<!-- Destroy unit if AIR or SHIP and fuel is zero -->
 	<script>
 		<trigger id="TURNSTART_UNITS" />
-		<condition text="UNIT_TAG IS AIR %% FUEL_OF_UNIT LESS_THAN 1" />
-		<action text="DESTROY_UNIT UNIT" />
+		<main condition="FUEL_OF_UNIT LESS_THAN 1" />
+		<case condition="UNIT_TAG IS AIR"   action="DESTROY_UNIT UNIT" />
+		<case condition="UNIT_TAG IS SHIP"  action="DESTROY_UNIT UNIT" />
+	</script>
+
+
+	<script>
+		<trigger id="TURNSTART_FIELDS" />
+		<main condition="FIELD_TAG IS PROPERTY" />
+		<case action="GIVE_FUNDS FIELD" />
 	</script>
 
 	<script>
 		<trigger id="TURNSTART_FIELDS" />
-		<condition text="FIELD_TAG IS PROPERTY" />
-		<action text="GIVE_FUNDS FIELD" />
+		<main condition="FIELD_TAG IS PROPERTY" />
+		<case condition="FUEL_OF_UNIT IS_NOT FULL"   action="RESUPPLY UNIT" />
+		<case condition="AMMO_OF_UNIT IS_NOT FULL"   action="RESUPPLY UNIT" />
 	</script>
+
 
 	<script>
 		<trigger id="TURNSTART_FIELDS" />
-		<condition text="FIELD_TAG IS PROPERTY %% FUEL_OF_UNIT IS_NOT FULL" />
-		<!--  OR -->
-		<condition text="FIELD_TAG IS PROPERTY %% AMMO_OF_UNIT IS_NOT FULL" />
-		<action text="RESUPPLY UNIT" />
+		<case condition="FIELD_TAG IS PROPERTY %% FIELD IS_OWNER_OF UNIT %% FIELD CAN_REPAIR UNIT %% FIELD CAN_PAY_REPAIR UNIT %% HEALTH_OF_UNIT IS_NOT FULL" action="HEAL_UNIT UNIT" />
 	</script>
 
-	<script>
-		<trigger id="TURNSTART_FIELDS" />
-		<condition text="FIELD_TAG IS PROPERTY %% FIELD IS_OWNER_OF UNIT %% FIELD CAN_REPAIR UNIT %% FIELD CAN_PAY_REPAIR UNIT %% HEALTH_OF_UNIT IS_NOT FULL" />
-		<action text="HEAL_UNIT UNIT" />
-	</script>
 
+	<!-- Add luck to an unit attack -->
 	<script>
 		<trigger id="UNIT_ATTACK" />
-		<condition text="UNIT IS_OWNER_OF UNIT" />
-		<action text="INCREASE_ATTACK_BY_RANDOM UNIT 10" />
+		<case action="INCREASE_ATTACK_BY_RANDOM UNIT 10" />
+	</script>
+	
+	
+	<!-- Adds defense stars to an unit defense -->
+	<script>
+		<trigger id="UNIT_DEFEND" />
+		<case condition="FIELD_TYPE IS PLAIN"    action="INCREASE_DEFENSE UNIT 10" />
+		<case condition="FIELD_TYPE IS FOREST"   action="INCREASE_DEFENSE UNIT 30" />
+		<case condition="FIELD_TYPE IS MOUNTAIN" action="INCREASE_DEFENSE UNIT 40" />
+		<case condition="FIELD_TYPE IS REEF"     action="INCREASE_DEFENSE UNIT 20" />
+		<case condition="FIELD_TYPE IS HQ"       action="INCREASE_DEFENSE UNIT 40" />
+		<case condition="FIELD_TYPE IS CITY"     action="INCREASE_DEFENSE UNIT 20" />
+		<case condition="FIELD_TYPE IS PORT"     action="INCREASE_DEFENSE UNIT 30" />
+		<case condition="FIELD_TYPE IS AIRPORT"  action="INCREASE_DEFENSE UNIT 30" />
+		<case condition="FIELD_TYPE IS FACTORY"  action="INCREASE_DEFENSE UNIT 30" />
+		<case condition="FIELD_TYPE IS RADAR"    action="INCREASE_DEFENSE UNIT 30" />
+		<case condition="FIELD_TYPE IS SILO"     action="INCREASE_DEFENSE UNIT 30" />
 	</script>
 
+	<!--  TO TEST CHANGE MOVECOST SYSTEM -->
 	<script>
-		<trigger id="UNIT_DEFEND" />
-		<condition text="UNIT IS_OWNER_OF UNIT" />
-		<action text="INCREASE_DEFENSE_BY_RANDOM UNIT 10" />
-	</script>
-
-
-	<script>
-		<trigger id="UNIT_DEFEND" />
-		<condition text="FIELD_TYPE IS PLAIN" />
-		<action text="INCREASE_DEFENSE UNIT 10" />
-	</script>
-	
-	<script>
-		<trigger id="UNIT_DEFEND" />
-		<condition text="FIELD_TYPE IS FOREST" />
-		<action text="INCREASE_DEFENSE UNIT 30" />
-	</script>
-
-	<script>
-		<trigger id="UNIT_DEFEND" />
-		<condition text="FIELD_TYPE IS MOUNTAIN" />
-		<action text="INCREASE_DEFENSE UNIT 40" />
-	</script>
-	
-	<script>
-		<trigger id="UNIT_DEFEND" />
-		<condition text="FIELD_TYPE IS REEF" />
-		<action text="INCREASE_DEFENSE UNIT 20" />
-	</script>
-	
-	<script>
-		<trigger id="UNIT_DEFEND" />
-		<condition text="FIELD_TYPE IS HQ" />
-		<action text="INCREASE_DEFENSE UNIT 40" />
-	</script>
-
-	<script>
-		<trigger id="UNIT_DEFEND" />
-		<condition text="FIELD_TYPE IS CITY" />
-		<action text="INCREASE_DEFENSE UNIT 20" />
-	</script>
-	
-	<script>
-		<trigger id="UNIT_DEFEND" />
-		<condition text="FIELD_TYPE IS PORT" />
-		<action text="INCREASE_DEFENSE UNIT 30" />
-	</script>
-	
-	<script>
-		<trigger id="UNIT_DEFEND" />
-		<condition text="FIELD_TYPE IS AIRPORT" />
-		<action text="INCREASE_DEFENSE UNIT 30" />
-	</script>
-	
-	<script>
-		<trigger id="UNIT_DEFEND" />
-		<condition text="FIELD_TYPE IS FACTORY" />
-		<action text="INCREASE_DEFENSE UNIT 30" />
-	</script>
-	
-	<script>
-		<trigger id="UNIT_DEFEND" />
-		<condition text="FIELD_TYPE IS RADAR" />
-		<action text="INCREASE_DEFENSE UNIT 30" />
-	</script>
-
-	<script>
-		<trigger id="UNIT_DEFEND" />
-		<condition text="FIELD_TYPE IS SILO" />
-		<action text="INCREASE_DEFENSE UNIT 30" />
+		<trigger id="MOVE_ONTO" />
+		<case condition="FIELD_TYPE IS PLAIN" action="INCREASE_MOVECOST FIELD 1" />
 	</script>
 	
 	<script>
 		<trigger id="VISION_UNIT" />
-		<condition text="UNIT_TAG IS FOOT %% FIELD_TYPE IS MOUNTAIN" />
-		<action text="INCREASE_SIGHT UNIT 2" />
+		<case condition="UNIT_TAG IS FOOT %% FIELD_TYPE IS MOUNTAIN" action="INCREASE_SIGHT UNIT 2" />
+	</script>
+	
+	
+	<script>
+		<trigger id="UNIT_WILL_MOVE" />
+		<case condition="WEATHER_TYPE IS SNOW"   action="DRECREASE_MOVEPOINTS UNIT 2" />
+	</script>
+	
+	
+	<script>
+		<trigger id="UNIT_ATTACK" />
+		<case condition="WEATHER_TYPE IS SANDSTORM" action="DECREASE_ATTACK UNIT 30" />
+	</script>
+	
+	
+	<script>
+		<trigger id="VISION_TILE" />
+		<case condition="WEATHER_TYPE IS RAIN"   action="SET_SIGHT FIELD 0" />
+	</script>
+	
+	
+	<script>
+		<trigger id="VISION_UNIT" />
+		<case condition="WEATHER_TYPE IS RAIN"   action="SET_SIGHT UNIT 1" />
 	</script>
 	
 </scripts>

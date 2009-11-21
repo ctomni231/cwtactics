@@ -7,6 +7,9 @@ import java.util.Set;
 import com.client.model.object.Game;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
+import com.system.ID;
+import com.system.data.script.ScriptFactory;
+import com.system.data.script.Trigger_Object;
 
 public class Move {
 
@@ -19,9 +22,13 @@ public class Move {
 
 	private static HashMap<Tile,MoveObject> moveTiles = new HashMap<Tile, MoveObject>();
 	private static ArrayList<Tile> moveWay 	= new ArrayList<Tile>();
-	private static int additionalTiles;
 	private static Tile	start;
 	private static Unit unit;
+	
+	// trigger variables
+	private static int moveCost;
+	private static int additionalTiles;			// only + tiles allowed at the moment
+	private static int additionalPoints;
 
 	
 	
@@ -38,10 +45,10 @@ public class Move {
 	public static void clear(){ 
 		
 		clearFields(); 
-		clearWay(); 
+		clearWay();
+		moveCost = 0;
 		additionalTiles = 0;
-		start = null;
-		unit = null;
+		additionalPoints = 0;
 	}
 	
 	/**
@@ -56,6 +63,48 @@ public class Move {
 	 */
 	public static void clearFields(){ 
 		moveTiles.clear(); 
+	}
+
+	/**
+	 * Returns the list of tiles in move range.
+	 */
+	public static HashMap<Tile,MoveObject> getTiles(){
+		return moveTiles;
+	}
+
+	/**
+	 * Changes move cost of a tile sheet.
+	 */
+	public static void changeCost( int value ){
+		moveCost += value;
+	}
+
+	/**
+	 * Sets the move cost of a tile sheet.
+	 */
+	public static void setCost( int value ){
+		moveCost = value;
+	}
+
+	/**
+	 * Changes units move points.
+	 */
+	public static void changeMovePoints(  int value ){
+		additionalPoints += value;
+	}
+
+	/**
+	 * Changes additional tiles value.
+	 */
+	public static void changeAdditionalTiles( int value ){
+		additionalTiles += value;
+	}
+	
+	/**
+	 * Sets the additional tiles value. 
+	 */
+	public static void setAdditional( int value ){
+		additionalTiles = value;
 	}
 
 	
@@ -73,15 +122,16 @@ public class Move {
 	 */
 	public static void initialize( Tile start , Unit unit ){
 		
-		// clear old
-		clear();
-		
 		// set variables
 		Move.start = start;
 		Move.unit = unit;
 		
+		// clear old paths and tiles
+		clear();
+	
 		// check trigger
-		additionalTiles = 1;	// <-- only as test, later here will be a trigger check for UNIT_WANT_MOVE
+		Trigger_Object.triggerCall(start, null);
+		ScriptFactory.checkAll( ID.Trigger.UNIT_WILL_MOVE);
 	}
 	
 	/**
@@ -188,7 +238,8 @@ public class Move {
             	Tile crossed = crossWay(tile);
                 if( crossed != null ) clearTo(crossed);
 
-                if ( getMinorFuel() + unit.sheet().getMoveType().getMoveCost( tile.sheet() ) <= unit.sheet().getMoveRange() ) moveWay.add(tile);
+                checkMoveCost(tile);                
+                if ( getMinorFuel() + moveCost <= unit.sheet().getMoveRange() + additionalPoints ) moveWay.add(tile);
                 else findAlternativeWay(tile);     // IF THE UNIT HAVEN'T ENOUGH MOVEPOINTS
             }
             else findAlternativeWay(tile);
@@ -212,25 +263,24 @@ public class Move {
 		// variables
 		int x = tile.getPosX();
 		int y = tile.getPosY();
-		int movecost = 0;
 		
 		if( !start ){
 			
 			// variables
-	        movecost = unit.sheet().getMoveType().getMoveCost( tile.sheet() );
-	        
+			checkMoveCost(tile);
+			
 	        // can you move onto this tile?
-	        if( !checkTile( tile, points, movecost ) ) return;
+	        if( !checkTile( tile, points, moveCost ) ) return;
 	        else{ 
 	        	MoveObject mObj = getMoveObj(tile);
 	        	
 	        	// add tile to move array and set needed fuel to move onto it
-	        	if( mObj.getFuel() == -1 || points + movecost < mObj.getFuel() ) mObj.setFuel( points + movecost );
+	        	if( mObj.getFuel() == -1 || points + moveCost < mObj.getFuel() ) mObj.setFuel( points + moveCost );
 	        }
 		}
         
         // check neighbor tiles
-		int left = points+movecost;
+		int left = points+moveCost;
         if ( x > 0 )                           run( Game.getMap().getTile(x-1, y  ), left , false );
         if ( x < Game.getMap().getSizeX() -1 ) run( Game.getMap().getTile(x+1, y  ), left , false );
         if ( y < Game.getMap().getSizeY() -1 ) run( Game.getMap().getTile(x  , y+1), left , false );
@@ -247,7 +297,7 @@ public class Move {
     	
     	Unit unit = tile.getUnit();
     	
-    	if( neededFuel + cost <= Move.unit.sheet().getMoveRange() ){
+    	if( neededFuel + cost <= Move.unit.sheet().getMoveRange() + additionalPoints ){
     		if( unit == null ) return true;
     		if( Fog.inFog(tile) ) return true;
     		if( unit.getOwner() == Move.unit.getOwner() ) return true;
@@ -278,7 +328,9 @@ public class Move {
 		
 		int fuel = 0;
 		for( int i = startPos ; i < moveWay.size() ; i++ ){
-			fuel += unit.sheet().getMoveType().getMoveCost( moveWay.get(i).sheet() );
+
+			checkMoveCost(moveWay.get(i));
+			fuel += moveCost;
 		}
 		
 		return fuel;
@@ -387,7 +439,9 @@ public class Move {
 			
 	        // don't cross yourself and check tile
 	        if ( moveWay.contains(tile) ) return false;
-	        if( !checkTile(tile, getMinorFuel() , unit.sheet().getMoveType().getMoveCost( tile.sheet() ) ) ) return false;
+	        
+	        checkMoveCost(tile);
+	        if( !checkTile(tile, getMinorFuel() , moveCost ) ) return false;
 	
 	        moveWay.add(tile);
 	
@@ -406,6 +460,16 @@ public class Move {
         if ( !found  ) moveWay.remove( moveWay.size() -1 );
         return found;
     }
+	
+	private static void checkMoveCost( Tile tile ){
+		
+		// get original move cost
+		moveCost = unit.sheet().getMoveType().getMoveCost( tile.sheet() );
+		
+		// check up scripts
+		Trigger_Object.triggerCall( tile, start );
+		ScriptFactory.checkAll( ID.Trigger.MOVE_ONTO);
+	}
 	
 	
 	
@@ -441,8 +505,5 @@ public class Move {
 		}
 		System.out.println();
 	}
-    
-	
-	
 }
 

@@ -2,6 +2,10 @@ package com.system.data.sheets;
 
 import java.util.HashMap;
 
+/**
+ * 
+ * @author Tapsi [BcMk]
+ */
 public class Weapon_Sheed {
 
 	/*
@@ -15,7 +19,7 @@ public class Weapon_Sheed {
 	private int		maxRange;
 	private int 	minRange;
 	private int		useAmmo;
-	private int		fireMode;		// 0 direct , 1 indirect , 2 indirect+move
+	private int		fireMode;		// 0 direct , 1 indirect , 2 indirect+move, 3 indirect + counter direct
 	private int		rangePenalty;
 	private HashMap<Unit_Sheed, Integer>	damageTable;
 	
@@ -30,6 +34,9 @@ public class Weapon_Sheed {
 	
 	public Weapon_Sheed(){
 		
+		fireMode = 0;
+		maxRange = 1;
+		minRange = 1;
 		damageTable = new HashMap<Unit_Sheed, Integer>();
 	}
 

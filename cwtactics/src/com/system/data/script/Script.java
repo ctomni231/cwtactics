@@ -11,8 +11,8 @@ public class Script {
 	 * 
 	 */
 
-	private ArrayList<Condition> 	conditions;
-	private ArrayList<SingleAction> actions;
+	private ArrayList<Condition> mainConditions;
+	private ArrayList<CaseCondition> cases;
 	
 	/*
 	 *
@@ -22,8 +22,8 @@ public class Script {
 	 */
 	
 	public Script(){
-		conditions 	= new ArrayList<Condition>();
-		actions		= new ArrayList<SingleAction>();
+		mainConditions 	= new ArrayList<Condition>();
+		cases		= new ArrayList<CaseCondition>();
 	}
 
 	/*
@@ -33,27 +33,24 @@ public class Script {
 	 * 
 	 */
 	
-	public void addCondition( String text){
-		conditions.add( new Condition(text) );
+	/**
+	 * Adds a main condition to the script.
+	 */
+	public void addMainCondition( String condition ){
+		mainConditions.add( new Condition( condition ));
+		mainConditions.trimToSize();
 	}
 	
-	public void addAction( String text ){
-		
-		String[] cond;
-		
-		if( text.contains(" %% ") ) text = text.replace( " %% ", "#");
-
-		// split the AND conditions
-		for( String s : text.split("#") ){
-				
-			cond = s.split(" ");
-			if( cond.length == 2 ) cond = new String[]{ cond[0] , cond[1] , null };
-			actions.add( 
-				new SingleAction( ScriptFactory.getAction( cond[0] ), ScriptFactory.getActionObj( cond[1] ), ScriptFactory.getActionValue( cond[2] ) )
-			);
-		}
+	/**
+	 * Adds a case to the script.
+	 */
+	public void addCase( String condition , String action ){
+		cases.add( new CaseCondition(condition, action));
+		cases.trimToSize();
 	}
 
+	
+	
 	/*
 	 *
 	 * WORK METHODS
@@ -61,11 +58,16 @@ public class Script {
 	 * 
 	 */
 
+	/**
+	 * Checks the condition status.
+	 */
 	public boolean statementTrue(){
+		
+		if( mainConditions.size() == 0 ) return true;
 		
 		// All main conditions connected by OR relationships,
 		// only one must be true to return a true value
-		for( Condition con : conditions ){
+		for( Condition con : mainConditions ){
 			if( con.isTrue() ) return true;
 		}
 		
@@ -73,19 +75,20 @@ public class Script {
 		return false;
 	}
 
+	/**
+	 * Calls an action from script.
+	 */
 	public void callAction(){
 		
-		for( SingleAction action : actions ){
-			action.doAction();
+		for( CaseCondition caseAction : cases ){
+			if( caseAction.checkCondition() ){
+				caseAction.doAction();
+				return;
+			}
 		}
 	}
 	
-	/*
-	 *
-	 * INTERNAL METHODS
-	 * ****************
-	 * 
-	 */
+	
 
 	/*
 	 *
@@ -93,6 +96,19 @@ public class Script {
 	 * **************
 	 * 
 	 */
+	
+	/**
+	 * Prints out script content onto console.
+	 */
+	public void print(){
+		System.out.println("============SCRIPT=========");
+		for( Condition cond : mainConditions ){
+			cond.print();
+		}
+		for( CaseCondition cond : cases ){
+			cond.print();
+		}
+	}
 
 }
 

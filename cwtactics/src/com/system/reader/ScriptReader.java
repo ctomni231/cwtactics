@@ -67,25 +67,26 @@ public class ScriptReader extends Parser{
                 	else if( attributes.getValue( "id" ).equals("BUILDING_CAPTURED")) 	trigger = ID.Trigger.BUILDING_CAPTURED;
                 	else if( attributes.getValue( "id" ).equals("VISION_UNIT")) 		trigger = ID.Trigger.VISION_UNIT;
                 	else if( attributes.getValue( "id" ).equals("VISION_TILE")) 		trigger = ID.Trigger.VISION_TILE;
+                	else if( attributes.getValue( "id" ).equals("MOVE_ONTO"))	 		trigger = ID.Trigger.MOVE_ONTO;
                 	
                 	if( trigger == null ) System.err.println( "Error , wrong trigger time -->"+attributes.getValue("id"));
                 	ScriptFactory.addScript(trigger, new Script() );
                 }
             }
         }
-		else if( super.getLastHeader().equals("condition") ){
+		else if( super.getLastHeader().equals("main") ){
 			if( attributes != null ){
-                if( attributes.getValue( "text" ) != null ){
+                if( attributes.getValue( "condition" ) != null ){
                 	
-                	ScriptFactory.getLast().addCondition( attributes.getValue( "text" ) );
+                	ScriptFactory.getLast().addMainCondition( attributes.getValue( "condition" ) );
                 }
 			}
 		}
-		else if( super.getLastHeader().equals("action") ){
+		else if( super.getLastHeader().equals("case") ){
 			if( attributes != null ){
-                if( attributes.getValue( "text" ) != null ){
-                	
-                	ScriptFactory.getLast().addAction( attributes.getValue( "text" ) );
+                if( attributes.getValue( "action" ) != null ){
+         
+                	ScriptFactory.getLast().addCase( attributes.getValue( "condition" ), attributes.getValue( "action" ) );
                 }
 			}
 		}
