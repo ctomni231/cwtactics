@@ -75,6 +75,22 @@ public class Tile_Sheet extends ObjectSheet{
 	public ArrayList<Unit_Sheed> getBuildList(){
 		return builds;
 	}
+	
+	/**
+	 * Can the tile build something?
+	 */
+	public boolean canBuild(){
+		if(  builds.size() > 0 ) return true;
+		return false;
+	}
+	
+	/**
+	 * Is the tile capture able ?
+	 */
+	public boolean isCapturable(){
+		if( getCapturePoints() != -1 ) return true;
+		return false;
+	}
 
 	/**
 	 * Can a unit type builded by the property

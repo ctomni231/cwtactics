@@ -1,8 +1,9 @@
 package com.client.state;
 
-import com.client.logic.input.Controls;
+import com.client.logic.status.Status;
 import com.client.menu.GUI.MapDraw;
 import com.client.model.object.Game;
+
 import org.newdawn.slick.Graphics;
 
 /**
@@ -13,10 +14,27 @@ import org.newdawn.slick.Graphics;
  * @author Crecen
  */
 public class InGameState extends SlickScreen{
+	
+	/*
+	 * 
+	 * VARIABLES
+	 * *********
+	 * 
+	 */
+	
     private MapDraw newMap;
     private int enterState;
     private int tileBase;
 
+    
+    
+    /*
+     * 
+     * CONSTRUCTORS
+     * ************
+     * 
+     */
+    
     public InGameState(){
         tileBase = 32;
     }
@@ -26,6 +44,15 @@ public class InGameState extends SlickScreen{
         newMap = new MapDraw(Game.getMap(), 10, 10, 0);
     }
 
+    
+    
+   /*
+    *
+    * WORK METHODS
+    * ************
+    *
+    */
+    
     @Override
     public void render(Graphics g) {
         newMap.render(g, scr_sysTime);
@@ -40,15 +67,6 @@ public class InGameState extends SlickScreen{
             enterState = (scr_ID+1);
     }
 
-
-
-    /*
-     *
-     * WORK METHODS
-     * ************
-     *
-     */
-
     @Override
     /**
      * Updates the inGame logic after
@@ -56,11 +74,21 @@ public class InGameState extends SlickScreen{
      */
     public void update(int timePassed) {
 
+    	// checks change state 
     	if( checkupState( enterState ) ) return;
-
+    	
     	updateUI(timePassed);
     }
 
+    
+    
+    /*
+     * 
+     * INTERNAL METHODS
+     * ****************
+     * 
+     */
+    
     /**
      * Checks the state variable and changes the state
      * if necessary.
@@ -74,6 +102,15 @@ public class InGameState extends SlickScreen{
 		}
 		return false;
 	}
+    
+    
+    
+    /*
+     * 
+     * UPDATE LOGIC METHODS
+     * ******************** 
+     *  
+     */
 
     /**
      * React on user inputs and changes logic
@@ -81,18 +118,22 @@ public class InGameState extends SlickScreen{
      */
     private void updateUI( int timePassed ){
 
+    	// update graphic system
         newMap.update();
-    	//if(Controls.isUpClicked() ||
-    	//   Controls.isDownClicked() ||
-    	//   Controls.isLeftClicked() ||
-    	//   Controls.isRightClicked() ||
-    	 //  Controls.isActionClicked() ||
-    	//   Controls.isCancelClicked()){
-        //    newMap.toggleGrid();
-        //    System.out.println("GAME ACTION: ");
-        //}
 
-        if(scr_mouseScroll != 0){
+        // react on input in the correct way 
+    	Status.update(timePassed, newMap);
+
+        // update scroll action
+        updateScroll();
+    }
+
+    /**
+     * Updates scroll system
+     */
+    private void updateScroll(){
+    	
+    	if(scr_mouseScroll != 0){
             if(scr_mouseScroll > 0)
                 tileBase += 2;
             else
@@ -101,7 +142,6 @@ public class InGameState extends SlickScreen{
             newMap.changeScale(tileBase);
         }
     }
-
-
+    
 
 }

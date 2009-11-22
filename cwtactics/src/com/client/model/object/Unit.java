@@ -22,6 +22,7 @@ public class Unit {
 	private int		fuel;
 	private int		ammo;
 	private boolean isHidden;
+	private boolean canAct;
 	private ArrayList<Unit> loads;
 		
 	
@@ -177,6 +178,14 @@ public class Unit {
 		
 		// remove this unit from owners unit list
 		getOwner().removeUnit(this);
+	}
+	
+	public boolean canAct(){
+		return canAct;
+	}
+	
+	public void setActed( boolean value ){
+		canAct = value;
 	}
 	
 	

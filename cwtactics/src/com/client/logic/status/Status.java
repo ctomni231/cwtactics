@@ -1,5 +1,8 @@
 package com.client.logic.status;
 
+import com.client.menu.GUI.MapDraw;
+import com.sun.org.apache.regexp.internal.recompile;
+
 /**
  * 
  * Class Status holds the current status of the GameRound
@@ -12,16 +15,45 @@ package com.client.logic.status;
 public class Status {
 
 	/*
+	 * 
+	 * ENUMERATIONS
+	 * ************
+	 * 
+	 */
+	
+	// the different states
+	public enum Mode{ 
+		
+		// enumerations
+		WAIT			( new Status_Wait() ),
+		SHOW_RANGE		( new Status_ShowRange() ),
+		SHOW_MOVE		( new Status_ShowMove() ),
+		SHOW_TARGETS	( new Status_ShowTargets() ),
+		MENU			(null);
+		
+		// variable
+		private Status_Interface stat;
+		
+		// constructor
+		Mode( Status_Interface stat ){
+			this.stat = stat;
+		}
+		
+		// getter
+		public Status_Interface getObject(){
+			return stat;
+		}
+	}
+	
+	
+	
+	/*
 	 *
 	 * VARIABLES
 	 * *********
 	 * 
 	 */
 	
-	// the different states
-	public enum Mode{ WAIT,SHOW_RANGE,SHOW_MOVING_RANGE,MENU };
-	
-	// the current sate
 	private static Mode status;
 
 	/*
@@ -48,11 +80,16 @@ public class Status {
 	
 	/**
 	 * Sets a new status for update logic
-	 * 
-	 * @param aStatus
 	 */
-	public static void setStatus( Mode aStatus ){
-		status = aStatus;
+	public static void setStatus( Mode status ){
+		
+		// check status
+		if( status == null || status.getObject() == null ){
+			System.err.println("STATUS IS NOT CORRECT!");
+			return;
+		}
+		
+		Status.status = status;
 	}
 
 	/*
@@ -62,19 +99,14 @@ public class Status {
 	 * 
 	 */
 
-	/*
-	 *
-	 * INTERNAL METHODS
-	 * ****************
-	 * 
+	/**
+	 * Update logic for a given status.
 	 */
-
-	/*
-	 *
-	 * OUTPUT METHODS
-	 * **************
-	 * 
-	 */
+	public static void update(int timePassed , MapDraw map ){
+		
+		// do update method
+		status.getObject().update(timePassed , map);
+	}
 
 }
 
