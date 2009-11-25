@@ -3,6 +3,7 @@ package com.client;
 import com.client.logic.command.MessageServer;
 import com.client.logic.command.commands.ingame.GenerateMove;
 import com.client.logic.command.commands.ingame.TestCommand;
+import com.client.logic.status.Status;
 import com.client.model.Move;
 import com.client.model.Weather;
 import com.client.model.object.Game;
@@ -49,6 +50,7 @@ public class MainGame {
     	new ModReader("data/MoveTables.xml");
     	new ModReader("data/Tiles.xml");
     	new ModReader("data/Units.xml");
+    	new ModReader("data/Buttons.xml");
     	new ScriptReader("data/Scripts.xml");
     	
     	MessageServer.setMode( ID.MessageMode.LOCAL );
@@ -63,18 +65,26 @@ public class MainGame {
     	
     	Weather.setWeather( Data.getWeatherSheet( 0 ));
     	
-    	Map map = new Map(20, 14);
+    	Map map = new Map(30, 20);
     	Team t = new Team();
     	Player p = new Player( "Alex", t );
     	Game.addPlayer(p);
     	t.addMember(p);
-    	for( int i = 0; i < 20 ; i++ ){    		
-    		for( int j = 0 ; j < 14 ; j++ ){
-    			if( i == 5 && j == 5 ){
+    	for( int i = 0; i < map.getSizeX() ; i++ ){    		
+    		for( int j = 0 ; j < map.getSizeY() ; j++ ){
+    			if( (i == 5 && j == 5) ||
+    				 (i == 5 && j == 4) ||
+    				  (i == 9 && j == 6) ||
+    				   (i == 7 && j == 7) ||
+    					(i == 1 && j == 8)    ){
     				map.setTile( new Tile( Data.getTileSheet( Data.getIntegerID("FOREST")), i, j, 0, null), i, j);
-    				Unit unit = new Unit( Data.getUnitSheet( Data.getIntegerID("MECH")) , p );
-    				map.getTile(i,j).setUnit( unit );
-    				p.addUnit(unit);
+    				
+    				if( (i == 5 && j == 5) ){
+    					Unit unit = new Unit( Data.getUnitSheet( Data.getIntegerID("MECH")) , p );
+    					map.getTile(i,j).setUnit( unit );
+    					p.addUnit(unit);
+    				}
+    				
     			}
     			else map.setTile( new Tile( Data.getTileSheet( Data.getIntegerID("PLAIN")), i, j, 0, null), i, j);
     		}
@@ -84,6 +94,7 @@ public class MainGame {
     	MessageServer.toCommandList( new GenerateMove() , false );
     	MessageServer.toCommandList( new TestCommand(p) , false );
         Game.setMap(map);
+        Status.setStatus( Status.Mode.WAIT );
         
         //ScriptFactory.printDatabase();
         

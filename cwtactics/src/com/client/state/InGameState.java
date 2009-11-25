@@ -43,6 +43,7 @@ public class InGameState extends SlickScreen{
     @Override
     public void init() {
         newMap = new MapDraw(Game.getMap(), 10, 10, 0);
+        newMap.changeScale(tileBase);
     }
 
     

@@ -2,6 +2,8 @@ package com.client.logic.status;
 
 import com.client.logic.input.Controls;
 import com.client.menu.GUI.MapDraw;
+import com.client.menu.logic.Menu;
+import com.client.menu.logic.buttons.Button;
 import com.client.model.Fog;
 import com.client.model.Move;
 import com.client.model.Range;
@@ -18,10 +20,12 @@ public class Status_Wait implements Status_Interface {
     	int x = map.getCursorX();
     	int y = map.getCursorY();
     	Tile tile = Game.getMap().getTile(x, y);
-    	Unit unit = tile.getUnit();
     	
     	// check variables
     	if( tile == null ) return;
+    	
+    	Unit unit = tile.getUnit();
+    	
     	
     	// ACTION BUTTON
     	//
@@ -36,7 +40,7 @@ public class Status_Wait implements Status_Interface {
     				Move.move();
     				
     				// set move mode
-    				Status.setStatus( Status.Mode.SHOW_MOVE );
+    				//Status.setStatus( Status.Mode.SHOW_MOVE );
     			}
     		}
     		// FACTORY
@@ -45,15 +49,19 @@ public class Status_Wait implements Status_Interface {
     			//TODO make build menu
     			
     			// set menu status
-    			Status.setStatus( Status.Mode.MENU );
+    			//Status.setStatus( Status.Mode.MENU );
     		}
     		// MAP MENU
     		else{	
     			
-    			//TODO make map menu
-    			
+    			// make map menu
+				Menu.createMapMenu();
+
+				// test output
+				Menu.print();
+				
     			// set menu status
-    			Status.setStatus( Status.Mode.MENU );
+    			//Status.setStatus( Status.Mode.MENU );
     		}
     	}
     	// CANCEL BUTTON
@@ -69,7 +77,7 @@ public class Status_Wait implements Status_Interface {
     			Range.getCompleteAttackRange(tile, unit);
     			
     			// set show range status
-    			Status.setStatus( Status.Mode.SHOW_RANGE );
+    			//Status.setStatus( Status.Mode.SHOW_RANGE );
     		}
     	}
 	}

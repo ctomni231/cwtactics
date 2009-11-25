@@ -142,8 +142,10 @@ public class MapDraw extends MovingPix{
             cursorx -= 1;
             scroll = false;
         }
-        if(Controls.isActionClicked())
-            toggleGrid();
+        
+        // prevent that status update don't recognizes inputs
+        //if(Controls.isActionClicked())
+        //    toggleGrid();
 
         //Makes the mouse move the cursor
         if(!mouseLock){

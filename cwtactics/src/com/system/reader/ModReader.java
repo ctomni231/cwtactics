@@ -81,7 +81,7 @@ public class ModReader extends Parser {
 		else if( super.isAheader("rank") )		parseRank(attributes);
 		else if( super.isAheader("ressource") ) parseResource(attributes);
 		else if( super.isAheader("movetype") )	parseMoveType(attributes);
-		else if( super.isAheader("Entry") )		parseEntry(attributes);
+		else if( super.isAheader("button") )	parseEntry(attributes);
 	}
 	
 	/*
@@ -96,7 +96,7 @@ public class ModReader extends Parser {
 	 */
 	private void parseEntry( Attributes attributes ){
 		
-		if( super.getLastHeader().equals("Entry") ){
+		if( super.getLastHeader().equals("button") ){
 			if( !Data.existIntegerID( attributes.getValue( "ID" ) ) ) Data.addEntrySheet( attributes.getValue( "ID" ) , new Sheet() );
 			headerID = attributes.getValue( "ID" );
 			return;

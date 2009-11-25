@@ -42,6 +42,7 @@ public class Unit {
 		morale		= 100;
 		experience	= 0;
 		rank		= 0;
+		canAct		= true;
 		
 		loads		= new ArrayList<Unit>();
 		
