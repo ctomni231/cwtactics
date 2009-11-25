@@ -105,7 +105,7 @@ public class Status {
 	public static void update(int timePassed , MapDraw map ){
 		
 		// do update method
-		status.getObject().update(timePassed , map);
+		//status.getObject().update(timePassed , map);
 	}
 
 }

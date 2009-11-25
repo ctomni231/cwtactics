@@ -15,8 +15,8 @@ public class Status_Wait implements Status_Interface {
 	public void update(int timePassed , MapDraw map ) {
 		
 		// variables
-    	int x = map.cursorx;
-    	int y = map.cursory;
+    	int x = map.getCursorX();
+    	int y = map.getCursorY();
     	Tile tile = Game.getMap().getTile(x, y);
     	Unit unit = tile.getUnit();
     	

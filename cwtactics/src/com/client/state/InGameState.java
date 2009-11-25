@@ -1,5 +1,6 @@
 package com.client.state;
 
+import com.client.logic.input.Controls;
 import com.client.logic.status.Status;
 import com.client.menu.GUI.MapDraw;
 import com.client.model.object.Game;
@@ -118,8 +119,18 @@ public class InGameState extends SlickScreen{
      */
     private void updateUI( int timePassed ){
 
+        if(Controls.isUpDown() || Controls.isDownDown() ||
+                Controls.isLeftDown() || Controls.isRightDown())
+            scr_mouseLock();
+
+        if(scr_mouseLock)
+            scr_mouseRelease();
+
     	// update graphic system
-        newMap.update();
+        scr_scroll = newMap.update(scr_mouseX, scr_mouseY, scr_mouseScroll,
+                scr_scroll, scr_mouseLock);
+        //Helps with scrolling
+        scr_mouseControl();
 
         // react on input in the correct way 
     	Status.update(timePassed, newMap);
