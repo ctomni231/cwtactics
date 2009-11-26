@@ -72,6 +72,7 @@ public class Data {
 	
 	public static void addUnitSheet( String ID , Unit_Sheed sh ){
 		unitTable.add(sh);
+		sh.setName(ID);
 		idTable.put(ID, unitTable.size() - 1 );
 	}
 	
@@ -82,6 +83,7 @@ public class Data {
 	
 	public static void addTileSheet( String ID , Tile_Sheet sh ){
 		tileTable.add(sh);
+		sh.setName(ID);
 		idTable.put(ID, tileTable.size() - 1 );
 	}
 	
@@ -92,6 +94,7 @@ public class Data {
 	
 	public static void addWeatherSheet( String ID , Weather_Sheet sh ){
 		weatherTable.add(sh);
+		sh.setName(ID);
 		idTable.put(ID, weatherTable.size() - 1 );
 	}
 	
@@ -102,6 +105,7 @@ public class Data {
 	
 	public static void addRankSheet( String ID , Rank_Sheet sh ){
 		rankTable.add(sh);
+		sh.setName(ID);
 		idTable.put(ID, rankTable.size() - 1 );
 	}
 	
@@ -112,6 +116,7 @@ public class Data {
 
 	public static void addRessourceSheet( String ID , Sheet sh ){
 		ressourceTable.add(sh);
+		sh.setName(ID);
 		idTable.put(ID, ressourceTable.size() - 1 );
 	}
 	
@@ -122,6 +127,7 @@ public class Data {
 	
 	public static void addMoveSheet( String ID , Move_Sheet sh ){
 		moveTable.add(sh);
+		sh.setName(ID);
 		idTable.put(ID, moveTable.size() - 1 );
 	}
 	
@@ -132,6 +138,7 @@ public class Data {
 
 	public static void addEntrySheet( String ID , Sheet sh ){
 		entryTable.add(sh);
+		sh.setName(ID);
 		idTable.put(ID, entryTable.size() - 1 );
 	}
 	

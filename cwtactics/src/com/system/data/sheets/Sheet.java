@@ -10,6 +10,7 @@ public class Sheet {
 	 */
 	
 	private String 	lang_name;
+	private String id;
 
 	/*
 	 *
@@ -30,6 +31,14 @@ public class Sheet {
 	 */
 	public void setName(String langName) {
 		lang_name = langName;
+	}
+	
+	public String getID() {
+		return id;
+	}
+
+	public void setID(String id) {
+		this.id = id;
 	}
 	
 }
