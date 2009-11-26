@@ -2,6 +2,7 @@ package com.client.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 import com.client.model.object.Game;
@@ -24,6 +25,7 @@ public class Move {
 	private static ArrayList<Tile> moveWay 	= new ArrayList<Tile>();
 	private static Tile	start;
 	private static Unit unit;
+	private static boolean tapped;
 	
 	// trigger variables
 	private static int moveCost;
@@ -49,6 +51,7 @@ public class Move {
 		moveCost = 0;
 		additionalTiles = 0;
 		additionalPoints = 0;
+		tapped = false;
 	}
 	
 	/**
@@ -97,14 +100,35 @@ public class Move {
 	 * Changes additional tiles value.
 	 */
 	public static void changeAdditionalTiles( int value ){
-		additionalTiles += value;
+		if( value > 0 ) additionalTiles += value;
 	}
 	
 	/**
 	 * Sets the additional tiles value. 
 	 */
 	public static void setAdditional( int value ){
-		additionalTiles = value;
+		if( value > 0 ) additionalTiles = value;
+	}
+	
+	public static ArrayList<Tile> getWay(){
+		return moveWay;
+	}
+	
+	public static Unit getUnit(){
+		return unit;
+	}
+	
+	public static Tile getStartTile(){
+		return start;
+	}
+	
+	public static Tile getTargetTile(){
+		if( moveWay.size() <= 1 ) System.err.println("moveWay empty!");
+		return moveWay.get( moveWay.size() -1 );
+	}
+	
+	public static boolean isTapped(){
+		return tapped;
 	}
 
 	
@@ -215,8 +239,8 @@ public class Move {
 			}
 		}
 		
-		// add start tile to way
-		moveWay.add(start);
+		// reset moveWay and add start tile
+		resetWay();
 	}
 
 	/**
@@ -244,6 +268,48 @@ public class Move {
             }
             else findAlternativeWay(tile);
         }
+    }
+    
+    public static void resetWay(){
+    	
+    	// clear complete way
+    	clearWay();
+
+    	// add start tile to way
+		moveWay.add(start);
+    }
+    
+    /**
+     * Check a tapping event.
+     * 
+     * @return if tapped true, else false
+     */
+    public static void completeWay(){
+
+    	int index = -1;
+    	
+    	// check the complete way
+    	for( Tile tile : moveWay ){
+    		
+    		Unit unit = tile.getUnit();
+    		
+    		// remember position, if you are tapped, you can move onto this tile
+    		if( unit == null ) index = moveWay.indexOf(tile) +1;
+    		
+    		// if the way contains an enemy unit, drop this and all 
+    		// following tiles
+    		if( unit != null && unit.getOwner() != Move.unit.getOwner() ){
+    			
+    			List<Tile> list = moveWay.subList( index , moveWay.size() );
+    	    	
+    			// after clearing list, all tiles from list are 
+    			// dropped from moveWay too
+    			list.clear();
+    			
+    			// you're tapped by enemy
+    			tapped = true;
+    		}
+    	}
     }
 
 	 

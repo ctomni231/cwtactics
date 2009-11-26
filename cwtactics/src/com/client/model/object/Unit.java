@@ -124,6 +124,7 @@ public class Unit {
 
 	public void decreaseFuel( int fuel ){
 		if( this.fuel - fuel >= 0 ) this.fuel -= fuel;
+		else this.fuel = 0;
 	}
 	
 	public int getAmmo() {

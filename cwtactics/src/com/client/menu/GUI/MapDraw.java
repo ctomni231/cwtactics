@@ -214,6 +214,18 @@ public class MapDraw extends MovingPix{
     public int getCursorY(){
         return cursory;
     }
+    
+    public void updateMapItem( int x , int y ){
+    	
+    	MapItem item = drawMap[x][y];
+    	item.unit = null;
+        item.terrain = itemList.getImgPart( map.getField()[x][y].sheet().getName().toUpperCase(), 0, 0);
+        itemList.makeNewImage(item.terrain);
+        if( map.getField()[x][y].getUnit() != null){
+            item.unit = itemList.getImgPart( map.getField()[x][y].getUnit().sheet().getName().toUpperCase(), 0, 0);
+            itemList.makeNewImage(item.unit);
+        }
+    }
 
     private MapItem createNewImage(MapItem item, int x, int y){
         if(item.terrain == null){

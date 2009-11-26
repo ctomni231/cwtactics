@@ -32,21 +32,27 @@ public class Status_Wait implements Status_Interface {
     	if( Controls.isActionClicked() ){
     		
     		// UNIT MOVE
-    		if( unit != null && Fog.inFog(tile) ){
+			
+    		if( unit != null && !Fog.inFog(tile) ){
     			if( unit.canAct() && unit.getOwner() == Turn.getPlayer() ){
     				
     				// make move tiles
     				Move.initialize(tile, unit);
     				Move.move();
     				
+    				Move.printMoveTiles();
+    				
     				// set move mode
-    				//Status.setStatus( Status.Mode.SHOW_MOVE );
+    				Status.setStatus( Status.Mode.SHOW_MOVE );
     			}
     		}
     		// FACTORY
     		else if( tile.sheet().canBuild() && tile.getOwner() == Turn.getPlayer() ){
     			
     			//TODO make build menu
+    			
+    			// test output
+    			Menu.print();
     			
     			// set menu status
     			//Status.setStatus( Status.Mode.MENU );
@@ -56,12 +62,9 @@ public class Status_Wait implements Status_Interface {
     			
     			// make map menu
 				Menu.createMapMenu();
-
-				// test output
-				Menu.print();
 				
     			// set menu status
-    			//Status.setStatus( Status.Mode.MENU );
+    			Status.setStatus( Status.Mode.MENU );
     		}
     	}
     	// CANCEL BUTTON
@@ -77,9 +80,10 @@ public class Status_Wait implements Status_Interface {
     			Range.getCompleteAttackRange(tile, unit);
     			
     			// set show range status
-    			//Status.setStatus( Status.Mode.SHOW_RANGE );
+    			Status.setStatus( Status.Mode.SHOW_RANGE );
     		}
     	}
+    	
 	}
 	
 }

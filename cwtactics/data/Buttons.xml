@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buttons>
+
+	<button ID="ENDTURN" >
+		<name  GER="Zug beenden"
+               ENG="End Turn" />
+	</button>
+	
+	<button ID="WAIT" >
+		<name  GER="Warten"
+               ENG="Wait" />
+	</button>
+	
+	<button ID="CAPTURE" >
+		<name  GER="Erobern"
+               ENG="Conquer" />
+	</button>
+
+</buttons>

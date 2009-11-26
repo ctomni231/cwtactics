@@ -60,6 +60,7 @@ public class ImgDataParser {
             temp = null;
             do{
                 temp = textScan.findInLine(".?[^\\x7B\\x7D]*.?");
+                if( temp == null ) temp = "";
                 if(!temp.matches(""))     gameData.add(temp);
             }while(!temp.matches(""));
             textScan.close();

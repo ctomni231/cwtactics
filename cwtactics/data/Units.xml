@@ -31,7 +31,7 @@
     
     <unit ID="MECH">
         <name GER="Bazooka"
-              ENG="Bazooka" />
+              ENG="MECH" />
         <cost ressource_0="2500" />
         <movement range="2" type="MV_BAZOOKA" vision="2" capture="15" weight="1" />
         <fuel amount="70" />

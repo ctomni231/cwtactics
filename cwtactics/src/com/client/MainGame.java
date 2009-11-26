@@ -1,10 +1,8 @@
 package com.client;
 
 import com.client.logic.command.MessageServer;
-import com.client.logic.command.commands.ingame.GenerateMove;
-import com.client.logic.command.commands.ingame.TestCommand;
+import com.client.logic.command.commands.ingame.*;
 import com.client.logic.status.Status;
-import com.client.model.Move;
 import com.client.model.Weather;
 import com.client.model.object.Game;
 import com.client.model.object.Map;
@@ -18,7 +16,6 @@ import com.client.state.MainMenuState;
 import com.client.state.SlickGame;
 import com.system.ID;
 import com.system.data.Data;
-import com.system.data.script.ScriptFactory;
 import com.system.reader.ModReader;
 import com.system.reader.ScriptReader;
 
@@ -77,8 +74,13 @@ public class MainGame {
     				  (i == 9 && j == 6) ||
     				   (i == 7 && j == 7) ||
     					(i == 1 && j == 8)    ){
-    				map.setTile( new Tile( Data.getTileSheet( Data.getIntegerID("FOREST")), i, j, 0, null), i, j);
     				
+    				
+    				if( (i == 9 && j == 6) ){
+    					map.setTile( new Tile( Data.getTileSheet( Data.getIntegerID("FACTORY")), i, j, 0, null), i, j);
+    				}else{
+    					map.setTile( new Tile( Data.getTileSheet( Data.getIntegerID("FOREST")), i, j, 0, null), i, j);
+    				}
     				if( (i == 5 && j == 5) ){
     					Unit unit = new Unit( Data.getUnitSheet( Data.getIntegerID("MECH")) , p );
     					map.getTile(i,j).setUnit( unit );
@@ -90,8 +92,6 @@ public class MainGame {
     		}
     	}
     	
-    	Move.initialize( map.getTile(5, 5), map.getTile(5, 5).getUnit());
-    	MessageServer.toCommandList( new GenerateMove() , false );
     	MessageServer.toCommandList( new TestCommand(p) , false );
         Game.setMap(map);
         Status.setStatus( Status.Mode.WAIT );

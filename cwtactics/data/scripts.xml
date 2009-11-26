@@ -65,12 +65,6 @@
 		<case condition="FIELD_TYPE IS RADAR"    action="INCREASE_DEFENSE UNIT 30" />
 		<case condition="FIELD_TYPE IS SILO"     action="INCREASE_DEFENSE UNIT 30" />
 	</script>
-
-	<!--  TO TEST CHANGE MOVECOST SYSTEM -->
-	<script>
-		<trigger id="MOVE_ONTO" />
-		<case condition="FIELD_TYPE IS PLAIN" action="INCREASE_MOVECOST FIELD 1" />
-	</script>
 	
 	<script>
 		<trigger id="VISION_UNIT" />
