@@ -5,6 +5,7 @@ import com.client.logic.status.Status;
 import com.client.menu.GUI.MapDraw;
 import com.client.model.object.Game;
 
+import com.system.reader.MenuReader;
 import org.newdawn.slick.Graphics;
 
 /**
@@ -26,6 +27,7 @@ public class InGameState extends SlickScreen{
     private MapDraw newMap;
     private int enterState;
     private int tileBase;
+    private MenuReader reader;
 
     
     

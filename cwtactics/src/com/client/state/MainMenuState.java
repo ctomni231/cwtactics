@@ -8,6 +8,7 @@ import com.client.state.mini.ExitMiniScr;
 import com.client.state.mini.MenuMiniScr;
 import com.client.state.mini.TitleMiniScr;
 import com.client.tools.TextImgLibrary;
+import com.system.reader.MenuReader;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
@@ -17,12 +18,9 @@ import org.newdawn.slick.Graphics;
  */
 public class MainMenuState extends SlickScreen {
 
-    private final int BG_IMG = 15;
-    private final String ALPHA = "resources/image/menu/smallAlpha.png";
-    private final int COL_START = 0;
-
     private boolean scrSwitch;
     private int column;
+    private MenuReader reader;
 
     private TextImgLibrary txtLib;
 
@@ -33,6 +31,7 @@ public class MainMenuState extends SlickScreen {
     private MenuMiniScr menuScr;
 
     public MainMenuState(){
+        reader = new MenuReader("data/mainmenu.xml");
         initText();
     }
     
@@ -40,19 +39,21 @@ public class MainMenuState extends SlickScreen {
     public void init(){
         initBackground();
 
-        titleScr = new TitleMiniScr(txtLib);
-        exitScr = new ExitMiniScr(txtLib, scr_getContainer().getWidth(),
-                scr_getContainer().getHeight());
-        menuScr = new MenuMiniScr(txtLib, COL_START);
+        titleScr = new TitleMiniScr(txtLib, reader.getTitleData());
+        exitScr = new ExitMiniScr(txtLib, reader.getExitData(),
+                scr_getContainer().getWidth(), scr_getContainer().getHeight());
+        menuScr = new MenuMiniScr(txtLib, reader.getMenuData(),
+                reader.getArrow(), reader.getMenuJustify());
     }
 
     @Override
     public void update(int timePassed){
-        if(Controls.isUpDown() ||
-           Controls.isDownDown() ||
-           Controls.isLeftDown() ||
-           Controls.isRightDown())
+        if(Controls.isUpDown() || Controls.isDownDown() ||
+           Controls.isLeftDown() || Controls.isRightDown())
                 scr_mouseLock();
+
+        if(scr_mouseLock)
+            scr_mouseRelease();
 
         switch(column){
             case 0:
@@ -70,9 +71,6 @@ public class MainMenuState extends SlickScreen {
     @Override
     public void render(Graphics g){
         bgPicture.render(g);
-
-        if(scr_mouseLock)
-            scr_mouseRelease();
 
         switch(column){
             case 0:
@@ -150,17 +148,17 @@ public class MainMenuState extends SlickScreen {
         column = 0;
         scrSwitch = true;
         
-        String[] allImages = new String[BG_IMG];
-        for(int i = 0; i < BG_IMG; i++)
-            allImages[i] = "resources/image/menu/background"+(i+1)+".png";
+        String[] allImages = new String[reader.noOfBGItems()];
+        for(int i = 0; i < reader.noOfBGItems(); i++)
+            allImages[i] = reader.getBGPrefix()+(i+1)+reader.getBGSuffix();
         bgPicture = new BGPicture(allImages, scr_getContainer().getWidth(),
                 scr_getContainer().getHeight());
-        bgPicture.setFileImage("bg");
+        bgPicture.setFileImage(reader.getUserBGRef());
 
         menuLogo = new LogoDraw();
-        menuLogo.addPictureLogo("resources/image/menu/cwTactics.png",
+        menuLogo.addPictureLogo(reader.getTitleLogo(),
                 145, -100, 350, 150, 1);
-        menuLogo.addPictureLogo("resources/image/menu/cwLogo.gif",
+        menuLogo.addPictureLogo(reader.getMiniLogo(),
                 0, -100, 75, 75, 1);
         menuLogo.addScrollFontLogo(" - ", 0, 480, 640, 20, 1, 0.1);
         menuLogo.setShadowColor(0, Color.black);
@@ -171,7 +169,7 @@ public class MainMenuState extends SlickScreen {
 
     private void initText(){
         txtLib = new TextImgLibrary();
-        txtLib.addImage(ALPHA);
+        txtLib.addImage(reader.getAlpha());
         txtLib.addAllCapitalLetters(txtLib.getImage(0), "", 6, 5, 0);
         txtLib.addLetter('-', txtLib.getImage(0), "", 6, 5, 29);
         txtLib.addLetter('\'', txtLib.getImage(0), "", 6, 5, 28);

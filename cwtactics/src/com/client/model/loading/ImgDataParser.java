@@ -258,6 +258,9 @@ public class ImgDataParser {
             return temp.UNIT;
         else if(part.matches("CUR.*"))
             return temp.CURSOR;
+        else if(part.matches("ATT.*")){
+            return temp.ATTRIBUTE;
+        }
         return 0;
     }
     

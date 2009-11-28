@@ -20,7 +20,7 @@ public class ImgData {
     public final byte COMMANDER = 3;
     public final byte ARROW = 4;
     public final byte CURSOR = 5;
-    public final byte QUICK = 6;//For explosions and other short effects
+    public final byte ATTRIBUTE = 6;//For explosions and other short effects
 
     public byte code;//What type of image is it
     public byte grid;//How many sides a single tile has for this image
@@ -29,6 +29,7 @@ public class ImgData {
     public boolean map;//Whether it is a map image, or a battle image
     //In pixels, where an image is located and the size
     public ArrayList<ImgFile> imgFileRef;
+    //Holds multiple references for animation purposes
     public ArrayList<Byte> animRef;
     public String codeType;//What group this image belongs to (CW, MW, etc.)
     public String name;//The name of this image (a.k.a BRIDGE)

@@ -28,7 +28,7 @@ import org.newdawn.slick.state.StateBasedGame;
  * @author Crecen
  */
 public class MainGame {
-    public static String GAME_TITLE = "Custom Wars Tactics Pre-Alpha 1.0";
+    public static String GAME_TITLE = "Custom Wars Tactics Pre-Alpha 1.1";
     
     //The target frames per second for this game
     public static int GAME_TARGET_FPS = 0;

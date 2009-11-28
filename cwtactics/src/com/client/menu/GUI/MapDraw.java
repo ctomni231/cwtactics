@@ -142,10 +142,6 @@ public class MapDraw extends MovingPix{
             cursorx -= 1;
             scroll = false;
         }
-        
-        // prevent that status update don't recognizes inputs
-        //if(Controls.isActionClicked())
-        //    toggleGrid();
 
         //Makes the mouse move the cursor
         if(!mouseLock){
@@ -215,29 +211,36 @@ public class MapDraw extends MovingPix{
         return cursory;
     }
     
-    public void updateMapItem( int x , int y ){
-    	
+    public void updateMapItem(int x, int y){    	
     	MapItem item = drawMap[x][y];
     	item.unit = null;
-        item.terrain = itemList.getImgPart( map.getField()[x][y].sheet().getName().toUpperCase(), 0, 0);
+        item.terrain = itemList.getImgPart( map.getField()[x][y].sheet().
+                getID().toUpperCase(), 0, 0);
         itemList.makeNewImage(item.terrain);
         if( map.getField()[x][y].getUnit() != null){
-            item.unit = itemList.getImgPart( map.getField()[x][y].getUnit().sheet().getName().toUpperCase(), 0, 0);
+            item.unit = itemList.getImgPart( map.getField()[x][y].
+                    getUnit().sheet().getID().toUpperCase(), 0, 0);
             itemList.makeNewImage(item.unit);
         }
     }
 
-    private MapItem createNewImage(MapItem item, int x, int y){
+    private MapItem createNewImage(MapItem item, int x, int y){      
         if(item.terrain == null){
+            int color = 0;
+            if(map.getField()[x][y].getOwner() != null)
+                color = map.getField()[x][y].getOwner().getID()+1;
             item.terrain = itemList.getImgPart(
                map.getField()[x][y].sheet().getName().toUpperCase(),
-               0, 0);
+               color, 0);
             itemList.makeNewImage(item.terrain);
-        }
+        }        
         if(item.unit == null && map.getField()[x][y].getUnit() != null){
+            int color = 0;
+            if(map.getField()[x][y].getUnit().getOwner() != null)
+                color = map.getField()[x][y].getUnit().getOwner().getID()+1;
             item.unit = itemList.getImgPart(
                map.getField()[x][y].getUnit().sheet().getName().toUpperCase(),
-               0, 0);
+               color, 0);
             itemList.makeNewImage(item.unit);
         }
         item.change = false;

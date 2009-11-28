@@ -27,9 +27,10 @@ public class ExitMiniScr {
 
     private ExitDraw exitScr;
 
-    public ExitMiniScr(TextImgLibrary txtLib, int width, int height){
+    public ExitMiniScr(TextImgLibrary txtLib, String[] data,
+            int width, int height){
         exitScr = new ExitDraw(0, 0, 0);
-        exitScr.init(new String[]{"LEAVING...", "YES", "NO"}, txtLib);
+        exitScr.init(data, txtLib);
         exitScr.exitMenu.setFinalPosition(
                 (int)((width-exitScr.getX())/2),
                 (int)((height-exitScr.getY())/2));

@@ -14,8 +14,7 @@ public class Status_Menu implements Status_Interface {
 		// LOGIC CRECEN , OR THE CALL METHOD FOR YOU LOGIC CLASS :)
 		// like this example
 		// int action = MyMenuToolClass.updateInput();
-		// action is the returned input, 1 if action is clicked and so on..
-		
+		// action is the returned input, 1 if action is clicked and so on...
 		int action = 0; // 0 = nothing, 1 = ACTION , 2 = CANCEL;
 		switch( action ){
 		

@@ -34,17 +34,18 @@ public class MenuMiniScr {
     private int menucolumn;
     private int counter;
     private String[] info;
+    private String arrow;
 
-    public MenuMiniScr(TextImgLibrary txtLib, int menu_clmn){
+    public MenuMiniScr(TextImgLibrary txtLib, String[] data,
+            String arrowRef, int menu_clmn){
         trackSelect = -1;
         start = menu_clmn;
         menucolumn = -2;
         scr_scrollIndex = 0;
         counter = 0;
         menuScr = new MenuDraw(MAX_ITEMS, 20, 0, 150, 0);
-        info = new String[]{
-            "VERSUS:3:Play a single player game against your friends.",
-            "EXIT:2:Leave, we see how it is. ;)"};
+        info = data;
+        arrow = arrowRef;
         init(txtLib);
     }
 
@@ -59,8 +60,7 @@ public class MenuMiniScr {
             else
                 tempText[i] = "";
         }
-        menuScr.init(temp, tempText, "resources/image/menu/uparrow.png",
-                txtLib);
+        menuScr.init(temp, tempText, arrow, txtLib);
     }
 
     public void update(){

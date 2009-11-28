@@ -21,18 +21,22 @@ public class TitleMiniScr {
     public int column;
 
     private TitleDraw titleScr;
+    private String menuData;
 
-    public TitleMiniScr(TextImgLibrary txtLib){
+    public TitleMiniScr(TextImgLibrary txtLib, String[] data){
+        menuData = "";
         titleScr = new TitleDraw();
-        titleScr.setWords("PRESS START", txtLib);
+        if(data.length > 0)
+            titleScr.setWords(data[0], txtLib);
         titleScr.setImageSize(200, 20);
+        if(data.length > 1)
+            menuData = ""+data[1]+
+            "                                                               ";
     }
 
     public void update(){
         if(scrSwitch){
-            menuLogo.setText(2, " - ADVANCE WARS IS COPYRIGHT OF " +
-                    "NINTENDO/INTELLIGENT SYSTEMS - " +
-        "                                                               ");
+            menuLogo.setText(2, menuData);
             menuLogo.setFinalPosition(0, 145, 30);
             //menuLogo.setFinalPosition(1, 0, 0);
             menuLogo.setFinalPosition(2, 0, 460);
