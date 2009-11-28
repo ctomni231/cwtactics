@@ -41,7 +41,7 @@ public class MainMenuState extends SlickScreen {
 
         titleScr = new TitleMiniScr(txtLib, reader.getTitleData());
         exitScr = new ExitMiniScr(txtLib, reader.getExitData(),
-                scr_getContainer().getWidth(), scr_getContainer().getHeight());
+             scr_getContainer().getWidth(), scr_getContainer().getHeight(), 0);
         menuScr = new MenuMiniScr(txtLib, reader.getMenuData(),
                 reader.getArrow(), reader.getMenuJustify());
     }
@@ -63,6 +63,8 @@ public class MainMenuState extends SlickScreen {
             case 2:
                 exitScr();
                 break;
+            case 3:
+                versusScr();
             default:
                 menuScr();
         }
@@ -86,7 +88,7 @@ public class MainMenuState extends SlickScreen {
         menuLogo.render(g);
     }
 
-    public void startScr(){
+    private void startScr(){
         titleScr.column = column;
         titleScr.scrSwitch = scrSwitch;
         titleScr.menuLogo = menuLogo;
@@ -96,11 +98,11 @@ public class MainMenuState extends SlickScreen {
         column = titleScr.column;
         scrSwitch = titleScr.scrSwitch;
     }
-    public void startScr(Graphics g){
+    private void startScr(Graphics g){
         titleScr.render(g);
     }
 
-    public void exitScr(){
+    private void exitScr(){
         exitScr.column = column;
         exitScr.scrSwitch = scrSwitch;
         exitScr.menuLogo = menuLogo;
@@ -117,11 +119,11 @@ public class MainMenuState extends SlickScreen {
         scr_exit = exitScr.scr_exit;
         if(exitScr.setLock)    scr_mouseLock();
     }
-    public void exitScr(Graphics g){
+    private void exitScr(Graphics g){
         exitScr.render(g);
     }
 
-    public void menuScr(){
+    private void menuScr(){
         menuScr.column = column;
         menuScr.scrSwitch = scrSwitch;
         menuScr.menuLogo = menuLogo;
@@ -140,9 +142,15 @@ public class MainMenuState extends SlickScreen {
         if(menuScr.setLock)    scr_mouseLock();
         scr_mouseControl(); //Makes sure you can scroll down and up
     }
-    public void menuScr(Graphics g){
+    private void menuScr(Graphics g){
         menuScr.render(g);
-    }  
+    }
+
+    private void versusScr(){
+        scr_switch.add(scr_ID+1);
+        column = 1;
+        scrSwitch = true;
+    }
 
     private void initBackground(){
         column = 0;

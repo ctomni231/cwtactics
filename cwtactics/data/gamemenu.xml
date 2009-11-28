@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu>
+	<screen ID="GAME MENU">
+		<alpha file="resources/image/menu/smallAlpha.png" />
+		<arrow file="resources/image/menu/uparrow.png" />
+
+		<exit>
+			<list GER="?"
+			ENG="RETURN TO MAIN..." />
+			<list GER="JA"
+			ENG="YES" />
+			<list GER="NEIN"
+			ENG="NO" />
+		</exit>
+		<end />
+	</screen>
+</menu>

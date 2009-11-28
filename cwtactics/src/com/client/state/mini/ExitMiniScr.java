@@ -26,23 +26,27 @@ public class ExitMiniScr {
     public boolean setLock;
 
     private ExitDraw exitScr;
+    private int type;
 
     public ExitMiniScr(TextImgLibrary txtLib, String[] data,
-            int width, int height){
+            int width, int height, int type){
         exitScr = new ExitDraw(0, 0, 0);
         exitScr.init(data, txtLib);
         exitScr.exitMenu.setFinalPosition(
                 (int)((width-exitScr.getX())/2),
                 (int)((height-exitScr.getY())/2));
+        this.type = type;
     }
 
     public void update(){
         setLock = false;
         if(scrSwitch){
-            menuLogo.setText(2, "");
-            menuLogo.setFinalPosition(0, 145, 50);
-            //menuLogo.setFinalPosition(1, 0, 0);
-            menuLogo.setFinalPosition(2, 0, 480);
+            if(menuLogo != null){
+                menuLogo.setText(2, "");
+                menuLogo.setFinalPosition(0, 145, 50);
+                //menuLogo.setFinalPosition(1, 0, 0);
+                menuLogo.setFinalPosition(2, 0, 480);
+            }
 
             exitScr.exitMenu.select = -1;
             scrSwitch = false;
@@ -62,18 +66,27 @@ public class ExitMiniScr {
            Controls.isRightClicked()){
             exitScr.exitMenu.select *= -1;
         }
-        if(Controls.isActionClicked()){
-            if(exitScr.exitMenu.select == 1)
-                scr_exit = true;
-            else{
+        
+        if(type == 1){
+            if(Controls.isActionClicked()){
+                if(exitScr.exitMenu.select == 1)    column = -1;
+                else                                column = 0;
+            }else if(Controls.isCancelClicked())    column = 0;
+            scrSwitch = true;
+        }else{
+            if(Controls.isActionClicked()){
+                if(exitScr.exitMenu.select == 1)
+                    scr_exit = true;
+                else{
+                    if(column == -1)    column = 0;
+                    else                column = 1;
+                    scrSwitch = true;
+                }
+            }else if(Controls.isCancelClicked()){
                 if(column == -1)    column = 0;
                 else                column = 1;
                 scrSwitch = true;
             }
-        }else if(Controls.isCancelClicked()){
-            if(column == -1)    column = 0;
-            else                column = 1;
-            scrSwitch = true;
         }
     }
 

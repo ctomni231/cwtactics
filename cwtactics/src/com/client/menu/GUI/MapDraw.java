@@ -4,6 +4,7 @@ import com.client.logic.input.Controls;
 import com.client.menu.GUI.tools.MovingPix;
 import com.client.menu.GUI.tools.PixAnimate;
 import com.client.menu.GUI.tools.PixMenu;
+import com.client.menu.logic.Menu;
 import com.client.model.loading.ImgData;
 import com.client.model.object.Map;
 import com.client.tools.ImgLibrary;
@@ -35,6 +36,8 @@ public class MapDraw extends MovingPix{
     private int realcury;
     private PixMenu cursor;
 
+    private int action;
+
     public MapDraw(Map theMap, int locx, int locy, double speed){
         super(locx, locy, speed);
         udcntr = 0;
@@ -55,6 +58,7 @@ public class MapDraw extends MovingPix{
         scale = itemList.getScale();
         cursorx = 0;
         cursory = 0;
+        action = 0;
         initCursor();
     }
 
@@ -75,16 +79,16 @@ public class MapDraw extends MovingPix{
                 temp.setFlipY();
                 temp.addImage(3, temp.getImage(0));
                 cursor.setImage(temp.getImage(0),0,0);
-                cursor.createNewItem(0, 0, 0);
+                cursor.createNewItem(0, 0, .5);
                 cursor.addMenuImgPart(temp.getImage(0), "", 1.0);
                 cursor.addMenuPart(0, false);
-                cursor.createNewItem((int)(BASE*scale), 0, 0);
+                cursor.createNewItem((int)(BASE*scale), 0, .5);
                 cursor.addMenuImgPart(temp.getImage(1), "", 1.0);
                 cursor.addMenuPart(0, false);
-                cursor.createNewItem(0, (int)(BASE*scale), 0);
+                cursor.createNewItem(0, (int)(BASE*scale), .5);
                 cursor.addMenuImgPart(temp.getImage(2), "", 1.0);
                 cursor.addMenuPart(0, false);
-                cursor.createNewItem((int)(BASE*scale), (int)(BASE*scale), 0);
+                cursor.createNewItem((int)(BASE*scale), (int)(BASE*scale), .5);
                 cursor.addMenuImgPart(temp.getImage(3), "", 1.0);
                 cursor.addMenuPart(0, false);
 
@@ -116,6 +120,8 @@ public class MapDraw extends MovingPix{
     public boolean update(int mouseX, int mouseY, int mouseScroll,
             boolean scroll, boolean mouseLock){
 
+        action = 0;
+
         if(Controls.isUpDown())         udcntr++;
         else if(Controls.isDownDown())  udcntr--;
         else                            udcntr = 0;
@@ -127,35 +133,55 @@ public class MapDraw extends MovingPix{
         if(cursory > 0 && (Controls.isUpClicked() || 
                 (scroll && udcntr > DELAY))){
             cursory -= 1;
+            speed = 0;
             scroll = false;
         }else if(cursory < mapsy-1 && (Controls.isDownClicked() ||
                 (scroll && udcntr < -DELAY))){
             cursory += 1;
+            speed = 0;
             scroll = false;
         }
         if(cursorx < mapsx-1 && (Controls.isLeftClicked() || 
                 (scroll && lrcntr < -DELAY))){
             cursorx += 1;
+            speed = 0;
             scroll = false;
         }else if(cursorx > 0 && (Controls.isRightClicked() ||
                 (scroll && lrcntr > DELAY))){
             cursorx -= 1;
+            speed = 0;
             scroll = false;
+        }
+
+        if(Controls.isActionDown())
+            action = 1;
+        if(Controls.isCancelDown())
+            action = 2;
+
+        if(Menu.getList() != null){
+            System.out.println("MENU APPROACHING: "+Menu.getList().size());
+            if(Menu.getList().size() != 0)
+                System.out.println("SEL BUTTON:"+ Menu.getSelected().getSheet().getName());
         }
 
         //Makes the mouse move the cursor
         if(!mouseLock){
-            if(realcurx+(int)(BASE*scale) < mouseX &&
-                    cursorx+1 < mapsx)
+            speed = 2;
+            if(posx+1 == fposx)     posx++;
+            if(posy+1 == fposy)     posy++;
+            
+            if(realcurx+(int)(BASE*scale) < mouseX && cursorx+1 < mapsx)
                 cursorx++;
             else if(realcurx > mouseX && cursorx > 0)
                 cursorx--;
-            if(realcury+(int)(BASE*scale) < mouseY &&
-                   cursory+1 < mapsy)
+            if(realcury+(int)(BASE*scale) < mouseY && cursory+1 < mapsy)
                 cursory++;
             else if(realcury > mouseY && cursory > 0)
                 cursory--;
         }
+
+        realcurx = (int)(fposx+cursorx*BASE*scale);
+        realcury = (int)(fposy+cursory*BASE*scale);
         
         if(realcurx+(BASE*scale) > MAX_X-(BASE*scale))
             fposx -= (BASE*scale/2);
@@ -166,16 +192,12 @@ public class MapDraw extends MovingPix{
         else if(realcury < (BASE*scale/2))
             fposy += (BASE*scale/2);
 
+
         return scroll;
     }
 
     public void render(Graphics g, int animTime){
-        realcurx = (int)(posx+cursorx*BASE*scale);
-        realcury = (int)(posy+cursory*BASE*scale);
-
-        cursor.setFinalPosition(
-                realcurx-(int)(cursor.getImage().getWidth()/2),
-                realcury-(int)(cursor.getImage().getHeight()/2));
+        drawCursor(animTime);
 
         renderSpeed();
         for(int j = 0; j < mapsy; j++){
@@ -210,6 +232,10 @@ public class MapDraw extends MovingPix{
     public int getCursorY(){
         return cursory;
     }
+
+    public int getAction(){
+        return action;
+    }
     
     public void updateMapItem(int x, int y){    	
     	MapItem item = drawMap[x][y];
@@ -221,6 +247,29 @@ public class MapDraw extends MovingPix{
             item.unit = itemList.getImgPart( map.getField()[x][y].
                     getUnit().sheet().getID().toUpperCase(), 0, 0);
             itemList.makeNewImage(item.unit);
+        }
+    }
+
+    private void drawCursor(int animTime){
+        realcurx = (int)(posx+cursorx*BASE*scale);
+        realcury = (int)(posy+cursory*BASE*scale);
+
+        cursor.setFinalPosition(
+                realcurx-(int)(cursor.getImage().getWidth()/2),
+                realcury-(int)(cursor.getImage().getHeight()/2));
+        if(animTime > 750){
+            cursor.setItemPosition(0, (int)(2*scale), (int)(2*scale));
+            cursor.setItemPosition(1, (int)(-2*scale+BASE*scale),
+                    (int)(2*scale));
+            cursor.setItemPosition(2, (int)(2*scale),
+                    (int)(-2*scale+BASE*scale));
+            cursor.setItemPosition(3, (int)(-2*scale+BASE*scale),
+                    (int)(-2*scale+BASE*scale));
+        }else if(animTime > 0 && animTime < 250){
+            cursor.setItemPosition(0, 0, 0);
+            cursor.setItemPosition(1, (int)(BASE*scale), 0);
+            cursor.setItemPosition(2, 0, (int)(BASE*scale));
+            cursor.setItemPosition(3, (int)(BASE*scale), (int)(BASE*scale));
         }
     }
 
