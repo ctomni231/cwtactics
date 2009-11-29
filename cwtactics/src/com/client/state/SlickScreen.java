@@ -71,8 +71,15 @@ public abstract class SlickScreen extends BasicGameState{
     public final void update(GameContainer container, 
             StateBasedGame game, int timePassed) throws SlickException {
     	
+        
+        
+        // check the command stack and return if a command is done
+        if( scr_checkCommands() ) return;
+        
         scr_sysTime = SlickGame.timer.getTime();
+        
         update(timePassed);
+        
         //This switches screens internally
         if(scr_switch.size() > 0){
             int check = scr_switch.get(0);
@@ -84,8 +91,6 @@ public abstract class SlickScreen extends BasicGameState{
         if(scr_exit)
             container.exit(); 
         scr_mouseScroll = 0;
-        // check the command stack and return if a command is done
-        if( scr_checkCommands() ) return;
     }
 
     //Simplified init function

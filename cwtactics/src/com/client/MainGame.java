@@ -77,12 +77,15 @@ public class MainGame {
     				
     				
     				if( (i == 9 && j == 6) ){
-    					map.setTile( new Tile( Data.getTileSheet( Data.getIntegerID("FACTORY")), i, j, 0, null), i, j);
+    					Tile tile =  new Tile( Data.getTileSheet( Data.getIntegerID("FACTORY") ) , i, j, 0, null);
+    					map.setTile( tile , i, j);
+    					tile.setOwner(p);
+    					p.addProperty(tile);
     				}else{
     					map.setTile( new Tile( Data.getTileSheet( Data.getIntegerID("FOREST")), i, j, 0, null), i, j);
     				}
     				if( (i == 5 && j == 5) ){
-    					Unit unit = new Unit( Data.getUnitSheet( Data.getIntegerID("MECH")) , p );
+    					Unit unit = new Unit( Data.getUnitSheet( Data.getIntegerID("INFANTRY")) , p );
     					map.getTile(i,j).setUnit( unit );
     					p.addUnit(unit);
     				}

@@ -1,6 +1,5 @@
 package com.client.menu.logic.buttons;
 
-import com.client.menu.GUI.tools.PixAnimate;
 import com.system.data.sheets.Sheet;
 
 public class Button{
@@ -13,7 +12,7 @@ public class Button{
 	 */
 	
 	public enum ButtonType{
-		NORMAL
+		NORMAL,TARGET_BUTTON,UNLOAD_TARGET_BUTTON,UNLOAD_UNIT_BUTTON
 	}
 	
 	
@@ -26,7 +25,6 @@ public class Button{
 	 */
 	
 	private ButtonType type;
-	private String headInformation;
 	private Sheet sheet;
 	
 	
@@ -38,9 +36,8 @@ public class Button{
 	 * 
 	 */
 	
-	public Button(ButtonType type, String headInformation, Sheet sheet ) {
+	public Button(ButtonType type, Sheet sheet ) {
 		this.type = type;
-		this.headInformation = headInformation;
 		this.sheet = sheet;
 	}
 	
@@ -61,23 +58,6 @@ public class Button{
 	}
 	
 	/**
-	  * Returns a single String with a full
-	  * information about the button.
-	  */ 
-	public String getMainText(){
-		return sheet.getName();
-	}
-
-	/**
-	  * Returns a single String with a short
-	  * information about the button.
-	  */
-	public String getHeadText(){
-		return headInformation;
-	}
-
-	
-	/**
 	  * Returns a String with type information
 	  * about the button.
 	  */
@@ -85,14 +65,5 @@ public class Button{
 		return sheet;
 	}
 
-	/**
-	  * Returns the Icon of the button.
-	  */
-	public PixAnimate getIcon(){
-		// we need to clear out how to access 
-		// your MapDraw with images like here, 
-		// e.g. return image with LTANK
-		return null;
-	}
 
 }

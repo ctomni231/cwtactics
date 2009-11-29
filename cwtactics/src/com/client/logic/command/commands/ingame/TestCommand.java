@@ -2,7 +2,6 @@ package com.client.logic.command.commands.ingame;
 
 import com.client.logic.command.Command;
 import com.client.model.Fog;
-import com.client.model.Move;
 import com.client.model.Turn;
 import com.client.model.object.Player;
 

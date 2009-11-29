@@ -3,7 +3,6 @@ package com.client.logic.status;
 import com.client.logic.input.Controls;
 import com.client.menu.GUI.MapDraw;
 import com.client.menu.logic.Menu;
-import com.client.menu.logic.buttons.Button;
 import com.client.model.Fog;
 import com.client.model.Move;
 import com.client.model.Range;
@@ -20,7 +19,7 @@ public class Status_Wait implements Status_Interface {
     	int x = map.getCursorX();
     	int y = map.getCursorY();
     	Tile tile = Game.getMap().getTile(x, y);
-    	
+		
     	// check variables
     	if( tile == null ) return;
     	
@@ -32,7 +31,6 @@ public class Status_Wait implements Status_Interface {
     	if( Controls.isActionClicked() ){
     		
     		// UNIT MOVE
-			
     		if( unit != null && !Fog.inFog(tile) ){
     			if( unit.canAct() && unit.getOwner() == Turn.getPlayer() ){
     				
@@ -47,15 +45,12 @@ public class Status_Wait implements Status_Interface {
     			}
     		}
     		// FACTORY
-    		else if( tile.sheet().canBuild() && tile.getOwner() == Turn.getPlayer() ){
+    		else if( tile.sheet().canBuild() && !Fog.inFog(tile) && tile.getOwner() == Turn.getPlayer() ){
     			
-    			//TODO make build menu
-    			
-    			// test output
-    			Menu.print();
+    			Menu.createBuildMenu(tile);
     			
     			// set menu status
-    			//Status.setStatus( Status.Mode.MENU );
+    			Status.setStatus( Status.Mode.MENU );
     		}
     		// MAP MENU
     		else{	

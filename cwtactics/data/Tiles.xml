@@ -68,7 +68,6 @@
             <buildtarget id="MECH"       />
 			<buildtarget id="RECOON"     />
             <buildtarget id="APC"        />
-		    <buildtarget id="THUNT"      />
 		    <buildtarget id="PAK"        />
 		    <buildtarget id="LTANK"      />
             <buildtarget id="MDTANK"     />

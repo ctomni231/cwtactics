@@ -82,6 +82,10 @@ public class InGameState extends SlickScreen{
     public void render(Graphics g) {
         newMap.render(g, scr_sysTime);
 
+        // if scrSwitch, then internally the logic 
+        // updates menu or something similar, don't draw!
+        if( scrSwitch ) return;
+        
         switch(column){
             case 1:
                 exitScr(g);
@@ -242,11 +246,10 @@ public class InGameState extends SlickScreen{
             default:
                 mapScr();
         }
-
-        if(column == 0){
+        
+        if(column == 0){      	
             // react on input in the correct way
             Status.update(timePassed, newMap);
-            newMap.resetAction();
         }
 
         // update scroll action

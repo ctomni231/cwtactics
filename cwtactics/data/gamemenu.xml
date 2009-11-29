@@ -5,12 +5,12 @@
 		<arrow file="resources/image/menu/uparrow.png" />
 
 		<main>
-			<list GER="?#1"
+			<list GER="Zurück zu Main#1"
 			ENG="RETURN TO MAIN#1" />
 		</main>
 
 		<exit>
-			<list GER="?"
+			<list GER="Zurück zum Hauptmenü..."
 			ENG="RETURN TO MAIN..." />
 			<list GER="JA"
 			ENG="YES" />

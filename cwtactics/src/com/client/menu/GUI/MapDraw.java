@@ -36,8 +36,6 @@ public class MapDraw extends MovingPix{
     private int realcury;
     private PixMenu cursor;
 
-    private int action;
-
     public MapDraw(Map theMap, int locx, int locy, double speed){
         super(locx, locy, speed);
         udcntr = 0;
@@ -58,7 +56,6 @@ public class MapDraw extends MovingPix{
         scale = itemList.getScale();
         cursorx = 0;
         cursory = 0;
-        action = 0;
         initCursor();
     }
 
@@ -120,8 +117,6 @@ public class MapDraw extends MovingPix{
     public boolean update(int mouseX, int mouseY, int mouseScroll,
             boolean scroll, boolean mouseLock){
 
-        action = 0;
-
         if(Controls.isUpDown())         udcntr++;
         else if(Controls.isDownDown())  udcntr--;
         else                            udcntr = 0;
@@ -153,12 +148,7 @@ public class MapDraw extends MovingPix{
             scroll = false;
         }
 
-        if(Controls.isActionDown())
-            action = 1;
-        if(Controls.isCancelDown())
-            action = 2;
-
-        if(Menu.getList() != null){
+        if(Menu.getList().size() > 0 ){
             System.out.println("MENU APPROACHING: "+Menu.getList().size());
             if(Menu.getList().size() != 0)
                 System.out.println("SEL BUTTON:"+ Menu.getSelected().getSheet().getName());
@@ -232,20 +222,11 @@ public class MapDraw extends MovingPix{
     public int getCursorY(){
         return cursory;
     }
-
-    public int getAction(){
-        return action;
-    }
-
-    public void resetAction(){
-        action = 0;
-    }
     
     public void updateMapItem(int x, int y){    	
     	MapItem item = drawMap[x][y];
     	item.unit = null;
-        item.terrain = itemList.getImgPart( map.getField()[x][y].sheet().
-                getID().toUpperCase(), 0, 0);
+        item.terrain = itemList.getImgPart( map.getField()[x][y].sheet().getID().toUpperCase(), 0, 0);
         itemList.makeNewImage(item.terrain);
         if( map.getField()[x][y].getUnit() != null){
             item.unit = itemList.getImgPart( map.getField()[x][y].

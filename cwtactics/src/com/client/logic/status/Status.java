@@ -1,7 +1,6 @@
 package com.client.logic.status;
 
 import com.client.menu.GUI.MapDraw;
-import com.sun.org.apache.regexp.internal.recompile;
 
 /**
  * 
@@ -29,7 +28,7 @@ public class Status {
 		SHOW_RANGE		( new Status_ShowRange() ),
 		SHOW_MOVE		( new Status_ShowMove() ),
 		SHOW_TARGETS	( new Status_ShowTargets() ),
-		MENU			(null);
+		MENU			( new Status_Menu() );
 		
 		// variable
 		private Status_Interface stat;
@@ -105,7 +104,7 @@ public class Status {
 	public static void update(int timePassed , MapDraw map ){
 		
 		// do update method
-		status.getObject().update(timePassed , map);
+		status.getObject().update(timePassed , map );
 	}
 
 }

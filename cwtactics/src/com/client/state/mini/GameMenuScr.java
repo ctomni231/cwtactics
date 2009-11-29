@@ -11,6 +11,7 @@ import org.newdawn.slick.Graphics;
  * @author Crecen
  */
 public class GameMenuScr {
+	
     private final int DELAY = 250;
     private final int MAX_ITEMS = 8;
     public boolean scrSwitch;
@@ -66,18 +67,25 @@ public class GameMenuScr {
     }
 
     public void update(TextImgLibrary txtLib){
+    	
         setLock = false;
+        
         if(scrSwitch){
-            if(Menu.getList().size() > 0){
+        	//TODO refactor init method, it needs tooo much time to prepare new menu :(
+        	// logic is thousands times faster than the menu draw logic
+        	
+            long time = System.currentTimeMillis();
+        	if(Menu.getList().size() > 0){
                 String[] temp = new String[Menu.getList().size()];
                 for(int i = 0; i < temp.length; i++)
-                    temp[i] = Menu.getList().get(i).
-                            getSheet().getName().toUpperCase();
+                    temp[i] = Menu.getList().get(i).getSheet().getName().toUpperCase();
                 init(txtLib, scrX, scrY, temp);
             }
             scrSwitch = false;
+            System.out.println("TIME NEEDED TO BUILD MENU :: "+(System.currentTimeMillis() - time)+" ms");
         }
-
+        
+        
         scr_scrollIndex = 10;
         if(!scr_mouseLock){
             scr_scrollIndex = 2;

@@ -3,9 +3,11 @@ package com.client.menu.logic;
 import java.util.ArrayList;
 
 import com.client.menu.logic.buttons.Button;
+import com.client.menu.logic.buttons.Button.ButtonType;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
 import com.system.data.Data;
+import com.system.data.sheets.Unit_Sheed;
 
 public class Menu {
 
@@ -17,7 +19,9 @@ public class Menu {
 	 */
 	
 	public enum MenuType{
-		MAP_MENU,BUILD_MENU,UNIT_ROOTMENU,UNIT_ATTACKMENU,UNLOAD_TARGETS_MENU,UNLOAD_UNITS_MENU
+		MAP_MENU,OPTIONS_MENU,SAVE_MENU,GAME_MENU,								// MAP MENUS
+		BUILD_MENU,																// PROPERTY MENUS
+		UNIT_ROOTMENU,UNIT_ATTACKMENU,UNLOAD_TARGETS_MENU,UNLOAD_UNITS_MENU		// UNIT MENUS
 	}
 	
 	
@@ -31,6 +35,7 @@ public class Menu {
 	
 	private static ArrayList<Button> buttons;
 	private static int pointer;
+	private static Tile tile; // from which tile is the menu called from ?
 	private static MenuType menuType;
 	
 	
@@ -58,7 +63,7 @@ public class Menu {
 	/**
 	 * Clears the button list.
 	 */
-	private static void clearList(){
+	public static void clearList(){
 		buttons.clear();
 		setPointer(0);
 	}
@@ -123,6 +128,14 @@ public class Menu {
 		Menu.menuType = menuType;
 	}
 	
+	public static void setTile( Tile tile ){
+		Menu.tile = tile;
+	}
+	
+	public static Tile getTile(){
+		return tile;
+	}
+	
 	
 
 	/*
@@ -144,7 +157,7 @@ public class Menu {
 		setMenuType( MenuType.MAP_MENU );
 		
 		// add buttons
-		addButton( new Button( Button.ButtonType.NORMAL , "" , Data.getEntrySheet( Data.getIntegerID("ENDTURN")) ) );
+		addButton( new Button( Button.ButtonType.NORMAL , Data.getEntrySheet( Data.getIntegerID("ENDTURN")) ) );
 		
 		// complete menu
 		completeList();
@@ -157,8 +170,26 @@ public class Menu {
 		setMenuType( MenuType.UNIT_ROOTMENU );
 		
 		// add buttons
-		if( tile.sheet().isCapturable() && unit.sheet().getCaptureValue() > 0 ) addButton( new Button( Button.ButtonType.NORMAL , "" , Data.getEntrySheet( Data.getIntegerID("CONQUER")) ) );
-		addButton( new Button( Button.ButtonType.NORMAL , "" , Data.getEntrySheet( Data.getIntegerID("WAIT")) ) );
+		if( tile.sheet().isCapturable() && unit.sheet().getCaptureValue() > 0  &&
+			tile.getOwner() != unit.getOwner() ) addButton( new Button( Button.ButtonType.NORMAL , Data.getEntrySheet( Data.getIntegerID("CONQUER")) ) );
+		addButton( new Button( Button.ButtonType.NORMAL , Data.getEntrySheet( Data.getIntegerID("WAIT")) ) );
+		
+		// complete menu
+		completeList();
+	}
+
+	public static void createBuildMenu( Tile tile ){
+		
+		// clear menu
+		clearList();
+		setMenuType( MenuType.BUILD_MENU );
+		
+		setTile(tile);
+		
+		// add buttons
+		for( Unit_Sheed sh : tile.sheet().getBuildList() ){
+			addButton( new Button( ButtonType.NORMAL , sh )  );
+		}
 		
 		// complete menu
 		completeList();
@@ -180,7 +211,7 @@ public class Menu {
 		
 		// print all buttons
 		for( Button b : Menu.getList() ){
-			System.out.print( b.getMainText()+" , " );
+			System.out.print( b.getSheet().getName()+" , " );
 		}
 		
 		// make new line

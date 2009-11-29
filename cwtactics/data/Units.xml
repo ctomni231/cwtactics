@@ -52,7 +52,6 @@
             <enemy id="HTANK"      wp1_damage="8"  />
             <enemy id="INFANTRY"   					wp2_damage="65" />
             <enemy id="MECH"       					wp2_damage="55" />
-            <enemy id="THUNT"      wp1_damage="50"  />
             <enemy id="PAK"        wp1_damage="40"  wp2_damage="15"/>
             <enemy id="AATANK"     wp1_damage="65" />
             <enemy id="ARTILLERY"  wp1_damage="70" />
@@ -83,7 +82,6 @@
             <enemy id="HTANK"      wp1_damage="1"  />
             <enemy id="INFANTRY"   wp1_damage="65" />
             <enemy id="MECH"       wp1_damage="55" />
-            <enemy id="THUNT"      wp1_damage="25"  />
             <enemy id="PAK"        wp1_damage="35"/>
             <enemy id="AATANK"     wp1_damage="10" />
             <enemy id="ARTILLERY"  wp1_damage="20" />
@@ -146,7 +144,6 @@
             <enemy id="HTANK"      wp1_damage="10" wp2_damage="1" />
             <enemy id="INFANTRY"   wp1_damage="75" wp2_damage="45" />
             <enemy id="MECH"       wp1_damage="70" wp2_damage="35" />
-            <enemy id="THUNT"      wp1_damage="25"  />
             <enemy id="PAK"        wp1_damage="35"  />
             <enemy id="AATANK"     wp1_damage="65" wp2_damage="5" />
             <enemy id="ARTILLERY"  wp1_damage="70" wp2_damage="10" />
@@ -329,7 +326,6 @@
             <enemy id="ROCKET"     wp1_damage="80" />
             <enemy id="LANDER"     wp1_damage="55" />
             <enemy id="BSHIP"      wp1_damage="40" />
-            <enemy id="THUNT"      wp1_damage="55" />
             <enemy id="PAK"        wp1_damage="65" />
         </damage>
     </unit>

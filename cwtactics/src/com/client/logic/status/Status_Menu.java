@@ -2,57 +2,76 @@ package com.client.logic.status;
 
 import com.client.logic.command.MessageServer;
 import com.client.logic.command.commands.ingame.MoveTo;
+import com.client.logic.input.Controls;
 import com.client.menu.GUI.MapDraw;
 import com.client.menu.logic.Menu;
+import com.client.menu.logic.buttons.Button;
+import com.client.menu.logic.buttons.Button.ButtonType;
+import com.client.model.Fog;
 import com.client.model.Move;
+import com.client.model.Turn;
+import com.client.model.object.Tile;
+import com.client.model.object.Unit;
+import com.system.data.sheets.Unit_Sheed;
 
 public class Status_Menu implements Status_Interface {	
 	
 	public void update(int timePassed, MapDraw map) {
-		
-		// INTO THIS CLASS GOES YOUR MENU CONTROL
-		// LOGIC CRECEN , OR THE CALL METHOD FOR YOU LOGIC CLASS :)
-		// like this example
-		// int action = MyMenuToolClass.updateInput();
-		// action is the returned input, 1 if action is clicked and so on...
-		int action = map.getAction(); // 0 = nothing, 1 = ACTION , 2 = CANCEL;
-		switch( action ){
-		
-			// ACTION WAS CLICKED
-			case 1 : 
-				switch( Menu.getType() ){
-					case UNIT_ROOTMENU :
-						
-						//TODO make logic
-						// first check what type is the button
-						// and then build subMenu or call Action
-						
-						// --> if maybe it's call action
-						// send move commands
+
+		if( Controls.isActionDown() ){
+			switch( Menu.getType() ){
+			
+				case UNIT_ROOTMENU :
+					
+					Button b = Menu.getSelected();
+					
+					if( b.getType() == ButtonType.NORMAL ){
+
 						MessageServer.send( new MoveTo(map), false);
-						if( Move.isTapped() ) // send showTapAnimation
-						
-						// doCommands for the button
-							
-						break;
-				}
-				break;
+						if( Move.isTapped() ) ; // send showTapAnimation
+													
+						Menu.clearList();
+						Status.setStatus( Status.Mode.WAIT );	
+					}						
+					break;
+					
+				case BUILD_MENU :
+					
+					//TODO as command logic
+					
+					Unit_Sheed sh = ((Unit_Sheed) Menu.getSelected().getSheet() );
+					Tile property = Menu.getTile();
+										
+					Unit unit = new Unit( sh , Turn.getPlayer() );
+					
+					property.setUnit(unit);
+					Turn.getPlayer().addUnit(unit);
+					
+					map.updateMapItem( property.getPosX() , property.getPosY() );
+					
+					Fog.processFog( unit.getOwner());
+					
+					Menu.clearList();
+					Status.setStatus( Status.Mode.WAIT );	
+					break;
+			}
+		}
+		else if ( Controls.isCancelDown() ){
+			
+			switch( Menu.getType() ){		
+			
+				// if you're in the unit root menu, go back to move range
+				case UNIT_ROOTMENU :
+					Move.resetWay();
+					Menu.clearList();
+					Status.setStatus( Status.Mode.SHOW_RANGE );
+					break;
 				
-			// CANCEL WAS CLICKED
-			case 2 :
-				switch( Menu.getType() ){
-					
-					// if you're in the unit root menu, go back to move range
-					case UNIT_ROOTMENU :
-						Move.resetWay();
-						Status.setStatus( Status.Mode.SHOW_RANGE );
-						break;
-					
-					// in the default case, go back to wait status
-					default :
-						Status.setStatus( Status.Mode.WAIT );
-				}
-				break;
+				// in the default case, go back to wait status
+				default :
+					Menu.clearList();
+					Status.setStatus( Status.Mode.WAIT );
+			}
 		}
 	}
 
