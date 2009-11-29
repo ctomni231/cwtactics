@@ -4,6 +4,11 @@
 		<alpha file="resources/image/menu/smallAlpha.png" />
 		<arrow file="resources/image/menu/uparrow.png" />
 
+		<main>
+			<list GER="?#1"
+			ENG="RETURN TO MAIN#1" />
+		</main>
+
 		<exit>
 			<list GER="?"
 			ENG="RETURN TO MAIN..." />

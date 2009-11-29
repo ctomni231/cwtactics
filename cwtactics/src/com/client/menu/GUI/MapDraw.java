@@ -236,6 +236,10 @@ public class MapDraw extends MovingPix{
     public int getAction(){
         return action;
     }
+
+    public void resetAction(){
+        action = 0;
+    }
     
     public void updateMapItem(int x, int y){    	
     	MapItem item = drawMap[x][y];

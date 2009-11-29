@@ -12,10 +12,10 @@
 		</title>
 
 		<main>
-			<list GER="?:3:?"
-			ENG="VERSUS:3:Play a single player game against your friends." />
-			<list GER="?:2:?"
-			ENG="EXIT:2:Leave, we see how it is. ;)" />
+			<list GER="?#3#?"
+			ENG="VERSUS#3#Play a single player game against your friends." />
+			<list GER="?#2#?"
+			ENG="EXIT#2#Leave, we see how it is. :)" />
 		</main>
 		
 		<exit>

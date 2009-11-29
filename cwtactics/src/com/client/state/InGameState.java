@@ -3,9 +3,11 @@ package com.client.state;
 import com.client.logic.input.Controls;
 import com.client.logic.status.Status;
 import com.client.menu.GUI.MapDraw;
+import com.client.menu.logic.Menu;
 import com.client.model.object.Game;
 
 import com.client.state.mini.ExitMiniScr;
+import com.client.state.mini.GameMenuScr;
 import com.client.tools.TextImgLibrary;
 import com.system.reader.MenuReader;
 import org.newdawn.slick.Graphics;
@@ -37,6 +39,7 @@ public class InGameState extends SlickScreen{
     private TextImgLibrary txtLib;
 
     private ExitMiniScr exitScr;
+    private GameMenuScr menuScr;
    
     /*
      * 
@@ -61,6 +64,9 @@ public class InGameState extends SlickScreen{
 
         exitScr = new ExitMiniScr(txtLib, reader.getExitData(),
             scr_getContainer().getWidth(), scr_getContainer().getHeight(), 1);
+        menuScr = new GameMenuScr(txtLib, reader.getMenuData(),
+                reader.getArrow(), scr_getContainer().getWidth(),
+                scr_getContainer().getHeight());
     }
 
     
@@ -79,6 +85,10 @@ public class InGameState extends SlickScreen{
         switch(column){
             case 1:
                 exitScr(g);
+                break;
+            case 2:
+                menuScr(g);
+                break;
         }
     }
 
@@ -133,10 +143,31 @@ public class InGameState extends SlickScreen{
         //Helps with scrolling
         scr_mouseControl();
 
-        //if(Controls.isCancelDown()){
-         //   column = 1;
-        //    scrSwitch = true;
-        //}
+        if(Menu.getList().size() > 0 && column == 0){
+            column = 2;
+            scrSwitch = true;
+        }
+    }
+
+    private void menuScr(){
+        menuScr.column = column;
+        menuScr.scrSwitch = scrSwitch;
+        menuScr.scr_mouseLock = scr_mouseLock;
+        menuScr.scr_mouseScroll = scr_mouseScroll;
+        menuScr.scr_mouseX = scr_mouseX;
+        menuScr.scr_mouseY = scr_mouseY;
+        menuScr.scr_scroll = scr_scroll;
+        menuScr.update(txtLib);
+        column = menuScr.column;
+        scrSwitch = menuScr.scrSwitch;
+        scr_mouseLock = menuScr.scr_mouseLock;
+        scr_scroll = menuScr.scr_scroll;
+        scr_scrollInd = menuScr.scr_scrollIndex;
+        if(menuScr.setLock)    scr_mouseLock();
+        scr_mouseControl(); //Makes sure you can scroll down and up
+    }
+    private void menuScr(Graphics g){
+        menuScr.render(g);
     }
 
     private void mainScr(){
@@ -205,6 +236,9 @@ public class InGameState extends SlickScreen{
             case 1:
                 exitScr();
                 break;
+            case 2:
+                menuScr();
+                break;
             default:
                 mapScr();
         }
@@ -212,6 +246,7 @@ public class InGameState extends SlickScreen{
         if(column == 0){
             // react on input in the correct way
             Status.update(timePassed, newMap);
+            newMap.resetAction();
         }
 
         // update scroll action

@@ -54,9 +54,8 @@ public class ExitDraw {
                 127), sizex, sizey, 10, false);
         exitMenu.createNewItem(5, 5, 0);
         exitMenu.addRoundBox(0, new Color(Color.darkGray.getRed(),
-                Color.darkGray.getGreen(),
-                Color.darkGray.getBlue(), 127), tempImg.getX(0)+10,
-                tempImg.getY(0)+10+tempImg.getY(1)+10, 10, false);
+                Color.darkGray.getGreen(), Color.darkGray.getBlue(), 127),
+                sizex-10, sizey-10, 10, false);
         exitMenu.createNewItem(10, 10, 0);
         exitMenu.addMenuImgPart(tempImg.getImage(0), "", 0.7);
         exitMenu.addMenuPart(0, false);

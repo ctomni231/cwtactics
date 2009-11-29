@@ -52,11 +52,11 @@ public class MenuMiniScr {
     private void init(TextImgLibrary txtLib){
         String[] temp = new String[info.length];
         for(int i = 0; i < temp.length; i++)
-            temp[i] = info[i].split(":")[0];
+            temp[i] = info[i].split("#")[0];
         String[] tempText = new String[info.length];
         for(int i = 0; i < tempText.length; i++){
-            if(info[i].split(":").length > 2)
-                tempText[i] = info[i].split(":")[2];
+            if(info[i].split("#").length > 2)
+                tempText[i] = info[i].split("#")[2];
             else
                 tempText[i] = "";
         }
@@ -66,15 +66,14 @@ public class MenuMiniScr {
     public void update(){
         setLock = false;
         if(scrSwitch){
-            menuLogo.setText(2, " - MAIN MENU -" +
-        "                                                               ");
+            menuLogo.setText(2, " - ");
             menuLogo.setFinalPosition(0, 145, 0);
             //menuLogo.setFinalPosition(1, 0, 0);
             menuLogo.setFinalPosition(2, 0, 460);
             scrSwitch = false;
         }
 
-        scr_scrollIndex = 4;
+        scr_scrollIndex = 10;
         if(!scr_mouseLock){
             scr_scrollIndex = 2;
             menuScr.menu.mouseSelect(scr_mouseX, scr_mouseY);
@@ -132,7 +131,7 @@ public class MenuMiniScr {
         }
 
         if(Controls.isActionClicked()){
-            column = Integer.parseInt(info[menuScr.menu.select].split(":")[1]);
+            column = Integer.parseInt(info[menuScr.menu.select].split("#")[1]);
             trackSelect = -1;
             scrSwitch = true;
         }
