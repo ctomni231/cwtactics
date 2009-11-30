@@ -233,10 +233,17 @@ public class MapDraw extends MovingPix{
                     }
                 }
                 if(drawMap[i][j].unit != null){
-                    if(Fog.isVisible(map.getTile(i,j).getUnit()))
+                    if(Fog.isVisible(map.getTile(i,j).getUnit())){
                         g.drawImage(itemList.getImage(drawMap[i][j].unit,
                         animTime), (int)(posx+((i*BASE-(BASE/2))*scale)),
                         (int)(posy+(((j-1)*BASE+(BASE/2))*scale)));
+                        if(map.getTile(i, j).getUnit().getHealth() < 100){
+                            g.setColor(Color.white);
+                            g.drawString(""+map.getTile(i,j).getUnit().
+                               getHealth(), (int)(posx+i*BASE*scale+15*scale),
+                                (int)(posy+j*BASE*scale+18*scale));
+                        }
+                    }
                 }
             }
         }
