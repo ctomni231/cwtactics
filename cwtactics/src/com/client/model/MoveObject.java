@@ -24,6 +24,7 @@ public class MoveObject {
 	
 	public MoveObject(){
 		this.needFuel = -1;
+		this.moveable = true;
 	}
 
 	

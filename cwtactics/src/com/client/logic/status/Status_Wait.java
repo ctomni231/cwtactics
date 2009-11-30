@@ -66,13 +66,15 @@ public class Status_Wait implements Status_Interface {
     	//
     	else if( Controls.isCancelDown() ){
     		
-    		if( unit != null && Fog.inFog(tile) ){
+    		if( unit != null && !Fog.inFog(tile) ){
     			
     			// is it a hidden unit ?
     			if( unit.isHidden() && !Fog.isVisible(unit) ) return;
     			
     			// setup tiles
     			Range.getCompleteAttackRange(tile, unit);
+    			
+    			System.out.println( Range.getList() );
     			
     			// set show range status
     			Status.setStatus( Status.Mode.SHOW_RANGE );

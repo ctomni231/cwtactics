@@ -157,7 +157,7 @@ public class Menu {
 		setMenuType( MenuType.MAP_MENU );
 		
 		// add buttons
-		addButton( new Button( Button.ButtonType.NORMAL , Data.getEntrySheet( Data.getIntegerID("ENDTURN")) ) );
+		addButton( new Button( Button.ButtonType.NORMAL ,  Data.getEntrySheet( Data.getIntegerID("ENDTURN")) ) );
 		
 		// complete menu
 		completeList();

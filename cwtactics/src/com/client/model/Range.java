@@ -125,7 +125,7 @@ public class Range {
     		if( sh.getUseAmmo() != -1 && unit.getAmmo() < sh.getUseAmmo() ) continue;
     		
     		if( sh.getFireMode() == 0 || sh.getFireMode() == 2 ){
-		    
+
     			// make virtual move first
 		    	Move.initialize(tile, unit);
 		    	Move.move();
@@ -135,14 +135,15 @@ public class Range {
 		    	
 		    	// attack from every tile
 		    	for( Tile mt : tiles.keySet() ){
+
 		    		if( tiles.get(mt).isMoveable() ){
-		    			getAttackRange(x, y, sh);
+		    			getAttackRange( mt.getPosX() , mt.getPosY() , sh);
 		    			addListToList(helpList);
 		    		}
 		    	}
     		}
     		else{
-    			
+
     			// attack from start place
 		    	getAttackRange(x, y, sh);
 		    	addListToList(helpList);
@@ -204,10 +205,11 @@ public class Range {
     	// variables
     	int minRange = sh.getMinRange() - 1;
     	int maxRange = sh.getMaxRange();
+
     	helpList.clear();
     
     	if( maxRange > -1 && maxRange > minRange ) addRange(maxRange, x, y);
-    	if( minRange > -1 && maxRange < minRange ) removeRange(minRange, x, y);
+    	if( minRange > -1 && maxRange > minRange ) removeRange(minRange, x, y);
     }
 
 	/**

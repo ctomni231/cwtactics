@@ -44,6 +44,9 @@ public class Unit {
 		rank		= 0;
 		canAct		= true;
 		
+		ammo 		= type.getAmmo();
+		fuel		= type.getFuel();
+		
 		loads		= new ArrayList<Unit>();
 		
 		loads.trimToSize();
