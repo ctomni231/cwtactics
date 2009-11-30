@@ -49,8 +49,7 @@ public class InGameState extends SlickScreen{
      */
     
     public InGameState(){
-        tileBase = 32;
-        scr_scrollInd = 10;
+        tileBase = 32;     
         column = 0;
         scrSwitch = true;
         reader = new MenuReader("data/gamemenu.xml");
@@ -139,6 +138,7 @@ public class InGameState extends SlickScreen{
 
     private void mapScr(){
         if(scrSwitch){
+            scr_scrollInd = 10;
             scrSwitch = false;
         }
         // update graphic system
@@ -262,7 +262,7 @@ public class InGameState extends SlickScreen{
     private void updateScroll(){
     	
     	if(scr_mouseScroll != 0){
-            if(scr_mouseScroll > 0)
+            if(scr_mouseScroll < 0)
                 tileBase += 2;
             else
                 tileBase -= 2;
@@ -270,6 +270,4 @@ public class InGameState extends SlickScreen{
             newMap.changeScale(tileBase);
         }
     }
-    
-
 }

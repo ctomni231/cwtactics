@@ -86,6 +86,10 @@ public class PixVertMenu extends PixMenu{
         }
     }
 
+    public int getMaxItems(){
+        return maxItems;
+    }
+
     public void setArrow(Image arrUp){
         if(arrUp != null){
             arrowUp = arrUp;

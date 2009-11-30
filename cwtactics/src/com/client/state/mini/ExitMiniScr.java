@@ -71,8 +71,11 @@ public class ExitMiniScr {
             if(Controls.isActionClicked()){
                 if(exitScr.exitMenu.select == 1)    column = -1;
                 else                                column = 0;
-            }else if(Controls.isCancelClicked())    column = 0;
-            scrSwitch = true;
+                scrSwitch = true;
+            }else if(Controls.isCancelClicked()){
+                column = 0;
+                scrSwitch = true;
+            }
         }else{
             if(Controls.isActionClicked()){
                 if(exitScr.exitMenu.select == 1)

@@ -226,11 +226,18 @@ public class MapDraw extends MovingPix{
     public void updateMapItem(int x, int y){    	
     	MapItem item = drawMap[x][y];
     	item.unit = null;
-        item.terrain = itemList.getImgPart( map.getField()[x][y].sheet().getID().toUpperCase(), 0, 0);
+        int color = 0;
+        if(map.getField()[x][y].getOwner() != null)
+            color = map.getField()[x][y].getOwner().getID()+1;
+        item.terrain = itemList.getImgPart( map.getField()[x][y].sheet().
+                getID().toUpperCase(), color, 0);
         itemList.makeNewImage(item.terrain);
         if( map.getField()[x][y].getUnit() != null){
+            color = 0;
+            if(map.getField()[x][y].getUnit().getOwner() != null)
+                color = map.getField()[x][y].getUnit().getOwner().getID()+1;
             item.unit = itemList.getImgPart( map.getField()[x][y].
-                    getUnit().sheet().getID().toUpperCase(), 0, 0);
+                    getUnit().sheet().getID().toUpperCase(), color, 0);
             itemList.makeNewImage(item.unit);
         }
     }
@@ -263,18 +270,16 @@ public class MapDraw extends MovingPix{
             int color = 0;
             if(map.getField()[x][y].getOwner() != null)
                 color = map.getField()[x][y].getOwner().getID()+1;
-            item.terrain = itemList.getImgPart(
-               map.getField()[x][y].sheet().getName().toUpperCase(),
-               color, 0);
+            item.terrain = itemList.getImgPart(map.getField()[x][y].sheet().
+                    getID(), color, 0);
             itemList.makeNewImage(item.terrain);
         }        
         if(item.unit == null && map.getField()[x][y].getUnit() != null){
             int color = 0;
             if(map.getField()[x][y].getUnit().getOwner() != null)
                 color = map.getField()[x][y].getUnit().getOwner().getID()+1;
-            item.unit = itemList.getImgPart(
-               map.getField()[x][y].getUnit().sheet().getName().toUpperCase(),
-               color, 0);
+            item.unit = itemList.getImgPart(map.getField()[x][y].getUnit().
+                    sheet().getID(), color, 0);
             itemList.makeNewImage(item.unit);
         }
         item.change = false;

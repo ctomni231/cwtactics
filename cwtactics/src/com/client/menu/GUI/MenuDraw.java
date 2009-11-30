@@ -59,12 +59,15 @@ public class MenuDraw {
                     length = txt.length();
             }
             sizex = 20+(tempAlpha.getX("A")*length);
-            sizey = 20+(tempAlpha.getY("A")*info.length);
-            menu.createNewItem(0, 0, 0);
+            if(info.length > menu.getMaxItems())
+                sizey = 20+(tempAlpha.getY("A")*(menu.getMaxItems()+1));
+            else
+                sizey = 20+(tempAlpha.getY("A")*info.length);
+            menu.createNewItem(-10, -10, 0);
             menu.addRoundBox(0, new Color(Color.darkGray.getRed(),
                     Color.darkGray.getGreen(), Color.darkGray.getBlue(),
                     127), sizex, sizey, 10, false);
-            menu.createNewItem(5, 5, 0);
+            menu.createNewItem(-5, -5, 0);
             menu.addRoundBox(0, new Color(Color.lightGray.getRed(),
                     Color.lightGray.getGreen(), Color.lightGray.getBlue(),
                     127), sizex-10, sizey-10, 10, false);
@@ -77,12 +80,12 @@ public class MenuDraw {
             tempImg.addImage(setWordImage(info[i], tempAlpha));
 
             if(index == 1){
-                menu.createNewItem(5, 8, 0);
+                menu.createNewItem(-5, -2, 0);
                 menu.addVertBox(i, new Color(Color.darkGray.getRed(),
                     Color.darkGray.getGreen(),
                     Color.darkGray.getBlue(), 127), 
                     sizex-10, 20, true);
-                menu.createNewItem(10, 10, 0);
+                menu.createNewItem(0, 0, 0);
             }else{
                 menu.createNewItem(0, 5, 0);
                 menu.addVertBox(i, new Color(Color.darkGray.getRed(),
