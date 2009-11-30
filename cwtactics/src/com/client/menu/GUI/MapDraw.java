@@ -1,11 +1,14 @@
 package com.client.menu.GUI;
 
 import com.client.logic.input.Controls;
+import com.client.logic.status.Status;
 import com.client.menu.GUI.tools.MovingPix;
 import com.client.menu.GUI.tools.PixAnimate;
 import com.client.menu.GUI.tools.PixMenu;
 import com.client.menu.logic.Menu;
 import com.client.model.Fog;
+import com.client.model.Move;
+import com.client.model.Range;
 import com.client.model.loading.ImgData;
 import com.client.model.object.Map;
 import com.client.tools.ImgLibrary;
@@ -213,10 +216,26 @@ public class MapDraw extends MovingPix{
                         (int)((BASE+1)*scale),
                         (int)((BASE+1)*scale));
                 }
+                if(Status.getStatus() == Status.Mode.SHOW_MOVE){
+                    if(Move.getTiles().containsKey(map.getTile(i, j))){
+                        g.setColor(new Color(0, 0, 255, 100));
+                        g.fillRect((int)(posx+i*BASE*scale),
+                            (int)(posy+j*BASE*scale), (int)(BASE*scale),
+                            (int)(BASE*scale));
+                    }
+                }
+                if(Status.getStatus() == Status.Mode.SHOW_RANGE){
+                    if(Range.isIn(map.getTile(i, j))){
+                        g.setColor(new Color(255, 0, 0, 100));
+                        g.fillRect((int)(posx+i*BASE*scale),
+                            (int)(posy+j*BASE*scale), (int)(BASE*scale),
+                            (int)(BASE*scale));
+                    }
+                }
                 if(drawMap[i][j].unit != null){
                     if(Fog.isVisible(map.getTile(i,j).getUnit()))
                         g.drawImage(itemList.getImage(drawMap[i][j].unit,
-                          animTime), (int)(posx+((i*BASE-(BASE/2))*scale)),
+                        animTime), (int)(posx+((i*BASE-(BASE/2))*scale)),
                         (int)(posy+(((j-1)*BASE+(BASE/2))*scale)));
                 }
             }

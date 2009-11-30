@@ -45,6 +45,13 @@ public class Range {
 		range.clear();
 		targets.clear();
 	}
+
+    public static boolean isIn( Tile tile ){
+        if( range.contains(tile) )
+            return true;
+        else
+            return false;
+    }
 	
 	/**
 	 * Adds a target to Range.
