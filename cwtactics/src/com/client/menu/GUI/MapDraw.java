@@ -5,6 +5,7 @@ import com.client.menu.GUI.tools.MovingPix;
 import com.client.menu.GUI.tools.PixAnimate;
 import com.client.menu.GUI.tools.PixMenu;
 import com.client.menu.logic.Menu;
+import com.client.model.Fog;
 import com.client.model.loading.ImgData;
 import com.client.model.object.Map;
 import com.client.tools.ImgLibrary;
@@ -20,6 +21,7 @@ public class MapDraw extends MovingPix{
     private final int DELAY = 25;
     public final int MAX_X = 640;
     public final int MAX_Y = 480;
+    public final Color FOG = new Color(150,150,150);
     private int udcntr;
     private int lrcntr;
     private Map map;
@@ -195,10 +197,15 @@ public class MapDraw extends MovingPix{
                 if(drawMap[i][j].change)
                     drawMap[i][j] = createNewImage(drawMap[i][j], i, j);
                 if(drawMap[i][j].terrain != null)
-                    g.drawImage(itemList.getImage(drawMap[i][j].terrain,
-                            animTime), 
-                        (int)(posx+(i*BASE*scale)),
+                    if(Fog.inFog(map.getTile(i, j))){
+                        g.drawImage(itemList.getImage(drawMap[i][j].terrain,
+                            animTime), (int)(posx+(i*BASE*scale)),
+                        (int)(posy+((j-1)*BASE*scale)), FOG);
+                    }else{
+                        g.drawImage(itemList.getImage(drawMap[i][j].terrain,
+                            animTime), (int)(posx+(i*BASE*scale)),
                         (int)(posy+((j-1)*BASE*scale)));
+                    }
                 if(showGrid){
                     g.setColor(Color.lightGray);
                     g.drawRect((int)(posx+i*BASE*scale),
@@ -206,10 +213,12 @@ public class MapDraw extends MovingPix{
                         (int)((BASE+1)*scale),
                         (int)((BASE+1)*scale));
                 }
-                if(drawMap[i][j].unit != null)
-                   g.drawImage(itemList.getImage(drawMap[i][j].unit, animTime),
-                        (int)(posx+((i*BASE-(BASE/2))*scale)),
+                if(drawMap[i][j].unit != null){
+                    if(Fog.isVisible(map.getTile(i,j).getUnit()))
+                        g.drawImage(itemList.getImage(drawMap[i][j].unit,
+                          animTime), (int)(posx+((i*BASE-(BASE/2))*scale)),
                         (int)(posy+(((j-1)*BASE+(BASE/2))*scale)));
+                }
             }
         }
         cursor.render(g);
