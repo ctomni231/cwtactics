@@ -301,6 +301,11 @@ public class ModReader extends Parser {
 		 * 		  HIDDENTARGET
 		 ****************************
 		 */
+		else if( super.getLastHeader().equals("hidden") ){
+			if( attributes.getValue("range") != null ){
+				sh.setNeedRange( Integer.parseInt(attributes.getValue("range")) );
+			}
+		}
 		else if( super.isAheader("unittarget") ){
 			
 			// create new sheet if you arrive a new XML object body and the ID isn't in the database

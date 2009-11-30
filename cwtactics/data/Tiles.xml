@@ -16,7 +16,7 @@
 		<tags>
         	<tag id="WOOD"/>
         </tags>
-		<hidden>
+		<hidden range="1" >
             <unittarget id="RECOON" range="2" />
 		</hidden>
     </field>

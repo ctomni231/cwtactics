@@ -21,6 +21,7 @@ public class ObjectSheet extends Sheet {
 	private ArrayList<Integer> tags;
 	private HashMap<Sheet, Integer> cost;
 	private HashMap<ObjectSheet,Integer>	hiddenRanges;
+	private int needRange;
 	private ArrayList<Unit_Sheed>	supplies;
 	
 	
@@ -35,6 +36,7 @@ public class ObjectSheet extends Sheet {
 	public ObjectSheet(){
 
 		vision = -1;
+		needRange = -1;
 		tags = new ArrayList<Integer>();
 		cost = new HashMap<Sheet, Integer>();
 		hiddenRanges = new HashMap<ObjectSheet,Integer>();
@@ -65,6 +67,14 @@ public class ObjectSheet extends Sheet {
 	 */
 	public void setVision(int vision) {
 		this.vision = vision;
+	}
+	
+	public int getNeedRange() {
+		return needRange;
+	}
+	
+	public void setNeedRange( int vision ){
+		this.needRange = vision;
 	}
 
 	/**
@@ -110,7 +120,7 @@ public class ObjectSheet extends Sheet {
 		
 		// all tiles are visible in any range, but hidden tiles like 
 		// forest, are only visible in a given range or less. 
-		else return -1;
+		else return needRange;
 	}
 	
 	/**
