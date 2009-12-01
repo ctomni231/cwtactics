@@ -3,6 +3,7 @@ package com.client;
 import com.client.logic.command.MessageServer;
 import com.client.logic.command.commands.ingame.*;
 import com.client.logic.status.Status;
+import com.client.model.Turn;
 import com.client.model.Weather;
 import com.client.model.object.Game;
 import com.client.model.object.Map;
@@ -64,9 +65,16 @@ public class MainGame {
     	
     	Map map = new Map(30, 20);
     	Team t = new Team();
+    	Team t2 = new Team();
     	Player p = new Player( "Alex", t );
+    	Player p2 = new Player( "Alex", t );
+    	Player p3 = new Player( "Alex", t2 );
     	Game.addPlayer(p);
+    	Game.addPlayer(p2);
+    	Game.addPlayer(p3);
     	t.addMember(p);
+    	t.addMember(p2);
+    	t2.addMember(p3);
     	for( int i = 0; i < map.getSizeX() ; i++ ){    		
     		for( int j = 0 ; j < map.getSizeY() ; j++ ){
     			if( (i == 5 && j == 5) ||
@@ -81,13 +89,21 @@ public class MainGame {
     					map.setTile( tile , i, j);
     					tile.setOwner(p);
     					p.addProperty(tile);
-    				}else{
-    					map.setTile( new Tile( Data.getTileSheet( Data.getIntegerID("FOREST")), i, j, 0, null), i, j);
     				}
-    				if( (i == 5 && j == 5) ){
-    					Unit unit = new Unit( Data.getUnitSheet( Data.getIntegerID("INFANTRY")) , p );
-    					map.getTile(i,j).setUnit( unit );
-    					p.addUnit(unit);
+    				else if( (i == 1 && j == 8) ){
+    					Tile tile =  new Tile( Data.getTileSheet( Data.getIntegerID("FACTORY") ) , i, j, 0, null);
+    					map.setTile( tile , i, j);
+    					tile.setOwner(p2);
+    					p2.addProperty(tile);
+    				}
+    				else if( (i == 5 && j == 5) ){
+    					Tile tile =  new Tile( Data.getTileSheet( Data.getIntegerID("FACTORY") ) , i, j, 0, null);
+    					map.setTile( tile , i, j);
+    					tile.setOwner(p3);
+    					p3.addProperty(tile);
+    				}
+    				else{
+    					map.setTile( new Tile( Data.getTileSheet( Data.getIntegerID("FOREST")), i, j, 0, null), i, j);
     				}
     				
     			}
@@ -98,7 +114,7 @@ public class MainGame {
     	MessageServer.toCommandList( new TestCommand(p) , false );
         Game.setMap(map);
         Status.setStatus( Status.Mode.WAIT );
-        
+        Turn.setPlayer( Game.getNextPlayer() );
         //ScriptFactory.printDatabase();
         
     	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

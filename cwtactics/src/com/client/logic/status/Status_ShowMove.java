@@ -22,9 +22,6 @@ public class Status_ShowMove implements Status_Interface {
     	// add the tile under the cursor to the move way
 		Move.toMoveWay(tile);
 		
-		// test output
-		Move.printMoveWay();
-    	
 		if( Controls.isActionClicked() ){
 			
 			// create unit menu

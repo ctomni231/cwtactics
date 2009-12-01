@@ -1,6 +1,8 @@
 package com.client.model;
 
+import com.client.model.object.Game;
 import com.client.model.object.Player;
+import com.client.model.object.Unit;
 
 public class Turn {
 
@@ -49,7 +51,16 @@ public class Turn {
 	 */
 	
 	public static void nextTurn(){
-		//TODO make logic things
+		
+		// reset units
+		for( Unit unit : getPlayer().getUnits() ){
+			unit.canAct(true);
+		}
+		
+		// set next player
+		setPlayer( Game.getNextPlayer() );
+		
+		Fog.processFog( getPlayer() );
 	}
 	
 	

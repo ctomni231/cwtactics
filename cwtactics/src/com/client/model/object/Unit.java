@@ -189,7 +189,7 @@ public class Unit {
 		return canAct;
 	}
 	
-	public void setActed( boolean value ){
+	public void canAct( boolean value ){
 		canAct = value;
 	}
 	

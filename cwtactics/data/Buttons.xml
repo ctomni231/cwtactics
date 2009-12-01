@@ -15,5 +15,10 @@
 		<name  GER="Erobern"
                ENG="Conquer" />
 	</button>
+	
+	<button ID="ATTACK" >
+		<name  GER="Angreifen"
+               ENG="Attack" />
+	</button>
 
 </buttons>

@@ -111,7 +111,8 @@ public class Game {
 		
 		// variables
 		Player player = players.get(playerPointer);
-		playerPointer = (playerPointer + 1)%players.size();	// resets automatically to zero if array list if it runs out of index
+		playerPointer++;
+		if( playerPointer == players.size()) playerPointer = 0;	// resets automatically to zero if array list if it runs out of index
 		
 		// if not alive check next player in list
 		if( !player.isAlive() ) return getNextPlayer();

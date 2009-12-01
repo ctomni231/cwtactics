@@ -18,6 +18,7 @@ public class Status_Menu implements Status_Interface {
 	
 	public void update(int timePassed, MapDraw map) {
 
+		// TODO remove action and cancel from mapdraw and menu!!
 		if( Controls.isActionDown() ){
 			switch( Menu.getType() ){
 			
@@ -53,6 +54,17 @@ public class Status_Menu implements Status_Interface {
 					
 					Menu.clearList();
 					Status.setStatus( Status.Mode.WAIT );	
+					break;
+					
+				case MAP_MENU :
+					
+					if( Menu.getSelected().getSheet().getID().equals("ENDTURN") ){
+
+						Turn.nextTurn();
+						
+						Menu.clearList();
+						Status.setStatus( Status.Mode.WAIT );
+					}
 					break;
 			}
 		}
