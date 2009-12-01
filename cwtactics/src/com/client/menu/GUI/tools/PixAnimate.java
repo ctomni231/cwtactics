@@ -49,8 +49,16 @@ public class PixAnimate {
         ImgDataParser.addForceType(code, type);
     }
 
+    public void clearData(){
+        ImgDataParser.clearData();
+    }
+
     public void loadData(){
         ImgDataParser.decodeFiles();       
+    }
+
+    public ArrayList<String> getTypes(){
+        return ImgDataParser.getTypes();
     }
 
     public ArrayList<ImgData> getData(){
@@ -190,7 +198,12 @@ public class PixAnimate {
                         new Color(data.dfltColors.get(j)),
                         new Color(unitColors.get(
                         j+data.dfltColors.size()*player).intValue()));
-            
+                }else if(data.code == data.PROPERTY &&
+                        j+data.dfltColors.size()*player < buildColors.size()){
+                    storedImg.setPixelChange(
+                        new Color(data.dfltColors.get(j)),
+                        new Color(buildColors.get(
+                        j+data.dfltColors.size()*player).intValue()));
                 }
             }
             storedImg.setImageSize(

@@ -15,13 +15,13 @@ import com.client.model.object.Unit;
 import com.system.data.sheets.Unit_Sheed;
 
 public class Status_Menu implements Status_Interface {	
-	
+
 	public void update(int timePassed, MapDraw map) {
 
 		// TODO remove action and cancel from mapdraw and menu!!
 		if( Controls.isActionDown() ){
 			switch( Menu.getType() ){
-			
+
 				case UNIT_ROOTMENU :
 					
 					Button b = Menu.getSelected();
@@ -57,8 +57,22 @@ public class Status_Menu implements Status_Interface {
 					break;
 					
 				case MAP_MENU :
-					
-					if( Menu.getSelected().getSheet().getID().equals("ENDTURN") ){
+
+                    if( Menu.getSelected().getSheet().getID().equals("AWDR") ){
+                        String[] temp = map.getTypes();
+                        map.changeType(temp[0]);
+
+                        Menu.clearList();
+						Status.setStatus( Status.Mode.WAIT );
+                    }
+                    else if( Menu.getSelected().getSheet().getID().equals("AWDS") ){
+                        String[] temp = map.getTypes();
+                        map.changeType(temp[1]);
+
+                        Menu.clearList();
+						Status.setStatus( Status.Mode.WAIT );
+                    }
+                    else if( Menu.getSelected().getSheet().getID().equals("ENDTURN") ){
 
 						Turn.nextTurn();
 						

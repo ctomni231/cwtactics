@@ -25,12 +25,14 @@ import java.util.Scanner;
 public class ImgDataParser {
     private static ArrayList<ImgData> allImg;
     private static ArrayList<Integer> defColors;
-    private static HashMap<Integer, String> preferItems = null;
+    private static HashMap<Integer, String> preferItems;
+    private static ArrayList<String> typeList;
 
     public static void init(){
         preferItems = new HashMap<Integer, String>();
         allImg = new ArrayList<ImgData>();
         defColors = new ArrayList<Integer>();
+        typeList = new ArrayList<String>();
     }
     //This class will search drawn items for a type that matches it.
     public static void addForceType(String code, String type){
@@ -41,9 +43,16 @@ public class ImgDataParser {
         return allImg;
     }
 
+    public static ArrayList<String> getTypes(){
+        return typeList;
+    }
+
     public static void clearData(){
+        if(preferItems != null)
+            preferItems.clear();
         if(allImg != null)
             allImg.clear();
+        typeList = new ArrayList<String>();
     }
 
     public static void decodeFiles(){
@@ -139,6 +148,7 @@ public class ImgDataParser {
                 continue;
             }else if(part[0].matches("TYP.*")){
                 temp.codeType = part[1];
+                addType(part[1]);
                 continue;
             }else if(part[0].matches("ARM.*")){
                 temp.army = part[1];
@@ -186,11 +196,7 @@ public class ImgDataParser {
                 }
             }
 
-            //If there is nothing preferred and this doesn't match
-            //It skips storing.
-            if(!stored.codeType.matches(temp.codeType))
-                continue;
-
+            
             //Checks for animations. These are created when two
             //items have exactly the same information except
             //for the file and location.
@@ -213,6 +219,12 @@ public class ImgDataParser {
                         break;
                 }
             }
+
+            //If there is nothing preferred and this doesn't match
+            //It skips storing.
+            if(!stored.codeType.matches(temp.codeType))
+                continue;
+            
             //Makes a new animation
             if(newAnim && (temp.tags.size() == stored.tags.size())){
                 //Makes sure only one file is saved per different animation
@@ -240,10 +252,12 @@ public class ImgDataParser {
                         stored.imgFileRef.add(tempFile);
                     }
                 }
+
                 allImg.set(i, stored);
                 return;
             }
         }
+
         temp.animRef.add((byte)0);
         allImg.add(temp);
     }
@@ -289,5 +303,10 @@ public class ImgDataParser {
                          Integer.parseInt(color[3])).getRGB());
 
         }
+    }
+
+    private static void addType(String type){
+        if(!typeList.contains(type))
+           typeList.add(type);
     }
 }

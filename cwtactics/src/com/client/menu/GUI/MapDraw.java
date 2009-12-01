@@ -33,6 +33,8 @@ public class MapDraw extends MovingPix{
     private double scale;
     private boolean showGrid;
 
+    private int column;
+
     private int mapsy;
     private int mapsx;
     private int cursorx;
@@ -61,6 +63,7 @@ public class MapDraw extends MovingPix{
         scale = itemList.getScale();
         cursorx = 0;
         cursory = 0;
+        column = 0;
         initCursor();
     }
 
@@ -105,8 +108,44 @@ public class MapDraw extends MovingPix{
         }
     }
 
+    public void changeType(String type){
+        itemList.clearData();
+        itemList.addPreferredItem("TERRAIN", type);
+        itemList.addPreferredItem("CITY", type);
+        itemList.addPreferredItem("UNIT", type);
+        itemList.loadData();
+        if(itemList.getScale() <= 0)
+            itemList.changeScale(BASE);
+        changeScale(BASE);
+    }
+
+    public void changeType(String code, String type){
+        itemList.clearData();
+        itemList.addPreferredItem(code, type);
+        itemList.loadData();
+        if(code.matches("TER.*") || code.matches("FIE.*") ||
+            code.matches("PRO.*") || code.matches("CIT.*") ||
+            code.matches("UNI.*"));
+        changeScale(BASE);
+    }
+
+    public String[] getTypes(){
+        String[] temp = new String[itemList.getTypes().size()];
+        for(int i = 0; i < temp.length; i++)
+            temp[i] = itemList.getTypes().get(i);
+        return temp;
+    }
+
     public void toggleGrid(){
         showGrid = !showGrid;
+    }
+
+    public int getColumn(){
+        return column;
+    }
+
+    public void setColumn(int index){
+        column = index;
     }
 
     public void changeScale(int tileBase){
@@ -232,7 +271,8 @@ public class MapDraw extends MovingPix{
                             (int)(BASE*scale));
                     }
                 }
-                if(drawMap[i][j].unit != null){
+                if(drawMap[i][j].unit != null &&
+                        !Fog.inFog(map.getTile(i, j))){
                     if(Fog.isVisible(map.getTile(i,j).getUnit())){
                         g.drawImage(itemList.getImage(drawMap[i][j].unit,
                         animTime), (int)(posx+((i*BASE-(BASE/2))*scale)),

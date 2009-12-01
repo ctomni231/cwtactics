@@ -247,9 +247,11 @@ public class InGameState extends SlickScreen{
                 mapScr();
         }
         
-        if(column == 0){      	
+        if(column == 0){
+            newMap.setColumn(column);
             // react on input in the correct way
             Status.update(timePassed, newMap);
+            column = newMap.getColumn();
         }
 
         // update scroll action

@@ -33,6 +33,7 @@ public class GameMenuScr {
     private int scrY;
     private int menuSize;
 
+    //Okay, make a status menu screen. This will just generate a menu.
     public GameMenuScr(TextImgLibrary txtLib, String[] data, String arrowRef,
             int width, int height){
         scr_scrollIndex = 0;

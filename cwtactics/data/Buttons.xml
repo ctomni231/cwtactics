@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <buttons>
 
+	<button ID="OPTIONS">
+		<name  GER="?"
+			ENG="Options" />
+	</button>
+
+	<button ID="AWDS">
+		<name  GER="?"
+			ENG="AWDS" />
+	</button>
+
+	<button ID="AWDR">
+		<name  GER="?"
+			ENG="AWDoR" />
+	</button>
+
+
 	<button ID="ENDTURN" >
 		<name  GER="Zug beenden"
                ENG="End Turn" />
