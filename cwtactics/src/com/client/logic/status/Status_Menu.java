@@ -58,16 +58,14 @@ public class Status_Menu implements Status_Interface {
 					
 				case MAP_MENU :
 
-                    if( Menu.getSelected().getSheet().getID().equals("AWDR") ){
-                        String[] temp = map.getTypes();
-                        map.changeType(temp[0]);
+                    if( Menu.getSelected().getSheet().getID().equals("AWDS") ){
+                        map.changeType("AWDS");
 
                         Menu.clearList();
 						Status.setStatus( Status.Mode.WAIT );
                     }
-                    else if( Menu.getSelected().getSheet().getID().equals("AWDS") ){
-                        String[] temp = map.getTypes();
-                        map.changeType(temp[1]);
+                    else if( Menu.getSelected().getSheet().getID().equals("AWDR") ){
+                        map.changeType("AWDR");
 
                         Menu.clearList();
 						Status.setStatus( Status.Mode.WAIT );

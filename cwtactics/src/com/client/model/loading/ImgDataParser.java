@@ -188,14 +188,16 @@ public class ImgDataParser {
             //art form.
             if(preferItems != null){
                 if(preferItems.containsKey((int)temp.code)){
-                    if(stored.codeType.matches(
-                            preferItems.get((int)temp.code))){
+                    if(!stored.codeType.matches(
+                            preferItems.get((int)temp.code)))
                         allImg.set(i, temp);
-                        break;
-                    }
                 }
             }
 
+            //If there is nothing preferred and this doesn't match
+            //It skips storing.
+            if(!stored.codeType.matches(temp.codeType))
+                continue;
             
             //Checks for animations. These are created when two
             //items have exactly the same information except
@@ -218,12 +220,7 @@ public class ImgDataParser {
                     if(!newAnim)
                         break;
                 }
-            }
-
-            //If there is nothing preferred and this doesn't match
-            //It skips storing.
-            if(!stored.codeType.matches(temp.codeType))
-                continue;
+            }         
             
             //Makes a new animation
             if(newAnim && (temp.tags.size() == stored.tags.size())){
