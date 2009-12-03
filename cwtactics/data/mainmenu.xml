@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <menu>
 	<screen ID="MAIN_MENU">
-		<alpha file="resources/image/menu/smallAlpha.png" />
-		<arrow file="resources/image/menu/uparrow.png" />		
+		<alpha file="image/menu/smallAlpha.png" />
+		<arrow file="image/menu/uparrow.png" />		
 
 		<title>
 			<list GER="?" 
@@ -30,7 +30,7 @@
 	</screen>
 
 	<background>
-		<prefix file="resources/image/menu/background" />
+		<prefix file="image/menu/background" />
 		<suffix file=".png" />
 		<items index="15" />
 		<user ref="bg" /> 
@@ -38,7 +38,7 @@
 	</background>
 
 	<logo>
-		<title file="resources/image/menu/cwTactics.png" />
-		<mini file="resources/image/menu/cwLogo.gif" />
+		<title file="image/menu/cwTactics.png" />
+		<mini file="image/menu/cwLogo.gif" />
 	</logo>
 </menu>

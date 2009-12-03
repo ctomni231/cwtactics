@@ -1,8 +1,8 @@
 package com.client.menu.GUI.tools;
 
-import com.client.model.loading.ImgData;
-import com.client.model.loading.ImgDataParser;
-import com.client.model.loading.ImgFile;
+import com.system.data.ImgData;
+import com.system.data.ImgDataParser;
+import com.system.data.ImgFile;
 import com.client.tools.ImgLibrary;
 import java.awt.Color;
 import java.util.ArrayList;

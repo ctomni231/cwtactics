@@ -1,4 +1,4 @@
-package com.client.model.loading;
+package com.system.data;
 
 /**
  * This holds the path to an image. It shows where to find an image

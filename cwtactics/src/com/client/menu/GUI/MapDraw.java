@@ -9,7 +9,7 @@ import com.client.menu.logic.Menu;
 import com.client.model.Fog;
 import com.client.model.Move;
 import com.client.model.Range;
-import com.client.model.loading.ImgData;
+import com.system.data.ImgData;
 import com.client.model.object.Map;
 import com.client.tools.ImgLibrary;
 import org.newdawn.slick.Color;
@@ -52,8 +52,8 @@ public class MapDraw extends MovingPix{
         mapsy = map.getSizeY();
         showGrid = false;
         itemList = new PixAnimate();
-        itemList.addBuildingChange("resources/image/plugin/PlayerBuilding.png");
-        itemList.addUnitChange("resources/image/plugin/PlayerUnit.png");
+        itemList.addBuildingChange("image/PlayerBuilding.png");
+        itemList.addUnitChange("image/PlayerUnit.png");
         itemList.loadData();
         drawMap = new MapItem[mapsx][mapsy];
         for(int i = 0; i < mapsx; i++){

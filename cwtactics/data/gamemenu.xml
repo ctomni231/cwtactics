@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <menu>
 	<screen ID="GAME MENU">
-		<alpha file="resources/image/menu/smallAlpha.png" />
-		<arrow file="resources/image/menu/uparrow.png" />
+		<alpha file="image/menu/smallAlpha.png" />
+		<arrow file="image/menu/uparrow.png" />
 
 		<main>
 			<list GER="Zurück zu Main#1"
