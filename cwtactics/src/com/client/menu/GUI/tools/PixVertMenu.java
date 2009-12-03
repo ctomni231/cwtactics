@@ -78,6 +78,14 @@ public class PixVertMenu extends PixMenu{
         vertParts.add(chng);
     }
 
+    public void clearAllVertParts(){
+        for(int i = vertParts.size()-1; i >= 0; i--)
+            menuItems.remove(vertParts.get(i));
+        vertParts.clear();
+        vertIndex.clear();
+        select = 0;
+    }
+
     public void setMaxItems(int number){
         if(number > 0){
             maxItems = number;

@@ -23,6 +23,8 @@ public class MenuReader extends Parser{
     private String ID;
     private String alphaRef;
     private String arrowRef;
+    private String unitColor;
+    private String propColor;
     private String[] titleData;
     private String[] menuData;
     private String[] exitData;
@@ -70,6 +72,12 @@ public class MenuReader extends Parser{
     public String getMiniLogo(){
         return logoMini;
     }
+    public String getUnitColorRef(){
+        return unitColor;
+    }
+    public String getPropColorRef(){
+        return propColor;
+    }
     public int getMenuJustify(){
         return menuJustify;
     }
@@ -84,55 +92,40 @@ public class MenuReader extends Parser{
     }
 
     private void backgroundEntry(Attributes attrib){
-        if(super.isAheader("prefix")){
-            bgPrefix = (attrib.getValue("file") != null) ?
-                attrib.getValue("file") : "";
-        }
-        if(super.isAheader("suffix")){
-            bgSuffix = (attrib.getValue("file") != null) ?
-                attrib.getValue("file") : "";
-        }
-        if(super.isAheader("user")){
-            bgRef = (attrib.getValue("ref") != null) ?
-                attrib.getValue("ref") : "";
-        }
-        if(super.isAheader("items")){
-            bgItems = (attrib.getValue("index") != null) ?
-                Integer.valueOf(attrib.getValue("index")) : 1;
-        }
-        if(super.isAheader("justify")){
-            menuJustify = (attrib.getValue("index") != null) ?
-                Integer.valueOf(attrib.getValue("index")) : 0;
-        }
+        if(super.isAheader("prefix"))
+            bgPrefix = fillEntry(attrib, "file");
+        if(super.isAheader("suffix"))
+            bgSuffix = fillEntry(attrib, "file");
+        if(super.isAheader("user"))
+            bgRef = fillEntry(attrib, "ref");
+        if(super.isAheader("items"))
+            bgItems = Integer.valueOf(fillEntry(attrib, "index"));
+        if(super.isAheader("justify"))
+            menuJustify = Integer.valueOf(fillEntry(attrib, "index"));
     }
 
     private void logoEntry(Attributes attrib){
         if(super.isAheader("title")){
-            logoTitle = (attrib.getValue("file") != null) ?
-                attrib.getValue("file") : "";
+            logoTitle = fillEntry(attrib, "file");
         }
         if(super.isAheader("mini")){
-            logoMini = (attrib.getValue("file") != null) ?
-                attrib.getValue("file") : "";
+            logoMini = fillEntry(attrib, "file");
         }
     }
 
     private void screenEntry(Attributes attrib){
         ID = (attrib.getValue("ID") != null) ? attrib.getValue("ID") : "";
-        if(super.isAheader("alpha")){
-            alphaRef = (attrib.getValue("file") != null) ?
-                attrib.getValue("file") : "";
-        }
-        if(super.isAheader("arrow")){
-            arrowRef = (attrib.getValue("file") != null) ?
-                attrib.getValue("file") : "";
-        }
-        
+        if(super.isAheader("alpha"))
+            alphaRef = fillEntry(attrib, "file");
+        if(super.isAheader("arrow"))
+            arrowRef = fillEntry(attrib, "file");
+        if(super.isAheader("unit"))
+            unitColor = fillEntry(attrib, "file");
+        if(super.isAheader("prop"))
+            propColor = fillEntry(attrib, "file");
         if(super.isAheader("logo")){
-            logoTitle = (attrib.getValue("titleRef") != null) ?
-                attrib.getValue("titleRef") : "";
-            logoMini = (attrib.getValue("logoRef") != null) ?
-                attrib.getValue("logoRef") : "";
+            logoTitle = fillEntry(attrib, "titleRef");
+            logoMini = fillEntry(attrib, "logoRef");
         }
         if(super.isAheader("title"))
             titleData = fillEntry(attrib, titleData);
@@ -151,10 +144,14 @@ public class MenuReader extends Parser{
             fillData = new String[temp.length+1];
             for(int i = 0; i < temp.length; i++)
                 fillData[i] = temp[i];
-            fillData[fillData.length-1] = (attrib.getValue(Data.getLanguage(
-                    )) != null) ? attrib.getValue(Data.getLanguage()) : "";
+            fillData[fillData.length-1] = fillEntry(
+                    attrib, Data.getLanguage());
         }
         return fillData;
+    }
+
+    private String fillEntry(Attributes attrib, String data){
+        return (attrib.getValue(data) != null) ? attrib.getValue(data) : "";
     }
 
 }

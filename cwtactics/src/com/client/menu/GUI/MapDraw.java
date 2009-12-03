@@ -34,6 +34,7 @@ public class MapDraw extends MovingPix{
     private boolean showGrid;
 
     private int column;
+    private int tilebase;
 
     private int mapsy;
     private int mapsx;
@@ -51,6 +52,7 @@ public class MapDraw extends MovingPix{
         mapsx = map.getSizeX();
         mapsy = map.getSizeY();
         showGrid = false;
+        tilebase = BASE;
         itemList = new PixAnimate();
         itemList.addBuildingChange("image/PlayerBuilding.png");
         itemList.addUnitChange("image/PlayerUnit.png");
@@ -114,9 +116,7 @@ public class MapDraw extends MovingPix{
         itemList.addPreferredItem("CITY", type);
         itemList.addPreferredItem("UNIT", type);
         itemList.loadData();
-        if(itemList.getScale() <= 0)
-            itemList.changeScale(BASE);
-        changeScale(BASE);
+        changeScale();
     }
 
     public void changeType(String code, String type){
@@ -126,7 +126,7 @@ public class MapDraw extends MovingPix{
         if(code.matches("TER.*") || code.matches("FIE.*") ||
             code.matches("PRO.*") || code.matches("CIT.*") ||
             code.matches("UNI.*"));
-        changeScale(BASE);
+        changeScale();
     }
 
     public String[] getTypes(){
@@ -149,7 +149,12 @@ public class MapDraw extends MovingPix{
     }
 
     public void changeScale(int tileBase){
-        itemList.changeScale(tileBase);
+        tilebase = tileBase;
+        changeScale();
+    }
+
+    public void changeScale(){
+        itemList.changeScale(tilebase);
         for(int i = 0; i < mapsx; i++){
             for(int j = 0; j < mapsy; j++)
                 drawMap[i][j] = new MapItem();
@@ -214,9 +219,24 @@ public class MapDraw extends MovingPix{
                 cursory--;
         }
 
+        //update();
+
+        if(mouseScroll != 0){
+            if(mouseScroll < 0)
+                tilebase += 2;
+            else
+                tilebase -= 2;
+            System.out.println("CURRENT TileBase: "+tilebase);
+            changeScale();
+        }
+
+        return scroll;
+    }
+
+    public void update(){
         realcurx = (int)(fposx+cursorx*BASE*scale);
         realcury = (int)(fposy+cursory*BASE*scale);
-        
+
         if(realcurx+(BASE*scale) > MAX_X-(BASE*scale))
             fposx -= (BASE*scale/2);
         else if(realcurx < (BASE*scale/2))
@@ -225,9 +245,6 @@ public class MapDraw extends MovingPix{
             fposy -= (BASE*scale/2);
         else if(realcury < (BASE*scale/2))
             fposy += (BASE*scale/2);
-
-
-        return scroll;
     }
 
     public void render(Graphics g, int animTime){
@@ -296,6 +313,10 @@ public class MapDraw extends MovingPix{
 
     public int getCursorY(){
         return cursory;
+    }
+
+    public int getTileBase(){
+        return tilebase;
     }
     
     public void updateMapItem(int x, int y){    	

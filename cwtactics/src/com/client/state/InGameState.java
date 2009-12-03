@@ -1,9 +1,7 @@
 package com.client.state;
 
 import com.client.logic.input.Controls;
-import com.client.logic.status.Status;
 import com.client.menu.GUI.MapDraw;
-import com.client.menu.logic.Menu;
 import com.client.model.object.Game;
 
 import com.client.state.mini.ExitMiniScr;
@@ -63,9 +61,8 @@ public class InGameState extends SlickScreen{
 
         exitScr = new ExitMiniScr(txtLib, reader.getExitData(),
             scr_getContainer().getWidth(), scr_getContainer().getHeight(), 1);
-        menuScr = new GameMenuScr(txtLib, reader.getMenuData(),
-                reader.getArrow(), scr_getContainer().getWidth(),
-                scr_getContainer().getHeight());
+        menuScr = new GameMenuScr(txtLib, reader.getArrow(),
+                scr_getContainer().getWidth(), scr_getContainer().getHeight());
     }
 
     
@@ -92,6 +89,8 @@ public class InGameState extends SlickScreen{
             case 2:
                 menuScr(g);
                 break;
+            default:
+                mapScr(g);
         }
     }
 
@@ -136,21 +135,27 @@ public class InGameState extends SlickScreen{
         exitScr.render(g);
     }
 
-    private void mapScr(){
-        if(scrSwitch){
-            scr_scrollInd = 10;
-            scrSwitch = false;
-        }
-        // update graphic system
-        scr_scroll = newMap.update(scr_mouseX, scr_mouseY, scr_mouseScroll,
-            scr_scroll, scr_mouseLock);
-        //Helps with scrolling
-        scr_mouseControl();
-
-        if(Menu.getList().size() > 0 && column == 0){
-            column = 2;
-            scrSwitch = true;
-        }
+    private void mapScr(int time){
+        menuScr.column = column;
+        menuScr.scrSwitch = scrSwitch;
+        menuScr.scr_mouseLock = scr_mouseLock;
+        menuScr.scr_mouseScroll = scr_mouseScroll;
+        menuScr.scr_mouseX = scr_mouseX;
+        menuScr.scr_mouseY = scr_mouseY;
+        menuScr.scr_scroll = scr_scroll;
+        menuScr.mapScr = newMap;
+        menuScr.update(txtLib, time);
+        newMap = menuScr.mapScr;
+        column = menuScr.column;
+        scrSwitch = menuScr.scrSwitch;
+        scr_mouseLock = menuScr.scr_mouseLock;
+        scr_scroll = menuScr.scr_scroll;
+        scr_scrollInd = menuScr.scr_scrollIndex;
+        if(menuScr.setLock)    scr_mouseLock();
+        scr_mouseControl(); //Makes sure you can scroll down and up
+    }
+    private void mapScr(Graphics g){
+        menuScr.render(g);
     }
 
     private void menuScr(){
@@ -161,7 +166,7 @@ public class InGameState extends SlickScreen{
         menuScr.scr_mouseX = scr_mouseX;
         menuScr.scr_mouseY = scr_mouseY;
         menuScr.scr_scroll = scr_scroll;
-        menuScr.update(txtLib);
+        //menuScr.update(txtLib);
         column = menuScr.column;
         scrSwitch = menuScr.scrSwitch;
         scr_mouseLock = menuScr.scr_mouseLock;
@@ -244,32 +249,7 @@ public class InGameState extends SlickScreen{
                 menuScr();
                 break;
             default:
-                mapScr();
-        }
-        
-        if(column == 0){
-            newMap.setColumn(column);
-            // react on input in the correct way
-            Status.update(timePassed, newMap);
-            column = newMap.getColumn();
-        }
-
-        // update scroll action
-        updateScroll();
-    }
-
-    /**
-     * Updates scroll system
-     */
-    private void updateScroll(){
-    	
-    	if(scr_mouseScroll != 0){
-            if(scr_mouseScroll < 0)
-                tileBase += 2;
-            else
-                tileBase -= 2;
-            System.out.println("CURRENT TileBase: "+tileBase);
-            newMap.changeScale(tileBase);
+                mapScr(timePassed);
         }
     }
 }

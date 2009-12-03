@@ -3,6 +3,8 @@
 	<screen ID="GAME MENU">
 		<alpha file="image/menu/smallAlpha.png" />
 		<arrow file="image/menu/uparrow.png" />
+		<unit file="image/PlayerUnit.png" />
+		<prop file="image/PlayerBuilding.png" />
 
 		<main>
 			<list GER="Zurück zu Main#1"

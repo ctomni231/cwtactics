@@ -19,7 +19,7 @@ public class Status_Menu implements Status_Interface {
 	public void update(int timePassed, MapDraw map) {
 
 		// TODO remove action and cancel from mapdraw and menu!!
-		if( Controls.isActionDown() ){
+		if( Controls.isActionClicked() ){
 			switch( Menu.getType() ){
 
 				case UNIT_ROOTMENU :

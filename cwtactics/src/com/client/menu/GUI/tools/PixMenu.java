@@ -95,6 +95,11 @@ public class PixMenu extends MovingPix{
         menuItems.add(item);
     }
 
+    public void clearAllItems(){
+        menuItems.clear();
+        select = 0;
+    }
+
     public void setOpacity(double opacity){
         if(opacity >= 0 && opacity <= 1)
             globalOpac = opacity;

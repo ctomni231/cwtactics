@@ -100,6 +100,29 @@ public class MenuDraw {
         }
     }
 
+    public void update(String[] info, TextImgLibrary tempAlpha){
+        ImgLibrary tempImg = new ImgLibrary();
+
+        menu.clearAllVertParts();
+        for(int i = 0; i < info.length; i++){
+            tempImg.addImage(setWordImage(info[i], tempAlpha));
+            for(int j = 0; j < dfltColors.length; j++)
+                tempImg.setPixelChange(dfltColors[j], chngColors[j]);
+            tempImg.addImage(setWordImage(info[i], tempAlpha));
+
+            menu.createNewItem(-5, -2, 0);
+            menu.addVertBox(i, new Color(Color.darkGray.getRed(),
+                Color.darkGray.getGreen(),
+                Color.darkGray.getBlue(), 127),
+                sizex-10, 20, true);
+            menu.createNewItem(0, 0, 0);
+
+            menu.addMenuImgPart(tempImg.getImage(0+(i*2)), "", 0.5);
+            menu.addMenuImgPart(tempImg.getImage(1+(i*2)), "", 0.5);
+            menu.addVertPart(i, true);
+        }
+    }
+
     public String getText(int index){
         return (index >= 0 && index < text.length) ?
               text[index]+"                                       " : "";
