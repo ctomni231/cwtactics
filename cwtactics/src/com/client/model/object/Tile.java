@@ -17,6 +17,9 @@ public class Tile {
 	private Tile_Sheet sheet;
 	private int		variation;
 	private int		posX,posY;
+    //JSR test variable
+    private int     spreadID;
+    private boolean change;
 
 	
 	
@@ -34,7 +37,8 @@ public class Tile {
 		this.owner	= owner;
 		this.sheet	= type;
 		this.variation = variation;
-		
+		spreadID = -1;
+        change = false;
 		//TODO capture / Property
 	}
 	
@@ -113,8 +117,23 @@ public class Tile {
 		setOwner(player);
 		player.addProperty(this);
 	}
+
+    //JSR test function
+    public int getSpreadID(){
+        return spreadID;
+    }
 	
-	
+	public void setSpreadID(int id){
+        spreadID = id;
+    }
+
+    public boolean getChange(){
+        return change;
+    }
+
+    public void setChange( boolean chng ){
+        change = chng;
+    }
 
 	/*
 	 *

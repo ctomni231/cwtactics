@@ -70,6 +70,18 @@ public class Status_Menu implements Status_Interface {
                         Menu.clearList();
 						Status.setStatus( Status.Mode.WAIT );
                     }
+                    else if( Menu.getSelected().getSheet().getID().equals("GRID") ){
+                        map.setColumn(2);
+
+                        Menu.clearList();
+						Status.setStatus( Status.Mode.WAIT );
+                    }
+                    else if( Menu.getSelected().getSheet().getID().equals("OPTIONS") ){
+                        map.setColumn(1);
+
+                        Menu.clearList();
+						Status.setStatus( Status.Mode.WAIT );
+                    }
                     else if( Menu.getSelected().getSheet().getID().equals("ENDTURN") ){
 
 						Turn.nextTurn();

@@ -113,6 +113,10 @@ public class Move {
 	public static ArrayList<Tile> getWay(){
 		return moveWay;
 	}
+
+    public static boolean inWay( Tile tile ){
+        return moveWay.contains(tile);
+    }
 	
 	public static Unit getUnit(){
 		return unit;

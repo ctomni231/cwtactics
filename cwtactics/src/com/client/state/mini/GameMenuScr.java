@@ -74,9 +74,10 @@ public class GameMenuScr {
             scrSwitch = false;
             System.out.println("TIME NEEDED TO BUILD MENU :: "+(System.currentTimeMillis() - time)+" ms");
         }
-        
+
+        scr_scrollIndex = 10;
         if(menuSize > 0){
-            scr_scrollIndex = 10;
+            
             if(!scr_mouseLock){
                 scr_scrollIndex = 2;
                 menuScr.menu.mouseSelect(scr_mouseX, scr_mouseY);
@@ -117,22 +118,6 @@ public class GameMenuScr {
             Menu.setPointer(menuScr.menu.select);
             if(Controls.isActionDown() || Controls.isCancelDown())
                 menuSize = 0;
-            //if(Controls.isActionClicked()){
-            //    if(menuScr.menu.select >= info.length){
-            //        Menu.setPointer(menuScr.menu.select-info.length);
-            //        column = 0;
-            //    }else if(info[menuScr.menu.select].split("#").length > 1)
-            //        column = Integer.parseInt(info[
-            //                menuScr.menu.select].split("#")[1]);
-            //    else
-            //        column = 0;
-            //    scrSwitch = true;
-            //}
-
-            //if(Controls.isCancelClicked()){
-            //    column = 0;
-            //    scrSwitch = true;
-            //}
         }else{
             scr_scroll = mapScr.update(scr_mouseX, scr_mouseY,
                     scr_mouseScroll, scr_scroll, scr_mouseLock);
@@ -145,6 +130,11 @@ public class GameMenuScr {
         }
         
         mapScr.update();
+
+        if(mapScr.getColumn() != 0){
+            column = mapScr.getColumn();
+            mapScr.setColumn(0);
+        }
         
     }
 

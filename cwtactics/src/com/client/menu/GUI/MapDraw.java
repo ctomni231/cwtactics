@@ -5,12 +5,13 @@ import com.client.logic.status.Status;
 import com.client.menu.GUI.tools.MovingPix;
 import com.client.menu.GUI.tools.PixAnimate;
 import com.client.menu.GUI.tools.PixMenu;
-import com.client.menu.logic.Menu;
 import com.client.model.Fog;
 import com.client.model.Move;
+import com.client.model.MoveAlt;
 import com.client.model.Range;
 import com.system.data.ImgData;
 import com.client.model.object.Map;
+import com.client.model.object.Tile;
 import com.client.tools.ImgLibrary;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -44,7 +45,8 @@ public class MapDraw extends MovingPix{
     private int realcury;
     private PixMenu cursor;
 
-    public MapDraw(Map theMap, int locx, int locy, double speed){
+    public MapDraw(Map theMap, String propRef, String unitRef,
+            int locx, int locy, double speed){
         super(locx, locy, speed);
         udcntr = 0;
         lrcntr = 0;
@@ -54,8 +56,8 @@ public class MapDraw extends MovingPix{
         showGrid = false;
         tilebase = BASE;
         itemList = new PixAnimate();
-        itemList.addBuildingChange("image/PlayerBuilding.png");
-        itemList.addUnitChange("image/PlayerUnit.png");
+        itemList.addBuildingChange(propRef);
+        itemList.addUnitChange(unitRef);
         itemList.loadData();
         drawMap = new MapItem[mapsx][mapsy];
         for(int i = 0; i < mapsx; i++){
@@ -67,6 +69,7 @@ public class MapDraw extends MovingPix{
         cursory = 0;
         column = 0;
         initCursor();
+        MoveAlt.init();
     }
 
     public void initCursor(){
@@ -197,12 +200,6 @@ public class MapDraw extends MovingPix{
             scroll = false;
         }
 
-        if(Menu.getList().size() > 0 ){
-            System.out.println("MENU APPROACHING: "+Menu.getList().size());
-            if(Menu.getList().size() != 0)
-                System.out.println("SEL BUTTON:"+ Menu.getSelected().getSheet().getName());
-        }
-
         //Makes the mouse move the cursor
         if(!mouseLock){
             speed = 2;
@@ -218,8 +215,6 @@ public class MapDraw extends MovingPix{
             else if(realcury > mouseY && cursory > 0)
                 cursory--;
         }
-
-        //update();
 
         if(mouseScroll != 0){
             if(mouseScroll < 0)
@@ -245,6 +240,109 @@ public class MapDraw extends MovingPix{
             fposy -= (BASE*scale/2);
         else if(realcury < (BASE*scale/2))
             fposy += (BASE*scale/2);
+    }
+    
+    public void updateMove(){
+        MoveAlt.spreadMove(cursorx, cursory);
+    }
+    
+    public void setMove(int move){
+        MoveAlt.clearWay();
+        if(map.getTile(cursorx, cursory).getUnit() != null){
+            MoveAlt.moveTag(
+                    map.getTile(cursorx, cursory).getUnit().sheet().
+                    getMoveRange(), cursorx, cursory);
+        }else{
+            MoveAlt.moveTag(move, cursorx, cursory);
+        }
+    }
+
+    public void draw(Graphics g, int animTime){
+        drawCursor(animTime);
+
+        renderSpeed();
+        for(int j = 0; j < mapsy; j++){
+            for(int i = 0; i < mapsx; i++){
+                if(drawMap[i][j].change)
+                    drawMap[i][j] = createNewImage(drawMap[i][j], i, j);
+                if(drawMap[i][j].terrain != null)
+                    if(Fog.inFog(map.getTile(i, j))){
+                        g.drawImage(itemList.getImage(drawMap[i][j].terrain,
+                            animTime), (int)(posx+(i*BASE*scale)),
+                        (int)(posy+((j-1)*BASE*scale)), FOG);
+                    }else{
+                        g.drawImage(itemList.getImage(drawMap[i][j].terrain,
+                            animTime), (int)(posx+(i*BASE*scale)),
+                        (int)(posy+((j-1)*BASE*scale)));
+                    }
+                if(showGrid){
+                    g.setColor(Color.lightGray);
+                    g.drawRect((int)(posx+i*BASE*scale),
+                        (int)(posy+j*BASE*scale),
+                        (int)((BASE+1)*scale),
+                        (int)((BASE+1)*scale));
+                }
+                if(Status.getStatus() == Status.Mode.SHOW_MOVE){
+                    if(Move.getTiles().containsKey(map.getTile(i, j))){
+                        g.setColor(new Color(0, 0, 255, 100));
+                        g.fillRect((int)(posx+i*BASE*scale),
+                            (int)(posy+j*BASE*scale), (int)(BASE*scale),
+                            (int)(BASE*scale));
+                    }
+                    if(Move.inWay(map.getTile(i, j))){
+                        g.setColor(new Color(0, 0, 0, 100));
+                        g.fillRect((int)(posx+i*BASE*scale),
+                            (int)(posy+j*BASE*scale), (int)(BASE*scale),
+                            (int)(BASE*scale));
+                    }
+                }
+                if(Status.getStatus() == Status.Mode.SHOW_RANGE){
+                    if(Range.isIn(map.getTile(i, j))){
+                        g.setColor(new Color(255, 0, 0, 100));
+                        g.fillRect((int)(posx+i*BASE*scale),
+                            (int)(posy+j*BASE*scale), (int)(BASE*scale),
+                            (int)(BASE*scale));
+                    }
+                }
+                if(map.getTile(i, j).getSpreadID() != -1){
+                    g.setColor(new Color(0, 100, 0, 100));
+                    g.fillRect((int)(posx+i*BASE*scale),
+                        (int)(posy+j*BASE*scale), (int)(BASE*scale),
+                        (int)(BASE*scale));
+                }
+
+
+                
+                if(drawMap[i][j].unit != null &&
+                        !Fog.inFog(map.getTile(i, j))){
+                    if(Fog.isVisible(map.getTile(i,j).getUnit())){
+                        g.drawImage(itemList.getImage(drawMap[i][j].unit,
+                        animTime), (int)(posx+((i*BASE-(BASE/2))*scale)),
+                        (int)(posy+(((j-1)*BASE+(BASE/2))*scale)));
+                        if(map.getTile(i, j).getUnit().getHealth() < 100){
+                            g.setColor(Color.white);
+                            g.drawString(""+map.getTile(i,j).getUnit().
+                               getHealth(), (int)(posx+i*BASE*scale+15*scale),
+                                (int)(posy+j*BASE*scale+18*scale));
+                        }
+                    }
+                }
+            }
+        }
+
+        for(Tile temp: MoveAlt.getWay()){
+            g.setColor(new Color(0, 0, 0, 100));
+            g.fillRect((int)(posx+temp.getPosX()*BASE*scale),
+                (int)(posy+temp.getPosY()*BASE*scale), (int)(BASE*scale),
+                (int)(BASE*scale));
+        }
+        if(MoveAlt.getWaySize() > 0){
+            g.setColor(new Color(0, 0, 0, 100));
+            g.fillRect((int)(posx+cursorx*BASE*scale),
+                (int)(posy+cursory*BASE*scale), (int)(BASE*scale),
+                (int)(BASE*scale));
+        }
+        cursor.render(g);
     }
 
     public void render(Graphics g, int animTime){
@@ -275,6 +373,12 @@ public class MapDraw extends MovingPix{
                 if(Status.getStatus() == Status.Mode.SHOW_MOVE){
                     if(Move.getTiles().containsKey(map.getTile(i, j))){
                         g.setColor(new Color(0, 0, 255, 100));
+                        g.fillRect((int)(posx+i*BASE*scale),
+                            (int)(posy+j*BASE*scale), (int)(BASE*scale),
+                            (int)(BASE*scale));
+                    }
+                    if(Move.inWay(map.getTile(i, j))){
+                        g.setColor(new Color(0, 0, 0, 100));
                         g.fillRect((int)(posx+i*BASE*scale),
                             (int)(posy+j*BASE*scale), (int)(BASE*scale),
                             (int)(BASE*scale));

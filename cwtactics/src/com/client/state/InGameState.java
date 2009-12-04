@@ -28,7 +28,6 @@ public class InGameState extends SlickScreen{
 	
     private MapDraw newMap;
     private int enterState;
-    private int tileBase;
 
     private MenuReader reader;
     private boolean scrSwitch;
@@ -46,8 +45,7 @@ public class InGameState extends SlickScreen{
      * 
      */
     
-    public InGameState(){
-        tileBase = 32;     
+    public InGameState(){    
         column = 0;
         scrSwitch = true;
         reader = new MenuReader("data/gamemenu.xml");
@@ -56,8 +54,8 @@ public class InGameState extends SlickScreen{
 
     @Override
     public void init() {
-        newMap = new MapDraw(Game.getMap(), 10, 10, 0);
-        newMap.changeScale(tileBase);
+        newMap = new MapDraw(Game.getMap(), reader.getPropColorRef(),
+                reader.getUnitColorRef(), 10, 10, 0);
 
         exitScr = new ExitMiniScr(txtLib, reader.getExitData(),
             scr_getContainer().getWidth(), scr_getContainer().getHeight(), 1);
@@ -159,24 +157,25 @@ public class InGameState extends SlickScreen{
     }
 
     private void menuScr(){
-        menuScr.column = column;
-        menuScr.scrSwitch = scrSwitch;
-        menuScr.scr_mouseLock = scr_mouseLock;
-        menuScr.scr_mouseScroll = scr_mouseScroll;
-        menuScr.scr_mouseX = scr_mouseX;
-        menuScr.scr_mouseY = scr_mouseY;
-        menuScr.scr_scroll = scr_scroll;
-        //menuScr.update(txtLib);
-        column = menuScr.column;
-        scrSwitch = menuScr.scrSwitch;
-        scr_mouseLock = menuScr.scr_mouseLock;
-        scr_scroll = menuScr.scr_scroll;
-        scr_scrollInd = menuScr.scr_scrollIndex;
-        if(menuScr.setLock)    scr_mouseLock();
-        scr_mouseControl(); //Makes sure you can scroll down and up
+        if(scrSwitch){
+            scrSwitch = false;
+        }
+
+        scr_scroll = newMap.update(scr_mouseX, scr_mouseY, scr_mouseScroll,
+                scr_scroll, scr_mouseLock);
+        newMap.update();
+        newMap.updateMove();
+
+        if(Controls.isActionClicked()){
+            newMap.setMove(10000);
+        }
+        if(Controls.isCancelClicked()){
+            column = 0;
+            scrSwitch = true;
+        }
     }
     private void menuScr(Graphics g){
-        menuScr.render(g);
+        newMap.draw(g, scr_sysTime);
     }
 
     private void mainScr(){

@@ -6,13 +6,18 @@
 			ENG="Options" />
 	</button>
 
-	<button ID="AWDS">
+	<button ID="GRID">
 		<name  GER="?"
+			ENG="Grid" />
+	</button>
+
+	<button ID="AWDS">
+		<name  GER="AWDS"
 			ENG="AWDS" />
 	</button>
 
 	<button ID="AWDR">
-		<name  GER="?"
+		<name  GER="AWDC"
 			ENG="AWDoR" />
 	</button>
 

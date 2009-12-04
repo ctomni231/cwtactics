@@ -159,6 +159,8 @@ public class Menu {
 		// add buttons
         addButton( new Button( Button.ButtonType.NORMAL ,  Data.getEntrySheet( Data.getIntegerID("AWDR")) ) );
         addButton( new Button( Button.ButtonType.NORMAL ,  Data.getEntrySheet( Data.getIntegerID("AWDS")) ) );
+        addButton( new Button( Button.ButtonType.NORMAL ,  Data.getEntrySheet( Data.getIntegerID("GRID")) ) );
+        addButton( new Button( Button.ButtonType.NORMAL ,  Data.getEntrySheet( Data.getIntegerID("OPTIONS")) ) );
 		addButton( new Button( Button.ButtonType.NORMAL ,  Data.getEntrySheet( Data.getIntegerID("ENDTURN")) ) );
 		
 		// complete menu
