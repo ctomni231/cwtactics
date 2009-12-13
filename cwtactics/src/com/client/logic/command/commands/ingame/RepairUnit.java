@@ -40,7 +40,6 @@ public class RepairUnit implements Command {
 	 */
 	
 	public void doCommand() {
-		
 		unit.increaseHealth(health);
 	}
 

@@ -2,6 +2,8 @@ package com.client.model.object;
 
 import java.util.ArrayList;
 
+import com.system.data.Data;
+
 public class Game {
 
 	/*
@@ -48,10 +50,12 @@ public class Game {
 		Game.map = map;
 	}
 	
-	public static void addPlayer( Player player ){
+	public static void addPlayer( Player player , Team team ){
 		players.add(player);
+		team.addMember(player);
 	}
 	
+	@Deprecated
 	public static void removePlayer( Player player ){
 		players.remove(player);
 	}
@@ -107,7 +111,48 @@ public class Game {
 		teams.trimToSize();
 	}
 
+	public static Player getMaster(){
+		
+		// return first alive player, he is all time the master
+		for( Player player : getPlayers() ){
+			if( player.isAlive() ) return player;
+		}
+		
+		// return null if all dead
+		return null;
+	}
+	
 	public static Player getNextPlayer(){
+		
+		// check game status
+		if( !hasEnoughTeams() ){
+			
+			// the next player is the same as the current ? That's definitely an error
+			System.err.println("Something goes wrong in Game, all next players are dead....");
+			System.exit(1);
+			return null;
+		}
+		
+		return findNextPlayer();
+	}
+	
+	public static boolean hasEnoughTeams(){
+		
+		int count = 0;
+		for( Team t : teams ){
+			
+			// is that team alive, then increase counter
+			if( t.isAlive() ) count++;
+			
+			// if two teams live, then the game can go on
+			if( count == 2 ) return true;
+		}
+		
+		// not enough teams live
+		return false;
+	}
+	
+	private static Player findNextPlayer(){
 		
 		// variables
 		Player player = players.get(playerPointer);
@@ -118,6 +163,21 @@ public class Game {
 		if( !player.isAlive() ) return getNextPlayer();
 		else return player;
 	}
+	
+	public static boolean checkPlayerStatus( Player player ){
+		
+		//TODO implement checkMode, complete all logic!
+		
+		// has headquarters ?
+		boolean hq = false;
+		for( Tile tile : player.getProperties() ){
+			if( tile.sheet().hasTag( Data.getIntegerTagID("HQ") ) ) hq = true; 
+		}
+		if( !hq ) return false;
+
+		return true;
+	}
+	
 
 	
 	/*

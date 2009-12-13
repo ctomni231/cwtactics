@@ -3,10 +3,9 @@ package com.system.data.script;
 import com.client.model.Weather;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
-import com.system.ID;
-import com.system.ID.Relationship;
-import com.system.ID.TriggerTest;
 import com.system.data.Data;
+import com.system.data.script.ScriptLogic.Relationship;
+import com.system.data.script.ScriptLogic.TriggerTest;
 
 public class SingleCondition {
 
@@ -17,8 +16,8 @@ public class SingleCondition {
 	 * 
 	 */
 
-	private ID.TriggerTest 	condition;
-	private ID.Relationship relationship;
+	private TriggerTest 	condition;
+	private Relationship relationship;
 	private int 			value;
 
 	/*
@@ -174,7 +173,7 @@ public class SingleCondition {
 			case FUEL_OF_UNIT :
 				
 				if( Trigger_Object.getField1().getUnit() == null ) break;
-				if( value == ID.FULL ) value = Trigger_Object.getField1().getUnit().sheet().getFuel();
+				if( value == ScriptLogic.FULL ) value = Trigger_Object.getField1().getUnit().sheet().getFuel();
 				
 				switch(relationship){
 					case IS :
@@ -199,7 +198,7 @@ public class SingleCondition {
 			case AMMO_OF_UNIT :
 
 				if( Trigger_Object.getField1().getUnit() == null ) break;
-				if( value == ID.FULL ) value = Trigger_Object.getField1().getUnit().sheet().getAmmo();
+				if( value == ScriptLogic.FULL ) value = Trigger_Object.getField1().getUnit().sheet().getAmmo();
 				
 				switch(relationship){
 					case IS :
@@ -225,7 +224,7 @@ public class SingleCondition {
 
 				if( Trigger_Object.getField1().getUnit() == null ) break;
 				// 999999 is the code for full health
-				if( value == ID.FULL ) value = 99;
+				if( value == ScriptLogic.FULL ) value = 99;
 				
 				switch(relationship){
 					case IS :
@@ -251,16 +250,16 @@ public class SingleCondition {
 				if( Trigger_Object.getField1().getUnit() == null ) break;
 				switch(relationship){
 					case CAN_PAY_REPAIR :
-						if( value == ID.UNIT && field1.sheet().canPay( field1.sheet().getRepairCost( unit1.sheet() , 20 ), field1.getOwner() ) ) return true;
-						else if( value == ID.UNIT2 && field1.sheet().canPay( field1.sheet().getRepairCost( unit2.sheet() , 20 ), field1.getOwner() ) ) return true;
+						if( value == ScriptLogic.UNIT && field1.sheet().canPay( field1.sheet().getRepairCost( unit1.sheet() , 20 ), field1.getOwner() ) ) return true;
+						else if( value == ScriptLogic.UNIT2 && field1.sheet().canPay( field1.sheet().getRepairCost( unit2.sheet() , 20 ), field1.getOwner() ) ) return true;
 						break;
 					case CAN_REPAIR :
-						if( value == ID.UNIT && field1.sheet().canRepair( unit1.sheet() ) ) return true;
-						else if( value == ID.UNIT2 && field1.sheet().canRepair( unit2.sheet() ) ) return true;
+						if( value == ScriptLogic.UNIT && field1.sheet().canRepair( unit1.sheet() ) ) return true;
+						else if( value == ScriptLogic.UNIT2 && field1.sheet().canRepair( unit2.sheet() ) ) return true;
 						break;
 					case IS_OWNER_OF :
-						if( value == ID.UNIT && unit1.getOwner() != field1.getOwner() ) return true;
-						else if( value == ID.UNIT2 && unit2.getOwner() != field1.getOwner() ) return true;
+						if( value == ScriptLogic.UNIT && unit1.getOwner() != field1.getOwner() ) return true;
+						else if( value == ScriptLogic.UNIT2 && unit2.getOwner() != field1.getOwner() ) return true;
 						break;
 				}
 				break;
@@ -270,8 +269,8 @@ public class SingleCondition {
 				if( Trigger_Object.getField1().getUnit() == null ) break;
 				switch(relationship){
 					case IS_OWNER_OF :
-						if( value == ID.UNIT && unit1.getOwner() != field1.getOwner() ) return true;
-						else if( value == ID.UNIT2 && unit2.getOwner() != field1.getOwner() ) return true;
+						if( value == ScriptLogic.UNIT && unit1.getOwner() != field1.getOwner() ) return true;
+						else if( value == ScriptLogic.UNIT2 && unit2.getOwner() != field1.getOwner() ) return true;
 						break;
 				}
 				break;

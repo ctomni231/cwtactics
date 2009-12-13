@@ -1,17 +1,13 @@
 package com.client.model;
 
 import java.util.ArrayList;
-
-//import object.Field;
-//import object.Map;
-
 import com.client.model.object.Game;
 import com.client.model.object.Player;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
-import com.system.ID;
 import com.system.data.script.ScriptFactory;
 import com.system.data.script.Trigger_Object;
+import com.system.data.script.ScriptLogic;
 import com.system.data.sheets.ObjectSheet;
 import com.system.data.sheets.Tile_Sheet;
 import com.system.data.sheets.Unit_Sheed;
@@ -89,7 +85,7 @@ public class Fog {
 	public static boolean inFog( Tile tile ){
 		
 		// if no fog exist, a tile is all time visible
-		if( noFog ) return true;
+		if( noFog ) return false;
 		
 		// if the tile is in visible array, return true
 		if( visibleTiles.contains(tile) ) return false;
@@ -120,11 +116,15 @@ public class Fog {
 	 * ! Also in no fog mode is the fog checked to 
 	 *   check hidden units and tiles.
 	 */
-	public static void processFog( Player player ){
+	public static void processFog(){
+		processFog( Instance.getCurPlayer() );
+	}
+	
+	private static void processFog( Player player ){
     		
 		// clear old
 		clear();
-
+		
     	// check up all visions from properties and units
     	for( Player pl : player.getTeam().getMembers() ){
     		    		
@@ -133,7 +133,7 @@ public class Fog {
     			
     			clearSightAddon();
     			Trigger_Object.triggerCall(tile, null);
-    			ScriptFactory.checkAll( ID.Trigger.VISION_TILE );
+    			ScriptFactory.checkAll( ScriptLogic.Trigger.VISION_TILE );
     			vision(tile, tile.sheet()); 
     		}
     		
@@ -144,7 +144,7 @@ public class Fog {
     			
     			clearSightAddon();
     			Trigger_Object.triggerCall( tile , null);
-    			ScriptFactory.checkAll( ID.Trigger.VISION_UNIT );
+    			ScriptFactory.checkAll( ScriptLogic.Trigger.VISION_UNIT );
     			vision( tile , unit.sheet() );
     		}
     	}

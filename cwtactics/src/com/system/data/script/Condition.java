@@ -79,10 +79,10 @@ public class Condition {
 			cond = s.split(" ");
 
 			conditions.add( new SingleCondition(
-				ScriptFactory.getCondition( cond[0]),
-				ScriptFactory.getRelation( cond[1]),
-				ScriptFactory.getValue( cond[2])
-			) );
+				ScriptLogic.getCondition( cond[0]),
+				ScriptLogic.getRelation( cond[1]),
+				ScriptLogic.getValue( cond[2]) ) 
+			);
 		}
 	}
 

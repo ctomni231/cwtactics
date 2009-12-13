@@ -1,45 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <buttons>
 
-	<button ID="OPTIONS">
-		<name  GER="?"
-			ENG="Options" />
-	</button>
+	<button ID="OPTIONS"></button>
 
-	<button ID="GRID">
-		<name  GER="?"
-			ENG="Grid" />
-	</button>
+	<button ID="GRID"></button>
 
-	<button ID="AWDS">
-		<name  GER="AWDS"
-			ENG="AWDS" />
-	</button>
+	<button ID="AWDS"></button>
 
-	<button ID="AWDR">
-		<name  GER="AWDC"
-			ENG="AWDoR" />
-	</button>
+	<button ID="AWDR"></button>
 
 
-	<button ID="ENDTURN" >
-		<name  GER="Zug beenden"
-               ENG="End Turn" />
-	</button>
+	<button ID="ENDTURN" ></button>
 	
-	<button ID="WAIT" >
-		<name  GER="Warten"
-               ENG="Wait" />
-	</button>
+	<button ID="WAIT" ></button>
 	
-	<button ID="CAPTURE" >
-		<name  GER="Erobern"
-               ENG="Conquer" />
-	</button>
+	<button ID="CAPTURE" ></button>
 	
-	<button ID="ATTACK" >
-		<name  GER="Angreifen"
-               ENG="Attack" />
-	</button>
+	<button ID="ATTACK" ></button>
 
 </buttons>

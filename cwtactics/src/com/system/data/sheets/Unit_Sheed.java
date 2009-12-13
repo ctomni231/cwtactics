@@ -22,6 +22,7 @@ public class Unit_Sheed extends ObjectSheet {
 	private int 	fuel;
 	private int		ammo;
 	private int		canLoad;
+	private int		unitLevel;
 	
 	private ArrayList<Weapon_Sheed> weapons;
 	private ArrayList<Unit_Sheed>	loads;
@@ -261,5 +262,12 @@ public class Unit_Sheed extends ObjectSheet {
 		else return fuelResupplyCost.get(resID);
 	}
 	
+	public int getLevel(){
+		return unitLevel;
+	}
+	
+	public void setLevel( int level ){
+		unitLevel = level;
+	}
 }
 

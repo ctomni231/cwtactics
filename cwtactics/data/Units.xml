@@ -2,339 +2,123 @@
 <untis>
 
 	<unit ID="INFANTRY">
-        <name GER="Infanterie" ENG="Infantry" />
         <cost ressource_0="1500" />
-        <movement range="3" type="MV_INFANTRY" vision="2" capture="15" weight="1" />
+        <movement level="6" range="3" type="MV_INFANTRY" vision="2" capture="15" weight="1" />
         <fuel amount="99" />
-        <tags> <tag id="GROUND"/><tag id="FOOT"/><tag id="SOLDIER"/> </tags>
+        <tags> <tag id="GROUND"/><tag id="FOOT"/><tag id="SOFT"/> </tags>
         <combat ammo="-1">
-            <weapon_1     GER="Masch. Gewehr"
-                          ENG="Machine-Gun"
-                          useAmmo="-1"   />
+            <weapon id="WP_MG"/>
         </combat>
-        <damage>
-            <enemy id="LTANK"      wp1_damage="5"  />
-            <enemy id="MDTANK"     wp1_damage="1"  />
-            <enemy id="HTANK"      wp1_damage="1"  />
-            <enemy id="THUNT"      wp1_damage="1"  />
-            <enemy id="PAK"        wp1_damage="15"  />
-            <enemy id="INFANTRY"   wp1_damage="55" />
-            <enemy id="MECH"       wp1_damage="45" />
-            <enemy id="AATANK"     wp1_damage="5"  />
-            <enemy id="ARTILLERY"  wp1_damage="15" />
-            <enemy id="APC"        wp1_damage="14" />
-            <enemy id="AAROCKET"   wp1_damage="26" />
-            <enemy id="RECOON"     wp1_damage="12" />
-            <enemy id="ROCKET"     wp1_damage="25" />
-        </damage>
     </unit>
     
     <unit ID="MECH">
-        <name GER="Bazooka"
-              ENG="MECH" />
         <cost ressource_0="2500" />
-        <movement range="2" type="MV_BAZOOKA" vision="2" capture="15" weight="1" />
+        <movement level="6" range="2" type="MV_BAZOOKA" vision="2" capture="15" weight="1" />
         <fuel amount="70" />
         <tags>
-        	<tag id="GROUND"/> <tag id="FOOT"/><tag id="SOLDIER"></tag>
+        	<tag id="GROUND"/><tag id="SOLDIER"/><tag id="SOFT"/>
         </tags>
         <combat ammo="3">
-            <weapon_1 GER="Bazooka"
-					  ENG="Bazooka"
-					  useAmmo="1"   />
-            <weapon_2 GER="MG"
-					  ENG="Machine-Gun"
-					  useAmmo="-1"   />
+			<weapon id="WP_BAZOOKA"/>
+            <weapon id="WP_MG"/>
         </combat>
-        <damage>
-            <enemy id="LTANK"      wp1_damage="55" />
-            <enemy id="MDTANK"     wp1_damage="15" />
-            <enemy id="HTANK"      wp1_damage="8"  />
-            <enemy id="INFANTRY"   					wp2_damage="65" />
-            <enemy id="MECH"       					wp2_damage="55" />
-            <enemy id="PAK"        wp1_damage="40"  wp2_damage="15"/>
-            <enemy id="AATANK"     wp1_damage="65" />
-            <enemy id="ARTILLERY"  wp1_damage="70" />
-            <enemy id="APC"        wp1_damage="75" />
-            <enemy id="BHELI"      					wp2_damage="30" />
-            <enemy id="THELI"      					wp2_damage="35" />
-            <enemy id="AAROCKET"   wp1_damage="85" />
-            <enemy id="RECOON"     wp1_damage="85" />
-            <enemy id="ROCKET"     wp1_damage="85" />
-        </damage>
     </unit>
     
     <unit ID="MOTORBIKE">
-        <name GER="Motorad"
-              ENG="Motorbike" />
         <cost ressource_0="2500" />
-        <movement range="5" type="MV_TIRE_B" vision="2" capture="15" weight="1" />
+        <movement level="0" range="5" type="MV_TIRE_B" vision="2" capture="15" weight="1" />
         <fuel amount="70" />
-        <tags> <tag id="GROUND" /><tag id="BIKE"/><tag id="VEHICLE"></tag> </tags>
+        <tags> <tag id="GROUND" /><tag id="BIKE"/> </tags>
         <combat ammo="-1">
-            <weapon_1 GER="MG"
-					  ENG="MG"
-					  useAmmo="-1"   ></weapon_1>
+            <weapon id="WP_MG"/>
         </combat>
-        <damage>
-            <enemy id="LTANK"      wp1_damage="5" />
-            <enemy id="MDTANK"     wp1_damage="1" />
-            <enemy id="HTANK"      wp1_damage="1"  />
-            <enemy id="INFANTRY"   wp1_damage="65" />
-            <enemy id="MECH"       wp1_damage="55" />
-            <enemy id="PAK"        wp1_damage="35"/>
-            <enemy id="AATANK"     wp1_damage="10" />
-            <enemy id="ARTILLERY"  wp1_damage="20" />
-            <enemy id="APC"        wp1_damage="25" />
-            <enemy id="BHELI"      wp1_damage="30" />
-            <enemy id="THELI"      wp1_damage="35" />
-            <enemy id="AAROCKET"   wp1_damage="25" />
-            <enemy id="RECOON"     wp1_damage="45" />
-            <enemy id="ROCKET"     wp1_damage="25" />
-        </damage>
     </unit>
     
 	<unit ID="RECOON">
-        <name GER="Spaeher"
-              ENG="Recoon"     />
         <cost ressource_0="4000" />
         <movement range="8" type="MV_TIRE_A" vision="5" weight="1" />
         <fuel amount="80" />
-        <tags> <tag id="GROUND"/> <tag id="VEHICLE"/> <tag id="SCOUT" /> <tag id="ANTI_FOOT" /> </tags>
+        <tags> <tag id="GROUND"/> <tag id="VEHICLE"/> <tag id="SCOUT" /> </tags>
         <combat ammo="-1" >
-            <weapon_1    GER="MG"
-                         ENG="Machine-Gun"
-                         useAmmo="-1"   />
+            <weapon id="WP_BAZOOKA"/>
         </combat>
-        <damage>
-            <enemy id="LTANK"      wp1_damage="6" />
-            <enemy id="MDTANK"     wp1_damage="1" />
-            <enemy id="HTANK"      wp1_damage="1" />
-            <enemy id="INFANTRY"   wp1_damage="80" />
-            <enemy id="MECH"       wp1_damage="65" />
-            <enemy id="AATANK"     wp1_damage="4" />
-            <enemy id="ARTILLERY"  wp1_damage="45" />
-            <enemy id="APC"        wp1_damage="45" />
-            <enemy id="AAROCKET"   wp1_damage="28" />
-            <enemy id="RECOON"     wp1_damage="35" />
-            <enemy id="ROCKET"     wp1_damage="55" />
-            <enemy id="THUNT"      wp1_damage="25"  />
-            <enemy id="PAK"        wp1_damage="30"  />
-        </damage>
     </unit>
 	
 	 <unit ID="LTANK">
-        <name GER="Lt. Panzer"
-              ENG="Tank"     />
         <cost ressource_0="7000" />
-        <movement range="6" type="MV_TANK" vision="3" weight="2" />
+        <movement level="0" range="6" type="MV_TANK" vision="3" weight="2" />
         <fuel amount="70" />
         <tags> <tag id="GROUND"/> <tag id="TANK"/> </tags>
         <combat ammo="6" >
-            <weapon_1    GER="Kanone"
-                         ENG="Cannon"
-                         useAmmo="1"   />
-            <weapon_2    GER="Maschinengewehr"
-                         ENG="Machine-Gun"
-                         useAmmo="-1"  />
+            <weapon id="WP_LT_CANNON"/>
+            <weapon id="WP_MG"/>
         </combat>
-        <damage>
-            <enemy id="LTANK"      wp1_damage="55" wp2_damage="5" />
-            <enemy id="MDTANK"     wp1_damage="15" wp2_damage="2" />
-            <enemy id="HTANK"      wp1_damage="10" wp2_damage="1" />
-            <enemy id="INFANTRY"   wp1_damage="75" wp2_damage="45" />
-            <enemy id="MECH"       wp1_damage="70" wp2_damage="35" />
-            <enemy id="PAK"        wp1_damage="35"  />
-            <enemy id="AATANK"     wp1_damage="65" wp2_damage="5" />
-            <enemy id="ARTILLERY"  wp1_damage="70" wp2_damage="10" />
-            <enemy id="APC"        wp1_damage="75" wp2_damage="10" />
-            <enemy id="BHELI"                      wp2_damage="5" />
-            <enemy id="THELI"                      wp2_damage="10" />
-            <enemy id="AAROCKET"   wp1_damage="85" wp2_damage="10" />
-            <enemy id="RECOON"     wp1_damage="85" wp2_damage="15" />
-            <enemy id="ROCKET"     wp1_damage="85" wp2_damage="10" />
-            <enemy id="LANDER"     wp1_damage="10"                 />
-        </damage>
     </unit>
     
     <unit ID="PAK">
-        <name GER="PaK"
-              ENG="Anti-Tank"     />
         <cost ressource_0="11000" />
-        <movement range="4" type="MV_TIRE_B" vision="2" weight="2" />
+        <movement level="0" range="4" type="MV_TIRE_B" vision="2" weight="2" />
         <fuel amount="40" />
-        <tags> <tag id="GROUND"/> <tag id="FOOT"/> <tag id="ANTI_TANK" /> </tags>
+        <tags> <tag id="GROUND"/> <tag id="VEHICLE"/> <tag id="ANTI_TANK" /> </tags>
         <combat ammo="6" >
-            <weapon_1    GER="Kanone"
-                         ENG="Cannon"
-                         useAmmo="1"  minrange="1" maxrange="3" indirect="3" />
+        	<weapon id="WP_HV_AT"/>
         </combat>
-        <damage>
-            <enemy id="LTANK"      wp1_damage="60" />
-            <enemy id="MDTANK"     wp1_damage="50" />
-            <enemy id="HTANK"      wp1_damage="40" />
-            <enemy id="AATANK"     wp1_damage="50" />
-            <enemy id="ARTILLERY"  wp1_damage="40" />
-            <enemy id="APC"        wp1_damage="40" />
-            <enemy id="AAROCKET"   wp1_damage="40" />
-            <enemy id="RECOON"     wp1_damage="35" />
-            <enemy id="ROCKET"     wp1_damage="40" />
-            <enemy id="LANDER"     wp1_damage="10" />
-            <enemy id="THUNT"      wp1_damage="25" />
-            <enemy id="PAK"        wp1_damage="30" />
-        </damage>
     </unit>
 
     <unit ID="MDTANK">
-        <name GER="Kampfpanzer"
-              ENG="Heavy Tank" />
         <cost ressource_0="12000" />
-        <movement range="5" type="MV_TANK" vision="2" weight="2" />
+        <movement level="0" range="5" type="MV_TANK" vision="2" weight="2" />
         <fuel amount="50" />
         <tags>
         	<tag id="GROUND"/> <tag id="TANK"/>
         </tags>
         <combat ammo="5" >
-          <weapon_1  GER="Kanone"
-                     ENG="Cannon"
-                     useAmmo="1"    />
-          <weapon_2  GER="MG"
-                     ENG="Machine-Gun"
-                     useAmmo="-1"  />
+          <weapon id="WP_MD_CANNON"/>
+          <weapon id="WP_MG"/>
         </combat>
-        <damage>
-            <enemy id="LTANK"      wp1_damage="85"  />
-            <enemy id="MDTANK"     wp1_damage="55"  />
-            <enemy id="HTANK"      wp1_damage="25"  />
-            <enemy id="INFANTRY"   wp1_damage="105" />
-            <enemy id="MECH"       wp1_damage="95"  />
-            <enemy id="AATANK"     wp1_damage="105" />
-            <enemy id="ARTILLERY"  wp1_damage="105" />
-            <enemy id="APC"        wp1_damage="105" />
-            <enemy id="AAROCKET"   wp1_damage="105" />
-            <enemy id="RECOON"     wp1_damage="105" />
-            <enemy id="ROCKET"     wp1_damage="105" />
-            <enemy id="LANDER"     wp1_damage="35"  />
-            <enemy id="THUNT"      wp1_damage="30"  />
-            <enemy id="PAK"        wp1_damage="25"  />
-        </damage>
-        <sprite  sprites="4" movesprites="6" time="250" movetime="125" />
     </unit>
 
     <unit ID="HTANK">
-        <name GER="Kreuzerpanzer"
-              ENG="War Tank"     />
         <cost ressource_0="16000" />
-        <movement range="4" type="MV_TANK" vision="1" weight="3" />
+        <movement level="0" range="4" type="MV_TANK" vision="1" weight="3" />
         <fuel amount="50" />
         <tags> <tag id="GROUND"/> <tag id="TANK"/>  <tag id="HEAVY_TANK" /> </tags>
         <combat ammo="3" >
-          <weapon_1  GER="Kanone"
-                     ENG="Cannon"
-                     useAmmo="1"   />
-          <weapon_2  GER="MG"
-                     ENG="Machine-Gun"
-                     useAmmo="-1"   />
+          <weapon id="WP_HV_CANNON"/>
+          <weapon id="WP_MG"/>
         </combat>
-        <damage>
-            <enemy id="LTANK"      wp1_damage="180" />
-            <enemy id="MDTANK"     wp1_damage="125" />
-            <enemy id="HTANK"      wp1_damage="65" />
-            <enemy id="INFANTRY"   wp1_damage="135" />
-            <enemy id="MECH"       wp1_damage="125" />
-            <enemy id="AATANK"     wp1_damage="195" />
-            <enemy id="ARTILLERY"  wp1_damage="195" />
-            <enemy id="APC"        wp1_damage="195" />
-            <enemy id="AAROCKET"   wp1_damage="195" />
-            <enemy id="RECOON"     wp1_damage="195" />
-            <enemy id="ROCKET"     wp1_damage="195" />
-            <enemy id="LANDER"     wp1_damage="75" />
-            <enemy id="THUNT"      wp1_damage="40"  />
-            <enemy id="PAK"        wp1_damage="30"  />
-        </damage>
     </unit>
 	
 	<unit ID="AATANK">
-        <name GER="Flakpanzer"
-              ENG="AA Tank"     />
         <cost ressource_0="7000" />
-        <movement range="6" type="MV_TANK" vision="3"  weight="2" />
+        <movement level="0" range="6" type="MV_TANK" vision="3"  weight="2" />
         <fuel amount="60" />
         <tags>
-        	<tag id="GROUND"/> <tag id="TANK"/> <tag id="ANTI_AIR" /> <tag id="ANTI_FOOT" />
+        	<tag id="GROUND"/> <tag id="TANK"/> <tag id="ANTI_AIR" />
         </tags>
         <combat ammo="6" >
-            <weapon_1  GER="Flak"
-                       ENG="Flak"
-                       useAmmo="1"    />
-            <weapon_2  GER="MG"
-                       ENG="Machine_Gun"
-                       useAmmo="-1"   />
+            <weapon id="WP_AA_CANNON"/>
+            <weapon id="WP_AAGROUND_CANNON"/>
+            <weapon id="WP_MG"/>
         </combat>
-        <damage>
-            <enemy id="LTANK"      wp1_damage="25" />
-            <enemy id="MDTANK"     wp1_damage="10" />
-            <enemy id="HTANK"      wp1_damage="1" />
-            <enemy id="INFANTRY"   wp1_damage="105" />
-            <enemy id="MECH"       wp1_damage="105" />
-            <enemy id="AATANK"     wp1_damage="45" />
-            <enemy id="ARTILLERY"  wp1_damage="50" />
-            <enemy id="APC"        wp1_damage="50" />
-            <enemy id="BHELI"      wp1_damage="120" />
-            <enemy id="BOMB"       wp1_damage="75" />
-            <enemy id="THELI"      wp1_damage="120" />
-            <enemy id="STEALTH"    wp1_damage="75" />
-            <enemy id="AAROCKET"   wp1_damage="55" />
-            <enemy id="JET"        wp1_damage="65" />
-            <enemy id="RECOON"     wp1_damage="60" />
-            <enemy id="ROCKET"     wp1_damage="55" />
-            <enemy id="THUNT"      wp1_damage="5"  />
-            <enemy id="PAK"        wp1_damage="15"  />
-            <enemy id="MRF"        wp1_damage="85"  />
-        </damage>
     </unit>
 	
 	<unit ID="ARTILLERY">
-        <name GER="Artillerie"
-              ENG="Artillery"     />
         <cost ressource_0="6000" />
-        <movement range="5" type="MV_TANK" vision="3"  weight="2" />
+        <movement level="0" range="5" type="MV_TANK" vision="3"  weight="2" />
         <fuel amount="50" />
         <resupply_cost ammo_ressource_0="100" />
         <tags>
         	<tag id="GROUND"/> <tag id="INDIRECT"/> <tag id="TANK"/> <tag id="ANTI_TANK" /> <tag id="ANTI_FOOT" />
         </tags>
         <combat ammo="6" >
-            <weapon_1  GER="Haubitze"
-                       ENG="Howitzer"
-                       useAmmo="1" minrange="2" maxrange="3" indirect="1" />
+        	<weapon id="WP_HOWITZER"/>
         </combat>
-        <damage>
-            <enemy id="LTANK"      wp1_damage="70" />
-            <enemy id="MDTANK"     wp1_damage="45" />
-            <enemy id="HTANK"      wp1_damage="15" />
-            <enemy id="INFANTRY"   wp1_damage="90" />
-            <enemy id="MECH"       wp1_damage="85" />
-            <enemy id="AATANK"     wp1_damage="75" />
-            <enemy id="ARTILLERY"  wp1_damage="75" />
-            <enemy id="APC"        wp1_damage="70" />
-            <enemy id="SUB"        wp1_damage="60" />
-            <enemy id="CRUISER"    wp1_damage="65" />
-            <enemy id="AAROCKET"   wp1_damage="80" />
-            <enemy id="CARRIER"    wp1_damage="45" />
-            <enemy id="RECOON"     wp1_damage="80" />
-            <enemy id="ROCKET"     wp1_damage="80" />
-            <enemy id="LANDER"     wp1_damage="55" />
-            <enemy id="BSHIP"      wp1_damage="40" />
-            <enemy id="PAK"        wp1_damage="65" />
-        </damage>
     </unit>
 	
 	<unit ID="APC">
-        <name GER="TTP"
-              ENG="RiG"     />
         <cost ressource_0="5000" />
-        <movement range="6" type="MV_TANK" vision="1" weight="3" />
+        <movement level="0" range="6" type="MV_TANK" vision="1" weight="3" />
         <fuel amount="99" />
         <tags>
         	<tag id="GROUND"/> <tag id="SUPPLY"/> <tag id="TANK"/> <tag id="TRANSPORT" />
@@ -358,88 +142,34 @@
     </unit>
 	
 	<unit ID="BHELI">
-        <name GER="Kampfhubschrauber"
-              ENG="Battle Chopter"     />
         <cost ressource_0="9000" />
-        <movement range="6" type="MV_AIR" vision="2" weight="1" />
+        <movement level="1" range="6" type="MV_AIR" vision="2" weight="1" />
         <fuel amount="99" />
-        <tags> <tag id="AIR"/> <tag id="CHOPTER"/> </tags>
+        <tags> <tag id="AIR"/> <tag id="COPTER"/> </tags>
         <combat ammo="6" >
-            <weapon_1  GER="Raketen"
-                       ENG="Rockets"
-                       useAmmo="1"    />
-			<weapon_2  GER="MG"
-                       ENG="Machine-Gun"
-                       useAmmo="-1"   />
+            <weapon id="WP_AG_RKL"/>
+            <weapon id="WP_MG"/>
         </combat>
-        <damage>
-            <enemy id="LTANK"      wp1_damage="55" />
-            <enemy id="MDTANK"     wp1_damage="25" />
-            <enemy id="HTANK"      wp1_damage="10" />
-            <enemy id="INFANTRY"                    wp2_damage="75" />
-            <enemy id="MECH"                        wp2_damage="65" />
-            <enemy id="AATANK"     wp1_damage="25" />
-            <enemy id="ARTILLERY"  wp1_damage="80" />
-            <enemy id="APC"        wp1_damage="60" />
-            <enemy id="BHELI"      wp1_damage="65" />
-            <enemy id="THELI"      wp1_damage="95" />
-            <enemy id="SUB"        wp1_damage="25" />
-            <enemy id="CRUISER"    wp1_damage="55" />
-            <enemy id="AAROCKET"   wp1_damage="65" />
-            <enemy id="CARRIER"    wp1_damage="25" />
-            <enemy id="RECOON"     wp1_damage="55" />
-            <enemy id="ROCKET"     wp1_damage="65" />
-            <enemy id="LANDER"     wp1_damage="25" />
-            <enemy id="BSHIP"      wp1_damage="25" />
-            <enemy id="THUNT"      wp1_damage="40"  />
-            <enemy id="PAK"        wp1_damage="35"  />
-        </damage>
     </unit>
 	
 	<unit ID="BOMB">
-        <name GER="Bomber"
-              ENG="Bomber"     />
         <cost ressource_0="20000" />
-        <movement range="7" type="MV_AIR" vision="3" weight="3"/>
+        <movement level="3" range="7" type="MV_AIR" vision="3" weight="3"/>
         <fuel amount="99" />
         <tags>
-        	<tag id="AIR"/> <tag id="BOMBER"/> <tag id="ANTI_TANK" /> <tag id="ANTI_FOOT" />
+        	<tag id="AIR"/> <tag id="BOMBER"/> <tag id="ANTI_TANK" /> <tag id="ANTI_FOOT" /> <tag id="PLANE"/>
         </tags>
         <combat ammo="6" >
-            <weapon_1  GER="Bomben"
-                       ENG="Bombs"
-                       useAmmo="1"   />
+        	<weapon id="WP_BOMBS"/>
         </combat>
-        <damage>
-            <enemy id="LTANK"      wp1_damage="105" />
-            <enemy id="MDTANK"     wp1_damage="95" />
-            <enemy id="HTANK"      wp1_damage="35" />
-            <enemy id="INFANTRY"   wp1_damage="110" />
-            <enemy id="MECH"       wp1_damage="110" />
-            <enemy id="AATANK"     wp1_damage="95" />
-            <enemy id="ARTILLERY"  wp1_damage="105" />
-            <enemy id="APC"        wp1_damage="105" />
-            <enemy id="SUB"        wp1_damage="95" />
-            <enemy id="CRUISER"    wp1_damage="85" />
-            <enemy id="AAROCKET"   wp1_damage="105" />
-            <enemy id="CARRIER"    wp1_damage="75" />
-            <enemy id="RECOON"     wp1_damage="105" />
-            <enemy id="ROCKET"     wp1_damage="105" />
-            <enemy id="LANDER"     wp1_damage="95" />
-            <enemy id="BSHIP"      wp1_damage="75" />
-            <enemy id="THUNT"      wp1_damage="90"  />
-            <enemy id="PAK"        wp1_damage="105"  />
-        </damage>
     </unit>
 	
 	<unit ID="THELI">
-        <name GER="Transporthubschrauber"
-              ENG="Transport Helicopter"     />
         <cost ressource_0="5000" />
-        <movement range="6" type="MV_AIR" vision="1" weight="1" />
+        <movement level="1" range="6" type="MV_AIR" vision="1" weight="1" />
         <fuel amount="99" />
         <tags>
-        	<tag id="TRANSPORT"/> <tag id="AIR"/> 
+        	<tag id="TRANSPORT"/> <tag id="AIR"/>  <tag id="COPTER"/>
         </tags>
 		<loads amount="2" >
             <loadtarget id="INFANTRY"    />
@@ -448,211 +178,96 @@
     </unit>
 	
 	<unit ID="SUB">
-        <name GER="Uboot"
-              ENG="Submarine"     />
         <cost ressource_0="20000" />
-        <movement range="6" type="MV_SHIP" vision="5" hide="1" weight="1" />
+        <movement level="5" range="6" type="MV_SHIP" vision="5" hide="1" weight="1" />
         <fuel amount="70" />
         <tags>
         	<tag id="WATER"/> <tag id="SUB" /> <tag id="STEALTH"/> <tag id="ANTI_SHIP"/>
         </tags>
         <combat ammo="6" >
-            <weapon_1  GER="Torpedo"
-                       ENG="Rockets"
-                       useAmmo="1"    />
+            <weapon id="WP_TORPEDO"/>
         </combat>
 		<hidden>
             <unittarget id="CRUISER"    range="2" />
             <unittarget id="CARRIER"    range="2" />
 		</hidden>
-        <damage>
-            <enemy id="SUB"        wp1_damage="55" />
-            <enemy id="CRUISER"    wp1_damage="25" />
-            <enemy id="CARRIER"    wp1_damage="75" />
-            <enemy id="LANDER"     wp1_damage="75" />
-            <enemy id="BSHIP"      wp1_damage="55" />
-        </damage>
     </unit>
 	
 	<unit ID="CRUISER">
-        <name GER="Kreuzer"
-              ENG="Cruiser"     />
         <cost ressource_0="16000" />
-        <movement range="5" type="MV_TRANSPORT" vision="5" weight="2" />
+        <movement level="4" range="5" type="MV_TRANSPORT" vision="5" weight="2" />
         <fuel amount="99"/>
         <tags>
         	<tag id="WATER"/> <tag id="SHIP"/> <tag id="ANTI_AIR"/> <tag id="ANTI_SUB" />
         </tags>
         <combat ammo="9"  >
-            <weapon_1   GER="Wasserbomben"
-                        ENG="Waterbombs"
-                        useAmmo="1"    />
-			<weapon_2   GER="Flak"
-                        ENG="Flak"
-                        useAmmo="-1"   />
+            <weapon id="WP_WATERBOMBS"/>
+			<weapon id="WP_AA_CANNON"/>
         </combat>
 		<loads amount="2" >
             <loadtarget id="BHELI"   />
 		</loads>
-        <damage>
-            <enemy id="SUB"        wp1_damage="90"                   />
-            <enemy id="BSHIP"      wp1_damage="5"                    />
-            <enemy id="LANDER"     wp1_damage="15"                   />
-            <enemy id="CRUISER"    wp1_damage="25"                   />
-            <enemy id="BHELI"                       wp2_damage="110" />
-            <enemy id="BOMB"                        wp2_damage="85"  />
-            <enemy id="THELI"                       wp2_damage="110" />
-            <enemy id="STEALTH"                     wp2_damage="100" />
-            <enemy id="JET"                         wp2_damage="70"  />
-            <enemy id="MRF"        				    wp2_damage="85"  />
-        </damage>
     </unit>
 	
 	<unit ID="AAROCKET">
-        <name GER="AA Raketenwerfer"
-              ENG="AA Rocketlauncher"     />
-        <cost ressource_0="12000" />
-        <movement range="5" type="MV_TIRE_A" vision="5" weight="2" />
+	    <cost ressource_0="12000" />
+        <movement level="0" range="5" type="MV_TIRE_A" vision="5" weight="2" />
         <fuel amount="50"/>
         <tags>
         	<tag id="GROUND"/> <tag id="ANTI_AIR"/> <tag id="VEHICLE"/> <tag id="INDIRECT" />
         </tags>
         <combat ammo="6" >
-            <weapon_1  GER="AA Rockets"
-                       ENG="AA Rockets"
-                       useAmmo="1" minrange="3" maxrange="6" indirect="1" />
+        	<weapon id="WP_AA_RKL"/>
         </combat>
-        <damage>
-            <enemy id="BHELI"      wp1_damage="120" />
-            <enemy id="BOMB"       wp1_damage="105" />
-            <enemy id="THELI"      wp1_damage="120" />
-            <enemy id="STEALTH"    wp1_damage="105" />
-            <enemy id="JET"        wp1_damage="105" />
-            <enemy id="MRF"        wp1_damage="120"  />
-        </damage>
     </unit>
 	
 	<unit ID="JET">
-        <name GER="Jäger"
-              ENG="Jet"     />
         <cost ressource_0="20000" />
-        <movement range="9" type="MV_AIR" vision="5" weight="2" />
+        <movement level="3" range="9" type="MV_AIR" vision="5" weight="2" />
         <fuel amount="99" />
         <tags>
-        	<tag id="AIR"/> <tag id="ANTI_AIR" />
+        	<tag id="AIR"/> <tag id="ANTI_AIR" /> <tag id="PLANE"/>
         </tags>
         <combat ammo="6" >
-            <weapon_1  GER="Luftabwehr Raketen"
-                       ENG="AA Rockets"
-                       useAmmo="1"    />
+            <weapon id="WP_AA_RKL2"/>
         </combat>
-        <damage>
-            <enemy id="BHELI"      wp1_damage="100" />
-            <enemy id="BOMB"       wp1_damage="100" />
-            <enemy id="THELI"      wp1_damage="100" />
-            <enemy id="STEALTH"    wp1_damage="85" />
-            <enemy id="JET"        wp1_damage="55" />
-            <enemy id="MRF"        wp1_damage="90"  />
-        </damage>
     </unit>
 
 	<unit ID="DUSTER">
-        <name GER="Mehrzweckjäger"
-              ENG="Duster"     />
         <cost ressource_0="13000" />
-        <movement range="7" type="MV_AIR" vision="4" weight="2" />
+        <movement level="2" range="7" type="MV_AIR" vision="4" weight="2" />
         <fuel amount="45" />
         <tags>
-        	<tag id="AIR"/> <tag id="SCOUT"/> <tag id="ANTI_AIR" /> <tag id="ANTI_FOOT" />
+        	<tag id="AIR"/> <tag id="SCOUT"/> <tag id="ANTI_AIR" /> <tag id="ANTI_FOOT" /> <tag id="PLANE"/>
         </tags>
-        <combat ammo="9" >
-            <weapon_1  GER="Luftabwehr Kanone"
-                       ENG="AA Cannon"
-                       useAmmo="1"    />
+        <combat ammo="6" >
+            <weapon id="WP_PLANE_CANNON"/>
+            <weapon id="WP_MG"/>
         </combat>
-        <damage>
-            <enemy id="BHELI"      wp1_damage="75" />
-            <enemy id="BOMB"       wp1_damage="50" />
-            <enemy id="THELI"      wp1_damage="75" />
-            <enemy id="STEALTH"    wp1_damage="60" />
-            <enemy id="JET"        wp1_damage="40" />
-            <enemy id="MRF"        wp1_damage="55"  />
-            <enemy id="LTANK"      wp1_damage="70" />
-            <enemy id="MDTANK"     wp1_damage="45" />
-            <enemy id="HTANK"      wp1_damage="15" />
-            <enemy id="INFANTRY"   wp1_damage="90" />
-            <enemy id="MECH"       wp1_damage="85" />
-            <enemy id="AATANK"     wp1_damage="75" />
-            <enemy id="ARTILLERY"  wp1_damage="75" />
-            <enemy id="APC"        wp1_damage="70" />
-            <enemy id="SUB"        wp1_damage="60" />
-            <enemy id="CRUISER"    wp1_damage="65" />
-            <enemy id="AAROCKET"   wp1_damage="80" />
-            <enemy id="CARRIER"    wp1_damage="45" />
-            <enemy id="RECOON"     wp1_damage="80" />
-            <enemy id="ROCKET"     wp1_damage="80" />
-            <enemy id="LANDER"     wp1_damage="55" />
-            <enemy id="BSHIP"      wp1_damage="40" />
-            <enemy id="THUNT"      wp1_damage="55" />
-            <enemy id="PAK"        wp1_damage="65" />
-        </damage>
     </unit>
 	
 	<unit ID="SHIP_PLANE">
-        <name GER="Mini_Jet"
-              ENG="Mini_Jet"     />
         <cost ressource_0="15000" />
-        <movement range="7" type="MV_AIR" vision="4" weight="2" />
+        <movement level="2" range="7" type="MV_AIR" vision="4" weight="2" />
         <fuel amount="99" />
         <tags>
-        	<tag id="AIR"/> <tag id="ANTI_AIR" />
+        	<tag id="AIR"/> <tag id="ANTI_AIR" />  <tag id="PLANE"/>
         </tags>
-        <combat ammo="3" >
-            <weapon_1  GER="35mm Kanone"
-                       ENG="35mm Canon"
-                       useAmmo="1"    />
+        <combat ammo="4" >
+            <weapon id="WP_WATERBOMBS"/>
+            <weapon id="WP_PLANE_CANNON"/>
         </combat>
-        <damage>
-            <enemy id="BHELI"      wp1_damage="75" />
-            <enemy id="BOMB"       wp1_damage="50" />
-            <enemy id="THELI"      wp1_damage="75" />
-            <enemy id="STEALTH"    wp1_damage="60" />
-            <enemy id="JET"        wp1_damage="40" />
-            <enemy id="MRF"        wp1_damage="55"  />
-            <enemy id="LTANK"      wp1_damage="70" />
-            <enemy id="MDTANK"     wp1_damage="45" />
-            <enemy id="HTANK"      wp1_damage="15" />
-            <enemy id="INFANTRY"   wp1_damage="90" />
-            <enemy id="MECH"       wp1_damage="85" />
-            <enemy id="AATANK"     wp1_damage="75" />
-            <enemy id="ARTILLERY"  wp1_damage="75" />
-            <enemy id="APC"        wp1_damage="70" />
-            <enemy id="SUB"        wp1_damage="60" />
-            <enemy id="CRUISER"    wp1_damage="65" />
-            <enemy id="AAROCKET"   wp1_damage="80" />
-            <enemy id="CARRIER"    wp1_damage="45" />
-            <enemy id="RECOON"     wp1_damage="80" />
-            <enemy id="ROCKET"     wp1_damage="80" />
-            <enemy id="LANDER"     wp1_damage="55" />
-            <enemy id="BSHIP"      wp1_damage="40" />
-            <enemy id="THUNT"      wp1_damage="55" />
-            <enemy id="PAK"        wp1_damage="65" />
-        </damage>
     </unit>
 
 	<unit ID="CARRIER">
-        <name GER="Flugzeugtraeger"
-              ENG="Carrier"     />
         <cost ressource_0="28000" />
-        <movement range="5" type="MV_SHIP" vision="4" weight="3" />
+        <movement level="4" range="5" type="MV_SHIP" vision="4" weight="3" />
         <fuel amount="99" />
         <tags>
         	<tag id="WATER"/> <tag id="TRANSPORT"/> <tag id="SHIP"/> <tag id="ANTI_AIR" />
         </tags>
         <combat ammo="-1" >
-			<weapon_1  GER="Flak"
-                       ENG="Flak"
-                       useAmmo="-1"/>
+			<weapon id="WP_AA_CANNON2"/>
         </combat>
 		<loads amount="2" >
             <loadtarget id="BHELI"        />
@@ -660,22 +275,12 @@
             <loadtarget id="JET"          />
             <loadtarget id="BOMB"          />
 		</loads>
-        <damage>
-            <enemy id="BHELI"      wp1_damage="115" />
-            <enemy id="BOMB"       wp1_damage="100" />
-            <enemy id="THELI"      wp1_damage="115" />
-            <enemy id="STEALTH"    wp1_damage="100" />
-            <enemy id="JET"        wp1_damage="100" />
-            <enemy id="MRF"        wp1_damage="120"  />
-        </damage>
     </unit>
 	
 	
 	<unit ID="LANDER">
-        <name GER="ATP"
-              ENG="ALV"     />
         <cost ressource_0="10000" />
-        <movement range="6" type="MV_TRANSPORT" vision="1" weight="3" />
+        <movement level="4" range="6" type="MV_TRANSPORT" vision="1" weight="3" />
         <fuel amount="99"/>
         <tags>
         	<tag id="WATER"/> <tag id="TRANSPORT"/> <tag id="SHIP" />
@@ -698,77 +303,29 @@
     
     
 	<unit ID="ROCKET">
-        <name GER="Raketenwerfer"
-              ENG="Rocketlauncher"     />
         <cost ressource_0="15000" />
-        <movement range="5" type="MV_TIRE_A" vision="3" weight="2" />
+        <movement level="0" range="5" type="MV_TIRE_A" vision="3" weight="2" />
         <fuel amount="50" />
         <resupply_cost ammo_ressource_0="100" />
         <tags>
         	<tag id="GROUND"/> <tag id="INDIRECT"/> <tag id="VEHICLE"/> <tag id="ANTI_TANK" /> <tag id="ANTI_FOOT" />
         </tags>
         <combat ammo="5" >
-            <weapon_1     GER="Raketenwerfer"
-                          ENG="Rocketlauncher"
-                          useAmmo="1"  minrange="3" maxrange="5" indirect="1" />
+        	<weapon id="WP_HV_RKL"/> 
         </combat>
-        <damage>
-            <enemy id="LTANK"      wp1_damage="80" />
-            <enemy id="MDTANK"     wp1_damage="55" />
-            <enemy id="HTANK"      wp1_damage="25" />
-            <enemy id="INFANTRY"   wp1_damage="95" />
-            <enemy id="MECH"       wp1_damage="90" />
-            <enemy id="AATANK"     wp1_damage="85" />
-            <enemy id="ARTILLERY"  wp1_damage="80" />
-            <enemy id="APC"        wp1_damage="80" />
-            <enemy id="SUB"        wp1_damage="85" />
-            <enemy id="CRUISER"    wp1_damage="85" />
-            <enemy id="AAROCKET"   wp1_damage="90" />
-            <enemy id="CARRIER"    wp1_damage="60" />
-            <enemy id="RECOON"     wp1_damage="90" />
-            <enemy id="ROCKET"     wp1_damage="85" />
-            <enemy id="LANDER"     wp1_damage="60" />
-            <enemy id="BSHIP"      wp1_damage="55" />
-            <enemy id="THUNT"      wp1_damage="75"  />
-            <enemy id="PAK"        wp1_damage="60"  />
-        </damage>
     </unit>
 	
 	<unit ID="BSHIP">
-        <name GER="Schlachtschiff"
-              ENG="Battleship"     />
         <cost ressource_0="25000" />
-        <movement range="5" type="MV_SHIP" vision="3" weight="3" />
+        <movement level="4" range="5" type="MV_SHIP" vision="3" weight="3" />
         <fuel amount="99"/>
         <resupply_cost ammo_ressource_0="100" />
         <tags>
         	<tag id="WATER"/> <tag id="SHIP"/> <tag id="INDIRECT"/> <tag id="ANTI_TANK" /> <tag id="ANTI_FOOT" /> <tag id="ANTI_SHIP" />
         </tags>
         <combat ammo="6" >
-            <weapon_1     GER="Haubitze"
-                          ENG="Howitzer"
-                          useAmmo="1"  minrange="2" maxrange="6" indirect="2" />
+        	<weapon id="WP_HOWITZER2"/>
         </combat>
-        <damage>
-            <enemy id="LTANK"      wp1_damage="80" />
-            <enemy id="MDTANK"     wp1_damage="55" />
-            <enemy id="HTANK"      wp1_damage="25" />
-            <enemy id="INFANTRY"   wp1_damage="95" />
-            <enemy id="MECH"       wp1_damage="90" />
-            <enemy id="AATANK"     wp1_damage="85" />
-            <enemy id="ARTILLERY"  wp1_damage="80" />
-            <enemy id="APC"        wp1_damage="80" />
-            <enemy id="SUB"        wp1_damage="85" />
-            <enemy id="CRUISER"    wp1_damage="85" />
-            <enemy id="AAROCKET"   wp1_damage="90" />
-            <enemy id="CARRIER"    wp1_damage="60" />
-            <enemy id="RECOON"     wp1_damage="90" />
-            <enemy id="ROCKET"     wp1_damage="85" />
-            <enemy id="LANDER"     wp1_damage="75" />
-            <enemy id="BSHIP"      wp1_damage="50" />
-            <enemy id="THUNT"      wp1_damage="85"  />
-            <enemy id="PAK"        wp1_damage="75"  />
-        </damage>
     </unit>
 	
 

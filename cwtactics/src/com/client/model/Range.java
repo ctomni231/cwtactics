@@ -170,9 +170,7 @@ public class Range {
     	
     	for( Tile tile : range ){
     		if( tile.getUnit() != null && tile.getUnit().getOwner() != unit.getOwner() ){
-    			Fight.setupBattle(start, unit, sh , tile, tile.getUnit() );
-    			Fight.checkEffects();
-    			if( Fight.getAttackDamage() > 0 ) targets.add(tile);
+    			if( !targets.contains(tile) && sh.canAttack( tile.getUnit().sheet() ) ) targets.add(tile);
     		}
     	}
     }

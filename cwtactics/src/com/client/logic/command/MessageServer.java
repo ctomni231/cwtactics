@@ -1,5 +1,6 @@
 package com.client.logic.command;
 
+import com.system.ID;
 import com.system.ID.MessageMode;
 
 public class MessageServer {
@@ -17,6 +18,21 @@ public class MessageServer {
 	
 	
 	/*
+	 * ACCESSING METHODS
+	 * *****************
+	 * 
+	 */
+	
+	/**
+	 * Sets the communication mode. 
+	 */
+	public static void setMode( MessageMode mode ){
+		MessageServer.mode = mode;
+	}
+	
+	
+	
+	/*
 	 * 
 	 * WORK METHODS
 	 * ************
@@ -24,13 +40,12 @@ public class MessageServer {
 	 */
 	
 	/**
-	 * Sends a command through the message
-	 * server.
+	 * Sends a command through the message server.
 	 */
-	public static void send( Command command , boolean atFirstPos ){
+	private static void send( Command command , boolean atFirstPos , ID.MessageMode mode ){
 		switch( mode ){
 			case LOCAL :
-				toCommandList(command, atFirstPos);
+				addCommand(command, atFirstPos);
 				break;
 			case IRC_NETWORK :
 				System.err.println("NETWORK MODE NOT IMPLEMENTED YET...");
@@ -38,20 +53,29 @@ public class MessageServer {
 		}
 	}
 	
-	/**
-	 * Sends a command local directly to the command
-	 * list.
-	 */
-	public static void toCommandList( Command command , boolean atFirstPos ){
-		if( atFirstPos ) CommandList.addToFirstPosition(command);
-		else CommandList.addToEndPosition(command);
+	public static void send( Command command ){
+		send( command , false , mode );
+	}
+
+	public static void sendLocal( Command command ){
+		send(command, false , ID.MessageMode.LOCAL );
 	}
 	
+	public static void sendToFirstPos( Command command ){
+		send( command , true , mode );
+	}
+	
+	public static void sendLocalToFirstPos( Command command ){
+		send(command, true , ID.MessageMode.LOCAL );
+	}
+	
+	
 	/**
-	 * Sets the communication mode. 
+	 * Sends a command to the command list.
 	 */
-	public static void setMode( MessageMode mode ){
-		MessageServer.mode = mode;
+	private static void addCommand( Command command , boolean atFirstPos ){
+		if( atFirstPos ) CommandList.addToFirstPosition(command);
+		else CommandList.addToEndPosition(command);
 	}
 
 }

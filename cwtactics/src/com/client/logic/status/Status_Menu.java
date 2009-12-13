@@ -28,7 +28,7 @@ public class Status_Menu implements Status_Interface {
 					
 					if( b.getType() == ButtonType.NORMAL ){
 
-						MessageServer.send( new MoveTo(map), false);
+						MessageServer.send( new MoveTo(map) );
 						if( Move.isTapped() ) ; // send showTapAnimation
 													
 						Menu.clearList();
@@ -50,7 +50,7 @@ public class Status_Menu implements Status_Interface {
 					
 					map.updateMapItem( property.getPosX() , property.getPosY() );
 					
-					Fog.processFog( unit.getOwner());
+					Fog.processFog();
 					
 					Menu.clearList();
 					Status.setStatus( Status.Mode.WAIT );	
@@ -65,7 +65,7 @@ public class Status_Menu implements Status_Interface {
 						Status.setStatus( Status.Mode.WAIT );
                     }
                     else if( Menu.getSelected().getSheet().getID().equals("AWDR") ){
-                        map.changeType("AWDR");
+                    	map.changeType("AWDR");
 
                         Menu.clearList();
 						Status.setStatus( Status.Mode.WAIT );

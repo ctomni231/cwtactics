@@ -1,12 +1,10 @@
 package com.system.data.sheets;
 
-import java.util.HashMap;
-
 /**
  * 
  * @author Tapsi [BcMk]
  */
-public class Weapon_Sheed {
+public class Weapon_Sheed extends Sheet{
 
 	/*
 	 *
@@ -21,7 +19,7 @@ public class Weapon_Sheed {
 	private int		useAmmo;
 	private int		fireMode;		// 0 direct , 1 indirect , 2 indirect+move, 3 indirect + counter direct
 	private int		rangePenalty;
-	private HashMap<Unit_Sheed, Integer>	damageTable;
+	private boolean[]   attackable;
 	
 	
 	
@@ -37,7 +35,7 @@ public class Weapon_Sheed {
 		fireMode = 0;
 		maxRange = 1;
 		minRange = 1;
-		damageTable = new HashMap<Unit_Sheed, Integer>();
+		attackable = new boolean[6];
 	}
 
 
@@ -133,19 +131,23 @@ public class Weapon_Sheed {
 		this.rangePenalty = rangePenalty;
 	}
 
-	/**
-	 * Sets the damage of the weapon for an unit ID
-	 */
-	public void setDamage( Unit_Sheed sh , int damage ){
-		damageTable.put(sh, damage);
+	public boolean canAttack( Unit_Sheed sh ){
+		
+		// get level and check it
+		int lv = sh.getLevel();
+		if( lv < 0 || lv >= attackable.length ) return false;
+			
+		// return value
+		if( attackable[lv] ) return true;
+		else return false;
 	}
 	
-	/**
-	 * Returns the damage against an unit ID 
-	 */
-	public int getDamage( Unit_Sheed sh ){
-		if(!damageTable.containsKey(sh) ) return -1;
-		return damageTable.get(sh);
+	public void setAttack( int lv , boolean value ){
+		
+		// get level and check it
+		if( lv < 0 || lv >= attackable.length ) return;
+		
+		attackable[lv] = value;
 	}
 	
 	

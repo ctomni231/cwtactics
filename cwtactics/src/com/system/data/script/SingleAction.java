@@ -1,21 +1,12 @@
 package com.system.data.script;
 
-import com.client.logic.command.MessageServer;
-import com.client.logic.command.commands.ingame.DecreaseFuel;
-import com.client.logic.command.commands.ingame.GiveFunds;
-import com.client.logic.command.commands.ingame.PayRepairCost;
-import com.client.logic.command.commands.ingame.RepairUnit;
-import com.client.logic.command.commands.ingame.ResupplyUnit;
-import com.client.logic.command.commands.ingame.SetDamage;
 import com.client.model.Fight;
 import com.client.model.Fog;
 import com.client.model.Move;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
-import com.system.ID;
-import com.system.ID.TriggerAction;
-import com.system.ID.TriggerAction_Obj;
-import com.system.data.Data;
+import com.system.data.script.ScriptLogic.TriggerAction;
+import com.system.data.script.ScriptLogic.TriggerAction_Obj;
 
 public class SingleAction {
 
@@ -26,8 +17,8 @@ public class SingleAction {
 	 * 
 	 */
 	
-	private ID.TriggerAction		action;
-	private ID.TriggerAction_Obj 	obj;
+	private TriggerAction		action;
+	private TriggerAction_Obj 	obj;
 	private int value;
 	
 
@@ -79,32 +70,32 @@ public class SingleAction {
 		
 			// Destroy the unit which are involved by the trigger 
 			case DESTROY_UNIT :
-				MessageServer.send( new SetDamage( unit , unit.getHealth() ) , true);
+				//TODO add script effect
 				break;
 				
 			// Property gives funds
 			case GIVE_FUNDS :
-				MessageServer.send( new GiveFunds( field.sheet().getFundsTable() , field ), true);
+				//TODO add script effect
 				break;
 			
 			// Field supplies an unit
 			case RESUPPLY_UNIT :
-				MessageServer.send( new ResupplyUnit() , true);
+				//TODO add script effect
 				break;
 			
 			// Field heals an unit
 			case PAY_REPAIR :
-				MessageServer.send( new PayRepairCost( field.sheet().getRepairCost( unit.sheet() , 20 )  , unit ), true);
+				//TODO add script effect
 				break;
 		
 			// Field heals an unit
 			case HEAL_UNIT :
-				MessageServer.send( new RepairUnit( unit , 20 ), true);
+				//TODO add script effect
 				break;
 				
 			// Field heals an unit
 			case DECREASE_FUEL :
-				MessageServer.send(  new DecreaseFuel( unit , 1), true);
+				//TODO add script effect
 				break;
 				
 			case INCREASE_ATTACK :

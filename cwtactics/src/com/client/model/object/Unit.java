@@ -64,6 +64,7 @@ public class Unit {
 	}
 
 	public void setHealth(int health) {
+		if( health >= 0 ) health = 0;
 		this.health = health;
 	}
 	
@@ -140,6 +141,11 @@ public class Unit {
 	
 	public void decreaseAmmo(){
 		if( this.ammo > 0 ) this.ammo--;
+	}
+	
+	public void decreaseAmmo( int value ){
+		if( this.ammo - value >= 0 ) this.ammo -= value;
+		else this.ammo = 0;
 	}
 	
 	public int getID(){

@@ -39,7 +39,8 @@ public class Tile {
 		this.variation = variation;
 		spreadID = -1;
         change = false;
-		//TODO capture / Property
+        resetCapPoints();
+        //TODO capture / Property
 	}
 	
 	
@@ -71,6 +72,15 @@ public class Tile {
 		return capPoints;
 	}
 
+	public void decreaseCapPoints( int value ){
+		if( capPoints - value >= 0 ) capPoints -= value;
+		else capPoints = 0;
+	}
+	
+	public void resetCapPoints(){
+		setCapPoints( capPoints = sheet().getCapturePoints() );
+	}
+	
 	public void setCapPoints(int capPoints) {
 		this.capPoints = capPoints;
 	}

@@ -1,6 +1,7 @@
 package com.client.logic.command.commands.ingame;
 
 import com.client.logic.command.Command;
+import com.client.logic.command.MessageServer;
 import com.client.menu.GUI.MapDraw;
 import com.client.model.Fog;
 import com.client.model.Move;
@@ -53,7 +54,7 @@ public class MoveTo implements Command {
 		Tile target = Move.getWay().get( Move.getWay().size() - 1 );
 		
 		// decrease fuel
-		unit.decreaseFuel( Move.getCompleteFuel() );
+		MessageServer.sendLocalToFirstPos( new DecreaseFuel(unit, Move.getCompleteFuel() ));
 		
 		// reset unit positions
 		start.setUnit(null);
@@ -64,7 +65,7 @@ public class MoveTo implements Command {
 		map.updateMapItem( target.getPosX() , target.getPosY() );
 		
 		// process fog
-		Fog.processFog( unit.getOwner() );
+		Fog.processFog();
 	}
 	
 	

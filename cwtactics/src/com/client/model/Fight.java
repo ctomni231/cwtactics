@@ -1,11 +1,13 @@
 package com.client.model;
 
-import com.client.logic.command.CommandList;
+import com.client.logic.command.MessageServer;
+import com.client.logic.command.commands.ingame.Battle;
+import com.client.logic.command.commands.ingame.DecreaseAmmo;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
-import com.system.ID;
 import com.system.data.script.ScriptFactory;
 import com.system.data.script.Trigger_Object;
+import com.system.data.script.ScriptLogic;
 import com.system.data.sheets.Weapon_Sheed;
 
 /**
@@ -59,21 +61,15 @@ public class Fight {
 	 * Check all effects for this fighting 
 	 * situation.
 	 */
-	public static void checkEffects(){
-		
-		// check status of fight, return if no fight exist
-		if( !checkStatus() ){
-			System.err.println("No fight exist, but logic wants to check effects for a fight.");
-			return;
-		}
+	private static void checkEffects(){
 		
 		// check effects for the attacker ( local )
 		Trigger_Object.triggerCall( attackerTile , defenderTile);
-		ScriptFactory.checkAll( ID.Trigger.UNIT_ATTACK);
+		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_ATTACK);
 		
 		// check effects for the defender ( local )
 		Trigger_Object.triggerCall( defenderTile , attackerTile);
-		ScriptFactory.checkAll( ID.Trigger.UNIT_DEFEND);
+		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_DEFEND);
 	}
 	
 	/**
@@ -82,21 +78,25 @@ public class Fight {
 	 */
 	public static void processBattle(){
 		
+		//TODO little bit refactoring
+		
 		// check status of fight, return if no fight exist
 		if( !checkStatus() ){
 			System.err.println("No fight exist, but logic wants to start the a fight.");
 			return;
 		}
+
+		// check effects 
+		checkEffects();
 		
 		// get damage variables
 		int attack = getAttackDamage();
 		int counter = getDefenderDamage();
 		
-		// set the damage on defender
-		if( attack > 0 ) CommandList.addToEndPosition( null );
-		
-		// only counter if the defender alive damage from attacker
-		if( counter > 0 && defender.getHealth() - attack > 0 ) CommandList.addToEndPosition( null );
+		// send command
+		MessageServer.send( new Battle( attackerTile, defenderTile ,attack ,counter ) );
+		MessageServer.send( new DecreaseAmmo(attacker, attackWeapon) );
+		if( defenderWeapon != null ) MessageServer.send( new DecreaseAmmo(defender, defenderWeapon) );
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class Fight {
 		for( Weapon_Sheed defenseWeapon : defender.sheet().getAllWeapons() ){
 			
 			// counter only possible if weapon is direct, can attack attacker and if you have enough ammo
-			if( ( defenseWeapon.getFireMode() == 0 || defenseWeapon.getFireMode() == 3 ) && defenseWeapon.getDamage( attacker.sheet() ) > 0 && defender.getAmmo() - defenseWeapon.getUseAmmo() >= 0 ) return defenseWeapon;
+			if( ( defenseWeapon.getFireMode() == 0 || defenseWeapon.getFireMode() == 3 ) && defenseWeapon.canAttack( attacker.sheet() ) && defender.getAmmo() - defenseWeapon.getUseAmmo() >= 0 ) return defenseWeapon;
 		}
 		
 		return null;
@@ -164,14 +164,16 @@ public class Fight {
 	 * Returns attacker damage.
 	 */
 	public static int getAttackDamage(){
-		 return attackWeapon.getDamage(defender.sheet()) + attackerPenalty;
+		 // you get all data from scripts, return script value
+		 return attackerPenalty;
 	}
 
 	/**
 	 * Returns counter damage from defender.
 	 */
 	public static int getDefenderDamage(){
-		if( defenderWeapon != null ) return defenderWeapon.getDamage(attacker.sheet()) + defenderPenalty;
+		// you get all data from scripts, return script value
+		if( defenderWeapon != null ) return defenderPenalty;
 		return 0;
 	}
 	

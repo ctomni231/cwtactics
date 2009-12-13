@@ -1,5 +1,7 @@
 package com.client.model;
 
+import com.client.logic.command.MessageServer;
+import com.client.logic.command.commands.ingame.ChangeWeather;
 import com.client.model.object.Game;
 import com.system.data.Data;
 import com.system.data.sheets.Weather_Sheet;
@@ -38,6 +40,13 @@ public class Weather {
 	 */
 	public static int getLeftDays(){
 		return leftDays;
+	}
+	
+	/**
+	 * Set left days.
+	 */
+	public static void setLeftDays( int value ){
+		leftDays = value;
 	}
 
 	/**
@@ -90,8 +99,10 @@ public class Weather {
 			// if random chance is less than the sum up 
 			// chance, set weather to current weather
 			if( chance < curChance ){
-				leftDays = (int) Math.random() * Game.getPlayers().size() * 2;
-				setWeather(sh); // TODO Command needed
+				
+				int leftDays = (int) Math.random() * Game.getPlayers().size() * 2;
+				
+				MessageServer.send( new ChangeWeather(sh, leftDays) );
 				break;
 			}
 		}

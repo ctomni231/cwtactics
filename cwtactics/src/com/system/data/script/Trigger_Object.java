@@ -20,6 +20,9 @@ public class Trigger_Object {
 
 	private static Tile field1;
 	private static Tile field2;
+	private static Unit unit1;
+	private static Unit unit2;
+	
 	
 	
 	/*
@@ -54,16 +57,14 @@ public class Trigger_Object {
  	* Returns the unit from the first saved tile. 
  	*/
 	public static Unit getUnit1() {
-		if( field1 == null ) return null;
-		return field1.getUnit();
+		return unit1;
 	}
 
    /**
 	* Returns the unit from the first saved tile. 
 	*/
 	public static Unit getUnit2() {
-		if( field2 == null ) return null;
-		return field2.getUnit();
+		return unit2;
 	}
 	
 	
@@ -80,6 +81,22 @@ public class Trigger_Object {
 	public static void triggerCall( Tile afield1 , Tile afield2 ){
 		field1 = afield1;
 		field2 = afield2;
+		unit1 = null;
+		unit2 = null;
+		if( field1 != null ) unit1 = field1.getUnit();
+		if( field2 != null ) unit2 = field2.getUnit();
+	}
+	
+	public static void triggerCall( Tile afield1 , Tile afield2 , Unit unit1 , Unit unit2 ){
+		field1 = afield1;
+		field2 = afield2;
+		Trigger_Object.unit1 = unit1;
+		Trigger_Object.unit2 = unit2;
+	}
+	
+	public static void triggerCall( Unit unit1 , Unit unit2 ){
+		Trigger_Object.unit1 = unit1;
+		Trigger_Object.unit2 = unit2;
 	}
 	
 	

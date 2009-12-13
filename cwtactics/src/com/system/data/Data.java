@@ -8,6 +8,7 @@ import com.system.data.sheets.Rank_Sheet;
 import com.system.data.sheets.Sheet;
 import com.system.data.sheets.Tile_Sheet;
 import com.system.data.sheets.Unit_Sheed;
+import com.system.data.sheets.Weapon_Sheed;
 import com.system.data.sheets.Weather_Sheet;
 
 public class Data {
@@ -27,6 +28,8 @@ public class Data {
 	private static ArrayList<Sheet> 		ressourceTable;
 	private static ArrayList<Sheet> 		entryTable;
 	private static ArrayList<Move_Sheet>	moveTable;
+	private static ArrayList<Sheet>			amorTable;
+	private static ArrayList<Weapon_Sheed>  weaponTable;
 	
 	// ID number table, contains all id numbers for string ID's
 	private static HashMap<String,Integer>	idTable;
@@ -59,6 +62,8 @@ public class Data {
 		unitTable 	= new ArrayList<Unit_Sheed>();
 		idTable		= new HashMap<String, Integer>();
 		tagTable	= new HashMap<String, Integer>();
+		amorTable   = new ArrayList<Sheet>();
+		weaponTable = new ArrayList<Weapon_Sheed>();
 	}
 	
 	
@@ -147,6 +152,17 @@ public class Data {
 		else return entryTable.get(ID);
 	}
 	
+	public static void addAmorSheet( String ID , Sheet sh ){
+		amorTable.add(sh);
+		sh.setID(ID);
+		idTable.put(ID, amorTable.size() - 1 );
+	}
+	
+	public static Sheet getAmorSheet( int ID ){
+		if( ID < 0 || ID >= amorTable.size() ) return null;
+		else return amorTable.get(ID);
+	}
+	
 	public static ArrayList<Sheet> getRessourceTable(){
 		return ressourceTable;
 	}
@@ -159,6 +175,16 @@ public class Data {
 		return tileTable;
 	}
 
+	public static void addWeaponSheet( String ID , Weapon_Sheed sh ){
+		weaponTable.add(sh);
+		sh.setID(ID);
+		idTable.put(ID, weaponTable.size() - 1 );
+	}
+	
+	public static Weapon_Sheed getWeaponSheet( int ID ){
+		if( ID < 0 || ID >= weaponTable.size() ) return null;
+		else return weaponTable.get(ID);
+	}
 
 	
 	

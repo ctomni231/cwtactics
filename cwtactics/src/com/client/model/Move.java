@@ -8,9 +8,9 @@ import java.util.Set;
 import com.client.model.object.Game;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
-import com.system.ID;
 import com.system.data.script.ScriptFactory;
 import com.system.data.script.Trigger_Object;
+import com.system.data.script.ScriptLogic;
 
 public class Move {
 
@@ -159,7 +159,7 @@ public class Move {
 	
 		// check trigger
 		Trigger_Object.triggerCall(start, null);
-		ScriptFactory.checkAll( ID.Trigger.UNIT_WILL_MOVE);
+		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_WILL_MOVE);
 	}
 	
 	/**
@@ -538,7 +538,7 @@ public class Move {
 		
 		// check up scripts
 		Trigger_Object.triggerCall( tile, start );
-		ScriptFactory.checkAll( ID.Trigger.MOVE_ONTO);
+		ScriptFactory.checkAll( ScriptLogic.Trigger.MOVE_ONTO);
 	}
 	
 	
@@ -555,8 +555,8 @@ public class Move {
 	 */
 	public static void printMoveTiles(){
 		System.out.println("Move Tiles :");
-		for( int i = 0; i < 10 ; i++ ){
-			for( int j = 0 ; j < 10 ; j++ ){
+		for( int i = 0; i < Game.getMap().getSizeX() ; i++ ){
+			for( int j = 0 ; j < Game.getMap().getSizeY() ; j++ ){
 				if( moveTiles.containsKey( Game.getMap().getTile(i, j) ) ) System.out.print("X || ");
 				else System.out.print("  || ");
     		}

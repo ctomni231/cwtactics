@@ -1,8 +1,9 @@
 package com.client;
 
 import com.client.logic.command.MessageServer;
-import com.client.logic.command.commands.ingame.*;
 import com.client.logic.status.Status;
+import com.client.model.Fog;
+import com.client.model.Instance;
 import com.client.model.Turn;
 import com.client.model.Weather;
 import com.client.model.object.Game;
@@ -10,13 +11,13 @@ import com.client.model.object.Map;
 import com.client.model.object.Player;
 import com.client.model.object.Team;
 import com.client.model.object.Tile;
-import com.client.model.object.Unit;
 
 import com.client.state.InGameState;
 import com.client.state.MainMenuState;
 import com.client.state.SlickGame;
 import com.system.ID;
 import com.system.data.Data;
+import com.system.reader.LanguageReader;
 import com.system.reader.ModReader;
 import com.system.reader.ScriptReader;
 
@@ -46,10 +47,13 @@ public class MainGame {
     	// load modification
     	new ModReader("data/Misc.xml");
     	new ModReader("data/MoveTables.xml");
+    	new ModReader("data/weapons.xml");
     	new ModReader("data/Tiles.xml");
     	new ModReader("data/Units.xml");
     	new ModReader("data/Buttons.xml");
     	new ScriptReader("data/Scripts.xml");
+    	new ScriptReader("data/damage.xml");
+    	new LanguageReader("data/language.xml");
     	
     	MessageServer.setMode( ID.MessageMode.LOCAL );
     	
@@ -64,17 +68,20 @@ public class MainGame {
     	Weather.setWeather( Data.getWeatherSheet( 0 ));
     	
     	Map map = new Map(30, 20);
-    	Team t = new Team();
-    	Team t2 = new Team();
+    	Game.addTeam();
+    	Game.addTeam();
+    	Team t = Game.getTeam(0);
+    	Team t2 = Game.getTeam(1);
     	Player p = new Player( "Alex", t );
-    	Player p2 = new Player( "Alex", t );
-    	Player p3 = new Player( "Alex", t2 );
-    	Game.addPlayer(p);
-    	Game.addPlayer(p2);
-    	Game.addPlayer(p3);
-    	t.addMember(p);
-    	t.addMember(p2);
-    	t2.addMember(p3);
+    	Player p2 = new Player( "Alex2", t );
+    	Player p3 = new Player( "Alex3", t2 );
+    	Instance.toStack(p);
+    	Instance.toStack(p2);
+    	Instance.toStack(p3);
+    	Game.addPlayer(p,t);
+    	Game.addPlayer(p2,t);
+    	Game.addPlayer(p3,t2);
+    	
     	for( int i = 0; i < map.getSizeX() ; i++ ){    		
     		for( int j = 0 ; j < map.getSizeY() ; j++ ){
     			if( (i == 5 && j == 5) ||
@@ -111,11 +118,10 @@ public class MainGame {
     		}
     	}
     	
-    	MessageServer.toCommandList( new TestCommand(p) , false );
         Game.setMap(map);
+        Fog.noFog(false);
         Status.setStatus( Status.Mode.WAIT );
-        Turn.setPlayer( Game.getNextPlayer() );
-        //ScriptFactory.printDatabase();
+        Turn.startTurn( Game.getNextPlayer() );
         
     	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

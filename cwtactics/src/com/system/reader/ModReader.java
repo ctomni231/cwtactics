@@ -82,6 +82,7 @@ public class ModReader extends Parser {
 		else if( super.isAheader("ressource") ) parseResource(attributes);
 		else if( super.isAheader("movetype") )	parseMoveType(attributes);
 		else if( super.isAheader("button") )	parseEntry(attributes);
+		else if( super.isAheader("weapon") )	parseWeapon(attributes);
 	}
 	
 	/*
@@ -90,6 +91,35 @@ public class ModReader extends Parser {
 	 * ****************
 	 * 
 	 */
+	
+	private void parseWeapon( Attributes attributes ){
+		
+		if( super.getLastHeader().equals("weapon") ){
+			if( attributes.getValue( "id" ) != null && !Data.existIntegerID( attributes.getValue( "id" ) ) ) Data.addWeaponSheet( attributes.getValue( "id" ) , new Weapon_Sheed() );
+			headerID = attributes.getValue( "id" );
+		}
+		
+		Weapon_Sheed sh = Data.getWeaponSheet( Data.getIntegerID(headerID) );
+		
+		if( super.isAheader("canAttack") ){
+			if( attributes.getValue("value") != null ){
+				String[] levels = attributes.getValue("value").split(",");
+				for( String s : levels ){
+					sh.setAttack( Integer.parseInt(s) , true);
+				}
+			}
+		}
+		else if( super.isAheader("useAmmo") ){
+			if( attributes.getValue("value") != null ) sh.setUseAmmo( Integer.parseInt(attributes.getValue("value")) );
+		}
+		else if( super.isAheader("weaponType") ){
+			if( attributes.getValue("value") != null ) sh.setFireMode( Integer.parseInt(attributes.getValue("value")) );
+		}
+		else if( super.isAheader("ranges") ){
+			if( attributes.getValue("min") != null ) sh.setFireMode( Integer.parseInt(attributes.getValue("min")) );
+			if( attributes.getValue("max") != null ) sh.setFireMode( Integer.parseInt(attributes.getValue("max")) );
+		}
+	}
 	
 	/**
 	 * Parses an entry block and adds the content to the data core.
@@ -102,15 +132,7 @@ public class ModReader extends Parser {
 			return;
 		}
 		
-		Sheet sh = Data.getEntrySheet( Data.getIntegerID(headerID) );
-		
-		/*
-		 * 			 NAME
-		 ****************************
-		 */
-		if( super.isAheader("name") ){
-			if( attributes.getValue( Data.getLanguage() ) != null ) sh.setName( attributes.getValue( Data.getLanguage() ) );
-		}
+		//Sheet sh = Data.getEntrySheet( Data.getIntegerID(headerID) );
 	}
 	
 	/**
@@ -127,19 +149,10 @@ public class ModReader extends Parser {
 		Rank_Sheet sh = Data.getRankSheet( Data.getIntegerID(headerID) );
 		
 		/*
-		 * 			 NAME
-		 ****************************
-		 */
-		if( super.isAheader("name") ){
-			
-			if( attributes.getValue( Data.getLanguage() ) != null ) sh.setName( attributes.getValue( Data.getLanguage() ) );
-		}
-		
-		/*
 		 * 			STATUS
 		 ****************************
 		 */
-		else if( super.isAheader("stats") ){
+		if( super.isAheader("stats") ){
 			
 			if( attributes.getValue("exp") != null ) sh.setExp( Integer.parseInt(attributes.getValue("exp")) );
 		}
@@ -158,20 +171,12 @@ public class ModReader extends Parser {
 		
 		Move_Sheet sh = Data.getMoveSheet( Data.getIntegerID(headerID) );
 		
-		/*
-		 * 			 NAME
-		 ****************************
-		 */
-		if( super.isAheader("name") ){
-			
-			if( attributes.getValue( Data.getLanguage() ) != null ) sh.setName( attributes.getValue( Data.getLanguage() ) );
-		}
 		
 		/*
 		 * 		  MOVE FIELDS
 		 ****************************
 		 */
-		else if( super.isAheader("fieldtarget") ){
+		if( super.isAheader("fieldtarget") ){
 			
 			// create new sheet if you arrive a new XML object body and the ID isn't in the database
 			if( ! Data.existIntegerID( attributes.getValue("id")  )) addTileSheet( attributes.getValue("id") );
@@ -192,16 +197,7 @@ public class ModReader extends Parser {
 			return;
 		}
 		
-		Sheet sh = Data.getRankSheet( Data.getIntegerID(headerID) );
-		
-		/*
-		 * 			 NAME
-		 ****************************
-		 */
-		if( super.isAheader("name") ){
-			
-			if( attributes.getValue( Data.getLanguage() ) != null ) sh.setName( attributes.getValue( Data.getLanguage() ) );
-		}
+		//Sheet sh = Data.getRankSheet( Data.getIntegerID(headerID) );
 	}
 	
 	/**
@@ -216,21 +212,12 @@ public class ModReader extends Parser {
 		}
 
 		Weather_Sheet sh = Data.getWeatherSheet( Data.getIntegerID(headerID) );
-
-		/*
-		 * 			 NAME
-		 ****************************
-		 */
-		if( super.isAheader("name") ){
-			
-			if( attributes.getValue( Data.getLanguage() ) != null ) sh.setName( attributes.getValue( Data.getLanguage() ) );
-		}
 		
 		/*
 		 * 		    STATUS
 		 ****************************
 		 */
-		else if( super.isAheader("stats") ){
+		if( super.isAheader("stats") ){
 			
 			if( attributes.getValue("chance") != null ) sh.setChance( Integer.parseInt(attributes.getValue("chance")) );
 		}
@@ -248,21 +235,12 @@ public class ModReader extends Parser {
 		}
 		
 		Tile_Sheet sh = Data.getTileSheet( Data.getIntegerID(headerID) );
-		
-		/*
-		 * 			 NAME
-		 ****************************
-		 */
-		if( super.isAheader("name") ){
-			
-			if( attributes.getValue( Data.getLanguage() ) != null ) sh.setName( attributes.getValue( Data.getLanguage() ) );
-		}
-		
+				
 		/*
 		 * 			  TAG
 		 ****************************
 		 */
-		else if( super.isAheader("tag") ){
+		if( super.isAheader("tag") ){
 			
 			if( attributes.getValue("id") != null ) 		sh.addTag( Data.getIntegerTagID(attributes.getValue("id")) );
 		}
@@ -273,7 +251,7 @@ public class ModReader extends Parser {
 		 */
 		else if( super.isAheader("funds") ){
 			
-			// checks all resources and adds it to the sheet if a valiue is given
+			// checks all resources and adds it to the sheet if a value is given
 			for( int i = 0 ; i < Data.getRessourceTable().size() ; i++ ){
 				if( attributes.getValue("ressource_"+i ) != null ) 		sh.setFunds( Data.getRessourceSheet(i) , Integer.parseInt( attributes.getValue("ressource_"+i) ) );
 			}
@@ -376,23 +354,14 @@ public class ModReader extends Parser {
 			headerID = attributes.getValue( "ID" );
 			return;
 		}
-		Unit_Sheed sh = Data.getUnitSheet( Data.getIntegerID(headerID) );
 		
-		/*
-		 * 			 NAME
-		 ****************************
-		 */
-		if( super.isAheader("name") ){
-			
-			// adds name to the sheet
-			if( attributes.getValue( Data.getLanguage() ) != null ) 	sh.setName( attributes.getValue( Data.getLanguage() ) );
-		}
+		Unit_Sheed sh = Data.getUnitSheet( Data.getIntegerID(headerID) );
 		
 		/*
 		 * 			 COST
 		 ****************************
 		 */
-		else if( super.isAheader("cost") ){
+		if( super.isAheader("cost") ){
 			
 			// checks all resources and adds it to the sheet if a valiue is given
 			for( int i = 0 ; i < Data.getRessourceTable().size() ; i++ ){
@@ -411,6 +380,7 @@ public class ModReader extends Parser {
 			if( attributes.getValue("vision") != null ) 	sh.setVision( Integer.parseInt(attributes.getValue("vision")) );
 			if( attributes.getValue("capture") != null ) 	sh.setCaptureValue( Integer.parseInt(attributes.getValue("capture")) );
 			if( attributes.getValue("weight") != null ) 	sh.setWeight( Integer.parseInt(attributes.getValue("weight")) );
+			if( attributes.getValue("level") != null ) 		sh.setLevel( Integer.parseInt(attributes.getValue("level")) );
 		}
 		
 		/*
@@ -439,40 +409,10 @@ public class ModReader extends Parser {
 			
 			if( attributes.getValue("ammo") != null ) 					sh.setAmmo( Integer.parseInt(attributes.getValue("ammo")) );
 		}
-		else if( super.isAheader("combat") && !super.getLastHeader().equals("combat") ){
-			
-			// crate a sheet and add it to unit sheet
-			Weapon_Sheed wSh = new Weapon_Sheed();
-			sh.addWeapon(wSh);
-			
-			// check values and sets the settings of the weapon
-			if( attributes.getValue( Data.getLanguage() ) != null ) 	wSh.setName( attributes.getValue( Data.getLanguage() ) );
-			if( attributes.getValue("useAmmo") != null ) 				wSh.setUseAmmo( Integer.parseInt(attributes.getValue("useAmmo")) );
-			if( attributes.getValue("minrange") != null ) 				wSh.setMinRange( Integer.parseInt(attributes.getValue("minrange")) );
-			if( attributes.getValue("maxrange") != null ) 				wSh.setMaxRange( Integer.parseInt(attributes.getValue("maxrange")) );
-			if( attributes.getValue("indirect") != null ) 				wSh.setFireMode( Integer.parseInt(attributes.getValue("indirect")) );
-			if( attributes.getValue("rangeMod") != null ) 				wSh.setRangePenalty( Integer.parseInt(attributes.getValue("rangeMod")) );
-		}
-		
-		/*
-		 * 			 DAMAGE
-		 ****************************
-		 */
-		else if( super.isAheader("damage") && super.isAheader("enemy")){
-			
-			// enemy target entry , fist check ID and then the damage
-			if( attributes.getValue("id") != null ){
-				
-				// exist the enemy ID in the database ? , if not create a new sheet for it
-				if( ! Data.existIntegerID( attributes.getValue("id")  )) addUnitSheet( attributes.getValue("id") );
-				Unit_Sheed sh_enemy = Data.getUnitSheet( Data.getIntegerID(attributes.getValue("id") ) );
-				
-				// check damage values for all weapons of the unit
-				for( int i = 0 ; i < sh.getNumberOfWeapons() ; i++ ){
-					
-					if( sh.getWeapon(i) == null ) return;
-					if( attributes.getValue("wp"+(i+1)+"_damage") != null ) sh.getWeapon(i).setDamage(sh_enemy, Integer.parseInt( attributes.getValue("wp"+(i+1)+"_damage") ));
-				}
+		else if( super.isAheader("weapon") ){
+			String id = attributes.getValue("id");
+			if( id != null ){
+				if( Data.existIntegerID( id ) ) sh.addWeapon( Data.getWeaponSheet( Data.getIntegerID(id) ) );
 			}
 		}
 		
