@@ -71,7 +71,16 @@ public class Status_Menu implements Status_Interface {
 						Status.setStatus( Status.Mode.WAIT );
                     }
                     else if( Menu.getSelected().getSheet().getID().equals("GRID") ){
-                        map.setColumn(2);
+                        //map.setColumn(2);
+                        for(int i = 0; i < 4; i++){
+                            map.addShake(6, 0);
+                            map.addShake(-6, 0);
+                            map.addShake(4, 0);
+                            map.addShake(-4, 0);
+                            map.addShake(2, 0);
+                            map.addShake(-2, 0);
+                        }
+                        map.addShake(0, 0);
 
                         Menu.clearList();
 						Status.setStatus( Status.Mode.WAIT );

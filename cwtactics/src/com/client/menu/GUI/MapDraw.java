@@ -13,6 +13,7 @@ import com.system.data.ImgData;
 import com.client.model.object.Map;
 import com.client.model.object.Tile;
 import com.client.tools.ImgLibrary;
+import java.util.ArrayList;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
@@ -45,11 +46,20 @@ public class MapDraw extends MovingPix{
     private int realcury;
     private PixMenu cursor;
 
+    private ArrayList<Integer> shakeX;
+    private ArrayList<Integer> shakeY;
+    private int shakex;
+    private int shakey;
+
     public MapDraw(Map theMap, String propRef, String unitRef,
             int locx, int locy, double speed){
         super(locx, locy, speed);
         udcntr = 0;
         lrcntr = 0;
+        shakeX = new ArrayList<Integer>();
+        shakeY = new ArrayList<Integer>();
+        shakex = 0;
+        shakey = 0;
         map = theMap;
         mapsx = map.getSizeX();
         mapsy = map.getSizeY();
@@ -111,6 +121,11 @@ public class MapDraw extends MovingPix{
                 break;
             }
         }
+    }
+
+    public void addShake(int x, int y){
+        shakeX.add(x);
+        shakeY.add(y);
     }
 
     public void changeType(String type){
@@ -240,6 +255,15 @@ public class MapDraw extends MovingPix{
             fposy -= (BASE*scale/2);
         else if(realcury < (BASE*scale/2))
             fposy += (BASE*scale/2);
+
+        if(shakex != shakey && shakey != 0){
+            shakex = 0;
+            shakey = 0;
+        }
+        if(shakeX.size() > 0){
+            shakex = shakeX.remove(0);
+            shakey = shakeY.remove(0);
+        }
     }
     
     public void updateMove(){
@@ -356,39 +380,39 @@ public class MapDraw extends MovingPix{
                 if(drawMap[i][j].terrain != null)
                     if(Fog.inFog(map.getTile(i, j))){
                         g.drawImage(itemList.getImage(drawMap[i][j].terrain,
-                            animTime), (int)(posx+(i*BASE*scale)),
-                        (int)(posy+((j-1)*BASE*scale)), FOG);
+                            animTime), (int)(posx+shakex+(i*BASE*scale)),
+                        (int)(posy+shakey+((j-1)*BASE*scale)), FOG);
                     }else{
                         g.drawImage(itemList.getImage(drawMap[i][j].terrain,
-                            animTime), (int)(posx+(i*BASE*scale)),
-                        (int)(posy+((j-1)*BASE*scale)));
+                            animTime), (int)(posx+shakex+(i*BASE*scale)),
+                        (int)(posy+shakey+((j-1)*BASE*scale)));
                     }
                 if(showGrid){
                     g.setColor(Color.lightGray);
-                    g.drawRect((int)(posx+i*BASE*scale),
-                        (int)(posy+j*BASE*scale),
+                    g.drawRect((int)(posx+shakex+i*BASE*scale),
+                        (int)(posy+shakey+j*BASE*scale),
                         (int)((BASE+1)*scale),
                         (int)((BASE+1)*scale));
                 }
                 if(Status.getStatus() == Status.Mode.SHOW_MOVE){
                     if(Move.getTiles().containsKey(map.getTile(i, j))){
                         g.setColor(new Color(0, 0, 255, 100));
-                        g.fillRect((int)(posx+i*BASE*scale),
-                            (int)(posy+j*BASE*scale), (int)(BASE*scale),
+                        g.fillRect((int)(posx+shakex+i*BASE*scale),
+                            (int)(posy+shakey+j*BASE*scale), (int)(BASE*scale),
                             (int)(BASE*scale));
                     }
                     if(Move.inWay(map.getTile(i, j))){
                         g.setColor(new Color(0, 0, 0, 100));
-                        g.fillRect((int)(posx+i*BASE*scale),
-                            (int)(posy+j*BASE*scale), (int)(BASE*scale),
+                        g.fillRect((int)(posx+shakex+i*BASE*scale),
+                            (int)(posy+shakey+j*BASE*scale), (int)(BASE*scale),
                             (int)(BASE*scale));
                     }
                 }
                 if(Status.getStatus() == Status.Mode.SHOW_RANGE){
                     if(Range.isIn(map.getTile(i, j))){
                         g.setColor(new Color(255, 0, 0, 100));
-                        g.fillRect((int)(posx+i*BASE*scale),
-                            (int)(posy+j*BASE*scale), (int)(BASE*scale),
+                        g.fillRect((int)(posx+shakex+i*BASE*scale),
+                            (int)(posy+shakey+j*BASE*scale), (int)(BASE*scale),
                             (int)(BASE*scale));
                     }
                 }
@@ -396,8 +420,8 @@ public class MapDraw extends MovingPix{
                         !Fog.inFog(map.getTile(i, j))){
                     if(Fog.isVisible(map.getTile(i,j).getUnit())){
                         g.drawImage(itemList.getImage(drawMap[i][j].unit,
-                        animTime), (int)(posx+((i*BASE-(BASE/2))*scale)),
-                        (int)(posy+(((j-1)*BASE+(BASE/2))*scale)));
+                        animTime), (int)(posx+shakex+((i*BASE-(BASE/2))*scale)),
+                        (int)(posy+shakey+(((j-1)*BASE+(BASE/2))*scale)));
                         if(map.getTile(i, j).getUnit().getHealth() < 100){
                             g.setColor(Color.white);
                             g.drawString(""+map.getTile(i,j).getUnit().
@@ -443,8 +467,8 @@ public class MapDraw extends MovingPix{
     }
 
     private void drawCursor(int animTime){
-        realcurx = (int)(posx+cursorx*BASE*scale);
-        realcury = (int)(posy+cursory*BASE*scale);
+        realcurx = (int)(posx+shakex+cursorx*BASE*scale);
+        realcury = (int)(posy+shakey+cursory*BASE*scale);
 
         cursor.setFinalPosition(
                 realcurx-(int)(cursor.getImage().getWidth()/2),

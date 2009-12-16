@@ -79,8 +79,7 @@ public class PixVertMenu extends PixMenu{
     }
 
     public void clearAllVertParts(){
-        for(int i = vertParts.size()-1; i >= 0; i--)
-            menuItems.remove(vertParts.get(i));
+        this.clearAllItems();
         vertParts.clear();
         vertIndex.clear();
         select = 0;

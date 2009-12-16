@@ -70,6 +70,7 @@ public class GameMenuScr {
                     info[i] = Menu.getList().get(i).getSheet().
                             getName().toUpperCase();
                 init(txtLib, scrX, scrY, info);
+                //menuScr.update(info, txtLib);
             }
             scrSwitch = false;
             System.out.println("TIME NEEDED TO BUILD MENU :: "+(System.currentTimeMillis() - time)+" ms");

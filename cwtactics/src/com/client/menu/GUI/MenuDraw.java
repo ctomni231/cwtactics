@@ -104,6 +104,7 @@ public class MenuDraw {
         ImgLibrary tempImg = new ImgLibrary();
 
         menu.clearAllVertParts();
+
         for(int i = 0; i < info.length; i++){
             tempImg.addImage(setWordImage(info[i], tempAlpha));
             for(int j = 0; j < dfltColors.length; j++)
