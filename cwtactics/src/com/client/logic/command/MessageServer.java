@@ -3,6 +3,13 @@ package com.client.logic.command;
 import com.system.ID;
 import com.system.ID.MessageMode;
 
+/**
+ * Controls incoming commands and send it in 
+ * many possible ways like network, local...
+ * to the command list.
+ * 
+ * @author Tapsi [BcMk]
+ */
 public class MessageServer {
 
 	/*
@@ -53,18 +60,31 @@ public class MessageServer {
 		}
 	}
 	
+	/**
+	 * Sends a command to the list.
+	 */
 	public static void send( Command command ){
 		send( command , false , mode );
 	}
 
+	/**
+	 * Sends a command directly to the command list
+	 * of this client.
+	 */
 	public static void sendLocal( Command command ){
 		send(command, false , ID.MessageMode.LOCAL );
 	}
-	
+
+	/**
+	 * Sends a command to the first position of the list.
+	 */
 	public static void sendToFirstPos( Command command ){
 		send( command , true , mode );
 	}
-	
+
+	/**
+	 * Sends a command, directly to the client, to the first position of the list.
+	 */
 	public static void sendLocalToFirstPos( Command command ){
 		send(command, true , ID.MessageMode.LOCAL );
 	}

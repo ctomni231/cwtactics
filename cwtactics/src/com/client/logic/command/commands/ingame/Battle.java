@@ -3,6 +3,8 @@ package com.client.logic.command.commands.ingame;
 import com.client.logic.command.Command;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
+import com.system.log.Logger;
+import com.system.log.Logger.Level;
 
 /**
  * Battle command between two unit.
@@ -56,13 +58,15 @@ public class Battle implements Command{
 	 */
 	private void giveDamage( Tile tile , int damage ){
 		
-		if( attack <= 0 ) return;
+		Logger.write( ""+damage , Level.NORMAL );
+		
+		if( damage <= 0 ) return;
 		
 		// get variables
 		Unit unit = tile.getUnit();
 		
 		// give damage
-		unit.decreaseHealth(attack);
+		unit.decreaseHealth(damage);
 		
 		// remove unit if destroyed
 		if( unit.getHealth() == 0 ){

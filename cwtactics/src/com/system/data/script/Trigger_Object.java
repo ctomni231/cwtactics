@@ -95,6 +95,8 @@ public class Trigger_Object {
 	}
 	
 	public static void triggerCall( Unit unit1 , Unit unit2 ){
+		field1 = null;
+		field2 = null;
 		Trigger_Object.unit1 = unit1;
 		Trigger_Object.unit2 = unit2;
 	}

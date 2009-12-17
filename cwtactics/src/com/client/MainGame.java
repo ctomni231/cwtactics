@@ -17,6 +17,9 @@ import com.client.state.MainMenuState;
 import com.client.state.SlickGame;
 import com.system.ID;
 import com.system.data.Data;
+
+
+import com.system.log.Logger;
 import com.system.reader.LanguageReader;
 import com.system.reader.ModReader;
 import com.system.reader.ScriptReader;
@@ -30,6 +33,7 @@ import org.newdawn.slick.state.StateBasedGame;
  * @author Crecen
  */
 public class MainGame {
+	
     public static String GAME_TITLE = "Custom Wars Tactics Pre-Alpha 1.1";
     
     //The target frames per second for this game
@@ -40,9 +44,43 @@ public class MainGame {
 
     public static void main(String args[]){
     	
-    	// TEST SECTION
-    	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    	// setup logic
+    	setupLogic();
+
+    	// start a test game
+    	initializeTestGame();
+    	
+    	// start graphic engine
+    	setupGraphicEngine();
+    	
+    }
+    
+    /**
+     * Setups and starts graphic engine.
+     */
+    private static void setupGraphicEngine(){
+    	
+    	//This holds all the Screens
+        //Create a new game with a title
+        SlickGame slickFrame = new SlickGame(GAME_TITLE);
+        //Adds timing functionality
+        slickFrame.startTimer(TIMER_FPS);
+        //-------------------------
+        //Add new Screens here
+        //-------------------------
+        slickFrame.addScreen(new MainMenuState());
+        slickFrame.addScreen(new InGameState());
+
+        //Sets up a new Frame window
+        MainGame game = new MainGame(slickFrame, 640, 480);
+        //Sets the FPS: <=0 is default frameSpeed
+        game.showSlickWindow(GAME_TARGET_FPS);
+    }
+    
+    /**
+     * Setups logic and data core.
+     */
+    private static void setupLogic(){
     	
     	// load modification
     	new ModReader("data/Misc.xml");
@@ -51,10 +89,11 @@ public class MainGame {
     	new ModReader("data/Tiles.xml");
     	new ModReader("data/Units.xml");
     	new ModReader("data/Buttons.xml");
-    	new ScriptReader("data/Scripts.xml");
     	new ScriptReader("data/damage.xml");
+    	new ScriptReader("data/Scripts.xml");
     	new LanguageReader("data/language.xml");
     	
+    	// set message server mode
     	MessageServer.setMode( ID.MessageMode.LOCAL );
     	
     	// output some test information from database
@@ -62,10 +101,19 @@ public class MainGame {
     	System.out.println("Author  : "+Data.getAuthor());
     	System.out.println("Version : "+Data.getVersion());
     
-    	System.out.println( Data.getTileSheet( Data.getIntegerID("FACTORY") ).getFunds( Data.getRessourceSheet( Data.getIntegerID("RESSOURCE_0"))) );
-    	System.out.println( Data.getUnitSheet( Data.getIntegerID("LTANK") ).getCost( Data.getRessourceSheet( Data.getIntegerID("RESSOURCE_0"))) );
     	
     	Weather.setWeather( Data.getWeatherSheet( 0 ));
+    	
+    	// setup logger
+    	Logger.setMode( Logger.Mode.CONSOLE );
+    	Logger.setOn();
+    	
+    }
+    
+    /**
+     * Create test game for testing ;D
+     */
+    private static void initializeTestGame(){
     	
     	Map map = new Map(30, 20);
     	Game.addTeam();
@@ -117,31 +165,11 @@ public class MainGame {
     			else map.setTile( new Tile( Data.getTileSheet( Data.getIntegerID("PLAIN")), i, j, 0, null), i, j);
     		}
     	}
-    	
+
         Game.setMap(map);
         Fog.noFog(false);
         Status.setStatus( Status.Mode.WAIT );
         Turn.startTurn( Game.getNextPlayer() );
-        
-    	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        //This holds all the Screens
-        //Create a new game with a title
-        SlickGame slickFrame = new SlickGame(GAME_TITLE);
-        //Adds timing functionality
-        slickFrame.startTimer(TIMER_FPS);
-        //-------------------------
-        //Add new Screens here
-        //-------------------------
-        slickFrame.addScreen(new MainMenuState());
-        slickFrame.addScreen(new InGameState());
-
-        //Sets up a new Frame window
-        MainGame game = new MainGame(slickFrame, 640, 480);
-        //Sets the FPS: <=0 is default frameSpeed
-        game.showSlickWindow(GAME_TARGET_FPS);
-    	
     }
 
     //The container used for this window

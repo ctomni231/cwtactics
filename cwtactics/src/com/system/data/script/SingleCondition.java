@@ -1,11 +1,14 @@
 package com.system.data.script;
 
+import com.client.model.Fight;
 import com.client.model.Weather;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
 import com.system.data.Data;
 import com.system.data.script.ScriptLogic.Relationship;
 import com.system.data.script.ScriptLogic.TriggerTest;
+import com.system.log.Logger;
+import com.system.log.Logger.Level;
 
 public class SingleCondition {
 
@@ -153,7 +156,7 @@ public class SingleCondition {
 			// check a unit tag
 			case UNIT2_TAG :
 				
-				if( Trigger_Object.getField1().getUnit() == null ) break;
+				if( Trigger_Object.getField2().getUnit() == null ) break;
 				switch(relationship){
 				
 					// value is the integer ID of the tag
@@ -287,8 +290,17 @@ public class SingleCondition {
 				}
 				break;
 				
+			case ATTACKER_WEAPON_TYPE :
+				
+				switch( relationship ){
+					case IS :
+						if( Data.getWeaponSheet(value) == Fight.getAttackerWeapon() ) return true;
+					case IS_NOT :
+						if( Data.getWeaponSheet(value) != Fight.getAttackerWeapon() ) return true;
+				}
+				
 			default	:
-				System.err.println("Error , a single condition contains an unknown id ("+condition+")");
+				Logger.write("Condition contains unkown condition type with number "+condition+" !", Level.WARN );
 				break;
 		}
 		

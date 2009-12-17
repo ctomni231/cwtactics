@@ -102,8 +102,8 @@ public class ModReader extends Parser {
 		Weapon_Sheed sh = Data.getWeaponSheet( Data.getIntegerID(headerID) );
 		
 		if( super.isAheader("canAttack") ){
-			if( attributes.getValue("value") != null ){
-				String[] levels = attributes.getValue("value").split(",");
+			if( attributes.getValue("levels") != null ){
+				String[] levels = attributes.getValue("levels").split(",");
 				for( String s : levels ){
 					sh.setAttack( Integer.parseInt(s) , true);
 				}
@@ -116,8 +116,8 @@ public class ModReader extends Parser {
 			if( attributes.getValue("value") != null ) sh.setFireMode( Integer.parseInt(attributes.getValue("value")) );
 		}
 		else if( super.isAheader("ranges") ){
-			if( attributes.getValue("min") != null ) sh.setFireMode( Integer.parseInt(attributes.getValue("min")) );
-			if( attributes.getValue("max") != null ) sh.setFireMode( Integer.parseInt(attributes.getValue("max")) );
+			if( attributes.getValue("min") != null ) sh.setMinRange( Integer.parseInt(attributes.getValue("min")) );
+			if( attributes.getValue("max") != null ) sh.setMaxRange( Integer.parseInt(attributes.getValue("max")) );
 		}
 	}
 	
@@ -381,6 +381,7 @@ public class ModReader extends Parser {
 			if( attributes.getValue("capture") != null ) 	sh.setCaptureValue( Integer.parseInt(attributes.getValue("capture")) );
 			if( attributes.getValue("weight") != null ) 	sh.setWeight( Integer.parseInt(attributes.getValue("weight")) );
 			if( attributes.getValue("level") != null ) 		sh.setLevel( Integer.parseInt(attributes.getValue("level")) );
+			if( attributes.getValue("hide") != null ) 		sh.setCanHide( Integer.parseInt(attributes.getValue("hide")) );
 		}
 		
 		/*

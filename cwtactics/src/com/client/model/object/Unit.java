@@ -64,7 +64,7 @@ public class Unit {
 	}
 
 	public void setHealth(int health) {
-		if( health >= 0 ) health = 0;
+		if( health < 0 ) health = 0;
 		this.health = health;
 	}
 	
@@ -178,8 +178,27 @@ public class Unit {
 		else return loads.get(pos);
 	}
 	
+	public boolean canLoadUnit( Unit unit ){
+		
+		if( loads.contains(unit) ) return false;
+		if( unit.sheet.getWeight() > getLeftLoadSpace() ) return false;
+		return true;
+	}
+	
+	public int getLeftLoadSpace(){
+		int space = sheet.canLoadWeight();
+		for( Unit unit : loads ){
+			space -= unit.sheet.getWeight();
+		}
+		return space;
+	}
+	
 	public void addLoad( Unit unit ){
-		if( unit != null ) loads.add(unit);
+		if( unit != null && !loads.contains(unit) ) loads.add(unit);
+	}
+	
+	public void removeLoad( Unit unit ){
+		if( unit != null && loads.contains(unit) ) loads.remove(unit);
 	}
 	
 	public void destroy(){

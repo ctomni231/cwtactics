@@ -1,5 +1,8 @@
 package com.system.data.sheets;
 
+import com.system.log.Logger;
+import com.system.log.Logger.Level;
+
 /**
  * 
  * @author Tapsi [BcMk]
@@ -35,7 +38,7 @@ public class Weapon_Sheed extends Sheet{
 		fireMode = 0;
 		maxRange = 1;
 		minRange = 1;
-		attackable = new boolean[6];
+		attackable = new boolean[7];
 	}
 
 
@@ -135,8 +138,9 @@ public class Weapon_Sheed extends Sheet{
 		
 		// get level and check it
 		int lv = sh.getLevel();
+		
 		if( lv < 0 || lv >= attackable.length ) return false;
-			
+
 		// return value
 		if( attackable[lv] ) return true;
 		else return false;

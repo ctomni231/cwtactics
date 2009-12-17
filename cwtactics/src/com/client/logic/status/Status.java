@@ -27,7 +27,6 @@ public class Status {
 		WAIT			( new Status_Wait() ),
 		SHOW_RANGE		( new Status_ShowRange() ),
 		SHOW_MOVE		( new Status_ShowMove() ),
-		SHOW_TARGETS	( new Status_ShowTargets() ),
 		MENU			( new Status_Menu() );
 		
 		// variable

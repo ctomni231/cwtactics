@@ -24,6 +24,8 @@ public class Unit_Sheed extends ObjectSheet {
 	private int		canLoad;
 	private int		unitLevel;
 	
+	private boolean canHide;
+	
 	private ArrayList<Weapon_Sheed> weapons;
 	private ArrayList<Unit_Sheed>	loads;
 	
@@ -268,6 +270,19 @@ public class Unit_Sheed extends ObjectSheet {
 	
 	public void setLevel( int level ){
 		unitLevel = level;
+	}
+	
+	public boolean canHide(){
+		return canHide;
+	}
+	
+	public void setCanHide( int value ){
+		if( value == 1 ) setCanHide(true);
+		else setCanHide(false);
+	}
+	
+	public void setCanHide( boolean value ){
+		canHide = value;
 	}
 }
 

@@ -40,7 +40,7 @@
         <fuel amount="80" />
         <tags> <tag id="GROUND"/> <tag id="VEHICLE"/> <tag id="SCOUT" /> </tags>
         <combat ammo="-1" >
-            <weapon id="WP_BAZOOKA"/>
+            <weapon id="WP_MG"/>
         </combat>
     </unit>
 	

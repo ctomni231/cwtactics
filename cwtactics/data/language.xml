@@ -77,6 +77,12 @@
 		<lang id="WAIT" 		ENG="Wait" 				GER="Warten" />
 		<lang id="CAPTURE" 		ENG="Capture" 			GER="Erobern" />
 		<lang id="ATTACK" 		ENG="Attack" 			GER="Angreifen" />
+		<lang id="HIDE"			ENG="Hide"				GER="Tarnen" />
+		<lang id="UNHIDE"		ENG="Unhide"			GER="Enttarnen" />
+		<lang id="LOAD"			ENG="Load"				GER="Einladen" />
+		<lang id="UNLOAD"		ENG="Unload"			GER="Entladen" />
+		<lang id="SUPPLY"		ENG="Supply"			GER="Versorgen" />
+		<lang id="ATTACK"		ENG="Attack"			GER="Angreifen" />
 	</buttons>
 	
 	<ranks>

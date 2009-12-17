@@ -38,6 +38,8 @@ public class ScriptLogic {
     	AMMO_OF_UNIT,
     	HEALTH_OF_UNIT,
     	FIELD,
+    	ATTACKER_WEAPON_TYPE,
+    	DEFENDER_WEAPON_TYPE,
     	UNIT
     }
     
@@ -180,6 +182,8 @@ public class ScriptLogic {
 		else if( text.equals("AMMO_OF_UNIT")) 		return TriggerTest.AMMO_OF_UNIT;
 		else if( text.equals("HEALTH_OF_UNIT")) 	return TriggerTest.HEALTH_OF_UNIT;
 		else if( text.equals("UNIT")) 				return TriggerTest.UNIT;
+		else if( text.equals("ATTACKER_WEAPON_TYPE")) return TriggerTest.ATTACKER_WEAPON_TYPE;
+		else if( text.equals("DEFENDER_WEAPON_TYPE")) return TriggerTest.DEFENDER_WEAPON_TYPE;
 		else if( text.equals("FIELD")) 				return ScriptLogic.TriggerTest.FIELD;
 		return null;
 	}  

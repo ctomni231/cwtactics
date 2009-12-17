@@ -9,7 +9,6 @@
 
 	<button ID="AWDR"></button>
 
-
 	<button ID="ENDTURN" ></button>
 	
 	<button ID="WAIT" ></button>
@@ -17,5 +16,17 @@
 	<button ID="CAPTURE" ></button>
 	
 	<button ID="ATTACK" ></button>
+
+	<button ID="HIDE"></button>
+
+	<button ID="UNHIDE"></button>
+
+	<button ID="LOAD"></button>
+	
+	<button ID="UNLOAD"></button>
+	
+	<button ID="ATTACK"></button>
+	
+	<button ID="SUPPLY"></button>
 
 </buttons>

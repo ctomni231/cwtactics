@@ -10,6 +10,7 @@ import com.system.data.sheets.Tile_Sheet;
 import com.system.data.sheets.Unit_Sheed;
 import com.system.data.sheets.Weapon_Sheed;
 import com.system.data.sheets.Weather_Sheet;
+import com.system.log.Logger;
 
 public class Data {
 
@@ -212,7 +213,7 @@ public class Data {
 	public static Integer getIntegerID( String ID ){
 
 		if( !existIntegerID(ID) ){
-			System.err.println("ID "+ID+" not found in the data core...");
+			Logger.write( "ID "+ID+" doesn't exist!" , Logger.Level.WARN );
 			return -1; 
 		}
 		else return idTable.get(ID); 

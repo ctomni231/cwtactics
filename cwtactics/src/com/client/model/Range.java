@@ -7,6 +7,8 @@ import com.client.model.object.Game;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
 import com.system.data.sheets.Weapon_Sheed;
+import com.system.log.Logger;
+import com.system.log.Logger.Level;
 
 /**
  * 
@@ -123,7 +125,7 @@ public class Range {
     		
     		// if you don't have enough ammo to use this weapon, continue
     		if( sh.getUseAmmo() != -1 && unit.getAmmo() < sh.getUseAmmo() ) continue;
-    		
+    		    		
     		if( sh.getFireMode() == 0 || sh.getFireMode() == 2 ){
 
     			// make virtual move first
@@ -156,10 +158,7 @@ public class Range {
 	 * Generates the internal list of targets.
 	 */
     public static void generateTargets( Tile start , Unit unit , Weapon_Sheed sh ){
-    	
-    	// setup
-    	clear();
-    	
+    	    	
     	// variables
     	int x = start.getPosX();
     	int y = start.getPosY();
@@ -170,6 +169,7 @@ public class Range {
     	
     	for( Tile tile : range ){
     		if( tile.getUnit() != null && tile.getUnit().getOwner() != unit.getOwner() ){
+        	
     			if( !targets.contains(tile) && sh.canAttack( tile.getUnit().sheet() ) ) targets.add(tile);
     		}
     	}
@@ -178,7 +178,9 @@ public class Range {
 	/**
 	 * Has the unit targets from a given tile and a given weapon type?
 	 */
-    public static boolean hasTargets( Tile tile , Unit unit , Weapon_Sheed sh ){
+    public static boolean hasWeaponTargets( Tile tile , Unit unit , Weapon_Sheed sh ){
+    	
+    	clear();
     	
     	generateTargets(tile, unit, sh);
     	
@@ -186,6 +188,14 @@ public class Range {
     	else return false;
     }
     
+	public static boolean hasUnitTargets( Tile tile , Unit unit ){
+
+		for( Weapon_Sheed sh : unit.sheet().getAllWeapons() ){
+			if( hasWeaponTargets(tile, unit, sh) ) return true;
+		}
+		return false;
+	}
+
     
     
     /*

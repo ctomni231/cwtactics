@@ -2,6 +2,7 @@ package com.client.model;
 
 import java.util.ArrayList;
 import com.client.model.object.Player;
+import com.system.log.Logger;
 
 public class Instance {
 

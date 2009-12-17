@@ -64,12 +64,9 @@ public class Fight {
 	private static void checkEffects(){
 		
 		// check effects for the attacker ( local )
-		Trigger_Object.triggerCall( attackerTile , defenderTile);
+		Trigger_Object.triggerCall( attackerTile , defenderTile , attacker , defender );
 		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_ATTACK);
 		
-		// check effects for the defender ( local )
-		Trigger_Object.triggerCall( defenderTile , attackerTile);
-		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_DEFEND);
 	}
 	
 	/**
@@ -175,6 +172,14 @@ public class Fight {
 		// you get all data from scripts, return script value
 		if( defenderWeapon != null ) return defenderPenalty;
 		return 0;
+	}
+	
+	public static Weapon_Sheed getAttackerWeapon(){
+		return attackWeapon;
+	}
+	
+	public static Weapon_Sheed getDefenderWeapon(){
+		return defenderWeapon;
 	}
 	
 	

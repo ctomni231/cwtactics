@@ -2,34 +2,39 @@ package com.client.logic.command;
 
 import java.util.ArrayList;
 
+/**
+ * CommandList holds all logic commands and
+ * gives a multi-thread save access to the 
+ * command list.
+ * 
+ * @author Tapsi [BcMk]
+ */
 public class CommandList {
 
 	/*
-	 * 
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 
 	private static ArrayList<Command> list;
 
+	
+	
 	/*
-	 * 
 	 * CONSTRUCTORS
 	 * ************
-	 * 
 	 */
 
 	// Initialize command stack at program loading 
 	static {
 		list = new ArrayList<Command>();
 	}
+	
+	
 
 	/*
-	 * 
 	 * ACCESSING METHODS
 	 * *****************
-	 * 
 	 */
 
 	/**
@@ -64,12 +69,11 @@ public class CommandList {
 		return false;
 	}
 
-	/*
-	 * INTERNAL METHODS
-	 */
-
+	
+	
 	/*
 	 * WORKING METHODS
+	 * ***************
 	 */
 
 	/**
@@ -83,9 +87,4 @@ public class CommandList {
 		return c;
 	}
 	
-
-	/*
-	 * OUTPUT METHODS
-	 */
-
 }
