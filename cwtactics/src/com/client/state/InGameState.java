@@ -133,6 +133,13 @@ public class InGameState extends SlickScreen{
         exitScr.render(g);
     }
 
+    private void menuScr(){
+
+    }
+    private void menuScr(Graphics g){
+
+    }
+
     private void mapScr(int time){
         menuScr.column = column;
         menuScr.scrSwitch = scrSwitch;
@@ -156,7 +163,7 @@ public class InGameState extends SlickScreen{
         menuScr.render(g);
     }
 
-    private void menuScr(){
+    private void testScr(){
         if(scrSwitch){
             scrSwitch = false;
         }
@@ -174,7 +181,7 @@ public class InGameState extends SlickScreen{
             scrSwitch = true;
         }
     }
-    private void menuScr(Graphics g){
+    private void testScr(Graphics g){
         newMap.draw(g, scr_sysTime);
     }
 

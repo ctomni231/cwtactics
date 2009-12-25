@@ -117,15 +117,17 @@ public class Status_Menu implements Status_Interface {
 
                     if( Menu.getSelected().getSheet().getID().equals("AWDS") )				map.changeType("AWDS");
                     else if( Menu.getSelected().getSheet().getID().equals("AWDR") )			map.changeType("AWDR");
-                    else if( Menu.getSelected().getSheet().getID().equals("GRID") )			map.setColumn(2);
+                    else if( Menu.getSelected().getSheet().getID().equals("GRID") )			map.toggleGrid();
                     else if( Menu.getSelected().getSheet().getID().equals("OPTIONS") )		map.setColumn(1);
                     else if( Menu.getSelected().getSheet().getID().equals("ENDTURN") )		MessageServer.send( new TurnEnd() );
                     else 																	Logger.write( "Status got an unknown button!", Level.WARN );
+
                     
                     // clear menu and go back to wait
                     Menu.clearList();
 					Status.setStatus( Status.Mode.WAIT );
 
+                    /*
                     if( Menu.getSelected().getSheet().getID().equals("AWDS") ){
                         map.changeType("AWDS");
 
@@ -166,7 +168,7 @@ public class Status_Menu implements Status_Interface {
 						Menu.clearList();
 						Status.setStatus( Status.Mode.WAIT );
 					}
-					break;
+					break;//*/
 			}
 		}
 		

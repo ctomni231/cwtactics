@@ -379,8 +379,8 @@ public class MapDraw extends MovingPix{
                     drawMap[i][j] = createNewImage(drawMap[i][j], i, j);
                 if(drawMap[i][j].terrain != null)
                     if(Fog.inFog(map.getTile(i, j))){
-                        g.drawImage(itemList.getImage(drawMap[i][j].terrain,
-                            animTime), (int)(posx+shakex+(i*BASE*scale)),
+                        g.drawImage(itemList.getImage(drawMap[i][j].blank,
+                            500), (int)(posx+shakex+(i*BASE*scale)),
                         (int)(posy+shakey+((j-1)*BASE*scale)), FOG);
                     }else{
                         g.drawImage(itemList.getImage(drawMap[i][j].terrain,
@@ -417,6 +417,7 @@ public class MapDraw extends MovingPix{
                     }
                 }
                 if(drawMap[i][j].unit != null &&
+                        map.getTile(i, j).getUnit() != null &&
                         !Fog.inFog(map.getTile(i, j))){
                     if(Fog.isVisible(map.getTile(i,j).getUnit())){
                         g.drawImage(itemList.getImage(drawMap[i][j].unit,
@@ -456,6 +457,9 @@ public class MapDraw extends MovingPix{
         item.terrain = itemList.getImgPart( map.getField()[x][y].sheet().
                 getID().toUpperCase(), color, 0);
         itemList.makeNewImage(item.terrain);
+        item.blank = itemList.getImgPart( map.getField()[x][y].sheet().
+                getID().toUpperCase(), 0, 0);
+        itemList.makeNewImage(item.blank);
         if( map.getField()[x][y].getUnit() != null){
             color = 0;
             if(map.getField()[x][y].getUnit().getOwner() != null)
@@ -497,6 +501,9 @@ public class MapDraw extends MovingPix{
             item.terrain = itemList.getImgPart(map.getField()[x][y].sheet().
                     getID(), color, 0);
             itemList.makeNewImage(item.terrain);
+            item.blank = itemList.getImgPart( map.getField()[x][y].sheet().
+                getID().toUpperCase(), 0, 0);
+            itemList.makeNewImage(item.blank);
         }        
         if(item.unit == null && map.getField()[x][y].getUnit() != null){
             int color = 0;
