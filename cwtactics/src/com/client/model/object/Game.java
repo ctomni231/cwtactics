@@ -46,6 +46,10 @@ public class Game {
 		return map;
 	}
 
+    public static int getCurrentPlayerID(){
+        return playerPointer;
+    }
+
 	public static void setMap(Map map) {
 		Game.map = map;
 	}

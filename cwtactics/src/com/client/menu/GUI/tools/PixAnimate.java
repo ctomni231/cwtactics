@@ -134,7 +134,7 @@ public class PixAnimate {
                     storedImg.setFlipY();
             }
             for(int j = 0; j < data.dfltColors.size(); j++){
-                if(data.code == data.UNIT &&
+                if((data.code == data.UNIT || data.code == data.ARROW) &&
                         j+data.dfltColors.size()*player < unitColors.size()){
                     storedImg.setPixelChange(
                         new Color(data.dfltColors.get(j)),

@@ -1,6 +1,7 @@
 package com.client.state;
 
 import com.client.logic.input.Controls;
+import com.client.menu.GUI.ListDraw;
 import com.client.menu.GUI.MapDraw;
 import com.client.model.object.Game;
 
@@ -27,6 +28,7 @@ public class InGameState extends SlickScreen{
 	 */
 	
     private MapDraw newMap;
+    private ListDraw newDraw;
     private int enterState;
 
     private MenuReader reader;
@@ -56,6 +58,8 @@ public class InGameState extends SlickScreen{
     public void init() {
         newMap = new MapDraw(Game.getMap(), reader.getPropColorRef(),
                 reader.getUnitColorRef(), 10, 10, 0);
+        newDraw = new ListDraw(7, 20, 0, 0, 0);
+        newDraw.init();
 
         exitScr = new ExitMiniScr(txtLib, reader.getExitData(),
             scr_getContainer().getWidth(), scr_getContainer().getHeight(), 1);
@@ -134,10 +138,16 @@ public class InGameState extends SlickScreen{
     }
 
     private void menuScr(){
+        if(scrSwitch){
+            scrSwitch = false;
+        }
 
+        if(Controls.isActionClicked()){
+            column = 0;
+        }
     }
     private void menuScr(Graphics g){
-
+        newDraw.selectBox.render(g);
     }
 
     private void mapScr(int time){

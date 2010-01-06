@@ -19,7 +19,7 @@ import org.newdawn.slick.state.transition.FadeInTransition;
 //scr_: stands for screen
 public abstract class SlickScreen extends BasicGameState{
     //Holds the game associated with this state
-    private StateBasedGame scr_stateGame;
+    //private StateBasedGame scr_stateGame;
     //Holds the container associated with this state
     private GameContainer scr_container;
     //Guarantees each screen has a separate ID
@@ -58,7 +58,7 @@ public abstract class SlickScreen extends BasicGameState{
 
     public final void init(GameContainer contain,
             StateBasedGame game) throws SlickException {
-        scr_stateGame = game;
+        //scr_stateGame = game;
         scr_container = contain;
         init();
     }
@@ -70,9 +70,7 @@ public abstract class SlickScreen extends BasicGameState{
     
     public final void update(GameContainer container, 
             StateBasedGame game, int timePassed) throws SlickException {
-    	
-        
-        
+    	      
         // check the command stack and return if a command is done
         if( scr_checkCommands() ) return;
         

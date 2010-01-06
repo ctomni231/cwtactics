@@ -117,58 +117,25 @@ public class Status_Menu implements Status_Interface {
 
                     if( Menu.getSelected().getSheet().getID().equals("AWDS") )				map.changeType("AWDS");
                     else if( Menu.getSelected().getSheet().getID().equals("AWDR") )			map.changeType("AWDR");
-                    else if( Menu.getSelected().getSheet().getID().equals("GRID") )			map.toggleGrid();
-                    else if( Menu.getSelected().getSheet().getID().equals("OPTIONS") )		map.setColumn(1);
-                    else if( Menu.getSelected().getSheet().getID().equals("ENDTURN") )		MessageServer.send( new TurnEnd() );
+                    else if( Menu.getSelected().getSheet().getID().equals("GRID") ){
+                        map.toggleGrid();
+                        map.addShake(6, 0);
+                        map.addShake(-6, 0);
+                        map.addShake(4, 0);
+                        map.addShake(-4, 0);
+                        map.addShake(2, 0);
+                        map.addShake(-2, 0);
+                        map.addShake(0, 0);
+                        map.setColumn(2);
+                    }else if( Menu.getSelected().getSheet().getID().equals("OPTIONS") )		map.setColumn(1);
+                    else if( Menu.getSelected().getSheet().getID().equals("ENDTURN") )	    MessageServer.send( new TurnEnd() ); //Turn.nextTurn();
                     else 																	Logger.write( "Status got an unknown button!", Level.WARN );
-
-                    
+               
                     // clear menu and go back to wait
                     Menu.clearList();
 					Status.setStatus( Status.Mode.WAIT );
 
-                    /*
-                    if( Menu.getSelected().getSheet().getID().equals("AWDS") ){
-                        map.changeType("AWDS");
-
-                        Menu.clearList();
-						Status.setStatus( Status.Mode.WAIT );
-                    }
-                    else if( Menu.getSelected().getSheet().getID().equals("AWDR") ){
-                    	map.changeType("AWDR");
-
-                        Menu.clearList();
-						Status.setStatus( Status.Mode.WAIT );
-                    }
-                    else if( Menu.getSelected().getSheet().getID().equals("GRID") ){
-                        //map.setColumn(2);
-                        for(int i = 0; i < 4; i++){
-                            map.addShake(6, 0);
-                            map.addShake(-6, 0);
-                            map.addShake(4, 0);
-                            map.addShake(-4, 0);
-                            map.addShake(2, 0);
-                            map.addShake(-2, 0);
-                        }
-                        map.addShake(0, 0);
-
-                        Menu.clearList();
-						Status.setStatus( Status.Mode.WAIT );
-                    }
-                    else if( Menu.getSelected().getSheet().getID().equals("OPTIONS") ){
-                        map.setColumn(1);
-
-                        Menu.clearList();
-						Status.setStatus( Status.Mode.WAIT );
-                    }
-                    else if( Menu.getSelected().getSheet().getID().equals("ENDTURN") ){
-
-						Turn.nextTurn();
-						
-						Menu.clearList();
-						Status.setStatus( Status.Mode.WAIT );
-					}
-					break;//*/
+					break;
 			}
 		}
 		

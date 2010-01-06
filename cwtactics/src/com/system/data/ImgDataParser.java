@@ -271,6 +271,8 @@ public class ImgDataParser {
             return temp.CURSOR;
         else if(part.matches("ATT.*")){
             return temp.ATTRIBUTE;
+        }else if(part.matches("ARR.*")){
+            return temp.ARROW;
         }
         return 0;
     }
