@@ -14,6 +14,8 @@ import com.system.data.ImgData;
 import com.client.model.object.Map;
 import com.client.model.object.Tile;
 import com.client.tools.ImgLibrary;
+import com.system.log.Logger;
+import com.system.log.Logger.Level;
 import java.util.ArrayList;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -53,6 +55,16 @@ public class MapDraw extends MovingPix{
     private int shakex;
     private int shakey;
 
+    private boolean mapScr;
+    private boolean mapWatch;
+    private int mapInd;
+
+    private MapItem unitTemp;
+    private double unitcurx;
+    private double unitcury;
+    private int moveNext;
+    private boolean moveActive;
+
     public MapDraw(Map theMap, String propRef, String unitRef,
             int locx, int locy, double speed){
         super(locx, locy, speed);
@@ -62,6 +74,14 @@ public class MapDraw extends MovingPix{
         shakeY = new ArrayList<Integer>();
         shakex = 0;
         shakey = 0;
+        moveNext = 0;
+        mapScr = true;
+        mapWatch = true;
+        mapInd = 4;
+        unitTemp = new MapItem();
+        unitcurx = 0;
+        unitcury = 0;
+        moveActive = false;
         map = theMap;
         mapsx = map.getSizeX();
         mapsy = map.getSizeY();
@@ -290,7 +310,7 @@ public class MapDraw extends MovingPix{
                         (int)((BASE+1)*scale),
                         (int)((BASE+1)*scale));
                 }
-                if(Status.getStatus() == Status.Mode.SHOW_MOVE){
+                if(!moveActive && Status.getStatus() == Status.Mode.SHOW_MOVE){
                     if(Move.getTiles().containsKey(map.getTile(i, j))){
                         g.setColor(new Color(0, 0, 255, 100));
                         g.fillRect((int)(posx+shakex+i*BASE*scale),
@@ -325,16 +345,22 @@ public class MapDraw extends MovingPix{
               }
             }
         }
+        if(moveActive){
+            renderMoveAnimation(g, animTime);
+        }
         if(shakex != shakey && shakey != 0){
             shakex = 0;
             shakey = 0;
         }
-        if(shakeX.size() > 0){
+        if(shakeX.size() > 0 && mapScr){
             shakex = shakeX.remove(0);
             shakey = shakeY.remove(0);
+            mapScr = false;
         }
 
         cursor.render(g);
+
+        if(!mapScr)    mapControl(animTime);
     }
 
     public int getCursorX(){
@@ -368,6 +394,80 @@ public class MapDraw extends MovingPix{
             item.unit = itemList.getImgPart( map.getField()[x][y].
                     getUnit().sheet().getID().toUpperCase(), color, 0);
             itemList.makeNewImage(item.unit);
+        }
+    }
+
+    public void startMoveAnimation(){
+        if(Move.getUnit() == null){
+            Logger.write("Unit Missing", Level.NORMAL);
+            return;
+        }
+        moveActive = true;
+        moveNext = 0;
+        unitcurx = Move.getStartTile().getPosX();
+        unitcury = Move.getStartTile().getPosY();
+        int color = 0;
+        color = Move.getUnit().getOwner().getID()+1;
+        unitTemp.blank = itemList.getImgPart(Move.getUnit().
+                sheet().getID(), color, 1);
+        if(unitTemp.blank == null)
+            unitTemp.blank = itemList.getImgPart(Move.getUnit().
+                sheet().getID(), color, 0);
+        itemList.makeNewImage(unitTemp.blank);
+        unitTemp.terrain = itemList.getImgPart(Move.getUnit().
+                sheet().getID(), color, 2);
+        if(unitTemp.terrain == null)
+            unitTemp.terrain = itemList.getImgPart(Move.getUnit().
+                sheet().getID(), color, 0);
+        itemList.makeNewImage(unitTemp.terrain);
+        unitTemp.unit = itemList.getImgPart(Move.getUnit().
+                sheet().getID(), color, 3);
+        itemList.makeNewImage(unitTemp.unit);
+        if(unitTemp.unit == null)
+            unitTemp.unit = itemList.getImgPart(Move.getUnit().
+                sheet().getID(), color, 0);
+    }
+
+    private void renderMoveAnimation(Graphics g, int animTime){
+        //System.out.println("UNIT: ("+unitcurx+","+unitcury+")");
+        if(unitcurx == Move.getWay().get(moveNext).getPosX() &&
+                unitcury == Move.getWay().get(moveNext).getPosY()){
+            moveNext++;
+            if(moveNext == Move.getWay().size()){
+                moveActive = false;
+                updateMapItem((int)unitcurx, (int)unitcury);
+                return;
+            }
+        }else if(mapScr){
+            if(unitcurx < Move.getWay().get(moveNext).getPosX()){
+                unitcurx+=.25;
+            }else if(unitcurx > Move.getWay().get(moveNext).getPosX()){
+                unitcurx-=.25;
+            }else if(unitcury < Move.getWay().get(moveNext).getPosY()){
+                unitcury+=.25;
+            }else if(unitcury > Move.getWay().get(moveNext).getPosY()){
+                unitcury-=.25;
+            }
+            mapScr = false;
+        }
+
+        if(unitcurx < Move.getWay().get(moveNext).getPosX()){
+            g.drawImage(itemList.getImage(unitTemp.unit,
+                animTime).getFlippedCopy(true, false),
+                (int)(posx+shakex+((unitcurx*BASE-(BASE/2))*scale)),
+                    (int)(posy+shakey+(((unitcury-1)*BASE+(BASE/2))*scale)));
+        }else if(unitcurx > Move.getWay().get(moveNext).getPosX()){
+            g.drawImage(itemList.getImage(unitTemp.unit,
+                animTime),(int)(posx+shakex+((unitcurx*BASE-(BASE/2))*scale)),
+                (int)(posy+shakey+(((unitcury-1)*BASE+(BASE/2))*scale)));
+        }else if(unitcury < Move.getWay().get(moveNext).getPosY()){
+            g.drawImage(itemList.getImage(unitTemp.terrain,
+                animTime), (int)(posx+shakex+((unitcurx*BASE-(BASE/2))*scale)),
+                (int)(posy+shakey+(((unitcury-1)*BASE+(BASE/2))*scale)));
+        }else if(unitcury > Move.getWay().get(moveNext).getPosY()){
+            g.drawImage(itemList.getImage(unitTemp.blank,
+                animTime), (int)(posx+shakex+((unitcurx*BASE-(BASE/2))*scale)),
+                (int)(posy+shakey+(((unitcury-1)*BASE+(BASE/2))*scale)));
         }
     }
     
@@ -502,6 +602,25 @@ public class MapDraw extends MovingPix{
         }
         item.change = false;
         return item;
+    }
+
+    private void mapControl(int animTime){
+        for(int i = 0; i < mapInd; i++){
+            if(animTime > (1000/mapInd)*i &&
+                    animTime < (1000/mapInd)*(i+1)){
+                if(mapWatch && animTime >
+                        ((1000/mapInd)*(i+1))-
+                        (1000/(2*mapInd))){
+                    mapScr = true;
+                    mapWatch = false;
+                }else if(!mapWatch && animTime <=
+                        ((1000/mapInd)*(i+1))-
+                        (1000/(2*mapInd))){
+                    mapScr = true;
+                    mapWatch = true;
+                }
+            }
+        }
     }
 
     //--------------------------------------------

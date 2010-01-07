@@ -62,7 +62,8 @@ public class MoveTo implements Command {
 		
 		// update graphic logic
 		map.updateMapItem( start.getPosX() , start.getPosY() );
-		map.updateMapItem( target.getPosX() , target.getPosY() );
+        map.startMoveAnimation(); //working on move to... got to get it to display.
+		//map.updateMapItem( target.getPosX() , target.getPosY() );
 		
 		// process fog
 		Fog.processFog();
