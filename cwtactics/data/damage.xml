@@ -5,155 +5,155 @@
 	
 	<script>
 		<trigger id="UNIT_ATTACK" />
-		<main condition="ATTACKER_WEAPON_TYPE IS WP_MG" />
-		<case condition="UNIT2_TAG IS COPTER" 		action="INCREASE_ATTACK UNIT 30" />
-		<case condition="UNIT2_TAG IS SOFT" 	   	action="INCREASE_ATTACK UNIT 60" />
-		<case condition="UNIT2_TAG IS VEHICLE"    	action="INCREASE_ATTACK UNIT 20" />
-		<case condition="UNIT2_TAG IS TANK"	    	action="INCREASE_ATTACK UNIT 10" />
+		<main condition="WEAPON IS WP_MG" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS COPTER" 		action="ATTACK INCREASE_BY 30" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS SOFT" 	   	action="ATTACK INCREASE_BY 60" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS VEHICLE"    	action="ATTACK INCREASE_BY 20" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS TANK"	    action="ATTACK INCREASE_BY 10" />
 	</script>
 	
 	<script>
 		<trigger id="UNIT_ATTACK" />
-		<main condition="ATTACKER_WEAPON_TYPE IS WP_BAZOOKA" />
-		<case condition="UNIT2_TAG IS VEHICLE"    	action="INCREASE_ATTACK UNIT 85" />
-		<case condition="UNIT2_TAG IS TANK"	    	action="INCREASE_ATTACK UNIT 70" />
+		<main condition="WEAPON IS WP_BAZOOKA" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS VEHICLE"    	action="ATTACK INCREASE_BY 85" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS TANK"	    action="ATTACK INCREASE_BY 70" />
 	</script>
 	
 	<script>
 		<trigger id="UNIT_ATTACK" />
-		<main condition="ATTACKER_WEAPON_TYPE IS WP_LT_CANNON" />
-		<case condition="UNIT2_TAG IS VEHICLE" 		action="INCREASE_ATTACK UNIT 85" />
-		<case condition="UNIT2_TAG IS TANK" 		action="INCREASE_ATTACK UNIT 55" />
+		<main condition="WEAPON IS WP_LT_CANNON" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS VEHICLE" 	action="ATTACK INCREASE_BY 85" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS TANK" 		action="ATTACK INCREASE_BY 55" />
 	</script>
 	
 	<script>
 		<trigger id="UNIT_ATTACK" />
-		<main condition="ATTACKER_WEAPON_TYPE IS WP_HV_AT" />
-		<case condition="UNIT2_TAG IS SOFT" 		action="INCREASE_ATTACK UNIT 75" />
-		<case condition="UNIT2_TAG IS TANK" 		action="INCREASE_ATTACK UNIT 75" />
-		<case condition="UNIT2_TAG IS VEHICLE" 		action="INCREASE_ATTACK UNIT 75" />
+		<main condition="WEAPON IS WP_HV_AT" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS SOFT" 		action="ATTACK INCREASE_BY 75" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS TANK" 		action="ATTACK INCREASE_BY 75" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS VEHICLE" 	action="ATTACK INCREASE_BY 75" />
 	</script>
 	
 	<script>
 		<trigger id="UNIT_ATTACK" />
-		<main condition="ATTACKER_WEAPON_TYPE IS WP_MD_CANNON" />
-		<case condition="UNIT2_TAG IS VEHICLE" 		action="INCREASE_ATTACK UNIT 85" />
-		<case condition="UNIT2_TAG IS TANK" 		action="INCREASE_ATTACK UNIT 95" />
+		<main condition="WEAPON IS WP_MD_CANNON" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS VEHICLE" 	action="ATTACK INCREASE_BY 85" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS TANK" 		action="ATTACK INCREASE_BY 95" />
 	</script>
 	
 	<script>
 		<trigger id="UNIT_ATTACK" />
-		<main condition="ATTACKER_WEAPON_TYPE IS WP_HV_CANNON" />
-		<case condition="UNIT2_TAG IS VEHICLE" 		action="INCREASE_ATTACK UNIT 95" />
-		<case condition="UNIT2_TAG IS TANK" 		action="INCREASE_ATTACK UNIT 105" />
+		<main condition="WEAPON IS WP_HV_CANNON" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS VEHICLE" 	action="ATTACK INCREASE_BY 95" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS TANK" 		action="ATTACK INCREASE_BY 105" />
 	</script>
 	
 	<script>
 		<trigger id="UNIT_ATTACK" />
-		<main condition="ATTACKER_WEAPON_TYPE IS WP_HOWITZER" />
-		<case condition="UNIT2_TAG IS SOFT" 		action="INCREASE_ATTACK UNIT 90" />
-		<case condition="UNIT2_TAG IS TANK" 		action="INCREASE_ATTACK UNIT 60" />
-		<case condition="UNIT2_TAG IS VEHICLE" 		action="INCREASE_ATTACK UNIT 80" />
-		<case condition="UNIT2_TAG IS SHIP" 		action="INCREASE_ATTACK UNIT 65" />
+		<main condition="WEAPON IS WP_HOWITZER" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS SOFT" 		action="ATTACK INCREASE_BY 90" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS TANK" 		action="ATTACK INCREASE_BY 60" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS VEHICLE" 	action="ATTACK INCREASE_BY 80" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS SHIP" 		action="ATTACK INCREASE_BY 65" />
 	</script>
 	
 	<script>
 		<trigger id="UNIT_ATTACK" />
-		<main condition="ATTACKER_WEAPON_TYPE IS WP_HOWITZER2" />
-		<case condition="UNIT2_TAG IS SOFT" 		action="INCREASE_ATTACK UNIT 75" />
-		<case condition="UNIT2_TAG IS TANK" 		action="INCREASE_ATTACK UNIT 70" />
-		<case condition="UNIT2_TAG IS VEHICLE" 		action="INCREASE_ATTACK UNIT 65" />
-		<case condition="UNIT2_TAG IS SHIP" 		action="INCREASE_ATTACK UNIT 75" />
+		<main condition="WEAPON IS WP_HOWITZER2" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS SOFT" 		action="ATTACK INCREASE_BY 75" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS TANK" 		action="ATTACK INCREASE_BY 70" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS VEHICLE" 	action="ATTACK INCREASE_BY 65" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS SHIP" 		action="ATTACK INCREASE_BY 75" />
 	</script>
 	
 	<script>
 		<trigger id="UNIT_ATTACK" />
-		<main condition="ATTACKER_WEAPON_TYPE IS WP_AG_RKL" />
-		<case condition="UNIT2_TAG IS TANK" 		action="INCREASE_ATTACK UNIT 70" />
-		<case condition="UNIT2_TAG IS VEHICLE" 		action="INCREASE_ATTACK UNIT 90" />
-		<case condition="UNIT2_TAG IS SHIP" 		action="INCREASE_ATTACK UNIT 25" />
+		<main condition="WEAPON IS WP_AG_RKL" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS TANK" 		action="ATTACK INCREASE_BY 70" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS VEHICLE" 	action="ATTACK INCREASE_BY 90" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS SHIP" 		action="ATTACK INCREASE_BY 25" />
 	</script>
 	
 	<script>
 		<trigger id="UNIT_ATTACK" />
-		<main condition="ATTACKER_WEAPON_TYPE IS WP_BOMBS" />
-		<case condition="UNIT2_TAG IS SOFT" 		action="INCREASE_ATTACK UNIT 115" />
-		<case condition="UNIT2_TAG IS TANK" 		action="INCREASE_ATTACK UNIT 105" />
-		<case condition="UNIT2_TAG IS VEHICLE" 		action="INCREASE_ATTACK UNIT 110" />
-		<case condition="UNIT2_TAG IS SHIP" 		action="INCREASE_ATTACK UNIT 95" />
+		<main condition="WEAPON IS WP_BOMBS" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS SOFT" 		action="ATTACK INCREASE_BY 115" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS TANK" 		action="ATTACK INCREASE_BY 105" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS VEHICLE" 	action="ATTACK INCREASE_BY 110" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS SHIP" 		action="ATTACK INCREASE_BY 95" />
 	</script>
 	
 	<script>
 		<trigger id="UNIT_ATTACK" />
-		<main condition="ATTACKER_WEAPON_TYPE IS WP_WATERBOMBS" />
-		<case condition="UNIT2_TAG IS SUB" 		action="INCREASE_ATTACK UNIT 110" />
+		<main condition="WEAPON IS WP_WATERBOMBS" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS SUB" 		action="ATTACK INCREASE_BY 110" />
 	</script>
 	
 	<script>
 		<trigger id="UNIT_ATTACK" />
-		<main condition="ATTACKER_WEAPON_TYPE IS WP_TORPEDO" />
-		<case condition="UNIT2_TAG IS SHIP" 		action="INCREASE_ATTACK UNIT 110" />
+		<main condition="WEAPON IS WP_TORPEDO" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS SHIP" 		action="ATTACK INCREASE_BY 110" />
 	</script>
 	
 	<script>
 		<trigger id="UNIT_ATTACK" />
-		<main condition="ATTACKER_WEAPON_TYPE IS WP_HV_CANNON" />
-		<case condition="UNIT2_TAG IS COPTER" 		action="INCREASE_ATTACK UNIT 120" />
+		<main condition="WEAPON IS WP_HV_CANNON" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS COPTER" 		action="ATTACK INCREASE_BY 120" />
 	</script>
 	
 	<script>
 		<trigger id="UNIT_ATTACK" />
-		<main condition="ATTACKER_WEAPON_TYPE IS WP_AA_RKL2" />
-		<case condition="UNIT2_TAG IS COPTER" 		action="INCREASE_ATTACK UNIT 120" />
-		<case condition="UNIT2_TAG IS PLANE"    	action="INCREASE_ATTACK UNIT 80" />
+		<main condition="WEAPON IS WP_AA_RKL2" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS COPTER" 		action="ATTACK INCREASE_BY 120" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS PLANE"    	action="ATTACK INCREASE_BY 80" />
 	</script>
 	
 	<script>
 		<trigger id="UNIT_ATTACK" />
-		<main condition="ATTACKER_WEAPON_TYPE IS WP_AAGROUND_CANNON" />
-		<case condition="UNIT2_TAG IS SOFT" 		action="INCREASE_ATTACK UNIT 105" />
-		<case condition="UNIT2_TAG IS TANK" 		action="INCREASE_ATTACK UNIT 15" />
-		<case condition="UNIT2_TAG IS VEHICLE" 		action="INCREASE_ATTACK UNIT 55" />
+		<main condition="WEAPON IS WP_AAGROUND_CANNON" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS SOFT" 		action="ATTACK INCREASE_BY 105" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS TANK" 		action="ATTACK INCREASE_BY 15" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS VEHICLE" 	action="ATTACK INCREASE_BY 55" />
 	</script>
 	
 	<script>
 		<trigger id="UNIT_ATTACK" />
-		<main condition="ATTACKER_WEAPON_TYPE IS WP_AA_CANNON2" />
-		<case condition="UNIT2_TAG IS COPTER" 		action="INCREASE_ATTACK UNIT 55" />
-		<case condition="UNIT2_TAG IS PLANE"    	action="INCREASE_ATTACK UNIT 40" />
+		<main condition="WEAPON IS WP_AA_CANNON2" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS COPTER" 		action="ATTACK INCREASE_BY 55" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS PLANE"    	action="ATTACK INCREASE_BY 40" />
 	</script>
 	
 	<script>
 		<trigger id="UNIT_ATTACK" />
-		<main condition="ATTACKER_WEAPON_TYPE IS WP_AA_CANNON" />
-		<case condition="UNIT2_TAG IS COPTER" 		action="INCREASE_ATTACK UNIT 120" />
-		<case condition="UNIT2_TAG IS PLANE"    	action="INCREASE_ATTACK UNIT 105" />
+		<main condition="WEAPON IS WP_AA_CANNON" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS COPTER" 		action="ATTACK INCREASE_BY 120" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS PLANE"    	action="ATTACK INCREASE_BY 105" />
 	</script>
 	
 	<script>
 		<trigger id="UNIT_ATTACK" />
-		<main condition="ATTACKER_WEAPON_TYPE IS WP_AA_RKL" />
-		<case condition="UNIT2_TAG IS COPTER" 		action="INCREASE_ATTACK UNIT 120" />
-		<case condition="UNIT2_TAG IS PLANE"    	action="INCREASE_ATTACK UNIT 100" />
+		<main condition="WEAPON IS WP_AA_RKL" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS COPTER" 		action="ATTACK INCREASE_BY 120" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS PLANE"    	action="ATTACK INCREASE_BY 100" />
 	</script>
 	
 	<script>
 		<trigger id="UNIT_ATTACK" />
-		<main condition="ATTACKER_WEAPON_TYPE IS WP_PLANE_CANNON" />
-		<case condition="UNIT2_TAG IS COPTER" 		action="INCREASE_ATTACK UNIT 120" />
-		<case condition="UNIT2_TAG IS TANK" 		action="INCREASE_ATTACK UNIT 10" />
-		<case condition="UNIT2_TAG IS VEHICLE" 		action="INCREASE_ATTACK UNIT 30" />
-		<case condition="UNIT2_TAG IS PLANE" 		action="INCREASE_ATTACK UNIT 50" />
-		<case condition="UNIT2_TAG IS SHIP" 		action="INCREASE_ATTACK UNIT 10" />
+		<main condition="WEAPON IS WP_PLANE_CANNON" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS COPTER" 		action="ATTACK INCREASE_BY 120" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS TANK" 		action="ATTACK INCREASE_BY 10" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS VEHICLE" 	action="ATTACK INCREASE_BY 30" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS PLANE" 		action="ATTACK INCREASE_BY 50" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS SHIP" 		action="ATTACK INCREASE_BY 10" />
 	</script>
 	
 	<script>
 		<trigger id="UNIT_ATTACK" />
-		<main condition="ATTACKER_WEAPON_TYPE IS WP_HV_RKL" />
-		<case condition="UNIT2_TAG IS SOFT" 		action="INCREASE_ATTACK UNIT 110" />
-		<case condition="UNIT2_TAG IS TANK" 		action="INCREASE_ATTACK UNIT 70" />
-		<case condition="UNIT2_TAG IS VEHICLE" 		action="INCREASE_ATTACK UNIT 90" />
-		<case condition="UNIT2_TAG IS SHIP" 		action="INCREASE_ATTACK UNIT 75" />
+		<main condition="WEAPON IS WP_HV_RKL" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS SOFT" 		action="ATTACK INCREASE_BY 110" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS TANK" 		action="ATTACK INCREASE_BY 70" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS VEHICLE" 	action="ATTACK INCREASE_BY 90" />
+		<case condition="TAGS_OF_DEFENDER_UNIT HAS SHIP" 		action="ATTACK INCREASE_BY 75" />
 	</script>
 	
 	

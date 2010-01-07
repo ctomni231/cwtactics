@@ -93,7 +93,7 @@ public class Turn {
 		
 		// start turn now
 		startTurn(newPlayer);
-	}
+	} 
 	
 	private static void prepareRound( Player oldPl , Player newPl ){
 		
@@ -107,7 +107,7 @@ public class Turn {
 		// end setup all properties from old player 
 		for( Tile property : oldPl.getProperties() ){
 			Trigger_Object.triggerCall( property , null );
-			ScriptFactory.checkAll( ScriptLogic.Trigger.TURN_END_FIELDS );	
+			ScriptFactory.checkAll( ScriptLogic.Trigger.TURN_START_TILES );	
 		}
 		
 		// setup all units from new player
@@ -119,7 +119,7 @@ public class Turn {
 		// get funds and repairs for new player
 		for( Tile property : newPl.getProperties() ){
 			Trigger_Object.triggerCall( property , null );
-			ScriptFactory.checkAll( ScriptLogic.Trigger.TURN_START_FIELDS );	
+			ScriptFactory.checkAll( ScriptLogic.Trigger.TURN_START_TILES );	
 		}
 	}
 	

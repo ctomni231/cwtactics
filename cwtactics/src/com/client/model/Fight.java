@@ -1,7 +1,7 @@
 package com.client.model;
 
 import com.client.logic.command.MessageServer;
-import com.client.logic.command.commands.ingame.Battle;
+import com.client.logic.command.commands.ingame.BattleDamage;
 import com.client.logic.command.commands.ingame.DecreaseAmmo;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
@@ -29,71 +29,84 @@ public class Fight {
 	private static Tile defenderTile;
 	private static Unit attacker;
 	private static Unit defender;
-	private static int attackerPenalty;
-	private static int defenderPenalty;
+	private static int penalty;
 
+	
+	
+	/*
+	 * ACCESSING METHODS
+	 * *****************
+	 */
+	
+	public static Unit getAttacker(){
+		return attacker;
+	}
+	
+	public static Unit getDefender(){
+		return defender;
+	}
+	
 	
 
 	/*
-	 *
 	 * WORK METHODS
-	 * ************
-	 * 
+	 * ************ 
 	 */
 	
 	/**
 	 * Setup a battle.
 	 */
-	public static void setupBattle( Tile attackerTile , Unit attacker , Weapon_Sheed attackerWeapon , Tile defenderTile , Unit defender ){
+	public static void battle( Tile attackerTile , Unit attacker , Weapon_Sheed attackerWeapon , Tile defenderTile , Unit defender ){
 		
+		// prepare battle
 		Fight.attackerTile = attackerTile;
 		Fight.defenderTile = defenderTile;
 		Fight.attacker = attacker;
 		Fight.defender = defender;
 		Fight.attackWeapon = attackerWeapon;
 		Fight.defenderWeapon = getConterWeapon();
+
+		// check effects attacker
+		penalty = 0;
+		attackerEffects();
+		int attack = penalty;
 		
-		attackerPenalty = 0;
-		defenderPenalty = 0;
+		// check effects defender
+		penalty = 0;
+		defenderEffects();
+		int counter = penalty;
+
+		// send command
+		if( attack <= 0 ) attack = 0;
+		if( counter <= 0 ) counter = 0;
+		MessageServer.send( new BattleDamage( attackerTile, defenderTile ,attack ,counter ) );
+		MessageServer.send( new DecreaseAmmo(attacker, attackWeapon) );
+		if( defenderWeapon != null ) MessageServer.send( new DecreaseAmmo(defender, defenderWeapon) );
 	}
 	
 	/**
 	 * Check all effects for this fighting 
 	 * situation.
 	 */
-	private static void checkEffects(){
+	private static void defenderEffects(){
 		
-		// check effects for the attacker ( local )
-		Trigger_Object.triggerCall( attackerTile , defenderTile , attacker , defender );
+		Trigger_Object.triggerCall( defenderTile , attackerTile , defender , attacker );
 		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_ATTACK);
-		
+		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_COUNTERATTACK);
+		Trigger_Object.triggerCall( attackerTile , defenderTile , attacker , defender );
+		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_DEFEND);
 	}
 	
 	/**
-	 * Starts the battle and inflicts damage to the to 
-	 * members of the battle.
+	 * Check all effects for this fighting 
+	 * situation.
 	 */
-	public static void processBattle(){
+	private static void attackerEffects(){
 		
-		//TODO little bit refactoring
-		
-		// check status of fight, return if no fight exist
-		if( !checkStatus() ){
-			System.err.println("No fight exist, but logic wants to start the a fight.");
-			return;
-		}
-
-		// check effects 
-		checkEffects();
-		
-		// get damage variables
-		int attack = getAttackDamage();
-		int counter = getDefenderDamage();
-		
-		// send command
-		MessageServer.send( new Battle( attackerTile, defenderTile ,attack ,counter ) );
-		MessageServer.send( new DecreaseAmmo(attacker, attackWeapon) );
-		if( defenderWeapon != null ) MessageServer.send( new DecreaseAmmo(defender, defenderWeapon) );
+		Trigger_Object.triggerCall( attackerTile , defenderTile , attacker , defender );
+		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_ATTACK);
+		Trigger_Object.triggerCall( defenderTile , attackerTile , defender , attacker );
+		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_DEFEND);
 	}
 
 	/**
@@ -137,7 +150,7 @@ public class Fight {
 	/**
 	 * Is the fight correctly set up?
 	 */
-	private static boolean checkStatus(){
+	public static boolean checkStatus(){
 		
 		if( attacker == null || defender == null || attackerTile == null || defenderTile == null || attackWeapon == null ) return false;
 		else return true;
@@ -146,32 +159,8 @@ public class Fight {
 	/**
 	 * Change the attacker damage 
 	 */
-	public static void changeAttackerPenalty( int value ){
-		attackerPenalty += value;
-	}
-	
-	/**
-	 * Change the defender counter damage
-	 */
-	public static void changeDefenderPenalty( int value ){
-		defenderPenalty += value;
-	}
-
-	/**
-	 * Returns attacker damage.
-	 */
-	public static int getAttackDamage(){
-		 // you get all data from scripts, return script value
-		 return attackerPenalty;
-	}
-
-	/**
-	 * Returns counter damage from defender.
-	 */
-	public static int getDefenderDamage(){
-		// you get all data from scripts, return script value
-		if( defenderWeapon != null ) return defenderPenalty;
-		return 0;
+	public static void changeAttackValue( int value ){
+		penalty += value;
 	}
 	
 	public static Weapon_Sheed getAttackerWeapon(){

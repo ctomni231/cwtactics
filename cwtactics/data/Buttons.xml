@@ -28,5 +28,10 @@
 	<button ID="ATTACK"></button>
 	
 	<button ID="SUPPLY"></button>
+	
+	<!-- HELP BUTTONS FOR SCRIPT ENGINE -->
+	
+	<button ID="TRUE"></button>
+
 
 </buttons>

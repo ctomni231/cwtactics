@@ -87,7 +87,10 @@ public class Action {
 			cond = s.split(" ");
 			if( cond.length == 2 ) cond = new String[]{ cond[0] , cond[1] , null };
 			actions.add( 
-				new SingleAction( ScriptLogic.getAction( cond[0] ), ScriptLogic.getActionObj( cond[1] ), ScriptLogic.getActionValue( cond[2] ) )
+				new SingleAction( 	ScriptLogic.getRelation( cond[0] ), 
+									ScriptLogic.getRelation( cond[1] ), 
+									ScriptLogic.getActionValue( cond[2] ) 
+																			)
 			);
 		}
 	}

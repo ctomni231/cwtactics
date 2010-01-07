@@ -26,15 +26,15 @@ public class ChangeResource implements Command {
 	 * ************
 	 */
 
-	public ChangeResource( int[] values , Tile property , boolean pay ) {
+	public ChangeResource( int[] values , Player player , boolean pay ) {
 		this.values = values;
-		this.player = property.getOwner();
+		this.player = player;
 		if( pay ) this.multi = -1;
 		else this.multi = 1;
 	}
 	
-	public ChangeResource( int[] values , Tile property ) {
-		this(values,property,false);
+	public ChangeResource( int[] values , Player player ) {
+		this(values,player,false);
 	}
 	
 

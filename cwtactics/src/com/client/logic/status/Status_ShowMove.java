@@ -24,6 +24,11 @@ public class Status_ShowMove implements Status_Interface {
 		
 		if( Controls.isActionClicked() ){
 			
+			if( Move.getTiles().get(tile) == null || !Move.getTiles().get(tile).isMoveable() ) return;
+			
+			// complete move way
+			Move.completeWay();
+			
 			// create unit menu
 			Menu.createUnitMenu( Move.getUnit() , Move.getTargetTile() );
 			

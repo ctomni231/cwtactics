@@ -3,6 +3,11 @@ package com.system.data.sheets;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.client.model.object.Game;
+import com.client.model.object.Map;
+import com.client.model.object.Tile;
+import com.client.model.object.Unit;
+
 public class Unit_Sheed extends ObjectSheet {
 
 	/*
@@ -28,6 +33,7 @@ public class Unit_Sheed extends ObjectSheet {
 	
 	private ArrayList<Weapon_Sheed> weapons;
 	private ArrayList<Unit_Sheed>	loads;
+	private ArrayList<Tile_Sheet> unloadPlaces;
 	
 	
 	
@@ -46,12 +52,14 @@ public class Unit_Sheed extends ObjectSheet {
 		
 		weapons	 = new ArrayList<Weapon_Sheed>();
 		loads	 = new ArrayList<Unit_Sheed>();
+		unloadPlaces = new ArrayList<Tile_Sheet>();
 		
 		// memory saving operations
 		// reduce size for units that hasen't 
 		// loads, supply targets ...
 		weapons.trimToSize();
 		loads.trimToSize();
+		unloadPlaces.trimToSize();
 	}
 	
 	
@@ -212,6 +220,39 @@ public class Unit_Sheed extends ObjectSheet {
 	public boolean canLoad( Unit_Sheed sh ){
 		if( sh == null || loads.indexOf(sh) == -1 ) return false;
 		else return true;
+	}
+	
+	public ArrayList<Tile> getUnloadPlaces( Tile tile , Unit apc ){
+		
+		ArrayList<Tile> list = new ArrayList<Tile>();
+		Map map = Game.getMap();
+		Move_Sheet mv = getMoveType();
+		Tile n = map.getTile( tile.getPosX() , tile.getPosY() - 1 );
+		Tile e = map.getTile( tile.getPosX() + 1 , tile.getPosY() );
+		Tile s = map.getTile( tile.getPosX() , tile.getPosY() + 1 );
+		Tile w = map.getTile( tile.getPosX() - 1 , tile.getPosY() );
+		
+		// CHECK UNLOAD TILES
+		if( n != null && (n.getUnit() == null || n.getUnit() == apc ) && mv.getMoveCost( n.sheet() ) != -1 ) list.add( n );
+		if( e != null && (e.getUnit() == null || e.getUnit() == apc ) && mv.getMoveCost( e.sheet() ) != -1 ) list.add( e );
+		if( s != null && (s.getUnit() == null || s.getUnit() == apc ) && mv.getMoveCost( s.sheet() ) != -1 ) list.add( s );
+		if( w != null && (w.getUnit() == null || w.getUnit() == apc ) && mv.getMoveCost( w.sheet() ) != -1 ) list.add( w );
+		
+		return list;
+	}
+	
+	public boolean canUnitUnloaded( Tile tile , Unit apc ){
+		
+		// IF THE TRANSPORT CAN ONLY UNLOAD ON SPECIAL TILES
+		// AND THIS TILES ISN'T IN THE LIST, THEN RETURN FALSE
+		if( unloadPlaces.size() > 0 && !unloadPlaces.contains(tile.sheet())) return false;
+		
+		if( getUnloadPlaces(tile,apc).size() > 0 ) return true;
+		else return false;
+	}
+	
+	public void addUnloadTile( Tile_Sheet sh ){
+		unloadPlaces.add(sh);
 	}
 	
 	

@@ -118,7 +118,7 @@ public class Tile_Sheet extends ObjectSheet{
 		int[] cost = new int[ length ];
 		
 		for( int i = 0 ; i < length ; i++ ){
-			cost[i] = ( sh.getCost( Data.getRessourceSheet(i) ) * health * repairExtra ) / 10000; 
+			cost[i] = ( sh.getCost( Data.getRessourceTable().get(i) ) * health * repairExtra ) / 10000; 
 		}
 		
 		return cost;
@@ -134,7 +134,7 @@ public class Tile_Sheet extends ObjectSheet{
 		int[] cost = new int[ length ];
 		
 		for( int i = 0 ; i < length ; i++ ){
-			cost[i] = getFunds( Data.getRessourceSheet(i) );
+			cost[i] = getFunds( Data.getRessourceTable().get(i) );
 		}
 		
 		return cost;

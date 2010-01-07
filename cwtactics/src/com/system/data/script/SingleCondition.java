@@ -1,46 +1,45 @@
 package com.system.data.script;
 
 import com.client.model.Fight;
+import com.client.model.Turn;
 import com.client.model.Weather;
-import com.client.model.object.Tile;
-import com.client.model.object.Unit;
+import com.client.model.object.Game;
 import com.system.data.Data;
-import com.system.data.script.ScriptLogic.Relationship;
-import com.system.data.script.ScriptLogic.TriggerTest;
+import com.system.data.script.ScriptLogic.ScriptKey;
 import com.system.log.Logger;
-import com.system.log.Logger.Level;
 
 public class SingleCondition {
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 
-	private TriggerTest 	condition;
-	private Relationship relationship;
+	protected ScriptKey 	condition;
+	protected ScriptKey		relationship;
 	private int 			value;
+	
+	private static final int IS			= 1;
+	private static final int IS_NOT		= 2;
+	private static final int GREATER	= 3;
+	private static final int LOWER		= 4;
+	
 
 	/*
-	 *
 	 * CONSTRUCTORS
 	 * ************
-	 * 
 	 */
 	
-	public SingleCondition( TriggerTest condition, Relationship relationship, int value) {
+	public SingleCondition( ScriptKey condition, ScriptKey relationship, int value) {
 		this.condition 		= condition;
 		this.relationship 	= relationship;
 		this.value 			= value;
 	}
 
+	
 	/*
-	 *
 	 * ACCESSING METHODS
-	 * *****************
-	 * 
+	 * ***************** 
 	 */
 
 	/*
@@ -51,274 +50,142 @@ public class SingleCondition {
 	 */
 
 	public boolean checkCondition(){
+
+		int result = -1;
 		
-		// set variables
-		int value 		= this.value;
-		Tile field1 	= Trigger_Object.getField1();
-		Unit unit1 		= Trigger_Object.getUnit1();
-		//Tile field2 	= Trigger_Object.getField2();
-		Unit unit2 		= Trigger_Object.getUnit2();
-				
+		// CHECK OBJECT WITH TARGET VALUE
 		switch(condition){
 		
-			// check a field tag
-			case FIELD_TAG :
-				
-				
-				switch(relationship){
-				
-					// value is the integer ID of the tag
-					case IS :
-						if( Trigger_Object.getField1().sheet().hasTag(value) ) return true;
-						break;
-					case IS_NOT :
-						if( !Trigger_Object.getField1().sheet().hasTag(value) ) return true;
-						break;
-					default :
-						System.err.println("Error , a single condition contains an unknown id ("+relationship+")");
-						break;
-				}
+			case IS_HIDDEN :
+				if( Trigger_Object.getUnit1() == null ) break;
+				if( Trigger_Object.getUnit1().isHidden() ) result = IS;
+				else result = IS_NOT;
 				break;
 				
-			case FIELD_TYPE :
+			case REPAIR_POSSIBLE :
+				if( Trigger_Object.getField1() == null && Trigger_Object.getUnit1() == null ) break;
+				if( Trigger_Object.getField1().sheet().canRepair( Trigger_Object.getUnit1().sheet() ) ) result = IS;
+				else result = IS_NOT;
+				break;
 				
+			case SUPPLY_POSSIBLE :
+				if( Trigger_Object.getField1() == null && Trigger_Object.getUnit1() == null ) break;
+				if( Trigger_Object.getField1().sheet().canSupply( Trigger_Object.getUnit1().sheet() ) ) result = IS;
+				else result = IS_NOT;
+				break;
+
+			case AMMO :
+				if( Trigger_Object.getUnit1() == null ) break;
+				if( value == ScriptLogic.FULL ) compareValue( Trigger_Object.getUnit1().getAmmo() , Trigger_Object.getUnit1().sheet().getAmmo() );
+				else result = compareValue( Trigger_Object.getUnit1().getAmmo() , value );
+				break;
+				
+			case FUEL :
+				if( Trigger_Object.getUnit1() == null ) break;
+				if( value == ScriptLogic.FULL ) compareValue( Trigger_Object.getUnit1().getFuel() , Trigger_Object.getUnit1().sheet().getFuel() );
+				else result = compareValue( Trigger_Object.getUnit1().getFuel() , value );
+				break;
+				
+			case HEALTH :
+				if( Trigger_Object.getUnit1() == null ) break;
+				if( value == ScriptLogic.FULL ) compareValue( Trigger_Object.getUnit1().getHealth() , 99 );
+				else result = compareValue( Trigger_Object.getUnit1().getHealth() , value );
+				break;
+				
+			case TAGS_OF_DEFENDER_TILE :
+				if( !Fight.checkStatus() &&  Trigger_Object.getField2() == null ) break;
+				if( Trigger_Object.getField2().sheet().hasTag(value) ) result = IS;
+				else result = IS_NOT;
+				break;
+				
+			case TAGS_OF_DEFENDER_UNIT :
+				if( !Fight.checkStatus() &&  Trigger_Object.getUnit2() == null ) break;
+				if( Trigger_Object.getUnit2().sheet().hasTag(value) ) result = IS;
+				else result = IS_NOT;
+				break;
+				
+			case X_POSITION_OF_TILE :
 				if( Trigger_Object.getField1() == null ) break;
-				switch(relationship){
-				
-				// value is the integer ID of the tag
-				case IS :
-					if( Trigger_Object.getField1().sheet() == Data.getTileSheet(value) ) return true;
-					break;
-				case IS_NOT :
-					if( Trigger_Object.getField1().sheet() != Data.getTileSheet(value) ) return true;
-					break;
-				default :
-					System.err.println("Error , a single condition contains an unknown id ("+relationship+")");
-					break;
-				}
+				result = compareValue( Trigger_Object.getField1().getPosX() , value );
 				break;
 				
-			case UNIT_TYPE :
-				
-				if( Trigger_Object.getField1().getUnit() == null ) break;
-				switch(relationship){
-				
-				// value is the integer ID of the tag
-				case IS :
-					if( Trigger_Object.getField1().getUnit().sheet() == Data.getUnitSheet(value) ) return true;
-					break;
-				case IS_NOT :
-					if( Trigger_Object.getField1().getUnit().sheet() != Data.getUnitSheet(value) ) return true;
-					break;
-				default :
-					System.err.println("Error , a single condition contains an unknown id ("+relationship+")");
-					break;
-				}
+			case Y_POSITION_OF_TILE :
+				if( Trigger_Object.getField1() == null ) break;
+				result = compareValue( Trigger_Object.getField1().getPosY() , value );
 				break;
 				
-			// check a unit tag
-			case UNIT_TAG :
-				
-				if( Trigger_Object.getField1().getUnit() == null ) break;
-				switch(relationship){
-				
-					// value is the integer ID of the tag
-					case IS :
-						if( Trigger_Object.getField1().getUnit().sheet().hasTag(value) ) return true;
-						break;
-					case IS_NOT :
-						if( !Trigger_Object.getField1().getUnit().sheet().hasTag(value) ) return true;
-						break;
-					default :
-						System.err.println("Error , a single condition contains an unknown id ("+relationship+")");
-						break;
-				}
+			case X_POSITION_OF_UNIT :
+				if( Trigger_Object.getUnit1() == null ) break;
+				result = compareValue( Game.getMap().findTile( Trigger_Object.getUnit1() ).getPosX() , value );
 				break;
 				
-			// check a field tag
-			case FIELD2_TAG :
-				
-				switch(relationship){
-				
-					// value is the integer ID of the tag
-					case IS :
-						if( Trigger_Object.getField2().sheet().hasTag(value) ) return true;
-						break;
-					case IS_NOT :
-						if( !Trigger_Object.getField2().sheet().hasTag(value) ) return true;
-						break;
-					default :
-						System.err.println("Error , a single condition contains an unknown id ("+relationship+")");
-						break;
-				}
+			case Y_POSITION_OF_UNIT :
+				if( Trigger_Object.getUnit1() == null ) break;
+				result = compareValue( Game.getMap().findTile( Trigger_Object.getUnit1() ).getPosY() , value );
 				break;
 				
-			// check a unit tag
-			case UNIT2_TAG :
-				
-				if( Trigger_Object.getField2().getUnit() == null ) break;
-				switch(relationship){
-				
-					// value is the integer ID of the tag
-					case IS :
-						if( Trigger_Object.getField2().getUnit().sheet().hasTag(value) ) return true;
-						break;
-					case IS_NOT :
-						if( !Trigger_Object.getField2().getUnit().sheet().hasTag(value) ) return true;
-						break;
-					default :
-						System.err.println("Error , a single condition contains an unknown id ("+relationship+")");
-						break;
-				}
-				break;
-				
-			// check unit fuel
-			case FUEL_OF_UNIT :
-				
-				if( Trigger_Object.getField1().getUnit() == null ) break;
-				if( value == ScriptLogic.FULL ) value = Trigger_Object.getField1().getUnit().sheet().getFuel();
-				
-				switch(relationship){
-					case IS :
-						if( Trigger_Object.getUnit1().getFuel() == value ) return true;
-						break;
-					case IS_NOT :
-						if( Trigger_Object.getUnit1().getFuel() != value ) return true;
-						break;
-					case LESS_THAN :
-						if( Trigger_Object.getUnit1().getFuel() < value ) return true;
-						break;
-					case MORE_THAN :
-						if( Trigger_Object.getUnit1().getFuel() > value ) return true;
-						break;
-					default :
-						System.err.println("Error , a single condition contains an unknown id ("+relationship+")");
-						break;
-				}
-				break;
-				
-			// check unit ammo
-			case AMMO_OF_UNIT :
-
-				if( Trigger_Object.getField1().getUnit() == null ) break;
-				if( value == ScriptLogic.FULL ) value = Trigger_Object.getField1().getUnit().sheet().getAmmo();
-				
-				switch(relationship){
-					case IS :
-						if( Trigger_Object.getUnit1().getAmmo() == value ) return true;
-						break;
-					case IS_NOT :
-						if( Trigger_Object.getUnit1().getAmmo() != value ) return true;
-						break;
-					case LESS_THAN :
-						if( Trigger_Object.getUnit1().getAmmo() < value ) return true;
-						break;
-					case MORE_THAN :
-						if( Trigger_Object.getUnit1().getAmmo() > value ) return true;
-						break;
-					default :
-						System.err.println("Error , a single condition contains an unknown id ("+relationship+")");
-						break;
-				}
-				break;
-				
-			// check unit health
-			case HEALTH_OF_UNIT :
-
-				if( Trigger_Object.getField1().getUnit() == null ) break;
-				// 999999 is the code for full health
-				if( value == ScriptLogic.FULL ) value = 99;
-				
-				switch(relationship){
-					case IS :
-						if( Trigger_Object.getUnit1().getHealth() == value ) return true;
-						break;
-					case IS_NOT :
-						if( Trigger_Object.getUnit1().getHealth() != value ) return true;
-						break;
-					case LESS_THAN :
-						if( Trigger_Object.getUnit1().getHealth() < value ) return true;
-						break;
-					case MORE_THAN :
-						if( Trigger_Object.getUnit1().getHealth() > value ) return true;
-						break;
-					default :
-						System.err.println("Error , a single condition contains an unknown id ("+relationship+")");
-						break;
-				}
-				break;
-				
-			case FIELD :
-				
-				if( Trigger_Object.getField1().getUnit() == null ) break;
-				switch(relationship){
-					case CAN_PAY_REPAIR :
-						if( value == ScriptLogic.UNIT && field1.sheet().canPay( field1.sheet().getRepairCost( unit1.sheet() , 20 ), field1.getOwner() ) ) return true;
-						else if( value == ScriptLogic.UNIT2 && field1.sheet().canPay( field1.sheet().getRepairCost( unit2.sheet() , 20 ), field1.getOwner() ) ) return true;
-						break;
-					case CAN_REPAIR :
-						if( value == ScriptLogic.UNIT && field1.sheet().canRepair( unit1.sheet() ) ) return true;
-						else if( value == ScriptLogic.UNIT2 && field1.sheet().canRepair( unit2.sheet() ) ) return true;
-						break;
-					case IS_OWNER_OF :
-						if( value == ScriptLogic.UNIT && unit1.getOwner() != field1.getOwner() ) return true;
-						else if( value == ScriptLogic.UNIT2 && unit2.getOwner() != field1.getOwner() ) return true;
-						break;
-				}
-				break;
-				
-			case UNIT :
-				
-				if( Trigger_Object.getField1().getUnit() == null ) break;
-				switch(relationship){
-					case IS_OWNER_OF :
-						if( value == ScriptLogic.UNIT && unit1.getOwner() != field1.getOwner() ) return true;
-						else if( value == ScriptLogic.UNIT2 && unit2.getOwner() != field1.getOwner() ) return true;
-						break;
-				}
-				break;
-				
-			case WEATHER_TYPE :
-				
-				switch(relationship){
-					case IS :
-						if( Data.getWeatherSheet(value) == Weather.getWeather() ) return true;
-						break;
-					case IS_NOT :
-						if( Data.getWeatherSheet(value) != Weather.getWeather() ) return true;
-						break;
-				}
-				break;
-				
-			case ATTACKER_WEAPON_TYPE :
-				
-				switch( relationship ){
-					case IS :
-						if( Data.getWeaponSheet(value) == Fight.getAttackerWeapon() ) return true;
-					case IS_NOT :
-						if( Data.getWeaponSheet(value) != Fight.getAttackerWeapon() ) return true;
-				}
-				
-			default	:
-				Logger.write("Condition contains unkown condition type with number "+condition+" !", Level.WARN );
+			case DAY_NUMBER :
+				result = compareValue( Turn.getDay() , value );
 				break;
 		}
 		
+		// CHECK RESULT WITH THE SEARCHED RELATIONSHIP
+		switch(relationship){
+		
+			case IS :
+				if( result == IS ) return true;
+				break;
+				
+			case IS_NOT :
+				if( result != IS ) return true;
+				break;
+				
+			case GREATER :
+				if( result == GREATER ) return true;
+				break;
+				
+			case LOWER :
+				if( result == LOWER ) return true;
+				break;
+				
+			case HAS :
+				if( result == IS ) return true;
+				break;
+				
+			case HAS_NOT :
+				if( result != IS ) return true;
+				break;
+		}
+		
+		// IF NO STATEMENT MATCHES, RETURN FALSE
 		return false;
 	}
 	
+	
+	
 	/*
-	 *
 	 * INTERNAL METHODS
 	 * ****************
-	 * 
 	 */
+	
+	private int compareValue( int hlp , int value ){
+		
+		int result;
+		
+		// COMPARE THE HELP VARIABLE WITH CONDITION VALUE
+		if( hlp > value ) result = GREATER;
+		else if( hlp < value ) result = LOWER;
+		else result = IS;
+		
+		// RETURN RESULT
+		return result;
+	}
 
+	
+	
 	/*
-	 *
 	 * OUTPUT METHODS
 	 * **************
-	 * 
 	 */
 	
 	public String toString(){

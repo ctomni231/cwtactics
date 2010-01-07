@@ -171,7 +171,7 @@ public class ObjectSheet extends Sheet {
 		int[] cost = new int[ length ];
 		
 		for( int i = 0 ; i < length ; i++ ){
-			cost[i] = ( sh.getCost( Data.getRessourceSheet(i) ) * amount * 2 ) / 10000; 
+			cost[i] = ( sh.getCost( Data.getRessourceTable().get(i) ) * amount * 2 ) / 10000; 
 		}
 		
 		return cost;
@@ -204,6 +204,14 @@ public class ObjectSheet extends Sheet {
 		if( resID == null ){ System.err.println("Ressource "+resID+" doesn'T exist in the database"); return 0; } 
 		if( !cost.containsKey(resID) ) return 0;
 		else return cost.get(resID);
+	}
+	
+	public int[] getCostTable(){
+		int[] costTable = new int[ Data.getRessourceTable().size() ];
+		for( Sheet i : cost.keySet() ){
+			costTable[ Data.getRessourceTable().indexOf(i) ] = cost.get(i);
+		}
+		return costTable;
 	}
 
 	/**

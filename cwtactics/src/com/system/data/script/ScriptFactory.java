@@ -87,32 +87,6 @@ public class ScriptFactory {
 			if( s.statementTrue() ) s.callAction();
 		}
 	}
-	
-		
-	
-
-	/*
-	 *
-	 * OUTPUT METHODS
-	 * **************
-	 * 
-	 */
-	
-	/**
-	 * Prints out the complete content of the script database.
-	 */
-	public static void printDatabase(){
-		for( Trigger trig : scripts.keySet() ){
-			System.out.println();
-			System.out.println("TRIGGER :: "+trig);
-			System.out.println();
-			for( Script script : scripts.get(trig) ){
-				System.out.println();
-				script.print();
-				System.out.println();
-			}
-		}
-	}
 
 }
 

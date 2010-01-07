@@ -181,10 +181,9 @@ public class InGameState extends SlickScreen{
         scr_scroll = newMap.update(scr_mouseX, scr_mouseY, scr_mouseScroll,
                 scr_scroll, scr_mouseLock);
         newMap.update();
-        newMap.updateMove();
 
         if(Controls.isActionClicked()){
-            newMap.setMove(10000);
+            
         }
         if(Controls.isCancelClicked()){
             column = 0;

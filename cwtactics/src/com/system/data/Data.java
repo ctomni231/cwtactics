@@ -11,32 +11,20 @@ import com.system.data.sheets.Unit_Sheed;
 import com.system.data.sheets.Weapon_Sheed;
 import com.system.data.sheets.Weather_Sheet;
 import com.system.log.Logger;
+import com.system.log.Logger.Level;
 
 public class Data {
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
-	// Data sheets
-	private static ArrayList<Unit_Sheed>	unitTable;
-	private static ArrayList<Tile_Sheet> 	tileTable;
-	private static ArrayList<Weather_Sheet>	weatherTable;
-	private static ArrayList<Rank_Sheet> 	rankTable;
-	private static ArrayList<Sheet> 		ressourceTable;
-	private static ArrayList<Sheet> 		entryTable;
-	private static ArrayList<Move_Sheet>	moveTable;
-	private static ArrayList<Sheet>			amorTable;
-	private static ArrayList<Weapon_Sheed>  weaponTable;
-	
-	// ID number table, contains all id numbers for string ID's
-	private static HashMap<String,Integer>	idTable;
-	
+	private static HashMap<String,Sheet> dataCore;
 	// Tag number table, contains all tag numbers for string tag ID's
 	private static HashMap<String,Integer>	tagTable;
+	private static ArrayList<Sheet> resourceTable;
+	private static ArrayList<Weather_Sheet> weatherTable;
 
 	// modification information
 	private static String name;
@@ -54,170 +42,121 @@ public class Data {
 
 	static{
 		
-		rankTable	= new ArrayList<Rank_Sheet>();
+		dataCore	= new HashMap<String, Sheet>(200);
+		tagTable	= new HashMap<String, Integer>(50);
+		
+		resourceTable = new ArrayList<Sheet>();
 		weatherTable = new ArrayList<Weather_Sheet>();
-		ressourceTable = new ArrayList<Sheet>();
-		moveTable	= new ArrayList<Move_Sheet>();
-		entryTable	= new ArrayList<Sheet>();
-		tileTable	= new ArrayList<Tile_Sheet>();
-		unitTable 	= new ArrayList<Unit_Sheed>();
-		idTable		= new HashMap<String, Integer>();
-		tagTable	= new HashMap<String, Integer>();
-		amorTable   = new ArrayList<Sheet>();
-		weaponTable = new ArrayList<Weapon_Sheed>();
+		
+		resourceTable.trimToSize();
+		weatherTable.trimToSize();
 	}
 	
 	
 	
 	/*
-	 *
 	 * ACCESSING METHODS
 	 * *****************
-	 * 
 	 */
 	
-	public static void addUnitSheet( String ID , Unit_Sheed sh ){
-		unitTable.add(sh);
+	public static void addSheet( String ID , Sheet sh ){
+		dataCore.put(ID, sh);
 		sh.setID(ID);
-		idTable.put(ID, unitTable.size() - 1 );
 	}
 	
-	public static Unit_Sheed getUnitSheet( int ID ){
-		if( ID < 0 || ID >= unitTable.size() ) return null;
-		else return unitTable.get(ID);
+	public static void addResourceSheet( String ID , Sheet sh ){
+		addSheet(ID, sh);
+		resourceTable.add(sh);
 	}
 	
-	public static void addTileSheet( String ID , Tile_Sheet sh ){
-		tileTable.add(sh);
-		sh.setID(ID);
-		idTable.put(ID, tileTable.size() - 1 );
+	public static void addWeatherSheet( String ID , Sheet sh ){
+		addSheet(ID, sh);
+		weatherTable.add( (Weather_Sheet) sh );
 	}
 	
-	public static Tile_Sheet getTileSheet( int ID ){
-		if( ID < 0 || ID >= tileTable.size() ) return null;
-		else return tileTable.get(ID);
+	public static Sheet getSheet( String ID ){
+		if( existID(ID) ) return dataCore.get(ID);
+		else return null;
 	}
 	
-	public static void addWeatherSheet( String ID , Weather_Sheet sh ){
-		weatherTable.add(sh);
-		sh.setID(ID);
-		idTable.put(ID, weatherTable.size() - 1 );
+	public static boolean existID( String ID ){
+		if( dataCore.containsKey(ID) ) return true;
+		else return false;
 	}
 	
-	public static Weather_Sheet getWeatherSheet( int ID ){
-		if( ID < 0 || ID >= weatherTable.size() ) return null;
-		else return weatherTable.get(ID);
+	public static Unit_Sheed getUnitSheet( String ID ){
+		if( existID(ID) ) return (Unit_Sheed) getSheet(ID);
+		Logger.write("UnitSheet '"+ID+"' doesn't exist!", Level.WARN);
+		return null;
 	}
 	
-	public static void addRankSheet( String ID , Rank_Sheet sh ){
-		rankTable.add(sh);
-		sh.setID(ID);
-		idTable.put(ID, rankTable.size() - 1 );
+	public static Tile_Sheet getTileSheet( String ID ){
+		if( existID(ID) ) return (Tile_Sheet) getSheet(ID);
+		Logger.write("TileSheet '"+ID+"' doesn't exist!", Level.WARN);
+		return null;
 	}
 	
-	public static Rank_Sheet getRankSheet( int ID ){
-		if( ID < 0 || ID >= rankTable.size() ) return null;
-		else return rankTable.get(ID);
+	public static Weather_Sheet getWeatherSheet( String ID ){
+		if( existID(ID) ) return (Weather_Sheet) getSheet(ID);
+		Logger.write("WeatherSheet '"+ID+"' doesn't exist!", Level.WARN);
+		return null;
+	}
+	
+	public static Rank_Sheet getRankSheet( String ID ){
+		if( existID(ID) ) return (Rank_Sheet) getSheet(ID);
+		Logger.write("RankSheet '"+ID+"' doesn't exist!", Level.WARN);
+		return null;
+	}
+	
+	public static Sheet getRessourceSheet( String ID ){
+		if( existID(ID) ) return (Sheet) getSheet(ID);
+		Logger.write("ResourceSheet '"+ID+"' doesn't exist!", Level.WARN);
+		return null;
+	}
+	
+	public static Move_Sheet getMoveSheet( String ID ){
+		if( existID(ID) ) return (Move_Sheet) getSheet(ID);
+		Logger.write("MoveSheet '"+ID+"' doesn't exist!", Level.WARN);
+		return null;
 	}
 
-	public static void addRessourceSheet( String ID , Sheet sh ){
-		ressourceTable.add(sh);
-		sh.setID(ID);
-		idTable.put(ID, ressourceTable.size() - 1 );
+	public static Sheet getEntrySheet( String ID ){
+		if( existID(ID) ) return (Sheet) getSheet(ID);
+		Logger.write("EntrySheet '"+ID+"' doesn't exist!", Level.WARN);
+		return null;
 	}
 	
-	public static Sheet getRessourceSheet( int ID ){
-		if( ID < 0 || ID >= ressourceTable.size() ) return null;
-		else return ressourceTable.get(ID);
+	public static Sheet getAmorSheet( String ID ){
+		if( existID(ID) ) return (Sheet) getSheet(ID);
+		Logger.write("AmorSheet '"+ID+"' doesn't exist!", Level.WARN);
+		return null;
 	}
 	
-	public static void addMoveSheet( String ID , Move_Sheet sh ){
-		moveTable.add(sh);
-		sh.setID(ID);
-		idTable.put(ID, moveTable.size() - 1 );
-	}
-	
-	public static Move_Sheet getMoveSheet( int ID ){
-		if( ID < 0 || ID >= moveTable.size() ) return null;
-		else return moveTable.get(ID);
-	}
-
-	public static void addEntrySheet( String ID , Sheet sh ){
-		entryTable.add(sh);
-		sh.setID(ID);
-		idTable.put(ID, entryTable.size() - 1 );
-	}
-	
-	public static Sheet getEntrySheet( int ID ){
-		if( ID < 0 || ID >= entryTable.size() ) return null;
-		else return entryTable.get(ID);
-	}
-	
-	public static void addAmorSheet( String ID , Sheet sh ){
-		amorTable.add(sh);
-		sh.setID(ID);
-		idTable.put(ID, amorTable.size() - 1 );
-	}
-	
-	public static Sheet getAmorSheet( int ID ){
-		if( ID < 0 || ID >= amorTable.size() ) return null;
-		else return amorTable.get(ID);
+	public static Weapon_Sheed getWeaponSheet( String ID ){
+		if( existID(ID) ) return (Weapon_Sheed) getSheet(ID);
+		Logger.write("WeaponSheet '"+ID+"' doesn't exist!", Level.WARN);
+		return null;
 	}
 	
 	public static ArrayList<Sheet> getRessourceTable(){
-		return ressourceTable;
+		return resourceTable;
 	}
 	
 	public static ArrayList<Weather_Sheet> getWeatherTable(){
 		return weatherTable;
 	}
 	
+	/*
 	public static ArrayList<Tile_Sheet> getTileTable(){
 		return tileTable;
-	}
-
-	public static void addWeaponSheet( String ID , Weapon_Sheed sh ){
-		weaponTable.add(sh);
-		sh.setID(ID);
-		idTable.put(ID, weaponTable.size() - 1 );
-	}
-	
-	public static Weapon_Sheed getWeaponSheet( int ID ){
-		if( ID < 0 || ID >= weaponTable.size() ) return null;
-		else return weaponTable.get(ID);
-	}
+	}*/
 
 	
 	
 	/*
-	 *
-	 * ID METHODS
-	 * **********
-	 * 
+	 * TAG METHODS
+	 * ***********
 	 */
-
-	/**
-	 * Exist an integer ID for a given String ID ?
-	 */
-	public static boolean existIntegerID( String ID ){
-		if( idTable.containsKey(ID) ) return true;
-		else return false;
-	}
-	
-	/**
-	 * Returns the internal identical number for
-	 * a String ID.
-	 * 
-	 * @param ID
-	 */
-	public static Integer getIntegerID( String ID ){
-
-		if( !existIntegerID(ID) ){
-			Logger.write( "ID "+ID+" doesn't exist!" , Logger.Level.WARN );
-			return -1; 
-		}
-		else return idTable.get(ID); 
-	}
 	
 	/**
 	 * Returns the internal identical number for
@@ -244,11 +183,11 @@ public class Data {
 		else return false;
 	}
 	
+	
+	
 	/*
-	 * 
 	 * GAME INFORMATION METHODS
 	 * ************************
-	 * 
 	 */
 	
 	public static String getName() {

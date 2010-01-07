@@ -44,10 +44,10 @@
 	</weapon>
 	
 	<weapon id="WP_AA_CANNON">
-		<canAttack levels="0,1,2,3,6" />
+		<canAttack levels="1,2,3" />
 		<useAmmo value="-1" />
-		<weaponType value="0" />
-		<ranges min="1" max="1" />
+		<weaponType value="1" />
+		<ranges min="1" max="2" />
 	</weapon>
 	
 	<weapon id="WP_HOWITZER">
@@ -114,7 +114,7 @@
 	</weapon>
 	
 	<weapon id="WP_AAGROUND_CANNON">
-		<canAttack levels="1,2,3" />
+		<canAttack levels="0,6" />
 		<useAmmo value="-1" />
 		<weaponType value="0" />
 		<ranges min="1" max="1" />

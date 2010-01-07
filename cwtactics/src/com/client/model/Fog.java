@@ -132,7 +132,9 @@ public class Fog {
     		for( Tile tile : pl.getProperties() ){
     			
     			clearSightAddon();
+    			additionalSight = tile.sheet().getVision();
     			Trigger_Object.triggerCall(tile, null);
+    			if( additionalSight < 0 ) additionalSight = 0;
     			ScriptFactory.checkAll( ScriptLogic.Trigger.VISION_TILE );
     			vision(tile, tile.sheet()); 
     		}
@@ -142,9 +144,15 @@ public class Fog {
     			
     			Tile tile =  Game.getMap().findTile(unit);
     			
+    			// unit is a load of an another unit
+    			if( tile == null ) continue;
+    			
     			clearSightAddon();
+    			additionalSight = unit.sheet().getVision();
     			Trigger_Object.triggerCall( tile , null);
     			ScriptFactory.checkAll( ScriptLogic.Trigger.VISION_UNIT );
+    			// PREVENT WRONG VALUES, UNIT CAN SEE AT MIN. WITH RANGE 1
+    			if( additionalSight <= 0 ) additionalSight = 1;
     			vision( tile , unit.sheet() );
     		}
     	}
@@ -166,7 +174,7 @@ public class Fog {
 	private static void vision( Tile tile , ObjectSheet sh ){
 		
 		// variables
-		int range = sh.getVision() + additionalSight;
+		int range = additionalSight;
 		
 		// check that range has more equals the minimum ranges of tiles and units !
 		if( sh instanceof Tile_Sheet && range < 0 ) range = 0;

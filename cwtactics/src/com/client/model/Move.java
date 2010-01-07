@@ -158,7 +158,7 @@ public class Move {
 		clear();
 	
 		// check trigger
-		Trigger_Object.triggerCall(start, null);
+		Trigger_Object.triggerCall(start, null, unit , null );
 		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_WILL_MOVE);
 	}
 	
@@ -233,13 +233,12 @@ public class Move {
 			
 			// mostly only own units left in moveTiles,
 			// but we must ignore hidden enemy units
-			if( unit != null && unit.getOwner() == Move.unit.getOwner() ){
+			if( unit != null ){
 				
-				if( Move.unit == unit ) getMoveObj(tile).setMoveable(false);
+				if( Fog.inFog(tile) || !Fog.isVisible(unit) ) continue;
 				
-				// if the own unit cannot load the moving unit,
-				// drop tile from move array
-				if( !unit.sheet().canLoad( Move.unit.sheet() ) ) getMoveObj(tile).setMoveable(false);
+				if( unit.getOwner() == Move.unit.getOwner() && unit.sheet().canLoad( Move.unit.sheet() ) && unit.getLeftLoadSpace() >= Move.unit.sheet().getWeight() ) continue;
+				else getMoveObj(tile).setMoveable(false);
 			}
 		}
 		
@@ -255,6 +254,7 @@ public class Move {
         // PROCESS IT'S POSITION WITH THE MOVING WAY
         if ( tile == start ) clearTo(start);                            // IS THE INPUT THE STARTPOINT
         else if ( !moveTiles.containsKey(tile) ) return;                // IS THE INPUT NOT IN THE FOCUS
+        else if( !moveTiles.get(tile).isMoveable() ) return;
         else if ( moveWay.get( moveWay.size() - 1 ) == tile ) return;   // IS THE INPUT FIELD THE SAME AS THE LAST IN MOVE
         else if ( moveWay.indexOf(tile) != -1 ) clearTo( tile );        // IS THE INPUT ALLREADY IN THE MOVING WAY
         else {
@@ -555,9 +555,9 @@ public class Move {
 	 */
 	public static void printMoveTiles(){
 		System.out.println("Move Tiles :");
-		for( int i = 0; i < Game.getMap().getSizeX() ; i++ ){
-			for( int j = 0 ; j < Game.getMap().getSizeY() ; j++ ){
-				if( moveTiles.containsKey( Game.getMap().getTile(i, j) ) ) System.out.print("X || ");
+		for( int i = 0; i < Game.getMap().getSizeY() ; i++ ){
+			for( int j = 0 ; j < Game.getMap().getSizeX() ; j++ ){
+				if( moveTiles.containsKey( Game.getMap().getTile(j, i) ) && moveTiles.get( Game.getMap().getTile(j, i) ).isMoveable() ) System.out.print("X || ");
 				else System.out.print("  || ");
     		}
 			System.out.println();
@@ -575,5 +575,7 @@ public class Move {
 		}
 		System.out.println();
 	}
+	
+	//TODO complete scripts check...
 }
 

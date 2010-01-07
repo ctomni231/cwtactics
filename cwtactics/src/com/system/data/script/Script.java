@@ -2,6 +2,11 @@ package com.system.data.script;
 
 import java.util.ArrayList;
 
+import com.client.model.Fight;
+import com.system.data.Data;
+import com.system.log.Logger;
+import com.system.log.Logger.Level;
+
 public class Script {
 
 	/*

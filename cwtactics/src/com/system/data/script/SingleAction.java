@@ -1,12 +1,15 @@
 package com.system.data.script;
 
+import com.client.logic.command.MessageServer;
+import com.client.logic.command.commands.ingame.ChangeResource;
+import com.client.logic.command.commands.ingame.ResupplyUnit;
+import com.client.logic.command.commands.ingame.SetDamage;
+import com.client.logic.command.commands.ingame.TryRepair;
 import com.client.model.Fight;
 import com.client.model.Fog;
-import com.client.model.Move;
-import com.client.model.object.Tile;
-import com.client.model.object.Unit;
-import com.system.data.script.ScriptLogic.TriggerAction;
-import com.system.data.script.ScriptLogic.TriggerAction_Obj;
+import com.system.data.script.ScriptLogic.ScriptKey;
+import com.system.log.Logger;
+import com.system.log.Logger.Level;
 
 public class SingleAction {
 
@@ -17,8 +20,8 @@ public class SingleAction {
 	 * 
 	 */
 	
-	private TriggerAction		action;
-	private TriggerAction_Obj 	obj;
+	private ScriptKey	action;
+	private ScriptKey	obj;
 	private int value;
 	
 
@@ -29,8 +32,7 @@ public class SingleAction {
 	 * 
 	 */
 	
-	public SingleAction( TriggerAction action, TriggerAction_Obj obj , int value ) {
-		
+	public SingleAction( ScriptKey obj , ScriptKey action, int value ) {
 		this.action = action;
 		this.obj 	= obj;
 		this.value 	= value;
@@ -52,154 +54,134 @@ public class SingleAction {
 	 */
 	
 	public void doAction(){
-		
-		Unit unit;
-		Tile field;
-		
-		if( obj == TriggerAction_Obj.UNIT || obj == TriggerAction_Obj.UNIT2){
-			unit = Trigger_Object.getUnit1();
-			field = Trigger_Object.getField1();
-		}
-		else{
-			unit = Trigger_Object.getUnit2();
-			field = Trigger_Object.getField2();
-		}			
-			
 			
 		switch( action ){
 		
-			// Destroy the unit which are involved by the trigger 
-			case DESTROY_UNIT :
-				//TODO add script effect
+			case DESTROY :
+				if( Trigger_Object.getUnit1() == null || obj != ScriptKey.UNIT ) break;
+				MessageServer.send( new SetDamage( Trigger_Object.getUnit1() , 100 ));
 				break;
 				
-			// Property gives funds
+			case SUPPLY :
+				if( Trigger_Object.getUnit1() == null || obj != ScriptKey.UNIT ) break;
+				//TODO fix command
+				MessageServer.send( new ResupplyUnit() );
+				break;
+				
+			case HEAL :
+				if( Trigger_Object.getField1() == null || Trigger_Object.getUnit1() == null || obj != ScriptKey.UNIT ) break;
+				MessageServer.send( new TryRepair( Trigger_Object.getField1() , value ));
+				break;
+				
 			case GIVE_FUNDS :
-				//TODO add script effect
+				if( Trigger_Object.getField1() == null || obj != ScriptKey.TILE ) break;
+				MessageServer.send( new ChangeResource( Trigger_Object.getField1().sheet().getFundsTable() , Trigger_Object.getField1().getOwner() , true ));
 				break;
-			
-			// Field supplies an unit
-			case RESUPPLY_UNIT :
-				//TODO add script effect
+				
+				//TODO MOVE MODEL
+				
+			case INCREASE_BY :
+				switch(obj){
+				
+					case ATTACK :
+						if( !Fight.checkStatus() ) break;
+						Fight.changeAttackValue(value);
+						break;
+						
+					// INCREASE DEFENSE IS DECREASING ATTACK POWER
+					case DEFENSE :
+						if( !Fight.checkStatus() ) break;
+						Fight.changeAttackValue(-value);
+						break;
+						
+					case FOG :
+						Fog.changeSightAddon(value);
+						break;
+				}
 				break;
-			
-			// Field heals an unit
-			case PAY_REPAIR :
-				//TODO add script effect
+				
+			case INCREASE_BY_RANDOM :
+				switch(obj){
+				
+					case ATTACK :
+						if( !Fight.checkStatus() ) break;
+						Fight.changeAttackValue((int) ( Math.random() * value ));
+						break;
+						
+					// INCREASE DEFENSE IS DECREASING ATTACK POWER
+					case DEFENSE :
+						if( !Fight.checkStatus() ) break;
+						Fight.changeAttackValue(-((int) ( Math.random() * value )));
+						break;
+						
+					case FOG :
+						Fog.changeSightAddon( (int) ( Math.random() * value ) );
+						break;
+				}
+				break;
+				
+			case DECREASE_BY :
+				switch(obj){
+				
+					case ATTACK :
+						if( !Fight.checkStatus() ) break;
+						Fight.changeAttackValue(-value);
+						break;
+						
+					// INCREASE DEFENSE IS DECREASING ATTACK POWER
+					case DEFENSE :
+						if( !Fight.checkStatus() ) break;
+						Fight.changeAttackValue(value);
+						break;
+						
+					case FOG :
+						Fog.changeSightAddon(-value);
+						break;
+				}
+				break;
+				
+			case DECREASE_BY_RANDOM :
+				switch(obj){
+				
+					case ATTACK :
+						if( !Fight.checkStatus() ) break;
+						Fight.changeAttackValue(-((int) ( Math.random() * value )));
+						break;
+						
+					// INCREASE DEFENSE IS DECREASING ATTACK POWER
+					case DEFENSE :
+						if( !Fight.checkStatus() ) break;
+						Fight.changeAttackValue( (int) ( Math.random() * value ));
+						break;
+						
+					case FOG :
+						Fog.changeSightAddon( -((int) ( Math.random() * value )) );
+						break;
+				}
+				break;
+				
+			case SET_TO :
+				switch(obj){
+				
+					case FOG :
+						Fog.setSightAddon(value);
+						break;
+				}
+				break;
+				
+			case SET_TO_RANDOM :
+				switch(obj){
+				
+					case FOG :
+						Fog.setSightAddon( ((int) Math.random() * value) );
+						break;
+				}
 				break;
 		
-			// Field heals an unit
-			case HEAL_UNIT :
-				//TODO add script effect
-				break;
-				
-			// Field heals an unit
-			case DECREASE_FUEL :
-				//TODO add script effect
-				break;
-				
-			case INCREASE_ATTACK :
-				if( field == Trigger_Object.getField1() ) Fight.changeAttackerPenalty(value);
-				else Fight.changeDefenderPenalty(value);
-				break;
-				
-			case DECREASE_ATTACK :
-				if( field == Trigger_Object.getField1() ) Fight.changeAttackerPenalty(-value);
-				else Fight.changeDefenderPenalty(-value);
-				break;
-				
-			case INCREASE_DEFENSE :
-				if( field == Trigger_Object.getField1() ) Fight.changeDefenderPenalty(-value);
-				else Fight.changeAttackerPenalty(-value);
-				break;
-				
-			case DECREASE_DEFENSE :
-				if( field == Trigger_Object.getField1() ) Fight.changeDefenderPenalty(value);
-				else Fight.changeAttackerPenalty(value);
-				break;
-				
-			case INCREASE_ATTACK_BY_RANDOM :
-				value = ((int) Math.random() * value );
-				if( value == 0 ) return;
-				if( field == Trigger_Object.getField1() ) Fight.changeAttackerPenalty(value);
-				else Fight.changeDefenderPenalty(value);
-				break;
-				
-			case DECREASE_ATTACK_BY_RANDOM :
-				value = ((int) Math.random() * value );
-				if( value == 0 ) return;
-				if( field == Trigger_Object.getField1() ) Fight.changeAttackerPenalty(-value);
-				else Fight.changeDefenderPenalty(-value);
-				break;
-				
-			case INCREASE_DEFENSE_BY_RANDOM :
-				value = ((int) Math.random() * value );
-				if( value == 0 ) return;
-				if( field == Trigger_Object.getField1() ) Fight.changeDefenderPenalty(-value);
-				else Fight.changeAttackerPenalty(-value);
-				break;
-				
-			case DECREASE_DEFENSE_BY_RANDOM :
-				value = ((int) Math.random() * value );
-				if( value == 0 ) return;
-				if( field == Trigger_Object.getField1() ) Fight.changeDefenderPenalty(value);
-				else Fight.changeAttackerPenalty(value);
-				break;
-				
-			case INCREASE_SIGHT :
-				Fog.changeSightAddon(value);
-				break;
-				
-			case DECREASE_SIGHT :
-				Fog.changeSightAddon(-value);
-				break;
-				
-			case SET_SIGHT :
-				Fog.setSightAddon(value);
-				break;
-				
-			case INCREASE_MOVEPOINTS :
-				Move.changeMovePoints(value);
-				break;
-				
-			case DECREASE_MOVEPOINTS :
-				Move.changeMovePoints(-value);
-				break;
-				
-			case INCREASE_MOVECOST :
-				Move.changeCost(value);
-				break;
-				
-			case DECREASE_MOVECOST :
-				Move.changeCost(-value);
-				break;
-				
-			case SET_MOVECOST :
-				Move.setCost(value);
-				break;
-				
 			default:
-				System.err.println("Wrong Trigger action given , the id "+action+" is unknown..");
+				Logger.write("Wrong action ==> "+obj.toString()+" "+action.toString()+" "+value+" is unknown.." , Level.WARN );
 				break;
 		}
-	}
-
-	/*
-	 *
-	 * INTERNAL METHODS
-	 * ****************
-	 * 
-	 */
-
-	/*
-	 *
-	 * OUTPUT METHODS
-	 * **************
-	 * 
-	 */
-	
-	public String toString(){
-		return " SA:: OBJECT:"+obj+" - ACTION:"+action+" VALUE:"+value;
 	}
 
 }

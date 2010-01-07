@@ -2,6 +2,7 @@ package com.client;
 
 import com.client.logic.command.MessageServer;
 import com.client.logic.status.Status;
+import com.client.model.Fight;
 import com.client.model.Fog;
 import com.client.model.Instance;
 import com.client.model.Turn;
@@ -11,12 +12,15 @@ import com.client.model.object.Map;
 import com.client.model.object.Player;
 import com.client.model.object.Team;
 import com.client.model.object.Tile;
+import com.client.model.object.Unit;
 
 import com.client.state.InGameState;
 import com.client.state.MainMenuState;
 import com.client.state.SlickGame;
 import com.system.ID;
 import com.system.data.Data;
+import com.system.data.script.ScriptFactory;
+import com.system.data.script.ScriptLogic;
 
 
 import com.system.log.Logger;
@@ -43,6 +47,10 @@ public class MainGame {
 
 
     public static void main(String args[]){
+    	
+    	// setup logger
+    	Logger.setMode( Logger.Mode.CONSOLE );
+    	Logger.setOn();
     	
     	// setup logic
     	setupLogic();
@@ -101,13 +109,7 @@ public class MainGame {
     	System.out.println("Author  : "+Data.getAuthor());
     	System.out.println("Version : "+Data.getVersion());
     
-    	
-    	Weather.setWeather( Data.getWeatherSheet( 0 ));
-    	
-    	// setup logger
-    	Logger.setMode( Logger.Mode.CONSOLE );
-    	Logger.setOn();
-    	
+    	Weather.setWeather( Data.getWeatherSheet( "SUN" ));
     }
     
     /**
@@ -115,7 +117,7 @@ public class MainGame {
      */
     private static void initializeTestGame(){
     	
-    	Map map = new Map(30, 20);
+    	Map map = new Map(50, 50);
     	Game.addTeam();
     	Game.addTeam();
     	Team t = Game.getTeam(0);
@@ -140,36 +142,48 @@ public class MainGame {
     				
     				
     				if( (i == 9 && j == 6) ){
-    					Tile tile =  new Tile( Data.getTileSheet( Data.getIntegerID("FACTORY") ) , i, j, 0, null);
+    					Tile tile =  new Tile( Data.getTileSheet( "FACTORY" ) , i, j, 0, null);
     					map.setTile( tile , i, j);
     					tile.setOwner(p);
     					p.addProperty(tile);
     				}
     				else if( (i == 1 && j == 8) ){
-    					Tile tile =  new Tile( Data.getTileSheet( Data.getIntegerID("FACTORY") ) , i, j, 0, null);
+    					Tile tile =  new Tile( Data.getTileSheet( "FACTORY" ) , i, j, 0, null);
     					map.setTile( tile , i, j);
     					tile.setOwner(p2);
     					p2.addProperty(tile);
     				}
     				else if( (i == 5 && j == 5) ){
-    					Tile tile =  new Tile( Data.getTileSheet( Data.getIntegerID("FACTORY") ) , i, j, 0, null);
+    					Tile tile =  new Tile( Data.getTileSheet( "FACTORY" ) , i, j, 0, null);
     					map.setTile( tile , i, j);
     					tile.setOwner(p3);
     					p3.addProperty(tile);
     				}
     				else{
-    					map.setTile( new Tile( Data.getTileSheet( Data.getIntegerID("FOREST")), i, j, 0, null), i, j);
+    					map.setTile( new Tile( Data.getTileSheet( "FOREST" ), i, j, 0, null), i, j);
     				}
     				
     			}
-    			else map.setTile( new Tile( Data.getTileSheet( Data.getIntegerID("PLAIN")), i, j, 0, null), i, j);
+    			else map.setTile( new Tile( Data.getTileSheet( "PLAIN" ), i, j, 0, null), i, j);
     		}
     	}
+    	
 
+    	Tile a = new Tile( Data.getTileSheet("PLAIN"),0,0,0,null);
+    	Tile b = new Tile( Data.getTileSheet("STREET"),0,0,0,null);
+    	Unit ua = new Unit(Data.getUnitSheet("INFANTRY"),p);
+    	Unit ub = new Unit(Data.getUnitSheet("INFANTRY"),p3);
+    	a.setUnit(ua);
+    	b.setUnit(ub);
+    	
+    	p.changeResource( 0 , 100000 );
+    	
         Game.setMap(map);
         Fog.noFog(false);
         Status.setStatus( Status.Mode.WAIT );
         Turn.startTurn( Game.getNextPlayer() );
+
+    	Fight.battle(a, ua, ua.sheet().getWeapon(0) , b , ub);
     }
 
     //The container used for this window

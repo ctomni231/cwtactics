@@ -11,7 +11,7 @@ import com.system.log.Logger.Level;
  * 
  * @author Tapsi [BcMk]
  */
-public class Battle implements Command{
+public class BattleDamage implements Command{
 
 	/*
 	 * VARIABLES
@@ -28,7 +28,7 @@ public class Battle implements Command{
 	 * ***********
 	 */
 	
-	public Battle( Tile attackerTile , Tile defenderTile , int attackDamage , int defenderDamage ){
+	public BattleDamage( Tile attackerTile , Tile defenderTile , int attackDamage , int defenderDamage ){
 		
 		attack = attackDamage;
 		counter = defenderDamage;

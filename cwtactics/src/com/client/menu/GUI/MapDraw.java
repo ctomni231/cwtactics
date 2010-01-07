@@ -7,7 +7,6 @@ import com.client.menu.GUI.tools.PixAnimate;
 import com.client.menu.GUI.tools.PixMenu;
 import com.client.model.Fog;
 import com.client.model.Move;
-import com.client.model.MoveAlt;
 import com.client.model.Range;
 import com.client.model.object.Game;
 import com.system.data.ImgData;
@@ -102,7 +101,6 @@ public class MapDraw extends MovingPix{
         column = 0;
         initCursor();
         clearArrow();
-        MoveAlt.init();
     }
 
     public void initCursor(){
@@ -623,25 +621,6 @@ public class MapDraw extends MovingPix{
         }
     }
 
-    //--------------------------------------------
-    //Move Alt Stuff
-    //---------------------------------------------
-
-    public void updateMove(){
-        MoveAlt.spreadMove(cursorx, cursory);
-    }
-
-    public void setMove(int move){
-        MoveAlt.clearWay();
-        if(map.getTile(cursorx, cursory).getUnit() != null){
-            MoveAlt.moveTag(
-                    map.getTile(cursorx, cursory).getUnit().sheet().
-                    getMoveRange(), cursorx, cursory);
-        }else{
-            MoveAlt.moveTag(move, cursorx, cursory);
-        }
-    }
-
     public void draw(Graphics g, int animTime){
         drawCursor(animTime);
 
@@ -715,13 +694,13 @@ public class MapDraw extends MovingPix{
             }
         }
 
-        for(Tile temp: MoveAlt.getWay()){
+        for(Tile temp: Move.getWay()){
             g.setColor(new Color(0, 0, 0, 100));
             g.fillRect((int)(posx+temp.getPosX()*BASE*scale),
                 (int)(posy+temp.getPosY()*BASE*scale), (int)(BASE*scale),
                 (int)(BASE*scale));
         }
-        if(MoveAlt.getWaySize() > 0){
+        if(Move.getWay().size() > 0){
             g.setColor(new Color(0, 0, 0, 100));
             g.fillRect((int)(posx+cursorx*BASE*scale),
                 (int)(posy+cursory*BASE*scale), (int)(BASE*scale),

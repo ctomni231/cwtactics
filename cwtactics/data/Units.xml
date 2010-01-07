@@ -176,6 +176,32 @@
             <loadtarget id="MECH"        />
 		</loads>
     </unit>
+    
+    <unit ID="WARPLANE">
+        <cost ressource_0="20000" />
+        <movement level="2" range="5" type="MV_AIR" vision="1" weight="3" />
+        <fuel amount="99" />
+        <tags>
+        	<tag id="TRANSPORT"/> <tag id="AIR"/>  <tag id="COPTER"/>
+        </tags>
+		<loads amount="4">
+			<!-- Can only unload on an airport! -->
+			<unloadPlace id="AIRPORT" />
+            <loadtarget id="INFANTRY"    />
+            <loadtarget id="MECH"        />
+            <loadtarget id="LTANK"    	/>
+            <loadtarget id="MDTANK"     />
+            <loadtarget id="HTANK"    	/>
+            <loadtarget id="PAK"        />
+            <loadtarget id="RECOON"    	/>
+            <loadtarget id="AATANK"        />
+            <loadtarget id="MOTORBIKE"    	/>
+            <loadtarget id="ARTILLERY"        />
+            <loadtarget id="APC"    />
+            <loadtarget id="AAROCKET"        />
+            <loadtarget id="ROCKET"    />
+		</loads>
+    </unit>
 	
 	<unit ID="SUB">
         <cost ressource_0="20000" />

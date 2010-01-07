@@ -55,11 +55,11 @@ public class ModReader extends Parser {
 	 */
 	
 	public void addUnitSheet( String header ){
-		Data.addUnitSheet(header, new Unit_Sheed());
+		Data.addSheet(header, new Unit_Sheed());
 	}
 	
 	public void addTileSheet( String header ){
-		Data.addTileSheet(header, new Tile_Sheet());
+		Data.addSheet(header, new Tile_Sheet());
 	}
 
 	/*
@@ -95,11 +95,11 @@ public class ModReader extends Parser {
 	private void parseWeapon( Attributes attributes ){
 		
 		if( super.getLastHeader().equals("weapon") ){
-			if( attributes.getValue( "id" ) != null && !Data.existIntegerID( attributes.getValue( "id" ) ) ) Data.addWeaponSheet( attributes.getValue( "id" ) , new Weapon_Sheed() );
+			if( attributes.getValue( "id" ) != null && !Data.existID( attributes.getValue( "ID" ) ) ) Data.addSheet( attributes.getValue( "id" ) , new Weapon_Sheed() );
 			headerID = attributes.getValue( "id" );
 		}
 		
-		Weapon_Sheed sh = Data.getWeaponSheet( Data.getIntegerID(headerID) );
+		Weapon_Sheed sh = Data.getWeaponSheet( headerID );
 		
 		if( super.isAheader("canAttack") ){
 			if( attributes.getValue("levels") != null ){
@@ -127,7 +127,7 @@ public class ModReader extends Parser {
 	private void parseEntry( Attributes attributes ){
 		
 		if( super.getLastHeader().equals("button") ){
-			if( !Data.existIntegerID( attributes.getValue( "ID" ) ) ) Data.addEntrySheet( attributes.getValue( "ID" ) , new Sheet() );
+			if( !Data.existID( attributes.getValue( "ID" ) ) ) Data.addSheet( attributes.getValue( "ID" ) , new Sheet() );
 			headerID = attributes.getValue( "ID" );
 			return;
 		}
@@ -141,12 +141,12 @@ public class ModReader extends Parser {
 	private void parseRank( Attributes attributes ){
 
 		if( super.getLastHeader().equals("rank") ){
-			if( !Data.existIntegerID( attributes.getValue( "ID" ) ) ) Data.addRankSheet( attributes.getValue( "ID" ) , new Rank_Sheet() );
+			if( !Data.existID( attributes.getValue( "ID" ) ) ) Data.addSheet( attributes.getValue( "ID" ) , new Rank_Sheet() );
 			headerID = attributes.getValue( "ID" );
 			return;
 		}
 		
-		Rank_Sheet sh = Data.getRankSheet( Data.getIntegerID(headerID) );
+		Rank_Sheet sh = Data.getRankSheet( headerID );
 		
 		/*
 		 * 			STATUS
@@ -164,12 +164,12 @@ public class ModReader extends Parser {
 	private void parseMoveType( Attributes attributes ){
 		
 		if( super.getLastHeader().equals("movetype") ){
-			if( !Data.existIntegerID( attributes.getValue( "ID" ) ) ) Data.addMoveSheet( attributes.getValue( "ID" ) , new Move_Sheet() );
+			if( !Data.existID( attributes.getValue( "ID" ) ) ) Data.addSheet( attributes.getValue( "ID" ) , new Move_Sheet() );
 			headerID = attributes.getValue( "ID" );
 			return;
 		}
 		
-		Move_Sheet sh = Data.getMoveSheet( Data.getIntegerID(headerID) );
+		Move_Sheet sh = Data.getMoveSheet( headerID );
 		
 		
 		/*
@@ -179,8 +179,8 @@ public class ModReader extends Parser {
 		if( super.isAheader("fieldtarget") ){
 			
 			// create new sheet if you arrive a new XML object body and the ID isn't in the database
-			if( ! Data.existIntegerID( attributes.getValue("id")  )) addTileSheet( attributes.getValue("id") );
-			Tile_Sheet shTarget = Data.getTileSheet( Data.getIntegerID(attributes.getValue("id") ) );
+			if( !Data.existID( attributes.getValue( "id" ) )) addTileSheet( attributes.getValue("id") );
+			Tile_Sheet shTarget = Data.getTileSheet( attributes.getValue("id") );
 
 			if( attributes.getValue("move") != null ) sh.addTileMoveCost( shTarget, Integer.parseInt(attributes.getValue("move")) );
 		}
@@ -192,7 +192,7 @@ public class ModReader extends Parser {
 	private void parseResource( Attributes attributes ){
 		
 		if( super.getLastHeader().equals("ressource") ){
-			if( !Data.existIntegerID( attributes.getValue( "ID" ) ) ) Data.addRessourceSheet( attributes.getValue( "ID" ) , new Sheet() );
+			if(!Data.existID( attributes.getValue( "ID" ) ) ) Data.addResourceSheet( attributes.getValue( "ID" ) , new Sheet() );
 			headerID = attributes.getValue( "ID" );
 			return;
 		}
@@ -206,12 +206,12 @@ public class ModReader extends Parser {
 	private void parseWeather( Attributes attributes ){
 
 		if( super.getLastHeader().equals("weather") ){
-			if( !Data.existIntegerID( attributes.getValue( "ID" ) ) ) Data.addWeatherSheet( attributes.getValue( "ID" ) , new Weather_Sheet() ); 
+			if( !Data.existID( attributes.getValue( "ID" ) ) ) Data.addWeatherSheet( attributes.getValue( "ID" ) , new Weather_Sheet() ); 
 			headerID = attributes.getValue( "ID" );
 			return;
 		}
 
-		Weather_Sheet sh = Data.getWeatherSheet( Data.getIntegerID(headerID) );
+		Weather_Sheet sh = Data.getWeatherSheet( headerID );
 		
 		/*
 		 * 		    STATUS
@@ -229,12 +229,12 @@ public class ModReader extends Parser {
 	private void parseTile( Attributes attributes ){
 
 		if( super.getLastHeader().equals("field") ){
-			if( !Data.existIntegerID( attributes.getValue( "ID" ) ) ) Data.addTileSheet( attributes.getValue( "ID" ) , new Tile_Sheet() );
+			if( !Data.existID( attributes.getValue( "ID" ) ) ) Data.addSheet( attributes.getValue( "ID" ) , new Tile_Sheet() );
 			headerID = attributes.getValue( "ID" );
 			return;
 		}
 		
-		Tile_Sheet sh = Data.getTileSheet( Data.getIntegerID(headerID) );
+		Tile_Sheet sh = Data.getTileSheet(headerID );
 				
 		/*
 		 * 			  TAG
@@ -253,7 +253,7 @@ public class ModReader extends Parser {
 			
 			// checks all resources and adds it to the sheet if a value is given
 			for( int i = 0 ; i < Data.getRessourceTable().size() ; i++ ){
-				if( attributes.getValue("ressource_"+i ) != null ) 		sh.setFunds( Data.getRessourceSheet(i) , Integer.parseInt( attributes.getValue("ressource_"+i) ) );
+				if( attributes.getValue("ressource_"+i ) != null ) 		sh.setFunds( Data.getRessourceTable().get(i) , Integer.parseInt( attributes.getValue("ressource_"+i) ) );
 			}
 		}
 		
@@ -287,16 +287,16 @@ public class ModReader extends Parser {
 		else if( super.isAheader("unittarget") ){
 			
 			// create new sheet if you arrive a new XML object body and the ID isn't in the database
-			if( ! Data.existIntegerID( attributes.getValue("id")  )) addUnitSheet( attributes.getValue("id") );
-			Unit_Sheed shDet = Data.getUnitSheet( Data.getIntegerID(attributes.getValue("id") ) );
+			if( !Data.existID( attributes.getValue( "id" ) )) addUnitSheet( attributes.getValue("id") );
+			Unit_Sheed shDet = Data.getUnitSheet( attributes.getValue("id") );
 			
 			sh.addDetectRange(shDet, Integer.parseInt(attributes.getValue("range")) );
 		}
 		else if( super.isAheader("tiletarget") ){
 			
 			// create new sheet if you arrive a new XML object body and the ID isn't in the database
-			if( ! Data.existIntegerID( attributes.getValue("id")  )) addUnitSheet( attributes.getValue("id") );
-			Tile_Sheet shDet = Data.getTileSheet( Data.getIntegerID(attributes.getValue("id") ) );
+			if( !Data.existID( attributes.getValue( "id" ) )) addUnitSheet( attributes.getValue("id") );
+			Tile_Sheet shDet = Data.getTileSheet( attributes.getValue("id") );
 			
 			sh.addDetectRange(shDet, Integer.parseInt(attributes.getValue("range")) );
 		}
@@ -308,8 +308,8 @@ public class ModReader extends Parser {
 		else if( super.isAheader("buildtarget") ){
 			
 			// create new sheet if you arrive a new XML object body and the ID isn't in the database
-			if( ! Data.existIntegerID( attributes.getValue("id")  )) addUnitSheet( attributes.getValue("id") );
-			Unit_Sheed shBuild = Data.getUnitSheet( Data.getIntegerID(attributes.getValue("id") ) );
+			if( !Data.existID( attributes.getValue( "id" )   )) addUnitSheet( attributes.getValue("id") );
+			Unit_Sheed shBuild = Data.getUnitSheet( attributes.getValue("id") );
 			
 			sh.addBuildType(shBuild);
 		}
@@ -350,12 +350,12 @@ public class ModReader extends Parser {
 		
 		// create new sheet if you arrive a new XML object body and the ID isn't in the database
 		if( super.getLastHeader().equals("unit") ){
-			if( !Data.existIntegerID( attributes.getValue( "ID" ) ) ) addUnitSheet( attributes.getValue( "ID" ) );
+			if( !Data.existID( attributes.getValue( "ID" ) ) ) addUnitSheet( attributes.getValue( "ID" ) );
 			headerID = attributes.getValue( "ID" );
 			return;
 		}
 		
-		Unit_Sheed sh = Data.getUnitSheet( Data.getIntegerID(headerID) );
+		Unit_Sheed sh = Data.getUnitSheet( headerID );
 		
 		/*
 		 * 			 COST
@@ -365,7 +365,7 @@ public class ModReader extends Parser {
 			
 			// checks all resources and adds it to the sheet if a valiue is given
 			for( int i = 0 ; i < Data.getRessourceTable().size() ; i++ ){
-				if( attributes.getValue("ressource_"+i ) != null ) 		sh.setCost( Data.getRessourceSheet(i) , Integer.parseInt( attributes.getValue("ressource_"+i) ) );
+				if( attributes.getValue("ressource_"+i ) != null ) 		sh.setCost( Data.getRessourceTable().get(i) , Integer.parseInt( attributes.getValue("ressource_"+i) ) );
 			}
 		}
 		
@@ -376,7 +376,7 @@ public class ModReader extends Parser {
 		else if( super.isAheader("movement") ){
 			
 			if( attributes.getValue("range") != null ) 		sh.setMoveRange( Integer.parseInt(attributes.getValue("range")) );
-			if( attributes.getValue("type") != null ) 		sh.setMoveType( Data.getMoveSheet( Data.getIntegerID(attributes.getValue("type"))) );
+			if( attributes.getValue("type") != null ) 		sh.setMoveType( Data.getMoveSheet( attributes.getValue("type")) );
 			if( attributes.getValue("vision") != null ) 	sh.setVision( Integer.parseInt(attributes.getValue("vision")) );
 			if( attributes.getValue("capture") != null ) 	sh.setCaptureValue( Integer.parseInt(attributes.getValue("capture")) );
 			if( attributes.getValue("weight") != null ) 	sh.setWeight( Integer.parseInt(attributes.getValue("weight")) );
@@ -413,7 +413,7 @@ public class ModReader extends Parser {
 		else if( super.isAheader("weapon") ){
 			String id = attributes.getValue("id");
 			if( id != null ){
-				if( Data.existIntegerID( id ) ) sh.addWeapon( Data.getWeaponSheet( Data.getIntegerID(id) ) );
+				if( Data.existID(id) ) sh.addWeapon( Data.getWeaponSheet(id) );
 			}
 		}
 		
@@ -424,8 +424,8 @@ public class ModReader extends Parser {
 		else if( super.isAheader("supply") && super.isAheader("supplytarget") ){
 			
 			// if the target sheet not exist create new one
-			if( ! Data.existIntegerID( attributes.getValue("id")  )) addUnitSheet( attributes.getValue("id") );
-			Unit_Sheed sh_supply = Data.getUnitSheet( Data.getIntegerID(attributes.getValue("id") ) );
+			if( !Data.existID( attributes.getValue( "id" ) ) ) addUnitSheet( attributes.getValue("id") );
+			Unit_Sheed sh_supply = Data.getUnitSheet( attributes.getValue("id") );
 			
 			sh.addSupplyType(sh_supply);
 		}
@@ -440,10 +440,18 @@ public class ModReader extends Parser {
 			if( super.isAheader("loadtarget") ){
 				
 				// if the target sheet not exist create new one
-				if( ! Data.existIntegerID( attributes.getValue("id")  )) addUnitSheet( attributes.getValue("id") );
-				Unit_Sheed sh_load = Data.getUnitSheet( Data.getIntegerID(attributes.getValue("id") ) );
+				if( !Data.existID( attributes.getValue( "id" ) )  ) addUnitSheet( attributes.getValue("id") );
+				Unit_Sheed sh_load = Data.getUnitSheet( attributes.getValue("id") );
 				
 				sh.addLoadType(sh_load);
+			}
+			else if( super.isAheader("unloadPlace") ){
+				
+				// if the target sheet not exist create new one
+				if( !Data.existID( attributes.getValue( "id" ) )  ) addTileSheet( attributes.getValue("id") );
+				Tile_Sheet sh_load = Data.getTileSheet( attributes.getValue("id") );
+				
+				sh.addUnloadTile( sh_load );
 			}
 		}
 	}

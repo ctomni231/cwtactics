@@ -31,18 +31,18 @@ public class LanguageReader extends com.system.xml.Parser {
 			
 			Sheet sh;
 			
-			// get the correct data sheet
-			if( super.isAheader("units") ) sh = Data.getUnitSheet( Data.getIntegerID( attributes.getValue("id")));
-			else if( super.isAheader("weapons") ) sh = Data.getWeaponSheet( Data.getIntegerID( attributes.getValue("id")));
-			else if( super.isAheader("tiles") ) sh = Data.getTileSheet( Data.getIntegerID( attributes.getValue("id")));
-			else if( super.isAheader("buttons") ) sh = Data.getEntrySheet( Data.getIntegerID( attributes.getValue("id")));
-			else if( super.isAheader("ranks") ) sh = Data.getRankSheet( Data.getIntegerID( attributes.getValue("id")));
-			else if( super.isAheader("resources") ) sh = Data.getRessourceSheet( Data.getIntegerID( attributes.getValue("id")));
-			else if( super.isAheader("weather") ) sh = Data.getWeatherSheet( Data.getIntegerID( attributes.getValue("id")));
-			else if( super.isAheader("movetypes") ) sh = Data.getMoveSheet( Data.getIntegerID( attributes.getValue("id")));
+			// GET THE CORRECT DATA SHEET
+			if( super.isAheader("units") ) sh = Data.getUnitSheet(  attributes.getValue("id"));
+			else if( super.isAheader("weapons") ) sh = Data.getWeaponSheet(  attributes.getValue("id"));
+			else if( super.isAheader("tiles") ) sh = Data.getTileSheet(  attributes.getValue("id"));
+			else if( super.isAheader("buttons") ) sh = Data.getEntrySheet(  attributes.getValue("id"));
+			else if( super.isAheader("ranks") ) sh = Data.getRankSheet(  attributes.getValue("id"));
+			else if( super.isAheader("resources") ) sh = Data.getRessourceSheet(  attributes.getValue("id"));
+			else if( super.isAheader("weather") ) sh = Data.getWeatherSheet(  attributes.getValue("id"));
+			else if( super.isAheader("movetypes") ) sh = Data.getMoveSheet(  attributes.getValue("id"));
 			else sh = null;
 				
-			// add language data to it
+			// ADD THE STRING VALUE TO THE SHEET
 			if( sh != null ) sh.setName( attributes.getValue( Data.getLanguage() ) );
 		}
 	}

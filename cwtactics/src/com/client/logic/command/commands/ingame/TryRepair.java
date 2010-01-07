@@ -32,7 +32,7 @@ public class TryRepair implements Command {
 		
 		// increase health and decrease resources of player
 		MessageServer.sendLocalToFirstPos( new RepairUnit(unit, amount) );
-		MessageServer.sendLocalToFirstPos( new ChangeResource(cost, tile, true) );
+		MessageServer.sendLocalToFirstPos( new ChangeResource(cost, tile.getOwner() , true) );
 	}
 
 }

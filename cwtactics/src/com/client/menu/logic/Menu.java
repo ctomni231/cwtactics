@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.client.menu.logic.buttons.Button;
 import com.client.menu.logic.buttons.TargetButton;
+import com.client.menu.logic.buttons.UnloadUnitButton;
+import com.client.menu.logic.buttons.UnloadUnitTargetButton;
 import com.client.menu.logic.buttons.Button.ButtonType;
 import com.client.model.Range;
 import com.client.model.object.Tile;
@@ -25,7 +27,8 @@ public class Menu {
 	public enum MenuType{
 		MAP_MENU,OPTIONS_MENU,SAVE_MENU,GAME_MENU,								// MAP MENUS
 		BUILD_MENU,																// PROPERTY MENUS
-		UNIT_ROOTMENU,UNIT_ATTACKMENU,UNIT_WEAPON_ATTACKMENU,UNLOAD_TARGETS_MENU,UNLOAD_UNITS_MENU		// UNIT MENUS
+		UNIT_ROOTMENU,UNIT_ATTACKMENU,UNIT_WEAPON_ATTACKMENU,
+		UNLOAD_TARGETS_MENU,UNLOAD_UNITS_MENU,UNLOAD_TARGETS_MENU2,UNLOAD_UNITS_MENU2 // UNIT MENUS
 	}
 	
 	
@@ -161,11 +164,11 @@ public class Menu {
 		setMenuType( MenuType.MAP_MENU );
 		
 		// add buttons
-        addButton( new Button( Button.ButtonType.NORMAL ,  Data.getEntrySheet( Data.getIntegerID("AWDR")) ) );
-        addButton( new Button( Button.ButtonType.NORMAL ,  Data.getEntrySheet( Data.getIntegerID("AWDS")) ) );
-        addButton( new Button( Button.ButtonType.NORMAL ,  Data.getEntrySheet( Data.getIntegerID("GRID")) ) );
-        addButton( new Button( Button.ButtonType.NORMAL ,  Data.getEntrySheet( Data.getIntegerID("OPTIONS")) ) );
-		addButton( new Button( Button.ButtonType.NORMAL ,  Data.getEntrySheet( Data.getIntegerID("ENDTURN")) ) );
+        addButton( new Button( Button.ButtonType.NORMAL ,  Data.getEntrySheet( "AWDR")) ) ;
+        addButton( new Button( Button.ButtonType.NORMAL ,  Data.getEntrySheet( "AWDS")) ) ;
+        addButton( new Button( Button.ButtonType.NORMAL ,  Data.getEntrySheet( "GRID")) ) ;
+        addButton( new Button( Button.ButtonType.NORMAL ,  Data.getEntrySheet( "OPTIONS")) ) ;
+		addButton( new Button( Button.ButtonType.NORMAL ,  Data.getEntrySheet( "ENDTURN")) ) ;
 		
 		// complete menu
 		completeList();
@@ -194,7 +197,7 @@ public class Menu {
 		Range.clear();
 		Range.generateTargets( tile, unit, sh);
 		for( Tile target : Range.getTargets() ){
-			addButton( new TargetButton( Button.ButtonType.TARGET_BUTTON , target.getUnit() , sh ) );
+			addButton( new TargetButton( Button.ButtonType.NORMAL , target.getUnit() , sh ) );
 		}
 		
 		// complete menu
@@ -216,7 +219,7 @@ public class Menu {
 				
 			// if on the tile is a transport unit which can load this unit
 			if( tile.getUnit().sheet().canLoad( unit.sheet() ) ){
-				if( tile.getUnit().canLoadUnit(unit) ) addButton( new Button( Button.ButtonType.NORMAL , Data.getEntrySheet( Data.getIntegerID("LOAD")) ));
+				if( tile.getUnit().canLoadUnit(unit) ) addButton( new Button( Button.ButtonType.NORMAL , Data.getEntrySheet( "LOAD")) );
 			}
 			else{
 				Logger.write("This situation isn't correct!", Logger.Level.ERROR );
@@ -225,20 +228,30 @@ public class Menu {
 		else{
 
 			// if there is a target for the unit
-			if( Range.hasUnitTargets(tile, unit) ) addButton( new Button( Button.ButtonType.NORMAL , Data.getEntrySheet( Data.getIntegerID("ATTACK")) ));
+			if( Range.hasUnitTargets(tile, unit) ) addButton( new Button( Button.ButtonType.SUBMENU_BUTTON , Data.getEntrySheet( "ATTACK")) );
+			
+			// if the unit has loads
+			if( unit.hasLoads() ){
+				for( Unit load : unit.getLoadedUnits() ){
+					if( load.sheet().canUnitUnloaded(tile, unit) ){
+						addButton( new Button( Button.ButtonType.SUBMENU_BUTTON , Data.getEntrySheet(  "UNLOAD" )));
+						break;
+					}
+				}
+			}
 			
 			// if you can capture a building
 			if( tile.sheet().isCapturable() && unit.sheet().getCaptureValue() > 0  &&
-				tile.getOwner() != unit.getOwner() ) addButton( new Button( Button.ButtonType.NORMAL , Data.getEntrySheet( Data.getIntegerID("CAPTURE")) ) );
+				tile.getOwner() != unit.getOwner() ) addButton( new Button( Button.ButtonType.NORMAL , Data.getEntrySheet( "CAPTURE") ) );
 			
 			// if you can hide yourself
 			if( unit.sheet().canHide() ){
-				if( unit.isHidden() ) addButton( new Button( Button.ButtonType.NORMAL , Data.getEntrySheet( Data.getIntegerID("HIDE")) ) );
-				else addButton( new Button( Button.ButtonType.NORMAL , Data.getEntrySheet( Data.getIntegerID("UNHIDE")) ) );
+				if( unit.isHidden() ) addButton( new Button( Button.ButtonType.NORMAL , Data.getEntrySheet( "HIDE") ) );
+				else addButton( new Button( Button.ButtonType.NORMAL , Data.getEntrySheet( "UNHIDE") ) );
 			}
 			
 			// every unit can perform a wait
-			addButton( new Button( Button.ButtonType.NORMAL , Data.getEntrySheet( Data.getIntegerID("WAIT")) ) );
+			addButton( new Button( Button.ButtonType.NORMAL , Data.getEntrySheet( "WAIT") ) );
 			
 		}
 		
@@ -260,6 +273,42 @@ public class Menu {
 		}
 		
 		// complete menu
+		completeList();
+	}
+	
+	public static void createUnloadUnitsMenu( Tile tile , Unit apc , Unit notInAPC ){
+		
+		// clear old
+		clearList();
+		if( Menu.getType() != MenuType.UNLOAD_TARGETS_MENU ) setMenuType( MenuType.UNLOAD_UNITS_MENU );
+		else setMenuType( MenuType.UNLOAD_UNITS_MENU2 );
+		
+		// add place only if the unit can unloaded onto 
+		// the place
+		for( Unit load : apc.getLoadedUnits() ){
+			if( load != notInAPC && apc.sheet().canUnitUnloaded(tile,apc) ) addButton( new UnloadUnitButton( ButtonType.SUBMENU_BUTTON , load.sheet() , load ));
+		}
+		
+		// every unit can perform a wait
+		addButton( new Button( Button.ButtonType.NORMAL , Data.getEntrySheet( "WAIT") ) );
+		
+		// complete
+		completeList();
+	}
+	
+	public static void createUnloadTargetMenu( Unit apc , Unit unit , Tile target ){
+		
+		// clear old
+		clearList();
+		if( Menu.getType() == MenuType.UNLOAD_UNITS_MENU ) setMenuType( MenuType.UNLOAD_TARGETS_MENU );
+		else setMenuType( MenuType.UNLOAD_TARGETS_MENU2 );
+		
+		// it's not possible that no unload place exist!
+		for( Tile place : unit.sheet().getUnloadPlaces(target,apc) ){
+			addButton( new UnloadUnitTargetButton( ButtonType.NORMAL , place.sheet() , unit , place));
+		}
+		
+		// complete
 		completeList();
 	}
 	

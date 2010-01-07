@@ -181,7 +181,17 @@ public class Unit {
 	public boolean canLoadUnit( Unit unit ){
 		
 		if( loads.contains(unit) ) return false;
-		if( unit.sheet.getWeight() > getLeftLoadSpace() ) return false;
+		int weight = unit.sheet.getWeight();
+		
+		// IF THE UNIT HAS LAODS, THE WEIGHT INCREASES BY THE LOAD OF THE WEIGHT
+		if( unit.getLoads() > 0 ){
+			for( Unit load : unit.getLoadedUnits() ){
+				weight += load.sheet().getWeight();
+			}
+		}
+		
+		// IF MORE WEIGHT THAN SPACE LEFT, RETURN FALSE
+		if( weight > getLeftLoadSpace() ) return false;
 		return true;
 	}
 	
@@ -242,7 +252,7 @@ public class Unit {
 	public String toString(){
 		
 		String s;
-		s = "UNIT HEALTH:"+getHealth()+" EXP:"+getExperience()+" MORALE:"+getMorale();
+		s = "UNIT TYP:"+sheet.getID()+" HEALTH:"+getHealth()+" EXP:"+getExperience()+" MORALE:"+getMorale();
 		return s;
 	}
 

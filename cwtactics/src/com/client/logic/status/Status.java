@@ -1,6 +1,7 @@
 package com.client.logic.status;
 
 import com.client.menu.GUI.MapDraw;
+import com.system.log.Logger;
 
 /**
  * 
@@ -101,7 +102,7 @@ public class Status {
 	 * Update logic for a given status.
 	 */
 	public static void update(int timePassed , MapDraw map ){
-		
+
 		// do update method
 		status.getObject().update(timePassed , map );
 	}

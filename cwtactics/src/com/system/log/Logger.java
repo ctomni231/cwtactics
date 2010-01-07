@@ -21,10 +21,16 @@ public class Logger {
 	 * *****************
 	 */
 
+	/**
+	 * Is the Logger object on?
+	 */
 	public static boolean isOn(){
 		return isOn;
 	}
 	
+	/**
+	 * Set the 
+	 */
 	private static void setOn( boolean value ){
 		isOn = value;
 	}
@@ -65,9 +71,6 @@ public class Logger {
 	 */
 	public static void write( String message , Level level ){
 		
-		// return if logger is off
-		if( !Logger.isOn() ) return; 
-			
 		// don't search trace information if you write a normal message
 		if( level == Level.NORMAL ) writeMessage(message, level);
 		else writeCriticalMessage(message, level);

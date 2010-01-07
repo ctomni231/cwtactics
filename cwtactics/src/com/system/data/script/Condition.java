@@ -2,6 +2,9 @@ package com.system.data.script;
 
 import java.util.ArrayList;
 
+import com.system.data.Data;
+import com.system.data.sheets.Sheet;
+
 public class Condition {
 
 	/*
@@ -78,11 +81,22 @@ public class Condition {
 			
 			cond = s.split(" ");
 
-			conditions.add( new SingleCondition(
-				ScriptLogic.getCondition( cond[0]),
-				ScriptLogic.getRelation( cond[1]),
-				ScriptLogic.getValue( cond[2]) ) 
-			);
+			Sheet sh = Data.getSheet( cond[2]);
+
+			if( sh == null ){
+				conditions.add( new SingleCondition(
+					ScriptLogic.getRelation( cond[0]),
+					ScriptLogic.getRelation( cond[1]),
+					ScriptLogic.getActionValue( cond[2]) ) 
+				);
+			}
+			else{
+				conditions.add( new SingleCondition_Sheet(
+					ScriptLogic.getRelation( cond[0]),
+					ScriptLogic.getRelation( cond[1]),
+					sh ) 
+				);
+			}
 		}
 	}
 

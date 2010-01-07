@@ -12,7 +12,7 @@ public class Button{
 	 */
 	
 	public enum ButtonType{
-		NORMAL,TARGET_BUTTON,UNLOAD_TARGET_BUTTON,UNLOAD_UNIT_BUTTON
+		NORMAL,SUBMENU_BUTTON
 	}
 	
 	
