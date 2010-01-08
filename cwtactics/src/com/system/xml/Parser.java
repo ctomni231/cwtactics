@@ -9,22 +9,26 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
+/**
+ * Simple XML parser class.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Parser extends DefaultHandler {
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
 	private ArrayList<String> header;
 
+	
+	
 	/*
-	 *
 	 * CONSTRUCTORS
 	 * ************
-	 * 
 	 */
 	
 	public Parser( String file ){
@@ -51,10 +55,8 @@ public class Parser extends DefaultHandler {
     
     
 	/*
-	 *
-	 * ACCESSING METHODS
-	 * *****************
-	 * 
+	 * ACCESS METHODS
+	 * **************
 	 */
     
 	/**
@@ -94,15 +96,8 @@ public class Parser extends DefaultHandler {
     
     
 	/*
-	 *
 	 * WORK METHODS
 	 * ************
-	 * 
-	 * This methods are extended from master class
-	 * and not necessary for subclasses.
-	 * Only the entry method is for subclasses, to
-	 * process the XML content.
-	 * 
 	 */
     
     @Override
@@ -127,26 +122,11 @@ public class Parser extends DefaultHandler {
     @Override
     public void characters (char[] ch, int start, int length) {}
     
-    // simple method for child classes.
+    // SIMPLE METHOD FOR CHILDREN CLASSES.
     public void entry( Attributes attributes ){}
     
-    // simple method for child classes.
+    // SIMPLE METHOD FOR CHILDREN CLASSES.
     public void entryEnd(){}
-
-	/*
-	 *
-	 * INTERNAL METHODS
-	 * ****************
-	 * 
-	 */
-	
-	/*
-	 *
-	 * OUTPUT METHODS
-	 * **************
-	 * 
-	 */
-	
 
 }
 

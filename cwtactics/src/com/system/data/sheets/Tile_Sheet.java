@@ -5,13 +5,15 @@ import java.util.ArrayList;
 import com.client.model.object.Player;
 import com.system.data.Data;
 
+/**
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Tile_Sheet extends ObjectSheet{
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
 	private static final int repairExtra = 50;		// halves the repair price
@@ -22,10 +24,8 @@ public class Tile_Sheet extends ObjectSheet{
 	
 	
 	/*
-	 *
 	 * CONSTRUCTORS
-	 * ************
-	 * 
+	 * ************ 
 	 */
 	
 	public Tile_Sheet(){
@@ -41,10 +41,8 @@ public class Tile_Sheet extends ObjectSheet{
 	
 
 	/*
-	 *
-	 * ACCESSING METHODS
-	 * *****************
-	 * 
+	 * ACCESS METHODS
+	 * **************
 	 */
 
 	/**

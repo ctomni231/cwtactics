@@ -2,24 +2,27 @@ package com.client.model.object;
 
 import java.util.ArrayList;
 
+/**
+ * Holds a team with players, which 
+ * are members of this team.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Team {
 
 	/*
-	 * 
 	 * VARIABLES 
 	 * *********
-	 * 
 	 */
 	
 	private ArrayList<Player> players;
 
 	
 	
-	/*
-	 * 
+	/* 
 	 * CONSTRUCTORS 
-	 * ************
-	 * 
+	 * ************ 
 	 */
 
 	public Team() {
@@ -30,10 +33,8 @@ public class Team {
 	
 	
 	/*
-	 * 
 	 * ACCESSING METHODS 
-	 * *****************
-	 * 
+	 * ***************** 
 	 */
 	
 	public void addMember( Player player ){
@@ -51,10 +52,8 @@ public class Team {
 	
 	
 	/*
-	 * 
 	 * WORK METHODS 
 	 * ************
-	 * 
 	 */
 
 	public boolean isInTeam(Player player) {
@@ -66,5 +65,19 @@ public class Team {
 		if( players.size() == 0 ) return false;
 		else return true;
 	}
+	
+	
+	
+	/*
+	 * OUTPUT METHODS
+	 * **************
+	 */
 
+	public String toString(){
+		String s = "Team has "+players.size()+" members : ";
+		for( Player p : players ){
+			s += p.getName()+";";
+		}
+		return s;
+	}
 }

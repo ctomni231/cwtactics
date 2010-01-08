@@ -2,28 +2,28 @@ package com.system.data.script;
 
 import java.util.ArrayList;
 
-import com.client.model.Fight;
-import com.system.data.Data;
-import com.system.log.Logger;
-import com.system.log.Logger.Level;
-
+/**
+ * Script class, contains conditions and
+ * actions.
+ *  
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Script {
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 
 	private ArrayList<Condition> mainConditions;
 	private ArrayList<CaseCondition> cases;
 	
+	
+	
 	/*
-	 *
 	 * CONSTRUCTORS
-	 * ************
-	 * 
+	 * ************ 
 	 */
 	
 	public Script(){
@@ -31,11 +31,11 @@ public class Script {
 		cases		= new ArrayList<CaseCondition>();
 	}
 
+	
+	
 	/*
-	 *
 	 * ACCESSING METHODS
-	 * *****************
-	 * 
+	 * ***************** 
 	 */
 	
 	/**
@@ -57,10 +57,8 @@ public class Script {
 	
 	
 	/*
-	 *
 	 * WORK METHODS
-	 * ************
-	 * 
+	 * ************ 
 	 */
 
 	/**
@@ -90,28 +88,6 @@ public class Script {
 				caseAction.doAction();
 				return;
 			}
-		}
-	}
-	
-	
-
-	/*
-	 *
-	 * OUTPUT METHODS
-	 * **************
-	 * 
-	 */
-	
-	/**
-	 * Prints out script content onto console.
-	 */
-	public void print(){
-		System.out.println("============SCRIPT=========");
-		for( Condition cond : mainConditions ){
-			cond.print();
-		}
-		for( CaseCondition cond : cases ){
-			cond.print();
 		}
 	}
 

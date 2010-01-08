@@ -7,14 +7,17 @@ import com.client.model.object.Game;
 import com.client.model.object.Map;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
+import com.system.log.Logger;
 
+/**
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Unit_Sheed extends ObjectSheet {
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
 	private HashMap<Sheet, Integer> fuelResupplyCost;
@@ -39,10 +42,8 @@ public class Unit_Sheed extends ObjectSheet {
 	
 	
 	/*
-	 *
 	 * CONSTRUCTORS
-	 * ************
-	 * 
+	 * ************ 
 	 */
 	
 	public Unit_Sheed(){
@@ -65,10 +66,8 @@ public class Unit_Sheed extends ObjectSheet {
 	
 
 	/*
-	 *
-	 * ACCESSING METHODS
-	 * *****************
-	 * 
+	 * ACCESS METHODS
+	 * **************
 	 */
 	
 	/**
@@ -188,7 +187,7 @@ public class Unit_Sheed extends ObjectSheet {
 	 * Returns the weapon by a given ID
 	 */
 	public Weapon_Sheed getWeapon( int ID ){
-		if( ID < 0 || ID >= weapons.size() ){ System.err.println( "Unit "+super.getName()+" has not a weapon with ID "+ID); return null; }
+		if( ID < 0 || ID >= weapons.size() ){ Logger.warn("Unit "+super.getName()+" has not a weapon with ID "+ID); return null; }
 		return weapons.get(ID);
 	}
 
@@ -203,7 +202,7 @@ public class Unit_Sheed extends ObjectSheet {
 	 * Adds a type of an unit that the transport unit can load
 	 */
 	public void addLoadType( Unit_Sheed sh ){
-		if( sh == null || loads.indexOf(sh) != -1 ){ System.err.println("Cannot add sheet for "+super.getName()+" loads, because sheed is null or allready in loads"); return; }
+		if( sh == null || loads.indexOf(sh) != -1 ){ Logger.warn("Cannot add sheet for "+super.getName()+" loads, because sheed is null or allready in loads"); return; }
 		else loads.add(sh);
 	}
 
@@ -222,6 +221,9 @@ public class Unit_Sheed extends ObjectSheet {
 		else return true;
 	}
 	
+	/**
+	 * Returns a list of tiles where the unit can unloaded.
+	 */
 	public ArrayList<Tile> getUnloadPlaces( Tile tile , Unit apc ){
 		
 		ArrayList<Tile> list = new ArrayList<Tile>();
@@ -240,7 +242,10 @@ public class Unit_Sheed extends ObjectSheet {
 		
 		return list;
 	}
-	
+
+	/**
+	 * Can an transport unit unload on a given tile.
+	 */
 	public boolean canUnitUnloaded( Tile tile , Unit apc ){
 		
 		// IF THE TRANSPORT CAN ONLY UNLOAD ON SPECIAL TILES
@@ -251,6 +256,10 @@ public class Unit_Sheed extends ObjectSheet {
 		else return false;
 	}
 	
+	/**
+	 * Add a unload only on condition
+	 * to the list.
+	 */
 	public void addUnloadTile( Tile_Sheet sh ){
 		unloadPlaces.add(sh);
 	}
@@ -258,13 +267,10 @@ public class Unit_Sheed extends ObjectSheet {
 	
 	
 	/*
-	 * 
 	 * COST METHODS
 	 * ************
-	 * 
 	 */
 	
-
 	/**
 	 * Sets the cost of re-supply one unit
 	 * ammo
@@ -304,24 +310,39 @@ public class Unit_Sheed extends ObjectSheet {
 		if( resID == null || !fuelResupplyCost.containsKey(resID) ){ System.err.println("Ressource "+resID+" doesn'T exist in the database"); return -1; }
 		else return fuelResupplyCost.get(resID);
 	}
-	
+
+	/**
+	 * Returns the level of the unit.
+	 */
 	public int getLevel(){
 		return unitLevel;
 	}
-	
+
+	/**
+	 * Sets the level of the unit.
+	 */
 	public void setLevel( int level ){
 		unitLevel = level;
 	}
-	
+
+	/**
+	 * Can this unit hide itself?
+	 */
 	public boolean canHide(){
 		return canHide;
 	}
-	
+
+	/**
+	 * Sets the stealth ability.
+	 */
 	public void setCanHide( int value ){
 		if( value == 1 ) setCanHide(true);
 		else setCanHide(false);
 	}
-	
+
+	/**
+	 * Sets the stealth ability.
+	 */
 	public void setCanHide( boolean value ){
 		canHide = value;
 	}

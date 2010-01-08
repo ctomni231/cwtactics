@@ -14,7 +14,6 @@ import com.client.model.object.Map;
 import com.client.model.object.Tile;
 import com.client.tools.ImgLibrary;
 import com.system.log.Logger;
-import com.system.log.Logger.Level;
 import java.util.ArrayList;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -407,10 +406,7 @@ public class MapDraw extends MovingPix{
     }
 
     public void startMoveAnimation(){
-        if(Move.getUnit() == null){
-            Logger.write("Unit Missing", Level.NORMAL);
-            return;
-        }
+        if(Move.getUnit() == null){ Logger.warn("Unit is missing!"); return; }
         moveActive = true;
         moveNext = 0;
         unitcurx = Move.getStartTile().getPosX();

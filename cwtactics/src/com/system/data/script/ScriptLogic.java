@@ -2,8 +2,13 @@ package com.system.data.script;
 
 import com.system.data.Data;
 import com.system.log.Logger;
-import com.system.log.Logger.Level;
 
+/**
+ * Script logic class.
+ *  
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class ScriptLogic {
 
 	/*
@@ -119,10 +124,13 @@ public class ScriptLogic {
 		}
 
 		// IF YOU ARRIVE THIS POINT, THROW WARNING MESSAGE
-		Logger.write( "Scripengine :: Got unknown script keyword ==> "+text , Level.WARN );
+		Logger.warn( "Scripengine :: Got unknown script keyword ==> "+text );
 		return null;
 	}
     
+    /**
+     * Returns the trigger for a given String.
+     */
     public static Trigger getTrigger( String text ){
 
 		// CHECK EVERY COMMAND
@@ -131,7 +139,7 @@ public class ScriptLogic {
 		}
 			 
 		// IF YOU ARRIVE THIS POINT, THROW WARNING MESSAGE
-		Logger.write( "Scripengine :: Got unknown trigger keyword ==> "+text , Level.WARN );
+		Logger.warn( "Scripengine :: Got unknown trigger keyword ==> "+text);
 		return null;
 	}
 

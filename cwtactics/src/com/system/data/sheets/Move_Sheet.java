@@ -2,33 +2,35 @@ package com.system.data.sheets;
 
 import java.util.HashMap;
 
+/**
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Move_Sheet extends Sheet{
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
 	private HashMap< Tile_Sheet , Integer > moveTable;
 
+	
+	
 	/*
-	 *
 	 * CONSTRUCTORS
 	 * ************
-	 * 
 	 */
 	
 	public Move_Sheet(){
 		moveTable = new HashMap<Tile_Sheet, Integer>();
 	}
 
+	
+	
 	/*
-	 *
-	 * ACCESSING METHODS
-	 * *****************
-	 * 
+	 * ACCESS METHODS
+	 * **************
 	 */
 
 	/**

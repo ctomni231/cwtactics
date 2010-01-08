@@ -7,14 +7,15 @@ import com.system.data.Data;
 
 /**
  * Master class for unit and tile sheets
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
  */
 public class ObjectSheet extends Sheet {
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 
 	private int vision;
@@ -27,10 +28,8 @@ public class ObjectSheet extends Sheet {
 	
 
 	/*
-	 *
 	 * CONSTRUCTORS
-	 * ************
-	 * 
+	 * ************ 
 	 */
 	
 	public ObjectSheet(){
@@ -49,10 +48,8 @@ public class ObjectSheet extends Sheet {
 	
 
 	/*
-	 *
-	 * ACCESSING METHODS
-	 * *****************
-	 * 
+	 * ACCESS METHODS
+	 * **************
 	 */
 
 	/**
@@ -180,10 +177,8 @@ public class ObjectSheet extends Sheet {
 	
 	
 	/*
-	 * 
 	 * COST METHODS
 	 * ************
-	 * 
 	 */
 
 	/**
@@ -206,6 +201,9 @@ public class ObjectSheet extends Sheet {
 		else return cost.get(resID);
 	}
 	
+	/**
+	 * Returns the cost table.
+	 */
 	public int[] getCostTable(){
 		int[] costTable = new int[ Data.getRessourceTable().size() ];
 		for( Sheet i : cost.keySet() ){

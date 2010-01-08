@@ -6,15 +6,42 @@ import com.client.model.object.Player;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
 
+/**
+ * Command that tries to repair units,
+ * only if their owner have enough
+ * resources.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class TryRepair implements Command {
 
+	/*
+	 * VARIABLES
+	 * *********
+	 */
+	
 	private Tile tile;
 	private int amount;
+	
+	
+	
+	/*
+	 * CONSTRUCTORS
+	 * ************
+	 */
 	
 	public TryRepair( Tile tile , int amount ){
 		this.tile = tile;
 		this.amount = amount;
 	}
+	
+	
+	
+	/*
+	 * WORK METHODS
+	 * ************
+	 */
 	
 	public void doCommand() {
 		

@@ -1,27 +1,17 @@
 package com.client;
 
+import java.util.logging.Level;
+
 import com.client.logic.command.MessageServer;
 import com.client.logic.status.Status;
-import com.client.model.Fight;
-import com.client.model.Fog;
-import com.client.model.Instance;
-import com.client.model.Turn;
-import com.client.model.Weather;
-import com.client.model.object.Game;
-import com.client.model.object.Map;
-import com.client.model.object.Player;
-import com.client.model.object.Team;
-import com.client.model.object.Tile;
-import com.client.model.object.Unit;
+import com.client.model.*;
+import com.client.model.object.*;
 
 import com.client.state.InGameState;
 import com.client.state.MainMenuState;
 import com.client.state.SlickGame;
 import com.system.ID;
 import com.system.data.Data;
-import com.system.data.script.ScriptFactory;
-import com.system.data.script.ScriptLogic;
-
 
 import com.system.log.Logger;
 import com.system.reader.LanguageReader;
@@ -33,8 +23,10 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
- * This handles displaying the game on the screen
+ * This handles displaying the game on the screen.
+ * 
  * @author Crecen
+ * @version 8.1.2010
  */
 public class MainGame {
 	
@@ -48,17 +40,17 @@ public class MainGame {
 
     public static void main(String args[]){
     	
-    	// setup logger
-    	Logger.setMode( Logger.Mode.CONSOLE );
+    	// SET UP LOGGER, STOP IF YOU GET CRITICAL MESSAGE
     	Logger.setOn();
+    	Logger.stopOnLevel( Level.SEVERE );
     	
-    	// setup logic
+    	// SETUP LOGIC
     	setupLogic();
 
-    	// start a test game
+    	// CREATE TEST GAME
     	initializeTestGame();
     	
-    	// start graphic engine
+    	// START GRAPHIC ENGINE
     	setupGraphicEngine();
     	
     }
@@ -164,7 +156,13 @@ public class MainGame {
     				}
     				
     			}
-    			else map.setTile( new Tile( Data.getTileSheet( "PLAIN" ), i, j, 0, null), i, j);
+    			else{
+    				Tile ttt = new Tile( Data.getTileSheet( "PLAIN" ), i, j, 0, null) ;
+    				map.setTile( ttt, i, j);
+    				//Unit b = new Unit(Data.getUnitSheet("INFANTRY"),p);
+    				//ttt.setUnit(b);
+    				//p.addUnit(b);
+    			}
     		}
     	}
     	
@@ -182,7 +180,6 @@ public class MainGame {
         Fog.noFog(false);
         Status.setStatus( Status.Mode.WAIT );
         Turn.startTurn( Game.getNextPlayer() );
-
     	Fight.battle(a, ua, ua.sheet().getWeapon(0) , b , ub);
     }
 

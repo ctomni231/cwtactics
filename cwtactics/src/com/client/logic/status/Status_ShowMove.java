@@ -7,39 +7,35 @@ import com.client.model.Move;
 import com.client.model.object.Game;
 import com.client.model.object.Tile;
 
+/**
+ * Move class.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Status_ShowMove implements Status_Interface {
 
 	public void update(int timePassed, MapDraw map) {
 		
-		// variables
+		// VARIABLES
     	int x = map.getCursorX();
     	int y = map.getCursorY();
     	Tile tile = Game.getMap().getTile(x, y);
-    	
-    	// check variables
     	if( tile == null ) return;
     	
-    	// add the tile under the cursor to the move way
+    	// ADD THE CURRENT TILE TO WAY
 		Move.toMoveWay(tile);
 		
 		if( Controls.isActionClicked() ){
 			
+			// IF NOT A CORRECT TARGET FOR MOVE, RETURN
 			if( Move.getTiles().get(tile) == null || !Move.getTiles().get(tile).isMoveable() ) return;
 			
-			// complete move way
 			Move.completeWay();
-			
-			// create unit menu
 			Menu.createUnitMenu( Move.getUnit() , Move.getTargetTile() );
-			
-			// set menu status
 			Status.setStatus( Status.Mode.MENU );
 		}
-		else if (  Controls.isCancelClicked() ){
-			
-			// cancel moving and set wait mode
-			Status.setStatus( Status.Mode.WAIT );
-		}
+		else if(Controls.isCancelClicked()) Status.setStatus( Status.Mode.WAIT );
 	}
 }
 

@@ -1,26 +1,26 @@
 package com.client.model;
 
 import com.client.logic.command.MessageServer;
-import com.client.logic.command.commands.ingame.BattleDamage;
-import com.client.logic.command.commands.ingame.DecreaseAmmo;
+import com.client.logic.command.commands.ingame.UnitAttack;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
 import com.system.data.script.ScriptFactory;
 import com.system.data.script.Trigger_Object;
 import com.system.data.script.ScriptLogic;
 import com.system.data.sheets.Weapon_Sheed;
+import com.system.log.Logger;
 
 /**
+ * Controls a battle between two units.
  * 
- * @author Tapsi [BcMk]
+ * @author tapsi
+ * @version 8.1.2010, #1
  */
 public class Fight {
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
 	private static Weapon_Sheed attackWeapon;
@@ -38,10 +38,16 @@ public class Fight {
 	 * *****************
 	 */
 	
+	/**
+	 * Returns the attacking unit.
+	 */
 	public static Unit getAttacker(){
 		return attacker;
 	}
 	
+	/**
+	 * Returns the defending unit.
+	 */
 	public static Unit getDefender(){
 		return defender;
 	}
@@ -58,7 +64,7 @@ public class Fight {
 	 */
 	public static void battle( Tile attackerTile , Unit attacker , Weapon_Sheed attackerWeapon , Tile defenderTile , Unit defender ){
 		
-		// prepare battle
+		// VARIABLES
 		Fight.attackerTile = attackerTile;
 		Fight.defenderTile = defenderTile;
 		Fight.attacker = attacker;
@@ -66,22 +72,25 @@ public class Fight {
 		Fight.attackWeapon = attackerWeapon;
 		Fight.defenderWeapon = getConterWeapon();
 
-		// check effects attacker
+		// CHECK EFFECTS, ATTACKER
 		penalty = 0;
 		attackerEffects();
-		int attack = penalty;
+		int attack = penalty * attacker.getHealth() / 100;
 		
-		// check effects defender
+		// EXCHANGE ATTACKER AND DEFENDER
+		Fight.attackerTile = defenderTile;
+		Fight.defenderTile = attackerTile;
+		Fight.attacker = defender;
+		Fight.defender = attacker;
+		
+		// CHECK EFFECTS, DEFENDER
 		penalty = 0;
 		defenderEffects();
-		int counter = penalty;
+		int counter = penalty * defender.getHealth() / 100;
 
-		// send command
-		if( attack <= 0 ) attack = 0;
-		if( counter <= 0 ) counter = 0;
-		MessageServer.send( new BattleDamage( attackerTile, defenderTile ,attack ,counter ) );
-		MessageServer.send( new DecreaseAmmo(attacker, attackWeapon) );
-		if( defenderWeapon != null ) MessageServer.send( new DecreaseAmmo(defender, defenderWeapon) );
+		// SEND COMMANDS
+		MessageServer.send( new UnitAttack( attacker, defender ,attack , attackerWeapon ) );
+		if( defenderWeapon != null ) MessageServer.send( new UnitAttack( defender, attacker ,counter , defenderWeapon ) );
 	}
 	
 	/**
@@ -90,10 +99,10 @@ public class Fight {
 	 */
 	private static void defenderEffects(){
 		
-		Trigger_Object.triggerCall( defenderTile , attackerTile , defender , attacker );
+		Trigger_Object.triggerCall( defenderTile , defender );
 		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_ATTACK);
 		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_COUNTERATTACK);
-		Trigger_Object.triggerCall( attackerTile , defenderTile , attacker , defender );
+		Trigger_Object.triggerCall( attackerTile , attacker );
 		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_DEFEND);
 	}
 	
@@ -103,9 +112,9 @@ public class Fight {
 	 */
 	private static void attackerEffects(){
 		
-		Trigger_Object.triggerCall( attackerTile , defenderTile , attacker , defender );
+		Trigger_Object.triggerCall( attackerTile , attacker );
 		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_ATTACK);
-		Trigger_Object.triggerCall( defenderTile , attackerTile , defender , attacker );
+		Trigger_Object.triggerCall( defenderTile , defender );
 		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_DEFEND);
 	}
 
@@ -117,7 +126,7 @@ public class Fight {
 		
 		// check status of fight, return if no fight exist
 		if( !checkStatus() ){
-			System.err.println("No fight exist, but logic wants to get a conter weapon for a fight.");
+			Logger.warn("No fight exist, but logic wants to get a conter weapon for a fight.");
 			return null;
 		}
 		

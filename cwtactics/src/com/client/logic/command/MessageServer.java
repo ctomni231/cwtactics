@@ -2,21 +2,21 @@ package com.client.logic.command;
 
 import com.system.ID;
 import com.system.ID.MessageMode;
+import com.system.log.Logger;
 
 /**
  * Controls incoming commands and send it in 
  * many possible ways like network, local...
  * to the command list.
  * 
- * @author Tapsi [BcMk]
+ * @author tapsi
+ * @version 8.1.2010, #2
  */
 public class MessageServer {
 
 	/*
-	 * 
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
 	// communication mode of commands
@@ -25,9 +25,8 @@ public class MessageServer {
 	
 	
 	/*
-	 * ACCESSING METHODS
-	 * *****************
-	 * 
+	 * ACCESS METHODS
+	 * **************
 	 */
 	
 	/**
@@ -40,10 +39,8 @@ public class MessageServer {
 	
 	
 	/*
-	 * 
 	 * WORK METHODS
 	 * ************
-	 * 
 	 */
 	
 	/**
@@ -51,12 +48,17 @@ public class MessageServer {
 	 */
 	private static void send( Command command , boolean atFirstPos , ID.MessageMode mode ){
 		switch( mode ){
+		
 			case LOCAL :
 				addCommand(command, atFirstPos);
 				break;
+				
 			case IRC_NETWORK :
-				System.err.println("NETWORK MODE NOT IMPLEMENTED YET...");
+				Logger.warn("Network mode isn't implemented yet!");
 				break;
+				
+			default :
+				Logger.warn("Unknown communication mode! ==> "+mode.toString() );
 		}
 	}
 	

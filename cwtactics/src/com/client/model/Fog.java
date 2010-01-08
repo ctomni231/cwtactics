@@ -12,33 +12,32 @@ import com.system.data.sheets.ObjectSheet;
 import com.system.data.sheets.Tile_Sheet;
 import com.system.data.sheets.Unit_Sheed;
 
-//import core.Misc_Data;
-
+/**
+ * Controls the fog system of the game round.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #2
+ */
 public class Fog {
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
 	private static ArrayList<Tile> visibleTiles;
 	private static ArrayList<Unit> visibleStealths;
 	private static boolean noFog;
-	private static int additionalSight;
+	private static int sightValue;
 	
 
 	
 	/*
-	 *
 	 * CONSTRUCTORS
-	 * ************
-	 * 
+	 * ************ 
 	 */
 
 	static{
-		
 		visibleStealths = new ArrayList<Unit>();
 		visibleTiles = new ArrayList<Tile>();
 		noFog = true;
@@ -47,10 +46,8 @@ public class Fog {
 	
 	
 	/*
-	 *
-	 * ACCESSING METHODS
-	 * *****************
-	 * 
+	 * ACCESS METHODS
+	 * ************** 
 	 */
 	
 	/**
@@ -72,32 +69,30 @@ public class Fog {
 	 * Is a hidden unit visible ?
 	 */
 	public static boolean isVisible( Unit unit ){
-		
-		// if the unit is in visible array, then the stealth
-		// unit is detected by an other enemy unit.
-		if( visibleStealths.contains(unit) ) return true;
-		else return true;
+		return ( visibleStealths.contains(unit) ) ? true : false;
 	}
 	
 	/**
 	 * Is a field in fog ?
 	 */
 	public static boolean inFog( Tile tile ){
-		
-		// if no fog exist, a tile is all time visible
-		if( noFog ) return false;
-		
-		// if the tile is in visible array, return true
-		if( visibleTiles.contains(tile) ) return false;
-		else return true;
+		// IF NOFOG, A TILE IS ALLTIME VISIBLE
+		return ( visibleTiles.contains(tile) || noFog ) ? true : false;
 	}
 	
-	public static void changeSightAddon( int value ){
-		additionalSight += value;
+	/**
+	 * Changes the sight value by a given 
+	 * value.
+	 */
+	public static void changeSight( int value ){
+		sightValue += value;
 	}
 	
-	public static void setSightAddon( int value ){
-		additionalSight = value;
+	/**
+	 * Sets the sight value to a given value.
+	 */
+	public static void setSight( int value ){
+		sightValue = value;
 	}
 	
 
@@ -131,10 +126,10 @@ public class Fog {
     		// check property vision
     		for( Tile tile : pl.getProperties() ){
     			
-    			clearSightAddon();
-    			additionalSight = tile.sheet().getVision();
+    			clearSight();
+    			sightValue = tile.sheet().getVision();
     			Trigger_Object.triggerCall(tile, null);
-    			if( additionalSight < 0 ) additionalSight = 0;
+    			if( sightValue < 0 ) sightValue = 0;
     			ScriptFactory.checkAll( ScriptLogic.Trigger.VISION_TILE );
     			vision(tile, tile.sheet()); 
     		}
@@ -147,12 +142,12 @@ public class Fog {
     			// unit is a load of an another unit
     			if( tile == null ) continue;
     			
-    			clearSightAddon();
-    			additionalSight = unit.sheet().getVision();
+    			clearSight();
+    			sightValue = unit.sheet().getVision();
     			Trigger_Object.triggerCall( tile , null);
     			ScriptFactory.checkAll( ScriptLogic.Trigger.VISION_UNIT );
     			// PREVENT WRONG VALUES, UNIT CAN SEE AT MIN. WITH RANGE 1
-    			if( additionalSight <= 0 ) additionalSight = 1;
+    			if( sightValue <= 0 ) sightValue = 1;
     			vision( tile , unit.sheet() );
     		}
     	}
@@ -162,10 +157,8 @@ public class Fog {
 	
 	
 	/*
-	 *
 	 * INTERNAL METHODS
 	 * ****************
-	 * 
 	 */
 	
 	/**
@@ -174,7 +167,7 @@ public class Fog {
 	private static void vision( Tile tile , ObjectSheet sh ){
 		
 		// variables
-		int range = additionalSight;
+		int range = sightValue;
 		
 		// check that range has more equals the minimum ranges of tiles and units !
 		if( sh instanceof Tile_Sheet && range < 0 ) range = 0;
@@ -272,30 +265,11 @@ public class Fog {
 		return Math.abs( start.getPosX() - target.getPosX() ) + Math.abs( start.getPosY() - target.getPosY() );
 	}
 	
-	private static void clearSightAddon(){
-		additionalSight = 0;
-	}
-	
-	
-	
-	/*
-	 * 
-	 * OUTPUT METHODS
-	 * **************
-	 * 
+	/**
+	 * Clears the sight value.
 	 */
-	
-	public static void printStatus(){
-		
-		System.out.println("YOU CAN SEE :");
-		for( Tile tile : visibleTiles ){
-			System.out.print( tile+" ; ");
-		}
-		System.out.println("");
-		System.out.println("YOU CAN SEE STEALTHS :");
-		for( Unit unit : visibleStealths ){
-			System.out.print( unit+" ; ");
-		}
+	private static void clearSight(){
+		sightValue = 0;
 	}
 }
 

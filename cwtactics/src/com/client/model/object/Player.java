@@ -3,13 +3,17 @@ package com.client.model.object;
 import java.util.ArrayList;
 import com.system.data.Data;
 
+/**
+ * Holds a player of a game round.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Player {
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
 	private String name;
@@ -21,10 +25,8 @@ public class Player {
 	
 
 	/*
-	 *
 	 * CONSTRUCTORS
-	 * ************
-	 * 
+	 * ************ 
 	 */
 	
 	public Player( String name , Team team ){
@@ -42,10 +44,8 @@ public class Player {
 	
 
 	/*
-	 *
-	 * ACCESSING METHODS
-	 * *****************
-	 * 
+	 * ACCESS METHODS
+	 * ************** 
 	 */
 
 	public String getName() {
@@ -109,28 +109,5 @@ public class Player {
 		else return false;
 	}
 	
-	
-	
-	/*
-	 *
-	 * WORK METHODS
-	 * ************
-	 * 
-	 */
-
-	/*
-	 *
-	 * INTERNAL METHODS
-	 * ****************
-	 * 
-	 */
-
-	/*
-	 *
-	 * OUTPUT METHODS
-	 * **************
-	 * 
-	 */
-
 }
 

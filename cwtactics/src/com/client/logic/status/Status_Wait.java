@@ -11,19 +11,23 @@ import com.client.model.object.Game;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
 
+/**
+ * Wait status class.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Status_Wait implements Status_Interface {
 
 	public void update(int timePassed , MapDraw map ) {
 		
-		// variables
+		// VARIABLES
     	int x = map.getCursorX();
     	int y = map.getCursorY();
     	Tile tile = Game.getMap().getTile(x, y);
-		
-    	// check variables
     	if( tile == null ) return;
-    	
     	Unit unit = tile.getUnit();
+    	Status.Mode mode = Status.getStatus();
     	
     	
     	// ACTION BUTTON
@@ -31,57 +35,40 @@ public class Status_Wait implements Status_Interface {
     	if( Controls.isActionClicked() ){
     		
     		// UNIT MOVE
-    		if( unit != null && !Fog.inFog(tile) ){
-    			if( unit.canAct() && unit.getOwner() == Turn.getPlayer() ){
-    				
-    				// make move tiles
-    				Move.initialize(tile, unit);
-    				Move.move();
-    				
-    				Move.printMoveTiles();
-    				
-    				// set move mode
-    				Status.setStatus( Status.Mode.SHOW_MOVE );
-    			}
+    		if( unit != null && !Fog.inFog(tile) &&  unit.canAct() && unit.getOwner() == Turn.getPlayer() ){
+    			Move.initialize(tile, unit);
+    			Move.move();
+    			mode = Status.Mode.SHOW_MOVE;
     		}
     		// FACTORY
     		else if( tile.sheet().canBuild() && !Fog.inFog(tile) && tile.getOwner() == Turn.getPlayer() ){
-    			
     			Menu.createBuildMenu(tile);
-    			
-    			// set menu status
-    			Status.setStatus( Status.Mode.MENU );
+    			mode = Status.Mode.MENU;
     		}
     		// MAP MENU
-    		else{	
-    			
-    			// make map menu
+    		else{
 				Menu.createMapMenu();
-				
-    			// set menu status
-    			Status.setStatus( Status.Mode.MENU );
+				mode = Status.Mode.MENU;
     		}
     	}
+    	
     	// CANCEL BUTTON
     	//
     	else if( Controls.isCancelDown() ){
     		
+    		// SHOW RANGE OF AN UNIT
     		if( unit != null && !Fog.inFog(tile) ){
     			
-    			// is it a hidden unit ?
+    			// IF HIDDEN AND NOT VISIBLE, RETURN
     			if( unit.isHidden() && !Fog.isVisible(unit) ) return;
     			
-    			// setup tiles
     			Range.getCompleteAttackRange(tile, unit);
-    			
-    			System.out.println( Range.getList() );
-    			
-    			// set show range status
-    			Status.setStatus( Status.Mode.SHOW_RANGE );
+    			mode = Status.Mode.SHOW_RANGE;
     		}
     	}
     	
+    	// SET STATUS
+    	Status.setStatus( mode );
 	}
-	
 }
 

@@ -7,6 +7,12 @@ import com.client.model.object.Tile;
 import com.client.model.object.Unit;
 import com.system.data.sheets.Unit_Sheed;
 
+/**
+ * Command to build a unit by a given property.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class BuildUnit implements Command {
 	
 	/*
@@ -50,11 +56,7 @@ public class BuildUnit implements Command {
 		// update graphic engine
 		map.updateMapItem( property.getPosX() , property.getPosY() );
 	}
-	
-	/*
-	 * INTERNAL METHODS
-	 * ****************
-	 */
+
 
 }
 

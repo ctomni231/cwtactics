@@ -4,13 +4,17 @@ import java.util.ArrayList;
 
 import com.system.data.sheets.Unit_Sheed;
 
+/**
+ * Holds an unit.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Unit {
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 
 	private int		health;
@@ -28,10 +32,8 @@ public class Unit {
 	
 	
 	/*
-	 *
 	 * CONSTRUCTORS
-	 * ************
-	 * 
+	 * ************ 
 	 */
 
 	public Unit( Unit_Sheed type , Player owner ){
@@ -52,11 +54,11 @@ public class Unit {
 		loads.trimToSize();
 	}
 
+	
+	
 	/*
-	 *
-	 * ACCESSING METHODS
-	 * *****************
-	 * 
+	 * ACCESS METHODS
+	 * ************** 
 	 */
 	
 	public int getHealth() {
@@ -231,29 +233,13 @@ public class Unit {
 	
 
 	/*
-	 *
-	 * WORK METHODS
-	 * ************
-	 * 
-	 */
-
-	/*
-	 *
 	 * OUTPUT METHODS
 	 * **************
-	 * 
 	 */
-
-	public void printStatus(){
-		System.out.println( toString() );
-	}
 	
     @Override
 	public String toString(){
-		
-		String s;
-		s = "UNIT TYP:"+sheet.getID()+" HEALTH:"+getHealth()+" EXP:"+getExperience()+" MORALE:"+getMorale();
-		return s;
+		return "UNIT TYP:"+sheet.getID()+" HEALTH:"+getHealth()+" EXP:"+getExperience()+" MORALE:"+getMorale();
 	}
 
 }

@@ -2,8 +2,14 @@ package com.client.model;
 
 import java.util.ArrayList;
 import com.client.model.object.Player;
-import com.system.log.Logger;
 
+/**
+ * Holds all players that are controlled
+ * by this client. 
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Instance {
 
 	// player in focus for this instance ( needed by fog system )

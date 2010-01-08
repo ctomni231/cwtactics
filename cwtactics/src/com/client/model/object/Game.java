@@ -2,15 +2,11 @@ package com.client.model.object;
 
 import java.util.ArrayList;
 
-import com.system.data.Data;
-
 public class Game {
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
 	private static Map map;
@@ -21,10 +17,8 @@ public class Game {
 	
 
 	/*
-	 *
 	 * CONSTRUCTORS
-	 * ************
-	 * 
+	 * ************ 
 	 */
 	
 	static{
@@ -35,11 +29,11 @@ public class Game {
 		teams.trimToSize();
 	}
 
+	
+	
 	/*
-	 *
-	 * ACCESSING METHODS
-	 * *****************
-	 * 
+	 * ACCESS METHODS
+	 * ************** 
 	 */
 
 	public static Map getMap() {
@@ -97,12 +91,15 @@ public class Game {
 	
 	
 	/*
-	 *
 	 * WORK METHODS
 	 * ************
-	 * 
 	 */
 
+	/**
+	 * Clears all information from
+	 * a game round and sets it back to 
+	 * vanilla status.
+	 */
 	public static void clearGame(){
 		
 		players.clear();
@@ -115,6 +112,9 @@ public class Game {
 		teams.trimToSize();
 	}
 
+	/**
+	 * Returns the master player.
+	 */
 	public static Player getMaster(){
 		
 		// return first alive player, he is all time the master
@@ -126,6 +126,10 @@ public class Game {
 		return null;
 	}
 	
+	/**
+	 * Returns the next player of the
+	 * player list.
+	 */
 	public static Player getNextPlayer(){
 		
 		// check game status
@@ -140,6 +144,9 @@ public class Game {
 		return findNextPlayer();
 	}
 	
+	/**
+	 * Are 2 or more teams alive ?
+	 */
 	public static boolean hasEnoughTeams(){
 		
 		int count = 0;
@@ -156,6 +163,9 @@ public class Game {
 		return false;
 	}
 	
+	/**
+	 * Finds and returns the next correct player. 
+	 */
 	private static Player findNextPlayer(){
 		
 		// variables
@@ -167,36 +177,5 @@ public class Game {
 		if( !player.isAlive() ) return getNextPlayer();
 		else return player;
 	}
-	
-	public static boolean checkPlayerStatus( Player player ){
-		
-		//TODO implement checkMode, complete all logic!
-		
-		// has headquarters ?
-		boolean hq = false;
-		for( Tile tile : player.getProperties() ){
-			if( tile.sheet().hasTag( Data.getIntegerTagID("HQ") ) ) hq = true; 
-		}
-		if( !hq ) return false;
-
-		return true;
-	}
-	
-
-	
-	/*
-	 *
-	 * INTERNAL METHODS
-	 * ****************
-	 * 
-	 */
-
-	/*
-	 *
-	 * OUTPUT METHODS
-	 * **************
-	 * 
-	 */
-
 }
 

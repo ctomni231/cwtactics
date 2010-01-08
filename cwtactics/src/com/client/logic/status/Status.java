@@ -4,21 +4,18 @@ import com.client.menu.GUI.MapDraw;
 import com.system.log.Logger;
 
 /**
- * 
  * Class Status holds the current status of the GameRound
  * logic
  * 
- * @author Tapsi
- * @version r1
+ * @author tapsi
+ * @version 8.1.2010, #1
  *
  */
 public class Status {
 
 	/*
-	 * 
 	 * ENUMERATIONS
 	 * ************
-	 * 
 	 */
 	
 	// the different states
@@ -47,31 +44,21 @@ public class Status {
 	
 	
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
 	private static Mode status;
 
+	
+	
 	/*
-	 *
-	 * CONSTRUCTORS
-	 * ************
-	 * 
-	 */
-
-	/*
-	 *
-	 * ACCESSING METHODS
-	 * *****************
-	 * 
+	 * ACCESS METHODS
+	 * ************** 
 	 */
 	
 	/**
-	 * returns the current status
-	 * 
+	 * Returns the current status.
 	 */
 	public static Mode getStatus(){
 		return status;
@@ -82,20 +69,20 @@ public class Status {
 	 */
 	public static void setStatus( Mode status ){
 		
-		// check status
+		// CHECK STATUS
 		if( status == null || status.getObject() == null ){
-			System.err.println("STATUS IS NOT CORRECT!");
+			Logger.warn("The given status is not correct!");
 			return;
 		}
 		
 		Status.status = status;
 	}
 
+	
+	
 	/*
-	 *
 	 * WORK METHODS
 	 * ************
-	 * 
 	 */
 
 	/**

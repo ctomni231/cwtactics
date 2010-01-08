@@ -9,7 +9,6 @@ import com.client.state.mini.ExitMiniScr;
 import com.client.state.mini.GameMenuScr;
 import com.client.tools.TextImgLibrary;
 import com.system.log.Logger;
-import com.system.log.Logger.Level;
 import com.system.reader.MenuReader;
 
 import org.newdawn.slick.GameContainer;

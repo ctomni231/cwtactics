@@ -8,121 +8,163 @@ import com.system.data.script.ScriptFactory;
 import com.system.data.script.Trigger_Object;
 import com.system.data.script.ScriptLogic;
 
+/**
+ * Class turn controls the internal 
+ * turn based logic.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Turn {
 
 	/*
-	 *
 	 * VARIABLES
-	 * *********
-	 * 
+	 * ********* 
 	 */
 	
 	private static Player turnPlayer;
 	private static int dayCounter;
-	private static int turns;
 
-	
-	static{
-		turns = 0;
-	}
 	
 	
 	/*
-	 *
 	 * ACCESSING METHODS
 	 * *****************
-	 * 
 	 */
-	
+
+	/**
+	 * Sets the current player.
+	 */
 	public static void setPlayer( Player turnPlayer ) {
 		Turn.turnPlayer = turnPlayer;
 	}
-	
+
+	/**
+	 * Returns the current player.
+	 */
 	public static Player getPlayer() {
 		return turnPlayer;
 	}
 	
-	public static void setDay(int dayCounter) {
-		Turn.dayCounter = dayCounter;
-	}
-	
+	/**
+	 * Returns the current day. 
+	 */
 	public static int getDay() {
 		return dayCounter;
 	}
-	
+
+	/**
+	 * Increases the turn counter.
+	 */
 	public static void increaseTurnCounter(){
-		turns++;
+		dayCounter++;
 	}
 	
 	
 
 	/*
-	 *
 	 * WORK METHODS
 	 * ************
-	 * 
 	 */
-	
+
+	/**
+	 * Starts the turn for the player.
+	 */
 	public static void startTurn( Player newPlayer ){
 		
-		// set next player, and set the player of current instance if it's an instance
-		// of this client
+		// SET CURRENT PLAYER AND UPDATE CLIENT INSTANCE
+		// IF POSSIBLE
 		setPlayer( newPlayer );
 		if( Instance.instanceOfClient(newPlayer) ) Instance.setCurPlayer(newPlayer);
 				
-		// reset fog
-		Fog.processFog();
-	}
-	
-	public static void nextTurn(){
-		
-		// Variables
-		Player oldPlayer = getPlayer();
-		Player newPlayer = Game.getNextPlayer();
-		
-		// prepare turn
-		prepareRound(oldPlayer, newPlayer);
-		
-		// decrease left weather days, if the master player is in this client, then change weather
-		// and send data over network to the other clients.
+		// ONLY MASTER ( SERVER ) PLAYER CHANGES WEATHER AND INCREASES
+		// TURN COUNTERS
 		if( newPlayer == Game.getMaster() ){
 			increaseTurnCounter();
 			Weather.decreaseLeftDays();
 			if( Instance.instanceOfClient(newPlayer) && Weather.getLeftDays() == 0 ) Weather.changeWeather();
 		}
 		
-		// start turn now
+		// CHECK EFFECTS
+		checkStartTurnEffects(newPlayer);
+		
+		// RESET FOG
+		Fog.processFog();
+	}
+
+	/**
+	 * End turn for old player.
+	 */
+	public static void endTurn( Player oldPlayer ){
+		checkEndTurnEffects(oldPlayer);
+	}
+
+	/**
+	 * Starts next turn.
+	 */
+	public static void nextTurn(){
+		
+		// VARIABLES
+		Player oldPlayer = getPlayer();
+		Player newPlayer = Game.getNextPlayer();
+		
+		// END OLD TURN AND START NEW TURN
+		endTurn(oldPlayer);
 		startTurn(newPlayer);
 	} 
 	
-	private static void prepareRound( Player oldPl , Player newPl ){
+	/**
+	 * Checks all effects for the turn end of the 
+	 * player of the ending turn.
+	 */
+	private static void checkEndTurnEffects( Player oldPl ){
 		
-		// end setup all units from old player
+		// CHECK EFFECTS FOR EVERY UNIT OF PLAYER
 		for( Unit unit : oldPl.getUnits() ){
-			Trigger_Object.triggerCall( unit , null );
+			Trigger_Object.triggerCall( null , unit );
 			ScriptFactory.checkAll( ScriptLogic.Trigger.TURN_END_UNITS );
 			unit.canAct(true);
 		}
 		
-		// end setup all properties from old player 
+		// CHECK EFFECTS FOR EVERY PROPERTY OF PLAYER
 		for( Tile property : oldPl.getProperties() ){
 			Trigger_Object.triggerCall( property , null );
-			ScriptFactory.checkAll( ScriptLogic.Trigger.TURN_START_TILES );	
+			ScriptFactory.checkAll( ScriptLogic.Trigger.TURN_END_TILES );	
 		}
 		
-		// setup all units from new player
+	}
+	
+	/**
+	 * Checks all effects for the turn start of the 
+	 * next player.
+	 */
+	private static void checkStartTurnEffects( Player newPl ){
+		
+		// CHECK EFFECTS FOR EVERY UNIT OF PLAYER
 		for( Unit unit : newPl.getUnits() ){
-			Trigger_Object.triggerCall( unit , null );
+			Trigger_Object.triggerCall( null , unit );
 			ScriptFactory.checkAll( ScriptLogic.Trigger.TURN_START_UNITS );
 		}
 		
-		// get funds and repairs for new player
+		// CHECK EFFECTS FOR EVERY PROPERTY OF PLAYER
 		for( Tile property : newPl.getProperties() ){
 			Trigger_Object.triggerCall( property , null );
 			ScriptFactory.checkAll( ScriptLogic.Trigger.TURN_START_TILES );	
 		}
 	}
 	
-
+	
+	
+	/*
+	 * OUTPUT METHODS
+	 * ************** 
+	 */
+	
+	/**
+	 * Returns status of Turn class.
+	 */
+	public static String getStatus(){
+		return "TURN :: It's day number "+getDay()+" and "+getPlayer().getName()+" has it's turn.";
+	}
 }
 

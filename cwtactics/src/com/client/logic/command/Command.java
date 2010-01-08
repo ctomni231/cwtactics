@@ -3,13 +3,15 @@ package com.client.logic.command;
 /**
  * Command interface for logic commands.
  * 
- * @author Tapsi [BcMk]
+ * @author tapsi
+ * @version 8.1.2010, #1
  */
 public interface Command{
     	
-	// every command do an individual action,
-    // all information about the command saves the command
-    // itself.
+	/**
+	 * Calls all actions for this
+	 * command object.
+	 */
     void doCommand();
   
 }

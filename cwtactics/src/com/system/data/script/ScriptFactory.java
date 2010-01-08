@@ -4,14 +4,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import com.system.data.script.ScriptLogic.Trigger;
 
-
+/**
+ * Factory class of scripts, holds
+ * all scripts and handles script events. 
+ *  
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class ScriptFactory {
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
 	private static HashMap< Trigger , ArrayList<Script> > scripts;
@@ -20,10 +24,8 @@ public class ScriptFactory {
 	
 	
 	/*
-	 *
 	 * CONSTRUCTORS
 	 * ************
-	 * 
 	 */
 	
 	static{
@@ -33,10 +35,8 @@ public class ScriptFactory {
 	
 
 	/*
-	 *
-	 * ACCESSING METHODS
-	 * *****************
-	 * 
+	 * ACCESS METHODS
+	 * **************
 	 */
 	
 	/**
@@ -70,11 +70,10 @@ public class ScriptFactory {
 	}
 	
 
+	
 	/*
-	 *
 	 * WORK METHODS
-	 * ************
-	 * 
+	 * ************ 
 	 */
 	
 	/**

@@ -9,27 +9,29 @@ import com.client.model.Fight;
 import com.client.model.Fog;
 import com.system.data.script.ScriptLogic.ScriptKey;
 import com.system.log.Logger;
-import com.system.log.Logger.Level;
 
+/**
+ * Action class.
+ *  
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class SingleAction {
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
 	private ScriptKey	action;
 	private ScriptKey	obj;
 	private int value;
 	
+	
 
 	/*
-	 *
 	 * CONSTRUCTORS
 	 * ************
-	 * 
 	 */
 	
 	public SingleAction( ScriptKey obj , ScriptKey action, int value ) {
@@ -39,18 +41,10 @@ public class SingleAction {
 	}
 	
 
-	/*
-	 *
-	 * ACCESSING METHODS
-	 * *****************
-	 * 
-	 */
 
 	/*
-	 *
 	 * WORK METHODS
 	 * ************
-	 * 
 	 */
 	
 	public void doAction(){
@@ -58,24 +52,24 @@ public class SingleAction {
 		switch( action ){
 		
 			case DESTROY :
-				if( Trigger_Object.getUnit1() == null || obj != ScriptKey.UNIT ) break;
-				MessageServer.send( new SetDamage( Trigger_Object.getUnit1() , 100 ));
+				if( Trigger_Object.getUnit() == null || obj != ScriptKey.UNIT ) break;
+				MessageServer.send( new SetDamage( Trigger_Object.getUnit() , 100 ));
 				break;
 				
 			case SUPPLY :
-				if( Trigger_Object.getUnit1() == null || obj != ScriptKey.UNIT ) break;
+				if( Trigger_Object.getUnit() == null || obj != ScriptKey.UNIT ) break;
 				//TODO fix command
 				MessageServer.send( new ResupplyUnit() );
 				break;
 				
 			case HEAL :
-				if( Trigger_Object.getField1() == null || Trigger_Object.getUnit1() == null || obj != ScriptKey.UNIT ) break;
-				MessageServer.send( new TryRepair( Trigger_Object.getField1() , value ));
+				if( Trigger_Object.getTile() == null || Trigger_Object.getUnit() == null || obj != ScriptKey.UNIT ) break;
+				MessageServer.send( new TryRepair( Trigger_Object.getTile() , value ));
 				break;
 				
 			case GIVE_FUNDS :
-				if( Trigger_Object.getField1() == null || obj != ScriptKey.TILE ) break;
-				MessageServer.send( new ChangeResource( Trigger_Object.getField1().sheet().getFundsTable() , Trigger_Object.getField1().getOwner() , true ));
+				if( Trigger_Object.getTile() == null || obj != ScriptKey.TILE ) break;
+				MessageServer.send( new ChangeResource( Trigger_Object.getTile().sheet().getFundsTable() , Trigger_Object.getTile().getOwner() , false ));
 				break;
 				
 				//TODO MOVE MODEL
@@ -95,7 +89,7 @@ public class SingleAction {
 						break;
 						
 					case FOG :
-						Fog.changeSightAddon(value);
+						Fog.changeSight(value);
 						break;
 				}
 				break;
@@ -115,7 +109,7 @@ public class SingleAction {
 						break;
 						
 					case FOG :
-						Fog.changeSightAddon( (int) ( Math.random() * value ) );
+						Fog.changeSight( (int) ( Math.random() * value ) );
 						break;
 				}
 				break;
@@ -135,7 +129,7 @@ public class SingleAction {
 						break;
 						
 					case FOG :
-						Fog.changeSightAddon(-value);
+						Fog.changeSight(-value);
 						break;
 				}
 				break;
@@ -155,7 +149,7 @@ public class SingleAction {
 						break;
 						
 					case FOG :
-						Fog.changeSightAddon( -((int) ( Math.random() * value )) );
+						Fog.changeSight( -((int) ( Math.random() * value )) );
 						break;
 				}
 				break;
@@ -164,7 +158,7 @@ public class SingleAction {
 				switch(obj){
 				
 					case FOG :
-						Fog.setSightAddon(value);
+						Fog.setSight(value);
 						break;
 				}
 				break;
@@ -173,13 +167,13 @@ public class SingleAction {
 				switch(obj){
 				
 					case FOG :
-						Fog.setSightAddon( ((int) Math.random() * value) );
+						Fog.setSight( ((int) Math.random() * value) );
 						break;
 				}
 				break;
 		
 			default:
-				Logger.write("Wrong action ==> "+obj.toString()+" "+action.toString()+" "+value+" is unknown.." , Level.WARN );
+				Logger.warn("Wrong action ==> "+obj.toString()+" "+action.toString()+" "+value+" is unknown.." );
 				break;
 		}
 	}

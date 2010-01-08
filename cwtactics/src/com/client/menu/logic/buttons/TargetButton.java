@@ -5,6 +5,13 @@ import com.client.model.object.Tile;
 import com.client.model.object.Unit;
 import com.system.data.sheets.Weapon_Sheed;
 
+/**
+ * Holds a target tile and unit
+ * for an attack.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class TargetButton extends Button{
 
 	/*
@@ -13,6 +20,7 @@ public class TargetButton extends Button{
 	 */
 
 	private Unit unit;
+	private Tile tile;
 	private Weapon_Sheed sh;
 	
 	
@@ -25,24 +33,34 @@ public class TargetButton extends Button{
 	public TargetButton(ButtonType type, Unit unit, Weapon_Sheed sh ) {
 		super(type, unit.sheet());
 		this.unit = unit;
+		this.tile = Game.getMap().findTile(unit);
 		this.sh = sh;
 	}
 	
 	
 
 	/*
-	 * ACCESSING METHODS
-	 * *****************
+	 * ACCESS METHODS
+	 * **************
 	 */
 	
+	/**
+	 * Returns the tile of the target.
+	 */
 	public Tile getTile(){
-		return Game.getMap().findTile(unit);
+		return tile;
 	}
 	
+	/**
+	 * Returns the target unit.
+	 */
 	public Unit getUnit(){
 		return unit;
 	}
 	
+	/**
+	 * Returns the attack weapon.
+	 */
 	public Weapon_Sheed getWeapon(){
 		return sh;
 	}

@@ -1,12 +1,17 @@
 package com.client.model.object;
 
+/**
+ * Holds a couple of tiles, these tiles
+ * together are a map.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Map {
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 
 	private Tile[][] tiles;
@@ -14,10 +19,8 @@ public class Map {
 	
 	
 	/*
-	 *
 	 * CONSTRUCTORS
-	 * ************
-	 * 
+	 * ************ 
 	 */
 
 	public Map( int sizeX , int sizeY ){
@@ -27,10 +30,8 @@ public class Map {
 	
 	
 	/*
-	 *
-	 * ACCESSING METHODS
-	 * *****************
-	 * 
+	 * ACCESS METHODS
+	 * ************** 
 	 */
 	
 	public Tile[][] getField(){
@@ -72,25 +73,6 @@ public class Map {
 	public int getSizeY(){
 		return tiles[0].length;
 	}
-
-
 	
-	/*
-	 *
-	 * OUTPUT METHODS
-	 * **************
-	 * 
-	 */
-	
-	public void printMap(){
-		
-		System.out.println("Map shape :)");
-		for( int i = 0; i < 10 ; i++ ){
-			for( int j = 0 ; j < 10 ; j++ ){
-				System.out.print( tiles[i][j].sheet().getName() +" || " );
-    		}
-			System.out.println();
-    	}
-	}
 }
 

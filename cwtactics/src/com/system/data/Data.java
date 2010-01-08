@@ -11,8 +11,13 @@ import com.system.data.sheets.Unit_Sheed;
 import com.system.data.sheets.Weapon_Sheed;
 import com.system.data.sheets.Weather_Sheet;
 import com.system.log.Logger;
-import com.system.log.Logger.Level;
 
+/**
+ * Holds all modification data.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Data {
 
 	/*
@@ -86,55 +91,55 @@ public class Data {
 	
 	public static Unit_Sheed getUnitSheet( String ID ){
 		if( existID(ID) ) return (Unit_Sheed) getSheet(ID);
-		Logger.write("UnitSheet '"+ID+"' doesn't exist!", Level.WARN);
+		Logger.warn("UnitSheet '"+ID+"' doesn't exist!");
 		return null;
 	}
 	
 	public static Tile_Sheet getTileSheet( String ID ){
 		if( existID(ID) ) return (Tile_Sheet) getSheet(ID);
-		Logger.write("TileSheet '"+ID+"' doesn't exist!", Level.WARN);
+		Logger.warn("TileSheet '"+ID+"' doesn't exist!");
 		return null;
 	}
 	
 	public static Weather_Sheet getWeatherSheet( String ID ){
 		if( existID(ID) ) return (Weather_Sheet) getSheet(ID);
-		Logger.write("WeatherSheet '"+ID+"' doesn't exist!", Level.WARN);
+		Logger.warn("WeatherSheet '"+ID+"' doesn't exist!");
 		return null;
 	}
 	
 	public static Rank_Sheet getRankSheet( String ID ){
 		if( existID(ID) ) return (Rank_Sheet) getSheet(ID);
-		Logger.write("RankSheet '"+ID+"' doesn't exist!", Level.WARN);
+		Logger.warn("RankSheet '"+ID+"' doesn't exist!");
 		return null;
 	}
 	
 	public static Sheet getRessourceSheet( String ID ){
 		if( existID(ID) ) return (Sheet) getSheet(ID);
-		Logger.write("ResourceSheet '"+ID+"' doesn't exist!", Level.WARN);
+		Logger.warn("ResourceSheet '"+ID+"' doesn't exist!");
 		return null;
 	}
 	
 	public static Move_Sheet getMoveSheet( String ID ){
 		if( existID(ID) ) return (Move_Sheet) getSheet(ID);
-		Logger.write("MoveSheet '"+ID+"' doesn't exist!", Level.WARN);
+		Logger.warn("MoveSheet '"+ID+"' doesn't exist!");
 		return null;
 	}
 
 	public static Sheet getEntrySheet( String ID ){
 		if( existID(ID) ) return (Sheet) getSheet(ID);
-		Logger.write("EntrySheet '"+ID+"' doesn't exist!", Level.WARN);
+		Logger.warn("EntrySheet '"+ID+"' doesn't exist!");
 		return null;
 	}
 	
 	public static Sheet getAmorSheet( String ID ){
 		if( existID(ID) ) return (Sheet) getSheet(ID);
-		Logger.write("AmorSheet '"+ID+"' doesn't exist!", Level.WARN);
+		Logger.warn("AmorSheet '"+ID+"' doesn't exist!");
 		return null;
 	}
 	
 	public static Weapon_Sheed getWeaponSheet( String ID ){
 		if( existID(ID) ) return (Weapon_Sheed) getSheet(ID);
-		Logger.write("WeaponSheet '"+ID+"' doesn't exist!", Level.WARN);
+		Logger.warn("WeaponSheet '"+ID+"' doesn't exist!");
 		return null;
 	}
 	
@@ -146,11 +151,6 @@ public class Data {
 		return weatherTable;
 	}
 	
-	/*
-	public static ArrayList<Tile_Sheet> getTileTable(){
-		return tileTable;
-	}*/
-
 	
 	
 	/*

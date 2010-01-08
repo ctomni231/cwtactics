@@ -1,12 +1,14 @@
 package com.system.data.sheets;
 
+/**
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Weather_Sheet extends Sheet {
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
 	private int chance;
@@ -14,10 +16,8 @@ public class Weather_Sheet extends Sheet {
 	
 
 	/*
-	 *
 	 * CONSTRUCTORS
 	 * ************
-	 * 
 	 */
 	
 	public Weather_Sheet(){
@@ -27,10 +27,8 @@ public class Weather_Sheet extends Sheet {
 	
 	
 	/*
-	 *
 	 * ACCESSING METHODS
 	 * *****************
-	 * 
 	 */
 
 	/**

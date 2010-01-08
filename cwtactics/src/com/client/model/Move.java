@@ -12,13 +12,17 @@ import com.system.data.script.ScriptFactory;
 import com.system.data.script.Trigger_Object;
 import com.system.data.script.ScriptLogic;
 
+/**
+ * Controls all unit moving actions.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Move {
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 
 	private static HashMap<Tile,MoveObject> moveTiles = new HashMap<Tile, MoveObject>();
@@ -35,10 +39,8 @@ public class Move {
 	
 	
 	/*
-	 *
 	 * ACCESSING METHODS
-	 * *****************
-	 * 
+	 * ***************** 
 	 */
 	
 	/**
@@ -158,7 +160,7 @@ public class Move {
 		clear();
 	
 		// check trigger
-		Trigger_Object.triggerCall(start, null, unit , null );
+		Trigger_Object.triggerCall( start, unit );
 		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_WILL_MOVE);
 	}
 	
@@ -531,49 +533,17 @@ public class Move {
         return found;
     }
 	
+	/**
+	 * Checks the effects for move costs.
+	 */
 	private static void checkMoveCost( Tile tile ){
 		
 		// get original move cost
 		moveCost = unit.sheet().getMoveType().getMoveCost( tile.sheet() );
 		
 		// check up scripts
-		Trigger_Object.triggerCall( tile, start );
+		Trigger_Object.triggerCall( tile, null );
 		ScriptFactory.checkAll( ScriptLogic.Trigger.MOVE_ONTO);
-	}
-	
-	
-	
-	/*
-	 * 
-	 * OUTPUT METHODS
-	 * **************
-	 * 
-	 */
-
-	/**
-	 * Prints out the move map as picture on console.
-	 */
-	public static void printMoveTiles(){
-		System.out.println("Move Tiles :");
-		for( int i = 0; i < Game.getMap().getSizeY() ; i++ ){
-			for( int j = 0 ; j < Game.getMap().getSizeX() ; j++ ){
-				if( moveTiles.containsKey( Game.getMap().getTile(j, i) ) && moveTiles.get( Game.getMap().getTile(j, i) ).isMoveable() ) System.out.print("X || ");
-				else System.out.print("  || ");
-    		}
-			System.out.println();
-    	}
-		System.out.println();
-	}
-
-	/**
-	 * Prints out the move way.
-	 */
-	public static void printMoveWay(){
-		System.out.println("Move Way :");
-		for( Tile tile : moveWay ){
-			System.out.print(tile+" || ");
-		}
-		System.out.println();
 	}
 	
 	//TODO complete scripts check...

@@ -2,15 +2,23 @@ package com.client.menu.logic.buttons;
 
 import com.system.data.sheets.Sheet;
 
+/**
+ * Class Button holds information
+ * for a button instance in the menu.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Button{
 
 	/*
-	 *
 	 * ENUMERATIONS
 	 * ************
-	 * 
 	 */
 	
+	/**
+	 * Button types.
+	 */
 	public enum ButtonType{
 		NORMAL,SUBMENU_BUTTON
 	}
@@ -18,10 +26,8 @@ public class Button{
 	
 	
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
 	private ButtonType type;
@@ -30,10 +36,8 @@ public class Button{
 	
 	
 	/*
-	 *
 	 * CONSTRUCTORS
-	 * ************
-	 * 
+	 * ************ 
 	 */
 	
 	public Button(ButtonType type, Sheet sheet ) {
@@ -44,10 +48,8 @@ public class Button{
 	
 	
 	/*
-	 *
-	 * ACCESSING METHODS
-	 * *****************
-	 * 
+	 * ACCESS METHODS
+	 * **************
 	 */
 
 	/**
@@ -64,6 +66,4 @@ public class Button{
 	public Sheet getSheet(){
 		return sheet;
 	}
-
-
 }

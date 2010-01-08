@@ -4,10 +4,11 @@ import java.util.ArrayList;
 
 /**
  * CommandList holds all logic commands and
- * gives a multi-thread save access to the 
+ * gives a thread save access to the 
  * command list.
  * 
- * @author Tapsi [BcMk]
+ * @author tapsi
+ * @version 8.1.2010, #1
  */
 public class CommandList {
 

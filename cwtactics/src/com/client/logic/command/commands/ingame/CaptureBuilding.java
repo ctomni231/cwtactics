@@ -4,6 +4,13 @@ import com.client.logic.command.Command;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
 
+/**
+ * Command to try to capture a property
+ * by a given unit.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class CaptureBuilding implements Command {
 
 	/*

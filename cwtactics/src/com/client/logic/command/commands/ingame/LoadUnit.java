@@ -3,6 +3,14 @@ package com.client.logic.command.commands.ingame;
 import com.client.logic.command.Command;
 import com.client.model.object.Unit;
 
+/**
+ * Command to load an unit into
+ * another unit or to unload an 
+ * unit from another unit.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class LoadUnit implements Command {
 
 	/*

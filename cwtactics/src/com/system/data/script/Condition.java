@@ -5,13 +5,18 @@ import java.util.ArrayList;
 import com.system.data.Data;
 import com.system.data.sheets.Sheet;
 
+/**
+ * Condition class, holds single 
+ * conditions. 
+ *  
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Condition {
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
 	private ArrayList< SingleCondition > conditions;
@@ -19,10 +24,8 @@ public class Condition {
 	
 	
 	/*
-	 *
 	 * CONSTRUCTORS
 	 * ************
-	 * 
 	 */
 	
 	public Condition( String condition_text ){
@@ -39,10 +42,8 @@ public class Condition {
 	
 	
 	/*
-	 *
 	 * WORK METHODS
 	 * ************
-	 * 
 	 */
 	
 	/**
@@ -59,10 +60,8 @@ public class Condition {
 	
 
 	/*
-	 *
 	 * INTERNAL METHODS
 	 * ****************
-	 * 
 	 */
 	
 	/**
@@ -97,25 +96,6 @@ public class Condition {
 					sh ) 
 				);
 			}
-		}
-	}
-
-	
-	
-	/*
-	 *
-	 * OUTPUT METHODS
-	 * **************
-	 * 
-	 */
-
-	/**
-	 * Print out content of this condition onto console.
-	 */
-	public void print(){
-		System.out.println("__CONDITION__");
-		for( SingleCondition cond : conditions ){
-			System.out.println("    "+cond);
 		}
 	}
 }

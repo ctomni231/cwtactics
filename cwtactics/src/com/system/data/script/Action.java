@@ -3,20 +3,17 @@ package com.system.data.script;
 import java.util.ArrayList;
 
 /**
- * 
  * Actions holds various single actions 
  * which are connected with AND.
- * 
- * @author Tapsi [BcMk]
- *
+ *  
+ * @author tapsi
+ * @version 8.1.2010, #1
  */
 public class Action {
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
 	private ArrayList< SingleAction > actions;
@@ -24,10 +21,8 @@ public class Action {
 	
 	
 	/*
-	 *
 	 * CONSTRUCTORS
-	 * ************
-	 * 
+	 * ************ 
 	 */
 	
 	public Action( String text ){
@@ -45,10 +40,8 @@ public class Action {
 
 
 	/*
-	 *
 	 * WORK METHODS
 	 * ************
-	 * 
 	 */
 	
 	/**
@@ -63,10 +56,8 @@ public class Action {
 	
 	
 	/*
-	 *
 	 * INTERNAL METHODS
-	 * ****************
-	 * 
+	 * **************** 
 	 */
 	
 	/**
@@ -95,25 +86,5 @@ public class Action {
 		}
 	}
 
-	
-	
-	/*
-	 *
-	 * OUTPUT METHODS
-	 * **************
-	 * 
-	 */
-	
-	/**
-	 * Print content of action object onto console.
-	 */
-	public void print(){
-		System.out.println("__ACTION__");
-		for( SingleAction act : actions ){
-			System.out.println("    "+act);
-		}
-	}
-	
-	
 }
 

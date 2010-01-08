@@ -1,12 +1,14 @@
 package com.system.data.sheets;
 
+/**
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Rank_Sheet extends Sheet {
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
 	private int exp;
@@ -14,10 +16,8 @@ public class Rank_Sheet extends Sheet {
 
 	
 	/*
-	 *
 	 * ACCESSING METHODS
-	 * *****************
-	 * 
+	 * ***************** 
 	 */
 
 	/**

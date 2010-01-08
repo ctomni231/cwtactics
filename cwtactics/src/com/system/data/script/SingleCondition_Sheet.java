@@ -1,15 +1,23 @@
 package com.system.data.script;
 
 import com.client.model.Fight;
-import com.client.model.Turn;
 import com.client.model.Weather;
-import com.client.model.object.Game;
-import com.system.data.Data;
 import com.system.data.script.ScriptLogic.ScriptKey;
 import com.system.data.sheets.Sheet;
 
+/**
+ * Condition class.
+ *  
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class SingleCondition_Sheet extends SingleCondition {
 
+	/*
+	 * VARIABLES
+	 * *********
+	 */
+	
 	private Sheet value;
 	private static final int IS			= 1;
 	private static final int IS_NOT		= 2;
@@ -17,10 +25,23 @@ public class SingleCondition_Sheet extends SingleCondition {
 	private static final int LOWER		= 4;
 	
 	
+	
+	/*
+	 * CONSTRUCTORS
+	 * ************
+	 */
+	
 	public SingleCondition_Sheet(ScriptKey condition, ScriptKey relationship, Sheet value) {
 		super(condition,relationship,-1);
 		this.value 			= value;
 	}
+	
+	
+	
+	/*
+	 * WORK METHODS
+	 * ************
+	 */
 	
 	public boolean checkCondition(){
 		
@@ -41,26 +62,26 @@ public class SingleCondition_Sheet extends SingleCondition {
 				break;
 				
 			case TYPE_OF_UNIT :
-				if( Trigger_Object.getUnit1() == null ) break;
-				if( Trigger_Object.getUnit1().sheet() == value ) result = IS;
+				if( Trigger_Object.getUnit() == null ) break;
+				if( Trigger_Object.getUnit().sheet() == value ) result = IS;
 				else result = IS_NOT;
 				break;
 				
 			case TYPE_OF_TILE :
-				if( Trigger_Object.getField1() == null ) break;
-				if( Trigger_Object.getField1().sheet() == value ) result = IS;
+				if( Trigger_Object.getTile() == null ) break;
+				if( Trigger_Object.getTile().sheet() == value ) result = IS;
 				else result = IS_NOT;
 				break;
 				
 			case TYPE_OF_DEFENDER_TILE :
-				if( !Fight.checkStatus() &&  Trigger_Object.getField2() == null ) break;
-				if( Trigger_Object.getField2().sheet() == value ) result = IS;
+				if( !Fight.checkStatus() && Fight.getDefender() == null ) break;
+				if( Fight.getDefender().sheet() == value ) result = IS;
 				else result = IS_NOT;
 				break;
 				
 			case TYPE_OF_DEFENDER_UNIT :
-				if( !Fight.checkStatus() &&  Trigger_Object.getUnit2() == null ) break;
-				if( Trigger_Object.getUnit2().sheet() == value ) result = IS;
+				if( !Fight.checkStatus() && Fight.getDefender() == null ) break;
+				if( Fight.getDefender().sheet() == value ) result = IS;
 				else result = IS_NOT;
 				break;
 		}

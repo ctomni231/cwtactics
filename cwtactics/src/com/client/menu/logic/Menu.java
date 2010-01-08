@@ -2,6 +2,7 @@ package com.client.menu.logic;
 
 import java.util.ArrayList;
 
+import com.client.menu.logic.buttons.BuildButton;
 import com.client.menu.logic.buttons.Button;
 import com.client.menu.logic.buttons.TargetButton;
 import com.client.menu.logic.buttons.UnloadUnitButton;
@@ -15,43 +16,55 @@ import com.system.data.sheets.Unit_Sheed;
 import com.system.data.sheets.Weapon_Sheed;
 import com.system.log.Logger;
 
+/**
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Menu {
 
 	/*
-	 *
 	 * ENUMERATIONS
 	 * ************
-	 * 
 	 */
 	
 	public enum MenuType{
-		MAP_MENU,OPTIONS_MENU,SAVE_MENU,GAME_MENU,								// MAP MENUS
-		BUILD_MENU,																// PROPERTY MENUS
-		UNIT_ROOTMENU,UNIT_ATTACKMENU,UNIT_WEAPON_ATTACKMENU,
-		UNLOAD_TARGETS_MENU,UNLOAD_UNITS_MENU,UNLOAD_TARGETS_MENU2,UNLOAD_UNITS_MENU2 // UNIT MENUS
+		
+		// MAP MENU
+		MAP_MENU,
+		OPTIONS_MENU,
+		SAVE_MENU,
+		GAME_MENU,								
+		
+		// PROPERTY MENU
+		PROPERTY_MENU,																		
+		
+		// UNIT MENUS
+		UNIT_ROOTMENU,
+		UNIT_ATTACKMENU,
+		UNIT_WEAPON_ATTACKMENU, 
+		UNLOAD_TARGETS_MENU,
+		UNLOAD_UNITS_MENU,
+		UNLOAD_TARGETS_MENU2,
+		UNLOAD_UNITS_MENU2 	
 	}
 	
 	
 	
 	/*
-	 *
 	 * VARIABLES
-	 * *********
-	 * 
+	 * ********* 
 	 */
 	
 	private static ArrayList<Button> buttons;
 	private static int pointer;
-	private static Tile tile; // from which tile is the menu called from ?
 	private static MenuType menuType;
 	
 	
 
 	/*
-	 *
 	 * CONSTRUCTORS
 	 * ************
-	 * 
 	 */
 	
 	static{
@@ -61,10 +74,8 @@ public class Menu {
 
 	
 	/*
-	 *
-	 * ACCESSING METHODS
-	 * *****************
-	 * 
+	 * ACCESS METHODS
+	 * **************
 	 */
 
 	/**
@@ -127,20 +138,18 @@ public class Menu {
 		pointer = value;
 	}
 	
+	/**
+	 * Returns the menu type.
+	 */
 	public static MenuType getType(){
 		return menuType;
 	}
 	
+	/**
+	 * Sets the menu type.
+	 */
 	public static void setMenuType( MenuType menuType ){
 		Menu.menuType = menuType;
-	}
-	
-	public static void setTile( Tile tile ){
-		Menu.tile = tile;
-	}
-	
-	public static Tile getTile(){
-		return tile;
 	}
 	
 	
@@ -222,7 +231,7 @@ public class Menu {
 				if( tile.getUnit().canLoadUnit(unit) ) addButton( new Button( Button.ButtonType.NORMAL , Data.getEntrySheet( "LOAD")) );
 			}
 			else{
-				Logger.write("This situation isn't correct!", Logger.Level.ERROR );
+				Logger.critical("This situation isn't correct!");
 			}
 		}
 		else{
@@ -263,13 +272,11 @@ public class Menu {
 		
 		// clear menu
 		clearList();
-		setMenuType( MenuType.BUILD_MENU );
-		
-		setTile(tile);
-		
+		setMenuType( MenuType.PROPERTY_MENU );
+	
 		// add buttons
 		for( Unit_Sheed sh : tile.sheet().getBuildList() ){
-			addButton( new Button( ButtonType.NORMAL , sh )  );
+			addButton( new BuildButton( ButtonType.NORMAL , sh , tile)  );
 		}
 		
 		// complete menu
@@ -315,27 +322,16 @@ public class Menu {
 	
 	
 	/*
-	 * 
 	 * OUTPUT METHODS
 	 * **************
-	 * 
 	 */
 	
-	public static void print(){
-		
-		// print head
-		System.out.print("MENU ==> ");
-		
-		// print all buttons
-		for( Button b : Menu.getList() ){
-			System.out.print( b.getSheet().getName()+" , " );
-		}
-		
-		// make new line
-		System.out.println();
+	/**
+	 * Returns the status of class menu.
+	 */
+	public static String getStatus(){
+		return "MENU :: Have "+buttons.size()+" buttons in the list and list pointer is at position "+pointer;
 	}
 	
-
-
 }
 

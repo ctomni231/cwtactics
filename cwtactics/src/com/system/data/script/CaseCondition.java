@@ -4,16 +4,14 @@ package com.system.data.script;
  * 
  * CaseCondition is an action object with an condition.
  * 
- * @author Tapsi [BcMk]
- *
+ * @author tapsi
+ * @version 8.1.2010, #1
  */
 public class CaseCondition {
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
 	private Condition condition;
@@ -22,10 +20,8 @@ public class CaseCondition {
 	
 	
 	/*
-	 *
 	 * CONSTRUCTORS
 	 * ************
-	 * 
 	 */
 	
 	public CaseCondition( String condition , String action ){
@@ -36,10 +32,8 @@ public class CaseCondition {
 	
 
 	/*
-	 *
-	 * ACCESSING METHODS
-	 * *****************
-	 * 
+	 * ACCESS METHODS
+	 * *************
 	 */
 	
 	/**
@@ -61,10 +55,8 @@ public class CaseCondition {
 
 	
 	/*
-	 *
 	 * WORK METHODS
 	 * ************
-	 * 
 	 */
 	
 	/**
@@ -81,22 +73,5 @@ public class CaseCondition {
 		action.doActions();
 	}
 
-	
-	
-	/*
-	 * 
-	 * OUTPUT METHODS
-	 * **************
-	 * 
-	 */
-
-	/**
-	 * Prints content of this case object onto the console.
-	 */
-	public void print(){
-		System.out.println("CASE CONDITION -------");
-		condition.print();
-		action.print();
-	}
 }
 

@@ -2,13 +2,17 @@ package com.client.model.object;
 
 import com.system.data.sheets.Tile_Sheet;
 
+/**
+ * Holds an tile.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Tile {
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
 	private Player 	owner;
@@ -24,10 +28,8 @@ public class Tile {
 	
 	
 	/*
-	 *
 	 * CONSTRUCTORS
-	 * ************
-	 * 
+	 * ************ 
 	 */
 
 	public Tile( Tile_Sheet type , int x , int y , int variation , Player owner ){
@@ -46,10 +48,8 @@ public class Tile {
 	
 	
 	/*
-	 *
 	 * ACCESSING METHODS
 	 * *****************
-	 * 
 	 */
 
 	public Player getOwner() {
@@ -145,25 +145,12 @@ public class Tile {
         change = chng;
     }
 
-	/*
-	 *
-	 * WORK METHODS
-	 * ************
-	 * 
-	 */
-	
-	
+
 
 	/*
-	 *
 	 * OUTPUT METHODS
 	 * **************
-	 * 
 	 */
-
-	public void printStatus(){
-		System.out.println( toString() );
-	}
 	
     @Override
 	public String toString(){

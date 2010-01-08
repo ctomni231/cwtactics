@@ -1,19 +1,14 @@
 package com.system.data.sheets;
 
-import com.system.log.Logger;
-import com.system.log.Logger.Level;
-
 /**
- * 
- * @author Tapsi [BcMk]
+ * @author tapsi
+ * @version 8.1.2010, #1
  */
 public class Weapon_Sheed extends Sheet{
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 
 	private String 	name;
@@ -27,10 +22,8 @@ public class Weapon_Sheed extends Sheet{
 	
 	
 	/*
-	 *
 	 * CONSTRUCTORS
 	 * ************
-	 * 
 	 */
 	
 	public Weapon_Sheed(){
@@ -44,10 +37,8 @@ public class Weapon_Sheed extends Sheet{
 
 
 	/*
-	 *
 	 * ACCESSING METHODS
 	 * *****************
-	 * 
 	 */
 
 	/**
@@ -134,6 +125,9 @@ public class Weapon_Sheed extends Sheet{
 		this.rangePenalty = rangePenalty;
 	}
 
+	/**
+	 * Can this weapon attack an unit?
+	 */
 	public boolean canAttack( Unit_Sheed sh ){
 		
 		// get level and check it
@@ -146,6 +140,10 @@ public class Weapon_Sheed extends Sheet{
 		else return false;
 	}
 	
+	/**
+	 * Sets the value ( can or cannot ) for a
+	 * given unit level.
+	 */
 	public void setAttack( int lv , boolean value ){
 		
 		// get level and check it
@@ -153,29 +151,6 @@ public class Weapon_Sheed extends Sheet{
 		
 		attackable[lv] = value;
 	}
-	
-	
-	
-	/*
-	 *
-	 * WORK METHODS
-	 * ************
-	 * 
-	 */
-
-	/*
-	 *
-	 * INTERNAL METHODS
-	 * ****************
-	 * 
-	 */
-
-	/*
-	 *
-	 * OUTPUT METHODS
-	 * **************
-	 * 
-	 */
 
 }
 

@@ -2,9 +2,16 @@ package com.client.logic.command.commands.ingame;
 
 import com.client.logic.command.Command;
 import com.client.model.object.Player;
-import com.client.model.object.Tile;
+import com.system.data.Data;
+import com.system.log.Logger;
 
-
+/**
+ * Command to change the resources of 
+ * a player by a given array of cost/funds.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class ChangeResource implements Command {
 
 	/*
@@ -50,20 +57,10 @@ public class ChangeResource implements Command {
 			
 			// pay every cost from players resource pool
 			player.changeResource(i, multi * values[i]);
+			
+			Logger.log( "Player "+player.getName()+" got "+(multi * values[i])+" of "+Data.getRessourceTable().get(i).getName() );
 		}
 	}
 
-	
-	
-	/*
-	 *
-	 * OUTPUT METHODS
-	 * **************
-	 * 
-	 */
- 
-	public String toString(){
-		return "GIVEFUNDS-";
-	}
 }
 

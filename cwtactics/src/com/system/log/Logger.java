@@ -1,5 +1,19 @@
 package com.system.log;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
+import java.util.logging.*;
+
+/**
+ * Logger class logs messages on console 
+ * and file.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #3
+ */
 public class Logger {
 
 	/*
@@ -8,14 +22,56 @@ public class Logger {
 	 */
 	
 	private static boolean isOn;
-	private static boolean stopOnError;
-	private static Mode mode;
-	
-	public enum Mode{ CONSOLE }
-	public enum Level{ NORMAL, WARN, ERROR }
-	
+	private static Level stopAt;
+	private static java.util.logging.Logger logger;
 
+	
+	
+	/*
+	 * CONSTRUCTOR 
+	 * ***********
+	 */
 
+	/**
+	 * Creates the internal logger instance.
+	 */
+	static {
+
+		logger = java.util.logging.Logger.getLogger("CustomWars : Tactics Logger");
+		SimpleFormatter formatter = new SimpleFormatter();
+		ConsoleHandler ch = new ConsoleHandler();
+		FileHandler fh =null;
+		
+		// GET DATE FOR LOG FILE
+		SimpleDateFormat formater = new SimpleDateFormat();
+		formater.applyPattern("'DATE'-yyyy_MM_dd-'TIME'-hh_mm' 'a");
+		Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("ECT"));
+
+		// TRY TO ADD THE FILE HANDLER TO LOGGER INSTANCE
+		try {
+			fh = new FileHandler("LOG-" + formater.format(cal.getTime()) + ".log", true);
+		} catch (SecurityException e) {
+			System.err.println("Security error in the logger construction");
+		} catch (IOException e) {
+			System.err.println("In/Out error in the logger construction");
+		}
+		logger.addHandler(fh);
+		fh.setFormatter(formatter);
+		
+		// TRY TO ADD CONSOLE HANDLER TO LOGGER
+		logger.addHandler(ch);
+		ch.setFormatter(formatter);
+
+		// SET THE LEVEL OF LOGGER, DON'T USE PARENT HANDLERS
+		Handler[] handlers = logger.getHandlers();
+		for (int index = 0; index < handlers.length; index++) handlers[index].setLevel(Level.ALL);
+		logger.setLevel(Level.ALL);
+		logger.setUseParentHandlers(false);
+
+	}
+	
+	
+	
 	/*
 	 * ACCESSING METHODS
 	 * *****************
@@ -29,34 +85,32 @@ public class Logger {
 	}
 	
 	/**
-	 * Set the 
+	 * Set the internal status.
 	 */
 	private static void setOn( boolean value ){
 		isOn = value;
 	}
 	
+	/**
+	 * Sets the logger off.
+	 */
 	public static void setOff(){ 
 		setOn(false); 
 	}
 	
+	/**
+	 * Sets the logger on.
+	 */
 	public static void setOn(){ 
 		setOn(true); 
 	}
 	
-	private static void setStopOnErrorOn( boolean value ){
-		stopOnError = value;
-	}
-	
-	public static void setStopOnErrorOff(){ 
-		setStopOnErrorOn(false); 
-	}
-	
-	public static void setStopOnErrorOn(){ 
-		setStopOnErrorOn(true); 
-	}
-	
-	public static void setMode( Mode mode ){
-		Logger.mode = mode;
+	/**
+	 * Sets the internal stop on error
+	 * status.
+	 */
+	public static void stopOnLevel( Level level ){
+		stopAt = level;
 	}
 	
 	
@@ -67,102 +121,65 @@ public class Logger {
 	 */
 	
 	/**
-	 * Writes a message into the logging system.
+	 * Returns the current stack trace
 	 */
-	public static void write( String message , Level level ){
+	private static String getStackTrace(){
 		
-		// don't search trace information if you write a normal message
-		if( level == Level.NORMAL ) writeMessage(message, level);
-		else writeCriticalMessage(message, level);
+		// ADD STACK TRACE INFORMATION
+        StackTraceElement element 	= Thread.currentThread().getStackTrace()[4];
+        String className			= element.getClassName();
+        String methodName       	= element.getMethodName();
+        int line                	= element.getLineNumber();
+        
+		return "NEXT LOG WAS CALLED AT CLASS "+className+" FROM METHOD "+methodName+" AT LINE "+line ;
 	}
 	
 	/**
-	 * Prints a log stamp onto the console. 
-	 * Primary for debug actions.
+	 * Is this Level greater equals the stop level?
 	 */
-	public static void printStamp(){
-		
-		// get data
-		StackTraceElement element = Thread.currentThread().getStackTrace()[2];
-		String classNameOld = null;
-		String methodNameOld= null;
-		String className 	= element.getClassName();
-		String methodName 	= element.getMethodName();
-		int line 			= element.getLineNumber();
-		int line2 			= 0;
-		
-		// only get background information if possible
-		if( Thread.currentThread().getStackTrace().length > 3 ){
-			StackTraceElement elementOld = Thread.currentThread().getStackTrace()[3];
-			classNameOld = elementOld.getClassName();
-			methodNameOld= elementOld.getMethodName();
-			line2		 = elementOld.getLineNumber();
-		}
-		
-		// print log stamp on console
-		System.out.println("LOG STAMP, in class "+className+" from method "+methodName+" at line "+line);
-		if( classNameOld != null &&
-			methodNameOld != null ) System.out.println("       called from method "+methodNameOld+" in class "+classNameOld+" at line "+line2);
+	private static boolean stopProgram( Level level ){
+		return ( level.intValue() >= stopAt.intValue() ) ? true : false;
 	}
 	
-	
-	
-	/*
-	 * INTERNAL METHODS
-	 * ****************
+	/**
+	 * Logs a given message in a given level
+	 * of dangerous.
 	 */
-	
-	private static void writeMessage( String message , Level level ){
+	private static void log( String message , Level level ){
 		
-		// print message
-		switch(mode){
-			
-			case CONSOLE :
-				writeOntoConsole(null,null,0,message,level);
-				break;
-		}
+		// RETURN IF LOGGER IS OFF, EXCEPT
+		// YOU'VE GOT A WARN MESSAGE THEN LOG ALSO A 
+		// STACK TRACE INFORMATION
+		if( level.intValue() >= Level.WARNING.intValue() ) logger.log( level , getStackTrace() );
+		else if( !isOn() ) return;
+		
+		// LOG MESSAGE
+		logger.log(level,message);
+		
+		// HALT PROGRAM IF THE LEVEL OF LOG REACHES STOP_LEVEL
+		if( stopProgram(level) ) System.exit(0);
 	}
-	
-	private static void writeCriticalMessage( String message , Level level ){
-		
-		// add trace information
-		StackTraceElement element = Thread.currentThread().getStackTrace()[3];
-		String className 	= element.getClassName();
-		String methodName 	= element.getMethodName();
-		int line 			= element.getLineNumber();
-		
-		// print message
-		switch(mode){
-		
-			case CONSOLE :
-				writeOntoConsole(className,methodName,line,message,level);
-				break;
-		}
-		
-		// if stop on error is on, stop engine
-		if( level == Level.ERROR && stopOnError ) System.exit(0);
+
+	/**
+	 * Logs a warning message.
+	 */
+	public static void warn( String message ){
+		log(message,Level.WARNING);
 	}
-	
-	private static void writeOntoConsole( String className , String methodName , int line , String message , Level level ){
-		
-		switch( level ){
-				
-			case NORMAL:
-				System.out.println(message);
-				break;
-				
-			case WARN:
-				System.err.println("WARNING MESSAGE, in class "+className+" from method "+methodName+" at line "+line);
-				System.err.println(message);
-				break;
-				
-			case ERROR:
-				System.err.println("ERROR MESSAGE, in class "+className+" from method "+methodName+" at line "+line);
-				System.err.println(message);
-				break;
-		}
+
+	/**
+	 * Logs a critical message.
+	 */
+	public static void critical( String message ){
+		log(message,Level.SEVERE);
 	}
-	
+
+	/**
+	 * Logs a normal message.
+	 */
+	public static void log( String message ){
+		log(message,Level.INFO);
+	}
 	
 	
 }

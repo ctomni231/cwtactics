@@ -9,6 +9,7 @@ import com.client.menu.GUI.MapDraw;
 import com.client.menu.logic.Menu;
 import com.client.menu.logic.buttons.*;
 import com.client.menu.logic.buttons.Button.ButtonType;
+import com.client.model.Fight;
 import com.client.model.Move;
 import com.client.model.Turn;
 import com.client.model.object.Tile;
@@ -17,9 +18,13 @@ import com.system.data.Data;
 import com.system.data.sheets.Sheet;
 import com.system.data.sheets.Unit_Sheed;
 import com.system.data.sheets.Weapon_Sheed;
-import com.system.log.Logger;
-import com.system.log.Logger.Level;
 
+/**
+ * Menu status class.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Status_Menu implements Status_Interface {	
 
 	public void update(int timePassed, MapDraw map) {
@@ -50,7 +55,7 @@ public class Status_Menu implements Status_Interface {
 				case UNLOAD_UNITS_MENU :
 				case UNLOAD_UNITS_MENU2 :
 			
-					Logger.write( selected.getSheet().getID() , Level.NORMAL );
+					//Logger.write( selected.getSheet().getID() , Level.NORMAL );
 					// if the button isn't a wait button
 					if( ! selected.getSheet().getID().equals("WAIT") ){
 						UnloadUnitButton button = (UnloadUnitButton) selected;
@@ -100,7 +105,9 @@ public class Status_Menu implements Status_Interface {
 					move(null, unit, map);
 					
 					// fight
-					if( !Move.isTapped() ) MessageServer.send( new StartFight(unit, button3.getUnit(), targetTile, button3.getTile() , button3.getWeapon() ));
+					if( !Move.isTapped() ){
+						Fight.battle( targetTile , unit , button3.getWeapon() , button3.getTile() , button3.getUnit() );
+					}
 
 					// set wait status to the unit
 					MessageServer.send( new UnitCanAct(Move.getUnit(),false) );
@@ -171,19 +178,20 @@ public class Status_Menu implements Status_Interface {
 					
 				// BUILD MENU
 				//
-				case BUILD_MENU :
+				case PROPERTY_MENU :
 					
 					Unit_Sheed sh = (Unit_Sheed) selected.getSheet();
-
+					Tile property = ((BuildButton) selected).getProperty();
+					
 					// if you can't pay, do nothing!
 					ArrayList<Sheet> list = Data.getRessourceTable();
 					for( int i = 0 ; i < list.size() ; i++ ){
-						if( Menu.getTile().getOwner().getResourceValue(i) < sh.getCost( list.get(i)) ) return;
+						if( property.getOwner().getResourceValue(i) < sh.getCost( list.get(i)) ) return;
 					}
 					
 					// send commands
-					MessageServer.send( new BuildUnit(Menu.getTile(),sh,Turn.getPlayer(),map) ); 
-					MessageServer.send( new ChangeResource( sh.getCostTable(), Menu.getTile().getOwner() , true ));
+					MessageServer.send( new BuildUnit(property,sh,Turn.getPlayer(),map) ); 
+					MessageServer.send( new ChangeResource( sh.getCostTable(), property.getOwner() , true ));
 					MessageServer.send( new ProcessFog() );
 					
 					break;
@@ -206,7 +214,7 @@ public class Status_Menu implements Status_Interface {
                         map.setColumn(2);
                     }else if( Menu.getSelected().getSheet().getID().equals("OPTIONS") )		map.setColumn(1);
                     else if( Menu.getSelected().getSheet().getID().equals("ENDTURN") )	    MessageServer.send( new TurnEnd() ); //Turn.nextTurn();
-                    else 																	Logger.write( "Status got an unknown button!", Level.WARN );
+                    //else 																	Logger.write( "Status got an unknown button!", Level.WARN );
 
 			}
 			
@@ -230,7 +238,7 @@ public class Status_Menu implements Status_Interface {
 					break;
 					
 				case UNLOAD_UNITS_MENU2 :
-					if( Logger.isOn() ) Logger.write( "Unit unloaded allready, undo action not allowed!", Level.NORMAL );
+					//if( Logger.isOn() ) Logger.write( "Unit unloaded allready, undo action not allowed!", Level.NORMAL );
 					break;
 					
 				case UNIT_ATTACKMENU : 

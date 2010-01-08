@@ -7,24 +7,20 @@ import com.client.model.object.Game;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
 import com.system.data.sheets.Weapon_Sheed;
-import com.system.log.Logger;
-import com.system.log.Logger.Level;
 
 /**
- * 
  * Class Range holds and controls unit attack ranges 
  * and battle targets.
  * 
- * @author Tapsi [BcMk]
+ * @author tapsi
+ * @version 8.1.2010, #1
  */
 public class Range {
 
 	
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
 	private static ArrayList<Tile> range = new ArrayList<Tile>();
@@ -34,10 +30,8 @@ public class Range {
 
 	
 	/*
-	 *
-	 * ACCESSING METHODS
-	 * *****************
-	 * 
+	 * ACCESS METHODS
+	 * ************** 
 	 */
 	
 	/**
@@ -102,10 +96,8 @@ public class Range {
 	
 
 	/*
-	 *
 	 * WORK METHODS
 	 * ************
-	 * 
 	 */
 	
 	/** 
@@ -188,6 +180,9 @@ public class Range {
     	else return false;
     }
     
+    /**
+     * Has a unit targets ?
+     */
 	public static boolean hasUnitTargets( Tile tile , Unit unit ){
 
 		for( Weapon_Sheed sh : unit.sheet().getAllWeapons() ){
@@ -199,10 +194,8 @@ public class Range {
     
     
     /*
-     * 
      * INTERNAL METHODS
      * ****************
-     * 
      */
 
 	/**
@@ -249,15 +242,6 @@ public class Range {
 	        }
 	    }
     }
-
-    
-    
-	/*
-	 *
-	 * OUTPUT METHODS
-	 * **************
-	 * 
-	 */
 
 }
 

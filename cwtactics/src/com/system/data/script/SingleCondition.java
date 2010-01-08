@@ -2,12 +2,16 @@ package com.system.data.script;
 
 import com.client.model.Fight;
 import com.client.model.Turn;
-import com.client.model.Weather;
 import com.client.model.object.Game;
-import com.system.data.Data;
 import com.system.data.script.ScriptLogic.ScriptKey;
 import com.system.log.Logger;
 
+/**
+ * Condition class.
+ *  
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class SingleCondition {
 
 	/*
@@ -25,6 +29,7 @@ public class SingleCondition {
 	private static final int LOWER		= 4;
 	
 
+	
 	/*
 	 * CONSTRUCTORS
 	 * ************
@@ -36,17 +41,11 @@ public class SingleCondition {
 		this.value 			= value;
 	}
 
+
 	
 	/*
-	 * ACCESSING METHODS
-	 * ***************** 
-	 */
-
-	/*
-	 *
 	 * WORK METHODS
-	 * ************
-	 * 
+	 * ************ 
 	 */
 
 	public boolean checkCondition(){
@@ -57,76 +56,91 @@ public class SingleCondition {
 		switch(condition){
 		
 			case IS_HIDDEN :
-				if( Trigger_Object.getUnit1() == null ) break;
-				if( Trigger_Object.getUnit1().isHidden() ) result = IS;
+				if( Trigger_Object.getUnit() == null ) break;
+				if( Trigger_Object.getUnit().isHidden() ) result = IS;
 				else result = IS_NOT;
 				break;
 				
 			case REPAIR_POSSIBLE :
-				if( Trigger_Object.getField1() == null && Trigger_Object.getUnit1() == null ) break;
-				if( Trigger_Object.getField1().sheet().canRepair( Trigger_Object.getUnit1().sheet() ) ) result = IS;
+				if( Trigger_Object.getTile() == null && Trigger_Object.getUnit() == null ) break;
+				if( Trigger_Object.getTile().sheet().canRepair( Trigger_Object.getUnit().sheet() ) ) result = IS;
 				else result = IS_NOT;
 				break;
 				
 			case SUPPLY_POSSIBLE :
-				if( Trigger_Object.getField1() == null && Trigger_Object.getUnit1() == null ) break;
-				if( Trigger_Object.getField1().sheet().canSupply( Trigger_Object.getUnit1().sheet() ) ) result = IS;
+				if( Trigger_Object.getTile() == null && Trigger_Object.getUnit() == null ) break;
+				if( Trigger_Object.getTile().sheet().canSupply( Trigger_Object.getUnit().sheet() ) ) result = IS;
 				else result = IS_NOT;
 				break;
 
 			case AMMO :
-				if( Trigger_Object.getUnit1() == null ) break;
-				if( value == ScriptLogic.FULL ) compareValue( Trigger_Object.getUnit1().getAmmo() , Trigger_Object.getUnit1().sheet().getAmmo() );
-				else result = compareValue( Trigger_Object.getUnit1().getAmmo() , value );
+				if( Trigger_Object.getUnit() == null ) break;
+				if( value == ScriptLogic.FULL ) compareValue( Trigger_Object.getUnit().getAmmo() , Trigger_Object.getUnit().sheet().getAmmo() );
+				else result = compareValue( Trigger_Object.getUnit().getAmmo() , value );
 				break;
 				
 			case FUEL :
-				if( Trigger_Object.getUnit1() == null ) break;
-				if( value == ScriptLogic.FULL ) compareValue( Trigger_Object.getUnit1().getFuel() , Trigger_Object.getUnit1().sheet().getFuel() );
-				else result = compareValue( Trigger_Object.getUnit1().getFuel() , value );
+				if( Trigger_Object.getUnit() == null ) break;
+				if( value == ScriptLogic.FULL ) compareValue( Trigger_Object.getUnit().getFuel() , Trigger_Object.getUnit().sheet().getFuel() );
+				else result = compareValue( Trigger_Object.getUnit().getFuel() , value );
 				break;
 				
 			case HEALTH :
-				if( Trigger_Object.getUnit1() == null ) break;
-				if( value == ScriptLogic.FULL ) compareValue( Trigger_Object.getUnit1().getHealth() , 99 );
-				else result = compareValue( Trigger_Object.getUnit1().getHealth() , value );
+				if( Trigger_Object.getUnit() == null ) break;
+				if( value == ScriptLogic.FULL ) compareValue( Trigger_Object.getUnit().getHealth() , 99 );
+				else result = compareValue( Trigger_Object.getUnit().getHealth() , value );
 				break;
 				
 			case TAGS_OF_DEFENDER_TILE :
-				if( !Fight.checkStatus() &&  Trigger_Object.getField2() == null ) break;
-				if( Trigger_Object.getField2().sheet().hasTag(value) ) result = IS;
+				if( !Fight.checkStatus() &&  Fight.getDefender() == null ) break;
+				if( Fight.getDefender().sheet().hasTag(value) ) result = IS;
 				else result = IS_NOT;
 				break;
 				
 			case TAGS_OF_DEFENDER_UNIT :
-				if( !Fight.checkStatus() &&  Trigger_Object.getUnit2() == null ) break;
-				if( Trigger_Object.getUnit2().sheet().hasTag(value) ) result = IS;
+				if( !Fight.checkStatus() && Fight.getDefender() == null ) break;
+				if( Fight.getDefender().sheet().hasTag(value) ) result = IS;
+				else result = IS_NOT;
+				break;
+				
+			case TAGS_OF_TILE :
+				if( Trigger_Object.getTile() == null ) break;
+				if( Trigger_Object.getTile().sheet().hasTag(value) ) result = IS;
+				else result = IS_NOT;
+				break;
+				
+			case TAGS_OF_UNIT :
+				if( Trigger_Object.getUnit() == null ) break;
+				if( Trigger_Object.getUnit().sheet().hasTag(value) ) result = IS;
 				else result = IS_NOT;
 				break;
 				
 			case X_POSITION_OF_TILE :
-				if( Trigger_Object.getField1() == null ) break;
-				result = compareValue( Trigger_Object.getField1().getPosX() , value );
+				if( Trigger_Object.getTile() == null ) break;
+				result = compareValue( Trigger_Object.getTile().getPosX() , value );
 				break;
 				
 			case Y_POSITION_OF_TILE :
-				if( Trigger_Object.getField1() == null ) break;
-				result = compareValue( Trigger_Object.getField1().getPosY() , value );
+				if( Trigger_Object.getTile() == null ) break;
+				result = compareValue( Trigger_Object.getTile().getPosY() , value );
 				break;
 				
 			case X_POSITION_OF_UNIT :
-				if( Trigger_Object.getUnit1() == null ) break;
-				result = compareValue( Game.getMap().findTile( Trigger_Object.getUnit1() ).getPosX() , value );
+				if( Trigger_Object.getUnit() == null ) break;
+				result = compareValue( Game.getMap().findTile( Trigger_Object.getUnit() ).getPosX() , value );
 				break;
 				
 			case Y_POSITION_OF_UNIT :
-				if( Trigger_Object.getUnit1() == null ) break;
-				result = compareValue( Game.getMap().findTile( Trigger_Object.getUnit1() ).getPosY() , value );
+				if( Trigger_Object.getUnit() == null ) break;
+				result = compareValue( Game.getMap().findTile( Trigger_Object.getUnit() ).getPosY() , value );
 				break;
 				
 			case DAY_NUMBER :
 				result = compareValue( Turn.getDay() , value );
 				break;
+				
+			default :
+				Logger.warn( "Got unknown condition ==> "+condition.toString() );
 		}
 		
 		// CHECK RESULT WITH THE SEARCHED RELATIONSHIP
@@ -180,17 +194,5 @@ public class SingleCondition {
 		// RETURN RESULT
 		return result;
 	}
-
-	
-	
-	/*
-	 * OUTPUT METHODS
-	 * **************
-	 */
-	
-	public String toString(){
-		return " SC:: COND:"+condition+" - REL:"+relationship+" VALUE:"+value;
-	}
-
 }
 

@@ -5,14 +5,19 @@ import com.client.logic.command.commands.ingame.ChangeWeather;
 import com.client.model.object.Game;
 import com.system.data.Data;
 import com.system.data.sheets.Weather_Sheet;
+import com.system.log.Logger;
 
+/**
+ * Holds the weather.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
+ */
 public class Weather {
 
 	/*
-	 *
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
 	private static Weather_Sheet weather;
@@ -21,10 +26,8 @@ public class Weather {
 
 
 	/*
-	 *
-	 * ACCESSING METHODS
-	 * *****************
-	 * 
+	 * ACCESS METHODS
+	 * **************
 	 */
 	
 	/**
@@ -32,7 +35,6 @@ public class Weather {
 	 */
 	public static void decreaseLeftDays(){
 		leftDays--;
-		// TODO change weather if null , and only server changes weather!
 	}
 	
 	/**
@@ -70,42 +72,60 @@ public class Weather {
 	 */
 	public static void changeWeather(){
 		
-		// make your choice for a new weather
 		int chance = 0;
 		int curChance = 0;
 		
-		// sum up all chances
+		// SUM UP ALL CHANCES
 		for( Weather_Sheet sh : Data.getWeatherTable() ){
 			
-			// if it's the old weather , continue
+			// SUM UP CHANCES
 			if( sh == getWeather() ) continue;
-			
-			// sum up chances for calculation
 			chance += sh.getChance();
 		}
 		
-		// get random value between 0 and chance
+		// GENERATE RANDOM VALUE
 		chance = ((int) Math.random() * chance);
 		
-		// try to find new weather
+		// TRY TO FIND THE NEW WEATHER
 		for( Weather_Sheet sh : Data.getWeatherTable() ){
 			
-			// if it's the old weather , continue
+			// SUM UP CHANCES
 			if( sh == getWeather() ) continue;
-			
-			// sum up chances
 			curChance += sh.getChance();
 			
-			// if random chance is less than the sum up 
-			// chance, set weather to current weather
-			if( chance < curChance ){
-				
-				int leftDays = (int) Math.random() * Game.getPlayers().size() * 2;
-				
-				MessageServer.send( new ChangeWeather(sh, leftDays) );
-				break;
-			}
+			// IF CUR_CHANCE FIT WITH THE
+			// SUM OF THE CHANCES, SET NEW WEATHER
+			if( chance > curChance ) continue;
+			sendCommand(sh);
+			break;
 		}
+	}
+	
+	/**
+	 * Sends the changeWeather command
+	 * over the MessageServer to the clients.
+	 */
+	private static void sendCommand( Weather_Sheet sh ){
+		
+		// GENERATE DURATION
+		int leftDays = (int) Math.random() * Game.getPlayers().size() * 2;
+		
+		Logger.log("Change weather from "+getWeather().getName()+" to "+sh.getName()+" with duration of "+leftDays+" days.");
+		
+		// SEND COMMAND
+		MessageServer.send( new ChangeWeather(sh, leftDays) );
+		
+	}
+	
+	
+	
+	/*
+	 * OUTPUT METHODS
+	 * **************
+	 */
+	
+	public static String getStatus(){
+		return "The weather is "+getWeather().getName()+" and will change in "+getLeftDays()+" days.";
 	}
 
 }

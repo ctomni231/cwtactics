@@ -6,19 +6,22 @@
 package com.client.logic.command.commands.ingame;
 
 import com.client.logic.command.Command;
+import com.client.model.object.Game;
+import com.client.model.object.Tile;
 import com.client.model.object.Unit;
 
 /**
- *
- * @author alexanderradom
+ * Command to inflict a value of damage
+ * to it.
+ * 
+ * @author tapsi
+ * @version 8.1.2010, #1
  */
 public class SetDamage implements Command {
 
 	/*
-	 * 
 	 * VARIABLES
 	 * *********
-	 * 
 	 */
 	
 	private Unit unit;
@@ -27,10 +30,8 @@ public class SetDamage implements Command {
 	
 
 	/*
-	 * 
 	 * CONSTRUCTORS
 	 * ************
-	 * 
 	 */
 	
     public SetDamage( Unit unit , int damage){
@@ -41,30 +42,28 @@ public class SetDamage implements Command {
 	
 	
 	/*
-	 * 
 	 * WORK METHODS
 	 * ************
-	 * 
 	 */
 
     public void doCommand(){
     	
-    	// change health of the unit
-    	unit.setHealth( unit.getHealth() - damage );
-    	
-    	//TODO destroy if health <= 0
+    	if( damage <= 0 ) return;
+		
+		// GIVE DAMAGE
+		unit.decreaseHealth(damage);
+		
+		// REMOVE UNIT IF HEALTH IS 0
+		if( unit.getHealth() == 0 ){
+			
+			Tile tile = Game.getMap().findTile(unit);
+			
+			//TODO show destroy animation
+			
+			// REMOVE UNIT INSTANCE FROM GAME INSTANCES
+			unit.getOwner().removeUnit(unit);
+			tile.setUnit(null);
+		}
     }
 
-    
-    
-    /*
-     *
-     * OUTPUT METHODS
-     * **************
-     * 
-     */
-    
-    public String toString(){
-    	return "SETDAMAGE-"+unit.getID()+"-"+damage;
-    }
 }
