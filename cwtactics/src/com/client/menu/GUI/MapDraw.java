@@ -480,6 +480,10 @@ public class MapDraw extends MovingPix{
         }
     }
     
+    public boolean isAnimationRunning(){
+        return moveActive;
+    }
+    
     private void updateArrow(Graphics g, int x, int y){
         if(Move.inWay(map.getTile(x, y))){
             Tile temp = map.getTile(x, y);

@@ -4,6 +4,7 @@ import com.client.logic.command.Command;
 import com.client.menu.GUI.MapDraw;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
+import com.system.log.Logger;
 
 public class FieldSetUnit implements Command {
 
@@ -20,6 +21,7 @@ public class FieldSetUnit implements Command {
 	public void doCommand() {
 		tile.setUnit(unit);
 		map.updateMapItem( tile.getPosX() , tile.getPosY() );
+		Logger.printStamp();
 	}
 
 }

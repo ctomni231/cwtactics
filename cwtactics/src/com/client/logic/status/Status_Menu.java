@@ -260,8 +260,8 @@ public class Status_Menu implements Status_Interface {
 	private void move( Unit startUnit , Unit targetUnit , MapDraw map ){
 
 		MessageServer.send( new FieldSetUnit( Move.getStartTile() , startUnit , map ) );
-		//TODO add showAnimationCommand here
-        map.startMoveAnimation();
+        MessageServer.send( new StartMoveAnimation(map) );
+        MessageServer.send( new WaitAnimation(map) );
 		MessageServer.send( new FieldSetUnit( Move.getTargetTile() , targetUnit , map ) );
 		
 		// decrease fuel

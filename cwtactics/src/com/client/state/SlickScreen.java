@@ -68,13 +68,12 @@ public abstract class SlickScreen extends BasicGameState{
         render(g);
     }
     
-    public final void update(GameContainer container, 
-            StateBasedGame game, int timePassed) throws SlickException {
+    public final void update(GameContainer container,  StateBasedGame game, int timePassed) throws SlickException {
     	      
-        // check the command stack and return if a command is done
-        if( scr_checkCommands() ) return;
-        
         scr_sysTime = SlickGame.timer.getTime();
+
+    	// check the command stack and return if a command is done
+        if( scr_checkCommands() ) return;
         
         update(timePassed);
         
@@ -152,7 +151,7 @@ public abstract class SlickScreen extends BasicGameState{
      * current update cycle will closed.
      *
      */
-    private boolean scr_checkCommands(){
+    protected boolean scr_checkCommands(){
 
     	if( ! CommandList.isEmpty() ){
     		CommandList.getNext().doCommand();
