@@ -23,6 +23,7 @@ public class PixAnimate {
     private ArrayList<Integer> buildColors;
     private ArrayList<Integer> unitColors;
     private HashMap<Short, Integer> imgMap;
+    private ImgDataParser imgData;
     private double scale;
 
     public PixAnimate(){
@@ -31,7 +32,7 @@ public class PixAnimate {
         unitColors = new ArrayList<Integer>();
         scale = 1.0;
         imgMap = new HashMap<Short, Integer>();
-        ImgDataParser.init();
+        imgData = new ImgDataParser();
     }
 
     public void addBuildingChange(String filePath){
@@ -43,23 +44,28 @@ public class PixAnimate {
     }
 
     public void addPreferredItem(String code, String type){
-        ImgDataParser.addForceType(code, type);
+        imgData.addForceType(code, type);
     }
 
     public void clearData(){
-        ImgDataParser.clearData();
+        imgData.clearData();
     }
 
     public void loadData(){
-        ImgDataParser.decodeFiles();       
+        imgData.decode();
+        //imgData.decodeFiles();
+    }
+
+    public boolean isReady(){
+        return imgData.isReady();
     }
 
     public ArrayList<String> getTypes(){
-        return ImgDataParser.getTypes();
+        return imgData.getTypes();
     }
 
     public ArrayList<ImgData> getData(){
-        return ImgDataParser.getData();
+        return imgData.getData();
     }
 
     public void changeScale(int tileBase){
@@ -75,8 +81,8 @@ public class PixAnimate {
     public AnimStore getImgPart(String name, int player, int direction){
         int nameItem = -1;
         byte[] anim = new byte[0];
-        for(int i = 0; i < ImgDataParser.getData().size(); i++){
-            ImgData data = ImgDataParser.getData().get(i);
+        for(int i = 0; i < imgData.getData().size(); i++){
+            ImgData data = imgData.getData().get(i);
             if(name.matches(data.group+".*") && data.direction == direction){
                 nameItem = i;
                 anim = new byte[data.animRef.size()];
@@ -118,7 +124,7 @@ public class PixAnimate {
         if(imgMap.containsKey(store))       return;
 
         ImgLibrary parseImg = new ImgLibrary();
-        ImgData data = ImgDataParser.getData().get(index);
+        ImgData data = imgData.getData().get(index);
         for(int i = 0; i < data.imgFileRef.size(); i++){
             ImgFile file = data.imgFileRef.get(i);
             parseImg.addImage(0, file.filename);

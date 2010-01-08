@@ -22,32 +22,35 @@ import java.util.Scanner;
 //(CODE:TYPE:NAME)
 //Make sure you allow to user to shrink data by type, and type alone.
 //either in getData(String type)
-public class ImgDataParser {
-    private static ArrayList<ImgData> allImg;
-    private static ArrayList<Integer> defColors;
-    private static HashMap<Integer, String> preferItems;
-    private static ArrayList<String> typeList;
+public class ImgDataParser implements Runnable{
+    private ArrayList<ImgData> allImg;
+    private ArrayList<Integer> defColors;
+    private HashMap<Integer, String> preferItems;
+    private ArrayList<String> typeList;
+    private boolean ready;
+    private Thread looper;
 
-    public static void init(){
+    public ImgDataParser(){
         preferItems = new HashMap<Integer, String>();
         allImg = new ArrayList<ImgData>();
         defColors = new ArrayList<Integer>();
         typeList = new ArrayList<String>();
     }
+
     //This class will search drawn items for a type that matches it.
-    public static void addForceType(String code, String type){
+    public void addForceType(String code, String type){
         preferItems.put((int)getCodeByte(code), type);
     }
 
-    public static ArrayList<ImgData> getData(){
-        return allImg;
+    public ArrayList<ImgData> getData(){
+        return ready ? allImg : new ArrayList<ImgData>();
     }
 
-    public static ArrayList<String> getTypes(){
+    public ArrayList<String> getTypes(){
         return typeList;
     }
 
-    public static void clearData(){
+    public void clearData(){
         if(preferItems != null)
             preferItems.clear();
         if(allImg != null)
@@ -55,10 +58,20 @@ public class ImgDataParser {
         typeList = new ArrayList<String>();
     }
 
-    public static void decodeFiles(){
-        decodeData(getFileTextInfo());
+    public boolean isReady(){
+        return ready;
     }
-    public static void decodeData(ArrayList<String> textData){
+
+    public void decode(){
+        ready = false;
+        looper = new Thread(this);
+        looper.start();
+    }
+    public void decodeFiles(){
+        decodeData(getFileTextInfo());
+        ready = true;
+    }
+    public void decodeData(ArrayList<String> textData){
         ArrayList<String> gameData;
         Scanner textScan;
         String temp;
@@ -77,7 +90,7 @@ public class ImgDataParser {
         }
     }
 
-    private static ArrayList<String> getFileTextInfo(){
+    private ArrayList<String> getFileTextInfo(){
         ArrayList<String> text = new ArrayList<String>();
         FileFind findFiles = new FileFind();
         findFiles.addAvoidDir(".svn");
@@ -105,7 +118,7 @@ public class ImgDataParser {
         return text;
     }
 
-    private static void fillData(ArrayList<String> gameData){
+    private void fillData(ArrayList<String> gameData){
         //Give back a group of ImgData
         ImgData temp = new ImgData();
         ImgFile tempFile = new ImgFile();        
@@ -171,7 +184,7 @@ public class ImgDataParser {
 
     //This stores animations and makes sure each item is stored once
     //in a database.
-    private static void storeData(ImgData temp){
+    private void storeData(ImgData temp){
         ImgData stored = null;
         for(int i = 0; i < allImg.size(); i++){
             stored = allImg.get(i);
@@ -259,7 +272,7 @@ public class ImgDataParser {
         allImg.add(temp);
     }
     
-    private static byte getCodeByte(String part){
+    private byte getCodeByte(String part){
         ImgData temp = new ImgData();
         if(part.matches("TER.*") || part.matches("FIE.*"))
             return temp.TERRAIN;
@@ -277,14 +290,14 @@ public class ImgDataParser {
         return 0;
     }
     
-    private static short[] sortLocations(String[] temp){
+    private short[] sortLocations(String[] temp){
         short[] cool = new short[temp.length-1];
         for(int i = 1; i < temp.length; i++)
             cool[i-1] = (short)Integer.parseInt(temp[i]);
         return cool;
     }
 
-    private static void storeColors(String[] parts){
+    private void storeColors(String[] parts){
         defColors = new ArrayList<Integer>();
         String[] color;
         for(int i = 1; i < parts.length; i++){
@@ -304,8 +317,16 @@ public class ImgDataParser {
         }
     }
 
-    private static void addType(String type){
+    private void addType(String type){
         if(!typeList.contains(type))
            typeList.add(type);
+    }
+
+    public void run(){
+        try{
+            decodeFiles();
+        }catch(Exception e){
+            System.out.println(e.getStackTrace());
+        }
     }
 }

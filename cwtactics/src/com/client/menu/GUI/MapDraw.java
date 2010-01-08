@@ -99,8 +99,7 @@ public class MapDraw extends MovingPix{
         cursorx = 0;
         cursory = 0;
         column = 0;
-        initCursor();
-        clearArrow();
+        drawArrow = new MapItem[10];
     }
 
     public void initCursor(){
@@ -142,6 +141,10 @@ public class MapDraw extends MovingPix{
                 break;
             }
         }
+    }
+
+    public void skipAnimation(){
+        moveActive = false;
     }
 
     public void addShake(int x, int y){
@@ -200,7 +203,8 @@ public class MapDraw extends MovingPix{
                 drawMap[i][j] = new MapItem();
         }
         scale = itemList.getScale();
-        initCursor();
+        if(itemList.isReady())
+            initCursor();
     }
 
     public boolean update(int mouseX, int mouseY, int mouseScroll,
@@ -280,6 +284,11 @@ public class MapDraw extends MovingPix{
     }    
 
     public void render(Graphics g, int animTime){
+        if(!itemList.isReady()){
+            g.drawString("LOADING...", 0, 460);
+            return;
+        }
+
         drawCursor(animTime);
 
         renderSpeed();
@@ -328,7 +337,9 @@ public class MapDraw extends MovingPix{
                 if(drawMap[i][j].unit != null &&
                         map.getTile(i, j).getUnit() != null &&
                         !Fog.inFog(map.getTile(i, j))){
-                    if(Fog.isVisible(map.getTile(i,j).getUnit())){
+                    if(Fog.isVisible(map.getTile(i,j).getUnit()) &&
+                            !(moveActive && Move.getTargetTile().
+                            equals(map.getTile(i, j)))){
                         g.drawImage(itemList.getImage(drawMap[i][j].unit,
                         animTime), (int)(posx+shakex+((i*BASE-(BASE/2))*scale)),
                         (int)(posy+shakey+(((j-1)*BASE+(BASE/2))*scale)));
@@ -535,10 +546,6 @@ public class MapDraw extends MovingPix{
         
     }
 
-    private void clearArrow(){
-        drawArrow = new MapItem[10];
-    }
-
     private MapItem getArrow(int dir){
         //if(drawArrow[dir] == null){
             drawArrow[dir] = new MapItem();
@@ -556,6 +563,9 @@ public class MapDraw extends MovingPix{
     }
 
     private void drawCursor(int animTime){
+        if(cursor == null)
+            initCursor();
+
         realcurx = (int)(posx+shakex+cursorx*BASE*scale);
         realcury = (int)(posy+shakey+cursory*BASE*scale);
 

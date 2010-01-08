@@ -65,6 +65,7 @@ public class GameMenuScr {
         	
             long time = System.currentTimeMillis();
         	if(menuSize > 0){
+                mapScr.skipAnimation();
                 info = new String[Menu.getList().size()];
                 for(int i = 0; i < info.length; i++)
                     info[i] = Menu.getList().get(i).getSheet().
