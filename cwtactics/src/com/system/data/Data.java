@@ -36,6 +36,7 @@ public class Data {
 	private static String author;
 	private static String version; 
 	private static String language;
+    private static String tileset;
 	
 	
 	/*
@@ -222,7 +223,13 @@ public class Data {
 		Data.language = language;
 	}
 	
-	
+	public static String getTileSet() {
+		return tileset;
+	}
+
+	public static void setTileSet(String tileset) {
+		Data.tileset = tileset;
+	}
 	
 }
 

@@ -6,7 +6,8 @@
 						author="Tapsi(Alex); JSR(Crecen)"
 						modVersion="1.0 Pre Alpha"  />
         <stats 			getallaftercaphq="1" 
-						language="ENG" />
+						language="ENG" 
+					      tileset="AWDS"/>
         <standart   	battleOnDefenderField="1"
         				healthIndependentDamage="0"  />
         <resupply_cost  fuel_ressource_0="10"

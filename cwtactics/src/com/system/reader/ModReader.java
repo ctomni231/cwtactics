@@ -340,6 +340,7 @@ public class ModReader extends Parser {
 			
 			// save language
 			if( attributes.getValue("language") != null ) Data.setLanguage( attributes.getValue("language") );
+            if( attributes.getValue("tileset") != null) Data.setTileSet( attributes.getValue("tileset"));
 		}
 	}
 	

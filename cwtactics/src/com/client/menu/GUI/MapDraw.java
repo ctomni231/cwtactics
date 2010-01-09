@@ -6,6 +6,7 @@ import com.client.menu.GUI.tools.MovingPix;
 import com.client.menu.GUI.tools.PixAnimate;
 import com.client.menu.GUI.tools.PixMenu;
 import com.client.model.Fog;
+import com.client.model.Instance;
 import com.client.model.Move;
 import com.client.model.Range;
 import com.client.model.object.Game;
@@ -291,6 +292,16 @@ public class MapDraw extends MovingPix{
         drawCursor(animTime);
 
         renderSpeed();
+
+        //Display anything you want to see displayed right here
+        //-----------------------------------------------------
+        g.setColor(Color.white);
+        g.drawString("GOLD: "+Instance.getCurPlayer().
+                        getResourceValue(0), 100, 10);
+
+        //END
+        //---
+        
         for(int j = 0; j < mapsy; j++){
             for(int i = 0; i < mapsx; i++){
               if((i > (-posx-scale*BASE)/(scale*BASE) &&
@@ -550,11 +561,8 @@ public class MapDraw extends MovingPix{
         //if(drawArrow[dir] == null){
             drawArrow[dir] = new MapItem();
             int color = 0;
-            if(Game.getPlayers() != null){
-                color = Game.getCurrentPlayerID();
-                if(color == 0)
-                    color = Game.getPlayers().size();
-            }
+            if(Game.getPlayers() != null)
+                color = Instance.getCurPlayer().getID()+1;
                 
             drawArrow[dir].blank = itemList.getImgPart("PRAXARROW", color, dir);
             itemList.makeNewImage(drawArrow[dir].blank);
