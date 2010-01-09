@@ -160,6 +160,7 @@ public class Range {
     	addListToList(helpList);
     	
     	for( Tile tile : range ){
+    		if( Fog.inFog(tile) ) continue;
     		if( tile.getUnit() != null && tile.getUnit().getOwner() != unit.getOwner() ){
         	
     			if( !targets.contains(tile) && sh.canAttack( tile.getUnit().sheet() ) ) targets.add(tile);

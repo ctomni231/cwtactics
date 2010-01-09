@@ -159,28 +159,16 @@ public class MainGame {
     			else{
     				Tile ttt = new Tile( Data.getTileSheet( "PLAIN" ), i, j, 0, null) ;
     				map.setTile( ttt, i, j);
-    				//Unit b = new Unit(Data.getUnitSheet("INFANTRY"),p);
-    				//ttt.setUnit(b);
-    				//p.addUnit(b);
     			}
     		}
     	}
-    	
 
-    	Tile a = new Tile( Data.getTileSheet("PLAIN"),0,0,0,null);
-    	Tile b = new Tile( Data.getTileSheet("STREET"),0,0,0,null);
-    	Unit ua = new Unit(Data.getUnitSheet("INFANTRY"),p);
-    	Unit ub = new Unit(Data.getUnitSheet("INFANTRY"),p3);
-    	a.setUnit(ua);
-    	b.setUnit(ub);
-    	
     	p.changeResource( 0 , 100000 );
     	
         Game.setMap(map);
         Fog.noFog(false);
         Status.setStatus( Status.Mode.WAIT );
         Turn.startTurn( Game.getNextPlayer() );
-    	Fight.battle(a, ua, ua.sheet().getWeapon(0) , b , ub);
     }
 
     //The container used for this window

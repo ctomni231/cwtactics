@@ -31,9 +31,11 @@ public class UnitAttack implements Command{
 	 */
 	
 	public UnitAttack( Unit attacker , Unit defender , int attackDamage , Weapon_Sheed weapon ){
+		
 		this.attack = attackDamage;
 		this.weapon = weapon;
 		this.defender = defender;
+		this.attacker = attacker;
 
 		// NO NEGATIVE DAMAGE
 		if( attack < 0 ) attack = 0;

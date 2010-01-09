@@ -69,7 +69,7 @@ public class Fog {
 	 * Is a hidden unit visible ?
 	 */
 	public static boolean isVisible( Unit unit ){
-		return ( visibleStealths.contains(unit) ) ? true : false;
+		return ( !unit.isHidden() || visibleStealths.contains(unit) ) ? true : false;
 	}
 	
 	/**
@@ -77,7 +77,7 @@ public class Fog {
 	 */
 	public static boolean inFog( Tile tile ){
 		// IF NOFOG, A TILE IS ALLTIME VISIBLE
-		return ( visibleTiles.contains(tile) || noFog ) ? true : false;
+		return ( visibleTiles.contains(tile) || noFog ) ? false : true;
 	}
 	
 	/**
