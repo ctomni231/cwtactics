@@ -61,8 +61,7 @@ public class InGameState extends SlickScreen{
 
     @Override
     public void init() {
-        newMap = new MapDraw(Game.getMap(), reader.getPropColorRef(),
-                reader.getUnitColorRef(), 10, 10, 0);
+        newMap = new MapDraw(Game.getMap(), 10, 10, 0);
         newDraw = new ListDraw(7, 20, 0, 0, 0);
         newDraw.init();
 

@@ -34,7 +34,6 @@ public class MapDraw extends MovingPix{
     private Map map;
     private MapItem[][] drawMap;
     private MapItem[] drawArrow;
-    private PixAnimate itemList;
     private double scale;
     private boolean showGrid;
 
@@ -64,8 +63,7 @@ public class MapDraw extends MovingPix{
     private int moveNext;
     private boolean moveActive;
 
-    public MapDraw(Map theMap, String propRef, String unitRef,
-            int locx, int locy, double speed){
+    public MapDraw(Map theMap, int locx, int locy, double speed){
         super(locx, locy, speed);
         udcntr = 0;
         lrcntr = 0;
@@ -86,16 +84,12 @@ public class MapDraw extends MovingPix{
         mapsy = map.getSizeY();
         showGrid = false;
         tilebase = BASE;
-        itemList = new PixAnimate();
-        itemList.addBuildingChange(propRef);
-        itemList.addUnitChange(unitRef);
-        itemList.loadData();
         drawMap = new MapItem[mapsx][mapsy];
         for(int i = 0; i < mapsx; i++){
             for(int j = 0; j < mapsy; j++)
                 drawMap[i][j] = new MapItem();
         }
-        scale = itemList.getScale();
+        scale = PixAnimate.getScale();
         cursorx = 0;
         cursory = 0;
         column = 0;
@@ -104,7 +98,7 @@ public class MapDraw extends MovingPix{
 
     public void initCursor(){
         cursor = new PixMenu((int)posx+cursorx, (int)posy+cursory, 0);
-        for(ImgData item: itemList.getData()){
+        for(ImgData item: PixAnimate.getData()){
             if(item.code == item.CURSOR){
                 ImgLibrary temp = new ImgLibrary();
                 temp.addImage(item.imgFileRef.get(0).filename);
@@ -153,19 +147,19 @@ public class MapDraw extends MovingPix{
     }
 
     public void changeType(String type){
-        itemList.clearData();
-        itemList.addPreferredItem("TERRAIN", type);
-        itemList.addPreferredItem("CITY", type);
-        itemList.addPreferredItem("UNIT", type);
-        itemList.addPreferredItem("ARROW", type);
-        itemList.loadData();
+        PixAnimate.clearData();
+        PixAnimate.addPreferredItem("TERRAIN", type);
+        PixAnimate.addPreferredItem("CITY", type);
+        PixAnimate.addPreferredItem("UNIT", type);
+        PixAnimate.addPreferredItem("ARROW", type);
+        PixAnimate.loadData();
         changeScale();
     }
 
     public void changeType(String code, String type){
-        itemList.clearData();
-        itemList.addPreferredItem(code, type);
-        itemList.loadData();
+        PixAnimate.clearData();
+        PixAnimate.addPreferredItem(code, type);
+        PixAnimate.loadData();
         if(code.matches("TER.*") || code.matches("FIE.*") ||
             code.matches("PRO.*") || code.matches("CIT.*") ||
             code.matches("UNI.*") || code.matches("ARR.*"));
@@ -173,9 +167,9 @@ public class MapDraw extends MovingPix{
     }
 
     public String[] getTypes(){
-        String[] temp = new String[itemList.getTypes().size()];
+        String[] temp = new String[PixAnimate.getTypes().size()];
         for(int i = 0; i < temp.length; i++)
-            temp[i] = itemList.getTypes().get(i);
+            temp[i] = PixAnimate.getTypes().get(i);
         return temp;
     }
 
@@ -197,13 +191,13 @@ public class MapDraw extends MovingPix{
     }
 
     public void changeScale(){
-        itemList.changeScale(tilebase);
+        PixAnimate.changeScale(tilebase);
         for(int i = 0; i < mapsx; i++){
             for(int j = 0; j < mapsy; j++)
                 drawMap[i][j] = new MapItem();
         }
-        scale = itemList.getScale();
-        if(itemList.isReady())
+        scale = PixAnimate.getScale();
+        if(PixAnimate.isReady())
             initCursor();
     }
 
@@ -284,7 +278,7 @@ public class MapDraw extends MovingPix{
     }    
 
     public void render(Graphics g, int animTime){
-        if(!itemList.isReady()){
+        if(!PixAnimate.isReady()){
             g.drawString("LOADING...", 0, 460);
             return;
         }
@@ -292,15 +286,6 @@ public class MapDraw extends MovingPix{
         drawCursor(animTime);
 
         renderSpeed();
-
-        //Display anything you want to see displayed right here
-        //-----------------------------------------------------
-        g.setColor(Color.white);
-        g.drawString("GOLD: "+Instance.getCurPlayer().
-                        getResourceValue(0), 100, 10);
-
-        //END
-        //---
         
         for(int j = 0; j < mapsy; j++){
             for(int i = 0; i < mapsx; i++){
@@ -312,11 +297,11 @@ public class MapDraw extends MovingPix{
                     drawMap[i][j] = createNewImage(drawMap[i][j], i, j);
                 if(drawMap[i][j].terrain != null)
                     if(Fog.inFog(map.getTile(i, j))){
-                        g.drawImage(itemList.getImage(drawMap[i][j].blank,
+                        g.drawImage(PixAnimate.getImage(drawMap[i][j].blank,
                             500), (int)(posx+shakex+(i*BASE*scale)),
                         (int)(posy+shakey+((j-1)*BASE*scale)), FOG);
                     }else{
-                        g.drawImage(itemList.getImage(drawMap[i][j].terrain,
+                        g.drawImage(PixAnimate.getImage(drawMap[i][j].terrain,
                             animTime), (int)(posx+shakex+(i*BASE*scale)),
                         (int)(posy+shakey+((j-1)*BASE*scale)));
                     }
@@ -334,7 +319,6 @@ public class MapDraw extends MovingPix{
                             (int)(posy+shakey+j*BASE*scale), (int)(BASE*scale),
                             (int)(BASE*scale));
                     }
-                    updateArrow(g, i, j);
                 }
                 if(Status.getStatus() == Status.Mode.SHOW_RANGE){
                     if(Range.isIn(map.getTile(i, j))){
@@ -350,7 +334,7 @@ public class MapDraw extends MovingPix{
                     if(Fog.isVisible(map.getTile(i,j).getUnit()) &&
                             !(moveActive && Move.getTargetTile().
                             equals(map.getTile(i, j)))){
-                        g.drawImage(itemList.getImage(drawMap[i][j].unit,
+                        g.drawImage(PixAnimate.getImage(drawMap[i][j].unit,
                         animTime), (int)(posx+shakex+((i*BASE-(BASE/2))*scale)),
                         (int)(posy+shakey+(((j-1)*BASE+(BASE/2))*scale)));
                         if(map.getTile(i, j).getUnit().getHealth() < 100){
@@ -361,10 +345,14 @@ public class MapDraw extends MovingPix{
                         }
                     }
                 }
+                if(!moveActive && Status.getStatus() == Status.Mode.SHOW_MOVE){
+                    updateArrow(g, i, j);
+                }
               }
             }
         }
         if(moveActive){
+            mapInd = 8;
             renderMoveAnimation(g, animTime);
         }
         if(shakex != shakey && shakey != 0){
@@ -372,12 +360,22 @@ public class MapDraw extends MovingPix{
             shakey = 0;
         }
         if(shakeX.size() > 0 && mapScr){
+            mapInd = 4;
             shakex = shakeX.remove(0);
             shakey = shakeY.remove(0);
             mapScr = false;
         }
 
         cursor.render(g);
+
+        //Display anything you want to see displayed right here
+        //-----------------------------------------------------
+        g.setColor(Color.white);
+        g.drawString("GOLD: "+Instance.getCurPlayer().
+                        getResourceValue(0), 100, 10);
+
+        //END
+        //---
 
         if(!mapScr)    mapControl(animTime);
     }
@@ -400,19 +398,19 @@ public class MapDraw extends MovingPix{
         int color = 0;
         if(map.getField()[x][y].getOwner() != null)
             color = map.getField()[x][y].getOwner().getID()+1;
-        item.terrain = itemList.getImgPart( map.getField()[x][y].sheet().
+        item.terrain = PixAnimate.getImgPart( map.getField()[x][y].sheet().
                 getID().toUpperCase(), color, 0);
-        itemList.makeNewImage(item.terrain);
-        item.blank = itemList.getImgPart( map.getField()[x][y].sheet().
+        PixAnimate.makeNewImage(item.terrain);
+        item.blank = PixAnimate.getImgPart( map.getField()[x][y].sheet().
                 getID().toUpperCase(), 0, 0);
-        itemList.makeNewImage(item.blank);
+        PixAnimate.makeNewImage(item.blank);
         if( map.getField()[x][y].getUnit() != null){
             color = 0;
             if(map.getField()[x][y].getUnit().getOwner() != null)
                 color = map.getField()[x][y].getUnit().getOwner().getID()+1;
-            item.unit = itemList.getImgPart( map.getField()[x][y].
+            item.unit = PixAnimate.getImgPart( map.getField()[x][y].
                     getUnit().sheet().getID().toUpperCase(), color, 0);
-            itemList.makeNewImage(item.unit);
+            PixAnimate.makeNewImage(item.unit);
         }
     }
 
@@ -424,23 +422,23 @@ public class MapDraw extends MovingPix{
         unitcury = Move.getStartTile().getPosY();
         int color = 0;
         color = Move.getUnit().getOwner().getID()+1;
-        unitTemp.blank = itemList.getImgPart(Move.getUnit().
+        unitTemp.blank = PixAnimate.getImgPart(Move.getUnit().
                 sheet().getID(), color, 1);
         if(unitTemp.blank == null)
-            unitTemp.blank = itemList.getImgPart(Move.getUnit().
+            unitTemp.blank = PixAnimate.getImgPart(Move.getUnit().
                 sheet().getID(), color, 0);
-        itemList.makeNewImage(unitTemp.blank);
-        unitTemp.terrain = itemList.getImgPart(Move.getUnit().
+        PixAnimate.makeNewImage(unitTemp.blank);
+        unitTemp.terrain = PixAnimate.getImgPart(Move.getUnit().
                 sheet().getID(), color, 2);
         if(unitTemp.terrain == null)
-            unitTemp.terrain = itemList.getImgPart(Move.getUnit().
+            unitTemp.terrain = PixAnimate.getImgPart(Move.getUnit().
                 sheet().getID(), color, 0);
-        itemList.makeNewImage(unitTemp.terrain);
-        unitTemp.unit = itemList.getImgPart(Move.getUnit().
+        PixAnimate.makeNewImage(unitTemp.terrain);
+        unitTemp.unit = PixAnimate.getImgPart(Move.getUnit().
                 sheet().getID(), color, 3);
-        itemList.makeNewImage(unitTemp.unit);
+        PixAnimate.makeNewImage(unitTemp.unit);
         if(unitTemp.unit == null)
-            unitTemp.unit = itemList.getImgPart(Move.getUnit().
+            unitTemp.unit = PixAnimate.getImgPart(Move.getUnit().
                 sheet().getID(), color, 0);
     }
 
@@ -468,20 +466,20 @@ public class MapDraw extends MovingPix{
         }
 
         if(unitcurx < Move.getWay().get(moveNext).getPosX()){
-            g.drawImage(itemList.getImage(unitTemp.unit,
+            g.drawImage(PixAnimate.getImage(unitTemp.unit,
                 animTime).getFlippedCopy(true, false),
                 (int)(posx+shakex+((unitcurx*BASE-(BASE/2))*scale)),
                     (int)(posy+shakey+(((unitcury-1)*BASE+(BASE/2))*scale)));
         }else if(unitcurx > Move.getWay().get(moveNext).getPosX()){
-            g.drawImage(itemList.getImage(unitTemp.unit,
+            g.drawImage(PixAnimate.getImage(unitTemp.unit,
                 animTime),(int)(posx+shakex+((unitcurx*BASE-(BASE/2))*scale)),
                 (int)(posy+shakey+(((unitcury-1)*BASE+(BASE/2))*scale)));
         }else if(unitcury < Move.getWay().get(moveNext).getPosY()){
-            g.drawImage(itemList.getImage(unitTemp.terrain,
+            g.drawImage(PixAnimate.getImage(unitTemp.terrain,
                 animTime), (int)(posx+shakex+((unitcurx*BASE-(BASE/2))*scale)),
                 (int)(posy+shakey+(((unitcury-1)*BASE+(BASE/2))*scale)));
         }else if(unitcury > Move.getWay().get(moveNext).getPosY()){
-            g.drawImage(itemList.getImage(unitTemp.blank,
+            g.drawImage(PixAnimate.getImage(unitTemp.blank,
                 animTime), (int)(posx+shakex+((unitcurx*BASE-(BASE/2))*scale)),
                 (int)(posy+shakey+(((unitcury-1)*BASE+(BASE/2))*scale)));
         }
@@ -550,7 +548,7 @@ public class MapDraw extends MovingPix{
                         tdir = 9;
                 }
             }
-            g.drawImage(itemList.getImage(getArrow(tdir).blank, 0),
+            g.drawImage(PixAnimate.getImage(getArrow(tdir).blank, 0),
                 (int)(posx+shakex+(x*BASE*scale)),
                 (int)(posy+shakey+(y*BASE*scale)));
         }
@@ -564,8 +562,8 @@ public class MapDraw extends MovingPix{
             if(Game.getPlayers() != null)
                 color = Instance.getCurPlayer().getID()+1;
                 
-            drawArrow[dir].blank = itemList.getImgPart("PRAXARROW", color, dir);
-            itemList.makeNewImage(drawArrow[dir].blank);
+            drawArrow[dir].blank = PixAnimate.getImgPart("PRAXARROW", color, dir);
+            PixAnimate.makeNewImage(drawArrow[dir].blank);
         //}
         return drawArrow[dir];
     }
@@ -601,20 +599,20 @@ public class MapDraw extends MovingPix{
             int color = 0;
             if(map.getField()[x][y].getOwner() != null)
                 color = map.getField()[x][y].getOwner().getID()+1;
-            item.terrain = itemList.getImgPart(map.getField()[x][y].sheet().
+            item.terrain = PixAnimate.getImgPart(map.getField()[x][y].sheet().
                     getID(), color, 0);
-            itemList.makeNewImage(item.terrain);
-            item.blank = itemList.getImgPart( map.getField()[x][y].sheet().
+            PixAnimate.makeNewImage(item.terrain);
+            item.blank = PixAnimate.getImgPart( map.getField()[x][y].sheet().
                 getID().toUpperCase(), 0, 0);
-            itemList.makeNewImage(item.blank);
+            PixAnimate.makeNewImage(item.blank);
         }        
         if(item.unit == null && map.getField()[x][y].getUnit() != null){
             int color = 0;
             if(map.getField()[x][y].getUnit().getOwner() != null)
                 color = map.getField()[x][y].getUnit().getOwner().getID()+1;
-            item.unit = itemList.getImgPart(map.getField()[x][y].getUnit().
+            item.unit = PixAnimate.getImgPart(map.getField()[x][y].getUnit().
                     sheet().getID(), color, 0);
-            itemList.makeNewImage(item.unit);
+            PixAnimate.makeNewImage(item.unit);
         }
         item.change = false;
         return item;
@@ -649,11 +647,11 @@ public class MapDraw extends MovingPix{
                     drawMap[i][j] = createNewImage(drawMap[i][j], i, j);
                 if(drawMap[i][j].terrain != null)
                     if(Fog.inFog(map.getTile(i, j))){
-                        g.drawImage(itemList.getImage(drawMap[i][j].terrain,
+                        g.drawImage(PixAnimate.getImage(drawMap[i][j].terrain,
                             animTime), (int)(posx+(i*BASE*scale)),
                         (int)(posy+((j-1)*BASE*scale)), FOG);
                     }else{
-                        g.drawImage(itemList.getImage(drawMap[i][j].terrain,
+                        g.drawImage(PixAnimate.getImage(drawMap[i][j].terrain,
                             animTime), (int)(posx+(i*BASE*scale)),
                         (int)(posy+((j-1)*BASE*scale)));
                     }
@@ -698,7 +696,7 @@ public class MapDraw extends MovingPix{
                 if(drawMap[i][j].unit != null &&
                         !Fog.inFog(map.getTile(i, j))){
                     if(Fog.isVisible(map.getTile(i,j).getUnit())){
-                        g.drawImage(itemList.getImage(drawMap[i][j].unit,
+                        g.drawImage(PixAnimate.getImage(drawMap[i][j].unit,
                         animTime), (int)(posx+((i*BASE-(BASE/2))*scale)),
                         (int)(posy+(((j-1)*BASE+(BASE/2))*scale)));
                         if(map.getTile(i, j).getUnit().getHealth() < 100){

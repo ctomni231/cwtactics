@@ -17,16 +17,20 @@ import org.newdawn.slick.Image;
  * @author Crecen
  */
 public class PixAnimate {
-    private final int BASE = 32;
+    private static final int BASE = 32;
 
-    private ImgLibrary storedImg;
-    private ArrayList<Integer> buildColors;
-    private ArrayList<Integer> unitColors;
-    private HashMap<Short, Integer> imgMap;
-    private ImgDataParser imgData;
-    private double scale;
+    private static ImgLibrary storedImg;
+    private static ArrayList<Integer> buildColors;
+    private static ArrayList<Integer> unitColors;
+    private static HashMap<Short, Integer> imgMap;
+    private static ImgDataParser imgData;
+    private static double scale;
 
     public PixAnimate(){
+        init();
+    }
+
+    public static void init(){
         storedImg = new ImgLibrary();
         buildColors = new ArrayList<Integer>();
         unitColors = new ArrayList<Integer>();
@@ -35,50 +39,50 @@ public class PixAnimate {
         imgData = new ImgDataParser();
     }
 
-    public void addBuildingChange(String filePath){
+    public static void addBuildingChange(String filePath){
         buildColors = colorChange(filePath);
     }
 
-    public void addUnitChange(String filePath){
+    public static void addUnitChange(String filePath){
         unitColors = colorChange(filePath);
     }
 
-    public void addPreferredItem(String code, String type){
+    public static void addPreferredItem(String code, String type){
         imgData.addForceType(code, type);
     }
 
-    public void clearData(){
+    public static void clearData(){
         imgData.clearData();
     }
 
-    public void loadData(){
+    public static void loadData(){
         imgData.decode();
         //imgData.decodeFiles();
     }
 
-    public boolean isReady(){
+    public static boolean isReady(){
         return imgData.isReady();
     }
 
-    public ArrayList<String> getTypes(){
+    public static ArrayList<String> getTypes(){
         return imgData.getTypes();
     }
 
-    public ArrayList<ImgData> getData(){
+    public static ArrayList<ImgData> getData(){
         return imgData.getData();
     }
 
-    public void changeScale(int tileBase){
+    public static void changeScale(int tileBase){
         if(tileBase > 0)
             scale = (double)tileBase/BASE;
         imgMap.clear();
     }
 
-    public double getScale(){
+    public static double getScale(){
         return scale;
     }
 
-    public AnimStore getImgPart(String name, int player, int direction){
+    public static AnimStore getImgPart(String name, int player, int direction){
         int nameItem = -1;
         byte[] anim = new byte[0];
         for(int i = 0; i < imgData.getData().size(); i++){
@@ -96,16 +100,16 @@ public class PixAnimate {
                 anim, 0, 0);
     }
 
-    public Image getImage(AnimStore item, int animTime){
+    public static Image getImage(AnimStore item, int animTime){
         return storedImg.getSlickImage(imgMap.get(
                 item.getAnimation(animTime)));
     }
 
-    public void makeNewImage(AnimStore item){
+    public static void makeNewImage(AnimStore item){
         if(item != null)    makeNewImage(item.ind, item.owner, item.dir);
     }
 
-    private ArrayList<Integer> colorChange(String filePath){
+    private static ArrayList<Integer> colorChange(String filePath){
         ArrayList<Integer> newColors = new ArrayList<Integer>();
         ImgLibrary temp = new ImgLibrary();
         temp.addImage(filePath);
@@ -119,7 +123,7 @@ public class PixAnimate {
     }
 
 
-    private void makeNewImage(int index, int player, int direction){
+    private static void makeNewImage(int index, int player, int direction){
         short store = (short)((index*10000+player*100+direction)*100);
         if(imgMap.containsKey(store))       return;
 

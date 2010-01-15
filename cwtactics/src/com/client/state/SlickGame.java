@@ -7,6 +7,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import com.client.logic.input.Controls;
+import org.newdawn.slick.CanvasGameContainer;
 
 /**
  * Extends stateBasedGame. Sets up functionality for the button
@@ -110,7 +111,7 @@ public class SlickGame extends StateBasedGame{
     @Override
     public void keyPressed(int key, char c){       
     	// if F9 is pressed, show FPS on screen
-    	if(key == FPS_KEY) contain.setShowFPS(!contain.isShowingFPS());        
+    	if(key == FPS_KEY) contain.setShowFPS(!contain.isShowingFPS());
         getState(getCurrentStateID()).keyPressed(key, c);
     }
 

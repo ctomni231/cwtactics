@@ -11,6 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
 import org.newdawn.slick.Color;
@@ -33,6 +34,8 @@ public class ImgLibrary extends Component{
     private HashMap<String, Integer> hashImg;
     //Holds values so you can change colors within images
     private HashMap<Integer, Integer> colorChanger;
+    //Holds values that will be blended into image
+    private ArrayList<Integer> colorBlend;
     //Used to set the width for an image
     private int sizex;
     //Used to set the height for an image
@@ -54,6 +57,7 @@ public class ImgLibrary extends Component{
         hashImg = new HashMap<String, Integer>();
         il = new ImgLoader();
         colorChanger = new HashMap<Integer, Integer>();
+        colorBlend = new ArrayList<Integer>();
         sizex = 0;
         sizey = 0;
         storeFileRef = true;
@@ -107,6 +111,14 @@ public class ImgLibrary extends Component{
             java.awt.Color toThisColor){
         if(toThisColor != null && fromThisColor != null)
             colorChanger.put(fromThisColor.getRGB(), toThisColor.getRGB());
+    }
+    //Blends pixels using java.awt.Color
+    public void setPixelBlend(java.awt.Color blendColor){
+        if(blendColor != null)  colorBlend.add(0, blendColor.getRGB());
+    }
+    //Sets what pixels to ignore while you are blending
+    public void setPixelIgnore(java.awt.Color ignoreColor){
+        if(ignoreColor != null)  colorBlend.add(ignoreColor.getRGB());
     }
 
     //ADDERS
@@ -311,7 +323,8 @@ public class ImgLibrary extends Component{
         heldImg.origy = tempImg.image.getHeight(this);
 
         //This changes the pixel colors, and clears the HashMap
-        if(!colorChanger.isEmpty() || mirrorX || mirrorY || rotNine){
+        if(!colorChanger.isEmpty() || !colorBlend.isEmpty() ||
+                mirrorX || mirrorY || rotNine){
             tempImg.pixels = handlePixels(tempImg.image, 0, 0,
                 heldImg.origx, heldImg.origy);
 
@@ -320,6 +333,10 @@ public class ImgLibrary extends Component{
             if(!colorChanger.isEmpty()){
                 tempImg.pixels = tempImg.setColorChange(colorChanger);
                 colorChanger.clear();
+            }
+            if(!colorBlend.isEmpty()){
+                tempImg.pixels = tempImg.setColorBlend(colorBlend);
+                colorBlend.clear();
             }
             if(mirrorX){
                 tempImg.pixels = tempImg.setFlipX();

@@ -4,6 +4,7 @@ import java.util.logging.Level;
 
 import com.client.logic.command.MessageServer;
 import com.client.logic.status.Status;
+import com.client.menu.GUI.tools.PixAnimate;
 import com.client.model.*;
 import com.client.model.object.*;
 
@@ -15,6 +16,7 @@ import com.system.data.Data;
 
 import com.system.log.Logger;
 import com.system.reader.LanguageReader;
+import com.system.reader.MenuReader;
 import com.system.reader.ModReader;
 import com.system.reader.ScriptReader;
 
@@ -102,6 +104,12 @@ public class MainGame {
     	System.out.println("Version : "+Data.getVersion());
     
     	Weather.setWeather( Data.getWeatherSheet( "SUN" ));
+
+        MenuReader reader = new MenuReader("data/gamemenu.xml");
+        PixAnimate.init();
+        PixAnimate.addBuildingChange(reader.getPropColorRef());
+        PixAnimate.addUnitChange(reader.getUnitColorRef());
+        PixAnimate.loadData();
     }
     
     /**

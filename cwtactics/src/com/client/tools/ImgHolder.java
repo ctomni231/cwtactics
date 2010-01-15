@@ -1,5 +1,7 @@
 package com.client.tools;
 
+import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashMap;
 import org.newdawn.slick.Image;
 
@@ -43,6 +45,28 @@ public class ImgHolder {
         for(int i = 0; i < change.length; i++){
             if(colorChange.containsKey(change[i]))
                 change[i] = colorChange.get(change[i]);
+        }
+        return change;
+    }
+
+    //Allows you to blend colors together
+    public int[] setColorBlend(ArrayList<Integer> colorBlend){
+        int[] change = pixels;
+        int blend = colorBlend.remove(0);
+        double opacity = (((blend >> 24) & 0xff)-255)/255;
+        int red, green, blue, alpha;
+        for(int i = 0; i < change.length; i++){
+            if(colorBlend.contains(change[i]))   continue;
+            alpha = (change[i] >> 24) & 0xff;
+            red = (change[i] >> 16) & 0xff;
+            green = (change[i] >> 8) & 0xff;
+            blue = (change[i]) & 0xff;
+            red += (((blend >> 16) & 0xff)-
+                    ((change[i] >> 16) & 0xff))*opacity;
+            green += (((blend >> 8) & 0xff)-
+                    ((change[i] >>  8) & 0xff))*opacity;
+            blue += (((blend) & 0xff)-((change[i]) & 0xff))*opacity;
+            change[i] = new Color(red, green, blue, alpha).getRGB();
         }
         return change;
     }
