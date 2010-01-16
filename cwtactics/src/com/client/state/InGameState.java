@@ -32,7 +32,7 @@ public class InGameState extends SlickScreen{
 	 * 
 	 */
 	
-    private MapDraw newMap;
+    private static MapDraw newMap;
     private ListDraw newDraw;
     private int enterState;
 
@@ -71,6 +71,9 @@ public class InGameState extends SlickScreen{
                 scr_getContainer().getWidth(), scr_getContainer().getHeight());
     }
 
+    public static MapDraw getMap(){
+    	return newMap;
+    }
     
     
    /*

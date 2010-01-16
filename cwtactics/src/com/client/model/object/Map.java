@@ -1,5 +1,7 @@
 package com.client.model.object;
 
+import com.system.log.Logger;
+
 /**
  * Holds a couple of tiles, these tiles
  * together are a map.
@@ -66,12 +68,23 @@ public class Map {
 		return tiles[x][y];
 	}
 	
+
+	public Tile getTile( String x , String y ){
+		return getTile( Integer.parseInt(x) , Integer.parseInt(y) );
+	}
+	
 	public int getSizeX(){
 		return tiles.length;
 	}
 	
 	public int getSizeY(){
 		return tiles[0].length;
+	}
+	
+	public static Unit getUnit( int ID ){
+		int idPlayer = ID / 10000;
+		int idUnit = ID % 10000;
+		return Game.getPlayer(idPlayer).getUnits().get(idUnit);
 	}
 	
 }

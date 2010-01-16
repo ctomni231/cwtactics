@@ -10,7 +10,7 @@ import com.system.log.Logger;
  * to the command list.
  * 
  * @author tapsi
- * @version 8.1.2010, #2
+ * @version 16.1.2010, #3
  */
 public class MessageServer {
 
@@ -46,7 +46,7 @@ public class MessageServer {
 	/**
 	 * Sends a command through the message server.
 	 */
-	private static void send( Command command , boolean atFirstPos , ID.MessageMode mode ){
+	private static void send( String command , boolean atFirstPos , ID.MessageMode mode ){
 		switch( mode ){
 		
 			case LOCAL :
@@ -65,7 +65,7 @@ public class MessageServer {
 	/**
 	 * Sends a command to the list.
 	 */
-	public static void send( Command command ){
+	public static void send( String command ){
 		send( command , false , mode );
 	}
 
@@ -73,21 +73,21 @@ public class MessageServer {
 	 * Sends a command directly to the command list
 	 * of this client.
 	 */
-	public static void sendLocal( Command command ){
+	public static void sendLocal( String command ){
 		send(command, false , ID.MessageMode.LOCAL );
 	}
 
 	/**
 	 * Sends a command to the first position of the list.
 	 */
-	public static void sendToFirstPos( Command command ){
+	public static void sendToFirstPos( String command ){
 		send( command , true , mode );
 	}
 
 	/**
 	 * Sends a command, directly to the client, to the first position of the list.
 	 */
-	public static void sendLocalToFirstPos( Command command ){
+	public static void sendLocalToFirstPos( String command ){
 		send(command, true , ID.MessageMode.LOCAL );
 	}
 	
@@ -95,7 +95,7 @@ public class MessageServer {
 	/**
 	 * Sends a command to the command list.
 	 */
-	private static void addCommand( Command command , boolean atFirstPos ){
+	private static void addCommand( String command , boolean atFirstPos ){
 		if( atFirstPos ) CommandList.addToFirstPosition(command);
 		else CommandList.addToEndPosition(command);
 	}

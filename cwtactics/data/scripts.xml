@@ -47,6 +47,11 @@
 		<case action="ATTACK INCREASE_BY_RANDOM 10" />
 	</script>
 	
+	<script>
+		<trigger id="BUILDING_CAPTURED" />
+		<case action="GAME DEFEAT_OWNER" />
+	</script>
+	
 	<!--  
 		EXAMPLE SCRIPT FOR CAMPAIGN, MAYBE A LABOR AT POS 10,10 IS CONQUERED BY ENEMY, THEN PLAYER LOOSE GAME
 		<script>

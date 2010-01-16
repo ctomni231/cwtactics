@@ -1,12 +1,10 @@
 package com.system.data.script;
 
+import com.client.logic.command.CommandFactory;
 import com.client.logic.command.MessageServer;
-import com.client.logic.command.commands.ingame.ChangeResource;
-import com.client.logic.command.commands.ingame.ResupplyUnit;
-import com.client.logic.command.commands.ingame.SetDamage;
-import com.client.logic.command.commands.ingame.TryRepair;
 import com.client.model.Fight;
 import com.client.model.Fog;
+import com.client.model.object.Player;
 import com.system.data.script.ScriptLogic.ScriptKey;
 import com.system.log.Logger;
 
@@ -53,23 +51,23 @@ public class SingleAction {
 		
 			case DESTROY :
 				if( Trigger_Object.getUnit() == null || obj != ScriptKey.UNIT ) break;
-				MessageServer.send( new SetDamage( Trigger_Object.getUnit() , 100 ));
+				MessageServer.send( CommandFactory.setDamage( Trigger_Object.getUnit() , 99 ));
 				break;
 				
 			case SUPPLY :
 				if( Trigger_Object.getUnit() == null || obj != ScriptKey.UNIT ) break;
 				//TODO fix command
-				MessageServer.send( new ResupplyUnit() );
+				MessageServer.send( null );
 				break;
 				
 			case HEAL :
 				if( Trigger_Object.getTile() == null || Trigger_Object.getUnit() == null || obj != ScriptKey.UNIT ) break;
-				MessageServer.send( new TryRepair( Trigger_Object.getTile() , value ));
+				MessageServer.send( CommandFactory.tryRepair( Trigger_Object.getTile() , Trigger_Object.getUnit() , value ));
 				break;
 				
 			case GIVE_FUNDS :
 				if( Trigger_Object.getTile() == null || obj != ScriptKey.TILE ) break;
-				MessageServer.send( new ChangeResource( Trigger_Object.getTile().sheet().getFundsTable() , Trigger_Object.getTile().getOwner() , false ));
+				MessageServer.send( CommandFactory.changeResource( false , Trigger_Object.getTile().getOwner() , Trigger_Object.getTile().sheet().getFundsTable() ));
 				break;
 				
 				//TODO MOVE MODEL
@@ -169,6 +167,12 @@ public class SingleAction {
 					case FOG :
 						Fog.setSight( ((int) Math.random() * value) );
 						break;
+				}
+				break;
+				
+			case DEFEAT_OWNER :
+				if( Trigger_Object.getTile() != null ){
+					MessageServer.send( CommandFactory.defeatPlayer( Trigger_Object.getTile().getOwner() ));
 				}
 				break;
 		

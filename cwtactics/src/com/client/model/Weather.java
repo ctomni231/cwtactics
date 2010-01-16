@@ -1,7 +1,7 @@
 package com.client.model;
 
+import com.client.logic.command.CommandFactory;
 import com.client.logic.command.MessageServer;
-import com.client.logic.command.commands.ingame.ChangeWeather;
 import com.client.model.object.Game;
 import com.system.data.Data;
 import com.system.data.sheets.Weather_Sheet;
@@ -110,10 +110,8 @@ public class Weather {
 		// GENERATE DURATION
 		int leftDays = (int) Math.random() * Game.getPlayers().size() * 2;
 		
-		Logger.log("Change weather from "+getWeather().getName()+" to "+sh.getName()+" with duration of "+leftDays+" days.");
-		
 		// SEND COMMAND
-		MessageServer.send( new ChangeWeather(sh, leftDays) );
+		MessageServer.send( CommandFactory.changeWeather(sh, leftDays) );
 		
 	}
 	

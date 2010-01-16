@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * command list.
  * 
  * @author tapsi
- * @version 8.1.2010, #1
+ * @version 16.1.2010, #2
  */
 public class CommandList {
 
@@ -17,7 +17,7 @@ public class CommandList {
 	 * *********
 	 */
 
-	private static ArrayList<Command> list;
+	private static ArrayList<String> list;
 
 	
 	
@@ -28,7 +28,7 @@ public class CommandList {
 
 	// Initialize command stack at program loading 
 	static {
-		list = new ArrayList<Command>();
+		list = new ArrayList<String>();
 	}
 	
 	
@@ -44,7 +44,7 @@ public class CommandList {
 	 * list.
 	 * 
 	 */
-	public synchronized static void addToEndPosition(Command c) {
+	public synchronized static void addToEndPosition(String c) {
 		if( c == null ) return;
 		list.add(c);
 	}
@@ -56,7 +56,7 @@ public class CommandList {
 	 * position of the command list.
 	 * 
 	 */
-	public synchronized static void addToFirstPosition(Command c) {
+	public synchronized static void addToFirstPosition(String c) {
 		if( c == null ) return;
 		list.add( 0 , c);
 	}
@@ -82,8 +82,8 @@ public class CommandList {
 	 * this command from list! ( push )
 	 * 
 	 */
-	public synchronized static Command getNext() {
-		Command c = list.get(0);
+	public synchronized static String getNext() {
+		String c = list.get(0);
 		list.remove(0);
 		return c;
 	}

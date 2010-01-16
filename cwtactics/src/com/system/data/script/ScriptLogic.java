@@ -65,8 +65,6 @@ public class ScriptLogic {
     	FOG,
     	MOVE,
     	GAME,
-    	//FUEL
-    	//AMMO
     	SIGHT,
     	MOVEPOINTS,
 
@@ -76,6 +74,7 @@ public class ScriptLogic {
     	SUPPLY,
     	HEAL,
     	GIVE_FUNDS,
+    	DEFEAT_OWNER,
 		INCREASE_BY,
 		INCREASE_BY_RANDOM,
 		DECREASE_BY,

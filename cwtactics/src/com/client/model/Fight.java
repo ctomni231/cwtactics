@@ -1,7 +1,7 @@
 package com.client.model;
 
+import com.client.logic.command.CommandFactory;
 import com.client.logic.command.MessageServer;
-import com.client.logic.command.commands.ingame.UnitAttack;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
 import com.system.data.script.ScriptFactory;
@@ -89,8 +89,8 @@ public class Fight {
 		int counter = penalty * defender.getHealth() / 100;
 
 		// SEND COMMANDS
-		MessageServer.send( new UnitAttack( attacker, defender ,attack , attackerWeapon ) );
-		if( defenderWeapon != null ) MessageServer.send( new UnitAttack( defender, attacker ,counter , defenderWeapon ) );
+		MessageServer.send( CommandFactory.unitAttack( attacker, defender ,attack , attackerWeapon ) );
+		if( defenderWeapon != null ) MessageServer.send( CommandFactory.unitAttack( defender, attacker ,counter , defenderWeapon ) );
 	}
 	
 	/**
