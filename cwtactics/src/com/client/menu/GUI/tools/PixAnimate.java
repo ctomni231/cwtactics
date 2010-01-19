@@ -82,6 +82,30 @@ public class PixAnimate {
         return scale;
     }
 
+    public static ImgData getData(String name){
+        for(int i = 0; i < imgData.getData().size(); i++){
+            ImgData data = imgData.getData().get(i);
+            if(name.matches(data.group+".*"))
+                return data;
+        }
+        return null;
+    }
+
+    public static AnimStore getBuildPart(String name,
+            int player, int direction){
+        for(int i = 0; i < imgData.getData().size(); i++){
+            ImgData build = imgData.getData().get(i);
+            if(name.matches(build.group+".*") &&
+                    build.code == build.PROPERTY){
+                for(String temp: build.tags){
+                    if(temp.matches("OT:.*"))
+                        return getTagPart(temp.substring(3), player, direction);
+                }
+            }
+        }
+        return getImgPart(name, player, direction);
+    }
+
     public static AnimStore getImgPart(String name, int player, int direction){
         int nameItem = -1;
         byte[] anim = new byte[0];
@@ -100,6 +124,16 @@ public class PixAnimate {
                 anim, 0, 0);
     }
 
+    public static AnimStore getImgPart(int index, int player, int direction){
+        if(index < 0 || index >= imgData.getData().size())
+            return null;
+        ImgData data = imgData.getData().get(index);
+        byte[] anim = new byte[data.animRef.size()];
+        for(int j = 0; j < anim.length; j++)
+                    anim[j] = data.animRef.get(j);
+        return new AnimStore(index, player, direction, anim, 0, 0);
+    }
+
     public static Image getImage(AnimStore item, int animTime){
         return storedImg.getSlickImage(imgMap.get(
                 item.getAnimation(animTime)));
@@ -107,6 +141,17 @@ public class PixAnimate {
 
     public static void makeNewImage(AnimStore item){
         if(item != null)    makeNewImage(item.ind, item.owner, item.dir);
+    }
+
+    private static AnimStore getTagPart(String tag, int player, int direction){
+        for(int i = 0; i < imgData.getData().size(); i++){
+            ImgData data = imgData.getData().get(i);
+            for(String temp: data.tags){
+                if(temp.substring(2).matches(tag))
+                    return getImgPart(data.name, player, direction);
+            }
+        }
+        return null;
     }
 
     private static ArrayList<Integer> colorChange(String filePath){
@@ -156,6 +201,13 @@ public class PixAnimate {
                         new Color(data.dfltColors.get(j)),
                         new Color(buildColors.get(
                         j+data.dfltColors.size()*player).intValue()));
+                }
+                
+                if((data.code == data.UNIT || data.code == data.PROPERTY)
+                        && data.ignrColors.size() != 0 && j == 2){
+                    storedImg.setPixelBlend(new Color(data.dfltColors.get(j)));
+                    for(int ignore: data.ignrColors)
+                        storedImg.setPixelIgnore(new Color(ignore));
                 }
             }
             storedImg.setImageSize(

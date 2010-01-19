@@ -24,17 +24,26 @@ import java.util.Scanner;
 //either in getData(String type)
 public class ImgDataParser implements Runnable{
     private ArrayList<ImgData> allImg;
+    private ArrayList<ImgData> tempImg;
     private ArrayList<Integer> defColors;
+    private ArrayList<Integer> ignColors;
     private HashMap<Integer, String> preferItems;
     private ArrayList<String> typeList;
     private boolean ready;
     private Thread looper;
+    private FileFind findFiles;
 
     public ImgDataParser(){
         preferItems = new HashMap<Integer, String>();
         allImg = new ArrayList<ImgData>();
+        tempImg = new ArrayList<ImgData>();
         defColors = new ArrayList<Integer>();
+        ignColors = new ArrayList<Integer>();
         typeList = new ArrayList<String>();
+        findFiles = new FileFind();
+        findFiles.addAvoidDir(".svn");
+        findFiles.addForceType("txt");
+        findFiles.refactor();
     }
 
     //This class will search drawn items for a type that matches it.
@@ -43,7 +52,7 @@ public class ImgDataParser implements Runnable{
     }
 
     public ArrayList<ImgData> getData(){
-        return ready ? allImg : new ArrayList<ImgData>();
+        return ready ? allImg : tempImg;
     }
 
     public ArrayList<String> getTypes(){
@@ -53,8 +62,12 @@ public class ImgDataParser implements Runnable{
     public void clearData(){
         if(preferItems != null)
             preferItems.clear();
-        if(allImg != null)
+        if(allImg != null){
+            tempImg.clear();
+            for(ImgData item: allImg)
+                tempImg.add(item);
             allImg.clear();
+        }
         typeList = new ArrayList<String>();
     }
 
@@ -92,10 +105,11 @@ public class ImgDataParser implements Runnable{
 
     private ArrayList<String> getFileTextInfo(){
         ArrayList<String> text = new ArrayList<String>();
-        FileFind findFiles = new FileFind();
-        findFiles.addAvoidDir(".svn");
-        findFiles.addForceType("txt");
-        findFiles.refactor();
+
+        //FileFind findFiles = new FileFind();
+        //findFiles.addAvoidDir(".svn");
+        //findFiles.addForceType("txt");
+        //findFiles.refactor();
 
         for(FileIndex file: findFiles.getAllFiles()){
             if(file.suffix.matches("txt")){
@@ -135,10 +149,15 @@ public class ImgDataParser implements Runnable{
                 storeColors(part);
                 continue;
             }
+            if(part[0].matches("BLE.*")){
+                storeIgnoreColors(part);
+                continue;
+            }
             if(part[0].matches("END") || part[0].matches("COD.*")){
                 if(!temp.name.matches("")){
                     //System.out.println(defColors);
                     temp.dfltColors = defColors;
+                    temp.ignrColors = ignColors;
                     storeData(temp);
                     temp = new ImgData();
                 }
@@ -310,6 +329,26 @@ public class ImgDataParser implements Runnable{
                          Integer.parseInt(color[2])).getRGB());
              else if(color.length == 4)
                  defColors.add(new Color(Integer.parseInt(color[0]),
+                         Integer.parseInt(color[1]),
+                         Integer.parseInt(color[2]),
+                         Integer.parseInt(color[3])).getRGB());
+
+        }
+    }
+
+    private void storeIgnoreColors(String[] parts){
+        ignColors = new ArrayList<Integer>();
+        String[] color;
+        for(int i = 1; i < parts.length; i++){
+             color = parts[i].split(",");
+             if(color.length == 1 && color[0].matches("0x.*"))
+                 ignColors.add(new Color(Integer.decode(color[0])).getRGB());
+             else if(color.length == 3)
+                 ignColors.add(new Color(Integer.parseInt(color[0]),
+                         Integer.parseInt(color[1]),
+                         Integer.parseInt(color[2])).getRGB());
+             else if(color.length == 4)
+                 ignColors.add(new Color(Integer.parseInt(color[0]),
                          Integer.parseInt(color[1]),
                          Integer.parseInt(color[2]),
                          Integer.parseInt(color[3])).getRGB());

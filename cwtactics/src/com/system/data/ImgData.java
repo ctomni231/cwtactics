@@ -40,6 +40,8 @@ public class ImgData {
     public ArrayList<String> tags;
     //Stores the default colors for the color changes
     public ArrayList<Integer> dfltColors;
+    //Stores colors to ignore whilest blending
+    public ArrayList<Integer> ignrColors;
 
     public ImgData(){
         code = -1;
@@ -50,6 +52,7 @@ public class ImgData {
         imgFileRef = new ArrayList<ImgFile>();
         animRef = new ArrayList<Byte>();
         dfltColors = new ArrayList<Integer>();
+        ignrColors = new ArrayList<Integer>();
         codeType = "";
         name = "";
         group = "";

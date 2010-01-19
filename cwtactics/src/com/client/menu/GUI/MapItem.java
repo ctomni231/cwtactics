@@ -9,11 +9,13 @@ import com.client.menu.GUI.tools.AnimStore;
 public class MapItem {
     public AnimStore terrain;
     public AnimStore blank;
+    public AnimStore connect;
     public AnimStore unit;
     public boolean change;
 
     public MapItem(){
         terrain = null;
+        connect = null;
         blank = null;
         unit = null;
         change = true;

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.client.logic.command.CommandFactory;
 import com.client.logic.command.MessageServer;
-import com.client.logic.command.commands.ingame.*;
 import com.client.logic.input.Controls;
 import com.client.menu.GUI.MapDraw;
 import com.client.menu.logic.Menu;

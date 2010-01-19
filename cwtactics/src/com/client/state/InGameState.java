@@ -181,24 +181,8 @@ public class InGameState extends SlickScreen{
     }
 
     private void testScr(){
-        if(scrSwitch){
-            scrSwitch = false;
-        }
-
-        scr_scroll = newMap.update(scr_mouseX, scr_mouseY, scr_mouseScroll,
-                scr_scroll, scr_mouseLock);
-        newMap.update();
-
-        if(Controls.isActionClicked()){
-            
-        }
-        if(Controls.isCancelClicked()){
-            column = 0;
-            scrSwitch = true;
-        }
     }
     private void testScr(Graphics g){
-        newMap.draw(g, scr_sysTime);
     }
 
     private void mainScr(){
