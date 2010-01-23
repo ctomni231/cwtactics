@@ -3,6 +3,7 @@ package com.system.data;
 import com.client.tools.FileFind;
 import com.client.tools.FileIndex;
 import java.awt.Color;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,6 +33,8 @@ public class ImgDataParser implements Runnable{
     private boolean ready;
     private Thread looper;
     private FileFind findFiles;
+    private int ttlItems;
+    private int crtItems;
 
     public ImgDataParser(){
         preferItems = new HashMap<Integer, String>();
@@ -49,6 +52,11 @@ public class ImgDataParser implements Runnable{
     //This class will search drawn items for a type that matches it.
     public void addForceType(String code, String type){
         preferItems.put((int)getCodeByte(code), type);
+    }
+
+    //So you can see the percentage
+    public double percentComplete(){
+        return ((crtItems/ttlItems)*100);
     }
 
     public ArrayList<ImgData> getData(){
@@ -80,15 +88,17 @@ public class ImgDataParser implements Runnable{
         looper = new Thread(this);
         looper.start();
     }
-    public void decodeFiles(){
+    public void decodeFiles(){      
         decodeData(getFileTextInfo());
         ready = true;
     }
+
     public void decodeData(ArrayList<String> textData){
         ArrayList<String> gameData;
         Scanner textScan;
         String temp;
-        for(String txt: textData){
+        
+        for(String txt: textData){           
             gameData = new ArrayList<String>();
             
             textScan = new Scanner(txt);
@@ -103,8 +113,10 @@ public class ImgDataParser implements Runnable{
         }
     }
 
+    //Never use FileReader to decode data, always use Scanner
     private ArrayList<String> getFileTextInfo(){
         ArrayList<String> text = new ArrayList<String>();
+        Scanner scan;
 
         //FileFind findFiles = new FileFind();
         //findFiles.addAvoidDir(".svn");
@@ -114,19 +126,15 @@ public class ImgDataParser implements Runnable{
         for(FileIndex file: findFiles.getAllFiles()){
             if(file.suffix.matches("txt")){
                 String temp = "";
-                char cool = 0;
                 try{
-                    FileReader fileRead = new FileReader(file.fpath);
-                    while(fileRead.ready()){
-                        cool = (char)fileRead.read();
-                        if(cool != '\n' && cool != '\r')
-                            temp = temp + String.valueOf(cool);
-                    }
-                    fileRead.close();
-               }catch(IOException e){
+                    scan = new Scanner(new File(file.fpath));
+                    while(scan.hasNext())
+                        temp += scan.next();
+                    scan.close();
+                }catch(IOException e){
                     return text;
-               }
-               text.add(temp);
+                }
+                text.add(temp);
             }
         }
         return text;
@@ -135,8 +143,11 @@ public class ImgDataParser implements Runnable{
     private void fillData(ArrayList<String> gameData){
         //Give back a group of ImgData
         ImgData temp = new ImgData();
-        ImgFile tempFile = new ImgFile();        
+        ImgFile tempFile = new ImgFile();
+        ttlItems = gameData.size();
+        crtItems = 0;
         for(String test: gameData){
+            crtItems++;
             //System.out.println("PART:"+test);
 
             if(!test.startsWith("{") || test.startsWith("{-"))

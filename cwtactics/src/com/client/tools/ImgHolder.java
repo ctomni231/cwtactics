@@ -53,7 +53,8 @@ public class ImgHolder {
     public int[] setColorBlend(ArrayList<Integer> colorBlend){
         int[] change = pixels;
         int blend = colorBlend.remove(0);
-        double opacity = (((blend >> 24) & 0xff)-255)/255;
+        //double opacity = (((blend >> 24) & 0xff)-255)/255;
+        double opacity = 0.5;
         int red, green, blue, alpha;
         for(int i = 0; i < change.length; i++){
             if(colorBlend.contains(change[i]))   continue;

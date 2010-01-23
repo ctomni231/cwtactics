@@ -4,17 +4,11 @@ import com.client.logic.input.Controls;
 import com.client.logic.status.Status;
 import com.client.menu.GUI.tools.MovingPix;
 import com.client.menu.GUI.tools.PixAnimate;
-import com.client.menu.GUI.tools.PixMenu;
 import com.client.model.Fog;
 import com.client.model.Instance;
 import com.client.model.Move;
 import com.client.model.Range;
-import com.client.model.object.Game;
-import com.system.data.ImgData;
 import com.client.model.object.Map;
-import com.client.model.object.Tile;
-import com.client.tools.ImgLibrary;
-import com.system.log.Logger;
 import java.util.ArrayList;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -33,9 +27,10 @@ public class MapDraw extends MovingPix{
     private int lrcntr;
     private Map map;
     private MapItem[][] drawMap;
-    private MapItem[] drawArrow;
+    
     private double scale;
     private boolean showGrid;
+    private MapArrow arrow;
 
     private int column;
     private int tilebase;
@@ -46,7 +41,6 @@ public class MapDraw extends MovingPix{
     private int cursory;
     private int realcurx;
     private int realcury;
-    private PixMenu cursor;
 
     private ArrayList<Integer> shakeX;
     private ArrayList<Integer> shakeY;
@@ -57,11 +51,6 @@ public class MapDraw extends MovingPix{
     private boolean mapWatch;
     private int mapInd;
 
-    private MapItem unitTemp;
-    private double unitcurx;
-    private double unitcury;
-    private int moveNext;
-    private boolean moveActive;
     private boolean ready;
 
     //TODO connections, menu
@@ -74,15 +63,11 @@ public class MapDraw extends MovingPix{
         shakeY = new ArrayList<Integer>();
         shakex = 0;
         shakey = 0;
-        moveNext = 0;
         mapScr = true;
         mapWatch = true;
         ready = false;
         mapInd = 4;
-        unitTemp = new MapItem();
-        unitcurx = 0;
-        unitcury = 0;
-        moveActive = false;
+        arrow = new MapArrow(theMap, BASE);
         map = theMap;
         mapsx = map.getSizeX();
         mapsy = map.getSizeY();
@@ -96,53 +81,11 @@ public class MapDraw extends MovingPix{
         scale = PixAnimate.getScale();
         cursorx = 0;
         cursory = 0;
-        column = 0;
-        drawArrow = new MapItem[10];
-    }
-
-    public void initCursor(){
-        cursor = new PixMenu((int)posx+cursorx, (int)posy+cursory, 0);
-        for(ImgData item: PixAnimate.getData()){
-            if(item.code == item.CURSOR){
-                ImgLibrary temp = new ImgLibrary();
-                temp.addImage(item.imgFileRef.get(0).filename);
-                temp.setImageSize((int)(temp.getX(0)*scale),
-                        (int)(temp.getY(0)*scale));
-                temp.addImage(0, temp.getImage(0));
-                temp.setFlipX();
-                temp.addImage(1, temp.getImage(0));
-                temp.setFlipY();
-                temp.addImage(2, temp.getImage(0));
-                temp.setFlipX();
-                temp.setFlipY();
-                temp.addImage(3, temp.getImage(0));
-                cursor.setImage(temp.getImage(0),0,0);
-                cursor.createNewItem(0, 0, .5);
-                cursor.addMenuImgPart(temp.getImage(0), "", 1.0);
-                cursor.addMenuPart(0, false);
-                cursor.createNewItem((int)(BASE*scale), 0, .5);
-                cursor.addMenuImgPart(temp.getImage(1), "", 1.0);
-                cursor.addMenuPart(0, false);
-                cursor.createNewItem(0, (int)(BASE*scale), .5);
-                cursor.addMenuImgPart(temp.getImage(2), "", 1.0);
-                cursor.addMenuPart(0, false);
-                cursor.createNewItem((int)(BASE*scale), (int)(BASE*scale), .5);
-                cursor.addMenuImgPart(temp.getImage(3), "", 1.0);
-                cursor.addMenuPart(0, false);
-
-                realcurx = (int)(posx+cursorx*BASE*scale);
-                realcury = (int)(posy+cursory*BASE*scale);
-
-                cursor.setFinalPosition(
-                        realcurx-(int)(temp.getX(0)/2),
-                        realcury-(int)(temp.getY(0)/2));
-                break;
-            }
-        }
+        column = 0;      
     }
 
     public void skipAnimation(){
-        moveActive = false;
+        arrow.skipAnimation();
     }
 
     public void addShake(int x, int y){
@@ -201,8 +144,13 @@ public class MapDraw extends MovingPix{
                 drawMap[i][j] = new MapItem();
         }
         scale = PixAnimate.getScale();
-        if(PixAnimate.isReady())
-            initCursor();
+        if(PixAnimate.isReady()){
+            arrow.setCurPosition(cursorx, cursory);
+            arrow.setPosition(posx, posy);
+            arrow.setScale(scale);
+            arrow.setShake(shakex, shakey);
+            arrow.initCursor();
+        }
     }
 
     public boolean update(int mouseX, int mouseY, int mouseScroll,
@@ -256,15 +204,13 @@ public class MapDraw extends MovingPix{
         }
 
         if(mouseScroll != 0){
-            if(mouseScroll < 0)
-                tilebase += 2;
-            else
-                tilebase -= 2;
+            if(mouseScroll < 0)     tilebase += 2;
+            else                    tilebase -= 2;
             System.out.println("CURRENT TileBase: "+tilebase);
             changeScale();
         }
 
-        if(!moveActive && PixAnimate.isReady() != ready){
+        if(!arrow.getMoveActive() && PixAnimate.isReady() != ready){
             changeScale();
             ready = PixAnimate.isReady();
         }
@@ -288,12 +234,17 @@ public class MapDraw extends MovingPix{
 
     public void render(Graphics g, int animTime){
         if(!PixAnimate.isReady()){
-            g.drawString("LOADING... ", 0, 460);
+            g.drawString("LOADING...", 0, 460);
             if(PixAnimate.getData().size() == 0)  return;
         }
 
-        drawCursor(animTime);
-
+        arrow.setCurPosition(cursorx, cursory);
+        arrow.setPosition(posx, posy);
+        arrow.setScale(scale);
+        arrow.setShake(shakex, shakey);
+        arrow.drawCursor(animTime);
+        realcurx = arrow.getRealX();
+        realcury = arrow.getRealY();
         renderSpeed();
         
         for(int j = 0; j < mapsy; j++){
@@ -310,9 +261,9 @@ public class MapDraw extends MovingPix{
                         connect, 500), (int)(posx+shakex+(i*BASE* scale)),
                         (int)(posy+shakey+((j-1)*BASE*scale)), FOG);
                         if(map.getField()[i][j].getOwner() != null)
-                            g.drawImage(PixAnimate.getImage(drawMap[i][j].blank,
-                            500), (int)(posx+shakex+(i*BASE*scale)),
-                            (int)(posy+shakey+((j-1)*BASE*scale)), FOG);                      
+                           g.drawImage(PixAnimate.getImage(drawMap[i][j].blank,
+                           500), (int)(posx+shakex+(i*BASE*scale)),
+                           (int)(posy+shakey+((j-1)*BASE*scale)), FOG);                      
                     }else{
                         g.drawImage(PixAnimate.getImage(drawMap[i][j].connect,
                             animTime), (int)(posx+shakex+(i*BASE*scale)),
@@ -329,7 +280,8 @@ public class MapDraw extends MovingPix{
                         (int)((BASE+1)*scale),
                         (int)((BASE+1)*scale));
                 }
-                if(!moveActive && Status.getStatus() == Status.Mode.SHOW_MOVE){
+                if(!arrow.getMoveActive() &&
+                        Status.getStatus() == Status.Mode.SHOW_MOVE){
                     if(Move.getTiles().containsKey(map.getTile(i, j))){
                         g.setColor(new Color(0, 0, 255, 100));
                         g.fillRect((int)(posx+shakex+i*BASE*scale),
@@ -349,11 +301,11 @@ public class MapDraw extends MovingPix{
                         map.getTile(i, j).getUnit() != null &&
                         !Fog.inFog(map.getTile(i, j))){
                     if(Fog.isVisible(map.getTile(i,j).getUnit()) &&
-                            !(moveActive && Move.getTargetTile().
+                            !(arrow.getMoveActive() && Move.getTargetTile().
                             equals(map.getTile(i, j)))){
-                        g.drawImage(PixAnimate.getImage(drawMap[i][j].unit,
-                        animTime), (int)(posx+shakex+((i*BASE-(BASE/2))*scale)),
-                        (int)(posy+shakey+(((j-1)*BASE+(BASE/2))*scale)));
+                       g.drawImage(PixAnimate.getImage(drawMap[i][j].unit,
+                       animTime), (int)(posx+shakex+((i*BASE-(BASE/2))*scale)),
+                       (int)(posy+shakey+(((j-1)*BASE+(BASE/2))*scale)));
                         if(map.getTile(i, j).getUnit().getHealth() < 100){
                             g.setColor(Color.white);
                             g.drawString(""+map.getTile(i,j).getUnit().
@@ -362,13 +314,14 @@ public class MapDraw extends MovingPix{
                         }
                     }
                 }
-                if(!moveActive && Status.getStatus() == Status.Mode.SHOW_MOVE){
-                    updateArrow(g, i, j);
+                if(!arrow.getMoveActive() &&
+                        Status.getStatus() == Status.Mode.SHOW_MOVE){
+                    arrow.updateArrow(g, i, j);
                 }
               }
             }
         }
-        if(moveActive){
+        if(arrow.getMoveActive()){
             mapInd = 8;
             renderMoveAnimation(g, animTime);
         }
@@ -383,7 +336,7 @@ public class MapDraw extends MovingPix{
             mapScr = false;
         }
 
-        cursor.render(g);
+        arrow.render(g);
 
         //Display anything you want to see displayed right here
         //-----------------------------------------------------
@@ -392,7 +345,7 @@ public class MapDraw extends MovingPix{
                         getResourceValue(0), 100, 10);
 
         if(!PixAnimate.isReady())
-            g.drawString("LOADING... ", 0, 460);
+            g.drawString("LOADING...", 0, 460);
 
         //END
         //---
@@ -410,186 +363,6 @@ public class MapDraw extends MovingPix{
 
     public int getTileBase(){
         return tilebase;
-    }
-
-    public void startMoveAnimation(){
-        if(Move.getUnit() == null){ Logger.warn("Unit is missing!"); return; }
-        moveActive = true;
-        moveNext = 0;
-        unitcurx = Move.getStartTile().getPosX();
-        unitcury = Move.getStartTile().getPosY();
-        int color = 0;
-        color = Move.getUnit().getOwner().getID()+1;
-        unitTemp.blank = PixAnimate.getImgPart(Move.getUnit().
-                sheet().getID(), color, 1);
-        if(unitTemp.blank == null)
-            unitTemp.blank = PixAnimate.getImgPart(Move.getUnit().
-                sheet().getID(), color, 0);
-        PixAnimate.makeNewImage(unitTemp.blank);
-        unitTemp.terrain = PixAnimate.getImgPart(Move.getUnit().
-                sheet().getID(), color, 2);
-        if(unitTemp.terrain == null)
-            unitTemp.terrain = PixAnimate.getImgPart(Move.getUnit().
-                sheet().getID(), color, 0);
-        PixAnimate.makeNewImage(unitTemp.terrain);
-        unitTemp.unit = PixAnimate.getImgPart(Move.getUnit().
-                sheet().getID(), color, 3);
-        PixAnimate.makeNewImage(unitTemp.unit);
-        if(unitTemp.unit == null)
-            unitTemp.unit = PixAnimate.getImgPart(Move.getUnit().
-                sheet().getID(), color, 0);
-    }
-
-    private void renderMoveAnimation(Graphics g, int animTime){
-        //System.out.println("UNIT: ("+unitcurx+","+unitcury+")");
-        if(unitcurx == Move.getWay().get(moveNext).getPosX() &&
-                unitcury == Move.getWay().get(moveNext).getPosY()){
-            moveNext++;
-            if(moveNext == Move.getWay().size()){
-                moveActive = false;
-                updateMapItem((int)unitcurx, (int)unitcury);
-                return;
-            }
-        }else if(mapScr){
-            if(unitcurx < Move.getWay().get(moveNext).getPosX()){
-                unitcurx+=.25;
-            }else if(unitcurx > Move.getWay().get(moveNext).getPosX()){
-                unitcurx-=.25;
-            }else if(unitcury < Move.getWay().get(moveNext).getPosY()){
-                unitcury+=.25;
-            }else if(unitcury > Move.getWay().get(moveNext).getPosY()){
-                unitcury-=.25;
-            }
-            mapScr = false;
-        }
-
-        if(unitcurx < Move.getWay().get(moveNext).getPosX()){
-            g.drawImage(PixAnimate.getImage(unitTemp.unit,
-                animTime).getFlippedCopy(true, false),
-                (int)(posx+shakex+((unitcurx*BASE-(BASE/2))*scale)),
-                    (int)(posy+shakey+(((unitcury-1)*BASE+(BASE/2))*scale)));
-        }else if(unitcurx > Move.getWay().get(moveNext).getPosX()){
-            g.drawImage(PixAnimate.getImage(unitTemp.unit,
-                animTime),(int)(posx+shakex+((unitcurx*BASE-(BASE/2))*scale)),
-                (int)(posy+shakey+(((unitcury-1)*BASE+(BASE/2))*scale)));
-        }else if(unitcury < Move.getWay().get(moveNext).getPosY()){
-            g.drawImage(PixAnimate.getImage(unitTemp.terrain,
-                animTime), (int)(posx+shakex+((unitcurx*BASE-(BASE/2))*scale)),
-                (int)(posy+shakey+(((unitcury-1)*BASE+(BASE/2))*scale)));
-        }else if(unitcury > Move.getWay().get(moveNext).getPosY()){
-            g.drawImage(PixAnimate.getImage(unitTemp.blank,
-                animTime), (int)(posx+shakex+((unitcurx*BASE-(BASE/2))*scale)),
-                (int)(posy+shakey+(((unitcury-1)*BASE+(BASE/2))*scale)));
-        }
-    }
-    
-    public boolean isAnimationRunning(){
-        return moveActive;
-    }
-    
-    private void updateArrow(Graphics g, int x, int y){
-        if(Move.inWay(map.getTile(x, y))){
-            Tile temp = map.getTile(x, y);
-            g.setColor(new Color(0, 0, 0, 100));
-            g.fillRect((int)(posx+shakex+x*BASE*scale),
-                (int)(posy+shakey+y*BASE*scale), (int)(BASE*scale),
-                (int)(BASE*scale));
-            int tpos = Move.getWay().indexOf(temp);
-            int tdir = 0;
-            if(tpos == 0)
-                return;
-            else if(tpos+1 == Move.getWay().size()){
-                if(Move.getWay().get(tpos-1).getPosX() < temp.getPosX())
-                    tdir = 2;
-                else if(Move.getWay().get(tpos-1).getPosX() > temp.getPosX())
-                    tdir = 3;
-                else if(Move.getWay().get(tpos-1).getPosY() < temp.getPosY())
-                    tdir = 1;
-                else if(Move.getWay().get(tpos-1).getPosY() > temp.getPosY())
-                    tdir = 0;
-            }else{
-                if(Move.getWay().get(tpos-1).getPosX() < temp.getPosX()){
-                    if(Move.getWay().get(tpos+1).getPosX() > temp.getPosX())
-                        tdir = 5;
-                    else if(Move.getWay().get(tpos+1).getPosY() <
-                            temp.getPosY())
-                        tdir = 6;
-                    else if(Move.getWay().get(tpos+1).getPosY() >
-                            temp.getPosY())
-                        tdir = 8;
-                }else if(Move.getWay().get(tpos-1).getPosX() > temp.getPosX()){
-                    if(Move.getWay().get(tpos+1).getPosX() < temp.getPosX())
-                        tdir = 5;
-                    else if(Move.getWay().get(tpos+1).getPosY() <
-                            temp.getPosY())
-                        tdir = 7;
-                    else if(Move.getWay().get(tpos+1).getPosY() >
-                            temp.getPosY())
-                        tdir = 9;
-                }else if(Move.getWay().get(tpos-1).getPosY() < temp.getPosY()){
-                    if(Move.getWay().get(tpos+1).getPosY() > temp.getPosY())
-                        tdir = 4;
-                    else if(Move.getWay().get(tpos+1).getPosX() <
-                            temp.getPosX())
-                        tdir = 6;
-                    else if(Move.getWay().get(tpos+1).getPosX() >
-                            temp.getPosX())
-                        tdir = 7;
-                }else if(Move.getWay().get(tpos-1).getPosY() > temp.getPosY()){
-                    if(Move.getWay().get(tpos+1).getPosY() < temp.getPosY())
-                        tdir = 4;
-                    else if(Move.getWay().get(tpos+1).getPosX() <
-                            temp.getPosX())
-                        tdir = 8;
-                    else if(Move.getWay().get(tpos+1).getPosX() >
-                            temp.getPosX())
-                        tdir = 9;
-                }
-            }
-            g.drawImage(PixAnimate.getImage(getArrow(tdir).blank, 0),
-                (int)(posx+shakex+(x*BASE*scale)),
-                (int)(posy+shakey+(y*BASE*scale)));
-        }
-        
-    }
-
-    private MapItem getArrow(int dir){
-        //if(drawArrow[dir] == null){
-            drawArrow[dir] = new MapItem();
-            int color = 0;
-            if(Game.getPlayers() != null)
-                color = Instance.getCurPlayer().getID()+1;
-                
-            drawArrow[dir].blank = PixAnimate.getImgPart("PRAXARROW", color, dir);
-            PixAnimate.makeNewImage(drawArrow[dir].blank);
-        //}
-        return drawArrow[dir];
-    }
-
-    private void drawCursor(int animTime){
-        if(cursor == null)
-            initCursor();
-
-        realcurx = (int)(posx+shakex+cursorx*BASE*scale);
-        realcury = (int)(posy+shakey+cursory*BASE*scale);
-
-        cursor.setFinalPosition(
-                realcurx-(int)(cursor.getImage().getWidth()/2),
-                realcury-(int)(cursor.getImage().getHeight()/2));
-        if(animTime > 750){
-            cursor.setItemPosition(0, (int)(2*scale), (int)(2*scale));
-            cursor.setItemPosition(1, (int)(-2*scale+BASE*scale),
-                    (int)(2*scale));
-            cursor.setItemPosition(2, (int)(2*scale),
-                    (int)(-2*scale+BASE*scale));
-            cursor.setItemPosition(3, (int)(-2*scale+BASE*scale),
-                    (int)(-2*scale+BASE*scale));
-        }else if(animTime > 0 && animTime < 250){
-            cursor.setItemPosition(0, 0, 0);
-            cursor.setItemPosition(1, (int)(BASE*scale), 0);
-            cursor.setItemPosition(2, 0, (int)(BASE*scale));
-            cursor.setItemPosition(3, (int)(BASE*scale), (int)(BASE*scale));
-        }
     }
 
     private MapItem createNewImage(MapItem item, int x, int y){      
@@ -644,17 +417,79 @@ public class MapDraw extends MovingPix{
         }
     }
 
+    public void startMoveAnimation(){
+        arrow.startMoveAnimation();
+    }
+
+    public boolean isAnimationRunning(){
+        return arrow.getMoveActive();
+    }
+
+    private void renderMoveAnimation(Graphics g, int animTime){
+        //System.out.println("UNIT: ("+unitcurx+","+unitcury+")");
+        if(arrow.getUnitCurX() == Move.getWay().get(arrow.getMoveNext()).
+                getPosX() && arrow.getUnitCurY() == Move.getWay().get(
+                arrow.getMoveNext()).getPosY()){
+            arrow.incrMoveNext();
+            if(arrow.getMoveNext() == Move.getWay().size()){
+                arrow.setMoveActive(false);
+                updateMapItem((int)arrow.getUnitCurX(),
+                        (int)arrow.getUnitCurY());
+                return;
+            }
+        }else if(mapScr){
+            if(arrow.getUnitCurX() < Move.getWay().get(
+                    arrow.getMoveNext()).getPosX()){
+                arrow.incrUnitCurX(.25);
+            }else if(arrow.getUnitCurX() > Move.getWay().get(
+                    arrow.getMoveNext()).getPosX()){
+                arrow.incrUnitCurX(-.25);
+            }else if(arrow.getUnitCurY() < Move.getWay().get(
+                    arrow.getMoveNext()).getPosY()){
+                arrow.incrUnitCurY(.25);
+            }else if(arrow.getUnitCurY() > Move.getWay().get(
+                    arrow.getMoveNext()).getPosY()){
+                arrow.incrUnitCurY(-.25);
+            }
+            mapScr = false;
+        }
+
+        if(arrow.getUnitCurX() < Move.getWay().get(
+                arrow.getMoveNext()).getPosX()){
+            g.drawImage(PixAnimate.getImage(arrow.getUnitItem().unit,
+                animTime).getFlippedCopy(true, false),
+                (int)(posx+shakex+((arrow.getUnitCurX()*BASE-(BASE/2))*scale)),
+                    (int)(posy+shakey+(((arrow.getUnitCurY()-1)
+                    *BASE+(BASE/2))*scale)));
+        }else if(arrow.getUnitCurX() > Move.getWay().get(
+                arrow.getMoveNext()).getPosX()){
+            g.drawImage(PixAnimate.getImage(arrow.getUnitItem().unit,
+                animTime),(int)(posx+shakex+((arrow.getUnitCurX()*
+                BASE-(BASE/2))*scale)), (int)(posy+shakey+(((
+                arrow.getUnitCurY()-1)*BASE+(BASE/2))*scale)));
+        }else if(arrow.getUnitCurY() < Move.getWay().get(
+                arrow.getMoveNext()).getPosY()){
+            g.drawImage(PixAnimate.getImage(arrow.getUnitItem().terrain,
+                animTime), (int)(posx+shakex+((arrow.getUnitCurX()
+                *BASE-(BASE/2))*scale)), (int)(posy+shakey+(((
+                arrow.getUnitCurY()-1)*BASE+(BASE/2))*scale)));
+        }else if(arrow.getUnitCurY() > Move.getWay().get(
+                arrow.getMoveNext()).getPosY()){
+            g.drawImage(PixAnimate.getImage(arrow.getUnitItem().blank,
+                animTime), (int)(posx+shakex+((arrow.getUnitCurX()
+                *BASE-(BASE/2))*scale)), (int)(posy+shakey+(((
+                arrow.getUnitCurY()-1)*BASE+(BASE/2))*scale)));
+        }
+    }
+
     private void mapControl(int animTime){
         for(int i = 0; i < mapInd; i++){
-            if(animTime > (1000/mapInd)*i &&
-                    animTime < (1000/mapInd)*(i+1)){
-                if(mapWatch && animTime >
-                        ((1000/mapInd)*(i+1))-
-                        (1000/(2*mapInd))){
+            if(animTime > (1000/mapInd)*i && animTime < (1000/mapInd)*(i+1)){
+                if(mapWatch && animTime > ((1000/mapInd)*
+                        (i+1))-(1000/(2*mapInd))){
                     mapScr = true;
                     mapWatch = false;
-                }else if(!mapWatch && animTime <=
-                        ((1000/mapInd)*(i+1))-
+                }else if(!mapWatch && animTime <= ((1000/mapInd)*(i+1))-
                         (1000/(2*mapInd))){
                     mapScr = true;
                     mapWatch = true;

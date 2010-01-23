@@ -444,7 +444,7 @@ public class Move {
     	int x = tile.getPosX();
 		int y = tile.getPosY();
 		
-    	if ( x > 0                            && moveWay.indexOf( Game.getMap().getTile(x-1, y  ) ) != -1 ) return true;                    
+    	if ( x > 0                            && moveWay.indexOf( Game.getMap().getTile(x-1, y  ) ) != -1 ) return true;
         if ( x < Game.getMap().getSizeX() -1  && moveWay.indexOf( Game.getMap().getTile(x+1, y  ) ) != -1 ) return true;
         if ( y < Game.getMap().getSizeY() -1  && moveWay.indexOf( Game.getMap().getTile(x  , y+1) ) != -1 ) return true;
         if ( y > 0                            && moveWay.indexOf( Game.getMap().getTile(x  , y-1) ) != -1 ) return true;

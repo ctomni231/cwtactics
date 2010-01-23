@@ -202,13 +202,13 @@ public class PixAnimate {
                         new Color(buildColors.get(
                         j+data.dfltColors.size()*player).intValue()));
                 }
-                
-                if((data.code == data.UNIT || data.code == data.PROPERTY)
-                        && data.ignrColors.size() != 0 && j == 2){
-                    storedImg.setPixelBlend(new Color(data.dfltColors.get(j)));
-                    for(int ignore: data.ignrColors)
-                        storedImg.setPixelIgnore(new Color(ignore));
-                }
+            }
+            if((data.code == data.UNIT || data.code == data.PROPERTY)
+                    && data.ignrColors.size() != 0){
+                storedImg.setPixelBlend(new Color(unitColors.get(
+                    2+data.dfltColors.size()*player).intValue()));
+                for(int ignore: data.ignrColors)
+                    storedImg.setPixelIgnore(new Color(ignore));
             }
             storedImg.setImageSize(
                 (int)(file.sizex*(BASE/(double)file.sizex)*file.tilex*scale),
