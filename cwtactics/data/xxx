@@ -1,0 +1,24 @@
+ID SCR_FUEL_PLANES
+WHEN TURN_START_UNITS
+IF unitHasTag:(getTriggerUnit:):AIR
+	CASE unitType:STEALTH DO_SWITCH
+		CASE isTrue:(isHidden:(getTriggerUnit:)) DO decreaseFuel:(getTriggerUnit:):8
+		DEFAULT decreaseFuel:(getTriggerUnit:):5
+	DEFAULT decreaseFuel:(getTriggerUnit:):1
+	
+ID SCR_FUEL_SHIPS
+WHEN TURN_START_UNITS
+IF unitHasTag:(getTriggerUnit:):SHIP
+	CASE unitType:SUB DO_SWITCH
+		CASE isTrue:(isHidden:(getTriggerUnit:)) DO decreaseFuel:(getTriggerUnit:):5
+		DEFAULT decreaseFuel:(getTriggerUnit:):1
+	DEFAULT decreaseFuel:(getTriggerUnit:):1
+	
+	
+	
+ID SCR_PROPERTY_SUPPLY
+WHEN TURN_START_TILES
+IF tileHasTag:(getTriggerTile:):PROPERTY
+	CASE lower:(getAmmo:(getTriggerUnit:)):(getMaxAmmo:(getTriggerUnit:)) DO
+	CASE lower:(getFuel:(getTriggerUnit:)):(getMaxFuel:(getTriggerUnit:)) DO
+	

@@ -1,12 +1,13 @@
 package com.client.model.object;
 
+import com.client.library.CustomWars_Library;
 import com.system.data.sheets.Tile_Sheet;
 
 /**
  * Holds an tile.
  * 
  * @author tapsi
- * @version 8.1.2010, #1
+ * @version 30.01.2010, #2
  */
 public class Tile {
 
@@ -23,7 +24,6 @@ public class Tile {
 	private int		posX,posY;
     //JSR test variable
     private int     spreadID;
-    private boolean change;
 
 	
 	
@@ -40,9 +40,7 @@ public class Tile {
 		this.sheet	= type;
 		this.variation = variation;
 		spreadID = -1;
-        change = false;
-        resetCapPoints();
-        //TODO capture / Property
+        CustomWars_Library.resetCapPoints(this);
 	}
 	
 	
@@ -70,15 +68,6 @@ public class Tile {
 	
 	public int getCapPoints() {
 		return capPoints;
-	}
-
-	public void decreaseCapPoints( int value ){
-		if( capPoints - value >= 0 ) capPoints -= value;
-		else capPoints = 0;
-	}
-	
-	public void resetCapPoints(){
-		setCapPoints( capPoints = sheet().getCapturePoints() );
 	}
 	
 	public void setCapPoints(int capPoints) {
@@ -112,21 +101,6 @@ public class Tile {
 	public void setPosY(int posY) {
 		this.posY = posY;
 	}
-	
-	public int getID(){
-		return Game.getMap().getSizeX() * posY + posX;
-	}
-	
-	public void changeOwner( Player player ){
-		
-		// remove property from previous owners list
-		if( getOwner() != null ) getOwner().removeProperty(this);
-		
-		// set new owner and add property to the list
-		// of the new owner
-		setOwner(player);
-		player.addProperty(this);
-	}
 
     //JSR test function
     public int getSpreadID(){
@@ -137,13 +111,14 @@ public class Tile {
         spreadID = id;
     }
 
+	/*
     public boolean getChange(){
         return change;
     }
 
     public void setChange( boolean chng ){
         change = chng;
-    }
+    }*/
 
 
 

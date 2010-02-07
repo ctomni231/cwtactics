@@ -1,14 +1,14 @@
 package com.client.model;
 
-import com.client.logic.command.CommandFactory;
-import com.client.logic.command.MessageServer;
+import com.client.library.CustomWars_Library;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
-import com.system.data.script.ScriptFactory;
-import com.system.data.script.Trigger_Object;
-import com.system.data.script.ScriptLogic;
+import com.system.data.DynamicMemory;
 import com.system.data.sheets.Weapon_Sheed;
 import com.system.log.Logger;
+import com.system.network.MessageServer;
+import com.system.network.coder.MessageEncoder;
+import com.system.triggerEngine.Script_Database;
 
 /**
  * Controls a battle between two units.
@@ -89,8 +89,10 @@ public class Fight {
 		int counter = penalty * defender.getHealth() / 100;
 
 		// SEND COMMANDS
-		MessageServer.send( CommandFactory.unitAttack( attacker, defender ,attack , attackerWeapon ) );
-		if( defenderWeapon != null ) MessageServer.send( CommandFactory.unitAttack( defender, attacker ,counter , defenderWeapon ) );
+		MessageServer.send("unitAttack="+MessageEncoder.encode(attacker)+","+MessageEncoder.encode(defender)+","+MessageEncoder.encode(attackerWeapon)+","+MessageEncoder.encode(attack));
+		if( defenderWeapon != null && defender.getHealth() - attack > 0 ){
+			MessageServer.send("unitAttack="+MessageEncoder.encode(defender)+","+MessageEncoder.encode(attacker)+","+MessageEncoder.encode(defenderWeapon)+","+MessageEncoder.encode(counter));
+		}
 	}
 	
 	/**
@@ -98,12 +100,15 @@ public class Fight {
 	 * situation.
 	 */
 	private static void defenderEffects(){
-		
-		Trigger_Object.triggerCall( defenderTile , defender );
-		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_ATTACK);
-		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_COUNTERATTACK);
-		Trigger_Object.triggerCall( attackerTile , attacker );
-		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_DEFEND);
+
+		DynamicMemory.setTile(defenderTile);
+		DynamicMemory.setUnit(defender);
+		Script_Database.checkAll("UNIT_ATTACK");
+		Script_Database.checkAll("UNIT_COUNTERATTACK");
+		DynamicMemory.setTile(attackerTile);
+		DynamicMemory.setUnit(attacker);
+		Script_Database.checkAll("UNIT_DEFEND");
+		DynamicMemory.reset();
 	}
 	
 	/**
@@ -112,10 +117,13 @@ public class Fight {
 	 */
 	private static void attackerEffects(){
 		
-		Trigger_Object.triggerCall( attackerTile , attacker );
-		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_ATTACK);
-		Trigger_Object.triggerCall( defenderTile , defender );
-		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_DEFEND);
+		DynamicMemory.setTile(attackerTile);
+		DynamicMemory.setUnit(attacker);
+		Script_Database.checkAll("UNIT_ATTACK");
+		DynamicMemory.setTile(defenderTile);
+		DynamicMemory.setUnit(defender);
+		Script_Database.checkAll("UNIT_DEFEND");
+		DynamicMemory.reset();
 	}
 
 	/**

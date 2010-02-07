@@ -3,7 +3,7 @@ package com.system.data.sheets;
 import java.util.ArrayList;
 
 import com.client.model.object.Player;
-import com.system.data.Data;
+import com.system.data.Database;
 
 /**
  * @author tapsi
@@ -74,6 +74,10 @@ public class Tile_Sheet extends ObjectSheet{
 		return builds;
 	}
 	
+	public ArrayList<Unit_Sheed> getRepairList(){
+		return repairs;
+	}
+	
 	/**
 	 * Can the tile build something?
 	 */
@@ -112,27 +116,9 @@ public class Tile_Sheet extends ObjectSheet{
 	 */
 	public int[] getRepairCost( Unit_Sheed sh , int health ){
 		
-		int length = Data.getRessourceTable().size();
-		int[] cost = new int[ length ];
-		
-		for( int i = 0 ; i < length ; i++ ){
-			cost[i] = ( sh.getCost( Data.getRessourceTable().get(i) ) * health * repairExtra ) / 10000; 
-		}
-		
-		return cost;
-	}
-	
-	/**
-	 * get repair cost for repairing an unit with 
-	 * a given health.
-	 */
-	public int[] getFundsTable(){
-		
-		int length = Data.getRessourceTable().size();
-		int[] cost = new int[ length ];
-		
-		for( int i = 0 ; i < length ; i++ ){
-			cost[i] = getFunds( Data.getRessourceTable().get(i) );
+		int[] cost = new int[ Database.getRessourceTable().size() ];
+		for( Sheet i : Database.getRessourceTable() ){
+			cost[ Database.getResourceNumber(i) ] = ( sh.getCost( i ) * health * repairExtra ) / 10000; 
 		}
 		
 		return cost;

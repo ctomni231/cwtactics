@@ -8,13 +8,8 @@ import com.client.model.object.Game;
 import com.client.state.mini.ExitMiniScr;
 import com.client.state.mini.GameMenuScr;
 import com.client.tools.TextImgLibrary;
-import com.system.log.Logger;
 import com.system.reader.MenuReader;
-
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.StateBasedGame;
 
 /**
  * InGameState.java

@@ -1,7 +1,5 @@
 package com.client.model.object;
 
-import com.system.log.Logger;
-
 /**
  * Holds a couple of tiles, these tiles
  * together are a map.

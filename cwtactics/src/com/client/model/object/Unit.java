@@ -2,13 +2,14 @@ package com.client.model.object;
 
 import java.util.ArrayList;
 
+import com.client.library.CustomWars_Library;
 import com.system.data.sheets.Unit_Sheed;
 
 /**
  * Holds an unit.
  * 
  * @author tapsi
- * @version 8.1.2010, #1
+ * @version 30.01.2010, #2
  */
 public class Unit {
 
@@ -20,7 +21,6 @@ public class Unit {
 	private int		health;
 	private Player	owner;
 	private Unit_Sheed sheet;
-	private int		morale;
 	private int		experience;
 	private int		rank;
 	private int		fuel;
@@ -40,8 +40,7 @@ public class Unit {
 		
 		this.sheet	= type;
 		this.owner	= owner;
-		health		= 99;
-		morale		= 100;
+		health		= CustomWars_Library.MAX_HEALTH;
 		experience	= 0;
 		rank		= 0;
 		canAct		= true;
@@ -50,7 +49,6 @@ public class Unit {
 		fuel		= type.getFuel();
 		
 		loads		= new ArrayList<Unit>();
-		
 		loads.trimToSize();
 	}
 
@@ -67,17 +65,8 @@ public class Unit {
 
 	public void setHealth(int health) {
 		if( health < 0 ) health = 0;
+		if ( health > CustomWars_Library.MAX_HEALTH ) health = CustomWars_Library.MAX_HEALTH; 
 		this.health = health;
-	}
-	
-	public void increaseHealth( int health ){
-		if( this.health + health > 99 ) this.health = 99;
-		else this.health += health; 
-	}
-	
-	public void decreaseHealth( int health ){
-		if( this.health - health < 0 ) this.health = 0;
-		else this.health -= health; 
 	}
 
 	public Player getOwner() {
@@ -86,14 +75,6 @@ public class Unit {
 
 	public void setOwner(Player owner) {
 		this.owner = owner;
-	}
-	
-	public int getMorale() {
-		return morale;
-	}
-
-	public void setMorale(int morale) {
-		this.morale = morale;
 	}
 
 	public int getExperience() {
@@ -121,16 +102,9 @@ public class Unit {
 	}
 
 	public void setFuel(int fuel) {
+		if( fuel < 0 ) fuel = 0;
+		if ( fuel > sheet().getFuel() ) fuel = sheet().getFuel(); 
 		this.fuel = fuel;
-	}
-	
-	public void decreaseFuel(){
-		if( this.fuel > 0 ) this.fuel--;
-	}
-
-	public void decreaseFuel( int fuel ){
-		if( this.fuel - fuel >= 0 ) this.fuel -= fuel;
-		else this.fuel = 0;
 	}
 	
 	public int getAmmo() {
@@ -138,20 +112,9 @@ public class Unit {
 	}
 
 	public void setAmmo(int ammo) {
+		if( ammo < 0 ) ammo = 0;
+		if ( ammo > sheet().getAmmo() ) ammo = sheet().getAmmo(); 
 		this.ammo = ammo;
-	}
-	
-	public void decreaseAmmo(){
-		if( this.ammo > 0 ) this.ammo--;
-	}
-	
-	public void decreaseAmmo( int value ){
-		if( this.ammo - value >= 0 ) this.ammo -= value;
-		else this.ammo = 0;
-	}
-	
-	public int getID(){
-		return ( owner.getID() * 10000 ) + owner.getUnits().indexOf(this);
 	}
 	
 	public boolean isHidden() {
@@ -167,59 +130,28 @@ public class Unit {
 	}
 	
 	public boolean hasLoads(){
-		if( getLoads() > 0 ) return true;
+		if( getNumberOfLoads() > 0 ) return true;
 		else return false;
 	}
 	
-	public int getLoads(){
+	public int getNumberOfLoads(){
 		return loads.size();
 	}
 	
 	public Unit getLoad( int pos ){
-		if( pos < 0 || pos >= getLoads() ) return null;
-		else return loads.get(pos);
-	}
-	
-	public boolean canLoadUnit( Unit unit ){
-		
-		if( loads.contains(unit) ) return false;
-		int weight = unit.sheet.getWeight();
-		
-		// IF THE UNIT HAS LAODS, THE WEIGHT INCREASES BY THE LOAD OF THE WEIGHT
-		if( unit.getLoads() > 0 ){
-			for( Unit load : unit.getLoadedUnits() ){
-				weight += load.sheet().getWeight();
-			}
-		}
-		
-		// IF MORE WEIGHT THAN SPACE LEFT, RETURN FALSE
-		if( weight > getLeftLoadSpace() ) return false;
-		return true;
-	}
-	
-	public int getLeftLoadSpace(){
-		int space = sheet.canLoadWeight();
-		for( Unit unit : loads ){
-			space -= unit.sheet.getWeight();
-		}
-		return space;
+		return ( pos >= 0 || pos < getNumberOfLoads() )? loads.get(pos) : null;
 	}
 	
 	public void addLoad( Unit unit ){
-		if( unit != null && !loads.contains(unit) ) loads.add(unit);
+		if( unit != null && !hasLoad(unit) ) loads.add(unit);
 	}
 	
 	public void removeLoad( Unit unit ){
-		if( unit != null && loads.contains(unit) ) loads.remove(unit);
+		if( unit != null && hasLoad(unit) ) loads.remove(unit);
 	}
 	
-	public void destroy(){
-		
-		// first destroy loads
-		if( getLoads() > 0 ) for( Unit unit : loads ){ unit.destroy(); } 
-		
-		// remove this unit from owners unit list
-		getOwner().removeUnit(this);
+	public boolean hasLoad( Unit unit ){
+		return ( loads.contains(unit) )? true : false;
 	}
 	
 	public boolean canAct(){
@@ -239,7 +171,9 @@ public class Unit {
 	
     @Override
 	public String toString(){
-		return "UNIT TYP:"+sheet.getID()+" HEALTH:"+getHealth()+" EXP:"+getExperience()+" MORALE:"+getMorale();
+		String s = "UNIT TYPE:"+sheet.getID()+" - HP:"+getHealth()+" - EXP:"+getExperience()+" - RANK:"+getRank();
+		for( Unit load : getLoadedUnits() ) s += "\n   LOADED "+load;
+		return s;
 	}
 
 }

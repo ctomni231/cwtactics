@@ -1,0 +1,122 @@
+ID SCR_WEAP_MG
+WHEN UNIT_ATTACK
+IF attackersWeaponIs:WP_MG
+	CASE unitHasTag:(returnDefender:):COPTER DO increaseAttack:30
+	CASE unitHasTag:(returnDefender:):SOFT DO increaseAttack:60
+	CASE unitHasTag:(returnDefender:):VEHICLE DO increaseAttack:20
+	CASE unitHasTag:(returnDefender:):TANK DO increaseAttack:10
+	
+ID SCR_WEAP_BAZOOKA
+WHEN UNIT_ATTACK
+IF attackersWeaponIs:WP_BAZOOKA
+	CASE unitHasTag:(returnDefender:):VEHICLE DO increaseAttack:85
+	CASE unitHasTag:(returnDefender:):TANK DO increaseAttack:70
+	
+ID SCR_WEAP_LT_CANNON
+WHEN UNIT_ATTACK
+IF attackersWeaponIs:WP_LT_CANNON
+	CASE unitHasTag:(returnDefender:):VEHICLE DO increaseAttack:85
+	CASE unitHasTag:(returnDefender:):TANK DO increaseAttack:55
+	
+ID SCR_WEAP_HVAT
+WHEN UNIT_ATTACK
+IF attackersWeaponIs:WP_HV_AT
+	CASE unitHasTag:(returnDefender:):SOFT DO increaseAttack:75
+	CASE unitHasTag:(returnDefender:):VEHICLE DO increaseAttack:75
+	CASE unitHasTag:(returnDefender:):TANK DO increaseAttack:75
+
+ID SCR_WEAP_HV_CANN
+WHEN UNIT_ATTACK
+IF attackersWeaponIs:WP_HV_CANNON
+	CASE unitHasTag:(returnDefender:):VEHICLE DO increaseAttack:85
+	CASE unitHasTag:(returnDefender:):TANK DO increaseAttack:95
+	
+ID SCR_WEAP_HOW
+WHEN UNIT_ATTACK
+IF attackersWeaponIs:WP_HOWITZER
+	CASE unitHasTag:(returnDefender:):SOFT DO increaseAttack:90
+	CASE unitHasTag:(returnDefender:):TANK DO increaseAttack:60
+	CASE unitHasTag:(returnDefender:):VEHICLE DO increaseAttack:80
+	CASE unitHasTag:(returnDefender:):SHIP DO increaseAttack:65
+	
+ID SCR_WEAP_HOW2
+WHEN UNIT_ATTACK
+IF attackersWeaponIs:WP_HOWITZER2
+	CASE unitHasTag:(returnDefender:):SOFT DO increaseAttack:75
+	CASE unitHasTag:(returnDefender:):TANK DO increaseAttack:70
+	CASE unitHasTag:(returnDefender:):VEHICLE DO increaseAttack:65
+	CASE unitHasTag:(returnDefender:):SHIP DO increaseAttack:75
+	
+ID SCR_WEAP_AGRKL
+WHEN UNIT_ATTACK
+IF attackersWeaponIs:WP_AG_RKL
+	CASE unitHasTag:(returnDefender:):SHIP DO increaseAttack:25
+	CASE unitHasTag:(returnDefender:):TANK DO increaseAttack:70
+	CASE unitHasTag:(returnDefender:):VEHICLE DO increaseAttack:90
+	
+ID SCR_WEAP_BOMBS
+WHEN UNIT_ATTACK
+IF attackersWeaponIs:WP_BOMBS
+	CASE unitHasTag:(returnDefender:):SOFT DO increaseAttack:115
+	CASE unitHasTag:(returnDefender:):TANK DO increaseAttack:105
+	CASE unitHasTag:(returnDefender:):VEHICLE DO increaseAttack:110
+	CASE unitHasTag:(returnDefender:):SHIP DO increaseAttack:95
+	
+ID SCR_WEAP_WATERBOMBS
+WHEN UNIT_ATTACK
+IF attackersWeaponIs:WP_WATERBOMBS
+	CASE unitHasTag:(returnDefender:):SUB DO increaseAttack:110
+	
+ID SCR_WEAP_TORPEDO
+WHEN UNIT_ATTACK
+IF attackersWeaponIs:WP_TORPEDO
+	CASE unitHasTag:(returnDefender:):SHIP DO increaseAttack:120
+	
+ID SCR_WEAP_AA_RKL2
+WHEN UNIT_ATTACK
+IF attackersWeaponIs:WP_AA_RKL2
+	CASE unitHasTag:(returnDefender:):COPTER DO increaseAttack:120
+	CASE unitHasTag:(returnDefender:):PLANE DO increaseAttack:80
+	
+ID SCR_WEAP_AAGROUND
+WHEN UNIT_ATTACK
+IF attackersWeaponIs:WP_AAGROUND_CANNON
+	CASE unitHasTag:(returnDefender:):SOFT DO increaseAttack:105
+	CASE unitHasTag:(returnDefender:):VEHICLE DO increaseAttack:55
+	CASE unitHasTag:(returnDefender:):TANK DO increaseAttack:15
+	
+ID SCR_WEAP_AA_CAN2
+WHEN UNIT_ATTACK
+IF attackersWeaponIs:WP_AA_CANNON2
+	CASE unitHasTag:(returnDefender:):COPTER DO increaseAttack:55
+	CASE unitHasTag:(returnDefender:):PLANE DO increaseAttack:40
+	
+ID SCR_WEAP_AA_CAN
+WHEN UNIT_ATTACK
+IF attackersWeaponIs:WP_AA_CANNON
+	CASE unitHasTag:(returnDefender:):COPTER DO increaseAttack:120
+	CASE unitHasTag:(returnDefender:):PLANE DO increaseAttack:105
+	
+ID SCR_WEAP_PLANE_CAN
+WHEN UNIT_ATTACK
+IF attackersWeaponIs:WP_PLANE_CANNON
+	CASE unitHasTag:(returnDefender:):COPTER DO increaseAttack:120
+	CASE unitHasTag:(returnDefender:):TANK DO increaseAttack:10
+	CASE unitHasTag:(returnDefender:):VEHICLE DO increaseAttack:30
+	CASE unitHasTag:(returnDefender:):PLANE DO increaseAttack:50
+	CASE unitHasTag:(returnDefender:):SHIP DO increaseAttack:10
+	
+ID SCR_WEAP_AA_RKL
+WHEN UNIT_ATTACK
+IF attackersWeaponIs:WP_AA_RKL
+	CASE unitHasTag:(returnDefender:):COPTER DO increaseAttack:120
+	CASE unitHasTag:(returnDefender:):PLANE DO increaseAttack:100
+	
+ID SCR_WEAP_HV_RKL
+WHEN UNIT_ATTACK
+IF attackersWeaponIs:WP_HV_RKL
+	CASE unitHasTag:(returnDefender:):SOFT DO increaseAttack:110
+	CASE unitHasTag:(returnDefender:):TANK DO increaseAttack:70
+	CASE unitHasTag:(returnDefender:):VEHICLE DO increaseAttack:90
+	CASE unitHasTag:(returnDefender:):SHIP DO increaseAttack:75
+	

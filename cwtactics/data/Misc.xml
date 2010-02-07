@@ -55,8 +55,8 @@
 	<!--  RESSOURCE BLOCK  --> 
 	<!--                   -->
 
-    <ressource ID="RESSOURCE_0" ></ressource>
-    <ressource ID="RESSOURCE_1" ></ressource>
+    <ressource ID="GOLD" ></ressource>
+    <ressource ID="OIL" ></ressource>
 
 
 </misc>

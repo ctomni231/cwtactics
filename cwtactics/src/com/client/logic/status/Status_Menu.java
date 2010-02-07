@@ -1,9 +1,6 @@
 package com.client.logic.status;
 
-import java.util.ArrayList;
-
-import com.client.logic.command.CommandFactory;
-import com.client.logic.command.MessageServer;
+import java.util.Collection;
 import com.client.logic.input.Controls;
 import com.client.menu.GUI.MapDraw;
 import com.client.menu.logic.Menu;
@@ -14,14 +11,14 @@ import com.client.model.Move;
 import com.client.model.Turn;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
-import com.system.data.Data;
-import com.system.data.script.ScriptFactory;
-import com.system.data.script.Trigger_Object;
-import com.system.data.script.ScriptLogic.Trigger;
+import com.system.data.Database;
+import com.system.data.DynamicMemory;
 import com.system.data.sheets.Sheet;
 import com.system.data.sheets.Unit_Sheed;
 import com.system.data.sheets.Weapon_Sheed;
-import com.system.log.Logger;
+import com.system.network.MessageServer;
+import com.system.network.coder.MessageEncoder;
+import com.system.triggerEngine.Script_Database;
 
 /**
  * Menu status class.
@@ -87,13 +84,12 @@ public class Status_Menu implements Status_Interface {
 						unit = apc;
 					}
 
-					MessageServer.send( CommandFactory.loadUnit( unit , load , false));
+					MessageServer.send("loadUnit="+MessageEncoder.encode(unit)+","+MessageEncoder.encode(load)+","+MessageEncoder.encode(false));
 					//TODO show move animation
-					MessageServer.send( CommandFactory.tileSetUnit( button2.getTile() , load ) );
-					MessageServer.send( CommandFactory.unitCanAct( load ,false) );
-					MessageServer.send( CommandFactory.unitCanAct( Move.getUnit(),false) );
-					MessageServer.send( CommandFactory.processFog() );
-
+					MessageServer.send("setUnit="+MessageEncoder.encode(button2.getTile())+","+MessageEncoder.encode(load));
+					MessageServer.send("unitCanAct="+MessageEncoder.encode(load)+","+MessageEncoder.encode(false));
+					MessageServer.send("unitCanAct="+MessageEncoder.encode(Move.getUnit())+","+MessageEncoder.encode(false));
+					MessageServer.send("processFog=");
 
 					Menu.createUnloadUnitsMenu(targetTile, unit, load);
 					if( Menu.getList().size() > 1 ) return;
@@ -114,8 +110,8 @@ public class Status_Menu implements Status_Interface {
 					}
 
 					// set wait status to the unit
-					MessageServer.send( CommandFactory.unitCanAct(Move.getUnit(),false) );
-					MessageServer.send( CommandFactory.processFog() );
+					MessageServer.send("unitCanAct="+MessageEncoder.encode(Move.getUnit())+","+MessageEncoder.encode(false));
+					MessageServer.send("processFog=");
 					
 					break;
 					
@@ -156,29 +152,28 @@ public class Status_Menu implements Status_Interface {
 						// if not tapped, react on selected button
 						if( !Move.isTapped() ){
 							if( Menu.getSelected().getSheet().getID().equals("LOAD") ){
-								MessageServer.send( CommandFactory.loadUnit(apc, Move.getUnit() ,  true ) );
+								MessageServer.send("loadUnit="+MessageEncoder.encode(apc)+","+MessageEncoder.encode(Move.getUnit())+","+MessageEncoder.encode(true));
 							}
 							else if( Menu.getSelected().getSheet().getID().equals("CAPTURE") ){
-								MessageServer.send( CommandFactory.captureBuilding(Move.getTargetTile(),Move.getUnit()) );
+								MessageServer.send("tryCapture="+MessageEncoder.encode(Move.getTargetTile())+","+MessageEncoder.encode(Move.getUnit()));
 								if( Move.getTargetTile().getCapPoints() <= ((int) Move.getUnit().sheet().getCaptureValue() * Move.getUnit().getHealth() / 99 ) ){
-									Trigger_Object.triggerCall(targetTile, unit);
-									ScriptFactory.checkAll( Trigger.BUILDING_CAPTURED );
+									DynamicMemory.setTile(targetTile);
+									DynamicMemory.setUnit(unit);
+									Script_Database.checkAll("BUILDING_CAPTURED");
+									DynamicMemory.reset();
 								}
-								MessageServer.send( CommandFactory.unitCanAct(Move.getUnit(),false) );
 							}		
 							else if( Menu.getSelected().getSheet().getID().equals("HIDE") ){
-								MessageServer.send( CommandFactory.hideUnit( Move.getUnit() , true) );
-								MessageServer.send( CommandFactory.unitCanAct(Move.getUnit(),false) );
+								MessageServer.send("hideUnit="+MessageEncoder.encode(Move.getUnit())+","+MessageEncoder.encode(true));
 							}		
 							else if( Menu.getSelected().getSheet().getID().equals("UNHIDE") ){
-								MessageServer.send( CommandFactory.hideUnit( Move.getUnit() ,false) );
-								MessageServer.send( CommandFactory.unitCanAct(Move.getUnit(),false) );
+								MessageServer.send("hideUnit="+MessageEncoder.encode(Move.getUnit())+","+MessageEncoder.encode(false));
 							}
 						}
 
 						// set wait status to the unit
-						MessageServer.send( CommandFactory.unitCanAct(Move.getUnit(),false) );
-						MessageServer.send( CommandFactory.processFog() );
+						MessageServer.send("unitCanAct="+MessageEncoder.encode(Move.getUnit())+","+MessageEncoder.encode(false));
+						MessageServer.send("processFog=");
 					}
 					
 					break;
@@ -191,16 +186,19 @@ public class Status_Menu implements Status_Interface {
 					Tile property = ((BuildButton) selected).getProperty();
 					
 					// if you can't pay, do nothing!
-					ArrayList<Sheet> list = Data.getRessourceTable();
-					for( int i = 0 ; i < list.size() ; i++ ){
-						if( property.getOwner().getResourceValue(i) < sh.getCost( list.get(i)) ) return;
+					Collection<Sheet> list = Database.getRessourceTable();
+					int l = 0;
+					for( Sheet listSheet : list ){
+						if( property.getOwner().getResourceValue(l) < sh.getCost( listSheet ) ) return;
+						l++;
 					}
 					
-					// send commands
-					MessageServer.send( CommandFactory.buildUnit(property,sh,Turn.getPlayer() ) ); 
-					MessageServer.send( CommandFactory.changeResource( true, property.getOwner() , sh.getCostTable() ));
-					MessageServer.send( CommandFactory.processFog() );
-					
+					// send commands 
+					int[] costT = sh.getCostTable();
+					for( int i = 0 ; i < costT.length ; i++ ) MessageServer.send("changeResource="+MessageEncoder.encode(property.getOwner())+","+MessageEncoder.encode(i)+","+MessageEncoder.encode(costT[i]));
+					//TODO probleme!
+					MessageServer.send("buildUnit="+MessageEncoder.encode(property)+","+MessageEncoder.encode(sh)+","+MessageEncoder.encode(Turn.getPlayer()));
+					MessageServer.send("processFog=");
 					break;
 					
 				// MAP CLICK MENU
@@ -220,7 +218,7 @@ public class Status_Menu implements Status_Interface {
                         map.addShake(0, 0);
                         map.setColumn(2);
                     }else if( Menu.getSelected().getSheet().getID().equals("OPTIONS") )		map.setColumn(1);
-                    else if( Menu.getSelected().getSheet().getID().equals("ENDTURN") )	    MessageServer.send( CommandFactory.turnEnd() ); //Turn.nextTurn();
+                    else if( Menu.getSelected().getSheet().getID().equals("ENDTURN") )	  	MessageServer.send("turnEnd=");
                     //else 																	Logger.write( "Status got an unknown button!", Level.WARN );
 
 			}
@@ -274,14 +272,13 @@ public class Status_Menu implements Status_Interface {
 	
 	private void move( Unit startUnit , Unit targetUnit , MapDraw map ){
 
-		MessageServer.send( CommandFactory.tileSetUnit( Move.getStartTile() , startUnit ) );
-        MessageServer.send( CommandFactory.startMoveAnimation() );
-        MessageServer.send( CommandFactory.waitAnimation() );
-		MessageServer.send( CommandFactory.tileSetUnit( Move.getTargetTile() , targetUnit ) );
-		
+		MessageServer.send("setUnit="+MessageEncoder.encode(Move.getStartTile())+","+MessageEncoder.encode(startUnit));
+		MessageServer.send("startMoveAnimation=");
+		MessageServer.send("waitAnimation=");
+		MessageServer.send("setUnit="+MessageEncoder.encode(Move.getTargetTile())+","+MessageEncoder.encode(targetUnit));
+			
 		// decrease fuel
-		MessageServer.send( CommandFactory.decreaseFuel( Move.getUnit() , Move.getCompleteFuel() ));
-		
+		MessageServer.send("decreaseFuel="+MessageEncoder.encode(Move.getUnit())+","+MessageEncoder.encode(Move.getCompleteFuel()) );
 	}
 	
 	private void changeStatus( Status.Mode status ){

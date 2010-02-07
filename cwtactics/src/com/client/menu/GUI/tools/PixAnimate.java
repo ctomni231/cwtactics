@@ -3,6 +3,7 @@ package com.client.menu.GUI.tools;
 import com.system.data.ImgData;
 import com.system.data.ImgDataParser;
 import com.system.data.ImgFile;
+import com.system.log.Logger;
 import com.client.tools.ImgLibrary;
 import java.awt.Color;
 import java.util.ArrayList;

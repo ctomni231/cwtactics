@@ -5,12 +5,11 @@ import com.client.model.object.Game;
 import com.client.model.object.Player;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
-import com.system.data.script.ScriptFactory;
-import com.system.data.script.Trigger_Object;
-import com.system.data.script.ScriptLogic;
+import com.system.data.DynamicMemory;
 import com.system.data.sheets.ObjectSheet;
 import com.system.data.sheets.Tile_Sheet;
 import com.system.data.sheets.Unit_Sheed;
+import com.system.triggerEngine.Script_Database;
 
 /**
  * Controls the fog system of the game round.
@@ -128,9 +127,10 @@ public class Fog {
     			
     			clearSight();
     			sightValue = tile.sheet().getVision();
-    			Trigger_Object.triggerCall(tile, null);
+    			DynamicMemory.setTile(tile);
+    			Script_Database.checkAll( "VISION_TILE" );
     			if( sightValue < 0 ) sightValue = 0;
-    			ScriptFactory.checkAll( ScriptLogic.Trigger.VISION_TILE );
+    			DynamicMemory.reset();
     			vision(tile, tile.sheet()); 
     		}
     		
@@ -144,8 +144,9 @@ public class Fog {
     			
     			clearSight();
     			sightValue = unit.sheet().getVision();
-    			Trigger_Object.triggerCall( tile , null);
-    			ScriptFactory.checkAll( ScriptLogic.Trigger.VISION_UNIT );
+    			DynamicMemory.setUnit(unit);
+    			Script_Database.checkAll( "VISION_UNIT" );
+    			DynamicMemory.reset();
     			// PREVENT WRONG VALUES, UNIT CAN SEE AT MIN. WITH RANGE 1
     			if( sightValue <= 0 ) sightValue = 1;
     			vision( tile , unit.sheet() );

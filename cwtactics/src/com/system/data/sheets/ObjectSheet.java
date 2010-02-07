@@ -1,9 +1,10 @@
 package com.system.data.sheets;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
-import com.system.data.Data;
+import com.system.data.Database;
 
 /**
  * Master class for unit and tile sheets
@@ -164,11 +165,14 @@ public class ObjectSheet extends Sheet {
 		
 		//TODO search better configuration --> mod.xml settings for prices etc...
 		
-		int length = Data.getRessourceTable().size();
+		int length = Database.getRessourceTable().size();
 		int[] cost = new int[ length ];
 		
-		for( int i = 0 ; i < length ; i++ ){
-			cost[i] = ( sh.getCost( Data.getRessourceTable().get(i) ) * amount * 2 ) / 10000; 
+		Collection<Sheet> list = Database.getRessourceTable();
+		int l = 0;
+		for( Sheet listSheet : list ){
+			cost[ Database.getResourceNumber(listSheet) ] = ( sh.getCost( listSheet ) * amount * 2 ) / 10000; 
+			l++;
 		}
 		
 		return cost;
@@ -205,9 +209,9 @@ public class ObjectSheet extends Sheet {
 	 * Returns the cost table.
 	 */
 	public int[] getCostTable(){
-		int[] costTable = new int[ Data.getRessourceTable().size() ];
+		int[] costTable = new int[ Database.getRessourceTable().size() ];
 		for( Sheet i : cost.keySet() ){
-			costTable[ Data.getRessourceTable().indexOf(i) ] = cost.get(i);
+			costTable[ Database.getResourceNumber(i) ] = cost.get(i);
 		}
 		return costTable;
 	}

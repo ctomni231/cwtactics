@@ -1,7 +1,7 @@
 package com.system.reader;
 
-import com.system.data.Data;
-import com.system.xml.Parser;
+import com.system.data.Database;
+import com.system.input.XML_Parser;
 import org.xml.sax.Attributes;
 
 /**
@@ -9,7 +9,7 @@ import org.xml.sax.Attributes;
  * friendly, and also to export all menu items to an external state.
  * @author Crecen
  */
-public class MenuReader extends Parser{
+public class MenuReader extends XML_Parser{
 
     private String bgPrefix;
     private String bgSuffix;
@@ -145,7 +145,7 @@ public class MenuReader extends Parser{
             for(int i = 0; i < temp.length; i++)
                 fillData[i] = temp[i];
             fillData[fillData.length-1] = fillEntry(
-                    attrib, Data.getLanguage());
+                    attrib, Database.getLanguage());
         }
         return fillData;
     }

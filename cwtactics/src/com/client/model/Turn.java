@@ -4,9 +4,8 @@ import com.client.model.object.Game;
 import com.client.model.object.Player;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
-import com.system.data.script.ScriptFactory;
-import com.system.data.script.Trigger_Object;
-import com.system.data.script.ScriptLogic;
+import com.system.data.DynamicMemory;
+import com.system.triggerEngine.Script_Database;
 
 /**
  * Class turn controls the internal 
@@ -121,15 +120,17 @@ public class Turn {
 		
 		// CHECK EFFECTS FOR EVERY UNIT OF PLAYER
 		for( Unit unit : oldPl.getUnits() ){
-			Trigger_Object.triggerCall( null , unit );
-			ScriptFactory.checkAll( ScriptLogic.Trigger.TURN_END_UNITS );
+			DynamicMemory.setUnit(unit);
+			Script_Database.checkAll("TURN_END_UNITS");
+			DynamicMemory.reset();
 			unit.canAct(true);
 		}
 		
 		// CHECK EFFECTS FOR EVERY PROPERTY OF PLAYER
 		for( Tile property : oldPl.getProperties() ){
-			Trigger_Object.triggerCall( property , null );
-			ScriptFactory.checkAll( ScriptLogic.Trigger.TURN_END_TILES );	
+			DynamicMemory.setTile(property);
+			Script_Database.checkAll("TURN_END_TILES");
+			DynamicMemory.reset();
 		}
 		
 	}
@@ -142,14 +143,16 @@ public class Turn {
 		
 		// CHECK EFFECTS FOR EVERY UNIT OF PLAYER
 		for( Unit unit : newPl.getUnits() ){
-			Trigger_Object.triggerCall( null , unit );
-			ScriptFactory.checkAll( ScriptLogic.Trigger.TURN_START_UNITS );
+			DynamicMemory.setUnit(unit);
+			Script_Database.checkAll("TURN_START_UNITS");
+			DynamicMemory.reset();
 		}
 		
 		// CHECK EFFECTS FOR EVERY PROPERTY OF PLAYER
 		for( Tile property : newPl.getProperties() ){
-			Trigger_Object.triggerCall( property , null );
-			ScriptFactory.checkAll( ScriptLogic.Trigger.TURN_START_TILES );	
+			DynamicMemory.setTile(property);
+			Script_Database.checkAll("TURN_START_TILES");
+			DynamicMemory.reset();
 		}
 	}
 	

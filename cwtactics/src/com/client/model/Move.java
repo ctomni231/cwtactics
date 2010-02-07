@@ -5,18 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import com.client.library.CustomWars_Library;
 import com.client.model.object.Game;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
-import com.system.data.script.ScriptFactory;
-import com.system.data.script.Trigger_Object;
-import com.system.data.script.ScriptLogic;
+import com.system.data.DynamicMemory;
+import com.system.triggerEngine.Script_Database;
 
 /**
  * Controls all unit moving actions.
- * 
- * @author tapsi
- * @version 8.1.2010, #1
  */
 public class Move {
 
@@ -160,8 +157,10 @@ public class Move {
 		clear();
 	
 		// check trigger
-		Trigger_Object.triggerCall( start, unit );
-		ScriptFactory.checkAll( ScriptLogic.Trigger.UNIT_WILL_MOVE);
+		DynamicMemory.setUnit(unit);
+		DynamicMemory.setTile(start);
+		Script_Database.checkAll("UNIT_WILL_MOVE");
+		DynamicMemory.reset();
 	}
 	
 	/**
@@ -239,7 +238,7 @@ public class Move {
 				
 				if( Fog.inFog(tile) || !Fog.isVisible(unit) ) continue;
 				
-				if( unit.getOwner() == Move.unit.getOwner() && unit.sheet().canLoad( Move.unit.sheet() ) && unit.getLeftLoadSpace() >= Move.unit.sheet().getWeight() ) continue;
+				if( unit.getOwner() == Move.unit.getOwner() && unit.sheet().canLoad( Move.unit.sheet() ) && CustomWars_Library.getLeftLoadSpace( unit ) >= Move.unit.sheet().getWeight() ) continue;
 				else getMoveObj(tile).setMoveable(false);
 			}
 		}
@@ -542,8 +541,9 @@ public class Move {
 		moveCost = unit.sheet().getMoveType().getMoveCost( tile.sheet() );
 		
 		// check up scripts
-		Trigger_Object.triggerCall( tile, null );
-		ScriptFactory.checkAll( ScriptLogic.Trigger.MOVE_ONTO);
+		DynamicMemory.setTile(tile);
+		Script_Database.checkAll("MOVE_ONTO");
+		DynamicMemory.reset();
 	}
 	
 	//TODO complete scripts check...

@@ -1,7 +1,7 @@
 package com.client.model.object;
 
 import java.util.ArrayList;
-import com.system.data.Data;
+import com.system.data.Database;
 
 /**
  * Holds a player of a game round.
@@ -35,7 +35,7 @@ public class Player {
 		this.team	= team;
 		units		= new ArrayList<Unit>();
 		properties	= new ArrayList<Tile>();
-		resourcePool = new int[ Data.getRessourceTable().size() ];
+		resourcePool = new int[ Database.getRessourceTable().size() ];
 		
 		units.trimToSize();
 		properties.trimToSize();
@@ -72,6 +72,10 @@ public class Player {
 		units.remove(unit);
 	}
 	
+	public boolean hasUnit( Unit unit ){
+		return ( units.contains(unit) )? true : false;
+	}
+	
 	public ArrayList<Tile> getProperties() {
 		return properties;
 	}
@@ -88,8 +92,17 @@ public class Player {
 		properties.remove(prop);
 	}
 	
+	public boolean hasProperty( Tile tile ){
+		return ( properties.contains(tile) )? true : false;
+	}
+	
 	public void changeResource( int resID , int value ){
 		resourcePool[resID] += value;
+	}
+	
+	public void setResource( int resID , int value ){
+		if( value < 0 ) return;
+		resourcePool[resID] = value;
 	}
 	
 	public int getResourceValue( int resID ){

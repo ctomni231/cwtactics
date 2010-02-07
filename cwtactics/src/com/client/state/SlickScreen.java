@@ -1,7 +1,7 @@
 package com.client.state;
 
-import com.client.logic.command.CommandFactory;
-import com.client.logic.command.CommandList;
+import com.system.network.MessageServer;
+
 import java.util.ArrayList;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -153,12 +153,7 @@ public abstract class SlickScreen extends BasicGameState{
      *
      */
     protected boolean scr_checkCommands(){
-
-    	if( ! CommandList.isEmpty() ){
-    		CommandFactory.doCommand( CommandList.getNext() );
-    		return true;
-    	}
-    	return false;
+    	return MessageServer.checkNext();
     }
 
     //Finalizes the ID, making sure there are no overlaps

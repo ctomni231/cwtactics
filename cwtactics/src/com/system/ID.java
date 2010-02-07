@@ -30,10 +30,5 @@ public interface ID {
 		public void setValue( int val ){ value = val; }
 		
 	}
-    
-    public enum MessageMode{
-    	LOCAL,IRC_NETWORK
-    }
-    
 }
 

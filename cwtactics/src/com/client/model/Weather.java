@@ -1,11 +1,11 @@
 package com.client.model;
 
-import com.client.logic.command.CommandFactory;
-import com.client.logic.command.MessageServer;
 import com.client.model.object.Game;
-import com.system.data.Data;
+import com.system.data.Database;
+import com.system.data.sheets.Sheet;
 import com.system.data.sheets.Weather_Sheet;
-import com.system.log.Logger;
+import com.system.network.MessageServer;
+import com.system.network.coder.MessageEncoder;
 
 /**
  * Holds the weather.
@@ -76,27 +76,27 @@ public class Weather {
 		int curChance = 0;
 		
 		// SUM UP ALL CHANCES
-		for( Weather_Sheet sh : Data.getWeatherTable() ){
+		for( Sheet sh : Database.getWeatherTable() ){
 			
 			// SUM UP CHANCES
 			if( sh == getWeather() ) continue;
-			chance += sh.getChance();
+			chance += ((Weather_Sheet) sh).getChance();
 		}
 		
 		// GENERATE RANDOM VALUE
 		chance = ((int) Math.random() * chance);
 		
 		// TRY TO FIND THE NEW WEATHER
-		for( Weather_Sheet sh : Data.getWeatherTable() ){
+		for( Sheet sh : Database.getWeatherTable() ){
 			
 			// SUM UP CHANCES
 			if( sh == getWeather() ) continue;
-			curChance += sh.getChance();
+			curChance += ((Weather_Sheet) sh).getChance();
 			
 			// IF CUR_CHANCE FIT WITH THE
 			// SUM OF THE CHANCES, SET NEW WEATHER
 			if( chance > curChance ) continue;
-			sendCommand(sh);
+			sendCommand( ((Weather_Sheet) sh) );
 			break;
 		}
 	}
@@ -111,8 +111,7 @@ public class Weather {
 		int leftDays = (int) Math.random() * Game.getPlayers().size() * 2;
 		
 		// SEND COMMAND
-		MessageServer.send( CommandFactory.changeWeather(sh, leftDays) );
-		
+		MessageServer.send("changeWeather="+MessageEncoder.encode(sh)+","+MessageEncoder.encode(leftDays));
 	}
 	
 	
