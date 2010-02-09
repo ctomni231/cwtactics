@@ -4,7 +4,6 @@ import com.client.tools.FileFind;
 import com.client.tools.FileIndex;
 import java.awt.Color;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,8 +32,6 @@ public class ImgDataParser implements Runnable{
     private boolean ready;
     private Thread looper;
     private FileFind findFiles;
-    private int ttlItems;
-    private int crtItems;
 
     public ImgDataParser(){
         preferItems = new HashMap<Integer, String>();
@@ -44,19 +41,18 @@ public class ImgDataParser implements Runnable{
         ignColors = new ArrayList<Integer>();
         typeList = new ArrayList<String>();
         findFiles = new FileFind();
+        refactorFiles("txt");
+    }
+
+    public void refactorFiles(String suffix){
         findFiles.addAvoidDir(".svn");
-        findFiles.addForceType("txt");
+        findFiles.addForceType(suffix);
         findFiles.refactor();
     }
 
     //This class will search drawn items for a type that matches it.
     public void addForceType(String code, String type){
         preferItems.put((int)getCodeByte(code), type);
-    }
-
-    //So you can see the percentage
-    public double percentComplete(){
-        return ((crtItems/ttlItems)*100);
     }
 
     public ArrayList<ImgData> getData(){
@@ -118,11 +114,6 @@ public class ImgDataParser implements Runnable{
         ArrayList<String> text = new ArrayList<String>();
         Scanner scan;
 
-        //FileFind findFiles = new FileFind();
-        //findFiles.addAvoidDir(".svn");
-        //findFiles.addForceType("txt");
-        //findFiles.refactor();
-
         for(FileIndex file: findFiles.getAllFiles()){
             if(file.suffix.matches("txt")){
                 String temp = "";
@@ -144,10 +135,7 @@ public class ImgDataParser implements Runnable{
         //Give back a group of ImgData
         ImgData temp = new ImgData();
         ImgFile tempFile = new ImgFile();
-        ttlItems = gameData.size();
-        crtItems = 0;
         for(String test: gameData){
-            crtItems++;
             //System.out.println("PART:"+test);
 
             if(!test.startsWith("{") || test.startsWith("{-"))
