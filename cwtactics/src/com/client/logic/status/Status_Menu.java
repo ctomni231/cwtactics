@@ -1,7 +1,8 @@
 package com.client.logic.status;
 
 import java.util.Collection;
-import com.client.logic.input.Controls;
+
+import com.client.input.Controls;
 import com.client.menu.GUI.MapDraw;
 import com.client.menu.logic.Menu;
 import com.client.menu.logic.buttons.*;
@@ -11,7 +12,7 @@ import com.client.model.Move;
 import com.client.model.Turn;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
-import com.system.data.Database;
+import com.system.data.Engine_Database;
 import com.system.data.DynamicMemory;
 import com.system.data.sheets.Sheet;
 import com.system.data.sheets.Unit_Sheed;
@@ -186,7 +187,7 @@ public class Status_Menu implements Status_Interface {
 					Tile property = ((BuildButton) selected).getProperty();
 					
 					// if you can't pay, do nothing!
-					Collection<Sheet> list = Database.getRessourceTable();
+					Collection<Sheet> list = Engine_Database.getRessourceTable();
 					int l = 0;
 					for( Sheet listSheet : list ){
 						if( property.getOwner().getResourceValue(l) < sh.getCost( listSheet ) ) return;

@@ -1,6 +1,6 @@
 package com.client.menu.GUI;
 
-import com.client.logic.input.Controls;
+import com.client.input.Controls;
 import com.client.logic.status.Status;
 import com.client.menu.GUI.tools.MovingPix;
 import com.client.menu.GUI.tools.PixAnimate;
@@ -9,6 +9,8 @@ import com.client.model.Instance;
 import com.client.model.Move;
 import com.client.model.Range;
 import com.client.model.object.Map;
+import com.system.log.Logger;
+
 import java.util.ArrayList;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;

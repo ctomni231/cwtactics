@@ -1,7 +1,7 @@
 package com.client.model.object;
 
 import java.util.ArrayList;
-import com.system.data.Database;
+import com.system.data.Engine_Database;
 
 /**
  * Holds a player of a game round.
@@ -35,7 +35,7 @@ public class Player {
 		this.team	= team;
 		units		= new ArrayList<Unit>();
 		properties	= new ArrayList<Tile>();
-		resourcePool = new int[ Database.getRessourceTable().size() ];
+		resourcePool = new int[ Engine_Database.getRessourceTable().size() ];
 		
 		units.trimToSize();
 		properties.trimToSize();

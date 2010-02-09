@@ -13,8 +13,7 @@ import com.client.model.object.*;
 import com.client.state.InGameState;
 import com.client.state.MainMenuState;
 import com.client.state.SlickGame;
-import com.system.data.Database;
-
+import com.system.data.Engine_Database;
 import com.system.log.Logger;
 import com.system.network.MessageServer;
 import com.system.network.MessageServer.MessageMode;
@@ -53,8 +52,8 @@ public class MainGame {
     	Logger.setConsoleOutputOn();
     	Logger.stopOnLevel( Level.SEVERE );
 
-    	MessageEncoder.addEncoderMethods( CustomWars_Encoder.class.getDeclaredMethods() );
-    	MessageDecoder.addDecoderMethods( CustomWars_Decoder.class.getDeclaredMethods() );
+    	MessageEncoder.addEncoderMethods( CustomWars_Encoder.class);
+    	MessageDecoder.addDecoderMethods( CustomWars_Decoder.class);
 
     	// test, add script/message server database
     	Method_Database.addLibrary( CustomWars_Library.class );
@@ -121,23 +120,22 @@ public class MainGame {
     	new ModReader("data/Units.xml");
     	new ModReader("data/Buttons.xml");
     	new LanguageReader("data/language.xml");
-    	
-    	
+
+        MenuReader reader = new MenuReader("data/gamemenu.xml");
+    	PixAnimate.init();
+        PixAnimate.addBuildingChange(reader.getPropColorRef());
+        PixAnimate.addUnitChange(reader.getUnitColorRef());
+        PixAnimate.loadData();
+        
     	// set message server mode
     	MessageServer.setMode( MessageMode.LOCAL );
     	
     	// output some test information from database
-    	System.out.println("Mod     : "+Database.getName());
-    	System.out.println("Author  : "+Database.getAuthor());
-    	System.out.println("Version : "+Database.getVersion());
+    	System.out.println("Mod     : "+Engine_Database.getName());
+    	System.out.println("Author  : "+Engine_Database.getAuthor());
+    	System.out.println("Version : "+Engine_Database.getVersion());
     
-    	Weather.setWeather( Database.getWeatherSheet( "SUN" ));
-
-        MenuReader reader = new MenuReader("data/gamemenu.xml");
-        PixAnimate.init();
-        PixAnimate.addBuildingChange(reader.getPropColorRef());
-        PixAnimate.addUnitChange(reader.getUnitColorRef());
-        PixAnimate.loadData();
+    	Weather.setWeather( Engine_Database.getWeatherSheet( "SUN" ));
     }
     
     /**
@@ -170,30 +168,30 @@ public class MainGame {
     				
     				
     				if( (i == 9 && j == 6) ){
-    					Tile tile =  new Tile( Database.getTileSheet( "FACTORY" ) , i, j, 0, null);
+    					Tile tile =  new Tile( Engine_Database.getTileSheet( "FACTORY" ) , i, j, 0, null);
     					map.setTile( tile , i, j);
     					tile.setOwner(p);
     					p.addProperty(tile);
     				}
     				else if( (i == 1 && j == 8) ){
-    					Tile tile =  new Tile( Database.getTileSheet( "FACTORY" ) , i, j, 0, null);
+    					Tile tile =  new Tile( Engine_Database.getTileSheet( "FACTORY" ) , i, j, 0, null);
     					map.setTile( tile , i, j);
     					tile.setOwner(p2);
     					p2.addProperty(tile);
     				}
     				else if( (i == 5 && j == 5) ){
-    					Tile tile =  new Tile( Database.getTileSheet( "FACTORY" ) , i, j, 0, null);
+    					Tile tile =  new Tile( Engine_Database.getTileSheet( "FACTORY" ) , i, j, 0, null);
     					map.setTile( tile , i, j);
     					tile.setOwner(p3);
     					p3.addProperty(tile);
     				}
     				else{
-    					map.setTile( new Tile( Database.getTileSheet( "FOREST" ), i, j, 0, null), i, j);
+    					map.setTile( new Tile( Engine_Database.getTileSheet( "FOREST" ), i, j, 0, null), i, j);
     				}
     				
     			}
     			else{
-    				Tile ttt = new Tile( Database.getTileSheet( "PLAIN" ), i, j, 0, null) ;
+    				Tile ttt = new Tile( Engine_Database.getTileSheet( "PLAIN" ), i, j, 0, null) ;
     				map.setTile( ttt, i, j);
     			}
     		}

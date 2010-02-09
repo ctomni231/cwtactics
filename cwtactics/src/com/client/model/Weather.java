@@ -1,7 +1,7 @@
 package com.client.model;
 
 import com.client.model.object.Game;
-import com.system.data.Database;
+import com.system.data.Engine_Database;
 import com.system.data.sheets.Sheet;
 import com.system.data.sheets.Weather_Sheet;
 import com.system.network.MessageServer;
@@ -76,7 +76,7 @@ public class Weather {
 		int curChance = 0;
 		
 		// SUM UP ALL CHANCES
-		for( Sheet sh : Database.getWeatherTable() ){
+		for( Sheet sh : Engine_Database.getWeatherTable() ){
 			
 			// SUM UP CHANCES
 			if( sh == getWeather() ) continue;
@@ -87,7 +87,7 @@ public class Weather {
 		chance = ((int) Math.random() * chance);
 		
 		// TRY TO FIND THE NEW WEATHER
-		for( Sheet sh : Database.getWeatherTable() ){
+		for( Sheet sh : Engine_Database.getWeatherTable() ){
 			
 			// SUM UP CHANCES
 			if( sh == getWeather() ) continue;

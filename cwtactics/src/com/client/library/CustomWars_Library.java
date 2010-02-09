@@ -10,13 +10,14 @@ import com.client.model.object.Player;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
 import com.client.state.InGameState;
-import com.system.data.Database;
+import com.system.data.Engine_Database;
 import com.system.data.DynamicMemory;
 import com.system.data.sheets.Unit_Sheed;
 import com.system.data.sheets.Weapon_Sheed;
 import com.system.data.sheets.Weather_Sheet;
 import com.system.log.Logger;
 import com.system.network.MessageServer;
+import com.system.network.MessageServer.MessageMode;
 
 public class CustomWars_Library {
 	
@@ -107,7 +108,7 @@ public class CustomWars_Library {
 	}
 	
 	public static void waitAnimation(){
-		if( InGameState.getMap().isAnimationRunning() ) MessageServer.sendLocalToFirstPos( "waitAnimation=" );
+		if( InGameState.getMap().isAnimationRunning() ) MessageServer.send( "waitAnimation=" , true , MessageMode.LOCAL );
 	}
 	
 	public static void turnEnd(){
@@ -134,7 +135,7 @@ public class CustomWars_Library {
 	}
 	
 	public static boolean isWeather( String wt ){
-		return ( wt != null && Database.getWeatherSheet(wt) == Weather.getWeather() )? true : false;
+		return ( wt != null && Engine_Database.getWeatherSheet(wt) == Weather.getWeather() )? true : false;
 	}
 	
 	public static void changeWeather( Weather_Sheet sh , int days ){
@@ -332,7 +333,7 @@ public class CustomWars_Library {
 	
 	// TODO safer!
 	public static int getPrice( Unit unit , String resID ){
-		return ( unit != null )? unit.sheet().getCost( Database.getRessourceSheet(resID) ) : -1;
+		return ( unit != null )? unit.sheet().getCost( Engine_Database.getRessourceSheet(resID) ) : -1;
 	}
 	
 	public static boolean typeOfUnit( Unit unit , String type ){
@@ -341,7 +342,7 @@ public class CustomWars_Library {
 	}
 	
 	public static boolean unitHasTag( Unit unit , String tag ){
-		if( unit != null && unit.sheet().hasTag( Database.getIntegerTagID(tag) ) ) return true;
+		if( unit != null && unit.sheet().hasTag( Engine_Database.getIntegerTagID(tag) ) ) return true;
 		else return false;
 	}
 	
@@ -404,7 +405,7 @@ public class CustomWars_Library {
 	
 	public static boolean tileHasTag( Tile tile , String tag ){
 		Logger.log(""+tile+"---"+tag);
-		if( tile != null && tile.sheet().hasTag( Database.getIntegerTagID(tag) ) ) return true;
+		if( tile != null && tile.sheet().hasTag( Engine_Database.getIntegerTagID(tag) ) ) return true;
 		else return false;
 	}
 	

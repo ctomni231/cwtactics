@@ -3,7 +3,7 @@ package com.system.data.sheets;
 import java.util.ArrayList;
 
 import com.client.model.object.Player;
-import com.system.data.Database;
+import com.system.data.Engine_Database;
 
 /**
  * @author tapsi
@@ -116,9 +116,9 @@ public class Tile_Sheet extends ObjectSheet{
 	 */
 	public int[] getRepairCost( Unit_Sheed sh , int health ){
 		
-		int[] cost = new int[ Database.getRessourceTable().size() ];
-		for( Sheet i : Database.getRessourceTable() ){
-			cost[ Database.getResourceNumber(i) ] = ( sh.getCost( i ) * health * repairExtra ) / 10000; 
+		int[] cost = new int[ Engine_Database.getRessourceTable().size() ];
+		for( Sheet i : Engine_Database.getRessourceTable() ){
+			cost[ Engine_Database.getResourceNumber(i) ] = ( sh.getCost( i ) * health * repairExtra ) / 10000; 
 		}
 		
 		return cost;

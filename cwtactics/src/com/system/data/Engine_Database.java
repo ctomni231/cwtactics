@@ -9,12 +9,13 @@ import com.system.data.sheets.Tile_Sheet;
 import com.system.data.sheets.Unit_Sheed;
 import com.system.data.sheets.Weapon_Sheed;
 import com.system.data.sheets.Weather_Sheet;
+import com.system.error.NoSuchKey_Exception;
 import com.system.log.Logger;
 
 /**
  * Holds all modification data.
  */
-public class Database {
+public class Engine_Database {
 
 	/*
 	 * VARIABLES
@@ -182,7 +183,7 @@ public class Database {
 	}
 
 	public static void setName(String name) {
-		Database.name = name;
+		Engine_Database.name = name;
 	}
 	
 	public static String getAuthor() {
@@ -190,7 +191,7 @@ public class Database {
 	}
 
 	public static void setAuthor(String author) {
-		Database.author = author;
+		Engine_Database.author = author;
 	}
 
 	public static String getVersion() {
@@ -198,7 +199,7 @@ public class Database {
 	}
 
 	public static void setVersion(String version) {
-		Database.version = version;
+		Engine_Database.version = version;
 	}
 
 	public static String getLanguage() {
@@ -206,7 +207,7 @@ public class Database {
 	}
 
 	public static void setLanguage(String language) {
-		Database.language = language;
+		Engine_Database.language = language;
 	}
 	
 	public static String getTileSet() {
@@ -214,7 +215,7 @@ public class Database {
 	}
 
 	public static void setTileSet(String tileset) {
-		Database.tileset = tileset;
+		Engine_Database.tileset = tileset;
 	}
 	
 }

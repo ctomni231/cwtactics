@@ -1,6 +1,6 @@
 package com.client.state.mini;
 
-import com.client.logic.input.Controls;
+import com.client.input.Controls;
 import com.client.logic.status.Status;
 import com.client.menu.GUI.MapDraw;
 import com.client.menu.GUI.MenuDraw;

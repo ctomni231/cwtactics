@@ -165,12 +165,11 @@ public class MapArrow {
     }
 
     public void drawCursor(int animTime){
-        if(cursor == null)
+        if(cursor == null){
             initCursor();
-
+        }
         realcurx = (int)(posx+shakex+cursorx*BASE*scale);
         realcury = (int)(posy+shakey+cursory*BASE*scale);
-
         cursor.setFinalPosition(
                 realcurx-(int)(cursor.getImage().getWidth()/2),
                 realcury-(int)(cursor.getImage().getHeight()/2));

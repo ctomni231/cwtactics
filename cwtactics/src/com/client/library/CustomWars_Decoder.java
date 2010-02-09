@@ -5,7 +5,7 @@ import com.client.model.object.Map;
 import com.client.model.object.Player;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
-import com.system.data.Database;
+import com.system.data.Engine_Database;
 import com.system.data.sheets.Unit_Sheed;
 
 public class CustomWars_Decoder {
@@ -25,7 +25,7 @@ public class CustomWars_Decoder {
 	}
 	
 	public static Unit_Sheed decodeUnitSheet( String str ){
-		return Database.getUnitSheet(str);
+		return Engine_Database.getUnitSheet(str);
 	}
 
 }

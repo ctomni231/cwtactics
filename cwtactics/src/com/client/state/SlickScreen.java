@@ -1,5 +1,9 @@
 package com.client.state;
 
+import com.system.error.Empty_Exception;
+import com.system.error.Invoke_Exception;
+import com.system.error.NoSuchMethod_Exception;
+import com.system.log.Logger;
 import com.system.network.MessageServer;
 
 import java.util.ArrayList;
@@ -153,7 +157,15 @@ public abstract class SlickScreen extends BasicGameState{
      *
      */
     protected boolean scr_checkCommands(){
-    	return MessageServer.checkNext();
+    	try{ 
+    		MessageServer.doNextCommand(); 
+    		return true; 
+    	}
+    	catch( Empty_Exception e ){ return false; }
+    	catch( Invoke_Exception e ){ Logger.warn(e.toString()); return false; }
+    	catch( NullPointerException e ){ Logger.warn(e.toString()); return false; }
+    	catch( NoSuchMethod_Exception e ){ Logger.warn(e.toString()); return false; }
+    	catch( IllegalArgumentException e ){ Logger.warn(e.toString()); return false; }
     }
 
     //Finalizes the ID, making sure there are no overlaps

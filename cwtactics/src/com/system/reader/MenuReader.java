@@ -1,6 +1,6 @@
 package com.system.reader;
 
-import com.system.data.Database;
+import com.system.data.Engine_Database;
 import com.system.input.XML_Parser;
 import org.xml.sax.Attributes;
 
@@ -145,7 +145,7 @@ public class MenuReader extends XML_Parser{
             for(int i = 0; i < temp.length; i++)
                 fillData[i] = temp[i];
             fillData[fillData.length-1] = fillEntry(
-                    attrib, Database.getLanguage());
+                    attrib, Engine_Database.getLanguage());
         }
         return fillData;
     }

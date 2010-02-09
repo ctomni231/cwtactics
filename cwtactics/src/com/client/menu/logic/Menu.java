@@ -12,7 +12,7 @@ import com.client.menu.logic.buttons.Button.ButtonType;
 import com.client.model.Range;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
-import com.system.data.Database;
+import com.system.data.Engine_Database;
 import com.system.data.sheets.Unit_Sheed;
 import com.system.data.sheets.Weapon_Sheed;
 import com.system.log.Logger;
@@ -174,11 +174,11 @@ public class Menu {
 		setMenuType( MenuType.MAP_MENU );
 		
 		// add buttons
-        addButton( new Button( Button.ButtonType.NORMAL ,  Database.getEntrySheet( "AWDR")) ) ;
-        addButton( new Button( Button.ButtonType.NORMAL ,  Database.getEntrySheet( "AWDS")) ) ;
-        addButton( new Button( Button.ButtonType.NORMAL ,  Database.getEntrySheet( "GRID")) ) ;
-        addButton( new Button( Button.ButtonType.NORMAL ,  Database.getEntrySheet( "OPTIONS")) ) ;
-		addButton( new Button( Button.ButtonType.NORMAL ,  Database.getEntrySheet( "ENDTURN")) ) ;
+        addButton( new Button( Button.ButtonType.NORMAL ,  Engine_Database.getEntrySheet( "AWDR")) ) ;
+        addButton( new Button( Button.ButtonType.NORMAL ,  Engine_Database.getEntrySheet( "AWDS")) ) ;
+        addButton( new Button( Button.ButtonType.NORMAL ,  Engine_Database.getEntrySheet( "GRID")) ) ;
+        addButton( new Button( Button.ButtonType.NORMAL ,  Engine_Database.getEntrySheet( "OPTIONS")) ) ;
+		addButton( new Button( Button.ButtonType.NORMAL ,  Engine_Database.getEntrySheet( "ENDTURN")) ) ;
 		
 		// complete menu
 		completeList();
@@ -229,7 +229,7 @@ public class Menu {
 				
 			// if on the tile is a transport unit which can load this unit
 			if( tile.getUnit().sheet().canLoad( unit.sheet() ) ){
-				if( CustomWars_Library.canLoadUnit(tile.getUnit(),unit) ) addButton( new Button( Button.ButtonType.NORMAL , Database.getEntrySheet( "LOAD")) );
+				if( CustomWars_Library.canLoadUnit(tile.getUnit(),unit) ) addButton( new Button( Button.ButtonType.NORMAL , Engine_Database.getEntrySheet( "LOAD")) );
 			}
 			else{
 				Logger.critical("This situation isn't correct!");
@@ -238,13 +238,13 @@ public class Menu {
 		else{
 
 			// if there is a target for the unit
-			if( Range.hasUnitTargets(tile, unit) ) addButton( new Button( Button.ButtonType.SUBMENU_BUTTON , Database.getEntrySheet( "ATTACK")) );
+			if( Range.hasUnitTargets(tile, unit) ) addButton( new Button( Button.ButtonType.SUBMENU_BUTTON , Engine_Database.getEntrySheet( "ATTACK")) );
 			
 			// if the unit has loads
 			if( unit.hasLoads() ){
 				for( Unit load : unit.getLoadedUnits() ){
 					if( load.sheet().canUnitUnloaded(tile, unit) ){
-						addButton( new Button( Button.ButtonType.SUBMENU_BUTTON , Database.getEntrySheet(  "UNLOAD" )));
+						addButton( new Button( Button.ButtonType.SUBMENU_BUTTON , Engine_Database.getEntrySheet(  "UNLOAD" )));
 						break;
 					}
 				}
@@ -252,16 +252,16 @@ public class Menu {
 			
 			// if you can capture a building
 			if( tile.sheet().isCapturable() && unit.sheet().getCaptureValue() > 0  &&
-				tile.getOwner() != unit.getOwner() ) addButton( new Button( Button.ButtonType.NORMAL , Database.getEntrySheet( "CAPTURE") ) );
+				tile.getOwner() != unit.getOwner() ) addButton( new Button( Button.ButtonType.NORMAL , Engine_Database.getEntrySheet( "CAPTURE") ) );
 			
 			// if you can hide yourself
 			if( unit.sheet().canHide() ){
-				if( unit.isHidden() ) addButton( new Button( Button.ButtonType.NORMAL , Database.getEntrySheet( "HIDE") ) );
-				else addButton( new Button( Button.ButtonType.NORMAL , Database.getEntrySheet( "UNHIDE") ) );
+				if( unit.isHidden() ) addButton( new Button( Button.ButtonType.NORMAL , Engine_Database.getEntrySheet( "HIDE") ) );
+				else addButton( new Button( Button.ButtonType.NORMAL , Engine_Database.getEntrySheet( "UNHIDE") ) );
 			}
 			
 			// every unit can perform a wait
-			addButton( new Button( Button.ButtonType.NORMAL , Database.getEntrySheet( "WAIT") ) );
+			addButton( new Button( Button.ButtonType.NORMAL , Engine_Database.getEntrySheet( "WAIT") ) );
 			
 		}
 		
@@ -298,7 +298,7 @@ public class Menu {
 		}
 		
 		// every unit can perform a wait
-		addButton( new Button( Button.ButtonType.NORMAL , Database.getEntrySheet( "WAIT") ) );
+		addButton( new Button( Button.ButtonType.NORMAL , Engine_Database.getEntrySheet( "WAIT") ) );
 		
 		// complete
 		completeList();

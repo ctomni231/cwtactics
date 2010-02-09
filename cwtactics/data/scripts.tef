@@ -13,6 +13,10 @@ ID GIVE_FUNDS
 WHEN TURN_START_TILES
 IF tileHasTag:(getTriggerTile:):PROPERTY
 	DEFAULT changeResource:(getOwnerOfTile:(getTriggerTile:)):0:1000
+	
+ID GIVE_FUNDS2
+WHEN TURN_START_TILES
+DEFAULT changeResource:(getOwnerOfTile:(getTriggerTile:)):0:12000
 
 ID SCR_ATTACK_LUCK
 WHEN UNIT_ATTACK

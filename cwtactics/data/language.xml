@@ -92,8 +92,8 @@
 	</ranks>
 	
 	<resources>
-		<lang id="RESSOURCE_0" 	ENG="Gold" 				GER="Geld" />
-		<lang id="RESSOURCE_1" 	ENG="Oil" 				GER="Öl" />
+		<lang id="GOLD" 	ENG="Gold" 				GER="Geld" />
+		<lang id="OIL"	 	ENG="Oil" 				GER="Öl" />
 	</resources>
 	
 	<weather>

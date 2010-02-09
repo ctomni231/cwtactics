@@ -2,8 +2,8 @@ package com.system.reader;
 
 import org.xml.sax.Attributes;
 
-import com.system.data.Database;
-import com.system.data.Database.Category;
+import com.system.data.Engine_Database;
+import com.system.data.Engine_Database.Category;
 import com.system.data.sheets.Move_Sheet;
 import com.system.data.sheets.Rank_Sheet;
 import com.system.data.sheets.Sheet;
@@ -11,7 +11,9 @@ import com.system.data.sheets.Tile_Sheet;
 import com.system.data.sheets.Unit_Sheed;
 import com.system.data.sheets.Weapon_Sheed;
 import com.system.data.sheets.Weather_Sheet;
+import com.system.error.Add_Exception;
 import com.system.input.XML_Parser;
+import com.system.log.Logger;
 
 /**
  * 
@@ -56,11 +58,13 @@ public class ModReader extends XML_Parser {
 	 */
 	
 	public void addUnitSheet( String header ){
-		Database.addSheet( Category.UNIT_SHEETS , header, new Unit_Sheed());
+		try{ Engine_Database.addSheet( Category.UNIT_SHEETS , header, new Unit_Sheed()); }
+		catch( Add_Exception e ){ }
 	}
 	
 	public void addTileSheet( String header ){
-		Database.addSheet( Category.TILE_SHEETS ,  header, new Tile_Sheet());
+		try{ Engine_Database.addSheet( Category.TILE_SHEETS ,  header, new Tile_Sheet()); }
+		catch( Add_Exception e ){ }
 	}
 
 	/*
@@ -96,11 +100,12 @@ public class ModReader extends XML_Parser {
 	private void parseWeapon( Attributes attributes ){
 		
 		if( super.getLastHeader().equals("weapon") ){
-			if( attributes.getValue( "id" ) != null && !Database.existID( attributes.getValue( "ID" ) ) ) Database.addSheet( Category.WEAPON_SHEETS , attributes.getValue( "id" ) , new Weapon_Sheed() );
+			try{ if( attributes.getValue( "id" ) != null ) Engine_Database.addSheet( Category.WEAPON_SHEETS , attributes.getValue( "id" ) , new Weapon_Sheed() ); }
+			catch( Add_Exception e ){ }
 			headerID = attributes.getValue( "id" );
 		}
 		
-		Weapon_Sheed sh = Database.getWeaponSheet( headerID );
+		Weapon_Sheed sh = Engine_Database.getWeaponSheet( headerID );
 		
 		if( super.isAheader("canAttack") ){
 			if( attributes.getValue("levels") != null ){
@@ -128,7 +133,8 @@ public class ModReader extends XML_Parser {
 	private void parseEntry( Attributes attributes ){
 		
 		if( super.getLastHeader().equals("button") ){
-			if( !Database.existID( attributes.getValue( "ID" ) ) ) Database.addSheet( Category.ENTRIES , attributes.getValue( "ID" ) , new Sheet() );
+			try{ Engine_Database.addSheet( Category.ENTRIES , attributes.getValue( "ID" ) , new Sheet() ); }
+			catch( Add_Exception e ){ }
 			headerID = attributes.getValue( "ID" );
 			return;
 		}
@@ -142,12 +148,13 @@ public class ModReader extends XML_Parser {
 	private void parseRank( Attributes attributes ){
 
 		if( super.getLastHeader().equals("rank") ){
-			if( !Database.existID( attributes.getValue( "ID" ) ) ) Database.addSheet( Category.RANK_SHEETS , attributes.getValue( "ID" ) , new Rank_Sheet() );
+			try{ Engine_Database.addSheet( Category.RANK_SHEETS , attributes.getValue( "ID" ) , new Rank_Sheet() ); }
+			catch( Add_Exception e ){ }
 			headerID = attributes.getValue( "ID" );
 			return;
 		}
 		
-		Rank_Sheet sh = Database.getRankSheet( headerID );
+		Rank_Sheet sh = Engine_Database.getRankSheet( headerID );
 		
 		/*
 		 * 			STATUS
@@ -165,12 +172,13 @@ public class ModReader extends XML_Parser {
 	private void parseMoveType( Attributes attributes ){
 		
 		if( super.getLastHeader().equals("movetype") ){
-			if( !Database.existID( attributes.getValue( "ID" ) ) ) Database.addSheet(Category.MOVE_SHEETS ,  attributes.getValue( "ID" ) , new Move_Sheet() );
+			try{ Engine_Database.addSheet(Category.MOVE_SHEETS ,  attributes.getValue( "ID" ) , new Move_Sheet() ); }
+			catch( Add_Exception e ){ }
 			headerID = attributes.getValue( "ID" );
 			return;
 		}
 		
-		Move_Sheet sh = Database.getMoveSheet( headerID );
+		Move_Sheet sh = Engine_Database.getMoveSheet( headerID );
 		
 		
 		/*
@@ -180,8 +188,8 @@ public class ModReader extends XML_Parser {
 		if( super.isAheader("fieldtarget") ){
 			
 			// create new sheet if you arrive a new XML object body and the ID isn't in the database
-			if( !Database.existID( attributes.getValue( "id" ) )) addTileSheet( attributes.getValue("id") );
-			Tile_Sheet shTarget = Database.getTileSheet( attributes.getValue("id") );
+			addTileSheet( attributes.getValue("id") );
+			Tile_Sheet shTarget = Engine_Database.getTileSheet( attributes.getValue("id") );
 
 			if( attributes.getValue("move") != null ) sh.addTileMoveCost( shTarget, Integer.parseInt(attributes.getValue("move")) );
 		}
@@ -193,7 +201,8 @@ public class ModReader extends XML_Parser {
 	private void parseResource( Attributes attributes ){
 		
 		if( super.getLastHeader().equals("ressource") ){
-			if(!Database.existID( attributes.getValue( "ID" ) ) ) Database.addSheet( Category.RESOURCE_SHEETS , attributes.getValue( "ID" ) , new Sheet() );
+			try{ Engine_Database.addSheet( Category.RESOURCE_SHEETS , attributes.getValue( "ID" ) , new Sheet() ); }
+			catch( Add_Exception e ){ }
 			headerID = attributes.getValue( "ID" );
 			return;
 		}
@@ -207,12 +216,13 @@ public class ModReader extends XML_Parser {
 	private void parseWeather( Attributes attributes ){
 
 		if( super.getLastHeader().equals("weather") ){
-			if( !Database.existID( attributes.getValue( "ID" ) ) ) Database.addSheet( Category.WEATHER_SHEETS , attributes.getValue( "ID" ) , new Weather_Sheet() ); 
+			try{ Engine_Database.addSheet( Category.WEATHER_SHEETS , attributes.getValue( "ID" ) , new Weather_Sheet() ); }
+			catch( Add_Exception e ){ }
 			headerID = attributes.getValue( "ID" );
 			return;
 		}
 
-		Weather_Sheet sh = Database.getWeatherSheet( headerID );
+		Weather_Sheet sh = Engine_Database.getWeatherSheet( headerID );
 		
 		/*
 		 * 		    STATUS
@@ -230,12 +240,13 @@ public class ModReader extends XML_Parser {
 	private void parseTile( Attributes attributes ){
 
 		if( super.getLastHeader().equals("field") ){
-			if( !Database.existID( attributes.getValue( "ID" ) ) ) Database.addSheet( Category.TILE_SHEETS , attributes.getValue( "ID" ) , new Tile_Sheet() );
+			try{ Engine_Database.addSheet( Category.TILE_SHEETS , attributes.getValue( "ID" ) , new Tile_Sheet() ); }
+			catch( Add_Exception e ){ }
 			headerID = attributes.getValue( "ID" );
 			return;
 		}
 		
-		Tile_Sheet sh = Database.getTileSheet(headerID );
+		Tile_Sheet sh = Engine_Database.getTileSheet(headerID );
 				
 		/*
 		 * 			  TAG
@@ -243,7 +254,7 @@ public class ModReader extends XML_Parser {
 		 */
 		if( super.isAheader("tag") ){
 			
-			if( attributes.getValue("id") != null ) 		sh.addTag( Database.getIntegerTagID(attributes.getValue("id")) );
+			if( attributes.getValue("id") != null ) 		sh.addTag( Engine_Database.getIntegerTagID(attributes.getValue("id")) );
 		}
 		
 		/*
@@ -253,8 +264,8 @@ public class ModReader extends XML_Parser {
 		else if( super.isAheader("funds") ){
 			
 			// checks all resources and adds it to the sheet if a value is given
-			for( int i = 0 ; i < Database.getRessourceTable().size() ; i++ ){
-				if( attributes.getValue("ressource_"+i ) != null ) 		sh.setFunds( Database.getResourceSheet(i) , Integer.parseInt( attributes.getValue("ressource_"+i) ) );
+			for( int i = 0 ; i < Engine_Database.getRessourceTable().size() ; i++ ){
+				if( attributes.getValue("ressource_"+i ) != null ) 		sh.setFunds( Engine_Database.getResourceSheet(i) , Integer.parseInt( attributes.getValue("ressource_"+i) ) );
 			}
 		}
 		
@@ -288,16 +299,18 @@ public class ModReader extends XML_Parser {
 		else if( super.isAheader("unittarget") ){
 			
 			// create new sheet if you arrive a new XML object body and the ID isn't in the database
-			if( !Database.existID( attributes.getValue( "id" ) )) addUnitSheet( attributes.getValue("id") );
-			Unit_Sheed shDet = Database.getUnitSheet( attributes.getValue("id") );
+			try{ addUnitSheet( attributes.getValue("id") ); }
+			catch( Add_Exception e ){ }
+			Unit_Sheed shDet = Engine_Database.getUnitSheet( attributes.getValue("id") );
 			
 			sh.addDetectRange(shDet, Integer.parseInt(attributes.getValue("range")) );
 		}
 		else if( super.isAheader("tiletarget") ){
 			
 			// create new sheet if you arrive a new XML object body and the ID isn't in the database
-			if( !Database.existID( attributes.getValue( "id" ) )) addUnitSheet( attributes.getValue("id") );
-			Tile_Sheet shDet = Database.getTileSheet( attributes.getValue("id") );
+			try{ addUnitSheet( attributes.getValue("id") ); }
+			catch( Add_Exception e ){ } 
+			Tile_Sheet shDet = Engine_Database.getTileSheet( attributes.getValue("id") );
 			
 			sh.addDetectRange(shDet, Integer.parseInt(attributes.getValue("range")) );
 		}
@@ -309,8 +322,9 @@ public class ModReader extends XML_Parser {
 		else if( super.isAheader("buildtarget") ){
 			
 			// create new sheet if you arrive a new XML object body and the ID isn't in the database
-			if( !Database.existID( attributes.getValue( "id" )   )) addUnitSheet( attributes.getValue("id") );
-			Unit_Sheed shBuild = Database.getUnitSheet( attributes.getValue("id") );
+			try{ addUnitSheet( attributes.getValue("id") ); }
+			catch( Add_Exception e ){ }
+			Unit_Sheed shBuild = Engine_Database.getUnitSheet( attributes.getValue("id") );
 			
 			sh.addBuildType(shBuild);
 		}
@@ -328,9 +342,9 @@ public class ModReader extends XML_Parser {
 		if( super.isAheader("information") ){
 			
 			// save general modification information
-			if( attributes.getValue("name") != null ) Database.setName( attributes.getValue("name") );
-			if( attributes.getValue("author") != null ) Database.setAuthor( attributes.getValue("author") );
-			if( attributes.getValue("modVersion") != null ) Database.setVersion( attributes.getValue("modVersion") );
+			if( attributes.getValue("name") != null ) Engine_Database.setName( attributes.getValue("name") );
+			if( attributes.getValue("author") != null ) Engine_Database.setAuthor( attributes.getValue("author") );
+			if( attributes.getValue("modVersion") != null ) Engine_Database.setVersion( attributes.getValue("modVersion") );
 		}
 		
 		/*
@@ -340,8 +354,8 @@ public class ModReader extends XML_Parser {
 		else if( super.isAheader("stats") ){
 			
 			// save language
-			if( attributes.getValue("language") != null ) Database.setLanguage( attributes.getValue("language") );
-            if( attributes.getValue("tileset") != null) Database.setTileSet( attributes.getValue("tileset"));
+			if( attributes.getValue("language") != null ) Engine_Database.setLanguage( attributes.getValue("language") );
+            if( attributes.getValue("tileset") != null) Engine_Database.setTileSet( attributes.getValue("tileset"));
 		}
 	}
 	
@@ -352,12 +366,13 @@ public class ModReader extends XML_Parser {
 		
 		// create new sheet if you arrive a new XML object body and the ID isn't in the database
 		if( super.getLastHeader().equals("unit") ){
-			if( !Database.existID( attributes.getValue( "ID" ) ) ) addUnitSheet( attributes.getValue( "ID" ) );
+			try{ addUnitSheet( attributes.getValue( "ID" ) ); }
+			catch( Add_Exception e ){ }
 			headerID = attributes.getValue( "ID" );
 			return;
 		}
 		
-		Unit_Sheed sh = Database.getUnitSheet( headerID );
+		Unit_Sheed sh = Engine_Database.getUnitSheet( headerID );
 		
 		/*
 		 * 			 COST
@@ -366,8 +381,8 @@ public class ModReader extends XML_Parser {
 		if( super.isAheader("cost") ){
 			
 			// checks all resources and adds it to the sheet if a value is given
-			for( int i = 0 ; i < Database.getRessourceTable().size() ; i++ ){
-				if( attributes.getValue("ressource_"+i ) != null ) 		sh.setCost( Database.getResourceSheet(i) , Integer.parseInt( attributes.getValue("ressource_"+i) ) );
+			for( int i = 0 ; i < Engine_Database.getRessourceTable().size() ; i++ ){
+				if( attributes.getValue("ressource_"+i ) != null ) 		sh.setCost( Engine_Database.getResourceSheet(i) , Integer.parseInt( attributes.getValue("ressource_"+i) ) );
 			}
 		}
 		
@@ -378,7 +393,7 @@ public class ModReader extends XML_Parser {
 		else if( super.isAheader("movement") ){
 			
 			if( attributes.getValue("range") != null ) 		sh.setMoveRange( Integer.parseInt(attributes.getValue("range")) );
-			if( attributes.getValue("type") != null ) 		sh.setMoveType( Database.getMoveSheet( attributes.getValue("type")) );
+			if( attributes.getValue("type") != null ) 		sh.setMoveType( Engine_Database.getMoveSheet( attributes.getValue("type")) );
 			if( attributes.getValue("vision") != null ) 	sh.setVision( Integer.parseInt(attributes.getValue("vision")) );
 			if( attributes.getValue("capture") != null ) 	sh.setCaptureValue( Integer.parseInt(attributes.getValue("capture")) );
 			if( attributes.getValue("weight") != null ) 	sh.setWeight( Integer.parseInt(attributes.getValue("weight")) );
@@ -401,7 +416,7 @@ public class ModReader extends XML_Parser {
 		 */
 		else if( super.isAheader("tag") ){
 			
-			if( attributes.getValue("id") != null ) 		sh.addTag( Database.getIntegerTagID(attributes.getValue("id")) );
+			if( attributes.getValue("id") != null ) 		sh.addTag( Engine_Database.getIntegerTagID(attributes.getValue("id")) );
 		}
 		
 		/*
@@ -415,7 +430,7 @@ public class ModReader extends XML_Parser {
 		else if( super.isAheader("weapon") ){
 			String id = attributes.getValue("id");
 			if( id != null ){
-				if( Database.existID(id) ) sh.addWeapon( Database.getWeaponSheet(id) );
+				sh.addWeapon( Engine_Database.getWeaponSheet(id) );
 			}
 		}
 		
@@ -426,8 +441,9 @@ public class ModReader extends XML_Parser {
 		else if( super.isAheader("supply") && super.isAheader("supplytarget") ){
 			
 			// if the target sheet not exist create new one
-			if( !Database.existID( attributes.getValue( "id" ) ) ) addUnitSheet( attributes.getValue("id") );
-			Unit_Sheed sh_supply = Database.getUnitSheet( attributes.getValue("id") );
+			try{ addUnitSheet( attributes.getValue("id") ); }
+			catch( Add_Exception e ){ }
+			Unit_Sheed sh_supply = Engine_Database.getUnitSheet( attributes.getValue("id") );
 			
 			sh.addSupplyType(sh_supply);
 		}
@@ -442,16 +458,18 @@ public class ModReader extends XML_Parser {
 			if( super.isAheader("loadtarget") ){
 				
 				// if the target sheet not exist create new one
-				if( !Database.existID( attributes.getValue( "id" ) )  ) addUnitSheet( attributes.getValue("id") );
-				Unit_Sheed sh_load = Database.getUnitSheet( attributes.getValue("id") );
+				try{ addUnitSheet( attributes.getValue("id") ); }
+				catch( Add_Exception e ){ }
+				Unit_Sheed sh_load = Engine_Database.getUnitSheet( attributes.getValue("id") );
 				
 				sh.addLoadType(sh_load);
 			}
 			else if( super.isAheader("unloadPlace") ){
 				
 				// if the target sheet not exist create new one
-				if( !Database.existID( attributes.getValue( "id" ) )  ) addTileSheet( attributes.getValue("id") );
-				Tile_Sheet sh_load = Database.getTileSheet( attributes.getValue("id") );
+				try{ addTileSheet( attributes.getValue("id") ); }
+				catch( Add_Exception e ){ }
+				Tile_Sheet sh_load = Engine_Database.getTileSheet( attributes.getValue("id") );
 				
 				sh.addUnloadTile( sh_load );
 			}

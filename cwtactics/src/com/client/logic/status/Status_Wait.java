@@ -1,6 +1,6 @@
 package com.client.logic.status;
 
-import com.client.logic.input.Controls;
+import com.client.input.Controls;
 import com.client.menu.GUI.MapDraw;
 import com.client.menu.logic.Menu;
 import com.client.model.Fog;

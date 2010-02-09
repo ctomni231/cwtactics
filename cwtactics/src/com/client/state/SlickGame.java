@@ -6,7 +6,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import com.client.logic.input.Controls;
+import com.client.input.Controls;
+
 import org.newdawn.slick.CanvasGameContainer;
 
 /**
