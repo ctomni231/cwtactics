@@ -168,6 +168,7 @@ public class MapArrow {
         if(cursor == null){
             initCursor();
         }
+      //  if(1==1) return;
         realcurx = (int)(posx+shakex+cursorx*BASE*scale);
         realcury = (int)(posy+shakey+cursory*BASE*scale);
         cursor.setFinalPosition(

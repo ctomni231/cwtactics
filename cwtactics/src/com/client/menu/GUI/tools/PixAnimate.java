@@ -58,7 +58,7 @@ public class PixAnimate {
 
     public static void loadData(){
         imgData.decode();
-        //imgData.decodeFiles();
+        imgData.decodeFiles();
     }
 
     public static boolean isReady(){
