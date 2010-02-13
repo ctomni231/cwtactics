@@ -14,6 +14,8 @@ public class PixMenu extends MovingPix{
     public final int REGULAR = 0;
     public final int ROUND_BOX = 1;
     public final int RECTANGLE = 2;
+    public final int RND_BORDER = 3;
+    public final int BORDER = 4;
 
     protected ArrayList<PixMenuItem> menuItems;
     protected double globalOpac;
@@ -60,39 +62,31 @@ public class PixMenu extends MovingPix{
     }
     public void addMenuPart(int select, int sizex, int sizey,
             boolean selectable){
-        item.index = REGULAR;
-        item.select = select;
-        item.selectable = selectable;
-        item.sizex = sizex;
-        item.sizey = sizey;
-        menuItems.add(item);
+        addItem(REGULAR, select, null, sizex, sizey, 0, selectable);
     }
     
     //Make sure you create a new item or items might overlap each other
     public void addRoundBox(int select, Color theColor, 
             int sizex, int sizey, int arc, boolean selectable){
-        item.index = ROUND_BOX;
-        item.select = select;
-        item.theColor = theColor;
-        item.selectable = selectable;
-        item.sizex = sizex;
-        item.sizey = sizey;
-        item.arc = arc;
-        item.pixPart = null;
-        menuItems.add(item);
+        addItem(ROUND_BOX, select, theColor, sizex, sizey, arc, selectable);
     }
     
     //Make sure you create a new item or items might overlap each other
     public void addBox(int select, Color theColor, int sizex, int sizey,
             boolean selectable){
-        item.index = RECTANGLE;
-        item.select = select;
-        item.theColor = theColor;
-        item.selectable = selectable;
-        item.sizex = sizex;
-        item.sizey = sizey;
-        item.pixPart = null;
-        menuItems.add(item);
+        addItem(RECTANGLE, select, theColor, sizex, sizey, 0, selectable);
+    }
+
+    //Make sure you create a new item or items might overlap each other
+    public void addBorder(int select, Color theColor, int sizex, int sizey,
+            boolean selectable){
+        addItem(BORDER, select, theColor, sizex, sizey, 0, selectable);
+    }
+
+    //Make sure you create a new item or items might overlap each other
+    public void addRoundBorder(int select, Color theColor, int sizex,
+            int sizey, int arc, boolean selectable){
+        addItem(RND_BORDER, select, theColor, sizex, sizey, arc, selectable);
     }
 
     public void clearAllItems(){
@@ -204,27 +198,8 @@ public class PixMenu extends MovingPix{
                 continue;
 
             switch(itm.index){
-                //This draws a colored rounded box to the screen
-                case ROUND_BOX:
-                    if(select == itm.select || !itm.selectable){
-                        if(itm.theColor != null)
-                            g.setColor(itm.theColor);
-                        g.fillRoundRect((int)(posx+itm.posx),
-                                (int)(posy+itm.posy), itm.sizex,
-                                itm.sizey, itm.arc);
-                    }
-                    break;
-                case RECTANGLE://This draws a colored rectangle to the screen
-                    if(select == itm.select || !itm.selectable){
-                        if(itm.theColor != null)
-                            g.setColor(itm.theColor);
-                        g.fillRect((int)(posx+itm.posx),
-                                (int)(posy+itm.posy), itm.sizex,
-                                itm.sizey);
-                    }
-                    break;
                 case REGULAR:
-                default: //This draws picture items to the screen
+                   //This draws picture items to the screen
                     itm.changeAll(select == itm.select, globalOpac);                   
                     if(itm.logoPic != null){
                         logoPic = itm.logoPic;
@@ -241,7 +216,41 @@ public class PixMenu extends MovingPix{
                         g.drawString(logoTxt, (int)(posx+itm.posx),
                                 (int)(posy+itm.posy));
                     }
+                    break;
+                default:
+                    if(select == itm.select || !itm.selectable){
+                        if(itm.theColor != null)
+                            g.setColor(itm.theColor);
+                        if(itm.index == RECTANGLE)
+                            g.fillRect((int)(posx+itm.posx), (int)
+                                 (posy+itm.posy), itm.sizex, itm.sizey);
+                        else if(itm.index == ROUND_BOX)
+                            g.fillRoundRect((int)(posx+itm.posx),
+                                (int)(posy+itm.posy), itm.sizex,
+                                itm.sizey, itm.arc);
+                        else if(itm.index == BORDER)
+                            g.drawRect((int)(posx+itm.posx), (int)
+                               (posy+itm.posy), itm.sizex, itm.sizey);
+                        else if(itm.index == RND_BORDER)
+                            g.drawRoundRect((int)(posx+itm.posx),
+                                (int)(posy+itm.posy), itm.sizex,
+                                itm.sizey, itm.arc);
+                    }
             }
         }
+    }
+
+    private void addItem(int index, int select, Color theColor,
+            int sizex, int sizey, int arc, boolean selectable){
+        item.index = index;
+        item.select = select;
+        item.theColor = theColor;
+        item.selectable = selectable;
+        item.sizex = sizex;
+        item.sizey = sizey;
+        item.arc = arc;
+        if(index != REGULAR)
+            item.pixPart = null;
+        menuItems.add(item);
     }
 }

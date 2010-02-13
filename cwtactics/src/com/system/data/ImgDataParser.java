@@ -114,7 +114,8 @@ public class ImgDataParser implements Runnable{
         ArrayList<String> text = new ArrayList<String>();
         Scanner scan;
 
-        for(FileIndex file: findFiles.getAllFiles()){
+        for(int i = 0; i < findFiles.getAllFiles().size(); i++){
+            FileIndex file = findFiles.getAllFiles().get(i);
             if(file.suffix.matches("txt")){
                 String temp = "";
                 try{
@@ -123,7 +124,7 @@ public class ImgDataParser implements Runnable{
                         temp += scan.next();
                     scan.close();
                 }catch(IOException e){
-                    return text;
+                    continue;
                 }
                 text.add(temp);
             }

@@ -190,7 +190,8 @@ public class Status_Menu implements Status_Interface {
 					Collection<Sheet> list = Engine_Database.getRessourceTable();
 					int l = 0;
 					for( Sheet listSheet : list ){
-						if( property.getOwner().getResourceValue(l) < sh.getCost( listSheet ) ) return;
+                        //TODO JSR Problem Line
+						//if( property.getOwner().getResourceValue(l) < sh.getCost( listSheet ) ) return;
 						l++;
 					}
 					
@@ -217,7 +218,6 @@ public class Status_Menu implements Status_Interface {
                         map.addShake(2, 0);
                         map.addShake(-2, 0);
                         map.addShake(0, 0);
-                        map.setColumn(2);
                     }else if( Menu.getSelected().getSheet().getID().equals("OPTIONS") )		map.setColumn(1);
                     else if( Menu.getSelected().getSheet().getID().equals("ENDTURN") )	  	MessageServer.send("turnEnd=");
                     //else 																	Logger.write( "Status got an unknown button!", Level.WARN );

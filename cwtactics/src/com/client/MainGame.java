@@ -71,8 +71,9 @@ public class MainGame {
     	Script_Database.addTrigger("VISION_TILE");
     	(new ScriptReader("data/Scripts.tef")).parse();
     	(new ScriptReader("data/damage.tef")).parse();
-    	
-		MusicFactory.play( SoundLoader.loadMusicFile("SONG_LASH.ogg"));
+
+        //JSR: Shut down of music for faster testing
+		//MusicFactory.play( SoundLoader.loadMusicFile("SONG_LASH.ogg"));
     	
     	// SETUP LOGIC
     	setupLogic(); 

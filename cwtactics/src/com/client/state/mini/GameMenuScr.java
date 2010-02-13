@@ -2,6 +2,7 @@ package com.client.state.mini;
 
 import com.client.input.Controls;
 import com.client.logic.status.Status;
+import com.client.menu.GUI.ListDraw;
 import com.client.menu.GUI.MapDraw;
 import com.client.menu.GUI.MenuDraw;
 import com.client.menu.logic.Menu;
@@ -19,6 +20,7 @@ public class GameMenuScr {
     public boolean scrSwitch;
     public int column;
 
+    public int scr_sysTime;
     public boolean scr_mouseLock;
     public int scr_mouseScroll;
     public int scr_mouseX;
@@ -29,6 +31,7 @@ public class GameMenuScr {
     public MapDraw mapScr;
 
     private MenuDraw menuScr;
+    private ListDraw listScr;
     private int counter;
     private String[] info;
     private String arrow;
@@ -45,6 +48,7 @@ public class GameMenuScr {
         scrX = width;
         scrY = height;
         init(txtLib, scrX, scrY, new String[0]);
+        listScr = new ListDraw(txtLib, MAX_ITEMS, 20, 0, 0, 0);
     }
 
     private void init(TextImgLibrary txtLib, int width, int height,
@@ -83,8 +87,10 @@ public class GameMenuScr {
             if(!scr_mouseLock){
                 scr_scrollIndex = 2;
                 menuScr.menu.mouseSelect(scr_mouseX, scr_mouseY);
+                //listScr.mouseSelect(scr_mouseX, scr_mouseY);
                 if(scr_scroll){
                     menuScr.menu.mouseScroll(scr_mouseX, scr_mouseY);
+                    //listScr.mouseScroll(scr_mouseX, scr_mouseY);
                     scr_scroll = false;
                 }
             }
@@ -141,8 +147,10 @@ public class GameMenuScr {
     }
 
     public void render(Graphics g){
-        if(menuSize > 0)
+        if(menuSize > 0){
             menuScr.menu.render(g);
+            //listScr.render(g, scr_sysTime);
+        }
     }
 
     public int getMenuSize(){

@@ -69,10 +69,28 @@ public class PixVertMenu extends PixMenu{
         vertParts.add(chng);
     }
 
+    public void addVertRoundBorder(int select, Color theColor,
+            int sizex, int sizey, int arc, boolean selectable){
+        int chng = menuItems.size();
+        super.addRoundBorder(select, theColor, sizex, sizey, arc, selectable);
+        super.setItemPosition(chng, 0,
+                (int)(select*spacingY), true);
+        vertParts.add(chng);
+    }
+
     public void addVertBox(int select, Color theColor,
             int sizex, int sizey, boolean selectable){
         int chng = menuItems.size();
         super.addBox(select, theColor, sizex, sizey, selectable);
+        super.setItemPosition(chng, 0,
+                (int)(select*spacingY), true);
+        vertParts.add(chng);
+    }
+
+    public void addVertBorder(int select, Color theColor,
+            int sizex, int sizey, boolean selectable){
+        int chng = menuItems.size();
+        super.addBorder(select, theColor, sizex, sizey, selectable);
         super.setItemPosition(chng, 0,
                 (int)(select*spacingY), true);
         vertParts.add(chng);
