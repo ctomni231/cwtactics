@@ -14,6 +14,7 @@ public class PixVertMenu extends PixMenu{
     private int maxItems;
     private int itemMax;
     private int itemMin;
+    private int maxSelect;
 
     private ArrayList<Integer> vertParts;
     private ArrayList<Integer> vertIndex;
@@ -35,6 +36,7 @@ public class PixVertMenu extends PixMenu{
         maxItems = 1;
         itemMax = maxItems-1;
         itemMin = 0;
+        maxSelect = 0;
         arrowSpacing = 0;
         arrowSpace = 0;
         start = true;
@@ -50,6 +52,8 @@ public class PixVertMenu extends PixMenu{
         super.addMenuPart(select, sizex, sizey, selectable);
         super.setItemPosition(chng, 0,
                 (int)(select*spacingY), true);
+        if(select >= maxItems)
+            super.setItemDraw(chng, false);
         vertParts.add(chng);
 
         boolean addSelect = true;
@@ -58,6 +62,9 @@ public class PixVertMenu extends PixMenu{
             if(addSelect) break;
         }
         if(addSelect)   vertIndex.add(select);
+
+        if(select > maxSelect)
+            maxSelect = select;
     }
 
     public void addVertRound(int select, Color theColor,
@@ -100,19 +107,28 @@ public class PixVertMenu extends PixMenu{
         this.clearAllItems();
         vertParts.clear();
         vertIndex.clear();
+        maxSelect = 0;
         select = 0;
+        resetMaxItems();
     }
 
     public void setMaxItems(int number){
         if(number > 0){
             maxItems = number;
-            itemMax = maxItems-1;
-            itemMin = 0;
+            resetMaxItems();
         }
     }
 
     public int getMaxItems(){
         return maxItems;
+    }
+
+    public int getMaxSelection(){
+        return maxSelect;
+    }
+
+    public int getItemMin(){
+        return itemMin;
     }
 
     public void setArrow(Image arrUp){
@@ -168,13 +184,13 @@ public class PixVertMenu extends PixMenu{
                 if(globalOpac >= 0 && globalOpac <= 1)
                     arrowUp.setAlpha((float)globalOpac);
                 g.drawImage(arrowUp, (float)(posx+arrowSpace),
-                    (float)(posy-spacingY));
+                    (float)(posy-arrowSpacing));
             }
-            if(itemMax+1 < vertIndex.size() && arrowDown != null){
+            if(itemMax+1 <= maxSelect && arrowDown != null){
                 if(globalOpac >= 0 && globalOpac <= 1)
                     arrowDown.setAlpha((float)globalOpac);
                 g.drawImage(arrowDown, (float)(posx+arrowSpace),
-                    (float)(posy+(spacingY*maxItems)));
+                    (float)(posy-(arrowSpacing/4)+(spacingY*maxItems)));
             }
         }
     }
@@ -216,8 +232,13 @@ public class PixVertMenu extends PixMenu{
     public void mouseScroll(int mx, int my){
         if(itemMin > 0 && my > posy-spacingY && my < posy)
             select--;
-        if(itemMax+1 < vertIndex.size() && my > posy+(spacingY*maxItems) &&
+        if(itemMax+1 <= maxSelect && my > posy+(spacingY*maxItems) &&
                 my < posy+(spacingY*maxItems)+spacingY)
             select++;
+    }
+
+    private void resetMaxItems(){
+        itemMax = maxItems-1;
+        itemMin = 0;
     }
 }

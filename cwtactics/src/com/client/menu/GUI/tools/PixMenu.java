@@ -160,7 +160,7 @@ public class PixMenu extends MovingPix{
         return menuItems;
     }
 
-    public void mouseSelect(int mx, int my){
+    public boolean mouseSelect(int mx, int my){
         double sx = 0;
         double sy = 0;
         for(PixMenuItem itm: menuItems){
@@ -180,11 +180,12 @@ public class PixMenu extends MovingPix{
                     if(my > itm.posy+posy &&
                             my < itm.posy+posy+sy){
                         select = itm.select;
-                        return;
+                        return true;
                     }
                 }
             }
         }
+        return false;
     }
 
     @Override

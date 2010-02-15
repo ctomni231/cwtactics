@@ -30,10 +30,10 @@ public class GameMenuScr {
     public int scr_scrollIndex;
     public MapDraw mapScr;
 
-    private MenuDraw menuScr;
     private ListDraw listScr;
     private int counter;
     private String[] info;
+    private String[] infoTxt;
     private String arrow;
     private int scrX;
     private int scrY;
@@ -47,38 +47,32 @@ public class GameMenuScr {
         arrow = arrowRef;
         scrX = width;
         scrY = height;
-        init(txtLib, scrX, scrY, new String[0]);
-        listScr = new ListDraw(txtLib, MAX_ITEMS, 20, 0, 0, 0);
-    }
-
-    private void init(TextImgLibrary txtLib, int width, int height,
-            String[] menuItems){
-        menuScr = new MenuDraw(MAX_ITEMS, 20, 0, 0, 0);
-        menuScr.setIndex(1); //Makes menu draw differently
-        info = menuItems;
-        menuScr.init(info, new String[0], arrow, txtLib);
-        menuScr.menu.setFinalPosition((int)((width-menuScr.getSizeX())/2),
-                (int)((height-menuScr.getSizeY())/2));
+        listScr = new ListDraw(txtLib, arrowRef, MAX_ITEMS, 30, 30, 30, 0);
     }
 
     public void update(TextImgLibrary txtLib, int timePassed){
         setLock = false;
         if(scrSwitch){
-        	//TODO refactor init method, it needs tooo much time to prepare new menu :(
+        	//TODO refactor init method, it needs tooo much time to prepare
+            //new menu :(
         	// logic is thousands times faster than the menu draw logic
         	
             long time = System.currentTimeMillis();
         	if(menuSize > 0){
                 mapScr.skipAnimation();
                 info = new String[Menu.getList().size()];
-                for(int i = 0; i < info.length; i++)
+                infoTxt = new String[Menu.getList().size()];
+                for(int i = 0; i < info.length; i++){
                     info[i] = Menu.getList().get(i).getSheet().
                             getName().toUpperCase();
-                init(txtLib, scrX, scrY, info);
-                //menuScr.update(info, txtLib);
+                    infoTxt[i] = Menu.getList().get(i).getSheet()
+                            .getID().toUpperCase();
+                }
+                listScr.update(info, infoTxt, scrX, scrY);
             }
             scrSwitch = false;
-            System.out.println("TIME NEEDED TO BUILD MENU :: "+(System.currentTimeMillis() - time)+" ms");
+            System.out.println("TIME NEEDED TO BUILD MENU :: "+
+                    (System.currentTimeMillis() - time)+" ms");
         }
 
         scr_scrollIndex = 10;
@@ -86,18 +80,16 @@ public class GameMenuScr {
             
             if(!scr_mouseLock){
                 scr_scrollIndex = 2;
-                menuScr.menu.mouseSelect(scr_mouseX, scr_mouseY);
-                //listScr.mouseSelect(scr_mouseX, scr_mouseY);
+                listScr.mouseSelect(scr_mouseX, scr_mouseY);
                 if(scr_scroll){
-                    menuScr.menu.mouseScroll(scr_mouseX, scr_mouseY);
-                    //listScr.mouseScroll(scr_mouseX, scr_mouseY);
+                    listScr.mouseScroll(scr_mouseX, scr_mouseY);
                     scr_scroll = false;
                 }
             }
 
             if(scr_mouseScroll != 0){
                 setLock = true;
-                menuScr.menu.select += scr_mouseScroll;
+                listScr.changeSelect(scr_mouseScroll);
             }
 
             if(Controls.isUpDown())
@@ -109,21 +101,16 @@ public class GameMenuScr {
 
             if(Controls.isUpClicked() ||
                     (counter > DELAY && scr_scroll)){
-                menuScr.menu.select--;
+                listScr.changeSelect(-1);
                 scr_scroll = false;
             }
             if(Controls.isDownClicked() ||
                     (counter < -DELAY && scr_scroll)){
-                menuScr.menu.select++;
+                listScr.changeSelect(1);
                 scr_scroll = false;
             }
 
-            if(menuScr.menu.select < 0)
-                menuScr.menu.select = menuSize-1;
-            else if(menuScr.menu.select >= menuSize)
-                menuScr.menu.select = 0;
-
-            Menu.setPointer(menuScr.menu.select);
+            Menu.setPointer(listScr.items.select);
             if(Controls.isActionDown() || Controls.isCancelDown())
                 menuSize = 0;
         }else{
@@ -132,7 +119,7 @@ public class GameMenuScr {
             Status.update(timePassed, mapScr);
 
             if(menuSize == 0 && Menu.getList().size() > 0){
-                    scrSwitch = true;
+                scrSwitch = true;
                 menuSize = Menu.getList().size();
             }
         }
@@ -147,10 +134,8 @@ public class GameMenuScr {
     }
 
     public void render(Graphics g){
-        if(menuSize > 0){
-            menuScr.menu.render(g);
-            //listScr.render(g, scr_sysTime);
-        }
+        if(menuSize > 0)
+            listScr.render(g, scr_sysTime);
     }
 
     public int getMenuSize(){

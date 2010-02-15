@@ -58,7 +58,6 @@ public class PixAnimate {
 
     public static void loadData(){
         imgData.decode();
-        imgData.decodeFiles();
     }
 
     public static boolean isReady(){
@@ -133,6 +132,11 @@ public class PixAnimate {
         for(int j = 0; j < anim.length; j++)
                     anim[j] = data.animRef.get(j);
         return new AnimStore(index, player, direction, anim, 0, 0);
+    }
+
+    public static java.awt.Image getJavaImg(AnimStore item, int animTime){
+        return storedImg.getImage(imgMap.get(
+                item.getAnimation(animTime)));
     }
 
     public static Image getImage(AnimStore item, int animTime){
