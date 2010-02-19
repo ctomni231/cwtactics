@@ -28,6 +28,8 @@ public class MapArrow {
     private int cursory;
     private double posx;
     private double posy;
+    private double checkposx;
+    private double checkposy;
     private int shakex;
     private int shakey;
     private boolean moveActive;
@@ -50,6 +52,8 @@ public class MapArrow {
         cursory = 0;
         posx = 0;
         posy = 0;
+        checkposx = 0;
+        checkposy = 0;
         shakex = 0;
         shakey = 0;
         unitTemp = new MapItem();
@@ -69,6 +73,17 @@ public class MapArrow {
     public void setPosition(double x, double y){
         posx = x;
         posy = y;
+    }
+
+    public boolean checkPosition(){
+        return (posx == checkposx && posy == checkposy);
+    }
+
+    public void updateCheck(){
+        if(!checkPosition()){
+            checkposx = posx;
+            checkposy = posy;
+        }
     }
     public void setShake(int sx, int sy){
         shakex = sx;

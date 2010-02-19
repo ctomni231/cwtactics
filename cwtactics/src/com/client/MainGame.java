@@ -13,8 +13,6 @@ import com.client.model.object.*;
 import com.client.state.InGameState;
 import com.client.state.MainMenuState;
 import com.client.state.SlickGame;
-import com.client.tools.LuaLibrary;
-import com.client.tools.LuaTest;
 import com.system.data.Engine_Database;
 import com.system.log.Logger;
 import com.system.network.MessageServer;
@@ -79,9 +77,6 @@ public class MainGame {
     	
     	// SETUP LOGIC
     	setupLogic();
-
-        //To test if Lua code works
-        initLua();
     	
     	// CREATE TEST GAME
     	initializeTestGame();
@@ -112,17 +107,6 @@ public class MainGame {
         //Sets the FPS: <=0 is default frameSpeed
         game.showSlickWindow(GAME_TARGET_FPS);
 
-    }
-
-    /**
-     * Sets up Lua for use
-     */
-    private static void initLua(){
-        LuaLibrary.runLuaFile("data/setup.lua");
-        LuaTest print = new LuaTest();
-        print.addLuaFunction("println");
-        LuaLibrary.executeLuaFunction("cool");
-        LuaLibrary.executeLuaFunction("blah");
     }
     
     /**
@@ -235,6 +219,7 @@ public class MainGame {
             container.setDisplayMode(sizex, sizey, false);
             container.setAlwaysRender(false);
             container.setShowFPS(false);
+            container.setClearEachFrame(false);
             container.setForceExit(true);
             //Set up the screens for the window
             game.initStatesList(container);

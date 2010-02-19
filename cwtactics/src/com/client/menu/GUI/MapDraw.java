@@ -248,7 +248,9 @@ public class MapDraw extends MovingPix{
         realcurx = arrow.getRealX();
         realcury = arrow.getRealY();
         renderSpeed();
-        
+
+        setBorder(g);
+
         for(int j = 0; j < mapsy; j++){
             for(int i = 0; i < mapsx; i++){
               if((i > (-posx-scale*BASE)/(scale*BASE) &&
@@ -257,6 +259,8 @@ public class MapDraw extends MovingPix{
                   j < (-posy+MAX_Y)/(scale*BASE))){
                 if(drawMap[i][j].change)
                     drawMap[i][j] = createNewImage(drawMap[i][j], i, j);
+                //UNCOMMENT TO SEE SPEED IMPROVEMENT
+                //if(!drawCheck(i,j))  continue;
                 if(drawMap[i][j].terrain != null)
                     if(Fog.inFog(map.getTile(i, j))){
                         g.drawImage(PixAnimate.getImage(drawMap[i][j].
@@ -339,6 +343,7 @@ public class MapDraw extends MovingPix{
         }
 
         arrow.render(g);
+        arrow.updateCheck();
 
         //Display anything you want to see displayed right here
         //-----------------------------------------------------
@@ -353,6 +358,27 @@ public class MapDraw extends MovingPix{
         //---
 
         if(!mapScr)    mapControl(animTime);
+    }
+
+    private void setBorder(Graphics g){
+        g.setColor(Color.black);
+        if(posx > 0)
+            g.fillRect(0, 0, (int)posx, MAX_Y);
+        if(posx+(mapsx*scale*BASE) < MAX_X)
+            g.fillRect((int)(posx+(mapsx*scale*BASE)), 0, MAX_X, MAX_Y);
+        if(posy > 0)
+            g.fillRect(0, 0, MAX_X, (int)posy);
+        if(posy+(mapsy*scale*BASE) < MAX_Y)
+            g.fillRect(0, (int)(posy+(mapsy*scale*BASE)), MAX_X, MAX_Y);
+    }
+
+    private boolean drawCheck(int i, int j){
+        if(!arrow.checkPosition())
+            return true;
+        if(i >= cursorx-2 && i <= cursorx+2 &&
+                j >= cursory-2 && j <= cursory+2)
+            return true;
+        return false;
     }
 
     public int getCursorX(){
