@@ -13,6 +13,8 @@ import com.client.model.object.*;
 import com.client.state.InGameState;
 import com.client.state.MainMenuState;
 import com.client.state.SlickGame;
+import com.client.tools.LuaLibrary;
+import com.client.tools.LuaTest;
 import com.system.data.Engine_Database;
 import com.system.log.Logger;
 import com.system.network.MessageServer;
@@ -76,7 +78,10 @@ public class MainGame {
 		//MusicFactory.play( SoundLoader.loadMusicFile("SONG_LASH.ogg"));
     	
     	// SETUP LOGIC
-    	setupLogic(); 
+    	setupLogic();
+
+        //To test if Lua code works
+        initLua();
     	
     	// CREATE TEST GAME
     	initializeTestGame();
@@ -106,6 +111,18 @@ public class MainGame {
         MainGame game = new MainGame(slickFrame, 640, 480);
         //Sets the FPS: <=0 is default frameSpeed
         game.showSlickWindow(GAME_TARGET_FPS);
+
+    }
+
+    /**
+     * Sets up Lua for use
+     */
+    private static void initLua(){
+        LuaLibrary.runLuaFile("data/setup.lua");
+        LuaTest print = new LuaTest();
+        print.addLuaFunction("println");
+        LuaLibrary.executeLuaFunction("cool");
+        LuaLibrary.executeLuaFunction("blah");
     }
     
     /**

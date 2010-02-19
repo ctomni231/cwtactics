@@ -19,7 +19,7 @@ public abstract class LuaLoader extends JavaFunction{
 
     @Override
     public int execute() throws LuaException {
-        setCommand(lua.toString(lua.getTop()));
+        doCommand(lua.toString(lua.getTop()));
         return 0;
     }
 
@@ -28,7 +28,7 @@ public abstract class LuaLoader extends JavaFunction{
      * can be accessed by a lua command specified by a name
      * @param name
      */
-    public abstract void setCommand(String name);
+    public abstract void doCommand(String text);
 
     /**
      * Adds this function to the Lua Library
