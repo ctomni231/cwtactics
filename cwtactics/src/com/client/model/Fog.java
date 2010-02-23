@@ -27,6 +27,7 @@ public class Fog {
 	private static ArrayList<Tile> visibleTiles;
 	private static ArrayList<Unit> visibleStealths;
 	private static boolean noFog;
+    private static boolean processFog;
 	private static int sightValue;
 	
 
@@ -40,6 +41,7 @@ public class Fog {
 		visibleStealths = new ArrayList<Unit>();
 		visibleTiles = new ArrayList<Tile>();
 		noFog = true;
+        processFog = false;
 	}
 	
 	
@@ -93,9 +95,18 @@ public class Fog {
 	public static void setSight( int value ){
 		sightValue = value;
 	}
-	
 
-	
+    /**
+     * Checks to see if the fog was recently processed
+     */
+    public static boolean isProcessFog(){
+        if(processFog){
+            processFog = false;
+            return true;
+        }
+        return processFog;
+    }
+		
 	/*
 	 *
 	 * WORK METHODS
@@ -115,7 +126,8 @@ public class Fog {
 	}
 	
 	private static void processFog( Player player ){
-    		
+
+        processFog = true;
 		// clear old
 		clear();
 		

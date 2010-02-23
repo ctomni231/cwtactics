@@ -34,7 +34,6 @@ public class GameMenuScr {
     private int counter;
     private String[] info;
     private String[] infoTxt;
-    private String arrow;
     private int scrX;
     private int scrY;
     private int menuSize;
@@ -44,7 +43,6 @@ public class GameMenuScr {
             int width, int height){
         scr_scrollIndex = 0;
         counter = 0;
-        arrow = arrowRef;
         scrX = width;
         scrY = height;
         listScr = new ListDraw(txtLib, arrowRef, MAX_ITEMS, 30, 30, 30, 0);
@@ -77,7 +75,7 @@ public class GameMenuScr {
 
         scr_scrollIndex = 10;
         if(menuSize > 0){
-            
+            mapScr.drawAllTiles();
             if(!scr_mouseLock){
                 scr_scrollIndex = 2;
                 listScr.mouseSelect(scr_mouseX, scr_mouseY);

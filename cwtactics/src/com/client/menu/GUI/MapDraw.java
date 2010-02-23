@@ -9,7 +9,6 @@ import com.client.model.Instance;
 import com.client.model.Move;
 import com.client.model.Range;
 import com.client.model.object.Map;
-import com.system.log.Logger;
 
 import java.util.ArrayList;
 import org.newdawn.slick.Color;
@@ -52,8 +51,10 @@ public class MapDraw extends MovingPix{
     private boolean mapScr;
     private boolean mapWatch;
     private int mapInd;
+    private int smallTile;
 
     private boolean ready;
+    private boolean drawAll;
 
     //TODO connections, menu
 
@@ -126,6 +127,10 @@ public class MapDraw extends MovingPix{
         showGrid = !showGrid;
     }
 
+    public void drawAllTiles(){
+        drawAll = true;
+    }
+
     public int getColumn(){
         return column;
     }
@@ -147,12 +152,14 @@ public class MapDraw extends MovingPix{
         }
         scale = PixAnimate.getScale();
         if(PixAnimate.isReady()){
+            smallTile = PixAnimate.getDataLocation("PLAIN");
             arrow.setCurPosition(cursorx, cursory);
             arrow.setPosition(posx, posy);
             arrow.setScale(scale);
             arrow.setShake(shakex, shakey);
             arrow.initCursor();
         }
+        drawAllTiles();
     }
 
     public boolean update(int mouseX, int mouseY, int mouseScroll,
@@ -260,7 +267,7 @@ public class MapDraw extends MovingPix{
                 if(drawMap[i][j].change)
                     drawMap[i][j] = createNewImage(drawMap[i][j], i, j);
                 //UNCOMMENT TO SEE SPEED IMPROVEMENT
-                //if(!drawCheck(i,j))  continue;
+                if(!drawCheck(i,j))  continue;
                 if(drawMap[i][j].terrain != null)
                     if(Fog.inFog(map.getTile(i, j))){
                         g.drawImage(PixAnimate.getImage(drawMap[i][j].
@@ -326,10 +333,17 @@ public class MapDraw extends MovingPix{
                 }
               }
             }
+        }     
+
+        if(drawAll) drawAll = false;
+
+        if(Fog.isProcessFog()){
+            drawAllTiles();
         }
         if(arrow.getMoveActive()){
             mapInd = 8;
             renderMoveAnimation(g, animTime);
+            drawAllTiles();
         }
         if(shakex != shakey && shakey != 0){
             shakex = 0;
@@ -344,6 +358,8 @@ public class MapDraw extends MovingPix{
 
         arrow.render(g);
         arrow.updateCheck();
+
+        
 
         //Display anything you want to see displayed right here
         //-----------------------------------------------------
@@ -375,10 +391,25 @@ public class MapDraw extends MovingPix{
     private boolean drawCheck(int i, int j){
         if(!arrow.checkPosition())
             return true;
-        if(i >= cursorx-2 && i <= cursorx+2 &&
+        if(i >= cursorx-1 && i <= cursorx+1 &&
+                j >= cursory-1 && j <= cursory+1)
+            return true;
+        if(!arrow.checkCursor() && i >= cursorx-2 && i <= cursorx+2 &&
                 j >= cursory-2 && j <= cursory+2)
             return true;
-        return false;
+        if(drawMap[i][j].unit != null)
+            return true;
+        if(drawMap[i][j].terrain.ind != smallTile)
+            return true;
+        if(arrow.getMoveActive())
+            return true;
+        if(Status.getStatus() == Status.Mode.SHOW_MOVE &&
+                Move.getTiles().containsKey(map.getTile(i, j)))
+            return true;
+        if(Status.getStatus() == Status.Mode.SHOW_RANGE &&
+                Range.isIn(map.getTile(i, j)))
+            return true;
+        return drawAll;
     }
 
     public int getCursorX(){

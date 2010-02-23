@@ -26,6 +26,8 @@ public class MapArrow {
     private int realcury;
     private int cursorx;
     private int cursory;
+    private int checkcurx;
+    private int checkcury;
     private double posx;
     private double posy;
     private double checkposx;
@@ -50,6 +52,8 @@ public class MapArrow {
         realcury = 0;
         cursorx = 0;
         cursory = 0;
+        checkcurx = 0;
+        checkcury = 0;
         posx = 0;
         posy = 0;
         checkposx = 0;
@@ -79,10 +83,18 @@ public class MapArrow {
         return (posx == checkposx && posy == checkposy);
     }
 
+    public boolean checkCursor(){
+        return (cursorx == checkcurx && cursory == checkcury);
+    }
+
     public void updateCheck(){
         if(!checkPosition()){
             checkposx = posx;
             checkposy = posy;
+        }
+        if(!checkCursor()){
+            checkcurx = cursorx;
+            checkcury = cursory;
         }
     }
     public void setShake(int sx, int sy){

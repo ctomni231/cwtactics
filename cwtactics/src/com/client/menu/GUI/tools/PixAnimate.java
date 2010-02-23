@@ -91,6 +91,15 @@ public class PixAnimate {
         return null;
     }
 
+    public static int getDataLocation(String name){
+        for(int i = 0; i < imgData.getData().size(); i++){
+            ImgData data = imgData.getData().get(i);
+            if(name.matches(data.group+".*"))
+                return i;
+        }
+        return -1;
+    }
+
     public static AnimStore getBuildPart(String name,
             int player, int direction){
         for(int i = 0; i < imgData.getData().size(); i++){
