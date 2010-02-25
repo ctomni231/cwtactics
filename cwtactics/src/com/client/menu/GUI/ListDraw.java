@@ -95,6 +95,14 @@ public class ListDraw {
         setFinalPosition(width, height);
     }
 
+    public int getSizeX(){
+        return sizex;
+    }
+
+    public int getSizeY(){
+        return sizey;
+    }
+
     private void setFinalPosition(int w, int h){
         items.setFinalPosition((int)((w-sizex)/2), (int)((h-sizey)/2));
         selectBox.setFinalPosition((int)((w-sizex)/2), (int)((h-sizey)/2));

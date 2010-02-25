@@ -2,6 +2,7 @@ package com.client.menu.GUI;
 
 import com.client.input.Controls;
 import com.client.logic.status.Status;
+import com.client.menu.GUI.tools.MouseBox;
 import com.client.menu.GUI.tools.MovingPix;
 import com.client.menu.GUI.tools.PixAnimate;
 import com.client.model.Fog;
@@ -55,6 +56,7 @@ public class MapDraw extends MovingPix{
 
     private boolean ready;
     private boolean drawAll;
+    private ArrayList<MouseBox> drawBox;
 
     //TODO connections, menu
 
@@ -84,7 +86,13 @@ public class MapDraw extends MovingPix{
         scale = PixAnimate.getScale();
         cursorx = 0;
         cursory = 0;
-        column = 0;      
+        column = 0;
+        drawBox = new ArrayList<MouseBox>();
+        addTopBox();
+    }
+
+    public void addTopBox(){
+        addBox(0, 0, 0, 250, 100);
     }
 
     public void skipAnimation(){
@@ -94,6 +102,27 @@ public class MapDraw extends MovingPix{
     public void addShake(int x, int y){
         shakeX.add(x);
         shakeY.add(y);
+    }
+
+    public void addBox(int locx, int locy, int sizex, int sizey){
+        MouseBox temp = new MouseBox();
+        temp.setData(locx, locy, sizex, sizey);
+        drawBox.add(temp);
+    }
+    public void addBox(int index, int locx, int locy, int sizex, int sizey){
+        MouseBox temp = new MouseBox();
+        temp.setData(locx, locy, sizex, sizey);
+        if(index < drawBox.size())
+            drawBox.set(index, temp);
+        else
+            drawBox.add(temp);
+    }
+    public void removeBox(int index){
+        if(index >= 0 && index < drawBox.size())
+            drawBox.remove(index);
+    }
+    public void clearAllBox(){
+        drawBox.clear();
     }
 
     public void changeType(String type){
@@ -409,7 +438,28 @@ public class MapDraw extends MovingPix{
         if(Status.getStatus() == Status.Mode.SHOW_RANGE &&
                 Range.isIn(map.getTile(i, j)))
             return true;
+        //if(drawField(i,j))
+        //    return true;
         return drawAll;
+    }
+
+    /**
+     * Checks to see if a tile is within a particular field of drawing
+     */
+    public boolean drawField(int i, int j){
+        for(int k = 0; k < drawBox.size(); k++){
+            if(drawBox.get(k).getData(0) <= i*BASE*scale &&
+               drawBox.get(k).getData(1) <= j*BASE*scale &&
+               drawBox.get(k).getData(2) >= i*BASE*scale &&
+               drawBox.get(k).getData(3) >= j*BASE*scale)
+                return true;
+            if(drawBox.get(k).getData(0) <= i*(2*BASE*scale) &&
+               drawBox.get(k).getData(1) <= j*(2*BASE*scale) &&
+               drawBox.get(k).getData(2) >= i*(2*BASE*scale) &&
+               drawBox.get(k).getData(3) >= j*(2*BASE*scale))
+                return true;
+        }
+        return false;
     }
 
     public int getCursorX(){

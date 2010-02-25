@@ -4,7 +4,6 @@ import com.client.input.Controls;
 import com.client.logic.status.Status;
 import com.client.menu.GUI.ListDraw;
 import com.client.menu.GUI.MapDraw;
-import com.client.menu.GUI.MenuDraw;
 import com.client.menu.logic.Menu;
 import com.client.tools.TextImgLibrary;
 import org.newdawn.slick.Graphics;
@@ -67,6 +66,9 @@ public class GameMenuScr {
                             .getID().toUpperCase();
                 }
                 listScr.update(info, infoTxt, scrX, scrY);
+                //mapScr.addBox(1, (scrX-listScr.getSizeX())/2,
+                //        (scrY-listScr.getSizeY())/2,
+                //        listScr.getSizeX(), listScr.getSizeY());
             }
             scrSwitch = false;
             System.out.println("TIME NEEDED TO BUILD MENU :: "+
@@ -109,8 +111,10 @@ public class GameMenuScr {
             }
 
             Menu.setPointer(listScr.items.select);
-            if(Controls.isActionDown() || Controls.isCancelDown())
+            if(Controls.isActionDown() || Controls.isCancelDown()){
                 menuSize = 0;
+                //mapScr.removeBox(1);
+            }
         }else{
             scr_scroll = mapScr.update(scr_mouseX, scr_mouseY,
                     scr_mouseScroll, scr_scroll, scr_mouseLock);
