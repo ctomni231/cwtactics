@@ -92,7 +92,7 @@ public class MapDraw extends MovingPix{
     }
 
     public void addTopBox(){
-        addBox(0, 0, 0, 250, 100);
+        addBox(0, 0, 0, 250, 50);
     }
 
     public void skipAnimation(){
@@ -438,8 +438,8 @@ public class MapDraw extends MovingPix{
         if(Status.getStatus() == Status.Mode.SHOW_RANGE &&
                 Range.isIn(map.getTile(i, j)))
             return true;
-        //if(drawField(i,j))
-        //    return true;
+        if(drawField(i,j))
+            return true;
         return drawAll;
     }
 
@@ -448,15 +448,15 @@ public class MapDraw extends MovingPix{
      */
     public boolean drawField(int i, int j){
         for(int k = 0; k < drawBox.size(); k++){
-            if(drawBox.get(k).getData(0) <= i*BASE*scale &&
-               drawBox.get(k).getData(1) <= j*BASE*scale &&
-               drawBox.get(k).getData(2) >= i*BASE*scale &&
-               drawBox.get(k).getData(3) >= j*BASE*scale)
+            if(drawBox.get(k).getData(0) <= posx+i*BASE*scale &&
+               drawBox.get(k).getData(1) <= posy+j*BASE*scale &&
+               drawBox.get(k).getData(2) >= posx+i*BASE*scale &&
+               drawBox.get(k).getData(3) >= posy+j*BASE*scale)
                 return true;
-            if(drawBox.get(k).getData(0) <= i*(2*BASE*scale) &&
-               drawBox.get(k).getData(1) <= j*(2*BASE*scale) &&
-               drawBox.get(k).getData(2) >= i*(2*BASE*scale) &&
-               drawBox.get(k).getData(3) >= j*(2*BASE*scale))
+            if(drawBox.get(k).getData(0) <= posx+(i*BASE*scale)+(BASE*scale) &&
+               drawBox.get(k).getData(1) <= posy+(j*BASE*scale)+(BASE*scale) &&
+               drawBox.get(k).getData(2) >= posx+(i*BASE*scale)+(BASE*scale) &&
+               drawBox.get(k).getData(3) >= posy+(j*BASE*scale)+(BASE*scale))
                 return true;
         }
         return false;

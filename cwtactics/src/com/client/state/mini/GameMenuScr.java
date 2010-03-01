@@ -66,9 +66,9 @@ public class GameMenuScr {
                             .getID().toUpperCase();
                 }
                 listScr.update(info, infoTxt, scrX, scrY);
-                //mapScr.addBox(1, (scrX-listScr.getSizeX())/2,
-                //        (scrY-listScr.getSizeY())/2,
-                //        listScr.getSizeX(), listScr.getSizeY());
+                mapScr.addBox(1, (scrX-listScr.getSizeX())/2,
+                        (scrY-listScr.getSizeY())/2,
+                        listScr.getSizeX(), listScr.getSizeY());
             }
             scrSwitch = false;
             System.out.println("TIME NEEDED TO BUILD MENU :: "+
@@ -77,7 +77,7 @@ public class GameMenuScr {
 
         scr_scrollIndex = 10;
         if(menuSize > 0){
-            mapScr.drawAllTiles();
+            //mapScr.drawAllTiles();
             if(!scr_mouseLock){
                 scr_scrollIndex = 2;
                 listScr.mouseSelect(scr_mouseX, scr_mouseY);
@@ -113,7 +113,7 @@ public class GameMenuScr {
             Menu.setPointer(listScr.items.select);
             if(Controls.isActionDown() || Controls.isCancelDown()){
                 menuSize = 0;
-                //mapScr.removeBox(1);
+                mapScr.removeBox(1);
             }
         }else{
             scr_scroll = mapScr.update(scr_mouseX, scr_mouseY,
