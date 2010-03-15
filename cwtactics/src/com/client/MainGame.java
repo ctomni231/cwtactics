@@ -15,6 +15,8 @@ import com.client.state.MainMenuState;
 import com.client.state.SlickGame;
 import com.system.data.Engine_Database;
 import com.system.log.Logger;
+import com.system.meowShell.Method_Database;
+import com.system.meowShell.Script_Database;
 import com.system.network.MessageServer;
 import com.system.network.MessageServer.MessageMode;
 import com.system.network.coder.MessageDecoder;
@@ -25,8 +27,6 @@ import com.system.reader.ModReader;
 import com.system.reader.ScriptReader;
 import com.system.sound.MusicFactory;
 import com.system.sound.SoundLoader;
-import com.system.triggerEngine.Method_Database;
-import com.system.triggerEngine.Script_Database;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
@@ -56,7 +56,6 @@ public class MainGame {
     	MessageDecoder.addDecoderMethods( CustomWars_Decoder.class);
 
     	// test, add script/message server database
-    	Method_Database.addLibrary( CustomWars_Library.class );
     	MessageServer.addLibrary( CustomWars_Library.class );
     	Script_Database.addTrigger("TURN_START_UNITS");
     	Script_Database.addTrigger("TURN_START_TILES");
@@ -66,7 +65,7 @@ public class MainGame {
     	Script_Database.addTrigger("UNIT_ATTACK");
     	Script_Database.addTrigger("UNIT_DEFEND");
     	Script_Database.addTrigger("UNIT_WILL_MOVE");
-    	Script_Database.addTrigger("VISION_UNIT");
+    	com.system.meowShell.Script_Database.addTrigger("VISION_UNIT");
     	Script_Database.addTrigger("MOVE_ONTO");
     	Script_Database.addTrigger("VISION_TILE");
     	(new ScriptReader("data/Scripts.tef")).parse();

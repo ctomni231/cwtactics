@@ -1,6 +1,5 @@
 package com.client.model;
 
-import com.client.library.CustomWars_Library;
 import com.client.model.object.Tile;
 import com.client.model.object.Unit;
 import com.system.data.DynamicMemory;
@@ -8,7 +7,7 @@ import com.system.data.sheets.Weapon_Sheed;
 import com.system.log.Logger;
 import com.system.network.MessageServer;
 import com.system.network.coder.MessageEncoder;
-import com.system.triggerEngine.Script_Database;
+import com.system.meowShell.Script_Database;
 
 /**
  * Controls a battle between two units.

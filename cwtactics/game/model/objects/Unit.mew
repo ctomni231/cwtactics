@@ -1,0 +1,29 @@
+class Unit :
+	
+	def constructor( sheet ) :
+		self.sheet  = sheet;
+		self.health = 100;
+		self.ammo   = sheet.getAmmo();
+		self.fuel   = sheet.getFuel();
+		self.exp    = 0;
+		self.rank   = 0;
+		self.pos    = None;
+		
+	# health 
+	def getHealth()    : return self.health;
+	def setHealth( x ) : 
+		if   x < 0   : x = 0;
+		elif x > 99  : x = 99;
+		self.health = x;
+	def changeHealth( x ): setHealth( getHealth() + x );
+	
+	# fuel
+	def getFuel()    : return self.health;
+	def setFuel( x ) : 
+		if   x < 0   : x = 0;
+		self.health = x;
+	def changeFuel( x ): setFuel( getFuel() + x );
+		
+	# position
+	def getPosition()      : return self.pos;
+	def setPosition( pos ) : self.pos = pos;

@@ -1,0 +1,4 @@
+class Idle_State :
+	
+	def updateLogic( timePassed ) :
+		

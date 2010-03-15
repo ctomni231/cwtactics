@@ -3,13 +3,7 @@ package com.system.reader;
 import java.util.ArrayList;
 
 import com.system.input.KeyValue_Parser;
-import com.system.triggerEngine.Script_Database;
-import com.system.triggerEngine.script.Script;
-import com.system.triggerEngine.script.object.Action;
-import com.system.triggerEngine.script.object.Case;
-import com.system.triggerEngine.script.object.CommandList_Action;
-import com.system.triggerEngine.script.object.Condition;
-
+import com.system.meowShell.Script_Database;
 public class ScriptReader extends KeyValue_Parser{
 	
 	public ScriptReader(String file) {
@@ -29,6 +23,7 @@ public class ScriptReader extends KeyValue_Parser{
 
 	public void parse(){
 		
+		/*
 		super.parserFile();
 		ArrayList<String> keys = super.getKeys();
 		ArrayList<String> values = super.getValues();
@@ -63,7 +58,7 @@ public class ScriptReader extends KeyValue_Parser{
 					for( String str : strC.split("#") ) s.setDefault( new CommandList_Action( str ) );
 				}
 			}
-		}
+		}*/
 	}
 	
 }
