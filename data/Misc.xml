@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<misc>
+
+	<mod ID="CUSTOM_TACTICWARS" >
+        <information   	name="Mini Tactics"
+						author="Tapsi(Alex); JSR(Crecen)"
+						modVersion="1.0 Pre Alpha"  />
+        <stats 			getallaftercaphq="1" 
+						language="ENG" 
+					      tileset="AWDS"/>
+        <standart   	battleOnDefenderField="1"
+        				healthIndependentDamage="0"  />
+        <resupply_cost  fuel_ressource_0="10"
+                        ammo_ressource_0="10" />
+    </mod>
+	
+	
+	<!--                 --> 
+	<!--  WEATHER BLOCK  --> 
+	<!--                 --> 
+	
+	<weather ID="SUN" >
+		<stats chance="55" />
+	</weather>
+
+	<weather ID="RAIN" >
+		<stats chance="25" />
+	</weather>
+
+	<weather ID="SANDSTORM" >
+		<stats chance="10" />
+	</weather>
+	
+	<weather ID="SNOW" >
+		<stats chance="10" />
+	</weather>
+	
+	<!--              --> 
+	<!--  RANK BLOCK  --> 
+	<!--              --> 
+	
+	<rank ID="RANK-0" >
+		<stats exp="150" />
+	</rank>
+	
+	<rank ID="RANK-1" >
+		<stats exp="300" />
+	</rank>
+	
+	<rank ID="RANK-2" >
+		<stats exp="500" />
+	</rank>
+	
+    <!--                   --> 
+	<!--  RESSOURCE BLOCK  --> 
+	<!--                   -->
+
+    <ressource ID="GOLD" ></ressource>
+    <ressource ID="OIL" ></ressource>
+
+
+</misc>

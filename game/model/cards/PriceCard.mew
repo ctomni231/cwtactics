@@ -1,0 +1,19 @@
+# Simple resource model
+#
+class PriceCard :
+	
+	def constructor() : 
+		self.oil = 0
+		self.gold = 0
+	
+	# Getter / Setter
+	def getOil()      : return oil
+	def getGold()     : return gold
+	def setOil(x)     : self.oil = x
+	def setGold(x)    : self.gold = x
+	def changeOil(x)  : self.oil += x
+	def changeGold(x) : self.gold += x
+	
+	# language
+	def getOilName()  : Language.get("OIL");
+	def getGoldName() : Language.get("GOLD");

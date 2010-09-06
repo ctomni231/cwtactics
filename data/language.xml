@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language>
+
+	<units>
+		<lang id="INFANTRY" 	ENG="Infantry" 			GER="Infanterie" />
+		<lang id="MECH" 		ENG="Bazooka" 			GER="Mech. Infanterie" />
+		<lang id="MOTORBIKE" 	ENG="Motorbike" 		GER="Lt. Späher" />
+		<lang id="RECOON" 		ENG="Recoon" 			GER="Späher" />
+		<lang id="LTANK" 		ENG="Tank" 				GER="Lt. Panzer" />
+		<lang id="PAK" 			ENG="Anti-Tank Cannon" 	GER="Panzerabwehr-Kanone" />
+		<lang id="MDTANK" 		ENG="Battletank" 		GER="Kampfpanzer" />
+		<lang id="HTANK" 		ENG="War Tank" 			GER="Kriegspanzer" />
+		<lang id="AATANK" 		ENG="Anti-Air Tank" 	GER="Flakpanzer" />
+		<lang id="ARTILLERY" 	ENG="Artillery" 		GER="Artillerie" />
+		<lang id="APC" 			ENG="Supply Tank" 		GER="Versorgungspanzer" />
+		<lang id="BHELI" 		ENG="Battle Copter" 	GER="Kampfhubschrauber" />
+		<lang id="BOMB" 		ENG="Bomber" 			GER="Bomber" />
+		<lang id="THELI" 		ENG="Transport Copter" 	GER="Transporthelikopter" />
+		<lang id="SUB" 			ENG="Submarine" 		GER="U-Boot" />
+		<lang id="CRUISER" 		ENG="Cruiser" 			GER="Kreuzer" />
+		<lang id="AAROCKET" 	ENG="Anti-Air Rocket" 	GER="Luftabwehr-Raketenwerfer" />
+		<lang id="JET" 			ENG="Plane Hunter" 		GER="Jäger" />
+		<lang id="DUSTER" 		ENG="Duster" 			GER="Mehrzweckjäger" />
+		<lang id="SHIP_PLANE" 	ENG="Light Duster" 		GER="Lt. Mehrzweckjäger" />
+		<lang id="CARRIER" 		ENG="Carrier" 			GER="Flugzeugträger" />
+		<lang id="LANDER" 		ENG="Transport Ship" 	GER="Transportschiff" />
+		<lang id="ROCKET" 		ENG="Rocketlauncher" 	GER="Raketernwerfer" />
+		<lang id="BSHIP" 		ENG="Battleship"	 	GER="Schlachtschiff" />
+	</units>
+	
+	<weapons>
+		<lang id="WP_MG" 		ENG="Machinegun" 		GER="Maschinengwehr" />
+		<lang id="WP_BAZOOKA" 	ENG="Bazooka" 			GER="PA-Raketenwerfer" />
+		<lang id="WP_LT_CANNON" ENG="75mm Cannon" 		GER="75mm Kanone" />
+		<lang id="WP_HV_AT" 	ENG="Anti-Tank Cannon" 	GER="Anti-Panzer Kanone" />
+		<lang id="WP_MD_CANNON" ENG="100mm Cannon"		GER="100mm Kanone" />
+		<lang id="WP_HV_CANNON" ENG="150mm Cannon" 		GER="150mm Kanone" />
+		<lang id="WP_AA_CANNON" ENG="Anti-Air Cannon" 	GER="Flugabwehr-Kanone" />
+		<lang id="WP_HOWITZER" 	ENG="180mm Howitzer" 	GER="180mm Haubitze" />
+		<lang id="WP_AG_RKL" 	ENG="Air-Ground Rockets" GER="Luft-Boden Raketen" />
+		<lang id="WP_BOMBS" 	ENG="Bombs" 			GER="Bomben" />
+		<lang id="WP_TORPEDO" 	ENG="Torpedos" 			GER="Torpedos" />
+		<lang id="WP_WATERBOMBS" ENG="Waterbombs" 		GER="Wasserbomben" />
+		<lang id="WP_AA_RKL" 	ENG="Anti-Air Rockets" 	GER="Luftabwehr-Raketen" />
+		<lang id="WP_AA_RKL2" 	ENG="Air-Air Rockets" 	GER="Luft-Luft Raketen" />
+		<lang id="WP_PLANE_CANNON" ENG="30mm Cannon" 	GER="30mm Kanone" />
+		<lang id="WP_AA_CANNON2" ENG="Anti-Air Cannon" 	GER="Luftabwehr-Kanone" />
+		<lang id="WP_AAGROUND_CANNON" ENG="Anti-Air Cannon" 	GER="Luftabwehr-Kanone" />
+		<lang id="WP_HV_RKL" 	ENG="Rocketlauncher" 	GER="Raktenwerfer" />
+		<lang id="WP_HOWITZER2" ENG="300mm Howitzer" 	GER="300mm Haubitze" />
+	</weapons>
+	
+	<tiles>
+		<lang id="PLAIN" 		ENG="Plain" 			GER="Feld" />
+		<lang id="FOREST" 		ENG="Forest" 			GER="Wald" />
+		<lang id="MOUNTAIN" 	ENG="Mountain" 			GER="Berge" />
+		<lang id="CITY" 		ENG="City" 				GER="Stadt" />
+		<lang id="FACTORY" 		ENG="Factory" 			GER="Fabrik" />
+		<lang id="AIRPORT" 		ENG="Airport" 			GER="Flughafen" />
+		<lang id="PORT" 		ENG="Port" 				GER="Hafen" />
+		<lang id="SILO" 		ENG="Silo" 				GER="Silo" />
+		<lang id="HQ" 			ENG="Headquarters" 		GER="Hauptquartier" />
+		<lang id="RADAR" 		ENG="Radar" 			GER="Radar" />
+		<lang id="STREET" 		ENG="Street" 			GER="Strasse" />
+		<lang id="RIVER" 		ENG="River" 			GER="Fluss" />
+		<lang id="WATER" 		ENG="Water" 			GER="Wasser" />
+		<lang id="REEF" 		ENG="Reef" 				GER="Riff" />
+		<lang id="SHOAL" 		ENG="Shoal" 			GER="Küste" />
+	</tiles>
+	
+	<buttons>
+		<lang id="OPTIONS" 		ENG="Options" 			GER="Optionen" />
+		<lang id="GRID"			ENG="Grid" 				GER="Grid" />
+		<lang id="AWDS" 		ENG="AWDS" 				GER="AWDS" />
+		<lang id="AWDR" 		ENG="AWDoR" 			GER="AWDC" />
+		<lang id="ENDTURN" 		ENG="End Turn" 			GER="Zug Beenden" />
+		<lang id="WAIT" 		ENG="Wait" 				GER="Warten" />
+		<lang id="CAPTURE" 		ENG="Capture" 			GER="Erobern" />
+		<lang id="ATTACK" 		ENG="Attack" 			GER="Angreifen" />
+		<lang id="HIDE"			ENG="Hide"				GER="Tarnen" />
+		<lang id="UNHIDE"		ENG="Unhide"			GER="Enttarnen" />
+		<lang id="LOAD"			ENG="Load"				GER="Einladen" />
+		<lang id="UNLOAD"		ENG="Unload"			GER="Entladen" />
+		<lang id="SUPPLY"		ENG="Supply"			GER="Versorgen" />
+		<lang id="ATTACK"		ENG="Attack"			GER="Angreifen" />
+	</buttons>
+	
+	<ranks>
+		<lang id="RANK-0" 		ENG="Guard" 			GER="Erfahren" />
+		<lang id="RANK-1" 		ENG="Veteran" 			GER="Veteran" />
+		<lang id="RANK-2" 		ENG="Elite" 			GER="Alter Hase" />
+	</ranks>
+	
+	<resources>
+		<lang id="GOLD" 	ENG="Gold" 				GER="Geld" />
+		<lang id="OIL"	 	ENG="Oil" 				GER="Öl" />
+	</resources>
+	
+	<weather>
+		<lang id="SUN" 			ENG="Clear" 			GER="Sonnig" />
+		<lang id="RAIN" 		ENG="Rain" 				GER="Regen" />
+		<lang id="SANDSTORM" 	ENG="Sandstorm" 		GER="Sturm" />
+		<lang id="SNOW" 		ENG="Schnee" 			GER="Schnee" />
+	</weather>
+	
+	<movetypes>
+		<lang id="MV_INFANTRY" 	ENG="Foot" 				GER="Fuss" />
+		<lang id="MV_BAZOOKA" 	ENG="Foot" 				GER="Fuss" />
+		<lang id="MV_TIRE_A" 	ENG="Tires" 			GER="Räder" />
+		<lang id="MV_TIRE_B" 	ENG="Tires" 			GER="Räder" />
+		<lang id="MV_TANK" 		ENG="Chains" 			GER="Ketten" />
+		<lang id="MV_AIR" 		ENG="Air" 				GER="Luft" />
+		<lang id="MV_SHIP" 		ENG="Sea" 				GER="See" />
+		<lang id="MV_TRANSPORT" ENG="Sea" 				GER="See" />
+	</movetypes>
+	
+</language>
