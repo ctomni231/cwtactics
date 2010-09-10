@@ -43,7 +43,7 @@ public class MainGame {
     public static String GAME_TITLE = "Custom Wars Tactics Pre-Alpha 0.6";
     
     //The target frames per second for this game
-    public static int GAME_TARGET_FPS = 0;
+    public static int GAME_TARGET_FPS = 60;
     //The target frames for second for the system timer
     public static int TIMER_FPS = 10;
 	
@@ -52,8 +52,9 @@ public class MainGame {
     	Logger.setConsoleOutputOn();
     	Logger.stopOnLevel( Level.SEVERE );
 
-    	MessageEncoder.addEncoderMethods( CustomWars_Encoder.class);
-    	MessageDecoder.addDecoderMethods( CustomWars_Decoder.class);
+        //TODO commented out; causes errors
+    	//MessageEncoder.addEncoderMethods( CustomWars_Encoder.class);
+    	//MessageDecoder.addDecoderMethods( CustomWars_Decoder.class);
 
     	// test, add script/message server database
     	MessageServer.addLibrary( CustomWars_Library.class );

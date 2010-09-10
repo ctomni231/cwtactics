@@ -1,5 +1,0 @@
-# Data class for an unit.
-#
-class UnitSheet :
-	
-	def constructor():

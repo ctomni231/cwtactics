@@ -108,7 +108,8 @@ public class CustomWars_Library {
 	}
 	
 	public static void waitAnimation(){
-		if( InGameState.getMap().isAnimationRunning() ) MessageServer.send( "waitAnimation=" , true , MessageMode.LOCAL );
+            //TODO: commented out; causes errors
+		//if( InGameState.getMap().isAnimationRunning() ) MessageServer.send( "waitAnimation=" , true , MessageMode.LOCAL );
 	}
 	
 	public static void turnEnd(){

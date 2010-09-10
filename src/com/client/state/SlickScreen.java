@@ -157,8 +157,9 @@ public abstract class SlickScreen extends BasicGameState{
      *
      */
     protected boolean scr_checkCommands(){
-    	try{ 
-    		MessageServer.doNextCommand(); 
+    	try{
+            //TODO: commented out; causes errors
+    		//MessageServer.doNextCommand();
     		return true; 
     	}
     	catch( Empty_Exception e ){ return false; }

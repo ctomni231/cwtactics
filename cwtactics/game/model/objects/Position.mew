@@ -1,9 +1,0 @@
-class Position :
-	
-	def constructor( x , y ) :
-		self.x = x;
-		self.y = y;
-		
-	# getter 
-	def getX() : return self.x;
-	def getY() : return self.y;

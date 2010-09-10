@@ -1,7 +1,0 @@
-class StateController :
-	
-	def constructor():
-		self.states = MeoWHashSet();
-	
-	def updateLogic( timePassed ) :
-		
