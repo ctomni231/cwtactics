@@ -36,15 +36,12 @@ public class SlixGame extends BasicGame{
     private Screen tempScreen;
     //Holds a variable so only the top screen displays
     private int scrStart;
-    //Holds whether this image is an applet (default: true)
-    private boolean isApplet;
 
     //The slick applet won't work any other way sadly
     public SlixGame(){
         super("JSlix");
         KeyPress.setConv(true);
         timer = new Timer(true);
-        isApplet = true;
         loadGame();
     }
 
@@ -53,10 +50,6 @@ public class SlixGame extends BasicGame{
         SlixLibrary.addFrameScreen(new TestScreen());
     }
     
-    public void setAsFrame(){
-        isApplet = false;
-    }
-
     @Override
     public void init(GameContainer container) throws SlickException {
         contain = container;
@@ -82,7 +75,6 @@ public class SlixGame extends BasicGame{
             tempScreen.scr_width = container.getWidth();
             tempScreen.scr_height = container.getHeight();
             tempScreen.scr_sysTime = timer.getTime();
-            tempScreen.scr_isApplet = isApplet;
             tempScreen.update(timePassed);
 
             if(!tempScreen.scr_link)
@@ -92,7 +84,6 @@ public class SlixGame extends BasicGame{
 
     public void render(GameContainer container, Graphics g)
             throws SlickException {
-        if(SlixLibrary.size() == 0) return;
         for(int i = 0; i < SlixLibrary.size(); i++){
             scrStart = i;
             tempScreen = SlixLibrary.scrOrder.get(i);

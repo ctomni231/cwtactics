@@ -1,6 +1,5 @@
 package com.client;
 
-import com.client.JSGMain;
 import com.jslix.system.Slix;
 
 
@@ -23,7 +22,7 @@ public class JMain extends Slix{
             if(argv[0].matches("java"))         game.showWindow();
             else if(argv[0].matches("slick"))   game.showSlick();
         }else
-            game.showWindow();
+            game.showSlick();
     }
 
     public JMain(int width, int height){

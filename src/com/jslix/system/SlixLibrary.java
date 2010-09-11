@@ -27,6 +27,10 @@ public class SlixLibrary {
      * Will force the Frame or Applet to exit
      */
     private static boolean exit = false;
+    /**
+     * Sets whether this is an applet or a frame
+     */
+    private static boolean isApplet = true;
 
     /**
      * Adds a screen to be displayed by the main window
@@ -45,6 +49,7 @@ public class SlixLibrary {
      */
     public static void addFrameScreen(Screen theScreen, String name){
         theScreen.scr_name = name;
+        theScreen.scr_isApplet = isApplet;
         scrList.add(theScreen);
     }
     
@@ -143,7 +148,14 @@ public class SlixLibrary {
      * Used to see if it is okay to quit
      * @return If it is okay to quit
      */
-    public static boolean quitNow(){
+    protected static boolean quitNow(){
         return exit;
+    }
+
+    /**
+     * Sets the current screens as frame screens rather than applet screens
+     */
+    protected static void setFrame(){
+        isApplet = false;
     }
 }

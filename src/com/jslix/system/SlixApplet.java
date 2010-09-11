@@ -115,7 +115,6 @@ public class SlixApplet extends Applet implements Runnable, KeyListener,
             tempScreen.scr_width = w;
             tempScreen.scr_height = h;
             tempScreen.scr_sysTime = game.getTime();
-            tempScreen.scr_isApplet = true;
             tempScreen.update(-100);
             tempScreen.render((Graphics2D)g, this);
             tempScreen.scr_mouseScroll = 0;

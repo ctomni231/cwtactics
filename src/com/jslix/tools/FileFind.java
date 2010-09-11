@@ -1,14 +1,20 @@
 package com.jslix.tools;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.AccessControlException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A simple remix of FileManager. This class looks for files in the
- * current directory, then stores them into an array of FileIndex
+ * current directory, then stores them into an array of FileIndex.
+ * Has functions for creating files and directories.
  * Mostly Strings are used here, so be careful of memory.
  *
  * @author Crecen
@@ -132,5 +138,101 @@ public class FileFind {
         }
 
         return newFile;
+    }
+
+    public boolean createFile(String path, String filename, String data,
+            boolean temp){
+        File newFile = null;
+        if(!path.endsWith("/"))
+            path += "/";
+
+        try {
+            newFile = new File(path+filename);
+            if (newFile.createNewFile())
+                System.out.println("File Created! "+path+filename);
+            else{
+                System.out.println("File Exists! "+path+filename);
+                return false;
+            }
+            if(temp)    newFile.deleteOnExit();
+
+        } catch (IOException e) {
+            System.out.println("File IOException! "+path+filename);
+            return false;
+        } catch(AccessControlException ex){
+            System.out.println("Applet Active, can't Access! "+path+filename);
+            return false;
+        }
+
+        try {
+            FileWriter newWrite = new FileWriter(newFile);
+            newWrite.write(data);
+        } catch (IOException e) {
+            System.out.println("Can't Write to File! "+path+filename);
+            return false;
+        } catch(AccessControlException ex){
+            System.err.println(ex);
+            return false;
+        }
+        return true;
+    }
+
+    public void deleteFile(String path, String filename){
+        File newFile = null;
+        if(!path.endsWith("/"))
+            path += "/";
+
+        newFile = new File(path+filename);
+        if (newFile.delete())
+            System.out.println("File Deleted! "+path+filename);
+        else
+            System.out.println("Failed to Delete File! "+path+filename);
+    }
+
+    public void makeDirectory(String folder, boolean hide){
+        if(hide && folder.charAt(0) != '.')
+            folder = "."+folder;
+
+        try{
+            File newFile = new File(folder);
+
+            if(newFile.mkdir()){
+                System.out.println("Directory Created! "+folder);
+                if(hide && !newFile.isHidden())
+                    hideDirectory(folder);
+            }else{
+                System.out.println("Directory Failed! "+folder);
+            }
+        } catch(AccessControlException ex){
+            System.err.println(ex);
+        }
+    }
+
+    public void makeDirectories(String path){
+        try{
+            File newFile = new File(path);
+
+            if(newFile.mkdirs())
+                System.out.println("Directories Created! "+path);
+            else
+                System.out.println("Directories Failed!"+path);
+        } catch(AccessControlException ex){
+            System.err.println(ex);
+        }
+
+    }
+
+    private void hideDirectory(String folder){
+        String dosCommand = "cmd /c attrib +h "+
+                folder.replace("/", "")+" /s /d";
+        try {
+            Process process = Runtime.getRuntime().exec(dosCommand);
+            InputStream in = process.getInputStream();
+            int ch;
+            while((ch = in.read()) != -1)
+                System.out.print((char)ch);
+        } catch (IOException e) {
+            System.out.println("Hidden attribute failed!!");
+        }
     }
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This is a comment!!! -->
+<cool ID="xml">
+	<next>
+		<week>
+			<cool ID="ready" />
+		</week>
+	</next>
+</cool>

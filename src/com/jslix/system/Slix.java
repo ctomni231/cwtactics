@@ -119,7 +119,6 @@ public class Slix extends JComponent implements Runnable, KeyListener,
             window.pack();
             contain.start();
             game.startTimer(true);
-            game.setAsFrame();
             KeyPress.setConv(true);
         } catch (SlickException ex) {
             System.err.println(ex);
@@ -135,7 +134,6 @@ public class Slix extends JComponent implements Runnable, KeyListener,
         addMouseMotionListener(this);
         addMouseWheelListener(this);
         game.startTimer(false);
-        game.setAsFrame();
         Thread looper = new Thread(this);
         looper.start();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -273,7 +271,6 @@ public class Slix extends JComponent implements Runnable, KeyListener,
             tempScreen.scr_width = w;
             tempScreen.scr_height = h;
             tempScreen.scr_sysTime = game.getTime();
-            tempScreen.scr_isApplet = false;
             tempScreen.update(-100);
             tempScreen.render(g2, this);
             tempScreen.scr_mouseScroll = 0;
@@ -303,6 +300,7 @@ public class Slix extends JComponent implements Runnable, KeyListener,
         window = new JFrame(mainTitle);
         window.setBackground(Color.BLACK);
         setBackground(Color.BLACK);
+        SlixLibrary.setFrame();
     }
 
     public final void run() {
