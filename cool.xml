@@ -3,7 +3,9 @@
 <cool ID="xml">
 	<next>
 		<week>
-			<cool ID="ready" />
+			<cool ID="ready">
+				<list strut="4" blue="5" fare="3" some="2" blah="1" />
+			</cool>
 		</week>
 	</next>
 </cool>

@@ -143,6 +143,10 @@ public class Slix extends JComponent implements Runnable, KeyListener,
         window.pack();
         KeyPress.setConv(false);
     }
+    
+    public void setResizeableWindow(boolean resize){
+        window.setResizable(resize);
+    }
 
     public final void changeGame(SlixGame newGame){
         if(newGame != null)
@@ -216,6 +220,11 @@ public class Slix extends JComponent implements Runnable, KeyListener,
         if (id == MouseEvent.MOUSE_ENTERED){}
         if (id == MouseEvent.MOUSE_EXITED){}
         if (id == MouseEvent.MOUSE_WHEEL){}
+    }
+
+    @Override
+    public void repaint() {
+        super.repaint();
     }
 
     /**

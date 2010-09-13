@@ -5,6 +5,7 @@ import com.jslix.tools.ImgLibrary;
 import com.jslix.tools.XML_Writer;
 import java.awt.Component;
 import java.awt.Graphics2D;
+import java.util.HashMap;
 import org.newdawn.slick.Graphics;
 
 /**
@@ -23,20 +24,28 @@ public class MainMenuScreen extends Screen{
         cursx = scr_width;
         cursy = scr_height;
         imgSort = new ImgLibrary();
+        HashMap<String, String> temp = new HashMap<String, String>();
+        temp.put("blah", "1");
+        temp.put("some", "2");
+        temp.put("fare", "3");
+        temp.put("strut", "4");
+        temp.put("blue", "5");
 
         writer = new XML_Writer("", "cool.xml");
         writer.addXMLComment("This is a comment!!!");
-        writer.addOpenXMLTag("cool");
-        writer.addAttribute("ID", "xml");
-        writer.closeXMLTag();
+        writer.addXMLTag("cool");
+        writer.addAttribute("ID", "xml", false);
         writer.addXMLTag("next");
         writer.addXMLTag("week");
-        writer.addOpenXMLTag("cool");
-        writer.addAttribute("ID", "ready");
-        writer.endXMLTag();
+        writer.addXMLTag("cool");
+        writer.addAttribute("ID", "ready", false);
+        writer.addXMLTag("list");
+        writer.addAttribute(temp, false);
         writer.endAllTags();
         writer.print();
-        writer.writeToFile();
+        writer.writeToFile(true);
+
+
     }
 
     @Override

@@ -1,6 +1,5 @@
-package com.system;
+package com.jslix.system;
 
-import com.jslix.system.JSlixGame;
 import com.jslix.system.Slix;
 import com.jslix.system.SlixLibrary;
 
@@ -27,7 +26,8 @@ public class JSlix extends Slix{
     //natives.
     //Creating a Slick frame uses JSlix.showSlick() and it does require
     //natives through a classpath.
-    public static void main(String[] argv) {
+    
+	public static void main(String[] argv){
         //Determine the starting size of the window here. Users can resize
         //either frame at will.
         JSlix game = new JSlix(480, 320);
