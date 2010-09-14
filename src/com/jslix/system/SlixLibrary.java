@@ -56,13 +56,22 @@ public class SlixLibrary {
     /**
      * Schedules a screen for deletion using the index number
      * You can schedule as many screens for deletion as you
-     * want in one sitting. Not tested with Slick window.
+     * want in one sitting.
      *
      * @param index The index number screen to delete
      */
     public static void removeFrameScreen(int index){
         if(index >= 0 && index < scrOrder.size())
             delOrder.add(index);
+    }
+
+    /**
+     * Schedules a Screen deletion for all Screens, therefore ending
+     * the game.
+     */
+    public static void removeAllScreens(){
+        for(int i = 0; i < scrOrder.size(); i++)
+            removeFrameScreen(i);
     }
 
     /**

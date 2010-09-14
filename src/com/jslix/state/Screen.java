@@ -18,8 +18,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Crecen
  */
-public abstract class Screen {
-
+public abstract class Screen implements ScreenSkeleton{
     /**
      * If true, schedules the deletion of this screen
      */
