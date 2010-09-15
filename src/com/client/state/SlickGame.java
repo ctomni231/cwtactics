@@ -8,8 +8,6 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import com.client.input.Controls;
 
-import org.newdawn.slick.CanvasGameContainer;
-
 /**
  * Extends stateBasedGame. Sets up functionality for the button
  * and the states.

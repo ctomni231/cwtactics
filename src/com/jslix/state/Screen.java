@@ -1,5 +1,6 @@
 package com.jslix.state;
 
+import com.jslix.system.KeyPress;
 import java.awt.Graphics2D;
 import java.awt.Component;
 import org.newdawn.slick.Graphics;
@@ -60,6 +61,20 @@ public abstract class Screen implements ScreenSkeleton{
      */
     public boolean scr_isApplet = true;
 
+    //Mouse helper functions
+    //Mouse does not register commands if within the x vicinity of this
+    public int scr_lockx = -1000;
+    //Mouse does not register commands if within the y vicinity of this
+    public int scr_locky = -1000;
+    //Controls whether mouse movements are registered within screens
+    public boolean scr_mouseLock = false;
+    //Controls how often a mouse is able to effect menu actions
+    public boolean scr_scroll = false;
+    //This sets the control of scrolling to system time
+    public boolean scr_scrollWatch = false;
+    //How quick a user is able to scroll, the higher the number the quicker
+    public int scr_scrollInd = 2;
+
     //Simplified init function
     public abstract void init();
 
@@ -79,5 +94,43 @@ public abstract class Screen implements ScreenSkeleton{
 
     public final boolean scr_getNew(){
         return scr_new;
+    }
+
+    //Prevents mouse actions from being accepted
+    public void scr_mouseLock(){
+        scr_lockx = KeyPress.getMouseX();
+        scr_locky = KeyPress.getMouseY();
+        scr_mouseLock = true;
+    }
+
+    //Allows mouse actions to be accepted
+    public void scr_mouseRelease(){
+        if(KeyPress.getMouseX() > scr_lockx+5 ||
+            KeyPress.getMouseX() < scr_lockx-5 ||
+            KeyPress.getMouseY() > scr_locky+5 ||
+            KeyPress.getMouseY() < scr_locky-5)
+            scr_mouseLock = false;
+    }
+
+    //Helps handle controlled scrolling within the screen
+    public void scr_mouseControl(){
+        if(!scr_scroll){
+            for(int i = 0; i < scr_scrollInd; i++){
+                if(scr_sysTime > (1000/scr_scrollInd)*i &&
+                        scr_sysTime < (1000/scr_scrollInd)*(i+1)){
+                    if(scr_scrollWatch && scr_sysTime >
+                            ((1000/scr_scrollInd)*(i+1))-
+                            (1000/(2*scr_scrollInd))){
+                        scr_scroll = true;
+                        scr_scrollWatch = false;
+                    }else if(!scr_scrollWatch && scr_sysTime <=
+                            ((1000/scr_scrollInd)*(i+1))-
+                            (1000/(2*scr_scrollInd))){
+                        scr_scroll = true;
+                        scr_scrollWatch = true;
+                    }
+                }
+            }
+        }
     }
 }

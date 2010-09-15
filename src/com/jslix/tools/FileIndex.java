@@ -17,7 +17,8 @@ public class FileIndex {
         reFactor(filename, filepath, basepath);
     }
 
-    public void reFactor(String filename, String filepath, String basepath){
+    public final void reFactor(String filename,
+            String filepath, String basepath){
         fname = filename;
 
         fpath = filepath.replace('\\','/');

@@ -193,7 +193,7 @@ public class TextImgLibrary extends ImgLibrary{
             bimg = new BufferedImage(limit, locy+psizey,
                     BufferedImage.TYPE_INT_ARGB);
         }else{
-            bimg = new BufferedImage(locx+(psizex*letterMax), locy+psizey,
+            bimg = new BufferedImage(locx+(psizex*letterMax)+1, locy+psizey,
                     BufferedImage.TYPE_INT_ARGB);
         }
         g = bimg.createGraphics();

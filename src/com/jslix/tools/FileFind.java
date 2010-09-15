@@ -8,8 +8,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.AccessControlException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A simple remix of FileManager. This class looks for files in the
@@ -21,34 +19,51 @@ import java.util.logging.Logger;
  */
 public class FileFind {
     private File theFile;
-    private String thePath;//BasePath of .jar
+    private String basePath;//BasePath of .jar
+    private String thePath;//Path of directory
     private ArrayList<FileIndex> allFiles;
     private ArrayList<String> fileType;//Find specific files
     private ArrayList<String> avoidDir;//Avoid specific directories
 
+    //Finds the files from the root directory
     public FileFind(){
-        try{
-            theFile = new File("");
-            thePath = theFile.getAbsolutePath();
-        }catch(AccessControlException ex){
-            System.err.println(ex);
-        }
+        initialize("");
+    }
 
-        allFiles = new ArrayList<FileIndex>();
-        fileType = new ArrayList<String>();
-        avoidDir = new ArrayList<String>();
+    //Finds files from the directory you specify
+    public FileFind(String directory){
+        initialize(directory);
+        if(!theFile.exists() || !theFile.isDirectory())
+            initialize("");
+    }
+
+    //Changes the directory so fileFinder just searches there
+    public boolean changeDirectory(String directory){
+        initialize(directory);
+        if(!theFile.exists() || !theFile.isDirectory()){
+            initialize("");
+            return false;
+        }
+        return true;
     }
 
     public String getRootPath(){
         return (thePath.replace('\\','/')+"/");
     }
 
+    public String getBasePath(){
+        return (thePath.replace('\\','/')+"/");
+    }
+
     //This forces the file finder to only find files of a certain suffix
     public void addForceType(String suffix){
+        if(suffix.startsWith("."))
+            suffix = suffix.substring(1);
         if(!suffix.matches(""))
             fileType.add(suffix);
     }
 
+    //This cause the file finder to avoid certain directories
     public void addAvoidDir(String directory){
         if(!directory.matches(""))
             avoidDir.add(directory);
@@ -60,15 +75,19 @@ public class FileFind {
 
     public void refactor(){
         allFiles.clear();
-        getFiles(thePath);
+        try{
+            getFiles(thePath);
+        }catch(AccessControlException ex){
+            System.err.println(ex);
+        }
     }
 
-    private void getFiles(String path){
+    private void getFiles(String path) throws AccessControlException{
         File temp = new File(path);
         String[] tempfile = temp.list();
         FileIndex holdtemp;
         for(int i = 0; i < tempfile.length; ++i){
-            holdtemp = new FileIndex(tempfile[i], path, thePath);
+            holdtemp = new FileIndex(tempfile[i], path, basePath);
             if(matchSuffix(holdtemp))
                 allFiles.add(holdtemp);
             if(matchDir(tempfile[i])){
@@ -234,5 +253,20 @@ public class FileFind {
         } catch (IOException e) {
             System.out.println("Hidden attribute failed!!");
         }
+    }
+
+    private void initialize(String directory){
+        try{
+            theFile = new File("");
+            basePath = theFile.getAbsolutePath();
+            theFile = new File(directory);
+            thePath = theFile.getAbsolutePath();
+        }catch(AccessControlException ex){
+            System.err.println(ex);
+        }
+
+        allFiles = new ArrayList<FileIndex>();
+        fileType = new ArrayList<String>();
+        avoidDir = new ArrayList<String>();
     }
 }

@@ -315,7 +315,7 @@ public class XML_Writer {
             if(newFile.mkdirs())
                 System.out.println("Directories Created! "+path);
             else
-                System.out.println("Directories Failed!"+path);
+                System.out.println("Directories Failed! "+path);
 
             newFile = new File(path+filename);
             if (newFile.createNewFile())

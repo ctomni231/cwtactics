@@ -142,8 +142,7 @@ public class MenuReader extends XML_Parser{
         if(super.getLastHeader().matches("list")){
             String[] temp = fillData;
             fillData = new String[temp.length+1];
-            for(int i = 0; i < temp.length; i++)
-                fillData[i] = temp[i];
+            System.arraycopy(temp, 0, fillData, 0, temp.length);
             fillData[fillData.length-1] = fillEntry(
                     attrib, Engine_Database.getLanguage());
         }

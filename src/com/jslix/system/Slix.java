@@ -73,6 +73,10 @@ public class Slix extends JComponent implements Runnable, KeyListener,
      * Holds the keyboard and mouse id actions
      */
     private int id;
+    /**
+     * Holds whether to update each frame for slick (default:false)
+     */
+    private boolean frameUpdate;
     //Holds a temporary Screen
     private Screen tempScreen;
     //Holds a variable so only the top screen displays
@@ -87,10 +91,16 @@ public class Slix extends JComponent implements Runnable, KeyListener,
         window.setTitle(mainTitle);
     }
 
+    public void changeFrameClear(boolean clear){
+        frameUpdate = clear;
+    }
+
     public void showSlick(){
     	if(game == null)
     		game = new SlixGame();
+
         try {
+            game.setUpdateFrame(frameUpdate);
             contain = new SlixContainer(game);
             contain.setBackground(Color.BLACK);
 
@@ -222,11 +232,6 @@ public class Slix extends JComponent implements Runnable, KeyListener,
         if (id == MouseEvent.MOUSE_WHEEL){}
     }
 
-    @Override
-    public void repaint() {
-        super.repaint();
-    }
-
     /**
      * This function handles drawing screens to the frame
      * @param g Graphics object binded to this function
@@ -309,6 +314,7 @@ public class Slix extends JComponent implements Runnable, KeyListener,
         window = new JFrame(mainTitle);
         window.setBackground(Color.BLACK);
         setBackground(Color.BLACK);
+        frameUpdate = true;
         SlixLibrary.setFrame();
     }
 

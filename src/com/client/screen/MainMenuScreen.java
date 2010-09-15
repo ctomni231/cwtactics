@@ -21,6 +21,7 @@ public class MainMenuScreen extends Screen{
 
     @Override
     public void init() {
+        bgPic.getSystem(scr_sysTime, scr_isApplet, scr_link);
         bgPic.init();
     }
 

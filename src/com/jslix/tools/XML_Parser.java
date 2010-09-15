@@ -40,10 +40,11 @@ public class XML_Parser extends DefaultHandler {
 	 */
     private void read( String filename ){
         try {
-            File file 					= new File(filename);
+            //FileFind finder = new FileFind();
+            File file = new File(filename);
             SAXParserFactory factory 	= SAXParserFactory.newInstance();
             SAXParser parser 			= factory.newSAXParser();
-            parser.parse( file, this );
+            parser.parse( file , this );
         } catch (Exception e) { System.out.println(e); }
     }
     

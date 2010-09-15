@@ -1,23 +1,30 @@
 package com.client.graphic;
 
+import com.client.graphic.tools.BackgroundReader;
 import com.client.tools.GameSkeleton;
 import com.client.tools.ImgLibrary;
+import com.jslix.tools.FileFind;
+import com.jslix.tools.FileIndex;
+import com.jslix.tools.XML_Writer;
 import java.awt.Component;
 import java.awt.Graphics2D;
+import java.util.Random;
 import org.newdawn.slick.Graphics;
 
 /**
  * BackgroundHandler.java
  *
- * This class handles the backgrounds of the game
+ * This class handles the backgrounds of a screen
  *
- * @author Ctomni
+ * @author Crecen
  */
 public class BackgroundHandler implements GameSkeleton {
 
     private ImgLibrary imgSort;
+    private Random generator;
     private int cursx;
     private int cursy;
+    private boolean applet;
 
     public BackgroundHandler(int width, int height){
         cursx = width;
@@ -26,14 +33,13 @@ public class BackgroundHandler implements GameSkeleton {
     }
 
     public void init() {
-        imgSort.addImage("image/menu/background1.png");
+        if(!applet)     findNewBackgrounds();
+        loadRandomBackground();
         imgSort.setImageSize(cursx, cursy);
         imgSort.addImage(imgSort.getImage(0));
     }
 
-    public void update(int timePassed) {
-
-    }
+    public void update(int timePassed) {}
 
     public void render(Graphics g) {
         g.drawImage(imgSort.getSlickImage(1), 0, 0);
@@ -41,6 +47,46 @@ public class BackgroundHandler implements GameSkeleton {
 
     public void render(Graphics2D g, Component dthis) {
         g.drawImage(imgSort.getImage(1), 0, 0, dthis);
+    }
+
+    private void findNewBackgrounds(){
+        FileFind fileFinder = new FileFind();
+        XML_Writer writer = new XML_Writer("data","background.xml");
+        if(fileFinder.changeDirectory("image/background")){
+            //Forces it to only look for pictures
+            fileFinder.addAvoidDir(".svn");
+            fileFinder.addForceType(".jpg");
+            fileFinder.addForceType(".gif");
+            fileFinder.addForceType(".png");
+            fileFinder.addForceType(".bmp");
+
+            fileFinder.refactor();
+
+            writer.addXMLTag("background");
+
+            for(FileIndex file: fileFinder.getAllFiles()){
+                if(!file.isDirectory){
+                    writer.addXMLTag("image");
+                    writer.addAttribute("file", file.fpath, true);
+                }
+            }
+
+            writer.endAllTags();
+            //writer.print();
+            writer.writeToFile(true);
+        }
+    }
+
+    //Gets a random background from the xml file
+    private void loadRandomBackground(){
+        BackgroundReader reader = new BackgroundReader("data/background.xml");
+        String[] entries = reader.getEntries();
+
+        if(entries.length > 0){
+            generator = new Random();
+            int random = generator.nextInt(entries.length);
+            imgSort.addImage(entries[random]);
+        }
     }
 
     public void getScreen(String name, int index, int width, int height) {
@@ -52,7 +98,9 @@ public class BackgroundHandler implements GameSkeleton {
         }
     }
 
-    public void getSystem(int time, boolean isApplet, boolean seethru) {}
+    public void getSystem(int time, boolean isApplet, boolean seethru){
+        applet = isApplet;
+    }
 
     public void getMouse(int mouseScroll) {}
 

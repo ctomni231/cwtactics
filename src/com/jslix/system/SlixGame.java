@@ -36,12 +36,15 @@ public class SlixGame extends BasicGame{
     private Screen tempScreen;
     //Holds a variable so only the top screen displays
     private int scrStart;
+    //Holds whether we need to clear the fram each time for Slick Window
+    private boolean clear;
 
     //The slick applet won't work any other way sadly
     public SlixGame(){
         super("JSlix");
         KeyPress.setConv(true);
         timer = new Timer(true);
+        clear = true;
         loadGame();
     }
 
@@ -53,6 +56,7 @@ public class SlixGame extends BasicGame{
     @Override
     public void init(GameContainer container) throws SlickException {
         contain = container;
+        contain.setClearEachFrame(clear);
         SlixLibrary.updateScreens();
     }
 
@@ -102,6 +106,10 @@ public class SlixGame extends BasicGame{
         }
 
         showRate(g);
+    }
+
+    public void setUpdateFrame(boolean clear){
+        this.clear = clear;
     }
 
     private void showRate(Graphics g){
