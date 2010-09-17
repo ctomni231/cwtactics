@@ -1,8 +1,8 @@
 package com.client.graphic;
 
 import com.client.graphic.tools.BackgroundReader;
-import com.client.tools.GameSkeleton;
 import com.client.tools.ImgLibrary;
+import com.jslix.state.ScreenSkeleton;
 import com.jslix.tools.FileFind;
 import com.jslix.tools.FileIndex;
 import com.jslix.tools.XML_Writer;
@@ -18,7 +18,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Crecen
  */
-public class BackgroundHandler implements GameSkeleton {
+public class BackgroundHandler implements ScreenSkeleton {
 
     private ImgLibrary imgSort;
     private Random generator;
@@ -39,7 +39,19 @@ public class BackgroundHandler implements GameSkeleton {
         imgSort.addImage(imgSort.getImage(0));
     }
 
-    public void update(int timePassed) {}
+    public void update(int width, int height, int sysTime, int mouseScroll) {
+        if(cursx != width || cursy != height){
+            cursx = width;
+            cursy = height;
+            imgSort.setImageSize(cursx, cursy);
+            imgSort.addImage(1, imgSort.getImage(0));
+        }
+    }
+
+    public void update(String name, int index, boolean isApplet,
+            boolean seethru) {
+        applet = isApplet;
+    }
 
     public void render(Graphics g) {
         g.drawImage(imgSort.getSlickImage(1), 0, 0);
@@ -89,21 +101,6 @@ public class BackgroundHandler implements GameSkeleton {
         }
     }
 
-    public void getScreen(String name, int index, int width, int height) {
-        if(cursx != width || cursy != height){
-            cursx = width;
-            cursy = height;
-            imgSort.setImageSize(cursx, cursy);
-            imgSort.addImage(1, imgSort.getImage(0));
-        }
-    }
-
-    public void getSystem(int time, boolean isApplet, boolean seethru){
-        applet = isApplet;
-    }
-
-    public void getMouse(int mouseScroll) {}
-
-    public void getDelete(boolean delete) {}
+    public void update(int timePassed) {}
 
 }

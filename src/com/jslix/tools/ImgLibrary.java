@@ -96,14 +96,8 @@ public class ImgLibrary extends Component{
     }
 
     //Changes pixels using a slick.Color
-    public void setPixelChange(Color fromThisColor,
-            Color toThisColor){
-        setPixelChange(new java.awt.Color(fromThisColor.getRed(),
-                fromThisColor.getGreen(), fromThisColor.getBlue(),
-                fromThisColor.getAlpha()),
-                new java.awt.Color(toThisColor.getRed(),
-                toThisColor.getGreen(), toThisColor.getBlue(),
-                toThisColor.getAlpha()));
+    public void setPixelChange(Color fromThisColor, Color toThisColor){
+        setPixelChange(getColor(fromThisColor), getColor(toThisColor));
     }
 
     //Changes pixels using java.awt.Color
@@ -189,9 +183,7 @@ public class ImgLibrary extends Component{
     //This is used to keep images from becoming null.
     public org.newdawn.slick.Image getColorBox(Color newColor,
             String boxName, int sizex, int sizey){
-        return makeSlickImage(getColorBox(
-                new java.awt.Color(newColor.getRed(), newColor.getGreen(),
-                newColor.getBlue(), newColor.getAlpha()),
+        return makeSlickImage(getColorBox(getColor(newColor),
                 sizex, sizey), boxName);
     }
     public Image getColorBox(java.awt.Color theColor, int sizex, int sizey){
@@ -315,6 +307,14 @@ public class ImgLibrary extends Component{
     }
     public int hashSize(){
         return hashImg.size();
+    }
+    public java.awt.Color getColor(Color color){
+        return new java.awt.Color(color.getRed(), color.getGreen(),
+                color.getBlue(), color.getAlpha());
+    }
+    public Color getColor(java.awt.Color color){
+        return new Color(color.getRed(), color.getGreen(),
+                color.getBlue(), color.getAlpha());
     }
 
     //PRIVATE FUNCTIONS

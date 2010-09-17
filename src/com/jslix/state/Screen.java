@@ -78,14 +78,14 @@ public abstract class Screen implements ScreenSkeleton{
     //Simplified init function
     public abstract void init();
 
+    //Simplified update function
+    public abstract void update(int timePassed);
+
     //Simplified render function (SLICK)
     public abstract void render(Graphics g);
 
     //Simplified render function (JAVA)
-    public abstract void render(Graphics2D g, Component dthis);
-
-    //Simplified update function
-    public abstract void update(int timePassed);
+    public abstract void render(Graphics2D g, Component dthis);  
 
     public final void scr_init(){
         init();
@@ -133,4 +133,9 @@ public abstract class Screen implements ScreenSkeleton{
             }
         }
     }
+
+    public void update(int width, int height, int time, int mouseScroll){}
+
+    public void update(String name, int index, boolean isApplet,
+            boolean seethru){}
 }
