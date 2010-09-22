@@ -98,7 +98,6 @@ public class InGame extends Screen {
 
     @Override
     public void update(int timePassed) {
-
     	// checks change state
     	if( checkupState( enterState ) ) return;
 

@@ -1,6 +1,6 @@
 package com.client.graphic;
 
-import com.client.graphic.tools.BackgroundReader;
+import com.client.graphic.xml.BackgroundReader;
 import com.client.tools.ImgLibrary;
 import com.jslix.state.ScreenSkeleton;
 import com.jslix.tools.FileFind;

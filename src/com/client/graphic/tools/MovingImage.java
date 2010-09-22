@@ -2,6 +2,7 @@ package com.client.graphic.tools;
 
 import com.jslix.state.ScreenSkeleton;
 import com.jslix.tools.ImgLibrary;
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
@@ -32,6 +33,7 @@ public class MovingImage implements ScreenSkeleton{
     protected double speed;
     protected int shadeOff;
     protected Color shadow;
+    protected double opacity;
 
     protected ImgLibrary imgRef;
     protected String logoTxt;
@@ -45,6 +47,7 @@ public class MovingImage implements ScreenSkeleton{
         shadeOff = 0;
         imgRef = new ImgLibrary();
         logoTxt = "";
+        opacity = 1.0;
         scalex = 1;
         scaley = 1;
         origx = -1;
@@ -62,20 +65,31 @@ public class MovingImage implements ScreenSkeleton{
         origy = scrY;
     }
 
+    public void setOpacity(double opacity){
+        if(opacity >= 0 && opacity <= 1)
+            this.opacity = opacity;
+    }
+
     public void setImage(String imgPath){
         setImage(imgPath, 0, 0);
+    }
+
+    public void setImage(Image img){
+        setImage(img, 0, 0);
     }
 
     public void setImage(String imgPath, int sizex, int sizey){
         if(sizex*sizey > 0)
             imgRef.setImageSize(sizex, sizey);
-        imgRef.addImage(imgPath);
+        imgRef.addImage(0, imgPath);
+        cursx = 0;
     }
 
     public void setImage(Image img, int sizex, int sizey){
         if(sizex*sizey > 0)
             imgRef.setImageSize(sizex, sizey);
-        imgRef.addImage(img);
+        imgRef.addImage(0, img);
+        cursx = 0;
     }
 
     public void setShadowOffset(int offset){
@@ -123,14 +137,20 @@ public class MovingImage implements ScreenSkeleton{
             imgRef.setImageSize((int)((double)imgRef.getX(0)*scalex),
                     (int)((double)imgRef.getY(0)*scaley));
             imgRef.addImage(1, imgRef.getImage(0));
-            imgRef.setPixelBlend(shadow);
-            imgRef.addImage(2, imgRef.getImage(1));
+            if(shadow != null){
+                imgRef.setPixelBlend(shadow);
+                imgRef.addImage(2, imgRef.getImage(1));
+            }
         }
     }
 
     public void render(Graphics g) {
         if(imgRef.length() > 1){
             if(shadeOff != 0 && shadow != null)
+                if(opacity < 1){
+                    imgRef.getSlickImage(1).setAlpha((float)opacity);
+                    imgRef.getSlickImage(2).setAlpha((float)opacity);
+                }
                 g.drawImage(imgRef.getSlickImage(2),
                         (int)((posx+shadeOff)*scalex),
                         (int)((posy+shadeOff)*scaley));
@@ -148,6 +168,9 @@ public class MovingImage implements ScreenSkeleton{
 
     public void render(Graphics2D g, Component dthis){
         if(imgRef.length() > 1){
+            if(opacity < 1)
+                g.setComposite(AlphaComposite.getInstance(
+                        AlphaComposite.SRC_OVER, (float)opacity));
             if(shadeOff != 0 && shadow != null)
                 g.drawImage(imgRef.getImage(2), 
                         (int)((posx+shadeOff)*scalex),
@@ -158,7 +181,8 @@ public class MovingImage implements ScreenSkeleton{
             else
                 g.drawImage(imgRef.getImage(1), 
                         (int)(posx*scalex), (int)(posy*scaley), dthis);
-
+            if(opacity < 1)
+                g.setComposite(AlphaComposite.SrcOver);
         }else if(!logoTxt.matches(""))
             g.drawString(logoTxt, (int)(posx*scalex), (int)(posy*scaley));
     }

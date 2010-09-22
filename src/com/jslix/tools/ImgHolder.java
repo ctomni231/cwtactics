@@ -50,11 +50,9 @@ public class ImgHolder {
     }
 
     //Allows you to blend colors together
-    public int[] setColorBlend(ArrayList<Integer> colorBlend){
+    public int[] setColorBlend(ArrayList<Integer> colorBlend, double opacity){
         int[] change = pixels;
         int blend = colorBlend.remove(0);
-        //double opacity = (((blend >> 24) & 0xff)-255)/255;
-        double opacity = 0.5;
         int red, green, blue, alpha;
         for(int i = 0; i < change.length; i++){
             if(colorBlend.contains(change[i]))   continue;
@@ -85,9 +83,10 @@ public class ImgHolder {
     //Flips pixels along the y-axis (vertical flip)
     public int[] setFlipY(){
         int[] change = new int[pixels.length];
-        for(int i = 0; i < origx; i++)
+        for(int i = 0; i < origx; i++){
             for(int j = 0; j < origy; j++)
                 change[i+((origy-j-1)*origx)] = pixels[i+j*origx];
+        }
         return change;
     }
 

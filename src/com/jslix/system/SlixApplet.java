@@ -46,10 +46,14 @@ public class SlixApplet extends Applet implements Runnable, KeyListener,
         }
     }
 
+    public void toggleFPS(){
+        showRate = !showRate;
+    }
+
     @Override
     public void init(){
         KeyPress.setConv(false);        
-        showRate = true;
+        showRate = false;
         addKeyListener(this);
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -131,6 +135,8 @@ public class SlixApplet extends Applet implements Runnable, KeyListener,
             //System.out.println("Key Code:" + keycode);
             //System.out.println("Key Location:" + keylocation);
             KeyPress.addKeyPress(e.getKeyCode(), false);
+            if(e.getKeyCode() == 120)
+                toggleFPS();
         }
         if (id == KeyEvent.KEY_TYPED){}
         if (id == KeyEvent.KEY_RELEASED){

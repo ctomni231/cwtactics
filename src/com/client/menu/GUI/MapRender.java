@@ -1,7 +1,6 @@
 package com.client.menu.GUI;
 
 import com.client.menu.GUI.tools.MovingPix;
-import com.client.menu.GUI.tools.PixAnimate;
 import org.newdawn.slick.Graphics;
 
 /**

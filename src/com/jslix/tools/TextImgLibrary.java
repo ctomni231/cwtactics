@@ -294,8 +294,7 @@ public class TextImgLibrary extends ImgLibrary{
     private int drawLetter(Graphics2D g, String ref,
             int locx, int locy, boolean draw){
         if(draw)
-            g.drawImage(getImage(getIndex(ref)),
-                        locx, locy, this);
+            g.drawImage(getImage(getIndex(ref)), locx, locy, this);
         return getX(ref);
     }
 }

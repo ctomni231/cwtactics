@@ -1,11 +1,11 @@
 package com.client.screen;
 
 import com.client.graphic.BackgroundHandler;
-import com.client.graphic.tools.LogoLibrary;
-import com.client.graphic.tools.MovingImage;
+import com.client.graphic.LogoHandler;
+import com.client.graphic.TitleGUI;
+import com.client.graphic.xml.TitleReader;
+import com.jslix.debug.MemoryTest;
 import com.jslix.state.Screen;
-import com.system.reader.MenuReader;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import org.newdawn.slick.Graphics;
@@ -20,45 +20,83 @@ public class MainMenuScreen extends Screen{
     private final int SIZE_X = 640;
     private final int SIZE_Y = 480;
 
+    private TitleReader reader;
     private BackgroundHandler bgPic;
-    private MenuReader reader;
-    private MovingImage pic;
+    private LogoHandler logoPic;
+
+    private TitleGUI titleScr;
+
+    private boolean scrStart;
+    private int column;
 
     public MainMenuScreen(){
+        reader = new TitleReader("data/titlescreen.xml");
         bgPic = new BackgroundHandler(scr_width, scr_height);
-        reader = new MenuReader("data/mainmenu.xml");
+        logoPic = new LogoHandler(reader.getTitleLogoPath(),
+                reader.getMiniLogoPath(), reader.getCopyright(),
+                SIZE_X, SIZE_Y);
+
+        titleScr = new TitleGUI(220, 375, 0);
+        titleScr.setOrigScreen(SIZE_X, SIZE_Y);
+        titleScr.setWords(reader.getAlphaPath(), reader.getStartText(),
+                200, 20);
+        
+        scrStart = true;
+        column = 0;
     }
 
     @Override
     public void init() {
-        //Test code here
-        pic = new MovingImage(145, -100, 1);
-        pic.setImage(reader.getTitleLogo(), 350, 150);
-
-        pic.setShadowColor(Color.BLACK);
-        pic.setShadowOffset(2);
-        pic.setOrigScreen(SIZE_X, SIZE_Y);
-
         bgPic.update(scr_name, scr_index, scr_isApplet, scr_link);
         bgPic.init();
+        logoPic.init();
     }
 
     @Override
     public void update(int timePassed) {
         bgPic.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
-        pic.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
-        pic.setFinalPosition(145, 30);
+
+        switch(column){
+            case 0:
+                startScr();
+                break;
+            default:
+        }
+        logoPic.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);        
+        //MemoryTest.printMemoryUsage("MAIN");
     }
 
     @Override
     public void render(Graphics g) {
         bgPic.render(g);
-        pic.render(g);
+        switch(column){
+            case 0:
+                titleScr.render(g);
+                break;
+            default:
+        }
+        logoPic.render(g);
     }
 
     @Override
     public void render(Graphics2D g, Component dthis) {
         bgPic.render(g, dthis);
-        pic.render(g, dthis);
+        switch(column){
+            case 0:
+                titleScr.render(g, dthis);
+                break;
+            default:
+        }
+        logoPic.render(g, dthis);
+    }
+
+    private void startScr(){
+        if(scrStart){
+            logoPic.setFinalPosition(0, 145, 30);
+            logoPic.setFinalPosition(2, 0, 460);
+            logoPic.setScrollText();
+            scrStart = false;
+        }
+        titleScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
     }
 }

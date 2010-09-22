@@ -1,6 +1,7 @@
 package com.jslix.state;
 
 import com.jslix.system.KeyPress;
+import com.jslix.tools.MouseHelper;
 import java.awt.Graphics2D;
 import java.awt.Component;
 import org.newdawn.slick.Graphics;
@@ -60,18 +61,16 @@ public abstract class Screen implements ScreenSkeleton{
      * Tells you whether the screen is an applet
      */
     public boolean scr_isApplet = true;
+    /**
+     * The mouseHelper class helps you control scrolling and locking the
+     * mouse actions
+     */
+    private MouseHelper scr_helper = new MouseHelper();
 
-    //Mouse helper functions
-    //Mouse does not register commands if within the x vicinity of this
-    public int scr_lockx = -1000;
-    //Mouse does not register commands if within the y vicinity of this
-    public int scr_locky = -1000;
-    //Controls whether mouse movements are registered within screens
+     //Controls whether mouse movements are registered within screens
     public boolean scr_mouseLock = false;
     //Controls how often a mouse is able to effect menu actions
     public boolean scr_scroll = false;
-    //This sets the control of scrolling to system time
-    public boolean scr_scrollWatch = false;
     //How quick a user is able to scroll, the higher the number the quicker
     public int scr_scrollInd = 2;
 
@@ -98,40 +97,22 @@ public abstract class Screen implements ScreenSkeleton{
 
     //Prevents mouse actions from being accepted
     public void scr_mouseLock(){
-        scr_lockx = KeyPress.getMouseX();
-        scr_locky = KeyPress.getMouseY();
-        scr_mouseLock = true;
+        scr_helper.setMouseLock(KeyPress.getMouseX(), KeyPress.getMouseY());
+        scr_mouseLock = scr_helper.getMouseLock();
     }
 
     //Allows mouse actions to be accepted
     public void scr_mouseRelease(){
-        if(KeyPress.getMouseX() > scr_lockx+5 ||
-            KeyPress.getMouseX() < scr_lockx-5 ||
-            KeyPress.getMouseY() > scr_locky+5 ||
-            KeyPress.getMouseY() < scr_locky-5)
-            scr_mouseLock = false;
+        scr_helper.setMouseRelease(KeyPress.getMouseX(), KeyPress.getMouseY());
+        scr_mouseLock = scr_helper.getMouseLock();
     }
 
-    //Helps handle controlled scrolling within the screen
+    //Controls how quickly the mouse scrolls
     public void scr_mouseControl(){
-        if(!scr_scroll){
-            for(int i = 0; i < scr_scrollInd; i++){
-                if(scr_sysTime > (1000/scr_scrollInd)*i &&
-                        scr_sysTime < (1000/scr_scrollInd)*(i+1)){
-                    if(scr_scrollWatch && scr_sysTime >
-                            ((1000/scr_scrollInd)*(i+1))-
-                            (1000/(2*scr_scrollInd))){
-                        scr_scroll = true;
-                        scr_scrollWatch = false;
-                    }else if(!scr_scrollWatch && scr_sysTime <=
-                            ((1000/scr_scrollInd)*(i+1))-
-                            (1000/(2*scr_scrollInd))){
-                        scr_scroll = true;
-                        scr_scrollWatch = true;
-                    }
-                }
-            }
-        }
+        scr_helper.setScrollIndex(scr_scrollInd);
+        scr_helper.setMouseControl(scr_sysTime);
+        if(!scr_scroll)
+            scr_scroll = scr_helper.getScroll();
     }
 
     public void update(int width, int height, int time, int mouseScroll){}

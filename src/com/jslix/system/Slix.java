@@ -310,7 +310,7 @@ public class Slix extends JComponent implements Runnable, KeyListener,
     	mainTitle = "JSlix Window";
         sizex = width;
         sizey = height;
-        showRate = true;
+        showRate = false;
         window = new JFrame(mainTitle);
         window.setBackground(Color.BLACK);
         setBackground(Color.BLACK);

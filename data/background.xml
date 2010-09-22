@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<background>
+	<image file="image/background/AWDoRBack.png" />
+	<image file="image/background/AWDSWorld.png" />
+	<image file="image/background/CWArtea-MK.png" />
+	<image file="image/background/CWArtea1.png" />
+	<image file="image/background/CWGame1.png" />
+	<image file="image/background/CWGame2.png" />
+	<image file="image/background/CWKosh1.png" />
+	<image file="image/background/CWKosh2.png" />
+	<image file="image/background/CWKosh3.png" />
+	<image file="image/background/CWKosh4.png" />
+	<image file="image/background/CWMap.png" />
+	<image file="image/background/CWTitle1.png" />
+	<image file="image/background/CWTitle2.png" />
+	<image file="image/background/CWTitle3.png" />
+	<image file="image/background/CWXLoading.png" />
+	<image file="image/background/CWXTitle.png" />
+	<image file="image/background/day.png" />
+	<image file="image/background/night.png" />
+</background>

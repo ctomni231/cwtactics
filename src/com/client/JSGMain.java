@@ -23,7 +23,7 @@ public class JSGMain extends SlixGame{
 
             //YOU MAY SET NEW SIZE VALUES FOR THE APPLET HERE
             //Make sure you match them in the .html, or it won't work.
-            app.setDisplayMode( 500, 500, false );
+            app.setDisplayMode( 480, 320, false );
             app.start();
         } catch ( SlickException e ) {
             e.printStackTrace();

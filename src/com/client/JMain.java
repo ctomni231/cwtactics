@@ -17,6 +17,7 @@ public class JMain extends Slix{
     public final static int GAME_HEIGHT = 480; //320, 480
 
     public static void main(String[] argv) {
+
         JMain game = new JMain(GAME_WIDTH, GAME_HEIGHT);
         game.changeTitle(GAME_TITLE);
 
@@ -24,7 +25,7 @@ public class JMain extends Slix{
             if(argv[0].matches("java"))         game.showWindow();
             else if(argv[0].matches("slick"))   game.showSlick();
         }else
-            game.showWindow();
+            game.showSlick();
     }
 
     public JMain(int width, int height){

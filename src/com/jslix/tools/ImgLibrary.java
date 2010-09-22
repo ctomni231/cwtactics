@@ -40,6 +40,8 @@ public class ImgLibrary extends Component{
     private int sizex;
     //Used to set the height for an image
     private int sizey;
+    //Used to set the blend opacity
+    private double opacity;
     //Lets the user choose whether to store a filename image
     private boolean storeFileRef;
     //Lets the user quickly flip this image horizontally
@@ -60,6 +62,7 @@ public class ImgLibrary extends Component{
         colorBlend = new ArrayList<Integer>();
         sizex = 0;
         sizey = 0;
+        opacity = 0.5;
         storeFileRef = true;
         mirrorX = false;
         mirrorY = false;
@@ -108,7 +111,12 @@ public class ImgLibrary extends Component{
     }
     //Blends pixels using java.awt.Color
     public void setPixelBlend(java.awt.Color blendColor){
+        setPixelBlend(blendColor, 0.5);
+    }
+    //Blends pixels using java.awt.Color
+    public void setPixelBlend(java.awt.Color blendColor, double opacity){
         if(blendColor != null)  colorBlend.add(0, blendColor.getRGB());
+        if(opacity >= 0 && opacity <= 1)  this.opacity = opacity;
     }
     //Sets what pixels to ignore while you are blending
     public void setPixelIgnore(java.awt.Color ignoreColor){
@@ -160,8 +168,7 @@ public class ImgLibrary extends Component{
         else{
             ImgHolder[] temp = sortedImg;
             sortedImg = new ImgHolder[temp.length+1];
-            for(int i = 0; i < temp.length; i++)
-                sortedImg[i] = temp[i];
+            System.arraycopy(temp, 0, sortedImg, 0, temp.length);
             sortedImg[sortedImg.length-1] = storeImage();
         }
         return true;
@@ -336,8 +343,9 @@ public class ImgLibrary extends Component{
                 colorChanger.clear();
             }
             if(!colorBlend.isEmpty()){
-                tempImg.pixels = tempImg.setColorBlend(colorBlend);
+                tempImg.pixels = tempImg.setColorBlend(colorBlend, opacity);
                 colorBlend.clear();
+                opacity = 0.5;
             }
             if(mirrorX){
                 tempImg.pixels = tempImg.setFlipX();

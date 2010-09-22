@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu>
+	<logo   title="image/menu/cwTactics.png" 
+		mini="image/menu/cwLogo.gif" />
+
+	<title  copy=" - ADVANCE WARS IS COPYRIGHT OF NINTENDO/INTELLIGENT SYSTEMS - "
+		start="PRESS START" 
+		alpha="image/menu/smallAlpha.png"
+		arrow="image/menu/uparrow.png" />
+</menu>

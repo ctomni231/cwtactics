@@ -57,6 +57,7 @@ public class SlixGame extends BasicGame{
     public void init(GameContainer container) throws SlickException {
         contain = container;
         contain.setClearEachFrame(clear);
+        contain.setShowFPS(false);
         SlixLibrary.updateScreens();
     }
 
