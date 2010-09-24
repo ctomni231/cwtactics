@@ -1,4 +1,0 @@
-class Setup :
-	
-	def loadLibs():
-		register German_LanguageCard() > Language;

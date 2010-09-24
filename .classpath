@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="lib/cajuscript-0.3.5.jar"/>
+	<classpathentry kind="lib" path="lib/CoderModule-1_0.jar"/>
+	<classpathentry kind="lib" path="lib/CommandListSystem-0_6.jar"/>
+	<classpathentry kind="lib" path="lib/CommandListSystem-0_61.jar"/>
+	<classpathentry kind="lib" path="lib/DynamicDataMemory-1_2.jar"/>
+	<classpathentry kind="lib" path="lib/DynamicDataMemory-1_3.jar"/>
+	<classpathentry kind="lib" path="lib/FileParserModule-0_3.jar"/>
+	<classpathentry kind="lib" path="lib/FileParserModule-0_4.jar"/>
+	<classpathentry kind="lib" path="lib/FileParserModule-0_5.jar"/>
+	<classpathentry kind="lib" path="lib/groovy-1.7.5-SNAPSHOT-0.2.24.jar"/>
+	<classpathentry kind="lib" path="lib/groovy-all-1.7.5.jar"/>
+	<classpathentry kind="lib" path="lib/groovypp-all-0.2.24.jar"/>
+	<classpathentry kind="lib" path="lib/JavaLoggerModule-1_1.jar"/>
+	<classpathentry kind="lib" path="lib/JavaTriggerEngine-0_9.jar"/>
+	<classpathentry kind="lib" path="lib/jogg-0.0.7.jar"/>
+	<classpathentry kind="lib" path="lib/jorbis-0.0.15.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl.jar"/>
+	<classpathentry kind="lib" path="lib/MeoWScript-0_3.jar"/>
+	<classpathentry kind="lib" path="lib/MeoWScript-0_31.jar"/>
+	<classpathentry kind="lib" path="lib/MeowShell-1_0.jar"/>
+	<classpathentry kind="lib" path="lib/MethodLibrary-1_0.jar"/>
+	<classpathentry kind="lib" path="lib/RuntimeChangeableClass-0_5.jar"/>
+	<classpathentry kind="lib" path="lib/SimpleSoundAPI-1_0.jar"/>
+	<classpathentry kind="lib" path="lib/SimpleSoundAPI-1_1.jar"/>
+	<classpathentry kind="lib" path="lib/slick.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="con" path="GROOVY_SUPPORT"/>
+	<classpathentry kind="lib" path="lib/exotec_lib.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

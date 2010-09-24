@@ -1,8 +1,0 @@
-class BuildCard :
-	
-	def constructor( id ) : 
-		self.id = id;
-	
-	# Getter / Setter
-	def getID()        : return self.id; 
-	def getPriceCard() : return self.price;
