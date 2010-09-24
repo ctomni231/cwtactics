@@ -37,6 +37,8 @@ public class MovingImage implements ScreenSkeleton{
 
     protected ImgLibrary imgRef;
     protected String logoTxt;
+    //This controls if image resizing is active
+    protected boolean active;
 
     public MovingImage(int locx, int locy, double speed){
         posx = locx;
@@ -52,6 +54,7 @@ public class MovingImage implements ScreenSkeleton{
         scaley = 1;
         origx = -1;
         origy = -1;
+        active = true;
     }
 
     /**
@@ -81,14 +84,20 @@ public class MovingImage implements ScreenSkeleton{
     public void setImage(String imgPath, int sizex, int sizey){
         if(sizex*sizey > 0)
             imgRef.setImageSize(sizex, sizey);
-        imgRef.addImage(0, imgPath);
+        if(active)
+            imgRef.addImage(0, imgPath);
+        else
+            imgRef.addImage(imgPath);
         cursx = 0;
     }
 
     public void setImage(Image img, int sizex, int sizey){
         if(sizex*sizey > 0)
             imgRef.setImageSize(sizex, sizey);
-        imgRef.addImage(0, img);
+        if(active)
+            imgRef.addImage(0, img);
+        else
+            imgRef.addImage(img);
         cursx = 0;
     }
 
@@ -134,12 +143,14 @@ public class MovingImage implements ScreenSkeleton{
             if(origy <= 0)  origy = height;
             scalex = (double)cursx/origx;
             scaley = (double)cursy/origy;
-            imgRef.setImageSize((int)((double)imgRef.getX(0)*scalex),
+            if(active){
+                imgRef.setImageSize((int)((double)imgRef.getX(0)*scalex),
                     (int)((double)imgRef.getY(0)*scaley));
-            imgRef.addImage(1, imgRef.getImage(0));
-            if(shadow != null){
-                imgRef.setPixelBlend(shadow);
-                imgRef.addImage(2, imgRef.getImage(1));
+                imgRef.addImage(1, imgRef.getImage(0));
+                if(shadow != null){
+                    imgRef.setPixelBlend(shadow);
+                    imgRef.addImage(2, imgRef.getImage(1));
+                }
             }
         }
     }

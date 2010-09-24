@@ -17,5 +17,6 @@
 	<image file="image/background/CWXLoading.png" />
 	<image file="image/background/CWXTitle.png" />
 	<image file="image/background/day.png" />
+	<image file="image/background/lighting bolt.png" />
 	<image file="image/background/night.png" />
 </background>

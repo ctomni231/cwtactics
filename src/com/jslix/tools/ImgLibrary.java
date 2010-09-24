@@ -319,9 +319,19 @@ public class ImgLibrary extends Component{
         return new java.awt.Color(color.getRed(), color.getGreen(),
                 color.getBlue(), color.getAlpha());
     }
+    public java.awt.Color getColor(java.awt.Color color, int alpha){
+        return (alpha < 0 || alpha > 255) ? color :
+            new java.awt.Color(color.getRed(), color.getGreen(),
+            color.getBlue(), alpha);
+    }
     public Color getColor(java.awt.Color color){
         return new Color(color.getRed(), color.getGreen(),
                 color.getBlue(), color.getAlpha());
+    }
+    public Color getColor(Color color, int alpha){
+        return (alpha < 0 || alpha > 255) ? color :
+            new Color(color.getRed(), color.getGreen(),
+            color.getBlue(), alpha);
     }
 
     //PRIVATE FUNCTIONS

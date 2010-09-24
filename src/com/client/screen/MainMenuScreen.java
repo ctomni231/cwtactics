@@ -3,6 +3,7 @@ package com.client.screen;
 import com.client.graphic.BackgroundHandler;
 import com.client.graphic.LogoHandler;
 import com.client.graphic.TitleGUI;
+import com.client.graphic.ExitGUI;
 import com.client.graphic.xml.TitleReader;
 import com.jslix.debug.MemoryTest;
 import com.jslix.state.Screen;
@@ -25,6 +26,7 @@ public class MainMenuScreen extends Screen{
     private LogoHandler logoPic;
 
     private TitleGUI titleScr;
+    private ExitGUI exitScr;
 
     private boolean scrStart;
     private int column;
@@ -40,6 +42,8 @@ public class MainMenuScreen extends Screen{
         titleScr.setOrigScreen(SIZE_X, SIZE_Y);
         titleScr.setWords(reader.getAlphaPath(), reader.getStartText(),
                 200, 20);
+
+        exitScr = new ExitGUI(reader.getAlphaPath(), 100, 100, 0);       
         
         scrStart = true;
         column = 0;
@@ -50,6 +54,7 @@ public class MainMenuScreen extends Screen{
         bgPic.update(scr_name, scr_index, scr_isApplet, scr_link);
         bgPic.init();
         logoPic.init();
+        exitScr.init();
     }
 
     @Override
@@ -61,6 +66,7 @@ public class MainMenuScreen extends Screen{
                 startScr();
                 break;
             default:
+                exitScr();
         }
         logoPic.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);        
         //MemoryTest.printMemoryUsage("MAIN");
@@ -74,6 +80,7 @@ public class MainMenuScreen extends Screen{
                 titleScr.render(g);
                 break;
             default:
+                exitScr.render(g);
         }
         logoPic.render(g);
     }
@@ -86,6 +93,7 @@ public class MainMenuScreen extends Screen{
                 titleScr.render(g, dthis);
                 break;
             default:
+                exitScr.render(g, dthis);
         }
         logoPic.render(g, dthis);
     }
@@ -98,5 +106,23 @@ public class MainMenuScreen extends Screen{
             scrStart = false;
         }
         titleScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
+        column = titleScr.control();
+        if(column != 0){
+            scrStart = true;
+        }
+    }
+
+    private void exitScr(){
+        if(scrStart){
+            logoPic.setFinalPosition(0, 145, 50);
+            logoPic.setFinalPosition(2, 0, 480);
+            //logoPic.setScrollText();
+            scrStart = false;
+        }
+        exitScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
+        column = exitScr.control();
+        if(column != -1){
+            scrStart = true;
+        }
     }
 }
