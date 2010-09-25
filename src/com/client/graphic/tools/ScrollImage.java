@@ -65,7 +65,12 @@ public class ScrollImage extends MovingImage {
     public void setTextImage(String text) {
         setShadowColor(imgRef.getColor(textColor));
         setImage(getTextPicture(text), 0, 0);
+        logoTxt = text;
         textScroll.clear();
+    }
+    
+    public String getText(){
+    	return logoTxt;
     }
 
     private Image getTextPicture(String text){

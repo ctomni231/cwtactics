@@ -1,8 +1,12 @@
 package com.client.graphic;
 
+import com.jslix.system.SlixLibrary;
+import com.jslix.tools.MouseHelper;
 import com.jslix.tools.TextImgLibrary;
 import com.client.graphic.tools.MovingMenu;
+import com.client.input.Controls;
 import com.client.input.KeyControl;
+import com.jslix.tools.ImgLibrary;
 import java.awt.Color;
 
 /**
@@ -19,21 +23,49 @@ public class ExitGUI extends MovingMenu{
     private Color[] chngColors;
     private int sizex;
     private int sizey;
+    private int x;
+    private int y;
     private String alpha;
+    private MouseHelper helper;
+    private int type;
 
     public ExitGUI(String alphaRef, int locx, int locy, double speed){
         super(locx, locy, speed);
+        active = false;
         alpha = alphaRef;
+        helper = new MouseHelper();
         dfltColors = new Color[]{new Color(128, 128, 128),
         new Color(160, 160, 160)};
         chngColors = new Color[]{new Color(200, 200, 200),
         new Color(255, 255, 255)};
         sizex = 100;
         sizey = 100;
+        select = -1;
+        type = 0;
+    }
+    
+    public void setType(int type){
+    	this.type = type;
     }
 
     @Override
+    public void setOrigScreen(int scrX, int scrY) {
+        super.setOrigScreen(scrX, scrY);
+        x = scrX;
+        y = scrY;
+    }
+
+
+    @Override
     public void init() {
+        ImgLibrary tempImg = new ImgLibrary();
+        tempImg.addImage(getTextImg(alpha, "LEAVING..."));
+        tempImg.addImage(getTextImg(alpha, "YES"));
+        tempImg.addImage(getTextImg(alpha, "NO"));
+
+        sizex = tempImg.getX(0)+20;
+        sizey = tempImg.getY(0)+10+tempImg.getY(1)+20;
+
         createNewItem(0,0,0);
         addRoundBox(0, imgRef.getColor(Color.LIGHT_GRAY, 127),
                 sizex, sizey, 10, false);
@@ -41,22 +73,74 @@ public class ExitGUI extends MovingMenu{
         addRoundBox(0, imgRef.getColor(Color.DARK_GRAY, 127),
                 sizex-10, sizey-10, 10, false);
         createNewItem(10, 10, 0);
-        addImagePart(getTextImg(alpha, "EXIT"), 0.7);
+        addImagePart(getTextImg(alpha, "LEAVING..."), 0.7);
         addMenuItem(0, false);
+        createNewItem(10, 10+tempImg.getY(0)+10, 0);
+        addImagePart(getTextImg(alpha, "YES"), 0.7);
+        addImagePart(getTextImg(alpha, "YES", dfltColors, chngColors), 0.7);
+        addMenuItem(1, true);
+        createNewItem(10+tempImg.getX(0)-tempImg.getX(2),
+                10+tempImg.getY(0)+10, 0);
+        addImagePart(getTextImg(alpha, "NO"), 0.7);
+        addImagePart(getTextImg(alpha, "NO", dfltColors, chngColors), 0.7);
+        addMenuItem(-1, true);
+
+        setFinalPosition((int)((x-sizex)/2), (int)((y-sizey)/2));
+    }
+    
+    @Override
+    public void update(int width, int height, int sysTime, int mouseScroll){
+    	super.update(width, height, sysTime, mouseScroll);
+    	if(helper.getMouseLock())
+    		helper.setMouseRelease(KeyControl.getMouseX(), 
+    			KeyControl.getMouseY());
     }
 
-    //TODO (JSLIX) Find a better way to implement control system
-    public int control(){
-        if(KeyControl.isActionClicked()){
-            return -1;
-        }else if(KeyControl.isCancelClicked()){
-            return 0;
+    public int control(int column, int mouseScroll){
+        if(KeyControl.isUpClicked() ||
+            KeyControl.isDownClicked() ||
+            KeyControl.isLeftClicked() ||
+            KeyControl.isRightClicked())
+            select *= -1;
+        
+        if(!helper.getMouseLock())
+        	mouseSelect(KeyControl.getMouseX(), KeyControl.getMouseY());
+        
+        if(mouseScroll != 0){
+        	helper.setMouseLock(KeyControl.getMouseX(), 
+        			KeyControl.getMouseY());
+        	select *= -1;
         }
 
-        return -1;
+        if(type == 1){
+            if(Controls.isActionClicked()){
+                if(select == 1)    SlixLibrary.removeAllScreens();
+                else               column = 0;
+            }else if(Controls.isCancelClicked()){
+                column = 0;
+            }
+        }else{
+            if(Controls.isActionClicked()){
+                if(select == 1) //Some other menu action
+                    SlixLibrary.removeAllScreens();
+                else{
+                    if(column == -1)    column = 0;
+                    else                column = 1;
+                }
+            }else if(Controls.isCancelClicked()){
+                if(column == -1)    column = 0;
+                else                column = 1;
+            }
+        }
+
+        return column;
     }
 
     private java.awt.Image getTextImg(String alpha, String text){
+        return getTextImg(alpha, text, null, null);
+    }
+    private java.awt.Image getTextImg(String alpha, String text,
+            Color[] fromColor, Color[] toColor){
         TextImgLibrary txtLib = new TextImgLibrary();
         txtLib.addImage(alpha);
         txtLib.addAllCapitalLetters(txtLib.getImage(0), "", 6, 5, 0);
@@ -65,6 +149,11 @@ public class ExitGUI extends MovingMenu{
         txtLib.addLetter(',', txtLib.getImage(0), "", 6, 5, 27);
         txtLib.addLetter('.', txtLib.getImage(0), "", 6, 5, 26);
         txtLib.setString(text, "", 0, 0, 0, 0);
-        return txtLib.getTextImage();
+        if(fromColor != null && toColor != null){
+            for(int j = 0; j < fromColor.length; j++)
+                txtLib.setPixelChange(fromColor[j], toColor[j]);           
+        }
+        txtLib.addImage(text, txtLib.getTextImage());
+        return txtLib.getImage(text);
     }
 }

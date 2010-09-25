@@ -71,6 +71,13 @@ public class KeyPress {
     public static int getMouseScroll(){
         return mouseScroll;
     }
+    
+    /**
+     * This sets the scroll wheel to steady
+     */
+    public static void resetMouseWheel(){
+    	mouseScroll = 0;
+    }
     /**
      * Whether user is actively pressing a control
      * @return Whether a user is causing input

@@ -1,5 +1,8 @@
 package com.client.graphic.tools;
 
+import com.jslix.tools.ImgLibrary;
+
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
@@ -26,6 +29,9 @@ public class MovingMenu extends MovingImage{
     private ArrayList<Integer> resetImage;
     public int select;
     private MenuItem item;
+    private double sx;
+    private double sy;
+    private ImgLibrary imgResize;
 
     public MovingMenu(int locx, int locy, double speed){
         super(locx, locy, speed);
@@ -34,6 +40,9 @@ public class MovingMenu extends MovingImage{
         resetImage = new ArrayList<Integer>();
         allItems = new MenuItem[0];
         item = new MenuItem(locx, locy, speed);
+        imgResize = new ImgLibrary();
+        sx = 0;
+        sy = 0;
     }
 
     //Creates a new item to be drawn on the screen
@@ -43,26 +52,10 @@ public class MovingMenu extends MovingImage{
 
     //Adds an image onto the item
     public void addImagePart(String imgPath, double opacity){
-        if(resetImage.isEmpty()){
-            item.addReference(imgRef.length());
-            setImage(imgPath);
-        }else{
-            imgRef.addImage(resetImage.get(0), imgPath);
-            item.addReference(resetImage.remove(0));
-        }
-        item.opacity = opacity;
+        addImgPart(imgPath, null, opacity);
     }
-
-    //Adds an image onto the item
     public void addImagePart(Image img, double opacity){
-        if(resetImage.isEmpty()){
-            item.addReference(imgRef.length());
-            setImage(img);
-        }else{
-            imgRef.addImage(resetImage.get(0), img);
-            item.addReference(resetImage.remove(0));
-        }
-        item.opacity = opacity;
+    	addImgPart("", img, opacity);
     }
 
     //Adds/Replaces the item to/on the list of items (do once per menu item)
@@ -71,7 +64,7 @@ public class MovingMenu extends MovingImage{
     }
     public void addMenuItem(int index, int select, boolean selectable){
         addItem(index, REGULAR, select, null, imgRef.getX(allItems.length),
-                imgRef.getY(allItems.length), 0, true);
+                imgRef.getY(allItems.length), 0, selectable);
     }
 
     //Adds a Rounded Filled Box to the Menu items list
@@ -153,17 +146,46 @@ public class MovingMenu extends MovingImage{
             }
         }
     }
+    
+    public boolean mouseSelect(int mx, int my){
+    	for(MenuItem itm: allItems){
+            if(!itm.drawthis)
+                continue;
+            if(itm.selectable && select != itm.select){           	
+            	if(itm.sizex == 0 && itm.sizey == 0){
+            		itm.sizex = imgRef.getX(itm.getPicture(false));
+            		itm.sizey = imgRef.getY(itm.getPicture(false));
+            	}
+            	if(mx > (int)((itm.posx+posx)*scalex) && 
+            			mx < (int)((itm.posx+posx+itm.sizex)*scalex)){
+                    if(my > (int)((itm.posy+posy)*scaley) && 
+                    		my < (int)((itm.posy+posy+itm.sizey)*scaley)){
+                    	
+                        select = itm.select;
+                        return true;
+                    }
+                }
+            }
+    	}
+    	return false;
+    }
 
-    //TODO (JSLIX) Menu items need to resize with the screen
     @Override
     public void update(int width, int height, int sysTime, int mouseScroll){
         super.update(width, height, sysTime, mouseScroll);
         for(int i = 0; i < allItems.length; i++)
             allItems[i].renderSpeed();
-        //If scroll is different, you'll have to resize all images
+        if(sx != scalex || sy != scaley){
+            for(int i = 0; i < imgRef.length(); i++){
+                imgResize.setImageSize((int)((double)imgRef.getX(i)*scalex),
+                    (int)((double)imgRef.getY(i)*scaley));
+                imgResize.addImage(i, imgRef.getImage(i));
+            }
+            sx = scalex;
+            sy = scaley;
+        }
     }
 
-    //TODO (JSLIX) Check to see if select is working
     @Override
     public void render(Graphics g){
         for(MenuItem itm: allItems){
@@ -172,28 +194,45 @@ public class MovingMenu extends MovingImage{
 
             switch(itm.id){
                 case REGULAR:
-                    g.drawImage(imgRef.getSlickImage(itm.getPicture(
-                            itm.index == select)),
-                            (int)(posx+itm.posx), (int)(posy+itm.posy));
+                	if(itm.opacity >= 0 && itm.opacity <= 1)
+                		imgResize.getSlickImage(
+                				itm.getPicture(itm.select == select))
+                				.setAlpha((float)itm.opacity);
+                	else if(opacity < 1)
+                		imgResize.getSlickImage(
+                				itm.getPicture(itm.select == select))
+                				.setAlpha((float)opacity);
+                    g.drawImage(imgResize.getSlickImage(itm.getPicture(
+                            itm.select == select)),
+                            (int)((posx+itm.posx)*scalex), 
+                            (int)((posy+itm.posy)*scaley));
                     break;
                 default:
-                    if(select == itm.index || !itm.selectable){
+                    if(select == itm.select || !itm.selectable){
                         if(itm.theColor != null)
                             g.setColor(imgRef.getColor(itm.theColor));
-                        if(itm.index == RECTANGLE)
-                            g.fillRect((int)(posx+itm.posx), (int)
-                                 (posy+itm.posy), itm.sizex, itm.sizey);
-                        else if(itm.index == ROUND_BOX)
-                            g.fillRoundRect((int)(posx+itm.posx),
-                                (int)(posy+itm.posy), itm.sizex,
-                                itm.sizey, itm.arc);
-                        else if(itm.index == BORDER)
-                            g.drawRect((int)(posx+itm.posx), (int)
-                               (posy+itm.posy), itm.sizex, itm.sizey);
-                        else if(itm.index == RND_BORDER)
-                            g.drawRoundRect((int)(posx+itm.posx),
-                                (int)(posy+itm.posy), itm.sizex,
-                                itm.sizey, itm.arc);
+                        if(itm.select == RECTANGLE)
+                            g.fillRect((int)((posx+itm.posx)*scalex), 
+                                    (int)((posy+itm.posy)*scaley), 
+                                    (int)(itm.sizex*scalex), 
+                                    (int)(itm.sizey*scaley));
+                        else if(itm.select == ROUND_BOX)
+                            g.fillRoundRect((int)((posx+itm.posx)*scalex), 
+                                    (int)((posy+itm.posy)*scaley), 
+                                    (int)(itm.sizex*scalex), 
+                                    (int)(itm.sizey*scaley), 
+                                    (int)(itm.arc*scaley));
+                        else if(itm.select == BORDER)
+                            g.drawRect((int)((posx+itm.posx)*scalex), 
+                                    (int)((posy+itm.posy)*scaley), 
+                                    (int)(itm.sizex*scalex), 
+                                    (int)(itm.sizey*scaley));
+                        else if(itm.select == RND_BORDER)
+                            g.drawRoundRect((int)((posx+itm.posx)*scalex), 
+                                    (int)((posy+itm.posy)*scaley),
+                                    (int)(itm.sizex*scalex), 
+                                    (int)(itm.sizey*scaley), 
+                                    (int)(itm.arc*scaley));
                     }
             }
         }
@@ -208,28 +247,49 @@ public class MovingMenu extends MovingImage{
 
             switch(itm.id){
                 case REGULAR:
-                    g.drawImage(imgRef.getImage(itm.getPicture(
-                            itm.index == select)),
-                            (int)(posx+itm.posx), (int)(posy+itm.posy), dthis);
+                	if(itm.opacity >= 0 && itm.opacity <= 1)
+                		g.setComposite(AlphaComposite.getInstance(
+                				AlphaComposite.SRC_OVER,
+                                (float)itm.opacity));
+                	else if(opacity < 1)
+                		g.setComposite(AlphaComposite.getInstance(
+                				AlphaComposite.SRC_OVER,
+                                (float)opacity));
+                    g.drawImage(imgResize.getImage(itm.getPicture(
+                            itm.select == select)),
+                            (int)((posx+itm.posx)*scalex), 
+                            (int)((posy+itm.posy)*scaley), dthis);
+                    if(opacity < 1 || itm.opacity >= 0 && itm.opacity < 1)
+                    	g.setComposite(AlphaComposite.SrcOver);
                     break;
                 default:
-                    if(select == itm.index || !itm.selectable){
+                    if(select == itm.select || !itm.selectable){
                         if(itm.theColor != null)
                             g.setColor(itm.theColor);
-                        if(itm.index == RECTANGLE)
-                            g.fillRect((int)(posx+itm.posx), (int)
-                                 (posy+itm.posy), itm.sizex, itm.sizey);
-                        else if(itm.index == ROUND_BOX)
-                            g.fillRoundRect((int)(posx+itm.posx),
-                                (int)(posy+itm.posy), itm.sizex,
-                                itm.sizey, itm.arc, itm.arc);
-                        else if(itm.index == BORDER)
-                            g.drawRect((int)(posx+itm.posx), (int)
-                               (posy+itm.posy), itm.sizex, itm.sizey);
-                        else if(itm.index == RND_BORDER)
-                            g.drawRoundRect((int)(posx+itm.posx),
-                                (int)(posy+itm.posy), itm.sizex,
-                                itm.sizey, itm.arc, itm.arc);
+                        if(itm.select == RECTANGLE)
+                            g.fillRect((int)((posx+itm.posx)*scalex), 
+                                    (int)((posy+itm.posy)*scaley), 
+                                    (int)(itm.sizex*scalex), 
+                                    (int)(itm.sizey*scaley));
+                        else if(itm.select == ROUND_BOX)
+                            g.fillRoundRect((int)((posx+itm.posx)*scalex), 
+                                    (int)((posy+itm.posy)*scaley), 
+                                    (int)(itm.sizex*scalex), 
+                                    (int)(itm.sizey*scaley), 
+                                    (int)(itm.arc*scalex), 
+                                    (int)(itm.arc*scaley));
+                        else if(itm.select == BORDER)
+                            g.drawRect((int)((posx+itm.posx)*scalex), 
+                                    (int)((posy+itm.posy)*scaley), 
+                                    (int)(itm.sizex*scalex), 
+                                    (int)(itm.sizey*scaley));
+                        else if(itm.select == RND_BORDER)
+                            g.drawRoundRect((int)((posx+itm.posx)*scalex), 
+                                    (int)((posy+itm.posy)*scaley), 
+                                    (int)(itm.sizex*scalex), 
+                                    (int)(itm.sizey*scaley),
+                                    (int)(itm.arc*scalex), 
+                                    (int)(itm.arc*scaley));
                     }
             }
         }
@@ -268,7 +328,7 @@ public class MovingMenu extends MovingImage{
     private void addItem(int index, int id, int select, Color theColor,
          int sizex, int sizey, int arc, boolean selectable){
         item.id = id;
-        item.index = select;
+        item.select = select;
         item.theColor = theColor;
         item.selectable = selectable;
         item.sizex = sizex;
@@ -289,8 +349,29 @@ public class MovingMenu extends MovingImage{
     }
 
     private void replaceItem(int index){
-        if(index >= 0 && index < allItems.length)
+        if(index >= 0 && index < allItems.length){
+        	MenuItem[] temp = allItems;
+            allItems = new MenuItem[temp.length];
+            System.arraycopy(temp, 0, allItems, 0, temp.length);
             allItems[index] = item;
+        }
+    }
+    
+    private void addImgPart(String imgPath, Image img, double opacity){
+    	if(resetImage.isEmpty()){
+            item.addReference(imgRef.length());
+            if(img == null)
+            	setImage(imgPath);
+            else
+            	setImage(img);
+        }else{
+        	if(img == null)
+        		imgRef.addImage(resetImage.get(0), imgPath);
+            else
+            	imgRef.addImage(resetImage.get(0), img);
+            item.addReference(resetImage.remove(0));
+        }
+        item.opacity = opacity;
     }
 
 

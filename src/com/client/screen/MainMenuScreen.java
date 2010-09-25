@@ -30,6 +30,7 @@ public class MainMenuScreen extends Screen{
 
     private boolean scrStart;
     private int column;
+    private int current;
 
     public MainMenuScreen(){
         reader = new TitleReader("data/titlescreen.xml");
@@ -43,7 +44,9 @@ public class MainMenuScreen extends Screen{
         titleScr.setWords(reader.getAlphaPath(), reader.getStartText(),
                 200, 20);
 
-        exitScr = new ExitGUI(reader.getAlphaPath(), 100, 100, 0);       
+        exitScr = new ExitGUI(reader.getAlphaPath(), 100, 200, 0);
+        exitScr.setOrigScreen(SIZE_X, SIZE_Y);
+        exitScr.setType(1);
         
         scrStart = true;
         column = 0;
@@ -68,7 +71,8 @@ public class MainMenuScreen extends Screen{
             default:
                 exitScr();
         }
-        logoPic.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);        
+        scr_mouseScroll = 0;
+        logoPic.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
         //MemoryTest.printMemoryUsage("MAIN");
     }
 
@@ -106,8 +110,9 @@ public class MainMenuScreen extends Screen{
             scrStart = false;
         }
         titleScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
-        column = titleScr.control();
-        if(column != 0){
+        current = titleScr.control(column);
+        if(column != current){
+            column = current;
             scrStart = true;
         }
     }
@@ -116,12 +121,12 @@ public class MainMenuScreen extends Screen{
         if(scrStart){
             logoPic.setFinalPosition(0, 145, 50);
             logoPic.setFinalPosition(2, 0, 480);
-            //logoPic.setScrollText();
             scrStart = false;
         }
         exitScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
-        column = exitScr.control();
-        if(column != -1){
+        current = exitScr.control(column, scr_mouseScroll);
+        if(column != current){
+            column = current;
             scrStart = true;
         }
     }

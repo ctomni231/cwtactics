@@ -13,7 +13,7 @@ public class MenuItem {
     //This holds the ID# of the MenuItem
     public int id;
     //This holds its user selection index#
-    public int index;
+    public int select;
     //This holds the text reference to the image
     protected int[] refPath;
     //This holds the index in the refPath for which image will be diplayed
@@ -51,11 +51,11 @@ public class MenuItem {
         fposy = locy;
         this.speed = speed;
         refPath = new int[0];
-        index = 0;
+        select = 0;
         choice = 0;
         opacity = -1;
-        selectable = true;
         theColor = null;
+        selectable = true;
         sizex = 0;
         sizey = 0;
         arc = 0;
@@ -89,9 +89,9 @@ public class MenuItem {
 
     public int getPicture(boolean select){
         if(select && choice+1 < refPath.length)
-            return choice+1;
+            return refPath[choice+1];
         else
-            return choice;
+            return refPath[choice];
     }
 
     public void renderSpeed(){

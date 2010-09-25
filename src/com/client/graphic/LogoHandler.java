@@ -2,6 +2,7 @@ package com.client.graphic;
 
 import com.client.graphic.tools.MovingImage;
 import com.client.graphic.tools.ScrollImage;
+import com.client.input.KeyControl;
 import com.jslix.state.ScreenSkeleton;
 import java.awt.Color;
 import java.awt.Component;
@@ -62,7 +63,9 @@ public class LogoHandler implements ScreenSkeleton{
     }
 
     public void setScrollText(){
-        scroll.setTextImage(cool[2]+"                                       ");
+    	if(!scroll.getText().matches(cool[2]+".*"))
+    		scroll.setTextImage(cool[2]+
+    				"                                       ");
     }
     public void setScrollText(String text){
         scroll.setTextImage(text);
@@ -71,6 +74,8 @@ public class LogoHandler implements ScreenSkeleton{
     public void update(int width, int height, int sysTime, int mouseScroll) {
         pic.update(width, height, sysTime, mouseScroll);
         scroll.update(width, height, sysTime, mouseScroll);
+        if(mouseScroll == 0)
+        	KeyControl.resetMouseWheel();
     }
 
     public void render(Graphics g) {

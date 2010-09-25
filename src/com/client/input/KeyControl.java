@@ -116,6 +116,15 @@ public class KeyControl {
      * DIRECT ACCESS METHODS
      * *********************
      */
+    
+    // MOUSE LOCATION
+    public static int getMouseX(){
+    	return KeyPress.getMouseX();	}
+    public static int getMouseY(){
+    	return KeyPress.getMouseY();	}
+    public static void resetMouseWheel(){
+    	KeyPress.resetMouseWheel();
+    }
 
     // IS CLICKED
     public static boolean isUpClicked(){

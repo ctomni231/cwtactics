@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <background>
 	<image file="image/background/AWDoRBack.png" />
+	<image file="image/background/AWDSSky.png" />
 	<image file="image/background/AWDSWorld.png" />
 	<image file="image/background/CWArtea-MK.png" />
 	<image file="image/background/CWArtea1.png" />

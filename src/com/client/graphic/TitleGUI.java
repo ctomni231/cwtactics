@@ -51,14 +51,13 @@ public class TitleGUI extends MovingImage {
         g.setComposite(AlphaComposite.SrcOver);
     }
 
-    public int control(){
+    public int control(int column){
         if(KeyControl.isActionClicked()){
             return 0;
         }else if(KeyControl.isCancelClicked()){
             return 1;
         }
-
-        return 0;
+        return column;
     }
 
     private void changeTime(){
