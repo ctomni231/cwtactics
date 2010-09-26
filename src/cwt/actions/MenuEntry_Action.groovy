@@ -1,16 +1,17 @@
 @Typed
-package cwt.data
+package cwt.actions
 
 /**
- * Armor class.
+ * Entry for the menu, that calls an action after the entry is performed.
  * 
  * @author Radom, Alexander
  * @license Look into "LICENSE" file for further information
- * @version 25.09.2010
+ * @version 1
  * @todo <UL>
  *       <LI>nothing at the moment</LI>
  *       </UL>
  */
-class ArmorType implements TypeSheet
+class MenuEntry_Action extends Action
 {
+
 }

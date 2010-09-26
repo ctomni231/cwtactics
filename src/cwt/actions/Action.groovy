@@ -1,16 +1,17 @@
 @Typed
-package cwt.data
+package cwt.actions
 
 /**
- * Armor class.
+ * Simple action class, that calls a command or an another action.
  * 
  * @author Radom, Alexander
  * @license Look into "LICENSE" file for further information
- * @version 25.09.2010
+ * @version 1
  * @todo <UL>
  *       <LI>nothing at the moment</LI>
  *       </UL>
  */
-class ArmorType implements TypeSheet
+abstract class Action
 {
+	
 }

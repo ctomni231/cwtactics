@@ -4,13 +4,12 @@ package cwt.model.map
 import groovy.lang.Delegate;
 import cwt.model.Unit;
 
-class Tile extends CustomizeAbleGraphic
+class Tile extends MapObject
 {
-	@Delegate CustomizeAbleGraphic shape
-	Unit unit
+	short identicalPos
 	
-	Tile()
+	protected void setIdenticalPos( short identicalPos )
 	{
-		shape = new CustomizeAbleGraphic()
+		this.identicalPos = identicalPos
 	}
 }

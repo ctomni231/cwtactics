@@ -20,6 +20,7 @@ import groovy.lang.Mixin;
  *            </LI>
  *            </UL>
  */
+@Mixin( TeamUtils )
 class Team
 {
 	byte members
@@ -30,7 +31,7 @@ class Team
 	}
 	
 	@Override 
-	private void setMembers( byte members )
+	protected void setMembers( byte members )
 	{
 		assert members >= 0
 

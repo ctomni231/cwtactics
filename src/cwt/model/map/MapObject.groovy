@@ -6,19 +6,20 @@ package cwt.model.map
  * 
  * @author Radom, Alexander
  * @license Look into "LICENSE" file for further information
- * @version 1
- * @changelog <UL>
- *            <LI>v1
- *            <UL>
- *            <LI>initial version</LI>
- *            </UL>
- *            </LI>
- *            </UL>
+ * @version 25.09.2010
+ * @todo <UL>
+ *       <LI>nothing at the moment</LI>
+ *       </UL>
  */
-class CustomizeAbleGraphic
+class MapObject
 {
 	byte variation
 	
+	/**
+	 * Sets the variation id number of this object.
+	 * 
+	 * @param variation must be greater equals zero
+	 */
 	@Override
 	void setVariation( byte variation )
 	{

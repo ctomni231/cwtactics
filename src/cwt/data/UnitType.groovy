@@ -13,6 +13,7 @@ class UnitType implements TypeSheet
 	boolean canHide
 	ArmorType armor
 	short armorPercentage
+	private List<ArmorType> canLoad
 	
 	boolean isTransport()
 	{
