@@ -1,7 +1,7 @@
 @Typed
 package cwt_repo_tapsi.commands
 
-import cwt_repo_tapsi.model.Unit;
+import cwt_repo_tapsi.model.map.Unit;
 
 class IncreaseHealth extends ChangeHealth
 {

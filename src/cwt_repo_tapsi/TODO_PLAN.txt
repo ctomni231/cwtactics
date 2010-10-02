@@ -1,0 +1,34 @@
+[*] = Done
+[#] = Started
+[ ] = Not Started
+
+=> Map Model Objects	[#]
+ => Tile				[*]
+ => Property			[*]
+ => Unit				[*]
+ => Map					[#]
+ => MapObject			[#]
+ => Team				[#]
+ => Player				[#]
+
+=> Data Model			[#]
+ => ResourceModel		[#]
+
+=> Factory				[#]
+
+=> Logic Model Objects	[#]
+ => Weather				[#]
+ => Range				[#]
+ => Fog					[#]
+ => Turn				[#]
+ => Cards				[#]
+ 	=> Battle			[#]
+ 	=> Fog				[#]
+ 	=> Range			[#]
+
+=> State Model			[#]
+ => 
+
+=> Command System Model	[#]
+
+=> Menu Model			[#]

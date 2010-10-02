@@ -4,11 +4,12 @@ package cwt_repo_tapsi.service.commandSystem
 import cwt_repo_tapsi.structures.ConcurrentModificationList;
 import cwt_repo_tapsi.structures.ConcurrentModificationList.Strategy;
 
+
 /**
  * Simple command service class, that provides the services
  * to add commands and retrieve them later. This class is thread
  * safe and designed for games.
- * 
+ *
  * @author Radom, Alexander
  * @license Look into "LICENSE" file for further information
  * @version 1

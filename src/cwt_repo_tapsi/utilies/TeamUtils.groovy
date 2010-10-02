@@ -1,8 +1,7 @@
 @Typed
 package cwt_repo_tapsi.utilies
 
-import cwt_repo_tapsi.model.Player;
-import cwt_repo_tapsi.model.Team;
+import cwt_repo_tapsi.model.map.Player;
 
 /**
  * Team utily class.
@@ -16,15 +15,15 @@ import cwt_repo_tapsi.model.Team;
  */
 class TeamUtils
 {
-	static boolean areAllied( Team self , Player player )
+	static boolean areAllied( Player self , Player player )
 	{
 		assert self
 		assert player 
 		
-		return self == player.team
+		return self.team == player.team
 	}
 	
-	static boolean areEnemies( Team self , Player player )
+	static boolean areEnemies( Player self , Player player )
 	{
 		assert self
 		assert player

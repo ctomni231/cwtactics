@@ -4,16 +4,14 @@ package cwt_repo_tapsi.model.map
 /**
  * Abstract map object, provides support of variations for the graphic engine.
  * 
- * @author Radom, Alexander
+ * @author Radom, Alexander [ blackcat.myako@gmail.com ]
  * @license Look into "LICENSE" file for further information
- * @version 25.09.2010
- * @todo <UL>
- *       <LI>nothing at the moment</LI>
- *       </UL>
+ * @version 30.10.2010 
  */
 class MapObject
 {
-	byte variation
+	int variation
+	int id
 	
 	/**
 	 * Sets the variation id number of this object.
@@ -21,7 +19,7 @@ class MapObject
 	 * @param variation must be greater equals zero
 	 */
 	@Override
-	void setVariation( byte variation )
+	void setVariation( int variation )
 	{
 		assert variation >= 0
 		

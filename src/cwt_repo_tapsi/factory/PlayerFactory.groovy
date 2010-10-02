@@ -1,8 +1,7 @@
 @Typed
 package cwt_repo_tapsi.factory
 
-import cwt_repo_tapsi.model.Player;
-import cwt_repo_tapsi.model.Team;
+import cwt_repo_tapsi.model.map.Player;
 
 /**
  * Player factory class.
@@ -22,12 +21,9 @@ class PlayerFactory
 	 * 
 	 * @param team team of the player
 	 */
-	Player createPlayer( Team team )
+	Player createPlayer( )
 	{
-		assert team 
-		
-		team.addMember()
-		return new Player( team )
+		// TODO
 	}
 	
 	/**

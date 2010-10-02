@@ -2,30 +2,25 @@
 package cwt_repo_tapsi.model.map
 
 import java.util.HashMap;
-import cwt_repo_tapsi.model.Unit;
-import cwt_repo_tapsi.model.Team;
 import cwt_repo_tapsi.utilies.MapUtils;
 
 @Mixin( MapUtils )
 class Map
 {
 	
-	HashMap<Short,Unit> unitMap
-	List<Team> teams
+	HashMap unitMap
 	Tile[][] mapTiles
 	private int height
 	private int width	
 	
-	@Override
-	protected void setTeams( List<Team> teams )
+	Map()
 	{
-		assert teams
 		
-		this.teams = teams
+		setUnitMap [:]
 	}
-	
+		
 	@Override
-	protected void setUnitMap( HashMap<Short, Unit> unitMap )
+	protected void setUnitMap( HashMap unitMap )
 	{
 		assert unitMap
 		

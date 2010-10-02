@@ -1,9 +1,9 @@
 @Typed
 package cwt_repo_tapsi.utilies
 
-import cwt_repo_tapsi.model.Unit;
 import cwt_repo_tapsi.model.map.Tile;
 import cwt_repo_tapsi.model.map.Map;
+import cwt_repo_tapsi.model.map.Unit;
 
 /**
  * Utily methods for maps.

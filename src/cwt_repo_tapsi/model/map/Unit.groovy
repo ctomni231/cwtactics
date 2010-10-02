@@ -1,30 +1,25 @@
 @Typed
-package cwt_repo_tapsi.model
+package cwt_repo_tapsi.model.map
 
 import cwt_repo_tapsi.data.UnitType;
-import cwt_repo_tapsi.model.map.MapObject;
 
 /**
- * Class description.
+ * Unit class.
  * 
- * @author Radom, Alexander
+ * @author Radom, Alexander [ blackcat.myako@gmail.com ]
  * @license Look into "LICENSE" file for further information
- * @version 26.09.2010
- * @todo <UL>
- *       <LI>nothing at the moment</LI>
- *       </UL>
+ * @version 01.10.2010
  */
 class Unit extends MapObject
 {
 	final static short MAX_HEALTH = 99
 	
 	@Delegate UnitType type
-	short health
-	short ammo
-	short exp
-	short fuel
+	int health
+	int ammo
+	int exp
+	int fuel
 	boolean canAct
-	LoadContainer loads
 	
 	@Override
 	protected void setType( UnitType type )
@@ -35,7 +30,7 @@ class Unit extends MapObject
 	}
 	
 	@Override
-	void setFuel( short fuel )
+	void setFuel( int fuel )
 	{
 		assert fuel >= 0
 		
@@ -43,7 +38,7 @@ class Unit extends MapObject
 	}
 	
 	@Override
-	void setExp( short exp )
+	void setExp( int exp )
 	{
 		assert exp >= 0
 		
@@ -51,7 +46,7 @@ class Unit extends MapObject
 	}
 	
 	@Override
-	void setHealth( short health )
+	void setHealth( int health )
 	{
 		assert health in (0..MAX_HEALTH)
 		
@@ -59,17 +54,16 @@ class Unit extends MapObject
 	}
 	
 	@Override
-	void setAmmo( short ammo )
+	void setAmmo( int ammo )
 	{
 		assert ammo >= 0
 		
 		this.ammo = ammo
 	}
 	
-	boolean isTransport()
+	@Override
+	String toString()
 	{
-		assert type
-		
-		return type.isTransport()
+		"ID:"+id+" HP:"+health+" FUEL:"+fuel+" AMMO:"+ammo+" CAN_ACT:"+canAct
 	}
 }
