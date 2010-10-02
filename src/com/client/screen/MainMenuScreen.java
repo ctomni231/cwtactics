@@ -44,7 +44,8 @@ public class MainMenuScreen extends Screen{
         titleScr.setWords(reader.getAlphaPath(), reader.getStartText(),
                 200, 20);
 
-        exitScr = new ExitGUI(reader.getAlphaPath(), 100, 200, 0);
+        exitScr = new ExitGUI(reader.getAlphaPath(), reader.getExitData(),
+                100, 200, 0);
         exitScr.setOrigScreen(SIZE_X, SIZE_Y);
         exitScr.setType(1);
         

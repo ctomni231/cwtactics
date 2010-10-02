@@ -26,8 +26,8 @@ public class XML_Parser extends DefaultHandler {
 	///////////////
 	
 	public XML_Parser( String file ){
-		header = new ArrayList<String>();
-		read(file);
+            header = new ArrayList<String>();
+            read(file);
 	}
 
 	

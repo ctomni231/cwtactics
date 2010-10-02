@@ -19,26 +19,25 @@ import org.newdawn.slick.Graphics;
  */
 public class MovingImage implements ScreenSkeleton{
 
-    protected double scalex;
-    protected double scaley;
-    private int origx;
-    private int origy;
-    private int cursx;
-    private int cursy;
+    protected double scalex;//Controls the scale width of an Image
+    protected double scaley;//Controls the scale height of an Image
+    private int origx;//The original width of the screen
+    private int origy;//The original height of the screen
+    private int cursx;//The current scale width of an Image
+    private int cursy;//The current scale height of an Image
 
-    protected double posx;
-    protected double posy;
-    protected double fposx;
-    protected double fposy;
-    protected double speed;
-    protected int shadeOff;
-    protected Color shadow;
-    protected double opacity;
+    protected double posx;//The current x-axis position of an image
+    protected double posy;//The current y-axis position of an image
+    protected double fposx;//Where this image will move to in x-axis
+    protected double fposy;//Where this image will move to in y-axis
+    protected double speed;//How quickly the object will move
+    protected int shadeOff;//How far off the shade is from the image
+    protected Color shadow;//What color to put in the shadow of the image
+    protected double opacity;//How much color you can see through an image
 
-    protected ImgLibrary imgRef;
-    protected String logoTxt;
-    //This controls if image resizing is active
-    protected boolean active;
+    protected ImgLibrary imgRef;//The stored displayed Images
+    protected String logoTxt;//Almost obsolete, text based display
+    protected boolean active;//This controls if image resizing is active
 
     public MovingImage(int locx, int locy, double speed){
         posx = locx;
@@ -68,19 +67,23 @@ public class MovingImage implements ScreenSkeleton{
         origy = scrY;
     }
 
+    //Sets an opacity for this image
     public void setOpacity(double opacity){
         if(opacity >= 0 && opacity <= 1)
             this.opacity = opacity;
     }
 
+    //Sets a new image based on the filepath
     public void setImage(String imgPath){
         setImage(imgPath, 0, 0);
     }
 
+    //Sets a new image based on a current image
     public void setImage(Image img){
         setImage(img, 0, 0);
     }
 
+    //Sets a new resizable image based on filepath
     public void setImage(String imgPath, int sizex, int sizey){
         if(sizex*sizey > 0)
             imgRef.setImageSize(sizex, sizey);
@@ -91,6 +94,7 @@ public class MovingImage implements ScreenSkeleton{
         cursx = 0;
     }
 
+    //Sets a new resizable image based on a current image
     public void setImage(Image img, int sizex, int sizey){
         if(sizex*sizey > 0)
             imgRef.setImageSize(sizex, sizey);
@@ -101,33 +105,40 @@ public class MovingImage implements ScreenSkeleton{
         cursx = 0;
     }
 
+    //Sets a whole new offset for the shadow
     public void setShadowOffset(int offset){
         shadeOff = offset;
     }
 
+    //Sets a whole new color for the shadow
     public void setShadowColor(Color theColor){
         if(theColor != null)
             shadow = theColor;
     }
 
+    //Sets new text for the display
     public void setText(String display){
         logoTxt = display;
     }
 
+    //Forces the image into this position
     public void setPosition(int x, int y){
         posx = x;
         posy = y;
     }
 
+    //Glides the image into a position specified
     public void setFinalPosition(int x, int y){
         fposx = x;
         fposy = y;
     }
 
+    //Clears all stored text
     public void clearText(){
         logoTxt = "";
     }
 
+    //Sets the speed in which the menu will glide
     public void setSpeed(double thisSpeed){
         if(thisSpeed < 0)
             thisSpeed *= -1;
@@ -197,7 +208,8 @@ public class MovingImage implements ScreenSkeleton{
         }else if(!logoTxt.matches(""))
             g.drawString(logoTxt, (int)(posx*scalex), (int)(posy*scaley));
     }
-    
+
+    //This controls the gliding of the images
     private void renderSpeed(){
         if(posx == fposx && posy == fposy);
         else if(speed == 0){

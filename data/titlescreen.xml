@@ -7,4 +7,12 @@
 		start="PRESS START" 
 		alpha="image/menu/smallAlpha.png"
 		arrow="image/menu/uparrow.png" />
+
+	<screen ID="MAIN MENU">
+		<exit>
+			<list text="LEAVING..." />
+			<list text="YES" />
+			<list text="NO" />
+		</exit>
+	</screen>
 </menu>

@@ -25,14 +25,15 @@ public class MovingMenu extends MovingImage{
     public final int RND_BORDER = 3;
     public final int BORDER = 4;
 
-    private MenuItem[] allItems;
-    private ArrayList<Integer> resetImage;
-    public int select;
-    private MenuItem item;
-    private double sx;
-    private double sy;
-    private ImgLibrary imgResize;
+    protected MenuItem[] allItems;//All Items for this menu
+    private ArrayList<Integer> resetImage;//Helps better index images
+    public int select;//This highlights a menu item
+    private MenuItem item;//A temp item for storing various enhancements
+    private double sx;//A temp value for rescaling
+    private double sy;//A temp value for rescaling
+    private ImgLibrary imgResize;//This holds all resized images
 
+    //This creates a new moving menu, speed is the speed of movement
     public MovingMenu(int locx, int locy, double speed){
         super(locx, locy, speed);
         active = false;
@@ -60,49 +61,39 @@ public class MovingMenu extends MovingImage{
 
     //Adds/Replaces the item to/on the list of items (do once per menu item)
     public void addMenuItem(int select, boolean selectable){
-        addMenuItem(-1, select, selectable);
-    }
-    public void addMenuItem(int index, int select, boolean selectable){
-        addItem(index, REGULAR, select, null, imgRef.getX(allItems.length),
+        addItem(REGULAR, select, null, imgRef.getX(allItems.length),
                 imgRef.getY(allItems.length), 0, selectable);
     }
 
     //Adds a Rounded Filled Box to the Menu items list
     public void addRoundBox(int select, Color theColor,
             int sizex, int sizey, int arc, boolean selectable){
-        addRoundBox(-1, ROUND_BOX, theColor,
-                sizex, sizey, arc, selectable);
-    }
-    public void addRoundBox(int index, int select, Color theColor,
-            int sizex, int sizey, int arc, boolean selectable){
-        addItem(index, ROUND_BOX, select, theColor,
+        addItem(ROUND_BOX, select, theColor,
                 sizex, sizey, arc, selectable);
     }
 
     //Adds a rectangle Filled Box to the Menu Items list
     public void addBox(int select, Color theColor, int sizex, int sizey,
             boolean selectable){
-        addBox(-1, RECTANGLE, theColor, sizex, sizey, selectable);
-    }
-    public void addBox(int index, int select, Color theColor,
-            int sizex, int sizey, boolean selectable){
-        addItem(index, RECTANGLE, select, theColor,
+        addItem(RECTANGLE, select, theColor,
                 sizex, sizey, 0, selectable);
     }
 
     //Adds a rectangle border box to the Menu Items list
     public void addBorder(int select, Color theColor, int sizex, int sizey,
             boolean selectable){
-        addItem(-1, BORDER, select, theColor, sizex, sizey, 0, selectable);
+        addItem(BORDER, select, theColor,
+                sizex, sizey, 0, selectable);
     }
 
     //Adds a rounded border box to the menu items list
     public void addRoundBorder(int select, Color theColor, int sizex,
             int sizey, int arc, boolean selectable){
-        addItem(-1, RND_BORDER, select, theColor,
+        addItem(RND_BORDER, select, theColor,
                 sizex, sizey, arc, selectable);
     }
 
+    //Repositions the indexed item to the place you specify
     public void setItemPosition(int index, int locx, int locy){
         setItemPosition(index, locx, locy, false);
     }
@@ -137,6 +128,7 @@ public class MovingMenu extends MovingImage{
         }
     }
 
+    //This sets a new image within the menu item
     public void setItemImage(int index, int itemIndex, String imgPath){
         if(index >= 0 && index < allItems.length){
             if(item.getIndexExists(itemIndex)){
@@ -146,7 +138,8 @@ public class MovingMenu extends MovingImage{
             }
         }
     }
-    
+
+    //This deals with mouse selecting within the menu
     public boolean mouseSelect(int mx, int my){
     	for(MenuItem itm: allItems){
             if(!itm.drawthis)
@@ -196,11 +189,11 @@ public class MovingMenu extends MovingImage{
                 case REGULAR:
                 	if(itm.opacity >= 0 && itm.opacity <= 1)
                 		imgResize.getSlickImage(
-                				itm.getPicture(itm.select == select))
-                				.setAlpha((float)itm.opacity);
+                                        itm.getPicture(itm.select == select))
+                                        .setAlpha((float)itm.opacity);
                 	else if(opacity < 1)
                 		imgResize.getSlickImage(
-                				itm.getPicture(itm.select == select))
+                                        itm.getPicture(itm.select == select))
                 				.setAlpha((float)opacity);
                     g.drawImage(imgResize.getSlickImage(itm.getPicture(
                             itm.select == select)),
@@ -266,24 +259,24 @@ public class MovingMenu extends MovingImage{
                     if(select == itm.select || !itm.selectable){
                         if(itm.theColor != null)
                             g.setColor(itm.theColor);
-                        if(itm.select == RECTANGLE)
+                        if(itm.id == RECTANGLE)
                             g.fillRect((int)((posx+itm.posx)*scalex), 
                                     (int)((posy+itm.posy)*scaley), 
                                     (int)(itm.sizex*scalex), 
                                     (int)(itm.sizey*scaley));
-                        else if(itm.select == ROUND_BOX)
+                        else if(itm.id == ROUND_BOX)
                             g.fillRoundRect((int)((posx+itm.posx)*scalex), 
                                     (int)((posy+itm.posy)*scaley), 
                                     (int)(itm.sizex*scalex), 
                                     (int)(itm.sizey*scaley), 
                                     (int)(itm.arc*scalex), 
                                     (int)(itm.arc*scaley));
-                        else if(itm.select == BORDER)
+                        else if(itm.id == BORDER)
                             g.drawRect((int)((posx+itm.posx)*scalex), 
                                     (int)((posy+itm.posy)*scaley), 
                                     (int)(itm.sizex*scalex), 
                                     (int)(itm.sizey*scaley));
-                        else if(itm.select == RND_BORDER)
+                        else if(itm.id == RND_BORDER)
                             g.drawRoundRect((int)((posx+itm.posx)*scalex), 
                                     (int)((posy+itm.posy)*scaley), 
                                     (int)(itm.sizex*scalex), 
@@ -324,8 +317,18 @@ public class MovingMenu extends MovingImage{
         }
     }
 
+    //Switchies two items
+    public void swapItems(int index, int change){
+        if(index >= 0 && index < allItems.length &&
+                change >= 0 && change < allItems.length){
+            MenuItem temp = allItems[index];
+            allItems[index] = allItems[change];
+            allItems[change] = temp;
+        }
+    }
+
     //This universally adds an item to the list
-    private void addItem(int index, int id, int select, Color theColor,
+    private void addItem(int id, int select, Color theColor,
          int sizex, int sizey, int arc, boolean selectable){
         item.id = id;
         item.select = select;
@@ -334,29 +337,18 @@ public class MovingMenu extends MovingImage{
         item.sizex = sizex;
         item.sizey = sizey;
         item.arc = arc;
-        if(index < 0 || index >= allItems.length)
-            addItem();
-        else
-            replaceItem(index);
+        addItem();
     }
 
+    //Adds an item onto the item array
     private void addItem(){
-        //Adds an item onto the item array
         MenuItem[] temp = allItems;
         allItems = new MenuItem[temp.length+1];
         System.arraycopy(temp, 0, allItems, 0, temp.length);
         allItems[allItems.length-1] = item;
     }
 
-    private void replaceItem(int index){
-        if(index >= 0 && index < allItems.length){
-        	MenuItem[] temp = allItems;
-            allItems = new MenuItem[temp.length];
-            System.arraycopy(temp, 0, allItems, 0, temp.length);
-            allItems[index] = item;
-        }
-    }
-    
+    //Deals with adding images to the array of images
     private void addImgPart(String imgPath, Image img, double opacity){
     	if(resetImage.isEmpty()){
             item.addReference(imgRef.length());
@@ -365,8 +357,8 @@ public class MovingMenu extends MovingImage{
             else
             	setImage(img);
         }else{
-        	if(img == null)
-        		imgRef.addImage(resetImage.get(0), imgPath);
+            if(img == null)
+                    imgRef.addImage(resetImage.get(0), imgPath);
             else
             	imgRef.addImage(resetImage.get(0), img);
             item.addReference(resetImage.remove(0));

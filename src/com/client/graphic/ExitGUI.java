@@ -21,6 +21,7 @@ public class ExitGUI extends MovingMenu{
 
     private Color[] dfltColors;
     private Color[] chngColors;
+    private String[] exitData;
     private int sizex;
     private int sizey;
     private int x;
@@ -29,7 +30,8 @@ public class ExitGUI extends MovingMenu{
     private MouseHelper helper;
     private int type;
 
-    public ExitGUI(String alphaRef, int locx, int locy, double speed){
+    public ExitGUI(String alphaRef, String[] data,
+            int locx, int locy, double speed){
         super(locx, locy, speed);
         active = false;
         alpha = alphaRef;
@@ -38,6 +40,7 @@ public class ExitGUI extends MovingMenu{
         new Color(160, 160, 160)};
         chngColors = new Color[]{new Color(200, 200, 200),
         new Color(255, 255, 255)};
+        exitData = data;
         sizex = 100;
         sizey = 100;
         select = -1;
@@ -59,9 +62,9 @@ public class ExitGUI extends MovingMenu{
     @Override
     public void init() {
         ImgLibrary tempImg = new ImgLibrary();
-        tempImg.addImage(getTextImg(alpha, "LEAVING..."));
-        tempImg.addImage(getTextImg(alpha, "YES"));
-        tempImg.addImage(getTextImg(alpha, "NO"));
+        tempImg.addImage(getTextImg(alpha, exitData[0]));
+        tempImg.addImage(getTextImg(alpha, exitData[1]));
+        tempImg.addImage(getTextImg(alpha, exitData[2]));
 
         sizex = tempImg.getX(0)+20;
         sizey = tempImg.getY(0)+10+tempImg.getY(1)+20;
@@ -73,16 +76,18 @@ public class ExitGUI extends MovingMenu{
         addRoundBox(0, imgRef.getColor(Color.DARK_GRAY, 127),
                 sizex-10, sizey-10, 10, false);
         createNewItem(10, 10, 0);
-        addImagePart(getTextImg(alpha, "LEAVING..."), 0.7);
+        addImagePart(getTextImg(alpha, exitData[0]), 0.7);
         addMenuItem(0, false);
         createNewItem(10, 10+tempImg.getY(0)+10, 0);
-        addImagePart(getTextImg(alpha, "YES"), 0.7);
-        addImagePart(getTextImg(alpha, "YES", dfltColors, chngColors), 0.7);
+        addImagePart(getTextImg(alpha, exitData[1]), 0.7);
+        addImagePart(getTextImg(alpha, exitData[1],
+                dfltColors, chngColors), 0.7);
         addMenuItem(1, true);
         createNewItem(10+tempImg.getX(0)-tempImg.getX(2),
                 10+tempImg.getY(0)+10, 0);
-        addImagePart(getTextImg(alpha, "NO"), 0.7);
-        addImagePart(getTextImg(alpha, "NO", dfltColors, chngColors), 0.7);
+        addImagePart(getTextImg(alpha, exitData[2]), 0.7);
+        addImagePart(getTextImg(alpha, exitData[2],
+                dfltColors, chngColors), 0.7);
         addMenuItem(-1, true);
 
         setFinalPosition((int)((x-sizex)/2), (int)((y-sizey)/2));
