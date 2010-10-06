@@ -7,7 +7,7 @@
 		start="PRESS START" 
 		alpha="image/menu/smallAlpha.png"
 		arrow="image/menu/uparrow.png"
-		help="ARROWS-Help Bar SELECT-Start CANCEL-Exit" />
+		help="ARROWS-Lock Help SELECT-Start CANCEL-Exit" />
 
 	<screen ID="MAIN MENU">
 		<exit>

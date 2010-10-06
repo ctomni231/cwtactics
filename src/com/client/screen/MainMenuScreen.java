@@ -82,6 +82,7 @@ public class MainMenuScreen extends Screen{
             default:
                 menuScr();
         }
+        helpHide(8);
         scr_mouseScroll = 0;
         logoPic.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
         //MemoryTest.printMemoryUsage("MAIN");
@@ -123,9 +124,7 @@ public class MainMenuScreen extends Screen{
             logoPic.setFinalPosition(2, 0, 460);
             logoPic.setScrollText();
             logoPic.setHelpText(reader.getStartHelp()[0]);
-            logoPic.setCounter(WAIT_TIME*2);
-            if(!menuHelp)
-                logoPic.setFinalPosition(3, 0, -20);
+            logoPic.setCounter(WAIT_TIME*8);
             scrStart = false;
         }
         titleScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
@@ -135,7 +134,6 @@ public class MainMenuScreen extends Screen{
             scrStart = true;
         }
 
-        logoPic.checkHelp();
         if(menuHelp != titleScr.getHelp()){
             menuHelp = titleScr.getHelp();
             if(menuHelp){
@@ -144,11 +142,9 @@ public class MainMenuScreen extends Screen{
             }else{
                 logoPic.setHelpOpacity(0.6);
                 logoPic.setFinalPosition(3, 0, -20);
+                logoPic.setCounter(WAIT_TIME*8);
             }
         }
-
-        if(!menuHelp && logoPic.getCounter())
-            logoPic.setFinalPosition(3, 0, 0);
     }
 
     private void menuScr(){
@@ -179,8 +175,17 @@ public class MainMenuScreen extends Screen{
             column = current;
             scrStart = true;
         }
+    }
 
-        if(!menuHelp && logoPic.getCounter())
-            logoPic.setFinalPosition(3, 0, 0);
+    private void helpHide(int mult){
+        if(logoPic.checkHelp())
+        	logoPic.setCounter(WAIT_TIME*mult);
+
+        if(!menuHelp){
+            if(logoPic.getCounter())
+                logoPic.setFinalPosition(3, 0, 0);
+            else
+                logoPic.setFinalPosition(3, 0, -20);
+        }
     }
 }
