@@ -5,6 +5,7 @@ import com.client.graphic.tools.MovingMenu;
 import com.client.graphic.tools.ScrollImage;
 import com.client.input.KeyControl;
 import com.jslix.state.ScreenSkeleton;
+import com.jslix.tools.MouseHelper;
 import com.jslix.tools.PixtureMap;
 import java.awt.Color;
 import java.awt.Component;
@@ -24,6 +25,8 @@ public class LogoHandler implements ScreenSkeleton{
     private MovingImage logo;
     private ScrollImage scroll;
     private MovingMenu help;
+    private MouseHelper helper;
+    private int counter;
     private int sizex;
     private int sizey;
     private String[] cool;
@@ -72,6 +75,17 @@ public class LogoHandler implements ScreenSkeleton{
         help.addImagePart(pixture.getImage(0), -1);
         help.addMenuItem(0, false);
         help.setOrigScreen(sizex, sizey);
+
+        helper = new MouseHelper();
+        helper.setScrollIndex(4);
+    }
+
+    public void setCounter(int number){
+        counter = number;
+    }
+
+    public boolean getCounter(){
+        return counter < 1;
     }
 
     public void setFinalPosition(int index, int locx, int locy){
@@ -90,7 +104,7 @@ public class LogoHandler implements ScreenSkeleton{
     }
 
     public void setHelpText(String text){
-        pixture.setOpacity(0.2);
+        pixture.setOpacity(0.1);
         pixture.addImage(0, pixture.getTextPicture(text));
         
         help.setItemImage(2, 0, pixture.getImage(0));
@@ -113,6 +127,9 @@ public class LogoHandler implements ScreenSkeleton{
         help.update(width, height, sysTime, mouseScroll);
         if(mouseScroll == 0)
         	KeyControl.resetMouseWheel();
+        helper.setMouseControl(sysTime);
+        if(counter > 0 && helper.getScroll())
+            counter--;
     }
 
     public void render(Graphics g) {

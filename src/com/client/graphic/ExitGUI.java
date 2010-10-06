@@ -29,6 +29,7 @@ public class ExitGUI extends MovingMenu{
     private String alpha;
     private MouseHelper helper;
     private int type;
+    private int change;
 
     public ExitGUI(String alphaRef, String[] data,
             int locx, int locy, double speed){
@@ -45,6 +46,7 @@ public class ExitGUI extends MovingMenu{
         sizey = 100;
         select = -1;
         type = 0;
+        change = 0;
     }
     
     public void setType(int type){
@@ -99,6 +101,14 @@ public class ExitGUI extends MovingMenu{
     	if(helper.getMouseLock())
     		helper.setMouseRelease(KeyControl.getMouseX(), 
     			KeyControl.getMouseY());
+    }
+
+    public boolean getMenuChange(){
+        if(change != select){
+            change = select;
+            return true;
+        }
+        return false;
     }
 
     public String getHelpText(){

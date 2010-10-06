@@ -21,6 +21,7 @@ public class MainMenuScreen extends Screen{
 
     private final int SIZE_X = 640;
     private final int SIZE_Y = 480;
+    private final int WAIT_TIME = 15;
 
     private TitleReader reader;
     private BackgroundHandler bgPic;
@@ -122,6 +123,9 @@ public class MainMenuScreen extends Screen{
             logoPic.setFinalPosition(2, 0, 460);
             logoPic.setScrollText();
             logoPic.setHelpText(reader.getStartHelp()[0]);
+            logoPic.setCounter(WAIT_TIME*2);
+            if(!menuHelp)
+                logoPic.setFinalPosition(3, 0, -20);
             scrStart = false;
         }
         titleScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
@@ -138,12 +142,13 @@ public class MainMenuScreen extends Screen{
                 logoPic.setHelpOpacity(0.9);
                 logoPic.setFinalPosition(3, 0, 0);
             }else{
-                logoPic.setHelpOpacity(0.5);
+                logoPic.setHelpOpacity(0.6);
                 logoPic.setFinalPosition(3, 0, -20);
             }
         }
-        
-        
+
+        if(!menuHelp && logoPic.getCounter())
+            logoPic.setFinalPosition(3, 0, 0);
     }
 
     private void menuScr(){
@@ -154,15 +159,28 @@ public class MainMenuScreen extends Screen{
         if(scrStart){
             logoPic.setFinalPosition(0, 145, 50);
             logoPic.setFinalPosition(2, 0, 480);
+            logoPic.setHelpText(exitScr.getHelpText());
+            logoPic.setCounter(WAIT_TIME);
+            if(!menuHelp)
+                logoPic.setFinalPosition(3, 0, -20);
             scrStart = false;
         }
 
-        logoPic.setHelpText(exitScr.getHelpText());
+        if(exitScr.getMenuChange()){
+            logoPic.setHelpText(exitScr.getHelpText());
+            if(!menuHelp)
+                logoPic.setFinalPosition(3, 0, -20);
+            logoPic.setCounter(WAIT_TIME);
+        }
+        
         exitScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
         current = exitScr.control(column, scr_mouseScroll);
         if(column != current){
             column = current;
             scrStart = true;
         }
+
+        if(!menuHelp && logoPic.getCounter())
+            logoPic.setFinalPosition(3, 0, 0);
     }
 }
