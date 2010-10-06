@@ -1,0 +1,38 @@
+JSlix Screen - Complete (JMain Runnable)
+
+[*] = Done
+[#] = Started
+[ ] = Not Started
+
+Phase 1 - Title Screen [#]
+
+Title Screen - Background Display (XML root)  [*]
+Title Screen - Logo Display & Movement        [*]
+Exit Screen - Menu Display                    [*]
+Exit Screen - Menu Functionality (XML root)   [*]
+Help Logo Bar - Background Display (XML root) [*]
+Help Logo Bar - TImer Functionality           [ ]
+Main Menu - Vertical Menu Display             [#]
+Main Menu - Menu Functionality (XML root)     [ ]
+Credit Screen - Credit Display                [ ]
+Credit Screen - Function (Text .txt roots)    [ ]
+Key Configure - Menu Display (Java roots)     [ ]
+Key Configure - Menu Functionality (XML root) [ ]
+
+Phase 2 - Map Screen [ ]
+
+Menu Screen - Menu Display                                              [ ]
+Menu Screen - Menu Functionality (XML root)                             [ ]
+Exit Screen - Menu Display                                              [ ]
+Exit Screen - Menu Functionality (XML root)                             [ ]
+Map Display - Map Display (Normal) Stays same, even if screen stretches [ ]
+Map Display - Map Display (Stretch) Stretches with screen size          [ ]
+Terrain Display - Draw Terrain (ID- Type- Random - Weather - Color)     [ ]
+Terrain Display - Draw Buildings                                        [ ]
+Terrain Display - Building Animations                                   [ ]
+Terrain Functionality Terrain Connections                               [ ]
+Terrain Functionality - Inventions                                      [ ]
+Unit Display - Draw Units (ID- Type- Color)                             [ ]
+Unit Display - Animations                                               [ ]
+Unit Functionality - Explosions                                         [ ]
+Unit Functionality - Zones                                              [ ]

@@ -6,13 +6,17 @@
 	<title  copy=" - ADVANCE WARS IS COPYRIGHT OF NINTENDO/INTELLIGENT SYSTEMS - "
 		start="PRESS START" 
 		alpha="image/menu/smallAlpha.png"
-		arrow="image/menu/uparrow.png" />
+		arrow="image/menu/uparrow.png"
+		help="ARROWS-Help Bar SELECT-Start CANCEL-Exit" />
 
 	<screen ID="MAIN MENU">
 		<exit>
 			<list text="LEAVING..." />
 			<list text="YES" />
 			<list text="NO" />
+			<list text="Exit? SELECT-Yes CANCEL-Title" />
+			<list text="Exit? SELECT-No CANCEL-Title" />
+			
 		</exit>
 	</screen>
 </menu>

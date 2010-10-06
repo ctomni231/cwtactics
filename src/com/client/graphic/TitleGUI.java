@@ -16,11 +16,13 @@ public class TitleGUI extends MovingImage {
 
     private double counter;
     private int time;
+    private boolean help;
 
     public TitleGUI(int locx, int locy, double speed){
         super(locx, locy, speed);
         counter = 0;
         time = 0;
+        help = false;
     }
     
     public void setWords(String alphaPath, String text, int width, int height){
@@ -31,33 +33,45 @@ public class TitleGUI extends MovingImage {
     public void update(int width, int height, int sysTime, int mouseScroll) {
         super.update(width, height, sysTime, mouseScroll);      
         time = sysTime;
+        changeTime();
     }
 
     @Override
     public void render(Graphics g){
-        changeTime();
         imgRef.getSlickImage(1).setAlpha((float)counter);
-        g.drawImage(imgRef.getSlickImage(1), (int)(posx*scalex),
-                (int)(posy*scaley));
+        if(imgRef.length() > 1)
+            imgRef.getSlickImage(2).setAlpha((float)counter);
+        super.render(g);
     }
 
     @Override
     public void render(Graphics2D g, Component dthis) {
-        changeTime();
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
                 (float)counter));
-        g.drawImage(imgRef.getImage(1), (int)(posx*scalex),
-                (int)(posy*scaley), dthis);
+        super.render(g, dthis);
         g.setComposite(AlphaComposite.SrcOver);
     }
 
     public int control(int column){
+        if(KeyControl.isUpClicked() ||
+                KeyControl.isDownClicked() ||
+                KeyControl.isRightClicked() ||
+                KeyControl.isLeftClicked())
+            help = !help;
+
         if(KeyControl.isActionClicked()){
-            return 0;
+            if(KeyControl.getMouseY() < 20*scaley)
+                help = !help;
+            else
+                return 0;
         }else if(KeyControl.isCancelClicked()){
-            return 1;
+            return -1;
         }
         return column;
+    }
+
+    public boolean getHelp(){
+        return help;
     }
 
     private void changeTime(){

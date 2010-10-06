@@ -1,7 +1,7 @@
 @Typed
 package cwt_repo_tapsi.service.commandSystem
 
-interface Command
+public interface Command
 {
 	/**
 	 * Does the actions of this command.

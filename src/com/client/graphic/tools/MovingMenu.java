@@ -132,8 +132,21 @@ public class MovingMenu extends MovingImage{
     public void setItemImage(int index, int itemIndex, String imgPath){
         if(index >= 0 && index < allItems.length){
             if(item.getIndexExists(itemIndex)){
-            item = allItems[index];
+                sx = 0;
+                item = allItems[index];
                 imgRef.addImage(item.refPath[itemIndex], imgPath);
+                allItems[index] = item;
+            }
+        }
+    }
+
+    //This sets a new image within the menu item
+    public void setItemImage(int index, int itemIndex, Image img){
+        if(index >= 0 && index < allItems.length){
+            if(item.getIndexExists(itemIndex)){
+                sx = 0;
+                item = allItems[index];
+                imgRef.addImage(item.refPath[itemIndex], img);
                 allItems[index] = item;
             }
         }
@@ -204,23 +217,23 @@ public class MovingMenu extends MovingImage{
                     if(select == itm.select || !itm.selectable){
                         if(itm.theColor != null)
                             g.setColor(imgRef.getColor(itm.theColor));
-                        if(itm.select == RECTANGLE)
+                        if(itm.id == RECTANGLE)
                             g.fillRect((int)((posx+itm.posx)*scalex), 
                                     (int)((posy+itm.posy)*scaley), 
                                     (int)(itm.sizex*scalex), 
                                     (int)(itm.sizey*scaley));
-                        else if(itm.select == ROUND_BOX)
+                        else if(itm.id == ROUND_BOX)
                             g.fillRoundRect((int)((posx+itm.posx)*scalex), 
                                     (int)((posy+itm.posy)*scaley), 
                                     (int)(itm.sizex*scalex), 
                                     (int)(itm.sizey*scaley), 
                                     (int)(itm.arc*scaley));
-                        else if(itm.select == BORDER)
+                        else if(itm.id == BORDER)
                             g.drawRect((int)((posx+itm.posx)*scalex), 
                                     (int)((posy+itm.posy)*scaley), 
                                     (int)(itm.sizex*scalex), 
                                     (int)(itm.sizey*scaley));
-                        else if(itm.select == RND_BORDER)
+                        else if(itm.id == RND_BORDER)
                             g.drawRoundRect((int)((posx+itm.posx)*scalex), 
                                     (int)((posy+itm.posy)*scaley),
                                     (int)(itm.sizex*scalex), 
@@ -366,5 +379,14 @@ public class MovingMenu extends MovingImage{
         item.opacity = opacity;
     }
 
+    //Gets the scale of the window
+    public double getScaleX(){
+        return scalex;
+    }
+
+    //Gets the scale of the window
+    public double getScaleY(){
+        return scaley;
+    }
 
 }

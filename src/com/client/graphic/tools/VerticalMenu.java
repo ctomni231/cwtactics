@@ -19,8 +19,8 @@ public class VerticalMenu extends MovingMenu{
     private ArrayList<Integer> vertPart;//Reference to Menu Item
     private ArrayList<Integer> curList;//Current visible List of Menu Items
     private int maxPos;//How many positions there are total
-    private int maxItems;//THe max number of items to show on the screen
-    private int spacingY;//THe amount of space between each item
+    private int maxItems;//The max number of items to show on the screen
+    private int spacingY;//The amount of space between each item
     private boolean generate;//Redoes the vertical menu if true
 
     public int track;//Tracks the position of the menu

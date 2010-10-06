@@ -15,7 +15,7 @@ package cwt_repo_tapsi.states
  *       <LI>nothing at the moment</LI>
  *       </UL>
  */
-abstract class State
+public abstract class State
 {
 	abstract void update( int timePassed )
 }

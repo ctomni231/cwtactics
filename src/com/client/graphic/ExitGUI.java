@@ -101,12 +101,22 @@ public class ExitGUI extends MovingMenu{
     			KeyControl.getMouseY());
     }
 
+    public String getHelpText(){
+        if(select == 1)
+            return exitData[3];
+        else
+            return exitData[4];
+    }
+
     public int control(int column, int mouseScroll){
         if(KeyControl.isUpClicked() ||
             KeyControl.isDownClicked() ||
             KeyControl.isLeftClicked() ||
-            KeyControl.isRightClicked())
+            KeyControl.isRightClicked()){
+            helper.setMouseLock(KeyControl.getMouseX(),
+        			KeyControl.getMouseY());
             select *= -1;
+        }
         
         if(!helper.getMouseLock())
         	mouseSelect(KeyControl.getMouseX(), KeyControl.getMouseY());

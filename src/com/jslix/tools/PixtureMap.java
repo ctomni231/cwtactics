@@ -176,9 +176,10 @@ public class PixtureMap extends ImgLibrary{
         createImg(1,1);
         g.setFont(Font.getFont(Font.DIALOG));
         int width = g.getFontMetrics().stringWidth(text);
-        int height = g.getFontMetrics().getHeight();
+        int descent = g.getFontMetrics().getDescent();
+        int height = g.getFontMetrics().getHeight()+descent;
         createImg(width, height);
-        addTextToGridImage(text, 0, height);
+        addTextToGridImage(text, 0, height-descent);
         return getGridImage();
     }
 

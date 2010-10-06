@@ -55,10 +55,10 @@ public class SlixGame extends BasicGame{
     
     @Override
     public void init(GameContainer container) throws SlickException {
+        SlixLibrary.updateScreens();
         contain = container;
         contain.setClearEachFrame(clear);
         contain.setShowFPS(false);
-        SlixLibrary.updateScreens();
     }
 
     @Override
@@ -89,6 +89,8 @@ public class SlixGame extends BasicGame{
 
     public void render(GameContainer container, Graphics g)
             throws SlickException {
+        if(SlixLibrary.size() == 0) return;
+        
         for(int i = 0; i < SlixLibrary.size(); i++){
             scrStart = i;
             tempScreen = SlixLibrary.scrOrder.get(i);

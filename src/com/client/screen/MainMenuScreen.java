@@ -7,6 +7,7 @@ import com.client.graphic.ExitGUI;
 import com.client.graphic.xml.TitleReader;
 import com.jslix.debug.MemoryTest;
 import com.jslix.state.Screen;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import org.newdawn.slick.Graphics;
@@ -24,6 +25,7 @@ public class MainMenuScreen extends Screen{
     private TitleReader reader;
     private BackgroundHandler bgPic;
     private LogoHandler logoPic;
+    private boolean menuHelp;
 
     private TitleGUI titleScr;
     private ExitGUI exitScr;
@@ -33,6 +35,7 @@ public class MainMenuScreen extends Screen{
     private int current;
 
     public MainMenuScreen(){
+        menuHelp = true;
         reader = new TitleReader("data/titlescreen.xml");
         bgPic = new BackgroundHandler(scr_width, scr_height);
         logoPic = new LogoHandler(reader.getTitleLogoPath(),
@@ -41,6 +44,8 @@ public class MainMenuScreen extends Screen{
 
         titleScr = new TitleGUI(220, 375, 0);
         titleScr.setOrigScreen(SIZE_X, SIZE_Y);
+        titleScr.setShadowColor(Color.BLACK);
+        titleScr.setShadowOffset(1);
         titleScr.setWords(reader.getAlphaPath(), reader.getStartText(),
                 200, 20);
 
@@ -67,10 +72,14 @@ public class MainMenuScreen extends Screen{
 
         switch(column){
             case 0:
-                startScr();
+                titleScr();
+                break;
+            case -1:
+            case 2:
+                exitScr();
                 break;
             default:
-                exitScr();
+                menuScr();
         }
         scr_mouseScroll = 0;
         logoPic.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
@@ -84,8 +93,10 @@ public class MainMenuScreen extends Screen{
             case 0:
                 titleScr.render(g);
                 break;
-            default:
+            case -1:
+            case 2:
                 exitScr.render(g);
+                break;
         }
         logoPic.render(g);
     }
@@ -97,17 +108,20 @@ public class MainMenuScreen extends Screen{
             case 0:
                 titleScr.render(g, dthis);
                 break;
-            default:
+            case -1:
+            case 2:
                 exitScr.render(g, dthis);
+                break;
         }
         logoPic.render(g, dthis);
     }
 
-    private void startScr(){
+    private void titleScr(){
         if(scrStart){
             logoPic.setFinalPosition(0, 145, 30);
             logoPic.setFinalPosition(2, 0, 460);
             logoPic.setScrollText();
+            logoPic.setHelpText(reader.getStartHelp()[0]);
             scrStart = false;
         }
         titleScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
@@ -116,6 +130,24 @@ public class MainMenuScreen extends Screen{
             column = current;
             scrStart = true;
         }
+
+        logoPic.checkHelp();
+        if(menuHelp != titleScr.getHelp()){
+            menuHelp = titleScr.getHelp();
+            if(menuHelp){
+                logoPic.setHelpOpacity(0.9);
+                logoPic.setFinalPosition(3, 0, 0);
+            }else{
+                logoPic.setHelpOpacity(0.5);
+                logoPic.setFinalPosition(3, 0, -20);
+            }
+        }
+        
+        
+    }
+
+    private void menuScr(){
+
     }
 
     private void exitScr(){
@@ -124,6 +156,8 @@ public class MainMenuScreen extends Screen{
             logoPic.setFinalPosition(2, 0, 480);
             scrStart = false;
         }
+
+        logoPic.setHelpText(exitScr.getHelpText());
         exitScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
         current = exitScr.control(column, scr_mouseScroll);
         if(column != current){
