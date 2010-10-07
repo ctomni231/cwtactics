@@ -4,6 +4,7 @@ import com.client.graphic.tools.MovingImage;
 import com.client.graphic.tools.ScrollImage;
 import com.client.input.KeyControl;
 import com.jslix.state.ScreenSkeleton;
+import com.jslix.tools.LocaleService;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;

@@ -4,6 +4,7 @@ import com.client.graphic.BackgroundHandler;
 import com.client.graphic.LogoHandler;
 import com.client.graphic.TitleGUI;
 import com.client.graphic.ExitGUI;
+import com.client.graphic.xml.LangControl;
 import com.client.graphic.xml.TitleReader;
 import com.jslix.debug.MemoryTest;
 import com.jslix.state.Screen;
@@ -37,6 +38,7 @@ public class MainMenuScreen extends Screen{
 
     public MainMenuScreen(){
         menuHelp = true;
+
         reader = new TitleReader("data/titlescreen.xml");
         bgPic = new BackgroundHandler(scr_width, scr_height);
         logoPic = new LogoHandler(reader.getTitleLogoPath(),
@@ -47,13 +49,14 @@ public class MainMenuScreen extends Screen{
         titleScr.setOrigScreen(SIZE_X, SIZE_Y);
         titleScr.setShadowColor(Color.BLACK);
         titleScr.setShadowOffset(1);
-        titleScr.setWords(reader.getAlphaPath(), reader.getStartText(),
-                200, 20);
+        titleScr.setWords(reader.getAlphaPath(), 
+                reader.getStartText(), 200, 20);
 
-        exitScr = new ExitGUI(reader.getAlphaPath(), reader.getExitData(),
-                100, 200, 0);
+        exitScr = new ExitGUI(reader.getAlphaPath(), 
+                reader.getExitData(), 100, 200, 0);
         exitScr.setOrigScreen(SIZE_X, SIZE_Y);
         exitScr.setType(1);
+
         
         scrStart = true;
         column = 0;

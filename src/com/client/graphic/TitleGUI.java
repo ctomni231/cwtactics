@@ -2,6 +2,7 @@ package com.client.graphic;
 
 import com.client.graphic.tools.MovingImage;
 import com.client.input.KeyControl;
+import com.jslix.tools.LocaleService;
 import com.jslix.tools.TextImgLibrary;
 import java.awt.AlphaComposite;
 import java.awt.Component;

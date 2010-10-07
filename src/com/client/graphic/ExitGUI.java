@@ -7,6 +7,7 @@ import com.client.graphic.tools.MovingMenu;
 import com.client.input.Controls;
 import com.client.input.KeyControl;
 import com.jslix.tools.ImgLibrary;
+import com.jslix.tools.LocaleService;
 import java.awt.Color;
 
 /**

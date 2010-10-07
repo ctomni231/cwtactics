@@ -12,6 +12,9 @@ import org.xml.sax.Attributes;
  */
 public class TitleReader extends XML_Parser{
 
+    public final String LANG_PATH = "data/lang/Languages";
+
+    private LangControl lang;
     private String logoPath;
     private String miniPath;
     private String copyright;
@@ -109,6 +112,11 @@ public class TitleReader extends XML_Parser{
     }
 
     private String fillEntry(Attributes attrib, String data){
-        return (attrib.getValue(data) != null) ? attrib.getValue(data) : "";
+        if(lang == null){
+            lang = new LangControl(LANG_PATH);
+            lang.getBundle();
+        }
+        return (attrib.getValue(data) != null) ? 
+            lang.getText(attrib.getValue(data)) : "";
     }
 }

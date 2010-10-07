@@ -3,20 +3,19 @@
 	<logo   title="image/menu/cwTactics.png" 
 		mini="image/menu/cwLogo.gif" />
 
-	<title  copy=" - ADVANCE WARS IS COPYRIGHT OF NINTENDO/INTELLIGENT SYSTEMS - "
-		start="PRESS START" 
+	<title  copy="@copyright"
+		start="@start" 
 		alpha="image/menu/smallAlpha.png"
 		arrow="image/menu/uparrow.png"
-		help="ARROWS-Lock Help SELECT-Start CANCEL-Exit" />
+		help="@titleHelp" />
 
 	<screen ID="MAIN MENU">
 		<exit>
-			<list text="LEAVING..." />
-			<list text="YES" />
-			<list text="NO" />
-			<list text="Exit? SELECT-Yes CANCEL-Title" />
-			<list text="Exit? SELECT-No CANCEL-Title" />
-			
+			<list text="@exitQuestion" />
+			<list text="@exitYes" />
+			<list text="@exitNo" />
+			<list text="@exitHelpYes" />
+			<list text="@exitHelpNo" />
 		</exit>
 	</screen>
 </menu>
