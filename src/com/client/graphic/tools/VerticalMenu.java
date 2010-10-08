@@ -125,19 +125,36 @@ public class VerticalMenu extends MovingMenu{
             generateMenu();
     }
 
+    @Override
+    public boolean mouseSelect(int mx, int my){
+        if(super.mouseSelect(mx, my)){
+            for(int i = 0; i < vertPart.size(); i++){
+                if(allItems[vertPart.get(i)].select == select){
+                    track = vertPos.get(i);
+                    return true;
+                }
+            }
+            track = -1;
+            return true;
+        }
+        return false;
+    }
+
 
     //Generates a new Menu
     private void generateMenu(){
         curList.clear();
-        for(int i = 0; i < maxPos; i++){
+        for(int i = 0; i <= maxPos; i++){
             if(vertPos.contains(i))
                 curList.add(i);
         }
-        for(int i = 0; i < vertPart.size(); i++){
-            track = vertPos.get(i);
-            if(curList.contains(track)){
-                setItemPosition(track, 0, -(i*spacingY));
-                setItemDraw(track, i < maxItems);
+        for(int i = 0; i < curList.size(); i++){
+            track = curList.get(i);
+            for(int j = 0; j < vertPart.size(); j++){
+                if(vertPos.get(j) == track){
+                    setItemPosition(vertPart.get(j), 0, (i+1)*spacingY, true);
+                    //setItemDraw(vertPart.get(j), i < maxItems);
+                }
             }
         }
         track = 0;

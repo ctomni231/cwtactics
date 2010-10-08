@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <menu>
 	<logo   title="image/menu/cwTactics.png" 
-		mini="image/menu/cwLogo.gif" />
+		mini="image/menu/cwLogo.gif" 
+		help="image/question.png" />
 
 	<title  copy="@copyright"
 		start="@start" 
@@ -17,5 +18,9 @@
 			<list text="@exitHelpYes" />
 			<list text="@exitHelpNo" />
 		</exit>
+		<main>
+			<list item="EXIT" id="2" text="Leave, we see how it is. :)"
+				help="EXIT - Ends this game session" />
+		</main> 
 	</screen>
 </menu>

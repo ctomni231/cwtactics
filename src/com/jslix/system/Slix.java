@@ -171,6 +171,10 @@ public class Slix extends JComponent implements Runnable, KeyListener,
         game.setFrameTime(updateTime);
     }
 
+    public void setUpdateClear(boolean clear){
+        game.setUpdateFrame(clear);
+    }
+
     public void toggleFPS(){
         showRate = !showRate;
     }

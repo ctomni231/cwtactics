@@ -4,7 +4,6 @@ import com.client.graphic.tools.MovingImage;
 import com.client.graphic.tools.ScrollImage;
 import com.client.input.KeyControl;
 import com.jslix.state.ScreenSkeleton;
-import com.jslix.tools.LocaleService;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
@@ -23,15 +22,17 @@ public class LogoHandler implements ScreenSkeleton{
     private MovingImage logo;
     private ScrollImage scroll;
     private HelpHandler help;
+    private String helpPath;
     private int sizex;
     private int sizey;
     private String[] cool;
 
     public LogoHandler(String title, String mini,
-            String copyright, int width, int height){
+            String copyright, String help, int width, int height){
         cool = new String[]{ title, mini, copyright };
         sizex = width;
         sizey = height;
+        helpPath = help;
     }
 
     public void init() {
@@ -54,7 +55,7 @@ public class LogoHandler implements ScreenSkeleton{
         scroll.setTextImage(" - ");
         scroll.setOrigScreen(sizex, sizey);
 
-        help = new HelpHandler("image/question.png", 0, -20, 1);
+        help = new HelpHandler(helpPath, 0, -20, 1);
         help.init();
         help.setOrigScreen(sizex, sizey);
     }

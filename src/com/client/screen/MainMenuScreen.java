@@ -4,7 +4,7 @@ import com.client.graphic.BackgroundHandler;
 import com.client.graphic.LogoHandler;
 import com.client.graphic.TitleGUI;
 import com.client.graphic.ExitGUI;
-import com.client.graphic.xml.LangControl;
+import com.client.graphic.MenuGUI;
 import com.client.graphic.xml.TitleReader;
 import com.jslix.debug.MemoryTest;
 import com.jslix.state.Screen;
@@ -31,6 +31,7 @@ public class MainMenuScreen extends Screen{
 
     private TitleGUI titleScr;
     private ExitGUI exitScr;
+    private MenuGUI menuScr;
 
     private boolean scrStart;
     private int column;
@@ -43,7 +44,7 @@ public class MainMenuScreen extends Screen{
         bgPic = new BackgroundHandler(scr_width, scr_height);
         logoPic = new LogoHandler(reader.getTitleLogoPath(),
                 reader.getMiniLogoPath(), reader.getCopyright(),
-                SIZE_X, SIZE_Y);
+                reader.getQuestion(), SIZE_X, SIZE_Y);
 
         titleScr = new TitleGUI(220, 375, 0);
         titleScr.setOrigScreen(SIZE_X, SIZE_Y);
@@ -57,6 +58,10 @@ public class MainMenuScreen extends Screen{
         exitScr.setOrigScreen(SIZE_X, SIZE_Y);
         exitScr.setType(1);
 
+        menuScr = new MenuGUI(reader.getAlphaPath(), 20, 0, 165, 0);
+        menuScr.initMenu(reader.getMainOption(), reader.getMainSelect(),
+                reader.getMainText(), reader.getMainHelp());
+        menuScr.setOrigScreen(SIZE_X, SIZE_Y);
         
         scrStart = true;
         column = 0;
@@ -102,6 +107,8 @@ public class MainMenuScreen extends Screen{
             case 2:
                 exitScr.render(g);
                 break;
+            default:
+                menuScr.render(g);
         }
         logoPic.render(g);
     }
@@ -117,6 +124,8 @@ public class MainMenuScreen extends Screen{
             case 2:
                 exitScr.render(g, dthis);
                 break;
+            default:
+                menuScr.render(g, dthis);
         }
         logoPic.render(g, dthis);
     }
@@ -132,10 +141,7 @@ public class MainMenuScreen extends Screen{
         }
         titleScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
         current = titleScr.control(column);
-        if(column != current){
-            column = current;
-            scrStart = true;
-        }
+        
 
         if(menuHelp != titleScr.getHelp()){
             menuHelp = titleScr.getHelp();
@@ -143,7 +149,7 @@ public class MainMenuScreen extends Screen{
                 logoPic.setHelpOpacity(0.9);
                 logoPic.setFinalPosition(3, 0, 0);
             }else{
-                logoPic.setHelpOpacity(0.6);
+                logoPic.setHelpOpacity(0.7);
                 logoPic.setFinalPosition(3, 0, -20);
                 logoPic.setCounter(WAIT_TIME*8);
             }
@@ -151,7 +157,14 @@ public class MainMenuScreen extends Screen{
     }
 
     private void menuScr(){
+        if(scrStart){
+            logoPic.setFinalPosition(0, 145, 15);
+            logoPic.setFinalPosition(2, 0, 460);
+            scrStart = false;
+        }
 
+        menuScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
+        current = menuScr.control(column);
     }
 
     private void exitScr(){
@@ -174,13 +187,14 @@ public class MainMenuScreen extends Screen{
         
         exitScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
         current = exitScr.control(column, scr_mouseScroll);
+    }
+
+    private void helpHide(int mult){
         if(column != current){
             column = current;
             scrStart = true;
         }
-    }
 
-    private void helpHide(int mult){
         if(logoPic.checkHelp())
         	logoPic.setCounter(WAIT_TIME*mult);
 

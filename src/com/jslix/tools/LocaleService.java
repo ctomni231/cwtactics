@@ -23,9 +23,10 @@ public class LocaleService extends ClassLoader {
     public LocaleService( String filename ){
         finder = new FileFind();
         this.filename = filename;
+        getBundle();
     }
     
-    public void getBundle(){
+    public final void getBundle(){
         lang = ResourceBundle.getBundle(filename, Locale.getDefault(), this);
     }
 
@@ -47,7 +48,7 @@ public class LocaleService extends ClassLoader {
      * @param ID the id
      * @return a localized string
      */
-    public String getText( String ID ){
+    public String get( String ID ){
         return (lang != null && ID != null) ? lang.getString(ID) : "N/A";
     }
 

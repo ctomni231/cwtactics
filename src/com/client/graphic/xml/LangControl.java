@@ -1,6 +1,6 @@
 package com.client.graphic.xml;
 
-import com.jslix.tools.LocaleService;
+import cwt_repo_tapsi.service.languageSupport.DictionaryService;
 
 /**
  * LangControl.java
@@ -9,16 +9,15 @@ import com.jslix.tools.LocaleService;
  * 
  * @author Ctomni
  */
-public class LangControl extends LocaleService{
+public class LangControl extends DictionaryService{
 
     public LangControl(String filename){
         super(filename);
     }
 
-    @Override
     public String getText(String ID){
         if(ID.startsWith("@"))
-            return super.getText(ID);
+            return super.get(ID);
         else
             return ID;
     }

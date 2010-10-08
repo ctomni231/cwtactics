@@ -2,7 +2,6 @@ package com.client.graphic;
 
 import com.client.graphic.tools.MovingImage;
 import com.client.input.KeyControl;
-import com.jslix.tools.LocaleService;
 import com.jslix.tools.TextImgLibrary;
 import java.awt.AlphaComposite;
 import java.awt.Component;
@@ -64,7 +63,7 @@ public class TitleGUI extends MovingImage {
             if(KeyControl.getMouseY() < 20*scaley)
                 help = !help;
             else
-                return 0;
+                return 1;
         }else if(KeyControl.isCancelClicked()){
             return -1;
         }

@@ -24,7 +24,7 @@ public class JMainGame extends Slix{
             if(argv[0].matches("java"))         game.showWindow();
             else if(argv[0].matches("slick"))   game.showSlick();
         }else
-            game.showWindow();
+            game.showSlick();
     }
 
     public JMainGame(int width, int height){
