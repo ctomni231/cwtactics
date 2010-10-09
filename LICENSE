@@ -1,9 +1,104 @@
+Exotec-BearWolf Custom Wars: Tactics BSD-4 license
+
+/*<DESCRIPTION OF FILE>
+ *
+ *@author <AUTHOR>
+ *@version <VERSION>
+ *@license  New BSD License
+ *	Copyright (c) 2010, Exotec-BearWolf
+ *	Exotec-BearWolf label holder: 
+ *		Radom, Alexander [blackcat.myako@gmail.com]
+ *		Carr, Crecen [scarr231@yahoo.com]
+ *	All rights reserved.
+ *
+ *	Redistribution and use in source and binary forms, with or without modification, 
+ *	are permitted provided that the following conditions are met:
+ *
+ *	1)	Redistributions of source code must retain the above copyright notice, 
+ *      	this list of conditions and the following disclaimer.
+ *
+ *	2)	Redistributions in binary form must reproduce the above copyright notice, 
+ *      	this list of conditions and the following disclaimer in the documentation 
+ *      	and/or other materials 	provided with the distribution.
+ *
+ *	3)	Neither the name of the Exotec nor the names of its contributors 
+ *      	may be used to endorse or promote products derived from this software 
+ *		without specific prior written permission.
+ *
+ *	4)	Modifications of this software is allowed, if the modified software
+ *  		is distributed under this license. The modified software must retain 
+ *  		the above copyright notice, this list of conditions and the following  
+ *		disclaimer.
+ *
+ *	5)	All advertising materials mentioning features or use of this software
+ *		must display the following acknowledgement (without quotes):
+ * 		"This product includes software developed by Exotec-BearWolf."
+ *
+ *	6)	The commercial usage of this software or as library in an commercial
+ *		software project is not allowed. If you want to this software
+ *  		in a commercial, ask Exotec-BearWolf for a commercial license.
+ *
+ *	7)	The redistribution of this software is not allowed in a commercial way.
+ *		Example given, selling of this software pressed on CD's or as 
+ *		charged download is not allowed.
+ *
+ *
+ *	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+ *	ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+ *	WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+ *	IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+ *	INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+ *	NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
+ *	OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+ *	LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
+ *	OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
+ *	OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+Normal BSD license
+
+/*<DESCRIPTION OF FILE>
+ *
+ *@author <AUTHOR>
+ *@version <VERSION>
+ *@license  New BSD License
+ *	Copyright (c) 2010, BearWolf/Exotec
+ *	Exotec label holder: Radom, Alexander, blackcat.myako@gmail.com
+ *	BearWolf label holder: Carr, Crecen, scarr231@yahoo.com
+ *	All rights reserved.
+ *
+ *	Redistribution and use in source and binary forms, with or without modification, 
+ *	are permitted provided that the following conditions are met:
+ *
+ *	1)	Redistributions of source code must retain the above copyright notice, 
+ *      	this list of conditions and the following disclaimer.
+ *
+ *	2)	Redistributions in binary form must reproduce the above copyright notice, 
+ *      	this list of conditions and the following disclaimer in the documentation 
+ *      	and/or other materials 	provided with the distribution.
+ *
+ *	3)	Neither the name of the Exotec/BearWolf nor the names of its contributors 
+ *      	may be used to endorse or promote products derived from this software 
+ *		without specific prior written permission.
+ *
+ *	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+ *	ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+ *	WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+ *	IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+ *	INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+ *	NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
+ *	OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+ *	LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
+ *	OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
+ *	OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 License for CustomWars - Tactics
 
 Copyright (c) 2010, CustomTec Games
 CustomTec Games label owner : 
  * Radom Alexander [blackcat.myako@gmail.com]
- * Crecen ... [ctomni231@gmail.com] < please fill that out crecen =D >
+ * Carr Crecen [ctomni231@gmail.com] 
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

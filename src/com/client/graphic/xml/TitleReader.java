@@ -146,7 +146,6 @@ public class TitleReader extends XML_Parser{
     private String fillEntry(Attributes attrib, String data){
         if(lang == null){
             lang = new LangControl(LANG_PATH);
-            //lang.getBundle();
         }
         return (attrib.getValue(data) != null) ? 
             lang.getText(attrib.getValue(data)) : "";
