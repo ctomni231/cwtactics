@@ -1,16 +1,16 @@
 package com.client.graphic.xml;
 
-//import com.jslix.tools.LocaleService;
-import cwt_repo_tapsi.service.languageSupport.DictionaryService;
+import com.jslix.tools.LocaleService;
+//import cwt_repo_tapsi.service.languageSupport.DictionaryService;
 
 /**
  * LangControl.java
  *
  * This class regulates xml language conversions
  * 
- * @author Ctomni
+ * @author Crecen
  */
-public class LangControl extends DictionaryService{
+public class LangControl extends LocaleService{
 
     public LangControl(String filename){
         super(filename);

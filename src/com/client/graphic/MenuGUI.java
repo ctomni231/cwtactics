@@ -18,20 +18,22 @@ public class MenuGUI extends VerticalMenu{
     private Color[] dfltColors;
     private Color[] chngColors;
     private String alpha;
+    private String arrow;
     private int[] selectID;
     private String[] text;
     private String[] help;
 
-    public MenuGUI(String alphaPath, int spacing,
+    public MenuGUI(String arrowPath, String alphaPath, int spacing,
             int locx, int locy, double speed){
         super(locx, locy, speed);       
         alpha = alphaPath;
+        arrow = arrowPath;
         dfltColors = new Color[]{new Color(128, 128, 128),
         new Color(160, 160, 160)};
         chngColors = new Color[]{new Color(200, 200, 200),
         new Color(255, 255, 255)};
         setSpacingY(spacing);
-        //setMaxItems(8);
+        setMaxItems(10);
     }
 
     public void initMenu(String[] mainOption, String[] mainID,
@@ -42,22 +44,37 @@ public class MenuGUI extends VerticalMenu{
         for(int i = 0; i < mainID.length; i++)
             selectID[i] = Integer.parseInt(mainID[i]);
 
-        //for(int i = 0; i < mainOption.length; i++){
-        for(int i = 0; i < 10; i++){
+        for(int i = 0; i < mainOption.length; i++){
             createNewItem(0, 5, 0);
             addVertBox(i, i, imgRef.getColor(Color.DARK_GRAY, 127),
-                    640, 7, false);
+                    640, 7, true);
             createNewItem(10, 0, 0);
-            addImagePart(getTextImg(alpha, mainOption[0]), 0.7);
-            addImagePart(getTextImg(alpha, mainOption[0],
+            addImagePart(getTextImg(alpha, mainOption[i]), 0.7);
+            addImagePart(getTextImg(alpha, mainOption[i],
                 dfltColors, chngColors), 0.7);
             addVertItem(i, i, true);
         }
+
+        setArrowUp(arrow);
     }
 
     @Override
     public void init(){
+        String[] temp = new String[]{ "VERSUS", "ONLINE",
+        "CREATE MAP", "LOAD MAP", "MAP EDITOR", "KEY CONFIGURE",
+        "CREDITS", "EXIT"};
 
+        initMenu(temp, new String[0], null, null);
+
+        //setJustify(635, 0, 'R');
+        setJustify(320, 0, 'C');
+        //setJustify(5, 0, 'L');
+
+        //changePosition(2, -7);
+        //changePosition(3, -7);
+
+        //changePosition(8, -7);
+        //changePosition(9, -7);
     }
 
     public int control(int column){
@@ -65,6 +82,15 @@ public class MenuGUI extends VerticalMenu{
                 KeyControl.isCancelClicked()){
             column = 0;
         }
+
+        if(KeyControl.isUpClicked())
+            moveUp();
+
+        if(KeyControl.isDownClicked())
+            moveDown();
+
+        mouseSelect(KeyControl.getMouseX(), KeyControl.getMouseY());
+        
         return column;
     }
 

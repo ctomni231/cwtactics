@@ -58,9 +58,11 @@ public class MainMenuScreen extends Screen{
         exitScr.setOrigScreen(SIZE_X, SIZE_Y);
         exitScr.setType(1);
 
-        menuScr = new MenuGUI(reader.getAlphaPath(), 20, 0, 165, 0);
-        menuScr.initMenu(reader.getMainOption(), reader.getMainSelect(),
-                reader.getMainText(), reader.getMainHelp());
+        menuScr = new MenuGUI(reader.getArrowPath(), reader.getAlphaPath(),
+                20, 0, 165, 0);
+        menuScr.init();
+        //menuScr.initMenu(reader.getMainOption(), reader.getMainSelect(),
+        //        reader.getMainText(), reader.getMainHelp());
         menuScr.setOrigScreen(SIZE_X, SIZE_Y);
         
         scrStart = true;

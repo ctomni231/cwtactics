@@ -31,7 +31,7 @@ public class MovingMenu extends MovingImage{
     private MenuItem item;//A temp item for storing various enhancements
     private double sx;//A temp value for rescaling
     private double sy;//A temp value for rescaling
-    private ImgLibrary imgResize;//This holds all resized images
+    protected ImgLibrary imgResize;//This holds all resized images
 
     //This creates a new moving menu, speed is the speed of movement
     public MovingMenu(int locx, int locy, double speed){
@@ -371,7 +371,7 @@ public class MovingMenu extends MovingImage{
             	setImage(img);
         }else{
             if(img == null)
-                    imgRef.addImage(resetImage.get(0), imgPath);
+                imgRef.addImage(resetImage.get(0), imgPath);
             else
             	imgRef.addImage(resetImage.get(0), img);
             item.addReference(resetImage.remove(0));

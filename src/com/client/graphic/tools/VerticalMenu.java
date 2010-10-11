@@ -1,7 +1,11 @@
 package com.client.graphic.tools;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
+import org.newdawn.slick.Graphics;
 
 /**
  * VerticalMenu.java
@@ -20,8 +24,13 @@ public class VerticalMenu extends MovingMenu{
     private ArrayList<Integer> curList;//Current visible List of Menu Items
     private int maxPos;//How many positions there are total
     private int maxItems;//The max number of items to show on the screen
+    private int arrowloc;//Used to justify the arrows to a position
+    private int arrowPos;//Used to store where the arrow is located
+    private int itemMin;//Used to track where you are in the vertical menu
+    private int change;//Used to track the vertical menu shifts
     private int spacingY;//The amount of space between each item
     private boolean generate;//Redoes the vertical menu if true
+    private double lx;//Used to keep track of justifying picture text
 
     public int track;//Tracks the position of the menu
 
@@ -31,9 +40,11 @@ public class VerticalMenu extends MovingMenu{
         vertPart = new ArrayList<Integer>();
         curList = new ArrayList<Integer>();
         maxItems = 1;
+        itemMin = 0;
         maxPos = 0;
         spacingY = 0;
         generate = true;
+        lx = 0;
     }
 
     //Adds a Vertical Item to the Menu
@@ -82,7 +93,21 @@ public class VerticalMenu extends MovingMenu{
             maxItems = change;
     }
 
-    //CHanges the position of a vertical menu item (negative= non-display)
+    public void setArrowUp(String arrow){
+        setArrowUp(arrow, null, null);
+    }
+    public void setArrowUp(String arrow, Color[] fromColor, Color[] toColor){
+        arrowPos = imgRef.length();
+        if(fromColor != null && toColor != null){
+            for(int j = 0; j < fromColor.length; j++)
+                imgRef.setPixelChange(fromColor[j], toColor[j]);
+        }
+        imgRef.addImage(arrow);
+        imgRef.setFlipY();
+        imgRef.addImage(imgRef.getImage(arrowPos));
+    }
+
+    //Changes the position of a vertical menu item (negative= non-display)
     public void changePosition(int index, int position){
         if(index >= 0 && index < allItems.length){
             for(int i = 0; i < vertPart.size(); i++){
@@ -90,6 +115,8 @@ public class VerticalMenu extends MovingMenu{
                     vertPos.set(i, position);
             }
         }
+        if(position > maxPos)
+            maxPos = position;
         generate = true;
     }
 
@@ -118,6 +145,55 @@ public class VerticalMenu extends MovingMenu{
         generate = true;
     }
 
+    public void moveDown(){
+        track++;
+        if(track >= curList.size())
+            track = 0;
+        for(int i = 0; i < vertPart.size(); i++){
+            if(vertPos.get(i) == curList.get(track)){
+                select = allItems[vertPart.get(i)].select;
+                return;
+            }
+        }
+    }
+
+    public void moveUp(){
+        track--;
+        if(track < 0)
+            track = curList.size()-1;
+        for(int i = 0; i < vertPart.size(); i++){
+            if(vertPos.get(i) == curList.get(track)){
+                select = allItems[vertPart.get(i)].select;
+                return;
+            }
+        }
+    }
+
+    public void setSelect(int sel){
+        select = sel;
+        setSelect();
+    }
+
+    public void setJustify(double locx, int arrlocx, char justify){
+        arrowloc = arrlocx;
+        for(int index: vertPart){
+            lx = locx+fposx;
+            if(allItems[vertPart.get(index)].refPath.length > 0){
+                if(justify == 'r' || justify == 'R'){
+                    lx -= imgRef.getX(allItems[
+                            vertPart.get(index)].getPicture(false));
+                }else if(justify == 'c' || justify == 'C'){
+                    lx -= (double)(imgRef.getX(allItems[vertPart.get(index)]
+                            .getPicture(false))/2.0);
+                }
+            }
+            if(allItems[vertPart.get(index)].id == 0)
+                super.setItemPosition(index, (int)lx,
+                        (int)(allItems[vertPart.get(index)].posy));
+        }
+        lx = locx+fposx;
+    }
+
     @Override
     public void update(int width, int height, int sysTime, int mouseScroll) {
         super.update(width, height, sysTime, mouseScroll);
@@ -125,22 +201,119 @@ public class VerticalMenu extends MovingMenu{
             generateMenu();
     }
 
+
     @Override
     public boolean mouseSelect(int mx, int my){
-        if(super.mouseSelect(mx, my)){
-            for(int i = 0; i < vertPart.size(); i++){
-                if(allItems[vertPart.get(i)].select == select){
-                    track = vertPos.get(i);
-                    return true;
+    	for(MenuItem itm: allItems){
+            if(!itm.drawthis)
+                continue;
+            if(itm.id == REGULAR && itm.selectable && select != itm.select){
+            	if(itm.sizex == 0 && itm.sizey == 0){
+            		itm.sizex = imgRef.getX(itm.getPicture(false));
+            		itm.sizey = imgRef.getY(itm.getPicture(false));
+            	}
+            	if(mx > (int)((itm.posx+posx)*scalex) &&
+            			mx < (int)((itm.posx+posx+itm.sizex)*scalex)){
+                    if(my > (int)((itm.posy+posy)*scaley) &&
+                    		my < (int)((itm.posy+posy+itm.sizey)*scaley)){
+
+                        select = itm.select;
+                        break;
+                    }
                 }
             }
-            track = -1;
-            return true;
+    	}
+    	return mouseSelect();
+    }
+
+    @Override
+    public void render(Graphics2D g, Component dthis) {
+        super.render(g, dthis);
+        if(curList.size() > maxItems){
+            updateList();
+            if(itemMin > 0){
+                if(opacity >= 0 && opacity < 1)
+                    g.setComposite(AlphaComposite.getInstance(
+                	AlphaComposite.SRC_OVER, (float)opacity));
+                g.drawImage(imgResize.getImage(arrowPos),
+                    (int)((lx+arrowloc)*scalex),
+                    (int)(posy*scaley), dthis);
+                if(opacity >= 0 && opacity < 1)
+                    	g.setComposite(AlphaComposite.SrcOver);
+            }
+            if(itemMin+maxItems < curList.size()){
+                if(opacity >= 0 && opacity < 1)
+                    g.setComposite(AlphaComposite.getInstance(
+                	AlphaComposite.SRC_OVER, (float)opacity));
+                g.drawImage(imgResize.getImage(arrowPos+1),
+                    (int)((lx+arrowloc)*scalex),
+                    (int)((posy+(spacingY*(maxItems+1)))*scaley), dthis);
+                if(opacity >= 0 && opacity < 1)
+                    	g.setComposite(AlphaComposite.SrcOver);
+            }
         }
-        return false;
     }
 
 
+    @Override
+    public void render(Graphics g) {
+        super.render(g);
+        if(curList.size() > maxItems){
+            updateList();
+            if(itemMin > 0){
+                if(opacity >= 0 && opacity <= 1)
+                    imgResize.getSlickImage(0).setAlpha((float)opacity);
+                g.drawImage(imgResize.getSlickImage(0),
+                        (int)((lx+arrowloc)*scalex),
+                        (int)(posy*scaley));
+            }
+            if(itemMin+maxItems < curList.size()){
+                if(opacity >= 0 && opacity <= 1)
+                    imgResize.getSlickImage(1).setAlpha((float)opacity);
+                g.drawImage(imgResize.getSlickImage(1),
+                        (int)((lx+arrowloc)*scalex),
+                        (int)((posy+(spacingY*(maxItems+1)))*scaley));
+            }
+        }
+    }
+
+    private boolean mouseSelect(){
+        for(int i = 0; i < vertPart.size(); i++){
+            if(allItems[vertPart.get(i)].select == select){
+                for(int j = 0; j < curList.size(); j++){
+                    if(vertPos.get(i) == curList.get(j)){
+                        track = j;
+                        return true;
+                    }
+                }
+            }
+        }
+        track = -1;
+        return false;
+    }
+
+    private void updateList(){
+        change = 0;
+        while(track >= itemMin+maxItems){
+            itemMin++;
+            change++;
+        }
+        while(track < itemMin){
+            itemMin--;
+            change--;
+        }
+        
+        if(change != 0)
+            generateMenu(change);
+    }
+
+    private void generateMenu(int change){
+        for(int index: vertPart){
+            super.setItemPosition(index, 0, -(change*spacingY), true);
+            super.setItemDraw(index, (vertPos.get(index) >= itemMin &&
+                vertPos.get(index) < itemMin+maxItems));
+        }
+    }
     //Generates a new Menu
     private void generateMenu(){
         curList.clear();
@@ -151,9 +324,12 @@ public class VerticalMenu extends MovingMenu{
         for(int i = 0; i < curList.size(); i++){
             track = curList.get(i);
             for(int j = 0; j < vertPart.size(); j++){
-                if(vertPos.get(j) == track){
+                if(vertPos.get(j) < 0){
                     setItemPosition(vertPart.get(j), 0, (i+1)*spacingY, true);
-                    //setItemDraw(vertPart.get(j), i < maxItems);
+                    setItemDraw(vertPart.get(j), false);
+                }else if(vertPos.get(j) == track){
+                    setItemPosition(vertPart.get(j), 0, (i+1)*spacingY, true);
+                    setItemDraw(vertPart.get(j), i < maxItems);
                 }
             }
         }
@@ -167,5 +343,17 @@ public class VerticalMenu extends MovingMenu{
         vertPos.add(position);
         if(position > maxPos)
             maxPos = position;
+    }
+
+    private void setSelect(){
+        for(int i = 0; i < vertPart.size(); i++){
+            if(allItems[vertPart.get(i)].select == select){
+                for(int j = 0; j < curList.size(); j++){
+                    if(vertPos.get(i) == curList.get(j))
+                        track = j;
+                }
+            }
+        }
+        track = -1;
     }
 }
