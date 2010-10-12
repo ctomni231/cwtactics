@@ -1,8 +1,8 @@
 package com.client.menu.GUI;
 
-import com.client.tools.FileFind;
-import com.client.tools.FileIndex;
-import com.client.tools.ImgLibrary;
+import com.jslix.tools.FileFind;
+import com.jslix.tools.FileIndex;
+import com.jslix.tools.ImgLibrary;
 import java.util.Random;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;

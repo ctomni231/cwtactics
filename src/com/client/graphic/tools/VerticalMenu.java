@@ -53,6 +53,15 @@ public class VerticalMenu extends MovingMenu{
         addMenuItem(select, selectable);
     }
 
+    //Returns how many Vertical Items are stored
+    public int getVertSize(){
+        return vertPart.size();
+    }
+
+    public int getVertIndex(){
+        return curList.isEmpty() ? 0: curList.get(track);
+    }
+
     //Adds a Round Filled Box pinned to the Vertical menu
     public void addVertRound(int position, int select, Color theColor,
             int sizex, int sizey, int arc, boolean selectable){
@@ -305,6 +314,14 @@ public class VerticalMenu extends MovingMenu{
         
         if(change != 0)
             generateMenu(change);
+    }
+
+    public void mouseScroll(int mx, int my){
+        if(itemMin > 0 && my > posy-spacingY && my < posy)
+            moveUp();
+        if(itemMin+maxItems <= maxPos && my > posy+(spacingY*(maxItems+1)) &&
+                my < posy+(spacingY*(maxItems+1))+spacingY)
+            moveDown();
     }
 
     private void generateMenu(int change){

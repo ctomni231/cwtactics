@@ -2,8 +2,10 @@ package com.client.graphic;
 
 import com.client.graphic.tools.MovingImage;
 import com.client.input.KeyControl;
+import com.jslix.tools.ImgLibrary;
 import com.jslix.tools.TextImgLibrary;
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import org.newdawn.slick.Graphics;
@@ -17,6 +19,7 @@ public class TitleGUI extends MovingImage {
     private double counter;
     private int time;
     private boolean help;
+    private int[] colors;
 
     public TitleGUI(int locx, int locy, double speed){
         super(locx, locy, speed);
@@ -92,5 +95,21 @@ public class TitleGUI extends MovingImage {
         txtLib.addLetter('.', txtLib.getImage(0), "", 6, 5, 26);
         txtLib.setString(text, "", 0, 0, 0, 0);
         return txtLib.getTextImage();
+    }
+
+    public void setColorPath(String colorPath){
+        ImgLibrary imgLib = new ImgLibrary();
+        imgLib.addImage(colorPath);
+        colors = imgLib.getPixels(0);
+    }
+
+    public void setColor(int index){
+        index *= 16;
+        if(index >= 0 && index < colors.length){
+            addColor(new Color(160, 160, 160),
+                    new Color(colors[index+9+3]));
+            addColor(new Color(128, 128, 128),
+                    new Color(colors[index+9+4]));
+        }
     }
 }

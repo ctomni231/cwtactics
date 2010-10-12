@@ -7,7 +7,7 @@ import com.client.model.Move;
 import com.client.model.object.Game;
 import com.client.model.object.Map;
 import com.client.model.object.Tile;
-import com.client.tools.ImgLibrary;
+import com.jslix.tools.ImgLibrary;
 import com.system.data.ImgData;
 import com.system.log.Logger;
 import org.newdawn.slick.Color;

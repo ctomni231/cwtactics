@@ -128,6 +128,15 @@ public class MovingMenu extends MovingImage{
         }
     }
 
+    //This changes how selected items react in a menu
+    public void setItemColor(int index, Color theColor){
+        if(index >= 0 && index < allItems.length && theColor != null){
+            item = allItems[index];
+            item.theColor = theColor;
+            allItems[index] = item;
+        }
+    }
+
     //This sets a new image within the menu item
     public void setItemImage(int index, int itemIndex, String imgPath){
         if(index >= 0 && index < allItems.length){
@@ -183,6 +192,10 @@ public class MovingMenu extends MovingImage{
             allItems[i].renderSpeed();
         if(sx != scalex || sy != scaley){
             for(int i = 0; i < imgRef.length(); i++){
+                if(dfltColor != null){
+                    for(int j = 0; j < dfltColor.length; j++)
+                        imgResize.setPixelChange(dfltColor[j], chngColor[j]);
+                }
                 imgResize.setImageSize((int)((double)imgRef.getX(i)*scalex),
                     (int)((double)imgRef.getY(i)*scaley));
                 imgResize.addImage(i, imgRef.getImage(i));

@@ -5,7 +5,7 @@ import com.client.logic.status.Status;
 import com.client.menu.GUI.ListDraw;
 import com.client.menu.GUI.MapDraw;
 import com.client.menu.logic.Menu;
-import com.client.tools.TextImgLibrary;
+import com.jslix.tools.TextImgLibrary;
 import org.newdawn.slick.Graphics;
 
 /**

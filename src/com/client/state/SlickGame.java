@@ -1,6 +1,6 @@
 package com.client.state;
 
-import com.client.tools.Timer;
+import com.jslix.tools.Timer;
 import java.util.ArrayList;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;

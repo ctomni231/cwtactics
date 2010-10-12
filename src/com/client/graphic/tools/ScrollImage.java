@@ -52,11 +52,17 @@ public class ScrollImage extends MovingImage {
         helper.setScrollIndex(speed);
     }
 
+    public void setBoxColor(java.awt.Color newColor){
+        setBoxColor(imgRef.getColor(newColor));
+    }
     public void setBoxColor(Color newColor){
         if(newColor != null)
             boxColor = newColor;
     }
 
+    public void setTextColor(java.awt.Color newColor){
+        setTextColor(imgRef.getColor(newColor));
+    }
     public void setTextColor(Color newColor){
         if(newColor != null)
             textColor = newColor;

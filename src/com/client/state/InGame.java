@@ -5,7 +5,7 @@ import com.client.menu.GUI.MapDraw;
 import com.client.model.object.Game;
 import com.client.state.mini.ExitMiniScr;
 import com.client.state.mini.GameMenuScr;
-import com.client.tools.TextImgLibrary;
+import com.jslix.tools.TextImgLibrary;
 import com.jslix.state.Screen;
 import com.jslix.system.KeyPress;
 import com.jslix.system.SlixLibrary;

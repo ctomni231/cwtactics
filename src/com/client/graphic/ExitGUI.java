@@ -30,6 +30,7 @@ public class ExitGUI extends MovingMenu{
     private MouseHelper helper;
     private int type;
     private int change;
+    private int[] colors;
 
     public ExitGUI(String alphaRef, String[] data,
             int locx, int locy, double speed){
@@ -180,5 +181,29 @@ public class ExitGUI extends MovingMenu{
         }
         txtLib.addImage(text, txtLib.getTextImage());
         return txtLib.getImage(text);
+    }
+
+    public void setColorPath(String colorPath){
+        ImgLibrary imgLib = new ImgLibrary();
+        imgLib.addImage(colorPath);
+        colors = imgLib.getPixels(0);
+    }
+
+    public void setColor(int index){
+        index *= 16;
+        if(index >= 0 && index < colors.length){
+            addColor(new Color(160, 160, 160),
+                    new Color(colors[index+9+3]));
+            addColor(new Color(128, 128, 128),
+                    new Color(colors[index+9+4]));
+            addColor(new Color(255, 255, 255),
+                    new Color(colors[index+9+0]));
+            addColor(new Color(200, 200, 200),
+                    new Color(colors[index+9+2]));
+            setItemColor(0, imgRef.getColor(
+                    new Color(colors[index+9+1]), 127));
+            setItemColor(1, imgRef.getColor(
+                    new Color(colors[index+9+5]), 127));
+        }
     }
 }

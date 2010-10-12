@@ -4,6 +4,9 @@
 		mini="image/menu/cwLogo.gif" 
 		help="image/question.png" />
 
+	<color  prop="image/PlayerBuilding.png"
+		unit="image/PlayerUnit.png" />
+
 	<title  copy="@copyright"
 		start="@start" 
 		alpha="image/menu/smallAlpha.png"

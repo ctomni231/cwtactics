@@ -22,6 +22,8 @@ public class TitleReader extends XML_Parser{
     private String start;//The title blinking logo
     private String alpha;//The path to the alphabet text picture
     private String arrow;//The path to the arrow picture
+    private String unitColor;//The path to the unit colors
+    private String propColor;//The path to the property colors
 
     private String[] startHelp;//Title Help Bar text files
     private String[] exitData;//Data conaining exit text and help text
@@ -32,6 +34,14 @@ public class TitleReader extends XML_Parser{
 
     public TitleReader(String file){
         super(file);
+    }
+
+    public String getUnitColors(){
+        return unitColor;
+    }
+
+    public String getPropColors(){
+        return propColor;
     }
 
     public String[] getMainOption(){
@@ -105,6 +115,9 @@ public class TitleReader extends XML_Parser{
             start = fillEntry(attrib, "start");
             alpha = fillEntry(attrib, "alpha");
             arrow = fillEntry(attrib, "arrow");
+        }else if(super.isAheader("color")){
+            unitColor = fillEntry(attrib, "unit");
+            propColor = fillEntry(attrib, "prop");
         }else if(super.isAheader("screen")){
             screenEntry(attrib);
         }

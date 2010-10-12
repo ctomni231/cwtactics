@@ -1,6 +1,6 @@
 package com.client.menu.GUI;
 
-import com.client.tools.TextImgLibrary;
+import com.jslix.tools.TextImgLibrary;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 

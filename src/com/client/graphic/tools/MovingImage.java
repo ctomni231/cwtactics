@@ -38,12 +38,18 @@ public class MovingImage implements ScreenSkeleton{
     protected ImgLibrary imgRef;//The stored displayed Images
     protected String logoTxt;//Almost obsolete, text based display
     protected boolean active;//This controls if image resizing is active
+    protected Color[] dfltColor;//A list of default colors
+    protected Color[] chngColor;//A list of recolors
+    private double fsizex;//Stores the intended width for this image
+    private double fsizey;//Stores the intended height for this image
 
     public MovingImage(int locx, int locy, double speed){
         posx = locx;
         fposx = locx;
         posy = locy;
         fposy = locy;
+        fsizex = 0;
+        fsizey = 0;
         this.speed = speed;
         shadeOff = 0;
         imgRef = new ImgLibrary();
@@ -54,6 +60,22 @@ public class MovingImage implements ScreenSkeleton{
         origx = -1;
         origy = -1;
         active = true;
+    }
+
+    //Allows you to add color changes to the images
+    public void addColor(Color fromColor, Color toColor){
+        if(fromColor != null && toColor != null){
+            dfltColor = addColor(dfltColor, fromColor);
+            chngColor = addColor(chngColor, toColor);
+            cursx = 0;
+        }
+    }
+
+    //Resets all color changes to the images
+    public void resetColor(){
+        dfltColor = null;
+        chngColor = null;
+        cursx = 0;
     }
 
     /**
@@ -85,23 +107,27 @@ public class MovingImage implements ScreenSkeleton{
 
     //Sets a new resizable image based on filepath
     public void setImage(String imgPath, int sizex, int sizey){
-        if(sizex*sizey > 0)
-            imgRef.setImageSize(sizex, sizey);
+        //if(sizex*sizey > 0)
+        //    imgRef.setImageSize(sizex, sizey);
         if(active)
             imgRef.addImage(0, imgPath);
         else
             imgRef.addImage(imgPath);
+        fsizex = (sizex > 0) ? sizex: imgRef.getX(0);
+        fsizey = (sizey > 0) ? sizey: imgRef.getY(0);
         cursx = 0;
     }
 
     //Sets a new resizable image based on a current image
     public void setImage(Image img, int sizex, int sizey){
-        if(sizex*sizey > 0)
-            imgRef.setImageSize(sizex, sizey);
+        //if(sizex*sizey > 0)
+        //    imgRef.setImageSize(sizex, sizey);
         if(active)
             imgRef.addImage(0, img);
         else
             imgRef.addImage(img);
+        fsizex = (sizex > 0) ? sizex: imgRef.getX(0);
+        fsizey = (sizey > 0) ? sizey: imgRef.getY(0);
         cursx = 0;
     }
 
@@ -155,8 +181,12 @@ public class MovingImage implements ScreenSkeleton{
             scalex = (double)cursx/origx;
             scaley = (double)cursy/origy;
             if(active){
-                imgRef.setImageSize((int)((double)imgRef.getX(0)*scalex),
-                    (int)((double)imgRef.getY(0)*scaley));
+                if(dfltColor != null){
+                    for(int i = 0; i < dfltColor.length; i++)
+                        imgRef.setPixelChange(dfltColor[i], chngColor[i]);
+                }
+                imgRef.setImageSize((int)(fsizex*scalex),
+                    (int)(fsizey*scaley));
                 imgRef.addImage(1, imgRef.getImage(0));
                 if(shadow != null){
                     imgRef.setPixelBlend(shadow);
@@ -233,4 +263,16 @@ public class MovingImage implements ScreenSkeleton{
             boolean seethru) {}
 
     public void update(int timePassed) {}
+
+    private Color[] addColor(Color[] colorArray, Color theColor){
+        if(colorArray == null)
+            colorArray = new Color[0];
+
+        Color[] temp = colorArray;
+        colorArray = new Color[temp.length+1];
+        System.arraycopy(temp, 0, colorArray, 0, temp.length);
+        colorArray[colorArray.length-1] = theColor;
+
+        return colorArray;
+    }
 }

@@ -4,6 +4,7 @@ import com.client.graphic.tools.MovingImage;
 import com.client.graphic.tools.ScrollImage;
 import com.client.input.KeyControl;
 import com.jslix.state.ScreenSkeleton;
+import com.jslix.tools.ImgLibrary;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
@@ -26,6 +27,8 @@ public class LogoHandler implements ScreenSkeleton{
     private int sizex;
     private int sizey;
     private String[] cool;
+    private int[] colors;
+    private ImgLibrary imgLib;
 
     public LogoHandler(String title, String mini,
             String copyright, String help, int width, int height){
@@ -33,6 +36,7 @@ public class LogoHandler implements ScreenSkeleton{
         sizex = width;
         sizey = height;
         helpPath = help;
+        imgLib = new ImgLibrary();
     }
 
     public void init() {
@@ -58,6 +62,38 @@ public class LogoHandler implements ScreenSkeleton{
         help = new HelpHandler(helpPath, 0, -20, 1);
         help.init();
         help.setOrigScreen(sizex, sizey);
+    }
+
+    public void setColorPath(String colorPath){
+        imgLib = new ImgLibrary();
+        imgLib.addImage(colorPath);
+        colors = imgLib.getPixels(0);
+    }
+
+    public void setColor(int index){
+        index *= 16;
+        if(index >= 0 && index < colors.length){
+            if(pic != null){
+                pic.addColor(new Color(255,0,0),
+                        new Color(colors[index+9+2]));
+                pic.addColor(new Color(127,0,0),
+                        new Color(colors[index+9+5]));
+            }
+
+            if(scroll != null){
+                scroll.setBoxColor(
+                        imgLib.getColor(new Color(colors[index+9+5]), 127));
+                scroll.setTextColor(
+                        imgLib.getColor(new Color(colors[index+9+0]), 200));
+            }
+
+            if(help != null){
+                help.setItemColor(0,
+                        imgLib.getColor(new Color(colors[index+9+5]), 127));
+                help.addColor(Color.WHITE,
+                        imgLib.getColor(new Color(colors[index+9+0]), 200));
+            }
+        }
     }
 
     public void setCounter(int number){
@@ -95,6 +131,9 @@ public class LogoHandler implements ScreenSkeleton{
     public void setScrollText(String text){
         if(!scroll.getText().matches(text+".*"))
             scroll.setTextImage(text+"                                   ");
+    }
+    public void forceScrollText(String text){
+        scroll.setTextImage(text+"                                   ");
     }
 
     public void update(int width, int height, int sysTime, int mouseScroll) {

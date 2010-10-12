@@ -3,7 +3,7 @@ package com.client.state.mini;
 import com.client.input.Controls;
 import com.client.menu.GUI.ExitDraw;
 import com.client.menu.GUI.LogoDraw;
-import com.client.tools.TextImgLibrary;
+import com.jslix.tools.TextImgLibrary;
 import org.newdawn.slick.Graphics;
 
 /**
