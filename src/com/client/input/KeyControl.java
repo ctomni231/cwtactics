@@ -132,9 +132,9 @@ public class KeyControl {
     public static boolean isDownClicked(){
         return isClicked( Keys.DOWN ); }
     public static boolean isLeftClicked(){
-        return isClicked( Keys.RIGHT ); }
-    public static boolean isRightClicked(){
         return isClicked( Keys.LEFT ); }
+    public static boolean isRightClicked(){
+        return isClicked( Keys.RIGHT ); }
     public static boolean isActionClicked(){
         return (isClicked( Keys.ENTER ) || isClicked( Mouse.ENTER )); }
     public static boolean isCancelClicked(){
@@ -146,9 +146,9 @@ public class KeyControl {
     public static boolean isDownDown(){
         return isDown( Keys.DOWN ); }
     public static boolean isLeftDown(){
-        return isDown( Keys.RIGHT ); }
-    public static boolean isRightDown(){
         return isDown( Keys.LEFT ); }
+    public static boolean isRightDown(){
+        return isDown( Keys.RIGHT ); }
     public static boolean isActionDown(){
         return (isDown( Keys.ENTER ) || isDown( Mouse.ENTER)); }
     public static boolean isCancelDown(){

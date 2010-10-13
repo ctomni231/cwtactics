@@ -45,6 +45,7 @@ public class VerticalMenu extends MovingMenu{
         spacingY = 0;
         generate = true;
         lx = 0;
+        track = -100;
     }
 
     //Adds a Vertical Item to the Menu
@@ -185,6 +186,7 @@ public class VerticalMenu extends MovingMenu{
 
     public void setJustify(double locx, int arrlocx, char justify){
         arrowloc = arrlocx;
+        
         for(int index: vertPart){
             lx = locx+fposx;
             if(allItems[vertPart.get(index)].refPath.length > 0){
@@ -197,10 +199,13 @@ public class VerticalMenu extends MovingMenu{
                 }
             }
             if(allItems[vertPart.get(index)].id == 0)
-                super.setItemPosition(index, (int)lx,
-                        (int)(allItems[vertPart.get(index)].posy));
+                super.setItemPosition(index, 
+                        (int)(lx-allItems[vertPart.get(index)].posx), 0, true);
+            else
+                super.setItemPosition(index, (int)fposx, 0, true);
         }
         lx = locx+fposx;
+        generate = true;
     }
 
     @Override
@@ -317,7 +322,7 @@ public class VerticalMenu extends MovingMenu{
     }
 
     public void mouseScroll(int mx, int my){
-        if(itemMin > 0 && my > posy-spacingY && my < posy)
+        if(itemMin > 0 && my > posy && my < posy+spacingY)
             moveUp();
         if(itemMin+maxItems <= maxPos && my > posy+(spacingY*(maxItems+1)) &&
                 my < posy+(spacingY*(maxItems+1))+spacingY)
@@ -339,19 +344,35 @@ public class VerticalMenu extends MovingMenu{
                 curList.add(i);
         }
         for(int i = 0; i < curList.size(); i++){
-            track = curList.get(i);
             for(int j = 0; j < vertPart.size(); j++){
                 if(vertPos.get(j) < 0){
-                    setItemPosition(vertPart.get(j), 0, (i+1)*spacingY, true);
+                    if(allItems[vertPart.get(j)].posy < (i+1)*spacingY)
+                        setItemPosition(vertPart.get(j), 0,
+                                (i+1)*spacingY, true);
                     setItemDraw(vertPart.get(j), false);
-                }else if(vertPos.get(j) == track){
-                    setItemPosition(vertPart.get(j), 0, (i+1)*spacingY, true);
+                }else if(vertPos.get(j) == curList.get(i)){
+                    if(allItems[vertPart.get(j)].posy < (i+1)*spacingY)
+                        setItemPosition(vertPart.get(j), 0,
+                                (i+1)*spacingY, true);
                     setItemDraw(vertPart.get(j), i < maxItems);
                 }
             }
         }
-        track = 0;
+
         generate = false;
+        for(int i = 0; i < vertPart.size(); i++){
+            if(select == allItems[vertPart.get(i)].select &&
+                    allItems[vertPart.get(i)].drawthis){
+                return;
+            }
+        }
+        track = 0;
+        for(int i = 0; i < vertPart.size(); i++){
+            if(vertPos.get(i) == curList.get(track)){
+                select = allItems[vertPart.get(i)].select;
+                break;
+            }
+        }       
     }
 
     //Used to set the vertical item references

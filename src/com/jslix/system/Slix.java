@@ -108,6 +108,7 @@ public class Slix extends JComponent implements Runnable, KeyListener,
             window.addWindowListener(new WindowAdapter() {
                @Override
                 public void windowClosing(WindowEvent e) {
+                    SlixLibrary.updateScreens();
                     contain.dispose();
                     window.dispose();
                     System.exit(0);
@@ -116,6 +117,7 @@ public class Slix extends JComponent implements Runnable, KeyListener,
             contain.addComponentListener(new ComponentAdapter() {
                 @Override
                 public void componentHidden(ComponentEvent e) {
+                    SlixLibrary.updateScreens();
                     contain.dispose();
                     window.dispose();
                     System.exit(0);
@@ -146,7 +148,16 @@ public class Slix extends JComponent implements Runnable, KeyListener,
         game.startTimer(false);
         Thread looper = new Thread(this);
         looper.start();
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        window.addWindowListener(new WindowAdapter() {
+           @Override
+            public void windowClosing(WindowEvent e) {
+                SlixLibrary.updateScreens();
+                window.dispose();
+                System.exit(0);
+            }
+        });
         window.add(this);
         window.validate();
         window.setVisible(true);

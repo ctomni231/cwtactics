@@ -28,7 +28,6 @@ public class ExitGUI extends MovingMenu{
     private int y;
     private String alpha;
     private MouseHelper helper;
-    private int type;
     private int change;
     private int[] colors;
 
@@ -46,12 +45,7 @@ public class ExitGUI extends MovingMenu{
         sizex = 100;
         sizey = 100;
         select = -1;
-        type = 0;
         change = 0;
-    }
-    
-    public void setType(int type){
-    	this.type = type;
     }
 
     @Override
@@ -138,25 +132,16 @@ public class ExitGUI extends MovingMenu{
         	select *= -1;
         }
 
-        if(type == 1){
-            if(Controls.isActionClicked()){
-                if(select == 1)    SlixLibrary.removeAllScreens();
-                else               column = 0;
-            }else if(Controls.isCancelClicked()){
-                column = 0;
-            }
-        }else{
-            if(Controls.isActionClicked()){
-                if(select == 1) //Some other menu action
-                    SlixLibrary.removeAllScreens();
-                else{
-                    if(column == -1)    column = 0;
-                    else                column = 1;
-                }
-            }else if(Controls.isCancelClicked()){
+        if(Controls.isActionClicked()){
+            if(select == 1)
+                SlixLibrary.removeAllScreens();
+            else{
                 if(column == -1)    column = 0;
                 else                column = 1;
             }
+        }else if(Controls.isCancelClicked()){
+            if(column == -1)    column = 0;
+            else                column = 1;
         }
 
         return column;
@@ -191,6 +176,7 @@ public class ExitGUI extends MovingMenu{
 
     public void setColor(int index){
         index *= 16;
+        resetColor();
         if(index >= 0 && index < colors.length){
             addColor(new Color(160, 160, 160),
                     new Color(colors[index+9+3]));
@@ -204,6 +190,11 @@ public class ExitGUI extends MovingMenu{
                     new Color(colors[index+9+1]), 127));
             setItemColor(1, imgRef.getColor(
                     new Color(colors[index+9+5]), 127));
+            resetScreen();
+        }else{
+            setItemColor(0, imgRef.getColor(Color.LIGHT_GRAY, 127));
+            setItemColor(1, imgRef.getColor(Color.DARK_GRAY, 127));
+            resetScreen();
         }
     }
 }

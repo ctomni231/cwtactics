@@ -8,22 +8,22 @@
 		unit="image/PlayerUnit.png" />
 
 	<title  copy="@copyright"
-		start="@start" 
+		start="PRESS START" 
 		alpha="image/menu/smallAlpha.png"
 		arrow="image/menu/uparrow.png"
 		help="@titleHelp" />
 
 	<screen ID="MAIN MENU">
 		<exit>
-			<list text="@exitQuestion" />
-			<list text="@exitYes" />
-			<list text="@exitNo" />
+			<list text="LEAVING..." />
+			<list text="YES" />
+			<list text="NO" />
 			<list text="@exitHelpYes" />
 			<list text="@exitHelpNo" />
 		</exit>
 		<main>
 			<list item="EXIT" id="2" text="Leave, we see how it is. :)"
-				help="EXIT - Ends this game session" />
+			help="[EXIT] SELECT-Ends this game session CANCEL-Title" />
 		</main> 
 	</screen>
 </menu>

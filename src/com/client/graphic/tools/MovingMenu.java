@@ -51,6 +51,12 @@ public class MovingMenu extends MovingImage{
         item = new MenuItem(locx, locy, speed);
     }
 
+    //Resets the screen
+    public void resetScreen(){
+        sx = 0;
+        sy = 0;
+    }
+
     //Adds an image onto the item
     public void addImagePart(String imgPath, double opacity){
         addImgPart(imgPath, null, opacity);
@@ -319,6 +325,7 @@ public class MovingMenu extends MovingImage{
         for(int i = 0; i < allItems.length; i++){
             deleteItem(i);
         }
+        allItems = new MenuItem[0];
     }
     public void deleteItems(int type){
         for(int i = 0; i < allItems.length; i++){

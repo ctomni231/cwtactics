@@ -86,6 +86,9 @@ public abstract class Screen implements ScreenSkeleton{
     //Simplified render function (JAVA)
     public abstract void render(Graphics2D g, Component dthis);  
 
+    //This runs when a screen is about to be destroyed
+    public void scr_close(){}
+
     public final void scr_init(){
         init();
         scr_new = false;

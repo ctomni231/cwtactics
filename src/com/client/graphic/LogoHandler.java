@@ -47,8 +47,9 @@ public class LogoHandler implements ScreenSkeleton{
         pic.setShadowOffset(2);
         pic.setOrigScreen(sizex, sizey);
 
-        logo = new MovingImage(0, -100, 1);
-        logo.setImage(cool[1], 75, 75);
+        logo = new MovingImage(0, -150, 1);
+        logo.setImage(cool[1], 125, 125);
+        logo.setOrigScreen(sizex, sizey);
 
         logo.setShadowColor(Color.BLACK);
         logo.setShadowOffset(2);
@@ -72,8 +73,10 @@ public class LogoHandler implements ScreenSkeleton{
 
     public void setColor(int index){
         index *= 16;
+
         if(index >= 0 && index < colors.length){
             if(pic != null){
+                pic.resetColor();
                 pic.addColor(new Color(255,0,0),
                         new Color(colors[index+9+2]));
                 pic.addColor(new Color(127,0,0),
@@ -88,10 +91,24 @@ public class LogoHandler implements ScreenSkeleton{
             }
 
             if(help != null){
+                help.resetColor();
                 help.setItemColor(0,
                         imgLib.getColor(new Color(colors[index+9+5]), 127));
-                help.addColor(Color.WHITE,
+                help.addColor(imgLib.getColor(Color.WHITE, 127),
                         imgLib.getColor(new Color(colors[index+9+0]), 200));
+            }
+        }else{
+            if(pic != null)
+                pic.resetColor();
+
+            if(scroll != null){
+                scroll.setBoxColor(new Color(60, 60, 60, 127));
+                scroll.setTextColor(new Color(255, 255, 255, 127));
+            }
+
+            if(help != null){
+                help.resetColor();
+                help.setItemColor(0, imgLib.getColor(Color.DARK_GRAY, 127));
             }
         }
     }
@@ -138,6 +155,7 @@ public class LogoHandler implements ScreenSkeleton{
 
     public void update(int width, int height, int sysTime, int mouseScroll) {
         pic.update(width, height, sysTime, mouseScroll);
+        logo.update(width, height, sysTime, mouseScroll);
         scroll.update(width, height, sysTime, mouseScroll);
         help.update(width, height, sysTime, mouseScroll);
         if(mouseScroll == 0)
@@ -146,12 +164,14 @@ public class LogoHandler implements ScreenSkeleton{
 
     public void render(Graphics g) {
         pic.render(g);
+        logo.render(g);
         scroll.render(g);
         help.render(g);
     }
 
     public void render(Graphics2D g, Component dthis) {
         pic.render(g, dthis);
+        logo.render(g, dthis);
         scroll.render(g, dthis);
         help.render(g, dthis);
     }

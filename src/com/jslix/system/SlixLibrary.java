@@ -130,6 +130,7 @@ public class SlixLibrary {
 
                 //Destroys screens that have been marked
                 if(scrOrder.get(i).scr_delete){
+                    scrOrder.get(i).scr_close();
                     scrOrder.remove(i);
                     i--;
                 }

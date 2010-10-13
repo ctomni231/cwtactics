@@ -3,6 +3,7 @@ package com.client.graphic;
 import com.client.graphic.tools.VerticalMenu;
 import com.client.input.KeyControl;
 import com.jslix.tools.ImgLibrary;
+import com.jslix.tools.MouseHelper;
 import com.jslix.tools.TextImgLibrary;
 import java.awt.Color;
 
@@ -27,6 +28,11 @@ public class MenuGUI extends VerticalMenu{
     private String[] help;
     private int[] colors;
     private int change;
+    private MouseHelper helper;
+    private int menuColumn;
+    private int menuChange;
+    private int factions;
+    private int curFaction;
 
     public MenuGUI(String arrowPath, String alphaPath, int spacing,
             int locx, int locy, double speed){
@@ -39,7 +45,13 @@ public class MenuGUI extends VerticalMenu{
         new Color(255, 255, 255)};
         setSpacingY(spacing);
         setMaxItems(MAX_ITEMS);
+        helper = new MouseHelper();
+        helper.setScrollIndex(2);
         change = 0;
+        menuColumn = 0;
+        menuChange = -1;
+        factions = 0;
+        curFaction = -1;
     }
 
     public void initMenu(String[] mainOption, String[] mainID,
@@ -52,13 +64,13 @@ public class MenuGUI extends VerticalMenu{
 
         for(int i = 0; i < mainOption.length; i++){
             createNewItem(0, 5, 0);
-            addVertBox(i, i, imgRef.getColor(Color.DARK_GRAY, 127),
+            addVertBox(i, selectID[i], imgRef.getColor(Color.DARK_GRAY, 127),
                     640, 7, true);
             createNewItem(10, 0, 0);
             addImagePart(getTextImg(alpha, mainOption[i]), 0.7);
             addImagePart(getTextImg(alpha, mainOption[i],
                 dfltColors, chngColors), 0.7);
-            addVertItem(i, i, true);
+            addVertItem(i, selectID[i], true);
         }
 
         setArrowUp(arrow);
@@ -92,10 +104,14 @@ public class MenuGUI extends VerticalMenu{
             "EXIT - Ends this game session"
         };
 
-        initMenu(temp, new String[0], tempText, helpText);
+        String[] ID = new String[]{
+            "-2","-3","-4","-5","-6","-7","3","2"
+        };
+
+        initMenu(temp, ID, tempText, helpText);
 
         //setJustify(635, 0, 'R');
-        setJustify(320, 0, 'C');
+        //setJustify(320, 0, 'C');
         //setJustify(5, 0, 'L');
 
         //changePosition(2, -7);
@@ -103,6 +119,28 @@ public class MenuGUI extends VerticalMenu{
 
         //changePosition(8, -7);
         //changePosition(9, -7);
+    }
+
+    @Override
+    public void update(int width, int height, int sysTime, int mouseScroll) {
+        super.update(width, height, sysTime, mouseScroll);
+        if(menuColumn != menuChange){
+            if(menuColumn == 1)
+                setJustify(635, -10, 'R');
+            else if(menuColumn == -1)
+                setJustify(5, 0, 'L');
+            else
+                setJustify(320, 0, 'C');
+            menuChange = menuColumn;
+        }
+        helper.setMouseControl(sysTime);
+        if(helper.getMouseLock())
+    		helper.setMouseRelease(KeyControl.getMouseX(),
+    			KeyControl.getMouseY());        
+    }
+
+    public int getMenuColumn(){
+        return menuColumn;
     }
 
     public boolean getMenuChange(){
@@ -121,10 +159,24 @@ public class MenuGUI extends VerticalMenu{
         return help[getVertIndex()];
     }
 
-    public int control(int column){
-        if(KeyControl.isActionClicked() ||
-                KeyControl.isCancelClicked()){
-            column = 0;
+    public int control(int column, int mouseScroll){
+        if(KeyControl.isUpDown() || KeyControl.isDownDown() ||
+            KeyControl.isLeftDown() || KeyControl.isRightDown()){
+            helper.setMouseLock(KeyControl.getMouseX(),
+        			KeyControl.getMouseY());
+        }
+
+        if(!helper.getMouseLock()){
+            mouseSelect(KeyControl.getMouseX(), KeyControl.getMouseY());
+            if(helper.getScroll())
+                mouseScroll(KeyControl.getMouseX(), KeyControl.getMouseY());
+        }
+
+        if(mouseScroll != 0){
+        	helper.setMouseLock(KeyControl.getMouseX(),
+        			KeyControl.getMouseY());
+        	if(mouseScroll == -1)   moveUp();
+                else                    moveDown();
         }
 
         if(KeyControl.isUpClicked())
@@ -133,8 +185,30 @@ public class MenuGUI extends VerticalMenu{
         if(KeyControl.isDownClicked())
             moveDown();
 
-        mouseScroll(KeyControl.getMouseX(), KeyControl.getMouseY());
-        mouseSelect(KeyControl.getMouseX(), KeyControl.getMouseY());
+        if(KeyControl.isLeftClicked()){
+            if(menuColumn > -1)
+                menuColumn--;
+            else
+                curFaction--;
+        }
+
+        if(KeyControl.isRightClicked()){
+            if(menuColumn < 1)
+                menuColumn++;
+            else
+                curFaction++;
+        }
+
+        if(curFaction >= factions)
+            curFaction = -1;
+        if(curFaction < -1)
+            curFaction = factions-1;
+
+        if(KeyControl.isActionClicked())
+            column = select;
+
+        if(KeyControl.isCancelClicked())
+            column = 0;
         
         return column;
     }
@@ -164,15 +238,19 @@ public class MenuGUI extends VerticalMenu{
         ImgLibrary imgLib = new ImgLibrary();
         imgLib.addImage(colorPath);
         colors = imgLib.getPixels(0);
+        factions = colors.length/16;
     }
 
     public void setColor(int index){
         index *= 16;
-        if(index >= 0 && index < colors.length){
+        resetColor();
+        if(index >= 0 && index < colors.length){            
             addColor(new Color(160, 160, 160),
                     new Color(colors[index+9+3]));
             addColor(new Color(128, 128, 128),
                     new Color(colors[index+9+4]));
+            addColor(new Color(64, 64, 64),
+                    new Color(colors[index+9+5]));
             addColor(new Color(255, 255, 255),
                     new Color(colors[index+9+0]));
             addColor(new Color(200, 200, 200),
@@ -180,7 +258,15 @@ public class MenuGUI extends VerticalMenu{
             for(int i = 0; i < getVertSize(); i+=2)
                 setItemColor(i, imgRef.getColor(
                     new Color(colors[index+9+5]), 127));
+            resetScreen();
+        }else{
+            for(int i = 0; i < getVertSize(); i+=2)
+                setItemColor(i, imgRef.getColor(Color.DARK_GRAY, 127));
+            resetScreen();
         }
     }
 
+    public int getCurFaction(){
+        return curFaction;
+    }
 }

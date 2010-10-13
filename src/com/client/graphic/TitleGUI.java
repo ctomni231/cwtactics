@@ -105,6 +105,7 @@ public class TitleGUI extends MovingImage {
 
     public void setColor(int index){
         index *= 16;
+        resetColor();
         if(index >= 0 && index < colors.length){
             addColor(new Color(160, 160, 160),
                     new Color(colors[index+9+3]));
