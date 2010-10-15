@@ -78,7 +78,10 @@ public class MainMenuScreen extends Screen{
         menuScr.setColorPath(reader.getUnitColors());
 
         credScr = new CreditGUI(reader.getAlphaPath(), "data/credits.txt",
-                0, 0, 0.5);
+                0, 0, 1);
+        credScr.setOpacity(0.7);
+        credScr.setColorPath(reader.getUnitColors());
+        credScr.setOrigScreen(SIZE_X, SIZE_Y);
 
         menuColor = MENU_COLOR;
         curColor = MENU_COLOR;
@@ -240,9 +243,12 @@ public class MainMenuScreen extends Screen{
             logoPic.setFinalPosition(0, 145, -150);
             logoPic.setFinalPosition(1, 0, 20);
             logoPic.setFinalPosition(2, 0, 480);
-            credScr.start();
+            credScr.setColor(menuColor);
             scrStart = false;
         }
+
+        if(credScr.getMenuChange())
+            logoPic.setHelpText(credScr.getHelpText());
 
         logoPic.setCounter(WAIT_TIME);
         credScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);

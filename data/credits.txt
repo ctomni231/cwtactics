@@ -1,32 +1,32 @@
 <-- CUSTOM WARS: TACTICS CREDITS -->
-
+ 
 <FORUM HOSTING - LEAD>
 Xenesis
-
+ 
 <MAIN CODERS>
 JakeSamiRulz
 Tapsi
-
+ 
 <BACKGROUND GRAPHICS>
 Kosheh
-
+ 
 <FORUM MODDERS>
 DiamondPhoenix
 Narts
 Kiwi
-
+ 
 <MAIN CONTRIBUTORS>
 chom-chom
 MarinePower
 Urusan
 Ace.Stef569
 amarriner
-
+ 
 <DESIGN DEVELOPERS>
 CoconutTank
 Captain Vimes
 Veggie
-
+ 
 <FORUM CONTRIBUTORS>
 St Johnston
 Islip
@@ -34,29 +34,29 @@ Destin/Artea
 UserShadow7989
 BlackEther
 Simon
-
+ 
 <HOSTING>
 Ohloh
 GoogleCode
-
-
-
-<--CUSTOM WARS BETA 27: CREDITS-->
-
+ 
+ 
+ 
+<--CUSTOM WARS BETA 27 CREDITS-->
+ 
 <PROGRAMMERS - LEAD>
 Urusan
 MoogleGunner
 Captain Vimes
-
+ 
 <PROGRAMMERS - MINOR>
 CoconutTank
 Xenesis
 Fugue
-
+ 
 <PROGRAMMERS - CONTRIBUTORS>
 Fobbah
 Redline/Kanon
-
+ 
 <HONORABLE MENTIONS>
 Retsej
 Kosheh
@@ -64,38 +64,38 @@ QuackQuackGoesTheDuck
 Xaif
 ShakyAlliance
 Tassadar
-VeggieHunter/Veggie
-
+VeggieHunter
+ 
 <TESTING>
-COFrosty
+CO_Frosty
 Hombre_Del_Pac
-
+ 
 <FORUM - ADMINISTRATORS>
 Xenesis
 Silifi of Death
 Kosheh
-
+ 
 <FORUM - FORMER ADMINISTRATORS>
 Freelance_FOX
 Retsej
-
+ 
 <QUALITY CONTROL - LEAD>
 CO_Frosty
 Xenesis
-
+ 
 <GRAPHIC DEVELOPMENT - LEAD>
 Xaif
 Kosheh
 Tsu
-
-<MUSIC/SOUND FX - LEAD>
+ 
+<MUSIC SOUND FX - LEAD>
 Retsej
-
+ 
 <FORMER LEADS>
 Veggie
 Pyrannha
 Andynator
-
+ 
 <-COMMANDING OFFICER DESIGNERS->
 <ARTEMIS>
 Legoman727
@@ -179,7 +179,7 @@ Xenesis
 <LEVENWORTH>
 Kosheh
 ChessRules
-
+ 
 <-ARMY FACTION DESIGNERS->
 <AMBER CORONA>
 FreeLance_FOX
@@ -199,36 +199,36 @@ Xaif
 FreeLance_FoX
 <SHUTTLERUNNER>
 Overlord Smurf
-
-<-TERRAIN & PROPERTY DESIGNERS->
+ 
+<-TERRAIN/PROPERTY DESIGNERS->
 <WALLS>
 Tsu
 <MINE>
 Limbo
-
+ 
 <-TILESET DESIGNERS->
 <DESERT>
 Limbo
 <ARTIFICIAL>
 Tsu
-
+ 
 <GRAPHIC DESIGNERS - LIST>
 Rimdev
-Tsu 
-Xaif 
-Gamerofthegame 
-Overlord Smurf 
-Kosheh 
-LordPlushie 
-Ozzy 
-Fighter_Dedede 
-veggiehunter 
-Baboonius 
-Stuffman 
-Obscure 
-Artea 
-Narts 
-
+Tsu
+Xaif
+Gamerofthegame
+Overlord Smurf
+Kosheh
+LordPlushie
+Ozzy
+Fighter_Dedede
+veggiehunter
+Baboonius
+Stuffman
+Obscure
+Destin Artea
+Narts
+ 
 <-CAMPAIGN DESIGNERS->
 <ORANGE STAR>
 Legoman727
@@ -249,14 +249,14 @@ Silifi of Death
 <PARALLEL GALAXY>
 Killing Edge
 Retsej
-
-<MUSIC & SOUND FX - CONTRIBUTORS>
+ 
+<MUSIC/SOUND FX - CONTRIBUTORS>
 X0_000
 FreeLance_FoX
 Retsej
 Tsu
 Slipp Penguin
-
+ 
 <-LOCALIZATION CONTRIBUTORS->
 <LATIN AMERICAN>
 TNT Colonel
@@ -275,40 +275,90 @@ Xenesis
 Urusan
 <PIG LATIN>
 Unakau
-
-<-COPYRIGHT->
-<CUSTOM WARS BETA>
-Custom Wars Team
-<CUSTOM WARS TACTICS>
-Exotec-BearWolf
-<ADVANCE WARS 1, 2, DUAL STRIKE, DAYS OF RUIN, DARK CONFLICT>
-Intelligent Systems & Nintendo
-For making Advance Wars. Buy their games! They deserve it!
-
-<-SPECIAL THANKS->
+ 
+<-MISCELLANEOUS->
 <HIDDEN CO OPTION>
 Nirual
+ 
 <CHECK RANGE>
 Tsu
+ 
 <CREDITS>
 Redattack34
 Kosheh
+ 
 <RESEARCH>
 Shaky-Alliance
+ 
 <PROJECT REVIVAL TEAM>
 Xenesis
 Silifi of Death
+ 
 <FORUM MANAGER>
 Xenesis
+
 <FORUM REVIVAL>
 FreeLance_FoX
+ 
 <CUSTOM WARS FOUNDERS>
 Merloc
 Sturm=Best
-
-<EXTRA SPECIAL THANKS>
-To you
-
+ 
+<-COPYRIGHT->
+<CUSTOM WARS BETA 27>
+Custom Wars Team
+<CUSTOM WARS TACTICS>
+Exotec
+BearWolf
+<ADVANCE WARS 1>
+Nintendo
+Intelligent Systems
+<ADVANCE WARS 2>
+Nintendo
+Intelligent Systems
+<ADVANCE WARS DUAL STRIKE>
+Nintendo
+Intelligent Systems
+<ADVANCE WARS DAYS OF RUIN>
+Nintendo
+Intelligent Systems
+<ADVANCE WARS DARK CONFLICT>
+Nintendo
+Intelligent Systems
+ 
+<-SPECIAL THANKS->
+<NINTENDO>
+<INTELLIGENT SYSTEMS>
+For making Advance Wars.
+Buy their games.
+They deserve it.
+ 
+<SILIFI>
+<XENESIS>
+For saving the project
+after RWD Incident.
+ 
+<XENESIS>
+Creating the forums.
+ 
+<KOSHEH>
+For creating the CW Mainpage,
+the CW wiki, and the IRC
+ 
+<Freelance_FoX>
+For starting a forum after
+getting kicked out of AWN
+ 
+<Merloc>
+<Sturm=Best>
+For starting Custom Wars
+ 
+<AND YOU>
+For continuous playtesting
+and contributing to CW and
+CWTactics. We could not do
+it without your support.
+ 
 <Thanks for playing Custom Wars>
 
 

@@ -3,8 +3,10 @@ package com.client.graphic;
 import com.client.graphic.tools.MovingMenu;
 import com.client.input.KeyControl;
 import com.jslix.tools.FileFind;
+import com.jslix.tools.ImgLibrary;
 import com.jslix.tools.MouseHelper;
 import com.jslix.tools.TextImgLibrary;
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
@@ -27,23 +29,28 @@ public class CreditGUI extends MovingMenu{
     private String credits;
     private String credPath;
     private String credItem;
+    private String curItem;
     private String alpha;
     private MouseHelper help;
     private Color[] dfltColors;
     private Color[] chngColors;
+    private int[] colors;
+    private Color line;
 
     public CreditGUI(String alphaPath, String creditPath,
             int locx, int locy, double speed){
         super(locx, locy, speed);
         credits = "";
         help = new MouseHelper();
-        help.setScrollIndex(1);
+        help.setScrollIndex(20);
         dfltColors = new Color[]{new Color(128, 128, 128),
         new Color(160, 160, 160)};
         chngColors = new Color[]{new Color(200, 200, 200),
         new Color(255, 255, 255)};
         credPath = creditPath;
+        curItem = "";
         alpha = alphaPath;
+        setLineColor(Color.DARK_GRAY);
         try {
             scanContents(credPath);
         } catch (FileNotFoundException ex) {
@@ -52,20 +59,40 @@ public class CreditGUI extends MovingMenu{
     }
 
     public void start(){
+        if(scanner != null)
+            scanner.close();
         scanner = new Scanner(credits);
     }
 
     @Override
-    public void update(int width, int height, int sysTime, int mouseScroll) {
-        super.update(width, height, sysTime, mouseScroll);
+    public void update(int width, int height, int sysTime, int mouseScroll) {      
         help.setMouseControl(sysTime);
-        if(help.getScroll() && scanner != null)
+        if(help.getScroll())
+            super.update(width, height, sysTime, mouseScroll);
+        
+       
+        if(allItems.length == 0){
+            start();
+            createItem();
+        }else if(allItems[allItems.length-1].posy < 450)
             createItem();
 
         for(int i = 0; i < allItems.length; i++){
-            if(allItems[i].posy < -50)
+            if(allItems[i].posy < -15)
                 deleteItem(i);
         }
+    }
+
+    public boolean getMenuChange(){
+        if(!curItem.matches(credItem)){
+            curItem = credItem;
+            return true;
+        }
+        return false;
+    }
+
+    public String getHelpText(){
+        return curItem;
     }
 
     @Override
@@ -73,10 +100,14 @@ public class CreditGUI extends MovingMenu{
         for(int i = 0; i < allItems.length; i++){
             allItems[i].speed = speed*scaley;
             if(allItems[i].selectable){
-                g.setColor(imgRef.getColor(Color.DARK_GRAY));
+                g.setColor(imgRef.getColor(line));
                 g.fillRect(0, (int)(allItems[i].posy*scaley+5),
                         (int)(640*scalex), (int)(7*scaley));
             }
+            if(opacity < 1)
+                imgResize.getSlickImage(allItems[i].select)
+                	.setAlpha((float)opacity);
+
             g.drawImage(imgResize.getSlickImage(allItems[i].select),
                     (int)(allItems[i].posx*scalex),
                     (int)(allItems[i].posy*scaley));
@@ -87,16 +118,23 @@ public class CreditGUI extends MovingMenu{
     @Override
     public void render(Graphics2D g, Component dthis) {
         for(int i = 0; i < allItems.length; i++){
+            if(allItems[i] == null)
+                continue;
             allItems[i].speed = speed*scaley;
             if(allItems[i].selectable){
-                g.setColor(Color.DARK_GRAY);
+                g.setColor(line);
                 g.fillRect(0, (int)(allItems[i].posy*scaley+5),
                         (int)(640*scalex), (int)(7*scaley));
             }
+            if(opacity < 1)
+                g.setComposite(AlphaComposite.getInstance(
+                                AlphaComposite.SRC_OVER,
+                (float)opacity));
             g.drawImage(imgResize.getImage(allItems[i].select),
                     (int)(allItems[i].posx*scalex),
                     (int)(allItems[i].posy*scaley), dthis);
-
+            if(opacity < 1)
+                g.setComposite(AlphaComposite.SrcOver);
         }
     }
 
@@ -112,8 +150,6 @@ public class CreditGUI extends MovingMenu{
                 addMenuItem(imgRef.getIndex(credItem), true);
             else
                 addMenuItem(imgRef.getIndex(credItem), false);
-
-
 
             setItemPosition(allItems.length-1, 0, -500, true);
         }
@@ -173,6 +209,37 @@ public class CreditGUI extends MovingMenu{
         }
         txtLib.addImage(text, txtLib.getTextImage());
         return txtLib.getImage(text);
+    }
+
+    public void setColorPath(String colorPath){
+        ImgLibrary imgLib = new ImgLibrary();
+        imgLib.addImage(colorPath);
+        colors = imgLib.getPixels(0);
+    }
+
+    public void setColor(int index){
+        index *= 16;
+        resetColor();
+        if(index >= 0 && index < colors.length){
+            addColor(new Color(160, 160, 160),
+                    new Color(colors[index+9+3]));
+            addColor(new Color(128, 128, 128),
+                    new Color(colors[index+9+4]));
+            addColor(new Color(255, 255, 255),
+                    new Color(colors[index+9+0]));
+            addColor(new Color(200, 200, 200),
+                    new Color(colors[index+9+2]));
+            setLineColor(new Color(colors[index+9+5]));
+            resetScreen();
+        }else{
+            setLineColor(Color.DARK_GRAY);
+            resetScreen();
+        }
+    }
+
+    private void setLineColor(Color color){
+        if(color != null)
+            line = imgRef.getColor(color, 127);
     }
 
 }

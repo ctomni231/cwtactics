@@ -322,10 +322,9 @@ public class MovingMenu extends MovingImage{
 
     //Cleanly deletes items for the menu List
     public void deleteItems(){
-        for(int i = 0; i < allItems.length; i++){
+        for(int i = allItems.length; --i >= 0 ;){
             deleteItem(i);
         }
-        allItems = new MenuItem[0];
     }
     public void deleteItems(int type){
         for(int i = 0; i < allItems.length; i++){
@@ -344,7 +343,7 @@ public class MovingMenu extends MovingImage{
             for(int i = 0; i < allItems.length; i++){
                 if(i < index)
                     allItems[i] = temp[i];
-                else if(i > index)
+                else if(i >= index)
                     allItems[i] = temp[i+1];
             }
         }

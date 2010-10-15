@@ -73,6 +73,14 @@ public class KeyControl {
     }
 
     /**
+     * Polls to see whether this is a Slick Window
+     * @return whither this is a Slick Window (true) or a Java window (false)
+     */
+    public static boolean isSlickWindow(){
+        return KeyPress.isSlickWindow();
+    }
+
+    /**
      * Is a button clicked ?
      */
     private static boolean isClicked( Keys key ){
