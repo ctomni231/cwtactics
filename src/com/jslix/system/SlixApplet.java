@@ -15,9 +15,16 @@ import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 
 /**
+ * SlixApplet.java
+ * 
+ * This is used to make a general java applet for the JSlix Screens
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 09.21.10
  */
+
+//TODO: Finish commenting this class
 public class SlixApplet extends Applet implements Runnable, KeyListener,
         MouseListener, MouseMotionListener, MouseWheelListener{
 

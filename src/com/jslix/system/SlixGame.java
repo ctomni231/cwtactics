@@ -11,9 +11,17 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 /**
+ * SlixGame.java
  *
- * @author Crecen
+ * A shell game class that holds the Slick Applet and also controls
+ * the screens for all Slick Frames and Applets
+ *
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 10.15.10
  */
+
+//TODO: Finish commenting this class
 public class SlixGame extends BasicGame{
 
     public static void main( String[] args ) {
@@ -45,7 +53,7 @@ public class SlixGame extends BasicGame{
         KeyPress.setConv(true);
         timer = new Timer(true);
         clear = true;
-        loadGame();
+        load();
     }
 
     //Override this function to load different Screens into the game
@@ -207,6 +215,13 @@ public class SlixGame extends BasicGame{
      */
     protected void setFrameRate(){
         timer.setFrameRate();
+    }
+
+    /**
+     * Used to load games in the Slick Frame and Applets
+     */
+    private void load(){
+        loadGame();
     }
 
 }

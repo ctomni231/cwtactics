@@ -6,12 +6,17 @@ import java.util.HashMap;
 import org.newdawn.slick.Image;
 
 /**
- * ImgHolder
+ * ImgHolder.java
+ *
  * A remix of ImageHolder. The ImgHolder helps store images in an
  * ImageLibrary.
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 09.21.10
  */
+
+//TODO: Finish commenting this class
 public class ImgHolder {
     //Stores a Java Image
     public java.awt.Image image;

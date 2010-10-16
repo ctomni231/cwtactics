@@ -8,8 +8,12 @@ import org.xml.sax.Attributes;
  *
  * My simple class for reading the XML image files
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 09.21.10
  */
+
+//TODO: Finish commenting this class
 public class BackgroundReader extends XML_Parser {
 
     private String[] items;

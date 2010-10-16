@@ -13,8 +13,12 @@ import java.awt.image.MemoryImageSource;
  *
  * A class made specifically for editing the pixel portion of the images
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 10.05.10
  */
+
+//TODO: Finish commenting this class
 public class PixtureMap extends ImgLibrary{
 
     //The graphics class used for creating images

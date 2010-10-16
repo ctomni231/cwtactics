@@ -18,11 +18,18 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.SlickException;
 
 /**
+ * ImgLibrary.java
+ *
  * A remix of ImageSorter, ImgLibrary helps with organizing and sectioning
  * images. It performs recolors, resizes images, stores images, and sets
  * optional references for images.
- * @author Crecen
+ *
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 09.24.10
  */
+
+//TODO: Finish commenting this class
 public class ImgLibrary extends Component{
     //Sets the default for Slick Images
     private final String IMAGE_TYPE = "png";

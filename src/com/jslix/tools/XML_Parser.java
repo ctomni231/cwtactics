@@ -13,7 +13,14 @@ import org.xml.sax.helpers.DefaultHandler;
  * XML_Parser
  *
  * Simple XML parser class. Written by Tapsi.
+ *
+ * @author Radom, Alexander
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 10.02.10
  */
+
+//TODO: Finish commenting this class
 public class XML_Parser extends DefaultHandler {
 
 	// VARIABLES

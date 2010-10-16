@@ -16,10 +16,16 @@ import java.awt.Graphics2D;
 import org.newdawn.slick.Graphics;
 
 /**
+ * MainMenuScreen.java
+ *
  * The new main menu screen now using JSlix exclusively.
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 10.15.10
  */
+
+//TODO: Finish commenting this class
 public class MainMenuScreen extends Screen{
 
     //CHANGE THE STARTING MENU COLOR (0 - 18)
@@ -77,7 +83,8 @@ public class MainMenuScreen extends Screen{
         menuScr.setOrigScreen(SIZE_X, SIZE_Y);
         menuScr.setColorPath(reader.getUnitColors());
 
-        credScr = new CreditGUI(reader.getAlphaPath(), "data/credits.txt",
+        credScr = new CreditGUI(reader.getAlphaPath(),
+                reader.getNumberText(), reader.getCreditPath(),
                 0, 0, 1);
         credScr.setOpacity(0.7);
         credScr.setColorPath(reader.getUnitColors());

@@ -11,9 +11,16 @@ import java.util.ResourceBundle;
  * 
  * The parallel Java class to DictionaryService by Tapsi, with the ability
  * to read outside class files by Stef & myself.
- * 
- * @author Crecen
+ *
+ * @author Radom, Alexander
+ * @author Carr, Crecen
+ * @author Stefan569
+ *
+ * @license Look into "LICENSE" file for further information
+ * @version 10.08.10
  */
+
+//TODO: Finish commenting this class
 public class LocaleService extends ClassLoader {
 
     private ResourceBundle lang;

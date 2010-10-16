@@ -15,8 +15,12 @@ import org.newdawn.slick.Graphics;
  *
  * A remix of PixMenu, helps you to create a menu of selectable image items
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 10.15.10
  */
+
+//TODO: Finish commenting this class
 public class MovingMenu extends MovingImage{
 
     public final int REGULAR = 0;

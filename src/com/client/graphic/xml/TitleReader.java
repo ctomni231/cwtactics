@@ -8,8 +8,12 @@ import org.xml.sax.Attributes;
  *
  * This class reads in and stores the title screen elements
  * 
- * @author Ctomni
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 10.11.10
  */
+
+//TODO: Finish commenting this class
 public class TitleReader extends XML_Parser{
 
     public final String LANG_PATH = "data/lang/Languages";
@@ -22,6 +26,8 @@ public class TitleReader extends XML_Parser{
     private String start;//The title blinking logo
     private String alpha;//The path to the alphabet text picture
     private String arrow;//The path to the arrow picture
+    private String number;//The path to the number text picture
+    private String credit;//The path to the credits
     private String unitColor;//The path to the unit colors
     private String propColor;//The path to the property colors
 
@@ -42,6 +48,14 @@ public class TitleReader extends XML_Parser{
 
     public String getPropColors(){
         return propColor;
+    }
+
+    public String getNumberText(){
+        return number;
+    }
+
+    public String getCreditPath(){
+        return credit;
     }
 
     public String[] getMainOption(){
@@ -115,6 +129,8 @@ public class TitleReader extends XML_Parser{
             start = fillEntry(attrib, "start");
             alpha = fillEntry(attrib, "alpha");
             arrow = fillEntry(attrib, "arrow");
+            number = fillEntry(attrib, "number");
+            credit = fillEntry(attrib, "credit");
         }else if(super.isAheader("color")){
             unitColor = fillEntry(attrib, "unit");
             propColor = fillEntry(attrib, "prop");

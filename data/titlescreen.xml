@@ -10,7 +10,9 @@
 	<title  copy="@copyright"
 		start="PRESS START" 
 		alpha="image/menu/smallAlpha.png"
+		number="image/menu/numbers.png"
 		arrow="image/menu/uparrow.png"
+		credit="data/credits.txt"
 		help="@titleHelp" />
 
 	<screen ID="MAIN MENU">

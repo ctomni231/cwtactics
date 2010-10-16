@@ -33,9 +33,12 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
+ * MainGame.java
+ * 
  * This handles displaying the game on the screen.
  * 
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
  * @version 8.1.2010
  */
 public class MainGame {
@@ -46,7 +49,11 @@ public class MainGame {
     public static int GAME_TARGET_FPS = 60;
     //The target frames for second for the system timer
     public static int TIMER_FPS = 10;
-	
+
+    /**
+     * The main class sets up a new Slick Game screen
+     * @param args Arguments: N/A
+     */
     public static void main(String args[]){
     	
     	Logger.setConsoleOutputOn();
@@ -210,7 +217,12 @@ public class MainGame {
     //The container used for this window
     private AppGameContainer container;
 
-    //Creates a new Slick Window with the following parameters
+    /**
+     * Creates a new Slick Window with the following parameters
+     * @param game The game to be used with this window
+     * @param sizex The width of the window
+     * @param sizey The height of the window
+     */
     public MainGame(StateBasedGame game,
             int sizex, int sizey){
         try {
@@ -228,7 +240,10 @@ public class MainGame {
         }
     }
 
-    //Shows a Slick window and sets the Frames per second
+    /**
+     * Shows a Slick window and sets the Frames per second
+     * @param maxFPS The max Frames per second of this window
+     */
     public void showSlickWindow(int maxFPS){
         try {
             if(maxFPS > 0)

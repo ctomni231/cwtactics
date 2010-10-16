@@ -11,8 +11,12 @@ import java.util.Scanner;
  * Slick mentions all keys in terms of numbers, but Java has the String
  * values for each key
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 09.25.10
  */
+
+//TODO: Finish commenting this class
 public class KeyPress {
 
     //This converts keys

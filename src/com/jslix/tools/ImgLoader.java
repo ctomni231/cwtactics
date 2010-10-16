@@ -8,12 +8,17 @@ import java.net.URL;
 import java.security.AccessControlException;
 
 /**
- * ImgLoader
+ * ImgLoader.java
+ *
  * A remix of ImageLoader. Gives functions in helping to load awtImages
  * from within the .jar, on a web page, or within a relative folder.
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 09.10.10
  */
+
+//TODO: Finish commenting this class
 public class ImgLoader extends Component{
 
     //Gets an Image from a relative file path

@@ -15,8 +15,12 @@ import org.newdawn.slick.Graphics;
  * This is a remix of ScrollPix, it is used for moving images across the
  * Screen in a smooth motion, has support for Java2D fonts.
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 10.11.10
  */
+
+//TODO: Finish commenting this class
 public class ScrollImage extends MovingImage {
 
     private ArrayList<Double> textScroll;

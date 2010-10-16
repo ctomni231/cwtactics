@@ -9,10 +9,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
+ * XML_Writer.java
+ *
  * A simple tool that'll hopefully be useful for writing XML files
  *
- * @author Ctomni
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 09.15.10
  */
+
+//TODO: Finish commenting this class
 public class XML_Writer {
 
     private final int TAB_SPACE = 8;

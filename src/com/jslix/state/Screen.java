@@ -18,8 +18,12 @@ import org.newdawn.slick.Graphics;
  * these Screens can be added/deleted from the game at any time. This
  * regulates Screens for both Slick and Java Frames.
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 10.12.10
  */
+
+//TODO: Finish commenting this class
 public abstract class Screen implements ScreenSkeleton{
     /**
      * If true, schedules the deletion of this screen

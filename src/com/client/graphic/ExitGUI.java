@@ -10,27 +10,37 @@ import com.jslix.tools.ImgLibrary;
 import java.awt.Color;
 
 /**
- * ExitGUI
+ * ExitGUI.java
  *
  * This handles the GUI by helping draw an exit screen for the menu
  * class.
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 10.12.10
  */
 public class ExitGUI extends MovingMenu{
 
-    private Color[] dfltColors;
-    private Color[] chngColors;
-    private String[] exitData;
-    private int sizex;
-    private int sizey;
-    private int x;
-    private int y;
-    private String alpha;
-    private MouseHelper helper;
-    private int change;
-    private int[] colors;
+    private Color[] dfltColors;//Default colors for the letters
+    private Color[] chngColors;//Colors to change the letters to
+    private String[] exitData;//A list of text pretaining to the menu
+    private int sizex;//The width of the exit window
+    private int sizey;//The height of the exit window
+    private int x;//Holds the original screen width
+    private int y;//Holds the original screen height
+    private String alpha;//Holds the path to the alpha text picture
+    private MouseHelper helper;//Regulates the mouse focus
+    private int change;//Tracks the menu change for the menu
+    private int[] colors;//Integer representation of the multple colors
 
+    /**
+     * This class displays an exit window with two options
+     * @param alphaRef The path to the alpha text file
+     * @param data Text pertaining to the exit menu
+     * @param locx The x-axis location of the exit window
+     * @param locy The y-axis location of the exit window
+     * @param speed How quickly the exit window will move
+     */
     public ExitGUI(String alphaRef, String[] data,
             int locx, int locy, double speed){
         super(locx, locy, speed);
@@ -48,6 +58,11 @@ public class ExitGUI extends MovingMenu{
         change = 0;
     }
 
+    /**
+     * This gets the beginning size of the window
+     * @param scrX The current window width
+     * @param scrY The current window height
+     */
     @Override
     public void setOrigScreen(int scrX, int scrY) {
         super.setOrigScreen(scrX, scrY);
@@ -56,6 +71,9 @@ public class ExitGUI extends MovingMenu{
     }
 
 
+    /**
+     * This sets up the GUI of the exit screen
+     */
     @Override
     public void init() {
         ImgLibrary tempImg = new ImgLibrary();
@@ -89,7 +107,14 @@ public class ExitGUI extends MovingMenu{
 
         setFinalPosition((int)((x-sizex)/2), (int)((y-sizey)/2));
     }
-    
+
+    /**
+     * This completely controls graphics updates for the menu
+     * @param width The current width of the window
+     * @param height The current height of the window
+     * @param sysTime The system time in milliseconds
+     * @param mouseScroll The mouse scroll wheel value
+     */
     @Override
     public void update(int width, int height, int sysTime, int mouseScroll){
     	super.update(width, height, sysTime, mouseScroll);
@@ -98,6 +123,10 @@ public class ExitGUI extends MovingMenu{
     			KeyControl.getMouseY());
     }
 
+    /**
+     * This function gets when the menu option changes
+     * @return whether the menu option changed (true) or not (false)
+     */
     public boolean getMenuChange(){
         if(change != select){
             change = select;
@@ -106,13 +135,21 @@ public class ExitGUI extends MovingMenu{
         return false;
     }
 
+    /**
+     * This function gets the help text for display
+     * @return The String representing the help text
+     */
     public String getHelpText(){
-        if(select == 1)
-            return exitData[3];
-        else
-            return exitData[4];
+        return (select == 1) ? exitData[3] : exitData[4];
     }
 
+    /**
+     * THis function controls column selection and user button actions
+     * for the exit screen
+     * @param column The current column this screen is associated with
+     * @param mouseScroll The current mouse scroll wheel value
+     * @return The altered column variable
+     */
     public int control(int column, int mouseScroll){
         if(KeyControl.isUpClicked() ||
             KeyControl.isDownClicked() ||
@@ -147,9 +184,24 @@ public class ExitGUI extends MovingMenu{
         return column;
     }
 
+    /**
+     * This function turns a String into a picture
+     * @param alpha The path to the alpha file
+     * @param text The text to convert into a picture
+     * @return An image representing the text
+     */
     private java.awt.Image getTextImg(String alpha, String text){
         return getTextImg(alpha, text, null, null);
     }
+
+    /**
+     * This function turns a String into a picture
+     * @param alpha The path to the alpha file
+     * @param text The text to convert into a picture
+     * @param fromColor A list of default colors
+     * @param toColor A list of recolor values
+     * @return An image representing the text
+     */
     private java.awt.Image getTextImg(String alpha, String text,
             Color[] fromColor, Color[] toColor){
         TextImgLibrary txtLib = new TextImgLibrary();
@@ -168,12 +220,20 @@ public class ExitGUI extends MovingMenu{
         return txtLib.getImage(text);
     }
 
+    /**
+     * This function gets a list of color changes for menu items
+     * @param colorPath The path to the color list
+     */
     public void setColorPath(String colorPath){
         ImgLibrary imgLib = new ImgLibrary();
         imgLib.addImage(colorPath);
         colors = imgLib.getPixels(0);
     }
 
+    /**
+     * This function changes the color based on the menu colors
+     * @param index Which index of colors to use for this menu
+     */
     public void setColor(int index){
         index *= 16;
         resetColor();

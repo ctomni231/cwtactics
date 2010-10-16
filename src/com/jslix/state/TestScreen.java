@@ -12,8 +12,13 @@ import org.newdawn.slick.Graphics;
  * TestScreen
  *
  * A testing screen for the JSlix class.
- * @author Crecen
+ * 
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 09.24.10
  */
+
+//TODO: Finish commenting this class
 public class TestScreen extends Screen{
     private int counter;
     private ImgLibrary imgSort;

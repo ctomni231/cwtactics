@@ -10,8 +10,12 @@ import org.newdawn.slick.Graphics;
  * This gives the basic functions for easy Screen integration. A necessity
  * for the graphics classes to share functionality
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 09.24.10
  */
+
+//TODO: Finish commenting this class
 public interface ScreenSkeleton {
 
     //Simplified init function

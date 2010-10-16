@@ -4,11 +4,17 @@ import com.jslix.state.Screen;
 import java.util.ArrayList;
 
 /**
+ * SlixLibrary.java
+ *
  * A remix of PraxisLibrary. Used to hold a list of Screens/States and store
  * them for display for both the Java2D and Slick graphic classes
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 10.12.10
  */
+
+//TODO: Finish commenting this class
 public class SlixLibrary {
 
     /**

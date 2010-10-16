@@ -19,8 +19,12 @@ import org.newdawn.slick.SlickException;
  * Screens. Descriptions below will tell you what overwriting functions
  * do. You can create the Slick Applet here.
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 09.10.10
  */
+
+//TODO: Finish commenting this class
 public class JSlixGame extends SlixGame{
 
     //The main function allows you to create Slick Applets from

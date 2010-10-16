@@ -5,10 +5,14 @@ package com.jslix.system;
  *
  * Holds the conversion code from Slick keys to Java keys, and vice-versa.
  * Mostly for reference purposes, and because applets have to go through so
- * much sercurity to access files.
+ * much security to access files.
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 09.10.10
  */
+
+//TODO: Finish commenting this class
 public class SlixConv {
     public static String conv = "/Helps convert Slick keys to java keys\n"+
         "/JAVA=http://java.sun.com/javase/6/docs/api/constant-values.html\n"+

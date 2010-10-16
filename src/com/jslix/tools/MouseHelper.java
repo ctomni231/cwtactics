@@ -5,8 +5,12 @@ package com.jslix.tools;
  *
  * This class helps you control the mouse and the scrolling of objects
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 09.21.10
  */
+
+//TODO: Finish commenting this class
 public class MouseHelper {
 
     //Mouse helper functions

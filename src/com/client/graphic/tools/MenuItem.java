@@ -7,8 +7,12 @@ import java.awt.Color;
  * 
  * Holds a MenuItem reference for the Moving Menu class
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 09.25.10
  */
+
+//TODO: Finish commenting this class
 public class MenuItem {
     //This holds the ID# of the MenuItem
     public int id;

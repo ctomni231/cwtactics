@@ -34,10 +34,17 @@ import org.newdawn.slick.SlickException;
  *
  * The game class for the menu
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 09.15.10
  */
 public class JSGMainGame extends SlixGame {
 
+    /**
+     * The main class for starting a Slick Applet or non-resizing Slick
+     * window for the JSlix version of the game
+     * @param args Arguments: N/A
+     */
     public static void main(String[] args){
         try{
             JSGMainGame game = new JSGMainGame();
@@ -53,6 +60,9 @@ public class JSGMainGame extends SlixGame {
         }
     }
 
+    /**
+     * This loads the screens into the the JSlix version of the game
+     */
     @Override
     public void loadGame(){
         setupLogic();
@@ -65,6 +75,10 @@ public class JSGMainGame extends SlixGame {
         //Also a good place to do all the initialzation stuff
     }
 
+    /**
+     * This function sets up the logic files and pulls all the information
+     * from the XML database
+     */
     private static void setupLogic(){
 
         Logger.setConsoleOutputOn();
@@ -90,7 +104,7 @@ public class JSGMainGame extends SlixGame {
     	(new ScriptReader("data/Scripts.tef")).parse();
     	(new ScriptReader("data/damage.tef")).parse();
 
-        //JSR: Shut down of music for faster testing
+        //TODO JSR: Shut down of music for faster testing
 		//MusicFactory.play( SoundLoader.loadMusicFile("SONG_LASH.ogg"));
 
     	// load modification
@@ -117,10 +131,12 @@ public class JSGMainGame extends SlixGame {
     	System.out.println("Version : "+Engine_Database.getVersion());
 
     	Weather.setWeather( Engine_Database.getWeatherSheet( "SUN" ));
-
-
     }
 
+    /**
+     * This functions creates a new game with hard-coded parameters to be
+     * used for testing purposes
+     */
     private static void initializeTestGame(){
     	
     	Map map = new Map(50, 50);

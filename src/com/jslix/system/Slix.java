@@ -22,9 +22,16 @@ import javax.swing.JFrame;
 import org.newdawn.slick.SlickException;
 
 /**
+ * Slix.java
+ *
  * This class contains the basics for the screen system
- * @author Crecen
+ *
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 10.12.10
  */
+
+//TODO: Finish commenting this class
 public class Slix extends JComponent implements Runnable, KeyListener,
         MouseListener, MouseMotionListener, MouseWheelListener {
 

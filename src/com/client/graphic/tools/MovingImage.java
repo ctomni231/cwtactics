@@ -10,13 +10,17 @@ import java.awt.Image;
 import org.newdawn.slick.Graphics;
 
 /**
- * MovingImage
+ * MovingImage.java
  * 
  * A simple remix of MovingPix, it moves images around the Canvas in a
  * smooth motion.
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 10.11.10
  */
+
+//TODO: Finish commenting this class
 public class MovingImage implements ScreenSkeleton{
 
     protected double scalex;//Controls the scale width of an Image

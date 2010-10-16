@@ -13,10 +13,12 @@ import org.newdawn.slick.Graphics;
  * A remix of PixVertMenu, this class organizes a regular menu class into
  * one that positions items in a vertical menu.
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 10.12.10
  */
 
-//TODO (JSlix) Update and Render stuff galore to set up display.
+//TODO: Finish commenting this class
 public class VerticalMenu extends MovingMenu{
 
     private ArrayList<Integer> vertPos;//Position of Menu Items

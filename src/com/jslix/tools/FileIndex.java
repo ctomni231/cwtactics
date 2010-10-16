@@ -1,10 +1,17 @@
 package com.jslix.tools;
 
 /**
+ * FileIndex.java
+ *
  * A remix of FileHolder. This class will simplify a file to its
  * resourcePath.
- * @author Crecen
+ *
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 09.15.10
  */
+
+//TODO: Finish commenting this class
 public class FileIndex {
     public String fname;//Filename
     public String fpath;//Filepath

@@ -10,13 +10,19 @@ import java.security.AccessControlException;
 import java.util.ArrayList;
 
 /**
+ * FileFind.java
+ *
  * A simple remix of FileManager. This class looks for files in the
  * current directory, then stores them into an array of FileIndex.
  * Has functions for creating files and directories.
  * Mostly Strings are used here, so be careful of memory.
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 09.15.10
  */
+
+//TODO: Finish commenting this class
 public class FileFind {
     private File theFile;
     private String basePath;//BasePath of .jar

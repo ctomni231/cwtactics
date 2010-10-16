@@ -5,10 +5,17 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 /**
+ * TextImgLibrary.java
+ *
  * Adds the ability to make Images in forms of text paragraphs,
  * words, and lines.
- * @author Crecen
+ *
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 10.21.10
  */
+
+//TODO: Finish commenting this class
 public class TextImgLibrary extends ImgLibrary{
     //Capital Letters Position
     private final int ASCII_CAP = 65;

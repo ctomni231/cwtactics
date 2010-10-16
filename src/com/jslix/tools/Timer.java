@@ -1,12 +1,17 @@
 package com.jslix.tools;
 /**
- * Timer
+ * Timer.java
+ *
  * A regulation for the amount of time taken regulated by system time
  * instead of a framerate. Counts to 1000 milliseconds and restarts.
  * Using this class to regulate scrolling speed for objects and user input.
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 10.10.10
  */
+
+//TODO: Finish commenting this class
 public class Timer extends Thread{
     private int animTime;
     private long millisec;

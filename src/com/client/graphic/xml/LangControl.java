@@ -8,8 +8,12 @@ import com.jslix.tools.LocaleService;
  *
  * This class regulates xml language conversions
  * 
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 10.11.10
  */
+
+//TODO: Finish commenting this class
 public class LangControl extends LocaleService{
 
     public LangControl(String filename){

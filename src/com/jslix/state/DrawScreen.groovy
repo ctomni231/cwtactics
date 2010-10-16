@@ -9,8 +9,12 @@ import org.newdawn.slick.Graphics;
 *
 * This handles functions that depend on the groovy
 *
-* @author Crecen
+* @author Carr, Crecen
+* @license Look into "LICENSE" file for further information
+* @version 09.24.10
 */
+
+//TODO: Finish commenting this class
 interface DrawScreen {
 def init();
 def update(int timePassed);

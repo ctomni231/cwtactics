@@ -11,9 +11,16 @@ import java.awt.Graphics2D;
 import org.newdawn.slick.Graphics;
 
 /**
+ * TitleGUI.java
  *
- * @author Ctomni
+ * This displays the flashing title "Press Start" logo
+ * 
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 10.12.10
  */
+
+//TODO: Finish commenting this class
 public class TitleGUI extends MovingImage {
 
     private double counter;
@@ -63,7 +70,8 @@ public class TitleGUI extends MovingImage {
             help = !help;
 
         if(KeyControl.isActionClicked()){
-            if(KeyControl.getMouseY() < 20*scaley)
+            if(KeyControl.getMouseY() < 20*scaley &&
+                    KeyControl.getMouseX() != 0)
                 help = !help;
             else
                 return 1;

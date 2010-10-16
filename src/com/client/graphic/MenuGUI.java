@@ -12,9 +12,12 @@ import java.awt.Color;
  * 
  * This handles the GUI by drawing a menu for the screen
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 10.12.10
  */
 
+//TODO: Finish commenting this class
 public class MenuGUI extends VerticalMenu{
 
     public final int MAX_ITEMS = 8;

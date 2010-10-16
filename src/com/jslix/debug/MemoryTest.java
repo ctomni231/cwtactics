@@ -9,8 +9,13 @@ import java.util.Vector;
  * A remix of BenchTest in CWX. This class gets Memory Usage in the
  * program which is exceptionally useful for debug cases.
  *
- * @author Eugene
+ * @author Eugene, Raether
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 09.21.10
  */
+
+//TODO: Finish commenting this class
 public class MemoryTest {
 
     //JSR: References the bytes used

@@ -22,7 +22,12 @@ import org.newdawn.slick.Graphics;
  *
  * Check slicktext.txt for information about the KeyPresses.
  *
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 09.24.10
  */
+
+//TODO: Finish commenting this class
 public class JTestScreen extends Screen{
 
     public int counter;

@@ -1,8 +1,5 @@
 package com.jslix.system;
 
-import com.jslix.system.Slix;
-import com.jslix.system.SlixLibrary;
-
 /**
  * UserSys
  *
@@ -17,8 +14,12 @@ import com.jslix.system.SlixLibrary;
  * own Screens. It requires that you already have overwritten SlixGame.
  * You can create both the Java and the Slick window here.
  *
- * @author Crecen
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 09.12.10
  */
+
+//TODO: Finish commenting this class
 public class JSlix extends Slix{
 
     //This function allows you to create either a Java frame or a Slick frame
