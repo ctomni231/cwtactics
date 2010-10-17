@@ -15,19 +15,31 @@ import org.newdawn.slick.Graphics;
  * @version 09.24.10
  */
 
-//TODO: Finish commenting this class
 public interface ScreenSkeleton {
 
-    //Simplified init function
+    /**
+     * Simplified initialization function for initializing variables
+     */
     public void init();
 
-    //Simplified update function
+    /**
+     * Simplified update function for updating both the Slick2D and Java2D
+     * windows
+     * @param timePassed negative values (Java2D) & positive values (Slick2D)
+     */
     public void update(int timePassed);
 
-    //Simplified render function (SLICK)
+    /**
+     * Simplified render function for drawing Slick based graphics
+     * @param g The Slick2D graphics object
+     */
     public void render(Graphics g);
 
-    //Simplified render function (JAVA)
+    /**
+     * Simplified render function for drawing Java2D based Graphics
+     * @param g The Java2D graphics object
+     * @param dthis The Java2D Component object
+     */
     public void render(Graphics2D g, Component dthis);
 
     /**
@@ -49,8 +61,5 @@ public interface ScreenSkeleton {
      * @param seethru Whether this screen is translucent(true) or not(false)
      */
     public void update(String name, int index,
-            boolean isApplet, boolean seethru);
-
-
-    
+            boolean isApplet, boolean seethru);   
 }

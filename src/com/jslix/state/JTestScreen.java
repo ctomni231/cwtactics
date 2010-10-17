@@ -27,37 +27,46 @@ import org.newdawn.slick.Graphics;
  * @version 09.24.10
  */
 
-//TODO: Finish commenting this class
 public class JTestScreen extends Screen{
 
-    public int counter;
+    public int counter;//A counter for keeping track of the timePassed
 
-    //Initialize all variables here to prevent Slick from crashing. Uses
-    //Slick initialize function. Uses Java's initialize function as well.
+    /**
+     * Initialize all variables here to prevent Slick from crashing. Uses
+     * Slick initialize function. Uses Java2D initialize function as well.
+     */
     @Override
     public void init() {
         counter = 0;
     }
 
-    //This is Slick's exclusive render function used only by the Slick
-    //window. Use this to show Slick related actions and functions.
+    /**
+     * This is Slick2D exclusive render function used only by the Slick
+     * window. Use this to show Slick related actions and functions.
+     * @param g The Slick graphics object
+     */
     @Override
     public void render(Graphics g) {
         g.setColor(Color.blue);
         g.drawString("COUNTER="+counter, 100, scr_index*10+100);
     }
 
-    //This is Java's exclusive render function used only by the Java
-    //window. Use this to show Java related actions and functions.
+    /**
+     * This is Java2D exclusive render function used only by the Java
+     * window. Use this to show Java related actions and functions.
+     * @param g The Java2D graphics object
+     * @param dthis Java2D Component object
+     */
     @Override
     public void render(Graphics2D g, Component dthis) {
         g.setColor(java.awt.Color.blue);
         g.drawString("COUNTER="+counter, 100, scr_index*10+100);
     }
 
-    //The update function is shared by both Java and Slick functions.
-    //timePassed indicates negative values for Java Screens and positive
-    //value for Slick Screens.
+    /**
+     * The update function is shared by both Java and Slick functions.
+     * @param timePassed negative values (Java2D) & positive values (Slick2D)
+     */
     @Override
     public void update(int timePassed) {
         if(scr_index == 0)

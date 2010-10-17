@@ -16,7 +16,6 @@ import java.util.Scanner;
  * @version 09.25.10
  */
 
-//TODO: Finish commenting this class
 public class KeyPress {
 
     //This converts keys

@@ -16,9 +16,9 @@ import java.awt.image.MemoryImageSource;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 10.05.10
+ * @todo TODO Finish commenting this class
  */
 
-//TODO: Finish commenting this class
 public class PixtureMap extends ImgLibrary{
 
     //The graphics class used for creating images

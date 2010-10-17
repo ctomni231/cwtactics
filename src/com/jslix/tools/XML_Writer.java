@@ -18,7 +18,6 @@ import java.util.HashMap;
  * @version 09.15.10
  */
 
-//TODO: Finish commenting this class
 public class XML_Writer {
 
     private final int TAB_SPACE = 8;
@@ -306,10 +305,24 @@ public class XML_Writer {
         filePath = path;
     }
 
+    /**
+     * Changes the filename associated with the XML file
+     * @param filename The new filename for this XML file
+     */
     public void changeFilename(String filename){
         this.filename = filename;
     }
 
+    /**
+     * This creates a new Directory and a new file within the directory
+     * with the XML file within it
+     * @param path The path from the home directory
+     * @param filename The name of the file
+     * @param data The data associated with the file
+     * @param temp If this file deletes when you exit the game
+     * @param overwrite Whether you should overwrite the current file
+     * @return Whether this file was written to the computer
+     */
     private boolean createFile(String path, String filename, String data,
             boolean temp, boolean overwrite){
         File newFile = null;
@@ -352,5 +365,4 @@ public class XML_Writer {
 
         return true;
     }
-
 }

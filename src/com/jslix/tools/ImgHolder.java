@@ -14,9 +14,9 @@ import org.newdawn.slick.Image;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 09.21.10
+ * @todo TODO Finish commenting this class
  */
 
-//TODO: Finish commenting this class
 public class ImgHolder {
     //Stores a Java Image
     public java.awt.Image image;

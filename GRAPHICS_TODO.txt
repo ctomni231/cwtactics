@@ -16,7 +16,7 @@ Main Menu - Vertical Menu Display             [*]
 Main Menu - Menu Functionality (XML root)     [*]
 Credit Screen - Credit Display                [*]
 Credit Screen - Function (Text .txt roots)    [*]
-Key Configure - Menu Display (Java roots)     [ ]
+Key Configure - Menu Display (Java roots)     [#]
 Key Configure - Menu Functionality (XML root) [ ]
 
 Phase 2 - Map Screen [ ]

@@ -20,9 +20,9 @@ import java.util.ArrayList;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 09.15.10
+ * @todo TODO Finish commenting this class
  */
 
-//TODO: Finish commenting this class
 public class FileFind {
     private File theFile;
     private String basePath;//BasePath of .jar

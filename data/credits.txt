@@ -1,4 +1,4 @@
-<-- CUSTOM WARS: TACTICS CREDITS -->
+<-- CUSTOM WARS TACTICS CREDITS -->
  
 <FORUM HOSTING - LEAD>
 Xenesis
@@ -9,6 +9,7 @@ Tapsi
  
 <BACKGROUND GRAPHICS>
 Kosheh
+Destin Artea
  
 <FORUM MODDERS>
 DiamondPhoenix

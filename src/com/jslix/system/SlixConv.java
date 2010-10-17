@@ -10,9 +10,9 @@ package com.jslix.system;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 09.10.10
+ * @todo TODO Finish commenting this class
  */
 
-//TODO: Finish commenting this class
 public class SlixConv {
     public static String conv = "/Helps convert Slick keys to java keys\n"+
         "/JAVA=http://java.sun.com/javase/6/docs/api/constant-values.html\n"+

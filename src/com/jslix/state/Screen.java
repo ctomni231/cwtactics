@@ -23,7 +23,6 @@ import org.newdawn.slick.Graphics;
  * @version 10.12.10
  */
 
-//TODO: Finish commenting this class
 public abstract class Screen implements ScreenSkeleton{
     /**
      * If true, schedules the deletion of this screen
@@ -38,7 +37,7 @@ public abstract class Screen implements ScreenSkeleton{
      */
     public int scr_height = 0;
     /**
-     * Holds the clicks of the mousewheel
+     * Holds the clicks of the mouse wheel
      */
     public int scr_mouseScroll = 0;
     /**
@@ -70,51 +69,84 @@ public abstract class Screen implements ScreenSkeleton{
      * mouse actions
      */
     private MouseHelper scr_helper = new MouseHelper();
-
-     //Controls whether mouse movements are registered within screens
+    /**
+     * Controls whether mouse movements are registered within screens
+     */
     public boolean scr_mouseLock = false;
-    //Controls how often a mouse is able to effect menu actions
+    /**
+     * Controls how often a mouse is able to effect menu actions
+     */
     public boolean scr_scroll = false;
-    //How quick a user is able to scroll, the higher the number the quicker
+    /**
+     * How quick a user is able to scroll, the higher the number the quicker
+     */
     public int scr_scrollInd = 2;
 
-    //Simplified init function
+    /**
+     * Simplified initialization function for initializing variables
+     */
     public abstract void init();
 
-    //Simplified update function
+    /**
+     * Simplified update function for updating both the Slick2D and Java2D
+     * windows
+     * @param timePassed negative values (Java2D) & positive values (Slick2D)
+     */
     public abstract void update(int timePassed);
 
-    //Simplified render function (SLICK)
+    /**
+     * Simplified render function for drawing Slick based graphics
+     * @param g The Slick2D graphics object
+     */
     public abstract void render(Graphics g);
 
-    //Simplified render function (JAVA)
+    /**
+     * Simplified render function for drawing Java2D based Graphics
+     * @param g The Java2D graphics object
+     * @param dthis The Java2D Component object
+     */
     public abstract void render(Graphics2D g, Component dthis);  
 
-    //This runs when a screen is about to be destroyed
+    /**
+     * This runs when a screen is about to be destroyed
+     */
     public void scr_close(){}
 
+    /**
+     * This function runs when a screen is initialized
+     */
     public final void scr_init(){
         init();
         scr_new = false;
     }
 
+    /**
+     * This function gets if this screen has just been created
+     * @return Whether this screen has just been created(true) or not(false)
+     */
     public final boolean scr_getNew(){
         return scr_new;
     }
 
-    //Prevents mouse actions from being accepted
+    /**
+     * This function prevents mouse actions from being accepted (lock)
+     */
     public void scr_mouseLock(){
         scr_helper.setMouseLock(KeyPress.getMouseX(), KeyPress.getMouseY());
         scr_mouseLock = scr_helper.getMouseLock();
     }
 
-    //Allows mouse actions to be accepted
+    /**
+     * This function allows mouse actions to be accepted after lock
+     */
     public void scr_mouseRelease(){
         scr_helper.setMouseRelease(KeyPress.getMouseX(), KeyPress.getMouseY());
         scr_mouseLock = scr_helper.getMouseLock();
     }
 
-    //Controls how quickly the mouse scrolls
+    /**
+     * This function controls how quickly the mouse scrolls
+     */
     public void scr_mouseControl(){
         scr_helper.setScrollIndex(scr_scrollInd);
         scr_helper.setMouseControl(scr_sysTime);
@@ -122,8 +154,22 @@ public abstract class Screen implements ScreenSkeleton{
             scr_scroll = scr_helper.getScroll();
     }
 
+    /**
+     * This function controls the various screen elements
+     * @param width The screens current width
+     * @param height The screens current height
+     * @param time The current system time in milliseconds
+     * @param mouseScroll The current mouse scroll wheel
+     */
     public void update(int width, int height, int time, int mouseScroll){}
 
+    /**
+     * This function controls the more specific screen elements
+     * @param name The current name of the screen
+     * @param index The current position of this screen
+     * @param isApplet Whether this screen is an applet(true) or not(false)
+     * @param seethru Whether you can see through the screen(T) or not(F)
+     */
     public void update(String name, int index, boolean isApplet,
             boolean seethru){}
 }

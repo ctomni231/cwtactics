@@ -19,9 +19,9 @@ import org.newdawn.slick.SlickException;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 10.15.10
+ * @todo TODO Finish commenting this class
  */
 
-//TODO: Finish commenting this class
 public class SlixGame extends BasicGame{
 
     public static void main( String[] args ) {

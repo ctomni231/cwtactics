@@ -14,13 +14,12 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * Simple XML parser class. Written by Tapsi.
  *
- * @author Radom, Alexander
- * @author Carr, Crecen
+ * @author <ul><li>Radom, Alexander</li>
+ *              <li>Carr, Crecen</li></ul>
  * @license Look into "LICENSE" file for further information
- * @version 10.02.10
+ * @version 10.16.10
  */
 
-//TODO: Finish commenting this class
 public class XML_Parser extends DefaultHandler {
 
 	// VARIABLES
@@ -47,8 +46,8 @@ public class XML_Parser extends DefaultHandler {
 	 */
     private void read( String filename ){
         try {
-            //FileFind finder = new FileFind();
-            File file = new File(filename);
+            FileFind finder = new FileFind();
+            File file = finder.getFile(filename);
             SAXParserFactory factory 	= SAXParserFactory.newInstance();
             SAXParser parser 			= factory.newSAXParser();
             parser.parse( file , this );

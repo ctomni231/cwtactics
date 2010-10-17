@@ -18,11 +18,13 @@ import org.newdawn.slick.Graphics;
  * @version 09.24.10
  */
 
-//TODO: Finish commenting this class
 public class TestScreen extends Screen{
-    private int counter;
-    private ImgLibrary imgSort;
+    private int counter;//This holds the updating rate for the class
+    private ImgLibrary imgSort;//This holds an imageholder for the class
 
+    /**
+     * Sets up the picture and sets the screen to be see through
+     */
     @Override
     public void init() {
         imgSort = new ImgLibrary();
@@ -30,6 +32,12 @@ public class TestScreen extends Screen{
         scr_link = true;
     }
 
+    /**
+     * Draws the various elements for the Slick window including the
+     * keyboard and mouse actions, an image, the update rate, and
+     * the frames per second
+     * @param g The Slick graphics object
+     */
     @Override
     public void render(Graphics g) {
         g.drawImage(imgSort.getSlickImage(0), scr_index*20, scr_index*20);
@@ -55,6 +63,13 @@ public class TestScreen extends Screen{
 
     }
 
+    /**
+     * Draws the various elements for the Java2D window including the
+     * keyboard and mouse actions, an image, the update rate, and
+     * the frames per second
+     * @param g The java2D graphics object
+     * @param dthis The java2D component object
+     */
     @Override
     public void render(Graphics2D g, Component dthis) {
        g.drawImage(imgSort.getImage(0), scr_index*20, scr_index*20, dthis);
@@ -77,6 +92,11 @@ public class TestScreen extends Screen{
         g.drawString(""+counter,scr_index*20+0,scr_index*20+60);
     }
 
+    /**
+     * This updates the graphics based on various actions done by the user
+     * and by the engine
+     * @param timePassed negative values (Java2D) & positive values (Slick2D)
+     */
     @Override
     public void update(int timePassed) {
         if(scr_index == 0)
@@ -108,6 +128,4 @@ public class TestScreen extends Screen{
             }
         }
     }
-
 }
-

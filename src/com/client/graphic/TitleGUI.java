@@ -17,35 +17,60 @@ import org.newdawn.slick.Graphics;
  * 
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.12.10
+ * @version 10.16.10
  */
 
-//TODO: Finish commenting this class
 public class TitleGUI extends MovingImage {
 
-    private double counter;
-    private int time;
-    private boolean help;
-    private int[] colors;
+    private double counter;//This controls the opacity of the image
+    private boolean help;//This controls whether the help is available or not
+    private int[] colors;//Integer representation of the multple colors
 
+    /**
+     * This class displays a flashing start logo and controls the help bar
+     * screen functionality
+     * @param locx The x-axis location of the title flashing logo
+     * @param locy The y-axis location of the title flashing logo
+     * @param speed How fast the flashing title screen logo moves
+     */
     public TitleGUI(int locx, int locy, double speed){
         super(locx, locy, speed);
         counter = 0;
-        time = 0;
         help = false;
     }
-    
+
+    /**
+     * This sets the letters for the flashing logo
+     * @param alphaPath The alphaPath to the text picture
+     * @param text The text to convert into a picture
+     * @param width The x-axis size of the logo
+     * @param height The y-axis size of the logo
+     */
     public void setWords(String alphaPath, String text, int width, int height){
         setImage(getTextImg(alphaPath, text), width, height);
     }
 
+    /**
+     * This class updates all graphical elements of the title screen
+     * @param width The current width of the window
+     * @param height The current height of the window
+     * @param sysTime The system time in milliseconds
+     * @param mouseScroll The mouse scroll wheel value
+     */
     @Override
     public void update(int width, int height, int sysTime, int mouseScroll) {
         super.update(width, height, sysTime, mouseScroll);      
-        time = sysTime;
-        changeTime();
+        counter = (((double)sysTime/1000)-.5);
+        if(counter > 1 || counter < -1)
+            counter = 1;
+        if(counter < 0)
+            counter *= -1;
     }
 
+    /**
+     * This renders the title image to the screen
+     * @param g Graphics object for Slick
+     */
     @Override
     public void render(Graphics g){
         imgRef.getSlickImage(1).setAlpha((float)counter);
@@ -54,6 +79,11 @@ public class TitleGUI extends MovingImage {
         super.render(g);
     }
 
+    /**
+     * This renders the title image to the Screen
+     * @param g Graphics object for Java2D
+     * @param dthis Component object for Java2D
+     */
     @Override
     public void render(Graphics2D g, Component dthis) {
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
@@ -62,6 +92,13 @@ public class TitleGUI extends MovingImage {
         g.setComposite(AlphaComposite.SrcOver);
     }
 
+    /**
+     * This function deals with all the keyboard and mouse actions for this
+     * screen. It also deals with how this screen interacts with other
+     * screens.
+     * @param column The current column this screen is on
+     * @return A new column to change to
+     */
     public int control(int column){
         if(KeyControl.isUpClicked() ||
                 KeyControl.isDownClicked() ||
@@ -81,18 +118,20 @@ public class TitleGUI extends MovingImage {
         return column;
     }
 
+    /**
+     * Gets whether the help menu bar is locked in display
+     * @return Whether this bar is displayed(true) or timed(false)
+     */
     public boolean getHelp(){
         return help;
     }
 
-    private void changeTime(){
-        counter = (((double)time/1000)-.5);
-        if(counter > 1 || counter < -1)
-            counter = 1;
-        if(counter < 0)
-            counter *= -1;
-    }
-
+    /**
+     * This function turns a String into a picture
+     * @param alpha The path to the alpha file
+     * @param text The text to convert into a picture
+     * @return An image representing the text
+     */
     private java.awt.Image getTextImg(String alpha, String text){
         TextImgLibrary txtLib = new TextImgLibrary();
         txtLib.addImage(alpha);
@@ -105,12 +144,20 @@ public class TitleGUI extends MovingImage {
         return txtLib.getTextImage();
     }
 
+    /**
+     * This function gets a list of color changes for menu items
+     * @param colorPath The path to the color list
+     */
     public void setColorPath(String colorPath){
         ImgLibrary imgLib = new ImgLibrary();
         imgLib.addImage(colorPath);
         colors = imgLib.getPixels(0);
     }
 
+    /**
+     * This function changes the color based on the menu colors
+     * @param index Which index of colors to use for this menu
+     */
     public void setColor(int index){
         index *= 16;
         resetColor();

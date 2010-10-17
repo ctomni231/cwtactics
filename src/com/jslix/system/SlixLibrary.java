@@ -13,8 +13,6 @@ import java.util.ArrayList;
  * @license Look into "LICENSE" file for further information
  * @version 10.12.10
  */
-
-//TODO: Finish commenting this class
 public class SlixLibrary {
 
     /**

@@ -9,13 +9,11 @@ import com.jslix.system.KeyPress;
  * This is meant to combine the Control and ID class into one
  * function.
  *
- * @author Carr, Crecen
- * @author Radom, Alexander
+ * @author <ul><li>Carr, Crecen</li>
+ *              <li>Radom, Alexander</li></ul>
  * @license Look into "LICENSE" file for further information
  * @version 10.15.10
  */
-
-//TODO: Finish commenting this class
 public class KeyControl {
     /*
      * Keyboard values

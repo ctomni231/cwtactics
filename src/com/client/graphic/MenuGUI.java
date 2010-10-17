@@ -14,29 +14,40 @@ import java.awt.Color;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.12.10
+ * @version 10.16.10
  */
 
-//TODO: Finish commenting this class
 public class MenuGUI extends VerticalMenu{
 
-    public final int MAX_ITEMS = 8;
+    public final int MAX_ITEMS = 8;//The maximum items a vertical menu has
 
-    private Color[] dfltColors;
-    private Color[] chngColors;
-    private String alpha;
-    private String arrow;
-    private int[] selectID;
-    private String[] text;
-    private String[] help;
-    private int[] colors;
-    private int change;
-    private MouseHelper helper;
-    private int menuColumn;
-    private int menuChange;
-    private int factions;
-    private int curFaction;
+    private Color[] dfltColors;//Default colors for the letters
+    private Color[] chngColors;//Colors to change the letters to
+    private String alpha;//Holds the path to the alpha text picture
+    private String arrow;//Holds the path to the arrow picture file
+    private int[] selectID;//Holds information related to menu selections
+    private String[] text;//Holds information related to scrolling text
+    private String[] help;//Holds information related to the help bar text
+    private int[] colors;//Integer representation of the multiple colors
+    private int change;//Holds whether the menu selection has changed
+    private MouseHelper helper;//Regulates the mouse focus
+    private int menuColumn;//Helps regulate the justify of the menu
+    private int menuChange;//Holds whether a justify column has changed
+    private int factions;//Holds the max menu faction colors
+    private int curFaction;//Holds whether a menu faction color changed
 
+    /**
+     * This class displays a main menu and is the main class for controlling
+     * all items that appear in the main menu. In addition, it also directly
+     * alters the scroll text, the help text, and controls how the menu is
+     * colored.
+     * @param arrowPath The path to the upward arrow picture
+     * @param alphaPath The path to the text picture file used
+     * @param spacing The amount of spacing between each menu item
+     * @param locx The x-axis location of the menu
+     * @param locy The y-axis location of the menu
+     * @param speed How quickly this menu will move
+     */
     public MenuGUI(String arrowPath, String alphaPath, int spacing,
             int locx, int locy, double speed){
         super(locx, locy, speed);       
@@ -57,10 +68,21 @@ public class MenuGUI extends VerticalMenu{
         curFaction = -1;
     }
 
+    /**
+     * This function completely sets up a vertical main menu with all the
+     * options stored. Each item is sorted by array number.
+     * @param mainOption A group of all selectable items
+     * @param mainID A group of all menu selections for the items
+     * @param mainText A group of scroll text associated with the items
+     * @param mainHelp A group of help text associated with the items
+     */
     public void initMenu(String[] mainOption, String[] mainID,
             String[] mainText, String[] mainHelp){
         help = mainHelp;
-        text = mainText;
+        text = new String[mainText.length];
+        for(int i = 0; ++i < mainText.length; )
+        	text[i] = "- "+mainText[i]+" -";
+        
         selectID = new int[mainID.length];
         for(int i = 0; i < mainID.length; i++)
             selectID[i] = Integer.parseInt(mainID[i]);
@@ -79,6 +101,10 @@ public class MenuGUI extends VerticalMenu{
         setArrowUp(arrow);
     }
 
+    /**
+     * Currently used for the main menu, but is actually a testing class
+     * used for debugging the main menu.
+     */
     @Override
     public void init(){
         String[] temp = new String[]{ "VERSUS", "ONLINE",
@@ -86,14 +112,14 @@ public class MenuGUI extends VerticalMenu{
         "CREDITS", "EXIT"};
 
         String[] tempText = new String[]{
-            "- Play a multiplayer game against your friends -",
-            "- Turn the tides of war on a friend through online battle -",
-            "- Create the playfield of your imagination -",
-            "- Load a map from the archive -",
-            "- Edit an existing map or make changes to a new map -",
-            "- Change the keyboard settings here -",
-            "- See the creators of the game -",
-            "- Leave. We see how it is :( -"
+            "Play a multiplayer game against your friends",
+            "Turn the tides of war on a friend through online battle",
+            "Create the playfield of your imagination",
+            "Load a map from the archive",
+            "Edit an existing map or make changes to a new map",
+            "Change the keyboard settings here",
+            "See the creators of the game",
+            "Leave. We see how it is :("
         };
 
         String[] helpText = new String[]{
@@ -108,7 +134,7 @@ public class MenuGUI extends VerticalMenu{
         };
 
         String[] ID = new String[]{
-            "-2","-3","-4","-5","-6","-7","3","2"
+            "-2","-3","-4","-5","-6","4","3","2"
         };
 
         initMenu(temp, ID, tempText, helpText);
@@ -124,6 +150,13 @@ public class MenuGUI extends VerticalMenu{
         //changePosition(9, -7);
     }
 
+    /**
+     * This function updates all the graphical elements in the menu
+     * @param width The current width of the screen
+     * @param height The current height of the screen
+     * @param sysTime The current system time in milliseconds
+     * @param mouseScroll The current mouse scroll wheel value
+     */
     @Override
     public void update(int width, int height, int sysTime, int mouseScroll) {
         super.update(width, height, sysTime, mouseScroll);
@@ -142,10 +175,18 @@ public class MenuGUI extends VerticalMenu{
     			KeyControl.getMouseY());        
     }
 
+    /**
+     * This function gets the menu justify position
+     * @return The menu justify position
+     */
     public int getMenuColumn(){
         return menuColumn;
     }
 
+    /**
+     * This function keeps track of whether a menu option changes
+     * @return whether a menu option changes(true) or not(false)
+     */
     public boolean getMenuChange(){
         if(change != select){
             change = select;
@@ -154,14 +195,29 @@ public class MenuGUI extends VerticalMenu{
         return false;
     }
 
+    /**
+     * This function gets the current scrolling text for the item selected
+     * @return The current scrolling text
+     */
     public String getScrollText(){
         return text[getVertIndex()];
     }
 
+    /**
+     * This function gets the current help bar text for the item selected
+     * @return The current help bar text
+     */
     public String getHelpText(){
         return help[getVertIndex()];
     }
 
+    /**
+     * This function gets all the user defined actions and uses them to
+     * control the functions within the menu.
+     * @param column The current column this menu is associated with
+     * @param mouseScroll The current mouse scroll wheel
+     * @return The new column value if it was changed
+     */
     public int control(int column, int mouseScroll){
         if(KeyControl.isUpDown() || KeyControl.isDownDown() ||
             KeyControl.isLeftDown() || KeyControl.isRightDown()){
@@ -216,9 +272,24 @@ public class MenuGUI extends VerticalMenu{
         return column;
     }
 
+    /**
+     * This function turns a String into a picture
+     * @param alpha The path to the alpha file
+     * @param text The text to convert into a picture
+     * @return An image representing the text
+     */
     private java.awt.Image getTextImg(String alpha, String text){
         return getTextImg(alpha, text, null, null);
     }
+
+    /**
+     * This function turns a String into a picture
+     * @param alpha The path to the alpha file
+     * @param text The text to convert into a picture
+     * @param fromColor A list of default colors
+     * @param toColor A list of recolor values
+     * @return An image representing the text
+     */
     private java.awt.Image getTextImg(String alpha, String text,
             Color[] fromColor, Color[] toColor){
         TextImgLibrary txtLib = new TextImgLibrary();
@@ -237,6 +308,10 @@ public class MenuGUI extends VerticalMenu{
         return txtLib.getImage(text);
     }
 
+    /**
+     * This function gets a list of color changes for menu items
+     * @param colorPath The path to the color list
+     */
     public void setColorPath(String colorPath){
         ImgLibrary imgLib = new ImgLibrary();
         imgLib.addImage(colorPath);
@@ -244,6 +319,10 @@ public class MenuGUI extends VerticalMenu{
         factions = colors.length/16;
     }
 
+    /**
+     * This function changes the color based on the menu colors
+     * @param index Which index of colors to use for this menu
+     */
     public void setColor(int index){
         index *= 16;
         resetColor();
@@ -269,6 +348,10 @@ public class MenuGUI extends VerticalMenu{
         }
     }
 
+    /**
+     * This function gets the current menu faction color
+     * @return The menu faction color
+     */
     public int getCurFaction(){
         return curFaction;
     }

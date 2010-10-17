@@ -29,9 +29,9 @@ import org.newdawn.slick.SlickException;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 10.12.10
+ * @todo TODO Finish commenting this class
  */
 
-//TODO: Finish commenting this class
 public class Slix extends JComponent implements Runnable, KeyListener,
         MouseListener, MouseMotionListener, MouseWheelListener {
 

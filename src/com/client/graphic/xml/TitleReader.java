@@ -11,103 +11,37 @@ import org.xml.sax.Attributes;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 10.11.10
+ * @todo TODO Finish commenting this class
  */
 
-//TODO: Finish commenting this class
 public class TitleReader extends XML_Parser{
 
     public final String LANG_PATH = "data/lang/Languages";
 
     private LangControl lang;//Language controller for this class "@"
-    private String logoPath;//The filepath to the main logo picture
-    private String miniPath;//The filePath to the mini logo picture
-    private String copyright;//The text representing the copyright info
-    private String question;//The filepath to the question mark picture
-    private String start;//The title blinking logo
-    private String alpha;//The path to the alphabet text picture
-    private String arrow;//The path to the arrow picture
-    private String number;//The path to the number text picture
-    private String credit;//The path to the credits
-    private String unitColor;//The path to the unit colors
-    private String propColor;//The path to the property colors
+    public String logoPath;//The filepath to the main logo picture
+    public String miniPath;//The filePath to the mini logo picture
+    public String copyright;//The text representing the copyright info
+    public String question;//The filepath to the question mark picture
+    public String start;//The title blinking logo
+    public String alpha;//The path to the alphabet text picture
+    public String arrow;//The path to the arrow picture
+    public String number;//The path to the number text picture
+    public String credit;//The path to the credits
+    public String unitColor;//The path to the unit colors
+    public String propColor;//The path to the property colors
 
-    private String[] startHelp;//Title Help Bar text files
-    private String[] exitData;//Data conaining exit text and help text
-    private String[] mainOption;//The menu option for the main menu
-    private String[] mainSelect;//The integer select for the main menu
-    private String[] mainText;//The scroll text for the main menu
-    private String[] mainHelp;//The help text for the main menu
+    public String[] startHelp;//Title Help Bar text files
+    public String[] exitData;//Data containing exit text and help text
+    public String[] mainOption;//The menu option for the main menu
+    public String[] mainSelect;//The integer select for the main menu
+    public String[] mainText;//The scroll text for the main menu
+    public String[] mainHelp;//The help text for the main menu
+    public String[] keyOption;//The option text for the keys
+    public String[] keyHelp;//The help text for the keys
 
     public TitleReader(String file){
         super(file);
-    }
-
-    public String getUnitColors(){
-        return unitColor;
-    }
-
-    public String getPropColors(){
-        return propColor;
-    }
-
-    public String getNumberText(){
-        return number;
-    }
-
-    public String getCreditPath(){
-        return credit;
-    }
-
-    public String[] getMainOption(){
-        return mainOption;
-    }
-
-    public String[] getMainSelect(){
-        return mainSelect;
-    }
-
-    public String[] getMainText(){
-        return mainText;
-    }
-
-    public String[] getMainHelp(){
-        return mainHelp;
-    }
-    
-    public String getTitleLogoPath(){
-        return logoPath;
-    }
-
-    public String getMiniLogoPath(){
-        return miniPath;
-    }
-
-    public String getCopyright(){
-        return copyright;
-    }
-
-    public String getQuestion(){
-        return question;
-    }
-
-    public String getStartText(){
-        return start;
-    }
-
-    public String getAlphaPath(){
-        return alpha;
-    }
-
-    public String getArrowPath(){
-        return arrow;
-    }
-
-    public String[] getExitData(){
-        return exitData;
-    }
-
-    public String[] getStartHelp(){
-        return startHelp;
     }
 
     @Override
@@ -151,6 +85,10 @@ public class TitleReader extends XML_Parser{
             mainSelect = fillEntry(attrib, mainSelect, "list", "id");
             mainText = fillEntry(attrib, mainText, "list", "text");
             mainHelp = fillEntry(attrib, mainHelp, "list", "help");
+        }
+        if(super.isAheader("key")){
+        	keyOption = fillEntry(attrib, keyOption, "list", "text");
+        	keyHelp = fillEntry(attrib, keyHelp, "list", "help");
         }
     }
 

@@ -13,9 +13,9 @@ import java.awt.image.BufferedImage;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 10.21.10
+ * @todo TODO Finish commenting this class
  */
 
-//TODO: Finish commenting this class
 public class TextImgLibrary extends ImgLibrary{
     //Capital Letters Position
     private final int ASCII_CAP = 65;

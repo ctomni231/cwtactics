@@ -8,9 +8,9 @@ package com.jslix.tools;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 09.21.10
+ * @todo TODO Finish commenting this class
  */
 
-//TODO: Finish commenting this class
 public class MouseHelper {
 
     //Mouse helper functions

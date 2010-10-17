@@ -24,8 +24,33 @@
 			<list text="@exitHelpNo" />
 		</exit>
 		<main>
-			<list item="EXIT" id="2" text="Leave, we see how it is. :)"
-			help="[EXIT] SELECT-Ends this game session CANCEL-Title" />
-		</main> 
+			<list item="CREDITS" id="3" 
+			text="See the ending credits of the game"
+			help="CREDITS - See the creators of Custom Wars Tactics" />
+			
+			<list item="EXIT" id="2" 
+			text="Leave, we see how it is. :)"
+			help="EXIT - Ends this game session" />
+		</main>
+		<key>
+			<list text="UP" 
+			help="UP - Sets a keyboard key for up" />
+			<list text="DOWN" 
+			help="DOWN - Sets a keyboard key for down" />
+			<list text="LEFT" 
+			help="LEFT - Sets a keyboard key for left"/>
+			<list text="RIGHT" />
+			help="RIGHT - Sets a keyboard key for right" />
+			<list text="SELECT" 
+			help="SELECT - Sets a keyboard key for select" />
+			<list text="CANCEL" 
+			help="CANCEL - Sets a keyboard key for cancel" />
+			<list text="SELECT BUTTON TO EDIT" 
+			help="EDIT - SELECT to edit this item"/>
+			<list text="GO BACK"
+			help="GO BACK - Go back to title screen" />
+			<list text="PRESS A KEY"
+			help="PRESS A KEY - Sets key pressed to highlighted item" />
+		</key>
 	</screen>
 </menu>

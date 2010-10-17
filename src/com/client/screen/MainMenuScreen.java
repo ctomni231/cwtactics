@@ -6,6 +6,7 @@ import com.client.graphic.LogoHandler;
 import com.client.graphic.TitleGUI;
 import com.client.graphic.ExitGUI;
 import com.client.graphic.MenuGUI;
+import com.client.graphic.KeyGUI;
 import com.client.graphic.xml.TitleReader;
 import com.jslix.debug.MemoryTest;
 import com.jslix.state.Screen;
@@ -22,10 +23,10 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.15.10
+ * @version 10.16.10
+ * @todo TODO Finish commenting this class
  */
 
-//TODO: Finish commenting this class
 public class MainMenuScreen extends Screen{
 
     //CHANGE THE STARTING MENU COLOR (0 - 18)
@@ -44,6 +45,7 @@ public class MainMenuScreen extends Screen{
     private ExitGUI exitScr;
     private MenuGUI menuScr;
     private CreditGUI credScr;
+    private KeyGUI keyScr;
 
     private boolean scrStart;
     private int column;
@@ -56,39 +58,36 @@ public class MainMenuScreen extends Screen{
 
         reader = new TitleReader("data/titlescreen.xml");
         bgPic = new BackgroundHandler(scr_width, scr_height);
-        logoPic = new LogoHandler(reader.getTitleLogoPath(),
-                reader.getMiniLogoPath(), reader.getCopyright(),
-                reader.getQuestion(), SIZE_X, SIZE_Y);
-        logoPic.setColorPath(reader.getUnitColors());
+        logoPic = new LogoHandler(reader.logoPath, reader.miniPath, 
+        		reader.copyright, reader.question, SIZE_X, SIZE_Y);
+        logoPic.setColorPath(reader.unitColor);
         
 
         titleScr = new TitleGUI(220, 375, 0);
         titleScr.setOrigScreen(SIZE_X, SIZE_Y);
         titleScr.setShadowColor(Color.BLACK);
         titleScr.setShadowOffset(1);
-        titleScr.setWords(reader.getAlphaPath(), 
-                reader.getStartText(), 200, 20);
-        titleScr.setColorPath(reader.getUnitColors());
+        titleScr.setWords(reader.alpha, reader.start, 200, 20);
+        titleScr.setColorPath(reader.unitColor);
 
-        exitScr = new ExitGUI(reader.getAlphaPath(), 
-                reader.getExitData(), 100, 200, 0);
+        exitScr = new ExitGUI(reader.alpha, reader.exitData, 100, 200, 0);
         exitScr.setOrigScreen(SIZE_X, SIZE_Y);
-        exitScr.setColorPath(reader.getUnitColors());
+        exitScr.setColorPath(reader.unitColor);
 
-        menuScr = new MenuGUI(reader.getArrowPath(), reader.getAlphaPath(),
-                20, 0, 165, 0);
+        menuScr = new MenuGUI(reader.arrow, reader.alpha, 20, 0, 165, 0);
         menuScr.init();
         //menuScr.initMenu(reader.getMainOption(), reader.getMainSelect(),
         //        reader.getMainText(), reader.getMainHelp());
         menuScr.setOrigScreen(SIZE_X, SIZE_Y);
-        menuScr.setColorPath(reader.getUnitColors());
+        menuScr.setColorPath(reader.unitColor);
 
-        credScr = new CreditGUI(reader.getAlphaPath(),
-                reader.getNumberText(), reader.getCreditPath(),
+        credScr = new CreditGUI(reader.alpha, reader.number, reader.credit,
                 0, 0, 1);
         credScr.setOpacity(0.7);
-        credScr.setColorPath(reader.getUnitColors());
+        credScr.setColorPath(reader.unitColor);
         credScr.setOrigScreen(SIZE_X, SIZE_Y);
+
+        keyScr = new KeyGUI(0, 0, 1);
 
         menuColor = MENU_COLOR;
         curColor = MENU_COLOR;
@@ -119,6 +118,9 @@ public class MainMenuScreen extends Screen{
             case 3:
                 creditScr();
                 break;
+            case 4:
+                keyScr();
+                break;
             default:
                 menuScr();
         }
@@ -142,6 +144,9 @@ public class MainMenuScreen extends Screen{
             case 3:
                 credScr.render(g);
                 break;
+            case 4:
+                keyScr.render(g);
+                break;
             default:
                 menuScr.render(g);
         }
@@ -162,6 +167,9 @@ public class MainMenuScreen extends Screen{
             case 3:
                 credScr.render(g, dthis);
                 break;
+            case 4:
+                keyScr.render(g, dthis);
+                break;
             default:
                 menuScr.render(g, dthis);
         }
@@ -173,7 +181,7 @@ public class MainMenuScreen extends Screen{
             logoPic.setFinalPosition(0, 145, 30);
             logoPic.setFinalPosition(2, 0, 460);
             logoPic.setScrollText();
-            logoPic.setHelpText(reader.getStartHelp()[0]);
+            logoPic.setHelpText(reader.startHelp[0]);
             logoPic.setColor(menuColor);
             logoPic.setCounter(WAIT_TIME*8);
             titleScr.setColor(menuColor);
@@ -260,6 +268,17 @@ public class MainMenuScreen extends Screen{
         logoPic.setCounter(WAIT_TIME);
         credScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
         current = credScr.control(column);
+    }
+
+    private void keyScr(){
+        if(scrStart){
+            logoPic.setFinalPosition(0, 145, 15);
+            logoPic.setFinalPosition(2, 0, 480);
+            scrStart = false;
+        }
+
+        keyScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
+        current = keyScr.control(column, scr_mouseScroll);
     }
 
     private void helpHide(int mult){

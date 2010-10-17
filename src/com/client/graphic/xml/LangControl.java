@@ -11,9 +11,9 @@ import com.jslix.tools.LocaleService;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 10.11.10
+ * @todo TODO Finish commenting this class
  */
 
-//TODO: Finish commenting this class
 public class LangControl extends LocaleService{
 
     public LangControl(String filename){

@@ -10,9 +10,11 @@ package com.jslix.tools;
  * @version 09.14.10
  */
 
-//TODO: Finish commenting this class
 public interface XML_Writable {
-
+    /**
+     * This function can be inserted into your files in order to quickly
+     * write XML files
+     * @param writer The XML_Writer associated with this class
+     */
     public void writeToXML(XML_Writer writer);
-
 }

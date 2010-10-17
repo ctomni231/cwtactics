@@ -4,24 +4,29 @@ import java.text.NumberFormat;
 import java.util.Vector;
 
 /**
- * MemoryTest
+ * MemoryTest.java
  * 
  * A remix of BenchTest in CWX. This class gets Memory Usage in the
  * program which is exceptionally useful for debug cases.
  *
- * @author Eugene, Raether
+ * @author <ul><li>Raether, Eugene</li>
+ *          <li>Carr, Crecen</li></ul>
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 09.21.10
  */
 
-//TODO: Finish commenting this class
 public class MemoryTest {
 
-    //JSR: References the bytes used
+    //References the bytes used
    private static String[] reference = {"B", "KB", "MB", "GB", "TB"};
 
-   //JSR: Translates bytes properly formatted
+   /**
+    * This function changes the size of bytes in a readable format
+    * @param bytes The number of bytes
+    * @param decimalPlaces How many decimal places to display
+    * @return A properly formatted string containing the amount of bytes
+    */
    public static String simplyFileSize(long bytes, int decimalPlaces){
          long kB = bytes / 1024;
          long mB = kB / 1024;
@@ -31,34 +36,34 @@ public class MemoryTest {
          long[] data = {bytes, kB, mB, gB, tB};
          int highest = 0;
 
-         for(int x=0;x<data.length;x++)
-         {
+         for(int x=0;x<data.length;x++){
             if(data[x] == 0)
-            {
                break;
-            }
             else
-            {
                highest = x;
-            }
          }
 
          NumberFormat format = NumberFormat.getInstance();
          format.setMaximumFractionDigits(decimalPlaces);
          format.setMinimumFractionDigits(decimalPlaces);
 
-
          return format.format(data[highest])+" "+reference[highest];
      }
 
-   //JSR: Prints the memory usage so far for the program using the
-   //Notifier as a channel
-     public static void printMemoryUsage(String notifier){
+   /**
+    * This class prints the total memory usage of the JVM so far in the
+    * system within a text format.
+    * @param notifier A String to prefix the size data.
+    */
+    public static void printMemoryUsage(String notifier){
          System.out.println(notifier+": "+trunBytes(getMemoryUsage()));
-     }
+    }
 
-     //JSR: Calculates Max Memory of your machine
-     public static String calcMaxMem(){
+    /**
+     * This class calculates the maximum memory of the machine
+     * @return The maximum memory this JVM can access
+     */
+    public static String calcMaxMem(){
         long l = time();
         Vector localVector = new Vector(512);
         for (int i = 0; (i < 512) && (time() - l < 2500L); i++)
@@ -69,9 +74,13 @@ public class MemoryTest {
             return i + " MB";
         }
         return ">" + localVector.size() + " MB";
-     }
+    }
 
-     //JSR: Translates bytes into the Proper format
+    /**
+     * This function changes a byte number into a properly formatted string
+     * @param bytes THe number of bytes
+     * @return A properly formatted string of bytes
+     */
      private static String trunBytes(long bytes){
          long kB = bytes / 1024;
          long mB = kB / 1024;
@@ -82,18 +91,20 @@ public class MemoryTest {
              kB > 1 ? "KB:"+kB : "Bytes:"+bytes;
       }
 
-     //JSR: Gets the memory usage for the program
+     /**
+      * Gets the current memory usage for the program
+      * @return The current memory usage
+      */
      private static long getMemoryUsage(){
          return Runtime.getRuntime().totalMemory()-
                  Runtime.getRuntime().freeMemory();
      }
 
-     //JSR: Gets the time of the system
+     /**
+      * Gets the current time of the system
+      * @return The current time in milliseconds
+      */
      private static long time(){
         return System.currentTimeMillis();
      }
-
-
 }
-
-

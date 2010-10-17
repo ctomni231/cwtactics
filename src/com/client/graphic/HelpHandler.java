@@ -59,7 +59,7 @@ public class HelpHandler extends MovingMenu{
     }
 
     /**
-     * THis function updates the help bar and regulates the help bar actions
+     * This function updates the help bar and regulates the help bar actions
      * and visibility on the screen
      * @param width The current width of the window
      * @param height The current height of the window
@@ -115,6 +115,4 @@ public class HelpHandler extends MovingMenu{
         }
         return false;
     }
-
-
 }

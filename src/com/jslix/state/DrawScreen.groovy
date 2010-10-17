@@ -14,13 +14,12 @@ import org.newdawn.slick.Graphics;
 * @version 09.24.10
 */
 
-//TODO: Finish commenting this class
 interface DrawScreen {
-def init();
-def update(int timePassed);
-def render(Graphics g);
-def render(Graphics2D g, Component dthis);
-def update(int width, int height, int sysTime, int mouseScroll);
-def update(String name, int index, boolean isApplet, boolean seeThru);
+    def init();
+    def update(int timePassed);
+    def render(Graphics g);
+    def render(Graphics2D g, Component dthis);
+    def update(int width, int height, int sysTime, int mouseScroll);
+    def update(String name, int index, boolean isApplet, boolean seeThru);
 }
 
