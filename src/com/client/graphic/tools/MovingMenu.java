@@ -23,11 +23,11 @@ import org.newdawn.slick.Graphics;
 
 public class MovingMenu extends MovingImage{
 
-    public final int REGULAR = 0;
-    public final int ROUND_BOX = 1;
-    public final int RECTANGLE = 2;
-    public final int RND_BORDER = 3;
-    public final int BORDER = 4;
+    public final int REGULAR = 0;//MenuItem regular item index
+    public final int ROUND_BOX = 1;//MenuItem round box item index
+    public final int RECTANGLE = 2;//MenuItem rectangle item index
+    public final int RND_BORDER = 3;//MenuItem round border item index
+    public final int BORDER = 4;//ManuItem border item index
 
     protected MenuItem[] allItems;//All Items for this menu
     private ArrayList<Integer> resetImage;//Helps better index images
@@ -37,7 +37,14 @@ public class MovingMenu extends MovingImage{
     private double sy;//A temp value for rescaling
     protected ImgLibrary imgResize;//This holds all resized images
 
-    //This creates a new moving menu, speed is the speed of movement
+    /**
+     * This class organizes a group of images into click-able boxes for
+     * easy menu management. Each menu item is binded to a select value
+     * for easy selection of the items
+     * @param locx The x-axis location of the menu
+     * @param locy The y-axis location of the menu
+     * @param speed The speed this menu moves
+     */
     public MovingMenu(int locx, int locy, double speed){
         super(locx, locy, speed);
         active = false;
@@ -50,46 +57,81 @@ public class MovingMenu extends MovingImage{
         sy = 0;
     }
 
-    //Creates a new item to be drawn on the screen
+    /**
+     * This creates a new empty menu item to be filled
+     * @param locx The x-axis location of this menu item
+     * @param locy The y-axis location of the menu item
+     * @param speed How quickly this menu item moves
+     */
     public void createNewItem(int locx, int locy, double speed){
         item = new MenuItem(locx, locy, speed);
     }
 
-    //Resets the screen
-    public void resetScreen(){
-        sx = 0;
-        sy = 0;
-    }
-
-    //Adds an image onto the item
+    /**
+     * This adds an image onto the created menu item based on file path
+     * @param imgPath The file path to the image
+     * @param opacity The opacity of this image (0-1)
+     */
     public void addImagePart(String imgPath, double opacity){
         addImgPart(imgPath, null, opacity);
     }
+
+    /**
+     * This adds an image onto the created menu item based on an image
+     * @param img The image to add to this menu item
+     * @param opacity The opacity of this image (0-1)
+     */
     public void addImagePart(Image img, double opacity){
     	addImgPart("", img, opacity);
     }
 
-    //Adds/Replaces the item to/on the list of items (do once per menu item)
+    /**
+     * This adds the menu item on a list so it'll be displayed.
+     * @param select The select index associated with this item
+     * @param selectable Whether this item changes when selected
+     */
     public void addMenuItem(int select, boolean selectable){
         addItem(REGULAR, select, null, imgRef.getX(allItems.length),
                 imgRef.getY(allItems.length), 0, selectable);
     }
 
-    //Adds a Rounded Filled Box to the Menu items list
+    /**
+     * This function adds a rounded filled box to the menu list
+     * @param select The select index associated with this item
+     * @param theColor The color of this rounded box
+     * @param sizex The width of this rounded box
+     * @param sizey The height of this rounded box
+     * @param arc The arc length of this rounded box
+     * @param selectable Whether this item changes when selected
+     */
     public void addRoundBox(int select, Color theColor,
             int sizex, int sizey, int arc, boolean selectable){
         addItem(ROUND_BOX, select, theColor,
                 sizex, sizey, arc, selectable);
     }
 
-    //Adds a rectangle Filled Box to the Menu Items list
+    /**
+     * This function adds a filled rectangle to the menu list
+     * @param select The select index associated with this item
+     * @param theColor The color of this rectangle
+     * @param sizex The width of this rectangle
+     * @param sizey The height of this rectangle
+     * @param selectable Whether this item changes when selected
+     */
     public void addBox(int select, Color theColor, int sizex, int sizey,
             boolean selectable){
         addItem(RECTANGLE, select, theColor,
                 sizex, sizey, 0, selectable);
     }
 
-    //Adds a rectangle border box to the Menu Items list
+    /**
+     * This function adds a rectangle border to the menu list
+     * @param select The select index associated with this item
+     * @param theColor The color of this border
+     * @param sizex The width of this border
+     * @param sizey The height of this border
+     * @param selectable Whether this item changes when selected
+     */
     public void addBorder(int select, Color theColor, int sizex, int sizey,
             boolean selectable){
         addItem(BORDER, select, theColor,
@@ -97,16 +139,46 @@ public class MovingMenu extends MovingImage{
     }
 
     //Adds a rounded border box to the menu items list
+    /**
+     * This function adds a rounded rectangle border to the menu list
+     * @param select The select index associated with this item
+     * @param theColor The color of this border
+     * @param sizex The width of this border
+     * @param sizey The height of this border
+     * @param arc The are width of this border
+     * @param selectable Whether this item changes when selected
+     */
     public void addRoundBorder(int select, Color theColor, int sizex,
             int sizey, int arc, boolean selectable){
         addItem(RND_BORDER, select, theColor,
                 sizex, sizey, arc, selectable);
     }
 
-    //Repositions the indexed item to the place you specify
+    /**
+     * This is used to refresh the visibility of all items
+     */
+    public void resetScreen(){
+        sx = 0;
+        sy = 0;
+    }
+
+    /**
+     * This function changes the position of a menu item in the list
+     * @param index The current position of the item in the list
+     * @param locx The new x-axis location to set this image to
+     * @param locy The new y-axis location to set this image to
+     */
     public void setItemPosition(int index, int locx, int locy){
         setItemPosition(index, locx, locy, false);
     }
+
+    /**
+     * This function changes the position of a menu item in the list
+     * @param index The current position of the item in the list
+     * @param locx The new x-axis location to set this image to
+     * @param locy The new y-axis location to set this image to
+     * @param addPrev Whether to add the previous image location(T) or not(F)
+     */
     public void setItemPosition(int index, int locx, int locy,
             boolean addPrev){
         if(index >= 0 && index < allItems.length){
@@ -120,7 +192,11 @@ public class MovingMenu extends MovingImage{
         }
     }
 
-    //Sets whether this item is drawable
+    /**
+     * This function sets the visibility and select-ability of the menu item
+     * @param index The current position of the item in the list
+     * @param draw Whether to draw this item(true) or not(false)
+     */
     public void setItemDraw(int index, boolean draw){
         if(index >= 0 && index < allItems.length){
             item = allItems[index];
@@ -129,7 +205,11 @@ public class MovingMenu extends MovingImage{
         }
     }
 
-    //This changes how selected items react in a menu
+    /**
+     * This sets the position of the selected images of the menu item
+     * @param index The current position of the item in the list
+     * @param choice The value that controls the indexed image display
+     */
     public void setItemChoice(int index, int choice){
         if(index >= 0 && index < allItems.length){
             item = allItems[index];
@@ -138,7 +218,11 @@ public class MovingMenu extends MovingImage{
         }
     }
 
-    //This changes how selected items react in a menu
+    /**
+     * This function sets the color of the menu item
+     * @param index The current position of the item in the list
+     * @param theColor The color to change the item to
+     */
     public void setItemColor(int index, Color theColor){
         if(index >= 0 && index < allItems.length && theColor != null){
             item = allItems[index];

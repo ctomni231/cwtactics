@@ -87,8 +87,8 @@ public class TitleReader extends XML_Parser{
             mainHelp = fillEntry(attrib, mainHelp, "list", "help");
         }
         if(super.isAheader("key")){
-        	keyOption = fillEntry(attrib, keyOption, "list", "text");
-        	keyHelp = fillEntry(attrib, keyHelp, "list", "help");
+            keyOption = fillEntry(attrib, keyOption, "list", "text");
+            keyHelp = fillEntry(attrib, keyHelp, "list", "help");
         }
     }
 

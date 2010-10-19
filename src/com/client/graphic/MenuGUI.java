@@ -80,7 +80,7 @@ public class MenuGUI extends VerticalMenu{
             String[] mainText, String[] mainHelp){
         help = mainHelp;
         text = new String[mainText.length];
-        for(int i = 0; ++i < mainText.length; )
+        for(int i = -1; ++i < mainText.length; )
         	text[i] = "- "+mainText[i]+" -";
         
         selectID = new int[mainID.length];

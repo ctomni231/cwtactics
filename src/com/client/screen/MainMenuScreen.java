@@ -76,18 +76,21 @@ public class MainMenuScreen extends Screen{
 
         menuScr = new MenuGUI(reader.arrow, reader.alpha, 20, 0, 165, 0);
         menuScr.init();
-        //menuScr.initMenu(reader.getMainOption(), reader.getMainSelect(),
-        //        reader.getMainText(), reader.getMainHelp());
+        //menuScr.initMenu(reader.mainOption, reader.mainSelect,
+        //        reader.mainText, reader.mainHelp);
         menuScr.setOrigScreen(SIZE_X, SIZE_Y);
         menuScr.setColorPath(reader.unitColor);
-
+        
         credScr = new CreditGUI(reader.alpha, reader.number, reader.credit,
                 0, 0, 1);
         credScr.setOpacity(0.7);
         credScr.setColorPath(reader.unitColor);
         credScr.setOrigScreen(SIZE_X, SIZE_Y);
 
-        keyScr = new KeyGUI(0, 0, 1);
+        keyScr = new KeyGUI(reader.alpha, reader.number, reader.arrow,
+        		20, 0, 165, 1);
+        keyScr.init(reader.keyOption, reader.keyHelp);
+        keyScr.setOrigScreen(SIZE_X, SIZE_Y);
 
         menuColor = MENU_COLOR;
         curColor = MENU_COLOR;

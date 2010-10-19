@@ -15,7 +15,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.12.10
+ * @version 10.18.10
  * @todo TODO Finish commenting this class
  */
 
@@ -41,7 +41,7 @@ public class VerticalMenu extends MovingMenu{
         vertPos = new ArrayList<Integer>();
         vertPart = new ArrayList<Integer>();
         curList = new ArrayList<Integer>();
-        maxItems = 1;
+        maxItems = 10;
         itemMin = 0;
         maxPos = 0;
         spacingY = 0;

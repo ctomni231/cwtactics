@@ -17,8 +17,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.11.10
- * @todo TODO Finish commenting this class
+ * @version 10.18.10
  */
 
 public class MovingImage implements ScreenSkeleton{
@@ -40,13 +39,19 @@ public class MovingImage implements ScreenSkeleton{
     protected double opacity;//How much color you can see through an image
 
     protected ImgLibrary imgRef;//The stored displayed Images
-    protected String logoTxt;//Almost obsolete, text based display
     protected boolean active;//This controls if image resizing is active
     protected Color[] dfltColor;//A list of default colors
     protected Color[] chngColor;//A list of recolors
     private double fsizex;//Stores the intended width for this image
     private double fsizey;//Stores the intended height for this image
 
+    /**
+     * This class creates a moving logo picture that appears to move around
+     * the screen
+     * @param locx The x-axis position of this object
+     * @param locy The y-axis position of this object
+     * @param speed How fast this object moves in the screen
+     */
     public MovingImage(int locx, int locy, double speed){
         posx = locx;
         fposx = locx;
@@ -57,7 +62,6 @@ public class MovingImage implements ScreenSkeleton{
         this.speed = speed;
         shadeOff = 0;
         imgRef = new ImgLibrary();
-        logoTxt = "";
         opacity = 1.0;
         scalex = 1;
         scaley = 1;
@@ -66,7 +70,11 @@ public class MovingImage implements ScreenSkeleton{
         active = true;
     }
 
-    //Allows you to add color changes to the images
+    /**
+     * This function changes image colors when displayed to the window
+     * @param fromColor The default color RGB to change
+     * @param toColor The color to change the default RGB to
+     */
     public void addColor(Color fromColor, Color toColor){
         if(fromColor != null && toColor != null){
             dfltColor = addColor(dfltColor, fromColor);
@@ -75,7 +83,9 @@ public class MovingImage implements ScreenSkeleton{
         }
     }
 
-    //Resets all color changes to the images
+    /**
+     * This function removes all color changing variables from the list
+     */
     public void resetColor(){
         dfltColor = null;
         chngColor = null;
@@ -93,26 +103,38 @@ public class MovingImage implements ScreenSkeleton{
         origy = scrY;
     }
 
-    //Sets an opacity for this image
+    /**
+     * This function sets an opacity for this image
+     * @param opacity How opaque this image is from 0-1
+     */
     public void setOpacity(double opacity){
         if(opacity >= 0 && opacity <= 1)
             this.opacity = opacity;
     }
 
-    //Sets a new image based on the filepath
+    /**
+     * Sets an image to display based on a path from a file
+     * @param imgPath The path to the image
+     */
     public void setImage(String imgPath){
         setImage(imgPath, 0, 0);
     }
 
-    //Sets a new image based on a current image
+    /**
+     * Sets an image to display based on another image
+     * @param img The java Image to display
+     */
     public void setImage(Image img){
         setImage(img, 0, 0);
     }
 
-    //Sets a new resizable image based on filepath
+    /**
+     * Sets an image to display based on a path from a file
+     * @param imgPath The path to the image
+     * @param sizex the resize width of the image
+     * @param sizey the resize height of the image
+     */
     public void setImage(String imgPath, int sizex, int sizey){
-        //if(sizex*sizey > 0)
-        //    imgRef.setImageSize(sizex, sizey);
         if(active)
             imgRef.addImage(0, imgPath);
         else
@@ -122,10 +144,13 @@ public class MovingImage implements ScreenSkeleton{
         cursx = 0;
     }
 
-    //Sets a new resizable image based on a current image
+    /**
+     * Sets an image to display based on another image
+     * @param img The java Image to display
+     * @param sizex the resize width of the image
+     * @param sizey the resize height of the image
+     */
     public void setImage(Image img, int sizex, int sizey){
-        //if(sizex*sizey > 0)
-        //    imgRef.setImageSize(sizex, sizey);
         if(active)
             imgRef.addImage(0, img);
         else
@@ -135,46 +160,61 @@ public class MovingImage implements ScreenSkeleton{
         cursx = 0;
     }
 
-    //Sets a whole new offset for the shadow
+    /**
+     * Sets a shadow casted underneath the image
+     * @param offset How far the shadow is from the image
+     */
     public void setShadowOffset(int offset){
         shadeOff = offset;
     }
 
-    //Sets a whole new color for the shadow
+    /**
+     * Sets the blending color for the shadow
+     * @param theColor The color of the shadow blend
+     */
     public void setShadowColor(Color theColor){
         if(theColor != null)
             shadow = theColor;
     }
 
-    //Sets new text for the display
-    public void setText(String display){
-        logoTxt = display;
-    }
-
-    //Forces the image into this position
+    /**
+     * This sets a new position for the image without altering the final
+     * position
+     * @param x The x-axis location
+     * @param y The y-axis location
+     */
     public void setPosition(int x, int y){
         posx = x;
         posy = y;
     }
 
-    //Glides the image into a position specified
+    /**
+     * This sets a new position for the image that it will move to
+     * @param x The x-axis location
+     * @param y The y-axis location
+     */
     public void setFinalPosition(int x, int y){
         fposx = x;
         fposy = y;
     }
 
-    //Clears all stored text
-    public void clearText(){
-        logoTxt = "";
-    }
-
-    //Sets the speed in which the menu will glide
+    /**
+     * This sets the image movement speed for the image
+     * @param thisSpeed The movement speed for the image
+     */
     public void setSpeed(double thisSpeed){
         if(thisSpeed < 0)
             thisSpeed *= -1;
         speed = thisSpeed;
     }
 
+    /**
+     * This function updates the visuals of the moving image
+     * @param width The current width of the screen
+     * @param height The current height of the screen
+     * @param sysTime The system time in milliseconds
+     * @param mouseScroll The mouse scroll wheel value
+     */
     public void update(int width, int height, int sysTime, int mouseScroll) {
         renderSpeed();
         if(cursx != width || cursy != height){
@@ -200,6 +240,10 @@ public class MovingImage implements ScreenSkeleton{
         }
     }
 
+    /**
+     * This function draws a moving image to the screen
+     * @param g The SLick graphics object
+     */
     public void render(Graphics g) {
         if(imgRef.length() > 1){
             if(shadeOff != 0 && shadow != null)
@@ -217,11 +261,14 @@ public class MovingImage implements ScreenSkeleton{
                 g.drawImage(imgRef.getSlickImage(1),
                         (int)(posx*scalex), (int)(posy*scaley));
 
-        }else if(!logoTxt.matches(""))
-            g.drawString(logoTxt,
-                    (int)(posx*scalex), (int)(posy*scaley));
+        }
     }
 
+    /**
+     * This function draws a moving image to the screen
+     * @param g The Java2D graphics object
+     * @param dthis The Java2D Component object
+     */
     public void render(Graphics2D g, Component dthis){
         if(imgRef.length() > 1){
             if(opacity < 1)
@@ -239,11 +286,12 @@ public class MovingImage implements ScreenSkeleton{
                         (int)(posx*scalex), (int)(posy*scaley), dthis);
             if(opacity < 1)
                 g.setComposite(AlphaComposite.SrcOver);
-        }else if(!logoTxt.matches(""))
-            g.drawString(logoTxt, (int)(posx*scalex), (int)(posy*scaley));
+        }
     }
 
-    //This controls the gliding of the images
+    /**
+     * This controls the movement of the images
+     */
     private void renderSpeed(){
         if(posx == fposx && posy == fposy);
         else if(speed == 0){
@@ -261,13 +309,13 @@ public class MovingImage implements ScreenSkeleton{
         }
     }
 
-    public void init() {}
-
-    public void update(String name, int index, boolean isApplet,
-            boolean seethru) {}
-
-    public void update(int timePassed) {}
-
+    /**
+     * This function adds a color to the color array used for repainting
+     * images
+     * @param colorArray The current color array
+     * @param theColor The color to be added
+     * @return The color appended onto the array
+     */
     private Color[] addColor(Color[] colorArray, Color theColor){
         if(colorArray == null)
             colorArray = new Color[0];
@@ -279,4 +327,11 @@ public class MovingImage implements ScreenSkeleton{
 
         return colorArray;
     }
+
+    public void init() {}
+
+    public void update(String name, int index, boolean isApplet,
+            boolean seethru) {}
+
+    public void update(int timePassed) {}
 }

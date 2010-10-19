@@ -30,6 +30,7 @@ public class ScrollImage extends MovingImage {
     private Color textColor;
     private Color boxColor;
     private MouseHelper helper;
+    private String logoTxt;
 
     public ScrollImage(int locx, int locy,
             int sizex, int sizey, int moveSpeed){
