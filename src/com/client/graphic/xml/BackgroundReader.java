@@ -11,23 +11,26 @@ import org.xml.sax.Attributes;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 09.21.10
- * @todo TODO Finish commenting this class
  */
 
 public class BackgroundReader extends XML_Parser {
 
-    private String[] items;
+    public String[] items;//A list of background items from a file
     
     //Reads in a background from an XML file
+    /**
+     * This class reads a list of images from a pre-created XML file
+     * @param file The file path to the XML
+     */
     public BackgroundReader(String file){
         super(file);
     }
 
-    //Returns the background item paths
-    public String[] getEntries(){
-        return items;
-    }
-
+    /**
+     * This function sorts the tags into readable entries for storage of
+     * strings
+     * @param attributes A current line in the XML file
+     */
     @Override
     public void entry(Attributes attributes){
         if(attributes == null)  return;
@@ -36,13 +39,22 @@ public class BackgroundReader extends XML_Parser {
             backgroundEntry(attributes);
     }
 
-    //Lists the backgorund entries in an ArrayList
+    /**
+     * This lists all the background entries inside a String array
+     * @param attrib A current line in an XML file
+     */
     private void backgroundEntry(Attributes attrib){
         if(super.isAheader("image")){
             items = fillEntry(attrib, items);
         }
     }
 
+    /**
+     * This function performs the storage of items into an array
+     * @param attrib A current line in the XML file
+     * @param fillData The array to create and fill with items
+     * @return A new array with the attribute within it
+     */
     private String[] fillEntry(Attributes attrib, String[] fillData){
         if(fillData == null)
             fillData = new String[0];
@@ -56,6 +68,12 @@ public class BackgroundReader extends XML_Parser {
         return fillData;
     }
 
+    /**
+     * This function converts a single entry into a String
+     * @param attrib The current line in the XML file
+     * @param data The tag name data key to extract from
+     * @return A String containing the key value
+     */
     private String fillEntry(Attributes attrib, String data){
         return (attrib.getValue(data) != null) ? attrib.getValue(data) : "";
     }

@@ -12,12 +12,14 @@ import org.newdawn.slick.SlickException;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 09.10.10
+ * @version 10.21.10
  * @todo TODO Finish commenting this class
  */
 
 public class SlixContainer extends CanvasGameContainer{
 
+	private static final long serialVersionUID = 2452945053572843636L;
+	
     public SlixContainer(Game game) throws SlickException{
         super(game);
     }

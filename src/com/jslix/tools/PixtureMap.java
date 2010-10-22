@@ -15,12 +15,14 @@ import java.awt.image.MemoryImageSource;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.05.10
+ * @version 10.21.10
  * @todo TODO Finish commenting this class
  */
 
 public class PixtureMap extends ImgLibrary{
 
+	private static final long serialVersionUID = 2452945053572843636L;
+	
     //The graphics class used for creating images
     private Graphics2D g;
     //The Image class used to store the creations

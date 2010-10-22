@@ -9,11 +9,13 @@ import com.jslix.system.Slix;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.08.10
+ * @version 10.21.10
  */
 public class JMainGame extends Slix{
-
-    public static String GAME_TITLE = "Custom Wars Tactics Pre-Alpha 0.6";
+	
+	private static final long serialVersionUID = 2452945053572843636L;
+	
+	public static String GAME_TITLE = "Custom Wars Tactics Pre-Alpha 0.6";
     public final static int GAME_WIDTH = 640; //480, 640
     public final static int GAME_HEIGHT = 480; //320, 480
 

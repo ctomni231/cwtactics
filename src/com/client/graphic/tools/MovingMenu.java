@@ -18,7 +18,6 @@ import org.newdawn.slick.Graphics;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 10.15.10
- * @todo TODO Finish commenting this class
  */
 
 public class MovingMenu extends MovingImage{
@@ -88,7 +87,7 @@ public class MovingMenu extends MovingImage{
     /**
      * This adds the menu item on a list so it'll be displayed.
      * @param select The select index associated with this item
-     * @param selectable Whether this item changes when selected
+     * @param selectable Whether the user can interact with the menu item
      */
     public void addMenuItem(int select, boolean selectable){
         addItem(REGULAR, select, null, imgRef.getX(allItems.length),
@@ -102,7 +101,7 @@ public class MovingMenu extends MovingImage{
      * @param sizex The width of this rounded box
      * @param sizey The height of this rounded box
      * @param arc The arc length of this rounded box
-     * @param selectable Whether this item changes when selected
+     * @param selectable Whether the user can interact with the menu item
      */
     public void addRoundBox(int select, Color theColor,
             int sizex, int sizey, int arc, boolean selectable){
@@ -116,7 +115,7 @@ public class MovingMenu extends MovingImage{
      * @param theColor The color of this rectangle
      * @param sizex The width of this rectangle
      * @param sizey The height of this rectangle
-     * @param selectable Whether this item changes when selected
+     * @param selectable Whether the user can interact with the menu item
      */
     public void addBox(int select, Color theColor, int sizex, int sizey,
             boolean selectable){
@@ -130,7 +129,7 @@ public class MovingMenu extends MovingImage{
      * @param theColor The color of this border
      * @param sizex The width of this border
      * @param sizey The height of this border
-     * @param selectable Whether this item changes when selected
+     * @param selectable Whether the user can interact with the menu item
      */
     public void addBorder(int select, Color theColor, int sizex, int sizey,
             boolean selectable){
@@ -146,7 +145,7 @@ public class MovingMenu extends MovingImage{
      * @param sizex The width of this border
      * @param sizey The height of this border
      * @param arc The are width of this border
-     * @param selectable Whether this item changes when selected
+     * @param selectable Whether the user can interact with the menu item
      */
     public void addRoundBorder(int select, Color theColor, int sizex,
             int sizey, int arc, boolean selectable){
@@ -211,7 +210,7 @@ public class MovingMenu extends MovingImage{
      * @param choice The value that controls the indexed image display
      */
     public void setItemChoice(int index, int choice){
-        if(index >= 0 && index < allItems.length){
+        if(index >= -1 && index < allItems.length){
             item = allItems[index];
             item.choice = choice;
             allItems[index] = item;
@@ -231,7 +230,12 @@ public class MovingMenu extends MovingImage{
         }
     }
 
-    //This sets a new image within the menu item
+    /**
+     * This function sets a new image within a menu item
+     * @param index The current position of the item in the list
+     * @param itemIndex The current position of the picture in the menu item
+     * @param imgPath The file path of the new image
+     */
     public void setItemImage(int index, int itemIndex, String imgPath){
         if(index >= 0 && index < allItems.length){
             if(item.getIndexExists(itemIndex)){
@@ -243,7 +247,12 @@ public class MovingMenu extends MovingImage{
         }
     }
 
-    //This sets a new image within the menu item
+    /**
+     * This function sets a new image within a menu item
+     * @param index The current position of the item in the list
+     * @param itemIndex The current position of the picture in the menu item
+     * @param img The new image to replace the current image
+     */
     public void setItemImage(int index, int itemIndex, Image img){
         if(index >= 0 && index < allItems.length){
             if(item.getIndexExists(itemIndex)){
@@ -255,7 +264,13 @@ public class MovingMenu extends MovingImage{
         }
     }
 
-    //This deals with mouse selecting within the menu
+    /**
+     * This controls how the mouse interacts with the selection of the menu
+     * items
+     * @param mx The x-axis position of the mouse
+     * @param my The y-axis position of the mouse
+     * @return Whether the mouse is overlapping a menu item(T) or not(F)
+     */
     public boolean mouseSelect(int mx, int my){
     	for(MenuItem itm: allItems){
             if(!itm.drawthis)
@@ -279,6 +294,14 @@ public class MovingMenu extends MovingImage{
     	return false;
     }
 
+    /**
+     * This function deals with updating all the graphical features of
+     * the menu
+     * @param width The current width of the window
+     * @param height The current height of the window
+     * @param sysTime The system time in milliseconds
+     * @param mouseScroll The current mouse scroll wheel value
+     */
     @Override
     public void update(int width, int height, int sysTime, int mouseScroll){
         super.update(width, height, sysTime, mouseScroll);
@@ -299,6 +322,10 @@ public class MovingMenu extends MovingImage{
         }
     }
 
+    /**
+     * This draws the menu using a graphics object
+     * @param g The Slick2D Graphics object
+     */
     @Override
     public void render(Graphics g){
         for(MenuItem itm: allItems){
@@ -307,18 +334,21 @@ public class MovingMenu extends MovingImage{
 
             switch(itm.id){
                 case REGULAR:
-                	if(itm.opacity >= 0 && itm.opacity <= 1)
-                		imgResize.getSlickImage(
+                	if(itm.choice != -1 || itm.select == select){
+                		if(itm.opacity >= 0 && itm.opacity <= 1)
+                			imgResize.getSlickImage(
                                         itm.getPicture(itm.select == select))
                                         .setAlpha((float)itm.opacity);
-                	else if(opacity < 1)
-                		imgResize.getSlickImage(
+                		else if(opacity < 1)
+                			imgResize.getSlickImage(
                                         itm.getPicture(itm.select == select))
                 				.setAlpha((float)opacity);
-                    g.drawImage(imgResize.getSlickImage(itm.getPicture(
-                            itm.select == select)),
+                	
+                		g.drawImage(imgResize.getSlickImage(
+                                    itm.getPicture(itm.select == select)),
                             (int)((posx+itm.posx)*scalex), 
                             (int)((posy+itm.posy)*scaley));
+                	}
                     break;
                 default:
                     if(select == itm.select || !itm.selectable){
@@ -351,6 +381,11 @@ public class MovingMenu extends MovingImage{
         }
     }
 
+    /**
+     * This draws a menu using the graphics object
+     * @param g The Java2D graphics object
+     * @param dthis The Java2D Component object
+     */
     @Override
     public void render(Graphics2D g, Component dthis){
         for(MenuItem itm: allItems){
@@ -368,7 +403,8 @@ public class MovingMenu extends MovingImage{
                 		g.setComposite(AlphaComposite.getInstance(
                 				AlphaComposite.SRC_OVER,
                                 (float)opacity));
-                    g.drawImage(imgResize.getImage(itm.getPicture(
+                	if(itm.choice != -1 || itm.select == select)
+                		g.drawImage(imgResize.getImage(itm.getPicture(
                             itm.select == select)),
                             (int)((posx+itm.posx)*scalex), 
                             (int)((posy+itm.posy)*scaley), dthis);
@@ -408,18 +444,31 @@ public class MovingMenu extends MovingImage{
         }
     }
 
-    //Cleanly deletes items for the menu List
+    /**
+     * This function deletes all menu items in the item list cleanly
+     */
     public void deleteItems(){
         for(int i = allItems.length; --i >= 0 ;){
             deleteItem(i);
         }
     }
+
+    /**
+     * This function deletes all items in the menu item list of a specific
+     * type
+     * @param type The type of menu item to delete
+     */
     public void deleteItems(int type){
         for(int i = 0; i < allItems.length; i++){
             if(item.id == type)
                 deleteItem(i);
         }
     }
+
+    /**
+     * This function deletes an item you specify
+     * @param index The index location of the menu item
+     */
     public void deleteItem(int index){
         if(index >= 0 && index < allItems.length){
             item = allItems[index];
@@ -437,7 +486,11 @@ public class MovingMenu extends MovingImage{
         }
     }
 
-    //Switchies two items
+    /**
+     * This function swaps two items positions in the menu list
+     * @param index The index location of the menu item
+     * @param change The new location of the menu item
+     */
     public void swapItems(int index, int change){
         if(index >= 0 && index < allItems.length &&
                 change >= 0 && change < allItems.length){
@@ -447,7 +500,17 @@ public class MovingMenu extends MovingImage{
         }
     }
 
-    //This universally adds an item to the list
+    /**
+     * This function is the universal hub function for adding items to a
+     * menu item list for each type
+     * @param id The type of item this item is associated as
+     * @param select The select index this item will highlight for
+     * @param theColor The color of this item
+     * @param sizex The width of this item
+     * @param sizey The height of this item
+     * @param arc The arc length of this item
+     * @param selectable Whether this item interacts with the user
+     */
     private void addItem(int id, int select, Color theColor,
          int sizex, int sizey, int arc, boolean selectable){
         item.id = id;
@@ -460,7 +523,9 @@ public class MovingMenu extends MovingImage{
         addItem();
     }
 
-    //Adds an item onto the item array
+    /**
+     * This function adds an item onto the menu item array
+     */
     private void addItem(){
         MenuItem[] temp = allItems;
         allItems = new MenuItem[temp.length+1];
@@ -468,7 +533,13 @@ public class MovingMenu extends MovingImage{
         allItems[allItems.length-1] = item;
     }
 
-    //Deals with adding images to the array of images
+    /**
+     * This function is the universal hub function for adding an image to
+     * a menu item
+     * @param imgPath The file path to the image
+     * @param img The java2D image to add
+     * @param opacity How opaque an image is from 0 - 1.
+     */
     private void addImgPart(String imgPath, Image img, double opacity){
     	if(resetImage.isEmpty()){
             item.addReference(imgRef.length());
@@ -486,14 +557,19 @@ public class MovingMenu extends MovingImage{
         item.opacity = opacity;
     }
 
-    //Gets the scale of the window
+    /**
+     * This function gets the window width
+     * @return The window width
+     */
     public double getScaleX(){
         return scalex;
     }
 
-    //Gets the scale of the window
+    /**
+     * This function gets the window height
+     * @return The window height
+     */
     public double getScaleY(){
         return scaley;
     }
-
 }

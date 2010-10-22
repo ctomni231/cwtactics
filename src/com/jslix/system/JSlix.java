@@ -22,6 +22,8 @@ package com.jslix.system;
 
 public class JSlix extends Slix{
 
+	private static final long serialVersionUID = 2452945053572843636L;
+	
     //This function allows you to create either a Java frame or a Slick frame
     //Creating a Java frame uses JSlix.showWindow() and it does not require
     //natives.

@@ -36,6 +36,14 @@ public class VerticalMenu extends MovingMenu{
 
     public int track;//Tracks the position of the menu
 
+    /**
+     * The vertical menu class expands the functionality of the Moving
+     * Menu class to create a vertical menu of items. It still allows you
+     * to use the old methods as well making it very versatile.
+     * @param locx The x-axis location of the menu
+     * @param locy The y-axis location of the menu
+     * @param speed The movement speed of the menu
+     */
     public VerticalMenu(int locx, int locy, double speed){
         super(locx, locy, speed);
         vertPos = new ArrayList<Integer>();
@@ -51,35 +59,78 @@ public class VerticalMenu extends MovingMenu{
     }
 
     //Adds a Vertical Item to the Menu
+    /**
+     * This function adds a vertical menu item to the menu list. This item
+     * lines itself into a vertical menu when added
+     * @param position The menu position of this menu item
+     * @param select The select index this item interacts with
+     * @param selectable Whether the user can interact with the menu item
+     */
     public void addVertItem(int position, int select, boolean selectable){
         addVertical(position);
         addMenuItem(select, selectable);
     }
 
-    //Returns how many Vertical Items are stored
+    /**
+     * This function tells you how many Vertical items are currently stored
+     * @return The number of Vertical items stored
+     */
     public int getVertSize(){
         return vertPart.size();
     }
 
+    /**
+     * This returns the current menu item of a vertical menu
+     * @return The current menu item of a vertical menu
+     */
     public int getVertIndex(){
         return curList.isEmpty() ? 0: curList.get(track);
     }
 
-    //Adds a Round Filled Box pinned to the Vertical menu
+    /**
+     * This function adds a rounded filled box that follows the rules
+     * of a vertical menu
+     * @param position The menu position of this menu item
+     * @param select The select index associated with this item
+     * @param theColor The color of this rounded box
+     * @param sizex The width of this rounded box
+     * @param sizey The height of this rounded box
+     * @param arc The arc length of this rounded box
+     * @param selectable Whether the user can interact with the menu item
+     */
     public void addVertRound(int position, int select, Color theColor,
             int sizex, int sizey, int arc, boolean selectable){
         addVertical(position);
         addRoundBox(select, theColor, sizex, sizey, arc, selectable);
     }
 
-    //Adds a Round Border pinned to the Vertical menu
+    /**
+     * This function adds a rounded border that follows the rules of
+     * a vertical menu
+     * @param position The menu position of this menu item
+     * @param select The select index associated with this item
+     * @param theColor The color of this rounded border
+     * @param sizex The width of this rounded border
+     * @param sizey The height of this rounded border
+     * @param arc The arc length of this rounded border
+     * @param selectable Whether the user can interact with the menu item
+     */
     public void addVertRoundBorder(int position, int select, Color theColor,
             int sizex, int sizey, int arc, boolean selectable){
         addVertical(position);
         addRoundBorder(select, theColor, sizex, sizey, arc, selectable);
     }
 
-    //Adds a filled box pinned to the vertical menu
+    /**
+     * This function adds a rectangle colored box that follows the rules
+     * of a vertical menu
+     * @param position The menu position of this menu item
+     * @param select The select index associated with this item
+     * @param theColor The color of this rectangle
+     * @param sizex The width of this rectangle
+     * @param sizey The height of this rectangle
+     * @param selectable Whether the user can interact with the menu item
+     */
     public void addVertBox(int position, int select, Color theColor,
             int sizex, int sizey, boolean selectable){
         addVertical(position);

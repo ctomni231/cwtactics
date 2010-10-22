@@ -21,13 +21,15 @@ import java.awt.image.BufferedImage;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 09.21.10
+ * @version 10.21.10
  * @todo TODO Finish commenting this class
  */
 
 public class SlixApplet extends Applet implements Runnable, KeyListener,
         MouseListener, MouseMotionListener, MouseWheelListener{
 
+	private static final long serialVersionUID = 2452945053572843636L;
+	
     private Thread looper;
     private int id;
     private SlixGame game;

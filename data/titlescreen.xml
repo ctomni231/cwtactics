@@ -50,7 +50,7 @@
 			<list text="CANCEL" 
 			help="CANCEL - Sets a keyboard key for cancel" />
 			<list text="SELECT BUTTON TO EDIT" 
-			help="EDIT - SELECT to edit this item" />
+			help="- Press SELECT to edit this item -" />
 			<list text="GO BACK"
 			help="GO BACK - Go back to title screen" />
 			<list text="PRESS A KEY"

@@ -9,11 +9,12 @@ import com.jslix.system.SlixApplet;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 09.12.10
+ * @version 09.21.10
  */
 public class JApplet extends SlixApplet {
 
-    /*
+	private static final long serialVersionUID = 2452945053572843636L;
+	/*
      * Contains the code for making a Java2D Applet from the JSlix
      * Screens.
      */

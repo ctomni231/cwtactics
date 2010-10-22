@@ -15,11 +15,13 @@ import java.security.AccessControlException;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 09.10.10
+ * @version 10.21.10
  * @todo TODO Finish commenting this class
  */
 
 public class ImgLoader extends Component{
+	
+	private static final long serialVersionUID = 2452945053572843636L;
 
     //Gets an Image from a relative file path
     public Image getFileImage(String filename){

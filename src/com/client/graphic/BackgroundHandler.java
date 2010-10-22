@@ -137,7 +137,7 @@ public class BackgroundHandler implements ScreenSkeleton {
      */
     private void loadRandomBackground(){
         BackgroundReader reader = new BackgroundReader("data/background.xml");
-        String[] entries = reader.getEntries();
+        String[] entries = reader.items;
 
         if(entries.length > 0){
             generator = new Random();

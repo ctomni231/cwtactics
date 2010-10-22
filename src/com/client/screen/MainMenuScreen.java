@@ -23,7 +23,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.16.10
+ * @version 10.21.10
  * @todo TODO Finish commenting this class
  */
 
@@ -88,7 +88,7 @@ public class MainMenuScreen extends Screen{
         credScr.setOrigScreen(SIZE_X, SIZE_Y);
 
         keyScr = new KeyGUI(reader.alpha, reader.number, reader.arrow,
-        		20, 0, 165, 1);
+        		20, 0, 200, 1);
         keyScr.init(reader.keyOption, reader.keyHelp);
         keyScr.setOrigScreen(SIZE_X, SIZE_Y);
 
@@ -275,7 +275,7 @@ public class MainMenuScreen extends Screen{
 
     private void keyScr(){
         if(scrStart){
-            logoPic.setFinalPosition(0, 145, 15);
+            logoPic.setFinalPosition(0, 145, 30);
             logoPic.setFinalPosition(2, 0, 480);
             scrStart = false;
         }

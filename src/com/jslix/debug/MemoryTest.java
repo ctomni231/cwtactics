@@ -13,7 +13,7 @@ import java.util.Vector;
  *          <li>Carr, Crecen</li></ul>
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 09.21.10
+ * @version 10.21.10
  */
 
 public class MemoryTest {
@@ -65,7 +65,7 @@ public class MemoryTest {
      */
     public static String calcMaxMem(){
         long l = time();
-        Vector localVector = new Vector(512);
+        Vector<byte[]> localVector = new Vector<byte[]>(512);
         for (int i = 0; (i < 512) && (time() - l < 2500L); i++)
         try{
             localVector.addElement(new byte[1048576]);

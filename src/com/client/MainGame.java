@@ -39,9 +39,10 @@ import org.newdawn.slick.state.StateBasedGame;
  * 
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 8.1.2010
+ * @version 10.21.2010
  */
 public class MainGame {
+	private static final long serialVersionUID = 2452945053572843636L;
 	
     public static String GAME_TITLE = "Custom Wars Tactics Pre-Alpha 0.6";
     

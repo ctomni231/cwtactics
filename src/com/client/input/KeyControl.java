@@ -12,7 +12,7 @@ import com.jslix.system.KeyPress;
  * @author <ul><li>Carr, Crecen</li>
  *              <li>Radom, Alexander</li></ul>
  * @license Look into "LICENSE" file for further information
- * @version 10.15.10
+ * @version 10.21.10
  */
 public class KeyControl {
     /*
@@ -21,7 +21,7 @@ public class KeyControl {
     public static enum Keys{
         // action keys with values for keyboard keys
         UP(200, 38), DOWN(208, 40),
-        RIGHT(205, 39), LEFT(203, 37),
+        LEFT(203, 37), RIGHT(205, 39), 
         ENTER(44, 90),CANCEL(45, 88);
 
         // key value of the key

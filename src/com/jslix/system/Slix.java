@@ -28,13 +28,15 @@ import org.newdawn.slick.SlickException;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.12.10
+ * @version 10.21.10
  * @todo TODO Finish commenting this class
  */
 
 public class Slix extends JComponent implements Runnable, KeyListener,
         MouseListener, MouseMotionListener, MouseWheelListener {
 
+	private static final long serialVersionUID = 2452945053572843636L;
+	
     public static void main(String[] argv) {       
         Slix game = new Slix(480, 320);
         if(argv.length > 0){

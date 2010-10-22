@@ -22,6 +22,8 @@ package com.jslix.system;
 
 public class JSlixApplet extends SlixApplet{
 
+	private static final long serialVersionUID = 2452945053572843636L;
+	
     //This is the only function needed to create java applets
     public JSlixApplet(){
         super();
