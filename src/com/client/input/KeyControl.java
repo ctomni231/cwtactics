@@ -12,7 +12,7 @@ import com.jslix.system.KeyPress;
  * @author <ul><li>Carr, Crecen</li>
  *              <li>Radom, Alexander</li></ul>
  * @license Look into "LICENSE" file for further information
- * @version 10.21.10
+ * @version 10.22.10
  */
 public class KeyControl {
     /*
@@ -73,6 +73,48 @@ public class KeyControl {
             this.java = java;
             this.slick = slick;
         }
+    }
+
+    /**
+     * This function checks to see if the user is actively pressing something
+     * @return if a user a pressing an action(true) or not(false)
+     */
+    public static boolean isUserActive(){
+        return KeyPress.userActive();
+    }
+
+    /**
+     * This function tells you if the last action pressed was a mouse action
+     * @return if the user pressed the mouse action last
+     */
+    public static boolean isMouseFocused(){
+        return KeyPress.mouseFocused();
+    }
+
+    /**
+     * This function gets the last key pressed by the user
+     * @return The last key pressed
+     */
+    public static int getLastKey(){
+        return KeyPress.lastKeyAction();
+    }
+
+    /**
+     * This function gets the last mouse click done by the user
+     * @return The last mouse click
+     */
+    public static int getLastMouse(){
+        return KeyPress.lastMouseAction();
+    }
+
+    /**
+     * This function converts Slick keys into Java keys and vice versa
+     * depending on the window that is displayed
+     * @param keycode The current key code to convert
+     * @return A key code opposite to the window displayed
+     */
+    public static int getKeyConversion(int keycode){
+        return KeyPress.getKeyConversion(keycode);
     }
 
     /**

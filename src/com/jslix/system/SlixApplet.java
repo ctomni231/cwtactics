@@ -28,7 +28,7 @@ import java.awt.image.BufferedImage;
 public class SlixApplet extends Applet implements Runnable, KeyListener,
         MouseListener, MouseMotionListener, MouseWheelListener{
 
-	private static final long serialVersionUID = 2452945053572843636L;
+    private static final long serialVersionUID = 2452945053572843636L;
 	
     private Thread looper;
     private int id;

@@ -4,7 +4,7 @@ JSlix Screen - Complete (JMain Runnable)
 [#] = Started
 [ ] = Not Started
 
-Phase 1 - Title Screen [#]
+Phase 1 - Title Screen [*]
 
 Title Screen - Background Display (XML root)  [*]
 Title Screen - Logo Display & Movement        [*]
@@ -16,8 +16,8 @@ Main Menu - Vertical Menu Display             [*]
 Main Menu - Menu Functionality (XML root)     [*]
 Credit Screen - Credit Display                [*]
 Credit Screen - Function (Text .txt roots)    [*]
-Key Configure - Menu Display (Java roots)     [#]
-Key Configure - Menu Functionality (XML root) [#]
+Key Configure - Menu Display (Java roots)     [*]
+Key Configure - Menu Functionality (XML root) [*]
 
 Phase 2 - Map Screen [ ]
 
@@ -96,7 +96,7 @@ Morale Bar (Top) - Funding Display                                      [ ]
 Statistic Bar (Bottom) - Terrain Attribute Display                      [ ]
 Statistic Bar (Bottom) - Unit Attribute Display                         [ ]
 
-Phase 6 - CO Functionality
+Phase 7 - CO Functionality
 
 CO Select Screen - Menu Display                                         [ ]
 CO Select Screen - Menu Functionality (XML root)                        [ ]

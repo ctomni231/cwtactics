@@ -13,7 +13,7 @@ import java.util.Scanner;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 09.25.10
+ * @version 10.22.10
  */
 
 public class KeyPress {
@@ -223,7 +223,7 @@ public class KeyPress {
         temp.code = keycode;
         temp.index = 0;
         lastKey = keycode;
-        mouseFocus = true;
+        mouseFocus = false;
         alterKeyPress(temp, true);
     }
 
@@ -237,7 +237,7 @@ public class KeyPress {
         temp.code = mousebutton;
         temp.index = 1;
         lastMouse = mousebutton;
-        mouseFocus = false;
+        mouseFocus = true;
         alterKeyPress(temp, true);
     }
 

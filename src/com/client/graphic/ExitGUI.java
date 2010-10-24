@@ -161,12 +161,12 @@ public class ExitGUI extends MovingMenu{
         }
         
         if(!helper.getMouseLock())
-        	mouseSelect(KeyControl.getMouseX(), KeyControl.getMouseY());
+            mouseSelect(KeyControl.getMouseX(), KeyControl.getMouseY());
         
         if(mouseScroll != 0){
-        	helper.setMouseLock(KeyControl.getMouseX(), 
+            helper.setMouseLock(KeyControl.getMouseX(),
         			KeyControl.getMouseY());
-        	select *= -1;
+            select *= -1;
         }
 
         if(Controls.isActionClicked()){

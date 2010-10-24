@@ -22,13 +22,14 @@ import org.newdawn.slick.SlickException;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 09.10.10
- * @todo TODO Finish commenting this class
  */
 
 public class JSlixGame extends SlixGame{
 
-    //The main function allows you to create Slick Applets from
-    //your program.
+    /**
+     * This function is used for creating Slick applets
+     * @param args No arguments available
+     */
     public static void main(String[] args){
         try{
             AppGameContainer app = new AppGameContainer(new JSlixGame());
@@ -42,13 +43,14 @@ public class JSlixGame extends SlixGame{
         }
     }
 
-
-    //Override this function to add your own screens when the window
-    //initializes. Required for all applets and frames.
+    /**
+     * This function is used for loading and initializing screens into
+     * the JSlix classes. It is required that this function is overridden
+     * and used when trying to upload you own screens into the window.
+     */
     @Override
     public void loadGame(){
         //DO ALL YOUR INITIALIZATIONS FOR YOUR SCREENS HERE!!!
         SlixLibrary.addFrameScreen(new JTestScreen());
     }
-
 }

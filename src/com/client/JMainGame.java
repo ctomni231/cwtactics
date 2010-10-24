@@ -13,9 +13,9 @@ import com.jslix.system.Slix;
  */
 public class JMainGame extends Slix{
 	
-	private static final long serialVersionUID = 2452945053572843636L;
+    private static final long serialVersionUID = 2452945053572843636L;
 	
-	public static String GAME_TITLE = "Custom Wars Tactics Pre-Alpha 0.6";
+    public static String GAME_TITLE = "Custom Wars Tactics Pre-Alpha 0.6";
     public final static int GAME_WIDTH = 640; //480, 640
     public final static int GAME_HEIGHT = 480; //320, 480
 

@@ -35,14 +35,14 @@ import org.newdawn.slick.state.StateBasedGame;
 /**
  * MainGame.java
  * 
- * This handles displaying the game on the screen.
+ * This handles displaying the game on the screen. (8/1/10)
  * 
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 10.21.2010
  */
 public class MainGame {
-	private static final long serialVersionUID = 2452945053572843636L;
+    private static final long serialVersionUID = 2452945053572843636L;
 	
     public static String GAME_TITLE = "Custom Wars Tactics Pre-Alpha 0.6";
     

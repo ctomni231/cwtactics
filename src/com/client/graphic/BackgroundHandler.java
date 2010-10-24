@@ -18,7 +18,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.11.10
+ * @version 10.21.10
  */
 public class BackgroundHandler implements ScreenSkeleton {
 

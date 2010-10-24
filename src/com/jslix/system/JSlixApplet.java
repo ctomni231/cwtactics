@@ -17,14 +17,15 @@ package com.jslix.system;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 09.10.10
- * @todo TODO Finish commenting this class
  */
 
 public class JSlixApplet extends SlixApplet{
 
-	private static final long serialVersionUID = 2452945053572843636L;
-	
-    //This is the only function needed to create java applets
+    private static final long serialVersionUID = 2452945053572843636L;
+
+    /**
+     * This function is the only needed function for creating JSlix applets
+     */
     public JSlixApplet(){
         super();
         //Use this function to add your game class to Slix so it'll

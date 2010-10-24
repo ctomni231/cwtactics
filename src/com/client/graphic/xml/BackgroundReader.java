@@ -17,7 +17,6 @@ public class BackgroundReader extends XML_Parser {
 
     public String[] items;//A list of background items from a file
     
-    //Reads in a background from an XML file
     /**
      * This class reads a list of images from a pre-created XML file
      * @param file The file path to the XML

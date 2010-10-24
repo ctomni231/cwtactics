@@ -93,10 +93,9 @@ public class MovingImage implements ScreenSkeleton{
     }
 
     /**
-     * This allows you to position and stretch an image to a set
-     * screen size
-     * @param scrsx Emulated screen width
-     * @param scrsy Emulated screen height
+     * This function is used to stretch images to the window size
+     * @param scrX The width of the window
+     * @param scrY The height of the window
      */
     public void setOrigScreen(int scrX, int scrY){
         origx = scrX;
@@ -242,7 +241,7 @@ public class MovingImage implements ScreenSkeleton{
 
     /**
      * This function draws a moving image to the screen
-     * @param g The SLick graphics object
+     * @param g The Slick graphics object
      */
     public void render(Graphics g) {
         if(imgRef.length() > 1){

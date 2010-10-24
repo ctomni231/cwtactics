@@ -11,7 +11,6 @@ import org.xml.sax.Attributes;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 10.11.10
- * @todo TODO Finish commenting this class
  */
 
 public class TitleReader extends XML_Parser{
@@ -40,10 +39,18 @@ public class TitleReader extends XML_Parser{
     public String[] keyOption;//The option text for the keys
     public String[] keyHelp;//The help text for the keys
 
+    /**
+     * This class sets up a XML file for the title screen display
+     * @param file The file path to the XML file
+     */
     public TitleReader(String file){
         super(file);
     }
 
+    /**
+     * This function reads all XML lines
+     * @param attributes The attributes of the current line
+     */
     @Override
     public void entry(Attributes attributes){
         if(attributes == null)  return;
@@ -52,6 +59,10 @@ public class TitleReader extends XML_Parser{
             menuEntry(attributes);
     }
 
+    /**
+     * This function gets XML tags referencing the menu
+     * @param attrib The attributes of a current line
+     */
     private void menuEntry(Attributes attrib){
         titleEntry(attrib);
         if(super.isAheader("logo")){
@@ -73,10 +84,18 @@ public class TitleReader extends XML_Parser{
         }
     }
 
+    /**
+     * This function gets XML tags referencing the title screen
+     * @param attrib The attributes of a current line
+     */
     private void titleEntry(Attributes attrib){
         startHelp = fillEntry(attrib, startHelp, "title", "help");
     }
 
+    /**
+     * This function gets XML tags referencing the main menu
+     * @param attrib The attributes of a current line
+     */
     private void screenEntry(Attributes attrib){
         if(super.isAheader("exit"))
             exitData = fillEntry(attrib, exitData);
@@ -92,10 +111,24 @@ public class TitleReader extends XML_Parser{
         }
     }
 
+    /**
+     * This function fills an array with an XML tag value
+     * @param attrib The attributes of a current line
+     * @param fillData The array to fill up
+     * @return An array containing the item
+     */
     private String[] fillEntry(Attributes attrib, String[] fillData){
         return fillEntry(attrib, fillData, "list", "text");
     }
 
+    /**
+     * This function fills an array with an XML tag value
+     * @param attrib The attributes of a current line
+     * @param fillData The array to fill up
+     * @param head The XML tag value
+     * @param value The XML tag value
+     * @return An array containing the item
+     */
     private String[] fillEntry(Attributes attrib, String[] fillData,
             String head, String value){
         if(fillData == null)
@@ -110,6 +143,12 @@ public class TitleReader extends XML_Parser{
         return fillData;
     }
 
+    /**
+     * This function takes an XML tag and gives you its value
+     * @param attrib The attributes of a current XML line
+     * @param data The key tag
+     * @return The value of the key tag
+     */
     private String fillEntry(Attributes attrib, String data){
         if(lang == null){
             lang = new LangControl(LANG_PATH);

@@ -21,7 +21,7 @@ import java.security.AccessControlException;
 
 public class ImgLoader extends Component{
 	
-	private static final long serialVersionUID = 2452945053572843636L;
+    private static final long serialVersionUID = 2452945053572843636L;
 
     //Gets an Image from a relative file path
     public Image getFileImage(String filename){

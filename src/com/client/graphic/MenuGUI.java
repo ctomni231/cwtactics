@@ -138,16 +138,6 @@ public class MenuGUI extends VerticalMenu{
         };
 
         initMenu(temp, ID, tempText, helpText);
-
-        //setJustify(635, 0, 'R');
-        //setJustify(320, 0, 'C');
-        //setJustify(5, 0, 'L');
-
-        //changePosition(2, -7);
-        //changePosition(3, -7);
-
-        //changePosition(8, -7);
-        //changePosition(9, -7);
     }
 
     /**

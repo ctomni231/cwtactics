@@ -18,7 +18,7 @@ import java.awt.image.BufferedImage;
 
 public class TextImgLibrary extends ImgLibrary{
 	
-	private static final long serialVersionUID = 2452945053572843636L;
+    private static final long serialVersionUID = 2452945053572843636L;
 	
     //Capital Letters Position
     private final int ASCII_CAP = 65;

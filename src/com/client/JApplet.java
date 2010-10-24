@@ -13,8 +13,8 @@ import com.jslix.system.SlixApplet;
  */
 public class JApplet extends SlixApplet {
 
-	private static final long serialVersionUID = 2452945053572843636L;
-	/*
+    private static final long serialVersionUID = 2452945053572843636L;
+    /*
      * Contains the code for making a Java2D Applet from the JSlix
      * Screens.
      */

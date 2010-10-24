@@ -23,36 +23,38 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.21.10
- * @todo TODO Finish commenting this class
+ * @version 10.23.10
  */
 
 public class MainMenuScreen extends Screen{
 
     //CHANGE THE STARTING MENU COLOR (0 - 18)
-    private final int MENU_COLOR = -1;
+    private final int MENU_COLOR = -1;//The color of the menu items
+    private final int SIZE_X = 640;//The base window height
+    private final int SIZE_Y = 480;//The base window width
+    private final int WAIT_TIME = 15;//The help bar waiting time
 
-    private final int SIZE_X = 640;
-    private final int SIZE_Y = 480;
-    private final int WAIT_TIME = 15;
+    private TitleReader reader;//XML reader for the title and menu screens
+    private BackgroundHandler bgPic;//XML reader for the background
+    private LogoHandler logoPic;//This holds all the moving logos
+    private boolean menuHelp;//Holds whether help bar is locked to screen
 
-    private TitleReader reader;
-    private BackgroundHandler bgPic;
-    private LogoHandler logoPic;
-    private boolean menuHelp;
+    private TitleGUI titleScr;//Holds screen data for the title screen
+    private ExitGUI exitScr;//Holds screen data for the exit screen
+    private MenuGUI menuScr;//Holds screen data for the main menu
+    private CreditGUI credScr;//Holds screen data for the credits
+    private KeyGUI keyScr;//Holds screen data for the key configure
 
-    private TitleGUI titleScr;
-    private ExitGUI exitScr;
-    private MenuGUI menuScr;
-    private CreditGUI credScr;
-    private KeyGUI keyScr;
+    private boolean scrStart;//The initization sequence starter for screens
+    private int column;//Which screen index we are currently showing
+    private int current;//Used to update the screen index
+    private int menuColor;//The current color of the menu items
+    private int curColor;//Used to update the current color
 
-    private boolean scrStart;
-    private int column;
-    private int current;
-    private int menuColor;
-    private int curColor;
-
+    /**
+     * This class contains all the elements that make up the title screen
+     * of CWT. This function initializes all the screens.
+     */
     public MainMenuScreen(){
         menuHelp = true;
 
@@ -87,9 +89,9 @@ public class MainMenuScreen extends Screen{
         credScr.setColorPath(reader.unitColor);
         credScr.setOrigScreen(SIZE_X, SIZE_Y);
 
-        keyScr = new KeyGUI(reader.alpha, reader.number, reader.arrow,
-        		20, 0, 200, 1);
+        keyScr = new KeyGUI(reader.alpha, reader.number, 20, 0, 200, 1);
         keyScr.init(reader.keyOption, reader.keyHelp);
+        keyScr.setColorPath(reader.unitColor);
         keyScr.setOrigScreen(SIZE_X, SIZE_Y);
 
         menuColor = MENU_COLOR;
@@ -98,6 +100,9 @@ public class MainMenuScreen extends Screen{
         column = 0;
     }
 
+    /**
+     * This function initializes some of the elements of the screen
+     */
     @Override
     public void init() {
         bgPic.update(scr_name, scr_index, scr_isApplet, scr_link);
@@ -106,6 +111,10 @@ public class MainMenuScreen extends Screen{
         exitScr.init();
     }
 
+    /**
+     * This function updates all the screens on an indexed basis
+     * @param timePassed The amount of time passed between each screen
+     */
     @Override
     public void update(int timePassed) {
         bgPic.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
@@ -133,6 +142,10 @@ public class MainMenuScreen extends Screen{
         //MemoryTest.printMemoryUsage("MAIN");
     }
 
+    /**
+     * This draws the screen to the window
+     * @param g The Slick2D graphics object
+     */
     @Override
     public void render(Graphics g) {
         bgPic.render(g);
@@ -156,6 +169,11 @@ public class MainMenuScreen extends Screen{
         logoPic.render(g);
     }
 
+    /**
+     * This draws the screens to the window
+     * @param g The Java2D graphics object
+     * @param dthis The Java2D component object
+     */
     @Override
     public void render(Graphics2D g, Component dthis) {
         bgPic.render(g, dthis);
@@ -179,6 +197,9 @@ public class MainMenuScreen extends Screen{
         logoPic.render(g, dthis);
     }
 
+    /**
+     * This contains all the updates for the title screen
+     */
     private void titleScr(){
         if(scrStart){
             logoPic.setFinalPosition(0, 145, 30);
@@ -207,6 +228,9 @@ public class MainMenuScreen extends Screen{
         }
     }
 
+    /**
+     * This contains all the updates for the main menu screen
+     */
     private void menuScr(){
         if(scrStart){
             logoPic.setFinalPosition(0, 145, 15);
@@ -233,6 +257,9 @@ public class MainMenuScreen extends Screen{
         curColor = menuScr.getCurFaction();
     }
 
+    /**
+     * This contains all the updates for the exit screen
+     */
     private void exitScr(){
         if(scrStart){
             logoPic.setFinalPosition(0, 145, 50);
@@ -256,6 +283,9 @@ public class MainMenuScreen extends Screen{
         current = exitScr.control(column, scr_mouseScroll);
     }
 
+    /**
+     * This contains all the updates for the credit screen
+     */
     private void creditScr(){
         if(scrStart){
             logoPic.setFinalPosition(0, 145, -150);
@@ -273,17 +303,40 @@ public class MainMenuScreen extends Screen{
         current = credScr.control(column);
     }
 
+    /**
+     * This contains all the updates for the key configure screen
+     */
     private void keyScr(){
         if(scrStart){
             logoPic.setFinalPosition(0, 145, 30);
             logoPic.setFinalPosition(2, 0, 480);
+            logoPic.setHelpText(keyScr.getHelpText());
+            logoPic.setScrollText(keyScr.getScrollText());
+            logoPic.setCounter(WAIT_TIME);
+            keyScr.setColor(menuColor);
             scrStart = false;
         }
+
+        if(keyScr.getMenuChange()){
+            logoPic.setHelpText(keyScr.getHelpText());
+            if(!menuHelp)
+                logoPic.setFinalPosition(3, 0, -20);
+            logoPic.setCounter(WAIT_TIME);
+
+            logoPic.setFinalPosition(2, 0, 480);
+            if(keyScr.getScrollDisplay())
+                logoPic.setFinalPosition(2, 0, 460);
+        }      
 
         keyScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
         current = keyScr.control(column, scr_mouseScroll);
     }
 
+    /**
+     * This function is used to hide the help bar, and update the colors
+     * @param mult Multiplies the wait time by this amount for specific
+     * screens
+     */
     private void helpHide(int mult){
         if(column != current){
             column = current;
@@ -309,6 +362,10 @@ public class MainMenuScreen extends Screen{
         }
     }
 
+    /**
+     * This function is used to save all the options you set. Only done
+     * when exiting the game and if it isn't an applet.
+     */
     @Override
     public void scr_close() {
         if(!scr_isApplet){

@@ -35,8 +35,14 @@ import org.newdawn.slick.SlickException;
 public class Slix extends JComponent implements Runnable, KeyListener,
         MouseListener, MouseMotionListener, MouseWheelListener {
 
-	private static final long serialVersionUID = 2452945053572843636L;
-	
+    private static final long serialVersionUID = 2452945053572843636L;
+
+    /**
+     * This class allows you to create Java2D or Slick2D frames from
+     * a list of screens contained in a SlixGame extended class. The
+     * Slick2D frame requires natives in order to run.
+     * @param argv "java" = java2D, "slick" = Slick2D (req natives)
+     */
     public static void main(String[] argv) {       
         Slix game = new Slix(480, 320);
         if(argv.length > 0){
@@ -86,24 +92,40 @@ public class Slix extends JComponent implements Runnable, KeyListener,
      * Holds whether to update each frame for slick (default:false)
      */
     private boolean frameUpdate;
-    //Holds a temporary Screen
-    private Screen tempScreen;
-    //Holds a variable so only the top screen displays
-    private int scrStart;
+    
+    private Screen tempScreen;//Holds a temporary Screen
+    private int scrStart;//Holds a variable so only the top screen displays
 
+    /**
+     * This class creates a Java2D or Slick2D screen with a starting
+     * width and height
+     * @param width The x-axis length of the screen
+     * @param height The y-axis length of the screen
+     */
     public Slix(int width, int height){
         initialize(width, height);
     }
 
+    /**
+     * This function changes the title at the top of the JSlix window
+     * @param newTitle The new title name
+     */
     public void changeTitle(String newTitle){
         mainTitle = newTitle;
         window.setTitle(mainTitle);
     }
 
+    /**
+     * This function changes the update render of a Slick2D window
+     * @param clear Whether to update each time(true) or not(false)
+     */
     public void changeFrameClear(boolean clear){
         frameUpdate = clear;
     }
 
+    /**
+     * This function initializes and displays a Slick2D frame
+     */
     public void showSlick(){
     	if(game == null)
     		game = new SlixGame();
@@ -146,7 +168,10 @@ public class Slix extends JComponent implements Runnable, KeyListener,
             showWindow();
         }
     }
-    
+
+    /**
+     * This function initializes and displays a java2D frame
+     */
     public void showWindow(){
     	if(game == null)
     		game = new SlixGame();
@@ -173,7 +198,11 @@ public class Slix extends JComponent implements Runnable, KeyListener,
         window.pack();
         KeyPress.setConv(false);
     }
-    
+
+    /**
+     * This function sets whether the user is allowed to resize the window
+     * @param resize Whether the user can resize the window(T) or not(F)
+     */
     public void setResizeableWindow(boolean resize){
         window.setResizable(resize);
     }

@@ -21,7 +21,7 @@ import java.awt.image.MemoryImageSource;
 
 public class PixtureMap extends ImgLibrary{
 
-	private static final long serialVersionUID = 2452945053572843636L;
+    private static final long serialVersionUID = 2452945053572843636L;
 	
     //The graphics class used for creating images
     private Graphics2D g;
