@@ -41,7 +41,7 @@ public class Timer extends Thread{
 
     @Override
     public final void run() {
-        try{
+        try{           
             while(true){
                 Thread.sleep(frametime);
                 setFrameRate();

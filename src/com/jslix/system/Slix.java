@@ -29,7 +29,6 @@ import org.newdawn.slick.SlickException;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 10.21.10
- * @todo TODO Finish commenting this class
  */
 
 public class Slix extends JComponent implements Runnable, KeyListener,
@@ -207,23 +206,43 @@ public class Slix extends JComponent implements Runnable, KeyListener,
         window.setResizable(resize);
     }
 
+    /**
+     * This function changes the Slick window associated with the screens
+     * @param newGame The new Slick BasicGame window
+     */
     public final void changeGame(SlixGame newGame){
         if(newGame != null)
             game = newGame;
     }
 
+    /**
+     * This gets the outside frame of the JSlix window
+     * @return The frame outside the JSlix window
+     */
     public JFrame getWindow(){
         return window;
     }
 
+    /**
+     * This sets the update rate of the frames, and deals directly with
+     * system time
+     * @param updateTime How often to update the system time
+     */
     public void setFrameTime(int updateTime){
         game.setFrameTime(updateTime);
     }
 
+    /**
+     * This function sets the redrawing of the Slick Screen
+     * @param clear Whether the screen should redraw every frame(T) or not(F)
+     */
     public void setUpdateClear(boolean clear){
         game.setUpdateFrame(clear);
     }
 
+    /**
+     * This function sets the visibility of the FPS for the Java2D screen
+     */
     public void toggleFPS(){
         showRate = !showRate;
     }
@@ -237,8 +256,11 @@ public class Slix extends JComponent implements Runnable, KeyListener,
         return new Dimension(sizex, sizey);
     }
 
-
-    //Handles various keyboard actions and stores them to values (expandable)
+    /**
+     * This function handles various keyboard actions and stores them to
+     * values for Java2D (expandable)
+     * @param e The key event to handle
+     */
     private void handleKeyboard(KeyEvent e){
         id = e.getID();
         if (id == KeyEvent.KEY_PRESSED){
@@ -257,7 +279,12 @@ public class Slix extends JComponent implements Runnable, KeyListener,
 
     }
 
-    //Handles various mouse actions and stores them to actions (expandable)
+    /**
+     * This function handles various mouse actions and stores them to
+     * actions for Java2D(expandable)
+     * @param e The mouse action to handle
+     * @param wheelScroll The mouse scroll wheel value
+     */
     private void handleMouse(MouseEvent e, int wheelScroll){
         id = e.getID();
         if (id == MouseEvent.MOUSE_CLICKED){}
@@ -316,6 +343,14 @@ public class Slix extends JComponent implements Runnable, KeyListener,
         showRate(g2);
     }
 
+    /**
+     * This function draws all the screens to the Java2D window. Due to
+     * Java2D frames not handling the updates in a normal way, it also handles
+     * the update functions.
+     * @param g2 The java2D Graphics engine
+     * @param w The current width of the window
+     * @param h The current height of the window
+     */
     private void drawJava(Graphics2D g2, int w, int h){
         SlixLibrary.updateScreens();
 
@@ -344,6 +379,10 @@ public class Slix extends JComponent implements Runnable, KeyListener,
         }
     }
 
+    /**
+     * This function shows the frame rate graphics
+     * @param g2 The Java2D graphics object
+     */
     private void showRate(Graphics g2){
         if(showRate){
             g2.setColor(Color.WHITE);
@@ -351,14 +390,28 @@ public class Slix extends JComponent implements Runnable, KeyListener,
         }
     }
 
+    /**
+     * This function sets the frame rate for the Slick and Java2D game
+     */
     private void setFrameRate(){
         game.setFrameRate();
     }
 
+    /**
+     * This function gets the integer value of the frame update time for the
+     * Java2D and Slick2D game
+     * @return The system time update rate
+     */
     private int getFrameTime(){
         return game.getFrameTime();
     }
-    
+
+    /**
+     * This function initializes the Slick and Java2D general functions,
+     * but does not uses any resources for setting up the windows
+     * @param width The x-axis length of the screen
+     * @param height The y-axis length of the screen
+     */
     private void initialize(int width, int height){
     	mainTitle = "JSlix Window";
         sizex = width;
@@ -371,8 +424,11 @@ public class Slix extends JComponent implements Runnable, KeyListener,
         SlixLibrary.setFrame();
     }
 
+    /**
+     * This is the runnable for JSlix
+     */
     public final void run() {
-        try{
+        try{           
             while(true){
                 Thread.sleep(getFrameTime());
                 setFrameRate();

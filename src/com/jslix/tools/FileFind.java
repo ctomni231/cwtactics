@@ -19,31 +19,39 @@ import java.util.ArrayList;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 09.15.10
- * @todo TODO Finish commenting this class
+ * @version 10.24.10
  */
 
 public class FileFind {
-    private File theFile;
+    private File theFile;//Holds the temporary file for storage
     private String basePath;//BasePath of .jar
     private String thePath;//Path of directory
-    private ArrayList<FileIndex> allFiles;
-    private ArrayList<String> fileType;//Find specific files
-    private ArrayList<String> avoidDir;//Avoid specific directories
+    private ArrayList<FileIndex> allFiles;//Holds all searched files
+    private ArrayList<String> fileType;//Finds specific files
+    private ArrayList<String> avoidDir;//Avoids specific directories
 
-    //Finds the files from the root directory
+    /**
+     * This class searches for files from the root directory.
+     */
     public FileFind(){
         initialize("");
     }
 
-    //Finds files from the directory you specify
+    /**
+     * This class searches for files from the directory you specify
+     * @param directory The path to the directory
+     */
     public FileFind(String directory){
         initialize(directory);
         if(!theFile.exists() || !theFile.isDirectory())
             initialize("");
     }
 
-    //Changes the directory so fileFinder just searches there
+    /**
+     * This function changes the directory path of the file search
+     * @param directory The path to the directory
+     * @return Whether the directory change was successful(T) or not(F)
+     */
     public boolean changeDirectory(String directory){
         initialize(directory);
         if(!theFile.exists() || !theFile.isDirectory()){
@@ -53,15 +61,27 @@ public class FileFind {
         return true;
     }
 
+    /**
+     * This function gets the root path of the directory
+     * @return The String value representing the root path
+     */
     public String getRootPath(){
         return (thePath.replace('\\','/')+"/");
     }
 
+    /**
+     * This function gets the root path of the current .jar used
+     * @return The String value representing the root path
+     */
     public String getBasePath(){
-        return (thePath.replace('\\','/')+"/");
+        return (basePath.replace('\\','/')+"/");
     }
 
-    //This forces the file finder to only find files of a certain suffix
+    /**
+     * This function adds a specific file type to look for while searching.
+     * You can add as many file types as you want to narrow your search.
+     * @param suffix The suffix of the file path to look for (case sensitive)
+     */
     public void addForceType(String suffix){
         if(suffix.startsWith("."))
             suffix = suffix.substring(1);
@@ -69,16 +89,30 @@ public class FileFind {
             fileType.add(suffix);
     }
 
-    //This cause the file finder to avoid certain directories
+    /**
+     * This function adds a directory type to avoid while searching for
+     * files. You can add as many directories as you want for faster
+     * search speeds
+     * @param directory The directory to avoid
+     */
     public void addAvoidDir(String directory){
         if(!directory.matches(""))
             avoidDir.add(directory);
     }
 
+    /**
+     * This function returns a list of files after a search refactor()
+     * has been called
+     * @return The list of searched file paths
+     */
     public ArrayList<FileIndex> getAllFiles(){
         return allFiles;
     }
 
+    /**
+     * This function searches all files recursively from the directory
+     * path specified and puts them into a list.
+     */
     public void refactor(){
         allFiles.clear();
         try{
@@ -88,6 +122,12 @@ public class FileFind {
         }
     }
 
+    /**
+     * This function is used for reading files from the directory specified
+     * and compiling it into a list.
+     * @param path The path to the file
+     * @throws AccessControlException Thrown if file can't be read
+     */
     private void getFiles(String path) throws AccessControlException{
         File temp = new File(path);
         String[] tempfile = temp.list();
@@ -104,6 +144,12 @@ public class FileFind {
         }
     }
 
+    /**
+     * This function checks to see if a file suffix matches any of the stored
+     * suffixes
+     * @param hold The index to check validity
+     * @return If the held file matches any suffixes stored(T) or not(F)
+     */
     private boolean matchSuffix(FileIndex hold){
         for(String type: fileType){
             if(type.matches(hold.suffix))   return true;
@@ -111,6 +157,12 @@ public class FileFind {
         return fileType.isEmpty();
     }
 
+    /**
+     * This function checks to see if a file matches any of the directories
+     * stored
+     * @param dir The current directory holder
+     * @return If the held directory matches this one(F) or not(T)
+     */
     private boolean matchDir(String dir){
         for(String avoid: avoidDir){
             if(dir.matches(avoid))          return false;
@@ -118,7 +170,11 @@ public class FileFind {
         return true;
     }
 
-    //Gets a File from the user home directory
+    /**
+     * This function is used for loading files from the user directory
+     * @param filename The path to the file
+     * @return A file representing the file name path
+     */
     public File getFile(String filename){
         File newFile = null;
 
@@ -132,7 +188,12 @@ public class FileFind {
         return newFile;
     }
 
-    //Gets a file from a url string referencing the home library (applets)
+    /**
+     * This function gets a file from a URL string referencing the home
+     * library (for applets)
+     * @param filename The path to the file
+     * @return A file representing the file name path
+     */
     public File getClassFile(String filename){
         File newFile = null;
 
@@ -148,7 +209,11 @@ public class FileFind {
         return newFile;
     }
 
-    //Gets a file directly from the .jar resource
+    /**
+     * This function gets a file directly from the .jar resource
+     * @param filename The path to the file
+     * @return A file representing the file name path
+     */
     public File getResourceFile(String filename){
         File newFile = null;
 
@@ -165,6 +230,14 @@ public class FileFind {
         return newFile;
     }
 
+    /**
+     * This function is used to create a file to the user directory.
+     * @param path The path to creation directory
+     * @param filename The name of the file to be created
+     * @param data The data associated with the file
+     * @param temp Whether this file deletes on close(T) or not(F)
+     * @return Whether the operation was successful(T) or not(F)
+     */
     public boolean createFile(String path, String filename, String data,
             boolean temp){
         File newFile = null;
@@ -202,6 +275,11 @@ public class FileFind {
         return true;
     }
 
+    /**
+     * This function is used to delete a file from the user directory
+     * @param path The path to deletion directory
+     * @param filename The name of the file to be deleted
+     */
     public void deleteFile(String path, String filename){
         File newFile = null;
         if(!path.endsWith("/"))
@@ -214,6 +292,11 @@ public class FileFind {
             System.out.println("Failed to Delete File! "+path+filename);
     }
 
+    /**
+     * This function is used to create a directory for the user
+     * @param folder The path to the creation directory
+     * @param hide Whether this directory is hidden(T) or not(F)
+     */
     public void makeDirectory(String folder, boolean hide){
         if(hide && folder.charAt(0) != '.')
             folder = "."+folder;
@@ -233,6 +316,10 @@ public class FileFind {
         }
     }
 
+    /**
+     * This function is used for making a group of directories for the user
+     * @param path The path to the creation directory
+     */
     public void makeDirectories(String path){
         try{
             File newFile = new File(path);
@@ -247,6 +334,10 @@ public class FileFind {
 
     }
 
+    /**
+     * This function hides a directory for Windows based machines
+     * @param folder The path to the hidden directory
+     */
     private void hideDirectory(String folder){
         String dosCommand = "cmd /c attrib +h "+
                 folder.replace("/", "")+" /s /d";
@@ -261,10 +352,13 @@ public class FileFind {
         }
     }
 
+    /**
+     * This function initializes all the variables used in the class
+     * @param directory The path to the search directory
+     */
     private void initialize(String directory){
         try{
-            theFile = new File("");
-            basePath = theFile.getAbsolutePath();
+            basePath = new File("").getAbsolutePath();
             theFile = new File(directory);
             thePath = theFile.getAbsolutePath();
         }catch(AccessControlException ex){

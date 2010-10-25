@@ -19,11 +19,18 @@ import org.newdawn.slick.SlickException;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 10.15.10
- * @todo TODO Finish commenting this class
  */
 
 public class SlixGame extends BasicGame{
 
+    /**
+     * This function is the primary function for displaying a Slick2D
+     * applet to the screen. It can also be used as a runnable to display
+     * a fixed Slick window that has an accurate length and width. The
+     * CanvasGameContainer in JSlix Frames length and width are not
+     * accurate in visuals.
+     * @param args No arguments available
+     */
     public static void main( String[] args ) {
         try{ 
             AppGameContainer app = new AppGameContainer(new SlixGame());
@@ -47,7 +54,12 @@ public class SlixGame extends BasicGame{
     //Holds whether we need to clear the fram each time for Slick Window
     private boolean clear;
 
-    //The slick applet won't work any other way sadly
+    /**
+     * This class handles all visuals for Java2D Frame, Java2D Applet,
+     * Slick2D Frame, and Slick2D Applet. This function initializes the
+     * system Timer and loads all the screens for the class. The Slick
+     * applet depends on this method.
+     */
     public SlixGame(){
         super("JSlix");
         KeyPress.setConv(true);
@@ -56,11 +68,20 @@ public class SlixGame extends BasicGame{
         load();
     }
 
-    //Override this function to load different Screens into the game
+    /**
+     * This function loads all the different screens into the game. It must
+     * be overridden for you to add in your own screens.
+     */
     public void loadGame(){
         SlixLibrary.addFrameScreen(new TestScreen());
     }
-    
+
+    /**
+     * The Slick2D initialization function for all Screens. Initializes
+     * all the Screens in a window.
+     * @param container The game container for this window
+     * @throws SlickException Thrown if there is an error in Slick
+     */
     @Override
     public void init(GameContainer container) throws SlickException {
         SlixLibrary.updateScreens();
@@ -69,6 +90,13 @@ public class SlixGame extends BasicGame{
         contain.setShowFPS(false);
     }
 
+    /**
+     * The Slick update function for all Screens. Initializes all the
+     * Screens in a window
+     * @param container The game container for this window
+     * @param timePassed The amount of time passed per update
+     * @throws SlickException Thrown if there is an error in Slick
+     */
     @Override
     public void update(GameContainer container, int timePassed)
             throws SlickException {
@@ -95,6 +123,13 @@ public class SlixGame extends BasicGame{
         }
     }
 
+    /**
+     * The Slick2D render function for all the Screens. This function
+     * controls all rendering for each Screen
+     * @param container The game container for this window
+     * @param g The graphics object for Slick
+     * @throws SlickException Thrown if there is an error in Slick
+     */
     public void render(GameContainer container, Graphics g)
             throws SlickException {
         if(SlixLibrary.size() == 0) return;
@@ -119,10 +154,18 @@ public class SlixGame extends BasicGame{
         showRate(g);
     }
 
+    /**
+     * This function sets the redrawing of the Slick Screen
+     * @param clear Whether the screen should redraw every frame(T) or not(F)
+     */
     public void setUpdateFrame(boolean clear){
         this.clear = clear;
     }
 
+    /**
+     * This function shows the frame rate graphics
+     * @param g The Slick2D graphics object
+     */
     private void showRate(Graphics g){
         if(contain.isShowingFPS()){
             g.setColor(Color.white);
@@ -130,6 +173,11 @@ public class SlixGame extends BasicGame{
         }
     }
 
+    /**
+     * Handles the key press actions for Slick2D
+     * @param key The key code for Slick
+     * @param c The character associated with the key code
+     */
     @Override
     public void keyPressed(int key, char c){
     	// if F9 is pressed, show FPS on screen
@@ -137,21 +185,45 @@ public class SlixGame extends BasicGame{
         KeyPress.addKeyPress(key, true);
     }
 
+    /**
+     * Handles the key release actions for Slick2D
+     * @param key The key code for Slick
+     * @param c The character associated with the key code
+     */
     @Override
     public void keyReleased(int key, char c){
         KeyPress.removeKeyPress(key);
     }
 
+    /**
+     * Handles the mouse click actions for Slick2D
+     * @param button The mouse button clicked
+     * @param x The x-axis location of the mouse
+     * @param y The y-axis location of the mouse
+     */
     @Override
     public void mousePressed(int button, int x, int y){
         KeyPress.addMouseClick(button, true);
     }
 
+    /**
+     * Handles the mouse release actions for Slick2D
+     * @param button The mouse button clicked
+     * @param x The x-axis location of the mouse
+     * @param y The y-axis location of the mouse
+     */
     @Override
     public void mouseReleased(int button, int x, int y){
         KeyPress.removeMouseClick(button);
     }
 
+    /**
+     * This function handles the mouse movement for Slick2D
+     * @param oldx The old mouse x-axis position
+     * @param oldy The old mouse y-axis position
+     * @param newx The new mouse x-axis position
+     * @param newy The new mouse y-axis position
+     */
     @Override
     public void mouseMoved(int oldx, int oldy, int newx, int newy){
         KeyPress.mouseX = newx;
@@ -159,6 +231,10 @@ public class SlixGame extends BasicGame{
         KeyPress.mouseScroll = 0;
     }
 
+    /**
+     * This function handles the mouse scroll wheel for Slick2D
+     * @param newValue The value of the scroll wheel
+     */
     @Override
     public void mouseWheelMoved(int newValue){
         //Changes it to a single integer
