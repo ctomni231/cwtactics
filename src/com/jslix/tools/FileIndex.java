@@ -9,21 +9,34 @@ package com.jslix.tools;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 09.15.10
- * @todo TODO Finish commenting this class
  */
 
 public class FileIndex {
-    public String fname;//Filename
-    public String fpath;//Filepath
-    public String bpath;//Basepath
-    public String prefix;
-    public String suffix;
-    public boolean isDirectory;
+    public String fname;//The filename of this particular file
+    public String fpath;//The path to this file
+    public String bpath;//The base path to this file's directory
+    public String prefix;//The current name of this file
+    public String suffix;//The current attribute file
+    public boolean isDirectory;//Holds if this file is a directory
 
+    /**
+     * This class holds one file for a FileFind class. This helps in
+     * finding references to files.
+     * @param filename The name of the file
+     * @param filepath The path to the file
+     * @param basepath The path to the file's base directory
+     */
     public FileIndex(String filename, String filepath, String basepath){
         reFactor(filename, filepath, basepath);
     }
 
+    /**
+     * This class takes the information from the file and organizes it
+     * among the different variables
+     * @param filename The name of the file
+     * @param filepath The path to the file
+     * @param basepath The path to the file's base directory
+     */
     public final void reFactor(String filename,
             String filepath, String basepath){
         fname = filename;
@@ -48,6 +61,10 @@ public class FileIndex {
         //outputAll();
     }
 
+    /**
+     * This function writes the information to the console window of one
+     * file.
+     */
     public void outputAll(){
         System.out.println("Filename:"+fname);
         System.out.println("BasePath:"+bpath);

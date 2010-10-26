@@ -14,7 +14,6 @@ import org.newdawn.slick.Image;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 09.21.10
- * @todo TODO Finish commenting this class
  */
 
 public class ImgHolder {
@@ -33,7 +32,11 @@ public class ImgHolder {
     //Stores the original height of this image (when loaded)
     public int origy;
 
-    //Init
+    /**
+     * This class holds one image and the image information of an image
+     * library class (ImgLibrary). This function initializes all variables
+     * to default values.
+     */
     ImgHolder(){
         image = null;
         sImage = null;
@@ -44,7 +47,13 @@ public class ImgHolder {
         origy = 1;
     }
 
-    //Indexes pixel changes in a HashMap<fromThisColor, toThisColor>
+    /**
+     * This function indexes all pixel changes in a HashMap<fromThisColor,
+     * toThisColor> and uses them to change the colors of pixels
+     * representing an image.
+     * @param colorChange The HashMap of default colors and changes
+     * @return An array list of altered pixels
+     */
     public int[] setColorChange(HashMap<Integer, Integer> colorChange){
         int[] change = pixels;
         for(int i = 0; i < change.length; i++){
@@ -54,7 +63,15 @@ public class ImgHolder {
         return change;
     }
 
-    //Allows you to blend colors together
+    /**
+     * This function takes the first member of a list of colors and
+     * blends it into the pixels. THe rest of the list is used to prevent
+     * default colors from being blended. The amount of blending is determined
+     * by the amount of opacity (0-1) you decide.
+     * @param colorBlend The color blend and the list of colors to ignore
+     * @param opacity The intensity of the blend from 0.0 - 1.0
+     * @return An array list of altered pixels
+     */
     public int[] setColorBlend(ArrayList<Integer> colorBlend, double opacity){
         int[] change = pixels;
         int blend = colorBlend.remove(0);
@@ -75,7 +92,10 @@ public class ImgHolder {
         return change;
     }
 
-    //Flips pixels along the x-axis (horizontal flip)
+    /**
+     * This function performs a x-axis horizontal flip to the pixels
+     * @return An array list of altered pixels
+     */
     public int[] setFlipX(){
         int[] change = new int[pixels.length];
         for(int i = 0; i < origx; i++){
@@ -85,7 +105,10 @@ public class ImgHolder {
         return change;
     }
 
-    //Flips pixels along the y-axis (vertical flip)
+    /**
+     * This function performs a y-axis vertical flip to the pixels
+     * @return An array list of altered pixels
+     */
     public int[] setFlipY(){
         int[] change = new int[pixels.length];
         for(int i = 0; i < origx; i++){
@@ -95,7 +118,10 @@ public class ImgHolder {
         return change;
     }
 
-    //Rotates an image 90 degrees clockwise
+    /**
+     * This function performs a 90 degree rotation to the pixels
+     * @return An array list of altered pixels
+     */
     public int[] rotateClockwise(){
         int[] change = new int[pixels.length];
         for(int i = 0; i < origy; i++){

@@ -17,7 +17,6 @@ import java.util.ResourceBundle;
  *          <li>Stefan569</li></ul>
  * @license Look into "LICENSE" file for further information
  * @version 10.08.10
- * @todo TODO Finish commenting this class
  */
 
 public class LocaleService extends ClassLoader {
@@ -26,16 +25,31 @@ public class LocaleService extends ClassLoader {
     private FileFind finder;
     private String filename;
 
+    /**
+     * This class deals with all the language functionality for
+     * properties files
+     * @param filename The path to the properties files
+     */
     public LocaleService( String filename ){
         finder = new FileFind();
         this.filename = filename;
         getBundle();
     }
-    
+
+    /**
+     * This function gets a resource bundle dependant on the users
+     * native language
+     */
     public final void getBundle(){
         lang = ResourceBundle.getBundle(filename, Locale.getDefault(), this);
     }
 
+    /**
+     * This class expands the ClassLoader to find resources from not only
+     * the user directory, but also from URL and .jar files.
+     * @param name the path to the properties file
+     * @return A URL representing the properties file
+     */
     @Override
     protected URL findResource(String name) {
       File f = finder.getFile(name);

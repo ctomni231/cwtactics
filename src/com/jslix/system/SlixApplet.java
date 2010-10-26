@@ -100,7 +100,7 @@ public class SlixApplet extends Applet implements Runnable, KeyListener,
 
     /**
      * This function updates all the graphics of an applet
-     * @param g
+     * @param g The Java2D graphics object
      */
     @Override
     public void update(Graphics g){        
@@ -109,7 +109,7 @@ public class SlixApplet extends Applet implements Runnable, KeyListener,
 
     /**
      * This function uses update to update graphics in the applet
-     * @param g
+     * @param g The Java2D graphics object
      */
     @Override
     public void paint(Graphics g){

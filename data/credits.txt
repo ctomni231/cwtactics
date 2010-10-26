@@ -2,7 +2,7 @@
  
 <FORUM HOSTING - LEAD>
 Xenesis
- 
+  
 <MAIN CODERS>
 JakeSamiRulz
 Tapsi
@@ -11,17 +11,19 @@ Tapsi
 Kosheh
 Destin Artea
  
-<FORUM MODDERS>
-DiamondPhoenix
-Narts
-Kiwi
- 
 <MAIN CONTRIBUTORS>
-chom-chom
-MarinePower
 Urusan
+chom-chom
 Ace.Stef569
+MarinePower
 amarriner
+ 
+<MINOR CONTRIBUTORS>
+MoogleGunner
+St Johnston
+Islip
+Robosturm
+Eagle
 TruthSeeker
  
 <DESIGN DEVELOPERS>
@@ -29,10 +31,12 @@ CoconutTank
 Captain Vimes
 Veggie
  
+<FORUM MODDERS>
+DiamondPhoenix
+Narts
+Kiwi
+ 
 <FORUM CONTRIBUTORS>
-St Johnston
-Islip
-Destin/Artea
 UserShadow7989
 BlackEther
 Simon

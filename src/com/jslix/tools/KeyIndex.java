@@ -10,13 +10,16 @@ package com.jslix.tools;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 09.10.10
- * @todo TODO Finish commenting this class
  */
 
 public class KeyIndex {
-    public byte index;
-    public int code;
+    public byte index;//This holds the hold and pressed index
+    public int code;//THis holds the key pressed or the mouse button
 
+    /**
+     * This class holds the key and mouse information for classes. It
+     * is purposely small so it won't take up any memory.
+     */
     public KeyIndex(){
         index = 0;
         code = 0;

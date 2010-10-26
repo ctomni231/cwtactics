@@ -12,8 +12,7 @@ import java.awt.image.BufferedImage;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.21.10
- * @todo TODO Finish commenting this class
+ * @version 10.25.10
  */
 
 public class TextImgLibrary extends ImgLibrary{
@@ -31,24 +30,63 @@ public class TextImgLibrary extends ImgLibrary{
     //Graphic class for the Buffered Image
     Graphics2D g;
 
+    /**
+     * This class is used for creating text from images in a java2D image
+     * format. The text is inputted as a String and then the text can be
+     * organized into strings, words, or paragraphs. The text is given in
+     * a java2D picture representing the text.
+     */
     public TextImgLibrary(){
         super();
         bimg = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
     }
+
+    //-------
     //GETTERS
+    //-------
+
+    /**
+     * This gets the created text as a java2D image
+     * @return The java2D image representation of the text
+     */
     public Image getTextImage(){
         return bimg;
     }
+
+    /**
+     * This gets the Slick2D representation of the created text
+     * @param imgName The name of the SLick2D image
+     * @return The Slick2D representation of the text
+     */
     public org.newdawn.slick.Image getSlickTextImage(String imgName){
-        return makeSlickImage(bimg, imgName);
+        return il.makeSlickImage(bimg, imgName);
     }
 
+    //------
     //ADDERS
-    //Adds a image to the ImgLibrary referenced by a letter
+    //------
+
+    /**
+     * This adds a letter image to the internal ImgLibrary of this class.
+     * This letter is used to draw words for string text.
+     * @param letter The character this image represents
+     * @param img The current image to place into the ImgLibrary
+     * @return Whether inputting the image was successful
+     */
     public boolean addLetter(char letter, Image img){
         return addImage(""+letter+"", img);
     }
-    //Adds a image to the Library referenced by [ref]_[letter]
+
+    /**
+     * This adds a letter image to the internal ImgLibrary of this class.
+     * The letter reference is prefixed by the reference you specify in this
+     * format [ref]_[letter]. This letter is used to draw words for string
+     * text.
+     * @param letter The character this image represents
+     * @param img The current image to place into the image library
+     * @param ref The name of the reference prefix
+     * @return Whether inputting the image was successful
+     */
     public boolean addLetter(char letter, Image img, String ref){
         if(img == null)
             return false;
@@ -60,7 +98,23 @@ public class TextImgLibrary extends ImgLibrary{
             addReference(""+letter+"", length()-1);
         return true;
     }
-    //Adds a letter from an image that needs to be splitted
+
+    /**
+     * This adds a letter image to the internal ImgLibrary of this class
+     * for images that include more than one letter, the slice variables
+     * are used to splice the images evenly, while start decides the location
+     * of the image. The letter reference is prefixed by the reference you
+     * specify in this format [ref]_[letter]. These letters are used to draw
+     * words for string text.
+     * @param letter The character this image represents
+     * @param img The current image to place into the image library
+     * @param ref The name of the reference prefix
+     * @param slicex The number of slices along the x-axis
+     * @param slicey The number of slices along the y-axis
+     * @param start The location of the image index Left-Right Top-Bottom
+     * order starting at 0.
+     * @return Whether inputting the image was successful
+     */
     public boolean addLetter(char letter, Image img, String ref,
             int slicex, int slicey, int start){
         if(slicex*slicey == 0 || start >= slicex*slicey ||
@@ -76,30 +130,97 @@ public class TextImgLibrary extends ImgLibrary{
         return addLetter(letter, temp.getImage(0, (start%slicex)*(int)sx,
                       (start/slicex)*(int)sy, (int)sx, (int)sy), ref);
     }
-    //Helps with adding the most common letters
+
+    /**
+     * This function adds all the capital letters to the internal ImgLibrary.
+     * The letter reference is prefixed by the reference you
+     * specify in this format [ref]_[letter]. These letters are used to draw
+     * words for string text.
+     * @param img The current image to place into the image library
+     * @param ref The name of the reference prefix
+     * @param slicex The number of slices along the x-axis
+     * @param slicey The number of slices along the y-axis
+     * @param start The location of the image index Left-Right Top-Bottom
+     * order starting at 0.
+     * @return Whether inputting the images was successful
+     */
     public boolean addAllCapitalLetters(Image img, String ref,
             int slicex, int slicey, int start){
         return addSlicedText(img, ref, slicex, slicey, start, 
                 ASCII_CAP, 26);
-    }   
+    }
+
+    /**
+     * This function adds all the lower case letters to the internal
+     * ImgLibrary. The letter reference is prefixed by the reference you
+     * specify in this format [ref]_[letter]. These letters are used to draw
+     * words for string text.
+     * @param img The current image to place into the image library
+     * @param ref The name of the reference prefix
+     * @param slicex The number of slices along the x-axis
+     * @param slicey The number of slices along the y-axis
+     * @param start The location of the image index Left-Right Top-Bottom
+     * order starting at 0.
+     * @return Whether inputting the images was successful
+     */
     public boolean addAllLowerCaseLetters(Image img, String ref,
             int slicex, int slicey, int start){
         return addSlicedText(img, ref, slicex, slicey, start, 
                 ASCII_LOW, 26);
-    }    
+    }
+
+    /**
+     * This function adds all the numbers to the internal ImgLibrary.
+     * The letter reference is prefixed by the reference you
+     * specify in this format [ref]_[letter]. These letters are used to draw
+     * words for string text.
+     * @param img The current image to place into the image library
+     * @param ref The name of the reference prefix
+     * @param slicex The number of slices along the x-axis
+     * @param slicey The number of slices along the y-axis
+     * @param start The location of the image index Left-Right Top-Bottom
+     * order starting at 0.
+     * @return Whether inputting the images was successful
+     */
     public boolean addAllNumbers(Image img, String ref,
             int slicex, int slicey, int start){
         return addSlicedText(img, ref, slicex, slicey, start, 
                 ASCII_NUMBER, 10);
     }
-    
+
+    //-------
     //SETTERS
-    //Draws a basic String, stops at whenever it reaches the pixel limit.
-    //limit<1 = limitless
+    //-------
+
+    /**
+     * Uses letters from the letter dictionary to form letters. This
+     * will draw letters to an image in the form of a continuous string.
+     * This function starts at the beginning of the word.
+     * @param word The letters to draw into the image
+     * @param ref The reference text to the letter image
+     * @param locx Starting x-location of the word in the image
+     * @param locy Starting y-location of the word in the image
+     * @param limit The number of pixels text is allowed to go in the
+     * X-direction (Numbers below 1: no x-limits)
+     * @return returns the letter it stopped at
+     */
     public int setString(String word, String ref,
             int locx, int locy, int limit){
         return setString(word, ref, locx, locy, 0, limit);
     }
+
+    /**
+     * Uses letters from the ImgLibrary to form letters. This
+     * will draw letters to an image in the form of a continuous string.
+     * @param word The letters to draw into the image
+     * @param ref The reference text to the letter image
+     * @param locx Starting x-location of the word in the image
+     * @param locy Starting y-location of the word in the image
+     * @param start Which letter to start reading the word at [0: default]
+     * @param limit The number of pixels text is allowed to go in the
+     * X-direction (Numbers below 1: no x-limits)
+     * @return returns the letter it stopped at
+     */
     public int setString(String word, String ref,
             int locx, int locy, int start, int limit){
         if(start > 0 && start < word.length())
@@ -129,22 +250,71 @@ public class TextImgLibrary extends ImgLibrary{
         }
         return letterMax;
     }
-    //Used for drawing text that stops at spaces and dashes
-    //limit<1 = limitless
+
+    /**
+     * Uses letters from the ImgLibrary dictionary to form words. Difference
+     * from setString() is that words are only cut off at white spaces and
+     * dashes. This function starts at the beginning of the word string.
+     * @param word The word to draw
+     * @param ref The reference text to the letter image
+     * @param locx Starting x-location of the word in the image
+     * @param locy Starting y-location of the word in the image
+     * @param start Which letter to start reading the word at
+     * @param limit The number of pixels text is allowed to go in the
+     * X-direction (Numbers below 1: no x-limits)
+     * @return returns the letter it stopped at.
+     */
     public int setWords(String word, String ref,
             int locx, int locy, int limit){
         return setWords(word, ref, locx, locy, 0, limit, true);
     }
+
+    /**
+     * Uses letters from the ImgLibrary to form words. Difference from
+     * setString() is that words are only cut off at white spaces and dashes.
+     * @param word The word to draw
+     * @param ref The reference text to the letter image
+     * @param locx Starting x-location of the word in the image
+     * @param locy Starting y-location of the word in the image
+     * @param start Which letter to start reading the word at
+     * @param limit The number of pixels text is allowed to go in the
+     * X-direction (Numbers below 1: no x-limits)
+     * @return returns the letter it stopped at.
+     */
     public int setWords(String word, String ref,
             int locx, int locy, int start, int limit){
         return setWords(word, ref, locx, locy, start, limit, true);
     }
-    //Used for drawing a textline that stops at spaces and dashes
+
+    /**
+     * Uses letters from the ImgLibrary to form mini paragraphs.
+     * Mini paragraphs are kept track of extensively in this function as
+     * long as the text and limit remains constant.
+     * @param linenumber The line of the paragraph to draw
+     * @param word The word to draw
+     * @param ref The reference text to the letter image
+     * @param locx Starting x-location of the word in the image
+     * @param locy Starting y-location of the word in the image
+     * @param limit The number of pixels text is allowed to go in the
+     * X-direction (Numbers below 1: no x-limits)
+     */
     public void setParagraphLine(int linenumber, String word,
             String ref, int locx, int locy, int limit){
         setParagraphLine(linenumber, word, ref, locx, locy, limit, true);
     }
-    //Used for drawing a group of line that stop at spaces and dashes
+
+    /**
+     * Uses letters from the ImgLibrary to form paragraphs.
+     * @param word The word to draw
+     * @param ref The reference text to the letter image
+     * @param locx Starting x-location of the word in the image
+     * @param locy Starting y-location of the word in the image
+     * @param limit The number of pixels text is allowed to go
+     * in the X-direction (Numbers below 1: no x-limits)
+     * @param spacingy The amount of y-axis spacing to give between each line
+     * @param startline The line of the paragraph to start at
+     * @param endline The line of the paragraph to end at
+     */
     public void setParagraph(String word, String ref, int locx, int locy,
             int limit, int spacingy, int startline, int endline){
         if(startline < 0)
@@ -165,8 +335,22 @@ public class TextImgLibrary extends ImgLibrary{
 
     }
 
+    //-------
     //PRIVATE
-    //Returns false if all text wasn't added
+    //-------
+
+    /**
+     * This function adds sliced images to the ImgLibrary for referencing
+     * @param img The current image to place into the image library
+     * @param ref The name of the reference prefix
+     * @param slicex The number of slices along the x-axis
+     * @param slicey The number of slices along the y-axis
+     * @param start The location of the image index Left-Right Top-Bottom
+     * order starting at 0.
+     * @param ASCII_start The starting point of the ASCII character
+     * @param ASCII_limit The amount of ASCII characters in the list
+     * @return Whether all characters were added to the list
+     */
     private boolean addSlicedText(Image img, String ref,
             int slicex, int slicey, int start, int ASCII_start,
             int ASCII_limit){
@@ -177,7 +361,17 @@ public class TextImgLibrary extends ImgLibrary{
         }
         return true;
     }
-    //Sets up a Buffered image ready for input
+
+    /**
+     * This function sets up the Buffered Image used for changing a String
+     * text into an image file
+     * @param word The word to draw
+     * @param ref The reference text to the letter image
+     * @param locx Starting x-location of the word in the image
+     * @param locy Starting y-location of the word in the image
+     * @param limit The number of pixels text is allowed to go in the
+     * X-direction (Numbers below 1: no x-limits)
+     */
     private void prepareTextImage(String word, int locx,
             int locy, int limit, String ref){
         //Obtains a size for the PixtureMap and stores it
@@ -204,6 +398,19 @@ public class TextImgLibrary extends ImgLibrary{
         g = bimg.createGraphics();
     }
 
+    /**
+     * Uses letters from the ImgLibrary to form words. Difference from
+     * setString() is that words are only cut off at white spaces and dashes.
+     * @param word The word to draw
+     * @param ref The reference text to the letter image
+     * @param locx Starting x-location of the word in the image
+     * @param locy Starting y-location of the word in the image
+     * @param start Which letter to start reading the word at
+     * @param limit The number of pixels text is allowed to go in the
+     * X-direction (Numbers below 1: no x-limits)
+     * @param map Whether it is drawing to the image(T) or not(F)
+     * @return returns the letter it stopped at.
+     */
     private int setWords(String word, String ref,
             int locx, int locy, int start, int limit, boolean map){
         if(start > 0 && start < word.length())
@@ -252,6 +459,19 @@ public class TextImgLibrary extends ImgLibrary{
         return letterMax;
     }
 
+    /**
+     * Uses letters from the ImgLibrary to form mini paragraphs.
+     * Mini paragraphs are kept track of extensively in this function as
+     * long as the text and limit remains constant.
+     * @param linenumber The line of the paragraph to draw
+     * @param word The word to draw
+     * @param ref The reference text to the letter image
+     * @param locx Starting x-location of the word in the image
+     * @param locy Starting y-location of the word in the image
+     * @param limit The number of pixels text is allowed to go in the
+     * X-direction (Numbers below 1: no x-limits)
+     * @param map Whether it is drawing to the image(T) or not(F)
+     */
     private void setParagraphLine(int linenumber, String word,
             String ref, int locx, int locy, int limit, boolean map){
         int letterMax = word.length();
@@ -274,6 +494,13 @@ public class TextImgLibrary extends ImgLibrary{
         }while(start != -1);
     }
 
+    /**
+     * This gets the default spacing for the y-axis for paragraphs using
+     * the images in ImgLibrary as a reference
+     * @param word The word to draw
+     * @param ref The reference text to the letter image
+     * @return The amount of spacing for this image
+     */
     private int getDefaultSpacing(String ref, String word){
         int tsy = 0;
         for(int i = 0; i < word.length(); i++){
@@ -285,6 +512,12 @@ public class TextImgLibrary extends ImgLibrary{
         return tsy;
     }
 
+    /**
+     * This gets the default spacing for the x-axis for words using
+     * the images in ImgLibrary as a reference
+     * @param ref The reference text to the letter image
+     * @return The amount of spacing for these words
+     */
     private int getDefaultSpacing(String ref){
         int tsx = 0;
         //Tries to get default spacing for the letters
@@ -301,6 +534,15 @@ public class TextImgLibrary extends ImgLibrary{
         return tsx;
     }
 
+    /**
+     * This function draws a letter to the image map
+     * @param g The java2D graphics object
+     * @param ref The reference text to the letter image
+     * @param locx Starting x-location of the word in the image
+     * @param locy Starting y-location of the word in the image
+     * @param draw Whether to draw this image to the BufferedImage
+     * @return The width of this particular item
+     */
     private int drawLetter(Graphics2D g, String ref,
             int locx, int locy, boolean draw){
         if(draw)

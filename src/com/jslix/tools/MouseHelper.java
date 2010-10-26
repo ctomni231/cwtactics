@@ -8,7 +8,6 @@ package com.jslix.tools;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 09.21.10
- * @todo TODO Finish commenting this class
  */
 
 public class MouseHelper {
@@ -27,6 +26,12 @@ public class MouseHelper {
     //How quick a user is able to scroll, the higher the number the quicker
     private int scrollInd = 2;
 
+    /**
+     * This class helps regulate how the mouse and the keyboard integrates
+     * with each other with mouse locking. It also regulates the system
+     * time and helps with controlling the scrolling values so everything
+     * stays in time.
+     */
     public MouseHelper(){
         lockx = -1000;
         locky = -1000;
@@ -36,28 +41,41 @@ public class MouseHelper {
         scrollInd = 2;
     }
 
-    //Prevents mouse actions from being accepted
+    /**
+     * This function prevents mouse actions from being accepted
+     * @param mouseX The x-axis location of the mouse
+     * @param mouseY The y-axis location of the mouse
+     */
     public void setMouseLock(int mouseX, int mouseY){
         lockx = mouseX;
         locky = mouseY;
         mouseLock = true;
     }
 
-    //Allows mouse actions to be accepted
+    /**
+     * This function allows mouse actions to be accepted
+     * @param mouseX The x-axis location of the mouse
+     * @param mouseY The y-axis location of the mouse
+     */
     public void setMouseRelease(int mouseX, int mouseY){
         if(mouseX > lockx+5 || mouseX < lockx-5 ||
             mouseY > locky+5 || mouseY < locky-5)
             mouseLock = false;
     }
 
-    //Sets how often you want the mouse to scroll each second. 1 is once
-    //every second, 2 is twice every second, and so on...
+    /**
+     * This function sets how often you want the mouse to scroll each second
+     * @param scrollIndex How many times per second to scroll
+     */
     public void setScrollIndex(int scrollIndex){
         if(scrollIndex > 0)
             scrollInd = scrollIndex;
     }
 
-    //This function tells you when it is okay to scroll
+    /**
+     * This function controls when you are allowed to scroll
+     * @return Whether you are allowed to scroll
+     */
     public boolean getScroll(){
         if(scroll){
             scroll = !scroll;
@@ -66,17 +84,26 @@ public class MouseHelper {
         return scroll;
     }
 
-    //This function returns whether the mouse is locked
+    /**
+     * This function returns whether the mouse is locked
+     * @return Whether the mouse is locked
+     */
     public boolean getMouseLock(){
         return mouseLock;
     }
 
-    //Gets the current scrollIndex
+    /**
+     * This gets how many times per second you are allowed to scroll
+     * @return The amount of times per second you are allowed to scroll
+     */
     public int getScrollIndex(){
         return scrollInd;
     }
 
-    //Helps handle controlled scrolling within the screen
+    /**
+     * This function fully controls the scrolling within the screen
+     * @param sysTime The amount of system time used by Timer class
+     */
     public void setMouseControl(int sysTime){
         if(!scroll){
             for(int i = 0; i < scrollInd; i++){
