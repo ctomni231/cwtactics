@@ -10,20 +10,25 @@ import com.jslix.system.Slix;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.21.10
+ * @version 10.27.10
+ * @todo TODO Work on full screen mode for this class only
  */
 public class JMain extends Slix{
 	
     private static final long serialVersionUID = 2452945053572843636L;
-	
+
+    //Title of the game
     public static String GAME_TITLE = "Custom Wars Tactics Pre-Alpha 0.6";
+    //Width of the window normal
     public final static int GAME_WIDTH = 640; //480, 640
+    //Height of the window normal
     public final static int GAME_HEIGHT = 480; //320, 480
 
     /**
      * The main class for starting a Java2D Frame or a Slick Frame window
      * for the JSlix version of the game
-     * @param argv Arguments: slick=Slick2D window, java=java2D window
+     * @param argv Arguments: slick=Slick2D window, java=java2D window,
+     * full=Slick fullscreen (no resize)
      */
     public static void main(String[] argv) {
 
@@ -33,6 +38,7 @@ public class JMain extends Slix{
         if(argv.length > 0){
             if(argv[0].matches("java"))         game.showWindow();
             else if(argv[0].matches("slick"))   game.showSlick();
+            else if(argv[0].matches("full"))	game.showFull();
         }else
             game.showWindow();
     }

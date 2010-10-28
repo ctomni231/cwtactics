@@ -18,7 +18,7 @@ import org.newdawn.slick.SlickException;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.15.10
+ * @version 10.27.10
  */
 
 public class SlixGame extends BasicGame{
@@ -37,7 +37,7 @@ public class SlixGame extends BasicGame{
             app.setDisplayMode( 500, 500, false );
             app.start();
         } catch ( SlickException e ) { 
-            e.printStackTrace(); 
+            System.err.println(e);
         } 
     }
 
@@ -45,6 +45,8 @@ public class SlixGame extends BasicGame{
     public static Timer timer;
     //F9 to toggle the frameRate visibility
     private final int FPS_KEY = 67;
+    //F10 to toggle the full screen capabilities
+    private final int FS_KEY = 68;
     //Holds the container used for this StateBasedGame
     private GameContainer contain;
     //Holds a temporary Screen representing a real Screen
@@ -163,6 +165,22 @@ public class SlixGame extends BasicGame{
     }
 
     /**
+     * This function toggles visibility of full screen display
+     */
+    public void setFullScreen(){
+        if(SlixLibrary.isApplet())  return;
+        if(contain.getWidth() != 800 && contain.getHeight() != 600){
+            SlixLibrary.check();
+            return;
+        }
+        try {
+            contain.setFullscreen(!contain.isFullscreen());
+        } catch (SlickException ex) {
+            System.err.println(ex);
+        }
+    }
+
+    /**
      * This function shows the frame rate graphics
      * @param g The Slick2D graphics object
      */
@@ -182,6 +200,7 @@ public class SlixGame extends BasicGame{
     public void keyPressed(int key, char c){
     	// if F9 is pressed, show FPS on screen
     	if(key == FPS_KEY) contain.setShowFPS(!contain.isShowingFPS());
+        if(key == FS_KEY)  setFullScreen();
         KeyPress.addKeyPress(key, true);
     }
 

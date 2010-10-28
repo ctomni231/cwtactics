@@ -13,7 +13,7 @@ import org.newdawn.slick.SlickException;
  * Slick applet
  *
  *@author Carr, Crecen
- *@version 10.11.10
+ *@version 10.27.10
  *@license  New BSD License
  *	Copyright (c) 2010, BearWolf/Exotec
  *	Exotec label holder is Radom Alexander, blackcat.myako@gmail.com
@@ -65,8 +65,10 @@ public class JSGMain extends SlixGame{
             //app.setDisplayMode( 480, 320, false );
             app.setDisplayMode( 640, 480, false );
             app.start();
+
+            
         } catch ( SlickException e ) {
-            e.printStackTrace();
+            System.err.println(e);
         }
     }
 

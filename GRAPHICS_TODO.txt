@@ -1,3 +1,8 @@
+Hardcoded Features
+
+F9 - Toggle FPS
+F10 - Toggle Full Screen mode (Slick2D Frames only)
+
 JSlix Screen - Complete (JMain Runnable)
 
 [*] = Done

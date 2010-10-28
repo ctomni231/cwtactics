@@ -19,6 +19,8 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+
+import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
 
 /**
@@ -28,7 +30,7 @@ import org.newdawn.slick.SlickException;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.21.10
+ * @version 10.27.10
  */
 
 public class Slix extends JComponent implements Runnable, KeyListener,
@@ -51,12 +53,20 @@ public class Slix extends JComponent implements Runnable, KeyListener,
             game.showWindow();
     }
 
+    //Width of the window for fullscreen
+    public final int FULL_WIDTH = 800;
+    //Height of the window for fullscreen
+    public final int FULL_HEIGHT = 600;
     /**
      * The window that holds the frame of the game
      */
     private JFrame window;
     /**
-     * This holds the Slick version of the game
+     * This holds the Slick version of the game (no resize)
+     */
+    private AppGameContainer app;
+    /**
+     * This holds the Slick version of the game (resize)
      */
     private SlixContainer contain;
     /**
@@ -145,6 +155,15 @@ public class Slix extends JComponent implements Runnable, KeyListener,
                 }
             });
             contain.addComponentListener(new ComponentAdapter() {
+
+                @Override
+                public void componentResized(ComponentEvent ce) {
+                    super.componentResized(ce);
+                    sizex = contain.getWidth()+16;
+                    sizey = contain.getHeight()+38;
+                    window.setSize(sizex, sizey);                   
+                }
+
                 @Override
                 public void componentHidden(ComponentEvent e) {
                     SlixLibrary.updateScreens();
@@ -159,6 +178,7 @@ public class Slix extends JComponent implements Runnable, KeyListener,
             window.validate();
             window.setVisible(true);
             window.pack();
+            contain.setSize(getPreferredSize());
             contain.start();
             game.startTimer(true);
             KeyPress.setConv(true);
@@ -196,6 +216,18 @@ public class Slix extends JComponent implements Runnable, KeyListener,
         window.setVisible(true);
         window.pack();
         KeyPress.setConv(false);
+    }
+
+    public void showFull(){
+    	if(game == null)
+    		game = new SlixGame();
+    	try{ 
+            app = new AppGameContainer(game);
+            app.setDisplayMode( FULL_WIDTH, FULL_HEIGHT, true );
+            app.start();
+        } catch ( SlickException e ) { 
+            System.err.println(e);
+        } 
     }
 
     /**

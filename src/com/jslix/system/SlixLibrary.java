@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.12.10
+ * @version 10.27.10
  */
 public class SlixLibrary {
 
@@ -35,6 +35,10 @@ public class SlixLibrary {
      * Sets whether this is an applet or a frame
      */
     private static boolean isApplet = true;
+    /**
+     * This deals specifically with screen resizing for the Slick Window
+     */
+    private static boolean check = false;
 
     /**
      * Adds a screen to be displayed by the main window
@@ -152,6 +156,14 @@ public class SlixLibrary {
     }
 
     /**
+     * This function tells you whether this screen is an applet
+     * @return Whether this screen is an applet(T) or not(F)
+     */
+    public static boolean isApplet(){
+        return isApplet;
+    }
+
+    /**
      * Used to help a frame or applet quit
      */
     public static void quit(){
@@ -164,6 +176,25 @@ public class SlixLibrary {
      */
     protected static boolean quitNow(){
         return exit;
+    }
+
+    /**
+     * Used to help a frame resize
+     */
+    public static void check(){
+        check = true;
+    }
+
+    /**
+     * Used to see if it is okay to resize the screen
+     * @return If it is okay to resize the screen
+     */
+    protected static boolean checkNow(){
+        if(check){
+            check = false;
+            return !check;
+        }
+        return check;
     }
 
     /**

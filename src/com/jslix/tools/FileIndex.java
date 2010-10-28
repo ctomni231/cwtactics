@@ -58,19 +58,18 @@ public class FileIndex {
             if(prefix.matches(""))  isDirectory = true;
             suffix = filename.substring(split+1);
         }
-        //outputAll();
+        //System.out.println(toString());
     }
 
     /**
      * This function writes the information to the console window of one
      * file.
      */
-    public void outputAll(){
-        System.out.println("Filename:"+fname);
-        System.out.println("BasePath:"+bpath);
-        System.out.println("Filepath:"+fpath);
-        System.out.println("Prefix:"+prefix);
-        System.out.println("Suffix:"+suffix);
-        System.out.println("Directory:"+isDirectory);
+    @Override
+    public String toString(){
+        return String.format("%s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s",
+                "Filename", fname, "BasePath", bpath, "FilePath", fpath,
+                "Prefix", prefix, "Suffix", suffix,
+                "isDirectory", isDirectory);
     }
 }
