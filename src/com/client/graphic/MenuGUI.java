@@ -14,7 +14,7 @@ import java.awt.Color;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.16.10
+ * @version 10.28.10
  */
 
 public class MenuGUI extends VerticalMenu{
@@ -171,6 +171,27 @@ public class MenuGUI extends VerticalMenu{
      */
     public int getMenuColumn(){
         return menuColumn;
+    }
+
+    /**
+     * This function sets the menu column
+     * @param set The menu column
+     */
+    public void setMenuColumn(int set){
+        if(menuColumn >= -1 && menuColumn <= 1)
+            menuColumn = set;
+    }
+
+    /**
+     * This function sets the current faction for the menu
+     * @param set The menu color
+     */
+    public void setCurFaction(int set){        
+        curFaction = set;
+        if(curFaction >= factions)
+            curFaction = -1;
+        if(curFaction < -1)
+            curFaction = factions-1;
     }
 
     /**

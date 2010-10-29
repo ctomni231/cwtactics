@@ -41,18 +41,6 @@ public class BackgroundHandler implements ScreenSkeleton {
     }
 
     /**
-     * This function checks to see if there are any new backgrounds. If not,
-     * it'll load a list of the old backgrounds, choose one, and resize it
-     * to fit the screen.
-     */
-    public void init() {
-        if(!applet)     findNewBackgrounds();
-        loadRandomBackground();
-        imgSort.setImageSize(cursx, cursy);
-        imgSort.addImage(imgSort.getImage(0));
-    }
-
-    /**
      * This function is used to poll the screen to see if the window size
      * has been changed so it can resize the background
      * @param width The current width of the window
@@ -79,7 +67,10 @@ public class BackgroundHandler implements ScreenSkeleton {
      */
     public void update(String name, int index, boolean isApplet,
             boolean seethru) {
-        applet = isApplet;
+        if(!isApplet)     findNewBackgrounds();
+        loadRandomBackground();
+        imgSort.setImageSize(cursx, cursy);
+        imgSort.addImage(imgSort.getImage(0));
     }
 
     /**
@@ -145,6 +136,8 @@ public class BackgroundHandler implements ScreenSkeleton {
             imgSort.addImage(entries[random]);
         }
     }
+
+    public void init() {}
 
     public void update(int timePassed) {}
 }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
@@ -16,32 +17,43 @@ import java.util.ResourceBundle;
  *          <li>Carr, Crecen</li>
  *          <li>Stefan569</li></ul>
  * @license Look into "LICENSE" file for further information
- * @version 10.08.10
+ * @version 10.28.10
  */
 
 public class LocaleService extends ClassLoader {
 
     private ResourceBundle lang;
     private FileFind finder;
-    private String filename;
+    private Properties property;
 
     /**
      * This class deals with all the language functionality for
      * properties files
      * @param filename The path to the properties files
      */
-    public LocaleService( String filename ){
+    public LocaleService(){
         finder = new FileFind();
-        this.filename = filename;
-        getBundle();
+        property = new Properties();
+    }
+
+    /**
+     * This gets a bundle for the default Locale
+     * @param filename The path to the properties file
+     */
+    public final void getBundle(String filename){
+        getBundle(filename, Locale.getDefault());
     }
 
     /**
      * This function gets a resource bundle dependant on the users
      * native language
+     * @param filename The path to the properties file
+     * @param locale The locale language type to use
      */
-    public final void getBundle(){
-        lang = ResourceBundle.getBundle(filename, Locale.getDefault(), this);
+    public final void getBundle(String filename, Locale locale){
+        lang = ResourceBundle.getBundle(filename, locale, this);
+        for(String theSet: lang.keySet())
+            property.setProperty(theSet, lang.getString(theSet));
     }
 
     /**
@@ -69,7 +81,7 @@ public class LocaleService extends ClassLoader {
      * @return a localized string
      */
     public String get( String ID ){
-        return (lang != null && ID != null) ? lang.getString(ID) : "N/A";
+        return (property.containsKey(ID)) ? property.getProperty(ID) : ID;
     }
 
 }

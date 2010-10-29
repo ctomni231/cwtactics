@@ -15,19 +15,19 @@ import java.util.HashMap;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 09.15.10
+ * @version 10.28.10
  */
 
 public class XML_Writer {
 
-    private final int TAB_SPACE = 8;
-    private final int MAX_CHARS = 70;
-    private String data;
-    private String filePath;
-    private String filename;
-    private ArrayList<String> curTag;
-    private boolean open;
-    private int character;
+    private final int TAB_SPACE = 8;//The amount of spaces a TAB makes
+    private final int MAX_CHARS = 70;//The max caharacters before a newline
+    private String data;//The data contained within the XML file
+    protected String filePath;//THe path to the XML file
+    protected String filename;//THe XML filename
+    private ArrayList<String> curTag;//The current open tag of the XML file
+    private boolean open;//Holds whether a tag is opened
+    private int character;//Holds how many characters the current tag has
 
     /**
      * Writes an XML file in the current directory. If the directory

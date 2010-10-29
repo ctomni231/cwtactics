@@ -21,7 +21,25 @@ public class LangControl extends LocaleService{
      * @param filename The file path of the properties file
      */
     public LangControl(String filename){
-        super(filename);
+        super();
+        getBundle(filename);
+    }
+
+    /**
+     * This splits up the text by white space and gets the ID's for multiple
+     * property ID's. Useful for making fill in the blank text applications.
+     * @param ID The property ID
+     * @return The value from the ID key
+     */
+    public String getText(String ID){
+        String temp = "";
+        if(ID.split(" ").length < 2)
+            return get(ID);
+
+        for(String part: ID.split(" "))
+            temp += get(part) + " ";
+
+        return temp;
     }
 
     /**
@@ -29,7 +47,8 @@ public class LangControl extends LocaleService{
      * @param ID The property ID
      * @return The value from the ID key
      */
-    public String getText(String ID){
+    @Override
+    public String get(String ID){
         if(ID.startsWith("@"))
             return super.get(ID);
         else

@@ -12,7 +12,7 @@ import com.jslix.system.KeyPress;
  * @author <ul><li>Carr, Crecen</li>
  *              <li>Radom, Alexander</li></ul>
  * @license Look into "LICENSE" file for further information
- * @version 10.22.10
+ * @version 10.28.10
  */
 public class KeyControl {
     /*
@@ -22,7 +22,7 @@ public class KeyControl {
         // action keys with values for keyboard keys
         UP(200, 38), DOWN(208, 40),
         LEFT(203, 37), RIGHT(205, 39), 
-        ENTER(44, 90),CANCEL(45, 88);
+        SELECT(44, 90),CANCEL(45, 88);
 
         // key value of the key
         private int slick;
@@ -52,7 +52,7 @@ public class KeyControl {
     public static enum Mouse{
 
         //action clicks with clicks for the mouse
-        ENTER(0, 1), CANCEL(1, 3);
+        SELECT(0, 1), CANCEL(1, 3);
 
         private int slick;
         private int java;
@@ -189,7 +189,7 @@ public class KeyControl {
     public static boolean isRightClicked(){
         return isClicked( Keys.RIGHT ); }
     public static boolean isActionClicked(){
-        return (isClicked( Keys.ENTER ) || isClicked( Mouse.ENTER )); }
+        return (isClicked( Keys.SELECT ) || isClicked( Mouse.SELECT )); }
     public static boolean isCancelClicked(){
         return (isClicked( Keys.CANCEL ) || isClicked( Mouse.CANCEL )); }
 
@@ -203,7 +203,7 @@ public class KeyControl {
     public static boolean isRightDown(){
         return isDown( Keys.RIGHT ); }
     public static boolean isActionDown(){
-        return (isDown( Keys.ENTER ) || isDown( Mouse.ENTER)); }
+        return (isDown( Keys.SELECT ) || isDown( Mouse.SELECT)); }
     public static boolean isCancelDown(){
         return (isDown( Keys.CANCEL ) || isDown( Mouse.CANCEL )); }
 }

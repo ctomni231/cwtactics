@@ -6,12 +6,18 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.AccessControlException;
+import java.util.Locale;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
+import com.jslix.tools.FileFind;
+
 /**
- * Dictionary class that loads localized strings from a file.
+ * Dictionary class that loads localized strings from a file. Expanded
+ * to store in an overwriting method.
  * 
- * @author Radom, Alexander
+ * @author <UL><LI>Radom, Alexander</LI>
+ *       <LI>Carr, Crecen</LI></UL>
  * @license Look into "LICENSE" file for further information
  * @version 26.09.2010
  * @todo <UL>
@@ -20,12 +26,36 @@ import java.util.ResourceBundle;
  */
 class DictionaryService extends ClassLoader
 {
-
 	private ResourceBundle lang;
-		
-	DictionaryService( String fileName )
-	{
-		lang = ResourceBundle.getBundle( fileName , java.util.Locale.getDefault(), this  )
+    private FileFind finder;
+    private Properties property;
+	
+	/**
+	 * This class gets Text files based on Language Locale.	
+	 */
+	DictionaryService(){
+		finder = new FileFind()
+		property = new Properties()
+	}
+	
+	/**
+	* This gets a bundle for the default Locale
+	* @param filename The path to the properties file
+	*/
+	public final void getBundle(String filename){
+		getBundle(filename, Locale.getDefault())
+	}
+	
+	/**
+	* This function gets a resource bundle dependent on the users
+	* native language
+	* @param filename The path to the properties file
+	* @param locale The locale language type to use
+	*/
+	public final void getBundle(String filename, Locale locale){
+		lang = ResourceBundle.getBundle(filename, locale, this)
+		for(String theSet: lang.keySet())
+			property.setProperty(theSet, lang.getString(theSet))
 	}
 	
 	/**
@@ -36,15 +66,14 @@ class DictionaryService extends ClassLoader
 	 */
 	String get( String ID )
 	{
-		assert lang != null
 		assert ID != null
 		
-		return lang.getString(ID) ?: "N/A" 
+		return property.getProperty(ID) ?: ID 
 	}
 	
 	@Override
 	protected URL findResource(String name) {
-	  File f = getFile(name);
+	  File f = finder.getFile(name);
 
 	  try {
 		return f.toURI().toURL();
@@ -52,35 +81,5 @@ class DictionaryService extends ClassLoader
 	  catch (MalformedURLException e) {
 	  }
 	  return super.findResource(name);
-	}
-	
-	//Gets a File from the user home directory
-	private File getFile(String filename){
-		File newFile = null;
-
-		try{
-			newFile = new File(filename);
-		}catch(AccessControlException ex){
-			System.err.println(ex);
-			newFile = getClassFile(filename);
-		}
-
-		return newFile;
-	}
-
-	//Gets a file from a url string referencing the home library (applets)
-	private File getClassFile(String filename){
-		File newFile = null;
-
-		URL tempURL = getClass().getResource("/"+filename);
-		if(tempURL != null){
-			try {
-				newFile = new File(tempURL.toURI());
-			} catch (URISyntaxException ex) {
-				System.err.println(ex);
-			}
-		}
-
-		return newFile;
 	}
 }
