@@ -10,33 +10,43 @@ import org.xml.sax.Attributes;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.28.10
+ * @version 10.29.10
  */
 public class Options extends XML_Parser{
 
-    public int help;
-    public int color;
-    public int column;
+    public int help;//Holds the help bar visible value
+    public int color;//Holds the starting menu color
+    public int column;//Holds the starting menu column
 
-    public int up;
-    public int down;
-    public int left;
-    public int right;
-    public int select;
-    public int cancel;
+    public int up;//Holds the java key up
+    public int down;//Holds the java key down
+    public int left;//Holds the java key left
+    public int right;//Holds the java key right
+    public int select;//Holds the java key select
+    public int cancel;//Holds the java key cancel
 
-    public int sUp;
-    public int sDown;
-    public int sLeft;
-    public int sRight;
-    public int sSelect;
-    public int sCancel;
+    public int sUp;//Holds the Slick key up
+    public int sDown;//Holds the Slick key down
+    public int sLeft;//Holds the Slick key Left
+    public int sRight;//Holds the Slick key Right
+    public int sSelect;//Holds the Slick key Select
+    public int sCancel;//Holds the Slick Key Cancel
 
+    /**
+     * This class gets a group of options set by the user when the
+     * user exits cleanly. It is used for storing key configurations
+     * mainly, and was expanded to store other settings
+     * @param filename The path to the options file
+     */
     public Options(String filename){
          super(filename);
     }
 
-
+    /**
+     * This function sorts the tags into readable entries for storage of
+     * strings
+     * @param attributes A current line in the XML file
+     */
     @Override
     public void entry(Attributes attributes){
          if(attributes == null)  return;
@@ -46,6 +56,10 @@ public class Options extends XML_Parser{
 
     }
 
+    /**
+     * This function gathers all tags that have to do with setting the options
+     * @param attrib A current line in the XML file
+     */
     private void optionEntry(Attributes attrib){
         if(super.isAheader("normal"))
             normalEntry(attrib);
@@ -55,12 +69,22 @@ public class Options extends XML_Parser{
              slickEntry(attrib);
     }
 
+    /**
+     * This function handles all the generic tags that have to do with
+     * the options such as menu orientation and color
+     * @param attrib A current line in the XML file
+     */
     private void normalEntry(Attributes attrib){
         help = Integer.parseInt(fillEntry(attrib, "help"));
         color = Integer.parseInt(fillEntry(attrib, "color"));
         column = Integer.parseInt(fillEntry(attrib, "column"));
     }
 
+    /**
+     * This function handles gathering all the stored information for
+     * java2D keys
+     * @param attrib A current line in the XML file
+     */
     private void javaEntry(Attributes attrib){
         up = Integer.parseInt(fillEntry(attrib, "UP"));
         down = Integer.parseInt(fillEntry(attrib, "DOWN"));
@@ -70,6 +94,11 @@ public class Options extends XML_Parser{
         cancel = Integer.parseInt(fillEntry(attrib, "CANCEL"));
     }
 
+    /**
+     * This function handles gathering all the stored information for
+     * the Slick2D keys
+     * @param attrib A current line in the XML file
+     */
     private void slickEntry(Attributes attrib){
         sUp = Integer.parseInt(fillEntry(attrib, "UP"));
         sDown = Integer.parseInt(fillEntry(attrib, "DOWN"));
@@ -80,34 +109,12 @@ public class Options extends XML_Parser{
     }
 
     /**
-     * This function fills an array with an XML tag value
-     * @param attrib The attributes of a current line
-     * @param fillData The array to fill up
-     * @param head The XML tag value
-     * @param value The XML tag value
-     * @return An array containing the item
-     */
-    private String[] fillEntry(Attributes attrib, String[] fillData,
-            String head, String value){
-        if(fillData == null)
-            fillData = new String[0];
-
-        if(super.getLastHeader().matches(head)){
-            String[] temp = fillData;
-            fillData = new String[temp.length+1];
-            System.arraycopy(temp, 0, fillData, 0, temp.length);
-            fillData[fillData.length-1] = fillEntry(attrib, value);
-        }
-        return fillData;
-    }
-
-    /**
      * This function takes an XML tag and gives you its value
      * @param attrib The attributes of a current XML line
      * @param data The key tag
      * @return The value of the key tag
      */
     private String fillEntry(Attributes attrib, String data){
-        return (attrib.getValue(data) != null) ? attrib.getValue(data) : "-1";
+        return (attrib.getValue(data) != null) ? attrib.getValue(data) : "0";
     }
 }

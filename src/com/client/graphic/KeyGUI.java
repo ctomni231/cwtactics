@@ -1,10 +1,10 @@
 package com.client.graphic;
 
+import com.client.graphic.tools.TextPix;
 import com.client.graphic.tools.VerticalMenu;
 import com.client.input.KeyControl;
 import com.jslix.tools.ImgLibrary;
 import com.jslix.tools.MouseHelper;
-import com.jslix.tools.TextImgLibrary;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
@@ -19,7 +19,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.23.10
+ * @version 10.29.10
  */
 
 public class KeyGUI extends VerticalMenu{
@@ -27,8 +27,6 @@ public class KeyGUI extends VerticalMenu{
     public final int MAX_ITEMS = 6;//The maximum items a vertical menu has
 	
     private String[] help;//Keeps the help associated with the actions
-    private String alpha;//The path to the alpha letters
-    private String numbers;//The path to the numbers text
     private Color[] dfltColors;//Default colors for the letters
     private Color[] chngColors;//Colors to change the letters to
     private double counter;//This controls the opacity of the image
@@ -51,12 +49,9 @@ public class KeyGUI extends VerticalMenu{
      * @param locy The y-axis location of the menu
      * @param speed The movement speed of this menu
      */
-    public KeyGUI(String alphaPath, String numberPath, int spacing,
-    		int locx, int locy, double speed){
+    public KeyGUI(int spacing, int locx, int locy, double speed){
         super(locx, locy, speed);
         keyItems = new VerticalMenu(locx, locy, speed);
-        alpha = alphaPath;
-        numbers = numberPath;
         space = spacing;
         change = 0;
         setSpacingY(space);
@@ -106,14 +101,14 @@ public class KeyGUI extends VerticalMenu{
     	addBox(6, imgRef.getColor(Color.DARK_GRAY, 127),
                 640, 7, true);
     	createNewItem(30, (MAX_ITEMS+2)*space, 0);
-    	addImagePart(getTextImg(alpha, keyItem[6]), 0.7);
-        addImagePart(getTextImg(alpha, keyItem[7],
+    	addImagePart(TextPix.getTextImg(keyItem[6]), 0.7);
+        addImagePart(TextPix.getTextImg(keyItem[7],
                  dfltColors, chngColors), 0.7);
         addMenuItem(6, true);
         
         for(int i = 0; i < KeyControl.Keys.values().length; i++){
             keyItems.createNewItem(30, 0, 0);
-            keyItems.addImagePart(getTextImg(alpha,
+            keyItems.addImagePart(TextPix.getTextImg(
                     KeyEvent.getKeyText(KeyControl.Keys.values()[i]
                     .javaValue()).toUpperCase()), 0.7);
             keyItems.addVertItem(i, i, false);
@@ -125,7 +120,7 @@ public class KeyGUI extends VerticalMenu{
     	keyItems.addBox(6, imgRef.getColor(Color.DARK_GRAY, 127),
                 640, 7, false);
         keyItems.createNewItem(30, (MAX_ITEMS+2)*space, 0);
-        keyItems.addImagePart(getTextImg(alpha, keyItem[8],
+        keyItems.addImagePart(TextPix.getTextImg(keyItem[8],
                 dfltColors, chngColors), 0.7);
         keyItems.addMenuItem(6, false);
         
@@ -137,10 +132,10 @@ public class KeyGUI extends VerticalMenu{
             addVertBox(i, i, imgRef.getColor(Color.DARK_GRAY, 127),
                     640, 7, true);
             createNewItem(30, 0, 0);
-            addImagePart(getTextImg(alpha, keyItem[i]), 0.7);
+            addImagePart(TextPix.getTextImg(keyItem[i]), 0.7);
             addVertItem(i, i, true);
             keyItems.createNewItem(30, 0, 0);
-            keyItems.addImagePart(getTextImg(alpha, keyItem[i],
+            keyItems.addImagePart(TextPix.getTextImg(keyItem[i],
                     dfltColors, chngColors), -1);
             keyItems.addMenuItem(i, true);
             
@@ -263,8 +258,8 @@ public class KeyGUI extends VerticalMenu{
             //Changes the visuals of all keys
             for(int i = 0; i < KeyControl.Keys.values().length; i++){
                 keyItems.setItemImage(i, 0,
-                    getTextImg(alpha,
-                    KeyEvent.getKeyText(KeyControl.Keys.values()[i]
+                    TextPix.getTextImg(KeyEvent.getKeyText(
+                    KeyControl.Keys.values()[i]
                     .javaValue()).toUpperCase()));
             }
 
@@ -318,45 +313,6 @@ public class KeyGUI extends VerticalMenu{
     public String getHelpText(){
         return keySelect ? help[MAX_ITEMS+2] : (select != 6) ? help[select] :
             help[MAX_ITEMS+1];
-    }
-
-    /**
-     * This function turns a String into a picture
-     * @param alpha The path to the alpha file
-     * @param text The text to convert into a picture
-     * @return An image representing the text
-     */
-    private java.awt.Image getTextImg(String alpha, String text){
-        return getTextImg(alpha, text, null, null);
-    }
-
-    /**
-     * This function turns a String into a picture
-     * @param alpha The path to the alpha file
-     * @param text The text to convert into a picture
-     * @param fromColor A list of default colors
-     * @param toColor A list of recolor values
-     * @return An image representing the text
-     */
-    private java.awt.Image getTextImg(String alpha, String text,
-            Color[] fromColor, Color[] toColor){
-        TextImgLibrary txtLib = new TextImgLibrary();
-        txtLib.addImage(alpha);
-        txtLib.addImage(numbers);
-        txtLib.addAllCapitalLetters(txtLib.getImage(0), "", 6, 5, 0);
-        txtLib.addLetter('-', txtLib.getImage(0), "", 6, 5, 29);
-        txtLib.addLetter('\'', txtLib.getImage(0), "", 6, 5, 28);
-        txtLib.addLetter(',', txtLib.getImage(0), "", 6, 5, 27);
-        txtLib.addLetter('.', txtLib.getImage(0), "", 6, 5, 26);
-
-        txtLib.addAllNumbers(txtLib.getImage(1), "", 10, 1, 0);
-        txtLib.setString(text, "", 0, 0, 0, 0);
-        if(fromColor != null && toColor != null){
-            for(int j = 0; j < fromColor.length; j++)
-                txtLib.setPixelChange(fromColor[j], toColor[j]);
-        }
-        txtLib.addImage(text, txtLib.getTextImage());
-        return txtLib.getImage(text);
     }
 
     /**

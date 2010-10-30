@@ -7,8 +7,8 @@ import com.client.graphic.TitleGUI;
 import com.client.graphic.ExitGUI;
 import com.client.graphic.MenuGUI;
 import com.client.graphic.KeyGUI;
+import com.client.graphic.tools.TextPix;
 import com.client.graphic.xml.TitleReader;
-import com.client.input.KeyControl;
 import com.client.input.OptionHandler;
 import com.jslix.debug.MemoryTest;
 import com.jslix.state.Screen;
@@ -24,7 +24,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.23.10
+ * @version 10.29.10
  */
 
 public class MainMenuScreen extends Screen{
@@ -52,7 +52,6 @@ public class MainMenuScreen extends Screen{
     private int current;//Used to update the screen index
     private int menuColor;//The current color of the menu items
     private int curColor;//Used to update the current color
-    private boolean exists;//Whether the options file exists
 
     /**
      * This class contains all the elements that make up the title screen
@@ -60,11 +59,12 @@ public class MainMenuScreen extends Screen{
      */
     public MainMenuScreen(){
         menuHelp = true;
-        exists = false;
-
-        initOptions();
 
         reader = new TitleReader("data/titlescreen.xml");
+
+        TextPix.setTextPath(reader.alpha);
+        TextPix.setNumPath(reader.number);
+
         bgPic = new BackgroundHandler(scr_width, scr_height);
         logoPic = new LogoHandler(reader.logoPath, reader.miniPath, 
         		reader.copyright, reader.question, SIZE_X, SIZE_Y);
@@ -74,30 +74,26 @@ public class MainMenuScreen extends Screen{
         titleScr.setOrigScreen(SIZE_X, SIZE_Y);
         titleScr.setShadowColor(Color.BLACK);
         titleScr.setShadowOffset(1);
-        titleScr.setWords(reader.alpha, reader.start, 200, 20);
+        titleScr.setWords(reader.start, 200, 20);
         titleScr.setColorPath(reader.unitColor);
 
-        exitScr = new ExitGUI(reader.alpha, reader.exitData, 100, 200, 0);
+        exitScr = new ExitGUI(reader.exitData, 100, 200, 0);
         exitScr.setOrigScreen(SIZE_X, SIZE_Y);
         exitScr.setColorPath(reader.unitColor);
 
-        menuScr = new MenuGUI(reader.arrow, reader.alpha, 20, 0, 165, 0);
+        menuScr = new MenuGUI(reader.arrow, 20, 0, 165, 0);
         menuScr.init();
         //menuScr.initMenu(reader.mainOption, reader.mainSelect,
         //        reader.mainText, reader.mainHelp);
         menuScr.setOrigScreen(SIZE_X, SIZE_Y);
         menuScr.setColorPath(reader.unitColor);
-        if(exists)
-            menuScr.setMenuColumn(option.getOptions().column);
         
-        credScr = new CreditGUI(reader.alpha, reader.number, reader.credit,
-                0, 0, 1);
+        credScr = new CreditGUI(reader.credit, 0, 0, 1);
         credScr.setOpacity(0.7);
         credScr.setColorPath(reader.unitColor);
         credScr.setOrigScreen(SIZE_X, SIZE_Y);
 
-        keyScr = new KeyGUI(reader.alpha, reader.number, 20, 0, 200, 1);
-        keyScr.init(reader.keyOption, reader.keyHelp);
+        keyScr = new KeyGUI(20, 0, 200, 1);
         keyScr.setColorPath(reader.unitColor);
         keyScr.setOrigScreen(SIZE_X, SIZE_Y);
 
@@ -111,6 +107,8 @@ public class MainMenuScreen extends Screen{
      */
     @Override
     public void init() {
+        initOptions();
+        keyScr.init(reader.keyOption, reader.keyHelp);
         bgPic.update(scr_name, scr_index, scr_isApplet, scr_link);
         logoPic.init();
         exitScr.init();
@@ -368,26 +366,19 @@ public class MainMenuScreen extends Screen{
         }
     }
 
+    /**
+     * This function gets all the options created by the user and
+     * applies then to the frame. This does not apply to applets.
+     */
     private void initOptions(){
         option = new OptionHandler("data","options.xml");
-        exists = option.exists();
-        if(exists){
+        if(!scr_isApplet && option.exists()){
             option.loadOptions();
-            menuHelp = (option.getOptions().help == 1);
+            titleScr.setHelp(option.getOptions().help == 1);
+            menuHelp = !titleScr.getHelp();
             menuColor = option.getOptions().color;
             curColor = menuColor;
-            KeyControl.Keys.UP.setValues(option.getOptions().sUp,
-                    option.getOptions().up);
-            KeyControl.Keys.DOWN.setValues(option.getOptions().sDown,
-                    option.getOptions().down);
-            KeyControl.Keys.LEFT.setValues(option.getOptions().sLeft,
-                    option.getOptions().left);
-            KeyControl.Keys.RIGHT.setValues(option.getOptions().sRight,
-                    option.getOptions().right);
-            KeyControl.Keys.SELECT.setValues(option.getOptions().sSelect,
-                    option.getOptions().select);
-            KeyControl.Keys.CANCEL.setValues(option.getOptions().sCancel,
-                    option.getOptions().cancel);
+            menuScr.setMenuColumn(option.getOptions().column);
         }else{
             menuColor = MENU_COLOR;
             curColor = MENU_COLOR;
@@ -400,44 +391,7 @@ public class MainMenuScreen extends Screen{
      */
     @Override
     public void scr_close() {
-        if(!scr_isApplet){          
-            option.addXMLTag("options");
-            option.addXMLTag("normal");
-            if(menuHelp)
-                option.addAttribute("help", "1", false);
-            else
-                option.addAttribute("help", "0", false);
-            option.addAttribute("color", ""+menuColor, false);
-            option.addAttribute("column", ""+menuScr.getMenuColumn(), true);
-            option.addXMLTag("java");
-            option.addAttribute("UP",
-                    ""+KeyControl.Keys.UP.javaValue(), false);
-            option.addAttribute("DOWN",
-                    ""+KeyControl.Keys.DOWN.javaValue(), false);
-            option.addAttribute("LEFT",
-                    ""+KeyControl.Keys.LEFT.javaValue(), false);
-            option.addAttribute("RIGHT",
-                    ""+KeyControl.Keys.RIGHT.javaValue(), false);
-            option.addAttribute("SELECT",
-                    ""+KeyControl.Keys.SELECT.javaValue(), false);
-            option.addAttribute("CANCEL",
-                    ""+KeyControl.Keys.CANCEL.javaValue(), true);
-            option.addXMLTag("slick");
-            option.addAttribute("UP",
-                    ""+KeyControl.Keys.UP.slickValue(), false);
-            option.addAttribute("DOWN",
-                    ""+KeyControl.Keys.DOWN.slickValue(), false);
-            option.addAttribute("LEFT",
-                    ""+KeyControl.Keys.LEFT.slickValue(), false);
-            option.addAttribute("RIGHT",
-                    ""+KeyControl.Keys.RIGHT.slickValue(), false);
-            option.addAttribute("SELECT",
-                    ""+KeyControl.Keys.SELECT.slickValue(), false);
-            option.addAttribute("CANCEL",
-                    ""+KeyControl.Keys.CANCEL.slickValue(), true);
-            option.endAllTags();
-            option.print();
-            option.writeToFile(true);
-        }
+        if(!scr_isApplet)
+            option.storeValues(menuHelp, menuColor, menuScr.getMenuColumn());
     }
 }

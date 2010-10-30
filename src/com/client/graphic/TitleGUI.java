@@ -1,6 +1,7 @@
 package com.client.graphic;
 
 import com.client.graphic.tools.MovingImage;
+import com.client.graphic.tools.TextPix;
 import com.client.input.KeyControl;
 import com.jslix.tools.ImgLibrary;
 import com.jslix.tools.TextImgLibrary;
@@ -17,7 +18,7 @@ import org.newdawn.slick.Graphics;
  * 
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.16.10
+ * @version 10.29.10
  */
 
 public class TitleGUI extends MovingImage {
@@ -41,13 +42,12 @@ public class TitleGUI extends MovingImage {
 
     /**
      * This sets the letters for the flashing logo
-     * @param alphaPath The alphaPath to the text picture
      * @param text The text to convert into a picture
      * @param width The x-axis size of the logo
      * @param height The y-axis size of the logo
      */
-    public void setWords(String alphaPath, String text, int width, int height){
-        setImage(getTextImg(alphaPath, text), width, height);
+    public void setWords(String text, int width, int height){
+        setImage(TextPix.getTextImg(text), width, height);
     }
 
     /**
@@ -127,21 +127,11 @@ public class TitleGUI extends MovingImage {
     }
 
     /**
-     * This function turns a String into a picture
-     * @param alpha The path to the alpha file
-     * @param text The text to convert into a picture
-     * @return An image representing the text
+     * This function helps set if the help bar is visible
+     * @param set Whether the help bar is visible(true) or not(false)
      */
-    private java.awt.Image getTextImg(String alpha, String text){
-        TextImgLibrary txtLib = new TextImgLibrary();
-        txtLib.addImage(alpha);
-        txtLib.addAllCapitalLetters(txtLib.getImage(0), "", 6, 5, 0);
-        txtLib.addLetter('-', txtLib.getImage(0), "", 6, 5, 29);
-        txtLib.addLetter('\'', txtLib.getImage(0), "", 6, 5, 28);
-        txtLib.addLetter(',', txtLib.getImage(0), "", 6, 5, 27);
-        txtLib.addLetter('.', txtLib.getImage(0), "", 6, 5, 26);
-        txtLib.setString(text, "", 0, 0, 0, 0);
-        return txtLib.getTextImage();
+    public void setHelp(boolean set){
+        help = set;
     }
 
     /**

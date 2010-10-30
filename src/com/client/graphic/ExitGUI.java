@@ -2,8 +2,8 @@ package com.client.graphic;
 
 import com.jslix.system.SlixLibrary;
 import com.jslix.tools.MouseHelper;
-import com.jslix.tools.TextImgLibrary;
 import com.client.graphic.tools.MovingMenu;
+import com.client.graphic.tools.TextPix;
 import com.client.input.Controls;
 import com.client.input.KeyControl;
 import com.jslix.tools.ImgLibrary;
@@ -17,7 +17,7 @@ import java.awt.Color;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.12.10
+ * @version 10.29.10
  */
 public class ExitGUI extends MovingMenu{
 
@@ -28,7 +28,6 @@ public class ExitGUI extends MovingMenu{
     private int sizey;//The height of the exit window
     private int x;//Holds the original screen width
     private int y;//Holds the original screen height
-    private String alpha;//Holds the path to the alpha text picture
     private MouseHelper helper;//Regulates the mouse focus
     private int change;//Tracks the menu change for the menu
     private int[] colors;//Integer representation of the multple colors
@@ -41,11 +40,10 @@ public class ExitGUI extends MovingMenu{
      * @param locy The y-axis location of the exit window
      * @param speed How quickly the exit window will move
      */
-    public ExitGUI(String alphaRef, String[] data,
+    public ExitGUI(String[] data,
             int locx, int locy, double speed){
         super(locx, locy, speed);
         active = false;
-        alpha = alphaRef;
         helper = new MouseHelper();
         dfltColors = new Color[]{new Color(128, 128, 128),
         new Color(160, 160, 160)};
@@ -77,9 +75,9 @@ public class ExitGUI extends MovingMenu{
     @Override
     public void init() {
         ImgLibrary tempImg = new ImgLibrary();
-        tempImg.addImage(getTextImg(alpha, exitData[0]));
-        tempImg.addImage(getTextImg(alpha, exitData[1]));
-        tempImg.addImage(getTextImg(alpha, exitData[2]));
+        tempImg.addImage(TextPix.getTextImg(exitData[0]));
+        tempImg.addImage(TextPix.getTextImg(exitData[1]));
+        tempImg.addImage(TextPix.getTextImg(exitData[2]));
 
         sizex = tempImg.getX(0)+20;
         sizey = tempImg.getY(0)+10+tempImg.getY(1)+20;
@@ -91,17 +89,17 @@ public class ExitGUI extends MovingMenu{
         addRoundBox(0, imgRef.getColor(Color.DARK_GRAY, 127),
                 sizex-10, sizey-10, 10, false);
         createNewItem(10, 10, 0);
-        addImagePart(getTextImg(alpha, exitData[0]), 0.7);
+        addImagePart(TextPix.getTextImg(exitData[0]), 0.7);
         addMenuItem(0, false);
         createNewItem(10, 10+tempImg.getY(0)+10, 0);
-        addImagePart(getTextImg(alpha, exitData[1]), 0.7);
-        addImagePart(getTextImg(alpha, exitData[1],
+        addImagePart(TextPix.getTextImg(exitData[1]), 0.7);
+        addImagePart(TextPix.getTextImg(exitData[1],
                 dfltColors, chngColors), 0.7);
         addMenuItem(1, true);
         createNewItem(10+tempImg.getX(0)-tempImg.getX(2),
                 10+tempImg.getY(0)+10, 0);
-        addImagePart(getTextImg(alpha, exitData[2]), 0.7);
-        addImagePart(getTextImg(alpha, exitData[2],
+        addImagePart(TextPix.getTextImg(exitData[2]), 0.7);
+        addImagePart(TextPix.getTextImg(exitData[2],
                 dfltColors, chngColors), 0.7);
         addMenuItem(-1, true);
 
@@ -182,42 +180,6 @@ public class ExitGUI extends MovingMenu{
         }
 
         return column;
-    }
-
-    /**
-     * This function turns a String into a picture
-     * @param alpha The path to the alpha file
-     * @param text The text to convert into a picture
-     * @return An image representing the text
-     */
-    private java.awt.Image getTextImg(String alpha, String text){
-        return getTextImg(alpha, text, null, null);
-    }
-
-    /**
-     * This function turns a String into a picture
-     * @param alpha The path to the alpha file
-     * @param text The text to convert into a picture
-     * @param fromColor A list of default colors
-     * @param toColor A list of recolor values
-     * @return An image representing the text
-     */
-    private java.awt.Image getTextImg(String alpha, String text,
-            Color[] fromColor, Color[] toColor){
-        TextImgLibrary txtLib = new TextImgLibrary();
-        txtLib.addImage(alpha);
-        txtLib.addAllCapitalLetters(txtLib.getImage(0), "", 6, 5, 0);
-        txtLib.addLetter('-', txtLib.getImage(0), "", 6, 5, 29);
-        txtLib.addLetter('\'', txtLib.getImage(0), "", 6, 5, 28);
-        txtLib.addLetter(',', txtLib.getImage(0), "", 6, 5, 27);
-        txtLib.addLetter('.', txtLib.getImage(0), "", 6, 5, 26);
-        txtLib.setString(text, "", 0, 0, 0, 0);
-        if(fromColor != null && toColor != null){
-            for(int j = 0; j < fromColor.length; j++)
-                txtLib.setPixelChange(fromColor[j], toColor[j]);           
-        }
-        txtLib.addImage(text, txtLib.getTextImage());
-        return txtLib.getImage(text);
     }
 
     /**

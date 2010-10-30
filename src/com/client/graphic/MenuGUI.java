@@ -1,10 +1,10 @@
 package com.client.graphic;
 
+import com.client.graphic.tools.TextPix;
 import com.client.graphic.tools.VerticalMenu;
 import com.client.input.KeyControl;
 import com.jslix.tools.ImgLibrary;
 import com.jslix.tools.MouseHelper;
-import com.jslix.tools.TextImgLibrary;
 import java.awt.Color;
 
 /**
@@ -14,7 +14,7 @@ import java.awt.Color;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.28.10
+ * @version 10.29.10
  */
 
 public class MenuGUI extends VerticalMenu{
@@ -23,7 +23,6 @@ public class MenuGUI extends VerticalMenu{
 
     private Color[] dfltColors;//Default colors for the letters
     private Color[] chngColors;//Colors to change the letters to
-    private String alpha;//Holds the path to the alpha text picture
     private String arrow;//Holds the path to the arrow picture file
     private int[] selectID;//Holds information related to menu selections
     private String[] text;//Holds information related to scrolling text
@@ -48,10 +47,9 @@ public class MenuGUI extends VerticalMenu{
      * @param locy The y-axis location of the menu
      * @param speed How quickly this menu will move
      */
-    public MenuGUI(String arrowPath, String alphaPath, int spacing,
+    public MenuGUI(String arrowPath, int spacing,
             int locx, int locy, double speed){
         super(locx, locy, speed);       
-        alpha = alphaPath;
         arrow = arrowPath;
         dfltColors = new Color[]{new Color(128, 128, 128),
         new Color(160, 160, 160)};
@@ -92,8 +90,8 @@ public class MenuGUI extends VerticalMenu{
             addVertBox(i, selectID[i], imgRef.getColor(Color.DARK_GRAY, 127),
                     640, 7, true);
             createNewItem(10, 0, 0);
-            addImagePart(getTextImg(alpha, mainOption[i]), 0.7);
-            addImagePart(getTextImg(alpha, mainOption[i],
+            addImagePart(TextPix.getTextImg(mainOption[i]), 0.7);
+            addImagePart(TextPix.getTextImg(mainOption[i],
                 dfltColors, chngColors), 0.7);
             addVertItem(i, selectID[i], true);
         }
@@ -281,42 +279,6 @@ public class MenuGUI extends VerticalMenu{
             column = 0;
         
         return column;
-    }
-
-    /**
-     * This function turns a String into a picture
-     * @param alpha The path to the alpha file
-     * @param text The text to convert into a picture
-     * @return An image representing the text
-     */
-    private java.awt.Image getTextImg(String alpha, String text){
-        return getTextImg(alpha, text, null, null);
-    }
-
-    /**
-     * This function turns a String into a picture
-     * @param alpha The path to the alpha file
-     * @param text The text to convert into a picture
-     * @param fromColor A list of default colors
-     * @param toColor A list of recolor values
-     * @return An image representing the text
-     */
-    private java.awt.Image getTextImg(String alpha, String text,
-            Color[] fromColor, Color[] toColor){
-        TextImgLibrary txtLib = new TextImgLibrary();
-        txtLib.addImage(alpha);
-        txtLib.addAllCapitalLetters(txtLib.getImage(0), "", 6, 5, 0);
-        txtLib.addLetter('-', txtLib.getImage(0), "", 6, 5, 29);
-        txtLib.addLetter('\'', txtLib.getImage(0), "", 6, 5, 28);
-        txtLib.addLetter(',', txtLib.getImage(0), "", 6, 5, 27);
-        txtLib.addLetter('.', txtLib.getImage(0), "", 6, 5, 26);
-        txtLib.setString(text, "", 0, 0, 0, 0);
-        if(fromColor != null && toColor != null){
-            for(int j = 0; j < fromColor.length; j++)
-                txtLib.setPixelChange(fromColor[j], toColor[j]);
-        }
-        txtLib.addImage(text, txtLib.getTextImage());
-        return txtLib.getImage(text);
     }
 
     /**
