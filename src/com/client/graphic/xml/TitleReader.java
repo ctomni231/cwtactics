@@ -10,7 +10,7 @@ import org.xml.sax.Attributes;
  * 
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.11.10
+ * @version 10.30.10
  */
 
 public class TitleReader extends XML_Parser{
@@ -20,6 +20,8 @@ public class TitleReader extends XML_Parser{
     private LangControl lang;//Language controller for this class "@"
     public String logoPath;//The filepath to the main logo picture
     public String miniPath;//The filePath to the mini logo picture
+    public String picPath;//The filePath to the picture logo
+    public String main;//The text about the main menu
     public String copyright;//The text representing the copyright info
     public String question;//The filepath to the question mark picture
     public String start;//The title blinking logo
@@ -68,11 +70,13 @@ public class TitleReader extends XML_Parser{
         if(super.isAheader("logo")){
             logoPath = fillEntry(attrib, "title");
             miniPath = fillEntry(attrib, "mini");
+            picPath = fillEntry(attrib, "pic");
             question = fillEntry(attrib, "help");
         }else if(super.isAheader("title")){
             copyright = fillEntry(attrib, "copy");
             start = fillEntry(attrib, "start");
             alpha = fillEntry(attrib, "alpha");
+            main = fillEntry(attrib, "main");
             arrow = fillEntry(attrib, "arrow");
             number = fillEntry(attrib, "number");
             credit = fillEntry(attrib, "credit");

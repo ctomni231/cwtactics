@@ -14,7 +14,7 @@ import java.awt.Color;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.29.10
+ * @version 10.30.10
  */
 
 public class MenuGUI extends VerticalMenu{
@@ -25,6 +25,7 @@ public class MenuGUI extends VerticalMenu{
     private Color[] chngColors;//Colors to change the letters to
     private String arrow;//Holds the path to the arrow picture file
     private int[] selectID;//Holds information related to menu selections
+    private String[] option;//Holds information regarding the menu options
     private String[] text;//Holds information related to scrolling text
     private String[] help;//Holds information related to the help bar text
     private int[] colors;//Integer representation of the multiple colors
@@ -77,6 +78,7 @@ public class MenuGUI extends VerticalMenu{
     public void initMenu(String[] mainOption, String[] mainID,
             String[] mainText, String[] mainHelp){
         help = mainHelp;
+        option = mainOption;
         text = new String[mainText.length];
         for(int i = -1; ++i < mainText.length; )
         	text[i] = "- "+mainText[i]+" -";
@@ -85,13 +87,13 @@ public class MenuGUI extends VerticalMenu{
         for(int i = 0; i < mainID.length; i++)
             selectID[i] = Integer.parseInt(mainID[i]);
 
-        for(int i = 0; i < mainOption.length; i++){
+        for(int i = 0; i < option.length; i++){
             createNewItem(0, 5, 0);
             addVertBox(i, selectID[i], imgRef.getColor(Color.DARK_GRAY, 127),
                     640, 7, true);
             createNewItem(10, 0, 0);
-            addImagePart(TextPix.getTextImg(mainOption[i]), 0.7);
-            addImagePart(TextPix.getTextImg(mainOption[i],
+            addImagePart(TextPix.getTextImg(option[i]), 0.7);
+            addImagePart(TextPix.getTextImg(option[i],
                 dfltColors, chngColors), 0.7);
             addVertItem(i, selectID[i], true);
         }
@@ -218,6 +220,20 @@ public class MenuGUI extends VerticalMenu{
      */
     public String getHelpText(){
         return help[getVertIndex()];
+    }
+
+    /**
+     * This function gets the text displayed for the bottom title bar
+     * @param column The current column
+     * @return A String representing the menu option
+     */
+    public String getOptionText(int column){
+        if(column == -1)    column = 2;
+        for(int i = 0; i < option.length; i++){
+            if(selectID[i] == column)
+                return option[i];
+        }
+        return "-";
     }
 
     /**

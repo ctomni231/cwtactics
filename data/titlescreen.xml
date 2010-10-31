@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <menu>
 	<logo   title="image/menu/cwTactics.png" 
-		mini="image/menu/cwLogo.gif" 
+		mini="image/menu/cwtitle.gif"
+		pic="image/menu/cwLogo.gif" 
 		help="image/question.png" />
 
 	<color  prop="image/PlayerBuilding.png"
@@ -9,7 +10,8 @@
 
 	<title  copy="@copyright"
 		start="PRESS START" 
-		alpha="image/menu/smallAlpha.png"
+		main="MAIN MENU"
+		alpha="image/menu/BasicAlpha.png"
 		number="image/menu/numbers.png"
 		arrow="image/menu/uparrow.png"
 		credit="data/credits.txt"

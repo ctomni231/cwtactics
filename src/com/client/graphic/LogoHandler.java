@@ -2,6 +2,7 @@ package com.client.graphic;
 
 import com.client.graphic.tools.MovingImage;
 import com.client.graphic.tools.ScrollImage;
+import com.client.graphic.tools.TextPix;
 import com.client.input.KeyControl;
 import com.jslix.state.ScreenSkeleton;
 import com.jslix.tools.ImgLibrary;
@@ -17,12 +18,14 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.12.10
+ * @version 10.30.10
  */
 public class LogoHandler implements ScreenSkeleton{
 
-    private MovingImage pic;//This holeds the Main Logo image
-    private MovingImage logo;//This holds the alternate logo image
+    private MovingImage pic;//This holds the Main Logo image
+    private MovingImage logo;//This holds the Custom Wars main logo
+    private MovingImage alt;//This holds the alternate logo image
+    private MovingImage info;//This holds the information of the menu
     private ScrollImage scroll;//This holds the bottom scrolling text
     private HelpHandler help;//This holds the help bar
     private String helpPath;//This holds the path to the help logo image
@@ -35,16 +38,11 @@ public class LogoHandler implements ScreenSkeleton{
     /**
      * This class handles all moving elements within the title screen of the
      * main option screen and controls their overall positioning.
-     * @param title The path to the main logo
-     * @param mini The path to the alternate logo image
-     * @param copyright The copyright scrolling text
      * @param help The path to the help icon image
      * @param width The current width of the screen
      * @param height The current height of the screen
      */
-    public LogoHandler(String title, String mini,
-            String copyright, String help, int width, int height){
-        cool = new String[]{ title, mini, copyright };
+    public LogoHandler(String help, int width, int height){      
         sizex = width;
         sizey = height;
         helpPath = help;
@@ -54,14 +52,35 @@ public class LogoHandler implements ScreenSkeleton{
     /**
      * This function sets up all the moving elements in the window and
      * initializes them for display
+     * @param title The path to the main logo
+     * @param mini The path to the alternate logo image
+     * @param pix THe path to the picture logo
+     * @param copyright The copyright scrolling text
      */
-    public void init() {
+    public void init(String title, String mini, String pix, 
+            String copyright){
+        cool = new String[]{ title, pix, copyright, mini };
         pic = new MovingImage(145, -100, 1);
         pic.setImage(cool[0], 350, 150);
 
         pic.setShadowColor(Color.BLACK);
         pic.setShadowOffset(2);
         pic.setOrigScreen(sizex, sizey);
+
+        alt = new MovingImage(430, 480, 1);
+        alt.setImage(cool[3], 200, 25);
+        alt.setOpacity(0.9);
+
+        alt.setShadowColor(Color.BLACK);
+        alt.setShadowOffset(2);
+        alt.setOrigScreen(sizex, sizey);
+
+        info = new MovingImage(5, 480, 1);
+        info.setImage("-");
+
+        info.setShadowColor(Color.BLACK);
+        info.setShadowOffset(2);
+        info.setOrigScreen(sizex, sizey);
 
         logo = new MovingImage(0, -150, 1);
         logo.setImage(cool[1], 125, 125);
@@ -107,6 +126,14 @@ public class LogoHandler implements ScreenSkeleton{
                         new Color(colors[index+9+5]));
             }
 
+            if(info != null){
+                info.resetColor();
+                info.addColor(new Color(160, 160, 160),
+                    new Color(colors[index+9+3]));
+                info.addColor(new Color(128, 128, 128),
+                    new Color(colors[index+9+4]));
+            }
+
             if(scroll != null){
                 scroll.setBoxColor(
                         imgLib.getColor(new Color(colors[index+9+5]), 127));
@@ -124,6 +151,9 @@ public class LogoHandler implements ScreenSkeleton{
         }else{
             if(pic != null)
                 pic.resetColor();
+
+            if(info != null)
+                info.resetColor();
 
             if(scroll != null){
                 scroll.setBoxColor(new Color(60, 60, 60, 127));
@@ -170,6 +200,10 @@ public class LogoHandler implements ScreenSkeleton{
             scroll.setFinalPosition(locx, locy);
         if(index == 3)
             help.setFinalPosition(locx, locy);
+        if(index == 4)
+            alt.setFinalPosition(locx, locy);
+        if(index == 5)
+            info.setFinalPosition(locx, locy);
     }
 
     /**
@@ -186,6 +220,14 @@ public class LogoHandler implements ScreenSkeleton{
      */
     public void setHelpText(String text){
         help.setHelpText(text);
+    }
+
+    /**
+     * This function gets the help text for display
+     * @return The String representing the help text
+     */
+    public void setInfoText(String text){
+        info.setImage(TextPix.getTextImg(text));
     }
 
     /**
@@ -227,6 +269,8 @@ public class LogoHandler implements ScreenSkeleton{
         logo.update(width, height, sysTime, mouseScroll);
         scroll.update(width, height, sysTime, mouseScroll);
         help.update(width, height, sysTime, mouseScroll);
+        alt.update(width, height, sysTime, mouseScroll);
+        info.update(width, height, sysTime, mouseScroll);
         if(mouseScroll == 0)
         	KeyControl.resetMouseWheel();
     }
@@ -237,9 +281,11 @@ public class LogoHandler implements ScreenSkeleton{
      */
     public void render(Graphics g) {
         pic.render(g);
+        alt.render(g);
         logo.render(g);
+        info.render(g);
         scroll.render(g);
-        help.render(g);
+        help.render(g);        
     }
 
     /**
@@ -249,9 +295,11 @@ public class LogoHandler implements ScreenSkeleton{
      */
     public void render(Graphics2D g, Component dthis) {
         pic.render(g, dthis);
+        alt.render(g, dthis);
         logo.render(g, dthis);
+        info.render(g, dthis);
         scroll.render(g, dthis);
-        help.render(g, dthis);
+        help.render(g, dthis);       
     }
 
     /**
@@ -262,6 +310,8 @@ public class LogoHandler implements ScreenSkeleton{
     public boolean checkHelp(){
         return help.checkHelp();
     }
+
+    public void init(){}
 
     public void update(int timePassed) {}
 

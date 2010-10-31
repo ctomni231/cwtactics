@@ -24,7 +24,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.29.10
+ * @version 10.30.10
  */
 
 public class MainMenuScreen extends Screen{
@@ -58,16 +58,13 @@ public class MainMenuScreen extends Screen{
      * of CWT. This function initializes all the screens.
      */
     public MainMenuScreen(){
-        menuHelp = true;
-
         reader = new TitleReader("data/titlescreen.xml");
 
         TextPix.setTextPath(reader.alpha);
         TextPix.setNumPath(reader.number);
 
         bgPic = new BackgroundHandler(scr_width, scr_height);
-        logoPic = new LogoHandler(reader.logoPath, reader.miniPath, 
-        		reader.copyright, reader.question, SIZE_X, SIZE_Y);
+        logoPic = new LogoHandler(reader.question, SIZE_X, SIZE_Y);
         logoPic.setColorPath(reader.unitColor);       
 
         titleScr = new TitleGUI(220, 375, 0);
@@ -110,7 +107,8 @@ public class MainMenuScreen extends Screen{
         initOptions();
         keyScr.init(reader.keyOption, reader.keyHelp);
         bgPic.update(scr_name, scr_index, scr_isApplet, scr_link);
-        logoPic.init();
+        logoPic.init(reader.logoPath, reader.miniPath, reader.picPath,
+                reader.copyright);
         exitScr.init();
     }
 
@@ -207,6 +205,8 @@ public class MainMenuScreen extends Screen{
         if(scrStart){
             logoPic.setFinalPosition(0, 145, 30);
             logoPic.setFinalPosition(2, 0, 460);
+            logoPic.setFinalPosition(4, 430, 480);
+            logoPic.setFinalPosition(5, 5, 480);
             logoPic.setScrollText();
             logoPic.setHelpText(reader.startHelp[0]);
             logoPic.setColor(menuColor);
@@ -240,9 +240,12 @@ public class MainMenuScreen extends Screen{
             logoPic.setFinalPosition(0, 145, 15);
             logoPic.setFinalPosition(1, 0, -150);
             logoPic.setFinalPosition(2, 0, 460);
+            logoPic.setFinalPosition(4, 430, 430);
+            logoPic.setFinalPosition(5, 5, 438);
             menuScr.setColor(menuColor);
             logoPic.setHelpText(menuScr.getHelpText());
             logoPic.forceScrollText(menuScr.getScrollText());
+            logoPic.setInfoText(reader.main);
             logoPic.setCounter(WAIT_TIME);
             if(!menuHelp)
                 logoPic.setFinalPosition(3, 0, -20);
@@ -268,7 +271,10 @@ public class MainMenuScreen extends Screen{
         if(scrStart){
             logoPic.setFinalPosition(0, 145, 50);
             logoPic.setFinalPosition(2, 0, 480);
+            logoPic.setFinalPosition(4, 430, 450);
+            logoPic.setFinalPosition(5, 5, 458);
             logoPic.setHelpText(exitScr.getHelpText());
+            logoPic.setInfoText(menuScr.getOptionText(column));
             exitScr.setColor(menuColor);
             logoPic.setCounter(WAIT_TIME);
             if(!menuHelp)
@@ -295,6 +301,9 @@ public class MainMenuScreen extends Screen{
             logoPic.setFinalPosition(0, 145, -150);
             logoPic.setFinalPosition(1, 0, 20);
             logoPic.setFinalPosition(2, 0, 480);
+            logoPic.setFinalPosition(4, 430, 480);
+            logoPic.setFinalPosition(5, 5, 458);
+            logoPic.setInfoText(menuScr.getOptionText(column));
             credScr.setColor(menuColor);
             scrStart = false;
         }
@@ -314,8 +323,11 @@ public class MainMenuScreen extends Screen{
         if(scrStart){
             logoPic.setFinalPosition(0, 145, 30);
             logoPic.setFinalPosition(2, 0, 480);
+            logoPic.setFinalPosition(4, 430, 450);
+            logoPic.setFinalPosition(5, 5, 458);
             logoPic.setHelpText(keyScr.getHelpText());
             logoPic.setScrollText(keyScr.getScrollText());
+            logoPic.setInfoText(menuScr.getOptionText(column));
             logoPic.setCounter(WAIT_TIME);
             keyScr.setColor(menuColor);
             scrStart = false;
@@ -328,8 +340,13 @@ public class MainMenuScreen extends Screen{
             logoPic.setCounter(WAIT_TIME);
 
             logoPic.setFinalPosition(2, 0, 480);
-            if(keyScr.getScrollDisplay())
+            logoPic.setFinalPosition(4, 430, 450);
+            logoPic.setFinalPosition(5, 5, 458);
+            if(keyScr.getScrollDisplay()){
                 logoPic.setFinalPosition(2, 0, 460);
+                logoPic.setFinalPosition(4, 430, 430);
+                logoPic.setFinalPosition(5, 5, 438);
+            }
         }      
 
         keyScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
@@ -344,6 +361,7 @@ public class MainMenuScreen extends Screen{
     private void helpHide(int mult){
         if(column != current){
             column = current;
+            logoPic.setHelpText("");
             scrStart = true;
         }
 
@@ -380,6 +398,7 @@ public class MainMenuScreen extends Screen{
             curColor = menuColor;
             menuScr.setMenuColumn(option.getOptions().column);
         }else{
+            menuHelp = true;
             menuColor = MENU_COLOR;
             curColor = MENU_COLOR;
         }
