@@ -12,6 +12,7 @@ import com.client.graphic.xml.TitleReader;
 import com.client.input.OptionHandler;
 import com.jslix.debug.MemoryTest;
 import com.jslix.state.Screen;
+import com.jslix.system.SlixLibrary;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
@@ -24,7 +25,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.30.10
+ * @version 11.01.10
  */
 
 public class MainMenuScreen extends Screen{
@@ -133,6 +134,14 @@ public class MainMenuScreen extends Screen{
                 break;
             case 4:
                 keyScr();
+                break;
+            case 5:
+                SlixLibrary.addFrameScreen(new MapEditorScreen());
+                current = 1;
+                break;
+            case 6:
+                SlixLibrary.addFrameScreen(new VersusGameScreen());
+                current = 1;
                 break;
             default:
                 menuScr();

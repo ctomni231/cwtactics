@@ -134,7 +134,7 @@ public class MenuGUI extends VerticalMenu{
         };
 
         String[] ID = new String[]{
-            "-2","-3","-4","-5","-6","4","3","2"
+            "6","-3","-4","-5","5","4","3","2"
         };
 
         initMenu(temp, ID, tempText, helpText);
