@@ -27,7 +27,7 @@ public class BGPicture {
     }
 
     //Use in Slick init();
-    public void setRandomImage(String[] pics){
+    public final void setRandomImage(String[] pics){
         generator = new Random();
         int random = generator.nextInt(pics.length);
         setImage(pics[random]);

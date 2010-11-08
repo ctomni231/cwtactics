@@ -19,7 +19,7 @@ import java.util.ArrayList;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.24.10
+ * @version 11.07.10
  */
 
 public class FileFind {
@@ -85,7 +85,7 @@ public class FileFind {
     public void addForceType(String suffix){
         if(suffix.startsWith("."))
             suffix = suffix.substring(1);
-        if(!suffix.matches(""))
+        if(!suffix.equals(""))
             fileType.add(suffix);
     }
 
@@ -96,7 +96,7 @@ public class FileFind {
      * @param directory The directory to avoid
      */
     public void addAvoidDir(String directory){
-        if(!directory.matches(""))
+        if(!directory.equals(""))
             avoidDir.add(directory);
     }
 
@@ -152,7 +152,7 @@ public class FileFind {
      */
     private boolean matchSuffix(FileIndex hold){
         for(String type: fileType){
-            if(type.matches(hold.suffix))   return true;
+            if(type.equals(hold.suffix))   return true;
         }
         return fileType.isEmpty();
     }
@@ -165,7 +165,7 @@ public class FileFind {
      */
     private boolean matchDir(String dir){
         for(String avoid: avoidDir){
-            if(dir.matches(avoid))          return false;
+            if(dir.equals(avoid))          return false;
         }
         return true;
     }

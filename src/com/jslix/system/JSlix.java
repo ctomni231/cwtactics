@@ -42,8 +42,8 @@ public class JSlix extends Slix{
         //This section of code allows you to use arguments to decipher
         //which Screen to display (optional)
         if(argv.length > 0){
-            if(argv[0].matches("java"))         game.showWindow();
-            else if(argv[0].matches("slick"))   game.showSlick();
+            if(argv[0].equals("java"))         game.showWindow();
+            else if(argv[0].equals("slick"))   game.showSlick();
         }else
             game.showWindow();
     }

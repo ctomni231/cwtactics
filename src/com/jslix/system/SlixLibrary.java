@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.27.10
+ * @version 11.07.10
  */
 public class SlixLibrary {
 
@@ -89,7 +89,7 @@ public class SlixLibrary {
      */
     public static int getScreenIndex(String name){
         for(int i = 0; i < scrOrder.size(); i++){
-            if(name.matches(scrOrder.get(i).scr_name))
+            if(name.equals(scrOrder.get(i).scr_name))
                 return i;
         }
         return -1;

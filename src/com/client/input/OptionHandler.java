@@ -11,7 +11,7 @@ import com.jslix.tools.XML_Writer;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.29.10
+ * @version 11.07.10
  */
 public class OptionHandler extends XML_Writer{
 
@@ -64,7 +64,7 @@ public class OptionHandler extends XML_Writer{
         FileFind finder = new FileFind(filePath);
         finder.refactor();
         for(FileIndex index: finder.getAllFiles()){
-            if(index.fname.matches(filename))
+            if(index.fname.equals(filename))
                 return true;
         }
         return false;

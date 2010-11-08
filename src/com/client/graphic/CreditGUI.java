@@ -22,7 +22,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.29.10
+ * @version 11.07.10
  */
 
 public class CreditGUI extends MovingMenu{
@@ -108,7 +108,7 @@ public class CreditGUI extends MovingMenu{
      * @return Whether a new item appeared
      */
     public boolean getMenuChange(){
-        if(!curItem.matches(credItem)){
+        if(!curItem.equals(credItem)){
             curItem = credItem;
             return true;
         }
@@ -183,11 +183,7 @@ public class CreditGUI extends MovingMenu{
 
         if(!credItem.isEmpty()){
             createNewItem(620-imgRef.getX(credItem), 480, speed);
-            if(credItem.startsWith("<"))
-                addMenuItem(imgRef.getIndex(credItem), true);
-            else
-                addMenuItem(imgRef.getIndex(credItem), false);
-
+            addMenuItem(imgRef.getIndex(credItem), credItem.startsWith("<"));
             setItemPosition(allItems.length-1, 0, -500, true);
         }
     }

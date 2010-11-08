@@ -15,7 +15,7 @@ import java.util.HashMap;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.28.10
+ * @version 11.07.10
  */
 
 public class XML_Writer {
@@ -37,7 +37,7 @@ public class XML_Writer {
      */
     public XML_Writer(String path, String filename){
         data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n";
-        if(!path.matches("") && !path.endsWith("/"))
+        if(!path.equals("") && !path.endsWith("/"))
             path += "/";
         filePath = path;
         if(!filename.endsWith(".xml"))
@@ -326,7 +326,7 @@ public class XML_Writer {
     private boolean createFile(String path, String filename, String data,
             boolean temp, boolean overwrite){
         File newFile = null;
-        if(!path.matches("") && !path.endsWith("/"))
+        if(!path.equals("") && !path.endsWith("/"))
             path += "/";
 
         try {

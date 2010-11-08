@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.25.10
+ * @version 11.07.10
  */
 
 public class TextImgLibrary extends ImgLibrary{
@@ -90,7 +90,7 @@ public class TextImgLibrary extends ImgLibrary{
     public boolean addLetter(char letter, Image img, String ref){
         if(img == null)
             return false;
-        if(ref.matches(""))
+        if(ref.equals(""))
             addImage(img);
         else
             addImage(ref+"_"+letter, img);

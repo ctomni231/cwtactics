@@ -10,7 +10,7 @@ import org.xml.sax.Attributes;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 09.21.10
+ * @version 11.07.10
  */
 
 public class BackgroundReader extends XML_Parser {
@@ -58,7 +58,7 @@ public class BackgroundReader extends XML_Parser {
         if(fillData == null)
             fillData = new String[0];
 
-        if(super.getLastHeader().matches("image")){
+        if(super.getLastHeader().equals("image")){
             String[] temp = fillData;
             fillData = new String[temp.length+1];
             System.arraycopy(temp, 0, fillData, 0, temp.length);

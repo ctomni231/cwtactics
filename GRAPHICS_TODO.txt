@@ -1,3 +1,6 @@
+@author : ctomni231
+@version : 11.01.2010
+
 Hardcoded Features
 
 F9 - Toggle FPS
@@ -8,6 +11,7 @@ JSlix Screen - Complete (JMain Runnable)
 [*] = Done
 [#] = Started
 [ ] = Not Started
+[?] = Unsure of Whether Option Will be Implemented
 
 Phase 1 - Title Screen [*]
 
@@ -27,12 +31,14 @@ Key Configure - Menu Functionality (XML root) [*]
 Phase 2 - Map Screen [ ]
 
 Map Display - Map Display (Normal) Stays same, even if screen stretches [ ]
-Map Display - Map Display (Stretch) Stretches with screen size          [ ]
+Map Display - Map Display (Stretch) Stretches with screen size          [?]
 Zoom Functionality - Zoom In/Out                                        [ ]
 Cursor Functionality - Display Cursor                                   [ ]
 Cursor Functionality - Center Map                                       [ ]
 Cursor Functionality - Stretch Cursor                                   [ ]
 Cursor Functionality - Delete Unit/Properties                           [ ]
+Cursor Functionality - Attack Cursor					[ ]
+Cursor Functionality - Missile Cursor					[ ]
 Terrain Display - Draw Terrain (ID- Type- Random - Weather - Color)     [ ]
 Terrain Display - Draw Buildings                                        [ ]
 Terrain Display - Building Animations                                   [ ]
@@ -40,9 +46,15 @@ Terrain Functionality - Terrain Connections                             [ ]
 Terrain Functionality - Inventions                                      [ ]
 Unit Display - Draw Units (ID- Type- Color)                             [ ]
 Unit Display - Animations                                               [ ]
-Unit Functionality - Explosions                                         [ ]
+Unit Diaplay - Explosions	                                        [ ]
+Unit Display - Attributes						[ ]
 Unit Functionality - Zones                                              [ ]
 Map Functionality - Grid                                                [ ]
+Map Functionality - Attack Highlight					[ ]
+Map Functionality - Movement Highlight					[ ]
+Map Functionality - CO Zone Highlight					[ ]
+Power Effect - Power Attributes (Multiple)				[ ]
+Weather Display - Animations						[ ]
 
 Phase 3 - Map I/O [ ]
 
@@ -57,15 +69,19 @@ Create New - Map Editor Option (XML root)                               [ ]
 Create New - Functionality (TileSizeX, TileSizeY)                       [ ]
 Load Map - Map Editor Option (XML root)                                 [ ]
 Load Map - (.cw Map) Functionality                                      [ ]
+Load Map - (.aws Map) Functionality					[ ]
+Load Map - (.awd Map) Functionality					[ ]
+Load Map - (.xml) Functionality						[ ]
 Map List - Loading Display (XML root)                                   [ ]
 Map Organize - Alphabetize                                              [ ]
 Map Organize - Number of Players                                        [ ]
-Map Organize - Origination of Map                                       [ ]
+Map Organize - Origination of Map (Attribute Type)                      [ ]
 Map Organize - Folders                                                  [ ]
 Mini Map - Map Display Reference (XML root)                             [ ]
 Mini Map - Property Item Display (XML root)                             [ ]
+Map Save - Replay Save System (Byte root)				[ ]
 
-Phase 4 - Map Editor [ ]
+Phase 4 - Map Editor [#]
 
 Menu Screen - Menu Display                                              [ ]
 Menu Screen - Menu Functionality (XML root)                             [ ]
@@ -85,9 +101,31 @@ Cursor Functionality - Copy Units                                       [ ]
 
 Phase 5 - Trigger Rule System [ ]
 
+Trigger Functionality - Condition					[ ]
+Trigger Functionality - Effect						[ ]
+Trigger Functionality - Rule System (Multiple Conditions/Effects)	[ ]
+RUle Screen - Option Display						[ ]
+Rule Screen - Option Functionality					[ ]
+Rule Screen - CO Bans							[ ]
+Rule Screen - Unit Bans							[ ]
+Rule Screen - Unit Building List					[ ]
+Rule Screen - Starting Funds						[ ]
+Rule Screen - Income							[ ]
+Rule Screen - CO Select							[ ]
+Rule Screen - AI Type							[ ]
+Rule Screen - FOW Type							[ ]
+Rule Screen - Turn Limit						[ ]
+Rule Screen - Capture Limit						[ ]
+Rule Screen - Time Limit						[ ]
+Rule Screen - Game Visual Type						[ ]
+Rule Screen - Modding Type (CW Balance, CWT, AW, etc.)			[ ]
+Rule Screen - Game Mode Type						[ ]
+Rule Screen - CO Power Mode (on/off)					[ ]
+Rule Screen - Weather							[ ]
+
 To be expanded...
 
-Phase 6 - Versus Game [ ]
+Phase 6 - Versus Game [#]
 
 Menu Screen - Menu Display                                              [ ]
 Menu Screen - Menu Functionality (XML root)                             [ ]
@@ -98,15 +136,67 @@ Graphic Connectivity - Unit Data Model                                  [ ]
 Menu Connectivity - Option Menu                                         [ ]
 Menu Connectivity - Build Menu                                          [ ]
 Morale Bar (Top) - Funding Display                                      [ ]
+Morale Bar (Top) - CO Morale Bar Display				[ ]
+Morale Bar (Top) - CO KO Bar Display					[ ]
 Statistic Bar (Bottom) - Terrain Attribute Display                      [ ]
 Statistic Bar (Bottom) - Unit Attribute Display                         [ ]
+Map Functionality - Battle Animations					[ ]
+Map Functionality - Capture Animations					[ ]
+Menu Functionality - CO Dossier Screen					[ ]
+Menu Functionality - Troop Intelligence Screen				[ ]
+Menu Functionality - Options Screen					[ ]
+Menu Functionality - Save Game						[ ]
+Menu Functionality - Load Game						[ ]
+Menu Functionality - Swap CO (End Turn)					[ ]
+Menu Functionality - End Turn						[ ]
 
-Phase 7 - CO Functionality
+Phase 7 - CO Functionality [ ]
 
 CO Select Screen - Menu Display                                         [ ]
 CO Select Screen - Menu Functionality (XML root)                        [ ]
-Exit Screen - Menu Display                                              [ ]
-Exit Screen - Menu Functionality (XML root)                             [ ]
+CO Select Screen - Team Functionality					[ ]
+Force Skill Screen - Menu Display	                                [ ]
+FOrce Skill Screen - Menu Functionality (XML root)	                [ ]
+Weather Screen - Duration						[ ]
+Weather Screen - Starting Day						[ ]
+Weather Screen - Weather Chance						[ ]
+Options Screen - Delete							[ ]
+Options Screen - Yield							[ ]
+Options Screen - Music Volume						[ ]
+Options Screen - Sound FX Volume					[ ]
+Options Screen - Visual Mode 						[?]
+Options Screen - Resize Screen						[ ]
+Options Screen - Scale Screen						[ ]
+Options Screen - Save Replay						[ ]
+Options Screen - Test Replay (DEBUG)					[?]
+Options Screen - Exit Map (Back to Main Menu)				[ ]
+Victory Screen - Power/Technique/Speed Point System			[ ]
+Victory Screen - Unit Stats System					[ ]
 
 To be expanded...
 
+Phase 8 - Network Functionality [ ]
+
+Menu Screen - Menu Display                                              [ ]
+Menu Screen - Menu Functionality (XML root)                             [ ]
+Exit Screen - Menu Display                                              [ ]
+Exit Screen - Menu Functionality (XML root)                             [ ]
+Chat Functionality - Chat System					[ ]
+Lobby Functionality - Game Lobby					[ ]
+
+To be expanded...
+
+Phase 9 - Campaign Functionality [ ]
+
+Menu Screen - Menu Display                                              [ ]
+Menu Screen - Menu Functionality (XML root)                             [ ]
+Exit Screen - Menu Display                                              [ ]
+Exit Screen - Menu Functionality (XML root)                             [ ]
+Mission Select - Map Selector Screen					[ ]
+Mission Select - Mission Functionality					[ ]
+Map Visual - Point-to-Point SYstem					[ ]
+Map Visual - Background Layer BitMask					[ ]
+Map Triggers - Mission Select Conditions				[ ]
+Map Triggers - Mission Select Effects					[ ]
+
+To be expanded...

@@ -10,7 +10,7 @@ import org.xml.sax.Attributes;
  * 
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.30.10
+ * @version 11.07.10
  */
 
 public class TitleReader extends XML_Parser{
@@ -138,7 +138,7 @@ public class TitleReader extends XML_Parser{
         if(fillData == null)
             fillData = new String[0];
 
-        if(super.getLastHeader().matches(head)){
+        if(super.getLastHeader().equals(head)){
             String[] temp = fillData;
             fillData = new String[temp.length+1];
             System.arraycopy(temp, 0, fillData, 0, temp.length);

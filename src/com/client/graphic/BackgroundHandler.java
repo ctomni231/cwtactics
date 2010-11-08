@@ -26,7 +26,6 @@ public class BackgroundHandler implements ScreenSkeleton {
     private Random generator;//Helps select a random number
     private int cursx;//Holds the current width of the displayed window
     private int cursy;//Holds the current height of the displayed window
-    private boolean applet;//Holds whether the current window is an applet
 
     /**
      * This holds a series of background images for CWT. The images are
@@ -117,7 +116,6 @@ public class BackgroundHandler implements ScreenSkeleton {
             }
 
             writer.endAllTags();
-            //writer.print();
             writer.writeToFile(true);
         }
     }

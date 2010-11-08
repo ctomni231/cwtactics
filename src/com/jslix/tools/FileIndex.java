@@ -8,7 +8,7 @@ package com.jslix.tools;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 09.15.10
+ * @version 11.07.10
  */
 
 public class FileIndex {
@@ -55,7 +55,7 @@ public class FileIndex {
             suffix = "";
         }else{
             prefix = filename.substring(0, split);
-            if(prefix.matches(""))  isDirectory = true;
+            if(prefix.equals(""))  isDirectory = true;
             suffix = filename.substring(split+1);
         }
         //System.out.println(toString());

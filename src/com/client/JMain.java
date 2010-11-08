@@ -10,8 +10,7 @@ import com.jslix.system.Slix;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.27.10
- * @todo TODO Work on full screen mode for this class only
+ * @version 11.07.10
  */
 public class JMain extends Slix{
 	
@@ -36,9 +35,9 @@ public class JMain extends Slix{
         game.changeTitle(GAME_TITLE);
 
         if(argv.length > 0){
-            if(argv[0].matches("java"))         game.showWindow();
-            else if(argv[0].matches("slick"))   game.showSlick();
-            else if(argv[0].matches("full"))	game.showFull();
+            if(argv[0].equals("java"))         game.showWindow();
+            else if(argv[0].equals("slick"))   game.showSlick();
+            else if(argv[0].equals("full"))	game.showFull();
         }else
             game.showWindow();
     }
