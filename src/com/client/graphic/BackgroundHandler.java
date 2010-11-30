@@ -6,6 +6,7 @@ import com.jslix.state.ScreenSkeleton;
 import com.jslix.tools.FileFind;
 import com.jslix.tools.FileIndex;
 import com.jslix.tools.XML_Writer;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.util.Random;
@@ -18,7 +19,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.21.10
+ * @version 11.28.10
  */
 public class BackgroundHandler implements ScreenSkeleton {
 
@@ -128,10 +129,18 @@ public class BackgroundHandler implements ScreenSkeleton {
         BackgroundReader reader = new BackgroundReader("data/background.xml");
         String[] entries = reader.items;
 
-        if(entries.length > 0){
+        if(entries == null){
             generator = new Random();
-            int random = generator.nextInt(entries.length);
-            imgSort.addImage(entries[random]);
+            imgSort.addImage(imgSort.getColorBox(new Color(
+                    generator.nextInt(256), generator.nextInt(256),
+                    generator.nextInt(256)), 1, 1));
+            return;
+        }else if(entries.length > 0){
+            generator = new Random();
+            if(entries.length > 0){
+                int random = generator.nextInt(entries.length);
+                imgSort.addImage(entries[random]);
+            }
         }
     }
 

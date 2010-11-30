@@ -17,7 +17,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.15.10
+ * @version 11.29.10
  */
 
 public class MovingMenu extends MovingImage{
@@ -334,21 +334,21 @@ public class MovingMenu extends MovingImage{
 
             switch(itm.id){
                 case REGULAR:
-                	if(itm.choice != -1 || itm.select == select){
-                		if(itm.opacity >= 0 && itm.opacity <= 1)
-                			imgResize.getSlickImage(
-                                        itm.getPicture(itm.select == select))
-                                        .setAlpha((float)itm.opacity);
-                		else if(opacity < 1)
-                			imgResize.getSlickImage(
-                                        itm.getPicture(itm.select == select))
-                				.setAlpha((float)opacity);
-                	
-                		g.drawImage(imgResize.getSlickImage(
-                                    itm.getPicture(itm.select == select)),
-                            (int)((posx+itm.posx)*scalex), 
+                    if(itm.choice != -1 || itm.select == select){
+                        if(itm.opacity >= 0 && itm.opacity <= 1)
+                                imgResize.getSlickImage(
+                                itm.getPicture(itm.select == select))
+                                .setAlpha((float)itm.opacity);
+                        else if(opacity < 1)
+                                imgResize.getSlickImage(
+                                itm.getPicture(itm.select == select))
+                                        .setAlpha((float)opacity);
+
+                        g.drawImage(imgResize.getSlickImage(
+                            itm.getPicture(itm.select == select)),
+                            (int)((posx+itm.posx)*scalex),
                             (int)((posy+itm.posy)*scaley));
-                	}
+                    }
                     break;
                 default:
                     if(select == itm.select || !itm.selectable){
@@ -395,19 +395,16 @@ public class MovingMenu extends MovingImage{
 
             switch(itm.id){
                 case REGULAR:
-                	if(itm.opacity >= 0 && itm.opacity <= 1)
-                		g.setComposite(AlphaComposite.getInstance(
-                				AlphaComposite.SRC_OVER,
-                                (float)itm.opacity));
-                	else if(opacity < 1)
-                		g.setComposite(AlphaComposite.getInstance(
-                				AlphaComposite.SRC_OVER,
-                                (float)opacity));
-                	if(itm.choice != -1 || itm.select == select)
-                		g.drawImage(imgResize.getImage(itm.getPicture(
-                            itm.select == select)),
-                            (int)((posx+itm.posx)*scalex), 
-                            (int)((posy+itm.posy)*scaley), dthis);
+                    if(itm.opacity >= 0 && itm.opacity <= 1)
+                        g.setComposite(AlphaComposite.getInstance(
+                         AlphaComposite.SRC_OVER, (float)itm.opacity));
+                    else if(opacity < 1)
+                        g.setComposite(AlphaComposite.getInstance(
+                         AlphaComposite.SRC_OVER, (float)opacity));
+                    if(itm.choice != -1 || itm.select == select)
+                        g.drawImage(imgResize.getImage(itm.getPicture(
+                        itm.select == select)), (int)((posx+itm.posx)*scalex),
+                        (int)((posy+itm.posy)*scaley), dthis);
                     if(opacity < 1 || itm.opacity >= 0 && itm.opacity < 1)
                     	g.setComposite(AlphaComposite.SrcOver);
                     break;
@@ -448,9 +445,8 @@ public class MovingMenu extends MovingImage{
      * This function deletes all menu items in the item list cleanly
      */
     public void deleteItems(){
-        for(int i = allItems.length; --i >= 0 ;){
+        for(int i = allItems.length; --i >= 0 ;)
             deleteItem(i);
-        }
     }
 
     /**
