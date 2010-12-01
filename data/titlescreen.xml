@@ -26,30 +26,39 @@
 			<list text="@exitHelpNo" />
 		</exit>
 		<main>
-			<list item="VERSUS" id="6"
+			<list item="VERSUS " id="6"
 			text="Play a multiplayer game against your friends" 
 			help="VERSUS - Start a quick game versus a friend" />
 			
+			<list item="ONLINE " id="-3" 
+			text="Turn the tides of war on a friend through online battle"
+			help="ONLINE - Start an online server game with a friend" />
+
 			<list item="MAP EDITOR" id="5" 
 			text="Create the playfield of your imagination"
 			help="MAP EDITOR - Create/Edit an existing map from the archive" />
-			
-			<list item="EXIT" id="2" 
-			text="Leave, we see how it is. :)"
-			help="EXIT - Ends this game session" />
 
 			<list item="KEY CONFIGURE" id="4"
 			text="Change the keyboard actions of the game" 
 			help="KEY CONFIGURE - Set up the keyboard settings" />
 			
-			<list item="CREDITS" id="3" 
+			<list item="CREDITS " id="3" 
 			text="See the ending credits of the game"
 			help="CREDITS - See the creators of Custom Wars Tactics" />
 			
-			<list item="EXIT" id="2" 
+			<list item="EXIT " id="2" 
 			text="Leave, we see how it is. :)"
 			help="EXIT - Ends this game session" />
 		</main>
+		<edit>
+			<list item="CREATE MAP" id="-4"
+			text="Create the playfield of your imagination" 
+			help="CREATE MAP - Create a new map for the game" />
+
+			<list item="LOAD MAP" id="-5"
+			text="Load a map from the archive" 
+			help="LOAD MAP - Load an existing map from the archive" />
+		</edit>
 		<key>
 			<list text="UP" 
 			help="UP - Sets a keyboard key for up" />

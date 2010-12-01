@@ -103,7 +103,7 @@ public class SlixApplet extends Applet implements Runnable, KeyListener,
      * @param g The Java2D graphics object
      */
     @Override
-    public void update(Graphics g){        
+    public void update(Graphics g){ 
         paint(g);
     }
 

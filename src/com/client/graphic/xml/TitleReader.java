@@ -10,7 +10,7 @@ import org.xml.sax.Attributes;
  * 
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 11.07.10
+ * @version 11.30.10
  */
 
 public class TitleReader extends XML_Parser{
@@ -38,6 +38,10 @@ public class TitleReader extends XML_Parser{
     public String[] mainSelect;//The integer select for the main menu
     public String[] mainText;//The scroll text for the main menu
     public String[] mainHelp;//The help text for the main menu
+    public String[] editOption;//The menu option for the main menu
+    public String[] editSelect;//The integer select for the main menu
+    public String[] editText;//The scroll text for the main menu
+    public String[] editHelp;//The help text for the main menu
     public String[] keyOption;//The option text for the keys
     public String[] keyHelp;//The help text for the keys
 
@@ -108,6 +112,12 @@ public class TitleReader extends XML_Parser{
             mainSelect = fillEntry(attrib, mainSelect, "list", "id");
             mainText = fillEntry(attrib, mainText, "list", "text");
             mainHelp = fillEntry(attrib, mainHelp, "list", "help");
+        }
+        if(super.isAheader("edit")){
+            editOption = fillEntry(attrib, editOption, "list", "item");
+            editSelect = fillEntry(attrib, editSelect, "list", "id");
+            editText = fillEntry(attrib, editText, "list", "text");
+            editHelp = fillEntry(attrib, editHelp, "list", "help");
         }
         if(super.isAheader("key")){
             keyOption = fillEntry(attrib, keyOption, "list", "text");

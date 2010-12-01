@@ -25,7 +25,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 11.01.10
+ * @version 11.30.10
  */
 
 public class MainMenuScreen extends Screen{
@@ -47,6 +47,7 @@ public class MainMenuScreen extends Screen{
     private MenuGUI menuScr;//Holds screen data for the main menu
     private CreditGUI credScr;//Holds screen data for the credits
     private KeyGUI keyScr;//Holds screen data for the key configure
+    private MenuGUI editScr;//Holds screen data for the map editor options
 
     private boolean scrStart;//The initization sequence starter for screens
     private int column;//Which screen index we are currently showing
@@ -80,11 +81,18 @@ public class MainMenuScreen extends Screen{
         exitScr.setColorPath(reader.unitColor);
 
         menuScr = new MenuGUI(reader.arrow, 20, 0, 165, 0);
-        menuScr.init();
-        //menuScr.initMenu(reader.mainOption, reader.mainSelect,
-        //        reader.mainText, reader.mainHelp);
+        //menuScr.init();
+        menuScr.initMenu(reader.mainOption, reader.mainSelect,
+                reader.mainText, reader.mainHelp);
         menuScr.setOrigScreen(SIZE_X, SIZE_Y);
         menuScr.setColorPath(reader.unitColor);
+
+        editScr = new MenuGUI(reader.arrow, 20, 0, 165, 0);
+        editScr.initMenu(reader.editOption, reader.editSelect,
+                reader.editText, reader.editHelp);
+        editScr.setOrigScreen(SIZE_X, SIZE_Y);
+        editScr.setColorPath(reader.unitColor);
+        editScr.setPrevious(1);
         
         credScr = new CreditGUI(reader.credit, 0, 0, 1);
         credScr.setOpacity(0.7);
@@ -136,12 +144,16 @@ public class MainMenuScreen extends Screen{
                 keyScr();
                 break;
             case 5:
-                SlixLibrary.addFrameScreen(new MapEditorScreen());
-                current = 1;
+                editScr();
                 break;
             case 6:
                 SlixLibrary.addFrameScreen(new VersusGameScreen());
                 current = 1;
+                break;
+            case -4:
+            case -5:
+                SlixLibrary.addFrameScreen(new MapEditorScreen());
+                current = 5;
                 break;
             default:
                 menuScr();
@@ -173,6 +185,9 @@ public class MainMenuScreen extends Screen{
             case 4:
                 keyScr.render(g);
                 break;
+            case 5:
+                editScr.render(g);
+                break;
             default:
                 menuScr.render(g);
         }
@@ -200,6 +215,9 @@ public class MainMenuScreen extends Screen{
                 break;
             case 4:
                 keyScr.render(g, dthis);
+                break;
+            case 5:
+                editScr.render(g, dthis);
                 break;
             default:
                 menuScr.render(g, dthis);
@@ -271,6 +289,38 @@ public class MainMenuScreen extends Screen{
         menuScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
         current = menuScr.control(column, scr_mouseScroll);
         curColor = menuScr.getCurFaction();
+    }
+
+    /**
+     * This contains all the updates for the main menu screen
+     */
+    private void editScr(){
+        if(scrStart){
+            logoPic.setFinalPosition(0, 145, 15);
+            logoPic.setFinalPosition(1, 0, -150);
+            logoPic.setFinalPosition(2, 0, 460);
+            logoPic.setFinalPosition(4, 430, 430);
+            logoPic.setFinalPosition(5, 5, 438);
+            editScr.setColor(menuColor);
+            logoPic.setHelpText(editScr.getHelpText());
+            logoPic.forceScrollText(editScr.getScrollText());
+            logoPic.setInfoText(menuScr.getOptionText(column));
+            logoPic.setCounter(WAIT_TIME);
+            editScr.setMenuColumn(menuScr.getMenuColumn());
+            if(!menuHelp)
+                logoPic.setFinalPosition(3, 0, -20);
+            scrStart = false;
+        }
+
+        if(editScr.getMenuChange()){
+            logoPic.forceScrollText(editScr.getScrollText());
+            logoPic.setHelpText(editScr.getHelpText());
+            if(!menuHelp)
+                logoPic.setFinalPosition(3, 0, -20);
+            logoPic.setCounter(WAIT_TIME);
+        }
+        editScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
+        current = editScr.control(column, scr_mouseScroll);
     }
 
     /**

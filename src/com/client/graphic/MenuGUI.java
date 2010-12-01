@@ -14,7 +14,7 @@ import java.awt.Color;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.30.10
+ * @version 11.30.10
  */
 
 public class MenuGUI extends VerticalMenu{
@@ -35,6 +35,7 @@ public class MenuGUI extends VerticalMenu{
     private int menuChange;//Holds whether a justify column has changed
     private int factions;//Holds the max menu faction colors
     private int curFaction;//Holds whether a menu faction color changed
+    private int back;//Holds the menu option selected when you click back
 
     /**
      * This class displays a main menu and is the main class for controlling
@@ -65,6 +66,7 @@ public class MenuGUI extends VerticalMenu{
         menuChange = -1;
         factions = 0;
         curFaction = -1;
+        back = 0;
     }
 
     /**
@@ -124,7 +126,7 @@ public class MenuGUI extends VerticalMenu{
 
         String[] helpText = new String[]{
             "VERSUS - Start a quick game versus a friend offline",
-            "ONLINE - Start a online server game with a friend",
+            "ONLINE - Start an online server game with a friend",
             "CREATE MAP - Create a new map for the game",
             "LOAD MAP - Load an existing map from the archive",
             "MAP EDITOR - Edit an existing map from the archive",
@@ -152,7 +154,7 @@ public class MenuGUI extends VerticalMenu{
         super.update(width, height, sysTime, mouseScroll);
         if(menuColumn != menuChange){
             if(menuColumn == 1)
-                setJustify(635, -10, 'R');
+                setJustify(650, -10, 'R');
             else if(menuColumn == -1)
                 setJustify(5, 0, 'L');
             else
@@ -237,6 +239,14 @@ public class MenuGUI extends VerticalMenu{
     }
 
     /**
+     * This function sets the screen index to go to when Cancel is clicked
+     * @param set The column number to revert to
+     */
+    public void setPrevious(int set){
+        back = set;
+    }
+
+    /**
      * This function gets all the user defined actions and uses them to
      * control the functions within the menu.
      * @param column The current column this menu is associated with
@@ -269,14 +279,14 @@ public class MenuGUI extends VerticalMenu{
         if(KeyControl.isDownClicked())
             moveDown();
 
-        if(KeyControl.isLeftClicked()){
+        if(KeyControl.isLeftClicked() && back == 0){
             if(menuColumn > -1)
                 menuColumn--;
             else
                 curFaction--;
         }
 
-        if(KeyControl.isRightClicked()){
+        if(KeyControl.isRightClicked() && back == 0){
             if(menuColumn < 1)
                 menuColumn++;
             else
@@ -292,7 +302,7 @@ public class MenuGUI extends VerticalMenu{
             column = select;
 
         if(KeyControl.isCancelClicked())
-            column = 0;
+            column = back;
         
         return column;
     }

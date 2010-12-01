@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <background>
+	<image file="image/background/AW1Map.png" />
 	<image file="image/background/AW1Title.png" />
+	<image file="image/background/AW2Map.png" />
 	<image file="image/background/AW2Sturm.png" />
 	<image file="image/background/AWDoRBack.png" />
 	<image file="image/background/AWDSSky.png" />
