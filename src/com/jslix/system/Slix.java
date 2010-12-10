@@ -1,12 +1,10 @@
 package com.jslix.system;
 
 import com.jslix.state.Screen;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
@@ -21,7 +19,6 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
@@ -33,7 +30,7 @@ import org.newdawn.slick.SlickException;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 11.30.10
+ * @version 12.01.10
  */
 
 public class Slix extends JComponent implements Runnable, KeyListener,
@@ -64,11 +61,6 @@ public class Slix extends JComponent implements Runnable, KeyListener,
      * The window that holds the frame of the game
      */
     private JFrame window;
-    /**
-     * The panel that holds the frame of the game
-     */
-    private JPanel panel;
-    private JPanel panel2;
     /**
      * This holds the Slick version of the game (no resize)
      */
@@ -156,6 +148,7 @@ public class Slix extends JComponent implements Runnable, KeyListener,
             window.addWindowListener(new WindowAdapter() {
                @Override
                 public void windowClosing(WindowEvent e) {
+                    SlixLibrary.removeAllScreens();
                     SlixLibrary.updateScreens();
                     contain.dispose();
                     window.dispose();
@@ -174,6 +167,7 @@ public class Slix extends JComponent implements Runnable, KeyListener,
 
                 @Override
                 public void componentHidden(ComponentEvent e) {
+                    SlixLibrary.removeAllScreens();
                     SlixLibrary.updateScreens();
                     contain.dispose();
                     window.dispose();
@@ -214,6 +208,7 @@ public class Slix extends JComponent implements Runnable, KeyListener,
         window.addWindowListener(new WindowAdapter() {
            @Override
             public void windowClosing(WindowEvent e) {
+                SlixLibrary.removeAllScreens();
                 SlixLibrary.updateScreens();
                 window.dispose();
                 System.exit(0);

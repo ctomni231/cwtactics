@@ -39,7 +39,7 @@ public class JMain extends Slix{
             else if(argv[0].equals("slick"))   game.showSlick();
             else if(argv[0].equals("full"))	game.showFull();
         }else
-            game.showSlick();
+            game.showWindow();
     }
 
     /**

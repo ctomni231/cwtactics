@@ -14,7 +14,7 @@ import java.awt.Color;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 11.30.10
+ * @version 12.01.10
  */
 
 public class MenuGUI extends VerticalMenu{
@@ -80,7 +80,9 @@ public class MenuGUI extends VerticalMenu{
     public void initMenu(String[] mainOption, String[] mainID,
             String[] mainText, String[] mainHelp){
         help = mainHelp;
-        option = mainOption;
+        option = new String[mainOption.length];
+        for(int i = 0; i < option.length; i++)
+            option[i] = mainOption[i].trim();
         text = new String[mainText.length];
         for(int i = -1; ++i < mainText.length; )
         	text[i] = "- "+mainText[i]+" -";
@@ -154,7 +156,7 @@ public class MenuGUI extends VerticalMenu{
         super.update(width, height, sysTime, mouseScroll);
         if(menuColumn != menuChange){
             if(menuColumn == 1)
-                setJustify(650, -10, 'R');
+                setJustify(635, -10, 'R');
             else if(menuColumn == -1)
                 setJustify(5, 0, 'L');
             else
