@@ -141,7 +141,7 @@ public class MapDraw extends MovingPix{
         PixAnimate.loadData();
         if(code.matches("TER.*") || code.matches("FIE.*") ||
             code.matches("PRO.*") || code.matches("CIT.*") ||
-            code.matches("UNI.*") || code.matches("ARR.*"));
+            code.matches("UNI.*") || code.matches("ARR.*"))
         changeScale();
     }
 

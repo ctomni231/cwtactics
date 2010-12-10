@@ -1,5 +1,6 @@
 package com.client.graphic.xml;
 
+import com.system.reader.LangControl;
 import com.jslix.tools.XML_Parser;
 import org.xml.sax.Attributes;
 
