@@ -118,9 +118,9 @@ public class XML_Parser extends DefaultHandler{
      * @param index The tag location of the characters by getLocation()
      * @return The array of characters in the current location
      */
-    public ArrayList<String> getCharacters(int index){
+    public String[] getCharacters(int index){
         return (index >= 0 && index < charList.length) ?
-            charList[index] : new ArrayList<String>();
+            (String[])charList[index].toArray() : new String[0];
     }
 
     /**

@@ -10,7 +10,6 @@
 
 	<title  copy="@copyright"
 		start="PRESS START" 
-		main="MAIN MENU"
 		alpha="image/menu/BasicAlpha.png"
 		number="image/menu/numbers.png"
 		arrow="image/menu/uparrow.png"

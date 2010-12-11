@@ -8,11 +8,11 @@ import com.client.graphic.ExitGUI;
 import com.client.graphic.MenuGUI;
 import com.client.graphic.KeyGUI;
 import com.client.graphic.tools.TextPix;
-import com.client.graphic.xml.TitleReader;
 import com.client.input.OptionHandler;
 import com.jslix.debug.MemoryTest;
 import com.jslix.state.Screen;
 import com.jslix.system.SlixLibrary;
+import com.system.reader.XML_Reader;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
@@ -25,7 +25,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 11.30.10
+ * @version 12.11.10
  */
 
 public class MainMenuScreen extends Screen{
@@ -36,7 +36,6 @@ public class MainMenuScreen extends Screen{
     private final int SIZE_Y = 480;//The base window width
     private final int WAIT_TIME = 15;//The help bar waiting time
 
-    private TitleReader reader;//XML reader for the title and menu screens
     private BackgroundHandler bgPic;//XML reader for the background
     private LogoHandler logoPic;//This holds all the moving logos
     private boolean menuHelp;//Holds whether help bar is locked to screen
@@ -54,57 +53,121 @@ public class MainMenuScreen extends Screen{
     private int current;//Used to update the screen index
     private int menuColor;//The current color of the menu items
     private int curColor;//Used to update the current color
+    private String startHelp;//This stores the title screen help message
+    private String mainText;//This stores the main menu text
+    private int[] entryLocation;//Stores entry locations for menu items
+    private String[][] entries;//Stores strings of entry location
+
 
     /**
      * This class contains all the elements that make up the title screen
      * of CWT. This function initializes all the screens.
      */
     public MainMenuScreen(){
-        reader = new TitleReader("data/titlescreen.xml");
-
-        TextPix.setTextPath(reader.alpha);
-        TextPix.setNumPath(reader.number);
-
         bgPic = new BackgroundHandler(scr_width, scr_height);
-        logoPic = new LogoHandler(reader.question, SIZE_X, SIZE_Y);
-        logoPic.setColorPath(reader.unitColor);       
+
+        XML_Reader.parse("data/titlescreen.xml");
+        XML_Reader.setLanguagePath("data/lang/Languages");
+        TextPix.setTextPath(XML_Reader.getAttribute(XML_Reader.getIndex(
+                "menu title")[0], "alpha"));
+        TextPix.setNumPath(XML_Reader.getAttribute(XML_Reader.getIndex(
+                "menu title")[0], "number"));
+
+        logoPic = new LogoHandler(XML_Reader.getAttribute(XML_Reader.getIndex(
+                "menu logo")[0], "help"), SIZE_X, SIZE_Y);
+        logoPic.setColorPath(XML_Reader.getAttribute(XML_Reader.getIndex(
+                "menu color")[0], "unit"));
+        startHelp = XML_Reader.convert(XML_Reader.getAttribute(
+                XML_Reader.getIndex("menu title")[0], "help"));
+        mainText = XML_Reader.convert(XML_Reader.getAttribute(
+                XML_Reader.getIndex("menu screen")[0], "ID"));
 
         titleScr = new TitleGUI(220, 375, 0);
         titleScr.setOrigScreen(SIZE_X, SIZE_Y);
         titleScr.setShadowColor(Color.BLACK);
         titleScr.setShadowOffset(1);
-        titleScr.setWords(reader.start, 200, 20);
-        titleScr.setColorPath(reader.unitColor);
+        titleScr.setWords(XML_Reader.getAttribute(
+                XML_Reader.getIndex("menu title")[0], "start"), 200, 20);
+        titleScr.setColorPath(XML_Reader.getAttribute(
+                XML_Reader.getIndex("menu color")[0], "unit"));
 
-        exitScr = new ExitGUI(reader.exitData, 100, 200, 0);
+        entryLocation = XML_Reader.getIndex("menu screen exit list");
+        entries = new String[1][entryLocation.length];
+        for(int i = 0; i < entryLocation.length; i++)
+            entries[0][i] = XML_Reader.getAttribute(entryLocation[i], "text");
+        exitScr = new ExitGUI(XML_Reader.convert(entries[0]), 100, 200, 0);
         exitScr.setOrigScreen(SIZE_X, SIZE_Y);
-        exitScr.setColorPath(reader.unitColor);
+        exitScr.setColorPath(XML_Reader.getAttribute(
+                XML_Reader.getIndex("menu color")[0], "unit"));
 
-        menuScr = new MenuGUI(reader.arrow, 20, 0, 165, 0);
+        entryLocation = XML_Reader.getIndex("menu screen main list");
+        entries = new String[4][entryLocation.length];
+        for(int i = 0; i < entryLocation.length; i++){
+            entries[0][i] = XML_Reader.getAttribute(entryLocation[i], "item");
+            entries[1][i] = XML_Reader.getAttribute(entryLocation[i], "id");
+            entries[2][i] = XML_Reader.getAttribute(entryLocation[i], "text");
+            entries[3][i] = XML_Reader.getAttribute(entryLocation[i], "help");
+        }
+        menuScr = new MenuGUI(XML_Reader.getAttribute(
+                XML_Reader.getIndex("menu title")[0], "arrow"), 20, 0, 165, 0);
         //menuScr.init();
-        menuScr.initMenu(reader.mainOption, reader.mainSelect,
-                reader.mainText, reader.mainHelp);
+        menuScr.initMenu(XML_Reader.convert(entries[0]),
+                XML_Reader.convert(entries[1]), XML_Reader.convert(entries[2]),
+                XML_Reader.convert(entries[3]));
         menuScr.setOrigScreen(SIZE_X, SIZE_Y);
-        menuScr.setColorPath(reader.unitColor);
+        menuScr.setColorPath(XML_Reader.getAttribute(
+                XML_Reader.getIndex("menu color")[0], "unit"));
 
-        editScr = new MenuGUI(reader.arrow, 20, 0, 165, 0);
-        editScr.initMenu(reader.editOption, reader.editSelect,
-                reader.editText, reader.editHelp);
+        entryLocation = XML_Reader.getIndex("menu screen edit list");
+        entries = new String[4][entryLocation.length];
+        for(int i = 0; i < entryLocation.length; i++){
+            entries[0][i] = XML_Reader.getAttribute(entryLocation[i], "item");
+            entries[1][i] = XML_Reader.getAttribute(entryLocation[i], "id");
+            entries[2][i] = XML_Reader.getAttribute(entryLocation[i], "text");
+            entries[3][i] = XML_Reader.getAttribute(entryLocation[i], "help");
+        }
+        editScr = new MenuGUI(XML_Reader.getAttribute(
+                XML_Reader.getIndex("menu title")[0], "arrow"), 20, 0, 165, 0);
+        editScr.initMenu(XML_Reader.convert(entries[0]),
+                XML_Reader.convert(entries[1]), XML_Reader.convert(entries[2]),
+                XML_Reader.convert(entries[3]));
         editScr.setOrigScreen(SIZE_X, SIZE_Y);
-        editScr.setColorPath(reader.unitColor);
+        editScr.setColorPath(XML_Reader.getAttribute(
+                XML_Reader.getIndex("menu color")[0], "unit"));
         editScr.setPrevious(1);
-        
-        credScr = new CreditGUI(reader.credit, 0, 0, 1);
+
+        credScr = new CreditGUI(XML_Reader.getAttribute(
+                XML_Reader.getIndex("menu title")[0], "credit"), 0, 0, 1);
         credScr.setOpacity(0.7);
-        credScr.setColorPath(reader.unitColor);
+        credScr.setColorPath(XML_Reader.getAttribute(
+                XML_Reader.getIndex("menu color")[0], "unit"));
         credScr.setOrigScreen(SIZE_X, SIZE_Y);
 
         keyScr = new KeyGUI(20, 0, 200, 1);
-        keyScr.setColorPath(reader.unitColor);
+        keyScr.setColorPath(XML_Reader.getAttribute(
+                XML_Reader.getIndex("menu color")[0], "unit"));
         keyScr.setOrigScreen(SIZE_X, SIZE_Y);
 
+        //Stores the initialization data below in the init() function
+        entryLocation = XML_Reader.getIndex("menu screen key list");
+        entries = new String[6][entryLocation.length];
+        for(int i = 0; i < entryLocation.length; i++){
+            entries[0][i] = XML_Reader.getAttribute(entryLocation[i], "text");
+            entries[1][i] = XML_Reader.getAttribute(entryLocation[i], "help");
+        }
+        entries[2][0] = XML_Reader.convert(XML_Reader.getAttribute(
+                XML_Reader.getIndex("menu logo")[0], "title"));
+        entries[3][0] = XML_Reader.convert(XML_Reader.getAttribute(
+                XML_Reader.getIndex("menu logo")[0], "mini"));
+        entries[4][0] = XML_Reader.convert(XML_Reader.getAttribute(
+                XML_Reader.getIndex("menu logo")[0], "pic"));
+        entries[5][0] = XML_Reader.convert(XML_Reader.getAttribute(
+                XML_Reader.getIndex("menu title")[0], "copy"));
+
+        XML_Reader.clear();
+
         scrStart = true;
-        
+
         column = 0;
     }
 
@@ -114,10 +177,11 @@ public class MainMenuScreen extends Screen{
     @Override
     public void init() {
         initOptions();
-        keyScr.init(reader.keyOption, reader.keyHelp);
+        keyScr.init(XML_Reader.convert(entries[0]),
+                XML_Reader.convert(entries[1]));
         bgPic.update(scr_name, scr_index, scr_isApplet, scr_link);
-        logoPic.init(reader.logoPath, reader.miniPath, reader.picPath,
-                reader.copyright);
+        logoPic.init(entries[2][0], entries[3][0], entries[4][0],
+                entries[5][0]);
         exitScr.init();
     }
 
@@ -235,7 +299,7 @@ public class MainMenuScreen extends Screen{
             logoPic.setFinalPosition(4, 430, 480);
             logoPic.setFinalPosition(5, 5, 480);
             logoPic.setScrollText();
-            logoPic.setHelpText(reader.startHelp[0]);
+            logoPic.setHelpText(startHelp);
             logoPic.setColor(menuColor);
             logoPic.setCounter(WAIT_TIME*8);
             titleScr.setColor(menuColor);
@@ -272,7 +336,7 @@ public class MainMenuScreen extends Screen{
             menuScr.setColor(menuColor);
             logoPic.setHelpText(menuScr.getHelpText());
             logoPic.forceScrollText(menuScr.getScrollText());
-            logoPic.setInfoText(reader.main);
+            logoPic.setInfoText(mainText);
             logoPic.setCounter(WAIT_TIME);
             if(!menuHelp)
                 logoPic.setFinalPosition(3, 0, -20);
