@@ -1,0 +1,31 @@
+<Terrain>
+     <Lang Path="data/terrain/lang/Languages" />
+
+     <Color Hex="0xe8d090" />
+     <Color Red="255" Green="125" Blue="255" />
+
+     <!-- Color... (multiple calls inserts more default colors to change) -->
+
+     <Data Name="Plain" Base="Plain" Type="AWDS">
+            <Graphic Weather="Clear" Direction="0">
+
+                  <File Path="image/AWDS_Terrain.png"
+                        LOCX="0" LOCY="0" SIZEX="16" SIZEY="32" 
+  			TILESIZEX="1" TILESIZEY="1" />
+
+                  <!-- File... (multiple calls to file controls animation sequences) -->
+                  
+                  <Tag O="PLIN" />
+                  <Tag OL="LAND" />
+
+                  <!-- Tag... (multiple calls to Tag increases the amount of relations 
+				to other tiles) -->
+            </Graphic>
+
+            <!-- Graphic (multiple calls to graphics w/ the same weather randomizes 
+			the tiles; w/o the same weather creates new tiles) -->
+
+     </Data>
+     <!-- Data (multiple calls to data changes the type of terrain and terrain name; 
+		first one overwrites all others) -->
+</Terrain>
