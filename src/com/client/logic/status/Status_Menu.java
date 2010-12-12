@@ -2,7 +2,7 @@ package com.client.logic.status;
 
 import java.util.Collection;
 
-import com.client.input.Controls;
+import com.system.input.Controls;
 import com.client.menu.GUI.MapDraw;
 import com.client.menu.logic.Menu;
 import com.client.menu.logic.buttons.*;

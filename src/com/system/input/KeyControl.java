@@ -1,4 +1,4 @@
-package com.client.input;
+package com.system.input;
 
 import com.jslix.system.KeyPress;
 

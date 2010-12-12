@@ -6,7 +6,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import com.client.input.Controls;
+import com.system.input.Controls;
 
 /**
  * Extends stateBasedGame. Sets up functionality for the button

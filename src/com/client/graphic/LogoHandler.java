@@ -3,7 +3,7 @@ package com.client.graphic;
 import com.client.graphic.tools.MovingImage;
 import com.client.graphic.tools.ScrollImage;
 import com.client.graphic.tools.TextPix;
-import com.client.input.KeyControl;
+import com.system.input.KeyControl;
 import com.jslix.state.ScreenSkeleton;
 import com.jslix.tools.ImgLibrary;
 import java.awt.Color;

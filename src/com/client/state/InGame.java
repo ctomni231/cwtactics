@@ -1,6 +1,6 @@
 package com.client.state;
 
-import com.client.input.KeyControl;
+import com.system.input.KeyControl;
 import com.client.menu.GUI.MapDraw;
 import com.client.model.object.Game;
 import com.client.state.mini.ExitMiniScr;

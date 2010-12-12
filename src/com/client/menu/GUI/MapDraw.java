@@ -1,6 +1,6 @@
 package com.client.menu.GUI;
 
-import com.client.input.Controls;
+import com.system.input.Controls;
 import com.client.logic.status.Status;
 import com.client.menu.GUI.tools.MouseBox;
 import com.client.menu.GUI.tools.MovingPix;

@@ -1,6 +1,6 @@
 package com.client.state;
 
-import com.client.input.Controls;
+import com.system.input.Controls;
 import com.client.menu.GUI.MapDraw;
 import com.client.model.object.Game;
 

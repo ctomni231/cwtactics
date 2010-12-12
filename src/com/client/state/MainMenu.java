@@ -1,6 +1,6 @@
 package com.client.state;
 
-import com.client.input.KeyControl;
+import com.system.input.KeyControl;
 import com.client.menu.GUI.BGPicture;
 import com.client.menu.GUI.LogoDraw;
 import com.client.state.mini.ExitMiniScr;

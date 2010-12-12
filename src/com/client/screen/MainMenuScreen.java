@@ -8,7 +8,7 @@ import com.client.graphic.ExitGUI;
 import com.client.graphic.MenuGUI;
 import com.client.graphic.KeyGUI;
 import com.client.graphic.tools.TextPix;
-import com.client.input.OptionHandler;
+import com.system.input.OptionHandler;
 import com.jslix.debug.MemoryTest;
 import com.jslix.state.Screen;
 import com.jslix.system.SlixLibrary;

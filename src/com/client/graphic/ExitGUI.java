@@ -4,8 +4,8 @@ import com.jslix.system.SlixLibrary;
 import com.jslix.tools.MouseHelper;
 import com.client.graphic.tools.MovingMenu;
 import com.client.graphic.tools.TextPix;
-import com.client.input.Controls;
-import com.client.input.KeyControl;
+import com.system.input.Controls;
+import com.system.input.KeyControl;
 import com.jslix.tools.ImgLibrary;
 import java.awt.Color;
 

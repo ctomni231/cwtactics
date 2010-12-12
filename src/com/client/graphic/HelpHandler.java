@@ -1,7 +1,7 @@
 package com.client.graphic;
 
 import com.client.graphic.tools.MovingMenu;
-import com.client.input.KeyControl;
+import com.system.input.KeyControl;
 import com.jslix.tools.MouseHelper;
 import com.jslix.tools.PixtureMap;
 import java.awt.Color;

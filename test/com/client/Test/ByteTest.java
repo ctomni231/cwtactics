@@ -1,6 +1,6 @@
 package com.client.Test;
 
-import com.system.map.ByteMap;
+import com.system.data.ByteMap;
 import junit.framework.Assert;
 import org.junit.Test;
 

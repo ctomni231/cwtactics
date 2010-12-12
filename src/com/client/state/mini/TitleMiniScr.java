@@ -1,6 +1,6 @@
 package com.client.state.mini;
 
-import com.client.input.Controls;
+import com.system.input.Controls;
 import com.client.menu.GUI.LogoDraw;
 import com.client.menu.GUI.TitleDraw;
 import com.jslix.tools.TextImgLibrary;

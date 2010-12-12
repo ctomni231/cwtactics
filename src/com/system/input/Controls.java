@@ -1,4 +1,4 @@
-package com.client.input;
+package com.system.input;
 
 import org.newdawn.slick.Input;
 

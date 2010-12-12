@@ -1,6 +1,6 @@
 package com.client.state;
 
-import com.client.input.Controls;
+import com.system.input.Controls;
 import com.client.menu.GUI.BGPicture;
 import com.client.menu.GUI.LogoDraw;
 

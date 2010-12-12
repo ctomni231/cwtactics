@@ -1,15 +1,15 @@
-package com.system.map;
+package com.system.data;
 
 /**
  * ByteMap.java
  *
- * This class deals with organizing the I/O of map data into a
+ * This class deals with organizing the I/O of data into a
  * compact format using integer. Also tried to keep it compact so
  * bit data doesn't flow into other classes.
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.11.10
+ * @version 12.12.10
  */
 
 public class ByteMap {
@@ -33,12 +33,26 @@ public class ByteMap {
      * @param index The index to store the byte into
      * @param value The value of this particular byte
      */
-    public void add(int index, int value){
+    public void addByte(int index, int value){
         if(value < 0 || value > 255)
-            data[index] = 0;
+            value = 0;
         if(index >= 0 && index < MAX_DATA)
             data[index] = (byte)(value-128);
+    }
 
+    /**
+     * This function stores data into bytes that will be later stored into
+     * a byte array in unsigned integer format
+     * @param index The index to store the byte into
+     * @param leftVal The value of the left bit
+     * @param rightVal The value of the right bit
+     */
+    public void addByte(int index, int leftVal, int rightVal){
+        if(leftVal < 0 || leftVal > 15)
+            leftVal = 0;
+        if(rightVal < 0 || rightVal > 15)
+            rightVal = 0;
+        addByte(index, (leftVal*16)+rightVal);
     }
 
     /**
@@ -53,60 +67,61 @@ public class ByteMap {
      * This function compacts bytes into an integer
      * @return A long containing the byte data
      */
-    public int compact(){
+    public int getValue(){
         return ((data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3]);
     }
 
     /**
      * This function gets bytes in unsigned integer format from an integer
-     * @param compact The integer to extract the byte data from
-     * @param index The portion of byte code to retrieve from the integer
+     * @param index The array portion of byte code to retrieve
+     * @param value The integer to extract the byte data from
      * @return An unsigned integer representing the byte
      */
-    public int get(int value, int index){
-        return (int)(getByteData(value, index)+128);
+    public int getByte(int index, int value){
+        return (int)(getByteData(index, value)+128);
     }
 
     /**
      * This function gets the bit value for a unsigned byte.
-     * @param value The value of the bit
+     * @param index The array portion of byte code to retrieve
+     * @param value The integer to extract the bit data from
      * @param left Gets the left(T) or right(F) value of the bit
-     * @return A bit number with the specified conditions
+     * @return An unsigned bit number with the specified conditions
      */
-    public int getBit(int value, boolean left){
-        return (int)(getBitData(value, left)+8);
+    public int getBit(int index, int value, boolean left){
+        return (int)(getBitData(getByte(index, value), left)+8);
     }
-
 
     /**
      * This function gets bytes from a integer
-     * @param compact The long to extract the byte data from
+     * @param value The integer to extract the byte data from
      * @param index The portion of byte code to retrieve from the long
      * @return An unsigned integer representing the byte
      */
-    private byte getByteData(int compact, int index){
+    private byte getByteData(int index, int value){
         switch(index){
             case 0:
-                return (byte)((compact & 0xFF000000) >>> 24);
+                return (byte)((value & 0xFF000000) >>> 24);
             case 1:
-                return (byte)((compact & 0x00FF0000) >>> 16);
+                return (byte)((value & 0x00FF0000) >>> 16);
             case 2:
-                return (byte)((compact & 0x0000FF00) >>> 8);
-            default:
-                return (byte)((compact & 0x000000FF));
+                return (byte)((value & 0x0000FF00) >>> 8);
+            case 3:
+                return (byte)((value & 0x000000FF));
         }
+        return 0;
     }
 
     /**
      * This function gets the bit value for a unsigned byte.
-     * @param value The value of the bit
+     * @param value The value of the unsigned byte (0-255)
      * @param left Gets the left(T) or right(F) value of the bit
      * @return A bit number with the specified conditions
      */
     private byte getBitData(int value, boolean left){
-        byte temp = 0;
-        if(value >= 0 && value < 256)
-            temp = 0;
+        if(value < 0 && value > 255)
+            value = 0;
+        byte temp = (byte)(value-128);
 
         if(left)
             return (byte)((temp & 0x000000F0) >>> 4);

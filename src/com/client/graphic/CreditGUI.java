@@ -2,7 +2,7 @@ package com.client.graphic;
 
 import com.client.graphic.tools.MovingMenu;
 import com.client.graphic.tools.TextPix;
-import com.client.input.KeyControl;
+import com.system.input.KeyControl;
 import com.jslix.tools.FileFind;
 import com.jslix.tools.ImgLibrary;
 import com.jslix.tools.MouseHelper;

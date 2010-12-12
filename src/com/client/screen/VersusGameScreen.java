@@ -1,6 +1,6 @@
 package com.client.screen;
 
-import com.client.input.KeyControl;
+import com.system.input.KeyControl;
 import com.jslix.state.Screen;
 import java.awt.Component;
 import java.awt.Graphics2D;
