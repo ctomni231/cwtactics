@@ -150,7 +150,11 @@ public class MainMenuScreen extends Screen{
 
         //Stores the initialization data below in the init() function
         entryLocation = XML_Reader.getIndex("menu screen key list");
-        entries = new String[6][entryLocation.length];
+        entries = new String[6][];
+        for(int i = 0; i < entries.length; i++){
+            entries[i] = (i < 2) ? new String[entryLocation.length] :
+                new String[1];
+        }
         for(int i = 0; i < entryLocation.length; i++){
             entries[0][i] = XML_Reader.getAttribute(entryLocation[i], "text");
             entries[1][i] = XML_Reader.getAttribute(entryLocation[i], "help");
