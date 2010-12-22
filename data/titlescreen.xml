@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <menu>
+	<lang	path="data/lang/Languages" />
 	<logo   title="image/menu/cwTactics.png" 
 		mini="image/menu/cwtitle.gif"
 		pic="image/menu/cwLogo.gif" 

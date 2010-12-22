@@ -20,7 +20,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author <ul><li>Radom, Alexander</li>
  *              <li>Carr, Crecen</li></ul>
  * @license Look into "LICENSE" file for further information
- * @version 12.10.10
+ * @version 12.20.10
  */
 
 public class XML_Parser extends DefaultHandler{
@@ -108,7 +108,18 @@ public class XML_Parser extends DefaultHandler{
      */
     public String getAttribute(int index, String key){
         HashMap<String, String> temp = getAttribute(index);
-        return (temp.containsKey(key)) ? temp.get(key) : "null";
+        return (temp.containsKey(key)) ? temp.get(key) : "";
+    }
+
+    /**
+     * This function is used to get the tags from a specific index
+     * in the document.
+     * @param index The index location of the tag hierarchy.
+     * @return The tag in parent -> children order
+     */
+    public String[] getTags(int index){
+        return (index >= 0 && index < tagList.length) ?
+            createArray(tagList[index]) : new String[0];
     }
 
     /**
@@ -120,7 +131,7 @@ public class XML_Parser extends DefaultHandler{
      */
     public String[] getCharacters(int index){
         return (index >= 0 && index < charList.length) ?
-            (String[])charList[index].toArray() : new String[0];
+            createArray(charList[index]) : new String[0];
     }
 
     /**
@@ -191,6 +202,14 @@ public class XML_Parser extends DefaultHandler{
     }
 
     /**
+     * This gets the amount of parsed data in the document
+     * @return The amount of separate storage tags in the document.
+     */
+    public int size(){
+        return (tagList != null) ? tagList.length : 0;
+    }
+
+    /**
      * This clears all the stored array data.
      */
     public void clear(){
@@ -208,7 +227,6 @@ public class XML_Parser extends DefaultHandler{
      */
     @Override
     public void startDocument() throws SAXException {
-        //System.out.println("Parsing begins...");
         header = new ArrayList<String>();
         tagList = null;
         attrList = null;
@@ -224,7 +242,6 @@ public class XML_Parser extends DefaultHandler{
      */
     @Override
     public void endDocument() throws SAXException {
-        //System.out.println("Parsing ends...");
         tempAttr = null;
         tempChar = null;
         focusTag = null;
@@ -243,17 +260,6 @@ public class XML_Parser extends DefaultHandler{
     @Override
     public void startElement(String namespaceURI, String localName,
             String rawName, Attributes atts) throws SAXException {
-        //System.out.print("startElement: " + localName);
-        //if(namespaceURI.equals(""))
-        //    System.out.println(" in namespace " + namespaceURI +
-        //            " (" + rawName + ")");
-        //else
-        //    System.out.println(" has no associated namespace");
-
-        //for(int i = 0; i < atts.getLength(); i++)
-        //    System.out.println(" Attribute: " + atts.getLocalName(i) +
-        //            " = \"" + atts.getValue(i) + "\"");
-
         //Original function
         header.add(rawName);
     	if( atts != null ) entry(atts);
@@ -275,8 +281,6 @@ public class XML_Parser extends DefaultHandler{
      */
     @Override
     public void characters(char[] ch, int start, int end) throws SAXException {
-        //System.out.println("characters: " + new String(ch, start, end));
-
         if(!(new String(ch, start, end).isEmpty()))
             tempChar = addData(tempChar, new String(ch, start, end));
     }
@@ -292,8 +296,6 @@ public class XML_Parser extends DefaultHandler{
     @Override
     public void endElement(String namespaceURI, String localName,
             String rawName) throws SAXException {
-        //System.out.println("endElement: " + localName + " (" +rawName+ ")");
-
         if(checkFocus()){
             tagList = addBranch(tagList);
             tagList = addData(tagList, header);
@@ -519,6 +521,21 @@ public class XML_Parser extends DefaultHandler{
          }
 
          return focusTag.length == 0;
+     }
+
+     /**
+      * This function creates a basic array from a ArrayList
+      * @param fillData The ArrayList to convert
+      * @return A basic String array with the same data
+      */
+     private String[] createArray(ArrayList<String> fillData){
+         if(fillData == null)
+             return new String[0];
+
+         String[] temp = new String[fillData.size()];
+         for(int i = 0; i < temp.length; i++)
+             temp[i] = fillData.get(i);
+         return temp;
      }
 
     //------------------------

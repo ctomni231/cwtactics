@@ -12,6 +12,7 @@ import com.system.input.OptionHandler;
 import com.jslix.debug.MemoryTest;
 import com.jslix.state.Screen;
 import com.jslix.system.SlixLibrary;
+import com.system.data.GameElement;
 import com.system.reader.XML_Reader;
 import java.awt.Color;
 import java.awt.Component;
@@ -25,7 +26,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.11.10
+ * @version 12.20.10
  */
 
 public class MainMenuScreen extends Screen{
@@ -67,7 +68,8 @@ public class MainMenuScreen extends Screen{
         bgPic = new BackgroundHandler(scr_width, scr_height);
 
         XML_Reader.parse("data/titlescreen.xml");
-        XML_Reader.setLanguagePath("data/lang/Languages");
+        XML_Reader.setLanguagePath(XML_Reader.getAttribute(
+                XML_Reader.getIndex("menu lang")[0], "path"));
         TextPix.setTextPath(XML_Reader.getAttribute(XML_Reader.getIndex(
                 "menu title")[0], "alpha"));
         TextPix.setNumPath(XML_Reader.getAttribute(XML_Reader.getIndex(
@@ -516,6 +518,7 @@ public class MainMenuScreen extends Screen{
      * applies then to the frame. This does not apply to applets.
      */
     private void initOptions(){
+        GameElement.initialize(scr_isApplet);
         option = new OptionHandler("data","options.xml");
         if(!scr_isApplet && option.exists()){
             option.loadOptions();

@@ -1,6 +1,6 @@
 package com.system.logger;
 
-import com.sun.xml.internal.bind.v2.runtime.RuntimeUtil.ToStringAdapter;
+//import com.sun.xml.internal.bind.v2.runtime.RuntimeUtil.ToStringAdapter;
 import com.system.commPipe.CommandPoolListener;
 import java.util.Vector;
 

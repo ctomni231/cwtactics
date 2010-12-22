@@ -11,7 +11,7 @@
 
                   <File Path="image/AWDS_Terrain.png"
                         LOCX="0" LOCY="0" SIZEX="16" SIZEY="32" 
-  			TILESIZEX="1" TILESIZEY="1" />
+  			TILESIZEX="1" TILESIZEY="1" FLIP="0" />
 
                   <!-- File... (multiple calls to file controls animation sequences) -->
                   

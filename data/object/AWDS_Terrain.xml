@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TERRAIN>
+	<LANG PATH="data/terrain/lang/Languages" />
+
+	<DATA NAME="Plain" BASE="Plain" TYPE="AWDS">
+		<GRAPHIC WEATHER="Clear" DIRECTION="0">
+			<FILE PATH="image/AWDS_Terrain.png"
+				LOCX="0" LOCY="0" SIZEX="16" SIZEY="32"
+				TILESIZEX="1" TILESIZEY="1" />
+			<TAG O="PLIN" OL="LAND" />
+		</GRAPHIC>
+	</DATA>
+
+	<DATA NAME="Forest" BASE="Forest" TYPE="AWDS">
+		<GRAPHIC WEATHER="Clear" DIRECTION="0">
+			<FILE PATH="image/AWDS_Terrain.png"
+				LOCX="16" LOCY="0" SIZEX="16" SIZEY="32"
+				TILESIZEX="1" TILESIZEY="1" />
+			<TAG O="FRST" OL="LAND" />
+		</GRAPHIC>
+	</DATA>
+</TERRAIN>
