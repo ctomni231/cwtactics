@@ -20,7 +20,7 @@ import java.util.Vector;
  * @license Look into "LICENSE" file for further information
  * @version 12.12.2010
  */
-public class CommandPool
+public final class CommandPool
 {
     // operation codes
     public static final int LOW_PRIORITY = 0;

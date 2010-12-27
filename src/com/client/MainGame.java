@@ -5,7 +5,7 @@ import java.util.logging.Level;
 import com.client.library.CustomWars_Decoder;
 import com.client.library.CustomWars_Encoder;
 import com.client.library.CustomWars_Library;
-import com.client.logic.status.Status;
+import com.customwarsTactics.service.StatusController;
 import com.client.menu.GUI.tools.PixAnimate;
 import com.client.model.*;
 import com.client.model.object.*;
@@ -211,7 +211,7 @@ public class MainGame {
     	
         Game.setMap(map);
         Fog.noFog(false);
-        Status.setStatus( Status.Mode.WAIT );
+        StatusController.setStatus( StatusController.Mode.WAIT );
         Turn.startTurn( Game.getNextPlayer() );
     }
 

@@ -1,5 +1,7 @@
 package com.client.logic.status;
 
+import com.customwarsTactics.service.StatusController;
+import com.customwarsTactics.logic.states.Status_Interface;
 import com.system.input.Controls;
 import com.client.menu.GUI.MapDraw;
 import com.client.model.Range;
@@ -17,7 +19,7 @@ public class Status_ShowRange implements Status_Interface {
 		// GO BACK IF CANCEL ISN'T PRESSED DOWN
 		if( !Controls.isCancelDown() ){
 			Range.clear();
-			Status.setStatus( Status.Mode.WAIT );
+			StatusController.setStatus( StatusController.Mode.WAIT );
 		}
 	}
 

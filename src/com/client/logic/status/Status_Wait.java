@@ -1,5 +1,7 @@
 package com.client.logic.status;
 
+import com.customwarsTactics.logic.states.Status_Interface;
+import com.customwarsTactics.service.StatusController;
 import com.system.input.Controls;
 import com.client.menu.GUI.MapDraw;
 import com.client.menu.logic.Menu;
@@ -27,7 +29,7 @@ public class Status_Wait implements Status_Interface {
     	Tile tile = Game.getMap().getTile(x, y);
     	if( tile == null ) return;
     	Unit unit = tile.getUnit();
-    	Status.Mode mode = Status.getStatus();
+    	StatusController.Mode mode = StatusController.getStatus();
     	
     	
     	// ACTION BUTTON
@@ -38,17 +40,17 @@ public class Status_Wait implements Status_Interface {
     		if( unit != null && !Fog.inFog(tile) &&  unit.canAct() && unit.getOwner() == Turn.getPlayer() ){
     			Move.initialize(tile, unit);
     			Move.move();
-    			mode = Status.Mode.SHOW_MOVE;
+    			mode = StatusController.Mode.SHOW_MOVE;
     		}
     		// FACTORY
     		else if( tile.sheet().canBuild() && !Fog.inFog(tile) && tile.getOwner() == Turn.getPlayer() ){
     			Menu.createBuildMenu(tile);
-    			mode = Status.Mode.MENU;
+    			mode = StatusController.Mode.MENU;
     		}
     		// MAP MENU
     		else{
 				Menu.createMapMenu();
-				mode = Status.Mode.MENU;
+				mode = StatusController.Mode.MENU;
     		}
     	}
     	
@@ -63,12 +65,12 @@ public class Status_Wait implements Status_Interface {
     			if( unit.isHidden() && !Fog.isVisible(unit) ) return;
     			
     			Range.getCompleteAttackRange(tile, unit);
-    			mode = Status.Mode.SHOW_RANGE;
+    			mode = StatusController.Mode.SHOW_RANGE;
     		}
     	}
     	
     	// SET STATUS
-    	Status.setStatus( mode );
+    	StatusController.setStatus( mode );
 	}
 }
 

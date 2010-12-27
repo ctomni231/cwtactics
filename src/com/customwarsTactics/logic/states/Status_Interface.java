@@ -1,4 +1,4 @@
-package com.client.logic.status;
+package com.customwarsTactics.logic.states;
 
 import com.client.menu.GUI.MapDraw;
 

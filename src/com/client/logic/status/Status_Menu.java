@@ -1,5 +1,7 @@
 package com.client.logic.status;
 
+import com.customwarsTactics.service.StatusController;
+import com.customwarsTactics.logic.states.Status_Interface;
 import java.util.Collection;
 
 import com.system.input.Controls;
@@ -225,7 +227,7 @@ public class Status_Menu implements Status_Interface {
 			}
 			
             // clear menu and go back to wait
-            changeStatus( Status.Mode.WAIT );
+            changeStatus( StatusController.Mode.WAIT );
 		}
 		
 		// CANCEL IS CLICKED
@@ -260,12 +262,12 @@ public class Status_Menu implements Status_Interface {
 					
 					// clear all things from move and menu
 					Move.resetWay();
-					changeStatus( Status.Mode.SHOW_MOVE );
+					changeStatus( StatusController.Mode.SHOW_MOVE );
 					break;
 				
 				// in the default case, go back to wait status
 				default :
-					changeStatus( Status.Mode.WAIT );
+					changeStatus( StatusController.Mode.WAIT );
 			}
 		}
 		
@@ -282,9 +284,9 @@ public class Status_Menu implements Status_Interface {
 		MessageServer.send("decreaseFuel="+MessageEncoder.encode(Move.getUnit())+","+MessageEncoder.encode(Move.getCompleteFuel()) );
 	}
 	
-	private void changeStatus( Status.Mode status ){
+	private void changeStatus( StatusController.Mode status ){
 		
 		Menu.clearList();
-		Status.setStatus( status );
+		StatusController.setStatus( status );
 	}
 }

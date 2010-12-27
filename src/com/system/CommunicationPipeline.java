@@ -11,7 +11,8 @@ import com.system.network.Connection;
  * @license Look into "LICENSE" file for further information
  * @version 12.12.2010
  */
-public class CommunicationPipeline {
+public class CommunicationPipeline
+{
 
     // singleton instance
     private static final CommunicationPipeline INSTANCE = new CommunicationPipeline();

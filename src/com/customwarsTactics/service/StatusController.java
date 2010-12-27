@@ -1,5 +1,10 @@
-package com.client.logic.status;
+package com.customwarsTactics.service;
 
+import com.customwarsTactics.logic.states.Status_Interface;
+import com.client.logic.status.Status_Menu;
+import com.client.logic.status.Status_ShowMove;
+import com.client.logic.status.Status_ShowRange;
+import com.client.logic.status.Status_Wait;
 import com.client.menu.GUI.MapDraw;
 import com.system.log.Logger;
 
@@ -11,7 +16,7 @@ import com.system.log.Logger;
  * @version 8.1.2010, #1
  *
  */
-public class Status {
+public class StatusController {
 
 	/*
 	 * ENUMERATIONS
@@ -75,7 +80,7 @@ public class Status {
 			return;
 		}
 		
-		Status.status = status;
+		StatusController.status = status;
 	}
 
 	

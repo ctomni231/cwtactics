@@ -1,5 +1,7 @@
 package com.client.logic.status;
 
+import com.customwarsTactics.service.StatusController;
+import com.customwarsTactics.logic.states.Status_Interface;
 import com.system.input.Controls;
 import com.client.menu.GUI.MapDraw;
 import com.client.menu.logic.Menu;
@@ -33,9 +35,9 @@ public class Status_ShowMove implements Status_Interface {
 			
 			Move.completeWay();
 			Menu.createUnitMenu( Move.getUnit() , Move.getTargetTile() );
-			Status.setStatus( Status.Mode.MENU );
+			StatusController.setStatus( StatusController.Mode.MENU );
 		}
-		else if(Controls.isCancelClicked()) Status.setStatus( Status.Mode.WAIT );
+		else if(Controls.isCancelClicked()) StatusController.setStatus( StatusController.Mode.WAIT );
 	}
 }
 

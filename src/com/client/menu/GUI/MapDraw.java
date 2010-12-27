@@ -1,7 +1,7 @@
 package com.client.menu.GUI;
 
 import com.system.input.Controls;
-import com.client.logic.status.Status;
+import com.customwarsTactics.service.StatusController;
 import com.client.menu.GUI.tools.MouseBox;
 import com.client.menu.GUI.tools.MovingPix;
 import com.client.menu.GUI.tools.PixAnimate;
@@ -323,7 +323,7 @@ public class MapDraw extends MovingPix{
                         (int)((BASE+1)*scale));
                 }
                 if(!arrow.getMoveActive() &&
-                        Status.getStatus() == Status.Mode.SHOW_MOVE){
+                        StatusController.getStatus() == StatusController.Mode.SHOW_MOVE){
                     if(Move.getTiles().containsKey(map.getTile(i, j))){
                         g.setColor(new Color(0, 0, 255, 100));
                         g.fillRect((int)(posx+shakex+i*BASE*scale),
@@ -331,7 +331,7 @@ public class MapDraw extends MovingPix{
                             (int)(BASE*scale));
                     }
                 }
-                if(Status.getStatus() == Status.Mode.SHOW_RANGE){
+                if(StatusController.getStatus() == StatusController.Mode.SHOW_RANGE){
                     if(Range.isIn(map.getTile(i, j))){
                         g.setColor(new Color(255, 0, 0, 100));
                         g.fillRect((int)(posx+shakex+i*BASE*scale),
@@ -357,7 +357,7 @@ public class MapDraw extends MovingPix{
                     }
                 }
                 if(!arrow.getMoveActive() &&
-                        Status.getStatus() == Status.Mode.SHOW_MOVE){
+                        StatusController.getStatus() == StatusController.Mode.SHOW_MOVE){
                     arrow.updateArrow(g, i, j);
                 }
               }
@@ -432,10 +432,10 @@ public class MapDraw extends MovingPix{
             return true;
         if(arrow.getMoveActive())
             return true;
-        if(Status.getStatus() == Status.Mode.SHOW_MOVE &&
+        if(StatusController.getStatus() == StatusController.Mode.SHOW_MOVE &&
                 Move.getTiles().containsKey(map.getTile(i, j)))
             return true;
-        if(Status.getStatus() == Status.Mode.SHOW_RANGE &&
+        if(StatusController.getStatus() == StatusController.Mode.SHOW_RANGE &&
                 Range.isIn(map.getTile(i, j)))
             return true;
         if(drawField(i,j))

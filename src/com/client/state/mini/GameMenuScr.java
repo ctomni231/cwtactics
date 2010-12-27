@@ -1,7 +1,7 @@
 package com.client.state.mini;
 
 import com.system.input.Controls;
-import com.client.logic.status.Status;
+import com.customwarsTactics.service.StatusController;
 import com.client.menu.GUI.ListDraw;
 import com.client.menu.GUI.MapDraw;
 import com.client.menu.logic.Menu;
@@ -118,7 +118,7 @@ public class GameMenuScr {
         }else{
             scr_scroll = mapScr.update(scr_mouseX, scr_mouseY,
                     scr_mouseScroll, scr_scroll, scr_mouseLock);
-            Status.update(timePassed, mapScr);
+            StatusController.update(timePassed, mapScr);
 
             if(menuSize == 0 && Menu.getList().size() > 0){
                 scrSwitch = true;

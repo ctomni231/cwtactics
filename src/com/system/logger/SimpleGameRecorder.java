@@ -70,8 +70,7 @@ public class SimpleGameRecorder implements CommandPoolListener
     @Override
     public String toString()
     {
-        
-        return new StringBuilder("game recorder, recorded command:")
+        return new StringBuilder("game recorder, recorded commands:")
                         .append( getNumOfMessages() ).toString();
     }
 

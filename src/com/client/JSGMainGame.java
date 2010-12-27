@@ -1,7 +1,7 @@
 package com.client;
 
 import com.client.library.CustomWars_Library;
-import com.client.logic.status.Status;
+import com.customwarsTactics.service.StatusController;
 import com.client.menu.GUI.tools.PixAnimate;
 import com.client.model.Fog;
 import com.client.model.Instance;
@@ -197,7 +197,7 @@ public class JSGMainGame extends SlixGame {
 
         Game.setMap(map);
         Fog.noFog(false);
-        Status.setStatus( Status.Mode.WAIT );
+        StatusController.setStatus( StatusController.Mode.WAIT );
         Turn.startTurn( Game.getNextPlayer() );
     }
 }
