@@ -1,7 +1,7 @@
-package com.client.model;
+package com.customwarsTactics.logic.mapController;
 
-import com.client.model.object.Tile;
-import com.client.model.object.Unit;
+import com.customwarsTactics.model.mapObjects.Tile;
+import com.customwarsTactics.model.mapObjects.Unit;
 import com.system.data.DynamicMemory;
 import com.system.data.sheets.Weapon_Sheed;
 import com.system.log.Logger;

@@ -5,9 +5,9 @@ import com.customwarsTactics.logic.states.Status_Interface;
 import com.system.input.Controls;
 import com.client.menu.GUI.MapDraw;
 import com.client.menu.logic.Menu;
-import com.client.model.Move;
+import com.customwarsTactics.logic.mapController.Move;
 import com.client.model.object.Game;
-import com.client.model.object.Tile;
+import com.customwarsTactics.model.mapObjects.Tile;
 
 /**
  * Move class.

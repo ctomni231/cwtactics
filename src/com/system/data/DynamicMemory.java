@@ -1,7 +1,7 @@
 package com.system.data;
 
-import com.client.model.object.Tile;
-import com.client.model.object.Unit;
+import com.customwarsTactics.model.mapObjects.Tile;
+import com.customwarsTactics.model.mapObjects.Unit;
 
 public class DynamicMemory {
 

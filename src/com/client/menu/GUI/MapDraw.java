@@ -5,11 +5,11 @@ import com.customwarsTactics.service.StatusController;
 import com.client.menu.GUI.tools.MouseBox;
 import com.client.menu.GUI.tools.MovingPix;
 import com.client.menu.GUI.tools.PixAnimate;
-import com.client.model.Fog;
+import com.customwarsTactics.logic.mapController.Fog;
 import com.client.model.Instance;
-import com.client.model.Move;
-import com.client.model.Range;
-import com.client.model.object.Map;
+import com.customwarsTactics.logic.mapController.Move;
+import com.customwarsTactics.logic.mapController.Range;
+import com.customwarsTactics.model.mapObjects.Map;
 
 import java.util.ArrayList;
 import org.newdawn.slick.Color;

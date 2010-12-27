@@ -1,4 +1,4 @@
-package com.client.model.object;
+package com.customwarsTactics.model.mapObjects;
 
 import com.client.library.CustomWars_Library;
 import com.system.data.sheets.Tile_Sheet;

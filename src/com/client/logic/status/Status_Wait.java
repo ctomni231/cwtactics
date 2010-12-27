@@ -5,13 +5,13 @@ import com.customwarsTactics.service.StatusController;
 import com.system.input.Controls;
 import com.client.menu.GUI.MapDraw;
 import com.client.menu.logic.Menu;
-import com.client.model.Fog;
-import com.client.model.Move;
-import com.client.model.Range;
-import com.client.model.Turn;
+import com.customwarsTactics.logic.mapController.Fog;
+import com.customwarsTactics.logic.mapController.Move;
+import com.customwarsTactics.logic.mapController.Range;
+import com.customwarsTactics.logic.mapController.TurnController;
 import com.client.model.object.Game;
-import com.client.model.object.Tile;
-import com.client.model.object.Unit;
+import com.customwarsTactics.model.mapObjects.Tile;
+import com.customwarsTactics.model.mapObjects.Unit;
 
 /**
  * Wait status class.
@@ -37,13 +37,13 @@ public class Status_Wait implements Status_Interface {
     	if( Controls.isActionClicked() ){
     		
     		// UNIT MOVE
-    		if( unit != null && !Fog.inFog(tile) &&  unit.canAct() && unit.getOwner() == Turn.getPlayer() ){
+    		if( unit != null && !Fog.inFog(tile) &&  unit.canAct() && unit.getOwner() == TurnController.getPlayer() ){
     			Move.initialize(tile, unit);
     			Move.move();
     			mode = StatusController.Mode.SHOW_MOVE;
     		}
     		// FACTORY
-    		else if( tile.sheet().canBuild() && !Fog.inFog(tile) && tile.getOwner() == Turn.getPlayer() ){
+    		else if( tile.sheet().canBuild() && !Fog.inFog(tile) && tile.getOwner() == TurnController.getPlayer() ){
     			Menu.createBuildMenu(tile);
     			mode = StatusController.Mode.MENU;
     		}

@@ -4,7 +4,7 @@ import com.customwarsTactics.service.StatusController;
 import com.customwarsTactics.logic.states.Status_Interface;
 import com.system.input.Controls;
 import com.client.menu.GUI.MapDraw;
-import com.client.model.Range;
+import com.customwarsTactics.logic.mapController.Range;
 
 /**
  * ShowRange class.

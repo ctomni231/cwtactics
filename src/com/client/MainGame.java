@@ -1,5 +1,11 @@
 package com.client;
 
+import com.customwarsTactics.model.mapObjects.Map;
+import com.customwarsTactics.model.mapObjects.Player;
+import com.customwarsTactics.model.mapObjects.Tile;
+import com.customwarsTactics.logic.mapController.Weather;
+import com.customwarsTactics.logic.mapController.Fog;
+import com.customwarsTactics.logic.mapController.TurnController;
 import java.util.logging.Level;
 
 import com.client.library.CustomWars_Decoder;
@@ -212,7 +218,7 @@ public class MainGame {
         Game.setMap(map);
         Fog.noFog(false);
         StatusController.setStatus( StatusController.Mode.WAIT );
-        Turn.startTurn( Game.getNextPlayer() );
+        TurnController.startTurn( Game.getNextPlayer() );
     }
 
     //The container used for this window

@@ -1,4 +1,4 @@
-package com.client.model;
+package com.customwarsTactics.logic.mapController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.Set;
 
 import com.client.library.CustomWars_Library;
+import com.client.model.MoveObject;
 import com.client.model.object.Game;
-import com.client.model.object.Tile;
-import com.client.model.object.Unit;
+import com.customwarsTactics.model.mapObjects.Tile;
+import com.customwarsTactics.model.mapObjects.Unit;
 import com.system.data.DynamicMemory;
 import com.system.meowShell.Script_Database;
 

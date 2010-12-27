@@ -1,4 +1,4 @@
-package com.client.model;
+package com.customwarsTactics.logic.mapController;
 
 import com.client.model.object.Game;
 import com.system.data.Engine_Database;

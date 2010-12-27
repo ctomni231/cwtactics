@@ -1,10 +1,10 @@
 package com.customwarsTactics.service;
 
-import com.client.model.object.Map;
-import com.client.model.object.Player;
-import com.client.model.object.Tile;
-import com.client.model.object.Unit;
-import com.system.error.NotImplementedError;
+import com.customwarsTactics.model.mapObjects.Map;
+import com.customwarsTactics.model.mapObjects.Player;
+import com.customwarsTactics.model.mapObjects.Tile;
+import com.customwarsTactics.model.mapObjects.Unit;
+import com.customwarsTactics.system.error.NotImplementedError;
 
 /**
  * Class description.

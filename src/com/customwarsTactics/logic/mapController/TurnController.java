@@ -1,20 +1,22 @@
-package com.client.model;
+package com.customwarsTactics.logic.mapController;
 
+import com.client.model.Instance;
 import com.client.model.object.Game;
-import com.client.model.object.Player;
-import com.client.model.object.Tile;
-import com.client.model.object.Unit;
+import com.customwarsTactics.model.mapObjects.Player;
+import com.customwarsTactics.model.mapObjects.Tile;
+import com.customwarsTactics.model.mapObjects.Unit;
 import com.system.data.DynamicMemory;
 import com.system.meowShell.Script_Database;
 
 /**
  * Class turn controls the internal 
  * turn based logic.
- * 
- * @author tapsi
- * @version 8.1.2010, #1
+ *
+ * @author Radom, Alexander [ blackcat.myako@gmail.com ]
+ * @license Look into "LICENSE" file for further information
+ * @version 27.12.2010
  */
-public class Turn {
+public class TurnController {
 
 	/*
 	 * VARIABLES
@@ -24,18 +26,12 @@ public class Turn {
 	private static Player turnPlayer;
 	private static int dayCounter;
 
-	
-	
-	/*
-	 * ACCESSING METHODS
-	 * *****************
-	 */
 
 	/**
 	 * Sets the current player.
 	 */
 	public static void setPlayer( Player turnPlayer ) {
-		Turn.turnPlayer = turnPlayer;
+		TurnController.turnPlayer = turnPlayer;
 	}
 
 	/**
@@ -59,13 +55,6 @@ public class Turn {
 		dayCounter++;
 	}
 	
-	
-
-	/*
-	 * WORK METHODS
-	 * ************
-	 */
-
 	/**
 	 * Starts the turn for the player.
 	 */
@@ -155,19 +144,14 @@ public class Turn {
 			DynamicMemory.reset();
 		}
 	}
-	
-	
-	
-	/*
-	 * OUTPUT METHODS
-	 * ************** 
-	 */
-	
-	/**
-	 * Returns status of Turn class.
-	 */
-	public static String getStatus(){
-		return "TURN :: It's day number "+getDay()+" and "+getPlayer().getName()+" has it's turn.";
+
+    @Override
+	public String toString(){
+		return new StringBuilder("TURN :: It's day number ")
+                        .append( getDay() )
+                        .append( " and " )
+                        .append( getPlayer().getName() )
+                        .append( " has it's turn").toString();
 	}
 }
 

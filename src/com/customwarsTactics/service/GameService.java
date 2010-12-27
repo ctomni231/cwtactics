@@ -1,6 +1,6 @@
 package com.customwarsTactics.service;
 
-import com.system.error.NotImplementedError;
+import com.customwarsTactics.system.error.NotImplementedError;
 
 /**
  * Game service class is the central point of a complete game round. This
@@ -19,6 +19,7 @@ public class GameService
 
     private static GameService activeGame;
     private static final IDController idService = new IDController();
+    private static final StatusController statusController = new StatusController();
     private final ClientService localClients;
 
     public GameService( ClientService localClients )
@@ -73,6 +74,14 @@ public class GameService
     public static IDController getIdService()
     {
         return idService;
+    }
+
+    /**
+     * @return the statusController
+     */
+    public static StatusController getStatusController()
+    {
+        return statusController;
     }
 
  }

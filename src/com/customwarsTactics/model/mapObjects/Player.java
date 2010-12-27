@@ -1,5 +1,7 @@
-package com.client.model.object;
+package com.customwarsTactics.model.mapObjects;
 
+import com.client.model.object.Game;
+import com.client.model.object.Team;
 import java.util.ArrayList;
 import com.system.data.Engine_Database;
 

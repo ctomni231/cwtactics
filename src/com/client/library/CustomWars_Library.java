@@ -1,14 +1,14 @@
 package com.client.library;
 
-import com.client.model.Fight;
-import com.client.model.Fog;
-import com.client.model.Move;
-import com.client.model.Turn;
-import com.client.model.Weather;
+import com.customwarsTactics.logic.mapController.Fight;
+import com.customwarsTactics.logic.mapController.Fog;
+import com.customwarsTactics.logic.mapController.Move;
+import com.customwarsTactics.logic.mapController.TurnController;
+import com.customwarsTactics.logic.mapController.Weather;
 import com.client.model.object.Game;
-import com.client.model.object.Player;
-import com.client.model.object.Tile;
-import com.client.model.object.Unit;
+import com.customwarsTactics.model.mapObjects.Player;
+import com.customwarsTactics.model.mapObjects.Tile;
+import com.customwarsTactics.model.mapObjects.Unit;
 import com.client.state.InGameState;
 import com.system.data.Engine_Database;
 import com.system.data.DynamicMemory;
@@ -113,7 +113,7 @@ public class CustomWars_Library {
 	}
 	
 	public static void turnEnd(){
-		Turn.nextTurn();
+		TurnController.nextTurn();
 	}
 	
 	public static void processFog(){

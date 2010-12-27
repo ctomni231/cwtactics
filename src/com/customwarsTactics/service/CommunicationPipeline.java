@@ -1,7 +1,7 @@
-package com.system;
+package com.customwarsTactics.service;
 
-import com.system.commPipe.CommandPool;
-import com.system.network.Connection;
+import com.customwarsTactics.system.commandPipeline.CommandPool;
+import com.customwarsTactics.system.network.Connection;
 
 /**
  * Service class, that holds the complete communication system with the command

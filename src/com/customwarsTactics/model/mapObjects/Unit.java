@@ -1,4 +1,4 @@
-package com.client.model.object;
+package com.customwarsTactics.model.mapObjects;
 
 import java.util.ArrayList;
 

@@ -1,8 +1,9 @@
 package com.system.commPipe;
 
+import com.customwarsTactics.system.commandPipeline.CommandPool;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static com.system.commPipe.CommandPool.*;
+import static com.customwarsTactics.system.commandPipeline.CommandPool.*;
 
 public class CommandPoolTest {
     

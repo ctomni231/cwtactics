@@ -3,15 +3,15 @@ package com.client;
 import com.client.library.CustomWars_Library;
 import com.customwarsTactics.service.StatusController;
 import com.client.menu.GUI.tools.PixAnimate;
-import com.client.model.Fog;
+import com.customwarsTactics.logic.mapController.Fog;
 import com.client.model.Instance;
-import com.client.model.Turn;
-import com.client.model.Weather;
+import com.customwarsTactics.logic.mapController.TurnController;
+import com.customwarsTactics.logic.mapController.Weather;
 import com.client.model.object.Game;
-import com.client.model.object.Map;
-import com.client.model.object.Player;
+import com.customwarsTactics.model.mapObjects.Map;
+import com.customwarsTactics.model.mapObjects.Player;
 import com.client.model.object.Team;
-import com.client.model.object.Tile;
+import com.customwarsTactics.model.mapObjects.Tile;
 import com.client.state.InGame;
 import com.client.state.MainMenu;
 import com.jslix.system.SlixGame;
@@ -198,6 +198,6 @@ public class JSGMainGame extends SlixGame {
         Game.setMap(map);
         Fog.noFog(false);
         StatusController.setStatus( StatusController.Mode.WAIT );
-        Turn.startTurn( Game.getNextPlayer() );
+        TurnController.startTurn( Game.getNextPlayer() );
     }
 }

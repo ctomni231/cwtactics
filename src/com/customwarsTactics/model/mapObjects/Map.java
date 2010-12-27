@@ -1,4 +1,6 @@
-package com.client.model.object;
+package com.customwarsTactics.model.mapObjects;
+
+import com.client.model.object.Game;
 
 /**
  * Holds a couple of tiles, these tiles

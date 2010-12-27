@@ -9,11 +9,11 @@ import com.client.menu.GUI.MapDraw;
 import com.client.menu.logic.Menu;
 import com.client.menu.logic.buttons.*;
 import com.client.menu.logic.buttons.Button.ButtonType;
-import com.client.model.Fight;
-import com.client.model.Move;
-import com.client.model.Turn;
-import com.client.model.object.Tile;
-import com.client.model.object.Unit;
+import com.customwarsTactics.logic.mapController.Fight;
+import com.customwarsTactics.logic.mapController.Move;
+import com.customwarsTactics.logic.mapController.TurnController;
+import com.customwarsTactics.model.mapObjects.Tile;
+import com.customwarsTactics.model.mapObjects.Unit;
 import com.system.data.Engine_Database;
 import com.system.data.DynamicMemory;
 import com.system.data.sheets.Sheet;
@@ -201,7 +201,7 @@ public class Status_Menu implements Status_Interface {
 					int[] costT = sh.getCostTable();
 					for( int i = 0 ; i < costT.length ; i++ ) MessageServer.send("changeResource="+MessageEncoder.encode(property.getOwner())+","+MessageEncoder.encode(i)+","+MessageEncoder.encode(costT[i]));
 					//TODO probleme!
-					MessageServer.send("buildUnit="+MessageEncoder.encode(property)+","+MessageEncoder.encode(sh)+","+MessageEncoder.encode(Turn.getPlayer()));
+					MessageServer.send("buildUnit="+MessageEncoder.encode(property)+","+MessageEncoder.encode(sh)+","+MessageEncoder.encode(TurnController.getPlayer()));
 					MessageServer.send("processFog=");
 					break;
 					
