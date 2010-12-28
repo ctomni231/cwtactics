@@ -1,8 +1,8 @@
 package com.client.menu.GUI;
 
 import com.client.menu.GUI.tools.PixMenu;
-import com.jslix.tools.ImgLibrary;
-import com.jslix.tools.TextImgLibrary;
+import com.cwt.system.jslix.tools.ImgLibrary;
+import com.cwt.system.jslix.tools.TextImgLibrary;
 import java.awt.Image;
 import org.newdawn.slick.Color;
 

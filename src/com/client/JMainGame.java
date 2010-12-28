@@ -1,6 +1,6 @@
 package com.client;
 
-import com.jslix.system.Slix;
+import com.cwt.system.jsilx.Slix;
 
 /**
  * JMainGame

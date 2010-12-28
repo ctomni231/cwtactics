@@ -1,7 +1,7 @@
 package com.client.ParserTest;
 
 import com.client.graphic.xml.BackgroundReader;
-import com.system.reader.XML_Reader;
+import com.cwt.io.XML_Reader;
 import junit.framework.Assert;
 import org.junit.Test;
 

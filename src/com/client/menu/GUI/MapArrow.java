@@ -7,7 +7,7 @@ import com.customwarsTactics.logic.mapController.Move;
 import com.client.model.object.Game;
 import com.customwarsTactics.model.mapObjects.Map;
 import com.customwarsTactics.model.mapObjects.Tile;
-import com.jslix.tools.ImgLibrary;
+import com.cwt.system.jslix.tools.ImgLibrary;
 import com.system.data.ImgData;
 import com.system.log.Logger;
 import org.newdawn.slick.Color;

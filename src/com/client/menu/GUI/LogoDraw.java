@@ -2,7 +2,7 @@ package com.client.menu.GUI;
 
 import com.client.menu.GUI.tools.MovingPix;
 import com.client.menu.GUI.tools.ScrollPix;
-import com.jslix.tools.TextImgLibrary;
+import com.cwt.system.jslix.tools.TextImgLibrary;
 import java.util.ArrayList;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;

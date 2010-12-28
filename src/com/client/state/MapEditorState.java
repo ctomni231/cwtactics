@@ -1,6 +1,6 @@
 package com.client.state;
 
-import com.jslix.tools.TextImgLibrary;
+import com.cwt.system.jslix.tools.TextImgLibrary;
 import com.system.reader.MenuReader;
 import org.newdawn.slick.Graphics;
 

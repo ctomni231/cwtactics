@@ -1,15 +1,15 @@
 package com.client.state;
 
-import com.system.input.KeyControl;
+import com.cwt.io.KeyControl;
 import com.client.menu.GUI.BGPicture;
 import com.client.menu.GUI.LogoDraw;
 import com.client.state.mini.ExitMiniScr;
 import com.client.state.mini.MenuMiniScr;
 import com.client.state.mini.TitleMiniScr;
-import com.jslix.tools.TextImgLibrary;
-import com.jslix.state.Screen;
-import com.jslix.system.KeyPress;
-import com.jslix.system.SlixLibrary;
+import com.cwt.system.jslix.tools.TextImgLibrary;
+import com.cwt.system.jslix.state.Screen;
+import com.cwt.system.jsilx.KeyPress;
+import com.cwt.system.jsilx.SlixLibrary;
 import com.system.reader.MenuReader;
 import java.awt.Component;
 import java.awt.Graphics2D;

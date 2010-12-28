@@ -1,5 +1,6 @@
 package com.system.input;
 
+import com.cwt.io.KeyControl;
 import org.newdawn.slick.Input;
 
 import com.system.ID;

@@ -7,7 +7,7 @@ import com.client.menu.GUI.LogoDraw;
 import com.client.state.mini.ExitMiniScr;
 import com.client.state.mini.MenuMiniScr;
 import com.client.state.mini.TitleMiniScr;
-import com.jslix.tools.TextImgLibrary;
+import com.cwt.system.jslix.tools.TextImgLibrary;
 import com.system.reader.MenuReader;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;

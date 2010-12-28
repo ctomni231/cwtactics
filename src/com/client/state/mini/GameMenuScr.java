@@ -5,7 +5,7 @@ import com.customwarsTactics.service.StatusController;
 import com.client.menu.GUI.ListDraw;
 import com.client.menu.GUI.MapDraw;
 import com.client.menu.logic.Menu;
-import com.jslix.tools.TextImgLibrary;
+import com.cwt.system.jslix.tools.TextImgLibrary;
 import org.newdawn.slick.Graphics;
 
 /**

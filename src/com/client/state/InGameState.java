@@ -6,7 +6,7 @@ import com.client.model.object.Game;
 
 import com.client.state.mini.ExitMiniScr;
 import com.client.state.mini.GameMenuScr;
-import com.jslix.tools.TextImgLibrary;
+import com.cwt.system.jslix.tools.TextImgLibrary;
 import com.system.reader.MenuReader;
 import org.newdawn.slick.Graphics;
 

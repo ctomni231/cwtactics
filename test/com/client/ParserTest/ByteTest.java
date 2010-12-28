@@ -1,6 +1,6 @@
 package com.client.ParserTest;
 
-import com.system.data.ByteMap;
+import com.cwt.system.data.ByteMap;
 import junit.framework.Assert;
 import org.junit.Test;
 
