@@ -1,10 +1,10 @@
 package com.client.logic.status;
 
-import com.customwarsTactics.service.StatusController;
-import com.customwarsTactics.logic.states.Status_Interface;
+import com.cwt.service.StatusController;
+import com.cwt.logic.states.Status_Interface;
 import com.system.input.Controls;
 import com.client.menu.GUI.MapDraw;
-import com.customwarsTactics.logic.mapController.Range;
+import com.cwt.logic.mapController.Range;
 
 /**
  * ShowRange class.

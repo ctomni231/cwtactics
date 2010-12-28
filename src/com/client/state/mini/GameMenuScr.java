@@ -1,7 +1,7 @@
 package com.client.state.mini;
 
 import com.system.input.Controls;
-import com.customwarsTactics.service.StatusController;
+import com.cwt.service.StatusController;
 import com.client.menu.GUI.ListDraw;
 import com.client.menu.GUI.MapDraw;
 import com.client.menu.logic.Menu;

@@ -1,7 +1,7 @@
 package com.system.data;
 
-import com.customwarsTactics.model.mapObjects.Tile;
-import com.customwarsTactics.model.mapObjects.Unit;
+import com.cwt.model.mapObjects.Tile;
+import com.cwt.model.mapObjects.Unit;
 
 public class DynamicMemory {
 

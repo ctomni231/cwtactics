@@ -1,13 +1,13 @@
 package com.client.logic.status;
 
-import com.customwarsTactics.service.StatusController;
-import com.customwarsTactics.logic.states.Status_Interface;
+import com.cwt.service.StatusController;
+import com.cwt.logic.states.Status_Interface;
 import com.system.input.Controls;
 import com.client.menu.GUI.MapDraw;
 import com.client.menu.logic.Menu;
-import com.customwarsTactics.logic.mapController.Move;
+import com.cwt.logic.mapController.Move;
 import com.client.model.object.Game;
-import com.customwarsTactics.model.mapObjects.Tile;
+import com.cwt.model.mapObjects.Tile;
 
 /**
  * Move class.

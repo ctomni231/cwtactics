@@ -1,14 +1,14 @@
 package com.client.library;
 
-import com.customwarsTactics.logic.mapController.Fight;
-import com.customwarsTactics.logic.mapController.Fog;
-import com.customwarsTactics.logic.mapController.Move;
-import com.customwarsTactics.logic.mapController.TurnController;
-import com.customwarsTactics.logic.mapController.Weather;
+import com.cwt.logic.mapController.Fight;
+import com.cwt.logic.mapController.Fog;
+import com.cwt.logic.mapController.Move;
+import com.cwt.logic.mapController.TurnController;
+import com.cwt.logic.mapController.Weather;
 import com.client.model.object.Game;
-import com.customwarsTactics.model.mapObjects.Player;
-import com.customwarsTactics.model.mapObjects.Tile;
-import com.customwarsTactics.model.mapObjects.Unit;
+import com.cwt.model.mapObjects.Player;
+import com.cwt.model.mapObjects.Tile;
+import com.cwt.model.mapObjects.Unit;
 import com.client.state.InGameState;
 import com.system.data.Engine_Database;
 import com.system.data.DynamicMemory;

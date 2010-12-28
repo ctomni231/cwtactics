@@ -1,8 +1,8 @@
 package com.client.library;
 
-import com.customwarsTactics.model.mapObjects.Player;
-import com.customwarsTactics.model.mapObjects.Unit;
-import com.customwarsTactics.model.mapObjects.Tile;
+import com.cwt.model.mapObjects.Player;
+import com.cwt.model.mapObjects.Unit;
+import com.cwt.model.mapObjects.Tile;
 import com.client.model.object.*;
 import com.system.data.sheets.Unit_Sheed;
 

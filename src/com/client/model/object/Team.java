@@ -1,6 +1,6 @@
 package com.client.model.object;
 
-import com.customwarsTactics.model.mapObjects.Player;
+import com.cwt.model.mapObjects.Player;
 import java.util.ArrayList;
 
 /**

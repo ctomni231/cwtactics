@@ -1,7 +1,7 @@
 package com.client.model;
 
 import java.util.ArrayList;
-import com.customwarsTactics.model.mapObjects.Player;
+import com.cwt.model.mapObjects.Player;
 
 /**
  * Holds all players that are controlled

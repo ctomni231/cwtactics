@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.client.model.object.Game;
-import com.customwarsTactics.model.mapObjects.Map;
-import com.customwarsTactics.model.mapObjects.Tile;
-import com.customwarsTactics.model.mapObjects.Unit;
+import com.cwt.model.mapObjects.Map;
+import com.cwt.model.mapObjects.Tile;
+import com.cwt.model.mapObjects.Unit;
 import com.system.log.Logger;
 
 /**

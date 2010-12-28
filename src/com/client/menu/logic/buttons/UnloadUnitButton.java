@@ -1,6 +1,6 @@
 package com.client.menu.logic.buttons;
 
-import com.customwarsTactics.model.mapObjects.Unit;
+import com.cwt.model.mapObjects.Unit;
 import com.system.data.sheets.Sheet;
 
 /**

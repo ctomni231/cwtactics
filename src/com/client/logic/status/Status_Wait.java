@@ -1,17 +1,17 @@
 package com.client.logic.status;
 
-import com.customwarsTactics.logic.states.Status_Interface;
-import com.customwarsTactics.service.StatusController;
+import com.cwt.logic.states.Status_Interface;
+import com.cwt.service.StatusController;
 import com.system.input.Controls;
 import com.client.menu.GUI.MapDraw;
 import com.client.menu.logic.Menu;
-import com.customwarsTactics.logic.mapController.Fog;
-import com.customwarsTactics.logic.mapController.Move;
-import com.customwarsTactics.logic.mapController.Range;
-import com.customwarsTactics.logic.mapController.TurnController;
+import com.cwt.logic.mapController.Fog;
+import com.cwt.logic.mapController.Move;
+import com.cwt.logic.mapController.Range;
+import com.cwt.logic.mapController.TurnController;
 import com.client.model.object.Game;
-import com.customwarsTactics.model.mapObjects.Tile;
-import com.customwarsTactics.model.mapObjects.Unit;
+import com.cwt.model.mapObjects.Tile;
+import com.cwt.model.mapObjects.Unit;
 
 /**
  * Wait status class.

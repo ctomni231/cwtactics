@@ -1,8 +1,8 @@
 package com.client.menu.logic.buttons;
 
 import com.client.model.object.Game;
-import com.customwarsTactics.model.mapObjects.Tile;
-import com.customwarsTactics.model.mapObjects.Unit;
+import com.cwt.model.mapObjects.Tile;
+import com.cwt.model.mapObjects.Unit;
 import com.system.data.sheets.Weapon_Sheed;
 
 /**

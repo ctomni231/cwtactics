@@ -1,7 +1,7 @@
 package com.client.model.object;
 
-import com.customwarsTactics.model.mapObjects.Map;
-import com.customwarsTactics.model.mapObjects.Player;
+import com.cwt.model.mapObjects.Map;
+import com.cwt.model.mapObjects.Player;
 import java.util.ArrayList;
 
 public class Game {

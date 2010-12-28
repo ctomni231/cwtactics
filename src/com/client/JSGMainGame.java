@@ -1,17 +1,17 @@
 package com.client;
 
 import com.client.library.CustomWars_Library;
-import com.customwarsTactics.service.StatusController;
+import com.cwt.service.StatusController;
 import com.client.menu.GUI.tools.PixAnimate;
-import com.customwarsTactics.logic.mapController.Fog;
+import com.cwt.logic.mapController.Fog;
 import com.client.model.Instance;
-import com.customwarsTactics.logic.mapController.TurnController;
-import com.customwarsTactics.logic.mapController.Weather;
+import com.cwt.logic.mapController.TurnController;
+import com.cwt.logic.mapController.Weather;
 import com.client.model.object.Game;
-import com.customwarsTactics.model.mapObjects.Map;
-import com.customwarsTactics.model.mapObjects.Player;
+import com.cwt.model.mapObjects.Map;
+import com.cwt.model.mapObjects.Player;
 import com.client.model.object.Team;
-import com.customwarsTactics.model.mapObjects.Tile;
+import com.cwt.model.mapObjects.Tile;
 import com.client.state.InGame;
 import com.client.state.MainMenu;
 import com.cwt.system.jsilx.SlixGame;

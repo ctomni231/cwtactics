@@ -1,15 +1,15 @@
 package com.client.menu.GUI;
 
 import com.system.input.Controls;
-import com.customwarsTactics.service.StatusController;
+import com.cwt.service.StatusController;
 import com.client.menu.GUI.tools.MouseBox;
 import com.client.menu.GUI.tools.MovingPix;
 import com.client.menu.GUI.tools.PixAnimate;
-import com.customwarsTactics.logic.mapController.Fog;
+import com.cwt.logic.mapController.Fog;
 import com.client.model.Instance;
-import com.customwarsTactics.logic.mapController.Move;
-import com.customwarsTactics.logic.mapController.Range;
-import com.customwarsTactics.model.mapObjects.Map;
+import com.cwt.logic.mapController.Move;
+import com.cwt.logic.mapController.Range;
+import com.cwt.model.mapObjects.Map;
 
 import java.util.ArrayList;
 import org.newdawn.slick.Color;

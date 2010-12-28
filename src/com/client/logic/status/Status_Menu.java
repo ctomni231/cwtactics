@@ -1,7 +1,7 @@
 package com.client.logic.status;
 
-import com.customwarsTactics.service.StatusController;
-import com.customwarsTactics.logic.states.Status_Interface;
+import com.cwt.service.StatusController;
+import com.cwt.logic.states.Status_Interface;
 import java.util.Collection;
 
 import com.system.input.Controls;
@@ -9,11 +9,11 @@ import com.client.menu.GUI.MapDraw;
 import com.client.menu.logic.Menu;
 import com.client.menu.logic.buttons.*;
 import com.client.menu.logic.buttons.Button.ButtonType;
-import com.customwarsTactics.logic.mapController.Fight;
-import com.customwarsTactics.logic.mapController.Move;
-import com.customwarsTactics.logic.mapController.TurnController;
-import com.customwarsTactics.model.mapObjects.Tile;
-import com.customwarsTactics.model.mapObjects.Unit;
+import com.cwt.logic.mapController.Fight;
+import com.cwt.logic.mapController.Move;
+import com.cwt.logic.mapController.TurnController;
+import com.cwt.model.mapObjects.Tile;
+import com.cwt.model.mapObjects.Unit;
 import com.system.data.Engine_Database;
 import com.system.data.DynamicMemory;
 import com.system.data.sheets.Sheet;

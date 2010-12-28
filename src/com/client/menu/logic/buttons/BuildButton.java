@@ -1,6 +1,6 @@
 package com.client.menu.logic.buttons;
 
-import com.customwarsTactics.model.mapObjects.Tile;
+import com.cwt.model.mapObjects.Tile;
 import com.system.data.sheets.Sheet;
 
 public class BuildButton extends Button{
