@@ -14,11 +14,16 @@ package com.cwt.system.data;
 public class FileLibrary {
 
     private String[] fileItems;
-    private int[][] location;
+    private int[][] loc;
 
     public void addItem(String data){
-        if(checkData(data))
+        loc = addBranch(loc);
+        int temp = checkData(data);
+        if(temp != -1)
             fileItems = addData(fileItems, data);
+        else
+            temp = fileItems.length-1;
+        loc[loc.length-1] = addData(loc[loc.length-1], temp);
     }
 
     /**
@@ -27,14 +32,14 @@ public class FileLibrary {
      * @param data The data to be stored to the reference
      * @return Whether the data exists(F) or not (T)
      */
-    private boolean checkData(String data){
+    private int checkData(String data){
         if(fileItems != null){
             for(int i = 0; i < fileItems.length; i++){
                 if(fileItems[i].equals(data))
-                    return false;
+                    return i;
             }
         }
-        return true;
+        return -1;
     }
 
     /**
