@@ -1,4 +1,4 @@
-package com.cwt.system.jsilx;
+package com.cwt.system.jslix;
 
 import com.cwt.system.jslix.state.Screen;
 import java.util.ArrayList;

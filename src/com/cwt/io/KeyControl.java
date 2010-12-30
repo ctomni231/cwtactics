@@ -1,6 +1,6 @@
 package com.cwt.io;
 
-import com.cwt.system.jsilx.KeyPress;
+import com.cwt.system.jslix.KeyPress;
 
 /**
  * KeyControl.java

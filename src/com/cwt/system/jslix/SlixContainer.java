@@ -1,4 +1,4 @@
-package com.cwt.system.jsilx;
+package com.cwt.system.jslix;
 
 import org.newdawn.slick.CanvasGameContainer;
 import org.newdawn.slick.Game;

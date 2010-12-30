@@ -1,7 +1,7 @@
 package com.cwt.system.jslix.state;
 
-import com.cwt.system.jsilx.KeyPress;
-import com.cwt.system.jsilx.SlixLibrary;
+import com.cwt.system.jslix.KeyPress;
+import com.cwt.system.jslix.SlixLibrary;
 import com.cwt.system.jslix.tools.ImgLibrary;
 import java.awt.Component;
 import java.awt.Graphics2D;

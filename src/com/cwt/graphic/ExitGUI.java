@@ -1,6 +1,6 @@
 package com.cwt.graphic;
 
-import com.cwt.system.jsilx.SlixLibrary;
+import com.cwt.system.jslix.SlixLibrary;
 import com.cwt.system.jslix.tools.MouseHelper;
 import com.cwt.graphic.tools.MovingMenu;
 import com.cwt.graphic.tools.TextPix;

@@ -1,6 +1,6 @@
 package com.cwt.system.jslix.state;
 
-import com.cwt.system.jsilx.KeyPress;
+import com.cwt.system.jslix.KeyPress;
 import com.cwt.system.jslix.tools.MouseHelper;
 import java.awt.Graphics2D;
 import java.awt.Component;

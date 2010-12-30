@@ -11,7 +11,7 @@ import com.cwt.graphic.tools.TextPix;
 import com.cwt.io.OptionHandler;
 import com.cwt.system.jslix.debug.MemoryTest;
 import com.cwt.system.jslix.state.Screen;
-import com.cwt.system.jsilx.SlixLibrary;
+import com.cwt.system.jslix.SlixLibrary;
 import com.cwt.system.data.GameElement;
 import com.cwt.io.XML_Reader;
 import java.awt.Color;

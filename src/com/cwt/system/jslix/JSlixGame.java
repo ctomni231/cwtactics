@@ -1,4 +1,4 @@
-package com.cwt.system.jsilx;
+package com.cwt.system.jslix;
 
 import com.cwt.system.jslix.state.JTestScreen;
 import org.newdawn.slick.AppGameContainer;

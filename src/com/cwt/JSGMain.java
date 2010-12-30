@@ -1,8 +1,8 @@
 package com.cwt;
 
 import com.cwt.screen.MainMenuScreen;
-import com.cwt.system.jsilx.SlixGame;
-import com.cwt.system.jsilx.SlixLibrary;
+import com.cwt.system.jslix.SlixGame;
+import com.cwt.system.jslix.SlixLibrary;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
 
