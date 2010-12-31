@@ -1,5 +1,7 @@
 package com.cwt.system.data;
 
+import java.util.HashMap;
+
 /**
  * FileLibrary.java
  *
@@ -9,12 +11,22 @@ package com.cwt.system.data;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.24.10
+ * @version 12.30.10
  */
 public class FileLibrary {
 
     private String[] fileItems;
     private int[][] loc;
+
+    public void addItem(HashMap<String, String> fillData){
+
+        for(String key: fillData.keySet()){
+            System.out.println("KEY: "+key);
+            //Figure out whether to store this in a sturctured array
+            //or just to handle each data stream separately. Leaning
+            //the first option.
+        }
+    }
 
     public void addItem(String data){
         loc = addBranch(loc);
@@ -24,6 +36,14 @@ public class FileLibrary {
         else
             temp = fileItems.length-1;
         loc[loc.length-1] = addData(loc[loc.length-1], temp);
+    }
+
+    public void addItem(int code, int data){
+        if(loc[loc.length-1].length < 2)
+            loc[loc.length-1] = addData(loc[loc.length-1], code);
+        else
+            loc[loc.length-1][2] = (loc[loc.length-1][2] * 10) + code;
+        loc[loc.length-1] = addData(loc[loc.length-1], data);
     }
 
     /**

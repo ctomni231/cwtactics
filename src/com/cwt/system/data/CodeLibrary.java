@@ -32,13 +32,13 @@ public class CodeLibrary {
     public static byte checkAll(int index, String part){
         switch(index){
             case 0:
-                return checkCode(part);
+                return checkCode(part.toUpperCase());
             case 1:
-                return checkData(part);
+                return checkData(part.toUpperCase());
             case 2:
-                return checkType(part);
+                return checkType(part.toUpperCase());
             case 3:
-                return checkFile(part);
+                return checkFile(part.toUpperCase());
         }
         return -1;
     }

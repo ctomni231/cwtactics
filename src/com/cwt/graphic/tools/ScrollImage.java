@@ -17,7 +17,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.11.10
+ * @version 12.30.10
  */
 
 public class ScrollImage extends MovingImage {
@@ -30,6 +30,7 @@ public class ScrollImage extends MovingImage {
     private Color boxColor;//The color of the background bar
     private MouseHelper helper;//Helps Regulates the scrolling speed
     private String logoTxt;//Represents the text of the scrolling image
+    private PixtureMap pixture;//Holds a picture map for making picture text
 
     /**
      * This class takes a font string and changes it into a repeating scrolling
@@ -51,7 +52,7 @@ public class ScrollImage extends MovingImage {
         boxColor = new Color(60, 60, 60, 127);
         textColor = new Color(255, 255, 255, 127);
         helper = new MouseHelper();
-        
+        pixture = new PixtureMap();
     }
 
     /**
@@ -134,7 +135,6 @@ public class ScrollImage extends MovingImage {
      * @return An image representing the text
      */
     private Image getTextPicture(String text){
-        PixtureMap pixture = new PixtureMap();
         pixture.setOpacity(opacity);
         return pixture.getTextPicture(text);
     }

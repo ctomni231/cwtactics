@@ -69,7 +69,7 @@ Retsej
 Kosheh
 QuackQuackGoesTheDuck
 Xaif
-ShakyAlliance
+Shaky-Alliance
 Tassadar
 VeggieHunter
  
@@ -268,7 +268,7 @@ Slipp Penguin
 <-LOCALIZATION CONTRIBUTORS->
 <LATIN AMERICAN>
 TNT Colonel
-Shaky Alliance
+Shaky-Alliance
 <SPAIN>
 Kanzer
 <FRENCH>
@@ -341,7 +341,7 @@ For making Advance Wars.
 Buy their games.
 They deserve it.
  
-<SILIFI>
+<SILIFI OF DEATH>
 <XENESIS>
 For saving the project
 after RWD Incident.

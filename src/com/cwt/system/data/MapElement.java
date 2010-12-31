@@ -20,14 +20,17 @@ import com.cwt.system.jslix.tools.XML_Writer;
 public class MapElement implements Runnable{
 
     private int[][] data;
+    private int[] tagFill;
     private boolean isApplet;
     private boolean ready;
     private Thread looper;
     private XML_Parser mapParse;
+    private FileLibrary flib;
 
     public MapElement(){
         data = new int[0][0];
         mapParse = new XML_Parser();
+        flib = new FileLibrary();
         ready = false;
         isApplet = true;
     }
@@ -127,8 +130,9 @@ public class MapElement implements Runnable{
 
             //This loop checks to see if all tags are valid
             for(int j = 0; j < mapParse.getTags(i).length; j++){
-                if(CodeLibrary.checkAll(j, mapParse.getTags(i)[j].
-                        toUpperCase()) == -1){
+                int temp = (int)CodeLibrary.checkAll(
+                        j, mapParse.getTags(i)[j]);
+                if(CodeLibrary.checkAll(j, mapParse.getTags(i)[j]) == -1){
                     if(i == 0){
                         System.out.println(mapParse.getTags(i)[0]+
                             " not recognized");
@@ -136,7 +140,18 @@ public class MapElement implements Runnable{
                     }else
                         continue UPPER;
                 }
+
+                tagFill = addData(tagFill, temp);
             }
+
+            if(tagFill.length == 4){
+                //Check for file data
+                if(tagFill[3] == 0)
+                    flib.addItem(mapParse.getAttribute(i));
+
+            }
+
+            tagFill = null;
 
             
         }
@@ -144,6 +159,7 @@ public class MapElement implements Runnable{
         //Store the code, color, language, and other data
         //Try to find a good way to deal with those attributes
 
+        /*
         int size = mapParse.size();
 
         for(int i = 0; i < size; i++){
@@ -151,7 +167,7 @@ public class MapElement implements Runnable{
             for(int j = 0; j < mapParse.getTags(i).length; j++)
                 System.out.print(mapParse.getTags(i)[j]+" ");
             System.out.println();
-        }
+        }//*/
         //Color and Language are separate attributes
     }
 

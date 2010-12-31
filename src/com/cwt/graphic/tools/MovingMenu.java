@@ -17,7 +17,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 11.29.10
+ * @version 12.30.10
  */
 
 public class MovingMenu extends MovingImage{
@@ -32,6 +32,7 @@ public class MovingMenu extends MovingImage{
     private ArrayList<Integer> resetImage;//Helps better index images
     public int select;//This highlights a menu item
     private MenuItem item;//A temp item for storing various enhancements
+    private MenuItemPool itemObj;//This helps recycle item objects
     private double sx;//A temp value for rescaling
     private double sy;//A temp value for rescaling
     protected ImgLibrary imgResize;//This holds all resized images
@@ -50,7 +51,8 @@ public class MovingMenu extends MovingImage{
         select = 0;
         resetImage = new ArrayList<Integer>();
         allItems = new MenuItem[0];
-        item = new MenuItem(locx, locy, speed);
+        itemObj = new MenuItemPool();
+        createNewItem(locx, locy, speed);
         imgResize = new ImgLibrary();
         sx = 0;
         sy = 0;
@@ -62,8 +64,10 @@ public class MovingMenu extends MovingImage{
      * @param locy The y-axis location of the menu item
      * @param speed How quickly this menu item moves
      */
-    public void createNewItem(int locx, int locy, double speed){
-        item = new MenuItem(locx, locy, speed);
+    public final void createNewItem(int locx, int locy, double speed){
+        itemObj.setVar(locx, locy, speed);
+        //item = new MenuItem(locx, locy, speed);
+        item = itemObj.acquireObject();
     }
 
     /**
@@ -470,6 +474,7 @@ public class MovingMenu extends MovingImage{
             item = allItems[index];
             for(int i = 0; i < item.refPath.length; i++)
                 resetImage.add(item.refPath[i]);
+            itemObj.recycleInstance(allItems[index]);
 
             MenuItem[] temp = allItems;
             allItems = new MenuItem[temp.length-1];
