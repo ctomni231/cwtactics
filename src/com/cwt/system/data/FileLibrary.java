@@ -11,27 +11,80 @@ import java.util.HashMap;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.30.10
+ * @version 01.06.11
  */
 public class FileLibrary {
 
+    public final int PATH = 0;
+    public final int LOCX = 1;
+    public final int LOCY = 2;
+    public final int SIZEX = 3;
+    public final int SIZEY = 4;
+    public final int TILESIZEX = 5;
+    public final int TILESIZEY = 6;
+    public final int FLIP = 7;
+
+    public final int ITEMS = 8;
     private String[] fileItems;
     private int[][] loc;
+    private int[] tempLoc;
 
-    public void addItem(HashMap<String, String> fillData){
+    public FileLibrary(){
+        tempLoc = new int[ITEMS];
+    }
+
+    public int addItem(HashMap<String, String> fillData){
+
+        for(int i = 0; i < ITEMS; i++)
+            tempLoc[i] = -1;
 
         for(String key: fillData.keySet()){
-            System.out.println("KEY: "+key);
+            //System.out.println("KEY: "+key);
+
+            if(key.toUpperCase().matches("P.*")){
+                tempLoc[PATH] = 0;
+                addItem(fillData.get(key));
+            }else if(key.toUpperCase().matches("L.*X") ||
+                    key.toUpperCase().equals("X"))
+                tempLoc[LOCX] = Integer.parseInt(fillData.get(key));
+            else if(key.toUpperCase().matches("L.*Y") ||
+                    key.toUpperCase().equals("Y"))
+                tempLoc[LOCY] = Integer.parseInt(fillData.get(key));
+            else if(key.toUpperCase().matches("S.*X"))
+                tempLoc[SIZEX] = Integer.parseInt(fillData.get(key));
+            else if(key.toUpperCase().matches("S.*Y"))
+                tempLoc[SIZEY] = Integer.parseInt(fillData.get(key));
+            else if(key.toUpperCase().matches("T.*X"))
+                tempLoc[TILESIZEX] = Integer.parseInt(fillData.get(key));
+            else if(key.toUpperCase().matches("T.*Y"))
+                tempLoc[TILESIZEY] = Integer.parseInt(fillData.get(key));
+            else if(key.toUpperCase().matches("F.*"))
+                tempLoc[FLIP] = Integer.parseInt(fillData.get(key));
             //Figure out whether to store this in a sturctured array
             //or just to handle each data stream separately. Leaning
             //the first option.
         }
+
+        if(tempLoc[0] == -1)
+            return tempLoc[0];
+
+        for(int i = 1; i < tempLoc.length; i++){
+            if(tempLoc[i] != -1){
+                tempLoc[0] = tempLoc[0] * 10 + i;
+                addItem(i, tempLoc[i]);
+            }
+        }
+
+        System.out.println("STORE: "+loc[loc.length-1].length+" "+
+                loc[loc.length-1][1]);
+
+        return loc.length-1;
     }
 
     public void addItem(String data){
         loc = addBranch(loc);
         int temp = checkData(data);
-        if(temp != -1)
+        if(temp == -1)
             fileItems = addData(fileItems, data);
         else
             temp = fileItems.length-1;
@@ -42,7 +95,7 @@ public class FileLibrary {
         if(loc[loc.length-1].length < 2)
             loc[loc.length-1] = addData(loc[loc.length-1], code);
         else
-            loc[loc.length-1][2] = (loc[loc.length-1][2] * 10) + code;
+            loc[loc.length-1][1] = (loc[loc.length-1][1] * 10) + code;
         loc[loc.length-1] = addData(loc[loc.length-1], data);
     }
 

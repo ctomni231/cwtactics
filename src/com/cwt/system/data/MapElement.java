@@ -13,14 +13,17 @@ import com.cwt.system.jslix.tools.XML_Writer;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.21.10
+ * @version 01.05.11
  * @todo TODO Work on completing the sorting of terrain data first
  */
 
 public class MapElement implements Runnable{
 
+    public final int MAX_ITEMS = 12;
+
     private int[][] data;
     private int[] tagFill;
+    private int[] tempTag;
     private boolean isApplet;
     private boolean ready;
     private Thread looper;
@@ -29,6 +32,7 @@ public class MapElement implements Runnable{
 
     public MapElement(){
         data = new int[0][0];
+        tempTag = new int[MAX_ITEMS];
         mapParse = new XML_Parser();
         flib = new FileLibrary();
         ready = false;
@@ -125,9 +129,7 @@ public class MapElement implements Runnable{
     private void parseData(String entry){
         mapParse.parse(entry);
 
-        UPPER:
-        for(int i = 0; i < mapParse.size(); i++){
-
+        UPPER:for(int i = 0; i < mapParse.size(); i++){
             //This loop checks to see if all tags are valid
             for(int j = 0; j < mapParse.getTags(i).length; j++){
                 int temp = (int)CodeLibrary.checkAll(

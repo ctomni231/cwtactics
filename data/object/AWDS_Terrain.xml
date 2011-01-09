@@ -4,9 +4,7 @@
 
 	<DATA NAME="Plain" BASE="Plain" TYPE="AWDS">
 		<GRAPHIC WEATHER="Clear" DIRECTION="0">
-			<FILE PATH="image/AWDS_Terrain.png"
-				LOCX="0" LOCY="0" SIZEX="16" SIZEY="32"
-				TILESIZEX="1" TILESIZEY="1" />
+			<FILE PATH="image/AWDS_Terrain.png" SIZEX="16" SIZEY="32" />
 			<TAG O="PLIN" OL="LAND" />
 		</GRAPHIC>
 	</DATA>
