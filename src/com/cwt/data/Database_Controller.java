@@ -25,6 +25,7 @@ public class Database_Controller
     private HashMap<String, TileType_Sheet> tile_DB;
     private HashMap<String, WeaponType_Sheet> weapon_DB;
     private HashMap<String, ArmorClass> armor_DB;
+    private HashMap<String, Integer> tagDatabase;
 
     private Database_Controller()
     {
@@ -33,6 +34,10 @@ public class Database_Controller
         tile_DB = new HashMap<String, TileType_Sheet>();
         weapon_DB = new HashMap<String, WeaponType_Sheet>();
         armor_DB = new HashMap<String, ArmorClass>();
+
+        tagDatabase = new HashMap<String, Integer>();
+
+        // pre-init data
     }
 
     /**
@@ -41,5 +46,20 @@ public class Database_Controller
     public static Database_Controller getInstance()
     {
         return Database_Controller.INSTANCE;
+    }
+
+    /**
+     * Class description.
+     *
+     * @author Radom, Alexander [ blackcat.myako@gmail.com ]
+     * @license Look into "LICENSE" file for further information
+     * @version 28.12.2010
+     */
+    private abstract static class TagsInit
+    {
+        private static void init( HashMap<String,Integer> tags )
+        {
+
+        }
     }
 }
