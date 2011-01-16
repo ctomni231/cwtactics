@@ -1,7 +1,7 @@
 package com.cwt.model.mapObjects;
 
-import com.client.library.CustomWars_Library;
-import com.system.data.sheets.Tile_Sheet;
+//import com.client.library.CustomWars_Library;
+//import com.system.data.sheets.Tile_Sheet;
 
 /**
  * Holds an tile.
@@ -19,7 +19,7 @@ public class Tile {
 	private Player 	owner;
 	private Unit 	unit;
 	private int 	capPoints;
-	private Tile_Sheet sheet;
+	//private Tile_Sheet sheet;
 	private int		variation;
 	private int		posX,posY;
     //JSR test variable
@@ -32,7 +32,8 @@ public class Tile {
 	 * ************ 
 	 */
 
-	public Tile( Tile_Sheet type , int x , int y , int variation , Player owner ){
+	/**
+        public Tile( Tile_Sheet type , int x , int y , int variation , Player owner ){
 		
 		posX 		= x;
 		posY 		= y;
@@ -42,6 +43,7 @@ public class Tile {
 		spreadID = -1;
         CustomWars_Library.resetCapPoints(this);
 	}
+        */
 	
 	
 	
@@ -74,9 +76,9 @@ public class Tile {
 		this.capPoints = capPoints;
 	}
 
-	public Tile_Sheet sheet(){
+	/**public Tile_Sheet sheet(){
 		return sheet;
-	}
+	}*/
 	
 	public int getVariation() {
 		return variation;

@@ -167,14 +167,14 @@ public class ExitGUI extends MovingMenu{
             select *= -1;
         }
 
-        if(Controls.isActionClicked()){
+        if(KeyControl.isActionClicked()){
             if(select == 1)
                 SlixLibrary.removeAllScreens();
             else{
                 if(column == -1)    column = 0;
                 else                column = 1;
             }
-        }else if(Controls.isCancelClicked()){
+        }else if(KeyControl.isCancelClicked()){
             if(column == -1)    column = 0;
             else                column = 1;
         }
