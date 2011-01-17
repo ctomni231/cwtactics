@@ -1,69 +1,18 @@
-Project : MeoW Shell Engine
-Version : coming 2.0 Black Cat
+Project : Yet another standard library (Yasl)
+Version : Beta 1
 Authors : Alexander Radom
-Contributors : Crecen Carr
+          Crecen Carr
 
 Prerequisites :
  - Java Runtime Environment v.5 or greater
 
-Notes:
-
-The MeoW Shell engine is an easy API to realize a trigger event based
-system from outside. The engine allows to set triggers in your program and
-reacting on it over script file. Mainly developed as scripting engine for simple
-turn based games can MeoWShell easy gain coding abilities to the end user. It
-makes possible to allow controlled scripting from outside of the program.
-The syntax of MeoW Shell is very inspired by Python.
 
 Changelog:
 
-2.0 milestone 1 (16.01.2011)
-============================
-- while test accomplished
-- comparison statements with && and || connection
-- while keyword
-- var++/var-- operator implemented
-- meow shell parser and compiler ( meow shell to java byte code compiler )
-  implemented
-- number and none variable implemented
-- new object variable system defined
-- javaAssist library implemented
-- started new repository from scratch
+Beta 1
+======
 
-1.5
-===
-- optimized function caching
-- optimized variable caching
-- int++/int-- optimized by variable object increase/decrease functions
-
-1.1 (30.12.2010)
-================
-- recreated first part of the new structure
-- created first part of the new scope structure ( scopes holds global and static
-                                                  variables )
-- done caching of thread model
-- enhanced evaluation speed overall
-- reduced memory consumption
-- refactored external function package
-- created first version of the ExtSystem class ( MeoWShell implementation of
-                                                 java.lang.System methods )
-
-1.0 (12.02.2010) Golden Cat
-===========================
-- creation of variables is now possible and can be used in the method calls
-- calling methods now className.methodName();
-- script files have now a java like syntax
-- if/else statements allows unlimited sub if/else statements
-- added if/else statement
-- takes now an list of strings as input -> no static way of reading data from files
-- optimized code
-
-0.9 Beta (08.02.2010)
-=====================
-- added CommandList Action class for adding network capable actions
-- some updates on syntax system
-- optimized code
-
-0.8 Beta
-========
-- first version, taken from Custom Wars Tactics
+- initial version
+- memory service class
+- first pooling templates
+- assertion helper class
