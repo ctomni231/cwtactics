@@ -1,6 +1,6 @@
 package com.cwt.model.cards;
 
-import com.cwt.system.objectPool.ObjectPool;
+import com.cwt.system.ObjectPool;
 
 /**
  * Battle card, represents a possible battle between an attacker and a

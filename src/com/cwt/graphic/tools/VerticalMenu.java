@@ -555,9 +555,8 @@ public class VerticalMenu extends MovingMenu{
         generate = false;
         for(int i = 0; i < vertPart.size(); i++){
             if(select == allItems[vertPart.get(i)].select &&
-                    allItems[vertPart.get(i)].drawthis){
+                    allItems[vertPart.get(i)].drawthis)
                 return;
-            }
         }
         if(select <= 0){
             track = 0;
