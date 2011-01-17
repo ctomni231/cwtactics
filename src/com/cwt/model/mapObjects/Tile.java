@@ -8,6 +8,7 @@ package com.cwt.model.mapObjects;
  * 
  * @author tapsi
  * @version 30.01.2010, #2
+ * @todo TODO Class broken due to com.system & com.client removal
  */
 public class Tile {
 

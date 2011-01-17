@@ -1,6 +1,6 @@
 package com.cwt.logic.mapController;
 
-import com.client.model.object.Game;
+//import com.client.model.object.Game;
 import com.system.data.Engine_Database;
 import com.system.data.sheets.Sheet;
 import com.system.data.sheets.Weather_Sheet;
@@ -12,6 +12,7 @@ import com.system.network.coder.MessageEncoder;
  * 
  * @author tapsi
  * @version 8.1.2010, #1
+ * @todo TODO Class broken due to com.system & com.client removal
  */
 public class Weather {
 
@@ -108,7 +109,7 @@ public class Weather {
 	private static void sendCommand( Weather_Sheet sh ){
 		
 		// GENERATE DURATION
-		int leftDays = (int) Math.random() * Game.getPlayers().size() * 2;
+		//int leftDays = (int) Math.random() * Game.getPlayers().size() * 2;
 		
 		// SEND COMMAND
 		MessageServer.send("changeWeather="+MessageEncoder.encode(sh)+","+MessageEncoder.encode(leftDays));

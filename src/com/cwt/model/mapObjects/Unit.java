@@ -2,13 +2,14 @@ package com.cwt.model.mapObjects;
 
 import java.util.ArrayList;
 
-import com.client.library.CustomWars_Library;
-import com.system.data.sheets.Unit_Sheed;
+//import com.client.library.CustomWars_Library;
+//import com.system.data.sheets.Unit_Sheed;
 /**
  * Holds an unit.
  * 
  * @author tapsi
  * @version 30.01.2010, #2
+ * @todo TODO Class broken due to com.system & com.client removal
  */
 public class Unit {
 
@@ -19,7 +20,7 @@ public class Unit {
 
         private int             health;
         private Player  owner;
-        private Unit_Sheed sheet;
+        //private Unit_Sheed sheet;
         private int             experience;
         private int             rank;
         private int             fuel;
@@ -34,7 +35,7 @@ public class Unit {
          * ************
          */
 
-        public Unit( Unit_Sheed type , Player owner ){
+        /*public Unit( Unit_Sheed type , Player owner ){
 
                 this.sheet      = type;
                 this.owner      = owner;
@@ -48,7 +49,7 @@ public class Unit {
 
                 loads           = new ArrayList<Unit>();
                 loads.trimToSize();
-        }
+        }*/
 
 
 
@@ -63,7 +64,7 @@ public class Unit {
 
         public void setHealth(int health) {
                 if( health < 0 ) health = 0;
-                if ( health > CustomWars_Library.MAX_HEALTH ) health = CustomWars_Library.MAX_HEALTH;
+                //if ( health > CustomWars_Library.MAX_HEALTH ) health = CustomWars_Library.MAX_HEALTH;
                 this.health = health;
         }
 
@@ -91,9 +92,9 @@ public class Unit {
                 this.rank = rank;
         }
 
-        public Unit_Sheed sheet(){
+        /*public Unit_Sheed sheet(){
                 return sheet;
-        }
+        }*/
 
         public int getFuel() {
                 return fuel;
@@ -101,7 +102,7 @@ public class Unit {
 
         public void setFuel(int fuel) {
                 if( fuel < 0 ) fuel = 0;
-                if ( fuel > sheet().getFuel() ) fuel = sheet().getFuel();
+                //if ( fuel > sheet().getFuel() ) fuel = sheet().getFuel();
                 this.fuel = fuel;
         }
 
@@ -111,7 +112,7 @@ public class Unit {
 
         public void setAmmo(int ammo) {
                 if( ammo < 0 ) ammo = 0;
-                if ( ammo > sheet().getAmmo() ) ammo = sheet().getAmmo();
+                //if ( ammo > sheet().getAmmo() ) ammo = sheet().getAmmo();
                 this.ammo = ammo;
         }
 
@@ -169,9 +170,12 @@ public class Unit {
 
     @Override
         public String toString(){
-                String s = "UNIT TYPE:"+sheet.getID()+" - HP:"+getHealth()+" - EXP:"+getExperience()+" - RANK:"+getRank();
-                for( Unit load : getLoadedUnits() ) s += "\n   LOADED "+load;
-                return s;
+                //String s = "UNIT TYPE:"+sheet.getID()+" - HP:"+getHealth()+" - EXP:"+getExperience()+" - RANK:"+getRank();
+                //for( Unit load : getLoadedUnits() ) s += "\n   LOADED "+load;
+                //return s;
+
+                //Added by JSR
+                return "";
         }
 
 }

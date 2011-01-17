@@ -1,6 +1,6 @@
 package com.cwt.model.mapObjects;
 
-import com.client.model.object.Game;
+// com.client.model.object.Game;
 
 /**
  * Holds a couple of tiles, these tiles
@@ -8,6 +8,7 @@ import com.client.model.object.Game;
  * 
  * @author tapsi
  * @version 8.1.2010, #1
+ * @todo TODO Class broken due to com.system & com.client removal
  */
 public class Map {
 
@@ -84,7 +85,10 @@ public class Map {
 	public static Unit getUnit( int ID ){
 		int idPlayer = ID / 10000;
 		int idUnit = ID % 10000;
-		return Game.getPlayer(idPlayer).getUnits().get(idUnit);
+		//return Game.getPlayer(idPlayer).getUnits().get(idUnit);
+
+                //Added by JSR
+                return null;
 	}
 	
 }

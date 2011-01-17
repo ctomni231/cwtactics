@@ -1,11 +1,11 @@
 package com.cwt.logic.mapController;
 
-import com.client.model.Instance;
-import com.client.model.object.Game;
+//import com.client.model.Instance;
+//import com.client.model.object.Game;
 import com.cwt.model.mapObjects.Player;
 import com.cwt.model.mapObjects.Tile;
 import com.cwt.model.mapObjects.Unit;
-import com.system.data.DynamicMemory;
+//import com.system.data.DynamicMemory;
 import com.system.meowShell.Script_Database;
 
 /**
@@ -15,6 +15,7 @@ import com.system.meowShell.Script_Database;
  * @author Radom, Alexander [ blackcat.myako@gmail.com ]
  * @license Look into "LICENSE" file for further information
  * @version 27.12.2010
+ * @todo TODO Class broken due to com.system & com.client removal
  */
 public class TurnController {
 
@@ -63,15 +64,15 @@ public class TurnController {
 		// SET CURRENT PLAYER AND UPDATE CLIENT INSTANCE
 		// IF POSSIBLE
 		setPlayer( newPlayer );
-		if( Instance.instanceOfClient(newPlayer) ) Instance.setCurPlayer(newPlayer);
+		//if( Instance.instanceOfClient(newPlayer) ) Instance.setCurPlayer(newPlayer);
 				
 		// ONLY MASTER ( SERVER ) PLAYER CHANGES WEATHER AND INCREASES
 		// TURN COUNTERS
-		if( newPlayer == Game.getMaster() ){
+		/*if( newPlayer == Game.getMaster() ){
 			increaseTurnCounter();
 			Weather.decreaseLeftDays();
 			if( Instance.instanceOfClient(newPlayer) && Weather.getLeftDays() == 0 ) Weather.changeWeather();
-		}
+		}*/
 		
 		// CHECK EFFECTS
 		checkStartTurnEffects(newPlayer);
@@ -94,11 +95,11 @@ public class TurnController {
 		
 		// VARIABLES
 		Player oldPlayer = getPlayer();
-		Player newPlayer = Game.getNextPlayer();
+		//Player newPlayer = Game.getNextPlayer();
 		
 		// END OLD TURN AND START NEW TURN
 		endTurn(oldPlayer);
-		startTurn(newPlayer);
+		//startTurn(newPlayer);
 	} 
 	
 	/**
@@ -109,17 +110,17 @@ public class TurnController {
 		
 		// CHECK EFFECTS FOR EVERY UNIT OF PLAYER
 		for( Unit unit : oldPl.getUnits() ){
-			DynamicMemory.setUnit(unit);
+			//DynamicMemory.setUnit(unit);
 			Script_Database.checkAll("TURN_END_UNITS");
-			DynamicMemory.reset();
+			//DynamicMemory.reset();
 			unit.canAct(true);
 		}
 		
 		// CHECK EFFECTS FOR EVERY PROPERTY OF PLAYER
 		for( Tile property : oldPl.getProperties() ){
-			DynamicMemory.setTile(property);
+			//DynamicMemory.setTile(property);
 			Script_Database.checkAll("TURN_END_TILES");
-			DynamicMemory.reset();
+			//DynamicMemory.reset();
 		}
 		
 	}
@@ -132,16 +133,16 @@ public class TurnController {
 		
 		// CHECK EFFECTS FOR EVERY UNIT OF PLAYER
 		for( Unit unit : newPl.getUnits() ){
-			DynamicMemory.setUnit(unit);
+			//DynamicMemory.setUnit(unit);
 			Script_Database.checkAll("TURN_START_UNITS");
-			DynamicMemory.reset();
+			//DynamicMemory.reset();
 		}
 		
 		// CHECK EFFECTS FOR EVERY PROPERTY OF PLAYER
 		for( Tile property : newPl.getProperties() ){
-			DynamicMemory.setTile(property);
+			//DynamicMemory.setTile(property);
 			Script_Database.checkAll("TURN_START_TILES");
-			DynamicMemory.reset();
+			//DynamicMemory.reset();
 		}
 	}
 

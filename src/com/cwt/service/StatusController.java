@@ -1,11 +1,11 @@
 package com.cwt.service;
 
 import com.cwt.logic.states.Status_Interface;
-import com.client.logic.status.Status_Menu;
-import com.client.logic.status.Status_ShowMove;
-import com.client.logic.status.Status_ShowRange;
-import com.client.logic.status.Status_Wait;
-import com.client.menu.GUI.MapDraw;
+//import com.client.logic.status.Status_Menu;
+//import com.client.logic.status.Status_ShowMove;
+//import com.client.logic.status.Status_ShowRange;
+//import com.client.logic.status.Status_Wait;
+//import com.client.menu.GUI.MapDraw;
 import com.system.log.Logger;
 
 /**
@@ -14,7 +14,7 @@ import com.system.log.Logger;
  * 
  * @author tapsi
  * @version 8.1.2010, #1
- *
+ * @todo TODO Class broken due to com.system & com.client removal
  */
 public class StatusController {
 
@@ -24,13 +24,13 @@ public class StatusController {
 	 */
 	
 	// the different states
-	public enum Mode{ 
+	/*public enum Mode{
 		
 		// enumerations
-		WAIT			( new Status_Wait() ),
-		SHOW_RANGE		( new Status_ShowRange() ),
-		SHOW_MOVE		( new Status_ShowMove() ),
-		MENU			( new Status_Menu() );
+		//WAIT			( new Status_Wait() ),
+		//SHOW_RANGE		( new Status_ShowRange() ),
+		//SHOW_MOVE		( new Status_ShowMove() ),
+		//MENU			( new Status_Menu() );
 		
 		// variable
 		private Status_Interface stat;
@@ -44,7 +44,7 @@ public class StatusController {
 		public Status_Interface getObject(){
 			return stat;
 		}
-	}
+	}*/
 	
 	
 	
@@ -53,7 +53,7 @@ public class StatusController {
 	 * *********
 	 */
 	
-	private static Mode status;
+	//private static Mode status;
 
 	
 	
@@ -65,14 +65,14 @@ public class StatusController {
 	/**
 	 * Returns the current status.
 	 */
-	public static Mode getStatus(){
+	/*public static Mode getStatus(){
 		return status;
-	}
+	}*/
 	
 	/**
 	 * Sets a new status for update logic
 	 */
-	public static void setStatus( Mode status ){
+	/*public static void setStatus( Mode status ){
 		
 		// CHECK STATUS
 		if( status == null || status.getObject() == null ){
@@ -81,7 +81,7 @@ public class StatusController {
 		}
 		
 		StatusController.status = status;
-	}
+	}*/
 
 	
 	
@@ -93,11 +93,11 @@ public class StatusController {
 	/**
 	 * Update logic for a given status.
 	 */
-	public static void update(int timePassed , MapDraw map ){
+	/*public static void update(int timePassed , MapDraw map ){
 
 		// do update method
 		status.getObject().update(timePassed , map );
-	}
+	}*/
 
 }
 

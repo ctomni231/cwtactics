@@ -2,7 +2,7 @@ package com.cwt.logic.mapController;
 
 import com.cwt.model.mapObjects.Tile;
 import com.cwt.model.mapObjects.Unit;
-import com.system.data.DynamicMemory;
+//import com.system.data.DynamicMemory;
 import com.system.data.sheets.Weapon_Sheed;
 import com.system.log.Logger;
 import com.system.network.MessageServer;
@@ -14,6 +14,7 @@ import com.system.meowShell.Script_Database;
  * 
  * @author tapsi
  * @version 8.1.2010, #1
+ * @todo TODO Class broken due to com.system & com.client removal
  */
 public class Fight {
 
@@ -100,14 +101,14 @@ public class Fight {
 	 */
 	private static void defenderEffects(){
 
-		DynamicMemory.setTile(defenderTile);
-		DynamicMemory.setUnit(defender);
+		//DynamicMemory.setTile(defenderTile);
+		//DynamicMemory.setUnit(defender);
 		Script_Database.checkAll("UNIT_ATTACK");
 		Script_Database.checkAll("UNIT_COUNTERATTACK");
-		DynamicMemory.setTile(attackerTile);
-		DynamicMemory.setUnit(attacker);
+		//DynamicMemory.setTile(attackerTile);
+		//DynamicMemory.setUnit(attacker);
 		Script_Database.checkAll("UNIT_DEFEND");
-		DynamicMemory.reset();
+		//DynamicMemory.reset();
 	}
 	
 	/**
@@ -116,13 +117,13 @@ public class Fight {
 	 */
 	private static void attackerEffects(){
 		
-		DynamicMemory.setTile(attackerTile);
-		DynamicMemory.setUnit(attacker);
+		//DynamicMemory.setTile(attackerTile);
+		//DynamicMemory.setUnit(attacker);
 		Script_Database.checkAll("UNIT_ATTACK");
-		DynamicMemory.setTile(defenderTile);
-		DynamicMemory.setUnit(defender);
+		//DynamicMemory.setTile(defenderTile);
+		//DynamicMemory.setUnit(defender);
 		Script_Database.checkAll("UNIT_DEFEND");
-		DynamicMemory.reset();
+		//DynamicMemory.reset();
 	}
 
 	/**
@@ -141,11 +142,11 @@ public class Fight {
 		if( attackWeapon.getFireMode() > 0 ) return null;
 		
 		// check every weapon
-		for( Weapon_Sheed defenseWeapon : defender.sheet().getAllWeapons() ){
+		/*for( Weapon_Sheed defenseWeapon : defender.sheet().getAllWeapons() ){
 			
 			// counter only possible if weapon is direct, can attack attacker and if you have enough ammo
 			if( ( defenseWeapon.getFireMode() == 0 || defenseWeapon.getFireMode() == 3 ) && defenseWeapon.canAttack( attacker.sheet() ) && defender.getAmmo() - defenseWeapon.getUseAmmo() >= 0 ) return defenseWeapon;
-		}
+		}*/
 		
 		return null;
 	}

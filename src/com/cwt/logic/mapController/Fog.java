@@ -1,15 +1,15 @@
 package com.cwt.logic.mapController;
 
-import com.client.model.Instance;
+//import com.client.model.Instance;
 import java.util.ArrayList;
-import com.client.model.object.Game;
+//import com.client.model.object.Game;
 import com.cwt.model.mapObjects.Player;
 import com.cwt.model.mapObjects.Tile;
 import com.cwt.model.mapObjects.Unit;
-import com.system.data.DynamicMemory;
+//import com.system.data.DynamicMemory;
 import com.system.data.sheets.ObjectSheet;
 import com.system.data.sheets.Tile_Sheet;
-import com.system.data.sheets.Unit_Sheed;
+//import com.system.data.sheets.Unit_Sheed;
 import com.system.meowShell.Script_Database;
 
 /**
@@ -17,6 +17,7 @@ import com.system.meowShell.Script_Database;
  * 
  * @author tapsi
  * @version 8.1.2010, #2
+ * @todo TODO Class broken due to com.system & com.client removal
  */
 public class Fog {
 
@@ -123,7 +124,7 @@ public class Fog {
 	 *   check hidden units and tiles.
 	 */
 	public static void processFog(){
-		processFog( Instance.getCurPlayer() );
+		//processFog( Instance.getCurPlayer() );
 	}
 	
 	private static void processFog( Player player ){
@@ -133,21 +134,24 @@ public class Fog {
 		clear();
 		
     	// check up all visions from properties and units
+                /**
     	for( Player pl : player.getTeam().getMembers() ){
-    		    		
+
+
     		// check property vision
     		for( Tile tile : pl.getProperties() ){
     			
     			clearSight();
     			sightValue = tile.sheet().getVision();
-    			DynamicMemory.setTile(tile);
+    			//DynamicMemory.setTile(tile);
     			Script_Database.checkAll( "VISION_TILE" );
     			if( sightValue < 0 ) sightValue = 0;
-    			DynamicMemory.reset();
+    			//DynamicMemory.reset();
     			vision(tile, tile.sheet()); 
     		}
     		
-    		// check unit vision 
+    		// check unit vision
+
     		for( Unit unit : pl.getUnits() ){
     			
     			Tile tile =  Game.getMap().findTile(unit);
@@ -164,7 +168,10 @@ public class Fog {
     			if( sightValue <= 0 ) sightValue = 1;
     			vision( tile , unit.sheet() );
     		}
+
+
     	}
+          */
     	
     }
 	
@@ -189,8 +196,8 @@ public class Fog {
 		
 		
 		// protect against incorrect scripts
-		if( sh instanceof Unit_Sheed && range < 1 ) range = 1;
-		else if ( sh instanceof Tile_Sheet && range < 0 ) range = 0;
+		//if( sh instanceof Unit_Sheed && range < 1 ) range = 1;
+		//else if ( sh instanceof Tile_Sheet && range < 0 ) range = 0;
 		
 		int x = tile.getPosX();
 		int y = tile.getPosY();
@@ -198,10 +205,10 @@ public class Fog {
 		// add tiles that the object can see
 		for( int i = 0 ; i <= range ; i++ ){
             for( int i2 = 0 ; i2 <= range-i ; i2++ ){
-                if ( x - i2 >= 0 && y - i >= 0                                             ) checkTile( tile, sh , Game.getMap().getTile(x-i2, y-i ));
-                if ( x + i2 < Game.getMap().getSizeX() && y - i >= 0                       ) checkTile( tile, sh , Game.getMap().getTile(x+i2, y-i ));
-                if ( x - i2 >= 0 && y + i < Game.getMap().getSizeY()                       ) checkTile( tile, sh , Game.getMap().getTile(x-i2, y+i ));
-                if ( x + i2 < Game.getMap().getSizeX() && y + i < Game.getMap().getSizeY() ) checkTile( tile, sh , Game.getMap().getTile(x+i2, y+i ));
+                //if ( x - i2 >= 0 && y - i >= 0                                             ) checkTile( tile, sh , Game.getMap().getTile(x-i2, y-i ));
+                //if ( x + i2 < Game.getMap().getSizeX() && y - i >= 0                       ) checkTile( tile, sh , Game.getMap().getTile(x+i2, y-i ));
+                //if ( x - i2 >= 0 && y + i < Game.getMap().getSizeY()                       ) checkTile( tile, sh , Game.getMap().getTile(x-i2, y+i ));
+               // if ( x + i2 < Game.getMap().getSizeX() && y + i < Game.getMap().getSizeY() ) checkTile( tile, sh , Game.getMap().getTile(x+i2, y+i ));
             }
         }
     }
@@ -232,10 +239,10 @@ public class Fog {
 	private static boolean canSeeTile( Tile start , ObjectSheet sh , Tile target ){
 		
 		int range = getRange(start, target);
-		int needed = target.sheet().getDetectingRange( sh );
+		//int needed = target.sheet().getDetectingRange( sh );
 		
-		if( needed == -1 || range <= needed ) return true;
-		else return false;
+		/*if( needed == -1 || range <= needed ) return true;
+		else*/ return false;
 	}
 
 	/**
@@ -244,10 +251,10 @@ public class Fog {
 	private static boolean canSeeStealth( Tile start , ObjectSheet sh , Tile target ){
 		
 		int range = getRange(start, target);
-		int needed = target.getUnit().sheet().getStealthRange( sh );
+		//int needed = target.getUnit().sheet().getStealthRange( sh );
 		
-		if( range <= needed ) return true;
-		else return false;
+		/*if( range <= needed ) return true;
+		else*/ return false;
 	}
 	
 	/**

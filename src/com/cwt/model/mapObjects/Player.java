@@ -1,7 +1,7 @@
 package com.cwt.model.mapObjects;
 
-import com.client.model.object.Game;
-import com.client.model.object.Team;
+//import com.client.model.object.Game;
+//import com.client.model.object.Team;
 import java.util.ArrayList;
 import com.system.data.Engine_Database;
 
@@ -10,6 +10,7 @@ import com.system.data.Engine_Database;
  * 
  * @author tapsi
  * @version 8.1.2010, #1
+ * @todo TODO Class broken due to com.system & com.client removal
  */
 public class Player {
 
@@ -21,7 +22,7 @@ public class Player {
 	private String name;
 	private ArrayList<Unit> units;
 	private ArrayList<Tile> properties;
-	private Team team;
+	//private Team team;
 	private int[] resourcePool;
 	
 	
@@ -31,7 +32,7 @@ public class Player {
 	 * ************ 
 	 */
 	
-	public Player( String name , Team team ){
+	/*public Player( String name , Team team ){
 		
 		this.name	= name;
 		this.team	= team;
@@ -41,7 +42,7 @@ public class Player {
 		
 		units.trimToSize();
 		properties.trimToSize();
-	}
+	}*/
 	
 	
 
@@ -111,7 +112,7 @@ public class Player {
 		return resourcePool[resID];
 	}
 	
-	public int getID(){
+	/*public int getID(){
 		return Game.getPlayerID(this);
 	}
 	
@@ -122,7 +123,7 @@ public class Player {
 	public boolean isAlive(){
 		if( team.isInTeam(this) ) return true;
 		else return false;
-	}
+	}*/
 	
 }
 

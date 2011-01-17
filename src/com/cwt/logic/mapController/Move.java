@@ -5,16 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import com.client.library.CustomWars_Library;
-import com.client.model.MoveObject;
-import com.client.model.object.Game;
+//import com.client.library.CustomWars_Library;
+//import com.client.model.MoveObject;
+//import com.client.model.object.Game;
 import com.cwt.model.mapObjects.Tile;
 import com.cwt.model.mapObjects.Unit;
-import com.system.data.DynamicMemory;
+//import com.system.data.DynamicMemory;
 import com.system.meowShell.Script_Database;
 
 /**
  * Controls all unit moving actions.
+ * @todo TODO Class broken due to com.system & com.client removal
  */
 public class Move {
 
@@ -23,7 +24,7 @@ public class Move {
 	 * *********
 	 */
 
-	private static HashMap<Tile,MoveObject> moveTiles = new HashMap<Tile, MoveObject>();
+	//private static HashMap<Tile,MoveObject> moveTiles = new HashMap<Tile, MoveObject>();
 	private static ArrayList<Tile> moveWay 	= new ArrayList<Tile>();
 	private static Tile	start;
 	private static Unit unit;
@@ -46,7 +47,7 @@ public class Move {
 	 */
 	public static void clear(){ 
 		
-		clearFields(); 
+		//clearFields();
 		clearWay();
 		moveCost = 0;
 		additionalTiles = 0;
@@ -64,16 +65,16 @@ public class Move {
 	/**
 	 * Clears tile map.
 	 */
-	public static void clearFields(){ 
+	/*public static void clearFields(){
 		moveTiles.clear(); 
-	}
+	}*/
 
 	/**
 	 * Returns the list of tiles in move range.
 	 */
-	public static HashMap<Tile,MoveObject> getTiles(){
+	/*public static HashMap<Tile,MoveObject> getTiles(){
 		return moveTiles;
-	}
+	}*/
 
 	/**
 	 * Changes move cost of a tile sheet.
@@ -158,17 +159,17 @@ public class Move {
 		clear();
 	
 		// check trigger
-		DynamicMemory.setUnit(unit);
-		DynamicMemory.setTile(start);
+		//DynamicMemory.setUnit(unit);
+		//DynamicMemory.setTile(start);
 		Script_Database.checkAll("UNIT_WILL_MOVE");
-		DynamicMemory.reset();
+		//DynamicMemory.reset();
 	}
 	
 	/**
 	 * Is the Move system initialized ? 
 	 */
 	public static boolean initialized(){
-		if( moveTiles.size() == 0 && moveWay.size() == 0 ) return true;
+		//if( moveTiles.size() == 0 && moveWay.size() == 0 ) return true;
 		return false;
 	}
 
@@ -208,18 +209,18 @@ public class Move {
 			// add a the free tiles range
 			for( int i = 0 ; i <= additionalTiles ; i++ ){
 	            for( int i2 = 0 ; i2 <= additionalTiles-i ; i2++ ){
-	                if ( x - i2 >= 0                       && y - i >= 0                       && freeTiles.indexOf(Game.getMap().getTile(x-i2, y-i)) == -1 ) freeTiles.add( Game.getMap().getTile(x-i2, y-i) );
-		            if ( x - i2 >= 0                       && y + i < Game.getMap().getSizeY() && freeTiles.indexOf(Game.getMap().getTile(x-i2, y+i)) == -1 ) freeTiles.add( Game.getMap().getTile(x-i2, y+i) );
-	                if ( x + i2 < Game.getMap().getSizeX() && y - i >= 0                       && freeTiles.indexOf(Game.getMap().getTile(x+i2, y-i)) == -1 ) freeTiles.add( Game.getMap().getTile(x+i2, y-i) );
-	                if ( x + i2 < Game.getMap().getSizeX() && y + i < Game.getMap().getSizeY() && freeTiles.indexOf(Game.getMap().getTile(x+i2, y+i)) == -1 ) freeTiles.add( Game.getMap().getTile(x+i2, y+i) );
+	                //if ( x - i2 >= 0                       && y - i >= 0                       && freeTiles.indexOf(Game.getMap().getTile(x-i2, y-i)) == -1 ) freeTiles.add( Game.getMap().getTile(x-i2, y-i) );
+		        //    if ( x - i2 >= 0                       && y + i < Game.getMap().getSizeY() && freeTiles.indexOf(Game.getMap().getTile(x-i2, y+i)) == -1 ) freeTiles.add( Game.getMap().getTile(x-i2, y+i) );
+	                //if ( x + i2 < Game.getMap().getSizeX() && y - i >= 0                       && freeTiles.indexOf(Game.getMap().getTile(x+i2, y-i)) == -1 ) freeTiles.add( Game.getMap().getTile(x+i2, y-i) );
+	                //if ( x + i2 < Game.getMap().getSizeX() && y + i < Game.getMap().getSizeY() && freeTiles.indexOf(Game.getMap().getTile(x+i2, y+i)) == -1 ) freeTiles.add( Game.getMap().getTile(x+i2, y+i) );
 	            }
 	        }
 			
 			// drop not move able fields
-			Set<Tile> set = moveTiles.keySet();
-			for( Tile tile : set ){
-				if( unit.sheet().getMoveType().getMoveCost( tile.sheet() ) == -1 ) moveTiles.remove(tile);
-			}
+			//Set<Tile> set = moveTiles.keySet();
+			//for( Tile tile : set ){
+			//	if( unit.sheet().getMoveType().getMoveCost( tile.sheet() ) == -1 ) moveTiles.remove(tile);
+			//}
 		}
 
 		// calculate normal move
@@ -229,7 +230,7 @@ public class Move {
 		
 		// remove tile where own units are, we can move through
 		// these tiles, but not directly onto them
-		for( Tile tile : moveTiles.keySet() ){
+		/*for( Tile tile : moveTiles.keySet() ){
 			
 			Unit unit  =  tile.getUnit();
 			
@@ -242,7 +243,7 @@ public class Move {
 				if( unit.getOwner() == Move.unit.getOwner() && unit.sheet().canLoad( Move.unit.sheet() ) && CustomWars_Library.getLeftLoadSpace( unit ) >= Move.unit.sheet().getWeight() ) continue;
 				else getMoveObj(tile).setMoveable(false);
 			}
-		}
+		}*/
 		
 		// reset moveWay and add start tile
 		resetWay();
@@ -255,8 +256,8 @@ public class Move {
     	        
         // PROCESS IT'S POSITION WITH THE MOVING WAY
         if ( tile == start ) clearTo(start);                            // IS THE INPUT THE STARTPOINT
-        else if ( !moveTiles.containsKey(tile) ) return;                // IS THE INPUT NOT IN THE FOCUS
-        else if( !moveTiles.get(tile).isMoveable() ) return;
+        //else if ( !moveTiles.containsKey(tile) ) return;                // IS THE INPUT NOT IN THE FOCUS
+        //else if( !moveTiles.get(tile).isMoveable() ) return;
         else if ( moveWay.get( moveWay.size() - 1 ) == tile ) return;   // IS THE INPUT FIELD THE SAME AS THE LAST IN MOVE
         else if ( moveWay.indexOf(tile) != -1 ) clearTo( tile );        // IS THE INPUT ALLREADY IN THE MOVING WAY
         else {
@@ -269,8 +270,8 @@ public class Move {
                 if( crossed != null ) clearTo(crossed);
 
                 checkMoveCost(tile);                
-                if ( getMinorFuel() + moveCost <= unit.sheet().getMoveRange() + additionalPoints ) moveWay.add(tile);
-                else findAlternativeWay(tile);     // IF THE UNIT HAVEN'T ENOUGH MOVEPOINTS
+                /*if ( getMinorFuel() + moveCost <= unit.sheet().getMoveRange() + additionalPoints ) moveWay.add(tile);
+                else*/ findAlternativeWay(tile);     // IF THE UNIT HAVEN'T ENOUGH MOVEPOINTS
             }
             else findAlternativeWay(tile);
         }
@@ -344,19 +345,19 @@ public class Move {
 	        // can you move onto this tile?
 	        if( !checkTile( tile, points, moveCost ) ) return;
 	        else{ 
-	        	MoveObject mObj = getMoveObj(tile);
+	        	//MoveObject mObj = getMoveObj(tile);
 	        	
 	        	// add tile to move array and set needed fuel to move onto it
-	        	if( mObj.getFuel() == -1 || points + moveCost < mObj.getFuel() ) mObj.setFuel( points + moveCost );
+	        	//if( mObj.getFuel() == -1 || points + moveCost < mObj.getFuel() ) mObj.setFuel( points + moveCost );
 	        }
 		}
         
         // check neighbor tiles
 		int left = points+moveCost;
-        if ( x > 0 )                           run( Game.getMap().getTile(x-1, y  ), left , false );
-        if ( x < Game.getMap().getSizeX() -1 ) run( Game.getMap().getTile(x+1, y  ), left , false );
-        if ( y < Game.getMap().getSizeY() -1 ) run( Game.getMap().getTile(x  , y+1), left , false );
-        if ( y > 0 )                           run( Game.getMap().getTile(x  , y-1), left , false );
+        //if ( x > 0 )                           run( Game.getMap().getTile(x-1, y  ), left , false );
+        //if ( x < Game.getMap().getSizeX() -1 ) run( Game.getMap().getTile(x+1, y  ), left , false );
+        //if ( y < Game.getMap().getSizeY() -1 ) run( Game.getMap().getTile(x  , y+1), left , false );
+        //if ( y > 0 )                           run( Game.getMap().getTile(x  , y-1), left , false );
         
     }
 	
@@ -369,12 +370,12 @@ public class Move {
     	
     	Unit unit = tile.getUnit();
     	
-    	if( neededFuel + cost <= Move.unit.sheet().getMoveRange() + additionalPoints ){
+    	/*if( neededFuel + cost <= Move.unit.sheet().getMoveRange() + additionalPoints ){
     		if( unit == null ) return true;
     		if( Fog.inFog(tile) ) return true;
     		if( unit.getOwner() == Move.unit.getOwner() ) return true;
     		if( unit.isHidden() && !Fog.isVisible(unit) ) return true;
-    	}
+    	}*/
     	return false;
     }
 
@@ -412,11 +413,11 @@ public class Move {
 	 * Returns a moveObject from tile map, if not exist 
 	 * it will create a new one.
 	 */
-    private static MoveObject getMoveObj( Tile tile ){
+    /*private static MoveObject getMoveObj( Tile tile ){
     	
     	if( !moveTiles.containsKey(tile) ) moveTiles.put(tile, new MoveObject() );
     	return moveTiles.get(tile);
-    }
+    }*/
 
 	/**
 	 * Clears the move way to a given tile.
@@ -444,10 +445,10 @@ public class Move {
     	int x = tile.getPosX();
 		int y = tile.getPosY();
 		
-    	if ( x > 0                            && moveWay.indexOf( Game.getMap().getTile(x-1, y  ) ) != -1 ) return true;
-        if ( x < Game.getMap().getSizeX() -1  && moveWay.indexOf( Game.getMap().getTile(x+1, y  ) ) != -1 ) return true;
-        if ( y < Game.getMap().getSizeY() -1  && moveWay.indexOf( Game.getMap().getTile(x  , y+1) ) != -1 ) return true;
-        if ( y > 0                            && moveWay.indexOf( Game.getMap().getTile(x  , y-1) ) != -1 ) return true;
+    	//if ( x > 0                            && moveWay.indexOf( Game.getMap().getTile(x-1, y  ) ) != -1 ) return true;
+        //if ( x < Game.getMap().getSizeX() -1  && moveWay.indexOf( Game.getMap().getTile(x+1, y  ) ) != -1 ) return true;
+        //if ( y < Game.getMap().getSizeY() -1  && moveWay.indexOf( Game.getMap().getTile(x  , y+1) ) != -1 ) return true;
+        //if ( y > 0                            && moveWay.indexOf( Game.getMap().getTile(x  , y-1) ) != -1 ) return true;
     	return false;
     }
 
@@ -468,10 +469,10 @@ public class Move {
 		Tile inList = null;
 		
 		// get neighbor tiles
-		if ( x > 0                           ) t1 = ( Game.getMap().getTile(x-1, y  ) );                    
-	    if ( x < Game.getMap().getSizeX() -1 ) t2 = ( Game.getMap().getTile(x+1, y  ) );
-	    if ( y < Game.getMap().getSizeY() -1 ) t3 = ( Game.getMap().getTile(x  , y+1) );
-	    if ( y > 0                           ) t4 = ( Game.getMap().getTile(x  , y-1) );
+		//if ( x > 0                           ) t1 = ( Game.getMap().getTile(x-1, y  ) );
+	    //if ( x < Game.getMap().getSizeX() -1 ) t2 = ( Game.getMap().getTile(x+1, y  ) );
+	    //if ( y < Game.getMap().getSizeY() -1 ) t3 = ( Game.getMap().getTile(x  , y+1) );
+	    //if ( y > 0                           ) t4 = ( Game.getMap().getTile(x  , y-1) );
 	    
 	    // set the crossed tile, that is nearest to the
 	    // start of the moving way
@@ -523,10 +524,10 @@ public class Move {
 
         // TRY TO FIND A WAY IN EVERY DIRECTION
 		boolean found = false;
-        if ( x > 0 )                                     { found = alternativeRun( Game.getMap().getTile(x-1, y  ) , target , false ); }
-        if ( y > 0 && !found )                           { found = alternativeRun( Game.getMap().getTile(x  , y-1) , target , false ); }
-        if ( x < Game.getMap().getSizeX() - 1 && !found ){ found = alternativeRun( Game.getMap().getTile(x+1, y  ) , target , false ); }
-        if ( y < Game.getMap().getSizeY() - 1 && !found ){ found = alternativeRun( Game.getMap().getTile(x  , y+1) , target , false ); }
+        //if ( x > 0 )                                     { found = alternativeRun( Game.getMap().getTile(x-1, y  ) , target , false ); }
+        //if ( y > 0 && !found )                           { found = alternativeRun( Game.getMap().getTile(x  , y-1) , target , false ); }
+        //if ( x < Game.getMap().getSizeX() - 1 && !found ){ found = alternativeRun( Game.getMap().getTile(x+1, y  ) , target , false ); }
+        //if ( y < Game.getMap().getSizeY() - 1 && !found ){ found = alternativeRun( Game.getMap().getTile(x  , y+1) , target , false ); }
         
         // IF THIS ROUTE DIDN'T CORRECT REMOVE FIELD FROM ARRAY
         if ( !found  ) moveWay.remove( moveWay.size() -1 );
@@ -539,12 +540,12 @@ public class Move {
 	private static void checkMoveCost( Tile tile ){
 		
 		// get original move cost
-		moveCost = unit.sheet().getMoveType().getMoveCost( tile.sheet() );
+		//moveCost = unit.sheet().getMoveType().getMoveCost( tile.sheet() );
 		
 		// check up scripts
-		DynamicMemory.setTile(tile);
+		//DynamicMemory.setTile(tile);
 		Script_Database.checkAll("MOVE_ONTO");
-		DynamicMemory.reset();
+		//DynamicMemory.reset();
 	}
 	
 	//TODO complete scripts check...

@@ -1,10 +1,10 @@
 package com.cwt.logic.mapController;
 
-import com.client.model.MoveObject;
+//import com.client.model.MoveObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.client.model.object.Game;
+//import com.client.model.object.Game;
 import com.cwt.model.mapObjects.Tile;
 import com.cwt.model.mapObjects.Unit;
 import com.system.data.sheets.Weapon_Sheed;
@@ -15,6 +15,7 @@ import com.system.data.sheets.Weapon_Sheed;
  * 
  * @author tapsi
  * @version 8.1.2010, #1
+ * @todo TODO Class broken due to com.system & com.client removal
  */
 public class Range {
 
@@ -114,7 +115,7 @@ public class Range {
     	int y = tile.getPosY();
     	
     	// check range for every weapon
-    	for( Weapon_Sheed sh : unit.sheet().getAllWeapons() ){
+    	/*for( Weapon_Sheed sh : unit.sheet().getAllWeapons() ){
     		
     		// if you don't have enough ammo to use this weapon, continue
     		if( sh.getUseAmmo() != -1 && unit.getAmmo() < sh.getUseAmmo() ) continue;
@@ -126,7 +127,7 @@ public class Range {
 		    	Move.move();
 		    	
 		    	// get tiles from move
-		    	HashMap<Tile, MoveObject> tiles = Move.getTiles();
+		    	//HashMap<Tile, MoveObject> tiles = Move.getTiles();
 		    	
 		    	// attack from every tile
 		    	for( Tile mt : tiles.keySet() ){
@@ -144,7 +145,7 @@ public class Range {
 		    	addListToList(helpList);
 				break;
     		}	
-    	}
+    	}*/
     }
 
 	/**
@@ -164,7 +165,7 @@ public class Range {
     		if( Fog.inFog(tile) ) continue;
     		if( tile.getUnit() != null && tile.getUnit().getOwner() != unit.getOwner() ){
         	
-    			if( !targets.contains(tile) && sh.canAttack( tile.getUnit().sheet() ) ) targets.add(tile);
+    			//if( !targets.contains(tile) && sh.canAttack( tile.getUnit().sheet() ) ) targets.add(tile);
     		}
     	}
     }
@@ -187,9 +188,9 @@ public class Range {
      */
 	public static boolean hasUnitTargets( Tile tile , Unit unit ){
 
-		for( Weapon_Sheed sh : unit.sheet().getAllWeapons() ){
+		/*for( Weapon_Sheed sh : unit.sheet().getAllWeapons() ){
 			if( hasWeaponTargets(tile, unit, sh) ) return true;
-		}
+		}*/
 		return false;
 	}
 
@@ -222,10 +223,10 @@ public class Range {
 	    
 		for( int i = 0 ; i <= range ; i++ ){
 	        for( int i2 = 0 ; i2 <= range-i ; i2++ ){
-	            if ( x - i2 >= 0                       && y - i >= 0                       && helpList.indexOf(Game.getMap().getTile(x-i2, y-i)) == -1 ) helpList.add( Game.getMap().getTile(x-i2, y-i) );
-	            if ( x - i2 >= 0                       && y + i < Game.getMap().getSizeY() && helpList.indexOf(Game.getMap().getTile(x-i2, y+i)) == -1 ) helpList.add( Game.getMap().getTile(x-i2, y+i) );
-	            if ( x + i2 < Game.getMap().getSizeX() && y - i >= 0                       && helpList.indexOf(Game.getMap().getTile(x+i2, y-i)) == -1 ) helpList.add( Game.getMap().getTile(x+i2, y-i) );
-	            if ( x + i2 < Game.getMap().getSizeX() && y + i < Game.getMap().getSizeY() && helpList.indexOf(Game.getMap().getTile(x+i2, y+i)) == -1 ) helpList.add( Game.getMap().getTile(x+i2, y+i) );
+	            //if ( x - i2 >= 0                       && y - i >= 0                       && helpList.indexOf(Game.getMap().getTile(x-i2, y-i)) == -1 ) helpList.add( Game.getMap().getTile(x-i2, y-i) );
+	            //if ( x - i2 >= 0                       && y + i < Game.getMap().getSizeY() && helpList.indexOf(Game.getMap().getTile(x-i2, y+i)) == -1 ) helpList.add( Game.getMap().getTile(x-i2, y+i) );
+	            //if ( x + i2 < Game.getMap().getSizeX() && y - i >= 0                       && helpList.indexOf(Game.getMap().getTile(x+i2, y-i)) == -1 ) helpList.add( Game.getMap().getTile(x+i2, y-i) );
+	            //if ( x + i2 < Game.getMap().getSizeX() && y + i < Game.getMap().getSizeY() && helpList.indexOf(Game.getMap().getTile(x+i2, y+i)) == -1 ) helpList.add( Game.getMap().getTile(x+i2, y+i) );
 	        }
 	    }
     }
@@ -237,10 +238,10 @@ public class Range {
     	
 		for( int i = 0 ; i <= range ; i++ ){
 	        for( int i2 = 0 ; i2 <= range-i ; i2++ ){
-	            if ( x - i2 >= 0                       && y - i >= 0                       && helpList.indexOf(Game.getMap().getTile(x-i2, y-i)) != -1 ) helpList.remove( Game.getMap().getTile(x-i2, y-i) );
-	            if ( x - i2 >= 0                       && y + i < Game.getMap().getSizeY() && helpList.indexOf(Game.getMap().getTile(x-i2, y+i)) != -1 ) helpList.remove( Game.getMap().getTile(x-i2, y+i) );
-	            if ( x + i2 < Game.getMap().getSizeX() && y - i >= 0                       && helpList.indexOf(Game.getMap().getTile(x+i2, y-i)) != -1 ) helpList.remove( Game.getMap().getTile(x+i2, y-i) );
-	            if ( x + i2 < Game.getMap().getSizeX() && y + i < Game.getMap().getSizeY() && helpList.indexOf(Game.getMap().getTile(x+i2, y+i)) != -1 ) helpList.remove( Game.getMap().getTile(x+i2, y+i) );
+	            //if ( x - i2 >= 0                       && y - i >= 0                       && helpList.indexOf(Game.getMap().getTile(x-i2, y-i)) != -1 ) helpList.remove( Game.getMap().getTile(x-i2, y-i) );
+	            //if ( x - i2 >= 0                       && y + i < Game.getMap().getSizeY() && helpList.indexOf(Game.getMap().getTile(x-i2, y+i)) != -1 ) helpList.remove( Game.getMap().getTile(x-i2, y+i) );
+	            //if ( x + i2 < Game.getMap().getSizeX() && y - i >= 0                       && helpList.indexOf(Game.getMap().getTile(x+i2, y-i)) != -1 ) helpList.remove( Game.getMap().getTile(x+i2, y-i) );
+	            //if ( x + i2 < Game.getMap().getSizeX() && y + i < Game.getMap().getSizeY() && helpList.indexOf(Game.getMap().getTile(x+i2, y+i)) != -1 ) helpList.remove( Game.getMap().getTile(x+i2, y+i) );
 	        }
 	    }
     }
