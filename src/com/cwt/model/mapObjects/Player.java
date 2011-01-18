@@ -3,7 +3,7 @@ package com.cwt.model.mapObjects;
 //import com.client.model.object.Game;
 //import com.client.model.object.Team;
 import java.util.ArrayList;
-import com.system.data.Engine_Database;
+//import com.system.data.Engine_Database;
 
 /**
  * Holds a player of a game round.

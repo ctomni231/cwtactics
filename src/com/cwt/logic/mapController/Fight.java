@@ -3,7 +3,7 @@ package com.cwt.logic.mapController;
 import com.cwt.model.mapObjects.Tile;
 import com.cwt.model.mapObjects.Unit;
 //import com.system.data.DynamicMemory;
-import com.system.data.sheets.Weapon_Sheed;
+//import com.system.data.sheets.Weapon_Sheed;
 import com.system.log.Logger;
 import com.system.network.MessageServer;
 import com.system.network.coder.MessageEncoder;
@@ -23,8 +23,8 @@ public class Fight {
 	 * *********
 	 */
 	
-	private static Weapon_Sheed attackWeapon;
-	private static Weapon_Sheed defenderWeapon;
+	//private static Weapon_Sheed attackWeapon;
+	//private static Weapon_Sheed defenderWeapon;
 	private static Tile attackerTile;
 	private static Tile defenderTile;
 	private static Unit attacker;
@@ -62,15 +62,15 @@ public class Fight {
 	/**
 	 * Setup a battle.
 	 */
-	public static void battle( Tile attackerTile , Unit attacker , Weapon_Sheed attackerWeapon , Tile defenderTile , Unit defender ){
+	/*public static void battle( Tile attackerTile , Unit attacker , Weapon_Sheed attackerWeapon , Tile defenderTile , Unit defender ){
 		
 		// VARIABLES
 		Fight.attackerTile = attackerTile;
 		Fight.defenderTile = defenderTile;
 		Fight.attacker = attacker;
 		Fight.defender = defender;
-		Fight.attackWeapon = attackerWeapon;
-		Fight.defenderWeapon = getConterWeapon();
+		//Fight.attackWeapon = attackerWeapon;
+		//Fight.defenderWeapon = getConterWeapon();
 
 		// CHECK EFFECTS, ATTACKER
 		penalty = 0;
@@ -93,7 +93,7 @@ public class Fight {
 		if( defenderWeapon != null && defender.getHealth() - attack > 0 ){
 			MessageServer.send("unitAttack="+MessageEncoder.encode(defender)+","+MessageEncoder.encode(attacker)+","+MessageEncoder.encode(defenderWeapon)+","+MessageEncoder.encode(counter));
 		}
-	}
+	}*/
 	
 	/**
 	 * Check all effects for this fighting 
@@ -130,7 +130,7 @@ public class Fight {
 	 * Returns a weapon with that the defender can 
 	 * counter the attacker.
 	 */
-	public static Weapon_Sheed getConterWeapon( ){
+	/*public static Weapon_Sheed getConterWeapon( ){
 		
 		// check status of fight, return if no fight exist
 		if( !checkStatus() ){
@@ -142,14 +142,14 @@ public class Fight {
 		if( attackWeapon.getFireMode() > 0 ) return null;
 		
 		// check every weapon
-		/*for( Weapon_Sheed defenseWeapon : defender.sheet().getAllWeapons() ){
+		for( Weapon_Sheed defenseWeapon : defender.sheet().getAllWeapons() ){
 			
 			// counter only possible if weapon is direct, can attack attacker and if you have enough ammo
 			if( ( defenseWeapon.getFireMode() == 0 || defenseWeapon.getFireMode() == 3 ) && defenseWeapon.canAttack( attacker.sheet() ) && defender.getAmmo() - defenseWeapon.getUseAmmo() >= 0 ) return defenseWeapon;
-		}*/
+		}
 		
 		return null;
-	}
+	}*/
 	
 	/**
 	 * Resets the status of the fight to null.
@@ -158,8 +158,8 @@ public class Fight {
 		
 		attacker = null;
 		defender = null;
-		attackWeapon = null;
-		defenderWeapon = null;
+		//attackWeapon = null;
+		//defenderWeapon = null;
 		attackerTile = null;
 		defenderTile = null;
 	}
@@ -169,8 +169,8 @@ public class Fight {
 	 */
 	public static boolean checkStatus(){
 		
-		if( attacker == null || defender == null || attackerTile == null || defenderTile == null || attackWeapon == null ) return false;
-		else return true;
+		/*if( attacker == null || defender == null || attackerTile == null || defenderTile == null || attackWeapon == null ) return false;
+		else*/ return true;
 	}
 	
 	/**
@@ -180,13 +180,13 @@ public class Fight {
 		penalty += value;
 	}
 	
-	public static Weapon_Sheed getAttackerWeapon(){
+	/*public static Weapon_Sheed getAttackerWeapon(){
 		return attackWeapon;
-	}
+	}*/
 	
-	public static Weapon_Sheed getDefenderWeapon(){
+	/*public static Weapon_Sheed getDefenderWeapon(){
 		return defenderWeapon;
-	}
+	}*/
 	
 	
 	

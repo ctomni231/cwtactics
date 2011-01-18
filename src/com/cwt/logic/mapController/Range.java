@@ -7,7 +7,7 @@ import java.util.HashMap;
 //import com.client.model.object.Game;
 import com.cwt.model.mapObjects.Tile;
 import com.cwt.model.mapObjects.Unit;
-import com.system.data.sheets.Weapon_Sheed;
+//import com.system.data.sheets.Weapon_Sheed;
 
 /**
  * Class Range holds and controls unit attack ranges 
@@ -151,7 +151,7 @@ public class Range {
 	/**
 	 * Generates the internal list of targets.
 	 */
-    public static void generateTargets( Tile start , Unit unit , Weapon_Sheed sh ){
+    /*public static void generateTargets( Tile start , Unit unit , Weapon_Sheed sh ){
     	    	
     	// variables
     	int x = start.getPosX();
@@ -168,12 +168,12 @@ public class Range {
     			//if( !targets.contains(tile) && sh.canAttack( tile.getUnit().sheet() ) ) targets.add(tile);
     		}
     	}
-    }
+    }*/
 
 	/**
 	 * Has the unit targets from a given tile and a given weapon type?
 	 */
-    public static boolean hasWeaponTargets( Tile tile , Unit unit , Weapon_Sheed sh ){
+    /*public static boolean hasWeaponTargets( Tile tile , Unit unit , Weapon_Sheed sh ){
     	
     	clear();
     	
@@ -181,7 +181,7 @@ public class Range {
     	
     	if( targets.size() > 0 ) return true;
     	else return false;
-    }
+    }*/
     
     /**
      * Has a unit targets ?
@@ -204,7 +204,7 @@ public class Range {
 	/**
 	 * Returns all tiles from a position and a given weapon.
 	 */
-    private static void getAttackRange( int x , int y , Weapon_Sheed sh ){
+    /*private static void getAttackRange( int x , int y , Weapon_Sheed sh ){
     	
     	// variables
     	int minRange = sh.getMinRange() - 1;
@@ -214,7 +214,7 @@ public class Range {
     
     	if( maxRange > -1 && maxRange > minRange ) addRange(maxRange, x, y);
     	if( minRange > -1 && maxRange > minRange ) removeRange(minRange, x, y);
-    }
+    }*/
 
 	/**
 	 * Adds tiles for a given range to the help list.

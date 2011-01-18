@@ -1,9 +1,9 @@
 package com.cwt.logic.mapController;
 
 //import com.client.model.object.Game;
-import com.system.data.Engine_Database;
-import com.system.data.sheets.Sheet;
-import com.system.data.sheets.Weather_Sheet;
+//import com.system.data.Engine_Database;
+//import com.system.data.sheets.Sheet;
+//import com.system.data.sheets.Weather_Sheet;
 import com.system.network.MessageServer;
 import com.system.network.coder.MessageEncoder;
 
@@ -21,7 +21,7 @@ public class Weather {
 	 * *********
 	 */
 	
-	private static Weather_Sheet weather;
+	//private static Weather_Sheet weather;
 	private static int leftDays;
 
 
@@ -55,16 +55,16 @@ public class Weather {
 	/**
 	 * Sets the weather.
 	 */	
-	public static void setWeather(Weather_Sheet weather) {
+	/*public static void setWeather(Weather_Sheet weather) {
 		Weather.weather = weather;
-	}
+	}*/
 
 	/** 
 	 * Returns the weather.
 	 */
-	public static Weather_Sheet getWeather() {
+	/*public static Weather_Sheet getWeather() {
 		return weather;
-	}
+	}*/
 	
 	/**
 	 * Searches randomly for a new weather. The new weather 
@@ -77,18 +77,18 @@ public class Weather {
 		int curChance = 0;
 		
 		// SUM UP ALL CHANCES
-		for( Sheet sh : Engine_Database.getWeatherTable() ){
+		/*for( Sheet sh : Engine_Database.getWeatherTable() ){
 			
 			// SUM UP CHANCES
 			if( sh == getWeather() ) continue;
 			chance += ((Weather_Sheet) sh).getChance();
-		}
+		}*/
 		
 		// GENERATE RANDOM VALUE
 		chance = ((int) Math.random() * chance);
 		
 		// TRY TO FIND THE NEW WEATHER
-		for( Sheet sh : Engine_Database.getWeatherTable() ){
+		/*for( Sheet sh : Engine_Database.getWeatherTable() ){
 			
 			// SUM UP CHANCES
 			if( sh == getWeather() ) continue;
@@ -99,21 +99,21 @@ public class Weather {
 			if( chance > curChance ) continue;
 			sendCommand( ((Weather_Sheet) sh) );
 			break;
-		}
+		}*/
 	}
 	
 	/**
 	 * Sends the changeWeather command
 	 * over the MessageServer to the clients.
 	 */
-	private static void sendCommand( Weather_Sheet sh ){
+	/*private static void sendCommand( Weather_Sheet sh ){
 		
 		// GENERATE DURATION
 		//int leftDays = (int) Math.random() * Game.getPlayers().size() * 2;
 		
 		// SEND COMMAND
 		MessageServer.send("changeWeather="+MessageEncoder.encode(sh)+","+MessageEncoder.encode(leftDays));
-	}
+	}*/
 	
 	
 	
@@ -122,9 +122,9 @@ public class Weather {
 	 * **************
 	 */
 	
-	public static String getStatus(){
+	/*public static String getStatus(){
 		return "The weather is "+getWeather().getName()+" and will change in "+getLeftDays()+" days.";
-	}
+	}*/
 
 }
 

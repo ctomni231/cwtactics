@@ -4,7 +4,6 @@ import com.cwt.system.jslix.SlixLibrary;
 import com.cwt.system.jslix.tools.MouseHelper;
 import com.cwt.graphic.tools.MovingMenu;
 import com.cwt.graphic.tools.TextPix;
-import com.system.input.Controls;
 import com.cwt.io.KeyControl;
 import com.cwt.system.jslix.tools.ImgLibrary;
 import java.awt.Color;

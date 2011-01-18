@@ -1,4 +1,4 @@
-package com.yasl.internationalisation;
+package com.yasl.internationalization;
 
 import com.cwt.system.jslix.tools.FileFind;
 import java.io.File;

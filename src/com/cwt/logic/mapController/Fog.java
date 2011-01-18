@@ -7,8 +7,8 @@ import com.cwt.model.mapObjects.Player;
 import com.cwt.model.mapObjects.Tile;
 import com.cwt.model.mapObjects.Unit;
 //import com.system.data.DynamicMemory;
-import com.system.data.sheets.ObjectSheet;
-import com.system.data.sheets.Tile_Sheet;
+//import com.system.data.sheets.ObjectSheet;
+//import com.system.data.sheets.Tile_Sheet;
 //import com.system.data.sheets.Unit_Sheed;
 import com.system.meowShell.Script_Database;
 
@@ -131,7 +131,7 @@ public class Fog {
 
         processFog = true;
 		// clear old
-		clear();
+		//clear();
 		
     	// check up all visions from properties and units
                 /**
@@ -185,7 +185,7 @@ public class Fog {
 	/**
 	 * Checks the vision on an object on a given tile. 
 	 */
-	private static void vision( Tile tile , ObjectSheet sh ){
+	/*private static void vision( Tile tile , ObjectSheet sh ){
 		
 		// variables
 		int range = sightValue;
@@ -211,13 +211,13 @@ public class Fog {
                // if ( x + i2 < Game.getMap().getSizeX() && y + i < Game.getMap().getSizeY() ) checkTile( tile, sh , Game.getMap().getTile(x+i2, y+i ));
             }
         }
-    }
+    }*/
 	
 	/**
 	 * Checks the vision status of an object 
 	 * on a given tile for a given target tile.  
 	 */
-	private static void checkTile( Tile start , ObjectSheet sh , Tile target ){
+	/*private static void checkTile( Tile start , ObjectSheet sh , Tile target ){
 		
 		Unit unit = target.getUnit();
 		
@@ -231,31 +231,31 @@ public class Fog {
 			// if there is a hidden unit on the tile, check vision status
 			if( unit != null && unit.isHidden() && !visibleStealths.contains(unit) && canSeeStealth(start, sh , target) ) addStealth(unit);
 		}
-	}
+	}*/
 	
 	/**
 	 * Can an object see that tile from his position?
 	 */
-	private static boolean canSeeTile( Tile start , ObjectSheet sh , Tile target ){
+	/*private static boolean canSeeTile( Tile start , ObjectSheet sh , Tile target ){
 		
 		int range = getRange(start, target);
 		//int needed = target.sheet().getDetectingRange( sh );
 		
-		/*if( needed == -1 || range <= needed ) return true;
-		else*/ return false;
-	}
+		if( needed == -1 || range <= needed ) return true;
+		else return false;
+	}*/
 
 	/**
 	 * Can an object see that stealth from his position?
 	 */
-	private static boolean canSeeStealth( Tile start , ObjectSheet sh , Tile target ){
+	/*private static boolean canSeeStealth( Tile start , ObjectSheet sh , Tile target ){
 		
 		int range = getRange(start, target);
 		//int needed = target.getUnit().sheet().getStealthRange( sh );
 		
-		/*if( range <= needed ) return true;
-		else*/ return false;
-	}
+		if( range <= needed ) return true;
+		else return false;
+	}*/
 	
 	/**
 	 * Clears fog class status.

@@ -16,7 +16,7 @@ package com.cwt.system.data;
 public class KeyStore {
 
     public final int INT_SIZE = -2147483648;//Integer Max amount
-    private int[] data;//Stores the data in an array
+    private int[] arrayData;//Stores the data in an array
     private int max;//The amount of data to store in this array
 
     /**
@@ -25,22 +25,44 @@ public class KeyStore {
      * storing only the data changes in an array.
      */
     public KeyStore(){
-        this(0);
-    }
-
-    /**
-     * This function stores data in an expandable array headed with a key
-     * value for indexing. It was made to make the most of the arrays by
-     * storing only the data changes in an array.
-     * @param maxData The amount of data to store in this array
-     */
-    public KeyStore(int maxData){
-        data = new int[0];
-        max = (maxData > 0 && maxData < 31) ? maxData : 31;
+        arrayData = new int[0];
+        max = 0;
     }
 
     public void addData(int index, int data){
-        
+        if(index < 0 || index > 31)
+            return;
+
+        if(index > max)
+            max = index+1;
+
+        if(index+1 == max && addCode(index))
+            arrayData = addData(arrayData, data);
+        else
+            arrayData = insertData(arrayData,
+                    getCodePosition(index, arrayData[0])+1, data);
+    }
+
+    public int[] getData(){
+        int[] list = new int[max];
+        for(int i = 0, counter = 0, number = arrayData[0]; i < max; i++){
+            if(number >= Math.pow(2, 31-i)-INT_SIZE){
+                number -= Math.pow(2, 31-i);
+                counter++;
+                list[i] = arrayData[counter];
+            }else
+                list[i] = 0;
+        }
+        return list;
+    }
+
+    /**
+     * This function checks the code to see if a particular item exists
+     * @param index The position to check the validity of the data
+     * @return Whether the data exists(true) or not(false)
+     */
+    public boolean checkCode(int index){
+        return checkCode(index, arrayData[0]);
     }
 
     /**
@@ -67,6 +89,7 @@ public class KeyStore {
      * ArrayList. This function allows you to push data in the middle of
      * an array.
      * @param fillData The data to add to a primitive array
+     * @param index The position where to add data into the array
      * @param data The data to add to the array
      * @return An array with the data attached
      */
@@ -89,37 +112,52 @@ public class KeyStore {
 
     /**
      * This function adds an index to the key, if it is valid
-     * @param @param index The index to add to the key
-     * @param number The number to add the index to
-     * @return The new number with the added key in it
+     * @param index The index to add to the key
      */
-    private int addCode(int index, int number){
-        if(index >= 0){
-            if(!checkCode(index, number))
-                number += Math.pow(2, index);
-            if(number > 0)
-                number += INT_SIZE;
+    private boolean addCode(int index){
+        if(arrayData.length == 0)
+            arrayData = new int[]{ -INT_SIZE };
+
+        if(!checkCode(index, arrayData[0])){
+            arrayData[0] += Math.pow(2, 31-index);
+            return true;
         }
-        return number;
+
+        return false;
     }
 
     /**
      * This function takes the code portion of the data and checks if it
      * exists.
      * @param index The index to check if a number exists
-     * @param number The number in question
+     * @param number The number to check the particular index for
      * @return Whether the number exists in this list
      */
     private boolean checkCode(int index, int number){
-        number -= INT_SIZE;
-        for(int i = max; i >= 0; i--){
+        for(int i = 0; i < max; i++){
             if(i == index)
-                return (number >= Math.pow(2, i));
-            if(number >= Math.pow(2, i))
-                number -= Math.pow(2, i);
+                return (number >= Math.pow(2, 31-i)-INT_SIZE);
+            if(number >= Math.pow(2, 31-i)-INT_SIZE)
+                number -= Math.pow(2, 31-i);
         }
-
         return false;
     }
 
+    /**
+     * This function gets the position of a certain code item in a key
+     * @param index The index to check if the number exists
+     * @param number The number to check the particular index for
+     * @return Whether the number exists in this list
+     */
+    private int getCodePosition(int index, int number){      
+        for(int counter = 0, i = 0; i < max; i++){
+            if(i == index)
+                return counter;
+            if(number >= Math.pow(2, 31-i)-INT_SIZE){
+                number -= Math.pow(2, 31-i);
+                counter++;
+            }
+        }
+        return -1;
+    }
 }
