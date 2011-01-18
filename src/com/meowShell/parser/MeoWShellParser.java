@@ -230,6 +230,8 @@ public class MeoWShellParser
         LinkedList<String> code = new LinkedList<String>();
         code.add("n = 0");
         code.add("while n >= 0 && n < 1000 : n++");
+        code.add("n = 100");
+        code.add("while n > 0 : n--");
         
         ContextBlock bl = getInstance().parseStrings(code);
 
@@ -244,5 +246,10 @@ public class MeoWShellParser
            // System.out.println("MeoWShell 2.0 : " + (System.nanoTime()-time)/1000000d + "ms");
         //}
      }
+
+    //This function is just to make it easier to perform the testing
+    public ContextBlock parse( LinkedList<String> rows ){
+        return parseStrings(rows);
+    }
 
  }

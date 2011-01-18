@@ -1,6 +1,6 @@
 package com.cwt.io;
 
-import com.cwt.system.jslix.tools.LocaleService;
+import com.yasl.internationalisation.LocaleService;
 
 /**
  * LangControl.java

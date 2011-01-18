@@ -19,7 +19,7 @@ public class Decreament implements Node
         assertNotNull( statement );
         assertGreater( statement.getStatement().length() , 0);
 
-        return statement.getStatement().endsWith("++");
+        return statement.getStatement().endsWith("--");
     }
 
     public void parse(Properties properties, StringBuilder context, Statement statement)
