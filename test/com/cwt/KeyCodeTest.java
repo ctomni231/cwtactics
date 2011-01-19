@@ -1,6 +1,6 @@
 package com.cwt;
 
-import com.cwt.system.data.KeyStore;
+import com.cwt.map.KeyStore;
 import junit.framework.Assert;
 import org.junit.Test;
 

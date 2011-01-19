@@ -1,4 +1,4 @@
-package com.cwt.system.data;
+package com.cwt.map;
 
 import com.cwt.system.jslix.tools.FileFind;
 import com.cwt.system.jslix.tools.FileIndex;
@@ -28,13 +28,15 @@ public class MapElement implements Runnable{
     private boolean ready;
     private Thread looper;
     private XML_Parser mapParse;
-    private FileLibrary flib;
+    private FileStorage flib;
+    private TagStorage tlib;
 
     public MapElement(){
         data = new int[0][0];
         tempTag = new int[MAX_ITEMS];
         mapParse = new XML_Parser();
-        flib = new FileLibrary();
+        flib = new FileStorage();
+        tlib = new TagStorage();
         ready = false;
         isApplet = true;
     }
@@ -132,9 +134,9 @@ public class MapElement implements Runnable{
         UPPER:for(int i = 0; i < mapParse.size(); i++){
             //This loop checks to see if all tags are valid
             for(int j = 0; j < mapParse.getTags(i).length; j++){
-                int temp = (int)CodeLibrary.checkAll(
+                int temp = (int)CodeStorage.checkAll(
                         j, mapParse.getTags(i)[j]);
-                if(CodeLibrary.checkAll(j, mapParse.getTags(i)[j]) == -1){
+                if(CodeStorage.checkAll(j, mapParse.getTags(i)[j]) == -1){
                     if(i == 0){
                         System.out.println(mapParse.getTags(i)[0]+
                             " not recognized");
@@ -150,6 +152,8 @@ public class MapElement implements Runnable{
                 //Check for file data
                 if(tagFill[3] == 0)
                     flib.addItem(mapParse.getAttribute(i));
+                else if(tagFill[3] == 1)
+                    tlib.addItem(mapParse.getAttribute(i));
 
             }
 

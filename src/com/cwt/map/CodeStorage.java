@@ -1,7 +1,7 @@
-package com.cwt.system.data;
+package com.cwt.map;
 
 /**
- * CodeLibrary.java
+ * CodeStorage.java
  *
  * This class deals with checking the valid code entries for the objects
  * within the game. The CWT graphic mainframe depends on this class to
@@ -11,7 +11,7 @@ package com.cwt.system.data;
  * @license Look into "LICENSE" file for further information
  * @version 12.21.10
  */
-public class CodeLibrary {
+public class CodeStorage {
 
     //The valid data for the code section of the XML
     public static final byte TERRAIN = 0;//The Terrain/Data object code

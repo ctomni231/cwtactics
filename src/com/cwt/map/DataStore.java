@@ -1,4 +1,4 @@
-package com.cwt.system.data;
+package com.cwt.map;
 
 /**
  * DataStore.java
@@ -33,17 +33,32 @@ public class DataStore {
 
     /**
      * This adds data to the newest possible layer
-     * @param data The layer to add the data to
+     * @param data The data to add to the current layer
      * @return The layer index
      */
     public int addData(int data){
         if(dataItems == null)
             addNewLayer();
+        return addData(dataItems.length-1, data);
+    }
 
-        dataItems[dataItems.length-1] = addData(
-                dataItems[dataItems.length-1], data);
+    /**
+     * This adds data to the layer you specify
+     * @param index The layer to add the data to
+     * @param data The data to add to the indexed layer
+     * @return The layer index
+     */
+    public int addData(int index, int data){
+        if(index >= 0 && index < dataItems.length)
+            dataItems[index] = addData(dataItems[index], data);
+        return index;
+    }
 
-        return dataItems.length-1;
+    /**
+     * This clears the current layer of all data items
+     */
+    public void clearCurrent(){
+        dataItems[dataItems.length-1] = new int[0];
     }
 
     /**

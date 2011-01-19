@@ -1,4 +1,4 @@
-package com.cwt.system.data;
+package com.cwt.map;
 
 /**
  * KeyStore.java
@@ -49,6 +49,16 @@ public class KeyStore {
     }
 
     /**
+     * This function replaces one integer in the array for another integer.
+     * @param index The position to store the data
+     * @param data The data to be stored
+     */
+    public void replaceData(int index, int data){
+        if(checkCode(index))
+            arrayData[getCodePosition(index, arrayData[0])+1] = data;
+    }
+
+    /**
      * This function gets an array containing data from the stored array.
      * Dummy value is put into the place of non-included array values.
      * @return An array containing the values of this storage array.
@@ -67,11 +77,24 @@ public class KeyStore {
     }
 
     /**
+     * This function gets data from the stored array using an index
+     * @param index The index from where to get the data
+     * @return The value representing the index
+     */
+    public int getData(int index){
+        return (index >= 0 && index < max) ? getData()[index] : -1;
+    }
+
+    /**
      * This function checks the code to see if a particular item exists
      * @param index The position to check the validity of the data
      * @return Whether the data exists(true) or not(false)
      */
     public boolean checkCode(int index){
+        if(arrayData == null)
+            return false;
+        else if(arrayData.length < 1)
+            return false;
         return checkCode(index, arrayData[0]);
     }
 
@@ -91,8 +114,9 @@ public class KeyStore {
         System.arraycopy(temp, 0, fillData, 0, temp.length);
         fillData[fillData.length-1] = data;
 
-        for(int i = 0; i < fillData.length; i++)
-            System.out.println("DATA "+i+":"+fillData[i]);
+        //for(int i = 0; i < fillData.length; i++)
+        //    System.out.println("DATA "+i+":"+fillData[i]);
+        //System.out.println("ADD-------------------------------------");
 
         return fillData;
     }
@@ -120,8 +144,9 @@ public class KeyStore {
             fillData[index] = data;
         }
 
-        for(int i = 0; i < fillData.length; i++)
-            System.out.println("DATA "+i+":"+fillData[i]);
+        //for(int i = 0; i < fillData.length; i++)
+        //    System.out.println("DATA "+i+":"+fillData[i]);
+        //System.out.println("INS "+index+":---------------------------------");
 
         return fillData;
     }
@@ -146,10 +171,11 @@ public class KeyStore {
      * @return Whether the number exists in this list
      */
     private boolean checkCode(int index, int number){
+
         for(int i = 0; i < max; i++){
             if(i == index)
-                return (number >= Math.pow(2, 31-i)-INT_SIZE);
-            if(number >= Math.pow(2, 31-i)-INT_SIZE)
+                return (number >= Math.pow(2, 31-i)+INT_SIZE);
+            if(number >= Math.pow(2, 31-i)+INT_SIZE)
                 number -= Math.pow(2, 31-i);
         }
         return false;
@@ -165,7 +191,7 @@ public class KeyStore {
         for(int counter = 0, i = 0; i < max; i++){
             if(i == index)
                 return counter;
-            if(number >= Math.pow(2, 31-i)-INT_SIZE){
+            if(number >= Math.pow(2, 31-i)+INT_SIZE){
                 number -= Math.pow(2, 31-i);
                 counter++;
             }

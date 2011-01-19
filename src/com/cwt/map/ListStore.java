@@ -1,4 +1,4 @@
-package com.cwt.system.data;
+package com.cwt.map;
 
 /**
  * ListStore.java
@@ -26,9 +26,22 @@ public class ListStore {
      * This function adds data to the items
      * @param data The data to be stored to the reference
      */
-    public void addData(String data){
+    public void add(String data){
         if(!checkData(data))
             dataItems = addData(dataItems, data);
+    }
+
+    /**
+     * This function adds data to the items
+     * @param data THe data to be stored to the reference
+     * @return The index where this data was stored
+     */
+    public int addData(String data){
+        if(!checkData(data)){
+            dataItems = addData(dataItems, data);
+            return dataItems.length-1;
+        }
+        return getData(data);
     }
 
     /**
