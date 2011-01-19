@@ -9,9 +9,7 @@ package com.cwt.system.data;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.16.11
- * @todo TODO Working on completing the indexing for the class, work with
- * the data array instead of the current setup.
+ * @version 01.18.11
  */
 public class KeyStore {
 
@@ -29,29 +27,41 @@ public class KeyStore {
         max = 0;
     }
 
+    /**
+     * This function adds data to the array in the form of an integer. The
+     * array always tries to store the least amount of data possible.
+     * @param index The position to store the data
+     * @param data The data to be stored
+     */
     public void addData(int index, int data){
         if(index < 0 || index > 31)
             return;
 
-        if(index > max)
+        if(index >= max)
             max = index+1;
 
-        if(index+1 == max && addCode(index))
+        addCode(index);
+        if(index+1 >= max && !checkCode(index))
             arrayData = addData(arrayData, data);
         else
             arrayData = insertData(arrayData,
                     getCodePosition(index, arrayData[0])+1, data);
     }
 
+    /**
+     * This function gets an array containing data from the stored array.
+     * Dummy value is put into the place of non-included array values.
+     * @return An array containing the values of this storage array.
+     */
     public int[] getData(){
         int[] list = new int[max];
         for(int i = 0, counter = 0, number = arrayData[0]; i < max; i++){
-            if(number >= Math.pow(2, 31-i)-INT_SIZE){
+            if(number >= Math.pow(2, 31-i)+INT_SIZE){
                 number -= Math.pow(2, 31-i);
                 counter++;
                 list[i] = arrayData[counter];
             }else
-                list[i] = 0;
+                list[i] = -1;
         }
         return list;
     }
@@ -81,6 +91,9 @@ public class KeyStore {
         System.arraycopy(temp, 0, fillData, 0, temp.length);
         fillData[fillData.length-1] = data;
 
+        for(int i = 0; i < fillData.length; i++)
+            System.out.println("DATA "+i+":"+fillData[i]);
+
         return fillData;
     }
 
@@ -107,6 +120,9 @@ public class KeyStore {
             fillData[index] = data;
         }
 
+        for(int i = 0; i < fillData.length; i++)
+            System.out.println("DATA "+i+":"+fillData[i]);
+
         return fillData;
     }
 
@@ -114,16 +130,12 @@ public class KeyStore {
      * This function adds an index to the key, if it is valid
      * @param index The index to add to the key
      */
-    private boolean addCode(int index){
+    private void addCode(int index){
         if(arrayData.length == 0)
             arrayData = new int[]{ -INT_SIZE };
 
-        if(!checkCode(index, arrayData[0])){
+        if(!checkCode(index, arrayData[0]))
             arrayData[0] += Math.pow(2, 31-index);
-            return true;
-        }
-
-        return false;
     }
 
     /**
