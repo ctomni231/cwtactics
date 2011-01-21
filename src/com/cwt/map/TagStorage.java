@@ -15,7 +15,7 @@ import java.util.HashMap;
  * @todo TODO I have to split the addItem into a dual part so multiple tags
  * can be added to the system.
  */
-public class TagStorage implements Storage {
+public class TagStorage{
 
     public final byte O = 0;//Holds the default place tag of this object
     public final byte OL = 1;//Holds the tile this object overlaps
@@ -42,34 +42,38 @@ public class TagStorage implements Storage {
     public TagStorage(){
         tagNames = new ListStore();
         multItems = new DataStore();
+        tempKey = new KeyStore();
         initReferences();
     }
 
-    public int addItem(HashMap<String, String> fillData) {
+    /**
+     * This function finalizes the storage for the tags
+     * @return The index where this tag is stored
+     */
+    public int addItem(){
+        tagItems = addData(tagItems, tempKey);
         tempKey = new KeyStore();
+        return tagItems.length-1;
+    }
+
+    public void addItem(HashMap<String, String> fillData) {
 
         for(String key: fillData.keySet()){
             //System.out.println("KEY: "+key);
             if(ref.containsKey(key.toUpperCase()))
-                checkItem(ref.get(key.toUpperCase()),
+                storeItem(ref.get(key.toUpperCase()),
                         tagNames.addData(fillData.get(key)));
-
-            //if(key.toUpperCase().equals("O"))
-            //    checkItem(O, tagNames.addData(fillData.get(key)));
-            //else if(key.toUpperCase().equals("OL"))
-            //    checkItem(OL, tagNames.addData(fillData.get(key)));
         }
 
+        /*
         for(int i = 0; i < tempKey.getData().length; i++){
             if(tempKey.getData()[i] < -1)
                 System.out.println("STORE "+i+":"+tagNames.
-                    getData((tempKey.getData()[i]*-1)-2));
+                    getData(((tempKey.getData()[i]*-1)-2)));
+            else
+                System.out.println("STORE "+i+":"+tempKey.getData()[i]);
         }
-        System.out.println("TAG:---------------------------------");
-
-        tagItems = addData(tagItems, tempKey);
-
-        return tagItems.length-1;
+        System.out.println("TAG:---------------------------------");//*/
     }
 
     /**
@@ -78,7 +82,7 @@ public class TagStorage implements Storage {
      * @param index The index where this item is to be stored
      * @param data The data of this particular item
      */
-    private void checkItem(int index, int data){
+    private void storeItem(int index, int data){
         if(tempKey.checkCode(index)){
             if(tempKey.getData(index) < -1){
                 multItems.addNewLayer();

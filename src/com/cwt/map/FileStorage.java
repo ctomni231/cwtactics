@@ -1,5 +1,6 @@
 package com.cwt.map;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -13,7 +14,7 @@ import java.util.HashMap;
  * @license Look into "LICENSE" file for further information
  * @version 01.19.11
  */
-public class FileStorage implements Storage{
+public class FileStorage{
 
     public final byte PATH = 0;//The path to the graphic file
     public final byte LOCX = 1;//The x-axis pixel location to start in the file
@@ -74,6 +75,7 @@ public class FileStorage implements Storage{
         if(tempKey.getData(PATH) == -1)
             return -1;
 
+        /*
         for(int i = 0; i < tempKey.getData().length; i++){
             if(i == 0)
                 System.out.println("PATH:"+tempKey.getData()[i]);
@@ -92,10 +94,25 @@ public class FileStorage implements Storage{
             if(i == 7)
                 System.out.println("FLIP:"+tempKey.getData()[i]);
         }
-        System.out.println("FILE:---------------------------------");
+        System.out.println("FILE:---------------------------------");//*/
         
-        locItems = addData(locItems, tempKey);
+        return checkFile();
+    }
 
+    /**
+     * This checks the file against the current data before storing it as
+     * new data. This is used just for saving memory.
+     * @return The index where this data is found
+     */
+    private int checkFile(){
+        if(locItems != null){
+            for(int i = 0; i < locItems.length; i++){
+                if(Arrays.equals(locItems[locItems.length - 1].getData(),
+                    tempKey.getData()))
+                return i;
+            }
+        }
+        locItems = addData(locItems, tempKey);
         return locItems.length-1;
     }
 

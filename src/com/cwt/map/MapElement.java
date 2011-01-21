@@ -19,24 +19,49 @@ import com.cwt.system.jslix.tools.XML_Writer;
 
 public class MapElement implements Runnable{
 
+    public final byte CODE = 0;//Holds the type of object this is
+    public final byte NAME = 1;//Holds the name reference to this object
+    public final byte BASE = 2;//Holds the object grouping type
+    public final byte TYPE = 3;//Holds which game this object belongs to
+    public final byte DIRECTION = 4;//Holds the direction of this object
+    public final byte ARMY = 5; //Holds which faction this object is part of
+    public final byte WEATHER = 6;//Holds the weather type of this object
+    public final byte FILE = 7;//Holds where in memory this data is stored
+    public final byte TAGS = 8;//Holds the type connection data of the object
+    public final byte COLOR = 9;//Holds the object default color information
+    public final byte RANDOM = 10;//Holds data for random objects
+    public final byte ANIMATE = 11;//Holds data for animations of objects
+
     public final int MAX_ITEMS = 12;
 
-    private int[][] data;
-    private int[] tagFill;
-    private int[] tempTag;
     private boolean isApplet;
     private boolean ready;
     private Thread looper;
+
+    private int[] tagFill;
+    private KeyStore[] dataItems;
     private XML_Parser mapParse;
-    private FileStorage flib;
-    private TagStorage tlib;
+    private FileStorage fileLib;
+    private TagStorage tagLib;
+    private ListStore nameLib;
+    private ListStore baseLib;
+    private ListStore typeLib;
+    private ListStore armyLib;
+    private DataStore colorLib;
+    private DataStore randLib;
+    private DataStore animLib;
 
     public MapElement(){
-        data = new int[0][0];
-        tempTag = new int[MAX_ITEMS];
         mapParse = new XML_Parser();
-        flib = new FileStorage();
-        tlib = new TagStorage();
+        fileLib = new FileStorage();
+        tagLib = new TagStorage();
+        nameLib = new ListStore();
+        baseLib = new ListStore();
+        typeLib = new ListStore();
+        armyLib = new ListStore();
+        colorLib = new DataStore();
+        randLib = new DataStore();
+        animLib = new DataStore();
         ready = false;
         isApplet = true;
     }
@@ -61,23 +86,31 @@ public class MapElement implements Runnable{
         ready = true;
     }
 
-    private int[][] addBranch(int[][] fillData){
-        if(fillData == null)
-            fillData = new int[0][];
-
-        int[][] temp = fillData;
-        fillData = new int[temp.length+1][];
-        System.arraycopy(temp, 0, fillData, 0, temp.length);
-
-        return fillData;
-    }
-
     private int[] addData(int[] fillData, int data){
         if(fillData == null)
             fillData = new int[0];
 
         int[] temp = fillData;
         fillData = new int[temp.length+1];
+        System.arraycopy(temp, 0, fillData, 0, temp.length);
+        fillData[fillData.length-1] = data;
+
+        return fillData;
+    }
+
+    /**
+     * This function is used to cause a primitive array to act like an
+     * ArrayList. This acts like a push function.
+     * @param fillData The data to add to a primitive array
+     * @param data The data to add to the array
+     * @return An array with the data attached
+     */
+    private KeyStore[] addData(KeyStore[] fillData, KeyStore data){
+        if(fillData == null)
+            fillData = new KeyStore[0];
+
+        KeyStore[] temp = fillData;
+        fillData = new KeyStore[temp.length+1];
         System.arraycopy(temp, 0, fillData, 0, temp.length);
         fillData[fillData.length-1] = data;
 
@@ -151,9 +184,9 @@ public class MapElement implements Runnable{
             if(tagFill.length == 4){
                 //Check for file data
                 if(tagFill[3] == 0)
-                    flib.addItem(mapParse.getAttribute(i));
+                    fileLib.addItem(mapParse.getAttribute(i));
                 else if(tagFill[3] == 1)
-                    tlib.addItem(mapParse.getAttribute(i));
+                    tagLib.addItem(mapParse.getAttribute(i));
 
             }
 
