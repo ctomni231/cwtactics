@@ -2,6 +2,7 @@ package com.meowShell.parser.nodes;
 
 import com.meowShell.parser.statements.Statement;
 import com.meowShell.exception.SyntaxException;
+import com.meowShell.parser.IndentMarker.IndentMarkerHolder;
 import com.meowShell.parser.nodes.Decreament;
 import com.meowShell.parser.nodes.Increament;
 import com.meowShell.parser.nodes.Node;
@@ -11,7 +12,6 @@ import com.meowShell.parser.nodes.OperationVariable;
 import com.meowShell.parser.nodes.SetVariable;
 import com.meowShell.parser.nodes.While;
 import com.meowShell.parser.nodes.Variable;
-import java.util.Properties;
 
 /**
  * Node dictionary service contains all possible syntax nodes and provides
@@ -19,7 +19,7 @@ import java.util.Properties;
  *
  * @author Radom, Alexander [ blackcat.myako@gmail.com ]
  * @license Look into "LICENSE" file for further information
- * @version 16.01.2011
+ * @version 22.01.2011
  */
 public class NodeDictionary
 {
@@ -38,9 +38,7 @@ public class NodeDictionary
     private Node arithmeticOp = new ArithmeticOperatior();
     private Node copy = new Copy();
     private Node condition = new Condition();
-
-    // temp
-    private Node tmp = new TempPrint();
+    private Node function = new Function();
     
 
     /**
@@ -51,16 +49,16 @@ public class NodeDictionary
      *                source is putted in
      * @param statement the statement that will be parsed
      */
-    public void parseReturnerStatement( Properties properties , StringBuilder context , Statement statement )
+    public void parseReturnerStatement( IndentMarkerHolder marker , String statement )
     {
              if( number.fits(statement) )
-                 number.parse(properties, context, statement);
+                 number.parse( marker , statement);
         else if( copy.fits(statement))
-                 copy.parse(properties, context, statement);
+                 copy.parse( marker , statement);
         else if( variable.fits(statement))
-                 variable.parse(properties, context, statement);
+                 variable.parse( marker , statement);
         else
-            throw new SyntaxException("Unknown statement, "+statement.getStatement());
+            throw new SyntaxException("Unknown statement, "+statement );
     }
 
     /**
@@ -71,12 +69,12 @@ public class NodeDictionary
      *                source is putted in
      * @param statement the statement that will be parsed
      */
-    public void parseCondition( Properties properties , StringBuilder context , Statement statement )
+    public void parseCondition( IndentMarkerHolder marker , String statement )
     {
              if( condition.fits(statement))
-                 condition.parse(properties, context, statement);
+                 condition.parse( marker , statement);
         else
-            throw new SyntaxException("Unknown statement, "+statement.getStatement());
+            throw new SyntaxException("Unknown statement, "+statement );
     }
 
 
@@ -88,12 +86,12 @@ public class NodeDictionary
      *                source is putted in
      * @param statement the statement that will be parsed
      */
-    public void parseVarReturnerStatement( Properties properties , StringBuilder context , Statement statement )
+    public void parseVarReturnerStatement( IndentMarkerHolder marker , String statement )
     {
              if( variable.fits(statement))
-                 variable.parse(properties, context, statement);
+                 variable.parse( marker , statement);
         else
-            throw new SyntaxException("Unknown statement, "+statement.getStatement());
+            throw new SyntaxException("Unknown statement, "+statement );
     }
 
     /**
@@ -104,14 +102,14 @@ public class NodeDictionary
      *                source is putted in
      * @param statement the statement that will be parsed
      */
-    public void parseOperationPartStatement( Properties properties , StringBuilder context , Statement statement )
+    public void parseOperationPartStatement( IndentMarkerHolder marker , String statement )
     {
              if(operationNumber.fits(statement))
-                operationNumber.parse(properties, context, statement);
+                operationNumber.parse( marker , statement);
         else if(operationVar.fits(statement))
-                operationVar.parse(properties, context, statement);
+                operationVar.parse( marker , statement);
         else
-            throw new SyntaxException("Unknown statement, "+statement.getStatement());
+            throw new SyntaxException("Unknown statement, "+statement );
     }
 
     /**
@@ -123,22 +121,25 @@ public class NodeDictionary
      *                source is putted in
      * @param statement the statement that will be parsed
      */
-    public void parseActorStatement( Properties properties , StringBuilder context , Statement statement )
+    public void parseActorStatement( IndentMarkerHolder marker , String statement )
     {
              if( arithmeticOp.fits(statement) )
-                 arithmeticOp.parse( properties , context , statement);
+                 arithmeticOp.parse( marker , statement);
         else if( whileS.fits(statement) )
-                 whileS.parse(properties, context, statement);
+                 whileS.parse( marker , statement);
         else if( setVariable.fits(statement) )
-                 setVariable.parse( properties , context , statement);
+                 setVariable.parse( marker , statement);
         else if( increament.fits(statement) )
-                 increament.parse(properties, context, statement);
+                 increament.parse( marker , statement);
         else if( decreament.fits(statement) )
-                 decreament.parse(properties, context, statement);
-        else if( tmp.fits(statement) )
-                 tmp.parse(properties, context, statement);
+                 decreament.parse( marker , statement);
         else
-            throw new SyntaxException("Unknown statement, "+statement.getStatement());
+            throw new SyntaxException("Unknown statement, "+statement );
+    }
+
+    public boolean isFunction( String statement )
+    {
+        return function.fits(statement);
     }
 
     /**

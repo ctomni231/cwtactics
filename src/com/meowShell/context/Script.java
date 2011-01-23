@@ -10,7 +10,7 @@ import com.meowShell.variables.MeoWObject;
  * @license Look into "LICENSE" file for further information
  * @version 13.01.2011
  */
-public abstract class CallAbleBlock
+public abstract class Script
 {
     public MeoWObject call( MeoWObject... parameters )
     {

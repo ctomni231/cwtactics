@@ -1,35 +1,49 @@
 package com.meowShell.parser.nodes;
 
+import com.meowShell.exception.SyntaxException;
+import com.meowShell.parser.IndentMarker.IndentMarkerHolder;
+import com.yasl.tools.StringTools;
+
 import static com.yasl.assertions.Assertions.*;
-import com.meowShell.parser.statements.Statement;
-import java.util.Properties;
+import static com.yasl.logging.Logging.*;
+import static com.yasl.application.ApplicationFlags.*;
 
 /**
- * Class description.
+ * Variable statement that represents a value in the memory.
  *
  * @author Radom, Alexander [ blackcat.myako@gmail.com ]
  * @license Look into "LICENSE" file for further information
- * @version 15.01.2011
+ * @version 22.01.2011
  */
-public class Variable implements Node
+public class Variable extends Node
 {
 
-    public boolean fits(Statement statement)
+    @Override
+    public boolean fits(String statement)
     {
         assertNotNull(statement);
 
-        char first = statement.getStatement().charAt(0);
+        char first = statement.charAt(0);
+
+        // variable cannot start with a number
         if( first >= 0 && first <= 9 )
             return false;
 
-        return !statement.getStatement().contains(".");
+        // no method call on a variable
+        return !statement.contains(".");
     }
 
-    public void parse(Properties properties, StringBuilder context, Statement statement)
+    @Override
+    public void parse(IndentMarkerHolder nodeTree, String statement)
     {
-        assertNotNull(context,statement,properties);
+        assertNotNull(nodeTree,statement);
 
-        context.append( statement.getStatement() );
+        statement = StringTools.cutOuterCharacters( statement , ' ' );
+
+        if( statement.contains(" ") )
+            throwing( new SyntaxException(statement+" as variable name is illegal"));
+
+        nodeTree.marker.node.addJavaSourceCode(statement);
     }
 
 }

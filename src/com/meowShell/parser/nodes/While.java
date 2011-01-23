@@ -1,11 +1,11 @@
 package com.meowShell.parser.nodes;
 
-import static com.yasl.assertions.Assertions.*;
 import com.meowShell.exception.SyntaxException;
-import com.meowShell.parser.statements.Statement;
-import com.meowShell.parser.statements.StatementBlock;
-import java.util.LinkedList;
-import java.util.Properties;
+import com.meowShell.parser.IndentMarker.IndentMarkerHolder;
+
+import static com.yasl.assertions.Assertions.*;
+import static com.yasl.logging.Logging.*;
+import static com.yasl.application.ApplicationFlags.*;
 
 /**
  * Class description.
@@ -14,62 +14,12 @@ import java.util.Properties;
  * @license Look into "LICENSE" file for further information
  * @version 13.01.2011
  */
-public class While implements Node
+public class While extends ContainerNode
 {
 
-    public boolean fits( Statement statement)
+    public While()
     {
-        assertNotNull(statement);
-
-        if( !statement.getStatement().startsWith("while") )
-            return false;
-
-        // while statement has definitely a : in the same line
-        if( statement.getStatement().indexOf(':') == -1 )
-            throw new SyntaxException("while keyword without : in statement \""+statement+"\"");
-
-        return true;
-    }
-
-    public void parse( Properties properties , StringBuilder context , Statement statement )
-    {
-        assertNotNull(statement);
-        
-        String statementS = statement.getStatement();
-        int indS = statementS.indexOf(':');
-        NodeDictionary dict = NodeDictionary.getInstance();
-
-        String condition = statementS.substring(5,indS);
-        String rightStatements = statementS.substring(indS+1, statementS.length() );
-
-        context.append("while(");
-
-        int[] ind = getIndexes(condition);
-        //dict.parseOperationPartStatement(properties, context, new Statement( condition.substring(0, ind[0]), -1));
-        //context.append( condition.substring(ind[0], ind[1]) );
-        //dict.parseOperationPartStatement(properties, context, new Statement( condition.substring(ind[1], condition.length()), -1));
-
-        dict.parseCondition(properties, context, new Statement(condition, -1));
-
-        context.append("){");
-
-            if( rightStatements.length() > 0 )
-            {
-                dict.parseActorStatement(properties, context, new Statement( rightStatements, -1));
-                context.append(";");
-            }
-
-            int i;
-            LinkedList<Statement> subStatements = ((StatementBlock) statement).getSubStatements();
-            int e = subStatements.size();
-            for( i = 0 ; i < e ; i++ )
-            {
-                
-                dict.parseActorStatement(properties, context, subStatements.get(i));
-                context.append(";");
-            }
-
-        context.append("}");
+        super("while");
     }
 
     private int[] getIndexes( String condition )
@@ -99,6 +49,33 @@ public class While implements Node
         }
 
         return ar;
+    }
+
+    @Override
+    public boolean fits(String statement)
+    {
+        assertNotNull(statement);
+
+        return super.fits( statement );
+    }
+
+    @Override
+    public void parse(IndentMarkerHolder nodeTree, String statement)
+    {
+        super.parse(nodeTree,statement);
+
+        NodeDictionary dict = NodeDictionary.getInstance();
+
+        
+        nodeTree.marker.node.addJavaSourceCode("while(");
+        
+        // condition
+        dict.parseCondition( nodeTree , contentMiddle );
+
+        nodeTree.marker.node.addJavaSourceCode("){");
+
+        if( contentAfter.length() > 0 )
+            parseContentAfter(nodeTree);
     }
 
 }

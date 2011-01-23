@@ -1,41 +1,36 @@
 package com.meowShell.parser.nodes;
 
-import java.util.Properties;
-import com.meowShell.parser.statements.Statement;
+import com.meowShell.parser.IndentMarker.IndentMarkerHolder;
 import static com.yasl.assertions.Assertions.*;
 
 /**
- * Class description.
+ * Numerical expression.
  *
  * @author Radom, Alexander [ blackcat.myako@gmail.com ]
  * @license Look into "LICENSE" file for further information
- * @version 15.01.2011
+ * @version 22.01.2011
  */
-public class Number implements Node
+public class Number extends Node
 {
-
-    public boolean fits( Statement statement)
+    @Override
+    public boolean fits(String statement)
     {
         assertNotNull( statement );
 
         try
-        {
-            Float.parseFloat(statement.getStatement());
-            return true;
-        }
+            { Float.parseFloat(statement); return true; }
         catch( NumberFormatException e )
-        {
-            return false;
-        }
+            { return false; }
     }
 
-    public void parse( Properties properties , StringBuilder context , Statement statement )
+    @Override
+    public void parse(IndentMarkerHolder nodeTree, String statement)
     {
         assertNotNull( statement );
 
-        context.append( "new com.meowShell.variables.MeoWNumber(" );
-        context.append( statement.getStatement() );
-        context.append( "f)" );
+        nodeTree.marker.node.addJavaSourceCode( "new com.meowShell.variables.MeoWNumber(" );
+        nodeTree.marker.node.addJavaSourceCode( statement );
+        nodeTree.marker.node.addJavaSourceCode( "f)" );
     }
 
 }

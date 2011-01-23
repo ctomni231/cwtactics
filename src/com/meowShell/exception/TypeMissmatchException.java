@@ -8,8 +8,11 @@ package com.meowShell.exception;
  * @license Look into "LICENSE" file for further information
  * @version 10.01.2011
  */
-public class OperationTypeMissmatchException extends RuntimeException
+public class TypeMissmatchException extends RuntimeException
 {
-    public OperationTypeMissmatchException(){ super(); }
-    public OperationTypeMissmatchException( String message ){ super( message ); }
+    @Override
+    public String toString()
+    {
+        return "action unavailable on this variable";
+    }
 }

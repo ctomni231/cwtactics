@@ -1,6 +1,6 @@
 package com.meowShell.variables;
 
-import com.meowShell.exception.OperationTypeMissmatchException;
+import com.meowShell.exception.TypeMissmatchException;
 
 /**
  * Defines structure of a meow shell object.
@@ -11,8 +11,7 @@ import com.meowShell.exception.OperationTypeMissmatchException;
  */
 public abstract class MeoWObject
 {
-    private static final String EXCEPTION_MESSAGE = "action unavailable on this variable";
-
+    
     /*
      * getter methods
      */
@@ -29,7 +28,7 @@ public abstract class MeoWObject
      */
     public float getNumericValue()
     {
-        throw new OperationTypeMissmatchException(EXCEPTION_MESSAGE);
+        throw new TypeMissmatchException();
     }
 
     /**
@@ -38,7 +37,7 @@ public abstract class MeoWObject
      */
     public Object getObjectValue()
     {
-        throw new OperationTypeMissmatchException(EXCEPTION_MESSAGE);
+        throw new TypeMissmatchException();
     }
 
 
@@ -54,7 +53,7 @@ public abstract class MeoWObject
      */
     public void setNumericValue( float val )
     {
-        throw new OperationTypeMissmatchException(EXCEPTION_MESSAGE);
+        throw new TypeMissmatchException();
     }
 
     /**
@@ -65,7 +64,7 @@ public abstract class MeoWObject
      */
     public void setJavaObject( Object obj )
     {
-        throw new OperationTypeMissmatchException(EXCEPTION_MESSAGE);
+        throw new TypeMissmatchException();
     }
 
     /**
@@ -76,9 +75,19 @@ public abstract class MeoWObject
      */
     public void setBooleanValue( boolean val )
     {
-        throw new OperationTypeMissmatchException(EXCEPTION_MESSAGE);
+        throw new TypeMissmatchException();
     }
 
+    public void setValueAt( int f , MeoWObject obj )
+    {
+        throw new TypeMissmatchException();
+    }
+
+    public MeoWObject getValueAt( int f )
+    {
+        throw new TypeMissmatchException();
+    }
+    
     
     /*
      * aritmetic operations
@@ -93,7 +102,7 @@ public abstract class MeoWObject
      */
     public void plus( float val )
     {
-        throw new OperationTypeMissmatchException(EXCEPTION_MESSAGE);
+        throw new TypeMissmatchException();
     }
 
     /**
@@ -104,7 +113,7 @@ public abstract class MeoWObject
      */
     public void minus( float val )
     {
-        throw new OperationTypeMissmatchException(EXCEPTION_MESSAGE);
+        throw new TypeMissmatchException();
     }
 
     /**
@@ -115,7 +124,7 @@ public abstract class MeoWObject
      */
     public void multiply( float val )
     {
-        throw new OperationTypeMissmatchException(EXCEPTION_MESSAGE);
+        throw new TypeMissmatchException();
     }
 
     /**
@@ -126,7 +135,7 @@ public abstract class MeoWObject
      */
     public void divide( float val )
     {
-        throw new OperationTypeMissmatchException(EXCEPTION_MESSAGE);
+        throw new TypeMissmatchException();
     }
 
     /**
@@ -137,7 +146,7 @@ public abstract class MeoWObject
      */
     public void pow( float val )
     {
-        throw new OperationTypeMissmatchException(EXCEPTION_MESSAGE);
+        throw new TypeMissmatchException();
     }
 
     /**
@@ -148,7 +157,7 @@ public abstract class MeoWObject
      */
     public void modulo( float val )
     {
-        throw new OperationTypeMissmatchException(EXCEPTION_MESSAGE);
+        throw new TypeMissmatchException();
     }
 
     /**
@@ -156,7 +165,7 @@ public abstract class MeoWObject
      */
     public void sqrt()
     {
-        throw new OperationTypeMissmatchException(EXCEPTION_MESSAGE);
+        throw new TypeMissmatchException();
     }
 
 

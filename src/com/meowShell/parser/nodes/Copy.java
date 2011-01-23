@@ -1,37 +1,39 @@
 package com.meowShell.parser.nodes;
 
+import com.meowShell.parser.IndentMarker.IndentMarkerHolder;
 import java.util.Properties;
 import com.meowShell.parser.statements.Statement;
 import static com.yasl.assertions.Assertions.*;
 
 /**
- * Class description.
+ * Copy operator that produces a clone of a meow object data type.
  *
  * @author Radom, Alexander [ blackcat.myako@gmail.com ]
  * @license Look into "LICENSE" file for further information
- * @version 13.01.2011
+ * @version 22.01.2011
  */
-public class Copy implements Node
+public class Copy extends Node
 {
 
-    public boolean fits( Statement statement)
+    @Override
+    public boolean fits(String statement)
     {
         assertNotNull( statement );
-        assertGreater( statement.getStatement().length() , 0);
+        assertGreater( statement.length() , 0);
 
-        return statement.getStatement().startsWith("&");
+        return statement.startsWith("&");
     }
 
-    public void parse(Properties properties, StringBuilder context, Statement statement)
+    @Override
+    public void parse(IndentMarkerHolder nodeTree, String statement)
     {
-        assertNotNull( statement , context , properties );
-        assertGreater( statement.getStatement().length() , 0);
+        assertNotNull( statement , nodeTree );
+        assertGreater( statement.length() , 0);
 
-        String varName = statement.getStatement().substring(1, statement.getStatement().length());
+        String varName = statement.substring(1, statement.length());
 
-        // TODO returner searching
-        context.append(varName);
-        context.append(".clone()");
+        NodeDictionary.getInstance().parseReturnerStatement(nodeTree,varName);
+        nodeTree.marker.node.addJavaSourceCode(".clone()");
     }
 
 }

@@ -1,5 +1,6 @@
 package com.meowShell.parser.nodes;
 
+import com.meowShell.parser.IndentMarker.IndentMarkerHolder;
 import java.util.Properties;
 import com.meowShell.parser.statements.Statement;
 import static com.yasl.assertions.Assertions.*;
@@ -9,73 +10,63 @@ import static com.yasl.assertions.Assertions.*;
  *
  * @author Radom, Alexander [ blackcat.myako@gmail.com ]
  * @license Look into "LICENSE" file for further information
- * @version 13.01.2011
+ * @version 22.01.2011
  */
-public class ArithmeticOperatior implements Node
+public class ArithmeticOperatior extends Node
 {
 
-    public boolean fits( Statement statement)
+    @Override
+    public boolean fits(String statement)
     {
         assertNotNull( statement );
-        assertGreater( statement.getStatement().length() , 0);
+        assertGreater( statement.length() , 0);
 
-        String str = statement.getStatement();
         return (
-            str.contains("+=") ||
-            str.contains("-=") ||
-            str.contains("*=") ||
-            str.contains("/=") ||
-            str.contains("%=") ||
-            str.contains("^=") ||
-            str.contains("<=")
+            statement.contains("+=") ||
+            statement.contains("-=") ||
+            statement.contains("*=") ||
+            statement.contains("/=") ||
+            statement.contains("%=") ||
+            statement.contains("^=") ||
+            statement.contains("<=")
         );
     }
 
-    public void parse(Properties properties, StringBuilder context, Statement statement)
+    @Override
+    public void parse(IndentMarkerHolder nodeTree, String statement)
     {
-        assertNotNull( statement , context , properties );
-        assertGreater( statement.getStatement().length() , 0);
+        assertNotNull( statement , nodeTree );
+        assertGreater( statement.length() , 0);
 
-        String str = statement.getStatement();
-        int index = str.indexOf("=");
+        int index = statement.indexOf("=");
 
         assertGreater(index, 1);
 
-        String varName = str.substring(0,index-1);
-        String rigthStatement = str.substring(index+1,str.length());
+        String varName = statement.substring(0,index-1);
+        String rigthStatement = statement.substring(index+1,statement.length());
 
-        context.append(varName);
-        switch( str.charAt(index-1) )
+        NodeDictionary.getInstance().parseReturnerStatement(nodeTree,varName);
+        
+        String back = null;
+        switch( statement.charAt(index-1) )
         {
-            case '<':
-                context.append(".setNumericValue(");
-                break;
-            case '+':
-                context.append(".plus(");
-                break;
-            case '-':
-                context.append(".minus(");
-                break;
-            case '*':
-                context.append(".multiply(");
-                break;
-            case '/':
-                context.append(".divide(");
-                break;
-            case '%':
-                context.append(".mod(");
-                break;
-            case '^':
-                context.append(".pow(");
-                break;
+            case '<': back = ".setNumericValue("; break;
+            case '+': back = ".plus("; break;
+            case '-': back = ".minus("; break;
+            case '*': back = ".multiply("; break;
+            case '/': back = ".divide("; break;
+            case '%': back = ".mod("; break;
+            case '^': back = ".pow("; break;
             default:
-                throw new UnknownError();
+                throw new UnknownError("this should not happen");
         }
 
-        //TODO
-        NodeDictionary.getInstance().parseOperationPartStatement(properties, context, new Statement(rigthStatement,-1));
+        assertNotNull(back);
 
-        context.append(")");
+        nodeTree.marker.node.addJavaSourceCode(back);
+        NodeDictionary.getInstance().parseOperationPartStatement(nodeTree,rigthStatement);
+
+        nodeTree.marker.node.addJavaSourceCode(")");
     }
 
 }

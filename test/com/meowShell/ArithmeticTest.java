@@ -1,13 +1,12 @@
 package com.meowShell;
 
-import com.meowShell.compiler.MeoWShellCompiler;
-import com.meowShell.context.CallAbleBlock;
-import com.meowShell.parser.MeoWShellParser;
+import com.meowShell.context.Script;
 import com.meowShell.parser.statements.ContextBlock;
 import java.util.LinkedList;
 import java.util.Properties;
 import junit.framework.Assert;
 import org.junit.Test;
+import static com.yasl.logging.Logging.*;
 
 /**
  * ArithmeticTest.java
@@ -19,42 +18,24 @@ import org.junit.Test;
  * @version 01.17.11
  */
 
-public class ArithmeticTest {
+public class ArithmeticTest
+{
 
-    public CallAbleBlock func;
+    public Script func;
 
     @Test
-    public void incrementTest(){
-        LinkedList<String> code = new LinkedList<String>();
-        code.add("n = 0");
-        code.add("while n >= 0 && n < 1000 : n++");
-        code.add("x = 1000");
-        code.add("while x > 0 && x <= 1000 : x--");
-
-        ContextBlock bl = MeoWShellParser.getInstance().parse(code);
-
-        Properties p = new Properties();
-        MeoWShellCompiler.setTraceOn(p);
-        func = MeoWShellCompiler.getInstance().compileBlock( p , bl);
-        func.call();
-
-        Assert.assertNotNull(func);
+    public void incrementTest()
+    {
+        notImplemetedYet();
     }
 
     //Dual test for arithmetic does not work
-    /*@Test
-    public void decrementTest(){
-        LinkedList<String> code = new LinkedList<String>();
-        code.add("x = 1000");
-        code.add("while x > 0 && x <= 1000 : x--");
-
-        ContextBlock bl = MeoWShellParser.getInstance().parse(code);
-
-        Properties p = new Properties();
-        MeoWShellCompiler.setTraceOn(p);
-        func = MeoWShellCompiler.getInstance().compileBlock( p , bl);
-        func.call();
-
-        Assert.assertNotNull(func);
-    }*/
+    @Test
+    public void decrementTest()
+    {
+        notImplemetedYet();
+        
+        // "x = 1000"
+        // "while x > 0 && x <= 1000 : x--"
+    }
 }

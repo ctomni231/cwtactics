@@ -1,21 +1,20 @@
 package com.meowShell.parser.nodes;
 
-import com.meowShell.parser.statements.Statement;
-import java.util.Properties;
+import com.meowShell.parser.IndentMarker;
 
 /**
  * Class description.
  *
  * @author Radom, Alexander [ blackcat.myako@gmail.com ]
  * @license Look into "LICENSE" file for further information
- * @version 16.01.2011
+ * @version 22.01.2011
  */
-public class OperationNumber extends Number implements Node
+public class OperationNumber extends Number
 {
     @Override
-    public void parse(Properties properties, StringBuilder context, Statement statement)
+    public void parse( IndentMarker.IndentMarkerHolder nodeTree , String statement)
     {
-        context.append( Float.parseFloat( statement.getStatement() ));
-        context.append("f");
+        nodeTree.marker.node.addJavaSourceCode(Float.parseFloat(statement));
+        nodeTree.marker.node.addJavaSourceCode("f");
     }
 }

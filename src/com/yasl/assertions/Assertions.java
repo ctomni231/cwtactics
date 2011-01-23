@@ -3,7 +3,6 @@ package com.yasl.assertions;
 import com.yasl.exception.AssertFailed;
 import java.util.List;
 import java.util.Map;
-import static com.yasl.assertions.AssertionMessages.*;
 
 /**
  * Service class that provides many methods for assertions. Should be statical
@@ -39,7 +38,7 @@ public abstract class Assertions
 
     public static void assertInList( Object object , List list ) throws AssertFailed
     {
-        if( !list.contains(object) ) throw new AssertFailed( objectIsntInCollection(object) );
+        if( !list.contains(object) ) throw new AssertFailed( );
     }
 
     public static void assertNotInList( Object object , Object[] list ) throws AssertFailed
@@ -56,7 +55,7 @@ public abstract class Assertions
 
     public static void assertInMap( Object object , Map map ) throws AssertFailed
     {
-        if( !map.containsKey(object) ) throw new AssertFailed( objectIsntInCollection(object) );
+        if( !map.containsKey(object) ) throw new AssertFailed( );
     }
 
     public static void assertNotInMap( Object object , Map map ) throws AssertFailed
@@ -106,5 +105,21 @@ public abstract class Assertions
     public static void assertLowerEquals( int value , int lowerEq ) throws AssertFailed
     {
         if( value > lowerEq) throw new AssertFailed();
+    }
+
+    public static void assertStartsWith( String str , String value )
+    {
+        assertNotNull(str,value);
+
+        if( !str.startsWith(value) )
+            throw new AssertFailed();
+    }
+
+    public static void assertEndsWith( String str , String value )
+    {
+        assertNotNull(str,value);
+
+        if( !str.endsWith(value) )
+            throw new AssertFailed();
     }
 }

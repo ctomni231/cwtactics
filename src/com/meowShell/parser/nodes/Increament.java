@@ -1,39 +1,40 @@
 package com.meowShell.parser.nodes;
 
+import com.meowShell.parser.IndentMarker.IndentMarkerHolder;
 import java.util.Properties;
 import com.meowShell.parser.statements.Statement;
 import static com.yasl.assertions.Assertions.*;
 
 /**
- * Class description.
+ * Simple ++ operator, used on numeric data types.
  *
  * @author Radom, Alexander [ blackcat.myako@gmail.com ]
  * @license Look into "LICENSE" file for further information
- * @version 13.01.2011
+ * @version 22.01.2011
  */
-public class Increament implements Node
+public class Increament extends Node
 {
 
-    public boolean fits( Statement statement)
+    @Override
+    public boolean fits(String statement)
     {
         assertNotNull( statement );
-        assertGreater( statement.getStatement().length() , 0);
+        assertGreater( statement.length() , 0);
 
-        return statement.getStatement().endsWith("++");
+        return statement.endsWith("++");
     }
 
-    public void parse(Properties properties, StringBuilder context, Statement statement)
+    @Override
+    public void parse(IndentMarkerHolder nodeTree, String statement)
     {
-        assertNotNull( statement , context , properties );
-        assertGreater( statement.getStatement().length() , 0);
+        assertNotNull( statement , nodeTree );
+        assertGreater( statement.length() , 0);
 
-        String varName = statement.getStatement().substring(0, statement.getStatement().length()-2);
+        String varName = statement.substring(0, statement.length()-2);
 
-        NodeDictionary.getInstance().parseVarReturnerStatement(properties,
-                                                                 context,
-                                                                 new Statement(varName, -1));
-        
-        context.append(".plus(1f)");
+        NodeDictionary.getInstance().parseVarReturnerStatement( nodeTree , varName );
+
+        nodeTree.marker.node.addJavaSourceCode(".plus(1f)");
     }
 
 }
