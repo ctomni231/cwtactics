@@ -52,6 +52,8 @@ public class MapElement implements Runnable{
     private DataStore randLib;
     private DataStore animLib;
 
+    private int tagTrack;
+
     public MapElement(){
         mapParse = new XML_Parser();
         fileLib = new FileStorage();
@@ -63,6 +65,7 @@ public class MapElement implements Runnable{
         colorLib = new DataStore();
         randLib = new DataStore();
         animLib = new DataStore();
+        tagTrack = 0;
         ready = false;
         isApplet = true;
     }
@@ -87,6 +90,13 @@ public class MapElement implements Runnable{
         ready = true;
     }
 
+    /**
+     * This function is used to cause a primitive array to act like an
+     * ArrayList. This acts like a push function.
+     * @param fillData The data to add to a primitive array
+     * @param data The data to add to the array
+     * @return An array with the data attached
+     */
     private int[] addData(int[] fillData, int data){
         if(fillData == null)
             fillData = new int[0];
@@ -116,6 +126,28 @@ public class MapElement implements Runnable{
         fillData[fillData.length-1] = data;
 
         return fillData;
+    }
+
+    /**
+     * This class stores the tags within the array in a way that keeps the
+     * class from taking up too much memory
+     * @param store The data storage class to change
+     * @param index The index where this item is to be stored
+     * @param data The data of this particular item
+     * @return Returns the altered storage class
+     */
+    private DataStore storeData(DataStore store, int index, int data){
+        if(item.checkCode(index)){
+            if(item.getData(index) < -1){
+                store.addNewLayer();
+                store.addData((item.getData(index)*-1) - 2);
+                item.replaceData(index, store.addData(data));
+            }else
+                store.addData(item.getData(index), data);
+        }else
+            item.addData(index, (data+2)*-1);
+
+        return store;
     }
 
     /**
@@ -183,21 +215,25 @@ public class MapElement implements Runnable{
             }
 
             if(tagFill.length == 4){
-                switch(tagFill[3]){
+                switch(tagFill[3]){ 
                     case 0:
                         //Check for file data
                         temp = fileLib.addItem(mapParse.getAttribute(i));
 
-                        if(dataItems == null || temp+1 == fileLib.size())
+                        if(dataItems == null || temp+1 == fileLib.size()){
                             item = new KeyStore();
-                        else if(temp >= 0)
-                            item = dataItems[temp];
-
-                        if(temp >= 0)
                             animLib = storeData(animLib, FILE, temp);
+                            dataItems = addData(dataItems, item);
+                        }else if (temp >= 0){
+                            item = dataItems[temp];
+                            animLib = storeData(animLib, FILE, temp);
+                            dataItems[temp] = item;
+                        }
+                        break;
                     case 1:
                         //Check for tag data
                         tagLib.addItem(mapParse.getAttribute(i));
+                        break;
                 }
             }
 
@@ -205,6 +241,12 @@ public class MapElement implements Runnable{
                 switch(tagFill[2]){
                     case 0:
                         //Check for graphic data
+                        temp = tagLib.addItem();
+                        for(int j = tagTrack; j < fileLib.size(); j++)
+                            dataItems[j].addData(TAGS, temp);
+                        dataItems[tagTrack].replaceData(FILE, animLib.size());
+                        tagTrack = fileLib.size();
+                        
                 }
             }
 
@@ -239,20 +281,6 @@ public class MapElement implements Runnable{
             System.out.println();
         }//*/
         //Color and Language are separate attributes
-    }
-
-    private DataStore storeData(DataStore store, int index, int data){
-        if(item.checkCode(index)){
-            if(item.getData(index) < -1){
-                store.addNewLayer();
-                store.addData((item.getData(index)*-1) - 2);
-                item.replaceData(index, store.addData(data));
-            }else
-                store.addData(item.getData(index), data);
-        }else
-            item.addData(index, (data+2)*-1);
-
-        return store;
     }
 
     public void run() {

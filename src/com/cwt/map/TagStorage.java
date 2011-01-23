@@ -12,8 +12,6 @@ import java.util.HashMap;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 01.19.11
- * @todo TODO I have to split the addItem into a dual part so multiple tags
- * can be added to the system.
  */
 public class TagStorage{
 

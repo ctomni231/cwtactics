@@ -122,6 +122,14 @@ public class DataStore {
     }
 
     /**
+     * This function gets the amount of items stored in this class
+     * @return The amount of indices in this class
+     */
+    public int size(){
+        return (dataItems != null) ? dataItems.length : 0;
+    }
+
+    /**
      * This function gets the data from the layers, if it is invalid you'll
      * get an empty array
      * @param index The index to pull the data from
