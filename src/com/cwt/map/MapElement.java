@@ -40,6 +40,7 @@ public class MapElement implements Runnable{
 
     private int[] tagFill;
     private KeyStore[] dataItems;
+    private KeyStore item;
     private XML_Parser mapParse;
     private FileStorage fileLib;
     private TagStorage tagLib;
@@ -164,10 +165,10 @@ public class MapElement implements Runnable{
     private void parseData(String entry){
         mapParse.parse(entry);
 
-        UPPER:for(int i = 0; i < mapParse.size(); i++){
+        UPPER:for(int temp = 0, i = 0; i < mapParse.size(); i++){
             //This loop checks to see if all tags are valid
             for(int j = 0; j < mapParse.getTags(i).length; j++){
-                int temp = (int)CodeStorage.checkAll(
+                 temp = (int)CodeStorage.checkAll(
                         j, mapParse.getTags(i)[j]);
                 if(CodeStorage.checkAll(j, mapParse.getTags(i)[j]) == -1){
                     if(i == 0){
@@ -182,18 +183,48 @@ public class MapElement implements Runnable{
             }
 
             if(tagFill.length == 4){
-                //Check for file data
-                if(tagFill[3] == 0)
-                    fileLib.addItem(mapParse.getAttribute(i));
-                else if(tagFill[3] == 1)
-                    tagLib.addItem(mapParse.getAttribute(i));
+                switch(tagFill[3]){
+                    case 0:
+                        //Check for file data
+                        temp = fileLib.addItem(mapParse.getAttribute(i));
 
+                        if(dataItems == null || temp+1 == fileLib.size())
+                            item = new KeyStore();
+                        else if(temp >= 0)
+                            item = dataItems[temp];
+
+                        if(temp >= 0)
+                            animLib = storeData(animLib, FILE, temp);
+                    case 1:
+                        //Check for tag data
+                        tagLib.addItem(mapParse.getAttribute(i));
+                }
+            }
+
+            else if(tagFill.length == 3){
+                switch(tagFill[2]){
+                    case 0:
+                        //Check for graphic data
+                }
+            }
+
+            else if(tagFill.length == 2){
+                switch(tagFill[1]){
+                    case 0:
+                        //Check for basic data
+                    case 1:
+                        //Check for color data
+                    case 2:
+                        //Check for language data
+                }
             }
 
             tagFill = null;
 
             
         }
+
+
 
         //Store the code, color, language, and other data
         //Try to find a good way to deal with those attributes
@@ -208,6 +239,20 @@ public class MapElement implements Runnable{
             System.out.println();
         }//*/
         //Color and Language are separate attributes
+    }
+
+    private DataStore storeData(DataStore store, int index, int data){
+        if(item.checkCode(index)){
+            if(item.getData(index) < -1){
+                store.addNewLayer();
+                store.addData((item.getData(index)*-1) - 2);
+                item.replaceData(index, store.addData(data));
+            }else
+                store.addData(item.getData(index), data);
+        }else
+            item.addData(index, (data+2)*-1);
+
+        return store;
     }
 
     public void run() {

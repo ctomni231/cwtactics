@@ -117,6 +117,14 @@ public class FileStorage{
     }
 
     /**
+     * This holds the amount of file items within the class
+     * @return The amount of file items
+     */
+    public int size(){
+        return (locItems != null) ? locItems.length : 0;
+    }
+
+    /**
      * This function is used to cause a primitive array to act like an
      * ArrayList. This acts like a push function.
      * @param fillData The data to add to a primitive array
