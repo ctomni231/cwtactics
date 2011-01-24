@@ -11,7 +11,6 @@ import java.util.Vector;
  *
  * @author <ul><li>Raether, Eugene</li>
  *          <li>Carr, Crecen</li></ul>
- * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 10.21.10
  */

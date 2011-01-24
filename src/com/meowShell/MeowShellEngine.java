@@ -51,11 +51,11 @@ public final class MeowShellEngine
      */
     public Script compile( File file )
     {
-        if( appFlagExist( COMPILER_DEBUG ) )
-            log("Compiling meow shell script file "+file.getPath());
-
         assertNotNull(file);
         assertTrue(file.canRead());
+
+        if( appFlagExist( COMPILER_DEBUG ) )
+            log("Compiling meow shell script file "+file.getPath());
 
         BufferedReader reader = null;
         CompilerBlockNode mNode = new CompilerBlockNode();

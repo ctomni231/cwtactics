@@ -54,11 +54,11 @@ public class ClassCompiler
 
         try
         {
-            int num;
+            //int num;
 
             synchronized( INSTANCE )
             {
-                num = COUNTER;
+                //num = COUNTER;
                 COUNTER++;
             }
 

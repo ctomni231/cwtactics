@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import static com.yasl.logging.Logging.*;
 
 /**
  * XML_Writer.java
@@ -332,19 +333,18 @@ public class XML_Writer {
         try {
             newFile = new File(path);
             if(newFile.mkdirs())
-                System.out.println("Directories Created! "+path);
+                log("Directories Created! "+path);
             else
-                System.out.println("Directories Failed! "+path);
+                log("Directories Failed! "+path);
 
             newFile = new File(path+filename);
             if (newFile.createNewFile())
-                System.out.println("File Created! "+path+filename);
+                log("File Created! "+path+filename);
             else{
                 if(overwrite){
-                    System.out.println("File Exists! "
-                            + "Overwriting! "+path+filename);
+                    log("File Exists! Overwriting! "+path+filename);
                 }else{
-                    System.out.println("File Exists! "+path+filename);
+                    log("File Exists! "+path+filename);
                     return false;
                 }
             }
@@ -356,10 +356,10 @@ public class XML_Writer {
             out.close();
             
         } catch (IOException e) {
-            System.out.println("File IOException! "+path+filename);
+            warn("File IOException! "+path+filename);
             return false;
         } catch(AccessControlException e){
-            System.out.println("Applet Active, can't Access! "+path+filename);
+            log("Applet Active, can't Access! "+path+filename);
             return false;
         }
 

@@ -29,13 +29,9 @@ public class ArithmeticTest
         notImplemetedYet();
     }
 
-    //Dual test for arithmetic does not work
     @Test
     public void decrementTest()
     {
         notImplemetedYet();
-        
-        // "x = 1000"
-        // "while x > 0 && x <= 1000 : x--"
     }
 }

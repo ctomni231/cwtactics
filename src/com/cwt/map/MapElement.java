@@ -4,6 +4,7 @@ import com.cwt.system.jslix.tools.FileFind;
 import com.cwt.system.jslix.tools.FileIndex;
 import com.cwt.system.jslix.tools.XML_Parser;
 import com.cwt.system.jslix.tools.XML_Writer;
+import static com.yasl.logging.Logging.*;
 
 /**
  * MapElement.java
@@ -188,7 +189,7 @@ public class MapElement implements Runnable{
             entries[i] = mapParse.getAttribute(entryLocation[i], "file");
         
         for(String entry: entries){
-            System.out.println("DATA: "+entry);
+            log("DATA: "+entry);
             parseData(entry);
         }
 
@@ -204,8 +205,7 @@ public class MapElement implements Runnable{
                         j, mapParse.getTags(i)[j]);
                 if(CodeStorage.checkAll(j, mapParse.getTags(i)[j]) == -1){
                     if(i == 0){
-                        System.out.println(mapParse.getTags(i)[0]+
-                            " not recognized");
+                        warn(mapParse.getTags(i)[0]+" not recognized");
                         return;
                     }else
                         continue UPPER;
