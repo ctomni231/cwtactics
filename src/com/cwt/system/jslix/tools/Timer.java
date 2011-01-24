@@ -1,4 +1,6 @@
 package com.cwt.system.jslix.tools;
+
+import static com.yasl.logging.Logging.*;
 /**
  * Timer.java
  *
@@ -62,7 +64,7 @@ public class Timer extends Thread{
                 setFrameRate();
             }
         }catch(Exception e){
-            System.out.println(e.getStackTrace());
+            warn(e.getMessage());
             System.exit(0);
         }
     }

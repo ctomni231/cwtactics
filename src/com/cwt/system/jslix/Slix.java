@@ -19,6 +19,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import static com.yasl.logging.Logging.*;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
@@ -474,7 +475,7 @@ public class Slix extends JComponent implements Runnable, KeyListener,
                 repaint();
             }
         }catch(Exception e){
-            System.out.println(e.getStackTrace());
+            warn(e.getMessage());
             System.exit(0);
         }
     }

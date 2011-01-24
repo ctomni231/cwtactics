@@ -2,6 +2,7 @@ package com.cwt.system.jslix.debug;
 
 import java.text.NumberFormat;
 import java.util.Vector;
+import static com.yasl.logging.Logging.*;
 
 /**
  * MemoryTest.java
@@ -55,7 +56,7 @@ public class MemoryTest {
     * @param notifier A String to prefix the size data.
     */
     public static void printMemoryUsage(String notifier){
-         System.out.println(notifier+": "+trunBytes(getMemoryUsage()));
+         log(notifier+": "+trunBytes(getMemoryUsage()));
     }
 
     /**

@@ -287,7 +287,7 @@ public class MapElement implements Runnable{
         try{
             decodeFiles();
         }catch(Exception e){
-            System.out.println(e.getStackTrace());
+            warn(e.getMessage());
         }
     }
 }

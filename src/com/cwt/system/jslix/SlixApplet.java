@@ -13,6 +13,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
+import static com.yasl.logging.Logging.*;
 
 /**
  * SlixApplet.java
@@ -256,7 +257,7 @@ public class SlixApplet extends Applet implements Runnable, KeyListener,
             try {
                 Thread.sleep(game.getFrameTime());
             } catch (InterruptedException e) {
-                System.out.println(e.getStackTrace());
+                warn(e.getMessage());
             }
             setFrameRate();
             repaint();

@@ -168,7 +168,7 @@ public class XML_Writer {
 
             if(endTag) endXMLTag();
         }else
-            System.out.println("No open tag found! Use addXMLTag(String tag) "
+            warn("No open tag found! Use addXMLTag(String tag) "
                     + "to add attribute "+key+"="+value+" !");
     }
 
@@ -187,7 +187,7 @@ public class XML_Writer {
                 if(endTag)  endXMLTag();
             }
         }else
-            System.out.println("No open tag found! Use addXMLTag(String tag) "
+            warn("No open tag found! Use addXMLTag(String tag) "
                     + "to add attributes!");
     }
     
