@@ -54,15 +54,15 @@ public class ClassCompiler
 
         try
         {
-            //int num;
-
+            int num;
             synchronized( INSTANCE )
             {
-                //num = COUNTER;
+                // be sure that you get the next counter value
+                num = COUNTER;
                 COUNTER++;
             }
 
-            CtClass clazz = classPool.makeClass( PACKAGE+COUNTER, superClass);
+            CtClass clazz = classPool.makeClass( PACKAGE+num, superClass);
             CtMethod method;
 
             Set<Entry<String,CompilerBlockNode>> keys = rootNode.getKeys();
