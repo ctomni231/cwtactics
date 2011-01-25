@@ -12,9 +12,14 @@ package com.cwt.system.jslix;
  */
 public class NativeLoader {
 
-    public final String OS = System.getProperty("os.name");
-    public final String DIR = "lib/native/";
+    public final String OS = System.getProperty("os.name");//The current OS
+    public final String DIR = "lib/native/";//Holds the directory
 
+    /**
+     * This function checks your computers operating system and loads the
+     * natives for that system to enable Slick to run.
+     * @return Whether the natives were loaded(T) or not(F)
+     */
     public boolean loadNatives(){
         if(OS.startsWith("Windows")){
             System.loadLibrary(DIR+"natives-win32/OpenAL32");

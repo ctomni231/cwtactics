@@ -16,7 +16,7 @@ import static com.yasl.logging.Logging.*;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 11.07.10
+ * @version 01.24.10
  */
 
 public class XML_Writer {
@@ -41,7 +41,7 @@ public class XML_Writer {
         if(!path.equals("") && !path.endsWith("/"))
             path += "/";
         filePath = path;
-        if(!filename.endsWith(".xml") || !filename.endsWith(".jnlp"))
+        if(!filename.endsWith(".xml") && !filename.endsWith(".jnlp"))
             filename += ".xml";
         this.filename = filename;
         curTag = new ArrayList<String>();

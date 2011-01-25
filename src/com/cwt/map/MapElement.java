@@ -1,5 +1,6 @@
 package com.cwt.map;
 
+import java.util.HashMap;
 import com.cwt.system.jslix.tools.FileFind;
 import com.cwt.system.jslix.tools.FileIndex;
 import com.cwt.system.jslix.tools.XML_Parser;

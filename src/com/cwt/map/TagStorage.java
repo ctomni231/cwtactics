@@ -30,13 +30,18 @@ public class TagStorage{
     public final byte ER = 12;//Holds the rejected connection for East
     public final byte WR = 13;//Holds the rejected connection for West
 
-    private KeyStore[] tagItems;
-    private DataStore multItems;
-    private ListStore tagNames;
-    private HashMap<String, Byte> ref;
+    private KeyStore[] tagItems;//This holds the individual connections
+    private DataStore multItems;//This holds multiple tag for each connection
+    private ListStore tagNames;//This holds the connection name references
+    private HashMap<String, Byte> ref;//This holds valid connection references
 
-    private KeyStore tempKey;
+    private KeyStore tempKey;//This holds temporary connection values
 
+    /**
+     * This class deals with organizing the tag connections for every object.
+     * This is mostly used for terrain, but is also used to store other
+     * objects as well.
+     */
     public TagStorage(){
         tagNames = new ListStore();
         multItems = new DataStore();
@@ -54,6 +59,11 @@ public class TagStorage{
         return tagItems.length-1;
     }
 
+    /**
+     * This adds an item to the tag section and stores it into an array
+     * @param fillData The data where all the tag items are stored
+     * @return The index where this data was stored
+     */
     public void addItem(HashMap<String, String> fillData) {
 
         for(String key: fillData.keySet()){
