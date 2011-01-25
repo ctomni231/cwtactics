@@ -41,7 +41,7 @@ public class XML_Writer {
         if(!path.equals("") && !path.endsWith("/"))
             path += "/";
         filePath = path;
-        if(!filename.endsWith(".xml"))
+        if(!filename.endsWith(".xml") || !filename.endsWith(".jnlp"))
             filename += ".xml";
         this.filename = filename;
         curTag = new ArrayList<String>();

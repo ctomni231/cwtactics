@@ -242,8 +242,10 @@ public class MapElement implements Runnable{
                     case 0:
                         //Check for graphic data
                         temp = tagLib.addItem();
-                        for(int j = tagTrack; j < fileLib.size(); j++)
+                        for(int j = tagTrack; j < fileLib.size(); j++){
                             dataItems[j].addData(TAGS, temp);
+                            dataItems[j].addData(DIRECTION, j);
+                        }
                         dataItems[tagTrack].replaceData(FILE, animLib.size());
                         tagTrack = fileLib.size();
                         
@@ -282,6 +284,12 @@ public class MapElement implements Runnable{
         }//*/
         //Color and Language are separate attributes
     }
+
+    //I have to use the same system in TagStorage to get attributes to load
+    //cleanly here.
+    //private String getAttribute(int index, String key){
+    //
+    //}
 
     public void run() {
         try{
