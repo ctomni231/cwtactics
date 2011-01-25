@@ -6,8 +6,8 @@
 
      <!-- Color... (multiple calls inserts more default colors to change) -->
 
-     <Data Name="Plain" Base="Plain" Type="AWDS">
-            <Graphic Weather="Clear" Direction="0">
+     <Data Name="Plain" Base="Plain" Type="AWDS" Size="Small" >
+            <Graphic Weather="Clear" Direction="0" Army="DF">
 
                   <File Path="image/AWDS_Terrain.png"
                         LOCX="0" LOCY="0" SIZEX="16" SIZEY="32" 
@@ -18,14 +18,11 @@
                   <Tag O="PLIN" />
                   <Tag OL="LAND" />
 
-                  <!-- Tag... (multiple calls to Tag increases the amount of relations 
-				to other tiles) -->
+                  <!-- Tag... (multiple calls to Tag increases the amount of relations to other tiles) -->
             </Graphic>
 
-            <!-- Graphic (multiple calls to graphics w/ the same weather randomizes 
-			the tiles; w/o the same weather creates new tiles) -->
+            <!-- Graphic (multiple calls to graphics w/ the same attributes randomizes the tiles; w/o the same attributes creates new tiles) -->
 
      </Data>
-     <!-- Data (multiple calls to data changes the type of terrain and terrain name; 
-		first one overwrites all others) -->
+     <!-- Data (multiple calls to data changes the type of terrain and terrain name; first one overwrites all others) -->
 </Terrain>

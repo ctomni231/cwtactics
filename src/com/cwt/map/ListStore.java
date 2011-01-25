@@ -33,7 +33,7 @@ public class ListStore {
 
     /**
      * This function adds data to the items
-     * @param data THe data to be stored to the reference
+     * @param data The data to be stored to the reference
      * @return The index where this data was stored
      */
     public int addData(String data){
@@ -65,6 +65,14 @@ public class ListStore {
                 return i;
         }
         return -1;
+    }
+
+    /**
+     * This function returns the amount of items within the list
+     * @return The amount of items
+     */
+    public int size(){
+        return dataItems.length;
     }
 
     /**
