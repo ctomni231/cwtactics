@@ -7,7 +7,7 @@
      <!-- Color... (multiple calls inserts more default colors to change) -->
 
      <Data Name="Plain" Base="Plain" Type="AWDS" Size="Small" >
-            <Graphic Weather="Clear" Direction="0" Army="DF">
+            <Graphic Weather="Clear" Direction="O" Army="GD">
 
                   <File Path="image/AWDS_Terrain.png"
                         LOCX="0" LOCY="0" SIZEX="16" SIZEY="32" 

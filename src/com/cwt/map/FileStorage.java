@@ -2,6 +2,7 @@ package com.cwt.map;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import static com.yasl.logging.Logging.*;
 
 /**
  * FileStorage.java
@@ -12,7 +13,7 @@ import java.util.HashMap;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.19.11
+ * @version 01.25.11
  */
 public class FileStorage{
 
@@ -25,10 +26,9 @@ public class FileStorage{
     public final byte TSIZEY = 6;//The number of tiles it takes for y-axis
     public final byte FLIP = 7;//Special flipping and rotating instructions
 
-    public final int ITEMS = 8;//The maximum amount of items stored in array
-
     private KeyStore[] locItems;//Stores the items in an integer format
     private ListStore fileItems;//Stores the textual portion of the items
+    private RefStore refItems;//Stores references for the file items
 
     private KeyStore tempKey;//A temporary value for storing the items
 
@@ -39,6 +39,15 @@ public class FileStorage{
      */
     public FileStorage(){
         fileItems = new ListStore();
+        refItems = new RefStore();
+        refItems.add("P.*", PATH);
+        refItems.add(new String[]{"L.*X","X"}, LOCX);
+        refItems.add(new String[]{"L.*Y","Y"}, LOCY);
+        refItems.add("S.*X", SIZEX);
+        refItems.add("S.*Y", SIZEY);
+        refItems.add("T.*X", TSIZEX);
+        refItems.add("T.*Y", TSIZEY);
+        refItems.add("F.*", FLIP);
     }
 
     /**
@@ -52,24 +61,17 @@ public class FileStorage{
         for(String key: fillData.keySet()){
             //System.out.println("KEY: "+key);
 
-            if(key.toUpperCase().matches("P.*"))
-                tempKey.addData(PATH, fileItems.addData(key));
-            else if(key.toUpperCase().matches("L.*X") ||
-                    key.toUpperCase().equals("X"))
-                tempKey.addData(LOCX, Integer.parseInt(fillData.get(key)));
-            else if(key.toUpperCase().matches("L.*Y") ||
-                    key.toUpperCase().equals("Y"))
-                tempKey.addData(LOCY, Integer.parseInt(fillData.get(key)));
-            else if(key.toUpperCase().matches("S.*X"))
-                tempKey.addData(SIZEX, Integer.parseInt(fillData.get(key)));
-            else if(key.toUpperCase().matches("S.*Y"))
-                tempKey.addData(SIZEY, Integer.parseInt(fillData.get(key)));
-            else if(key.toUpperCase().matches("T.*X"))
-                tempKey.addData(TSIZEX, Integer.parseInt(fillData.get(key)));
-            else if(key.toUpperCase().matches("T.*Y"))
-                tempKey.addData(TSIZEY, Integer.parseInt(fillData.get(key)));
-            else if(key.toUpperCase().matches("F.*"))
-                tempKey.addData(FLIP, Integer.parseInt(fillData.get(key)));
+            switch(refItems.get(key)){
+                case -1:
+                    warn("Graphic key '"+key+"' not recognized!");
+                    break;
+                case PATH:
+                    tempKey.addData(PATH, fileItems.addData(key));
+                    break;
+                default:
+                    tempKey.addData(refItems.get(key),
+                            Integer.parseInt(fillData.get(key)));
+            }
         }
 
         if(tempKey.getData(PATH) == -1)

@@ -1,6 +1,7 @@
 package com.cwt.map;
 
 import java.util.HashMap;
+import static com.yasl.logging.Logging.*;
 
 /**
  * TagStorage.java
@@ -33,7 +34,7 @@ public class TagStorage{
     private KeyStore[] tagItems;//This holds the individual connections
     private DataStore multItems;//This holds multiple tag for each connection
     private ListStore tagNames;//This holds the connection name references
-    private HashMap<String, Byte> ref;//This holds valid connection references
+    private RefStore ref;//This holds valid connection references
 
     private KeyStore tempKey;//This holds temporary connection values
 
@@ -46,7 +47,21 @@ public class TagStorage{
         tagNames = new ListStore();
         multItems = new DataStore();
         tempKey = new KeyStore();
-        initReferences();
+        ref = new RefStore();
+        ref.add("O", O);
+        ref.add("OL", OL);
+        ref.add("N", N);
+        ref.add("S", S);
+        ref.add("E", E);
+        ref.add("W", W);
+        ref.add("NE", NE);
+        ref.add("NW", NW);
+        ref.add("SE", SE);
+        ref.add("SW", SW);
+        ref.add("NR", NR);
+        ref.add("SR", SR);
+        ref.add("ER", ER);
+        ref.add("WR", WR);
     }
 
     /**
@@ -68,9 +83,14 @@ public class TagStorage{
 
         for(String key: fillData.keySet()){
             //System.out.println("KEY: "+key);
-            if(ref.containsKey(key.toUpperCase()))
-                storeItem(ref.get(key.toUpperCase()),
-                        tagNames.addData(fillData.get(key)));
+            switch(ref.get(key)){
+                case -1:
+                    warn("Tag key '"+key+"' not recognized!");
+                    break;
+                default:
+                    storeItem(ref.get(key), tagNames.addData(
+                            fillData.get(key)));
+            }
         }
 
         /*
@@ -120,26 +140,4 @@ public class TagStorage{
 
         return fillData;
     }
-
-    /**
-     * This class organizes all references into a hashMap for faster indexing
-     */
-    private void initReferences(){
-        ref = new HashMap<String, Byte>();
-        ref.put("O", O);
-        ref.put("OL", OL);
-        ref.put("N", N);
-        ref.put("S", S);
-        ref.put("E", E);
-        ref.put("W", W);
-        ref.put("NE", NE);
-        ref.put("NW", NW);
-        ref.put("SE", SE);
-        ref.put("SW", SW);
-        ref.put("NR", NR);
-        ref.put("SR", SR);
-        ref.put("ER", ER);
-        ref.put("WR", WR);
-    }
-
 }

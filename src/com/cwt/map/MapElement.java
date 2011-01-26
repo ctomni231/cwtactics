@@ -1,6 +1,5 @@
 package com.cwt.map;
 
-import java.util.HashMap;
 import com.cwt.system.jslix.tools.FileFind;
 import com.cwt.system.jslix.tools.FileIndex;
 import com.cwt.system.jslix.tools.XML_Parser;
@@ -15,30 +14,29 @@ import static com.yasl.logging.Logging.*;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.05.11
+ * @version 01.25.11
  * @todo TODO Work on completing the sorting of terrain data first
  */
 
 public class MapElement implements Runnable{
 
-    public final byte CODE = 0;//Holds the type of object this is
-    public final byte NAME = 1;//Holds the name reference to this object
-    public final byte BASE = 2;//Holds the object grouping type
-    public final byte TYPE = 3;//Holds which game this object belongs to
-    public final byte DIRECTION = 4;//Holds the direction of this object
-    public final byte ARMY = 5; //Holds which faction this object is part of
-    public final byte WEATHER = 6;//Holds the weather type of this object
-    public final byte FILE = 7;//Holds where in memory this data is stored
-    public final byte TAGS = 8;//Holds the type connection data of the object
-    public final byte COLOR = 9;//Holds the object default color information
-    public final byte RANDOM = 10;//Holds data for random objects
-    public final byte ANIMATE = 11;//Holds data for animations of objects
+    public static final byte CODE = 0;//Holds the type of object this is
+    public static final byte NAME = 1;//Holds the name reference to this object
+    public static final byte BASE = 2;//Holds the object grouping type
+    public static final byte TYPE = 3;//Holds which game this object belongs to
+    public static final byte SIZE = 4;//Holds the viewing size on an object
+    public static final byte DIRECTION = 5;//Holds the direction of this object
+    public static final byte ARMY = 6; //Holds the faction of this object
+    public static final byte WEATHER = 7;//Holds the weather of this object
+    public static final byte FILE = 8;//Holds the object memory location
+    public static final byte TAGS = 9;//Holds the object type connection data
+    public static final byte COLOR = 10;//Holds the object default colors
+    public static final byte RANDOM = 11;//Holds data for random objects
+    public static final byte ANIMATE = 12;//Holds object animation data
 
-    public final int MAX_ITEMS = 12;
-
-    private boolean isApplet;
-    private boolean ready;
-    private Thread looper;
+    private boolean isApplet;//Holds whether this screen is an applet
+    private boolean ready;//Holds whether all the outside data is loaded
+    private Thread looper;//Holds the Thread associated with this object
 
     private int[] tagFill;
     private KeyStore[] dataItems;
@@ -46,6 +44,7 @@ public class MapElement implements Runnable{
     private XML_Parser mapParse;
     private FileStorage fileLib;
     private TagStorage tagLib;
+    private DataStorage dataLib;
     private ListStore nameLib;
     private ListStore baseLib;
     private ListStore typeLib;
@@ -59,6 +58,7 @@ public class MapElement implements Runnable{
     public MapElement(){
         mapParse = new XML_Parser();
         fileLib = new FileStorage();
+        dataLib = new DataStorage();
         tagLib = new TagStorage();
         nameLib = new ListStore();
         baseLib = new ListStore();
@@ -70,6 +70,43 @@ public class MapElement implements Runnable{
         tagTrack = 0;
         ready = false;
         isApplet = true;
+    }
+
+    private void loadRef(){
+        //Direction Reference Codes
+        dataLib.addRef(DIRECTION, "O", 0);
+        dataLib.addRef(DIRECTION, "N", 1);
+        dataLib.addRef(DIRECTION, "S", 2);
+        dataLib.addRef(DIRECTION, "E", 3);
+        dataLib.addRef(DIRECTION, "W", 4);
+        dataLib.addRef(DIRECTION, "NS", 5);
+        dataLib.addRef(DIRECTION, "EW", 6);
+        dataLib.addRef(DIRECTION, "NE", 7);
+        dataLib.addRef(DIRECTION, "NW", 8);
+        dataLib.addRef(DIRECTION, "SE", 9);
+        dataLib.addRef(DIRECTION, "SW", 10);
+        dataLib.addRef(DIRECTION, "NSE", 11);
+        dataLib.addRef(DIRECTION, "NSW", 12);
+        dataLib.addRef(DIRECTION, "NEW", 13);
+        dataLib.addRef(DIRECTION, "SEW", 14);
+        dataLib.addRef(DIRECTION, "NSEW", 15);
+
+        //Weather Reference Codes
+        dataLib.addRef(WEATHER, "CLEAR", 0);
+        dataLib.addRef(WEATHER, "SNOW", 1);
+        dataLib.addRef(WEATHER, "RAIN", 2);
+        dataLib.addRef(WEATHER, "SANDSTORM", 3);
+        dataLib.addRef(WEATHER, "HIGHWINDS", 4);
+        dataLib.addRef(WEATHER, "HEATWAVE", 5);
+        dataLib.addRef(WEATHER, "THUNDERSTORM", 6);
+        dataLib.addRef(WEATHER, "ACIDRAIN", 7);
+        dataLib.addRef(WEATHER, "EARTHQUAKE", 8);
+
+        //Size Reference Codes (HEX - later on)
+        dataLib.addRef(SIZE, new String[]{"S.*","O.*"}, 0);
+        dataLib.addRef(SIZE, new String[]{"M.*","Z.*"}, 1);
+        dataLib.addRef(SIZE, new String[]{"L.*","B.*"}, 2);
+
     }
 
     public void setApplet(boolean set){
@@ -185,6 +222,7 @@ public class MapElement implements Runnable{
         mapParse.parse("data/filelist.xml");
         int[] entryLocation = mapParse.getLocation("object list");
         String[] entries = new String[entryLocation.length];
+        //loadRef();
 
         for(int i = 0; i < entryLocation.length; i++)
             entries[i] = mapParse.getAttribute(entryLocation[i], "file");
@@ -202,8 +240,7 @@ public class MapElement implements Runnable{
         UPPER:for(int temp = 0, i = 0; i < mapParse.size(); i++){
             //This loop checks to see if all tags are valid
             for(int j = 0; j < mapParse.getTags(i).length; j++){
-                 temp = (int)CodeStorage.checkAll(
-                        j, mapParse.getTags(i)[j]);
+                temp = (int)CodeStorage.checkAll(j, mapParse.getTags(i)[j]);
                 if(CodeStorage.checkAll(j, mapParse.getTags(i)[j]) == -1){
                     if(i == 0){
                         warn(mapParse.getTags(i)[0]+" not recognized");
@@ -245,7 +282,10 @@ public class MapElement implements Runnable{
                         temp = tagLib.addItem();
                         for(int j = tagTrack; j < fileLib.size(); j++){
                             dataItems[j].addData(TAGS, temp);
-                            dataItems[j].addData(DIRECTION, j);
+
+                            //TODO: Work on section below
+                            dataItems[j].addData(DIRECTION, dataLib.addItem(
+                                    DIRECTION, mapParse.getAttribute(i)));
                         }
                         dataItems[tagTrack].replaceData(FILE, animLib.size());
                         tagTrack = fileLib.size();

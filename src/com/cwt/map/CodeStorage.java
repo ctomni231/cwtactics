@@ -9,18 +9,36 @@ package com.cwt.map;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.21.10
+ * @version 01.25.11
  */
 public class CodeStorage {
 
     //The valid data for the code section of the XML
-    public static final byte TERRAIN = 0;//The Terrain/Data object code
-    public static final byte PROPERTY = 1;//The Property/Language object code
-    public static final byte UNIT = 2;//The Unit/Color object code
+    public static final byte TERRAIN = 0;//The Terrain object code
+    public static final byte PROPERTY = 1;//The Property object code
+    public static final byte UNIT = 2;//The Unit object code
     public static final byte COMMANDER = 3;//The code for Commander objects
     public static final byte CURSOR = 4;//The code for cursor objects
     public static final byte ARROW = 5;//The code for arrow objects
     public static final byte ATTRIBUTE = 6;//The code for attribute objects
+
+    //The valid data for the data section of the XML
+    public static final byte DATA = 0;//The Data object code
+    public static final byte COLOR = 1;//The Color object code
+    public static final byte LANGUAGE = 2;//The Language object code
+
+    //The valid data for the type section of the XML
+    public static final byte GRAPHIC = 0;//The Graphic object code
+
+    //The valid data for the file section of the XML
+    public static final byte FILE = 0;//The File object code
+    public static final byte TAG = 1;//The Tag object code
+
+    private static boolean start = true;//Checks initialization status
+    private static RefStore checkCode;//Reference for code
+    private static RefStore checkData;//Reference for data
+    private static RefStore checkType;//Reference for type
+    private static RefStore checkFile;//Reference for file
 
     /**
      * This function is used to wrap all the function into function
@@ -29,79 +47,46 @@ public class CodeStorage {
      * @param part The naming part to test
      * @return The index representing the object code
      */
-    public static byte checkAll(int index, String part){
+    public static int checkAll(int index, String part){
+        if(start)
+            initialize();
+
         switch(index){
             case 0:
-                return checkCode(part.toUpperCase());
+                return checkCode.get(part);
             case 1:
-                return checkData(part.toUpperCase());
+                return checkData.get(part);
             case 2:
-                return checkType(part.toUpperCase());
+                return checkType.get(part);
             case 3:
-                return checkFile(part.toUpperCase());
+                return checkFile.get(part);
         }
         return -1;
     }
 
     /**
-     * This function checks the validity of code
-     * @param part The text to test
-     * @return The index representing the object code
+     * This initializes all the references for the code section
      */
-    public static byte checkCode(String part){
-        if(part.matches("TER.*") || part.matches("FIE.*"))
-            return TERRAIN;
-        else if(part.matches("CIT.*") || part.matches("PRO.*"))
-            return PROPERTY;
-        else if(part.matches("UNI.*"))
-            return UNIT;
-        else if(part.matches("CUR.*"))
-            return CURSOR;
-        else if(part.matches("ATT.*")){
-            return ATTRIBUTE;
-        }else if(part.matches("ARR.*")){
-            return ARROW;
-        }
-        return -1;
+    private static void initialize(){
+        //Validity of the code
+        checkCode = new RefStore();
+        checkCode.add(new String[]{"TER.*","FIE.*"}, TERRAIN);
+        checkCode.add(new String[]{"CIT.*","PRO.*"}, PROPERTY);
+        checkCode.add("UNI.*", UNIT);
+        checkCode.add("CUR.*", CURSOR);
+        checkCode.add("ATT.*", ATTRIBUTE);
+        checkCode.add("ARR.*", ARROW);
+        //Validity of the data
+        checkData = new RefStore();
+        checkData.add("DAT.*", DATA);
+        checkData.add("COL.*", COLOR);
+        checkData.add("LAN.*", LANGUAGE);
+        //Validity of the type
+        checkType = new RefStore();
+        checkType.add("GRA.*", GRAPHIC);
+        //Validity of the file
+        checkFile = new RefStore();
+        checkFile.add("FIL.*", FILE);
+        checkFile.add("TAG", TAG);
     }
-
-    /**
-     * This function checks the validity of the data section
-     * @param part The text to test
-     * @return The index representing the object code
-     */
-    public static byte checkData(String part){
-        if(part.matches("DAT.*"))
-            return TERRAIN;
-        else if(part.matches("COL.*"))
-            return PROPERTY;
-        else if(part.matches("LAN.*"))
-            return UNIT;
-        return -1;
-    }
-
-    /**
-     * This function checks the validity of the type section
-     * @param part The text to test
-     * @return The index representing the object code
-     */
-    public static byte checkType(String part){
-        if(part.matches("GRA.*"))
-            return TERRAIN;
-        return -1;
-    }
-
-    /**
-     * This function checks the validity of the file section
-     * @param part The text to test
-     * @return The index representing the object code
-     */
-    public static byte checkFile(String part){
-        if(part.matches("FIL.*"))
-            return TERRAIN;
-        else if(part.matches("TAG"))
-            return PROPERTY;
-        return -1;
-    }
-
 }
