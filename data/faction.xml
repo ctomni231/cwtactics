@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<army>
+    <color>
+        <unit small="image/PlayerUnit.png" />
+        <prop small="image/PlayerBuilding.png" />
+    </color>
+
+    <faction>
+        <list name="GRAY DIAMOND" id="GD" />
+        <list name="ORANGE STAR" id="OS" />
+        <list name="BLUE MOON" id="BM" />
+        <list name="GREEN EARTH" id="GE" />
+        <list name="YELLOW COMET" id="YC" />
+        <list name="BLACK HOLE" id="BH" />
+        <list name="CRIMSON RAY" id="CR" />
+        <list name="ARSENIC VORTEX" id="AV" />
+        <list name="SEPIA SUN" id="SS" />
+        <list name="SCARLET FLARE" id="SF" />
+        <list name="IVORY NEBULA" id="IN" />
+        <list name="COBALT STORM" id="CS" />
+        <list name="PINK COSMOS" id="PC" />
+        <list name="TEAL GRAVITY" id="TG" />
+        <list name="INDIGO ECLIPSE" id="IE" />
+        <list name="WHITE NOVA" id="WN" />
+        <list name="CREAM GALAXY" id="CG" />
+        <list name="MAGNETA ORBIT" id="MO" />
+        <list name="JADE ASTEROID" id="JA" />
+    </faction>
+</army>

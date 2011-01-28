@@ -44,7 +44,6 @@ public class MapElement implements Runnable{
     private XML_Parser mapParse;
     private FileStorage fileLib;
     private TagStorage tagLib;
-    private DataStorage dataLib;
     private ListStore nameLib;
     private ListStore baseLib;
     private ListStore typeLib;
@@ -58,7 +57,6 @@ public class MapElement implements Runnable{
     public MapElement(){
         mapParse = new XML_Parser();
         fileLib = new FileStorage();
-        dataLib = new DataStorage();
         tagLib = new TagStorage();
         nameLib = new ListStore();
         baseLib = new ListStore();
@@ -70,43 +68,6 @@ public class MapElement implements Runnable{
         tagTrack = 0;
         ready = false;
         isApplet = true;
-    }
-
-    private void loadRef(){
-        //Direction Reference Codes
-        dataLib.addRef(DIRECTION, "O", 0);
-        dataLib.addRef(DIRECTION, "N", 1);
-        dataLib.addRef(DIRECTION, "S", 2);
-        dataLib.addRef(DIRECTION, "E", 3);
-        dataLib.addRef(DIRECTION, "W", 4);
-        dataLib.addRef(DIRECTION, "NS", 5);
-        dataLib.addRef(DIRECTION, "EW", 6);
-        dataLib.addRef(DIRECTION, "NE", 7);
-        dataLib.addRef(DIRECTION, "NW", 8);
-        dataLib.addRef(DIRECTION, "SE", 9);
-        dataLib.addRef(DIRECTION, "SW", 10);
-        dataLib.addRef(DIRECTION, "NSE", 11);
-        dataLib.addRef(DIRECTION, "NSW", 12);
-        dataLib.addRef(DIRECTION, "NEW", 13);
-        dataLib.addRef(DIRECTION, "SEW", 14);
-        dataLib.addRef(DIRECTION, "NSEW", 15);
-
-        //Weather Reference Codes
-        dataLib.addRef(WEATHER, "CLEAR", 0);
-        dataLib.addRef(WEATHER, "SNOW", 1);
-        dataLib.addRef(WEATHER, "RAIN", 2);
-        dataLib.addRef(WEATHER, "SANDSTORM", 3);
-        dataLib.addRef(WEATHER, "HIGHWINDS", 4);
-        dataLib.addRef(WEATHER, "HEATWAVE", 5);
-        dataLib.addRef(WEATHER, "THUNDERSTORM", 6);
-        dataLib.addRef(WEATHER, "ACIDRAIN", 7);
-        dataLib.addRef(WEATHER, "EARTHQUAKE", 8);
-
-        //Size Reference Codes (HEX - later on)
-        dataLib.addRef(SIZE, new String[]{"S.*","O.*"}, 0);
-        dataLib.addRef(SIZE, new String[]{"M.*","Z.*"}, 1);
-        dataLib.addRef(SIZE, new String[]{"L.*","B.*"}, 2);
-
     }
 
     public void setApplet(boolean set){
@@ -237,7 +198,7 @@ public class MapElement implements Runnable{
     private void parseData(String entry){
         mapParse.parse(entry);
 
-        UPPER:for(int temp = 0, i = 0; i < mapParse.size(); i++){
+        for(int temp = 0, i = 0; i < mapParse.size(); i++){
             //This loop checks to see if all tags are valid
             for(int j = 0; j < mapParse.getTags(i).length; j++){
                 temp = (int)CodeStorage.checkAll(j, mapParse.getTags(i)[j]);
@@ -246,7 +207,7 @@ public class MapElement implements Runnable{
                         warn(mapParse.getTags(i)[0]+" not recognized");
                         return;
                     }else
-                        continue UPPER;
+                        continue;
                 }
 
                 tagFill = addData(tagFill, temp);
@@ -278,17 +239,19 @@ public class MapElement implements Runnable{
             else if(tagFill.length == 3){
                 switch(tagFill[2]){
                     case 0:
-                        //Check for graphic data
+                        //Check for graphic data                        
                         temp = tagLib.addItem();
                         for(int j = tagTrack; j < fileLib.size(); j++){
                             dataItems[j].addData(TAGS, temp);
 
                             //TODO: Work on section below
-                            dataItems[j].addData(DIRECTION, dataLib.addItem(
-                                    DIRECTION, mapParse.getAttribute(i)));
+                            //dataItems[j].addData(DIRECTION, dataLib.addItem(
+                            //        DIRECTION, mapParse.getAttribute(i)));
                         }
-                        dataItems[tagTrack].replaceData(FILE, animLib.size());
-                        tagTrack = fileLib.size();
+                        if(tagTrack != fileLib.size())
+                            dataItems[tagTrack].replaceData(
+                                    FILE, animLib.size());
+                        tagTrack = fileLib.size();//*/
                         
                 }
             }
@@ -304,9 +267,7 @@ public class MapElement implements Runnable{
                 }
             }
 
-            tagFill = null;
-
-            
+            tagFill = null;            
         }
 
 
@@ -336,7 +297,7 @@ public class MapElement implements Runnable{
         try{
             decodeFiles();
         }catch(Exception e){
-            warn(e.getMessage());
+            warn(e.toString());
         }
     }
 }

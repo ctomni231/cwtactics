@@ -6,9 +6,6 @@
 		pic="image/menu/cwLogo.gif" 
 		help="image/question.png" />
 
-	<color  prop="image/PlayerBuilding.png"
-		unit="image/PlayerUnit.png" />
-
 	<title  copy="@copyright"
 		start="PRESS START" 
 		alpha="image/menu/BasicAlpha.png"

@@ -1,5 +1,5 @@
 @author : ctomni231
-@version : 11.01.2010
+@version : 01.27.2011
 
 Hardcoded Features
 
@@ -56,9 +56,9 @@ Map Functionality - CO Zone Highlight					[ ]
 Power Effect - Power Attributes (Multiple)				[ ]
 Weather Display - Animations						[ ]
 
-Phase 3 - Map I/O [ ]
+Phase 3 - Map I/O [#]
 
-XML Library - Reference (String[] root)                                 [ ]
+XML Library - Reference (String[] root)                                 [#]
 Image Loading - Terrain Layer [Connections, Owner] (XML root)           [ ]
 Image Loading - Unit Layer [Owner] (XML root)                           [ ]
 Image Storage - Terrain int[][] (Byte root)                             [ ]

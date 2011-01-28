@@ -57,20 +57,20 @@ public class FileStorage{
      */
     public int addItem(HashMap<String, String> fillData) {
         tempKey = new KeyStore();
+        int temp;
 
         for(String key: fillData.keySet()){
             //System.out.println("KEY: "+key);
-
-            switch(refItems.get(key)){
+            temp = refItems.get(key);
+            switch(temp){
                 case -1:
-                    warn("Graphic key '"+key+"' not recognized!");
+                    warn("File key '"+key+"' not recognized!");
                     break;
                 case PATH:
                     tempKey.addData(PATH, fileItems.addData(key));
                     break;
                 default:
-                    tempKey.addData(refItems.get(key),
-                            Integer.parseInt(fillData.get(key)));
+                    tempKey.addData(temp, Integer.parseInt(fillData.get(key)));
             }
         }
 
@@ -109,9 +109,8 @@ public class FileStorage{
     private int checkFile(){
         if(locItems != null){
             for(int i = 0; i < locItems.length; i++){
-                if(Arrays.equals(locItems[locItems.length - 1].getData(),
-                    tempKey.getData()))
-                return i;
+                if(Arrays.equals(locItems[i].getData(), tempKey.getData()))
+                    return i;
             }
         }
         locItems = addData(locItems, tempKey);

@@ -26,7 +26,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.20.10
+ * @version 01.27.11
  */
 
 public class MainMenuScreen extends Screen{
@@ -59,13 +59,16 @@ public class MainMenuScreen extends Screen{
     private int[] entryLocation;//Stores entry locations for menu items
     private String[][] entries;//Stores strings of entry location
 
-
     /**
      * This class contains all the elements that make up the title screen
      * of CWT. This function initializes all the screens.
      */
     public MainMenuScreen(){
         bgPic = new BackgroundHandler(scr_width, scr_height);
+
+        XML_Reader.parse("data/faction.xml");
+        String colorPath = XML_Reader.getAttribute(
+                XML_Reader.getIndex("army color unit")[0], "small");
 
         XML_Reader.parse("data/titlescreen.xml");
         XML_Reader.setLanguagePath(XML_Reader.getAttribute(
@@ -77,8 +80,7 @@ public class MainMenuScreen extends Screen{
 
         logoPic = new LogoHandler(XML_Reader.getAttribute(XML_Reader.getIndex(
                 "menu logo")[0], "help"), SIZE_X, SIZE_Y);
-        logoPic.setColorPath(XML_Reader.getAttribute(XML_Reader.getIndex(
-                "menu color")[0], "unit"));
+        logoPic.setColorPath(colorPath);
         startHelp = XML_Reader.convert(XML_Reader.getAttribute(
                 XML_Reader.getIndex("menu title")[0], "help"));
         mainText = XML_Reader.convert(XML_Reader.getAttribute(
@@ -90,8 +92,7 @@ public class MainMenuScreen extends Screen{
         titleScr.setShadowOffset(1);
         titleScr.setWords(XML_Reader.getAttribute(
                 XML_Reader.getIndex("menu title")[0], "start"), 200, 20);
-        titleScr.setColorPath(XML_Reader.getAttribute(
-                XML_Reader.getIndex("menu color")[0], "unit"));
+        titleScr.setColorPath(colorPath);
 
         entryLocation = XML_Reader.getIndex("menu screen exit list");
         entries = new String[1][entryLocation.length];
@@ -99,8 +100,7 @@ public class MainMenuScreen extends Screen{
             entries[0][i] = XML_Reader.getAttribute(entryLocation[i], "text");
         exitScr = new ExitGUI(XML_Reader.convert(entries[0]), 100, 200, 0);
         exitScr.setOrigScreen(SIZE_X, SIZE_Y);
-        exitScr.setColorPath(XML_Reader.getAttribute(
-                XML_Reader.getIndex("menu color")[0], "unit"));
+        exitScr.setColorPath(colorPath);
 
         entryLocation = XML_Reader.getIndex("menu screen main list");
         entries = new String[4][entryLocation.length];
@@ -117,8 +117,7 @@ public class MainMenuScreen extends Screen{
                 XML_Reader.convert(entries[1]), XML_Reader.convert(entries[2]),
                 XML_Reader.convert(entries[3]));
         menuScr.setOrigScreen(SIZE_X, SIZE_Y);
-        menuScr.setColorPath(XML_Reader.getAttribute(
-                XML_Reader.getIndex("menu color")[0], "unit"));
+        menuScr.setColorPath(colorPath);
 
         entryLocation = XML_Reader.getIndex("menu screen edit list");
         entries = new String[4][entryLocation.length];
@@ -134,20 +133,17 @@ public class MainMenuScreen extends Screen{
                 XML_Reader.convert(entries[1]), XML_Reader.convert(entries[2]),
                 XML_Reader.convert(entries[3]));
         editScr.setOrigScreen(SIZE_X, SIZE_Y);
-        editScr.setColorPath(XML_Reader.getAttribute(
-                XML_Reader.getIndex("menu color")[0], "unit"));
+        editScr.setColorPath(colorPath);
         editScr.setPrevious(1);
 
         credScr = new CreditGUI(XML_Reader.getAttribute(
                 XML_Reader.getIndex("menu title")[0], "credit"), 0, 0, 1);
         credScr.setOpacity(0.7);
-        credScr.setColorPath(XML_Reader.getAttribute(
-                XML_Reader.getIndex("menu color")[0], "unit"));
+        credScr.setColorPath(colorPath);
         credScr.setOrigScreen(SIZE_X, SIZE_Y);
 
         keyScr = new KeyGUI(20, 0, 200, 1);
-        keyScr.setColorPath(XML_Reader.getAttribute(
-                XML_Reader.getIndex("menu color")[0], "unit"));
+        keyScr.setColorPath(colorPath);
         keyScr.setOrigScreen(SIZE_X, SIZE_Y);
 
         //Stores the initialization data below in the init() function

@@ -80,16 +80,16 @@ public class TagStorage{
      * @return The index where this data was stored
      */
     public void addItem(HashMap<String, String> fillData) {
-
+        int temp;
         for(String key: fillData.keySet()){
             //System.out.println("KEY: "+key);
-            switch(ref.get(key)){
+            temp = ref.get(key);
+            switch(temp){
                 case -1:
                     warn("Tag key '"+key+"' not recognized!");
                     break;
                 default:
-                    storeItem(ref.get(key), tagNames.addData(
-                            fillData.get(key)));
+                    storeItem(temp, tagNames.addData(fillData.get(key)));
             }
         }
 
