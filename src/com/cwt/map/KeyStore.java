@@ -9,7 +9,7 @@ package com.cwt.map;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.18.11
+ * @version 01.28.11
  */
 public class KeyStore {
 
@@ -56,6 +56,8 @@ public class KeyStore {
     public void replaceData(int index, int data){
         if(checkCode(index))
             arrayData[getCodePosition(index, arrayData[0])+1] = data;
+        else
+            addData(index, data);
     }
 
     /**
@@ -65,13 +67,15 @@ public class KeyStore {
      */
     public int[] getData(){
         int[] list = new int[max];
-        for(int i = 0, counter = 0, number = arrayData[0]; i < max; i++){
-            if(number >= Math.pow(2, 31-i)+INT_SIZE){
-                number -= Math.pow(2, 31-i);
-                counter++;
-                list[i] = arrayData[counter];
-            }else
-                list[i] = -1;
+        if(max > 0){
+            for(int i = 0, counter = 0, number = arrayData[0]; i < max; i++){
+                if(number >= Math.pow(2, 31-i)+INT_SIZE){
+                    number -= Math.pow(2, 31-i);
+                    counter++;
+                    list[i] = arrayData[counter];
+                }else
+                    list[i] = -1;
+            }
         }
         return list;
     }

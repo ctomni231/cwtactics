@@ -14,25 +14,33 @@ import static com.yasl.logging.Logging.*;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.25.11
+ * @version 01.28.11
  * @todo TODO Work on completing the sorting of terrain data first
  */
 
 public class MapElement implements Runnable{
 
-    public static final byte CODE = 0;//Holds the type of object this is
-    public static final byte NAME = 1;//Holds the name reference to this object
-    public static final byte BASE = 2;//Holds the object grouping type
-    public static final byte TYPE = 3;//Holds which game this object belongs to
-    public static final byte SIZE = 4;//Holds the viewing size on an object
-    public static final byte DIRECTION = 5;//Holds the direction of this object
-    public static final byte ARMY = 6; //Holds the faction of this object
-    public static final byte WEATHER = 7;//Holds the weather of this object
-    public static final byte FILE = 8;//Holds the object memory location
-    public static final byte TAGS = 9;//Holds the object type connection data
-    public static final byte COLOR = 10;//Holds the object default colors
-    public static final byte RANDOM = 11;//Holds data for random objects
-    public static final byte ANIMATE = 12;//Holds object animation data
+    //public static final byte CODE = 0;//Holds the type of object this is
+    //public static final byte NAME = 1;//Holds the name reference to this object
+    //public static final byte BASE = 2;//Holds the object grouping type
+    //public static final byte TYPE = 3;//Holds which game this object belongs to
+    //public static final byte SIZE = 4;//Holds the viewing size on an object
+    //public static final byte DIRECTION = 5;//Holds the direction of this object
+    //public static final byte ARMY = 6; //Holds the faction of this object
+    //public static final byte WEATHER = 7;//Holds the weather of this object
+    //public static final byte FILE = 8;//Holds the object memory location
+    //public static final byte TAGS = 9;//Holds the object type connection data
+    //public static final byte COLOR = 10;//Holds the object default colors
+    //public static final byte RANDOM = 11;//Holds data for random objects
+    //public static final byte ANIMATE = 12;//Holds object animation data
+
+    public static final byte CODE = 0;
+    public static final byte DATA = 1;
+    public static final byte GRAPHIC = 2;
+    public static final byte FILE = 3;
+    public static final byte TAGS = 4;
+    public static final byte RANDOM = 5;
+    public static final byte COLOR = 6;
 
     private boolean isApplet;//Holds whether this screen is an applet
     private boolean ready;//Holds whether all the outside data is loaded
@@ -43,29 +51,35 @@ public class MapElement implements Runnable{
     private KeyStore item;
     private XML_Parser mapParse;
     private FileStorage fileLib;
+    private GraphicStorage picLib;
+    private DataStorage dataLib;
+    private ColorStorage colorLib;
     private TagStorage tagLib;
     private ListStore nameLib;
     private ListStore baseLib;
     private ListStore typeLib;
     private ListStore armyLib;
-    private DataStore colorLib;
     private DataStore randLib;
     private DataStore animLib;
 
     private int tagTrack;
+    private int dataTrack;
 
     public MapElement(){
         mapParse = new XML_Parser();
         fileLib = new FileStorage();
         tagLib = new TagStorage();
+        picLib = new GraphicStorage();
+        dataLib = new DataStorage();
+        colorLib = new ColorStorage();
         nameLib = new ListStore();
         baseLib = new ListStore();
         typeLib = new ListStore();
         armyLib = new ListStore();
-        colorLib = new DataStore();
         randLib = new DataStore();
         animLib = new DataStore();
         tagTrack = 0;
+        dataTrack = 0;
         ready = false;
         isApplet = true;
     }
@@ -239,20 +253,28 @@ public class MapElement implements Runnable{
             else if(tagFill.length == 3){
                 switch(tagFill[2]){
                     case 0:
-                        //Check for graphic data                        
-                        temp = tagLib.addItem();
-                        for(int j = tagTrack; j < fileLib.size(); j++){
-                            dataItems[j].addData(TAGS, temp);
-
-                            //TODO: Work on section below
-                            //dataItems[j].addData(DIRECTION, dataLib.addItem(
-                            //        DIRECTION, mapParse.getAttribute(i)));
-                        }
-                        if(tagTrack != fileLib.size())
+                        //Check for graphic data
+                        if(tagTrack != fileLib.size()){
+                            temp = tagLib.addItem();
+                            for(int j = tagTrack; j < fileLib.size(); j++){
+                                dataItems[j].addData(TAGS, temp);
+                                dataItems[j].addData(GRAPHIC, picLib.addItem(
+                                       mapParse.getAttribute(i)));
+                            }
+                            
+                            temp = picLib.addItem(mapParse.getAttribute(i));
+                            for(int j = dataTrack; j < fileLib.size(); j++){
+                                if(dataItems[j].getData(GRAPHIC) == temp){
+                                    item = dataItems[j];
+                                    randLib = storeData(randLib, RANDOM, temp);
+                                    dataItems[j] = item;
+                                    break;
+                                }
+                            }
                             dataItems[tagTrack].replaceData(
                                     FILE, animLib.size());
-                        tagTrack = fileLib.size();//*/
-                        
+                            tagTrack = fileLib.size();
+                        }                       
                 }
             }
 
@@ -260,8 +282,17 @@ public class MapElement implements Runnable{
                 switch(tagFill[1]){
                     case 0:
                         //Check for basic data
+                        temp = dataLib.addItem(mapParse.getAttribute(i));
+                        for(int j = dataTrack; j < fileLib.size(); j++){
+                            dataItems[j].addData(DATA, temp);
+                            dataItems[j].addData(COLOR, colorLib.addItem());
+                        }
+                        dataTrack = fileLib.size();
+                        break;
                     case 1:
                         //Check for color data
+                        colorLib.addItem(mapParse.getAttribute(i));
+                        break;
                     case 2:
                         //Check for language data
                 }
@@ -286,12 +317,6 @@ public class MapElement implements Runnable{
         }//*/
         //Color and Language are separate attributes
     }
-
-    //I have to use the same system in TagStorage to get attributes to load
-    //cleanly here.
-    //private String getAttribute(int index, String key){
-    //
-    //}
 
     public void run() {
         try{

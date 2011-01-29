@@ -3,7 +3,7 @@
 	<LANG PATH="data/terrain/lang/Languages" />
 
 	<DATA NAME="Plain" BASE="Plain" TYPE="AWDS">
-		<GRAPHIC WEATHER="Clear" DIRECTION="0" Size="Small" >
+		<GRAPHIC WEATHER="Clear" DIRECTION="0" SIZE="Small" >
 			<FILE PATH="image/AWDS_Terrain.png" SIZEX="16" SIZEY="32" />
 			<TAG O="PLIN" OL="LAND" />
 		</GRAPHIC>

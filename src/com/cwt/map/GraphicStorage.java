@@ -12,7 +12,7 @@ import static com.yasl.logging.Logging.*;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.27.11
+ * @version 01.28.11
  */
 public class GraphicStorage {
 
@@ -63,7 +63,7 @@ public class GraphicStorage {
                     break;
             }
         }
-        return checkGraphic();
+        return (tempKey.getData().length != 0) ? checkGraphic() : -1;
     }
 
     /**

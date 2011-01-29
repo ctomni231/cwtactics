@@ -10,7 +10,7 @@ import java.util.Arrays;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.18.11
+ * @version 01.28.11
  */
 public class DataStore {
 
@@ -31,7 +31,10 @@ public class DataStore {
      * @return The layer index
      */
     public int addNewLayer(){
-        dataItems = addBranch(dataItems);
+        if(dataItems == null)
+            dataItems = addBranch(dataItems);
+        else if(dataItems[dataItems.length - 1].length > 0)
+            dataItems = addBranch(dataItems);
         return dataItems.length-1;
     }
 
@@ -112,6 +115,22 @@ public class DataStore {
         }
 
         return addData(data);
+    }
+
+    /**
+     * This function acts like an add data command, but only if the current
+     * data is present within the previous members array. If the data in the
+     * current array exists, it returns the index matching the previous
+     * member it matches instead. This function will disable you from adding
+     * data by index.
+     * @return A layer index matching the last inputted array
+     */
+    public int addRefData(){
+        if(dataItems.length == 0)
+            return 0;
+        int[] temp = dataItems[dataItems.length-1];
+        clearCurrent();
+        return addRefData(temp);
     }
 
     /**
