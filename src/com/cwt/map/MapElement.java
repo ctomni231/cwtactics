@@ -14,57 +14,45 @@ import static com.yasl.logging.Logging.*;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.28.11
- * @todo TODO Work on completing the sorting of terrain data first
+ * @version 01.29.11
  */
 
 public class MapElement implements Runnable{
 
-    //public static final byte CODE = 0;//Holds the type of object this is
-    //public static final byte NAME = 1;//Holds the name reference to this object
-    //public static final byte BASE = 2;//Holds the object grouping type
-    //public static final byte TYPE = 3;//Holds which game this object belongs to
-    //public static final byte SIZE = 4;//Holds the viewing size on an object
-    //public static final byte DIRECTION = 5;//Holds the direction of this object
-    //public static final byte ARMY = 6; //Holds the faction of this object
-    //public static final byte WEATHER = 7;//Holds the weather of this object
-    //public static final byte FILE = 8;//Holds the object memory location
-    //public static final byte TAGS = 9;//Holds the object type connection data
-    //public static final byte COLOR = 10;//Holds the object default colors
-    //public static final byte RANDOM = 11;//Holds data for random objects
-    //public static final byte ANIMATE = 12;//Holds object animation data
-
-    public static final byte CODE = 0;
-    public static final byte DATA = 1;
-    public static final byte GRAPHIC = 2;
-    public static final byte FILE = 3;
-    public static final byte TAGS = 4;
-    public static final byte RANDOM = 5;
-    public static final byte COLOR = 6;
+    public static final byte CODE = 0;//Holds the type of object this is
+    public static final byte DATA = 1;//Holds the object naming attributes
+    public static final byte GRAPHIC = 2;//Holds the objct type attributes
+    public static final byte FILE = 3;//Holds the object memory location
+    public static final byte TAGS = 4;//Holds the object type connection data
+    public static final byte RANDOM = 5;//Holds data for random objects
+    public static final byte COLOR = 6;//Holds the object default colors
 
     private boolean isApplet;//Holds whether this screen is an applet
     private boolean ready;//Holds whether all the outside data is loaded
     private Thread looper;//Holds the Thread associated with this object
 
-    private int[] tagFill;
-    private KeyStore[] dataItems;
-    private KeyStore item;
-    private XML_Parser mapParse;
-    private FileStorage fileLib;
-    private GraphicStorage picLib;
-    private DataStorage dataLib;
-    private ColorStorage colorLib;
-    private TagStorage tagLib;
-    private ListStore nameLib;
-    private ListStore baseLib;
-    private ListStore typeLib;
-    private ListStore armyLib;
-    private DataStore randLib;
-    private DataStore animLib;
+    private int[] tagFill;//This stores all the tag elements used
+    private KeyStore[] dataItems;//This is the main storage area for objects
+    private KeyStore item;//This temporarily assists the main storage area
+    private XML_Parser mapParse;//This is used to parse XML documents
+    private FileStorage fileLib;//This stores all the file XML tag information
+    private GraphicStorage picLib;//This stores graphic XML tag information
+    private DataStorage dataLib;//This stores all the data XML tag information
+    private ColorStorage colorLib;//This stores the color XML tag information
+    private TagStorage tagLib;//This stores the tag XML tag information
+    private LangStorage langLib;//This stores the language XML tag information
+    private DataStore randLib;//This stores the random object list
+    private DataStore animLib;//This stores the animation object list
 
-    private int tagTrack;
-    private int dataTrack;
+    private int tagTrack;//This keeps track of the animation list
+    private int dataTrack;//This keeps track of the random object list
 
+    /**
+     * This class is responsible for all the object loading and storage of all
+     * the map objects. It holds them in the smallest data types possible
+     * and is optimized to look for matches and ignoring storage of empty
+     * elements.
+     */
     public MapElement(){
         mapParse = new XML_Parser();
         fileLib = new FileStorage();
@@ -72,10 +60,7 @@ public class MapElement implements Runnable{
         picLib = new GraphicStorage();
         dataLib = new DataStorage();
         colorLib = new ColorStorage();
-        nameLib = new ListStore();
-        baseLib = new ListStore();
-        typeLib = new ListStore();
-        armyLib = new ListStore();
+        langLib = new LangStorage();
         randLib = new DataStore();
         animLib = new DataStore();
         tagTrack = 0;
@@ -84,20 +69,40 @@ public class MapElement implements Runnable{
         isApplet = true;
     }
 
+    /**
+     * This function sets whether the current game is an Applet. It is used
+     * to regulate how items are loaded, and whether new items should be
+     * searched.
+     * @param set Whether this item is an applet(T) or not(F)
+     */
     public void setApplet(boolean set){
         isApplet = set;
     }
 
+    /**
+     * This function gives you information about whether all the objects
+     * are loaded into memory
+     * @return Whether all objects are loaded(T) or not(F)
+     */
     public boolean isReady(){
         return ready;
     }
 
+    /**
+     * This function is used to set a new Thread in where to decode all
+     * the object files. The process is done separately so the user can
+     * still navigate the game while objects are loading into the system.
+     */
     public void decode(){
         ready = false;
         looper = new Thread(this);
         looper.start();
     }
 
+    /**
+     * This function is used to find and load the objects that will be used
+     * for the game. 
+     */
     private void decodeFiles(){
         //if(!isApplet)   findObjects();
         loadObjects();
@@ -193,11 +198,13 @@ public class MapElement implements Runnable{
         }
     }
 
+    /**
+     * This function loads the objects from the file name list specified.
+     */
     private void loadObjects(){
         mapParse.parse("data/filelist.xml");
         int[] entryLocation = mapParse.getLocation("object list");
         String[] entries = new String[entryLocation.length];
-        //loadRef();
 
         for(int i = 0; i < entryLocation.length; i++)
             entries[i] = mapParse.getAttribute(entryLocation[i], "file");
@@ -209,6 +216,12 @@ public class MapElement implements Runnable{
 
     }
 
+    /**
+     * THis file searches and parses each XML file in the file list and turns
+     * it into a list of storage. The process is optimized to take up the
+     * least memory possible to store objects
+     * @param entry The XML file to parse
+     */
     private void parseData(String entry){
         mapParse.parse(entry);
 
@@ -286,6 +299,8 @@ public class MapElement implements Runnable{
                         for(int j = dataTrack; j < fileLib.size(); j++){
                             dataItems[j].addData(DATA, temp);
                             dataItems[j].addData(COLOR, colorLib.addItem());
+                            dataItems[j].addData(CODE, CodeStorage.checkAll(
+                                    CODE, mapParse.getTags(i)[CODE]));
                         }
                         dataTrack = fileLib.size();
                         break;
@@ -295,17 +310,16 @@ public class MapElement implements Runnable{
                         break;
                     case 2:
                         //Check for language data
+                        dataLib.setLanguage(langLib.getItem(
+                                mapParse.getAttribute(i)));
+                        break;
                 }
             }
 
             tagFill = null;            
         }
 
-
-
-        //Store the code, color, language, and other data
-        //Try to find a good way to deal with those attributes
-
+        //UNCOMMENT TO SEE ALL THE XML TAGS
         /*
         int size = mapParse.size();
 
@@ -315,9 +329,11 @@ public class MapElement implements Runnable{
                 System.out.print(mapParse.getTags(i)[j]+" ");
             System.out.println();
         }//*/
-        //Color and Language are separate attributes
     }
 
+    /**
+     * This function runs the loading in a separate thread
+     */
     public void run() {
         try{
             decodeFiles();

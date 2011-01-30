@@ -11,6 +11,7 @@
 		alpha="image/menu/BasicAlpha.png"
 		number="image/menu/numbers.png"
 		arrow="image/menu/uparrow.png"
+		load="image/menu/loading.png"
 		credit="data/credits.txt"
 		help="@titleHelp" />
 

@@ -18,4 +18,12 @@ public class GameElement {
         mapStore.setApplet(isApplet);
         mapStore.decode();
     }
+
+    /**
+     * This function updates you when all objects are loaded into memory
+     * @return Whether all object are loaded(T) or not(F)
+     */
+    public static boolean isReady(){
+        return mapStore.isReady();
+    }
 }

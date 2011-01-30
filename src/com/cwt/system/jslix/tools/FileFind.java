@@ -49,6 +49,15 @@ public class FileFind {
     }
 
     /**
+     * This function checks if a file path exists
+     * @param path The file path to check
+     * @return Whether the file path exists(T) or not(F)
+     */
+    public boolean exists(String path){
+        return new File(path).exists();
+    }
+
+    /**
      * This function changes the directory path of the file search
      * @param directory The path to the directory
      * @return Whether the directory change was successful(T) or not(F)

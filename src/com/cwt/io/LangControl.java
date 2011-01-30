@@ -9,7 +9,7 @@ import com.yasl.internationalization.LocaleService;
  * 
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.10.10
+ * @version 01.29.11
  */
 
 public class LangControl extends LocaleService{
@@ -38,11 +38,11 @@ public class LangControl extends LocaleService{
      * @param ID The property ID
      * @return The value from the ID key
      */
-    public String getText(String ID){
-        String temp = "";
+    public String getText(String ID){        
         if(ID.split(" ").length < 2)
             return get(ID);
 
+        String temp = "";
         for(String part: ID.split(" "))
             temp += get(part) + " ";
 
@@ -56,9 +56,6 @@ public class LangControl extends LocaleService{
      */
     @Override
     public String get(String ID){
-        if(ID.startsWith("@"))
-            return super.get(ID);
-        else
-            return ID;
+        return ID.startsWith("@") ? super.get(ID) : ID;
     }
 }

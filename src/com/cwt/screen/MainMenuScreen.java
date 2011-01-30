@@ -148,7 +148,7 @@ public class MainMenuScreen extends Screen{
 
         //Stores the initialization data below in the init() function
         entryLocation = XML_Reader.getIndex("menu screen key list");
-        entries = new String[6][];
+        entries = new String[7][];
         for(int i = 0; i < entries.length; i++){
             entries[i] = (i < 2) ? new String[entryLocation.length] :
                 new String[1];
@@ -165,6 +165,8 @@ public class MainMenuScreen extends Screen{
                 XML_Reader.getIndex("menu logo")[0], "pic"));
         entries[5][0] = XML_Reader.convert(XML_Reader.getAttribute(
                 XML_Reader.getIndex("menu title")[0], "copy"));
+        entries[6][0] = XML_Reader.convert(XML_Reader.getAttribute(
+                XML_Reader.getIndex("menu title")[0], "load"));
 
         XML_Reader.clear();
 
@@ -183,7 +185,7 @@ public class MainMenuScreen extends Screen{
                 XML_Reader.convert(entries[1]));
         bgPic.update(scr_name, scr_index, scr_isApplet, scr_link);
         logoPic.init(entries[2][0], entries[3][0], entries[4][0],
-                entries[5][0]);
+                entries[5][0], entries[6][0]);
         exitScr.init();
     }
 
@@ -226,7 +228,9 @@ public class MainMenuScreen extends Screen{
         }
         helpHide(8);
         scr_mouseScroll = 0;
-        logoPic.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
+        if(GameElement.isReady())
+            logoPic.setFinalPosition(6, 640, 0);
+        logoPic.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);       
         //MemoryTest.printMemoryUsage("MAIN");
     }
 

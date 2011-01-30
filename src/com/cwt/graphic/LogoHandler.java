@@ -4,6 +4,7 @@ import com.cwt.graphic.tools.MovingImage;
 import com.cwt.graphic.tools.ScrollImage;
 import com.cwt.graphic.tools.TextPix;
 import com.cwt.io.KeyControl;
+import com.cwt.map.GameElement;
 import com.cwt.system.jslix.state.ScreenSkeleton;
 import com.cwt.system.jslix.tools.ImgLibrary;
 import java.awt.Color;
@@ -26,6 +27,7 @@ public class LogoHandler implements ScreenSkeleton{
     private MovingImage logo;//This holds the Custom Wars main logo
     private MovingImage alt;//This holds the alternate logo image
     private MovingImage info;//This holds the information of the menu
+    private MovingImage load;//This holds the loading symbol
     private ScrollImage scroll;//This holds the bottom scrolling text
     private HelpHandler help;//This holds the help bar
     private String helpPath;//This holds the path to the help logo image
@@ -58,8 +60,8 @@ public class LogoHandler implements ScreenSkeleton{
      * @param copyright The copyright scrolling text
      */
     public void init(String title, String mini, String pix, 
-            String copyright){
-        cool = new String[]{ title, pix, copyright, mini };
+            String copyright, String loading){
+        cool = new String[]{ title, pix, copyright, mini, loading };
         pic = new MovingImage(145, -100, 1);
         pic.setImage(cool[0], 350, 150);
 
@@ -81,6 +83,14 @@ public class LogoHandler implements ScreenSkeleton{
         info.setShadowColor(Color.BLACK);
         info.setShadowOffset(2);
         info.setOrigScreen(sizex, sizey);
+
+        load = new MovingImage(620, 0, 1);
+        load.setImage(cool[4], 20, 20);
+        load.setOpacity(0.9);
+
+        load.setShadowColor(Color.BLACK);
+        load.setShadowOffset(2);
+        load.setOrigScreen(sizex, sizey);
 
         logo = new MovingImage(0, -150, 1);
         logo.setImage(cool[1], 125, 125);
@@ -126,6 +136,14 @@ public class LogoHandler implements ScreenSkeleton{
                         new Color(colors[index+9+5]));
             }
 
+            if(load != null){
+                load.resetColor();
+                load.addColor(new Color(255,0,0),
+                        new Color(colors[index+9+2]));
+                load.addColor(new Color(127,0,0),
+                        new Color(colors[index+9+5]));
+            }
+
             if(info != null){
                 info.resetColor();
                 info.addColor(new Color(160, 160, 160),
@@ -151,6 +169,9 @@ public class LogoHandler implements ScreenSkeleton{
         }else{
             if(pic != null)
                 pic.resetColor();
+
+            if(load != null)
+                load.resetColor();
 
             if(info != null)
                 info.resetColor();
@@ -194,16 +215,19 @@ public class LogoHandler implements ScreenSkeleton{
     public void setFinalPosition(int index, int locx, int locy){
         if(index == 0)
             pic.setFinalPosition(locx, locy);
-        if(index == 1)
+        else if(index == 1)
             logo.setFinalPosition(locx, locy);
-        if(index == 2)
+        else if(index == 2)
             scroll.setFinalPosition(locx, locy);
-        if(index == 3)
+        else if(index == 3)
             help.setFinalPosition(locx, locy);
-        if(index == 4)
+        else if(index == 4)
             alt.setFinalPosition(locx, locy);
-        if(index == 5)
+        else if(index == 5)
             info.setFinalPosition(locx, locy);
+        else if(index == 6)
+            load.setFinalPosition(locx, locy);
+
     }
 
     /**
@@ -271,6 +295,7 @@ public class LogoHandler implements ScreenSkeleton{
         help.update(width, height, sysTime, mouseScroll);
         alt.update(width, height, sysTime, mouseScroll);
         info.update(width, height, sysTime, mouseScroll);
+        load.update(width, height, sysTime, mouseScroll);
         if(mouseScroll == 0)
         	KeyControl.resetMouseWheel();
     }
@@ -280,12 +305,13 @@ public class LogoHandler implements ScreenSkeleton{
      * @param g Graphics object for Slick
      */
     public void render(Graphics g) {
+        load.render(g);
         pic.render(g);
         alt.render(g);
         logo.render(g);
         info.render(g);
         scroll.render(g);
-        help.render(g);        
+        help.render(g);      
     }
 
     /**
@@ -294,6 +320,7 @@ public class LogoHandler implements ScreenSkeleton{
      * @param dthis Component object for Java2D
      */
     public void render(Graphics2D g, Component dthis) {
+        load.render(g, dthis);
         pic.render(g, dthis);
         alt.render(g, dthis);
         logo.render(g, dthis);

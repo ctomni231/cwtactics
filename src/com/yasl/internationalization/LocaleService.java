@@ -1,12 +1,12 @@
 package com.yasl.internationalization;
 
 import com.cwt.system.jslix.tools.FileFind;
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import static com.yasl.logging.Logging.*;
 
 /**
  * LocaleService
@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
  *          <li>Carr, Crecen</li>
  *          <li>Stefan569</li></ul>
  * @license Look into "LICENSE" file for further information
- * @version 10.28.10
+ * @version 01.29.11
  */
 
 public class LocaleService extends ClassLoader {
@@ -38,6 +38,15 @@ public class LocaleService extends ClassLoader {
     }
 
     /**
+     * This function checks if a file path exists
+     * @param path The file path to check
+     * @return Whether the file path exists(T) or not(F)
+     */
+    public final boolean exists(String path){
+        return finder.exists(path);
+    }
+
+    /**
      * This gets a bundle for the default Locale
      * @param filename The path to the properties file
      */
@@ -52,9 +61,11 @@ public class LocaleService extends ClassLoader {
      * @param locale The locale language type to use
      */
     public final void getBundle(String filename, Locale locale){
-        lang = ResourceBundle.getBundle(filename, locale, this);
-        for(String theSet: lang.keySet())
-            property.setProperty(theSet, lang.getString(theSet));
+        if(!filename.isEmpty()){
+            lang = ResourceBundle.getBundle(filename, locale, this);
+            for(String theSet: lang.keySet())
+                property.setProperty(theSet, lang.getString(theSet));
+        }
     }
 
     /**
@@ -65,12 +76,11 @@ public class LocaleService extends ClassLoader {
      */
     @Override
     protected URL findResource(String name) {
-      File f = finder.getFile(name);
-
       try {
-        return f.toURI().toURL();
+        return finder.getFile(name).toURI().toURL();
       }
-      catch (MalformedURLException e) {
+      catch (MalformedURLException e){
+          warn(e.toString());
       }
       return super.findResource(name);
     }

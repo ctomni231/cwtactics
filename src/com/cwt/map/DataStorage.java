@@ -1,5 +1,6 @@
 package com.cwt.map;
 
+import com.cwt.io.LangControl;
 import java.util.Arrays;
 import java.util.HashMap;
 import static com.yasl.logging.Logging.*;
@@ -23,6 +24,7 @@ public class DataStorage {
     private KeyStore[] locItems;//Stores the items in an integer format
     private ListStore[] dataItems;//Stores the textual portion of the items
     private RefStore refItems;//Stores references for the data items
+    private LangControl locale;//Helps conversion of the language for items
 
     private KeyStore tempKey;//A temporary value for storing the items
 
@@ -33,9 +35,20 @@ public class DataStorage {
      */
     public DataStorage(){
         refItems = new RefStore();
+        locale = new LangControl();
         refItems.add("NAM.*", NAME);
         refItems.add("BAS.*", BASE);
         refItems.add("TYP.*", TYPE);
+    }
+
+    /**
+     * This function sets the language path for the conversion of the
+     * String objects
+     * @param path The path to the language properties file
+     */
+    public void setLanguage(String path){
+        if(locale.exists(path))
+            locale.getBundle(path);
     }
 
     /**
@@ -57,8 +70,8 @@ public class DataStorage {
                     warn("Data key '"+key+"' not recognized!");
                     break;
                 default:
-                    tempKey.addData(temp, dataItems[temp].addData(key));
-                    break;
+                    tempKey.addData(temp, dataItems[temp].addData(
+                            locale.getText(key)));
             }
         }
 
