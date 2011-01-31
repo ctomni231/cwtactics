@@ -16,9 +16,12 @@ import java.awt.Color;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.29.10
+ * @version 01.30.11
  */
 public class ExitGUI extends MovingMenu{
+
+    public final int DELAY = 30;//The delay time of keyboard scrolling
+    public final int SCROLL_SPEED = 2;//How fast the menu scrolls
 
     private Color[] dfltColors;//Default colors for the letters
     private Color[] chngColors;//Colors to change the letters to
@@ -30,6 +33,7 @@ public class ExitGUI extends MovingMenu{
     private MouseHelper helper;//Regulates the mouse focus
     private int change;//Tracks the menu change for the menu
     private int[] colors;//Integer representation of the multple colors
+    private int keyCount;//This helps regulate scrolling for keyboard
 
     /**
      * This class displays an exit window with two options
@@ -44,6 +48,7 @@ public class ExitGUI extends MovingMenu{
         super(locx, locy, speed);
         active = false;
         helper = new MouseHelper();
+        helper.setScrollIndex(SCROLL_SPEED);
         dfltColors = new Color[]{new Color(128, 128, 128),
         new Color(160, 160, 160)};
         chngColors = new Color[]{new Color(200, 200, 200),
@@ -53,6 +58,7 @@ public class ExitGUI extends MovingMenu{
         sizey = 100;
         select = -1;
         change = 0;
+        keyCount = 0;
     }
 
     /**
@@ -115,6 +121,7 @@ public class ExitGUI extends MovingMenu{
     @Override
     public void update(int width, int height, int sysTime, int mouseScroll){
     	super.update(width, height, sysTime, mouseScroll);
+        helper.setMouseControl(sysTime);
     	if(helper.getMouseLock())
     		helper.setMouseRelease(KeyControl.getMouseX(), 
     			KeyControl.getMouseY());
@@ -156,6 +163,15 @@ public class ExitGUI extends MovingMenu{
         			KeyControl.getMouseY());
             select *= -1;
         }
+
+        if(keyCount > DELAY && helper.getScroll())
+            select *= -1;
+
+        if(KeyControl.isUpDown() || KeyControl.isDownDown() ||
+                KeyControl.isLeftDown() || KeyControl.isRightDown())
+            keyCount++;
+        else
+            keyCount = 0;
         
         if(!helper.getMouseLock())
             mouseSelect(KeyControl.getMouseX(), KeyControl.getMouseY());

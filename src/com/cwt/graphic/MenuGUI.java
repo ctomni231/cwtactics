@@ -14,12 +14,14 @@ import java.awt.Color;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.01.10
+ * @version 01.30.11
  */
 
 public class MenuGUI extends VerticalMenu{
 
     public final int MAX_ITEMS = 8;//The maximum items a vertical menu has
+    public final int DELAY = 30;//The delay time of keyboard scrolling
+    public final int SCROLL_SPEED = 2;//How fast the menu scrolls
 
     private Color[] dfltColors;//Default colors for the letters
     private Color[] chngColors;//Colors to change the letters to
@@ -36,6 +38,7 @@ public class MenuGUI extends VerticalMenu{
     private int factions;//Holds the max menu faction colors
     private int curFaction;//Holds whether a menu faction color changed
     private int back;//Holds the menu option selected when you click back
+    private int keyCount;//This helps regulate scrolling for keyboard
 
     /**
      * This class displays a main menu and is the main class for controlling
@@ -60,13 +63,14 @@ public class MenuGUI extends VerticalMenu{
         setSpacingY(spacing);
         setMaxItems(MAX_ITEMS);
         helper = new MouseHelper();
-        helper.setScrollIndex(2);
+        helper.setScrollIndex(SCROLL_SPEED);
         change = 0;
         menuColumn = 0;
         menuChange = -1;
         factions = 0;
         curFaction = -1;
         back = 0;
+        keyCount = 0;
     }
 
     /**
@@ -269,10 +273,10 @@ public class MenuGUI extends VerticalMenu{
         }
 
         if(mouseScroll != 0){
-        	helper.setMouseLock(KeyControl.getMouseX(),
-        			KeyControl.getMouseY());
-        	if(mouseScroll == -1)   moveUp();
-                else                    moveDown();
+            helper.setMouseLock(KeyControl.getMouseX(),
+                            KeyControl.getMouseY());
+            if(mouseScroll == -1)   moveUp();
+            else                    moveDown();
         }
 
         if(KeyControl.isUpClicked())
@@ -280,6 +284,18 @@ public class MenuGUI extends VerticalMenu{
 
         if(KeyControl.isDownClicked())
             moveDown();
+
+        if(keyCount > DELAY && helper.getScroll())
+            moveUp();
+        else if(keyCount < -DELAY && helper.getScroll())
+            moveDown();
+
+        if(KeyControl.isUpDown())
+            keyCount++;
+        else if(KeyControl.isDownDown())
+            keyCount--;
+        else
+            keyCount = 0;
 
         if(KeyControl.isLeftClicked() && back == 0){
             if(menuColumn > -1)

@@ -26,7 +26,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.27.11
+ * @version 01.30.11
  */
 
 public class MainMenuScreen extends Screen{
@@ -49,14 +49,13 @@ public class MainMenuScreen extends Screen{
     private KeyGUI keyScr;//Holds screen data for the key configure
     private MenuGUI editScr;//Holds screen data for the map editor options
 
-    private boolean scrStart;//The initization sequence starter for screens
+    private boolean scrStart;//The initialization sequence starter for screens
     private int column;//Which screen index we are currently showing
     private int current;//Used to update the screen index
     private int menuColor;//The current color of the menu items
     private int curColor;//Used to update the current color
     private String startHelp;//This stores the title screen help message
     private String mainText;//This stores the main menu text
-    private int[] entryLocation;//Stores entry locations for menu items
     private String[][] entries;//Stores strings of entry location
 
     /**
@@ -94,7 +93,7 @@ public class MainMenuScreen extends Screen{
                 XML_Reader.getIndex("menu title")[0], "start"), 200, 20);
         titleScr.setColorPath(colorPath);
 
-        entryLocation = XML_Reader.getIndex("menu screen exit list");
+        int[] entryLocation = XML_Reader.getIndex("menu screen exit list");
         entries = new String[1][entryLocation.length];
         for(int i = 0; i < entryLocation.length; i++)
             entries[0][i] = XML_Reader.getAttribute(entryLocation[i], "text");
@@ -148,7 +147,7 @@ public class MainMenuScreen extends Screen{
 
         //Stores the initialization data below in the init() function
         entryLocation = XML_Reader.getIndex("menu screen key list");
-        entries = new String[7][];
+        entries = new String[8][];
         for(int i = 0; i < entries.length; i++){
             entries[i] = (i < 2) ? new String[entryLocation.length] :
                 new String[1];
@@ -167,6 +166,8 @@ public class MainMenuScreen extends Screen{
                 XML_Reader.getIndex("menu title")[0], "copy"));
         entries[6][0] = XML_Reader.convert(XML_Reader.getAttribute(
                 XML_Reader.getIndex("menu title")[0], "load"));
+        entries[7][0] = XML_Reader.convert(XML_Reader.getAttribute(
+                XML_Reader.getIndex("menu title")[0], "faction"));
 
         XML_Reader.clear();
 
@@ -185,7 +186,7 @@ public class MainMenuScreen extends Screen{
                 XML_Reader.convert(entries[1]));
         bgPic.update(scr_name, scr_index, scr_isApplet, scr_link);
         logoPic.init(entries[2][0], entries[3][0], entries[4][0],
-                entries[5][0], entries[6][0]);
+                entries[5][0], entries[6][0], entries[7][0]);
         exitScr.init();
     }
 
@@ -228,9 +229,7 @@ public class MainMenuScreen extends Screen{
         }
         helpHide(8);
         scr_mouseScroll = 0;
-        if(GameElement.isReady())
-            logoPic.setFinalPosition(6, 640, 0);
-        logoPic.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);       
+        logoPic.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll); 
         //MemoryTest.printMemoryUsage("MAIN");
     }
 
@@ -314,7 +313,6 @@ public class MainMenuScreen extends Screen{
         }
         titleScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
         current = titleScr.control(column);
-        
 
         if(menuHelp != titleScr.getHelp()){
             menuHelp = titleScr.getHelp();
@@ -356,6 +354,9 @@ public class MainMenuScreen extends Screen{
                 logoPic.setFinalPosition(3, 0, -20);
             logoPic.setCounter(WAIT_TIME);
         }
+
+        if(!logoPic.getHelpText().equals(menuScr.getHelpText()))
+            logoPic.setHelpText(menuScr.getHelpText());
         menuScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
         current = menuScr.control(column, scr_mouseScroll);
         curColor = menuScr.getCurFaction();
@@ -511,6 +512,9 @@ public class MainMenuScreen extends Screen{
             else
                 logoPic.setFinalPosition(3, 0, -20);
         }
+
+        if(GameElement.isReady())
+            logoPic.setFinalPosition(6, 640, 0);
     }
 
     /**

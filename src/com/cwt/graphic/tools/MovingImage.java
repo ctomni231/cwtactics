@@ -18,6 +18,7 @@ import org.newdawn.slick.Graphics;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 10.18.10
+ * @todo TODO Need to find a way to do cut images easier on Moving Image
  */
 
 public class MovingImage implements ScreenSkeleton{

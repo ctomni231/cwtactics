@@ -4,7 +4,6 @@ import com.cwt.graphic.tools.MovingImage;
 import com.cwt.graphic.tools.ScrollImage;
 import com.cwt.graphic.tools.TextPix;
 import com.cwt.io.KeyControl;
-import com.cwt.map.GameElement;
 import com.cwt.system.jslix.state.ScreenSkeleton;
 import com.cwt.system.jslix.tools.ImgLibrary;
 import java.awt.Color;
@@ -19,7 +18,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.30.10
+ * @version 01.30.11
  */
 public class LogoHandler implements ScreenSkeleton{
 
@@ -60,8 +59,8 @@ public class LogoHandler implements ScreenSkeleton{
      * @param copyright The copyright scrolling text
      */
     public void init(String title, String mini, String pix, 
-            String copyright, String loading){
-        cool = new String[]{ title, pix, copyright, mini, loading };
+            String copyright, String loading, String faction){
+        cool = new String[]{ title, pix, copyright, mini, loading, faction };
         pic = new MovingImage(145, -100, 1);
         pic.setImage(cool[0], 350, 150);
 
@@ -206,6 +205,14 @@ public class LogoHandler implements ScreenSkeleton{
     }
 
     /**
+     * Gets the current text string used in the help bar
+     * @return The help text
+     */
+    public String getHelpText(){
+        return help.getHelpText();
+    }
+
+    /**
      * This function is used to set the final position for the moving objects
      * within this screen
      * @param index The index representation of an moving object
@@ -227,7 +234,6 @@ public class LogoHandler implements ScreenSkeleton{
             info.setFinalPosition(locx, locy);
         else if(index == 6)
             load.setFinalPosition(locx, locy);
-
     }
 
     /**

@@ -19,12 +19,14 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.29.10
+ * @version 01.30.11
  */
 
 public class KeyGUI extends VerticalMenu{
 
     public final int MAX_ITEMS = 6;//The maximum items a vertical menu has
+    public final int DELAY = 30;//The delay time of keyboard scrolling
+    public final int SCROLL_SPEED = 2;//How fast the menu scrolls
 	
     private String[] help;//Keeps the help associated with the actions
     private Color[] dfltColors;//Default colors for the letters
@@ -38,6 +40,7 @@ public class KeyGUI extends VerticalMenu{
     private boolean haltPress;//This keeps the user from pressing anything
     private int change;//Holds whether the menu selection has changed
     private int[] colors;//Integer representation of the multiple colors
+    private int keyCount;//This helps regulate scrolling for keyboard
 
     /**
      * This class completely controls editing all the keyboard actions for
@@ -60,6 +63,7 @@ public class KeyGUI extends VerticalMenu{
         keyItems.setMaxItems(MAX_ITEMS);
         keyItems.setOpacity(0.6);
         helper = new MouseHelper();
+        helper.setScrollIndex(SCROLL_SPEED);
         dfltColors = new Color[]{new Color(128, 128, 128),
         new Color(160, 160, 160)};
         chngColors = new Color[]{new Color(200, 200, 200),
@@ -68,6 +72,7 @@ public class KeyGUI extends VerticalMenu{
         keySelect = false;
         curSelect = false;
         haltPress = false;
+        keyCount = 0;
     }
 
     /**
@@ -188,6 +193,18 @@ public class KeyGUI extends VerticalMenu{
 
         if(KeyControl.isDownClicked())
             select++;
+
+        if(keyCount > DELAY && helper.getScroll())
+            select--;
+        else if(keyCount < -DELAY && helper.getScroll())
+            select++;
+
+        if(KeyControl.isUpDown())
+            keyCount++;
+        else if(KeyControl.isDownDown())
+            keyCount--;
+        else
+            keyCount = 0;
 
         if(!helper.getMouseLock())
             mouseAllSelect(KeyControl.getMouseX(), KeyControl.getMouseY());
@@ -338,6 +355,8 @@ public class KeyGUI extends VerticalMenu{
             keyItems.setOpacity(counter);
         }else
             keyItems.setOpacity(0.6);
+
+        helper.setMouseControl(sysTime);
     }
 
     /**

@@ -11,15 +11,16 @@ import java.awt.Color;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.6.10
+ * @version 01.30.11
  */
 public class HelpHandler extends MovingMenu{
 
     private MouseHelper helper;//Regulates the mouse focus for help text
     private String logoPath;//Stores the path to the tiny question logo
     private PixtureMap pixture;//This is used to help create font text pics
-    private Color theColor;//This stores the backgrond color of the help box
+    private Color theColor;//This stores the background color of the help box
     private int counter;//Helps control the visibility of the help bar
+    private String helpText;//Helps regulate bugs in the help bar
 
     /**
      * This class displays a help bar on the top of the screen
@@ -79,11 +80,21 @@ public class HelpHandler extends MovingMenu{
      * @return The String representing the help text
      */
     public void setHelpText(String text){
+        helpText = text;
         pixture.setOpacity(0.1);
-        pixture.addImage(0, pixture.getTextPicture(text));
+        pixture.addImage(0, pixture.getTextPicture(helpText));
 
         setItemImage(2, 0, pixture.getImage(0));
         setItemPosition(2, 640-pixture.getX(0), 0);
+    }
+
+    /**
+     * Gets the current text string used in the help bar
+     * @return The help text
+     */
+    public String getHelpText(){
+        setItemPosition(2, 640-pixture.getX(0), 0);
+        return helpText;
     }
 
     /**
