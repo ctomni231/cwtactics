@@ -16,7 +16,7 @@ import java.awt.Color;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.30.11
+ * @version 01.31.11
  */
 public class ExitGUI extends MovingMenu{
 
@@ -202,9 +202,7 @@ public class ExitGUI extends MovingMenu{
      * @param colorPath The path to the color list
      */
     public void setColorPath(String colorPath){
-        ImgLibrary imgLib = new ImgLibrary();
-        imgLib.addImage(colorPath);
-        colors = imgLib.getPixels(0);
+        colors = TextPix.getImgPixels(colorPath);
     }
 
     /**

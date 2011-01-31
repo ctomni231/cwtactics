@@ -3,7 +3,6 @@ package com.cwt.graphic;
 import com.cwt.graphic.tools.TextPix;
 import com.cwt.graphic.tools.VerticalMenu;
 import com.cwt.io.KeyControl;
-import com.cwt.system.jslix.tools.ImgLibrary;
 import com.cwt.system.jslix.tools.MouseHelper;
 import java.awt.Color;
 import java.awt.Component;
@@ -19,7 +18,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.30.11
+ * @version 01.31.11
  */
 
 public class KeyGUI extends VerticalMenu{
@@ -364,9 +363,7 @@ public class KeyGUI extends VerticalMenu{
      * @param colorPath The path to the color list
      */
     public void setColorPath(String colorPath){
-        ImgLibrary imgLib = new ImgLibrary();
-        imgLib.addImage(colorPath);
-        colors = imgLib.getPixels(0);
+        colors = TextPix.getImgPixels(colorPath);
     }
 
     /**

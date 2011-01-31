@@ -3,8 +3,6 @@ package com.cwt.graphic;
 import com.cwt.graphic.tools.MovingImage;
 import com.cwt.graphic.tools.TextPix;
 import com.cwt.io.KeyControl;
-import com.cwt.system.jslix.tools.ImgLibrary;
-import com.cwt.system.jslix.tools.TextImgLibrary;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
@@ -18,7 +16,7 @@ import org.newdawn.slick.Graphics;
  * 
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.29.10
+ * @version 10.31.10
  */
 
 public class TitleGUI extends MovingImage {
@@ -139,9 +137,7 @@ public class TitleGUI extends MovingImage {
      * @param colorPath The path to the color list
      */
     public void setColorPath(String colorPath){
-        ImgLibrary imgLib = new ImgLibrary();
-        imgLib.addImage(colorPath);
-        colors = imgLib.getPixels(0);
+        colors = TextPix.getImgPixels(colorPath);
     }
 
     /**

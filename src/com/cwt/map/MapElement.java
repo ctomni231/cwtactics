@@ -319,6 +319,9 @@ public class MapElement implements Runnable{
             tagFill = null;            
         }
 
+        //UNCOMMENT TO SEE LOADING ICON
+        //while(true){}
+
         //UNCOMMENT TO SEE ALL THE XML TAGS
         /*
         int size = mapParse.size();

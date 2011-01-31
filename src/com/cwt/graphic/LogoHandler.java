@@ -6,6 +6,7 @@ import com.cwt.graphic.tools.TextPix;
 import com.cwt.io.KeyControl;
 import com.cwt.system.jslix.state.ScreenSkeleton;
 import com.cwt.system.jslix.tools.ImgLibrary;
+import com.cwt.system.jslix.tools.MouseHelper;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
@@ -18,15 +19,17 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.30.11
+ * @version 01.31.11
  */
 public class LogoHandler implements ScreenSkeleton{
+
+    public final int SCROLL_SPEED = 2;//How fast the menu scrolls
 
     private MovingImage pic;//This holds the Main Logo image
     private MovingImage logo;//This holds the Custom Wars main logo
     private MovingImage alt;//This holds the alternate logo image
     private MovingImage info;//This holds the information of the menu
-    private MovingImage load;//This holds the loading symbol
+    private TitleGUI load;//This holds the loading symbol
     private ScrollImage scroll;//This holds the bottom scrolling text
     private HelpHandler help;//This holds the help bar
     private String helpPath;//This holds the path to the help logo image
@@ -35,6 +38,8 @@ public class LogoHandler implements ScreenSkeleton{
     private String[] cool;//This combines the values pertaining to the text
     private int[] colors;//This holds a group of colors for color changes
     private ImgLibrary imgLib;//This holds an imgLibrary for changing colors
+    private MouseHelper helper;//Regulates the delay of the loading logo
+    private int counter;//Helps control the visibility of the loading logo
 
     /**
      * This class handles all moving elements within the title screen of the
@@ -47,6 +52,9 @@ public class LogoHandler implements ScreenSkeleton{
         sizex = width;
         sizey = height;
         helpPath = help;
+        helper = new MouseHelper();
+        helper.setScrollIndex(SCROLL_SPEED);
+        counter = 0;
         imgLib = new ImgLibrary();
     }
 
@@ -83,12 +91,11 @@ public class LogoHandler implements ScreenSkeleton{
         info.setShadowOffset(2);
         info.setOrigScreen(sizex, sizey);
 
-        load = new MovingImage(620, 0, 1);
+        load = new TitleGUI(620, 0, 1);
         load.setImage(cool[4], 20, 20);
-        load.setOpacity(0.9);
 
         load.setShadowColor(Color.BLACK);
-        load.setShadowOffset(2);
+        load.setShadowOffset(1);
         load.setOrigScreen(sizex, sizey);
 
         logo = new MovingImage(0, -150, 1);
@@ -105,8 +112,20 @@ public class LogoHandler implements ScreenSkeleton{
         scroll.setOrigScreen(sizex, sizey);
 
         help = new HelpHandler(helpPath, 0, -20, 1);
-        help.init();
         help.setOrigScreen(sizex, sizey);
+        help.init();       
+    }
+
+    /**
+     * This function sets the loading icon image
+     * @param index The faction color index
+     */
+    public void setLoadIcon(int index){
+        if(index*16 >= 0 && index*16 < colors.length)
+            load.setImage(TextPix.getCutImage(cool[5],
+                    0, index*14, 14, 14), 20, 20);
+        else
+            load.setImage(cool[4], 20, 20);
     }
 
     /**
@@ -114,9 +133,7 @@ public class LogoHandler implements ScreenSkeleton{
      * @param colorPath The path to the color list
      */
     public void setColorPath(String colorPath){
-        imgLib = new ImgLibrary();
-        imgLib.addImage(colorPath);
-        colors = imgLib.getPixels(0);
+        colors = TextPix.getImgPixels(colorPath);
     }
 
     /**
@@ -197,6 +214,15 @@ public class LogoHandler implements ScreenSkeleton{
     }
 
     /**
+     * This function controls how much seconds the faction logo stays
+     * visible before disappearing
+     * @param number The amount of time in quarter seconds
+     */
+    public void setFactionCounter(int number){
+        counter = number;
+    }
+
+    /**
      * This function is used to see if the help bar is visible
      * @return whether the help bar is visible(true) or not(false)
      */
@@ -205,11 +231,35 @@ public class LogoHandler implements ScreenSkeleton{
     }
 
     /**
+     * This function is used to see if the faction logo is visible
+     * @return whether the help bar is visible(true) or not(false)
+     */
+    public boolean isFactionVisible(){
+        return (counter > 0);
+    }
+
+    /**
      * Gets the current text string used in the help bar
      * @return The help text
      */
     public String getHelpText(){
         return help.getHelpText();
+    }
+
+    /**
+     * Sets the Help Bar right-justify position
+     * @param offset The distance away from the screen
+     */
+    public void setHelpJustify(int offset){
+        help.setPosition(offset);
+    }
+
+    /**
+     * Sets the opacity for the loading icon
+     * @param opac How opaque this object is
+     */
+    public void setLoadOpacity(double opac){
+        load.setOpacity(opac);
     }
 
     /**
@@ -302,8 +352,11 @@ public class LogoHandler implements ScreenSkeleton{
         alt.update(width, height, sysTime, mouseScroll);
         info.update(width, height, sysTime, mouseScroll);
         load.update(width, height, sysTime, mouseScroll);
+        helper.setMouseControl(sysTime);
+        if(counter > 0 && helper.getScroll())
+            counter--;
         if(mouseScroll == 0)
-        	KeyControl.resetMouseWheel();
+            KeyControl.resetMouseWheel();
     }
 
     /**
@@ -311,13 +364,13 @@ public class LogoHandler implements ScreenSkeleton{
      * @param g Graphics object for Slick
      */
     public void render(Graphics g) {
-        load.render(g);
         pic.render(g);
         alt.render(g);
         logo.render(g);
         info.render(g);
         scroll.render(g);
-        help.render(g);      
+        help.render(g);
+        load.render(g);
     }
 
     /**
@@ -326,13 +379,13 @@ public class LogoHandler implements ScreenSkeleton{
      * @param dthis Component object for Java2D
      */
     public void render(Graphics2D g, Component dthis) {
-        load.render(g, dthis);
         pic.render(g, dthis);
         alt.render(g, dthis);
         logo.render(g, dthis);
         info.render(g, dthis);
         scroll.render(g, dthis);
-        help.render(g, dthis);       
+        help.render(g, dthis);
+        load.render(g, dthis);
     }
 
     /**

@@ -5,7 +5,7 @@
         <prop small="image/PlayerBuilding.png" />
     </color>
 
-    <faction>
+    <faction symbol="image/AWFaction.png">
         <list name="GRAY DIAMOND" id="GD" />
         <list name="ORANGE STAR" id="OS" />
         <list name="BLUE MOON" id="BM" />

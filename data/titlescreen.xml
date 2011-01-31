@@ -12,7 +12,6 @@
 		number="image/menu/numbers.png"
 		arrow="image/menu/uparrow.png"
 		load="image/menu/loading.png"
-		faction="image/AWNameColors.png"
 		credit="data/credits.txt"
 		help="@titleHelp" />
 

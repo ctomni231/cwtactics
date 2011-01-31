@@ -17,16 +17,15 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.18.10
- * @todo TODO Need to find a way to do cut images easier on Moving Image
+ * @version 01.31.11
  */
 
 public class MovingImage implements ScreenSkeleton{
 
     protected double scalex;//Controls the scale width of an Image
     protected double scaley;//Controls the scale height of an Image
-    private int origx;//The original width of the screen
-    private int origy;//The original height of the screen
+    protected int origx;//The original width of the screen
+    protected int origy;//The original height of the screen
     private int cursx;//The current scale width of an Image
     private int cursy;//The current scale height of an Image
 

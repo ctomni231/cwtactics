@@ -4,7 +4,6 @@ import com.cwt.graphic.tools.MovingMenu;
 import com.cwt.graphic.tools.TextPix;
 import com.cwt.io.KeyControl;
 import com.cwt.system.jslix.tools.FileFind;
-import com.cwt.system.jslix.tools.ImgLibrary;
 import com.cwt.system.jslix.tools.MouseHelper;
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -22,7 +21,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 11.07.10
+ * @version 01.31.11
  */
 
 public class CreditGUI extends MovingMenu{
@@ -235,9 +234,7 @@ public class CreditGUI extends MovingMenu{
      * @param colorPath The path to the color list
      */
     public void setColorPath(String colorPath){
-        ImgLibrary imgLib = new ImgLibrary();
-        imgLib.addImage(colorPath);
-        colors = imgLib.getPixels(0);
+        colors = TextPix.getImgPixels(colorPath);
     }
 
     /**

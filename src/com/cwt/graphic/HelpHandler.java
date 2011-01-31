@@ -11,7 +11,7 @@ import java.awt.Color;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.30.11
+ * @version 01.31.11
  */
 public class HelpHandler extends MovingMenu{
 
@@ -21,6 +21,7 @@ public class HelpHandler extends MovingMenu{
     private Color theColor;//This stores the background color of the help box
     private int counter;//Helps control the visibility of the help bar
     private String helpText;//Helps regulate bugs in the help bar
+    private int textWidth;//The x-axis width of the help text
 
     /**
      * This class displays a help bar on the top of the screen
@@ -47,12 +48,11 @@ public class HelpHandler extends MovingMenu{
 
         setOpacity(0.9);
         createNewItem(0, 0, 1);
-        addBox(0, pixture.getColor(theColor, 127),
-                640, 20, false);
+        addBox(0, pixture.getColor(theColor, 127), origx, 20, false);
         createNewItem(2, 2, 1);
         addImagePart(logoPath, -1);
         addMenuItem(0, false);
-        createNewItem(640-pixture.getX(0), 0, 0);
+        createNewItem(origx-pixture.getX(0), 0, 0);
         addImagePart(pixture.getImage(0), -1);
         addMenuItem(0, false);
 
@@ -85,7 +85,8 @@ public class HelpHandler extends MovingMenu{
         pixture.addImage(0, pixture.getTextPicture(helpText));
 
         setItemImage(2, 0, pixture.getImage(0));
-        setItemPosition(2, 640-pixture.getX(0), 0);
+        textWidth = pixture.getX(0);
+        setPosition();
     }
 
     /**
@@ -93,8 +94,23 @@ public class HelpHandler extends MovingMenu{
      * @return The help text
      */
     public String getHelpText(){
-        setItemPosition(2, 640-pixture.getX(0), 0);
         return helpText;
+    }
+
+    /**
+     * This function sets the position of the Help bar to the default value
+     */
+    public void setPosition(){
+        setPosition(0);
+    }
+
+    /**
+     * This function sets the position of the Help Bar to right-justify with
+     * the edge of the screen
+     * @param offset Adjusts the pixel distance from the edge
+     */
+    public void setPosition(int offset){
+        setItemPosition(2, origx-(textWidth+offset), 0);
     }
 
     /**

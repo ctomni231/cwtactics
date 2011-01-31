@@ -1,5 +1,6 @@
 package com.cwt.graphic.tools;
 
+import com.cwt.system.jslix.tools.ImgLibrary;
 import com.cwt.system.jslix.tools.TextImgLibrary;
 import java.awt.Color;
 import java.awt.Image;
@@ -9,10 +10,11 @@ import java.awt.Image;
  *
  * This class was made to down size the amount of times I have to
  * make a whole new library in order to store and draw text pictures.
+ * It also contains tools for cutting images
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.29.10
+ * @version 01.31.11
  */
 public class TextPix {
 
@@ -70,5 +72,31 @@ public class TextPix {
         }
         txtLib.addImage(text, txtLib.getTextImage());
         return txtLib.getImage(text);
+    }
+
+    /**
+     * This function takes an image an cuts it into a smaller image
+     * @param imgPath The String path to the image
+     * @param lx The x-axis pixel position in the image to start the cut
+     * @param ly The y-axis pixel position in the image to start the cut
+     * @param sx The width of the cut in pixels
+     * @param sy The height of the cut in pixels
+     * @return An image with the specified dimensions
+     */
+    public static Image getCutImage(String imgPath,
+            int lx, int ly, int sx, int sy){
+        ImgLibrary tempImg = new ImgLibrary();
+        tempImg.addImage(imgPath);
+        return tempImg.getImage(0, lx, ly, sx, sy);
+    }
+
+    /**
+     * This function gets the pixels of an image
+     * @param imgPath The path to the image
+     */
+    public static int[] getImgPixels(String imgPath){
+        ImgLibrary tempImg = new ImgLibrary();
+        tempImg.addImage(imgPath);
+        return tempImg.getPixels(0);
     }
 }

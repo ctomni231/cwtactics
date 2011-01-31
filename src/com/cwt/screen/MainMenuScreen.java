@@ -26,7 +26,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.30.11
+ * @version 01.31.11
  */
 
 public class MainMenuScreen extends Screen{
@@ -41,6 +41,7 @@ public class MainMenuScreen extends Screen{
     private LogoHandler logoPic;//This holds all the moving logos
     private boolean menuHelp;//Holds whether help bar is locked to screen
     private OptionHandler option;//Loads and stores the user options
+    private int helpCount;//Holds the scroll value of the help text position
 
     private TitleGUI titleScr;//Holds screen data for the title screen
     private ExitGUI exitScr;//Holds screen data for the exit screen
@@ -68,6 +69,8 @@ public class MainMenuScreen extends Screen{
         XML_Reader.parse("data/faction.xml");
         String colorPath = XML_Reader.getAttribute(
                 XML_Reader.getIndex("army color unit")[0], "small");
+        String faction = XML_Reader.getAttribute(
+                XML_Reader.getIndex("army faction")[0], "symbol");
 
         XML_Reader.parse("data/titlescreen.xml");
         XML_Reader.setLanguagePath(XML_Reader.getAttribute(
@@ -166,8 +169,7 @@ public class MainMenuScreen extends Screen{
                 XML_Reader.getIndex("menu title")[0], "copy"));
         entries[6][0] = XML_Reader.convert(XML_Reader.getAttribute(
                 XML_Reader.getIndex("menu title")[0], "load"));
-        entries[7][0] = XML_Reader.convert(XML_Reader.getAttribute(
-                XML_Reader.getIndex("menu title")[0], "faction"));
+        entries[7][0] = faction;
 
         XML_Reader.clear();
 
@@ -495,6 +497,22 @@ public class MainMenuScreen extends Screen{
             scrStart = true;
         }
 
+        if(GameElement.isReady()){
+            if(curColor != menuColor){
+                logoPic.setLoadIcon(curColor);
+                logoPic.setFactionCounter(WAIT_TIME);
+            }
+            logoPic.setFinalPosition(6, SIZE_X-helpCount, 0);
+            logoPic.setLoadOpacity(0.9);
+        }else
+            logoPic.setFactionCounter(1);
+
+        if(logoPic.isFactionVisible())
+            helpCount = 20;          
+
+        if(helpCount > 0)
+            logoPic.setHelpJustify(helpCount--);
+
         if(curColor != menuColor){
             menuColor = curColor;
             logoPic.setColor(menuColor);
@@ -504,7 +522,7 @@ public class MainMenuScreen extends Screen{
         }
 
         if(logoPic.checkHelp())
-        	logoPic.setCounter(WAIT_TIME*mult);
+            logoPic.setCounter(WAIT_TIME*mult);
 
         if(!menuHelp){
             if(logoPic.getCounter())
@@ -512,9 +530,6 @@ public class MainMenuScreen extends Screen{
             else
                 logoPic.setFinalPosition(3, 0, -20);
         }
-
-        if(GameElement.isReady())
-            logoPic.setFinalPosition(6, 640, 0);
     }
 
     /**
@@ -522,7 +537,6 @@ public class MainMenuScreen extends Screen{
      * applies then to the frame. This does not apply to applets.
      */
     private void initOptions(){
-        GameElement.initialize(scr_isApplet);
         option = new OptionHandler("data","options.xml");
         if(!scr_isApplet && option.exists()){
             option.loadOptions();

@@ -1,5 +1,6 @@
 package com.cwt;
 
+import com.cwt.map.GameElement;
 import com.cwt.screen.MainMenuScreen;
 import com.cwt.system.jslix.SlixGame;
 import com.cwt.system.jslix.SlixLibrary;
@@ -13,7 +14,7 @@ import org.newdawn.slick.SlickException;
  * Slick applet
  *
  *@author Carr, Crecen
- *@version 10.27.10
+ *@version 01.31.11
  *@license  New BSD License
  *	Copyright (c) 2010, BearWolf/Exotec
  *	Exotec label holder is Radom Alexander, blackcat.myako@gmail.com
@@ -78,7 +79,8 @@ public class JSGMain extends SlixGame{
     @Override
     public void loadGame(){
         //DO ALL YOUR INITIALIZATIONS FOR YOUR SCREENS HERE!!!
-        SlixLibrary.addFrameScreen(new MainMenuScreen());
+        GameElement.initialize(SlixLibrary.isApplet());
+        SlixLibrary.addFrameScreen(new MainMenuScreen());     
         //Make sure you use SlixLibrary to add the Screens
         //Also a good place to do all the initialzation stuff
     }
