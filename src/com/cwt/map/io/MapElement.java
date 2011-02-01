@@ -1,4 +1,4 @@
-package com.cwt.map;
+package com.cwt.map.io;
 
 import com.cwt.system.jslix.tools.FileFind;
 import com.cwt.system.jslix.tools.FileIndex;
@@ -14,14 +14,14 @@ import static com.yasl.logging.Logging.*;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.29.11
+ * @version 01.31.11
  */
 
 public class MapElement implements Runnable{
 
     public static final byte CODE = 0;//Holds the type of object this is
     public static final byte DATA = 1;//Holds the object naming attributes
-    public static final byte GRAPHIC = 2;//Holds the objct type attributes
+    public static final byte GRAPHIC = 2;//Holds the object type attributes
     public static final byte FILE = 3;//Holds the object memory location
     public static final byte TAGS = 4;//Holds the object type connection data
     public static final byte RANDOM = 5;//Holds data for random objects
@@ -287,6 +287,7 @@ public class MapElement implements Runnable{
                             dataItems[tagTrack].replaceData(
                                     FILE, animLib.size());
                             tagTrack = fileLib.size();
+                            animLib.addNewLayer();
                         }                       
                 }
             }
@@ -295,14 +296,17 @@ public class MapElement implements Runnable{
                 switch(tagFill[1]){
                     case 0:
                         //Check for basic data
-                        temp = dataLib.addItem(mapParse.getAttribute(i));
-                        for(int j = dataTrack; j < fileLib.size(); j++){
-                            dataItems[j].addData(DATA, temp);
-                            dataItems[j].addData(COLOR, colorLib.addItem());
-                            dataItems[j].addData(CODE, CodeStorage.checkAll(
-                                    CODE, mapParse.getTags(i)[CODE]));
+                        if(dataTrack != fileLib.size()){
+                            temp = dataLib.addItem(mapParse.getAttribute(i));
+                            for(int j = dataTrack; j < fileLib.size(); j++){
+                                dataItems[j].addData(DATA, temp);
+                                dataItems[j].addData(COLOR,
+                                    colorLib.addItem());
+                                dataItems[j].addData(CODE, CodeStorage.
+                                    checkAll(CODE, mapParse.getTags(i)[CODE]));
+                            }
+                            dataTrack = fileLib.size();
                         }
-                        dataTrack = fileLib.size();
                         break;
                     case 1:
                         //Check for color data
@@ -318,6 +322,16 @@ public class MapElement implements Runnable{
 
             tagFill = null;            
         }
+
+        //FOR QUICK TESTING PURPOSES
+        /*
+        for(int i = 0; i < dataItems.length; i++){
+            int[] temp = dataItems[i].getData();
+            for(int j = 0; j < temp.length; j++){
+                System.out.print(temp[j]+",");
+            }
+            System.out.println();
+        }//*/
 
         //UNCOMMENT TO SEE LOADING ICON
         //while(true){}

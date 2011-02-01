@@ -1,4 +1,4 @@
-package com.cwt.map;
+package com.cwt.map.io;
 
 import java.util.Arrays;
 
@@ -10,7 +10,7 @@ import java.util.Arrays;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.28.11
+ * @version 01.31.11
  */
 public class DataStore {
 
@@ -32,6 +32,8 @@ public class DataStore {
      */
     public int addNewLayer(){
         if(dataItems == null)
+            dataItems = addBranch(dataItems);
+        else if(dataItems.length == 0)
             dataItems = addBranch(dataItems);
         else if(dataItems[dataItems.length - 1].length > 0)
             dataItems = addBranch(dataItems);

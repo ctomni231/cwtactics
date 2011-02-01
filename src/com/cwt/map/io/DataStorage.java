@@ -1,4 +1,4 @@
-package com.cwt.map;
+package com.cwt.map.io;
 
 import com.cwt.io.LangControl;
 import java.util.Arrays;
@@ -13,7 +13,7 @@ import static com.yasl.logging.Logging.*;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.28.11
+ * @version 01.31.11
  */
 public class DataStorage {
 
@@ -39,6 +39,7 @@ public class DataStorage {
         refItems.add("NAM.*", NAME);
         refItems.add("BAS.*", BASE);
         refItems.add("TYP.*", TYPE);
+        increaseIndex(refItems.size());
     }
 
     /**
@@ -63,7 +64,6 @@ public class DataStorage {
         for(String key: fillData.keySet()){
             //System.out.println("KEY: "+key);
             temp = refItems.get(key);
-            increaseIndex(temp);
 
             switch(temp){
                 case -1:
@@ -71,11 +71,11 @@ public class DataStorage {
                     break;
                 default:
                     tempKey.addData(temp, dataItems[temp].addData(
-                            locale.getText(key)));
+                            locale.getText(fillData.get(key))));
             }
         }
 
-        return (tempKey.getData().length != 0) ? checkData() : -1;
+        return (tempKey.getData().length > 0) ? checkData() : -1;
     }
 
     /**
@@ -122,7 +122,7 @@ public class DataStorage {
         if(dataItems == null)
             dataItems = addData(dataItems, new ListStore());
 
-        while(dataItems.length <= index)
+        while(dataItems.length < index)
             dataItems = addData(dataItems, new ListStore());
     }
 

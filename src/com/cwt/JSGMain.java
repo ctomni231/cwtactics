@@ -1,6 +1,6 @@
 package com.cwt;
 
-import com.cwt.map.GameElement;
+import com.cwt.map.io.GameElement;
 import com.cwt.screen.MainMenuScreen;
 import com.cwt.system.jslix.SlixGame;
 import com.cwt.system.jslix.SlixLibrary;

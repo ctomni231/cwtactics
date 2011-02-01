@@ -1,7 +1,7 @@
 package com.cwt;
 
-import com.cwt.map.HashStore;
-import com.cwt.map.ListStore;
+import com.cwt.map.io.HashStore;
+import com.cwt.map.io.ListStore;
 import junit.framework.Assert;
 import org.junit.Test;
 

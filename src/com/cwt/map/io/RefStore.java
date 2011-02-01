@@ -1,4 +1,4 @@
-package com.cwt.map;
+package com.cwt.map.io;
 
 import java.util.HashMap;
 
@@ -12,7 +12,7 @@ import java.util.HashMap;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.25.11
+ * @version 01.31.11
  */
 public class RefStore {
 
@@ -76,5 +76,13 @@ public class RefStore {
                 return ref.get(list.getData(i));
         }
         return (ref.containsKey(key)) ? ref.get(key) : -1;
+    }
+
+    /**
+     * Gets how many value references are within this reference list
+     * @return The size of this reference list
+     */
+    public int size(){
+        return ref.values().size();
     }
 }

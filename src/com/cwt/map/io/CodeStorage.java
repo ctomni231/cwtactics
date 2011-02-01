@@ -1,4 +1,4 @@
-package com.cwt.map;
+package com.cwt.map.io;
 
 /**
  * CodeStorage.java

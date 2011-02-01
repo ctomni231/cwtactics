@@ -1,6 +1,6 @@
 package com.cwt;
 
-import com.cwt.map.RefStore;
+import com.cwt.map.io.RefStore;
 import junit.framework.Assert;
 import org.junit.Test;
 
