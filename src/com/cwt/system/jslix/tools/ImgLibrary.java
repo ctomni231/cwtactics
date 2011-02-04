@@ -16,7 +16,7 @@ import org.newdawn.slick.Color;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 11.07.10
+ * @version 02.03.11
  */
 
 public class ImgLibrary extends Component{
@@ -299,14 +299,10 @@ public class ImgLibrary extends Component{
         if(tempImg.image == null)
             return false;
         //Makes image searchable by filename
-        if(!filename.equals("") && storeFileRef){
-            if(index == -1)
-                hashImg.put(filename, sortedImg.length);
-            else
-                hashImg.put(filename, index);
-        }
+        if(!filename.equals("") && storeFileRef)
+            hashImg.put(filename, (index == -1) ? sortedImg.length : index);
         storeFileRef = true;
-        //Either makes a new image or overwrites and older one.
+        //Either makes a new image or overwrites an older one.
         if(index >= 0 && index < sortedImg.length)
             sortedImg[index] = storeImage();
         else{

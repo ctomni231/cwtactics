@@ -65,7 +65,7 @@ public class MapElement implements Runnable{
         animLib = new DataStore();
         tagTrack = 0;
         dataTrack = 0;
-        ready = false;
+        ready = true;
         isApplet = true;
     }
 

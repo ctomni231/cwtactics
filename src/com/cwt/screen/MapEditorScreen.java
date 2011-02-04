@@ -2,6 +2,7 @@ package com.cwt.screen;
 
 import com.cwt.io.KeyControl;
 import com.cwt.system.jslix.state.Screen;
+import com.cwt.system.jslix.tools.MusicLibrary;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import org.newdawn.slick.Color;
@@ -25,9 +26,17 @@ public class MapEditorScreen extends Screen{
 
     private boolean scrStart;//The initialization sequence starter for screens
     private int column;//Which screen index we are currently showing
+    private MusicLibrary music;
 
     public MapEditorScreen(){
-
+        music = new MusicLibrary();
+        music.addClip("music/Lash.mp3");
+        music.addClip("sound/ok.wav");
+        music.addClip("sound/cancel.wav");
+        music.addClip("sound/maptick.wav");
+        music.addClip("sound/explode.wav");
+        music.loop(0);
+        
         scrStart = true;
 
         column = 0;
@@ -42,6 +51,18 @@ public class MapEditorScreen extends Screen{
         switch(column){
 
         }
+
+        if(KeyControl.isLeftClicked())
+            music.play(1);
+
+        if(KeyControl.isRightClicked())
+            music.play(2);
+
+        if(KeyControl.isUpClicked())
+            music.play(3);
+
+        if(KeyControl.isDownClicked())
+            music.play(4);
 
         //TEMPORARY UNTIL FURTHER NOTICE
         if(KeyControl.isActionClicked() || KeyControl.isCancelClicked())
@@ -68,6 +89,11 @@ public class MapEditorScreen extends Screen{
         //TEMPORARY UNTIL FURTHER NOTICE
         g.setColor(java.awt.Color.white);
         g.drawString("MAP EDITOR", 10, 10);
+    }
+
+    @Override
+    public void scr_close() {
+        music.stop();
     }
 
 }

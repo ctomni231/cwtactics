@@ -191,7 +191,7 @@ public class FileFind {
         try{
             newFile = new File(filename);
         }catch(AccessControlException ex){
-            System.err.println(ex);
+            log("Applet Active, can't Access! "+ex.toString());
             newFile = getClassFile(filename);
         }
 
@@ -212,7 +212,7 @@ public class FileFind {
             try {
                 newFile = new File(tempURL.toURI());
             } catch (URISyntaxException ex) {
-                System.err.println(ex);
+                warn("File Resource Error! "+filename);
             }
         }
 
@@ -233,7 +233,7 @@ public class FileFind {
             try {
                 newFile = new File(tempURL.toURI());
             } catch (URISyntaxException ex) {
-                System.err.println(ex);
+                warn("File Resource Error! "+filename);
             }
         }
 
