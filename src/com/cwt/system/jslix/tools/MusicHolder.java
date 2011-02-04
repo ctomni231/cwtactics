@@ -15,6 +15,7 @@ public class MusicHolder {
 
     public final byte MP3 = 0;//The index of an MP3 file
     public final byte WAV = 1;//The index of a WAV file
+    public final byte OGG = 2;//The index of an OGG file
 
     public File clip;//The path to the music file
     public int type;//The type of audio file
@@ -41,5 +42,7 @@ public class MusicHolder {
             type = MP3;
         else if(filename.toLowerCase().matches(".*[.]wav"))
             type = WAV;
+        else if(filename.toLowerCase().matches(".*[.]ogg"))
+            type = OGG;
     }
 }

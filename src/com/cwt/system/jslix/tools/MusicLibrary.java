@@ -1,5 +1,6 @@
 package com.cwt.system.jslix.tools;
 
+import org.newdawn.easyogg.OggClip;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.sampled.AudioSystem;
@@ -37,8 +38,8 @@ public class MusicLibrary implements Runnable{
     private AdvancedPlayer player;
     private MusicListener listener;
     private FileInputStream musicFile;
-    private AudioInputStream soundFile;
     private Clip clip;
+    private OggClip oggClip;
 
     private Thread looper;
     private boolean loop;
@@ -96,12 +97,12 @@ public class MusicLibrary implements Runnable{
     public void play(int index){
         if(index >= 0 && index < sortedClip.length){
             switch(sortedClip[index].type){
-                case 0:
-                    current = sortedClip[index];
-                    playMp3(false);
-                    break;
                 case 1:
                     playSound(index);
+                    break;
+                default:
+                    current = sortedClip[index];
+                    playMusic(false);
                     break;
             }
         }
@@ -109,8 +110,18 @@ public class MusicLibrary implements Runnable{
     }
 
     public void loop(int index){
-        current = sortedClip[index];
-        playMp3(true);
+        if(index >= 0 && index < sortedClip.length){
+            switch(sortedClip[index].type){
+                case 0:
+                    current = sortedClip[index];
+                    playMusic(true);
+                    break;
+                case 2:
+                    current = sortedClip[index];
+                    playMusic(true);
+                    break;
+            }
+        }
     }
 
     public void stop(){
@@ -119,11 +130,14 @@ public class MusicLibrary implements Runnable{
             player.close();
             ready = true;
         }
+        if(oggClip != null){
+            oggClip.stop();
+            oggClip.close();
+        }
     }
 
     public boolean isPlaying(){
-        ready = !listener.isPlaying();
-        return !ready;
+        return listener.isPlaying();
     }
         
     /**
@@ -131,15 +145,20 @@ public class MusicLibrary implements Runnable{
      */
     public void run() {
         try{
-            do{
-                playMusic();
-            }while(loop);
+            if(current.type == current.OGG){
+                playOGG();
+            }else if(current.type == current.MP3){
+                do{
+                    playMP3();
+                }while(loop);
+            }
+         
         }catch(Exception e){
             warn(e.toString());
         }
     }
 
-    private void playMusic() throws FileNotFoundException, 
+    private void playMP3() throws FileNotFoundException,
             JavaLayerException, IOException{
         musicFile = new FileInputStream(current.clip);
         player = new AdvancedPlayer(musicFile);
@@ -148,7 +167,16 @@ public class MusicLibrary implements Runnable{
         musicFile.close();
     }
 
-    private void playMp3(boolean repeat){
+    public void playOGG() throws FileNotFoundException, IOException{
+        musicFile = new FileInputStream(current.clip);
+        oggClip = new OggClip(musicFile);
+        if(loop)
+            oggClip.loop();
+        else
+            oggClip.play();
+    }
+
+    private void playMusic(boolean repeat){
         ready = false;
         loop = repeat;
         looper = new Thread(this);
@@ -195,56 +223,3 @@ public class MusicLibrary implements Runnable{
         return fillData;
     }
 }
-/*
-
- * try {
-            player = new FileInputStream("Kat.mp3");
-            play = new Player(player);
-            play.play();
-        } catch (JavaLayerException ex) {
-            System.out.println("Layer exception! "+ex.toString());
-        } catch (FileNotFoundException ex) {
-            System.out.println("Not found! "+ex.toString());
-        }
- *
- * //prepares the clip for playback, used internally
-    private static Clip openClip(String filename) {
-        Clip clip;
-        try {
-            // From file
-            AudioInputStream stream = AudioSystem.getAudioInputStream(new File(filename));
-            clip = AudioSystem.getClip();
-            // Open audio clip and load samples from the audio input stream.
-            clip.open(stream);
-
-        } catch (IOException e) {
-            System.err.println("Error: Could not read file " + filename);
-            return null;
-        } catch (LineUnavailableException e) {
-            System.err.println("Error: Line unavailable");
-            return null;
-        } catch (UnsupportedAudioFileException e) {
-            System.err.println("Error: " + filename + " not an audio file");
-            return null;
-        }
-
-        return clip;
-    }
- *
- * //Play a short clip from a file
-    public static void playClip(String fullPath) {
-        if (!Options.isSFXOn()) {
-            Clip c = openClip(fullPath);
-            if (c != null) {
-                if (c.isRunning()) {
-                    c.stop();   // Stop the player if it is still running
-                }
-                c.setFramePosition(0); // rewind to the beginning
-                c.start();     // Start playing
-
-            }
-        }
-    }
-
-
- */

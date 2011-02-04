@@ -36,6 +36,7 @@ public class MapEditorScreen extends Screen{
         music.addClip("sound/maptick.wav");
         music.addClip("sound/explode.wav");
         music.loop(0);
+
         
         scrStart = true;
 
