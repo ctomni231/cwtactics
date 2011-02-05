@@ -31,7 +31,7 @@ public class VersusGameScreen extends Screen{
     public VersusGameScreen(){
 
         music = new MusicLibrary();
-        music.addClip("music/peter.ogg");
+        music.addClip("music/Sky.mid");
         music.addClip("sound/ok.wav");
         music.addClip("sound/cancel.wav");
         music.addClip("sound/capture.wav");
