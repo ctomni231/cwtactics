@@ -61,7 +61,7 @@
 			text="This takes you back to the main menu"
 			help="GO BACK - Go back to main menu" />
 		</edit>
-		<key>
+		<key text="GO BACK - Go back to main menu">
 			<list text="UP" 
 			help="UP - Sets a keyboard key for up" />
 			<list text="DOWN" 
@@ -77,7 +77,7 @@
 			<list text="SELECT BUTTON TO EDIT" 
 			help="- Press SELECT to edit this item -" />
 			<list text="GO BACK"
-			help="GO BACK - Go back to main menu" />
+			help="- Press SELECT to save changes -" />
 			<list text="PRESS A KEY"
 			help="PRESS A KEY - Sets key pressed to highlighted item" />
 		</key>

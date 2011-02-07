@@ -18,7 +18,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.31.11
+ * @version 02.06.11
  */
 
 public class KeyGUI extends VerticalMenu{
@@ -40,6 +40,8 @@ public class KeyGUI extends VerticalMenu{
     private int change;//Holds whether the menu selection has changed
     private int[] colors;//Integer representation of the multiple colors
     private int keyCount;//This helps regulate scrolling for keyboard
+    private int[] keys;//This stores the keys for the key changes
+    private String backHelp;//This stores the help value for back
 
     /**
      * This class completely controls editing all the keyboard actions for
@@ -51,8 +53,9 @@ public class KeyGUI extends VerticalMenu{
      * @param locy The y-axis location of the menu
      * @param speed The movement speed of this menu
      */
-    public KeyGUI(int spacing, int locx, int locy, double speed){
+    public KeyGUI(String help, int spacing, int locx, int locy, double speed){
         super(locx, locy, speed);
+        keys = new int[KeyControl.Keys.values().length];
         keyItems = new VerticalMenu(locx, locy, speed);
         space = spacing;
         change = 0;
@@ -72,6 +75,7 @@ public class KeyGUI extends VerticalMenu{
         curSelect = false;
         haltPress = false;
         keyCount = 0;
+        backHelp = help;
     }
 
     /**
@@ -218,9 +222,10 @@ public class KeyGUI extends VerticalMenu{
         else if(select > MAX_ITEMS)	select = 0;
 
         if(KeyControl.isActionClicked()){
-            if(select == 6)
+            if(select == 6){
+                storeKeys();
                 column = 1;
-            else
+            }else
                 keySelect = true;
         }
 
@@ -245,41 +250,18 @@ public class KeyGUI extends VerticalMenu{
 
         if(!KeyControl.isMouseFocused() && KeyControl.getLastKey() != -1){
             int key = KeyControl.getLastKey();
-            int temp = 0;
 
             //If keys are matching, it switches the keys
-            for(int i = 0; i < KeyControl.Keys.values().length; i++){
-                if(KeyControl.isSlickWindow()){
-                    temp = KeyControl.Keys.values()[select].slickValue();
-                    if(key == KeyControl.Keys.values()[i].slickValue())
-                        KeyControl.Keys.values()[i].setValues(temp,
-                            KeyControl.getKeyConversion(temp));
-                }else{
-                    temp = KeyControl.Keys.values()[select].javaValue();
-                    if(key == KeyControl.Keys.values()[i].javaValue())
-                        KeyControl.Keys.values()[i].setValues(
-                            KeyControl.getKeyConversion(temp), temp);
-                }
+            for(int i = 0; i < keys.length; i++){
+                if(key == keys[i])
+                    keys[i] = keys[select];
             }
 
             //Sets the value of the key
-            if(KeyControl.isSlickWindow())
-                KeyControl.Keys.values()[select].setValues(key,
-                        KeyControl.getKeyConversion(key));
-            else
-                KeyControl.Keys.values()[select].setValues(
-                        KeyControl.getKeyConversion(key), key);
-
+            keys[select] = key;
  
             //Changes the visuals of all keys
-            for(int i = 0; i < KeyControl.Keys.values().length; i++){
-                keyItems.setItemImage(i, 0,
-                    TextPix.getTextImg(KeyEvent.getKeyText(
-                    KeyControl.Keys.values()[i]
-                    .javaValue()).toUpperCase()));
-            }
-
-            keyItems.setJustify(600, 0, 'R');
+            displayKeys();
 
             KeyControl.isUpClicked();
             KeyControl.isDownClicked();
@@ -311,7 +293,7 @@ public class KeyGUI extends VerticalMenu{
      * @return Whether it is okay to display the scroll bar(T) or not{F)
      */
     public boolean getScrollDisplay(){
-        return !keySelect && select != MAX_ITEMS;
+        return (select != MAX_ITEMS) ? !keySelect : !match();
     }
 
     /**
@@ -319,7 +301,7 @@ public class KeyGUI extends VerticalMenu{
      * @return The current scrolling text
      */
     public String getScrollText(){
-        return help[MAX_ITEMS];
+        return (select != 6) ? help[MAX_ITEMS] : help[MAX_ITEMS+1];
     }
 
     /**
@@ -328,7 +310,7 @@ public class KeyGUI extends VerticalMenu{
      */
     public String getHelpText(){
         return keySelect ? help[MAX_ITEMS+2] : (select != 6) ? help[select] :
-            help[MAX_ITEMS+1];
+            backHelp;
     }
 
     /**
@@ -469,5 +451,57 @@ public class KeyGUI extends VerticalMenu{
     public void addColor(Color fromColor, Color toColor) {
         super.addColor(fromColor, toColor);
         keyItems.addColor(fromColor, toColor);
+    }
+    
+    /**
+     * This function takes the current key presses and stores them to an
+     * array that holds the changes.
+     */
+    public void getKeys(){    
+        for(int i = 0; i < keys.length; i++){
+             keys[i] = KeyControl.isSlickWindow() ?
+                 KeyControl.Keys.values()[i].slickValue() :
+                 KeyControl.Keys.values()[i].javaValue();
+        }
+        displayKeys();
+    }
+
+    /**
+     * This function displays the keys in an orderly fashion
+     */
+    private void displayKeys(){
+        for(int i = 0; i < KeyControl.Keys.values().length; i++)
+            keyItems.setItemImage(i, 0, TextPix.getTextImg(
+                KeyEvent.getKeyText(KeyControl.isSlickWindow() ?
+                KeyControl.getKeyConversion(keys[i]) : keys[i]).
+                toUpperCase()));
+        keyItems.setJustify(600, 0, 'R');
+    }
+
+    /**
+     * This function stores the new key presses within the main system
+     */
+    private void storeKeys(){
+        for(int i = 0; i < keys.length; i++){
+            if(KeyControl.isSlickWindow())
+                KeyControl.Keys.values()[i].setValues(keys[i],
+                    KeyControl.getKeyConversion(keys[i]));
+            else
+                KeyControl.Keys.values()[i].setValues(
+                    KeyControl.getKeyConversion(keys[i]), keys[i]);
+        }
+    }
+
+    private boolean match(){
+        for(int i = 0; i < keys.length; i++){
+            if(KeyControl.isSlickWindow()){
+                if(keys[i] != KeyControl.Keys.values()[i].slickValue())
+                    return false;
+            }else{
+                if(keys[i] != KeyControl.Keys.values()[i].javaValue())
+                    return false;
+            }
+        }
+        return true;
     }
 }

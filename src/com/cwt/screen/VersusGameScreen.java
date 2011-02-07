@@ -53,16 +53,16 @@ public class VersusGameScreen extends Screen{
         }
 
         if(KeyControl.isLeftClicked())
-            music.play(1);
+            music.play("sound/ok.wav");
 
         if(KeyControl.isRightClicked())
-            music.play(2);
+            music.play("sound/cancel.wav");
 
         if(KeyControl.isUpClicked())
-            music.play(3);
+            music.play("sound/capture.wav");
 
         if(KeyControl.isDownClicked())
-            music.play(4);
+            music.play("sound/trap.wav");
 
         //TEMPORARY UNTIL FURTHER NOTICE
         if(KeyControl.isActionClicked() || KeyControl.isCancelClicked())

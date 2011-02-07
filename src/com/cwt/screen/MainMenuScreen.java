@@ -144,7 +144,9 @@ public class MainMenuScreen extends Screen{
         credScr.setColorPath(colorPath);
         credScr.setOrigScreen(SIZE_X, SIZE_Y);
 
-        keyScr = new KeyGUI(20, 0, 200, 1);
+        keyScr = new KeyGUI(XML_Reader.convert(XML_Reader.getAttribute(
+                XML_Reader.getIndex("menu screen key")[0], "text")),
+                20, 0, 200, 1);
         keyScr.setColorPath(colorPath);
         keyScr.setOrigScreen(SIZE_X, SIZE_Y);
 
@@ -454,23 +456,25 @@ public class MainMenuScreen extends Screen{
     private void keyScr(){
         if(scrStart){
             logoPic.setFinalPosition(0, 145, 30);
-            logoPic.setFinalPosition(2, 0, 480);
-            logoPic.setFinalPosition(4, 430, 450);
-            logoPic.setFinalPosition(5, 5, 458);
+            logoPic.setFinalPosition(2, 0, 460);
+            logoPic.setFinalPosition(4, 430, 430);
+            logoPic.setFinalPosition(5, 5, 438);
             logoPic.setHelpText(keyScr.getHelpText());
             logoPic.setScrollText(keyScr.getScrollText());
             logoPic.setInfoText(menuScr.getOptionText(column));
             logoPic.setCounter(WAIT_TIME);
             keyScr.setColor(menuColor);
+            keyScr.getKeys();
             scrStart = false;
         }
 
         if(keyScr.getMenuChange()){
+            logoPic.setScrollText(keyScr.getScrollText());
             logoPic.setHelpText(keyScr.getHelpText());
             if(!menuHelp)
                 logoPic.setFinalPosition(3, 0, -20);
             logoPic.setCounter(WAIT_TIME);
-
+            
             logoPic.setFinalPosition(2, 0, 480);
             logoPic.setFinalPosition(4, 430, 450);
             logoPic.setFinalPosition(5, 5, 458);
