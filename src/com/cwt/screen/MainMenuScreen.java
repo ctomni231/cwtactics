@@ -12,7 +12,7 @@ import com.cwt.io.OptionHandler;
 import com.cwt.system.jslix.debug.MemoryTest;
 import com.cwt.system.jslix.state.Screen;
 import com.cwt.system.jslix.SlixLibrary;
-import com.cwt.map.io.GameElement;
+import com.cwt.map.GameElement;
 import com.cwt.io.XML_Reader;
 import java.awt.Color;
 import java.awt.Component;

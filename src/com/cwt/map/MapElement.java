@@ -1,5 +1,14 @@
-package com.cwt.map.io;
+package com.cwt.map;
 
+import com.cwt.map.io.CodeStorage;
+import com.cwt.map.io.ColorStorage;
+import com.cwt.map.io.DataStorage;
+import com.cwt.map.io.DataStore;
+import com.cwt.map.io.FileStorage;
+import com.cwt.map.io.GraphicStorage;
+import com.cwt.map.io.KeyStore;
+import com.cwt.map.io.LangStorage;
+import com.cwt.map.io.TagStorage;
 import com.cwt.system.jslix.tools.FileFind;
 import com.cwt.system.jslix.tools.FileIndex;
 import com.cwt.system.jslix.tools.XML_Parser;
@@ -346,6 +355,17 @@ public class MapElement implements Runnable{
                 System.out.print(mapParse.getTags(i)[j]+" ");
             System.out.println();
         }//*/
+    }
+
+    /**
+     * This gets a data from the section of the array of your choice
+     * @param index The reference index of the item
+     * @param item The byte representation of the item
+     * @return An integer representing the data of the item
+     */
+    public int getData(int index, byte item){
+        return (index >= 0 && index < dataItems.length) ?
+            dataItems[index].getData(item) : -1;
     }
 
     /**

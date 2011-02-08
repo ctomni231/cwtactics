@@ -13,7 +13,7 @@ import static com.yasl.logging.Logging.*;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.25.11
+ * @version 02.06.11
  */
 public class FileStorage{
 
@@ -99,6 +99,27 @@ public class FileStorage{
         System.out.println("FILE:---------------------------------");//*/
         
         return checkFile();
+    }
+
+    /**
+     * This gets the file section of an item within the array
+     * @param index The reference index of the file
+     * @return The String representing the file
+     */
+    public String getFile(int index){
+        return (getData(index, PATH) >= 0) ?
+            fileItems.getData(getData(index, PATH)) : "";
+    }
+
+    /**
+     * This gets a data from the section of the array of your choice
+     * @param index The reference index of the item
+     * @param item The byte representation of the item
+     * @return An integer representing the data of the item
+     */
+    public int getData(int index, byte item){
+        return (index >= 0 && index < locItems.length) ?
+            locItems[index].getData(item) : -1;
     }
 
     /**

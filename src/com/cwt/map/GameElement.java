@@ -1,4 +1,6 @@
-package com.cwt.map.io;
+package com.cwt.map;
+
+import com.cwt.map.MapElement;
 
 /**
  * GameElement.java

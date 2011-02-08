@@ -105,6 +105,38 @@ public class TagStorage{
     }
 
     /**
+     * This gets all the tag names for a specific index and item
+     * @param index The reference to the tag group
+     * @param item The tag group to extract the data from
+     * @return The list of tag names from the group
+     */
+    public String[] getTags(int index, byte item){
+        int[] temp = getData(index, item);
+        String[] tags = new String[temp.length];
+        for(int i = 0; i < temp.length; i++)
+            tags[i] = tagNames.getData(temp[i]);
+        return tags;
+    }
+
+    /**
+     * This gets the correct data for the tag items and converts them into
+     * integers
+     * @param index The reference index for the tag items
+     * @param item The tag item reference
+     * @return The list of integers for this specific tag
+     */
+    private int[] getData(int index, byte item){
+        if(index >= 0 && index < tagItems.length){
+            index = tagItems[index].getData(item);
+            if(index < -1)
+                return new int[]{(index * -1) + 2};
+            else if(index > 0)
+                return multItems.getData(index);
+        }
+        return new int[0];
+    }
+
+    /**
      * This class stores the tags within the array in a way that keeps the
      * class from taking up too much memory
      * @param index The index where this item is to be stored
