@@ -29,7 +29,7 @@ import static com.yasl.logging.Logging.*;
  * @author <ul><li>Carr, Crecen</li>
  *          <li>Nolan, Clinton</li></ul>
  * @license Look into "LICENSE" file for further information
- * @version 02.04.11
+ * @version 02.09.11
  */
 public class MusicLibrary implements Runnable{
 
@@ -214,8 +214,10 @@ public class MusicLibrary implements Runnable{
             oggClip.close();
         }
         if(midiPlayer != null){
-            midiPlayer.stop();
-            midiPlayer.close();
+            if(midiPlayer.isOpen()){
+                midiPlayer.stop();
+                midiPlayer.close();
+            }
         }
         ready = true;
     }
@@ -270,7 +272,7 @@ public class MusicLibrary implements Runnable{
      * @throws FileNotFoundException if file isn't found
      * @throws IOException if something is wrong with the file
      */
-    public void playOGG() throws FileNotFoundException, IOException{
+    private void playOGG() throws FileNotFoundException, IOException{
         musicFile = new FileInputStream(finder.getFile(current.clip));
         oggClip = new OggClip(musicFile);
         if(loop)

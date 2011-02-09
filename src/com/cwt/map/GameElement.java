@@ -1,6 +1,6 @@
 package com.cwt.map;
 
-import com.cwt.map.MapElement;
+import com.cwt.io.JukeBox;
 
 /**
  * GameElement.java
@@ -9,14 +9,23 @@ import com.cwt.map.MapElement;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.17.10
+ * @version 02.09.11
  */
 
 public class GameElement {
 
+    /**
+     * This holds the map storage data for the class
+     */
     private static MapElement mapStore = new MapElement();
 
+    /**
+     * This function initializes the game elements including the music
+     * and the map objects
+     * @param isApplet Stores whether this screen is a frame or applet
+     */
     public static void initialize(boolean isApplet){
+        JukeBox.init();
         mapStore.setApplet(isApplet);
         mapStore.decode();
     }

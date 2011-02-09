@@ -1,8 +1,8 @@
 package com.cwt.screen;
 
+import com.cwt.io.JukeBox;
 import com.cwt.io.KeyControl;
 import com.cwt.system.jslix.state.Screen;
-import com.cwt.system.jslix.tools.MusicLibrary;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import org.newdawn.slick.Color;
@@ -15,10 +15,17 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.30.11
+ * @version 02.09.11
  */
 
 public class MapEditorScreen extends Screen{
+
+    private String MUSIC = "music/melanthe.mp3";
+
+    private String FX_1 = "sound/ok.wav";
+    private String FX_2 = "sound/cancel.wav";
+    private String FX_3 = "sound/maptick.wav";
+    private String FX_4 = "sound/explode.wav";
 
     private final int SIZE_X = 640;//The base window height
     private final int SIZE_Y = 480;//The base window width
@@ -26,17 +33,15 @@ public class MapEditorScreen extends Screen{
 
     private boolean scrStart;//The initialization sequence starter for screens
     private int column;//Which screen index we are currently showing
-    private MusicLibrary music;
 
     public MapEditorScreen(){
-        music = new MusicLibrary();
-        music.addClip("music/Lash.mp3");
-        music.addClip("sound/ok.wav");
-        music.addClip("sound/cancel.wav");
-        music.addClip("sound/maptick.wav");
-        music.addClip("sound/explode.wav");
-        music.loop(0);
-
+        JukeBox.stopClip();    
+        JukeBox.addClip(MUSIC);
+        JukeBox.addClip(FX_1);
+        JukeBox.addClip(FX_2);
+        JukeBox.addClip(FX_3);
+        JukeBox.addClip(FX_4);
+        JukeBox.loopClip(MUSIC);
         
         scrStart = true;
 
@@ -54,16 +59,16 @@ public class MapEditorScreen extends Screen{
         }
 
         if(KeyControl.isLeftClicked())
-            music.play(1);
+            JukeBox.playClip(FX_1);
 
         if(KeyControl.isRightClicked())
-            music.play(2);
+            JukeBox.playClip(FX_2);
 
         if(KeyControl.isUpClicked())
-            music.play(3);
+            JukeBox.playClip(FX_3);
 
         if(KeyControl.isDownClicked())
-            music.play(4);
+            JukeBox.playClip(FX_4);
 
         //TEMPORARY UNTIL FURTHER NOTICE
         if(KeyControl.isActionClicked() || KeyControl.isCancelClicked())
@@ -94,7 +99,7 @@ public class MapEditorScreen extends Screen{
 
     @Override
     public void scr_close() {
-        music.stop();
+        JukeBox.stopClip();
     }
 
 }

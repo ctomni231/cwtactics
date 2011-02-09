@@ -1,8 +1,8 @@
 package com.cwt.screen;
 
+import com.cwt.io.JukeBox;
 import com.cwt.io.KeyControl;
 import com.cwt.system.jslix.state.Screen;
-import com.cwt.system.jslix.tools.MusicLibrary;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import org.newdawn.slick.Color;
@@ -15,10 +15,17 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.30.11
+ * @version 02.09.11
  */
 
 public class VersusGameScreen extends Screen{
+
+    private String MUSIC = "music/Sky.mid";
+
+    private String FX_1 = "sound/ok.wav";
+    private String FX_2 = "sound/cancel.wav";
+    private String FX_3 = "sound/capture.wav";
+    private String FX_4 = "sound/trap.wav";
 
     private final int SIZE_X = 640;//The base window height
     private final int SIZE_Y = 480;//The base window width
@@ -26,17 +33,15 @@ public class VersusGameScreen extends Screen{
 
     private boolean scrStart;//The initialization sequence starter for screens
     private int column;//Which screen index we are currently showing
-    private MusicLibrary music;
 
     public VersusGameScreen(){
-
-        music = new MusicLibrary();
-        music.addClip("music/Sky.mid");
-        music.addClip("sound/ok.wav");
-        music.addClip("sound/cancel.wav");
-        music.addClip("sound/capture.wav");
-        music.addClip("sound/trap.wav");
-        music.loop(0);
+        JukeBox.stopClip();
+        JukeBox.addClip(MUSIC);
+        JukeBox.addClip(FX_1);
+        JukeBox.addClip(FX_2);
+        JukeBox.addClip(FX_3);
+        JukeBox.addClip(FX_4);
+        JukeBox.loopClip(MUSIC);
 
         scrStart = true;
 
@@ -53,16 +58,16 @@ public class VersusGameScreen extends Screen{
         }
 
         if(KeyControl.isLeftClicked())
-            music.play("sound/ok.wav");
+            JukeBox.playClip(FX_1);
 
         if(KeyControl.isRightClicked())
-            music.play("sound/cancel.wav");
+            JukeBox.playClip(FX_2);
 
         if(KeyControl.isUpClicked())
-            music.play("sound/capture.wav");
+            JukeBox.playClip(FX_3);
 
         if(KeyControl.isDownClicked())
-            music.play("sound/trap.wav");
+            JukeBox.playClip(FX_4);
 
         //TEMPORARY UNTIL FURTHER NOTICE
         if(KeyControl.isActionClicked() || KeyControl.isCancelClicked())
@@ -93,7 +98,7 @@ public class VersusGameScreen extends Screen{
 
     @Override
     public void scr_close() {
-        music.stop();
+        JukeBox.stopClip();
     }
 
 }
