@@ -10,21 +10,14 @@ import com.cwt.system.jslix.tools.MusicLibrary;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.09.11
+ * @version 02.13.11
  */
 public class JukeBox {
 
     /**
      * This holds the music player used for the JukeBox
      */
-    private static MusicLibrary player;
-
-    /**
-     * This initializes the JukeBox music player ready for use
-     */
-    public static void init(){
-        player = new MusicLibrary();
-    }
+    private static MusicLibrary player = new MusicLibrary();
 
     /**
      * This adds a music clip of sound effect to the jukebox

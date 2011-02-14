@@ -14,7 +14,7 @@ import java.util.HashMap;
  * @license Look into "LICENSE" file for further information
  * @version 01.31.11
  */
-public class RefStore {
+public class RefStore{
 
     private HashMap<String, Integer> ref;//Holds the reference String data
     private ListStore list;//Holds the wild card reference data

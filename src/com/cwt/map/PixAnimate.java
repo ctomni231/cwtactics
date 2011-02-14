@@ -1,18 +1,18 @@
 package com.cwt.map;
 
-import com.cwt.io.JukeBox;
-
 /**
- * GameElement.java
+ * PixAnimate.java
  *
- * This class allows the map data to be statically gathered.
+ * This class turns MapElement data into images and helps regulate the
+ * animations for those images. This also works on scaling the images and
+ * allows map data to be statically gathered.
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.09.11
+ * @version 02.13.11
  */
 
-public class GameElement {
+public class PixAnimate {
 
     /**
      * This holds the map storage data for the class
@@ -25,7 +25,6 @@ public class GameElement {
      * @param isApplet Stores whether this screen is a frame or applet
      */
     public static void initialize(boolean isApplet){
-        JukeBox.init();
         mapStore.setApplet(isApplet);
         mapStore.decode();
     }

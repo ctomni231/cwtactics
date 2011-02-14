@@ -175,7 +175,6 @@ public class KeyStore {
      * @return Whether the number exists in this list
      */
     private boolean checkCode(int index, int number){
-
         for(int i = 0; i < max; i++){
             if(i == index)
                 return (number >= Math.pow(2, 31-i)+INT_SIZE);

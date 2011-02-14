@@ -23,7 +23,7 @@ import static com.yasl.logging.Logging.*;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.31.11
+ * @version 02.14.11
  */
 
 public class MapElement implements Runnable{
@@ -44,6 +44,7 @@ public class MapElement implements Runnable{
     private KeyStore[] dataItems;//This is the main storage area for objects
     private KeyStore item;//This temporarily assists the main storage area
     private XML_Parser mapParse;//This is used to parse XML documents
+    private CodeStorage codeLib;//This stores all the code XML tag information
     private FileStorage fileLib;//This stores all the file XML tag information
     private GraphicStorage picLib;//This stores graphic XML tag information
     private DataStorage dataLib;//This stores all the data XML tag information
@@ -65,6 +66,7 @@ public class MapElement implements Runnable{
     public MapElement(){
         mapParse = new XML_Parser();
         fileLib = new FileStorage();
+        codeLib = new CodeStorage();
         tagLib = new TagStorage();
         picLib = new GraphicStorage();
         dataLib = new DataStorage();
@@ -165,6 +167,7 @@ public class MapElement implements Runnable{
      * @return Returns the altered storage class
      */
     private DataStore storeData(DataStore store, int index, int data){
+        
         if(item.checkCode(index)){
             if(item.getData(index) < -1){
                 store.addNewLayer();
@@ -237,8 +240,8 @@ public class MapElement implements Runnable{
         for(int temp = 0, i = 0; i < mapParse.size(); i++){
             //This loop checks to see if all tags are valid
             for(int j = 0; j < mapParse.getTags(i).length; j++){
-                temp = (int)CodeStorage.checkAll(j, mapParse.getTags(i)[j]);
-                if(CodeStorage.checkAll(j, mapParse.getTags(i)[j]) == -1){
+                temp = (int)codeLib.checkAll(j, mapParse.getTags(i)[j]);
+                if(codeLib.checkAll(j, mapParse.getTags(i)[j]) == -1){
                     if(i == 0){
                         warn(mapParse.getTags(i)[0]+" not recognized");
                         return;
@@ -293,10 +296,7 @@ public class MapElement implements Runnable{
                                     break;
                                 }
                             }
-                            dataItems[tagTrack].replaceData(
-                                    FILE, animLib.size());
                             tagTrack = fileLib.size();
-                            animLib.addNewLayer();
                         }                       
                 }
             }
@@ -311,7 +311,7 @@ public class MapElement implements Runnable{
                                 dataItems[j].addData(DATA, temp);
                                 dataItems[j].addData(COLOR,
                                     colorLib.addItem());
-                                dataItems[j].addData(CODE, CodeStorage.
+                                dataItems[j].addData(CODE, codeLib.
                                     checkAll(CODE, mapParse.getTags(i)[CODE]));
                             }
                             dataTrack = fileLib.size();
@@ -333,7 +333,7 @@ public class MapElement implements Runnable{
         }
 
         //FOR QUICK TESTING PURPOSES
-        /*
+        
         for(int i = 0; i < dataItems.length; i++){
             int[] temp = dataItems[i].getData();
             for(int j = 0; j < temp.length; j++){
@@ -366,6 +366,30 @@ public class MapElement implements Runnable{
     public int getData(int index, byte item){
         return (index >= 0 && index < dataItems.length) ?
             dataItems[index].getData(item) : -1;
+    }
+
+    /**
+     * This gets the correct data for the items and converts them into
+     * integers of an array
+     * @param index The reference index for the items
+     * @param item The item reference
+     * @return The list of integers for this specific item
+     */
+    public int[] getArray(int index, byte item){
+        if(index >= 0 && index < dataItems.length){
+            index = dataItems[index].getData(item);
+            if(index < -1)
+                return new int[]{(index * -1) + 2};
+            else if(index > 0){
+                if(item == FILE)
+                    return animLib.getData(index);
+                else if(item == RANDOM)
+                    return randLib.getData(index);
+                else
+                    return new int[]{index};
+            }
+        }
+        return new int[0];
     }
 
     /**

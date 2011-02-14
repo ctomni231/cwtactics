@@ -9,7 +9,7 @@ package com.cwt.map;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.14.10
+ * @version 02.13.11
  */
 
 public class ByteMap {
@@ -147,11 +147,7 @@ public class ByteMap {
     private byte getBitData(int value, boolean left){
         if(value < 0 && value > 255)
             value = 0;
-        byte temp = (byte)(value-128);
-
-        if(left)
-            return (byte)((temp & 0x000000F0) >>> 4);
-        else
-            return (byte)((temp & 0x0000000F));
+        return left ? (byte)(((value-128) & 0x000000F0) >>> 4) :
+            (byte)((value-128) & 0x0000000F);
     }
 }
