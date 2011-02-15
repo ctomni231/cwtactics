@@ -12,7 +12,7 @@ import static com.yasl.logging.Logging.*;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.28.11
+ * @version 02.14.11
  */
 public class GraphicStorage {
 
@@ -64,6 +64,17 @@ public class GraphicStorage {
             }
         }
         return (tempKey.getData().length != 0) ? checkGraphic() : -1;
+    }
+
+    /**
+     * This gets the textual references of the items you specify
+     * @param index The index of the item to retrieve
+     * @param item The item name of the textual data
+     * @return A String representation of the index
+     */
+    public String getData(int index, byte item){
+        return (index >= 0 && index < locItems.length) ?
+            graphicItems[item].getData(locItems[index].getData(item)) : "";
     }
 
     /**

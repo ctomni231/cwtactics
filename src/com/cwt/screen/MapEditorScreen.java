@@ -2,6 +2,7 @@ package com.cwt.screen;
 
 import com.cwt.io.JukeBox;
 import com.cwt.io.KeyControl;
+import com.cwt.map.PixAnimate;
 import com.cwt.system.jslix.state.Screen;
 import java.awt.Component;
 import java.awt.Graphics2D;
@@ -35,6 +36,7 @@ public class MapEditorScreen extends Screen{
     private int column;//Which screen index we are currently showing
 
     public MapEditorScreen(){
+        PixAnimate.getData();
         JukeBox.stopClip();    
         JukeBox.addClip(MUSIC);
         JukeBox.addClip(FX_1);

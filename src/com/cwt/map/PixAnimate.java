@@ -1,5 +1,7 @@
 package com.cwt.map;
 
+import com.cwt.map.io.TagStorage;
+
 /**
  * PixAnimate.java
  *
@@ -9,7 +11,7 @@ package com.cwt.map;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.13.11
+ * @version 02.14.11
  */
 
 public class PixAnimate {
@@ -27,6 +29,22 @@ public class PixAnimate {
     public static void initialize(boolean isApplet){
         mapStore.setApplet(isApplet);
         mapStore.decode();
+    }
+
+    public static void getData(){
+        for(int i = 0; i < mapStore.size(); i++){
+            int temp[] = mapStore.getArray(i, MapElement.FILE);
+            System.out.println(
+                    "FILE:"+mapStore.getFileData().getFile(temp[0]));
+        }
+    }
+
+    public static void getTags(){
+        for(int i = 0; i < mapStore.size(); i++){
+            int temp[] = mapStore.getArray(i, MapElement.TAGS);
+            System.out.println("TAGS:"+mapStore.getTagData().
+                    getTags(temp[0], TagStorage.O)[0]);
+        }
     }
 
     /**

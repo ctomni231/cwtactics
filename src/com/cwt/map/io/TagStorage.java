@@ -12,24 +12,24 @@ import static com.yasl.logging.Logging.*;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.19.11
+ * @version 02.14.11
  */
 public class TagStorage{
 
-    public final byte O = 0;//Holds the default place tag of this object
-    public final byte OL = 1;//Holds the tile this object overlaps
-    public final byte N = 2;//Holds the valid connection for North
-    public final byte S = 3;//Holds the valid connection for South
-    public final byte E = 4;//Holds the valid connection for East
-    public final byte W = 5;//Holds the valid connection for West
-    public final byte NE = 6;//Holds the valid connection for Northeast
-    public final byte NW = 7;//Holds the valid connection for Northwest
-    public final byte SE = 8;//Holds the valid connection for Southeast
-    public final byte SW = 9;//Holds the valid connection for Southwest
-    public final byte NR = 10;//Holds the rejected connection for North
-    public final byte SR = 11;//Holds the rejected connection for South
-    public final byte ER = 12;//Holds the rejected connection for East
-    public final byte WR = 13;//Holds the rejected connection for West
+    public static final byte O = 0;//Holds the default place tag of this object
+    public static final byte OL = 1;//Holds the tile this object overlaps
+    public static final byte N = 2;//Holds the valid connection for North
+    public static final byte S = 3;//Holds the valid connection for South
+    public static final byte E = 4;//Holds the valid connection for East
+    public static final byte W = 5;//Holds the valid connection for West
+    public static final byte NE = 6;//Holds the valid connection for Northeast
+    public static final byte NW = 7;//Holds the valid connection for Northwest
+    public static final byte SE = 8;//Holds the valid connection for Southeast
+    public static final byte SW = 9;//Holds the valid connection for Southwest
+    public static final byte NR = 10;//Holds the rejected connection for North
+    public static final byte SR = 11;//Holds the rejected connection for South
+    public static final byte ER = 12;//Holds the rejected connection for East
+    public static final byte WR = 13;//Holds the rejected connection for West
 
     private KeyStore[] tagItems;//This holds the individual connections
     private DataStore multItems;//This holds multiple tag for each connection
@@ -129,7 +129,7 @@ public class TagStorage{
         if(index >= 0 && index < tagItems.length){
             index = tagItems[index].getData(item);
             if(index < -1)
-                return new int[]{(index * -1) + 2};
+                return new int[]{-index-2};
             else if(index > 0)
                 return multItems.getData(index);
         }
@@ -146,12 +146,12 @@ public class TagStorage{
         if(tempKey.checkCode(index)){
             if(tempKey.getData(index) < -1){
                 multItems.addNewLayer();
-                multItems.addData((tempKey.getData(index)*-1) - 2);
+                multItems.addData(-tempKey.getData(index)-2);
                 tempKey.replaceData(index, multItems.addData(data));
             }else
                 multItems.addData(tempKey.getData(index), data);
         }else
-            tempKey.addData(index, (data+2)*-1);
+            tempKey.addData(index, -data-2);
     }
 
     /**

@@ -12,7 +12,7 @@ import static com.yasl.logging.Logging.*;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.28.11
+ * @version 02.14.11
  */
 public class ColorStorage {
 
@@ -77,12 +77,18 @@ public class ColorStorage {
             }
         }
 
-        if(tempKey.getData(HEX) != -1)
-            colorItems.addData(tempKey.getData(HEX));
-        else
-            colorItems.addData(getRGB(tempKey.getData(RED),
-                    tempKey.getData(GREEN), tempKey.getData(BLUE),
-                    tempKey.getData(ALPHA)));
+        colorItems.addData(tempKey.getData(HEX) < 0 ? tempKey.getData(HEX) :
+            getRGB(tempKey.getData(RED), tempKey.getData(GREEN),
+            tempKey.getData(BLUE), tempKey.getData(ALPHA)));
+    }
+
+    /**
+     * This function gets the color data for the index specified
+     * @param index The reference index for this group of colors
+     * @return The group of colors for this reference
+     */
+    public int[] getData(int index){
+        return colorItems.getData(index);
     }
 
     /**

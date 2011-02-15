@@ -171,12 +171,12 @@ public class MapElement implements Runnable{
         if(item.checkCode(index)){
             if(item.getData(index) < -1){
                 store.addNewLayer();
-                store.addData((item.getData(index)*-1) - 2);
+                store.addData(-item.getData(index)-2);
                 item.replaceData(index, store.addData(data));
             }else
                 store.addData(item.getData(index), data);
         }else
-            item.addData(index, (data+2)*-1);
+            item.addData(index, -data-2);
 
         return store;
     }
@@ -358,6 +358,46 @@ public class MapElement implements Runnable{
     }
 
     /**
+     * This function gets the all the data gathered for the graphic tag
+     * @return The collection of graphic tag data
+     */
+    public GraphicStorage getGraphicData(){
+        return picLib;
+    }
+
+    /**
+     * This function gets the all the data gathered for the color tag
+     * @return The collection of color tag data
+     */
+    public ColorStorage getColorData(){
+        return colorLib;
+    }
+
+    /**
+     * This function gets the all the data gathered for the data tag
+     * @return The collection of data tag data
+     */
+    public DataStorage getData(){
+        return dataLib;
+    }
+
+    /**
+     * This function gets the all the data gathered for the file tag
+     * @return The collection of file tag data
+     */
+    public FileStorage getFileData(){
+        return fileLib;
+    }
+
+    /**
+     * This function gets the all the data gathered for the tags tag
+     * @return The collection of tags tag data
+     */
+    public TagStorage getTagData(){
+        return tagLib;
+    }
+
+    /**
      * This gets a data from the section of the array of your choice
      * @param index The reference index of the item
      * @param item The byte representation of the item
@@ -379,8 +419,8 @@ public class MapElement implements Runnable{
         if(index >= 0 && index < dataItems.length){
             index = dataItems[index].getData(item);
             if(index < -1)
-                return new int[]{(index * -1) + 2};
-            else if(index > 0){
+                return new int[]{-index-2};
+            else if(index >= 0){
                 if(item == FILE)
                     return animLib.getData(index);
                 else if(item == RANDOM)
@@ -390,6 +430,14 @@ public class MapElement implements Runnable{
             }
         }
         return new int[0];
+    }
+
+    /**
+     * This function gets the total number of objects
+     * @return The number of objects in this class
+     */
+    public int size(){
+        return (dataItems != null) ? dataItems.length : 0;
     }
 
     /**

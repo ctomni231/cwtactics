@@ -26,7 +26,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.31.11
+ * @version 02.14.11
  */
 
 public class MainMenuScreen extends Screen{
@@ -475,14 +475,12 @@ public class MainMenuScreen extends Screen{
                 logoPic.setFinalPosition(3, 0, -20);
             logoPic.setCounter(WAIT_TIME);
             
-            logoPic.setFinalPosition(2, 0, 480);
-            logoPic.setFinalPosition(4, 430, 450);
-            logoPic.setFinalPosition(5, 5, 458);
-            if(keyScr.getScrollDisplay()){
-                logoPic.setFinalPosition(2, 0, 460);
-                logoPic.setFinalPosition(4, 430, 430);
-                logoPic.setFinalPosition(5, 5, 438);
-            }
+            logoPic.setFinalPosition(2, 0,
+                    keyScr.getScrollDisplay() ? 460 : 480);
+            logoPic.setFinalPosition(4, 430,
+                    keyScr.getScrollDisplay() ? 430 : 450);
+            logoPic.setFinalPosition(5, 5,
+                    keyScr.getScrollDisplay() ? 438 : 458);
         }      
 
         keyScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
@@ -528,12 +526,8 @@ public class MainMenuScreen extends Screen{
         if(logoPic.checkHelp())
             logoPic.setCounter(WAIT_TIME*mult);
 
-        if(!menuHelp){
-            if(logoPic.getCounter())
-                logoPic.setFinalPosition(3, 0, 0);
-            else
-                logoPic.setFinalPosition(3, 0, -20);
-        }
+        if(!menuHelp)
+            logoPic.setFinalPosition(3, 0, logoPic.getCounter() ? 0 : -20);
     }
 
     /**

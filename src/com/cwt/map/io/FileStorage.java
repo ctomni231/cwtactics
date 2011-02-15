@@ -67,7 +67,8 @@ public class FileStorage{
                     warn("File key '"+key+"' not recognized!");
                     break;
                 case PATH:
-                    tempKey.addData(PATH, fileItems.addData(key));
+                    tempKey.addData(PATH, 
+                            fileItems.addData(fillData.get(key)));
                     break;
                 default:
                     tempKey.addData(temp, Integer.parseInt(fillData.get(key)));
