@@ -1,7 +1,5 @@
 package com.cwt.map.io;
 
-import java.util.Arrays;
-
 /**
  * DataStore.java
  *
@@ -10,21 +8,11 @@ import java.util.Arrays;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.31.11
+ * @version 02.15.11
  */
 public class DataStore {
 
     private int[][] dataItems;//This holds the group of integer data
-    private boolean backtrack;//This holds how data is stored in the array
-
-    /**
-     * This class organizes a double integer array for storage and easy
-     * retrieval
-     */
-    public DataStore(){
-        dataItems = new int[0][];
-        backtrack = true;
-    }
 
     /**
      * This adds a new Layer to add data to
@@ -71,7 +59,7 @@ public class DataStore {
      * @return The layer index
      */
     public int addData(int index, int data){
-        if(backtrack && index >= 0 && index < dataItems.length)
+        if(index >= 0 && index < dataItems.length)
             dataItems[index] = addData(dataItems[index], data);
         return index;
     }
@@ -84,7 +72,7 @@ public class DataStore {
      */
     public int addData(int index, int[] data){
         if(data != null){
-            if(backtrack && index >= 0 && index < dataItems.length){
+            if(index >= 0 && index < dataItems.length){
                 for(int i = 0; i < data.length; i++)
                     dataItems[index] = addData(dataItems[index], data[i]);
             }
@@ -103,8 +91,6 @@ public class DataStore {
     public int addRefData(int[] data){
         if(data == null)
             return -1;
-        if(backtrack)
-            backtrack = false;
 
         if(dataItems == null)
             addNewLayer();
@@ -112,10 +98,16 @@ public class DataStore {
             addNewLayer();
 
         for(int i = 0; i < dataItems.length; i++){
-            if(Arrays.equals(dataItems[i], data))
-                return i;
+            if(dataItems[i].length == data.length){
+                for(int j = 0; j < data.length; j++){
+                    if(dataItems[i][j] != data[j])
+                        break;
+                    if(j == data.length-1)
+                        return i;
+                }
+            }
         }
-
+        
         return addData(data);
     }
 
@@ -128,9 +120,10 @@ public class DataStore {
      * @return A layer index matching the last inputted array
      */
     public int addRefData(){
-        if(dataItems.length == 0)
-            return 0;
+        if(dataItems == null)
+            return -1;
         int[] temp = dataItems[dataItems.length-1];
+        System.out.println("LENGTH:"+temp.length);
         clearCurrent();
         return addRefData(temp);
     }

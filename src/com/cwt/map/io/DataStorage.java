@@ -13,13 +13,13 @@ import static com.yasl.logging.Logging.*;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.07.11
+ * @version 02.15.11
  */
 public class DataStorage {
 
-    public final byte NAME = 0;//Holds the name reference to this object
-    public final byte BASE = 1;//Holds the object grouping type
-    public final byte TYPE = 2;//Holds which game this object belongs to
+    public static final byte NAME = 0;//Holds the name reference to this object
+    public static final byte BASE = 1;//Holds the object grouping type
+    public static final byte TYPE = 2;//Holds which game this object belongs to
 
     private KeyStore[] locItems;//Stores the items in an integer format
     private ListStore[] dataItems;//Stores the textual portion of the items

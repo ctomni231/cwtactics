@@ -1,6 +1,10 @@
 package com.cwt.map;
 
+import com.cwt.map.io.DataStorage;
+import com.cwt.map.io.FileStorage;
+import com.cwt.map.io.GraphicStorage;
 import com.cwt.map.io.TagStorage;
+import java.awt.Color;
 
 /**
  * PixAnimate.java
@@ -11,7 +15,7 @@ import com.cwt.map.io.TagStorage;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.14.11
+ * @version 02.15.11
  */
 
 public class PixAnimate {
@@ -33,17 +37,46 @@ public class PixAnimate {
 
     public static void getData(){
         for(int i = 0; i < mapStore.size(); i++){
-            int temp[] = mapStore.getArray(i, MapElement.FILE);
+            int temp[] = mapStore.getArray(i, MapElement.DATA);
             System.out.println(
-                    "FILE:"+mapStore.getFileData().getFile(temp[0]));
+                    "NAME:"+mapStore.getData().getData(temp[0], DataStorage.NAME)+
+                    "\nBASE:"+mapStore.getData().getData(temp[0], DataStorage.BASE)+
+                    "\nTYPE:"+mapStore.getData().getData(temp[0], DataStorage.TYPE));
+            temp = mapStore.getArray(i, MapElement.GRAPHIC);
+            System.out.println(
+                    "WEATHER:"+mapStore.getGraphicData().getData(temp[0], GraphicStorage.WEATHER)+
+                    "\nDIRECTION:"+mapStore.getGraphicData().getData(temp[0], GraphicStorage.DIRECTION)+
+                    "\nARMY:"+mapStore.getGraphicData().getData(temp[0], GraphicStorage.ARMY)+
+                    "\nSIZE:"+mapStore.getGraphicData().getData(temp[0], GraphicStorage.SIZE));
+            temp = mapStore.getArray(i, MapElement.FILE);
+            System.out.println(
+                "FILE:"+mapStore.getFileData().getFile(temp[0])+
+                "\nX:"+mapStore.getFileData().getData(temp[0], FileStorage.LOCX)+
+                "\nY:"+mapStore.getFileData().getData(temp[0], FileStorage.LOCY)+
+                "\nSX:"+mapStore.getFileData().getData(temp[0], FileStorage.SIZEX)+
+                "\nSY:"+mapStore.getFileData().getData(temp[0], FileStorage.SIZEY)+
+                "\nTX:"+mapStore.getFileData().getData(temp[0], FileStorage.TSIZEX)+
+                "\nTY:"+mapStore.getFileData().getData(temp[0], FileStorage.TSIZEY));
+            temp = mapStore.getArray(i, MapElement.TAGS);
+            System.out.println("TAGS:"+mapStore.getTagData().
+                    getTags(temp[0], TagStorage.O)[0]);
+            System.out.println("-----------------------------------------");
         }
     }
 
     public static void getTags(){
         for(int i = 0; i < mapStore.size(); i++){
-            int temp[] = mapStore.getArray(i, MapElement.TAGS);
-            System.out.println("TAGS:"+mapStore.getTagData().
-                    getTags(temp[0], TagStorage.O)[0]);
+            int temp[] = mapStore.getArray(i, MapElement.DATA);
+            System.out.println(
+                "NAME:"+mapStore.getData().getData(temp[0], DataStorage.NAME)+
+                "\nBASE:"+mapStore.getData().getData(temp[0], DataStorage.BASE)+
+                "\nTYPE:"+mapStore.getData().getData(temp[0], DataStorage.TYPE));
+            temp = mapStore.getArray(i, MapElement.COLOR);
+            if(temp.length > 0){
+                for(int data: mapStore.getColorData().getData(temp[0]))
+                    System.out.println(new Color(data).toString());
+            }
+            System.out.println("-----------------------------------------");
         }
     }
 

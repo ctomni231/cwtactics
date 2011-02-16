@@ -23,7 +23,7 @@ import static com.yasl.logging.Logging.*;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.14.11
+ * @version 02.15.11
  */
 
 public class MapElement implements Runnable{
@@ -333,7 +333,7 @@ public class MapElement implements Runnable{
         }
 
         //FOR QUICK TESTING PURPOSES
-        
+        /*
         for(int i = 0; i < dataItems.length; i++){
             int[] temp = dataItems[i].getData();
             for(int j = 0; j < temp.length; j++){

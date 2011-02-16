@@ -12,14 +12,14 @@ import static com.yasl.logging.Logging.*;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.14.11
+ * @version 02.15.11
  */
 public class GraphicStorage {
 
-    public final byte WEATHER = 0;//Holds the weather of this object
-    public final byte DIRECTION = 1;//Holds the direction of this object
-    public final byte ARMY = 2;//Holds the army faction of this object
-    public final byte SIZE = 3;//Holds the viewing size on an object
+    public static final byte WEATHER = 0;//Holds the weather of this object
+    public static final byte DIRECTION = 1;//Holds the direction of this object
+    public static final byte ARMY = 2;//Holds the army faction of this object
+    public static final byte SIZE = 3;//Holds the viewing size on an object
 
     private KeyStore[] locItems;//Stores the items in an integer format
     private ListStore[] graphicItems;//Stores the textual portion of the items
@@ -59,7 +59,8 @@ public class GraphicStorage {
                     warn("Graphic key '"+key+"' not recognized!");
                     break;
                 default:
-                    tempKey.addData(temp, graphicItems[temp].addData(key));
+                    tempKey.addData(temp, graphicItems[temp].addData(
+                            fillData.get(key)));
                     break;
             }
         }

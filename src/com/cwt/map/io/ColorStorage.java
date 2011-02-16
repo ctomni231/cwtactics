@@ -12,7 +12,7 @@ import static com.yasl.logging.Logging.*;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.14.11
+ * @version 02.15.11
  */
 public class ColorStorage {
 
@@ -71,14 +71,14 @@ public class ColorStorage {
                     break;
                 case HEX:
                     tempKey.addData(HEX, getHexColor(fillData.get(key)));
-                    break;
+                    colorItems.addData(getHexColor(fillData.get(key)));
+                    return;
                 default:
                     tempKey.addData(temp, Integer.parseInt(fillData.get(key)));
             }
         }
 
-        colorItems.addData(tempKey.getData(HEX) < 0 ? tempKey.getData(HEX) :
-            getRGB(tempKey.getData(RED), tempKey.getData(GREEN),
+        colorItems.addData(getRGB(tempKey.getData(RED), tempKey.getData(GREEN),
             tempKey.getData(BLUE), tempKey.getData(ALPHA)));
     }
 

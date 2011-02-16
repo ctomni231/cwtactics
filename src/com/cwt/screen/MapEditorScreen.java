@@ -16,12 +16,12 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.09.11
+ * @version 02.15.11
  */
 
 public class MapEditorScreen extends Screen{
 
-    private String MUSIC = "music/melanthe.mp3";
+    private String MUSIC = "music/Andy.mp3";
 
     private String FX_1 = "sound/ok.wav";
     private String FX_2 = "sound/cancel.wav";

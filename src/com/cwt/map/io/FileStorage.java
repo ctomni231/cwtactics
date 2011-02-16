@@ -13,18 +13,18 @@ import static com.yasl.logging.Logging.*;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.06.11
+ * @version 02.15.11
  */
 public class FileStorage{
 
-    public final byte PATH = 0;//The path to the graphic file
-    public final byte LOCX = 1;//The x-axis pixel location to start in the file
-    public final byte LOCY = 2;//The y-axis pixel location to start in the file
-    public final byte SIZEX = 3;//The x-axis pixel length to cut
-    public final byte SIZEY = 4;//The y-axis pixel length to cut
-    public final byte TSIZEX = 5;//The number of tiles it takes for x-axis
-    public final byte TSIZEY = 6;//The number of tiles it takes for y-axis
-    public final byte FLIP = 7;//Special flipping and rotating instructions
+    public static final byte PATH = 0;//The path to the graphic file
+    public static final byte LOCX = 1;//The starting x-axis pixel location
+    public static final byte LOCY = 2;//The starting y-axis pixel location
+    public static final byte SIZEX = 3;//The x-axis pixel length to cut
+    public static final byte SIZEY = 4;//The y-axis pixel length to cut
+    public static final byte TSIZEX = 5;//The number of x-axis tiles
+    public static final byte TSIZEY = 6;//The number of y-axis tiles
+    public static final byte FLIP = 7;//Special flipping/rotating instructions
 
     private KeyStore[] locItems;//Stores the items in an integer format
     private ListStore fileItems;//Stores the textual portion of the items
