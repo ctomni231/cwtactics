@@ -12,40 +12,25 @@ import java.awt.Color;
  * @version 09.25.10
  */
 
-public class MenuItem {
-    //This holds the ID# of the MenuItem
-    public int id;
-    //This holds its user selection index#
-    public int select;
-    //This holds the text reference to the image
-    protected int[] refPath;
-    //This holds the index in the refPath for which image will be diplayed
-    //When image is selected, it temporarily increments it by 1
-    public int choice;
-    //This holds whether this item is selectable
-    public boolean selectable;
-    //This holds whether this item should be drawn
-    public boolean drawthis;
-    //This holds the item opacity
-    public double opacity;
+public class MenuItem {    
+    public int id;//This holds the ID# of the MenuItem
+    public int select;//This holds its user selection index#
+    protected int[] refPath;//This holds the text reference to the image
+    public int choice;//Holds the refPath index of the displayed image
+    public boolean selectable;//This holds whether this item is selectable
+    public boolean drawthis;//This holds whether this item should be drawn
+    public double opacity;//This holds the item opacity
 
-    //Holds the current position
-    public double posx;
-    public double posy;
-    //Holds the final position
-    public double fposx;
-    public double fposy;
-    //Holds the pixel speed
-    public double speed;
-
-    //This holds the Color of a menu item
-    public Color theColor;
-    //This holds the width of a menu item
-    public int sizex;
-    //This holds the height of a menu item
-    public int sizey;
-    //This holds the arc of a menu item
-    public int arc;
+    public double posx;//The x-axis current position of the item
+    public double posy;//The y-axis current position of the item
+    public double fposx;//The final x-axis position of the item
+    public double fposy;//The final y-axis position of the item
+    public double speed;//The speed of the item
+  
+    public Color theColor;//This holds the Color of a menu item
+    public int sizex;//This holds the width of a menu item
+    public int sizey;//This holds the height of a menu item
+    public int arc;//This holds the arc of a menu item
 
     /**
      * This class holds an item for the MovingMenu class
@@ -126,15 +111,13 @@ public class MenuItem {
      * @return An index representing the picture
      */
     public int getPicture(boolean select){
-        if(select && choice+1 < refPath.length)
-            return refPath[choice+1];
-        else
-            return refPath[choice];
+        return refPath[(select && choice+1 < refPath.length) ?
+            choice+1 : choice];
     }
 
     /**
      * This function controls how fast an object will reach its destination
-     * Negative values will be treated as teleportation.
+     * Negative values will be treated as instant movement.
      */
     public void renderSpeed(){
         if(posx == fposx && posy == fposy);

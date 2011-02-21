@@ -180,7 +180,7 @@ public class CreditGUI extends MovingMenu{
         if(scanner.hasNextLine())
             credItem = scanner.nextLine();
 
-        if(!credItem.isEmpty()){
+        if(credItem.length() > 0){
             createNewItem(620-imgRef.getX(credItem), 480, speed);
             addMenuItem(imgRef.getIndex(credItem), credItem.startsWith("<"));
             setItemPosition(allItems.length-1, 0, -500, true);
@@ -209,13 +209,13 @@ public class CreditGUI extends MovingMenu{
      * @throws FileNotFoundException The exception if the file isn't found
      */
     private void scanContents(String path) throws FileNotFoundException{
-        if(credits.isEmpty()){
+        if(credits.length() == 0){
             find = new FileFind();
             scanner = new Scanner(find.getFile(path));
             while(scanner.hasNextLine()){
                 credItem = scanner.nextLine();
                 credits += credItem+"\n";
-                if(!credItem.isEmpty()){
+                if(credItem.length() > 0){
                     if(credItem.startsWith("<"))
                         imgRef.addImage(credItem,
                             TextPix.getTextImg(credItem.substring(1,

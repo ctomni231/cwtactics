@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 11.07.10
+ * @version 02.20.11
  */
 
 public class TextImgLibrary extends ImgLibrary{
@@ -125,8 +125,8 @@ public class TextImgLibrary extends ImgLibrary{
         temp.addImage(img);
         double psx = img.getWidth(temp);
         double psy = img.getHeight(temp);
-        double sx = psx / (double)slicex;
-        double sy = psy / (double)slicey;
+        double sx = (psx > 0) ? psx / (double)slicex : 1;
+        double sy = (psy > 0) ? psy / (double)slicey : 1;
         return addLetter(letter, temp.getImage(0, (start%slicex)*(int)sx,
                       (start/slicex)*(int)sy, (int)sx, (int)sy), ref);
     }
@@ -388,13 +388,9 @@ public class TextImgLibrary extends ImgLibrary{
             else if(psizey < getY(""+word.charAt(i)+""))
                 psizey = getY(""+word.charAt(i)+"");
         }
-        if(limit > 0){
-            bimg = new BufferedImage(limit, locy+psizey,
-                    BufferedImage.TYPE_INT_ARGB);
-        }else{
-            bimg = new BufferedImage(locx+(psizex*letterMax), locy+psizey,
-                    BufferedImage.TYPE_INT_ARGB);
-        }
+        bimg = new BufferedImage((limit > 0) ? limit : 
+            (locx+(psizex*letterMax) > 0) ? locx+(psizex*letterMax) : 1,
+                locy+psizey, BufferedImage.TYPE_INT_ARGB);
         g = bimg.createGraphics();
     }
 

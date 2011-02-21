@@ -4,6 +4,7 @@ import com.cwt.map.io.DataStorage;
 import com.cwt.map.io.FileStorage;
 import com.cwt.map.io.GraphicStorage;
 import com.cwt.map.io.TagStorage;
+import com.cwt.system.jslix.NotifyLibrary;
 import java.awt.Color;
 
 /**
@@ -33,11 +34,15 @@ public class PixAnimate {
     public static void initialize(boolean isApplet){
         mapStore.setApplet(isApplet);
         mapStore.decode();
+        NotifyLibrary.setJustify(true);
     }
 
     public static void getData(){
         for(int i = 0; i < mapStore.size(); i++){
             int temp[] = mapStore.getArray(i, MapElement.DATA);
+            NotifyLibrary.addMessage(NotifyLibrary.INFO,
+                "NAME:"+mapStore.getData().getData(temp[0], DataStorage.NAME),
+                30);
             System.out.println(
                     "NAME:"+mapStore.getData().getData(temp[0], DataStorage.NAME)+
                     "\nBASE:"+mapStore.getData().getData(temp[0], DataStorage.BASE)+
@@ -67,6 +72,9 @@ public class PixAnimate {
     public static void getTags(){
         for(int i = 0; i < mapStore.size(); i++){
             int temp[] = mapStore.getArray(i, MapElement.DATA);
+            NotifyLibrary.addMessage(NotifyLibrary.INFO,
+                "NAME:"+mapStore.getData().getData(temp[0], DataStorage.NAME),
+                30);
             System.out.println(
                 "NAME:"+mapStore.getData().getData(temp[0], DataStorage.NAME)+
                 "\nBASE:"+mapStore.getData().getData(temp[0], DataStorage.BASE)+

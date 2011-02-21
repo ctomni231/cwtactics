@@ -123,7 +123,6 @@ public class DataStore {
         if(dataItems == null)
             return -1;
         int[] temp = dataItems[dataItems.length-1];
-        System.out.println("LENGTH:"+temp.length);
         clearCurrent();
         return addRefData(temp);
     }

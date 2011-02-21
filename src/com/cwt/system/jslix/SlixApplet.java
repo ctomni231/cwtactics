@@ -22,7 +22,7 @@ import static com.yasl.logging.Logging.*;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.24.10
+ * @version 02.20.11
  */
 
 public class SlixApplet extends Applet implements Runnable, KeyListener,
@@ -172,6 +172,8 @@ public class SlixApplet extends Applet implements Runnable, KeyListener,
             if(!tempScreen.scr_link)
                 break;
         }
+
+        NotifyLibrary.update(w, h, game.getTime());
     }
 
     /**
@@ -245,6 +247,7 @@ public class SlixApplet extends Applet implements Runnable, KeyListener,
         if(showRate){
             g.setColor(Color.WHITE);
             g.drawString("FPS: "+game.getFPS(), 0, getSize().height);
+            NotifyLibrary.render((Graphics2D)g, this);
         }
     }
 

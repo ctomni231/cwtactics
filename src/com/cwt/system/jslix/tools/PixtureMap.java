@@ -18,7 +18,7 @@ import javax.imageio.ImageIO;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.21.10
+ * @version 01.20.11
  */
 
 public class PixtureMap extends ImgLibrary{
@@ -238,7 +238,7 @@ public class PixtureMap extends ImgLibrary{
      */
     public Image getTextPicture(String text){
         createImg(1,1);
-        g.setFont(Font.getFont(Font.DIALOG));
+        g.setFont(Font.decode("DIALOG"));
         int width = g.getFontMetrics().stringWidth(text);
         int descent = g.getFontMetrics().getDescent();
         int height = g.getFontMetrics().getHeight()+descent;

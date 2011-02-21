@@ -20,7 +20,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author <ul><li>Radom, Alexander</li>
  *              <li>Carr, Crecen</li></ul>
  * @license Look into "LICENSE" file for further information
- * @version 12.20.10
+ * @version 02.20.11
  */
 
 public class XML_Parser extends DefaultHandler{
@@ -281,7 +281,7 @@ public class XML_Parser extends DefaultHandler{
      */
     @Override
     public void characters(char[] ch, int start, int end) throws SAXException {
-        if(!(new String(ch, start, end).isEmpty()))
+        if(new String(ch, start, end).length() > 0)
             tempChar = addData(tempChar, new String(ch, start, end));
     }
 

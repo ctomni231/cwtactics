@@ -1,5 +1,6 @@
 package com.yasl.internationalization;
 
+import java.util.Enumeration;
 import com.cwt.system.jslix.tools.FileFind;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -18,7 +19,7 @@ import static com.yasl.logging.Logging.*;
  *          <li>Carr, Crecen</li>
  *          <li>Stefan569</li></ul>
  * @license Look into "LICENSE" file for further information
- * @version 01.29.11
+ * @version 02.20.11
  */
 
 public class LocaleService extends ClassLoader {
@@ -61,10 +62,13 @@ public class LocaleService extends ClassLoader {
      * @param locale The locale language type to use
      */
     public final void getBundle(String filename, Locale locale){
-        if(!filename.isEmpty()){
+        if(filename.length() > 0){
             lang = ResourceBundle.getBundle(filename, locale, this);
-            for(String theSet: lang.keySet())
-                property.setProperty(theSet, lang.getString(theSet));
+            Enumeration<String> allKeys = lang.getKeys();
+            while(allKeys.hasMoreElements()){
+                String tempKey = allKeys.nextElement();
+                property.setProperty(tempKey, lang.getString(tempKey));
+            }
         }
     }
 

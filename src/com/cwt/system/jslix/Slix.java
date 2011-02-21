@@ -31,7 +31,7 @@ import org.newdawn.slick.SlickException;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.01.10
+ * @version 02.20.11
  */
 
 public class Slix extends JComponent implements Runnable, KeyListener,
@@ -417,16 +417,19 @@ public class Slix extends JComponent implements Runnable, KeyListener,
             tempScreen.render(g2, this);
             tempScreen.scr_mouseScroll = 0;
         }
+
+        NotifyLibrary.update(w, h, game.getTime());
     }
 
     /**
-     * This function shows the frame rate graphics
+     * This function shows the frame rate and log message graphics
      * @param g2 The Java2D graphics object
      */
     private void showRate(Graphics g2){
         if(showRate){
             g2.setColor(Color.WHITE);
             g2.drawString("FPS: "+game.getFPS(), 0, getSize().height);
+            NotifyLibrary.render((Graphics2D)g2, this);
         }
     }
 

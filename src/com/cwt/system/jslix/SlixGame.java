@@ -18,7 +18,7 @@ import org.newdawn.slick.SlickException;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.27.10
+ * @version 02.20.11
  */
 
 public class SlixGame extends BasicGame{
@@ -123,6 +123,9 @@ public class SlixGame extends BasicGame{
             if(!tempScreen.scr_link)
                 break;
         }
+
+        NotifyLibrary.update(container.getWidth(), container.getHeight(),
+                timer.getTime());
     }
 
     /**
@@ -188,6 +191,7 @@ public class SlixGame extends BasicGame{
         if(contain.isShowingFPS()){
             g.setColor(Color.white);
             g.drawString("FPS: "+getFPS(), 0, contain.getHeight()-15);
+            NotifyLibrary.render(g);
         }
     }
 

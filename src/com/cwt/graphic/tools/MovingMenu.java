@@ -66,7 +66,6 @@ public class MovingMenu extends MovingImage{
      */
     public final void createNewItem(int locx, int locy, double speed){
         itemObj.setVar(locx, locy, speed);
-        //item = new MenuItem(locx, locy, speed);
         item = itemObj.acquireObject();
     }
 
