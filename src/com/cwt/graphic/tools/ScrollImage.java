@@ -17,7 +17,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.30.10
+ * @version 02.27.11
  */
 
 public class ScrollImage extends MovingImage {
@@ -60,10 +60,8 @@ public class ScrollImage extends MovingImage {
      * @param speed The speed of the scrolling text
      */
     public void setScrollSpeed(double speed){
-        if(speed < 0)
-            speed *= -1;
         if(speed != 0)
-            scrollSpeed = speed;
+            scrollSpeed = (speed < 0) ? -speed : speed;
     }
 
     /**
@@ -163,10 +161,8 @@ public class ScrollImage extends MovingImage {
         g.setColor(imgRef.getColor(boxColor));
         g.fillRect((int)(posx*scalex), (int)(posy*scaley), 
                 (int)(sizex*scalex), (int)(sizey*scaley));
-        if(helper.getScroll())
-            scroll(g, (int)posx, (int)posy, sizex, scrollSpeed, dthis);
-        else
-            scroll(g, (int)posx, (int)posy, sizex, 0, dthis);
+        scroll(g, (int)posx, (int)posy, sizex,
+                helper.getScroll() ? scrollSpeed : 0, dthis);
     }
 
     /**
@@ -178,10 +174,8 @@ public class ScrollImage extends MovingImage {
         g.setColor(boxColor);
         g.fillRect((int)(posx*scalex), (int)(posy*scaley),
                 (int)(sizex*scalex), (int)(sizey*scaley));
-        if(helper.getScroll())
-            scroll(g, (int)posx, (int)posy, sizex, scrollSpeed);
-        else
-            scroll(g, (int)posx, (int)posy, sizex, 0);
+        scroll(g, (int)posx, (int)posy, sizex,
+                helper.getScroll() ? scrollSpeed : 0);
     }
 
     /**

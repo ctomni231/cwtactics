@@ -1,8 +1,9 @@
 package com.cwt.system.jslix;
 
-import com.cwt.system.jslix.debug.NotifySystem;
+import com.cwt.system.jslix.debug.MessageSystem;
 import java.awt.Component;
 import java.awt.Graphics2D;
+import java.util.logging.Level;
 import org.newdawn.slick.Graphics;
 
 /**
@@ -21,14 +22,18 @@ public class NotifyLibrary {
     public static final byte WARN = 2;
     public static final byte CRITICAL = 3;
 
-    private static NotifySystem noteSys = new NotifySystem();
+    private static MessageSystem noteSys = new MessageSystem();
 
     public static void addMessage(byte type, String message, int delay){
-        noteSys.addMessage(type, message, delay);
+        noteSys.addMessage(Level.INFO, message, delay);
     }
 
     public static void setOffset(int x, int y){
         noteSys.setOffset(x, y);
+    }
+
+    public static void setFlow(boolean upward){
+        noteSys.setFlow(upward);
     }
 
     public static void setJustify(boolean right){

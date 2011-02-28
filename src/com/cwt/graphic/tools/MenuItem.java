@@ -119,20 +119,16 @@ public class MenuItem {
      * This function controls how fast an object will reach its destination
      * Negative values will be treated as instant movement.
      */
-    public void renderSpeed(){
-        if(posx == fposx && posy == fposy);
-        else if(speed == 0){
-            posx = fposx;
-            posy = fposy;
-        }else{
-            if(posx < fposx)
-                posx += speed;
-            else if(posx > fposx)
-                posx -= speed;
-            if(posy < fposy)
-                posy += speed;
-            else if(posy > fposy)
-                posy -= speed;
+    public void updatePosition(){
+        if(posx != fposx || posy != fposy){
+            if(speed == 0){
+                posx = fposx;
+                posy = fposy;
+            }
+            if(posx != fposx)
+                posx += (posx < fposx) ? speed : -speed;
+            if(posy != fposy)
+                posy += (posy < fposy) ? speed : -speed;
         }
     }
 }

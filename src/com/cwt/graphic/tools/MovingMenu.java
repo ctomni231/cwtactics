@@ -17,7 +17,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.30.10
+ * @version 02.27.11
  */
 
 public class MovingMenu extends MovingImage{
@@ -140,7 +140,6 @@ public class MovingMenu extends MovingImage{
                 sizex, sizey, 0, selectable);
     }
 
-    //Adds a rounded border box to the menu items list
     /**
      * This function adds a rounded rectangle border to the menu list
      * @param select The select index associated with this item
@@ -185,11 +184,8 @@ public class MovingMenu extends MovingImage{
             boolean addPrev){
         if(index >= 0 && index < allItems.length){
             item = allItems[index];
-            if(addPrev)
-                item.setFinalPosition((int)item.posx+locx,
-                        (int)item.posy+locy);
-            else
-                item.setFinalPosition(locx, locy);
+            item.setFinalPosition(addPrev ? (int)item.posx+locx : locx,
+                addPrev ? (int)item.posy+locy : locy);
             allItems[index] = item;
         }
     }
@@ -309,7 +305,7 @@ public class MovingMenu extends MovingImage{
     public void update(int width, int height, int sysTime, int mouseScroll){
         super.update(width, height, sysTime, mouseScroll);
         for(int i = 0; i < allItems.length; i++)
-            allItems[i].renderSpeed();
+            allItems[i].updatePosition();
         if(sx != scalex || sy != scaley){
             for(int i = 0; i < imgRef.length(); i++){
                 if(dfltColor != null){
@@ -339,13 +335,11 @@ public class MovingMenu extends MovingImage{
                 case REGULAR:
                     if(itm.choice != -1 || itm.select == select){
                         if(itm.opacity >= 0 && itm.opacity <= 1)
-                                imgResize.getSlickImage(
-                                itm.getPicture(itm.select == select))
-                                .setAlpha((float)itm.opacity);
+                           imgResize.getSlickImage(itm.getPicture(
+                           itm.select == select)).setAlpha((float)itm.opacity);
                         else if(opacity < 1)
-                                imgResize.getSlickImage(
-                                itm.getPicture(itm.select == select))
-                                        .setAlpha((float)opacity);
+                            imgResize.getSlickImage(itm.getPicture(
+                            itm.select == select)).setAlpha((float)opacity);
 
                         g.drawImage(imgResize.getSlickImage(
                             itm.getPicture(itm.select == select)),
@@ -359,26 +353,25 @@ public class MovingMenu extends MovingImage{
                             g.setColor(imgRef.getColor(itm.theColor));
                         if(itm.id == RECTANGLE)
                             g.fillRect((int)((posx+itm.posx)*scalex), 
-                                    (int)((posy+itm.posy)*scaley), 
-                                    (int)(itm.sizex*scalex), 
-                                    (int)(itm.sizey*scaley));
+                               (int)((posy+itm.posy)*scaley), 
+                               (int)(itm.sizex*scalex),
+                               (int)(itm.sizey*scaley));
                         else if(itm.id == ROUND_BOX)
                             g.fillRoundRect((int)((posx+itm.posx)*scalex), 
-                                    (int)((posy+itm.posy)*scaley), 
-                                    (int)(itm.sizex*scalex), 
-                                    (int)(itm.sizey*scaley), 
-                                    (int)(itm.arc*scaley));
+                               (int)((posy+itm.posy)*scaley), 
+                               (int)(itm.sizex*scalex),
+                               (int)(itm.sizey*scaley), (int)(itm.arc*scaley));
                         else if(itm.id == BORDER)
                             g.drawRect((int)((posx+itm.posx)*scalex), 
-                                    (int)((posy+itm.posy)*scaley), 
-                                    (int)(itm.sizex*scalex), 
-                                    (int)(itm.sizey*scaley));
+                                (int)((posy+itm.posy)*scaley),
+                                (int)(itm.sizex*scalex),
+                                (int)(itm.sizey*scaley));
                         else if(itm.id == RND_BORDER)
                             g.drawRoundRect((int)((posx+itm.posx)*scalex), 
-                                    (int)((posy+itm.posy)*scaley),
-                                    (int)(itm.sizex*scalex), 
-                                    (int)(itm.sizey*scaley), 
-                                    (int)(itm.arc*scaley));
+                                (int)((posy+itm.posy)*scaley),
+                                (int)(itm.sizex*scalex),
+                                (int)(itm.sizey*scaley),
+                                (int)(itm.arc*scaley));
                     }
             }
         }
@@ -417,28 +410,28 @@ public class MovingMenu extends MovingImage{
                             g.setColor(itm.theColor);
                         if(itm.id == RECTANGLE)
                             g.fillRect((int)((posx+itm.posx)*scalex), 
-                                    (int)((posy+itm.posy)*scaley), 
-                                    (int)(itm.sizex*scalex), 
-                                    (int)(itm.sizey*scaley));
+                                (int)((posy+itm.posy)*scaley),
+                                (int)(itm.sizex*scalex),
+                                (int)(itm.sizey*scaley));
                         else if(itm.id == ROUND_BOX)
                             g.fillRoundRect((int)((posx+itm.posx)*scalex), 
-                                    (int)((posy+itm.posy)*scaley), 
-                                    (int)(itm.sizex*scalex), 
-                                    (int)(itm.sizey*scaley), 
-                                    (int)(itm.arc*scalex), 
-                                    (int)(itm.arc*scaley));
+                                (int)((posy+itm.posy)*scaley),
+                                (int)(itm.sizex*scalex),
+                                (int)(itm.sizey*scaley),
+                                (int)(itm.arc*scalex),
+                                (int)(itm.arc*scaley));
                         else if(itm.id == BORDER)
                             g.drawRect((int)((posx+itm.posx)*scalex), 
-                                    (int)((posy+itm.posy)*scaley), 
-                                    (int)(itm.sizex*scalex), 
-                                    (int)(itm.sizey*scaley));
+                                (int)((posy+itm.posy)*scaley),
+                                (int)(itm.sizex*scalex),
+                                (int)(itm.sizey*scaley));
                         else if(itm.id == RND_BORDER)
                             g.drawRoundRect((int)((posx+itm.posx)*scalex), 
-                                    (int)((posy+itm.posy)*scaley), 
-                                    (int)(itm.sizex*scalex), 
-                                    (int)(itm.sizey*scaley),
-                                    (int)(itm.arc*scalex), 
-                                    (int)(itm.arc*scaley));
+                                (int)((posy+itm.posy)*scaley),
+                                (int)(itm.sizex*scalex),
+                                (int)(itm.sizey*scaley),
+                                (int)(itm.arc*scalex),
+                                (int)(itm.arc*scaley));
                     }
             }
         }

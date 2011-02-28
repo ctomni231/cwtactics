@@ -17,7 +17,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.31.11
+ * @version 02.27.11
  */
 
 public class MovingImage implements ScreenSkeleton{
@@ -202,9 +202,7 @@ public class MovingImage implements ScreenSkeleton{
      * @param thisSpeed The movement speed for the image
      */
     public void setSpeed(double thisSpeed){
-        if(thisSpeed < 0)
-            thisSpeed *= -1;
-        speed = thisSpeed;
+        speed = (thisSpeed < 0) ? -thisSpeed : thisSpeed;
     }
 
     /**
@@ -215,7 +213,7 @@ public class MovingImage implements ScreenSkeleton{
      * @param mouseScroll The mouse scroll wheel value
      */
     public void update(int width, int height, int sysTime, int mouseScroll) {
-        renderSpeed();
+        updatePosition();
         if(cursx != width || cursy != height){
             cursx = width;
             cursy = height;
@@ -245,21 +243,17 @@ public class MovingImage implements ScreenSkeleton{
      */
     public void render(Graphics g) {
         if(imgRef.length() > 1){
-            if(shadeOff != 0 && shadow != null)
+            if(shadeOff != 0 && shadow != null){
                 if(opacity < 1){
                     imgRef.getSlickImage(1).setAlpha((float)opacity);
                     imgRef.getSlickImage(2).setAlpha((float)opacity);
                 }
                 g.drawImage(imgRef.getSlickImage(2),
-                        (int)((posx+shadeOff)*scalex),
-                        (int)((posy+shadeOff)*scaley));
-            if(shadeOff == 0 && shadow != null)
-                g.drawImage(imgRef.getSlickImage(2),
-                        (int)(posx*scalex), (int)(posy*scaley));
-            else
-                g.drawImage(imgRef.getSlickImage(1),
-                        (int)(posx*scalex), (int)(posy*scaley));
-
+                    (int)((posx+shadeOff)*scalex),
+                    (int)((posy+shadeOff)*scaley));
+            }
+            g.drawImage(imgRef.getSlickImage((shadeOff == 0 && shadow != null)
+                    ? 2 : 1), (int)(posx*scalex), (int)(posy*scaley));
         }
     }
 
@@ -277,12 +271,8 @@ public class MovingImage implements ScreenSkeleton{
                 g.drawImage(imgRef.getImage(2), 
                         (int)((posx+shadeOff)*scalex),
                         (int)((posy+shadeOff)*scaley), dthis);
-            if(shadeOff == 0 && shadow != null)
-                g.drawImage(imgRef.getImage(2), 
-                        (int)(posx*scalex), (int)(posy*scaley), dthis);
-            else
-                g.drawImage(imgRef.getImage(1), 
-                        (int)(posx*scalex), (int)(posy*scaley), dthis);
+            g.drawImage(imgRef.getImage((shadeOff == 0 && shadow != null)
+                    ? 2 : 1), (int)(posx*scalex), (int)(posy*scaley), dthis);
             if(opacity < 1)
                 g.setComposite(AlphaComposite.SrcOver);
         }
@@ -291,20 +281,16 @@ public class MovingImage implements ScreenSkeleton{
     /**
      * This controls the movement of the images
      */
-    private void renderSpeed(){
-        if(posx == fposx && posy == fposy);
-        else if(speed == 0){
-            posx = fposx;
-            posy = fposy;
-        }else{
-            if(posx < fposx)
-                posx += speed;
-            else if(posx > fposx)
-                posx -= speed;
-            if(posy < fposy)
-                posy += speed;
-            else if(posy > fposy)
-                posy -= speed;
+    private void updatePosition(){
+        if(posx != fposx || posy != fposy){
+            if(speed == 0){
+                posx = fposx;
+                posy = fposy;
+            }
+            if(posx != fposx)
+                posx += (posx < fposx) ? speed : -speed;
+            if(posy != fposy)
+                posy += (posy < fposy) ? speed : -speed;
         }
     }
 

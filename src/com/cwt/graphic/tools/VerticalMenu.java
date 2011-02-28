@@ -15,7 +15,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.18.10
+ * @version 02.27.11
  */
 
 public class VerticalMenu extends MovingMenu{
@@ -318,11 +318,10 @@ public class VerticalMenu extends MovingMenu{
                             .getPicture(false))/2.0);
                 }
             }
-            if(allItems[vertPart.get(index)].id == 0)
-                super.setItemPosition(index, 
-                        (int)(lx-allItems[vertPart.get(index)].posx), 0, true);
-            else
-                super.setItemPosition(index, (int)fposx, 0, true);
+            super.setItemPosition(index,
+                allItems[vertPart.get(index)].id == 0 ?
+                    (int)(lx-allItems[vertPart.get(index)].posx) :
+                    (int)fposx, 0, true);
         }
         lx = locx+fposx;
         generate = true;
@@ -356,8 +355,8 @@ public class VerticalMenu extends MovingMenu{
                 continue;
             if(itm.id == REGULAR && itm.selectable && select != itm.select){
             	if(itm.sizex == 0 && itm.sizey == 0){
-            		itm.sizex = imgRef.getX(itm.getPicture(false));
-            		itm.sizey = imgRef.getY(itm.getPicture(false));
+                    itm.sizex = imgRef.getX(itm.getPicture(false));
+                    itm.sizey = imgRef.getY(itm.getPicture(false));
             	}
             	if(mx > (int)((itm.posx+posx)*scalex) &&
             			mx < (int)((itm.posx+posx+itm.sizex)*scalex)){
@@ -386,8 +385,8 @@ public class VerticalMenu extends MovingMenu{
                 continue;
             if(itm.selectable && select != itm.select){
             	if(itm.sizex == 0 && itm.sizey == 0){
-            		itm.sizex = imgRef.getX(itm.getPicture(false));
-            		itm.sizey = imgRef.getY(itm.getPicture(false));
+                    itm.sizex = imgRef.getX(itm.getPicture(false));
+                    itm.sizey = imgRef.getY(itm.getPicture(false));
             	}
             	if(mx > (int)((itm.posx+posx)*scalex) &&
             			mx < (int)((itm.posx+posx+itm.sizex)*scalex)){

@@ -89,7 +89,7 @@ public class NotifySystem implements ScreenSkeleton{
         countDown = helper.getScroll();
         for(int i = 0; i < noteSys.size(); i++){
             note = noteSys.get(i);
-            note.renderSpeed();
+            note.updatePosition();
             if(note.time > 0 && countDown)
                 note.time--;           
             noteSys.set(i, note);
@@ -123,7 +123,7 @@ public class NotifySystem implements ScreenSkeleton{
             note.fposx = justifyRight ? scrsx-offsetx-g.getFontMetrics().
                     stringWidth(note.note) : offsetx;
             note.fposy = i*SPACING+SPACING+(flowUp ? scrsy-offsety : offsety);
-            note.renderSpeed();
+            note.updatePosition();
             noteSys.set(i, note);
             g.setColor(java.awt.Color.white);
             g.drawString(note.note, (int)note.posx, (int)note.posy);

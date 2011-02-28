@@ -57,25 +57,13 @@ public class PixtureMap extends ImgLibrary{
      * @param sizey The height of the buffered image
      */
      public void createImg(int sizex, int sizey){
-         if(sizex < 1)  sizex = 1;
-         if(sizey < 1)  sizey = 1;
-         bimg = new BufferedImage(sizex, sizey, BufferedImage.TYPE_INT_ARGB);
+         editSizeX = (sizex < 1) ? 1 : sizex;
+         editSizeY = (sizey < 1) ? 1 : sizey;
+         bimg = new BufferedImage(editSizeX, editSizeY,
+                 BufferedImage.TYPE_INT_ARGB);
          g = bimg.createGraphics();
-         createImgGrid(sizex, sizey);
+         clearGrid();
      }
-
-    /**
-     * Creates a blank buffered image, overwrites the other image
-     * @param x The width of the image
-     * @param y The height of the image
-     */
-    public void createImgGrid(int x, int y){
-        if(x < 1)  x = 1;
-        if(y < 1)  y = 1;
-        editSizeX = x;
-        editSizeY = y;
-        clearGrid();
-    }
 
     /**
      * Clears the grid
@@ -97,9 +85,8 @@ public class PixtureMap extends ImgLibrary{
      * @param locy The pixel y-axis location of this image
      */
     public void setImageToGrid(Image img, int locx, int locy){
-        int index = length();
         addImage(img);
-        setImageToGrid(index, locx, locy);
+        setImageToGrid(length(), locx, locy);
     }
 
     /**

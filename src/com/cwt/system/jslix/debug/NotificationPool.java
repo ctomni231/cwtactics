@@ -9,10 +9,12 @@ import com.cwt.system.ObjectPool;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.20.11
+ * @version 02.27.11
  */
 public class NotificationPool extends ObjectPool<Notification>{
 
+    public int txtClr;//The color of the text
+    public int boxClr;//The color of the background box
     public String note;//The information message to be displayed
     public int time;//The amount of time the message will stay on screen
     public byte form;//The type of message this represents
@@ -32,6 +34,18 @@ public class NotificationPool extends ObjectPool<Notification>{
         note = message;
         time = delay;
         form = type;
+    }
+
+    /**
+     * This sets up the variables for a new or recycled Notification
+     * @param boxColor The background text box color
+     * @param textColor The color of the text
+     * @param message The text message to display on the screen
+     * @param delay How long the message remains on the screen
+     */
+    public void setVar(int boxColor, int textColor, String message, int delay){
+        note = message;
+        time = delay;
     }
 
     /**
@@ -68,8 +82,8 @@ public class NotificationPool extends ObjectPool<Notification>{
     }
 
     /**
-     * This function creates a new MenuItem object
-     * @return An instance of a new MenuItem object
+     * This function creates a new Notification object
+     * @return An instance of a new Notification object
      */
     @Override
     protected Notification createInstance() {
