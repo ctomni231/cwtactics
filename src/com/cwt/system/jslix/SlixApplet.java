@@ -22,18 +22,22 @@ import static com.yasl.logging.Logging.*;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.20.11
+ * @version 02.27.11
  */
 
 public class SlixApplet extends Applet implements Runnable, KeyListener,
         MouseListener, MouseMotionListener, MouseWheelListener{
 
     private static final long serialVersionUID = 2452945053572843636L;
-	
+    //F8 to toggle the log messages visibility
+    private final int LOG_KEY = 119;
+    //F9 to toggle the frameRate visibility
+    private final int FPS_KEY = 120;
     private Thread looper;//The thread associated with running this applet
     private int id;//Holds the keyboard and mouse id options
     private SlixGame game;//Holds the game of the CanvasGameContainer
     private boolean showRate;//Controls whether the frame rate is shown
+    private boolean showLog;//Controls whether the log messages are shown
     private Screen tempScreen;//Holds a temporary screen
     private int scrStart;//Holds a variable so only the top screen displays
     /**
@@ -68,12 +72,21 @@ public class SlixApplet extends Applet implements Runnable, KeyListener,
     }
 
     /**
+     * This changes the visibility of the log messages in the game window
+     */
+    public void toggleLog(){
+        showLog = !showLog;
+        if(showLog) NotifyLibrary.addMessage();
+    }
+
+    /**
      * This initializes the JSlix Applet basic functions
      */
     @Override
     public void init(){
         KeyPress.setConv(false);        
         showRate = false;
+        showLog = false;
         addKeyListener(this);
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -134,6 +147,7 @@ public class SlixApplet extends Applet implements Runnable, KeyListener,
         g.fillRect(0, 0, w, h);
 
         drawJava(g, w, h);
+        showLog(g, w, h);
         showRate(g);
     }
 
@@ -172,8 +186,6 @@ public class SlixApplet extends Applet implements Runnable, KeyListener,
             if(!tempScreen.scr_link)
                 break;
         }
-
-        NotifyLibrary.update(w, h, game.getTime());
     }
 
     /**
@@ -183,20 +195,22 @@ public class SlixApplet extends Applet implements Runnable, KeyListener,
      */
     private void handleKeyboard(KeyEvent e){
         id = e.getID();
-        if (id == KeyEvent.KEY_PRESSED){
-            //System.out.println("Key Code:" + keycode);
-            //System.out.println("Key Location:" + keylocation);
-            KeyPress.addKeyPress(e.getKeyCode(), false);
-            if(e.getKeyCode() == 120)
-                toggleFPS();
+        switch(id){
+            case KeyEvent.KEY_PRESSED:
+                //System.out.println("Key Code:" + keycode);
+                //System.out.println("Key Location:" + keylocation);
+                KeyPress.addKeyPress(e.getKeyCode(), false);
+                if(e.getKeyCode() == LOG_KEY)
+                    toggleLog();
+                if(e.getKeyCode() == FPS_KEY)
+                    toggleFPS();
+                break;
+            case KeyEvent.KEY_RELEASED:
+                //System.out.println("RKey Code:" + e.getKeyCode());
+                //System.out.println("RKey Location:" + e.getKeyLocation());
+                KeyPress.removeKeyPress(e.getKeyCode());
+                break;
         }
-        if (id == KeyEvent.KEY_TYPED){}
-        if (id == KeyEvent.KEY_RELEASED){
-            //System.out.println("RKey Code:" + e.getKeyCode());
-            //System.out.println("RKey Location:" + e.getKeyLocation());
-            KeyPress.removeKeyPress(e.getKeyCode());
-        }
-
     }
 
     /**
@@ -207,29 +221,24 @@ public class SlixApplet extends Applet implements Runnable, KeyListener,
      */
     private void handleMouse(MouseEvent e, int wheelScroll){
         id = e.getID();
-        if (id == MouseEvent.MOUSE_CLICKED){}
-        if (id == MouseEvent.MOUSE_PRESSED){
-            //System.out.println("Mouse Button:" + mousebutton);
-            //System.out.println("X Mouse:" + (mouseX*scalex));
-            //System.out.println("Y Mouse:" + (mouseY*scaley));
-            //System.out.println("Mouse Clicked:" + mouseclick);
-            KeyPress.addMouseClick(e.getButton(), false);
-        }
         KeyPress.mouseScroll = wheelScroll;
-        if (id == MouseEvent.MOUSE_RELEASED){
-            KeyPress.removeMouseClick(e.getButton());
+        switch(id){
+            case MouseEvent.MOUSE_PRESSED:
+                //System.out.println("Mouse Button:" + mousebutton);
+                //System.out.println("X Mouse:" + (mouseX*scalex));
+                //System.out.println("Y Mouse:" + (mouseY*scaley));
+                //System.out.println("Mouse Clicked:" + mouseclick);
+                KeyPress.addMouseClick(e.getButton(), false);
+                break;
+            case MouseEvent.MOUSE_RELEASED:
+                KeyPress.removeMouseClick(e.getButton());
+                break;
+            case MouseEvent.MOUSE_MOVED:
+            case MouseEvent.MOUSE_DRAGGED:
+                KeyPress.mouseX = e.getX();
+                KeyPress.mouseY = e.getY();
+                break;
         }
-        if (id == MouseEvent.MOUSE_MOVED){
-            KeyPress.mouseX = e.getX();
-            KeyPress.mouseY = e.getY();
-        }
-        if (id == MouseEvent.MOUSE_DRAGGED){
-            KeyPress.mouseX = e.getX();
-            KeyPress.mouseY = e.getY();
-        }
-        if (id == MouseEvent.MOUSE_ENTERED){}
-        if (id == MouseEvent.MOUSE_EXITED){}
-        if (id == MouseEvent.MOUSE_WHEEL){}
     }
 
     /**
@@ -247,6 +256,18 @@ public class SlixApplet extends Applet implements Runnable, KeyListener,
         if(showRate){
             g.setColor(Color.WHITE);
             g.drawString("FPS: "+game.getFPS(), 0, getSize().height);
+        }
+    }
+
+    /**
+     * This function shows log messages in the JSlix window
+     * @param g The Java2D graphics object
+     * @param w The current width of the window
+     * @param h The current height of the window
+     */
+    private void showLog(Graphics g, int w, int h){
+        if(showLog){
+            NotifyLibrary.update(w, h, game.getTime());
             NotifyLibrary.render((Graphics2D)g, this);
         }
     }

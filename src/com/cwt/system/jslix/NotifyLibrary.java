@@ -13,18 +13,22 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.20.11
+ * @version 02.27.11
  */
 public class NotifyLibrary {
 
-    public static final byte INFO = 0;
-    public static final byte FINE = 1;
-    public static final byte WARN = 2;
-    public static final byte CRITICAL = 3;
-
+    public static final int DELAY = 10;//The Default Notification delay
     private static MessageSystem noteSys = new MessageSystem();
 
-    public static void addMessage(byte type, String message, int delay){
+    protected static void addMessage(){
+        noteSys.addMessage(Level.INFO, "--JSLIX LOG--", DELAY);
+    }
+
+    public static void addMessage(String message){
+        noteSys.addMessage(Level.INFO, message, DELAY);
+    }
+    
+    public static void addMessage(String message, int delay){
         noteSys.addMessage(Level.INFO, message, delay);
     }
 

@@ -41,8 +41,7 @@ public class PixAnimate {
     public static void getData(){
         for(int i = 0; i < mapStore.size(); i++){
             int temp[] = mapStore.getArray(i, MapElement.DATA);
-            NotifyLibrary.addMessage(NotifyLibrary.INFO,
-                "NAME:"+mapStore.getData().getData(temp[0], DataStorage.NAME),
+            NotifyLibrary.addMessage("NAME:"+mapStore.getData().getData(temp[0], DataStorage.NAME),
                 30);
             System.out.println(
                     "NAME:"+mapStore.getData().getData(temp[0], DataStorage.NAME)+
@@ -73,8 +72,7 @@ public class PixAnimate {
     public static void getTags(){
         for(int i = 0; i < mapStore.size(); i++){
             int temp[] = mapStore.getArray(i, MapElement.DATA);
-            NotifyLibrary.addMessage(NotifyLibrary.INFO,
-                "NAME:"+mapStore.getData().getData(temp[0], DataStorage.NAME),
+            NotifyLibrary.addMessage("NAME:"+mapStore.getData().getData(temp[0], DataStorage.NAME),
                 30);
             System.out.println(
                 "NAME:"+mapStore.getData().getData(temp[0], DataStorage.NAME)+

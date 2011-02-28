@@ -21,13 +21,16 @@ import org.newdawn.slick.Graphics;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 02.27.11
+ * @todo TODO <ul><li>The background box for the message Notifications.</li>
+ *            <li>Fixing the timing on Notification visibility.</li>
+ *          <li>Fixing the color per level for the Notifications</li>
+ *          <li>Commenting all classes affected by the changes</li></ul>
  */
 public class MessageSystem implements ScreenSkeleton{
 
     private final int DELAY = 1;//The length of one iteration (1000/DELAY ms)
     private final int TEXTSPD = 0;//The speed which the log text moves
     private final Color BOXCLR = new Color(0, 0, 0, 0);//Default background
-    private final Color TXTCLR = new Color(255, 255, 255);//Default text color
 
     private PixtureMap imgSort;//The image organizer for notifications
     private ArrayList<Notification> noteSys;//The list of Notifications
@@ -65,11 +68,11 @@ public class MessageSystem implements ScreenSkeleton{
         int delay){
         noteObj.setVar(
             boxColor != null ? boxColor.getRGB() : BOXCLR.getRGB(),
-            textColor != null ? textColor.getRGB() : TXTCLR.getRGB(),
             message, delay);
         noteObj.setPos(justifyRight ? scrsx-offsetx : offsetx,
                 flowUp ? scrsy-offsety : offsety, TEXTSPD);
         noteSys.add(noteObj.acquireObject());
+        imgSort.setPixelChange(Color.white, textColor);
         imgSort.addImage(message, imgSort.getTextPicture(message+" "));
     }
             
@@ -87,25 +90,24 @@ public class MessageSystem implements ScreenSkeleton{
     }
 
     public void update(int width, int height, int sysTime, int mouseScroll){
-        if(noteSys.isEmpty())
-            return;
+        if(noteSys.size() > 0){
+            helper.setMouseControl(sysTime);
+            if(scrsx != width || scrsy != height){
+                scrsx = width;
+                scrsy = height;
+            }
 
-        helper.setMouseControl(sysTime);
-        if(scrsx != width || scrsy != height){
-            scrsx = width;
-            scrsy = height;
-        }
-
-        countDown = helper.getScroll();
-        for(int i = 0; i < noteSys.size(); i++){
-            note = noteSys.get(i);
-            note.updatePosition();
-            if(note.time > 0 && countDown)
-                note.time--;
-            noteSys.set(i, note);
-            if(note.time <= 0){
-                noteObj.recycleInstance(noteSys.remove(i));
-                i--;
+            countDown = helper.getScroll();      
+            for(int i = 0; i < noteSys.size(); i++){
+                note = noteSys.get(i);
+                note.updatePosition();
+                if(note.time > 0 && countDown)
+                    note.time--;
+                noteSys.set(i, note);
+                if(note.time <= 0){
+                    noteObj.recycleInstance(noteSys.remove(i));
+                    i--;
+                }
             }
         }
     }
@@ -118,8 +120,8 @@ public class MessageSystem implements ScreenSkeleton{
                     scrsx-offsetx-imgSort.getX(note.note) : offsetx;
                 note.fposy = flowUp ? -i*imgSort.getY(0)+scrsy-offsety :
                     (i+1)*imgSort.getY(0)+offsety;
-                g.setColor(imgSort.getColor(Color.white));
-                g.drawString(note.note, (int)note.posx, (int)note.posy);
+                g.drawImage(imgSort.getSlickImage(note.note),
+                        (int)note.posx, (int)note.posy);
             }
         }
     }
@@ -132,16 +134,16 @@ public class MessageSystem implements ScreenSkeleton{
                     scrsx-offsetx-imgSort.getX(note.note) : offsetx;
                 note.fposy = flowUp ? -i*imgSort.getY(0)+scrsy-offsety :
                     (i+1)*imgSort.getY(0)+offsety;
-                g.setColor(Color.white);
-                g.drawString(note.note, (int)note.posx, (int)note.posy);
+                g.drawImage(imgSort.getImage(note.note),
+                        (int)note.posx, (int)note.posy, dthis);
             }
         }
     }
 
     public void init(){}
 
-    public void update(int timePassed) {}
+    public void update(int timePassed){}
 
     public void update(String name, int index, boolean isApplet,
-            boolean seethru) {}
+            boolean seethru){}
 }

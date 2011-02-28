@@ -18,7 +18,7 @@ import org.newdawn.slick.SlickException;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.20.11
+ * @version 02.27.11
  */
 
 public class SlixGame extends BasicGame{
@@ -43,10 +43,14 @@ public class SlixGame extends BasicGame{
 
     //Can use this globally to time objects by system time
     public static Timer timer;
+    //F8 to toggle the log messages visibility
+    private final int LOG_KEY = 66;
     //F9 to toggle the frameRate visibility
     private final int FPS_KEY = 67;
     //F10 to toggle the full screen capabilities
     private final int FS_KEY = 68;
+    //Controls whather log messages are visible or not
+    private boolean showLog;
     //Holds the container used for this StateBasedGame
     private GameContainer contain;
     //Holds a temporary Screen representing a real Screen
@@ -66,6 +70,7 @@ public class SlixGame extends BasicGame{
         super("JSlix");
         KeyPress.setConv(true);
         timer = new Timer(true);
+        showLog = false;
         clear = true;
         load();
     }
@@ -124,8 +129,7 @@ public class SlixGame extends BasicGame{
                 break;
         }
 
-        NotifyLibrary.update(container.getWidth(), container.getHeight(),
-                timer.getTime());
+        updateLog(container.getWidth(), container.getHeight());
     }
 
     /**
@@ -156,6 +160,7 @@ public class SlixGame extends BasicGame{
                 break;
         }
 
+        showLog(g);
         showRate(g);
     }
 
@@ -191,8 +196,25 @@ public class SlixGame extends BasicGame{
         if(contain.isShowingFPS()){
             g.setColor(Color.white);
             g.drawString("FPS: "+getFPS(), 0, contain.getHeight()-15);
-            NotifyLibrary.render(g);
         }
+    }
+
+    /**
+     * This function updates the message log
+     * @param w The current width of the window
+     * @param h The current height of the window
+     */
+    private void updateLog(int w, int h){
+        if(showLog)
+            NotifyLibrary.update(w, h, timer.getTime());
+    }
+    /**
+     * This function shows the message log in the graphics
+     * @param g The Slick2D graphics object
+     */
+    private void showLog(Graphics g){
+        if(showLog)
+            NotifyLibrary.render(g);
     }
 
     /**
@@ -205,6 +227,10 @@ public class SlixGame extends BasicGame{
     	// if F9 is pressed, show FPS on screen
     	if(key == FPS_KEY) contain.setShowFPS(!contain.isShowingFPS());
         if(key == FS_KEY)  setFullScreen();
+        if(key == LOG_KEY){
+            showLog = !showLog;
+            if(showLog) NotifyLibrary.addMessage();
+        }
         KeyPress.addKeyPress(key, true);
     }
 

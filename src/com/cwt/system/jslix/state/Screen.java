@@ -1,7 +1,5 @@
 package com.cwt.system.jslix.state;
 
-import com.cwt.system.jslix.KeyPress;
-import com.cwt.system.jslix.tools.MouseHelper;
 import java.awt.Graphics2D;
 import java.awt.Component;
 import org.newdawn.slick.Graphics;
@@ -20,7 +18,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.12.10
+ * @version 02.27.11
  */
 
 public abstract class Screen implements ScreenSkeleton{
@@ -64,23 +62,6 @@ public abstract class Screen implements ScreenSkeleton{
      * Tells you whether the screen is an applet
      */
     public boolean scr_isApplet = true;
-    /**
-     * The mouseHelper class helps you control scrolling and locking the
-     * mouse actions
-     */
-    private MouseHelper scr_helper = new MouseHelper();
-    /**
-     * Controls whether mouse movements are registered within screens
-     */
-    public boolean scr_mouseLock = false;
-    /**
-     * Controls how often a mouse is able to effect menu actions
-     */
-    public boolean scr_scroll = false;
-    /**
-     * How quick a user is able to scroll, the higher the number the quicker
-     */
-    public int scr_scrollInd = 2;
 
     /**
      * Simplified initialization function for initializing variables
@@ -126,32 +107,6 @@ public abstract class Screen implements ScreenSkeleton{
      */
     public final boolean scr_getNew(){
         return scr_new;
-    }
-
-    /**
-     * This function prevents mouse actions from being accepted (lock)
-     */
-    public void scr_mouseLock(){
-        scr_helper.setMouseLock(KeyPress.getMouseX(), KeyPress.getMouseY());
-        scr_mouseLock = scr_helper.getMouseLock();
-    }
-
-    /**
-     * This function allows mouse actions to be accepted after lock
-     */
-    public void scr_mouseRelease(){
-        scr_helper.setMouseRelease(KeyPress.getMouseX(), KeyPress.getMouseY());
-        scr_mouseLock = scr_helper.getMouseLock();
-    }
-
-    /**
-     * This function controls how quickly the mouse scrolls
-     */
-    public void scr_mouseControl(){
-        scr_helper.setScrollIndex(scr_scrollInd);
-        scr_helper.setMouseControl(scr_sysTime);
-        if(!scr_scroll)
-            scr_scroll = scr_helper.getScroll();
     }
 
     /**

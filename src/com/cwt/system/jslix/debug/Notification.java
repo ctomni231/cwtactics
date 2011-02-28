@@ -13,8 +13,6 @@ public class Notification {
 
     public String note;//The information message to be displayed
     public int time;//The amount of time the message will stay on screen
-    public byte form;//The type of message this represents
-    public int txtClr;//The color of the text
     public int boxClr;//The color of the background box
     public double posx;//The x-axis current position of the item
     public double posy;//The y-axis current position of the item
@@ -26,39 +24,17 @@ public class Notification {
      * This class holds notifications that will be displayed to the screen
      * for both Java and Slick windows. These are usually used for error
      * messages and information not suitable for game API.
-     * @param type The type of message to be displayed
-     * @param message The text message to display on the screen
-     * @param delay How long the message remains on the screen
-     */
-    public Notification(byte type, String message, int delay,
-            double locx, double locy, double spd){
-        note = message;
-        time = delay;
-        form = type;
-        posx = locx;
-        posy = locy;
-        fposx = locx;
-        fposy = locy;
-        speed = spd;
-    }
-
-    /**
-     * This class holds notifications that will be displayed to the screen
-     * for both Java and Slick windows. These are usually used for error
-     * messages and information not suitable for game API.
      * @param boxColor The background color of the text box
-     * @param txtColor The color of the text
      * @param message The text message to display on the screen
      * @param delay How long the message remain on the screen
      * @param locx The x-axis location of this particular object
      * @param locy The y-axis location of this particular object
      * @param spd The movement speed of the object
      */
-    public Notification(int boxColor, int txtColor, String message, int delay,
+    public Notification(int boxColor, String message, int delay,
             double locx, double locy, double spd){
         note = message;
         time = delay;
-        txtClr = txtColor;
         boxClr = boxColor;
         posx = locx;
         posy = locy;

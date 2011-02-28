@@ -24,6 +24,7 @@ import javax.imageio.ImageIO;
 public class PixtureMap extends ImgLibrary{
 
     private static final long serialVersionUID = 2452945053572843636L;
+    public final String FONT = "DIALOG";//The default font type
 	
     //The graphics class used for creating images
     private Graphics2D g;
@@ -221,17 +222,28 @@ public class PixtureMap extends ImgLibrary{
      * This function creates an exact image enclosing the java2D font text
      * within it
      * @param text The string to turn into an image
+     * @param font The font-type-size to use with this image
      * @return A java2D image representing the font text
      */
-    public Image getTextPicture(String text){
+    public Image getTextPicture(String text, String font){
         createImg(1,1);
-        g.setFont(Font.decode("DIALOG"));
+        g.setFont(Font.decode(font));
         int width = g.getFontMetrics().stringWidth(text);
         int descent = g.getFontMetrics().getDescent();
         int height = g.getFontMetrics().getHeight()+descent;
         createImg(width, height);
         addTextToGridImage(text, 0, height-descent);
         return getGridImage();
+    }
+
+    /**
+     * This function creates an exact image enclosing the java2D font text
+     * within it
+     * @param text The string to turn into an image
+     * @return A java2D image representing the font text
+     */
+    public Image getTextPicture(String text){
+        return getTextPicture(text, FONT);
     }
 
     /**

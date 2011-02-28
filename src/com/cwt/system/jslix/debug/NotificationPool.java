@@ -13,11 +13,9 @@ import com.cwt.system.ObjectPool;
  */
 public class NotificationPool extends ObjectPool<Notification>{
 
-    public int txtClr;//The color of the text
     public int boxClr;//The color of the background box
     public String note;//The information message to be displayed
     public int time;//The amount of time the message will stay on screen
-    public byte form;//The type of message this represents
     public double posx;//The x-axis current position of the item
     public double posy;//The y-axis current position of the item
     public double fposx;//The final x-axis position of the item
@@ -26,24 +24,12 @@ public class NotificationPool extends ObjectPool<Notification>{
 
     /**
      * This sets up the variables for a new or recycled Notification
-     * @param type The type of message to be displayed
-     * @param message The text message to display on the screen
-     * @param delay How long the message remains on the screen
-     */
-    public void setVar(byte type, String message, int delay){
-        note = message;
-        time = delay;
-        form = type;
-    }
-
-    /**
-     * This sets up the variables for a new or recycled Notification
      * @param boxColor The background text box color
-     * @param textColor The color of the text
      * @param message The text message to display on the screen
      * @param delay How long the message remains on the screen
      */
-    public void setVar(int boxColor, int textColor, String message, int delay){
+    public void setVar(int boxColor, String message, int delay){
+        boxClr = boxColor;
         note = message;
         time = delay;
     }
@@ -70,9 +56,9 @@ public class NotificationPool extends ObjectPool<Notification>{
      */
     @Override
     protected Notification recycleInstance(Notification obj) {
-        obj.form = form;
         obj.note = note;
         obj.time = time;
+        obj.boxClr = boxClr;
         obj.posx = posx;
         obj.posy = posy;
         obj.fposx = fposx;
@@ -87,7 +73,7 @@ public class NotificationPool extends ObjectPool<Notification>{
      */
     @Override
     protected Notification createInstance() {
-        return new Notification(form, note, time, posx, posy, speed);
+        return new Notification(boxClr, note, time, posx, posy, speed);
     }
 
 }
