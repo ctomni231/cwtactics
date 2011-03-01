@@ -35,7 +35,7 @@ public class PixAnimate {
         mapStore.setApplet(isApplet);
         mapStore.decode();
         NotifyLibrary.setJustify(true);
-        NotifyLibrary.setFlow(false);
+        NotifyLibrary.setFlow(true);
     }
 
     public static void getData(){

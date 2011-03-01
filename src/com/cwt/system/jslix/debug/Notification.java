@@ -1,5 +1,7 @@
 package com.cwt.system.jslix.debug;
 
+import java.awt.Color;
+
 /**
  * Notification.java
  *
@@ -7,13 +9,13 @@ package com.cwt.system.jslix.debug;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.27.11
+ * @version 02.28.11
  */
 public class Notification {
 
     public String note;//The information message to be displayed
     public int time;//The amount of time the message will stay on screen
-    public int boxClr;//The color of the background box
+    public Color boxClr;//The color of the background box
     public double posx;//The x-axis current position of the item
     public double posy;//The y-axis current position of the item
     public double fposx;//The final x-axis position of the item
@@ -31,7 +33,7 @@ public class Notification {
      * @param locy The y-axis location of this particular object
      * @param spd The movement speed of the object
      */
-    public Notification(int boxColor, String message, int delay,
+    public Notification(Color boxColor, String message, int delay,
             double locx, double locy, double spd){
         note = message;
         time = delay;

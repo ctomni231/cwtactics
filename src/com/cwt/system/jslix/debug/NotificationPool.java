@@ -1,6 +1,7 @@
 package com.cwt.system.jslix.debug;
 
 import com.cwt.system.ObjectPool;
+import java.awt.Color;
 
 /**
  * NotificationPool.java
@@ -9,11 +10,11 @@ import com.cwt.system.ObjectPool;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.27.11
+ * @version 02.28.11
  */
 public class NotificationPool extends ObjectPool<Notification>{
 
-    public int boxClr;//The color of the background box
+    public Color boxClr;//The color of the background box
     public String note;//The information message to be displayed
     public int time;//The amount of time the message will stay on screen
     public double posx;//The x-axis current position of the item
@@ -28,7 +29,7 @@ public class NotificationPool extends ObjectPool<Notification>{
      * @param message The text message to display on the screen
      * @param delay How long the message remains on the screen
      */
-    public void setVar(int boxColor, String message, int delay){
+    public void setVar(Color boxColor, String message, int delay){
         boxClr = boxColor;
         note = message;
         time = delay;
