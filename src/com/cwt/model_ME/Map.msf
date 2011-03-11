@@ -1,0 +1,17 @@
+
+Map:
+    synced tiles[ Settings.MAX_WIDTH * Settings.MAX_HEIGHT ] Tile
+    
+    tileAtPos x , y : indexOf tiles
+        assert( x >= 0 && x < Settings.MAX_WIDTH ) 
+        assert( y >= 0 && y < Settings.MAX_HEIGHT ) 
+        
+        return tiles[ y*MAX_WIDTH + x ]
+
+struct Tile :
+    capturePoints
+    
+    # atm only
+    unit indexOf UnitFactory.units
+    
+    typed indexOf Data.tileSheets

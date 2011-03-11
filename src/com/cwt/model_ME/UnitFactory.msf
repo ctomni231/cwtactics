@@ -1,0 +1,44 @@
+#
+# Unit Factory
+#
+# This example uses the newest syntax of MeowScript 3
+#
+# Version: 11.03.2011
+# ToDo:
+# Author: Radom, Alexander [blackcat.myako@gmail.com]
+
+UnitFactory :
+
+    synced units[ Settings.MAX_PLAYER * Settings.MAX_UNITS ] Unit
+
+    acquireUnit type indexOf Data.unitSheets , player indexOf Game.players : indexOf units
+        for unit in units :
+            if !unit.inUse :
+                resetUnit( unit , player, type )
+                return unit
+
+        error("No free unit left")
+
+    releaseUnit unit of units : 
+        assert( unit.inUse )
+        unit.inUse = false
+
+    resetUnit unit indexOf units , owner indexOf Game.players , type indexOf Data.unitSheets :
+        unit.inUse = true
+
+    numOfFreeUnits :
+        # MeowScripts special iteration syntax
+        # count is a counter over an array that increases
+        # the counter for every entry of the array that 
+        # returns a true body of count expression
+        return count units : 
+            it.inUse == false
+
+struct Unit :
+    inUse
+    owner indexOf Game.players
+    hp
+    ammo
+    fuel
+    exp
+    type indexOf Data.unitSheets

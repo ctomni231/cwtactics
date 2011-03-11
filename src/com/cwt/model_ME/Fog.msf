@@ -1,0 +1,76 @@
+#
+# Example for shared keyword for variables instead of shared
+# objects
+# 
+
+FogController :
+    
+    #
+    # indexOf operator means that the value in clientPlayers are
+    # indexes for the array players in Game object
+    # 
+    # This design of a index pointer is network transport able 
+    #
+    clientPlayers[ MAX_PLAYERS ] indexOf Game.players
+    
+    # this variable points to an instance of the Unit array
+    # of UnitFactory
+    #
+    # this statement will be compiled internally to:
+    # 
+    # UnitFactory.units[ FogController.clientPlayer ]
+    #
+    # I'm ready for better ideas for the keyword :P 
+    # indexOf is a long keyword, but atm I have not a better one for it
+    #
+    clientPlayer indexOf UnitFactory.units
+    
+    # Will maybe enhanced in future with saving only screen 
+    # visible and so on , to prevent much overhead
+    #
+    # ATM           : It is 300x300 map => 90000 entries => 360KB
+    # INTELLIGENT   : Needs a bit more cpu on screen move, testing needed then, but would only need
+    #                 SCREEN_TILES_X*SCREEN_TILES_Y ( e.g. 40x40 => 1600 entries => 6.4 KB, 2% of 
+    #                 the storage we need in our current system )
+    #
+    # This array is a local variable, because every Client only see what the own active 
+    # player can see
+    visible [ Map.width*Map.height ]
+    
+    # this variable is shared on all clients
+    #
+    # Maybe we find another enhancement here, maybe another setting in the settings
+    # object ( e.g. MAX_STEAHLTHS ), or we save like in visible only screen wise.
+    # Another idea is, only to save the unvisible stealths in the visible tiles
+    # Last idea would be for visible and stealth array, because it is boolean array
+    # we could make bitwise operation here. MeowScript will allow something like 
+    # isSet( bitNum , value )
+    #
+    # Then the amount of space needed by this could be sized down to 12.5%
+    #
+    synced stealths[ Settings.MAX_PLAYERS*Settings.MAX_UNITS ] indexOf UnitFactory.units
+    
+    #
+    # Synced is the new keyword for network transported contexts. Variables are networked 
+    # if modified and function calls ( of synced functions ) will be called over net.
+    #
+    synced processFog :
+        FogMap.clearMap()
+        #toDo
+        
+    constructor :
+        clearMap()
+        
+    updateLocalClient curPlayer indexOf UnitFactory.units :
+        # change current fog scope if the current active player
+        # is an instance of the clients
+        if curPlayer in clientPlayers :
+            clientPlayer = curPlayer
+
+    clearMap :
+        # MeowScripts special iteration syntax ;)
+        #
+        # This kind of iteration is very fast, because of known array lenghts 
+        # at compile time, the compiler can unroll the loop completely 
+        each visible : 
+            it = false
