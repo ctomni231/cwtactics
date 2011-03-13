@@ -1,0 +1,36 @@
+# TRIGGER
+################################################################################
+
+# Defines an event registration with a parameter sheme 
+define trigger eventName
+
+# Defines a function thst is connected to an event
+on eventName :
+    expressions
+
+# Invoking events
+trigger eventName
+
+
+# STRATEGY
+################################################################################
+
+# Defines a handler registration with a parameter sheme 
+define context contextName
+
+# This one connects a handler function to a handler
+for contextName as strategyName :
+    expressions
+
+# set strategy 
+changeStrategy contextName to strategyName
+
+# trigger context
+trigger contextName
+
+# OBJECT
+################################################################################
+
+object objectName :
+    [synced] parameter [asArray lenght] [datatype]
+    

@@ -1,0 +1,17 @@
+/*
+ * Simple math library
+ */
+object Math :
+
+    function abs x :
+        if x < 0 : return -x
+        
+    function power x, y :
+        
+        if y == 0 : return 1
+        
+        n = 0
+        while y > 0 :
+            n += x
+            
+        return n

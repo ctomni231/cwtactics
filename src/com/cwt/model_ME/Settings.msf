@@ -1,17 +1,7 @@
-Settings :
-    
-    # Values, that will we set directly, are final
-    #
-    # for variables that needed to be initialized, but read/write able exists the constructor
-    # function
-    MAX_PLAYERS = 8
-    MAX_UNITS   = 100
-    MAX_WIDTH   = 100
-    MAX_HEIGHT  = 100
-    MAX_RANGE   = 10
-    MAX_HP      = 99
-    
-    #
-    # Greater isn't possible to move for units ( best case 15x 1MP tiles )
-    #
-    MAX_MOVEPOINTS = 15
+const MAX_PLAYERS       = 8
+const MAX_UNITS         = 100
+const MAX_WIDTH         = 100
+const MAX_HEIGHT        = 100
+const MAX_RANGE         = 10
+const MAX_HP            = 99
+const MAX_MOVEPOINTS    = 15

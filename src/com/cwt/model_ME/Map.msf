@@ -1,17 +1,41 @@
+object Map :
 
-Map:
-    synced tiles[ Settings.MAX_WIDTH * Settings.MAX_HEIGHT ] Tile
-    
-    tileAtPos x , y : indexOf tiles
-        assert( x >= 0 && x < Settings.MAX_WIDTH ) 
-        assert( y >= 0 && y < Settings.MAX_HEIGHT ) 
+    synced tiles asArray (MAX_WIDTH*MAX_HEIGHT) :
+        capturePoints
+        unit indexOf UnitFactory.units
+        type indexOf Data.tileSheets
+
+    function tileAtPos x , y : @tiles
+        assert( x >= 0 && x < MAX_WIDTH )
+        assert( y >= 0 && y < MAX_HEIGHT )     
         
         return tiles[ y*MAX_WIDTH + x ]
-
-struct Tile :
-    capturePoints
-    
-    # atm only
-    unit indexOf UnitFactory.units
-    
-    typed indexOf Data.tileSheets
+       
+    function positionOf tile @tiles : x,y
+        return ( tile%Map.width ),( tile/Map.width )
+       
+    /*
+     * returns the distance of two tiles
+     */
+    function distance t1 @tiles, t2 @tiles :
+        if t1 == t2 : 
+            error "t1 is the same as t2"
+        else :
+            x1,y1 = positionOf( t1 )
+            x2,y2 = positionOf( t2 )
+            return abs( x1 - x2 ) + abs( y1 - y2 )
+            
+    /*
+     * returns 4 indexes of the four neightbours of parameter tile
+     *
+     * @param tile
+     * @return: west,north,east,south all of @Map.tiles
+     */
+    function neightboursOf tile @tiles : @tiles, @tiles, @tiles, @tiles
+        
+        west = (    tiles%Map.width != 0)? tiles[tile-1] : null
+        east = ( (tiles+1)%Map.width != 0)? tiles[tile+1] : null
+        north = ( tiles >= Map.width )? tiles[ tile-Map.width ] : null
+        south = ( tiles < (Map.height-1)*Map.width )? tiles[ tile+Map.width ] : null 
+        
+        return west,north,east,south

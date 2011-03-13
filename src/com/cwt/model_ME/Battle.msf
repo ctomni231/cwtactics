@@ -1,0 +1,38 @@
+/*
+ * battle controller
+ */
+object Battle :
+
+    attackCard :
+        attacker @UnitFactory.units
+        defender @UnitFactory.units
+        attackDamage
+        counterDamage
+        
+    function initBattle attacker @UnitFactory.units ,defender @UnitFactory.units :
+        attackCard.attacker = attacker
+        attackCard.attacker = defender
+        attackCard.attackDamage = ...
+        attackCard.counterDamage = ...
+        
+    function startbattle attacker @UnitFactory.units ,defender @UnitFactory.units :
+        attackCard.effects = 0
+        
+        trigger "battleStarted"
+        
+        defender.hp -= attackCard.attackDamage
+        
+        // defender died
+        if defender.hp <= 0 :
+            ...
+        
+        else :
+            attacker.hp -= attackCard.counterDamage
+            
+            // attacker died
+            if attacker.hp <= 0 :            
+                ...
+        
+    function generateAttackRange unit @UnitFactoy.units :
+        // call Screen here to mark the range tiles as RED_OVERLAY
+        ...

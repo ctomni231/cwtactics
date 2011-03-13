@@ -1,0 +1,18 @@
+
+struct UnitSheet :
+    id
+    canLoad
+    movepoints
+    maxAmmo
+    maxFuel
+    weapon1
+    weapon2
+
+unitSheets[ Settings.MAX_UNIT_TYPES ] UnitSheet
+tileSheets[] ...
+
+constructor :
+    sheet 
+    for str in Mod.units :
+        loadModule( "/data/units/"+str )
+        
