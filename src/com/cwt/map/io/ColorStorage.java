@@ -22,10 +22,12 @@ public class ColorStorage {
     public final byte GREEN = 2;//Holds the Green reference value
     public final byte BLUE = 3;//Holds the Blue reference value
     public final byte ALPHA = 4;//Holds the Alpha reference value
+    public final byte END = 5;//Holds the end reference value
 
     private RefStore refItems;//Stores references for the file items
     private DataStore colorItems;//Stores the color items
     private KeyStore tempKey;//Stores the temporary numbers for the values
+    private boolean colorStore;//Stores whether reference should be stored
 
     /**
      * This class holds and organizes the default colors for the map
@@ -40,6 +42,8 @@ public class ColorStorage {
         refItems.add("G.*", GREEN);
         refItems.add("B.*", BLUE);
         refItems.add("A.*", ALPHA);
+        refItems.add(new String[]{"S.*","END"}, END);
+        colorStore = false;
     }
     
     /**
@@ -49,7 +53,7 @@ public class ColorStorage {
      * @return The layer index where the default colors are stored
      */
     public int addItem(){
-        return colorItems.addRefData();
+        return colorStore ? colorItems.addRefData() : -1;
     }
 
     /**
@@ -57,18 +61,25 @@ public class ColorStorage {
      * both HEX and RGBA value input and gives out a color in RGB value for
      * each one.
      * @param fillData The index where this data is stored
+     * @param blend Whether this is a blend color(T) or a basic color(F)
      */
-    public void addItem(HashMap<String, String> fillData) {
+    public void addItem(HashMap<String, String> fillData, boolean blend) {
         tempKey = new KeyStore();
         int temp;
+        if(!colorStore)
+            colorStore = true;
 
         for(String key: fillData.keySet()){
             //System.out.println("KEY: "+key);
             temp = refItems.get(key);
             switch(temp){
                 case -1:
-                    warn("Color key '"+key+"' not recognized!");
+                    warn((blend ? "Blend" : "Color")+
+                            "key '"+key+"' not recognized!");
                     break;
+                case END:
+                    colorStore = false;
+                    return;
                 case HEX:
                     tempKey.addData(HEX, getHexColor(fillData.get(key)));
                     colorItems.addData(getHexColor(fillData.get(key)));

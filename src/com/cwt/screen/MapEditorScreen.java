@@ -86,6 +86,8 @@ public class MapEditorScreen extends Screen{
         //TEMPORARY UNTIL FURTHER NOTICE
         g.setColor(Color.white);
         g.drawString("MAP EDITOR", 10, 10);
+
+        g.drawImage(PixAnimate.getSlickImage(1, 0, 0), 10, 10);
     }
 
     @Override
@@ -97,6 +99,8 @@ public class MapEditorScreen extends Screen{
         //TEMPORARY UNTIL FURTHER NOTICE
         g.setColor(java.awt.Color.white);
         g.drawString("MAP EDITOR", 10, 10);
+
+        g.drawImage(PixAnimate.getImage(1, 0, 0), 10, 10, dthis);
     }
 
     @Override

@@ -5,7 +5,10 @@ import com.cwt.map.io.FileStorage;
 import com.cwt.map.io.GraphicStorage;
 import com.cwt.map.io.TagStorage;
 import com.cwt.system.jslix.NotifyLibrary;
+import com.cwt.system.jslix.tools.ImgLibrary;
 import java.awt.Color;
+import java.util.ArrayList;
+import org.newdawn.slick.Image;
 
 /**
  * PixAnimate.java
@@ -25,6 +28,9 @@ public class PixAnimate {
      * This holds the map storage data for the class
      */
     private static MapElement mapStore = new MapElement();
+    private static ImgLibrary storedImg = new ImgLibrary();
+    private static ByteMap converter = new ByteMap();
+    private static ArrayList<Integer> imgList = new ArrayList<Integer>();
 
     /**
      * This function initializes the game elements including the music
@@ -36,6 +42,36 @@ public class PixAnimate {
         mapStore.decode();
         NotifyLibrary.setJustify(true);
         NotifyLibrary.setFlow(true);
+    }
+
+    public static java.awt.Image getImage(int index,
+            int player, int direction){
+        storeImage(index, player, direction);
+        return storedImg.getImage(imgList.indexOf(converter.getCompact()));
+    }
+
+    public static Image getSlickImage(int index, int player, int direction){
+        storeImage(index, player, direction);
+        return storedImg.getSlickImage(imgList.indexOf(converter.getCompact()));
+    }
+
+    private static void storeImage(int index, int player, int direction){
+        converter.clear();
+        converter.addShort(0, index);
+        converter.addByte(2, player);
+        converter.addByte(3, direction);
+        if(!imgList.contains(converter.getCompact())){
+            ImgLibrary parseImg = new ImgLibrary();
+            int[] temp = mapStore.getArray(index, MapElement.FILE);
+            parseImg.addImage(0, mapStore.getFileData().getFile(temp[0]));
+
+            imgList.add(converter.getCompact());
+            storedImg.addImage(parseImg.getImage(0,
+                mapStore.getFileData().getData(temp[0], FileStorage.LOCX),
+                mapStore.getFileData().getData(temp[0], FileStorage.LOCY),
+                mapStore.getFileData().getData(temp[0], FileStorage.SIZEX),
+                mapStore.getFileData().getData(temp[0], FileStorage.SIZEY)));
+        }
     }
 
     public static void getData(){

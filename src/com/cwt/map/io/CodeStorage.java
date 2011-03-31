@@ -26,6 +26,7 @@ public class CodeStorage{
     public final byte DATA = 0;//The Data object code
     public final byte COLOR = 1;//The Color object code
     public final byte LANGUAGE = 2;//The Language object code
+    public final byte BLEND = 3;//The Blend color object code
 
     //The valid data for the type section of the XML
     public final byte GRAPHIC = 0;//The Graphic object code
@@ -55,6 +56,7 @@ public class CodeStorage{
         temp = new RefStore();
         temp.add("DAT.*", DATA);
         temp.add("COL.*", COLOR);
+        temp.add("BLE.*", BLEND);
         temp.add("LAN.*", LANGUAGE);
         checkXML = addData(checkXML, temp);
         //Validity of the type

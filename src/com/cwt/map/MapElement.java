@@ -35,6 +35,7 @@ public class MapElement implements Runnable{
     public static final byte TAGS = 4;//Holds the object type connection data
     public static final byte RANDOM = 5;//Holds data for random objects
     public static final byte COLOR = 6;//Holds the object default colors
+    public static final byte BLEND = 7;//Holds the object default blend colors
 
     private boolean isApplet;//Holds whether this screen is an applet
     private boolean ready;//Holds whether all the outside data is loaded
@@ -49,6 +50,7 @@ public class MapElement implements Runnable{
     private GraphicStorage picLib;//This stores graphic XML tag information
     private DataStorage dataLib;//This stores all the data XML tag information
     private ColorStorage colorLib;//This stores the color XML tag information
+    private ColorStorage blendLib;//This stores the blend XML tag information
     private TagStorage tagLib;//This stores the tag XML tag information
     private LangStorage langLib;//This stores the language XML tag information
     private DataStore randLib;//This stores the random object list
@@ -71,6 +73,7 @@ public class MapElement implements Runnable{
         picLib = new GraphicStorage();
         dataLib = new DataStorage();
         colorLib = new ColorStorage();
+        blendLib = new ColorStorage();
         langLib = new LangStorage();
         randLib = new DataStore();
         animLib = new DataStore();
@@ -311,6 +314,8 @@ public class MapElement implements Runnable{
                                 dataItems[j].addData(DATA, temp);
                                 dataItems[j].addData(COLOR,
                                     colorLib.addItem());
+                                dataItems[j].addData(BLEND,
+                                    blendLib.addItem());
                                 dataItems[j].addData(CODE, codeLib.
                                     checkAll(CODE, mapParse.getTags(i)[CODE]));
                             }
@@ -319,12 +324,16 @@ public class MapElement implements Runnable{
                         break;
                     case 1:
                         //Check for color data
-                        colorLib.addItem(mapParse.getAttribute(i));
+                        colorLib.addItem(mapParse.getAttribute(i), false);
                         break;
                     case 2:
                         //Check for language data
                         dataLib.setLanguage(langLib.getItem(
                                 mapParse.getAttribute(i)));
+                        break;
+                    case 3:
+                        //Check for blend color data
+                        blendLib.addItem(mapParse.getAttribute(i), true);
                         break;
                 }
             }
@@ -366,11 +375,19 @@ public class MapElement implements Runnable{
     }
 
     /**
-     * This function gets the all the data gathered for the color tag
+     * This function gets all the data gathered for the color tag
      * @return The collection of color tag data
      */
     public ColorStorage getColorData(){
         return colorLib;
+    }
+
+    /**
+     * This function gets all the data gathered for the blend tag
+     * @return The collection of blend tag data
+     */
+    public ColorStorage getBlendData(){
+        return blendLib;
     }
 
     /**
