@@ -21,7 +21,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.31.11
+ * @version 04.03.11
  */
 
 public class CreditGUI extends MovingMenu{
@@ -245,20 +245,14 @@ public class CreditGUI extends MovingMenu{
         index *= 16;
         resetColor();
         if(index >= 0 && index < colors.length){
-            addColor(new Color(160, 160, 160),
-                    new Color(colors[index+9+3]));
-            addColor(new Color(128, 128, 128),
-                    new Color(colors[index+9+4]));
-            addColor(new Color(255, 255, 255),
-                    new Color(colors[index+9+0]));
-            addColor(new Color(200, 200, 200),
-                    new Color(colors[index+9+2]));
-            setLineColor(new Color(colors[index+9+5]));
-            resetScreen();
-        }else{
-            setLineColor(Color.DARK_GRAY);
-            resetScreen();
+            addColor(new Color(160, 160, 160), new Color(colors[index+9+3]));
+            addColor(new Color(128, 128, 128), new Color(colors[index+9+4]));
+            addColor(new Color(255, 255, 255), new Color(colors[index+9+0]));
+            addColor(new Color(200, 200, 200), new Color(colors[index+9+2]));
         }
+        setLineColor(index >= 0 && index < colors.length ?
+            new Color(colors[index+9+5]) : Color.DARK_GRAY);
+        resetScreen();
     }
 
     /**

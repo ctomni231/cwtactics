@@ -13,7 +13,7 @@ import java.awt.Color;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.31.11
+ * @version 04.02.11
  */
 
 public class MenuGUI extends VerticalMenu{
@@ -273,9 +273,11 @@ public class MenuGUI extends VerticalMenu{
 
         if(mouseScroll != 0){
             helper.setMouseLock(KeyControl.getMouseX(),
-                            KeyControl.getMouseY());
-            if(mouseScroll == -1)   moveUp();
-            else                    moveDown();
+                    KeyControl.getMouseY());
+            if(mouseScroll == -1)
+                moveUp();
+            else
+                moveDown();
         }
 
         if(KeyControl.isUpClicked())
@@ -341,25 +343,17 @@ public class MenuGUI extends VerticalMenu{
         index *= 16;
         resetColor();
         if(index >= 0 && index < colors.length){            
-            addColor(new Color(160, 160, 160),
-                    new Color(colors[index+9+3]));
-            addColor(new Color(128, 128, 128),
-                    new Color(colors[index+9+4]));
-            addColor(new Color(64, 64, 64),
-                    new Color(colors[index+9+5]));
-            addColor(new Color(255, 255, 255),
-                    new Color(colors[index+9+0]));
-            addColor(new Color(200, 200, 200),
-                    new Color(colors[index+9+2]));
-            for(int i = 0; i < getVertSize(); i+=2)
-                setItemColor(i, imgRef.getColor(
-                    new Color(colors[index+9+5]), 127));
-            resetScreen();
-        }else{
-            for(int i = 0; i < getVertSize(); i+=2)
-                setItemColor(i, imgRef.getColor(Color.DARK_GRAY, 127));
-            resetScreen();
+            addColor(new Color(160, 160, 160), new Color(colors[index+9+3]));
+            addColor(new Color(128, 128, 128), new Color(colors[index+9+4]));
+            addColor(new Color(64, 64, 64), new Color(colors[index+9+5]));
+            addColor(new Color(255, 255, 255), new Color(colors[index+9+0]));
+            addColor(new Color(200, 200, 200), new Color(colors[index+9+2]));
         }
+        for(int i = 0; i < getVertSize(); i+=2)
+            setItemColor(i, imgRef.getColor(
+                index >= 0 && index < colors.length ?
+                new Color(colors[index+9+5]) : Color.DARK_GRAY, 127));
+        resetScreen();
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.cwt.screen;
 
+import com.cwt.graphic.ExitGUI;
 import com.cwt.io.JukeBox;
 import com.cwt.io.KeyControl;
 import com.cwt.map.PixAnimate;
@@ -32,11 +33,17 @@ public class MapEditorScreen extends Screen{
     private final int SIZE_Y = 480;//The base window width
     private final int WAIT_TIME = 15;//The help bar waiting time
 
+    private ExitGUI exitScr;//Holds Screen data for the exit screen
+
     private boolean scrStart;//The initialization sequence starter for screens
     private int column;//Which screen index we are currently showing
 
     public MapEditorScreen(){
         PixAnimate.getData();
+
+
+
+        //TEMPORARY UNTIL FURTHER NOTICE
         JukeBox.stopClip();    
         JukeBox.addClip(MUSIC);
         JukeBox.addClip(FX_1);
@@ -60,6 +67,7 @@ public class MapEditorScreen extends Screen{
 
         }
 
+        //TEMPORARY UNTIL FURTHER NOTICE
         if(KeyControl.isLeftClicked())
             JukeBox.playClip(FX_1);
 
@@ -72,7 +80,6 @@ public class MapEditorScreen extends Screen{
         if(KeyControl.isDownClicked())
             JukeBox.playClip(FX_4);
 
-        //TEMPORARY UNTIL FURTHER NOTICE
         if(KeyControl.isActionClicked() || KeyControl.isCancelClicked())
             this.scr_delete = true;
     }

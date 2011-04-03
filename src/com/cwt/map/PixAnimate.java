@@ -19,18 +19,35 @@ import org.newdawn.slick.Image;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.15.11
+ * @version 03.31.11
  */
 
 public class PixAnimate {
 
     /**
+     * This is the default base size for all tiles in the game 
+     */
+    private static final int BASE = 32;
+    /**
      * This holds the map storage data for the class
      */
     private static MapElement mapStore = new MapElement();
+    /**
+     * This holds the scaled images for drawing to the screen
+     */
     private static ImgLibrary storedImg = new ImgLibrary();
+    /**
+     * This converts image storage data into byte data
+     */
     private static ByteMap converter = new ByteMap();
+    /**
+     * This holds the byte data conversions for the stored Images
+     */
     private static ArrayList<Integer> imgList = new ArrayList<Integer>();
+    /**
+     * This holds the scale factor of the images
+     */
+    private static double scale = 1.0;
 
     /**
      * This function initializes the game elements including the music
@@ -44,34 +61,67 @@ public class PixAnimate {
         NotifyLibrary.setFlow(true);
     }
 
+    /**
+     * This function gets an image from the MapElement list of images using
+     * the parameters specified
+     * @param index The index location of the image
+     * @param player The player color of this image object
+     * @param direction The facing direction of this image object
+     * @return An Java representation of the image
+     */
     public static java.awt.Image getImage(int index,
             int player, int direction){
         storeImage(index, player, direction);
         return storedImg.getImage(imgList.indexOf(converter.getCompact()));
     }
 
+    /**
+     * This function gets an image from the MapElement list of images using
+     * the parameters specified
+     * @param index The index location of the image
+     * @param player The player color of this image object
+     * @param direction The facing direction of this image object
+     * @return A Slick representation of the image
+     */
     public static Image getSlickImage(int index, int player, int direction){
         storeImage(index, player, direction);
-        return storedImg.getSlickImage(imgList.indexOf(converter.getCompact()));
+        return storedImg.getSlickImage(
+                imgList.indexOf(converter.getCompact()));
     }
 
+    /**
+     * This function stores a scaled image in the image library
+     * @param index The index of the image in the MapElement storage
+     * @param player The player color of this object
+     * @param direction The direction this object is facing
+     */
     private static void storeImage(int index, int player, int direction){
         converter.clear();
         converter.addShort(0, index);
         converter.addByte(2, player);
         converter.addByte(3, direction);
-        if(!imgList.contains(converter.getCompact())){
-            ImgLibrary parseImg = new ImgLibrary();
-            int[] temp = mapStore.getArray(index, MapElement.FILE);
-            parseImg.addImage(0, mapStore.getFileData().getFile(temp[0]));
+        
+        //If it exists, don't make new image
+        if(imgList.contains(converter.getCompact()))  return;
 
-            imgList.add(converter.getCompact());
-            storedImg.addImage(parseImg.getImage(0,
-                mapStore.getFileData().getData(temp[0], FileStorage.LOCX),
-                mapStore.getFileData().getData(temp[0], FileStorage.LOCY),
-                mapStore.getFileData().getData(temp[0], FileStorage.SIZEX),
-                mapStore.getFileData().getData(temp[0], FileStorage.SIZEY)));
-        }
+        //Gets the image
+        ImgLibrary parseImg = new ImgLibrary();
+        int[] temp = mapStore.getArray(index, MapElement.FILE);
+        int sizex = mapStore.getFileData().getData(temp[0], FileStorage.SIZEX);
+        int sizey = mapStore.getFileData().getData(temp[0], FileStorage.SIZEY);
+        parseImg.addImage(0, mapStore.getFileData().getFile(temp[0]));
+
+        //Scales the image
+        storedImg.setImageSize((int)(sizex*(BASE/(double)sizex)*mapStore.
+            getFileData().getData(temp[0], FileStorage.TSIZEX)*scale),
+            (int)(sizey*(BASE/(double)sizex)*mapStore.getFileData().
+            getData(temp[0], FileStorage.TSIZEY)*scale));
+
+        //Stores the image
+        imgList.add(converter.getCompact());
+        storedImg.addImage(parseImg.getImage(0, mapStore.getFileData().
+            getData(temp[0], FileStorage.LOCX), mapStore.getFileData().
+            getData(temp[0], FileStorage.LOCY), sizex, sizey));
     }
 
     public static void getData(){

@@ -16,7 +16,7 @@ import org.newdawn.slick.Graphics;
  * 
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.31.10
+ * @version 04.02.11
  */
 
 public class TitleGUI extends MovingImage {
@@ -71,9 +71,8 @@ public class TitleGUI extends MovingImage {
      */
     @Override
     public void render(Graphics g){
-        imgRef.getSlickImage(1).setAlpha((float)counter);
-        if(imgRef.length() > 1)
-            imgRef.getSlickImage(2).setAlpha((float)counter);
+        imgRef.getSlickImage(imgRef.length() > 1 ? 2 : 1).
+                setAlpha((float)counter);
         super.render(g);
     }
 
@@ -98,10 +97,8 @@ public class TitleGUI extends MovingImage {
      * @return A new column to change to
      */
     public int control(int column){
-        if(KeyControl.isUpClicked() ||
-                KeyControl.isDownClicked() ||
-                KeyControl.isRightClicked() ||
-                KeyControl.isLeftClicked())
+        if(KeyControl.isUpClicked() || KeyControl.isDownClicked() ||
+            KeyControl.isRightClicked() || KeyControl.isLeftClicked())
             help = !help;
 
         if(KeyControl.isActionClicked()){
@@ -110,9 +107,8 @@ public class TitleGUI extends MovingImage {
                 help = !help;
             else
                 return 1;
-        }else if(KeyControl.isCancelClicked()){
+        }else if(KeyControl.isCancelClicked())
             return -1;
-        }
         return column;
     }
 
@@ -148,10 +144,8 @@ public class TitleGUI extends MovingImage {
         index *= 16;
         resetColor();
         if(index >= 0 && index < colors.length){
-            addColor(new Color(160, 160, 160),
-                    new Color(colors[index+9+3]));
-            addColor(new Color(128, 128, 128),
-                    new Color(colors[index+9+4]));
+            addColor(new Color(160, 160, 160), new Color(colors[index+9+3]));
+            addColor(new Color(128, 128, 128), new Color(colors[index+9+4]));
         }
     }
 }

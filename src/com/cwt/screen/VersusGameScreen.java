@@ -21,11 +21,11 @@ import org.newdawn.slick.Graphics;
 
 public class VersusGameScreen extends Screen{
 
-    private String MUSIC = "music/Sky.mid";
+    private String MUSIC = "music/Andy.mp3";
 
     private String FX_1 = "sound/ok.wav";
     private String FX_2 = "sound/cancel.wav";
-    private String FX_3 = "sound/capture.wav";
+    private String FX_3 = "sound/maptick.wav";
     private String FX_4 = "sound/trap.wav";
 
     private final int SIZE_X = 640;//The base window height
