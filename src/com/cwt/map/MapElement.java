@@ -23,7 +23,7 @@ import static com.yasl.logging.Logging.*;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.15.11
+ * @version 04.10.11
  */
 
 public class MapElement implements Runnable{
@@ -42,7 +42,7 @@ public class MapElement implements Runnable{
     private Thread looper;//Holds the Thread associated with this object
 
     private int[] tagFill;//This stores all the tag elements used
-    private KeyStore[] dataItems;//This is the main storage area for objects
+    protected KeyStore[] dataItems;//This is the main storage area for objects
     private KeyStore item;//This temporarily assists the main storage area
     private XML_Parser mapParse;//This is used to parse XML documents
     private CodeStorage codeLib;//This stores all the code XML tag information
@@ -169,8 +169,7 @@ public class MapElement implements Runnable{
      * @param data The data of this particular item
      * @return Returns the altered storage class
      */
-    private DataStore storeData(DataStore store, int index, int data){
-        
+    private DataStore storeData(DataStore store, int index, int data){        
         if(item.checkCode(index)){
             if(item.getData(index) < -1){
                 store.addNewLayer();
@@ -185,14 +184,14 @@ public class MapElement implements Runnable{
     }
 
     /**
-     * This function searches through your system for backgrounds and
-     * organizes them in an XML file so they can be randomly selected.
+     * This function searches through your system for objects and
+     * organizes them in an XML file so they can be selected.
      */
     private void findObjects(){
         FileFind fileFinder = new FileFind();
         XML_Writer writer = new XML_Writer("data","filelist.xml");
         if(fileFinder.changeDirectory("data/object")){
-            //Forces it to only look for pictures
+            //Forces it to only look for XML files
             fileFinder.addAvoidDir(".svn");
             fileFinder.addForceType(".xml");
 
@@ -228,11 +227,10 @@ public class MapElement implements Runnable{
             log("DATA: "+entry);
             parseData(entry);
         }
-
     }
 
     /**
-     * THis file searches and parses each XML file in the file list and turns
+     * This file searches and parses each XML file in the file list and turns
      * it into a list of storage. The process is optimized to take up the
      * least memory possible to store objects
      * @param entry The XML file to parse
@@ -438,12 +436,9 @@ public class MapElement implements Runnable{
             if(index < -1)
                 return new int[]{-index-2};
             else if(index >= 0){
-                if(item == FILE)
-                    return animLib.getData(index);
-                else if(item == RANDOM)
-                    return randLib.getData(index);
-                else
-                    return new int[]{index};
+                return (item == FILE) ? animLib.getData(index) :
+                       (item == RANDOM) ? randLib.getData(index) :
+                       new int[]{index};
             }
         }
         return new int[0];
@@ -454,7 +449,7 @@ public class MapElement implements Runnable{
      * @return The number of objects in this class
      */
     public int size(){
-        return (dataItems != null) ? dataItems.length : 0;
+        return (dataItems == null) ? 0 : dataItems.length;
     }
 
     /**

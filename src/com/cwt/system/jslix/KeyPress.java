@@ -6,14 +6,14 @@ import java.util.Scanner;
 
 /**
  * A simple remix of UserAction. Instead of storing keyboard and mouse
- * actions, this class will help translate Slick keypresses into Java
- * keypresses and vice-versa for the keyboard and the mouse. Useful since
+ * actions, this class will help translate Slick key presses into Java
+ * key presses and vice-versa for the keyboard and the mouse. Useful since
  * Slick mentions all keys in terms of numbers, but Java has the String
  * values for each key
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.22.10
+ * @version 04.04.11
  */
 
 public class KeyPress {
@@ -107,7 +107,7 @@ public class KeyPress {
     }
 
     /**
-     * Holds the last mouse action regeistered by the user
+     * Holds the last mouse action registered by the user
      * @return The last mouse click registered
      */
     public static int lastMouseAction(){
@@ -172,9 +172,9 @@ public class KeyPress {
 
     /**
      * Depending on the frame displayed (user screen), it'll either generate
-     * a Slick keycode from a Java keycode is a Java window is displayed; or
-     * a Java keycode from a Slick keycode if a Slick window is diplayed.
-     * @param keycode The current screen keycode
+     * a Slick key code from a Java key code is a Java window is displayed; or
+     * a Java key code from a Slick key code if a Slick window is displayed.
+     * @param keycode The current screen key code
      * @return The converted code
      */
     public static int getKeyConversion(int keycode){
@@ -187,8 +187,8 @@ public class KeyPress {
 
     /**
      * Depending on the frame displayed (user screen), it'll either generate
-     * a Slick mouseclick from a Java click is a Java window is displayed; or
-     * a Java mouseclick from a Slick click if a Slick window is diplayed.
+     * a Slick mouse click from a Java click is a Java window is displayed; or
+     * a Java mouse click from a Slick click if a Slick window is displayed.
      * @param mousebutton The current screen click
      * @return The converted button
      */
@@ -242,7 +242,7 @@ public class KeyPress {
     }
 
     /**
-     * Removes a keypress from the list of keypresses
+     * Removes a key press from the list of key presses
      * @param keycode The key to remove
      */
     protected static void removeKeyPress(int keycode){
@@ -265,7 +265,7 @@ public class KeyPress {
 
     /**
      *
-     * Gets information from a file for all keypresses and mouse conversions
+     * Gets information from a file for all key presses and mouse conversions
      * @param slickConv Whether you want the Slick or Java conversions active
      */
     protected static void setConv(boolean slickConv){
@@ -277,21 +277,12 @@ public class KeyPress {
             String cool = tempScan.nextLine();
             //System.out.println(cool);
             String type[] = cool.split("\\s");
-            if(type[0].matches(">") && type.length > 2){
-                if(slickConv)
-                    mouseMap.put(Integer.valueOf(type[1]),
-                        Integer.valueOf(type[2]));
-                else
-                    mouseMap.put(Integer.valueOf(type[2]),
-                        Integer.valueOf(type[1]));
-            }else if(type[0].matches("\\d*") && type.length > 1){
-                if(slickConv)
-                    keyMap.put(Integer.valueOf(type[0]),
-                        Integer.valueOf(type[1]));
-                else
-                    keyMap.put(Integer.valueOf(type[1]),
-                        Integer.valueOf(type[0]));
-            }
+            if(type[0].matches(">") && type.length > 2)
+                mouseMap.put(Integer.valueOf(type[slickConv ? 1 : 2]),
+                        Integer.valueOf(type[slickConv ? 2 : 1]));
+            else if(type[0].matches("\\d*") && type.length > 1)
+                keyMap.put(Integer.valueOf(type[slickConv ? 0 : 1]),
+                        Integer.valueOf(type[slickConv ? 1 : 0]));
         }
     }
 
