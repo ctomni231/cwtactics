@@ -1,7 +1,0 @@
-const MAX_PLAYERS       = 8
-const MAX_UNITS         = 100
-const MAX_WIDTH         = 100
-const MAX_HEIGHT        = 100
-const MAX_RANGE         = 10
-const MAX_HP            = 99
-const MAX_MOVEPOINTS    = 15
