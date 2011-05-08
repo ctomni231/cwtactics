@@ -13,7 +13,7 @@ import static com.yasl.application.ApplicationFlags.*;
  * @license Look into "LICENSE" file for further information
  * @version 23.01.2011
  */
-public class StringTools
+public abstract class StringTools
 {
     public static String[] splitAtChar( String str , char splitter , char mask )
     {

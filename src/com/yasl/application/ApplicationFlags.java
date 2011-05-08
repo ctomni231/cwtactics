@@ -57,6 +57,27 @@ public final class ApplicationFlags
         return properties.containsKey(flagKey);
     }
 
+    public static String getAppFlag( String flagKey )
+    {
+        assertTrue( appFlagExist(flagKey) );
+
+        return properties.getProperty(flagKey);
+    }
+
+    public static int getAppFlag_as_Int( String flagKey )
+    {
+        assertTrue( appFlagExist(flagKey) );
+
+        try
+        {
+            return Integer.parseInt( properties.getProperty(flagKey) );
+        }
+        catch( NumberFormatException e )
+        {
+            throw new IllegalArgumentException("flag doesn't contain a number =>"+flagKey);
+        }
+    }
+
     public static boolean appFlagEquals( String flagKey , String flagValue )
     {
         assertTrue( appFlagExist(flagKey) );
