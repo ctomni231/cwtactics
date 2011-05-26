@@ -1,5 +1,45 @@
-// Testing script
-out.log("MeowEngine 3.0 Kaminaro Neko")
+MeowObject = function()
+{
+    var data = {}
 
-out.log("starting ... test")
-$: out.log("this line should be printed, if the compiler is in debug mode")
+    var sealed = null
+
+    var extendAble = null
+
+    this.get = function( varName )
+    {
+        return data[ varName ]
+    }
+
+    this.set = function( varName , value )
+    {
+        if( sealed != null )
+            throw "MeowObjectSealed"
+        else if( data[ varName ] === 'undefined' && extendable != null )
+            throw "MeowObjectShapeFixed"
+        else
+            data[ varName ] = value
+    }
+
+    this.seal = function( key )
+    {
+        sealed = key
+    }
+
+    this.fix = function( key )
+    {
+        extendAble = key
+    }
+
+    this.unseal = function( key )
+    {
+        if( sealed === key )
+            sealed = null
+    }
+
+    this.unfix = function( key )
+    {
+        if( extendAble === key )
+            extendAble = null
+    }
+}

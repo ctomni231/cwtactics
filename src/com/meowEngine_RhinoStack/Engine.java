@@ -1,13 +1,11 @@
-package com.meowEngine;
+package com.meowEngine_RhinoStack;
 
-import com.meowEngine.language.java.MeowConsole;
-import com.meowEngine.language.java.MeowInput;
-import com.meowEngine.language.java.MeowNetwork;
-import com.meowEngine.language.java.MeowSystem;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.SQLException;
 import com.yasl.annotation.CompositeModule;
 import com.yasl.annotation.SubModulePointer;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
 import org.mozilla.javascript.*;
 
@@ -24,7 +22,6 @@ public class Engine
 
 	@SubModulePointer private final Compiler compiler;
 	@SubModulePointer private Network networkCtr;
-	@SubModulePointer private Persistence persistCtr;
 
 	private HashSet<EngineModules> activeMods;
 
@@ -38,11 +35,12 @@ public class Engine
 
 		compiler = new Compiler(this);
 		networkCtr = null;
-		persistCtr = null;
 
 		compiler.debug = debug;
 
 		activeMods = new HashSet<EngineModules>();
+
+		context.setOptimizationLevel(9);
 
 		initializeRootStruct();
 		initializeNativeCallSecurity();
@@ -89,9 +87,15 @@ public class Engine
 		Scriptable root = context.newObject(rootScope);
 		rootScope.defineProperty("meow", root, 5);
 
+		// defines basic key listeners ( to prevent null pointer exceptions )
+		context.evaluateString(rootScope, "keyPressed = function(){};"
+										+ "keyUp = function(){};"
+										+ "keyDown = function(){}",
+										  "keyList", 0, null);
+
 		rootScope.put("VERSION", root, VERSION);
 
-		pushRequiredModule("core");
+//		pushRequiredModule("core");
 	}
 
 	@Override
@@ -126,22 +130,6 @@ public class Engine
 		this.networkCtr = networkCtr;
 	}
 
-	/**
-	 * @return the persistCtr
-	 */
-	public Persistence getPersistCtr()
-	{
-		return persistCtr;
-	}
-
-	/**
-	 * @param persistCtr the persistCtr to set
-	 */
-	void setPersistCtr(Persistence persistCtr)
-	{
-		this.persistCtr = persistCtr;
-	}
-
 	public void pushRequiredModule( String mod )
 	{
 		notNull(mod);
@@ -168,17 +156,46 @@ public class Engine
 		throw new IllegalArgumentException("unkown module: "+mod);
 	}
 
+	public void fireKeyDownEvent( int keyCode )
+	{
+		context.evaluateString(rootScope, "keyDown("+keyCode+")", "", 0, null);
+	}
+
+	public void fireKeyUpEvent( int keyCode )
+	{
+		context.evaluateString(rootScope, "keyUp("+keyCode+")", "", 0, null);
+	}
 
 
 	///////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////
 
-	public static void main( String[] args )
+	public static void main( String[] args ) throws FileNotFoundException, IOException, SQLException
 	{
 		Engine eng = new Engine( true );
 
-		Function f = eng.getCompiler().compileFile( new File("Test.js") );
+//		eng.pushRequiredModule("input");
+	//	eng.context.evaluateString(eng.rootScope, "function getGlobal(){return (function(){return this;}).call(null);}", "", 0, null);
+	//	Function f = eng.getCompiler().compileFile( new File("Test.js") );
 
-		f.call( eng.context , eng.rootScope ,  eng.rootScope, null);
+		//f.call( eng.context , eng.rootScope ,  eng.rootScope, null);
+
+		//f = eng.getCompiler().compileFile( new File("Test_1.js") );
+		//f.call( eng.context , eng.rootScope ,  eng.rootScope, null);
+
+		eng.context.evaluateString(eng.rootScope, "var o = { x:10 , y:{ x:10 , y:20 } };var x = o.y;java.lang.System.out.println( typeof o.y );delete o['y']; java.lang.System.out.println( typeof o.y );java.lang.System.out.println( typeof x );", "", 0, null);
+		//eng.context.compileFunction(eng.rootScope, "function(){ loop = function(){ for( var i = 0; i < 10000000 ;i++){} } }", "",0, null).call(eng.context, eng.rootScope, eng.rootScope, null);
+		/*
+		Script s = eng.context.compileString("loop()", "", 0, null);
+		long time;
+		for( int i = 0 ; i < 15 ; i++ )
+        {
+            time = System.nanoTime();
+
+			s.exec( eng.context , eng.rootScope);
+			//eng.context.evaluateString(eng.rootScope, "loop()", "", 0, null);
+            System.out.println( (System.nanoTime()-time)/1000000d +" FUNC ms");
+        }*/
+
 	}
 }

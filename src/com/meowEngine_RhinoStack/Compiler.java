@@ -1,4 +1,4 @@
-package com.meowEngine;
+package com.meowEngine_RhinoStack;
 
 import com.yasl.annotation.ParentModulePointer;
 import com.yasl.annotation.SubModule;
@@ -39,7 +39,7 @@ public class Compiler
 		{
 			return compileFile(
 					new File( Compiler.class
-						.getResource(Engine.SCRIPT_API_PACKAGE + "Core.js")
+						.getResource( path )
 						.toURI()));
 		}
 		catch (URISyntaxException ex)

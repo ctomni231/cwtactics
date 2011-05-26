@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.meowEngine;
+package com.meowEngine_RhinoStack;
 
-import com.meowEngine.language.java.MeowConsole;
-import com.meowEngine.language.java.MeowSystem;
+import com.meowEngine_RhinoStack.java.MeowConsole;
+import com.meowEngine_RhinoStack.java.MeowSystem;
 import org.mozilla.javascript.ScriptableObject;
 
 /**
@@ -29,7 +29,7 @@ public enum EngineModules
 			loadClazz( engine, MeowSystem.class );
 
 			engine.getCompiler().compileFile( 
-				Engine.SCRIPT_API_PACKAGE+"Core.js"
+				Engine.SCRIPT_API_PACKAGE+"MeowCore.js"
 			).call( engine.context , engine.rootScope, engine.rootScope, null);
 		}
 	},
@@ -107,6 +107,17 @@ public enum EngineModules
 		}
 	},
 
+	INPUT
+	{
+		@Override
+		public void load(Engine engine)
+		{
+			engine.getCompiler().compileFile(
+				Engine.SCRIPT_API_PACKAGE+"MeowInput.js"
+			).call( engine.context , engine.rootScope, engine.rootScope, null);
+		}
+	},
+
 	/**
 	 * Assert package loads a set of functions into the javaScript environment
 	 * to allow easier debug with pre set assertion functions.
@@ -118,7 +129,7 @@ public enum EngineModules
 		public void load(Engine engine)
 		{
 			engine.getCompiler().compileFile(
-				Engine.SCRIPT_API_PACKAGE+"Assert.js"
+				Engine.SCRIPT_API_PACKAGE+"MeowAssert.js"
 			).call( engine.context , engine.rootScope, engine.rootScope, null);
 		}
 	};
