@@ -1,3 +1,0 @@
-cwt.model.map = []
-
-
