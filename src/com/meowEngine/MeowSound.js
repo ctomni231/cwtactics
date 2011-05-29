@@ -2,17 +2,20 @@
  * Sound module that provides basic functions to control music and sfx of the
  * application
  *
- * @since 15.05.2011
+ * @since 26.05.2011
  * @author Tapsi
  * @namespace
  */
 meow.sound =
 /** @lends meow.sound# */
 {
+	/** @constant */
 	PLAYMODE_NORMAL : -1,
-	
+
+	/** @constant */
 	PLAYMODE_LOOPSONG : -2,
-	
+
+	/** @constant */
 	PLAYMODE_LOOPLIST : -3,
 
 	/**
@@ -50,7 +53,12 @@ meow.sound =
 			if( val >= 0 && val <= 1 )
 				meow.sound.soundModule.setSFXVolume( key )
 		},
-		
+
+		/**
+		 * Plays a sfx sound.
+		 *
+		 * @param {String} identical key for the sfx sound
+		 */
 		play : function( key )
 		{
 			meow.sound.soundModule.playSFX( key )
@@ -67,10 +75,29 @@ meow.sound =
 	music :
 	/** @lends meow.sound.music# */
 	{
+		/**
+		 * Song list.
+		 *
+		 * @private
+		 */
 		playList : new Array(),
 
+		/** @private */
 		playListPt : 0,
-		
+
+		/**
+		 * Play mode.
+		 *
+		 * @example
+		 * // plays the music list once
+		 * meow.sound.music.playMode = PLAYMODE_NORMAL
+		 *
+		 * // plays a song in a unendless loop
+		 * meow.sound.music.playMode = PLAYMODE_LOOPSONG
+		 *
+		 * // plays the music list unendless
+		 * meow.sound.music.playMode = PLAYMODE_LOOPLIST
+		 */
 		playMode : PLAYMODE_LOOPLIST,
 
 		/**
@@ -85,8 +112,9 @@ meow.sound =
 		},
 		
 		/**
-		 * Increases the list pointer and returns true, if the playlist is completely
-		 * parsed, the function sets the pointer to zero and returns true, else false.
+		 * Increases the list pointer and returns true, if the playlist is
+		 * completely parsed, the function sets the pointer to zero and returns
+		 * true, else false.
 		 */
 		tickList : function()
 		{
@@ -97,26 +125,43 @@ meow.sound =
 				return true
 			}
 			else return false
-		}
+		},
 
+		/**
+		 * Plays a song.
+		 *
+		 * @param {String} key identical key of the song, that will be played,
+		 *					   if null, next song from the song list will be
+		 *					   played.
+		 */
 		play : function( key )
 		{
 			if( typeof key !== 'undefined' )
 				meow.sound.soundModule.playMusic( key )
 			else
-				meow.sound.soundModule.playMusic( this.playList[ this.playListPt ] )
+				meow.sound.soundModule.playMusic(
+						this.playList[ this.playListPt ] )
 		},
-		
+
+		/**
+		 * Stops music playback.
+		 */
 		stop : function()
 		{
 			meow.sound.soundModule.stopMusic( )
 		},
 
+		/**
+		 * Clears the music playlist.
+		 */
 		clearList : function()
 		{
 			this.playList.removeRange( 0 , this.playList.length - 1 )
 		},
 
+		/**
+		 * Pushes a song to the music playlist.
+		 */
 		pushToPlaylist : function( key )
 		{
 			this.playList.push( key )
@@ -124,9 +169,15 @@ meow.sound =
 	}
 }
 
+if( !MEOW_NOCONFLICT )
+{
+	sfx = meow.sound.sfx
+	music = meow.sound.music
+}
+
 // initialize listener for music player to make sure, that the play list does
 // not stops after a track is done
-sys.getGlobal().onMusicTrackFinish = function()
+sys.getGlobal()["onMusicTrackFinish"] = function()
 { 
 	var mode = meow.sound.music.playMode
 	

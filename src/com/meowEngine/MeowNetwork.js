@@ -41,7 +41,7 @@ meow.network = /** @lends meow.network# */
 	syncInvoke : function( namespace , args )
 	{
 		this.netModule.pushMessage( "SINV_"
-								+funcName
+								+namespace
 								+devider
 								+(meow.JSON.stringify(args)))
 	},

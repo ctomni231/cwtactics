@@ -10,32 +10,7 @@ meow =
 	 * @constant
 	 * @field
 	 */
-	EMPTY_FUNCTION : function(){},
-
-	initWebContext : function()
-	{
-		
-		meow.sys.compContext =
-		{
-			// javascript loading
-			loadJS : function( file )
-			{
-				
-			}
-		}
-	}
-}
-
-/* MeowConsole */
-meow.out =
-{
-	log : MeowConsole.info,
-
-	info : MeowConsole.info,
-
-	warn : MeowConsole.warn,
-
-	critical : MeowConsole.critical
+	EMPTY_FUNCTION : function(){}
 }
 
 /**
@@ -43,14 +18,7 @@ meow.out =
  * @class
  */
 meow.sys =
-{
-	/**
-	 * Sends the current thread for a given time into sleep.
-	 * 
-	 * @param time Unsigned integer in milliseconds, that will be sleeped
-	 */
-	sleep : function( time ){MeowSystem.sleep(ms)},
-		
+{	
 	/**
 	 * Returns the root object. Useful in a java rhino evironment, where
 	 * the window keyword does not exists.
@@ -70,7 +38,7 @@ meow.sys =
 	
 		return str
 	},
-	
+
 	/**
 	 * Structure:
 	 *  void loadJS( String path ) => loads a local javascript file, compiles and runs it  
@@ -92,20 +60,18 @@ meow.sys =
 	reqModule : function( file )
 	{
 		// is array ?
-		if( file.length )
-			for( var i = 0 ; i < file.length ; i++ )
-				this.reqModule( file[i] )
+		//if( file.length )
+		//	for( var i = 0 ; i < file.length ; i++ )
+		//		this.reqModule( file[i] )
 		
 		if( this.compContext == null )
 		{
-			out.critical("compiler context is not set")
+			//out.critical("compiler context is not set")
 			return
 		}
 		
 		if( !this.loadedModules.contains(file) )
 		{
-			$: MeowConsole.info("Meow.Sys: Loading javaScript module "+file)
-			
 			this.compContext.loadJS( file+".js" )
 			
 			this.loadedModules.push(file)
@@ -172,11 +138,3 @@ meow.sys =
 		return this.indexOf( obj ) != -1
 	}
 
-
-
-// register globally, if no noConflict is set
-if( !meow.noConflict ) 
-{
-	out = meow.out
-	sys = meow.sys
-}

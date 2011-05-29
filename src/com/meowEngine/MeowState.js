@@ -7,11 +7,10 @@ var chk = meow.assert
 var out = meow.debug
 
 /**
- * MeowEngine's state controller
+ * MeowEngine's state controller.
  *
  * @author Tapsi
- * @since 15.05.2011
- * 
+ * @since 26.05.2011
  * @namespace
  */
 meow.state =
@@ -32,6 +31,9 @@ meow.state =
 	 */
 	stateMap : {},
 
+	/**
+	 * Invokes an updating step in the active state
+	 */
 	update : function()
 	{
 		out.info("Invoking active state algorithm")
@@ -39,9 +41,14 @@ meow.state =
 		this.activeState.update();
 	},
 
+	/**
+	 * Enters an unendless game loop.
+	 */
 	gameLoop : function()
 	{
 		out.info("Entering game loop")
+
+		chk.isTrue( activeState != null )
 
 		// game loop
 		while( true )
@@ -52,6 +59,9 @@ meow.state =
 		}
 	},
 
+	/**
+	 * Adds a state instance to the state controller.
+	 */
 	add : function( stateName , state )
 	{
 		chk.notEmpty( stateName )
@@ -65,15 +75,24 @@ meow.state =
 		this.stateMap[ stateName ] = func;
 	},
 
+	/**
+	 * Removes a state instance from the state controller.
+	 */
 	remove : function( stateName )
 	{
 		chk.notEmpty( stateName )
 		out.info( String.concat("State \"",stateName,"\" removed from state controller") )
 		chk.isIn( stateName , stateMap )
 
-		delete this.stateMap[ stateName ];
+		if( this.activeState == stateName )
+			throw "IsActiveStateException"
+		else
+			delete this.stateMap[ stateName ];
 	},
 
+	/**
+	 * Sets the active state.
+	 */
 	setState : function( stateName )
 	{
 		chk.notEmpty( stateName )
@@ -94,9 +113,12 @@ meow.state =
 	 * @example
 	 * // use BaseState as base for own states
 	 * var myState = new meow.state.State()
+	 *
 	 * myState.update = function(){
 	 *	 out.info( "myState updates it's data" )
 	 * }
+	 *
+	 * myState.enter = function(){ out.info("enters myState") }
 	 *
 	 * @class
 	 * @name State
@@ -123,3 +145,6 @@ meow.state =
 		exit : meow.EMPTY_FUNCTION
 	})
 }
+
+if( !MEOW_NOCONFLICT )
+	state = meow.state

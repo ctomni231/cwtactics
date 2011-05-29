@@ -2,7 +2,7 @@
  * Assertments for expression checkment.
  *
  * @author Tapsi
- * @since 15.05.2011
+ * @since 26.05.2011
  * @namespace
  */
 meow.assert =
@@ -154,5 +154,5 @@ meow.assert =
 	}
 }
 
-if( !meow.noConflict )
+if( !MEOW_NOCONFLICT )
 	assert = meow.assert

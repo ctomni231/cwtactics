@@ -8,5 +8,5 @@ meow.sys.reqModule("MeowClass")
  * @memberOf meow.entity
  */
 meow.entity.BaseEntity = Class.$extend( /** @lends meow.entity.BaseEntity# */{
-	update : meow.emptyFunction
+	update : meow.EMPTY_FUNCTION
 })
