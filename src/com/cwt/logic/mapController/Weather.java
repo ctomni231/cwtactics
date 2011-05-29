@@ -1,12 +1,5 @@
 package com.cwt.logic.mapController;
 
-//import com.client.model.object.Game;
-//import com.system.data.Engine_Database;
-//import com.system.data.sheets.Sheet;
-//import com.system.data.sheets.Weather_Sheet;
-import com.system.network.MessageServer;
-import com.system.network.coder.MessageEncoder;
-
 /**
  * Holds the weather.
  * 

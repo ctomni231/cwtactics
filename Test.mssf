@@ -1,8 +1,0 @@
-def test():
-    n = 0
-    while n < 10 :
-        n++
-
-n = 0
-while n < 1000000 :
-    n++

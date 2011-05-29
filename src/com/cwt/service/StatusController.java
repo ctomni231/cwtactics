@@ -1,12 +1,5 @@
 package com.cwt.service;
 
-import com.cwt.logic.states.Status_Interface;
-//import com.client.logic.status.Status_Menu;
-//import com.client.logic.status.Status_ShowMove;
-//import com.client.logic.status.Status_ShowRange;
-//import com.client.logic.status.Status_Wait;
-//import com.client.menu.GUI.MapDraw;
-import com.system.log.Logger;
 
 /**
  * Class Status holds the current status of the GameRound

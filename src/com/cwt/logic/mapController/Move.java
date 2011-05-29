@@ -11,7 +11,7 @@ import java.util.Set;
 import com.cwt.model.mapObjects.Tile;
 import com.cwt.model.mapObjects.Unit;
 //import com.system.data.DynamicMemory;
-import com.system.meowShell.Script_Database;
+//import com.system.meowShell.Script_Database;
 
 /**
  * Controls all unit moving actions.
@@ -161,7 +161,7 @@ public class Move {
 		// check trigger
 		//DynamicMemory.setUnit(unit);
 		//DynamicMemory.setTile(start);
-		Script_Database.checkAll("UNIT_WILL_MOVE");
+		//Script_Database.checkAll("UNIT_WILL_MOVE");
 		//DynamicMemory.reset();
 	}
 	
@@ -544,7 +544,7 @@ public class Move {
 		
 		// check up scripts
 		//DynamicMemory.setTile(tile);
-		Script_Database.checkAll("MOVE_ONTO");
+		///Script_Database.checkAll("MOVE_ONTO");
 		//DynamicMemory.reset();
 	}
 	

@@ -6,7 +6,7 @@ import com.cwt.model.mapObjects.Player;
 import com.cwt.model.mapObjects.Tile;
 import com.cwt.model.mapObjects.Unit;
 //import com.system.data.DynamicMemory;
-import com.system.meowShell.Script_Database;
+//import com.system.meowShell.Script_Database;
 
 /**
  * Class turn controls the internal 
@@ -111,7 +111,7 @@ public class TurnController {
 		// CHECK EFFECTS FOR EVERY UNIT OF PLAYER
 		for( Unit unit : oldPl.getUnits() ){
 			//DynamicMemory.setUnit(unit);
-			Script_Database.checkAll("TURN_END_UNITS");
+			//Script_Database.checkAll("TURN_END_UNITS");
 			//DynamicMemory.reset();
 			unit.canAct(true);
 		}
@@ -119,7 +119,7 @@ public class TurnController {
 		// CHECK EFFECTS FOR EVERY PROPERTY OF PLAYER
 		for( Tile property : oldPl.getProperties() ){
 			//DynamicMemory.setTile(property);
-			Script_Database.checkAll("TURN_END_TILES");
+		//	Script_Database.checkAll("TURN_END_TILES");
 			//DynamicMemory.reset();
 		}
 		
@@ -134,14 +134,14 @@ public class TurnController {
 		// CHECK EFFECTS FOR EVERY UNIT OF PLAYER
 		for( Unit unit : newPl.getUnits() ){
 			//DynamicMemory.setUnit(unit);
-			Script_Database.checkAll("TURN_START_UNITS");
+			//Script_Database.checkAll("TURN_START_UNITS");
 			//DynamicMemory.reset();
 		}
 		
 		// CHECK EFFECTS FOR EVERY PROPERTY OF PLAYER
 		for( Tile property : newPl.getProperties() ){
 			//DynamicMemory.setTile(property);
-			Script_Database.checkAll("TURN_START_TILES");
+			//Script_Database.checkAll("TURN_START_TILES");
 			//DynamicMemory.reset();
 		}
 	}

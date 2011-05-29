@@ -4,10 +4,6 @@ import com.cwt.model.mapObjects.Tile;
 import com.cwt.model.mapObjects.Unit;
 //import com.system.data.DynamicMemory;
 //import com.system.data.sheets.Weapon_Sheed;
-import com.system.log.Logger;
-import com.system.network.MessageServer;
-import com.system.network.coder.MessageEncoder;
-import com.system.meowShell.Script_Database;
 
 /**
  * Controls a battle between two units.
@@ -103,11 +99,11 @@ public class Fight {
 
 		//DynamicMemory.setTile(defenderTile);
 		//DynamicMemory.setUnit(defender);
-		Script_Database.checkAll("UNIT_ATTACK");
-		Script_Database.checkAll("UNIT_COUNTERATTACK");
+		//Script_Database.checkAll("UNIT_ATTACK");
+		//Script_Database.checkAll("UNIT_COUNTERATTACK");
 		//DynamicMemory.setTile(attackerTile);
 		//DynamicMemory.setUnit(attacker);
-		Script_Database.checkAll("UNIT_DEFEND");
+		//Script_Database.checkAll("UNIT_DEFEND");
 		//DynamicMemory.reset();
 	}
 	
@@ -119,10 +115,10 @@ public class Fight {
 		
 		//DynamicMemory.setTile(attackerTile);
 		//DynamicMemory.setUnit(attacker);
-		Script_Database.checkAll("UNIT_ATTACK");
+		//Script_Database.checkAll("UNIT_ATTACK");
 		//DynamicMemory.setTile(defenderTile);
 		//DynamicMemory.setUnit(defender);
-		Script_Database.checkAll("UNIT_DEFEND");
+		//Script_Database.checkAll("UNIT_DEFEND");
 		//DynamicMemory.reset();
 	}
 
