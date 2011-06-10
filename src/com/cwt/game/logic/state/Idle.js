@@ -1,24 +1,22 @@
-var idleState = new meow.state.State()
+(function(){
 
-idleState.update = function()
-{
-	if( meow.input.isPressed("action") )
-	{
-		// check unit menu
-		if( true )
-		{
-
+	/**
+	 * Idle state represents the normal view on the map without doing a special
+	 * action. It reqresents at the name already shows, the idle.
+	 */
+	var idleSt = {
+		
+		action : function(){
+			// if unit, move
+			// else if factory, build
+			// else menu
+		},
+		
+		cancel : function(){
+			// if unit, show range
 		}
-		// else main menu
-		else
-		{
-			meow.state.setState("MAIN_MENU")
-		}
-	}
-	else if( meow.input.isPressed("cancel") )
-	{
-		// check unit
-	}
-}
+	};
 
-meow.state.add("idle", idleState)
+	cwt.stateCtr.addState( idleSt );
+
+})();

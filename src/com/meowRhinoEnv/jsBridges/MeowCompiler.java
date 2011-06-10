@@ -12,8 +12,6 @@ import java.io.File;
  */
 public class MeowCompiler extends JsBridge
 {
-	public static String MEOW_SCRIPT_PATH = "meowScriptPath";
-
 	private Engine engine;
 
 	@Override
@@ -28,7 +26,7 @@ public class MeowCompiler extends JsBridge
 		File file;
 
 		path = System.getProperty( "user.dir" ) +
-			   System.getProperty( MEOW_SCRIPT_PATH ) +
+			   System.getProperty( Engine.MEOW_SCRIPT_PATH ) +
 			   fpath;
 		file = new File(path);
 		if( !file.exists() )

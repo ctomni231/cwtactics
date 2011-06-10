@@ -1,5 +1,10 @@
 MeowEngine for javaScript.
 
+The meow engine is a highly modular framework for javaScript. Unlike other
+javaScript frameworks, the meow engine is build in a micro kernel pattern.
+That means only the core itself has a monolithic structure. All other task
+specific things are separated as modules.
+
 Copyright (c) 2010-2011, Radom Alexander
 Contributors:
 - Carr, Crecen

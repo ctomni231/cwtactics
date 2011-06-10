@@ -15,6 +15,7 @@ import org.mozilla.javascript.*;
 public final class Engine
 {
 	public static String MEOW_PATH = "meowPath";
+	public static String MEOW_SCRIPT_PATH = "meowScriptPath";
 
 	@SubModulePointer private final Events event;
 
@@ -29,12 +30,17 @@ public final class Engine
 
 		initializeNativeCallSecurity();
 
+		// place window variable
+		evaluateGlobal("if( typeof window === 'undefined' )"
+						+ "window = (function(){return this;}).call(null);");
+		
 		// loads core file of Meow ( every time needed )
 		String path = System.getProperty("user.dir")
 					 +System.getProperty(MEOW_PATH)
-					 +"MeowCore.js";
+					 +"Core.js";
+
 		evaluateFileGlobal( new File( path ));
-		
+
 		event = new Events(this);
 	}
 
@@ -84,6 +90,26 @@ public final class Engine
 			System.err.println("can't compile file due: "+ex.getMessage());
 			return null;
 		}
+	}
+
+	public void evaluateScriptFile( String fpath )
+	{
+		String path;
+		File file;
+
+		path = System.getProperty( "user.dir" ) +
+			   System.getProperty( MEOW_SCRIPT_PATH ) +
+			   fpath;
+		file = new File(path);
+		if( !file.exists() )
+		{
+			path = System.getProperty( "user.dir" ) +
+				   System.getProperty( Engine.MEOW_PATH ) +
+				   fpath;
+			file = new File(path);
+		}
+
+		evaluateFileGlobal(file);
 	}
 
 	public void injectObjectIn( Class<? extends JsBridge> clazz , String path , Object... args )

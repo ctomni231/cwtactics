@@ -3,6 +3,7 @@ package com.cwt.game;
 import com.meowRhinoEnv.Engine;
 import com.meowRhinoEnv.jsBridges.MeowCompiler;
 import com.meowRhinoEnv.jsBridges.MeowConsole;
+import com.meowRhinoEnv.jsBridges.MeowDataBase;
 import com.meowRhinoEnv.jsBridges.MeowTimer;
 import java.io.File;
 
@@ -11,7 +12,7 @@ import java.io.File;
  * rhino stack for the meow engine and runs the Init.js file of cwt.
  *
  * @author Radom, Alexander [ blackcat.myako@gmail.com ]
- * @license Look into "LICENSE" file for further information
+ * @license Look into$ "LICENSE" file for further information
  * @version 29.05.2011
  */
 public class InitMeow
@@ -20,16 +21,16 @@ public class InitMeow
 	{
 		// set needed system properties for the rhino stack
 		System.setProperty( Engine.MEOW_PATH , "/com/meowEngine/");
-		System.setProperty( MeowCompiler.MEOW_SCRIPT_PATH , "/com/cwt/game/");
+		System.setProperty( Engine.MEOW_SCRIPT_PATH , "/com/cwt/game/");
 
 		Engine environment = new Engine();
 
 		// place js bridges
 		environment.injectObjectIn( MeowConsole.class , "meow.out");
 		environment.injectObjectIn( MeowTimer.class , "meow.timer");
-		environment.injectObjectIn( MeowCompiler.class , "meow.sys.compContext",
-												new Object[]{ environment });
 
-		environment.evaluateGlobal("meow.sys.reqModule('Init')");
+		environment.evaluateScriptFile("patterns/Command.js");
+
+		environment.evaluateScriptFile("Init.js");
 	}
 }

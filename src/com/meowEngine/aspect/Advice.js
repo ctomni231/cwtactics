@@ -8,9 +8,7 @@
 * jQuery-AOP 1.3
 * http://jquery-aop.googlecode.com/
 */
-
 (function() {
-
 
 ﻿  var _after﻿  ﻿  ﻿        = 1;
 ﻿  var _afterThrow﻿  ﻿     = 2;
@@ -184,7 +182,11 @@
 
 ﻿  };
 
-﻿  meow.aop =
+  /**
+   *
+   * @namespace
+   */
+﻿  meow.aop = /** @lends meow.aop# */
 ﻿  {
 ﻿  ﻿  /**
 ﻿  ﻿   * Creates an advice after the defined point-cut. The advice will be executed after the point-cut method

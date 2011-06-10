@@ -1,14 +1,14 @@
 (function(){
 
 	/**
-	 * Debugger module, to log messages on the console.
+	 * Debugger class, to log messages on the console.
 	 *
-	 * @namespace
+	 * @class
 	 * @since 29.05.2011
 	 */
-	meow.debug =
-	/** @lends meow.debug# */
-	{
+	meow.Debugger = debug;
+	var debug = meow.Class( /** @lends meow.Debugger# */ {
+
 		/** @constant */
 		LEVEL_OFF : -1,
 
@@ -23,6 +23,15 @@
 
 		/** @constant */
 		LEVEL_CRITICAL : 3,
+
+		/** @private */
+		_identifier : null,
+
+		constructor : function( identifier )
+		{
+			this._identifier =
+				( typeof identifier === 'string' )?	identifier : "";
+		},
 
 		/**
 		 * Status of the logger, the status describes want level of debug
@@ -52,7 +61,7 @@
 		 *
 		 * @private
 		 */
-		logger : null,
+		_logger : ( meow.out )? meow.out : null,
 
 		/**
 		 * Logs an information at LEVEL_INFO on the console.
@@ -62,7 +71,7 @@
 		info : function( msg )
 		{
 			if( this.status >= this.LEVEL_INFO )
-				this.logger.log( "INFO: "+msg );
+				this._logger.log( this._identifier+" INFO: "+msg );
 		},
 
 		/**
@@ -73,7 +82,7 @@
 		fine : function( msg )
 		{
 			if( this.status >= this.LEVEL_FINE )
-				this.logger.log( "FINE: "+msg );
+				this._logger.log( this._identifier+" FINE: "+msg );
 		},
 
 		/**
@@ -84,7 +93,7 @@
 		warn : function( msg )
 		{
 			if( this.status >= this.LEVEL_WARN )
-				this.logger.log( "WARN: "+msg );
+				this._logger.log( this._identifier+" WARN: "+msg );
 		},
 
 		/**
@@ -95,11 +104,8 @@
 		critical : function( msg )
 		{
 			if( this.status >= this.LEVEL_CRITICAL )
-				this.logger.log( "CRITICAL: "+msg );
+				this._logger.log( this._identifier+" CRITICAL: "+msg );
 		}
-	};
-
-	// set default logger if available
-	if( meow.out !== 'undefined' )
-		meow.debug.logger = meow.out;
+	});
+	
 })();

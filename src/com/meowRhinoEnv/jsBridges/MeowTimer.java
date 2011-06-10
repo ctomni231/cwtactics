@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  */
 public class MeowTimer extends JsBridge
 {
-	public static void jsStaticFunction_sleep( int time )
+	public static void jsFunction_sleep( int time )
 	{
 		try
 		{
