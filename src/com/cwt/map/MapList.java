@@ -1,6 +1,4 @@
-package com.cwt.map.io;
-
-import com.cwt.map.MapElement;
+package com.cwt.map;
 
 /**
  * MapList.java
@@ -40,6 +38,8 @@ public class MapList extends MapElement{
     private String tag_ER;//Holds the default East Reject tag criteria
     private String tag_WR;//Holds the default West Reject tag criteria
 
+    private int[] points;//Holds the point value for each criteria
+
     private boolean animations;//Holds whether to list all animations
     private boolean random;//Holds whether to list all random objects
 
@@ -49,6 +49,7 @@ public class MapList extends MapElement{
      */
     public MapList(){
         super();
+        setPoints();
     }
 
     /**
@@ -116,6 +117,14 @@ public class MapList extends MapElement{
         setTag(type.toCharArray(), tag);
     }
 
+    public int[] list(){
+        return new int[0];
+    }
+
+    public int match(){
+        return 0;
+    }
+
     /**
      * This function adds animations to the matching process
      */
@@ -158,6 +167,37 @@ public class MapList extends MapElement{
         tag_WR = "DFLT";
         animations = false;
         random = false;
+    }
+
+    private int[] list(int[] list){
+        if(!animations)
+            list = sortDuplicate(list, FILE);
+        if(!random)
+            list = sortDuplicate(list, RANDOM);
+        return list;
+    }
+
+    /**
+     * This function will find duplicate numbers and only sort one of that
+     * value in the list. It is used for sorting random images and animations
+     * @param list The list of items to sort
+     * @param item The item reference to sort this by determined by MapElement
+     * @return A reduced list splitting all the duplicate items.
+     */
+    private int[] sortDuplicate(int[] list, byte item){
+        int counter = 0;
+        int[] temp = new int[0];
+        for(int i = 0, maxNum = 0; i < list.length; i++){
+            for(int num: getArray(i, item)){
+                if(num > maxNum)
+                    maxNum = num;
+            }
+            if(maxNum > counter){
+                temp = addData(temp, i);
+                counter = maxNum;
+            }
+        }
+        return temp;
     }
 
     /**
@@ -218,7 +258,44 @@ public class MapList extends MapElement{
                     tag_W = tag;
             }
         }
+    }
 
+    /**
+     * This function sets the point values for graphics. The points are used
+     * to decide how graphics are drawn to the screen.
+     */
+    private void setPoints(){
+        points = new int[21];
+        for(int i = 0; i < points.length; i++){
+            if(i < 5)
+                points[i] = 10000;
+            else if(i < 9)
+                points[i] = 100;
+            else if(i < 17)
+                points[i] = 1;
+            else
+                points[i] = -1;
+
+        }
+    }
+
+    /**
+     * This function is used to cause a primitive array to act like an
+     * ArrayList. This acts like a push function.
+     * @param fillData The data to add to a primitive array
+     * @param data The data to add to the array
+     * @return An array with the data attached
+     */
+    private int[] addData(int[] fillData, int data){
+        if(fillData == null)
+            fillData = new int[0];
+
+        int[] temp = fillData;
+        fillData = new int[temp.length+1];
+        System.arraycopy(temp, 0, fillData, 0, temp.length);
+        fillData[fillData.length-1] = data;
+
+        return fillData;
     }
 
 }

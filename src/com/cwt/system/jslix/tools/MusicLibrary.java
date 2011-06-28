@@ -171,8 +171,7 @@ public class MusicLibrary implements Runnable{
                     playMusic(false);
                     break;
             }
-        }
-        
+        }       
     }
 
     /**
