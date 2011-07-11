@@ -20,17 +20,32 @@ public class InitMeow
 	public static void main( String[] args )
 	{
 		// set needed system properties for the rhino stack
-		System.setProperty( Engine.MEOW_PATH , "/com/meowEngine/");
-		System.setProperty( Engine.MEOW_SCRIPT_PATH , "/com/cwt/game/");
+		System.setProperty( Engine.MEOW_PATH , "/src/com/meowEngine/");
+		System.setProperty( Engine.MEOW_SCRIPT_PATH , "/src/com/cwt/core_mods/");
 
 		Engine environment = new Engine();
 
 		// place js bridges
-		environment.injectObjectIn( MeowConsole.class , "meow.out");
-		environment.injectObjectIn( MeowTimer.class , "meow.timer");
+		environment.injectObjectIn( MeowConsole.class , "console");
+		environment.injectObjectIn( MeowTimer.class , "timer");
 
-		environment.evaluateScriptFile("patterns/Command.js");
+		environment.evaluateScriptFile("/library/Core.js");
+        environment.evaluateScriptFile("/library/Testing.js");
 
-		environment.evaluateScriptFile("Init.js");
+        environment.evaluateScriptFile("/library/StateMachine.js");
+
+
+        //environment.evaluateGlobal("meowEngine.parseJSON = JSON.parse;"+
+        //                           "meowEngine.toJSON = JSON.stringify;");
+
+        environment.evaluateGlobal("meowEngine.registerShortCuts();");
+
+        // Start Testing
+        environment.evaluateScriptFile("/test/MeowEngine_Test.js");
+
+        //environment.evaluateGlobal("meowEngine.test.placeTracer( testOBJ, true);");
+        environment.evaluateGlobal("meowEngine.test.runAll();");
+
+       	//environment.evaluateScriptFile("Init.js");
 	}
 }

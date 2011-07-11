@@ -39,7 +39,8 @@ public final class Engine
 					 +System.getProperty(MEOW_PATH)
 					 +"Core.js";
 
-		evaluateFileGlobal( new File( path ));
+        // meowRhino will be a normal javaScript container in future
+		//evaluateFileGlobal( new File( path ));
 
 		event = new Events(this);
 	}
