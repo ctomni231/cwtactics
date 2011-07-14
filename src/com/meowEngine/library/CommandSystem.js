@@ -7,6 +7,12 @@
 	// SINCE: 10.07.2011
 	//======================================================================
 
+    if( typeof JSON.parse !== 'function' ||
+          typeof JSON.stringify !== 'function'){
+
+        throw "json module is needed by command system";
+    }
+
     /**
 	 * Command stack is a class for holding commands. It allows a revision based
 	 * handling of the commands including moving between single revisions etc.
@@ -223,19 +229,22 @@
         /**
          * Interpretes a message.
          *
-         * @param {String} msg message, that will be interpreted
+         * @param {String||Object} ctx context, that will be interpreted
+         * @param {Boolean} parseIt if true, the context will be parsed by the
+         *                  JSON interpreter, else the object will be used
+         *                  directly as argument for the interpreter function
          * @return result of the interpreter function
          */
-		interprete : function( msg ){
+		interprete : function( ctx , parseIt ){
 
-			var obj = meowEngine.parseJSON( msg );
-			var code = obj._iCode;
+			ctx = ( parseIt === true )? JSON.parse( ctx ) : ctx;
+			var code = ctx._iCode;
 
             if( typeof this._ctxMap[code] === 'undefined' ){
                 throw "No correct interpreter for code:"+code+" exists";
             }
 
-			return this._ctxMap[ code ]( obj );
+			return this._ctxMap[ code ]( ctx );
 		}
 	});
 

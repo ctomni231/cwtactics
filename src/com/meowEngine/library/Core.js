@@ -145,6 +145,32 @@
     };
 
     /**
+     *
+     */
+    meowEngine.parseNumber = function( expr, def, from, to ){
+        
+       var i = parseFloat( expr, 10 );
+       if( typeof i === 'number'    &&
+           typeof from === 'number' &&
+           typeof to === 'number' ){
+
+           // check range
+           _isTrue( from <= to , "MeowEngine parseNumber,"+
+                                 " illegal from to range");
+
+           if( i < from || i > to  ){
+               i = NaN;
+           }
+       }
+
+       if( isNaN(i) && typeof def === 'number' ){
+            i = def;
+       }
+
+       return i;
+    }
+
+    /**
 	 * An empty function, that can be used to set place holders or similar.
 	 */
     meowEngine.EMPTY_FUNCTION = function(){};

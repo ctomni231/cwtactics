@@ -17,35 +17,29 @@ import java.io.File;
  */
 public class InitMeow
 {
-	public static void main( String[] args )
-	{
-		// set needed system properties for the rhino stack
-		System.setProperty( Engine.MEOW_PATH , "/src/com/meowEngine/");
-		System.setProperty( Engine.MEOW_SCRIPT_PATH , "/src/com/cwt/core_mods/");
 
-		Engine environment = new Engine();
+    public static void main(String[] args)
+    {
+        // set needed system properties for the rhino stack
+        System.setProperty(Engine.MEOW_PATH, "/src/com/meowEngine/");
+        System.setProperty(Engine.MEOW_SCRIPT_PATH, "/jsLib/");
 
-		// place js bridges
-		environment.injectObjectIn( MeowConsole.class , "console");
-		environment.injectObjectIn( MeowTimer.class , "timer");
+        Engine environment = new Engine();
 
-		environment.evaluateScriptFile("/library/Core.js");
+        // place js bridges
+        environment.injectObjectIn(MeowConsole.class, "console");
+        environment.injectObjectIn(MeowTimer.class, "timer");
+
+        // meow modules
+        environment.evaluateScriptFile("/library/Core.js");
+        environment.evaluateScriptFile("/library/Container.js");
+        environment.evaluateScriptFile("/library/Controls.js");
+        environment.evaluateScriptFile("/library/Encoding.js");
+        environment.evaluateScriptFile("/library/ObjectPool.js");
+        environment.evaluateScriptFile("/library/StateMachine.js");
         environment.evaluateScriptFile("/library/Testing.js");
 
-        environment.evaluateScriptFile("/library/StateMachine.js");
-
-
-        //environment.evaluateGlobal("meowEngine.parseJSON = JSON.parse;"+
-        //                           "meowEngine.toJSON = JSON.stringify;");
-
+        // register shortcuts
         environment.evaluateGlobal("meowEngine.registerShortCuts();");
-
-        // Start Testing
-        environment.evaluateScriptFile("/test/MeowEngine_Test.js");
-
-        //environment.evaluateGlobal("meowEngine.test.placeTracer( testOBJ, true);");
-        environment.evaluateGlobal("meowEngine.test.runAll();");
-
-       	//environment.evaluateScriptFile("Init.js");
-	}
+    }
 }

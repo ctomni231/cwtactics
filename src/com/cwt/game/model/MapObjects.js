@@ -1,20 +1,31 @@
-meow.defineModule({
-	name : "CWT_MapObjects",
-	req : null,
-	body : function(){
+(function(){
 
-		var Tile = function()
-		{
+    var Unit = meowEngine.Class({
 
-		};
+        constructor : function(){
 
-		var Unit = function()
-		{
+            this.clean();
+        },
 
-		};
+        clean : function(){
 
-		// interhits from tileMap
-		Tile.prototype = MapObject.prototype;
-		Unit.prototype = MapObject.prototype;
-	}
-});
+            this.hp = 99;
+            this.ammo = 0;
+            this.fuel = 0;
+            
+        }
+    });
+
+    var Tile = meowEngine.Class({
+
+        constructor : function(){
+
+            this.clean();
+        },
+
+        clean : function(){
+
+        }
+    });
+
+})();

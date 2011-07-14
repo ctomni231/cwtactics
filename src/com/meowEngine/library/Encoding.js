@@ -46,7 +46,8 @@
 		}
 
 		// test encoders
-        if( typeof registerFunc("Hello") === 'string' ){
+        var res = registerFunc("Hello");
+        if( typeof res === 'string' || typeof res === 'number' ){
             _encoders[name] = registerFunc;
         }
         else{
@@ -618,7 +619,10 @@
 	meowEngine.encoder.pushEncoder( meowEngine.encoder.MD5, MD5 );
 	meowEngine.encoder.pushEncoder( meowEngine.encoder.SHA256, SHA256 );
     meowEngine.encoder.pushEncoder( meowEngine.encoder.CRC32, CRC32 );
-	meowEngine.encoder.pushEncoder( meowEngine.encoder.BASE64, BASE64 );
+
+    // refactor
+    // maybe all encoding algorithms should allow en/decode
+    //meowEngine.encoder.pushEncoder( meowEngine.encoder.BASE64, BASE64.encode );
 
 
     meowEngine.signals.onSignal( meowEngine.MEOW_SHORTCUTS , function(){

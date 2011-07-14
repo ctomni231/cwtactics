@@ -1,0 +1,86 @@
+{
+    // this document contains all units
+    "_iCode" : "_unitSheet",
+    
+    sheets : [
+
+        // INFANTRY
+        {
+            "ID"            : "INFANTRY",
+
+            "cost"          : 1000,
+
+            "moveRange"     : 3,
+            "moveType"      : "MV_INFANTRY",
+            "vision"        : 2,
+            "maxFuel"       : 99,
+
+            "captures"      : 10,
+            "weight"        : 1,
+
+            "maxAmmo"       : 0,
+            "weapons"       : [ "WP_MG" ],
+
+            "tags"          : [ "GROUND", "FOOT", "SOFT" ]
+        },
+
+        // MECH UNIT
+        {
+            "ID"            : "MECH",
+
+            "cost"          : 3000,
+
+            "moveRange"     : 2,
+            "moveType"      : "MV_MECH",
+            "vision"        : 2,
+            "maxFuel"       : 70,
+
+            "captures"      : 10,
+            "weight"        : 1,
+
+            "maxAmmo"       : 3,
+            "weapons"       : [ "WP_BAZOOKA", "WP_MG" ],
+
+            "tags"          : [ "GROUND", "FOOT", "SOFT", "ANTI_TANK" ]
+        },
+
+        // RECKON VEHICLE
+        {
+            "ID"            : "RECKON",
+
+            "cost"          : 4000,
+
+            "moveRange"     : 8,
+            "moveType"      : "MV_TIRE_A",
+            "vision"        : 5,
+            "maxFuel"       : 80,
+
+            "weight"        : 1,
+
+            "maxAmmo"       : 0,
+            "weapons"       : [ "WP_MG" ],
+
+            "tags"          : [ "GROUND", "VEHICLE", "FOOT", "SOFT" ]
+        },
+
+        // LIGHT TANK
+        {
+            "ID"            : "LTANK",
+
+            "cost"          : 7000,
+
+            "moveRange"     : 6,
+            "moveType"      : "MV_TANK",
+            "vision"        : 3,
+            "maxFuel"       : 70,
+
+            "weight"        : 2,
+
+            "maxAmmo"       : 6,
+            "weapons"       : [ "WP_LT_CANNON", "WP_MG" ],
+
+            "tags"          : [ "GROUND", "VEHICLE", "FOOT", "SOFT" ]
+        }
+
+    ]
+} 
