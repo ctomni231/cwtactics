@@ -1,0 +1,358 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		
+		<title>JsDoc Reference - meowEngine.ObjectPool</title>
+
+        <link rel="stylesheet" href="../static/default.css" type="text/css" media="screen" charset="utf-8" />
+	</head>
+
+	<body>
+<!-- ============================== header ================================= -->	
+		<!-- begin static/header.html -->
+		<div id="header">
+</div>
+		<!-- end static/header.html -->
+
+        
+
+<!-- ============================== classes index ============================ -->
+		<div id="index">
+            <div id="docs">
+                
+            </div>
+			
+<h2>Index</h2>
+<ul class="classList">
+  <li><a href="../files.html">File Index</a></li>
+  <li><a href="../index.html">Class Index</a></li>
+  <li><a href="../symbolindex.html">Symbol Index</a></li>
+</ul>
+<h2>Classes</h2>
+<ul class="classList">
+	
+	<li><i><a href="../symbols/_global_.html">_global_</a></i></li>
+	
+	<li><a href="../symbols/meowEngine.html">meowEngine</a></li>
+	
+	<li><a href="../symbols/meowEngine.Array.html">meowEngine.Array</a></li>
+	
+	<li><a href="../symbols/meowEngine.assert.html">meowEngine.assert</a></li>
+	
+	<li><a href="../symbols/meowEngine.checks.html">meowEngine.checks</a></li>
+	
+	<li><a href="../symbols/meowEngine.Command.html">meowEngine.Command</a></li>
+	
+	<li><a href="../symbols/meowEngine.CommandStack.html">meowEngine.CommandStack</a></li>
+	
+	<li><a href="../symbols/meowEngine.encoder.html">meowEngine.encoder</a></li>
+	
+	<li><a href="../symbols/meowEngine.Error.html">meowEngine.Error</a></li>
+	
+	<li><a href="../symbols/meowEngine.input.html">meowEngine.input</a></li>
+	
+	<li><a href="../symbols/meowEngine.Interpreter.html">meowEngine.Interpreter</a></li>
+	
+	<li><a href="../symbols/meowEngine.ObjectPool.html">meowEngine.ObjectPool</a></li>
+	
+	<li><a href="../symbols/meowEngine.RandomSet.html">meowEngine.RandomSet</a></li>
+	
+	<li><a href="../symbols/meowEngine.Set.html">meowEngine.Set</a></li>
+	
+	<li><a href="../symbols/meowEngine.Signal.html">meowEngine.Signal</a></li>
+	
+	<li><a href="../symbols/meowEngine.signals.html">meowEngine.signals</a></li>
+	
+	<li><a href="../symbols/meowEngine.test.html">meowEngine.test</a></li>
+	
+	<li><a href="../symbols/meowEngine.test.Logger.html">meowEngine.test.Logger</a></li>
+	
+</ul>
+
+		</div>
+		
+        <div id="symbolList">
+           <!-- constructor list -->
+           
+             <h3>
+                 Class 
+             </h3>
+             <ul>
+                <li >
+                  <a href="../symbols/meowEngine.ObjectPool.html">ObjectPool</a>
+                </li>
+             </ul>
+           
+           <!-- end constructor list -->
+
+           <!-- properties list -->
+           
+           
+           <!-- end properties list -->
+
+           <!-- function summary -->
+           
+           
+             <h3>Methods</h3>
+             <ul>
+               
+                   <li>
+                        <a href="../symbols/meowEngine.ObjectPool.html#acquire">acquire</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/meowEngine.ObjectPool.html#constructor">constructor</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/meowEngine.ObjectPool.html#isFull">isFull</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/meowEngine.ObjectPool.html#release">release</a>
+                    </li>
+               
+             </ul>
+           
+           <!-- end function summary -->
+
+           <!-- events summary -->
+           
+           
+           <!-- end events summary -->
+        </div>
+
+		<div id="content">
+<!-- ============================== class title ============================ -->
+			<h1 class="classTitle">
+				Class meowEngine.ObjectPool
+			</h1>
+
+<!-- ============================== class summary ========================== -->			
+			<p class="description">
+				
+				
+			
+				
+				
+				
+					<br /><i>Defined in: </i> <a href="../symbols/src/_Volumes_Tapsi HDD_Projekte_Java_projects_CustomWarsTactics_src_com_meowEngine_library_ObjectPool.js.html">ObjectPool.js</a>.
+				
+			</p>
+
+<!-- ============================== constructor details ==================== -->		
+			
+			<div class="details"><a name="constructor"> </a>
+				<div class="sectionTitle">
+					Class Detail
+				</div>
+				
+				<div class="fixedFont">
+						<b>meowEngine.ObjectPool</b>()
+				</div>
+				
+				<div class="description">
+					
+					
+				</div>
+				
+				
+				
+				
+					
+					
+					
+					
+					
+					
+					
+
+			</div>
+			
+
+<!-- ============================== field details ========================== -->		
+			
+
+<!-- ============================== method details ========================= -->		
+			
+              <div class="details">
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+				
+                  <div class="member">
+					<a name="acquire"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">
+                      </div>
+					
+					<b>acquire</b>()
+					
+					</div>
+					<div class="description">
+						<p>Acquires a new object from the pool. If no object is cached, a new
+one will be created. Remember, that the constructor is called with
+no arguments. The cached class should use a empty constructor and
+a cleaning method, if possible.</p>
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name="constructor"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">
+                      </div>
+					
+					<b>constructor</b>(classObj, size, cleanMethod)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>classObj</b>
+									
+								</dt>
+								<dd>class object, that will be used in this object pool.</dd>
+							
+								<dt>
+									<b>size</b>
+									
+								</dt>
+								<dd>Determines the size of the cache pool, if -1, the pool
+			   won't have a maximum size.</dd>
+							
+								<dt>
+									<b>cleanMethod</b>
+									
+								</dt>
+								<dd>the clean method, that will be called on acquire.
+					  If this function is null, no cleaning step will
+					  be done.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name="isFull"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">
+                      </div>
+					
+					<b>isFull</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>true if the pool is full, else false.</dd>
+							
+							</dl>
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name="release"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">
+                      </div>
+					
+					<b>release</b>(obj)
+					
+					</div>
+					<div class="description">
+						<p>Releases an object back to the pool. If the pool has a maximum size
+and the pool have the length of that maximum size, then the object
+will not be cached.</p>
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>obj</b>
+									
+								</dt>
+								<dd>object that will be pushed into the pool</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+              </div>
+			
+			
+<!-- ============================== event details ========================= -->		
+			
+			<hr />
+		</div>
+
+		
+<!-- ============================== footer ================================= -->
+		<div class="fineprint" style="clear:both;text-align:center">
+			
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Tue Jul 12 2011 14:43:18 GMT+0200 (MESZ)
+		</div>
+	</body>
+</html>
