@@ -1,5 +1,7 @@
 package com.cwt.map;
 
+import com.cwt.map.io.DataStorage;
+
 /**
  * MapList.java
  *
@@ -174,7 +176,58 @@ public class MapList extends MapElement{
             list = sortDuplicate(list, FILE);
         if(!random)
             list = sortDuplicate(list, RANDOM);
+        if(code >= 0)
+            list = sortItem(list, CODE);
         return list;
+    }
+
+    /**
+     * This function checks to see if a particular item matches with the
+     * current item and creates a list based on it.
+     * @param list The list of items to sort
+     * @param item The item reference to sort this by determined by MapElement
+     * @return A reduced list of the matching items
+     */
+    private int[] sortItem(int[] list, byte item){
+        int[] temp = new int[0];
+        for(int i = 0; i < list.length; i++){
+            switch(item){
+                case CODE:
+                    if(this.getData(list[i], item) == code)
+                        temp = addData(temp, list[i]);
+                    break;
+            }
+        }
+        return temp;
+    }
+
+    private boolean sortData(int item){
+        boolean pass = true;
+        int[] temp = getArray(item, DATA);
+        if(!base.equals("DFLT")){
+            pass = !pass;
+            for(int check: temp){
+                if(getData().getData(check, DataStorage.BASE).matches(base)){
+                    pass = !pass;
+                    break;
+                }
+            }
+            if(!pass)
+                return pass;
+        }
+        if(!type.equals("DFLT")){
+            pass = !pass;
+            for(int check: temp){
+                if(getData().getData(check, DataStorage.TYPE).matches(type)){
+                    pass = !pass;
+                    break;
+                }
+            }
+            if(!pass)
+                return pass;
+        }
+
+        return pass;
     }
 
     /**
