@@ -1,6 +1,7 @@
 package com.cwt.map;
 
 import com.cwt.map.io.DataStorage;
+import com.cwt.map.io.GraphicStorage;
 
 /**
  * MapList.java
@@ -201,32 +202,53 @@ public class MapList extends MapElement{
         return temp;
     }
 
+    /**
+     * This function checks to see if the item matches the data specified
+     * and determines whether it should be part of the list. It checks the
+     * Data Storage information only
+     * @param item The item reference to sort this by determined by MapElement
+     * @return A reduced list of the matching items
+     */
     private boolean sortData(int item){
         boolean pass = true;
         int[] temp = getArray(item, DATA);
         if(!base.equals("DFLT")){
-            pass = !pass;
-            for(int check: temp){
-                if(getData().getData(check, DataStorage.BASE).matches(base)){
-                    pass = !pass;
-                    break;
-                }
-            }
+            pass = sort(temp, DataStorage.BASE, base);
             if(!pass)
                 return pass;
         }
-        if(!type.equals("DFLT")){
-            pass = !pass;
-            for(int check: temp){
-                if(getData().getData(check, DataStorage.TYPE).matches(type)){
-                    pass = !pass;
-                    break;
-                }
-            }
-            if(!pass)
-                return pass;
-        }
+        if(!type.equals("DFLT"))
+            pass = sort(temp, DataStorage.TYPE, type);
+        return pass;
+    }
 
+    /**
+     * This function checks to see if the item matches the data specified
+     * and determines whether it should be part of the list. It checks the
+     * Graphic Storage information only
+     * @param item The item reference to sort this by determined by MapElement
+     * @return A reduced list of the matching items
+     */
+    private boolean sortGraphics(int item){
+        boolean pass = true;
+        int[] temp = getArray(item, GRAPHIC);
+        if(weather >= 0){
+            pass = sort(temp, GraphicStorage.WEATHER, ""+weather);
+            if(!pass)
+                return pass;
+        }
+        if(size >= 0){
+            pass = sort(temp, GraphicStorage.SIZE, ""+size);
+            if(!pass)
+                return pass;
+        }
+        if(direction >= 0){
+            pass = sort(temp, GraphicStorage.DIRECTION, ""+direction);
+            if(!pass)
+                return pass;
+        }
+        if(!army.equals("DFLT"))
+            pass = sort(temp, GraphicStorage.ARMY, army);
         return pass;
     }
 
@@ -251,6 +273,21 @@ public class MapList extends MapElement{
             }
         }
         return temp;
+    }
+
+    /**
+     * This function acts as a shortcut function for all the sorting functions
+     * @param temp The integer holding the values to sort
+     * @param store The class byte reference number
+     * @param compare This class equivalent comparing variable
+     * @return Whether all the items matched (T) or not (F)
+     */
+    private boolean sort(int[] temp, byte store, String compare){
+        for(int check: temp){
+            if(getData().getData(check, store).matches(compare))
+                return true;
+        }
+        return false;
     }
 
     /**
