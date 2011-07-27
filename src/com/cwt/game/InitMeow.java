@@ -1,11 +1,15 @@
 package com.cwt.game;
 
+import com.cwt.system.jslix.debug.MemoryTest;
 import com.meowRhinoEnv.Engine;
 import com.meowRhinoEnv.jsBridges.MeowCompiler;
 import com.meowRhinoEnv.jsBridges.MeowConsole;
 import com.meowRhinoEnv.jsBridges.MeowDataBase;
 import com.meowRhinoEnv.jsBridges.MeowTimer;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Initialization class for the meow engine. It loads and configurates the
@@ -40,6 +44,19 @@ public class InitMeow
         environment.evaluateScriptFile("/library/Testing.js");
 
         // register shortcuts
-        environment.evaluateGlobal("meowEngine.registerShortCuts();");
+        environment.evaluateGlobal("meowEngine.registerShortCuts(); var x;");
+
+        String s = "var obj = { x:10 };"+
+                   "Object.freeze( obj );"+ // thanks to ringo's rhino fork
+                                            // js enabled strict mode (ES5)
+                   "obj.x = 20;"+
+                   "console.log( '('+obj.x +';'+obj.y+')' );";
+        
+        environment.evaluateGlobal(s);
+        
+    }
+
+    static class WR {
+        int i;
     }
 }

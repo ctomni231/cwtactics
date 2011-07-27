@@ -8,7 +8,7 @@
 
     };
 
-    meowEngine.StateMachine.create({
+    var stF = meowEngine.StateMachine.create({
         initial : "idle",
         events : [
 
@@ -26,4 +26,8 @@
             { name:"unitTypeSelected", from:"buildUnit", to:"idle" }
         ]
     });
+
+    stF.onTransition = function(){
+        //$signal();
+    };
 })();

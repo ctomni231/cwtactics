@@ -12,6 +12,8 @@
         tiles : tiles
     }
 
+	var TypeSheet = meowEngine.Class({});
+
     var MapObjectType = meowEngine.Class({
 
         constructor : function( jsonObj ){
@@ -74,6 +76,16 @@
     });
 
     var WeatherSheet = meowEngine.Class({
+
+        constructor : function( jsonObj ){
+
+            this.ID = jsonObj.ID;
+
+            this.chance = _parseNum( jsonObj.chance, 1, 1, 1000 );
+        }
+    });
+
+    var WeaponSheet = meowEngine.Class({
 
         constructor : function( jsonObj ){
 

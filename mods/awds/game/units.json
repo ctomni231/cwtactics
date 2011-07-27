@@ -2,7 +2,7 @@
     // this document contains all units
     "_iCode" : "_unitSheet",
     
-    sheets : [
+    "sheets" : [
 
         // INFANTRY
         {
