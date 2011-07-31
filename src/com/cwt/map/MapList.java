@@ -2,6 +2,7 @@ package com.cwt.map;
 
 import com.cwt.map.io.DataStorage;
 import com.cwt.map.io.GraphicStorage;
+import com.cwt.map.io.TagStorage;
 
 /**
  * MapList.java
@@ -13,7 +14,7 @@ import com.cwt.map.io.GraphicStorage;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 04.10.11
+ * @version 07.30.11
  */
 public class MapList extends MapElement{
     private int code;//Holds the default code criteria
@@ -120,12 +121,57 @@ public class MapList extends MapElement{
         setTag(type.toCharArray(), tag);
     }
 
+    /**
+     * This function takes all object variables within the MapList and
+     * sorts them according to the parameters set within the function
+     * of the class
+     * @return A sorted list containing only items within the parameters set
+     */
     public int[] list(){
-        return new int[0];
+        int[] temp = new int[dataItems.length];
+        for(int i = 0; i < temp.length; i++)
+            temp[i] = i;
+        return list(temp);
+    }
+
+    /**
+     * This function takes all object variables within the MapList and
+     * sorts them according to the parameters set within the function
+     * of the class
+     * @param list A list of integers representing the object items
+     * @return A sorted list containing only items within the parameters set
+     */
+    public int[] list(int[] list){
+        if(!animations)
+            list = sortDuplicate(list, FILE);
+        if(!random)
+            list = sortDuplicate(list, RANDOM);
+        if(code >= 0){
+            list = sortItem(list, CODE);
+            list = sortItem(list, DATA);
+            list = sortItem(list, GRAPHIC);
+            list = sortItem(list, TAGS);
+        }
+        return list;
     }
 
     public int match(){
-        return 0;
+        return match(list());
+    }
+
+    //@todo TODO: Working on this
+    public int match(int[] list){
+        int bestScore = -1;
+        int bestMember = -1;
+        int score = 0;
+        for(int member: list){
+            score = matchItem(member, CODE);
+            score += matchItem(member, DATA);
+            score += matchItem(member, GRAPHIC);
+            score += matchItem(member, TAGS);
+
+        }
+        return bestMember;
     }
 
     /**
@@ -172,16 +218,6 @@ public class MapList extends MapElement{
         random = false;
     }
 
-    private int[] list(int[] list){
-        if(!animations)
-            list = sortDuplicate(list, FILE);
-        if(!random)
-            list = sortDuplicate(list, RANDOM);
-        if(code >= 0)
-            list = sortItem(list, CODE);
-        return list;
-    }
-
     /**
      * This function checks to see if a particular item matches with the
      * current item and creates a list based on it.
@@ -194,9 +230,21 @@ public class MapList extends MapElement{
         for(int i = 0; i < list.length; i++){
             switch(item){
                 case CODE:
-                    if(this.getData(list[i], item) == code)
+                    if(getData(list[i], item) == code)
                         temp = addData(temp, list[i]);
                     break;
+                case DATA:
+                    if(sortData(getData(list[i], item)))
+                        temp = addData(temp, list[i]);
+                    break;
+                case GRAPHIC:
+                    if(sortGraphics(getData(list[i], item)))
+                        temp = addData(temp, list[i]);
+                    break;
+                case TAGS:
+                    if(sortTag(getData(list[i], item)))
+                        temp = addData(temp, list[i]);
+
             }
         }
         return temp;
@@ -253,6 +301,185 @@ public class MapList extends MapElement{
     }
 
     /**
+     * This function checks to see if the item matches the data specified
+     * and determines whether it should be part of the list. It checks the
+     * Tag Storage information only
+     * @param item The item reference to sort this by determined by MapElement
+     * @return A reduced list of the matching items
+     */
+    private boolean sortTag(int item){
+    boolean pass = true;
+        int[] temp = getArray(item, TAGS);
+        if(!tag_O.equals("DFLT")){
+            pass = sort(temp, TagStorage.O, tag_O);
+            if(!pass)
+                return pass;
+        }
+        if(!tag_OL.equals("DFLT")){
+            pass = sort(temp, TagStorage.OL, tag_OL);
+            if(!pass)
+                return pass;
+        }
+        if(!tag_N.equals("DFLT")){
+            pass = sort(temp, TagStorage.N, tag_N);
+            if(!pass)
+                return pass;
+        }
+        if(!tag_NE.equals("DFLT")){
+            pass = sort(temp, TagStorage.NE, tag_NE);
+            if(!pass)
+                return pass;
+        }
+        if(!tag_NW.equals("DFLT")){
+            pass = sort(temp, TagStorage.NW, tag_NW);
+            if(!pass)
+                return pass;
+        }
+        if(!tag_S.equals("DFLT")){
+            pass = sort(temp, TagStorage.S, tag_S);
+            if(!pass)
+                return pass;
+        }
+        if(!tag_SE.equals("DFLT")){
+            pass = sort(temp, TagStorage.SE, tag_SE);
+            if(!pass)
+                return pass;
+        }
+        if(!tag_SW.equals("DFLT")){
+            pass = sort(temp, TagStorage.SW, tag_SW);
+            if(!pass)
+                return pass;
+        }
+        if(!tag_E.equals("DFLT")){
+            pass = sort(temp, TagStorage.E, tag_E);
+            if(!pass)
+                return pass;
+        }
+        if(!tag_W.equals("DFLT")){
+            pass = sort(temp, TagStorage.W, tag_W);
+            if(!pass)
+                return pass;
+        }
+        if(!tag_NR.equals("DFLT")){
+            pass = sort(temp, TagStorage.NR, tag_NR);
+            if(!pass)
+                return pass;
+        }
+        if(!tag_SR.equals("DFLT")){
+            pass = sort(temp, TagStorage.SR, tag_SR);
+            if(!pass)
+                return pass;
+        }
+        if(!tag_ER.equals("DFLT")){
+            pass = sort(temp, TagStorage.ER, tag_ER);
+            if(!pass)
+                return pass;
+        }
+        if(!tag_WR.equals("DFLT")){
+            pass = sort(temp, TagStorage.WR, tag_WR);
+            if(!pass)
+                return pass;
+        }
+        return pass;
+    }
+
+    private int matchItem(int index, byte item){
+        int score = 0;
+        switch(item){
+            case CODE:
+                if(getData(index, CODE) == code)
+                    score += points[0];
+                break;
+            case DATA:
+                score += matchData(index);
+                break;
+            case GRAPHIC:
+                score += matchGraphics(index);
+                break;
+            case TAGS:
+                score += matchTags(index);
+                break;
+        }
+        return score;
+    }
+
+    /**
+     * This checks to see if the data elements match within the Data Storage
+     * and assigns points based on the results
+     * @param index The index to check
+     * @return Points according to the amount of matches
+     */
+    private int matchData(int index){
+        int score = 0;
+        int[] temp = getArray(index, DATA);
+        if(!base.equals("DFLT") && sort(temp, DataStorage.BASE, base))
+            score += points[1];
+        if(!type.equals("DFLT") && sort(temp, DataStorage.TYPE, type))
+            score += points[2];
+        return score;
+    }
+
+    /**
+     * This checks to see if the graphics elements match within the
+     * Graphics Storage and assigns points based on the results
+     * @param index The index to check
+     * @return Points according to the amount of matches
+     */
+    private int matchGraphics(int index){
+        int score = 0;
+        int[] temp = getArray(index, GRAPHIC);
+        if(weather >= 0 && sort(temp, GraphicStorage.WEATHER, ""+weather))
+            score += points[3];
+        if(size >= 0 && sort(temp, GraphicStorage.SIZE, ""+size))
+            score += points[4];
+        if(direction >= 0 && sort(temp, GraphicStorage.DIRECTION, ""+direction))
+            score += points[5];
+        if(!army.equals("DFLT") && sort(temp, GraphicStorage.ARMY, army))
+            score += points[6];
+        return score;
+    }
+
+    /**
+     * This checks to see if the tag elements match within the
+     * Tag Storage and assigns points based on the results
+     * @param index The index to check
+     * @return Points according to the amount of matches
+     */
+    private int matchTags(int index){
+        int score = 0;
+        int[] temp = getArray(index, TAGS);
+        if(!tag_O.equals("DFLT") && sort(temp, TagStorage.O, tag_O))
+            score += points[7];
+        if(!tag_OL.equals("DFLT") && sort(temp, TagStorage.OL, tag_OL))
+            score += points[8];
+        if(!tag_N.equals("DFLT") && sort(temp, TagStorage.N, tag_N))
+            score += points[9];
+        if(!tag_NE.equals("DFLT") && sort(temp, TagStorage.NE, tag_NE))
+            score += points[10];
+        if(!tag_NW.equals("DFLT") && sort(temp, TagStorage.NW, tag_NW))
+            score += points[11];
+        if(!tag_S.equals("DFLT") && sort(temp, TagStorage.S, tag_S))
+            score += points[12];
+        if(!tag_SE.equals("DFLT") && sort(temp, TagStorage.SE, tag_SE))
+            score += points[13];
+        if(!tag_SW.equals("DFLT") && sort(temp, TagStorage.SW, tag_SW))
+            score += points[14];
+        if(!tag_E.equals("DFLT") && sort(temp, TagStorage.E, tag_E))
+            score += points[15];
+        if(!tag_W.equals("DFLT") && sort(temp, TagStorage.W, tag_W))
+            score += points[16];
+        if(!tag_NR.equals("DFLT") && sort(temp, TagStorage.NR, tag_NR))
+            score += points[17];
+        if(!tag_SR.equals("DFLT") && sort(temp, TagStorage.SR, tag_SR))
+            score += points[18];
+        if(!tag_ER.equals("DFLT") && sort(temp, TagStorage.ER, tag_ER))
+            score += points[19];
+        if(!tag_WR.equals("DFLT") && sort(temp, TagStorage.WR, tag_WR))
+            score += points[20];
+        return score;
+    }
+
+    /**
      * This function will find duplicate numbers and only sort one of that
      * value in the list. It is used for sorting random images and animations
      * @param list The list of items to sort
@@ -289,6 +516,17 @@ public class MapList extends MapElement{
         }
         return false;
     }
+
+    /**
+     * This function acts as a shortcut for all the matching functions
+     * @param index The index number of the list to check
+     * @param store The class byte reference number
+     * @param compare This class equivalent comparing variable
+     * @return Whether the item matched (T) or not (F)
+     */
+    //private boolean match(int index, byte store, String compare){
+    //    return getData().getData(index, store).matches(compare);
+    //}
 
     /**
      * This function uses a char array to determine which tag is filled
@@ -387,5 +625,4 @@ public class MapList extends MapElement{
 
         return fillData;
     }
-
 }
