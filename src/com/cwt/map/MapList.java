@@ -14,7 +14,7 @@ import com.cwt.map.io.TagStorage;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 07.30.11
+ * @version 07.31.11
  */
 public class MapList extends MapElement{
     private int code;//Holds the default code criteria
@@ -122,16 +122,24 @@ public class MapList extends MapElement{
     }
 
     /**
+     * This function gets all the objects within the object list
+     * @return A full list of variables
+     */
+    public int[] fullList(){
+        int[] temp = new int[dataItems.length];
+        for(int i = 0; i < temp.length; i++)
+            temp[i] = i;
+        return temp;
+    }
+
+    /**
      * This function takes all object variables within the MapList and
      * sorts them according to the parameters set within the function
      * of the class
      * @return A sorted list containing only items within the parameters set
      */
     public int[] list(){
-        int[] temp = new int[dataItems.length];
-        for(int i = 0; i < temp.length; i++)
-            temp[i] = i;
-        return list(temp);
+        return list(fullList());
     }
 
     /**
@@ -163,12 +171,19 @@ public class MapList extends MapElement{
     public int match(int[] list){
         int bestScore = -1;
         int bestMember = -1;
-        int score = 0;
+        int score = -1;
+        int bestSize = 0;
         for(int member: list){
             score = matchItem(member, CODE);
             score += matchItem(member, DATA);
             score += matchItem(member, GRAPHIC);
             score += matchItem(member, TAGS);
+
+            if(score > bestScore){
+                bestScore = score;
+                bestMember = member;
+            }else if(score == bestScore)
+                bestSize = sizeItem(member);
 
         }
         return bestMember;
@@ -244,7 +259,6 @@ public class MapList extends MapElement{
                 case TAGS:
                     if(sortTag(getData(list[i], item)))
                         temp = addData(temp, list[i]);
-
             }
         }
         return temp;
@@ -260,12 +274,9 @@ public class MapList extends MapElement{
     private boolean sortData(int item){
         boolean pass = true;
         int[] temp = getArray(item, DATA);
-        if(!base.equals("DFLT")){
+        if(!base.equals("DFLT"))
             pass = sort(temp, DataStorage.BASE, base);
-            if(!pass)
-                return pass;
-        }
-        if(!type.equals("DFLT"))
+        if(pass && !type.equals("DFLT"))
             pass = sort(temp, DataStorage.TYPE, type);
         return pass;
     }
@@ -280,22 +291,13 @@ public class MapList extends MapElement{
     private boolean sortGraphics(int item){
         boolean pass = true;
         int[] temp = getArray(item, GRAPHIC);
-        if(weather >= 0){
+        if(weather >= 0)
             pass = sort(temp, GraphicStorage.WEATHER, ""+weather);
-            if(!pass)
-                return pass;
-        }
-        if(size >= 0){
+        if(pass && size >= 0)
             pass = sort(temp, GraphicStorage.SIZE, ""+size);
-            if(!pass)
-                return pass;
-        }
-        if(direction >= 0){
+        if(pass && direction >= 0)
             pass = sort(temp, GraphicStorage.DIRECTION, ""+direction);
-            if(!pass)
-                return pass;
-        }
-        if(!army.equals("DFLT"))
+        if(pass && !army.equals("DFLT"))
             pass = sort(temp, GraphicStorage.ARMY, army);
         return pass;
     }
@@ -308,78 +310,36 @@ public class MapList extends MapElement{
      * @return A reduced list of the matching items
      */
     private boolean sortTag(int item){
-    boolean pass = true;
+        boolean pass = true;
         int[] temp = getArray(item, TAGS);
-        if(!tag_O.equals("DFLT")){
+        if(!tag_O.equals("DFLT"))
             pass = sort(temp, TagStorage.O, tag_O);
-            if(!pass)
-                return pass;
-        }
-        if(!tag_OL.equals("DFLT")){
+        if(pass && !tag_OL.equals("DFLT"))
             pass = sort(temp, TagStorage.OL, tag_OL);
-            if(!pass)
-                return pass;
-        }
-        if(!tag_N.equals("DFLT")){
+        if(pass && !tag_N.equals("DFLT"))
             pass = sort(temp, TagStorage.N, tag_N);
-            if(!pass)
-                return pass;
-        }
-        if(!tag_NE.equals("DFLT")){
+        if(pass && !tag_NE.equals("DFLT"))
             pass = sort(temp, TagStorage.NE, tag_NE);
-            if(!pass)
-                return pass;
-        }
-        if(!tag_NW.equals("DFLT")){
+        if(pass && !tag_NW.equals("DFLT"))
             pass = sort(temp, TagStorage.NW, tag_NW);
-            if(!pass)
-                return pass;
-        }
-        if(!tag_S.equals("DFLT")){
+        if(pass && !tag_S.equals("DFLT"))
             pass = sort(temp, TagStorage.S, tag_S);
-            if(!pass)
-                return pass;
-        }
-        if(!tag_SE.equals("DFLT")){
+        if(pass && !tag_SE.equals("DFLT"))
             pass = sort(temp, TagStorage.SE, tag_SE);
-            if(!pass)
-                return pass;
-        }
-        if(!tag_SW.equals("DFLT")){
+        if(pass && !tag_SW.equals("DFLT"))
             pass = sort(temp, TagStorage.SW, tag_SW);
-            if(!pass)
-                return pass;
-        }
-        if(!tag_E.equals("DFLT")){
+        if(pass && !tag_E.equals("DFLT"))
             pass = sort(temp, TagStorage.E, tag_E);
-            if(!pass)
-                return pass;
-        }
-        if(!tag_W.equals("DFLT")){
+        if(pass && !tag_W.equals("DFLT"))
             pass = sort(temp, TagStorage.W, tag_W);
-            if(!pass)
-                return pass;
-        }
-        if(!tag_NR.equals("DFLT")){
+        if(pass && !tag_NR.equals("DFLT"))
             pass = sort(temp, TagStorage.NR, tag_NR);
-            if(!pass)
-                return pass;
-        }
-        if(!tag_SR.equals("DFLT")){
+        if(pass && !tag_SR.equals("DFLT"))
             pass = sort(temp, TagStorage.SR, tag_SR);
-            if(!pass)
-                return pass;
-        }
-        if(!tag_ER.equals("DFLT")){
+        if(pass && !tag_ER.equals("DFLT"))
             pass = sort(temp, TagStorage.ER, tag_ER);
-            if(!pass)
-                return pass;
-        }
-        if(!tag_WR.equals("DFLT")){
+        if(pass && !tag_WR.equals("DFLT"))
             pass = sort(temp, TagStorage.WR, tag_WR);
-            if(!pass)
-                return pass;
-        }
         return pass;
     }
 
@@ -480,6 +440,98 @@ public class MapList extends MapElement{
     }
 
     /**
+     * This function finds the amount of tags filled with non-default items
+     * for lists in MapElement
+     * @param index The index to search for the amount of filled items
+     * @return How many items there are in total filled for this index
+     */
+    private int sizeItem(int index){
+        int length = 0;
+        if(getData(index, CODE) >= 0)
+            length++;
+        length += sizeData(index);
+        length += sizeGraphics(index);
+        length += sizeTags(index);
+        return length;
+    }
+
+    /**
+     * This function assists the sizeItem function by finding the amount of
+     * Data Items filled in a Map Element list
+     * @param index The index to search for the amount of filled items
+     * @return How many items there are in total filled for this index
+     */
+    private int sizeData(int index){
+        int length = 0;
+        int[] temp = getArray(index, DATA);
+        if(!sort(temp, DataStorage.BASE, ""))
+            length++;
+        if(!sort(temp, DataStorage.TYPE, ""))
+            length++;
+        return length;
+    }
+
+    /**
+     * This function assists the sizeItem function by finding the amount of
+     * Graphic Items filled in a Map Element list
+     * @param index The index to search for the amount of filled items
+     * @return How many items there are in total filled for this index
+     */
+    private int sizeGraphics(int index){
+        int length = 0;
+        int[] temp = getArray(index, GRAPHIC);
+        if(!sort(temp, GraphicStorage.WEATHER, "-1"))
+            length++;
+        if(!sort(temp, GraphicStorage.SIZE, "-1"))
+            length++;
+        if(!sort(temp, GraphicStorage.DIRECTION, "-1"))
+            length++;
+        if(!sort(temp, GraphicStorage.ARMY, ""))
+            length++;
+        return length;
+    }
+
+    /**
+     * This function assists the sizeItem function by finding the amount of
+     * Tag Items filled in a Map Element list
+     * @param index The index to search for the amount of filled items
+     * @return How many items there are in total filled for this index
+     */
+    private int sizeTags(int index){
+        int length = 0;
+        int[] temp = getArray(index, TAGS);
+        if(!sort(temp, TagStorage.O, ""))
+            length++;
+        if(!sort(temp, TagStorage.OL, ""))
+            length++;
+        if(!sort(temp, TagStorage.N, ""))
+            length++;
+        if(!sort(temp, TagStorage.NE, ""))
+            length++;
+        if(!sort(temp, TagStorage.NW, ""))
+            length++;
+        if(!sort(temp, TagStorage.S, ""))
+            length++;
+        if(!sort(temp, TagStorage.SE, ""))
+            length++;
+        if(!sort(temp, TagStorage.SW, ""))
+            length++;
+        if(!sort(temp, TagStorage.E, ""))
+            length++;
+        if(!sort(temp, TagStorage.W, ""))
+            length++;
+        if(!sort(temp, TagStorage.NR, ""))
+            length++;
+        if(!sort(temp, TagStorage.SR, ""))
+            length++;
+        if(!sort(temp, TagStorage.ER, ""))
+            length++;
+        if(!sort(temp, TagStorage.WR, ""))
+            length++;
+        return length;
+    }
+
+    /**
      * This function will find duplicate numbers and only sort one of that
      * value in the list. It is used for sorting random images and animations
      * @param list The list of items to sort
@@ -517,16 +569,6 @@ public class MapList extends MapElement{
         return false;
     }
 
-    /**
-     * This function acts as a shortcut for all the matching functions
-     * @param index The index number of the list to check
-     * @param store The class byte reference number
-     * @param compare This class equivalent comparing variable
-     * @return Whether the item matched (T) or not (F)
-     */
-    //private boolean match(int index, byte store, String compare){
-    //    return getData().getData(index, store).matches(compare);
-    //}
 
     /**
      * This function uses a char array to determine which tag is filled
@@ -603,7 +645,6 @@ public class MapList extends MapElement{
                 points[i] = 1;
             else
                 points[i] = -1;
-
         }
     }
 
