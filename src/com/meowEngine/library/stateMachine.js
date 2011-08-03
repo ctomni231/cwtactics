@@ -1,26 +1,57 @@
-(function(){
+neko.define("stateMachine",function(){
 
-    // MEOW STATE MACHINE MODULE
-    // =========================
-    //
-    // HEAVILY INSPIRED BY STATE MACHINE IMPLEMENTATION FROM:
-    // https://github.com/jakesgordon/javascript-state-machine
-    //
-    // THIS IMPLEMENTATION TAKES THE BASE IDEA FROM THE ORIGINAL MODULE AND
-    // MODIFIES IT, TO FIT A BIT BETTER WITH THE MEOW SYSTEM.
-    //
-    // LICENSE: THIS MODULE IS RELEASED ( NOT LIKE THE MOST MEOW MODULES ) NOT
-    //          UNDER THE MEOW LICENSE. IT TAKES THE ORIGINAL LICENSE OF
-    //          https://github.com/jakesgordon/javascript-state-machine,
-    //          DUE THE HEAVY INSPIRATIONS FROM THE STATE MACHINE FROM
-    //          JAKES GORDON.
-    //          
-    // SINCE: 10.07.2011
-    //======================================================================
+    var addEvent = function(stM, e){
 
-    meowEngine.StateMachine = {
+        var from = (e.from instanceof Array) ? e.from : [e.from];
+        stM._events[e.name] = stM._events[e.name] || {};
 
-        create: function(cfg) {
+        var end = from.length;
+        for (var n = 0 ; n < end; n++ ){
+            stM._events[e.name][from[n]] = e.to;
+        }
+    };
+
+    var buildEvent = function( name, map ) {
+
+        return function() {
+
+            var from = this._active;
+            var to = map[from];
+
+            if( this.cannot(name) ){
+                throw new Error("NoTransitionAvailable",
+                    "Event "+name+" innapropriate in current state "+from );
+            }
+
+            // trigger onEvent
+            var onEvent = this['onEvent'];
+            if( onEvent ){
+
+                if( onEvent.apply(this, arguments) === false ){
+
+                    // a return false stops a possible transition
+                    return;
+                }
+            }
+
+            // circling events aren't real transitions
+            if ( from != to){
+
+                // trigger onTransition
+                var enterState = this['onTransition'];
+                if( enterState ){
+                    enterState.apply(this, arguments);
+                }
+
+                // set new active state
+                this._active = to;
+            }
+        }
+    };
+
+    var StateMachine = neko.Class({
+
+        constructor : function( cfg ){
 
             if( !( cfg.events instanceof Array ) ){
                 throw "StateMachine, IllegalArgument";
@@ -30,105 +61,47 @@
                 throw "StateMachine, init state must be set";
             }
 
-            // (private) variables
-            ///////////////////////
+            // properties
+            this._events = {};
+            this._active = cfg.initial;
 
-            var instance = cfg.target || {};
-            var events = {};
-            var active = cfg.initial;
-
-
-            // inner functions
-            ///////////////////
-
-            var addEvent = function(e){
-
-                var from = (e.from instanceof Array) ? e.from : [e.from];
-                events[e.name] = events[e.name] || {};
-
-                var end = from.length;
-                for (var n = 0 ; n < end; n++ ){
-                    events[e.name][from[n]] = e.to;
-                }
-            };
-
-            var buildEvent = function( name, map ) {
-
-                return function() {
-
-                    var from = active;
-                    var to = map[from];
-
-                    if( this.cannot(name) ){
-
-                      throw meowEngine.createError("NoTransitionAvailable",
-                        "Event "+name+" innapropriate in current state "+from );
-                    }
-
-                    // trigger onEvent
-                    var onEvent = this['onEvent'];
-                    if( onEvent ){
-
-                        if( onEvent.apply(this, arguments) === false ){
-                            
-                            // a return false stops a possible transition
-                            return;
-                        }
-                    }   
-
-                    // circling events aren't real transitions
-                    if ( from != to){
-
-                        // trigger onTransition
-                        var enterState = this['onTransition'];
-                        if( enterState ){
-                            enterState.apply(this, arguments);
-                        }
-
-                        // set new active state
-                        active = to;
-                    }
-                }
-
-            };
-
-
-            // logic
-            /////////
-
+            // connect events
             var e = cfg.events.length;
             for( var n = 0; n < e; n++ ){
-                addEvent( cfg.events[n] );
+                addEvent( this, cfg.events[n] );
             }
 
-            for( var name in events ) {
-                if (events.hasOwnProperty(name)){
-                    instance[name] = buildEvent(name,events[name]);
+            // set events
+            for( var name in this._events ) {
+                if ( this._events.hasOwnProperty(name)){
+                    this[name] = buildEvent(name, this._events[name]);
                 }
             }
+        },
 
-            // build instance class body
-            /////////////////////////////
+        getState : function() {
+            return this._active;
+        },
 
-            instance.getState = function() {
-                return active;
-            };
+        isActive : function(state) {
+            return this._active == state;
+        },
 
-            instance.isActive = function(state) {
-                return active == state;
-            };
+        can : function(event) {
+            return !!this._events[event][this._active];
+        },
 
-            instance.can = function(event) {
-                return !!events[event][active];
-            };
-
-            instance.cannot = function(event) {
-                return !this.can(event);
-            };
-
-            // return instance
-            return instance;
+        cannot : function(event) {
+            return !this.can(event);
         }
-    };
+    });
 
-})();
+
+    // module API
+    return{
+
+        VERSION : 0.8,
+
+        StateMachine : StateMachine
+    }
+});
