@@ -7,11 +7,12 @@
 
 		setType : function( type ){
 			
-			_isTrue( type instanceOf _typeSheet );
+			_isTrue( type instanceof _typeSheet );
 			
 			this.type = type;
 		}
 	});
+        Object.seal( _typeObject );
 
 
    	/*

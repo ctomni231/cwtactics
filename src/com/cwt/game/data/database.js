@@ -1,5 +1,54 @@
+define("cwt_database",function(){
+    
+    // dependencies
+    var assert = require("assert");
+    var Class = require("meowEngine").Class;
+    
+    var exports = {};
+    
+    // classes
+    
+    var UnitSheet = Class({
+        
+        canAttack : function( target ){
+            if( target instanceof UnitSheet ){
+                
+            }
+            else{
+                throw "TypeError";
+            }
+        },
+        
+        canCapture : function(){ return this.capturePoints != 0; }
+    });
+    
+    var TileSheet = meowEngine.Class({});
+    
+    var WeaponSheet = meowEngine.Class({});
+    
+    var MoveSheet = meowEngine.Class({});
+    
+    
+    exports.tiles = {};
+    exports.units = {};
+    
+    exports.loadDatabaseContent = function(){
+    	
+    }
+    
+    // return module API
+    return exports;
+});
+
+
+
+
+
+
+
 (function(){
 
+    // cache
     var _isIn = meowEngine.checks.hasAttribute;
     var _isTrue = meowEngine.assert.isTrue;
     var _parseNum = meowEngine.parseNumber;
@@ -12,7 +61,13 @@
         tiles : tiles
     }
 
-	var TypeSheet = meowEngine.Class({});
+    var TypeSheet = meowEngine.Class({
+        
+        constructor : function( jsonObj ){
+            
+            this.ID = jsonObj.ID;
+        }
+    });
 
     var MapObjectType = meowEngine.Class({
 
@@ -95,4 +150,11 @@
         }
     });
 
+    // freeze all sheets, they may not altered later
+    var key;
+    for( key in units ){
+        if( units.hasOwnProperty( key ) ){
+            Object.freeze( units[key] );
+        }
+    }
 })();

@@ -1,6 +1,12 @@
-(function(){
+// we use requireJS as module system now!
+define(
 
-    $cwt = {};
+
+    "CWT_CORE",
+    [], // put all logic containers here!
     
-
-})();
+    function(){
+        
+        // main code and API
+    }
+);
