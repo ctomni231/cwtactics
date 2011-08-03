@@ -13,6 +13,11 @@ import org.mozilla.javascript.ScriptableObject;
  */
 public class RhinoEnvironment {
 
+    public static final String[] paths = new String[]{ "/jsLib",
+                                                 "/com/cwt/game",
+                                                 "/com/meowEngine",
+                                                 "/com/nekoJS" };
+    
     public static final RhinoEnvironment INSTANCE = new RhinoEnvironment();
     private final Context context;
     private final ScriptableObject rootScope;
@@ -49,7 +54,16 @@ public class RhinoEnvironment {
                 + "}",
                 "", 0, null);
 
-
+        // inject file loader function
+        context.evaluateString(rootScope, "NEKO_SYS_LOADFILE  = "
+                + "function( time ){"
+                + " try{  "
+                + " "
+                + " }"
+                + " catch(e){}"
+                + "}",
+                "", 0, null);
+        
         initSecurity();
     }
 
@@ -109,7 +123,8 @@ public class RhinoEnvironment {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
+
         INSTANCE.log("START NEKO TEST");
     }
 }

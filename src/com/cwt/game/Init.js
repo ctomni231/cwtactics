@@ -1,12 +1,4 @@
-// we use requireJS as module system now!
-define(
+neko.define("init", ["properties"], function( properties ){
 
-
-    "CWT_CORE",
-    [], // put all logic containers here!
-    
-    function(){
-        
-        // main code and API
-    }
-);
+    properties.setProperty( "MOD_PATH", "/mods" , properties.CONSTANT );
+});

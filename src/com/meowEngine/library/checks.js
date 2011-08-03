@@ -321,6 +321,23 @@ neko.define("checks",function(){
         return true;
     }
 
+    function isArrayOf( array, cls ){
+
+        if( ! (array instanceof Array) ){
+            
+            for( var i = 0, e = array.length; i < e; i++ ){
+                if( !( array[i] instanceof cls ) ){
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     // module API
     return {
 
@@ -352,6 +369,8 @@ neko.define("checks",function(){
         areObjects      : areObjects,
         areStrings      : areStrings,
         areUndefined    : areUndefined,
-        arentEmpty      : arentEmpty
+        arentEmpty      : arentEmpty,
+
+        isArrayOf       : isArrayOf
     }
 });
