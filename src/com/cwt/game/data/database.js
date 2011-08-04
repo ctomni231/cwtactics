@@ -305,6 +305,7 @@ neko.define("data/database", ["assert","checks","properties"],
     });
 
     /* LOAD COMPLETE PATH INTO DATABASE */
+    
 
     
     // return module API
@@ -313,11 +314,11 @@ neko.define("data/database", ["assert","checks","properties"],
         VERSION : 0.8, // REFACTOR PARSING ERROR MESSAGES
 
         // returns single sheets
-        unit : null,
-        tile : null,
-        moveType : null,
-        weapon : null,
-        weather : null,
+        unit        : function( ID ){ return units[ID]; },
+        tile        : function( ID ){ return tiles[ID]; },
+        moveType    : function( ID ){ return moveTypes[ID]; },
+        weapon      : function( ID ){ return weapons[ID]; },
+        weather     : function( ID ){ return weathers[ID]; },
 
         // fire types
         DIRECT : fire_DIRECT,
