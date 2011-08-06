@@ -1,0 +1,24 @@
+{
+    // this document contains all units
+    "_iCode" : "_moveTypeSheet",
+
+    "sheets" : [
+
+        {
+            "ID"            : "MV_INFANTRY",
+            "costs"         : {
+                "MOUNTAIN"      : 2,
+                "WATER"         : 0,    // 0 is not movable
+                "REEF"          : 0
+            }
+        },
+
+        {
+            "ID"            : "MV_BAZOOKA",
+            "costs"         :{
+                "WATER"         : 0,
+                "REEF"          : 0
+            }
+        }
+    ]
+}

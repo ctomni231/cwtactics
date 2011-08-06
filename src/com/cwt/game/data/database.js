@@ -313,6 +313,8 @@ neko.define("data/database", ["assert","checks","properties"],
 
         VERSION : 0.8, // REFACTOR PARSING ERROR MESSAGES
 
+        WeatherSheet : WeatherSheet,
+
         // returns single sheets
         unit        : function( ID ){ return units[ID]; },
         tile        : function( ID ){ return tiles[ID]; },
