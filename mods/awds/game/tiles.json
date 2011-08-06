@@ -1,5 +1,5 @@
 {
-    //TODO: ADD FACTORY PROPERTIES, REPAIRING
+    //TODO: ADD FACTORY PROPERTIES
 
     "_iCode" : "_tileSheet",
 
@@ -25,6 +25,9 @@
             "vision"            : 0,
             "capturePoints"     : 20,
             "income"            : 1000,
+            "repairs"           : {
+                "*"             : 20
+            },
             "tags"              : [ "PROPERTY" ]
         },
 
@@ -33,6 +36,9 @@
             "vision"            : 0,
             "capturePoints"     : 20,
             "income"            : 1000,
+            "repairs"           : {
+                "*"             : 20
+            },
             "tags"              : [ "PROPERTY", "FACTORY" ]
         },
 
@@ -41,6 +47,9 @@
             "vision"            : 0,
             "capturePoints"     : 20,
             "income"            : 1000,
+            "repairs"           : {
+                "*"             : 20
+            },
             "tags"              : [ "PROPERTY", "FACTORY" ]
         },
 
@@ -49,6 +58,9 @@
             "vision"            : 0,
             "capturePoints"     : 20,
             "income"            : 1000,
+            "repairs"           : {
+                "*"             : 20
+            },
             "tags"              : [ "PROPERTY", "FACTORY" ]
         },
 
@@ -64,6 +76,9 @@
             "vision"            : 1,
             "capturePoints"     : 20,
             "income"            : 1000,
+            "repairs"           : {
+                "*"             : 20
+            },
             "tags"              : [ "PROPERTY", "HQ" ]
         },
 
