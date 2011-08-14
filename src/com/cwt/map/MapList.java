@@ -14,7 +14,7 @@ import com.cwt.map.io.TagStorage;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 07.31.11
+ * @version 08.07.11
  */
 public class MapList extends MapElement{
     private int code;//Holds the default code criteria
@@ -163,16 +163,27 @@ public class MapList extends MapElement{
         return list;
     }
 
+    /**
+     * This function is used to find the closest match using all the
+     * information available within the tags. It returns an integer
+     * stating the best member from the entire MapElement items list.
+     * @return The best matching item from the entire MapElement list
+     */
     public int match(){
         return match(list());
     }
 
-    //@todo TODO: Working on this
+    /**
+     * This function is used to find the closest match using all the
+     * information available within the tags. It returns an integer
+     * stating the best member from the list provided.
+     * @param list An integer list representing the MapElement items
+     * @return The best matching item from the list provided
+     */
     public int match(int[] list){
         int bestScore = -1;
         int bestMember = -1;
         int score = -1;
-        int bestSize = 0;
         for(int member: list){
             score = matchItem(member, CODE);
             score += matchItem(member, DATA);
@@ -182,9 +193,16 @@ public class MapList extends MapElement{
             if(score > bestScore){
                 bestScore = score;
                 bestMember = member;
-            }else if(score == bestScore)
-                bestSize = sizeItem(member);
-
+            }else if(score == bestScore){
+                if(sizeItem(member) >= defaultSize() && 
+                        sizeItem(member) < sizeItem(bestMember)){
+                    bestScore = score;
+                    bestMember = member;
+                }else if(sizeItem(member) > sizeItem(bestMember)){
+                    bestScore = score;
+                    bestMember = member;
+                }
+            }
         }
         return bestMember;
     }
@@ -231,6 +249,58 @@ public class MapList extends MapElement{
         tag_WR = "DFLT";
         animations = false;
         random = false;
+    }
+
+    /**
+     * This function gets exactly how many items are filled within the
+     * default criteria with non-default values
+     * @return The amount of criteria filled
+     */
+    private int defaultSize(){
+        int length = 0;
+        if(code != -1)
+            length++;
+        if(!base.equals("DFLT"))
+            length++;
+        if(!type.equals("DFLT"))
+            length++;
+        if(weather != -1)
+            length++;
+        if(size != -1)
+            length++;
+        if(direction != -1)
+            length++;
+        if(!army.equals("DFLT"))
+            length++;
+        if(!tag_O.equals("DFLT"))
+            length++;
+        if(!tag_OL.equals("DFLT"))
+            length++;
+        if(!tag_N.equals("DFLT"))
+            length++;
+        if(!tag_NE.equals("DFLT"))
+            length++;
+        if(!tag_NW.equals("DFLT"))
+            length++;
+        if(!tag_S.equals("DFLT"))
+            length++;
+        if(!tag_SE.equals("DFLT"))
+            length++;
+        if(!tag_SW.equals("DFLT"))
+            length++;
+        if(!tag_E.equals("DFLT"))
+            length++;
+        if(!tag_W.equals("DFLT"))
+            length++;
+        if(!tag_NR.equals("DFLT"))
+            length++;
+        if(!tag_SR.equals("DFLT"))
+            length++;
+        if(!tag_ER.equals("DFLT"))
+            length++;
+        if(!tag_WR.equals("DFLT"))
+            length++;
+        return length;
     }
 
     /**
@@ -343,6 +413,13 @@ public class MapList extends MapElement{
         return pass;
     }
 
+    /**
+     * This checks to see if data elements match within the items selected
+     * and assigns point values according to the matched items
+     * @param index The MapElement index to check
+     * @param item The MapElement byte item reference
+     * @return Points according to the amount of matches
+     */
     private int matchItem(int index, byte item){
         int score = 0;
         switch(item){
@@ -366,7 +443,7 @@ public class MapList extends MapElement{
     /**
      * This checks to see if the data elements match within the Data Storage
      * and assigns points based on the results
-     * @param index The index to check
+     * @param index The MapElement index to check
      * @return Points according to the amount of matches
      */
     private int matchData(int index){
@@ -382,7 +459,7 @@ public class MapList extends MapElement{
     /**
      * This checks to see if the graphics elements match within the
      * Graphics Storage and assigns points based on the results
-     * @param index The index to check
+     * @param index The MapElement index to check
      * @return Points according to the amount of matches
      */
     private int matchGraphics(int index){
@@ -402,7 +479,7 @@ public class MapList extends MapElement{
     /**
      * This checks to see if the tag elements match within the
      * Tag Storage and assigns points based on the results
-     * @param index The index to check
+     * @param index The MapElement index to check
      * @return Points according to the amount of matches
      */
     private int matchTags(int index){

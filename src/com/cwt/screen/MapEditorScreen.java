@@ -41,8 +41,6 @@ public class MapEditorScreen extends Screen{
     public MapEditorScreen(){
         PixAnimate.getData();
 
-
-
         //TEMPORARY UNTIL FURTHER NOTICE
         JukeBox.stopClip();    
         JukeBox.addClip(MUSIC);
@@ -94,7 +92,7 @@ public class MapEditorScreen extends Screen{
         g.setColor(Color.white);
         g.drawString("MAP EDITOR", 10, 10);
 
-        g.drawImage(PixAnimate.getSlickImage(1, 0, 0), 10, 10);
+        g.drawImage(PixAnimate.getSlickImage(0, 0, 0), 10, 10);
     }
 
     @Override
@@ -107,7 +105,7 @@ public class MapEditorScreen extends Screen{
         g.setColor(java.awt.Color.white);
         g.drawString("MAP EDITOR", 10, 10);
 
-        g.drawImage(PixAnimate.getImage(1, 0, 0), 10, 10, dthis);
+        g.drawImage(PixAnimate.getImage(0, 0, 0), 10, 10, dthis);
     }
 
     @Override

@@ -19,7 +19,7 @@ import org.newdawn.slick.Image;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 03.31.11
+ * @version 08.07.11
  */
 
 public class PixAnimate {
@@ -31,7 +31,7 @@ public class PixAnimate {
     /**
      * This holds the map storage data for the class
      */
-    private static MapElement mapStore = new MapElement();
+    private static MapList mapStore = new MapList();
     /**
      * This holds the scaled images for drawing to the screen
      */
@@ -124,6 +124,17 @@ public class PixAnimate {
             getData(temp[0], FileStorage.LOCY), sizex, sizey));
     }
 
+    /**
+     * This function updates you when all objects are loaded into memory
+     * @return Whether all object are loaded(T) or not(F)
+     */
+    public static boolean isReady(){
+        return mapStore.isReady();
+    }
+
+    //-------------------------------
+    //TEST FUNCTIONS
+    //-------------------------------
     public static void getData(){
         for(int i = 0; i < mapStore.size(); i++){
             int temp[] = mapStore.getArray(i, MapElement.DATA);
@@ -171,13 +182,5 @@ public class PixAnimate {
             }
             System.out.println("-----------------------------------------");
         }
-    }
-
-    /**
-     * This function updates you when all objects are loaded into memory
-     * @return Whether all object are loaded(T) or not(F)
-     */
-    public static boolean isReady(){
-        return mapStore.isReady();
     }
 }

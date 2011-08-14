@@ -217,7 +217,9 @@ public class MainMenuScreen extends Screen{
                 keyScr();
                 break;
             case 5:
-                editScr();
+                //editScr();
+                SlixLibrary.addFrameScreen(new MapEditorScreen());
+                current = 1;
                 break;
             case 6:
                 SlixLibrary.addFrameScreen(new VersusGameScreen());
@@ -258,9 +260,9 @@ public class MainMenuScreen extends Screen{
             case 4:
                 keyScr.render(g);
                 break;
-            case 5:
-                editScr.render(g);
-                break;
+            //case 5:
+                //editScr.render(g);
+                //break;
             default:
                 menuScr.render(g);
         }

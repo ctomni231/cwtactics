@@ -25,7 +25,6 @@ import static com.yasl.logging.Logging.*;
  * @license Look into "LICENSE" file for further information
  * @version 04.10.11
  */
-
 public class MapElement implements Runnable{
 
     public static final byte CODE = 0;//Holds the type of object this is
