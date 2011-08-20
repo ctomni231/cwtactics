@@ -1,0 +1,11 @@
+{
+
+    "fillType"  : "PLAIN",
+
+    "mapWidth"  : 10,
+    "mapHeight" : 10,
+
+    "tiles"     : [
+        { "x":5, "y":5, "type":"HQ" }
+    ]
+}

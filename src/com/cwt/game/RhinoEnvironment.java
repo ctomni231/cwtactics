@@ -1,10 +1,14 @@
 package com.cwt.game;
 
+import java.io.File;
+import java.io.FileReader;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import org.mozilla.javascript.Context;
+import org.mozilla.javascript.JavaScriptException;
+import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 
 /**
@@ -126,5 +130,39 @@ public class RhinoEnvironment {
     public static void main(String[] args){
 
         INSTANCE.log("START NEKO TEST");
+        
+        Context context = Context.enter();
+        try {
+            context.setOptimizationLevel(-1);
+            try {
+                File f = new File("jsLib/coffee.js");
+                context.evaluateReader( INSTANCE.getRootContext() , new FileReader(f), "Test", 0, null);
+            } catch ( Exception e) {
+                System.err.println("NOoOOOOOOO! "+e);
+            }
+        } finally {
+            Context.exit();
+        }
+        
+       String s = "t = new Date()\n"
+                + "t = t.getTime()\n"
+                + "i = 0 \n"
+                + "while i < 10000000 \n"
+                + " i++ \n"
+                + "t2 = new Date() \n"
+                + "NEKO_SYS_LOGGER( t2.getTime() - t )";
+        INSTANCE.rootScope.put("coffeeScriptSource", INSTANCE.rootScope, s);
+        
+        INSTANCE.context.evaluateString(
+              INSTANCE.rootScope, 
+                "var a = CoffeeScript.compile( coffeeScriptSource );"
+              + "NEKO_SYS_LOGGER( a );", 
+                "", 0, null );
+        
+        INSTANCE.context.setOptimizationLevel(9);
+        for( int i = 0 ; i < 25 ; i++ )
+            context.evaluateString( INSTANCE.rootScope, 
+           ""+INSTANCE.rootScope.get("a", INSTANCE.rootScope),
+                "", 0, null);
     }
 }

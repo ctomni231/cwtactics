@@ -5,6 +5,9 @@
 #              the cwt engine.
 #     Changes: - reuses complete json models instead of copying the content
 #        ToDo: - move freeze wrappers and so on outside
+#              - no freeze of sheets after parsing... leave them alterable 
+#                the initialization process is done ( and mod scripts, that
+#                can alter the model/data, parsed too ) 
 #
 neko.module "data.database", ( require, exports ) ->
 
@@ -63,6 +66,19 @@ neko.module "data.database", ( require, exports ) ->
       it "moveType", ->
         expect(json.moveType).isString().propertyOf(moveTypes)
       
+      it "canLoad", ->
+        expect(json.canLoad).isInteger().greater(0)
+      
+      if json.supply?
+        for target in json.supply
+          it "supply ID:#{target}", -> expect(target).validString()
+        return
+      
+      if json.transport?
+        for target in json.transport
+          it "transport ID:#{target}", -> expect(target).validString()
+        return
+      
       # weapons must be an array of strings and valid ID's for weapon sheets
       if json.weapons?
         for weapon in json.weapons
@@ -74,6 +90,11 @@ neko.module "data.database", ( require, exports ) ->
         it "tag:#{tag}", -> expect(tag).isString()
         
       return # prevent for loop overhead due return array as last expression
+    
+    # check loading attributes, if one exists n, both must exists
+    if ( json.canLoad? and not json.transport? ) or
+       ( not json.canLoad? and json.transport? )
+        throw new Error "one transport property is missing on #{json.ID}"
     
     freeze( json ) # prevent altering on the sheet
     units[ json.ID ] = json
@@ -96,6 +117,22 @@ neko.module "data.database", ( require, exports ) ->
       it "capturePoints", ->
         expect(json.capturePoints).isInteger().greaterEquals(0)
                                               .lowerEquals(1000)
+      
+      if json.funds? 
+        it "funds", ->
+          expect(json.funds).isInteger().greater(0)
+          
+      if json.vision? 
+        it "vision", ->
+          expect(json.vision).isInteger().greaterEquals(0)
+        
+      if json.repairs?                                      
+        it "repairs", ->
+          for key,value of json.repairs
+            it "tag:#{key}", -> 
+              expect(key).validString()
+              expect(value).isInteger().greater(0)
+          return # for is last expression in it(...){}
                                               
       for tag in json.tags
         it "tag:#{tag}", -> expect(tag).isString()
@@ -182,7 +219,7 @@ neko.module "data.database", ( require, exports ) ->
       
     freeze( json ) # prevent altering on the sheet
     weathers[ json.ID ] = json
-    
+  
 
   # returns the available sheets in the database
   exports.movetype  = ( ID ) -> movetypes[ ID ]

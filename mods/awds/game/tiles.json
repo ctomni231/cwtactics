@@ -12,7 +12,10 @@
 
         {
             "ID"                : "FOREST",
-            "tags"              : [ "VISION_BLOCK" ]
+            "tags"              : [ "VISION_BLOCK" ],
+          // "canLookInto"       : ""  
+          // this will be done in a separate file, no code and data mixin
+          // a separate file can alter the sheet files
         },
 
         {
@@ -24,7 +27,7 @@
             "ID"                : "CITY",
             "vision"            : 0,
             "capturePoints"     : 20,
-            "income"            : 1000,
+            "funds"            : 1000,
             "repairs"           : {
                 "*"             : 20
             },
@@ -35,7 +38,7 @@
             "ID"                : "GROUND_FACTORY",
             "vision"            : 0,
             "capturePoints"     : 20,
-            "income"            : 1000,
+            "funds"            : 1000,
             "repairs"           : {
                 "*"             : 20
             },
@@ -46,7 +49,7 @@
             "ID"                : "AIRPORT",
             "vision"            : 0,
             "capturePoints"     : 20,
-            "income"            : 1000,
+            "funds"            : 1000,
             "repairs"           : {
                 "*"             : 20
             },
@@ -57,7 +60,7 @@
             "ID"                : "PORT",
             "vision"            : 0,
             "capturePoints"     : 20,
-            "income"            : 1000,
+            "funds"            : 1000,
             "repairs"           : {
                 "*"             : 20
             },
@@ -75,7 +78,7 @@
             "ID"                : "HQ",
             "vision"            : 1,
             "capturePoints"     : 20,
-            "income"            : 1000,
+            "funds"            : 1000,
             "repairs"           : {
                 "*"             : 20
             },

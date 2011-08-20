@@ -1,0 +1,15 @@
+{
+
+    "_iCode" : "_weaponSheet",
+
+    "sheets" : [
+
+        {
+            "ID"            : "WP_MG",
+            "useAmmo"       : 0,
+            "damage"        :{
+                "*"         : 0
+            }
+        }
+    ]
+}
