@@ -1,0 +1,21 @@
+Neko for Custom Wars Tactics
+
+Neko is the base engine behind the Custom Wars Tactics game. It rather tries to reuse rexisting stuff, than re-implementing it. Because of this, neko implements a robust module system to connect them all into a usable state to 
+be more flexible without having to recode things or building wrappers.
+
+The main parts of neko are:
+  - core; contains the module system and useful basic functions for classes
+  - utils; contains various stuff for solving different tasks
+    ( this uses mainly third party frameworks and integrates them nicely 
+      into the neko module namespace )
+  - tbs; contains many basic things, that can be used to program turn based
+    games
+
+Neko can be used for other games as well, as long the project accepts the rules of the neko license. 
+
+------------------------------------------------------------------------------
+Copyright (c) 2010-2011, Radom Alexander
+
+License: modified MIT license, open LICENSE file to read it
+Contributors:
+ * Carr, Crecen
