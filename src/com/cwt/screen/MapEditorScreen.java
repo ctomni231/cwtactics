@@ -1,6 +1,7 @@
 package com.cwt.screen;
 
 import com.cwt.graphic.ExitGUI;
+import com.cwt.graphic.tools.MapDraw;
 import com.cwt.io.JukeBox;
 import com.cwt.io.KeyControl;
 import com.cwt.map.PixAnimate;
@@ -34,12 +35,15 @@ public class MapEditorScreen extends Screen{
     private final int WAIT_TIME = 15;//The help bar waiting time
 
     private ExitGUI exitScr;//Holds Screen data for the exit screen
+    private MapDraw mapScr;
 
     private boolean scrStart;//The initialization sequence starter for screens
     private int column;//Which screen index we are currently showing
 
     public MapEditorScreen(){
         PixAnimate.getData();
+
+        mapScr = new MapDraw(10, 10, 1);
 
         //TEMPORARY UNTIL FURTHER NOTICE
         JukeBox.stopClip();    
@@ -61,6 +65,7 @@ public class MapEditorScreen extends Screen{
     @Override
     public void update(int timePassed) {
 
+        mapScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
         switch(column){
 
         }
@@ -84,6 +89,7 @@ public class MapEditorScreen extends Screen{
 
     @Override
     public void render(Graphics g) {
+        mapScr.render(g);
         switch(column){
 
         }
@@ -92,11 +98,12 @@ public class MapEditorScreen extends Screen{
         g.setColor(Color.white);
         g.drawString("MAP EDITOR", 10, 10);
 
-        g.drawImage(PixAnimate.getSlickImage(0, 0, 0), 10, 10);
+        //g.drawImage(PixAnimate.getSlickImage(0, 0, 0), 10, 10);
     }
 
     @Override
     public void render(Graphics2D g, Component dthis) {
+        mapScr.render(g, dthis);
         switch(column){
 
         }
@@ -105,7 +112,7 @@ public class MapEditorScreen extends Screen{
         g.setColor(java.awt.Color.white);
         g.drawString("MAP EDITOR", 10, 10);
 
-        g.drawImage(PixAnimate.getImage(0, 0, 0), 10, 10, dthis);
+        //g.drawImage(PixAnimate.getImage(0, 0, 0), 10, 10, dthis);
     }
 
     @Override
