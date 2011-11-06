@@ -22,5 +22,9 @@ public class MapItem {
      */
     public MapItem(){
         change = true;
+        terrain = -1;
+        blank = -1;
+        connect = -1;
+        unit = -1;
     }
 }

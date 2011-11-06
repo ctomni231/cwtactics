@@ -122,6 +122,20 @@ public class MapList extends MapElement{
     }
 
     /**
+     * This function adds animations to the matching process
+     */
+    public void addAnimation(){
+        animations = true;
+    }
+
+    /**
+     * This function adds random tiles to the matching process
+     */
+    public void addRandom(){
+        random = true;
+    }
+
+    /**
      * This function gets all the objects within the object list
      * @return A full list of variables
      */
@@ -206,21 +220,6 @@ public class MapList extends MapElement{
         }
         return bestMember;
     }
-
-    /**
-     * This function adds animations to the matching process
-     */
-    public void addAnimation(){
-        animations = true;
-    }
-
-    /**
-     * This function adds random tiles to the matching process
-     */
-    public void addRandom(){
-        random = true;
-    }
-    
 
     /**
      * This function resets all the data to the defaults
@@ -718,10 +717,8 @@ public class MapList extends MapElement{
                 points[i] = 10000;
             else if(i < 9)
                 points[i] = 100;
-            else if(i < 17)
-                points[i] = 1;
             else
-                points[i] = -1;
+                points[i] = (i < 17) ? 1 : -1;
         }
     }
 
