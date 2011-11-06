@@ -10,10 +10,10 @@ global.NEKO_SYS_LOGGER = ( msg ) ->
   console.log msg
 
 global.NEKO_SYS_JSLOADER = ( path ) -> 
-  require "./src/#{path}"
+  require "./js_src/#{path}"
   
 global.NEKO_SYS_COFFEELOADER = ( path ) -> 
-  require "./src/#{path}"
+  require "./js_src/#{path}"
 
 global.NEKO_SYS_JSONLOADER = ( path ) ->
   return JSON.parse( fs.readFileSync "#{path}.json",'utf8' ) 
@@ -22,7 +22,7 @@ global.NEKO_SYS_SLEEP = () -> return
 
 console.log process.cwd()
 
-nekoJS/core"
+require "nekoJS/core"
 
 # push custom files here
 
@@ -30,4 +30,4 @@ if files.length is 0
   # generate file list from dir
   files = fs.readdirSync "test"
   
-require "./test/#{file}" for file in files
+require "./js_test/#{file}" for file in files

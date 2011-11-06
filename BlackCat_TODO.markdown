@@ -1,0 +1,34 @@
+Contains all remaining work orders for the custom wars tactics model, logic and in/out system.  
+  
+@author : Radom Alexander [BlackCat]  
+@version : 16.10.2011  
+  
+  
+**Legend :**  
+[0]   => Not Started  
+[1]   => Design  
+[1-2] => Redesing ( e.g. due concept faults )  
+[2]   => Implementing  
+[3]   => Bugfixing  
+[4]   => Done  
+  
+Custom Wars - Tactics; Beta 1
+-----------------------------
+
+----
+
+###Custom Wars - Tactics
+* nothing :P
+
+###Neko Engine
+* neko.core **[1-2]**; add basic error API, enhance module API
+* neko.tbs.map **[2]**; map creator via JSON data, map data descriptor API
+* neko.tbs.zone **[1]**;
+ 
+
+
+
+Custom Wars Tactics; Final 1.0
+------------------------------
+
+----

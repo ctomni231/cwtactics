@@ -21,6 +21,7 @@ rootNode.neko = {}
 # completely.
 #
 _modules = {}
+p_baseMod = null
 
 rootNode.neko.require = require = ( modName, useCoffee ) ->
 
@@ -50,6 +51,8 @@ rootNode.neko.require = require = ( modName, useCoffee ) ->
 #
 rootNode.neko.module = module = ( modName, implementation ) ->
 
+  unles p_baseMod? = _modules["neko.base"] ? null
+  
   # check modName
   if modName.contrutor is not String or modName.length is 0
     throw new Error "neko.module; illegal module name #{modName}" 
@@ -63,7 +66,7 @@ rootNode.neko.module = module = ( modName, implementation ) ->
     
   # call implementation to generate the export object
   exports = {}
-  implementation require, exports
+  implementation require, exports, p_baseMod
     
   #TODO: When will the export module freezed? After call or with a special 
   #      function like neko.freezeModules or with a freeze able system
@@ -110,25 +113,44 @@ else
 # freeze the neko property
 Object.freeze rootNode.neko
 
-# 
-# nekoJS core module
-#
-module "nekoJS.core", ( require, exports ) ->
 
-  # 3.0 BETA 1
-  exports.VERSION = major:2 , minor:99 , build:1
+# 
+# nekoJS base module
+#
+module "nekoJS.base", ( require, exports ) ->
+
+  throwError = ( name, reason ) ->
+    msg = name
+    if reason? then msg += ";"+reason
+    throw new Error( msg )
+    
+  exports.VERSION = "3.0.0 BETA-1"
+    
+  error = 
+    notImplementedYet: ( reason ) ->
+      throwError( "NotImplementedYet", reason )
       
-  exports.parseJSON = ( path ) ->
-    return JSON.parse( NEKO_SYS_JSONLOADER path )
+    illegalArgs: ( reason ) ->
+      throwError( "IllegalArguments", reason )
+      
+    notAllowed: ( reason ) -> 
+      throwError( "NotAllowed", reason )
+  
+  Object.freeze error
+  exports.error = error
+  
+  exports.isOneOf: ( object, targets... ) ->
+      for i in targets
+        if object is i 
+          return yes
+      return no
+      
+  exports.expect = ( object ) ->
+    error.notImplementedYet()
+    
+  exports.fromJSON = JSON.stringify
+  
+  exports.toJSON = JSON.parse
     
   exports.isBlankString = ( str ) ->
     return /^\s*$/.test str
-  
-  exports.printModuleDesc = () ->
-    log = NEKO_SYS_LOGGER
-    log "Used modules of current running nekoJS project"
-    for own name, impl of _modules
-      v = impl.VERSION
-      log "#{name} - Version #{v.major}.#{v.minor}.#{v.build}"
-      
-    return
