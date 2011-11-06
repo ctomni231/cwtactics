@@ -8,15 +8,15 @@
 #
 neko.define "moduleName", ( require, exports, base ) ->
   
-  ####
+  ##
   # PRIVATE 
   ##
   
-  ####
+  ##
   # PUBLIC API
   ##
     
-  ####
+  ##
   # SYSTEM FUNCTIONS
   ##
   

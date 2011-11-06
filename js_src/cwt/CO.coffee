@@ -4,12 +4,12 @@
 #
 neko.define "cwt.CO", ( require, exports, base ) ->
   
-  ####
+  ##
   # PRIVATE
   ##
   
   # storage object, for saving the CO data for players
-  p_co_data = []
+  p_data = []
     
   p_indexOf = ( player ) ->
     switch p_mode 
@@ -19,7 +19,7 @@ neko.define "cwt.CO", ( require, exports, base ) ->
       else base.error.illegalArgs("unknown CO mode")
     
     
-  ####
+  ##
   # PUBLIC API
   ##
   
@@ -90,9 +90,9 @@ neko.define "cwt.CO", ( require, exports, base ) ->
   exports.mode = () -> p_data[0]
     
   
-  ####
+  ##        
   # SYSTEM FUNCTIONS
-  ##
+  ##                
   
   exports.saveStatus = ( block ) ->
     block["data"] = base.toJSON p_data
