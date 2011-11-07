@@ -4,14 +4,9 @@ neko.module "neko.fog", ( require, exports, base ) ->
   Unit = require("cwt.model").Unit
   map  = require("cwt.map")
 
-  # fog storage
-  p_fogData = {}
-  
-  # calculation function
-  p_calculation = null
-  
-  # tempoary store for calculation function
-  p_fogCalcData = null
+  _fogData = {}       # fog storage
+  _calculation = null # calculation function
+  _fogCalcData = null # tempoary store for calculation function
   
   # constants
   exports.SIMPLE_FOG = SIMPLE_FOG = 0
@@ -22,14 +17,16 @@ neko.module "neko.fog", ( require, exports, base ) ->
   # of blocking vision. This is a little bit more realistic and allows more
   # tactical movements.
   #
-  p_straightLineCalculation = () ->
+  _straightLineCalculation = () ->
     return
   
   ##
   # AWDS fog calculation function. Very basic, but allows hidden objects like
   # forests and stealth units.
   #
-  p_simpleFogCalculation = ( player ) ->
+  _simpleFogCalculation = ( player ) ->
+  
+    
   
     # first the units
     
@@ -56,16 +53,16 @@ neko.module "neko.fog", ( require, exports, base ) ->
   # @trows IllegalArguments if the fog system is already initialized
   #
   exports.initialize = ( type ) ->
-    if p_calculation? 
+    if _calculation? 
       base.error.noAllowed("fog system is already initialized")
       
     switch type
       when SIMPLE_FOG 
-        p_calculation = p_simpleFogCalculation
+        _calculation = _simpleFogCalculation
       
       when LINE_FOG
         base.error.notAllowed("not available in this version")
-        p_calculation = p_straightLineCalculation
+        _calculation = _straightLineCalculation
         
       else base.error.illegalArgs()
   
@@ -84,7 +81,9 @@ neko.module "neko.fog", ( require, exports, base ) ->
     else base.error.illegalArgs(()
   
   exports.processFog = ( ) ->
-    return
-    
+    # not sure how it will be atm
+    base.error.notImplementedYet()
+
+
 neko.test "cwt.fog" , ( require ) ->
   # later a test will be written here
