@@ -11,11 +11,12 @@ import com.cwt.map.PixAnimate;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 08.25.11
+ * @version 12.04.11
  */
 public class MapStorage {
 
     private int[] terrain;//Holds a terrain list of the last parameter group.
+    private int[] cursor;//Holds a cursor list of the last parameter group.
 
     /**
      * The Map Storage class creates lists of objects set by parameters.
@@ -31,6 +32,8 @@ public class MapStorage {
     public final void initialize(){
         PixAnimate.setCode(0);
         terrain = PixAnimate.getList();
+        PixAnimate.setCode(4);
+        cursor = PixAnimate.getList();
     }
 
     /**
@@ -39,5 +42,13 @@ public class MapStorage {
      */
     public int[] getTerrain(){
         return terrain;
+    }
+
+    /**
+     * This function gives you a list of cursor objects
+     * @return A list of cursor objects
+     */
+    public int[] getCursor(){
+        return cursor;
     }
 }

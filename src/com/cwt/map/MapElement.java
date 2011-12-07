@@ -23,7 +23,7 @@ import static com.yasl.logging.Logging.*;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 04.10.11
+ * @version 12.04.11
  */
 public class MapElement implements Runnable{
 
@@ -117,7 +117,7 @@ public class MapElement implements Runnable{
      * for the game. 
      */
     private void decodeFiles(){
-        //if(!isApplet)   findObjects();
+        if(!isApplet)   findObjects();
         loadObjects();
         ready = true;
     }
@@ -206,7 +206,7 @@ public class MapElement implements Runnable{
             }
 
             writer.endAllTags();
-            writer.print();
+            //writer.print();
             writer.writeToFile(true);
         }
     }

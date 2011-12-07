@@ -1,9 +1,9 @@
 package com.cwt.service;
 
-import com.cwt.model.mapObjects.Map;
-import com.cwt.model.mapObjects.Player;
-import com.cwt.model.mapObjects.Tile;
-import com.cwt.model.mapObjects.Unit;
+//import com.cwt.model.mapObjects.Map;
+//import com.cwt.model.mapObjects.Player;
+//import com.cwt.model.mapObjects.Tile;
+//import com.cwt.model.mapObjects.Unit;
 import com.cwt.system.error.NotImplementedError;
 
 /**
@@ -19,6 +19,8 @@ public class IDController
     // singleton instance
     private static final IDController INSTANCE = new IDController();
 
+    //Non-working elements
+    /*
     public Tile getTile( String ID , Map map )
     {
         //TODO
@@ -54,7 +56,7 @@ public class IDController
     {
         //TODO
         throw new NotImplementedError();
-    }
+    }*/
 
     /**
      * Retuns the singleton instance of the singleton class.

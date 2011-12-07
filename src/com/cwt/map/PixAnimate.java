@@ -20,7 +20,7 @@ import org.newdawn.slick.Image;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 08.26.11
+ * @version 12.04.11
  */
 
 public class PixAnimate {
@@ -200,6 +200,13 @@ public class PixAnimate {
     }
 
     /**
+     * This function resets all the data to the defaults
+     */
+    public static void resetDefault(){
+        mapStore.reset();
+    }
+
+    /**
      * This function takes all object variables within the MapList and
      * sorts them according to the parameters set within the function
      * of the class
@@ -233,6 +240,16 @@ public class PixAnimate {
         return mapStorage.getTerrain();
     }
 
+    /**
+     * This function gets the terrain list of the objects
+     * @return The terrain list
+     */
+    public static int[] getCursor(){
+        if(mapStorage == null)
+            mapStorage = new MapStorage();
+        return mapStorage.getCursor();
+    }
+
     //-------------------------------
     //TEST FUNCTIONS
     //-------------------------------
@@ -261,7 +278,8 @@ public class PixAnimate {
                 "\nTX:"+mapStore.getFileData().getData(temp[0], FileStorage.TSIZEX)+
                 "\nTY:"+mapStore.getFileData().getData(temp[0], FileStorage.TSIZEY));
             temp = mapStore.getArray(i, MapElement.TAGS);
-            System.out.println("TAGS:"+mapStore.getTagData().
+            if(mapStore.getTagData().getTags(temp[0], TagStorage.O).length != 0)
+                System.out.println("TAGS:"+mapStore.getTagData().
                     getTags(temp[0], TagStorage.O)[0]);
             System.out.println("-----------------------------------------");
         }

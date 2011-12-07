@@ -13,16 +13,17 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 08.25.11
+ * @version 12.05.11
  */
 public class MapDraw extends MenuItem implements ScreenSkeleton{
 
-    public final int MAP_X = 1;//Default x-axis size for editor maps
-    public final int MAP_Y = 1;//Default y-axis size for editor maps
+    public final int MAP_X = 30;//Default x-axis size for editor maps
+    public final int MAP_Y = 20;//Default y-axis size for editor maps
 
     private int mapsx;//The current x-axis tile width of the map
     private int mapsy;//The current y-axis tile height of the map
     private MapItem[][] drawMap;//The current map drawn to the screen
+    private MapCursor cursor;//The current cursor for the map
 
     /**
      * This class helps draw the map to the screen using a floating map. It
@@ -36,6 +37,7 @@ public class MapDraw extends MenuItem implements ScreenSkeleton{
         mapsx = MAP_X;
         mapsy = MAP_Y;
         drawMap = new MapItem[mapsx][mapsy];
+        cursor = new MapCursor(locx, locy, 1);
         resetMap();
     }
     
@@ -50,7 +52,8 @@ public class MapDraw extends MenuItem implements ScreenSkeleton{
                     createNewImage(drawMap[i][j], i, j);
                 if(drawMap[i][j].terrain >= 0){
                     g.drawImage(PixAnimate.getSlickImage(drawMap[i][j].terrain,
-                            0, 0), (int)posx+i*10, (int)posy+j*10);
+                            0, 0), (int)posx+i*PixAnimate.BASE,
+                            (int)posy+j*PixAnimate.BASE);
                 }
             }
         }
@@ -63,7 +66,8 @@ public class MapDraw extends MenuItem implements ScreenSkeleton{
                     createNewImage(drawMap[i][j], i, j);
                 if(drawMap[i][j].terrain >= 0){
                     g.drawImage(PixAnimate.getImage(drawMap[i][j].terrain, 
-                            0, 0), i*10, j*10, dthis);
+                            0, 0), (int)posx+i*PixAnimate.BASE,
+                            (int)posy+j*PixAnimate.BASE, dthis);
                 }
             }
         }
@@ -78,8 +82,10 @@ public class MapDraw extends MenuItem implements ScreenSkeleton{
                 drawMap[i][j] = new MapItem();
         }
 
+        //Sets up the cursor
+
         //Set up terrain
-        PixAnimate.getTerrain();
+        //PixAnimate.getTerrain();
 
     }
 

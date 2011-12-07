@@ -7,7 +7,7 @@ package com.cwt.graphic.tools;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 04.02.11
+ * @version 08.29.11
  */
 public class MapItem {
 

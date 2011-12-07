@@ -18,7 +18,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.15.11
+ * @version 08.29.11
  */
 
 public class MapEditorScreen extends Screen{

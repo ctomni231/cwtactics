@@ -48,7 +48,7 @@ public class KeyGUI extends VerticalMenu{
      * the game. Each key is forced to be different.
      * @param alphaPath The path to the alphabet image file
      * @param numberPath The path to the number image file
-     * @param spacing THe amount of spacing between each menu list item
+     * @param spacing The amount of spacing between each menu list item
      * @param locx The x-axis location of the menu
      * @param locy The y-axis location of the menu
      * @param speed The movement speed of this menu

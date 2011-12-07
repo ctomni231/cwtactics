@@ -14,7 +14,7 @@ import com.cwt.map.io.TagStorage;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 08.07.11
+ * @version 08.29.11
  */
 public class MapList extends MapElement{
     private int code;//Holds the default code criteria
@@ -53,6 +53,7 @@ public class MapList extends MapElement{
      */
     public MapList(){
         super();
+        reset();
         setPoints();
     }
 
@@ -224,7 +225,7 @@ public class MapList extends MapElement{
     /**
      * This function resets all the data to the defaults
      */
-    public void reset(){
+    public final void reset(){
         code = -1;
         base = "DFLT";
         type = "DFLT";

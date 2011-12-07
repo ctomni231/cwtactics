@@ -1,5 +1,5 @@
 @author : ctomni231
-@version : 01.27.2011
+@version : 12.04.2011
 
 Hardcoded Features
 
@@ -13,6 +13,12 @@ JSlix Screen - Complete (JMain Runnable)
 [#] = Started
 [ ] = Not Started
 [?] = Unsure of Whether Option Will be Implemented
+
+JSR Todo List (Current)
+
+AndEngine Functionality (JSlix)               [?]
+Message Option Screen (JSlix)                 [?]
+Moveable Cursor (MapDraw)                     [#]
 
 Phase 1 - Title Screen [*]
 
@@ -31,7 +37,7 @@ Key Configure - Menu Functionality (XML root) [*]
 
 Phase 2 - Map Screen [#]
 
-Map Display - Static Display (Normal) Stays same, even if screen stretches [ ]
+Map Display - Static Display (Normal) Stays same, even if screen stretches [#]
 Map Display - Scale Display (Stretch) Stretches with screen size           [?]
 Zoom Functionality - Zoom In/Out                                           [ ]
 Cursor Functionality - Display Cursor                                      [ ]

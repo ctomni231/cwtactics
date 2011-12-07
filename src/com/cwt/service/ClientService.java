@@ -1,6 +1,6 @@
 package com.cwt.service;
 
-import com.cwt.model.mapObjects.Player;
+//import com.cwt.model.mapObjects.Player;
 import static com.cwt.system.error.ErrorMessages.*;
 import java.util.ArrayList;
 
@@ -15,10 +15,12 @@ import java.util.ArrayList;
  */
 public class ClientService
 {
-    private final ArrayList<Player> controlledPlayers;
+    //private final ArrayList<Player> controlledPlayers;
     private int lastIndex;
 
-    public ClientService( ArrayList<Player> players )
+    //Non-working element
+    /*
+     public ClientService( ArrayList<Player> players )
     {
         assert players != null : printError( ARGUMENT_NULL_POINTER );
         assert players.size() > 0 : printError( ARGUMENT_ILLEGAL , players );
@@ -26,6 +28,7 @@ public class ClientService
         controlledPlayers = new ArrayList<Player>( players.size() );
         controlledPlayers.addAll(players);
     }
+    */
 
     /**
      * Is a player an instance on this client.
@@ -33,18 +36,23 @@ public class ClientService
      * @param player player instance
      * @return true if the player plays on this client, else false
      */
+    //Non-working element
+    /*
     public boolean isLocalPlayer( Player player )
     {
         assert player != null : printError( ARGUMENT_NULL_POINTER );
         
         return controlledPlayers.contains(player);
     }
+     */
 
     /**
      * Indexes a player as the active player on this client.
      *
      * @param player player instance
      */
+    //Non-working element
+    /*
 	public void indexPlayer( Player player )
     {
         assert player != null : printError( ARGUMENT_NULL_POINTER );
@@ -52,14 +60,18 @@ public class ClientService
 
         lastIndex = controlledPlayers.indexOf( player );
 	}
+     */
 
     /**
 	 * Returns the current player of this client.
 	 */
+    //Non-working element
+    /*
 	public Player getIndexedPlayer() 
     {
         assert lastIndex >= 0 && lastIndex < controlledPlayers.size() : printIndexError(lastIndex);
 
 		return controlledPlayers.get(lastIndex);
 	}
+     */
 }
