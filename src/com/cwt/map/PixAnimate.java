@@ -20,7 +20,7 @@ import org.newdawn.slick.Image;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.04.11
+ * @version 12.08.11
  */
 
 public class PixAnimate {
@@ -124,6 +124,32 @@ public class PixAnimate {
         storedImg.addImage(parseImg.getImage(0, locx, locy, sizex, sizey));
         System.out.println("("+storedImg.getX(0)+","+
                 storedImg.getY(0)+")");
+    }
+
+    /**
+     * This function sets the scale factor for the drawn objects
+     * @param tileSize The pixel length of one side of a tile
+     */
+    public static void setScale(int tileSize){
+        scale = tileSize/BASE;
+    }
+
+    /**
+     * This function gives you the relative scale factor of currently
+     * drawn tiles from the base size
+     * @return The current scale factor of currently drawn tiles
+     */
+    public static double getScale(){
+        return scale;
+    }
+
+    /**
+     * This function gives you a copy of all the objects stored in memory
+     * and their locations in the form of a class.
+     * @return The class containing every map object
+     */
+    public static MapList getMapData(){
+        return isReady() ? mapStore : null;
     }
 
     /**
@@ -242,7 +268,7 @@ public class PixAnimate {
 
     /**
      * This function gets the terrain list of the objects
-     * @return The terrain list
+     * @return The cursor list
      */
     public static int[] getCursor(){
         if(mapStorage == null)

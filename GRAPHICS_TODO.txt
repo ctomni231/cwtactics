@@ -1,5 +1,5 @@
 @author : ctomni231
-@version : 12.04.2011
+@version : 12.10.2011
 
 Hardcoded Features
 
@@ -19,6 +19,14 @@ JSR Todo List (Current)
 AndEngine Functionality (JSlix)               [?]
 Message Option Screen (JSlix)                 [?]
 Moveable Cursor (MapDraw)                     [#]
+
+JSR Notes
+
+(MapList) Cursor Data not storing correctly (fault below) [temp fix]
+- (MapList) Animation separation not working correctly [temp fix]
+- (MapList) Random separation not working correctly [temp fix]
+(MapCursor) tilex = if cursor stretches in x-axis
+(MapCursor) tiley = if cursor stretches in y-axis
 
 Phase 1 - Title Screen [*]
 
@@ -40,7 +48,7 @@ Phase 2 - Map Screen [#]
 Map Display - Static Display (Normal) Stays same, even if screen stretches [#]
 Map Display - Scale Display (Stretch) Stretches with screen size           [?]
 Zoom Functionality - Zoom In/Out                                           [ ]
-Cursor Functionality - Display Cursor                                      [ ]
+Cursor Functionality - Display Cursor                                      [*]
 Cursor Functionality - Center Map                                          [ ]
 Cursor Functionality - Stretch Cursor                                      [ ]
 Cursor Functionality - Delete Unit/Properties                              [ ]
@@ -53,7 +61,7 @@ Terrain Functionality - Terrain Connections                                [ ]
 Terrain Functionality - Inventions                                         [ ]
 Unit Display - Draw Units (ID- Type- Color)                                [ ]
 Unit Display - Animations                                                  [ ]
-Unit Diaplay - Explosions	                                           [ ]
+Unit Display - Explosions	                                           [ ]
 Unit Display - Attributes						   [ ]
 Unit Functionality - Zones                                                 [ ]
 Map Functionality - Grid                                                   [ ]

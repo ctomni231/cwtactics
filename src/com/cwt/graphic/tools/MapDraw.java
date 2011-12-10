@@ -17,13 +17,18 @@ import org.newdawn.slick.Graphics;
  */
 public class MapDraw extends MenuItem implements ScreenSkeleton{
 
-    public final int MAP_X = 30;//Default x-axis size for editor maps
-    public final int MAP_Y = 20;//Default y-axis size for editor maps
+    public final int BASE = PixAnimate.BASE;//Holds the default base value
+
+    public final int MAP_X = 1;//Default x-axis size for editor maps
+    public final int MAP_Y = 1;//Default y-axis size for editor maps
 
     private int mapsx;//The current x-axis tile width of the map
     private int mapsy;//The current y-axis tile height of the map
     private MapItem[][] drawMap;//The current map drawn to the screen
+    
     private MapCursor cursor;//The current cursor for the map
+    private int cursorx;//The tile x-axis location of the cursor
+    private int cursory;//The tile y-axis location of the cursor
 
     /**
      * This class helps draw the map to the screen using a floating map. It
@@ -37,12 +42,18 @@ public class MapDraw extends MenuItem implements ScreenSkeleton{
         mapsx = MAP_X;
         mapsy = MAP_Y;
         drawMap = new MapItem[mapsx][mapsy];
-        cursor = new MapCursor(locx, locy, 1);
+        cursor = new MapCursor(locx, locy, 0);
+        cursorx = 0;
+        cursory = 0;
         resetMap();
     }
     
     public void update(int width, int height, int sysTime, int mouseScroll){
+        cursor.update(width, height, sysTime, mouseScroll);
+    }
 
+    public int control(int column){
+        return column;
     }
 
     public void render(Graphics g){
@@ -52,11 +63,12 @@ public class MapDraw extends MenuItem implements ScreenSkeleton{
                     createNewImage(drawMap[i][j], i, j);
                 if(drawMap[i][j].terrain >= 0){
                     g.drawImage(PixAnimate.getSlickImage(drawMap[i][j].terrain,
-                            0, 0), (int)posx+i*PixAnimate.BASE,
-                            (int)posy+j*PixAnimate.BASE);
+                            0, 0), (int)posx+i*BASE, (int)posy+j*BASE);
                 }
             }
         }
+
+        cursor.render(g);
     }
 
     public void render(Graphics2D g, Component dthis){
@@ -66,11 +78,12 @@ public class MapDraw extends MenuItem implements ScreenSkeleton{
                     createNewImage(drawMap[i][j], i, j);
                 if(drawMap[i][j].terrain >= 0){
                     g.drawImage(PixAnimate.getImage(drawMap[i][j].terrain, 
-                            0, 0), (int)posx+i*PixAnimate.BASE,
-                            (int)posy+j*PixAnimate.BASE, dthis);
+                            0, 0), (int)posx+i*BASE, (int)posy+j*BASE, dthis);
                 }
             }
         }
+
+        cursor.render(g, dthis);
     }
 
     /**
@@ -83,7 +96,8 @@ public class MapDraw extends MenuItem implements ScreenSkeleton{
         }
 
         //Sets up the cursor
-
+        cursor.setCursor(0);
+        
         //Set up terrain
         //PixAnimate.getTerrain();
 

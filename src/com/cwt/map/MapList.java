@@ -616,6 +616,7 @@ public class MapList extends MapElement{
      * @return A reduced list splitting all the duplicate items.
      */
     private int[] sortDuplicate(int[] list, byte item){
+        /**
         int counter = 0;
         int[] temp = new int[0];
         for(int i = 0, maxNum = 0; i < list.length; i++){
@@ -626,6 +627,16 @@ public class MapList extends MapElement{
             if(maxNum > counter){
                 temp = addData(temp, i);
                 counter = maxNum;
+            }
+        }
+        return temp;
+         //*/
+        
+        int[] temp = new int[0];
+        for(int i = 0, maxNum = 0; i < list.length; i++){
+            if(getData(i, item) < maxNum){
+                maxNum = getData(i, item);
+                temp = addData(temp, i);
             }
         }
         return temp;

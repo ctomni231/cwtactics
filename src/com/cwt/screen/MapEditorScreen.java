@@ -41,7 +41,7 @@ public class MapEditorScreen extends Screen{
     private int column;//Which screen index we are currently showing
 
     public MapEditorScreen(){
-        PixAnimate.getData();
+        //PixAnimate.getData();
 
         mapScr = new MapDraw(10, 10, 1);
 
