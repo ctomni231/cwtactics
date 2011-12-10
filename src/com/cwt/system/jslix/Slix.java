@@ -204,7 +204,7 @@ public class Slix extends JComponent implements Runnable, KeyListener,
      */
     public void showWindow(){
     	if(game == null)
-    		game = new SlixGame();
+            game = new SlixGame();
         window.addKeyListener(this);
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -235,7 +235,7 @@ public class Slix extends JComponent implements Runnable, KeyListener,
      */
     public void showFull(){
     	if(game == null)
-    		game = new SlixGame();
+            game = new SlixGame();
     	try{ 
             app = new AppGameContainer(game);
             app.setDisplayMode( FULL_WIDTH, FULL_HEIGHT, true );

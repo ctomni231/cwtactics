@@ -43,7 +43,7 @@ public class MapEditorScreen extends Screen{
     public MapEditorScreen(){
         //PixAnimate.getData();
 
-        mapScr = new MapDraw(10, 10, 1);
+        mapScr = new MapDraw(10, 10, 0);
 
         //TEMPORARY UNTIL FURTHER NOTICE
         JukeBox.stopClip();    
@@ -97,8 +97,6 @@ public class MapEditorScreen extends Screen{
         //TEMPORARY UNTIL FURTHER NOTICE
         g.setColor(Color.white);
         g.drawString("MAP EDITOR", 10, 10);
-
-        //g.drawImage(PixAnimate.getSlickImage(0, 0, 0), 10, 10);
     }
 
     @Override
@@ -111,8 +109,6 @@ public class MapEditorScreen extends Screen{
         //TEMPORARY UNTIL FURTHER NOTICE
         g.setColor(java.awt.Color.white);
         g.drawString("MAP EDITOR", 10, 10);
-
-        //g.drawImage(PixAnimate.getImage(0, 0, 0), 10, 10, dthis);
     }
 
     @Override

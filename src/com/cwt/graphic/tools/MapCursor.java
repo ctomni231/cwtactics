@@ -13,7 +13,7 @@ import com.cwt.system.jslix.tools.ImgLibrary;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.05.11
+ * @version 12.10.11
  */
 public class MapCursor extends MovingMenu {
 
@@ -22,12 +22,10 @@ public class MapCursor extends MovingMenu {
     private ImgLibrary imgSort;//Holds all images for the current cursor
     private int[] curImages;//Holds all possible cursor images for the cursor
     private double scale;//Holds the scale of currently drawn tiles
-    private String cursorImg;//Holds the curent drawn cursor image
 
     public MapCursor(int locx, int locy, double speed){
         super(locx, locy, speed);
         curImages = PixAnimate.getCursor();
-        System.out.println("CURSOR SIZE:"+curImages.length);
         imgSort = new ImgLibrary();
     }
 
@@ -68,32 +66,28 @@ public class MapCursor extends MovingMenu {
         createNewItem((int)(BASE*scale), (int)(BASE*scale), 1);
         addImagePart(imgSort.getImage(4), 1.0);
         addMenuItem(0, true);
+    }
 
-        setFinalPosition((int)posx-(imgSort.getX(1)/2),
-                (int)posy-(imgSort.getY(1)/2)+BASE*2);
+    @Override
+    public void setFinalPosition(int locx, int locy){
+        super.setFinalPosition((int)(locx-(imgSort.getX(1)*scale)/2),
+                (int)(locy-(imgSort.getY(1)*scale)/2));
     }
 
     @Override
     public void update(int width, int height, int sysTime, int mouseScroll){
         super.update(width, height, sysTime, mouseScroll);
-        if(sysTime/10 > 50){
-            this.setItemPosition(0, (int)(scale),
-                (int)scale-(int)(BASE*scale));
-            this.setItemPosition(1, (int)((scale*BASE)-scale),
-                (int)scale-(int)(BASE*scale));
-            this.setItemPosition(2, (int)scale, (int)((scale*BASE)-scale)-
-                (int)(BASE*scale));
-            this.setItemPosition(3, (int)((scale*BASE)-scale),
-                (int)((scale*BASE)-scale)-(int)(BASE*scale));
-        }else{
-            this.setItemPosition(0, (int)(-scale*2),
-                (int)(-scale*2)-(int)(BASE*scale));
-            this.setItemPosition(1, (int)((scale*BASE)+(2*scale)),
-                (int)(-scale*2)-(int)(BASE*scale));
-            this.setItemPosition(2, (int)(-scale*2),
-                (int)((scale*BASE)+(2*scale))-(int)(BASE*scale));
-            this.setItemPosition(3, (int)((scale*BASE)+(2*scale)),
-                (int)((scale*BASE)+(2*scale))-(int)(BASE*scale));
-        }
+        
+        //Cursor mini movement
+        setItemPosition(0, (int)(sysTime/10 > 50 ? scale : -scale*2),
+            (int)(sysTime/10 > 50 ? scale : -scale*2)-(int)(BASE*scale));
+        setItemPosition(1, 
+            (int)((scale*BASE)+(sysTime/10 > 50 ? -scale : 2*scale)),
+            (int)(sysTime/10 > 50 ? scale : -scale*2)-(int)(BASE*scale));
+        setItemPosition(2, (int)(sysTime/10 > 50 ? scale : -scale*2),
+            (int)(sysTime/10 > 50 ? -scale : scale*2));
+        setItemPosition(3,
+            (int)((scale*BASE)+(sysTime/10 > 50 ? -scale : 2*scale)),
+            (int)(sysTime/10 > 50 ? -scale : scale*2));
     }
 }

@@ -28,6 +28,8 @@ JSR Notes
 (MapCursor) tilex = if cursor stretches in x-axis
 (MapCursor) tiley = if cursor stretches in y-axis
 
+(MapCursor) Cursor stretches when it isn't supposed to when enlarge screen
+
 Phase 1 - Title Screen [*]
 
 Title Screen - Background Display (XML root)  [*]

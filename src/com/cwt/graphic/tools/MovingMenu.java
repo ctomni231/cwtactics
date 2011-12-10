@@ -17,7 +17,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.27.11
+ * @version 12.10.11
  */
 
 public class MovingMenu extends MovingImage{
@@ -264,6 +264,19 @@ public class MovingMenu extends MovingImage{
     }
 
     /**
+     * This function sets the speed within a menu item
+     * @param index The current position of the item in the list
+     * @param speed The speed to change the item to
+     */
+    public void setItemSpeed(int index, double speed){
+        if(index >= 0 && index < allItems.length){
+            item = allItems[index];
+            item.speed = speed;
+            allItems[index] = item;
+        }
+    }
+
+    /**
      * This controls how the mouse interacts with the selection of the menu
      * items
      * @param mx The x-axis position of the mouse
@@ -283,7 +296,6 @@ public class MovingMenu extends MovingImage{
             			mx < (int)((itm.posx+posx+itm.sizex)*scalex)){
                     if(my > (int)((itm.posy+posy)*scaley) && 
                     		my < (int)((itm.posy+posy+itm.sizey)*scaley)){
-                    	
                         select = itm.select;
                         return true;
                     }
