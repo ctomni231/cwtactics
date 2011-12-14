@@ -13,7 +13,7 @@ import com.cwt.system.jslix.tools.ImgLibrary;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.10.11
+ * @version 12.11.11
  */
 public class MapCursor extends MovingMenu {
 
@@ -22,6 +22,7 @@ public class MapCursor extends MovingMenu {
     private ImgLibrary imgSort;//Holds all images for the current cursor
     private int[] curImages;//Holds all possible cursor images for the cursor
     private double scale;//Holds the scale of currently drawn tiles
+    private boolean stretch;//Holds whether the map grows to screen size
 
     public MapCursor(int locx, int locy, double speed){
         super(locx, locy, speed);
@@ -76,6 +77,7 @@ public class MapCursor extends MovingMenu {
 
     @Override
     public void update(int width, int height, int sysTime, int mouseScroll){
+        //setOrigScreen(-1, -1);
         super.update(width, height, sysTime, mouseScroll);
         
         //Cursor mini movement
@@ -89,5 +91,9 @@ public class MapCursor extends MovingMenu {
         setItemPosition(3,
             (int)((scale*BASE)+(sysTime/10 > 50 ? -scale : 2*scale)),
             (int)(sysTime/10 > 50 ? -scale : scale*2));
+    }
+
+    public void toggleScretch(){
+        stretch = !stretch;
     }
 }

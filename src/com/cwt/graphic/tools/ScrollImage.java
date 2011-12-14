@@ -188,8 +188,7 @@ public class ScrollImage extends MovingImage {
      */
     private void scroll(Graphics g, int px, int py,
             int width, double speed){
-        double temp;
-        double addmore;
+        double temp, addmore;
 
         if(textScroll.isEmpty())
             textScroll.add((double)width);
@@ -220,8 +219,7 @@ public class ScrollImage extends MovingImage {
      */
     private void scroll(Graphics2D g, int px, int py,
             int width, double speed, Component dthis){
-        double temp;
-        double addmore;
+        double temp, addmore;
 
         if(textScroll.isEmpty())
             textScroll.add((double)width);

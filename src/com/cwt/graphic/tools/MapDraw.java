@@ -14,9 +14,9 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.10.11
+ * @version 12.11.11
  */
-public class MapDraw extends MenuItem implements ScreenSkeleton{
+public class MapDraw extends MovingMenu implements ScreenSkeleton{
 
     public final int BASE = PixAnimate.BASE;//Holds the default base value
 
@@ -31,6 +31,7 @@ public class MapDraw extends MenuItem implements ScreenSkeleton{
     private double scale;//Holds the scale of currently drawn tiles
     private int cursorx;//The tile x-axis location of the cursor
     private int cursory;//The tile y-axis location of the cursor
+    private boolean stretch;//Holds whether the map grows to screen size
 
     /**
      * This class helps draw the map to the screen using a floating map. It
@@ -48,12 +49,13 @@ public class MapDraw extends MenuItem implements ScreenSkeleton{
         cursor = new MapCursor(locx, locy, 0);
         cursorx = 0;
         cursory = 0;
+        stretch = false;
         resetMap();
     }
     
     @Override
     public void update(int width, int height, int sysTime, int mouseScroll){
-        updatePosition();
+        super.update(width, height, sysTime, mouseScroll);
         cursor.update(width, height, sysTime, mouseScroll);
         cursor.setFinalPosition((int)(fposx+cursorx*BASE*scale),
                 (int)(fposy+cursory*BASE*scale+BASE*scale));
@@ -68,13 +70,13 @@ public class MapDraw extends MenuItem implements ScreenSkeleton{
             cursorx--;
 
         //Tries to keep cursor inside the screen
-        if(cursor.fposx+(int)(BASE*scale) > width-(int)(BASE*scale))
+        if(cursor.fposx+(int)(BASE*scale) > width-(int)(BASE*scale)/4)
             fposx -= (int)(BASE*scale);
-        else if(cursor.fposx < (int)(BASE*scale)/2)
+        else if(cursor.fposx < -(int)(BASE*scale)/4)
             fposx += (BASE*scale);
-        if(cursor.fposy+(BASE*scale) > height-(BASE*scale))
+        if(cursor.fposy+(BASE*scale) > height+(int)(BASE*scale)/4)
             fposy -= (BASE*scale);
-        else if(cursor.fposy < BASE*scale)
+        else if(cursor.fposy < (int)(BASE*scale)/4)
             fposy += (BASE*scale);
     }
 
@@ -102,6 +104,7 @@ public class MapDraw extends MenuItem implements ScreenSkeleton{
         cursor.render(g);
     }
 
+
     @Override
     public void render(Graphics2D g, Component dthis){
         for(int i = 0; i < mapsx; i++){
@@ -119,21 +122,18 @@ public class MapDraw extends MenuItem implements ScreenSkeleton{
         cursor.render(g, dthis);
     }
 
+
     /**
      * This function resets the map graphics
      */
     private void resetMap(){
+        deleteItems();
         for(int i = 0; i < mapsx; i++){
             for(int j = 0; j < mapsy; j++)
                 drawMap[i][j] = new MapItem();
         }
-
         //Sets up the cursor
         cursor.setCursor(0);
-        
-        //Set up terrain
-        //PixAnimate.getTerrain();
-
     }
 
     private MapItem createNewImage(MapItem item, int x, int y){
@@ -142,18 +142,7 @@ public class MapDraw extends MenuItem implements ScreenSkeleton{
             item.blank = 0;
             item.connect = 0;
         }
+
         return item;
-    }
-
-    public void init() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void update(int timePassed) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void update(String name, int index, boolean isApplet, boolean seethru) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
