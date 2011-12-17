@@ -4,7 +4,7 @@
  * @author BlackCat
  * @since 4.12.2011
  */
-define(["cwt/properties"], function( props ){
+define(["json!cwt/config"], function( cfg ){
   
   var _MapObject = my.Class({
     
@@ -14,7 +14,25 @@ define(["cwt/properties"], function( props ){
     }
   });
   
+  /**
+   * Player class.
+   */
+  var _Player = my.Class(_MapObject,{
+    
+    __reset__: function()
+    {
+      this.gold = 0;
+      
+      // reset units
+      var array = this.units;
+      for( var i=0,e=array.length; i<e; i++ )
+        array[i].__index__ = 0;
+    }
+  });
   
+  /**
+   * Property class.
+   */
   var _Property = my.Class(_MapObject,{
     
     constructor: function()
@@ -24,13 +42,15 @@ define(["cwt/properties"], function( props ){
     
     __reset__: function( type )
     {
-      this._super._reset(type);
-      this.capturePoints = 20;
+      this.Super.__reset__(type);
+      this.capturePoints = cfg.MAX_CAPTURE_POINTS;
       this.owner = 0;
     }
   });
   
-  
+  /**
+   * Unit class.
+   */
   var _Unit = my.Class(_MapObject,{
     
     constructor: function()
@@ -40,19 +60,21 @@ define(["cwt/properties"], function( props ){
     
     __reset__: function( type )
     {
-      this._super._reset(type);
-      this.hp = 99;
-      this.ammo = 0;
-      this.fuel = 0;
-      this.acted = false;
-      this.exp = 0;
-      this.rank = 0;
+      this.Super.__reset__(type);
+      this.__index__ = -1;
+      
+      this.hp     = cfg.MAX_HP;
+      this.ammo   = 0;
+      this.fuel   = 0;
+      this.acted  = false;
+      this.exp    = 0;
+      this.rank   = 0;
     }
 
   });
   
   return {
-    Unit : _Unit,
+    Unit     : _Unit,
     Property : _Property
   }
   

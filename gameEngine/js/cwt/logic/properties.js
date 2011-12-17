@@ -30,53 +30,53 @@ define(["cwt/model/map","cwt/sys/event"],function(map,event){
 	   * @param unit
 	   * @param property
 	   */
-      captureBuilding: function( unit, property )
+    captureBuilding: function( unit, property )
+    {
+      if( !(map.getTile(unit)===map.getTile(property)) )
       {
-    	  if( !(map.getTile(unit)===map.getTile(property)) )
-    	  {
-    		  var capt = unit.type.captures;
-			  capt = event.invoke("unitCaptures",unit,property,capt);
-			  
-			  event.invoke("propertyCaptured",unit,property);
-    		  
-    		  if( capt ) property.capturePoints -= capt;
-    		  //TODO error
-    		  
-    		  if( property.capturePoints < 0 )
-    		  {
-    			  property.capturePoints = property.type.capturePoints;
-    			  
-    			  //TODO works?
-    			  property.owner = unit.owner;
-    			  
-    			  event.invoke("propertyCaptured",unit,property);
-    		  }
-    	  }
-    	  //TODO error
-      },
-      
-      /**
-       * Returns the property of a given index or position.
-       * 
-       * @param index index of the position or x coordinate
-       * @param y y coordinate (if index is an index, then y must be undefined)
-       * @returns property object, if no one exists an error will be thrown
-       */
-      getPropertyAt: function( index, y )
-      {
-        if( y ) index = map.toIndex(index, y);
-        var res = _properties[index];
-        if( res ) return res;
-        
+        var capt = unit.type.captures;
+      capt = event.invoke("unitCaptures",unit,property,capt);
+
+      event.invoke("propertyCaptured",unit,property);
+
+        if( capt ) property.capturePoints -= capt;
         //TODO error
-      },
-	
-      /**
-       * Is a given tile ID a property?
-       * 
-       * @param tileID
-       * @returns {Boolean}
-       */
+
+        if( property.capturePoints < 0 )
+        {
+          property.capturePoints = property.type.capturePoints;
+
+          //TODO works?
+          property.owner = unit.owner;
+
+          event.invoke("propertyCaptured",unit,property);
+        }
+      }
+      //TODO error
+    },
+
+    /**
+     * Returns the property of a given index or position.
+     * 
+     * @param index index of the position or x coordinate
+     * @param y y coordinate (if index is an index, then y must be undefined)
+     * @returns property object, if no one exists an error will be thrown
+     */
+    getPropertyAt: function( index, y )
+    {
+      if( y ) index = map.toIndex(index, y);
+      var res = _properties[index];
+      if( res ) return res;
+
+      //TODO error
+    },
+
+    /**
+     * Is a given tile ID a property?
+     * 
+     * @param tileID
+     * @returns {Boolean}
+     */
 	  isProperty: function( tileID )
 	  {
 		  return typeof _properties[tileID] !== 'undefined'; 

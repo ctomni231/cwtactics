@@ -1,4 +1,4 @@
-define(["cwt/properties"],function(props){
+define(["json!cwt/config","cwt/logic/properties"],function(cfg,properties){
   
   /*************
    * VARIABLES *
@@ -7,8 +7,6 @@ define(["cwt/properties"],function(props){
   var _mapData = [];
   var _mapW = 0;
   var _mapH = 0;
-  var _objects = {};
-  var _properties = {};
   
   /**
    * @param x {Integer} x coordinate
@@ -40,8 +38,8 @@ define(["cwt/properties"],function(props){
     
     loadMap: function( mapData )
     {
-      if( mapData.width > props.MAX_MAP_WIDTH || 
-          mapData.height > props.MAX_MAP_HEIGHT ) 
+      if( mapData.width > cfg.MAX_MAP_WIDTH || 
+          mapData.height > cfg.MAX_MAP_HEIGHT ) 
           throw new Error("map is to big");
     },
     
@@ -50,14 +48,9 @@ define(["cwt/properties"],function(props){
       return _mapData
     },
     
-    onNeighbours: function( x,y,callback, range )
+    onNeighbors: function( x,y,callback, range )
     {
-      //neko.numbers(x,y);
-      //neko.functions(callback);
-      //range= neko.defaultValue(range,1);
-      
       var _list = [];
-      //build list
       
       callback.call(null,_list);
       
@@ -66,16 +59,36 @@ define(["cwt/properties"],function(props){
     },
     
     /**
-     * @return distance in tiles between the two tiles
+     * @return distance in tiles between the two units.
+     */
+    unitDistance: function( u1, u2 )
+    {
+      var index1 = u1.__index__;
+      var index2 = u2.__index__;
+      
+      var t1 = index1%_mapH;
+      var t2 = index2%_mapH;
+      
+      // check that
+      var distance = Math.abs( t1+t2 )+
+                     Math.abs( (index1-t1)/_mapH+(index2-t2)/_mapH );
+                   
+      return distance;
+    },
+    
+    /**
+     * @return distance in tiles between the two positions.
      */
     distance: function( sX,sY,dX,dY )
     {
       return Math.abs(sX-dX)+Math.abs(sY-dY)
     },
     
-    isNeighbourOf: function( sX,sY,dX,dY, range )
+    isNeighborOf: function( sX,sY,dX,dY, range )
     {
-      //range= neko.defaultValue(range,1);
+      // zero is also an invalid range
+      if( !range || range < 0 ) range = 1;
+      
       return range === this.distance(sX,sY,dX,dY);
     },
     
@@ -87,26 +100,6 @@ define(["cwt/properties"],function(props){
     height: function()
     {
       return _mapH;
-    },
-    
-    __save__: function( block )
-    {
-      // save map data
-      block.data = _mapData;
-      block.width = _mapW;
-      block.height = _mapH;
-      
-      // save map objects
-    },
-    
-    __load__: function( block )
-    {
-      // load map data
-      _mapData = block.data;
-      _mapW = block.width;
-      _mapH = block.height;
-      
-      // load map objects
     }
   }
 })

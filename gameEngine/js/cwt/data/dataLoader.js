@@ -1,3 +1,6 @@
+/**
+ * Data loading module, it will load all necessary data for the game engine.
+ */
 define(["cwt/database","sys/logger","mod/"+MOD+"/config"],
 	function(db,logger,_modConf){
 		
