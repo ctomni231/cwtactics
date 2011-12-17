@@ -86,7 +86,7 @@ public class ImgLoader extends Component{
         try{
             return getURLImage(new URL(urlstring));
         } catch(Exception e){
-            e.printStackTrace();
+            System.err.println(e);
             return null;
         }
     }
@@ -115,7 +115,7 @@ public class ImgLoader extends Component{
         try{
             mt.waitForAll();
         }catch(Exception e){
-            e.printStackTrace();
+            System.err.println(e);
         }
         return img;
     }

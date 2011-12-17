@@ -13,7 +13,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.28.11
+ * @version 12.17.11
  */
 public class NotifyLibrary {
 
@@ -55,6 +55,14 @@ public class NotifyLibrary {
      */
     public static void addMessage(Level level, String message, int delay){
         noteSys.addMessage(level, message, delay);
+    }
+
+    /**
+     * This gets the last input from the JSlix Message Log
+     * @return The last message from the Log
+     */
+    public static String getLastMessage(){
+        return noteSys.getLastMessage();
     }
 
     /**

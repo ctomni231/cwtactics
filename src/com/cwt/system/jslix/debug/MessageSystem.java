@@ -20,8 +20,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.28.11
- * @todo TODO Commenting all classes affected by the changes
+ * @version 12.17.11
  */
 public class MessageSystem implements ScreenSkeleton{
 
@@ -107,6 +106,14 @@ public class MessageSystem implements ScreenSkeleton{
     }
 
     /**
+     * This function is used for getting the last message inputted
+     * @return The last message inputted into the system
+     */
+    public String getLastMessage(){
+        return note.note;
+    }
+
+    /**
      * This sets the justification and positioning of the log messages
      * @param right Whether to display on the right(T) or left(F)
      */
@@ -155,6 +162,7 @@ public class MessageSystem implements ScreenSkeleton{
      * @param sysTime The current time in milliseconds
      * @param mouseScroll The current scroll wheel mouse position
      */
+    @Override
     public void update(int width, int height, int sysTime, int mouseScroll){
         if(noteSys.size() > 0){
             helper.setMouseControl(sysTime);
@@ -182,6 +190,7 @@ public class MessageSystem implements ScreenSkeleton{
      * This function renders the Slick2D screen
      * @param g The Slick2D graphics object
      */
+    @Override
     public void render(Graphics g) {
         if(noteSys.size() > 0){
             for(int i = 0; i < noteSys.size(); i++){
@@ -208,6 +217,7 @@ public class MessageSystem implements ScreenSkeleton{
      * @param g The Java2D graphics object
      * @param dthis The Java2D Component
      */
+    @Override
     public void render(Graphics2D g, Component dthis) {
         if(noteSys.size() > 0){
             for(int i = 0; i < noteSys.size(); i++){
@@ -229,10 +239,13 @@ public class MessageSystem implements ScreenSkeleton{
         }
     }
 
-    public void init(){}
+    @Override
+    public void init() {}
 
-    public void update(int timePassed){}
+    @Override
+    public void update(int timePassed) {}
 
+    @Override
     public void update(String name, int index, boolean isApplet,
-            boolean seethru){}
+            boolean seethru) {}
 }

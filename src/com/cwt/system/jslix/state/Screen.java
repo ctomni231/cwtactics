@@ -51,7 +51,7 @@ public abstract class Screen implements ScreenSkeleton{
      */
     public String scr_name = "";
     /**
-     * Holds whether this Screen will display underneath the current screen
+     * Holds whether this Screen will display Screens below it
      */
     public boolean scr_link = false;
     /**
@@ -59,13 +59,14 @@ public abstract class Screen implements ScreenSkeleton{
      */
     public int scr_sysTime = 0;
     /**
-     * Tells you whether the screen is an applet
+     * Tells you whether the screen frame is an Applet
      */
     public boolean scr_isApplet = true;
 
     /**
      * Simplified initialization function for initializing variables
      */
+    @Override
     public abstract void init();
 
     /**
@@ -73,12 +74,14 @@ public abstract class Screen implements ScreenSkeleton{
      * windows
      * @param timePassed negative values (Java2D) & positive values (Slick2D)
      */
+    @Override
     public abstract void update(int timePassed);
 
     /**
      * Simplified render function for drawing Slick based graphics
      * @param g The Slick2D graphics object
      */
+    @Override
     public abstract void render(Graphics g);
 
     /**
@@ -86,6 +89,7 @@ public abstract class Screen implements ScreenSkeleton{
      * @param g The Java2D graphics object
      * @param dthis The Java2D Component object
      */
+    @Override
     public abstract void render(Graphics2D g, Component dthis);  
 
     /**
@@ -116,6 +120,7 @@ public abstract class Screen implements ScreenSkeleton{
      * @param time The current system time in milliseconds
      * @param mouseScroll The current mouse scroll wheel
      */
+    @Override
     public void update(int width, int height, int time, int mouseScroll){}
 
     /**
@@ -125,6 +130,7 @@ public abstract class Screen implements ScreenSkeleton{
      * @param isApplet Whether this screen is an applet(true) or not(false)
      * @param seethru Whether you can see through the screen(T) or not(F)
      */
+    @Override
     public void update(String name, int index, boolean isApplet,
             boolean seethru){}
 }

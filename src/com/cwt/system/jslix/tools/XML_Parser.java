@@ -12,7 +12,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * XML_Reader
+ * XML_Parser
  *
  * Simple XML parser class. Written by Tapsi. Extended by JakeSamiRulz
  * in order to allow for static parsing.
@@ -28,7 +28,7 @@ public class XML_Parser extends DefaultHandler{
     // VARIABLES
     /////////////
 
-    private SAXParser parser;//THe SAX parser associated with this class
+    private SAXParser parser;//The SAX parser associated with this class
     private FileFind finder;//Helps regulate how files are searched
     private ArrayList<String> header;//Holds the header tags for the document
 

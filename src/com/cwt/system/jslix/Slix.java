@@ -494,6 +494,7 @@ public class Slix extends JComponent implements Runnable, KeyListener,
     /**
      * This is the runnable for JSlix
      */
+    @Override
     public final void run() {
         try{           
             while(true){
@@ -507,36 +508,47 @@ public class Slix extends JComponent implements Runnable, KeyListener,
         }
     }
 
+    @Override
     public void keyTyped(KeyEvent e) {
         handleKeyboard(e);
     }
+    @Override
     public void keyPressed(KeyEvent e) {
         handleKeyboard(e);
     }
+    @Override
     public void keyReleased(KeyEvent e) {
         handleKeyboard(e);
     }
+    @Override
     public void mouseClicked(MouseEvent e) {
         handleMouse(e, 0);
     }
+    @Override
     public void mousePressed(MouseEvent e) {
         handleMouse(e, 0);
     }
+    @Override
     public void mouseReleased(MouseEvent e) {
         handleMouse(e, 0);
     }
+    @Override
     public void mouseEntered(MouseEvent e) {
         handleMouse(e, 0);
     }
+    @Override
     public void mouseExited(MouseEvent e) {
         handleMouse(e, 0);
     }
+    @Override
     public void mouseDragged(MouseEvent e) {
         handleMouse(e, 0);
     }
+    @Override
     public void mouseMoved(MouseEvent e) {
         handleMouse(e, 0);
     }
+    @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         handleMouse(e, e.getWheelRotation());
     }

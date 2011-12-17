@@ -14,7 +14,7 @@ package com.cwt.system.jslix.tools;
 
 public class KeyIndex {
     public byte index;//This holds the hold and pressed index
-    public int code;//THis holds the key pressed or the mouse button
+    public int code;//This holds the key pressed or the mouse button
 
     /**
      * This class holds the key and mouse information for classes. It
