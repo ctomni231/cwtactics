@@ -1,0 +1,57 @@
+Contains all remaining work orders for the custom wars tactics model, 
+logic and in/out system.  
+  
+@author : Radom Alexander [BlackCat]  
+@version : 14.11.2011  
+  
+LEGEND:
+=======
+     - Planning 
+   * - Designing - first ideas, plans and design concepts 
+  ** - Implementing
+ *** - Bugfixing - solving last errors
+**** - Done
+  
+  
+ROADMAP:
+========
+  
+---------------------------------------------------------------------------
+  * Version Beta-1 
+    * General
+    
+    * Model                                                 (**)  
+	    * Change to functional data storage
+	    * Implement __save__ and __load__ functions           (*)
+	    * Add property objects
+	    * Mobile buildings-units
+    
+    * Turn controller                                       (**)
+      * Player <-> fog interconnections                     (*)
+      * Turn <-> client interconnections                    (*)
+    
+    * Battle controller
+      * ...
+    
+    * Menu controller
+      * Data store for menu entries ( player based )
+      * 
+    
+    * Map system
+      * ...
+    
+    * Pathfinding system
+      * add deterministic algorithm                         (*)
+      * Pathf. <-> map interconnections
+      
+    * CO system
+      * CO <-> game round interconnections                  (*)
+      * Adding Hooks for CO actions (powerActivated,...)  
+      
+---------------------------------------------------------------------------    
+  * Version Beta-2
+    * ...
+   
+---------------------------------------------------------------------------
+  * Version Final
+    * ...

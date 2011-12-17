@@ -1,1 +1,0 @@
-neko.test "neko.tbs.map", ( require, jasmine ) ->
