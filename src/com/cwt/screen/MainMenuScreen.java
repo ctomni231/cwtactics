@@ -14,7 +14,7 @@ import com.cwt.system.jslix.state.Screen;
 import com.cwt.system.jslix.SlixLibrary;
 import com.cwt.map.PixAnimate;
 import com.cwt.io.XML_Reader;
-import com.cwt.system.jslix.debug.OptionDebug;
+import com.cwt.system.jslix.debug.MessageDebug;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
@@ -232,7 +232,7 @@ public class MainMenuScreen extends Screen{
                 current = 5;
                 break;
             case -3:
-                SlixLibrary.addFrameScreen(new OptionDebug("Hello", "Y", "N"));
+                SlixLibrary.addFrameScreen(new MessageDebug("Hello"));
                 current = 1;
                 break;
             default:

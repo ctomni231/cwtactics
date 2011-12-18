@@ -22,7 +22,7 @@ import static com.yasl.logging.Logging.*;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.27.11
+ * @version 12.17.11
  */
 
 public class SlixApplet extends Applet implements Runnable, KeyListener,
@@ -179,12 +179,10 @@ public class SlixApplet extends Applet implements Runnable, KeyListener,
             tempScreen.scr_width = w;
             tempScreen.scr_height = h;
             tempScreen.scr_sysTime = game.getTime();
-            tempScreen.update(-100);
+            if(i == 0)
+                tempScreen.update(-100);
             tempScreen.render((Graphics2D)g, this);
             tempScreen.scr_mouseScroll = 0;
-
-            if(!tempScreen.scr_link)
-                break;
         }
     }
 
@@ -275,6 +273,7 @@ public class SlixApplet extends Applet implements Runnable, KeyListener,
     /**
      * This is the runnable for JSlix
      */
+    @Override
     public void run() {
         Thread me = Thread.currentThread();
         while (looper == me) {
@@ -288,36 +287,47 @@ public class SlixApplet extends Applet implements Runnable, KeyListener,
         }
     }
 
+    @Override
     public void keyTyped(KeyEvent e) {
         handleKeyboard(e);
     }
+    @Override
     public void keyPressed(KeyEvent e) {
         handleKeyboard(e);
     }
+    @Override
     public void keyReleased(KeyEvent e) {
         handleKeyboard(e);
     }
+    @Override
     public void mouseClicked(MouseEvent e) {
         handleMouse(e, 0);
     }
+    @Override
     public void mousePressed(MouseEvent e) {
         handleMouse(e, 0);
     }
+    @Override
     public void mouseReleased(MouseEvent e) {
         handleMouse(e, 0);
     }
+    @Override
     public void mouseEntered(MouseEvent e) {
         handleMouse(e, 0);
     }
+    @Override
     public void mouseExited(MouseEvent e) {
         handleMouse(e, 0);
     }
+    @Override
     public void mouseDragged(MouseEvent e) {
         handleMouse(e, 0);
     }
+    @Override
     public void mouseMoved(MouseEvent e) {
         handleMouse(e, 0);
     }
+    @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         handleMouse(e, e.getWheelRotation());
     }

@@ -1,5 +1,5 @@
 @author : ctomni231
-@version : 12.11.2011
+@version : 12.17.2011
 
 Hardcoded Features
 
@@ -17,16 +17,28 @@ JSlix Screen - Complete (JMain Runnable)
 JSR Todo List (Current)
 
 AndEngine Functionality (JSlix)               [?]
-Message Option Screen (JSlix)                 [?]
+Message Option Screen (JSlix)                 [#]
+JSON Parser (JSlix)                           [ ]
+JSON Writer (JSlix)                           [ ]
+JSON/XML Combined Parser (JSlix)              [?]
+JSOn/XML Combined Writer (JSlix)              [?]
+Message Prompt Screen (JSlix)                 [#]
+
 Moveable Cursor (MapDraw)                     [#]
 Stretch Cursor - Invention (tilex, tiley)     [ ]
+XML to JSON Conversion                        [ ]
 
 JSR Notes
 
 Change the MapDraw class from MenuItem to MovingMenu for stretch
 [Do not make them MenuItems (Java Heap) Use the width and height
-to average the screen weight]
+to average the screen weight] Priority: Low
 
+Working on the Option Message Screen specifically. Also need to
+work on the Prompt Screen directly after that. Priority: HOT
+
+Work on conversion of XML documents to JSON. Followed by making the
+JSON parser and writer. Priority: High
 
 Phase 1 - Title Screen [*]
 
