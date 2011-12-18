@@ -18,7 +18,7 @@ import org.newdawn.slick.SlickException;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.27.11
+ * @version 12.17.11
  */
 
 public class SlixGame extends BasicGame{
@@ -123,7 +123,8 @@ public class SlixGame extends BasicGame{
             tempScreen.scr_width = container.getWidth();
             tempScreen.scr_height = container.getHeight();
             tempScreen.scr_sysTime = timer.getTime();
-            tempScreen.update(timePassed);
+            if(i == 0)
+                tempScreen.update(timePassed);
 
             if(!tempScreen.scr_link)
                 break;
@@ -156,9 +157,6 @@ public class SlixGame extends BasicGame{
             tempScreen = SlixLibrary.scrOrder.get(i);
             tempScreen.render(g);
             tempScreen.scr_mouseScroll = 0;
-
-            if(!tempScreen.scr_link)
-                break;
         }
 
         showLog(g);

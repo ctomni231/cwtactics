@@ -71,8 +71,9 @@ public class TitleGUI extends MovingImage {
      */
     @Override
     public void render(Graphics g){
-        imgRef.getSlickImage(imgRef.length() > 1 ? 2 : 1).
-                setAlpha((float)counter);
+        imgRef.getSlickImage(1).setAlpha((float)counter);
+        if(imgRef.length() > 1)
+            imgRef.getSlickImage(2).setAlpha((float)counter);
         super.render(g);
     }
 

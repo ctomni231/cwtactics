@@ -1,6 +1,7 @@
 package com.cwt.system.jslix;
 
 import com.cwt.system.jslix.debug.MessageSystem;
+import com.cwt.system.jslix.debug.OptionDebug;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.util.logging.Level;
@@ -63,6 +64,18 @@ public class NotifyLibrary {
      */
     public static String getLastMessage(){
         return noteSys.getLastMessage();
+    }
+
+    /**\
+     * This adds an Option Screen from the JSlix Notification Screens to
+     * ask the user a true/false option. The answer to the log is pushed
+     * into the notifications.
+     * @param option The question/comment to poll the user
+     * @param t The text to display for true
+     * @param f The text to display for false
+     */
+    public static void addOptionScreen(String option, String t, String f){
+        SlixLibrary.addFrameScreen(new OptionDebug(option, t, f));
     }
 
     /**

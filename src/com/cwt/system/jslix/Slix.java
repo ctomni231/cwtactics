@@ -31,7 +31,7 @@ import org.newdawn.slick.SlickException;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.27.11
+ * @version 12.17.11
  */
 
 public class Slix extends JComponent implements Runnable, KeyListener,
@@ -427,7 +427,8 @@ public class Slix extends JComponent implements Runnable, KeyListener,
             tempScreen.scr_width = w;
             tempScreen.scr_height = h;
             tempScreen.scr_sysTime = game.getTime();
-            tempScreen.update(-100);
+            if(i == 0)
+                tempScreen.update(-100);
             tempScreen.render(g2, this);
             tempScreen.scr_mouseScroll = 0;
         }
