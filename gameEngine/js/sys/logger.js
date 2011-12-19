@@ -64,6 +64,6 @@ define(["lib/log4javascript"],function(){
 		
 		isFatalEnabled: function(){
 			return _level.level <= log4javascript.Level.FATAL.level;
-		},		
+		}
 	};
 });

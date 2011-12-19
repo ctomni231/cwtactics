@@ -19,6 +19,11 @@ define(["json!cwt/config"], function( cfg ){
    */
   var _Player = my.Class(_MapObject,{
     
+    constructor: function()
+    {
+      this.units = [];
+    },
+    
     __reset__: function()
     {
       this.gold = 0;
@@ -72,10 +77,11 @@ define(["json!cwt/config"], function( cfg ){
     }
 
   });
-  
+    
   return {
     Unit     : _Unit,
     Property : _Property
+    
   }
   
-})
+});

@@ -1,3 +1,4 @@
+// THIS WAS FOR MOBILE CLIENT
 require(["cwt/drawer"], function( drawer ){
   
   console.log("START CWT");

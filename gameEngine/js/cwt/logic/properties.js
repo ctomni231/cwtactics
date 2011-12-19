@@ -46,10 +46,17 @@ define(["cwt/model/map","cwt/sys/event"],function(map,event){
         {
           property.capturePoints = property.type.capturePoints;
 
-          //TODO works?
-          property.owner = unit.owner;
 
           event.invoke("propertyCaptured",unit,property);
+          
+          // is HQ
+          if( property.ID == "HQ" )
+          {
+            // player loosing game
+          }
+          
+          //TODO works?
+          property.owner = unit.owner;
         }
       }
       //TODO error
@@ -68,7 +75,7 @@ define(["cwt/model/map","cwt/sys/event"],function(map,event){
       var res = _properties[index];
       if( res ) return res;
 
-      //TODO error
+      return null;
     },
 
     /**
