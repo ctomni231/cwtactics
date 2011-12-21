@@ -20,7 +20,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.17.11
+ * @version 12.18.11
  */
 public class MessageSystem implements ScreenSkeleton{
 
@@ -32,6 +32,7 @@ public class MessageSystem implements ScreenSkeleton{
     private ArrayList<Notification> noteSys;//The list of Notifications
     private Notification note;//The temporary holder for Notifications
     private NotificationPool noteObj;//The Object Pool for Notifications
+    private String lastNote;//The last note inputted into the system
     private MouseHelper helper;//This helps regulate timing control
     private int scrsx;//The current x-axis screen size
     private int scrsy;//The current y-axis screen size
@@ -103,6 +104,7 @@ public class MessageSystem implements ScreenSkeleton{
         noteSys.add(noteObj.acquireObject());
         imgSort.setPixelChange(Color.white, textColor);
         imgSort.addImage(message, imgSort.getTextPicture(message+" "));
+        lastNote = message;
     }
 
     /**
@@ -110,7 +112,7 @@ public class MessageSystem implements ScreenSkeleton{
      * @return The last message inputted into the system
      */
     public String getLastMessage(){
-        return note.note;
+        return lastNote;
     }
 
     /**

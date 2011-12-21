@@ -129,40 +129,32 @@ public class KeyControl {
      * Is a button clicked ?
      */
     private static boolean isClicked( Keys key ){
-        if(KeyPress.isSlickWindow())
-            return KeyPress.isKeyPressed( key.slickValue() );
-        else
-            return KeyPress.isKeyPressed( key.javaValue() );
+        return KeyPress.isKeyPressed(KeyPress.isSlickWindow() ?
+            key.slickValue() : key.javaValue());
     }
 
     /**
      * Is a button hold ?
      */
     private static boolean isDown( Keys key ){
-        if(KeyPress.isSlickWindow())
-            return KeyPress.isKeyDown( key.slickValue() );
-        else
-            return KeyPress.isKeyDown( key.javaValue() );
+        return KeyPress.isKeyDown(KeyPress.isSlickWindow() ?
+            key.slickValue() : key.javaValue());
     }
 
     /**
      * Is a mouse button clicked ?
      */
     private static boolean isClicked( Mouse mouse ){
-        if(KeyPress.isSlickWindow())
-            return KeyPress.isMouseClicked( mouse.slickValue() );
-        else
-            return KeyPress.isMouseClicked( mouse.javaValue() );
+        return KeyPress.isMouseClicked(KeyPress.isSlickWindow() ?
+            mouse.slickValue() : mouse.javaValue());
     }
 
     /**
      * Is a mouse button hold ?
      */
     private static boolean isDown( Mouse mouse ){
-        if(KeyPress.isSlickWindow())
-            return KeyPress.isMouseDown( mouse.slickValue() );
-        else
-            return KeyPress.isMouseDown( mouse.javaValue() );
+        return KeyPress.isMouseDown(KeyPress.isSlickWindow() ?
+            mouse.slickValue() : mouse.javaValue());
     }
 
     /*
@@ -176,8 +168,7 @@ public class KeyControl {
     public static int getMouseY(){
     	return KeyPress.getMouseY();	}
     public static void resetMouseWheel(){
-    	KeyPress.resetMouseWheel();
-    }
+    	KeyPress.resetMouseWheel();     }
 
     // IS CLICKED
     public static boolean isUpClicked(){

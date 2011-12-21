@@ -44,7 +44,7 @@ public class JukeBox {
     }
 
     /**
-     * This stop a music clip from playing
+     * This stops a music clip from playing
      */
     public static void stopClip(){
         player.stop();

@@ -22,25 +22,25 @@ import org.newdawn.slick.Graphics;
 public class OptionDebug extends Screen{
 
     private PixtureMap imgSort;//Holds the image text representations
-    private String optionMessage;//Holds the option question text
-    private String optionYes;//Holds the yes text
-    private String optionNo;//Holds the no text
+    private String message;//Holds the option question text
+    private String yes;//Holds the yes text
+    private String no;//Holds the no text
     private boolean option;//Holds the user selected option
 
     public OptionDebug(String message, String t, String f){
         imgSort = new PixtureMap();
-        optionMessage = message;
-        optionYes = t;
-        optionNo = f;
+        this.message = message;
+        yes = t;
+        no = f;
         option = true;
         scr_link = true;
     }
 
     @Override
     public void init() {
-        addMessage(optionMessage);
-        addMessage(optionYes);
-        addMessage(optionNo);
+        imgSort.addImage(message, imgSort.getTextPicture(message+" "));
+        imgSort.addImage(yes, imgSort.getTextPicture(yes+" "));
+        imgSort.addImage(no, imgSort.getTextPicture(no+" "));
     }
 
     @Override
@@ -69,31 +69,33 @@ public class OptionDebug extends Screen{
 
     @Override
     public void render(Graphics g){
-        g.setColor(imgSort.getColor(Color.black, 127));
+        g.setColor(imgSort.getColor(Color.blue, 127));
         g.fillRect(0, 0, scr_width, scr_height);
-        g.setColor(Color.white);
-        g.drawString(optionMessage,
-                (int)(scr_width/2-imgSort.getX(optionMessage)/2),
-                (int)(scr_height/2-imgSort.getX(optionMessage)));
+        g.fillRect((int)(scr_width/2-imgSort.getX(message)/2),
+            (int)(scr_height/2-imgSort.getY(message)),
+            imgSort.getX(message),
+            imgSort.getY(message));
+        g.drawImage(imgSort.getSlickImage(message),
+            (int)(scr_width/2-imgSort.getX(message)/2),
+            (int)(scr_height/2-imgSort.getY(message)));
     }
 
     @Override
     public void render(Graphics2D g, Component dthis){
-        g.setColor(imgSort.getColor(java.awt.Color.black, 127));
+        g.setColor(imgSort.getColor(java.awt.Color.blue, 127));
         g.fillRect(0, 0, scr_width, scr_height);
-        g.setColor(java.awt.Color.white);
-        g.drawString(optionMessage,
-                (int)(scr_width/2-imgSort.getX(optionMessage)/2),
-                (int)(scr_height/2-imgSort.getX(optionMessage)));
-    }
-    
-    public void addMessage(String message){
-        imgSort.addImage(message, imgSort.getTextPicture(message+" "));
+        g.fillRect((int)(scr_width/2-imgSort.getX(message)/2),
+            (int)(scr_height/2-imgSort.getY(message)),
+            imgSort.getX(message),
+            imgSort.getY(message));
+        g.drawImage(imgSort.getImage(message),
+            (int)(scr_width/2-imgSort.getX(message)/2),
+            (int)(scr_height/2-imgSort.getY(message)), dthis);
     }
 
     @Override
     public void scr_close(){
-        NotifyLibrary.addMessage(option+":"+optionMessage);
+        NotifyLibrary.addMessage(option+":"+message);
     }
 
 }

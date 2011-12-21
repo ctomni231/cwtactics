@@ -17,6 +17,7 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.awt.BorderLayout;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import static com.yasl.logging.Logging.*;
@@ -31,7 +32,7 @@ import org.newdawn.slick.SlickException;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.17.11
+ * @version 12.20.11
  */
 
 public class Slix extends JComponent implements Runnable, KeyListener,
@@ -146,7 +147,7 @@ public class Slix extends JComponent implements Runnable, KeyListener,
      */
     public void showSlick(){
     	if(game == null)
-    		game = new SlixGame();
+            game = new SlixGame();
 
         try {
             game.setUpdateFrame(frameUpdate);
@@ -167,14 +168,6 @@ public class Slix extends JComponent implements Runnable, KeyListener,
             contain.addComponentListener(new ComponentAdapter() {
 
                 @Override
-                public void componentResized(ComponentEvent ce) {
-                    super.componentResized(ce);
-                    sizex = contain.getWidth()+16;
-                    sizey = contain.getHeight()+38;
-                    window.setSize(sizex, sizey);                   
-                }
-
-                @Override
                 public void componentHidden(ComponentEvent e) {
                     SlixLibrary.removeAllScreens();
                     SlixLibrary.updateScreens();
@@ -185,11 +178,10 @@ public class Slix extends JComponent implements Runnable, KeyListener,
             });
 
             window.setSize(sizex, sizey);
-            window.getContentPane().add(contain);
+            window.add(contain, BorderLayout.CENTER);
             window.validate();
             window.setVisible(true);
             window.pack();
-            contain.setSize(getPreferredSize());
             contain.start();
             game.startTimer(true);
             KeyPress.setConv(true);
@@ -205,14 +197,13 @@ public class Slix extends JComponent implements Runnable, KeyListener,
     public void showWindow(){
     	if(game == null)
             game = new SlixGame();
-        window.addKeyListener(this);
+        addKeyListener(this);
         addMouseListener(this);
         addMouseMotionListener(this);
         addMouseWheelListener(this);
         game.startTimer(false);
         Thread looper = new Thread(this);
         looper.start();
-        //window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         window.addWindowListener(new WindowAdapter() {
            @Override
@@ -223,7 +214,7 @@ public class Slix extends JComponent implements Runnable, KeyListener,
                 System.exit(0);
             }
         });
-        window.add(this);
+        window.add(this, BorderLayout.CENTER);
         window.validate();
         window.setVisible(true);
         window.pack();
@@ -343,6 +334,7 @@ public class Slix extends JComponent implements Runnable, KeyListener,
      * @param wheelScroll The mouse scroll wheel value
      */
     private void handleMouse(MouseEvent e, int wheelScroll){
+        requestFocus();
         id = e.getID();
         KeyPress.mouseScroll = wheelScroll;
         switch(id){

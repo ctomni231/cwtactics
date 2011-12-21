@@ -1,5 +1,5 @@
 @author : ctomni231
-@version : 12.17.2011
+@version : 12.20.2011
 
 Hardcoded Features
 
@@ -34,11 +34,16 @@ Change the MapDraw class from MenuItem to MovingMenu for stretch
 [Do not make them MenuItems (Java Heap) Use the width and height
 to average the screen weight] Priority: Low
 
-Working on the Option Message Screen specifically. Also need to
-work on the Prompt Screen directly after that. Priority: HOT
-
 Work on conversion of XML documents to JSON. Followed by making the
-JSON parser and writer. Priority: High
+JSON parser and writer. Priority: Medium
+
+Must plan out the API for the 3 JSlix debug screens before moving ahead
+and creating them. Working on the Option Message Screen specifically. 
+Also need to work on the Prompt Screen directly after that. Priority: High
+
+Expanding JSlix to handle layouts, which will make the frame more versatile
+in handling multi-tasking applications. It is going to include this
+functionality for both Slick/Java Consoles & Applets. Priority: HOT
 
 Phase 1 - Title Screen [*]
 
