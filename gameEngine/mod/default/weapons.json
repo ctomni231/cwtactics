@@ -6,7 +6,8 @@
             "useAmmo"       : 0,
             "minRange"      : 1,
             "maxRange"      : 1,
-            "damage"        :{
+            "fireType"      : "DIRECT",
+            "damages"        :{
                 "*"         : 0
             }
         }

@@ -1,11 +1,13 @@
 {
 
-    "fillType"  : "PLAIN",
+    "filler" : "PLAIN",
 
-    "mapWidth"  : 10,
-    "mapHeight" : 10,
+    "width"  : 10,
+    "height" : 10,
 
-    "tiles"     : [
-        { "x":5, "y":5, "type":"HQ" }
-    ]
+    "tileData" : {
+        '5': {
+          '5' : 'HQ'
+        }
+    }
 }

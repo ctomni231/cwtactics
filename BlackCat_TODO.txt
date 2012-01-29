@@ -21,10 +21,10 @@ ROADMAP:
     * General
     
     * Model                                                 (**)  
-	    * Change to functional data storage
+	    * Change to functional data storage                   (**)
 	    * Implement __save__ and __load__ functions           (*)
-	    * Add property objects
-	    * Mobile buildings-units
+	    * Add property objects                                (**)
+	    * Mobile buildings-units                          
     
     * Turn controller                                       (**)
       * Player <-> fog interconnections                     (*)

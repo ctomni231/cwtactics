@@ -199,8 +199,10 @@
             "maxAmmo"       : 99,
             "weapons"       : [],
 
-            "transport"     : ["SOFT"],
-            "canLoad"       : 2,
+            "transport"     : {
+                "canLoad"   : ["SOFT"],
+                "maxWeight" : 2
+            },
 
             "supply"        : ["SOFT","TANK","AIR","SHIP"],
 
@@ -258,8 +260,10 @@
             "maxAmmo"       : 0,
             "weapons"       : [],
 
-            "transport"     : ["SOFT"],
-            "canLoad"       : 2,
+            "transport"     : {
+                "canLoad"   : ["SOFT"],
+                "maxWeight" : 2
+            },
 
             "tags"          : [ "AIR", "COPTER", "TRANSPORT" ]
         },
@@ -279,8 +283,10 @@
             "maxAmmo"       : 0,
             "weapons"       : [],
 
-            "transport"     : ["VEHICLE","SOFT","TANK"],
-            "canLoad"       : 4,
+            "transport"     : {
+                "canLoad"   : ["VEHICLE","SOFT","TANK"],
+                "maxWeight" : 4
+            },
 
             "tags"          : [ "AIR", "PLANE", "TRANSPORT" ]
         },
@@ -318,8 +324,11 @@
             "maxAmmo"       : 9,
             "weapons"       : [ "WP_WATERBOMBS" ],
 
-            "transport"     : [ "COPTER" ],
-            "canLoad"       : 2,
+            "transport"     : {
+                "canLoad"   : ["COPTER"],
+                "maxWeight" : 2
+            },
+
 
             "tags"          : [ "WATRER", "SHIP", "TRANSPORT" ]
         },
@@ -430,11 +439,11 @@
 
             "weight"        : 3,
 
-            "maxAmmo"       : 0,
-            "weapons"       : [ ],
+            "transport"     : {
+                "canLoad"   : ["SOFT","VEHICLE","TANK"],
+                "maxWeight" : 1
+            },
 
-            "transport"     : [ "SOFT", "VEHICLE", "TANK" ],
-            "canLoad"       : 3,
 
             "tags"          : [ "WATER", "SHIP", "TRANSPORT" ]
         },
