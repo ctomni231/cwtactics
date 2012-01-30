@@ -1,57 +1,164 @@
-Contains all remaining work orders for the custom wars tactics model, 
-logic and in/out system.  
-  
-@author : Radom Alexander [BlackCat]  
-@version : 14.11.2011  
-  
-LEGEND:
-=======
-     - Planning 
-   * - Designing - first ideas, plans and design concepts 
-  ** - Implementing
- *** - Bugfixing - solving last errors
-**** - Done
-  
-  
-ROADMAP:
-========
-  
----------------------------------------------------------------------------
-  * Version Beta-1 
-    * General
-    
-    * Model                                                 (**)  
-	    * Change to functional data storage                   (**)
-	    * Implement __save__ and __load__ functions           (*)
-	    * Add property objects                                (**)
-	    * Mobile buildings-units                          
-    
-    * Turn controller                                       (**)
-      * Player <-> fog interconnections                     (*)
-      * Turn <-> client interconnections                    (*)
-    
-    * Battle controller
-      * ...
-    
-    * Menu controller
-      * Data store for menu entries ( player based )
-      * 
-    
-    * Map system
-      * ...
-    
-    * Pathfinding system
-      * add deterministic algorithm                         (*)
-      * Pathf. <-> map interconnections
-      
-    * CO system
-      * CO <-> game round interconnections                  (*)
-      * Adding Hooks for CO actions (powerActivated,...)  
-      
----------------------------------------------------------------------------    
-  * Version Beta-2
-    * ...
-   
----------------------------------------------------------------------------
-  * Version Final
-    * ...
+Outline: CWT - NekoEngine
+- BareBone
+  internal system bare bone for the outline ;)
+    - Database
+    - Model
+    - Data Container
+    - Kernel
+        - Input Pipe
+-  53% Beta 1
+       This beta should be able to produce a simple map with units and
+       so on. Furthermore, the prototype must be able to recognize
+       inputs and convert them into valid actions for the map. This
+       means, that move actions must be available.
+    - 100% Database
+        - 100% Data Loader
+               Input format is JSON.
+               The loader should reuse json object if possible. If
+               Object.freeze is not available, a deep copy will be
+               creeated.
+            -  [x] parseSheet( data )
+        - 100% Sheet Parser
+            -  [x] Movetype
+                - costs: Map<string,int>
+            -  [x] Unit
+                - movepoints: int
+                - movetype: Movetype
+            -  [x] Tile
+            -  [x] Property
+                - capturePoints
+                - funds
+                - repairs
+                - repairAmount
+                - canProduce
+    -  66% Model
+           depends on database
+        -  [x] Player
+            - gold: int
+            - units: array of Unit
+        -  [x] Unit
+               depends on Player
+            - id
+            - hp
+            - ammo
+            - fuel
+            - exp
+        -  [x] Tile
+            - id
+        -  [x] Property
+            - id: string
+            - capturePoints: int
+            - owner: Player
+        -  [ ] Map
+               depends on Tile, Property
+               one instance only
+            - properties: array of Property
+            - tiles: array of Tile
+        -  [ ] GameRound
+            - map: Map
+            - players: array of Player
+            - activePlayer: Player
+    -   0% Data Container
+        -  [ ] Moveway
+            - mover: Unit
+            - leftPoints: int
+            - startTile: Tile
+            - way: array of Tile
+            - push( tile, appendMissingTiles [default=false] ):
+              boolean
+              second parameter adds all tiles between the last tile of
+              the way and the selected one
+    -  46% Kernel
+        -   0% InputPipe
+               this is the communication pipeline between client (
+               JSLIX, HTML Client ) and the neko game engine.
+               Furthermore this service will share all necessary op
+               codes to the other clients, e.g. to sync move
+               animations and so on...
+            -  [ ] OPCODEs
+                - Any service will be callable through the network
+                  connect, except it is marked as local
+                - Any service method string will be interconnected to
+                  an unique identical number -> the OPCODE number
+            - clients: array of Connection
+                - How to solve that ( local, net ) ?
+                - LocalConnection
+                - NetConnection
+            -  [ ] push( opCode, args... ): obj
+                   JSLIX can use this API directly to save cpu time to
+                   parse the command string to opcodes
+            -  [ ] push( msg ): obj
+                   invokes the main push method after parsing a
+                   message string to valid values
+                   
+                   Default communication function for the client
+        - 100% Objects
+            -  [x] isOwnerOf( player, obj ): boolean
+                   checks the ownership of a player and a map object
+                   like an unit
+            -  [x] canUse( player, obj ): boolean
+                   returns true, if a player can use an object or
+                   false if not... this functions also returns false
+                   if e.g. a player unit is blocked by an event
+        -  40% Move
+            -  [x] generateMoveWay( mover: Unit )
+            -  [ ] calculateWay(moveway, start, target)
+            -  [x] canMove( unit, start, end ): boolean
+            -  [ ] canMoveInOneTurn( unit, start, end ): boolean
+            -  [ ] move( moveway ): boolean
+
+-   0% Beta 2
+       Properties should be capturable by capturing units. Transport
+       units should be able to transport other units of the own
+       fraction. At least this beta implements the event system.
+    -   0% Database
+        -   0% Sheet Parser
+            -  [ ] Unit
+                - transport
+                  transport node
+                    - canLoad: int
+                    - maxWeight: int
+                - captures: int
+    -   0% Kernel
+        -   0% Objects
+            -  [ ] isTransporter( unit ): boolean
+            -  [ ] canTransport( unit, load ): boolean
+            -  [ ] loadUnit( transport, unit ): boolean
+            -  [ ] unloadUnit( transport, load ): boolean
+            -  [ ] loadedUnits( transport ): array of Unit
+        -   0% Property
+               maybe this will be moved into the "objects" stacks.
+            -  [ ] canCapture( capturer, property ): boolean
+            -  [ ] capture( property, capturer ): boolean
+        -   0% Battle
+            -  [ ] invokeBattle( att, def ): boolean
+
+-  [ ] Beta 3
+       Turn logic with weather changes etc... furthermore the
+       gameround logic should be available. This means also, that the
+       win and loose process is implemented too.
+
+-  [ ] Beta 4
+       Special properties like silos with custom actions and mobile
+       buildings like airfield should be available.
+
+-   0% Beta 6
+       CO logic is implemented and supports AWDS and AWDoR style :)
+       Map loading system with register and unregister stuff for map
+       scripts.
+    -   0% Model
+        -  [ ] CO
+            - power
+        -  [ ] Commander
+    -   0% Data Container
+        -  [ ] PlayerCO
+               contains the relationship between player - CO/Commander
+               - Unit
+            - unit
+            - typeCo
+            - status
+
+-  [ ] Release Candidate
+       Bugfixing
+
+-  [ ] Final 1.0

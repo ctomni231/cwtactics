@@ -6,3 +6,9 @@ function objects_findPropertyKey( object, value ){
     // return null, no key exists
     return null;
 }
+
+function objects_softCopy( source, target ){
+    for( var key in source ){
+        if( source.hasOwnProperty(key) ) target[key] = source[key];
+    }
+}

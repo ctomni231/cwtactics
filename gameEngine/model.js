@@ -1,55 +1,51 @@
-function Unit(){}
+// ------ UNITS ------
 
-function resetUnit( unit, sheet ){
-    if( TYPED ) expect( arguments ).typedList( Unit, UnitSheet );
+/**
+ * Resets an unit object back to a clean state.
+ */
+function model_resetUnit( unit, sheet ){
+    if( DEBUG ){ 
+        log$info("reset unit instance");
+        expect( unit ).isStruct('Unit');
+        expect( sheet ).isStruct('UnitSheet');
+    }
     
     unit.hp = 99;
     unit.ammo = sheet.maxAmmo;
     unit.fuel = sheet.maxFuel;
     unit.exp = 0;
     
-    // delete transport object
-    if( neko.isDef(unit.transport) ) delete unit.transport;
+    // delete transport object [@WAITS BETA-1]
 }
 
-function objects_isTransporter( unit ){
-    if( TYPED );
-    
-    return typeof unit !== 'undefined';
-}
 
-function getLoadedWeight( unit ){
-    if( TYPED );
-    
-    var l = 0;
-    for( var i in unit.transport ) l += unit.transport[i].sheet().weight;
-    
-    return l;
-}
+// -------- PROPERTY ----------
 
-function loadUnit( transport, load ){
-    if( TYPED );
-    
-    if( !isTransporter(transport) ) neko.error(transport+' is not a transporter');
-    transport.transport.put( load );
-}
-
-// END OF UNIT SECTOR
-
-function Property(){}
-
-function resetProperty( property, sheet ){
-    if( TYPED ) expect( arguments ).typedList( Property, PropertySheet );
+/**
+ * Resets a property object back to a clean state.
+ */
+function model_resetProperty( property, sheet ){
+    if( DEBUG ){
+        log$info("reset property instance");
+        expect( property ).isStruct('Property');
+    }
     
     property.capturePoints = sheet.capturePoints;
     property.owner = null;
 }
 
-// END OF PROPERTY SECTOR
 
-function Player(){}
+// -------- PLAYER ---------
 
-function resetPlayer( player ){
+/**
+ * Resets a player object back to a clean state.
+ */
+function model_resetPlayer( player ){
+    if( DEBUG ){
+        log$info("reset player instance");
+        expect( player ).isStruct('Player');
+    }
+    
     player.name = "";
     player.gold = 0;
     player.team = 0;
@@ -58,45 +54,26 @@ function resetPlayer( player ){
 }
 
 
-/**
- * true if at least two players alive, that are not members of the same team.
- */
-function game_atLeastTwoEnemyPlayerAlive(){
-    var r = null;
-    for( var i = 0; i < map.players.length ; i++ ){
-      if( r == null ) r = map.players[i].team;
-      else if( map.players[i] !== r ) return true;
-    }
-    return false;
-}
-
-function objects_isPlayerAlive( player ){
-    return player.team !== game_round_playerLoosed;
-}
-
-var game_round_playerLoosed = -1;
-
-
-/* ************************************************** */
-/* map and game model with all necessary map objects. */
-/* ************************************************** */
+// ----------- GAME AND MAP DATA ----------
 
 var game_map = [];
-var game_map_width = 0;
-var game_map_height = 0;
+var game_mapNew = collection_matrix( MAX_MAP_LENGTH );
+var game_map_width;
+var game_map_height;
 var game_map_properties = {};   // object<position,property>
 var game_map_units = {};        // object<position,unit>
 
-var game_round_day = null;
-var game_round_turn = null;
-var game_round_players = null;
-var game_round_leftActors = null;
-var game_round_activePlayerID = null;
+var game_round_day;
+var game_round_turn;
+var game_round_players = collection_fixedStructArray('Player', MAX_PLAYER );
+var game_round_leftActors = [];
+var game_round_activePlayerID;
 
 /**
  * Loads a map file and saves it's content into the map objects.
  */
 function game_loadMap( data ){
+    if( DEBUG ) log_info("loading "+data.name+" map into game model");
     
     game_map_height = data.height;
     game_map_width = data.width;
@@ -120,10 +97,21 @@ function game_loadMap( data ){
         }
     });
     
+    log_info("reset game round meta data");
+    
     // reset metadata 
     game_round_day = 0;
     game_round_turn = 0;
     game_round_activePlayerID = 0;
+    
+    // reset players
+    collection_each( game_round_players, function( el ){
+        model_resetPlayer(el);
+    });
+    
+    collection_clear( game$round$leftActors );
+    
+    if( DEBUG ) log_info("loading map complete");
 }
 
 function game_indexToPosX( index ){
@@ -145,25 +133,27 @@ function game_distance( tileA, tileB ){ //@TODO support units as argument too
 }
 
 
-/* SYSTEM EVENTS
- ****************/
+// ---------- SAVE EVENTS -------------
 
 event_listen("saveGame",function(){
-    // not implemented yet
+    neko_error_notImplementedYet();
 });
 
 event_listen("loadGame",function(){
-    // not implemented yet
+    neko_error_notImplementedYet();
 });
+
+
+// ---------- DEBUG PRINTING ------------
 
 event_listen("debug_printStatus", function(){
     
-    log_info("==Map==");
+    log_info("==Map==");    
+    log_info("Tiledata:"+game_map);
+    log_info("Units:"+game_map_units);
     log_info("Map-Width:"+game_map_width);
     log_info("Map-Height:"+game_map_height);
-    log_info("Tiledata:"+game_map);
     log_info("Property:"+game_map_properties);
-    log_info("Units:"+game_map_units);
     
     log_info("==Game Round==");
     log_info("Day:"+game_round_day);

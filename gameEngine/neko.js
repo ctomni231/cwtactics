@@ -96,42 +96,32 @@ function log_error( msg ){
 }
 
 
+function neko_error_notImplementedYet(){
+    var msg = "this function or algrithm is not implemented yet";
+    log$error(msg);
+    throw Error(msg);
+}
 
 
-/*
- * MATCHERS
- */
+// ------ MATCHERS ------
 
-neko_expect_registerMatcher("isString", function(){
-    return typeof this.value === 'string';
-},true);
+neko_expect_registerMatcher("isString", function(){ return typeof this.value === 'string'; },true);
+neko_expect_registerMatcher("isNumber", function(){ return typeof this.value === 'number'; },true);
+neko_expect_registerMatcher("isInteger", 
+                                  function(){ var n = this.value; return typeof n === 'number' && n%1 === 0; },true);
+neko_expect_registerMatcher("isPropertyOf", function( obj ){ return typeof obj[this.value] !== 'undefined'; },true);
+neko_expect_registerMatcher("ge", function(n){ return this.value >= n; },true,true);
+neko_expect_registerMatcher("gt", function(n){ return this.value > n; },true,true);
+neko_expect_registerMatcher("lt", function(n){ return this.value < n; },true,true);
+neko_expect_registerMatcher("le", function(n){ return this.value <= n; },true,true);
 
-neko_expect_registerMatcher("isNumber", function(){
-    return typeof this.value === 'number';
-},true);
 
-neko_expect_registerMatcher("isInteger", function(){
-    var n = this.value;
-    return typeof n === 'number' && n%1 === 0;
-},true);
+// ------ CLASS -------
 
-neko_expect_registerMatcher("isPropertyOf", function( obj ){
-    return typeof obj[this.value] !== 'undefined';
-},true);
+function neko_structObject( structName ){
+    if( DEBUG ) expect( structName ).isString().size.gt(0);
+    
+    return {__struct__ : structName};
+}
 
-neko_expect_registerMatcher("ge", function(n){
-    return this.value >= n;
-},true,true);
-
-neko_expect_registerMatcher("gt", function(n){
-    return this.value > n;
-},true,true);
-
-neko_expect_registerMatcher("lt", function(n){
-    return this.value < n;
-},true,true);
-
-neko_expect_registerMatcher("le", function(n){
-    return this.value <= n;
-},true,true);
-
+neko_expect_registerMatcher("isStruct", function( name ){ return this.value.__struct__ === name; }, true );

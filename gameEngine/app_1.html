@@ -796,23 +796,23 @@
 			var appender = new log4javascript.InPageAppender();
 			log.addAppender(appender);
             
-            log$info = function(msg){
+            log_info = function(msg){
                 log.info(msg);
             }
-            log$warn = function(msg){
+            log_warn = function(msg){
                 log.warn(msg);
             }
-            log$error = function(msg){
+            log_error = function(msg){
                 log.error(msg);
             }
             
             var targetFPSdiffer = 500;
             var stop = false;
             function mainLoop(){
-                log$info("do a game loop");
+                log_info("do a game loop");
 
                 if( stop === true ){
-                  log$info("waiting...");
+                  log_info("waiting...");
                   waitInStop();
                   
                 } 
@@ -824,20 +824,20 @@
                 if( stop == true ) setTimeout(waitInStop,1500);
                 else{ 
                   mainLoop();
-                  log$info("done");
+                  log_info("done");
                 }
             }
             
             // load mod
-            collection$each(tiles.sheets, function( element ){ db$parseSheet(element , "TILE"); });
-            collection$each(movetypes.sheets, function( element ){ db$parseSheet(element, "MOVETYPE"); });
-            collection$each(units.sheets, function( element ){ db$parseSheet(element, "UNIT"); });
+            collection_each(tiles.sheets, function( element ){ db_parseSheet(element , "TILE"); });
+            collection_each(movetypes.sheets, function( element ){ db_parseSheet(element, "MOVETYPE"); });
+            collection_each(units.sheets, function( element ){ db_parseSheet(element, "UNIT"); });
             
             // load map
-            game$loadMap( testmap );
+            game_loadMap( testmap );
             
             var u1 = { type:"INFANTRY" }
-            game$map$units[0] = u1;
+            game_map_units[0] = u1;
             
             // start loop
             mainLoop();
