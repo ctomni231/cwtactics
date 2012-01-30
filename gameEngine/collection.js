@@ -10,7 +10,7 @@ function collection(){
     return res;
 }
 
-function collection$addAll(list, append){
+function collection_addAll(list, append){
     if(TYPED){
         expect(list,append).isArray();
     }
@@ -20,7 +20,7 @@ function collection$addAll(list, append){
     for(; i<e; i++ ) list.push( append[i] );
 }
 
-function collection$copy(list, list2){
+function collection_copy(list, list2){
     if(TYPED) expect(list,append).isArray();
     
     list.splice(0,list.length);
@@ -29,27 +29,27 @@ function collection$copy(list, list2){
     for(; i<e; i++ ) list[i] = list2[i];
 }
 
-function collection$fillWithElement( list, element, start ){
+function collection_fillWithElement( list, element, start ){
     
     if( !start ) start = 0;
     var e = list.length;
     for(; start<e; start++ ) list[start] = element;
 }
 
-var collection$_sliceFn = Array.prototype.slice;
+var collection__sliceFn = Array.prototype.slice;
 
 /**
  * Slices a part out of an array and returns it. This implementation is uses the native
  * Array class implementation. This function can be used on arguments arrays as well.
  */
-function collection$slice(array,startIndex,endIndex){
-    return collection$_sliceFn.apply(startIndex,endIndex)
+function collection_slice(array,startIndex,endIndex){
+    return collection__sliceFn.apply(startIndex,endIndex)
 }
 
 /**
  * Calls a function on each element of a list.
  */
-function collection$each( list, fN ){
+function collection_each( list, fN ){
     if( TYPED ){
         expect( list ).isArray();
         expect( fN ).isFunction();
@@ -63,7 +63,7 @@ function collection$each( list, fN ){
 /**
  * Calls a function on each element of a list.
  */
-function collection$eachInRange( list, start, end, fN ){
+function collection_eachInRange( list, start, end, fN ){
    
     if( TYPED ){
         expect( list ).isArray();
@@ -83,7 +83,7 @@ function collection$eachInRange( list, start, end, fN ){
  * Returns a simple enumeration object of a given list of strings.
  * This function uses identical id numbers as values for the given enumeration keys.
  */
-function collection$enum(){
+function collection_enum(){
 
     if( typeof arguments[0] === 'string' ){
       if( TYPED ) expect(arguments).each.isString();
@@ -93,7 +93,7 @@ function collection$enum(){
       
       // values contains all enumeration values
       result.__values__ = [];
-      collection$copy( result.__values__, arguments );
+      collection_copy( result.__values__, arguments );
       
       return result;
     }

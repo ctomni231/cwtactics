@@ -1,6 +1,6 @@
-var db$_final = false;
-var db$_sheetKeys = {};     // holds all id data <str,int>
-var db$_sheetData = [];     // holds all sheets <int,object>
+var db__final = false;
+var db__sheetKeys = {};     // holds all id data <str,int>
+var db__sheetData = [];     // holds all sheets <int,object>
 
 /**
  * Checks an unit sheet and throws an ExpectFailedError if an assertment
@@ -9,42 +9,42 @@ var db$_sheetData = [];     // holds all sheets <int,object>
  * @function 
  * @param {Object} data
  */
-function db$_checkUnitSheet( data ){
+function db__checkUnitSheet( data ){
 
-    expect( data.ID ).isString().not.isPropertyOf( db$_sheetKeys );
+    expect( data.ID ).isString().not.isPropertyOf( db__sheetKeys );
 
     // some checks @TODO movetype sheet check
-    expect( data.moveType ).isString().isPropertyOf( db$_sheetKeys );                                                                           
+    expect( data.moveType ).isString().isPropertyOf( db__sheetKeys );                                                                           
     expect( data.moveRange ).isInteger().gt(0);
 }
 
-function db$_checkMoveTypeSheet( data ){
+function db__checkMoveTypeSheet( data ){
 
-    expect( data.ID ).isString().not.isPropertyOf( db$_sheetKeys );
+    expect( data.ID ).isString().not.isPropertyOf( db__sheetKeys );
 
     // some checks
     // @TODO fix it
     //expect( data.costs ).isMap().key.isString().not.isEmpty().value.isInt();
 }
 
-function db$_checkTileSheet( data ){
+function db__checkTileSheet( data ){
 
-    expect( data.ID ).isString().not.isPropertyOf( db$_sheetKeys );
+    expect( data.ID ).isString().not.isPropertyOf( db__sheetKeys );
 
     // some checks
     expect( data.defense ).isInteger().ge(0);
 }
 
-function db$_checkPropertySheet( data ){
+function db__checkPropertySheet( data ){
 
-    expect( data.ID ).isString().not.isPropertyOf( db$_sheetKeys );
+    expect( data.ID ).isString().not.isPropertyOf( db__sheetKeys );
 
     // some checks
     expect( data.capturePoints ).isInteger().gt(0);
 }
 
 
-var db$SheetType = collection$enum("UNIT","TILE","PROPERTY","MOVETYPE");
+var db_SheetType = collection_enum("UNIT","TILE","PROPERTY","MOVETYPE");
 
 /**
  * Parses a sheet and adds it to the database.
@@ -53,30 +53,30 @@ var db$SheetType = collection$enum("UNIT","TILE","PROPERTY","MOVETYPE");
  * @name parseSheet
  * @memberOf db
  */
-function db$parseSheet(data,type){
+function db_parseSheet(data,type){
 
-    if( db$_final === true ) throw Error("database is already finalized");
+    if( db__final === true ) throw Error("database is already finalized");
 
     if( type === "UNIT" ){
-        db$_checkUnitSheet( data );
+        db__checkUnitSheet( data );
     }
     else if( type === "PROPERTY" ){
-        db$_checkPropertySheet( data );
+        db__checkPropertySheet( data );
     }
     else if( type === "MOVETYPE" ){
-        db$_checkMoveTypeSheet( data );
+        db__checkMoveTypeSheet( data );
     }
     else if( type === "TILE" ){
-        db$_checkTileSheet( data );
+        db__checkTileSheet( data );
     }
     else throw Error("unknown sheet '"+type+"'");
 
-    db$_sheetData[ db$_registerId( data.ID ) ] = data;
+    db__sheetData[ db__registerId( data.ID ) ] = data;
     delete data.ID; // remove duplicate data
 }
 
-function db$finalize(){ 
-    db$_final = true; 
+function db_finalize(){ 
+    db__final = true; 
 }
 
 /**
@@ -84,44 +84,44 @@ function db$finalize(){
  * 
  * @param {string} sheetId
  */
-function db$_registerId( sheetId ){
+function db__registerId( sheetId ){
     
     var nextSheetId = 0;
-    for( var key in db$_sheetKeys ) if( db$_sheetKeys.hasOwnProperty(key) ) nextSheetId++;
+    for( var key in db__sheetKeys ) if( db__sheetKeys.hasOwnProperty(key) ) nextSheetId++;
     
-    db$_sheetKeys[ sheetId ] = nextSheetId;
+    db__sheetKeys[ sheetId ] = nextSheetId;
     return nextSheetId;
 }
 
 /**
  * Returns a sheet by its id.
  */
-function db$sheet( id ){
+function db_sheet( id ){
     
     // get int id from data object if necessary
     if( typeof id === 'string' ){
-	 id = db$_sheetKeys[id];
+	 id = db__sheetKeys[id];
     }
     
     if( TYPED ) expect(id).isInteger();
     if( DEBUG ){
         var numOfSheets = 0;
         //TODO check sheet
-        for( var key in db$_sheetData ) if( db$_sheetData.hasOwnProperty(key) ) numOfSheets++;
+        for( var key in db__sheetData ) if( db__sheetData.hasOwnProperty(key) ) numOfSheets++;
         expect(id).ge(0).lt(numOfSheets); 
     }
     
-    return db$_sheetData[id];
+    return db__sheetData[id];
 }
 
-event$listen("debug_printStatus", function(){
+event_listen("debug_printStatus", function(){
     
     //TODO print nicer output
-    log$info("==Database==");
+    log_info("==Database==");
     
-    log$info("  Keys:");
-    for( var key in db$_sheetKeys ) log$info("    Key:"+key+" ID:"+db$_sheetKeys[key]);
+    log_info("  Keys:");
+    for( var key in db__sheetKeys ) log_info("    Key:"+key+" ID:"+db__sheetKeys[key]);
     
-    log$info("  Sheets:");
-    for( var i in db$_sheetData ) log$info("    ID:"+i+" Sheet:"+db$_sheetData[i]);
+    log_info("  Sheets:");
+    for( var i in db__sheetData ) log_info("    ID:"+i+" Sheet:"+db__sheetData[i]);
 });

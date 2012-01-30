@@ -12,7 +12,7 @@ function resetUnit( unit, sheet ){
     if( neko.isDef(unit.transport) ) delete unit.transport;
 }
 
-function objects$isTransporter( unit ){
+function objects_isTransporter( unit ){
     if( TYPED );
     
     return typeof unit !== 'undefined';
@@ -61,7 +61,7 @@ function resetPlayer( player ){
 /**
  * true if at least two players alive, that are not members of the same team.
  */
-function game$atLeastTwoEnemyPlayerAlive(){
+function game_atLeastTwoEnemyPlayerAlive(){
     var r = null;
     for( var i = 0; i < map.players.length ; i++ ){
       if( r == null ) r = map.players[i].team;
@@ -70,50 +70,50 @@ function game$atLeastTwoEnemyPlayerAlive(){
     return false;
 }
 
-function objects$isPlayerAlive( player ){
-    return player.team !== game$round$playerLoosed;
+function objects_isPlayerAlive( player ){
+    return player.team !== game_round_playerLoosed;
 }
 
-var game$round$playerLoosed = -1;
+var game_round_playerLoosed = -1;
 
 
 /* ************************************************** */
 /* map and game model with all necessary map objects. */
 /* ************************************************** */
 
-var game$map = [];
-var game$map$width = 0;
-var game$map$height = 0;
-var game$map$properties = {};   // object<position,property>
-var game$map$units = {};        // object<position,unit>
+var game_map = [];
+var game_map_width = 0;
+var game_map_height = 0;
+var game_map_properties = {};   // object<position,property>
+var game_map_units = {};        // object<position,unit>
 
-var game$round$day = null;
-var game$round$turn = null;
-var game$round$players = null;
-var game$round$leftActors = null;
-var game$round$activePlayerID = null;
+var game_round_day = null;
+var game_round_turn = null;
+var game_round_players = null;
+var game_round_leftActors = null;
+var game_round_activePlayerID = null;
 
 /**
  * Loads a map file and saves it's content into the map objects.
  */
-function game$loadMap( data ){
+function game_loadMap( data ){
     
-    game$map$height = data.height;
-    game$map$width = data.width;
+    game_map_height = data.height;
+    game_map_width = data.width;
 
     // set player data
 
     // fill map with filler
     var filler = data.filler;
-    collection$eachInRange(game$map,0,data.width*data.height,function(el,index,array){ 
+    collection_eachInRange(game_map,0,data.width*data.height,function(el,index,array){ 
         array[index] = filler;
     });
     
     // place tiles
-    collection$each(data.tiles, function( tileDesc ){
+    collection_each(data.tiles, function( tileDesc ){
         if( TYPED ) expect(tileDesc.x,tileDesc.y).isInteger().ge(0);
         
-        game$map[tileDesc.y*game$map$width+tileDesc.x] = tileDesc.id;
+        game_map[tileDesc.y*game_map_width+tileDesc.x] = tileDesc.id;
         
         if( tileDesc.owner ){
             if( TYPED ) expect(tileDesc.owner).isInteger().ge(0);
@@ -121,25 +121,25 @@ function game$loadMap( data ){
     });
     
     // reset metadata 
-    game$round$day = 0;
-    game$round$turn = 0;
-    game$round$activePlayerID = 0;
+    game_round_day = 0;
+    game_round_turn = 0;
+    game_round_activePlayerID = 0;
 }
 
-function game$indexToPosX( index ){
-    return index % game$map$width;
+function game_indexToPosX( index ){
+    return index % game_map_width;
 }
 
-function game$indexToPosY( index ){
-    return (index -(index % game$map$width)) / game$map$height;
+function game_indexToPosY( index ){
+    return (index -(index % game_map_width)) / game_map_height;
 }
 
-function game$distance( tileA, tileB ){ //@TODO support units as argument too
+function game_distance( tileA, tileB ){ //@TODO support units as argument too
     
-    var x1 = game$indexToPosX(tileA);
-    var y1 = game$indexToPosY(tileA);
-    var x2 = game$indexToPosX(tileB);
-    var y2 = game$indexToPosY(tileB);
+    var x1 = game_indexToPosX(tileA);
+    var y1 = game_indexToPosY(tileA);
+    var x2 = game_indexToPosX(tileB);
+    var y2 = game_indexToPosY(tileB);
     
     return Math.abs(x1-x2)+Math.abs(y1-y2);
 }
@@ -148,26 +148,26 @@ function game$distance( tileA, tileB ){ //@TODO support units as argument too
 /* SYSTEM EVENTS
  ****************/
 
-event$listen("saveGame",function(){
+event_listen("saveGame",function(){
     // not implemented yet
 });
 
-event$listen("loadGame",function(){
+event_listen("loadGame",function(){
     // not implemented yet
 });
 
-event$listen("debug_printStatus", function(){
+event_listen("debug_printStatus", function(){
     
-    log$info("==Map==");
-    log$info("Map-Width:"+game$map$width);
-    log$info("Map-Height:"+game$map$height);
-    log$info("Tiledata:"+game$map);
-    log$info("Property:"+game$map$properties);
-    log$info("Units:"+game$map$units);
+    log_info("==Map==");
+    log_info("Map-Width:"+game_map_width);
+    log_info("Map-Height:"+game_map_height);
+    log_info("Tiledata:"+game_map);
+    log_info("Property:"+game_map_properties);
+    log_info("Units:"+game_map_units);
     
-    log$info("==Game Round==");
-    log$info("Day:"+game$round$day);
-    log$info("Turn:"+game$round$turn);
-    log$info("Active Player:"+game$round$activePlayerID);
-    log$info("Left Actors:"+game$round$leftActors);
+    log_info("==Game Round==");
+    log_info("Day:"+game_round_day);
+    log_info("Turn:"+game_round_turn);
+    log_info("Active Player:"+game_round_activePlayerID);
+    log_info("Left Actors:"+game_round_leftActors);
 });
