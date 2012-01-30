@@ -768,10 +768,12 @@
             };
         </script>
         
+        
         <!-- NEKO SCRIPTS -->
         <script type="text/javascript" src="neko.js"></script>
         <script type="text/javascript" src="collection.js"></script>
         <script type="text/javascript" src="events.js"></script>
+        <script type="text/javascript" src="objects.js"></script>
         <!-- END OF NEKO SCRIPTS -->
         
         <!-- CWT GAME SCRIPTS -->
@@ -780,6 +782,7 @@
         <script type="text/javascript" src="kernel.js"></script>
         <!-- END OF CWT GAME SCRIPTS -->
         
+        <script type="text/javascript" src="log4js-lib.js"></script>
         
         <!-- 
           TARGET BETA 1
@@ -788,6 +791,20 @@
             - moving of units
         -->
         <script type="text/javascript">
+            
+            var log = log4javascript.getLogger("main");
+			var appender = new log4javascript.InPageAppender();
+			log.addAppender(appender);
+            
+            log$info = function(msg){
+                log.info(msg);
+            }
+            log$warn = function(msg){
+                log.warn(msg);
+            }
+            log$error = function(msg){
+                log.error(msg);
+            }
             
             var targetFPSdiffer = 500;
             var stop = false;
@@ -819,12 +836,18 @@
             // load map
             game$loadMap( testmap );
             
+            var u1 = { type:"INFANTRY" }
+            game$map$units[0] = u1;
+            
             // start loop
             mainLoop();
         </script>
     </head>
     <body>
-      
+      <div id="debugIn">
+        <input id="evalIn"></input>
+        <input type="button" value='Parse' onclick='eval( document.getElementById(id).value );' />
+      </div>
       <div id="app_draw_canv">
         <canvas id="canvasObj" width="1024" height="768" style="position:absolute;left:0px;top:0px;z-index:2">
           Fallback-Inhalt

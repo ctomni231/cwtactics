@@ -99,7 +99,9 @@ function db$_registerId( sheetId ){
 function db$sheet( id ){
     
     // get int id from data object if necessary
-    if( typeof id === 'sring' ) id = db$_sheetKeys[id];
+    if( typeof id === 'string' ){
+	 id = db$_sheetKeys[id];
+    }
     
     if( TYPED ) expect(id).isInteger();
     if( DEBUG ){

@@ -12,17 +12,16 @@ function objects$canUse( player, object ){
 }
 
 
-
-
 /* ************** */
 /*  Move Service  */
 /* ************** */
 
-var move$way = [];
-var move$mover = null;
-var move$startTile = null;
-var move$leftMovePoints = 0;
-var move$movedata = {};
+// move will be directly init by client with movearray + moveunit
+//var move$way = [];
+//var move$mover = null;
+//var move$startTile = null;
+//var move$leftMovePoints = 0;
+//var move$movedata = {};
 
 /**
  * Prepares the internal move way data for a new move command by a user.
@@ -39,7 +38,7 @@ function move$moveMap( unit ){
     */
    
     // generate move map
-    var mvSheet = db$sheet( db$sheet( unit.type ).movetype );
+    var mvSheet = db$sheet( db$sheet( unit.type ).moveType );
     
     var curFuel;
     var movedata = {
@@ -54,6 +53,8 @@ function move$moveMap( unit ){
         
         tmpTile = tmpStack.pop();
         
+        if( DEBUG ) log$info("receiving neighbours of "+tmpTile );
+        
         // fill neighbour tiles
         /* x-1 */ tmpStack2[0] = (tmpTile%game$map$width > 0)? tmpTile-1 : null;
         /* x+1 */ tmpStack2[1] = (tmpTile%game$map$width < game$map$width-1 )? tmpTile+1 : null;
@@ -65,6 +66,8 @@ function move$moveMap( unit ){
             
             if( tmpStack2[i] != null ){
                 
+                if( DEBUG ) log$info("checking costs of move from "+tmpTile+" to "+tmpStack2[i] );
+                
                 // neighbour exists, check it
                 curFuel = movedata[ tmpTile ] - mvSheet.costs[ game$map[ tmpStack2[i] ] ];
                 
@@ -74,6 +77,10 @@ function move$moveMap( unit ){
                     // set only if the tile is not in the movedata or the current left points are smaller than the
                     // left points from move from tmpTile to the tile 
                     if( typeof movedata[ tmpStack2[i] ] === 'undefined' || movedata[ tmpStack2[i] ] < curFuel ){
+                        
+                        if( DEBUG ) log$info("the move over "+tmpTile+" is the best choice to move from "+start+
+                                                                                                 " to "+tmpStack2[i] );
+                        
                         tmpStack.push( tmpStack2[i] );
                     }
                 }
@@ -94,6 +101,18 @@ function move$moveMap( unit ){
 
 function move$calculateWay( start, end ){
     
+    //PROBLEM: our map is an array with one dimension, astar expects an array with two dimensions
+    //SOL: 1. change astar library
+    //     2. change cwt model
+    
+    // a-star search
+    astar.search( null , start, end, move$_AStarHeuristic );
+}
+
+function move$_AStarHeuristic(){ // maybe alter astar for disabled ways
+    // calc movepoints  
+    // if kind of wall ( not move able ), return 999999
+    // own unit or visible allied/enemy, return 999999
 }
 
 function move$canMoveToInOneTurn( unit, start, end ){
@@ -109,13 +128,16 @@ function move$canMoveToInOneTurn( unit, start, end ){
     return move$way.length > 0;
 }
 
-function move$moveUnit( moveway ){
+function move$moveUnit( unit, moveway ){
     
     if( DEBUG ) log$info("moving "+move$mover);
     if( DEBUG ){
-        expect( move$mover ).not.isNull();
+        //expect( move$mover ).not.isNull();
         expect( moveway ).isArray().size.greaterThen(1);
     }
+    
+    // check moveway 
+    if( move$calculateWay( moveway[0], moveway[ moveway.length -1 ]) == 0 ) throw Error("illegal move way");
     
     //@TODO break moveway if enemy unit is in way [@WAITS fog system]
     //@TODO refactor algorithm
