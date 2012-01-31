@@ -287,8 +287,10 @@ public class KeyPress {
     }
 
     /**
-     * Removes a key action pressed from the list
-     * @param keycode The key to be removed
+     * This function adds a key if it doesn't exist in the system, or removes
+     * a key if it already exists in the system
+     * @param type The type of key to add or remove from the system
+     * @param add Whether you want to add a key (T) or remove a key (F)
      */
     private static void alterKeyPress(KeyIndex type, boolean add){
         if(conveyor == null)    clearAll();
