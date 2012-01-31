@@ -56,8 +56,7 @@ function model_resetPlayer( player ){
 
 // ----------- GAME AND MAP DATA ----------
 
-var game_map = [];
-var game_mapNew = collection_matrix( MAX_MAP_LENGTH );
+var game_map = collection_matrix( MAX_MAP_LENGTH );
 var game_map_width;
 var game_map_height;
 var game_map_properties = {};   // object<position,property>
@@ -82,15 +81,18 @@ function game_loadMap( data ){
 
     // fill map with filler
     var filler = data.filler;
-    collection_eachInRange(game_map,0,data.width*data.height,function(el,index,array){ 
-        array[index] = filler;
+    collection_each( game_map , function(el,x,y,matrix){
+        matrix[x][y] = filler;
     });
     
     // place tiles
     collection_each(data.tiles, function( tileDesc ){
-        if( TYPED ) expect(tileDesc.x,tileDesc.y).isInteger().ge(0);
+        if( DEBUG ){
+            expect(tileDesc.y).isInteger().ge(0);
+            expect(tileDesc.x).isInteger().ge(0);
+        }
         
-        game_map[tileDesc.y*game_map_width+tileDesc.x] = tileDesc.id;
+        game_map[tileDesc.x][tileDesc.y] = tileDesc.id;
         
         if( tileDesc.owner ){
             if( TYPED ) expect(tileDesc.owner).isInteger().ge(0);
@@ -114,20 +116,9 @@ function game_loadMap( data ){
     if( DEBUG ) log_info("loading map complete");
 }
 
-function game_indexToPosX( index ){
-    return index % game_map_width;
-}
-
-function game_indexToPosY( index ){
-    return (index -(index % game_map_width)) / game_map_height;
-}
-
-function game_distance( tileA, tileB ){ //@TODO support units as argument too
+function game_distance( objA, objB ){
     
-    var x1 = game_indexToPosX(tileA);
-    var y1 = game_indexToPosY(tileA);
-    var x2 = game_indexToPosX(tileB);
-    var y2 = game_indexToPosY(tileB);
+    // get positions
     
     return Math.abs(x1-x2)+Math.abs(y1-y2);
 }
