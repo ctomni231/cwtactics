@@ -1,5 +1,5 @@
 @author : ctomni231
-@version : 12.20.2011
+@version : 01.31.2012
 
 Hardcoded Features
 
@@ -14,21 +14,13 @@ JSlix Screen - Complete (JMain Runnable)
 [ ] = Not Started
 [?] = Unsure of Whether Option Will be Implemented
 
-JSR Todo List (Current)
+---------------------------
+JSR Notes and Current Goals
+---------------------------
 
-AndEngine Functionality (JSlix)               [?]
-Message Option Screen (JSlix)                 [#]
-JSON Parser (JSlix)                           [ ]
-JSON Writer (JSlix)                           [ ]
-JSON/XML Combined Parser (JSlix)              [?]
-JSOn/XML Combined Writer (JSlix)              [?]
-Message Prompt Screen (JSlix)                 [#]
-
-Moveable Cursor (MapDraw)                     [#]
-Stretch Cursor - Invention (tilex, tiley)     [ ]
-XML to JSON Conversion                        [ ]
-
-JSR Notes
+---
+CWT
+---
 
 Change the MapDraw class from MenuItem to MovingMenu for stretch
 [Do not make them MenuItems (Java Heap) Use the width and height
@@ -37,13 +29,56 @@ to average the screen weight] Priority: Low
 Work on conversion of XML documents to JSON. Followed by making the
 JSON parser and writer. Priority: Medium
 
+-----
+JSlix
+-----
+
 Must plan out the API for the 3 JSlix debug screens before moving ahead
 and creating them. Working on the Option Message Screen specifically. 
 Also need to work on the Prompt Screen directly after that. Priority: High
 
 Expanding JSlix to handle layouts, which will make the frame more versatile
 in handling multi-tasking applications. It is going to include this
-functionality for both Slick/Java Consoles & Applets. Priority: HOT
+functionality for both Slick/Java Consoles & Applets. Priority: Critical
+
+In order to add layouts to Applets, I'll have to redo the entire Applet
+class. I found out how to make Slick work exactly like normal Applets.
+Priority: HOT (Working)
+
+The JSlix system must load the natives from startup instead of forcing the
+natives to be loaded from the same folder. It'l make it easier to distribute
+the Slick version and cut down on bugs. Priority: High
+
+The Java API JTextfield needs to be added to the bottom of the screen in
+order to make it easier to deal with text entries into the system without
+having to do two separate Text Fields for TWL and Swing. Priority: High
+
+-------
+General
+-------
+
+Finishing all of this will open up a multitude of functionality and possibly
+solve most of the problems I have with the current system.
+
+JSR General Todo List (Current) [ ]
+
+Moveable Cursor (MapDraw)                     [#]
+Stretch Cursor - Invention (tilex, tiley)     [ ]
+XML to JSON Conversion                        [ ]
+
+JSlix Todo List (Current) [ ]
+
+AndEngine Functionality (JSlix)               [?]
+JSON Parser (JSlix)                           [ ]
+JSON Writer (JSlix)                           [ ]
+JSON/XML Combined Parser (JSlix)              [?]
+JSOn/XML Combined Writer (JSlix)              [?]
+Message Option Screen (JSlix)                 [#]
+Message Prompt Screen (JSlix)                 [#]
+Java2D Full Screen Implementation (JSlix)     [ ]
+Java Swing Textfield Implementation (JSlix)   [ ]
+Automatic Native loading (JSlix)              [ ]
+Slick in Java Applet Frame (JSlix)            [#]
 
 Phase 1 - Title Screen [*]
 
