@@ -30,12 +30,28 @@
 
 
 (function(exports){  
-  
+    
     /**
      * NekoScript syntax nodes.
      */
     var SYNTAX_NODES = {
-      
+        
+        RULE: [ "WHEN","CONDITION_BLOCK", "THEN", "ACTION_BLOCK" ],
+        
+        CONDITION_BLOCK: [ SYNTAX_NODES.CONDITION ],
+        
+        CONDITION: [ SYNTAX_NODES.OBJECT_PARAMETER, SYNTAX_NODES.COMPARATOR, SYNTAX_NODES.NUMBER ],
+        
+        COMPARATOR: [
+            [SYNTAX_NODES.LOWER,SYNTAX_NODES.LOWEREQ,SYNTAX_NODES.EQUALS,SYNTAX_NODES.GREATER,SYNTAX_NODES.GREATEREQ]
+        ],
+        
+        ACTION_BLOCK : [ SYNTAX_NODES.ACTION ],
+        
+        ACTION: [ SYNTAX_NODES.OBJECT_PARAMETER, ACTOR, NUMBER ],
+        
+        ACTOR: [ SYNTAX_NODES.ADD, SYNTAX_NODES.SUB, SYNTAX_NODES.MOD, SYNTAX_NODES.MUL, SYNTAX_NODES.DIV ],
+        
         WHEN:{
             after: [],
             expr:/WHEN/ 
@@ -138,6 +154,10 @@
 
         MOD:{
             expr:/\%=/
+        },
+        
+        DELIMITTER:{
+            expr:/;/
         }
     }
     var SYNTAX_VALUES = [];
@@ -234,6 +254,33 @@
 })( ( typeof exports !== 'undefined' )? exports:(window.NekoScript = {}) );
 
 
+// this tree produces following query plan
+//
+// 1. check unit.hp < 25
+//    if true:
+//     1. check unit.hp <= 10
+//         if true:
+//           1. check unit.ammo <= 2
+//              if true:
+//                  1. call unit.hp += 20
+//                  2. call unit.ammo += 2
+//     2. call unit.hp += 10
+//
+// the rule check plans are in interconnection to each other... this should prevent unnecessary checks that could
+// be solved implicit ( like if x < 10 then x < 5 must not be checked, its false )
+//
+// format: [ objectName, attributeName, value, actor, next]
+var test__soItCouldLookLike__RULETREE = [
+    ["unit","hp","25","lt"[
+        ["unit","hp","10","le",[
+                ["unit","ammo","2","le",[
+                        ["unit","hp","20","+=" ],
+                        ["unit","ammo","2","+=" ]
+                ]]
+        ]],
+        ["unit","hp","10","+=" ]
+    ]]
+]
 
 
 var _test = new NekoScript.KnowlegdeBase();
