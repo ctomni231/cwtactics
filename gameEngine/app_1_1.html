@@ -199,7 +199,7 @@
             var sel;
             while( cIndex < rule.length) {
                 
-                sel = rule.substring(cIndex,rule.length-1);
+                sel = rule.substring(cIndex,rule.length);
                 var found = false;
                 for( var i in SYNTAX_VALUES ){
                   console.log("search "+SYNTAX_VALUES[i]+" reg "+SYNTAX_NODES[SYNTAX_VALUES[i]].expr+" on "+sel);
