@@ -15,13 +15,20 @@ import java.awt.Color;
  */
 public class HelpHandler extends MovingMenu{
 
-    private MouseHelper helper;//Regulates the mouse focus for help text
-    private String logoPath;//Stores the path to the tiny question logo
-    private PixtureMap pixture;//This is used to help create font text pics
-    private Color theColor;//This stores the background color of the help box
-    private int counter;//Helps control the visibility of the help bar
-    private String helpText;//Helps regulate bugs in the help bar
-    private int textWidth;//The x-axis width of the help text
+    /** Regulates the mouse focus for help text */
+    private MouseHelper helper;
+    /** Stores the path to the tiny question logo */
+    private String logoPath;
+    /** This is used to help create font text pictures */
+    private PixtureMap pixture;
+    /** This stores the background colors of the help box */
+    private Color theColor;
+    /** Helps control the visibility of the help bar */
+    private int counter;
+    /** Helps regulate bugs in the help bar */
+    private String helpText;
+    /** The x-axis width of the help text */
+    private int textWidth;
 
     /**
      * This class displays a help bar on the top of the screen

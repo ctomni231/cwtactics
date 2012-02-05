@@ -20,20 +20,33 @@ import java.awt.Color;
  */
 public class ExitGUI extends MovingMenu{
 
-    public final int DELAY = 30;//The delay time of keyboard scrolling
-    public final int SCROLL_SPEED = 2;//How fast the menu scrolls
+    /** The delay time of keyboard scrolling */
+    public final int DELAY = 30;
+    /** How fast the menu scrolls */
+    public final int SCROLL_SPEED = 2;
 
-    private Color[] dfltColors;//Default colors for the letters
-    private Color[] chngColors;//Colors to change the letters to
-    private String[] exitData;//A list of text pretaining to the menu
-    private int sizex;//The width of the exit window
-    private int sizey;//The height of the exit window
-    private int x;//Holds the original screen width
-    private int y;//Holds the original screen height
-    private MouseHelper helper;//Regulates the mouse focus
-    private int change;//Tracks the menu change for the menu
-    private int[] colors;//Integer representation of the multple colors
-    private int keyCount;//This helps regulate scrolling for keyboard
+    /** Default colors for the letters */
+    private Color[] dfltColors;
+    /** Colors to change the letters to */
+    private Color[] chngColors;
+    /** A list of text that lays out the exit menu options */
+    private String[] exitData;
+    /** The width of the exit window */
+    private int sizex;
+    /** The height of the exit window */
+    private int sizey;
+    /** Holds the original screen width */
+    private int x;
+    /** Holds the original screen height */
+    private int y;
+    /** Regulates the mouse focus */
+    private MouseHelper helper;
+    /** Tracks the menu change for the menu */
+    private int change;
+    /** Integer representation of the multiple colors */
+    private int[] colors;
+    /** This helps regulate scrolling for keyboard */
+    private int keyCount;
 
     /**
      * This class displays an exit window with two options

@@ -22,20 +22,33 @@ import org.newdawn.slick.Graphics;
 
 public class MovingMenu extends MovingImage{
 
-    public final int REGULAR = 0;//MenuItem regular item index
-    public final int ROUND_BOX = 1;//MenuItem round box item index
-    public final int RECTANGLE = 2;//MenuItem rectangle item index
-    public final int RND_BORDER = 3;//MenuItem round border item index
-    public final int BORDER = 4;//ManuItem border item index
+    /** MenuItem regular item index */
+    public final int REGULAR = 0;
+    /** MenuItem round box item index */
+    public final int ROUND_BOX = 1;
+    /** MenuItem rectangle item index */
+    public final int RECTANGLE = 2;
+    /** MenuItem round border item index */
+    public final int RND_BORDER = 3;
+    /** MenuItem border item index */
+    public final int BORDER = 4;
 
-    protected MenuItem[] allItems;//All Items for this menu
-    private ArrayList<Integer> resetImage;//Helps better index images
-    public int select;//This highlights a menu item
-    private MenuItem item;//A temp item for storing various enhancements
-    private MenuItemPool itemObj;//This helps recycle item objects
-    private double sx;//A temp value for rescaling
-    private double sy;//A temp value for rescaling
-    protected ImgLibrary imgResize;//This holds all resized images
+    /** All Items for this menu */
+    protected MenuItem[] allItems;
+    /** Helps better index images */
+    private ArrayList<Integer> resetImage;
+    /** This highlights a menu item */
+    public int select;
+    /** A temp item for storing various enhancements */
+    private MenuItem item;
+    /** This helps recycle item objects */
+    private MenuItemPool itemObj;
+    /** A temp value for x-axis rescaling */
+    private double sx;
+    /** A temp value for y-axis rescaling */
+    private double sy;
+    /** This holds all resized images */
+    protected ImgLibrary imgResize;
 
     /**
      * This class organizes a group of images into click-able boxes for

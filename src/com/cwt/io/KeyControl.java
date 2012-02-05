@@ -13,19 +13,22 @@ import com.cwt.system.jslix.KeyPress;
  *              <li>Radom, Alexander</li></ul>
  * @license Look into "LICENSE" file for further information
  * @version 10.28.10
+ * @todo TODO: Finish the commenting of this class and following classes.
  */
 public class KeyControl {
     /*
      * Keyboard values
      */
     public static enum Keys{
-        // action keys with values for keyboard keys
-        UP(200, 38), DOWN(208, 40),
-        LEFT(203, 37), RIGHT(205, 39), 
-        SELECT(44, 90),CANCEL(45, 88);
 
-        // key value of the key
+        /** Action keys with values for keyboard keys */
+        UP(200, 38), DOWN(208, 40), LEFT(203, 37), RIGHT(205, 39),
+                                                   SELECT(44, 90),
+                                                   CANCEL(45, 88);
+
+        /** The Slick2D value of a key */
         private int slick;
+        /** The Java2D value of a key */
         private int java;
 
         Keys(int slickVal, int javaVal){

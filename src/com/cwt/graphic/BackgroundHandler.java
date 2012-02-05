@@ -23,10 +23,14 @@ import org.newdawn.slick.Graphics;
  */
 public class BackgroundHandler implements ScreenSkeleton {
 
-    private ImgLibrary imgSort;//Stores the background images
-    private Random generator;//Helps select a random number
-    private int cursx;//Holds the current width of the displayed window
-    private int cursy;//Holds the current height of the displayed window
+    /** Stores the background images */
+    private ImgLibrary imgSort;
+    /** Helps select a random number */
+    private Random generator;
+    /** Holds the current width of the displayed window */
+    private int cursx;
+    /** Holds the current height of the displayed window */
+    private int cursy;
 
     /**
      * This holds a series of background images for CWT. The images are

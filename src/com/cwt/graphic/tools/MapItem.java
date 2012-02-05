@@ -11,11 +11,16 @@ package com.cwt.graphic.tools;
  */
 public class MapItem {
 
-    public int terrain;//This holds the terrain graphic data for the map
-    public int blank;//This holds the FOW graphic data for the map
-    public int connect;//This holds the connection graphic data for the map
-    public int unit;//This holds the unit graphic data for the map
-    public boolean change;//This holds whether this item needs to be edited
+    /** This holds the terrain graphic data for the map */
+    public int terrain;
+    /** This holds the FOW graphic data for the map */
+    public int blank;
+    /** This holds the connection graphic data for the map */
+    public int connect;
+    /** This holds the unit graphic data for the map */
+    public int unit;
+    /** This holds whether this item needs to be edited */
+    public boolean change;
 
     /**
      * This class stores all the items needed to draw tiles within the map.

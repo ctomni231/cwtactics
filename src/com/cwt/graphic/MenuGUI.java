@@ -18,26 +18,45 @@ import java.awt.Color;
 
 public class MenuGUI extends VerticalMenu{
 
-    public final int MAX_ITEMS = 8;//The maximum items a vertical menu has
-    public final int DELAY = 30;//The delay time of keyboard scrolling
-    public final int SCROLL_SPEED = 2;//How fast the menu scrolls
+    /** The maximum items a vertical menu has */
+    public final int MAX_ITEMS = 8;
+    /** The delay time of keyboard scrolling */
+    public final int DELAY = 30;
+    /** How fast the menu scrolls */
+    public final int SCROLL_SPEED = 2;
 
-    private Color[] dfltColors;//Default colors for the letters
-    private Color[] chngColors;//Colors to change the letters to
-    private String arrow;//Holds the path to the arrow picture file
-    private int[] selectID;//Holds information related to menu selections
-    private String[] option;//Holds information regarding the menu options
-    private String[] text;//Holds information related to scrolling text
-    private String[] help;//Holds information related to the help bar text
-    private int[] colors;//Integer representation of the multiple colors
-    private int change;//Holds whether the menu selection has changed
-    private MouseHelper helper;//Regulates the mouse focus
-    private int menuColumn;//Helps regulate the justify of the menu
-    private int menuChange;//Holds whether a justify column has changed
-    private int factions;//Holds the max menu faction colors
-    private int curFaction;//Holds whether a menu faction color changed
-    private int back;//Holds the menu option selected when you click back
-    private int keyCount;//This helps regulate scrolling for keyboard
+    /** Default colors for the letters */
+    private Color[] dfltColors;
+    /** Colors to change the letters to */
+    private Color[] chngColors;
+    /** Holds the path to the arrow picture file */
+    private String arrow;
+    /** Holds information related to menu selections */
+    private int[] selectID;
+    /** Holds information regarding the menu options */
+    private String[] option;
+    /** Holds information related to scrolling text */
+    private String[] text;
+    /** Holds information related to the help bar text */
+    private String[] help;
+    /** Integer representation of the multiple colors */
+    private int[] colors;
+    /** Holds whether the menu selection has changed */
+    private int change;
+    /** Regulates the mouse focus */
+    private MouseHelper helper;
+    /** Helps regulate the justify of the menu */
+    private int menuColumn;
+    /** Holds whether a justify column has changed */
+    private int menuChange;
+    /** Holds the max menu faction colors */
+    private int factions;
+    /** Holds whether a menu faction color changed */
+    private int curFaction;
+    /** Holds the menu option selected when you click back */
+    private int back;
+    /** This helps regulate scrolling for keyboard */
+    private int keyCount;
 
     /**
      * This class displays a main menu and is the main class for controlling

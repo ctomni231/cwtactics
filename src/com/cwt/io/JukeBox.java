@@ -14,9 +14,7 @@ import com.cwt.system.jslix.tools.MusicLibrary;
  */
 public class JukeBox {
 
-    /**
-     * This holds the music player used for the JukeBox
-     */
+    /** This holds the music player used for the JukeBox */
     private static MusicLibrary player = new MusicLibrary();
 
     /**

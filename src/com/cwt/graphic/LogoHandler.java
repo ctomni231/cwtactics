@@ -23,23 +23,39 @@ import org.newdawn.slick.Graphics;
  */
 public class LogoHandler implements ScreenSkeleton{
 
-    public final int SCROLL_SPEED = 2;//How fast the menu scrolls
+    /** How fast the menu scrolls */
+    public final int SCROLL_SPEED = 2;
 
-    private MovingImage pic;//This holds the Main Logo image
-    private MovingImage logo;//This holds the Custom Wars main logo
-    private MovingImage alt;//This holds the alternate logo image
-    private MovingImage info;//This holds the information of the menu
-    private TitleGUI load;//This holds the loading symbol
-    private ScrollImage scroll;//This holds the bottom scrolling text
-    private HelpHandler help;//This holds the help bar
-    private String helpPath;//This holds the path to the help logo image
-    private int sizex;//This holds the current width of the screen
-    private int sizey;//This holds the current height of the screen
-    private String[] cool;//This combines the values pertaining to the text
-    private int[] colors;//This holds a group of colors for color changes
-    private ImgLibrary imgLib;//This holds an imgLibrary for changing colors
-    private MouseHelper helper;//Regulates the delay of the loading logo
-    private int counter;//Helps control the visibility of the loading logo
+    /** This holds the Main Logo image */
+    private MovingImage pic;
+    /** This holds the Custom Wars main logo */
+    private MovingImage logo;
+    /** This holds the alternate logo image */
+    private MovingImage alt;
+    /** This holds the information of the menu */
+    private MovingImage info;
+    /** This holds the loading symbol */
+    private TitleGUI load;
+    /** This holds the bottom scrolling text */
+    private ScrollImage scroll;
+    /** This holds the help bar */
+    private HelpHandler help;
+    /** This holds the path to the help logo image */
+    private String helpPath;
+    /** This holds the current width of the screen */
+    private int sizex;
+    /** This holds the current height of the screen */
+    private int sizey;
+    /** This combines the values pertaining to the text */
+    private String[] cool;
+    /** This holds a group of colors for color changes */
+    private int[] colors;
+    /** This holds an imgLibrary for changing colors */
+    private ImgLibrary imgLib;
+    /** Regulates the delay of the loading logo */
+    private MouseHelper helper;
+    /** Helps control the visibility of the loading logo */
+    private int counter;
 
     /**
      * This class handles all moving elements within the title screen of the

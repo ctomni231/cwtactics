@@ -21,9 +21,12 @@ import org.newdawn.slick.Graphics;
 
 public class TitleGUI extends MovingImage {
 
-    private double counter;//This controls the opacity of the image
-    private boolean help;//This controls whether the help is available or not
-    private int[] colors;//Integer representation of the multple colors
+    /** This controls the opacity of the image */
+    private double counter;
+    /** This controls whether the help is available or not */
+    private boolean help;
+    /** Hex Integer representation of the multiple colors */
+    private int[] colors;
 
     /**
      * This class displays a flashing start logo and controls the help bar
