@@ -1,3 +1,50 @@
+(function(){
+    
+    var moduleCache = {};
+    
+    needDepedency = function( depID ){
+    
+    }
+    
+})();
+
+exports.run = function(){};
+
+var dropinRequire	= function(moduleId){
+	if( moduleId in dropinRequire.cache )	return dropinRequire.cache[moduleId]
+	var req	= new XMLHttpRequest();
+	req.open('GET', moduleId, false);
+	req.send(null);
+	if(req.status != 200)	throw new Error(req)
+	var txt	= dropinRequire.prefix + req.responseText + dropinRequire.suffix;
+	return dropinRequire.cache[moduleId] = eval(txt);
+}
+dropinRequire.cache	= {};
+dropinRequire.prefix	= "(function(){"+
+			"	var _module	= { exports: {} };"+
+			"	var _require	= function(moduleId){"+
+			"		return dropinRequire(moduleId)"+
+			"	};"+
+			"	(function(module, exports, require){";
+			// Here goes the javascript with commonjs modules
+dropinRequire.suffix	= "	})(_module, _module.exports, _require);"+
+			"	return _module.exports;"+
+			"})();";
+
+// to handle the replacement of "require" function
+// - TODO do i need a global
+dropinRequire.prevRequire	= require;
+/**
+ * dropinRequire.noConflict
+ * - attemps to make a jQuery-like noConflict
+ * - check and make it work
+*/
+dropinRequire.noConflict	= function(){	// no removeAll ?
+	require	= dropinRequire.prevRequire;
+	return dropinRequire;
+}
+var require	= dropinRequire;
+
 /* 
  * @MODULE EXPECTIONS
  * @DESC Functions to realise some basic expections checks... useful for BDD.
@@ -72,15 +119,14 @@ function neko_expect( value ){
 }
 
 // predefined matchers
-neko_expect_registerMatcher("isString", function(){ return typeof this.value === 'string'; },true);
-neko_expect_registerMatcher("isNumber", function(){ return typeof this.value === 'number'; },true);
-neko_expect_registerMatcher("isInteger", 
-    function(){ var n = this.value; return typeof n === 'number' && n%1 === 0; },true);
-neko_expect_registerMatcher("isPropertyOf", function( obj ){ return typeof obj[this.value] !== 'undefined'; },true);
-neko_expect_registerMatcher("ge", function(n){ return this.value >= n; },true,true);
-neko_expect_registerMatcher("gt", function(n){ return this.value > n; },true,true);
-neko_expect_registerMatcher("lt", function(n){ return this.value < n; },true,true);
-neko_expect_registerMatcher("le", function(n){ return this.value <= n; },true,true);
+neko_expect_registerMatcher("isString", function(){return typeof this.value === 'string';},true);
+neko_expect_registerMatcher("isNumber", function(){return typeof this.value === 'number';},true);
+neko_expect_registerMatcher("isInteger", function(){var n = this.value;return typeof n === 'number' && n%1 === 0;},true);
+neko_expect_registerMatcher("isPropertyOf", function( obj ){return typeof obj[this.value] !== 'undefined';},true);
+neko_expect_registerMatcher("ge", function(n){return this.value >= n;},true,true);
+neko_expect_registerMatcher("gt", function(n){return this.value > n;},true,true);
+neko_expect_registerMatcher("lt", function(n){return this.value < n;},true,true);
+neko_expect_registerMatcher("le", function(n){return this.value <= n;},true,true);
 
 
 /* 
@@ -119,14 +165,35 @@ function log_error( msg ){
  * @SINCE 31.01.12
  */
 
+var neko_structs = {};
+
 function neko_structObject( structName ){
-    if( DEBUG ) expect( structName ).isString().size.gt(0);
+    if( DEBUG ){
+        expect( structName ).isString().size.gt(0);
+        expect( structName ).not.isPropertyOf( neko_structs );
+        
+        // new way
+        expect( structName, { 
+            type:'string', 
+            minLength:1, 
+            notPropertyOf:neko_structs 
+        });
+    }
+   
+    // save cache 
+    if( !neko_structs[structName] ) neko_structs[structName] = structName;
     
-    return {__struct__ : structName};
+    return { 
+        __struct__ : structName 
+    };
+}
+
+function neko_isStruct( obj, struct ){
+    
 }
 
 // some matchers
-neko_expect_registerMatcher("isStruct", function( name ){ return this.value.__struct__ === name; }, true );
+neko_expect_registerMatcher("isStruct", function( name ){return this.value.__struct__ === name;}, true );
 
 /**
  * Grabs all namespace elements from the root node.

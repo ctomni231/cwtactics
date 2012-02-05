@@ -11,7 +11,6 @@ function objects_canUse( player, object ){
     return player === game_round.activePlayer && collection_contains(game_round.canAct,object);
 }
 
-
 /* ************** */
 /*  Move Service  */
 /* ************** */

@@ -56,10 +56,17 @@ function model_resetPlayer( player ){
 
 // ----------- GAME AND MAP DATA ----------
 
+// simple matrix, that holds all tiles 
+// maxtrix of tileSheet IDs
 var game_map = collection_matrix( MAX_MAP_LENGTH );
+
 var game_map_width;
 var game_map_height;
+
+// holds all property positions and property objects
 var game_map_properties = {};   // object<position,property>
+
+// holds all unit positions
 var game_map_units = {};        // object<position,unit>
 
 var game_round_day;
@@ -118,8 +125,15 @@ function game_loadMap( data ){
 
 function game_distance( objA, objB ){
     
-    // get positions
+    var x1,y1,x2,y2;
+    if( neko_isStruct(objA) === 'Unit' ){
+        
+    }
+    else if( neko_isStruct(objA) === 'Property' ){
+        
+    }
     
+    // get positions    
     return Math.abs(x1-x2)+Math.abs(y1-y2);
 }
 

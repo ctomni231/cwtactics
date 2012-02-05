@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<!--
+    CURRENT NO-VISIBLE TEST FILE FOR CWT GAME ENGINE.
+
+    TEST SYSTEM:
+        BLACKCAT: GOOGLE CHROME 16 ON MAC OSX 10.6
+
+    SINCE: 22.01.2012
+-->
+<html>
+    <head>
+    
+        <style>
+            body {
+                overflow:hidden;
+                background: #d7d7d7;
+                margin:0;
+                padding:0;
+            }
+        </style>
+
+        <!-- IPAD META DATA -->
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />        
+        <!-- END OF IPAD META DATA -->
+        
+        <script type="text/javascript">
+
+
+
+(function(exports){  
+  
+    /**
+     * NekoScript syntax nodes.
+     */
+    var SYNTAX_NODES = {
+      
+        WHEN:{
+            after: [],
+            expr:/WHEN/ 
+        },
+        
+        THEN:{
+            after: [],
+            expr:/THEN/ 
+        },
+
+        ON:{
+            after: [],
+            expr:/ON/ 
+        },
+
+        NUMBER:{
+            expr:/\d+(\.\d+)?/
+        },
+        
+        OBJECT_PARAMETER:{
+            after: [ ],
+            expr:/\w+(\.\w+)+/ 
+        },
+
+
+        /* Conditional operator */
+        /* ==================== */
+
+        WHITESPACE:{
+          expr:/ /
+        },
+        
+        WORD:{
+          expr:/\w+[.]{0}/
+        },
+
+        GREATER:{
+            after: [ ],
+            expr:/>/ 
+        },
+
+        GREATEREQ:{
+            after: [ ],
+            expr:/>=/ 
+        },
+
+        LOWER:{
+            after: [ ],
+            expr:/</ 
+        },
+
+        LOWEREQ:{
+            after: [ ],
+            expr:/<=/ 
+        },
+
+        NOT_EQUALS:{
+            after: [ ],
+            expr:/!=/ 
+        },
+
+        EQUALS:{
+            after: [ ],
+            expr:/\=\=/ 
+        },
+        
+        
+        /* Connectors */
+        /* ========== */
+
+        AND:{
+            after: [ ],
+            expr:/AND/ 
+        },
+
+        OR:{
+            after: [ ],
+            expr:/OR/ 
+        },
+
+
+        /* Operations */
+        /* ========== */
+
+        ADD:{
+            expr:/\+=/
+        },
+
+        SUB:{
+            expr:/\-=/
+        },
+
+        DIV:{
+            expr:/\/=/
+        },
+
+        MUL:{
+            expr:/\*=/
+        },
+
+        MOD:{
+            expr:/\%=/
+        }
+    }
+    var SYNTAX_VALUES = [];
+    for( var el in SYNTAX_NODES ){
+      if( SYNTAX_NODES.hasOwnProperty(el) ) SYNTAX_VALUES.push( el );
+    }
+    
+
+    // class Session
+    var Session = function( knowlegdeBase ){
+      this._kb = knowlegdeBase;
+      this._memory = {};
+    }
+    
+    // class Session API
+    Session.prototype = {
+
+        insert: function( name, object ){
+          if( this._memory.hasOwnProperty(name) ) 
+            throw Error("property "+name+" already exists in memory");
+          
+          this._memory[name] = object;
+        },
+
+        clear: function(){
+          // remove data ojects from memory
+          for( var el in this._memory ){
+            if( this._memory.hasOwnProperty(el) ) delete this._memory[el];
+          }
+        },
+        
+        remove: function( name ){
+          if( this._memory.hasOwnProperty(name) ) delete this._memory[name];
+        },
+
+        run: function(){
+          // run rule engine with the memory of the session
+        }
+    }
+
+    // class KnowlegdeBase
+    var KnowlegdeBase = function(){
+      this._ignored = {};
+      this._ruleTree = []; // tree
+      this._rules = {};  // object<ruleID,ruleNodes>
+    }
+
+    // class KnowlegdeBase API
+    KnowlegdeBase.prototype = {
+        
+        // PARSES A RULE AND PUTS THE NODES INTO THE DATA TREE
+        parseRule: function( rule ){
+            
+            // holds all parsed nodes, beginning with root (empty array)
+            var _nodeStack = [];
+            
+            var cIndex = 0;
+            var matching = []; // array of matching rules of the previous iteration
+            var sel;
+            while( cIndex < rule.length) {
+                
+                sel = rule.substring(cIndex,rule.length-1);
+                var found = false;
+                for( var i in SYNTAX_VALUES ){
+                  console.log("search "+SYNTAX_VALUES[i]+" reg "+SYNTAX_NODES[SYNTAX_VALUES[i]].expr+" on "+sel);
+                  var reg = SYNTAX_NODES[SYNTAX_VALUES[i]].expr;
+                  var index = sel.search(reg);
+                  if( index == 0 ){
+                    // found 
+                    found = true;
+                    console.log("found... i was "+cIndex);
+                    cIndex+= ((sel.match(reg))[0]).toString().length;
+                    if( SYNTAX_VALUES[i] !== "WHITESPACE") 
+                      matching.push( SYNTAX_VALUES[i]+" ("+((sel.match(reg))[0]).toString()+")" );
+                    console.log("... i is now "+cIndex+" --> "+((sel.match(reg))[0]).toString()  );
+                    break;
+                  }
+                  console.log("index is "+index);
+                }
+                
+                if( found ) continue;
+                break;
+            }
+            
+            console.log("FOUND:")
+            for( var i in matching ) console.log( matching[i] );
+        }
+    }
+
+    // export public objects
+    exports.KnowlegdeBase = KnowlegdeBase;
+    exports.Session = Session;
+
+})( ( typeof exports !== 'undefined' )? exports:(window.NekoScript = {}) );
+
+
+
+
+var _test = new NekoScript.KnowlegdeBase();
+
+// increase health if unit.hp is lower 25
+_test.parseRule("ON unitDamaged WHEN unit.hp < 25 THEN unit.hp += 20");
+
+        </script>
+    </head>
+    <body>
+    </body>
+</html>
