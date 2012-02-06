@@ -10,6 +10,7 @@ package com.cwt.map;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 02.13.11
+ * @todo TODO: Finish commenting this segment
  */
 
 public class ByteMap {

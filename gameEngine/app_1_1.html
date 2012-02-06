@@ -286,7 +286,9 @@ var test__soItCouldLookLike__RULETREE = [
 var _test = new NekoScript.KnowlegdeBase();
 
 // increase health if unit.hp is lower 25
-_test.parseRule("ON unitDamaged WHEN unit.hp < 25 THEN unit.hp += 20");
+//_test.parseRule("ON unitDamaged WHEN unit.hp < 25 THEN unit.hp += 20");
+// increases ammo if unit.hp is lower than 10
+_test.parseRule("ON unitDamaged WHEN unit.hp < 10 THEN unit.ammo += 1");
 
         </script>
     </head>

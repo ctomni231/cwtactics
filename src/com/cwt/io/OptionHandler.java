@@ -15,13 +15,14 @@ import com.cwt.system.jslix.tools.XML_Writer;
  */
 public class OptionHandler extends XML_Writer{
 
-    private Options options;//Holds the option XML Reader class
+    /** Holds the option XML Reader class */
+    private Options options;
 
     /**
      * This class holds the current options and deals with writing
      * and storing them to the users computer
-     * @param path
-     * @param filename
+     * @param path The path to the option file
+     * @param filename The name of the option file
      */
     public OptionHandler(String path, String filename){
         super(path, filename);

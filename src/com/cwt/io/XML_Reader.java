@@ -14,13 +14,9 @@ import com.cwt.system.jslix.tools.XML_Parser;
  */
 public class XML_Reader {
 
-    /**
-     * This variable helps handle and parse XML documents
-     */
+    /** This variable helps handle and parse XML documents */
     private static XML_Parser parser = new XML_Parser();
-    /**
-     * This variable regulates XML language conversions
-     */
+    /** This variable regulates XML language conversions */
     private static LangControl control = new LangControl();
 
     /**
@@ -98,7 +94,7 @@ public class XML_Reader {
     }
 
     /**
-     * THis function clears all the data stored in the parser
+     * This function clears all the data stored in the parser
      */
     public static void clear(){
         parser.clear();
