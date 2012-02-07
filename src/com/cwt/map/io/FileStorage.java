@@ -17,20 +17,32 @@ import static com.yasl.logging.Logging.*;
  */
 public class FileStorage{
 
-    public static final byte PATH = 0;//The path to the graphic file
-    public static final byte LOCX = 1;//The starting x-axis pixel location
-    public static final byte LOCY = 2;//The starting y-axis pixel location
-    public static final byte SIZEX = 3;//The x-axis pixel length to cut
-    public static final byte SIZEY = 4;//The y-axis pixel length to cut
-    public static final byte TSIZEX = 5;//The number of x-axis tiles
-    public static final byte TSIZEY = 6;//The number of y-axis tiles
-    public static final byte FLIP = 7;//Special flipping/rotating instructions
+    /** The path to the graphic file */
+    public static final byte PATH = 0;
+    /** The starting x-axis pixel location */
+    public static final byte LOCX = 1;
+    /** The starting y-axis pixel location */
+    public static final byte LOCY = 2;
+    /** The x-axis pixel length to cut */
+    public static final byte SIZEX = 3;
+    /** The y-axis pixel length to cut */
+    public static final byte SIZEY = 4;
+    /** The number of x-axis tiles */
+    public static final byte TSIZEX = 5;
+    /** The number of y-axis tiles */
+    public static final byte TSIZEY = 6;
+    /** Special flipping/rotating instructions */
+    public static final byte FLIP = 7;
 
-    private KeyStore[] locItems;//Stores the items in an integer format
-    private ListStore fileItems;//Stores the textual portion of the items
-    private RefStore refItems;//Stores references for the file items
+    /** Stores the items in an integer format */
+    private KeyStore[] locItems;
+    /** Stores the textual portion of the items */
+    private ListStore fileItems;
+    /** Stores references for the file items */
+    private RefStore refItems;
 
-    private KeyStore tempKey;//A temporary value for storing the items
+    /** A temporary value for storing the items */
+    private KeyStore tempKey;
 
     /**
      * This class takes the file section of the graphics and stores them

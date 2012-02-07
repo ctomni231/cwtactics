@@ -27,36 +27,63 @@ import static com.yasl.logging.Logging.*;
  */
 public class MapElement implements Runnable{
 
-    public static final byte CODE = 0;//Holds the type of object this is
-    public static final byte DATA = 1;//Holds the object naming attributes
-    public static final byte GRAPHIC = 2;//Holds the object type attributes
-    public static final byte FILE = 3;//Holds the object memory location
-    public static final byte TAGS = 4;//Holds the object type connection data
-    public static final byte RANDOM = 5;//Holds data for random objects
-    public static final byte COLOR = 6;//Holds the object default colors
-    public static final byte BLEND = 7;//Holds the object default blend colors
+    /** Holds the type of object this is */
+    public static final byte CODE = 0;
+    /** Holds the object naming attributes */
+    public static final byte DATA = 1;
+    /** Holds the object type attributes */
+    public static final byte GRAPHIC = 2;
+    /** Holds the object memory location */
+    public static final byte FILE = 3;
+    /** Holds the object type connection data */
+    public static final byte TAGS = 4;
+    /** Holds data for random objects */
+    public static final byte RANDOM = 5;
+    /** Holds the object default colors */
+    public static final byte COLOR = 6;
+    /** Holds the object default blend colors */
+    public static final byte BLEND = 7;
 
-    private boolean isApplet;//Holds whether this screen is an applet
-    private boolean ready;//Holds whether all the outside data is loaded
-    private Thread looper;//Holds the Thread associated with this object
+    /** Holds whether this screen is an Applet */
+    private boolean isApplet;
+    /** Holds whether all the outside data is loaded */
+    private boolean ready;
+    /** Holds the Thread associated with this object */
+    private Thread looper;
 
-    private int[] tagFill;//This stores all the tag elements used
-    protected KeyStore[] dataItems;//This is the main storage area for objects
-    private KeyStore item;//This temporarily assists the main storage area
-    private XML_Parser mapParse;//This is used to parse XML documents
-    private CodeStorage codeLib;//This stores all the code XML tag information
-    private FileStorage fileLib;//This stores all the file XML tag information
-    private GraphicStorage picLib;//This stores graphic XML tag information
-    private DataStorage dataLib;//This stores all the data XML tag information
-    private ColorStorage colorLib;//This stores the color XML tag information
-    private ColorStorage blendLib;//This stores the blend XML tag information
-    private TagStorage tagLib;//This stores the tag XML tag information
-    private LangStorage langLib;//This stores the language XML tag information
-    private DataStore randLib;//This stores the random object list
-    private DataStore animLib;//This stores the animation object list
+    /** This stores all the tag elements used */
+    private int[] tagFill;
+    /** This is the main storage area for objects */
+    protected KeyStore[] dataItems;
+    /** This temporarily assists the main storage area */
+    private KeyStore item;
+    /** This is used to parse XML documents */
+    private XML_Parser mapParse;
+    /** This stores all the code XML tag information */
+    private CodeStorage codeLib;
+    /** This stores all the file XML tag information */
+    private FileStorage fileLib;
+    /** This stores graphic XML tag information */
+    private GraphicStorage picLib;
+    /** This stores all the data XML tag information */
+    private DataStorage dataLib;
+    /** This stores the color XML tag information */
+    private ColorStorage colorLib;
+    /** This stores the blend XML tag information */
+    private ColorStorage blendLib;
+    /** This stores the tag XML tag information */
+    private TagStorage tagLib;
+    /** This stores the language XML tag information */
+    private LangStorage langLib;
+    /** This stores the random object list */
+    private DataStore randLib;
+    /** This stores the animation object list */
+    private DataStore animLib;
 
-    private int tagTrack;//This keeps track of the animation list
-    private int dataTrack;//This keeps track of the random object list
+    /** This keeps track of the animation list */
+    private int tagTrack;
+    /** This keeps track of the random object list */
+    private int dataTrack;
 
     /**
      * This class is responsible for all the object loading and storage of all
@@ -454,6 +481,7 @@ public class MapElement implements Runnable{
     /**
      * This function runs the loading in a separate thread
      */
+    @Override
     public void run() {
         try{
             decodeFiles();

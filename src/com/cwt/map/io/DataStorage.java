@@ -17,16 +17,24 @@ import static com.yasl.logging.Logging.*;
  */
 public class DataStorage {
 
-    public static final byte NAME = 0;//Holds the name reference to this object
-    public static final byte BASE = 1;//Holds the object grouping type
-    public static final byte TYPE = 2;//Holds which game this object belongs to
+    /** Holds the name reference to this object */
+    public static final byte NAME = 0;
+    /** Holds the object grouping type */
+    public static final byte BASE = 1;
+    /** Holds which game this object belongs to */
+    public static final byte TYPE = 2;
 
-    private KeyStore[] locItems;//Stores the items in an integer format
-    private ListStore[] dataItems;//Stores the textual portion of the items
-    private RefStore refItems;//Stores references for the data items
-    private LangControl locale;//Helps conversion of the language for items
+    /** Stores the items in an integer format */
+    private KeyStore[] locItems;
+    /** Stores the textual portion of the items */
+    private ListStore[] dataItems;
+    /** Stores references for the data items */
+    private RefStore refItems;
+    /** Helps conversion of the language for items */
+    private LangControl locale;
 
-    private KeyStore tempKey;//A temporary value for storing the items
+    /** A temporary value for storing the items */
+    private KeyStore tempKey;
 
     /**
      * This class takes the data section of the XML file and stores them

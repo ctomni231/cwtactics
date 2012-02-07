@@ -13,29 +13,55 @@ package com.cwt.map.io;
  */
 public class CodeStorage{
 
+    //----------------------------------------------
     //The valid data for the code section of the XML
-    public final byte TERRAIN = 0;//The Terrain object code
-    public final byte PROPERTY = 1;//The Property object code
-    public final byte UNIT = 2;//The Unit object code
-    public final byte COMMANDER = 3;//The code for Commander objects
-    public final byte CURSOR = 4;//The code for cursor objects
-    public final byte ARROW = 5;//The code for arrow objects
-    public final byte ATTRIBUTE = 6;//The code for attribute objects
+    //----------------------------------------------
 
+    /** The Terrain object code */
+    public final byte TERRAIN = 0;
+    /** The Property object code */
+    public final byte PROPERTY = 1;
+    /** The Unit object code */
+    public final byte UNIT = 2;
+    /** The code for Commander objects */
+    public final byte COMMANDER = 3;
+    /** The code for cursor objects */
+    public final byte CURSOR = 4;
+    /** The code for arrow objects */
+    public final byte ARROW = 5;
+    /** The code for attribute objects */
+    public final byte ATTRIBUTE = 6;
+
+    //----------------------------------------------
     //The valid data for the data section of the XML
-    public final byte DATA = 0;//The Data object code
-    public final byte COLOR = 1;//The Color object code
-    public final byte LANGUAGE = 2;//The Language object code
-    public final byte BLEND = 3;//The Blend color object code
+    //----------------------------------------------
 
+    /** The Data object code */
+    public final byte DATA = 0;
+    /** The Color object code */
+    public final byte COLOR = 1;
+    /** The Language object code */
+    public final byte LANGUAGE = 2;
+    /** The Blend color object code */
+    public final byte BLEND = 3;
+
+    //----------------------------------------------
     //The valid data for the type section of the XML
-    public final byte GRAPHIC = 0;//The Graphic object code
+    //----------------------------------------------
 
+    /** The Graphic object code */
+    public final byte GRAPHIC = 0;
+
+    //----------------------------------------------
     //The valid data for the file section of the XML
-    public final byte FILE = 0;//The File object code
-    public final byte TAG = 1;//The Tag object code
+    //----------------------------------------------
 
-    //The reference code for code, data, type, and file respectively
+    /** The File object code */
+    public final byte FILE = 0;
+    /** The Tag object code */
+    public final byte TAG = 1;
+
+    /** The reference code for code, data, type, and file respectively */
     private RefStore[] checkXML;
 
     /**

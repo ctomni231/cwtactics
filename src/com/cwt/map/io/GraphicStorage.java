@@ -16,16 +16,24 @@ import static com.yasl.logging.Logging.*;
  */
 public class GraphicStorage {
 
-    public static final byte WEATHER = 0;//Holds the weather of this object
-    public static final byte DIRECTION = 1;//Holds the direction of this object
-    public static final byte ARMY = 2;//Holds the army faction of this object
-    public static final byte SIZE = 3;//Holds the viewing size on an object
+    /** Holds the weather of this object */
+    public static final byte WEATHER = 0;
+    /** Holds the direction of this object */
+    public static final byte DIRECTION = 1;
+    /** Holds the army faction of this object */
+    public static final byte ARMY = 2;
+    /** Holds the viewing size on an object */
+    public static final byte SIZE = 3;
 
-    private KeyStore[] locItems;//Stores the items in an integer format
-    private ListStore[] graphicItems;//Stores the textual portion of the items
-    private RefStore refItems;//Stores references for the graphic items
+    /** Stores the items in an integer format */
+    private KeyStore[] locItems;
+    /** Stores the textual portion of the items */
+    private ListStore[] graphicItems;
+    /** Stores references for the graphic items */
+    private RefStore refItems;
 
-    private KeyStore tempKey;//A temporary value for storing the items
+    /** A temporary value for storing the items */
+    private KeyStore tempKey;
 
     /**
      * This class takes the graphic section of the XML file and stores them

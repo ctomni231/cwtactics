@@ -16,27 +16,46 @@ import static com.yasl.logging.Logging.*;
  */
 public class TagStorage{
 
-    public static final byte O = 0;//Holds the default place tag of this object
-    public static final byte OL = 1;//Holds the tile this object overlaps
-    public static final byte N = 2;//Holds the valid connection for North
-    public static final byte S = 3;//Holds the valid connection for South
-    public static final byte E = 4;//Holds the valid connection for East
-    public static final byte W = 5;//Holds the valid connection for West
-    public static final byte NE = 6;//Holds the valid connection for Northeast
-    public static final byte NW = 7;//Holds the valid connection for Northwest
-    public static final byte SE = 8;//Holds the valid connection for Southeast
-    public static final byte SW = 9;//Holds the valid connection for Southwest
-    public static final byte NR = 10;//Holds the rejected connection for North
-    public static final byte SR = 11;//Holds the rejected connection for South
-    public static final byte ER = 12;//Holds the rejected connection for East
-    public static final byte WR = 13;//Holds the rejected connection for West
+    /** Holds the default place tag of this object */
+    public static final byte O = 0;
+    /** Holds the tile this object overlaps */
+    public static final byte OL = 1;
+    /** Holds the valid connection for North */
+    public static final byte N = 2;
+    /** Holds the valid connection for South */
+    public static final byte S = 3;
+    /** Holds the valid connection for East */
+    public static final byte E = 4;
+    /** Holds the valid connection for West */
+    public static final byte W = 5;
+    /** Holds the valid connection for Northeast */
+    public static final byte NE = 6;
+    /** Holds the valid connection for Northwest */
+    public static final byte NW = 7;
+    /** Holds the valid connection for Southeast */
+    public static final byte SE = 8;
+    /** Holds the valid connection for Southwest */
+    public static final byte SW = 9;
+    /** Holds the rejected connection for North */
+    public static final byte NR = 10;
+    /** Holds the rejected connection for South */
+    public static final byte SR = 11;
+    /** Holds the rejected connection for East */
+    public static final byte ER = 12;
+    /** Holds the rejected connection for West */
+    public static final byte WR = 13;
 
-    private KeyStore[] tagItems;//This holds the individual connections
-    private DataStore multItems;//This holds multiple tag for each connection
-    private ListStore tagNames;//This holds the connection name references
-    private RefStore ref;//This holds valid connection references
+    /** This holds the individual connections */
+    private KeyStore[] tagItems;
+    /** This holds multiple tag for each connection */
+    private DataStore multItems;
+    /** This holds the connection name references */
+    private ListStore tagNames;
+    /** This holds valid connection references */
+    private RefStore ref;
 
-    private KeyStore tempKey;//This holds temporary connection values
+    /** This holds temporary connection values */
+    private KeyStore tempKey;
 
     /**
      * This class deals with organizing the tag connections for every object.

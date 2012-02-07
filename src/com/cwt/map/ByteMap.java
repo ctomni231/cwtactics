@@ -10,13 +10,14 @@ package com.cwt.map;
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 02.13.11
- * @todo TODO: Finish commenting this segment
  */
 
 public class ByteMap {
 
-    public final int MAX_DATA = 4;//The amount of data to be stored
-    private byte[] data;//An array that organizes the data
+    /** The amount of data to be stored */
+    public final int MAX_DATA = 4;
+    /** An array that organizes the data */
+    private byte[] data;
 
     /**
      * This class stores and retrieves data from the integer data type

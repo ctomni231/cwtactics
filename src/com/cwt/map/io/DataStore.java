@@ -12,7 +12,8 @@ package com.cwt.map.io;
  */
 public class DataStore {
 
-    private int[][] dataItems;//This holds the group of integer data
+    /** This holds the group of integer data */
+    private int[][] dataItems;
 
     /**
      * This adds a new Layer to add data to

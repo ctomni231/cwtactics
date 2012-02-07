@@ -15,8 +15,10 @@ import com.cwt.map.PixAnimate;
  */
 public class MapStorage {
 
-    private int[] terrain;//Holds a terrain list of the last parameter group.
-    private int[] cursor;//Holds a cursor list of the last parameter group.
+    /** Holds a terrain list of the last parameter group */
+    private int[] terrain;
+    /** Holds a cursor list of the last parameter group */
+    private int[] cursor;
 
     /**
      * The Map Storage class creates lists of objects set by parameters.

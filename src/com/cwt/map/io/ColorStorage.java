@@ -16,18 +16,29 @@ import static com.yasl.logging.Logging.*;
  */
 public class ColorStorage {
 
-    public final int BASE = 255;//Holds the default value for the colors
-    public final byte HEX = 0;//Holds the Hexidecimal reference value
-    public final byte RED = 1;//Holds the Red reference value
-    public final byte GREEN = 2;//Holds the Green reference value
-    public final byte BLUE = 3;//Holds the Blue reference value
-    public final byte ALPHA = 4;//Holds the Alpha reference value
-    public final byte END = 5;//Holds the end reference value
+    /** Holds the default value for the colors */
+    public final int BASE = 255;
+    /** Holds the Hexadecimal reference value */
+    public final byte HEX = 0;
+    /** Holds the Red reference value */
+    public final byte RED = 1;
+    /** Holds the Green reference value */
+    public final byte GREEN = 2;
+    /** Holds the Blue reference value */
+    public final byte BLUE = 3;
+    /** Holds the Alpha reference value */
+    public final byte ALPHA = 4;
+    /** Holds the end reference value */
+    public final byte END = 5;
 
-    private RefStore refItems;//Stores references for the file items
-    private DataStore colorItems;//Stores the color items
-    private KeyStore tempKey;//Stores the temporary numbers for the values
-    private boolean colorStore;//Stores whether reference should be stored
+    /** Stores references for the file items */
+    private RefStore refItems;
+    /** Stores the color items */
+    private DataStore colorItems;
+    /** Stores the temporary numbers for the values */
+    private KeyStore tempKey;
+    /** Stores whether reference should be stored */
+    private boolean colorStore;
 
     /**
      * This class holds and organizes the default colors for the map
