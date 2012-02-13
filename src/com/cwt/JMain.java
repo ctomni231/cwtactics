@@ -16,11 +16,11 @@ public class JMain extends Slix{
 	
     private static final long serialVersionUID = 2452945053572843636L;
 
-    //Title of the game
+    /** Title of the game */
     public static String GAME_TITLE = "Custom Wars Tactics Pre-Alpha 0.6";
-    //Width of the window normal
+    /** Width of the window normal */
     public final static int GAME_WIDTH = 640; //480, 640
-    //Height of the window normal
+    /** Height of the window normal */
     public final static int GAME_HEIGHT = 480; //320, 480
 
     /**

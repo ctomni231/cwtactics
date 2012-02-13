@@ -10,7 +10,7 @@ import java.awt.Image;
  *
  * This class was made to down size the amount of times I have to
  * make a whole new library in order to store and draw text pictures.
- * It also contains tools for cutting images
+ * It also contains tools for cutting images.
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
@@ -18,8 +18,10 @@ import java.awt.Image;
  */
 public class TextPix {
 
-    private static String txtPath;//The path to the alphabet text
-    private static String numPath;//The path to the number text
+    /** The path to the alphabet text */
+    private static String txtPath;
+    /** The path to the number text */
+    private static String numPath;
 
     /**
      * This function sets the path to the text

@@ -18,20 +18,31 @@ import org.newdawn.slick.Graphics;
  */
 public class MapDraw extends MovingMenu implements ScreenSkeleton{
 
-    public final int BASE = PixAnimate.BASE;//Holds the default base value
+    /** Holds the default base value */
+    public final int BASE = PixAnimate.BASE;
 
-    public final int MAP_X = 30;//Default x-axis size for editor maps
-    public final int MAP_Y = 20;//Default y-axis size for editor maps
+    /** Default x-axis size for editor maps */
+    public final int MAP_X = 30;
+    /** Default y-axis size for editor maps */
+    public final int MAP_Y = 20;
 
-    private int mapsx;//The current x-axis tile width of the map
-    private int mapsy;//The current y-axis tile height of the map
-    private MapItem[][] drawMap;//The current map drawn to the screen
+    /** The current x-axis tile width of the map */
+    private int mapsx;
+    /** The current y-axis tile height of the map */
+    private int mapsy;
+    /** The current map drawn to the screen */
+    private MapItem[][] drawMap;
     
-    private MapCursor cursor;//The current cursor for the map
-    private double scale;//Holds the scale of currently drawn tiles
-    private int cursorx;//The tile x-axis location of the cursor
-    private int cursory;//The tile y-axis location of the cursor
-    private boolean stretch;//Holds whether the map grows to screen size
+    /** The current cursor for the map */
+    private MapCursor cursor;
+    /** Holds the scale of currently drawn tiles */
+    private double scale;
+    /** The tile x-axis location of the cursor */
+    private int cursorx;
+    /** The tile y-axis location of the cursor */
+    private int cursory;
+    /** Holds whether the map grows to screen size */
+    private boolean stretch;
 
     /**
      * This class helps draw the map to the screen using a floating map. It
@@ -52,7 +63,14 @@ public class MapDraw extends MovingMenu implements ScreenSkeleton{
         stretch = false;
         resetMap();
     }
-    
+
+    /**
+     * This function updates all the items of the map and the map cursor
+     * @param width The current width of the screen
+     * @param height The current height of the screen
+     * @param sysTime The current time in milliseconds
+     * @param mouseScroll The mouse scroll wheel actions
+     */
     @Override
     public void update(int width, int height, int sysTime, int mouseScroll){
         super.update(width, height, sysTime, mouseScroll);
@@ -80,6 +98,11 @@ public class MapDraw extends MovingMenu implements ScreenSkeleton{
             fposy += (BASE*scale);
     }
 
+    /**
+     * This function draws the cursor according to a map tile position
+     * @param tilex The x-axis position of the tile
+     * @param tiley The y-axis position of the tile
+     */
     public void setCursor(int tilex, int tiley){
         if(tilex >= 0 && tilex < mapsx)
             cursorx = tilex;
@@ -87,6 +110,10 @@ public class MapDraw extends MovingMenu implements ScreenSkeleton{
             cursory = tiley;
     }
 
+    /**
+     * This function renders the map graphics for Slick2D
+     * @param g The Slick2D graphics object
+     */
     @Override
     public void render(Graphics g){
         for(int i = 0; i < mapsx; i++){
@@ -105,6 +132,11 @@ public class MapDraw extends MovingMenu implements ScreenSkeleton{
     }
 
 
+    /**
+     * This function renders the map graphics for Java2D
+     * @param g The Java2D graphics object
+     * @param dthis The Component helper for rendering graphics
+     */
     @Override
     public void render(Graphics2D g, Component dthis){
         for(int i = 0; i < mapsx; i++){
@@ -136,6 +168,13 @@ public class MapDraw extends MovingMenu implements ScreenSkeleton{
         cursor.setCursor(0);
     }
 
+    /**
+     * This function creates a new tile within the map
+     * @param item The new tile graphic information holder
+     * @param x The x-axis tile location of this image
+     * @param y The y-axis tile location of this image
+     * @return The tile graphics image holder associated with this object
+     */
     private MapItem createNewImage(MapItem item, int x, int y){
         if(item.terrain < 0){
             item.terrain = 0;

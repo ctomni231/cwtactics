@@ -20,19 +20,32 @@ import org.newdawn.slick.Graphics;
 
 public class VerticalMenu extends MovingMenu{
 
-    private ArrayList<Integer> vertPos;//Position of Menu Items
-    private ArrayList<Integer> vertPart;//Reference to Menu Item
-    private ArrayList<Integer> curList;//Current visible List of Menu Items
-    private int maxPos;//How many positions there are total
-    private int maxItems;//The max number of items to show on the screen
-    private int arrowloc;//Used to justify the arrows to a position
-    private int arrowPos;//Used to store where the arrow is located
-    private int itemMin;//Used to track where you are in the vertical menu
-    private int change;//Used to track the vertical menu shifts
-    private int spacingY;//The amount of space between each item
-    private boolean generate;//Redoes the vertical menu if true
-    private double lx;//Used to keep track of justifying picture text
-    public int track;//Tracks the position of the menu
+    /** The Position of Menu Items */
+    private ArrayList<Integer> vertPos;
+    /** The References to Menu Items */
+    private ArrayList<Integer> vertPart;
+    /** Current visible List of Menu Items */
+    private ArrayList<Integer> curList;
+    /** How many menu positions there are in total */
+    private int maxPos;
+    /** The maximum number of items to show on the screen */
+    private int maxItems;
+    /** Used to justify the arrows to a position */
+    private int arrowloc;
+    /** Used to store where the arrow is located */
+    private int arrowPos;
+    /** Used to track where you are in the vertical menu */
+    private int itemMin;
+    /** Used to track the vertical menu shifts */
+    private int change;
+    /** The amount of y-axis space between each item */
+    private int spacingY;
+    /** Used to regenerate the vertical menu */
+    private boolean generate;
+    /** Used to keep track of justifying picture text */
+    private double lx;
+    /** Tracks the position of the menu */
+    public int track;
 
     /**
      * The vertical menu class expands the functionality of the Moving
@@ -197,7 +210,6 @@ public class VerticalMenu extends MovingMenu{
         imgRef.addImage(imgRef.getImage(arrowPos));
     }
 
-    //Changes the position of a vertical menu item (negative= non-display)
     /**
      * This changes the order of the menu items according to the position
      * number. The lower the number, the higher the position. Negative
@@ -499,7 +511,7 @@ public class VerticalMenu extends MovingMenu{
     }
 
     /**
-     * THis function controls the scrolling the list when the mouse is
+     * This function controls the scrolling the list when the mouse is
      * hovering above or below the list
      * @param mx The x-axis location of the mouse
      * @param my The y-axis location of the mouse

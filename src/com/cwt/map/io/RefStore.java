@@ -16,8 +16,10 @@ import java.util.HashMap;
  */
 public class RefStore{
 
-    private HashMap<String, Integer> ref;//Holds the reference String data
-    private ListStore list;//Holds the wild card reference data
+    /** Holds the reference String data */
+    private HashMap<String, Integer> ref;
+    /** Holds the wild card reference data */
+    private ListStore list;
 
     /**
      * This class uses a HashMap and a List to store String values for

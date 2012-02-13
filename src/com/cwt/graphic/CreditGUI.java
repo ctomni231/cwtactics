@@ -26,17 +26,28 @@ import org.newdawn.slick.Graphics;
 
 public class CreditGUI extends MovingMenu{
 
-    private Scanner scanner;//The scanner used for reading from strings/files
-    private FileFind find;//Used for finding a file
-    private String credits;//This holds the scannable credit item
-    private String credPath;//This holds the path to the credit file
-    private String credItem;//This holds the temporary name in the list
-    private String curItem;//This keeps track of name changes in the list
-    private MouseHelper help;//This controls the scrolling speed of the text
-    private Color[] dfltColors;//Default colors for the letters
-    private Color[] chngColors;//Colors to change the letters to
-    private int[] colors;//Integer repersentation of the multiple colors
-    private Color line;//The color of the background line on a credit subject
+    /** The scanner used for reading from strings/files */
+    private Scanner scanner;
+    /** Used for finding a file */
+    private FileFind find;
+    /** This holds the scannable credit item */
+    private String credits;
+    /** This holds the path to the credit file */
+    private String credPath;
+    /** This holds the temporary name in the list */
+    private String credItem;
+    /** This keeps track of name changes in the list */
+    private String curItem;
+    /** This controls the scrolling speed of the text */
+    private MouseHelper help;
+    /** Default colors for the letters */
+    private Color[] dfltColors;
+    /** Colors to change the letters to */
+    private Color[] chngColors;
+    /** Integer representation of the multiple colors */
+    private int[] colors;
+    /** The color of the background line on a credit subject */
+    private Color line;
 
     /**
      * This class displays a list of credits from a text file

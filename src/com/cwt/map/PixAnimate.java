@@ -25,21 +25,33 @@ import org.newdawn.slick.Image;
 
 public class PixAnimate {
 
-    public static final int BASE = 32;//Default base size for all tiles
+    /** The default base size for all tiles */
+    public static final int BASE = 32;
 
-    private static MapList mapStore = new MapList();//Holds map storage data
-    private static ImgLibrary storedImg = new ImgLibrary();//Hold scaled images
-    private static ByteMap converter = new ByteMap();//Converts image to byte
-    //Byte data conversion for images
+    /** Holds map storage data */
+    private static MapList mapStore = new MapList();
+    /** This holds scaled images */
+    private static ImgLibrary storedImg = new ImgLibrary();
+    /** This converts image data to byte data */
+    private static ByteMap converter = new ByteMap();
+    /** This holds all the byte data conversion for images */
     private static ArrayList<Integer> imgList = new ArrayList<Integer>();
-    private static MapStorage mapStorage;//Holds map lists used by Map Editor
-    private static double scale = 1.0;//Holds the scale factor of the images
-    private static int locx;//Holds a temporary x-axis location
-    private static int locy;//Holds a temporary y-axis location
-    private static int tsx;//Holds a temporary tile width
-    private static int tsy;//Holds a temporary tile height
-    private static int sizex;//Holds a temporary x-axis size
-    private static int sizey;//Holds a temporary y-axis size
+    /** Holds map lists used by Map Editor */
+    private static MapStorage mapStorage;
+    /** Holds the scale factor of the images */
+    private static double scale = 1.0;
+    /** Holds a temporary x-axis location */
+    private static int locx;
+    /** Holds a temporary y-axis location */
+    private static int locy;
+    /** Holds a temporary tile width */
+    private static int tsx;
+    /** Holds a temporary tile height */
+    private static int tsy;
+    /** Holds a temporary x-axis size */
+    private static int sizex;
+    /** Holds a temporary y-axis size */
+    private static int sizey;
 
     /**
      * This function initializes the game elements including the music
@@ -279,6 +291,10 @@ public class PixAnimate {
     //-------------------------------
     //TEST FUNCTIONS
     //-------------------------------
+
+    /**
+     * This gets data from the data element of the MapElement
+     */
     public static void getData(){
         for(int i = 0; i < mapStore.size(); i++){
             int temp[] = mapStore.getArray(i, MapElement.DATA);
@@ -311,6 +327,9 @@ public class PixAnimate {
         }
     }
 
+    /**
+     * This gets data from the tag element of MapElement
+     */
     public static void getTags(){
         for(int i = 0; i < mapStore.size(); i++){
             int temp[] = mapStore.getArray(i, MapElement.DATA);

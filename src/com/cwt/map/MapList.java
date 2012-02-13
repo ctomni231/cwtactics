@@ -17,35 +17,60 @@ import com.cwt.map.io.TagStorage;
  * @version 08.29.11
  */
 public class MapList extends MapElement{
-    private int code;//Holds the default code criteria
-    private String base;//Holds the default base criteria
-    private String type;//Holds the default tile type criteria
-    private int weather;//Holds the default weather criteria
-    private int size;//Holds the default size criteria
 
-    private int direction;//Holds the default directional criteria
-    private String army;//Holds the default army faction criteria
-    private String tag_O;//Holds the default Original tag criteria
-    private String tag_OL;//Holds the default OverLap tag criteria
+    /** Holds the default code criteria */
+    private int code;
+    /** Holds the default base criteria */
+    private String base;
+    /** Holds the default tile type criteria */
+    private String type;
+    /** Holds the default weather criteria */
+    private int weather;
+    /** Holds the default size criteria */
+    private int size;
 
-    private String tag_N;//Holds the default North tag criteria
-    private String tag_NE;//Holds the default North East tag criteria
-    private String tag_NW;//Holds the default North West tag criteria
-    private String tag_S;//Holds the default South tag criteria
-    private String tag_SE;//Holds the default South East tag criteria
-    private String tag_SW;//Holds the default South West tag criteria
-    private String tag_E;//Holds the default East tag criteria
-    private String tag_W;//Holds the default West tag criteria
+    /** Holds the default directional criteria */
+    private int direction;
+    /** Holds the default army faction criteria */
+    private String army;
+    /** Holds the default Original tag criteria */
+    private String tag_O;
+    /** Holds the default OverLap tag criteria */
+    private String tag_OL;
 
-    private String tag_NR;//Holds the default North Reject tag criteria
-    private String tag_SR;//Holds the default South Reject tag criteria
-    private String tag_ER;//Holds the default East Reject tag criteria
-    private String tag_WR;//Holds the default West Reject tag criteria
+    /** Holds the default North tag criteria */
+    private String tag_N;
+    /** Holds the default North East tag criteria */
+    private String tag_NE;
+    /** Holds the default North West tag criteria */
+    private String tag_NW;
+    /** Holds the default South tag criteria */
+    private String tag_S;
+    /** Holds the default South East tag criteria */
+    private String tag_SE;
+    /** Holds the default South West tag criteria */
+    private String tag_SW;
+    /** Holds the default East tag criteria */
+    private String tag_E;
+    /** Holds the default West tag criteria */
+    private String tag_W;
 
-    private int[] points;//Holds the point value for each criteria
+    /** Holds the default North Reject tag criteria */
+    private String tag_NR;
+    /** Holds the default South Reject tag criteria */
+    private String tag_SR;
+    /** Holds the default East Reject tag criteria */
+    private String tag_ER;
+    /** Holds the default West Reject tag criteria */
+    private String tag_WR;
 
-    private boolean animations;//Holds whether to list all animations
-    private boolean random;//Holds whether to list all random objects
+    /** Holds the point value for each criteria */
+    private int[] points;
+
+    /** Holds whether all animations should be part of the list */
+    private boolean animations;
+    /** Holds whether all random objects should be part of the list */
+    private boolean random;
 
     /**
      * This class is the matching section of the MapElement, it is used to

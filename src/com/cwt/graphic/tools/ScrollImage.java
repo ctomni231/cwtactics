@@ -22,15 +22,24 @@ import org.newdawn.slick.Graphics;
 
 public class ScrollImage extends MovingImage {
 
-    private ArrayList<Double> textScroll;//Holds a list of scrolling images
-    private double scrollSpeed;//The speed of the scrolling images
-    private int sizex;//The width of the background bar
-    private int sizey;//The height of the background bar
-    private Color textColor;//The color of the scrolling text
-    private Color boxColor;//The color of the background bar
-    private MouseHelper helper;//Helps Regulates the scrolling speed
-    private String logoTxt;//Represents the text of the scrolling image
-    private PixtureMap pixture;//Holds a picture map for making picture text
+    /** Holds a list of scrolling images */
+    private ArrayList<Double> textScroll;
+    /** The speed of the scrolling images */
+    private double scrollSpeed;
+    /** The width of the background bar */
+    private int sizex;
+    /** The height of the background bar */
+    private int sizey;
+    /** The color of the scrolling text */
+    private Color textColor;
+    /** The color of the background bar */
+    private Color boxColor;
+    /** Helps Regulates the scrolling speed */
+    private MouseHelper helper;
+    /** Represents the text of the scrolling image */
+    private String logoTxt;
+    /** Holds a picture map for making picture text */
+    private PixtureMap pixture;
 
     /**
      * This class takes a font string and changes it into a repeating scrolling

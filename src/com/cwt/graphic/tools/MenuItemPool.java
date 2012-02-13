@@ -13,9 +13,12 @@ import com.cwt.system.ObjectPool;
  */
 public class MenuItemPool extends ObjectPool<MenuItem>{
 
-    private int locx;//A temporary x-axis location variable
-    private int locy;//A temporary y-axis location variable
-    private double speed;//A temporary speed holding variable
+    /** A temporary x-axis location variable */
+    private int locx;
+    /** A temporary y-axis location variable */
+    private int locy;
+    /** A temporary speed holding variable */
+    private double speed;
 
     /**
      * This sets up the variables for a new or recycled MenuItem

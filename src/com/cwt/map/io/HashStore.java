@@ -17,8 +17,10 @@ import java.util.HashMap;
  */
 public class HashStore {
 
-    private HashMap<Integer, String> dataItems;//The String HashMap
-    private int counter;//A counter to store the indexes of the HashMap
+    /** The String HashMap */
+    private HashMap<Integer, String> dataItems;
+    /** A counter to store the indexes of the HashMap */
+    private int counter;
 
     /**
      * This class takes String objects and organizes them in a reference

@@ -12,25 +12,42 @@ import java.awt.Color;
  * @version 02.27.11
  */
 
-public class MenuItem {    
-    public int id;//This holds the ID# of the MenuItem
-    public int select;//This holds its user selection index#
-    protected int[] refPath;//This holds the text reference to the image
-    public int choice;//Holds the refPath index of the displayed image
-    public boolean selectable;//This holds whether this item is selectable
-    public boolean drawthis;//This holds whether this item should be drawn
-    public double opacity;//This holds the item opacity
+public class MenuItem {
 
-    public double posx;//The x-axis current position of the item
-    public double posy;//The y-axis current position of the item
-    public double fposx;//The final x-axis position of the item
-    public double fposy;//The final y-axis position of the item
-    public double speed;//The speed of the item
-  
-    public Color theColor;//This holds the Color of a menu item
-    public int sizex;//This holds the width of a menu item
-    public int sizey;//This holds the height of a menu item
-    public int arc;//This holds the arc of a menu item
+    /** This holds the ID number of the MenuItem */
+    public int id;
+    /** This holds its user selection index number */
+    public int select;
+    /** This holds the text reference to the image */
+    protected int[] refPath;
+    /** Holds the refPath index of the displayed image */
+    public int choice;
+    /** This holds whether this item is selectable */
+    public boolean selectable;
+    /** This holds whether this item should be drawn */
+    public boolean drawthis;
+    /** This holds the item opacity */
+    public double opacity;
+
+    /** The x-axis current position of the item */
+    public double posx;
+    /** The y-axis current position of the item */
+    public double posy;
+    /** The final x-axis position of the item */
+    public double fposx;
+    /** The final y-axis position of the item */
+    public double fposy;
+    /** The speed of the item */
+    public double speed;
+
+    /** This holds the Color of a menu item */
+    public Color theColor;
+    /** This holds the width of a menu item */
+    public int sizex;
+    /** This holds the height of a menu item */
+    public int sizey;
+    /** This holds the arc of a menu item */
+    public int arc;
 
     /**
      * This class holds an item for the MovingMenu class

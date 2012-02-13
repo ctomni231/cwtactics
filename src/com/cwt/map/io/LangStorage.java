@@ -16,9 +16,11 @@ import static com.yasl.logging.Logging.*;
  */
 public class LangStorage {
 
-    public final byte LANG = 0;//Holds the language reference
+    /** Holds the language reference */
+    public final byte LANG = 0;
 
-    private RefStore refItems;//Stores references for the language items
+    /** Stores references for the language items */
+    private RefStore refItems;
 
     /**
      * This class gets a language path string used for localization from

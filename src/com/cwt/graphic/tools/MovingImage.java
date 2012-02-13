@@ -22,28 +22,48 @@ import org.newdawn.slick.Graphics;
 
 public class MovingImage implements ScreenSkeleton{
 
-    protected double scalex;//Controls the scale width of an Image
-    protected double scaley;//Controls the scale height of an Image
-    protected int origx;//The original width of the screen
-    protected int origy;//The original height of the screen
-    private int cursx;//The current scale width of an Image
-    private int cursy;//The current scale height of an Image
+    /** Controls the scale width of an Image */
+    protected double scalex;
+    /** Controls the scale height of an Image */
+    protected double scaley;
+    /** The original width of the screen */
+    protected int origx;
+    /** The original height of the screen */
+    protected int origy;
+    /** The current scale width of an Image */
+    private int cursx;
+    /** The current scale height of an Image */
+    private int cursy;
 
-    protected double posx;//The current x-axis position of an image
-    protected double posy;//The current y-axis position of an image
-    protected double fposx;//Where this image will move to in x-axis
-    protected double fposy;//Where this image will move to in y-axis
-    protected double speed;//How quickly the object will move
-    protected int shadeOff;//How far off the shade is from the image
-    protected Color shadow;//What color to put in the shadow of the image
-    protected double opacity;//How much color you can see through an image
+    /** The current x-axis position of an image */
+    protected double posx;
+    /** The current y-axis position of an image */
+    protected double posy;
+    /** Where this image will move to in x-axis */
+    protected double fposx;
+    /** Where this image will move to in y-axis */
+    protected double fposy;
+    /** How quickly the object will move in pixels */
+    protected double speed;
+    /** How far off the shade is from the image */
+    protected int shadeOff;
+    /** What color to put in the shadow of the image */
+    protected Color shadow;
+    /** How much color you can see through an image */
+    protected double opacity;
 
-    protected ImgLibrary imgRef;//The stored displayed Images
-    protected boolean active;//This controls if image resizing is active
-    protected Color[] dfltColor;//A list of default colors
-    protected Color[] chngColor;//A list of recolors
-    private double fsizex;//Stores the intended width for this image
-    private double fsizey;//Stores the intended height for this image
+    /** The stored displayed Images */
+    protected ImgLibrary imgRef;
+    /** This controls if image resizing is active */
+    protected boolean active;
+    /** A list of default colors */
+    protected Color[] dfltColor;
+    /** A list of recolors */
+    protected Color[] chngColor;
+    /** Stores the intended width for this image */
+    private double fsizex;
+    /** Stores the intended height for this image */
+    private double fsizey;
 
     /**
      * This class creates a moving logo picture that appears to move around
@@ -212,6 +232,7 @@ public class MovingImage implements ScreenSkeleton{
      * @param sysTime The system time in milliseconds
      * @param mouseScroll The mouse scroll wheel value
      */
+    @Override
     public void update(int width, int height, int sysTime, int mouseScroll) {
         updatePosition();
         if(cursx != width || cursy != height){
@@ -241,6 +262,7 @@ public class MovingImage implements ScreenSkeleton{
      * This function draws a moving image to the screen
      * @param g The Slick graphics object
      */
+    @Override
     public void render(Graphics g) {
         if(imgRef.length() > 1){
             if(shadeOff != 0 && shadow != null){
@@ -262,6 +284,7 @@ public class MovingImage implements ScreenSkeleton{
      * @param g The Java2D graphics object
      * @param dthis The Java2D Component object
      */
+    @Override
     public void render(Graphics2D g, Component dthis){
         if(imgRef.length() > 1){
             if(opacity < 1)
@@ -313,10 +336,13 @@ public class MovingImage implements ScreenSkeleton{
         return colorArray;
     }
 
+    @Override
     public void init() {}
 
+    @Override
     public void update(String name, int index, boolean isApplet,
             boolean seethru) {}
 
+    @Override
     public void update(int timePassed) {}
 }

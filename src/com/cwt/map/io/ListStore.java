@@ -13,7 +13,8 @@ package com.cwt.map.io;
  */
 public class ListStore {
 
-    private String[] dataItems;//This array stores all the Strings
+    /** This array stores all the Strings */
+    private String[] dataItems;
 
     /**
      * This class takes String objects and organizes them in a reference

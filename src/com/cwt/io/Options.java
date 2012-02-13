@@ -14,23 +14,38 @@ import org.xml.sax.Attributes;
  */
 public class Options extends XML_Parser{
 
-    public int help;//Holds the help bar visible value
-    public int color;//Holds the starting menu color
-    public int column;//Holds the starting menu column
+    /** Holds the help bar visible value */
+    public int help;
+    /** Holds the starting menu color */
+    public int color;
+    /** Holds the starting menu column */
+    public int column;
 
-    public int up;//Holds the java key up
-    public int down;//Holds the java key down
-    public int left;//Holds the java key left
-    public int right;//Holds the java key right
-    public int select;//Holds the java key select
-    public int cancel;//Holds the java key cancel
+    /** Holds the java key for up */
+    public int up;
+    /** Holds the java key for down */
+    public int down;
+    /** Holds the java key for left */
+    public int left;
+    /** Holds the java key for right */
+    public int right;
+    /** Holds the java key for select */
+    public int select;
+    /** Holds the java key for cancel */
+    public int cancel;
 
-    public int sUp;//Holds the Slick key up
-    public int sDown;//Holds the Slick key down
-    public int sLeft;//Holds the Slick key Left
-    public int sRight;//Holds the Slick key Right
-    public int sSelect;//Holds the Slick key Select
-    public int sCancel;//Holds the Slick Key Cancel
+    /** Holds the Slick key for up */
+    public int sUp;
+    /** Holds the Slick key for down */
+    public int sDown;
+    /** Holds the Slick key for left */
+    public int sLeft;
+    /** Holds the Slick key for right */
+    public int sRight;
+    /** Holds the Slick key for select */
+    public int sSelect;
+    /** Holds the Slick key for Cancel */
+    public int sCancel;
 
     /**
      * This class gets a group of options set by the user when the

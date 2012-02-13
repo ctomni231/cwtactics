@@ -13,9 +13,12 @@ package com.cwt.map.io;
  */
 public class KeyStore {
 
-    public final int INT_SIZE = -2147483648;//Integer Max amount
-    private int[] arrayData;//Stores the data in an array
-    private int max;//The amount of data to store in this array
+    /** Integer Max amount */
+    public final int INT_SIZE = -2147483648;
+    /** Stores the data in an array */
+    private int[] arrayData;
+    /** The amount of data to store in this array */
+    private int max;
 
     /**
      * This function stores data in an expandable array headed with a key

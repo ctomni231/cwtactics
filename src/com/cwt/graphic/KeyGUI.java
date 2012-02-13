@@ -23,25 +23,43 @@ import org.newdawn.slick.Graphics;
 
 public class KeyGUI extends VerticalMenu{
 
-    public final int MAX_ITEMS = 6;//The maximum items a vertical menu has
-    public final int DELAY = 30;//The delay time of keyboard scrolling
-    public final int SCROLL_SPEED = 2;//How fast the menu scrolls
-	
-    private String[] help;//Keeps the help associated with the actions
-    private Color[] dfltColors;//Default colors for the letters
-    private Color[] chngColors;//Colors to change the letters to
-    private double counter;//This controls the opacity of the image
-    private MouseHelper helper;//Regulates the mouse focus
-    private VerticalMenu keyItems;//Holds the keys associated with the actions
-    private int space;//Holds the amount of spacing between each picture
-    private boolean keySelect;//How this class reacts to key presses
-    private boolean curSelect;//The current keySelect of the window
-    private boolean haltPress;//This keeps the user from pressing anything
-    private int change;//Holds whether the menu selection has changed
-    private int[] colors;//Integer representation of the multiple colors
-    private int keyCount;//This helps regulate scrolling for keyboard
-    private int[] keys;//This stores the keys for the key changes
-    private String backHelp;//This stores the help value for back
+    /** The maximum items a vertical menu has */
+    public final int MAX_ITEMS = 6;
+    /** The delay time of keyboard scrolling */
+    public final int DELAY = 30;
+    /** How fast the menu scrolls */
+    public final int SCROLL_SPEED = 2;
+
+    /** Keeps the help associated with the actions */
+    private String[] help;
+    /** Default colors for the letters */
+    private Color[] dfltColors;
+    /** Colors to change the letters to */
+    private Color[] chngColors;
+    /** This controls the opacity of the image */
+    private double counter;
+    /** Regulates the mouse focus */
+    private MouseHelper helper;
+    /** Holds the keys associated with the actions */
+    private VerticalMenu keyItems;
+    /** Holds the amount of spacing between each picture */
+    private int space;
+    /** Changes how this class reacts to key presses */
+    private boolean keySelect;
+    /** The current keySelect of the window */
+    private boolean curSelect;
+    /** This keeps the user from pressing anything */
+    private boolean haltPress;
+    /** Holds whether the menu selection has changed */
+    private int change;
+    /** Integer representation of the multiple colors */
+    private int[] colors;
+    /** This helps regulate scrolling for keyboard */
+    private int keyCount;
+    /** This stores the keys for the key changes */
+    private int[] keys;
+    /** This stores the help value for the back option */
+    private String backHelp;
 
     /**
      * This class completely controls editing all the keyboard actions for
