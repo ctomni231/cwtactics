@@ -767,19 +767,12 @@
                     ]
             };
         </script>
-        
-        
-        <!-- NEKO SCRIPTS -->
-        <script type="text/javascript" src="extLib/neko.js"></script>
-        <!-- END OF NEKO SCRIPTS -->
-        
-        <!-- CWT GAME SCRIPTS -->
-        <script type="text/javascript" src="db.js"></script>
-        <script type="text/javascript" src="model.js"></script>
-        <script type="text/javascript" src="kernel.js"></script>
-        <!-- END OF CWT GAME SCRIPTS -->
-        
-        <script type="text/javascript" src="extLib/log4js-lib.js"></script>
+
+        <!-- HEAD.JS CONF -->
+        <script> var head_conf = { head:'require' }; </script>
+
+
+        <script type="text/javascript" src="../src/lib/log4js-lib.js"></script>
         
         <!-- 
           TARGET BETA 1
@@ -824,6 +817,8 @@
                   log_info("done");
                 }
             }
+
+            nekoUtilies.isDeclared("x");
             
             // load mod
             collection_each(tiles.sheets, function( element ){ db_parseSheet(element , "TILE"); });
