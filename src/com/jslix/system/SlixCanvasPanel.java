@@ -52,6 +52,8 @@ public class SlixCanvasPanel extends GameContainer {
         height = h;
     }
 
+
+
     /**
      * This initializes the frame based on Java Applet initialization
      * @throws SlickException Indicates a failure to initialize the framework

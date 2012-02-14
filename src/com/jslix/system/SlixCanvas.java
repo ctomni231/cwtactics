@@ -25,6 +25,10 @@ public class SlixCanvas extends Canvas{
     private SlixCanvasPanel container;
     /** Alpha background supported */
     protected boolean alphaSupport = true;
+    /** The thread that is looping for the game */
+    protected Thread gameThread;
+    /** The container running for this game */
+    private SlixCanvasPanel contain;
 
     /**
      * This function creates a new panel
@@ -78,6 +82,52 @@ public class SlixCanvas extends Canvas{
         this.requestFocus();
         container.runloop(width, height);
     }
+
+    /**
+     * This sets up a separate Thread for LWJGL to run in
+     */
+    @Override
+    public final void addNotify() {
+        super.addNotify();
+        if (gameThread != null) {
+            return;
+        }
+
+        gameThread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    start();
+                } catch (Exception e) {
+                    System.err.println(e);
+                    if (Display.isCreated()) {
+                        Display.destroy();
+                    }
+                    setVisible(false);//removeAll();
+                    //add(new ConsolePanel(e));
+                    validate();
+                }
+            }
+        };
+
+        gameThread.start();
+    }
+
+    /**
+     * This removes the LWJGL Thread
+     */
+    @Override
+    public final void removeNotify() {
+        contain.stopApplet();
+        try {
+            gameThread.join();
+        } catch (InterruptedException e) {
+            System.err.println(e);
+        }
+        super.removeNotify();
+    }
+
+
     /**
      * This function initializes the GL state
      */
