@@ -29,7 +29,7 @@ import org.newdawn.slick.util.Log;
  * @author <ul><li>Glass, Kevin</li>
  *          <li>Carr, Crecen</li></ul>
  * @license Look into "LICENSE" file for further information
- * @version 01.31.12
+ * @version 02.19.12
  */
 public class SlixCanvasPanel extends GameContainer {
 
@@ -348,28 +348,12 @@ public class SlixCanvasPanel extends GameContainer {
     }
 
     /**
-     * This function checks to see if the dimensions of the canvas match the
-     * display
-     * @param w The frame width
-     * @param h The frame height
-     */
-    public void checkDimensions(int w, int h) {
-        if ((width != w) || (height != h)) {
-            try {
-                this.setDisplayMode(w, h, false);
-            } catch (SlickException e) {
-                Log.error(e);
-            }
-        }
-    }
-
-    /**
      * Set the display mode to be used
      *
      * @param width The width of the display required
      * @param height The height of the display required
      * @param fullscreen True if we want fullscreen mode
-     * @throws SlickException Indicates a failure to initialise the display
+     * @throws SlickException Indicates a failure to initialize the display
      */
     public void setDisplayMode(int width, int height, boolean fullscreen)
             throws SlickException {
@@ -450,17 +434,16 @@ public class SlixCanvasPanel extends GameContainer {
      * @throws Exception Indicates a failure within the game loop
      */
     public void runloop(int w, int h) throws Exception {
-        while (running) {
+        if(running){
             int delta = getDelta();
 
             updateAndRender(delta);
 
-            checkDimensions(w, h);
+            setDisplayMode(w, h, false);
 
             updateFPS();
             Display.update();
-        }
-
-        Display.destroy();
+        }else
+            Display.destroy();
     }
 }
