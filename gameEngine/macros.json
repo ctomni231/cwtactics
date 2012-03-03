@@ -1,0 +1,16 @@
+{
+  "macros":[
+
+    {
+      "macro":"first",
+      "doc":"returns the first element of a list that returns true in the callback",
+      "parameter":[
+        "$list",
+        "$callback"
+      ],
+      "action":[
+      ]
+    }
+
+  ]
+}

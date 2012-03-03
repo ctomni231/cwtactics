@@ -1,0 +1,40 @@
+<rules>
+
+    <rulegroup id="debugLog">
+
+        <rule id="logRuleCheck" desc="invokes the log alrithms when the conditions of a rule will be checked">
+            <sysrule/>
+            <on>ruleCheck</on>
+            <then>
+                <attr>info</attr>
+                <attr>
+                    <format> <attr>conditions of rule {0} will be checked</attr> <attr>ruleName</attr> </format>
+                </attr>
+            </then>
+        </rule>
+
+        <rule id="logRuleFired" desc="invokes a log algorithm when a rule is fired" >
+            <sysrule/>
+            <on>ruleFired</on>
+            <then>
+                <log>
+                    <attr>info</attr>
+                    <attr>
+                        <format> <attr>actions of rule {0} will be fired</attr> <attr>ruleName</attr> </format>
+                    </attr>
+                </log>
+            </then>
+        </rule>
+
+        <rule id="logRuleNotFired" desc="invokes a log algorithm when a rule is not fired">
+            <sysrule/>
+            <on>ruleNotFired</on>
+            <then>
+                <attr>info</attr>
+                <attr>
+                    <format> <attr>actions of rule {0} will not be fired</attr> <attr>ruleName</attr> </format>
+                </attr>
+            </then>
+        </rule>
+    </rulegroup>
+</rules>

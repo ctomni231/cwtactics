@@ -1,0 +1,30 @@
+{
+  "rules":[
+
+    {
+      "rule":"unitMenu",
+      "on":"user.click",
+      "when":[
+        ["def", "user.click.tile.unit"],
+        ["is", "user.click.tile.unit.owner", "user.playerID"]
+      ],
+      "then":[
+        ["push", "menu.commands",
+          ["create.MenuEntry", "MOVE", "Move Unit"],
+          ["create.MenuEntry", "WAIT", "Wait"]]
+      ]
+    },
+
+    {
+      "rule":"mapMenu",
+      "on":"user.click",
+      "when":[
+        ["undef", "user.click.tile.unit"]
+      ],
+      "then":[
+        ["push", "menu.commands",
+          ["create.MenuEntry", "TURNEND", "End Turn"]]
+      ]
+    }
+  ]
+}

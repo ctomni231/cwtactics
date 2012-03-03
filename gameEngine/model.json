@@ -1,0 +1,24 @@
+{
+  "rules":[
+    {
+      "rule":"modelInit",
+      "doc":"initializes the model on game start",
+      "on":"gameInit",
+      "then":[
+        ["// init the base variables"],
+        ["set","model.map", ["create.matrix","20","20"]]
+      ]
+    },
+
+    {
+      "rule":"modelReset",
+      "doc":"",
+      "on":"loadMap",
+      "then":[
+        ["set","model.day",0],
+        ["set","model.turn",0],
+        ["set","model.activePlayer",0]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+(rule giveLuck
+  (on unitAttack)
+  (when
+    (or (and (is a b c) (is b x))
+        (and (is a d  ) (is b y)) )
+  (then
+    (increase battle.attacker.dmg (random 10))
+    (increase battle.defender.dmg (random 10)) ))
+
+
+(rule openMapMenu
+  (on 'userClick')
+  (when
+    (is state 'IDLE'))
+  (then
+    (add menu.commands 'End Turn') ))
+
+
+(rule openUnitMenu
+  (on 'userClick')
+  (when
+    (is state 'IDLE')
+    (exists clickedTile.unit)
+    (is clickedTile.unit.owner clickedPlayer) )
+  (then
+    (add menu.commands 'Move') ))
+
+
+(rule openUnitAttackMenu
+  (whenFired openUnitMenu)
+  (when
+    (any (cwt.neighborsOf clickedTile 1)
+         (not item.owner clickedPlayer)   ))
+  (then
+    (add menu.commands 'Attack') ))
+
+
+-- USER CLICKED ATTACK IN THE UNIT MENU
+(rule invokeAttackUnit
+  (on 'userClick')
+  (when
+    (is state 'ATTACK_TARGET_SELECT') )
+  (then
+    (event 'unitAttack') ))

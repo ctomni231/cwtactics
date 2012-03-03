@@ -1,0 +1,10 @@
+{
+  "rules":[
+    {
+      "rule":"prepareCard",
+      "then":[
+
+      ]
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "rules":[
+
+    {
+      "rule":"coTapsi",
+      "on":"coActivate",
+      "when":[
+        ["is","co.id","'TAPSI'"]
+      ],
+      "then":[
+        ["+","player.att",10],
+        ["+","player.def",10]
+      ]
+    },
+
+    { "if":["GROUND"],
+      "then":[
+        ["att",10,-1],
+        ["def",10,-1] ]},
+
+    {
+      "then":[
+        ["weather","snow",2 ]]
+    },
+
+    {
+      "if":[
+        "snowy"
+      ],
+      "then":[
+        ["moverange",-2,-1]
+      ]
+    },
+
+    { "if":["INDIRECT","GROUND"],
+      "then":[
+        ["att",-15,-1] ]},
+
+    {
+      "rule":"coTapsi.courage",
+      "on":"battle",
+      "when":[
+        ["is","defender.co","'TAPSI'"],
+        ["gt",8,["len","defender.units"]]
+      ],
+      "then":[
+        ["+","defender.dmg",20],
+        ["-","attacker.dmg",20]
+      ]
+    }
+  ]
+}
