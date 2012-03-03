@@ -1,5 +1,5 @@
 @author : ctomni231
-@version : 01.31.2012
+@version : 02.19.2012
 
 Hardcoded Features
 
@@ -39,14 +39,15 @@ Also need to work on the Prompt Screen directly after that. Priority: High
 
 Expanding JSlix to handle layouts, which will make the frame more versatile
 in handling multi-tasking applications. It is going to include this
-functionality for both Slick/Java Consoles & Applets. Priority: Critical
+functionality for both Slick/Java Consoles & Applets. 
+Priority: Hot (working)
 
 In order to add layouts to Applets, I'll have to redo the entire Applet
 class. I found out how to make Slick work exactly like normal Applets.
-Priority: HOT (Working)
+Done: (Delete next iteration)
 
 The JSlix system must load the natives from startup instead of forcing the
-natives to be loaded from the same folder. It'l make it easier to distribute
+natives to be loaded from the same folder. It'll make it easier to distribute
 the Slick version and cut down on bugs. Priority: High
 
 The Java API JTextfield needs to be added to the bottom of the screen in
@@ -78,7 +79,7 @@ Message Prompt Screen (JSlix)                 [#]
 Java2D Full Screen Implementation (JSlix)     [ ]
 Java Swing Textfield Implementation (JSlix)   [ ]
 Automatic Native loading (JSlix)              [ ]
-Slick in Java Applet Frame (JSlix)            [#]
+Slick in Java Applet Frame (JSlix)            [*]
 
 Phase 1 - Title Screen [*]
 
