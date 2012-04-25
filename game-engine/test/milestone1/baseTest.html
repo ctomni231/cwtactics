@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/qunit/git/qunit.js"></script>
+  <link rel="stylesheet" href="http://code.jquery.com/qunit/git/qunit.css" type="text/css" media="screen" />
+
+  <!-- EXTERNAL LIBRARIES -->
+  <script src="./../../lib/amanda.js"></script>
+
+  <!-- JSMESSAGE -->
+  <script src="./../../../jsMessage/src/jsMessage.js"></script>
+  <script src="./../../../jsMessage/src/filters/networkSharing.js"></script>
+  <script src="./../../../jsMessage/src/filters/logger.js"></script>
+  <script src="./../../../jsMessage/src/filters/ringBuffer.js"></script>
+  <script src="./../../../jsMessage/src/filters/validator.js"></script>
+  <script src="./../../../jsMessage/src/filters/switch.js"></script>
+
+  <!-- CWT SYS STUFF -->
+  <script src="./../../src/messages.js"></script>
+  <script src="./../../src/constants.js"></script>
+  <script src="./../../src/system.js"></script>
+
+  <!-- DB -->
+  <script src="./../../src/data/database.js"></script>
+  <script src="./../../src/data/validators.js"></script>
+
+  <!-- TYPES -->
+  <script src="./../../mod/movetypes.js"></script>
+  <script src="./../../mod/weapons.js"></script>
+  <script src="./../../mod/tiles.js"></script>
+  <script src="./../../mod/units.js"></script>
+
+  <!-- MODEL -->
+  <script src="./../../src/model/map.js"></script>
+
+  <!-- LOGIC -->
+  <script src="./../../src/logic/map.js"></script>
+  <script src="./../../src/logic/factory.js"></script>
+  <script src="./../../src/logic/move.js"></script>
+
+  <!-- MAIN BLOCK -->
+  <script type="text/javascript">
+
+
+    var baseGame = {
+
+      width:10,
+      height:10,
+      filler:'PLAIN',
+
+      players:[
+        { name:'testGamer', team:0 }
+      ],
+
+      tiles:[
+        { x:1, y:1, id:'HQ', owner:0 },
+        { x:1, y:1, id:'HQ' },
+        { x:4, y:3, id:'MOUNTAIN' },
+        { x:5, y:3, id:'MOUNTAIN' },
+        { x:3, y:3, id:'FOREST' },
+        { x:6, y:3, id:'FOREST' },
+        { x:4, y:2, id:'FOREST' },
+        { x:6, y:2, id:'FOREST' }
+      ]
+    };
+
+    $(document).ready(function(){
+
+      test("map loading", function(){
+        messageContext.message({ cmd:Msg.GAME_INIT, data:baseGame });
+
+        equal( map[1][1].id, 'HQ', 'at (1,1) is a headquarters' );
+      });
+
+      test("map objects", function(){
+        messageContext.message( { cmd:Msg.UNIT_BUILDED, pId:0, propId: map[1][1].prop , type:'INFANTRY'});
+
+        equal( map.units[0].hp, 99, 'unit 0 does not exists' );
+      });
+
+      test("unit move", function(){
+        messageContext.message({ cmd:Msg.MOVE, uid:0, x:1, y:1, way:[1,1,1,1] });
+
+        equal( map.units[0].hp, map.units[ map[5][1].unit ].hp , 'unit 0 does not moved from (1,1) to (5,1)' );
+      });
+    });
+  </script>
+  <!-- END OF MAIN BLOCK -->
+
+</head>
+<body>
+  <!-- OUT -->
+  <div id="test" style="visibility: hidden;"></div>
+
+  <h1 id="qunit-header">SimpleLogger filter tests</h1>
+  <h2 id="qunit-banner"></h2>
+  <div id="qunit-testrunner-toolbar"></div>
+
+  <h2 id="qunit-userAgent"></h2>
+  <ol id="qunit-tests"></ol>
+  <div id="qunit-fixture">test markup, will be hidden</div>
+</body>
+</html>
