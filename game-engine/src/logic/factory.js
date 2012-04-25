@@ -15,6 +15,8 @@ commandNode( Msg.UNIT_BUILDED ,
     unit.ammo = sheet.maxAmmo;
     unit.fuel = sheet.maxFuel;
     unit.weight = sheet.weight;
+
+    map[msg.x][msg.y].unit = uid;
   },
 
   // validator

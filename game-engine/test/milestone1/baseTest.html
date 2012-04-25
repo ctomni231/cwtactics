@@ -11,12 +11,12 @@
   <script src="./../../lib/amanda.js"></script>
 
   <!-- JSMESSAGE -->
-  <script src="./../../../jsMessage/src/jsMessage.js"></script>
-  <script src="./../../../jsMessage/src/filters/networkSharing.js"></script>
-  <script src="./../../../jsMessage/src/filters/logger.js"></script>
-  <script src="./../../../jsMessage/src/filters/ringBuffer.js"></script>
-  <script src="./../../../jsMessage/src/filters/validator.js"></script>
-  <script src="./../../../jsMessage/src/filters/switch.js"></script>
+  <script src="./../../../../jsMessage/src/jsMessage.js"></script>
+  <script src="./../../../../jsMessage/src/filters/networkSharing.js"></script>
+  <script src="./../../../../jsMessage/src/filters/logger.js"></script>
+  <script src="./../../../../jsMessage/src/filters/ringBuffer.js"></script>
+  <script src="./../../../../jsMessage/src/filters/validator.js"></script>
+  <script src="./../../../../jsMessage/src/filters/switch.js"></script>
 
   <!-- CWT SYS STUFF -->
   <script src="./../../src/messages.js"></script>
@@ -76,15 +76,27 @@
       });
 
       test("map objects", function(){
-        messageContext.message( { cmd:Msg.UNIT_BUILDED, pId:0, propId: map[1][1].prop , type:'INFANTRY'});
+        messageContext.message( { cmd:Msg.UNIT_BUILDED, x:1, y:1, pId:0, propId: map[1][1].prop , type:'INFANTRY'});
 
-        equal( map.units[0].hp, 99, 'unit 0 does not exists' );
+        equal( map.units[0].hp, 99, 'unit object (id:0) does not exists' );
+        equal( map.units[ map[1][1].unit ].hp, 99, 'unit object (id:0) access by map does not exists' );
       });
 
       test("unit move", function(){
         messageContext.message({ cmd:Msg.MOVE, uid:0, x:1, y:1, way:[1,1,1,1] });
 
         equal( map.units[0].hp, map.units[ map[5][1].unit ].hp , 'unit 0 does not moved from (1,1) to (5,1)' );
+      });
+
+      test("unit move not blocked by own unit", function(){
+        messageContext.message({ cmd:Msg.UNIT_BUILDED, x:1, y:1, pId:0, propId: map[1][1].prop , type:'INFANTRY' });
+
+        equal( map.units[ map[1][1].unit ].hp, 99, 'unit object (id:1) should be on property (1,1) after building, but it does not exists' );
+
+        // want to move to 6,1 ( not blocked by own unit )
+        messageContext.message({ cmd:Msg.MOVE, uid:1, x:1, y:1, way:[1,1,1,1,1] });
+
+        equal( map.units[1].hp, map.units[ map[6][1].unit ].hp , 'unit object (id:1) seems to be blocked at (4,1)' );
       });
     });
   </script>
