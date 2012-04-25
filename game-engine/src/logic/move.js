@@ -22,7 +22,7 @@ commandNode( Msg.MOVE ,
 
       // if there is an unit in the way, break ( except own one )
       //TODO allies?
-      if( map[x][y].unit && map[x][y].unit.owner === unit.owner ) break;
+      if( typeof map[x][y].unit === 'number' && map.units[map[x][y].unit].owner !== unit.owner ) break;
 
       // update last tile
       lX = x;
