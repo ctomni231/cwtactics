@@ -38,15 +38,3 @@ commandNode( Msg.MOVE ,
 
   }
 );
-
-commandNode( Msg.GENERATE_MOVEWAY,
-  function( msg ){
-
-    messageContext.message( Msg.UNIT_MOVEMAP, {});
-  },
-
-  // validator
-  {
-    uId: map.unitIdValidator
-  }
-);

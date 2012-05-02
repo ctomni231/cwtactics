@@ -39,12 +39,9 @@
   <!-- LOGIC -->
   <script src="./../../src/logic/map.js"></script>
   <script src="./../../src/logic/factory.js"></script>
-  <script src="./../../src/logic/move.js"></script>
+  <script src="../../src/logic/generateMoveWay.js"></script>
 
-  <!-- MAIN BLOCK -->
   <script type="text/javascript">
-
-
     var baseGame = {
 
       width:10,
@@ -70,6 +67,10 @@
 
     $(document).ready(function(){
 
+      /* ****************** MAP TESTS ************************* */
+
+      module("basic map tests");
+
       test("map loading", function(){
         messageContext.message({ cmd:Msg.GAME_INIT, data:baseGame });
 
@@ -83,10 +84,49 @@
         equal( map.units[ map[1][1].unit ].hp, 99, 'unit object (id:0) is on property (1,1) after building' );
       });
 
-      test("unit move", function(){
-        messageContext.message({ cmd:Msg.MOVE, uid:0, x:1, y:1, way:[1,1,1,1] });
+      test("map sizes test",function(){
+        expect(0);
+      });
 
+      test("map metadata test",function(){
+        expect(0);
+      });
+
+      test("map objects test",function(){
+        expect(0);
+      });
+
+      /* ****************** MOVE TESTS ************************* */
+
+      module("basic move tests");
+
+      test("initial data check", function(){
+        expect(0);
+      });
+
+      // invoke action
+      messageContext.message({ cmd:Msg.MOVE, uid:0, x:1, y:1, way:[1,1,1,1] });
+
+      test("position of the mover should be changed", function(){
         equal( map.units[0].hp, map.units[ map[5][1].unit ].hp , 'unit (id:0) moved from (1,1) to (5,1)' );
+      });
+
+      test("resources of the mover must be lower after move", function(){
+        expect(0);
+      });
+
+      // make a way that is tooo long
+
+      test("way must be declined if unit has not enough resources", function(){
+        expect(0);
+      });
+
+      test("way must be declined if unit cannot move the way", function(){
+        expect(0);
+      });
+
+      test("unit cannot move onto an own unit", function(){
+        expect(0);
       });
 
       test("unit move not blocked by own unit", function(){
@@ -114,9 +154,34 @@
 
         equal( map.units[1].hp, map.units[ map[6][1].unit ].hp , 'unit object (id:1) is on tile (6,1) and was blocked by an enemy unit on (7,1)' );
       });
+
+
+      /* ****************** PROPERTY TESTS ************************* */
+
+      module("property capture tests");
+
+      test("unit cannot capture if it is not on the property", function(){
+        expect(0);
+      });
+
+      test("unit cannot capute if it has no capturing ability", function(){
+        expect(0);
+      });
+
+      test("capture points must decrease", function(){
+        expect(0);
+      });
+
+      test("owner has to be changed after capture points are le zero", function(){
+        expect(0);
+      });
+
+      test("property owner looses game if the property type is HQ", function(){
+        expect(0);
+      });
+
     });
   </script>
-  <!-- END OF MAIN BLOCK -->
 
 </head>
 <body>
