@@ -3,23 +3,23 @@
  */
 var cwt = {
 
-  util:{
+	util:{
 
-    each: function( obj, callback ){
-      var keys = Object.keys(obj);
-      for(var i = 0, e = keys.length; i < e; i++){
-        callback( obj[keys[i]], keys[i] );
-      }
-    },
+		each: function( obj, callback ){
+			var keys = Object.keys(obj);
+			for(var i = 0, e = keys.length; i < e; i++){
+				callback( obj[keys[i]], keys[i] );
+			}
+		},
 
-    subscribe: function(){
-			
-    },
+		subscribe: function(){
 
-    publish: function( topic ){
-			
-    }
-  }
+		},
+
+		publish: function( topic ){
+
+		}
+	}
 };
 
 /*
@@ -42,4 +42,4 @@ var cwt = {
 
  // Log the array of listeners to show that it has been removed
  console.log(ee.listeners('foo'));
-  */
+	*/

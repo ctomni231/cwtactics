@@ -8,55 +8,55 @@
 		<style>
 			#app {
 			}
-			
+
 			.draw_panel {
 				position: absolute;
 				z-index: 0;
 			}
-			
+
 			.draw_panel_objects {
 				position: absolute;
 				z-index: 1;
 			}
 		</style>
-		
+
 		<!-- CWT -->
 		<script src="../game-engine/main.js" type="text/javascript"></script>
 		<script src="../game-engine/sheets.js" type="text/javascript"></script>
 		<script src="../game-engine/map.js" type="text/javascript"></script>
 		<script src="../game-engine/move.js" type="text/javascript"></script>
 		<script src="../game-engine/relationship.js" type="text/javascript"></script>
-		
+
 		<!-- CWT WC -->
 		<script src="hammer.js" type="text/javascript"></script>
 		<script src="stacktrace.js" type="text/javascript"></script>
 		<script src="cwtwc.js" type="text/javascript"></script>
-		
+
 		<script type="text/javascript">
 			var touchMove = function(event) {
 				// Prevent scrolling on this element
 				event.preventDefault();
 			}
-			
+
 			window.onerror = function(e){ 
 				document.getElementById("err").innerHTML = ( e + "<br>"+ printStackTrace().join("<br>") ); 
 			}
 			window.onlog = function(e){ 
 				document.getElementById("err").innerHTML = ( JSON.stringify(e) ); 
 			}
-			
+
 			// SIMPLE TEST MAP
 			var testMap = {
-				
+
 				height: 70,
 				width: 70,
 				filler: "PLAIN",
-				
+
 				players:[
 					{ gold:1000 , team:1 },
 					{ gold:0    , team:2 }
 				],
-				
+
 				data:{
 					"0":{ "4":"FOREST",
 								"5":"HQ", 
@@ -76,7 +76,7 @@
 								"7":"MOUNTAIN",
 								"8":"FOREST" }
 				},
-				
+
 				properties:[
 					{ x:0, y:5, capturePoints:20, owner:0 },
 					{ x:0, y:6, capturePoints:20, owner:0 },
@@ -85,7 +85,7 @@
 					{ x:9, y:5, capturePoints:20, owner:1 },
 					{ x:9, y:6, capturePoints:20, owner:1 }
 				],
-				
+
 				units:[
 					{ x:2, y:2, type:"INFANTRY" , owner:0 },
 					{ x:8, y:5, type:"TANK" , owner:0 },
@@ -98,91 +98,91 @@
 					{ x:6, y:6, type:"ARTILLERY", owner:1 }
 				]
 			};
-			
+
 			var fps = 0, now, lastUpdate = (new Date)*1 - 1;
 			// The higher this value, the less the FPS will be affected by quick changes
 			// Setting this to 1 will show you the FPS of the last sampled frame only
 			var fpsFilter = 50;
 			var fpsOut;
-			
+
 			function start(){
 				fpsOut = document.getElementById('fps');
 				cwt.map.loadMap( testMap );
-		
+
 		// populate some random data
 		var keys = ["PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","FOREST","MOUNTAIN"];
 		for(var y=0,ye=cwt.map._height; y<=ye; y++){
 			for(var x=0,xe=cwt.map._width; x<=xe; x++){
-				
+
 				if( cwt.map._map[x][y] === "PLAIN" ){ 
 					var i = parseInt( keys.length*Math.random() , 10);
 					cwt.map._map[x][y] = keys[ i ];
 				}
 			}
 		}
-				
+
 				var hammer = new Hammer( document.getElementById("app") , {
 					prevent_default: true
 				});
 				hammer.ondragend = function(ev){ 
 					document.getElementById("move").innerHTML = ev.angle + " --- "+ 
 																	parseInt( ev.distance/32, 10 );
-																	
+
 					var a = ev.angle;
 					var d = 0;
 							 if( a >= -135 && a < -45 ) d = 0;
 					else if( a >= -45 && a < 45 ) d = 1;
 					else if( a >= 45 && a < 135 ) d = 2;
 					else if( a >= 135 || a < -135 ) d = 3;
-					
+
 					var dis = parseInt( ev.distance/32, 10 );
 					if( dis === 0 ) dis = 1; 
 					cwtwc.mapShift( d, dis );
 				};
-				
+
 				cwtwc.initialize();
-				
+
 				// call draw
 				draw();
 			}
 
-      function keyShift( event ){
-        switch( event.keyCode ){
+	  function keyShift( event ){
+		switch( event.keyCode ){
 
-          case 37:
-            cwtwc.mapShift( 3, 1 );
-            break;
-          case 38:
-            cwtwc.mapShift( 0, 1 );
-            break;
-          case 39:
-            cwtwc.mapShift( 1, 1 );
-            break;
-          case 40:
-            cwtwc.mapShift( 2, 1 );
-            break;
+		  case 37:
+			cwtwc.mapShift( 3, 1 );
+			break;
+		  case 38:
+			cwtwc.mapShift( 0, 1 );
+			break;
+		  case 39:
+			cwtwc.mapShift( 1, 1 );
+			break;
+		  case 40:
+			cwtwc.mapShift( 2, 1 );
+			break;
 
-        }
-      }
-			
+		}
+	  }
+
 			var mDiff = 250;
 			var cDiff = 0;
 			function draw(){
 				cwtwc.drawScreen();
-				
+
 				var diff = ((now=new Date) - lastUpdate);
 				var thisFrameFPS = 1000 / diff;
 				fps += (thisFrameFPS - fps) / fpsFilter;
 				lastUpdate = now * 1 - 1;
 				fpsOut.innerHTML = fps.toFixed(1) + "fps";
-				
+
 				cDiff += diff;
 				if( cDiff >= mDiff ){
 					cDiff = 0;
 					cwtwc.animStep++;
 					if( cwtwc.animStep >= 3 ) cwtwc.animStep = 0;
 				}
-				
+
 				// better than intervall because intervall slows down if the draw routine needs
 				// longer to finish than the set interval. This can be better controlled later to 
 				// get a stable fps.
@@ -190,7 +190,7 @@
 			}
 		</script>
 	</head>
-	
+
 	<body onLoad="start();" onkeyup="keyShift(event)">
 	<div id="app">
 		<div id="err"></div>
@@ -200,7 +200,7 @@
 		<canvas id="cwt_maplayer" width="960" height="606" class="draw_panel" >
 			Fallback-Inhalt MAP
 		</canvas>
-		
+
 		<canvas id="cwt_objectlayer" width="960" height="606" class="draw_panel_objects" >
 			Fallback-Inhalt OBJEKTE
 		</canvas>
