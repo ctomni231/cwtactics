@@ -1,9 +1,7 @@
 var cwtwc = {
 
 	ctx_map: null,
-	ctx_obj: null, // <-- layer can be removed because we draw in one canvas to make bigger tiles
-								 // overlapping (not like in aw 1)
-
+	
 	// still todo ( --> should be loaded via mod )
 	terrain: new Image(),
 	terrainMap: {
@@ -28,8 +26,7 @@ var cwtwc = {
 
 	initialize: function(){
 		cwtwc.ctx_map = document.getElementById("cwt_maplayer").getContext("2d");
-		cwtwc.ctx_obj = document.getElementById("cwt_objectlayer").getContext("2d");
-
+		
 		// get size
 		cwtwc.sw = parseInt( document.getElementById("cwt_maplayer").width / cwtwc.tx , 10 );
 		cwtwc.sh = parseInt( document.getElementById("cwt_maplayer").height / cwtwc.ty , 10 );
@@ -153,7 +150,6 @@ var cwtwc = {
 		}
 		// END OF - rebuild draw map
 
-		document.getElementById("out").innerHTML = 	" SW:"+cwtwc.sw+" SH:"+cwtwc.sh+
-																								" SX:"+cwtwc.sx+" SY:"+cwtwc.sy;
+		
 	}
 };

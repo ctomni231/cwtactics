@@ -6,18 +6,74 @@
 		<title>untitled</title>
 
 		<style>
+			body, html  {
+  margin: 0;
+  padding: 0;
+}
+		
 			#app {
+				position: absolute;
+				left: 0px;
+				top: 0px;
+				bottom: 32px;
 			}
 
 			.draw_panel {
-				position: absolute;
-				z-index: 0;
 			}
+			
+			div.nav {
+				position: absolute;
+				background: black;
+				width: 100%;
+				bottom: 0px;
+			}
+			
 
-			.draw_panel_objects {
-				position: absolute;
-				z-index: 1;
-			}
+div.nav{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+width:100%;
+margin-bottom: 0px;
+}
+
+div.nav ul{
+
+list-style:none;
+background:#2d2d2d;
+margin:0;
+padding:0;
+}
+
+div.nav li{
+display:inline-block;
+float:left;
+}
+
+div.nav li:first-child{
+margin-left:5px;
+}
+
+div.nav a{
+display:block;
+padding:10px;
+text-decoration:none;
+color:#bbbbbb;
+border-top:2px solid transparent;
+}
+
+div.nav a:hover,
+div.nav li.active a{
+background:#3d3d3d;
+color:#dddddd;
+border-top:2px solid #ff4800;
+}
+
+.clearFloat{
+clear:both;
+}
+
+
+			
 		</style>
 
 		<!-- CWT -->
@@ -38,18 +94,13 @@
 				event.preventDefault();
 			}
 
-			window.onerror = function(e){ 
-				document.getElementById("err").innerHTML = ( e + "<br>"+ printStackTrace().join("<br>") ); 
-			}
-			window.onlog = function(e){ 
-				document.getElementById("err").innerHTML = ( JSON.stringify(e) ); 
-			}
+			window.onerror = function( e ){ alert(e); }
 
 			// SIMPLE TEST MAP
 			var testMap = {
 
-				height: 70,
-				width: 70,
+				height: 99,
+				width: 99,
 				filler: "PLAIN",
 
 				players:[
@@ -104,11 +155,13 @@
 			// Setting this to 1 will show you the FPS of the last sampled frame only
 			var fpsFilter = 50;
 			var fpsOut;
-
+			
 			function start(){
 				fpsOut = document.getElementById('fps');
 				cwt.map.loadMap( testMap );
-
+				
+				document.getElementById("cwt_maplayer").height = window.innerHeight - 32;
+				document.getElementById("cwt_maplayer").width = window.innerWidth;
 		// populate some random data
 		var keys = ["PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","FOREST","MOUNTAIN"];
 		for(var y=0,ye=cwt.map._height; y<=ye; y++){
@@ -125,9 +178,6 @@
 					prevent_default: true
 				});
 				hammer.ondragend = function(ev){ 
-					document.getElementById("move").innerHTML = ev.angle + " --- "+ 
-																	parseInt( ev.distance/32, 10 );
-
 					var a = ev.angle;
 					var d = 0;
 							 if( a >= -135 && a < -45 ) d = 0;
@@ -168,6 +218,7 @@
 			var mDiff = 250;
 			var cDiff = 0;
 			function draw(){
+				if( cwtwc.terrain.complete ){
 				cwtwc.drawScreen();
 
 				var diff = ((now=new Date) - lastUpdate);
@@ -182,6 +233,8 @@
 					cwtwc.animStep++;
 					if( cwtwc.animStep >= 3 ) cwtwc.animStep = 0;
 				}
+				
+				}
 
 				// better than intervall because intervall slows down if the draw routine needs
 				// longer to finish than the set interval. This can be better controlled later to 
@@ -193,17 +246,19 @@
 
 	<body onLoad="start();" onkeyup="keyShift(event)">
 	<div id="app">
-		<div id="err"></div>
-		<div id="fps"></div>
-		<div id="move"></div>
-		<div id="out"></div>
-		<canvas id="cwt_maplayer" width="960" height="606" class="draw_panel" >
+		<div id="fps" style="position: absolute;" ></div>
+		<canvas id="cwt_maplayer" class="draw_panel" >
 			Fallback-Inhalt MAP
 		</canvas>
-
-		<canvas id="cwt_objectlayer" width="960" height="606" class="draw_panel_objects" >
-			Fallback-Inhalt OBJEKTE
-		</canvas>
+	</div>
+	
+	<div class="nav">
+		<ul>
+			<li><a href="#">Map</a></li>
+			<li><a href="#">Build</a></li>
+			<li><a href="#">Statistics</a></li>
+			<div class="clearFloat"></div>
+		</ul>
 	</div>
 	</body>
 </html>
