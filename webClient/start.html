@@ -4,49 +4,71 @@
 		<meta charset="utf-8">
 		<meta name = "viewport" content = "user-scalable=no, initial-scale=1, maximum-scale=1,  width=device-width" />
 		<title>untitled</title>
-
-		<style>
-			body, html  {
-  margin: 0;
-  padding: 0;
-}
 		
-			#app {
-				position: absolute;
-				left: 0px;
-				top: 0px;
-				bottom: 32px;
-			}
+		<style>
+body, html  {
+	margin: 0;
+	padding: 0;
+}
 
-			.draw_panel {
-			}
-			
-			div.nav {
-				position: absolute;
-				background: black;
-				width: 100%;
-				bottom: 0px;
-			}
-			
+.content_panel{
+	min-width: 100%;
+	
+	overflow-y: auto;
+	overflow-x: hidden;
+	
+	height: 94.2%;
+	
+	margin-top: -250%;
+	
+	position: absolute;
+	background: #000;
+	z-index: 2;
+	
+	-webkit-transition: all .8s ease-in-out;
+		 -moz-transition: all .8s ease-in-out;
+			 -o-transition: all .8s ease-in-out;
+					transition: all .8s ease-in-out;
+}
+
+.content_panel:target{
+	margin-top: 0%;
+	background-color: #ffcb00;
+}
+
+#app{
+		position: absolute;
+		left: 0px;
+		top: 0px;
+		bottom: 32px;
+}
+
+div.nav {
+	position: absolute;
+	width: 100%;
+	bottom: 0px;
+}
 
 div.nav{
-font-family:Arial, Helvetica, sans-serif;
-font-size:12px;
-width:100%;
-margin-bottom: 0px;
+	height: 6%;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	width:100%;
+	margin-bottom: 0px;
 }
 
 div.nav ul{
-
-list-style:none;
-background:#2d2d2d;
-margin:0;
-padding:0;
+	list-style:none;
+	background:#2d2d2d;
+	margin:0;
+	height: 100%;
+	padding:0;
 }
 
 div.nav li{
-display:inline-block;
-float:left;
+	display:inline-block;
+	float:left;
+	height: 100%;
 }
 
 div.nav li:first-child{
@@ -63,51 +85,55 @@ border-top:2px solid transparent;
 
 div.nav a:hover,
 div.nav li.active a{
-background:#3d3d3d;
-color:#dddddd;
-border-top:2px solid #ff4800;
+	background:#3d3d3d;
+	height: 100%;
+	color:#dddddd;
+	border-top:2px solid #ff4800;
 }
 
 .clearFloat{
-clear:both;
+	clear:both;
 }
 
 
 			
 		</style>
-
+		
+		<!-- LIBS  -->
+		<script src="../lib/amanda.js" type="text/javascript"></script>
+		
 		<!-- CWT -->
 		<script src="../game-engine/main.js" type="text/javascript"></script>
 		<script src="../game-engine/sheets.js" type="text/javascript"></script>
 		<script src="../game-engine/map.js" type="text/javascript"></script>
 		<script src="../game-engine/move.js" type="text/javascript"></script>
-		<script src="../game-engine/relationship.js" type="text/javascript"></script>
-
+		<script src="../game-engine/selectors.js" type="text/javascript"></script>
+		
 		<!-- CWT WC -->
 		<script src="hammer.js" type="text/javascript"></script>
 		<script src="stacktrace.js" type="text/javascript"></script>
 		<script src="cwtwc.js" type="text/javascript"></script>
 
 		<script type="text/javascript">
-			var touchMove = function(event) {
+			var touchMove = function(event){
 				// Prevent scrolling on this element
 				event.preventDefault();
 			}
-
+			
 			window.onerror = function( e ){ alert(e); }
-
+			
 			// SIMPLE TEST MAP
 			var testMap = {
-
-				height: 99,
-				width: 99,
+			
+				height: 70,
+				width: 70,
 				filler: "PLAIN",
-
+				
 				players:[
 					{ gold:1000 , team:1 },
 					{ gold:0    , team:2 }
 				],
-
+				
 				data:{
 					"0":{ "4":"FOREST",
 								"5":"HQ", 
@@ -157,26 +183,30 @@ clear:both;
 			var fpsOut;
 			
 			function start(){
+				
 				fpsOut = document.getElementById('fps');
+				
+				// start
+				cwt.start();
+				
 				cwt.map.loadMap( testMap );
 				
 				document.getElementById("cwt_maplayer").height = window.innerHeight - 32;
 				document.getElementById("cwt_maplayer").width = window.innerWidth;
-		// populate some random data
-		var keys = ["PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","FOREST","MOUNTAIN"];
-		for(var y=0,ye=cwt.map._height; y<=ye; y++){
-			for(var x=0,xe=cwt.map._width; x<=xe; x++){
-
-				if( cwt.map._map[x][y] === "PLAIN" ){ 
-					var i = parseInt( keys.length*Math.random() , 10);
-					cwt.map._map[x][y] = keys[ i ];
+				
+				// populate some random data
+				var keys = ["PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","FOREST","MOUNTAIN"];
+				for(var y=0,ye=cwt.map._height; y<=ye; y++){
+					for(var x=0,xe=cwt.map._width; x<=xe; x++){
+						
+						if( cwt.map._map[x][y] === "PLAIN" ){ 
+							var i = parseInt( keys.length*Math.random() , 10);
+							cwt.map._map[x][y] = keys[ i ];
+						}
+					}
 				}
-			}
-		}
-
-				var hammer = new Hammer( document.getElementById("app") , {
-					prevent_default: true
-				});
+				
+				var hammer = new Hammer( document.getElementById("app") ,{ prevent_default: true });
 				hammer.ondragend = function(ev){ 
 					var a = ev.angle;
 					var d = 0;
@@ -184,58 +214,64 @@ clear:both;
 					else if( a >= -45 && a < 45 ) d = 1;
 					else if( a >= 45 && a < 135 ) d = 2;
 					else if( a >= 135 || a < -135 ) d = 3;
-
+					
 					var dis = parseInt( ev.distance/32, 10 );
 					if( dis === 0 ) dis = 1; 
 					cwtwc.mapShift( d, dis );
 				};
-
+				
 				cwtwc.initialize();
-
+				
 				// call draw
 				draw();
 			}
-
-	  function keyShift( event ){
-		switch( event.keyCode ){
-
-		  case 37:
-			cwtwc.mapShift( 3, 1 );
-			break;
-		  case 38:
-			cwtwc.mapShift( 0, 1 );
-			break;
-		  case 39:
-			cwtwc.mapShift( 1, 1 );
-			break;
-		  case 40:
-			cwtwc.mapShift( 2, 1 );
-			break;
-
-		}
-	  }
-
+		
+			/**
+			 * Extracts the key code from an key event and calls the map shift
+			 * function of the webclient with correct arguments.
+			 */
+			function keyShift( event ){
+				
+				switch( event.keyCode ){
+					
+					case 37:
+						cwtwc.mapShift( 3, 1 );
+						break;
+						
+					case 38:
+						cwtwc.mapShift( 0, 1 );
+						break;
+						
+					case 39:
+						cwtwc.mapShift( 1, 1 );
+						break;
+						
+					case 40:
+						cwtwc.mapShift( 2, 1 );
+						break;
+				}
+			}
+			
 			var mDiff = 250;
 			var cDiff = 0;
 			function draw(){
 				if( cwtwc.terrain.complete ){
-				cwtwc.drawScreen();
-
-				var diff = ((now=new Date) - lastUpdate);
-				var thisFrameFPS = 1000 / diff;
-				fps += (thisFrameFPS - fps) / fpsFilter;
-				lastUpdate = now * 1 - 1;
-				fpsOut.innerHTML = fps.toFixed(1) + "fps";
-
-				cDiff += diff;
-				if( cDiff >= mDiff ){
-					cDiff = 0;
-					cwtwc.animStep++;
-					if( cwtwc.animStep >= 3 ) cwtwc.animStep = 0;
+					cwtwc.drawScreen();
+					
+					var diff = ((now=new Date) - lastUpdate);
+					var thisFrameFPS = 1000 / diff;
+					fps += (thisFrameFPS - fps) / fpsFilter;
+					lastUpdate = now * 1 - 1;
+					fpsOut.innerHTML = fps.toFixed(1) + "fps";
+					
+					cDiff += diff;
+					if( cDiff >= mDiff ){
+						cDiff = 0;
+						cwtwc.animStep++;
+						if( cwtwc.animStep >= 3 ) cwtwc.animStep = 0;
+					}
 				}
 				
-				}
-
 				// better than intervall because intervall slows down if the draw routine needs
 				// longer to finish than the set interval. This can be better controlled later to 
 				// get a stable fps.
@@ -245,18 +281,45 @@ clear:both;
 	</head>
 
 	<body onLoad="start();" onkeyup="keyShift(event)">
+	
 	<div id="app">
-		<div id="fps" style="position: absolute;" ></div>
-		<canvas id="cwt_maplayer" class="draw_panel" >
-			Fallback-Inhalt MAP
-		</canvas>
+			<div id="fps" style="position: absolute;" ></div>
+			<canvas id="cwt_maplayer" class="draw_panel" >
+				Fallback-Inhalt MAP
+			</canvas>
+	</div>
+	
+	<div id="build" class="content_panel" >
+		WE ARE BUILDING HERE<br>
+		WE ARE BUILDING HERE<br>
+		WE ARE BUILDING HERE<br>
+		WE ARE BUILDING HERE<br>
+		WE ARE BUILDING HERE<br>
+		WE ARE BUILDING HERE<br>
+		WE ARE BUILDING HERE<br>
+		WE ARE BUILDING HERE<br>
+		WE ARE BUILDING HERE<br>
+		WE ARE BUILDING HERE
+	</div>
+	
+	<div id="statistics" class="content_panel" >
+		HOLDING STATISTICS HERE<br>
+		HOLDING STATISTICS HERE<br>
+		HOLDING STATISTICS HERE<br>
+		HOLDING STATISTICS HERE<br>
+		HOLDING STATISTICS HERE<br>
+		HOLDING STATISTICS HERE<br>
+		HOLDING STATISTICS HERE<br>
+		HOLDING STATISTICS HERE<br>
+		HOLDING STATISTICS HERE<br>
+		HOLDING STATISTICS HERE
 	</div>
 	
 	<div class="nav">
 		<ul>
-			<li><a href="#">Map</a></li>
-			<li><a href="#">Build</a></li>
-			<li><a href="#">Statistics</a></li>
+			<li><a href="#app">Map</a></li>
+			<li><a href="#build">Build</a></li>
+			<li><a href="#statistics">Statistics</a></li>
 			<div class="clearFloat"></div>
 		</ul>
 	</div>

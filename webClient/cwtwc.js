@@ -1,7 +1,7 @@
 var cwtwc = {
 
 	ctx_map: null,
-	
+
 	// still todo ( --> should be loaded via mod )
 	terrain: new Image(),
 	terrainMap: {
@@ -20,13 +20,12 @@ var cwtwc = {
 	sx:0,
 	sy:0,
 
-	// todo: get size from documentElement
 	sw: 0,
 	sh: 0,
 
 	initialize: function(){
 		cwtwc.ctx_map = document.getElementById("cwt_maplayer").getContext("2d");
-		
+
 		// get size
 		cwtwc.sw = parseInt( document.getElementById("cwt_maplayer").width / cwtwc.tx , 10 );
 		cwtwc.sh = parseInt( document.getElementById("cwt_maplayer").height / cwtwc.ty , 10 );
@@ -149,7 +148,21 @@ var cwtwc = {
 			}
 		}
 		// END OF - rebuild draw map
+	},
 
-		
+	doStep: function(){
+
+		if( !cwt.message.isEmpty() ){
+
+			// pop message and evaluate it
+			// TODO
+		}
+
+		// update screen
+		this.drawScreen();
+
+		// calculate time and wait the delta
+		// TODO
 	}
+
 };

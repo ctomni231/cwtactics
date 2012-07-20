@@ -1,36 +1,38 @@
-cwt.map = {
-
+cwt.map = cwt.model = {
+	
+	// constants
+	INACTIVE: -1,
+	
+	// data
 	_width: 0,
 	_height: 0,
-
-	_map: (function(){
-		var a = [];
-		for( var i=0; i<100; i++) a[i] = [];
-		return a;
-	})(),
-
-	_units: (function(){
-		var a = [];
-		for( var i=0; i<800; i++) a[i] = { 
-			x:0, 
-			y:0, 
+	_weather: null,
+	_day: 0,
+	_map: [],
+	_units: [],
+	_players: [],
+	_properties: [],
+	
+	init: function(){
+		
+		for( var i=0; i<100; i++) cwt.map._map[i] = [];
+		
+		for( var i=0; i<800; i++) cwt.map._units[i] = { 
+			x:0, y:0, 
 			type: null, 
-			owner:-1 
-		}
-		return a;
-	})(),
-
-	_players: (function(){
-		var a = [];
-		for( var i=0; i<8; i++) a[i] = {
-			team: -1,
+			owner: cwt.map.INACTIVE
+		};
+		
+		for( var i=0; i<8; i++) cwt.map._players[i] = {
+			team: cwt.map.INACTIVE,
 			gold: 0
 		};
-		return a;
-	})(),
-
-	_properties: [],
-
+	},
+	
+	weather: function(){
+		return this._weather;
+	},
+	
 	metrics: function(){
 		return {
 			width: this._width,
@@ -47,7 +49,7 @@ cwt.map = {
 		if( id < 0 || this._units.length <= id ) throw Error("invalid id");
 
 		var o = this._units[id];
-		if( o.owner === -1 ) return null; //throw Error("invalid id");
+		if( o.owner === cwt.map.INACTIVE ) return null; //throw Error("invalid id");
 
 		return o;
 	},
@@ -61,7 +63,7 @@ cwt.map = {
 		if( id < 0 || this._players.length <= id ) throw Error("invalid id");
 
 		var o = this._players[id];
-		if( o.team === -1 ) return null; //throw Error("invalid id");
+		if( o.team === cwt.map.INACTIVE ) return null; //throw Error("invalid id");
 
 		return o;
 	},
@@ -75,59 +77,54 @@ cwt.map = {
 		if( id < 0 || this._properties.length <= id ) throw Error("invalid id");
 
 		var o = this._properties[id];
-		if( o.owner === -1 ) return null; //throw Error("invalid id");
+		if( o.owner === cwt.map.INACTIVE ) return null; //throw Error("invalid id");
 
 		return o;
 	},
-
+	
+	
+	// ************************** Object selectors ****************************
+	// ************************************************************************
+	
 	/**
 	 * Calls a function on the registered properties.
 	 */
-	properties: function( cb, selector, pid ){
-		this._select( this._properties, cb, selector, pid );
+	properties: function( selector, pid ){
+		return this._collect( this._properties, pid, pt );
 	},
-
+	
 	/**
 	 * Calls a function on the registered units.
 	 */
 	units: function( cb, selector, pid ){
-		this._select( this._units, cb, selector, pid );
+		return this._collect( this._units, pid, pt );
 	},
-
-	/**
-	 * Simple selection function to select a set out of a object list by a selector. A selector
-	 * simply symbolizes a conditional selection.
-	 *
-	 * @param objs
-	 * @param cb
-	 * @param selector (optional)
-	 * @param pid (optional)
-	 */
-	_select: function( objs, cb, selector, pid ){
-		var obj;
-		if( arguments.length === 2 ){
-			// ALL OBJECTS
-
-			for(var i = 0, e = objs.length; i < e; i++){
-				obj = objs[i];
-
-				// ignore inactive
-				if( obj.owner !== -1 ) cb( obj );
+	
+	_collect: function( list, selector, pid ){
+		var pt;
+		var result = [];
+		var hasSelector = arguments.length > 0;
+		if( hasSelector ) pt = map.player(pid).team;
+		
+		for(var i=0,e=list.length; i<e; i++){
+			
+			// check inactivity and selector
+			if( list[i].owner !== this.INACTIVE ){
+				if( !hasSelector || selector( list[i], pid, pt) ){
+				
+					// add the unit to the result
+					results[ results.length ] = list[i];
+				}
 			}
 		}
-		else{
-			// WITH SELECTOR
-			var pt = map.player(pid).team;
-
-			for(var i = 0, e = objs.length; i < e; i++){
-				obj = objs[i];
-
-				// ignore inactive
-				if( obj.owner !== -1 && selector( obj, pid, pt ) ) cb( obj );
-			}
-		}
+		
+		return result;
 	},
-
+	
+	
+	// ************************** Logic functions *****************************
+	// ************************************************************************
+	
 	/**
 	 * Loads a map and initializes the game context.
 	 */
@@ -158,17 +155,22 @@ cwt.map = {
 			this._players[i].gold = plD.gold;
 			this._players[i].team = plD.team;
 		}
-
+		for( var i=data.players.length, e=this._players.length; i<e; i++){
+			this._players[i].team = this.INACTIVE; 
+		}
+		
 		// units
 		for( var i = 0, e = data.units.length; i<e; i++){
 			var unit = data.units[i];
+			
 			this._units[i].x = unit.x;
 			this._units[i].y = unit.y;
 			this._units[i].type = unit.type;
 			this._units[i].owner = unit.owner;
 		}
-
-/*
-		cwt.publish( "mapLoaded" ); */
+		for( var i=data.units.length, e=this._units.length; i<e; i++){
+			this._units[i].owner = this.INACTIVE; 
+		}
+		
 	}
 };

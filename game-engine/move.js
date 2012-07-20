@@ -1,91 +1,81 @@
 cwt.move = {
-
-	calculateWay: function( uid, tx, ty ){
-		var unit = map.unit(uid);
-		var sx = unit.x;
-		var sy = unit.y;
-	},
-
+	
+	// diferent move codes
+	CODE_UP: 0,
+	CODE_RIGHT: 1,
+	CODE_DOWN: 2,
+	CODE_LEFT: 3,
+	
+	/**
+	 * Returns the costs for a movetype to move onto a tile type.
+	 */
 	moveCosts: function( movetype, tiletype ){
-
 		var c;
-
+		
 		// search id
 		var c = movetype.costs[ tiletype.id ];
 		if( c !== undefined ) return c;
-
+		
 		// search tags (TODO)
-
+		
 		// fallback entry
 		return movetype.costs["*"];
 	},
-
-	generateMoveCard: function( uid ){
-
-		var unit = map.unit(uid);
-		var x = unit.x;
-		var y = unit.y;
-
-		// get the calculator function
-		var getCost = this.generateCostCalculator(
-			db.movetype( db.unit( unit.type ).movetype )
-		);
-
-		var card = {
-			uid: uid,
-			field: {
-
-			},
-			way: []
-		};
-
-		// build move way
-
-		return card;
+	
+	/**
+	 * Creates a move map for a given unit. The position of the unit can be faked by a given second
+	 * and third argument that indicates a possible position. If only the unit id is given, then
+	 * the unit position will be used.
+	 */
+	createMoveCard: function( uid, x, y ){
+		var map = {};
+		var unit = cwt.model.unit( uid );
+		var type = cwt.db.unit( unit.type );
+		
+		// if no position is given then use the unit position
+		if( arguments.length === 1 ){
+			x = unit.x;
+			y = unit.y;
+		}
+		
+		// meta data
+		map.uid = uid;
+		map.x = x;
+		map.y = y;
+		map.r = type.moveRange;
+		map.moveMap = [];
+		map.way = [];
+		
+		// decrease range if not enough fuel is available
+		if( unit.fuel < map.r ) map.r = unit.fuel;
+		
+		// build move map
+		var tile;
+		var cost;
+		var needsCheck = [ x, y, map.r ];
+		needsCheck.size = 1;
+		while( needsCheck.size > 0 ){
+			tile = needsCheck[ needsCheck.size-1 ];
+			needsCheck.size--;
+			
+			// check up
+			if( tile[1] > 0 ){
+				cost = this.moveCosts( type, cwt.map.tile( tile[0], tile[1]-1 ) );
+			}
+			
+			// check right
+			
+			// check down
+			
+			// check left
+		}
+		needsCheck.splice(0);
+		  
+		return map;
 	},
-
+	
 	move: function( card ){
-		cwt.util.publish("move/move", card);
-
-		//TODO check card
-		if(
-			card.uid < 0 ||
-				card.uid > map.units.length ||
-				card.way.length === 0
-			){
-			this.events.emit("gameError",{
-				source:"move",
-				msg:"illegal card values",
-				attached: card
-			});
-		}
-
-		var unit = map.units[ card.uid ];
-		var way = card.way;
-		var x = unit.x;
-		var y = unit.y;
-
-		// check moveway
-		for( var i=0,e=way.length; i<e; i++ ){
-
-			// change current position
-			var cmd = way[i];
-			if( cmd === 0 ) y--;
-			else if( cmd === 1 ) x++;
-			else if( cmd === 2 ) y++;
-			else if( cmd === 3 ) x--;
-			else throw Error("illegal way code");
-
-			// if there is an unit in the way, break ( except own one )
-			//TODO allies?
-			//		if( typeof map[x][y].unit === 'number' && map.units[map[x][y].unit].owner !== unit.owner ) break;
-
-			// update last tile
-			lX = x;
-			lY = y;
-		}
-
-		// set new position
-		//map[lX][lY].unit = msg.uid;
+		
+		
 	}
 };

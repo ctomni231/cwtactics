@@ -1,7 +1,7 @@
 cwt.db = {
 
 	// MODEL
-	_amanda: amanda("json"),
+	_amanda: null,
 	_units: {},
 	_tiles: {},
 	_weapons: {},
@@ -20,7 +20,14 @@ cwt.db = {
 		WEATHER:3,
 		MOVE_TYPE:4
 	},
-
+	
+	init: function(){
+		
+		this._amanda = amanda("json");
+		
+		// create some selectors
+	},
+	
 	/**
 	 * Different sheet validators.
 	 *
@@ -176,8 +183,10 @@ cwt.db = {
 		}
 
 		this._amanda.validate( data, schema, function(e){
-			if( e ){
-				throw Error(); }});
+			if( e ){ 
+				throw Error( e ); 
+			}
+		});
 
 		if( db.hasOwnProperty(id) ) throw Error(id+" is already registered");
 		db[id] = data;
