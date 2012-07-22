@@ -145,26 +145,26 @@ cwt.move = {
 			// get new current position
 			switch( way[i] ){
 
-				case 0:
+				case this.CODE_UP:
 					if( cY === 0 ) throw Error("cannot do move command UP because current position is at the border");
 					cY--;
           break;
 
-				case 1:
+				case this.CODE_RIGHT:
 					if( cX === cwt.map._width-1 ){
 						throw Error("cannot do move command UP because current position is at the border");
 					}
 					cX++;
           break;
 
-				case 2:
+				case this.CODE_DOWN:
 					if( cY === cwt.map._height-1 ){
 						throw Error("cannot do move command DOWN because current position is at the border");
 					}
 					cY++;
           break;
 
-				case 3:
+				case this.CODE_LEFT:
 					if( cX === 0 ) throw Error("cannot do move command LEFT because current position is at the border");
 					cX--;
           break;
