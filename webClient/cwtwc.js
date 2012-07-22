@@ -11,6 +11,7 @@ var cwtwc = {
 	},
 
 	drawnMap: [],
+  drawChanges: 0,
 
 	tx: 16,
 	ty: 16,
@@ -39,6 +40,7 @@ var cwtwc = {
 	},
 
 	drawScreen: function(){
+    console.log("DRAW");
 
 		var xe,ye;
 		var pix;
@@ -84,6 +86,9 @@ var cwtwc = {
 				}
 			}
 		}
+
+    // clear counter
+    cwt.drawChanges = 0;
 	},
 
 	mapShift: function( dir, dis ){
@@ -116,6 +121,8 @@ var cwtwc = {
 				break;
 		}
 
+    cwt.drawChanges = 0;
+
 		// rebuild draw map
 		var xe,ye;
 		var map = cwt.map._map;
@@ -143,6 +150,7 @@ var cwtwc = {
 						)
 					){
 					cwtwc.drawnMap[x-cwtwc.sx][y-cwtwc.sy] = true;
+          cwt.drawChanges++;
 				}
 				else cwtwc.drawnMap[x-cwtwc.sx][y-cwtwc.sy] = false;
 			}
@@ -152,14 +160,11 @@ var cwtwc = {
 
 	doStep: function(){
 
-		if( !cwt.message.isEmpty() ){
-
-			// pop message and evaluate it
-			// TODO
-		}
+    // evaluate next command
+		if( !cwt.message.isEmpty() ){ cwt.message.evalNext(); }
 
 		// update screen
-		this.drawScreen();
+		if( cwt.drawChanges > 0 ) this.drawScreen();
 
 		// calculate time and wait the delta
 		// TODO

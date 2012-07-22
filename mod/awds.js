@@ -1,0 +1,1 @@
+cwt.mod.awds = {};

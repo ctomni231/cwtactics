@@ -45,7 +45,8 @@ cwt.db = {
 				maxAmmo: { type:'integer', minimum:0, maximum:99 },
 				maxFuel: { type:'integer', minimum: 0, maximum:99, required:true },
 				moveRange: { type:'integer', minimum: 0, maximum:15, required:true },
-				moveType: { type:'string', required:true }
+				moveType: { type:'string', required:true },
+				weight: { type:'integer', required:true }
 			}
 		},
 
@@ -54,8 +55,8 @@ cwt.db = {
 			type: 'object',
 			properties: {
 				ID: { type:'string', except:[], required:true },
-				capturePoints: { format:'int', minimum: 1, maximum:99 },
-				defense: { format:'int', minimum: 0, maximum:5, required:true }
+				capturePoints: { type:'integer', minimum: 1, maximum:99 },
+				defense: { type:'integer', minimum: 0, maximum:5 }
 			}
 		},
 
@@ -172,25 +173,26 @@ cwt.db = {
 				db = this._weathers;
 				excList = this.validators.weatherValidator.properties.ID.except;
 				break;
-
+				
 			case this.types.MOVE_TYPE:
 				schema =  this.validators.movetypeValidator;
 				db = this._movetypes;
 				excList = this.validators.movetypeValidator.properties.ID.except;
 				break;
-
+				
 			default: throw Error("unknow type "+type);
 		}
-
+		
 		this._amanda.validate( data, schema, function(e){
-			if( e ){ 
+			if( e ){
+				console.error( JSON.stringify( e.getMessages()) );
 				throw Error( e ); 
 			}
 		});
-
+		
 		if( db.hasOwnProperty(id) ) throw Error(id+" is already registered");
 		db[id] = data;
-
+		
 		// register id in exception list
 		excList.push(id);
 	}

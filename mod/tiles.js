@@ -1,5 +1,4 @@
-var _tmp_ = {
-  "sheets" : [
+cwt.mod.awds.tiles = [
 
     {
       "ID"                : "PLAIN",
@@ -109,9 +108,4 @@ var _tmp_ = {
       "ID"                : "SHOAL",
       "tags"              : [ "VISION_BLOCK" ]
     }
-  ]
-};
-
-for( var i = 0; i<_tmp_.sheets.length; i++ ){
-  app.module("db").parse( _tmp_.sheets[i], app.module("db").types.TILE );
-}
+];

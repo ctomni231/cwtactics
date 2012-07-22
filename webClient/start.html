@@ -101,10 +101,19 @@ div.nav li.active a{
 		
 		<!-- LIBS  -->
 		<script src="../lib/amanda.js" type="text/javascript"></script>
+		<script src="../lib/jsonSelect.js" type="text/javascript"></script>
+		<script src="../lib/jpath.js" type="text/javascript"></script>
 		
 		<!-- CWT -->
 		<script src="../game-engine/main.js" type="text/javascript"></script>
-		<script src="../game-engine/sheets.js" type="text/javascript"></script>
+
+		<script src="../mod/awds.js" type="text/javascript"></script>
+		<script src="../mod/movetypes.js" type="text/javascript"></script>
+		<script src="../mod/weapons.js" type="text/javascript"></script>
+		<script src="../mod/tiles.js" type="text/javascript"></script>
+		<script src="../mod/units.js" type="text/javascript"></script>
+
+		<script src="../game-engine/db.js" type="text/javascript"></script>
 		<script src="../game-engine/map.js" type="text/javascript"></script>
 		<script src="../game-engine/move.js" type="text/javascript"></script>
 		<script src="../game-engine/selectors.js" type="text/javascript"></script>
@@ -164,15 +173,15 @@ div.nav li.active a{
 				],
 
 				units:[
-					{ x:2, y:2, type:"INFANTRY" , owner:0 },
-					{ x:8, y:5, type:"TANK" , owner:0 },
-					{ x:7, y:8, type:"INFANTRY" , owner:0 },
-					{ x:6, y:9, type:"TANK" , owner:0 },
-					{ x:6, y:10, type:"INFANTRY" , owner:0 },
-					{ x:3, y:14, type:"INFANTRY" , owner:0 },
-					{ x:9, y:7, type:"TANK"      , owner:0 },
-					{ x:9, y:9, type:"MECH"     , owner:1 },
-					{ x:6, y:6, type:"ARTILLERY", owner:1 }
+					{ x:2, y:2, type:"LTANK" , owner:0, fuel:50 },
+					{ x:8, y:5, type:"LTANK" , owner:0, fuel:1 },
+					{ x:7, y:8, type:"INFANTRY" , owner:0, fuel:50 },
+					{ x:6, y:9, type:"LTANK" , owner:0, fuel:50 },
+					{ x:6, y:10, type:"INFANTRY" , owner:0, fuel:50 },
+					{ x:3, y:14, type:"INFANTRY" , owner:0, fuel:50 },
+					{ x:9, y:7, type:"LTANK"      , owner:0, fuel:50 },
+					{ x:9, y:9, type:"MECH"     , owner:1, fuel:50 },
+					{ x:6, y:6, type:"ARTILLERY", owner:1, fuel:50 }
 				]
 			};
 
@@ -188,6 +197,7 @@ div.nav li.active a{
 				
 				// start
 				cwt.start();
+				cwt.loadDefaultMod();
 				
 				cwt.map.loadMap( testMap );
 				
@@ -254,28 +264,31 @@ div.nav li.active a{
 			
 			var mDiff = 250;
 			var cDiff = 0;
+			cwt.drawChanges = 1;
 			function draw(){
 				if( cwtwc.terrain.complete ){
-					cwtwc.drawScreen();
+				  	if( cwt.drawChanges > 0 ) cwtwc.drawScreen();
 					
 					var diff = ((now=new Date) - lastUpdate);
 					var thisFrameFPS = 1000 / diff;
 					fps += (thisFrameFPS - fps) / fpsFilter;
 					lastUpdate = now * 1 - 1;
 					fpsOut.innerHTML = fps.toFixed(1) + "fps";
-					
+
+				  	/*
 					cDiff += diff;
 					if( cDiff >= mDiff ){
 						cDiff = 0;
 						cwtwc.animStep++;
 						if( cwtwc.animStep >= 3 ) cwtwc.animStep = 0;
 					}
+					*/
 				}
 				
 				// better than intervall because intervall slows down if the draw routine needs
 				// longer to finish than the set interval. This can be better controlled later to 
 				// get a stable fps.
-				setTimeout(draw, 16-diff); //TODO do a better fps management here!
+				setTimeout(draw, 16-diff ); //TODO do a better fps management here!
 			}
 		</script>
 	</head>

@@ -1,9 +1,7 @@
 // TODO THIS DATA IS THE DEFAULT MOD DATA
 // 
 
-var _tmp_ = {
-
-  "sheets" : [
+cwt.mod.awds.movetypes = [
 
     {
       "ID"            : "MV_INFANTRY",
@@ -90,9 +88,4 @@ var _tmp_ = {
         "*"             : 0
       }
     }
-  ]
-};
-
-for( var i = 0; i<_tmp_.sheets.length; i++ ){
-  app.module("db").parse( _tmp_.sheets[i], app.module("db").types.MOVE_TYPE );
-}
+];

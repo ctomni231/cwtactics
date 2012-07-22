@@ -1,5 +1,4 @@
-var _tmp_ = {
-  "sheets" : [
+cwt.mod.awds.weapons = [
 
     {
       "ID"            : "WP_MG",
@@ -11,9 +10,4 @@ var _tmp_ = {
         "*"         : 0
       }
     }
-  ]
-};
-
-for( var i = 0; i<_tmp_.sheets.length; i++ ){
-  app.module("db").parse( _tmp_.sheets[i], app.module("db").types.WEAPONS );
-}
+];

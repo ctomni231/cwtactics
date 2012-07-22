@@ -1,5 +1,4 @@
-var _tmp_ = {
-  "sheets" : [
+cwt.mod.awds.units = [
 
     {
       "ID"            : "INFANTRY",
@@ -484,9 +483,4 @@ var _tmp_ = {
       "tags"          : [ "WATER", "SHIP", "INDIRECT", "AT" ]
     }
 
-  ]
-};
-
-for( var i = 0; i<_tmp_.sheets.length; i++ ){
-  app.module("db").parse( _tmp_.sheets[i], app.module("db").types.UNIT );
-}
+];

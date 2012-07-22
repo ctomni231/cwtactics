@@ -19,7 +19,8 @@ cwt.map = cwt.model = {
 		
 		for( var i=0; i<800; i++) cwt.map._units[i] = { 
 			x:0, y:0, 
-			type: null, 
+			type: null,
+      fuel: 0,
 			owner: cwt.map.INACTIVE
 		};
 		
@@ -53,6 +54,28 @@ cwt.map = cwt.model = {
 
 		return o;
 	},
+
+  unitByPos: function( x, y ){
+    var unit;
+
+    for( var i=0,e=this._units.length; i<e; i++ ){
+      unit = this._units[i];
+      if( unit.x === x && unit.y === y ) return unit;
+    }
+
+    return null;
+  },
+
+  unitIdByPos: function( x, y ){
+    var unit;
+
+    for( var i=0,e=this._units.length; i<e; i++ ){
+      unit = this._units[i];
+      if( unit.x === x && unit.y === y ) return i;
+    }
+
+    return null;
+  },
 
 	/**
 	 * Returns a player by its id.
@@ -162,8 +185,9 @@ cwt.map = cwt.model = {
 		// units
 		for( var i = 0, e = data.units.length; i<e; i++){
 			var unit = data.units[i];
-			
-			this._units[i].x = unit.x;
+
+      this._units[i].fuel = unit.fuel;
+      this._units[i].x = unit.x;
 			this._units[i].y = unit.y;
 			this._units[i].type = unit.type;
 			this._units[i].owner = unit.owner;

@@ -40,7 +40,9 @@ cwt.selectors = {
 		this.ownWithLowHP = this.createGroup( "own", "lowHealth" );
 		this.enemyWithLowHP = this.createGroup( "enemy", "lowHealth" );
 	},
-	
+
+  queries:{
+  },
 	
 	// ************************* Default Selectors ***********************
 	// *******************************************************************
