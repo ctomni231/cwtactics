@@ -63,7 +63,7 @@ cwt.move = {
       tile = needsCheck[ needsCheck.length-1 ];
       needsCheck.splice(0,1);
 
-      console.log("check tile - "+JSON.stringify( tile )+ " rest is "+JSON.stringify(needsCheck) );
+      if( cwt.DEBUG ) console.log("check tile - "+JSON.stringify( tile )+ " rest is "+JSON.stringify(needsCheck) );
 
       // UP
       if( tile[1] > 0 )
@@ -82,26 +82,26 @@ cwt.move = {
         this._checkMove( tile[0]+1, tile[1], tile[2], mType, map.moveMap, needsCheck );
     }
 
-    console.log("result move card- "+JSON.stringify( map ));
+    if( cwt.DEBUG ) console.log("result move card- "+JSON.stringify( map ));
 
     return map;
   },
 
   _checkMove: function( tx, ty, mvp, mType, movemap, checkMap ){
 
-    console.log("check move to - ("+tx+","+ty+")");
+    if( cwt.DEBUG ) console.log("check move to - ("+tx+","+ty+")");
     var cost = this.moveCosts( mType, cwt.map._map[ tx ][ ty ] );
     if( cost != -1 ){
 
       var rest = mvp-cost;
-      console.log("rest mvp "+rest);
+      if( cwt.DEBUG ) console.log("rest mvp "+rest);
       if( rest >= 0 ){
 
         if( !movemap.hasOwnProperty( tx ) ){
           movemap[ tx ] = {};
         }
 
-        if( movemap[ tx ].hasOwnProperty( ty ) ){
+        if( cwt.DEBUG && movemap[ tx ].hasOwnProperty( ty ) ){
           console.log("move already exists");
 
           if( movemap[ tx ][ ty ] < rest ){
@@ -112,7 +112,7 @@ cwt.move = {
         if( !movemap[ tx ].hasOwnProperty( ty ) ||
           movemap[ tx ][ ty ] < rest ){
 
-            console.log("add move to - ("+tx+","+ty+")");
+            if( cwt.DEBUG ) console.log("add move to - ("+tx+","+ty+")");
 
             // add to to check map
             checkMap.push( [ tx, ty, rest ] );

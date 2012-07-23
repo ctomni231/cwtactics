@@ -101,8 +101,7 @@ div.nav li.active a{
 		
 		<!-- LIBS  -->
 		<script src="../lib/amanda.js" type="text/javascript"></script>
-		<script src="../lib/jsonSelect.js" type="text/javascript"></script>
-		<script src="../lib/jpath.js" type="text/javascript"></script>
+		<script src="../lib/hqx.js" type="text/javascript"></script>
 		
 		<!-- CWT -->
 		<script src="../game-engine/main.js" type="text/javascript"></script>
@@ -122,6 +121,7 @@ div.nav li.active a{
 		<script src="hammer.js" type="text/javascript"></script>
 		<script src="stacktrace.js" type="text/javascript"></script>
 		<script src="cwtwc.js" type="text/javascript"></script>
+		<script src="img/defaultGraphics.js" type="text/javascript"></script>
 
 		<script type="text/javascript">
 			var touchMove = function(event){
@@ -264,25 +264,36 @@ div.nav li.active a{
 			
 			var mDiff = 250;
 			var cDiff = 0;
+			var hq = false;
 			cwt.drawChanges = 1;
 			function draw(){
 				if( cwtwc.terrain.complete ){
-				  	if( cwt.drawChanges > 0 ) cwtwc.drawScreen();
-					
-					var diff = ((now=new Date) - lastUpdate);
-          					var thisFrameFPS = 1000 / diff;
-					fps += (thisFrameFPS - fps) / fpsFilter;
-					lastUpdate = now * 1 - 1;
-					fpsOut.innerHTML = fps.toFixed(1) + "fps";
-
-				  	/*
-					cDiff += diff;
-					if( cDiff >= mDiff ){
-						cDiff = 0;
-						cwtwc.animStep++;
-						if( cwtwc.animStep >= 3 ) cwtwc.animStep = 0;
+					if( !hq ){
+					  cwtwc.terrain = hqx( cwtwc.terrain, 2 );
+					  hq = true;
+					  cwtwc.terrain.complete = true;
 					}
-					*/
+				  	else{
+
+					  if( cwt.drawChanges > 0 ) cwtwc.drawScreen();
+
+
+					  var diff = ((now=new Date) - lastUpdate);
+							  var thisFrameFPS = 1000 / diff;
+					  fps += (thisFrameFPS - fps) / fpsFilter;
+					  lastUpdate = now * 1 - 1;
+					  fpsOut.innerHTML = fps.toFixed(1) + "fps";
+
+					  cwtwc.triggerAnimation( diff );
+					  /*
+					  cDiff += diff;
+					  if( cDiff >= mDiff ){
+						  cDiff = 0;
+						  cwtwc.animStep++;
+						  if( cwtwc.animStep >= 3 ) cwtwc.animStep = 0;
+					  }
+					  */
+					}
 				}
 				
 				// better than intervall because intervall slows down if the draw routine needs

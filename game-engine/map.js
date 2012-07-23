@@ -61,7 +61,7 @@ cwt.map = cwt.model = {
 
     for( var i=0,e=this._units.length; i<e; i++ ){
       unit = this._units[i];
-      if( unit.x === x && unit.y === y ) return unit;
+      if( unit.owner !== -1 && unit.x === x && unit.y === y ) return unit;
     }
 
     return null;
@@ -72,7 +72,7 @@ cwt.map = cwt.model = {
 
     for( var i=0,e=this._units.length; i<e; i++ ){
       unit = this._units[i];
-      if( unit.x === x && unit.y === y ) return i;
+      if( unit.owner !== -1 && unit.x === x && unit.y === y ) return i;
     }
 
     return null;
@@ -111,7 +111,7 @@ cwt.map = cwt.model = {
 
     for( var i=0,e=this._properties.length; i<e; i++ ){
       prop = this._properties[i];
-      if( prop.x === x && prop.y === y ) return prop;
+      if( prop.owner !== -1 && prop.x === x && prop.y === y ) return prop;
     }
 
     return null;

@@ -5,6 +5,9 @@
  */
 var cwt = {
 
+  // some flags
+  DEBUG: false,
+
   /** @namespace */
   mod:{},
 
@@ -36,6 +39,10 @@ var cwt = {
 
   /** @namespace */
   util:{
+
+    setDebug: function( bool ){
+      cwt.DEBUG = bool;
+    },
 
     /**
      * Iterates all keys of an object and calls a callback function on every key.
