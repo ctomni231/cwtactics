@@ -15,9 +15,7 @@ cwt.message = {
   init: function(){
 
     // clear buffer
-    for(var i=0,e=this.MAX_SIZE; i<e; i++){
-      this._buffer[i] = null;
-    }
+    for(var i=0,e=this.MAX_SIZE; i<e; i++){ this._buffer[i] = null; }
   },
 
   /**
@@ -53,8 +51,4 @@ cwt.message = {
     this._rInd++;
     if( this._rInd === this.MAX_SIZE ) this._rInd = 0;
   }
-
-  /**
-   * DIFFERENT MESSAGE FUNCTIONS
-   */
 };

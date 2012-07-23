@@ -50,9 +50,7 @@ var cwt = {
     /**
      * A function that always returning the value 'true'.
      */
-    trueReturner: function(){ 
-      return true; 
-    }
+    trueReturner: function(){ return true; }
   },
 
   /**

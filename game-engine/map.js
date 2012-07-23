@@ -1,4 +1,4 @@
-cwt.map = cwt.model = {
+cwt.model = cwt.model = {
 
   // constants
   INACTIVE: -1,
@@ -8,6 +8,7 @@ cwt.map = cwt.model = {
   _height: 0,
   _weather: null,
   _day: 0,
+  _activePlayer: this.INACTIVE,
   _map: [],
   _units: [],
   _players: [],
@@ -15,17 +16,17 @@ cwt.map = cwt.model = {
 
   init: function(){
 
-    for( var i=0; i<100; i++) cwt.map._map[i] = [];
+    for( var i=0; i<100; i++) cwt.model._map[i] = [];
 
-    for( var i=0; i<800; i++) cwt.map._units[i] = {
+    for( var i=0; i<800; i++) cwt.model._units[i] = {
       x:0, y:0,
       type: null,
       fuel: 0,
-      owner: cwt.map.INACTIVE
+      owner: cwt.model.INACTIVE
     };
 
-    for( var i=0; i<8; i++) cwt.map._players[i] = {
-      team: cwt.map.INACTIVE,
+    for( var i=0; i<8; i++) cwt.model._players[i] = {
+      team: cwt.model.INACTIVE,
       gold: 0
     };
   },
@@ -50,7 +51,7 @@ cwt.map = cwt.model = {
     if( id < 0 || this._units.length <= id ) throw Error("invalid id");
 
     var o = this._units[id];
-    if( o.owner === cwt.map.INACTIVE ) return null; //throw Error("invalid id");
+    if( o.owner === cwt.model.INACTIVE ) return null; //throw Error("invalid id");
 
     return o;
   },
@@ -86,7 +87,7 @@ cwt.map = cwt.model = {
     if( id < 0 || this._players.length <= id ) throw Error("invalid id");
 
     var o = this._players[id];
-    if( o.team === cwt.map.INACTIVE ) return null; //throw Error("invalid id");
+    if( o.team === cwt.model.INACTIVE ) return null; //throw Error("invalid id");
 
     return o;
   },
@@ -100,7 +101,7 @@ cwt.map = cwt.model = {
     if( id < 0 || this._properties.length <= id ) throw Error("invalid id");
 
     var o = this._properties[id];
-    if( o.owner === cwt.map.INACTIVE ) return null; //throw Error("invalid id");
+    if( o.owner === cwt.model.INACTIVE ) return null; //throw Error("invalid id");
 
     return o;
   },
@@ -115,10 +116,6 @@ cwt.map = cwt.model = {
 
     return null;
   },
-
-
-  // ************************** Object selectors ****************************
-  // ************************************************************************
 
   /**
    * Calls a function on the registered properties.
@@ -155,10 +152,6 @@ cwt.map = cwt.model = {
     return result;
   },
 
-
-  // ************************** Logic functions *****************************
-  // ************************************************************************
-
   /**
    * Loads a map and initializes the game context.
    */
@@ -168,17 +161,21 @@ cwt.map = cwt.model = {
     this._width = data.width;
     this._height = data.height;
 
+    // TODO this should be in map data possible too ( e.g. if map is the result of a save game )
+    this._day = 0;
+    this._activePlayer = 0;
+
     // filler
     for( var x=0, e1=this._width; x<e1; x++ ){
       for( var y=0, e2=this._height; y<e2; y++ ){
-        cwt.map._map[x][y] = data.filler;
+        cwt.model._map[x][y] = data.filler;
       }
     }
 
     // special tiles
     cwt.util.each( data.data , function( col, x ){
       cwt.util.each( col , function( tile, y ){
-        cwt.map._map[x][y] = tile;
+        cwt.model._map[x][y] = tile;
       });
     });
 
