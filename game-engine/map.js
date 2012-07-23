@@ -1,4 +1,4 @@
-cwt.model = cwt.model = {
+cwt.map = cwt.model = {
 
   // constants
   INACTIVE: -1,
@@ -135,7 +135,7 @@ cwt.model = cwt.model = {
     var pt;
     var result = [];
     var hasSelector = arguments.length > 0;
-    if( hasSelector ) pt = map.player(pid).team;
+    if( hasSelector ) pt = cwt.model.player(pid).team;
 
     for(var i=0,e=list.length; i<e; i++){
 
@@ -144,7 +144,7 @@ cwt.model = cwt.model = {
         if( !hasSelector || selector( list[i], pid, pt) ){
 
           // add the unit to the result
-          results[ results.length ] = list[i];
+          result[ result.length ] = list[i];
         }
       }
     }
