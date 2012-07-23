@@ -270,7 +270,7 @@ div.nav li.active a{
 				  	if( cwt.drawChanges > 0 ) cwtwc.drawScreen();
 					
 					var diff = ((now=new Date) - lastUpdate);
-					var thisFrameFPS = 1000 / diff;
+          					var thisFrameFPS = 1000 / diff;
 					fps += (thisFrameFPS - fps) / fpsFilter;
 					lastUpdate = now * 1 - 1;
 					fpsOut.innerHTML = fps.toFixed(1) + "fps";
