@@ -90,9 +90,10 @@ var cwtwc = {
 
           var unit = cwt.model.unitByPos(x,y);
           if( unit !== null ){
-            if( cwtwc.imgMap[type] !== undefined ){
+            var imgM = cwtwc.imgMap[ unit.type ];
+            if( imgM !== undefined ){
 
-              var imgM = cwtwc.imgMap[type];
+
               cwtwc.ctx_map.drawImage(
                 imgM[0],
                 imgM[4] + (this.aStep*imgM[1]), imgM[5],
@@ -218,9 +219,13 @@ var cwtwc = {
           var unit = cwt.model.unitByPos(x,y);
           if(
             unit !== null ||
-            ( y>0 && cwt.model.unitByPos(x,y-1) !== null )
+            ( y>0 &&
+              (
+                cwt.model.unitByPos(x,y-1) !== null ||
+                cwtwc.drawnMap[x-cwtwc.sx][y-cwtwc.sy-1] // TODO only if overlapping
+              )
+            )
 
-            // TODO recognize if overlapping tiles are in a column
           ){
 
             if( cwt.DEBUG ) console.log("redrawing tile ("+x+","+y+")cause of an unit");
