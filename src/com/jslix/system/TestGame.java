@@ -34,8 +34,9 @@ public class TestGame extends BasicGame{
 
     @Override
     public void render(GameContainer container, Graphics g) throws SlickException {
-        g.setColor(Color.blue);
+        g.setColor(container.hasFocus() ? Color.blue : Color.black);
         g.fillRect(0, 0, container.getWidth(), container.getHeight());
+
     }
 
 }

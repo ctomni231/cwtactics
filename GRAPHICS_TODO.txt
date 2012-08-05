@@ -42,9 +42,9 @@ in handling multi-tasking applications. It is going to include this
 functionality for both Slick/Java Consoles & Applets. 
 Priority: Hot (working)
 
-In order to add layouts to Applets, I'll have to redo the entire Applet
-class. I found out how to make Slick work exactly like normal Applets.
-Done: (Delete next iteration)
+Attempt to implement full screen into Java2D screens in order to blanket
+functionality of toggling full screens in both implementations.
+Priority: Medium
 
 The JSlix system must load the natives from startup instead of forcing the
 natives to be loaded from the same folder. It'll make it easier to distribute

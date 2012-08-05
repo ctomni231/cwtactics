@@ -2,6 +2,7 @@ package com.jslix.system;
 
 import java.applet.Applet;
 import java.awt.BorderLayout;
+import javax.swing.JTextField;
 
 /**
  * SlixApplet.java
@@ -16,6 +17,8 @@ public class SlixApplet extends Applet{
 
     /** The Applet that holds the canvas container */
     private SlixCanvas canvas;
+    /** The Textfield for this particular Applet */
+    private JTextField textfield;
 
     /**
      * By Kevin of Slick2D: Altered by JSR.
@@ -27,10 +30,13 @@ public class SlixApplet extends Applet{
         setIgnoreRepaint(true);
         canvas = new SlixCanvas(new TestGame());
         canvas.setSize(getWidth(), getHeight());
-        add(canvas);
+        add(canvas, BorderLayout.CENTER);
         canvas.setFocusable(true);
         canvas.requestFocus();
         canvas.setIgnoreRepaint(true);
+        textfield = new JTextField();
+        add(textfield, BorderLayout.SOUTH);
+        textfield.setFocusable(true);
         setVisible(true);
     }
 }

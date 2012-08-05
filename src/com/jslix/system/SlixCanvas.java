@@ -1,8 +1,6 @@
 package com.jslix.system;
 
 import java.awt.Canvas;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.PixelFormat;
@@ -27,8 +25,6 @@ public class SlixCanvas extends Canvas{
 
     /** The container being displayed on this canvas */
     private SlixCanvasPanel container;
-    /** Alpha background supported */
-    protected boolean alphaSupport = true;
     /** The thread that is looping for the game */
     protected Thread gameThread;
 
@@ -64,9 +60,8 @@ public class SlixCanvas extends Canvas{
     @Override
     public final void addNotify() {
         super.addNotify();
-        if (gameThread != null) {
+        if (gameThread != null)
             return;
-        }
 
         gameThread = new Thread() {
             @Override
@@ -78,8 +73,7 @@ public class SlixCanvas extends Canvas{
                     if (Display.isCreated()) {
                         Display.destroy();
                     }
-                    setVisible(false);//removeAll();
-                    //add(new ConsolePanel(e));
+                    setVisible(false);
                     validate();
                 }
             }
@@ -122,7 +116,7 @@ public class SlixCanvas extends Canvas{
         }
 
         initGL();
-        this.requestFocus();
+        requestFocus();
         while(container.isRunning()){
             container.runloop(getWidth(), getHeight());
         }
@@ -137,16 +131,14 @@ public class SlixCanvas extends Canvas{
         try {
             // create display with alpha
             Display.create(new PixelFormat(8, 8, 0));
-            alphaSupport = true;
+            container.alphaSupport = true;
         } catch (Exception e) {
             // if we couldn't get alpha, let us know
-            alphaSupport = false;
+            container.alphaSupport = false;
             Display.destroy();
             // create display without alpha
             Display.create();
-        } finally {
-            container.alphaSupport = alphaSupport;
-        }
+        } 
     }
 
     /**

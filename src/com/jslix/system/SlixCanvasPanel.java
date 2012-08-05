@@ -38,7 +38,7 @@ public class SlixCanvasPanel extends GameContainer {
     /** The display mode we're going to try and use */
     protected DisplayMode targetDisplayMode;
     /** Alpha background supported */
-    protected boolean alphaSupport = true;
+    protected boolean alphaSupport;
 
     /**
      * This class uses a Game Container to provide the Applet Context
@@ -439,7 +439,8 @@ public class SlixCanvasPanel extends GameContainer {
 
             updateAndRender(delta);
 
-            setDisplayMode(w, h, false);
+            if(w > 0 && h > 0)
+                setDisplayMode(w, h, false);
 
             updateFPS();
             Display.update();
