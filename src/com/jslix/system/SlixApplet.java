@@ -18,7 +18,7 @@ public class SlixApplet extends Applet{
     /** The Applet that holds the canvas container */
     private SlixCanvas canvas;
     /** The Textfield for this particular Applet */
-    private JTextField textfield;
+    private SlixTextField textfield;
 
     /**
      * By Kevin of Slick2D: Altered by JSR.
@@ -34,9 +34,11 @@ public class SlixApplet extends Applet{
         canvas.setFocusable(true);
         canvas.requestFocus();
         canvas.setIgnoreRepaint(true);
-        textfield = new JTextField();
+        textfield = new SlixTextField();
         add(textfield, BorderLayout.SOUTH);
         textfield.setFocusable(true);
         setVisible(true);
     }
+    
+    
 }

@@ -2,9 +2,12 @@ package com.jslix.system;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
-import javax.swing.JTextField;
 import org.newdawn.slick.SlickException;
 
 /**
@@ -37,7 +40,7 @@ public class Slix {
     /** The window that holds the frame of the game */
     private JFrame window;
     /** This holds the Slick version of the game (resize) */
-    private SlixCanvas contain;
+    private SlixContainer contain;
     /** This holds the game of the CanvasGameContainer */
     private TestGame game;
     /** The title of the window */
@@ -61,7 +64,7 @@ public class Slix {
     /** Holds a variable so only the top screen displays */
     private int scrStart;
     /** The Textfield for this particular Applet */
-    private JTextField textfield;
+    private SlixTextField textfield;
 
     /**
      * This class creates a Java2D or Slick2D screen with a starting
@@ -77,19 +80,34 @@ public class Slix {
      * This function initializes and displays a Slick2D frame
      */
     public void showSlick(){
-    	if(game == null)
-            game = new TestGame();
+        try {
+            if (game == null) {
+                game = new TestGame();
+            }
+            contain = new SlixContainer(game);
+            contain.setSize(sizex, sizey);
+            window.add(contain, BorderLayout.CENTER);
+            window.setSize(sizex, sizey);
+            window.add(textfield, BorderLayout.SOUTH);
+            window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            window.addWindowListener(new WindowAdapter() {
 
-        contain = new SlixCanvas(game);
-        contain.setSize(sizex, sizey);
-        window.setSize(sizex, sizey);
-        window.add(contain, BorderLayout.CENTER);
-        textfield = new JTextField();
-        window.add(textfield, BorderLayout.SOUTH);
-        textfield.setFocusable(true);
-        window.validate();
-        window.setVisible(true);
-        window.pack();
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    //SlixLibrary.removeAllScreens();
+                    //SlixLibrary.updateScreens();
+                    window.dispose();
+                    System.exit(0);
+                }
+            });
+            textfield.setFocusable(true);
+            window.validate();
+            window.setVisible(true);
+            window.pack();
+            contain.start();
+        } catch (SlickException ex) {
+            System.err.println(ex);
+        }
 
     }
 
@@ -109,5 +127,6 @@ public class Slix {
         //setBackground(Color.BLACK);
         frameUpdate = true;
         //SlixLibrary.setFrame();
+        textfield = new SlixTextField();
     }
 }
