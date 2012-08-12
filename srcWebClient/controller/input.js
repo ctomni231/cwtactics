@@ -168,12 +168,7 @@ cwt.client.click = function(x,y){
   */
 };
 
-/**
- * Extracts the key code from an key event and calls the map shift
- * function of the webclient with correct arguments.
- */
-cwt.client._keyboardEvent = function( event ){
-
+cwt.client._rerenderCursorTiles = function(){
   if( this.cursorY-1 >= 0 ){
     if( this.cursorX-1 >= 0 )      this.drawnMap[ this.cursorX-1 ][ this.cursorY-1 ] = true;
     this.drawnMap[ this.cursorX   ][ this.cursorY-1 ] = true;
@@ -191,6 +186,15 @@ cwt.client._keyboardEvent = function( event ){
   }
 
   this.drawChanges = 1;
+};
+
+/**
+ * Extracts the key code from an key event and calls the map shift
+ * function of the webclient with correct arguments.
+ */
+cwt.client._keyboardEvent = function( event ){
+
+  this._rerenderCursorTiles();
 
   switch( event.keyCode ){
 
@@ -269,6 +273,10 @@ cwt.client._initTouchEvents = function(){
   hammer.ontap = function(ev) {
     var x = parseInt( ev.position[0].x / cwt.client.tx, 10 );
     var y = parseInt( ev.position[0].y / cwt.client.ty, 10 );
+
+    cwt.client._rerenderCursorTiles();
+    cwt.client.cursorX = x;
+    cwt.client.cursorY = y;
 
     // convert screen to real position
     x = x+ cwt.client.sx;
