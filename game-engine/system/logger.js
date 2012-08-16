@@ -17,7 +17,8 @@ cwt.log = {
 
   /** @private */
   _repl: function( el, i ){
-    return JSON.stringify( cwt.log._arg[ parseInt(i,10)+1 ] );
+    var arg = cwt.log._arg[ parseInt(i,10)+1];
+    return ( typeof arg !== 'string' )? JSON.stringify( arg ) : arg;
   },
 
   /** @private */

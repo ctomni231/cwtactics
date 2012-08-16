@@ -4,6 +4,10 @@
  * @namespace
  */
 cwt.move = {
+    
+  init: function( annotated ){
+    annotated.transaction("move");
+  },
 
   /**
    * Diferent move codes to describe move ways.
@@ -193,14 +197,14 @@ cwt.move = {
     var keysX = Object.keys( moveMap );
     for( var x=0,xe=keysX.length; x<xe; x++ ){
 
-      if( keysX[x] < lx ) lx = keysX[x];
-      if( keysX[x] > hx ) hx = keysX[x];
+      if( parseInt( keysX[x], 10 ) < lx ) lx = parseInt( keysX[x], 10 );
+      if( parseInt( keysX[x], 10 ) > hx ) hx = parseInt( keysX[x], 10 );
 
       keysY = Object.keys( moveMap[ keysX[x] ] );
       for( var y=0,ye=keysY.length; y<ye; y++ ){
 
-        if( keysY[y] < ly ) ly = keysY[y];
-        if( keysY[y] > hy ) hy = keysY[y];
+        if( parseInt( keysY[y], 10 ) < ly ) ly = parseInt( keysY[y], 10 );
+        if( parseInt( keysY[y], 10 ) > hy ) hy = parseInt( keysY[y], 10 );
       }
     }
 
@@ -290,26 +294,26 @@ cwt.move = {
       // get new current position
       switch( way[i] ){
 
-        case this.MOVE_CODES.CODE_UP:
+        case this.MOVE_CODES.UP:
           if( cY === 0 ) cwt.log.error("cannot do move command UP because current position is at the border");
           cY--;
           break;
 
-        case this.MOVE_CODES.CODE_RIGHT:
+        case this.MOVE_CODES.RIGHT:
           if( cX === cwt.model._width-1 ){
             cwt.log.error("cannot do move command UP because current position is at the border");
           }
           cX++;
           break;
 
-        case this.MOVE_CODES.CODE_DOWN:
+        case this.MOVE_CODES.DOWN:
           if( cY === cwt.model._height-1 ){
             cwt.log.error("cannot do move command DOWN because current position is at the border");
           }
           cY++;
           break;
 
-        case this.MOVE_CODES.CODE_LEFT:
+        case this.MOVE_CODES.LEFT:
           if( cX === 0 ) cwt.log.error("cannot do move command LEFT because current position is at the border");
           cX--;
           break;
@@ -335,10 +339,18 @@ cwt.move = {
       fuelUsed += this.moveCosts( mType, cwt.model._map[cX][cY] );
     }
 
+    // remove old unitPos
+    cwt.model._unitPosMap[ unit.x ][ unit.y ] = null;
+
     // update meta data
     unit.x = cX;
     unit.y = cY;
     unit.fuel -= fuelUsed;
+    
+    // set new old unitPos
+    cwt.model._unitPosMap[cX][cY] = unit;
+    
+    if( cwt.DEBUG ) cwt.log.info("moved unit {0} from ({1},{2}) to ({3},{4})", card.uid, card.x, card.y, cX, cY );
   },
 
   /**

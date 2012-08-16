@@ -49,7 +49,7 @@ cwt.messageBuffer = {
    * Returns true if the buffer is not empty else false.
    */
   hasMsg: function(){
-    return ( this._buffer[ this._rInd ] === null );
+    return ( this._buffer[ this._rInd ] !== null );
   },
 
   /**

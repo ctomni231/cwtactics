@@ -72,9 +72,10 @@ var cwt = {
     cwt.util.each( cwt, function( module, key ){
       if( key !== 'util' ){
         // TODO solve organization of modules
-        if( module !== null && module.hasOwnProperty("init") ){
-          cwt.log.info( "initializing cwt.{0}", key );
+        var hasInit = module !== null && module.hasOwnProperty("init");
           
+        cwt.log.info( "initializing cwt.{0}{1}", key, ( hasInit )? ", calling module initializer" : "" );
+        if( hasInit ){
           cwt.annotation._selectedMod = key;
           module.init( cwt.annotation ); 
         }

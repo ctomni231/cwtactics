@@ -3,8 +3,47 @@ cwt.client.imageTypeMap = {};
 cwt.client.imageListMap = {
   RED:   [],
   GREEN: [],
-  BLUE:  []
+  BLUE:  [],
+  GRAY:  []
 };
+
+/**
+ * Color maps for different target color shemas.
+ */
+cwt.client.imgColorReplacementMapProperty = {
+
+  GRAY:[
+    120,104,120,
+    152,136,200,
+    192,192,200,
+    240,232,208,
+    248,248,240
+  ],
+
+  RED:[
+    255,255,0,
+    184,64,120,
+    224,80,56,
+    248,208,136,
+    248,248,248
+  ],
+
+  BLUE:[
+    255,255,0,
+    104,72,224,
+    120,112,248,
+    136,208,248,
+    184,248,248
+  ],
+
+  GREEN:[
+    255,255,0,
+    64,160,104,
+    80,200,88,
+    128,232,120,
+    168,248,168
+  ]
+}
 
 /**
  * Color maps for different target color shemas.
@@ -19,7 +58,8 @@ cwt.client.imgColorReplacementMap = {
             248,40,0,
             248,88,0,
             248,152,112,
-            248,200,128 ],
+            248,200,128,
+            255,239,95 ],
 
   /** @constant */
           // "#182818","#088048","#08A830","#10D028","#28F028","#88F880","#C8F8C0"
@@ -29,7 +69,8 @@ cwt.client.imgColorReplacementMap = {
             16,208,40,
             40,240,40,
             136,248,128,
-            200,248,192 ],
+            200,248,192,
+            255,239,95 ],
 
   /** @constant */
           // "#181840","#2820C0","#0068E8","#0098F0","#40B8F0","#68E0F8","#B8F0F8"
@@ -39,7 +80,8 @@ cwt.client.imgColorReplacementMap = {
             0,152,240,
             64,184,240,
             104,224,248,
-            184,240,248 ]
+            184,240,248,
+            255,239,95 ]
 };
 
 /**
@@ -53,7 +95,7 @@ cwt.client.imgColorReplacementMap = {
  * @param sy
  * @param overlay
  */
-cwt.client.registerImage = function( key, img, w, h, tiles, sx, sy, overlay ){
+cwt.client.registerImage = function( key, img, w, h, tiles, sx, sy, overlay, property ){
 
   // register image for loading
   var index = this.imageListMap.RED.indexOf(img);
@@ -62,8 +104,13 @@ cwt.client.registerImage = function( key, img, w, h, tiles, sx, sy, overlay ){
     this.imageListMap.RED.push( img );
   }
 
+  if( property === true ){
+    property = 1;
+  }
+  else property = 0;
+
   // register image type
-  this.imageTypeMap[ key ] = [ index, w, h, tiles, sx, sy, overlay, 0 ];
+  this.imageTypeMap[ key ] = [ index, w, h, tiles, sx, sy, overlay, 0, property ];
 };
 
 /**
@@ -157,12 +204,30 @@ cwt.client.imageLoadingStatus = StateMachine.create({
         return canvas;
       }
 
+      var keys = Object.keys( cwt.client.imageTypeMap );
+      var indexesProperties = []; // i=8
+      for( var i=0,e=keys.length; i<e; i++ ){
+        if( cwt.client.imageTypeMap[ keys[i] ][8] === 1 ){
+          indexesProperties.push( cwt.client.imageTypeMap[ keys[i] ][0] );
+        }
+      }
+
       var imgMap = cwt.client.imageListMap;
-      var colorMap = cwt.client.imgColorReplacementMap;
       for( var i=0,e=imgMap.RED.length; i<e; i++ ){
 
-        imgMap.BLUE[i] = replaceColors( imgMap.RED[i], colorMap.RED, colorMap.BLUE );
-        imgMap.GREEN[i] = replaceColors( imgMap.RED[i], colorMap.RED, colorMap.GREEN );
+        if( indexesProperties.indexOf(i) !== -1 ){
+          var colorMap = cwt.client.imgColorReplacementMapProperty;
+
+          imgMap.BLUE[i] = replaceColors( imgMap.RED[i], colorMap.RED, colorMap.BLUE );
+          imgMap.GREEN[i] = replaceColors( imgMap.RED[i], colorMap.RED, colorMap.GREEN );
+          imgMap.GRAY[i] = replaceColors( imgMap.RED[i], colorMap.RED, colorMap.GRAY );
+        }
+        else{
+          var colorMap = cwt.client.imgColorReplacementMap;
+
+          imgMap.BLUE[i] = replaceColors( imgMap.RED[i], colorMap.RED, colorMap.BLUE );
+          imgMap.GREEN[i] = replaceColors( imgMap.RED[i], colorMap.RED, colorMap.GREEN );
+        }
       }
 
       cwt.client.imageLoadingStatus.next();

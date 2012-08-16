@@ -20,7 +20,7 @@ cwt.action = {
     var key = modName+"."+actionName;
 
     this._actions[key] = {
-      actFn: cwt[modName][actionName],
+      actFn: actionName,
       that: cwt[modName],
       actor: actor
     };
@@ -31,7 +31,7 @@ cwt.action = {
    */
   doAction: function( actObj ){
     var act = this._actions[ actObj.k ];
-    act.actFn.apply( act.that, actObj.a );
+    act.that[ act.actFn ].apply( act.that, actObj.a );
   },
 
   /**

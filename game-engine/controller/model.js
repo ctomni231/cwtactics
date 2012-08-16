@@ -22,19 +22,24 @@ cwt.model = {
   _players: [],
 
   /** @private */
+  _propertyPosMap: [],
+
+  /** @private */
   _properties: [],
 
   init: function( annotated ){
     annotated.persist("_width");
     annotated.persist("_height");
     annotated.persist("_map");
-    annotated.persist("_unitPosMap");
     annotated.persist("_units");
     annotated.persist("_players");
     annotated.persist("_properties");
+    annotated.persist("_unitPosMap");
+    annotated.persist("_propertyPosMap");
 
     for( var i=0; i<100; i++) cwt.model._map[i] = [];
     for( var i=0; i<100; i++) cwt.model._unitPosMap[i] = [];
+    for( var i=0; i<100; i++) cwt.model._propertyPosMap[i] = [];
 
     for( var i=0; i<800; i++) cwt.model._units[i] = {
       x:0, y:0,
@@ -79,20 +84,25 @@ cwt.model = {
   unitByPos: function( x, y ){
     var unit;
 
-    for( var i=0,e=this._units.length; i<e; i++ ){
-      unit = this._units[i];
-      if( unit.owner !== -1 && unit.x === x && unit.y === y ) return unit;
-    }
+    unit = this._unitPosMap[x][y];
+    if( unit !== undefined ) return unit;
 
     return null;
+  },
+
+  unitId: function( unit ){
+    for( var i = 0, e= this._units.length; i<e; i++ ){
+      if( this._units[i] === unit ) return i;
+    }
+
+    return -1;
   },
 
   unitIdByPos: function( x, y ){
     var unit;
 
-    for( var i=0,e=this._units.length; i<e; i++ ){
-      unit = this._units[i];
-      if( unit.owner !== -1 && unit.x === x && unit.y === y ) return i;
+    for( var i = 0, e= this._units.length; i<e; i++ ){
+      if( this._units[i].owner !== -1 && this._units[i].x === x && this._units[i].y === y ) return i;
     }
 
     return -1;
@@ -129,10 +139,8 @@ cwt.model = {
   propertyByPos: function( x, y ){
     var prop;
 
-    for( var i=0,e=this._properties.length; i<e; i++ ){
-      prop = this._properties[i];
-      if( prop.owner !== -1 && prop.x === x && prop.y === y ) return prop;
-    }
+    prop = this._propertyPosMap[x][y];
+    if( prop !== undefined ) return prop;
 
     return null;
   },
@@ -140,9 +148,8 @@ cwt.model = {
   propertyIdByPos: function( x, y ){
     var prop;
 
-    for( var i=0,e=this._properties.length; i<e; i++ ){
-      prop = this._properties[i];
-      if( prop.owner !== -1 && prop.x === x && prop.y === y ) return i;
+    for( var i = 0, e= this._properties.length; i<e; i++ ){
+      if( this._properties[i].owner !== -1 && this._properties[i].x === x && this._properties[i].y === y ) return i;
     }
 
     return -1;
@@ -247,7 +254,8 @@ cwt.model = {
       this._units[i].type = unit.type;
       this._units[i].owner = unit.owner;
 
-      cwt.model._unitPosMap[unit.x][unit.y] = unit;
+      // TODO use identical
+      cwt.model._unitPosMap[unit.x][unit.y] = this._units[i];
     }
     for( var i=data.units.length, e=this._units.length; i<e; i++){
       this._units[i].owner = this.INACTIVE;
@@ -259,8 +267,12 @@ cwt.model = {
 
       this._properties[i].owner = property.owner;
       this._properties[i].capturePoints = property.capturePoints;
+      this._properties[i].type = property.type;
       this._properties[i].x = property.x;
       this._properties[i].y = property.y;
+
+      // TODO use identical
+      cwt.model._propertyPosMap[property.x][property.y] = this._properties[i];
     }
     for( var i=data.properties.length, e=this._properties.length; i<e; i++){
       this._properties[i].owner = this.INACTIVE;

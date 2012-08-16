@@ -42,6 +42,11 @@ cwt.client = {
   update: function( delta ){
     var cl = cwt.client;
 
+    if( cwt.messageBuffer.hasMsg() ){
+        var msg = cwt.messageBuffer.popMsg();
+        cwt.transaction.evalTransactionMessage( msg );
+    }
+
     cl.solveMapShift();
 
     if( cl.drawChanges > 0 ){
