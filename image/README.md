@@ -3,14 +3,12 @@
 This shows how objects are organized within the object folders for units, terrain(fields), and buildings(properties).
 
 ## Terrain (animation by rows...)
-
-`Straight  Turns             Deltas                All     Singles      
-[ew][ns]  [ne][nw][se][sw]  [new][sew][nse][nsw]  [nsew]  [n][s][e][w][o]`
+   
+`[ew][ns]  [ne][nw][se][sw]  [new][sew][nse][nsw]  [nsew]  [n][s][e][w][o]`
 
 ## Cursor (animation by rows...)
 
-`Straight  Turns             Singles
-[ew][ns]  [ne][nw][es][sw]  [n][s][e][w]`
+`[ew][ns]  [ne][nw][es][sw]  [n][s][e][w]`
 
 ## City  (animation by columns...)
 
@@ -23,7 +21,7 @@ This shows how objects are organized within the object folders for units, terrai
 
 ## File Organization
 
-(Tileset Type)_(Unit Type)_(Army Faction[Optional])
+`(Tileset Type)_(Unit Type)_(Army Faction[Optional])`
 
 ### Tileset Types
 
@@ -45,8 +43,8 @@ This shows how objects are organized within the object folders for units, terrai
 * *APCR* = APC Rig
 * *TANK* = Tank
 * *MDTK* = Medium Tank
-* *NTNK* = NeoBttl Tank
-* *WRTK* = MegaWar Tank
+* *NTNK* = Neo-Battle Tank
+* *WRTK* = Mega Wartank
 * *SPTK* = Spider Tank
 * *BCRT* = Battlecraft
 * *OOZM* = Oozium
@@ -63,8 +61,8 @@ This shows how objects are organized within the object folders for units, terrai
 
 ### Unit Types - Air
 
-* *TCTR* = T-Copter
-* *BCTR* = B-Copter
+* *TCTR* = Transport-Copter
+* *BCTR* = Battle-Copter
 * *FGTR* = Fighter Jet
 * *BMBR* = Bomber
 * *BKBM* = BB Nuke
@@ -82,7 +80,7 @@ This shows how objects are organized within the object folders for units, terrai
 * *SUBM* = Submarine
 * *LNDR* = Lander
 * *BKBT* = BB Patrol
-* *ACAR* = AC-Carrier
+* *ACAR* = Aircraft-Carrier
 * *GNBT* = Gunboat
 * *DSYR* = Destroyer
 
@@ -141,7 +139,7 @@ This shows how objects are organized within the object folders for units, terrai
 
 ### Army Factions
 
-* *GD* = Gray Diamond (Neutral)
+* *GD* = Gray Diamond (Neutral/Freelance)
 * *OS* = Orange Star
 * *BM* = Blue Moon
 * *GE* = Green Earth
