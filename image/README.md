@@ -24,7 +24,9 @@ This shows how objects are organized within the object folders for units, terrai
 
 ## Terrain
 
-`(Tileset Type)_(Object Type)-(Overlap Type[Optional])~(Connection Type N-NE-E-SE-S-SW-W-NW [Optional])`
+`(Tileset Type)_(Terrain Type)-(Overlap Type[Optional])~(Connection 4-Type N-E-S-W [Optional])`
+
+`(Tileset Type)_(Terrain Type)-(Overlap Type[Optional])~(Connection 8-Type N-NE-E-SE-S-SW-W-NW [Optional])`
 
 ## General
 
@@ -70,8 +72,8 @@ This shows how objects are organized within the object folders for units, terrai
 * *MDTK* = Medium Tank
 * *NTNK* = Neo-Battle Tank
 * *WRTK* = Mega Wartank
-* *SPTK* = Spider Tank
-* *BCRT* = Battlecraft
+* *SPTK* = Spider-Tank
+* *BCRT* = Battle-Hovercraft
 * *OOZM* = Oozium
 * *FLRE* = Flare
 
@@ -86,17 +88,17 @@ This shows how objects are organized within the object folders for units, terrai
 
 ## Unit Types - Air
 
-* *TCTR* = Transport-Copter
-* *BCTR* = Battle-Copter
-* *FGTR* = Fighter Jet
+* *TCTR* = Transport-Helicopter
+* *BCTR* = Battle-Helicopter
+* *FGTR* = Jet Fighter 
 * *BMBR* = Bomber
-* *BKBM* = BB Nuke
+* *BKBM* = Black Nuclear-Bomb
 * *STLH* = Stealth
 * *SEAP* = Seaplane
 * *DUST* = Duster
 * *ZPLN* = Zeppelin
 * *SPYP* = Spyplane
-* *HCTR* = Heavycopter
+* *HCTR* = Heavy-Helicopter
 
 ## Unit Types - Sea
 
@@ -104,7 +106,7 @@ This shows how objects are organized within the object folders for units, terrai
 * *CRUS* = Cruiser
 * *SUBM* = Submarine
 * *LNDR* = Lander
-* *BKBT* = BB Patrol
+* *BKBT* = Black Patrol-Boat
 * *ACAR* = Aircraft-Carrier
 * *GNBT* = Gunboat
 * *DSYR* = Destroyer
@@ -129,7 +131,7 @@ This shows how objects are organized within the object folders for units, terrai
 * *METR* = Meteor
 * *PLZM* = Plasma
 * *PLZP* = Plazma Pipe
-* *PZPS* = Plazma Pipe Seam
+* *PZPS* = Plazma Pipeseam
 * *PIPE* = Pipe
 * *PIPS* = Pipeseam
 * *PIPR* = Piperail
@@ -146,11 +148,11 @@ This shows how objects are organized within the object folders for units, terrai
 * *BASE* = Factory
 * *APRT* = Airport
 * *SPRT* = Seaport
-* *CMTR* = Com-Tower
+* *CMTR* = Communication-Tower
 * *SILO* = Missile Silo
 * *RDAR* = Radar
-* *TAPT* = Temp Airport
-* *TSPT* = Temp Seaport
+* *TAPT* = Temporary Airport
+* *TSPT* = Temporary Seaport
 * *STRH* = Stronghold
 * *LABS* = Lab
 * *QURY* = Query
