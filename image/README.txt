@@ -18,12 +18,23 @@ This shows how objects are organized within the object folders for units, terrai
 
 `[wait1][wait2][wait3][north1][north2][north3][south1][south2][south3][west1][west2][west3]`
 
+***
 
-## File Organization
+# File Organization
 
-`(Tileset Type)_(Unit Type)_(Army Faction[Optional])`
+## Terrain
 
-### Tileset Types
+`(Tileset Type)_(Object Type)-(Overlap Type[Optional])~(Connection Type N-NE-E-SE-S-SW-W-NW [Optional])`
+
+## General
+
+`(Tileset Type)_(Object Type)_(Army Faction[Optional])`
+
+***
+
+# Image Abbreviations
+
+## Tileset Types
 
 * *AW1* = Advance Wars 1
 * *AW2* = Advance Wars 2
@@ -32,7 +43,21 @@ This shows how objects are organized within the object folders for units, terrai
 * *CW* = Custom Wars (Original)
 * *CWT* = Custom Wars Tactics
 
-### Unit Types - Direct Land
+## Overlap Types
+
+* *L* = Land (Default)
+* *S* = Sea/Ocean
+* *B* = Shoal/Beach
+* *R* = River/Swamp
+
+## Connection Types
+
+* *3* = Land (Default)
+* *2* = Shoal/Beach
+* *1* = River/Swamp
+* *0* = Sea/Ocean
+
+## Unit Types - Direct Land
 
 * *INFT* = Infantry
 * *MECH* = Mech
@@ -50,7 +75,7 @@ This shows how objects are organized within the object folders for units, terrai
 * *OOZM* = Oozium
 * *FLRE* = Flare
 
-### Unit Types - Indirect Land
+## Unit Types - Indirect Land
 
 * *ARTY* = Artillery
 * *RCKT* = Rockets
@@ -59,7 +84,7 @@ This shows how objects are organized within the object folders for units, terrai
 * *ATNK* = Anti-Tank
 * *ACRT* = Artillery-craft
 
-### Unit Types - Air
+## Unit Types - Air
 
 * *TCTR* = Transport-Copter
 * *BCTR* = Battle-Copter
@@ -73,7 +98,7 @@ This shows how objects are organized within the object folders for units, terrai
 * *SPYP* = Spyplane
 * *HCTR* = Heavycopter
 
-### Unit Types - Sea
+## Unit Types - Sea
 
 * *BSHP* = Battleship
 * *CRUS* = Cruiser
@@ -84,19 +109,18 @@ This shows how objects are organized within the object folders for units, terrai
 * *GNBT* = Gunboat
 * *DSYR* = Destroyer
 
-### Unit Types - Obsolete
+## Unit Types - Obsolete
 
 * *SRNR* = Shuttlerunner
 
-### Terrain Types
+## Terrain Types
 
 * *PLIN* = Plain
 * *FRST* = Forest
 * *MNTN* = Mountain
 * *RIVR* = River
 * *ROAD* = Road
-* *BRDG* = Bridge (River)
-* *SBRG* = Suspension Bridge (Seas)
+* *BRDG* = Bridge
 * *REEF* = Reef
 * *WTLD* = Wasteland
 * *RUIN* = Ruins
@@ -115,7 +139,7 @@ This shows how objects are organized within the object folders for units, terrai
 * *FIRE* = Fire
 * *NULL* = Null
 
-### Property Types
+## Property Types
 
 * *HQTR* = Headquarters
 * *CITY* = City
@@ -133,11 +157,11 @@ This shows how objects are organized within the object folders for units, terrai
 * *ORIG* = Oil Rig
 * *WALL* = Wall
 
-### Inventions
+## Inventions
 
 * (None Yet)
 
-### Army Factions
+## Army Factions
 
 * *GD* = Gray Diamond (Neutral/Freelance)
 * *OS* = Orange Star
