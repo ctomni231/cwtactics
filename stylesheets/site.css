@@ -10,6 +10,11 @@
     box-shadow: 0 8px 6px -6px #666;
 }
 
+.headerSupport {
+    font-size: 0.8em;
+    font-style: italic;
+}
+
 .headerText{
     font-family: "Gill Sans";
     margin-bottom: 2px;
