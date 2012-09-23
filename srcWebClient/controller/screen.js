@@ -1,109 +1,168 @@
-// screen shift in tile positions
-cwt.client.sx = 0;
-cwt.client.sy = 0;
+/** 
+ * Screen position on x axis.
+ * 
+ * @example read_only
+ */
+cwtwc.sx = 0;
 
-// screen metrics in tiles
-cwt.client.sw = 0;
-cwt.client.sh = 0;
+/** 
+ * Screen position on y axis. 
+ * 
+ * @example read_only
+ */
+cwtwc.sy = 0;
 
-// shift commands
-cwt.client.msx = 0;
-cwt.client.msy = 0;
+/**  
+ * Screen width in tiles. 
+ * 
+ * @example read_only
+ */
+cwtwc.sw = 0;
 
-cwt.client.drawChanges = 0;
+/** 
+ * Screen height in tiles. 
+ * 
+ * @example read_only
+ */
+cwtwc.sh = 0;
 
-cwt.client.solveMapShift = function(){
+/** 
+ * Screen movement on x axis. 
+ * If this variable is lower zero, the screen will move left a bit
+ * in every update step until it reaches zero. If the value is 
+ * greater zero it will move right.
+ */
+cwtwc.msx = 0;
+
+/** 
+ * Screen movement on y axis. 
+ * If this variable is lower zero, the screen will move up a bit
+ * in every update step until it reaches zero. If the value is 
+ * greater zero it will move down.
+ */
+cwtwc.msy = 0;
+
+/** 
+ * Indicates that the screen needs to be redrawn.
+ * (in future the value will be true|false)
+ */
+cwtwc.drawChanges = 0;
+
+/**
+ * Shifts the screen in relationship to the screen movement 
+ * variables.
+ */
+cwtwc.solveMapShift = function(){
   var dir = -1;
 
-  if( this.msx !== 0 ){
-    if( this.msx < 0 ){ dir = 3; this.msx++; }
-    else              { dir = 1; this.msx--; }
-  } else if( this.msy !== 0 ){
-    if( this.msy < 0 ){ dir = 0; this.msy++; }
-    else              { dir = 2; this.msy--; }
+  if( cwtwc.msx !== 0 ){
+    if( cwtwc.msx < 0 ){ dir = 3; cwtwc.msx++; }
+    else               { dir = 1; cwtwc.msx--; }
+  } else if( cwtwc.msy !== 0 ){
+    if( cwtwc.msy < 0 ){ dir = 0; cwtwc.msy++; }
+    else               { dir = 2; cwtwc.msy--; }
   }
 
-  if( dir !== -1 ) this.mapShift( dir, 1 );
+  if( dir !== -1 ) cwtwc.mapShift( dir, 1 );
 };
 
-cwt.client.betterMapShift = function( dir, len ){
+/**
+ * New map shift method. This one uses the update step based screen
+ * movement algorithm.
+ */
+cwtwc.betterMapShift = function( dir, len ){
 
-       if( dir === 0 ) this.msy -= len;
-  else if( dir === 1 ) this.msx += len;
-  else if( dir === 2 ) this.msy += len;
-  else if( dir === 3 ) this.msx -= len;
+       if( dir === 0 ) cwtwc.msy -= len;
+  else if( dir === 1 ) cwtwc.msx += len;
+  else if( dir === 2 ) cwtwc.msy += len;
+  else if( dir === 3 ) cwtwc.msx -= len;
 };
 
-cwt.client.mapShift = function( dir, dis ){
+/**
+ * Shifts the screen by a distance in a given direction. This 
+ * function calculates the redraw map.
+ */
+cwtwc.mapShift = function( dir, dis ){
   if( dis === undefined ) dis = 1;
 
-  var sx = this.sx;
-  var sy = this.sy;
+  var sx = cwtwc.sx;
+  var sy = cwtwc.sy;
 
+  // update screen meta data
   switch (dir) {
     case 0:
-      this.sy -= dis;
-      if( this.sy < 0 ){
-        this.sy = 0;
+      cwtwc.sy -= dis;
+      if( cwtwc.sy < 0 ){
+        cwtwc.sy = 0;
       }
       break;
 
     case 1:
-      this.sx += dis;
-      if( this.sx >= cwt.model._width-this.sw ) this.sx = cwt.model._width-this.sw-1;
-      if( this.sx < 0 ) this.sx = 0; // bugfix if map width is smaller than screen width
+      cwtwc.sx += dis;
+      if( cwtwc.sx >= cwt.mapWidth-cwtwc.sw ) cwtwc.sx = cwt.mapWidth-cwtwc.sw-1;
+      if( cwtwc.sx < 0 ) cwtwc.sx = 0; // bugfix if map width is smaller than screen width
       break;
 
     case 2:
-      this.sy += dis;
-      if( this.sy >= cwt.model._height-this.sh ) this.sy = cwt.model._height-this.sh-1;
-      if( this.sy < 0 ) this.sy = 0; // bugfix if map height is smaller than screen height
+      cwtwc.sy += dis;
+      if( cwtwc.sy >= cwt.mapHeight-cwtwc.sh ) cwtwc.sy = cwt.mapHeight-cwtwc.sh-1;
+      if( cwtwc.sy < 0 ) cwtwc.sy = 0; // bugfix if map height is smaller than screen height
       break;
 
     case 3:
-      this.sx -= dis;
-      if( this.sx < 0 ) this.sx = 0;
+      cwtwc.sx -= dis;
+      if( cwtwc.sx < 0 ) cwtwc.sx = 0;
       break;
   }
 
-  this.drawChanges = 0;
+  cwtwc.drawChanges = 0;
 
-  // rebuild draw map
+  // rebuild redraw map
   var xe,ye;
-  var map = cwt.model._map;
-  var shiftX = this.sx - sx;
-  var shiftY = this.sy - sy;
+  var map = cwt._map;
+  var shiftX = cwtwc.sx - sx;
+  var shiftY = cwtwc.sy - sy;
 
-  ye = this.sy+this.sh-1;
-  if( ye >= cwt.model._height ) ye = cwt.model._height-1;
-  for(var y=this.sy; y<=ye; y++){
+  ye = cwtwc.sy + cwtwc.sh -1;
+  if( ye >= cwt.mapHeight ) ye = cwt.mapHeight-1;
+  for(var y=cwtwc.sy; y<=ye; y++){
 
-    xe = this.sx+this.sw-1;
-    if( xe >= cwt.model._width ) xe = cwt.model._width-1;
-    for(var x=this.sx; x<=xe; x++){
-
+    xe = cwtwc.sx + cwtwc.sw -1;
+    if( xe >= cwt.mapWidth ) xe = cwt.mapWidth-1;
+    for(var x=cwtwc.sx; x<=xe; x++){
+          
+          // tile type is different
       if( map[x][y] !== map[x-shiftX][y-shiftY]
         ||
           (
-            cwt.model._unitPosMap[x][y] !== null ||
-            cwt.model._unitPosMap[x-shiftX][y-shiftY] !== null
+            // unit was/is on screen tile
+            cwt._unitPosMap[x][y] !== null ||
+            cwt._unitPosMap[x-shiftX][y-shiftY] !== null
           )
         ||
-          this.imageTypeMap[ map[x][y] ] !== undefined &&
-          this.imageTypeMap[ map[x][y] ][6] === 1
+          (
+            // property was/is on screen tile
+            cwt._propertyPosMap[x][y] !== null ||
+            cwt._propertyPosMap[x-shiftX][y-shiftY] !== null
+          )
         ||
-        ( y<ye && this.imageTypeMap[ map[x][y+1] ] !== undefined
-               && this.imageTypeMap[ map[x][y+1] ][6] === 1 )
+          // new target cell overlaps
+          cwtwc.imageTypeMap[ map[x][y] ] !== undefined &&
+          cwtwc.imageTypeMap[ map[x][y] ][6] === 1
         ||
-        ( y<ye && this.imageTypeMap[ map[x-shiftX][y-shiftY+1] ] !== undefined
-               && this.imageTypeMap[ map[x-shiftX][y-shiftY+1] ][6] === 1 )
+          // bottom cell below target overlaps
+        ( y<ye && cwtwc.imageTypeMap[ map[x][y+1] ] !== undefined
+               && cwtwc.imageTypeMap[ map[x][y+1] ][6] === 1 )
+        ||
+          // bottom cell below target overlaps
+        ( y<ye && cwtwc.imageTypeMap[ map[x-shiftX][y-shiftY+1] ] !== undefined
+               && cwtwc.imageTypeMap[ map[x-shiftX][y-shiftY+1] ][6] === 1 )
       ){
 
-        this.drawnMap[x-this.sx][y-this.sy] = true;
-        this.drawChanges++;
+        cwtwc.drawnMap[x-cwtwc.sx][y-cwtwc.sy] = true;
+        cwtwc.drawChanges = 1;
       }
-      else this.drawnMap[x-this.sx][y-this.sy] = false;
-
+      else cwtwc.drawnMap[x-cwtwc.sx][y-cwtwc.sy] = false;
     }
   }
 

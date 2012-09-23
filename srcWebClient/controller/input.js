@@ -1,174 +1,149 @@
 /**
  * Holds the current selected unit by the client.
  */
-cwt.client.selectedUnit = null;
-
-cwt.client.focusTiles = null;
+cwtwc.selectedUnit = null;
 
 /**
- * Input controller that handles all incoming user inputs.
+ * Holds markers for tiles that will be shown as focussed
+ * (move map, attack range or commander range).
  */
-cwt.client.inputController = StateMachine.create({
+cwtwc.focusTiles = null;
 
-  initial: 'off',
+cwtwc._initInput = function(){
+  var appEl = document.getElementById( cwtwc.APP_CONTAINER );
 
-  error: function(eventName, from, to, args, errorCode, errorMessage) {
-    if( cwt.DEBUG ){
-      cwt.log.info("illegal transition in input handler at state '"+from+"' via event '"+eventName+"' WITH ERROR: " + errorMessage );
-    }
+  cwtwc._initMouseEvents(appEl);
+  cwtwc._initTouchEvents(appEl);
 
-    return "";
-  },
+  // react on state changes
+  cwt.input.addStateChangeListener( cwtwc._stateChangelistener );
 
-  events: [
-
-    { name: 'init',           from: 'off',              to:   'nothingSelected' },
-
-    { name: 'tile',           from: 'nothingSelected',  to:   'mapMenu' },
-    { name: 'ownUnit',        from: 'nothingSelected',  to:   'showMovingRange' },
-    { name: 'enemyUnit',      from: 'nothingSelected',  to:   'showActingRange' },
-    { name: 'alliedUnit',     from: 'nothingSelected',  to:   'showActingRange' },
-    { name: 'hold',           from: 'nothingSelected',  to:   'nothingSelected' },
-
-    { name: 'tile',           from: 'showMovingRange',  to:   'unitMenu' },
-    { name: 'ownProperty',    from: 'showMovingRange',  to:   'unitMenu' },
-    { name: 'enemyProperty',  from: 'showMovingRange',  to:   'unitMenu' },
-    { name: 'hold',           from: 'showMovingRange',  to:   'nothingSelected' },
-
-    { name: 'click',          from: 'unitMenu',         to:   'nothingSelected' },
-    { name: 'cancel',         from: 'unitMenu',         to:   'nothingSelected' },
-    { name: 'click',          from: 'mapMenu',          to:   'nothingSelected' },
-    { name: 'cancel',         from: 'mapMenu',          to:   'nothingSelected' },
-
-    { name: 'ownProperty',    from: 'nothingSelected',  to:   'propertySelected' },
-    
-    
-    { name: 'devBack',         from: '*',               to:   'nothingSelected' }
-
-  ],
-
-  callbacks: {
-
-    oninit: function(){
-      var appEl = document.getElementById( cwt.client.APP_CONTAINER );
-
-      cwt.client._initMouseEvents();
-
-      // touch
-      cwt.client._initTouchEvents();
-      
-      cwt.client.focusTiles = [];
-      for( var i=0,e=100; i<e; i++ ){
-      
-        cwt.client.focusTiles[i] = [];
-        for( var j=0,ej=100; j<ej; j++ ){
-        
-          cwt.client.focusTiles[i][j] = false;
-        }
-      }
-    },
-
-    onleaveshowMovingRange: function( event, from, to ){
-      if( cwt.DEBUG ) cwt.log.info("leaving unit selection");
-      
-      if( to !== 'unitMenu' ){
-          cwt.client._resetFocusTiles();
-          cwt.client.selectedUnit = null;
-      }
-    },
-
-    onmapMenu: function( event, from, to, x, y ){
-      cwt.client.menuController.show( cwt.action.mapActions( x, y ), x, y );
-    },
-    
-    onshowMovingRange: function( event, from, to, x, y, unitId, unit ){
-      try{
-      
-        cwt.client.selectedUnit = unit;
-        var mvBlock = cwt.move.createMoveCard( unitId, x, y ).moveMap;
-
-        cwt.client._resetFocusTiles();
-        var keysX = Object.keys( mvBlock );
-        
-        for( var x=0,xe=keysX.length; x<xe; x++ ){
-
-          var kx = parseInt( keysX[x] , 10);
-          var keysY = Object.keys( mvBlock[kx] );
-          for( var y=0,ye=keysY.length; y<ye; y++ ){
-            var ky = parseInt( keysY[y] , 10);
-
-            cwt.client.focusTiles[kx][ky] = true;
-          }
-        }
-        
-      }
-      catch(e){
-        cwt.log.error( e.message );
-      }
-    },
-
-    onunitMenu: function( event, from, to, selected, x, y, sx, sy ){
-      if( from === 'showMovingRange' ){
-          if( cwt.client.focusTiles[x][y] === false ){
-              this.cancel();
-          }
-          else{
-              var unit = cwt.model.unit(selected);
-              var card = cwt.move.createMoveCard( selected, unit.x, unit.y );
-              var path = cwt.move.returnPath( selected, unit.x, unit.y, x, y , card );
-              card.way = path;
-              
-              cwt.move.move( card );
-              
-              cwt.client.drawnMap[ unit.x-cwt.client.sx ][ unit.y-cwt.client.sy ] = true;
-              cwt.client._resetFocusTiles();
-              cwt.client.menuController.show( cwt.action.unitActions( selected, x, y ), x, y );
-          }
-      }
-      else{
-          // cwt.client._resetFocusTiles();
-          cwt.client.menuController.show( cwt.action.unitActions( selected, x, y ), x, y );
-      }
-    },
-
-    onunitSelected: function( x, y ){
-      //
-    }
-  }
-});
+  cwtwc.focusTiles = cwt.util.matrix(100, 100, false);
+};
 
 /**
- *
- *
+ * @private
+ */
+cwtwc._stateChangelistener = function( state, oldState, event ){
+
+  // OLD STATE
+  switch( oldState ){
+
+    // MENU
+    case 'UnitActions' :
+    case 'MapActions' :
+    case 'FactoryActions' :
+
+      if( event === 'back' || event === 'doAction' ){
+        cwtwc.menuController.hide();
+      }
+
+      break;
+  }
+
+  // TO STATE
+  switch( state ){
+  
+    // hide move tiles after releasing unit selection
+    case 'NoSelection' :
+      cwtwc._resetFocusTiles();
+      break;
+      
+    // show move tiles
+    case 'UnitMoveMap' :
+      // var mvBlock = cwt.input.movemap.moveMap;
+      var card = cwt.input.movemap;
+      var cost;
+      
+      for( var mvsX=card.moveMapX,
+               mvsXe=card.moveMapX+(cwt.MAX_MOVE_RANGE*2+1) ; mvsX<mvsXe; mvsX++ ){
+        
+        for( var mvsY=card.moveMapY,
+                 mvsYe=card.moveMapY+(cwt.MAX_MOVE_RANGE*2+1) ; mvsY<mvsYe; mvsY++ ){
+
+          cost = cwt.moveCostsForPos( card, mvsX, mvsY );
+          if( cost > 0 ){
+
+            // set focus
+            cwtwc.focusTiles[mvsX][mvsY] = true;
+
+            // mark for redraw
+            if( mvsX >= cwtwc.sx && mvsX < cwtwc.sx+cwtwc.sw &&
+                mvsY >= cwtwc.sy && mvsY < cwtwc.sy+cwtwc.sh    ){
+
+              cwtwc.drawnMap[mvsX-cwtwc.sx][mvsY-cwtwc.sy] = true;
+            }
+
+            cwtwc.drawChanges = 1;
+          }
+        }
+      }
+
+      break;
+
+    case 'UnitSelection':
+      cwt.input.showMoveMap();
+      break;
+      
+    // MENU
+    case 'UnitActions' :
+    case 'MapActions' :
+    case 'FactoryActions' :
+      cwtwc.menuController.show(
+        cwt.input.actions,
+        cwtwc.cursorX, cwtwc.cursorY
+      );
+      break;
+  } 
+};
+
+/**
  * @param x
  * @param y
  */
-cwt.client.click = function(x,y){
-  var actions;
-  var cState = cwt.client.inputController.current;
+cwtwc.click = function(x,y){
+  if( cwt.DEBUG ){
+    cwt.info("got a click at tile {0},{1}", x, y );
+  }
 
-  if( cwt.DEBUG ) cwt.log.info("click at ("+x+","+y+")");
+  if( cwt.input.current === 'UnitMoveMap' ){
+    if( cwt.moveCostsForPos( cwt.input.movemap, x, y ) > 0 ){
 
-  if( cState === "nothingSelected" ){                               // NOTHING
-
-    var unitId = cwt.model.unitIdByPos( x, y );
-    if( unitId !== -1 ){                                            // UNIT SELECTION ?
-
-      var unit = cwt.model.unit( unitId );
-      cwt.client.inputController.ownUnit( x, y, unitId, unit );
+      var card = cwt.input.movemap;
+      card.way = cwt.returnPath( card.uid, card.x, card.y, x, y, card );
+      cwt.input.showActionMap(x,y);
     }
-    else{                                                           // PROPERTY SELECTION ?
+    else{
 
-      // MAP SELECTION
-      cwt.client.inputController.tile( x, y );
+      cwtwc.back(x,y);
     }
   }
-  else if( cState === "showMovingRange" ){                          // RANGE VISIBLE
+  else{
+    var unitId = cwt.tileOccupiedByUnit(x,y);
+    if( unitId !== false && cwt.canAct(unitId) ){
 
-    // MAP SELECTION
-    cwt.client.inputController.tile( cwt.model.unitId(cwt.client.selectedUnit) , x, y );
+      // UNIT SELECTION
+      cwt.input.unitSelected( unitId );
+    }
+    else{
+
+      var propId = cwt.tileIsProperty(x,y);
+      if( propId !== false ){
+
+        // FACTORY SELECTION
+        cwt.input.factorySelected( propId );
+      }
+      else{
+
+        // MAP SELECTION
+        cwt.input.mapSelected( x, y );
+      }
+    }
   }
-  else cwt.log.error("state {0} is not usable for a click", cState );
+};
+
+cwtwc.back = function(x,y){
+  cwt.input.back();
 };
 
 /**
@@ -177,46 +152,47 @@ cwt.client.click = function(x,y){
  *
  * @private
  */
-cwt.client._resetFocusTiles = function(){
-  for( var i=0,e=cwt.model._width; i<e; i++ ){
-    for( var j=0,ej=cwt.model._height; j<ej; j++ ){
+cwtwc._resetFocusTiles = function(){
+  for( var i=0,e=cwt.mapWidth; i<e; i++ ){
+    for( var j=0,ej=cwt.mapHeight; j<ej; j++ ){
       
-      if( cwt.client.focusTiles[i][j] === true ){
-          if( i >= cwt.client.sx && i < cwt.client.sx+cwt.client.sw &&
-              j >= cwt.client.sy && j < cwt.client.sy+cwt.client.sh ){
-              
-            cwt.client.drawnMap[i-cwt.client.sx][j-cwt.client.sy] = true;
+      if( cwtwc.focusTiles[i][j] === true ){
+          if( i >= cwtwc.sx && i < cwtwc.sx+cwtwc.sw &&
+              j >= cwtwc.sy && j < cwtwc.sy+cwtwc.sh ){
+
+            cwtwc.drawnMap[i-cwtwc.sx][j-cwtwc.sy] = true;
           }
-          
-          cwt.client.focusTiles[i][j] = false;
+
+          cwtwc.focusTiles[i][j] = false;
       }
     }
   }
-  cwt.client.drawChanges = 1;
+  cwtwc.drawChanges = 1;
 };
 
 /**
  * @private
  */
-cwt.client._rerenderCursorTiles = function(){
+cwtwc._rerenderCursorTiles = function(){
 
-  if( this.cursorY-1 >= 0 ){
-    if( this.cursorX-1 >= 0 )      this.drawnMap[ this.cursorX-1 ][ this.cursorY-1 ] = true;
-    this.drawnMap[ this.cursorX   ][ this.cursorY-1 ] = true;
-    if( this.cursorX+1 < this.sw ) this.drawnMap[ this.cursorX+1 ][ this.cursorY-1 ] = true;
+  if( cwtwc.cursorY-1 >= 0 ){
+    if( cwtwc.cursorX-1 >= 0 )      cwtwc.drawnMap[ cwtwc.cursorX-1 ][ cwtwc.cursorY-1 ] = true;
+    cwtwc.drawnMap[ cwtwc.cursorX   ][ cwtwc.cursorY-1 ] = true;
+    if( cwtwc.cursorX+1 < cwtwc.sw ) cwtwc.drawnMap[ cwtwc.cursorX+1 ][ cwtwc.cursorY-1 ] = true;
   }
 
-  if( this.cursorX-1 >= 0 )      this.drawnMap[ this.cursorX-1 ][ this.cursorY   ] = true;
-  this.drawnMap[ this.cursorX   ][ this.cursorY   ] = true;
-  if( this.cursorX+1 < this.sw ) this.drawnMap[ this.cursorX+1 ][ this.cursorY   ] = true;
+  if( cwtwc.cursorX-1 >= 0 )      cwtwc.drawnMap[ cwtwc.cursorX-1 ][ cwtwc.cursorY   ] = true;
+  cwtwc.drawnMap[ cwtwc.cursorX   ][ cwtwc.cursorY   ] = true;
+  if( cwtwc.cursorX+1 < cwtwc.sw ) cwtwc.drawnMap[ cwtwc.cursorX+1 ][ cwtwc.cursorY   ] = true;
 
-  if( this.cursorY+1 < this.sh ){
-    if( this.cursorX-1 >= 0 )      this.drawnMap[ this.cursorX-1 ][ this.cursorY+1 ] = true;
-    this.drawnMap[ this.cursorX ][ this.cursorY+1 ] = true;
-    if( this.cursorX+1 < this.sw ) this.drawnMap[ this.cursorX+1 ][ this.cursorY+1 ] = true;
+  if( cwtwc.cursorY+1 < cwtwc.sh ){
+    if( cwtwc.cursorX-1 >= 0 )      cwtwc.drawnMap[ cwtwc.cursorX-1 ][ cwtwc.cursorY+1 ] = true;
+    cwtwc.drawnMap[ cwtwc.cursorX ][ cwtwc.cursorY+1 ] = true;
+    if( cwtwc.cursorX+1 < cwtwc.sw ) cwtwc.drawnMap[ cwtwc.cursorX+1 ][ cwtwc.cursorY+1 ] = true;
   }
 
-  this.drawChanges = 1;
+  // mark redraw wish
+  cwtwc.drawChanges = 1;
 };
 
 /**
@@ -225,66 +201,66 @@ cwt.client._rerenderCursorTiles = function(){
  *
  * @private
  */
-cwt.client._keyboardEvent = function( event ){
+cwtwc._keyboardEvent = function( event ){
 
   switch( event.keyCode ){
 
     // LEFT
     case 37:
-      this._rerenderCursorTiles();
-      if( this.cursorX == 3 && this.sx > 0 ){
-        this.betterMapShift(3,1);
+      cwtwc._rerenderCursorTiles();
+      if( cwtwc.cursorX == 3 && cwtwc.sx > 0 ){
+        cwtwc.betterMapShift(3,1);
       }
       else{
-        this.cursorX--;
-        if( this.cursorX < 0 ) this.cursorX = 0;
+        cwtwc.cursorX--;
+        if( cwtwc.cursorX < 0 ) cwtwc.cursorX = 0;
       }
       break;
 
     // UP
     case 38:
-      this._rerenderCursorTiles();
-      if( this.cursorY == 3 && this.sy > 0 ){
-        this.betterMapShift(0,1);
+      cwtwc._rerenderCursorTiles();
+      if( cwtwc.cursorY == 3 && cwtwc.sy > 0 ){
+        cwtwc.betterMapShift(0,1);
       }
       else{
-        this.cursorY--;
-        if( this.cursorY < 0 ) this.cursorY = 0;
+        cwtwc.cursorY--;
+        if( cwtwc.cursorY < 0 ) cwtwc.cursorY = 0;
       }
       break;
 
     // RIGHT
     case 39:
       this._rerenderCursorTiles();
-      if( this.cursorX == this.sw-4 && this.sx < cwt.model._width-1-this.sw ){
-        this.betterMapShift(1,1);
+      if( cwtwc.cursorX == cwtwc.sw-4 && cwtwc.sx < cwtwc.mapWidth-1-cwtwc.sw ){
+        cwtwc.betterMapShift(1,1);
       }
       else{
-        this.cursorX++;
-        if( this.cursorX >= this.sw ) this.cursorX = this.sw-1;
+        cwtwc.cursorX++;
+        if( cwtwc.cursorX >= cwtwc.sw ) cwtwc.cursorX = cwtwc.sw-1;
       }
       break;
 
     // DOWN
     case 40:
       this._rerenderCursorTiles();
-      if( this.cursorY == this.sh-4 && this.sy < cwt.model._height-1-this.sh ){
-        this.betterMapShift(2,1);
+      if( cwtwc.cursorY == cwtwc.sh-4 && cwtwc.sy < cwt.mapHeight-1-cwtwc.sh ){
+        cwtwc.betterMapShift(2,1);
       }
       else{
-        this.cursorY++;
-        if( this.cursorY >= this.sh ) this.cursorY = this.sh-1;
+        cwtwc.cursorY++;
+        if( cwtwc.cursorY >= cwtwc.sh ) cwtwc.cursorY = cwtwc.sh-1;
       }
       break;
 
     // BACKSPACE
     case 8:
-      cwt.client.inputController.hold();
+      cwtwc.back();
       break;
 
     // ENTER
     case 13:
-      cwt.client.click( cwt.client.sx+this.cursorX, cwt.client.sy+this.cursorY );
+      cwtwc.click( cwtwc.sx+ cwtwc.cursorX, cwtwc.sy+ cwtwc.cursorY );
       break;
   }
 };
@@ -294,27 +270,27 @@ cwt.client._keyboardEvent = function( event ){
  *
  * @private
  */
-cwt.client._initMouseEvents = function(){
-  var appEl = document.getElementById( cwt.client.APP_CONTAINER );
+cwtwc._initMouseEvents = function( appEl ){
 
   /* MOUSE MOVE */
-  appEl.onmousemove = function(ev){
-    var x = parseInt( ev.pageX / cwt.client.tx, 10 );
-    var y = parseInt( ev.pageY / cwt.client.ty, 10 );
+  appEl.onmousemove = function (ev) {
+    var x = parseInt( ev.pageX / cwtwc.tx, 10);
+    var y = parseInt( ev.pageY / cwtwc.ty, 10);
 
     // check boundaries
-    if( x < cwt.client.sw && y < cwt.client.sh ){
+    if (x < cwtwc.sw && y < cwtwc.sh) {
 
-      if( cwt.client.cursorX !== x || cwt.client.cursorY !== y ){
-        cwt.client._rerenderCursorTiles();
-        cwt.client.cursorX = x;
-        cwt.client.cursorY = y;
+      if ( cwtwc.cursorX !== x || cwtwc.cursorY !== y) {
+
+        // TODO: think about this, because cursor is dropped in m1
+        cwtwc._rerenderCursorTiles();
+        cwtwc.cursorX = x;
+        cwtwc.cursorY = y;
       }
     }
-  }
+  };
 
-    // MOUSE BUTTON_HOLD, BUTTON_CLICK ETC. WILL BE DONE
-    // BY HAMMER.JS
+  // MOUSE BUTTON_HOLD, BUTTON_CLICK ETC. WILL BE DONE BY HAMMER.JS
 };
 
 /**
@@ -322,53 +298,4 @@ cwt.client._initMouseEvents = function(){
  *
  * @private
  */
-cwt.client._initTouchEvents = function(){
-  var hammer = new Hammer( document.getElementById( cwt.client.APP_CONTAINER ), { prevent_default: true });
-
-  /* DRAG EVENT */
-  hammer.ondragend = function(ev){
-
-    // get direction
-    var a = ev.angle;
-    var d = 0;
-    if( a >= -135 && a < -45  ) d = 0;
-    else if( a >= -45  && a < 45   ) d = 1;
-    else if( a >= 45   && a < 135  ) d = 2;
-    else if( a >= 135  || a < -135 ) d = 3;
-
-    // get distance
-    var dis = parseInt( ev.distance/32, 10 );
-    if( dis === 0 ) dis = 1;
-
-    cwt.client.betterMapShift( d, dis );
-  };
-
-  /* TAP EVENT */
-  hammer.ontap = function(ev) {
-    var x = parseInt( ev.position[0].x / cwt.client.tx, 10 );
-    var y = parseInt( ev.position[0].y / cwt.client.ty, 10 );
-
-    if( cwt.client.cursorX !== x || cwt.client.cursorY !== y ){
-      cwt.client._rerenderCursorTiles();
-      cwt.client.cursorX = x;
-      cwt.client.cursorY = y;
-    }
-
-    // convert screen to real position
-    x = x+ cwt.client.sx;
-    y = y+ cwt.client.sy;
-
-    cwt.client.click( x,y );
-  };
-
-  /* HOLD TOUCH EVENT */
-  hammer.onhold = function(ev) {
-    var x = parseInt( ev.position[0].x / cwt.client.tx, 10 );
-    var y = parseInt( ev.position[0].y / cwt.client.ty, 10 );
-
-    cwt.client.inputController.hold();
-  };
-
-  /* RELEASE TOUCH EVENT */
-  hammer.onrelease = function( ev ){};
-};
+cwtwc._initTouchEvents = function( appEl ){};
