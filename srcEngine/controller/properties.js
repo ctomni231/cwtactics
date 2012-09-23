@@ -1,5 +1,5 @@
 cwt.onInit( "properties", function(){
-  cwt.userAction("capture",
+  cwt.userAction("captureProperty",
     function( actions, x, y, prop, unit, selected ){
 
       if( selected !== null && prop !== null &&
@@ -36,13 +36,13 @@ cwt.captureProperty = function( x, y, id ){
     if( prop.type === 'HQ' ){
       var oldPlayer = cwt.player(prop.owner);
 
-      var units = cwt.units( cwt.selectors.own, prop.owner );
+      var units = cwt.selectOwnUnits( prop.owner );
       for( var i = 0, e = units.length; i<e; i++ ){
         units[i].team = -1;
         cwt._unitPosMap[ units[i].x ][ units[i].y ] = null;
       }
 
-      var props = cwt.properties( cwt.selectors.own, prop.owner );
+      var props = cwt.selectOwnProperties( prop.owner );
       for( var i = 0, e = props.length; i<e; i++ ){
         props[i].owner = -1;
       }
@@ -54,4 +54,6 @@ cwt.captureProperty = function( x, y, id ){
     prop.capturePoints = 20;
     prop.owner = unit.owner;
   }
+
+  cwt._localWait(unit);
 };

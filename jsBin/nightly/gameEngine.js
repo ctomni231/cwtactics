@@ -912,6 +912,14 @@ cwt.loadMap = function( data ){
     cwt._properties[i].owner = cwt.INACTIVE_ID;
   }
 
+  // add actors
+  var startIndex= cwt._turnPid*cwt.MAX_UNITS_PER_PLAYER;
+  for( var i= startIndex,
+         e=   i+cwt.MAX_UNITS_PER_PLAYER; i<e; i++ ){
+
+    cwt._turnActors[i-startIndex] = ( cwt.unitById(i) !== null )? true : false;
+  }
+
   if( cwt.DEBUG ){
     cwt.info("map successfully loaded");
   }
@@ -1547,62 +1555,6 @@ cwt.returnPath = function( uid, stx, sty, tx, ty , card){
   var unit = cwt.unitById( card.uid );
   var type = cwt.unitSheet( unit.type );
   var mType = cwt.movetypeSheet( type.moveType );
-  //var nodes = [];
-
-  /*
-  var lx = +10000,
-      ly = +10000,
-      hx = -10000,
-      hy = -10000;
-
-  var keysY;
-  var keysX = Object.keys( moveMap );
-  for( var x=0,xe=keysX.length; x<xe; x++ ){
-
-    if( parseInt( keysX[x], 10 ) < lx ) lx = parseInt( keysX[x], 10 );
-    if( parseInt( keysX[x], 10 ) > hx ) hx = parseInt( keysX[x], 10 );
-
-    keysY = Object.keys( moveMap[ keysX[x] ] );
-    for( var y=0,ye=keysY.length; y<ye; y++ ){
-
-      if( parseInt( keysY[y], 10 ) < ly ) ly = parseInt( keysY[y], 10 );
-      if( parseInt( keysY[y], 10 ) > hy ) hy = parseInt( keysY[y], 10 );
-    }
-  }
-
-  ly = parseInt( ly ,10 );
-  lx = parseInt( lx ,10 );
-  hx = parseInt( hx ,10 );
-  hy = parseInt( hy ,10 );
-
-  if( cwt.DEBUG ) cwt.info("lx:{0} hx:{1} ly:{2} hy:{3}",lx,hx,ly,hy);
-
-  var sx = hx - lx + 1;
-  var sy = hy - ly + 1;
-
-  cwt.log.info("size x:{0} size y:{1}",sx,sy);
-
-  for( var x = 0; x < sx; x++ ){
-    nodes.push([]);
-    for( var y = 0; y < sy; y++ ){
-
-      var cost = moveMap[ lx+x ][ ly+y ];
-      if( cost === undefined ) cost = 0; // wall / not movable
-      nodes[ nodes.length-1 ][y] = cost;
-    }
-  }
-
-  if( cwt.DEBUG ) cwt.info("nodes:{0}", nodes);
-
-  var graph = new Graph( nodes );
-
-  stx -= lx;
-  sty -= ly;
-  tx -= lx;
-  ty -= ly;
-
-  if( cwt.DEBUG ) cwt.info("sx:{0} sy:{1} tx:{2} ty:{3}",stx, sty,tx,ty);
-  */
 
   // var graph = new Graph( nodes );
   var graph = new Graph( card.moveMap );
@@ -1690,6 +1642,27 @@ cwt.moveUnit = function( card ){
     if( cwt._wayBlocked( cX, cY, unit.owner, i == e-1 ) ){
 
       lastIndex = i-1;
+
+      // GP BACK
+      switch( way[i] ){
+
+        case cwt.MOVE_CODE_UP:
+          cY++;
+          break;
+
+        case cwt.MOVE_CODE_RIGHT:
+          cX--;
+          break;
+
+        case cwt.MOVE_CODE_DOWN:
+          cY--;
+          break;
+
+        case cwt.MOVE_CODE_LEFT:
+          cX++;
+          break;
+      }
+
 
       if( lastIndex == -1 ){
 
@@ -1794,7 +1767,7 @@ cwt._wayBlocked = function( x,y, owner, lastTile ){
   return false;
 };
 cwt.onInit( "properties", function(){
-  cwt.userAction("capture",
+  cwt.userAction("captureProperty",
     function( actions, x, y, prop, unit, selected ){
 
       if( selected !== null && prop !== null &&
@@ -1831,13 +1804,13 @@ cwt.captureProperty = function( x, y, id ){
     if( prop.type === 'HQ' ){
       var oldPlayer = cwt.player(prop.owner);
 
-      var units = cwt.units( cwt.selectors.own, prop.owner );
+      var units = cwt.selectOwnUnits( prop.owner );
       for( var i = 0, e = units.length; i<e; i++ ){
         units[i].team = -1;
         cwt._unitPosMap[ units[i].x ][ units[i].y ] = null;
       }
 
-      var props = cwt.properties( cwt.selectors.own, prop.owner );
+      var props = cwt.selectOwnProperties( prop.owner );
       for( var i = 0, e = props.length; i<e; i++ ){
         props[i].owner = -1;
       }
@@ -1849,6 +1822,8 @@ cwt.captureProperty = function( x, y, id ){
     prop.capturePoints = 20;
     prop.owner = unit.owner;
   }
+
+  cwt._localWait(unit);
 };
 /**
  * Selects unit objects.
@@ -1885,10 +1860,39 @@ cwt._createPidTidSelector = function( pidFits, tidFits ){
       // check by modificator
       var unit = cwt.unitById(i);
       if( unit !== null &&
-          ((cPid === pid) === pidFits ) && 
-          ((cTid === tid) === tidFits )
-      ){
+        ((cPid === pid) === pidFits ) &&
+        ((cTid === tid) === tidFits )
+        ){
         result[ result.length ] = unit;
+      }
+    }
+
+    return result;
+  };
+}
+
+/**
+ * Selects property objects.
+ *
+ * @private
+ * @param pidFits
+ * @param tidFits
+ */
+cwt._createPidTidSelectorProperties = function( pidFits, tidFits ){
+  var properties = cwt._properties;
+
+  return function( pid ){
+    var result = [];
+    var tid = cwt.player(pid).team;
+    for( var i=0,e=properties.length; i<e; i++ ){
+
+      // check by modificator
+      var prop = cwt.propertyById(i);
+      if( prop !== null && prop.owner !== -1 &&
+        (( prop.owner === pid) === pidFits ) &&
+        (( cwt.player(prop.owner).team === tid) === tidFits )
+        ){
+        result[ result.length ] = prop;
       }
     }
 
@@ -1900,10 +1904,18 @@ cwt.selectOwnUnits = null;
 cwt.selectEnemyUnits = null;
 cwt.selectAlliedUnits = null;
 
+cwt.selectOwnProperties = null;
+cwt.selectEnemyProperties = null;
+cwt.selectAlliedProperties = null;
+
 cwt.onInit("selectors",function(){
   cwt.selectOwnUnits = cwt._createPidTidSelector(true,true);
   cwt.selectEnemyUnits = cwt._createPidTidSelector(false,false);
   cwt.selectAlliedUnits = cwt._createPidTidSelector(false,true);
+
+  cwt.selectOwnProperties = cwt._createPidTidSelectorProperties(true,true);
+  cwt.selectEnemyProperties = cwt._createPidTidSelectorProperties(false,false);
+  cwt.selectAlliedProperties = cwt._createPidTidSelectorProperties(false,true);
 });
 
 /** @private */
@@ -1964,6 +1976,10 @@ cwt.canAct = function( uid ){
  * @param uid
  */
 cwt.wait = function( unit ){
+  cwt._localWait(unit);
+};
+
+cwt._localWait = function( unit ){
   var uid = ( typeof unit === 'number' )? unit : cwt.extractUnitId( unit );
   var startIndex = cwt._turnPid*cwt.MAX_UNITS_PER_PLAYER;
 
@@ -2010,10 +2026,11 @@ cwt.nextTurn = function(){
   cwt._turnPid = pid;
 
   // add actors
-  for( var i= pid*cwt.MAX_UNITS_PER_PLAYER,
+  var startIndex= pid*cwt.MAX_UNITS_PER_PLAYER;
+  for( var i= startIndex,
            e=   i+cwt.MAX_UNITS_PER_PLAYER; i<e; i++ ){
 
-    cwt._turnActors[i] = ( cwt.unitById(i) !== null )? true : false;
+    cwt._turnActors[i-startIndex] = ( cwt.unitById(i) !== null )? true : false;
   }
 
   // start turn

@@ -1061,7 +1061,7 @@ cwtwc.click = function(x,y){
       cwt.input.unitSelected( unitId );
     }
     else{
-
+/*
       var propId = cwt.tileIsProperty(x,y);
       if( propId !== false ){
 
@@ -1069,10 +1069,10 @@ cwtwc.click = function(x,y){
         cwt.input.factorySelected( propId );
       }
       else{
-
+*/
         // MAP SELECTION
         cwt.input.mapSelected( x, y );
-      }
+      /* } */
     }
   }
 };

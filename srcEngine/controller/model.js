@@ -315,6 +315,14 @@ cwt.loadMap = function( data ){
     cwt._properties[i].owner = cwt.INACTIVE_ID;
   }
 
+  // add actors
+  var startIndex= cwt._turnPid*cwt.MAX_UNITS_PER_PLAYER;
+  for( var i= startIndex,
+         e=   i+cwt.MAX_UNITS_PER_PLAYER; i<e; i++ ){
+
+    cwt._turnActors[i-startIndex] = ( cwt.unitById(i) !== null )? true : false;
+  }
+
   if( cwt.DEBUG ){
     cwt.info("map successfully loaded");
   }

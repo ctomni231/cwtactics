@@ -57,6 +57,10 @@ cwt.canAct = function( uid ){
  * @param uid
  */
 cwt.wait = function( unit ){
+  cwt._localWait(unit);
+};
+
+cwt._localWait = function( unit ){
   var uid = ( typeof unit === 'number' )? unit : cwt.extractUnitId( unit );
   var startIndex = cwt._turnPid*cwt.MAX_UNITS_PER_PLAYER;
 
@@ -103,10 +107,11 @@ cwt.nextTurn = function(){
   cwt._turnPid = pid;
 
   // add actors
-  for( var i= pid*cwt.MAX_UNITS_PER_PLAYER,
+  var startIndex= pid*cwt.MAX_UNITS_PER_PLAYER;
+  for( var i= startIndex,
            e=   i+cwt.MAX_UNITS_PER_PLAYER; i<e; i++ ){
 
-    cwt._turnActors[i] = ( cwt.unitById(i) !== null )? true : false;
+    cwt._turnActors[i-startIndex] = ( cwt.unitById(i) !== null )? true : false;
   }
 
   // start turn
