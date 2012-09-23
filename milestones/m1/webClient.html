@@ -8,16 +8,16 @@
         <title>Custom Wars Tactics</title>
 
         <!--                    GAME ENGINE                           -->
-        <script src="gameEngineDeps_min.js" type="text/javascript" ></script>
-        <script src="gameEngine_min.js" type="text/javascript" ></script>
+        <script src="gameEngineDeps.js" type="text/javascript" ></script>
+        <script src="gameEngine.js" type="text/javascript" ></script>
 
-        <script src="defaultMod_min.js" type="text/javascript" ></script>
+        <script src="defaultMod.js" type="text/javascript" ></script>
 
         <!--                    WEB CLIENT                           -->
-        <script src="webClientDeps_min.js" type="text/javascript" ></script>
+        <script src="webClientDeps.js" type="text/javascript" ></script>
         <link   href="webClientDeps.css" type="text/css" rel="stylesheet" />
 
-        <script src="webClient_min.js" type="text/javascript" ></script>
+        <script src="webClient.js" type="text/javascript" ></script>
         <link   href="webClient.css"      type="text/css" rel="stylesheet" />
 
         <script src="webClientGraphics.js" type="text/javascript"></script>
@@ -33,7 +33,7 @@
     
             log.toggle();
 
-            cwt.util.setDebug( false );
+            cwt.util.setDebug( true );
             cwt.start();
             cwt.loadDefaultMod();
             cwt.loadMap( testMap );
