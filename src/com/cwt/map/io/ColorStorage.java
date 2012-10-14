@@ -2,7 +2,6 @@ package com.cwt.map.io;
 
 import java.awt.Color;
 import java.util.HashMap;
-import static com.yasl.logging.Logging.*;
 
 /**
  * ColorStorage.java
@@ -85,8 +84,7 @@ public class ColorStorage {
             temp = refItems.get(key);
             switch(temp){
                 case -1:
-                    warn((blend ? "Blend" : "Color")+
-                            "key '"+key+"' not recognized!");
+                    System.out.println((blend ? "Blend" : "Color")+"key '"+key+"' not recognized!");
                     break;
                 case END:
                     colorStore = false;
@@ -149,7 +147,7 @@ public class ColorStorage {
         try{
             return Color.decode(value).getRGB();
         }catch(NumberFormatException ex){
-            warn("Illegal Color Format! "+ex.toString());
+            System.err.println("Illegal Color Format! "+ex.toString());
             return -1;
         }
     }

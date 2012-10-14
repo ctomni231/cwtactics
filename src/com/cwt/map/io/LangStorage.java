@@ -1,7 +1,6 @@
 package com.cwt.map.io;
 
 import java.util.HashMap;
-import static com.yasl.logging.Logging.*;
 
 /**
  * LangStorage.java
@@ -41,7 +40,7 @@ public class LangStorage {
         for(String key: fillData.keySet()){
             switch(refItems.get(key)){
                 case -1:
-                    warn("Language path key '"+key+"' not recognized!");
+                    System.out.println("Language path key '"+key+"' not recognized!");
                     break;
                 case LANG:
                     return fillData.get(key);

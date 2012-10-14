@@ -1,7 +1,6 @@
 package com.cwt.map.io;
 
 import java.util.HashMap;
-import static com.yasl.logging.Logging.*;
 
 /**
  * TagStorage.java
@@ -105,7 +104,7 @@ public class TagStorage{
             temp = ref.get(key);
             switch(temp){
                 case -1:
-                    warn("Tag key '"+key+"' not recognized!");
+                    System.out.println("Tag key '"+key+"' not recognized!");
                     break;
                 default:
                     storeItem(temp, tagNames.addData(fillData.get(key)));

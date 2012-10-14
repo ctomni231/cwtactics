@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import static com.yasl.logging.Logging.*;
 
 /**
  * XML_Writer.java
@@ -22,7 +21,7 @@ import static com.yasl.logging.Logging.*;
 public class XML_Writer {
 
     private final int TAB_SPACE = 8;//The amount of spaces a TAB makes
-    private final int MAX_CHARS = 70;//The max caharacters before a newline
+    private final int MAX_CHARS = 70;//The max characters before a newline
     private String data;//The data contained within the XML file
     protected String filePath;//THe path to the XML file
     protected String filename;//THe XML filename
@@ -168,7 +167,7 @@ public class XML_Writer {
 
             if(endTag) endXMLTag();
         }else
-            warn("No open tag found! Use addXMLTag(String tag) "
+        	System.out.println("No open tag found! Use addXMLTag(String tag) "
                     + "to add attribute "+key+"="+value+" !");
     }
 
@@ -187,7 +186,7 @@ public class XML_Writer {
                 if(endTag)  endXMLTag();
             }
         }else
-            warn("No open tag found! Use addXMLTag(String tag) "
+        	System.out.println("No open tag found! Use addXMLTag(String tag) "
                     + "to add attributes!");
     }
     
@@ -333,20 +332,17 @@ public class XML_Writer {
         try {
             newFile = new File(path);
             if(newFile.mkdirs())
-                log("Directories Created! "+path);
+            	System.out.println("Directories Created! "+path);
             else
-                log("Directories Failed! "+path);
+            	System.out.println("Directories Failed! "+path);
 
             newFile = new File(path+filename);
             if (newFile.createNewFile())
-                log("File Created! "+path+filename);
+            	System.out.println("File Created! "+path+filename);
             else{
-                if(overwrite){
-                    log("File Exists! Overwriting! "+path+filename);
-                }else{
-                    log("File Exists! "+path+filename);
-                    return false;
-                }
+            	System.out.println("File Exists!" + (overwrite ? "Overwriting!" : "") + path+filename);
+            	if(!overwrite)
+            		return false;
             }
             if(temp)    newFile.deleteOnExit();
 
@@ -356,10 +352,10 @@ public class XML_Writer {
             out.close();
             
         } catch (IOException e) {
-            warn("File IOException! "+path+filename);
+        	System.err.println("File IOException! "+path+filename);
             return false;
         } catch(AccessControlException e){
-            log("Applet Active, can't Access! "+path+filename);
+        	System.err.println("Applet Active, can't Access! "+path+filename);
             return false;
         }
 

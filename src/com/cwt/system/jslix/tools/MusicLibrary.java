@@ -16,7 +16,6 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.advanced.AdvancedPlayer;
-import static com.yasl.logging.Logging.*;
 
 /**
  * MusicLibrary.java
@@ -233,7 +232,7 @@ public class MusicLibrary implements Runnable{
             else if (current.type == current.MP3)
                 playMP3();
         }catch(Exception e){
-            warn("Error! "+e.toString());
+        	System.err.println("Error! "+e.toString());
         }
     }
 
@@ -297,11 +296,11 @@ public class MusicLibrary implements Runnable{
             clip.setFramePosition(0);
             clip.start();
         } catch (LineUnavailableException ex) {
-            warn("Line Unavailable! "+ex.toString());
+        	System.err.println("Line Unavailable! "+ex.toString());
         } catch (UnsupportedAudioFileException ex) {
-            warn("File Unsupported! "+ex.toString());
+        	System.err.println("File Unsupported! "+ex.toString());
         } catch (IOException ex) {
-            warn("File Not Found! "+ex.toString());
+        	System.err.println("File Not Found! "+ex.toString());
         }
     }
 
@@ -318,11 +317,11 @@ public class MusicLibrary implements Runnable{
                 midiPlayer.setLoopCount(midiPlayer.LOOP_CONTINUOUSLY);
             midiPlayer.start();
         } catch (MidiUnavailableException ex) {
-            warn("Midi Unavailable! "+ex.toString());
+        	System.err.println("Midi Unavailable! "+ex.toString());
         } catch (InvalidMidiDataException ex) {
-            warn("Midi Invalid! "+ex.toString());
+        	System.err.println("Midi Invalid! "+ex.toString());
         } catch (IOException ex) {
-            warn("File Not Found! "+ex.toString());
+        	System.err.println("File Not Found! "+ex.toString());
         }
     }
 

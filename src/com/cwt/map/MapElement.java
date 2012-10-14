@@ -13,7 +13,6 @@ import com.cwt.system.jslix.tools.FileFind;
 import com.cwt.system.jslix.tools.FileIndex;
 import com.cwt.system.jslix.tools.XML_Parser;
 import com.cwt.system.jslix.tools.XML_Writer;
-import static com.yasl.logging.Logging.*;
 
 /**
  * MapElement.java
@@ -250,7 +249,7 @@ public class MapElement implements Runnable{
             entries[i] = mapParse.getAttribute(entryLocation[i], "file");
         
         for(String entry: entries){
-            log("DATA: "+entry);
+            System.out.println("DATA: "+entry);
             parseData(entry);
         }
     }
@@ -270,7 +269,7 @@ public class MapElement implements Runnable{
                 temp = (int)codeLib.checkAll(j, mapParse.getTags(i)[j]);
                 if(codeLib.checkAll(j, mapParse.getTags(i)[j]) == -1){
                     if(i == 0){
-                        warn(mapParse.getTags(i)[0]+" not recognized");
+                        System.err.println(mapParse.getTags(i)[0]+" not recognized");
                         return;
                     }else
                         continue;
@@ -486,7 +485,7 @@ public class MapElement implements Runnable{
         try{
             decodeFiles();
         }catch(Exception e){
-            warn(e.toString());
+            System.err.println(e.toString());
         }
     }
 }

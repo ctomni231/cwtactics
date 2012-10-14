@@ -20,7 +20,6 @@ import java.awt.image.BufferedImage;
 import java.awt.BorderLayout;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import static com.yasl.logging.Logging.*;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
@@ -496,7 +495,7 @@ public class Slix extends JComponent implements Runnable, KeyListener,
                 repaint();
             }
         }catch(Exception e){
-            warn(e.getMessage());
+            System.err.println(e.getMessage());
             System.exit(0);
         }
     }

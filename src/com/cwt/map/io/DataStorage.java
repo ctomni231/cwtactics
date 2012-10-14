@@ -3,7 +3,6 @@ package com.cwt.map.io;
 import com.cwt.io.LangControl;
 import java.util.Arrays;
 import java.util.HashMap;
-import static com.yasl.logging.Logging.*;
 
 /**
  * DataStorage.java
@@ -75,7 +74,7 @@ public class DataStorage {
 
             switch(temp){
                 case -1:
-                    warn("Data key '"+key+"' not recognized!");
+                    System.out.println("Data key '"+key+"' not recognized!");
                     break;
                 default:
                     tempKey.addData(temp, dataItems[temp].addData(

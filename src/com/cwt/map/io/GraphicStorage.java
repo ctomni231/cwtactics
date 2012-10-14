@@ -2,7 +2,6 @@ package com.cwt.map.io;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import static com.yasl.logging.Logging.*;
 
 /**
  * GraphicStorage.java
@@ -64,7 +63,7 @@ public class GraphicStorage {
 
             switch(temp){
                 case -1:
-                    warn("Graphic key '"+key+"' not recognized!");
+                    System.out.println("Graphic key '"+key+"' not recognized!");
                     break;
                 default:
                     tempKey.addData(temp, graphicItems[temp].addData(

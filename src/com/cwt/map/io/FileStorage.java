@@ -2,7 +2,6 @@ package com.cwt.map.io;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import static com.yasl.logging.Logging.*;
 
 /**
  * FileStorage.java
@@ -76,7 +75,7 @@ public class FileStorage{
             temp = refItems.get(key);
             switch(temp){
                 case -1:
-                    warn("File key '"+key+"' not recognized!");
+                    System.out.println("File key '"+key+"' not recognized!");
                     break;
                 case PATH:
                     tempKey.addData(PATH, 

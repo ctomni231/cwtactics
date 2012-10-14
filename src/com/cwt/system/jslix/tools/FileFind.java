@@ -8,7 +8,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.AccessControlException;
 import java.util.ArrayList;
-import static com.yasl.logging.Logging.*;
 
 /**
  * FileFind.java
@@ -191,7 +190,7 @@ public class FileFind {
         try{
             newFile = new File(filename);
         }catch(AccessControlException ex){
-            log("Applet Active, can't Access! "+ex.toString());
+            System.err.println("Applet Active, can't Access! "+ex.toString());
             newFile = getClassFile(filename);
         }
 
@@ -212,7 +211,7 @@ public class FileFind {
             try {
                 newFile = new File(tempURL.toURI());
             } catch (URISyntaxException ex) {
-                warn("File Resource Error! "+filename);
+            	System.err.println("File Resource Error! "+filename);
             }
         }
 
@@ -233,7 +232,7 @@ public class FileFind {
             try {
                 newFile = new File(tempURL.toURI());
             } catch (URISyntaxException ex) {
-                warn("File Resource Error! "+filename);
+            	System.err.println("File Resource Error! "+filename);
             }
         }
 
@@ -257,18 +256,18 @@ public class FileFind {
         try {
             newFile = new File(path+filename);
             if (newFile.createNewFile())
-                log("File Created! "+path+filename);
+            	System.out.println("File Created! "+path+filename);
             else{
-                log("File Exists! "+path+filename);
+            	System.out.println("File Exists! "+path+filename);
                 return false;
             }
             if(temp)    newFile.deleteOnExit();
 
         } catch (IOException e) {
-            warn("File IOException! "+path+filename);
+        	System.err.println("File IOException! "+path+filename);
             return false;
         } catch(AccessControlException ex){
-            log("Applet Active, can't Access! "+path+filename);
+        	System.err.println("Applet Active, can't Access! "+path+filename);
             return false;
         }
 
@@ -276,10 +275,10 @@ public class FileFind {
             FileWriter newWrite = new FileWriter(newFile);
             newWrite.write(data);
         } catch (IOException e) {
-            warn("Can't Write to File! "+path+filename);
+        	System.err.println("Can't Write to File! "+path+filename);
             return false;
         } catch(AccessControlException ex){
-            log("Applet Active, can't Access! "+path+filename);
+        	System.err.println("Applet Active, can't Access! "+path+filename);
             return false;
         }
         return true;
@@ -297,9 +296,9 @@ public class FileFind {
 
         newFile = new File(path+filename);
         if (newFile.delete())
-            log("File Deleted! "+path+filename);
+        	System.out.println("File Deleted! "+path+filename);
         else
-            warn("Failed to Delete File! "+path+filename);
+        	System.out.println("Failed to Delete File! "+path+filename);
     }
 
     /**
@@ -315,14 +314,14 @@ public class FileFind {
             File newFile = new File(folder);
 
             if(newFile.mkdir()){
-                log("Directory Created! "+folder);
+            	System.out.println("Directory Created! "+folder);
                 if(hide && !newFile.isHidden())
                     hideDirectory(folder);
             }else{
-                log("Directory Failed! "+folder);
+            	System.out.println("Directory Failed! "+folder);
             }
         } catch(AccessControlException ex){
-            log("Applet Active, can't Access! "+folder);
+        	System.err.println("Applet Active, can't Access! "+folder);
         }
     }
 
@@ -335,11 +334,11 @@ public class FileFind {
             File newFile = new File(path);
 
             if(newFile.mkdirs())
-                log("Directories Created! "+path);
+            	System.out.println("Directories Created! "+path);
             else
-                log("Directories Failed!"+path);
+            	System.out.println("Directories Failed!"+path);
         } catch(AccessControlException ex){
-            log("Applet Active, can't Access! "+path);
+        	System.err.println("Applet Active, can't Access! "+path);
         }
 
     }
@@ -358,7 +357,7 @@ public class FileFind {
             while((ch = in.read()) != -1)
                 System.out.print((char)ch);
         } catch (IOException e) {
-            warn("Hidden attribute failed!!");
+        	System.err.println("Hidden attribute failed!!");
         }
     }
 
@@ -372,7 +371,7 @@ public class FileFind {
             theFile = new File(directory);
             thePath = theFile.getAbsolutePath();
         }catch(AccessControlException ex){
-            log("Applet Active, can't Access! "+directory);
+        	System.err.println("Applet Active, can't Access! "+directory);
         }
 
         allFiles = new ArrayList<FileIndex>();

@@ -1,7 +1,5 @@
 package com.cwt.io;
 
-import com.yasl.internationalization.LocaleService;
-
 /**
  * LangControl.java
  *
