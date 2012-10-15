@@ -10,6 +10,17 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+/**
+ * GSlix.java
+ *
+ * This class is a small attempt to merge LibGDX with the JSlix library. The other
+ * 3 backends to run the program are not within the repository, but they will be able
+ * to be downloaded via googlecode.
+ * 
+ * @author Carr, Crecen
+ * @license Look into "LICENSE" file for further information
+ * @version 10.14.12
+ */
 public class GSlix implements ApplicationListener {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;

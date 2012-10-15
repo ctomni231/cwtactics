@@ -1,40 +1,43 @@
-# Image Organization
-
-This shows how objects are organized within the object folders for units, terrain(fields), and buildings(properties).
-
-## Terrain (animation by rows...)
-   
-`[ew][ns]  [ne][nw][se][sw]  [new][sew][nse][nsw]  [nsew]  [n][s][e][w][o]`
-
-## Cursor (animation by rows...)
-
-`[ew][ns]  [ne][nw][es][sw]  [n][s][e][w]`
-
-## City  (animation by columns...)
-
-`[anim1][anim2][anim3][anim4]`
-
-## Unit (animation by columns...)
-
-`[wait1][wait2][wait3][north1][north2][north3][south1][south2][south3][west1][west2][west3]`
-
-***
-
 # File Organization
+
+This shows how the file names are organized within the object folders for units, terrain(fields), and properties(buildings/inventions).
 
 ## Terrain
 
-`(Tileset Type)_(Terrain Type)-(Overlap Type[Optional])~(Connection 4-Type N-E-S-W [Optional])`
+`(Tileset Type)_(Terrain Type)-(Overlap Type[Optional])~(Connection 4-Type N-S-W-E [Optional])`
+`(Tileset Type)_(Terrain Type)-(Overlap Type[Optional])~(Connection 8-Type N-S-W-E-NW-NE-SW-SE [Optional])`
 
-`(Tileset Type)_(Terrain Type)-(Overlap Type[Optional])~(Connection 8-Type N-NE-E-SE-S-SW-W-NW [Optional])`
-
-## General
+## Properties & Units
 
 `(Tileset Type)_(Object Type)_(Army Faction[Optional])`
 
 ***
 
+# Image Organization
+
+This shows how objects are organized within the object files for units, terrain(fields), and properties(buildings/inventions).
+
+## Unit (animation by columns...)
+
+`[wait1][wait2][wait3][north1][north2][north3][south1][south2][south3][west1][west2][west3]`
+
+## Terrain & Properties (animation by columns...)
+
+`[anim1][anim2][anim3][anim4]`
+
+***
+
 # Image Abbreviations
+
+## Overlap & Connection Image Abbreviations
+
+* *L* = Land [Default]
+* *S* = Sea/Ocean
+* *B* = Shoal/Beach
+* *R* = River/Shallow
+* *O* = Road/Bridge
+* *P* = Pipe/PipeSeam
+* *N* = Neutral/Wildcard 
 
 ## Tileset Types
 
@@ -43,21 +46,7 @@ This shows how objects are organized within the object folders for units, terrai
 * *AWDS* = Advance Wars Dual Strike
 * *AWDR* = Advance Wars Days of Ruin/Dark Conflict
 * *CW* = Custom Wars (Original)
-* *CWT* = Custom Wars Tactics
-
-## Overlap Types
-
-* *L* = Land (Default)
-* *S* = Sea/Ocean
-* *B* = Shoal/Beach
-* *R* = River/Swamp
-
-## Connection Types
-
-* *3* = Land (Default)
-* *2* = Shoal/Beach
-* *1* = River/Swamp
-* *0* = Sea/Ocean
+* *CWT* = Custom Wars Tactics [Default]
 
 ## Unit Types - Direct Land
 
@@ -84,7 +73,7 @@ This shows how objects are organized within the object folders for units, terrai
 * *MISS* = Missiles
 * *PRNR* = Piperunner
 * *ATNK* = Anti-Tank
-* *ACRT* = Artillery-craft
+* *ACRT* = Artillery-Hovercraft
 
 ## Unit Types - Air
 
@@ -113,7 +102,7 @@ This shows how objects are organized within the object folders for units, terrai
 
 ## Unit Types - Obsolete
 
-* *SRNR* = Shuttlerunner
+* *SRNR* = Shuttle-Piperunner
 
 ## Terrain Types
 
@@ -166,7 +155,7 @@ This shows how objects are organized within the object folders for units, terrai
 ## Army Factions
 
 * *GD* = Gray Diamond (Neutral/Freelance)
-* *OS* = Orange Star
+* *OS* = Orange Star [Default]
 * *BM* = Blue Moon
 * *GE* = Green Earth
 * *YC* = Yellow Comet
