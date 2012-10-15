@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+<html debug="true" >
+    <head >
+      <script src="config.js" type="text/javascript" ></script>
+
+      <script> var cwt = {}; </script>
+
+      <script src="../libJs/jquery-min.js" type="text/javascript" ></script>
+      <script src="../libJs/popup.js" type="text/javascript" ></script>
+
+      <script src="../libJs/graph.js" type="text/javascript" ></script>
+      <script src="../libJs/astar.js" type="text/javascript" ></script>
+
+      <script src="../libJs/amanda.js" type="text/javascript" ></script>
+      <script src="../libJs/stacktrace.js" type="text/javascript" ></script>
+      <script src="../libJs/animFrame.js" type="text/javascript" ></script>
+      <script src="../libJs/hammer.js" type="text/javascript" ></script>
+
+      <script src="../srcEngine/engine_skeleton.js" type="text/javascript" ></script>
+      <script src="../srcEngine/persistence.js" type="text/javascript" ></script>
+      <script src="../srcEngine/utils.js" type="text/javascript" ></script>
+      <script src="../srcEngine/map.js" type="text/javascript" ></script>
+      <script src="../srcEngine/sheets.js" type="text/javascript" ></script>
+      <script src="../srcEngine/turn.js" type="text/javascript" ></script>
+      <script src="../srcEngine/move.js" type="text/javascript" ></script>
+      <script src="../srcEngine/battle.js" type="text/javascript" ></script>
+      <script src="../srcEngine/property.js" type="text/javascript" ></script>
+      <script src="../srcEngine/clientAction.js" type="text/javascript" ></script>
+
+      <script src="../mod/awds.js" type="text/javascript" ></script>
+      <script src="../mod/movetypes.js" type="text/javascript" ></script>
+      <script src="../mod/scripts.js" type="text/javascript" ></script>
+      <script src="../mod/tiles.js" type="text/javascript" ></script>
+      <script src="../mod/units.js" type="text/javascript" ></script>
+      <script src="../mod/weapons.js" type="text/javascript" ></script>
+
+      <script src="main.js" type="text/javascript" ></script>
+      <script src="images.js" type="text/javascript" ></script>
+      <script src="locale.js" type="text/javascript" ></script>
+      <script src="screen.js" type="text/javascript" ></script>
+      <script src="controls.js" type="text/javascript" ></script>
+      <script src="animation.js" type="text/javascript" ></script>
+      <script src="menu.js" type="text/javascript" ></script>
+      <script src="touch.js" type="text/javascript" ></script>
+
+      <link   href="webClient.css"      type="text/css" rel="stylesheet" />
+
+      <script src="../temp/testMap.js" type="text/javascript" ></script>
+
+      <script>
+        var act, cl;
+        function start(){
+
+          cwt.defineLayer( CWT_LAYER_CLIENT,
+                  function( client, userAction, data, util, persistence ){
+                    /*
+                     util.logError = function( msg ){
+                     if( arguments.length > 1 ){
+                     msg = Array.prototype.join.call( arguments, " " );
+                     }
+
+                     document.writeln("<span style='color:red;'>");
+                     document.writeln( msg );
+                     document.writeln("</br>");
+                     //document.writeln( arguments.callee.caller );
+                     document.writeln( printStackTrace().join('</br>') );
+
+                     document.writeln("</span>");
+                     document.writeln("</br>");
+                     }
+
+                     util.logInfo = function( msg ){
+                     if( arguments.length > 1 ){
+                     msg = Array.prototype.join.call( arguments, " " );
+                     }
+
+                     document.writeln( msg );
+                     document.writeln("</br>");
+                     }
+
+                     window.onerror = function( e ){
+                     util.logError(e);
+                     }
+
+                     */
+                    util.logInfo("Start game engine test playground");
+                    util.DEBUG = true;
+
+                    persistence.loadModification( CWT_MOD_DEFAULT );
+
+                    client.IMAGE_PATH = "../jsBin/cwtwc_pics/";
+
+                    function wait(){
+                      if( !client.checkImageLoadingStatus() ){
+                        setTimeout( wait, 250 );
+                      }
+                      else{
+                        util.logInfo("client loaded");
+                        client.initCanvas();
+                        client.initializeTouch();
+                        client.completeRedraw();
+                        persistence.load( testMap );
+
+                        var start = new Date().getTime();
+                        function step(){
+                          requestAnimationFrame( step );
+
+                          var now = new Date().getTime();
+                          var time = now - start;
+                          start = now;
+
+                          client.update( time );
+                        }
+                        window.requestAnimationFrame( step );
+                      }
+                    }
+
+                    client.startLoading();
+                    wait();
+                  });
+
+
+
+          act = cwt.__debugAccess__().l.ACTIONS_ACCESS;
+          cl = cwt.__debugAccess__().l.CLIENT;
+          cl.language = "de";
+          data = cwt.__debugAccess__().l[ CWT_LAYER_DATA_ACCESS ];
+        }
+      </script>
+    </head>
+
+    <body onLoad="start();">
+    <div id="CWTWCW_APP">
+
+      <div id="fps" style="position: absolute;" ></div>
+
+      <!-- MAP -->
+      <canvas id="CWTWC_CANVAS" class="draw_panel" >
+        <div style="color: red;" >
+          could not display map container! </div> </canvas>
+
+      <!-- MENU -->
+      <div id="CWTWC_MENU">
+        <ul class="cwtwc_menu">
+
+          <li><button id="menuEntry_0"></button></li>
+          <li><button id="menuEntry_1"></button></li>
+          <li><button id="menuEntry_2"></button></li>
+          <li><button id="menuEntry_3"></button></li>
+          <li><button id="menuEntry_4"></button></li>
+          <li><button id="menuEntry_5"></button></li>
+          <li><button id="menuEntry_6"></button></li>
+          <li><button id="menuEntry_7"></button></li>
+          <li><button id="menuEntry_8"></button></li>
+          <li><button id="menuEntry_9"></button></li>
+
+          <li><button id="menuEntry_CANCEL"></button></li>
+
+        </ul>
+      </div>
+
+      <div id="log" ></div>
+    </div>
+    </body>
+</html>
