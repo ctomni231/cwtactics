@@ -196,7 +196,7 @@ public class SlixAppletGame extends AppletGameContainer {
         }
 
         /**
-         * Initialise GL state
+         * Initialize GL state
          */
         protected void initGL() {
             try {
@@ -213,7 +213,7 @@ public class SlixAppletGame extends AppletGameContainer {
 
 
     /**
-     * A game container to provide the applet context
+     * A game container to provide the Applet context
      *
      * @author kevin
      */
@@ -237,9 +237,9 @@ public class SlixAppletGame extends AppletGameContainer {
         }
 
         /**
-         * Initiliase based on Applet init
+         * Initialize based on Applet init
          *
-         * @throws SlickException Indicates a failure to inialise the basic framework
+         * @throws SlickException Indicates a failure to initialize the basic framework
          */
         public void initApplet() throws SlickException {
             initSystem();
@@ -546,7 +546,7 @@ public class SlixAppletGame extends AppletGameContainer {
          * @param width The width of the display required
          * @param height The height of the display required
          * @param fullscreen True if we want fullscreen mode
-         * @throws SlickException Indicates a failure to initialise the display
+         * @throws SlickException Indicates a failure to initialize the display
          */
         public void setDisplayMode(int width, int height, boolean fullscreen)
                 throws SlickException {
@@ -577,7 +577,7 @@ public class SlixAppletGame extends AppletGameContainer {
                                 }
                             }
 
-                            // if we've found a match for bpp and frequence against the
+                            // if we've found a match for bpp and frequency against the
                             // original display mode then it's probably best to go for this one
                             // since it's most likely compatible with the monitor
                             if ((current.getBitsPerPixel() == originalDisplayMode
@@ -640,6 +640,4 @@ public class SlixAppletGame extends AppletGameContainer {
             Display.destroy();
         }
     }
-
-
 }
