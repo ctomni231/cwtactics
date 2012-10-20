@@ -18,7 +18,7 @@ public class JukeBox {
     private static MusicLibrary player = new MusicLibrary();
 
     /**
-     * This adds a music clip of sound effect to the jukebox
+     * This adds a music clip of sound effect to the Jukebox
      * @param filename The file path of the music clip
      */
     public static boolean addClip(String filename){
@@ -26,7 +26,7 @@ public class JukeBox {
     }
 
     /**
-     * This plays a music clip from start to finish in the jukebox
+     * This plays a music clip from start to finish in the Jukebox
      * @param filename The file path of the music clip
      */
     public static void playClip(String filename){

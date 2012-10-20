@@ -175,7 +175,7 @@ public class VerticalMenu extends MovingMenu{
 
     /**
      * This function sets the max menu items visible in the screen
-     * at any given time. Other items will be selectable via scrolling.
+     * at any given time. Other items will be able to be selected via scrolling.
      * @param change How many items are visible in the screen
      */
     public void setMaxItems(int change){
@@ -386,7 +386,7 @@ public class VerticalMenu extends MovingMenu{
 
     /**
      * This controls how the mouse interacts with the selection of the menu
-     * items. This counts all items in the menu as selectable
+     * items. This counts all items in the menu as select able
      * @param mx The x-axis position of the mouse
      * @param my The y-axis position of the mouse
      * @return Whether the mouse is overlapping a menu item(T) or not(F)

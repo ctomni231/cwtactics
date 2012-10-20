@@ -1,7 +1,5 @@
 package com.cwt.system.jslix.tools;
 
-import java.io.File;
-
 /**
  * MusicHolder.java
  *

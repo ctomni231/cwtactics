@@ -7,7 +7,12 @@ This shows how the file names are organized within the object folders for units,
 `(Tileset Type)_(Terrain Type)-(Overlap Type[Optional])~(Connection 4-Type N-S-W-E [Optional])`
 `(Tileset Type)_(Terrain Type)-(Overlap Type[Optional])~(Connection 8-Type N-S-W-E-NW-NE-SW-SE [Optional])`
 
-## Properties & Units
+## Properties
+
+`(Tileset Type)_(Object Type)_(Army Faction[Optional])-
+(Overlap Type[Optional])`
+
+## Units
 
 `(Tileset Type)_(Object Type)_(Army Faction[Optional])`
 
@@ -139,9 +144,11 @@ This shows how objects are organized within the object files for units, terrain(
 * *SPRT* = Seaport
 * *CMTR* = Communication-Tower
 * *SILO* = Missile Silo
+* *PLTF* = Missile Silo Platform
 * *RDAR* = Radar
 * *TAPT* = Temporary Airport
 * *TSPT* = Temporary Seaport
+* *RUBL* = Rubble
 * *STRH* = Stronghold
 * *LABS* = Lab
 * *QURY* = Query

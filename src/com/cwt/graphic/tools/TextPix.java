@@ -52,7 +52,7 @@ public class TextPix {
      * This function turns a String into a picture
      * @param text The text to convert into a picture
      * @param fromColor A list of default colors
-     * @param toColor A list of recolor values
+     * @param toColor A list of re-color values
      * @return An image representing the text
      */
     public static Image getTextImg(String text,

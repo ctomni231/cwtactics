@@ -82,6 +82,6 @@ public class JSGMain extends SlixGame{
         PixAnimate.initialize(SlixLibrary.isApplet());
         SlixLibrary.addFrameScreen(new MainMenuScreen());     
         //Make sure you use SlixLibrary to add the Screens
-        //Also a good place to do all the initialzation stuff
+        //Also a good place to do all the initialization stuff
     }
 }

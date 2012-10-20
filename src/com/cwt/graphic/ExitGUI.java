@@ -16,7 +16,7 @@ import java.awt.Color;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 04.03.11
+ * @version 10.19.12
  */
 public class ExitGUI extends MovingMenu{
 
@@ -198,14 +198,10 @@ public class ExitGUI extends MovingMenu{
         if(KeyControl.isActionClicked()){
             if(select == 1)
                 SlixLibrary.removeAllScreens();
-            else{
-                if(column == -1)    column = 0;
-                else                column = 1;
-            }
-        }else if(KeyControl.isCancelClicked()){
-            if(column == -1)    column = 0;
-            else                column = 1;
-        }
+            else
+            	column = (column == -1) ? 0 : 1;
+        }else if(KeyControl.isCancelClicked())
+        	column = (column == -1) ? 0 : 1;
 
         return column;
     }

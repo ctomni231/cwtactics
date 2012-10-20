@@ -63,10 +63,10 @@ public class BackgroundHandler implements ScreenSkeleton {
 
     /**
      * This function is used to poll the screen to see if the current window
-     * is an applet
+     * is an Applet
      * @param name The current name ID of this screen
      * @param index The current position of this screen in SlixLibrary
-     * @param isApplet Tells you whether this screen is an applet
+     * @param isApplet Tells you whether this screen is an @seeApplet
      * @param seethru If true, you can see screens underneath this screen
      */
     public void update(String name, int index, boolean isApplet,

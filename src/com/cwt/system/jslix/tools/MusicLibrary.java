@@ -314,7 +314,7 @@ public class MusicLibrary implements Runnable{
                     finder.getFile(current.clip)));
             midiPlayer.open();
             if(loop)
-                midiPlayer.setLoopCount(midiPlayer.LOOP_CONTINUOUSLY);
+                midiPlayer.setLoopCount(Sequencer.LOOP_CONTINUOUSLY);
             midiPlayer.start();
         } catch (MidiUnavailableException ex) {
         	System.err.println("Midi Unavailable! "+ex.toString());

@@ -22,7 +22,7 @@ public class MenuItem {
     protected int[] refPath;
     /** Holds the refPath index of the displayed image */
     public int choice;
-    /** This holds whether this item is selectable */
+    /** This holds whether this item is able to be selected */
     public boolean selectable;
     /** This holds whether this item should be drawn */
     public boolean drawthis;

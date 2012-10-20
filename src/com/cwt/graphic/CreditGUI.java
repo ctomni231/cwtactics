@@ -30,7 +30,7 @@ public class CreditGUI extends MovingMenu{
     private Scanner scanner;
     /** Used for finding a file */
     private FileFind find;
-    /** This holds the scannable credit item */
+    /** This holds the credit item to be scanned */
     private String credits;
     /** This holds the path to the credit file */
     private String credPath;

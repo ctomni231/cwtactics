@@ -43,9 +43,9 @@ public class MovingMenu extends MovingImage{
     private MenuItem item;
     /** This helps recycle item objects */
     private MenuItemPool itemObj;
-    /** A temp value for x-axis rescaling */
+    /** A temporary value for x-axis re-scaling */
     private double sx;
-    /** A temp value for y-axis rescaling */
+    /** A temporary value for y-axis re-scaling */
     private double sy;
     /** This holds all resized images */
     protected ImgLibrary imgResize;

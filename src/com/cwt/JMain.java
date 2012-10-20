@@ -27,7 +27,7 @@ public class JMain extends Slix{
      * The main class for starting a Java2D Frame or a Slick Frame window
      * for the JSlix version of the game
      * @param argv Arguments: slick=Slick2D window, java=java2D window,
-     * full=Slick fullscreen (no resize)
+     * full=Slick full screen (no resize)
      */
     public static void main(String[] argv) {
 
