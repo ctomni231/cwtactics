@@ -3,6 +3,21 @@ body, html  {
     padding: 0;
 }
 
+body {
+    overflow: hidden;
+}
+
+canvas {
+    -webkit-box-shadow: 2px 2px 15px #000000;
+    -moz-box-shadow: 2px 2px 15px #000000;
+    box-shadow: 2px 2px 15px #000000;
+}
+
+.blackbird {
+
+    overflow: auto;
+}
+
 .content_panel{
     min-width: 100%;
 
@@ -28,7 +43,7 @@ body, html  {
     background-color: #ffcb00;
 }
 
-#app{
+#CWTWCW_APP {
     position: absolute;
     left: 0px;
     top: 0px;
@@ -92,7 +107,7 @@ div.nav li.active a{
     clear:both;
 }
 
-#menu {
+#CWTWC_MENU {
     z-index: 2;
     position: absolute;
     left: 64px;
@@ -104,25 +119,25 @@ div.nav li.active a{
     box-shadow: 2px 2px 15px #000000;
 }
 
-#menu .cwtwc_menu {
+#CWTWC_MENU .cwtwc_menu {
     margin:0;
     padding:0;
     list-style:none;
 }
 
-#menu li {
+#CWTWC_MENU li {
     margin-top: 1px;
     margin-bottom: 1px;
 }
 
-#menu button {
+#CWTWC_MENU button {
     width: 200px;
     height: 32px;
     border-style: none;
     background-color: gray;
 }
 
-#menu button:hover {
+#CWTWC_MENU button:hover {
     background-color: #d3d3d3;
     border-bottom-style: solid;
     border-bottom-color: #ffffff;

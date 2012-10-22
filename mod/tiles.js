@@ -1,17 +1,17 @@
-cwt.mod.awds.tiles = [
+CWT_MOD_DEFAULT.tiles = [
 
     {
-      "ID"                : "PLAIN",
+      "ID"                : "PLIN",
       "tags"              : []
     },
 
     {
-      "ID"                : "FOREST",
+      "ID"                : "FRST",
       "tags"              : [ "VISION_BLOCK" ]
     },
 
     {
-      "ID"                : "MOUNTAIN",
+      "ID"                : "MNTN",
       "tags"              : [ "" ]
     },
 
@@ -27,7 +27,7 @@ cwt.mod.awds.tiles = [
     },
 
     {
-      "ID"                : "GROUND_FACTORY",
+      "ID"                : "FACTORY",
       "vision"            : 0,
       "capturePoints"     : 20,
       "funds"            : 1000,
@@ -61,9 +61,12 @@ cwt.mod.awds.tiles = [
 
     {
       "ID"                : "SILO",
-      "vision"            : 0,
-      "capturePoints"     : 20,
-      "tags"              : [ "PROPERTY" ]
+      "vision"            : 0
+    },
+
+    {
+      "ID"                : "SILO_EMPTY",
+      "vision"            : 0
     },
 
     {

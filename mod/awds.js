@@ -1,1 +1,1 @@
-cwt.mod.awds = {};
+var CWT_MOD_DEFAULT = {};

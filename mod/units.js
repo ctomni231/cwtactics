@@ -1,7 +1,7 @@
-cwt.mod.awds.units = [
+CWT_MOD_DEFAULT.units = [
 
     {
-      "ID"            : "INFANTRY",
+      "ID"            : "INFT_OS",
 
       "cost"          : 1000,
 
@@ -14,13 +14,13 @@ cwt.mod.awds.units = [
       "weight"        : 1,
 
       "maxAmmo"       : 0,
-      "weapons"       : [ "WP_MG" ],
+      "mainWeapon"    : "WP_MG",
 
       "tags"          : [ "GROUND", "FOOT", "SOFT" ]
     },
 
     {
-      "ID"            : "MECH",
+      "ID"            : "MECH_OS",
 
       "cost"          : 3000,
 
@@ -33,13 +33,14 @@ cwt.mod.awds.units = [
       "weight"        : 1,
 
       "maxAmmo"       : 3,
-      "weapons"       : [ "WP_BAZOOKA", "WP_MG" ],
+      "mainWeapon"    : "WP_BAZOOKA",
+      "subWeapon"     : "WP_MG",
 
       "tags"          : [ "GROUND", "FOOT", "SOFT", "ANTI_TANK" ]
     },
 
     {
-      "ID"            : "RECKON",
+      "ID"            : "RECN",
 
       "cost"          : 4000,
 
@@ -51,13 +52,14 @@ cwt.mod.awds.units = [
       "weight"        : 1,
 
       "maxAmmo"       : 0,
-      "weapons"       : [ "WP_MG" ],
+
+      "mainWeapon"    : "WP_MG",
 
       "tags"          : [ "GROUND", "VEHICLE", "FOOT", "SOFT" ]
     },
 
     {
-      "ID"            : "MOTORBIKE",
+      "ID"            : "BIKE",
 
       "cost"          : 2500,
 
@@ -70,13 +72,14 @@ cwt.mod.awds.units = [
       "weight"        : 1,
 
       "maxAmmo"       : 0,
-      "weapons"       : [ "WP_MG" ],
+
+      "mainWeapon"    : "WP_MG",
 
       "tags"          : [ "GROUND", "BIKE" ]
     },
 
     {
-      "ID"            : "LTANK",
+      "ID"            : "TANK",
 
       "cost"          : 7000,
 
@@ -88,13 +91,15 @@ cwt.mod.awds.units = [
       "weight"        : 2,
 
       "maxAmmo"       : 6,
-      "weapons"       : [ "WP_LT_CANNON", "WP_MG" ],
+
+      "mainWeapon"    : "WP_LT_CANNON",
+      "subWeapon"     : "WP_MG",
 
       "tags"          : [ "GROUND", "VEHICLE", "FOOT", "SOFT" ]
     },
 
     {
-      "ID"            : "PAK",
+      "ID"            : "ATNK",
 
       "cost"          : 11000,
 
@@ -106,13 +111,14 @@ cwt.mod.awds.units = [
       "weight"        : 2,
 
       "maxAmmo"       : 6,
-      "weapons"       : [ "WP_AT_CANNON" ],
+
+      "mainWeapon"    : "WP_AT_CANNON",
 
       "tags"          : []
     },
 
     {
-      "ID"            : "MDTANK",
+      "ID"            : "MDTK",
 
       "cost"          : 12000,
 
@@ -124,13 +130,15 @@ cwt.mod.awds.units = [
       "weight"        : 2,
 
       "maxAmmo"       : 5,
-      "weapons"       : [ "WP_MD_CANNON", "WP_MG" ],
+
+      "mainWeapon"    : "WP_MD_CANNON",
+      "subWeapon"     : "WP_MG",
 
       "tags"          : [ "GROUND", "TANK" ]
     },
 
     {
-      "ID"            : "HTANK",
+      "ID"            : "WRTK",
 
       "cost"          : 16000,
 
@@ -142,13 +150,15 @@ cwt.mod.awds.units = [
       "weight"        : 3,
 
       "maxAmmo"       : 3,
-      "weapons"       : [ "WP_HV_CANNON", "WP_MG" ],
+
+      "mainWeapon"    : "WP_HV_CANNON",
+      "subWeapon"     : "WP_MG",
 
       "tags"          : []
     },
 
     {
-      "ID"            : "AATANK",
+      "ID"            : "AAIR",
 
       "cost"          : 7000,
 
@@ -160,13 +170,15 @@ cwt.mod.awds.units = [
       "weight"        : 2,
 
       "maxAmmo"       : 6,
-      "weapons"       : [ "WP_AA_CANN", "WP_MG" ],
+
+      "mainWeapon"    : "WP_AA_CANNON",
+      "subWeapon"     : "WP_MG",
 
       "tags"          : []
     },
 
     {
-      "ID"            : "ARTILLERY",
+      "ID"            : "ARTY",
 
       "cost"          : 6000,
 
@@ -178,13 +190,14 @@ cwt.mod.awds.units = [
       "weight"        : 2,
 
       "maxAmmo"       : 6,
-      "weapons"       : [ "WP_HOWITZER" ],
+
+      "mainWeapon"    : "WP_HOWITZER",
 
       "tags"          : [ "INDIRECT_UNIT" ]
     },
 
     {
-      "ID"            : "APC",
+      "ID"            : "APCR",
 
       "cost"          : 5000,
 
@@ -195,8 +208,7 @@ cwt.mod.awds.units = [
 
       "weight"        : 3,
 
-      "maxAmmo"       : 99,
-      "weapons"       : [],
+      "maxAmmo"       : 0,
 
       "transport"     : {
         "canLoad"   : ["SOFT"],
@@ -209,7 +221,7 @@ cwt.mod.awds.units = [
     },
 
     {
-      "ID"            : "BHELI",
+      "ID"            : "BCTR",
 
       "cost"          : 9000,
 
@@ -221,13 +233,15 @@ cwt.mod.awds.units = [
       "weight"        : 1,
 
       "maxAmmo"       : 6,
-      "weapons"       : [ "WP_AG_ROCKET", "WP_MG" ],
+
+      "mainWeapon"    : "WP_AG_ROCKET",
+      "subWeapon"     : "WP_MG",
 
       "tags"          : [ "AIR", "COPTER" ]
     },
 
     {
-      "ID"            : "BOMB",
+      "ID"            : "BKBM",
 
       "cost"          : 20000,
 
@@ -239,13 +253,14 @@ cwt.mod.awds.units = [
       "weight"        : 3,
 
       "maxAmmo"       : 6,
-      "weapons"       : [ "WP_BOMBS" ],
+
+      "mainWeapon"    : "WP_BOMBS",
 
       "tags"          : [ "AIR", "PLANE" ]
     },
 
     {
-      "ID"            : "THELI",
+      "ID"            : "TCTR",
 
       "cost"          : 5000,
 
@@ -268,7 +283,7 @@ cwt.mod.awds.units = [
     },
 
     {
-      "ID"            : "WARPLANE",
+      "ID"            : "BMBR",
 
       "cost"          : 20000,
 
@@ -291,7 +306,7 @@ cwt.mod.awds.units = [
     },
 
     {
-      "ID"            : "SUB",
+      "ID"            : "SUBM",
 
       "cost"          : 20000,
 
@@ -303,13 +318,14 @@ cwt.mod.awds.units = [
       "weight"        : 1,
 
       "maxAmmo"       : 6,
-      "weapons"       : [ "WP_TORPEDO" ],
+
+      "mainWeapon"    : "WP_TORPEDO",
 
       "tags"          : [ "SUB", "SHIP", "STEALTH" ]
     },
 
     {
-      "ID"            : "CRUISER",
+      "ID"            : "CRUS",
 
       "cost"          : 16000,
 
@@ -321,7 +337,8 @@ cwt.mod.awds.units = [
       "weight"        : 2,
 
       "maxAmmo"       : 9,
-      "weapons"       : [ "WP_WATERBOMBS" ],
+
+      "mainWeapon"    : "WP_WATERBOMBS",
 
       "transport"     : {
         "canLoad"   : ["COPTER"],
@@ -333,7 +350,7 @@ cwt.mod.awds.units = [
     },
 
     {
-      "ID"            : "AAROCKET",
+      "ID"            : "MISS",
 
       "cost"          : 12000,
 
@@ -345,13 +362,14 @@ cwt.mod.awds.units = [
       "weight"        : 2,
 
       "maxAmmo"       : 6,
-      "weapons"       : [ "WP_AA_ROCKET" ],
+
+      "mainWeapon"    : "WP_AA_ROCKET",
 
       "tags"          : [ "VEHICLE", "ANTI_AIR", "INDIRECT" ]
     },
 
     {
-      "ID"            : "JET",
+      "ID"            : "FGTR",
 
       "cost"          : 20000,
 
@@ -363,13 +381,14 @@ cwt.mod.awds.units = [
       "weight"        : 2,
 
       "maxAmmo"       : 6,
-      "weapons"       : [ "WP_AA_JETROCKET" ],
+
+      "mainWeapon"    : "WP_AA_JETROCKET",
 
       "tags"          : [ "AIR", "PLANE", "ANTI_AIR" ]
     },
 
     {
-      "ID"            : "DUSTER",
+      "ID"            : "DUST",
 
       "cost"          : 13000,
 
@@ -381,13 +400,15 @@ cwt.mod.awds.units = [
       "weight"        : 2,
 
       "maxAmmo"       : 6,
-      "weapons"       : [ "WP_PLANE_CANNON", "WP_MG" ],
+
+      "mainWeapon"    : "WP_PLANET_CANNON",
+      "subWeapon"     : "WP_MG",
 
       "tags"          : [ "AIR", "PLANE", "SCOUT" ]
     },
 
     {
-      "ID"            : "SHIP_PLANE",
+      "ID"            : "SEAP",
 
       "cost"          : 15000,
 
@@ -399,14 +420,16 @@ cwt.mod.awds.units = [
       "weight"        : 2,
 
       "maxAmmo"       : 4,
-      "weapons"       : [ "WP_WATERBOMBS", "WP_PLANE_CANNON" ],
+
+      "mainWeapon"    : "WP_WATERBOMBS",
+      "subWeapon"     : "WP_PLANE_CANNON",
 
       "tags"          : [ "AIR", "PLANE", "ANTI_AIR" ]
 
     },
 
     {
-      "ID"            : "CARRIER",
+      "ID"            : "ACAR",
 
       "cost"          : 28000,
 
@@ -418,7 +441,8 @@ cwt.mod.awds.units = [
       "weight"        : 3,
 
       "maxAmmo"       : 0,
-      "weapons"       : [ "WP_AA_SHIPCANNON" ],
+
+      "mainWeapon"    : "WP_AA_SHIPCANNON",
 
       "transport"     : [ "AIR" ],
       "canLoad"       : 2,
@@ -427,7 +451,7 @@ cwt.mod.awds.units = [
     },
 
     {
-      "ID"            : "LANDER",
+      "ID"            : "LNDR",
 
       "cost"          : 10000,
 
@@ -448,7 +472,7 @@ cwt.mod.awds.units = [
     },
 
     {
-      "ID"            : "ROCKET",
+      "ID"            : "RCKT",
 
       "cost"          : 15000,
 
@@ -460,13 +484,14 @@ cwt.mod.awds.units = [
       "weight"        : 2,
 
       "maxAmmo"       : 5,
-      "weapons"       : [ "WP_HV_ROCKET" ],
+
+      "mainWeapon"    : "WP_HV_ROCKET",
 
       "tags"          : [ "GROUND", "VEHICLE", "AT" ]
     },
 
     {
-      "ID"            : "BSHIP",
+      "ID"            : "BSHP",
 
       "cost"          : 25000,
 
@@ -478,7 +503,8 @@ cwt.mod.awds.units = [
       "weight"        : 3,
 
       "maxAmmo"       : 6,
-      "weapons"       : [ "WP_SHIP_HOWITZER" ],
+
+      "mainWeapon"    : "WP_SHIP_HOWITZER",
 
       "tags"          : [ "WATER", "SHIP", "INDIRECT", "AT" ]
     }

@@ -2,7 +2,7 @@ console.log('building cwt web client');
 
 var jsthings = [
   "main.js",
-  "model/images.js",
+  "data/images.js",
   "controller/draw.js",
   "controller/input.js",
   "controller/menu.js",
@@ -17,7 +17,7 @@ var cssthings = [
 ];
 
 var copythings = [
-  "webClient.html",
+  "start.html",
   "testMap.js"
 ];
 

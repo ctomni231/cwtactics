@@ -1,4 +1,4 @@
-cwt.mod.awds.events = {
+CWT_MOD_DEFAULT.events = {
 
   isHidden: function( unit, tileType, lX, lY, tX, tY, distance ){
     if( tileType === 'FOREST' && distance > 1 ){

@@ -11,8 +11,10 @@ exports.buildAndWrite = function( files, target, src ){
       fs.readFileSync( src+'/'+file ).toString() : file;
   });
 
-  var out = fs.openSync( target+".js" , 'w+');
-  fs.writeSync(out, all.join('\n'));
+  var out;
+
+  // out = fs.openSync( target+".js" , 'w+');
+  // fs.writeSync(out, all.join('\n'));
 
   var ast = jsp.parse(all.join('\n') );
   ast = pro.ast_lift_variables(ast);
