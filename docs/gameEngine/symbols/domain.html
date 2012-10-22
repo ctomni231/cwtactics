@@ -1,0 +1,525 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		
+		<title>JsDoc Reference - domain</title>
+
+        <link rel="stylesheet" href="../static/default.css" type="text/css" media="screen" charset="utf-8" />
+	</head>
+
+	<body>
+<!-- ============================== header ================================= -->	
+		<!-- begin static/header.html -->
+		<div id="header">
+</div>
+		<!-- end static/header.html -->
+
+        
+
+<!-- ============================== classes index ============================ -->
+		<div id="index">
+            <div id="docs">
+                
+            </div>
+			
+<h2>Index</h2>
+<ul class="classList">
+  <li><a href="../files.html">File Index</a></li>
+  <li><a href="../index.html">Class Index</a></li>
+  <li><a href="../symbolindex.html">Symbol Index</a></li>
+</ul>
+<h2>Classes</h2>
+<ul class="classList">
+	
+	<li><i><a href="../symbols/_global_.html">_global_</a></i></li>
+	
+	<li><a href="../symbols/actions.html">actions</a></li>
+	
+	<li><a href="../symbols/controller.html">controller</a></li>
+	
+	<li><a href="../symbols/domain.html">domain</a></li>
+	
+	<li><a href="../symbols/game.html">game</a></li>
+	
+	<li><a href="../symbols/persistence.html">persistence</a></li>
+	
+	<li><a href="../symbols/sheets.html">sheets</a></li>
+	
+	<li><a href="../symbols/sheets.typeSheetValidators.html">sheets.typeSheetValidators</a></li>
+	
+	<li><a href="../symbols/signal.html">signal</a></li>
+	
+	<li><a href="../symbols/util.html">util</a></li>
+	
+</ul>
+
+		</div>
+		
+        <div id="symbolList">
+           <!-- constructor list -->
+           
+             <h3>
+                 Namespace 
+             </h3>
+             <ul>
+                <li >
+                  <a href="../symbols/domain.html">domain</a>
+                </li>
+             </ul>
+           
+           <!-- end constructor list -->
+
+           <!-- properties list -->
+           
+           
+             <h3>Variables</h3>
+             <ul>
+               
+                 <li>
+                   <a href="../symbols/domain.html#.day">day</a>
+                 </li>
+               
+                 <li>
+                   <a href="../symbols/domain.html#.leftActors">leftActors</a>
+                 </li>
+               
+                 <li>
+                   <a href="../symbols/domain.html#.map">map</a>
+                 </li>
+               
+                 <li>
+                   <a href="../symbols/domain.html#.mapHeight">mapHeight</a>
+                 </li>
+               
+                 <li>
+                   <a href="../symbols/domain.html#.mapWidth">mapWidth</a>
+                 </li>
+               
+                 <li>
+                   <a href="../symbols/domain.html#.players">players</a>
+                 </li>
+               
+                 <li>
+                   <a href="../symbols/domain.html#.properties">properties</a>
+                 </li>
+               
+                 <li>
+                   <a href="../symbols/domain.html#.propertyPosMap">propertyPosMap</a>
+                 </li>
+               
+                 <li>
+                   <a href="../symbols/domain.html#.turnOwner">turnOwner</a>
+                 </li>
+               
+                 <li>
+                   <a href="../symbols/domain.html#.unitPosMap">unitPosMap</a>
+                 </li>
+               
+                 <li>
+                   <a href="../symbols/domain.html#.units">units</a>
+                 </li>
+               
+             </ul>
+           
+           <!-- end properties list -->
+
+           <!-- function summary -->
+           
+           
+           <!-- end function summary -->
+
+           <!-- events summary -->
+           
+           
+           <!-- end events summary -->
+        </div>
+
+		<div id="content">
+<!-- ============================== class title ============================ -->
+			<h1 class="classTitle">
+				Namespace domain
+			</h1>
+
+<!-- ============================== class summary ========================== -->			
+			<p class="description">
+				
+				
+			
+				
+				
+				
+					<br /><i>Defined in: </i> <a href="../symbols/src/_Users_alexanderradom_Desktop_Dropsi_Dropbox_Projekte_cwtactics_cwtactics_srcEngine_engineBase.js.html">engineBase.js</a>.
+				
+			</p>
+
+<!-- ============================== constructor details ==================== -->		
+			
+			<div class="details"><a name="constructor"> </a>
+				<div class="sectionTitle">
+					Namespace Detail
+				</div>
+				
+				<div class="fixedFont">
+						<b>domain</b>
+				</div>
+				
+				<div class="description">
+					<p>The model layer holds all necessary data for a game round. This layer can be
+extended to store additional data for game rounds.
+</br></br>
+If you extend this layer you should follow two rules. At first remember that
+every property of this layer will be saved in a save game. The current
+persistence layer implementation uses a json algorithm to serialize all model
+data. This means you cannot store cyclic data structures in the model layer.
+Furthermore you should not place functions in this layer because this would
+not follow the specification of this layer.</p>
+					
+				</div>
+				
+				
+				
+				<pre class="code"> usage -> read only for client</pre>
+				
+				
+				
+				
+					
+					
+					
+					
+					
+					
+					
+
+			</div>
+			
+
+<!-- ============================== field details ========================== -->		
+			
+              <div class="details">
+				<div class="sectionTitle">
+					Field Detail
+				</div>
+				
+                  <div class="member">
+					<a name=".day"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					
+					<span class="light">domain.</span><b>day</b>
+					
+					</div>
+					<div class="description">
+						<p>Represents the current action day in the game. The day attribute increases
+everytime if the first player starts its turn.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_alexanderradom_Desktop_Dropsi_Dropbox_Projekte_cwtactics_cwtactics_srcEngine_turn.js.html">turn.js</a>.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+                  </div>
+				
+                  <div class="member">
+					<a name=".leftActors"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					
+					<span class="light">domain.</span><b>leftActors</b>
+					
+					</div>
+					<div class="description">
+						<p>Holds the identical numbers of all objects that can act during the turn.
+After a unit has acted, it should be removed from this list with
+data.markAsUnusable.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_alexanderradom_Desktop_Dropsi_Dropbox_Projekte_cwtactics_cwtactics_srcEngine_turn.js.html">turn.js</a>.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+                  </div>
+				
+                  <div class="member">
+					<a name=".map"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					
+					<span class="light">domain.</span><b>map</b>
+					
+					</div>
+					<div class="description">
+						<p>Map table that holds all known tiles.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_alexanderradom_Desktop_Dropsi_Dropbox_Projekte_cwtactics_cwtactics_srcEngine_map.js.html">map.js</a>.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+                  </div>
+				
+                  <div class="member">
+					<a name=".mapHeight"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					
+					<span class="light">domain.</span><b>mapHeight</b>
+					
+					</div>
+					<div class="description">
+						<p>Map height in tiles.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_alexanderradom_Desktop_Dropsi_Dropbox_Projekte_cwtactics_cwtactics_srcEngine_map.js.html">map.js</a>.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+                  </div>
+				
+                  <div class="member">
+					<a name=".mapWidth"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					
+					<span class="light">domain.</span><b>mapWidth</b>
+					
+					</div>
+					<div class="description">
+						<p>Map width in tiles.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_alexanderradom_Desktop_Dropsi_Dropbox_Projekte_cwtactics_cwtactics_srcEngine_map.js.html">map.js</a>.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+                  </div>
+				
+                  <div class="member">
+					<a name=".players"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					
+					<span class="light">domain.</span><b>players</b>
+					
+					</div>
+					<div class="description">
+						<p>Holds all player objects of a game round.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_alexanderradom_Desktop_Dropsi_Dropbox_Projekte_cwtactics_cwtactics_srcEngine_map.js.html">map.js</a>.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+                  </div>
+				
+                  <div class="member">
+					<a name=".properties"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					
+					<span class="light">domain.</span><b>properties</b>
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_alexanderradom_Desktop_Dropsi_Dropbox_Projekte_cwtactics_cwtactics_srcEngine_property.js.html">property.js</a>.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+                  </div>
+				
+                  <div class="member">
+					<a name=".propertyPosMap"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					
+					<span class="light">domain.</span><b>propertyPosMap</b>
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_alexanderradom_Desktop_Dropsi_Dropbox_Projekte_cwtactics_cwtactics_srcEngine_property.js.html">property.js</a>.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+                  </div>
+				
+                  <div class="member">
+					<a name=".turnOwner"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					
+					<span class="light">domain.</span><b>turnOwner</b>
+					
+					</div>
+					<div class="description">
+						<p>Holds the identical number of the current turn owner.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_alexanderradom_Desktop_Dropsi_Dropbox_Projekte_cwtactics_cwtactics_srcEngine_turn.js.html">turn.js</a>.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+                  </div>
+				
+                  <div class="member">
+					<a name=".unitPosMap"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					
+					<span class="light">domain.</span><b>unitPosMap</b>
+					
+					</div>
+					<div class="description">
+						<p>Unit positions are stored here.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_alexanderradom_Desktop_Dropsi_Dropbox_Projekte_cwtactics_cwtactics_srcEngine_map.js.html">map.js</a>.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+                  </div>
+				
+                  <div class="member">
+					<a name=".units"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					
+					<span class="light">domain.</span><b>units</b>
+					
+					</div>
+					<div class="description">
+						<p>Holds all unit objects of a game round.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_alexanderradom_Desktop_Dropsi_Dropbox_Projekte_cwtactics_cwtactics_srcEngine_map.js.html">map.js</a>.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+                  </div>
+				
+              </div>
+			
+
+<!-- ============================== method details ========================= -->		
+			
+			
+<!-- ============================== event details ========================= -->		
+			
+			<hr />
+		</div>
+
+		
+<!-- ============================== footer ================================= -->
+		<div class="fineprint" style="clear:both;text-align:center">
+			
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Mon Oct 22 2012 18:40:04 GMT+0200 (MESZ)
+		</div>
+	</body>
+</html>
