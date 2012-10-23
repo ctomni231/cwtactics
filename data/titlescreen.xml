@@ -4,14 +4,14 @@
 	<logo   title="image/menu/cwTactics.png" 
 		mini="image/menu/cwtitle.gif"
 		pic="image/menu/cwLogo.gif" 
-		help="image/options/question.png" />
+		help="image/icons/question.png" />
 
 	<title  copy="@copyright"
 		start="PRESS START" 
 		alpha="image/menu/BasicAlpha.png"
 		number="image/menu/numbers.png"
 		arrow="image/menu/uparrow.png"
-		load="image/options/loading.png"
+		load="image/icons/loading.png"
 		credit="data/credits.txt"
 		help="@titleHelp" />
 
