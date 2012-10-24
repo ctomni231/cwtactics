@@ -314,7 +314,7 @@ actions.join = {
  *
  * @event map.load
  */
-signal.connect( game.EVENT_LOAD_MAP, function( channel, mapData ){
+signal.connect( signal.EVENT_LOAD_MAP, function( channel, mapData ){
   if( util.DEBUG ){
     util.logInfo("start loading map");
   }

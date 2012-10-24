@@ -120,12 +120,6 @@ var animation = {};
  */
 var storage   = {};
 
-/**
- * ...
- * @namespace
- */
-var locale    = {};
-
 /** @constant */
 signal.EVENT_CLIENT_INIT = "client:init";
 

@@ -26,20 +26,40 @@ animation._createTimer = function( steps, timePerStep ){
   }
 }
 
+animation._unitAnimStep = 0;
+animation._unitAnimMaxStep = 3;
+animation._unitAnimTime = 0;
+animation._unitAnimMaxTime = 250;
+
 /**
  * Unit animation timer.
  */
 animation.unitAnimation     = animation._createTimer( 3, 250 );
+
+animation._propAnimStep = 0;
+animation._propAnimMaxStep = 4;
+animation._propAnimTime = 0;
+animation._propAnimMaxTime = 300;
 
 /**
  * Property animation timer.
  */
 animation.propertyAnimation = animation._createTimer( 4, 300 );
 
+animation._selectorAnimStep = 0;
+animation._selectorAnimMaxStep = 7;
+animation._selectorAnimTime = 0;
+animation._selectorAnimMaxTime = 100;
+
 /**
  * Selector animation timer.
  */
 animation.selectorAnimation = animation._createTimer( 7, 100 );
+
+animation._statAnimStep = 0;
+animation._statAnimMaxStep = 8;
+animation._statAnimTime = 0;
+animation._statAnimMaxTime = 375;
 
 /**
  * Status animation timer.
@@ -82,11 +102,64 @@ animation.moveAnimationShift = 0;
  * @param delta delta time in milliseconds
  */
 animation.updateAnimationTimer = function( delta ){
-
+  /*
   var uni = animation.unitAnimation.update( delta );
   var pro = animation.propertyAnimation.update( delta );
   var sel = animation.selectorAnimation.update( delta );
-  animation.statAnimation.update( delta );
+  animation.statAnimation.update( delta );*/
+
+
+  var uni = false, pro = false, sel = false;
+
+  // UNIT
+  animation._unitAnimTime += delta;
+  if( animation._unitAnimTime >= animation._unitAnimMaxTime ){
+    // INCREASE STEP AND RESET TIMER
+    animation._unitAnimTime = 0;
+    animation._unitAnimStep++;
+    if( animation._unitAnimStep >= animation._unitAnimMaxStep ){
+      animation._unitAnimStep = 0;
+    }
+    uni = true;
+  }
+  else uni = false;
+  
+  // PROP
+  animation._propAnimTime += delta;
+  if( animation._propAnimTime >= animation._propAnimMaxTime ){
+    // INCREASE STEP AND RESET TIMER
+    animation._propAnimTime = 0;
+    animation._propAnimStep++;
+    if( animation._propAnimStep >= animation._propAnimMaxStep ){
+      animation._propAnimStep = 0;
+    }
+    pro = true;
+  }
+  else pro = false;
+  
+  // SELECTOR
+  animation._selectorAnimTime += delta;
+  if( animation._selectorAnimTime >= animation._selectorAnimMaxTime ){
+    // INCREASE STEP AND RESET TIMER
+    animation._selectorAnimTime = 0;
+    animation._selectorAnimStep++;
+    if( animation._selectorAnimStep >= animation._selectorAnimMaxStep ){
+      animation._selectorAnimStep = 0;
+    }
+    sel = true;
+  }
+  else sel = false;
+  
+  // STAT
+  animation._statAnimTime += delta;
+  if( animation._statAnimTime >= animation._statAnimMaxTime ){
+    // INCREASE STEP AND RESET TIMER
+    animation._statAnimTime = 0;
+    animation._statAnimStep++;
+    if( animation._statAnimStep >= animation._statAnimMaxStep ){
+      animation._statAnimStep = 0;
+    }
+  }
 
   var x  = screen.screenX;
   var yS = screen.screenY;
@@ -131,28 +204,32 @@ animation.updateAnimationTimer = function( delta ){
  * Returns the step of the unit timer.
  */
 animation.unitAnimationStep = function(){
-  return animation.unitAnimation.currentStep();
+  // return animation.unitAnimation.currentStep();
+  return animation._unitAnimStep;
 };
 
 /**
  * Returns the step of the property timer.
  */
 animation.propertyAnimationStep = function(){
-  return animation.propertyAnimation.currentStep();
+  // return animation.propertyAnimation.currentStep();
+  return animation._propAnimStep;
 };
 
 /**
  * Returns the step of the selector timer.
  */
 animation.selectorAnimationStep = function(){
-  return animation.selectorAnimation.currentStep();
+  // return animation.selectorAnimation.currentStep();
+  return animation._selectorAnimStep;
 };
 
 /**
  *
  */
 animation.statAnimationStep = function(){
-  return animation.statAnimation.currentStep();
+  // return animation.statAnimation.currentStep();
+  return animation._statAnimStep;
 };
 
 /**

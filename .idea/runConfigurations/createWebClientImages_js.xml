@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="createWebClientImages.js" type="NodeJSConfigurationType" factoryName="Node JS" path-to-node="/usr/local/bin/node" path-to-js-file="$PROJECT_DIR$/jsBin/createWebClientImages.js" working-dir="$PROJECT_DIR$" pass-parent-envs="false" coffeescript-run="false">
+    <envs>
+      <env name="NODE_PATH" value="/usr/local/lib/node_modules" />
+    </envs>
+    <RunnerSettings RunnerId="NodeJS.run" />
+    <ConfigurationWrapper RunnerId="NodeJS.run" />
+    <method />
+  </configuration>
+</component>

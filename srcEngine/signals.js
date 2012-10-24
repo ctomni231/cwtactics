@@ -12,6 +12,8 @@ signal._data = {};
  */
 signal.connect = function( channel, cb ){
   var data = signal._data;
+ 
+  if( util.DEBUG ) util.logInfo("connect handler for "+channel);
 
   // CREATE CHANNEL IF IT DOES NOT EXISTS
   if( !data.hasOwnProperty(channel) ) data[channel] = [];
@@ -54,6 +56,8 @@ signal.disconnect = function( channel, cb ){
  */
 signal.emit = function( channel ){
   var data = signal._data;
+
+  if( util.DEBUG ) util.logInfo("call event "+channel);
 
   // CREATE CHANNEL IF IT DOES NOT EXISTS
   if( !data.hasOwnProperty(channel) ) return;

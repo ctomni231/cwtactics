@@ -89,3 +89,9 @@ var util        = {};
  * @namespace
  */
 var signal      = {};
+
+/**
+ * ...
+ * @namespace
+ */
+var locale    = {};

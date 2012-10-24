@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
-<html manifest="/offline.manifest" >
+<html manifest="cache.manifest" >
     <head >
+      <meta content="yes" name="apple-mobile-web-app-capable" />
       <script src="config.js" type="text/javascript" ></script>
 
       <!-- EXT LIB -->
@@ -23,6 +24,7 @@
       <script src="../srcEngine/engineBase.js" type="text/javascript" ></script>
       <script src="../srcEngine/signals.js" type="text/javascript" ></script>
       <script src="../srcEngine/persistence.js" type="text/javascript" ></script>
+      <script src="../srcEngine/locale.js" type="text/javascript" ></script>
       <script src="../srcEngine/utils.js" type="text/javascript" ></script>
       <script src="../srcEngine/map.js" type="text/javascript" ></script>
       <script src="../srcEngine/sheets.js" type="text/javascript" ></script>
@@ -51,7 +53,6 @@
 
       <script src="clientBase.js" type="text/javascript" ></script>
       <script src="images.js" type="text/javascript" ></script>
-      <script src="locale.js" type="text/javascript" ></script>
       <script src="screen.js" type="text/javascript" ></script>
       <script src="controls.js" type="text/javascript" ></script>
       <script src="animation.js" type="text/javascript" ></script>
@@ -82,6 +83,37 @@
 
       <script>
         function loadingClient(){
+
+
+          function testAppCache(){
+var appCache = window.applicationCache;
+switch (appCache.status) {
+  case appCache.UNCACHED: // UNCACHED == 0
+    return 'UNCACHED';
+    break;
+  case appCache.IDLE: // IDLE == 1
+    return 'IDLE';
+    break;
+  case appCache.CHECKING: // CHECKING == 2
+    return 'CHECKING';
+    break;
+  case appCache.DOWNLOADING: // DOWNLOADING == 3
+    return 'DOWNLOADING';
+    break;
+  case appCache.UPDATEREADY:  // UPDATEREADY == 4
+    return 'UPDATEREADY';
+    break;
+  case appCache.OBSOLETE: // OBSOLETE == 5
+    return 'OBSOLETE';
+    break;
+  default:
+    return 'UKNOWN CACHE STATUS';
+    break;
+};
+
+          }
+          
+          console.log( testAppCache() );
 
           // BLACKBIRD
           log.toggle();
@@ -120,12 +152,16 @@
           // ENTER GAME LOOP
           window.requestAnimationFrame( gameLoop );
         }
+
+
+        window.addEventListener("hashchange", function(ev){
+          util.logInfo("==> "+document.location.hash);
+          document.location.hash = "";
+        });
       </script>
     </head>
 
     <body onLoad="loadingClient();">
-
-    <audio id="lashSong" src="Lash.mp3" type="audio/mp3" ></audio>
 
     <div id="CWTWC_APP">
 

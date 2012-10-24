@@ -95,7 +95,7 @@ game.unitAttack = function( attid, defid, attDmg, defDmg, attwp, defwp ) {
   if( def.hp < 0 ){
 
     // defender destroyed
-    cwt.destroyUnit( defid );
+    game.destroyUnit( defid );
   }
   else if( defwp !== null ){
 
@@ -108,13 +108,13 @@ game.unitAttack = function( attid, defid, attDmg, defDmg, attwp, defwp ) {
     }
 
     // fill co power meter
-    cwt.increasePowerMeter( att.owner, 0 );
-    cwt.increasePowerMeter( def.owner, 0.5*0 );
+    game.increasePowerMeter( att.owner, 0 );
+    game.increasePowerMeter( def.owner, 0.5*0 );
 
     if( att.hp < 0 ){
 
       // attacker destroyed
-      cwt.destroyUnit( attid );
+      game.destroyUnit( attid );
     }
   }
 };
