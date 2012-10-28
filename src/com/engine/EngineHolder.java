@@ -18,7 +18,7 @@ public class EngineHolder {
     public static final Logger logger = Logger.getLogger("JS Engine Holder");
 
     public enum ENGINE_MODULE {
-        GAME,SIGNAL,CONTROLLER
+        GAME,SIGNAL,CONTROLLER,GLOBAL,PERSISTENCE
     }
     
     private Engine engine;
@@ -26,6 +26,8 @@ public class EngineHolder {
     private ScriptableObject mod_game;
     private ScriptableObject mod_signal;
     private ScriptableObject mod_controller;
+    private ScriptableObject mod_persistence;
+    private ScriptableObject mod_global;
 
     public EngineHolder( Engine e ){
 
@@ -42,6 +44,8 @@ public class EngineHolder {
         mod_game = (ScriptableObject) e.evalExpression("game");
         mod_signal = (ScriptableObject) e.evalExpression("signal");
         mod_controller = (ScriptableObject) e.evalExpression("controller");
+        mod_persistence = (ScriptableObject) e.evalExpression("persistence");
+        mod_global = (ScriptableObject) e.evalExpression("window");
     }
 
     private ScriptableObject getScopeByMod( ENGINE_MODULE mod ){
@@ -49,6 +53,8 @@ public class EngineHolder {
             case GAME: return mod_game;
             case SIGNAL: return mod_signal;
             case CONTROLLER: return mod_controller;
+            case PERSISTENCE: return mod_persistence;
+            case GLOBAL: return mod_global;
             default: throw new IllegalArgumentException("unknown module");
         }
     }
