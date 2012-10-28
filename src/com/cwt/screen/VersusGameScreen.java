@@ -21,12 +21,12 @@ import org.newdawn.slick.Graphics;
 
 public class VersusGameScreen extends Screen{
 
-    private String MUSIC = "music/Andy.mp3";
+    //private String MUSIC = "music/Andy.mp3";
 
-    private String FX_1 = "sound/ok.wav";
-    private String FX_2 = "sound/cancel.wav";
-    private String FX_3 = "sound/maptick.wav";
-    private String FX_4 = "sound/trap.wav";
+    //private String FX_1 = "sound/ok.wav";
+    //private String FX_2 = "sound/cancel.wav";
+    //private String FX_3 = "sound/maptick.wav";
+    //private String FX_4 = "sound/trap.wav";
 
     private final int SIZE_X = 640;//The base window height
     private final int SIZE_Y = 480;//The base window width
@@ -37,13 +37,13 @@ public class VersusGameScreen extends Screen{
 
     public VersusGameScreen(){
         PixAnimate.getTags();
-        JukeBox.stopClip();
-        JukeBox.addClip(MUSIC);
-        JukeBox.addClip(FX_1);
-        JukeBox.addClip(FX_2);
-        JukeBox.addClip(FX_3);
-        JukeBox.addClip(FX_4);
-        JukeBox.loopClip(MUSIC);
+        //JukeBox.stopClip();
+        //JukeBox.addClip(MUSIC);
+        //JukeBox.addClip(FX_1);
+        //JukeBox.addClip(FX_2);
+        //JukeBox.addClip(FX_3);
+        //JukeBox.addClip(FX_4);
+        //JukeBox.loopClip(MUSIC);
 
         scrStart = true;
 
@@ -59,21 +59,21 @@ public class VersusGameScreen extends Screen{
 
         }
 
-        if(KeyControl.isLeftClicked())
-            JukeBox.playClip(FX_1);
+        //if(KeyControl.isLeftClicked())
+        //    JukeBox.playClip(FX_1);
 
-        if(KeyControl.isRightClicked())
-            JukeBox.playClip(FX_2);
+        //if(KeyControl.isRightClicked())
+        //    JukeBox.playClip(FX_2);
 
-        if(KeyControl.isUpClicked())
-            JukeBox.playClip(FX_3);
+        //if(KeyControl.isUpClicked())
+        //    JukeBox.playClip(FX_3);
 
-        if(KeyControl.isDownClicked())
-            JukeBox.playClip(FX_4);
+        //if(KeyControl.isDownClicked())
+        //    JukeBox.playClip(FX_4);
 
         //TEMPORARY UNTIL FURTHER NOTICE
-        if(KeyControl.isActionClicked() || KeyControl.isCancelClicked())
-            this.scr_delete = true;
+        //if(KeyControl.isActionClicked() || KeyControl.isCancelClicked())
+        //    this.scr_delete = true;
     }
 
     @Override
@@ -100,7 +100,7 @@ public class VersusGameScreen extends Screen{
 
     @Override
     public void scr_close() {
-        JukeBox.stopClip();
+        //JukeBox.stopClip();
     }
 
 }
