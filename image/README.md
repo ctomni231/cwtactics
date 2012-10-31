@@ -37,6 +37,7 @@ This shows how objects are organized within the object files for units, terrain(
 ## Overlap & Connection Image Abbreviations
 
 * *L* = Land [Default]
+* *W* = Water (Sea, Shoal, River)
 * *S* = Sea/Ocean
 * *B* = Shoal/Beach
 * *R* = River/Shallow

@@ -1,5 +1,7 @@
 package com.cwt;
 
+import com.cwt.game.ObjectLibrary;
+import com.cwt.game.ObjectStorage;
 import com.cwt.map.PixAnimate;
 import com.cwt.screen.MainMenuScreen;
 import com.cwt.system.jslix.SlixGame;
@@ -79,6 +81,7 @@ public class JSGMain extends SlixGame{
     @Override
     public void loadGame(){
         //DO ALL YOUR INITIALIZATIONS FOR YOUR SCREENS HERE!!!
+    	ObjectLibrary.initialize(SlixLibrary.isApplet());
         PixAnimate.initialize(SlixLibrary.isApplet());
         SlixLibrary.addFrameScreen(new MainMenuScreen());     
         //Make sure you use SlixLibrary to add the Screens
