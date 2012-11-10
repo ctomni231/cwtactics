@@ -1,5 +1,7 @@
 package com.cwt.game;
 
+import com.cwt.io.XML_Reader;
+
 /**
  * ObjectLibrary.java
  *
@@ -9,7 +11,7 @@ package com.cwt.game;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 10.30.12
+ * @version 10.31.12
  */
 
 public class ObjectLibrary {
@@ -25,8 +27,9 @@ public class ObjectLibrary {
      * and the map objects
      * @param isApplet Stores whether this screen is a frame or applet
      */
-    public static void initialize(boolean isApplet){
-        objStore.setApplet(isApplet);
+    public static void initialize(boolean isApplet){ 	
+        objStore.setApplet(isApplet);        
         objStore.decode();
     }
+    
 }

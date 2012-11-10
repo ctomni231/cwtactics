@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<folder>
+	<path terrain="image/terrain" />
+	<path property="image/properties" />
+	<path unit="image/units" />
+	<path terrain="image/fields" />
+	<path property="image/buildings" />
+	<path unit="image/objects" />
+</folder>

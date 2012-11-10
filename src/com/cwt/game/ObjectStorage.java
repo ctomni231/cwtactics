@@ -2,6 +2,7 @@ package com.cwt.game;
 
 import com.cwt.system.jslix.tools.FileFind;
 import com.cwt.system.jslix.tools.FileIndex;
+import com.cwt.system.jslix.tools.XML_Writer;
 
 /**
  * ObjectStorage.java
@@ -14,6 +15,15 @@ import com.cwt.system.jslix.tools.FileIndex;
  * @version 10.30.12
  */
 public class ObjectStorage implements Runnable{
+	
+	/** Integer representation for terrain objects */
+	public final int TERRAIN = 0;
+	/** Integer representation for property objects */
+	public final int PROPERTY = 1;
+	/** Integer representation for unit objects */
+	public final int UNIT = 2;
+	/** Integer representation for cursor objects */
+	public final int CURSOR = 3;
 
 	/** Holds whether this screen is an Applet */
     private boolean isApplet;
@@ -21,6 +31,8 @@ public class ObjectStorage implements Runnable{
     private boolean ready;
     /** Holds the Thread associated with this object */
     private Thread looper;
+    /** Holds the folder paths used to find objects */
+    private String[] filePath;
     
     /**
      * This class is responsible for all the object loading and storage of all
@@ -74,6 +86,7 @@ public class ObjectStorage implements Runnable{
             System.err.println(e.toString());
         }
     }
+
     
     /**
      * This function is used to find and load the objects that will be used
@@ -85,15 +98,56 @@ public class ObjectStorage implements Runnable{
         ready = true;
     }
     
+    /**
+     * This function searches through your system for objects and
+     * organizes them in an XML file so they can be selected.
+     */
     private void findObjects(){
     	FileFind fileFinder = new FileFind();
+    	XML_Writer writer = new XML_Writer("data","objectlist.xml");   	
+
     	if(fileFinder.changeDirectory("image")){
     		fileFinder.refactor();
-    		for(FileIndex file: fileFinder.getAllFiles()){
-    			System.out.println("Object File:"+file.fpath);
-    		}
-    	}
-    }
+	        writer.addXMLTag("object");
 	
+	        for(FileIndex file: fileFinder.getAllFiles()){
+	            if(!file.isDirectory){
+	                writer.addXMLTag("list");
+	                writer.addAttribute("file", file.fpath, true);
+	            }
+	        }
+    	}
+    	
+    	writer.endAllTags();
+        //writer.print();
+        writer.writeToFile(true);
+    }
+    
+    /**
+     * This function loads the objects from the file name list specified.
+     */
+    private void loadObjects(){
+    	
+    }
+    
+    /**
+     * This function is used to cause a primitive array to act like an
+     * ArrayList. This acts like a push function.
+     * @param fillData The data to add to a primitive array
+     * @param data The data to add to the array
+     * @return An array with the data attached
+     */
+    private String[] addData(String[] fillData, String data){
+        if(fillData == null)
+            fillData = new String[0];
+
+        String[] temp = fillData;
+        fillData = new String[temp.length+1];
+        for(int i = -1; i++ < temp.length-1;)
+            fillData[i] = temp[i];
+        fillData[fillData.length-1] = data;
+
+        return fillData;
+    }
 
 }

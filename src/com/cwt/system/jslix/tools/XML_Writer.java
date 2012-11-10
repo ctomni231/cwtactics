@@ -137,7 +137,7 @@ public class XML_Writer {
      * is false, you may add as many attributes to a tag as you want.
      * @param key The key of the attribute
      * @param value The value of the attribute
-     * @param endTag Whether to leave the tag open(true) or not(false)
+     * @param endTag Whether to close the tag(true) or not(false)
      */
     public void addAttribute(String key, String value, boolean endTag){
         //Encloses value in quotes, if you haven't already
