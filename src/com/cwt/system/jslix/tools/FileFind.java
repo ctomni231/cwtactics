@@ -161,7 +161,8 @@ public class FileFind {
      */
     private boolean matchSuffix(FileIndex hold){
         for(String type: fileType){
-            if(type.equals(hold.suffix))   return true;
+            if(type.equals(hold.suffix))   
+            	return true;
         }
         return fileType.isEmpty();
     }
@@ -174,7 +175,8 @@ public class FileFind {
      */
     private boolean matchDir(String dir){
         for(String avoid: avoidDir){
-            if(dir.equals(avoid))          return false;
+            if(dir.equals(avoid))          
+            	return false;
         }
         return true;
     }
@@ -199,7 +201,7 @@ public class FileFind {
 
     /**
      * This function gets a file from a URL string referencing the home
-     * library (for applets)
+     * library (for Applets)
      * @param filename The path to the file
      * @return A file representing the file name path
      */

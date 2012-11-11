@@ -4,13 +4,12 @@ This shows how the file names are organized within the object folders for units,
 
 ## Terrain
 
-`(Tileset Type)_(Terrain Type)-(Overlap Type[Optional])~(Connection 4-Type N-S-W-E [Optional])`
-`(Tileset Type)_(Terrain Type)-(Overlap Type[Optional])~(Connection 8-Type N-S-W-E-NW-NE-SW-SE [Optional])`
+`(Tileset Type)-(Weather Type[Optional])_(Terrain Type)-(Overlap Type[Optional])~(Connection 4-Type N-S-W-E [Optional])`
+`(Tileset Type)-(Weather Type[Optional])_(Terrain Type)-(Overlap Type[Optional])~(Connection 8-Type N-S-W-E-NW-NE-SW-SE [Optional])`
 
 ## Properties
 
-`(Tileset Type)_(Object Type)_(Army Faction[Optional])-
-(Overlap Type[Optional])`
+`(Tileset Type)-(Weather Type[Optional])_(Object Type)-(Overlap Type[Optional])_(Army Faction[Optional])-`
 
 ## Units
 
@@ -181,3 +180,15 @@ This shows how objects are organized within the object files for units, terrain(
 * *CG* = Cream Galaxy
 * *MO* = Magneta Orbit
 * *JA* = Jade Asteroid
+
+## Weather
+
+* *C* = Clear
+* *S* = Snow
+* *R* = Rain
+* *D* = Sandstorm
+* *W* = Windstorm (High Winds)
+* *H* = Heatwave
+* *T* = Thunderstorm
+* *A* = Acid Rain
+* *Q* = Earthquake
