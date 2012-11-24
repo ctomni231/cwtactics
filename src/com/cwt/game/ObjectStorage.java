@@ -1,6 +1,8 @@
 package com.cwt.game;
 
+import com.cwt.game.tools.KeyStore;
 import com.cwt.game.tools.ListStore;
+import com.cwt.game.tools.RefStore;
 import com.cwt.system.jslix.tools.FileFind;
 import com.cwt.system.jslix.tools.FileIndex;
 import com.cwt.system.jslix.tools.XML_Parser;
@@ -14,14 +16,14 @@ import com.cwt.system.jslix.tools.XML_Writer;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 11.10.12
+ * @version 11.24.12
  */
 public class ObjectStorage implements Runnable{
 	
 	/** Holds the max object representation fields. */
 	public final int MAX_OBJECTS = 11;
 	/** Integer representation for the file folder path */
-	public final int FILE = 0;
+	public final int FILE = 0;	
 	/** Integer representation for code type */
 	public final int CODE = 1;
 	/** Integer representation for the object real name tag */
@@ -30,18 +32,27 @@ public class ObjectStorage implements Runnable{
 	public final int BASE = 3;
 	/** Integer representation for the object game type */
 	public final int TYPE = 4;
-	/** Integer representation for the object army faction */
-	public final int ARMY = 5;
+	/** Integer representation for the object connection */
+	public final int CONNECTION = 5;
 	/** Integer representation for the object weather */
 	public final int WEATHER = 6;
-	/** Integer representation for the object size */
-	public final int SIZE = 7;
-	/** Integer representation for the object direction */
-	public final int DIRECTION = 8;
-	/** Integer representation for the object connection */
-	public final int CONNECTION = 9;
+	/** Integer representation for the object army faction */
+	public final int ARMY = 7;
 	/** Integer representation for the object overlap type (map editor) */
-	public final int OVERLAP = 10;
+	public final int OVERLAP = 8;
+	/** Integer representation for the object size */
+	public final int SIZE = 9;
+	/** Integer representation for the object direction */
+	public final int DIRECTION = 10;
+	
+	/** Holds the integer representation for the terrain code */
+	public final int TERRAIN = 0;
+	/** Holds the integer representation for the property code */
+	public final int PROPERTY = 1;
+	/** Holds the integer representation for the unit code */
+	public final int UNIT = 2;
+	/** Holds the integer representation for the cursor code */
+	public final int CURSOR = 3;
 
 	/** Holds whether this screen is an Applet */
     private boolean isApplet;
@@ -51,10 +62,23 @@ public class ObjectStorage implements Runnable{
     private Thread looper;
     /** This is used to parse XML documents */
     private XML_Parser mapParse;
-    /** Holds the folder paths used to find objects */
-    private String[][] objectPath;
-    /** Holds a list of object names used to find objects */
-    private ListStore[] objList;
+    
+    /** Holds a list of file paths for each image object */
+    private ListStore fileList;
+    /** Holds a list of object names and base names for each image object */
+    private ListStore nameList;
+    /** Holds a list of object tile set types for each image object */
+    private ListStore typeList;
+    /** Holds a list of terrain connections for each image object */
+    private ListStore connectList;
+    /** Holds a list of acceptable code base items for each object */
+    private RefStore codeList;
+    /** Holds a list of acceptable weather items for each object */
+    private RefStore weatherList;
+    /** Holds a list of acceptable army faction items for each object */
+    private RefStore armyList;
+    /** Holds a list of all object data for each image object */
+    private KeyStore[] objList;
     
     /**
      * This class is responsible for all the object loading and storage of all
@@ -63,10 +87,61 @@ public class ObjectStorage implements Runnable{
      * elements.
      */
     public ObjectStorage(){
+    	fileList = new ListStore();
+    	nameList = new ListStore();
+    	typeList = new ListStore();
+    	connectList = new ListStore();
+    	codeList = new RefStore();
+    	weatherList = new RefStore();
+    	armyList = new RefStore();
+    	objList = new KeyStore[0];
     	mapParse = new XML_Parser();
-        objectPath = new String[MAX_OBJECTS][];
     	ready = true;
         isApplet = true;
+        initRef();
+    }
+    
+    /**
+     * This function initializes the references for each category with a reference list
+     */
+    private void initRef(){
+    	//CODE REFERENCES
+    	codeList.add(new String[]{"T.*","F.*"}, TERRAIN);//Terrain/Fields
+    	codeList.add(new String[]{"P.*","B.*"}, PROPERTY);//Properties/Buildings
+    	codeList.add("U.*", UNIT);//Units
+    	codeList.add("C.*", CURSOR);//Cursor
+    	
+    	//WEATHER REFERENCES (https://github.com/ctomni231/cwtactics/tree/master/image#weather)
+    	weatherList.add(new String[]{"C","CL.*"}, -1);//Clear [Default]
+    	weatherList.add(new String[]{"S","SN.*"}, 0);//Snow
+    	weatherList.add(new String[]{"R","RA.*"}, 1);//Rain
+    	weatherList.add(new String[]{"D","SA.*"}, 2);//Sand Storm
+    	weatherList.add(new String[]{"W","WI.*"}, 3);//Wind Storm (High Winds)
+    	weatherList.add(new String[]{"H","HE.*"}, 4);//Heat Wave
+    	weatherList.add(new String[]{"T","TH.*"}, 5);//Thunder Storm
+    	weatherList.add(new String[]{"A","AC.*"}, 6);//Acid Rain (Radio-activity)
+    	weatherList.add(new String[]{"Q","EA.*"}, 7);//Earthquake
+    	
+    	//ARMY FACTION REFERENCES (https://github.com/ctomni231/cwtactics/tree/master/image#army-factions)
+    	armyList.add("GD", -1);//Gray Diamond (Neutral) [Default]
+    	armyList.add("OS", 0);//Orange Star
+    	armyList.add("BM", 1);//Blue Moon
+    	armyList.add("GE", 2);//Green Earth
+    	armyList.add("YC", 3);//Yellow Comet
+    	armyList.add("BH", 4);//Black Hole
+    	armyList.add("CR", 5);//Crimson Ray
+    	armyList.add("AV", 6);//Arsenic Vortex
+    	armyList.add("SS", 7);//Sepia Sun
+    	armyList.add("SF", 8);//Scarlet Flare
+    	armyList.add("IN", 9);//Indigo Nebula
+    	armyList.add("CS", 10);//Cobalt Storm
+    	armyList.add("PC", 11);//Pink Cosmos
+    	armyList.add("TG", 12);//Teal Gravity
+    	armyList.add("IE", 13);//Indigo Eclipse
+    	armyList.add("WN", 14);//White Nova
+    	armyList.add("CG", 15);//Cream Galaxy
+    	armyList.add("MO", 16);//Magneta Orbit
+    	armyList.add("JA", 17);//Jade Asteroid
     }
     
     /**
@@ -97,7 +172,66 @@ public class ObjectStorage implements Runnable{
         ready = false;
         looper = new Thread(this);
         looper.start();
-    }	
+    }
+    
+    /**
+     * This function gets all the game types for each Object stored within
+     * @return All the object game types within this storage object
+     */
+    public String[] getTypeList(){
+    	return typeList.getData();
+    }
+    
+    /**
+     * This function is used to return a list constrained by the codeType
+     * @param codeType The code type representation
+     * @return A list constrained to that specific code type
+     */
+    public KeyStore[] getList(int codeType){
+    	KeyStore[] temp = new KeyStore[0];
+    	for(KeyStore item: objList){
+    		if(item.getData(CODE) == codeType)
+    			temp = addData(temp, item);
+    	}
+    	return temp;
+    }
+    
+    /**
+     * This function is used to get file names from the KeyStore index list
+     * @param index The index where the data is stored
+     * @return A file path corresponding to the index
+     */
+    public String getFile(int index){
+    	return fileList.getData(index);
+    }
+    
+    /**
+     * This function is used to get game types from the KeyStore index list
+     * @param index The index where the data is stored
+     * @return A game type corresponding to the index
+     */
+    public String getType(int index){
+    	return typeList.getData(index);
+    }
+    
+    /**
+     * This function is used to get terrain connections from the KeyStore index list
+     * @param index The index where the data is stored
+     * @return A terrain connection corresponding to the index
+     */
+    public String getConnection(int index){
+    	return connectList.getData(index);
+    }
+    
+    /**
+     * This function is used to get name abbreviations from the KeyStore index list
+     * for the overlap, base, and name attributes
+     * @param index The index where the data is stored
+     * @return A name abbreviation corresponding to the index
+     */
+    public String getName(int index){
+    	return nameList.getData(index);
+    }
 	
 	/**
      * This function runs the loading in a separate thread
@@ -155,13 +289,13 @@ public class ObjectStorage implements Runnable{
     	//This gets all image entries from the XML files specified
     	entries = getEntries(entries, "data/objectlist.xml");
         //This loads all the entries into the database
-        entries = loadEntries(entries);
+        entries = loadEntries(entries, "data/objload.xml");
     }
     
     /**
      * This function get all entries from a path specified from an XML file
+     * @param entries The array holding all the entries
      * @param path The path to the XML file to be parsed
-     * @param entries The array holding the entries
      * @return A updated list appending all new entries to the list
      */
     private String[] getEntries(String[] entries, String path){
@@ -172,25 +306,27 @@ public class ObjectStorage implements Runnable{
         mapParse.clear();
     	return entries;
     }
+    
     /**
      * This function loads all the current entries into the database
      * @param entries The array holding the entries
      * @return A updated list appending all new entries to the list
      */
-    private String[] loadEntries(String[] entries){
+    private String[] loadEntries(String[] entries, String path){
+    	mapParse.parse(path);
     	String[] temp;
     	for(String entry: entries){
-    		System.out.println("DATA: "+entry);
-    		temp = splitEntry(entry);
-    		for(int i = 0; i < MAX_OBJECTS; i++)
-    			objectPath[i] = addData(objectPath[i], temp[i]);    			
-            //parseData(entry);
+    		//System.out.println("DATA: "+entry);
+    		temp = parseSplit(splitEntry(entry));   		
+    		if(!temp[CODE].isEmpty())
+    			parseCategory(temp);
         }
+    	mapParse.clear();
     	return entries;
     }
     
     /**
-     * This function takes a picture file entry and split it into sections
+     * This function takes a picture file entry and splits it into categories
      * for storage into the database
      * @param entry The image file path
      * @return The entry split into smaller word sections for database use
@@ -240,11 +376,78 @@ public class ObjectStorage implements Runnable{
     		split[WEATHER] = temp[1];
     	}
     	
-    	//Test to see if everything is running okay
+    	return split;
+    }
+    
+    /**
+     * This function uses an XML file to further categorize the object files
+     * @param entries The array holding all the split categories
+     * @param path The path to the XML file to be parsed
+     * @return A updated list appending all new categories to the entry
+     */
+    private String[] parseSplit(String[] split){
+    	  	
+    	//This parses the folders and gets the code base for each item
+    	int[] entryLocation = mapParse.getLocation("object list");    	
+        for(int i = 0; i < entryLocation.length; i++){
+        	if(split[FILE].startsWith(mapParse.getAttribute(entryLocation[i], "file")))
+        		split[CODE] = mapParse.getAttribute(entryLocation[i], "code");
+        }
+        
+       //This parses the name and gives a base name for the map editor to sort items
+        entryLocation = mapParse.getLocation("object edit");
+        for(int i = 0; i < entryLocation.length; i++){
+        	split[BASE] = split[NAME];
+        	if(split[NAME].matches(mapParse.getAttribute(entryLocation[i], "name")))
+        		split[BASE] = mapParse.getAttribute(entryLocation[i], "base");
+        }
+        
+        /*//Test to see if everything is running okay
     	for(int i = 0; i < MAX_OBJECTS; i++)
     		System.out.println("S"+i+":"+split[i]);//*/
-    	
+        
     	return split;
+    }
+    
+    private void parseCategory(String[] split){
+    	KeyStore temp = new KeyStore();
+    	//File category
+    	if(!split[FILE].isEmpty())
+    		temp.addData(FILE, fileList.addData(split[FILE]));
+    	//Code category
+    	if(!split[CODE].isEmpty())
+    		temp.addData(CODE, codeList.get(split[CODE]));
+    	//Name category
+    	if(!split[NAME].isEmpty())
+    		temp.addData(NAME, nameList.addData(split[NAME]));
+    	//Base category
+    	if(!split[BASE].isEmpty())
+    		temp.addData(BASE, nameList.addData(split[BASE]));
+    	//Type category
+    	if(!split[TYPE].isEmpty())
+    		temp.addData(TYPE, typeList.addData(split[TYPE]));
+    	//Connection category
+    	if(!split[CONNECTION].isEmpty())
+    		temp.addData(CONNECTION, connectList.addData(split[CONNECTION]));
+    	//Weather category
+    	if(!split[WEATHER].isEmpty())
+    		temp.addData(WEATHER, weatherList.get(split[WEATHER]));
+    	//Army Faction category
+    	if(!split[ARMY].isEmpty())
+    		temp.addData(ARMY, armyList.get(split[ARMY]));
+    	//Overlap category
+    	if(!split[OVERLAP].isEmpty())
+    		temp.addData(OVERLAP, nameList.addData(split[OVERLAP]));
+    	//Size category - Not necessary yet (follows the CODE convention)
+    	//Direction category - Not necessary yet (follows the CODE convention)
+    	//Color category - Not necessary yet (follows the FILE convention)
+    	//Blend category - Not necessary yet (follows the FILE convention)
+    	//Random category - Not necessary yet
+    	//Animation category - Can be done using image width and height values
+    	
+    	//Adds a new Object to the object List
+    	objList = addData(objList, temp);
+    	//System.out.println("Success!! ENTRY="+objList.length);
     }
     
     /**
@@ -260,6 +463,26 @@ public class ObjectStorage implements Runnable{
 
         String[] temp = fillData;
         fillData = new String[temp.length+1];
+        for(int i = -1; i++ < temp.length-1;)
+            fillData[i] = temp[i];
+        fillData[fillData.length-1] = data;
+
+        return fillData;
+    }
+    
+    /**
+     * This function is used to cause a primitive array to act like an
+     * ArrayList. This acts like a push function.
+     * @param fillData The data to add to a primitive array
+     * @param data The data to add to the array
+     * @return An array with the data attached
+     */
+    private KeyStore[] addData(KeyStore[] fillData, KeyStore data){
+        if(fillData == null)
+            fillData = new KeyStore[0];
+
+        KeyStore[] temp = fillData;
+        fillData = new KeyStore[temp.length+1];
         for(int i = -1; i++ < temp.length-1;)
             fillData[i] = temp[i];
         fillData[fillData.length-1] = data;

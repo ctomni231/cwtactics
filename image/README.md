@@ -2,10 +2,12 @@
 
 This shows how the file names are organized within the object folders for units, terrain(fields), and properties(buildings/inventions). All files can follow the general file format, but the categories allow users to fine tune the data for specific images.
 
+_*Opt* = Optional_
+
 ## General File Format
 
 `(Tileset)-(Weather[Opt])_(Object)-(Overlap[Opt])_(Army[Opt])~(8-Connection N-S-W-E-NW-NE-SW-SE[Opt])`
-_*Opt* = Optional_
+
 
 ## Terrain Format
 
@@ -37,7 +39,7 @@ This shows how objects are organized within the object files for units, terrain(
 
 # Image Abbreviations
 
-## Overlap & Connection Image Abbreviations
+## Connection Image Abbreviations
 
 * *L* = Land [Default]
 * *W* = Water (Sea, Shoal, River)

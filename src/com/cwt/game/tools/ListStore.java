@@ -67,6 +67,14 @@ public class ListStore {
         }
         return -1;
     }
+    
+    /**
+     * This function returns a list of items in this Object
+     * @return A list of items within this Object
+     */
+    public String[] getData(){
+    	return dataItems;
+    }
 
     /**
      * This function returns the amount of items within the list

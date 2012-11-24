@@ -1,4 +1,4 @@
-package com.cwt.map.io;
+package com.cwt.game.tools;
 
 import java.util.HashMap;
 

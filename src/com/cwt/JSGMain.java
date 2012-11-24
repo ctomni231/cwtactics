@@ -1,7 +1,6 @@
 package com.cwt;
 
 import com.cwt.game.ObjectLibrary;
-import com.cwt.game.ObjectStorage;
 import com.cwt.map.PixAnimate;
 import com.cwt.screen.MainMenuScreen;
 import com.cwt.system.jslix.SlixGame;
@@ -16,7 +15,7 @@ import org.newdawn.slick.SlickException;
  * Slick applet
  *
  *@author Carr, Crecen
- *@version 01.31.11
+ *@version 11.24.12
  *@license  New BSD License
  *	Copyright (c) 2010, BearWolf/Exotec
  *	Exotec label holder is Radom Alexander, blackcat.myako@gmail.com

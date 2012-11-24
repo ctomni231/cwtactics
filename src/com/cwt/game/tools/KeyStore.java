@@ -65,7 +65,7 @@ public class KeyStore {
 
     /**
      * This function gets an array containing data from the stored array.
-     * Dummy value is put into the place of non-included array values.
+     * Dummy value (-1) is put into the place of non-included array values.
      * @return An array containing the values of this storage array.
      */
     public int[] getData(){

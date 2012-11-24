@@ -1,5 +1,7 @@
 package com.cwt.map.io;
 
+import com.cwt.game.tools.RefStore;
+
 /**
  * CodeStorage.java
  *

@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.cwt.game.tools.KeyStore;
 import com.cwt.game.tools.ListStore;
+import com.cwt.game.tools.RefStore;
 
 /**
  * TagStorage.java
