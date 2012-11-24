@@ -1,7 +1,5 @@
 package com.cwt.game;
 
-import com.cwt.io.XML_Reader;
-
 /**
  * ObjectLibrary.java
  *

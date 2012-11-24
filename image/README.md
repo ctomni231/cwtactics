@@ -1,19 +1,23 @@
 # File Organization
 
-This shows how the file names are organized within the object folders for units, terrain(fields), and properties(buildings/inventions).
+This shows how the file names are organized within the object folders for units, terrain(fields), and properties(buildings/inventions). All files can follow the general file format, but the categories allow users to fine tune the data for specific images.
 
-## Terrain
+## General File Format
 
-`(Tileset Type)-(Weather Type[Optional])_(Terrain Type)-(Overlap Type[Optional])~(Connection 4-Type N-S-W-E [Optional])`
-`(Tileset Type)-(Weather Type[Optional])_(Terrain Type)-(Overlap Type[Optional])~(Connection 8-Type N-S-W-E-NW-NE-SW-SE [Optional])`
+`(Tileset)-(Weather[Opt])_(Object)-(Overlap[Opt])_(Army[Opt])~(8-Connection N-S-W-E-NW-NE-SW-SE[Opt])`
+_*Opt* = Optional_
 
-## Properties
+## Terrain Format
 
-`(Tileset Type)-(Weather Type[Optional])_(Object Type)-(Overlap Type[Optional])_(Army Faction[Optional])-`
+`(Tileset Type)-(Weather Type[Opt])_(Terrain Type)-(Overlap Type[Opt])~(4-Connection Type N-S-W-E [Opt])`
 
-## Units
+## Properties Format
 
-`(Tileset Type)_(Object Type)_(Army Faction[Optional])`
+`(Tileset Type)-(Weather Type[Opt])_(Property Type)-(Overlap Type[Opt])_(Army Faction[Opt])`
+
+## Units Format
+
+`(Tileset Type)_(Unit Type)_(Army Faction[Opt])`
 
 ***
 

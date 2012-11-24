@@ -3,6 +3,8 @@ package com.cwt.map.io;
 import java.awt.Color;
 import java.util.HashMap;
 
+import com.cwt.game.tools.KeyStore;
+
 /**
  * ColorStorage.java
  *

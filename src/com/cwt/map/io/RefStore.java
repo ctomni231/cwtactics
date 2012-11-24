@@ -2,6 +2,8 @@ package com.cwt.map.io;
 
 import java.util.HashMap;
 
+import com.cwt.game.tools.ListStore;
+
 /**
  * RefStore.java
  *

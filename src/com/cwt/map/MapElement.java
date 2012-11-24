@@ -1,12 +1,12 @@
 package com.cwt.map;
 
+import com.cwt.game.tools.KeyStore;
 import com.cwt.map.io.CodeStorage;
 import com.cwt.map.io.ColorStorage;
 import com.cwt.map.io.DataStorage;
 import com.cwt.map.io.DataStore;
 import com.cwt.map.io.FileStorage;
 import com.cwt.map.io.GraphicStorage;
-import com.cwt.map.io.KeyStore;
 import com.cwt.map.io.LangStorage;
 import com.cwt.map.io.TagStorage;
 import com.cwt.system.jslix.tools.FileFind;

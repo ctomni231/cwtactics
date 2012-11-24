@@ -2,6 +2,9 @@ package com.cwt.map.io;
 
 import java.util.HashMap;
 
+import com.cwt.game.tools.KeyStore;
+import com.cwt.game.tools.ListStore;
+
 /**
  * TagStorage.java
  *

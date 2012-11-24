@@ -1,5 +1,6 @@
 package com.cwt.game;
 
+import com.cwt.game.tools.ListStore;
 import com.cwt.system.jslix.tools.FileFind;
 import com.cwt.system.jslix.tools.FileIndex;
 import com.cwt.system.jslix.tools.XML_Parser;
@@ -18,7 +19,7 @@ import com.cwt.system.jslix.tools.XML_Writer;
 public class ObjectStorage implements Runnable{
 	
 	/** Holds the max object representation fields. */
-	public final int MAX_OBJECTS = 10;
+	public final int MAX_OBJECTS = 11;
 	/** Integer representation for the file folder path */
 	public final int FILE = 0;
 	/** Integer representation for code type */
@@ -39,6 +40,8 @@ public class ObjectStorage implements Runnable{
 	public final int DIRECTION = 8;
 	/** Integer representation for the object connection */
 	public final int CONNECTION = 9;
+	/** Integer representation for the object overlap type (map editor) */
+	public final int OVERLAP = 10;
 
 	/** Holds whether this screen is an Applet */
     private boolean isApplet;
@@ -50,6 +53,8 @@ public class ObjectStorage implements Runnable{
     private XML_Parser mapParse;
     /** Holds the folder paths used to find objects */
     private String[][] objectPath;
+    /** Holds a list of object names used to find objects */
+    private ListStore[] objList;
     
     /**
      * This class is responsible for all the object loading and storage of all
@@ -193,10 +198,11 @@ public class ObjectStorage implements Runnable{
     private String[] splitEntry(String entry){
     	String[] split = new String[MAX_OBJECTS];
     	//Splits the letters out of the program
-    	String[] chars = entry.split("[A-Za-z0-9]+");
+    	String[] chars = entry.split("[A-Za-z0-9-]+");
     	//Splits the characters out of the program
     	String[] temp = entry.split("[_~/.]{1}");
     	
+    	//Sorts the name and connection types into categories
     	split[FILE] = entry;
     	for(int i = 0; i < temp.length; i++){
     		if(chars[i].matches("_")){
@@ -214,11 +220,29 @@ public class ObjectStorage implements Runnable{
     		}			
     	}
     	
+    	//Gives default values for the rest of the items
     	for(int i = 0; i < MAX_OBJECTS; i++){
     		if(split[i] == null)
     			split[i] = "";
-    		//System.out.println("S"+i+":"+split[i]);
     	}
+    	
+    	//Sorts the overlap type into a category
+    	temp = split[NAME].split("[-]");
+    	if(temp.length > 1){
+    		split[NAME] = temp[0];
+    		split[OVERLAP] = temp[1];
+    	}
+    	
+    	//Sorts the weather type into a category
+    	temp = split[TYPE].split("[-]");
+    	if(temp.length > 1){
+    		split[TYPE] = temp[0];
+    		split[WEATHER] = temp[1];
+    	}
+    	
+    	//Test to see if everything is running okay
+    	for(int i = 0; i < MAX_OBJECTS; i++)
+    		System.out.println("S"+i+":"+split[i]);//*/
     	
     	return split;
     }
