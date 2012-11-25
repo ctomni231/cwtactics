@@ -90,14 +90,15 @@ public class ObjectLibrary {
         //Gets the image
         ImgLibrary parseImg = new ImgLibrary();
         parseImg.addImage(objStore.getFile(index));
-        int sizex = parseImg.getX(0);
         int sizey = parseImg.getY(0);
+        int sizex = sizey/2;
+        
         
         //Scales the image
         storedImg.setImageSize((int)(sizex*((BASE*2)/(double)sizey)*scale),
             (int)(sizey*((BASE*2)/(double)sizey)*scale));
         
-      //Stores the image
+        //Stores the image
         imgList.add(converter.getCompact());
         storedImg.addImage(parseImg.getImage(0, 0, 0, sizex, sizey));
         System.out.println("("+storedImg.getX(0)+","+
