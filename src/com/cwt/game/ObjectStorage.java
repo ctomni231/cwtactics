@@ -75,10 +75,10 @@ public class ObjectStorage implements Runnable{
     private RefStore codeList;
     /** Holds a list of acceptable weather items for each object */
     private RefStore weatherList;
-    /** Holds a list of acceptable army faction items for each object */
-    private RefStore armyList;
+    /** Holds a list of army factions for each image object */
+    private ListStore armyList;
     /** Holds a list of all object data for each image object */
-    private KeyStore[] objList;
+    protected KeyStore[] objList;
     
     /**
      * This class is responsible for all the object loading and storage of all
@@ -87,14 +87,15 @@ public class ObjectStorage implements Runnable{
      * elements.
      */
     public ObjectStorage(){
+    	objList = new KeyStore[0];
     	fileList = new ListStore();
     	nameList = new ListStore();
     	typeList = new ListStore();
     	connectList = new ListStore();
+    	armyList = new ListStore();
     	codeList = new RefStore();
     	weatherList = new RefStore();
-    	armyList = new RefStore();
-    	objList = new KeyStore[0];
+    	
     	mapParse = new XML_Parser();
     	ready = true;
         isApplet = true;
@@ -123,25 +124,25 @@ public class ObjectStorage implements Runnable{
     	weatherList.add(new String[]{"Q","EA.*"}, 7);//Earthquake
     	
     	//ARMY FACTION REFERENCES (https://github.com/ctomni231/cwtactics/tree/master/image#army-factions)
-    	armyList.add("GD", -1);//Gray Diamond (Neutral) [Default]
-    	armyList.add("OS", 0);//Orange Star
-    	armyList.add("BM", 1);//Blue Moon
-    	armyList.add("GE", 2);//Green Earth
-    	armyList.add("YC", 3);//Yellow Comet
-    	armyList.add("BH", 4);//Black Hole
-    	armyList.add("CR", 5);//Crimson Ray
-    	armyList.add("AV", 6);//Arsenic Vortex
-    	armyList.add("SS", 7);//Sepia Sun
-    	armyList.add("SF", 8);//Scarlet Flare
-    	armyList.add("IN", 9);//Indigo Nebula
-    	armyList.add("CS", 10);//Cobalt Storm
-    	armyList.add("PC", 11);//Pink Cosmos
-    	armyList.add("TG", 12);//Teal Gravity
-    	armyList.add("IE", 13);//Indigo Eclipse
-    	armyList.add("WN", 14);//White Nova
-    	armyList.add("CG", 15);//Cream Galaxy
-    	armyList.add("MO", 16);//Magneta Orbit
-    	armyList.add("JA", 17);//Jade Asteroid
+    	armyList.add("GD");//Gray Diamond (Neutral) [Default]
+    	armyList.add("OS");//Orange Star
+    	armyList.add("BM");//Blue Moon
+    	armyList.add("GE");//Green Earth
+    	armyList.add("YC");//Yellow Comet
+    	armyList.add("BH");//Black Hole
+    	armyList.add("CR");//Crimson Ray
+    	armyList.add("AV");//Arsenic Vortex
+    	armyList.add("SS");//Sepia Sun
+    	armyList.add("SF");//Scarlet Flare
+    	armyList.add("IN");//Indigo Nebula
+    	armyList.add("CS");//Cobalt Storm
+    	armyList.add("PC");//Pink Cosmos
+    	armyList.add("TG");//Teal Gravity
+    	armyList.add("IE");//Indigo Eclipse
+    	armyList.add("WN");//White Nova
+    	armyList.add("CG");//Cream Galaxy
+    	armyList.add("MO");//Magneta Orbit
+    	armyList.add("JA");//Jade Asteroid
     }
     
     /**
@@ -183,17 +184,11 @@ public class ObjectStorage implements Runnable{
     }
     
     /**
-     * This function is used to return a list constrained by the codeType
-     * @param codeType The code type representation
-     * @return A list constrained to that specific code type
+     * This function gets all the army factions for each Object stored within
+     * @return All the object army factions within this storage object
      */
-    public KeyStore[] getList(int codeType){
-    	KeyStore[] temp = new KeyStore[0];
-    	for(KeyStore item: objList){
-    		if(item.getData(CODE) == codeType)
-    			temp = addData(temp, item);
-    	}
-    	return temp;
+    public String[] getArmyList(){
+    	return armyList.getData();
     }
     
     /**
@@ -231,6 +226,15 @@ public class ObjectStorage implements Runnable{
      */
     public String getName(int index){
     	return nameList.getData(index);
+    }
+    
+    /**
+     * This function is used to get army factions from the KeyStore index list
+     * @param index The index where the data is stored
+     * @return A name abbreviation corresponding to the index
+     */
+    public String getArmy(int index){
+    	return armyList.getData(index);
     }
 	
 	/**
@@ -385,8 +389,7 @@ public class ObjectStorage implements Runnable{
      * @param path The path to the XML file to be parsed
      * @return A updated list appending all new categories to the entry
      */
-    private String[] parseSplit(String[] split){
-    	  	
+    private String[] parseSplit(String[] split){  	  	
     	//This parses the folders and gets the code base for each item
     	int[] entryLocation = mapParse.getLocation("object list");    	
         for(int i = 0; i < entryLocation.length; i++){
@@ -434,7 +437,7 @@ public class ObjectStorage implements Runnable{
     		temp.addData(WEATHER, weatherList.get(split[WEATHER]));
     	//Army Faction category
     	if(!split[ARMY].isEmpty())
-    		temp.addData(ARMY, armyList.get(split[ARMY]));
+    		temp.addData(ARMY, armyList.addData(split[ARMY]));
     	//Overlap category
     	if(!split[OVERLAP].isEmpty())
     		temp.addData(OVERLAP, nameList.addData(split[OVERLAP]));

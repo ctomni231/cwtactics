@@ -1,4 +1,4 @@
-package com.cwt.map;
+package com.cwt.game.tools;
 
 /**
  * ByteMap.java

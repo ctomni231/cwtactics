@@ -1,5 +1,6 @@
 package com.cwt.map;
 
+import com.cwt.game.tools.ByteMap;
 import com.cwt.map.io.DataStorage;
 import com.cwt.map.io.FileStorage;
 import com.cwt.map.io.GraphicStorage;

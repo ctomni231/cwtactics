@@ -144,7 +144,7 @@
 	<list file="image/properties/AWDR_TAPT.png" />
 	<list file="image/properties/AWDR_TSPT.png" />
 	<list file="image/properties/AWDS_APRT.png" />
-	<list file="image/properties/AWDS_BASE-P.png" />
+	<list file="image/properties/AWDS_BASE-PIPE.png" />
 	<list file="image/properties/AWDS_BASE.png" />
 	<list file="image/properties/AWDS_CITY.png" />
 	<list file="image/properties/AWDS_CMTR.png" />
@@ -272,6 +272,8 @@
 	<list file="image/symbol/yellowup.png" />
 	<list file="image/terrain/AWDR_METR.png" />
 	<list file="image/terrain/AWDR_RUIN.png" />
+	<list file="image/terrain/AWDS_BRDG-SEAS~NNOO.png" />
+	<list file="image/terrain/AWDS_BRDG-SEAS~OONN.png" />
 	<list file="image/terrain/AWDS_BRDG~NNOO.png" />
 	<list file="image/terrain/AWDS_BRDG~NONO.png" />
 	<list file="image/terrain/AWDS_BRDG~NOON.png" />
@@ -283,8 +285,6 @@
 	<list file="image/terrain/AWDS_BRDG~OONO.png" />
 	<list file="image/terrain/AWDS_BRDG~OOON.png" />
 	<list file="image/terrain/AWDS_BRDG~OOOO.png" />
-	<list file="image/terrain/AWDS_BRDG~OOSS.png" />
-	<list file="image/terrain/AWDS_BRDG~SSOO.png" />
 	<list file="image/terrain/AWDS_FRST.png" />
 	<list file="image/terrain/AWDS_MNTN.png" />
 	<list file="image/terrain/AWDS_PIPE~LLLP.png" />
