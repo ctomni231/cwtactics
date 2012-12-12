@@ -14,7 +14,7 @@ import com.cwt.system.jslix.tools.ImgLibrary;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 11.24.12
+ * @version 12.11.12
  */
 
 public class ObjectLibrary {
@@ -69,6 +69,23 @@ public class ObjectLibrary {
         storeImage(index, player, direction);
         return storedImg.getSlickImage(
                 imgList.indexOf(converter.getCompact()));
+    }
+    
+    /**
+     * This function sets the scale factor for the drawn objects
+     * @param tileSize The pixel length of one side of a tile
+     */
+    public static void setScale(int tileSize){
+        scale = tileSize/BASE;
+    }
+
+    /**
+     * This function gives you the relative scale factor of currently
+     * drawn tiles from the base size
+     * @return The current scale factor of currently drawn tiles
+     */
+    public static double getScale(){
+        return scale;
     }
     
     /**

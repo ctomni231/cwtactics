@@ -84,6 +84,10 @@ public class EngineHolder {
         ScriptableObject scope = getScopeByMod(mod);
         return scope.get(name);
     }
+    
+    public Object evalExpression( String expr ){
+    	return engine.evalExpression(expr);
+    }
 
     // TEST IT
     public static void main( String[] args ){

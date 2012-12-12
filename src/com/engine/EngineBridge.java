@@ -9,15 +9,13 @@ package com.engine;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 11.26.12
+ * @version 12.10.12
  */
 public class EngineBridge {
 	/** This holds whether all files will be loaded separately (T) or together (F) */
-	public final static boolean DEVLOAD = true;
+	public final static boolean DEVLOAD = true;	
 	/** This is the JavaScript engine holder */
-	private static EngineHolder holder = null;
-	/** This is the JavaScript engine */
-	private static Engine engine = null;
+	private static EngineHolder holder = new EngineHolder( new Engine( DEVLOAD ) );
 	/** This holds the different modules that will be used for this engine */
 	private static EngineHolder.ENGINE_MODULE module = EngineHolder.ENGINE_MODULE.GLOBAL;
 	
@@ -26,7 +24,7 @@ public class EngineBridge {
 	 * @param mod The module name to change to
 	 * @return Whether module was changed(T) or not(F)
 	 */
-	public static boolean changeModule(String mod){
+	public static boolean setModule(String mod){
 		if(mod.matches("GL.*"))
 			module = EngineHolder.ENGINE_MODULE.GLOBAL;
 		else if(mod.matches("GA.*"))
@@ -46,7 +44,7 @@ public class EngineBridge {
 	 * This function gets the current module used in this class
 	 * @return The current module being used
 	 */
-	public static String currentModule(){
+	public static String getCurrentModule(){
 		switch( module ){
         	case GAME: 
         		return "GAME";
@@ -133,8 +131,7 @@ public class EngineBridge {
 	 * @param args The arguments for that particular function
 	 * @return A response from the engine in form of a Integer
 	 */
-	private static Object callFunction(String function, Object... args){
-		init();
+	public static Object callFunction(String function, Object... args){
 		return holder.callFunction(module, function, args);
 	}
 	
@@ -144,18 +141,17 @@ public class EngineBridge {
 	 * @param name The name of the property key
 	 * @return The value pertaining to the property key
 	 */
-	private static Object getProperty(String name){
-		init();
+	public static Object getProperty(String name){
 		return holder.getProperty(module, name);
 	}
 	
 	/**
-	 * Initializes the values if they haven't been initialized
+	 * This function is an exact replica of the Engine.java evaluate function. It
+	 * takes an expression and evaluates it within the Engine class.
+	 * @param expr The String expression to evaluate
+	 * @return Data representing the evaluated expression.
 	 */
-	private static void init(){
-		if(engine == null)
-			engine = new Engine( DEVLOAD );
-		if(holder == null)
-			holder = new EngineHolder( engine );
+	public static Object evalExpression( String expr ){
+		return holder.evalExpression(expr);
 	}
 }

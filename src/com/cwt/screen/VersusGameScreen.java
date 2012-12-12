@@ -72,8 +72,8 @@ public class VersusGameScreen extends Screen{
         //    JukeBox.playClip(FX_4);
 
         //TEMPORARY UNTIL FURTHER NOTICE
-        //if(KeyControl.isActionClicked() || KeyControl.isCancelClicked())
-        //    this.scr_delete = true;
+        if(KeyControl.isActionClicked() || KeyControl.isCancelClicked())
+            this.scr_delete = true;
     }
 
     @Override

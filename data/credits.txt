@@ -6,17 +6,18 @@ Xenesis
 <MAIN CODERS>
 JakeSamiRulz
 Tapsi
-CesarRamsan
  
 <BACKGROUND GRAPHICS>
 Kosheh
 Destin Artea
+Halo Capella
  
 <MAIN CONTRIBUTORS>
 Urusan
 chom-chom
 Ace.Stef569
 MarinePower
+CesarRamsan
  
 <MINOR CONTRIBUTORS>
 amarriner
@@ -27,6 +28,8 @@ Robosturm
 Eagle
 TruthSeeker
 Gipface
+Walker
+mgb2625
  
 <DESIGN DEVELOPERS>
 CoconutTank
@@ -46,6 +49,7 @@ Simon
 <HOSTING>
 Ohloh
 GoogleCode
+Github
  
  
  
