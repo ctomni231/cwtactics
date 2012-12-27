@@ -1,9 +1,12 @@
 package com.cwt.screen;
 
+import com.cwt.graphic.tools.MapField;
 import com.cwt.io.JukeBox;
 import com.cwt.io.KeyControl;
 import com.cwt.map.PixAnimate;
 import com.cwt.system.jslix.state.Screen;
+import com.engine.TestMap;
+
 import java.awt.Component;
 import java.awt.Graphics2D;
 import org.newdawn.slick.Color;
@@ -16,7 +19,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.09.11
+ * @version 12.26.12
  */
 
 public class VersusGameScreen extends Screen{
@@ -31,11 +34,17 @@ public class VersusGameScreen extends Screen{
     private final int SIZE_X = 640;//The base window height
     private final int SIZE_Y = 480;//The base window width
     private final int WAIT_TIME = 15;//The help bar waiting time
+    
+    private MapField mapScr;//The map Screen
 
     private boolean scrStart;//The initialization sequence starter for screens
     private int column;//Which screen index we are currently showing
 
     public VersusGameScreen(){
+    	
+    	mapScr = new MapField(10, 10, 0);
+    	mapScr.loadMap(TestMap.createTestMap());
+    	
         PixAnimate.getTags();
         //JukeBox.stopClip();
         //JukeBox.addClip(MUSIC);
@@ -55,6 +64,7 @@ public class VersusGameScreen extends Screen{
 
     @Override
     public void update(int timePassed) {
+    	mapScr.update(scr_width, scr_height, scr_sysTime, scr_mouseScroll);
         switch(column){
 
         }
@@ -78,6 +88,7 @@ public class VersusGameScreen extends Screen{
 
     @Override
     public void render(Graphics g) {
+    	mapScr.render(g);
         switch(column){
 
         }
@@ -89,6 +100,7 @@ public class VersusGameScreen extends Screen{
 
     @Override
     public void render(Graphics2D g, Component dthis) {
+    	mapScr.render(g, dthis);
         switch(column){
 
         }

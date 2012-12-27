@@ -42,6 +42,7 @@
 	<list file="image/background/night.png" />
 	<list file="image/cozone.png" />
 	<list file="image/cursor.png" />
+	<list file="image/CWTwants.txt" />
 	<list file="image/explode.png" />
 	<list file="image/HPNumbers.png" />
 	<list file="image/icons/apcboost.png" />
@@ -133,6 +134,7 @@
 	<list file="image/minimap.gif" />
 	<list file="image/PlayerBuilding.png" />
 	<list file="image/PlayerUnit.png" />
+	<list file="image/Pleasant Wars.txt" />
 	<list file="image/properties/AW1_APRT.png" />
 	<list file="image/properties/AW1_BASE.png" />
 	<list file="image/properties/AW1_CITY.png" />

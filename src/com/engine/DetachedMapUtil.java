@@ -49,15 +49,15 @@ public class DetachedMapUtil {
                 "load", e.evalExpression( DetachedMapUtil.toJSON(map) ) );
     }
 
-    private static String toJSON(DetachedMapUtil map){
+    public static String toJSON(DetachedMapUtil map){
         StringBuilder sb = new StringBuilder();
         
         sb.append("{\n");
             
             // META
-            sb.append("\t").append("mapWidth:").append(map.mapWidht).append(",\n");
-            sb.append("\t").append("mapHeight:").append(map.mapHeight).append(",\n");
-            sb.append("\t").append("filler:\"").append(map.filler).append("\",\n");
+            sb.append("\t").append("mapWidth:").append(map.mapWidht).append(";\n");
+            sb.append("\t").append("mapHeight:").append(map.mapHeight).append(";\n");
+            sb.append("\t").append("filler:\"").append(map.filler).append("\";\n");
 
             // DATA
             sb.append("\t").append("data:{\n");
@@ -72,12 +72,12 @@ public class DetachedMapUtil {
 
                     if( !created ){
                         sb.append("\t\t");
-                        if( !xF ) sb.append(",");
+                        if( !xF ) sb.append(";");
                         sb.append("\"").append(x).append("\":{\n");
                     }
 
                     sb.append("\t\t\t");
-                    if( !yF ) sb.append(",");
+                    if( !yF ) sb.append(";");
                     sb.append("\"").append(y).append("\":\"")
                             .append( map.tiles[x][y] ).append("\"\n");
 
@@ -92,7 +92,7 @@ public class DetachedMapUtil {
 
             }
 
-            sb.append("\t},\n");
+            sb.append("\t};\n");
 
             // PLAYERS
             if( map.players.size() > 0 ){
@@ -101,12 +101,12 @@ public class DetachedMapUtil {
                 int i = 0;
                 for( MapPlayer player : map.players ){
                     sb.append("\t");
-                    if( i>0 ) sb.append(",");
+                    if( i>0 ) sb.append(";");
                     sb.append("{\n");
 
-                    sb.append("\t\t").append("name:\"").append(player.name).append("\",\n");
-                    sb.append("\t\t").append("gold:").append(player.gold).append(",\n");
-                    sb.append("\t\t").append("team:").append(player.team).append(",\n");
+                    sb.append("\t\t").append("name:\"").append(player.name).append("\";\n");
+                    sb.append("\t\t").append("gold:").append(player.gold).append(";\n");
+                    sb.append("\t\t").append("team:").append(player.team).append(";\n");
 
                     // UNITS
                     if( player.units.size() > 0 ){
@@ -114,15 +114,15 @@ public class DetachedMapUtil {
                        boolean fUnit = true;
                        for( PlayerUnit unit: player.units ){
                            sb.append("\t\t\t");
-                           if( !fUnit ) sb.append(",");
+                           if( !fUnit ) sb.append(";");
                            sb.append("{\n");
                            
-                               sb.append("\t\t\t\t").append("x:").append(unit.x).append(",\n");
-                               sb.append("\t\t\t\t").append("y:").append(unit.y).append(",\n");
-                               sb.append("\t\t\t\t").append("ammo:").append(unit.ammo).append(",\n");
-                               sb.append("\t\t\t\t").append("fuel:").append(unit.fuel).append(",\n");
-                               sb.append("\t\t\t\t").append("hp:").append(unit.hp).append(",\n");
-                               sb.append("\t\t\t\t").append("type:\"").append(unit.type).append("\",\n");
+                               sb.append("\t\t\t\t").append("x:").append(unit.x).append(";\n");
+                               sb.append("\t\t\t\t").append("y:").append(unit.y).append(";\n");
+                               sb.append("\t\t\t\t").append("ammo:").append(unit.ammo).append(";\n");
+                               sb.append("\t\t\t\t").append("fuel:").append(unit.fuel).append(";\n");
+                               sb.append("\t\t\t\t").append("hp:").append(unit.hp).append(";\n");
+                               sb.append("\t\t\t\t").append("type:\"").append(unit.type).append("\";\n");
                                sb.append("\t\t\t\t").append("owner:").append(i).append("\n");
 
                            sb.append("\t\t\t").append("}\n");

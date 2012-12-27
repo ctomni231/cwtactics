@@ -53,6 +53,10 @@ public class MapField extends MovingMenu implements ScreenSkeleton{
 	public void loadMap(String jsonMap){
 		EngineBridge.setModule("PERSISTENCE");
 		EngineBridge.callFunction("load", EngineBridge.evalExpression(jsonMap));
+		
+		EngineBridge.setModule("GAME");
+		mapsx = EngineBridge.callFunctionAsInteger("mapWidth");
+		mapsy = EngineBridge.callFunctionAsInteger("mapHeight");
 	}
 	
 	/**
@@ -104,7 +108,7 @@ public class MapField extends MovingMenu implements ScreenSkeleton{
      */
     private MapItem createNewImage(MapItem item, int x, int y){
         if(item.terrain < 0){
-            item.terrain = 0;
+            item.terrain = 2;
             item.blank = 0;
             item.connect = 0;
         }
