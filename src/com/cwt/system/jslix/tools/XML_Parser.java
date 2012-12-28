@@ -28,17 +28,26 @@ public class XML_Parser extends DefaultHandler{
     // VARIABLES
     /////////////
 
-    private SAXParser parser;//The SAX parser associated with this class
-    private FileFind finder;//Helps regulate how files are searched
-    private ArrayList<String> header;//Holds the header tags for the document
+	/** The SAX parser associated with this class */
+    private SAXParser parser;
+    /** Helps regulate how files are searched */
+    private FileFind finder;
+    /** Holds the header tags for the document */
+    private ArrayList<String> header;
 
-    private ArrayList<String>[] tagList;//Helps hold the tags in tree format
-    private HashMap<String, String>[] attrList;//Holds attributes in tree form
-    private ArrayList<String>[] charList;//Holds characters in tree format
+    /** Helps hold the tags in tree format */
+    private ArrayList<String>[] tagList;
+    /** Holds attributes in tree form */
+    private HashMap<String, String>[] attrList;
+    /** Holds characters in tree format */
+    private ArrayList<String>[] charList;
 
-    private HashMap<String, String>[] tempAttr;//Temporary hold for attributes
-    private ArrayList<String>[] tempChar;//Temporary hold for characters
-    private ArrayList<String>[] focusTag;//Helps focus which tags are stored
+    /** Temporary hold for attributes */
+    private HashMap<String, String>[] tempAttr;
+    /** Temporary hold for characters */
+    private ArrayList<String>[] tempChar;
+    /** Helps focus which tags are stored */
+    private ArrayList<String>[] focusTag;
 
     // CONSTRUCTOR
     ///////////////

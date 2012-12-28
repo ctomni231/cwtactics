@@ -13,11 +13,16 @@ package com.cwt.system.jslix.tools;
  */
 
 public class Timer extends Thread{
-    private int animTime;//The current time valued (1-1000) in milliseconds
-    private long millisec;//Keeps track of the system time in milliseconds
-    private int frametime;//How often the System sleeps (Updates)
-    private int control;//Calculates the number of frames per second for java2D
-    private int FPS;//This stores the number of frames per second
+	/** The current time valued (1-1000) in milliseconds */
+    private int animTime;
+    /** Keeps track of the system time in milliseconds */
+    private long millisec;
+    /** How often the System sleeps (Updates) */
+    private int frametime;
+    /** Calculates the number of frames per second for java2D */
+    private int control;
+    /** This stores the number of frames per second */
+    private int FPS;
 
     /**
      * This class sets a system timer for both Java2D and Slick2D windows
