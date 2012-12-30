@@ -6,21 +6,22 @@ import java.util.Scanner;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.XML;
 
-public class JSON_Parser {
+public class JSON_Parser extends XML_Parser{
 
+	/** The XML Header for the XML converted file */
+	public final String HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 	/** The JSON parser used to parse JSON files for values */
 	private JSONObject parser;
 	/** The Scanner used to convert files into Strings */
 	private Scanner scanner;
-	/** The file finder used to find files within the system */
-	private FileFind finder;
 	/** The JSON script within the system */
 	private String script;
 	
 	/** This class sets up a JSON parser ready for parsing using the parse command */
 	public JSON_Parser(){
-		finder = new FileFind();
+		super();
 		script = "";
 	}
 	
@@ -29,13 +30,18 @@ public class JSON_Parser {
 		parse( filename );
 	}
 	
-	public final void parse( String filename ){
+	//TODO: Split this off into a class that can read both XML and JSON files.
+	public void parse( String filename ){
 		try {
 			scanner = new Scanner( finder.getFile(filename) );
 			script = "";
 			while(scanner.hasNext())
 				script = script + scanner.nextLine() + "\n";
 			parser = new JSONObject( script );
+			System.out.println(XML.toString( parser , 
+					filename.substring(filename.lastIndexOf("/")+1, filename.indexOf(".")) ));
+			//parseData(XML.toString( parser ));
+			
 		} catch (FileNotFoundException e) {
 			System.err.println(e);
 		} catch (JSONException e) {
@@ -69,7 +75,12 @@ public class JSON_Parser {
 	public static void main(String[] args){
 		JSON_Parser parse = new JSON_Parser();
 		parse.parse("map/test.json");
-		parse.get();
+		//parse.get();
 		//System.out.println( parse.getScript() );	
+	}
+	
+	private String formatXML( String data ){
+		XML_Writer writer = new XML_Writer();
+		return data;
 	}
 }

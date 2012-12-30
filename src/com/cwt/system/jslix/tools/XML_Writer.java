@@ -15,37 +15,53 @@ import java.util.HashMap;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 01.24.10
+ * @version 12.29.12
  */
 
 public class XML_Writer {
 
-    private final int TAB_SPACE = 8;//The amount of spaces a TAB makes
-    private final int MAX_CHARS = 70;//The max characters before a newline
-    private String data;//The data contained within the XML file
-    protected String filePath;//THe path to the XML file
-    protected String filename;//THe XML filename
-    private ArrayList<String> curTag;//The current open tag of the XML file
-    private boolean open;//Holds whether a tag is opened
-    private int character;//Holds how many characters the current tag has
+	/** The XML Header for each file */
+	public final String HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+	/** The amount of spaces a TAB makes*/
+    private final int TAB_SPACE = 8;
+    /** The max characters before a newline */
+    private final int MAX_CHARS = 70;
+    /** The data contained within the XML file */
+    private String data;
+    /** The path to the XML file */
+    protected String filePath;
+    /** The XML filename */
+    protected String filename;
+    /** The current open tag of the XML file */
+    private ArrayList<String> curTag;
+    /** Holds whether a tag is opened */
+    private boolean open;
+    /** Holds how many characters the current tag has */
+    private int character;
+    /** Holds whether this XML is ready to be written to the system */
+    private boolean writeReady;
 
     /**
-     * Writes an XML file in the current directory. If the directory
-     * doesn't exist, it'll attempt to create it.
-     * @param dirPath The directory this XML file will be created in
+     * This starts the framework to write a basic XML file.
+     */
+    public XML_Writer(){
+    	data = HEADER+"\r\n";
+    	curTag = new ArrayList<String>();
+        open = false;
+        character = 0;
+        writeReady = false;
+    }
+    
+    /**
+     * The starts the framework to write an XML file in the current 
+     * directory. If the directory doesn't exist, it'll attempt to 
+     * create it.
+     * @param path The directory this XML file will be created in
      * @param filename The name of the XML file
      */
     public XML_Writer(String path, String filename){
-        data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n";
-        if(!path.equals("") && !path.endsWith("/"))
-            path += "/";
-        filePath = path;
-        if(!filename.endsWith(".xml") && !filename.endsWith(".jnlp"))
-            filename += ".xml";
-        this.filename = filename;
-        curTag = new ArrayList<String>();
-        open = false;
-        character = 0;
+        this();
+        setFileData(path, filename);       
     }
     
     /**
@@ -258,6 +274,15 @@ public class XML_Writer {
     }
     
     /**
+     * This function gets the textual form of the XML data
+     * @return The raw XML data in a String format
+     */
+    public String getRawXML(){
+    	endAllTags();
+    	return data;
+    }
+    
+    /**
      * Prints out the entire XML file for display
      */
     public void print(){
@@ -269,7 +294,7 @@ public class XML_Writer {
      */
     public void resetXMLFile(){
         endAllTags();
-        data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n";
+        data = HEADER+"\r\n";
     }
     
     /**
@@ -279,8 +304,11 @@ public class XML_Writer {
      * @return true if it wrote the file
      */
     public boolean writeToFile(boolean overwrite){
-        endAllTags();
-        return createFile(filePath, filename, data, false, overwrite);
+		endAllTags();
+		if(writeReady)
+			return createFile(filePath, filename, data, false, overwrite);
+		System.err.println("File path is not set!");
+		return writeReady;
     }
 
     /**
@@ -292,15 +320,29 @@ public class XML_Writer {
      */
     public boolean writeToTempFile(boolean overwrite){
         endAllTags();
-        return createFile(filePath, filename, data, true, overwrite);
+        if(writeReady)
+        	return createFile(filePath, filename, data, true, overwrite);
+        System.err.println("File path is not set!");
+		return writeReady;
+    }
+    
+    /**
+     * This function sets the file location for this XML file to be
+     * written to.
+     * @param path The directory this XML file will be created in
+     * @param filename The name of the XML file
+     */
+    public final void setFileData(String path, String filename){
+    	setPath(path);
+    	setFilename(filename);
     }
 
     /**
      * Changes the path for where the XML file is to be written
      * @param path The path where the XML file will reside
      */
-    public void changePath(String path){
-        if(!path.endsWith("/"))
+    public final void setPath(String path){
+    	if(!path.equals("") && !path.endsWith("/"))
             path += "/";
         filePath = path;
     }
@@ -309,7 +351,10 @@ public class XML_Writer {
      * Changes the filename associated with the XML file
      * @param filename The new filename for this XML file
      */
-    public void changeFilename(String filename){
+    public final void setFilename(String filename){
+    	writeReady = true;
+    	if(!filename.endsWith(".xml") && !filename.endsWith(".jnlp"))
+            filename += ".xml";
         this.filename = filename;
     }
 

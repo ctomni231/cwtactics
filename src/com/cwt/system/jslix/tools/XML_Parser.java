@@ -1,5 +1,6 @@
 package com.cwt.system.jslix.tools;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +21,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author <ul><li>Radom, Alexander</li>
  *              <li>Carr, Crecen</li></ul>
  * @license Look into "LICENSE" file for further information
- * @version 02.20.11
+ * @version 12.28.12
  */
 
 public class XML_Parser extends DefaultHandler{
@@ -31,7 +32,7 @@ public class XML_Parser extends DefaultHandler{
 	/** The SAX parser associated with this class */
     private SAXParser parser;
     /** Helps regulate how files are searched */
-    private FileFind finder;
+    protected FileFind finder;
     /** Holds the header tags for the document */
     private ArrayList<String> header;
 
@@ -85,9 +86,24 @@ public class XML_Parser extends DefaultHandler{
      * location of the document.
      * @param filename The path to the XML document
      */
-    public final void parse(String filename){
+    public void parse(String filename){
         try {
             parser.parse(finder.getFile(filename), this);
+        } catch (SAXException ex) {
+            System.err.println(ex);
+        } catch (IOException ex) {
+            System.err.println(ex);
+        }
+    }
+    
+    /**
+     * This function parses the entire XML document using the raw data
+     * passed into the function
+     * @param xmlData The raw XML String data
+     */
+    protected final void parseData(String xmlData){
+    	try {
+            parser.parse(new ByteArrayInputStream(xmlData.getBytes("UTF-8")), this);
         } catch (SAXException ex) {
             System.err.println(ex);
         } catch (IOException ex) {
