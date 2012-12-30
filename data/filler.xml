@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test>
+	<mapWidth data="10" />
+	<players>
+		<name data="P1" />
+		<team data="1" />
+		<gold data="2000" />
+		<units>
+			<hp data="30" />
+			<owner data="0" />
+			<fuel data="10" />
+			<type data="INFT_OS" />
+			<ammo data="1" />
+			<y data="0" />
+			<x data="0" />
+		</units>
+		<units>
+			<hp data="50" />
+			<owner data="0" />
+			<fuel data="40" />
+			<type data="INFT_OS" />
+			<ammo data="-1" />
+			<y data="1" />
+			<x data="1" />
+		</units>
+	</players>
+	<players>
+		<name data="P2" />
+		<team data="2" />
+		<gold data="12000" />
+		<units>
+			<hp data="30" />
+			<owner data="1" />
+			<fuel data="10" />
+			<type data="INFT_OS" />
+			<ammo data="1" />
+			<y data="4" />
+			<x data="3" />
+		</units>
+	</players>
+	<mapHeight data="10" />
+	<data>
+		<2>
+			<7 data="FRST" />
+			<9 data="FRST" />
+			<8 data="FRST" />
+		</2>
+		<1>
+			<3 data="MNTN" />
+			<4 data="MNTN" />
+		</1>
+		<6>
+			<2 data="HQ" />
+		</6>
+		<5>
+			<2 data="MNTN" />
+		</5>
+		<9>
+			<5 data="FRST" />
+		</9>
+	</data>
+	<filler data="PLIN" />
+</test>
