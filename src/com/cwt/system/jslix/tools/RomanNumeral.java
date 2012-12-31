@@ -6,69 +6,47 @@ package com.cwt.system.jslix.tools;
  * This class will handle all the interactions with Roman numerals, such as
  * converting them to integers and vice-versa.
  * 
- * @author cramsan
+ * @author <ul><li>cramsan</li>
+ *          <li>Carr, Crecen</li></ul>
  * @license Look into "LICENSE" file for further information
- * @version 12.30.12
+ * @version 12.31.12
  */
 public class RomanNumeral {
+	
+	/** Holds all the Roman numerals in one straight String */
+	public static final String ROMAN = "IVXLCDM";
 	
 	/**
 	 * This function takes normal numbers and converts them into Roman numerals.
 	 * It's main purpose is to help keep the integrity of the XML data to stay
 	 * well formed.
 	 * 
-	 * @param intData Numerical data in String format
+	 * @param intData 
+	 * 				Numerical data in String format
 	 * @return The Roman numeral value of the data
 	 */
 	public static String convertToRomanNumeral(String intData) {
 		int num = Integer.valueOf(intData);
 		intData = "";// Reused this as temporary.
-		while (num > 0) {
-			if (num >= 1000 - 100) {
-				if (num < 1000) {
-					intData = intData + "C";
-					num += 100;
+		while(num > 0){
+			for(int i = 1000, j = 3; i > 0; i /= 10, j--){
+				if(num >= i - (i / 10)){
+					if(num < i){
+						intData += ROMAN.charAt((j*2)-2);
+						num += i / 10;
+					}
+					intData += ROMAN.charAt(j*2);
+					num -= i;
+					break;
+				}else if(j > 0 && num >= 4*(i / 10)){
+					if(num < 5*(i / 10)){
+						intData += ROMAN.charAt((j*2)-2);
+						num += (i / 10);
+					}
+					intData += ROMAN.charAt(j*2-1);
+					num -= 5*(i/10);
+					break;
 				}
-				intData = intData + "M";
-				num -= 1000;
-			} else if (num >= 500 - 100) {
-				if (num < 500) {
-					intData = intData + "C";
-					num += 100;
-				}
-				intData = intData + "D";
-				num -= 500;
-			} else if (num >= 100 - 10) {
-				if (num < 100) {
-					intData = intData + "X";
-					num += 10;
-				}
-				intData = intData + "C";
-				num -= 100;
-			} else if (num >= 50 - 10) {
-				if (num < 50) {
-					intData = intData + "X";
-					num += 10;
-				}
-				intData = intData + "L";
-				num -= 50;
-			} else if (num >= 10 - 1) {
-				if (num < 10) {
-					intData = intData + "I";
-					num += 1;
-				}
-				intData = intData + "X";
-				num -= 10;
-			} else if (num >= 5 - 1) {
-				if (num < 5) {
-					intData = intData + "I";
-					num += 1;
-				}
-				intData = intData + "V";
-				num -= 5;
-			} else {
-				intData = intData + "I";
-				num -= 1;
 			}
 		}
 		return intData;
