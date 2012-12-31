@@ -43,7 +43,7 @@ public class VersusGameScreen extends Screen{
     public VersusGameScreen(){
     	
     	mapScr = new MapField(10, 10, 0);
-    	mapScr.loadMap(TestMap.createTestMap());
+    	//mapScr.loadMap(TestMap.createTestMap());
     	
         PixAnimate.getTags();
         //JukeBox.stopClip();
