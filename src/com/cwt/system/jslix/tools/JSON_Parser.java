@@ -97,6 +97,7 @@ public class JSON_Parser extends XML_Parser {
 						temp.substring(0, data.indexOf("<")), true);
 			data = data.substring(data.indexOf(">") + 1);
 		}
+		System.out.println(writer.getRawXML());
 		return writer.getRawXML();
 	}
 

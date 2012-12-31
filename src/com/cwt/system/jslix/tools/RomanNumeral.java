@@ -3,7 +3,7 @@ package com.cwt.system.jslix.tools;
 /**
  * RomanNumeral.java
  * 
- * This class will handle all the interactions with roman numerals, such as
+ * This class will handle all the interactions with Roman numerals, such as
  * converting them to integers and vice-versa.
  * 
  * @author cramsan
@@ -11,13 +11,13 @@ package com.cwt.system.jslix.tools;
  * @version 12.30.12
  */
 public class RomanNumeral {
+	
 	/**
 	 * This function takes normal numbers and converts them into Roman numerals.
 	 * It's main purpose is to help keep the integrity of the XML data to stay
 	 * well formed.
 	 * 
-	 * @param data
-	 *            Numerical data in String format
+	 * @param intData Numerical data in String format
 	 * @return The Roman numeral value of the data
 	 */
 	public static String convertToRomanNumeral(String intData) {
