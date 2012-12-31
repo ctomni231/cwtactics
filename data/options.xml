@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <options>
-	<normal help="0" color="-1" column="0" />
+	<normal help="0" color="17" column="0" />
 	<java UP="38" DOWN="40" LEFT="37" RIGHT="39" SELECT="90" CANCEL="88" />
 	<slick UP="200" DOWN="208" LEFT="203" RIGHT="205" SELECT="44" CANCEL="45" />
 </options>
