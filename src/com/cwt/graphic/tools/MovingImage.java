@@ -232,7 +232,7 @@ public class MovingImage implements ScreenSkeleton{
      * @param sysTime The system time in milliseconds
      * @param mouseScroll The mouse scroll wheel value
      */
-    @Override
+    //@Override
     public void update(int width, int height, int sysTime, int mouseScroll) {
         updatePosition();
         if(cursx != width || cursy != height){
@@ -262,7 +262,7 @@ public class MovingImage implements ScreenSkeleton{
      * This function draws a moving image to the screen
      * @param g The Slick graphics object
      */
-    @Override
+    //@Override
     public void render(Graphics g) {
         if(imgRef.length() > 1){
             if(shadeOff != 0 && shadow != null){
@@ -284,7 +284,7 @@ public class MovingImage implements ScreenSkeleton{
      * @param g The Java2D graphics object
      * @param dthis The Java2D Component object
      */
-    @Override
+    //@Override
     public void render(Graphics2D g, Component dthis){
         if(imgRef.length() > 1){
             if(opacity < 1)
@@ -336,13 +336,13 @@ public class MovingImage implements ScreenSkeleton{
         return colorArray;
     }
 
-    @Override
+    //@Override
     public void init() {}
 
-    @Override
+    //@Override
     public void update(String name, int index, boolean isApplet,
             boolean seethru) {}
 
-    @Override
+    //@Override
     public void update(int timePassed) {}
 }

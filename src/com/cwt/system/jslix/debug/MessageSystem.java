@@ -164,7 +164,7 @@ public class MessageSystem implements ScreenSkeleton{
      * @param sysTime The current time in milliseconds
      * @param mouseScroll The current scroll wheel mouse position
      */
-    @Override
+    //@Override
     public void update(int width, int height, int sysTime, int mouseScroll){
         if(noteSys.size() > 0){
             helper.setMouseControl(sysTime);
@@ -192,7 +192,7 @@ public class MessageSystem implements ScreenSkeleton{
      * This function renders the Slick2D screen
      * @param g The Slick2D graphics object
      */
-    @Override
+    //@Override
     public void render(Graphics g) {
         if(noteSys.size() > 0){
             for(int i = 0; i < noteSys.size(); i++){
@@ -219,7 +219,7 @@ public class MessageSystem implements ScreenSkeleton{
      * @param g The Java2D graphics object
      * @param dthis The Java2D Component
      */
-    @Override
+    //@Override
     public void render(Graphics2D g, Component dthis) {
         if(noteSys.size() > 0){
             for(int i = 0; i < noteSys.size(); i++){
@@ -241,13 +241,13 @@ public class MessageSystem implements ScreenSkeleton{
         }
     }
 
-    @Override
+    //@Override
     public void init() {}
 
-    @Override
+    //@Override
     public void update(int timePassed) {}
 
-    @Override
+    //@Override
     public void update(String name, int index, boolean isApplet,
             boolean seethru) {}
 }

@@ -21,19 +21,19 @@ public class SlixTextField extends JTextField implements KeyListener{
 		addKeyListener(this);
 	}
 
-	@Override
+	//@Override
 	public void keyPressed(KeyEvent e) {
 			
 	}
 
 	
-        @Override
+        //@Override
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	//@Override
 	public void keyTyped(KeyEvent e) {
             System.out.println("Pressed Key");
 	}

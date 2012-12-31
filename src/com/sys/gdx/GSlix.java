@@ -27,7 +27,7 @@ public class GSlix implements ApplicationListener {
 	private Texture texture;
 	private Sprite sprite;
 	
-	@Override
+	//@Override
 	public void create() {		
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
@@ -46,13 +46,13 @@ public class GSlix implements ApplicationListener {
 		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
 	}
 
-	@Override
+	//@Override
 	public void dispose() {
 		batch.dispose();
 		texture.dispose();
 	}
 
-	@Override
+	//@Override
 	public void render() {		
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
@@ -63,15 +63,15 @@ public class GSlix implements ApplicationListener {
 		batch.end();
 	}
 
-	@Override
+	//@Override
 	public void resize(int width, int height) {
 	}
 
-	@Override
+	//@Override
 	public void pause() {
 	}
 
-	@Override
+	//@Override
 	public void resume() {
 	}
 }

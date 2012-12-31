@@ -480,7 +480,7 @@ public class MapElement implements Runnable{
     /**
      * This function runs the loading in a separate thread
      */
-    @Override
+    //@Override
     public void run() {
         try{
             decodeFiles();
