@@ -8,6 +8,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
 
+/**
+ * JSON_Parser
+ *
+ * Simple JSON parser class. This class converts JSON files into XML
+ * to make parsing of JSON files consistent.
+ *
+ * @author <ul><li>Carr, Crecen</li>
+ *             <li>Radom, Alexander</li>
+ *             <li>Ramirez-Sanchez, Cesar</li></ul>
+ * @license Look into "LICENSE" file for further information
+ * @version 12.31.12
+ */
 public class JSON_Parser extends XML_Parser {
 
 	/** The XML Header for the XML converted file */
@@ -20,48 +32,53 @@ public class JSON_Parser extends XML_Parser {
 	private String script;
 
 	/**
-	 * This class sets up a JSON parser ready for parsing using the parse
-	 * command
+	 * This class sets up a JSON parser ready for parsing
 	 */
 	public JSON_Parser() {
 		super();
 		script = "";
 	}
 
+	/**
+	 * This class sets up a JSON parser ready for parsing. It parses the
+	 * JSON document using the filename provided
+	 * @param filename The file path to the JSON file
+	 */
 	public JSON_Parser(String filename) {
 		this();
 		parse(filename);
 	}
-
-	// TODO: Split this off into a class that can read both XML and JSON files.
+	
+	/**
+	 * This function parses a JSON document using the filename provided. It
+	 * also provides support for parsing XML files.
+	 * 
+	 * @param filename The file path to the JSON file
+	 */
 	public void parse(String filename) {
-		try {
-			scanner = new Scanner(finder.getFile(filename));
-			script = "";
-			while (scanner.hasNext())
-				script = script + scanner.nextLine() + "\n";
-			parser = new JSONObject(script);
-
-			// Changes the JSON into an XML file in one pass
-			parseData(formatXML(XML.toString(parser,
-					(new File(filename)).getName())));
-
-		} catch (FileNotFoundException e) {
-			System.err.println(e);
-		} catch (JSONException e) {
-			System.err.println(e);
-		}
-	}
-
-	public void get() {
-		for (int i = 0; i < parser.length(); i++) {
+		if(filename.endsWith(".xml") || filename.endsWith(".jnlp"))
+			super.parse(filename);
+		else{
 			try {
-				System.out.println(parser.names().getString(i));
+				script = "";
+				
+				//Concats the file suffix to be the first tag
+				String temp = new File(filename).getName();
+				temp = temp.substring(0, temp.lastIndexOf("."));
+				
+				scanner = new Scanner(finder.getFile(filename));
+				while (scanner.hasNext())
+					script = script + scanner.nextLine() + "\n";
+				parser = new JSONObject(getScript());
+				
+				// Changes the JSON into an XML file in one pass
+				parseData(formatXML(XML.toString(parser, temp)));
+			} catch (FileNotFoundException e) {
+				System.err.println(e);
 			} catch (JSONException e) {
-				e.printStackTrace();
+				System.err.println(e);
 			}
-		}
-
+		}		
 	}
 
 	/**
@@ -92,19 +109,21 @@ public class JSON_Parser extends XML_Parser {
 				temp = temp.substring(1);
 				writer.addXMLTag(temp.matches("\\d.*") ? RomanNumeral
 						.convertToRomanNumeral(temp) : temp);
-			} else
+			}else
 				writer.addAttribute("data",
 						temp.substring(0, data.indexOf("<")), true);
 			data = data.substring(data.indexOf(">") + 1);
 		}
-		System.out.println(writer.getRawXML());
 		return writer.getRawXML();
 	}
 
+	/**
+	 * The testing function for XML
+	 * @param args N/A
+	 */
 	public static void main(String[] args) {
 		JSON_Parser parse = new JSON_Parser();
-		parse.parse("map/test.json");
-		//parse.get();
+		parse.parse("map/valid_test.json");
 		//System.out.println(parse.getScript());
 	}
 }

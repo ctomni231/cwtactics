@@ -6,7 +6,7 @@ package com.cwt.system.jslix.tools;
  * This class will handle all the interactions with Roman numerals, such as
  * converting them to integers and vice-versa.
  * 
- * @author <ul><li>cramsan</li>
+ * @author <ul><li>Ramirez-Sanchez, Cesar (cramsan)</li>
  *          <li>Carr, Crecen</li></ul>
  * @license Look into "LICENSE" file for further information
  * @version 12.31.12
@@ -137,6 +137,10 @@ public class RomanNumeral {
 		}
 	}
 
+	/**
+	 * The testing file for Roman numerals
+	 * @param args N/A
+	 */
 	public static void main(String[] args) {
 		String input, output, roman;
 		for (int i = 0; i < 10000; i++) {

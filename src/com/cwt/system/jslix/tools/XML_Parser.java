@@ -1,13 +1,18 @@
 package com.cwt.system.jslix.tools;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Scanner;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
+import org.json.JSONObject;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -21,7 +26,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author <ul><li>Radom, Alexander</li>
  *              <li>Carr, Crecen</li></ul>
  * @license Look into "LICENSE" file for further information
- * @version 12.28.12
+ * @version 12.31.12
  */
 
 public class XML_Parser extends DefaultHandler{
@@ -109,6 +114,24 @@ public class XML_Parser extends DefaultHandler{
         } catch (IOException ex) {
             System.err.println(ex);
         }
+    }
+    
+    /**
+     * This is used to get an XML script from a file provided
+     * @param filename The path to the XML document
+     * @return The XML raw data within a XML script
+     */
+    public String getScript( String filename ){
+    	String script = "";
+		try {
+			Scanner scanner = new Scanner(finder.getFile(filename));
+			while (scanner.hasNext())
+				script = script + scanner.nextLine() + "\n";
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return script;
     }
 
     /**
