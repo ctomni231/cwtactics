@@ -1,5 +1,5 @@
 @author : ctomni231
-@version : 02.19.2012
+@version : 12.31.2012
 
 Hardcoded Features
 
@@ -13,10 +13,19 @@ JSlix Screen - Complete (JMain Runnable)
 [#] = Started
 [ ] = Not Started
 [?] = Unsure of Whether Option Will be Implemented
+[@] = Deprecated (Not planned for development)
 
 ---------------------------
 JSR Notes and Current Goals
 ---------------------------
+
+---
+Rhino Bridge
+---
+
+The current function in engineBase.js persistence.load is
+broken not allowing loading of well-formed JSON maps to
+be loaded into the system. Priority: High
 
 ---
 CWT
@@ -26,8 +35,8 @@ Change the MapDraw class from MenuItem to MovingMenu for stretch
 [Do not make them MenuItems (Java Heap) Use the width and height
 to average the screen weight] Priority: Low
 
-Work on conversion of XML documents to JSON. Followed by making the
-JSON parser and writer. Priority: Medium
+Working on the JSON Writer, there is already framework for a
+decent one in DetachedMapUtil.java Priority: Medium
 
 -----
 JSlix
@@ -65,15 +74,16 @@ JSR General Todo List (Current) [ ]
 
 Moveable Cursor (MapDraw)                     [#]
 Stretch Cursor - Invention (tilex, tiley)     [ ]
-XML to JSON Conversion                        [ ]
+XML to JSON Conversion                        [#]
 
 JSlix Todo List (Current) [ ]
 
-AndEngine Functionality (JSlix)               [?]
-JSON Parser (JSlix)                           [ ]
-JSON Writer (JSlix)                           [ ]
-JSON/XML Combined Parser (JSlix)              [?]
-JSOn/XML Combined Writer (JSlix)              [?]
+AndEngine Functionality (JSlix)               [@]
+LibGDX Functionality (JSlix)                  [?]
+JSON Parser (JSlix)                           [*]
+JSON Writer (JSlix)                           [#]
+JSON/XML Combined Parser (JSlix)              [*]
+JSOn/XML Combined Writer (JSlix)              [@]
 Message Option Screen (JSlix)                 [#]
 Message Prompt Screen (JSlix)                 [#]
 Java2D Full Screen Implementation (JSlix)     [ ]

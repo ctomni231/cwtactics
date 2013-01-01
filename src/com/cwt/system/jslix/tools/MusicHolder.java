@@ -11,15 +11,23 @@ package com.cwt.system.jslix.tools;
  */
 public class MusicHolder {
 
-    public final byte MP3 = 0;//The index of an MP3 file
-    public final byte WAV = 1;//The index of a WAV file
-    public final byte OGG = 2;//The index of an OGG file
-    public final byte MID = 3;//The index of a MIDI file
+	/** The index of an MP3 file */
+    public final byte MP3 = 0;
+    /** The index of a WAV file */
+    public final byte WAV = 1;
+    /** The index of an OGG file */
+    public final byte OGG = 2;
+    /** The index of a MIDI file */
+    public final byte MID = 3;
 
-    public String clip;//The path to the music file
-    public int type;//The type of audio file
-    public int start;//Where the music starts its playback
-    public int end;//Where the music ends its playback
+    /** The path to the music file */
+    public String clip;
+    /** The type of audio file */
+    public int type;
+    /** Where the music starts its play back */
+    public int start;
+    /** Where the music ends its play back */
+    public int end;
 
     /**
      * This class is simply for storing information regarding music files.

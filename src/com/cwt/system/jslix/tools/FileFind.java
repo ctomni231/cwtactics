@@ -23,12 +23,18 @@ import java.util.ArrayList;
  */
 
 public class FileFind {
-    private File theFile;//Holds the temporary file for storage
-    private String basePath;//BasePath of .jar
-    private String thePath;//Path of directory
-    private ArrayList<FileIndex> allFiles;//Holds all searched files
-    private ArrayList<String> fileType;//Finds specific files
-    private ArrayList<String> avoidDir;//Avoids specific directories
+	/** Holds the temporary file for storage */
+    private File theFile;
+    /** BasePath of .jar */
+    private String basePath;
+    /** Path of directory */
+    private String thePath;
+    /** Holds all searched files */
+    private ArrayList<FileIndex> allFiles;
+    /** Finds specific files */
+    private ArrayList<String> fileType;
+    /** Avoids specific directories */
+    private ArrayList<String> avoidDir;
 
     /**
      * This class searches for files from the root directory.

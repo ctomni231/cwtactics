@@ -32,24 +32,37 @@ import javazoom.jl.player.advanced.AdvancedPlayer;
  */
 public class MusicLibrary implements Runnable{
 
-    private MusicHolder[] sortedClip;//Holds an array of music file data
-    private FileFind finder;//Holds the file locator for this class
-    private HashMap<String, Integer> hashClip;//Holds string references
-    private MusicHolder current;//Holds the current song for playing
+	/** Holds an array of music file data */
+    private MusicHolder[] sortedClip;
+    /** Holds the file locator for this class */
+    private FileFind finder;
+    /** Holds string references */
+    private HashMap<String, Integer> hashClip;
+    /** Holds the current song for playing */
+    private MusicHolder current;
 
-    private AdvancedPlayer player;//The MP3 music player
-    private MusicListener listener;//The playback listener for MP3 music
-    private FileInputStream musicFile;//The inputStream for music files
-    private Clip clip;//Holds the sound effect player
-    private OggClip oggClip;//Holds the OGG player
-    private Sequencer midiPlayer;//Holds the MIDI player
+    /** The MP3 music player */
+    private AdvancedPlayer player;
+    /** The play back listener for MP3 music */
+    private MusicListener listener;
+    /** The inputStream for music files */
+    private FileInputStream musicFile;
+    /** Holds the sound effect player */
+    private Clip clip;
+    /** Holds the OGG player */
+    private OggClip oggClip;
+    /** Holds the MIDI player */
+    private Sequencer midiPlayer;
 
-    private Thread looper;//This creates a separate thread for music
-    private boolean loop;//This holds whether a song loops or not
-    private boolean ready;//Holds whether all the outside data is loaded
+    /** This creates a separate thread for music */
+    private Thread looper;
+    /** This holds whether a song loops or not */
+    private boolean loop;
+    /** Holds whether all the outside data is loaded */
+    private boolean ready;
 
     /**
-     * This class supports playback, loop, and stop for MP3, WAV, OGG, and
+     * This class supports play back, loop, and stop for MP3, WAV, OGG, and
      * MID music files. This class also organizes the files so they only
      * need to be loaded into memory once.
      */
@@ -86,8 +99,8 @@ public class MusicLibrary implements Runnable{
     /**
      * This adds a music clip through a file path
      * @param filename The path to the music clip
-     * @param start Where to start playback in the clip
-     * @param end Where to end playback in the clip
+     * @param start Where to start play back in the clip
+     * @param end Where to end play back in the clip
      * @return Whether the clip was added(T) or not(F)
      */
     private boolean addClip(String filename, int start, int end){
@@ -199,7 +212,7 @@ public class MusicLibrary implements Runnable{
     }
 
     /**
-     * This function forces all music to halt playback. It is a little
+     * This function forces all music to halt play back. It is a little
      * delayed for OGG music
      */
     public void stop(){
@@ -221,7 +234,7 @@ public class MusicLibrary implements Runnable{
     }
         
     /**
-     * This function runs the playback for mp3 in a separate thread
+     * This function runs the play back for mp3 in a separate thread
      */
     public void run() {
         try{
@@ -238,7 +251,7 @@ public class MusicLibrary implements Runnable{
 
     /**
      * This function sets up music to play within its own Thread environment
-     * to save cpu time in the game
+     * to save CPU time in the game
      * @param repeat Whether this music clip loops(T) or not(F)
      */
     private void playMusic(boolean repeat){

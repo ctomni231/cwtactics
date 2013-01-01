@@ -24,21 +24,23 @@ import javax.imageio.ImageIO;
 public class PixtureMap extends ImgLibrary{
 
     private static final long serialVersionUID = 2452945053572843636L;
-    public final String FONT = "DIALOG";//The default font type
+    
+    /** The default font type */
+    public final String FONT = "DIALOG";
 	
-    //The graphics class used for creating images
+    /** The graphics class used for creating images */
     private Graphics2D g;
-    //The Image class used to store the creations
+    /** The Image class used to store the creations */
     private BufferedImage bimg;
-    //The width of the edit image portion
+    /** The width of the edit image portion */
     private int editSizeX;
-    //The height of the edit image portion
+    /** The height of the edit image portion */
     private int editSizeY;
-    //The transparent color of the image
+    /** The transparent color of the image */
     private Color transparent;
-    //The pixel representation of the grid for editing
+    /** The pixel representation of the grid for editing */
     private int[][] editgrid;
-    //The current opascity of an update
+    /** The current opacity of an update */
     private double editOpacity;
 
     /**
@@ -51,7 +53,6 @@ public class PixtureMap extends ImgLibrary{
         initialize(Color.BLACK);
     }
 
-    //Creates the buffered image to be used with the grid
     /**
      * This function creates the buffered image to be used with the grid
      * @param sizex The width of the buffered image
@@ -344,7 +345,7 @@ public class PixtureMap extends ImgLibrary{
     }
 
     /**
-     * This function stores the pixels inputted into the editing grid
+     * This function stores the pixel input into the editing grid
      * @param change The pixels to input into the image
      */
     private void copyArray(int[] change){

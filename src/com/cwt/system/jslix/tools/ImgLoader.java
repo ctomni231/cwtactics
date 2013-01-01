@@ -31,7 +31,9 @@ import org.newdawn.slick.SlickException;
 public class ImgLoader extends Component{
 	
     private static final long serialVersionUID = 2452945053572843636L;
-    private final String IMAGE_TYPE = "png";//Sets the default for Slick Images
+    
+    /** Sets the default for Slick Images */
+    private final String IMAGE_TYPE = "png";
 
     /**
      * Loads an Image from a image file. This is used to load images from

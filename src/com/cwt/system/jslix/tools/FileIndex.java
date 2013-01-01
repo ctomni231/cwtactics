@@ -12,12 +12,18 @@ package com.cwt.system.jslix.tools;
  */
 
 public class FileIndex {
-    public String fname;//The filename of this particular file
-    public String fpath;//The path to this file
-    public String bpath;//The base path to this file's directory
-    public String prefix;//The current name of this file
-    public String suffix;//The current attribute file
-    public boolean isDirectory;//Holds if this file is a directory
+	/** The filename of this particular file */
+    public String fname;
+    /** The path to this file */
+    public String fpath;
+    /** The base path to this file's directory */
+    public String bpath;
+    /** The current name of this file */
+    public String prefix;
+    /** The current attribute file */
+    public String suffix;
+    /** Holds if this file is a directory */
+    public boolean isDirectory;
 
     /**
      * This class holds one file for a FileFind class. This helps in

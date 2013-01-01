@@ -19,15 +19,15 @@ public class TextImgLibrary extends ImgLibrary{
 	
     private static final long serialVersionUID = 2452945053572843636L;
 	
-    //Capital Letters Position
+    /** Capital Letters Position */
     private final int ASCII_CAP = 65;
-    //Lowercase Letters Position
+    /** Lower case Letters Position */
     private final int ASCII_LOW = 97;
-    //Numbers start position
+    /** Numbers start position */
     private final int ASCII_NUMBER = 48;
-    //This helps store an textImage
+    /** This helps store an textImage */
     BufferedImage bimg;
-    //Graphic class for the Buffered Image
+    /** Graphic class for the Buffered Image */
     Graphics2D g;
 
     /**

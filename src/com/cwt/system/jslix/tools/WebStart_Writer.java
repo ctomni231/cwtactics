@@ -12,13 +12,19 @@ package com.cwt.system.jslix.tools;
  */
 public class WebStart_Writer {
 
-    public final String JNLP_PATH = "data/cwtactics.jnlp";//Holds the JNLP path
-    public final String JAR_PATH = "data/cwtactics.jar";//Hold the JAR Path
-    public final String TITLE = "Custom Wars Tactics";//Holds the title
-    public final String VENDOR = "Exotec-BearWolf";//Holds the creator data
-    public final String DESC = "A custom AW experience";//Holds the description
+	/** Holds the JNLP path */
+    public final String JNLP_PATH = "data/cwtactics.jnlp";
+    /** Hold the JAR Path */
+    public final String JAR_PATH = "data/cwtactics.jar";
+    /** Holds the title */
+    public final String TITLE = "Custom Wars Tactics";
+    /** Holds the creator data */
+    public final String VENDOR = "Exotec-BearWolf";
+    /** Holds the description */
+    public final String DESC = "A custom AW experience";
 
-    private XML_Writer writer;//The writer used to write the XML file
+    /** The writer used to write the XML file */
+    private XML_Writer writer;
 
     /**
      * This class writes a web start for Custom Wars Tactics. This class still

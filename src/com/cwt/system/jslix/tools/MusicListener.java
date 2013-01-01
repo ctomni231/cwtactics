@@ -15,11 +15,12 @@ import javazoom.jl.player.advanced.PlaybackListener;
  */
 public class MusicListener extends PlaybackListener {
 
-    private boolean playing;//Holds whether a song is playing in the system
+	/** Holds whether a song is playing in the system */
+    private boolean playing;
 
     /**
-     * This function tells you when the playback started
-     * @param pe The playback event
+     * This function tells you when the play back started
+     * @param pe The play back event
      */
     @Override
     public void playbackStarted(PlaybackEvent pe) {
@@ -28,8 +29,8 @@ public class MusicListener extends PlaybackListener {
     }
 
     /**
-     * This function tells you when the playback ended
-     * @param pe The playback event
+     * This function tells you when the play back ended
+     * @param pe The play back event
      */
     @Override
     public void playbackFinished(PlaybackEvent pe) {
@@ -38,7 +39,7 @@ public class MusicListener extends PlaybackListener {
     }
 
     /**
-     * This function informs you when a playback is playing
+     * This function informs you when it is playing
      * @return Whether the song is playing(T) or not(F)
      */
     public boolean isPlaying(){

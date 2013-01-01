@@ -17,19 +17,19 @@ import org.newdawn.slick.Image;
  */
 
 public class ImgHolder {
-    //Stores a Java Image
+    /** Stores a Java Image */
     public java.awt.Image image;
-    //Stores a Slick Image
+    /** Stores a Slick Image */
     public Image sImage;
-    //Stores a pixel representation of an image
+    /** Stores a pixel representation of an image */
     public int[] pixels;
-    //Stores the current width of this image
+    /** Stores the current width of this image */
     public int sizex;
-    //Stores the current height of this image
+    /** Stores the current height of this image */
     public int sizey;
-    //Stores the original width of this image (when loaded)
+    /** Stores the original width of this image (when loaded) */
     public int origx;
-    //Stores the original height of this image (when loaded)
+    /** Stores the original height of this image (when loaded) */
     public int origy;
 
     /**

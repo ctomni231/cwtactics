@@ -21,31 +21,33 @@ import org.newdawn.slick.Color;
 
 public class ImgLibrary extends Component{
     
-    //Helps with loading images
+	private static final long serialVersionUID = 1L;
+	
+	/** Helps with loading images */
     protected ImgLoader il;
-    //Helps store a list of images by index
+    /** Helps store a list of images by index */
     private ImgHolder[] sortedImg;
-    //Helps turn that list into a String reference
+    /** Helps turn an image list into a String reference */
     private HashMap<String, Integer> hashImg;
-    //Holds values so you can change colors within images
+    /** Holds values so you can change colors within images */
     private HashMap<Integer, Integer> colorChanger;
-    //Holds values that will be blended into image
+    /** Holds values that will be blended into image */
     private ArrayList<Integer> colorBlend;
-    //Used to set the width for an image
+    /** Used to set the width for an image */
     private int sizex;
-    //Used to set the height for an image
+    /** Used to set the height for an image */
     private int sizey;
-    //Used to set the blend opacity
+    /** Used to set the blend opacity */
     private double opacity;
-    //Lets the user choose whether to store a filename image
+    /** Lets the user choose whether to store a filename image */
     private boolean storeFileRef;
-    //Lets the user quickly flip this image horizontally
+    /** Lets the user quickly flip this image horizontally */
     private boolean mirrorX;
-    //Lets the user quickly flip this image vertically
+    /** Lets the user quickly flip this image vertically */
     private boolean mirrorY;
-    //Lets the user rotate this image clockwise 90 degrees
+    /** Lets the user rotate this image clockwise 90 degrees */
     private boolean rotNine;
-    //A temporary item to help store images
+    /** A temporary item to help store images */
     private ImgHolder tempImg;
 
     /**

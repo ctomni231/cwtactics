@@ -12,18 +12,17 @@ package com.cwt.system.jslix.tools;
 
 public class MouseHelper {
 
-    //Mouse helper functions
-    //Mouse does not register commands if within the x vicinity of this
+    /** Mouse does not register commands if within the x vicinity of this */
     private int lockx = -1000;
-    //Mouse does not register commands if within the y vicinity of this
+    /** Mouse does not register commands if within the y vicinity of this */
     private int locky = -1000;
-    //Controls whether mouse movements are registered within screens
+    /** Controls whether mouse movements are registered within screens */
     private boolean mouseLock = false;
-    //Controls how often a mouse is able to effect menu actions
+    /** Controls how often a mouse is able to effect menu actions */
     private boolean scroll = false;
-    //This sets the control of scrolling to system time
+    /** This sets the control of scrolling to system time */
     private boolean scrollWatch = false;
-    //How quick a user is able to scroll, the higher the number the quicker
+    /** How quick a user is able to scroll, the higher the number the quicker */
     private int scrollInd = 2;
 
     /**
