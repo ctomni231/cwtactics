@@ -1,21 +1,21 @@
 package com.cwt.io;
 
-import com.cwt.system.jslix.tools.XML_Parser;
+import com.cwt.system.jslix.tools.JSON_Parser;
 
 /**
  * XML_Reader.java
  *
  * A static class used for binding both XML parsing and Language control
- * in one class.
+ * in one class. Now has support for reading in and parsing JSON files.
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.10.10
+ * @version 12.31.12
  */
 public class XML_Reader {
 
     /** This variable helps handle and parse XML documents */
-    private static XML_Parser parser = new XML_Parser();
+    private static JSON_Parser parser = new JSON_Parser();
     /** This variable regulates XML language conversions */
     private static LangControl control = new LangControl();
 
@@ -42,6 +42,29 @@ public class XML_Reader {
      */
     public static void setLanguagePath(String filename){
         control.getBundle(filename);
+    }
+    
+    /**
+     * This function combines getIndex() and getAttribute() into one function
+     * to allow for easier access into the XML document tags
+     * @param tag The list of tags split by whitespace
+     * @param index The index where the XML tags are located
+     * @param key The attribute key to pull from
+     * @return A value associated with the key
+     */
+    public static String getTagAttribute(String tag, int index, String key){
+    	return getIndex(tag).length > index ? getAttribute(getIndex(tag)[index], key) : "";
+    }
+    
+    /**
+     * This function combines getIndex() and getAttribute() into one function
+     * to allow for easier access into the JSON document tags
+     * @param tag The list of tags split by whitespace
+     * @param index The index where the XML tags are located
+     * @return A value associated with the key
+     */
+    public static String getJSONAttribute(String tag, int index){
+    	return getJSONIndex(tag).length > index ? getJSONValue(getJSONIndex(tag)[index]) : "";
     }
 
     /**
@@ -71,6 +94,25 @@ public class XML_Reader {
      */
     public static String[] getCharacters(int index){
         return parser.getCharacters(index);
+    }
+    
+    /**
+     * This function gets the location of tags in a parsed document from
+     * a whitespace delimiter string for JSON files.
+     * @param tag The list of tags split by whitespace
+     * @return A list of locations where the tags occur
+     */
+    public static int[] getJSONIndex(String tag){
+    	return getIndex(parser.getPrefix()+" "+tag);
+    }
+    
+    /**
+     * This function gets an attribute value for JSON files from the location index
+     * @param index The index where the XML tags are located
+     * @return A value associated with the JSON file object
+     */
+    public static String getJSONValue(int index){
+        return getAttribute(index, parser.DATA);
     }
 
     /**

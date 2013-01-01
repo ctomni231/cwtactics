@@ -28,7 +28,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.20.11
+ * @version 12.31.12
  */
 
 public class MainMenuScreen extends Screen{
@@ -69,33 +69,25 @@ public class MainMenuScreen extends Screen{
         bgPic = new BackgroundHandler(scr_width, scr_height);
 
         XML_Reader.parse("data/faction.xml");
-        String colorPath = XML_Reader.getAttribute(
-                XML_Reader.getIndex("army color unit")[0], "small");
-        String faction = XML_Reader.getAttribute(
-                XML_Reader.getIndex("army faction")[0], "symbol");
+        String colorPath = XML_Reader.getTagAttribute("army color unit", 0, "small");
+        String faction = XML_Reader.getTagAttribute("army faction", 0, "symbol");
 
         XML_Reader.parse("data/titlescreen.xml");
-        XML_Reader.setLanguagePath(XML_Reader.getAttribute(
-                XML_Reader.getIndex("menu lang")[0], "path"));
-        TextPix.setTextPath(XML_Reader.getAttribute(XML_Reader.getIndex(
-                "menu title")[0], "alpha"));
-        TextPix.setNumPath(XML_Reader.getAttribute(XML_Reader.getIndex(
-                "menu title")[0], "number"));
+        XML_Reader.setLanguagePath(XML_Reader.getTagAttribute("menu lang", 0, "path"));
+        TextPix.setTextPath(XML_Reader.getTagAttribute("menu title", 0, "alpha"));
+        TextPix.setNumPath(XML_Reader.getTagAttribute("menu title", 0, "number"));
 
-        logoPic = new LogoHandler(XML_Reader.getAttribute(XML_Reader.getIndex(
-                "menu logo")[0], "help"), SIZE_X, SIZE_Y);
+        logoPic = new LogoHandler(XML_Reader.getTagAttribute("menu logo", 0, "help"), 
+        		SIZE_X, SIZE_Y);
         logoPic.setColorPath(colorPath);
-        startHelp = XML_Reader.convert(XML_Reader.getAttribute(
-                XML_Reader.getIndex("menu title")[0], "help"));
-        mainText = XML_Reader.convert(XML_Reader.getAttribute(
-                XML_Reader.getIndex("menu screen")[0], "ID"));
+        startHelp = XML_Reader.convert(XML_Reader.getTagAttribute("menu title", 0, "help"));
+        mainText = XML_Reader.convert(XML_Reader.getTagAttribute("menu screen", 0, "ID"));
 
         titleScr = new TitleGUI(220, 375, 0);
         titleScr.setOrigScreen(SIZE_X, SIZE_Y);
         titleScr.setShadowColor(Color.BLACK);
         titleScr.setShadowOffset(1);
-        titleScr.setWords(XML_Reader.getAttribute(
-                XML_Reader.getIndex("menu title")[0], "start"), 200, 20);
+        titleScr.setWords(XML_Reader.getTagAttribute("menu title", 0, "start"), 200, 20);
         titleScr.setColorPath(colorPath);
 
         int[] entryLocation = XML_Reader.getIndex("menu screen exit list");
@@ -114,8 +106,8 @@ public class MainMenuScreen extends Screen{
             entries[2][i] = XML_Reader.getAttribute(entryLocation[i], "text");
             entries[3][i] = XML_Reader.getAttribute(entryLocation[i], "help");
         }
-        menuScr = new MenuGUI(XML_Reader.getAttribute(
-                XML_Reader.getIndex("menu title")[0], "arrow"), 20, 0, 165, 0);
+        menuScr = new MenuGUI(XML_Reader.getTagAttribute("menu title", 0, "arrow"), 
+        				20, 0, 165, 0);
         //menuScr.init();
         menuScr.initMenu(XML_Reader.convert(entries[0]),
                 XML_Reader.convert(entries[1]), XML_Reader.convert(entries[2]),
@@ -131,8 +123,8 @@ public class MainMenuScreen extends Screen{
             entries[2][i] = XML_Reader.getAttribute(entryLocation[i], "text");
             entries[3][i] = XML_Reader.getAttribute(entryLocation[i], "help");
         }
-        editScr = new MenuGUI(XML_Reader.getAttribute(
-                XML_Reader.getIndex("menu title")[0], "arrow"), 20, 0, 165, 0);
+        editScr = new MenuGUI(XML_Reader.getTagAttribute("menu title", 0, "arrow"),
+        				20, 0, 165, 0);
         editScr.initMenu(XML_Reader.convert(entries[0]),
                 XML_Reader.convert(entries[1]), XML_Reader.convert(entries[2]),
                 XML_Reader.convert(entries[3]));
@@ -140,15 +132,14 @@ public class MainMenuScreen extends Screen{
         editScr.setColorPath(colorPath);
         editScr.setPrevious(1);
 
-        credScr = new CreditGUI(XML_Reader.getAttribute(
-                XML_Reader.getIndex("menu title")[0], "credit"), 0, 0, 1);
+        credScr = new CreditGUI(XML_Reader.getTagAttribute("menu title", 0, "credit"), 
+        				0, 0, 1);
         credScr.setOpacity(0.7);
         credScr.setColorPath(colorPath);
         credScr.setOrigScreen(SIZE_X, SIZE_Y);
 
-        keyScr = new KeyGUI(XML_Reader.convert(XML_Reader.getAttribute(
-                XML_Reader.getIndex("menu screen key")[0], "text")),
-                20, 0, 200, 1);
+        keyScr = new KeyGUI(XML_Reader.convert(XML_Reader.getTagAttribute(
+        		"menu screen key", 0, "text")), 20, 0, 200, 1);
         keyScr.setColorPath(colorPath);
         keyScr.setOrigScreen(SIZE_X, SIZE_Y);
 
@@ -163,16 +154,11 @@ public class MainMenuScreen extends Screen{
             entries[0][i] = XML_Reader.getAttribute(entryLocation[i], "text");
             entries[1][i] = XML_Reader.getAttribute(entryLocation[i], "help");
         }
-        entries[2][0] = XML_Reader.convert(XML_Reader.getAttribute(
-                XML_Reader.getIndex("menu logo")[0], "title"));
-        entries[3][0] = XML_Reader.convert(XML_Reader.getAttribute(
-                XML_Reader.getIndex("menu logo")[0], "mini"));
-        entries[4][0] = XML_Reader.convert(XML_Reader.getAttribute(
-                XML_Reader.getIndex("menu logo")[0], "pic"));
-        entries[5][0] = XML_Reader.convert(XML_Reader.getAttribute(
-                XML_Reader.getIndex("menu title")[0], "copy"));
-        entries[6][0] = XML_Reader.convert(XML_Reader.getAttribute(
-                XML_Reader.getIndex("menu title")[0], "load"));
+        entries[2][0] = XML_Reader.convert(XML_Reader.getTagAttribute("menu logo", 0, "title"));
+        entries[3][0] = XML_Reader.convert(XML_Reader.getTagAttribute("menu logo", 0, "mini"));
+        entries[4][0] = XML_Reader.convert(XML_Reader.getTagAttribute("menu logo", 0, "pic"));
+        entries[5][0] = XML_Reader.convert(XML_Reader.getTagAttribute("menu title", 0, "copy"));
+        entries[6][0] = XML_Reader.convert(XML_Reader.getTagAttribute("menu title", 0, "load"));
         entries[7][0] = faction;
 
         XML_Reader.clear();

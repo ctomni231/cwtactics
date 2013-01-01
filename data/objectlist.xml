@@ -431,6 +431,7 @@
 	<list file="image/terrain/AWDS_PIPE~PPPP.png" />
 	<list file="image/terrain/AWDS_PIPS~LLPP.png" />
 	<list file="image/terrain/AWDS_PIPS~PPLL.png" />
+	<list file="image/terrain/AWDS_PLIN.png" />
 	<list file="image/terrain/AWDS_PLIN~NNPP.png" />
 	<list file="image/terrain/AWDS_PLIN~PPNN.png" />
 	<list file="image/terrain/AWDS_REEF.png" />

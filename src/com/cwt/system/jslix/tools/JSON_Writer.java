@@ -91,7 +91,7 @@ public class JSON_Writer extends XML_Parser {
 			else if (temp.charAt(0) == '<') {
 				temp = temp.substring(1);
 				writer.addXMLTag(temp.matches("\\d.*") ? RomanNumeral
-						.convertToRomanNumeral(temp) : temp);
+						.convert(Integer.valueOf(temp)) : temp);
 			} else
 				writer.addAttribute("data",
 						temp.substring(0, data.indexOf("<")), true);

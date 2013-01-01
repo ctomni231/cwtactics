@@ -44,6 +44,16 @@ public class ObjectLibrary {
     }
     
     /**
+     * This function gets the best terrain index for an object available
+     * @param tag The 4-letter tag describing the object
+     * @return The index where this object is located
+     */
+    public static int getTerrainIndex(String tag){
+    	objStore.changeName(tag);
+    	return objStore.getBestIndex(objStore.TERRAIN);
+    }
+    
+    /**
      * This function gets an image from the MapElement list of images using
      * the parameters specified
      * @param index The index location of the image

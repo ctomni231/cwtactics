@@ -126,10 +126,9 @@ public class XML_Parser extends DefaultHandler{
 		try {
 			Scanner scanner = new Scanner(finder.getFile(filename));
 			while (scanner.hasNext())
-				script = script + scanner.nextLine() + "\n";
+				script += scanner.nextLine() + "\n";
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println(e);
 		}
 		return script;
     }

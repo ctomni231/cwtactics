@@ -59,8 +59,8 @@ public class ObjectSorter extends ObjectStorage{
 	//}
 	
 	/**
-	 * This function changes the preferred code attribute
-	 * @param newName The preferred code attribute
+	 * This function changes the preferred name attribute
+	 * @param newName The preferred name attribute
 	 */
 	public void changeName(String newName){
 		name = newName;
@@ -181,8 +181,8 @@ public class ObjectSorter extends ObjectStorage{
 		char[] tempstore = connection.toCharArray();
 		int points = 0;
 		for(int i = 0; i < 8; i++){
-			current[i] = tempcur.length < i ? tempcur[i] : 'N';
-			storage[i] = tempstore.length < i ? tempstore[i] : 'N';
+			current[i] = i < tempcur.length ? tempcur[i] : 'N';
+			storage[i] = i < tempstore.length ? tempstore[i] : 'N';
 			if(current[i] == storage[i] && current[i] != 'N')
 				points += CONNECT_POINTS;
 			else if(current[i] != storage[i] && storage[i] != 'N')

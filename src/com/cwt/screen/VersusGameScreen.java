@@ -37,24 +37,21 @@ public class VersusGameScreen extends Screen{
     private final int WAIT_TIME = 15;//The help bar waiting time
     
     private MapField mapScr;//The map Screen
-    private JSON_Parser parser;//The map parser
 
     private boolean scrStart;//The initialization sequence starter for screens
     private int column;//Which screen index we are currently showing
 
     public VersusGameScreen(){
     	
-    	parser = new JSON_Parser();
-    	parser.parse("map/test.json");
-    	
     	mapScr = new MapField(10, 10, 0);
+    	mapScr.loadMap("map/test.json");
     	
     	//TODO: Something is wrong with the EngineBridge Rhino parser when reading maps
     	//Un-comment line below and go to menu option "Versus" in JMain.java to see the error.
-    	//mapScr.loadMap(parser.getScript());
+    	//mapScr.loadMapFromEngine(TestMap.createTestMap());
     	
     	
-        PixAnimate.getTags();
+        //PixAnimate.getTags();
         //JukeBox.stopClip();
         //JukeBox.addClip(MUSIC);
         //JukeBox.addClip(FX_1);

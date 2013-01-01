@@ -25,26 +25,25 @@ public class RomanNumeral {
 	 * 				Numerical data in String format
 	 * @return The Roman numeral value of the data
 	 */
-	public static String convertToRomanNumeral(String intData) {
-		int num = Integer.valueOf(intData);
-		intData = "";// Reused this as temporary.
-		while(num > 0){
+	public static String convert(int numData) {
+		String intData = "";// Reused this as temporary.
+		while(numData > 0){
 			for(int i = 1000, j = 3; i > 0; i /= 10, j--){
-				if(num >= i - (i / 10)){
-					if(num < i){
+				if(numData >= i - (i / 10)){
+					if(numData < i){
 						intData += ROMAN.charAt((j*2)-2);
-						num += i / 10;
+						numData += i / 10;
 					}
 					intData += ROMAN.charAt(j*2);
-					num -= i;
+					numData -= i;
 					break;
-				}else if(j > 0 && num >= 4*(i / 10)){
-					if(num < 5*(i / 10)){
+				}else if(j > 0 && numData >= 4*(i / 10)){
+					if(numData < 5*(i / 10)){
 						intData += ROMAN.charAt((j*2)-2);
-						num += (i / 10);
+						numData += (i / 10);
 					}
 					intData += ROMAN.charAt(j*2-1);
-					num -= 5*(i/10);
+					numData -= 5*(i/10);
 					break;
 				}
 			}
@@ -53,14 +52,14 @@ public class RomanNumeral {
 	}
 
 	/**
-	 * This function takes roman numerals and converts them into normal
+	 * This function takes Roman numerals and reverts them into normal
 	 * numerals.
 	 * 
 	 * @param data
 	 *            Roman numeral in String format
 	 * @return The integer value of the data
 	 */
-	public static String convertFromRomanNumeral(String romanData) {
+	public static int revert(String romanData) {
 		int decimal = 0;
 		int lastNumber = 0;
 		String romanNumeral = romanData.toUpperCase();
@@ -108,7 +107,7 @@ public class RomanNumeral {
 				break;
 			}
 		}
-		return Integer.toString(decimal);
+		return decimal;
 	}
 
 	/**
@@ -145,8 +144,8 @@ public class RomanNumeral {
 		String input, output, roman;
 		for (int i = 0; i < 10000; i++) {
 			input = Integer.toString(i);
-			roman = convertToRomanNumeral(input);
-			output = convertFromRomanNumeral(roman);
+			roman = convert(Integer.valueOf(input));
+			output = Integer.toString(revert(roman));
 			System.out.println(input + " - " + roman + " - " + output);
 			if (!input.equals(output)) {
 				break;

@@ -6,7 +6,9 @@ import java.awt.Graphics2D;
 import org.newdawn.slick.Graphics;
 
 import com.cwt.game.ObjectLibrary;
+import com.cwt.io.XML_Reader;
 import com.cwt.system.jslix.state.ScreenSkeleton;
+import com.cwt.system.jslix.tools.RomanNumeral;
 import com.engine.EngineBridge;
 
 /*
@@ -37,6 +39,8 @@ public class MapField extends MovingMenu implements ScreenSkeleton{
     private int mapsy;
     /** The current map drawn to the screen */
     private MapItem[][] drawMap;
+    /** Holds a temporary map item */
+    private MapItem item;
     
     /** Holds the scale of currently drawn tiles */
     private double scale;
@@ -45,18 +49,39 @@ public class MapField extends MovingMenu implements ScreenSkeleton{
 		super(locx, locy, speed);
 		mapsx = MAP_X;
         mapsy = MAP_Y;
-        drawMap = new MapItem[mapsx][mapsy];
         scale = ObjectLibrary.getScale();
+        drawMap = new MapItem[mapsx][mapsy];
         resetMap();
 	}
 	
-	public void loadMap(String jsonMap){
+	public void loadMapFromEngine(String jsonMap){
 		EngineBridge.setModule("PERSISTENCE");
 		EngineBridge.callFunction("load", EngineBridge.evalExpression(jsonMap));
 		
 		EngineBridge.setModule("GAME");
 		mapsx = EngineBridge.callFunctionAsInteger("mapWidth");
 		mapsy = EngineBridge.callFunctionAsInteger("mapHeight");
+	}
+	
+	public void loadMap(String filename){
+		XML_Reader.parse(filename);
+		mapsx = Integer.valueOf(XML_Reader.getJSONAttribute("mapWidth", 0));
+		mapsy = Integer.valueOf(XML_Reader.getJSONAttribute("mapHeight", 0));
+		int terrFill = ObjectLibrary.getTerrainIndex("PLIN");
+		String terrTemp = "";
+		
+		drawMap = new MapItem[mapsx][mapsy];
+		deleteItems();
+        for(int i = 0; i < mapsx; i++){
+            for(int j = 0; j < mapsy; j++){
+            	item = new MapItem();
+            	terrTemp = XML_Reader.getJSONAttribute(
+            			"data "+RomanNumeral.convert(i)+" "+RomanNumeral.convert(j), 0);
+            	item.terrain = terrTemp.length() > 0 ? 
+            			ObjectLibrary.getTerrainIndex(terrTemp) : terrFill; 
+                drawMap[i][j] = createNewImage(item, i, j);
+            }
+        }
 	}
 	
 	/**
@@ -108,7 +133,7 @@ public class MapField extends MovingMenu implements ScreenSkeleton{
      */
     private MapItem createNewImage(MapItem item, int x, int y){
         if(item.terrain < 0){
-            item.terrain = 2;
+            item.terrain = 0;
             item.blank = 0;
             item.connect = 0;
         }

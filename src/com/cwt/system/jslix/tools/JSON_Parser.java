@@ -12,7 +12,8 @@ import org.json.XML;
  * JSON_Parser
  *
  * Simple JSON parser class. This class converts JSON files into XML
- * to make parsing of JSON files consistent.
+ * to make parsing of JSON files consistent. It is also fully capable
+ * of parsing XML files making it a combination parser.
  *
  * @author <ul><li>Carr, Crecen</li>
  *             <li>Radom, Alexander</li>
@@ -24,25 +25,32 @@ public class JSON_Parser extends XML_Parser {
 
 	/** The XML Header for the XML converted file */
 	public final String HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+	/** The XML data attribute Tag for attributes */
+	public final String DATA = "data";
 	/** The JSON parser used to parse JSON files for values */
 	private JSONObject parser;
 	/** The Scanner used to convert files into Strings */
 	private Scanner scanner;
 	/** The JSON script within the system */
 	private String script;
+	/** Holds the prefix of the file name */
+	private String prefix;
 
 	/**
-	 * This class sets up a JSON parser ready for parsing
+	 * This class sets up a JSON parser ready for parsing. It is capable of parsing
+	 * both JSON and XML files.
 	 */
 	public JSON_Parser() {
 		super();
 		script = "";
+		prefix = "";
 	}
 
 	/**
 	 * This class sets up a JSON parser ready for parsing. It parses the
-	 * JSON document using the filename provided
-	 * @param filename The file path to the JSON file
+	 * JSON document using the filename provided. It is also capable of
+	 * parsing XML files
+	 * @param filename The file path to the JSON (or XML) file
 	 */
 	public JSON_Parser(String filename) {
 		this();
@@ -53,41 +61,50 @@ public class JSON_Parser extends XML_Parser {
 	 * This function parses a JSON document using the filename provided. It
 	 * also provides support for parsing XML files.
 	 * 
-	 * @param filename The file path to the JSON file
+	 * @param filename The file path to the JSON (or XML) file
 	 */
-	public void parse(String filename) {
-		if(filename.endsWith(".xml") || filename.endsWith(".jnlp"))
-			super.parse(filename);
-		else{
-			try {
-				script = "";
+	public void parse(String filename) {		
+		try {
 				
-				//Concats the file suffix to be the first tag
-				String temp = new File(filename).getName();
-				temp = temp.substring(0, temp.lastIndexOf("."));
+			//Scans all data within the file
+			scanner = new Scanner(finder.getFile(filename));
+			script = "";
+			while (scanner.hasNext())
+				script += (scanner.nextLine() + "\n");
+			
+			//Makes the file suffix to be the first tag
+			prefix = new File(filename).getName();
+			prefix = prefix.substring(0, prefix.lastIndexOf("."));
 				
-				scanner = new Scanner(finder.getFile(filename));
-				while (scanner.hasNext())
-					script = script + scanner.nextLine() + "\n";
-				parser = new JSONObject(getScript());
-				
+			if(filename.endsWith(".json") || filename.endsWith(".JSON")){
 				// Changes the JSON into an XML file in one pass
-				parseData(formatXML(XML.toString(parser, temp)));
-			} catch (FileNotFoundException e) {
-				System.err.println(e);
-			} catch (JSONException e) {
-				System.err.println(e);
-			}
-		}		
+				parser = new JSONObject(getScript());
+				parseData(formatXML(XML.toString(parser, prefix)));
+			}else
+				super.parse(filename);	
+		} catch (FileNotFoundException e) {
+			System.err.println(e);
+		} catch (JSONException e) {
+			System.err.println(e);
+		}
 	}
 
 	/**
-	 * This function was made to return the raw script of the JSON file
+	 * This function was made to return the raw script of the JSON (or XML) file
 	 * 
-	 * @return The raw script of the JSON file
+	 * @return The raw script of the JSON (or XML) file
 	 */
 	public String getScript() {
 		return script;
+	}
+	
+	/**
+	 * This function gets the prefix of the file name. It is used by the JSON
+	 * Parser to label the first tag. 
+	 * @return The file prefix for this file
+	 */
+	public String getPrefix(){
+		return prefix;
 	}
 
 	/**
@@ -107,11 +124,10 @@ public class JSON_Parser extends XML_Parser {
 				writer.endXMLTag();
 			else if (temp.charAt(0) == '<') {
 				temp = temp.substring(1);
-				writer.addXMLTag(temp.matches("\\d.*") ? RomanNumeral
-						.convertToRomanNumeral(temp) : temp);
+				writer.addXMLTag(temp.matches("\\d.*") ? 
+						RomanNumeral.convert(Integer.valueOf(temp)) : temp);
 			}else
-				writer.addAttribute("data",
-						temp.substring(0, data.indexOf("<")), true);
+				writer.addAttribute(DATA, temp.substring(0, data.indexOf("<")), true);
 			data = data.substring(data.indexOf(">") + 1);
 		}
 		return writer.getRawXML();
