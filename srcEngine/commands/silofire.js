@@ -1,6 +1,7 @@
 controller.registerCommand({
 
   key:"silofire",
+  unitAction: true,
 
   _doDamage: function( x,y ){
     if( model.isValidPosition(x,y) ){
@@ -17,8 +18,7 @@ controller.registerCommand({
     var selectedUnit = data.getSourceUnit();
     var selectedProperty = data.getSourceProperty();
 
-    if( selectedUnit === null || selectedUnit.owner !== model.turnOwner ||
-        selectedProperty === null ||
+    if( selectedProperty === null ||
         selectedProperty .owner !== model.turnOwner ) return false;
 
     // if( controller.actiondata.getTargetUnit(data) !== null ) return false;

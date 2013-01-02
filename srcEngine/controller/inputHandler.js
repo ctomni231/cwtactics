@@ -143,8 +143,11 @@ controller.input = util.createStateMachine( "NONE", {
     cancel:function(){
       // if( this.inMultiStep ) return "ACTION_MENU";
 
-      return ( this.actionData.getSourceUnit() !== null )?
-        "MOVEPATH_SELECTION" : "IDLE";
+      var dto = this.actionData;
+      return ( dto.getSourceUnitId() !== CWT_INACTIVE_ID &&
+               dto.getSourceUnit().owner === model.turnOwner &&
+                model.canAct( dto.getSourceUnitId() ) )? "MOVEPATH_SELECTION" :
+                                                            "IDLE";
     }
   },
 
@@ -305,12 +308,33 @@ controller.input._checkClickEventArgs = function( ev, x,y ){
  * @private
  */
 controller.input._prepareMenu = function(){
+
   var dto = this.actionData;
   var addEl = controller.input._addMenuEntry;
   var commandKeys = Object.keys( controller.commands );
 
+  var unitActable = true;
+  var selectedUnit = dto.getSourceUnit();
+  if( selectedUnit === null || selectedUnit.owner !== model.turnOwner ){
+    unitActable = false;
+  }
+  else if( !model.canAct( dto.getSourceUnitId() ) ) unitActable = false;
+
+  var propertyActable = true;
+  var property = dto.getSourceProperty();
+  if( selectedUnit !== null ) propertyActable = false;
+  if( property === null ||
+      property.owner !== model.turnOwner ) propertyActable = false;
+
   for( var i=0,e=commandKeys.length; i<e; i++ ){
-    if( controller.getActionObject( commandKeys[i] ).condition(dto) ){
+
+    var action = controller.getActionObject( commandKeys[i] );
+
+    // PRE DEFINED CHECKERS
+    if( action.unitAction === true && !unitActable ) continue;
+    if( action.propertyAction === true && !propertyActable ) continue;
+
+    if( action.condition(dto) ){
       addEl( commandKeys[i] );
     }
   }

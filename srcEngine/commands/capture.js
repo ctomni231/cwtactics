@@ -1,6 +1,7 @@
 controller.registerCommand({
 
   key:"captureProperty",
+  unitAction: true,
 
   // ------------------------------------------------------------------------
   condition: function( data ){
@@ -9,10 +10,6 @@ controller.registerCommand({
     var property = data.getTargetProperty();
 
     return (
-
-      selectedUnit !== null &&
-        model.turnOwner === selectedUnit.owner &&
-
       property !== null &&
         model.turnOwner !== property.owner &&
 

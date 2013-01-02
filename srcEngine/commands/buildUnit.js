@@ -1,7 +1,7 @@
 controller.registerCommand({
 
   key:"buildUnit",
-
+  propertyAction: true,
   hasSubMenu: true,
 
   canPropTypeBuildUnitType: function( pType, uType ){
@@ -49,14 +49,12 @@ controller.registerCommand({
   // ------------------------------------------------------------------------
   condition: function( data ){
     var property = data.getSourceProperty();
-    var unit = data.getSourceUnitId();
-
-    if( property === null || unit !== -1 ||
-        property.owner !== model.turnOwner ) return false;
 
     return (
       model.hasFreeUnitSlots( model.turnOwner ) &&
-        this.getBuildList( model.extractPropertyId( property ) ).length > 0
+        this.getBuildList(
+          model.extractPropertyId( data.getSourceProperty() )
+        ).length > 0
       );
   },
 

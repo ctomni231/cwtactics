@@ -1,6 +1,7 @@
 controller.registerCommand({
 
   key: "unloadUnit",
+  unitAction: true,
   multiStepAction: true,
 
   // -----------------------------------------------------------------------
@@ -54,10 +55,6 @@ controller.registerCommand({
   // -----------------------------------------------------------------------
   condition: function( data ){
     var selectedUnit = data.getSourceUnit();
-    if( selectedUnit === null || selectedUnit.owner !== model.turnOwner ){
-      return false;
-    }
-
     if( data.getTargetUnit() !== null ) return false;
 
     var selectedUnitId = data.getSourceUnitId();

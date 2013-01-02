@@ -2242,8 +2242,11 @@ controller.input = util.createStateMachine( "NONE", {
     cancel:function(){
       // if( this.inMultiStep ) return "ACTION_MENU";
 
-      return ( this.actionData.getSourceUnit() !== null )?
-        "MOVEPATH_SELECTION" : "IDLE";
+      var dto = this.actionData;
+      return ( dto.getSourceUnitId() !== CWT_INACTIVE_ID &&
+               dto.getSourceUnit().owner === model.turnOwner &&
+                model.canAct( dto.getSourceUnitId() ) )? "MOVEPATH_SELECTION" :
+                                                            "IDLE";
     }
   },
 
@@ -2404,12 +2407,33 @@ controller.input._checkClickEventArgs = function( ev, x,y ){
  * @private
  */
 controller.input._prepareMenu = function(){
+
   var dto = this.actionData;
   var addEl = controller.input._addMenuEntry;
   var commandKeys = Object.keys( controller.commands );
 
+  var unitActable = true;
+  var selectedUnit = dto.getSourceUnit();
+  if( selectedUnit === null || selectedUnit.owner !== model.turnOwner ){
+    unitActable = false;
+  }
+  else if( !model.canAct( dto.getSourceUnitId() ) ) unitActable = false;
+
+  var propertyActable = true;
+  var property = dto.getSourceProperty();
+  if( selectedUnit !== null ) propertyActable = false;
+  if( property === null ||
+      property.owner !== model.turnOwner ) propertyActable = false;
+
   for( var i=0,e=commandKeys.length; i<e; i++ ){
-    if( controller.getActionObject( commandKeys[i] ).condition(dto) ){
+
+    var action = controller.getActionObject( commandKeys[i] );
+
+    // PRE DEFINED CHECKERS
+    if( action.unitAction === true && !unitActable ) continue;
+    if( action.propertyAction === true && !propertyActable ) continue;
+
+    if( action.condition(dto) ){
       addEl( commandKeys[i] );
     }
   }
@@ -2504,9 +2528,8 @@ controller.SelectionData.prototype.getDataMatrix = function( ){
 controller.registerCommand({
 
   key:"attack",
-
+  unitAction: true,
   targetSelection: true,
-
   hasSubMenu: true,
 
   hasTargets: function( unit, wpTag, x, y, moved ){
@@ -2628,7 +2651,6 @@ controller.registerCommand({
   // ------------------------------------------------------------------------
   condition: function( data ){
     var selectedUnit = data.getSourceUnit();
-    if( selectedUnit === null || selectedUnit.owner !== model.turnOwner ) return false;
 
     var x = data.getTargetX();
     var y = data.getTargetY();
@@ -2742,7 +2764,7 @@ controller.registerCommand({
 controller.registerCommand({
 
   key:"buildUnit",
-
+  propertyAction: true,
   hasSubMenu: true,
 
   canPropTypeBuildUnitType: function( pType, uType ){
@@ -2790,14 +2812,12 @@ controller.registerCommand({
   // ------------------------------------------------------------------------
   condition: function( data ){
     var property = data.getSourceProperty();
-    var unit = data.getSourceUnitId();
-
-    if( property === null || unit !== -1 ||
-        property.owner !== model.turnOwner ) return false;
 
     return (
       model.hasFreeUnitSlots( model.turnOwner ) &&
-        this.getBuildList( model.extractPropertyId( property ) ).length > 0
+        this.getBuildList(
+          model.extractPropertyId( data.getSourceProperty() )
+        ).length > 0
       );
   },
 
@@ -2823,6 +2843,7 @@ controller.registerCommand({
 controller.registerCommand({
 
   key:"captureProperty",
+  unitAction: true,
 
   // ------------------------------------------------------------------------
   condition: function( data ){
@@ -2831,10 +2852,6 @@ controller.registerCommand({
     var property = data.getTargetProperty();
 
     return (
-
-      selectedUnit !== null &&
-        model.turnOwner === selectedUnit.owner &&
-
       property !== null &&
         model.turnOwner !== property.owner &&
 
@@ -2959,14 +2976,13 @@ controller.registerCommand({
 controller.registerCommand({
 
   key:"join",
-
+  unitAction: true,
 
   // ----------------------------------------------------------------------
   condition: function( data ){
     var selectedUnit = data.getSourceUnit();
     var targetUnit = data.getTargetUnit();
-    if( selectedUnit === null || selectedUnit.owner !== model.turnOwner ||
-        targetUnit === null || targetUnit.owner !== model.turnOwner ||
+    if( targetUnit === null || targetUnit.owner !== model.turnOwner ||
         targetUnit === selectedUnit ) return false;
 
     return ( selectedUnit.type === targetUnit.type && targetUnit.hp < 89 );
@@ -3180,12 +3196,11 @@ controller.registerCommand({
 controller.registerCommand({
 
   key:"loadUnit",
+  unitAction: true,
 
   // -----------------------------------------------------------------------
   condition: function( data ){
     var selectedUnitId = data.getSourceUnitId();
-    if( selectedUnitId === -1 || data.getSourceUnit().owner !== model.turnOwner ) return false;
-
     var transporterId = data.getTargetUnitId();
     if( transporterId === -1 || data.getTargetUnit().owner !== model.turnOwner ) return false;
 
@@ -3333,20 +3348,31 @@ controller.registerCommand({
 
   // -----------------------------------------------------------------------
   condition: function( data ){
-    var selectedUnitId = data.getSourceUnitId();
+    if( data.getSourceUnitId() === CWT_INACTIVE_ID ){
+      // NO UNIT
 
-    return (
-      (
-        data.getSourceUnitId() === -1 ||
-        !model.canAct( selectedUnitId ) ||
-        data.getSourceUnit().owner !== model.turnOwner
-      )
-        &&
-      (
-        data.getSourcePropertyId() === -1 ||
-        data.getSourceProperty().owner !== model.turnOwner
-      )
-    );
+      if( data.getSourcePropertyId() !== CWT_INACTIVE_ID &&
+          data.getSourceProperty().owner === model.turnOwner ){
+
+        // PROPERTY
+        return false;
+      }
+      else return true;
+    }
+    else{
+      // UNIT
+
+      if( data.getSourceUnit().owner === model.turnOwner &&
+          model.canAct( data.getSourceUnitId() ) ){
+
+        // ACTABLE OWN
+        return false;
+      }
+      else return true;
+    }
+
+    // FALLBACK
+    return false;
   },
 
   // -----------------------------------------------------------------------
@@ -3501,6 +3527,7 @@ controller.registerCommand({
 controller.registerCommand({
 
   key:"silofire",
+  unitAction: true,
 
   _doDamage: function( x,y ){
     if( model.isValidPosition(x,y) ){
@@ -3517,8 +3544,7 @@ controller.registerCommand({
     var selectedUnit = data.getSourceUnit();
     var selectedProperty = data.getSourceProperty();
 
-    if( selectedUnit === null || selectedUnit.owner !== model.turnOwner ||
-        selectedProperty === null ||
+    if( selectedProperty === null ||
         selectedProperty .owner !== model.turnOwner ) return false;
 
     // if( controller.actiondata.getTargetUnit(data) !== null ) return false;
@@ -3577,6 +3603,7 @@ controller.registerCommand({
 controller.registerCommand({
 
   key:"supply",
+  unitAction: true,
 
   _resupplyUnitAt: function( x,y ){
     var unit = model.unitPosMap[x][y];
@@ -3588,8 +3615,6 @@ controller.registerCommand({
   // -----------------------------------------------------------------------
   condition: function( data ){
     var selectedUnit = data.getSourceUnit();
-    if( selectedUnit === null || model.turnOwner !== selectedUnit.owner ) return false;
-
     var sSheet = model.sheets.unitSheets[ selectedUnit.type ];
     if( sSheet.supply === undefined ) return false;
 
@@ -3625,6 +3650,7 @@ controller.registerCommand({
 controller.registerCommand({
 
   key: "unloadUnit",
+  unitAction: true,
   multiStepAction: true,
 
   // -----------------------------------------------------------------------
@@ -3678,10 +3704,6 @@ controller.registerCommand({
   // -----------------------------------------------------------------------
   condition: function( data ){
     var selectedUnit = data.getSourceUnit();
-    if( selectedUnit === null || selectedUnit.owner !== model.turnOwner ){
-      return false;
-    }
-
     if( data.getTargetUnit() !== null ) return false;
 
     var selectedUnitId = data.getSourceUnitId();
@@ -3724,14 +3746,11 @@ controller.registerCommand({
 controller.registerCommand({
 
   key: "wait",
+  unitAction: true,
 
   // -----------------------------------------------------------------------
   condition: function( data ){
     var selectedUnit = data.getSourceUnit();
-    if( selectedUnit === null || selectedUnit.owner !== model.turnOwner ){
-      return false;
-    }
-
     var targetUnit = data.getTargetUnit();
     return targetUnit === null || targetUnit === selectedUnit;
   },

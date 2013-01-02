@@ -1,14 +1,11 @@
 controller.registerCommand({
 
   key: "wait",
+  unitAction: true,
 
   // -----------------------------------------------------------------------
   condition: function( data ){
     var selectedUnit = data.getSourceUnit();
-    if( selectedUnit === null || selectedUnit.owner !== model.turnOwner ){
-      return false;
-    }
-
     var targetUnit = data.getTargetUnit();
     return targetUnit === null || targetUnit === selectedUnit;
   },

@@ -1,14 +1,13 @@
 controller.registerCommand({
 
   key:"join",
-
+  unitAction: true,
 
   // ----------------------------------------------------------------------
   condition: function( data ){
     var selectedUnit = data.getSourceUnit();
     var targetUnit = data.getTargetUnit();
-    if( selectedUnit === null || selectedUnit.owner !== model.turnOwner ||
-        targetUnit === null || targetUnit.owner !== model.turnOwner ||
+    if( targetUnit === null || targetUnit.owner !== model.turnOwner ||
         targetUnit === selectedUnit ) return false;
 
     return ( selectedUnit.type === targetUnit.type && targetUnit.hp < 89 );

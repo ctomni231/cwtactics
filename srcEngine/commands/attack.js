@@ -1,9 +1,8 @@
 controller.registerCommand({
 
   key:"attack",
-
+  unitAction: true,
   targetSelection: true,
-
   hasSubMenu: true,
 
   hasTargets: function( unit, wpTag, x, y, moved ){
@@ -125,7 +124,6 @@ controller.registerCommand({
   // ------------------------------------------------------------------------
   condition: function( data ){
     var selectedUnit = data.getSourceUnit();
-    if( selectedUnit === null || selectedUnit.owner !== model.turnOwner ) return false;
 
     var x = data.getTargetX();
     var y = data.getTargetY();

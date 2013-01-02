@@ -1,6 +1,7 @@
 controller.registerCommand({
 
   key:"supply",
+  unitAction: true,
 
   _resupplyUnitAt: function( x,y ){
     var unit = model.unitPosMap[x][y];
@@ -12,8 +13,6 @@ controller.registerCommand({
   // -----------------------------------------------------------------------
   condition: function( data ){
     var selectedUnit = data.getSourceUnit();
-    if( selectedUnit === null || model.turnOwner !== selectedUnit.owner ) return false;
-
     var sSheet = model.sheets.unitSheets[ selectedUnit.type ];
     if( sSheet.supply === undefined ) return false;
 

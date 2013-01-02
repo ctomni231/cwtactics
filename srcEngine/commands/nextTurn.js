@@ -4,20 +4,31 @@ controller.registerCommand({
 
   // -----------------------------------------------------------------------
   condition: function( data ){
-    var selectedUnitId = data.getSourceUnitId();
+    if( data.getSourceUnitId() === CWT_INACTIVE_ID ){
+      // NO UNIT
 
-    return (
-      (
-        data.getSourceUnitId() === -1 ||
-        !model.canAct( selectedUnitId ) ||
-        data.getSourceUnit().owner !== model.turnOwner
-      )
-        &&
-      (
-        data.getSourcePropertyId() === -1 ||
-        data.getSourceProperty().owner !== model.turnOwner
-      )
-    );
+      if( data.getSourcePropertyId() !== CWT_INACTIVE_ID &&
+          data.getSourceProperty().owner === model.turnOwner ){
+
+        // PROPERTY
+        return false;
+      }
+      else return true;
+    }
+    else{
+      // UNIT
+
+      if( data.getSourceUnit().owner === model.turnOwner &&
+          model.canAct( data.getSourceUnitId() ) ){
+
+        // ACTABLE OWN
+        return false;
+      }
+      else return true;
+    }
+
+    // FALLBACK
+    return false;
   },
 
   // -----------------------------------------------------------------------
