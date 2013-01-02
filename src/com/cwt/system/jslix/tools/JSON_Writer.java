@@ -1,110 +1,145 @@
 package com.cwt.system.jslix.tools;
 
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.security.AccessControlException;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.XML;
+import org.json.simple.JSONObject;
 
-public class JSON_Writer extends XML_Parser {
+public class JSON_Writer {
 
-	/** The XML Header for the XML converted file */
-	public final String HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-	/** The JSON parser used to parse JSON files for values */
-	private JSONObject parser;
-	/** The Scanner used to convert files into Strings */
-	private Scanner scanner;
-	/** The JSON script within the system */
-	private String script;
+	/** The JSON file */
+	private File file;
+	/** The JSON writer */
+	private JSONObject obj;
+
+	LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
+	String listKey;
+	LinkedList<String> list = new LinkedList<String>();
 
 	/**
 	 * This class sets up a JSON parser ready for parsing using the parse
 	 * command
 	 */
 	public JSON_Writer() {
-		super();
-		script = "";
+		obj = new JSONObject();
 	}
 
 	public JSON_Writer(String filename) {
 		this();
-		parse(filename);
+		setFileData(filename);
 	}
 
-	// TODO: Split this off into a class that can read both XML and JSON files.
-	public void parse(String filename) {
+	public final void setFileData(File file) throws IOException {
+		setFileData(file.getCanonicalPath(), file.getName());
+	}
+
+	public final void setFileData(String path, String filename) {
+		if (!filename.endsWith(".xml")) {
+			filename += ".xml";
+		}
+		this.file = new File(path + File.separator + filename);
+	}
+
+	public final void setFileData(String filename) {
+		if (!filename.endsWith(".xml")) {
+			filename += ".xml";
+		}
+		setFileData(".", filename);
+	}
+
+	public void addPair(String key, String value) {
+		obj.put(key, value);
+	}
+
+	public void addList(String key, String[] value) {
+		LinkedList<String> l1 = new LinkedList<String>();
+		for (String item : value) {
+			l1.add(item);
+		}
+		obj.put(key, l1);
+	}
+
+	public void addList(String key, LinkedList<String> values) {
+		obj.put(key, values);
+	}
+
+	public void startList(String key) {
+		this.listKey = key;
+		this.list = new LinkedList<String>();
+	}
+
+	public void addValueToList(String value) {
+		this.list.add(value);
+	}
+
+	public void finishList() {
+		this.addList(this.listKey, (LinkedList<String>) (this.list.clone()));
+		this.listKey = null;
+		this.list = null;
+	}
+
+	public void addMap(Map map) {
+		obj.putAll(map);
+	}
+
+	public void startMap() {
+		this.map = new LinkedHashMap<String, String>();
+	}
+
+	public void addValueToMap(String key, String value) {
+		this.map.put(key, value);
+	}
+
+	public void finishMap() {
+		this.addMap((LinkedHashMap<String, String>) (this.map.clone()));
+		this.map = null;
+	}
+
+	public void print() {
+		System.out.println(obj);
+	}
+
+	private boolean createFile(String path, String filename, String data,
+			boolean overwrite) {
+
+		setFileData(path, filename);
+
 		try {
-			scanner = new Scanner(finder.getFile(filename));
-			script = "";
-			while (scanner.hasNext())
-				script = script + scanner.nextLine() + "\n";
-			parser = new JSONObject(script);
+			if (file.mkdirs())
+				System.out.println("Directories Created! " + path);
+			else
+				System.out.println("Directories Failed! " + path);
 
-			// Changes the JSON into an XML file in one pass
-			parseData(formatXML(XML.toString(parser,
-					(new File(filename)).getName())));
-
-		} catch (FileNotFoundException e) {
-			System.err.println(e);
-		} catch (JSONException e) {
-			System.err.println(e);
-		}
-	}
-
-	public void get() {
-		for (int i = 0; i < parser.length(); i++) {
-			try {
-				System.out.println(parser.names().getString(i));
-			} catch (JSONException e) {
-				e.printStackTrace();
+			if (file.createNewFile())
+				System.out.println("File Created! " + path + filename);
+			else {
+				System.out.println("File Exists!"
+						+ (overwrite ? "Overwriting!" : "") + path + filename);
+				if (!overwrite)
+					return false;
 			}
+
+			FileWriter newWrite = new FileWriter(file);
+			BufferedWriter out = new BufferedWriter(newWrite);
+			out.write(data);
+			out.close();
+
+		} catch (IOException e) {
+			System.err.println("File IOException! " + path + filename);
+			return false;
+		} catch (AccessControlException e) {
+			System.err.println("Applet Active, can't Access! " + path
+					+ filename);
+			return false;
 		}
 
+		return true;
 	}
 
-	/**
-	 * This function was made to return the raw script of the JSON file
-	 * 
-	 * @return The raw script of the JSON file
-	 */
-	public String getScript() {
-		return script;
-	}
-
-	/**
-	 * This class takes a solid String of unformatted XML code and converts it
-	 * into proper formatted XML code readable by the XML_Parser class.
-	 * 
-	 * @param data
-	 *            A solid block of unreadable XML code from JSONObject
-	 * @return A properly formatted XML code
-	 */
-	private String formatXML(String data) {
-		XML_Writer writer = new XML_Writer();
-		String temp = "";
-		while (data.length() > 0) {
-			temp = data.substring(0, data.indexOf(">"));
-			if (temp.matches("</.*"))
-				writer.endXMLTag();
-			else if (temp.charAt(0) == '<') {
-				temp = temp.substring(1);
-				writer.addXMLTag(temp.matches("\\d.*") ? RomanNumeral
-						.convert(Integer.valueOf(temp)) : temp);
-			} else
-				writer.addAttribute("data",
-						temp.substring(0, data.indexOf("<")), true);
-			data = data.substring(data.indexOf(">") + 1);
-		}
-		System.out.println(writer.getRawXML());
-		return writer.getRawXML();
-	}
-
-	public static void main(String[] args) {
-		JSON_Writer parse = new JSON_Writer();
-		parse.parse("map/test.json");
-		//parse.get();
-		//System.out.println(parse.getScript());
-	}
 }
