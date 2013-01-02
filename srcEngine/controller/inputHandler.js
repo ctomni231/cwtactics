@@ -113,6 +113,12 @@ controller.input = util.createStateMachine( "NONE", {
     },
 
     cancel: function(){
+
+      var dto = this.actionData;
+      dto.setTarget( -1,-1 );
+      dto.setTargetProperty(null);
+      dto.setTargetUnit(null);
+
       return "IDLE";
     }
   },
@@ -142,6 +148,11 @@ controller.input = util.createStateMachine( "NONE", {
 
     cancel:function(){
       // if( this.inMultiStep ) return "ACTION_MENU";
+
+      var dto = this.actionData;
+      dto.setTarget( -1,-1 );
+      dto.setTargetProperty(null);
+      dto.setTargetUnit(null);
 
       var dto = this.actionData;
       return ( dto.getSourceUnitId() !== CWT_INACTIVE_ID &&

@@ -19,7 +19,7 @@ controller.registerCommand({
     var joinTarget = data.getTargetUnit();
 
     
-    var junitSheet = model.unitSheet( joinTarget.type );
+    var junitSheet = model.sheets.unitSheets[ joinTarget.type ];
 
     // HEALTH POINTS
     joinTarget.hp += joinSource.hp;
