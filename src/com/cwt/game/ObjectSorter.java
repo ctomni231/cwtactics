@@ -51,12 +51,13 @@ public class ObjectSorter extends ObjectStorage{
 	}
 	
 	/**
-	 * This function changes the preferred code attribute
-	 * @param newCode The preferred code attribute
+	 * This function gets a name from an image index
+	 * @param index The image index for this ObjectSorter
+	 * @return The String representation for the image name
 	 */
-	//public void changeCode(int newCode){
-	//	code = newCode;
-	//}
+	public String getImageName(int index){
+		return (index < objList.length) ? getName(objList[index].getData(NAME)) : "";
+	}
 	
 	/**
 	 * This function changes the preferred name attribute

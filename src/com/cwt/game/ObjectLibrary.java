@@ -46,11 +46,31 @@ public class ObjectLibrary {
     /**
      * This function gets the best terrain index for an object available
      * @param tag The 4-letter tag describing the object
-     * @return The index where this object is located
+     * @return The index where this image object is located
      */
     public static int getTerrainIndex(String tag){
     	objStore.changeName(tag);
+    	objStore.changeBase(tag);
     	return objStore.getBestIndex(objStore.TERRAIN);
+    }
+    
+    /**
+     * This function gets the best terrain index for an object available. It allows
+     * better access for the connection code to change base images.
+     * @param index The index where the image is located
+     * @param connection The 8- way (N-S-W-E-NW-NE-SW-SE) connection value
+     * @return The index where this image object is located
+     */
+    public static int getTerrainConnection(int index, String connection){
+    	objStore.changeConnection(connection);
+    	return getTerrainIndex(getName(index));
+    }
+    
+    /**
+     * This clears all the image index tag values to the default
+     */
+    public static void clear(){
+    	objStore.reset();
     }
     
     /**
@@ -96,6 +116,15 @@ public class ObjectLibrary {
      */
     public static double getScale(){
         return scale;
+    }
+    
+    /**
+	 * This function gets a name from an image index
+	 * @param index The image index for this ObjectSorter
+	 * @return The String representation for the image name
+	 */
+    private static String getName(int index){
+    	return objStore.getImageName(index);
     }
     
     /**

@@ -39,8 +39,6 @@ public class MapField extends MovingMenu implements ScreenSkeleton{
     private int mapsy;
     /** The current map drawn to the screen */
     private MapItem[][] drawMap;
-    /** Holds a temporary map item */
-    private MapItem item;
     
     /** Holds the scale of currently drawn tiles */
     private double scale;
@@ -67,21 +65,19 @@ public class MapField extends MovingMenu implements ScreenSkeleton{
 		XML_Reader.parse(filename);
 		mapsx = Integer.valueOf(XML_Reader.getJSONAttribute("mapWidth", 0));
 		mapsy = Integer.valueOf(XML_Reader.getJSONAttribute("mapHeight", 0));
-		int terrFill = ObjectLibrary.getTerrainIndex("PLIN");
+		int terrFill = ObjectLibrary.getTerrainIndex(XML_Reader.getJSONAttribute("filler", 0));
 		String terrTemp = "";
-		
 		drawMap = new MapItem[mapsx][mapsy];
-		deleteItems();
-        for(int i = 0; i < mapsx; i++){
+		resetMap();
+		for(int i = 0; i < mapsx; i++){
             for(int j = 0; j < mapsy; j++){
-            	item = new MapItem();
             	terrTemp = XML_Reader.getJSONAttribute(
-            			"data "+RomanNumeral.convert(i)+" "+RomanNumeral.convert(j), 0);
-            	item.terrain = terrTemp.length() > 0 ? 
-            			ObjectLibrary.getTerrainIndex(terrTemp) : terrFill; 
-                drawMap[i][j] = createNewImage(item, i, j);
+            	    			"data "+RomanNumeral.convert(i)+" "+RomanNumeral.convert(j), 0);
+            	drawMap[i][j].terrain = (terrTemp.length() > 0) ? 
+            	    			ObjectLibrary.getTerrainIndex(terrTemp) : terrFill;
             }
-        }
+		}
+		XML_Reader.clear();
 	}
 	
 	/**
@@ -93,9 +89,9 @@ public class MapField extends MovingMenu implements ScreenSkeleton{
         for(int i = 0; i < mapsx; i++){
             for(int j = 0; j < mapsy; j++){
                 if(drawMap[i][j].change)
-                    createNewImage(drawMap[i][j], i, j);
-                if(drawMap[i][j].terrain >= 0){
-                    g.drawImage(ObjectLibrary.getSlickImage(drawMap[i][j].terrain,
+                	drawMap[i][j] = createNewImage(drawMap[i][j], i, j);
+                if(drawMap[i][j].connect >= 0){
+                    g.drawImage(ObjectLibrary.getSlickImage(drawMap[i][j].connect,
                             0, 0), (int)(posx+i*BASE*scale),
                             (int)(posy+(j-1)*BASE*scale));
                 }
@@ -114,9 +110,9 @@ public class MapField extends MovingMenu implements ScreenSkeleton{
         for(int i = 0; i < mapsx; i++){
             for(int j = 0; j < mapsy; j++){
                 if(drawMap[i][j].change)
-                    createNewImage(drawMap[i][j], i, j);
-                if(drawMap[i][j].terrain >= 0){
-                    g.drawImage(ObjectLibrary.getImage(drawMap[i][j].terrain, 
+                    drawMap[i][j] = createNewImage(drawMap[i][j], i, j);
+                if(drawMap[i][j].connect >= 0){
+                    g.drawImage(ObjectLibrary.getImage(drawMap[i][j].connect, 
                             0, 0), (int)(posx+i*BASE*scale),
                             (int)(posy+(j-1)*BASE*scale), dthis);
                 }
@@ -132,12 +128,7 @@ public class MapField extends MovingMenu implements ScreenSkeleton{
      * @return The tile graphics image holder associated with this object
      */
     private MapItem createNewImage(MapItem item, int x, int y){
-        if(item.terrain < 0){
-            item.terrain = 0;
-            item.blank = 0;
-            item.connect = 0;
-        }
-
+    	item.connect = item.terrain;
         return item;
     }
 	

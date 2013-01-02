@@ -26,6 +26,10 @@ public class RomanNumeral {
 	 * @return The Roman numeral value of the data
 	 */
 	public static String convert(int numData) {
+		//Added functionality for the number zero
+		if(numData == 0)
+			return "O";
+		
 		String intData = "";// Reused this as temporary.
 		while(numData > 0){
 			for(int i = 1000, j = 3; i > 0; i /= 10, j--){
@@ -60,6 +64,10 @@ public class RomanNumeral {
 	 * @return The integer value of the data
 	 */
 	public static int revert(String romanData) {
+		//Added functionality for zero
+		if(romanData.toUpperCase().matches("O"))
+			return 0;
+		
 		int decimal = 0;
 		int lastNumber = 0;
 		String romanNumeral = romanData.toUpperCase();
