@@ -2786,8 +2786,9 @@ controller.registerCommand({
   // ------------------------------------------------------------------------
   condition: function( data ){
     var property = data.getSourceProperty();
+    var unit = data.getSourceUnitId();
 
-    if( property === null ||
+    if( property === null || unit !== -1 ||
         property.owner !== model.turnOwner ) return false;
 
     return (
