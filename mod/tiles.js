@@ -27,24 +27,31 @@ CWT_MOD_DEFAULT.tiles = [
     },
 
     {
-      "ID"                : "FACTORY",
+      "ID"                : "BASE",
       "vision"            : 0,
       "capturePoints"     : 20,
-      "funds"            : 1000,
+      "funds"             : 1000,
       "repairs"           : {
-        "*"             : 20
+        "*"               : 20
       },
-      "tags"              : [ "PROPERTY", "FACTORY" ]
+      "builds"            : [
+        "MV_INFANTRY",
+        "MV_MECH",
+        "MV_TIRE_A",
+        "MV_TIRE_B",
+        "MV_TANK"
+      ]
     },
 
     {
-      "ID"                : "AIRPORT",
+      "ID"                : "APRT",
       "vision"            : 0,
       "capturePoints"     : 20,
       "funds"            : 1000,
       "repairs"           : {
         "*"             : 20
       },
+      "builds"            : [ "AIR" ],
       "tags"              : [ "PROPERTY", "FACTORY" ]
     },
 
@@ -56,6 +63,7 @@ CWT_MOD_DEFAULT.tiles = [
       "repairs"           : {
         "*"             : 20
       },
+      "builds"            : [ "SHIP" ],
       "tags"              : [ "PROPERTY", "FACTORY" ]
     },
 
@@ -70,7 +78,7 @@ CWT_MOD_DEFAULT.tiles = [
     },
 
     {
-      "ID"                : "HQ",
+      "ID"                : "HQTR",
       "vision"            : 1,
       "capturePoints"     : 20,
       "funds"            : 1000,

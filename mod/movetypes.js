@@ -25,9 +25,9 @@ CWT_MOD_DEFAULT.movetypes = [
     {
       "ID"            : "MV_TIRE_A",
       "costs"         :{
-        "PLIN"         : 2,
-        "FRST"        : 3,
-        "MNTN"      : 0,
+        "PLIN"          : 2,
+        "FRST"          : 3,
+        "MNTN"          : 0,
         "RIVER"         : 0,
         "WATER"         : 0,
         "REEF"          : 0,

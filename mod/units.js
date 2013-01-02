@@ -1,7 +1,7 @@
 CWT_MOD_DEFAULT.units = [
 
     {
-      "ID"            : "INFT_OS",
+      "ID"            : "INFT",
 
       "cost"          : 1000,
 
@@ -14,13 +14,11 @@ CWT_MOD_DEFAULT.units = [
       "weight"        : 1,
 
       "maxAmmo"       : 0,
-      "mainWeapon"    : "WP_MG",
-
-      "tags"          : [ "GROUND", "FOOT", "SOFT" ]
+      "mainWeapon"    : "WP_MG"
     },
 
     {
-      "ID"            : "MECH_OS",
+      "ID"            : "MECH",
 
       "cost"          : 3000,
 
@@ -34,9 +32,7 @@ CWT_MOD_DEFAULT.units = [
 
       "maxAmmo"       : 3,
       "mainWeapon"    : "WP_BAZOOKA",
-      "subWeapon"     : "WP_MG",
-
-      "tags"          : [ "GROUND", "FOOT", "SOFT", "ANTI_TANK" ]
+      "subWeapon"     : "WP_MG2"
     },
 
     {
@@ -53,9 +49,7 @@ CWT_MOD_DEFAULT.units = [
 
       "maxAmmo"       : 0,
 
-      "mainWeapon"    : "WP_MG",
-
-      "tags"          : [ "GROUND", "VEHICLE", "FOOT", "SOFT" ]
+      "mainWeapon"    : "WP_MG"
     },
 
     {
@@ -73,9 +67,7 @@ CWT_MOD_DEFAULT.units = [
 
       "maxAmmo"       : 0,
 
-      "mainWeapon"    : "WP_MG",
-
-      "tags"          : [ "GROUND", "BIKE" ]
+      "mainWeapon"    : "WP_MG"
     },
 
     {
@@ -93,11 +85,10 @@ CWT_MOD_DEFAULT.units = [
       "maxAmmo"       : 6,
 
       "mainWeapon"    : "WP_LT_CANNON",
-      "subWeapon"     : "WP_MG",
-
-      "tags"          : [ "GROUND", "VEHICLE", "FOOT", "SOFT" ]
+      "subWeapon"     : "WP_MG"
     },
 
+  /*
     {
       "ID"            : "ATNK",
 
@@ -112,10 +103,9 @@ CWT_MOD_DEFAULT.units = [
 
       "maxAmmo"       : 6,
 
-      "mainWeapon"    : "WP_AT_CANNON",
-
-      "tags"          : []
+      "mainWeapon"    : "WP_AT_CANNON"
     },
+*/
 
     {
       "ID"            : "MDTK",
@@ -132,9 +122,7 @@ CWT_MOD_DEFAULT.units = [
       "maxAmmo"       : 5,
 
       "mainWeapon"    : "WP_MD_CANNON",
-      "subWeapon"     : "WP_MG",
-
-      "tags"          : [ "GROUND", "TANK" ]
+      "subWeapon"     : "WP_MG"
     },
 
     {
@@ -152,9 +140,7 @@ CWT_MOD_DEFAULT.units = [
       "maxAmmo"       : 3,
 
       "mainWeapon"    : "WP_HV_CANNON",
-      "subWeapon"     : "WP_MG",
-
-      "tags"          : []
+      "subWeapon"     : "WP_MG"
     },
 
     {
@@ -172,9 +158,7 @@ CWT_MOD_DEFAULT.units = [
       "maxAmmo"       : 6,
 
       "mainWeapon"    : "WP_AA_CANNON",
-      "subWeapon"     : "WP_MG",
-
-      "tags"          : []
+      "subWeapon"     : "WP_MG"
     },
 
     {
@@ -191,9 +175,7 @@ CWT_MOD_DEFAULT.units = [
 
       "maxAmmo"       : 6,
 
-      "mainWeapon"    : "WP_HOWITZER",
-
-      "tags"          : [ "INDIRECT_UNIT" ]
+      "mainWeapon"    : "WP_HOWITZER"
     },
 
     {
@@ -211,13 +193,11 @@ CWT_MOD_DEFAULT.units = [
       "maxAmmo"       : 0,
 
       "transport"     : {
-        "canLoad"   : ["SOFT"],
+        "canLoad"   : [ "MV_INFANTRY","MV_MECH" ],
         "maxWeight" : 2
       },
 
-      "supply"        : ["SOFT","TANK","AIR","SHIP"],
-
-      "tags"          : [ "TANK","SUPPLY","TRANSPORT" ]
+      "supply"        : ["*"]
     },
 
     {
@@ -234,10 +214,8 @@ CWT_MOD_DEFAULT.units = [
 
       "maxAmmo"       : 6,
 
-      "mainWeapon"    : "WP_AG_ROCKET",
-      "subWeapon"     : "WP_MG",
-
-      "tags"          : [ "AIR", "COPTER" ]
+      "mainWeapon"    : "WP_AG_RKL",
+      "subWeapon"     : "WP_MG"
     },
 
     {
@@ -254,9 +232,7 @@ CWT_MOD_DEFAULT.units = [
 
       "maxAmmo"       : 6,
 
-      "mainWeapon"    : "WP_BOMBS",
-
-      "tags"          : [ "AIR", "PLANE" ]
+      "mainWeapon"    : "WP_BOMBS"
     },
 
     {
@@ -275,34 +251,9 @@ CWT_MOD_DEFAULT.units = [
       "weapons"       : [],
 
       "transport"     : {
-        "canLoad"   : ["SOFT"],
+        "canLoad"   : [ "MV_INFANTRY" ],
         "maxWeight" : 2
-      },
-
-      "tags"          : [ "AIR", "COPTER", "TRANSPORT" ]
-    },
-
-    {
-      "ID"            : "BMBR",
-
-      "cost"          : 20000,
-
-      "moveRange"     : 5,
-      "moveType"      : "MV_AIR",
-      "vision"        : 1,
-      "maxFuel"       : 99,
-
-      "weight"        : 3,
-
-      "maxAmmo"       : 0,
-      "weapons"       : [],
-
-      "transport"     : {
-        "canLoad"   : ["VEHICLE","SOFT","TANK"],
-        "maxWeight" : 4
-      },
-
-      "tags"          : [ "AIR", "PLANE", "TRANSPORT" ]
+      }
     },
 
     {
@@ -319,9 +270,7 @@ CWT_MOD_DEFAULT.units = [
 
       "maxAmmo"       : 6,
 
-      "mainWeapon"    : "WP_TORPEDO",
-
-      "tags"          : [ "SUB", "SHIP", "STEALTH" ]
+      "mainWeapon"    : "WP_TORPEDO"
     },
 
     {
@@ -339,14 +288,12 @@ CWT_MOD_DEFAULT.units = [
       "maxAmmo"       : 9,
 
       "mainWeapon"    : "WP_WATERBOMBS",
+      "subWeapon"     : "WP_AA_GUN_CRUS",
 
       "transport"     : {
-        "canLoad"   : ["COPTER"],
+        "canLoad"   : [ "MV_AIR" ],
         "maxWeight" : 2
-      },
-
-
-      "tags"          : [ "WATRER", "SHIP", "TRANSPORT" ]
+      }
     },
 
     {
@@ -363,9 +310,7 @@ CWT_MOD_DEFAULT.units = [
 
       "maxAmmo"       : 6,
 
-      "mainWeapon"    : "WP_AA_ROCKET",
-
-      "tags"          : [ "VEHICLE", "ANTI_AIR", "INDIRECT" ]
+      "mainWeapon"    : "WP_AA_RKL"
     },
 
     {
@@ -382,11 +327,10 @@ CWT_MOD_DEFAULT.units = [
 
       "maxAmmo"       : 6,
 
-      "mainWeapon"    : "WP_AA_JETROCKET",
-
-      "tags"          : [ "AIR", "PLANE", "ANTI_AIR" ]
+      "mainWeapon"    : "WP_AA_JETROCKET"
     },
 
+/*
     {
       "ID"            : "DUST",
 
@@ -401,12 +345,11 @@ CWT_MOD_DEFAULT.units = [
 
       "maxAmmo"       : 6,
 
-      "mainWeapon"    : "WP_PLANET_CANNON",
-      "subWeapon"     : "WP_MG",
+      "mainWeapon"    : "WP_PLANE_CANNON",
+      "subWeapon"     : "WP_MG"
+    },*/
 
-      "tags"          : [ "AIR", "PLANE", "SCOUT" ]
-    },
-
+  /*
     {
       "ID"            : "SEAP",
 
@@ -422,11 +365,10 @@ CWT_MOD_DEFAULT.units = [
       "maxAmmo"       : 4,
 
       "mainWeapon"    : "WP_WATERBOMBS",
-      "subWeapon"     : "WP_PLANE_CANNON",
-
-      "tags"          : [ "AIR", "PLANE", "ANTI_AIR" ]
+      "subWeapon"     : "WP_PLANE_CANNON"
 
     },
+    */
 
     {
       "ID"            : "ACAR",
@@ -444,10 +386,8 @@ CWT_MOD_DEFAULT.units = [
 
       "mainWeapon"    : "WP_AA_SHIPCANNON",
 
-      "transport"     : [ "AIR" ],
-      "canLoad"       : 2,
-
-      "tags"          : [ "WATER", "SHIP", "TRANSPORT" ]
+      "transport"     : [ "MV_AIR" ],
+      "canLoad"       : 2
     },
 
     {
@@ -463,12 +403,9 @@ CWT_MOD_DEFAULT.units = [
       "weight"        : 3,
 
       "transport"     : {
-        "canLoad"   : ["SOFT","VEHICLE","TANK"],
+        "canLoad"   : [ "MV_INFANTRY","MV_TIRE_A","MV_TIRE_B","MV_TANK" ],
         "maxWeight" : 1
-      },
-
-
-      "tags"          : [ "WATER", "SHIP", "TRANSPORT" ]
+      }
     },
 
     {
@@ -485,9 +422,7 @@ CWT_MOD_DEFAULT.units = [
 
       "maxAmmo"       : 5,
 
-      "mainWeapon"    : "WP_HV_ROCKET",
-
-      "tags"          : [ "GROUND", "VEHICLE", "AT" ]
+      "mainWeapon"    : "WP_HV_RKL"
     },
 
     {
@@ -504,9 +439,7 @@ CWT_MOD_DEFAULT.units = [
 
       "maxAmmo"       : 6,
 
-      "mainWeapon"    : "WP_SHIP_HOWITZER",
-
-      "tags"          : [ "WATER", "SHIP", "INDIRECT", "AT" ]
+      "mainWeapon"    : "WP_SHIP_HOWITZER"
     }
 
 ];

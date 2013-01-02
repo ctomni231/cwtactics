@@ -1,16 +1,4 @@
-/**
- * The sheets layer holds all object type sheets of the game. Sheets can be
- * accessed over the data layer from higher level layers.
- *
- * @example
- *  dependencies:
- *    -> https://github.com/Baggz/Amanda [0.4]
- *
- *  usage -> read only for client
- *
- * @namespace
- */
-var sheets      = {};
+const CWT_INACTIVE_ID = -1;
 
 /**
  * The model layer holds all necessary data for a game round. This layer can be
@@ -23,27 +11,9 @@ var sheets      = {};
  * Furthermore you should not place functions in this layer because this would
  * not follow the specification of this layer.
  *
- * @example
- *  usage -> read only for client
- *
  * @namespace
  */
-var domain      = {};
-
-/**
- * The game layer holds access functions to get/set data in the model and
- * logic functions of the game.
- *
- * @namespace
- */
-var game        = {};
-
-/**
- * Holds all known game actions.
- *
- * @namespace
- */
-var actions     = {};
+var model      = {};
 
 /**
  * This is the main access layer for the custom wars tactics game client. All
@@ -55,23 +25,14 @@ var actions     = {};
  * empty (owned) property leads to a property actions like buying an unit. The
  * last option will be choosen if the tile is occupied by an own unit.
  *
- * Action type search:
- * <ul>
- *   <li>1. tile occupied by an actable unit</br>
- *        if yes then unit action else 2.</li>
- *   <li>2. is tile a property that can build things</br>
- *        if yes then property action else 3.</li>
- *   <li>3. map action</li>
- * </ul>
- *
  * @namespace
  */
 var controller  = {};
 
 /**
- * @namespace
+ *
  */
-var persistence = {};
+var view        = {};
 
 /**
  * Some useful utility functions are stored in this layer. This layer contains
@@ -82,16 +43,3 @@ var persistence = {};
  * @namespace
  */
 var util        = {};
-
-/**
- * Event object that allows pushing data into observerable channels.
- *
- * @namespace
- */
-var signal      = {};
-
-/**
- * ...
- * @namespace
- */
-var locale    = {};
