@@ -3,7 +3,7 @@
  *
  * @config
  */
-const CWT_MAX_MAP_WIDTH = 50;
+const CWT_MAX_MAP_WIDTH = 70;
 
 /**
  * The greatest possible map height.
