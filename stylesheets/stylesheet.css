@@ -258,7 +258,6 @@ form {
 }
 
 img {
-  width: 100%;
   max-width: 100%;
 }
 
@@ -272,7 +271,7 @@ Full-Width Styles
 
 .inner {
   position: relative;
-  max-width: 640px;
+  max-width: 750px;
   padding: 20px 10px;
   margin: 0 auto;
 }
