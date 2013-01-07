@@ -18,6 +18,7 @@ var PAGE_MILESTONES = {
       subHeaderB:"Rounds",
       pre:"This will be the last HTML client only milestone. The HTML client and the java client will be released in a similar state of functionality with the next milestone releases.",
       link:"milestones/m2/starterDebug.html",
+      img:"images/m2.png",
       post:"The second milestone is mostly a refactoring milestone because we fixed a lot of problems of the milestone 1. We did it to prepare the engine for next upcoming features. Beside of many under the hood updates, milestone 2 introduces some new features like information boxes, a complete game round, building units and so on. As one of first milestones, milestone 2 has a endable game round. If you conquer the enemy <strong>HQTR</strong>, the game will end. In this release you will get a message box which shows you the end of the game."
     },
 
