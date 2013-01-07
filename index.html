@@ -6,6 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     <meta name="description" content="Cwtactics : An effort to create an open engine to emulate the gaming experience of the Nintendo Advance Wars series." />
 
+    <script src='content/compability.js' type='text/javascript'></script>
+    <script src='content/news.js' type='text/javascript'></script>
+    <script src='content/milestones.js' type='text/javascript'></script>
+    <script src='content/navBar.js' type='text/javascript'></script>
+
+    <script src='scripts/desc.js' type='text/javascript'></script>
+    <script src='scripts/stuff.js' type='text/javascript'></script>
+
+    <script src='libs/jquery.js' type='text/javascript'></script>
+    <script src='libs/pure.js' type='text/javascript'></script>
+
     <script src='libs/date.js' type='text/javascript'></script>
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
@@ -22,14 +33,8 @@
           <h1 id="project_title">Custom Wars Tactics</h1>
           <h2 id="project_tagline">An effort to create an open engine to emulate the gaming experience of the Nintendo Advance Wars series.</h2>
 
-
-        <ul class="linkBar">
-          <li><a href="http://code.google.com/p/cwtactics/" target="_blank">GoogleCode Repo</a></li>
-          <li><a href="http://github.com/ctomni231/cwtactics" target="_blank">GitHub-Repo</a></li>
-          <li><a href="http://github.com/ctomni231/cwtactics/issues" target="_blank">Issues</a></li>
-          <li><a href="http://twitter.com/CustomWarsTacti" target="_blank">Twitter</a></li>
-          <li><a href="http://cwtactics.blogspot.de/" target="_blank">Blog</a></li>
-          <li><a class="playButton" href="milestones/m2.2/starterDebug.html" target="_blank">Play Cwt</a></li>
+        <ul id="navBar" class="linkBar">
+          <li><a target="_blank"></a></li>
         </ul>
         
         </header>
@@ -40,35 +45,11 @@
 
       <section id="lastestInfo" class="inner">
         <div class="headerText" >Latest News</div>
-        <table class="newsTable">
-
-          <!--
+        <table class="newsTable latestNews">
           <tr>
-            <td class="dateDiff">01.04.2013</td>
-            <td>Added a milestone 3 idea map</td>
+            <td class="dateDiff date"></td>
+            <td class="content"></td>
           </tr>
-          -->
-
-          <tr>
-            <td class="dateDiff">01.07.2013</td>
-            <td>Milestone 2.2 Update</td>
-          </tr>
-
-          <tr>
-            <td class="dateDiff">01.07.2013</td>
-            <td>Milestone 2.1 Update</td>
-          </tr>
-
-          <tr>
-            <td class="dateDiff">01.07.2013</td>
-            <td>Added compatibility map</td>
-          </tr>
-
-          <tr>
-            <td class="dateDiff">01.04.2013</td>
-            <td>Updated Github webpage design</td>
-          </tr>
-
         </table>
       </section>
 
@@ -76,158 +57,33 @@
         <div class="headerText" >Compatibility List
           <span class="headerSupport">(Milestone 2)</span></div>
 
-        <table id="compa" class="newsTable">
-
-          <tr> <td>Mobile Safari on iOS6</td> <td
-                  class="withStatusIcon">fine</td>
-               <td></td>
+        <table id="compa" class="newsTable compatilies">
+          <tr>
+            <td class="name"></td>
+            <td class="level withStatusIcon"></td>
+            <td class="notes"></td>
           </tr>
-
-          <tr> <td>WebView on iOS6</td> <td
-                  class="withStatusIcon">fine</td>
-                <td></td>
-          </tr>
-
-          <tr> <td>Chrome on Android 4.0</td> <td
-                  class="withStatusIcon">unknown</td></tr>
-
-          <tr> <td>Chrome on Android 4.1</td> <td
-                  class="withStatusIcon">fine</td>
-               <td>May have slow move animations</td>
-          </tr>
-
-          <tr> <td>Chrome 23</td> <td
-                  class="withStatusIcon">fine</td></tr>
-
-          <tr> <td>Safari 5.1</td> <td
-                  class="withStatusIcon">unknown</td></tr>
-
-          <tr> <td>Safari 6</td> <td
-                  class="withStatusIcon">unknown</td></tr>
-
-          <tr> <td>Firefox 17</td> <td
-                  class="withStatusIcon">problem</td>
-               <td>Object color issues</td>
-          </tr>
-
-          <tr> <td>Firefox 19</td> <td
-                  class="withStatusIcon">problem</td>
-               <td>Object color issues</td>
-          </tr>
-
-          <tr> <td>Internet Explorer 9</td> <td
-                  class="withStatusIcon">error</td>
-               <td>Fails to start</td>
-          </tr>
-
-          <tr> <td>Internet Explorer 10</td> <td
-                  class="withStatusIcon">unknown</td></tr>
-
-          <tr> <td>Opera 12</td> <td
-                  class="withStatusIcon">unknown</td></tr>
         </table>
       </section>
       
       <section id="milestoneBox" class="inner">
         <div class="headerText" >Releases and Plans</div>
-        
-        <div class="infoBox">
-          
-          <div class="main">Milestone<span>1</span>
-            <span class="role">We need</br>visual stuff</span></div>
-
-          <p>
-            The first milestone tries to build the base for the web client and
-            the java client. It provides a nearly complete model with first logic
-            functionalities.
-          </p>
-
-          <p>
-            <strong>Note,</strong> this is an alpha milestone and contains many
-            bugs. Hopefully milestone 2 will be a lot better. xD
-          </p>
-               
-          <p class="rightBox" >
-            <a class="a_demo_three" href="milestones/m1/webClient.html" target="_blank">Play It</a>
-          </p>
-        </div>
 
         <div class="infoBox">
-        
-          <div class="main">Milestone<span>2</span>
-            <span class="role">Game</br>Rounds</span></div>
+          <div class="main infoBoxHeader">
+          <span class="role">
+            <span class="infoBoxSubHeaderTop"></span></br>
+            <span class="infoBoxSubHeaderBottom"></span>
+          </span></div>
 
-          <p>
-            This will be the last HTML client only milestone. The HTML client
-            and the java client will be released in a similar state of
-            functionality with the next milestone releases.
-          </p>
+          <p class="firstText"></p>
+          <p class="imgBox"></p>
+          <p class="lastText"></p>
 
-          <p>
-            <img src="images/m2.png" title="Milestone 2">
-          </p>
-
-          <p>
-            The second milestone is mostly a refactoring milestone because we
-            fixed a lot of problems of the milestone 1. We did it to prepare the 
-            engine for next upcoming features. Beside of many under the hood
-            updates, milestone 2 introduces some new features like information
-            boxes, a complete game round, building units and so on.
-            As one of first milestones, milestone 2 has a endable game round.
-            If you conquer the enemy <strong>HQTR</strong>, the game will end.
-            In this release you will get a message box which shows you the end
-            of the game.
-          </p>
-          
-          <p>
-            <strong>This release has a loading bug.</strong> It may happen if
-            you load the game the first time. If you see a lot of blue and red
-            boxes on the screen then simply reload the page. Some times the
-            image loader is slower than the image recolor algorithm. This will
-            be fixed in milestone 3.
-          </p>
-
-          <p>
-            <strong>UPDATE! </strong> solved some control issues and implemented
-            a version tag in the upper left coner. This update is marked as
-            milestone <strong>2.1</strong>.
-          </p>
-
-          <p>
-            <strong>UPDATE! </strong> solved mouse control issues in firefox,
-            but there are some coloring issues.
-          </p>
-
-          <p class="rightBox" >
-            <a href="milestones/m2.2/starterDebug.html" target="_blank">Play It</a>
+          <p class="rightBox playItBox" >
+            <a class="a_demo_three" href="" target="_blank">Play It</a>
           </p>
         </div>
-
-        <div class="infoBox">
-            <div class="main">Milestone<span>3</span>
-                 <span class="role">Scripting</span></div>
-          <!--
-          <p class="rightBox" >
-            <a href="#" target="_blank">view RoadMap (ver: xx.01.2013)</a>
-          </p>
-          -->
-        </div>
-
-        <div class="infoBox">
-            <div class="main">Milestone<span>4</span>
-                <span class="role">Artificial</br>Intelligence</span></div>
-        </div>
-
-        <div class="infoBox">
-            <div class="main">Milestone<span>5</span>
-                <span class="role">Being</br>Serious</span></div>
-        </div>
-
-        <div class="infoBox">
-            <div class="main">Version<span>1.0</span>
-                <span class="role">Initial</br>Release</span></div>
-        </div>
-
       </section>
     </div>
     
@@ -240,76 +96,46 @@
         </p>
       </footer>
     </div>
-    
-    <!-- 
-        CREDITS:
-        
-        button design: http://www.cssbutton.me/robdozier
-    -->
-
-    <!--
-        LICENSE ICONS:
-
-Free Web Design Icon Set
-http://semlabs.co.uk/journal/free-web-design-icon-set
-
-By using the Free Web Design Icon Set you agree to the following:
-
-All ownership and copyright of the icons remains the property of SEM Labs (semlabs.co.uk).
-
-The icons may be modified.
-
-The icons may be used in both non-commercial and commercial works.
-
-The icons may not be sold standalone in their current or modified form.
-
-All stock icons are provided "As is." You agree not to hold SEM Labs liable for any damage that may occur as a result of using these icons.
-
-Finally attribution is very much appreciated, but not necessary. If used on a website, attribution is not necessary on every page; a link on an about page or credits page is fine. If you are unsure about attribution, drop an email on the contact form (semlabs.co.uk/contact). Giving attribution helps us folks who are producing free work and may lead to the expansion of this icon pack. Also, I'd like to see any site or other works that are using these icons.
-
-    -->
-
   </body>
   
   <script>
     (function(){
-      var now = new Date();
 
-      // DATES
-      var elements = document.getElementsByClassName("dateDiff");
-      for( var i = 0,e = elements.length; i<e; i++ ){
-        var dateVal = Date.parse( elements[i].innerHTML );
-        var diff = now - dateVal;
-        var daysDiff = Math.floor(diff/1000/60/60/24);
+      // RENDER TEMPLATES
+      $("#lastestInfo").render(PAGE_NEWS, PAGE_NEWS_DESC);
+      $("#compatibilityInfo").render(PAGE_COMPA, PAGE_COMPA_DESC);
+      $("#milestoneBox").render(PAGE_MILESTONES, PAGE_MILESTONES_DESC);
+      $("#navBar").render(PAGE_NAVBAR, PAGE_NAVBAR_DESC);
 
-        var value;
-        if( daysDiff === 0 ) value = "Today";
-        else if( daysDiff === 1 ) value = "Yesterday";
-        else if( daysDiff < 7 ) value = "This Week";
-        else if( daysDiff < 30 ) value = "Last Weeks";
-        else if( daysDiff < 60 ) value = "Last Month";
-        else if( daysDiff < 365 ) value = "Last Months";
-        else if( daysDiff >= 365 ) value = "Last Year";
-        else value = "Wheeew... old!";
-
-        elements[i].innerHTML = value;
-      }
-
-      // COMPA MAP
-      elements = document.getElementsByClassName("withStatusIcon");
-      for( var i = 0,e = elements.length; i<e; i++ ){
-        var value = elements[i].innerHTML;
-
-        if( value === "fine" ) value = "sign_tick.png";
-        else if( value === "problem" ) value = "sign_warning.png";
-        else if( value === "error" ) value = "sign_cacel.png";
-        else if( value === "unknown" ) value = "sign_question.png";
-        else value = "sign_question.png";
-
-        value = "<img src='icons/"+value+"'></img>";
-
-        elements[i].innerHTML = value;
-      }
+      PAGE_CONVERT_TAG_CLASSES();
     })();
   </script>
 </html>
+
+<!--
+    CREDITS:
+
+    button design: http://www.cssbutton.me/robdozier
+-->
+
+<!--
+    LICENSE ICONS:
+
+    Free Web Design Icon Set
+    http://semlabs.co.uk/journal/free-web-design-icon-set
+
+    By using the Free Web Design Icon Set you agree to the following:
+
+    All ownership and copyright of the icons remains the property of SEM Labs (semlabs.co.uk).
+
+    The icons may be modified.
+
+    The icons may be used in both non-commercial and commercial works.
+
+    The icons may not be sold standalone in their current or modified form.
+
+    All stock icons are provided "As is." You agree not to hold SEM Labs liable for any damage that may occur as a result of using these icons.
+
+    Finally attribution is very much appreciated, but not necessary. If used on a website, attribution is not necessary on every page; a link on an about page or credits page is fine. If you are unsure about attribution, drop an email on the contact form (semlabs.co.uk/contact). Giving attribution helps us folks who are producing free work and may lead to the expansion of this icon pack. Also, I'd like to see any site or other works that are using these icons.
+
+-->
