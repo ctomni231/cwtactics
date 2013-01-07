@@ -3,575 +3,13 @@
   <component name="ChangeListManager">
     <list id="3e58acfd-b129-49b1-94b4-60075a3584f9" name="Default" comment="m1" />
     <list default="true" id="7622ae88-e936-4923-874c-d620d5253c4c" name="New changelist" comment="m2.1">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/AW1_Building.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/AWDR_Terrain.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/AWDS_AIRPORT.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/AWDS_CITY.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/AWDS_FACTORY.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/AWDS_HQ.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/AWDS_PORT.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/AWDS_Terrain.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/AWFaction.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/AWNameColors.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/AW_BUILDINGS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/BuildingBaseColors.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/BuildingBaseColorsLarge.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/HPNumbers.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/PlayerBuilding.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/PlayerUnit.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/UnitBaseColors.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/UnitIcons.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/airexplode.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/arrow.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/AW1Map.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/AW1Title.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/AW2Map.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/AW2Sturm.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/AWDSSky.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/AWDSWorld.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/AWDoRBack.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/AWDoRSpace.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/CWArtea-MK.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/CWArtea1.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/CWGame1.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/CWGame2.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/CWKosh1.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/CWKosh2.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/CWKosh3.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/CWKosh4.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/CWMap.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/CWTitle1.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/CWTitle2.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/CWTitle3.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/CWXLoading.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/CWXTitle.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/CrWGame1.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/CrWGame2.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/day.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/lighting bolt.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/background/night.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/cozone.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/cursor.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/explode.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/apcboost.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/apcguard.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/arank.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/attack.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/bodyguard.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/brank.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/brawler.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/cancel.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/cannonguard.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/capture.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/capturesign.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/co.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/coandy.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/codrake.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/coeagle.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/cogrit.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/cohachi.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/cokanbei.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/comax.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/combatpay.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/conell.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/coolaf.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/copower.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/cosami.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/cosonja.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/costurm.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/cosuper.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/crank.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/delete.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/dive.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/eagleeye.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/endturn.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/fuel.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/goldrush.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/hachisoul.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/highanddry.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/hit.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/icebreaker.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/intel.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/invader.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/join.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/load.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/loading.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/luck.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/mechanic.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/miss.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/missileguard.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/mistwalker.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/mountaineer.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/music.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/option.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/point.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/prairiedog.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/question.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/ranger.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/repairsign.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/roadrage.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/saleprice.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/sandscorpion.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/save.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/seamanship.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/sharpshooter.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/skill.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/slamguard.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/smallcity.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/sneaky.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/snipeguard.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/srank.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/starpower.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/supplysign.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/surface.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/teamwork.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/towerpower.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/trapsign.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/unit.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/unload.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/visual.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/icons/yield.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/menu/BasicAlpha.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/menu/cwTactics.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/menu/cwlogo.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/menu/cwtitle.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/menu/numbers.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/menu/smallAlpha.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/menu/smallerAlpha.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/menu/uparrow.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/minimap.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AW1_APRT.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AW1_BASE.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AW1_CITY.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AW1_HQTR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AW1_PORT.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AW1_SPRT.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDR_HQTR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDR_RADR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDR_TAPT.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDR_TSPT.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_APRT.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_BASE-PIPE.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_BASE.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_CITY.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_CMTR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_HQTR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_HQTR_AV.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_HQTR_BH.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_HQTR_BM.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_HQTR_CG.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_HQTR_CR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_HQTR_CS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_HQTR_GE.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_HQTR_IE.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_HQTR_IN.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_HQTR_JA.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_HQTR_MO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_HQTR_PC.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_HQTR_SF.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_HQTR_SS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_HQTR_TG.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_HQTR_WN.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_HQTR_YC.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_LABS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_PLTF.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_PORT.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_RUBL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_SILO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/properties/AWDS_SPRT.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/field/AWDS_BRDG-S.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/field/AWDS_BRDG.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/field/AWDS_RIVR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/field/AWDS_ROAD.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/field/BRDG-S.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/field/BRDG.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/field/FRST.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/field/MNTN.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/field/PLIN.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/field/REEF.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/field/RIVR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/field/ROAD.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/field/SEAS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/prop/AIRPORT.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/prop/CITY.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/prop/FACTORY.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/prop/HQ.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/prop/PORT.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDR_METR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDR_RUIN.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_BRDG-SEAS~NNOO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_BRDG-SEAS~OONN.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_BRDG~NNOO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_BRDG~NONO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_BRDG~NOON.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_BRDG~NOOO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_BRDG~ONNO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_BRDG~ONON.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_BRDG~ONOO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_BRDG~OONN.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_BRDG~OONO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_BRDG~OOON.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_BRDG~OOOO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_FRST.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_MNTN.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_PIPE~LLLP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_PIPE~LLPL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_PIPE~LLPP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_PIPE~LPLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_PIPE~LPLP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_PIPE~LPPL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_PIPE~LPPP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_PIPE~PLLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_PIPE~PLLP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_PIPE~PLPL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_PIPE~PLPP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_PIPE~PPLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_PIPE~PPLP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_PIPE~PPPL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_PIPE~PPPP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_PIPS~LLPP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_PIPS~PPLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_PLIN~NNPP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_PLIN~PPNN.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_REEF.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_RIVR~LLRR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_RIVR~LRLR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_RIVR~LRRL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_RIVR~LRRR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_RIVR~RLLR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_RIVR~RLRL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_RIVR~RLRR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_RIVR~RRLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_RIVR~RRLR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_RIVR~RRRL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_RIVR~RRRR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_ROAD~LLOO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_ROAD~LOLO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_ROAD~LOOL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_ROAD~LOOO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_ROAD~OLLO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_ROAD~OLOL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_ROAD~OLOO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_ROAD~OOLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_ROAD~OOLO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_ROAD~OOOL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_ROAD~OOOO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~LLLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~LLLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~LLSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~LLSS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~LSLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~LSLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~LSSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~LSSS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~RSSS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SLLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SLLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SLSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SLSS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SRSS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SSLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SSRS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SSSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SSSR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SSSS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SSSSLLLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SSSSLLSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SSSSLLSS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SSSSLSLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SSSSLSLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SSSSLSSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SSSSLSSS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SSSSSLLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SSSSSLLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SSSSSLSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SSSSSLSS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SSSSSSLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SSSSSSLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SEAS~SSSSSSSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~BBLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~BBSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~BLBL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~BLLB.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~BLLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~BLSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~BSLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~BSSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~LBBL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~LBLB.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~LBLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~LBSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~LLLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~LLSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~LSBB.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~LSBS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~LSLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~LSLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~LSSB.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~LSSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~LSSS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~SBLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~SBSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~SLBB.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~SLBS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~SLLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~SLLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~SLSB.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~SLSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~SLSS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~SSLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/terr/AWDS_SHOA~SSSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/AAIR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/ACAR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/APCR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/ARTY.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/ATNK.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/BCTR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/BIKE.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/BKBM.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/BMBR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/BSHP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/CRUS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/DUST.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/FGTR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/FLRE.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/GNBT.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/INFT_OS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/LNDR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/MDTK.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/MECH_OS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/MISS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/NTNK.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/OOZM.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/PRNR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/RCKT.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/RECN.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/SEAP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/STLH.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/SUBM.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/TANK.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/TCTR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/scrap/unit/WRTK.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/seaexplode.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/smoked.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/0.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/1.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/2.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/3.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/4.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/5.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/6.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/7.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/8.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/ammo.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/attack.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/bigstar.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/bluearrow.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/bluedown.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/capture.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/commander.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/dash.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/detect.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/dive.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/dot.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/elite.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/fuel.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/goldboot.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/graydot.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/graystar.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/greendot.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/guard.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/hiddenhp.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/hp.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/lightning.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/load.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/material.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/minus.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/paralyze.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/plus.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/redcross.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/redup.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/smallplus.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/smallstar.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/two.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/unknown.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/veteran.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/whiteboot.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/yellowstar.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/symbol/yellowup.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDR_METR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDR_RUIN.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_BRDG-SEAS~NNOO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_BRDG-SEAS~OONN.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_BRDG~NNOO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_BRDG~NONO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_BRDG~NOON.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_BRDG~NOOO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_BRDG~ONNO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_BRDG~ONON.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_BRDG~ONOO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_BRDG~OONN.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_BRDG~OONO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_BRDG~OOON.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_BRDG~OOOO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_FRST.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_MNTN.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_PIPE~LLLP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_PIPE~LLPL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_PIPE~LLPP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_PIPE~LPLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_PIPE~LPLP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_PIPE~LPPL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_PIPE~LPPP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_PIPE~PLLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_PIPE~PLLP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_PIPE~PLPL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_PIPE~PLPP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_PIPE~PPLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_PIPE~PPLP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_PIPE~PPPL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_PIPE~PPPP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_PIPS~LLPP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_PIPS~PPLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_PLIN.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_PLIN_BACK.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_PLIN~NNPP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_PLIN~PPNN.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_REEF.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_RIVR~LLRR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_RIVR~LRLR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_RIVR~LRRL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_RIVR~LRRR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_RIVR~RLLR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_RIVR~RLRL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_RIVR~RLRR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_RIVR~RRLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_RIVR~RRLR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_RIVR~RRRL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_RIVR~RRRR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_ROAD~LLOO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_ROAD~LOLO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_ROAD~LOOL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_ROAD~LOOO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_ROAD~OLLO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_ROAD~OLOL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_ROAD~OLOO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_ROAD~OOLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_ROAD~OOLO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_ROAD~OOOL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_ROAD~OOOO.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~LLLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~LLLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~LLSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~LLSS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~LSLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~LSLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~LSSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~LSSS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~RSSS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SLLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SLLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SLSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SLSS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SRSS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SSLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SSRS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SSSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SSSR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SSSS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SSSSLLLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SSSSLLSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SSSSLLSS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SSSSLSLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SSSSLSLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SSSSLSSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SSSSLSSS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SSSSSLLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SSSSSLLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SSSSSLSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SSSSSLSS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SSSSSSLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SSSSSSLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SEAS~SSSSSSSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~BBLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~BBSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~BLBL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~BLLB.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~BLLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~BLSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~BSLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~BSSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~LBBL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~LBLB.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~LBLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~LBSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~LLLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~LLSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~LSBB.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~LSBS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~LSLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~LSLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~LSSB.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~LSSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~LSSS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~SBLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~SBSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~SLBB.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~SLBS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~SLLL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~SLLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~SLSB.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~SLSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~SLSS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~SSLS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/terrain/AWDS_SHOA~SSSL.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/unitatk.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/unitmove.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDR_ATNK.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDR_BIKE.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDR_DUST.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDR_FLRE.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDR_GNBT.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDR_SEAP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_AAIR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_ACAR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_APCR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_ARTY.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_BCTR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_BKBM.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_BMBR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_BSHP.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_CRUS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_FGTR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_INFT.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_INFT_OS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_LNDR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_MDTK.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_MECH.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_MECH_OS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_MISS.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_NTNK.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_OOZM.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_PRNR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_RCKT.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_RECN.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_STLH.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_SUBM.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_TANK.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_TCTR.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/units/AWDS_WRTK.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/clientDeps.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/client_debug.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/engineDeps.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/engine_debug.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/gameConf.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/README.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/propertyBaseColors.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/image/unitBaseColors.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/maps/testMap.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/mod.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.1/starterDebug.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.2/clientDeps.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.2/client_debug.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.2/engineDeps.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.2/engine_debug.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.2/gameConf.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.2/mod.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/milestones/m2.2/starterDebug.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
     </list>
@@ -615,15 +53,17 @@
         <option value="$PROJECT_DIR$/stylesheets/site.css" />
         <option value="$PROJECT_DIR$/milestones/m2.1/client_debug.js" />
         <option value="$PROJECT_DIR$/milestones/m2.1/starterDebug.html" />
+        <option value="$PROJECT_DIR$/milestones/m2.2/client_debug.js" />
+        <option value="$PROJECT_DIR$/milestones/m2.2/starterDebug.html" />
         <option value="$PROJECT_DIR$/index.html" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="676" />
-    <option name="y" value="83" />
-    <option name="width" value="1208" />
-    <option name="height" value="917" />
+    <option name="x" value="65" />
+    <option name="y" value="22" />
+    <option name="width" value="967" />
+    <option name="height" value="633" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -651,7 +91,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -692,7 +131,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="m2.1" />
+              <option name="myItemId" value="m2.2" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -710,7 +149,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="m2" />
+              <option name="myItemId" value="m2.1" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -786,23 +225,30 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="options.lastSelected" value="reference.settingsdialog.IDE.editor.colors.Font" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/milestones/m2.2" />
       <recent name="$PROJECT_DIR$/milestones/m2.1" />
       <recent name="$PROJECT_DIR$/icons" />
       <recent name="$PROJECT_DIR$/milestones/m1" />
     </key>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node JS">
+      <method>
+        <option name="PhingTarget" enabled="false" />
+      </method>
+    </configuration>
     <configuration default="true" type="JavascriptDebugSession" factoryName="Local">
       <JSDebuggerConfigurationSettings>
         <option name="engineId" value="embedded" />
@@ -824,27 +270,27 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="676" y="83" width="1208" height="917" extended-state="0" />
+    <frame x="65" y="22" width="967" height="633" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32894737" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19654605" sideWeight="0.35672516" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3294702" sideWeight="0.0" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32885212" sideWeight="0.0" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="JsTestDriver Server" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33040935" sideWeight="0.99835527" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -914,11 +360,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/milestones/m1/webClientDeps.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/milestones/m1/webClientDeps_min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
@@ -951,23 +392,72 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/milestones/m2.1/mod.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/milestones/m2.1/gameConf.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/milestones/m2.1/clientDeps.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/milestones/m2.1/client_debug.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="725" selection-start="33452" selection-end="33452" vertical-scroll-proportion="0.017902814">
+        <state line="1" column="725" selection-start="33452" selection-end="33452" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/milestones/m2.1/starterDebug.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="316" column="80" selection-start="7664" selection-end="7664" vertical-scroll-proportion="0.36842105">
+        <state line="316" column="80" selection-start="7664" selection-end="7664" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/milestones/m2.1/engineDeps.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/milestones/m2.2/mod.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/milestones/m2.2/client_debug.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="744" selection-start="33471" selection-end="33471" vertical-scroll-proportion="0.026717557">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/milestones/m2.2/starterDebug.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="338" column="30" selection-start="8305" selection-end="8305" vertical-scroll-proportion="0.6087824">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="80" column="43" selection-start="2742" selection-end="2742" vertical-scroll-proportion="0.3923567">
+        <state line="109" column="38" selection-start="3664" selection-end="3664" vertical-scroll-proportion="0.46906188">
           <folding />
         </state>
       </provider>
