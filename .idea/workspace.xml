@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list id="3e58acfd-b129-49b1-94b4-60075a3584f9" name="Default" comment="m1" />
-    <list default="true" id="7622ae88-e936-4923-874c-d620d5253c4c" name="New changelist" comment="new page design">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/icons/sign_cacel.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/icons/sign_question.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/icons/sign_tick.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/icons/sign_warning.png" />
+    <list default="true" id="7622ae88-e936-4923-874c-d620d5253c4c" name="New changelist" comment="compatibility list">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stylesheets/site.css" afterPath="$PROJECT_DIR$/stylesheets/site.css" />
     </list>
     <ignored path="gh-pages.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -30,26 +25,7 @@
     <favorites_list name="gh-pages" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="58" column="0" selection-start="2087" selection-end="2087" vertical-scroll-proportion="0.33242506">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="site.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/stylesheets/site.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="141" column="0" selection-start="3187" selection-end="3187" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -227,8 +203,8 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="options.lastSelected" value="reference.settingsdialog.IDE.editor.colors.Font" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -264,7 +240,7 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32894737" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19654605" sideWeight="0.35672516" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3297414" sideWeight="0.0" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3297414" sideWeight="0.0" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
@@ -315,7 +291,7 @@
     <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
     <option name="CREATE_PATCH_EXPAND_DETAILS_DEFAULT" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="new page design" />
+    <option name="LAST_COMMIT_MESSAGE" value="compatibility list" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -341,6 +317,7 @@
     <MESSAGE value="bugfix m2" />
     <MESSAGE value="milestone 2" />
     <MESSAGE value="new page design" />
+    <MESSAGE value="compatibility list" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -378,14 +355,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/stylesheets/site.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="141" column="0" selection-start="3187" selection-end="3187" vertical-scroll-proportion="0.0">
+        <state line="141" column="0" selection-start="3187" selection-end="3187" vertical-scroll-proportion="0.25891677">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="0" selection-start="2087" selection-end="2087" vertical-scroll-proportion="0.33242506">
+        <state line="53" column="39" selection-start="2024" selection-end="2024" vertical-scroll-proportion="0.5149864">
           <folding />
         </state>
       </provider>
