@@ -56,6 +56,62 @@
 
         </table>
       </section>
+
+      <section id="compatibilityInfo" class="inner">
+        <div class="headerText" >Compatibility List
+          <span class="headerSupport">(Milestone 2)</span></div>
+
+        <table id="compa" class="newsTable">
+
+          <tr> <td>Mobile Safari on iOS6</td> <td
+                  class="withStatusIcon">problem</td>
+               <td>Some errors with controls</td>
+          </tr>
+
+          <tr> <td>WebView on iOS6</td> <td
+                  class="withStatusIcon">problem</td>
+                <td>Some errors with controls</td>
+          </tr>
+
+          <tr> <td>Chrome on Android 4.0</td> <td
+                  class="withStatusIcon">unknown</td></tr>
+
+          <tr> <td>Chrome on Android 4.1</td> <td
+                  class="withStatusIcon">problem</td>
+               <td>Some errors with controls and slow move animation</td>
+          </tr>
+
+          <tr> <td>Chrome 23</td> <td
+                  class="withStatusIcon">fine</td></tr>
+
+          <tr> <td>Safari 5.1</td> <td
+                  class="withStatusIcon">unknown</td></tr>
+
+          <tr> <td>Safari 6</td> <td
+                  class="withStatusIcon">unknown</td></tr>
+
+          <tr> <td>Firefox 17</td> <td
+                  class="withStatusIcon">problem</td>
+               <td>Mouse controls not working</td>
+          </tr>
+
+          <tr> <td>Firefox 19</td> <td
+                  class="withStatusIcon">problem</td>
+               <td>Mouse controls not working</td>
+          </tr>
+
+          <tr> <td>Internet Explorer 9</td> <td
+                  class="withStatusIcon">error</td>
+               <td>Fails to start</td>
+          </tr>
+
+          <tr> <td>Internet Explorer 10</td> <td
+                  class="withStatusIcon">unknown</td></tr>
+
+          <tr> <td>Opera 12</td> <td
+                  class="withStatusIcon">unknown</td></tr>
+        </table>
+      </section>
       
       <section id="milestoneBox" class="inner">
         <div class="headerText" >Releases and Plans</div>
@@ -165,11 +221,35 @@
         button design: http://www.cssbutton.me/robdozier
     -->
 
+    <!--
+        LICENSE ICONS:
+
+Free Web Design Icon Set
+http://semlabs.co.uk/journal/free-web-design-icon-set
+
+By using the Free Web Design Icon Set you agree to the following:
+
+All ownership and copyright of the icons remains the property of SEM Labs (semlabs.co.uk).
+
+The icons may be modified.
+
+The icons may be used in both non-commercial and commercial works.
+
+The icons may not be sold standalone in their current or modified form.
+
+All stock icons are provided "As is." You agree not to hold SEM Labs liable for any damage that may occur as a result of using these icons.
+
+Finally attribution is very much appreciated, but not necessary. If used on a website, attribution is not necessary on every page; a link on an about page or credits page is fine. If you are unsure about attribution, drop an email on the contact form (semlabs.co.uk/contact). Giving attribution helps us folks who are producing free work and may lead to the expansion of this icon pack. Also, I'd like to see any site or other works that are using these icons.
+
+    -->
+
   </body>
   
   <script>
     (function(){
       var now = new Date();
+
+      // DATES
       var elements = document.getElementsByClassName("dateDiff");
       for( var i = 0,e = elements.length; i<e; i++ ){
         var dateVal = Date.parse( elements[i].innerHTML );
@@ -188,19 +268,22 @@
 
         elements[i].innerHTML = value;
       }
-    })();
-    
-    
-    function badgeFlip (event)
-    {
-    	var element = event.currentTarget;
 
-	    if (element.className == 'badge') {
-		    element.className = 'badge flipped';
-	    }
-	    else {
-		    element.className = 'badge';
-	    }
-    }
+      // COMPA MAP
+      elements = document.getElementsByClassName("withStatusIcon");
+      for( var i = 0,e = elements.length; i<e; i++ ){
+        var value = elements[i].innerHTML;
+
+        if( value === "fine" ) value = "sign_tick.png";
+        else if( value === "problem" ) value = "sign_warning.png";
+        else if( value === "error" ) value = "sign_cacel.png";
+        else if( value === "unknown" ) value = "sign_question.png";
+        else value = "sign_question.png";
+
+        value = "<img src='icons/"+value+"'></img>";
+
+        elements[i].innerHTML = value;
+      }
+    })();
   </script>
 </html>

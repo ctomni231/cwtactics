@@ -2,12 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list id="3e58acfd-b129-49b1-94b4-60075a3584f9" name="Default" comment="m1" />
-    <list default="true" id="7622ae88-e936-4923-874c-d620d5253c4c" name="New changelist" comment="milestone 2">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/libs/date.js" />
+    <list default="true" id="7622ae88-e936-4923-874c-d620d5253c4c" name="New changelist" comment="new page design">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/icons/sign_cacel.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/icons/sign_question.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/icons/sign_tick.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/icons/sign_warning.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stylesheets/site.css" afterPath="$PROJECT_DIR$/stylesheets/site.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stylesheets/stylesheet.css" afterPath="$PROJECT_DIR$/stylesheets/stylesheet.css" />
     </list>
     <ignored path="gh-pages.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,7 +30,26 @@
     <favorites_list name="gh-pages" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="58" column="0" selection-start="2087" selection-end="2087" vertical-scroll-proportion="0.33242506">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="site.css" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/stylesheets/site.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="141" column="0" selection-start="3187" selection-end="3187" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -52,8 +73,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="847" />
-    <option name="y" value="93" />
+    <option name="x" value="637" />
+    <option name="y" value="45" />
     <option name="width" value="928" />
     <option name="height" value="866" />
   </component>
@@ -179,6 +200,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="icons" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gh-pages" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gh-pages" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="docs" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -192,11 +227,12 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="options.lastSelected" value="reference.settingsdialog.IDE.editor.colors.Font" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/icons" />
       <recent name="$PROJECT_DIR$/milestones/m1" />
     </key>
   </component>
@@ -222,13 +258,13 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="847" y="93" width="928" height="866" extended-state="0" />
+    <frame x="637" y="45" width="928" height="866" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32894737" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19654605" sideWeight="0.35672516" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3297414" sideWeight="0.0" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3297414" sideWeight="0.0" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
@@ -279,7 +315,7 @@
     <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
     <option name="CREATE_PATCH_EXPAND_DETAILS_DEFAULT" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="milestone 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="new page design" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -304,6 +340,7 @@
     <MESSAGE value="bugfix milestone 2" />
     <MESSAGE value="bugfix m2" />
     <MESSAGE value="milestone 2" />
+    <MESSAGE value="new page design" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -331,28 +368,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/milestones/m2/starterDebug.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="342" column="0" selection-start="8501" selection-end="8554" vertical-scroll-proportion="0.8092643">
-          <folding />
-        </state>
+        <state line="342" column="0" selection-start="8501" selection-end="8554" vertical-scroll-proportion="0.8092643" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/stylesheets/stylesheet.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="259" column="5" selection-start="4567" selection-end="4567" vertical-scroll-proportion="0.33242133">
-          <folding />
-        </state>
+        <state line="259" column="5" selection-start="4567" selection-end="4567" vertical-scroll-proportion="0.33242133" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/stylesheets/site.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="68" column="0" selection-start="1259" selection-end="1259" vertical-scroll-proportion="0.38837516">
+        <state line="141" column="0" selection-start="3187" selection-end="3187" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="130" column="13" selection-start="4926" selection-end="4926" vertical-scroll-proportion="0.53405994">
+        <state line="58" column="0" selection-start="2087" selection-end="2087" vertical-scroll-proportion="0.33242506">
           <folding />
         </state>
       </provider>
