@@ -2,18 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list id="3e58acfd-b129-49b1-94b4-60075a3584f9" name="Default" comment="m1" />
-    <list default="true" id="7622ae88-e936-4923-874c-d620d5253c4c" name="New changelist" comment="m2.2">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/content/compability.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/content/milestones.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/content/navBar.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/content/news.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/libs/jquery.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/libs/pure.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scripts/desc.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scripts/stuff.js" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index.html" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+    <list default="true" id="7622ae88-e936-4923-874c-d620d5253c4c" name="New changelist" comment="new site structure&#10;">
+      <change type="MOVED" beforePath="$PROJECT_DIR$/content/compability.js" afterPath="$PROJECT_DIR$/content/compatibility.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
     </list>
     <ignored path="gh-pages.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -35,37 +27,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/index.html">
+      <file leaf-file-name="compatibility.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/content/compatibility.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="103" column="25" selection-start="3560" selection-end="3560" vertical-scroll-proportion="-4.2173915">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="desc.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/scripts/desc.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="22" selection-start="542" selection-end="542" vertical-scroll-proportion="-0.7275064">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="navBar.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/content/navBar.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="2" selection-start="748" selection-end="748" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="news.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/content/news.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="2" selection-start="282" selection-end="282" vertical-scroll-proportion="0.0">
+            <state line="0" column="14" selection-start="4" selection-end="14" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -97,17 +62,17 @@
         <option value="$PROJECT_DIR$/descriptors/desc.js" />
         <option value="$PROJECT_DIR$/scripts/stuff.js" />
         <option value="$PROJECT_DIR$/indexNew.html" />
-        <option value="$PROJECT_DIR$/content/milestones.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/content/navBar.js" />
         <option value="$PROJECT_DIR$/content/news.js" />
         <option value="$PROJECT_DIR$/scripts/desc.js" />
+        <option value="$PROJECT_DIR$/content/milestones.js" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="340" />
-    <option name="y" value="22" />
+    <option name="x" value="-4" />
+    <option name="y" value="76" />
     <option name="width" value="834" />
     <option name="height" value="689" />
   </component>
@@ -285,7 +250,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="340" y="22" width="834" height="689" extended-state="0" />
+    <frame x="-4" y="76" width="834" height="689" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -342,7 +307,7 @@
     <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
     <option name="CREATE_PATCH_EXPAND_DETAILS_DEFAULT" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="m2.2" />
+    <option name="LAST_COMMIT_MESSAGE" value="new site structure&#10;" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -371,6 +336,7 @@
     <MESSAGE value="compatibility list" />
     <MESSAGE value="m2.1" />
     <MESSAGE value="m2.2" />
+    <MESSAGE value="new site structure&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -418,13 +384,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/content/compability.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="14" selection-start="4" selection-end="14" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/libs/jquery.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
@@ -453,37 +412,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/content/milestones.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="25" selection-start="1506" selection-end="1506" vertical-scroll-proportion="0.019390581">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/content/navBar.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="2" selection-start="748" selection-end="748" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/content/news.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="2" selection-start="282" selection-end="282" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="103" column="25" selection-start="3560" selection-end="3560" vertical-scroll-proportion="-4.2173915">
+        <state line="18" column="2" selection-start="748" selection-end="748" vertical-scroll-proportion="0.67021275">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/desc.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="22" selection-start="542" selection-end="542" vertical-scroll-proportion="-0.7275064">
+        <state line="65" column="27" selection-start="1414" selection-end="1414" vertical-scroll-proportion="1.1079692">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/content/milestones.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="25" selection-start="535" selection-end="535" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/content/news.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="2" selection-start="282" selection-end="282" vertical-scroll-proportion="0.25192803">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="30" selection-start="735" selection-end="735" vertical-scroll-proportion="-0.9433428">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/content/compatibility.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="14" selection-start="4" selection-end="14" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
