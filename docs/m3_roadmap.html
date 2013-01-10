@@ -1,0 +1,418 @@
+
+
+<table>
+<caption id="map">Milestone 3 RoadMap</caption>
+<colgroup>
+<col style="text-align:left;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:left;"></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:left;"><strong>Bugfixes</strong> - <code>Milestone 2.3</code></td>
+</tr>
+<tr>
+	<td style="text-align:left;">attack possible in some situations where it should not be available ( e.g. during join action )</td>
+</tr>
+<tr>
+	<td style="text-align:left;">recoloring in <code>Mozilla Firefox</code> does not work on some object types</td>
+</tr>
+<tr>
+	<td style="text-align:left;">show unit names not their ids in transporters</td>
+</tr>
+<tr>
+	<td style="text-align:left;"><strong>Enhacements</strong> - <code>Milestone 2.4</code></td>
+</tr>
+<tr>
+	<td style="text-align:left;">a player can transfer money to the gold depot of an other player (useful in team matches)</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a player can transfer units and properties to an other player (useful in team matches)</td>
+</tr>
+<tr>
+	<td style="text-align:left;">regenerating silo</td>
+</tr>
+<tr>
+	<td style="text-align:left;">silo firing animation</td>
+</tr>
+<tr>
+	<td style="text-align:left;">destroy animation</td>
+</tr>
+<tr>
+	<td style="text-align:left;"><strong>Fog System</strong> - <code>Milestone 2.3</code></td>
+</tr>
+<tr>
+	<td style="text-align:left;"><s>the game holds a matrix with the vision values </s></td>
+</tr>
+<tr>
+	<td style="text-align:left;"><s>if a mover will be placed on the map every tile in range gets +1</s></td>
+</tr>
+<tr>
+	<td style="text-align:left;"><s>if a mover will be removed from the map every tile in range gets &#8211;1</s></td>
+</tr>
+<tr>
+	<td style="text-align:left;"><s>a tile is visible if the fog value greater than 0</s></td>
+</tr>
+<tr>
+	<td style="text-align:left;">fog changes if a property is captured</td>
+</tr>
+<tr>
+	<td style="text-align:left;">fog changes if an unit moves from a to b</td>
+</tr>
+<tr>
+	<td style="text-align:left;">fog changes if a unit will be placed on the map</td>
+</tr>
+<tr>
+	<td style="text-align:left;">fog changes if the turn starts</td>
+</tr>
+<tr>
+	<td style="text-align:left;">the game holds the last active local player instance</td>
+</tr>
+<tr>
+	<td style="text-align:left;">not every player will be playable (with AI mechanisms in milestone 4)</td>
+</tr>
+<tr>
+	<td style="text-align:left;">only the fog map of the last active player will be shown</td>
+</tr>
+<tr>
+	<td style="text-align:left;"><strong>Co System</strong></td>
+</tr>
+<tr>
+	<td style="text-align:left;">a player has a main co</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a player has a side co</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a player have a power meter bar</td>
+</tr>
+<tr>
+	<td style="text-align:left;">after a battle the attacker gets power meter points for the damage dealt</td>
+</tr>
+<tr>
+	<td style="text-align:left;">after a battle the defender gets power meter points for the damage he got</td>
+</tr>
+<tr>
+	<td style="text-align:left;">the power bar has a lower power part and a higher level part</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a player has an active co</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a player can active normal co power</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a player can active super co power</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a player can active tag co power</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a co power effect remains for one in-game day</td>
+</tr>
+<tr>
+	<td style="text-align:left;"><strong>Tag Engine</strong></td>
+</tr>
+<tr>
+	<td style="text-align:left;">tag script format which is JSON friendly</td>
+</tr>
+<tr>
+	<td style="text-align:left;">tag scripts can be global for all players</td>
+</tr>
+<tr>
+	<td style="text-align:left;">tag scripts can be player only and only activates for that players</td>
+</tr>
+<tr>
+	<td style="text-align:left;">tag scripts can be active for the whole gam round</td>
+</tr>
+<tr>
+	<td style="text-align:left;">tag scripts can be active for a given number of dates</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a tag event will be triggered from source code</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a unit position ( tile type ) can be set as condition</td>
+</tr>
+<tr>
+	<td style="text-align:left;">unit fire types can be set as condition</td>
+</tr>
+<tr>
+	<td style="text-align:left;">unit move types can be used as condition</td>
+</tr>
+<tr>
+	<td style="text-align:left;">unit type can be used as condition</td>
+</tr>
+</tbody>
+</table>
+<p><style type="text/css">
+/* +++ master +++ <em>/
+/</em> html elements */</p>
+
+<p>body {
+ margin: 0;
+ padding: 0;
+ border: 0;
+ vertical-align: baseline;
+ overflow:hidden;
+ background-color: #f2f2f2;
+ color: #3c3c3c;
+ font-size: 62.5%;
+ line-height: 2.4em;
+ -webkit-font-smoothing: antialiased;
+}
+a {
+ color: #308bd8;
+ text-decoration:none;
+}
+a:hover {
+ text-decoration: underline;
+}
+/* headings <em>/
+h1, h2 {
+ line-height:1.2em;
+ margin-top:32px;
+ margin-bottom:12px;
+}
+h1:first-child {
+ margin-top:0;
+}
+h3, h4, h5, h6 {
+ margin-top:12px;
+ margin-bottom:0;
+}
+h5, h6 {
+ font-size:0.9em;
+ line-height:1.0em;
+}
+/</em> end of headings <em>/
+p {
+ margin-top:0;
+ margin-bottom:24px;
+}
+p:last-child {
+ margin-bottom:0;
+}
+hr {
+ width: 100%;
+ margin: 3em auto;
+ border: 0;
+ color: #eee;
+ background-color: #ccc;
+ height: 1px;
+ -webkit-box-shadow:0px 1px 0px rgba(255, 255, 255, 0.75);
+}
+/</em> lists <em>/
+ol {
+ list-style: outside decimal;
+}
+ul {
+ list-style: outside disc;
+}
+ol, ul {
+ padding-left:0;
+ margin-bottom:24px;
+}
+ol li {
+ margin-bottom:16px;
+ margin-left:28px;
+}
+ul li {
+ margin-bottom:16px;
+ margin-left:20px;
+}
+ol:last-child, ul:last-child {
+ margin-bottom:0;
+}
+li &gt; p {
+ margin-bottom:12px;
+}
+li &gt; ol, li &gt; ul {
+ margin-top: 16px !important;
+ padding-left:16px;
+}
+dl {
+ margin-bottom:24px;
+}
+dl dt {
+ font-weight:bold;
+ margin-bottom:8px;
+}
+dl dd {
+ margin-left:0;
+ margin-bottom:12px;
+}
+dl dd:last-child, dl:last-child {
+ margin-bottom:0;
+}
+/</em> end of lists */
+pre {
+ white-space: pre-wrap;
+ margin-bottom: 24px;
+ overflow: hidden;
+ padding:3px;
+ -webkit-border-radius: 3px;
+ background-color: #eee;
+ border: 1px solid #ddd;
+}
+code {
+ white-space: nowrap;
+ font-size: 1.1em;
+ padding: 2px;
+ -webkit-border-radius: 3px;
+ background-color: #eee;
+ border: 1px solid #ddd;
+}
+pre code {
+ white-space: pre-wrap;
+ border: none;
+ padding: 0;
+ background-color: transparent;
+ -webkit-border-radius: 0;
+}
+blockquote {
+ margin-left: 0;
+ margin-right: auto;
+ width: 96%;
+ padding: 0 10px;
+ border-left: 3px solid #ddd;
+ color: #777;
+}
+table {
+ margin-left: auto;
+ margin-right: auto;
+ margin-bottom: 24px;
+ border-bottom: 1px solid #ddd;
+ border-right: 1px solid #ddd;
+ border-spacing: 0;
+}
+table th {
+ padding: 3px 10px;
+ background-color: #eee;
+ border-top: 1px solid #ddd;
+ border-left: 1px solid #ddd;
+}
+table tr {
+}
+table td {
+ padding: 3px 10px;
+ border-top: 1px solid #ddd;
+ border-left: 1px solid #ddd;
+}
+caption {
+ font-size: 1.2em;
+ font-weight: bold;
+ margin-bottom: 5px;
+}
+figure {
+ display: block;
+ text-align: center;
+}
+img {
+ border: none;
+ display: block;
+ margin: 1em auto;
+ max-width: 100%;
+}
+figcaption {
+ font-size: 0.8em;
+ font-style: italic;
+}
+mark {
+ background: #fefec0;
+ padding:1px 3px;
+}</p>
+
+<p>/* unique elements */</p>
+
+<h1>wrapper {</h1>
+
+<pre><code>height: 100%;
+overflow-y: scroll;
+overflow-x: hidden;
+font-size: 1.0em;
+width: 100%;
+</code></pre>
+
+<p>}</p>
+
+<h1>content {</h1>
+
+<pre><code>width: auto;
+padding: 8px 8px 8px 8px;
+font-family: 'mplus-1m-regular', Helvetica, Georgia, serif;
+font-size: 2.1em;
+</code></pre>
+
+<p>}</p>
+
+<p>/* classes */</p>
+
+<p>.markdowncitation {
+}
+.footnote {
+ font-size: 0.8em;
+ vertical-align: super;
+}
+.footnotes ol {
+ font-weight: bold;
+}
+.footnotes ol li p {
+ font-weight: normal;
+}</p>
+
+<p>/* custom formatting classes */</p>
+
+<p>.shadow {
+ -webkit-box-shadow: 0 2px 4px #999;
+}</p>
+
+<p>.source {
+ text-align: center;
+ font-size: 0.8em;
+ color: #777;
+ margin: &#8211;40px auto;
+}
+/* &#8212; master &#8212; <em>/
+/</em> +++ overrides +++ */</p>
+
+<h1>wrapper {</h1>
+
+<pre><code>position: fixed;
+width: 99.9%;
+</code></pre>
+
+<p>}</p>
+
+<h1>content {</h1>
+
+<pre><code>width: 610px;
+margin-left: auto;
+margin-right: auto;
+padding-top:0;
+padding-bottom:0;
+</code></pre>
+
+<p>}</p>
+
+<p>/* Mobile support */
+@media only screen and (max-device-width:1024px) {
+ html {
+ overflow: auto;
+ }</p>
+
+<pre><code>#wrapper {
+    overflow: auto;
+    position: relative;
+}
+</code></pre>
+
+<p>}
+/* &#8212; overrides &#8212; */</p>
+
+<p></style></p>
