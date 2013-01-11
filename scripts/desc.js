@@ -48,6 +48,10 @@ var PAGE_MILESTONES_DESC = {
 
       "a@href": "#{entry.link}"
       ,
+      
+      "a": "#{entry.linkCaption}"
+      ,
+      
       "a@style": function( args ){
         var link = args.item.link;
         if( typeof link !== 'undefined' && link !== null && link.length > 0 ){
