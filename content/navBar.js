@@ -2,8 +2,12 @@ var PAGE_LATEST_VERSION_LINK;
 for( var i=PAGE_MILESTONES.milestones.length-1,e=0; i>=e; i-- ){
   var link = PAGE_MILESTONES.milestones[i].link;
   if( typeof link !== 'undefined' && link !== null && link.length > 0 ){
-    PAGE_LATEST_VERSION_LINK = link;
-    break;
+    
+    // ONLY MILESTONE LINKS
+    if( link.indexOf("milestones/") !== -1 ){
+      PAGE_LATEST_VERSION_LINK = link;
+      break;
+    }
   }
 } 
 
