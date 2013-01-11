@@ -8,6 +8,7 @@ var PAGE_MILESTONES = {
       subHeaderB:"visual stuff",
       pre:"The first milestone tries to build the base for the web client and the java client. It provides a nearly complete model with first logic functionalities.",
       link:"milestones/m1/webClient.html",
+      linkCaption:"Play Milestone 1",
       post:"<strong>Note,</strong> this is an alpha milestone and contains many bugs. Hopefully milestone 2 will be a lot better. xD"
     },
 
@@ -18,6 +19,7 @@ var PAGE_MILESTONES = {
       subHeaderB:"Rounds",
       pre:"This will be the last HTML client only milestone. The HTML client and the java client will be released in a similar state of functionality with the next milestone releases.",
       link:"milestones/m2/starterDebug.html",
+      linkCaption:"Play Milestone 2",
       img:"images/m2.png",
       post:"The second milestone is mostly a refactoring milestone because we fixed a lot of problems of the milestone 1. We did it to prepare the engine for next upcoming features. Beside of many under the hood updates, milestone 2 introduces some new features like information boxes, a complete game round, building units and so on. As one of first milestones, milestone 2 has a endable game round. If you conquer the enemy <strong>HQTR</strong>, the game will end. In this release you will get a message box which shows you the end of the game."
     },
@@ -29,6 +31,7 @@ var PAGE_MILESTONES = {
       subHeaderB:"Fixes",
       pre:"",
       link:"milestones/m2.1/starterDebug.html",
+      linkCaption:"Play Milestone 2.1",
       post:"Solved some control issues and implemented a version tag in the upper left coner."
     },
 
@@ -39,6 +42,7 @@ var PAGE_MILESTONES = {
       subHeaderB:"Fixes",
       pre:"",
       link:"milestones/m2.2/starterDebug.html",
+      linkCaption:"Play Milestone 2.2",
       post:"Solved the mouse control issues in firefox, but there are some coloring issues."
     },
 
@@ -48,7 +52,8 @@ var PAGE_MILESTONES = {
       subHeaderT:"Scripting",
       subHeaderB:"Engine",
       pre:"Coming Soon! :D",
-      link:"",
+      link:"docs/m3_roadmap.html",
+      linkCaption:"View Roadmap <span style="font-size: 0.75em;">(10.1.2013)</span>",
       post:""
     } /*,
 
