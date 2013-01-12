@@ -53,7 +53,7 @@ var PAGE_MILESTONES = {
       subHeaderB:"Engine",
       pre:"Coming Soon! :D",
       link:"docs/m3_roadmap.html",
-      linkCaption:"View Roadmap <span style='font-size: 0.75em;'>(10.1.2013)</span>",
+      linkCaption:"View Roadmap <span style='font-size: 0.75em;'>(12.1.2013)</span>",
       post:""
     } /*,
 
