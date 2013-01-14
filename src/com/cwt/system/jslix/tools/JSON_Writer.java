@@ -11,6 +11,16 @@ import java.util.Map;
 
 import org.json.simple.JSONObject;
 
+/**
+ * JSON_Writer.java
+ * 
+ * This tool will allos for the creation of JSON files that are compliant with
+ * the format used in this project.
+ * 
+ * @author Cesar Ramirez
+ * @license Look into "LICENSE" file for further information
+ * @version 12.1.13
+ */
 public class JSON_Writer {
 
 	/** The JSON file */
@@ -18,9 +28,8 @@ public class JSON_Writer {
 	/** The JSON writer */
 	private JSONObject obj;
 
-	LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
-	String listKey;
-	LinkedList<String> list = new LinkedList<String>();
+	LinkedHashMap map = new LinkedHashMap();
+	LinkedList list = new LinkedList();
 
 	/**
 	 * This class sets up a JSON parser ready for parsing using the parse
@@ -30,15 +39,26 @@ public class JSON_Writer {
 		obj = new JSONObject();
 	}
 
+	/**
+	 * @param filename
+	 */
 	public JSON_Writer(String filename) {
 		this();
 		setFileData(filename);
 	}
 
+	/**
+	 * @param file
+	 * @throws IOException
+	 */
 	public final void setFileData(File file) throws IOException {
 		setFileData(file.getCanonicalPath(), file.getName());
 	}
 
+	/**
+	 * @param path
+	 * @param filename
+	 */
 	public final void setFileData(String path, String filename) {
 		if (!filename.endsWith(".xml")) {
 			filename += ".xml";
@@ -46,6 +66,9 @@ public class JSON_Writer {
 		this.file = new File(path + File.separator + filename);
 	}
 
+	/**
+	 * @param filename
+	 */
 	public final void setFileData(String filename) {
 		if (!filename.endsWith(".xml")) {
 			filename += ".xml";
@@ -53,58 +76,148 @@ public class JSON_Writer {
 		setFileData(".", filename);
 	}
 
+	/**
+	 * @param key
+	 * @param value
+	 */
 	public void addPair(String key, String value) {
 		obj.put(key, value);
 	}
 
+	/**
+	 * @param key
+	 * @param value
+	 */
+	public void addPair(String key, int value) {
+		obj.put(key, value);
+	}
+
+	/**
+	 * @param key
+	 * @param value
+	 */
+	public void addPair(String key, Object value) {
+		obj.put(key, value.toString());
+	}
+
+	/**
+	 * @param key
+	 * @param value
+	 */
 	public void addList(String key, String[] value) {
-		LinkedList<String> l1 = new LinkedList<String>();
+		LinkedList l1 = new LinkedList();
 		for (String item : value) {
 			l1.add(item);
 		}
 		obj.put(key, l1);
 	}
 
-	public void addList(String key, LinkedList<String> values) {
+	/**
+	 * @param key
+	 * @param values
+	 */
+	public void addList(String key, LinkedList values) {
 		obj.put(key, values);
 	}
 
-	public void startList(String key) {
-		this.listKey = key;
-		this.list = new LinkedList<String>();
+	/**
+	 * @param key
+	 */
+	public void startList() {
+		this.list = new LinkedList();
 	}
 
+	/**
+	 * @param value
+	 */
 	public void addValueToList(String value) {
 		this.list.add(value);
 	}
 
-	public void finishList() {
-		this.addList(this.listKey, (LinkedList<String>) (this.list.clone()));
-		this.listKey = null;
-		this.list = null;
+	/**
+	 * @param value
+	 */
+	public void addValueToList(LinkedHashMap value) {
+		this.list.add(value);
 	}
 
+	/**
+	 * @param value
+	 */
+	public void addValueToList(LinkedList value) {
+		this.list.add(value);
+	}
+
+	/**
+	 * 
+	 */
+	public LinkedList finishList() {
+		LinkedList tmp = (LinkedList) (this.list.clone());
+		this.list = null;
+		return tmp;
+	}
+
+	/**
+	 * @param map
+	 */
 	public void addMap(Map map) {
 		obj.putAll(map);
 	}
 
+	/**
+	 * 
+	 */
 	public void startMap() {
-		this.map = new LinkedHashMap<String, String>();
+		this.map = new LinkedHashMap();
 	}
 
+	/**
+	 * @param key
+	 * @param value
+	 */
 	public void addValueToMap(String key, String value) {
 		this.map.put(key, value);
 	}
 
-	public void finishMap() {
-		this.addMap((LinkedHashMap<String, String>) (this.map.clone()));
-		this.map = null;
+	/**
+	 * @param key
+	 * @param value
+	 */
+	public void addValueToMap(String key, LinkedHashMap value) {
+		this.map.put(key, value);
 	}
 
+	/**
+	 * @param key
+	 * @param value
+	 */
+	public void addValueToMap(String key, LinkedList value) {
+		this.map.put(key, value);
+	}
+
+	/**
+	 * 
+	 */
+	public LinkedHashMap finishMap() {
+		LinkedHashMap tmp = (LinkedHashMap) (this.map.clone());
+		this.map = null;
+		return tmp;
+	}
+
+	/**
+	 * 
+	 */
 	public void print() {
 		System.out.println(obj);
 	}
 
+	/**
+	 * @param path
+	 * @param filename
+	 * @param data
+	 * @param overwrite
+	 * @return
+	 */
 	private boolean createFile(String path, String filename, String data,
 			boolean overwrite) {
 
@@ -142,4 +255,60 @@ public class JSON_Writer {
 		return true;
 	}
 
+	public static void main(String[] args) {
+		JSON_Writer writer = new JSON_Writer("map" + File.separator
+				+ "testmap_copy.json");
+		writer.addPair("mapWidth", 10);
+		writer.addPair("mapHeight", 10);
+		writer.addPair("filler", "PLIN");
+
+		writer.startMap();
+		writer.addValueToMap("3", "MNTN");
+		writer.addValueToMap("4", "MNTN");
+		LinkedHashMap tmp1 = writer.finishMap();
+		writer.startMap();
+		writer.addValueToMap("1", tmp1);
+		LinkedHashMap tmpA = writer.finishMap();
+
+		writer.startMap();
+		writer.addValueToMap("7", "FRST");
+		writer.addValueToMap("8", "FRST");
+		writer.addValueToMap("9", "FRST");
+		LinkedHashMap tmp2 = writer.finishMap();
+		writer.startMap();
+		writer.addValueToMap("2", tmp2);
+		LinkedHashMap tmpB = writer.finishMap();
+
+		writer.startMap();
+		writer.addValueToMap("2", "MNTN");
+		LinkedHashMap tmp3 = writer.finishMap();
+		writer.startMap();
+		writer.addValueToMap("5", tmp3);
+		LinkedHashMap tmpC = writer.finishMap();
+
+		writer.startMap();
+		writer.addValueToMap("2", "HQ");
+		LinkedHashMap tmp4 = writer.finishMap();
+		writer.startMap();
+		writer.addValueToMap("6",tmp4);
+		LinkedHashMap tmpD = writer.finishMap();
+
+		writer.startMap();
+		writer.addValueToMap("5", "FRST");
+		LinkedHashMap tmp5 = writer.finishMap();
+		writer.startMap();
+		writer.addValueToMap("9",tmp5);
+		LinkedList tmpE = writer.finishList();
+
+		writer.startList();
+		writer.addValueToList(tmpA);
+		writer.addValueToList(tmpB);
+		writer.addValueToList(tmpC);
+		writer.addValueToList(tmpD);
+		writer.addValueToList(tmpE);
+		writer.addList("data", writer.finishList());
+
+		writer.print();
+
+	}
 }
