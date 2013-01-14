@@ -80,6 +80,14 @@ public class JSON_Writer {
 	 * @param key
 	 * @param value
 	 */
+	public void addPair(String key, int value) {
+		obj.put(key, value);
+	}
+
+	/**
+	 * @param key
+	 * @param value
+	 */
 	public void addPair(String key, String value) {
 		obj.put(key, value);
 	}
@@ -98,22 +106,6 @@ public class JSON_Writer {
 	 */
 	public void addPair(String key, LinkedList value) {
 		obj.put(key, value);
-	}
-	
-	/**
-	 * @param key
-	 * @param value
-	 */
-	public void addPair(String key, int value) {
-		obj.put(key, value);
-	}
-	
-	/**
-	 * @param key
-	 * @param value
-	 */
-	public void addPair(String key, Object value) {
-		obj.put(key, value.toString());
 	}
 
 	/**
@@ -165,6 +157,13 @@ public class JSON_Writer {
 	}
 
 	/**
+	 * @param value
+	 */
+	public void addValueToList(int value) {
+		this.list.add(value);
+	}
+
+	/**
 	 * 
 	 */
 	public LinkedList finishList() {
@@ -208,6 +207,14 @@ public class JSON_Writer {
 	 * @param value
 	 */
 	public void addValueToMap(String key, LinkedList value) {
+		this.map.put(key, value);
+	}
+
+	/**
+	 * @param key
+	 * @param value
+	 */
+	public void addValueToMap(String key, int value) {
 		this.map.put(key, value);
 	}
 
@@ -304,9 +311,71 @@ public class JSON_Writer {
 		writer.startMap();
 		writer.addValueToMap("1", tmp1);
 		writer.addValueToMap("2", tmp2);
-		
+		writer.addValueToMap("5", tmp3);
+		writer.addValueToMap("6", tmp4);
+		writer.addValueToMap("9", tmp5);
+
 		writer.addPair("data", writer.finishMap());
 
+		writer.startMap();
+		writer.addValueToMap("x", 0);
+		writer.addValueToMap("y", 0);
+		writer.addValueToMap("ammo", 1);
+		writer.addValueToMap("fuel", 10);
+		writer.addValueToMap("hp", 30);
+		writer.addValueToMap("type", "INFT_OS");
+		writer.addValueToMap("owner", 0);
+		LinkedHashMap p1u1 = writer.finishMap();
+		
+		writer.startMap();
+		writer.addValueToMap("x", 1);
+		writer.addValueToMap("y", 1);
+		writer.addValueToMap("ammo", -1);
+		writer.addValueToMap("fuel", 40);
+		writer.addValueToMap("hp", 50);
+		writer.addValueToMap("type", "INFT_OS");
+		writer.addValueToMap("owner", 0);
+		LinkedHashMap p1u2 = writer.finishMap();
+		
+		writer.startList();
+		writer.addValueToList(p1u1);
+		writer.addValueToList(p1u2);
+		LinkedList p1units = writer.finishList();
+		
+		writer.startMap();
+		writer.addValueToMap("name", "P1");
+		writer.addValueToMap("gold", "2000");
+		writer.addValueToMap("team", 1);
+		writer.addValueToMap("units", p1units);
+		LinkedHashMap p1 = writer.finishMap();
+		
+		
+		writer.startMap();
+		writer.addValueToMap("x", 0);
+		writer.addValueToMap("y", 0);
+		writer.addValueToMap("ammo", 1);
+		writer.addValueToMap("fuel", 10);
+		writer.addValueToMap("hp", 30);
+		writer.addValueToMap("type", "INFT_OS");
+		writer.addValueToMap("owner", 0);
+		LinkedHashMap p2u1 = writer.finishMap();
+				
+		writer.startList();
+		writer.addValueToList(p2u1);
+		LinkedList p2units = writer.finishList();
+		
+		writer.startMap();
+		writer.addValueToMap("name", "P2");
+		writer.addValueToMap("gold", "12000");
+		writer.addValueToMap("team", 2);
+		writer.addValueToMap("units", p1units);
+		LinkedHashMap p2 = writer.finishMap();
+		
+		writer.startList();
+		writer.addValueToList(p1);
+		writer.addValueToList(p2);
+		writer.addList("players", writer.finishList());
+		
 		writer.print();
 
 	}
