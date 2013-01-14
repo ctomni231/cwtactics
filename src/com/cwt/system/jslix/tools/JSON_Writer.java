@@ -88,10 +88,26 @@ public class JSON_Writer {
 	 * @param key
 	 * @param value
 	 */
-	public void addPair(String key, int value) {
+	public void addPair(String key, LinkedHashMap value) {
 		obj.put(key, value);
 	}
 
+	/**
+	 * @param key
+	 * @param value
+	 */
+	public void addPair(String key, LinkedList value) {
+		obj.put(key, value);
+	}
+	
+	/**
+	 * @param key
+	 * @param value
+	 */
+	public void addPair(String key, int value) {
+		obj.put(key, value);
+	}
+	
 	/**
 	 * @param key
 	 * @param value
@@ -266,47 +282,30 @@ public class JSON_Writer {
 		writer.addValueToMap("3", "MNTN");
 		writer.addValueToMap("4", "MNTN");
 		LinkedHashMap tmp1 = writer.finishMap();
-		writer.startMap();
-		writer.addValueToMap("1", tmp1);
-		LinkedHashMap tmpA = writer.finishMap();
 
 		writer.startMap();
 		writer.addValueToMap("7", "FRST");
 		writer.addValueToMap("8", "FRST");
 		writer.addValueToMap("9", "FRST");
 		LinkedHashMap tmp2 = writer.finishMap();
-		writer.startMap();
-		writer.addValueToMap("2", tmp2);
-		LinkedHashMap tmpB = writer.finishMap();
 
 		writer.startMap();
 		writer.addValueToMap("2", "MNTN");
 		LinkedHashMap tmp3 = writer.finishMap();
-		writer.startMap();
-		writer.addValueToMap("5", tmp3);
-		LinkedHashMap tmpC = writer.finishMap();
 
 		writer.startMap();
 		writer.addValueToMap("2", "HQ");
 		LinkedHashMap tmp4 = writer.finishMap();
-		writer.startMap();
-		writer.addValueToMap("6",tmp4);
-		LinkedHashMap tmpD = writer.finishMap();
 
 		writer.startMap();
 		writer.addValueToMap("5", "FRST");
 		LinkedHashMap tmp5 = writer.finishMap();
-		writer.startMap();
-		writer.addValueToMap("9",tmp5);
-		LinkedList tmpE = writer.finishList();
 
-		writer.startList();
-		writer.addValueToList(tmpA);
-		writer.addValueToList(tmpB);
-		writer.addValueToList(tmpC);
-		writer.addValueToList(tmpD);
-		writer.addValueToList(tmpE);
-		writer.addList("data", writer.finishList());
+		writer.startMap();
+		writer.addValueToMap("1", tmp1);
+		writer.addValueToMap("2", tmp2);
+		
+		writer.addPair("data", writer.finishMap());
 
 		writer.print();
 
