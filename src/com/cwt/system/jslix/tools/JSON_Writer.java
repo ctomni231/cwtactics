@@ -60,8 +60,8 @@ public class JSON_Writer {
 	 * @param filename
 	 */
 	public final void setFileData(String path, String filename) {
-		if (!filename.endsWith(".xml")) {
-			filename += ".xml";
+		if (!filename.endsWith(".json")) {
+			filename += ".json";
 		}
 		this.file = new File(path + File.separator + filename);
 	}
@@ -70,8 +70,8 @@ public class JSON_Writer {
 	 * @param filename
 	 */
 	public final void setFileData(String filename) {
-		if (!filename.endsWith(".xml")) {
-			filename += ".xml";
+		if (!filename.endsWith(".json")) {
+			filename += ".json";
 		}
 		setFileData(".", filename);
 	}
@@ -247,7 +247,7 @@ public class JSON_Writer {
 		setFileData(path, filename);
 
 		try {
-			if (file.mkdirs())
+			if (file.getParentFile().mkdirs())
 				System.out.println("Directories Created! " + path);
 			else
 				System.out.println("Directories Failed! " + path);
@@ -276,6 +276,15 @@ public class JSON_Writer {
 		}
 
 		return true;
+	}
+
+	/**
+	 * @param overwrite
+	 * @return
+	 */
+	private boolean createFile(boolean overwrite) {
+		return createFile(file.getParent(), file.getName(),
+				obj.toString(), overwrite);
 	}
 
 	public static void main(String[] args) {
@@ -326,7 +335,7 @@ public class JSON_Writer {
 		writer.addValueToMap("type", "INFT_OS");
 		writer.addValueToMap("owner", 0);
 		LinkedHashMap p1u1 = writer.finishMap();
-		
+
 		writer.startMap();
 		writer.addValueToMap("x", 1);
 		writer.addValueToMap("y", 1);
@@ -336,47 +345,46 @@ public class JSON_Writer {
 		writer.addValueToMap("type", "INFT_OS");
 		writer.addValueToMap("owner", 0);
 		LinkedHashMap p1u2 = writer.finishMap();
-		
+
 		writer.startList();
 		writer.addValueToList(p1u1);
 		writer.addValueToList(p1u2);
 		LinkedList p1units = writer.finishList();
-		
+
 		writer.startMap();
 		writer.addValueToMap("name", "P1");
-		writer.addValueToMap("gold", "2000");
+		writer.addValueToMap("gold", 2000);
 		writer.addValueToMap("team", 1);
 		writer.addValueToMap("units", p1units);
 		LinkedHashMap p1 = writer.finishMap();
-		
-		
+
 		writer.startMap();
-		writer.addValueToMap("x", 0);
-		writer.addValueToMap("y", 0);
+		writer.addValueToMap("x", 3);
+		writer.addValueToMap("y", 4);
 		writer.addValueToMap("ammo", 1);
 		writer.addValueToMap("fuel", 10);
 		writer.addValueToMap("hp", 30);
 		writer.addValueToMap("type", "INFT_OS");
-		writer.addValueToMap("owner", 0);
+		writer.addValueToMap("owner", 1);
 		LinkedHashMap p2u1 = writer.finishMap();
-				
+
 		writer.startList();
 		writer.addValueToList(p2u1);
 		LinkedList p2units = writer.finishList();
-		
+
 		writer.startMap();
 		writer.addValueToMap("name", "P2");
-		writer.addValueToMap("gold", "12000");
+		writer.addValueToMap("gold", 12000);
 		writer.addValueToMap("team", 2);
-		writer.addValueToMap("units", p1units);
+		writer.addValueToMap("units", p2units);
 		LinkedHashMap p2 = writer.finishMap();
-		
+
 		writer.startList();
 		writer.addValueToList(p1);
 		writer.addValueToList(p2);
 		writer.addList("players", writer.finishList());
-		
-		writer.print();
+
+		writer.createFile(true);
 
 	}
 }
