@@ -32,15 +32,19 @@ public class JSON_Writer {
 	LinkedList list = new LinkedList();
 
 	/**
-	 * This class sets up a JSON parser ready for parsing using the parse
-	 * command
+	 * This constructor sets up a JSON object. command
 	 */
 	public JSON_Writer() {
 		obj = new JSONObject();
 	}
 
 	/**
+	 * This constructor sets up a JSON object as well as a file where the output
+	 * will be written.
+	 * 
 	 * @param filename
+	 *            name of the json file to be written. This method will call
+	 *            setFileData and so the extension can be omitted.
 	 */
 	public JSON_Writer(String filename) {
 		this();
@@ -49,7 +53,9 @@ public class JSON_Writer {
 
 	/**
 	 * @param file
+	 *            File where the output will be written.
 	 * @throws IOException
+	 *             in case there is a problem creating or accessing the file.
 	 */
 	public final void setFileData(File file) throws IOException {
 		setFileData(file.getCanonicalPath(), file.getName());
@@ -57,7 +63,9 @@ public class JSON_Writer {
 
 	/**
 	 * @param path
+	 *            String representing the path to a directory
 	 * @param filename
+	 *            name of the file in such directory.
 	 */
 	public final void setFileData(String path, String filename) {
 		if (!filename.endsWith(".json")) {
@@ -68,6 +76,7 @@ public class JSON_Writer {
 
 	/**
 	 * @param filename
+	 *            string representing the filepath to a file.
 	 */
 	public final void setFileData(String filename) {
 		if (!filename.endsWith(".json")) {
@@ -77,6 +86,8 @@ public class JSON_Writer {
 	}
 
 	/**
+	 * Add a key, value pair to the root of the JSON object.
+	 * 
 	 * @param key
 	 * @param value
 	 */
@@ -85,6 +96,8 @@ public class JSON_Writer {
 	}
 
 	/**
+	 * Add a key, value pair to the root of the JSON object.
+	 * 
 	 * @param key
 	 * @param value
 	 */
@@ -93,6 +106,9 @@ public class JSON_Writer {
 	}
 
 	/**
+	 * Add a key, value pair to the root of the JSON object. In this case, the
+	 * value is a hash-map (represented as a LinkedHashMap).
+	 * 
 	 * @param key
 	 * @param value
 	 */
@@ -101,6 +117,9 @@ public class JSON_Writer {
 	}
 
 	/**
+	 * Add a key, value pair to the root of the JSON object. In this case, the
+	 * value is itself an array(represented as a list).
+	 * 
 	 * @param key
 	 * @param value
 	 */
@@ -109,6 +128,9 @@ public class JSON_Writer {
 	}
 
 	/**
+	 * Add a key, value pair to the root of the JSON object. In this case, the
+	 * value is itself an array.
+	 * 
 	 * @param key
 	 * @param value
 	 */
@@ -121,15 +143,11 @@ public class JSON_Writer {
 	}
 
 	/**
-	 * @param key
-	 * @param values
-	 */
-	public void addList(String key, LinkedList values) {
-		obj.put(key, values);
-	}
-
-	/**
-	 * @param key
+	 * Initialize a list inside this object, you can use this method to create
+	 * lists that later can be nested into any part of the JSON object. After
+	 * this method is called, you can add elements by using the addValueToList()
+	 * methods. Once done, use the finishList() to conclude the list creation
+	 * operation.
 	 */
 	public void startList() {
 		this.list = new LinkedList();
@@ -164,7 +182,10 @@ public class JSON_Writer {
 	}
 
 	/**
-	 * 
+	 * Once you are done using the List embedded into this object, you can call
+	 * this method to retrieve it. This method will also unbind the list from
+	 * this object and it will return a shallow copy of it. You can use this
+	 * copy to keep working on this list even after calling this method.
 	 */
 	public LinkedList finishList() {
 		LinkedList tmp = (LinkedList) (this.list.clone());
@@ -180,7 +201,11 @@ public class JSON_Writer {
 	}
 
 	/**
-	 * 
+	 * Initialize a hashmap inside this object, you can use this method to
+	 * create hashmap that later can be nested into any part of the JSON object.
+	 * After this method is called, you can add elements by using the
+	 * addValueToMap() methods. Once done, use the finishMap() to conclude the
+	 * creation operation.
 	 */
 	public void startMap() {
 		this.map = new LinkedHashMap();
@@ -219,8 +244,13 @@ public class JSON_Writer {
 	}
 
 	/**
-	 * 
+	 * Once you are done using the HashMap embedded into this object, you can
+	 * call this method to retrieve it. This method will also unbind the map
+	 * from this object and it will return a shallow copy of it. You can use
+	 * this copy to keep working on this hashmap(adding, removing elements) even
+	 * after calling this method.
 	 */
+
 	public LinkedHashMap finishMap() {
 		LinkedHashMap tmp = (LinkedHashMap) (this.map.clone());
 		this.map = null;
@@ -228,21 +258,35 @@ public class JSON_Writer {
 	}
 
 	/**
-	 * 
+	 * Print to stdout a string in JSON format of the current object.
 	 */
 	public void print() {
-		System.out.println(obj);
+		System.out.println(toString());
 	}
 
 	/**
-	 * @param path
-	 * @param filename
-	 * @param data
-	 * @param overwrite
-	 * @return
+	 * Return a string in JSON format of the current object.
 	 */
-	private boolean createFile(String path, String filename, String data,
-			boolean overwrite) {
+	public String toString() {
+		return obj.toString();
+	}
+
+	/**
+	 * This method will write the JSON string(unformatted) into a file specified
+	 * by the given parameters. If the output file was specified already, this
+	 * method will override those parameters, in that case you can call
+	 * createFile(boolean overwrite).
+	 * 
+	 * @param path
+	 *            to the directory where the file is stored.
+	 * @param filename
+	 *            name of the file. Extension can be omitted.
+	 * @param overwrite
+	 *            if the file already exists, overwrite it?
+	 * @return true if the write operation concluded successfully, false
+	 *         otherwise.
+	 */
+	private boolean createFile(String path, String filename, boolean overwrite) {
 
 		setFileData(path, filename);
 
@@ -263,7 +307,7 @@ public class JSON_Writer {
 
 			FileWriter newWrite = new FileWriter(file);
 			BufferedWriter out = new BufferedWriter(newWrite);
-			out.write(data);
+			out.write(obj.toString());
 			out.close();
 
 		} catch (IOException e) {
@@ -279,12 +323,18 @@ public class JSON_Writer {
 	}
 
 	/**
+	 * This method will write the JSON string(unformatted) into a file specified
+	 * by the given parameters. In order for this method to work, you need to
+	 * either have specified the output file already, or use 
+	 * createFile(String path, String filename, boolean overwrite).
+	 * 
 	 * @param overwrite
-	 * @return
+	 *            if the file already exists, overwrite it?
+	 * @return true if the write operation concluded successfully, false
+	 *         otherwise.
 	 */
 	private boolean createFile(boolean overwrite) {
-		return createFile(file.getParent(), file.getName(),
-				obj.toString(), overwrite);
+		return createFile(file.getParent(), file.getName(), overwrite);
 	}
 
 	public static void main(String[] args) {
@@ -382,7 +432,7 @@ public class JSON_Writer {
 		writer.startList();
 		writer.addValueToList(p1);
 		writer.addValueToList(p2);
-		writer.addList("players", writer.finishList());
+		writer.addPair("players", writer.finishList());
 
 		writer.createFile(true);
 
