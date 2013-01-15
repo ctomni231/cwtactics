@@ -5,7 +5,6 @@ import com.cwt.io.JukeBox;
 import com.cwt.io.KeyControl;
 import com.cwt.map.PixAnimate;
 import com.cwt.system.jslix.state.Screen;
-import com.cwt.system.jslix.tools.JSON_Parser;
 import com.engine.TestMap;
 
 import java.awt.Component;

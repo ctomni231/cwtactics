@@ -48,6 +48,7 @@ This shows how objects are organized within the object files for units, terrain(
 * *R* = River/Shallow
 * *O* = Road/Bridge
 * *P* = Pipe/PipeSeam
+* *Z* = Meteor/Plazma
 * *N* = Neutral/Wildcard 
 
 ## Tileset Types

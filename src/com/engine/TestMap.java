@@ -18,7 +18,6 @@ public class TestMap {
 	public static String createTestMap(){
 		DetachedMapUtil util = new DetachedMapUtil();
 
-		//UNCOMMENT HERE TO TEST THE MAP FILE
         util.mapHeight = 10;
         util.mapWidht = 10;
 

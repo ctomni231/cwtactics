@@ -146,7 +146,7 @@
 	<list file="image/properties/AWDR_TAPT.png" />
 	<list file="image/properties/AWDR_TSPT.png" />
 	<list file="image/properties/AWDS_APRT.png" />
-	<list file="image/properties/AWDS_BASE-PIPE.png" />
+	<list file="image/properties/AWDS_BASE-P.png" />
 	<list file="image/properties/AWDS_BASE.png" />
 	<list file="image/properties/AWDS_CITY.png" />
 	<list file="image/properties/AWDS_CMTR.png" />
@@ -432,6 +432,7 @@
 	<list file="image/terrain/AWDS_PIPS~LLPP.png" />
 	<list file="image/terrain/AWDS_PIPS~PPLL.png" />
 	<list file="image/terrain/AWDS_PLIN.png" />
+	<list file="image/terrain/AWDS_PLIN_BACK.png" />
 	<list file="image/terrain/AWDS_PLIN~NNPP.png" />
 	<list file="image/terrain/AWDS_PLIN~PPNN.png" />
 	<list file="image/terrain/AWDS_REEF.png" />
