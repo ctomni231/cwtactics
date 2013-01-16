@@ -66,6 +66,75 @@ public class EngineHolder {
         return (Boolean) o;
     }
 
+    public static boolean lowerThen( Object o, double num ){
+        if( o == null ) throw new IllegalArgumentException();
+        if( o instanceof Number ){
+            if( o instanceof Double && ((Double) o).doubleValue() < num ) return true;
+            else if(o instanceof Float && ((Float) o).floatValue() < num) return true;
+            else if(o instanceof Integer && ((Integer) o).intValue() < num) return true;
+            else throw new IllegalArgumentException();
+        }
+        throw new IllegalArgumentException();
+    }
+
+    public static boolean lowerEquals( Object o, double num ){
+        if( o == null ) throw new IllegalArgumentException();
+        if( o instanceof Number ){
+            if( o instanceof Double && ((Double) o).doubleValue() <= num ) return true;
+            else if(o instanceof Float && ((Float) o).floatValue() <= num) return true;
+            else if(o instanceof Integer && ((Integer) o).intValue() <= num) return true;
+            else throw new IllegalArgumentException();
+        }
+        throw new IllegalArgumentException();
+    }
+
+    public static boolean greaterEquals( Object o, double num ){
+        if( o == null ) throw new IllegalArgumentException();
+        if( o instanceof Number ){
+            if( o instanceof Double && ((Double) o).doubleValue() >= num ) return true;
+            else if(o instanceof Float && ((Float) o).floatValue() >= num) return true;
+            else if(o instanceof Integer && ((Integer) o).intValue() >= num) return true;
+            else throw new IllegalArgumentException();
+        }
+        throw new IllegalArgumentException();
+    }
+
+    public static boolean greaterThen( Object o, double num ){
+        if( o == null ) throw new IllegalArgumentException();
+        if( o instanceof Number ){
+            if( o instanceof Double && ((Double) o).doubleValue() > num ) return true;
+            else if(o instanceof Float && ((Float) o).floatValue() > num) return true;
+            else if(o instanceof Integer && ((Integer) o).intValue() > num) return true;
+            else throw new IllegalArgumentException();
+        }
+        throw new IllegalArgumentException();
+    }
+
+    public static boolean equals( Object o, Object exp ){
+        if( o == null || exp == null ){
+            if( o == null && exp == null ) return true;
+            else throw new IllegalArgumentException();
+        }
+        if( o.toString().equals( exp.toString() ) );
+        throw new IllegalArgumentException();
+    }
+
+    public static boolean isTrue( Object o ){
+        if( o == null ) throw new IllegalArgumentException();
+        if( o instanceof Boolean && ((Boolean) o).equals(Boolean.TRUE) ){
+            return true;
+        }
+        else if( o.toString().equalsIgnoreCase( Boolean.TRUE.toString() ) ){
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isFalse( Object o ){
+        if( o == null ) throw new IllegalArgumentException();
+        return !isTrue(o);
+    }
+
     public static ScriptableObject castJsObject( Object o ){
         return (ScriptableObject) o;
     }

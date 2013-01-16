@@ -22,9 +22,8 @@ public class ScriptEngine extends EngineHolder{
             ScriptEngine eH = new ScriptEngine(e);
 
             // DO GAME COMMANDS ( LOAD MOD AND TEST MAP )
-            while( 
-             ! castBoolean(
-                eH.callFunction(ENGINE_MODULE.CONTROLLER, "isBufferEmpty"))
+            while(
+                isFalse( eH.callFunction(ENGINE_MODULE.CONTROLLER, "isBufferEmpty") )
             ){
 
                 eH.callFunction(
