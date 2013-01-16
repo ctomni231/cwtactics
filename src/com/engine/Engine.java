@@ -26,31 +26,20 @@ public class Engine {
 
     public static final Logger logger = Logger.getLogger("JS Engine");
 
-    public static final String SOURCE_PATH = "srcEngine/";
-    public static final String DEPS_PATH = "libJs/";
-    public static final String MOD_PATH = "mod/";
+    public static final String SOURCE_PATH = "jsBin/nightly/normal/";
+    public static final String MAPS_PATH = "maps/";
 
     public static final String WORK_DIR = System.getProperty("user.dir");
 
-    public final String[] FILES_DEV_ENGINE = new String[]{
-      "engineBase","signals","utils","persistence","locale",
-      "sheets","factory","map","move",
-      "turn","battle","transport","property","clientAction"
+    public final String[] FILES = new String[]{ 
+        "gameConf","engineDeps","engine","mod"
     };
 
-    public final String[] FILES_DEV_DEPENDENCIES = new String[]{
-      "graph","astar","amanda"
+    public final String[] DEV_FILES = new String[]{
+        "gameConf","engineDeps","engine_debug","mod"
     };
 
-    public final String[] FILES_DEV_MOD = new String[]{
-        "awds", "language", "movetypes", "scripts", "tiles", "weapons", "units"
-    };
-
-    public final String[] FILES_ENGINE = new String[]{ "gameEngine" };
-
-    public final String[] FILES_DEPENDENCIES = new String[]{ "gameEngineDeps" };
-    
-    public final String[] FILES_MOD = new String[]{ "modification" };
+    public final String[] MAPS = new String[]{ "testMap" };
 
     private final Context jsCtx;
     private final ScriptableObject rootScope;
@@ -82,7 +71,6 @@ public class Engine {
         this.rootScope = jsCtx.initStandardObjects();
 
         // LOAD ENGINE
-        initConfig();
         loadDefaultObjects();
         loadEngine(devLoad);
     }
@@ -105,24 +93,10 @@ public class Engine {
          +"}");
     }
 
-    private void initConfig(){
-        configuration.put("CWT_INACTIVE_ID", -1);
-        configuration.put("CWT_MAX_MAP_WIDTH", 100);
-        configuration.put("CWT_MAX_MAP_HEIGHT", 100);
-        configuration.put("CWT_MAX_PLAYER", 8);
-        configuration.put("CWT_MAX_UNITS_PER_PLAYER", 50);
-        configuration.put("CWT_MAX_PROPERTIES", 200);
-        configuration.put("CWT_MAX_SELECTION_RANGE", 15);
-        configuration.put("CWT_MAX_MOVE_RANGE", 15);
-        configuration.put("CWT_MAX_BUFFER_SIZE", 200);
-    }
-
     private void loadEngine( boolean devLoad ) {
         logger.fine("start loading engine");
 
-        String[] deps = (devLoad)? FILES_DEV_DEPENDENCIES : FILES_DEPENDENCIES;
-        String[] sources = (devLoad)? FILES_DEV_ENGINE : FILES_ENGINE;
-        String[] mod = (devLoad)? FILES_DEV_MOD : FILES_MOD;
+        String[] files = (devLoad)? DEV_FILES : FILES;
 
         logger.fine("load configuration");
         Set<String> configKeys = configuration.keySet();
@@ -137,28 +111,21 @@ public class Engine {
             evalExpression( expr );
         }
         
-        logger.fine("load dependency files");
-        for( int i=0,e=deps.length; i<e; i++ ){
-          evaluateFile( getFile( DEPS_PATH, deps[i] ));
+        logger.fine("load files");
+        for( int i=0,e= files.length; i<e; i++ ){
+          evaluateFile( getFile( SOURCE_PATH, files[i] ));
         }
 
-        logger.fine("load engine files");
-        for( int i=0,e=sources.length; i<e; i++ ){
-          evaluateFile( getFile( SOURCE_PATH, sources[i] ));
-
-          if( sources[i].equals("utils") && devLoad ){
-              evalExpression("util.DEBUG = true;");
-          }
-        }
-
-        logger.fine("load mod files");
-        for( int i=0,e=mod.length; i<e; i++ ){
-          evaluateFile( getFile( MOD_PATH, mod[i] ));
+        logger.fine("load maps");
+        for( int i=0,e= MAPS.length; i<e; i++ ){
+          evaluateFile( getFile( MAPS_PATH, MAPS[i] ));
         }
 
         logger.fine("load mod");
-        evalExpression("locale.language = 'de';");
-        evalExpression("persistence.loadModification( CWT_MOD_DEFAULT );");
+        evalExpression("function __invoke( key ){ var data = controller.aquireActionDataObject(); data.setAction( key ); controller.pushActionDataIntoBuffer( data ); }");
+        evalExpression("__invoke( 'loadMod' );");
+        evalExpression("var data = controller.aquireActionDataObject(); data.setAction( 'loadGame' ); data.setSubAction( testMap ); controller.pushActionDataIntoBuffer( data );");
+        evalExpression("util.i18n_setLanguage('en');");
     }
 
     public Object evalExpression( String expr ){
@@ -247,25 +214,4 @@ public class Engine {
             return sb.toString();
         }
     }
-
-    /*
-    public static void main( String[] args ){
-        Engine e = new Engine(true);
-
-
-        // LOW LEVEL HACKY :P 
-
-        Object i;
-        i = e.evalExpression("domain.mapWidth;");
-        logger.fine("==> "+i.toString()+" -- "+i.getClass());
-
-        i = e.evalExpression("CWT_MAX_MAP_WIDTH");
-        logger.fine("==> "+i.toString()+" -- "+i.getClass());
-
-        logger.fine("==> "+e.rootScope.get("CWT_MAX_MAP_WIDTH") );
-
-        i = ((ScriptableObject) e.rootScope.get("domain")).get("mapWidth");
-        logger.fine("==> "+i.toString()+" -- "+i.getClass());
-    }
-    */
 }

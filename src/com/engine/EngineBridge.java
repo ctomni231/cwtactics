@@ -12,11 +12,14 @@ package com.engine;
  * @version 12.10.12
  */
 public class EngineBridge {
+
 	/** This holds whether all files will be loaded separately (T) or together (F) */
 	public final static boolean DEVLOAD = true;	
-	/** This is the JavaScript engine holder */
+
+        /** This is the JavaScript engine holder */
 	private static EngineHolder holder = new EngineHolder( new Engine( DEVLOAD ) );
-	/** This holds the different modules that will be used for this engine */
+
+        /** This holds the different modules that will be used for this engine */
 	private static EngineHolder.ENGINE_MODULE module = EngineHolder.ENGINE_MODULE.GLOBAL;
 	
 	/**
@@ -25,18 +28,17 @@ public class EngineBridge {
 	 * @return Whether module was changed(T) or not(F)
 	 */
 	public static boolean setModule(String mod){
-		if(mod.matches("GL.*"))
-			module = EngineHolder.ENGINE_MODULE.GLOBAL;
-		else if(mod.matches("GA.*"))
-			module = EngineHolder.ENGINE_MODULE.GAME;
-		else if(mod.matches("PE.*"))
-			module = EngineHolder.ENGINE_MODULE.PERSISTENCE;
+		     if(mod.matches("VI.*"))
+			module = EngineHolder.ENGINE_MODULE.VIEW;
+		else if(mod.matches("MO.*"))
+			module = EngineHolder.ENGINE_MODULE.MODEL;
+		else if(mod.matches("UT.*"))
+			module = EngineHolder.ENGINE_MODULE.UTIL;
 		else if(mod.matches("CO.*"))
 			module = EngineHolder.ENGINE_MODULE.CONTROLLER;
-		else if(mod.matches("SI.*"))
-			module = EngineHolder.ENGINE_MODULE.SIGNAL;
-		else
-			return false;
+		else if(mod.matches("GL.*"))
+			module = EngineHolder.ENGINE_MODULE.GLOBAL;
+		else return false;
 		return true;
 	}
 	
@@ -46,15 +48,15 @@ public class EngineBridge {
 	 */
 	public static String getCurrentModule(){
 		switch( module ){
-        	case GAME: 
-        		return "GAME";
-        	case SIGNAL: 
-        		return "SIGNAL";
+        	case VIEW:
+        		return "VIEW";
+        	case UTIL:
+        		return "UTIL";
         	case CONTROLLER: 
         		return "CONTROLLER";
-        	case PERSISTENCE: 
-        		return "PERSISTENCE";
-        	case GLOBAL: 
+        	case MODEL:
+        		return "MODEL";
+        	case GLOBAL:
         		return "GLOBAL";
         	default: 
         		return "UNKNOWN";

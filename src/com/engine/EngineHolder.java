@@ -1,8 +1,5 @@
 package com.engine;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -17,16 +14,14 @@ public class EngineHolder {
     
     public static final Logger logger = Logger.getLogger("JS Engine Holder");
 
-    public enum ENGINE_MODULE {
-        GAME,SIGNAL,CONTROLLER,GLOBAL,PERSISTENCE
-    }
+    public enum ENGINE_MODULE { VIEW,UTIL,CONTROLLER,MODEL,GLOBAL }
     
     private Engine engine;
 
-    private ScriptableObject mod_game;
-    private ScriptableObject mod_signal;
+    private ScriptableObject mod_view;
+    private ScriptableObject mod_util;
     private ScriptableObject mod_controller;
-    private ScriptableObject mod_persistence;
+    private ScriptableObject mod_model;
     private ScriptableObject mod_global;
 
     public EngineHolder( Engine e ){
@@ -41,118 +36,72 @@ public class EngineHolder {
         this.engine = e;
 
         // RECEIVE SCOPES
-        mod_game = (ScriptableObject) e.evalExpression("game");
-        mod_signal = (ScriptableObject) e.evalExpression("signal");
+        mod_view = (ScriptableObject) e.evalExpression("view");
+        mod_util = (ScriptableObject) e.evalExpression("util");
+        mod_model = (ScriptableObject) e.evalExpression("model");
         mod_controller = (ScriptableObject) e.evalExpression("controller");
-        mod_persistence = (ScriptableObject) e.evalExpression("persistence");
         mod_global = (ScriptableObject) e.evalExpression("window");
     }
 
     private ScriptableObject getScopeByMod( ENGINE_MODULE mod ){
         switch( mod ){
-            case GAME: return mod_game;
-            case SIGNAL: return mod_signal;
+            case VIEW: return mod_view;
+            case UTIL: return mod_util;
             case CONTROLLER: return mod_controller;
-            case PERSISTENCE: return mod_persistence;
+            case MODEL: return mod_model;
             case GLOBAL: return mod_global;
             default: throw new IllegalArgumentException("unknown module");
         }
     }
 
-    public static Number asNumber( Object o ){
+    public static Number castNumber( Object o ){
         return (Number) o;
     }
 
-    public static String asString( Object o ){
+    public static String castString( Object o ){
         return o.toString();
     }
 
-    public static boolean asBoolean( Object o ){
+    public static boolean castBoolean( Object o ){
         return (Boolean) o;
     }
 
-    public static ScriptableObject asJsObject( Object o ){
+    public static ScriptableObject castJsObject( Object o ){
         return (ScriptableObject) o;
     }
 
+    /**
+     * Calls a javascript function and returns its result.
+     * 
+     * @param mod
+     * @param fn
+     * @param args
+     * @return
+     */
     public Object callFunction( ENGINE_MODULE mod, String fn, Object... args ){
         ScriptableObject scope = getScopeByMod(mod);
         return ScriptableObject.callMethod(scope, fn, args);
     }
 
+    /**
+     * Returns a property from a engine module.
+     *
+     * @param mod
+     * @param name
+     * @return
+     */
     public Object getProperty( ENGINE_MODULE mod, String name ){
         ScriptableObject scope = getScopeByMod(mod);
         return scope.get(name);
     }
-    
+
+    /**
+     * Evaluates an expression and returns its results.
+     * 
+     * @param expr
+     * @return
+     */
     public Object evalExpression( String expr ){
     	return engine.evalExpression(expr);
-    }
-
-    // TEST IT
-    public static void main( String[] args ){
-        boolean dev = true;
-
-        Engine e = new Engine( dev );
-        EngineHolder eH = new EngineHolder(e);
-
-        // SHOULD BE 0
-        logger.fine("controller.currentState = "+
-          asString( eH.getProperty( ENGINE_MODULE.CONTROLLER, "currentState"))
-        );
-        
-        // SHOULD BE 0
-        logger.fine("game.mapWidth() = "+
-          asString( eH.callFunction( ENGINE_MODULE.GAME, "mapWidth"))
-        );
-
-        /*
-         SIMPLE SHELL TO TEST IT
-
- domain.players
-com.engine.Engine : evaluate expression domain.players
-com.engine.EngineHolder : => org.mozilla.javascript.NativeArray@3c6833f2
-xxx
-com.engine.Engine : evaluate expression xxx
-com.engine.Engine : engine error err:ReferenceError: "xxx" is not defined.
-trace:        at :0
-
-24.10.2012 20:33:26 com.engine.Engine evalExpression
-SCHWERWIEGEND: engine error err:ReferenceError: "xxx" is not defined.
-trace:        at :0
-
-com.engine.EngineHolder : => null
-xxx = 19
-com.engine.Engine : evaluate expression xxx = 19
-com.engine.EngineHolder : => 19
-xxx
-com.engine.Engine : evaluate expression xxx
-com.engine.EngineHolder : => 19
-game.loadMap
-com.engine.Engine : evaluate expression game.loadMap
-com.engine.EngineHolder : => org.mozilla.javascript.Undefined@31a3ca10
-game.day
-com.engine.Engine : evaluate expression game.day
-com.engine.EngineHolder : => org.mozilla.javascript.gen.c_25@666c5482
-game.day();
-com.engine.Engine : evaluate expression game.day();
-com.engine.EngineHolder : => 0.0
-
-
-         */
-
-        BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
-        String input;
-        while( true ){
-            try {
-                input = console.readLine();
-                if( input.equals("exit") ) System.exit(0);
-                else{
-                    logger.fine("=> "+e.evalExpression(input));
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(EngineHolder.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     }
 }

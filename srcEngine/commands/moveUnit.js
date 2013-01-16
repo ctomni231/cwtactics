@@ -103,7 +103,11 @@ controller.registerCommand({
 
     unit.fuel -= fuelUsed;
 
-    model.eraseUnitPosition( uid );
+    // DO NOT ERASE POSITION IF UNIT WAS LOADED OR HIDDEN (NOT INGAME HIDDEN)
+    // SOMEWHERE
+    if( unit.x !== -1 && unit.y !== -1 ){
+      model.eraseUnitPosition( uid );
+    }
 
     // DO NOT SET NEW POSITION IF THE POSITION IS OCCUPIED
     // THE SET POSITION LOGIC MUST BE DONE BY THE ACTION

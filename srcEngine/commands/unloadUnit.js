@@ -80,7 +80,7 @@ controller.registerCommand({
     model.unloadUnitFrom( loadId, transportId );
 
     var moveCode;
-    if( tx < trsx ) moveCode = model.MOVE_CODE_LEFT;
+         if( tx < trsx ) moveCode = model.MOVE_CODE_LEFT;
     else if( tx > trsx ) moveCode = model.MOVE_CODE_RIGHT;
     else if( ty < trsy ) moveCode = model.MOVE_CODE_UP;
     else if( ty > trsy ) moveCode = model.MOVE_CODE_DOWN;

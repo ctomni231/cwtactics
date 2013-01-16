@@ -63,6 +63,8 @@ controller.registerCommand({
 
       model.leftActors[i-startIndex] = (model.units[i] !== null);
     }
+
+    model.generateFogMap( pid );
   }
 
 });

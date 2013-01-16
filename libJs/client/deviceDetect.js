@@ -40,7 +40,7 @@ DeviceDetection = function(ua) {
       tabletPc: Boolean(ua.match(/Tablet PC/)),
       palmDevice: Boolean(ua.match(/(PalmOS|PalmSource| Pre\/)/)),
       kindle: Boolean(ua.match(/(Kindle)/)),
-      otherMobileHints: Boolean(ua.match(/(Opera Mini|IEMobile|SonyEricsson|smartphone)/)),
+      otherMobileHints: Boolean(ua.match(/(Opera Mini|IEMobile|SonyEricsson|smartphone)/))
     };
   }
 
@@ -72,3 +72,54 @@ DeviceDetection = function(ua) {
 
   this.construct(ua);
 };
+
+
+
+
+/**
+ * Browser detection based heavily on JQuery.browser implementation.
+ */
+var BrowserDetection = (function(){
+  var userAgent = navigator.userAgent.toLowerCase();
+  var result = {};
+
+  // CHECK BROWSER
+  var match = /(chrome)[ \/]([\w.]+)/.exec( userAgent ) ||
+    /(webkit)[ \/]([\w.]+)/.exec( userAgent ) ||
+    /(opera)(?:.*version|)[ \/]([\w.]+)/.exec( userAgent ) ||
+    /(msie) ([\w.]+)/.exec( userAgent ) ||
+    userAgent.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec( userAgent ) ||
+    [];
+
+  // INJECT INFO
+  if( match[1] ){
+    result[ match[1] ] = true;
+    result.version = match[2] || "0";
+  }
+
+  // CHROME IS WEBKIT, BUT WEBKIT IS ALSO SAFARI.
+  if( result.chrome ){
+    result.webkit = true;
+    
+    // CHECK FOR ANDROID
+    if( userAgent.search(/android/) !== -1 ){
+      result.android = true;
+    }
+  }
+  else if ( result.webkit ) {
+    result.safari = true;
+
+    // CHECK VERSION
+    var v = userAgent.match( /(version\/)([\w.]+)/ );
+    if( v ){
+      result.version = v[v.length-1];
+    }
+
+    // CHECK FOR IOS
+    if( userAgent.search(/like mac os x/) !== -1 ){
+      result.ios = true;
+    }
+  }
+
+  return result;
+})();

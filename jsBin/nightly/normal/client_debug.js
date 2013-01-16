@@ -150,8 +150,18 @@ controller.cursorActionCancel = function(){
 
   state = controller.input.state();
   if( state === "ACTION_MENU" || state === "ACTION_SUBMENU" ){
+
+    var menu = controller.input.menu;
+    if( controller.input.actionData.getAction() === 'unloadUnit' ){
+      var old = menu;
+      menu = [];
+      for( var i=0, e=controller.input.menuSize; i<e; i++ ){
+        menu[i] = model.units[ old[i] ].type;
+      }
+    }
+
     controller.showMenu(
-      controller.input.menu, controller.input.menuSize,
+      menu, controller.input.menuSize,
       controller.mapCursorX, controller.mapCursorY
     );
   }
@@ -192,8 +202,18 @@ controller.cursorActionClick = function(){
 
   state = controller.input.state();
   if( state === "ACTION_MENU" || state === "ACTION_SUBMENU" ){
+
+    var menu = controller.input.menu;
+    if( controller.input.actionData.getAction() === 'unloadUnit' ){
+      var old = menu;
+      menu = [];
+      for( var i=0, e=controller.input.menuSize; i<e; i++ ){
+        menu[i] = model.units[ old[i] ].type;
+      }
+    }
+
     controller.showMenu(
-      controller.input.menu, controller.input.menuSize,
+      menu, controller.input.menuSize,
       controller.mapCursorX, controller.mapCursorY
     );
   }
@@ -414,7 +434,7 @@ controller.enterGameLoop = function(){
     oldTime = now;
 
     var thisFrameFPS = 1000 / ((now=new Date) - lastUpdate);
-    fps += (thisFrameFPS - fps) / fpsFilter;
+    if( !isNaN(thisFrameFPS) ) fps += (thisFrameFPS - fps) / fpsFilter;
     lastUpdate = now;
 
     controller.gameLoop( delta );
@@ -422,7 +442,7 @@ controller.enterGameLoop = function(){
 
   var fpsOut = document.getElementById('fps');
   setInterval(function(){
-    fpsOut.innerHTML = fps.toFixed(1) + "fps";
+    fpsOut.innerHTML = CWT_VERSION + " " + fps.toFixed(1) + "fps";
   }, 1000);
 
   controller.input.event("start");
@@ -1026,7 +1046,7 @@ view.updateTileInfo = function( left ){
   var y = controller.mapCursorY;
 
   document.getElementById(
-    view.ID_CWTWC_CURSORINFO_TNAME ).innerHTML = model.map[x][y];
+    view.ID_CWTWC_CURSORINFO_TNAME ).innerHTML = model.map[x][y] + " V:" + model.fogData[x][y];
 
   document.getElementById(
     view.ID_CWTWC_CURSORINFO_TDEF ).innerHTML = 0;
@@ -1199,6 +1219,8 @@ view.renderMap = function( scale ){
       controller.input.state() === "ACTION_SELECT_TARGET"
   );
 
+  var inShadow;
+
   // ITERATE BY ROW
   var ye = model.mapHeight-1;
   for(var y = 0; y<=ye; y++){
@@ -1206,6 +1228,8 @@ view.renderMap = function( scale ){
     // ITERATE BY COLUMN
     var xe = model.mapWidth-1;
     for(var x= 0; x<=xe; x++){
+
+      inShadow = model.fogData[x][y] === 0;
 
       // RENDER IF NEEDED
       if( view.drawScreen[x][y] === true ){
@@ -1309,6 +1333,24 @@ view.renderMap = function( scale ){
         }
 
         // --------------------------------------------------------------------
+        // DRAW SHADOW
+
+        if( inShadow ){
+          tcx = (x)*tileSize;
+          tcy = (y)*tileSize;
+          tcw = tileSize;
+          tch = tileSize;
+
+          ctx.globalAlpha = 0.2;
+          ctx.fillStyle="black";
+          ctx.fillRect(
+            tcx,tcy,
+            tcw,tch
+          );
+          ctx.globalAlpha = 1;
+        }
+
+        // --------------------------------------------------------------------
         // DRAW FOCUS
         if( focusExists ){
           pic = view.getInfoImageForType(
@@ -1344,7 +1386,7 @@ view.renderMap = function( scale ){
         // DRAW UNIT
 
         var unit = model.unitPosMap[x][y];
-        if( unit !== null ){
+        if( !inShadow && unit !== null ){
           if( unit !== view.preventRenderUnit ){
             var color;
             if( unit.owner === -1 ){
@@ -1838,6 +1880,43 @@ view.registerSpriteAnimator( "PROPERTY", 4, 400, function(){
 });
 view.registerCommandHook({
 
+  key: "addVisioner",
+
+  prepare: function( data ){
+    var x = data.getSourceX();
+    var y = data.getSourceY();
+    var range = data.getSubAction();
+
+    var lX;
+    var hX;
+    var lY = y-range;
+    var hY = y+range;
+    if( lY < 0 ) lY = 0;
+    if( hY >= model.mapHeight ) hY = model.mapHeight-1;
+    for( ; lY<=hY; lY++ ){
+
+      var disY = Math.abs( lY-y );
+      lX = x-range+disY;
+      hX = x+range-disY;
+      if( lX < 0 ) lX = 0;
+      if( hX >= model.mapWidth ) hX = model.mapWidth-1;
+      for( ; lX<=hX; lX++ ){
+
+        view.markForRedraw( lX,lY );
+      }
+    }
+  },
+
+  render: function(){},
+  update: function(){},
+
+  isDone: function(){
+    return true;
+  }
+
+});
+view.registerCommandHook({
+
   key: "attack",
 
   prepare: function( data ){
@@ -2108,6 +2187,10 @@ view.registerCommandHook({
   key: "nextTurn",
 
   prepare: function( data ){
+    if( model.fogOn ){
+      view.completeRedraw();
+    }
+
     view.showInfoMessage( util.i18n_localized("day")+": "+model.day );
   },
 
@@ -2116,6 +2199,43 @@ view.registerCommandHook({
 
   isDone: function(){
     return !view.hasInfoMessage();
+  }
+
+});
+view.registerCommandHook({
+
+  key: "remVisioner",
+
+  prepare: function( data ){
+    var x = data.getSourceX();
+    var y = data.getSourceY();
+    var range = data.getSubAction();
+
+    var lX;
+    var hX;
+    var lY = y-range;
+    var hY = y+range;
+    if( lY < 0 ) lY = 0;
+    if( hY >= model.mapHeight ) hY = model.mapHeight-1;
+    for( ; lY<=hY; lY++ ){
+
+      var disY = Math.abs( lY-y );
+      lX = x-range+disY;
+      hX = x+range-disY;
+      if( lX < 0 ) lX = 0;
+      if( hX >= model.mapWidth ) hX = model.mapWidth-1;
+      for( ; lX<=hX; lX++ ){
+
+        view.markForRedraw( lX,lY );
+      }
+    }
+  },
+
+  render: function(){},
+  update: function(){},
+
+  isDone: function(){
+    return true;
   }
 
 });
@@ -2723,8 +2843,20 @@ controller.registerCommand({
       */
 
       canvas.onmousemove = function(ev){
-        var x = parseInt( ev.offsetX/16 , 10);
-        var y = parseInt( ev.offsetY/16 , 10);
+        var x,y;
+
+        if( typeof ev.offsetX === 'number' ){
+          x = ev.offsetX;
+          y = ev.offsetY;
+        }
+        else {
+          x = ev.layerX;
+          y = ev.layerY;
+        }
+
+        // to tile position
+        var x = parseInt( x/16 , 10);
+        var y = parseInt( y/16 , 10);
 
         /*
         if( controller.currentState === controller.STATE_SELECT_MOVE_PATH ){
@@ -2757,8 +2889,13 @@ controller.registerCommand({
         var y = ev.position[0].y;
 
         var tileLen = controller.screenScale*TILE_LENGTH;
-        var x = parseInt( x/tileLen , 10);
+        var x = parseInt( x/tileLen, 10);
         var y = parseInt( y/tileLen, 10);
+
+        // BUGFIX: HAMMER JS SEEMS TO GET THE SCREEN POSITION, NOT THE
+        // POSITION ON THE CANVAS, EVEN IF IT IS BIND TO THE CANVAS
+        x = x + controller.screenX;
+        y = y + controller.screenY;
 
 
         // TODO ENABLE SOUND
@@ -2782,13 +2919,6 @@ controller.registerCommand({
 
       hammer.onrelease = function(ev){
 
-      };
-
-      hammer.ondoubletap = function(ev) {
-        if( controller.screenScale < 3 ){
-          controller.setScreenScale( controller.screenScale+1 );
-        }
-        else controller.setScreenScale( 1 );
       };
 
       hammer.ondrag    = function(ev){
@@ -2895,11 +3025,36 @@ controller.registerCommand({
         controller.updateUnitStats( model.units[i] );
       }
     }
+
+    model.generateFogMap(0);
   }
 });
 
 
 (function(){
+
+  var browserCheck = [
+    ["chrome" ,18,19,20,21,22,23,24],
+    ["firefox",17,18,19],
+    ["safari" ,5,6]
+  ];
+
+  var found = false;
+  for( var i=0,e=browserCheck.length; i<e; i++ ){
+    var block = browserCheck[i];
+    if( BrowserDetection[ block[0] ] === true ){
+      found = true;
+      var versionFound = false;
+      for( var j=1,je=block.length; j<je; j++ ){
+        if( BrowserDetection.version.indexOf(block[j]) === 0 ){
+          versionFound = true;
+        }
+      }
+      if( !found ) alert("Attention!\nThe version of your browser is not supported!");
+    }
+  }
+  if( !found ) alert("Attention!\nYour browser is not supported!");
+
 
   function invoke( key ){
     var data = controller.aquireActionDataObject();

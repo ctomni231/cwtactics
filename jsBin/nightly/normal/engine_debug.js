@@ -4,6 +4,8 @@ const DEBUG = true;
 
 const CWT_INACTIVE_ID = -1;
 
+const CWT_VERSION = "Milestone 2.2";
+
 /**
  * The model layer holds all necessary data for a game round. This layer can be
  * extended to store additional data for game rounds.
@@ -526,6 +528,118 @@ util.replaceFunction = function( ns, factory ){
     throw Error("replacer factory needs to return a function");
   }
   cobj[ lastName ] = res;
+};
+model.fogData = util.matrix( CWT_MAX_MAP_WIDTH, CWT_MAX_MAP_HEIGHT, 0 );
+
+model.resetFogData = function( value ){
+  if( arguments.length === 0 ) value = 0;
+  var x = 0;
+  var xe = model.mapWidth;
+  var y;
+  var ye = model.mapHeight;
+
+  for( ;x<xe; x++ ){
+    for( y=0 ;y<ye; y++ ){
+      model.fogData[x][y] = value;
+    }
+  }
+};
+
+model.fogOn = true;
+
+model.generateFogMap = function( pid ){
+  if( model.fogOn === false ){
+    model.resetFogData(1);
+    return;
+  }
+
+  var addV = model.setVisioner;
+  var x = 0;
+  var xe = model.mapWidth;
+  var y;
+  var ye = model.mapHeight;
+  var tid = model.players[pid].team;
+
+  model.resetFogData();
+
+  for( ;x<xe; x++ ){
+    for( y=0 ;y<ye; y++ ){
+
+      // ---------------------------------------------------------------
+
+      var unit = model.unitPosMap[x][y];
+      if( unit !== null ){
+        var sid = unit.owner;
+        if( pid === sid || model.players[sid].team === tid ){
+          var vision = model.sheets.unitSheets[unit.type].vision;
+          addV( x,y, vision );
+        }
+      }
+
+      // ---------------------------------------------------------------
+
+      var property = model.propertyPosMap[x][y];
+      if( property !== null ){
+        var sid = property.owner;
+        if( pid === sid || model.players[sid].team === tid ){
+          var vision = model.sheets.tileSheets[property.type].vision;
+          addV( x,y, vision );
+        }
+      }
+
+      // ---------------------------------------------------------------
+
+    }
+  }
+};
+
+model.setVisioner = function( x,y, range ){
+  if( model.fogOn === false ){
+    return;
+  }
+
+  var lX;
+  var hX;
+  var lY = y-range;
+  var hY = y+range;
+  if( lY < 0 ) lY = 0;
+  if( hY >= model.mapHeight ) hY = model.mapHeight-1;
+  for( ; lY<=hY; lY++ ){
+
+    var disY = Math.abs( lY-y );
+    lX = x-range+disY;
+    hX = x+range-disY;
+    if( lX < 0 ) lX = 0;
+    if( hX >= model.mapWidth ) hX = model.mapWidth-1;
+    for( ; lX<=hX; lX++ ){
+
+      model.fogData[lX][lY]++;
+    }
+  }
+};
+
+model.removeVisioner = function( x,y, range ){
+  if( model.fogOn === false ){
+    return;
+  }
+
+  var lX;
+  var hX;
+  var lY = y-range;
+  var hY = y+range;
+  if( lY < 0 ) lY = 0;
+  if( hY >= model.mapHeight ) hY = model.mapHeight-1;
+  for( ; lY<=hY; lY++ ){
+
+    var disY = Math.abs( lY-y );
+    lX = x-range+disY;
+    hX = x+range-disY;
+    if( lX < 0 ) lX = 0;
+    if( hX >= model.mapWidth ) hX = model.mapWidth-1;
+    for( ; lX<=hX; lX++ ){
+      model.fogData[lX][lY]--;
+    }
+  }
 };
 /**
  * Map table that holds all known tiles.
@@ -1549,7 +1663,21 @@ model.hasFreeUnitSlots = function( pid ){
  * @param uid
  */
 model.eraseUnitPosition = function( uid ){
-  model.setUnitPosition( uid );
+  var unit = model.units[uid];
+  var ox = unit.x;
+  var oy = unit.y;
+
+  // clear old position
+  model.unitPosMap[ox][oy] = null;
+  unit.x = -1;
+  unit.y = -1;
+
+  // update fog
+  var data = new controller.ActionData();
+  data.setSource( ox,oy );
+  data.setAction("remVisioner");
+  data.setSubAction( model.sheets.unitSheets[unit.type].vision );
+  controller.pushActionDataIntoBuffer(data);
 };
 
 /**
@@ -1564,16 +1692,17 @@ model.setUnitPosition = function( uid, tx, ty ){
   var ox = unit.x;
   var oy = unit.y;
 
-  // clear old position
-  model.unitPosMap[ox][oy] = null;
+  unit.x = tx;
+  unit.y = ty;
 
-  // unit has a new position
-  if( arguments.length > 1 ){
-    unit.x = tx;
-    unit.y = ty;
+  model.unitPosMap[tx][ty] = unit;
 
-    model.unitPosMap[tx][ty] = unit;
-  }
+  // model.setVisioner( tx, ty, model.sheets.unitSheets[unit.type].vision );
+  var data = new controller.ActionData();
+  data.setSource( tx,ty );
+  data.setAction("addVisioner");
+  data.setSubAction( model.sheets.unitSheets[unit.type].vision );
+  controller.pushActionDataIntoBuffer(data);
 };
 
 /**
@@ -2003,7 +2132,7 @@ controller.evalNextMessageFromBuffer = function (){
   var data = controller.commandBuffer.pop();
   if( DEBUG ){
     util.logInfo(
-      "pushing command into buffer...\n",
+      "evaluating command into buffer...\n",
 
       "source (" ,data.getSourceX(), "," ,data.getSourceY(), ")\n",
       "target (" ,data.getTargetX(), "," ,data.getTargetY(), ")\n",
@@ -2445,6 +2574,7 @@ controller.input._prepareMenu = function(){
     }
   }
 };
+
 controller.SelectionData = function( range ){
   var len = range*2 + 1;
   this.data = [
@@ -2532,6 +2662,24 @@ controller.SelectionData.prototype.getCenterY = function(){
 controller.SelectionData.prototype.getDataMatrix = function( ){
   return this.data[0];
 };
+controller.registerCommand({
+
+  key:"addVisioner",
+
+  // ------------------------------------------------------------------------
+  condition: function( data ){
+    return false;
+  },
+
+  // ------------------------------------------------------------------------
+  action: function( data ){
+    model.setVisioner(
+      data.getSourceX(),
+      data.getSourceY(),
+      data.getSubAction()
+    );
+  }
+});
 controller.registerCommand({
 
   key:"attack",
@@ -2657,6 +2805,8 @@ controller.registerCommand({
 
   // ------------------------------------------------------------------------
   condition: function( data ){
+    if( data.getTargetUnitId() !== CWT_INACTIVE_ID ) return false;
+
     var selectedUnit = data.getSourceUnit();
 
     var x = data.getTargetX();
@@ -3209,7 +3359,9 @@ controller.registerCommand({
   condition: function( data ){
     var selectedUnitId = data.getSourceUnitId();
     var transporterId = data.getTargetUnitId();
-    if( transporterId === -1 || data.getTargetUnit().owner !== model.turnOwner ) return false;
+    if( transporterId === -1 || data.getTargetUnit().owner !== model.turnOwner){
+      return false;
+    }
 
     return (
       model.isTransport( transporterId ) &&
@@ -3222,7 +3374,6 @@ controller.registerCommand({
     var selectedUnitId = data.getSourceUnitId();
     var transporterId = data.getTargetUnitId();
 
-    model.eraseUnitPosition( selectedUnitId );
     model.loadUnitInto( selectedUnitId, transporterId );
   }
 });
@@ -3331,7 +3482,11 @@ controller.registerCommand({
 
     unit.fuel -= fuelUsed;
 
-    model.eraseUnitPosition( uid );
+    // DO NOT ERASE POSITION IF UNIT WAS LOADED OR HIDDEN (NOT INGAME HIDDEN)
+    // SOMEWHERE
+    if( unit.x !== -1 && unit.y !== -1 ){
+      model.eraseUnitPosition( uid );
+    }
 
     // DO NOT SET NEW POSITION IF THE POSITION IS OCCUPIED
     // THE SET POSITION LOGIC MUST BE DONE BY THE ACTION
@@ -3414,8 +3569,28 @@ controller.registerCommand({
 
       model.leftActors[i-startIndex] = (model.units[i] !== null);
     }
+
+    model.generateFogMap( pid );
   }
 
+});
+controller.registerCommand({
+
+  key:"remVisioner",
+
+  // ------------------------------------------------------------------------
+  condition: function( data ){
+    return false;
+  },
+
+  // ------------------------------------------------------------------------
+  action: function( data ){
+    model.removeVisioner(
+      data.getSourceX(),
+      data.getSourceY(),
+      data.getSubAction()
+    );
+  }
 });
 controller.SERIALIZATION_MAP = "map";
 controller.SERIALIZATION_MAP_H = "mapHeight";
@@ -3656,6 +3831,22 @@ controller.registerCommand({
 });
 controller.registerCommand({
 
+  key: "trapWait",
+
+  // -----------------------------------------------------------------------
+  condition: function( data ){
+    return false;
+  },
+
+  // -----------------------------------------------------------------------
+  action: function( data ){
+    data.setAction("wait");
+    controller.invokeCommand(data);
+  }
+
+});
+controller.registerCommand({
+
   key: "unloadUnit",
   unitAction: true,
   multiStepAction: true,
@@ -3736,7 +3927,7 @@ controller.registerCommand({
     model.unloadUnitFrom( loadId, transportId );
 
     var moveCode;
-    if( tx < trsx ) moveCode = model.MOVE_CODE_LEFT;
+         if( tx < trsx ) moveCode = model.MOVE_CODE_LEFT;
     else if( tx > trsx ) moveCode = model.MOVE_CODE_RIGHT;
     else if( ty < trsy ) moveCode = model.MOVE_CODE_UP;
     else if( ty > trsy ) moveCode = model.MOVE_CODE_DOWN;

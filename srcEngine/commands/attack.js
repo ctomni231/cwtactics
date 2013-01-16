@@ -123,6 +123,8 @@ controller.registerCommand({
 
   // ------------------------------------------------------------------------
   condition: function( data ){
+    if( data.getTargetUnitId() !== CWT_INACTIVE_ID ) return false;
+
     var selectedUnit = data.getSourceUnit();
 
     var x = data.getTargetX();

@@ -123,7 +123,7 @@ controller.enterGameLoop = function(){
     oldTime = now;
 
     var thisFrameFPS = 1000 / ((now=new Date) - lastUpdate);
-    fps += (thisFrameFPS - fps) / fpsFilter;
+    if( !isNaN(thisFrameFPS) ) fps += (thisFrameFPS - fps) / fpsFilter;
     lastUpdate = now;
 
     controller.gameLoop( delta );
@@ -131,7 +131,7 @@ controller.enterGameLoop = function(){
 
   var fpsOut = document.getElementById('fps');
   setInterval(function(){
-    fpsOut.innerHTML = fps.toFixed(1) + "fps";
+    fpsOut.innerHTML = CWT_VERSION + " " + fps.toFixed(1) + "fps";
   }, 1000);
 
   controller.input.event("start");

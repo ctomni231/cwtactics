@@ -42,7 +42,7 @@ view.updateTileInfo = function( left ){
   var y = controller.mapCursorY;
 
   document.getElementById(
-    view.ID_CWTWC_CURSORINFO_TNAME ).innerHTML = model.map[x][y];
+    view.ID_CWTWC_CURSORINFO_TNAME ).innerHTML = model.map[x][y] + " V:" + model.fogData[x][y];
 
   document.getElementById(
     view.ID_CWTWC_CURSORINFO_TDEF ).innerHTML = 0;

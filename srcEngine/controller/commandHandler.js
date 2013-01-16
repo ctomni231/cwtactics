@@ -117,7 +117,7 @@ controller.evalNextMessageFromBuffer = function (){
   var data = controller.commandBuffer.pop();
   if( DEBUG ){
     util.logInfo(
-      "pushing command into buffer...\n",
+      "evaluating command into buffer...\n",
 
       "source (" ,data.getSourceX(), "," ,data.getSourceY(), ")\n",
       "target (" ,data.getTargetX(), "," ,data.getTargetY(), ")\n",

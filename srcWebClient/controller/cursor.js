@@ -67,8 +67,18 @@ controller.cursorActionCancel = function(){
 
   state = controller.input.state();
   if( state === "ACTION_MENU" || state === "ACTION_SUBMENU" ){
+
+    var menu = controller.input.menu;
+    if( controller.input.actionData.getAction() === 'unloadUnit' ){
+      var old = menu;
+      menu = [];
+      for( var i=0, e=controller.input.menuSize; i<e; i++ ){
+        menu[i] = model.units[ old[i] ].type;
+      }
+    }
+
     controller.showMenu(
-      controller.input.menu, controller.input.menuSize,
+      menu, controller.input.menuSize,
       controller.mapCursorX, controller.mapCursorY
     );
   }
@@ -109,8 +119,18 @@ controller.cursorActionClick = function(){
 
   state = controller.input.state();
   if( state === "ACTION_MENU" || state === "ACTION_SUBMENU" ){
+
+    var menu = controller.input.menu;
+    if( controller.input.actionData.getAction() === 'unloadUnit' ){
+      var old = menu;
+      menu = [];
+      for( var i=0, e=controller.input.menuSize; i<e; i++ ){
+        menu[i] = model.units[ old[i] ].type;
+      }
+    }
+
     controller.showMenu(
-      controller.input.menu, controller.input.menuSize,
+      menu, controller.input.menuSize,
       controller.mapCursorX, controller.mapCursorY
     );
   }

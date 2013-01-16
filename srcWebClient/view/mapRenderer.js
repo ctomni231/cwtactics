@@ -45,6 +45,8 @@ view.renderMap = function( scale ){
       controller.input.state() === "ACTION_SELECT_TARGET"
   );
 
+  var inShadow;
+
   // ITERATE BY ROW
   var ye = model.mapHeight-1;
   for(var y = 0; y<=ye; y++){
@@ -52,6 +54,8 @@ view.renderMap = function( scale ){
     // ITERATE BY COLUMN
     var xe = model.mapWidth-1;
     for(var x= 0; x<=xe; x++){
+
+      inShadow = model.fogData[x][y] === 0;
 
       // RENDER IF NEEDED
       if( view.drawScreen[x][y] === true ){
@@ -155,6 +159,24 @@ view.renderMap = function( scale ){
         }
 
         // --------------------------------------------------------------------
+        // DRAW SHADOW
+
+        if( inShadow ){
+          tcx = (x)*tileSize;
+          tcy = (y)*tileSize;
+          tcw = tileSize;
+          tch = tileSize;
+
+          ctx.globalAlpha = 0.2;
+          ctx.fillStyle="black";
+          ctx.fillRect(
+            tcx,tcy,
+            tcw,tch
+          );
+          ctx.globalAlpha = 1;
+        }
+
+        // --------------------------------------------------------------------
         // DRAW FOCUS
         if( focusExists ){
           pic = view.getInfoImageForType(
@@ -190,7 +212,7 @@ view.renderMap = function( scale ){
         // DRAW UNIT
 
         var unit = model.unitPosMap[x][y];
-        if( unit !== null ){
+        if( !inShadow && unit !== null ){
           if( unit !== view.preventRenderUnit ){
             var color;
             if( unit.owner === -1 ){

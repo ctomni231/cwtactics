@@ -84,7 +84,21 @@ model.hasFreeUnitSlots = function( pid ){
  * @param uid
  */
 model.eraseUnitPosition = function( uid ){
-  model.setUnitPosition( uid );
+  var unit = model.units[uid];
+  var ox = unit.x;
+  var oy = unit.y;
+
+  // clear old position
+  model.unitPosMap[ox][oy] = null;
+  unit.x = -1;
+  unit.y = -1;
+
+  // update fog
+  var data = new controller.ActionData();
+  data.setSource( ox,oy );
+  data.setAction("remVisioner");
+  data.setSubAction( model.sheets.unitSheets[unit.type].vision );
+  controller.pushActionDataIntoBuffer(data);
 };
 
 /**
@@ -99,16 +113,17 @@ model.setUnitPosition = function( uid, tx, ty ){
   var ox = unit.x;
   var oy = unit.y;
 
-  // clear old position
-  model.unitPosMap[ox][oy] = null;
+  unit.x = tx;
+  unit.y = ty;
 
-  // unit has a new position
-  if( arguments.length > 1 ){
-    unit.x = tx;
-    unit.y = ty;
+  model.unitPosMap[tx][ty] = unit;
 
-    model.unitPosMap[tx][ty] = unit;
-  }
+  // model.setVisioner( tx, ty, model.sheets.unitSheets[unit.type].vision );
+  var data = new controller.ActionData();
+  data.setSource( tx,ty );
+  data.setAction("addVisioner");
+  data.setSubAction( model.sheets.unitSheets[unit.type].vision );
+  controller.pushActionDataIntoBuffer(data);
 };
 
 /**

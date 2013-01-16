@@ -79,7 +79,7 @@ CWT_MOD_DEFAULT.tiles = [
 
     {
       "ID"                : "HQTR",
-      "vision"            : 1,
+      "vision"            : 0,
       "capturePoints"     : 20,
       "funds"            : 1000,
       "repairs"           : {

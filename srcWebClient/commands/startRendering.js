@@ -25,5 +25,7 @@ controller.registerCommand({
         controller.updateUnitStats( model.units[i] );
       }
     }
+
+    model.generateFogMap(0);
   }
 });

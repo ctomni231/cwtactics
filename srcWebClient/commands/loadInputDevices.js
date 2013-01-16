@@ -131,8 +131,20 @@ controller.registerCommand({
       */
 
       canvas.onmousemove = function(ev){
-        var x = parseInt( ev.offsetX/16 , 10);
-        var y = parseInt( ev.offsetY/16 , 10);
+        var x,y;
+
+        if( typeof ev.offsetX === 'number' ){
+          x = ev.offsetX;
+          y = ev.offsetY;
+        }
+        else {
+          x = ev.layerX;
+          y = ev.layerY;
+        }
+
+        // to tile position
+        var x = parseInt( x/16 , 10);
+        var y = parseInt( y/16 , 10);
 
         /*
         if( controller.currentState === controller.STATE_SELECT_MOVE_PATH ){
@@ -165,8 +177,13 @@ controller.registerCommand({
         var y = ev.position[0].y;
 
         var tileLen = controller.screenScale*TILE_LENGTH;
-        var x = parseInt( x/tileLen , 10);
+        var x = parseInt( x/tileLen, 10);
         var y = parseInt( y/tileLen, 10);
+
+        // BUGFIX: HAMMER JS SEEMS TO GET THE SCREEN POSITION, NOT THE
+        // POSITION ON THE CANVAS, EVEN IF IT IS BIND TO THE CANVAS
+        x = x + controller.screenX;
+        y = y + controller.screenY;
 
 
         // TODO ENABLE SOUND
@@ -190,13 +207,6 @@ controller.registerCommand({
 
       hammer.onrelease = function(ev){
 
-      };
-
-      hammer.ondoubletap = function(ev) {
-        if( controller.screenScale < 3 ){
-          controller.setScreenScale( controller.screenScale+1 );
-        }
-        else controller.setScreenScale( 1 );
       };
 
       hammer.ondrag    = function(ev){
