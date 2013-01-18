@@ -1,10 +1,11 @@
 package com.cwt;
 
 import com.cwt.game.ObjectLibrary;
-import com.cwt.map.PixAnimate;
+import com.cwt.oldgame.PixAnimate;
 import com.cwt.screen.MainMenuScreen;
-import com.cwt.system.jslix.SlixGame;
-import com.cwt.system.jslix.SlixLibrary;
+import com.jslix.SlixGame;
+import com.jslix.SlixLibrary;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
 

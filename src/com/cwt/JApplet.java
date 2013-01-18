@@ -1,6 +1,6 @@
 package com.cwt;
 
-import com.cwt.system.jslix.SlixApplet;
+import com.jslix.SlixApplet;
 
 /**
  * JApplet.java

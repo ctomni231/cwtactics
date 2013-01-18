@@ -1,11 +1,12 @@
 package com.cwt.screen;
 
-import com.cwt.graphic.ExitGUI;
-import com.cwt.graphic.tools.MapDraw;
-import com.cwt.io.JukeBox;
-import com.cwt.io.KeyControl;
-import com.cwt.map.PixAnimate;
-import com.cwt.system.jslix.state.Screen;
+import com.cwt.map.MapDraw;
+import com.cwt.menu.ExitGUI;
+import com.cwt.oldgame.PixAnimate;
+import com.cwt.tools.JukeBox;
+import com.cwt.tools.KeyControl;
+import com.jslix.state.Screen;
+
 import java.awt.Component;
 import java.awt.Graphics2D;
 import org.newdawn.slick.Color;

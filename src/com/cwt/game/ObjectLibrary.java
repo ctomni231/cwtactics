@@ -3,7 +3,7 @@ package com.cwt.game;
 import java.util.ArrayList;
 import org.newdawn.slick.Image;
 import com.cwt.game.tools.ByteMap;
-import com.cwt.system.jslix.tools.ImgLibrary;
+import com.jslix.image.ImgLibrary;
 
 /**
  * ObjectLibrary.java

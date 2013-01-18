@@ -1,6 +1,6 @@
 package com.cwt;
 
-import com.cwt.system.jslix.Slix;
+import com.jslix.Slix;
 
 /**
  * JMain.java

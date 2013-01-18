@@ -3,10 +3,10 @@ package com.cwt.game;
 import com.cwt.game.tools.KeyStore;
 import com.cwt.game.tools.ListStore;
 import com.cwt.game.tools.RefStore;
-import com.cwt.system.jslix.tools.FileFind;
-import com.cwt.system.jslix.tools.FileIndex;
-import com.cwt.system.jslix.tools.XML_Parser;
-import com.cwt.system.jslix.tools.XML_Writer;
+import com.jslix.io.FileFind;
+import com.jslix.io.FileIndex;
+import com.jslix.parser.XML_Parser;
+import com.jslix.parser.XML_Writer;
 
 /**
  * ObjectStorage.java

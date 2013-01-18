@@ -1,11 +1,10 @@
 package com.cwt.screen;
 
-import com.cwt.graphic.tools.MapField;
-import com.cwt.io.JukeBox;
-import com.cwt.io.KeyControl;
-import com.cwt.map.PixAnimate;
-import com.cwt.system.jslix.state.Screen;
-import com.engine.TestMap;
+import com.cwt.map.MapField;
+import com.cwt.oldgame.PixAnimate;
+import com.cwt.tools.JukeBox;
+import com.cwt.tools.KeyControl;
+import com.jslix.state.Screen;
 
 import java.awt.Component;
 import java.awt.Graphics2D;
@@ -47,7 +46,7 @@ public class VersusGameScreen extends Screen{
     	
     	//TODO: Something is wrong with the EngineBridge Rhino parser when reading maps
     	//Un-comment line below and go to menu option "Versus" in JMain.java to see the error.
-    	//mapScr.loadMapFromEngine(TestMap.createTestMap());
+    	//mapScr.loadMapFromEngine();
     	
     	
         //PixAnimate.getTags();
