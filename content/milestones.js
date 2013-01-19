@@ -51,6 +51,7 @@ var PAGE_MILESTONES = {
       version:"2.4",
       subHeaderT:"Fog of",
       subHeaderB:"War",
+      img:"images/m2.4_pic_1.png",
       pre:"It will include the fog of war system. </br></br>This will be the last milestone with the old data system. Future versions of Cwt will be moddable only on source level. We want to make the game optimized to use only a little of RAM while giving a modding ability. </br></br>Our last approach to make Cwt itself as general platform for own AW style game is dropped! This is because this target is not realizable under normal conditions and furthermore the most users want more usability than customization.",
       link:"milestones/m2.4/starterDebug.html",
       linkCaption:"Play",
