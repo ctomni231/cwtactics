@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list id="3e58acfd-b129-49b1-94b4-60075a3584f9" name="Default" comment="m1" />
     <list default="true" id="7622ae88-e936-4923-874c-d620d5253c4c" name="New changelist" comment="new site structure&#10;">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/content/navBar.js" afterPath="$PROJECT_DIR$/content/navBar.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/project_roadmap_19012013.html" afterPath="$PROJECT_DIR$/docs/project_roadmap_19012013.html" />
     </list>
     <ignored path="gh-pages.iws" />
@@ -25,17 +24,7 @@
     <favorites_list name="gh-pages" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="navBar.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/content/navBar.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="75" selection-start="819" selection-end="819" vertical-scroll-proportion="0.55009824">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -64,8 +53,8 @@
         <option value="$PROJECT_DIR$/content/compatibility.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/content/news.js" />
-        <option value="$PROJECT_DIR$/docs/project_roadmap_19012013.html" />
         <option value="$PROJECT_DIR$/content/navBar.js" />
+        <option value="$PROJECT_DIR$/docs/project_roadmap_19012013.html" />
       </list>
     </option>
   </component>
@@ -250,12 +239,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="740" y="84" width="1063" height="866" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32894737" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19654605" sideWeight="0.35672516" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28316087" sideWeight="0.67252195" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28316087" sideWeight="0.67252195" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32747805" sideWeight="0.14675447" order="0" side_tool="true" content_ui="tabs" />
@@ -428,16 +417,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/docs/project_roadmap_19012013.html">
+    <entry file="file://$PROJECT_DIR$/content/navBar.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="361" column="7" selection-start="6732" selection-end="6732" vertical-scroll-proportion="0.17336152">
+        <state line="16" column="73" selection-start="541" selection-end="541" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/content/navBar.js">
+    <entry file="file://$PROJECT_DIR$/docs/project_roadmap_19012013.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="75" selection-start="819" selection-end="819" vertical-scroll-proportion="0.55009824">
+        <state line="200" column="14" selection-start="3550" selection-end="3550" vertical-scroll-proportion="0.33333334">
           <folding />
         </state>
       </provider>
