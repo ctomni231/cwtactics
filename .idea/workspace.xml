@@ -195,8 +195,8 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="options.lastSelected" value="reference.settingsdialog.IDE.editor.colors.Font" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -362,72 +362,52 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/desc.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="68" column="0" selection-start="1520" selection-end="1520" vertical-scroll-proportion="0.55992144">
-          <folding />
-        </state>
+        <state line="68" column="0" selection-start="1520" selection-end="1520" vertical-scroll-proportion="0.55992144" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/libs/date.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-2.1048386">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-2.1048386" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/stuff.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="71" column="3" selection-start="2828" selection-end="2828" vertical-scroll-proportion="0.8074656">
-          <folding />
-        </state>
+        <state line="71" column="3" selection-start="2828" selection-end="2828" vertical-scroll-proportion="0.8074656" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/stylesheets/site.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="239" column="1" selection-start="5568" selection-end="5568" vertical-scroll-proportion="0.43548387">
-          <folding />
-        </state>
+        <state line="239" column="1" selection-start="5568" selection-end="5568" vertical-scroll-proportion="0.43548387" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/content/compatibility.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="22" selection-start="643" selection-end="643" vertical-scroll-proportion="0.42239687">
-          <folding />
-        </state>
+        <state line="30" column="22" selection-start="643" selection-end="643" vertical-scroll-proportion="0.42239687" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="111" column="36" selection-start="4023" selection-end="4045" vertical-scroll-proportion="-4.130435">
-          <folding />
-        </state>
+        <state line="111" column="36" selection-start="4023" selection-end="4045" vertical-scroll-proportion="-4.130435" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/content/news.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="212" selection-start="716" selection-end="716" vertical-scroll-proportion="0.16935484">
-          <folding />
-        </state>
+        <state line="6" column="212" selection-start="716" selection-end="716" vertical-scroll-proportion="0.16935484" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/content/navBar.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="73" selection-start="541" selection-end="541" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="16" column="73" selection-start="541" selection-end="541" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/docs/project_roadmap_19012013.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="352" column="10" selection-start="6723" selection-end="6723" vertical-scroll-proportion="0.9408034">
-          <folding />
-        </state>
+        <state line="352" column="10" selection-start="6723" selection-end="6723" vertical-scroll-proportion="0.9408034" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/docs/project_roadmap.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="0" selection-start="374" selection-end="6525" vertical-scroll-proportion="0.29598308">
-          <folding />
-        </state>
+        <state line="10" column="0" selection-start="374" selection-end="6525" vertical-scroll-proportion="0.29598308" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/images/m2.4_pic_2.png">
@@ -435,16 +415,16 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/content/milestones.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="28" selection-start="2205" selection-end="2205" vertical-scroll-proportion="0.20967741">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/images/m2.4_pic_1.png">
       <provider selected="true" editor-type-id="images">
         <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/content/milestones.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="57" column="468" selection-start="2806" selection-end="2806" vertical-scroll-proportion="0.3951613">
+          <folding />
+        </state>
       </provider>
     </entry>
   </component>
