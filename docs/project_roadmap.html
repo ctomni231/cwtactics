@@ -1,0 +1,905 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN"
+"http://www.w3.org/TR/2001/REC-MathML2-20010221/dtd/xhtml-math11-f.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>ROAD_MAP_V1</title>
+
+  <meta name="format" content="complete"/>
+  <style type="text/css">
+/* +++ master +++ */
+/* html elements */ 
+
+body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+    overflow:hidden;
+    background-color: #f2f2f2;
+    color: #3c3c3c;
+    font-size: 62.5%;
+    -webkit-font-smoothing: antialiased;
+}
+a {
+    color: #308bd8;
+    text-decoration:none;
+}
+a:hover {
+    text-decoration: underline;
+}
+/* headings */
+h1, h2 {
+    line-height:1.2em;
+    margin-top:32px;
+    margin-bottom:12px;
+}
+h1:first-child {
+    margin-top:0;
+}
+h3, h4, h5, h6 {
+    margin-top:12px;
+    margin-bottom:6px;
+}
+h5, h6 {
+    font-size:0.9em;
+    line-height:1.0em;
+    margin-bottom:0;
+}
+/* end of headings */
+p {
+    margin:0 0 24px 0;
+}
+p:last-child {
+    margin-bottom:0;
+}
+hr {
+    width: 100%;
+    margin: 3em auto;
+    border: 0;
+    color: #eee;
+    background-color: #ccc;
+    height: 1px;
+    -webkit-box-shadow:0px 1px 0px rgba(255, 255, 255, 0.75);
+}
+/* lists */
+ol {
+    list-style: outside decimal;
+}
+ul {
+    list-style: outside disc;
+}
+ol, ul {
+    padding-left:0;
+    margin-bottom:24px;
+}
+ol li {
+    margin-bottom:16px;
+    margin-left:28px;
+}
+ul li {
+    margin-bottom:16px;
+    margin-left:16px;
+}
+li:last-child {
+    margin-bottom:0;
+}
+li > p {
+    margin-bottom:12px;
+}
+li > ol, li > ul {
+    margin-top: 16px !important;
+    padding-left:16px;
+}
+dl {
+    margin-bottom:24px;
+}
+dl dt {
+    font-weight:bold;
+    margin-bottom:8px;
+}
+dl dd {
+    margin-left:0;
+    margin-bottom:12px;
+}
+dl dd:last-child, dl:last-child {
+    margin-bottom:0;
+}
+/* end of lists */
+pre {
+    white-space: pre-wrap;
+    width: 96%;
+    margin-bottom: 24px;
+    overflow: hidden;
+    padding: 3px 10px;
+    -webkit-border-radius: 3px;
+    background-color: #eee;
+    border: 1px solid #ddd;
+}
+code {
+    white-space: nowrap;
+    font-size: 1.1em;
+    padding: 2px;
+    -webkit-border-radius: 3px;
+    background-color: #eee;
+    border: 1px solid #ddd;
+}
+pre code {
+    white-space: pre-wrap;
+    border: none;
+    padding: 0;
+    background-color: transparent;
+    -webkit-border-radius: 0;
+}
+blockquote {
+    margin-left: 0;
+    margin-right: auto;
+    width: 96%;
+    padding: 0 10px;
+    border-left: 3px solid #ddd;
+    color: #777;
+}
+table {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-spacing: 0;
+}
+table th {
+    padding: 3px 10px;
+    background-color: #eee;
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+}
+table tr {
+}
+table td {
+    padding: 3px 10px;
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+}
+caption {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+figure {
+    display: block;
+    text-align: center;
+}
+img {
+    display: block;
+    text-align: center;
+    border: none;
+    margin: 1em auto;
+    max-width: 100%;
+}
+figcaption {
+    font-size: 0.8em;
+    font-style: italic;
+}
+mark {
+    background: #fefec0;
+    padding:1px 3px;
+}
+
+/* unique elements */
+
+#wrapper {
+    position: fixed;
+    width: 99.9%;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    font-size: 1.0em;
+}
+#content {
+    width: 90%;
+    margin: 0 auto 0 auto;
+    padding: 30px 0 30px 0;
+    font-family: 'Helvetica Neue', Palatino, Georgia, serif;
+    font-size: 2.4em;
+    line-height: 1.400000em;
+}
+
+#wrapper::-webkit-scrollbar {
+    width: 8px;
+    height: 10px;
+    -webkit-transition: all .45s ease-in;
+    position: relative;
+}
+#wrapper::-webkit-scrollbar-button:start:decrement, #wrapper::-webkit-scrollbar-button:end:increment {
+    height: 0px;
+    display: block;
+    background-color: transparent;
+}
+#wrapper::-webkit-scrollbar-track-piece {
+    background-color:
+    transparent;
+    -webkit-border-radius: 6px;
+}
+#wrapper::-webkit-scrollbar-thumb:vertical {
+    height: 50px;
+    background-color: #c8c8c8;
+    -webkit-border-radius: 6px;
+    -webkit-transition: all .45s ease-in;
+}
+
+/* classes */
+
+.markdowncitation {
+}
+.footnote {
+    font-size: 0.8em;
+    vertical-align: super;
+}
+.footnotes ol {
+    font-weight: bold;
+}
+.footnotes ol li p {
+    font-weight: normal;
+}
+
+/* custom formatting classes */
+
+.shadow {
+    -webkit-box-shadow: 0 2px 4px #999;
+}
+
+.source {
+    text-align: center;
+    font-size: 0.8em;
+    color: #777;
+    margin: -40px;
+}
+/* --- master --- */
+/* +++ export overrides +++ */
+#wrapper {
+    width: 99.9%;
+}
+#content {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Mobile support */
+@media only screen and (max-device-width:1024px) {
+    html {
+        overflow: auto;
+    }
+
+    #wrapper {
+        overflow: auto;
+        position: relative;
+    }
+}
+/* --- export overrides --- */
+/* Printing support (Print and export to PDF).
+ * Override all printing colors to match the Light theme.
+ */
+@media print {
+    img, pre, blockquote, table, figure {
+        page-break-inside: avoid;
+    }
+    body {
+        background-color:#fff;
+    }
+    #wrapper {
+        position: static;
+        overflow: hidden;
+        color: #3c3c3c;
+        width: 100%;
+        margin: 0 auto;
+    }
+    .footnotes {
+        page-break-before: always;
+    }
+    #content {
+        margin: 0 auto;
+        padding: 0;
+        width: 98%;
+    }
+    #top-fader, #bottom-fader {
+        display: none;
+    }
+    a {
+        color: #3c3c3c;
+    }
+    hr {
+        color:#ddd;
+        background-color:#ddd;
+        -webkit-box-shadow:0px 1px 0px #ddd;
+    }
+    pre {
+        background-color:transparent;
+        border: 1px solid #ddd;
+    }
+    code {
+        background-color:transparent;
+        border: 1px solid #ddd;
+    }
+    blockquote {
+        border-left: 3px solid #ddd;
+        color: #3c3c3c;
+    }
+    table {
+        border-bottom: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+    }
+    table th {
+        background-color:transparent;
+        border-top: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+    }
+    table td {
+        border-top: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+    }
+    mark {
+        background:transparent;
+        color: #3c3c3c;
+    }
+    .source {
+        color: #3c3c3c;
+    }
+}
+  </style>
+</head>
+<body>
+  <div id="wrapper">
+    <div id="content">
+<table>
+<caption id="map">Milestone 2.3 - Small bugfixes and enhacements (internal: no release)</caption>
+<colgroup>
+<col style="text-align:left;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:left;"></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:left;"><s>attack possible in some situations where it should not be available ( e.g. during join action )</s></td>
+</tr>
+<tr>
+	<td style="text-align:left;"><s>show unit names not their ids in transporters</s></td>
+</tr>
+<tr>
+	<td style="text-align:left;">recoloring in <code>Mozilla Firefox</code> does not work on some object types</td>
+</tr>
+<tr>
+	<td style="text-align:left;">refactor unit position map (<strong>duplicate information</strong>)</td>
+</tr>
+<tr>
+	<td style="text-align:left;">fix image loader bug (<strong>may with usage of PreloaderJS</strong>)</td>
+</tr>
+<tr>
+	<td style="text-align:left;">refactor cursor action (<strong>duplicate code</strong>)</td>
+</tr>
+<tr>
+	<td style="text-align:left;"><s>compatibility map on page and in game message if the environment is not supported officially</s></td>
+</tr>
+<tr>
+	<td style="text-align:left;">Get funds from properties at turn start</td>
+</tr>
+<tr>
+	<td style="text-align:left;">Supply units can automatically resupply surrounding units at turn start</td>
+</tr>
+</tbody>
+</table>
+
+
+<table>
+<caption id="map">Milestone 2.4 - The fog system (tagged for end of january)</caption>
+<colgroup>
+<col style="text-align:left;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:left;"></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:left;"><s>the game holds a matrix with the vision values </s></td>
+</tr>
+<tr>
+	<td style="text-align:left;"><s>if a mover will be placed on the map every tile in range gets +1</s></td>
+</tr>
+<tr>
+	<td style="text-align:left;"><s>if a mover will be removed from the map every tile in range gets &#8211;1</s></td>
+</tr>
+<tr>
+	<td style="text-align:left;"><s>a tile is visible if the fog value greater than 0</s></td>
+</tr>
+<tr>
+	<td style="text-align:left;"><s>fog changes if an unit moves from a to b</s></td>
+</tr>
+<tr>
+	<td style="text-align:left;"><s>fog changes if a unit will be placed on the map </s></td>
+</tr>
+<tr>
+	<td style="text-align:left;"><s>fog changes if the turn starts </s></td>
+</tr>
+<tr>
+	<td style="text-align:left;">the move path must be checked before an action will be added to the stack, if the move path is not possible because of hidden objects then the action will be converted to <code>trapWait</code></td>
+</tr>
+<tr>
+	<td style="text-align:left;">fog changes if a property is captured</td>
+</tr>
+<tr>
+	<td style="text-align:left;">there is a fog map for every player</td>
+</tr>
+<tr>
+	<td style="text-align:left;">if a turn changes the active fog map will be replaced</td>
+</tr>
+<tr>
+	<td style="text-align:left;">fix overlay tile bug</td>
+</tr>
+<tr>
+	<td style="text-align:left;">if a <code>trapWait</code> action happens then a information icon will be shown at the place where this happend</td>
+</tr>
+</tbody>
+</table>
+
+
+<table>
+<caption id="map">Milestone 2.5 - Data Modification System </caption>
+<colgroup>
+<col style="text-align:left;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:left;"></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:left;">the data descriptions for object types will be simplified to tables to allow simple saving (<strong>allows easy user modifications, makes read abilities harder</strong>)</td>
+</tr>
+<tr>
+	<td style="text-align:left;">hard code size of the data tables for object types (<strong>means new units possible, but only a number n of different types at all</strong>)</td>
+</tr>
+<tr>
+	<td style="text-align:left;">use more numbers rather than strings to save types (<strong>saves some RAM</strong>)</td>
+</tr>
+<tr>
+	<td style="text-align:left;">save current interal system most as possible to prevent complexity and inflexibility (<strong>read data mod and load it into the sheets</strong>)</td>
+</tr>
+</tbody>
+</table>
+
+
+<table>
+<caption id="map">Milestone 2.6 - Storage system</caption>
+<colgroup>
+<col style="text-align:left;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:left;"></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:left;">the <code>storage API</code> will be available to store data</td>
+</tr>
+<tr>
+	<td style="text-align:left;">the <code>webClient</code> uses <code>indexedDB</code> or <code>webSQL</code> as database to store game data</td>
+</tr>
+<tr>
+	<td style="text-align:left;">the <code>jSlixClient</code> may offers a file based backend for the <code>storage API</code></td>
+</tr>
+<tr>
+	<td style="text-align:left;">the <code>config storage API</code> will be available to store the game configuration</td>
+</tr>
+<tr>
+	<td style="text-align:left;">the game loads the active data mod and configuration from the <code>storage</code> or <code>config storage</code></td>
+</tr>
+<tr>
+	<td style="text-align:left;">if no data mod is selected the game loads only the default one from source</td>
+</tr>
+<tr>
+	<td style="text-align:left;">if no configuration data is available then the default options will be injected into the <code>config storage</code></td>
+</tr>
+<tr>
+	<td style="text-align:left;">refactor map loader and saver to make small maps</td>
+</tr>
+</tbody>
+</table>
+
+
+<table>
+<caption id="map">Milestone 2.7 - UI and Teamplay</caption>
+<colgroup>
+<col style="text-align:left;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:left;"></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:left;">a player can transfer money to the gold depot of an other player (useful in team matches)</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a player can transfer units and properties to an other player (useful in team matches)</td>
+</tr>
+<tr>
+	<td style="text-align:left;">regenerating silo</td>
+</tr>
+<tr>
+	<td style="text-align:left;">silo firing animation</td>
+</tr>
+<tr>
+	<td style="text-align:left;">destroy animation</td>
+</tr>
+<tr>
+	<td style="text-align:left;">show loaded unit status </td>
+</tr>
+<tr>
+	<td style="text-align:left;"> show rank status</td>
+</tr>
+<tr>
+	<td style="text-align:left;">neutral properties will be rendered grey</td>
+</tr>
+<tr>
+	<td style="text-align:left;">show icons in the information boxes</td>
+</tr>
+<tr>
+	<td style="text-align:left;"> the unit information box shows the real <code>HP</code> of an unit </td>
+</tr>
+<tr>
+	<td style="text-align:left;">the player limit will be 4 per game round ( <em>ORANGE STAR</em>, <em>BLUE MOON</em>, <em>GREEN EARTH</em>, <em>YELLOW COMET</em>, <em>BLACK HOLE</em> )</td>
+</tr>
+<tr>
+	<td style="text-align:left;"> the unit limit will be set to 50 units per fraction</td>
+</tr>
+<tr>
+	<td style="text-align:left;">the property limit will be set to 200 per game round</td>
+</tr>
+<tr>
+	<td style="text-align:left;"> adding yellow and black color sheme</td>
+</tr>
+<tr>
+	<td style="text-align:left;">every fraction has a constant color (<strong>drops the own/allied/enemy color sheme</strong>)</td>
+</tr>
+</tbody>
+</table>
+
+
+<table>
+<caption id="map">Milestone 3 - CO system</caption>
+<colgroup>
+<col style="text-align:left;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:left;"></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:left;">tag script format which is JSON friendly</td>
+</tr>
+<tr>
+	<td style="text-align:left;">tag scripts can be global for all players</td>
+</tr>
+<tr>
+	<td style="text-align:left;">tag scripts can be player only and only activates for that players</td>
+</tr>
+<tr>
+	<td style="text-align:left;">tag scripts can be active for the whole gam round</td>
+</tr>
+<tr>
+	<td style="text-align:left;">tag scripts can be active for a given number of dates</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a tag event will be triggered from source code</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a unit position ( tile type ) can be set as condition</td>
+</tr>
+<tr>
+	<td style="text-align:left;">unit fire types can be set as condition</td>
+</tr>
+<tr>
+	<td style="text-align:left;">unit move types can be used as condition</td>
+</tr>
+<tr>
+	<td style="text-align:left;">unit type can be used as condition</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a player has a main co</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a player has a side co</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a player have a power meter bar</td>
+</tr>
+<tr>
+	<td style="text-align:left;">after a battle the attacker gets power meter points for the damage dealt</td>
+</tr>
+<tr>
+	<td style="text-align:left;">after a battle the defender gets power meter points for the damage he got</td>
+</tr>
+<tr>
+	<td style="text-align:left;">the power bar has a lower power part and a higher level part</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a player has an active co</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a player can active normal co power</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a player can active super co power</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a player can active tag co power</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a co power effect remains for one in-game day</td>
+</tr>
+</tbody>
+</table>
+<hr />
+
+<table>
+<caption id="map">Milestone 3.1 - Extended input system</caption>
+<colgroup>
+<col style="text-align:left;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:left;"></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:left;">the <code>webClient</code> supports <code>HTML5</code> game pads API as input method</td>
+</tr>
+<tr>
+	<td style="text-align:left;">the <code>webClient</code> recognizes if non-mobile devices have touch screen abilities</td>
+</tr>
+<tr>
+	<td style="text-align:left;">the input of gamepad/keyboard keys and touch gestures are remappable</td>
+</tr>
+<tr>
+	<td style="text-align:left;">simple game actions can be bound to keys on desktop environments</td>
+</tr>
+</tbody>
+</table>
+
+
+<table>
+<caption id="map">Milestone 3.2 - Sounds and Music</caption>
+<colgroup>
+<col style="text-align:left;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:left;"></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:left;">the <code>webClient</code> has an action click sound </td>
+</tr>
+<tr>
+	<td style="text-align:left;">the <code>webClient</code> has a cancel click sound</td>
+</tr>
+<tr>
+	<td style="text-align:left;"> the <code>webClient</code> has destroy sounds</td>
+	<td style="text-align:left;"> </td>
+</tr>
+<tr>
+	<td style="text-align:left;">every fraction has a song in the <code>webClient</code></td>
+</tr>
+<tr>
+	<td style="text-align:left;"> every CO has an unique sound in the <code>jSlixClient</code> </td>
+</tr>
+</tbody>
+</table>
+
+
+<table>
+<caption id="map">Milestone 3.3 - GUI</caption>
+<colgroup>
+<col style="text-align:left;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:left;"></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:left;">a start screen with a main menu</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a config screen action in the main menu</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a play versus action in the main menu</td>
+</tr>
+<tr>
+	<td style="text-align:left;">versus screen with a map browser allows to select a map to play on it</td>
+</tr>
+</tbody>
+</table>
+
+
+<table>
+<caption id="map">Milestone 3.4 - Network Mode</caption>
+<colgroup>
+<col style="text-align:left;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:left;"></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:left;"><code>AJAX</code> network mode</td>
+</tr>
+<tr>
+	<td style="text-align:left;">network games can be saved by the game hoster</td>
+</tr>
+<tr>
+	<td style="text-align:left;">play network game screen availble in the main menu</td>
+</tr>
+<tr>
+	<td style="text-align:left;">saved network games ca be used as <code>pre-deployed</code> maps for network modes (<strong>enables rejoin of failed network rounds</strong>)</td>
+</tr>
+<tr>
+	<td style="text-align:left;">every real player of a network game can only see its own player</td>
+	<td style="text-align:left;"> </td>
+</tr>
+</tbody>
+</table>
+
+
+<table>
+<caption id="map">Milestone 4 - Artificial Intelligence</caption>
+<colgroup>
+<col style="text-align:left;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:left;"></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:left;"> a player marked with tag <code>ai_player</code> will be controlled by the game hoster and their activities will be invoked by the artificial intelligence</td>
+</tr>
+<tr>
+	<td style="text-align:left;"> ai players building units</td>
+</tr>
+<tr>
+	<td style="text-align:left;"> ai players tries to conquer properties</td>
+</tr>
+<tr>
+	<td style="text-align:left;"> ai players tries to eliminate enemy units</td>
+</tr>
+</tbody>
+</table>
+<hr />
+
+<table>
+<caption id="map">Milestone 4.1</caption>
+<colgroup>
+<col style="text-align:left;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:left;"></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:left;"><code>playerPositionSwap</code> options that swaps the place at turn start randomly</td>
+</tr>
+</tbody>
+</table>
+
+
+<table>
+<caption id="map">Milestone 5</caption>
+<colgroup>
+<col style="text-align:left;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:left;"></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:left;"> players can be a spectator</td>
+</tr>
+<tr>
+	<td style="text-align:left;"> a network game round can have additional <em>non-active</em> players that acts as spectator</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a spectator can disable fog to see all of the battle field</td>
+</tr>
+<tr>
+	<td style="text-align:left;">a spectator can only chat with all players if the game hoster allowed that </td>
+</tr>
+</tbody>
+</table>
+<hr />
+
+<table>
+<caption id="map">RoadMap to Version 1.0</caption>
+<colgroup>
+<col style="text-align:left;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:left;"></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:left;"><code>jSlixClient</code> offers an ingame map editor</td>
+</tr>
+<tr>
+	<td style="text-align:left;">the map editor offers a mirror option to mirror the map <code>x-axis only</code> , <code>y-axis only</code> or <code>x/y-axis</code></td>
+</tr>
+<tr>
+	<td style="text-align:left;"><code>jSlixClient</code> offers an ingame data mod editor</td>
+</tr>
+<tr>
+	<td style="text-align:left;"><code>webClient</code> offers a screen to import or export data mods, maps, map packs and campaigns</td>
+</tr>
+</tbody>
+</table>
+<style>
+    table{
+        width:100%;
+    }
+</style>
+    </div>
+  </div> <!-- End wrapper -->
+</body>
+</html>
