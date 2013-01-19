@@ -11,7 +11,11 @@ var PAGE_COMPA_DESC = {
   "table tr": {
     "entry <- compabilities": {
       "td.name": "#{entry.name}",
-      "td.level": "#{entry.level}",
+      "td.lvWin": "#{entry.levelWin}",
+      "td.lvLin": "#{entry.levelLin}",
+      "td.lvMac": "#{entry.levelMac}",
+      "td.lvDrd": "#{entry.levelDrd}",
+      "td.lvIOS": "#{entry.levelIOS}",
       "td.notes": "#{entry.notes}"
     }
   }

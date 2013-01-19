@@ -48,12 +48,12 @@ var PAGE_MILESTONES = {
 
     {
       header:"Milestone",
-      version:"3",
-      subHeaderT:"Scripting",
-      subHeaderB:"Engine",
-      pre:"Coming Soon! :D",
-      link:"docs/m3_roadmap.html",
-      linkCaption:"View Roadmap <span style='font-size: 0.75em;'>(10.1.2013)</span>",
+      version:"2.4",
+      subHeaderT:"Fog of",
+      subHeaderB:"War",
+      pre:"Coming soon at end of january! It will include the fog of war system. </br></br>This will be the last milestone with the old data system. Future versions of Cwt will be moddable only on source level. We want to make the game optimized to use only a little of RAM while giving a modding ability. </br></br>Our last approach to make Cwt itself as general platform for own AW style game is dropped! This is because this target is not realizable under normal conditions and furthermore the most users want more usability than customization.",
+      link:"",
+      linkCaption:"",
       post:""
     } /*,
 

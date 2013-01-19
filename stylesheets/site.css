@@ -156,8 +156,26 @@
     width: 100px;
 }
 
+#compa tr:first-child {
+    border-bottom: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #000000;
+}
+
 #compa td:first-child {
-    width: 200px;
+    border-right: solid;
+    border-right-width: 1px;
+    border-right-color: #000000;
+}
+
+#compa td:nth-child(n) {
+    width: 16px;
+}
+
+#compa td:last-child {
+    width: auto;
+    font-size: 11px;
+    padding-left: 10px;
 }
 
 .newsTable td:last-child {
@@ -238,7 +256,7 @@
 @import url(http://fonts.googleapis.com/css?family=Advent+Pro);
 
 .main {
-   width: 100px;
+   width: 120px;
   height:  90px;
     left: -30px;
      top: -30px;
@@ -274,5 +292,5 @@
   left: 29px;
   bottom: 20px;
   line-height: 1;
-  text-align: right;
+  text-align: left;
 }
