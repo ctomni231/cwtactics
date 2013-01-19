@@ -331,11 +331,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/milestones/m2.2/mod.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/milestones/m2.2/client_debug.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1" column="744" selection-start="33471" selection-end="33471" vertical-scroll-proportion="0.026717557" />
@@ -426,7 +421,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/docs/project_roadmap_19012013.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="200" column="14" selection-start="3550" selection-end="3550" vertical-scroll-proportion="0.33333334">
+        <state line="352" column="10" selection-start="6723" selection-end="6723" vertical-scroll-proportion="0.9408034">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/project_roadmap.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="0" selection-start="374" selection-end="6525" vertical-scroll-proportion="0.29598308">
           <folding />
         </state>
       </provider>
