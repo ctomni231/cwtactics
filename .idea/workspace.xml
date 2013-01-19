@@ -3,13 +3,14 @@
   <component name="ChangeListManager">
     <list id="3e58acfd-b129-49b1-94b4-60075a3584f9" name="Default" comment="m1" />
     <list default="true" id="7622ae88-e936-4923-874c-d620d5253c4c" name="New changelist" comment="new site structure&#10;">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/docs/project_roadmap.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/icons/sign_deny.png" afterPath="$PROJECT_DIR$/icons/sign_deny.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/content/compatibility.js" afterPath="$PROJECT_DIR$/content/compatibility.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/content/milestones.js" afterPath="$PROJECT_DIR$/content/milestones.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/content/navBar.js" afterPath="$PROJECT_DIR$/content/navBar.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/content/news.js" afterPath="$PROJECT_DIR$/content/news.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/m3_roadmap.html" afterPath="$PROJECT_DIR$/docs/m3_roadmap.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/milestones/m2.2/starterDebug.html" afterPath="$PROJECT_DIR$/milestones/m2.2/starterDebug.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scripts/desc.js" afterPath="$PROJECT_DIR$/scripts/desc.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stylesheets/site.css" afterPath="$PROJECT_DIR$/stylesheets/site.css" />
     </list>
     <ignored path="gh-pages.iws" />
@@ -46,7 +47,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/milestones/m1/webClient.html" />
         <option value="$PROJECT_DIR$/stylesheets/stylesheet.css" />
         <option value="$PROJECT_DIR$/milestones/m2.1/client_debug.js" />
         <option value="$PROJECT_DIR$/milestones/m2.1/starterDebug.html" />
@@ -54,20 +54,21 @@
         <option value="$PROJECT_DIR$/milestones/m2.2/starterDebug.html" />
         <option value="$PROJECT_DIR$/content/compability.js" />
         <option value="$PROJECT_DIR$/descriptors/desc.js" />
-        <option value="$PROJECT_DIR$/scripts/stuff.js" />
         <option value="$PROJECT_DIR$/indexNew.html" />
-        <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/content/navBar.js" />
-        <option value="$PROJECT_DIR$/scripts/desc.js" />
         <option value="$PROJECT_DIR$/content/milestones.js" />
-        <option value="$PROJECT_DIR$/content/news.js" />
+        <option value="$PROJECT_DIR$/scripts/desc.js" />
+        <option value="$PROJECT_DIR$/scripts/stuff.js" />
         <option value="$PROJECT_DIR$/stylesheets/site.css" />
+        <option value="$PROJECT_DIR$/content/compatibility.js" />
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/content/news.js" />
+        <option value="$PROJECT_DIR$/content/navBar.js" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="652" />
-    <option name="y" value="91" />
+    <option name="x" value="740" />
+    <option name="y" value="84" />
     <option name="width" value="1063" />
     <option name="height" value="866" />
   </component>
@@ -120,6 +121,34 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="stylesheets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gh-pages" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gh-pages" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scripts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gh-pages" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gh-pages" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="libs" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -203,7 +232,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="652" y="91" width="1063" height="866" extended-state="0" />
+    <frame x="740" y="84" width="1063" height="866" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32894737" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -296,11 +325,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/milestones/m2.1/starterDebug.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="316" column="80" selection-start="7664" selection-end="7664" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/milestones/m2.1/engineDeps.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
@@ -331,53 +355,70 @@
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/stuff.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="1" selection-start="1298" selection-end="1298" vertical-scroll-proportion="0.72380954" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/content/navBar.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="2" selection-start="748" selection-end="748" vertical-scroll-proportion="0.67021275" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/desc.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="27" selection-start="1414" selection-end="1414" vertical-scroll-proportion="1.1079692" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="30" selection-start="735" selection-end="735" vertical-scroll-proportion="-0.9433428" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/content/compatibility.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="14" selection-start="4" selection-end="14" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/docs/m3_roadmap.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/content/milestones.js">
+    <entry file="file://$PROJECT_DIR$/scripts/desc.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="49" column="25" selection-start="2156" selection-end="2156" vertical-scroll-proportion="0.08467742">
+        <state line="68" column="0" selection-start="1520" selection-end="1520" vertical-scroll-proportion="0.55992144">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/content/news.js">
+    <entry file="file://$PROJECT_DIR$/libs/date.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="55" selection-start="832" selection-end="832" vertical-scroll-proportion="0.0">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-2.1048386">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/stuff.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="71" column="3" selection-start="2828" selection-end="2828" vertical-scroll-proportion="0.8074656">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/stylesheets/site.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="293" column="17" selection-start="6567" selection-end="6567" vertical-scroll-proportion="0.74596775">
+        <state line="239" column="1" selection-start="5568" selection-end="5568" vertical-scroll-proportion="0.43548387">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/content/compatibility.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="22" selection-start="643" selection-end="643" vertical-scroll-proportion="0.42239687">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="111" column="36" selection-start="4023" selection-end="4045" vertical-scroll-proportion="-4.130435">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/content/milestones.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="22" selection-start="655" selection-end="655" vertical-scroll-proportion="0.028225806">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/content/news.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="212" selection-start="716" selection-end="716" vertical-scroll-proportion="0.16935484">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/content/navBar.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="0" selection-start="361" selection-end="361" vertical-scroll-proportion="0.33005893">
           <folding />
         </state>
       </provider>

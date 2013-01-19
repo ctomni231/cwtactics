@@ -216,6 +216,8 @@
     border-style: solid;
     font-size: 12px;
     color: #641;
+
+    font-weight: 200;
 }
 
 .infoBox a:hover, .linkBar a:hover {
@@ -248,8 +250,7 @@
 }
 
 .playButton{
-    font-weight: 600;
-    text-decoration: underline;
+    font-weight: 700;
 }
 
 @import url(http://fonts.googleapis.com/css?family=Cutive);
@@ -293,4 +294,12 @@
   bottom: 20px;
   line-height: 1;
   text-align: left;
+}
+
+#roadMapLink{
+    font-weight: 700;
+}
+
+#roadMapLink:visited {
+    font-weight: 200;
 }

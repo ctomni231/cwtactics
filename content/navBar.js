@@ -18,7 +18,7 @@ var PAGE_NAVBAR = {
     { name:"Issues", link:"http://github.com/ctomni231/cwtactics/issues" },
     { name:"Twitter", link:"http://twitter.com/CustomWarsTacti" },
     { name:"Blog", link:"http://cwtactics.blogspot.de/" },
-    { name:"RoadMap", link:"docs/project_roadmap.html" },
-    { name:"<span class='playButton'>Play Cwt</span>", link:PAGE_LATEST_VERSION_LINK }
+    { id:"roadMapLink", name:"Roadmap", link:"docs/project_roadmap.html" },
+    { name:"<span class='playButton'>Play It!</span>", link:PAGE_LATEST_VERSION_LINK }
   ]
 };

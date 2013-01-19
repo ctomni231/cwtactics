@@ -71,6 +71,7 @@ var PAGE_NAVBAR_DESC = {
   "li":{
     "entry <- links":{
       "a":"entry.name",
+      "a@id":"entry.id",
       "a@href":"entry.link"
     }
   }

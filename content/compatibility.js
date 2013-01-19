@@ -11,7 +11,7 @@ var PAGE_COMPA = {
       notes:"" },
 
     { name:"Chrome",
-      levelWin:"unknown",
+      levelWin:"fine",
       levelLin:"fine",
       levelDrd:"fine",
       levelMac:"fine",
@@ -27,7 +27,7 @@ var PAGE_COMPA = {
       notes:"" },
 
     { name:"Firefox",
-      levelWin:"unknown",
+      levelWin:"fine",
       levelLin:"fine",
       levelDrd:"unknown",
       levelMac:"fine",
@@ -35,7 +35,7 @@ var PAGE_COMPA = {
       notes:"color issues fix available" },
 
     { name:"InternetExplorer",
-      levelWin:"unknown",
+      levelWin:"error",
       levelLin:"none",
       levelDrd:"none",
       levelMac:"none",
