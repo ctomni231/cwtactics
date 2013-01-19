@@ -28,11 +28,27 @@ controller.registerCommand({
 
     property.capturePoints -= unitSh.captures;
     if( property.capturePoints <= 0 ){
+      var x = data.getTargetX();
+      var y = data.getTargetY();
       if( DEBUG ){
-        var x = data.getTargetX();
-        var y = data.getTargetY();
         util.logInfo( "property at (",x,",",y,") captured");
       }
+
+      // REMOVE VISION
+      /* TODO ADD IT WHEN EVERY PLAYER HAS AN OWN SHADOW MAP
+      var data = new controller.ActionData();
+      data.setSource( x,y );
+      data.setAction("remVisioner");
+      data.setSubAction( model.sheets.tileSheets[property.type].vision );
+      controller.pushActionDataIntoBuffer(data);
+      */
+
+      // ADD VISION
+      var data = new controller.ActionData();
+      data.setSource( x,y );
+      data.setAction("addVisioner");
+      data.setSubAction( model.sheets.tileSheets[property.type].vision );
+      controller.pushActionDataIntoBuffer(data);
 
       if( property.type === 'HQTR' ){
         var pid = property.owner;

@@ -90,6 +90,24 @@ view.renderMap = function( scale ){
             tcx,tcy,
             tcw,tch
           );
+
+          // RENDER GRAY OVERLAY TO MARK AS USED
+          /*
+          if( inShadow && tch > 16 && view.OVERLAYER[type] === true ){
+
+            pic = view.getTileImageForType( type , view.COLOR_BLACK_MASK );
+
+            ctx.globalAlpha = 0.35;
+            ctx.drawImage(
+              pic,
+              scx,scy,
+              scw,sch/2,
+              tcx,tcy,
+              tcw,tch/2
+            );
+            ctx.globalAlpha = 1;
+          }
+          */
         }
         else{
           ctx.fillStyle="rgb(0,0,255)";
@@ -118,6 +136,8 @@ view.renderMap = function( scale ){
             color = view.COLOR_RED;
           }
 
+          if( inShadow ) color = view.COLOR_NEUTRAL;
+
           pic = view.getPropertyImageForType( property.type, color );
           scx = 0 + BASESIZE*sprStepProp;
           scy = 0;
@@ -143,6 +163,24 @@ view.renderMap = function( scale ){
               tcx,tcy,
               tcw,tch
             );
+
+            // RENDER GRAY OVERLAY TO MARK AS USED
+            if( inShadow && tch > 16 && property !== null ){
+
+              pic = view.getPropertyImageForType(
+                property.type, view.COLOR_BLACK_MASK
+              );
+
+              ctx.globalAlpha = 0.35;
+              ctx.drawImage(
+                pic,
+                scx,scy,
+                scw,sch/2,
+                tcx,tcy,
+                tcw,tch/2
+              );
+              ctx.globalAlpha = 1;
+            }
           }
           else{
             tcx = (x)*tileSize;

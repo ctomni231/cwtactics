@@ -128,29 +128,44 @@ controller.resetMapCursor = function(){
 
 /**
  *
+ * @param isCancel if true then it is a cancel action
  */
-controller.cursorActionCancel = function(){
+controller.cursorAction = function( isCancel ){
+
+  // BREAK IF YOU ARE IN THE ANIMATION PHASE
   if( controller.currentAnimatedKey !== null ) return;
-  var state;
-  var focusExists = (
-    controller.input.state() === "MOVEPATH_SELECTION" ||
-      controller.input.state() === "ACTION_SELECT_TARGET"
-    );
 
-  controller.input.event("cancel");
+  var bstate = controller.input.state();
+  var bfocus = ( bstate === "MOVEPATH_SELECTION" ||
+                 bstate === "ACTION_SELECT_TARGET" );
 
-  var focusExistsAfter = (
-    controller.input.state() === "MOVEPATH_SELECTION" ||
-      controller.input.state() === "ACTION_SELECT_TARGET"
-    );
+  // INVOKE ACTION
+  if( isCancel ){
+    controller.input.event("cancel");
+  }
+  else{
+    if( controller.menuCursorIndex !== -1 ){
+      controller.input.event( "action",controller.menuCursorIndex );
+    }
+    else {
+      controller.input.event( "action", controller.mapCursorX,
+                                        controller.mapCursorY );
+    }
+  }
 
-  if( (focusExists && !focusExistsAfter ) || focusExistsAfter ){
+  var astate = controller.input.state();
+  var afocus = ( astate === "MOVEPATH_SELECTION" ||
+                 astate === "ACTION_SELECT_TARGET" );
+
+  // RERENDERING
+  if( ( bfocus && !afocus ) || afocus ){
     view.markSelectionMapForRedraw( controller.input.selectionData );
   }
 
-  state = controller.input.state();
-  if( state === "ACTION_MENU" || state === "ACTION_SUBMENU" ){
+  // MENU
+  if( astate === "ACTION_MENU" || astate === "ACTION_SUBMENU" ){
 
+    // UNLOAD MENU ID TO TYPE FIX
     var menu = controller.input.menu;
     if( controller.input.actionData.getAction() === 'unloadUnit' ){
       var old = menu;
@@ -161,63 +176,29 @@ controller.cursorActionCancel = function(){
     }
 
     controller.showMenu(
-      menu, controller.input.menuSize,
-      controller.mapCursorX, controller.mapCursorY
+      menu,
+      controller.input.menuSize,
+      controller.mapCursorX,
+      controller.mapCursorY
     );
   }
-  else{ controller.hideMenu(); }
+  else{
+    controller.hideMenu();
+  }
+};
+
+/**
+ *
+ */
+controller.cursorActionCancel = function(){
+  controller.cursorAction(true);
 };
 
 /**
  *
  */
 controller.cursorActionClick = function(){
-  if( controller.currentAnimatedKey !== null ) return;
-  var state;
-  var focusExists = (
-    controller.input.state() === "MOVEPATH_SELECTION" ||
-      controller.input.state() === "ACTION_SELECT_TARGET"
-    );
-
-  if( controller.menuCursorIndex !== -1 ){
-    controller.input.event(
-      "action",controller.menuCursorIndex
-    );
-  }
-  else{
-    controller.input.event(
-      "action", controller.mapCursorX, controller.mapCursorY
-    );
-  }
-
-
-  var focusExistsAfter = (
-    controller.input.state() === "MOVEPATH_SELECTION" ||
-      controller.input.state() === "ACTION_SELECT_TARGET"
-    );
-
-  if(( focusExists && !focusExistsAfter ) || focusExistsAfter ){
-    view.markSelectionMapForRedraw( controller.input.selectionData );
-  }
-
-  state = controller.input.state();
-  if( state === "ACTION_MENU" || state === "ACTION_SUBMENU" ){
-
-    var menu = controller.input.menu;
-    if( controller.input.actionData.getAction() === 'unloadUnit' ){
-      var old = menu;
-      menu = [];
-      for( var i=0, e=controller.input.menuSize; i<e; i++ ){
-        menu[i] = model.units[ old[i] ].type;
-      }
-    }
-
-    controller.showMenu(
-      menu, controller.input.menuSize,
-      controller.mapCursorX, controller.mapCursorY
-    );
-  }
-  else{ controller.hideMenu(); }
+  controller.cursorAction(false);
 };
 
 /**
@@ -321,6 +302,8 @@ controller.currentAnimatedKeyNext = null;
 
 controller.noRendering = true;
 
+controller.lockCommandEvaluation = false;
+
 /**
  *
  * @param delta
@@ -337,48 +320,54 @@ controller.gameLoop = function( delta ){
 
     // 1.1. UPDATE LOGIC
     if( controller.currentAnimatedKey === null ){
-      if( !controller.isBufferEmpty() ){
-        var actionData = controller.evalNextMessageFromBuffer();
-        if( actionData !== null ){
 
-          var key = actionData.getAction();
 
-          // MOVE ANIMATED ?
-          var move = actionData.getMovePath();
-          if( move !== null && move.length > 0 ){
+      if( controller.lockCommandEvaluation === false ){
 
-            var moveAnimCmd = view.getCommandHook("move");
-            controller.currentAnimatedKey = moveAnimCmd;
-            moveAnimCmd.prepare( actionData );
+        if( !controller.isBufferEmpty() ){
+          var actionData = controller.evalNextMessageFromBuffer();
+          if( actionData !== null ){
 
-            if( CLIENT_DEBUG ){
-              util.logInfo( "preparing command animation for",moveAnimCmd.key );
+            var key = actionData.getAction();
+
+            // MOVE ANIMATED ?
+            var move = actionData.getMovePath();
+            if( move !== null && move.length > 0 ){
+
+              var moveAnimCmd = view.getCommandHook("move");
+              controller.currentAnimatedKey = moveAnimCmd;
+              moveAnimCmd.prepare( actionData );
+
+              if( CLIENT_DEBUG ){
+                util.logInfo( "preparing command animation for",moveAnimCmd.key );
+              }
             }
-          }
 
-          // IS ANIMATED ?
-          var animCmd = view.getCommandHook(key);
-          if( animCmd !== null ){
+            // IS ANIMATED ?
+            var animCmd = view.getCommandHook(key);
+            if( animCmd !== null ){
 
-            animCmd.prepare( actionData );
-            controller.currentAnimatedKeyNext = animCmd;
+              animCmd.prepare( actionData );
+              controller.currentAnimatedKeyNext = animCmd;
 
-            if( CLIENT_DEBUG ){
-              util.logInfo( "preparing command animation for",animCmd.key );
+              if( CLIENT_DEBUG ){
+                util.logInfo( "preparing command animation for",animCmd.key );
+              }
             }
+
+            // SWAP IF NO MOVE ANIMATION IS AVAILABLE
+            if( controller.currentAnimatedKey === null &&
+              controller.currentAnimatedKeyNext !== null ){
+
+              controller.currentAnimatedKey = controller.currentAnimatedKeyNext;
+              controller.currentAnimatedKeyNext = null;
+            }
+
+            // RELEASE COMMAND
+            controller.releaseActionDataObject( actionData );
           }
-
-          // SWAP IF NO MOVE ANIMATION IS AVAILABLE
-          if( controller.currentAnimatedKey === null &&
-                controller.currentAnimatedKeyNext !== null ){
-
-            controller.currentAnimatedKey = controller.currentAnimatedKeyNext;
-            controller.currentAnimatedKeyNext = null;
-          }
-
-          // RELEASE COMMAND
-          controller.releaseActionDataObject( actionData );
         }
+
       }
     }
     // 1.2. UPDATE COMMAND ANIMATION
@@ -1264,6 +1253,24 @@ view.renderMap = function( scale ){
             tcx,tcy,
             tcw,tch
           );
+
+          // RENDER GRAY OVERLAY TO MARK AS USED
+          /*
+          if( inShadow && tch > 16 && view.OVERLAYER[type] === true ){
+
+            pic = view.getTileImageForType( type , view.COLOR_BLACK_MASK );
+
+            ctx.globalAlpha = 0.35;
+            ctx.drawImage(
+              pic,
+              scx,scy,
+              scw,sch/2,
+              tcx,tcy,
+              tcw,tch/2
+            );
+            ctx.globalAlpha = 1;
+          }
+          */
         }
         else{
           ctx.fillStyle="rgb(0,0,255)";
@@ -1292,6 +1299,8 @@ view.renderMap = function( scale ){
             color = view.COLOR_RED;
           }
 
+          if( inShadow ) color = view.COLOR_NEUTRAL;
+
           pic = view.getPropertyImageForType( property.type, color );
           scx = 0 + BASESIZE*sprStepProp;
           scy = 0;
@@ -1317,6 +1326,24 @@ view.renderMap = function( scale ){
               tcx,tcy,
               tcw,tch
             );
+
+            // RENDER GRAY OVERLAY TO MARK AS USED
+            if( inShadow && tch > 16 && property !== null ){
+
+              pic = view.getPropertyImageForType(
+                property.type, view.COLOR_BLACK_MASK
+              );
+
+              ctx.globalAlpha = 0.35;
+              ctx.drawImage(
+                pic,
+                scx,scy,
+                scw,sch/2,
+                tcx,tcy,
+                tcw,tch/2
+              );
+              ctx.globalAlpha = 1;
+            }
           }
           else{
             tcx = (x)*tileSize;
@@ -2240,6 +2267,40 @@ view.registerCommandHook({
 
 });
 
+view.registerCommandHook({
+
+  key: "trapWait",
+
+  prepare: function( data ){
+    this.time = 0;
+    this.xp = data.getTargetX();
+    this.yp = data.getTargetY();
+    this.x = data.getTargetX() * TILE_LENGTH;
+    this.y = data.getTargetY() * TILE_LENGTH;
+  },
+
+  render: function(){
+    var pic = view.getInfoImageForType("TRAPPED");
+    view.canvasCtx.drawImage( pic, this.x, this.y );
+  },
+
+  update: function( delta ){
+    this.time += delta;
+  },
+
+  isDone: function(){
+    var res = this.time > 1000;
+    if( res ){
+      var pic = view.getInfoImageForType("TRAPPED");
+      var y = this.yp;
+      for( var i=this.xp,e=i+( parseInt(pic.width/TILE_LENGTH,10) ); i<=e; i++ ){
+        view.markForRedraw( i , y );
+      }
+    }
+    return res;
+  }
+
+});
 controller.registerCommand({
 
   key: "colorizeImages",
@@ -2258,6 +2319,7 @@ controller.registerCommand({
     BLUE:3,
     GREEN:4,
     YELLOW:5,
+    BLACK_MASK:8,
     colors:4
   },
 
@@ -2287,7 +2349,7 @@ controller.registerCommand({
      * @param oriColors
      * @param replColors
      */
-    function replaceColors( image, colorData, numColors, oriIndex, replaceIndex ){
+    function replaceColors( image, colorData, numColors, oriIndex, replaceIndex ,tp ){
       var canvas = document.createElement("canvas");
       var canvasContext = canvas.getContext("2d");
 
@@ -2301,6 +2363,7 @@ controller.registerCommand({
       var oriStart = (oriIndex*4)*numColors;
       var replStart = (replaceIndex*4)*numColors;
 
+      var replaced = 0;
       var t = true;
       for(var y = 0; y < imgPixels.height; y++){
         for(var x = 0; x < imgPixels.width; x++){
@@ -2315,6 +2378,7 @@ controller.registerCommand({
             var sR = colorData[oriStart+n  ];
             var sG = colorData[oriStart+n+1];
             var sB = colorData[oriStart+n+2];
+
             if( sR === oR && sG === oG && sB === oB ){
 
               var r = replStart+n;
@@ -2324,11 +2388,14 @@ controller.registerCommand({
               imgPixels.data[xi  ] = rR;
               imgPixels.data[xi+1] = rG;
               imgPixels.data[xi+2] = rB;
+
+              replaced++;
             }
           }
         }
       }
 
+      util.logInfo("replaced",replaced,"pixels for the type",tp);
       // write changes back
       canvasContext.putImageData(imgPixels, 0, 0 );
       return canvas;
@@ -2367,6 +2434,7 @@ controller.registerCommand({
             redPic, IMG_MAP_UNIT,
             this.UNIT_INDEXES.colors,
             this.UNIT_INDEXES.RED, this.UNIT_INDEXES.BLUE
+            ,tp
           ),
           tp,cCode,view.COLOR_BLUE
         );
@@ -2376,6 +2444,7 @@ controller.registerCommand({
             redPic, IMG_MAP_UNIT,
             this.UNIT_INDEXES.colors,
             this.UNIT_INDEXES.RED, this.UNIT_INDEXES.GREEN
+            ,tp
           ),
           tp,cCode,view.COLOR_GREEN
         );
@@ -2385,6 +2454,7 @@ controller.registerCommand({
             redPic, IMG_MAP_UNIT,
             this.UNIT_INDEXES.colors,
             this.UNIT_INDEXES.RED, this.UNIT_INDEXES.BLACK_MASK
+            ,tp
           ),
           tp,cCode,view.COLOR_BLACK_MASK
         );
@@ -2423,6 +2493,15 @@ controller.registerCommand({
           this.PROPERTY_INDEXES.RED, this.PROPERTY_INDEXES.GRAY
         ),
         tp,view.COLOR_NEUTRAL
+      );
+
+      view.setPropertyImageForType(
+        replaceColors(
+          redPic, IMG_MAP_PROP,
+          this.PROPERTY_INDEXES.colors,
+          this.PROPERTY_INDEXES.RED, this.PROPERTY_INDEXES.BLACK_MASK
+        ),
+        tp,view.COLOR_BLACK_MASK
       );
     }
   }
@@ -2604,6 +2683,9 @@ controller.registerCommand({
 
   // ------------------------------------------------------------------------
   action: function(){
+    if( CLIENT_DEBUG ){
+      util.logInfo("loading images... place lock");
+    }
     controller.lockCommandEvaluation = true;
 
     // STEP 1 - LOADING THEM
@@ -2647,7 +2729,7 @@ controller.registerCommand({
     var leftToLoad = 4;
 
     // LOAD UNITS (1)
-    if( util.DEBUG ){ util.logInfo("loading unit commands"); }
+    if( CLIENT_DEBUG ){ util.logInfo("loading unit commands"); }
     loadImages( CWT_MOD_DEFAULT.graphic.units, function( types, images ){
 
       for( var i=0,e=types.length; i<e; i++ ){
@@ -2656,12 +2738,12 @@ controller.registerCommand({
           view.IMAGE_CODE_IDLE, view.COLOR_RED
         );
       }
-      if( util.DEBUG ){ util.logInfo("unit commands loaded"); }
+      if( CLIENT_DEBUG ){ util.logInfo("unit commands loaded"); }
       leftToLoad--;
     });
 
     // LOAD PROPERTIES (2)
-    if( util.DEBUG ){ util.logInfo("loading property commands"); }
+    if( CLIENT_DEBUG ){ util.logInfo("loading property commands"); }
     loadImages( CWT_MOD_DEFAULT.graphic.properties, function( types, images ){
 
       for( var i=0,e=types.length; i<e; i++ ){
@@ -2670,37 +2752,39 @@ controller.registerCommand({
           view.COLOR_RED
         );
       }
-      if( util.DEBUG ){ util.logInfo("property commands loaded"); }
+      if( CLIENT_DEBUG ){ util.logInfo("property commands loaded"); }
       leftToLoad--;
     });
 
     // LOAD TILES (3)
-    if( util.DEBUG ){ util.logInfo("loading tile commands"); }
+    if( CLIENT_DEBUG ){ util.logInfo("loading tile commands"); }
     loadImages( CWT_MOD_DEFAULT.graphic.tiles, function( types, images ){
 
       for( var i=0,e=types.length; i<e; i++ ){
         view.setTileImageForType( images[i], types[i] );
       }
-      if( util.DEBUG ){ util.logInfo("tile commands loaded"); }
+      if( CLIENT_DEBUG ){ util.logInfo("tile commands loaded"); }
       leftToLoad--;
     });
 
     // LOAD OTHER (4)
-    if( util.DEBUG ){ util.logInfo("loading other commands"); }
+    if( CLIENT_DEBUG ){ util.logInfo("loading other commands"); }
     loadImages( CWT_MOD_DEFAULT.graphic.misc, function( types, images ){
 
       for( var i=0,e=types.length; i<e; i++ ){
         view.setInfoImageForType( images[i], types[i] );
       }
-      if( util.DEBUG ){ util.logInfo("other commands loaded"); }
+      if( CLIENT_DEBUG ){ util.logInfo("other commands loaded"); }
       leftToLoad--;
     });
 
     // WAIT FOR LOADING
-    if( util.DEBUG ){ util.logInfo("waiting for commands"); }
+    if( CLIENT_DEBUG ){ util.logInfo("waiting for commands"); }
     var modifyWaiter = function(){
       if( leftToLoad === 0 ){
-        if( util.DEBUG ){ util.logInfo("all commands are loaded"); }
+        if( CLIENT_DEBUG ){
+          util.logInfo("all images are loaded.. releasing lock");
+        }
         controller.lockCommandEvaluation = false;
       }
       else{
@@ -3035,7 +3119,7 @@ controller.registerCommand({
 
   var browserCheck = [
     ["chrome" ,18,19,20,21,22,23,24],
-    ["firefox",17,18,19],
+    ["mozilla",17,18,19],
     ["safari" ,5,6]
   ];
 
@@ -3050,10 +3134,14 @@ controller.registerCommand({
           versionFound = true;
         }
       }
-      if( !found ) alert("Attention!\nThe version of your browser is not supported!");
+      if( !found ){
+        alert("Attention!\nThe version of your browser is not supported!");
+      }
     }
   }
-  if( !found ) alert("Attention!\nYour browser is not supported!");
+  if( !found ){
+    alert("Attention!\nYour browser is not supported!");
+  }
 
 
   function invoke( key ){

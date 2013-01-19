@@ -8,6 +8,9 @@ controller.registerCommand({
 
   // ------------------------------------------------------------------------
   action: function(){
+    if( CLIENT_DEBUG ){
+      util.logInfo("loading images... place lock");
+    }
     controller.lockCommandEvaluation = true;
 
     // STEP 1 - LOADING THEM
@@ -51,7 +54,7 @@ controller.registerCommand({
     var leftToLoad = 4;
 
     // LOAD UNITS (1)
-    if( util.DEBUG ){ util.logInfo("loading unit commands"); }
+    if( CLIENT_DEBUG ){ util.logInfo("loading unit commands"); }
     loadImages( CWT_MOD_DEFAULT.graphic.units, function( types, images ){
 
       for( var i=0,e=types.length; i<e; i++ ){
@@ -60,12 +63,12 @@ controller.registerCommand({
           view.IMAGE_CODE_IDLE, view.COLOR_RED
         );
       }
-      if( util.DEBUG ){ util.logInfo("unit commands loaded"); }
+      if( CLIENT_DEBUG ){ util.logInfo("unit commands loaded"); }
       leftToLoad--;
     });
 
     // LOAD PROPERTIES (2)
-    if( util.DEBUG ){ util.logInfo("loading property commands"); }
+    if( CLIENT_DEBUG ){ util.logInfo("loading property commands"); }
     loadImages( CWT_MOD_DEFAULT.graphic.properties, function( types, images ){
 
       for( var i=0,e=types.length; i<e; i++ ){
@@ -74,37 +77,39 @@ controller.registerCommand({
           view.COLOR_RED
         );
       }
-      if( util.DEBUG ){ util.logInfo("property commands loaded"); }
+      if( CLIENT_DEBUG ){ util.logInfo("property commands loaded"); }
       leftToLoad--;
     });
 
     // LOAD TILES (3)
-    if( util.DEBUG ){ util.logInfo("loading tile commands"); }
+    if( CLIENT_DEBUG ){ util.logInfo("loading tile commands"); }
     loadImages( CWT_MOD_DEFAULT.graphic.tiles, function( types, images ){
 
       for( var i=0,e=types.length; i<e; i++ ){
         view.setTileImageForType( images[i], types[i] );
       }
-      if( util.DEBUG ){ util.logInfo("tile commands loaded"); }
+      if( CLIENT_DEBUG ){ util.logInfo("tile commands loaded"); }
       leftToLoad--;
     });
 
     // LOAD OTHER (4)
-    if( util.DEBUG ){ util.logInfo("loading other commands"); }
+    if( CLIENT_DEBUG ){ util.logInfo("loading other commands"); }
     loadImages( CWT_MOD_DEFAULT.graphic.misc, function( types, images ){
 
       for( var i=0,e=types.length; i<e; i++ ){
         view.setInfoImageForType( images[i], types[i] );
       }
-      if( util.DEBUG ){ util.logInfo("other commands loaded"); }
+      if( CLIENT_DEBUG ){ util.logInfo("other commands loaded"); }
       leftToLoad--;
     });
 
     // WAIT FOR LOADING
-    if( util.DEBUG ){ util.logInfo("waiting for commands"); }
+    if( CLIENT_DEBUG ){ util.logInfo("waiting for commands"); }
     var modifyWaiter = function(){
       if( leftToLoad === 0 ){
-        if( util.DEBUG ){ util.logInfo("all commands are loaded"); }
+        if( CLIENT_DEBUG ){
+          util.logInfo("all images are loaded.. releasing lock");
+        }
         controller.lockCommandEvaluation = false;
       }
       else{

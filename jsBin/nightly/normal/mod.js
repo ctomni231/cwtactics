@@ -74,6 +74,8 @@ CWT_MOD_DEFAULT.graphic = {
 
     ["SMOKE","smoked.png"],
 
+    ["TRAPPED","icons/trapsign.png"],
+
     ["ARROW_N","arrow.png",0,0,16,16],
     ["ARROW_E","arrow.png",0,0,16,16,90],
     ["ARROW_S","arrow.png",0,0,16,16,180],

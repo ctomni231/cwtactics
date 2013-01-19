@@ -90,10 +90,12 @@ controller.input = util.createStateMachine( "NONE", {
         this.menuSize = 0;
 
         var refObj;
-        if( (refObj = model.unitPosMap[x][y]) !== null ){
+        if( model.fogData[x][y] > 0 &&
+            (refObj = model.unitPosMap[x][y]) !== null ){
           this.actionData.setTargetUnit(refObj );
         }
         if( (refObj = model.propertyPosMap[x][y]) !== null ){
+
           this.actionData.setTargetProperty(refObj );
         }
 
@@ -209,11 +211,13 @@ controller.input = util.createStateMachine( "NONE", {
       this.actionData.setActionTarget(x,y);
 
       var refObj;
-      if( (refObj = model.unitPosMap[x][y]) !== null ){
+      if( model.fogData[x][y] > 0 &&
+          (refObj = model.unitPosMap[x][y]) !== null ){
+
               this.actionData.setTargetUnit(refObj);
       } else  this.actionData.setTargetUnit(null);
 
-      if( (refObj = model.propertyPosMap[x][y]) !== null ){
+      if(  (refObj = model.propertyPosMap[x][y]) !== null ){
               this.actionData.setTargetProperty(refObj);
       } else  this.actionData.setTargetProperty(null);
 
@@ -228,13 +232,52 @@ controller.input = util.createStateMachine( "NONE", {
   // -------------------------------------------------------------------------
   "FLUSH_ACTION": {
     actionState: function(){
-      var action = this.actionData.getAction();
-      var actObj = controller.getActionObject( action );
+      var actData = this.actionData;
+
+      var trapped = false;
+      if( actData.getMovePath() !== null ){
+        var way = actData.getMovePath();
+
+        var cx = actData.getSourceX();
+        var cy = actData.getSourceY();
+        for( var i=0,e=way.length; i<e; i++ ){
+
+          switch( way[i] ){
+            case model.MOVE_CODE_DOWN  : cy++; break;
+            case model.MOVE_CODE_UP    : cy--; break;
+            case model.MOVE_CODE_LEFT  : cx--; break;
+            case model.MOVE_CODE_RIGHT : cx++; break;
+          }
+
+          // ONLY TILES THAT ARE IN FOG OF WAR MUST BE CHECKED AGAINST
+          // HIDDEN ENEMY UNITS
+          if( model.fogData[cx][cy] === 0 ){
+            var unit = model.unitPosMap[cx][cy];
+            if( unit != null ){
+
+              // TRAPPED ?
+              if( model.players[model.turnOwner].team !==
+                    model.players[unit.owner].team ){
+
+                // CONVERT TO TRAP WAIT
+                actData.setAction("trapWait");
+                actData.setTarget(cx,cy);
+                actData.setTargetUnit( unit );
+                actData.setTargetProperty( null );
+                way.splice( i );
+                trapped = true;
+              }
+            }
+          }
+        }
+      }
 
       // PUSH A COPY INTO THE COMMAND BUFFER
-      controller.pushActionDataIntoBuffer( this.actionData.getCopy() );
+      controller.pushActionDataIntoBuffer( actData.getCopy() );
 
-      if( actObj.multiStepAction ){
+      var action = actData.getAction();
+      var actObj = controller.getActionObject( action );
+      if( !trapped && actObj.multiStepAction ){
         this.inMultiStep = true;
         var newData = controller.aquireActionDataObject();
         newData.setAction("invokeMultiStepAction");

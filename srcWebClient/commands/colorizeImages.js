@@ -16,6 +16,7 @@ controller.registerCommand({
     BLUE:3,
     GREEN:4,
     YELLOW:5,
+    BLACK_MASK:8,
     colors:4
   },
 
@@ -45,7 +46,7 @@ controller.registerCommand({
      * @param oriColors
      * @param replColors
      */
-    function replaceColors( image, colorData, numColors, oriIndex, replaceIndex ){
+    function replaceColors( image, colorData, numColors, oriIndex, replaceIndex ,tp ){
       var canvas = document.createElement("canvas");
       var canvasContext = canvas.getContext("2d");
 
@@ -59,6 +60,7 @@ controller.registerCommand({
       var oriStart = (oriIndex*4)*numColors;
       var replStart = (replaceIndex*4)*numColors;
 
+      var replaced = 0;
       var t = true;
       for(var y = 0; y < imgPixels.height; y++){
         for(var x = 0; x < imgPixels.width; x++){
@@ -73,6 +75,7 @@ controller.registerCommand({
             var sR = colorData[oriStart+n  ];
             var sG = colorData[oriStart+n+1];
             var sB = colorData[oriStart+n+2];
+
             if( sR === oR && sG === oG && sB === oB ){
 
               var r = replStart+n;
@@ -82,11 +85,14 @@ controller.registerCommand({
               imgPixels.data[xi  ] = rR;
               imgPixels.data[xi+1] = rG;
               imgPixels.data[xi+2] = rB;
+
+              replaced++;
             }
           }
         }
       }
 
+      util.logInfo("replaced",replaced,"pixels for the type",tp);
       // write changes back
       canvasContext.putImageData(imgPixels, 0, 0 );
       return canvas;
@@ -125,6 +131,7 @@ controller.registerCommand({
             redPic, IMG_MAP_UNIT,
             this.UNIT_INDEXES.colors,
             this.UNIT_INDEXES.RED, this.UNIT_INDEXES.BLUE
+            ,tp
           ),
           tp,cCode,view.COLOR_BLUE
         );
@@ -134,6 +141,7 @@ controller.registerCommand({
             redPic, IMG_MAP_UNIT,
             this.UNIT_INDEXES.colors,
             this.UNIT_INDEXES.RED, this.UNIT_INDEXES.GREEN
+            ,tp
           ),
           tp,cCode,view.COLOR_GREEN
         );
@@ -143,6 +151,7 @@ controller.registerCommand({
             redPic, IMG_MAP_UNIT,
             this.UNIT_INDEXES.colors,
             this.UNIT_INDEXES.RED, this.UNIT_INDEXES.BLACK_MASK
+            ,tp
           ),
           tp,cCode,view.COLOR_BLACK_MASK
         );
@@ -181,6 +190,15 @@ controller.registerCommand({
           this.PROPERTY_INDEXES.RED, this.PROPERTY_INDEXES.GRAY
         ),
         tp,view.COLOR_NEUTRAL
+      );
+
+      view.setPropertyImageForType(
+        replaceColors(
+          redPic, IMG_MAP_PROP,
+          this.PROPERTY_INDEXES.colors,
+          this.PROPERTY_INDEXES.RED, this.PROPERTY_INDEXES.BLACK_MASK
+        ),
+        tp,view.COLOR_BLACK_MASK
       );
     }
   }

@@ -45,29 +45,44 @@ controller.resetMapCursor = function(){
 
 /**
  *
+ * @param isCancel if true then it is a cancel action
  */
-controller.cursorActionCancel = function(){
+controller.cursorAction = function( isCancel ){
+
+  // BREAK IF YOU ARE IN THE ANIMATION PHASE
   if( controller.currentAnimatedKey !== null ) return;
-  var state;
-  var focusExists = (
-    controller.input.state() === "MOVEPATH_SELECTION" ||
-      controller.input.state() === "ACTION_SELECT_TARGET"
-    );
 
-  controller.input.event("cancel");
+  var bstate = controller.input.state();
+  var bfocus = ( bstate === "MOVEPATH_SELECTION" ||
+                 bstate === "ACTION_SELECT_TARGET" );
 
-  var focusExistsAfter = (
-    controller.input.state() === "MOVEPATH_SELECTION" ||
-      controller.input.state() === "ACTION_SELECT_TARGET"
-    );
+  // INVOKE ACTION
+  if( isCancel ){
+    controller.input.event("cancel");
+  }
+  else{
+    if( controller.menuCursorIndex !== -1 ){
+      controller.input.event( "action",controller.menuCursorIndex );
+    }
+    else {
+      controller.input.event( "action", controller.mapCursorX,
+                                        controller.mapCursorY );
+    }
+  }
 
-  if( (focusExists && !focusExistsAfter ) || focusExistsAfter ){
+  var astate = controller.input.state();
+  var afocus = ( astate === "MOVEPATH_SELECTION" ||
+                 astate === "ACTION_SELECT_TARGET" );
+
+  // RERENDERING
+  if( ( bfocus && !afocus ) || afocus ){
     view.markSelectionMapForRedraw( controller.input.selectionData );
   }
 
-  state = controller.input.state();
-  if( state === "ACTION_MENU" || state === "ACTION_SUBMENU" ){
+  // MENU
+  if( astate === "ACTION_MENU" || astate === "ACTION_SUBMENU" ){
 
+    // UNLOAD MENU ID TO TYPE FIX
     var menu = controller.input.menu;
     if( controller.input.actionData.getAction() === 'unloadUnit' ){
       var old = menu;
@@ -78,63 +93,29 @@ controller.cursorActionCancel = function(){
     }
 
     controller.showMenu(
-      menu, controller.input.menuSize,
-      controller.mapCursorX, controller.mapCursorY
+      menu,
+      controller.input.menuSize,
+      controller.mapCursorX,
+      controller.mapCursorY
     );
   }
-  else{ controller.hideMenu(); }
+  else{
+    controller.hideMenu();
+  }
+};
+
+/**
+ *
+ */
+controller.cursorActionCancel = function(){
+  controller.cursorAction(true);
 };
 
 /**
  *
  */
 controller.cursorActionClick = function(){
-  if( controller.currentAnimatedKey !== null ) return;
-  var state;
-  var focusExists = (
-    controller.input.state() === "MOVEPATH_SELECTION" ||
-      controller.input.state() === "ACTION_SELECT_TARGET"
-    );
-
-  if( controller.menuCursorIndex !== -1 ){
-    controller.input.event(
-      "action",controller.menuCursorIndex
-    );
-  }
-  else{
-    controller.input.event(
-      "action", controller.mapCursorX, controller.mapCursorY
-    );
-  }
-
-
-  var focusExistsAfter = (
-    controller.input.state() === "MOVEPATH_SELECTION" ||
-      controller.input.state() === "ACTION_SELECT_TARGET"
-    );
-
-  if(( focusExists && !focusExistsAfter ) || focusExistsAfter ){
-    view.markSelectionMapForRedraw( controller.input.selectionData );
-  }
-
-  state = controller.input.state();
-  if( state === "ACTION_MENU" || state === "ACTION_SUBMENU" ){
-
-    var menu = controller.input.menu;
-    if( controller.input.actionData.getAction() === 'unloadUnit' ){
-      var old = menu;
-      menu = [];
-      for( var i=0, e=controller.input.menuSize; i<e; i++ ){
-        menu[i] = model.units[ old[i] ].type;
-      }
-    }
-
-    controller.showMenu(
-      menu, controller.input.menuSize,
-      controller.mapCursorX, controller.mapCursorY
-    );
-  }
-  else{ controller.hideMenu(); }
+  controller.cursorAction(false);
 };
 
 /**

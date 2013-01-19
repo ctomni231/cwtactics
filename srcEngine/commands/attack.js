@@ -45,6 +45,9 @@ controller.registerCommand({
           if( tUnit !== null && tUnit.owner !== spid &&
               model.players[ tUnit.owner ].team !== steam ){
 
+              // IN FOG ?
+              if( model.fogData[x][y] === 0 ) continue;
+
               var dmg = model.getBaseDamage( wp, tUnit.type );
               if( dmg > 0 ){
                 return true;

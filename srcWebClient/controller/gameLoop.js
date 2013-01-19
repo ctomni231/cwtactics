@@ -10,6 +10,8 @@ controller.currentAnimatedKeyNext = null;
 
 controller.noRendering = true;
 
+controller.lockCommandEvaluation = false;
+
 /**
  *
  * @param delta
@@ -26,48 +28,54 @@ controller.gameLoop = function( delta ){
 
     // 1.1. UPDATE LOGIC
     if( controller.currentAnimatedKey === null ){
-      if( !controller.isBufferEmpty() ){
-        var actionData = controller.evalNextMessageFromBuffer();
-        if( actionData !== null ){
 
-          var key = actionData.getAction();
 
-          // MOVE ANIMATED ?
-          var move = actionData.getMovePath();
-          if( move !== null && move.length > 0 ){
+      if( controller.lockCommandEvaluation === false ){
 
-            var moveAnimCmd = view.getCommandHook("move");
-            controller.currentAnimatedKey = moveAnimCmd;
-            moveAnimCmd.prepare( actionData );
+        if( !controller.isBufferEmpty() ){
+          var actionData = controller.evalNextMessageFromBuffer();
+          if( actionData !== null ){
 
-            if( CLIENT_DEBUG ){
-              util.logInfo( "preparing command animation for",moveAnimCmd.key );
+            var key = actionData.getAction();
+
+            // MOVE ANIMATED ?
+            var move = actionData.getMovePath();
+            if( move !== null && move.length > 0 ){
+
+              var moveAnimCmd = view.getCommandHook("move");
+              controller.currentAnimatedKey = moveAnimCmd;
+              moveAnimCmd.prepare( actionData );
+
+              if( CLIENT_DEBUG ){
+                util.logInfo( "preparing command animation for",moveAnimCmd.key );
+              }
             }
-          }
 
-          // IS ANIMATED ?
-          var animCmd = view.getCommandHook(key);
-          if( animCmd !== null ){
+            // IS ANIMATED ?
+            var animCmd = view.getCommandHook(key);
+            if( animCmd !== null ){
 
-            animCmd.prepare( actionData );
-            controller.currentAnimatedKeyNext = animCmd;
+              animCmd.prepare( actionData );
+              controller.currentAnimatedKeyNext = animCmd;
 
-            if( CLIENT_DEBUG ){
-              util.logInfo( "preparing command animation for",animCmd.key );
+              if( CLIENT_DEBUG ){
+                util.logInfo( "preparing command animation for",animCmd.key );
+              }
             }
+
+            // SWAP IF NO MOVE ANIMATION IS AVAILABLE
+            if( controller.currentAnimatedKey === null &&
+              controller.currentAnimatedKeyNext !== null ){
+
+              controller.currentAnimatedKey = controller.currentAnimatedKeyNext;
+              controller.currentAnimatedKeyNext = null;
+            }
+
+            // RELEASE COMMAND
+            controller.releaseActionDataObject( actionData );
           }
-
-          // SWAP IF NO MOVE ANIMATION IS AVAILABLE
-          if( controller.currentAnimatedKey === null &&
-                controller.currentAnimatedKeyNext !== null ){
-
-            controller.currentAnimatedKey = controller.currentAnimatedKeyNext;
-            controller.currentAnimatedKeyNext = null;
-          }
-
-          // RELEASE COMMAND
-          controller.releaseActionDataObject( actionData );
         }
+
       }
     }
     // 1.2. UPDATE COMMAND ANIMATION

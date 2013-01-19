@@ -9,8 +9,11 @@ controller.registerCommand({
 
   // -----------------------------------------------------------------------
   action: function( data ){
-    data.setAction("wait");
-    controller.invokeCommand(data);
+    var ndata = new controller.ActionData();
+    ndata.setSource( data.getSourceX(), data.getSourceY() );
+    ndata.setAction("wait");
+    ndata.setSourceUnit( data.getSourceUnit() );
+    controller.invokeCommand( ndata );
   }
 
 });

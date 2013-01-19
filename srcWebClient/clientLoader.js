@@ -2,7 +2,7 @@
 
   var browserCheck = [
     ["chrome" ,18,19,20,21,22,23,24],
-    // ["firefox",17,18,19],
+    ["mozilla",17,18,19],
     ["safari" ,5,6]
   ];
 

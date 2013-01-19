@@ -99,6 +99,7 @@ model.fillMoveMap = function( selectData, actionData ){
 
         var cunit = model.unitPosMap[tx][ty];
         if( cunit !== null &&
+          model.fogData[tx][ty] > 0 &&
           model.players[cunit.owner].team !== player.team ){
           continue;
         }

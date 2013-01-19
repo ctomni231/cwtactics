@@ -8,7 +8,7 @@ const DEBUG = false;
 
 const CWT_INACTIVE_ID = -1;
 
-const CWT_VERSION = "Milestone 2.2";
+const CWT_VERSION = "Milestone 2.4";
 
 /**
  * The model layer holds all necessary data for a game round. This layer can be
@@ -822,6 +822,7 @@ model.fillMoveMap = function( selectData, actionData ){
 
         var cunit = model.unitPosMap[tx][ty];
         if( cunit !== null &&
+          model.fogData[tx][ty] > 0 &&
           model.players[cunit.owner].team !== player.team ){
           continue;
         }
@@ -2318,10 +2319,12 @@ controller.input = util.createStateMachine( "NONE", {
         this.menuSize = 0;
 
         var refObj;
-        if( (refObj = model.unitPosMap[x][y]) !== null ){
+        if( model.fogData[x][y] > 0 &&
+            (refObj = model.unitPosMap[x][y]) !== null ){
           this.actionData.setTargetUnit(refObj );
         }
         if( (refObj = model.propertyPosMap[x][y]) !== null ){
+
           this.actionData.setTargetProperty(refObj );
         }
 
@@ -2437,11 +2440,13 @@ controller.input = util.createStateMachine( "NONE", {
       this.actionData.setActionTarget(x,y);
 
       var refObj;
-      if( (refObj = model.unitPosMap[x][y]) !== null ){
+      if( model.fogData[x][y] > 0 &&
+          (refObj = model.unitPosMap[x][y]) !== null ){
+
               this.actionData.setTargetUnit(refObj);
       } else  this.actionData.setTargetUnit(null);
 
-      if( (refObj = model.propertyPosMap[x][y]) !== null ){
+      if(  (refObj = model.propertyPosMap[x][y]) !== null ){
               this.actionData.setTargetProperty(refObj);
       } else  this.actionData.setTargetProperty(null);
 
@@ -2456,13 +2461,52 @@ controller.input = util.createStateMachine( "NONE", {
   // -------------------------------------------------------------------------
   "FLUSH_ACTION": {
     actionState: function(){
-      var action = this.actionData.getAction();
-      var actObj = controller.getActionObject( action );
+      var actData = this.actionData;
+
+      var trapped = false;
+      if( actData.getMovePath() !== null ){
+        var way = actData.getMovePath();
+
+        var cx = actData.getSourceX();
+        var cy = actData.getSourceY();
+        for( var i=0,e=way.length; i<e; i++ ){
+
+          switch( way[i] ){
+            case model.MOVE_CODE_DOWN  : cy++; break;
+            case model.MOVE_CODE_UP    : cy--; break;
+            case model.MOVE_CODE_LEFT  : cx--; break;
+            case model.MOVE_CODE_RIGHT : cx++; break;
+          }
+
+          // ONLY TILES THAT ARE IN FOG OF WAR MUST BE CHECKED AGAINST
+          // HIDDEN ENEMY UNITS
+          if( model.fogData[cx][cy] === 0 ){
+            var unit = model.unitPosMap[cx][cy];
+            if( unit != null ){
+
+              // TRAPPED ?
+              if( model.players[model.turnOwner].team !==
+                    model.players[unit.owner].team ){
+
+                // CONVERT TO TRAP WAIT
+                actData.setAction("trapWait");
+                actData.setTarget(cx,cy);
+                actData.setTargetUnit( unit );
+                actData.setTargetProperty( null );
+                way.splice( i );
+                trapped = true;
+              }
+            }
+          }
+        }
+      }
 
       // PUSH A COPY INTO THE COMMAND BUFFER
-      controller.pushActionDataIntoBuffer( this.actionData.getCopy() );
+      controller.pushActionDataIntoBuffer( actData.getCopy() );
 
-      if( actObj.multiStepAction ){
+      var action = actData.getAction();
+      var actObj = controller.getActionObject( action );
+      if( !trapped && actObj.multiStepAction ){
         this.inMultiStep = true;
         var newData = controller.aquireActionDataObject();
         newData.setAction("invokeMultiStepAction");
@@ -2730,6 +2774,9 @@ controller.registerCommand({
           var tUnit = model.unitPosMap[ lX ][ lY ];
           if( tUnit !== null && tUnit.owner !== spid &&
               model.players[ tUnit.owner ].team !== steam ){
+
+              // IN FOG ?
+              if( model.fogData[x][y] === 0 ) continue;
 
               var dmg = model.getBaseDamage( wp, tUnit.type );
               if( dmg > 0 ){
@@ -3031,11 +3078,27 @@ controller.registerCommand({
 
     property.capturePoints -= unitSh.captures;
     if( property.capturePoints <= 0 ){
+      var x = data.getTargetX();
+      var y = data.getTargetY();
       if( DEBUG ){
-        var x = data.getTargetX();
-        var y = data.getTargetY();
         util.logInfo( "property at (",x,",",y,") captured");
       }
+
+      // REMOVE VISION
+      /* TODO ADD IT WHEN EVERY PLAYER HAS AN OWN SHADOW MAP
+      var data = new controller.ActionData();
+      data.setSource( x,y );
+      data.setAction("remVisioner");
+      data.setSubAction( model.sheets.tileSheets[property.type].vision );
+      controller.pushActionDataIntoBuffer(data);
+      */
+
+      // ADD VISION
+      var data = new controller.ActionData();
+      data.setSource( x,y );
+      data.setAction("addVisioner");
+      data.setSubAction( model.sheets.tileSheets[property.type].vision );
+      controller.pushActionDataIntoBuffer(data);
 
       if( property.type === 'HQTR' ){
         var pid = property.owner;
@@ -3567,11 +3630,32 @@ controller.registerCommand({
 
     model.turnOwner = pid;
 
+    var dataObj = new controller.ActionData();
+
+    dataObj.setAction("supply");
     var startIndex= pid* CWT_MAX_UNITS_PER_PLAYER;
     for( var i= startIndex,
              e= i+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
 
       model.leftActors[i-startIndex] = (model.units[i] !== null);
+
+      // TODO make better
+      var unit = model.units[i];
+      if( unit.type === "APCR" ){
+
+        dataObj.setSource( unit.x, unit.y );
+        dataObj.setTarget( unit.x, unit.y );
+        dataObj.setSourceUnit( unit );
+        controller.invokeCommand( dataObj );
+      }
+    }
+
+    // TODO make better
+    var turnOwnerObj = model.players[pid];
+    for( var i=0, e=model.properties.length; i<e; i++ ){
+      if( model.properties[i].owner === pid ){
+        turnOwnerObj.gold += 1000;
+      }
     }
 
     model.generateFogMap( pid );
@@ -3844,8 +3928,11 @@ controller.registerCommand({
 
   // -----------------------------------------------------------------------
   action: function( data ){
-    data.setAction("wait");
-    controller.invokeCommand(data);
+    var ndata = new controller.ActionData();
+    ndata.setSource( data.getSourceX(), data.getSourceY() );
+    ndata.setAction("wait");
+    ndata.setSourceUnit( data.getSourceUnit() );
+    controller.invokeCommand( ndata );
   }
 
 });

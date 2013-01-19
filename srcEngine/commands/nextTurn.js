@@ -57,11 +57,32 @@ controller.registerCommand({
 
     model.turnOwner = pid;
 
+    var dataObj = new controller.ActionData();
+
+    dataObj.setAction("supply");
     var startIndex= pid* CWT_MAX_UNITS_PER_PLAYER;
     for( var i= startIndex,
              e= i+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
 
       model.leftActors[i-startIndex] = (model.units[i] !== null);
+
+      // TODO make better
+      var unit = model.units[i];
+      if( unit.type === "APCR" ){
+
+        dataObj.setSource( unit.x, unit.y );
+        dataObj.setTarget( unit.x, unit.y );
+        dataObj.setSourceUnit( unit );
+        controller.invokeCommand( dataObj );
+      }
+    }
+
+    // TODO make better
+    var turnOwnerObj = model.players[pid];
+    for( var i=0, e=model.properties.length; i<e; i++ ){
+      if( model.properties[i].owner === pid ){
+        turnOwnerObj.gold += 1000;
+      }
     }
 
     model.generateFogMap( pid );
