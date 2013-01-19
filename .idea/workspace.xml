@@ -3,15 +3,8 @@
   <component name="ChangeListManager">
     <list id="3e58acfd-b129-49b1-94b4-60075a3584f9" name="Default" comment="m1" />
     <list default="true" id="7622ae88-e936-4923-874c-d620d5253c4c" name="New changelist" comment="new site structure&#10;">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/icons/sign_deny.png" afterPath="$PROJECT_DIR$/icons/sign_deny.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/content/compatibility.js" afterPath="$PROJECT_DIR$/content/compatibility.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/content/milestones.js" afterPath="$PROJECT_DIR$/content/milestones.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/content/navBar.js" afterPath="$PROJECT_DIR$/content/navBar.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/content/news.js" afterPath="$PROJECT_DIR$/content/news.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scripts/desc.js" afterPath="$PROJECT_DIR$/scripts/desc.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stylesheets/site.css" afterPath="$PROJECT_DIR$/stylesheets/site.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/project_roadmap_19012013.html" afterPath="$PROJECT_DIR$/docs/project_roadmap_19012013.html" />
     </list>
     <ignored path="gh-pages.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -32,7 +25,17 @@
     <favorites_list name="gh-pages" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="navBar.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/content/navBar.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="20" column="75" selection-start="819" selection-end="819" vertical-scroll-proportion="0.55009824">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -47,7 +50,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/stylesheets/stylesheet.css" />
         <option value="$PROJECT_DIR$/milestones/m2.1/client_debug.js" />
         <option value="$PROJECT_DIR$/milestones/m2.1/starterDebug.html" />
         <option value="$PROJECT_DIR$/milestones/m2.2/client_debug.js" />
@@ -62,6 +64,7 @@
         <option value="$PROJECT_DIR$/content/compatibility.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/content/news.js" />
+        <option value="$PROJECT_DIR$/docs/project_roadmap_19012013.html" />
         <option value="$PROJECT_DIR$/content/navBar.js" />
       </list>
     </option>
@@ -162,6 +165,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="docs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gh-pages" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gh-pages" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="content" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -233,12 +250,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="740" y="84" width="1063" height="866" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32894737" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19654605" sideWeight="0.35672516" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28316087" sideWeight="0.67252195" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28316087" sideWeight="0.67252195" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32747805" sideWeight="0.14675447" order="0" side_tool="true" content_ui="tabs" />
@@ -325,11 +342,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/milestones/m2.1/engineDeps.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/milestones/m2.2/mod.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
@@ -416,9 +428,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/docs/project_roadmap_19012013.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="361" column="7" selection-start="6732" selection-end="6732" vertical-scroll-proportion="0.17336152">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/content/navBar.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="0" selection-start="361" selection-end="361" vertical-scroll-proportion="0.33005893">
+        <state line="20" column="75" selection-start="819" selection-end="819" vertical-scroll-proportion="0.55009824">
           <folding />
         </state>
       </provider>
