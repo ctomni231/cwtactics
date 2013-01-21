@@ -131,7 +131,6 @@ public class EngineHolder {
     }
 
     public static boolean isFalse( Object o ){
-        if( o == null ) throw new IllegalArgumentException();
         return !isTrue(o);
     }
 

@@ -16,10 +16,10 @@ public class EngineBridge {
 	/** This holds whether all files will be loaded separately (T) or together (F) */
 	public final static boolean DEVLOAD = true;	
 
-        /** This is the JavaScript engine holder */
+    /** This is the JavaScript engine holder */
 	private static EngineHolder holder = new EngineHolder( new Engine( DEVLOAD ) );
 
-        /** This holds the different modules that will be used for this engine */
+    /** This holds the different modules that will be used for this engine */
 	private static EngineHolder.ENGINE_MODULE module = EngineHolder.ENGINE_MODULE.GLOBAL;
 	
 	/**
@@ -28,7 +28,7 @@ public class EngineBridge {
 	 * @return Whether module was changed(T) or not(F)
 	 */
 	public static boolean setModule(String mod){
-		     if(mod.matches("VI.*"))
+		if(mod.matches("VI.*"))
 			module = EngineHolder.ENGINE_MODULE.VIEW;
 		else if(mod.matches("MO.*"))
 			module = EngineHolder.ENGINE_MODULE.MODEL;
@@ -38,7 +38,8 @@ public class EngineBridge {
 			module = EngineHolder.ENGINE_MODULE.CONTROLLER;
 		else if(mod.matches("GL.*"))
 			module = EngineHolder.ENGINE_MODULE.GLOBAL;
-		else return false;
+		else 
+			return false;
 		return true;
 	}
 	
@@ -155,5 +156,16 @@ public class EngineBridge {
 	 */
 	public static Object evalExpression( String expr ){
 		return holder.evalExpression(expr);
+	}
+	
+	/**
+	 * This function checks to see if an function called through the JavaScript Engine
+	 * exists.
+	 * @param function The function to call in the current module
+	 * @param args The arguments for that particular function
+	 * @return Whether this function call answer exists (T) or not (F)
+	 */
+	public static boolean callFunctionExists(String function, Object... args){
+		return holder.isTrue(callFunction(function, args));
 	}
 }

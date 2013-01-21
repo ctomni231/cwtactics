@@ -42,11 +42,11 @@ public class VersusGameScreen extends Screen{
     public VersusGameScreen(){
     	
     	mapScr = new MapField(10, 10, 0);
-    	mapScr.loadMap("map/test.json");
+    	//mapScr.loadMap("map/test.json");
     	
     	//TODO: Something is wrong with the EngineBridge Rhino parser when reading maps
     	//Un-comment line below and go to menu option "Versus" in JMain.java to see the error.
-    	//mapScr.loadMapFromEngine();
+    	mapScr.loadMapFromEngine();
     	
     	
         //PixAnimate.getTags();

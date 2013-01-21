@@ -53,13 +53,24 @@ public class MapField extends MovingMenu implements ScreenSkeleton{
         resetMap();
 	}
 	
-	public void loadMapFromEngine(String jsonMap){
-		EngineBridge.setModule("PERSISTENCE");
-		EngineBridge.callFunction("load", EngineBridge.evalExpression(jsonMap));
+	public void loadMapFromEngine(){
+		EngineBridge.setModule("CONTROLLER");
 		
-		EngineBridge.setModule("GAME");
-		mapsx = EngineBridge.callFunctionAsInteger("mapWidth");
-		mapsy = EngineBridge.callFunctionAsInteger("mapHeight");
+		while(!EngineBridge.callFunctionExists("isBufferEmpty"))
+			EngineBridge.callFunction("evalNextMessageFromBuffer");
+		
+		EngineBridge.setModule("MODEL");
+		mapsx = EngineBridge.getPropertyAsInteger("mapWidth");
+		mapsy = EngineBridge.getPropertyAsInteger("mapHeight");
+		
+		System.out.println("("+mapsx+","+mapsy+")");
+		drawMap = new MapItem[mapsx][mapsy];
+		resetMap();
+		for(int i = 0; i < mapsx; i++){
+           for(int j = 0; j < mapsy; j++){
+            	drawMap[i][j].terrain = ObjectLibrary.getTerrainIndex("PLIN");
+           }    
+        }	
 	}
 	
 	public void loadMap(String filename){
