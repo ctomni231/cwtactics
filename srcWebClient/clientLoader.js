@@ -49,5 +49,6 @@
 
   util.i18n_setLanguage("en");
 
+  invoke( "loadConfig" );
   invoke( "startRendering" );
 })();

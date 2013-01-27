@@ -42,5 +42,7 @@ controller.registerCommand({
         CWT_MOD_DEFAULT.locale[langs[i]]
       );
     }
+
+    model.parseSheet( CWT_MOD_DEFAULT.rules, model.sheets.RULESET );
   }
 });

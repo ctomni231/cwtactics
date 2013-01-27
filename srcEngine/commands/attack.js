@@ -5,6 +5,34 @@ controller.registerCommand({
   targetSelection: true,
   hasSubMenu: true,
 
+  counterWeapon: function( xdef, ydef, xatt, yatt ){
+      var dis = Math.abs(xdef-xatt) + Math.abs( ydef-yatt );
+      if( dis > 1 ) return null; // INDIRECT ATTACK
+
+      var def = model.unitPosMap[xdef][ydef];
+      var att = model.unitPosMap[xatt][yatt];
+      var defsheet = model.sheets.unitSheets[ def.type ];
+      var mainWp = defsheet[model.PRIMARY_WEAPON_TAG];
+      var sideWp = defsheet[model.SECONDARY_WEAPON_TAG];
+
+      if( mainWp !== undefined ){
+        mainWp = model.sheets.weaponSheets[ mainWp ];
+        var minR = mainWp.minRange;
+        var maxR = mainWp.maxRange;
+        if( minR === 1 && maxR === 1 && dis === 1 ) return mainWp;
+      }
+
+      if( sideWp !== undefined ){
+        sideWp = model.sheets.weaponSheets[ sideWp ];
+        var minR = sideWp.minRange;
+        var maxR = sideWp.maxRange;
+        if( minR === 1 && maxR === 1 && dis === 1 ) return sideWp;
+      }
+
+      // NO POSSIBLE COUNTER WEAPON
+      return null;
+  },
+
   hasTargets: function( unit, wpTag, x, y, moved ){
     if( arguments.length === 2 ){
       x = unit.x;
@@ -46,7 +74,7 @@ controller.registerCommand({
               model.players[ tUnit.owner ].team !== steam ){
 
               // IN FOG ?
-              if( model.fogData[x][y] === 0 ) continue;
+              if( model.fogData[lX][lY] === 0 ) continue;
 
               var dmg = model.getBaseDamage( wp, tUnit.type );
               if( dmg > 0 ){
@@ -109,6 +137,9 @@ controller.registerCommand({
           if( tUnit !== null && tUnit.owner !== spid &&
             model.players[ tUnit.owner ].team !== steam ){
 
+            // IN FOG ?
+            if( model.fogData[lX][lY] === 0 ) continue;
+
             var dmg = model.getBaseDamage( wp, tUnit.type );
             if( dmg > 0 ){
 
@@ -126,7 +157,11 @@ controller.registerCommand({
 
   // ------------------------------------------------------------------------
   condition: function( data ){
-    if( data.getTargetUnitId() !== CWT_INACTIVE_ID ) return false;
+    var daysOfPeace = model.rules.daysOfPeace;
+    if( model.day-1 < daysOfPeace ) return false;
+
+    if( data.getTargetUnitId() !== CWT_INACTIVE_ID &&
+        data.getTargetUnitId() !== data.getSourceUnitId() ) return false;
 
     var selectedUnit = data.getSourceUnit();
 
@@ -155,10 +190,13 @@ controller.registerCommand({
     var attwp = ( weaponTag === 'mainWeapon')?
       model.primaryWeaponOfUnit( attacker ):
       model.secondaryWeaponOfUnit( attacker );
-    var defwp = null;
+
+    var defwp = this.counterWeapon(
+      defender.x, defender.y,
+      attacker.x, attacker.y
+    );
 
     var attDmg = model.getBaseDamage( attwp, defender.type );
-    var defDmg = 0;
 
     defender.hp -= attDmg;
 
@@ -179,6 +217,7 @@ controller.registerCommand({
     else if( defwp !== null ){
 
       // counterattack
+      var defDmg = model.getBaseDamage( defwp, attacker.type );
       attacker.hp -= defDmg;
 
       // decrease ammo

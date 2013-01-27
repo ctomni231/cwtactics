@@ -123,6 +123,9 @@ controller.registerCommand({
 
     // ------------------------------------------------------------------------
 
+    // LOAD RULES
+    model.setRulesByOption({});
+
     if( util.DEBUG ){ util.logInfo("game instance successfully loaded"); }
   }
 });

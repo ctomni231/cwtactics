@@ -93,12 +93,14 @@ model.eraseUnitPosition = function( uid ){
   unit.x = -1;
   unit.y = -1;
 
-  // update fog
-  var data = new controller.ActionData();
-  data.setSource( ox,oy );
-  data.setAction("remVisioner");
-  data.setSubAction( model.sheets.unitSheets[unit.type].vision );
-  controller.pushActionDataIntoBuffer(data);
+  // UPDATE FOG
+  if( unit.owner === model.turnOwner ){
+    var data = new controller.ActionData();
+    data.setSource( ox,oy );
+    data.setAction("remVisioner");
+    data.setSubAction( model.sheets.unitSheets[unit.type].vision );
+    controller.pushActionDataIntoBuffer(data);
+  }
 };
 
 /**
@@ -118,12 +120,13 @@ model.setUnitPosition = function( uid, tx, ty ){
 
   model.unitPosMap[tx][ty] = unit;
 
-  // model.setVisioner( tx, ty, model.sheets.unitSheets[unit.type].vision );
-  var data = new controller.ActionData();
-  data.setSource( tx,ty );
-  data.setAction("addVisioner");
-  data.setSubAction( model.sheets.unitSheets[unit.type].vision );
-  controller.pushActionDataIntoBuffer(data);
+  if( unit.owner === model.turnOwner ){
+    var data = new controller.ActionData();
+    data.setSource( tx,ty );
+    data.setAction("addVisioner");
+    data.setSubAction( model.sheets.unitSheets[unit.type].vision );
+    controller.pushActionDataIntoBuffer(data);
+  }
 };
 
 /**
@@ -136,4 +139,20 @@ model.tileOccupiedByUnit = function( x,y ){
   var unit = model.unitPosMap[x][y];
   if( unit === null ) return false;
   else return model.extractUnitId( unit );
+};
+
+/**
+ *
+ * @param pid
+ */
+model.countUnits = function( pid ){
+  var startIndex = pid*CWT_MAX_UNITS_PER_PLAYER;
+  var n = 0
+  for( var i=0, e=startIndex+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
+    if( model.units[i].owner !== CWT_INACTIVE_ID ){
+      n++;
+    }
+  }
+
+  return n;
 };

@@ -1,6 +1,6 @@
 const CWT_INACTIVE_ID = -1;
 
-const CWT_VERSION = "Milestone 2.4";
+const CWT_VERSION = "M 2.6";
 
 /**
  * The model layer holds all necessary data for a game round. This layer can be

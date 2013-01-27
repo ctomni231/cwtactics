@@ -2,6 +2,7 @@ controller.registerCommand({
 
   key:"silofire",
   unitAction: true,
+  freeTargetSelection: true,
 
   _doDamage: function( x,y ){
     if( model.isValidPosition(x,y) ){
@@ -16,10 +17,10 @@ controller.registerCommand({
   // ------------------------------------------------------------------------
   condition: function( data ){
     var selectedUnit = data.getSourceUnit();
-    var selectedProperty = data.getSourceProperty();
+    var selectedProperty = data.getTargetProperty();
 
     if( selectedProperty === null ||
-        selectedProperty .owner !== model.turnOwner ) return false;
+        selectedProperty.owner !== model.turnOwner ) return false;
 
     // if( controller.actiondata.getTargetUnit(data) !== null ) return false;
 
@@ -57,7 +58,9 @@ controller.registerCommand({
     dmgF( x  ,y+2 );
 
     // SET EMPTY TYPE
-    data.getSourceProperty().type = "SILO_EMPTY";
+    var px = data.getSourceUnit().x;
+    var py = data.getSourceUnit().y;
+    model.propertyPosMap[px][py].type = "SILO_EMPTY";
     controller.invokeCommand(data,"wait");
   }
 

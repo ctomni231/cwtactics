@@ -3,17 +3,18 @@
  * @param unit
  */
 controller.updateUnitStats = function( unit ){
+  var uSheet = model.sheets.unitSheets[ unit.type ];
 
   // FUEL
   var cFuel = unit.fuel;
-  var mFuel = model.sheets.unitSheets[ unit.type ].maxFuel;
+  var mFuel = uSheet.maxFuel;
   if( cFuel < parseInt(mFuel*0.25, 10) ) unit._clientData_.lowFuel = true;
   else                                   unit._clientData_.lowFuel = false;
 
 
   // AMMO
   var cAmmo = unit.ammo;
-  var mAmmo = model.sheets.unitSheets[ unit.type ].maxAmmo;
+  var mAmmo = uSheet.maxAmmo;
   if( cAmmo <= parseInt(mAmmo*0.25, 10) ) unit._clientData_.lowAmmo = true;
   else                                    unit._clientData_.lowAmmo = false;
   if( mAmmo === 0 )                       unit._clientData_.lowAmmo = false;
@@ -33,4 +34,21 @@ controller.updateUnitStats = function( unit ){
     else                    pic = view.getInfoImageForType("HP_1");
   }
   unit._clientData_.hpPic = pic;
+
+  // LOADED
+  if( model.hasLoadedIds( model.extractUnitId( unit ) ) ){
+    unit._clientData_.hasLoads = true;
+  }
+  else unit._clientData_.hasLoads = false;
+
+  // IS CAPTURING
+  if( unit.x > -1 ){
+    var prop = model.propertyPosMap[ unit.x ][ unit.y ];
+    if( prop !== null && uSheet.captures > 0 ){
+      if( prop.capturePoints < 20 ){
+        unit._clientData_.captures = true;
+      }
+      else unit._clientData_.captures = false;
+    }
+  }
 }

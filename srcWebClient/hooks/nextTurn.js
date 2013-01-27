@@ -7,6 +7,9 @@ view.registerCommandHook({
       view.completeRedraw();
     }
 
+    controller.resetTurnTimer();
+    view.updatePlayerInfo();
+
     view.showInfoMessage( util.i18n_localized("day")+": "+model.day );
   },
 

@@ -42,6 +42,13 @@ controller.registerCommand({
       if( pid === CWT_MAX_PLAYER ){
         pid = 0;
         model.day++;
+
+        var dayLimit = model.rules.dayLimit;
+        if( dayLimit !== 0 && model.day === dayLimit ){
+          var nData = controller.aquireActionDataObject();
+          nData.setAction( "endGame" );
+          controller.pushActionDataIntoBuffer( nData, true );
+        }
       }
 
       if( model.players[pid].team !== CWT_INACTIVE_ID ){
@@ -58,8 +65,8 @@ controller.registerCommand({
     model.turnOwner = pid;
 
     var dataObj = new controller.ActionData();
-
-    dataObj.setAction("supply");
+    var autoSupply = model.rules.autoSupplyAtTurnStart;
+    dataObj.setAction("supplyTurnStart");
     var startIndex= pid* CWT_MAX_UNITS_PER_PLAYER;
     for( var i= startIndex,
              e= i+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
@@ -68,7 +75,7 @@ controller.registerCommand({
 
       // TODO make better
       var unit = model.units[i];
-      if( unit.type === "APCR" ){
+      if( autoSupply && unit.type === "APCR" ){
 
         dataObj.setSource( unit.x, unit.y );
         dataObj.setTarget( unit.x, unit.y );
@@ -79,9 +86,12 @@ controller.registerCommand({
 
     // TODO make better
     var turnOwnerObj = model.players[pid];
+    var cityRepair = model.rules.cityRepair;
+    var fundsValue = model.rules.funds;
     for( var i=0, e=model.properties.length; i<e; i++ ){
       if( model.properties[i].owner === pid ){
-        turnOwnerObj.gold += 1000;
+        turnOwnerObj.gold += fundsValue;
+
       }
     }
 

@@ -100,7 +100,18 @@ controller.input = util.createStateMachine( "NONE", {
         }
 
         this._prepareMenu();
-        return "ACTION_MENU";
+
+        if( this.menuSize > 0 ){
+          return "ACTION_MENU";
+        }
+        else{
+          var dto = this.actionData;
+          dto.setTarget( -1,-1 );
+          dto.setTargetProperty(null);
+          dto.setTargetUnit(null);
+
+          return "MOVEPATH_SELECTION";
+        }
       }
       else if( dis === 1 ){
         var code = model.moveCodeFromAtoB( ox,oy, x,y );
@@ -141,6 +152,9 @@ controller.input = util.createStateMachine( "NONE", {
 
         actObj.prepareMenu( this.actionData, controller.input._addMenuEntry );
         return "ACTION_SUBMENU";
+      }
+      if( actObj.freeTargetSelection ){
+        return "ACTION_SELECT_TILE";
       }
       else if( actObj.prepareTargets !== null ){
         return controller.input._prepareSelection( actObj, "ACTION_MENU" );
@@ -226,6 +240,32 @@ controller.input = util.createStateMachine( "NONE", {
 
     cancel: function(){
       return this._last;
+    }
+  },
+
+  // -------------------------------------------------------------------------
+  "ACTION_SELECT_TILE":{
+    action: function( ev,x,y ){
+      if( DEBUG ) controller.input._checkClickEventArgs(ev,x,y);
+
+      this.actionData.setActionTarget(x,y);
+
+      var refObj;
+      if( model.fogData[x][y] > 0 &&
+        (refObj = model.unitPosMap[x][y]) !== null ){
+
+        this.actionData.setTargetUnit(refObj);
+      } else  this.actionData.setTargetUnit(null);
+
+      if(  (refObj = model.propertyPosMap[x][y]) !== null ){
+        this.actionData.setTargetProperty(refObj);
+      } else  this.actionData.setTargetProperty(null);
+
+      return "FLUSH_ACTION";
+    },
+
+    cancel: function(){
+      return "ACTION_MENU";
     }
   },
 

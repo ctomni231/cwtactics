@@ -30,18 +30,10 @@ controller.registerCommand({
     if( property.capturePoints <= 0 ){
       var x = data.getTargetX();
       var y = data.getTargetY();
+
       if( DEBUG ){
         util.logInfo( "property at (",x,",",y,") captured");
       }
-
-      // REMOVE VISION
-      /* TODO ADD IT WHEN EVERY PLAYER HAS AN OWN SHADOW MAP
-      var data = new controller.ActionData();
-      data.setSource( x,y );
-      data.setAction("remVisioner");
-      data.setSubAction( model.sheets.tileSheets[property.type].vision );
-      controller.pushActionDataIntoBuffer(data);
-      */
 
       // ADD VISION
       var data = new controller.ActionData();
@@ -95,6 +87,13 @@ controller.registerCommand({
       // set new meta data for property
       property.capturePoints = 20;
       property.owner = selectedUnit.owner;
+
+      var capLimit = model.rules.captureWinLimit;
+      if( capLimit !== 0 && capLimit <= model.countProperties() ){
+        var nData = controller.aquireActionDataObject();
+        nData.setAction( "endGame" );
+        controller.pushActionDataIntoBuffer( nData, true );
+      }
     }
 
     controller.invokeCommand( data, "wait" );

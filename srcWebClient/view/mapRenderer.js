@@ -12,6 +12,13 @@ view.preventRenderUnit = null;
  */
 view.canvasCtx = controller.screenElement.getContext("2d");
 
+view.colorArray = [
+  view.COLOR_RED,
+  view.COLOR_BLUE,
+  view.COLOR_GREEN,
+  view.COLOR_YELLOW
+];
+
 /**
  *
  * @example this is a god method because it would hit the performance
@@ -125,15 +132,8 @@ view.renderMap = function( scale ){
           if( property.owner === -1 ){
             color = view.COLOR_NEUTRAL;
           }
-          else if( property.owner === model.turnOwner ){
-            color = view.COLOR_GREEN;
-          }
-          else if( model.players[property.owner].team ===
-                    model.players[model.turnOwner].team ){
-            color = view.COLOR_BLUE;
-          }
-          else {
-            color = view.COLOR_RED;
+          else{
+            color = view.colorArray[ property.owner ];
           }
 
           if( inShadow ) color = view.COLOR_NEUTRAL;
@@ -256,15 +256,8 @@ view.renderMap = function( scale ){
             if( unit.owner === -1 ){
               color = view.COLOR_NEUTRAL;
             }
-            else if( unit.owner === model.turnOwner ){
-              color = view.COLOR_GREEN;
-            }
-            else if( model.players[unit.owner].team ===
-              model.players[model.turnOwner].team ){
-              color = view.COLOR_BLUE;
-            }
-            else {
-              color = view.COLOR_RED;
+            else{
+              color = view.colorArray[ unit.owner ];
             }
 
             var state = ( unit.owner % 2 === 1 )?
@@ -328,24 +321,55 @@ view.renderMap = function( scale ){
               );
             }
 
-            if( sprStepStat <= 2 && unit._clientData_.lowAmmo === true ){
+            // ------------------------------------------------------------
 
-              pic = view.getTileImageForType("SYM_AMMO");
-              ctx.drawImage(
-                pic,
-                tcx+tileSize/2,tcy+tileSize
-              );
+            if( sprStepStat !== 0 &&
+              sprStepStat !== 1 &&
+
+              sprStepStat !== 4 &&
+              sprStepStat !== 5 &&
+
+              sprStepStat !== 8 &&
+              sprStepStat !== 9 &&
+
+              sprStepStat !== 12 &&
+              sprStepStat !== 13 ){
+
+              var st = parseInt( sprStepStat/4 , 10 );
+
+              pic = null;
+              var stIn = st;
+              do{
+
+                if( stIn === 0 && unit._clientData_.lowAmmo ){
+                  pic = view.getInfoImageForType("SYM_AMMO");
+                }
+                else if( stIn === 1 && unit._clientData_.lowFuel ){
+                  pic = view.getInfoImageForType("SYM_FUEL");
+                }
+                else if( stIn === 2 && unit._clientData_.captures ){
+                  pic = view.getInfoImageForType("SYM_CAPTURE");
+                }
+                else if( stIn === 3 && unit._clientData_.hasLoads ){
+                  pic = view.getInfoImageForType("SYM_LOAD");
+                }
+
+                if( pic !== null ) break;
+
+                stIn++;
+                if( stIn === 4 ) stIn = 0;
+              }
+              while( stIn !== st );
+
+              if( pic !== null ){
+                ctx.drawImage(
+                  pic,
+                  tcx+tileSize/2,tcy+tileSize
+                );
+              }
             }
 
-            if( sprStepStat >= 4 && sprStepStat <= 6 &&
-              unit._clientData_.lowFuel === true){
-
-              pic = view.getInfoImageForType("SYM_FUEL");
-              ctx.drawImage(
-                pic,
-                tcx+tileSize/2,tcy+tileSize
-              );
-            }
+            // ------------------------------------------------------------
           }
         }
 

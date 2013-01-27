@@ -3,7 +3,6 @@ view.registerCommandHook({
   key: "move",
 
   prepare: function( data ){
-    var actionData = controller.actiondata;
 
     this.moveAnimationX     = data.getSourceX();
     this.moveAnimationY     = data.getSourceY();
@@ -71,17 +70,7 @@ view.registerCommandHook({
     var shift    = this.moveAnimationShift;
     var moveCode = this.moveAnimationPath[ this.moveAnimationIndex ];
     var unit     = model.units[ uid ];
-
-    var color;
-    if( unit.owner === model.turnOwner ){
-      color = view.COLOR_GREEN;
-    }
-    else if( model.players[unit.owner].team ===
-              model.players[model.turnOwner].team ){
-      color = view.COLOR_BLUE;
-    }
-    else color = view.COLOR_RED;
-
+    var color = view.colorArray[ unit.owner ];
     var state;
     var tp = unit.type;
 

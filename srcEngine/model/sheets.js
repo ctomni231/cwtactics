@@ -18,6 +18,9 @@ model.sheets.WEATHER_TYPE_SHEET = 3;
 model.sheets.MOVE_TYPE_SHEET = 4;
 
 /** @constant */
+model.sheets.RULESET = 5;
+
+/** @constant */
 model.PRIMARY_WEAPON_TAG = "mainWeapon";
 
 /** @constant */
@@ -49,11 +52,29 @@ model.sheets.weatherSheets = {};
 model.sheets.movetypeSheets = {};
 
 /**
+ * Contains the loaded modification rules.
+ */
+model.sheets.defaultRules = null;
+
+/**
  * Different sheet validators.
  *
  * @namespace
  */
 model.sheets.typeSheetValidators = {
+
+  rulesValidator: {
+    type: 'object',
+    properties:{
+      funds:            { type:'integer', minimum:0, maximum:99999 },
+      noUnitsLeftLoose: { type:'boolean' },
+      captureWinLimit:  { type:'integer', minimum:0, maximum:99999 },
+      turnTimeLimit:    { type:'integer', minimum:0, maximum:3600000 },
+      dayLimit:         { type:'integer', minimum:0, maximum:99999 },
+      unitLimit:        { type:'integer', minimum:1, maximum:50    },
+      blockedUnits:     { type:'array' }
+    }
+  },
 
   /** Schema for an unit sheet. */
   unitValidator: {
@@ -157,21 +178,30 @@ model.parseSheet = function( data, type ){
       excList = validators.movetypeValidator.properties.ID.except;
       break;
 
+    case model.sheets.RULESET:
+      schema =  validators.rulesValidator;
+      break;
+
     default: util.logError("unknow type",type);
   }
 
   // CHECK IDENTICAL STRING FIRST
-  if( db.hasOwnProperty(id) ) util.logError(id,"is already registered");
+  if( type !== model.sheets.RULESET &&
+    db.hasOwnProperty(id) ) util.logError(id,"is already registered");
 
   // VALIDATE SHEET
   model.sheets._dbAmanda.validate( data, schema, function(e){
     if( e ) util.logError( "failed to parse sheet due", e.getMessages() );
   });
 
-  db[id] = data;
+  if( type === model.sheets.RULESET ) model.sheets.defaultRules = data;
+  else{
+    db[id] = data;
 
-  // REGISTER ID IN EXCEPTION LIST
-  excList.push(id);
+    // REGISTER ID IN EXCEPTION LIST
+    excList.push(id);
+  }
+
 };
 
 /**

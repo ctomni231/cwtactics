@@ -19,6 +19,12 @@ controller.lockCommandEvaluation = false;
 controller.gameLoop = function( delta ){
 
   var inMove = (controller.moveScreenX !== 0 || controller.moveScreenY !== 0);
+  var nextTurnInvoke = controller.updateTurnTimer(delta);
+  if( nextTurnInvoke ){
+    var actionData = controller.aquireActionDataObject();
+    actionData.setAction("nextTurn");
+    controller.pushActionDataIntoBuffer( actionData );
+  }
 
   // 0. MAP SHIFT
   if( inMove ){

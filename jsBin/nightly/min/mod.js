@@ -1,4 +1,27 @@
-var CWT_MOD_DEFAULT = {};
+
+var CWT_MOD_DEFAULT = {
+
+  rules:{
+
+    funds:                  1000,
+
+    noUnitsLeftLoose:       false,
+
+    autoSupplyAtTurnStart:  false,
+
+    cityRepair:             20,
+
+    captureWinLimit:        0,
+
+    turnTimeLimit:          300000,
+    dayLimit:               0,
+    daysOfPeace:            0,
+
+    unitLimit:              50,
+
+    blockedUnits:           []
+  }
+};
 // LOAD IMAGES BY THIS FILE IN FUTURE
 CWT_MOD_DEFAULT.graphic = {
 
@@ -48,6 +71,8 @@ CWT_MOD_DEFAULT.graphic = {
     ["CITY","properties/AWDS_CITY.png"],
     ["CMTR","properties/AWDS_CMTR.png"],
     ["PORT","properties/AW1_PORT.png"],
+    ["SILO",      "properties/AWDS_SILO.png"],
+    ["SILO_EMPTY","properties/AWDS_PLTF.png"],
     ["RADR","properties/AWDR_RADR.png"]
   ],
 
@@ -63,8 +88,17 @@ CWT_MOD_DEFAULT.graphic = {
     ["HP_8","symbol/8.png"],
     ["HP_9","symbol/9.png"],
 
+    ["SYM_HP",  "symbol/hp.png"],
     ["SYM_AMMO","symbol/ammo.png"],
     ["SYM_FUEL","symbol/fuel.png"],
+    ["SYM_LOAD","symbol/load.png"],
+    ["SYM_CAPTURE","symbol/capture.png"],
+    ["SYM_UNKNOWN","symbol/unknown.png"],
+    ["SYM_DEFENSE","symbol/yellowstar.png"],
+
+    ["SYM_RANK_1","symbol/guard.png"],
+    ["SYM_RANK_2","symbol/elite.png"],
+    ["SYM_RANK_3","symbol/veteran.png"],
 
     ["MOVE_FOC","unitmove.png"],
     ["ATK_FOC","unitatk.png"],
@@ -75,6 +109,8 @@ CWT_MOD_DEFAULT.graphic = {
     ["SMOKE","smoked.png"],
 
     ["TRAPPED","icons/trapsign.png"],
+
+    ["EXPLOSION_GROUND","explode.png"],
 
     ["ARROW_N","arrow.png",0,0,16,16],
     ["ARROW_E","arrow.png",0,0,16,16,90],

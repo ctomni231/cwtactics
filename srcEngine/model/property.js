@@ -44,3 +44,20 @@ model.extractPropertyId = function( property ){
 
   throw Error("cannot find property",property );
 };
+
+/**
+ *
+ * @param pid
+ */
+model.countProperties = function( pid ){
+
+  var n = 0;
+  var props = model.properties;
+  for( var i=0,e=props.length; i<e; i++ ){
+    if( props[i].owner === pid ){
+      n++;
+    }
+  }
+
+  return n;
+};

@@ -10,7 +10,7 @@ var testMap={
 
   units:{
     "0":{ fuel: 20, ammo:1, loadedIn: -1, owner: 0, type:"TANK", x: 2, y: 2 },
-    "1":{ fuel: 20, ammo:0, loadedIn: -1, owner: 0, type:"INFT", x: 5, y: 8 },
+    "1":{ fuel: 40, ammo:0, loadedIn: -1, owner: 0, type:"RECN", x: 5, y: 8 },
     "2":{ fuel: 15, ammo:0, loadedIn: -1, owner: 0, type:"INFT", x: 6, y: 3 },
     "3":{ fuel: 70, ammo:0, loadedIn: -1, owner: 0, type:"APCR", x: 5, y: 3 },
     "4":{ fuel: 15, ammo:0, loadedIn: -1, owner: 0, type:"INFT", x: 4, y: 3 },
@@ -38,7 +38,8 @@ var testMap={
     "4":{capturePoints:20,owner:1,type:"BASE"},
     "5":{capturePoints:20,owner:1,type:"BASE"},
     "6":{capturePoints:20,owner:2,type:"HQTR"},
-    "7":{capturePoints:20,owner:2,type:"BASE"}
+    "7":{capturePoints:20,owner:2,type:"BASE"},
+    "8":{capturePoints:20,owner:0,type:"SILO"}
   },
 
   propertyPosMap:{
@@ -49,10 +50,11 @@ var testMap={
     "8,7":4,
     "9,8":5,
     "3,5":6,
-    "4,5":7
+    "4,5":7,
+    "4,2":8
   },
 
-  day:0,
+  day:1,
   turnOwner:0,
 
   leftActors:[true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],

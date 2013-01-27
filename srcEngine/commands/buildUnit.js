@@ -8,6 +8,7 @@ controller.registerCommand({
     var pSheet = model.sheets.tileSheets[ pType ];
     var bList = pSheet.builds;
     if( bList === undefined ) return false;
+    if( model.rules.blockedUnits.indexOf(uType) !== -1 ) return false;
 
     if( bList.indexOf("*") !== -1 ) return true;
     if( bList.indexOf( uType ) !== -1 ) return true;
@@ -49,6 +50,9 @@ controller.registerCommand({
   // ------------------------------------------------------------------------
   condition: function( data ){
     var property = data.getSourceProperty();
+    if( model.countUnits(model.turnOwner) >= model.rules.unitLimit ){
+      return false;
+    }
 
     return (
       model.hasFreeUnitSlots( model.turnOwner ) &&

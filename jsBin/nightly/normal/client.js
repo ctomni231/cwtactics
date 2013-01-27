@@ -315,6 +315,12 @@ controller.lockCommandEvaluation = false;
 controller.gameLoop = function( delta ){
 
   var inMove = (controller.moveScreenX !== 0 || controller.moveScreenY !== 0);
+  var nextTurnInvoke = controller.updateTurnTimer(delta);
+  if( nextTurnInvoke ){
+    var actionData = controller.aquireActionDataObject();
+    actionData.setAction("nextTurn");
+    controller.pushActionDataIntoBuffer( actionData );
+  }
 
   // 0. MAP SHIFT
   if( inMove ){
@@ -723,22 +729,65 @@ controller.shiftScreenPosition = function( code, len ){
 
   controller.setScreenPosition( x,y, false );
 };
+const STORAGE_SIZE = 25;
+
+controller.storage = {
+
+  get: function( key ){
+    var o = localStorage.getItem( key );
+    return o !== null ? JSON.parse(o) : null;
+  },
+
+  has: function( key ){
+    return localStorage.getItem(key) !== null;
+  },
+
+  clear: function(){
+    localStorage.clear();
+  },
+
+  remove: function( key ){
+    localStorage.removeItem( key );
+  },
+
+  set: function( key, value ){
+    localStorage.setItem( key, JSON.stringify(value) );
+  }
+};
+controller._turnTimerTime = 0;
+
+controller.resetTurnTimer = function(){
+  controller._turnTimerTime = 0;
+};
+
+controller.updateTurnTimer = function( delta ){
+  if(controller._turnTimerTime >= 0 && model.rules.turnTimeLimit > 0 ){
+    controller._turnTimerTime += delta;
+    if( controller._turnTimerTime > model.rules.turnTimeLimit ){
+
+      controller._turnTimerTime = -1;
+      return true;
+    }
+  }
+  return false;
+};
 /**
  *
  * @param unit
  */
 controller.updateUnitStats = function( unit ){
+  var uSheet = model.sheets.unitSheets[ unit.type ];
 
   // FUEL
   var cFuel = unit.fuel;
-  var mFuel = model.sheets.unitSheets[ unit.type ].maxFuel;
+  var mFuel = uSheet.maxFuel;
   if( cFuel < parseInt(mFuel*0.25, 10) ) unit._clientData_.lowFuel = true;
   else                                   unit._clientData_.lowFuel = false;
 
 
   // AMMO
   var cAmmo = unit.ammo;
-  var mAmmo = model.sheets.unitSheets[ unit.type ].maxAmmo;
+  var mAmmo = uSheet.maxAmmo;
   if( cAmmo <= parseInt(mAmmo*0.25, 10) ) unit._clientData_.lowAmmo = true;
   else                                    unit._clientData_.lowAmmo = false;
   if( mAmmo === 0 )                       unit._clientData_.lowAmmo = false;
@@ -758,6 +807,23 @@ controller.updateUnitStats = function( unit ){
     else                    pic = view.getInfoImageForType("HP_1");
   }
   unit._clientData_.hpPic = pic;
+
+  // LOADED
+  if( model.hasLoadedIds( model.extractUnitId( unit ) ) ){
+    unit._clientData_.hasLoads = true;
+  }
+  else unit._clientData_.hasLoads = false;
+
+  // IS CAPTURING
+  if( unit.x > -1 ){
+    var prop = model.propertyPosMap[ unit.x ][ unit.y ];
+    if( prop !== null && uSheet.captures > 0 ){
+      if( prop.capturePoints < 20 ){
+        unit._clientData_.captures = true;
+      }
+      else unit._clientData_.captures = false;
+    }
+  }
 }
 view._animCommands = {};
 
@@ -1179,6 +1245,13 @@ view.preventRenderUnit = null;
  */
 view.canvasCtx = controller.screenElement.getContext("2d");
 
+view.colorArray = [
+  view.COLOR_RED,
+  view.COLOR_BLUE,
+  view.COLOR_GREEN,
+  view.COLOR_YELLOW
+];
+
 /**
  *
  * @example this is a god method because it would hit the performance
@@ -1292,15 +1365,8 @@ view.renderMap = function( scale ){
           if( property.owner === -1 ){
             color = view.COLOR_NEUTRAL;
           }
-          else if( property.owner === model.turnOwner ){
-            color = view.COLOR_GREEN;
-          }
-          else if( model.players[property.owner].team ===
-                    model.players[model.turnOwner].team ){
-            color = view.COLOR_BLUE;
-          }
-          else {
-            color = view.COLOR_RED;
+          else{
+            color = view.colorArray[ property.owner ];
           }
 
           if( inShadow ) color = view.COLOR_NEUTRAL;
@@ -1423,15 +1489,8 @@ view.renderMap = function( scale ){
             if( unit.owner === -1 ){
               color = view.COLOR_NEUTRAL;
             }
-            else if( unit.owner === model.turnOwner ){
-              color = view.COLOR_GREEN;
-            }
-            else if( model.players[unit.owner].team ===
-              model.players[model.turnOwner].team ){
-              color = view.COLOR_BLUE;
-            }
-            else {
-              color = view.COLOR_RED;
+            else{
+              color = view.colorArray[ unit.owner ];
             }
 
             var state = ( unit.owner % 2 === 1 )?
@@ -1495,24 +1554,55 @@ view.renderMap = function( scale ){
               );
             }
 
-            if( sprStepStat <= 2 && unit._clientData_.lowAmmo === true ){
+            // ------------------------------------------------------------
 
-              pic = view.getTileImageForType("SYM_AMMO");
-              ctx.drawImage(
-                pic,
-                tcx+tileSize/2,tcy+tileSize
-              );
+            if( sprStepStat !== 0 &&
+              sprStepStat !== 1 &&
+
+              sprStepStat !== 4 &&
+              sprStepStat !== 5 &&
+
+              sprStepStat !== 8 &&
+              sprStepStat !== 9 &&
+
+              sprStepStat !== 12 &&
+              sprStepStat !== 13 ){
+
+              var st = parseInt( sprStepStat/4 , 10 );
+
+              pic = null;
+              var stIn = st;
+              do{
+
+                if( stIn === 0 && unit._clientData_.lowAmmo ){
+                  pic = view.getInfoImageForType("SYM_AMMO");
+                }
+                else if( stIn === 1 && unit._clientData_.lowFuel ){
+                  pic = view.getInfoImageForType("SYM_FUEL");
+                }
+                else if( stIn === 2 && unit._clientData_.captures ){
+                  pic = view.getInfoImageForType("SYM_CAPTURE");
+                }
+                else if( stIn === 3 && unit._clientData_.hasLoads ){
+                  pic = view.getInfoImageForType("SYM_LOAD");
+                }
+
+                if( pic !== null ) break;
+
+                stIn++;
+                if( stIn === 4 ) stIn = 0;
+              }
+              while( stIn !== st );
+
+              if( pic !== null ){
+                ctx.drawImage(
+                  pic,
+                  tcx+tileSize/2,tcy+tileSize
+                );
+              }
             }
 
-            if( sprStepStat >= 4 && sprStepStat <= 6 &&
-              unit._clientData_.lowFuel === true){
-
-              pic = view.getInfoImageForType("SYM_FUEL");
-              ctx.drawImage(
-                pic,
-                tcx+tileSize/2,tcy+tileSize
-              );
-            }
+            // ------------------------------------------------------------
           }
         }
 
@@ -1874,9 +1964,7 @@ view.registerSpriteAnimator( "SELECTION", 7, 150, function(){
   }
 });
 
-view.registerSpriteAnimator( "STATUS", 8, 375, function(){
-
-});
+view.registerSpriteAnimator( "STATUS", 16, 375, function(){});
 
 view.registerSpriteAnimator( "UNIT", 3, 250, function(){
   var x  = 0;
@@ -2029,8 +2117,19 @@ view.registerCommandHook({
   prepare: function( data ){
     var state = controller.input.state();
     if( state === "ACTION_MENU" || state === "ACTION_SUBMENU" ){
+
+      var menu = controller.input.menu;
+      if( controller.input.actionData.getAction() === 'unloadUnit' ){
+        var old = menu;
+        menu = [];
+        for( var i=0, e=controller.input.menuSize-1; i<e; i++ ){
+          menu[i] = model.units[ old[i] ].type;
+        }
+        menu[controller.input.menuSize-1] = old[ controller.input.menuSize-1 ];
+      }
+
       controller.showMenu(
-        controller.input.menu, controller.input.menuSize,
+        menu, controller.input.menuSize,
         controller.mapCursorX, controller.mapCursorY
       );
     }
@@ -2062,10 +2161,25 @@ view.registerCommandHook({
 });
 view.registerCommandHook({
 
+  key: "loadUnit",
+
+  prepare: function( data ){
+    controller.updateUnitStats( data.getTargetUnit() );
+  },
+
+  render: function(){},
+  update: function(){},
+
+  isDone: function(){
+    return true;
+  }
+
+});
+view.registerCommandHook({
+
   key: "move",
 
   prepare: function( data ){
-    var actionData = controller.actiondata;
 
     this.moveAnimationX     = data.getSourceX();
     this.moveAnimationY     = data.getSourceY();
@@ -2133,17 +2247,7 @@ view.registerCommandHook({
     var shift    = this.moveAnimationShift;
     var moveCode = this.moveAnimationPath[ this.moveAnimationIndex ];
     var unit     = model.units[ uid ];
-
-    var color;
-    if( unit.owner === model.turnOwner ){
-      color = view.COLOR_GREEN;
-    }
-    else if( model.players[unit.owner].team ===
-              model.players[model.turnOwner].team ){
-      color = view.COLOR_BLUE;
-    }
-    else color = view.COLOR_RED;
-
+    var color = view.colorArray[ unit.owner ];
     var state;
     var tp = unit.type;
 
@@ -2222,6 +2326,9 @@ view.registerCommandHook({
       view.completeRedraw();
     }
 
+    controller.resetTurnTimer();
+    view.updatePlayerInfo();
+
     view.showInfoMessage( util.i18n_localized("day")+": "+model.day );
   },
 
@@ -2270,7 +2377,110 @@ view.registerCommandHook({
   }
 
 });
+view.registerCommandHook({
 
+  key: "silofire",
+
+  _check: function( x,y ){
+    var unit = model.unitPosMap[x][y];
+    if( unit !== null ) controller.updateUnitStats( unit );
+  },
+
+  _render: function( x,y, step, img ){
+    if( step < 0 || step >= 10 ) return;
+
+    var tileSize = TILE_LENGTH;
+    var scx = 48*step;
+    var scy = 0;
+    var scw = 48;
+    var sch = 48;
+    var tcx = (x)*tileSize;
+    var tcy = (y)*tileSize;
+    var tcw = tileSize;
+    var tch = tileSize;
+
+    view.canvasCtx.drawImage(
+      img,
+      scx,scy,
+      scw,sch,
+      tcx,tcy,
+      tcw,tch
+    );
+
+    view.markForRedraw(x,y);
+  },
+
+  prepare: function( data ){
+    var x = data.getActionTargetX();
+    var y = data.getActionTargetY();
+    this.x = x;
+    this.y = y;
+    var chk = this._check;
+
+    chk( x, y-2 );
+
+    chk( x-1, y-1 );
+    chk( x  , y-1 );
+    chk( x+1, y-1 );
+
+    chk( x-2, y );
+    chk( x-1, y );
+    chk( x  , y );
+    chk( x+1, y );
+    chk( x+2, y );
+
+    chk( x-1, y+1 );
+    chk( x  , y+1 );
+    chk( x+1, y+1 );
+
+    chk( x, y+2 );
+
+    this.step = 0;
+    this.time = 0;
+  },
+
+  render: function(){
+    var pic = view.getInfoImageForType("EXPLOSION_GROUND");
+    var step = this.step;
+    var chk = this._render;
+    var x = this.x;
+    var y = this.y;
+
+    // CENTER
+    chk( x  , y, step,pic );
+
+    // INNER RING
+    step -= 1;
+    chk( x  , y-1, step,pic );
+    chk( x-1, y, step,pic );
+    chk( x+1, y, step,pic );
+    chk( x  , y+1, step,pic );
+
+    // OUTER RING
+    step -= 3;
+    chk( x-1, y+1, step,pic );
+    chk( x+1, y+1, step,pic );
+    chk( x-1, y-1, step,pic );
+    chk( x+1, y-1, step,pic );
+    chk( x, y-2, step,pic );
+    chk( x, y+2, step,pic );
+    chk( x-2, y, step,pic );
+    chk( x+2, y, step,pic );
+  },
+
+  update: function( delta ){
+    this.time += delta;
+    if( this.time > 50 ){
+      this.step++;
+      this.time = 0;
+    }
+  },
+
+  isDone: function(){
+    return this.step === 13;
+  }
+
+});
 view.registerCommandHook({
 
   key: "trapWait",
@@ -2302,6 +2512,22 @@ view.registerCommandHook({
       }
     }
     return res;
+  }
+
+});
+view.registerCommandHook({
+
+  key: "unloadUnit",
+
+  prepare: function( data ){
+    controller.updateUnitStats( data.getSourceUnit() );
+  },
+
+  render: function(){},
+  update: function(){},
+
+  isDone: function(){
+    return true;
   }
 
 });
@@ -2675,6 +2901,41 @@ controller.registerCommand({
     }
 
     if( DEBUG ){ util.logInfo("cutting misc into single types done"); }
+  }
+});
+controller.registerCommand({
+
+  key:"loadConfig",
+  localAction: true,
+
+  // ------------------------------------------------------------------------
+  condition: util.FUNCTION_FALSE_RETURNER,
+
+  // ------------------------------------------------------------------------
+  action: function(){
+    var config = controller.storage.get("CWT_CONFIG")
+    if( config === null ){
+
+      if( CLIENT_DEBUG ){
+        util.logInfo("creating fresh configuration object");
+      }
+
+      config = {
+        lastUpdate: new Date()
+      };
+
+      controller.storage.set("CWT_CONFIG", config);
+    }
+
+    if( CLIENT_DEBUG ){
+      util.logInfo(
+        "loaded configuration object (timestamp:",
+        config.lastUpdate,
+        ")"
+      );
+    }
+
+    // TODO do what is needed :P
   }
 });
 controller.registerCommand({
@@ -3170,6 +3431,7 @@ controller.registerCommand({
 
   util.i18n_setLanguage("en");
 
+  invoke( "loadConfig" );
   invoke( "startRendering" );
 })();
 
