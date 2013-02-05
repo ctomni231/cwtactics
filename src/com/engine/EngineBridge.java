@@ -1,5 +1,7 @@
 package com.engine;
 
+import org.mozilla.javascript.NativeArray;
+
 /*
  * EngineBridge.java
  *
@@ -9,7 +11,7 @@ package com.engine;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.10.12
+ * @version 1.31.13
  */
 public class EngineBridge {
 
@@ -18,7 +20,6 @@ public class EngineBridge {
 
     /** This is the JavaScript engine holder */
 	private static EngineHolder holder = new EngineHolder( new Engine( DEVLOAD ) );
-
     /** This holds the different modules that will be used for this engine */
 	private static EngineHolder.ENGINE_MODULE module = EngineHolder.ENGINE_MODULE.GLOBAL;
 	
@@ -125,6 +126,29 @@ public class EngineBridge {
 	 */
 	public static int getPropertyAsInteger(String name){
 		return (Integer)getProperty(name);
+	}
+	
+	/**
+	 * This function calls a function through the JavaScript class and returns
+	 * the response within an Object array
+	 * @param function The function to call in the current module
+	 * @param args The arguments for that particular function
+	 * @return A response from the engine in form of an Object array
+	 */
+	public static Object[] callFunctionAsArray(String function, Object... args){
+		NativeArray array = (NativeArray)callFunction(function, args);
+		return array.toArray();
+	}
+	
+	/**
+	 * This function gets a property value from the JavaScript Engine and returns
+	 * an array from that value
+	 * @param name The name of the key property
+	 * @return The array pertaining to the property key
+	 */
+	public static Object[] getPropertyAsArray(String name){
+		NativeArray array = (NativeArray)getProperty(name);
+		return array.toArray();
 	}
 	
 	/**

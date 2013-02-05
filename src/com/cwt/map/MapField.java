@@ -22,7 +22,7 @@ import com.jslix.tools.RomanNumeral;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.10.12
+ * @version 1.31.13
  */
 public class MapField extends MovingMenu implements ScreenSkeleton{
 	
@@ -54,8 +54,7 @@ public class MapField extends MovingMenu implements ScreenSkeleton{
 	}
 	
 	public void loadMapFromEngine(){
-		EngineBridge.setModule("CONTROLLER");
-		
+		EngineBridge.setModule("CONTROLLER");	
 		while(!EngineBridge.callFunctionExists("isBufferEmpty"))
 			EngineBridge.callFunction("evalNextMessageFromBuffer");
 		
@@ -63,7 +62,9 @@ public class MapField extends MovingMenu implements ScreenSkeleton{
 		mapsx = EngineBridge.getPropertyAsInteger("mapWidth");
 		mapsy = EngineBridge.getPropertyAsInteger("mapHeight");
 		
-		System.out.println("("+mapsx+","+mapsy+")");
+		System.out.println("Length: "+EngineBridge.getPropertyAsArray("map").length);
+		//System.out.println(EngineBridge.getProperty("map"));
+		//System.out.println("("+mapsx+","+mapsy+")");
 		drawMap = new MapItem[mapsx][mapsy];
 		resetMap();
 		for(int i = 0; i < mapsx; i++){

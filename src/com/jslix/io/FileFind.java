@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.AccessControlException;
@@ -203,6 +204,23 @@ public class FileFind {
         }
 
         return newFile;
+    }
+    
+    /**
+     * This function is used for returning URL from files in the user directory
+     * @param filename The path to the file
+     * @return A Uniform Resource Locator for this particular file
+     */
+    public URL getFileURL(String filename){
+    	URL newURL = null;
+    	
+    	try {
+			newURL = getFile(filename).toURI().toURL();
+		} catch (MalformedURLException e) {
+			System.err.println(e);
+		}
+    	
+    	return newURL;
     }
 
     /**

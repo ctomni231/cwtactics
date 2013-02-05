@@ -1,6 +1,7 @@
 package com.cwt.menu;
 
 import com.cwt.tools.XML_Reader;
+import com.jslix.image.AnimatedGif;
 import com.jslix.image.ImgLibrary;
 import com.jslix.io.FileFind;
 import com.jslix.io.FileIndex;
@@ -20,12 +21,14 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.11.10
+ * @version 02.05.13
  */
 public class BackgroundHandler implements ScreenSkeleton {
 
     /** Stores the background images */
     private ImgLibrary imgSort;
+    /** Stores an Animated GIF in the background */
+    private AnimatedGif animImg;
     /** Helps select a random number */
     private Random generator;
     /** Holds the current width of the displayed window */
@@ -43,6 +46,7 @@ public class BackgroundHandler implements ScreenSkeleton {
         cursx = width;
         cursy = height;
         imgSort = new ImgLibrary();
+        animImg = null;
     }
 
     /**
@@ -59,6 +63,8 @@ public class BackgroundHandler implements ScreenSkeleton {
             cursy = height;
             imgSort.setImageSize(cursx, cursy);
             imgSort.addImage(1, imgSort.getImage(0));
+            if(animImg != null)
+            	animImg.resizeImg(cursx, cursy);
         }
     }
 
@@ -93,6 +99,8 @@ public class BackgroundHandler implements ScreenSkeleton {
      */
     public void render(Graphics2D g, Component dthis) {
         g.drawImage(imgSort.getImage(1), 0, 0, dthis);
+        if(animImg != null)
+        	g.drawImage(animImg.getImage(), 0, 0, dthis);
     }
 
     /**
@@ -140,12 +148,17 @@ public class BackgroundHandler implements ScreenSkeleton {
             entries[i] = XML_Reader.getAttribute(entryLocation[i], "file");
 
         generator = new Random();
-        if(entries.length > 0)
-            imgSort.addImage(entries[generator.nextInt(entries.length)]);
-        else
-            imgSort.addImage(imgSort.getColorBox(new Color(
-                    generator.nextInt(256), generator.nextInt(256),
-                    generator.nextInt(256)), 1, 1));
+        imgSort.addImage(imgSort.getColorBox(new Color(
+                generator.nextInt(256), generator.nextInt(256),
+                generator.nextInt(256)), 1, 1));
+        if(entries.length > 0){
+        	String temp = entries[generator.nextInt(entries.length)];
+        	if(temp.toLowerCase().endsWith(".gif"))
+        		animImg = new AnimatedGif(temp);
+        	else
+        		imgSort.addImage(0, temp);
+        }
+            
         XML_Reader.clear();
     }
 

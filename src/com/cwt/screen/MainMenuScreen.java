@@ -20,6 +20,7 @@ import com.jslix.state.Screen;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
+
 import org.newdawn.slick.Graphics;
 
 /**
@@ -61,6 +62,7 @@ public class MainMenuScreen extends Screen{
     private String startHelp;//This stores the title screen help message
     private String mainText;//This stores the main menu text
     private String[][] entries;//Stores strings of entry location
+    
 
     /**
      * This class contains all the elements that make up the title screen
@@ -167,6 +169,7 @@ public class MainMenuScreen extends Screen{
         scrStart = true;
 
         column = 0;
+        
     }
 
     /**
