@@ -8,6 +8,19 @@ JakeSamiRulz
 Tapsi
 CesarRamsan
  
+<DESIGN MANAGER>
+DarthAttix
+
+<DESIGN DEVELOPERS - WIKI>
+MarinePower
+I Blame Video Games
+Lord Spyro
+
+<DESIGN DEVELOPERS - CW BETA 27>
+CoconutTank
+Captain Vimes
+Veggie
+
 <BACKGROUND GRAPHICS>
 Kosheh
 Destin Artea
@@ -17,8 +30,6 @@ Halo Capella
 Urusan
 chom-chom
 Ace.Stef569
-MarinePower
-MaraSargon
  
 <MINOR CONTRIBUTORS>
 amarriner
@@ -31,12 +42,8 @@ TruthSeeker
 Gipface
 Walker
 mgb2625
- 
-<DESIGN DEVELOPERS>
-CoconutTank
-Captain Vimes
-Veggie
- 
+theether
+
 <FORUM MODDERS>
 DiamondPhoenix
 Narts
@@ -46,8 +53,9 @@ Kiwi
 UserShadow7989
 BlackEther
 Simon
+BiggaBertha
  
-<HOSTING>
+<WEB HOSTING>
 Ohloh
 GoogleCode
 Github
