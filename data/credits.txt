@@ -9,7 +9,7 @@ Tapsi
 CesarRamsan
  
 <DESIGN MANAGER>
-DarthAttix
+MaraSargon
 
 <DESIGN DEVELOPERS - WIKI>
 MarinePower
@@ -41,7 +41,7 @@ Eagle
 TruthSeeker
 Gipface
 Walker
-mgb2625
+Simon
 theether
 
 <FORUM MODDERS>
@@ -52,7 +52,6 @@ Kiwi
 <FORUM CONTRIBUTORS>
 UserShadow7989
 BlackEther
-Simon
 BiggaBertha
  
 <WEB HOSTING>

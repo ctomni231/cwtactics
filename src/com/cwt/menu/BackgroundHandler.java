@@ -148,9 +148,8 @@ public class BackgroundHandler implements ScreenSkeleton {
             entries[i] = XML_Reader.getAttribute(entryLocation[i], "file");
 
         generator = new Random();
-        imgSort.addImage(imgSort.getColorBox(new Color(
-                generator.nextInt(256), generator.nextInt(256),
-                generator.nextInt(256)), 1, 1));
+        imgSort.addImage(imgSort.getColorBox(new Color(generator.nextInt(256), 
+        		generator.nextInt(256), generator.nextInt(256)), 1, 1));
         if(entries.length > 0){
         	String temp = entries[generator.nextInt(entries.length)];
         	if(temp.toLowerCase().endsWith(".gif"))
