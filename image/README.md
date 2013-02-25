@@ -39,10 +39,10 @@ This shows how objects are organized within the object files for units, terrain(
 
 # Image Abbreviations
 
-## Connection Image Abbreviations
+## Cursor and Terrain Connection Image Abbreviations
 
 * *L* = Land [Default]
-* *W* = Water (Sea, Shoal, River)
+* *W* = Wall
 * *S* = Sea/Ocean
 * *B* = Shoal/Beach
 * *R* = River/Shallow
