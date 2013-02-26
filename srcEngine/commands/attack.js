@@ -269,9 +269,13 @@ controller.userAction({
   },
   
   createDataSet: function( data ){
+    var wp = ( data.subAction === 'mainWeapon')?
+      model.primaryWeaponOfUnit( data.sourceUnit ):
+      model.secondaryWeaponOfUnit( data.sourceUnit );
+    
     return [ 
       data.sourceUnitId, 
-      model.getBaseDamage( data.subAction, data.selectionUnit.type ),
+      model.getBaseDamage( wp, data.selectionUnit.type ),
       data.subAction === model.PRIMARY_WEAPON_TAG,
       data.selectionUnitId, 
       0,

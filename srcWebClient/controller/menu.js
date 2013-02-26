@@ -86,7 +86,10 @@ controller.showMenu = function( menu, size, x, y ){
   for( var i=0,e=size ; i<e; i++ ){
     var entry;
 
-    if( entries.length > i ) entry = entries[i].children[0];
+    if( entries.length > i ){
+      entries[i].className = "";
+      entry = entries[i].children[0];
+    }
     else{
 
       // PERFORMANCE HIT ?

@@ -3272,9 +3272,13 @@ controller.userAction({
   },
   
   createDataSet: function( data ){
+    var wp = ( data.subAction === 'mainWeapon')?
+      model.primaryWeaponOfUnit( data.sourceUnit ):
+      model.secondaryWeaponOfUnit( data.sourceUnit );
+    
     return [ 
       data.sourceUnitId, 
-      model.getBaseDamage( data.subAction, data.selectionUnit.type ),
+      model.getBaseDamage( wp, data.selectionUnit.type ),
       data.subAction === model.PRIMARY_WEAPON_TAG,
       data.selectionUnitId, 
       0,
@@ -3725,12 +3729,14 @@ controller.engineAction({
     var unit = model.units[uid];
     
     // controller.actions.removeVision( unit.x, unit.y, model.sheets.unitSheets[ unit.type ].vision );
-    controller.pushAction( unit.x, unit.y, model.sheets.unitSheets[ unit.type ].vision, "RVIS" );
+    if( unit.owner === model.turnOwner ){
+      controller.pushAction( unit.x, unit.y, model.sheets.unitSheets[ unit.type ].vision, "RVIS" );
+    }
     
     unit.owner = CWT_INACTIVE_ID;
     model.unitPosMap[ unit.x ][ unit.y ] = null;
-    unit.x = -1;
-    unit.y = -1;
+    //unit.x = -1;
+    //unit.y = -1;
   }
 });
 controller.engineAction({

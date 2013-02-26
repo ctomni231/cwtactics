@@ -17,11 +17,13 @@ controller.engineAction({
     var unit = model.units[uid];
     
     // controller.actions.removeVision( unit.x, unit.y, model.sheets.unitSheets[ unit.type ].vision );
-    controller.pushAction( unit.x, unit.y, model.sheets.unitSheets[ unit.type ].vision, "RVIS" );
+    if( unit.owner === model.turnOwner ){
+      controller.pushAction( unit.x, unit.y, model.sheets.unitSheets[ unit.type ].vision, "RVIS" );
+    }
     
     unit.owner = CWT_INACTIVE_ID;
     model.unitPosMap[ unit.x ][ unit.y ] = null;
-    unit.x = -1;
-    unit.y = -1;
+    //unit.x = -1;
+    //unit.y = -1;
   }
 });

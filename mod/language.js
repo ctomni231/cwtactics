@@ -4,7 +4,7 @@ CWT_MOD_DEFAULT.locale ={
   de:{
 
     "INFT":"Infanterie",
-    "MECH":"Mechanisierte Infanterie",
+    "MECH":"Mech. Infanterie",
     "TANK":"Leichter Panzer",
     "MDTK":"Kampfpanzer",
     "WRTK":"Schw. Panzer",
@@ -70,7 +70,7 @@ CWT_MOD_DEFAULT.locale ={
   en:{
 
     "INFT":"Infantry",
-    "MECH":"Mechanized Infantry",
+    "MECH":"Mech. Infantry",
     "TANK":"Light Tank",
     "MDTK":"Battle Tank",
     "WRTK":"Heavy Tank",
