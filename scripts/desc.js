@@ -30,7 +30,7 @@ var PAGE_CONTROLS_DESC = {
          var item = arge.item;
          return [
            item.header,
-           "<span>"
+           "<span>",
            item.version,
            "</span><span class='role'>",
            item.subHeaderT,
