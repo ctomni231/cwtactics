@@ -1,5 +1,5 @@
 var PAGE_CONTROLS = {
-  controls:[
+  milestones:[
 
     {
       header:"Custom Wars Tactics Milestone",
