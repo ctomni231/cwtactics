@@ -21,6 +21,32 @@ var PAGE_COMPA_DESC = {
   }
 };
 
+var PAGE_CONTROLS_DESC = {
+  "div.infoBox":{
+     
+     "entry <- controls": {
+       
+       "div.infoBoxHeader": function(args) {
+         var item = arge.item;
+         return [
+           item.header,
+           "<span>"
+           item.version,
+           "</span><span class='role'>",
+           item.subHeaderT,
+           "<br/>",
+           item.subHeaderB,
+           "</span>"
+           ].join("");
+       },
+       
+       "p.firstText": "#{entry.pre}",
+       
+       "p.lastText": "#{entry.post}"
+     }
+  }
+}
+
 var PAGE_MILESTONES_DESC = {
   "div.infoBox":{
     "entry <- milestones": {
