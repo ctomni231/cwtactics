@@ -32,7 +32,7 @@ controller.userAction({
    * Transfers a property of a player to an other player.
    *
    * @param {Number} uid unit id
-   * @param {Number} tpod the id of the new owner
+   * @param {Number} tpid the id of the new owner
    *
    * @methodOf controller.actions
    * @name giveUnitToPlayer
@@ -45,11 +45,15 @@ controller.userAction({
     
     selectedUnit.owner = CWT_INACTIVE_ID;
     
+    // controller.actions.removeVision( selectedUnit.x, selectedUnit.y, model.sheets[ selectedUnit.type ].vision );
+    if( model.players[tpid].team !== model.players[opid].team ){
+      controller.pushAction( selectedUnit.x, selectedUnit.y, model.sheets.unitSheets[ selectedUnit.type ].vision, "RVIS" );
+    }
+    
     model.unitPosMap[ selectedUnit.x ][ selectedUnit.y ] = null;
-    controller.actions.removeVision( selectedUnit.x, selectedUnit.y, model.sheets[ selectedUnit.type ].vision );
-
-    var tid = model.createUnit( tpid, selectedUnit.type );
-    var targetUnit = model.units[ tid ];
+    
+    controller.actions.createUnit( selectedUnit.x, selectedUnit.y, tpid, selectedUnit.type );
+    var targetUnit =  model.unitPosMap[ selectedUnit.x ][ selectedUnit.y ];
     targetUnit.hp = selectedUnit.hp;
     targetUnit.ammo = selectedUnit.ammo;
     targetUnit.fuel = selectedUnit.fuel;
@@ -58,11 +62,6 @@ controller.userAction({
     targetUnit.x = tx;
     targetUnit.y = ty;
     targetUnit.loadedIn = selectedUnit.loadedIn;
-    
-    model.unitPosMap[ cX ][ cY ] = targetUnit;
-    if( model.players[tpid].team === model.players[opid].team ){
-      controller.actions.addVision(  targetUnit.x, targetUnit.y, model.sheets[ targetUnit.type ].vision );
-    }
   }
 
 });

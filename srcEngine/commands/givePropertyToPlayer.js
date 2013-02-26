@@ -14,7 +14,7 @@ controller.userAction({
   condition: function( mem ){
     var selected = mem.sourceProperty;
     if( selected === null ) return false;
-
+    if( selected.type === "HQ" ) return false;
     return true;
   },
 
@@ -40,7 +40,22 @@ controller.userAction({
    * @name givePropertyToPlayer
    */
   action: function( pid, newOwner ){
-    model.properties[pid].owner = newOwner;
+    var prop =  model.properties[pid];
+    prop.owner = newOwner;
+    
+    var x;
+    var y;
+    var xe = model.mapWidth;
+    var ye = model.mapHeight;
+    
+    for( x=0 ;x<xe; x++ ){
+      for( y=0 ;y<ye; y++ ){
+        if( model.propertyPosMap[x][y] === prop ){
+          controller.pushAction( x, y, model.sheets.tileSheets[ prop.type ].vision, "RVIS" );
+          return;
+        }
+      }
+    }
   }
 
 });

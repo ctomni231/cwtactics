@@ -36,7 +36,7 @@ controller.engineAction({
         model.unitPosMap[x][y] = unit;
         
         // controller.actions.addVision( unit.x, unit.y, model.sheets.unitSheets[ unit.type ].vision );
-        controller.pushAction( unit.x, unit.y, model.sheets.unitSheets[ unit.type ].vision, "AVIS" );
+        if( pid === model.turnOwner ) controller.pushAction( unit.x, unit.y, model.sheets.unitSheets[ unit.type ].vision, "AVIS" );
         
         if( DEBUG ){
           util.log("build unit for player",pid,"in slot",i);
