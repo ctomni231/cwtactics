@@ -13,7 +13,7 @@ var CWT_MOD_DEFAULT = {
 
     captureWinLimit:        0,
 
-    turnTimeLimit:          300000,
+    turnTimeLimit:          3000000,
     dayLimit:               0,
     daysOfPeace:            0,
 
@@ -123,7 +123,12 @@ CWT_MOD_DEFAULT.graphic = {
     ["ARROW_ES","arrow.png",32,0,16,16],
     ["ARROW_SW","arrow.png",32,0,16,16,90],
     ["ARROW_WN","arrow.png",32,0,16,16,180],
-    ["ARROW_NE","arrow.png",32,0,16,16,270]
+    ["ARROW_NE","arrow.png",32,0,16,16,270],
+
+    ["DUST_U","UnitDust.png",32*3,0,32*3,32,true],
+    ["DUST_D","UnitDust.png",32*6,0,32*3,32,true],
+    ["DUST_L","UnitDust.png",32  ,0,32*3,32,true],
+    ["DUST_R","UnitDust.png",32*9,0,32*3,32,true]
   ]
 };
 CWT_MOD_DEFAULT.locale ={
@@ -148,25 +153,31 @@ CWT_MOD_DEFAULT.locale ={
     "MNTN":"Berg",
     "FRST":"Wald",
 
-    "captureProperty":"Besetze Geb&auml;ude",
-    "unloadUnitFromTransporter":"Einheit ausladen",
-    "loadUnitIntoTransporter":"Einheit einladen",
-    "nextTurn":"Beende Zug",
-    "wait":"Warten",
-    "join":"Einheiten Vereinen",
+    "CTPR":"Besetze Geb&auml;ude",
+    "UNUN":"Einheit ausladen",
+    "LODU":"Einheit einladen",
+    "NXTR":"Beende Zug",
+    "WTUN":"Warten",
+    "JNUN":"Einheiten Vereinen",
     "subWeapon":"Zweitwaffe",
     "mainWeapon":"Hauptwaffe",
-    "silofire":"Rakete abfeuern",
+    "SLFR":"Rakete abfeuern",
+    "GMTP":"Geld an Spieler abtreten",
+    "GPTP":"Gebäude an Spieler abtreten",
+    "GUTP":"Einheit an Spieler abtreten",
+    "SPPL":"Einheiten Versorgen",
+    "ATUN":"Angreifen",
+    "BDUN":"Einheit produzieren",
 
-    "captureProperty.desc":"Besetzt das angegebene Geb&auml;ude. Wenn die Einheit die Eroberungspunkte dess Geb&auml;udes auf 0 senkt geht der Besitz auf den Eroberer &uuml;ber.",
-    "unloadUnitFromTransporter.desc":"Die Einheit wird in den Transporter ausgeladen. Nach dem Ausladen k&ouml;nnen beide Einheitein keine Aktionen innerhalb des aktiven Zuges ausf&uuml;hren.",
-    "loadUnitIntoTransporter.desc":"Die Einheit wird in den Transporter eingeladen.",
-    "nextTurn.desc":"Beende Zug",
-    "wait.desc":"Die Einheit beendet ihren Zug und kann danach innerhalb des aktiven Zuges nicht mehr benutzt werden.",
-    "join.desc":"Zwei Einheiten werden zu einer vereint und f&uuml;gen ihre vorhandenen Lebenspunkte und Ressourcen zusammen.",
+    "CTPR.desc":"Besetzt das angegebene Geb&auml;ude. Wenn die Einheit die Eroberungspunkte dess Geb&auml;udes auf 0 senkt geht der Besitz auf den Eroberer &uuml;ber.",
+    "UNUN.desc":"Die Einheit wird in den Transporter ausgeladen. Nach dem Ausladen k&ouml;nnen beide Einheitein keine Aktionen innerhalb des aktiven Zuges ausf&uuml;hren.",
+    "LODU.desc":"Die Einheit wird in den Transporter eingeladen.",
+    "NXTR.desc":"Beende Zug",
+    "WTUN.desc":"Die Einheit beendet ihren Zug und kann danach innerhalb des aktiven Zuges nicht mehr benutzt werden.",
+    "JNUN.desc":"Zwei Einheiten werden zu einer vereint und f&uuml;gen ihre vorhandenen Lebenspunkte und Ressourcen zusammen.",
     "subWeapon.desc":"Angriff mit der Zweitwaffe der Einheit.",
     "mainWeapon.desc":"Angriff mit der Hauptwaffe der Einheit.",
-    "silofire.desc":"Feuert eine Rakete auf ein Ziel ab welches mit einer Reichweite von 2 alle feindlichen Einheiten 2 HP Schaden zuf&uuml;gt.",
+    "SLFR.desc":"Feuert eine Rakete auf ein Ziel ab welches mit einer Reichweite von 2 alle feindlichen Einheiten 2 HP Schaden zuf&uuml;gt.",
 
     "yes":"Ja",
     "no":"Nein",
@@ -178,6 +189,13 @@ CWT_MOD_DEFAULT.locale ={
     "propertyCaptured":"Das Gebäude wurde erobert",
     "propertyPointsLeft":"Das Gebäude wird erobert... Punkte übrig:",
 
+    "capturePoints":"Basispunkte",
+    "defense":"Feldverteidigung",
+    "health":"Leben",
+    "ammo":"Munition",
+    "fuel":"Treibstoff",
+    
+    
     "gameHasEnded":"Das Spiel ist vorbei, es existiert nur noch ein Team"
   },
 
@@ -201,16 +219,22 @@ CWT_MOD_DEFAULT.locale ={
     "MNTN":"Mountain",
     "FRST":"Forrest",
 
-    "captureProperty":"Capture Property",
-    "unloadUnitFromTransporter":"Unload Unit",
-    "loadUnitIntoTransporter":"Load Unit",
-    "nextTurn":"End Turn",
-    "wait":"Wait",
-    "join":"Join Units",
+    "CTPR":"Capture Property",
+    "UNUN":"Unload Unit",
+    "LODU":"Load Unit",
+    "NXTR":"End Turn",
+    "WTUN":"Wait",
+    "JNUN":"Join Units",
     "subWeapon":"Sub Weapon",
     "mainWeapon":"Main Weapon",
-    "silofire":"Launch Rocket",
-
+    "SLFR":"Launch Rocket",
+    "GMTP":"Send Money to Player",
+    "GPTP":"Send Property to Player",
+    "GUTP":"Send Unit to Player",
+    "SPPL":"Supply",
+    "ATUN":"Attack",
+    "BDUN":"Build Unit",
+    
     "yes":"Yes",
     "no":"No",
     "ok":"Ok",
@@ -221,6 +245,12 @@ CWT_MOD_DEFAULT.locale ={
     "propertyCaptured":"The property was captured",
     "propertyPointsLeft":"Property capturing... Left points:",
 
+    "capturePoints":"Property Points",
+    "defense":"Tile Defense",
+    "health":"Health",
+    "ammo":"Ammo",
+    "fuel":"Fuel",
+    
     "gameHasEnded":"The game has ended because only one team is left"
   }
 };
@@ -240,7 +270,7 @@ CWT_MOD_DEFAULT.movetypes = [
     },
 
     {
-      "ID"            : "MV_BAZOOKA",
+      "ID"            : "MV_MECH",
       "costs"         :{
         "WATER"         : 0,
         "REEF"          : 0,
@@ -335,22 +365,26 @@ CWT_MOD_DEFAULT.tiles = [
 
     {
       "ID"                : "PLIN",
+      "defense"           : 1,
       "tags"              : []
     },
 
     {
       "ID"                : "FRST",
+      "defense"           : 2,
       "tags"              : [ "VISION_BLOCK" ]
     },
 
     {
       "ID"                : "MNTN",
+      "defense"           : 5,
       "tags"              : [ "" ]
     },
 
     {
       "ID"                : "CITY",
       "vision"            : 0,
+      "defense"           : 3,
       "capturePoints"     : 20,
       "funds"            : 1000,
       "repairs"           : {
@@ -362,6 +396,7 @@ CWT_MOD_DEFAULT.tiles = [
     {
       "ID"                : "BASE",
       "vision"            : 0,
+      "defense"           : 4,
       "capturePoints"     : 20,
       "funds"             : 1000,
       "repairs"           : {
@@ -379,6 +414,7 @@ CWT_MOD_DEFAULT.tiles = [
     {
       "ID"                : "APRT",
       "vision"            : 0,
+      "defense"           : 4,
       "capturePoints"     : 20,
       "funds"            : 1000,
       "repairs"           : {
@@ -391,6 +427,7 @@ CWT_MOD_DEFAULT.tiles = [
     {
       "ID"                : "PORT",
       "vision"            : 0,
+      "defense"           : 4,
       "capturePoints"     : 20,
       "funds"            : 1000,
       "repairs"           : {
@@ -402,17 +439,20 @@ CWT_MOD_DEFAULT.tiles = [
 
     {
       "ID"                : "SILO",
+      "defense"           : 2,
       "vision"            : 0
     },
 
     {
       "ID"                : "SILO_EMPTY",
+      "defense"           : 2,
       "vision"            : 0
     },
 
     {
       "ID"                : "HQTR",
       "vision"            : 0,
+      "defense"           : 5,
       "capturePoints"     : 20,
       "funds"            : 1000,
       "repairs"           : {
@@ -424,32 +464,38 @@ CWT_MOD_DEFAULT.tiles = [
     {
       "ID"                : "RADAR",
       "vision"            : 4,
+      "defense"           : 4,
       "capturePoints"     : 20,
       "tags"              : [ "PROPERTY", "SCOUT" ]
     },
 
     {
       "ID"                : "STREET",
+      "defense"           : 0,
       "tags"              : []
     },
 
     {
       "ID"                : "RIVER",
+      "defense"           : 0,
       "tags"              : []
     },
 
     {
       "ID"                : "WATER",
+      "defense"           : 0,
       "tags"              : []
     },
 
     {
       "ID"                : "REEF",
+      "defense"           : 3,
       "tags"              : [ "VISION_BLOCK" ]
     },
 
     {
       "ID"                : "SHOAL",
+      "defense"           : 0,
       "tags"              : [ "VISION_BLOCK" ]
     }
 ];

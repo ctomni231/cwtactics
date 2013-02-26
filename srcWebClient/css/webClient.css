@@ -1,3 +1,4 @@
+/*
 body, html  {
     margin: 0;
     padding: 0;
@@ -7,15 +8,10 @@ body {
     overflow: hidden;
 }
 
-canvas {
+#cwt_canvas {
     -webkit-box-shadow: 2px 2px 15px #000000;
     -moz-box-shadow: 2px 2px 15px #000000;
     box-shadow: 2px 2px 15px #000000;
-}
-
-.blackbird {
-
-    overflow: auto;
 }
 
 .content_panel{
@@ -183,3 +179,4 @@ div.nav li.active a{
 #CWTWC_MENU .menuRight{
     width: 200px;
 }
+*/

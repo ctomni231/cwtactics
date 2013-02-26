@@ -1,6 +1,16 @@
-const CWT_INACTIVE_ID = -1;
+/** 
+ * Represents an inactive identical number.
+ *
+ * @constant 
+ */ 
+var CWT_INACTIVE_ID = -1;
 
-const CWT_VERSION = "M 2.6";
+/**
+ * The engine version tag.
+ *
+ * @constant 
+ */ 
+var CWT_VERSION = "Milestone 2.6";
 
 /**
  * The model layer holds all necessary data for a game round. This layer can be
@@ -32,7 +42,7 @@ var model      = {};
 var controller  = {};
 
 /**
- *
+ * @namespace
  */
 var view        = {};
 
@@ -45,3 +55,13 @@ var view        = {};
  * @namespace
  */
 var util        = {};
+
+/**
+ * Injects a modification file into the engine.
+ *
+ * @param {String} modName name of the mod which must be represent as 
+ *                         file in the main context
+ */
+util.injectMod = function( modName ){
+  util.raiseError("inject mod function is not re-defined in the client");
+};

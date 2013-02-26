@@ -1,12 +1,8 @@
-controller.registerCommand({
+controller.engineAction({
 
-  key:"loadSounds",
-  localAction: true,
-
-  // ------------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
-
-  // ------------------------------------------------------------------------
+  name:"loadSounds",
+  key:"LOSO",
+  
   action: function(){
   }
 });

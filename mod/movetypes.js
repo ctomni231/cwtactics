@@ -14,7 +14,7 @@ CWT_MOD_DEFAULT.movetypes = [
     },
 
     {
-      "ID"            : "MV_BAZOOKA",
+      "ID"            : "MV_MECH",
       "costs"         :{
         "WATER"         : 0,
         "REEF"          : 0,

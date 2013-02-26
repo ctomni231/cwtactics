@@ -1,8 +1,8 @@
 /**
  * Fills an array with a value. Works also for matrix objects.
  *
- * @param arr
- * @param defaultValue
+ * @param arr an array or matrix created by {@link util.list} or {@link util.matrix}
+ * @param defaultValue he default value that will be inserted into the array/matrix
  */
 util.fill = function( arr, defaultValue ){
   var isFN = typeof defaultValue === 'function';
@@ -30,8 +30,8 @@ util.fill = function( arr, defaultValue ){
 /**
  * Creates a list and fills it with default values.
  *
- * @param len
- * @param defaultValue
+ * @param {Number} len the length of the created list
+ * @param defaultValue the default value that will be inserted into the list slots 
  */
 util.list = function( len, defaultValue ){
   if( defaultValue === undefined ){ defaultValue = null; }
@@ -49,9 +49,9 @@ util.list = function( len, defaultValue ){
 /**
  * Creates a matrix (table) and fills it with default values.
  *
- * @param w
- * @param h
- * @param defaultValue
+ * @param {Number} w width of the matrix
+ * @param {Number} h height of the matrix
+ * @param defaultValue the default value that will be inserted into the cells 
  */
 util.matrix = function( w, h, defaultValue ){
 

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang=en>
+  
+  <head>
+      <meta charset=utf-8>
+      <title>Sample HTML5 index.html from MyThinkPond</title>
+    
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%; 
+      }
+      
+      #sidePanel{
+        background-color: grey;
+        position: fixed;
+        width: 200px;
+        height: 100%;
+        left: 400px;
+        
+        -webkit-box-shadow: inset 0px 0px 15px 0px #444444; /* WebKit */
+           -moz-box-shadow: inset 0px 0px 15px 0px #444444; /* Firefox */
+                box-shadow: inset 0px 0px 15px 0px #444444; /* Standard */
+      }
+      
+      #topInfo{
+        position: relative;
+        width: 200px;
+        height: 150px;
+        
+        border-bottom-style: solid;
+        border-bottom-color: #444444;
+        border-bottom-width: 1px;
+      }
+      
+      #downList{
+        position: relative;
+        width: 200px;
+        height: 100%;
+        
+        border-top-style: solid;
+        border-top-color: #888888;
+        border-top-width: 1px;
+        
+        /*
+        -webkit-box-shadow: inset 0px +6px 5px -5px #444444; 
+           -moz-box-shadow: inset 0px +6px 5px -5px #444444; 
+                box-shadow: inset 0px +6px 5px -5px #444444; 
+        */
+      }
+      
+      .PanelVisible{
+        -webkit-transition-duration: 0.5s;
+        -moz-transition-duration: 0.5s;
+        -o-transition-duration: 0.5s;
+        transition-duration: 0.5s;
+      }
+      
+      .PanelHidden{
+        /* left: -200px !important; */
+        top: -100% !important; 
+        -webkit-transition-duration: 0.5s;
+        -moz-transition-duration: 0.5s;
+        -o-transition-duration: 0.5s;
+        transition-duration: 0.5s;
+      }
+      
+      #sidePanel div:hover{
+        
+      }
+      
+      #menuPopup{
+        /*
+        background-color: yellow;
+        width: 200px;
+        min-height: 32px;
+        max-height: 320px;
+        
+        border-radius: 4px;       
+
+        -webkit-box-shadow: 0px 0px 10px 2px #333333; 
+           -moz-box-shadow: 0px 0px 10px 2px #333333; 
+                box-shadow: 0px 0px 10px 2px #333333; 
+        */
+        
+        background-color:#EDEDED;
+        border:2px solid #666666;
+        
+        line-height:1.3em;
+        margin:10px auto;
+        padding:10px;
+        text-align:center;
+        width:300px;
+        -moz-border-radius:5px;
+        -webkit-border-radius:5px;
+        border-radius:5px;
+        -moz-box-shadow:0 0 5px #888888;
+        -webkit-box-shadow:0 0 5px #888888;
+        box-shadow:0 0 5px #888888;
+        
+        position: absolute;
+        top: 60px;
+        left: 60px;
+      }
+            
+      #content{
+        /* background-color: green; */
+        background-image: url(back.png);
+        background-size: 100%;
+        width: 100%;
+        height: 100%;
+      }
+      
+      /*
+      #menuPopup:before,
+      #menuPopup:after {
+          position: absolute;
+          top: 50%;
+          left: -8px;
+          margin-top: -5px;
+          content: '';
+          width: 0; 
+          height: 0; 
+          border-top: 6px solid transparent;
+          border-bottom: 6px solid transparent; 
+      
+          border-right: 8px solid #fff; 
+      }
+      
+      #menuPopup:before {
+          border-right-color: #999;
+          left: -9px;
+      }
+      */
+      
+      .chat-bubble-arrow-border {
+        border-color: #666666 transparent transparent transparent;
+        border-style: solid;
+        border-width: 10px;
+        height:0;
+        width:0;
+        position:absolute;
+        
+        left:30px;
+        top:67px;
+      }
+      
+      .chat-bubble-arrow {
+        border-color: #EDEDED transparent transparent transparent;
+        border-style: solid;
+        border-width: 10px;
+        height:0;
+        width:0;
+        position:absolute;
+        
+        left:30px;
+        top:64px;
+      }
+      
+      .chat-bubble-arrow-border-top {
+        border-color:  transparent transparent #666666 transparent;
+        border-style: solid;
+        border-width: 10px;
+        height:0;
+        width:0;
+        position:absolute;
+        
+        left:30px;
+        top:-20px;
+      }
+      
+      .chat-bubble-arrow-top {
+        border-color: transparent transparent #EDEDED transparent;
+        border-style: solid;
+        border-width: 10px;
+        height:0;
+        width:0;
+        position:absolute;
+        
+        left:30px;
+        top:-17px;
+      }
+    </style>
+    
+  </head>
+
+  <body>
+    <div id="sidePanel" class="PanelVisible">
+      <div id="topInfo">
+      </div>
+      <div id="downList">
+      </div>
+    </div>
+    
+    <div id="content">
+      <a href="#" onclick="document.getElementById('sidePanel').className='PanelVisible'">
+        -----------------------------------------Visible
+      </a>
+      <br/>
+      <a href="#" onclick="document.getElementById('sidePanel').className='PanelHidden'">
+        -----------------------------------------Hidden
+      </a>
+      <br/>
+      <a href="#" onclick="">
+        ----------------------------------------------------------------------POPUP
+      </a>
+      
+      
+      <div id="menuPopup">
+        <div class="content">XXX</div>
+        <div class="chat-bubble-arrow-border-top"></div>
+        <div class="chat-bubble-arrow-top"></div>
+      </div>
+      
+    </div>
+  </body>
+  
+  <script>
+    
+  </script>
+  
+</html>

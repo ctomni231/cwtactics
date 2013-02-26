@@ -1,12 +1,17 @@
-controller.registerCommand({
+controller.engineAction({
 
-  key: "startGame",
+  name: "startGame",
 
-  // -----------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
+  key: "STGM",
 
+  /**
+   * Starts the game round.
+   *
+   * @methodOf controller.actions
+   * @name startGame
+   */
   action: function(){
 
-
   }
+
 });

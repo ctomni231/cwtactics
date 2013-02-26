@@ -1,13 +1,15 @@
-controller.registerCommand({
+controller.userAction({
 
-  key:"loadUnit",
+  name:"loadUnit",
+
+  key:"LODU",
+
   unitAction: true,
 
-  // -----------------------------------------------------------------------
-  condition: function( data ){
-    var selectedUnitId = data.getSourceUnitId();
-    var transporterId = data.getTargetUnitId();
-    if( transporterId === -1 || data.getTargetUnit().owner !== model.turnOwner){
+  condition: function( mem ){
+    var selectedUnitId = mem.sourceUnitId;
+    var transporterId = mem.targetUnitId;
+    if( transporterId === -1 || mem.targetUnit.owner !== model.turnOwner){
       return false;
     }
 
@@ -17,11 +19,21 @@ controller.registerCommand({
     );
   },
 
-  // -----------------------------------------------------------------------
-  action: function( data ){
-    var selectedUnitId = data.getSourceUnitId();
-    var transporterId = data.getTargetUnitId();
+  createDataSet: function( mem ){
+    return [ mem.sourceUnitId, mem.targetUnitId ];
+  },
 
-    model.loadUnitInto( selectedUnitId, transporterId );
+  /**
+   * Loads an unit into a transporter.
+   *
+   * @param {Number} uid load unit id
+   * @param {Number} tid transporter id
+   *
+   * @methodOf controller.actions
+   * @name loadUnit
+   */
+  action: function( uid, tid ){
+    model.loadUnitInto( uid, tid );
   }
+
 });

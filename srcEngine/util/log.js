@@ -1,70 +1,43 @@
-/** @constant */
-util.LOG_INFO = 0;
-
-/** @constant */
-util.LOG_WARN = 1;
-
-/** @constant */
-util.LOG_ERROR = 2;
-
-/** @config */
-util.logWriter = function( level, string ){
-  switch( level ){
-
-    case util.LOG_ERROR:
-      console.error( string );
-      break;
-
-    case util.LOG_INFO:
-      console.log( string );
-      break;
-
-    case util.LOG_WARN:
-      console.warn( string );
-      break;
-
-    default:  console.log( string );
+/**
+ * Raises an error in the active Javascript environment.
+ *
+ * @param {...Object} reason A number of arguments that will be used as error message.
+ *                           If an argument isn't a String then it will be converted to
+ *                           String by the toString() function.
+ */
+util.raiseError = function( reason ){
+  
+  if( arguments.length === 0 ){
+    reason = "CustomWars Debug:: An error was raised";
   }
+  else if( arguments.length > 1 ){
+    reason = Array.prototype.join.call( arguments, " " );
+  }
+    
+  throw Error( reason );
 };
+
+/**
+ * Logging function.
+ *
+ * @param {...Object} reason A number of arguments that will be used as message.
+ *                           If an argument isn't a String then it will be converted to
+ *                           String by the toString() function.
+ * @config
+ */
+util.log = function( msg ){
+  if( arguments.length > 1 ){
+    msg = Array.prototype.join.call( arguments, " " );
+  }
+
+  console.log( msg );
+}
 
 /**
  * Overwritable logging function.
  *
- * @param string
- * @config
+ * @deprecated will be removed in version 0.3
  */
-util.logInfo = function( string ){
-  if( arguments.length > 1 ){
-    string = Array.prototype.join.call( arguments, " " );
-  }
-
-  util.logWriter( util.LOG_INFO , string );
-};
-
-/**
- * Overwritable logging function.
- *
- * @param string
- * @config
- */
-util.logWarn = function( string ){
-  if( arguments.length > 1 ){
-    string = Array.prototype.join.call( arguments, " " );
-  }
-
-  util.logWriter( util.LOG_WARN , string );
-};
-
-/**
- * Overwritable logging function.
- *
- * @param string
- * @config
- */
-util.logError = function( error ){
-  if( arguments.length > 1 ){
-    error = Array.prototype.join.call( arguments, " " );
-  }
-
-  util.logWriter( util.LOG_ERROR, error );
+util.logInfo = function(){
+  util.log.apply( this, arguments );
 };

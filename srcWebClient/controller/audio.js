@@ -1,6 +1,4 @@
 /**
- *
- */
 controller._soundContext = null;
 window.addEventListener('load', function(){
   try {
@@ -11,30 +9,16 @@ window.addEventListener('load', function(){
   }
 }, false);
 
-/**
- *
- */
 controller._sounds = {};
 
-/**
- *
- */
 controller._enabled = false;
 
-/**
- *
- */
 controller.enable = function(){
   if( controller._enabled === false ){
     controller._enabled = true;
   }
 };
 
-/**
- *
- * @param key
- * @param url
- */
 controller.loadSound = function( key, url ){
   var request = new XMLHttpRequest();
   request.open('GET', url, true);
@@ -59,18 +43,9 @@ controller.loadSound = function( key, url ){
   }
 };
 
-/**
- *
- * @param key
- */
 controller.playMusic = function( key ){
 
 };
-
-/**
- *
- * @param key
- */
 controller.playSfx = function( key ){
   if( controller._enabled !== true ) return;
 
@@ -79,4 +54,25 @@ controller.playSfx = function( key ){
   source.buffer = buffer;
   source.connect( controller._soundContext.destination );
   source.noteOn(0);
+};
+*/
+
+createjs.Sound.registerPlugin(createjs.WebAudioPlugin);
+
+createjs.Sound.addEventListener("loadComplete", function(){
+  if( CLIENT_DEBUG ){
+    util.log("finised loading sound");
+  }
+});
+
+createjs.Sound.registerManifest([
+  { src:"sound/ok.wav", id:"ACTION" }, 
+  { src:"sound/cancel.wav",  id:"CANCEL" }
+]);
+
+/**
+ * Plays a sound effect.
+ */
+controller.playSfx = function( id ){
+  createjs.Sound.play( id );
 };

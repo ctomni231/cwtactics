@@ -15,7 +15,7 @@ var testMap={
     "3":{ fuel: 70, ammo:0, loadedIn: -1, owner: 0, type:"APCR", x: 5, y: 3 },
     "4":{ fuel: 15, ammo:0, loadedIn: -1, owner: 0, type:"INFT", x: 4, y: 3 },
     "5":{ fuel: 15, ammo:0, loadedIn: -1, owner: 0, type:"INFT", x: 5, y: 2 },
-    "50":{ fuel: 20, ammo:0, loadedIn: -1, owner: 1, type:"INFT", x: 8, y: 8 },
+    "50":{ fuel: 20, hp:20, ammo:0, loadedIn: -1, owner: 1, type:"INFT", x: 8, y: 8 },
     "101":{ fuel: 20, ammo:0, loadedIn: -1, owner: 2, type:"INFT", x: 3, y: 3 }
   },
 

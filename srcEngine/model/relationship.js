@@ -2,6 +2,7 @@
  * Two objects which have the same owner.
  *
  * @constant
+ * @deprecated will be removed in version 0.3
  */
 model.RELATIONSHIP_SAME_OWNER = 0;
 
@@ -9,6 +10,7 @@ model.RELATIONSHIP_SAME_OWNER = 0;
  * Two objects which have differnt of the same team.
  *
  * @constant
+ * @deprecated will be removed in version 0.3
  */
 model.RELATIONSHIP_ALLIED = 1;
 
@@ -16,6 +18,7 @@ model.RELATIONSHIP_ALLIED = 1;
  * Two objects which have differnt owners of different teams.
  *
  * @constant
+ * @deprecated will be removed in version 0.3
  */
 model.RELATIONSHIP_ENEMY = 2;
 
@@ -24,17 +27,21 @@ model.RELATIONSHIP_ENEMY = 2;
  * hasn't an owner.
  *
  * @constant
+ * @deprecated will be removed in version 0.3
  */
 model.RELATIONSHIP_NONE = 3;
 
 /**
  * @constant
+ * @deprecated will be removed in version 0.3
  */
 model.RELATIONSHIP_SAME_OBJECT = 4;
 
 
 /**
  * Returns the relationship between two player identicals.
+ *
+ * @deprecated will be removed in version 0.3
  *
  * @param pidA player id or ownable object
  * @param pidB player id or ownable object

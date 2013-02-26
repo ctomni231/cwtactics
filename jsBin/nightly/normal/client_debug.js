@@ -1,7 +1,5 @@
 const CLIENT_DEBUG = true;
 /**
- *
- */
 controller._soundContext = null;
 window.addEventListener('load', function(){
   try {
@@ -12,30 +10,16 @@ window.addEventListener('load', function(){
   }
 }, false);
 
-/**
- *
- */
 controller._sounds = {};
 
-/**
- *
- */
 controller._enabled = false;
 
-/**
- *
- */
 controller.enable = function(){
   if( controller._enabled === false ){
     controller._enabled = true;
   }
 };
 
-/**
- *
- * @param key
- * @param url
- */
 controller.loadSound = function( key, url ){
   var request = new XMLHttpRequest();
   request.open('GET', url, true);
@@ -60,18 +44,9 @@ controller.loadSound = function( key, url ){
   }
 };
 
-/**
- *
- * @param key
- */
 controller.playMusic = function( key ){
 
 };
-
-/**
- *
- * @param key
- */
 controller.playSfx = function( key ){
   if( controller._enabled !== true ) return;
 
@@ -80,6 +55,27 @@ controller.playSfx = function( key ){
   source.buffer = buffer;
   source.connect( controller._soundContext.destination );
   source.noteOn(0);
+};
+*/
+
+createjs.Sound.registerPlugin(createjs.WebAudioPlugin);
+
+createjs.Sound.addEventListener("loadComplete", function(){
+  if( CLIENT_DEBUG ){
+    util.log("finised loading sound");
+  }
+});
+
+createjs.Sound.registerManifest([
+  { src:"sound/ok.wav", id:"ACTION" }, 
+  { src:"sound/cancel.wav",  id:"CANCEL" }
+]);
+
+/**
+ * Plays a sound effect.
+ */
+controller.playSfx = function( id ){
+  createjs.Sound.play( id );
 };
 /**
  * X coordinate of the cursor.
@@ -103,19 +99,39 @@ controller.resetMenuCursor = function(){
   controller.menuCursorIndex = 0;
 };
 
+controller.setMenuIndex = function( index ){
+  controller.menuEntryListElement.children[ controller.menuCursorIndex ].className = "";    
+  controller.menuCursorIndex = index;  
+  controller.menuEntryListElement.children[ controller.menuCursorIndex ].className = "activeButton";
+};
+
 /**
  *
  */
 controller.increaseMenuCursor = function(){
+  
+  controller.menuEntryListElement.children[ controller.menuCursorIndex ].className = "";
+  
   controller.menuCursorIndex++;
+  if( controller.menuCursorIndex === controller.stateMachine.data.menuSize ){
+    controller.menuCursorIndex--;
+  }
+  
+  controller.menuEntryListElement.children[ controller.menuCursorIndex ].className = "activeButton";
+  controller.menuEntryListElement.children[ controller.menuCursorIndex ].children[0].focus();
 };
 
 /**
  *
  */
 controller.decreaseMenuCursor = function(){
+  controller.menuEntryListElement.children[ controller.menuCursorIndex ].className = "";
+  
   controller.menuCursorIndex--;
   if( controller.menuCursorIndex < 0 ) controller.menuCursorIndex = 0;
+  
+  controller.menuEntryListElement.children[ controller.menuCursorIndex ].className = "activeButton";
+  controller.menuEntryListElement.children[ controller.menuCursorIndex ].children[0].focus();
 };
 
 /**
@@ -135,55 +151,49 @@ controller.cursorAction = function( isCancel ){
   // BREAK IF YOU ARE IN THE ANIMATION PHASE
   if( controller.currentAnimatedKey !== null ) return;
 
-  var bstate = controller.input.state();
+  var bstate = controller.stateMachine.state;
   var bfocus = ( bstate === "MOVEPATH_SELECTION" ||
-                 bstate === "ACTION_SELECT_TARGET" );
+                 bstate === "IDLE_R" ||
+                 bstate === "ACTION_SELECT_TARGET_A" ||
+                 bstate === "ACTION_SELECT_TARGET_B" );
 
   // INVOKE ACTION
   if( isCancel ){
-    controller.input.event("cancel");
+    controller.stateMachine.event("cancel", controller.mapCursorX, controller.mapCursorY );
   }
   else{
     if( controller.menuCursorIndex !== -1 ){
-      controller.input.event( "action",controller.menuCursorIndex );
+      controller.stateMachine.event( "action",controller.menuCursorIndex );
     }
     else {
-      controller.input.event( "action", controller.mapCursorX,
-                                        controller.mapCursorY );
+      controller.stateMachine.event( "action", controller.mapCursorX, controller.mapCursorY );
     }
   }
 
-  var astate = controller.input.state();
+  var astate = controller.stateMachine.state;
   var afocus = ( astate === "MOVEPATH_SELECTION" ||
-                 astate === "ACTION_SELECT_TARGET" );
+                 astate === "IDLE_R" ||
+                 astate === "ACTION_SELECT_TARGET_A" ||
+                 astate === "ACTION_SELECT_TARGET_B"  );
 
   // RERENDERING
   if( ( bfocus && !afocus ) || afocus ){
-    view.markSelectionMapForRedraw( controller.input.selectionData );
+    view.markSelectionMapForRedraw( controller.stateMachine.data );
   }
 
   // MENU
   if( astate === "ACTION_MENU" || astate === "ACTION_SUBMENU" ){
 
-    // UNLOAD MENU ID TO TYPE FIX
-    var menu = controller.input.menu;
-    if( controller.input.actionData.getAction() === 'unloadUnit' ){
-      var old = menu;
-      menu = [];
-      for( var i=0, e=controller.input.menuSize; i<e; i++ ){
-        menu[i] = model.units[ old[i] ].type;
-      }
-    }
-
+    var menu = controller.stateMachine.data.menu;
     controller.showMenu(
       menu,
-      controller.input.menuSize,
+      controller.stateMachine.data.menuSize,
       controller.mapCursorX,
       controller.mapCursorY
     );
   }
   else{
-    controller.hideMenu();
+    if( bstate === "ACTION_MENU" || bstate === "ACTION_SUBMENU" ) controller.hideMenu();
   }
 };
 
@@ -192,6 +202,7 @@ controller.cursorAction = function( isCancel ){
  */
 controller.cursorActionCancel = function(){
   controller.cursorAction(true);
+  controller.playSfx("CANCEL");
 };
 
 /**
@@ -199,6 +210,7 @@ controller.cursorActionCancel = function(){
  */
 controller.cursorActionClick = function(){
   controller.cursorAction(false);
+  controller.playSfx("ACTION");
 };
 
 /**
@@ -232,6 +244,8 @@ controller.moveCursor = function( dir, len ){
  */
 controller.setCursorPosition = function( x,y,relativeToScreen ){
 
+  if( controller.menuElement.style.display === "block" ) return;
+  
   if( relativeToScreen ){
     x = x + controller.screenX;
     y = y + controller.screenY;
@@ -250,40 +264,26 @@ controller.setCursorPosition = function( x,y,relativeToScreen ){
 
   controller.mapCursorX = x;
   controller.mapCursorY = y;
-
-  // TODO pre generate it if scale changes
-  var scw = parseInt(
-    parseInt( window.innerWidth/16,10 ) / controller.screenScale
-    ,10
-  );
-
-  var sch = parseInt(
-    parseInt( window.innerHeight/16,10 ) / controller.screenScale
-    ,10
-  );
+  
+  var scw = parseInt( parseInt( window.innerWidth/16,10 ) / controller.screenScale ,10 );
+  var sch = parseInt( parseInt( window.innerHeight/16,10 ) / controller.screenScale ,10 );
 
   var moveCode = -1;
-  if( x-controller.screenX <= 1 ) moveCode = model.MOVE_CODE_LEFT;
+  if( x-controller.screenX <= 1 )          moveCode = model.MOVE_CODE_LEFT;
   else if( x-controller.screenX >= scw-1 ) moveCode = model.MOVE_CODE_RIGHT;
-  else if( y-controller.screenY <= 1 ) moveCode = model.MOVE_CODE_UP;
+  else if( y-controller.screenY <= 1 )     moveCode = model.MOVE_CODE_UP;
   else if( y-controller.screenY >= sch-1 ) moveCode = model.MOVE_CODE_DOWN;
 
   if( moveCode !== -1 ){
     controller.shiftScreenPosition( moveCode, 5 );
   }
 
-  var isLeft = (x+controller.screenX) >= scw/2;
-  view.updateTileInfo( isLeft );
-  view.updatePlayerInfo( isLeft );
-  
   if( CLIENT_DEBUG ){
-    util.logInfo(
+    util.log(
       "set cursor position to",
       x,y,
       "screen node is at",
-      controller.screenX,controller.screenY,
-      "screen size is",
-      scw,sch
+      controller.screenX,controller.screenY
     );
   }
 
@@ -295,13 +295,16 @@ controller.setCursorPosition = function( x,y,relativeToScreen ){
  */
 controller.currentAnimatedKey = null;
 
+// controller.currentAnimatedKeyNext = null;
+
 /**
  *
  */
-controller.currentAnimatedKeyNext = null;
-
 controller.noRendering = true;
 
+/**
+ *
+ */
 controller.lockCommandEvaluation = false;
 
 /**
@@ -310,14 +313,10 @@ controller.lockCommandEvaluation = false;
  */
 controller.gameLoop = function( delta ){
 
-  var inMove = (controller.moveScreenX !== 0 || controller.moveScreenY !== 0);
-  var nextTurnInvoke = controller.updateTurnTimer(delta);
-  if( nextTurnInvoke ){
-    var actionData = controller.aquireActionDataObject();
-    actionData.setAction("nextTurn");
-    controller.pushActionDataIntoBuffer( actionData );
-  }
+  controller.updateTurnTimer( delta );
 
+  var inMove = (controller.moveScreenX !== 0 || controller.moveScreenY !== 0);
+  
   // 0. MAP SHIFT
   if( inMove ){
     controller.solveMapShift();
@@ -330,13 +329,14 @@ controller.gameLoop = function( delta ){
 
       if( controller.lockCommandEvaluation === false ){
 
-        if( !controller.isBufferEmpty() ){
-          var actionData = controller.evalNextMessageFromBuffer();
-          if( actionData !== null ){
+        if( !controller.noNextActions() ){
+          var data = controller.doNextAction();
+          if( data !== null ){
 
-            var key = actionData.getAction();
+            var key = data[ data.length-1 ];
 
-            // MOVE ANIMATED ?
+            /*
+             MOVE ANIMATED ?
             var move = actionData.getMovePath();
             if( move !== null && move.length > 0 ){
 
@@ -348,29 +348,33 @@ controller.gameLoop = function( delta ){
                 util.logInfo( "preparing command animation for",moveAnimCmd.key );
               }
             }
+            */
+
+            view.invokeCommandListener(key,data);
 
             // IS ANIMATED ?
             var animCmd = view.getCommandHook(key);
             if( animCmd !== null ){
 
-              animCmd.prepare( actionData );
-              controller.currentAnimatedKeyNext = animCmd;
+              animCmd.prepare.apply( animCmd, data );
+              controller.currentAnimatedKey = animCmd;
 
               if( CLIENT_DEBUG ){
-                util.logInfo( "preparing command animation for",animCmd.key );
+                util.log( "preparing command animation for", key );
               }
             }
 
-            // SWAP IF NO MOVE ANIMATION IS AVAILABLE
+            /*
+             SWAP IF NO MOVE ANIMATION IS AVAILABLE
             if( controller.currentAnimatedKey === null &&
               controller.currentAnimatedKeyNext !== null ){
 
               controller.currentAnimatedKey = controller.currentAnimatedKeyNext;
               controller.currentAnimatedKeyNext = null;
             }
-
-            // RELEASE COMMAND
+            
             controller.releaseActionDataObject( actionData );
+            */
           }
         }
 
@@ -391,29 +395,27 @@ controller.gameLoop = function( delta ){
   }
 
   if( !controller.noRendering && !inMove ){
+    
     // 4. RENDER COMMAND ANIMATION
     if( controller.currentAnimatedKey !== null ){
 
       if( controller.currentAnimatedKey.isDone() ){
 
         if( CLIENT_DEBUG ){
-          util.logInfo(
-            "completed command animation for", controller.currentAnimatedKey.key
-          );
+          util.log( "completed command animation for", controller.currentAnimatedKey.key );
         }
 
         controller.currentAnimatedKey = null;
-
-        if( controller.currentAnimatedKeyNext !== null ){
-          controller.currentAnimatedKey = controller.currentAnimatedKeyNext;
-          controller.currentAnimatedKeyNext = null;
-        }
+      } else { 
+        controller.currentAnimatedKey.render(); 
       }
-      else{ controller.currentAnimatedKey.render(); }
     }
   }
 };
 
+/**
+ *
+ */
 controller.enterGameLoop = function(){
 
   if( CLIENT_DEBUG ) util.logInfo("enter game loop");
@@ -440,7 +442,7 @@ controller.enterGameLoop = function(){
     fpsOut.innerHTML = CWT_VERSION + " " + fps.toFixed(1) + "fps";
   }, 1000);
 
-  controller.input.event("start");
+  controller.stateMachine.event("start");
   view.fitScreenToDeviceOrientation();
 
   // ENTER LOOP
@@ -464,25 +466,32 @@ controller.menuElement = document.getElementById("cwt_menu");
 /**
  *
  */
+controller.menuHeaderElement = document.getElementById("cwt_menu_header");
+
+/**
+ *
+ */
+controller.menuEntryContentElement = document.getElementById("cwt_menu_content");
+
+/**
+ *
+ */
 controller.menuEntryListElement = document.getElementById("cwt_menu_entries");
 
 /** @private */
 controller._connectMenuListener = function( el, index ){
 
-  // TODO FAIL TOO
   el.onclick = function(){
     if( CLIENT_DEBUG ){
-      util.logInfo("menu element",index,"will be triggered");
+      util.log("menu action will be triggered");
     }
 
-    controller.menuCursorIndex = index;
     controller.cursorActionClick();
   };
 
   // TODO FAIL!!!
   el.onmouseover = function(){
-    //document.getElementById( "cwtwc_menu_desc" ).innerHTML =
-    //  locale.localizedString( controller.actionList[index]+".desc" );
+    controller.setMenuIndex( index );
   };
 };
 
@@ -497,6 +506,14 @@ controller.showMenu = function( menu, size, x, y ){
 
   var tileSize = TILE_LENGTH*controller.screenScale;
 
+  var renderer = controller.menuRenderer_["__mainMenu__"];
+  if( controller.stateMachine.state === "ACTION_SUBMENU" ){
+    var newRend = controller.menuRenderer_[ controller.stateMachine.data.action ];
+    if( newRend ){
+      renderer = newRend;
+    }
+  }
+  
   if( arguments.length === 1 ){
     x = controller.menuPosX;
     y = controller.menuPosY;
@@ -508,6 +525,8 @@ controller.showMenu = function( menu, size, x, y ){
 
   var entries = controller.menuEntryListElement.children;
 
+  controller.menuRenderer_["__infoPanel__"]( x,y,controller.menuHeaderElement );
+  
   // HIDE THEM
   for( var i=0,e=entries.length ; i<e; i++ ){
     entries[i].style.display = "none";
@@ -528,14 +547,15 @@ controller.showMenu = function( menu, size, x, y ){
       controller.menuEntryListElement.appendChild( li );
     }
 
-    entry.innerHTML = util.i18n_localized( menu[i] );
+    renderer( menu[i], entry, i );
+    // entry.innerHTML = util.i18n_localized( menu[i] );
+    
     entries[i].style.display = "";
   }
 
   // RELATIVE SCREEN POS
   x = x - controller.screenX;
   y = y - controller.screenY;
-
 
   var tileSizeMenuX = parseInt( 150/tileSize , 10 );
   var tileSizeMenuY = parseInt( 160/tileSize , 10 );
@@ -545,14 +565,20 @@ controller.showMenu = function( menu, size, x, y ){
   // CACHE POSITION
   controller.menuPosX = x;
   controller.menuPosY = y;
+  
+  
   controller.menuCursorIndex = 0;
-
+  controller.menuEntryListElement.children[ controller.menuCursorIndex ].className = "activeButton";
+  controller.menuEntryListElement.children[ controller.menuCursorIndex ].children[0].focus();
+  
   // SET MENU STYLE
   var menuStyle = controller.menuElement.style;
-  menuStyle.top = (y*tileSize)+"px";
-  menuStyle.left = (x*tileSize)+"px";
+  menuStyle.top = ((y*tileSize)+10)+"px";
+  menuStyle.left = ((x*tileSize)-10)+"px";
   menuStyle.zIndex = 2000;
   menuStyle.display = "block";
+  
+  controller.setMenuIndex( 0 );
 };
 
 /**
@@ -561,17 +587,100 @@ controller.showMenu = function( menu, size, x, y ){
 controller.hideMenu = function(){
   if( CLIENT_DEBUG ){ util.logInfo("closing GUI menu"); }
 
+  controller.menuEntryListElement.children[ controller.menuCursorIndex ].className = "";
+
   controller.menuElement.style.display = "none";
   controller.menuCursorIndex = -1;
 };
-controller.generateMovePath = function( sx,sy, tx,ty ){
-  return [];
+
+/** @private */
+controller.menuRenderer_ = {};
+
+controller.registerMenuRenderer = function( key, renderer ){
+  if( controller.menuRenderer_.hasOwnProperty( key ) ){
+    util.raiseError("renderer for",key,"is already registered");
+  }
+  
+  controller.menuRenderer_[ key ] = renderer;
 };
 
-controller.appendToPath = function( path, code ){
-  return path;
+/**
+ * Status map with status information for the unit objects.
+ * 
+ * @private
+ */
+controller.statusMap_ = util.list( CWT_MAX_UNITS_PER_PLAYER*CWT_MAX_PLAYER, function(){
+  return {
+    HP_PIC: null,
+    LOW_AMMO:false,
+    LOW_FUEL:false,
+    HAS_LOADS:false,
+    CAPTURES: false
+  };
+});
+
+/**
+ * 
+ * @param {type} unit
+ */
+controller.getUnitStatusForUnit = function( unit ){
+  var id = model.extractUnitId(unit);
+  return controller.statusMap_[id];
 };
 
+/**
+ * 
+ * @param {type} uid
+ */
+controller.updateUnitStatus = function( uid ){
+  var unit = model.units[uid];
+  var unitStatus = controller.statusMap_[uid];
+  var uSheet = model.sheets.unitSheets[ unit.type ];
+  
+  var cAmmo = unit.ammo;
+  var mAmmo = uSheet.maxAmmo;
+  if( cAmmo <= parseInt(mAmmo*0.25, 10) ) unitStatus.LOW_AMMO = true;
+  else                                    unitStatus.LOW_AMMO = false;
+  if( mAmmo === 0 )                       unitStatus.LOW_AMMO = false;
+  
+  var cFuel = unit.fuel;
+  var mFuel = uSheet.maxFuel;
+  if( cFuel < parseInt(mFuel*0.25, 10) ) unitStatus.LOW_FUEL = true;
+  else                                   unitStatus.LOW_FUEL = false;
+  
+  var num = -1;
+  if( unit.hp <= 90 ){
+    num = parseInt( unit.hp/10 , 10 )+1;
+  }
+  
+  switch ( num ){
+    case 1: unitStatus.HP_PIC = view.getInfoImageForType("HP_1"); break;
+    case 2: unitStatus.HP_PIC = view.getInfoImageForType("HP_2"); break;
+    case 3: unitStatus.HP_PIC = view.getInfoImageForType("HP_3"); break;
+    case 4: unitStatus.HP_PIC = view.getInfoImageForType("HP_4"); break;
+    case 5: unitStatus.HP_PIC = view.getInfoImageForType("HP_5"); break;
+    case 6: unitStatus.HP_PIC = view.getInfoImageForType("HP_6"); break;
+    case 7: unitStatus.HP_PIC = view.getInfoImageForType("HP_7"); break;
+    case 8: unitStatus.HP_PIC = view.getInfoImageForType("HP_8"); break;
+    case 9: unitStatus.HP_PIC = view.getInfoImageForType("HP_9"); break;
+    default: unitStatus.HP_PIC = null;
+  }
+  
+  if( uSheet.transport ){
+    if( !model.hasLoadedIds( uid ) ){
+         unitStatus.HAS_LOADS = false;
+    }
+    else unitStatus.HAS_LOADS = false;
+  }
+  
+  if( unit.x !== -1 ){
+    var property = model.propertyPosMap[ unit.x ][ unit.y ];
+    if( property !== null && property.capturePoints < 20 ){
+      unitStatus.CAPTURES = true;
+    }
+    else unitStatus.CAPTURES = false;
+  }
+};
 /**
  *
  */
@@ -725,8 +834,6 @@ controller.shiftScreenPosition = function( code, len ){
 
   controller.setScreenPosition( x,y, false );
 };
-const STORAGE_SIZE = 25;
-
 controller.storage = {
 
   get: function( key ){
@@ -750,77 +857,6 @@ controller.storage = {
     localStorage.setItem( key, JSON.stringify(value) );
   }
 };
-controller._turnTimerTime = 0;
-
-controller.resetTurnTimer = function(){
-  controller._turnTimerTime = 0;
-};
-
-controller.updateTurnTimer = function( delta ){
-  if(controller._turnTimerTime >= 0 && model.rules.turnTimeLimit > 0 ){
-    controller._turnTimerTime += delta;
-    if( controller._turnTimerTime > model.rules.turnTimeLimit ){
-
-      controller._turnTimerTime = -1;
-      return true;
-    }
-  }
-  return false;
-};
-/**
- *
- * @param unit
- */
-controller.updateUnitStats = function( unit ){
-  var uSheet = model.sheets.unitSheets[ unit.type ];
-
-  // FUEL
-  var cFuel = unit.fuel;
-  var mFuel = uSheet.maxFuel;
-  if( cFuel < parseInt(mFuel*0.25, 10) ) unit._clientData_.lowFuel = true;
-  else                                   unit._clientData_.lowFuel = false;
-
-
-  // AMMO
-  var cAmmo = unit.ammo;
-  var mAmmo = uSheet.maxAmmo;
-  if( cAmmo <= parseInt(mAmmo*0.25, 10) ) unit._clientData_.lowAmmo = true;
-  else                                    unit._clientData_.lowAmmo = false;
-  if( mAmmo === 0 )                       unit._clientData_.lowAmmo = false;
-
-  // HP
-
-  var pic = null;
-  if( unit.hp <= 90 ){
-    if( unit.hp > 80 )      pic = view.getInfoImageForType("HP_9");
-    else if( unit.hp > 70 ) pic = view.getInfoImageForType("HP_8");
-    else if( unit.hp > 60 ) pic = view.getInfoImageForType("HP_7");
-    else if( unit.hp > 50 ) pic = view.getInfoImageForType("HP_6");
-    else if( unit.hp > 40 ) pic = view.getInfoImageForType("HP_5");
-    else if( unit.hp > 30 ) pic = view.getInfoImageForType("HP_4");
-    else if( unit.hp > 20 ) pic = view.getInfoImageForType("HP_3");
-    else if( unit.hp > 10 ) pic = view.getInfoImageForType("HP_2");
-    else                    pic = view.getInfoImageForType("HP_1");
-  }
-  unit._clientData_.hpPic = pic;
-
-  // LOADED
-  if( model.hasLoadedIds( model.extractUnitId( unit ) ) ){
-    unit._clientData_.hasLoads = true;
-  }
-  else unit._clientData_.hasLoads = false;
-
-  // IS CAPTURING
-  if( unit.x > -1 ){
-    var prop = model.propertyPosMap[ unit.x ][ unit.y ];
-    if( prop !== null && uSheet.captures > 0 ){
-      if( prop.capturePoints < 20 ){
-        unit._clientData_.captures = true;
-      }
-      else unit._clientData_.captures = false;
-    }
-  }
-}
 view._animCommands = {};
 
 view.registerCommandHook = function( impl ){
@@ -831,6 +867,25 @@ view.registerCommandHook = function( impl ){
 view.getCommandHook = function( key ){
   var obj = view._animCommands[key];
   return obj !== undefined ? obj: null;
+};
+
+view._commandListeners = {};
+
+view.registerCommandListener = function( key, listener ){
+  if( !view._commandListeners.hasOwnProperty(key) ){
+    view._commandListeners[key] = [];
+  }
+  
+  view._commandListeners[key].push( listener );
+};
+
+view.invokeCommandListener = function( key, args ){
+  var list = view._commandListeners[key];
+  if( list ){
+    for( var i=0,e=list.length; i<e; i++ ){
+      list[i].apply( null, args );
+    }
+  }
 };
 /** @constant */
 view.IMAGE_CODE_IDLE          = "IDLE";
@@ -958,7 +1013,7 @@ view.setImageForType = function( image, type, state, color ){
       view.CodeUpview[color][type]           = image;
       break;
 
-    default: util.logError("unknown image state code ",state );
+    default: util.raiseError("unknown image state code ",state );
   }
 };
 
@@ -1014,7 +1069,7 @@ view.getImageForType = function( type, code, color ){
     case view.IMAGE_CODE_STATELESS :
       return view.CodeStatelessview[color][type];
 
-    default: util.logError("unknown image state code ",code );
+    default: util.raiseError("unknown image state code ",code );
   }
 };
 
@@ -1057,177 +1112,7 @@ view.getInfoImageForType = function( type ){
     type, view.IMAGE_CODE_STATELESS, view.COLOR_NONE
   );
 };
-view.ID_DIV_CWTWC_CURSORINFO    = "cwt_tile_inf";
-view.ID_CWTWC_CURSORINFO_IMG    = "tile_inf_pic";
-view.ID_CWTWC_CURSORINFO_TNAME  = "tile_inf_name";
-view.ID_CWTWC_CURSORINFO_TDEF   = "tile_inf_def";
-view.ID_CWTWC_CURSORINFO_UNAME  = "tile_inf_unitname";
-view.ID_CWTWC_CURSORINFO_HP     = "tile_inf_hp";
-view.ID_CWTWC_CURSORINFO_AMMO   = "tile_inf_ammo";
-view.ID_CWTWC_CURSORINFO_FUEL   = "tile_inf_fuel";
-view.ID_CWTWC_CURSORINFO_HP_DESC     = "tile_inf_hpDesc";
-view.ID_CWTWC_CURSORINFO_AMMO_DESC   = "tile_inf_ammoDesc";
-view.ID_CWTWC_CURSORINFO_FUEL_DESC   = "tile_inf_fuelDesc";
-
-view.ID_DIV_CWTWC_PLAYERINFO    = "cwt_player_inf";
-view.ID_CWTWC_PLAYERINFO_NAME   = "player_inf_name";
-view.ID_CWTWC_PLAYERINFO_GOLD   = "player_inf_gold";
-view.ID_CWTWC_PLAYERINFO_COS    = "player_inf_power";
-view.ID_CWTWC_PLAYERINFO_NUMPRO = "player_inf_props";
-view.ID_CWTWC_PLAYERINFO_NUMUNI = "player_inf_units";
-
-view.ID_DIV_CWTWC_MSG_PANEL            = "cwt_info_box";
-view.ID_DIV_CWTWC_MSG_PANEL_CONTENT    = "cwt_info_box_content";
-
-view.showInfoBlocks = function(){
-  document.getElementById(
-    view.ID_DIV_CWTWC_CURSORINFO ).className="tooltip active";
-
-  document.getElementById(
-    view.ID_DIV_CWTWC_PLAYERINFO ).className="tooltip active";
-};
-
-view.hideInfoBlocks = function(){
-  document.getElementById(
-    view.ID_DIV_CWTWC_CURSORINFO ).className="tooltip out";
-
-
-  document.getElementById(
-    view.ID_DIV_CWTWC_PLAYERINFO ).className="tooltip out";
-};
-
-view.updateTileInfo = function( left ){
-  var x = controller.mapCursorX;
-  var y = controller.mapCursorY;
-
-  document.getElementById(
-    view.ID_CWTWC_CURSORINFO_TNAME ).innerHTML = model.map[x][y] + " V:" + model.fogData[x][y];
-
-  document.getElementById(
-    view.ID_CWTWC_CURSORINFO_TDEF ).innerHTML = 0;
-
-  var unit = model.unitPosMap[x][y];
-  if( unit !== null ){
-
-    document.getElementById(
-      view.ID_CWTWC_CURSORINFO_UNAME ).innerHTML = unit.type;
-
-    document.getElementById(
-      view.ID_CWTWC_CURSORINFO_HP ).innerHTML = unit.hp;
-
-    document.getElementById(
-      view.ID_CWTWC_CURSORINFO_AMMO ).innerHTML = unit.ammo;
-
-    document.getElementById(
-      view.ID_CWTWC_CURSORINFO_FUEL ).innerHTML = unit.fuel;
-
-    document.getElementById(
-      view.ID_CWTWC_CURSORINFO_HP_DESC ).innerHTML = "HP";
-
-    document.getElementById(
-      view.ID_CWTWC_CURSORINFO_AMMO_DESC ).innerHTML = "Ammo";
-
-    document.getElementById(
-      view.ID_CWTWC_CURSORINFO_FUEL_DESC ).innerHTML = "Fuel";
-  }
-  else{
-
-    document.getElementById(
-      view.ID_CWTWC_CURSORINFO_UNAME ).innerHTML = "";
-
-    document.getElementById(
-      view.ID_CWTWC_CURSORINFO_HP ).innerHTML = "";
-
-    document.getElementById(
-      view.ID_CWTWC_CURSORINFO_AMMO ).innerHTML = "";
-
-    document.getElementById(
-      view.ID_CWTWC_CURSORINFO_FUEL ).innerHTML = "";
-
-    document.getElementById(
-      view.ID_CWTWC_CURSORINFO_HP_DESC ).innerHTML = "";
-
-    document.getElementById(
-      view.ID_CWTWC_CURSORINFO_AMMO_DESC ).innerHTML = "";
-
-    document.getElementById(
-      view.ID_CWTWC_CURSORINFO_FUEL_DESC ).innerHTML = "";
-  }
-
-  var cursorInf = document.getElementById(view.ID_DIV_CWTWC_CURSORINFO );
-
-  cursorInf.style.top = (window.innerHeight - cursorInf.offsetHeight - 15)+"px";
-  if( left ){
-    cursorInf.style.left = "10px";
-  }
-  else{
-    cursorInf.style.left = (window.innerWidth - cursorInf.offsetWidth - 10)+"px";
-  }
-};
-
-view.updatePlayerInfo = function( left ){
-  var player = model.players[ model.turnOwner ];
-
-  document.getElementById(
-    view.ID_CWTWC_PLAYERINFO_NAME ).innerHTML = player.name;
-
-  document.getElementById(
-    view.ID_CWTWC_PLAYERINFO_GOLD ).innerHTML = player.gold;
-
-  document.getElementById(
-    view.ID_CWTWC_PLAYERINFO_COS ).innerHTML = 0;
-
-  document.getElementById(
-    view.ID_CWTWC_PLAYERINFO_NUMPRO ).innerHTML = 0;
-
-  document.getElementById(
-    view.ID_CWTWC_PLAYERINFO_NUMUNI ).innerHTML = 0;
-
-
-  var playerInf = document.getElementById(view.ID_DIV_CWTWC_PLAYERINFO );
-
-  playerInf.style.top = "10px";
-  if( left ){
-    playerInf.style.left = "10px";
-  }
-  else{
-    playerInf.style.left = (window.innerWidth - playerInf.offsetWidth - 10)+"px";
-  }
-};
-
-view.DEFAULT_MESSAGE_TIME = 1000;
-
-view._hideInfoMessage = function(){
-  var panel = document.getElementById(view.ID_DIV_CWTWC_MSG_PANEL );
-
-  panel.className = "tooltip out";
-};
-
-view.hasInfoMessage = function(){
-  return document.getElementById( view.ID_DIV_CWTWC_MSG_PANEL
-            ).className !== "tooltip out";
-};
-
-view.showInfoMessage = function( msg, time ){
-  if( arguments.length === 1 ) time = view.DEFAULT_MESSAGE_TIME;
-
-  var panel = document.getElementById(view.ID_DIV_CWTWC_MSG_PANEL );
-
-  // panel.innerHTML = msg;
-  document.getElementById(view.ID_DIV_CWTWC_MSG_PANEL_CONTENT ).innerHTML = msg;
-
-  panel.className = "tooltip active";
-  panel.style.position = "absolute";
-  panel.style.left = parseInt(
-    ((window.innerWidth/2) - (panel.offsetWidth/2)), 10
-  )+"px";
-  panel.style.top = parseInt(
-    ((window.innerHeight/2) - (panel.offsetHeight/2)), 10
-  )+"px";
-
-  setTimeout( view._hideInfoMessage, time );
-};
-const TILE_LENGTH = 16;
+var TILE_LENGTH = 16;
 
 controller.baseSize = CWT_MOD_DEFAULT.graphic.baseSize;
 
@@ -1277,8 +1162,10 @@ view.renderMap = function( scale ){
   var BASESIZE = controller.baseSize;
   
   var focusExists = (
-    controller.input.state() === "MOVEPATH_SELECTION" ||
-      controller.input.state() === "ACTION_SELECT_TARGET"
+    controller.stateMachine.state === "MOVEPATH_SELECTION" ||
+      controller.stateMachine.state === "IDLE_R" ||
+      controller.stateMachine.state === "ACTION_SELECT_TARGET_A" ||
+      controller.stateMachine.state === "ACTION_SELECT_TARGET_B"
   );
 
   var inShadow;
@@ -1447,11 +1334,10 @@ view.renderMap = function( scale ){
         // DRAW FOCUS
         if( focusExists ){
           pic = view.getInfoImageForType(
-            ( controller.input.state() === "MOVEPATH_SELECTION" )?
-              "MOVE_FOC" : "ATK_FOC"
+            ( controller.stateMachine.state === "MOVEPATH_SELECTION" )? "MOVE_FOC" : "ATK_FOC"
           );
 
-          var value = controller.input.selectionData.getPositionValue( x,y );
+          var value = controller.stateMachine.data.getSelectionValueAt(x,y);
           if( value > 0 ){
 
             scx = BASESIZE*sprStepSel;
@@ -1542,7 +1428,9 @@ view.renderMap = function( scale ){
               );
             }
 
-            pic = unit._clientData_.hpPic;
+            var stats = controller.getUnitStatusForUnit( unit );
+
+            pic = stats.HP_PIC;
             if( pic !== null ){
               ctx.drawImage(
                 pic,
@@ -1570,16 +1458,17 @@ view.renderMap = function( scale ){
               var stIn = st;
               do{
 
-                if( stIn === 0 && unit._clientData_.lowAmmo ){
+                // TODO
+                if( stIn === 0 && stats.LOW_AMMO ){
                   pic = view.getInfoImageForType("SYM_AMMO");
                 }
-                else if( stIn === 1 && unit._clientData_.lowFuel ){
+                else if( stIn === 1 && stats.LOW_FUEL ){
                   pic = view.getInfoImageForType("SYM_FUEL");
                 }
-                else if( stIn === 2 && unit._clientData_.captures ){
+                else if( stIn === 2 && stats.CAPTURES ){
                   pic = view.getInfoImageForType("SYM_CAPTURE");
                 }
-                else if( stIn === 3 && unit._clientData_.hasLoads ){
+                else if( stIn === 3 && stats.HAS_LOADS ){
                   pic = view.getInfoImageForType("SYM_LOAD");
                 }
 
@@ -1608,11 +1497,11 @@ view.renderMap = function( scale ){
   }
 
   // DRAW ARROW
-  if( controller.input.state() === "MOVEPATH_SELECTION" ){
-    var actiondataObj = controller.input.actionData;
-    var currentMovePath = actiondataObj.getMovePath();
-    var cX = actiondataObj.getSourceX();
-    var cY = actiondataObj.getSourceY();
+  if( controller.stateMachine.state === "MOVEPATH_SELECTION" ){
+    var actiondataObj = controller.stateMachine.data;
+    var currentMovePath = actiondataObj.movePath;
+    var cX = actiondataObj.sourceX;
+    var cY = actiondataObj.sourceY;
     var oX;
     var oY;
     var tX;
@@ -1721,6 +1610,9 @@ view.renderMap = function( scale ){
   view.drawScreenChanges=0;
 };
 
+/**
+ * 
+ */
 view.fitScreenToDeviceOrientation = function(){
   var canvEl = controller.screenElement;
 
@@ -1729,6 +1621,41 @@ view.fitScreenToDeviceOrientation = function(){
 
   controller.screenWidth  = parseInt( window.innerWidth/  TILE_LENGTH, 10 );
   controller.screenHeight = parseInt( window.innerHeight/ TILE_LENGTH, 10 );
+};
+view.ID_DIV_CWTWC_MSG_PANEL            = "cwt_info_box";
+view.ID_DIV_CWTWC_MSG_PANEL_CONTENT    = "cwt_info_box_content";
+
+view.DEFAULT_MESSAGE_TIME = 1000;
+
+view._hideInfoMessage = function(){
+  var panel = document.getElementById(view.ID_DIV_CWTWC_MSG_PANEL );
+
+  panel.className = "tooltip out";
+};
+
+view.hasInfoMessage = function(){
+  return document.getElementById( view.ID_DIV_CWTWC_MSG_PANEL
+            ).className !== "tooltip out";
+};
+
+view.showInfoMessage = function( msg, time ){
+  if( arguments.length === 1 ) time = view.DEFAULT_MESSAGE_TIME;
+
+  var panel = document.getElementById(view.ID_DIV_CWTWC_MSG_PANEL );
+
+  // panel.innerHTML = msg;
+  document.getElementById(view.ID_DIV_CWTWC_MSG_PANEL_CONTENT ).innerHTML = msg;
+
+  panel.className = "tooltip active";
+  panel.style.position = "absolute";
+  panel.style.left = parseInt(
+    ((window.innerWidth/2) - (panel.offsetWidth/2)), 10
+  )+"px";
+  panel.style.top = parseInt(
+    ((window.innerHeight/2) - (panel.offsetHeight/2)), 10
+  )+"px";
+
+  setTimeout( view._hideInfoMessage, time );
 };
 /**
  * SOME TILES THAT ARE KNOWN AS OVERLAYERS --> TODO this should be
@@ -1882,10 +1809,10 @@ view.completeRedraw = function(){
   }
 };
 
-view.markSelectionMapForRedraw = function( selectionMap ){
-  var cx = selectionMap.getCenterX();
-  var cy = selectionMap.getCenterY();
-  var data = selectionMap.getDataMatrix();
+view.markSelectionMapForRedraw = function( scope ){
+  var cx = scope.selectionCX;
+  var cy = scope.selectionCY;
+  var data = scope.selectionData;
 
   for( var x=0;x<data.length; x++ ){
     var sMap = data[x];
@@ -1940,8 +1867,10 @@ view.updateSpriteAnimations = function( delta ){
 // ---------------------------------------------------------------------------
 
 view.registerSpriteAnimator( "SELECTION", 7, 150, function(){
-  if( controller.input.state() !== "MOVEPATH_SELECTION" &&
-      controller.input.state() !== "ACTION_SELECT_TARGET"  ) return;
+  if( controller.stateMachine.state !== "MOVEPATH_SELECTION" &&
+      controller.stateMachine.state !== "IDLE_R" &&
+      controller.stateMachine.state !== "ACTION_SELECT_TARGET_A" &&
+      controller.stateMachine.state !== "ACTION_SELECT_TARGET_B"  ) return;
 
   var x  = 0;
   var yS = 0;
@@ -1949,10 +1878,9 @@ view.registerSpriteAnimator( "SELECTION", 7, 150, function(){
   var ye = model.mapHeight;
 
   // ITERATE THROUGH THE SCREEN
-  var selectData = controller.input.selectionData;
   for( ; x<xe; x++ ){
     for( var y=yS ; y<ye; y++ ){
-      if( selectData.getPositionValue( x, y ) > -1 ){
+      if( controller.stateMachine.data.getSelectionValueAt( x, y ) > -1 ){
 
         view.markForRedraw( x,y );
       }
@@ -1995,13 +1923,9 @@ view.registerSpriteAnimator( "PROPERTY", 4, 400, function(){
 });
 view.registerCommandHook({
 
-  key: "addVisioner",
+  key: "AVIS",
 
-  prepare: function( data ){
-    var x = data.getSourceX();
-    var y = data.getSourceY();
-    var range = data.getSubAction();
-
+  prepare: function( x,y, range ){
     var lX;
     var hX;
     var lY = y-range;
@@ -2032,11 +1956,90 @@ view.registerCommandHook({
 });
 view.registerCommandHook({
 
-  key: "attack",
+  key: "ATUN",
 
-  prepare: function( data ){
-    controller.updateUnitStats( data.getSourceUnit() );
-    controller.updateUnitStats( data.getTargetUnit() );
+  // ------------------------------------------------------------------------
+
+  prepare: function( aid, admg, aUseAmmo, did, ddmg, dUseAmmo ){
+    var sUnit = model.units[ aid ];
+    var tUnit = model.units[ did ];
+
+    this.step = 0;
+    this.time = 0;
+
+    if(        sUnit.hp <= 0 ){
+      this.x = sUnit.x;
+      this.y = sUnit.y;
+    }
+    else{
+      //controller.updateUnitStats( sUnit );
+
+      if(   tUnit.hp <= 0 ){
+        this.x = tUnit.x;
+        this.y = tUnit.y;
+      }
+      else{
+        //controller.updateUnitStats( tUnit );
+        this.step = -1;
+      }
+    }
+  },
+
+  // ------------------------------------------------------------------------
+
+  render: function(){
+    var step = this.step;
+    if( step === -1 ) return;
+
+    var pic = view.getInfoImageForType("EXPLOSION_GROUND");
+
+    var x = this.x;
+    var y = this.y;
+
+    var tileSize = TILE_LENGTH;
+    var scx = 48*step;
+    var scy = 0;
+    var scw = 48;
+    var sch = 48;
+    var tcx = (x)*tileSize;
+    var tcy = (y)*tileSize;
+    var tcw = tileSize;
+    var tch = tileSize;
+
+    view.canvasCtx.drawImage(
+      pic,
+      scx,scy,
+      scw,sch,
+      tcx,tcy,
+      tcw,tch
+    );
+
+    view.markForRedraw(x,y);
+  },
+
+  // ------------------------------------------------------------------------
+
+  update: function( delta ){
+    this.time += delta;
+    if( this.time > 50 ){
+      this.step++;
+      this.time = 0;
+    }
+  },
+
+  // ------------------------------------------------------------------------
+
+  isDone: function(){
+    return this.step === -1 || this.step === 10;
+  }
+
+});
+view.registerCommandHook({
+
+  key: "BDUN",
+
+  prepare: function(  ){
+    view.completeRedraw();
   },
 
   render: function(){},
@@ -2049,30 +2052,10 @@ view.registerCommandHook({
 });
 view.registerCommandHook({
 
-  key: "buildUnit",
+  key: "CTPR",
 
-  prepare: function( data ){
-
-    var x = data.getSourceX();
-    var y = data.getSourceY();
-    var unit = model.unitPosMap[x][y];
-    controller.updateUnitStats( unit );
-  },
-
-  render: function(){},
-  update: function(){},
-
-  isDone: function(){
-    return true;
-  }
-
-});
-view.registerCommandHook({
-
-  key: "captureProperty",
-
-  prepare: function( data ){
-    var property = data.getTargetProperty();
+  prepare: function( cid, prid, px,py, points ){
+    var property = model.properties[ prid ];
 
     if( property.capturePoints === 20 ){
       view.showInfoMessage( util.i18n_localized("propertyCaptured") );
@@ -2092,9 +2075,9 @@ view.registerCommandHook({
 });
 view.registerCommandHook({
 
-  key: "endGame",
+  key: "EDGM",
 
-  prepare: function( data ){
+  prepare: function( ){
     view.showInfoMessage( util.i18n_localized("gameHasEnded"), 1000*60*60 );
   },
 
@@ -2108,14 +2091,16 @@ view.registerCommandHook({
 });
 view.registerCommandHook({
 
-  key: "invokeMultiStepAction",
+  key: "IVMS",
 
-  prepare: function( data ){
-    var state = controller.input.state();
+  prepare: function(){
+    var state = controller.stateMachine.state;
+    var data = controller.stateMachine.data;
     if( state === "ACTION_MENU" || state === "ACTION_SUBMENU" ){
 
-      var menu = controller.input.menu;
-      if( controller.input.actionData.getAction() === 'unloadUnit' ){
+      /*
+      var menu = data.menu;
+      if( data.action === 'unloadUnit' ){
         var old = menu;
         menu = [];
         for( var i=0, e=controller.input.menuSize-1; i<e; i++ ){
@@ -2123,11 +2108,9 @@ view.registerCommandHook({
         }
         menu[controller.input.menuSize-1] = old[ controller.input.menuSize-1 ];
       }
+      */
 
-      controller.showMenu(
-        menu, controller.input.menuSize,
-        controller.mapCursorX, controller.mapCursorY
-      );
+      controller.showMenu( data.menu, data.menuSize, controller.mapCursorX, controller.mapCursorY );
     }
   },
 
@@ -2140,52 +2123,26 @@ view.registerCommandHook({
 
 });
 view.registerCommandHook({
-
-  key: "join",
-
-  prepare: function( data ){
-    controller.updateUnitStats( data.getTargetUnit() );
-  },
-
-  render: function(){},
-  update: function(){},
-
-  isDone: function(){
-    return true;
-  }
-
-});
-view.registerCommandHook({
-
-  key: "loadUnit",
-
-  prepare: function( data ){
-    controller.updateUnitStats( data.getTargetUnit() );
-  },
-
-  render: function(){},
-  update: function(){},
-
-  isDone: function(){
-    return true;
-  }
-
-});
-view.registerCommandHook({
-
-  key: "move",
-
-  prepare: function( data ){
-
-    this.moveAnimationX     = data.getSourceX();
-    this.moveAnimationY     = data.getSourceY();
+  
+  key: "MOVE",
+  
+  prepare: function( way, uid, x,y ){
+    
+    this.moveAnimationX     = x;
+    this.moveAnimationY     = y;
     this.moveAnimationIndex = 0;
-    this.moveAnimationPath  = data.getMovePath();
-    this.moveAnimationUid   = data.getSourceUnitId();
+    this.moveAnimationPath  = way;
+    this.moveAnimationUid   = uid;
     this.moveAnimationShift = 0;
-
-    view.preventRenderUnit = data.getSourceUnit();
-
+    
+    this.moveAnimationDustX = -1;
+    this.moveAnimationDustY = -1;
+    this.moveAnimationDustTime = -1;
+    this.moveAnimationDustStep = -1;
+    this.moveAnimationDustPic = null;
+    
+    view.preventRenderUnit = model.units[ uid ];
+    
     if( CLIENT_DEBUG ){
       util.logInfo(
         "drawing move from",
@@ -2194,48 +2151,84 @@ view.registerCommandHook({
         "(",this.moveAnimationPath,")"
       );
     }
-
+    
     // CHECK STATUS
-    controller.updateUnitStats( data.getSourceUnit() );
+    // controller.updateUnitStats( model.units[ uid ] );
   },
-
-    update: function( delta ){
-      var tileSize = TILE_LENGTH;
-
-      // MOVE 4 TILES / SECOND
-      this.moveAnimationShift += ( delta/1000 ) * ( tileSize*12 );
-
-      view.markForRedrawWithNeighboursRing(
-        this.moveAnimationX, this.moveAnimationY
-      );
-
-      if( this.moveAnimationShift > tileSize ){
-
-        // UPDATE ANIMATION POS
-        switch( this.moveAnimationPath[ this.moveAnimationIndex ] ){
-          case model.MOVE_CODE_UP :    this.moveAnimationY--; break;
-          case model.MOVE_CODE_RIGHT : this.moveAnimationX++; break;
-          case model.MOVE_CODE_DOWN :  this.moveAnimationY++; break;
-          case model.MOVE_CODE_LEFT :  this.moveAnimationX--; break;
-        }
-
-        this.moveAnimationIndex++;
-
-        this.moveAnimationShift -= tileSize;
-        // this.moveAnimationShift = 0;
-
-        if( this.moveAnimationIndex === this.moveAnimationPath.length ){
-          this.moveAnimationX     = 0;
-          this.moveAnimationY     = 0;
-          this.moveAnimationIndex = 0;
-          this.moveAnimationPath  = null;
-          this.moveAnimationUid   = -1;
-          this.moveAnimationShift = 0;
-          view.preventRenderUnit = null; // RENDER UNIT NOW NORMALLY
+  
+  update: function( delta ){
+    var tileSize = TILE_LENGTH;
+    
+    // MOVE 4 TILES / SECOND
+    this.moveAnimationShift += ( delta/1000 ) * ( tileSize*8);
+    
+    view.markForRedrawWithNeighboursRing(
+      this.moveAnimationX, this.moveAnimationY
+    );
+    
+    // DUST
+    if( this.moveAnimationDustStep !== -1 ){
+      
+      this.moveAnimationDustTime += delta;
+      if( this.moveAnimationDustTime > 30 ){
+        
+        this.moveAnimationDustStep++;
+        this.moveAnimationDustTime = 0;
+        
+        if( this.moveAnimationDustStep === 3 ){
+          this.moveAnimationDustStep = -1;
         }
       }
-    },
-
+    }
+    
+    if( this.moveAnimationShift > tileSize ){
+      
+      this.moveAnimationDustX = this.moveAnimationX;
+      this.moveAnimationDustY = this.moveAnimationY;
+      this.moveAnimationDustTime = 0;
+      this.moveAnimationDustStep = 0;
+      
+      // UPDATE ANIMATION POS
+      switch( this.moveAnimationPath[ this.moveAnimationIndex ] ){
+          
+        case model.MOVE_CODE_UP :
+          this.moveAnimationY--;
+          this.moveAnimationDustPic = view.getInfoImageForType("DUST_U");
+          break;
+          
+        case model.MOVE_CODE_RIGHT :
+          this.moveAnimationX++;
+          this.moveAnimationDustPic = view.getInfoImageForType("DUST_R");
+          break;
+          
+        case model.MOVE_CODE_DOWN :
+          this.moveAnimationY++;
+          this.moveAnimationDustPic = view.getInfoImageForType("DUST_D");
+          break;
+          
+        case model.MOVE_CODE_LEFT :
+          this.moveAnimationX--;
+          this.moveAnimationDustPic = view.getInfoImageForType("DUST_L");
+          break;
+      }
+      
+      this.moveAnimationIndex++;
+      
+      this.moveAnimationShift -= tileSize;
+      // this.moveAnimationShift = 0;
+      
+      if( this.moveAnimationIndex === this.moveAnimationPath.length ){
+        this.moveAnimationX     = 0;
+        this.moveAnimationY     = 0;
+        this.moveAnimationIndex = 0;
+        this.moveAnimationPath  = null;
+        this.moveAnimationUid   = -1;
+        this.moveAnimationShift = 0;
+        view.preventRenderUnit = null; // RENDER UNIT NOW NORMALLY
+      }
+    }
+  },
+  
   render: function(){
     var uid      = this.moveAnimationUid;
     var cx       = this.moveAnimationX;
@@ -2246,7 +2239,7 @@ view.registerCommandHook({
     var color = view.colorArray[ unit.owner ];
     var state;
     var tp = unit.type;
-
+    
     // GET CORRECT IMAGE STATE
     switch( moveCode ){
       case model.MOVE_CODE_UP :    state = view.IMAGE_CODE_UP;    break;
@@ -2254,9 +2247,9 @@ view.registerCommandHook({
       case model.MOVE_CODE_DOWN :  state = view.IMAGE_CODE_DOWN;  break;
       case model.MOVE_CODE_LEFT :  state = view.IMAGE_CODE_LEFT;  break;
     }
-
+    
     var pic = view.getUnitImageForType( tp, state, color );
-
+    
     var tileSize = TILE_LENGTH;
     var BASESIZE = controller.baseSize;
     var scx = (BASESIZE*2)*view.getSpriteStep("UNIT");
@@ -2267,7 +2260,7 @@ view.registerCommandHook({
     var tcy = ( cy )*tileSize -tileSize/2;
     var tcw = tileSize+tileSize;
     var tch = tileSize+tileSize;
-
+    
     // ADD SHIFT
     switch( moveCode ){
       case model.MOVE_CODE_UP:    tcy -= shift; break;
@@ -2275,7 +2268,7 @@ view.registerCommandHook({
       case model.MOVE_CODE_RIGHT: tcx += shift; break;
       case model.MOVE_CODE_DOWN:  tcy += shift; break;
     }
-
+    
     // DRAW IT
     if( pic !== undefined ){
       view.canvasCtx.drawImage(
@@ -2291,7 +2284,7 @@ view.registerCommandHook({
       tcy = ( cy )*tileSize;
       tcw = tileSize;
       tch = tileSize;
-
+      
       // ADD SHIFT
       switch( moveCode ){
         case model.MOVE_CODE_UP:    tcy -= shift; break;
@@ -2299,31 +2292,50 @@ view.registerCommandHook({
         case model.MOVE_CODE_RIGHT: tcx += shift; break;
         case model.MOVE_CODE_DOWN:  tcy += shift; break;
       }
-
+      
       view.canvasCtx.fillStyle="rgb(255,0,0)";
       view.canvasCtx.fillRect(
         tcx,tcy,
         tcw,tch
       );
     }
+    
+    // DUST
+    if( this.moveAnimationDustStep !== -1 ){
+      
+      var tileSize = TILE_LENGTH;
+      scx = (BASESIZE*2)*this.moveAnimationDustStep;
+      scy = 0;
+      scw = BASESIZE*2;
+      sch = BASESIZE*2;
+      tcx = ( this.moveAnimationDustX )*tileSize -tileSize/2;
+      tcy = ( this.moveAnimationDustY )*tileSize -tileSize/2;
+      tcw = tileSize+tileSize;
+      tch = tileSize+tileSize;
+      
+      view.canvasCtx.drawImage(
+        this.moveAnimationDustPic,
+        scx,scy,
+        scw,sch,
+        tcx,tcy,
+        tcw,tch
+      );
+    }
   },
-
+  
   isDone: function(){
     return this.moveAnimationUid === -1;
   }
-
+  
 });
 view.registerCommandHook({
 
-  key: "nextTurn",
+  key: "NXTR",
 
-  prepare: function( data ){
-    if( model.fogOn ){
+  prepare: function(  ){
+    if( model.rules.fogEnabled ){
       view.completeRedraw();
     }
-
-    controller.resetTurnTimer();
-    view.updatePlayerInfo();
 
     view.showInfoMessage( util.i18n_localized("day")+": "+model.day );
   },
@@ -2338,13 +2350,9 @@ view.registerCommandHook({
 });
 view.registerCommandHook({
 
-  key: "remVisioner",
+  key: "RVIS",
 
-  prepare: function( data ){
-    var x = data.getSourceX();
-    var y = data.getSourceY();
-    var range = data.getSubAction();
-
+  prepare: function( x,y, range ){
     var lX;
     var hX;
     var lY = y-range;
@@ -2375,11 +2383,9 @@ view.registerCommandHook({
 });
 view.registerCommandHook({
 
-  key: "silofire",
+  key: "SLFR",
 
   _check: function( x,y ){
-    var unit = model.unitPosMap[x][y];
-    if( unit !== null ) controller.updateUnitStats( unit );
   },
 
   _render: function( x,y, step, img ){
@@ -2406,9 +2412,9 @@ view.registerCommandHook({
     view.markForRedraw(x,y);
   },
 
-  prepare: function( data ){
-    var x = data.getActionTargetX();
-    var y = data.getActionTargetY();
+  prepare: function( uid, sx,sy, prid, tx,ty ){
+    var x = tx;
+    var y = ty;
     this.x = x;
     this.y = y;
     var chk = this._check;
@@ -2479,14 +2485,14 @@ view.registerCommandHook({
 });
 view.registerCommandHook({
 
-  key: "trapWait",
+  key: "TRWT",
 
-  prepare: function( data ){
+  prepare: function( x,y,uid ){
     this.time = 0;
-    this.xp = data.getTargetX();
-    this.yp = data.getTargetY();
-    this.x = data.getTargetX() * TILE_LENGTH;
-    this.y = data.getTargetY() * TILE_LENGTH;
+    this.xp = x;
+    this.yp = y;
+    this.x = x * TILE_LENGTH;
+    this.y = y * TILE_LENGTH;
   },
 
   render: function(){
@@ -2511,25 +2517,220 @@ view.registerCommandHook({
   }
 
 });
-view.registerCommandHook({
-
-  key: "unloadUnit",
-
-  prepare: function( data ){
-    controller.updateUnitStats( data.getSourceUnit() );
-  },
-
-  render: function(){},
-  update: function(){},
-
-  isDone: function(){
-    return true;
-  }
-
+view.registerCommandListener("ATUN",function( aid, admg, aUseAmmo, did ){
+  controller.updateUnitStatus( aid );
+  controller.updateUnitStatus( did );
 });
-controller.registerCommand({
 
-  key: "colorizeImages",
+view.registerCommandListener("CTPR",function( cid ){
+  controller.updateUnitStatus( cid );
+});
+
+view.registerCommandListener("CRUN",function( x,y ){
+  controller.updateUnitStatus( model.extractUnitId( model.unitPosMap[x][y] ) );
+});
+
+view.registerCommandListener("DMUN",function( uid ){
+  controller.updateUnitStatus( uid );
+});
+
+view.registerCommandListener("HEUN",function( uid ){
+  controller.updateUnitStatus( uid );
+});
+
+view.registerCommandListener("GUTP",function( uid ){
+  var old = model.units[uid];
+  controller.updateUnitStatus( model.extractUnitId( model.unitPosMap[ old.x ][ old.y ]  ));
+});
+
+view.registerCommandListener("LODU",function( uid, tid ){
+  controller.updateUnitStatus( tid );
+});
+
+view.registerCommandListener("JNUN",function( sid, tid ){
+  controller.updateUnitStatus( tid );
+});
+
+view.registerCommandListener("MOVE",function( way, uid, x,y ){
+  controller.updateUnitStatus( uid );
+});
+
+(function(){
+  function dmgF( x,y ){
+    if( model.isValidPosition(x,y) ){
+      var unit = model.unitPosMap[x][y];
+      if( unit !== null ){
+        controller.updateUnitStatus( model.extractUnitId(unit) );
+      }
+    }
+  }
+  
+  view.registerCommandListener("SLFR",function( uid, sx,sy, prid, tx,ty ){
+    var x = tx;
+    var y = ty;
+    
+    dmgF( x  ,y-2 );
+    dmgF( x-1,y-1 );
+    dmgF( x  ,y-1 );
+    dmgF( x+1,y-1 );
+    dmgF( x-2,y   );
+    dmgF( x-1,y   );
+    dmgF( x  ,y   );
+    dmgF( x+1,y   );
+    dmgF( x+2,y   );
+    dmgF( x-1,y+1 );
+    dmgF( x  ,y+1 );
+    dmgF( x+1,y+1 );
+    dmgF( x  ,y+2 );
+  });
+  
+  view.registerCommandListener("SPPL",function( sid, x,y ){
+    dmgF( x,y-1   );
+    dmgF( x-1,y   );
+    dmgF( x  ,y   );
+    dmgF( x+1,y   );
+    dmgF( x,y+1   );
+  });
+})();
+
+view.registerCommandListener("UNUN",function( transportId, trsx, trsy, loadId, tx,ty ){
+  controller.updateUnitStatus( transportId );
+});
+
+view.registerCommandListener("LDGM",function(){
+  for( var i=0,e=model.units.length; i<e; i++ ){
+    if( model.units[i].owner !== CWT_INACTIVE_ID ){
+      controller.updateUnitStatus( i );
+    }
+  }
+});
+
+view.registerCommandListener("AVIS",function( x,y,range ){
+  view.markForRedrawRange(x,y,range);
+});
+
+view.registerCommandListener("RVIS",function( x,y,range ){
+  view.markForRedrawRange(x,y,range);
+});
+
+controller.registerMenuRenderer("BDUN",function( content, entry, index ){
+  
+  var cost = model.sheets.unitSheets[ content ].cost
+  entry.innerHTML = util.i18n_localized(content)+" ("+cost+"$)";
+});
+controller.registerMenuRenderer("GMTP",function( content, entry, index ){
+  entry.innerHTML = content+"$";
+});
+controller.infoPanelRender_ = {
+
+  tile: function( x,y, unit, property, row, left, right ){
+    left.innerHTML = util.i18n_localized(model.map[x][y]);
+  },
+  
+  defense: function( x,y, unit, property, row, left, right ){
+    left.innerHTML = util.i18n_localized("defense");
+    right.innerHTML = model.sheets.tileSheets[ model.map[x][y] ].defense;
+  },
+  
+  property: function( x,y, unit, property, row, left, right ){
+    row.style.display = (property !== null)? "table-row": "none";
+    if( property === null ) return;
+    
+    left.innerHTML = util.i18n_localized( property.type );
+  },
+  
+  capturePoints: function( x,y, unit, property, row, left, right ){
+    row.style.display = (property !== null)? "table-row": "none";
+    if( property === null ) return;
+    
+    left.innerHTML = util.i18n_localized("capturePoints");
+    right.innerHTML = property.capturePoints;
+  },
+  
+  unit: function( x,y, unit, property, row, left, right ){
+    row.style.display = (unit !== null)? "table-row": "none";
+    if( unit === null ) return;
+    
+    left.innerHTML = util.i18n_localized( unit.type );
+  },
+  
+  hp: function( x,y, unit, property, row, left, right ){
+    row.style.display = (unit !== null)? "table-row": "none";
+    if( unit === null ) return;
+    
+    left.innerHTML = util.i18n_localized("health");
+    right.innerHTML = (parseInt( unit.hp/10,10)+1);
+  },
+  
+  ammo: function( x,y, unit, property, row, left, right ){
+    row.style.display = (unit !== null)? "table-row": "none";
+    if( unit === null ) return;
+    
+    left.innerHTML = util.i18n_localized("ammo");
+    right.innerHTML = unit.ammo;  
+  },
+  
+  fuel: function( x,y, unit, property, row, left, right ){
+    row.style.display = (unit !== null)? "table-row": "none";
+    if( unit === null ) return;
+    
+    left.innerHTML = util.i18n_localized("fuel");
+    right.innerHTML = unit.fuel;  
+  }
+};
+
+controller.infoPanelRenderComponents_ = {
+  empty:true
+};
+
+// RENDERS THE INFORMATION PANEL IN THE MENU
+controller.registerMenuRenderer("__infoPanel__",function( x,y, entry ){
+  
+  // COLLECT
+  if( controller.infoPanelRenderComponents_.empty ){
+    var table = document.getElementsByName("cwt_menu_header_table")[0];
+    var rows = table.getElementsByTagName("tr");
+    for( var i=0,e=rows.length; i<e; i++ ){
+        
+      var row = rows[i];
+      var columns = row.getElementsByTagName("td");
+      
+      if( columns.length !== 2 ) util.raiseError();
+      
+      controller.infoPanelRenderComponents_[ row.attributes.name.value ] = [
+        row,
+        columns[0], columns[1]
+      ];
+    }
+    
+    delete controller.infoPanelRenderComponents_.empty;
+  }
+  
+  var keys = Object.keys( controller.infoPanelRenderComponents_ );
+  for( var i=0,e=keys.length; i<e; i++ ){
+    
+    var key = keys[i];
+    var renderFn = controller.infoPanelRender_[key];
+    var renderEl = controller.infoPanelRenderComponents_[key];
+    
+    var unit = model.unitPosMap[x][y];
+    var property = model.propertyPosMap[x][y];
+    
+    if( renderFn === undefined ) continue;
+    
+    renderFn( x,y, unit, property, renderEl[0],renderEl[1],renderEl[2] );
+  }
+});
+controller.registerMenuRenderer("__mainMenu__",function( content, entry, index ){
+  entry.innerHTML = util.i18n_localized( content );
+});
+controller.registerMenuRenderer("UNUN",function( content, entry, index ){
+  entry.innerHTML = model.units[ content ].type;  
+});
+controller.engineAction({
+
+  name: "colorizeImages",
+  key: "COLI",
 
   UNIT_INDEXES:{
     BLACK_MASK:8,
@@ -2548,11 +2749,7 @@ controller.registerCommand({
     BLACK_MASK:8,
     colors:4
   },
-
-  // ------------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
-
-  // ------------------------------------------------------------------------
+  
   action: function(){
 
     function getImageDataArray( image ){
@@ -2732,11 +2929,10 @@ controller.registerCommand({
     }
   }
 });
-controller.registerCommand({
+controller.engineAction({
 
-  key: "cutImages",
-
-  condition: util.FUNCTION_FALSE_RETURNER,
+  name: "cutImages",
+  key: "CUTI",
 
   action: function(){
 
@@ -2869,24 +3065,53 @@ controller.registerCommand({
         var img = view.getInfoImageForType( miscType[0] );
 
         nCanvas = document.createElement('canvas');
-        nCanvas.height = 16;
-        nCanvas.width  = 16;
         nContext = nCanvas.getContext('2d');
 
         if( miscType.length > 6 ){
-          nContext.save();
-          nContext.translate(8,8);
-          nContext.rotate( miscType[6] * Math.PI/180);
-          nContext.translate(-8,-8);
+          if( miscType[6] === true ){
+
+            //TODO FIX THAT
+            nCanvas.height = 32;
+            nCanvas.width  = 32*3;
+
+            nCanvas = flipImage( nCanvas, true, false);
+
+            nContext = nCanvas.getContext('2d');
+          }
+          else{
+
+            nCanvas.height = 16;
+            nCanvas.width  = 16;
+            nContext.save();
+            nContext.translate(8,8);
+            nContext.rotate( miscType[6] * Math.PI/180);
+            nContext.translate(-8,-8);
+          }
+        }
+        else{
+          nCanvas.height = 16;
+          nCanvas.width  = 16;
         }
 
-        nContext.drawImage(
-          img,
-          miscType[2], miscType[3],
-          miscType[4], miscType[5],
-          0, 0,
-          16, 16
-        );
+        if( miscType.length > 6 && miscType[6] === true ){
+          // TODO FIX THAT
+          nContext.drawImage(
+            img,
+            miscType[2], miscType[3],
+            miscType[4], miscType[5],
+            0, 0,
+            32*3, 32
+          );
+        }
+        else{
+          nContext.drawImage(
+            img,
+            miscType[2], miscType[3],
+            miscType[4], miscType[5],
+            0, 0,
+            16, 16
+          );
+        }
 
         if( miscType.length > 6 ){
           nContext.restore();
@@ -2899,15 +3124,11 @@ controller.registerCommand({
     if( DEBUG ){ util.logInfo("cutting misc into single types done"); }
   }
 });
-controller.registerCommand({
+controller.engineAction({
 
-  key:"loadConfig",
-  localAction: true,
-
-  // ------------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
-
-  // ------------------------------------------------------------------------
+  name:"loadConfig",
+  key:"LCFG",
+  
   action: function(){
     var config = controller.storage.get("CWT_CONFIG")
     if( config === null ){
@@ -2934,19 +3155,16 @@ controller.registerCommand({
     // TODO do what is needed :P
   }
 });
-controller.registerCommand({
+controller.engineAction({
 
-  key:"loadImages",
-  localAction: true,
-
-  // ------------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
-
-  // ------------------------------------------------------------------------
+  name:"loadImages",
+  key:"LOIM",
+  
   action: function(){
     if( CLIENT_DEBUG ){
-      util.logInfo("loading images... place lock");
+      util.log("loading images... place lock");
     }
+    
     controller.lockCommandEvaluation = true;
 
     // STEP 1 - LOADING THEM
@@ -3079,14 +3297,11 @@ controller.INPUT_KEYBOARD_CODE_M = 77;
 /** @constant */
 controller.INPUT_KEYBOARD_CODE_N = 78;
 
-controller.registerCommand({
+controller.engineAction({
 
-  key:"loadInputDevices",
-
-  // ------------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
-
-  // ------------------------------------------------------------------------
+  name:"loadInputDevices",
+  key:"LOID",
+  
   action: function(){
 
     var detect = new DeviceDetection( navigator.userAgent );
@@ -3094,12 +3309,33 @@ controller.registerCommand({
     // **************************************************************
     // KEYBOARD SUPPORT FOR DESKTOP DEVICES
     if( detect.isDesktop() ){
+      
+      document.onkeyup = function( ev ){
+        if( controller.stateMachine.state === "IDLE_R" ){
+          
+          switch( code ){
+            case controller.INPUT_KEYBOARD_CODE_LEFT:
+            case controller.INPUT_KEYBOARD_CODE_UP:
+            case controller.INPUT_KEYBOARD_CODE_RIGHT:
+            case controller.INPUT_KEYBOARD_CODE_DOWN:
+            case controller.INPUT_KEYBOARD_CODE_BACKSPACE:
+            case controller.INPUT_KEYBOARD_CODE_ENTER:
+              controller.cursorActionCancel();
+              return false;
+          }
+        }
+      };
+      
       //document.onkeydown = function( ev ){
       document.onkeydown = function( ev ){
         if( CLIENT_DEBUG ){
           util.logInfo("got key code",ev.keyCode);
         }
 
+        var state = controller.stateMachine.state;
+        var inMenu = ( state === "ACTION_MENU" ||
+                       state === "ACTION_SUBMENU" );
+        
         var code = ev.keyCode;
         switch( code ){
 
@@ -3108,7 +3344,9 @@ controller.registerCommand({
             break;
 
           case controller.INPUT_KEYBOARD_CODE_UP:
-            controller.moveCursor( model.MOVE_CODE_UP, 1 );
+            if( !inMenu ) controller.moveCursor( model.MOVE_CODE_UP, 1 );
+            else controller.decreaseMenuCursor();
+            
             break;
 
           case controller.INPUT_KEYBOARD_CODE_RIGHT:
@@ -3116,7 +3354,9 @@ controller.registerCommand({
             break;
 
           case controller.INPUT_KEYBOARD_CODE_DOWN:
-            controller.moveCursor( model.MOVE_CODE_DOWN, 1 );
+            if( !inMenu ) controller.moveCursor( model.MOVE_CODE_DOWN, 1 );
+            else controller.increaseMenuCursor();
+            
             break;
 
           case controller.INPUT_KEYBOARD_CODE_BACKSPACE:
@@ -3218,6 +3458,14 @@ controller.registerCommand({
           case 3: controller.cursorActionCancel(); break;   // RIGHT
         }
       };
+      
+      canvas.onmouseup = function(ev){
+        if( controller.stateMachine.state === "IDLE_R" ){
+          switch(ev.which){
+            case 3: controller.cursorActionCancel(); break;   // RIGHT
+          }
+        }
+      };
     }
 
     // **************************************************************
@@ -3263,7 +3511,9 @@ controller.registerCommand({
       };
 
       hammer.onrelease = function(ev){
-
+        if( controller.stateMachine.state === "IDLE_R" ){
+          controller.cursorActionCancel();
+        }
       };
 
       hammer.ondrag    = function(ev){
@@ -3331,50 +3581,27 @@ controller.registerCommand({
   }
 
 });
-controller.registerCommand({
+controller.engineAction({
 
-  key:"loadSounds",
-  localAction: true,
-
-  // ------------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
-
-  // ------------------------------------------------------------------------
+  name:"loadSounds",
+  key:"LOSO",
+  
   action: function(){
   }
 });
-controller.registerCommand({
+controller.engineAction({
 
-  key:"startRendering",
-  localAction: true,
+  name:"startRendering",
+  
+  key:"STRE",
 
-  // ------------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
-
-  // ------------------------------------------------------------------------
   action: function(){
-
-    view.showInfoBlocks();
-
     controller.noRendering = false;
 
     view.fitScreenToDeviceOrientation();
     view.completeRedraw();
-
-
-    view.updateTileInfo();
-    view.updatePlayerInfo();
-
-    for( var i=0, e=model.units.length; i<e; i++ ){
-      if( model.units[i].owner !== CWT_INACTIVE_ID ){
-        controller.updateUnitStats( model.units[i] );
-      }
-    }
-
-    model.generateFogMap(0);
   }
 });
-
 
 (function(){
 
@@ -3404,32 +3631,31 @@ controller.registerCommand({
     alert("Attention!\nYour browser is not supported!");
   }
 
-
-  function invoke( key ){
-    var data = controller.aquireActionDataObject();
-    data.setAction( key );
-    controller.pushActionDataIntoBuffer( data );
-  }
-
-  // ----------------------------------------------------------------------
-  invoke( "loadMod" );
-  invoke( "loadImages" );
-  invoke( "cutImages" );
-  invoke( "colorizeImages" );
-  invoke( "loadInputDevices" );
-  invoke( "loadSounds" );
-
-  // FOR DEBUG PROCESS
-  var data = controller.aquireActionDataObject();
-  data.setAction( "loadGame" );
-  data.setSubAction( testMap );
-  controller.pushActionDataIntoBuffer( data );
+  util.injectMod = function( file ){
+    var fileref=document.createElement('script');
+    fileref.setAttribute("type","text/javascript");
+    fileref.setAttribute("src", file+".js" );
+    document.getElementsByTagName("head")[0].appendChild(fileref)
+  };
+  
+  // LOAD MODIFICATION
+  if( controller.storage.has("mod") ){
+         util.injectMod( controller.storage.get("mod") );
+  } else util.injectMod( "mod" ); // mod.js - ATM IN THE RESULT BUILD
 
   util.i18n_setLanguage("en");
-
-  invoke( "loadConfig" );
-  invoke( "startRendering" );
+  
+  controller.pushSharedAction("LDMD");
+  controller.pushSharedAction("LOIM");
+  controller.pushSharedAction("CUTI");
+  controller.pushSharedAction("COLI");
+  controller.pushSharedAction("LOID");
+  controller.pushSharedAction("LOSO");
+  controller.pushSharedAction( testMapNew, "LDGM" );  
+  controller.pushSharedAction("LCFG");
+  controller.pushSharedAction("STRE");
 })();
+
 
 
 

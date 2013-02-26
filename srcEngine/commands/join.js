@@ -1,29 +1,46 @@
-controller.registerCommand({
+controller.userAction({
 
-  key:"join",
+  name:"join",
+  key:"JNUN",
+  
   unitAction: true,
 
-  // ----------------------------------------------------------------------
-  condition: function( data ){
-    var selectedUnit = data.getSourceUnit();
-    var targetUnit = data.getTargetUnit();
-    if( targetUnit === null || targetUnit.owner !== model.turnOwner ||
+  condition: function( mem ){
+    var selectedUnit = mem.sourceUnit;
+    var targetUnit = mem.targetUnit;
+    
+    if( selectedUnit === null || 
+        targetUnit === null || 
+        targetUnit.owner !== model.turnOwner ||
         targetUnit === selectedUnit ) return false;
+    
+    // NO LOAD MERGE
+    if( model.hasLoadedIds( mem.sourceUnitId ) || 
+        model.hasLoadedIds( mem.targetUnitId ) ) return false;
 
     return ( selectedUnit.type === targetUnit.type && targetUnit.hp < 89 );
   },
+  
+  createDataSet: function( mem ){
+    return [ mem.sourceUnitId, mem.targetUnitId ];
+  },
 
-  // ----------------------------------------------------------------------
-  action: function( data ){
-    var joinSource = data.getSourceUnit();
-    var joinTarget = data.getTargetUnit();
-
-    
+  /**
+   * Joins an unit into an other.
+   *
+   * @param {Number} pid source unit id
+   * @param {Number} tid target unit id
+   *
+   * @methodOf controller.actions
+   * @name join
+   */
+  action: function( sid, tid ){
+    var joinSource = model.units[sid];
+    var joinTarget = model.units[tid];
     var junitSheet = model.sheets.unitSheets[ joinTarget.type ];
 
     // HEALTH POINTS
-    joinTarget.hp += joinSource.hp;
-    if( joinTarget.hp > 99 ) joinTarget.hp = 99;
+    controller.actions.healUnit( tid, joinSource.hp );
 
     // AMMO
     joinTarget.ammo += joinSource.ammo;
@@ -37,10 +54,7 @@ controller.registerCommand({
       joinTarget.fuel = junitSheet.maxFuel;
     }
 
-    model.destroyUnit( model.extractUnitId(joinSource) );
-    
-    // CHANGE SCOPE OF SELECTED UNIT TO TARGET
-    data.setSourceUnit( joinTarget );
-    controller.invokeCommand( data, "wait" );
+    controller.actions.destroyUnit( sid );
+    controller.actions.wait( tid );
   }
 });

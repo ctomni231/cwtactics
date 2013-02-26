@@ -1,0 +1,686 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		
+		<title>JsDoc Reference - controller</title>
+
+        <link rel="stylesheet" href="../static/default.css" type="text/css" media="screen" charset="utf-8" />
+	</head>
+
+	<body>
+<!-- ============================== header ================================= -->	
+		<!-- begin static/header.html -->
+		<div id="header">
+</div>
+		<!-- end static/header.html -->
+
+        
+
+<!-- ============================== classes index ============================ -->
+		<div id="index">
+            <div id="docs">
+                
+            </div>
+			
+<h2>Index</h2>
+<ul class="classList">
+  <li><a href="../files.html">File Index</a></li>
+  <li><a href="../index.html">Class Index</a></li>
+  <li><a href="../symbolindex.html">Symbol Index</a></li>
+</ul>
+<h2>Classes</h2>
+<ul class="classList">
+	
+	<li><i><a href="../symbols/_global_.html">_global_</a></i></li>
+	
+	<li><a href="../symbols/controller.html">controller</a></li>
+	
+	<li><a href="../symbols/controller.actions.html">controller.actions</a></li>
+	
+	<li><a href="../symbols/controller.serializationHandler.html">controller.serializationHandler</a></li>
+	
+	<li><a href="../symbols/controller.stateMachine.html">controller.stateMachine</a></li>
+	
+	<li><a href="../symbols/controller.stateMachine.data.html">controller.stateMachine.data</a></li>
+	
+	<li><a href="../symbols/controller.stateMachine.structure.html">controller.stateMachine.structure</a></li>
+	
+	<li><a href="../symbols/model.html">model</a></li>
+	
+	<li><a href="../symbols/model.sheets.html">model.sheets</a></li>
+	
+	<li><a href="../symbols/model.sheets.typeSheetValidators.html">model.sheets.typeSheetValidators</a></li>
+	
+	<li><a href="../symbols/util.html">util</a></li>
+	
+	<li><a href="../symbols/view.html">view</a></li>
+	
+</ul>
+
+		</div>
+		
+        <div id="symbolList">
+           <!-- constructor list -->
+           
+             <h3>
+                 Namespace 
+             </h3>
+             <ul>
+                <li >
+                  <a href="../symbols/controller.html">controller</a>
+                </li>
+             </ul>
+           
+           <!-- end constructor list -->
+
+           <!-- properties list -->
+           
+           
+             <h3>Variables</h3>
+             <ul>
+               
+                 <li>
+                   <a href="../symbols/controller.html#.CURRENT_SERIALIZATION_HANDLER">CURRENT_SERIALIZATION_HANDLER</a>
+                 </li>
+               
+             </ul>
+           
+           <!-- end properties list -->
+
+           <!-- function summary -->
+           
+           
+             <h3>Functions</h3>
+             <ul>
+               
+                   <li>
+                        <a href="../symbols/controller.html#.clientAction">clientAction</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/controller.html#.doNextAction">doNextAction</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/controller.html#.engineAction">engineAction</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/controller.html#.getActionObject">getActionObject</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/controller.html#.getActiveSerializationHandler">getActiveSerializationHandler</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/controller.html#.isNetworkGame">isNetworkGame</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/controller.html#.noNextActions">noNextActions</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/controller.html#.pushAction">pushAction</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/controller.html#.pushSharedAction">pushSharedAction</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/controller.html#.sendNetworkMessage_">sendNetworkMessage_</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/controller.html#.userAction">userAction</a>
+                    </li>
+               
+             </ul>
+           
+           <!-- end function summary -->
+
+           <!-- events summary -->
+           
+           
+           <!-- end events summary -->
+        </div>
+
+		<div id="content">
+<!-- ============================== class title ============================ -->
+			<h1 class="classTitle">
+				Namespace controller
+			</h1>
+
+<!-- ============================== class summary ========================== -->			
+			<p class="description">
+				
+				
+			
+				
+				
+				
+					<br /><i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_engineBase.js.html">engineBase.js</a>.
+				
+			</p>
+
+<!-- ============================== constructor details ==================== -->		
+			
+			<div class="details"><a name="constructor"> </a>
+				<div class="sectionTitle">
+					Namespace Detail
+				</div>
+				
+				<div class="fixedFont">
+						<b>controller</b>
+				</div>
+				
+				<div class="description">
+					<p>This is the main access layer for the custom wars tactics game client. All
+data changing actions will be invoked from this layer.</p>
+
+<p>The layer itself is build as state machine which represents a player action.
+Every action starts by a selection of a tile. Which the selected object will
+be choosen by the state of the tile. An empty tile leads to a map action. An
+empty (owned) property leads to a property actions like buying an unit. The
+last option will be choosen if the tile is occupied by an own unit.</p>
+					
+				</div>
+				
+				
+				
+				
+					
+					
+					
+					
+					
+					
+					
+
+			</div>
+			
+
+<!-- ============================== field details ========================== -->		
+			
+              <div class="details">
+				<div class="sectionTitle">
+					Field Detail
+				</div>
+				
+                  <div class="member">
+					<a name=".CURRENT_SERIALIZATION_HANDLER"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; &lt;constant&gt; 
+                      </div>
+					
+					
+					<span class="light">controller.</span><b>CURRENT_SERIALIZATION_HANDLER</b>
+					
+					</div>
+					<div class="description">
+						<p>Current active serialization handler version.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_controller_dataHandler.js.html">dataHandler.js</a>.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+                  </div>
+				
+              </div>
+			
+
+<!-- ============================== method details ========================= -->		
+			
+              <div class="details">
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+				
+                  <div class="member">
+					<a name=".clientAction"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">controller.</span><b>clientAction</b>(impl)
+					
+					</div>
+					<div class="description">
+						<p>A client action is always a locally invoked action.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_controller_actionHandler.js.html">actionHandler.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>impl</b>
+									
+								</dt>
+								<dd>action implementation</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name=".doNextAction"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">controller.</span><b>doNextAction</b>()
+					
+					</div>
+					<div class="description">
+						<p>Pops the oldest action from the buffer and evaluates it. After the evaluation this 
+function returns the action. If no action is in the buffer, null will be returned.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_controller_actionStack.js.html">actionStack.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name=".engineAction"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">controller.</span><b>engineAction</b>(impl)
+					
+					</div>
+					<div class="description">
+						<p>Registers an internal non user callable action.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_controller_actionHandler.js.html">actionHandler.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>impl</b>
+									
+								</dt>
+								<dd>action implementation</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name=".getActionObject"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">controller.</span><b>getActionObject</b>(actionKey)
+					
+					</div>
+					<div class="description">
+						<p>Returns an action object for a given action key.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_controller_actionHandler.js.html">actionHandler.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>actionKey</b>
+									
+								</dt>
+								<dd>action key</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name=".getActiveSerializationHandler"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">controller.</span><b>getActiveSerializationHandler</b>(version)
+					
+					</div>
+					<div class="description">
+						<p>Returns the correct <a href="../symbols/controller.serializationHandler.html">controller.serializationHandler</a> object for the given 
+version.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_controller_dataHandler.js.html">dataHandler.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>version</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>serialization handler object</dd>
+							
+							</dl>
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name=".isNetworkGame"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">controller.</span><b>isNetworkGame</b>()
+					
+					</div>
+					<div class="description">
+						<p>Returns true if the current session a network session, else false.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_controller_networkHandler.js.html">networkHandler.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name=".noNextActions"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">controller.</span><b>noNextActions</b>()
+					
+					</div>
+					<div class="description">
+						<p>Returns true if no action is in the action 
+stack, else false.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_controller_actionStack.js.html">actionStack.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name=".pushAction"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">controller.</span><b>pushAction</b>()
+					
+					</div>
+					<div class="description">
+						<p>Pushes an action into the buffer.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_controller_actionStack.js.html">actionStack.js</a>.
+						
+						
+					</div>
+					
+					
+					
+					<pre class="code">
+ data format
+ [ parameters... , actionKey ]</pre>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name=".pushSharedAction"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">controller.</span><b>pushSharedAction</b>()
+					
+					</div>
+					<div class="description">
+						<p>Pushes an action into the buffer and invokes a transaction process if the action
+is marked as shared.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_controller_actionStack.js.html">actionStack.js</a>.
+						
+						
+					</div>
+					
+					
+					
+					<pre class="code">
+ data format
+ [ parameters... , actionKey ]</pre>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name=".sendNetworkMessage_"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">controller.</span><b>sendNetworkMessage_</b>()
+					
+					</div>
+					<div class="description">
+						<p>Encodes an argument array and sends it to the server instance.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_controller_networkHandler.js.html">networkHandler.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>arguments.</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name=".userAction"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">controller.</span><b>userAction</b>(impl)
+					
+					</div>
+					<div class="description">
+						<p>Registers an user callable action.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_controller_actionHandler.js.html">actionHandler.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>impl</b>
+									
+								</dt>
+								<dd>action implementation</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+              </div>
+			
+			
+<!-- ============================== event details ========================= -->		
+			
+			<hr />
+		</div>
+
+		
+<!-- ============================== footer ================================= -->
+		<div class="fineprint" style="clear:both;text-align:center">
+			
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Tue Feb 26 2013 00:59:25 GMT+0100 (MEZ)
+		</div>
+	</body>
+</html>

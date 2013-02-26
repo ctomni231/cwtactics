@@ -1,1 +1,1 @@
-const DEBUG = true;
+var DEBUG = true;

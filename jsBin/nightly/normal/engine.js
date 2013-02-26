@@ -2,13 +2,82 @@
  * Included for builds to turn off debugging and type checks.
  * Uglify will use it to drop these statements.
  */
-const DEBUG = false;
+var DEBUG = false;
+/** @constant */
+var CWT_ACTIONS_BUFFER_SIZE = 200;
+
+/**
+ * The greatest possible map width.
+ *
+ * @config
+ */
+var CWT_MAX_MAP_WIDTH = 100;
+
+/**
+ * The greatest possible map height.
+ *
+ * @config
+ */
+var CWT_MAX_MAP_HEIGHT = 100;
+
+/**
+ * Maximum amount of players in the game.
+ *
+ * @config
+ */
+var CWT_MAX_PLAYER = 5;
+
+/**
+ * The maximum amount of units a player can hold.
+ *
+ * @config
+ */
+var CWT_MAX_UNITS_PER_PLAYER = 50;
+
+/**
+ * The maximum amount of properties on a map.
+ *
+ * @config
+ */
+var CWT_MAX_PROPERTIES = 200;
+
+/**
+ * The maximum range to select a target from a selection range.
+ *
+ * @config
+ */
+var CWT_MAX_SELECTION_RANGE = 15;
+
+/**
+ * The maximum move range for an unit object.
+ *
+ * @config
+ */
+var CWT_MAX_MOVE_RANGE = 15;
+
+/**
+ * This constant can be overwritten for a custom size, but this must be done
+ * before the engine will be initialized.
+ *
+ * @config
+ */
+var CWT_MAX_BUFFER_SIZE = 200;
 
 
 
-const CWT_INACTIVE_ID = -1;
+/** 
+ * Represents an inactive identical number.
+ *
+ * @constant 
+ */ 
+var CWT_INACTIVE_ID = -1;
 
-const CWT_VERSION = "M 2.6";
+/**
+ * The engine version tag.
+ *
+ * @constant 
+ */ 
+var CWT_VERSION = "Milestone 2.6";
 
 /**
  * The model layer holds all necessary data for a game round. This layer can be
@@ -40,7 +109,7 @@ var model      = {};
 var controller  = {};
 
 /**
- *
+ * @namespace
  */
 var view        = {};
 
@@ -54,12 +123,23 @@ var view        = {};
  */
 var util        = {};
 
+/**
+ * Injects a modification file into the engine.
+ *
+ * @param {String} modName name of the mod which must be represent as 
+ *                         file in the main context
+ */
+util.injectMod = function( modName ){
+  util.raiseError("inject mod function is not re-defined in the client");
+};
+
+
 
 /**
  * Fills an array with a value. Works also for matrix objects.
  *
- * @param arr
- * @param defaultValue
+ * @param arr an array or matrix created by {@link util.list} or {@link util.matrix}
+ * @param defaultValue he default value that will be inserted into the array/matrix
  */
 util.fill = function( arr, defaultValue ){
   var isFN = typeof defaultValue === 'function';
@@ -87,8 +167,8 @@ util.fill = function( arr, defaultValue ){
 /**
  * Creates a list and fills it with default values.
  *
- * @param len
- * @param defaultValue
+ * @param {Number} len the length of the created list
+ * @param defaultValue the default value that will be inserted into the list slots 
  */
 util.list = function( len, defaultValue ){
   if( defaultValue === undefined ){ defaultValue = null; }
@@ -106,9 +186,9 @@ util.list = function( len, defaultValue ){
 /**
  * Creates a matrix (table) and fills it with default values.
  *
- * @param w
- * @param h
- * @param defaultValue
+ * @param {Number} w width of the matrix
+ * @param {Number} h height of the matrix
+ * @param defaultValue the default value that will be inserted into the cells 
  */
 util.matrix = function( w, h, defaultValue ){
 
@@ -131,139 +211,22 @@ util.matrix = function( w, h, defaultValue ){
 
   return warr;
 };
-/**
- * Throws an error for an illegal unit id.
+/** 
+ * Contains all active languages.
  */
-util.illegalUnitIdError = function(){
-  throw Error("illegal unit id");
-};
-
-/**
- * Throws an error for an illegal property id.
- */
-util.illegalPropertyIdError = function(){
-  throw Error("illegal unit id");
-};
-
-/**
- * Throws an error for an illegal argument.
- */
-util.illegalArgumentError = function(){
-  throw Error("illegal argument");
-};
-
-/**
- * Throws an error for a type error.
- */
-util.typeError = function(){
-  throw Error("type error");
-};
-
-/**
- * Throws an unexpected error.
- */
-util.unexpectedSituationError = function(){
-  throw Error("unexpected error");
-};
-
-/**
- * Throws an error for an illegal position.
- */
-util.illegalPositionError = function(){
-  throw Error("illegal map position");
-};
-
-/**
- * Throws an error for an illegal position.
- */
-util.nullPointerError = function(){
-  throw Error("null pointer");
-};
-
-/**
- *
- * @param obj
- */
-util.isDefined = function( obj ){
-  return obj !== undefined && obj !== null;
-};
-
-/**
- *
- * @param obj
- */
-util.isFn = function( obj ){
-  return typeof obj === "function";
-};
-
-/**
- *
- * @param obj
- */
-util.isNumber = function( obj ){
-  return typeof obj === "number";
-};
-
-/**
- *
- * @param obj
- */
-util.isString = function( obj ){
-  return typeof obj === "string";
-};
-
-/**
- *
- * @param obj
- */
-util.isBool = function( obj ){
-  return typeof obj === "boolean";
-};
-util.StringIdMapper = function(){
-  this.map = {};
-  this._len = 0;
-};
-
-/**
- *
- * @param key
- */
-util.StringIdMapper.prototype.getIdFromKey = function( key ){
-  return this.map[key];
-};
-
-/**
- *
- * @param id
- */
-util.StringIdMapper.prototype.getKeyFromId = function( id ){
-  var map = this.map;
-  var keys = Object.keys( map );
-
-  for( var i=0,e=keys.length; i<e; i++ ){
-    if( map[keys[i]] === id ) return keys[i];
-  }
-
-  return null;
-};
-
-/**
- *
- * @param keyString
- */
-util.StringIdMapper.prototype.registerKey = function( keyString ){
-  if( this.map.hasOwnProperty( keyString ) ) throw Error();
-
-  this.map[ keyString ] = this._len;
-  this._len++;
-};
 util.i18n_data = { en:{} };
+
+/** 
+ * The active language object for the game.
+ *
+ * @default english
+ */
 util.i18n_lang = util.i18n_data.en;
 
 /**
  * Returns a localized string for a given key or if not exist the key itself.
  *
- * @param key
+ * @param {String} key
  */
 util.i18n_localized = function( key ){
   var result = this.i18n_lang[key];
@@ -273,7 +236,7 @@ util.i18n_localized = function( key ){
 /**
  * Sets the active language.
  *
- * @param langKey
+ * @param {String} langKey
  */
 util.i18n_setLanguage = function( langKey ){
   if( !util.i18n_data.hasOwnProperty( langKey ) ){
@@ -287,8 +250,8 @@ util.i18n_setLanguage = function( langKey ){
 /**
  * Appends data to a given language.
  *
- * @param langKey
- * @param data
+ * @param {String} langKey
+ * @param {Object} data
  */
 util.i18n_appendToLanguage = function( langKey, data ){
 
@@ -304,84 +267,56 @@ util.i18n_appendToLanguage = function( langKey, data ){
     langNs[ keys[i] ] = data[ keys[i] ];
   }
 };
-/** @constant */
-util.LOG_INFO = 0;
-
-/** @constant */
-util.LOG_WARN = 1;
-
-/** @constant */
-util.LOG_ERROR = 2;
-
-/** @config */
-util.logWriter = function( level, string ){
-  switch( level ){
-
-    case util.LOG_ERROR:
-      console.error( string );
-      break;
-
-    case util.LOG_INFO:
-      console.log( string );
-      break;
-
-    case util.LOG_WARN:
-      console.warn( string );
-      break;
-
-    default:  console.log( string );
+/**
+ * Raises an error in the active Javascript environment.
+ *
+ * @param {...Object} reason A number of arguments that will be used as error message.
+ *                           If an argument isn't a String then it will be converted to
+ *                           String by the toString() function.
+ */
+util.raiseError = function( reason ){
+  
+  if( arguments.length === 0 ){
+    reason = "CustomWars Debug:: An error was raised";
   }
+  else if( arguments.length > 1 ){
+    reason = Array.prototype.join.call( arguments, " " );
+  }
+    
+  throw Error( reason );
 };
+
+/**
+ * Logging function.
+ *
+ * @param {...Object} reason A number of arguments that will be used as message.
+ *                           If an argument isn't a String then it will be converted to
+ *                           String by the toString() function.
+ * @config
+ */
+util.log = function( msg ){
+  if( arguments.length > 1 ){
+    msg = Array.prototype.join.call( arguments, " " );
+  }
+
+  console.log( msg );
+}
 
 /**
  * Overwritable logging function.
  *
- * @param string
- * @config
+ * @deprecated will be removed in version 0.3
  */
-util.logInfo = function( string ){
-  if( arguments.length > 1 ){
-    string = Array.prototype.join.call( arguments, " " );
-  }
-
-  util.logWriter( util.LOG_INFO , string );
+util.logInfo = function(){
+  util.log.apply( this, arguments );
 };
-
-/**
- * Overwritable logging function.
- *
- * @param string
- * @config
+/** 
+ * Creates a ring buffer with a fixed size.
  */
-util.logWarn = function( string ){
-  if( arguments.length > 1 ){
-    string = Array.prototype.join.call( arguments, " " );
-  }
-
-  util.logWriter( util.LOG_WARN , string );
-};
-
-/**
- * Overwritable logging function.
- *
- * @param string
- * @config
- */
-util.logError = function( error ){
-  if( arguments.length > 1 ){
-    error = Array.prototype.join.call( arguments, " " );
-  }
-
-  util.logWriter( util.LOG_ERROR, error );
-};
 util.createRingBuffer = function( size ){
 
   var buffer = {
 
-    /**
-     *
-     * @param msg
-     */
     push: function (msg){
       if ( this._data[ this._wInd ] !== null) {
         throw Error("message buffer is full");
@@ -402,15 +337,13 @@ util.createRingBuffer = function( size ){
     },
 
     /**
+     * Returns true if the ring buffer is empty else false.
      *
      */
     isEmpty: function () {
       return ( this._data[ this._rInd ] === null );
     },
 
-    /**
-     *
-     */
     pop: function () {
       if( this._data[ this._rInd ] === null) {
         throw Error("message buffer is empty");
@@ -427,9 +360,6 @@ util.createRingBuffer = function( size ){
       return msg;
     },
 
-    /**
-     *
-     */
     clear: function(){
       this._rInd = 0;
       this._wInd = 0;
@@ -446,206 +376,66 @@ util.createRingBuffer = function( size ){
 
   return buffer;
 };
-util.createStateMachine = function( state, factory ){
-
-  return {
-
-    state:function(){
-      return state;
-    },
-
-    event:function( event ){
-      if( DEBUG ){
-        util.logInfo("got event",event);
-      }
-
-      var descr = factory[state][event];
-
-      if( DEBUG && descr === undefined ){
-        util.illegalArgumentError("event "+event+" not defined ");
-      }
-
-      // SET STATE
-      state = ( typeof descr === "function" )?
-        descr.apply( controller.input, arguments ): descr;
-
-      if( DEBUG ){
-        util.logInfo("enter new state",state);
-      }
-
-      if( DEBUG && !factory.hasOwnProperty(state) ){
-        util.illegalArgumentError("state "+state+" is not defined");
-      }
-
-      descr = factory[state].onenter;
-      if( descr !== undefined ){
-        descr.apply( controller.input, arguments );
-      }
-
-      descr = factory[state].actionState;
-      if( descr !== undefined ){
-        controller.input.event( "actionState" );
-      }
-    }
-  };
-};
+/** 
+ * @constant 
+ */
 util.FUNCTION_TRUE_RETURNER = function(){ return true; };
+
+/** 
+ * @constant 
+ */
 util.FUNCTION_FALSE_RETURNER = function(){ return false; };
-
 /**
- * Serializes a javascript object to a JSON specification compatible string.
- *
- * @param o
+ * Contains the fog data map. A value 0 means a tile is not visible. A value
+ * greater than 0 means it is visible for n units ( n = fog value of the tile ). 
  */
-util.objectToJSON = function( o ){
-  return JSON.stringify(o);
-};
-
-/**
- *
- * @param ns
- * @param factory {function( function )}
- */
-util.replaceFunction = function( ns, factory ){
-
-  // SEARCH OBJECT
-  var lookup = ns.split(".");
-  var cobj = window;
-  for( var i=0,e=lookup.length; i<e-1; i++ ){
-
-    cobj = cobj[ lookup[i] ];
-    if( cobj === undefined ){
-      throw Error("illegal given namespace: does not exists");
-    }
-  }
-
-  var lastName = lookup[ lookup.length -1 ];
-  var fn = cobj[ lastName ];
-
-  if( typeof fn !== 'function' ){
-    throw Error("target object needs to be a function");
-  }
-
-  // SET NEW FN
-  var res = factory( fn );
-  if( typeof res !== 'function' ){
-    throw Error("replacer factory needs to return a function");
-  }
-  cobj[ lastName ] = res;
-};
 model.fogData = util.matrix( CWT_MAX_MAP_WIDTH, CWT_MAX_MAP_HEIGHT, 0 );
+/**
+ * Rule object holder.
+ */
+model.ruleTable = {};
 
-model.resetFogData = function( value ){
-  if( arguments.length === 0 ) value = 0;
-  var x = 0;
-  var xe = model.mapWidth;
-  var y;
-  var ye = model.mapHeight;
+/**
+ * Data level rules.
+ */
+model.ruleTable.dataLevel = {
 
-  for( ;x<xe; x++ ){
-    for( y=0 ;y<ye; y++ ){
-      model.fogData[x][y] = value;
-    }
-  }
+  /** attack damage modifier */
+  att:100,
+
+  /** defense damage modifier */
+  def:100,
+
+  /** counter attack damage modifier */
+  cAtt:100,
+
+  /** the funds returned by owned properties */
+  funds:1000,
+
+  /** the vision modifier */
+  vision: 0,
+  
+  /** the move range modifier */
+  moveRange: 0,
+  
+  /** days to regenerate silos, -1 if no regeneration should be done */
+  siloRegeneration:-1,
+
+  /** is fog enabled? */
+  fogEnabled:true,
+  
+  /** is a silo usable? */
+  usableSilo:true
 };
 
-model.fogOn = true;
+model.ruleTable.mapLevel = Object.create( model.ruleTable.dataLevel );
+model.ruleTable.roundLevel = Object.create( model.ruleTable.mapLevel );
+model.ruleTable.playerLevel = Object.create( model.ruleTable.roundLevel );
 
-model.generateFogMap = function( pid ){
-  if( model.fogOn === false ){
-    model.resetFogData(1);
-    return;
-  }
-
-  var addV = model.setVisioner;
-  var x = 0;
-  var xe = model.mapWidth;
-  var y;
-  var ye = model.mapHeight;
-  var tid = model.players[pid].team;
-
-  model.resetFogData();
-
-  for( ;x<xe; x++ ){
-    for( y=0 ;y<ye; y++ ){
-
-      // ---------------------------------------------------------------
-
-      var unit = model.unitPosMap[x][y];
-      if( unit !== null ){
-        var sid = unit.owner;
-        if( pid === sid || model.players[sid].team === tid ){
-          var vision = model.sheets.unitSheets[unit.type].vision;
-          addV( x,y, vision );
-        }
-      }
-
-      // ---------------------------------------------------------------
-
-      var property = model.propertyPosMap[x][y];
-      if( property !== null ){
-        var sid = property.owner;
-        if( pid === sid || model.players[sid].team === tid ){
-          var vision = model.sheets.tileSheets[property.type].vision;
-          addV( x,y, vision );
-        }
-      }
-
-      // ---------------------------------------------------------------
-
-    }
-  }
-};
-
-model.setVisioner = function( x,y, range ){
-  if( model.fogOn === false ){
-    return;
-  }
-
-  var lX;
-  var hX;
-  var lY = y-range;
-  var hY = y+range;
-  if( lY < 0 ) lY = 0;
-  if( hY >= model.mapHeight ) hY = model.mapHeight-1;
-  for( ; lY<=hY; lY++ ){
-
-    var disY = Math.abs( lY-y );
-    lX = x-range+disY;
-    hX = x+range-disY;
-    if( lX < 0 ) lX = 0;
-    if( hX >= model.mapWidth ) hX = model.mapWidth-1;
-    for( ; lX<=hX; lX++ ){
-
-      model.fogData[lX][lY]++;
-    }
-  }
-};
-
-model.removeVisioner = function( x,y, range ){
-  if( model.fogOn === false ){
-    return;
-  }
-
-  var lX;
-  var hX;
-  var lY = y-range;
-  var hY = y+range;
-  if( lY < 0 ) lY = 0;
-  if( hY >= model.mapHeight ) hY = model.mapHeight-1;
-  for( ; lY<=hY; lY++ ){
-
-    var disY = Math.abs( lY-y );
-    lX = x-range+disY;
-    hX = x+range-disY;
-    if( lX < 0 ) lX = 0;
-    if( hX >= model.mapWidth ) hX = model.mapWidth-1;
-    for( ; lX<=hX; lX++ ){
-      model.fogData[lX][lY]--;
-    }
-  }
-};
-model.rules = {};
+/**
+ * Main rule object.
+ */
+model.rules = model.ruleTable.playerLevel;
 
 /**
  * Unites modification rules and custom rules to a valid game round rule
@@ -686,10 +476,10 @@ model.mapWidth = -1;
 /**
  * Returns the distance of two positions.
  *
- * @param sx
- * @param sy
- * @param tx
- * @param ty
+ * @param {Number} sx
+ * @param {Number} sy
+ * @param {Number} tx
+ * @param {Number} ty
  */
 model.distance = function( sx,sy,tx,ty ){
   var dx = Math.abs(sx-tx);
@@ -698,15 +488,16 @@ model.distance = function( sx,sy,tx,ty ){
 };
 
 /**
- *
- * @param ax
- * @param ay
- * @param bx
- * @param by
+ * Returns the move code from a tile ax,ay to bx,by.
+ * 
+ * @param {Number} ax
+ * @param {Number} ay
+ * @param {Number} bx
+ * @param {Number} by
  */
 model.moveCodeFromAtoB = function( ax,ay, bx,by ){
   if( model.distance( ax,ay, bx,by ) !== 1 ){
-    util.illegalArgumentError("both positions haven't a distance of 1");
+    util.raiseError("both positions haven't a distance of 1");
   }
 
   // MUST FIT
@@ -722,6 +513,15 @@ model.isValidPosition = function( x,y ){
   return ( x >= 0 && y >= 0 && x < model.mapWidth && y < model.mapHeight );
 };
 
+/**
+ * Returns true if an own unit, in relationship to a given player id, is on a
+ * tile at a given position x,y.
+ * 
+ * @param {Number} x
+ * @param {Number} y
+ * @param {Number} pid
+ * @returns {Boolean}
+ */
 model.thereIsAnOwnUnitAt = function( x,y,pid ){
   if( !model.isValidPosition(x,y) ) return false;
 
@@ -729,6 +529,15 @@ model.thereIsAnOwnUnitAt = function( x,y,pid ){
   return ( unit !== null && pid === unit.owner );
 };
 
+/**
+ * Returns true if an allied unit, in relationship to a given player id, is on 
+ * a tile at a given position x,y.
+ * 
+ * @param {Number} x
+ * @param {Number} y
+ * @param {Number} pid
+ * @returns {Boolean}
+ */
 model.thereIsAnAlliedUnitAt = function( x,y,pid ){
   if( !model.isValidPosition(x,y) ) return false;
 
@@ -737,6 +546,15 @@ model.thereIsAnAlliedUnitAt = function( x,y,pid ){
             model.players[pid].team === model.players[unit.owner].team);
 };
 
+/**
+ * Returns true if an enemy unit, in relationship to a given player id, is on a
+ * tile at a given position x,y.
+ * 
+ * @param {Number} x
+ * @param {Number} y
+ * @param {Number} pid
+ * @returns {Boolean}
+ */
 model.thereIsAnEnemyUnitAt = function( x,y,pid ){
   if( !model.isValidPosition(x,y) ) return false;
 
@@ -769,25 +587,25 @@ model.MOVE_CODE_DOWN  = 2;
 model.MOVE_CODE_LEFT  = 3;
 
 /**
- *
- * @param selectData
- * @param actionData
+ * Injects movable tiles into a action data memory object.
+ * 
+ * @param data action data memory
  */
-model.fillMoveMap = function( selectData, actionData ){
-  var unit   = actionData.getSourceUnit();
+model.fillMoveMap = function( data ){
+  var unit   = data.sourceUnit;
   var type   = model.sheets.unitSheets[unit.type];
   var mType  = model.sheets.movetypeSheets[ type.moveType ];
   var player = model.players[unit.owner];
   var range  = type.moveRange;
-  var x = actionData.getSourceX();
-  var y = actionData.getSourceY();
+  var x = data.sourceX;
+  var y = data.sourceY;
 
   // DECREASE RANGE IF NOT ENOUGH FUEL IS AVAILABLE
   if( unit.fuel < range ) range = unit.fuel;
 
   // ADD START TILE TO MAP
-  selectData.cleanIt( CWT_INACTIVE_ID, x,y );
-  selectData.setPositionValue( x,y,range );
+  data.setSelectionCenter( x,y,CWT_INACTIVE_ID );
+  data.setSelectionValueAt( x,y,range );
 
   // FILL MAP ( ONE STRUCT IS X;Y;LEFT_POINTS )
   var toBeChecked = [ x,y,range ];
@@ -852,10 +670,10 @@ model.fillMoveMap = function( selectData, actionData ){
 
         var rest = cp-cost;
         if( rest >= 0 &&
-          rest > selectData.getPositionValue(tx,ty) ){
+          rest > data.getSelectionValueAt(tx,ty) ){
 
           // ADD TO MOVE MAP
-          selectData.setPositionValue( tx,ty,rest );
+          data.setSelectionValueAt( tx,ty,rest );
 
           // ADD TO CHECKER
           for( var i=0,e=toBeChecked.length; i<=e; i+=3 ){
@@ -874,35 +692,33 @@ model.fillMoveMap = function( selectData, actionData ){
   // CONVERT LEFT POINTS TO MOVE COSTS
   for( var x=0,xe=model.mapWidth; x<xe; x++ ){
     for( var y=0,ye=model.mapHeight; y<ye; y++ ){
-      if( selectData.getPositionValue(x,y) !== -1 ){
+      if( data.getSelectionValueAt(x,y) !== -1 ){
         var cost = model.moveCosts( mType, model.map[x][y] );
-        selectData.setPositionValue( x, y, cost );
+        data.setSelectionValueAt( x, y, cost );
       }
     }
   }
 };
 
 /**
+ * Appends a tile to the move path of a given action data memory object.
  *
- * @param selectData
- * @param actionData
- * @param tx
- * @param ty
- * @param code
+ * @param data action data memory
+ * @param tx target x coordinate
+ * @param ty target y coordinate
+ * @param code move code to the next tile
  */
-model.addCodeToPath = function( selectData, actionData, tx, ty, code ){
-  var fuelLeft = actionData.getSourceUnit().fuel;
-  var fuelUsed = 0;
-  var movePath = actionData.getMovePath();
+model.addCodeToPath = function( data, tx, ty, code ){
+  var fuelLeft = data.sourceUnit.fuel;
+  var fuelUsed = 0; 
+  var movePath = data.movePath;
   movePath.push( code );
-  var points =  model.sheets.unitSheets[
-    actionData.getSourceUnit().type
-  ].moveRange;
+  var points =  model.sheets.unitSheets[ data.sourceUnit.type ].moveRange;
 
   if( fuelLeft < points ) points = fuelLeft;
 
-  var cx = actionData.getSourceX();
-  var cy = actionData.getSourceY();
+  var cx = data.sourceX;
+  var cy = data.sourceY;
   for( var i=0,e=movePath.length; i<e; i++ ){
 
     switch( movePath[i] ){
@@ -910,52 +726,49 @@ model.addCodeToPath = function( selectData, actionData, tx, ty, code ){
       case model.MOVE_CODE_DOWN: cy++; break;
       case model.MOVE_CODE_LEFT: cx--; break;
       case model.MOVE_CODE_RIGHT: cx++; break;
-      default : util.illegalArgumentError();
+      default : util.raiseError();
     }
 
-    fuelUsed += selectData.getPositionValue(cx,cy);
+    fuelUsed += data.getSelectionValueAt(cx,cy);
   }
 
   // GENERATE NEW PATH IF THE OLD IS NOT POSSIBLE
   if( fuelUsed > points ){
-    model.setPathByRecalculation( selectData, actionData, tx,ty );
+    model.setPathByRecalculation( data, tx,ty );
   }
 };
 
 /**
- *
- * @param selectData
- * @param actionData
- * @param tx
- * @param ty
+ * Regenerates a path from the source position of an action data memory object
+ * to a given target position.
+ * 
+ * @param data action data memory
+ * @param tx target x coordinate
+ * @param ty target y coordinate
  */
-model.setPathByRecalculation = function( selectData, actionData, tx,ty ){
-  var stx = actionData.getSourceX( );
-  var sty = actionData.getSourceY( );
-  var movePath = actionData.getMovePath();
+model.setPathByRecalculation = function( data, tx,ty ){
+  var stx = data.sourceX;
+  var sty = data.sourceY;
+  var movePath = data.movePath;
 
-  if ( DEBUG ) util.logInfo(
-    "searching path from",
-    "(", stx, ",", sty, ")",
-    "to",
-    "(", tx, ",", ty, ")"
-  );
+  if ( DEBUG ){
+    util.log( "searching path from (", stx, ",", sty, ") to (", tx, ",", ty, ")" );
+  }
 
-  // var graph = new Graph( nodes );
-  var graph = new Graph( selectData.getDataMatrix() );
+  var graph = new Graph( data.selectionData );
 
-  var dsx = stx - selectData.getCenterX( );
-  var dsy = sty - selectData.getCenterY( );
+  var dsx = stx - data.selectionCX;
+  var dsy = sty - data.selectionCY;
   var start = graph.nodes[ dsx ][ dsy ];
 
-  var dtx = tx - selectData.getCenterX( );
-  var dty = ty - selectData.getCenterY( );
+  var dtx = tx - data.selectionCX;
+  var dty = ty - data.selectionCY;
   var end = graph.nodes[ dtx ][ dty ];
 
   var path = astar.search(graph.nodes, start, end);
 
   if ( DEBUG ){
-    util.logInfo("calculated way is", path);
+    util.log("calculated way is", path);
   }
 
   var codesPath = [];
@@ -968,11 +781,12 @@ model.setPathByRecalculation = function( selectData, actionData, tx,ty ){
 
     var dir;
     if (cNode.x > cx) dir = model.MOVE_CODE_RIGHT;
-    if (cNode.x < cx) dir = model.MOVE_CODE_LEFT;
-    if (cNode.y > cy) dir = model.MOVE_CODE_DOWN;
-    if (cNode.y < cy) dir = model.MOVE_CODE_UP;
-
-    if (dir === undefined) throw Error();
+    else if (cNode.x < cx) dir = model.MOVE_CODE_LEFT;
+    else if (cNode.y > cy) dir = model.MOVE_CODE_DOWN;
+    else if (cNode.y < cy) dir = model.MOVE_CODE_UP;
+    else {
+      util.raiseError();
+    }
 
     codesPath.push(dir);
 
@@ -985,43 +799,92 @@ model.setPathByRecalculation = function( selectData, actionData, tx,ty ){
     movePath[i] = codesPath[i];
   }
 };
+/**
+ * List that contains all player instances. An inactive player is marked 
+ * with {@link CWT_INACTIVE_ID} as team number.
+ */
 model.players = util.list( CWT_MAX_PLAYER+1, function( index ){
   var neutral = (index === CWT_MAX_PLAYER );
   return {
     gold: 0,
     team: ( neutral )? 9999 : CWT_INACTIVE_ID,
     name: ( neutral )? "NEUTRAL" : null
-  }
+  };
 });
 
+/**
+ * Returns true if the given id is a neutral player, else false.
+ * 
+ * @param {Number} id player id
+ * @deprecated will be removed with version 0.3 because the neutral player will
+ *             be dropped.
+ */
 model.isNeutralPlayer = function( id ){
   return model.neutralPlayerId === id;
 };
 
 /**
+ * Extracts the identical number from an player object.
+ *
+ * @param player
+ */
+model.extractPlayerId = function( player ){
+  if( player === null ){
+    util.raiseError("player argument cannot be null");
+  }
+
+  var players = model.players;
+  for( var i=0,e=players.length; i<e; i++ ){
+    if( players[i] === player ) return i;
+  }
+
+  util.raiseError( "cannot find player", players );
+};
+
+/**
  * Returns the neutral player id.
+ * 
+ * @deprecated will be dropped in version 0.3
  */
 model.neutralPlayerId = model.players.length-1;
 
+/**
+ * Returns true if player id A is in the same team 
+ * as player id B, else false. 
+ * 
+ * @param {Number} pidA player id
+ * @param {Number} pidB player id
+ */
 model.alliedPlayers = function( pidA, pidB ){
   return model.players[pidA].team === model.players[pidB].team;
 };
 
+/**
+ * Returns true if player id A is not in the same 
+ * team as player id B, else false. 
+ * 
+ * @param {Number} pidA player id
+ * @param {Number} pidB player id
+ */
 model.enemyPlayers = function( pidA, pidB ){
   return model.players[pidA].team !== model.players[pidB].team;
 };
 /**
- *
+ * List of all available properties of a game round. If a property is not 
+ * used it will be marked with an owner value {@link CWT_INACTIVE_ID}.
  */
 model.properties = util.list( CWT_MAX_PROPERTIES+1, function(){
   return {
     capturePoints: 20,
-    owner: -1
-  }
+    owner: -1,
+    type: null
+  };
 });
 
 /**
- *
+ * Matrix that has the same metrics as the game map. Every property will be 
+ * placed in the cell that represents its position. A property will be 
+ * accessed by model.propertyPosMap[x][y].
  */
 model.propertyPosMap = util.matrix(
   CWT_MAX_MAP_WIDTH,
@@ -1030,9 +893,10 @@ model.propertyPosMap = util.matrix(
 );
 
 /**
- *
- * @param x
- * @param y
+ * Returns true if the tile at position x,y is a property, else false.
+ * 
+ * @param {Number} x x coordinate
+ * @param {Number} y y coordinate
  */
 model.tileIsProperty = function( x,y ){
   var prop = model.propertyPosMap[x][y];
@@ -1042,11 +906,11 @@ model.tileIsProperty = function( x,y ){
 /**
  * Extracts the identical number from a property object.
  *
- * @param unit
+ * @param property
  */
 model.extractPropertyId = function( property ){
   if( property === null ){
-    throw Error("property argument cannot be null");
+    util.raiseError("property argument cannot be null");
   }
 
   var props = model.properties;
@@ -1054,12 +918,13 @@ model.extractPropertyId = function( property ){
     if( props[i] === property ) return i;
   }
 
-  throw Error("cannot find property",property );
+  util.raiseError("cannot find property",property );
 };
 
 /**
+ * Counts all properties owned by the player with the given player id.
  *
- * @param pid
+ * @param {Number} pid player id
  */
 model.countProperties = function( pid ){
 
@@ -1077,6 +942,7 @@ model.countProperties = function( pid ){
  * Two objects which have the same owner.
  *
  * @constant
+ * @deprecated will be removed in version 0.3
  */
 model.RELATIONSHIP_SAME_OWNER = 0;
 
@@ -1084,6 +950,7 @@ model.RELATIONSHIP_SAME_OWNER = 0;
  * Two objects which have differnt of the same team.
  *
  * @constant
+ * @deprecated will be removed in version 0.3
  */
 model.RELATIONSHIP_ALLIED = 1;
 
@@ -1091,6 +958,7 @@ model.RELATIONSHIP_ALLIED = 1;
  * Two objects which have differnt owners of different teams.
  *
  * @constant
+ * @deprecated will be removed in version 0.3
  */
 model.RELATIONSHIP_ENEMY = 2;
 
@@ -1099,17 +967,21 @@ model.RELATIONSHIP_ENEMY = 2;
  * hasn't an owner.
  *
  * @constant
+ * @deprecated will be removed in version 0.3
  */
 model.RELATIONSHIP_NONE = 3;
 
 /**
  * @constant
+ * @deprecated will be removed in version 0.3
  */
 model.RELATIONSHIP_SAME_OBJECT = 4;
 
 
 /**
  * Returns the relationship between two player identicals.
+ *
+ * @deprecated will be removed in version 0.3
  *
  * @param pidA player id or ownable object
  * @param pidB player id or ownable object
@@ -1181,32 +1053,18 @@ model.canAct = function( uid ){
 model.isTurnOwner = function( pid ){
   return model.turnOwner === pid;
 };
-
 /**
- * Removes an unit from the actable array. An unit that goes into
- * the wait status cannot do another action in the active turn.
- *
- * @param uid
+ * Contains all data sheets of the game.
+ * 
+ * @namespace
  */
-model.markAsUnusable = function( uid ){
-  var uid = ( typeof uid === 'number' )? uid : model.extractUnitId( uid );
-  var startIndex = model.turnOwner * CWT_MAX_UNITS_PER_PLAYER;
-
-  // NOT THE OWNER OF THE CURRENT TURN
-  if( uid >= startIndex + CWT_MAX_UNITS_PER_PLAYER ||
-    uid < startIndex ){
-
-    util.logError("unit owner is not the active player");
-  }
-
-  model.leftActors[ uid - startIndex ] = false;
-
-  if( DEBUG ){
-    util.logInfo("unit",uid,"going into wait status");
-  }
-};
 model.sheets = {};
 
+/**
+ * Amanda validator object.
+ * 
+ * @private
+ */
 model.sheets._dbAmanda = amanda("json");
 
 /** @constant */
@@ -1270,6 +1128,7 @@ model.sheets.defaultRules = null;
  */
 model.sheets.typeSheetValidators = {
 
+  /** Schema for the rule object. */
   rulesValidator: {
     type: 'object',
     properties:{
@@ -1389,16 +1248,16 @@ model.parseSheet = function( data, type ){
       schema =  validators.rulesValidator;
       break;
 
-    default: util.logError("unknow type",type);
+    default: util.raiseError("unknow type",type);
   }
 
   // CHECK IDENTICAL STRING FIRST
   if( type !== model.sheets.RULESET &&
-    db.hasOwnProperty(id) ) util.logError(id,"is already registered");
+    db.hasOwnProperty(id) ) util.raiseError(id,"is already registered");
 
   // VALIDATE SHEET
   model.sheets._dbAmanda.validate( data, schema, function(e){
-    if( e ) util.logError( "failed to parse sheet due", e.getMessages() );
+    if( e ) util.raiseError( "failed to parse sheet due", e.getMessages() );
   });
 
   if( type === model.sheets.RULESET ) model.sheets.defaultRules = data;
@@ -1449,11 +1308,12 @@ model.getListOfTileTypes = function(){
 };
 
 /**
+ * Returns the primary weapon of an unit.
  *
- * @param unit
+ * @param unit unit object
  */
 model.primaryWeaponOfUnit = function( unit ){
-  if( DEBUG && unit === null ) util.illegalArgumentError();
+  if( DEBUG && unit === null ) util.raiseError();
 
   if( typeof unit === 'number' ){
     unit = model.units[unit];
@@ -1464,11 +1324,12 @@ model.primaryWeaponOfUnit = function( unit ){
 };
 
 /**
+ * Returns the secondary weapon of an unit.
  *
  * @param unit
  */
 model.secondaryWeaponOfUnit = function( unit ){
-  if( DEBUG && unit === null ) util.illegalArgumentError();
+  if( DEBUG && unit === null ) util.raiseError();
 
   if( typeof unit === 'number' ){
     unit = model.units[unit];
@@ -1481,12 +1342,12 @@ model.secondaryWeaponOfUnit = function( unit ){
 /**
  * Returns the base damage from a weapon sheet against an unit type.
  *
- * @param weapon weapon sheet
- * @param uType {string} unit type
+ * @param weapon weapon sheet object
+ * @param {String} uType unit type
  */
 model.getBaseDamage = function( weapon, uType ){
-  if( DEBUG && weapon === null ) util.illegalArgumentError();
-  if( DEBUG && uType === null ) util.illegalArgumentError();
+  if( DEBUG && weapon === null ) util.raiseError();
+  if( DEBUG && uType === null ) util.raiseError();
 
   var dmg;
 
@@ -1502,8 +1363,8 @@ model.getBaseDamage = function( weapon, uType ){
 /**
  * Returns the costs for a movetype to move onto a tile type.
  *
- * @param movetype
- * @param tiletype
+ * @param movetype move type object
+ * @param {String} tiletype tile type
  */
 model.moveCosts = function( movetype, tiletype ){
   var c;
@@ -1516,9 +1377,15 @@ model.moveCosts = function( movetype, tiletype ){
   return c;
 };
 /**
- * Retusn a list of loaded unit ids by a given transporter id.
+ * Contains all regenerating silos. Every silo will be added if the 
+ * regeneration is enabled. The number stored in a property symbolizes 
+ * the number of days since the silo was registered as regenerate able.
+ */
+model.regeneratingSilos = {};
+/**
+ * Retuns a list of loaded unit ids by a given transporter id.
  *
- * @param tid
+ * @param {Number} tid transporter id
  */
 model.getLoadedIds = function( tid ){
   var loaded = [];
@@ -1541,7 +1408,7 @@ model.getLoadedIds = function( tid ){
  * Has a transporter unit with id tid loaded units? Returns true if yes, else
  * false.
  *
- * @param tid
+ * @param {Number} tid transporter id
  */
 model.hasLoadedIds = function( tid ){
   var pid = model.units[ tid ].owner;
@@ -1563,8 +1430,8 @@ model.hasLoadedIds = function( tid ){
  * Returns true if the unit with the id lid is loaded by a transporter unit
  * with id tid.
  *
- * @param lid
- * @param tid
+ * @param {Number} lid load id
+ * @param {Number} tid transporter id
  */
 model.isLoadedBy = function( lid, tid ){
   return model.units[ lid ].loadedIn === tid;
@@ -1573,8 +1440,8 @@ model.isLoadedBy = function( lid, tid ){
 /**
  * Loads the unit with id lid into a tranporter with the id tid.
  *
- * @param lid
- * @param tid
+ * @param {Number} lid load id
+ * @param {Number} tid transporter id
  */
 model.loadUnitInto = function( lid, tid ){
   if( !model.canLoad( lid,tid ) ){
@@ -1587,8 +1454,8 @@ model.loadUnitInto = function( lid, tid ){
 /**
  * Unloads the unit with id lid from a tranporter with the id tid.
  *
- * @param lid
- * @param tid
+ * @param {Number} lid
+ * @param {Number} tid
  */
 model.unloadUnitFrom = function( lid, tid ){
   model.units[ lid ].loadedIn = -1;
@@ -1600,8 +1467,8 @@ model.unloadUnitFrom = function( lid, tid ){
  * would load the unit. If the calculated weight is greater than the maxiumum
  * loadable weight false will be returned.
  *
- * @param lid
- * @param tid
+ * @param {Number} lid load id
+ * @param {Number} tid transporter id
  */
 model.canLoad = function( lid, tid ){
   var tp = model.units[ tid ];
@@ -1645,15 +1512,23 @@ model.canLoad = function( lid, tid ){
 /**
  * Returns true if the unit with id tid is a traensporter, else false.
  *
- * @param tid
+ * @param {Number} tid transporter id
  */
 model.isTransport = function( tid ){
   return model.sheets.unitSheets[
     model.units[ tid ].type ].transport !== undefined;
 };
 
+/**
+ * Matrix with the same metrics like the map. Every unit is placed into the 
+ * cell that represents its position.
+ */
 model.unitPosMap = util.matrix( CWT_MAX_MAP_WIDTH, CWT_MAX_MAP_HEIGHT, null );
 
+/**
+ * List of all unit objects. An inactive unit is marked with 
+ * {@link CWT_INACTIVE_ID} as owner.
+ */
 model.units = util.list( CWT_MAX_PLAYER*CWT_MAX_UNITS_PER_PLAYER, function(){
   return {
     x:0,
@@ -1664,8 +1539,7 @@ model.units = util.list( CWT_MAX_PLAYER*CWT_MAX_UNITS_PER_PLAYER, function(){
     loadedIn: -1,
     fuel: 0,
     owner: CWT_INACTIVE_ID,
-    _clientData_: {}
-  }
+  };
 });
 
 /**
@@ -1675,7 +1549,7 @@ model.units = util.list( CWT_MAX_PLAYER*CWT_MAX_UNITS_PER_PLAYER, function(){
  */
 model.extractUnitId = function( unit ){
   if( unit === null ){
-    throw Error("unit argument cannot be null");
+    util.raiseError("unit argument cannot be null");
   }
 
   var units = model.units;
@@ -1683,46 +1557,15 @@ model.extractUnitId = function( unit ){
     if( units[i] === unit ) return i;
   }
 
-  throw Error("cannot find unit", JSON.stringify(unit) );
-};
-
-model.createUnit = function( pid, type ){
-  var startIndex = pid*CWT_MAX_UNITS_PER_PLAYER;
-  for( var i=startIndex, e=startIndex+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
-
-    if( model.units[i].owner === CWT_INACTIVE_ID ){
-
-      var typeSheet = model.sheets.unitSheets[ type ];
-      model.units[i].owner = pid;
-      model.units[i].hp = 99;
-      model.units[i].type = type;
-      model.units[i].ammo = typeSheet.maxAmmo;
-      model.units[i].fuel = typeSheet.maxFuel;
-      model.units[i].loadedIn = -1;
-
-      if( util.DEBUG ){
-        util.logInfo("builded unit for player",pid,"in slot",i);
-      }
-
-      return i;
-    }
-  }
-
-  if( util.DEBUG ){
-    throw Error("cannot build unit for player",pid,"no slots free");
-  }
-  return -1;
+  util.raiseError("cannot find unit", unit );
 };
 
 /**
- * Destroys an unit object and removes its references from the
- * game instance.
+ * Returns true if a player with a given player id has free slots for new units.
+ * 
+ * @param {Number} pid player id
+ * @returns {Boolean}
  */
-model.destroyUnit = function( uid ){
-  model.eraseUnitPosition( uid );
-  model.units[uid].owner = CWT_INACTIVE_ID;
-};
-
 model.hasFreeUnitSlots = function( pid ){
   var startIndex = pid*CWT_MAX_UNITS_PER_PLAYER;
   for( var i=0, e=startIndex+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
@@ -1733,61 +1576,10 @@ model.hasFreeUnitSlots = function( pid ){
 };
 
 /**
- * Erases an unit position.
+ * Returns true if a given position is occupied by an unit, else false.
  *
- * @param uid
- */
-model.eraseUnitPosition = function( uid ){
-  var unit = model.units[uid];
-  var ox = unit.x;
-  var oy = unit.y;
-
-  // clear old position
-  model.unitPosMap[ox][oy] = null;
-  unit.x = -1;
-  unit.y = -1;
-
-  // UPDATE FOG
-  if( unit.owner === model.turnOwner ){
-    var data = new controller.ActionData();
-    data.setSource( ox,oy );
-    data.setAction("remVisioner");
-    data.setSubAction( model.sheets.unitSheets[unit.type].vision );
-    controller.pushActionDataIntoBuffer(data);
-  }
-};
-
-/**
- * Sets the position of an unit.
- *
- * @param uid
- * @param tx
- * @param ty
- */
-model.setUnitPosition = function( uid, tx, ty ){
-  var unit = model.units[uid];
-  var ox = unit.x;
-  var oy = unit.y;
-
-  unit.x = tx;
-  unit.y = ty;
-
-  model.unitPosMap[tx][ty] = unit;
-
-  if( unit.owner === model.turnOwner ){
-    var data = new controller.ActionData();
-    data.setSource( tx,ty );
-    data.setAction("addVisioner");
-    data.setSubAction( model.sheets.unitSheets[unit.type].vision );
-    controller.pushActionDataIntoBuffer(data);
-  }
-};
-
-/**
- * Returns true if a given position is occupied by an unit.
- *
- * @param x
- * @param y
+ * @param {Number} x x coordinate
+ * @param {Number} y y coordinate
  */
 model.tileOccupiedByUnit = function( x,y ){
   var unit = model.unitPosMap[x][y];
@@ -1796,8 +1588,9 @@ model.tileOccupiedByUnit = function( x,y ){
 };
 
 /**
+ * Counts all units that are owned by the player with the given player id.
  *
- * @param pid
+ * @param {Number} pid player id
  */
 model.countUnits = function( pid ){
   var startIndex = pid*CWT_MAX_UNITS_PER_PLAYER;
@@ -1811,793 +1604,1122 @@ model.countUnits = function( pid ){
   return n;
 };
 /**
- * @private
+ * Wrapper object to make actions locally callable without invoking a transaction context nor being
+ * evaluated over the action stack.
+ * 
+ * Note that the client expects actions to be invoked over the action stack. Only smaller actions like
+ * wait should be invoked directly, all other things should be pushed into the action stack.
+ * 
+ * @namespace
  */
-controller._actionDataPool = util.createRingBuffer(50);
+controller.actions = {};
+
+/** 
+ * Contains all known action objects.
+ *  
+ * @private 
+ */
+controller.actionObjects_ = {};
 
 /**
- * @return {controller.ActionData}
- */
-controller.aquireActionDataObject = function(){
-  var pool = controller._actionDataPool;
-  if( pool.isEmpty() ){
-    return new controller.ActionData();
-  }
-  else {
-    return pool.pop();
-  }
-};
-
-/**
+ * Registers an internal non user callable action.
  *
- * @param actionData
+ * @param impl action implementation
  */
-controller.releaseActionDataObject = function( actionData ){
-  if( DEBUG && !actionData instanceof controller.ActionData ){
-    util.illegalArgumentError();
-  }
-
-  actionData.cleanIt();
-  controller._actionDataPool.push( actionData );
-};
-
-/**
- * ActionData object that hold numerous information about an object action.
- */
-controller.ActionData = function(){
-  this.data = [];
-  this.cleanIt();
-};
-
-/**
- *
- */
-controller.ActionData.prototype.cleanIt = function(){
-
-  // SOURCE POS
-  this.data[0] = -1;
-  this.data[1] = -1;
-
-  // TARGET POS
-  this.data[2] = -1;
-  this.data[3] = -1;
-
-  // ACTION TARGET POS
-  this.data[4] = -1;
-  this.data[5] = -1;
-
-  this.data[6] = -1; // SOURCE UNIT ID
-  this.data[7] = -1; // SOURCE PROP ID
-  this.data[8] = -1; // TARGET UNIT ID
-  this.data[9] = -1; // TARGET PROP ID
-
-  // MOVE PATH
-  this.data[10] = null;
-
-  // ACTIONS
-  this.data[11] = null;
-  this.data[12] = null;
-};
-
-/**
- *
- */
-controller.ActionData.prototype.setSource = function( x,y ){
-  this.data[0] = x;
-  this.data[1] = y;
-};
-
-/**
- *
- */
-controller.ActionData.prototype.getSourceX = function(){
-  return this.data[0];
-};
-
-/**
- *
- */
-controller.ActionData.prototype.getSourceY = function(){
-  return this.data[1];
-};
-
-/**
- *
- */
-controller.ActionData.prototype.setTarget = function( x,y ){
-  this.data[2] = x;
-  this.data[3] = y;
-};
-
-/**
- *
- */
-controller.ActionData.prototype.getTargetX = function(){
-  return this.data[2];
-};
-
-/**
- *
- */
-controller.ActionData.prototype.getTargetY = function(){
-  return this.data[3];
-};
-
-/**
- *
- */
-controller.ActionData.prototype.setActionTarget = function( x,y ){
-  this.data[4] = x;
-  this.data[5] = y;
-};
-
-/**
- *
- */
-controller.ActionData.prototype.getActionTargetX = function(){
-  return this.data[4];
-};
-
-/**
- *
- */
-controller.ActionData.prototype.getActionTargetY = function(){
-  return this.data[5];
-};
-
-/**
- *
- */
-controller.ActionData.prototype.setSourceUnit = function( unit ){
-  if( unit === null ) this.data[6] = -1;
-  else this.data[6] = model.extractUnitId( unit );
-};
-
-/**
- *
- */
-controller.ActionData.prototype.getSourceUnit = function(){
-  var id = this.data[6];
-  if( id === -1 ) return null;
-  return model.units[id];
-};
-
-/**
- *
- */
-controller.ActionData.prototype.getSourceUnitId = function(){
-  return this.data[6];
-};
-
-/**
- *
- */
-controller.ActionData.prototype.setSourceProperty = function( prop ){
-  if( prop === null ) this.data[7] = -1;
-  else this.data[7] = model.extractPropertyId( prop );
-};
-
-/**
- *
- */
-controller.ActionData.prototype.getSourceProperty = function(){
-  var id = this.data[7];
-  if( id === -1 ) return null;
-  return model.properties[id];
-};
-
-/**
- *
- */
-controller.ActionData.prototype.getSourcePropertyId = function(){
-  return this.data[7];
-};
-
-/**
- *
- */
-controller.ActionData.prototype.setTargetUnit = function( unit ){
-  if( unit === null ) this.data[8] = -1;
-  else this.data[8] = model.extractUnitId( unit );
-};
-
-/**
- *
- */
-controller.ActionData.prototype.getTargetUnit = function(){
-  var id = this.data[8];
-  if( id === -1 ) return null;
-  return model.units[id];
-};
-
-/**
- *
- */
-controller.ActionData.prototype.getTargetUnitId = function(){
-  return this.data[8];
-};
-
-/**
- *
- */
-controller.ActionData.prototype.setTargetProperty = function( prop ){
-  if( prop === null ) this.data[9] = -1;
-  else this.data[9] = model.extractPropertyId( prop );
-};
-
-/**
- *
- */
-controller.ActionData.prototype.getTargetProperty = function(){
-  var id = this.data[9];
-  if( id === -1 ) return null;
-  return model.properties[id];
-};
-
-/**
- *
- */
-controller.ActionData.prototype.getTargetPropertyId = function(){
-  return this.data[9];
-};
-
-/**
- *
- */
-controller.ActionData.prototype.setMovePath = function( path ){
-  this.data[10] = path;
-};
-
-/**
- *
- */
-controller.ActionData.prototype.getMovePath = function(){
-  return this.data[10];
-};
-
-/**
- *
- */
-controller.ActionData.prototype.setAction = function( action ){
-  this.data[11] = action;
-};
-
-/**
- *
- */
-controller.ActionData.prototype.getAction = function(){
-  return this.data[11];
-};
-
-/**
- *
- */
-controller.ActionData.prototype.setSubAction = function( action ){
-  this.data[12] = action;
-};
-
-/**
- *
- */
-controller.ActionData.prototype.getSubAction = function(){
-  return this.data[12];
-};
-
-/**
- *
- */
-controller.ActionData.prototype.getCopy = function(){
-
-  var actionData = controller.aquireActionDataObject();
-
-  // COPY DATA
-  actionData.data[0] = this.data[0];
-  actionData.data[1] = this.data[1];
-  actionData.data[2] = this.data[2];
-  actionData.data[3] = this.data[3];
-  actionData.data[4] = this.data[4];
-  actionData.data[5] = this.data[5];
-  actionData.data[6] = this.data[6];
-  actionData.data[7] = this.data[7];
-  actionData.data[8] = this.data[8];
-  actionData.data[9] = this.data[9];
-  actionData.data[10] = this.data[10];
-  actionData.data[11] = this.data[11];
-  actionData.data[12] = this.data[12];
-
-  return actionData;
-};
-controller.commands = {};
-
-controller.commandBuffer = util.createRingBuffer( 200 );
-
-/**
- * Registers a command description.
- *
- * @param options
- */
-controller.registerCommand = function( options ){
-  if( DEBUG && !util.isString( options.key ) ) util.illegalArgumentError();
-  if( DEBUG && !util.isFn( options.action ) ) util.illegalArgumentError();
-  if( DEBUG && !util.isFn( options.condition ) ) util.illegalArgumentError();
-
-  // DEFAULT OPTIONS
-  var impl = {
-    prepareMenu:     null,
-    prepareTargets:  null,
-    localAction:     false,
-    multiStepAction: false,
-    condition:       util.FUNCTION_TRUE_RETURNER
+controller.engineAction = function( impl ){
+  
+  // CHECKS
+  if( !impl.hasOwnProperty("key") ) util.raiseError("action key isn't defined");
+  if( controller.actionObjects_.hasOwnProperty( impl.key ) ) util.raiseError("action key is already registered");
+  if( !impl.hasOwnProperty("name") ) util.raiseError("action name isn't defined");
+  if( !impl.hasOwnProperty("action") ) util.raiseError("action implementation isn't defined");
+  if( !impl.hasOwnProperty("condition") ) impl.condition = false;
+  if( !impl.hasOwnProperty("shared") ) impl.shared = false;
+  
+  // REGISTER PROGRAMATIC LINK
+  var key = impl.key;
+  controller.actions[ impl.name ] = function(){
+    var cmd = controller.actionObjects_[ key ];
+    cmd.action.apply( cmd, arguments );
   };
-
-  // MIXIN OPTIONS
-  var key = options.key;
-  var keys = Object.keys( options );
-  for( var i=0,e=keys.length; i<e; i++ ){
-    impl[ keys[i] ] = options[ keys[i] ];
-  }
-
-  controller.commands[ key ] = impl;
+  
+  controller.actionObjects_[ key ] = impl;
 };
 
 /**
- * Directly invokes the action phase of a command.
+ * Registers an user callable action.
  *
- * @param data action data array
- * @param cKey action key ( optional, default value is data.getAction() )
+ * @param impl action implementation
  */
-controller.invokeCommand = function( data, cKey ){
-  if( arguments.length === 1 ) cKey = data.getAction();
-
-  if( DEBUG && !util.isString( cKey ) ) util.illegalArgumentError();
-  if( DEBUG && !util.isDefined( data ) ) util.illegalArgumentError();
-
-  var cmd = controller.commands[ cKey ];
-
-  // MOVE IT
-  if( data.getMovePath() !== null ){
-    controller.commands[ "move" ].action.apply( cmd, [data] );
+controller.userAction = function( impl ){
+  
+  // CHECKS
+  if( !impl.hasOwnProperty("condition") ) impl.condition = util.FUNCTION_TRUE_RETURNER;
+  if( !impl.hasOwnProperty("prepareMenu") ) impl.prepareMenu = null;
+  if( !impl.hasOwnProperty("prepareTargets") ) impl.prepareTargets = null;
+  if( !impl.hasOwnProperty("isTargetValid") ) impl.isTargetValid = null;
+  if( !impl.hasOwnProperty("multiStepAction") ) impl.multiStepAction = false;
+  if( !impl.hasOwnProperty("shared") ) impl.shared = true;
+  if( impl.prepareTargets !== null && !impl.hasOwnProperty("targetSelectionType") ) impl.targetSelectionType = "A";
+  
+  if( !impl.hasOwnProperty("createDataSet") ) util.raiseError("action data set creation handler isn't defined");
+  if( impl.prepareTargets !== null && impl.isTargetValid !== null ){
+    util.raiseError("only one selection type can be used in an action");
   }
-
-  // DO IT
-  cmd.action.apply( cmd, [data] );
+  
+  controller.engineAction( impl );
 };
 
-controller.isNetworkGame = function(){
-  return false; //controller.online;
+/**
+ * A client action is always a locally invoked action.
+ * 
+ * @param impl action implementation
+ */
+controller.clientAction = function( impl ){
+  impl.shared = false;
+  
+  controller.userAction( impl );
 };
 
-controller._parseNetworkMessage = function( msg ){
-  // controller.commandBuffer.push( JSON.parse( msg ) );
-  // GET DATA ARRAY
-  // GET ACTION DATA OBJECT
-  // INJECT DATA
-  // ADD INTO BUFFER
-  util.unexpectedSituationError();
-};
-
-controller._sendNetworkMessage = function( msg ){
-  // GET DATA ARRAY
-  // SEND DATA ARRAY
-  util.unexpectedSituationError();
-};
-
-controller.pushActionDataIntoBuffer = function( data, local ){
-  if( DEBUG ){
-    util.logInfo(
-      "pushing command into buffer...\n",
-
-      "source (" ,data.getSourceX(), "," ,data.getSourceY(), ")\n",
-      "target (" ,data.getTargetX(), "," ,data.getTargetY(), ")\n",
-      "action target (" ,data.getActionTargetX(),",",data.getActionTargetY(),")\n",
-
-      "selected unit id" ,data.getSourceUnitId(), "\n",
-      "selected property id" ,data.getSourcePropertyId(), "\n",
-
-      "target unit id" ,data.getTargetUnitId(), "\n",
-      "target property id" ,data.getTargetPropertyId(), "\n",
-
-      "selected action" ,data.getAction(), "\n",
-      "sub menu action" ,data.getSubAction(), "\n",
-
-      "move path",data.getMovePath()
-    );
-  }
-
-  controller.commandBuffer.push( data );
-
-  if( local !== true && this.isNetworkGame() ){
-    var cmd = controller.commands[ data.getAction() ];
-    if( cmd.localAction !== false ) this._sendNetworkMessage( data );
-  }
-};
-
+/**
+ * Returns an action object for a given action key.
+ * 
+ * @param {String} actionKey action key
+ */
 controller.getActionObject = function( actionKey ){
-  return controller.commands[actionKey];
+  return controller.actionObjects_[actionKey];
+};
+/** 
+ * Action buffer object that holds all actions that aren't invoked yet.
+ * 
+ * @private 
+ */
+controller.actionBuffer_ = util.createRingBuffer( CWT_ACTIONS_BUFFER_SIZE );
+
+/**
+ * Pushes an action into the buffer and invokes a transaction process if the action
+ * is marked as shared.
+ * 
+ * @example 
+ *  data format
+ *  [ parameters... , actionKey ]
+ */
+controller.pushSharedAction = function(){
+  var cmd = controller.actionObjects_[ arguments[arguments.length-1] ];
+  if( cmd.shared && controller.isNetworkGame() ){
+    this.sendNetworkMessage_( arguments );
+  }
+  
+  controller.pushAction.apply( this, arguments );
 };
 
-controller.isBufferEmpty  = function(){
-  return controller.commandBuffer.isEmpty();
-};
-
-controller.evalNextMessageFromBuffer = function (){
-  if( controller.commandBuffer.isEmpty() ) return null;
-
-  var data = controller.commandBuffer.pop();
+/**
+ * Pushes an action into the buffer.
+ * 
+ * @example 
+ *  data format
+ *  [ parameters... , actionKey ]
+ */
+controller.pushAction = function(){
   if( DEBUG ){
-    util.logInfo(
-      "evaluating command into buffer...\n",
-
-      "source (" ,data.getSourceX(), "," ,data.getSourceY(), ")\n",
-      "target (" ,data.getTargetX(), "," ,data.getTargetY(), ")\n",
-      "action target (" ,data.getActionTargetX(),",",data.getActionTargetY(),")\n",
-
-      "selected unit id" ,data.getSourceUnitId(), "\n",
-      "selected property id" ,data.getSourcePropertyId(), "\n",
-
-      "target unit id" ,data.getTargetUnitId(), "\n",
-      "target property id" ,data.getTargetPropertyId(), "\n",
-
-      "selected action" ,data.getAction(), "\n",
-      "sub menu action" ,data.getSubAction(), "\n",
-
-      "move path",data.getMovePath()
-    );
+    util.log("push action",JSON.stringify(arguments),"into action stack");
   }
 
-  controller.invokeCommand( data );
+  controller.actionBuffer_.push( arguments );
+};
+
+/**
+ * Returns true if no action is in the action 
+ * stack, else false.
+ */
+controller.noNextActions  = function(){
+  return controller.actionBuffer_.isEmpty();
+};
+
+/**
+ * Pops the oldest action from the buffer and evaluates it. After the evaluation this 
+ * function returns the action. If no action is in the buffer, null will be returned.
+ */
+controller.doNextAction = function (){
+  if( controller.actionBuffer_.isEmpty() ){
+    return null;
+  }
+
+  var data = controller.actionBuffer_.pop();
+  if( DEBUG ){
+    util.log("evaluate action",JSON.stringify(data));
+  }
+
+  var cmd = controller.actionObjects_[ data[data.length-1] ];
+  cmd.action.apply( cmd, data );
+  
   return data;
 };
 /**
- * Persists the actual game instance.
- */
-controller.saveDOM = function(){
-
-  // SERIALIZE
-  return JSON.stringify( model );
-};
-
-/**
- * Loads a game from a data block.
  *
- * @param data
+ * Every loader must be configured to load a map from a given map specification
+ * into the actual model. If an outdated map specification us used, the model
+ * must be prepared to work with the current model.
+ * 
+ * @namespace
  */
-controller.loadDOM = function( mapData ){
-  if( typeof mapData === 'string' ){
+controller.serializationHandler = {
 
-    // DESERIALIZE IF YOU GOT A SERIALIZED MODEL
-    try{
-      mapData = JSON.parse( mapData );
-    }
-    catch( e ){
-      if( util.DEBUG ) throw Error("got invalid json save data");
-    }
+  /**
+   * API
+   * 
+   * @namespace
+   */
+  "interface":{
 
-    throw Error("niy");
+    /**
+     * Saves the domain model.
+     */
+    save: null,
+
+    /**
+     * Loads a model into the domain model.
+     *
+     * @param {object} data
+     */
+    load: null,
+
+    /**
+     * Serializes an unit object.
+     *
+     * @param {object} unit
+     */
+    serializeUnit: null,
+
+    /**
+     * Deserializes an unit object and prepares the model.
+     *
+     * @param {Array} data
+     */
+    deserializeUnit: null,
+
+    /**
+     * Serializes an player object.
+     *
+     * @param {object} player
+     */
+    serializePlayer: null,
+
+    /**
+     * Deserializes an player object and prepares the model.
+     *
+     * @param {Array} data
+     */
+    deserializePlayer: null,
+
+    /**
+     * Serializes a property object.
+     *
+     * @param {object} property
+     */
+    serializeProperty: null,
+
+    /**
+     * Deserializes an property object and prepares the model.
+     *
+     * @param {Array} data
+     */
+    deserializeProperty: null
+  },
+
+  // #########################################################################
+
+  /**
+   * Map serialization transfer functions for the milestone 2.6
+   * map specifications.
+   * 
+   * @namespace
+   */
+  "2.6":{
+
+    save: function(){
+      var dom = {};
+
+      // META DATA
+      dom.day = model.day;
+      dom.turnOwner = model.turnOwner;
+      dom.mapWidth = model.mapWidth;
+      dom.mapHeight = model.mapHeight;
+
+      // MAP
+      dom.map = [];
+      var mostIdsMap = {};
+      var mostIdsMapCurIndex = 0;
+      for( var x=0,xe=model.mapWidth; x<xe; x++ ){
+
+        dom.map[x] = [];
+        for( var y=0,ye=model.mapHeight; y<ye; y++ ){
+
+          var type = dom.map[x][y];
+
+          if( !mostIdsMap.hasOwnProperty(type) ){
+            mostIdsMap[type] = mostIdsMapCurIndex;
+            mostIdsMapCurIndex++;
+          }
+
+          dom.map[x][y] = mostIdsMap[type];
+        }
+      }
+
+      // ADD TYPE MAP
+      dom.typeMap = [];
+      var typeKeys = Object.keys( mostIdsMap );
+      for( var i=0,e=typeKeys.length; i<e; i++ ){
+        dom.typeMap[ mostIdsMap[typeKeys[i]] ] = typeKeys[i];
+      }
+
+      // UNITS
+      dom.units = [];
+      for( var i=0,e=model.units.length; i<e; i++ ){
+        if( model.units[i].owner !== CWT_INACTIVE_ID ){
+          dom.units.push( this.serializeUnit(model.units[i]) );
+        }
+      }
+
+      // PROPERTIES
+      dom.properties = [];
+      for( var i=0,e=model.properties.length; i<e; i++ ){
+        if( model.properties[i].owner !== CWT_INACTIVE_ID ){
+          dom.properties.push( this.serializeProperty(model.properties[i]) );
+        }
+      }
+
+      // PLAYERS
+      dom.players = [];
+      for( var i=0,e=model.players.length; i<e; i++ ){
+        if( model.players[i].team !== CWT_INACTIVE_ID ){
+          dom.players.push( this.serializePlayer(model.players[i]) );
+        }
+      }
+
+      // ACTORS
+      dom.actors = [];
+      for( var i=0,e=model.leftActors.length; i<e; i++ ){
+        if( model.leftActors[i] ){
+          dom.actors.push( i );
+        }
+      }
+
+      dom.rules = {};
+      var keys = Object.keys( model.rules );
+      for( var i= 0,e=keys.length; i<e; i++ ){
+        var key = keys[i];
+        dom.rules[ key ] = model.rules[ key ];
+      }
+
+      return dom;
+    },
+
+    load: function( data ){
+
+      model.day = data.day;
+      model.turnOwner = data.turnOwner;
+      model.mapWidth = data.mapWidth;
+      model.mapHeight = data.mapHeight;
+
+      // MAP
+      for( var x=0,xe=model.mapWidth; x<xe; x++ ){
+        for( var y=0,ye=model.mapHeight; y<ye; y++ ){
+          model.unitPosMap[x][y] = null;
+          model.propertyPosMap[x][y] = null;
+          model.map[x][y] = data.typeMap[ data.map[x][y] ];
+        }
+      }
+
+      // UNITS
+      for( var i=0,e=model.units.length; i<e; i++ ){
+        model.units[i].owner = CWT_INACTIVE_ID;
+      }
+
+      for( var i=0,e=data.units.length; i<e; i++ ){
+        this.deserializeUnit( data.units[i] );
+      }
+
+      // PROPERTIES
+      for( var i=0,e=model.properties.length; i<e; i++ ){
+        model.properties[i].owner = CWT_INACTIVE_ID;
+      }
+
+      for( var i=0,e=data.properties.length; i<e; i++ ){
+        this.deserializeProperty( data.properties[i] );
+      }
+
+      // PLAYERS
+      for( var i=0,e=model.players.length; i<e; i++ ){
+        model.players[i].team = CWT_INACTIVE_ID;
+      }
+
+      for( var i=0,e=data.players.length; i<e; i++ ){
+        this.deserializePlayer( data.players[i] );
+      }
+
+      // ACTORS
+      for( var i=0,e=model.leftActors.length; i<e; i++ ){
+        model.leftActors[i] = false;
+      }
+
+      for( var i=0,e=data.leftActors.length; i<e; i++ ){
+        model.leftActors[ data.leftActors[i] ] = true;
+      }
+
+      model.setRulesByOption( data.rules );
+
+    },
+
+    serializeUnit: function( unit ){
+
+      return [
+        model.extractUnitId(unit),
+        unit.type,
+        unit.x,
+        unit.y,
+        unit.hp,
+        unit.ammo,
+        unit.fuel,
+        unit.loadedIn,
+        unit.owner
+      ];
+    },
+
+    deserializeUnit: function( data ){
+
+      // GET UNIT
+      var id = data[0];
+      var unit = model.units[id];
+
+      // INJECT DATA
+      unit.type     = data[1];
+      unit.x        = data[2];
+      unit.y        = data[3];
+      unit.hp       = data[4];
+      unit.ammo     = data[5];
+      unit.fuel     = data[6];
+      unit.loadedIn = data[7];
+      unit.owner    = data[8];
+
+      model.unitPosMap[ data[2] ][ data[3] ] = unit;
+    },
+
+    serializePlayer: function( player ){
+
+      return [
+        player.extractPlayerId( player ),
+        player.name,
+        player.gold,
+        player.team
+      ];
+    },
+
+    deserializePlayer: function( data ){
+
+      // GET PLAYER
+      var id = data[0];
+      var player = model.players[id];
+
+      // INJECT DATA
+      player.name = data[1];
+      player.gold = data[2];
+      player.team = data[3];
+    },
+
+    serializeProperty: function( property ){
+
+      // SEARCH POSITION
+      var px,py;
+      var found = false;
+      for( var x=0; x<model.mapWidth && !found; x++ ){
+        for( var y=0; y<model.mapHeight && !found; y++ ){
+          if( model.propertyPosMap[x][y] === property ){
+            px = x;
+            py = y;
+            found = true;
+          }
+        }
+      }
+
+      return [
+        model.extractPropertyId( property ),
+        px,
+        py,
+        property.type,
+        property.capturePoints,
+        property.owner
+      ];
+    },
+
+    deserializeProperty: function( data ){
+
+      // GET PROPERTY
+      var id = data[0];
+      var property = model.properties[id];
+
+      // INJECT DATA
+      property.type          = data[3];
+      property.capturePoints = data[4];
+      property.owner         = data[5];
+
+      model.propertyPosMap[ data[1] ][ data[2] ] = property;
+    }
   }
+ 
 };
 
 /**
- * Loads a modification into the game engine.
+ * Current active serialization handler version.
+ * 
+ * @constant
  */
-controller.loadMod = function( modification ){
-  var list;
+controller.CURRENT_SERIALIZATION_HANDLER = "2.6";
 
-  list = modification.movetypes;
-  for( var i=0,e=list.length; i<e; i++ ){
-    model.parseSheet( list[i], model.MOVE_TYPE_SHEET );
-  }
-
-  list = modification.weapons;
-  for( var i=0,e=list.length; i<e; i++ ){
-    model.parseSheet( list[i], model.WEAPON_TYPE_SHEET );
-  }
-
-  list = modification.tiles;
-  for( var i=0,e=list.length; i<e; i++ ){
-    model.parseSheet( list[i], model.TILE_TYPE_SHEET );
-  }
-
-  list = modification.units;
-  for( var i=0,e=list.length; i<e; i++ ){
-    model.parseSheet( list[i], model.UNIT_TYPE_SHEET );
-  }
-
-  var langs = modification.locale;
-  if( langs !== undefined ){
-
-    var langIds = Object.keys( langs );
-    for( var i=0,e=langIds.length; i<e; i++ ){
-      util.i18n_appendToLanguage( langIds[i], langs[ langIds[i] ] );
+/**
+ * Returns the correct {@link controller.serializationHandler} object for the given 
+ * version.
+ * 
+ * @param {String} version 
+ * @returns serialization handler object
+ */
+controller.getActiveSerializationHandler = function( version ){
+  if( arguments.length === 1 ){
+    if( DEBUG &&  !controller.serializationHandler.hasOwnProperty( version ) ){
+      util.raiseError("unknown map format");
     }
+
+    return controller.serializationHandler[ version ];
   }
+  else return controller.serializationHandler[ controller.CURRENT_SERIALIZATION_HANDLER ];
 };
 /**
+ * Returns true if the current session a network session, else false.
+ */
+controller.isNetworkGame = function(){
+  return false;
+};
+
+/**
+ * Parses a network message and invokes the action stack with the 
+ * decoded message as argument.
+ * 
+ * @config
+ */
+controller._parseNetworkMessage = function( msg ){
+  //var data = JSON.parse( msg );
+  util.unexpectedSituationError();
+};
+
+/**
+ * Encodes an argument array and sends it to the server instance.
  *
+ * @config
  */
-controller.idHolder = new util.StringIdMapper();
+controller.sendNetworkMessage_ = function( args ){
+  //var msg = JSON.stringify( arguments );
+  util.unexpectedSituationError();
+};
+
+
 /**
- * User input action state machine that controls the data flow between
- * user interactions and flushes actions.
+ * The central finite state machine of the game engine.
+ *
+ * @namespace 
  */
-controller.input = util.createStateMachine( "NONE", {
+controller.stateMachine = /** @lends controller.stateMachine */ {
+  
+  /**
+   * Represents a breaking transition event. To break a transition it should
+   * be used in an event function of a state implementation.
+   * 
+   * @constant
+   * @example 
+   *    action: function(){
+   *        return this.BREAK_TRANSITION;
+   *    }
+   */
+  BREAK_TRANSITION: "__BREAK_TRS__",
+  
+  /**
+   * Current active state.
+   */
+  state:     "NONE",
+  
+  /**
+   * State history that contains a queue of the state flow.
+   * 
+   * @type Array
+   */
+  history:[],
+  
+  /**
+   * Represents a return to last state event. To return to the last state it 
+   * should be used in an event function of a state implementation. 
+   * 
+   * @constant
+   * @example 
+   *    cancel: function(){
+   *        return this.lastState;
+   *    }
+   */
+  lastState: "__LAST_STATE_TRS__",
+  
+  /**
+   * State machine construction diagram object. Every state and transition will 
+   * be defined in this descriptor object.
+   * 
+   * @namespace
+   */
+  structure: {},
+  
+  /**
+   * Invokes an event in the current active state.
+   * 
+   * @param {String} ev event name
+   * @param {...Object} arguments for the event
+   */
+  event: function( ev ){
+    if( DEBUG ) util.log("got event",ev);
+    
+    var stateEvent = this.structure[ this.state ][ ev ];
+    if( stateEvent === undefined ){
+      util.raiseError("missing event",ev,"in state",this.state);
+    }
+    
+    var nextState = stateEvent.apply( this, arguments );
+    if( nextState !== undefined ){
+      if( nextState !== this.BREAK_TRANSITION ){
+        
+        var goBack = nextState === this.lastState;
+        if( goBack ){
+          if( this.history.length === 1 ) nextState = "IDLE";
+          else nextState = this.history.pop();
+        }
+        
+        var nextStateImpl = this.structure[ nextState ];
+        if( nextStateImpl === undefined ){
+          util.raiseError("state",nextState,"is not defined");
+        }
+        
+        if( nextStateImpl.onenter !== undefined ){
+          
+          var breaker = nextStateImpl.onenter.apply( this, arguments );
+          if( breaker === this.BREAK_TRANSITION ){
+            
+            // BREAK TRANSITION
+            return;
+          }
+          else if( breaker !== undefined ){
+            
+            
+          }
+        }
+        
+        if( !goBack ){
+          this.history.push( this.state );
+        }
+        
+        this.state = nextState;
+        if( DEBUG ) util.log("changed state to",nextState);
+        
+        if( nextStateImpl.actionState !== undefined ){
+          this.event.call( this, "actionState" );
+        }
+        
+      }
+      else if( ev === "actionState" ){
+        util.raiseError("an action state cannot return a break transition"); 
+      }
+    }
+    else {
+      util.raiseError("an event must return a transition command"); 
+    }
+  }
+};
+/**
+ * Action process data memory object. It is used as data holder to transport
+ * data between the single states of the state machine of the game engine.
+ *
+ * @namespace 
+ */
+controller.stateMachine.data = {
 
-  "NONE":{
-    "start": function(){
+   /**
+    * Sets a position in the data object. The target name of the position will
+    * be determined by the tags array.
+    * 
+    * @private
+    * @param {Array} tags list of the position property names
+    * @param {Number} x x coordinate
+    * @param {Number} y y coordinate
+    */
+  setPosition_: function( tags, x,y ){
+    var refObj;
 
-      this.menu = util.list( 20, null );
-      this.menuSize = 0;
-      this.inMultiStep = false;
+    this[tags[0]] = x;
+    this[tags[1]] = y;
+    var isValid = (x !== -1 && y !== -1);
+    var inFog = isValid? (model.fogData[x][y] === 0) : false;
 
-      this.actionData = controller.aquireActionDataObject();
-      this.selectionData = new controller.SelectionData( CWT_MAX_MOVE_RANGE );
+    // ----- UNIT -----
+    refObj = isValid? model.unitPosMap[x][y] : null;
+    if( isValid && !inFog && refObj !== null ){
+      this[tags[2]] = refObj;
+      this[tags[3]] = model.extractUnitId(refObj);
+    }
+    else{
+      this[tags[2]] = null;
+      this[tags[3]] = -1;
+    }
 
-      return "IDLE";
+    // ----- PROPERTY -----
+    refObj = isValid? model.propertyPosMap[x][y] : null;
+    if( isValid && !inFog && refObj !== null ){
+      this[tags[4]] = refObj;
+      this[tags[5]] = model.extractPropertyId(refObj);
+    }
+    else{
+      this[tags[4]] = null;
+      this[tags[5]] = -1;
     }
   },
 
-  // -------------------------------------------------------------------------
-  "IDLE":{
+  /** X coordinate of the source position */
+  sourceX:0,
+  
+  /** Y coordinate of the source position */
+  sourceY:0,
+  
+  /** Unit object at the source position */        
+  sourceUnit:null,
+  
+  /** Unit id at the source position */
+  sourceUnitId:-1,
+  
+  /** Property object at the source position */
+  sourceProperty:null,
+  
+  /** Property id at the source position */
+  sourcePropertyId:-1,
 
-    "onenter": function(){
-      this.menuSize = 0;
-      this.inMultiStep = false;
-      this.actionData.cleanIt();
-    },
+  /** Property names of the source position */
+  sourceTags_: [ "sourceX","sourceY","sourceUnit","sourceUnitId","sourceProperty","sourcePropertyId" ],
 
-    "action": function( ev, x, y ){
-      if( DEBUG ) this._checkClickEventArgs(ev,x,y);
-
-      var dto = this.actionData;
-      var refObj;
-      dto.setSource( x,y );
-
-      if( (refObj = model.unitPosMap[x][y]) !== null ){
-        dto.setSourceUnit( refObj );
-      }
-      if( (refObj = model.propertyPosMap[x][y]) !== null ){
-        dto.setSourceProperty(refObj);
-      }
-
-      if( dto.getSourceUnitId() !== CWT_INACTIVE_ID &&
-          dto.getSourceUnit().owner === model.turnOwner &&
-          model.canAct( dto.getSourceUnitId() )
-      ){
-
-        dto.setTarget(x,y);
-        dto.setMovePath([]);
-        model.fillMoveMap( this.selectionData, dto );
-        return "MOVEPATH_SELECTION";
-      }
-      else{
-
-        this._prepareMenu();
-        return "ACTION_MENU";
-      }
-    },
-
-    cancel:function(){
-      return "IDLE";
-    }
+  /**
+   * Sets the source position.
+   * 
+   * @param {Number} x x coordinate
+   * @param {Number} y y coordinate
+   */
+  setSource: function( x,y ){
+    this.setPosition_( this.sourceTags_, x,y );
   },
 
-  // -------------------------------------------------------------------------
-  "MOVEPATH_SELECTION":{
-
-    action: function( ev,x,y ){
-      if( DEBUG ) controller.input._checkClickEventArgs(ev,x,y);
-
-      if( this.selectionData.getPositionValue(x,y) < 0){
-        if( CLIENT_DEBUG ){
-          util.logInfo("break event because selection is not in the map");
-        }
-
-        return "MOVEPATH_SELECTION";
-      }
-
-      var dto = this.actionData;
-      var ox = dto.getTargetX(  );
-      var oy = dto.getTargetY(  );
-
-      var dis = model.distance( ox,oy, x,y );
-      dto.setTarget( x,y );
-
-      if( dis === 0 ){
-
-        util.fill( this.menu, null );
-        this.menuSize = 0;
-
-        var refObj;
-        if( model.fogData[x][y] > 0 &&
-            (refObj = model.unitPosMap[x][y]) !== null ){
-          this.actionData.setTargetUnit(refObj );
-        }
-        if( (refObj = model.propertyPosMap[x][y]) !== null ){
-
-          this.actionData.setTargetProperty(refObj );
-        }
-
-        this._prepareMenu();
-
-        if( this.menuSize > 0 ){
-          return "ACTION_MENU";
-        }
-        else{
-          var dto = this.actionData;
-          dto.setTarget( -1,-1 );
-          dto.setTargetProperty(null);
-          dto.setTargetUnit(null);
-
-          return "MOVEPATH_SELECTION";
-        }
-      }
-      else if( dis === 1 ){
-        var code = model.moveCodeFromAtoB( ox,oy, x,y );
-        model.addCodeToPath( this.selectionData, dto, x,y, code );
-        return "MOVEPATH_SELECTION";
-      }
-      else{
-        // GENERATE PATH
-        model.setPathByRecalculation( this.selectionData, dto, x,y );
-        return "MOVEPATH_SELECTION";
-      }
-    },
-
-    cancel: function(){
-
-      var dto = this.actionData;
-      dto.setTarget( -1,-1 );
-      dto.setTargetProperty(null);
-      dto.setTargetUnit(null);
-
-      return "IDLE";
-    }
+  /** X coordinate of the target position */
+  targetX:0,
+  
+  /** Y coordinate of the target position */
+  targetY:0,
+  
+  /** Unit object at the target position */         
+  targetUnit:null,
+  
+  /** Unit id at the target position */ 
+  targetUnitId:-1,
+  
+  /** Property object at the target position */         
+  targetProperty:null,
+          
+  /** Property id at the target position */ 
+  targetPropertyId:-1,
+          
+  /** Property names of the target position */
+  targetTags_: [ "targetX","targetY","targetUnit","targetUnitId","targetProperty","targetPropertyId" ],
+          
+  /**
+   * Sets the target position.
+   * 
+   * @param {Number} x x coordinate
+   * @param {Number} y y coordinate
+   */
+  setTarget: function( x,y ){
+    this.setPosition_( this.targetTags_, x,y );
   },
 
-  // -------------------------------------------------------------------------
-  "ACTION_MENU":{
+  /** X coordinate of the selection position */
+  selectionX:0,
+          
+  /** Y coordinate of the selection position */
+  selectionY:0,
+  
+  /** Unit object at the selection position */         
+  selectionUnit:null,
+          
+  /** Unit id at the selection position */ 
+  selectionUnitId:-1,
+          
+  /** Property object at the selection position */
+  selectionProperty:null,
+          
+  /** Property id at the selection position */
+  selectionPropertyId:-1,
 
+  /** Property names of the selection position */
+  selectionTags_: [ "selectionX","selectionY","selectionUnit","selectionUnitId","selectionProperty","selectionPropertyId" ],
+          
+  /**
+   * Sets the selection position.
+   * 
+   * @param {Number} x x coordinate
+   * @param {Number} y y coordinate
+   */
+  setSelectionTarget: function( x,y ){
+    this.setPosition_( this.selectionTags_, x,y );
+  },
+
+  // -------------------------------------------------
+
+  /**
+   * Move path of a selected unit.
+   */
+  movePath: [],
+
+  /**
+   * Cleans the move path from move codes.
+   */
+  cleanMovepath: function(){
+    this.movePath.splice(0);
+  },
+
+  /**
+   * Clones the path and returns the created array.
+   */
+  cloneMovepath: function(){
+    var path = [];
+    for( var i=0,e=this.movePath.length; i<e; i++ ){
+      path[i] = this.movePath[i];
+    }
+
+    return path;
+  },
+
+  // -------------------------------------------------
+
+  /**
+   * Selection action key.
+   */
+  action: null,
+          
+  /**
+   * Selected sub action object.
+   */
+  subaction: null,
+          
+  /**
+   * Action object that represents the selected action.
+   */
+  actionObject: null,
+
+  // -------------------------------------------------
+
+  /**
+   * X coordinate of the selection data.
+   */
+  selectionCX:0,
+  
+  /**
+   * Y coordinate of the selection data.
+   */        
+  selectionCY:0,
+          
+  /**
+   * Data matrix of the selection data.
+   */
+  selectionData: util.matrix(
+    CWT_MAX_SELECTION_RANGE*4+1,
+    CWT_MAX_SELECTION_RANGE*4+1,
+    0
+  ),
+  
+  /**
+   * Sets the value of a position x,y in the selectiond data.
+   * 
+   * @param {Number} x x coordinate
+   * @param {Number} y y coordinate
+   * @param {Number} defValue value that will be set into every cell of the matrix
+   */
+  setSelectionCenter: function( x,y, defValue ){
+    var data = this.selectionData;
+    var e = data.length;
+    var cx = x;
+    var cy = y;
+    for (var x = 0; x < e; x++) {
+      for (var y = 0; y < e; y++) {
+        data[x][y] = defValue;
+      }
+    }
+
+    // right bounds are not important
+    this.selectionCX = Math.max(0, cx - CWT_MAX_SELECTION_RANGE*2);
+    this.selectionCY = Math.max(0, cy - CWT_MAX_SELECTION_RANGE*2);
+  },
+
+  /**
+   * Returns the value of a position x,y in the selectiond data.
+   * 
+   * @param {Number} x x coordinate
+   * @param {Number} y y coordinate
+   */
+  getSelectionValueAt: function( x,y ){
+    var data = this.selectionData;
+    var cy = this.selectionCY;
+    var cx = this.selectionCX;
+    x = x - cx;
+    y = y - cy;
+    var maxLen = data.length;
+
+    if( x < 0 || y < 0 || x >= maxLen || y >= maxLen ){
+      return -1;
+    }
+    else return data[x][y];
+  },
+ 
+  /**
+   * Sets the value of a position x,y in the selectiond data.
+   * 
+   * @param {Number} x x coordinate
+   * @param {Number} y y coordinate
+   * @param {Number} value value that will be set
+   */
+  setSelectionValueAt: function( x,y, value ){
+    var data = this.selectionData;
+    var cy = this.selectionCY;
+    var cx = this.selectionCX;
+    x = x - cx;
+    y = y - cy;
+    var maxLen = data.length;
+
+    if( x < 0 || y < 0 || x >= maxLen || y >= maxLen ){
+      util.raiseError();
+    }
+    else data[x][y] = value;
+  },
+
+  /**
+   * Prepares the selection for a the saved action key and returns the correct selection state key.
+   */
+  prepareSelection: function(){
+    var x = this.targetX;
+    var y = this.targetY;
+
+    this.setSelectionCenter( x,y, -1 );
+    this.actionObject.prepareTargets( this );
+
+    return ( this.actionObject.targetSelectionType === "A" )? "ACTION_SELECT_TARGET_A" : "ACTION_SELECT_TARGET_B";
+  },
+
+  // -------------------------------------------------
+
+  /**
+   * Menu list that contains all menu entries. This implementation is a cached list. The 
+   * symantic size of the menu is marked by {@link controller.stateMachine.data.menuSize}.
+   * 
+   * @example
+   *   data is [ entryA, entryB, entryC, null, null ]
+   *   size is 3
+   */
+  menu: util.list( 20, null ),
+          
+  /**
+   * Size of the menu.
+   */
+  menuSize:0,
+
+  /**
+   * Adds an object to the menu.
+   * 
+   * @param {Object} entry
+   */
+  addEntry: function( entry ){
+    if( this.menuSize === this.menu.length ){
+      util.raiseError();
+    }
+
+    this.menu[ this.menuSize ] = entry;
+    this.menuSize++;
+  },
+
+  /**
+   * Cleans the menu.
+   */
+  cleanMenu: function(){
+    this.menuSize = 0;
+  },
+
+  /**
+   * Prepares the menu for a given source and target position.
+   */
+  prepareMenu: function(){
+    var commandKeys = Object.keys( controller.actionObjects_ );
+
+    // ----- UNIT -----
+    var unitActable = true;
+    var selectedUnit = this.sourceUnit;
+    if( selectedUnit === null || selectedUnit.owner !== model.turnOwner ){
+      unitActable = false;
+    }
+    else if( !model.canAct( this.sourceUnitId ) ) unitActable = false;
+
+    // ----- PROPERTY -----
+    var propertyActable = true;
+    var property = this.sourceProperty;
+    if( selectedUnit !== null ) propertyActable = false;
+    if( property === null || property.owner !== model.turnOwner ){
+      propertyActable = false;
+    }
+
+    for( var i=0,e=commandKeys.length; i<e; i++ ){
+      var action = controller.getActionObject( commandKeys[i] );
+
+      // IS USER CALLABLE ACTION ?
+      if( !action.condition ) continue;
+
+      // PRE DEFINED CHECKERS
+      if( action.unitAction === true && !unitActable ) continue;
+      if( action.propertyAction === true && !propertyActable ) continue;
+
+      // CHECK CONDITION
+      if( action.condition( this ) ){
+        this.addEntry( commandKeys[i] );
+      }
+    }
+  }
+
+};
+/**
+ * @private
+ */
+controller._turnTimerTime = 0;
+
+/**
+ * Resets the turn timer.
+ */
+controller.resetTurnTimer = function(){
+  controller._turnTimerTime = 0;
+};
+
+/**
+ * Updates the turn timer.
+ * 
+ * @param {Number} delta time since last call
+ */
+controller.updateTurnTimer = function( delta ){
+  if(controller._turnTimerTime >= 0 && model.rules.turnTimeLimit > 0 ){
+    controller._turnTimerTime += delta;
+    if( controller._turnTimerTime > model.rules.turnTimeLimit ){
+
+      controller._turnTimerTime = -1;
+      controller.pushSharedAction("NXTR");
+    }
+  }
+};
+/**
+ * Action menu state that generates a list of possible action for a 
+ * selected target tile.
+ */
+controller.stateMachine.structure.ACTION_MENU = {
+  
+    onenter: function(){
+      
+      this.data.cleanMenu();
+      this.data.prepareMenu();
+
+      if( this.data.menuSize === 0 ){        
+        this.data.setTarget( -1,-1 );
+        return this.BREAK_TRANSITION;
+      }
+    },
+  
     action:function( ev, index ){
-      if( DEBUG ) controller.input._checkMenuEventArgs( ev, index );
-
-      var action = this.menu[ index ];
+      var action = this.data.menu[ index ];
       var actObj = controller.getActionObject( action );
-      this.actionData.setAction( action );
+      
+      this.data.action = action;
+      this.data.actionObject = actObj;
 
       if( actObj.prepareMenu !== null ){
-        util.fill( this.menu, null );
-        this.menuSize = 0;
-
-        actObj.prepareMenu( this.actionData, controller.input._addMenuEntry );
         return "ACTION_SUBMENU";
       }
-      if( actObj.freeTargetSelection ){
+      else if( actObj.isTargetValid !== null ){
         return "ACTION_SELECT_TILE";
       }
-      else if( actObj.prepareTargets !== null ){
-        return controller.input._prepareSelection( actObj, "ACTION_MENU" );
+      else if( actObj.prepareTargets !== null && actObj.targetSelectionType === "A" ){
+        return this.data.prepareSelection();
       }
       else return "FLUSH_ACTION";
     },
 
     cancel:function(){
-      // if( this.inMultiStep ) return "ACTION_MENU";
-
-      var dto = this.actionData;
-      dto.setTarget( -1,-1 );
-      dto.setTargetProperty(null);
-      dto.setTargetUnit(null);
-
-      var dto = this.actionData;
-      return ( dto.getSourceUnitId() !== CWT_INACTIVE_ID &&
-               dto.getSourceUnit().owner === model.turnOwner &&
-                model.canAct( dto.getSourceUnitId() ) )? "MOVEPATH_SELECTION" :
-                                                            "IDLE";
+      this.data.setTarget(-1,-1);
+      return this.lastState;
+    }
+}
+/**
+ * Action sub menu state that generates a list of possible sub actions for 
+ * an action to modify the selected action like select an unit that should
+ * be unloaded.
+ */
+controller.stateMachine.structure.ACTION_SUBMENU = {
+  
+  onenter: function( ev, x,y ){
+    this.data.cleanMenu();
+    controller.getActionObject( this.data.action ).prepareMenu( this.data );
+    if( this.data.menuSize === 0 ){        
+      util.raiseError("sub menu cannot be empty");
     }
   },
-
-  // -------------------------------------------------------------------------
-  "ACTION_SUBMENU":{
-
-    action: function( ev, index ){
-      if( DEBUG ) controller.input._checkMenuEventArgs( ev, index );
-      var action = this.menu[ index ];
-
-      if( action === "done" ){
-        return "IDLE";
-      }
-
-      var actObj = controller.getActionObject( this.actionData.getAction() );
-      this.actionData.setSubAction( action );
-
-      if( actObj.prepareTargets !== null ){
-        return controller.input._prepareSelection( actObj, "ACTION_SUBMENU" );
-      }
-      else return "FLUSH_ACTION";
-    },
-
-    cancel: function(){
-      if( this.inMultiStep ) return "ACTION_SUBMENU";
-
-      util.fill( this.menu, null );
-      this.menuSize = 0;
-
-      this._prepareMenu();
-      return "ACTION_MENU";
+  
+  action: function( ev, index ){
+    var action = this.data.menu[ index ];
+    
+    if( action === "done" ){
+      return "IDLE";
     }
-  },
-
-  // -------------------------------------------------------------------------
-  "ACTION_SELECT_TARGET":{
-    action: function( ev,x,y ){
-      if( DEBUG ) controller.input._checkClickEventArgs(ev,x,y);
-
-      if( this.selectionData.getPositionValue(x,y) < 0){
-        if( CLIENT_DEBUG ){
-          util.logInfo("break event because selection is not in the map");
-        }
-
-        return "ACTION_SELECT_TARGET";
-      }
-
-      this.actionData.setActionTarget(x,y);
-
-      var refObj;
-      if( model.fogData[x][y] > 0 &&
-          (refObj = model.unitPosMap[x][y]) !== null ){
-
-              this.actionData.setTargetUnit(refObj);
-      } else  this.actionData.setTargetUnit(null);
-
-      if(  (refObj = model.propertyPosMap[x][y]) !== null ){
-              this.actionData.setTargetProperty(refObj);
-      } else  this.actionData.setTargetProperty(null);
-
-      return "FLUSH_ACTION";
-    },
-
-    cancel: function(){
-      return this._last;
+    
+    this.data.subAction = action;
+    
+    if( this.data.actionObject.prepareTargets !== null && 
+        this.data.actionObject.targetSelectionType === "B" ){
+      
+      return this.data.prepareSelection();
     }
+    else return "FLUSH_ACTION";
   },
-
-  // -------------------------------------------------------------------------
-  "ACTION_SELECT_TILE":{
-    action: function( ev,x,y ){
-      if( DEBUG ) controller.input._checkClickEventArgs(ev,x,y);
-
-      this.actionData.setActionTarget(x,y);
-
-      var refObj;
-      if( model.fogData[x][y] > 0 &&
-        (refObj = model.unitPosMap[x][y]) !== null ){
-
-        this.actionData.setTargetUnit(refObj);
-      } else  this.actionData.setTargetUnit(null);
-
-      if(  (refObj = model.propertyPosMap[x][y]) !== null ){
-        this.actionData.setTargetProperty(refObj);
-      } else  this.actionData.setTargetProperty(null);
-
-      return "FLUSH_ACTION";
-    },
-
-    cancel: function(){
-      return "ACTION_MENU";
-    }
-  },
-
-  // -------------------------------------------------------------------------
-  "FLUSH_ACTION": {
+  
+  
+  cancel: function(){
+    if( this.data.inMultiStep ) return this.lastState;
+    
+    this.data.cleanMenu();
+    this.data.prepareMenu();
+    
+    return this.lastState;
+  }
+}
+/**
+ * Action state that converts the collected action data from client
+ * to sharable transactions and pushes them into the action stack.
+ */
+controller.stateMachine.structure.FLUSH_ACTION = {
+  
     actionState: function(){
-      var actData = this.actionData;
-
       var trapped = false;
-      if( actData.getMovePath() !== null ){
-        var way = actData.getMovePath();
+      if( this.data.movePath !== null ){
+        var way = this.data.movePath;
 
-        var cx = actData.getSourceX();
-        var cy = actData.getSourceY();
+        var cx = this.data.sourceX;
+        var cy = this.data.sourceY;
         for( var i=0,e=way.length; i<e; i++ ){
 
           switch( way[i] ){
@@ -2618,10 +2740,8 @@ controller.input = util.createStateMachine( "NONE", {
                     model.players[unit.owner].team ){
 
                 // CONVERT TO TRAP WAIT
-                actData.setAction("trapWait");
-                actData.setTarget(cx,cy);
-                actData.setTargetUnit( unit );
-                actData.setTargetProperty( null );
+                this.data.action = "TRWT";
+                this.data.setTarget(cx,cy);
                 way.splice( i );
                 trapped = true;
               }
@@ -2631,265 +2751,384 @@ controller.input = util.createStateMachine( "NONE", {
       }
 
       // PUSH A COPY INTO THE COMMAND BUFFER
-      controller.pushActionDataIntoBuffer( actData.getCopy() );
+      var action;
+      var actObj;
+      var actArgs;
+      
+      if( this.data.movePath.length > 0 ){
+        action = "MOVE";
+        actObj = controller.getActionObject( action );
+        actArgs = actObj.createDataSet( this.data );
+        actArgs.push(action);
+        controller.pushSharedAction.apply( null, actArgs );
+      }
 
-      var action = actData.getAction();
-      var actObj = controller.getActionObject( action );
+      action = this.data.action;
+      actObj = this.data.actionObject;
+      actArgs = actObj.createDataSet( this.data );
+      actArgs.push(action);
+      controller.pushSharedAction.apply( null, actArgs );
+
       if( !trapped && actObj.multiStepAction ){
-        this.inMultiStep = true;
-        var newData = controller.aquireActionDataObject();
-        newData.setAction("invokeMultiStepAction");
-        controller.pushActionDataIntoBuffer(newData);
+        this.data.inMultiStep = true;
+        controller.pushSharedAction.apply( null, ["IVMS"] );
         return "MULTISTEP_IDLE";
       }
       else return "IDLE";
     }
+  
+};
+/**
+ * The base state of a game round. An action process starts here, the 
+ * action data of the state machine is always empty in this state.
+ */
+controller.stateMachine.structure.IDLE = {
+
+  onenter: function(){
+    this.data.cleanMenu();
+    this.data.cleanMovepath();
+    this.data.menuSize = 0;
+    this.data.inMultiStep = false;
+    this.data.action = null;
+    this.data.subAction = null;
+    this.data.setTarget(-1,-1);
+    this.data.setSource(-1,-1);
+    this.data.setSelectionTarget(-1,-1);
+    this.history.splice(0);
   },
 
-  // -------------------------------------------------------------------------
-  "MULTISTEP_IDLE": {
+  action: function(ev, x, y){
+    var mem = this.data;
 
-    "nextStep": function(){
-      var action = this.actionData.getAction();
-      var actObj = controller.getActionObject( action );
+    mem.setSource(x, y);
 
-      this.menuSize = 0;
-      this.actionData.setMovePath(null);
-      util.fill( this.menu, null );
+    if ( mem.sourceUnitId !== CWT_INACTIVE_ID && mem.sourceUnit.owner === model.turnOwner && model.canAct(mem.sourceUnitId)){
+      return "MOVEPATH_SELECTION";
+    } 
+    else{
+      this.data.setTarget(x,y);
+      return "ACTION_MENU";
+    }
+  },
 
-      actObj.prepareMenu( this.actionData, controller.input._addMenuEntry );
-      controller.input._addMenuEntry("done");
+  cancel: function ( ev,x,y ) {
+    return "IDLE_R";
+  }
 
-      return (this.menuSize > 1)? "ACTION_SUBMENU": "IDLE";
+};
+/**
+ * Available from the {@link controller.stateMachine.structure.IDLE_R} state
+ * and generates, if available, an attack range for a selected unit.
+ */
+controller.stateMachine.structure.IDLE_R = {
+
+  onenter: function( ev, x,y ){
+    this.data.setSource(x,y);
+    if( this.data.sourceUnit !== null ){
+
+      controller.getActionObject("ATUN").fillAttackableTiles( this.data );
+    }
+    else return this.BREAK_TRANSITION;
+  },
+
+  cancel: function () {
+    return "IDLE";
+  }
+
+};
+ controller.stateMachine.structure.MOVEPATH_SELECTION = {
+  
+    onenter: function( ev, x,y ){
+      this.data.setTarget(x, y);
+      this.data.cleanMovepath();
+      model.fillMoveMap( this.data );
+    },
+  
+    action: function( ev,x,y ){
+      if( this.data.getSelectionValueAt(x,y) < 0){
+        if( CLIENT_DEBUG ){
+          util.log("break event because selection is not in the map");
+        }
+
+        return this.BREAK_TRANSITION;
+      }
+
+      var ox = this.data.targetX;
+      var oy = this.data.targetY;
+      var dis = model.distance( ox,oy, x,y );
+
+      this.data.setTarget( x,y );
+
+      if( dis === 0 ){
+        return "ACTION_MENU";
+      }
+      else if( dis === 1 ){
+
+        // ADD TILE TO PATH
+        var code = model.moveCodeFromAtoB( ox,oy, x,y );
+        model.addCodeToPath( this.data, x,y, code );
+        return this.BREAK_TRANSITION;
+      }
+      else{
+
+        // GENERATE PATH
+        model.setPathByRecalculation( this.data, x,y );
+        return this.BREAK_TRANSITION;
+      }
+    },
+
+    cancel: function(){
+
+      this.data.setTarget(-1,-1);
+      return this.lastState;
+    }
+  
+}
+controller.stateMachine.structure.MULTISTEP_IDLE = {
+  
+    nextStep: function(){
+
+      var action = this.data.action;
+      var actObj = this.data.actionObject;
+
+      this.data.cleanMenu();
+      this.data.cleanMovepath();
+
+      actObj.prepareMenu( this.data );
+      this.data.addEntry("done");
+
+      return ( this.data.menuSize > 1 )? "ACTION_SUBMENU": "IDLE";
+
+    }
+  
+};
+/**
+ * The start state of the cwt state machine.
+ */
+controller.stateMachine.structure.NONE = {
+    
+    start: function(){
+      return "IDLE";
+    }
+  
+};
+/**
+ * The client selects a target tile in this step. The selected action generates a map of
+ * selectable tiles. This selection will be invoked before(!) the sub menu.
+ */
+controller.stateMachine.structure.ACTION_SELECT_TARGET_A = {
+    
+    action: function( ev,x,y ){
+      
+      if( this.data.getSelectionValueAt(x,y) < 0){
+        if( CLIENT_DEBUG ){
+          util.log("break event because selection is not in the map");
+        }
+
+        return this.BREAK_TRANSITION;
+      }
+
+      this.data.setSelectionTarget(x,y);
+      return "FLUSH_ACTION";
+    },
+
+    cancel: function(){
+      return this.lastState;
+    }
+  
+};
+/**
+ * The client selects a target tile in this step. The selected action generates a map of
+ * selectable tiles. This selection will be invoked after(!) the sub menu.
+ */
+controller.stateMachine.structure.ACTION_SELECT_TARGET_B = controller.stateMachine.structure.ACTION_SELECT_TARGET_A;
+/**
+ * The client selects a target tile in this step. Unlike {@link controller.stateMachine.structure.ACTION_SELECT_TARGET_A}
+ * and {@link controller.stateMachine.structure.ACTION_SELECT_TARGET_B} this state allows a free selection
+ * over the map. Normally this state will be invoked by actions with the isTargetValid attribute. 
+ */
+controller.stateMachine.structure.ACTION_SELECT_TILE = {
+    
+    action: function( ev,x,y ){      
+      if( this.data.actionObject.isTargetValid( this.data, x,y) ){
+        
+        this.data.setSelectionTarget(x,y);
+        return "FLUSH_ACTION";
+      }
+      else return this.BREAK_TRANSITION;
+    },
+
+    cancel: function(){
+      this.data.setSelectionTarget(-1,-1);
+      return this.lastState;
+    }
+  
+};
+controller.engineAction({
+
+  name:"addVision",
+  
+  key:"AVIS",
+  
+  /**
+   * Places a visioner object at a given positin with a given range.
+   *
+   * @param {Number} x x coordinate
+   * @param {Number} y y coordinate
+   * @param {Number} range range of the visioner
+   * 
+   * @methodOf controller.actions
+   * @name addVision
+   */
+  action: function( x,y, range ){
+    if( model.rules.fogEnabled === false ){
+      return;
+    }
+      
+    var lX;
+    var hX;
+    var lY = y-range;
+    var hY = y+range;
+    if( lY < 0 ) lY = 0;
+    if( hY >= model.mapHeight ) hY = model.mapHeight-1;
+    for( ; lY<=hY; lY++ ){
+  
+      var disY = Math.abs( lY-y );
+      lX = x-range+disY;
+      hX = x+range-disY;
+      if( lX < 0 ) lX = 0;
+      if( hX >= model.mapWidth ) hX = model.mapWidth-1;
+      for( ; lX<=hX; lX++ ){
+  
+        model.fogData[lX][lY]++;
+      }
     }
   }
 });
-
-/**
- * @private
- * @param entry
- */
-controller.input._addMenuEntry = function( entry ){
-  if( controller.input.menuSize === controller.input.menu.length ){
-    util.unexpectedSituationError();
-  }
-
-  controller.input.menu[ controller.input.menuSize ] = entry;
-  controller.input.menuSize++;
-};
-
-/**
- * @private
- * @param actObj
- * @param lastState
- */
-controller.input._prepareSelection = function( actObj, lastState ){
-  var x = this.actionData.getTargetX();
-  var y = this.actionData.getTargetY();
-  this._last = lastState;
-
-
-  this.selectionData.cleanIt( -1, x,y );
-  actObj.prepareTargets( this.actionData, this.selectionData );
-
-  return "ACTION_SELECT_TARGET";
-};
-
-/**
- * @private
- * @param ev
- * @param index
- */
-controller.input._checkMenuEventArgs = function( ev, index ){
-  if( !util.isNumber(index) ) util.illegalArgumentError();
-  if( index < 0 || index >= this.menu.length ) util.illegalArgumentError();
-};
-
-/**
- * @private
- * @param ev
- * @param x
- * @param y
- */
-controller.input._checkClickEventArgs = function( ev, x,y ){
-  if( !util.isNumber(x) || !util.isNumber(y) ) util.illegalArgumentError();
-  if( !model.isValidPosition(x,y) ) util.illegalPositionError();
-};
-
-/**
- * @private
- */
-controller.input._prepareMenu = function(){
-
-  var dto = this.actionData;
-  var addEl = controller.input._addMenuEntry;
-  var commandKeys = Object.keys( controller.commands );
-
-  var unitActable = true;
-  var selectedUnit = dto.getSourceUnit();
-  if( selectedUnit === null || selectedUnit.owner !== model.turnOwner ){
-    unitActable = false;
-  }
-  else if( !model.canAct( dto.getSourceUnitId() ) ) unitActable = false;
-
-  var propertyActable = true;
-  var property = dto.getSourceProperty();
-  if( selectedUnit !== null ) propertyActable = false;
-  if( property === null ||
-      property.owner !== model.turnOwner ) propertyActable = false;
-
-  for( var i=0,e=commandKeys.length; i<e; i++ ){
-
-    var action = controller.getActionObject( commandKeys[i] );
-
-    // PRE DEFINED CHECKERS
-    if( action.unitAction === true && !unitActable ) continue;
-    if( action.propertyAction === true && !propertyActable ) continue;
-
-    if( action.condition(dto) ){
-      addEl( commandKeys[i] );
-    }
-  }
-};
-
-controller.SelectionData = function( range ){
-  var len = range*2 + 1;
-  this.data = [
-    util.matrix( len,len,0 ), // DATA
-    0,0                       // CENTERX, CENTERY
-  ];
-};
-
-/**
- *
- * @param defaultData
- * @param cx
- * @param cy
- */
-controller.SelectionData.prototype.cleanIt = function( defaultData, cx,cy ){
-  var data = this.data[0];
-  var e = data.length;
-  for (var x = 0; x < e; x++) {
-    for (var y = 0; y < e; y++) {
-      data[x][y] = defaultData;
-    }
-  }
-
-  // right bounds are not important
-  this.data[1] = Math.max(0, cx - CWT_MAX_SELECTION_RANGE);
-  this.data[2] = Math.max(0, cy - CWT_MAX_SELECTION_RANGE);
-};
-
-/**
- *
- * @param x
- * @param y
- * @param value
- */
-controller.SelectionData.prototype.setPositionValue = function( x,y, value ){
-  var data = this.data[0];
-  var cy = this.data[1];
-  var cx = this.data[2];
-  x = x - cx;
-  y = y - cy;
-  var maxLen = data.length;
-
-  if( x < 0 || y < 0 || x >= maxLen || y >= maxLen ){
-    util.illegalPositionError();
-  }
-  else data[x][y] = value;
-};
-
-/**
- *
- * @param x
- * @param y
- */
-controller.SelectionData.prototype.getPositionValue = function( x,y ){
-  var data = this.data[0];
-  var cy = this.data[1];
-  var cx = this.data[2];
-  x = x - cx;
-  y = y - cy;
-  var maxLen = data.length;
-
-  if( x < 0 || y < 0 || x >= maxLen || y >= maxLen ){
-    return -1;
-  }
-  else return data[x][y];
-};
-
-/**
- *
- */
-controller.SelectionData.prototype.getCenterX = function(){
-  return this.data[1];
-};
-
-/**
- *
- */
-controller.SelectionData.prototype.getCenterY = function(){
-  return this.data[1];
-};
-
-/**
- *
- */
-controller.SelectionData.prototype.getDataMatrix = function( ){
-  return this.data[0];
-};
-controller.registerCommand({
-
-  key:"addVisioner",
-
-  // ------------------------------------------------------------------------
-  condition: function( data ){
-    return false;
-  },
-
-  // ------------------------------------------------------------------------
-  action: function( data ){
-    model.setVisioner(
-      data.getSourceX(),
-      data.getSourceY(),
-      data.getSubAction()
-    );
-  }
-});
-controller.registerCommand({
-
-  key:"attack",
+controller.userAction({
+  
+  name:"attackUnit",
+  
+  key:"ATUN",
+  
   unitAction: true,
-  targetSelection: true,
   hasSubMenu: true,
+  
+  MOVABLE_CODE: 1,
+  MOVABLE_ATTACKABLE_CODE: 2,
+  ATTACKABLE_CODE: 3,
 
+  fillAttackableTiles: function( data ){
+    var sx = data.sourceX;
+    var sy = data.sourceY;
+    var unit = data.sourceUnit;
+    
+    model.fillMoveMap( data );
+    
+    var sdata = data.selectionData;
+    var e = sdata.length;
+    var cx = data.selectionCX;
+    var cy = data.selectionCY;
+    
+    // SET MOVE DATA
+    for (var x = 0; x < e; x++) {
+      for (var y = 0; y < e; y++) {
+        if( sdata[x][y] >= 0 ) sdata[x][y] = this.MOVABLE_CODE;
+      }
+    }
+    
+    // GET TARGETS
+    for (var x = 0; x < e; x++) {
+      for (var y = 0; y < e; y++) {
+        if( sdata[x][y] === this.MOVABLE_CODE ||
+            sdata[x][y] === this.MOVABLE_ATTACKABLE_CODE ){
+          
+          this.markTargets( data, unit, x,y, model.PRIMARY_WEAPON_TAG ); 
+          this.markTargets( data, unit, x,y, model.SECONDARY_WEAPON_TAG ); 
+          
+          // TILE IS PROCESSED
+          sdata[x][y] === this.ATTACKABLE_CODE;
+        }
+      }
+    }
+  },
+  
   counterWeapon: function( xdef, ydef, xatt, yatt ){
-      var dis = Math.abs(xdef-xatt) + Math.abs( ydef-yatt );
-      if( dis > 1 ) return null; // INDIRECT ATTACK
+    var dis = Math.abs(xdef-xatt) + Math.abs( ydef-yatt );
+    if( dis > 1 ) return null; // INDIRECT ATTACK
 
-      var def = model.unitPosMap[xdef][ydef];
-      var att = model.unitPosMap[xatt][yatt];
-      var defsheet = model.sheets.unitSheets[ def.type ];
-      var mainWp = defsheet[model.PRIMARY_WEAPON_TAG];
-      var sideWp = defsheet[model.SECONDARY_WEAPON_TAG];
+    var def = model.unitPosMap[xdef][ydef];
+    var att = model.unitPosMap[xatt][yatt];
+    var defsheet = model.sheets.unitSheets[ def.type ];
+    var mainWp = defsheet[model.PRIMARY_WEAPON_TAG];
+    var sideWp = defsheet[model.SECONDARY_WEAPON_TAG];
 
-      if( mainWp !== undefined ){
-        mainWp = model.sheets.weaponSheets[ mainWp ];
-        var minR = mainWp.minRange;
-        var maxR = mainWp.maxRange;
-        if( minR === 1 && maxR === 1 && dis === 1 ) return mainWp;
+    if( mainWp !== undefined ){
+      mainWp = model.sheets.weaponSheets[ mainWp ];
+      var minR = mainWp.minRange;
+      var maxR = mainWp.maxRange;
+      if( minR === 1 && maxR === 1 && dis === 1 ) return mainWp;
+    }
+
+    if( sideWp !== undefined ){
+      sideWp = model.sheets.weaponSheets[ sideWp ];
+      var minR = sideWp.minRange;
+      var maxR = sideWp.maxRange;
+      if( minR === 1 && maxR === 1 && dis === 1 ) return sideWp;
+    }
+
+    // NO POSSIBLE COUNTER WEAPON
+    return null;
+  },
+  
+  markTargets: function( data, unit, x, y, wpTag ){
+    if( arguments.length === 2 ){
+      x = unit.x;
+      y = unit.y;
+    }
+
+    var spid = unit.owner;
+    var steam = model.players[ unit.owner ].team;
+
+    var usheet = model.sheets.unitSheets[ unit.type ];
+    var wp     = model.sheets.weaponSheets[
+      ( wpTag === model.PRIMARY_WEAPON_TAG )?
+        usheet[model.PRIMARY_WEAPON_TAG] : usheet[model.SECONDARY_WEAPON_TAG]
+      ];
+
+    if( wp === undefined ) return;
+
+    var minR = wp.minRange;
+    var maxR = wp.maxRange;
+
+    var lX;
+    var hX;
+    var lY = y-maxR;
+    var hY = y+maxR;
+    if( lY < 0 ) lY = 0;
+    if( hY >= model.mapHeight ) hY = model.mapHeight-1;
+    for( ; lY<=hY; lY++ ){
+
+      var disY = Math.abs( lY-y );
+      lX = x-maxR+disY;
+      hX = x+maxR-disY;
+      if( lX < 0 ) lX = 0;
+      if( hX >= model.mapWidth ) hX = model.mapWidth-1;
+      for( ; lX<=hX; lX++ ){
+
+        if( model.distance( x,y, lX,lY ) >= minR ){
+          
+          var value = data.getSelectionValueAt( lX,lY );
+              
+          var tValue = this.ATTACKABLE_CODE;
+          if( value === this.MOVABLE_CODE ){
+              tValue = this.MOVABLE_ATTACKABLE_CODE;
+          }
+                 
+          data.setSelectionValueAt( lX,lY, tValue );
+        }
       }
-
-      if( sideWp !== undefined ){
-        sideWp = model.sheets.weaponSheets[ sideWp ];
-        var minR = sideWp.minRange;
-        var maxR = sideWp.maxRange;
-        if( minR === 1 && maxR === 1 && dis === 1 ) return sideWp;
-      }
-
-      // NO POSSIBLE COUNTER WEAPON
-      return null;
+    }
   },
 
   hasTargets: function( unit, wpTag, x, y, moved ){
@@ -2905,7 +3144,7 @@ controller.registerCommand({
     var wp     = model.sheets.weaponSheets[
       ( wpTag === model.PRIMARY_WEAPON_TAG )?
         usheet[model.PRIMARY_WEAPON_TAG] : usheet[model.SECONDARY_WEAPON_TAG]
-    ];
+      ];
 
     if( wp === undefined ) return false;
 
@@ -2930,42 +3169,41 @@ controller.registerCommand({
         if( model.distance( x,y, lX,lY ) >= minR ){
           var tUnit = model.unitPosMap[ lX ][ lY ];
           if( tUnit !== null && tUnit.owner !== spid &&
-              model.players[ tUnit.owner ].team !== steam ){
+            model.players[ tUnit.owner ].team !== steam ){
 
-              // IN FOG ?
-              if( model.fogData[lX][lY] === 0 ) continue;
+            // IN FOG ?
+            if( model.fogData[lX][lY] === 0 ) continue;
 
-              var dmg = model.getBaseDamage( wp, tUnit.type );
-              if( dmg > 0 ){
-                return true;
-              }
+            var dmg = model.getBaseDamage( wp, tUnit.type );
+            if( dmg > 0 ){
+              return true;
             }
           }
         }
       }
+    }
   },
 
-  // ------------------------------------------------------------------------
-  prepareMenu: function( data, addEntry ){
-    var selectedUnit = data.getSourceUnit();
-    var x = data.getTargetX();
-    var y = data.getTargetY();
+  prepareMenu: function( data ){
+    var selectedUnit = data.sourceUnit;
+    var x = data.targetX;
+    var y = data.targetY;
 
     // TODO --> MOVED <--
     if( this.hasTargets(selectedUnit,model.PRIMARY_WEAPON_TAG,x,y,true)){
-      addEntry("mainWeapon");
+      data.addEntry("mainWeapon");
     }
     if( this.hasTargets(selectedUnit,model.SECONDARY_WEAPON_TAG,x,y,true)){
-      addEntry("subWeapon");
+      data.addEntry("subWeapon");
     }
   },
 
-  // ------------------------------------------------------------------------
-  prepareTargets: function( data, selectionData ){
-    var selectedUnit = data.getSourceUnit();
-    var weapon = data.getSubAction();
-    var tx = data.getTargetX();
-    var ty = data.getTargetY();
+  targetSelectionType:"B",
+  prepareTargets: function( data ){
+    var selectedUnit = data.sourceUnit;
+    var weapon = data.subAction;
+    var tx = data.targetX;
+    var ty = data.targetY;
 
     var wp = ( weapon === 'mainWeapon')?
       model.primaryWeaponOfUnit( selectedUnit ):
@@ -3006,7 +3244,7 @@ controller.registerCommand({
                 util.logInfo("found target at (",lX,",",lY,")");
               }
 
-              selectionData.setPositionValue( lX,lY, 1 );
+              data.setSelectionValueAt( lX,lY, 1 );
             }
           }
         }
@@ -3014,18 +3252,16 @@ controller.registerCommand({
     }
   },
 
-  // ------------------------------------------------------------------------
   condition: function( data ){
     var daysOfPeace = model.rules.daysOfPeace;
     if( model.day-1 < daysOfPeace ) return false;
 
-    if( data.getTargetUnitId() !== CWT_INACTIVE_ID &&
-        data.getTargetUnitId() !== data.getSourceUnitId() ) return false;
+    if( data.targetUnitId !== CWT_INACTIVE_ID && data.targetUnitId !== data.sourceUnitId ) return false;
 
-    var selectedUnit = data.getSourceUnit();
+    var selectedUnit = data.sourceUnit;
 
-    var x = data.getTargetX();
-    var y = data.getTargetY();
+    var x = data.targetX;
+    var y = data.targetY;
 
     if(
       ( model.primaryWeaponOfUnit(selectedUnit) !== null &&
@@ -3038,67 +3274,43 @@ controller.registerCommand({
     }
     else return false;
   },
-
-  // ------------------------------------------------------------------------
-  action: function( data ){
-    var attacker = data.getSourceUnit();
-    var defender = data.getTargetUnit();
-    var weaponTag = data.getSubAction();
-
-    // TODO COUNTER ATTACK
-    var attwp = ( weaponTag === 'mainWeapon')?
-      model.primaryWeaponOfUnit( attacker ):
-      model.secondaryWeaponOfUnit( attacker );
-
-    var defwp = this.counterWeapon(
-      defender.x, defender.y,
-      attacker.x, attacker.y
-    );
-
-    var attDmg = model.getBaseDamage( attwp, defender.type );
-
-    defender.hp -= attDmg;
-
-    // decrease ammo
-    if( attwp.useAmmo !== 0 ){
-      attacker.ammo--;
+  
+  createDataSet: function( data ){
+    return [ 
+      data.sourceUnitId, 
+      model.getBaseDamage( data.subAction, data.selectionUnit.type ),
+      data.subAction === model.PRIMARY_WEAPON_TAG,
+      data.selectionUnitId, 
+      0,
+      false
+    ];
+  },
+  
+  /**
+   * One unit attacks another unit.
+   *
+   * @param {Number} aid unit id of the attacker
+   * @param {Number} admg damage dealt by the attacker
+   * @param {Boolean} aUseAmmo if true attacker ammo will be decreased
+   * @param {Number} did unit id of the defender
+   * @param {Number} ddmg damage dealt by the defender
+   * @param {Boolean} dUseAmmo if true defender ammo will be decreased
+   * 
+   * @methodOf controller.actions
+   * @name attackUnit
+   */
+  action: function( aid, admg, aUseAmmo, did, ddmg, dUseAmmo ){
+    
+    // ATTACK
+    controller.actions.damageUnit( did, admg );
+    controller.actions.wait( aid );
+    
+    // COUNTER ATTACK
+    if( model.units[did].owner !== CWT_INACTIVE_ID ){
+      controller.actions.damageUnit( aid, ddmg );  
     }
-
-    // fill co power meter
-    //model.increasePowerMeter( att.owner, 0.5*0 );
-    //model.increasePowerMeter( defender.owner, 0 );
-
-    if( defender.hp < 0 ){
-
-      // defender destroyed
-      model.destroyUnit( model.extractUnitId(defender) );
-    }
-    else if( defwp !== null ){
-
-      // counterattack
-      var defDmg = model.getBaseDamage( defwp, attacker.type );
-      attacker.hp -= defDmg;
-
-      // decrease ammo
-      if( defwp.useAmmo !== 0 ){
-        defender.ammo--;
-      }
-
-      // fill co power meter
-      //game.increasePowerMeter( att.owner, 0 );
-      //game.increasePowerMeter( defender.owner, 0.5*0 );
-
-      if( attacker.hp < 0 ){
-
-        // attacker destroyed
-        model.destroyUnit( model.extractUnitId(attacker) );
-      }
-    }
-
-    controller.invokeCommand( data, "wait" );
   }
 });
-
 
 /********
 
@@ -3137,10 +3349,14 @@ controller.registerCommand({
  It should be noted that a COs meter does not charge during the turn they activate a power.
 
  *****************/
-controller.registerCommand({
+controller.userAction({
 
-  key:"buildUnit",
+  name:"buildUnit",
+
+  key:"BDUN",
+  
   propertyAction: true,
+
   hasSubMenu: true,
 
   canPropTypeBuildUnitType: function( pType, uType ){
@@ -3175,94 +3391,184 @@ controller.registerCommand({
     return bl;
   },
 
-  // ------------------------------------------------------------------------
-  prepareMenu: function( data, addEntry ){
-    var prop = data.getSourceProperty();
-    if( DEBUG && prop === null ){ util.illegalArgumentError(); }
-
-    var bList = this.getBuildList( model.extractPropertyId( prop ) );
-
-    // APPEND TYPES
-    for( var i=0,e=bList.length; i<e; i++ ) addEntry( bList[i] );
-  },
-
-  // ------------------------------------------------------------------------
-  condition: function( data ){
-    var property = data.getSourceProperty();
+  condition: function( mem ){
+    var property = mem.sourceProperty;
     if( model.countUnits(model.turnOwner) >= model.rules.unitLimit ){
       return false;
     }
 
     return (
       model.hasFreeUnitSlots( model.turnOwner ) &&
-        this.getBuildList(
-          model.extractPropertyId( data.getSourceProperty() )
-        ).length > 0
-      );
+        this.getBuildList( model.extractPropertyId( property ) ).length > 0
+    );
+  },
+  
+  prepareMenu: function( mem ){
+    var property = mem.sourceProperty;
+    
+    if( DEBUG && property === null ){ 
+      util.raiseError();
+    }
+
+    var bList = this.getBuildList( mem.sourcePropertyId );
+    for( var i=0,e=bList.length; i<e; i++ ){
+      mem.addEntry( bList[i] );
+    }
+  },
+  
+  createDataSet: function( mem ){
+    return [ mem.sourceX, mem.sourceY, mem.subAction ];
   },
 
-  // ------------------------------------------------------------------------
-  action: function( data ){
-    var x = data.getSourceX();
-    var y = data.getSourceY();
-    var subEntry = data.getSubAction();
+  /**
+   * Builds an unit.
+   *
+   * @param {Number} x x coordinate
+   * @param {Number} y y coordinate
+   * @param {String} type type of the unit
+   *
+   * @methodOf controller.actions
+   * @name buildUnit
+   */
+  action: function( x,y, type ){
 
-    var uid = model.createUnit( model.turnOwner, subEntry );
-    model.setUnitPosition( uid, x,y );
-
+    controller.actions.createUnit( x,y, model.turnOwner, type );
+    
+    var uid = model.extractUnitId( model.unitPosMap[x][y] );
     var pl = model.players[ model.turnOwner ];
-    pl.gold -= model.sheets.unitSheets[ subEntry ].cost;
+    
+    pl.gold -= model.sheets.unitSheets[ type ].cost;
 
-    var newData = controller.aquireActionDataObject();
-    newData.setSourceUnit(model.units[uid]);
-    newData.setAction("wait");
-    controller.invokeCommand( newData );
+    controller.actions.wait( uid );
   }
 
 });
-controller.registerCommand({
+controller.engineAction({
 
-  key:"captureProperty",
+  name:"calculateFog",
+  
+  key:"CCFO",
+  
+  /**
+   * Calculates the fog map for a given player id.
+   *
+   * @param {Number} pid player id
+   *
+   * @methodOf controller.actions
+   * @name calculateFog
+   */
+  action: function( pid ){
+    var x;
+    var y;
+    var xe = model.mapWidth;
+    var ye = model.mapHeight;
+    var tid = model.players[pid].team;
+    var fogEnabled = model.rules.fogEnabled;
+    
+    for( x=0 ;x<xe; x++ ){
+      for( y=0 ;y<ye; y++ ){
+        if( !fogEnabled ){
+          model.fogData[x][y] = 1;
+        }
+        else{
+          model.fogData[x][y] = 0;
+        }
+      }
+    }
+    
+    if( fogEnabled ){
+      for( x=0 ;x<xe; x++ ){
+        for( y=0 ;y<ye; y++ ){
+    
+            //--------
+            var unit = model.unitPosMap[x][y];
+            if( unit !== null ){
+              var sid = unit.owner;
+              if( pid === sid || model.players[sid].team === tid ){
+                var vision = model.sheets.unitSheets[unit.type].vision;
+                controller.actions.addVision( x,y, vision );
+              }
+            }
+      
+            //--------
+            var property = model.propertyPosMap[x][y];
+            if( property !== null ){
+              var sid = property.owner;
+              if( pid === sid || model.players[sid].team === tid ){
+                var vision = model.sheets.tileSheets[property.type].vision;
+                controller.actions.addVision( x,y, vision );
+              }
+            }
+        }
+      }
+    }
+  }
+  
+});
+controller.userAction({
+  
+  name:"captureProperty",
+
+  key:"CTPR",
+  
   unitAction: true,
-
-  // ------------------------------------------------------------------------
-  condition: function( data ){
-    var selectedUnit = data.getSourceUnit();
-    var unit = data.getTargetUnit();
-    var property = data.getTargetProperty();
-
+  
+  condition: function( mem ){
     return (
-      property !== null &&
-        model.turnOwner !== property.owner &&
+      mem.targetProperty !== null && 
+      model.turnOwner !== mem.targetProperty.owner &&
 
-      ( unit === null || unit === selectedUnit ) &&
+      ( mem.targetUnit === null || mem.targetUnit === mem.sourceUnit ) &&
 
-      model.sheets.tileSheets[ property.type ].capturePoints > 0 &&
-      model.sheets.unitSheets[ selectedUnit.type ].captures > 0
+      model.sheets.tileSheets[ mem.targetProperty.type ].capturePoints > 0 &&
+      model.sheets.unitSheets[ mem.sourceUnit.type ].captures > 0
     );
   },
-
-  // ------------------------------------------------------------------------
-  action: function( data ){
-    var selectedUnit = data.getSourceUnit();
-    var property = data.getTargetProperty();
+  
+  createDataSet: function( mem ){
+    
+    // ONE POINT FOR EVERY 10 HP STARTING WITH 9
+    var points = parseInt( mem.sourceUnit.hp/10, 10 ) +1;
+    
+    return [
+      mem.sourceUnitId,
+      mem.targetPropertyId,
+      mem.targetX,
+      mem.targetY,
+      points
+    ];
+  },
+  
+  /**
+   * Captures a property.
+   *
+   * @param {Number} cid capturer id
+   * @param {Number} prid property id
+   * @param {Number} px x coordinate
+   * @param {Number} py y coordinate
+   * @param {Number} points capture points
+   *
+   * @methodOf controller.actions
+   * @name captureProperty
+   */
+  action: function( cid, prid, px,py, points ){
+    var selectedUnit = model.units[cid];
+    var property = model.properties[prid];
     var unitSh = model.sheets.unitSheets[ selectedUnit.type ];
 
-    property.capturePoints -= unitSh.captures;
+    selectedUnit.ST_CAPTURES = true;
+    
+    property.capturePoints -= points;
     if( property.capturePoints <= 0 ){
-      var x = data.getTargetX();
-      var y = data.getTargetY();
+      var x = px;
+      var y = py;
 
       if( DEBUG ){
         util.logInfo( "property at (",x,",",y,") captured");
       }
 
       // ADD VISION
-      var data = new controller.ActionData();
-      data.setSource( x,y );
-      data.setAction("addVisioner");
-      data.setSubAction( model.sheets.tileSheets[property.type].vision );
-      controller.pushActionDataIntoBuffer(data);
+      controller.actions.addVision( x,y, model.sheets.tileSheets[property.type].vision );
 
       if( property.type === 'HQTR' ){
         var pid = property.owner;
@@ -3300,9 +3606,7 @@ controller.registerCommand({
 
         // NO OPPOSITE TEAMS LEFT ?
         if( _teamFound !== -1 ){
-          var nData = controller.aquireActionDataObject();
-          nData.setAction( "endGame" );
-          controller.pushActionDataIntoBuffer( nData, true );
+          controller.pushSharedAction("endGame");
         }
       }
 
@@ -3312,88 +3616,413 @@ controller.registerCommand({
 
       var capLimit = model.rules.captureWinLimit;
       if( capLimit !== 0 && capLimit <= model.countProperties() ){
-        var nData = controller.aquireActionDataObject();
-        nData.setAction( "endGame" );
-        controller.pushActionDataIntoBuffer( nData, true );
+        controller.pushSharedAction("endGame");
       }
     }
 
-    controller.invokeCommand( data, "wait" );
+    controller.actions.wait( cid );
   }
-
+  
 });
-controller.registerCommand({
+controller.engineAction({
 
-  key: "endGame",
+  name:"createUnit",
+  
+  key:"CRUN",
+  
+  /**
+   * Creates an unit in the unit depot of a given player.
+   *
+   * @param {Number} x x coordinate
+   * @param {Number} y y coordinate
+   * @param {Number} pid player id of the player
+   * @param {String} type type of the unit type
+   *
+   * @methodOf controller.actions
+   * @name createUnit
+   */
+  action: function( x,y, pid, type ){
 
-  // -----------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
-
-  // -----------------------------------------------------------------------
-  action: function( data ){
+    var startIndex = pid*CWT_MAX_UNITS_PER_PLAYER;
+    for( var i=startIndex, e=startIndex+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
+  
+      if( model.units[i].owner === CWT_INACTIVE_ID ){
+  
+        var typeSheet = model.sheets.unitSheets[ type ];
+        var unit = model.units[i];
+        unit.owner = pid;
+        unit.hp = 99;
+        unit.type = type;
+        unit.ammo = typeSheet.maxAmmo;
+        unit.fuel = typeSheet.maxFuel;
+        unit.loadedIn = -1;
+        unit.x = x;
+        unit.y = y;
+        
+        model.unitPosMap[x][y] = unit;
+        
+        // controller.actions.addVision( unit.x, unit.y, model.sheets.unitSheets[ unit.type ].vision );
+        controller.pushAction( unit.x, unit.y, model.sheets.unitSheets[ unit.type ].vision, "AVIS" );
+        
+        if( DEBUG ){
+          util.log("build unit for player",pid,"in slot",i);
+        }
+        
+        return;
+      }
+    }
+  
     if( DEBUG ){
-      util.logInfo("the game ends because no opposite players exists");
+      util.raiseError("cannot build unit for player",pid,"no slots free");
+    }
+  }
+});
+controller.engineAction({
+
+  name:"damageUnit",
+  
+  key:"DMUN",
+  
+  /**
+   * Damages an unit.
+   *
+   * @param {Number} uid unit id
+   * @param {Number} hp health points
+   *
+   * @methodOf controller.actions
+   * @name damageUnit
+   */
+  action: function( uid, hp ){
+    var unit = model.units[uid];
+    
+    unit.hp -= hp;
+    if( unit.hp < 0 ){
+      controller.actions.destroyUnit( uid );
+    }
+    else{
+      
+      var num = -1;
+      if( unit.hp <= 90 ){
+        num = parseInt( unit.hp/10 , 10 )+1;
+      }
+      unit.ST_HP_NUM = num;
+    }
+  }
+  
+});
+controller.engineAction({
+
+  name:"destroyUnit",
+  
+  key:"DEUN",
+  
+  /**
+   * Destroys an unit.
+   *
+   * @param {Number} uid unit id
+   *
+   * @methodOf controller.actions
+   * @name destroyUnit
+   */
+  action: function( uid ){
+    
+    var unit = model.units[uid];
+    
+    // controller.actions.removeVision( unit.x, unit.y, model.sheets.unitSheets[ unit.type ].vision );
+    controller.pushAction( unit.x, unit.y, model.sheets.unitSheets[ unit.type ].vision, "RVIS" );
+    
+    unit.owner = CWT_INACTIVE_ID;
+    model.unitPosMap[ unit.x ][ unit.y ] = null;
+    unit.x = -1;
+    unit.y = -1;
+  }
+});
+controller.engineAction({
+
+  name: "endGame",
+
+  key: "EDGM",
+
+  /**
+   * Ends the game round.
+   *
+   * @methodOf controller.actions
+   * @name endGame
+   */
+  action: function(){
+
+    if( DEBUG ){
+      util.log("the game ends because no opposite players exists");
     }
   }
 
 });
-controller.registerCommand({
+controller.userAction({
 
-  key:"healUnit",
+  name:"giveMoneyToPlayer",
 
-  // ------------------------------------------------------------------------
-  condition: function( data ){
-    return false;
+  key:"GMTP",
+
+  hasSubMenu: true,
+
+  condition: function( mem ){
+    if( model.players[ model.turnOwner ].gold < 500 ) return false;
+
+    var selectedUnit = mem.sourceUnit;
+    var unit = mem.targetUnit;
+    if( unit === null ) return false;
+    
+    if( selectedUnit !== null && unit !== selectedUnit ) return false;
+
+    var property = mem.targetProperty;
+    if( unit === null && property === null ) return false;
+
+    return true;
   },
 
-  // ------------------------------------------------------------------------
-  action: function( data ){
-    var healingUnit = data.getTargetUnit();
+  prepareMenu: function( mem ){
+    var availGold = model.players[ model.turnOwner ].gold;
+    if( availGold >= 500 ) mem.addEntry(500);
+    if( availGold >= 1000 ) mem.addEntry(1000);
+    if( availGold >= 2500 ) mem.addEntry(2500);
+    if( availGold >= 5000 ) mem.addEntry(5000);
+    if( availGold >= 10000 ) mem.addEntry(10000);
+    if( availGold >= 25000 ) mem.addEntry(25000);
+    if( availGold >= 50000 ) mem.addEntry(50000);
+  },
 
-    var hp = 20;
+  createDataSet: function( mem ){
+    var obj = mem.targetUnit;
+    if( obj === null ){
+      obj = mem.targetProperty;
+    }
 
-    healingUnit.hp += hp;
-    if( healingUnit.hp > 99 ) healingUnit.hp = 99;
+    return [ obj.owner, mem.subAction ];
+  },
+
+  /**
+   * Transfers money from the gold depot of a player to the gold depot to an other player.
+   *
+   * @param {Number} pid player id of the target player
+   * @param {Number} money money that will be transfered
+   *
+   * @methodOf controller.actions
+   * @name giveMoneyToPlayer
+   */
+  action: function( pid, money ){
+    var sPlayer = model.players[ model.turnOwner ];
+    var tPlayer = model.players[ pid ];
+
+    if( money > sPlayer.gold ){
+        money = sPlayer.gold;
+    }
+
+    // TRANSFER GOLD
+    sPlayer.gold -= money;
+    tPlayer.gold += money;
+  }
+
+});
+controller.userAction({
+
+  name:"givePropertyToPlayer",
+
+  key:"GPTP",
+
+  propertyAction: true,
+  hasSubMenu: true,
+
+  /**
+   * @param {controller.stateMachine.data} mem
+   * @return {Boolean}
+   */
+  condition: function( mem ){
+    var selected = mem.sourceProperty;
+    if( selected === null ) return false;
+
+    return true;
+  },
+
+  prepareMenu: function( mem ){
+    for( var i= 0,e=CWT_MAX_PLAYER; i<e; i++ ){
+      if( i !== model.turnOwner && model.players[i].team !== CWT_INACTIVE_ID ){
+        mem.addEntry(i);
+      }
+    }
+  },
+
+  createDataSet: function( mem ){
+    return [ mem.sourcePropertyId, mem.subAction ];
+  },
+
+  /**
+   * Transfers a property of a player to an other player.
+   *
+   * @param {Number} pid property id
+   * @param {Number} newOwner the id of the new owner
+   *
+   * @methodOf controller.actions
+   * @name givePropertyToPlayer
+   */
+  action: function( pid, newOwner ){
+    model.properties[pid].owner = newOwner;
+  }
+
+});
+controller.userAction({
+
+  name:"giveUnitToPlayer",
+
+  key:"GUTP",
+
+  unitAction: true,
+  hasSubMenu: true,
+
+  condition: function( mem ){
+    var selectedUnit = mem.sourceUnit;
+    if( selectedUnit === null ) return false;
+    if( mem.targetUnit !== null ) return false;
+    
+    var unit = mem.targetUnit;
+    return unit !== selectedUnit;
+  },
+
+  prepareMenu: function( mem ){
+    for( var i= 0,e=CWT_MAX_PLAYER; i<e; i++ ){
+      if( i !== model.turnOwner && model.players[i].team !== CWT_INACTIVE_ID ){
+        mem.addEntry(i);
+      }
+    }
+  },
+
+  createDataSet: function( mem ){
+    return [ mem.sourceUnitId, mem.subAction ];
+  },
+
+  /**
+   * Transfers a property of a player to an other player.
+   *
+   * @param {Number} uid unit id
+   * @param {Number} tpod the id of the new owner
+   *
+   * @methodOf controller.actions
+   * @name giveUnitToPlayer
+   */
+  action: function( uid, tpid ){
+    var selectedUnit = model.units[uid];
+    var tx = selectedUnit.x;
+    var ty = selectedUnit.y;
+    var opid = selectedUnit.owner;
+    
+    selectedUnit.owner = CWT_INACTIVE_ID;
+    
+    model.unitPosMap[ selectedUnit.x ][ selectedUnit.y ] = null;
+    controller.actions.removeVision( selectedUnit.x, selectedUnit.y, model.sheets[ selectedUnit.type ].vision );
+
+    var tid = model.createUnit( tpid, selectedUnit.type );
+    var targetUnit = model.units[ tid ];
+    targetUnit.hp = selectedUnit.hp;
+    targetUnit.ammo = selectedUnit.ammo;
+    targetUnit.fuel = selectedUnit.fuel;
+    targetUnit.exp = selectedUnit.exp;
+    targetUnit.type = selectedUnit.type;
+    targetUnit.x = tx;
+    targetUnit.y = ty;
+    targetUnit.loadedIn = selectedUnit.loadedIn;
+    
+    model.unitPosMap[ cX ][ cY ] = targetUnit;
+    if( model.players[tpid].team === model.players[opid].team ){
+      controller.actions.addVision(  targetUnit.x, targetUnit.y, model.sheets[ targetUnit.type ].vision );
+    }
+  }
+
+});
+controller.engineAction({
+
+  name:"healUnit",
+  
+  key:"HEUN",
+  
+  /**
+   * Heals an unit.
+   *
+   * @param {Number} uid unit id
+   * @param {Number} hp health points
+   *
+   * @methodOf controller.actions
+   * @name healUnit
+   */
+  action: function( uid, hp ){
+    var unit = model.units[uid];
+    
+    unit.hp += hp;
+    if( unit.hp > 99 ) unit.hp = 99;
+    
+    var num = -1;
+    if( unit.hp <= 90 ){
+      num = parseInt( unit.hp/10 , 10 )+1;
+    }
+    unit.ST_HP_NUM = num;
   }
 });
-controller.registerCommand({
+controller.engineAction({
 
-  key:"invokeMultiStepAction",
+  name:"invokeMultiStepAction",
+  key:"IVMS",
 
-  // ----------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
-
-  // ----------------------------------------------------------------------
-  action: function( data ){
-    controller.input.event("nextStep");
+  /**
+   * Invokes a multi step action.
+   *
+   * @methodOf controller.actions
+   * @name invokeMultiStepAction
+   */
+  action: function(){
+    controller.stateMachine.event("nextStep");
   }
 });
-controller.registerCommand({
+controller.userAction({
 
-  key:"join",
+  name:"join",
+  key:"JNUN",
+  
   unitAction: true,
 
-  // ----------------------------------------------------------------------
-  condition: function( data ){
-    var selectedUnit = data.getSourceUnit();
-    var targetUnit = data.getTargetUnit();
-    if( targetUnit === null || targetUnit.owner !== model.turnOwner ||
+  condition: function( mem ){
+    var selectedUnit = mem.sourceUnit;
+    var targetUnit = mem.targetUnit;
+    
+    if( selectedUnit === null || 
+        targetUnit === null || 
+        targetUnit.owner !== model.turnOwner ||
         targetUnit === selectedUnit ) return false;
+    
+    // NO LOAD MERGE
+    if( model.hasLoadedIds( mem.sourceUnitId ) || 
+        model.hasLoadedIds( mem.targetUnitId ) ) return false;
 
     return ( selectedUnit.type === targetUnit.type && targetUnit.hp < 89 );
   },
+  
+  createDataSet: function( mem ){
+    return [ mem.sourceUnitId, mem.targetUnitId ];
+  },
 
-  // ----------------------------------------------------------------------
-  action: function( data ){
-    var joinSource = data.getSourceUnit();
-    var joinTarget = data.getTargetUnit();
-
-    
+  /**
+   * Joins an unit into an other.
+   *
+   * @param {Number} pid source unit id
+   * @param {Number} tid target unit id
+   *
+   * @methodOf controller.actions
+   * @name join
+   */
+  action: function( sid, tid ){
+    var joinSource = model.units[sid];
+    var joinTarget = model.units[tid];
     var junitSheet = model.sheets.unitSheets[ joinTarget.type ];
 
     // HEALTH POINTS
-    joinTarget.hp += joinSource.hp;
-    if( joinTarget.hp > 99 ) joinTarget.hp = 99;
+    controller.actions.healUnit( tid, joinSource.hp );
 
     // AMMO
     joinTarget.ammo += joinSource.ammo;
@@ -3407,151 +4036,56 @@ controller.registerCommand({
       joinTarget.fuel = junitSheet.maxFuel;
     }
 
-    model.destroyUnit( model.extractUnitId(joinSource) );
-    
-    // CHANGE SCOPE OF SELECTED UNIT TO TARGET
-    data.setSourceUnit( joinTarget );
-    controller.invokeCommand( data, "wait" );
+    controller.actions.destroyUnit( sid );
+    controller.actions.wait( tid );
   }
 });
-controller.registerCommand({
+controller.engineAction({
 
-  key: "loadGame",
+  name: "loadGame",
 
-  _copyProps: function( source, target ){
-    var keys = Object.keys( source );
-    for( var i=0,e=keys.length; i<e; i++ ){
-      target[ keys[i] ] = source[ keys[i] ];
-    }
-  },
+  key: "LDGM",
 
-  // -----------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
+  /**
+   * Loads a game file into the domain model.
+   *
+   * @param map map container
+   *
+   * @methodOf controller.actions
+   * @name loadGame
+   */
+  action: function( map ){
 
-  // -----------------------------------------------------------------------
-  action: function( data ){
-    if( util.DEBUG ){ util.logInfo("start loading game instance"); }
-
-    var copy = this._copyProps;
-    var mapData = data.getSubAction();
-
-    // ------------------------------------------------------------------------
-    // MAP
-
-    model.mapHeight = mapData[ controller.SERIALIZATION_MAP_H ];
-    model.mapWidth = mapData[ controller.SERIALIZATION_MAP_W ];
-
-    for( var x=0,xe=model.mapWidth; x<xe; x++ ){
-      for( var y=0,ye=model.mapHeight; y<ye; y++ ){
-        model.map[x][y] = mapData[ controller.SERIALIZATION_MAP ][x][y];
-      }
+    if( DEBUG ){
+      util.log("start loading game instance");
     }
 
-    // ------------------------------------------------------------------------
-    // UNITS
-
-    for( var i=0,e=model.units.length; i<e; i++ ){
-      var unit = model.units[i];
-      if( mapData[ controller.SERIALIZATION_UNITS ].hasOwnProperty(i) ){
-        copy( mapData[ controller.SERIALIZATION_UNITS ][i], unit );
-      }
-      else{
-        unit.owner = CWT_INACTIVE_ID;
-      }
-    }
-
-    for( var x=0,xe=model.mapWidth; x<xe; x++ ){
-      for( var y=0,ye=model.mapHeight; y<ye; y++ ){
-        model.unitPosMap[x][y] = null;
-      }
-    }
-
-    var posKeys;
-    posKeys = Object.keys(mapData[ controller.SERIALIZATION_UNITS_POS ] );
-    for( var i=0,e=posKeys.length; i<e; i++ ){
-      var parts = posKeys[i].split(",");
-      var x = parseInt( parts[0], 10 );
-      var y = parseInt( parts[1], 10 );
-
-      model.unitPosMap[x][y] = model.units[
-        mapData[ controller.SERIALIZATION_UNITS_POS ][ posKeys[i] ]
-      ];
-    }
-
-    // ------------------------------------------------------------------------
-    // PROPS
-
-    for( var i=0,e=model.properties.length; i<e; i++ ){
-      var prop = model.properties[i];
-      if( mapData[ controller.SERIALIZATION_PROPS ].hasOwnProperty(i) ){
-        copy( mapData[ controller.SERIALIZATION_PROPS ][i], prop );
-      }
-      else{
-        prop.owner = CWT_INACTIVE_ID;
-      }
-    }
-
-    for( var x=0,xe=model.mapWidth; x<xe; x++ ){
-      for( var y=0,ye=model.mapHeight; y<ye; y++ ){
-        model.propertyPosMap[x][y] = null;
-      }
-    }
-
-    posKeys = Object.keys(mapData[ controller.SERIALIZATION_PROPS_POS ] );
-    for( var i=0,e=posKeys.length; i<e; i++ ){
-      var parts = posKeys[i].split(",");
-      var x = parseInt( parts[0], 10 );
-      var y = parseInt( parts[1], 10 );
-
-      model.propertyPosMap[x][y] = model.properties[
-        mapData[ controller.SERIALIZATION_PROPS_POS ][ posKeys[i] ]
-      ];
-    }
-
-    // ------------------------------------------------------------------------
-    // ROUND
-
-    model.day = mapData[ controller.SERIALIZATION_DAY ];
-    model.turnOwner = mapData[ controller.SERIALIZATION_TURNOWNER ];
-    // model.leftActors = mapData[ controller.SERIALIZATION_LEFTACTORS ];
-
-    if( mapData[ controller.SERIALIZATION_LEFTACTORS ] !== undefined ){
-      for( var i=0,e= mapData[ controller.SERIALIZATION_LEFTACTORS ].length;
-           i<e; i++ ){
-
-        model.leftActors[i] =  mapData[ controller.SERIALIZATION_LEFTACTORS ][i];
-      }
-    }
-    else util.fill( model.leftActors, true );
-
-    // ------------------------------------------------------------------------
-    // PLAYERS
-
-    for( var i=0,e=model.players.length; i<e; i++ ){
-      var player = model.players[i];
-      if( mapData[ controller.SERIALIZATION_PLAYERS ].hasOwnProperty(i) ){
-        copy( mapData[ controller.SERIALIZATION_PLAYERS ][i], player );
-      }
-      else{
-        player.team = CWT_INACTIVE_ID;
-      }
-    }
-
-    // ------------------------------------------------------------------------
+    // LOAD MAP
+    var handler = controller.getActiveSerializationHandler( map.format );
+    handler.load( map );
 
     // LOAD RULES
     model.setRulesByOption({});
+    
+    controller.actions.calculateFog( model.turnOwner );
 
-    if( util.DEBUG ){ util.logInfo("game instance successfully loaded"); }
+    if( DEBUG ){
+      util.log("game instance successfully loaded");
+    }
   }
 });
-controller.registerCommand({
+controller.engineAction({
 
-  key: "loadMod",
+  name: "loadMod",
 
-  // -----------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
+  key: "LDMD",
 
+  /**
+   * Loads a modification.
+   *
+   * @methodOf controller.actions
+   * @name loadMod
+   */
   action: function(){
 
     for( var i=0,e=CWT_MOD_DEFAULT.movetypes.length; i<e; i++ ){
@@ -3593,16 +4127,18 @@ controller.registerCommand({
     model.parseSheet( CWT_MOD_DEFAULT.rules, model.sheets.RULESET );
   }
 });
-controller.registerCommand({
+controller.userAction({
 
-  key:"loadUnit",
+  name:"loadUnit",
+
+  key:"LODU",
+
   unitAction: true,
 
-  // -----------------------------------------------------------------------
-  condition: function( data ){
-    var selectedUnitId = data.getSourceUnitId();
-    var transporterId = data.getTargetUnitId();
-    if( transporterId === -1 || data.getTargetUnit().owner !== model.turnOwner){
+  condition: function( mem ){
+    var selectedUnitId = mem.sourceUnitId;
+    var transporterId = mem.targetUnitId;
+    if( transporterId === -1 || mem.targetUnit.owner !== model.turnOwner){
       return false;
     }
 
@@ -3612,44 +4148,83 @@ controller.registerCommand({
     );
   },
 
-  // -----------------------------------------------------------------------
-  action: function( data ){
-    var selectedUnitId = data.getSourceUnitId();
-    var transporterId = data.getTargetUnitId();
-
-    model.loadUnitInto( selectedUnitId, transporterId );
-  }
-});
-controller.registerCommand({
-
-  key: "makeActable",
-  userAction: false,
-
-  // -----------------------------------------------------------------------
-  condition: function( data ){
-    return false;
+  createDataSet: function( mem ){
+    return [ mem.sourceUnitId, mem.targetUnitId ];
   },
 
-  // -----------------------------------------------------------------------
-  action: function( data ){
-    model.leftActors[ data.getSourceUnitId() ] = true;
+  /**
+   * Loads an unit into a transporter.
+   *
+   * @param {Number} uid load unit id
+   * @param {Number} tid transporter id
+   *
+   * @methodOf controller.actions
+   * @name loadUnit
+   */
+  action: function( uid, tid ){
+    model.loadUnitInto( uid, tid );
   }
 
 });
-controller.registerCommand({
+controller.engineAction({
 
-  key: "move",
+  name: "makeActable",
 
-  // -----------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
+  key: "MKAC",
+  
+  /**
+   * Makes an unit id actable.
+   *
+   * @param {Number} uid unit id
+   *
+   * @methodOf controller.actions
+   * @name makeActable
+   */
+  action: function( uid ){
+    var uid = ( typeof uid === 'number' )? uid : model.extractUnitId( uid );
+    var startIndex = model.turnOwner * CWT_MAX_UNITS_PER_PLAYER;
+  
+    // NOT THE OWNER OF THE CURRENT TURN
+    if( uid >= startIndex + CWT_MAX_UNITS_PER_PLAYER ||
+      uid < startIndex ){
+  
+      util.raiseError("unit owner is not the active player");
+    }
+  
+    model.leftActors[ uid - startIndex ] = true;
+  
+    if( DEBUG ){
+      util.log("unit",uid,"going into wait status");
+    }
+  }
 
-  // -----------------------------------------------------------------------
-  action: function( data ){
-    var way = data.getMovePath();
-    var uid = data.getSourceUnitId();
+});
+controller.engineAction({
 
-    var cX = data.getSourceX();
-    var cY = data.getSourceY();
+  name: "moveUnit",
+
+  key: "MOVE",
+
+  shared: true,
+
+  createDataSet: function( data ){
+    return [ data.cloneMovepath(), data.sourceUnitId, data.sourceX, data.sourceY ];
+  },
+  
+  /**
+   * Moves an unit from A to B.
+   *
+   * @param {Array} way move path of the unit
+   * @param {Number} uid moving unit id 
+   * @param {Number} x x coordinate of the source
+   * @param {Number} y y coordinate of the source
+   *
+   * @methodOf controller.actions
+   * @name moveUnit
+   */
+  action: function( way, uid, x,y ){
+    var cX = x;
+    var cY = y;
     var unit = model.units[ uid ];
     var uType = model.sheets.unitSheets[ unit.type ];
     var mType = model.sheets.movetypeSheets[ uType.moveType ];
@@ -3723,13 +4298,10 @@ controller.registerCommand({
         }
 
 
-        if( lastIndex == -1 ){
+        if( lastIndex === -1 ){
 
           // THAT IS A FAULT
-          cwt.error(
-            "unit is blocked by an enemy, but the enemy",
-            "stands beside the start tile, that is a logic fault!"
-          );
+          util.raiseError( "unit is blocked by an enemy, but the enemy stands beside the start tile, that is a logic fault!" );
         }
 
         break;
@@ -3740,40 +4312,70 @@ controller.registerCommand({
     }
 
     unit.fuel -= fuelUsed;
-
+    
     // DO NOT ERASE POSITION IF UNIT WAS LOADED OR HIDDEN (NOT INGAME HIDDEN)
     // SOMEWHERE
     if( unit.x !== -1 && unit.y !== -1 ){
-      model.eraseUnitPosition( uid );
+      model.unitPosMap[ unit.x ][ unit.y ] = null;
+      
+      // controller.actions.removeVision( unit.x, unit.y, model.sheets.unitSheets[ unit.type ].vision );
+      controller.pushAction( unit.x, unit.y, model.sheets.unitSheets[ unit.type ].vision, "RVIS" );
+      
+      unit.x = -1;
+      unit.y = -1;
     }
 
     // DO NOT SET NEW POSITION IF THE POSITION IS OCCUPIED
     // THE SET POSITION LOGIC MUST BE DONE BY THE ACTION
     if( model.unitPosMap[cX][cY] === null ){
-      model.setUnitPosition( uid, cX, cY );
+      unit.x = cX;
+      unit.y = cY;
+      model.unitPosMap[ cX ][ cY ] = unit;
+      //controller.actions.addVision(  cX, cY, model.sheets.unitSheets[ unit.type ].vision );
+      controller.pushAction( cX,cY, model.sheets.unitSheets[ unit.type ].vision, "AVIS" );
     }
 
     if( DEBUG ){
-      util.logInfo(
-        "moved unit",uid,
-        "from (",data.getSourceX(),",",data.getSourceY(),")",
-        "to (",cX,",",cY,")"
-      );
+      util.log( "moved unit",uid,"from (",x,",",y,") to (",cX,",",cY,")" );
     }
   }
 
 })
-controller.registerCommand({
+controller.engineAction({
 
-  key: "nextTurn",
+  name:"moveVision",
+  
+  key:"MVIS",
+  
+  /**
+   * Transfers a property of a player to an other player.
+   *
+   * @param {Number} sx x coordinate of the source
+   * @param {Number} sy y coordinate of the source
+   * @param {Number} tx x coordinate of the target
+   * @param {Number} ty y coordinate of the target
+   * @param {Number} range vision range of the visioner
+   *
+   * @methodOf controller.actions
+   * @name moveVision
+   */
+  action: function( sx,sy, tx,ty, range ){
+    controller.actions.removeVision(sx,sy,range);
+    controller.actions.addVision(tx,ty,range);
+  }
+});
+controller.userAction({
 
-  // -----------------------------------------------------------------------
-  condition: function( data ){
-    if( data.getSourceUnitId() === CWT_INACTIVE_ID ){
+  name: "nextTurn",
+
+  key: "NXTR",
+
+  condition: function( mem ){
+
+    if( mem.sourceUnitId === CWT_INACTIVE_ID ){
       // NO UNIT
 
-      if( data.getSourcePropertyId() !== CWT_INACTIVE_ID &&
-          data.getSourceProperty().owner === model.turnOwner ){
+      if( mem.sourcePropertyId !== CWT_INACTIVE_ID && mem.sourceProperty.owner === model.turnOwner ){
 
         // PROPERTY
         return false;
@@ -3783,10 +4385,9 @@ controller.registerCommand({
     else{
       // UNIT
 
-      if( data.getSourceUnit().owner === model.turnOwner &&
-          model.canAct( data.getSourceUnitId() ) ){
+      if( mem.sourceUnit.owner === model.turnOwner && model.canAct( mem.sourceUnitId ) ){
 
-        // ACTABLE OWN
+        // ACT ABLE OWN
         return false;
       }
       else return true;
@@ -3796,23 +4397,32 @@ controller.registerCommand({
     return false;
   },
 
-  // -----------------------------------------------------------------------
-  action: function( data ){
+  createDataSet: function( mem ){
+    return [];
+  },
+
+  /**
+   * Ends the turn for the current active player.
+   *
+   * @methodOf controller.actions
+   * @name nextTurn
+   */
+  action: function(){
     var pid = model.turnOwner;
     var oid = pid;
 
     // FIND NEXT PLAYER
     pid++;
     while( pid !== oid ){
+
       if( pid === CWT_MAX_PLAYER ){
+
         pid = 0;
         model.day++;
 
         var dayLimit = model.rules.dayLimit;
         if( dayLimit !== 0 && model.day === dayLimit ){
-          var nData = controller.aquireActionDataObject();
-          nData.setAction( "endGame" );
-          controller.pushActionDataIntoBuffer( nData, true );
+          controller.pushSharedAction("endGame");
         }
       }
 
@@ -3825,16 +4435,30 @@ controller.registerCommand({
       // INCREASE ID
       pid++;
     }
-    if( DEBUG && pid === oid ){ util.unexpectedSituationError(); }
+    if( pid === oid ){
+      util.raiseError();
+    }
 
     model.turnOwner = pid;
 
+    var startIndex= pid* CWT_MAX_UNITS_PER_PLAYER;
+    for( var i= startIndex, e= i+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
+
+      model.leftActors[i-startIndex] = (model.units[i] !== null);
+    }
+    
+    for( var i=0,e=CWT_MAX_PROPERTIES; i<e; i++ ){
+      if( model.properties[i].type === "SILO_EMPTY" ){
+        controller.actions.siloRegeneration(i);
+      }
+    }
+    
+    /*
     var dataObj = new controller.ActionData();
     var autoSupply = model.rules.autoSupplyAtTurnStart;
     dataObj.setAction("supplyTurnStart");
     var startIndex= pid* CWT_MAX_UNITS_PER_PLAYER;
-    for( var i= startIndex,
-             e= i+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
+    for( var i= startIndex, e= i+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
 
       model.leftActors[i-startIndex] = (model.units[i] !== null);
 
@@ -3859,148 +4483,90 @@ controller.registerCommand({
 
       }
     }
+    */
 
-    model.generateFogMap( pid );
+    controller.actions.calculateFog( pid );
+    
+    controller.resetTurnTimer();
   }
 
 });
-controller.registerCommand({
+controller.engineAction({
 
-  key:"remVisioner",
+  name:"removeVision",
+  
+  key:"RVIS",
 
-  // ------------------------------------------------------------------------
-  condition: function( data ){
-    return false;
-  },
-
-  // ------------------------------------------------------------------------
-  action: function( data ){
-    model.removeVisioner(
-      data.getSourceX(),
-      data.getSourceY(),
-      data.getSubAction()
-    );
+  /**
+   * Removes a visioner at a given position with a given range.
+   *
+   * @param {Number} x x coordinate
+   * @param {Number} y y coordinate
+   * @param {Number} range vision range of the visioner
+   *
+   * @methodOf controller.actions
+   * @name removeVision
+   */
+  action: function( x,y, range ){
+    if( model.rules.fogEnabled === false ){
+      return;
+    }
+  
+    var lX;
+    var hX;
+    var lY = y-range;
+    var hY = y+range;
+    if( lY < 0 ) lY = 0;
+    if( hY >= model.mapHeight ) hY = model.mapHeight-1;
+    for( ; lY<=hY; lY++ ){
+  
+      var disY = Math.abs( lY-y );
+      lX = x-range+disY;
+      hX = x+range-disY;
+      if( lX < 0 ) lX = 0;
+      if( hX >= model.mapWidth ) hX = model.mapWidth-1;
+      for( ; lX<=hX; lX++ ){
+        
+        model.fogData[lX][lY]--;
+      }
+    }
   }
 });
-controller.SERIALIZATION_MAP = "map";
-controller.SERIALIZATION_MAP_H = "mapHeight";
-controller.SERIALIZATION_MAP_W = "mapWidth";
+controller.engineAction({
 
-controller.SERIALIZATION_UNITS = "units";
-controller.SERIALIZATION_UNITS_POS = "unitPosMap";
+  name: "saveGame",
 
-controller.SERIALIZATION_PROPS = "properties";
-controller.SERIALIZATION_PROPS_POS = "propertyPosMap";
+  key: "SAGA",
 
-controller.SERIALIZATION_PLAYERS = "players";
-
-controller.SERIALIZATION_DAY = "day";
-controller.SERIALIZATION_TURNOWNER = "turnOwner";
-controller.SERIALIZATION_LEFTACTORS = "leftActors";
-
-
-controller.registerCommand({
-
-  key: "saveGame",
-
-  // -----------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
-
-  // -----------------------------------------------------------------------
-  action: function( data ){
-    if( util.DEBUG ){ util.logInfo("start saving game instance"); }
-
-    var json = {};
-
-    // ------------------------------------------------------------------------
-    // MAP
-
-    json[ controller.SERIALIZATION_MAP ] = util.matrix(
-      model.mapWidth,model.mapHeight, null
-    );
-
-    for( var x=0,xe=model.mapWidth; x<xe; x++ ){
-      for( var y=0,ye=model.mapHeight; y<ye; y++ ){
-        json[ controller.SERIALIZATION_MAP ][x][y] = model.map[x][y];
-      }
+  /**
+   * Saves the game round.
+   *
+   * @methodOf controller.actions
+   * @name saveGame
+   */
+  action: function(){
+    if( DEBUG ){
+      util.log("start saving game instance");
     }
 
-    json[ controller.SERIALIZATION_MAP_H ] = model.mapHeight;
-    json[ controller.SERIALIZATION_MAP_W ] = model.mapWidth;
-
-    // ------------------------------------------------------------------------
-    // UNITS
-
-    json[ controller.SERIALIZATION_UNITS ] = {};
-    for( var i=0,e=model.units.length; i<e; i++ ){
-      var unit = model.units[i];
-      if( unit.owner !== CWT_INACTIVE_ID ){
-        json[ controller.SERIALIZATION_UNITS ][i] = unit;
-      }
-    }
-
-    json[ controller.SERIALIZATION_UNITS_POS ] = {};
-    for( var x=0,xe=model.mapWidth; x<xe; x++ ){
-      for( var y=0,ye=model.mapHeight; y<ye; y++ ){
-        var unit = model.unitPosMap[x][y];
-        if( unit !== null ){
-          json[ controller.SERIALIZATION_UNITS_POS ][ x+","+y ] = model.extractUnitId(unit);
-        }
-      }
-    }
-
-    // ------------------------------------------------------------------------
-    // PROPS
-
-    json[ controller.SERIALIZATION_PROPS ] = {};
-    for( var i=0,e=model.properties.length; i<e; i++ ){
-      var prop = model.properties[i];
-      if( prop.owner !== CWT_INACTIVE_ID ){
-        json[ controller.SERIALIZATION_PROPS ][i] = prop;
-      }
-    }
-
-    json[ controller.SERIALIZATION_PROPS_POS ] = {};
-    for( var x=0,xe=model.mapWidth; x<xe; x++ ){
-      for( var y=0,ye=model.mapHeight; y<ye; y++ ){
-        var prop = model.propertyPosMap[x][y];
-        if( prop !== null ){
-          json[ controller.SERIALIZATION_PROPS_POS ][ x+","+y ] = model.extractPropertyId(prop);
-        }
-      }
-    }
-
-    // ------------------------------------------------------------------------
-    // ROUND
-
-    json[ controller.SERIALIZATION_DAY ] = model.day;
-    json[ controller.SERIALIZATION_TURNOWNER ] = model.turnOwner;
-    json[ controller.SERIALIZATION_LEFTACTORS ] = model.leftActors;
-
-    // ------------------------------------------------------------------------
-    // PLAYERS
-
-    json[ controller.SERIALIZATION_PLAYERS ] = {};
-    for( var i=0,e=model.players.length; i<e; i++ ){
-      var player = model.players[i];
-      if( player.team !== CWT_INACTIVE_ID ){
-        json[ controller.SERIALIZATION_PLAYERS ][i] = player;
-      }
-    }
-
-    // ------------------------------------------------------------------------
-
+    var handler = controller.getActiveSerializationHandler();
+    var json = handler.save();
     json = JSON.stringify( json, null, "\t" ); // SERIALIZE IT
-    data.setSubAction( json );
 
-    if( util.DEBUG ){ util.logInfo("game instance successfully saved"); }
+    // data.setSubAction( json );
+
+    if( DEBUG ){
+      util.log("game instance successfully saved");
+    }
   }
 });
-controller.registerCommand({
+controller.userAction({
 
-  key:"silofire",
+  name:"silofire",
+
+  key:"SLFR",
+
   unitAction: true,
-  freeTargetSelection: true,
 
   _doDamage: function( x,y ){
     if( model.isValidPosition(x,y) ){
@@ -4012,15 +4578,17 @@ controller.registerCommand({
     }
   },
 
-  // ------------------------------------------------------------------------
-  condition: function( data ){
-    var selectedUnit = data.getSourceUnit();
-    var selectedProperty = data.getTargetProperty();
+  isTargetValid: function( mem, x,y ){
+    return model.isValidPosition(x,y);
+  },
 
-    if( selectedProperty === null ||
-        selectedProperty.owner !== model.turnOwner ) return false;
+  condition: function( mem ){
+    var selectedUnit = mem.sourceUnit;
+    var selectedProperty = mem.targetProperty;
 
-    // if( controller.actiondata.getTargetUnit(data) !== null ) return false;
+    if( selectedProperty === null || selectedProperty.owner !== model.turnOwner ) return false;
+
+    if( mem.targetUnit !== null ) return false;
 
     if( selectedUnit.type !== "INFT" && selectedUnit.type !== "MECH" ){
       return false;
@@ -4029,16 +4597,19 @@ controller.registerCommand({
     return ( selectedProperty.type === "SILO" );
   },
 
-  // ------------------------------------------------------------------------
-  targetValid: function( data, x,y ){
-    return model.isValidPosition(x,y);
+  createDataSet: function( mem ){
+    return [ 
+      mem.sourceUnitId, 
+      mem.targetX, mem.targetY, 
+      mem.targetPropertyId, 
+      mem.selectionX, mem.selectionY
+    ];
   },
 
-  // ------------------------------------------------------------------------
-  action: function( data ){
+  action: function( uid, sx,sy, prid, tx,ty ){
     var dmgF = this._doDamage;
-    var x = data.getActionTargetX();
-    var y = data.getActionTargetY();
+    var x = tx;
+    var y = ty;
 
     // RANGE OF TWO -> CIRCLE SHAPE
     dmgF( x  ,y-2 );
@@ -4056,28 +4627,66 @@ controller.registerCommand({
     dmgF( x  ,y+2 );
 
     // SET EMPTY TYPE
-    var px = data.getSourceUnit().x;
-    var py = data.getSourceUnit().y;
+    var px = sx;
+    var py = sy;
     model.propertyPosMap[px][py].type = "SILO_EMPTY";
-    controller.invokeCommand(data,"wait");
+    controller.actions.wait( uid );
   }
 
 });
-controller.registerCommand({
+controller.engineAction({
 
-  key: "startGame",
+  name:"siloRegeneration",
+  
+  key:"SIRE",
+  
+  /**
+   * Invokes a day tick for an empty silo.
+   *
+   * @param {Number} pid property id
+   *
+   * @methodOf controller.actions
+   * @name siloRegeneration
+   */
+  action: function( pid ){
+    
+    var maxDays = model.rules.siloRegeneration;
+    if( maxDays === -1 ) return;
+    
+    if( model.regeneratingSilos.hasOwnProperty(pid) ){
+      model.regeneratingSilos[pid]++;
+    }
+    else model.regeneratingSilos[pid] = 1;
+    
+    if( model.regeneratingSilos[pid] >= maxDays ){
+      delete model.regeneratingSilos[pid];
+      model.properties[pid].type = "SILO";
+    }
+  }
+});
+controller.engineAction({
 
-  // -----------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
+  name: "startGame",
 
+  key: "STGM",
+
+  /**
+   * Starts the game round.
+   *
+   * @methodOf controller.actions
+   * @name startGame
+   */
   action: function(){
 
-
   }
-});
-controller.registerCommand({
 
-  key:"supply",
+});
+controller.userAction({
+
+  name:"supply",
+
+  key:"SPPL",
+
   unitAction: true,
 
   _resupplyUnitAt: function( x,y ){
@@ -4087,30 +4696,44 @@ controller.registerCommand({
     unit.fuel = uSheet.maxFuel;
   },
 
-  // -----------------------------------------------------------------------
-  condition: function( data ){
-    var selectedUnit = data.getSourceUnit();
+  condition: function( mem ){
+
+    var selectedUnit = mem.sourceUnit;
     var sSheet = model.sheets.unitSheets[ selectedUnit.type ];
     if( sSheet.supply === undefined ) return false;
 
     var pid = selectedUnit.owner;
 
-    var x = data.getTargetX();
-    var y = data.getTargetY();
+    var x = mem.targetX;
+    var y = mem.targetY;
     var check = model.thereIsAnOwnUnitAt;
 
     return (
-      check(x-1,y,pid) || check(x+1,y,pid) ||
-      check(x,y-1,pid) || check(x,y+1,pid)
+      check(x-1,y,pid) ||
+      check(x+1,y,pid) ||
+      check(x,y-1,pid) ||
+      check(x,y+1,pid)
     );
   },
 
-  // -----------------------------------------------------------------------
-  action: function( data ){
-    var selectedUnit = data.getSourceUnit();
+  createDataSet: function( mem ){
+    return [ mem.sourceUnitId, mem.targetX, mem.targetY ];
+  },
+
+  /**
+   * Supplies units that are near a supplier.
+   *
+   * @param {Number} sid supplier unit id
+   * @param {Number} x x coordinate of the supplier
+   * @param {Number} y y coordinate of the supplier
+   * 
+   * @methodOf controller.actions
+   * @name supply
+   */
+  action: function( sid, x,y ){
+
+    var selectedUnit = model.units[ sid ];
     var pid = selectedUnit.owner;
-    var x = data.getTargetX();
-    var y = data.getTargetY();
     var check = model.thereIsAnOwnUnitAt;
     var refill = this._resupplyUnitAt;
 
@@ -4119,64 +4742,88 @@ controller.registerCommand({
     if( check(x,y-1,pid) ){ refill(x,y-1); }
     if( check(x,y+1,pid) ){ refill(x,y+1); }
 
-    controller.invokeCommand(data,"wait");
+    controller.actions.wait(sid);
   }
 });
-controller.registerCommand({
+controller.engineAction({
 
-  key: "trapWait",
+  name: "trapWait",
 
-  // -----------------------------------------------------------------------
-  condition: function( data ){
-    return false;
+  key: "TRWT",
+
+  createDataSet: function( data ){
+    return [ data.selectionUnitId ];
   },
-
-  // -----------------------------------------------------------------------
-  action: function( data ){
-    var ndata = new controller.ActionData();
-    ndata.setSource( data.getSourceX(), data.getSourceY() );
-    ndata.setAction("wait");
-    ndata.setSourceUnit( data.getSourceUnit() );
-    controller.invokeCommand( ndata );
+  
+  /**
+   * Trap wait action is invoked if a move path cannot be moved because
+   * an enemy unit stays in the way.
+   *
+   * @param {Number} uid unit id
+   * 
+   * @methodOf controller.actions
+   * @name trapWait
+   */
+  action: function( uid ){
+    controller.actions.wait( uid );
   }
 
 });
-controller.registerCommand({
+controller.engineAction({
 
-  key:"supplyTurnStart",
-  userAction: false,
+  name:"supplyTurnStart",
 
-  // -----------------------------------------------------------------------
-  condition: function( data ){
-    return false;
-  },
+  key:"TSSP",
 
-  // -----------------------------------------------------------------------
-  action: function( data ){
-    controller.invokeCommand( data, "supply" );
-    controller.invokeCommand( data, "makeActable" );
+  /**
+   * Supplies units at turn start.
+   *
+   * @param {Number} sid supplier unit id
+   * @param {Number} x x coordinate of the supplier
+   * @param {Number} y y coordinate of the supplier
+   * 
+   * @methodOf controller.actions
+   * @name supplyTurnStart
+   */
+  action: function( sid, x,y ){
+
+    controller.actions.supply( sid, x,y );
+    controller.actions.makeActable( sid );
   }
 });
-controller.registerCommand({
+controller.userAction({
 
-  key: "unloadUnit",
+  name: "unloadUnit",
+
+  key: "UNUN",
+
   unitAction: true,
   multiStepAction: true,
 
-  // -----------------------------------------------------------------------
-  prepareMenu: function( data, addEntry ){
-    var selectedId = data.getSourceUnitId();
+  condition: function( mem ){
+    var selectedUnit = mem.sourceUnit;
+    if( mem.targetUnit !== null ) return false;
+
+    var selectedUnitId = mem.sourceUnitId;
+    return (
+      model.isTransport( selectedUnitId ) &&
+        model.hasLoadedIds( selectedUnitId )
+      );
+  },
+
+  prepareMenu: function( mem ){
+    var selectedId = mem.sourceUnitId;
     var loads = model.getLoadedIds( selectedId );
     for( var i=0,e=loads.length; i<e; i++ ){
-      addEntry( loads[i] );
+      mem.addEntry( loads[i] );
     }
   },
 
-  // -----------------------------------------------------------------------
-  prepareTargets: function( data, selectionData ){
-    var subEntry = data.getSubAction( );
-    var tx = data.getTargetX( );
-    var ty = data.getTargetY( );
+  targetSelectionType: "B",
+  prepareTargets: function( mem ){
+    var subEntry = mem.subAction;
+    var tx = mem.targetX;
+    var ty = mem.targetY;
 
     var load = model.units[ subEntry ];
     var loadS = model.sheets.unitSheets[ load.type ];
@@ -4185,55 +4832,60 @@ controller.registerCommand({
     if( tx > 0 ){
       if( model.unitPosMap[tx-1][ty] === null &&
         model.moveCosts( loadMvS, model.map[tx-1][ty] ) !== -1  ){
-        selectionData.setPositionValue( tx-1,ty,1 );
+        mem.setSelectionValueAt( tx-1,ty,1 );
       }
     }
 
     if( ty > 0 ){
       if( model.unitPosMap[tx][ty-1] === null &&
         model.moveCosts( loadMvS, model.map[tx][ty-1] ) !== -1  ){
-        selectionData.setPositionValue( tx,ty-1,1 );
+        mem.setSelectionValueAt( tx,ty-1,1 );
       }
     }
 
     if( ty < model.mapHeight-1 ){
       if( model.unitPosMap[tx][ty+1] === null &&
         model.moveCosts( loadMvS, model.map[tx][ty+1] ) !== -1  ){
-        selectionData.setPositionValue( tx,ty+1,1 );
+        mem.setSelectionValueAt( tx,ty+1,1 );
       }
     }
 
     if( tx < model.mapWidth-1 ){
       if( model.unitPosMap[tx+1][ty] === null &&
         model.moveCosts( loadMvS, model.map[tx+1][ty] ) !== -1  ){
-        selectionData.setPositionValue( tx+1,ty,1 );
+        mem.setSelectionValueAt( tx+1,ty,1 );
       }
     }
   },
 
-  // -----------------------------------------------------------------------
-  condition: function( data ){
-    var selectedUnit = data.getSourceUnit();
-    if( data.getTargetUnit() !== null ) return false;
-
-    var selectedUnitId = data.getSourceUnitId();
-    return (
-      model.isTransport( selectedUnitId ) &&
-        model.hasLoadedIds( selectedUnitId )
-    );
+  createDataSet: function( mem ){
+    return [
+      mem.sourceUnitId,
+      mem.targetX,
+      mem.targetY,
+      mem.subAction,
+      mem.selectionX,
+      mem.selectionY
+    ];
   },
 
-  // -----------------------------------------------------------------------
-  action: function( data ){
-    var loadId      = data.getSubAction();
-    var transportId = data.getSourceUnitId();
-    var tx          = data.getActionTargetX();
-    var ty          = data.getActionTargetY();
-    var trsx        = data.getTargetX();
-    var trsy        = data.getTargetY();
+  /**
+   * Unloads an unit from an transporter to an neighbour tile´.
+   *
+   * @param {Number} transportId transporter id
+   * @param {Number} trsx x coordinate of the transporter
+   * @param {Number} trsy y coordinate of the transporter
+   * @param {Number} loadId unit id of the load
+   * @param {Number} tx x coordinate of the target
+   * @param {Number} ty y coordinate of the target
+   * 
+   * @methodOf controller.actions
+   * @name unloadUnit
+   */
+  action: function( transportId, trsx, trsy, loadId, tx,ty ){
 
     // SEND TRANSPORTER INTO WAIT
-    controller.invokeCommand( data, "wait" );
+    controller.actions.wait( transportId );
 
     // SEND LOADED UNIT INTO WAIT
     model.unloadUnitFrom( loadId, transportId );
@@ -4243,31 +4895,50 @@ controller.registerCommand({
     else if( tx > trsx ) moveCode = model.MOVE_CODE_RIGHT;
     else if( ty < trsy ) moveCode = model.MOVE_CODE_UP;
     else if( ty > trsy ) moveCode = model.MOVE_CODE_DOWN;
-
-    var tmpAction = controller.aquireActionDataObject();
-    tmpAction.setSourceUnit( model.units[loadId] );
-    tmpAction.setMovePath( [ moveCode ] );
-    tmpAction.setAction( "wait");
-    tmpAction.setSource( trsx, trsy );
-    controller.pushActionDataIntoBuffer( tmpAction, true );
+    
+    controller.pushAction( [ moveCode ], loadId, trsx, trsy, "MOVE" );
+    controller.pushAction( loadId, "WTUN" );
   }
 
 });
-controller.registerCommand({
-
-  key: "wait",
+controller.userAction({
+  
+  name:"wait",
+  
+  key:"WTUN",
+  
   unitAction: true,
-
-  // -----------------------------------------------------------------------
-  condition: function( data ){
-    var selectedUnit = data.getSourceUnit();
-    var targetUnit = data.getTargetUnit();
-    return targetUnit === null || targetUnit === selectedUnit;
+  
+  condition: function( mem ){
+    return ( mem.targetUnit === null || mem.targetUnit === mem.sourceUnit );
   },
-
-  // -----------------------------------------------------------------------
-  action: function( data ){
-    model.markAsUnusable( data.getSourceUnitId() );
+  
+  createDataSet: function( mem ){
+    return [ mem.sourceUnitId ];
+  },
+  
+  /**
+   * Sends an unit into the wait status.
+   *
+   * @param {Number} uid unit id
+   * 
+   * @methodOf controller.actions
+   * @name wait
+   */
+  action: function( uid ){
+    var uid = ( typeof uid === 'number' )? uid : model.extractUnitId( uid );
+    var startIndex = model.turnOwner * CWT_MAX_UNITS_PER_PLAYER;
+  
+    // NOT THE OWNER OF THE CURRENT TURN
+    if( uid >= startIndex + CWT_MAX_UNITS_PER_PLAYER || uid < startIndex ){
+      util.raiseError("unit owner is not the active player");
+    }
+  
+    model.leftActors[ uid - startIndex ] = false;
+  
+    if( DEBUG ){
+      util.log("unit",uid,"going into wait status");
+    }
   }
-
+  
 });

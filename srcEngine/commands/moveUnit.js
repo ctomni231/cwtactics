@@ -1,17 +1,29 @@
-controller.registerCommand({
+controller.engineAction({
 
-  key: "move",
+  name: "moveUnit",
 
-  // -----------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
+  key: "MOVE",
 
-  // -----------------------------------------------------------------------
-  action: function( data ){
-    var way = data.getMovePath();
-    var uid = data.getSourceUnitId();
+  shared: true,
 
-    var cX = data.getSourceX();
-    var cY = data.getSourceY();
+  createDataSet: function( data ){
+    return [ data.cloneMovepath(), data.sourceUnitId, data.sourceX, data.sourceY ];
+  },
+  
+  /**
+   * Moves an unit from A to B.
+   *
+   * @param {Array} way move path of the unit
+   * @param {Number} uid moving unit id 
+   * @param {Number} x x coordinate of the source
+   * @param {Number} y y coordinate of the source
+   *
+   * @methodOf controller.actions
+   * @name moveUnit
+   */
+  action: function( way, uid, x,y ){
+    var cX = x;
+    var cY = y;
     var unit = model.units[ uid ];
     var uType = model.sheets.unitSheets[ unit.type ];
     var mType = model.sheets.movetypeSheets[ uType.moveType ];
@@ -85,13 +97,10 @@ controller.registerCommand({
         }
 
 
-        if( lastIndex == -1 ){
+        if( lastIndex === -1 ){
 
           // THAT IS A FAULT
-          cwt.error(
-            "unit is blocked by an enemy, but the enemy",
-            "stands beside the start tile, that is a logic fault!"
-          );
+          util.raiseError( "unit is blocked by an enemy, but the enemy stands beside the start tile, that is a logic fault!" );
         }
 
         break;
@@ -102,25 +111,31 @@ controller.registerCommand({
     }
 
     unit.fuel -= fuelUsed;
-
+    
     // DO NOT ERASE POSITION IF UNIT WAS LOADED OR HIDDEN (NOT INGAME HIDDEN)
     // SOMEWHERE
     if( unit.x !== -1 && unit.y !== -1 ){
-      model.eraseUnitPosition( uid );
+      model.unitPosMap[ unit.x ][ unit.y ] = null;
+      
+      // controller.actions.removeVision( unit.x, unit.y, model.sheets.unitSheets[ unit.type ].vision );
+      controller.pushAction( unit.x, unit.y, model.sheets.unitSheets[ unit.type ].vision, "RVIS" );
+      
+      unit.x = -1;
+      unit.y = -1;
     }
 
     // DO NOT SET NEW POSITION IF THE POSITION IS OCCUPIED
     // THE SET POSITION LOGIC MUST BE DONE BY THE ACTION
     if( model.unitPosMap[cX][cY] === null ){
-      model.setUnitPosition( uid, cX, cY );
+      unit.x = cX;
+      unit.y = cY;
+      model.unitPosMap[ cX ][ cY ] = unit;
+      //controller.actions.addVision(  cX, cY, model.sheets.unitSheets[ unit.type ].vision );
+      controller.pushAction( cX,cY, model.sheets.unitSheets[ unit.type ].vision, "AVIS" );
     }
 
     if( DEBUG ){
-      util.logInfo(
-        "moved unit",uid,
-        "from (",data.getSourceX(),",",data.getSourceY(),")",
-        "to (",cX,",",cY,")"
-      );
+      util.log( "moved unit",uid,"from (",x,",",y,") to (",cX,",",cY,")" );
     }
   }
 

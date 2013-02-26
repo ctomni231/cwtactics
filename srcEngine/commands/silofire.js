@@ -1,8 +1,10 @@
-controller.registerCommand({
+controller.userAction({
 
-  key:"silofire",
+  name:"silofire",
+
+  key:"SLFR",
+
   unitAction: true,
-  freeTargetSelection: true,
 
   _doDamage: function( x,y ){
     if( model.isValidPosition(x,y) ){
@@ -14,15 +16,17 @@ controller.registerCommand({
     }
   },
 
-  // ------------------------------------------------------------------------
-  condition: function( data ){
-    var selectedUnit = data.getSourceUnit();
-    var selectedProperty = data.getTargetProperty();
+  isTargetValid: function( mem, x,y ){
+    return model.isValidPosition(x,y);
+  },
 
-    if( selectedProperty === null ||
-        selectedProperty.owner !== model.turnOwner ) return false;
+  condition: function( mem ){
+    var selectedUnit = mem.sourceUnit;
+    var selectedProperty = mem.targetProperty;
 
-    // if( controller.actiondata.getTargetUnit(data) !== null ) return false;
+    if( selectedProperty === null || selectedProperty.owner !== model.turnOwner ) return false;
+
+    if( mem.targetUnit !== null ) return false;
 
     if( selectedUnit.type !== "INFT" && selectedUnit.type !== "MECH" ){
       return false;
@@ -31,16 +35,19 @@ controller.registerCommand({
     return ( selectedProperty.type === "SILO" );
   },
 
-  // ------------------------------------------------------------------------
-  targetValid: function( data, x,y ){
-    return model.isValidPosition(x,y);
+  createDataSet: function( mem ){
+    return [ 
+      mem.sourceUnitId, 
+      mem.targetX, mem.targetY, 
+      mem.targetPropertyId, 
+      mem.selectionX, mem.selectionY
+    ];
   },
 
-  // ------------------------------------------------------------------------
-  action: function( data ){
+  action: function( uid, sx,sy, prid, tx,ty ){
     var dmgF = this._doDamage;
-    var x = data.getActionTargetX();
-    var y = data.getActionTargetY();
+    var x = tx;
+    var y = ty;
 
     // RANGE OF TWO -> CIRCLE SHAPE
     dmgF( x  ,y-2 );
@@ -58,10 +65,10 @@ controller.registerCommand({
     dmgF( x  ,y+2 );
 
     // SET EMPTY TYPE
-    var px = data.getSourceUnit().x;
-    var py = data.getSourceUnit().y;
+    var px = sx;
+    var py = sy;
     model.propertyPosMap[px][py].type = "SILO_EMPTY";
-    controller.invokeCommand(data,"wait");
+    controller.actions.wait( uid );
   }
 
 });

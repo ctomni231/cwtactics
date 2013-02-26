@@ -150,10 +150,10 @@ view.completeRedraw = function(){
   }
 };
 
-view.markSelectionMapForRedraw = function( selectionMap ){
-  var cx = selectionMap.getCenterX();
-  var cy = selectionMap.getCenterY();
-  var data = selectionMap.getDataMatrix();
+view.markSelectionMapForRedraw = function( scope ){
+  var cx = scope.selectionCX;
+  var cy = scope.selectionCY;
+  var data = scope.selectionData;
 
   for( var x=0;x<data.length; x++ ){
     var sMap = data[x];

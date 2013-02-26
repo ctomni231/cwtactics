@@ -1,0 +1,30 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="NAME">controller.engineAction</span><span class="PUNC">(</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>  2</span> 
+<span class='line'>  3</span> </span><span class="WHIT">  </span><span class="NAME">name</span><span class="PUNC">:</span><span class="STRN">"moveVision"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>  4</span> </span><span class="WHIT">  
+<span class='line'>  5</span>   </span><span class="NAME">key</span><span class="PUNC">:</span><span class="STRN">"MVIS"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>  6</span> </span><span class="WHIT">  
+<span class='line'>  7</span>   </span><span class="COMM">/**
+<span class='line'>  8</span>    * Transfers a property of a player to an other player.
+<span class='line'>  9</span>    *
+<span class='line'> 10</span>    * @param {Number} sx x coordinate of the source
+<span class='line'> 11</span>    * @param {Number} sy y coordinate of the source
+<span class='line'> 12</span>    * @param {Number} tx x coordinate of the target
+<span class='line'> 13</span>    * @param {Number} ty y coordinate of the target
+<span class='line'> 14</span>    * @param {Number} range vision range of the visioner
+<span class='line'> 15</span>    *
+<span class='line'> 16</span>    * @methodOf controller.actions
+<span class='line'> 17</span>    * @name moveVision
+<span class='line'> 18</span>    */</span><span class="WHIT">
+<span class='line'> 19</span> </span><span class="WHIT">  </span><span class="NAME">action</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">sx</span><span class="PUNC">,</span><span class="NAME">sy</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">tx</span><span class="PUNC">,</span><span class="NAME">ty</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">range</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 20</span> </span><span class="WHIT">    </span><span class="NAME">controller.actions.removeVision</span><span class="PUNC">(</span><span class="NAME">sx</span><span class="PUNC">,</span><span class="NAME">sy</span><span class="PUNC">,</span><span class="NAME">range</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 21</span> </span><span class="WHIT">    </span><span class="NAME">controller.actions.addVision</span><span class="PUNC">(</span><span class="NAME">tx</span><span class="PUNC">,</span><span class="NAME">ty</span><span class="PUNC">,</span><span class="NAME">range</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 22</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 23</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span></pre></body></html>

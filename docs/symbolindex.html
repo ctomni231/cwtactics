@@ -1,0 +1,2183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		
+		<title>JsDoc Reference - Index</title>
+		<meta name="generator" content="JsDoc Toolkit" />
+		
+        <link rel="stylesheet" href="static/default.css" type="text/css" media="screen" charset="utf-8" />
+
+        <style>
+            #symbolFilter {
+                margin-top: 2em;
+                margin-bottom: 1em;
+            }
+
+            .hidden {
+                visibility: hidden;
+                display: none;
+            }
+        </style>
+
+        <script>
+            var overview, filterField;
+
+            function filterOverview() {
+                var i, name,
+                    lst = overview.getElementsByTagName('tr'),
+                    regex = filterField.value ? ('^(' + filterField.value + ')') : '.*';
+
+                regex = new RegExp(regex, 'i');
+                for (i = 0; i < lst.length; i++) {
+                    name = lst[i].getElementsByTagName('td')[0].innerHTML;
+                    if (regex.test(name)) {
+                        lst[i].className = 'symbolEntry';
+                    } else {
+                        lst[i].className = 'symbolEntry hidden';
+                    }
+                }
+            }
+
+            var init = function() {
+                overview = window.document.getElementById('symbolOverview');
+                filterField = window.document.getElementById('symbolFilter');
+
+                filterField.addEventListener('change', filterOverview, false);
+                filterOverview();
+
+                delete init;
+            }
+        </script>
+	</head>
+	
+	<body onload="init()">
+		<div id="header">
+</div>
+
+		<div id="index">
+            <div id="docs">
+                
+            </div>
+			
+<h2>Index</h2>
+<ul class="classList">
+  <li><a href="files.html">File Index</a></li>
+  <li><a href="index.html">Class Index</a></li>
+  <li><a href="symbolindex.html">Symbol Index</a></li>
+</ul>
+<h2>Classes</h2>
+<ul class="classList">
+	
+	<li><i><a href="symbols/_global_.html">_global_</a></i></li>
+	
+	<li><a href="symbols/controller.html">controller</a></li>
+	
+	<li><a href="symbols/controller.actions.html">controller.actions</a></li>
+	
+	<li><a href="symbols/controller.serializationHandler.html">controller.serializationHandler</a></li>
+	
+	<li><a href="symbols/controller.stateMachine.html">controller.stateMachine</a></li>
+	
+	<li><a href="symbols/controller.stateMachine.data.html">controller.stateMachine.data</a></li>
+	
+	<li><a href="symbols/controller.stateMachine.structure.html">controller.stateMachine.structure</a></li>
+	
+	<li><a href="symbols/model.html">model</a></li>
+	
+	<li><a href="symbols/model.sheets.html">model.sheets</a></li>
+	
+	<li><a href="symbols/model.sheets.typeSheetValidators.html">model.sheets.typeSheetValidators</a></li>
+	
+	<li><a href="symbols/util.html">util</a></li>
+	
+	<li><a href="symbols/view.html">view</a></li>
+	
+</ul>
+
+		</div>
+		
+		<div id="content">
+            <h1 id="classTitle">Symbol Index</h1>
+            <div>
+                <input id="symbolFilter" type="text" /><br />
+                <table id="symbolOverview">
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">action</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.action">controller.stateMachine.data.action</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">ACTION_MENU</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.structure.html#.ACTION_MENU">controller.stateMachine.structure.ACTION_MENU</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">ACTION_SELECT_TARGET_A</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.structure.html#.ACTION_SELECT_TARGET_A">controller.stateMachine.structure.ACTION_SELECT_TARGET_A</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">ACTION_SELECT_TARGET_B</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.structure.html#.ACTION_SELECT_TARGET_B">controller.stateMachine.structure.ACTION_SELECT_TARGET_B</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">ACTION_SELECT_TILE</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.structure.html#.ACTION_SELECT_TILE">controller.stateMachine.structure.ACTION_SELECT_TILE</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">ACTION_SUBMENU</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.structure.html#.ACTION_SUBMENU">controller.stateMachine.structure.ACTION_SUBMENU</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">actionObject</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.actionObject">controller.stateMachine.data.actionObject</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">actions</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html">controller.actions</a>
+                        
+                          <a href="symbols/controller.actions.html">controller.actions</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">addCodeToPath</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.addCodeToPath">model.addCodeToPath</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">addEntry</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.addEntry">controller.stateMachine.data.addEntry</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">addVision</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.addVision">controller.actions.addVision</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">alliedPlayers</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.alliedPlayers">model.alliedPlayers</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">attackUnit</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.attackUnit">controller.actions.attackUnit</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">BREAK_TRANSITION</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.html#.BREAK_TRANSITION">controller.stateMachine.BREAK_TRANSITION</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">buildUnit</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.buildUnit">controller.actions.buildUnit</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">calculateFog</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.calculateFog">controller.actions.calculateFog</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">canAct</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.canAct">model.canAct</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">canLoad</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.canLoad">model.canLoad</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">captureProperty</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.captureProperty">controller.actions.captureProperty</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">cleanMenu</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.cleanMenu">controller.stateMachine.data.cleanMenu</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">cleanMovepath</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.cleanMovepath">controller.stateMachine.data.cleanMovepath</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">clientAction</td>
+                      <td>
+                        
+                          <a href="symbols/controller.html#.clientAction">controller.clientAction</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">clonePath</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.clonePath">controller.stateMachine.data.clonePath</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">controller</td>
+                      <td>
+                        
+                          <a href="symbols/controller.html">controller</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">countProperties</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.countProperties">model.countProperties</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">countUnits</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.countUnits">model.countUnits</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">createRingBuffer</td>
+                      <td>
+                        
+                          <a href="symbols/util.html#.createRingBuffer">util.createRingBuffer</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">createUnit</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.createUnit">controller.actions.createUnit</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">CURRENT_SERIALIZATION_HANDLER</td>
+                      <td>
+                        
+                          <a href="symbols/controller.html#.CURRENT_SERIALIZATION_HANDLER">controller.CURRENT_SERIALIZATION_HANDLER</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">CWT_ACTIONS_BUFFER_SIZE</td>
+                      <td>
+                        
+                          <a href="symbols/_global_.html#CWT_ACTIONS_BUFFER_SIZE">CWT_ACTIONS_BUFFER_SIZE</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">CWT_INACTIVE_ID</td>
+                      <td>
+                        
+                          <a href="symbols/_global_.html#CWT_INACTIVE_ID">CWT_INACTIVE_ID</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">CWT_MAX_BUFFER_SIZE</td>
+                      <td>
+                        
+                          <a href="symbols/_global_.html#CWT_MAX_BUFFER_SIZE">CWT_MAX_BUFFER_SIZE</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">CWT_MAX_MAP_HEIGHT</td>
+                      <td>
+                        
+                          <a href="symbols/_global_.html#CWT_MAX_MAP_HEIGHT">CWT_MAX_MAP_HEIGHT</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">CWT_MAX_MAP_WIDTH</td>
+                      <td>
+                        
+                          <a href="symbols/_global_.html#CWT_MAX_MAP_WIDTH">CWT_MAX_MAP_WIDTH</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">CWT_MAX_MOVE_RANGE</td>
+                      <td>
+                        
+                          <a href="symbols/_global_.html#CWT_MAX_MOVE_RANGE">CWT_MAX_MOVE_RANGE</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">CWT_MAX_PLAYER</td>
+                      <td>
+                        
+                          <a href="symbols/_global_.html#CWT_MAX_PLAYER">CWT_MAX_PLAYER</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">CWT_MAX_PROPERTIES</td>
+                      <td>
+                        
+                          <a href="symbols/_global_.html#CWT_MAX_PROPERTIES">CWT_MAX_PROPERTIES</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">CWT_MAX_SELECTION_RANGE</td>
+                      <td>
+                        
+                          <a href="symbols/_global_.html#CWT_MAX_SELECTION_RANGE">CWT_MAX_SELECTION_RANGE</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">CWT_MAX_UNITS_PER_PLAYER</td>
+                      <td>
+                        
+                          <a href="symbols/_global_.html#CWT_MAX_UNITS_PER_PLAYER">CWT_MAX_UNITS_PER_PLAYER</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">CWT_VERSION</td>
+                      <td>
+                        
+                          <a href="symbols/_global_.html#CWT_VERSION">CWT_VERSION</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">damageUnit</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.damageUnit">controller.actions.damageUnit</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">data</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html">controller.stateMachine.data</a>
+                        
+                          <a href="symbols/controller.stateMachine.data.html">controller.stateMachine.data</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">day</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.day">model.day</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">DEBUG</td>
+                      <td>
+                        
+                          <a href="symbols/_global_.html#DEBUG">DEBUG</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">defaultRules</td>
+                      <td>
+                        
+                          <a href="symbols/model.sheets.html#.defaultRules">model.sheets.defaultRules</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">deserializePlayer</td>
+                      <td>
+                        
+                          <a href="symbols/controller.serializationHandler.html#.deserializePlayer">controller.serializationHandler.deserializePlayer</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">deserializeProperty</td>
+                      <td>
+                        
+                          <a href="symbols/controller.serializationHandler.html#.deserializeProperty">controller.serializationHandler.deserializeProperty</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">deserializeUnit</td>
+                      <td>
+                        
+                          <a href="symbols/controller.serializationHandler.html#.deserializeUnit">controller.serializationHandler.deserializeUnit</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">destroyUnit</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.destroyUnit">controller.actions.destroyUnit</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">distance</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.distance">model.distance</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">doNextAction</td>
+                      <td>
+                        
+                          <a href="symbols/controller.html#.doNextAction">controller.doNextAction</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">endGame</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.endGame">controller.actions.endGame</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">enemyPlayers</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.enemyPlayers">model.enemyPlayers</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">engineAction</td>
+                      <td>
+                        
+                          <a href="symbols/controller.html#.engineAction">controller.engineAction</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">event</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.html#.event">controller.stateMachine.event</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">extractPlayerId</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.extractPlayerId">model.extractPlayerId</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">extractPropertyId</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.extractPropertyId">model.extractPropertyId</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">extractUnitId</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.extractUnitId">model.extractUnitId</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">fill</td>
+                      <td>
+                        
+                          <a href="symbols/util.html#.fill">util.fill</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">fillMoveMap</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.fillMoveMap">model.fillMoveMap</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">FLUSH_ACTION</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.structure.html#.FLUSH_ACTION">controller.stateMachine.structure.FLUSH_ACTION</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">fogData</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.fogData">model.fogData</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">FUNCTION_FALSE_RETURNER</td>
+                      <td>
+                        
+                          <a href="symbols/util.html#.FUNCTION_FALSE_RETURNER">util.FUNCTION_FALSE_RETURNER</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">FUNCTION_TRUE_RETURNER</td>
+                      <td>
+                        
+                          <a href="symbols/util.html#.FUNCTION_TRUE_RETURNER">util.FUNCTION_TRUE_RETURNER</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">getActionObject</td>
+                      <td>
+                        
+                          <a href="symbols/controller.html#.getActionObject">controller.getActionObject</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">getActiveSerializationHandler</td>
+                      <td>
+                        
+                          <a href="symbols/controller.html#.getActiveSerializationHandler">controller.getActiveSerializationHandler</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">getBaseDamage</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.getBaseDamage">model.getBaseDamage</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">getListOfPropertyTypes</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.getListOfPropertyTypes">model.getListOfPropertyTypes</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">getListOfTileTypes</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.getListOfTileTypes">model.getListOfTileTypes</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">getListOfUnitTypes</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.getListOfUnitTypes">model.getListOfUnitTypes</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">getLoadedIds</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.getLoadedIds">model.getLoadedIds</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">getSelectionValueAt</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.getSelectionValueAt">controller.stateMachine.data.getSelectionValueAt</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">giveMoneyToPlayer</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.giveMoneyToPlayer">controller.actions.giveMoneyToPlayer</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">givePropertyToPlayer</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.givePropertyToPlayer">controller.actions.givePropertyToPlayer</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">giveUnitToPlayer</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.giveUnitToPlayer">controller.actions.giveUnitToPlayer</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">hasFreeUnitSlots</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.hasFreeUnitSlots">model.hasFreeUnitSlots</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">hasLoadedIds</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.hasLoadedIds">model.hasLoadedIds</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">healUnit</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.healUnit">controller.actions.healUnit</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">history</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.html#.history">controller.stateMachine.history</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">i18n_appendToLanguage</td>
+                      <td>
+                        
+                          <a href="symbols/util.html#.i18n_appendToLanguage">util.i18n_appendToLanguage</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">i18n_data</td>
+                      <td>
+                        
+                          <a href="symbols/util.html#.i18n_data">util.i18n_data</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">i18n_lang</td>
+                      <td>
+                        
+                          <a href="symbols/util.html#.i18n_lang">util.i18n_lang</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">i18n_localized</td>
+                      <td>
+                        
+                          <a href="symbols/util.html#.i18n_localized">util.i18n_localized</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">i18n_setLanguage</td>
+                      <td>
+                        
+                          <a href="symbols/util.html#.i18n_setLanguage">util.i18n_setLanguage</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">IDLE</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.structure.html#.IDLE">controller.stateMachine.structure.IDLE</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">IDLE_R</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.structure.html#.IDLE_R">controller.stateMachine.structure.IDLE_R</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">injectMod</td>
+                      <td>
+                        
+                          <a href="symbols/util.html#.injectMod">util.injectMod</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">invokeMultiStepAction</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.invokeMultiStepAction">controller.actions.invokeMultiStepAction</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">isLoadedBy</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.isLoadedBy">model.isLoadedBy</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">isNetworkGame</td>
+                      <td>
+                        
+                          <a href="symbols/controller.html#.isNetworkGame">controller.isNetworkGame</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">isNeutralPlayer</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.isNeutralPlayer">model.isNeutralPlayer</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">isTransport</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.isTransport">model.isTransport</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">isTurnOwner</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.isTurnOwner">model.isTurnOwner</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">join</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.join">controller.actions.join</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">lastState</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.html#.lastState">controller.stateMachine.lastState</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">leftActors</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.leftActors">model.leftActors</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">list</td>
+                      <td>
+                        
+                          <a href="symbols/util.html#.list">util.list</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">load</td>
+                      <td>
+                        
+                          <a href="symbols/controller.serializationHandler.html#.load">controller.serializationHandler.load</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">loadGame</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.loadGame">controller.actions.loadGame</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">loadMod</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.loadMod">controller.actions.loadMod</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">loadUnit</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.loadUnit">controller.actions.loadUnit</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">loadUnitInto</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.loadUnitInto">model.loadUnitInto</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">log</td>
+                      <td>
+                        
+                          <a href="symbols/util.html#.log">util.log</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">logInfo</td>
+                      <td>
+                        
+                          <a href="symbols/util.html#.logInfo">util.logInfo</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">makeActable</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.makeActable">controller.actions.makeActable</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">map</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.map">model.map</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">mapHeight</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.mapHeight">model.mapHeight</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">mapWidth</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.mapWidth">model.mapWidth</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">matrix</td>
+                      <td>
+                        
+                          <a href="symbols/util.html#.matrix">util.matrix</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">menu</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.menu">controller.stateMachine.data.menu</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">menuSize</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.menuSize">controller.stateMachine.data.menuSize</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">model</td>
+                      <td>
+                        
+                          <a href="symbols/model.html">model</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">MOVE_CODE_DOWN</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.MOVE_CODE_DOWN">model.MOVE_CODE_DOWN</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">MOVE_CODE_LEFT</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.MOVE_CODE_LEFT">model.MOVE_CODE_LEFT</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">MOVE_CODE_RIGHT</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.MOVE_CODE_RIGHT">model.MOVE_CODE_RIGHT</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">MOVE_CODE_UP</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.MOVE_CODE_UP">model.MOVE_CODE_UP</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">MOVE_TYPE_SHEET</td>
+                      <td>
+                        
+                          <a href="symbols/model.sheets.html#.MOVE_TYPE_SHEET">model.sheets.MOVE_TYPE_SHEET</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">moveCodeFromAtoB</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.moveCodeFromAtoB">model.moveCodeFromAtoB</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">moveCosts</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.moveCosts">model.moveCosts</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">movePath</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.movePath">controller.stateMachine.data.movePath</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">movetypeSheets</td>
+                      <td>
+                        
+                          <a href="symbols/model.sheets.html#.movetypeSheets">model.sheets.movetypeSheets</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">movetypeValidator</td>
+                      <td>
+                        
+                          <a href="symbols/model.sheets.typeSheetValidators.html#.movetypeValidator">model.sheets.typeSheetValidators.movetypeValidator</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">moveUnit</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.moveUnit">controller.actions.moveUnit</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">moveVision</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.moveVision">controller.actions.moveVision</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">neutralPlayerId</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.neutralPlayerId">model.neutralPlayerId</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">nextTurn</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.nextTurn">controller.actions.nextTurn</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">NONE</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.structure.html#.NONE">controller.stateMachine.structure.NONE</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">noNextActions</td>
+                      <td>
+                        
+                          <a href="symbols/controller.html#.noNextActions">controller.noNextActions</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">parseSheet</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.parseSheet">model.parseSheet</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">players</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.players">model.players</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">prepareMenu</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.prepareMenu">controller.stateMachine.data.prepareMenu</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">prepareSelection</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.prepareSelection">controller.stateMachine.data.prepareSelection</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">PRIMARY_WEAPON_TAG</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.PRIMARY_WEAPON_TAG">model.PRIMARY_WEAPON_TAG</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">primaryWeaponOfUnit</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.primaryWeaponOfUnit">model.primaryWeaponOfUnit</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">properties</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.properties">model.properties</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">propertyPosMap</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.propertyPosMap">model.propertyPosMap</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">pushAction</td>
+                      <td>
+                        
+                          <a href="symbols/controller.html#.pushAction">controller.pushAction</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">pushSharedAction</td>
+                      <td>
+                        
+                          <a href="symbols/controller.html#.pushSharedAction">controller.pushSharedAction</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">raiseError</td>
+                      <td>
+                        
+                          <a href="symbols/util.html#.raiseError">util.raiseError</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">regeneratingSilos</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.regeneratingSilos">model.regeneratingSilos</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">RELATIONSHIP_ALLIED</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.RELATIONSHIP_ALLIED">model.RELATIONSHIP_ALLIED</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">RELATIONSHIP_ENEMY</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.RELATIONSHIP_ENEMY">model.RELATIONSHIP_ENEMY</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">RELATIONSHIP_NONE</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.RELATIONSHIP_NONE">model.RELATIONSHIP_NONE</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">RELATIONSHIP_SAME_OBJECT</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.RELATIONSHIP_SAME_OBJECT">model.RELATIONSHIP_SAME_OBJECT</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">RELATIONSHIP_SAME_OWNER</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.RELATIONSHIP_SAME_OWNER">model.RELATIONSHIP_SAME_OWNER</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">relationshipBetween</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.relationshipBetween">model.relationshipBetween</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">removeVision</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.removeVision">controller.actions.removeVision</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">rules</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.rules">model.rules</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">RULESET</td>
+                      <td>
+                        
+                          <a href="symbols/model.sheets.html#.RULESET">model.sheets.RULESET</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">rulesValidator</td>
+                      <td>
+                        
+                          <a href="symbols/model.sheets.typeSheetValidators.html#.rulesValidator">model.sheets.typeSheetValidators.rulesValidator</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">ruleTable</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.ruleTable">model.ruleTable</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">save</td>
+                      <td>
+                        
+                          <a href="symbols/controller.serializationHandler.html#.save">controller.serializationHandler.save</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">saveGame</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.saveGame">controller.actions.saveGame</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">SECONDARY_WEAPON_TAG</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.SECONDARY_WEAPON_TAG">model.SECONDARY_WEAPON_TAG</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">secondaryWeaponOfUnit</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.secondaryWeaponOfUnit">model.secondaryWeaponOfUnit</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">selectionCX</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.selectionCX">controller.stateMachine.data.selectionCX</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">selectionCY</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.selectionCY">controller.stateMachine.data.selectionCY</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">selectionData</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.selectionData">controller.stateMachine.data.selectionData</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">selectionProperty</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.selectionProperty">controller.stateMachine.data.selectionProperty</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">selectionPropertyId</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.selectionPropertyId">controller.stateMachine.data.selectionPropertyId</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">selectionTags_</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.selectionTags_">controller.stateMachine.data.selectionTags_</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">selectionUnit</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.selectionUnit">controller.stateMachine.data.selectionUnit</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">selectionUnitId</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.selectionUnitId">controller.stateMachine.data.selectionUnitId</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">selectionX</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.selectionX">controller.stateMachine.data.selectionX</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">selectionY</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.selectionY">controller.stateMachine.data.selectionY</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">sendNetworkMessage_</td>
+                      <td>
+                        
+                          <a href="symbols/controller.html#.sendNetworkMessage_">controller.sendNetworkMessage_</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">serializationHandler</td>
+                      <td>
+                        
+                          <a href="symbols/controller.serializationHandler.html">controller.serializationHandler</a>
+                        
+                          <a href="symbols/controller.serializationHandler.html">controller.serializationHandler</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">serializePlayer</td>
+                      <td>
+                        
+                          <a href="symbols/controller.serializationHandler.html#.serializePlayer">controller.serializationHandler.serializePlayer</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">serializeProperty</td>
+                      <td>
+                        
+                          <a href="symbols/controller.serializationHandler.html#.serializeProperty">controller.serializationHandler.serializeProperty</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">serializeUnit</td>
+                      <td>
+                        
+                          <a href="symbols/controller.serializationHandler.html#.serializeUnit">controller.serializationHandler.serializeUnit</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">setPathByRecalculation</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.setPathByRecalculation">model.setPathByRecalculation</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">setRulesByOption</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.setRulesByOption">model.setRulesByOption</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">setSelectionCenter</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.setSelectionCenter">controller.stateMachine.data.setSelectionCenter</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">setSelectionTarget</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.setSelectionTarget">controller.stateMachine.data.setSelectionTarget</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">setSelectionValueAt</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.setSelectionValueAt">controller.stateMachine.data.setSelectionValueAt</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">setSource</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.setSource">controller.stateMachine.data.setSource</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">setTarget</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.setTarget">controller.stateMachine.data.setTarget</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">sheets</td>
+                      <td>
+                        
+                          <a href="symbols/model.sheets.html">model.sheets</a>
+                        
+                          <a href="symbols/model.sheets.html">model.sheets</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">siloRegeneration</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.siloRegeneration">controller.actions.siloRegeneration</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">sourceProperty</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.sourceProperty">controller.stateMachine.data.sourceProperty</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">sourcePropertyId</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.sourcePropertyId">controller.stateMachine.data.sourcePropertyId</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">sourceTags_</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.sourceTags_">controller.stateMachine.data.sourceTags_</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">sourceUnit</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.sourceUnit">controller.stateMachine.data.sourceUnit</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">sourceUnitId</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.sourceUnitId">controller.stateMachine.data.sourceUnitId</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">sourceX</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.sourceX">controller.stateMachine.data.sourceX</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">sourceY</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.sourceY">controller.stateMachine.data.sourceY</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">startGame</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.startGame">controller.actions.startGame</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">state</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.html#.state">controller.stateMachine.state</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">stateMachine</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.html">controller.stateMachine</a>
+                        
+                          <a href="symbols/controller.stateMachine.html">controller.stateMachine</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">structure</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.structure.html">controller.stateMachine.structure</a>
+                        
+                          <a href="symbols/controller.stateMachine.structure.html">controller.stateMachine.structure</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">subaction</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.subaction">controller.stateMachine.data.subaction</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">supply</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.supply">controller.actions.supply</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">supplyTurnStart</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.supplyTurnStart">controller.actions.supplyTurnStart</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">targetProperty</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.targetProperty">controller.stateMachine.data.targetProperty</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">targetPropertyId</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.targetPropertyId">controller.stateMachine.data.targetPropertyId</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">targetTags_</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.targetTags_">controller.stateMachine.data.targetTags_</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">targetUnit</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.targetUnit">controller.stateMachine.data.targetUnit</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">targetUnitId</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.targetUnitId">controller.stateMachine.data.targetUnitId</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">targetX</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.targetX">controller.stateMachine.data.targetX</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">targetY</td>
+                      <td>
+                        
+                          <a href="symbols/controller.stateMachine.data.html#.targetY">controller.stateMachine.data.targetY</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">thereIsAnAlliedUnitAt</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.thereIsAnAlliedUnitAt">model.thereIsAnAlliedUnitAt</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">thereIsAnEnemyUnitAt</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.thereIsAnEnemyUnitAt">model.thereIsAnEnemyUnitAt</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">thereIsAnOwnUnitAt</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.thereIsAnOwnUnitAt">model.thereIsAnOwnUnitAt</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">TILE_TYPE_SHEET</td>
+                      <td>
+                        
+                          <a href="symbols/model.sheets.html#.TILE_TYPE_SHEET">model.sheets.TILE_TYPE_SHEET</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">tileIsProperty</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.tileIsProperty">model.tileIsProperty</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">tileOccupiedByUnit</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.tileOccupiedByUnit">model.tileOccupiedByUnit</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">tileSheets</td>
+                      <td>
+                        
+                          <a href="symbols/model.sheets.html#.tileSheets">model.sheets.tileSheets</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">tileValidator</td>
+                      <td>
+                        
+                          <a href="symbols/model.sheets.typeSheetValidators.html#.tileValidator">model.sheets.typeSheetValidators.tileValidator</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">trapWait</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.trapWait">controller.actions.trapWait</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">turnOwner</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.turnOwner">model.turnOwner</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">typeSheetValidators</td>
+                      <td>
+                        
+                          <a href="symbols/model.sheets.typeSheetValidators.html">model.sheets.typeSheetValidators</a>
+                        
+                          <a href="symbols/model.sheets.typeSheetValidators.html">model.sheets.typeSheetValidators</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">UNIT_TYPE_SHEET</td>
+                      <td>
+                        
+                          <a href="symbols/model.sheets.html#.UNIT_TYPE_SHEET">model.sheets.UNIT_TYPE_SHEET</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">unitPosMap</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.unitPosMap">model.unitPosMap</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">units</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.units">model.units</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">unitSheets</td>
+                      <td>
+                        
+                          <a href="symbols/model.sheets.html#.unitSheets">model.sheets.unitSheets</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">unitValidator</td>
+                      <td>
+                        
+                          <a href="symbols/model.sheets.typeSheetValidators.html#.unitValidator">model.sheets.typeSheetValidators.unitValidator</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">unloadUnit</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.unloadUnit">controller.actions.unloadUnit</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">unloadUnitFrom</td>
+                      <td>
+                        
+                          <a href="symbols/model.html#.unloadUnitFrom">model.unloadUnitFrom</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">userAction</td>
+                      <td>
+                        
+                          <a href="symbols/controller.html#.userAction">controller.userAction</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">util</td>
+                      <td>
+                        
+                          <a href="symbols/util.html">util</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">view</td>
+                      <td>
+                        
+                          <a href="symbols/view.html">view</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">wait</td>
+                      <td>
+                        
+                          <a href="symbols/controller.actions.html#.wait">controller.actions.wait</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">WEAPON_TYPE_SHEET</td>
+                      <td>
+                        
+                          <a href="symbols/model.sheets.html#.WEAPON_TYPE_SHEET">model.sheets.WEAPON_TYPE_SHEET</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">weaponSheets</td>
+                      <td>
+                        
+                          <a href="symbols/model.sheets.html#.weaponSheets">model.sheets.weaponSheets</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">weaponValidator</td>
+                      <td>
+                        
+                          <a href="symbols/model.sheets.typeSheetValidators.html#.weaponValidator">model.sheets.typeSheetValidators.weaponValidator</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">WEATHER_TYPE_SHEET</td>
+                      <td>
+                        
+                          <a href="symbols/model.sheets.html#.WEATHER_TYPE_SHEET">model.sheets.WEATHER_TYPE_SHEET</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">weatherSheets</td>
+                      <td>
+                        
+                          <a href="symbols/model.sheets.html#.weatherSheets">model.sheets.weatherSheets</a>
+                        
+                      </td>
+                    </tr>
+                  
+                    <tr class="symbolEntry">
+                      <td class="symbolName">weatherValidator</td>
+                      <td>
+                        
+                          <a href="symbols/model.sheets.typeSheetValidators.html#.weatherValidator">model.sheets.typeSheetValidators.weatherValidator</a>
+                        
+                      </td>
+                    </tr>
+                  
+                </table>
+            </div>
+            <hr />
+		</div>
+		<div class="fineprint" style="clear:both;text-align:center">
+			
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blankt">JsDoc Toolkit</a> 2.4.0 on Tue Feb 26 2013 00:59:29 GMT+0100 (MEZ)
+		</div>
+	</body>
+</html>
+

@@ -99,6 +99,11 @@ CWT_MOD_DEFAULT.graphic = {
     ["ARROW_ES","arrow.png",32,0,16,16],
     ["ARROW_SW","arrow.png",32,0,16,16,90],
     ["ARROW_WN","arrow.png",32,0,16,16,180],
-    ["ARROW_NE","arrow.png",32,0,16,16,270]
+    ["ARROW_NE","arrow.png",32,0,16,16,270],
+
+    ["DUST_U","UnitDust.png",32*3,0,32*3,32,true],
+    ["DUST_D","UnitDust.png",32*6,0,32*3,32,true],
+    ["DUST_L","UnitDust.png",32  ,0,32*3,32,true],
+    ["DUST_R","UnitDust.png",32*9,0,32*3,32,true]
   ]
 };

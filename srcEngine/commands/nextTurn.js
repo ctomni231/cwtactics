@@ -1,14 +1,15 @@
-controller.registerCommand({
+controller.userAction({
 
-  key: "nextTurn",
+  name: "nextTurn",
 
-  // -----------------------------------------------------------------------
-  condition: function( data ){
-    if( data.getSourceUnitId() === CWT_INACTIVE_ID ){
+  key: "NXTR",
+
+  condition: function( mem ){
+
+    if( mem.sourceUnitId === CWT_INACTIVE_ID ){
       // NO UNIT
 
-      if( data.getSourcePropertyId() !== CWT_INACTIVE_ID &&
-          data.getSourceProperty().owner === model.turnOwner ){
+      if( mem.sourcePropertyId !== CWT_INACTIVE_ID && mem.sourceProperty.owner === model.turnOwner ){
 
         // PROPERTY
         return false;
@@ -18,10 +19,9 @@ controller.registerCommand({
     else{
       // UNIT
 
-      if( data.getSourceUnit().owner === model.turnOwner &&
-          model.canAct( data.getSourceUnitId() ) ){
+      if( mem.sourceUnit.owner === model.turnOwner && model.canAct( mem.sourceUnitId ) ){
 
-        // ACTABLE OWN
+        // ACT ABLE OWN
         return false;
       }
       else return true;
@@ -31,23 +31,32 @@ controller.registerCommand({
     return false;
   },
 
-  // -----------------------------------------------------------------------
-  action: function( data ){
+  createDataSet: function( mem ){
+    return [];
+  },
+
+  /**
+   * Ends the turn for the current active player.
+   *
+   * @methodOf controller.actions
+   * @name nextTurn
+   */
+  action: function(){
     var pid = model.turnOwner;
     var oid = pid;
 
     // FIND NEXT PLAYER
     pid++;
     while( pid !== oid ){
+
       if( pid === CWT_MAX_PLAYER ){
+
         pid = 0;
         model.day++;
 
         var dayLimit = model.rules.dayLimit;
         if( dayLimit !== 0 && model.day === dayLimit ){
-          var nData = controller.aquireActionDataObject();
-          nData.setAction( "endGame" );
-          controller.pushActionDataIntoBuffer( nData, true );
+          controller.pushSharedAction("endGame");
         }
       }
 
@@ -60,16 +69,30 @@ controller.registerCommand({
       // INCREASE ID
       pid++;
     }
-    if( DEBUG && pid === oid ){ util.unexpectedSituationError(); }
+    if( pid === oid ){
+      util.raiseError();
+    }
 
     model.turnOwner = pid;
 
+    var startIndex= pid* CWT_MAX_UNITS_PER_PLAYER;
+    for( var i= startIndex, e= i+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
+
+      model.leftActors[i-startIndex] = (model.units[i] !== null);
+    }
+    
+    for( var i=0,e=CWT_MAX_PROPERTIES; i<e; i++ ){
+      if( model.properties[i].type === "SILO_EMPTY" ){
+        controller.actions.siloRegeneration(i);
+      }
+    }
+    
+    /*
     var dataObj = new controller.ActionData();
     var autoSupply = model.rules.autoSupplyAtTurnStart;
     dataObj.setAction("supplyTurnStart");
     var startIndex= pid* CWT_MAX_UNITS_PER_PLAYER;
-    for( var i= startIndex,
-             e= i+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
+    for( var i= startIndex, e= i+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
 
       model.leftActors[i-startIndex] = (model.units[i] !== null);
 
@@ -94,8 +117,11 @@ controller.registerCommand({
 
       }
     }
+    */
 
-    model.generateFogMap( pid );
+    controller.actions.calculateFog( pid );
+    
+    controller.resetTurnTimer();
   }
 
 });

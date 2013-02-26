@@ -20,19 +20,39 @@ controller.resetMenuCursor = function(){
   controller.menuCursorIndex = 0;
 };
 
+controller.setMenuIndex = function( index ){
+  controller.menuEntryListElement.children[ controller.menuCursorIndex ].className = "";    
+  controller.menuCursorIndex = index;  
+  controller.menuEntryListElement.children[ controller.menuCursorIndex ].className = "activeButton";
+};
+
 /**
  *
  */
 controller.increaseMenuCursor = function(){
+  
+  controller.menuEntryListElement.children[ controller.menuCursorIndex ].className = "";
+  
   controller.menuCursorIndex++;
+  if( controller.menuCursorIndex === controller.stateMachine.data.menuSize ){
+    controller.menuCursorIndex--;
+  }
+  
+  controller.menuEntryListElement.children[ controller.menuCursorIndex ].className = "activeButton";
+  controller.menuEntryListElement.children[ controller.menuCursorIndex ].children[0].focus();
 };
 
 /**
  *
  */
 controller.decreaseMenuCursor = function(){
+  controller.menuEntryListElement.children[ controller.menuCursorIndex ].className = "";
+  
   controller.menuCursorIndex--;
   if( controller.menuCursorIndex < 0 ) controller.menuCursorIndex = 0;
+  
+  controller.menuEntryListElement.children[ controller.menuCursorIndex ].className = "activeButton";
+  controller.menuEntryListElement.children[ controller.menuCursorIndex ].children[0].focus();
 };
 
 /**
@@ -52,55 +72,49 @@ controller.cursorAction = function( isCancel ){
   // BREAK IF YOU ARE IN THE ANIMATION PHASE
   if( controller.currentAnimatedKey !== null ) return;
 
-  var bstate = controller.input.state();
+  var bstate = controller.stateMachine.state;
   var bfocus = ( bstate === "MOVEPATH_SELECTION" ||
-                 bstate === "ACTION_SELECT_TARGET" );
+                 bstate === "IDLE_R" ||
+                 bstate === "ACTION_SELECT_TARGET_A" ||
+                 bstate === "ACTION_SELECT_TARGET_B" );
 
   // INVOKE ACTION
   if( isCancel ){
-    controller.input.event("cancel");
+    controller.stateMachine.event("cancel", controller.mapCursorX, controller.mapCursorY );
   }
   else{
     if( controller.menuCursorIndex !== -1 ){
-      controller.input.event( "action",controller.menuCursorIndex );
+      controller.stateMachine.event( "action",controller.menuCursorIndex );
     }
     else {
-      controller.input.event( "action", controller.mapCursorX,
-                                        controller.mapCursorY );
+      controller.stateMachine.event( "action", controller.mapCursorX, controller.mapCursorY );
     }
   }
 
-  var astate = controller.input.state();
+  var astate = controller.stateMachine.state;
   var afocus = ( astate === "MOVEPATH_SELECTION" ||
-                 astate === "ACTION_SELECT_TARGET" );
+                 astate === "IDLE_R" ||
+                 astate === "ACTION_SELECT_TARGET_A" ||
+                 astate === "ACTION_SELECT_TARGET_B"  );
 
   // RERENDERING
   if( ( bfocus && !afocus ) || afocus ){
-    view.markSelectionMapForRedraw( controller.input.selectionData );
+    view.markSelectionMapForRedraw( controller.stateMachine.data );
   }
 
   // MENU
   if( astate === "ACTION_MENU" || astate === "ACTION_SUBMENU" ){
 
-    // UNLOAD MENU ID TO TYPE FIX
-    var menu = controller.input.menu;
-    if( controller.input.actionData.getAction() === 'unloadUnit' ){
-      var old = menu;
-      menu = [];
-      for( var i=0, e=controller.input.menuSize; i<e; i++ ){
-        menu[i] = model.units[ old[i] ].type;
-      }
-    }
-
+    var menu = controller.stateMachine.data.menu;
     controller.showMenu(
       menu,
-      controller.input.menuSize,
+      controller.stateMachine.data.menuSize,
       controller.mapCursorX,
       controller.mapCursorY
     );
   }
   else{
-    controller.hideMenu();
+    if( bstate === "ACTION_MENU" || bstate === "ACTION_SUBMENU" ) controller.hideMenu();
   }
 };
 
@@ -109,6 +123,7 @@ controller.cursorAction = function( isCancel ){
  */
 controller.cursorActionCancel = function(){
   controller.cursorAction(true);
+  controller.playSfx("CANCEL");
 };
 
 /**
@@ -116,6 +131,7 @@ controller.cursorActionCancel = function(){
  */
 controller.cursorActionClick = function(){
   controller.cursorAction(false);
+  controller.playSfx("ACTION");
 };
 
 /**
@@ -149,6 +165,8 @@ controller.moveCursor = function( dir, len ){
  */
 controller.setCursorPosition = function( x,y,relativeToScreen ){
 
+  if( controller.menuElement.style.display === "block" ) return;
+  
   if( relativeToScreen ){
     x = x + controller.screenX;
     y = y + controller.screenY;
@@ -167,40 +185,26 @@ controller.setCursorPosition = function( x,y,relativeToScreen ){
 
   controller.mapCursorX = x;
   controller.mapCursorY = y;
-
-  // TODO pre generate it if scale changes
-  var scw = parseInt(
-    parseInt( window.innerWidth/16,10 ) / controller.screenScale
-    ,10
-  );
-
-  var sch = parseInt(
-    parseInt( window.innerHeight/16,10 ) / controller.screenScale
-    ,10
-  );
+  
+  var scw = parseInt( parseInt( window.innerWidth/16,10 ) / controller.screenScale ,10 );
+  var sch = parseInt( parseInt( window.innerHeight/16,10 ) / controller.screenScale ,10 );
 
   var moveCode = -1;
-  if( x-controller.screenX <= 1 ) moveCode = model.MOVE_CODE_LEFT;
+  if( x-controller.screenX <= 1 )          moveCode = model.MOVE_CODE_LEFT;
   else if( x-controller.screenX >= scw-1 ) moveCode = model.MOVE_CODE_RIGHT;
-  else if( y-controller.screenY <= 1 ) moveCode = model.MOVE_CODE_UP;
+  else if( y-controller.screenY <= 1 )     moveCode = model.MOVE_CODE_UP;
   else if( y-controller.screenY >= sch-1 ) moveCode = model.MOVE_CODE_DOWN;
 
   if( moveCode !== -1 ){
     controller.shiftScreenPosition( moveCode, 5 );
   }
 
-  var isLeft = (x+controller.screenX) >= scw/2;
-  view.updateTileInfo( isLeft );
-  view.updatePlayerInfo( isLeft );
-  
   if( CLIENT_DEBUG ){
-    util.logInfo(
+    util.log(
       "set cursor position to",
       x,y,
       "screen node is at",
-      controller.screenX,controller.screenY,
-      "screen size is",
-      scw,sch
+      controller.screenX,controller.screenY
     );
   }
 

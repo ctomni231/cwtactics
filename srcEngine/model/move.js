@@ -23,25 +23,25 @@ model.MOVE_CODE_DOWN  = 2;
 model.MOVE_CODE_LEFT  = 3;
 
 /**
- *
- * @param selectData
- * @param actionData
+ * Injects movable tiles into a action data memory object.
+ * 
+ * @param data action data memory
  */
-model.fillMoveMap = function( selectData, actionData ){
-  var unit   = actionData.getSourceUnit();
+model.fillMoveMap = function( data ){
+  var unit   = data.sourceUnit;
   var type   = model.sheets.unitSheets[unit.type];
   var mType  = model.sheets.movetypeSheets[ type.moveType ];
   var player = model.players[unit.owner];
   var range  = type.moveRange;
-  var x = actionData.getSourceX();
-  var y = actionData.getSourceY();
+  var x = data.sourceX;
+  var y = data.sourceY;
 
   // DECREASE RANGE IF NOT ENOUGH FUEL IS AVAILABLE
   if( unit.fuel < range ) range = unit.fuel;
 
   // ADD START TILE TO MAP
-  selectData.cleanIt( CWT_INACTIVE_ID, x,y );
-  selectData.setPositionValue( x,y,range );
+  data.setSelectionCenter( x,y,CWT_INACTIVE_ID );
+  data.setSelectionValueAt( x,y,range );
 
   // FILL MAP ( ONE STRUCT IS X;Y;LEFT_POINTS )
   var toBeChecked = [ x,y,range ];
@@ -106,10 +106,10 @@ model.fillMoveMap = function( selectData, actionData ){
 
         var rest = cp-cost;
         if( rest >= 0 &&
-          rest > selectData.getPositionValue(tx,ty) ){
+          rest > data.getSelectionValueAt(tx,ty) ){
 
           // ADD TO MOVE MAP
-          selectData.setPositionValue( tx,ty,rest );
+          data.setSelectionValueAt( tx,ty,rest );
 
           // ADD TO CHECKER
           for( var i=0,e=toBeChecked.length; i<=e; i+=3 ){
@@ -128,35 +128,33 @@ model.fillMoveMap = function( selectData, actionData ){
   // CONVERT LEFT POINTS TO MOVE COSTS
   for( var x=0,xe=model.mapWidth; x<xe; x++ ){
     for( var y=0,ye=model.mapHeight; y<ye; y++ ){
-      if( selectData.getPositionValue(x,y) !== -1 ){
+      if( data.getSelectionValueAt(x,y) !== -1 ){
         var cost = model.moveCosts( mType, model.map[x][y] );
-        selectData.setPositionValue( x, y, cost );
+        data.setSelectionValueAt( x, y, cost );
       }
     }
   }
 };
 
 /**
+ * Appends a tile to the move path of a given action data memory object.
  *
- * @param selectData
- * @param actionData
- * @param tx
- * @param ty
- * @param code
+ * @param data action data memory
+ * @param tx target x coordinate
+ * @param ty target y coordinate
+ * @param code move code to the next tile
  */
-model.addCodeToPath = function( selectData, actionData, tx, ty, code ){
-  var fuelLeft = actionData.getSourceUnit().fuel;
-  var fuelUsed = 0;
-  var movePath = actionData.getMovePath();
+model.addCodeToPath = function( data, tx, ty, code ){
+  var fuelLeft = data.sourceUnit.fuel;
+  var fuelUsed = 0; 
+  var movePath = data.movePath;
   movePath.push( code );
-  var points =  model.sheets.unitSheets[
-    actionData.getSourceUnit().type
-  ].moveRange;
+  var points =  model.sheets.unitSheets[ data.sourceUnit.type ].moveRange;
 
   if( fuelLeft < points ) points = fuelLeft;
 
-  var cx = actionData.getSourceX();
-  var cy = actionData.getSourceY();
+  var cx = data.sourceX;
+  var cy = data.sourceY;
   for( var i=0,e=movePath.length; i<e; i++ ){
 
     switch( movePath[i] ){
@@ -164,52 +162,49 @@ model.addCodeToPath = function( selectData, actionData, tx, ty, code ){
       case model.MOVE_CODE_DOWN: cy++; break;
       case model.MOVE_CODE_LEFT: cx--; break;
       case model.MOVE_CODE_RIGHT: cx++; break;
-      default : util.illegalArgumentError();
+      default : util.raiseError();
     }
 
-    fuelUsed += selectData.getPositionValue(cx,cy);
+    fuelUsed += data.getSelectionValueAt(cx,cy);
   }
 
   // GENERATE NEW PATH IF THE OLD IS NOT POSSIBLE
   if( fuelUsed > points ){
-    model.setPathByRecalculation( selectData, actionData, tx,ty );
+    model.setPathByRecalculation( data, tx,ty );
   }
 };
 
 /**
- *
- * @param selectData
- * @param actionData
- * @param tx
- * @param ty
+ * Regenerates a path from the source position of an action data memory object
+ * to a given target position.
+ * 
+ * @param data action data memory
+ * @param tx target x coordinate
+ * @param ty target y coordinate
  */
-model.setPathByRecalculation = function( selectData, actionData, tx,ty ){
-  var stx = actionData.getSourceX( );
-  var sty = actionData.getSourceY( );
-  var movePath = actionData.getMovePath();
+model.setPathByRecalculation = function( data, tx,ty ){
+  var stx = data.sourceX;
+  var sty = data.sourceY;
+  var movePath = data.movePath;
 
-  if ( DEBUG ) util.logInfo(
-    "searching path from",
-    "(", stx, ",", sty, ")",
-    "to",
-    "(", tx, ",", ty, ")"
-  );
+  if ( DEBUG ){
+    util.log( "searching path from (", stx, ",", sty, ") to (", tx, ",", ty, ")" );
+  }
 
-  // var graph = new Graph( nodes );
-  var graph = new Graph( selectData.getDataMatrix() );
+  var graph = new Graph( data.selectionData );
 
-  var dsx = stx - selectData.getCenterX( );
-  var dsy = sty - selectData.getCenterY( );
+  var dsx = stx - data.selectionCX;
+  var dsy = sty - data.selectionCY;
   var start = graph.nodes[ dsx ][ dsy ];
 
-  var dtx = tx - selectData.getCenterX( );
-  var dty = ty - selectData.getCenterY( );
+  var dtx = tx - data.selectionCX;
+  var dty = ty - data.selectionCY;
   var end = graph.nodes[ dtx ][ dty ];
 
   var path = astar.search(graph.nodes, start, end);
 
   if ( DEBUG ){
-    util.logInfo("calculated way is", path);
+    util.log("calculated way is", path);
   }
 
   var codesPath = [];
@@ -222,11 +217,12 @@ model.setPathByRecalculation = function( selectData, actionData, tx,ty ){
 
     var dir;
     if (cNode.x > cx) dir = model.MOVE_CODE_RIGHT;
-    if (cNode.x < cx) dir = model.MOVE_CODE_LEFT;
-    if (cNode.y > cy) dir = model.MOVE_CODE_DOWN;
-    if (cNode.y < cy) dir = model.MOVE_CODE_UP;
-
-    if (dir === undefined) throw Error();
+    else if (cNode.x < cx) dir = model.MOVE_CODE_LEFT;
+    else if (cNode.y > cy) dir = model.MOVE_CODE_DOWN;
+    else if (cNode.y < cy) dir = model.MOVE_CODE_UP;
+    else {
+      util.raiseError();
+    }
 
     codesPath.push(dir);
 

@@ -26,29 +26,27 @@
     alert("Attention!\nYour browser is not supported!");
   }
 
-
-  function invoke( key ){
-    var data = controller.aquireActionDataObject();
-    data.setAction( key );
-    controller.pushActionDataIntoBuffer( data );
-  }
-
-  // ----------------------------------------------------------------------
-  invoke( "loadMod" );
-  invoke( "loadImages" );
-  invoke( "cutImages" );
-  invoke( "colorizeImages" );
-  invoke( "loadInputDevices" );
-  invoke( "loadSounds" );
-
-  // FOR DEBUG PROCESS
-  var data = controller.aquireActionDataObject();
-  data.setAction( "loadGame" );
-  data.setSubAction( testMap );
-  controller.pushActionDataIntoBuffer( data );
+  util.injectMod = function( file ){
+    var fileref=document.createElement('script');
+    fileref.setAttribute("type","text/javascript");
+    fileref.setAttribute("src", file+".js" );
+    document.getElementsByTagName("head")[0].appendChild(fileref)
+  };
+  
+  // LOAD MODIFICATION
+  if( controller.storage.has("mod") ){
+         util.injectMod( controller.storage.get("mod") );
+  } else util.injectMod( "mod" ); // mod.js - ATM IN THE RESULT BUILD
 
   util.i18n_setLanguage("en");
-
-  invoke( "loadConfig" );
-  invoke( "startRendering" );
+  
+  controller.pushSharedAction("LDMD");
+  controller.pushSharedAction("LOIM");
+  controller.pushSharedAction("CUTI");
+  controller.pushSharedAction("COLI");
+  controller.pushSharedAction("LOID");
+  controller.pushSharedAction("LOSO");
+  controller.pushSharedAction( testMapNew, "LDGM" );  
+  controller.pushSharedAction("LCFG");
+  controller.pushSharedAction("STRE");
 })();

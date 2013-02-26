@@ -1,13 +1,13 @@
 view.registerCommandHook({
 
-  key: "trapWait",
+  key: "TRWT",
 
-  prepare: function( data ){
+  prepare: function( x,y,uid ){
     this.time = 0;
-    this.xp = data.getTargetX();
-    this.yp = data.getTargetY();
-    this.x = data.getTargetX() * TILE_LENGTH;
-    this.y = data.getTargetY() * TILE_LENGTH;
+    this.xp = x;
+    this.yp = y;
+    this.x = x * TILE_LENGTH;
+    this.y = y * TILE_LENGTH;
   },
 
   render: function(){

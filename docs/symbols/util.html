@@ -1,0 +1,854 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		
+		<title>JsDoc Reference - util</title>
+
+        <link rel="stylesheet" href="../static/default.css" type="text/css" media="screen" charset="utf-8" />
+	</head>
+
+	<body>
+<!-- ============================== header ================================= -->	
+		<!-- begin static/header.html -->
+		<div id="header">
+</div>
+		<!-- end static/header.html -->
+
+        
+
+<!-- ============================== classes index ============================ -->
+		<div id="index">
+            <div id="docs">
+                
+            </div>
+			
+<h2>Index</h2>
+<ul class="classList">
+  <li><a href="../files.html">File Index</a></li>
+  <li><a href="../index.html">Class Index</a></li>
+  <li><a href="../symbolindex.html">Symbol Index</a></li>
+</ul>
+<h2>Classes</h2>
+<ul class="classList">
+	
+	<li><i><a href="../symbols/_global_.html">_global_</a></i></li>
+	
+	<li><a href="../symbols/controller.html">controller</a></li>
+	
+	<li><a href="../symbols/controller.actions.html">controller.actions</a></li>
+	
+	<li><a href="../symbols/controller.serializationHandler.html">controller.serializationHandler</a></li>
+	
+	<li><a href="../symbols/controller.stateMachine.html">controller.stateMachine</a></li>
+	
+	<li><a href="../symbols/controller.stateMachine.data.html">controller.stateMachine.data</a></li>
+	
+	<li><a href="../symbols/controller.stateMachine.structure.html">controller.stateMachine.structure</a></li>
+	
+	<li><a href="../symbols/model.html">model</a></li>
+	
+	<li><a href="../symbols/model.sheets.html">model.sheets</a></li>
+	
+	<li><a href="../symbols/model.sheets.typeSheetValidators.html">model.sheets.typeSheetValidators</a></li>
+	
+	<li><a href="../symbols/util.html">util</a></li>
+	
+	<li><a href="../symbols/view.html">view</a></li>
+	
+</ul>
+
+		</div>
+		
+        <div id="symbolList">
+           <!-- constructor list -->
+           
+             <h3>
+                 Namespace 
+             </h3>
+             <ul>
+                <li >
+                  <a href="../symbols/util.html">util</a>
+                </li>
+             </ul>
+           
+           <!-- end constructor list -->
+
+           <!-- properties list -->
+           
+           
+             <h3>Variables</h3>
+             <ul>
+               
+                 <li>
+                   <a href="../symbols/util.html#.i18n_data">i18n_data</a>
+                 </li>
+               
+                 <li>
+                   <a href="../symbols/util.html#.i18n_lang">i18n_lang</a>
+                 </li>
+               
+             </ul>
+           
+           <!-- end properties list -->
+
+           <!-- function summary -->
+           
+           
+             <h3>Functions</h3>
+             <ul>
+               
+                   <li>
+                        <a href="../symbols/util.html#.createRingBuffer">createRingBuffer</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/util.html#.fill">fill</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/util.html#.FUNCTION_FALSE_RETURNER">FUNCTION_FALSE_RETURNER</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/util.html#.FUNCTION_TRUE_RETURNER">FUNCTION_TRUE_RETURNER</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/util.html#.i18n_appendToLanguage">i18n_appendToLanguage</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/util.html#.i18n_localized">i18n_localized</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/util.html#.i18n_setLanguage">i18n_setLanguage</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/util.html#.injectMod">injectMod</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/util.html#.list">list</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/util.html#.log">log</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/util.html#.logInfo">logInfo</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/util.html#.matrix">matrix</a>
+                    </li>
+               
+                   <li>
+                        <a href="../symbols/util.html#.raiseError">raiseError</a>
+                    </li>
+               
+             </ul>
+           
+           <!-- end function summary -->
+
+           <!-- events summary -->
+           
+           
+           <!-- end events summary -->
+        </div>
+
+		<div id="content">
+<!-- ============================== class title ============================ -->
+			<h1 class="classTitle">
+				Namespace util
+			</h1>
+
+<!-- ============================== class summary ========================== -->			
+			<p class="description">
+				
+				
+			
+				
+				
+				
+					<br /><i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_engineBase.js.html">engineBase.js</a>.
+				
+			</p>
+
+<!-- ============================== constructor details ==================== -->		
+			
+			<div class="details"><a name="constructor"> </a>
+				<div class="sectionTitle">
+					Namespace Detail
+				</div>
+				
+				<div class="fixedFont">
+						<b>util</b>
+				</div>
+				
+				<div class="description">
+					<p>Some useful utility functions are stored in this layer. This layer contains
+the logging functions of custom wars tactics. These functions are
+overwritable to have a custom log behaviour for the game client. As example
+if you use a graphical logging solution like BlackbirdJs.</p>
+					
+				</div>
+				
+				
+				
+				
+					
+					
+					
+					
+					
+					
+					
+
+			</div>
+			
+
+<!-- ============================== field details ========================== -->		
+			
+              <div class="details">
+				<div class="sectionTitle">
+					Field Detail
+				</div>
+				
+                  <div class="member">
+					<a name=".i18n_data"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					
+					<span class="light">util.</span><b>i18n_data</b>
+					
+					</div>
+					<div class="description">
+						<p>Contains all active languages.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_util_locale.js.html">locale.js</a>.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+                  </div>
+				
+                  <div class="member">
+					<a name=".i18n_lang"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					
+					<span class="light">util.</span><b>i18n_lang</b>
+					
+					</div>
+					<div class="description">
+						<p>The active language object for the game.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_util_locale.js.html">locale.js</a>.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								english
+							</dd>
+							</dl>
+						
+                  </div>
+				
+              </div>
+			
+
+<!-- ============================== method details ========================= -->		
+			
+              <div class="details">
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+				
+                  <div class="member">
+					<a name=".createRingBuffer"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">util.</span><b>createRingBuffer</b>(size)
+					
+					</div>
+					<div class="description">
+						<p>Creates a ring buffer with a fixed size.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_util_ringBuffer.js.html">ringBuffer.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>size</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name=".fill"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">util.</span><b>fill</b>(arr, defaultValue)
+					
+					</div>
+					<div class="description">
+						<p>Fills an array with a value. Works also for matrix objects.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_util_arrayUtil.js.html">arrayUtil.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>arr</b>
+									
+								</dt>
+								<dd>an array or matrix created by <a href="../symbols/util.html#.list">util.list</a> or <a href="../symbols/util.html#.matrix">util.matrix</a></dd>
+							
+								<dt>
+									<b>defaultValue</b>
+									
+								</dt>
+								<dd>he default value that will be inserted into the array/matrix</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name=".FUNCTION_FALSE_RETURNER"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">util.</span><b>FUNCTION_FALSE_RETURNER</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_util_utils.js.html">utils.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name=".FUNCTION_TRUE_RETURNER"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">util.</span><b>FUNCTION_TRUE_RETURNER</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_util_utils.js.html">utils.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name=".i18n_appendToLanguage"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">util.</span><b>i18n_appendToLanguage</b>(langKey, data)
+					
+					</div>
+					<div class="description">
+						<p>Appends data to a given language.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_util_locale.js.html">locale.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>langKey</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>data</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name=".i18n_localized"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">util.</span><b>i18n_localized</b>(key)
+					
+					</div>
+					<div class="description">
+						<p>Returns a localized string for a given key or if not exist the key itself.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_util_locale.js.html">locale.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>key</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name=".i18n_setLanguage"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">util.</span><b>i18n_setLanguage</b>(langKey)
+					
+					</div>
+					<div class="description">
+						<p>Sets the active language.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_util_locale.js.html">locale.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>langKey</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name=".injectMod"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">util.</span><b>injectMod</b>(modName)
+					
+					</div>
+					<div class="description">
+						<p>Injects a modification file into the engine.</p>
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>modName</b>
+									
+								</dt>
+								<dd>name of the mod which must be represent as 
+                        file in the main context</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name=".list"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">util.</span><b>list</b>(len, defaultValue)
+					
+					</div>
+					<div class="description">
+						<p>Creates a list and fills it with default values.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_util_arrayUtil.js.html">arrayUtil.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>len</b>
+									
+								</dt>
+								<dd>the length of the created list</dd>
+							
+								<dt>
+									<b>defaultValue</b>
+									
+								</dt>
+								<dd>the default value that will be inserted into the list slots</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name=".log"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">util.</span><b>log</b>(reason)
+					
+					</div>
+					<div class="description">
+						<p>Logging function.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_util_log.js.html">log.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{...Object}</span> <b>reason</b>
+									
+								</dt>
+								<dd>A number of arguments that will be used as message.
+                          If an argument isn't a String then it will be converted to
+                          String by the toString() function.</dd>
+							
+								<dt>
+									<b>reason.</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name=".logInfo"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">util.</span><b>logInfo</b>()
+					
+					</div>
+					<div class="description">
+						<p>Overwritable logging function.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_util_log.js.html">log.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Deprecated:</dt>
+							<dt>
+								will be removed in version 0.3
+							</dt>
+							</dl>
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name=".matrix"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">util.</span><b>matrix</b>(w, h, defaultValue)
+					
+					</div>
+					<div class="description">
+						<p>Creates a matrix (table) and fills it with default values.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_util_arrayUtil.js.html">arrayUtil.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>w</b>
+									
+								</dt>
+								<dd>width of the matrix</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>h</b>
+									
+								</dt>
+								<dd>height of the matrix</dd>
+							
+								<dt>
+									<b>defaultValue</b>
+									
+								</dt>
+								<dd>the default value that will be inserted into the cells</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+                  <div class="member">
+					<a name=".raiseError"> </a>
+					<div class="fixedFont">
+                      <div class="modifiers">&lt;static&gt; 
+                      </div>
+					
+					<span class="light">util.</span><b>raiseError</b>(reason)
+					
+					</div>
+					<div class="description">
+						<p>Raises an error in the active Javascript environment.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tapsi_Desktop_Dropbox_Dropbox_Dropsi Ordner_Custom Wars Tactics_cwtactics_srcEngine_util_log.js.html">log.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{...Object}</span> <b>reason</b>
+									
+								</dt>
+								<dd>A number of arguments that will be used as error message.
+                          If an argument isn't a String then it will be converted to
+                          String by the toString() function.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+                  </div>
+				
+              </div>
+			
+			
+<!-- ============================== event details ========================= -->		
+			
+			<hr />
+		</div>
+
+		
+<!-- ============================== footer ================================= -->
+		<div class="fineprint" style="clear:both;text-align:center">
+			
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Tue Feb 26 2013 00:59:28 GMT+0100 (MEZ)
+		</div>
+	</body>
+</html>

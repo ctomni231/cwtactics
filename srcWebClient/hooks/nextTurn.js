@@ -1,14 +1,11 @@
 view.registerCommandHook({
 
-  key: "nextTurn",
+  key: "NXTR",
 
-  prepare: function( data ){
-    if( model.fogOn ){
+  prepare: function(  ){
+    if( model.rules.fogEnabled ){
       view.completeRedraw();
     }
-
-    controller.resetTurnTimer();
-    view.updatePlayerInfo();
 
     view.showInfoMessage( util.i18n_localized("day")+": "+model.day );
   },

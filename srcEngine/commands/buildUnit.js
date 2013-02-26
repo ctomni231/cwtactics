@@ -1,7 +1,11 @@
-controller.registerCommand({
+controller.userAction({
 
-  key:"buildUnit",
+  name:"buildUnit",
+
+  key:"BDUN",
+  
   propertyAction: true,
+
   hasSubMenu: true,
 
   canPropTypeBuildUnitType: function( pType, uType ){
@@ -36,48 +40,55 @@ controller.registerCommand({
     return bl;
   },
 
-  // ------------------------------------------------------------------------
-  prepareMenu: function( data, addEntry ){
-    var prop = data.getSourceProperty();
-    if( DEBUG && prop === null ){ util.illegalArgumentError(); }
-
-    var bList = this.getBuildList( model.extractPropertyId( prop ) );
-
-    // APPEND TYPES
-    for( var i=0,e=bList.length; i<e; i++ ) addEntry( bList[i] );
-  },
-
-  // ------------------------------------------------------------------------
-  condition: function( data ){
-    var property = data.getSourceProperty();
+  condition: function( mem ){
+    var property = mem.sourceProperty;
     if( model.countUnits(model.turnOwner) >= model.rules.unitLimit ){
       return false;
     }
 
     return (
       model.hasFreeUnitSlots( model.turnOwner ) &&
-        this.getBuildList(
-          model.extractPropertyId( data.getSourceProperty() )
-        ).length > 0
-      );
+        this.getBuildList( model.extractPropertyId( property ) ).length > 0
+    );
+  },
+  
+  prepareMenu: function( mem ){
+    var property = mem.sourceProperty;
+    
+    if( DEBUG && property === null ){ 
+      util.raiseError();
+    }
+
+    var bList = this.getBuildList( mem.sourcePropertyId );
+    for( var i=0,e=bList.length; i<e; i++ ){
+      mem.addEntry( bList[i] );
+    }
+  },
+  
+  createDataSet: function( mem ){
+    return [ mem.sourceX, mem.sourceY, mem.subAction ];
   },
 
-  // ------------------------------------------------------------------------
-  action: function( data ){
-    var x = data.getSourceX();
-    var y = data.getSourceY();
-    var subEntry = data.getSubAction();
+  /**
+   * Builds an unit.
+   *
+   * @param {Number} x x coordinate
+   * @param {Number} y y coordinate
+   * @param {String} type type of the unit
+   *
+   * @methodOf controller.actions
+   * @name buildUnit
+   */
+  action: function( x,y, type ){
 
-    var uid = model.createUnit( model.turnOwner, subEntry );
-    model.setUnitPosition( uid, x,y );
-
+    controller.actions.createUnit( x,y, model.turnOwner, type );
+    
+    var uid = model.extractUnitId( model.unitPosMap[x][y] );
     var pl = model.players[ model.turnOwner ];
-    pl.gold -= model.sheets.unitSheets[ subEntry ].cost;
+    
+    pl.gold -= model.sheets.unitSheets[ type ].cost;
 
-    var newData = controller.aquireActionDataObject();
-    newData.setSourceUnit(model.units[uid]);
-    newData.setAction("wait");
-    controller.invokeCommand( newData );
+    controller.actions.wait( uid );
   }
 
 });

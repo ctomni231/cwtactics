@@ -1,6 +1,7 @@
-controller.registerCommand({
+controller.engineAction({
 
-  key: "colorizeImages",
+  name: "colorizeImages",
+  key: "COLI",
 
   UNIT_INDEXES:{
     BLACK_MASK:8,
@@ -19,11 +20,7 @@ controller.registerCommand({
     BLACK_MASK:8,
     colors:4
   },
-
-  // ------------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
-
-  // ------------------------------------------------------------------------
+  
   action: function(){
 
     function getImageDataArray( image ){

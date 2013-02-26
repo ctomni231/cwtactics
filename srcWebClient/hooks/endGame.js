@@ -1,8 +1,8 @@
 view.registerCommandHook({
 
-  key: "endGame",
+  key: "EDGM",
 
-  prepare: function( data ){
+  prepare: function( ){
     view.showInfoMessage( util.i18n_localized("gameHasEnded"), 1000*60*60 );
   },
 

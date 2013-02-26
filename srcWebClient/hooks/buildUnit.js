@@ -1,13 +1,9 @@
 view.registerCommandHook({
 
-  key: "buildUnit",
+  key: "BDUN",
 
-  prepare: function( data ){
-
-    var x = data.getSourceX();
-    var y = data.getSourceY();
-    var unit = model.unitPosMap[x][y];
-    controller.updateUnitStats( unit );
+  prepare: function(  ){
+    view.completeRedraw();
   },
 
   render: function(){},

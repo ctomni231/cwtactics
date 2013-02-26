@@ -1,10 +1,8 @@
 view.registerCommandHook({
 
-  key: "silofire",
+  key: "SLFR",
 
   _check: function( x,y ){
-    var unit = model.unitPosMap[x][y];
-    if( unit !== null ) controller.updateUnitStats( unit );
   },
 
   _render: function( x,y, step, img ){
@@ -31,9 +29,9 @@ view.registerCommandHook({
     view.markForRedraw(x,y);
   },
 
-  prepare: function( data ){
-    var x = data.getActionTargetX();
-    var y = data.getActionTargetY();
+  prepare: function( uid, sx,sy, prid, tx,ty ){
+    var x = tx;
+    var y = ty;
     this.x = x;
     this.y = y;
     var chk = this._check;

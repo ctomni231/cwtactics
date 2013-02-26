@@ -1,7 +1,7 @@
 /**
- * Retusn a list of loaded unit ids by a given transporter id.
+ * Retuns a list of loaded unit ids by a given transporter id.
  *
- * @param tid
+ * @param {Number} tid transporter id
  */
 model.getLoadedIds = function( tid ){
   var loaded = [];
@@ -24,7 +24,7 @@ model.getLoadedIds = function( tid ){
  * Has a transporter unit with id tid loaded units? Returns true if yes, else
  * false.
  *
- * @param tid
+ * @param {Number} tid transporter id
  */
 model.hasLoadedIds = function( tid ){
   var pid = model.units[ tid ].owner;
@@ -46,8 +46,8 @@ model.hasLoadedIds = function( tid ){
  * Returns true if the unit with the id lid is loaded by a transporter unit
  * with id tid.
  *
- * @param lid
- * @param tid
+ * @param {Number} lid load id
+ * @param {Number} tid transporter id
  */
 model.isLoadedBy = function( lid, tid ){
   return model.units[ lid ].loadedIn === tid;
@@ -56,8 +56,8 @@ model.isLoadedBy = function( lid, tid ){
 /**
  * Loads the unit with id lid into a tranporter with the id tid.
  *
- * @param lid
- * @param tid
+ * @param {Number} lid load id
+ * @param {Number} tid transporter id
  */
 model.loadUnitInto = function( lid, tid ){
   if( !model.canLoad( lid,tid ) ){
@@ -70,8 +70,8 @@ model.loadUnitInto = function( lid, tid ){
 /**
  * Unloads the unit with id lid from a tranporter with the id tid.
  *
- * @param lid
- * @param tid
+ * @param {Number} lid
+ * @param {Number} tid
  */
 model.unloadUnitFrom = function( lid, tid ){
   model.units[ lid ].loadedIn = -1;
@@ -83,8 +83,8 @@ model.unloadUnitFrom = function( lid, tid ){
  * would load the unit. If the calculated weight is greater than the maxiumum
  * loadable weight false will be returned.
  *
- * @param lid
- * @param tid
+ * @param {Number} lid load id
+ * @param {Number} tid transporter id
  */
 model.canLoad = function( lid, tid ){
   var tp = model.units[ tid ];
@@ -128,7 +128,7 @@ model.canLoad = function( lid, tid ){
 /**
  * Returns true if the unit with id tid is a traensporter, else false.
  *
- * @param tid
+ * @param {Number} tid transporter id
  */
 model.isTransport = function( tid ){
   return model.sheets.unitSheets[

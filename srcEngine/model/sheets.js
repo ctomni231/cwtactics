@@ -1,5 +1,15 @@
+/**
+ * Contains all data sheets of the game.
+ * 
+ * @namespace
+ */
 model.sheets = {};
 
+/**
+ * Amanda validator object.
+ * 
+ * @private
+ */
 model.sheets._dbAmanda = amanda("json");
 
 /** @constant */
@@ -63,6 +73,7 @@ model.sheets.defaultRules = null;
  */
 model.sheets.typeSheetValidators = {
 
+  /** Schema for the rule object. */
   rulesValidator: {
     type: 'object',
     properties:{
@@ -182,16 +193,16 @@ model.parseSheet = function( data, type ){
       schema =  validators.rulesValidator;
       break;
 
-    default: util.logError("unknow type",type);
+    default: util.raiseError("unknow type",type);
   }
 
   // CHECK IDENTICAL STRING FIRST
   if( type !== model.sheets.RULESET &&
-    db.hasOwnProperty(id) ) util.logError(id,"is already registered");
+    db.hasOwnProperty(id) ) util.raiseError(id,"is already registered");
 
   // VALIDATE SHEET
   model.sheets._dbAmanda.validate( data, schema, function(e){
-    if( e ) util.logError( "failed to parse sheet due", e.getMessages() );
+    if( e ) util.raiseError( "failed to parse sheet due", e.getMessages() );
   });
 
   if( type === model.sheets.RULESET ) model.sheets.defaultRules = data;
@@ -242,11 +253,12 @@ model.getListOfTileTypes = function(){
 };
 
 /**
+ * Returns the primary weapon of an unit.
  *
- * @param unit
+ * @param unit unit object
  */
 model.primaryWeaponOfUnit = function( unit ){
-  if( DEBUG && unit === null ) util.illegalArgumentError();
+  if( DEBUG && unit === null ) util.raiseError();
 
   if( typeof unit === 'number' ){
     unit = model.units[unit];
@@ -257,11 +269,12 @@ model.primaryWeaponOfUnit = function( unit ){
 };
 
 /**
+ * Returns the secondary weapon of an unit.
  *
  * @param unit
  */
 model.secondaryWeaponOfUnit = function( unit ){
-  if( DEBUG && unit === null ) util.illegalArgumentError();
+  if( DEBUG && unit === null ) util.raiseError();
 
   if( typeof unit === 'number' ){
     unit = model.units[unit];
@@ -274,12 +287,12 @@ model.secondaryWeaponOfUnit = function( unit ){
 /**
  * Returns the base damage from a weapon sheet against an unit type.
  *
- * @param weapon weapon sheet
- * @param uType {string} unit type
+ * @param weapon weapon sheet object
+ * @param {String} uType unit type
  */
 model.getBaseDamage = function( weapon, uType ){
-  if( DEBUG && weapon === null ) util.illegalArgumentError();
-  if( DEBUG && uType === null ) util.illegalArgumentError();
+  if( DEBUG && weapon === null ) util.raiseError();
+  if( DEBUG && uType === null ) util.raiseError();
 
   var dmg;
 
@@ -295,8 +308,8 @@ model.getBaseDamage = function( weapon, uType ){
 /**
  * Returns the costs for a movetype to move onto a tile type.
  *
- * @param movetype
- * @param tiletype
+ * @param movetype move type object
+ * @param {String} tiletype tile type
  */
 model.moveCosts = function( movetype, tiletype ){
   var c;

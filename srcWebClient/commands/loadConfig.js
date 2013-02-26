@@ -1,12 +1,8 @@
-controller.registerCommand({
+controller.engineAction({
 
-  key:"loadConfig",
-  localAction: true,
-
-  // ------------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
-
-  // ------------------------------------------------------------------------
+  name:"loadConfig",
+  key:"LCFG",
+  
   action: function(){
     var config = controller.storage.get("CWT_CONFIG")
     if( config === null ){

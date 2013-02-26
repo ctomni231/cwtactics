@@ -1,11 +1,10 @@
+/** 
+ * Creates a ring buffer with a fixed size.
+ */
 util.createRingBuffer = function( size ){
 
   var buffer = {
 
-    /**
-     *
-     * @param msg
-     */
     push: function (msg){
       if ( this._data[ this._wInd ] !== null) {
         throw Error("message buffer is full");
@@ -26,15 +25,13 @@ util.createRingBuffer = function( size ){
     },
 
     /**
+     * Returns true if the ring buffer is empty else false.
      *
      */
     isEmpty: function () {
       return ( this._data[ this._rInd ] === null );
     },
 
-    /**
-     *
-     */
     pop: function () {
       if( this._data[ this._rInd ] === null) {
         throw Error("message buffer is empty");
@@ -51,9 +48,6 @@ util.createRingBuffer = function( size ){
       return msg;
     },
 
-    /**
-     *
-     */
     clear: function(){
       this._rInd = 0;
       this._wInd = 0;

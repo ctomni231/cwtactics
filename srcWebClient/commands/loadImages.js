@@ -1,16 +1,13 @@
-controller.registerCommand({
+controller.engineAction({
 
-  key:"loadImages",
-  localAction: true,
-
-  // ------------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
-
-  // ------------------------------------------------------------------------
+  name:"loadImages",
+  key:"LOIM",
+  
   action: function(){
     if( CLIENT_DEBUG ){
-      util.logInfo("loading images... place lock");
+      util.log("loading images... place lock");
     }
+    
     controller.lockCommandEvaluation = true;
 
     // STEP 1 - LOADING THEM

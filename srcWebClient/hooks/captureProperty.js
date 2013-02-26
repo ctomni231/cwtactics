@@ -1,9 +1,9 @@
 view.registerCommandHook({
 
-  key: "captureProperty",
+  key: "CTPR",
 
-  prepare: function( data ){
-    var property = data.getTargetProperty();
+  prepare: function( cid, prid, px,py, points ){
+    var property = model.properties[ prid ];
 
     if( property.capturePoints === 20 ){
       view.showInfoMessage( util.i18n_localized("propertyCaptured") );

@@ -1,16 +1,22 @@
-controller.registerCommand({
+controller.engineAction({
 
-  key:"supplyTurnStart",
-  userAction: false,
+  name:"supplyTurnStart",
 
-  // -----------------------------------------------------------------------
-  condition: function( data ){
-    return false;
-  },
+  key:"TSSP",
 
-  // -----------------------------------------------------------------------
-  action: function( data ){
-    controller.invokeCommand( data, "supply" );
-    controller.invokeCommand( data, "makeActable" );
+  /**
+   * Supplies units at turn start.
+   *
+   * @param {Number} sid supplier unit id
+   * @param {Number} x x coordinate of the supplier
+   * @param {Number} y y coordinate of the supplier
+   * 
+   * @methodOf controller.actions
+   * @name supplyTurnStart
+   */
+  action: function( sid, x,y ){
+
+    controller.actions.supply( sid, x,y );
+    controller.actions.makeActable( sid );
   }
 });

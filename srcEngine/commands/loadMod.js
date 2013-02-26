@@ -1,10 +1,15 @@
-controller.registerCommand({
+controller.engineAction({
 
-  key: "loadMod",
+  name: "loadMod",
 
-  // -----------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
+  key: "LDMD",
 
+  /**
+   * Loads a modification.
+   *
+   * @methodOf controller.actions
+   * @name loadMod
+   */
   action: function(){
 
     for( var i=0,e=CWT_MOD_DEFAULT.movetypes.length; i<e; i++ ){

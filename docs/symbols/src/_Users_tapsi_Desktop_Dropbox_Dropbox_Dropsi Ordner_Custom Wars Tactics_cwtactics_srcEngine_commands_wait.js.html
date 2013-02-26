@@ -1,0 +1,48 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="NAME">controller.userAction</span><span class="PUNC">(</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>  2</span> </span><span class="WHIT">  
+<span class='line'>  3</span>   </span><span class="NAME">name</span><span class="PUNC">:</span><span class="STRN">"wait"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>  4</span> </span><span class="WHIT">  
+<span class='line'>  5</span>   </span><span class="NAME">key</span><span class="PUNC">:</span><span class="STRN">"WTUN"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>  6</span> </span><span class="WHIT">  
+<span class='line'>  7</span>   </span><span class="NAME">unitAction</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>  8</span> </span><span class="WHIT">  
+<span class='line'>  9</span>   </span><span class="NAME">condition</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">mem</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 10</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">mem.targetUnit</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">mem.targetUnit</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">mem.sourceUnit</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 11</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 12</span> </span><span class="WHIT">  
+<span class='line'> 13</span>   </span><span class="NAME">createDataSet</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">mem</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 14</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">mem.sourceUnitId</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 15</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 16</span> </span><span class="WHIT">  
+<span class='line'> 17</span>   </span><span class="COMM">/**
+<span class='line'> 18</span>    * Sends an unit into the wait status.
+<span class='line'> 19</span>    *
+<span class='line'> 20</span>    * @param {Number} uid unit id
+<span class='line'> 21</span>    * 
+<span class='line'> 22</span>    * @methodOf controller.actions
+<span class='line'> 23</span>    * @name wait
+<span class='line'> 24</span>    */</span><span class="WHIT">
+<span class='line'> 25</span> </span><span class="WHIT">  </span><span class="NAME">action</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">uid</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 26</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">uid</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">typeof</span><span class="WHIT"> </span><span class="NAME">uid</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">'number'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">uid</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">model.extractUnitId</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">uid</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 27</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">startIndex</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">model.turnOwner</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">CWT_MAX_UNITS_PER_PLAYER</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 28</span> </span><span class="WHIT">  
+<span class='line'> 29</span>     </span><span class="COMM">// NOT THE OWNER OF THE CURRENT TURN</span><span class="WHIT">
+<span class='line'> 30</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">uid</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NAME">startIndex</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">CWT_MAX_UNITS_PER_PLAYER</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">uid</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">startIndex</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 31</span> </span><span class="WHIT">      </span><span class="NAME">util.raiseError</span><span class="PUNC">(</span><span class="STRN">"unit owner is not the active player"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 32</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 33</span> </span><span class="WHIT">  
+<span class='line'> 34</span>     </span><span class="NAME">model.leftActors</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">uid</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">startIndex</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 35</span> </span><span class="WHIT">  
+<span class='line'> 36</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">DEBUG</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="WHIT">      </span><span class="NAME">util.log</span><span class="PUNC">(</span><span class="STRN">"unit"</span><span class="PUNC">,</span><span class="NAME">uid</span><span class="PUNC">,</span><span class="STRN">"going into wait status"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 39</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 40</span> </span><span class="WHIT">  
+<span class='line'> 41</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span></pre></body></html>

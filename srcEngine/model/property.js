@@ -1,15 +1,19 @@
 /**
- *
+ * List of all available properties of a game round. If a property is not 
+ * used it will be marked with an owner value {@link CWT_INACTIVE_ID}.
  */
 model.properties = util.list( CWT_MAX_PROPERTIES+1, function(){
   return {
     capturePoints: 20,
-    owner: -1
-  }
+    owner: -1,
+    type: null
+  };
 });
 
 /**
- *
+ * Matrix that has the same metrics as the game map. Every property will be 
+ * placed in the cell that represents its position. A property will be 
+ * accessed by model.propertyPosMap[x][y].
  */
 model.propertyPosMap = util.matrix(
   CWT_MAX_MAP_WIDTH,
@@ -18,9 +22,10 @@ model.propertyPosMap = util.matrix(
 );
 
 /**
- *
- * @param x
- * @param y
+ * Returns true if the tile at position x,y is a property, else false.
+ * 
+ * @param {Number} x x coordinate
+ * @param {Number} y y coordinate
  */
 model.tileIsProperty = function( x,y ){
   var prop = model.propertyPosMap[x][y];
@@ -30,11 +35,11 @@ model.tileIsProperty = function( x,y ){
 /**
  * Extracts the identical number from a property object.
  *
- * @param unit
+ * @param property
  */
 model.extractPropertyId = function( property ){
   if( property === null ){
-    throw Error("property argument cannot be null");
+    util.raiseError("property argument cannot be null");
   }
 
   var props = model.properties;
@@ -42,12 +47,13 @@ model.extractPropertyId = function( property ){
     if( props[i] === property ) return i;
   }
 
-  throw Error("cannot find property",property );
+  util.raiseError("cannot find property",property );
 };
 
 /**
+ * Counts all properties owned by the player with the given player id.
  *
- * @param pid
+ * @param {Number} pid player id
  */
 model.countProperties = function( pid ){
 

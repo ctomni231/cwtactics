@@ -1,12 +1,8 @@
 view.registerCommandHook({
 
-  key: "remVisioner",
+  key: "RVIS",
 
-  prepare: function( data ){
-    var x = data.getSourceX();
-    var y = data.getSourceY();
-    var range = data.getSubAction();
-
+  prepare: function( x,y, range ){
     var lX;
     var hX;
     var lY = y-range;

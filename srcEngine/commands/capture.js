@@ -1,46 +1,67 @@
-controller.registerCommand({
+controller.userAction({
+  
+  name:"captureProperty",
 
-  key:"captureProperty",
+  key:"CTPR",
+  
   unitAction: true,
-
-  // ------------------------------------------------------------------------
-  condition: function( data ){
-    var selectedUnit = data.getSourceUnit();
-    var unit = data.getTargetUnit();
-    var property = data.getTargetProperty();
-
+  
+  condition: function( mem ){
     return (
-      property !== null &&
-        model.turnOwner !== property.owner &&
+      mem.targetProperty !== null && 
+      model.turnOwner !== mem.targetProperty.owner &&
 
-      ( unit === null || unit === selectedUnit ) &&
+      ( mem.targetUnit === null || mem.targetUnit === mem.sourceUnit ) &&
 
-      model.sheets.tileSheets[ property.type ].capturePoints > 0 &&
-      model.sheets.unitSheets[ selectedUnit.type ].captures > 0
+      model.sheets.tileSheets[ mem.targetProperty.type ].capturePoints > 0 &&
+      model.sheets.unitSheets[ mem.sourceUnit.type ].captures > 0
     );
   },
-
-  // ------------------------------------------------------------------------
-  action: function( data ){
-    var selectedUnit = data.getSourceUnit();
-    var property = data.getTargetProperty();
+  
+  createDataSet: function( mem ){
+    
+    // ONE POINT FOR EVERY 10 HP STARTING WITH 9
+    var points = parseInt( mem.sourceUnit.hp/10, 10 ) +1;
+    
+    return [
+      mem.sourceUnitId,
+      mem.targetPropertyId,
+      mem.targetX,
+      mem.targetY,
+      points
+    ];
+  },
+  
+  /**
+   * Captures a property.
+   *
+   * @param {Number} cid capturer id
+   * @param {Number} prid property id
+   * @param {Number} px x coordinate
+   * @param {Number} py y coordinate
+   * @param {Number} points capture points
+   *
+   * @methodOf controller.actions
+   * @name captureProperty
+   */
+  action: function( cid, prid, px,py, points ){
+    var selectedUnit = model.units[cid];
+    var property = model.properties[prid];
     var unitSh = model.sheets.unitSheets[ selectedUnit.type ];
 
-    property.capturePoints -= unitSh.captures;
+    selectedUnit.ST_CAPTURES = true;
+    
+    property.capturePoints -= points;
     if( property.capturePoints <= 0 ){
-      var x = data.getTargetX();
-      var y = data.getTargetY();
+      var x = px;
+      var y = py;
 
       if( DEBUG ){
         util.logInfo( "property at (",x,",",y,") captured");
       }
 
       // ADD VISION
-      var data = new controller.ActionData();
-      data.setSource( x,y );
-      data.setAction("addVisioner");
-      data.setSubAction( model.sheets.tileSheets[property.type].vision );
-      controller.pushActionDataIntoBuffer(data);
+      controller.actions.addVision( x,y, model.sheets.tileSheets[property.type].vision );
 
       if( property.type === 'HQTR' ){
         var pid = property.owner;
@@ -78,9 +99,7 @@ controller.registerCommand({
 
         // NO OPPOSITE TEAMS LEFT ?
         if( _teamFound !== -1 ){
-          var nData = controller.aquireActionDataObject();
-          nData.setAction( "endGame" );
-          controller.pushActionDataIntoBuffer( nData, true );
+          controller.pushSharedAction("endGame");
         }
       }
 
@@ -90,13 +109,11 @@ controller.registerCommand({
 
       var capLimit = model.rules.captureWinLimit;
       if( capLimit !== 0 && capLimit <= model.countProperties() ){
-        var nData = controller.aquireActionDataObject();
-        nData.setAction( "endGame" );
-        controller.pushActionDataIntoBuffer( nData, true );
+        controller.pushSharedAction("endGame");
       }
     }
 
-    controller.invokeCommand( data, "wait" );
+    controller.actions.wait( cid );
   }
-
+  
 });

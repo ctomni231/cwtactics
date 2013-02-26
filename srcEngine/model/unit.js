@@ -1,5 +1,13 @@
+/**
+ * Matrix with the same metrics like the map. Every unit is placed into the 
+ * cell that represents its position.
+ */
 model.unitPosMap = util.matrix( CWT_MAX_MAP_WIDTH, CWT_MAX_MAP_HEIGHT, null );
 
+/**
+ * List of all unit objects. An inactive unit is marked with 
+ * {@link CWT_INACTIVE_ID} as owner.
+ */
 model.units = util.list( CWT_MAX_PLAYER*CWT_MAX_UNITS_PER_PLAYER, function(){
   return {
     x:0,
@@ -10,8 +18,7 @@ model.units = util.list( CWT_MAX_PLAYER*CWT_MAX_UNITS_PER_PLAYER, function(){
     loadedIn: -1,
     fuel: 0,
     owner: CWT_INACTIVE_ID,
-    _clientData_: {}
-  }
+  };
 });
 
 /**
@@ -21,7 +28,7 @@ model.units = util.list( CWT_MAX_PLAYER*CWT_MAX_UNITS_PER_PLAYER, function(){
  */
 model.extractUnitId = function( unit ){
   if( unit === null ){
-    throw Error("unit argument cannot be null");
+    util.raiseError("unit argument cannot be null");
   }
 
   var units = model.units;
@@ -29,46 +36,15 @@ model.extractUnitId = function( unit ){
     if( units[i] === unit ) return i;
   }
 
-  throw Error("cannot find unit", JSON.stringify(unit) );
-};
-
-model.createUnit = function( pid, type ){
-  var startIndex = pid*CWT_MAX_UNITS_PER_PLAYER;
-  for( var i=startIndex, e=startIndex+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
-
-    if( model.units[i].owner === CWT_INACTIVE_ID ){
-
-      var typeSheet = model.sheets.unitSheets[ type ];
-      model.units[i].owner = pid;
-      model.units[i].hp = 99;
-      model.units[i].type = type;
-      model.units[i].ammo = typeSheet.maxAmmo;
-      model.units[i].fuel = typeSheet.maxFuel;
-      model.units[i].loadedIn = -1;
-
-      if( util.DEBUG ){
-        util.logInfo("builded unit for player",pid,"in slot",i);
-      }
-
-      return i;
-    }
-  }
-
-  if( util.DEBUG ){
-    throw Error("cannot build unit for player",pid,"no slots free");
-  }
-  return -1;
+  util.raiseError("cannot find unit", unit );
 };
 
 /**
- * Destroys an unit object and removes its references from the
- * game instance.
+ * Returns true if a player with a given player id has free slots for new units.
+ * 
+ * @param {Number} pid player id
+ * @returns {Boolean}
  */
-model.destroyUnit = function( uid ){
-  model.eraseUnitPosition( uid );
-  model.units[uid].owner = CWT_INACTIVE_ID;
-};
-
 model.hasFreeUnitSlots = function( pid ){
   var startIndex = pid*CWT_MAX_UNITS_PER_PLAYER;
   for( var i=0, e=startIndex+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
@@ -79,61 +55,10 @@ model.hasFreeUnitSlots = function( pid ){
 };
 
 /**
- * Erases an unit position.
+ * Returns true if a given position is occupied by an unit, else false.
  *
- * @param uid
- */
-model.eraseUnitPosition = function( uid ){
-  var unit = model.units[uid];
-  var ox = unit.x;
-  var oy = unit.y;
-
-  // clear old position
-  model.unitPosMap[ox][oy] = null;
-  unit.x = -1;
-  unit.y = -1;
-
-  // UPDATE FOG
-  if( unit.owner === model.turnOwner ){
-    var data = new controller.ActionData();
-    data.setSource( ox,oy );
-    data.setAction("remVisioner");
-    data.setSubAction( model.sheets.unitSheets[unit.type].vision );
-    controller.pushActionDataIntoBuffer(data);
-  }
-};
-
-/**
- * Sets the position of an unit.
- *
- * @param uid
- * @param tx
- * @param ty
- */
-model.setUnitPosition = function( uid, tx, ty ){
-  var unit = model.units[uid];
-  var ox = unit.x;
-  var oy = unit.y;
-
-  unit.x = tx;
-  unit.y = ty;
-
-  model.unitPosMap[tx][ty] = unit;
-
-  if( unit.owner === model.turnOwner ){
-    var data = new controller.ActionData();
-    data.setSource( tx,ty );
-    data.setAction("addVisioner");
-    data.setSubAction( model.sheets.unitSheets[unit.type].vision );
-    controller.pushActionDataIntoBuffer(data);
-  }
-};
-
-/**
- * Returns true if a given position is occupied by an unit.
- *
- * @param x
- * @param y
+ * @param {Number} x x coordinate
+ * @param {Number} y y coordinate
  */
 model.tileOccupiedByUnit = function( x,y ){
   var unit = model.unitPosMap[x][y];
@@ -142,8 +67,9 @@ model.tileOccupiedByUnit = function( x,y ){
 };
 
 /**
+ * Counts all units that are owned by the player with the given player id.
  *
- * @param pid
+ * @param {Number} pid player id
  */
 model.countUnits = function( pid ){
   var startIndex = pid*CWT_MAX_UNITS_PER_PLAYER;

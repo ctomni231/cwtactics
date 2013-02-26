@@ -22,14 +22,11 @@ controller.INPUT_KEYBOARD_CODE_M = 77;
 /** @constant */
 controller.INPUT_KEYBOARD_CODE_N = 78;
 
-controller.registerCommand({
+controller.engineAction({
 
-  key:"loadInputDevices",
-
-  // ------------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
-
-  // ------------------------------------------------------------------------
+  name:"loadInputDevices",
+  key:"LOID",
+  
   action: function(){
 
     var detect = new DeviceDetection( navigator.userAgent );
@@ -37,12 +34,33 @@ controller.registerCommand({
     // **************************************************************
     // KEYBOARD SUPPORT FOR DESKTOP DEVICES
     if( detect.isDesktop() ){
+      
+      document.onkeyup = function( ev ){
+        if( controller.stateMachine.state === "IDLE_R" ){
+          
+          switch( code ){
+            case controller.INPUT_KEYBOARD_CODE_LEFT:
+            case controller.INPUT_KEYBOARD_CODE_UP:
+            case controller.INPUT_KEYBOARD_CODE_RIGHT:
+            case controller.INPUT_KEYBOARD_CODE_DOWN:
+            case controller.INPUT_KEYBOARD_CODE_BACKSPACE:
+            case controller.INPUT_KEYBOARD_CODE_ENTER:
+              controller.cursorActionCancel();
+              return false;
+          }
+        }
+      };
+      
       //document.onkeydown = function( ev ){
       document.onkeydown = function( ev ){
         if( CLIENT_DEBUG ){
           util.logInfo("got key code",ev.keyCode);
         }
 
+        var state = controller.stateMachine.state;
+        var inMenu = ( state === "ACTION_MENU" ||
+                       state === "ACTION_SUBMENU" );
+        
         var code = ev.keyCode;
         switch( code ){
 
@@ -51,7 +69,9 @@ controller.registerCommand({
             break;
 
           case controller.INPUT_KEYBOARD_CODE_UP:
-            controller.moveCursor( model.MOVE_CODE_UP, 1 );
+            if( !inMenu ) controller.moveCursor( model.MOVE_CODE_UP, 1 );
+            else controller.decreaseMenuCursor();
+            
             break;
 
           case controller.INPUT_KEYBOARD_CODE_RIGHT:
@@ -59,7 +79,9 @@ controller.registerCommand({
             break;
 
           case controller.INPUT_KEYBOARD_CODE_DOWN:
-            controller.moveCursor( model.MOVE_CODE_DOWN, 1 );
+            if( !inMenu ) controller.moveCursor( model.MOVE_CODE_DOWN, 1 );
+            else controller.increaseMenuCursor();
+            
             break;
 
           case controller.INPUT_KEYBOARD_CODE_BACKSPACE:
@@ -161,6 +183,14 @@ controller.registerCommand({
           case 3: controller.cursorActionCancel(); break;   // RIGHT
         }
       };
+      
+      canvas.onmouseup = function(ev){
+        if( controller.stateMachine.state === "IDLE_R" ){
+          switch(ev.which){
+            case 3: controller.cursorActionCancel(); break;   // RIGHT
+          }
+        }
+      };
     }
 
     // **************************************************************
@@ -206,7 +236,9 @@ controller.registerCommand({
       };
 
       hammer.onrelease = function(ev){
-
+        if( controller.stateMachine.state === "IDLE_R" ){
+          controller.cursorActionCancel();
+        }
       };
 
       hammer.ondrag    = function(ev){

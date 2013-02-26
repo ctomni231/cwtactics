@@ -1,12 +1,15 @@
-controller.registerCommand({
+controller.engineAction({
 
-  key:"invokeMultiStepAction",
+  name:"invokeMultiStepAction",
+  key:"IVMS",
 
-  // ----------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
-
-  // ----------------------------------------------------------------------
-  action: function( data ){
-    controller.input.event("nextStep");
+  /**
+   * Invokes a multi step action.
+   *
+   * @methodOf controller.actions
+   * @name invokeMultiStepAction
+   */
+  action: function(){
+    controller.stateMachine.event("nextStep");
   }
 });

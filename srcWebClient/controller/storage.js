@@ -1,5 +1,3 @@
-const STORAGE_SIZE = 25;
-
 controller.storage = {
 
   get: function( key ){

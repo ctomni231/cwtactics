@@ -44,8 +44,10 @@ view.updateSpriteAnimations = function( delta ){
 // ---------------------------------------------------------------------------
 
 view.registerSpriteAnimator( "SELECTION", 7, 150, function(){
-  if( controller.input.state() !== "MOVEPATH_SELECTION" &&
-      controller.input.state() !== "ACTION_SELECT_TARGET"  ) return;
+  if( controller.stateMachine.state !== "MOVEPATH_SELECTION" &&
+      controller.stateMachine.state !== "IDLE_R" &&
+      controller.stateMachine.state !== "ACTION_SELECT_TARGET_A" &&
+      controller.stateMachine.state !== "ACTION_SELECT_TARGET_B"  ) return;
 
   var x  = 0;
   var yS = 0;
@@ -53,10 +55,9 @@ view.registerSpriteAnimator( "SELECTION", 7, 150, function(){
   var ye = model.mapHeight;
 
   // ITERATE THROUGH THE SCREEN
-  var selectData = controller.input.selectionData;
   for( ; x<xe; x++ ){
     for( var y=yS ; y<ye; y++ ){
-      if( selectData.getPositionValue( x, y ) > -1 ){
+      if( controller.stateMachine.data.getSelectionValueAt( x, y ) > -1 ){
 
         view.markForRedraw( x,y );
       }

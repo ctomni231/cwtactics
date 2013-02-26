@@ -43,27 +43,3 @@ model.canAct = function( uid ){
 model.isTurnOwner = function( pid ){
   return model.turnOwner === pid;
 };
-
-/**
- * Removes an unit from the actable array. An unit that goes into
- * the wait status cannot do another action in the active turn.
- *
- * @param uid
- */
-model.markAsUnusable = function( uid ){
-  var uid = ( typeof uid === 'number' )? uid : model.extractUnitId( uid );
-  var startIndex = model.turnOwner * CWT_MAX_UNITS_PER_PLAYER;
-
-  // NOT THE OWNER OF THE CURRENT TURN
-  if( uid >= startIndex + CWT_MAX_UNITS_PER_PLAYER ||
-    uid < startIndex ){
-
-    util.logError("unit owner is not the active player");
-  }
-
-  model.leftActors[ uid - startIndex ] = false;
-
-  if( DEBUG ){
-    util.logInfo("unit",uid,"going into wait status");
-  }
-};

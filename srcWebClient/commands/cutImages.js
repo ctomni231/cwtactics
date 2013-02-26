@@ -1,8 +1,7 @@
-controller.registerCommand({
+controller.engineAction({
 
-  key: "cutImages",
-
-  condition: util.FUNCTION_FALSE_RETURNER,
+  name: "cutImages",
+  key: "CUTI",
 
   action: function(){
 
@@ -135,24 +134,53 @@ controller.registerCommand({
         var img = view.getInfoImageForType( miscType[0] );
 
         nCanvas = document.createElement('canvas');
-        nCanvas.height = 16;
-        nCanvas.width  = 16;
         nContext = nCanvas.getContext('2d');
 
         if( miscType.length > 6 ){
-          nContext.save();
-          nContext.translate(8,8);
-          nContext.rotate( miscType[6] * Math.PI/180);
-          nContext.translate(-8,-8);
+          if( miscType[6] === true ){
+
+            //TODO FIX THAT
+            nCanvas.height = 32;
+            nCanvas.width  = 32*3;
+
+            nCanvas = flipImage( nCanvas, true, false);
+
+            nContext = nCanvas.getContext('2d');
+          }
+          else{
+
+            nCanvas.height = 16;
+            nCanvas.width  = 16;
+            nContext.save();
+            nContext.translate(8,8);
+            nContext.rotate( miscType[6] * Math.PI/180);
+            nContext.translate(-8,-8);
+          }
+        }
+        else{
+          nCanvas.height = 16;
+          nCanvas.width  = 16;
         }
 
-        nContext.drawImage(
-          img,
-          miscType[2], miscType[3],
-          miscType[4], miscType[5],
-          0, 0,
-          16, 16
-        );
+        if( miscType.length > 6 && miscType[6] === true ){
+          // TODO FIX THAT
+          nContext.drawImage(
+            img,
+            miscType[2], miscType[3],
+            miscType[4], miscType[5],
+            0, 0,
+            32*3, 32
+          );
+        }
+        else{
+          nContext.drawImage(
+            img,
+            miscType[2], miscType[3],
+            miscType[4], miscType[5],
+            0, 0,
+            16, 16
+          );
+        }
 
         if( miscType.length > 6 ){
           nContext.restore();

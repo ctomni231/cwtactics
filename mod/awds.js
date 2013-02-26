@@ -12,7 +12,7 @@ var CWT_MOD_DEFAULT = {
 
     captureWinLimit:        0,
 
-    turnTimeLimit:          300000,
+    turnTimeLimit:          3000000,
     dayLimit:               0,
     daysOfPeace:            0,
 

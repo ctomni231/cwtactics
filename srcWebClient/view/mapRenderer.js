@@ -1,4 +1,4 @@
-const TILE_LENGTH = 16;
+var TILE_LENGTH = 16;
 
 controller.baseSize = CWT_MOD_DEFAULT.graphic.baseSize;
 
@@ -48,8 +48,10 @@ view.renderMap = function( scale ){
   var BASESIZE = controller.baseSize;
   
   var focusExists = (
-    controller.input.state() === "MOVEPATH_SELECTION" ||
-      controller.input.state() === "ACTION_SELECT_TARGET"
+    controller.stateMachine.state === "MOVEPATH_SELECTION" ||
+      controller.stateMachine.state === "IDLE_R" ||
+      controller.stateMachine.state === "ACTION_SELECT_TARGET_A" ||
+      controller.stateMachine.state === "ACTION_SELECT_TARGET_B"
   );
 
   var inShadow;
@@ -218,11 +220,10 @@ view.renderMap = function( scale ){
         // DRAW FOCUS
         if( focusExists ){
           pic = view.getInfoImageForType(
-            ( controller.input.state() === "MOVEPATH_SELECTION" )?
-              "MOVE_FOC" : "ATK_FOC"
+            ( controller.stateMachine.state === "MOVEPATH_SELECTION" )? "MOVE_FOC" : "ATK_FOC"
           );
 
-          var value = controller.input.selectionData.getPositionValue( x,y );
+          var value = controller.stateMachine.data.getSelectionValueAt(x,y);
           if( value > 0 ){
 
             scx = BASESIZE*sprStepSel;
@@ -313,7 +314,9 @@ view.renderMap = function( scale ){
               );
             }
 
-            pic = unit._clientData_.hpPic;
+            var stats = controller.getUnitStatusForUnit( unit );
+
+            pic = stats.HP_PIC;
             if( pic !== null ){
               ctx.drawImage(
                 pic,
@@ -341,16 +344,17 @@ view.renderMap = function( scale ){
               var stIn = st;
               do{
 
-                if( stIn === 0 && unit._clientData_.lowAmmo ){
+                // TODO
+                if( stIn === 0 && stats.LOW_AMMO ){
                   pic = view.getInfoImageForType("SYM_AMMO");
                 }
-                else if( stIn === 1 && unit._clientData_.lowFuel ){
+                else if( stIn === 1 && stats.LOW_FUEL ){
                   pic = view.getInfoImageForType("SYM_FUEL");
                 }
-                else if( stIn === 2 && unit._clientData_.captures ){
+                else if( stIn === 2 && stats.CAPTURES ){
                   pic = view.getInfoImageForType("SYM_CAPTURE");
                 }
-                else if( stIn === 3 && unit._clientData_.hasLoads ){
+                else if( stIn === 3 && stats.HAS_LOADS ){
                   pic = view.getInfoImageForType("SYM_LOAD");
                 }
 
@@ -379,11 +383,11 @@ view.renderMap = function( scale ){
   }
 
   // DRAW ARROW
-  if( controller.input.state() === "MOVEPATH_SELECTION" ){
-    var actiondataObj = controller.input.actionData;
-    var currentMovePath = actiondataObj.getMovePath();
-    var cX = actiondataObj.getSourceX();
-    var cY = actiondataObj.getSourceY();
+  if( controller.stateMachine.state === "MOVEPATH_SELECTION" ){
+    var actiondataObj = controller.stateMachine.data;
+    var currentMovePath = actiondataObj.movePath;
+    var cX = actiondataObj.sourceX;
+    var cY = actiondataObj.sourceY;
     var oX;
     var oY;
     var tX;
@@ -492,6 +496,9 @@ view.renderMap = function( scale ){
   view.drawScreenChanges=0;
 };
 
+/**
+ * 
+ */
 view.fitScreenToDeviceOrientation = function(){
   var canvEl = controller.screenElement;
 

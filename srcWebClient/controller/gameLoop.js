@@ -3,13 +3,16 @@
  */
 controller.currentAnimatedKey = null;
 
+// controller.currentAnimatedKeyNext = null;
+
 /**
  *
  */
-controller.currentAnimatedKeyNext = null;
-
 controller.noRendering = true;
 
+/**
+ *
+ */
 controller.lockCommandEvaluation = false;
 
 /**
@@ -18,14 +21,10 @@ controller.lockCommandEvaluation = false;
  */
 controller.gameLoop = function( delta ){
 
-  var inMove = (controller.moveScreenX !== 0 || controller.moveScreenY !== 0);
-  var nextTurnInvoke = controller.updateTurnTimer(delta);
-  if( nextTurnInvoke ){
-    var actionData = controller.aquireActionDataObject();
-    actionData.setAction("nextTurn");
-    controller.pushActionDataIntoBuffer( actionData );
-  }
+  controller.updateTurnTimer( delta );
 
+  var inMove = (controller.moveScreenX !== 0 || controller.moveScreenY !== 0);
+  
   // 0. MAP SHIFT
   if( inMove ){
     controller.solveMapShift();
@@ -38,13 +37,14 @@ controller.gameLoop = function( delta ){
 
       if( controller.lockCommandEvaluation === false ){
 
-        if( !controller.isBufferEmpty() ){
-          var actionData = controller.evalNextMessageFromBuffer();
-          if( actionData !== null ){
+        if( !controller.noNextActions() ){
+          var data = controller.doNextAction();
+          if( data !== null ){
 
-            var key = actionData.getAction();
+            var key = data[ data.length-1 ];
 
-            // MOVE ANIMATED ?
+            /*
+             MOVE ANIMATED ?
             var move = actionData.getMovePath();
             if( move !== null && move.length > 0 ){
 
@@ -56,29 +56,33 @@ controller.gameLoop = function( delta ){
                 util.logInfo( "preparing command animation for",moveAnimCmd.key );
               }
             }
+            */
+
+            view.invokeCommandListener(key,data);
 
             // IS ANIMATED ?
             var animCmd = view.getCommandHook(key);
             if( animCmd !== null ){
 
-              animCmd.prepare( actionData );
-              controller.currentAnimatedKeyNext = animCmd;
+              animCmd.prepare.apply( animCmd, data );
+              controller.currentAnimatedKey = animCmd;
 
               if( CLIENT_DEBUG ){
-                util.logInfo( "preparing command animation for",animCmd.key );
+                util.log( "preparing command animation for", key );
               }
             }
 
-            // SWAP IF NO MOVE ANIMATION IS AVAILABLE
+            /*
+             SWAP IF NO MOVE ANIMATION IS AVAILABLE
             if( controller.currentAnimatedKey === null &&
               controller.currentAnimatedKeyNext !== null ){
 
               controller.currentAnimatedKey = controller.currentAnimatedKeyNext;
               controller.currentAnimatedKeyNext = null;
             }
-
-            // RELEASE COMMAND
+            
             controller.releaseActionDataObject( actionData );
+            */
           }
         }
 
@@ -99,29 +103,27 @@ controller.gameLoop = function( delta ){
   }
 
   if( !controller.noRendering && !inMove ){
+    
     // 4. RENDER COMMAND ANIMATION
     if( controller.currentAnimatedKey !== null ){
 
       if( controller.currentAnimatedKey.isDone() ){
 
         if( CLIENT_DEBUG ){
-          util.logInfo(
-            "completed command animation for", controller.currentAnimatedKey.key
-          );
+          util.log( "completed command animation for", controller.currentAnimatedKey.key );
         }
 
         controller.currentAnimatedKey = null;
-
-        if( controller.currentAnimatedKeyNext !== null ){
-          controller.currentAnimatedKey = controller.currentAnimatedKeyNext;
-          controller.currentAnimatedKeyNext = null;
-        }
+      } else { 
+        controller.currentAnimatedKey.render(); 
       }
-      else{ controller.currentAnimatedKey.render(); }
     }
   }
 };
 
+/**
+ *
+ */
 controller.enterGameLoop = function(){
 
   if( CLIENT_DEBUG ) util.logInfo("enter game loop");
@@ -148,7 +150,7 @@ controller.enterGameLoop = function(){
     fpsOut.innerHTML = CWT_VERSION + " " + fps.toFixed(1) + "fps";
   }, 1000);
 
-  controller.input.event("start");
+  controller.stateMachine.event("start");
   view.fitScreenToDeviceOrientation();
 
   // ENTER LOOP

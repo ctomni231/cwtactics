@@ -1,14 +1,19 @@
-controller.registerCommand({
+controller.engineAction({
 
-  key: "endGame",
+  name: "endGame",
 
-  // -----------------------------------------------------------------------
-  condition: util.FUNCTION_FALSE_RETURNER,
+  key: "EDGM",
 
-  // -----------------------------------------------------------------------
-  action: function( data ){
+  /**
+   * Ends the game round.
+   *
+   * @methodOf controller.actions
+   * @name endGame
+   */
+  action: function(){
+
     if( DEBUG ){
-      util.logInfo("the game ends because no opposite players exists");
+      util.log("the game ends because no opposite players exists");
     }
   }
 

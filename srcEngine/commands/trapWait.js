@@ -1,19 +1,24 @@
-controller.registerCommand({
+controller.engineAction({
 
-  key: "trapWait",
+  name: "trapWait",
 
-  // -----------------------------------------------------------------------
-  condition: function( data ){
-    return false;
+  key: "TRWT",
+
+  createDataSet: function( data ){
+    return [ data.selectionUnitId ];
   },
-
-  // -----------------------------------------------------------------------
-  action: function( data ){
-    var ndata = new controller.ActionData();
-    ndata.setSource( data.getSourceX(), data.getSourceY() );
-    ndata.setAction("wait");
-    ndata.setSourceUnit( data.getSourceUnit() );
-    controller.invokeCommand( ndata );
+  
+  /**
+   * Trap wait action is invoked if a move path cannot be moved because
+   * an enemy unit stays in the way.
+   *
+   * @param {Number} uid unit id
+   * 
+   * @methodOf controller.actions
+   * @name trapWait
+   */
+  action: function( uid ){
+    controller.actions.wait( uid );
   }
 
 });
