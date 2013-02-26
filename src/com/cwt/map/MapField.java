@@ -53,6 +53,9 @@ public class MapField extends MovingMenu implements ScreenSkeleton{
         resetMap();
 	}
 	
+	//TODO: Use model.map to load the map and get all the data
+	//TODO: Also make sure to finish off terrain connections and unit animations
+	//TODO: Finish up the CO images, and start to update the Graphics todo list
 	public void loadMapFromEngine(){
 		EngineBridge.setModule("CONTROLLER");	
 		while(!EngineBridge.callFunctionExists("isBufferEmpty"))

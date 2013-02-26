@@ -2,7 +2,7 @@
  
 <FORUM HOSTING - LEAD>
 Xenesis
-  
+ 
 <MAIN CODERS>
 JakeSamiRulz
 Tapsi
@@ -10,17 +10,17 @@ CesarRamsan
  
 <DESIGN MANAGER>
 MaraSargon
-
+ 
 <DESIGN DEVELOPERS - WIKI>
 MarinePower
 I Blame Video Games
 Lord Spyro
-
+ 
 <DESIGN DEVELOPERS - CW BETA 27>
 CoconutTank
 Captain Vimes
 Veggie
-
+ 
 <BACKGROUND GRAPHICS>
 Kosheh
 Destin Artea
@@ -43,7 +43,7 @@ Gipface
 Walker
 Simon
 theether
-
+ 
 <FORUM MODDERS>
 DiamondPhoenix
 Narts
