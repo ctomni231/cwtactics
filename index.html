@@ -6,19 +6,20 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     <meta name="description" content="Cwtactics : An effort to create an open engine to emulate the gaming experience of the Nintendo Advance Wars series." />
 
-    <script src='content/compatibility.js' type='text/javascript'></script>
-    <script src='content/news.js' type='text/javascript'></script>
-    <script src='content/milestones.js' type='text/javascript'></script>
-    <script src='content/navBar.js' type='text/javascript'></script>
-
-    <script src='scripts/desc.js' type='text/javascript'></script>
-    <script src='scripts/stuff.js' type='text/javascript'></script>
-
+    <!-- DEPENDENCIES -->
     <script src='libs/jquery.js' type='text/javascript'></script>
     <script src='libs/pure.js' type='text/javascript'></script>
-
-    <script src='libs/date.js' type='text/javascript'></script>
-    <script src='libs/prettyTime.js' type='text/javascript'></script>
+    <script src='libs/moment.js' type='text/javascript'></script>
+    
+    <!-- PROG AND TEMPLATE DESC -->
+    <script src='scripts/stuff.js' type='text/javascript'></script>
+    <script src='scripts/desc.js' type='text/javascript'></script>
+    
+    <!-- DATA -->
+    <script src='content/milestones.js' type='text/javascript'></script>
+    <script src='content/navBar.js' type='text/javascript'></script>
+    <script src='content/legals.js' type='text/javascript'></script>
+    <script src='content/links.js' type='text/javascript'></script>
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/site.css">
@@ -28,110 +29,155 @@
 
   <body>
 
-    <!-- HEADER -->
     <div id="header_wrap" class="outer">
-        <header class="inner">
-          <h1 id="project_title">Custom Wars Tactics</h1>
-          <h2 id="project_tagline">An effort to create an open engine to emulate the gaming experience of the Nintendo Advance Wars series.</h2>
 
-        <ul id="navBar" class="linkBar">
-          <li><a target="_blank"></a></li>
-        </ul>
-        
-        </header>
+      <!-- ######################################################################## -->
+      
+      <header class="inner">
+         
+          <h1 id="project_title">Custom Wars Tactics</h1>
+          <div>
+            <ul id="navBar" class="navigationBar">
+              <li><a target="_blank" onclick="return PAGE_PROG.openSection( this, this.attributes.section.value );"></a></li>
+            </ul>
+          </div>
+         
+      </header> 
+      
+      <!-- ######################################################################## -->
     </div>
 
-    <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
-
-      <section id="lastestInfo" class="inner">
-        <div class="headerText" >Latest News</div>
-        <table class="newsTable latestNews">
+      
+      <!-- ######################################################################## -->
+      
+      <section id="sectionMain"  style="display:none;"  class="inner">
+        
+        <table class="fourColTable">
+                  
           <tr>
-            <td class="dateDiff date"></td>
-            <td class="content"></td>
+            
+            <td class="mainColLeft">      
+              <script language="JavaScript" src="http://feed2js.org//feed2js.php?src=http%3A%2F%2Fcwtactics.blogspot.de%2F%2Ffeeds%2Fposts%2Fdefault&num=5&desc=100&date=y&targ=y&utf=y&css=bloggerPosts"  charset="UTF-8" type="text/javascript"></script>
+            </td>  
+            
+            <td class="mainColRight">
+              <div>
+                <table>
+                  <tr>
+                    <td>
+                      <img class="cwtImage" src="images/main.png">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <p class="buttonLink middleSide">
+                        <a id="playLatestButton" class="left" href="" target="_blank">Play Online</a>
+                        <a class="right disabledButton" href="#" >Download Jslix</a>
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              
+            </td>
           </tr>
-        </table>
-      </section>
-
-      <section id="compatibilityInfo" class="inner">
-        <div class="headerText" >Compatibility List
-          <span class="headerSupport">(Milestone 2.6)</span></div>
-
-        <table id="compa" class="newsTable compatilies">
-          <tr>
-            <td class="name withStatusIcon"></td>
-            <td  class="lvWin withStatusIcon"></td>
-            <td  class="lvLin withStatusIcon"></td>
-            <td  class="lvDrd withStatusIcon"></td>
-            <td  class="lvMac withStatusIcon"></td>
-            <td  class="lvIOS withStatusIcon"></td>
-            <td class="notes"></td>
-          </tr>
-        </table>
+         </table>
+                
       </section>
       
-      <section id="milestoneBox" class="inner">
-        <div class="headerText" >Releases and Plans</div>
-
+      <!-- ######################################################################## -->
+      
+      <section id="sectionManual" style="display:none;" class="inner">
+        <p class="centerP">
+          I'm under construction.. visit me later. ;)
+        </p>
+      </section>
+      
+      <!-- ######################################################################## -->
+      
+      <section id="sectionRelease" style="display:none;" class="inner">
+        
         <div class="infoBox">
           <div class="main infoBoxHeader">
-          <span class="role">
-            <span class="infoBoxSubHeaderTop"></span></br>
-            <span class="infoBoxSubHeaderBottom"></span>
-          </span></div>
-
-          <p class="firstText"></p>
+            <span class="role">
+              <span class="infoBoxSubHeaderTop"></span></br>
+              <span class="infoBoxSubHeaderBottom"></span>
+            </span>
+          </div>
+        
           <p class="imgBox"></p>
-          <p class="lastText"></p>
-
-          <p class="rightBox playItBox" >
-            <a class="a_demo_three" href="" target="_blank">Play It</a>
+        
+          <p class="buttonLink leftSide">
+            <a class="play" href="" target="_blank">Play It</a>
+          </p>
+        
+          <p class="text"></p>
+        
+          <p class="changelogBox">
+            <span>Changelog:</span>
+            <ul>
+              <li class="changelog"></li>
+            </ul>
           </p>
         </div>
+        
       </section>
+    
+      <!-- ######################################################################## -->
+    
+      <section id="sectionLinks" style="display:none;" class="inner">
+        
+          <ul>
+            <li>
+              <p class="buttonLink middleSide">
+                <a href="" target="_blank"></a>
+              </p>
+            </li>
+          </ul>
+        
+      </section>
+      
+      <!-- ######################################################################## -->
+    
+      <section id="sectionLegal" style="display:none;" class="inner">
+        
+        <div class="infoBox">
+          
+          <div class="main infoBoxHeader">
+            <span class="role">
+              <span class="infoBoxSubHeaderTop"></span></br>
+              <span class="infoBoxSubHeaderBottom"></span>
+            </span>
+          </div>
+        
+          <p class="text"></p>
+          
+          <p class="buttonLink rightSide">
+            <a href="" target="_blank">Read More</a>
+          </p>
+        
+        </div>
+
+      </section>
+      
+      <!-- ######################################################################## -->
+    
     </div>
     
-    <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
+      
+      <!-- ######################################################################## -->
+      
       <footer class="inner">
-        <p class="copyright">Custom Wars Tactics is developed by <a href="https://github.com/ctomni231" target="_blank" >ctomni231</a> and <a href="https://github.com/Tapsi" target="_blank">BlackCat</a></p>
+        <p class="copyright">Custom Wars Tactics is developed by <a id="mailToJSR" href="mailto:ctomni231@gmail.com">ctomni231</a> and <a href="mailto:blackcat.myako@gmail.com">BlackCat</a></p>
         <p id="disclamer" class="copyright">
           <strong>DISCLAMER:</strong> This game engine is in no way affiliated with Nintendo or Intelligent Systems.
         </p>
       </footer>
+      
+      <!-- ######################################################################## -->
+      
     </div>
   </body>
-  
-  <script>
-    (function(){
-
-      // RENDER TEMPLATES
-      $("#lastestInfo").render(PAGE_NEWS, PAGE_NEWS_DESC);
-      $("#compatibilityInfo").render(PAGE_COMPA, PAGE_COMPA_DESC);
-      $("#milestoneBox").render(PAGE_MILESTONES, PAGE_MILESTONES_DESC);
-      $("#navBar").render(PAGE_NAVBAR, PAGE_NAVBAR_DESC);
-
-      PAGE_CONVERT_TAG_CLASSES();
-    })();
-  </script>
 </html>
-
-<!--
-    CREDITS:
-
-    button design: http://www.cssbutton.me/robdozier
--->
-
-<!--
-    LICENSE ICONS:
-
-    http://www.fatcow.com/free-icons
-    http://creativecommons.org/licenses/by/3.0/us/
-
-    Chrome Icon
-    http://alexiy777.deviantart.com/art/Chrome-Tango-Icon-Actual-233455899
-
-    Vista Icon
-    Copyright by and Trademark of Microsoft
--->

@@ -1,27 +1,63 @@
-var PAGE_NEWS_DESC = {
-  "table tr": {
-    "newsEntry <- news": {
-      "td.date": "#{newsEntry.date}",
-      "td.content": "#{newsEntry.content}"
+/* ***************************************************************** */
+
+PAGE_DESC.linkSection = {
+  
+  "li":{
+    "entry <- links":{
+      
+      "a":"#{entry.name}",
+      
+      "a@href":"#{entry.link}"
     }
   }
+  
 };
 
-var PAGE_COMPA_DESC = {
-  "table tr": {
-    "entry <- compabilities": {
-      "td.name": "#{entry.name}",
-      "td.lvWin": "#{entry.levelWin}",
-      "td.lvLin": "#{entry.levelLin}",
-      "td.lvMac": "#{entry.levelMac}",
-      "td.lvDrd": "#{entry.levelDrd}",
-      "td.lvIOS": "#{entry.levelIOS}",
-      "td.notes": "#{entry.notes}"
+/* ***************************************************************** */
+
+PAGE_DESC.legalSection = {
+  
+  "div.infoBox":{
+    "entry <- legals": {
+
+      "div.infoBoxHeader": function(args) {
+        var item = args.item;
+        return [
+          item.header,
+          "<span>",
+          item.version,
+          "</span><span class='role'>",
+          item.subHeaderT,
+          "<br/>",
+          item.subHeaderB,
+          "</span>"
+        ].join("");
+      },
+      
+      "p.text":{
+        "part <- entry.text": {
+          ".":"#{part}"
+        }
+      },
+            
+      "a@href": "#{entry.link}",
+      "a@style": function( args ){
+        var link = args.item.link;
+        if( typeof link !== 'undefined' && link !== null && link.length > 0 ){
+          return "";
+        }
+        return "display:none";
+      }
+      
     }
   }
+  
 };
 
-var PAGE_MILESTONES_DESC = {
+/* ***************************************************************** */
+
+PAGE_DESC.milestoneSection = {
+  
   "div.infoBox":{
     "entry <- milestones": {
 
@@ -38,24 +74,27 @@ var PAGE_MILESTONES_DESC = {
           "</span>"
         ].join("");
       },
-
-      "p.firstText": "#{entry.pre}",
-
+      
       "p.imgBox": function(args) {
         if( typeof args.item.img !== 'undefined' && args.item.img !== null ){
           return "<img src='"+args.item.img+"'>";
         }
         else return "";
       },
-
-      "p.lastText": "#{entry.post}",
-
-      "a@href": "#{entry.link}"
-      ,
+    
+      "p.text":{
+        "part <- entry.text": {
+          ".":"#{part}"
+        }
+      },
       
-      "a": "#{entry.linkCaption}"
-      ,
+      "li.changelog":{
+        "log <- entry.changelog": {
+          ".":"#{log}"
+        }
+      },
       
+      "a@href": "#{entry.link}",
       "a@style": function( args ){
         var link = args.item.link;
         if( typeof link !== 'undefined' && link !== null && link.length > 0 ){
@@ -63,16 +102,41 @@ var PAGE_MILESTONES_DESC = {
         }
         return "display:none";
       }
+      
     }
   }
+  
 };
 
-var PAGE_NAVBAR_DESC = {
+/* ***************************************************************** */
+
+PAGE_DESC.navBar = {
   "li":{
-    "entry <- links":{
-      "a":"entry.name",
-      "a@id":"entry.id",
-      "a@href":"entry.link"
+    "entry <- navBar":{
+      
+      "a":"#{entry.name}",
+      
+      "a@section":"#{entry.section}",
+      
+      "a@href":function( args ){
+        var target = args.item.section;
+        var link = args.item.link;
+        
+        if( link === true ){
+          return target;
+        }
+        return "";
+      },
+      
+      "a@target":function( args ){
+        var target = args.item.section;
+        var link = args.item.link;
+        
+        if( link === true && target.substr(0,6) !== "mailto" ){
+          return "_blank";
+        }
+        return "_self";
+      }
     }
   }
 };
