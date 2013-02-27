@@ -1,3 +1,6 @@
+var CLIENT_DEBUG = true;
+var DEBUG 		 = true;
+
 /** @constant */
 var CWT_ACTIONS_BUFFER_SIZE = 200;
 

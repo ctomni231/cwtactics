@@ -1,9 +1,4 @@
 /**
- * Included for builds to turn off debugging and type checks.
- * Uglify will use it to drop these statements.
- */
-const CLIENT_DEBUG = false;
-/**
 controller._soundContext = null;
 window.addEventListener('load', function(){
   try {
@@ -71,8 +66,8 @@ createjs.Sound.addEventListener("loadComplete", function(){
 });
 
 createjs.Sound.registerManifest([
-  { src:"sound/ok.wav", id:"ACTION" }, 
-  { src:"sound/cancel.wav",  id:"CANCEL" }
+  { src:"../../../sound/ok.wav", id:"ACTION" }, 
+  { src:"../../../sound/cancel.wav",  id:"CANCEL" }
 ]);
 
 /**
@@ -3662,7 +3657,6 @@ controller.engineAction({
   controller.pushSharedAction("LCFG");
   controller.pushSharedAction("STRE");
 })();
-
 
 
 

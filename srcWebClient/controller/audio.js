@@ -66,8 +66,8 @@ createjs.Sound.addEventListener("loadComplete", function(){
 });
 
 createjs.Sound.registerManifest([
-  { src:"sound/ok.wav", id:"ACTION" }, 
-  { src:"sound/cancel.wav",  id:"CANCEL" }
+  { src:"../../../sound/ok.wav", id:"ACTION" }, 
+  { src:"../../../sound/cancel.wav",  id:"CANCEL" }
 ]);
 
 /**

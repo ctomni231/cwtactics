@@ -1,8 +1,6 @@
-/**
- * Included for builds to turn off debugging and type checks.
- * Uglify will use it to drop these statements.
- */
-var DEBUG = false;
+var CLIENT_DEBUG = true;
+var DEBUG 		 = true;
+
 /** @constant */
 var CWT_ACTIONS_BUFFER_SIZE = 200;
 
