@@ -6,6 +6,8 @@ PAGE_DATA.links = [
   { name:"Issues", link:"http://github.com/ctomni231/cwtactics/issues" },
   { name:"Wiki", link:"http://github.com/ctomni231/cwtactics/wiki" },
   
+  { name:"Youtube Playlist", link:"http://www.youtube.com/watch?v=GfRJiSylfPc&list=PLIJ4AW02hN2FcMLF8ka-puq1mza2VuOJb" },
+  
   { name:"Blog", link:"http://cwtactics.blogspot.de/" }
   
 ];
