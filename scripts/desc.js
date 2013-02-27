@@ -57,7 +57,6 @@ PAGE_DESC.legalSection = {
 /* ***************************************************************** */
 
 PAGE_DESC.milestoneSection = {
-  
   "div.infoBox":{
     "entry <- milestones": {
 
