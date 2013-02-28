@@ -1,4 +1,40 @@
 PAGE_DATA.milestones = [
+
+  {
+    header: "Milestone",
+    version: "2.65",
+    subHeaderT: "Bugfixes",
+    subHeaderB: "and more",
+    
+    img: "images/milestones/m2.65.png",
+    
+    text:[
+      ""
+    ],
+    
+    link: "games/milestones/m2.65/starter.html",
+    
+    changelog:[
+      "Fix: you can spend money to yourself",
+      "Fix: done action wasn't added to the menu during a muiltistep action",
+      "Fix: trapping crashes the engine",
+      "Fix: engine crash after capturing enemy hq",
+      "Fix: no units left condition",
+      "Fix: end turn action condition don't shown on own hq",
+      "Fix: you can get information about objects that are in fog",
+      "Fix: getElementsByTagName workaround for Internet Explorer 9",
+      "Enhancement: joining strategy makes a correct hp point addition",
+      "Enhancement: if a unit moves then it cannot attack with indirect weapons",
+      "Enhancement: show send money action if you click on somebodies hq",
+      "Enhancement: unit type names are shown in the unload menu instead of their identical numbers",
+      "Enhancement: player names are shown in the give unit/property menu instead of their identical numbers",
+      "Enhancement: silo regeneration in turns or days",
+      "Enhancement: destroy animation on units if a player lost its hq",
+      "Enhancement: silo cursor"
+    ]
+  },
+  
+  // --------------------------------------------------------------------------------------------------------
   
   {
     header: "Milestone",
