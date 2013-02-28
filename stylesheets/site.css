@@ -318,7 +318,7 @@ display:none;
 /* ************************ FEB/MAR 2013 ************************ */
 
 #header_wrap{
-  height: 55px;
+  height: 49px;
 }
 
 #main_content_wrap{
@@ -329,7 +329,7 @@ display:none;
   font-size: 22px;
   float: left;
   position: absolute;
-  top: 13px;
+  top: 1px;
 }
 
 
