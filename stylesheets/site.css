@@ -494,6 +494,12 @@ display:none;
   left: 370px;
 }
 
+.headerImg {
+  border: 0px solid #ebebeb;
+  box-shadow: 0 0 0px #ebebeb;
+  -webkit-box-shadow: 0 0 0px #ebebeb;
+}
+
 #sectionMain .buttonLink a {
   width: 100px;
 }
