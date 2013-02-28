@@ -329,7 +329,7 @@ display:none;
   font-size: 22px;
   float: left;
   position: absolute;
-  top: 1px;
+  top: -3px;
 }
 
 
@@ -337,7 +337,7 @@ display:none;
 
 .navigationBar {
   float: right;
-  margin-top: 3px;
+  margin-top: 0px;
 }
 
 .navigationBar li {
