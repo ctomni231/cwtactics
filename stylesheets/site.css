@@ -329,7 +329,7 @@ display:none;
   font-size: 22px;
   float: left;
   position: absolute;
-  top: 16px;
+  top: 13px;
 }
 
 
@@ -498,6 +498,9 @@ display:none;
   border: 0px solid #ebebeb;
   box-shadow: 0 0 0px #ebebeb;
   -webkit-box-shadow: 0 0 0px #ebebeb;
+  -ms-box-shadow: 0 0 0px #ebebeb;
+  -o-box-shadow: 0 0 0px #ebebeb;
+  -moz-box-shadow: 0 0 0px #ebebeb;
 }
 
 #sectionMain .buttonLink a {
