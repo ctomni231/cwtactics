@@ -2,6 +2,43 @@ PAGE_DATA.milestones = [
 
   {
     header: "Milestone",
+    version: "2.68",
+    subHeaderT: "Weather and",
+    subHeaderB: "more Fixes",
+    
+    img: "images/milestones/m2.68.png",
+    
+    text:[
+      ""
+    ],
+    
+    link: "games/milestones/m2.68/starter.html",
+    
+    changelog:[
+      "Feature: implemented weather (functional) with affects on vision and move costs",
+      "Feature: game rule that enables/disables healing of units on properties",
+      "Feature: game rule that enables/disables healing of units on allied properties",
+      "Feature: game rule that enables/disables supplying of units on properties",
+      "Feature: game rule that enables/disables supplying of units on allied properties",
+      "Fix: auto refill resources by supply units rule is now enabled by default",
+      "Fix: attacks with ammo using weapons decreases the units ammo depot",
+      "Fix: damage was not scaled by HP lost",
+      "Fix: move path won't be cleaned if you go back from a menu state",
+      "Fix: terrain stars was not recognized in attack damage",
+      "Fix: defensers do not counter attack if they survive the attack",
+      "Fix: html elements are no longer in selection if you click hold and shift you cursor",
+      "Enhancement: faster transition to zoom in/out and map shifting",
+      "Enhancement: added additional zoom steps (0.8x and 0.7x)",
+      "Enhancement: touch devices can control the menu index by dragging up and down",
+      "Enhancement: the direction of map shift uses Apples idea if shift in iOS devices (e.g. slide up to move down)",
+      "Enhancement: engine uses less for better CSS"
+    ]
+  },
+  
+  // --------------------------------------------------------------------------------------------------------
+  
+  {
+    header: "Milestone",
     version: "2.65",
     subHeaderT: "Bugfixes",
     subHeaderB: "and more",
