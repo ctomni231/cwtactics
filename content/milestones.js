@@ -1,5 +1,31 @@
 PAGE_DATA.milestones = [
-
+  
+  {
+    header: "Milestone",
+    version: "2.69",
+    subHeaderT: "Hot Fix",
+    subHeaderB: "",
+    
+    img: "images/milestones/m2.69.png",
+    
+    text:[
+      ""
+    ],
+    
+    link: "games/milestones/m2.69/starter.html",
+    
+    changelog:[
+      "Fix: you cannot transfer units with loaded units",
+      "Fix: the game crashes while searching a counter weapon",
+      "Feature: attacking and defending gives power to the owners power depot",
+      "Feature: you can hide and unhide units with the canHide ability",
+      "Feature: re-enabled mouse wheel zooming",
+      "Enhancement: on desktop a click outside of the menu invokes a cancel ( on touch devices an action )"
+    ]
+  },
+  
+  // --------------------------------------------------------------------------------------------------------
+  
   {
     header: "Milestone",
     version: "2.68",

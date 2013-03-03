@@ -390,7 +390,7 @@ display:none;
 }
 
 .rss-date {
-  font-weight: normal;
+  font-weight: bold;
 }
 
 .rss-box-bloggerPosts .item-link {
@@ -471,8 +471,8 @@ display:none;
 }
 
 .cwtImage{
-  width: 480px;
-  height: 320px;
+  width: 400px;
+  height: 300px;
   border-style: solid;
   border-width: 1px;
   
