@@ -35,7 +35,7 @@ view.registerCommandHook({
     this.x = x;
     this.y = y;
     var chk = this._check;
-
+    
     chk( x, y-2 );
 
     chk( x-1, y-1 );

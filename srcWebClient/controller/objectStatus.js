@@ -9,7 +9,8 @@ controller.statusMap_ = util.list( CWT_MAX_UNITS_PER_PLAYER*CWT_MAX_PLAYER, func
     LOW_AMMO:false,
     LOW_FUEL:false,
     HAS_LOADS:false,
-    CAPTURES: false
+    CAPTURES: false,
+    TURN_OWNER_VISIBLE: false
   };
 });
 
@@ -22,12 +23,24 @@ controller.getUnitStatusForUnit = function( unit ){
   return controller.statusMap_[id];
 };
 
+controller.inVision_ = function( x,y, pid,tid ){
+  if( !model.isValidPosition(x,y) ) return false;
+  
+  var unit = model.unitPosMap[x][y];
+  return ( 
+    unit !== null &&
+    ( unit.owner === pid || model.players[ unit.owner ].team == tid )
+  );
+};
+
 /**
  * 
  * @param {type} uid
  */
 controller.updateUnitStatus = function( uid ){
   var unit = model.units[uid];
+  var x = unit.x;
+  var y = unit.y;
   var unitStatus = controller.statusMap_[uid];
   var uSheet = model.sheets.unitSheets[ unit.type ];
   
@@ -64,7 +77,7 @@ controller.updateUnitStatus = function( uid ){
     if( !model.hasLoadedIds( uid ) ){
          unitStatus.HAS_LOADS = false;
     }
-    else unitStatus.HAS_LOADS = false;
+    else unitStatus.HAS_LOADS = true;
   }
   
   if( unit.x !== -1 ){
@@ -73,5 +86,18 @@ controller.updateUnitStatus = function( uid ){
       unitStatus.CAPTURES = true;
     }
     else unitStatus.CAPTURES = false;
+  }
+  
+  unitStatus.TURN_OWNER_VISIBLE = false;
+  var tpid = model.turnOwner;
+  var ttid = model.players[tpid].team;
+  var inVis = controller.inVision_;
+  
+  if( inVis( x-1,y, tpid,ttid ) || 
+      inVis( x,y-1, tpid,ttid ) || 
+      inVis( x,y+1, tpid,ttid ) || 
+      inVis( x+1,y, tpid,ttid ) ){
+    
+    unitStatus.TURN_OWNER_VISIBLE = true;
   }
 };

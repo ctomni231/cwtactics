@@ -12,15 +12,15 @@ controller.engineAction({
    * @methodOf controller.actions
    * @name siloRegeneration
    */
-  action: function( pid ){
+  action: function( pid, turns ){
     
     var maxDays = model.rules.siloRegeneration;
     if( maxDays === -1 ) return;
     
     if( model.regeneratingSilos.hasOwnProperty(pid) ){
-      model.regeneratingSilos[pid]++;
+      model.regeneratingSilos[pid] += turns;
     }
-    else model.regeneratingSilos[pid] = 1;
+    else model.regeneratingSilos[pid] = turns;
     
     if( model.regeneratingSilos[pid] >= maxDays ){
       delete model.regeneratingSilos[pid];

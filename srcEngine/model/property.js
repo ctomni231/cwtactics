@@ -29,7 +29,7 @@ model.propertyPosMap = util.matrix(
  */
 model.tileIsProperty = function( x,y ){
   var prop = model.propertyPosMap[x][y];
-  return prop !== undefined;
+  return prop !== null;
 };
 
 /**

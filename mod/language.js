@@ -35,7 +35,9 @@ CWT_MOD_DEFAULT.locale ={
     "SPPL":"Einheiten Versorgen",
     "ATUN":"Angreifen",
     "BDUN":"Einheit produzieren",
-
+    "HIUN":"Einheit tarnen",
+    "UHUN":"Einheit enttarnen",
+    
     "CTPR.desc":"Besetzt das angegebene Geb&auml;ude. Wenn die Einheit die Eroberungspunkte dess Geb&auml;udes auf 0 senkt geht der Besitz auf den Eroberer &uuml;ber.",
     "UNUN.desc":"Die Einheit wird in den Transporter ausgeladen. Nach dem Ausladen k&ouml;nnen beide Einheitein keine Aktionen innerhalb des aktiven Zuges ausf&uuml;hren.",
     "LODU.desc":"Die Einheit wird in den Transporter eingeladen.",
@@ -61,7 +63,11 @@ CWT_MOD_DEFAULT.locale ={
     "health":"Leben",
     "ammo":"Munition",
     "fuel":"Treibstoff",
+    "weatherChange":"Wetter ändert sich zu",
     
+    "SUN":  "Sonnenschein",
+    "RAIN": "Regen",
+    "SNOW": "Schnee",
     
     "gameHasEnded":"Das Spiel ist vorbei, es existiert nur noch ein Team"
   },
@@ -101,6 +107,8 @@ CWT_MOD_DEFAULT.locale ={
     "SPPL":"Supply",
     "ATUN":"Attack",
     "BDUN":"Build Unit",
+    "HIUN":"Hide Unit",
+    "UHUN":"Unhide Unit",
     
     "yes":"Yes",
     "no":"No",
@@ -117,6 +125,11 @@ CWT_MOD_DEFAULT.locale ={
     "health":"Health",
     "ammo":"Ammo",
     "fuel":"Fuel",
+    "weatherChange":"Weather changes to",
+    
+    "SUN":  "Sun",
+    "RAIN": "Rain",
+    "SNOW": "Snow",
     
     "gameHasEnded":"The game has ended because only one team is left"
   }

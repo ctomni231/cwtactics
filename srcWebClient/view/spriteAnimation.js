@@ -65,7 +65,7 @@ view.registerSpriteAnimator( "SELECTION", 7, 150, function(){
   }
 });
 
-view.registerSpriteAnimator( "STATUS", 16, 375, function(){});
+view.registerSpriteAnimator( "STATUS", 20, 375, function(){});
 
 view.registerSpriteAnimator( "UNIT", 3, 250, function(){
   var x  = 0;

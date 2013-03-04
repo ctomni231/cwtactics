@@ -53,6 +53,17 @@ CWT_MOD_DEFAULT.graphic = {
   ],
 
   misc:[
+    
+    ["SILO_N","wall/AWDS_SILO~WNWW.png"],
+    ["SILO_S","wall/AWDS_SILO~NWWW.png"],
+    ["SILO_W","wall/AWDS_SILO~WWWN.png"],
+    ["SILO_E","wall/AWDS_SILO~WWNW.png"],
+    ["SILO_SW","wall/AWDS_SILO~NWWN.png"],
+    ["SILO_SE","wall/AWDS_SILO~NWNW.png"],
+    ["SILO_NW","wall/AWDS_SILO~WNWN.png"],
+    ["SILO_NE","wall/AWDS_SILO~WNNW.png"],
+    ["SILO_ALL","wall/AWDS_SILO~WWWW.png"],
+    
     ["HP_0","symbol/0.png"],
     ["HP_1","symbol/1.png"],
     ["HP_2","symbol/2.png"],
@@ -70,6 +81,7 @@ CWT_MOD_DEFAULT.graphic = {
     ["SYM_LOAD","symbol/load.png"],
     ["SYM_CAPTURE","symbol/capture.png"],
     ["SYM_UNKNOWN","symbol/unknown.png"],
+    ["SYM_HIDDEN","symbol/detect.png"],
     ["SYM_DEFENSE","symbol/yellowstar.png"],
 
     ["SYM_RANK_1","symbol/guard.png"],

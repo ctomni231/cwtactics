@@ -35,7 +35,8 @@ model.fillMoveMap = function( data ){
   var range  = type.moveRange;
   var x = data.sourceX;
   var y = data.sourceY;
-
+  var wth = model.weather.ID;
+  
   // DECREASE RANGE IF NOT ENOUGH FUEL IS AVAILABLE
   if( unit.fuel < range ) range = unit.fuel;
 
@@ -94,13 +95,14 @@ model.fillMoveMap = function( data ){
       var tx = checker[n  ];
       var ty = checker[n+1];
 
-      var cost = model.moveCosts( mType, model.map[ tx ][ ty ] );
+      var cost = model.moveCosts( mType, model.map[ tx ][ ty ], wth );
       if( cost !== 0 ){
 
         var cunit = model.unitPosMap[tx][ty];
         if( cunit !== null &&
-          model.fogData[tx][ty] > 0 &&
-          model.players[cunit.owner].team !== player.team ){
+            model.fogData[tx][ty] > 0 &&
+            !cunit.hidden &&
+            model.players[cunit.owner].team !== player.team ){
           continue;
         }
 
@@ -129,7 +131,7 @@ model.fillMoveMap = function( data ){
   for( var x=0,xe=model.mapWidth; x<xe; x++ ){
     for( var y=0,ye=model.mapHeight; y<ye; y++ ){
       if( data.getSelectionValueAt(x,y) !== -1 ){
-        var cost = model.moveCosts( mType, model.map[x][y] );
+        var cost = model.moveCosts( mType, model.map[x][y], wth );
         data.setSelectionValueAt( x, y, cost );
       }
     }

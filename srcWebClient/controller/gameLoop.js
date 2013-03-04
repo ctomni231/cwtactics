@@ -42,22 +42,6 @@ controller.gameLoop = function( delta ){
           if( data !== null ){
 
             var key = data[ data.length-1 ];
-
-            /*
-             MOVE ANIMATED ?
-            var move = actionData.getMovePath();
-            if( move !== null && move.length > 0 ){
-
-              var moveAnimCmd = view.getCommandHook("move");
-              controller.currentAnimatedKey = moveAnimCmd;
-              moveAnimCmd.prepare( actionData );
-
-              if( CLIENT_DEBUG ){
-                util.logInfo( "preparing command animation for",moveAnimCmd.key );
-              }
-            }
-            */
-
             view.invokeCommandListener(key,data);
 
             // IS ANIMATED ?
@@ -71,18 +55,6 @@ controller.gameLoop = function( delta ){
                 util.log( "preparing command animation for", key );
               }
             }
-
-            /*
-             SWAP IF NO MOVE ANIMATION IS AVAILABLE
-            if( controller.currentAnimatedKey === null &&
-              controller.currentAnimatedKeyNext !== null ){
-
-              controller.currentAnimatedKey = controller.currentAnimatedKeyNext;
-              controller.currentAnimatedKeyNext = null;
-            }
-            
-            controller.releaseActionDataObject( actionData );
-            */
           }
         }
 
@@ -100,6 +72,32 @@ controller.gameLoop = function( delta ){
   // 3. RENDER SCREEN
   if( !controller.noRendering && view.drawScreenChanges > 0 ){
     view.renderMap( controller.screenScale );
+  }
+  
+  // UPDATE CURSOR
+  if( controller.stateMachine.state === "ACTION_SELECT_TILE" ){
+    
+    var r = view.selectionRange;
+    var x = controller.mapCursorX;
+    var y = controller.mapCursorY;
+    var lX;
+    var hX;
+    var lY = y-r;
+    var hY = y+r;
+    if( lY < 0 ) lY = 0;
+    if( hY >= model.mapHeight ) hY = model.mapHeight-1;
+    for( ; lY<=hY; lY++ ){
+  
+      var disY = Math.abs( lY-y );
+      lX = x-r+disY;
+      hX = x+r-disY;
+      if( lX < 0 ) lX = 0;
+      if( hX >= model.mapWidth ) hX = model.mapWidth-1;
+      for( ; lX<=hX; lX++ ){
+  
+        view.markForRedraw(lX,lY);
+      }
+    }
   }
 
   if( !controller.noRendering && !inMove ){

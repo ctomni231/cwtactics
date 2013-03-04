@@ -1,10 +1,6 @@
  controller.stateMachine.structure.MOVEPATH_SELECTION = {
   
-    onenter: function( ev, x,y ){
-      this.data.setTarget(x, y);
-      this.data.cleanMovepath();
-      model.fillMoveMap( this.data );
-    },
+    onenter: function( ev, x,y ){},
   
     action: function( ev,x,y ){
       if( this.data.getSelectionValueAt(x,y) < 0){

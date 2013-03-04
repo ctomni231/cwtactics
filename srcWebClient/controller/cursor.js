@@ -186,8 +186,12 @@ controller.setCursorPosition = function( x,y,relativeToScreen ){
   controller.mapCursorX = x;
   controller.mapCursorY = y;
   
-  var scw = parseInt( parseInt( window.innerWidth/16,10 ) / controller.screenScale ,10 );
-  var sch = parseInt( parseInt( window.innerHeight/16,10 ) / controller.screenScale ,10 );
+  var scale = controller.screenScale;  
+  if( scale === 0 ) scale = 0.8;
+  else if( scale === -1 ) scale = 0.7;
+  
+  var scw = parseInt( parseInt( window.innerWidth/16,10 ) / scale ,10 );
+  var sch = parseInt( parseInt( window.innerHeight/16,10 ) / scale ,10 );
 
   var moveCode = -1;
   if( x-controller.screenX <= 1 )          moveCode = model.MOVE_CODE_LEFT;

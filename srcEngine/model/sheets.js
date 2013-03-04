@@ -125,7 +125,8 @@ model.sheets.typeSheetValidators = {
   weatherValidator: {
     type: 'object',
     properties:{
-      ID: { type:'string', except:[], required:true }
+      ID: { type:'string', except:[], required:true },
+      visionChange: { type:'integer' }
     }
   },
 
@@ -136,8 +137,12 @@ model.sheets.typeSheetValidators = {
       ID: { type:'string', except:[], required:true },
       costs: {
         type: "object",
-        patternProperties: {
-          '[.]*': { type:"integer", minimum:0 } }
+        properties:{
+          type: "object",
+          patternProperties: {
+            '[.]*': { type:"integer", minimum:0 } 
+          }
+        }
       }
     }
   }
@@ -311,13 +316,12 @@ model.getBaseDamage = function( weapon, uType ){
  * @param movetype move type object
  * @param {String} tiletype tile type
  */
-model.moveCosts = function( movetype, tiletype ){
+model.moveCosts = function( movetype, tiletype, wth ){
   var c;
+  var set = movetype.costs[ wth ];
 
-  // search id
-  c = movetype.costs[ tiletype ];
-
-  if( c === undefined ) c = movetype.costs["*"];
+  c = set[ tiletype ];
+  if( c === undefined ) c = set["*"];
 
   return c;
 };

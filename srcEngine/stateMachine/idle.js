@@ -15,6 +15,7 @@ controller.stateMachine.structure.IDLE = {
     this.data.setSource(-1,-1);
     this.data.setSelectionTarget(-1,-1);
     this.history.splice(0);
+    this.data.inMultiStep = false;
   },
 
   action: function(ev, x, y){
@@ -23,6 +24,9 @@ controller.stateMachine.structure.IDLE = {
     mem.setSource(x, y);
 
     if ( mem.sourceUnitId !== CWT_INACTIVE_ID && mem.sourceUnit.owner === model.turnOwner && model.canAct(mem.sourceUnitId)){
+      this.data.setTarget(x, y);
+      this.data.cleanMovepath();
+      model.fillMoveMap( this.data );
       return "MOVEPATH_SELECTION";
     } 
     else{

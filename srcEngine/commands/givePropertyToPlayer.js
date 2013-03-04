@@ -14,7 +14,7 @@ controller.userAction({
   condition: function( mem ){
     var selected = mem.sourceProperty;
     if( selected === null ) return false;
-    if( selected.type === "HQ" ) return false;
+    if( selected.type === "HQTR" ) return false;
     return true;
   },
 

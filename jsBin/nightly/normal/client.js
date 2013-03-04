@@ -264,8 +264,12 @@ controller.setCursorPosition = function( x,y,relativeToScreen ){
   controller.mapCursorX = x;
   controller.mapCursorY = y;
   
-  var scw = parseInt( parseInt( window.innerWidth/16,10 ) / controller.screenScale ,10 );
-  var sch = parseInt( parseInt( window.innerHeight/16,10 ) / controller.screenScale ,10 );
+  var scale = controller.screenScale;  
+  if( scale === 0 ) scale = 0.8;
+  else if( scale === -1 ) scale = 0.7;
+  
+  var scw = parseInt( parseInt( window.innerWidth/16,10 ) / scale ,10 );
+  var sch = parseInt( parseInt( window.innerHeight/16,10 ) / scale ,10 );
 
   var moveCode = -1;
   if( x-controller.screenX <= 1 )          moveCode = model.MOVE_CODE_LEFT;
@@ -333,22 +337,6 @@ controller.gameLoop = function( delta ){
           if( data !== null ){
 
             var key = data[ data.length-1 ];
-
-            /*
-             MOVE ANIMATED ?
-            var move = actionData.getMovePath();
-            if( move !== null && move.length > 0 ){
-
-              var moveAnimCmd = view.getCommandHook("move");
-              controller.currentAnimatedKey = moveAnimCmd;
-              moveAnimCmd.prepare( actionData );
-
-              if( CLIENT_DEBUG ){
-                util.logInfo( "preparing command animation for",moveAnimCmd.key );
-              }
-            }
-            */
-
             view.invokeCommandListener(key,data);
 
             // IS ANIMATED ?
@@ -362,18 +350,6 @@ controller.gameLoop = function( delta ){
                 util.log( "preparing command animation for", key );
               }
             }
-
-            /*
-             SWAP IF NO MOVE ANIMATION IS AVAILABLE
-            if( controller.currentAnimatedKey === null &&
-              controller.currentAnimatedKeyNext !== null ){
-
-              controller.currentAnimatedKey = controller.currentAnimatedKeyNext;
-              controller.currentAnimatedKeyNext = null;
-            }
-            
-            controller.releaseActionDataObject( actionData );
-            */
           }
         }
 
@@ -391,6 +367,32 @@ controller.gameLoop = function( delta ){
   // 3. RENDER SCREEN
   if( !controller.noRendering && view.drawScreenChanges > 0 ){
     view.renderMap( controller.screenScale );
+  }
+  
+  // UPDATE CURSOR
+  if( controller.stateMachine.state === "ACTION_SELECT_TILE" ){
+    
+    var r = view.selectionRange;
+    var x = controller.mapCursorX;
+    var y = controller.mapCursorY;
+    var lX;
+    var hX;
+    var lY = y-r;
+    var hY = y+r;
+    if( lY < 0 ) lY = 0;
+    if( hY >= model.mapHeight ) hY = model.mapHeight-1;
+    for( ; lY<=hY; lY++ ){
+  
+      var disY = Math.abs( lY-y );
+      lX = x-r+disY;
+      hX = x+r-disY;
+      if( lX < 0 ) lX = 0;
+      if( hX >= model.mapWidth ) hX = model.mapWidth-1;
+      for( ; lX<=hX; lX++ ){
+  
+        view.markForRedraw(lX,lY);
+      }
+    }
   }
 
   if( !controller.noRendering && !inMove ){
@@ -617,7 +619,8 @@ controller.statusMap_ = util.list( CWT_MAX_UNITS_PER_PLAYER*CWT_MAX_PLAYER, func
     LOW_AMMO:false,
     LOW_FUEL:false,
     HAS_LOADS:false,
-    CAPTURES: false
+    CAPTURES: false,
+    TURN_OWNER_VISIBLE: false
   };
 });
 
@@ -630,12 +633,24 @@ controller.getUnitStatusForUnit = function( unit ){
   return controller.statusMap_[id];
 };
 
+controller.inVision_ = function( x,y, pid,tid ){
+  if( !model.isValidPosition(x,y) ) return false;
+  
+  var unit = model.unitPosMap[x][y];
+  return ( 
+    unit !== null &&
+    ( unit.owner === pid || model.players[ unit.owner ].team == tid )
+  );
+};
+
 /**
  * 
  * @param {type} uid
  */
 controller.updateUnitStatus = function( uid ){
   var unit = model.units[uid];
+  var x = unit.x;
+  var y = unit.y;
   var unitStatus = controller.statusMap_[uid];
   var uSheet = model.sheets.unitSheets[ unit.type ];
   
@@ -672,7 +687,7 @@ controller.updateUnitStatus = function( uid ){
     if( !model.hasLoadedIds( uid ) ){
          unitStatus.HAS_LOADS = false;
     }
-    else unitStatus.HAS_LOADS = false;
+    else unitStatus.HAS_LOADS = true;
   }
   
   if( unit.x !== -1 ){
@@ -681,6 +696,19 @@ controller.updateUnitStatus = function( uid ){
       unitStatus.CAPTURES = true;
     }
     else unitStatus.CAPTURES = false;
+  }
+  
+  unitStatus.TURN_OWNER_VISIBLE = false;
+  var tpid = model.turnOwner;
+  var ttid = model.players[tpid].team;
+  var inVis = controller.inVision_;
+  
+  if( inVis( x-1,y, tpid,ttid ) || 
+      inVis( x,y-1, tpid,ttid ) || 
+      inVis( x,y+1, tpid,ttid ) || 
+      inVis( x+1,y, tpid,ttid ) ){
+    
+    unitStatus.TURN_OWNER_VISIBLE = true;
   }
 };
 /**
@@ -751,17 +779,18 @@ controller._transEndEventNames = {
  * @throws Error if the screen scale is not an integer
  */
 controller.setScreenScale = function( scale ){
-  if( scale !== 1 && scale !== 2 && scale !== 3 ){
-
-    util.illegalArgumentError();
+  if( scale < -1 || scale > 3 ){
+    return;
   }
 
   controller.screenScale = scale;
 
   // INVOKES SCALING TRANSITION
-  if( scale === 1 ) controller.screenElement.className = "";
-  else              controller.screenElement.className = "scale"+scale;
+  controller.screenElement.className = "scale"+scale;
 
+  if( scale === 0 ) scale = 0.8;
+  else if( scale === -1 ) scale = 0.7;
+  
   // TODO: UPDATE SCREEN PARAMETERS
   var tileLen = TILE_LENGTH*scale;
   controller.screenWidth  = parseInt( window.innerWidth/  tileLen, 10 );
@@ -1116,6 +1145,9 @@ view.getInfoImageForType = function( type ){
 };
 var TILE_LENGTH = 16;
 
+/**
+ *
+ */
 controller.baseSize = CWT_MOD_DEFAULT.graphic.baseSize;
 
 /**
@@ -1128,6 +1160,14 @@ view.preventRenderUnit = null;
  */
 view.canvasCtx = controller.screenElement.getContext("2d");
 
+/**
+ *
+ */
+view.selectionRange = 2;
+
+/**
+ *
+ */
 view.colorArray = [
   view.COLOR_RED,
   view.COLOR_BLUE,
@@ -1147,6 +1187,8 @@ view.renderMap = function( scale ){
   var ctx = view.canvasCtx;
   var sx = controller.screenX;
   var sy = controller.screenY;
+  var cursx = controller.mapCursorX;
+  var cursy = controller.mapCursorY;
   var type;
   var pic;
   var scx;
@@ -1162,6 +1204,7 @@ view.renderMap = function( scale ){
   var sprStepProp = view.getSpriteStep("PROPERTY");
   var sprStepStat = view.getSpriteStep("STATUS");
   var BASESIZE = controller.baseSize;
+  var teamId = model.players[ model.turnOwner ].team;
   
   var focusExists = (
     controller.stateMachine.state === "MOVEPATH_SELECTION" ||
@@ -1169,6 +1212,8 @@ view.renderMap = function( scale ){
       controller.stateMachine.state === "ACTION_SELECT_TARGET_A" ||
       controller.stateMachine.state === "ACTION_SELECT_TARGET_B"
   );
+  
+  var inFreeSelection = ( controller.stateMachine.state === "ACTION_SELECT_TILE" );
 
   var inShadow;
 
@@ -1362,12 +1407,59 @@ view.renderMap = function( scale ){
             ctx.globalAlpha = 1;
           }
         }
+        
+        // --------------------------------------------------------------------
+        // FREE SELCTION WALLS 
+        
+        if( inFreeSelection ){
+          var dis = model.distance( cursx,cursy, x,y );
+          if( view.selectionRange === dis ){
+            
+            var pic = null;
+            if( dis === 0 ){
+              pic = view.getInfoImageForType("SILO_ALL");
+            }
+            else {
+              if( cursx === x ){
+                if( y < cursy ) pic = view.getInfoImageForType("SILO_N");
+                else pic = view.getInfoImageForType("SILO_S");
+              }
+              else if( cursy === y ){
+                if( x < cursx ) pic = view.getInfoImageForType("SILO_W");
+                else pic = view.getInfoImageForType("SILO_E");
+              }
+              else{
+                if( x < cursx ){
+                  if( y < cursy ) pic = view.getInfoImageForType("SILO_NW");
+                  else pic = view.getInfoImageForType("SILO_SW");
+                }
+                else {
+                  if( y < cursy ) pic = view.getInfoImageForType("SILO_NE");
+                  else pic = view.getInfoImageForType("SILO_SE");
+                }
+              }
+            }
+            
+            tcx = (x)*tileSize;
+            tcy = (y)*tileSize; 
+            if( pic !== null ){
+              ctx.drawImage(
+                pic,
+                tcx,tcy
+              );
+            }
+          }
+        }
 
         // --------------------------------------------------------------------
         // DRAW UNIT
 
         var unit = model.unitPosMap[x][y];
-        if( !inShadow && unit !== null ){
+        var stats = (unit !== null )? controller.getUnitStatusForUnit( unit ) : null;
+        if( !inShadow && unit !== null && 
+           ( !unit.hidden || unit.owner === model.turnOwner || model.players[ unit.owner ].team == teamId ||
+              stats.TURN_OWNER_VISIBLE ) ){
+          
           if( unit !== view.preventRenderUnit ){
             var color;
             if( unit.owner === -1 ){
@@ -1430,8 +1522,6 @@ view.renderMap = function( scale ){
               );
             }
 
-            var stats = controller.getUnitStatusForUnit( unit );
-
             pic = stats.HP_PIC;
             if( pic !== null ){
               ctx.drawImage(
@@ -1452,7 +1542,10 @@ view.renderMap = function( scale ){
               sprStepStat !== 9 &&
 
               sprStepStat !== 12 &&
-              sprStepStat !== 13 ){
+              sprStepStat !== 13 &&
+              
+              sprStepStat !== 16 &&
+              sprStepStat !== 17 ){
 
               var st = parseInt( sprStepStat/4 , 10 );
 
@@ -1464,20 +1557,23 @@ view.renderMap = function( scale ){
                 if( stIn === 0 && stats.LOW_AMMO ){
                   pic = view.getInfoImageForType("SYM_AMMO");
                 }
-                else if( stIn === 1 && stats.LOW_FUEL ){
-                  pic = view.getInfoImageForType("SYM_FUEL");
-                }
-                else if( stIn === 2 && stats.CAPTURES ){
+                else if( stIn === 1 && stats.CAPTURES ){
                   pic = view.getInfoImageForType("SYM_CAPTURE");
+                }
+                else if( stIn === 2 && stats.LOW_FUEL ){
+                  pic = view.getInfoImageForType("SYM_FUEL");
                 }
                 else if( stIn === 3 && stats.HAS_LOADS ){
                   pic = view.getInfoImageForType("SYM_LOAD");
+                }
+                else if( stIn === 4 && unit.hidden ){
+                  pic = view.getInfoImageForType("SYM_HIDDEN");
                 }
 
                 if( pic !== null ) break;
 
                 stIn++;
-                if( stIn === 4 ) stIn = 0;
+                if( stIn === 5 ) stIn = 0;
               }
               while( stIn !== st );
 
@@ -1890,7 +1986,7 @@ view.registerSpriteAnimator( "SELECTION", 7, 150, function(){
   }
 });
 
-view.registerSpriteAnimator( "STATUS", 16, 375, function(){});
+view.registerSpriteAnimator( "STATUS", 20, 375, function(){});
 
 view.registerSpriteAnimator( "UNIT", 3, 250, function(){
   var x  = 0;
@@ -1956,6 +2052,7 @@ view.registerCommandHook({
   }
 
 });
+/*
 view.registerCommandHook({
 
   key: "ATUN",
@@ -2036,6 +2133,7 @@ view.registerCommandHook({
   }
 
 });
+*/
 view.registerCommandHook({
 
   key: "BDUN",
@@ -2072,6 +2170,86 @@ view.registerCommandHook({
 
   isDone: function(){
     return !view.hasInfoMessage();
+  }
+
+});
+view.registerCommandHook({
+
+  key: "CWTH",
+
+  prepare: function( wth ){
+    view.showInfoMessage( util.i18n_localized("weatherChange")+" "+util.i18n_localized( wth ) );
+  },
+
+  render: function(){},
+  update: function(){},
+
+  isDone: function(){
+    return !view.hasInfoMessage();
+  }
+
+});
+view.registerCommandHook({
+
+  key: "DEUN",
+
+  // ------------------------------------------------------------------------
+
+  prepare: function( id ){
+    var unit = model.units[ id ];
+
+    this.step = 0;
+    this.time = 0;
+
+    this.x = unit.x;
+    this.y = unit.y;
+  },
+
+  // ------------------------------------------------------------------------
+
+  render: function(){
+    var step = this.step;
+
+    var pic = view.getInfoImageForType("EXPLOSION_GROUND");
+
+    var x = this.x;
+    var y = this.y;
+
+    var tileSize = TILE_LENGTH;
+    var scx = 48*step;
+    var scy = 0;
+    var scw = 48;
+    var sch = 48;
+    var tcx = (x)*tileSize;
+    var tcy = (y)*tileSize;
+    var tcw = tileSize;
+    var tch = tileSize;
+
+    view.canvasCtx.drawImage(
+      pic,
+      scx,scy,
+      scw,sch,
+      tcx,tcy,
+      tcw,tch
+    );
+
+    view.markForRedraw(x,y);
+  },
+
+  // ------------------------------------------------------------------------
+
+  update: function( delta ){
+    this.time += delta;
+    if( this.time > 50 ){
+      this.step++;
+      this.time = 0;
+    }
+  },
+
+  // ------------------------------------------------------------------------
+
+  isDone: function(){
+    return this.step === 10;
   }
 
 });
@@ -2420,7 +2598,7 @@ view.registerCommandHook({
     this.x = x;
     this.y = y;
     var chk = this._check;
-
+    
     chk( x, y-2 );
 
     chk( x-1, y-1 );
@@ -2489,12 +2667,13 @@ view.registerCommandHook({
 
   key: "TRWT",
 
-  prepare: function( x,y,uid ){
+  prepare: function( uid ){
+    var unit = model.units[ uid ];
     this.time = 0;
-    this.xp = x;
-    this.yp = y;
-    this.x = x * TILE_LENGTH;
-    this.y = y * TILE_LENGTH;
+    this.xp = unit.x+1;
+    this.yp = unit.y;
+    this.x = (unit.x+1) * TILE_LENGTH;
+    this.y = unit.y * TILE_LENGTH;
   },
 
   render: function(){
@@ -2557,6 +2736,10 @@ view.registerCommandListener("MOVE",function( way, uid, x,y ){
   controller.updateUnitStatus( uid );
 });
 
+view.registerCommandListener("RFRS",function( uid ){
+  controller.updateUnitStatus( uid );
+});
+
 (function(){
   function dmgF( x,y ){
     if( model.isValidPosition(x,y) ){
@@ -2607,21 +2790,43 @@ view.registerCommandListener("LDGM",function(){
   }
 });
 
-view.registerCommandListener("AVIS",function( x,y,range ){
-  view.markForRedrawRange(x,y,range);
-});
-
-view.registerCommandListener("RVIS",function( x,y,range ){
-  view.markForRedrawRange(x,y,range);
-});
-
+(function(){
+  
+  var visionCheck = function( x,y,range ){
+    view.markForRedrawRange(x,y,range);
+    
+    var r = range;
+    var lX;
+    var hX;
+    var lY = y-r;
+    var hY = y+r;
+    if( lY < 0 ) lY = 0;
+    if( hY >= model.mapHeight ) hY = model.mapHeight-1;
+    for( ; lY<=hY; lY++ ){
+      
+      var disY = Math.abs( lY-y );
+      lX = x-r+disY;
+      hX = x+r-disY;
+      if( lX < 0 ) lX = 0;
+      if( hX >= model.mapWidth ) hX = model.mapWidth-1;
+      for( ; lX<=hX; lX++ ){
+        
+        var unit = model.unitPosMap[lX][lY];
+        if( unit !== null && unit.hidden ){
+          controller.updateUnitStatus( model.extractUnitId( unit ) );
+        }
+      }
+    }
+  };
+  
+  view.registerCommandListener("AVIS",visionCheck);
+  view.registerCommandListener("RVIS",visionCheck);
+  
+})();
 controller.registerMenuRenderer("BDUN",function( content, entry, index ){
   
   var cost = model.sheets.unitSheets[ content ].cost
   entry.innerHTML = util.i18n_localized(content)+" ("+cost+"$)";
-});
-controller.registerMenuRenderer("GMTP",function( content, entry, index ){
-  entry.innerHTML = content+"$";
 });
 controller.infoPanelRender_ = {
 
@@ -2635,6 +2840,8 @@ controller.infoPanelRender_ = {
   },
   
   property: function( x,y, unit, property, row, left, right ){
+    if( !model.fogData[x][y] ) property = null;
+    
     row.style.display = (property !== null)? "table-row": "none";
     if( property === null ) return;
     
@@ -2642,6 +2849,8 @@ controller.infoPanelRender_ = {
   },
   
   capturePoints: function( x,y, unit, property, row, left, right ){
+    if( !model.fogData[x][y] ) property = null;
+    
     row.style.display = (property !== null)? "table-row": "none";
     if( property === null ) return;
     
@@ -2650,6 +2859,8 @@ controller.infoPanelRender_ = {
   },
   
   unit: function( x,y, unit, property, row, left, right ){
+    if( !model.fogData[x][y] ) unit = null;
+    
     row.style.display = (unit !== null)? "table-row": "none";
     if( unit === null ) return;
     
@@ -2657,6 +2868,8 @@ controller.infoPanelRender_ = {
   },
   
   hp: function( x,y, unit, property, row, left, right ){
+    if( !model.fogData[x][y] ) unit = null;
+    
     row.style.display = (unit !== null)? "table-row": "none";
     if( unit === null ) return;
     
@@ -2665,6 +2878,8 @@ controller.infoPanelRender_ = {
   },
   
   ammo: function( x,y, unit, property, row, left, right ){
+    if( !model.fogData[x][y] ) unit = null;
+    
     row.style.display = (unit !== null)? "table-row": "none";
     if( unit === null ) return;
     
@@ -2673,6 +2888,8 @@ controller.infoPanelRender_ = {
   },
   
   fuel: function( x,y, unit, property, row, left, right ){
+    if( !model.fogData[x][y] ) unit = null;
+    
     row.style.display = (unit !== null)? "table-row": "none";
     if( unit === null ) return;
     
@@ -2691,11 +2908,13 @@ controller.registerMenuRenderer("__infoPanel__",function( x,y, entry ){
   // COLLECT
   if( controller.infoPanelRenderComponents_.empty ){
     var table = document.getElementsByName("cwt_menu_header_table")[0];
-    var rows = table.getElementsByTagName("tr");
+    //var rows = table.getElementsByTagName("tr");
+    var rows = table.children[0].children;
     for( var i=0,e=rows.length; i<e; i++ ){
         
       var row = rows[i];
-      var columns = row.getElementsByTagName("td");
+      // var columns = row.getElementsByTagName("td");
+      var columns = row.cells;
       
       if( columns.length !== 2 ) util.raiseError();
       
@@ -2726,8 +2945,23 @@ controller.registerMenuRenderer("__infoPanel__",function( x,y, entry ){
 controller.registerMenuRenderer("__mainMenu__",function( content, entry, index ){
   entry.innerHTML = util.i18n_localized( content );
 });
+controller.registerMenuRenderer("GMTP",function( content, entry, index ){
+  entry.innerHTML = content+"$"; 
+});
+(function(){
+  
+  var extractPlayer = function( content, entry, index ){
+    entry.innerHTML = model.players[content].name;  
+  } 
+
+  controller.registerMenuRenderer("GPTP",extractPlayer);
+  controller.registerMenuRenderer("GUTP",extractPlayer);
+})();
 controller.registerMenuRenderer("UNUN",function( content, entry, index ){
-  entry.innerHTML = model.units[ content ].type;  
+  if( content === "done" ){
+    entry.innerHTML = util.i18n_localized( "done" );  
+  }
+  else entry.innerHTML = util.i18n_localized( model.units[ content ].type );  
 });
 controller.engineAction({
 
@@ -3315,6 +3549,7 @@ controller.engineAction({
       document.onkeyup = function( ev ){
         if( controller.stateMachine.state === "IDLE_R" ){
           
+          var code = ev.keyCode;
           switch( code ){
             case controller.INPUT_KEYBOARD_CODE_LEFT:
             case controller.INPUT_KEYBOARD_CODE_UP:
@@ -3370,15 +3605,11 @@ controller.engineAction({
             break;
 
           case controller.INPUT_KEYBOARD_CODE_M:
-            if( controller.screenScale < 3 ){
-              controller.setScreenScale( controller.screenScale+1 );
-            }
+            controller.setScreenScale( controller.screenScale+1 );
             break;
 
           case controller.INPUT_KEYBOARD_CODE_N:
-            if( controller.screenScale > 1 ){
-              controller.setScreenScale( controller.screenScale-1 );
-            }
+            controller.setScreenScale( controller.screenScale-1 );
             break;
         }
 
@@ -3399,26 +3630,34 @@ controller.engineAction({
 
     // **************************************************************
     // MOUSE SUPPORT FOR DESKTOP DEVICES
-    if( detect.isDesktop() ){
+    if( head.desktop ){
       var canvas = document.getElementById( "cwt_canvas" );
+      var menuEl = document.getElementById( "cwt_menu" );
 
+      var inMenu = false;
+      
+      menuEl.onmouseout = function(){ 
+        inMenu=false; 
+      };
+      
+      menuEl.onmouseover = function(){ 
+        inMenu=true; 
+      };
+      
       function MouseWheelHandler(e){
         var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+        // var delta = (e.wheelDelta || -e.detail);
+        // if( delta > -10 && delta < 10 ) return;
         if( delta > 0 ){
           // ZOOM IN
-          if( controller.screenScale < 3 ){
-            controller.setScreenScale( controller.screenScale+1 );
-          }
+          controller.setScreenScale( controller.screenScale+1 );
         }
         else{
           // ZOOM OUT
-          if( controller.screenScale > 1 ){
-            controller.setScreenScale( controller.screenScale-1 );
-          }
+          controller.setScreenScale( controller.screenScale-1 );
         }
       }
 
-      /*
       if( canvas.addEventListener){
         // IE9, Chrome, Safari, Opera
         canvas.addEventListener("mousewheel", MouseWheelHandler, false);
@@ -3427,7 +3666,6 @@ controller.engineAction({
       }
       // IE 6/7/8
       else canvas.attachEvent("onmousewheel", MouseWheelHandler);
-      */
 
       canvas.onmousemove = function(ev){
         var x,y;
@@ -3454,10 +3692,17 @@ controller.engineAction({
       };
 
       canvas.onmousedown = function(ev){
-        switch(ev.which){
-          case 1: controller.cursorActionClick(); break;    // LEFT
-          case 2: break;                                    // MIDDLE
-          case 3: controller.cursorActionCancel(); break;   // RIGHT
+        var state = controller.stateMachine.state;
+        if( (state === "ACTION_MENU" || state === "ACTION_SUBMENU") && !inMenu ){
+          // MENU + MOUSE OUTSIDE === CANCEL
+          controller.cursorActionCancel()
+        }
+        else{
+          switch(ev.which){
+            case 1: controller.cursorActionClick(); break;    // LEFT
+            case 2: break;                                    // MIDDLE
+            case 3: controller.cursorActionCancel(); break;   // RIGHT
+          }
         }
       };
       
@@ -3472,11 +3717,12 @@ controller.engineAction({
 
     // **************************************************************
     // TOUCH SUPPORT FOR TOUCH DEVICES
-    if( detect.isAndroid() || detect.isTouchDevice() ){
+    if( head.mobile ){
       var appEl = document.getElementById( "cwt_canvas" );
       var hammer = new Hammer( appEl, { prevent_default: true });
-      // var dragDisX = 0;
-      // var dragDisY = 0;
+      var ios = head.browser.ios;
+      var drag_up = 0;
+      var drag_down = 0;
 
       hammer.ontap     = function( ev ){
         var cv = appEl;
@@ -3506,6 +3752,7 @@ controller.engineAction({
           userInput._input_touch_cDisX = x;
           userInput._input_touch_cDisY = y;
         }*/
+        
       };
 
       hammer.onhold    = function(){
@@ -3517,39 +3764,56 @@ controller.engineAction({
           controller.cursorActionCancel();
         }
       };
-
+      
       hammer.ondrag    = function(ev){
-        /*
-         var cv = document.getElementById( client.ID_CANVAS );
-
-         var disX = ev.distanceX - cv.offsetLeft;
-         var disY = ev.distanceY - cv.offsetTop;
-         userInput._input_touch_cDisTouchX = disX;
-         userInput._input_touch_cDisTouchY = disY;
-
-         var x = userInput._input_touch_cDisX+ parseInt( disX/ screen.tileSizeX, 10 );
-         var y = userInput._input_touch_cDisY+ parseInt( disY/ screen.tileSizeY, 10 );
-
-         userInput.appendToCurrentMovePath(x,y);
-         */
+        var state = controller.stateMachine.state;
+        if( state === "ACTION_MENU" || state === "ACTION_SUBMENU" ){
+          
+          var dis = ev.distanceY;
+          if( dis < drag_up ){
+            controller.decreaseMenuCursor();
+            drag_down = drag_up;
+            drag_up = drag_up-50;
+          }
+          else if( dis > drag_down ){
+            controller.increaseMenuCursor();
+            drag_up = drag_down;
+            drag_down = drag_down+50;
+          }
+        }
       };
 
       hammer.ondragend = function(ev){
-        var tileSize = TILE_LENGTH*controller.screenScale;
-        var a = ev.angle;
-        var d = 0;
-
-        // GET DIRECTION
-             if( a >= -135 && a < -45  ) d = model.MOVE_CODE_UP;
-        else if( a >= -45  && a < 45   ) d = model.MOVE_CODE_RIGHT;
-        else if( a >= 45   && a < 135  ) d = model.MOVE_CODE_DOWN;
-        else if( a >= 135  || a < -135 ) d = model.MOVE_CODE_LEFT;
-
-        // get distance
-        var dis = parseInt( ev.distance/tileSize, 10 );
-        if( dis === 0 ) dis = 1;
-
-        controller.shiftScreenPosition( d, dis );
+        
+        var state = controller.stateMachine.state;
+        if( state === "ACTION_MENU" || state === "ACTION_SUBMENU" ){
+          drag_up = -50;
+          drag_down = 50;
+        }
+        else{
+          var tileSize = TILE_LENGTH*controller.screenScale;
+          var a = ev.angle;
+          var d = 0;
+          
+          if( !ios ){
+                 if( a >= -135 && a < -45  ) d = model.MOVE_CODE_UP;
+            else if( a >= -45  && a < 45   ) d = model.MOVE_CODE_RIGHT;
+            else if( a >= 45   && a < 135  ) d = model.MOVE_CODE_DOWN;
+            else if( a >= 135  || a < -135 ) d = model.MOVE_CODE_LEFT;
+          }
+          else{
+                 if( a >= -135 && a < -45  ) d = model.MOVE_CODE_DOWN;
+            else if( a >= -45  && a < 45   ) d = model.MOVE_CODE_LEFT;
+            else if( a >= 45   && a < 135  ) d = model.MOVE_CODE_UP;
+            else if( a >= 135  || a < -135 ) d = model.MOVE_CODE_RIGHT;
+          }
+          
+          // get distance
+          var dis = parseInt( ev.distance/tileSize, 10 );
+          if( dis === 0 ) dis = 1;
+  
+          controller.shiftScreenPosition( d, dis );
+        }
 
         /* ==> MOVE STATE
          var x = cDisX+ parseInt( cDisTouchX / screen.tileSizeX, 10 );
@@ -3567,15 +3831,11 @@ controller.engineAction({
       hammer.ontransformend = function(ev){
         if( ev.scale > 1 ){
           // ZOOM IN
-          if( controller.screenScale < 3 ){
-            controller.setScreenScale( controller.screenScale+1 );
-          }
+          controller.setScreenScale( controller.screenScale+1 );
         }
         else{
           // ZOOM OUT
-          if( controller.screenScale > 1 ){
-            controller.setScreenScale( controller.screenScale-1 );
-          }
+          controller.setScreenScale( controller.screenScale-1 );
         }
         return false;
       };
@@ -3607,30 +3867,23 @@ controller.engineAction({
 
 (function(){
 
-  var browserCheck = [
-    ["chrome" ,18,19,20,21,22,23,24],
-    ["mozilla",17,18,19],
-    ["safari" ,5,6]
-  ];
-
-  var found = false;
-  for( var i=0,e=browserCheck.length; i<e; i++ ){
-    var block = browserCheck[i];
-    if( BrowserDetection[ block[0] ] === true ){
-      found = true;
-      var versionFound = false;
-      for( var j=1,je=block.length; j<je; j++ ){
-        if( BrowserDetection.version.indexOf(block[j]) === 0 ){
-          versionFound = true;
-        }
-      }
-      if( !found ){
-        alert("Attention!\nThe version of your browser is not supported!");
-      }
-    }
+  var notSupported = true;
+  var browser = head.browser;
+  if( head.mobile ){
+    // MOBILE
+    if( browser.ios    && browser.version >= 6 )  notSupported = false;
+    if( browser.android && browser.webkit && browser.version >= 20 ) notSupported = false;
   }
-  if( !found ){
-    alert("Attention!\nYour browser is not supported!");
+  else{
+    // DESKTOP
+    if( browser.ie     && browser.version >= 9 ) notSupported = false;
+    if( browser.safari && browser.version >= 6 ) notSupported = false;
+    if( browser.chrome && browser.version >= 20 ) notSupported = false;
+    if( browser.ff     && browser.version >= 17 ) notSupported = false;
+  }
+  
+  if( notSupported ){
+    alert("Attention!\nYour browser is not supported! --> "+JSON.stringify(browser) );
   }
 
   util.injectMod = function( file ){

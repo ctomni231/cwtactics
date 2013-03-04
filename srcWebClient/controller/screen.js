@@ -66,17 +66,18 @@ controller._transEndEventNames = {
  * @throws Error if the screen scale is not an integer
  */
 controller.setScreenScale = function( scale ){
-  if( scale !== 1 && scale !== 2 && scale !== 3 ){
-
-    util.illegalArgumentError();
+  if( scale < -1 || scale > 3 ){
+    return;
   }
 
   controller.screenScale = scale;
 
   // INVOKES SCALING TRANSITION
-  if( scale === 1 ) controller.screenElement.className = "";
-  else              controller.screenElement.className = "scale"+scale;
+  controller.screenElement.className = "scale"+scale;
 
+  if( scale === 0 ) scale = 0.8;
+  else if( scale === -1 ) scale = 0.7;
+  
   // TODO: UPDATE SCREEN PARAMETERS
   var tileLen = TILE_LENGTH*scale;
   controller.screenWidth  = parseInt( window.innerWidth/  tileLen, 10 );

@@ -2,12 +2,13 @@ view.registerCommandHook({
 
   key: "TRWT",
 
-  prepare: function( x,y,uid ){
+  prepare: function( uid ){
+    var unit = model.units[ uid ];
     this.time = 0;
-    this.xp = x;
-    this.yp = y;
-    this.x = x * TILE_LENGTH;
-    this.y = y * TILE_LENGTH;
+    this.xp = unit.x+1;
+    this.yp = unit.y;
+    this.x = (unit.x+1) * TILE_LENGTH;
+    this.y = unit.y * TILE_LENGTH;
   },
 
   render: function(){

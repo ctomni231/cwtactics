@@ -87,6 +87,8 @@ model.unloadUnitFrom = function( lid, tid ){
  * @param {Number} tid transporter id
  */
 model.canLoad = function( lid, tid ){
+  if( lid === tid ) util.raiseError();
+  
   var tp = model.units[ tid ];
   var lu = model.units[ lid ];
 

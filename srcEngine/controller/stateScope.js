@@ -25,7 +25,9 @@ controller.stateMachine.data = {
 
     // ----- UNIT -----
     refObj = isValid? model.unitPosMap[x][y] : null;
-    if( isValid && !inFog && refObj !== null ){
+    if( isValid && !inFog && refObj !== null && 
+        ( !refObj.hidden || refObj.owner === model.turnOwner || model.players[ refObj.owner ].team == model.players[ model.turnOwner ].team ) ){
+      
       this[tags[2]] = refObj;
       this[tags[3]] = model.extractUnitId(refObj);
     }
@@ -355,6 +357,10 @@ controller.stateMachine.data = {
         this.addEntry( commandKeys[i] );
       }
     }
-  }
+  },
+  
+  // -------------------------------------------------
+  
+  inMultiStep: false
 
 };

@@ -43,3 +43,22 @@ model.canAct = function( uid ){
 model.isTurnOwner = function( pid ){
   return model.turnOwner === pid;
 };
+
+/**
+ * 
+ *
+ * @param {Number} v number in days
+ */
+model.daysToTurns = function( v ){
+  return model.players.length*v;
+};
+
+/**
+ *
+ */
+model.weather = null;
+
+/**
+ *
+ */
+model.weatherDays = 0;

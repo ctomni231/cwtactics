@@ -8,6 +8,24 @@ model.ruleTable = {};
  */
 model.ruleTable.dataLevel = {
 
+  funds:                  1000,
+
+  noUnitsLeftLoose:       false,
+
+  autoSupplyAtTurnStart:  true,
+
+  cityRepair:             20,
+
+  captureWinLimit:        0,
+
+  turnTimeLimit:          3000000,
+  dayLimit:               0,
+  daysOfPeace:            0,
+
+  unitLimit:              50,
+
+  blockedUnits:           [],
+  
   /** attack damage modifier */
   att:100,
 
@@ -33,7 +51,13 @@ model.ruleTable.dataLevel = {
   fogEnabled:true,
   
   /** is a silo usable? */
-  usableSilo:true
+  usableSilo:true,
+  
+  resupplyUnitOnAlliedProperties: true,
+  
+  healUnitsOnProperties: true,
+  
+  healUnitsOnAlliedProperties: true
 };
 
 model.ruleTable.mapLevel = Object.create( model.ruleTable.dataLevel );
@@ -64,5 +88,25 @@ model.setRulesByOption = function( options ){
     } else{
       rules[key] = modRules[key];
     }
+  }
+};
+
+model.setRule = function( str ){
+  var tokens = str.split(" ");
+  
+  var property = tokens[0];
+  var value = tokens[1];
+  
+  switch( property ){
+      
+    case "siloRegenerationDays":
+      model.rules.siloRegeneration = model.daysToTurns( value );
+      break;
+      
+    case "siloRegenerationTurns":
+      model.rules.siloRegeneration = value;
+      break;
+      
+    default: util.raiseError("unknown gamerule", property); 
   }
 };

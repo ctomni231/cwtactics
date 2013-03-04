@@ -58,16 +58,20 @@ controller.userAction({
 
     if( mainWp !== undefined ){
       mainWp = model.sheets.weaponSheets[ mainWp ];
-      var minR = mainWp.minRange;
-      var maxR = mainWp.maxRange;
-      if( minR === 1 && maxR === 1 && dis === 1 ) return mainWp;
+      if( mainWp.usesAmmo === 0 || def.ammo > 0 ){
+        var minR = mainWp.minRange;
+        var maxR = mainWp.maxRange;
+        if( minR === 1 && maxR === 1 && dis === 1 ) return mainWp;
+      }
     }
 
     if( sideWp !== undefined ){
       sideWp = model.sheets.weaponSheets[ sideWp ];
-      var minR = sideWp.minRange;
-      var maxR = sideWp.maxRange;
-      if( minR === 1 && maxR === 1 && dis === 1 ) return sideWp;
+      if( sideWp.usesAmmo === 0 || def.ammo > 0 ){
+        var minR = sideWp.minRange;
+        var maxR = sideWp.maxRange;
+        if( minR === 1 && maxR === 1 && dis === 1 ) return sideWp;
+      }
     }
 
     // NO POSSIBLE COUNTER WEAPON
@@ -141,6 +145,10 @@ controller.userAction({
 
     if( wp === undefined ) return false;
 
+    if( wp.usesAmmo === 1 && unit.ammo === 0 ) return false;
+    
+    if( moved && wp.fireType === "INDIRECT" ) return false;
+    
     var minR = wp.minRange;
     var maxR = wp.maxRange;
 
@@ -252,15 +260,20 @@ controller.userAction({
     if( data.targetUnitId !== CWT_INACTIVE_ID && data.targetUnitId !== data.sourceUnitId ) return false;
 
     var selectedUnit = data.sourceUnit;
-
+    
+    var moved = false;
+    if( data.movePath.length > 0 ){
+      moved = true;
+    }
+    
     var x = data.targetX;
     var y = data.targetY;
 
     if(
       ( model.primaryWeaponOfUnit(selectedUnit) !== null &&
-        this.hasTargets( selectedUnit,model.PRIMARY_WEAPON_TAG,x,y, true )) ||
+        this.hasTargets( selectedUnit,model.PRIMARY_WEAPON_TAG,x,y, moved )) ||
         ( model.secondaryWeaponOfUnit(selectedUnit) !== null &&
-          this.hasTargets( selectedUnit,model.SECONDARY_WEAPON_TAG,x,y, true ))
+          this.hasTargets( selectedUnit,model.SECONDARY_WEAPON_TAG,x,y, moved ))
 
       ){
       return true;
@@ -268,18 +281,61 @@ controller.userAction({
     else return false;
   },
   
+  getEndDamage: function( attacker, wp, defender ){
+    
+    var BASE = model.getBaseDamage( wp, defender.type );
+    
+    var AHP = model.unitHpPt( attacker );
+    var ACO = 100;
+    var LUCK = parseInt( Math.random()*10, 10 );
+    
+    var DCO = 100;
+    
+    var ftype;
+    if( model.propertyPosMap[defender.x][defender.y] !== null ){
+      ftype = model.propertyPosMap[defender.x][defender.y].type;
+    }
+    else ftype = model.map[defender.x][defender.y];
+    
+    var DTR = model.sheets.tileSheets[ ftype ].defense;
+    var DHP = model.unitHpPt( defender );
+    
+    // D%=[B*ACO/100+R]*(AHP/10)*[(200-(DCO+DTR*DHP))/100]
+    var damage = (BASE*ACO/100+LUCK) * (AHP/10) * ( (200-( DCO+(DTR*DHP) ) ) /100 );
+    damage = parseInt( damage, 10 );
+    
+    if( DEBUG ){
+      util.log(
+        "attacker: ",model.extractUnitId( attacker ),
+        "[",BASE,"*",ACO,"/100+",LUCK,"]*(",AHP,"/10)*[(200-(",DCO,"+",DTR,"*",DHP,"))/100]",
+        "=",damage
+      );
+    }
+    
+    return damage;
+  },
+  
   createDataSet: function( data ){
-    var wp = ( data.subAction === 'mainWeapon')?
-      model.primaryWeaponOfUnit( data.sourceUnit ):
-      model.secondaryWeaponOfUnit( data.sourceUnit );
+    
+    var attWp = ( data.subAction === 'mainWeapon')? model.primaryWeaponOfUnit( data.sourceUnit ): model.secondaryWeaponOfUnit( data.sourceUnit );
+    var attDmg = this.getEndDamage( data.sourceUnit, attWp, data.selectionUnit );
+    
+    var defDmg = 0;
+    var defWp = this.counterWeapon( data.selectionX, data.selectionY, data.targetX, data.targetY );
+    if( defWp !== null ){
+      defDmg = this.getEndDamage( data.selectionUnit, defWp, data.sourceUnit );
+    }
     
     return [ 
+      
       data.sourceUnitId, 
-      model.getBaseDamage( wp, data.selectionUnit.type ),
-      data.subAction === model.PRIMARY_WEAPON_TAG,
+      attDmg,
+      attWp.usesAmmo !== 0,
+      
       data.selectionUnitId, 
-      0,
-      false
+      defDmg,
+      ( defWp !== null && defWp.usesAmmo !== 0 )
+      
     ];
   },
   
@@ -302,30 +358,30 @@ controller.userAction({
     controller.actions.damageUnit( did, admg );
     controller.actions.wait( aid );
     
+    if( aUseAmmo ) model.units[aid].ammo--;
+    
+    var dSheets = model.sheets.unitSheets[ model.units[did].type ];
+    controller.actions.givePower( 
+      model.units[aid].owner,  
+      ( 0.5*parseInt( admg/10, 10 )*dSheets.cost )
+    );
+    
     // COUNTER ATTACK
     if( model.units[did].owner !== CWT_INACTIVE_ID ){
       controller.actions.damageUnit( aid, ddmg );  
+      
+      if( dUseAmmo ) model.units[did].ammo--;
+      
+      var aSheets = model.sheets.unitSheets[ model.units[aid].type ];
+      controller.actions.givePower( 
+        model.units[did].owner,  
+        ( parseInt( admg/10, 10 )*dSheets.cost )
+      );
     }
   }
 });
 
 /********
-
- D%=[B*ACO/100+R]*(AHP/10)*[(200-(DCO+DTR*DHP))/100]
-
- D = Actual damage expressed as a percentage
-
- B = Base damage (in damage chart)
- ACO = Attacking CO attack value (example:130 for Kanbei)
-
- R = Random number 0-9
-
- AHP = HP of attacker
-
- DCO = Defending CO defense value (example:80 for Grimm)
- DTR = Defending Terrain Stars (IE plain = 1, wood = 2)
- DHP = HP of defender
-
  Denoted as xxxXXXX where x = small star and X = big star..for now.
  Every star is worth 9000 fund at the start of the game. Each additional
  use of CO Power(including SCOP) increase the value of each star by 1800

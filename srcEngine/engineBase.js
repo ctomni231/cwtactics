@@ -10,7 +10,7 @@ var CWT_INACTIVE_ID = -1;
  *
  * @constant 
  */ 
-var CWT_VERSION = "Milestone 2.6";
+var CWT_VERSION = "Milestone 2.7";
 
 /**
  * The model layer holds all necessary data for a game round. This layer can be

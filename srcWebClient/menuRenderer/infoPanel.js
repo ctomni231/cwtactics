@@ -10,6 +10,8 @@ controller.infoPanelRender_ = {
   },
   
   property: function( x,y, unit, property, row, left, right ){
+    if( !model.fogData[x][y] ) property = null;
+    
     row.style.display = (property !== null)? "table-row": "none";
     if( property === null ) return;
     
@@ -17,6 +19,8 @@ controller.infoPanelRender_ = {
   },
   
   capturePoints: function( x,y, unit, property, row, left, right ){
+    if( !model.fogData[x][y] ) property = null;
+    
     row.style.display = (property !== null)? "table-row": "none";
     if( property === null ) return;
     
@@ -25,6 +29,8 @@ controller.infoPanelRender_ = {
   },
   
   unit: function( x,y, unit, property, row, left, right ){
+    if( !model.fogData[x][y] ) unit = null;
+    
     row.style.display = (unit !== null)? "table-row": "none";
     if( unit === null ) return;
     
@@ -32,6 +38,8 @@ controller.infoPanelRender_ = {
   },
   
   hp: function( x,y, unit, property, row, left, right ){
+    if( !model.fogData[x][y] ) unit = null;
+    
     row.style.display = (unit !== null)? "table-row": "none";
     if( unit === null ) return;
     
@@ -40,6 +48,8 @@ controller.infoPanelRender_ = {
   },
   
   ammo: function( x,y, unit, property, row, left, right ){
+    if( !model.fogData[x][y] ) unit = null;
+    
     row.style.display = (unit !== null)? "table-row": "none";
     if( unit === null ) return;
     
@@ -48,6 +58,8 @@ controller.infoPanelRender_ = {
   },
   
   fuel: function( x,y, unit, property, row, left, right ){
+    if( !model.fogData[x][y] ) unit = null;
+    
     row.style.display = (unit !== null)? "table-row": "none";
     if( unit === null ) return;
     
@@ -66,11 +78,13 @@ controller.registerMenuRenderer("__infoPanel__",function( x,y, entry ){
   // COLLECT
   if( controller.infoPanelRenderComponents_.empty ){
     var table = document.getElementsByName("cwt_menu_header_table")[0];
-    var rows = table.getElementsByTagName("tr");
+    //var rows = table.getElementsByTagName("tr");
+    var rows = table.children[0].children;
     for( var i=0,e=rows.length; i<e; i++ ){
         
       var row = rows[i];
-      var columns = row.getElementsByTagName("td");
+      // var columns = row.getElementsByTagName("td");
+      var columns = row.cells;
       
       if( columns.length !== 2 ) util.raiseError();
       

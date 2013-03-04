@@ -2,26 +2,26 @@
 var CWT_MOD_DEFAULT = {
 
   rules:{
-
-    funds:                  1000,
-
-    noUnitsLeftLoose:       false,
-
-    autoSupplyAtTurnStart:  false,
-
-    cityRepair:             20,
-
-    captureWinLimit:        0,
-
-    turnTimeLimit:          3000000,
-    dayLimit:               0,
-    daysOfPeace:            0,
-
-    unitLimit:              50,
-
-    blockedUnits:           []
   }
 };
+CWT_MOD_DEFAULT.cos = [
+  
+  {
+    id:"ANDI",
+    name:"Andi"
+  },
+  
+  {
+    id:"OLAF",
+    name:"Olaf"
+  },
+  
+  {
+    id:"EAGL",
+    name:"Eagle"
+  }
+  
+];
 // LOAD IMAGES BY THIS FILE IN FUTURE
 CWT_MOD_DEFAULT.graphic = {
 
@@ -77,6 +77,17 @@ CWT_MOD_DEFAULT.graphic = {
   ],
 
   misc:[
+    
+    ["SILO_N","wall/AWDS_SILO~WNWW.png"],
+    ["SILO_S","wall/AWDS_SILO~NWWW.png"],
+    ["SILO_W","wall/AWDS_SILO~WWWN.png"],
+    ["SILO_E","wall/AWDS_SILO~WWNW.png"],
+    ["SILO_SW","wall/AWDS_SILO~NWWN.png"],
+    ["SILO_SE","wall/AWDS_SILO~NWNW.png"],
+    ["SILO_NW","wall/AWDS_SILO~WNWN.png"],
+    ["SILO_NE","wall/AWDS_SILO~WNNW.png"],
+    ["SILO_ALL","wall/AWDS_SILO~WWWW.png"],
+    
     ["HP_0","symbol/0.png"],
     ["HP_1","symbol/1.png"],
     ["HP_2","symbol/2.png"],
@@ -94,6 +105,7 @@ CWT_MOD_DEFAULT.graphic = {
     ["SYM_LOAD","symbol/load.png"],
     ["SYM_CAPTURE","symbol/capture.png"],
     ["SYM_UNKNOWN","symbol/unknown.png"],
+    ["SYM_HIDDEN","symbol/detect.png"],
     ["SYM_DEFENSE","symbol/yellowstar.png"],
 
     ["SYM_RANK_1","symbol/guard.png"],
@@ -168,7 +180,9 @@ CWT_MOD_DEFAULT.locale ={
     "SPPL":"Einheiten Versorgen",
     "ATUN":"Angreifen",
     "BDUN":"Einheit produzieren",
-
+    "HIUN":"Einheit tarnen",
+    "UHUN":"Einheit enttarnen",
+    
     "CTPR.desc":"Besetzt das angegebene Geb&auml;ude. Wenn die Einheit die Eroberungspunkte dess Geb&auml;udes auf 0 senkt geht der Besitz auf den Eroberer &uuml;ber.",
     "UNUN.desc":"Die Einheit wird in den Transporter ausgeladen. Nach dem Ausladen k&ouml;nnen beide Einheitein keine Aktionen innerhalb des aktiven Zuges ausf&uuml;hren.",
     "LODU.desc":"Die Einheit wird in den Transporter eingeladen.",
@@ -194,7 +208,11 @@ CWT_MOD_DEFAULT.locale ={
     "health":"Leben",
     "ammo":"Munition",
     "fuel":"Treibstoff",
+    "weatherChange":"Wetter ändert sich zu",
     
+    "SUN":  "Sonnenschein",
+    "RAIN": "Regen",
+    "SNOW": "Schnee",
     
     "gameHasEnded":"Das Spiel ist vorbei, es existiert nur noch ein Team"
   },
@@ -234,6 +252,8 @@ CWT_MOD_DEFAULT.locale ={
     "SPPL":"Supply",
     "ATUN":"Attack",
     "BDUN":"Build Unit",
+    "HIUN":"Hide Unit",
+    "UHUN":"Unhide Unit",
     
     "yes":"Yes",
     "no":"No",
@@ -250,6 +270,11 @@ CWT_MOD_DEFAULT.locale ={
     "health":"Health",
     "ammo":"Ammo",
     "fuel":"Fuel",
+    "weatherChange":"Weather changes to",
+    
+    "SUN":  "Sun",
+    "RAIN": "Rain",
+    "SNOW": "Snow",
     
     "gameHasEnded":"The game has ended because only one team is left"
   }
@@ -262,86 +287,233 @@ CWT_MOD_DEFAULT.movetypes = [
     {
       "ID"            : "MV_INFANTRY",
       "costs"         : {
-        "MNTN"      : 2,
-        "WATER"         : 0,
-        "REEF"          : 0,
-        "*"             : 1
+        
+        "SUN":{
+          "MNTN"          : 2,
+          "WATER"         : 0,
+          "REEF"          : 0,
+          "*"             : 1
+        },
+        
+        "RAIN":{
+          "MNTN"          : 2,
+          "WATER"         : 0,
+          "REEF"          : 0,
+          "*"             : 1
+        },
+        
+        "SNOW":{
+          "PLIN"          : 2,
+          "MNTN"          : 4,
+          "FRST"          : 2,
+          "RIVER"         : 2,
+          "WATER"         : 0,
+          "REEF"          : 0,
+          "*"             : 1
+        }
       }
     },
 
     {
       "ID"            : "MV_MECH",
       "costs"         :{
-        "WATER"         : 0,
-        "REEF"          : 0,
-        "*"             : 1
+        "SUN":{
+          "WATER"         : 0,
+          "REEF"          : 0,
+          "*"             : 1
+        },
+        
+        "RAIN":{
+          "WATER"         : 0,
+          "REEF"          : 0,
+          "*"             : 1
+        },
+        
+        "SNOW":{
+          "WATER"         : 0,
+          "REEF"          : 0,
+          "MNTN"          : 2,
+          "*"             : 1
+        }
       }
     },
 
     {
       "ID"            : "MV_TIRE_A",
       "costs"         :{
-        "PLIN"          : 2,
-        "FRST"          : 3,
-        "MNTN"          : 0,
-        "RIVER"         : 0,
-        "WATER"         : 0,
-        "REEF"          : 0,
-        "*"             : 1
+        "SUN":{
+          "PLIN"          : 2,
+          "FRST"          : 3,
+          "MNTN"          : 0,
+          "RIVER"         : 0,
+          "WATER"         : 0,
+          "REEF"          : 0,
+          "*"             : 1
+        },
+        
+        "RAIN":{
+          "PLIN"          : 3,
+          "FRST"          : 4,
+          "MNTN"          : 0,
+          "RIVER"         : 0,
+          "WATER"         : 0,
+          "REEF"          : 0,
+          "*"             : 1
+        },
+        
+        "SNOW":{
+          "PLIN"          : 3,
+          "FRST"          : 4,
+          "MNTN"          : 0,
+          "RIVER"         : 0,
+          "WATER"         : 0,
+          "REEF"          : 0,
+          "*"             : 1
+        }
       }
     },
 
     {
       "ID"            : "MV_TIRE_B",
       "costs"         :{
-        "FRST"        : 3,
-        "MNTN"      : 0,
-        "RIVER"         : 0,
-        "WATER"         : 0,
-        "REEF"          : 0,
-        "*"             : 1
+        "SUN":{
+          "PLIN"          : 2,
+          "FRST"          : 3,
+          "MNTN"          : 0,
+          "RIVER"         : 0,
+          "WATER"         : 0,
+          "REEF"          : 0,
+          "*"             : 1
+        },
+        
+        "RAIN":{
+          "PLIN"          : 3,
+          "FRST"          : 4,
+          "MNTN"          : 0,
+          "RIVER"         : 0,
+          "WATER"         : 0,
+          "REEF"          : 0,
+          "*"             : 1
+        },
+        
+        "SNOW":{
+          "PLIN"          : 3,
+          "FRST"          : 4,
+          "MNTN"          : 0,
+          "RIVER"         : 0,
+          "WATER"         : 0,
+          "REEF"          : 0,
+          "*"             : 1
+        }
       }
     },
 
     {
       "ID"            : "MV_TANK",
       "costs"         :{
-        "FRST"        : 2,
-        "MNTN"      : 0,
-        "RIVER"         : 0,
-        "WATER"         : 0,
-        "REEF"          : 0,
-        "*"             : 1
+        
+        "SUN":{
+          "FRST"          : 2,
+          "MNTN"          : 0,
+          "RIVER"         : 0,
+          "WATER"         : 0,
+          "REEF"          : 0,
+          "*"             : 1
+        },
+        
+        "RAIN":{
+          "PLIN"          : 2,
+          "FRST"          : 3,
+          "MNTN"          : 0,
+          "RIVER"         : 0,
+          "WATER"         : 0,
+          "REEF"          : 0,
+          "*"             : 1
+        },
+        
+        "SNOW":{
+          "PLIN"          : 2,
+          "FRST"          : 3,
+          "MNTN"          : 0,
+          "RIVER"         : 0,
+          "WATER"         : 0,
+          "REEF"          : 0,
+          "*"             : 1
+        }
       }
     },
 
     {
       "ID"            : "MV_AIR",
       "costs"         :{
-        "*"             : 1
+        
+        "SUN":{
+          "*"             : 1
+        },
+        
+        "RAIN":{
+          "*"             : 1
+        },
+        
+        "SNOW":{
+          "*"             : 2
+        }
       }
     },
 
     {
       "ID"            : "MV_SHIP",
       "costs"         :{
-        "WATER"         : 1,
-        "RIVER"         : 1,
-        "PORT"          : 1,
-        "REEF"          : 2,
-        "*"             : 0
+        "SUN":{
+          "WATER"         : 1,
+          "PORT"          : 1,
+          "REEF"          : 2,
+          "*"             : 0
+        },
+        
+        "RAIN":{
+          "WATER"         : 1,
+          "PORT"          : 1,
+          "REEF"          : 2,
+          "*"             : 0
+        },
+        
+        "SNOW":{
+          "WATER"         : 2,
+          "PORT"          : 2,
+          "REEF"          : 2,
+          "*"             : 0
+        }
       }
     },
 
     {
       "ID"            : "MV_WATER_TRANSPORT",
       "costs"         :{
-        "WATER"         : 1,
-        "RIVER"         : 1,
-        "PORT"          : 1,
-        "REEF"          : 2,
-        "SHOAL"         : 1,
-        "*"             : 0
+        
+        "SUN":{
+          "WATER"         : 1,
+          "PORT"          : 1,
+          "REEF"          : 2,
+          "SHOAL"         : 1,
+          "*"             : 0
+        },
+        
+        "RAIN":{
+          "WATER"         : 1,
+          "PORT"          : 1,
+          "REEF"          : 2,
+          "SHOAL"         : 1,
+          "*"             : 0
+        },
+        
+        "SNOW":{
+          "WATER"         : 2,
+          "PORT"          : 2,
+          "REEF"          : 2,
+          "SHOAL"         : 1,
+          "*"             : 0
+        }
       }
     }
 ];
@@ -377,7 +549,7 @@ CWT_MOD_DEFAULT.tiles = [
 
     {
       "ID"                : "MNTN",
-      "defense"           : 5,
+      "defense"           : 4,
       "tags"              : [ "" ]
     },
 
@@ -396,7 +568,7 @@ CWT_MOD_DEFAULT.tiles = [
     {
       "ID"                : "BASE",
       "vision"            : 0,
-      "defense"           : 4,
+      "defense"           : 3,
       "capturePoints"     : 20,
       "funds"             : 1000,
       "repairs"           : {
@@ -414,7 +586,7 @@ CWT_MOD_DEFAULT.tiles = [
     {
       "ID"                : "APRT",
       "vision"            : 0,
-      "defense"           : 4,
+      "defense"           : 3,
       "capturePoints"     : 20,
       "funds"            : 1000,
       "repairs"           : {
@@ -427,7 +599,7 @@ CWT_MOD_DEFAULT.tiles = [
     {
       "ID"                : "PORT",
       "vision"            : 0,
-      "defense"           : 4,
+      "defense"           : 3,
       "capturePoints"     : 20,
       "funds"            : 1000,
       "repairs"           : {
@@ -439,20 +611,20 @@ CWT_MOD_DEFAULT.tiles = [
 
     {
       "ID"                : "SILO",
-      "defense"           : 2,
+      "defense"           : 3,
       "vision"            : 0
     },
 
     {
       "ID"                : "SILO_EMPTY",
-      "defense"           : 2,
+      "defense"           : 3,
       "vision"            : 0
     },
 
     {
       "ID"                : "HQTR",
       "vision"            : 0,
-      "defense"           : 5,
+      "defense"           : 4,
       "capturePoints"     : 20,
       "funds"            : 1000,
       "repairs"           : {
@@ -464,7 +636,7 @@ CWT_MOD_DEFAULT.tiles = [
     {
       "ID"                : "RADAR",
       "vision"            : 4,
-      "defense"           : 4,
+      "defense"           : 3,
       "capturePoints"     : 20,
       "tags"              : [ "PROPERTY", "SCOUT" ]
     },
@@ -489,7 +661,7 @@ CWT_MOD_DEFAULT.tiles = [
 
     {
       "ID"                : "REEF",
-      "defense"           : 3,
+      "defense"           : 1,
       "tags"              : [ "VISION_BLOCK" ]
     },
 
@@ -511,6 +683,8 @@ CWT_MOD_DEFAULT.units = [
       "vision"        : 2,
       "maxFuel"       : 99,
 
+      "canHide"       : true,
+      
       "captures"      : 10,
       "weight"        : 1,
 
@@ -550,7 +724,7 @@ CWT_MOD_DEFAULT.units = [
 
       "maxAmmo"       : 0,
 
-      "mainWeapon"    : "WP_MG"
+      "mainWeapon"    : "WP_MG3"
     },
 
     {
@@ -767,6 +941,8 @@ CWT_MOD_DEFAULT.units = [
       "vision"        : 5,
       "maxFuel"       : 70,
 
+      "canHide"       : true,
+      
       "weight"        : 1,
 
       "maxAmmo"       : 6,
@@ -980,19 +1156,44 @@ CWT_MOD_DEFAULT.weapons = [
     "damages"       :{
       "INFT":65,
       "MECH":55,
-      "AAIR":5,
-      "APCR":14,
-      "ARTY":15,
+      "AAIR":6,
+      "APCR":20,
+      "ARTY":32,
       "BCTR":9,
-      "TANK":5,
+      "TANK":6,
       "MDTK":1,
       "WRTK":1,
       "NTKN":1,
-      "PRNR":5,
-      "RECN":12,
-      "RCKT":25,
+      "PRNR":6,
+      "RECN":18,
+      "RCKT":35,
       "TCTR":35,
-      "MISS":26
+      "MISS":35
+    }
+  },
+  
+  {
+    "ID"            : "WP_MG3",
+    "useAmmo"       : 0,
+    "minRange"      : 1,
+    "maxRange"      : 1,
+    "fireType"      : "DIRECT",
+    "damages"       :{
+      "INFT":70,
+      "MECH":65,
+      "AAIR":4,
+      "APCR":45,
+      "ARTY":45,
+      "BCTR":10,
+      "TANK":6,
+      "MDTK":1,
+      "WRTK":1,
+      "NTKN":1,
+      "PRNR":6,
+      "RECN":35,
+      "RCKT":55,
+      "TCTR":35,
+      "MISS":28
     }
   },
 
@@ -1373,7 +1574,7 @@ CWT_MOD_DEFAULT.weapons = [
     "useAmmo"       : 1,
     "minRange"      : 3,
     "maxRange"      : 5,
-    "fireType"      : "DIRECT",
+    "fireType"      : "INDIRECT",
     "damages"       :{
       "INFT":95,
       "MECH":90,
@@ -1430,5 +1631,22 @@ CWT_MOD_DEFAULT.weapons = [
       "RCKT":85,
       "MISS":90
     }
+  }
+];
+CWT_MOD_DEFAULT.weathers = [
+  
+  { 
+    ID:"SUN",
+    visionChange:0
+  },
+  
+  { 
+    ID:"RAIN",
+    visionChange:-1
+  },
+  
+  { 
+    ID:"SNOW",
+    visionChange:-1
   }
 ];

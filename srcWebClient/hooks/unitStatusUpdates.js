@@ -36,6 +36,10 @@ view.registerCommandListener("MOVE",function( way, uid, x,y ){
   controller.updateUnitStatus( uid );
 });
 
+view.registerCommandListener("RFRS",function( uid ){
+  controller.updateUnitStatus( uid );
+});
+
 (function(){
   function dmgF( x,y ){
     if( model.isValidPosition(x,y) ){
@@ -86,10 +90,36 @@ view.registerCommandListener("LDGM",function(){
   }
 });
 
-view.registerCommandListener("AVIS",function( x,y,range ){
-  view.markForRedrawRange(x,y,range);
-});
-
-view.registerCommandListener("RVIS",function( x,y,range ){
-  view.markForRedrawRange(x,y,range);
-});
+(function(){
+  
+  var visionCheck = function( x,y,range ){
+    view.markForRedrawRange(x,y,range);
+    
+    var r = range;
+    var lX;
+    var hX;
+    var lY = y-r;
+    var hY = y+r;
+    if( lY < 0 ) lY = 0;
+    if( hY >= model.mapHeight ) hY = model.mapHeight-1;
+    for( ; lY<=hY; lY++ ){
+      
+      var disY = Math.abs( lY-y );
+      lX = x-r+disY;
+      hX = x+r-disY;
+      if( lX < 0 ) lX = 0;
+      if( hX >= model.mapWidth ) hX = model.mapWidth-1;
+      for( ; lX<=hX; lX++ ){
+        
+        var unit = model.unitPosMap[lX][lY];
+        if( unit !== null && unit.hidden ){
+          controller.updateUnitStatus( model.extractUnitId( unit ) );
+        }
+      }
+    }
+  };
+  
+  view.registerCommandListener("AVIS",visionCheck);
+  view.registerCommandListener("RVIS",visionCheck);
+  
+})();

@@ -6,10 +6,12 @@
 controller.stateMachine.structure.ACTION_SUBMENU = {
   
   onenter: function( ev, x,y ){
-    this.data.cleanMenu();
-    controller.getActionObject( this.data.action ).prepareMenu( this.data );
-    if( this.data.menuSize === 0 ){        
-      util.raiseError("sub menu cannot be empty");
+    if( !this.data.inMultiStep ){
+      this.data.cleanMenu();
+      controller.getActionObject( this.data.action ).prepareMenu( this.data );
+      if( this.data.menuSize === 0 ){        
+        util.raiseError("sub menu cannot be empty");
+      }
     }
   },
   

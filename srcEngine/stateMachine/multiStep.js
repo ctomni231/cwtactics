@@ -10,6 +10,8 @@ controller.stateMachine.structure.MULTISTEP_IDLE = {
 
       actObj.prepareMenu( this.data );
       this.data.addEntry("done");
+      
+      this.data.inMultiStep = true;
 
       return ( this.data.menuSize > 1 )? "ACTION_SUBMENU": "IDLE";
 

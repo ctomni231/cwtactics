@@ -21,9 +21,12 @@ controller.engineAction({
       controller.pushAction( unit.x, unit.y, model.sheets.unitSheets[ unit.type ].vision, "RVIS" );
     }
     
+    var pid = unit.owner;
     unit.owner = CWT_INACTIVE_ID;
-    model.unitPosMap[ unit.x ][ unit.y ] = null;
-    //unit.x = -1;
-    //unit.y = -1;
+    if( unit.x !== -1 ) model.unitPosMap[ unit.x ][ unit.y ] = null;
+    
+    if( model.rules.noUnitsLeftLoose && model.countUnits( pid ) === 0 ){
+      controller.pushAction("EDGM");
+    }
   }
 });

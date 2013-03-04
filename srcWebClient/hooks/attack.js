@@ -1,3 +1,4 @@
+/*
 view.registerCommandHook({
 
   key: "ATUN",
@@ -78,3 +79,4 @@ view.registerCommandHook({
   }
 
 });
+*/

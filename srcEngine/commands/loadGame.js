@@ -25,8 +25,10 @@ controller.engineAction({
     // LOAD RULES
     model.setRulesByOption({});
     
+    controller.actions.changeWeather( "SUN", 4+ parseInt( Math.random()*6, 10 ) );
+    
     controller.actions.calculateFog( model.turnOwner );
-
+    
     if( DEBUG ){
       util.log("game instance successfully loaded");
     }

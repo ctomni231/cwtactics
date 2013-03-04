@@ -45,12 +45,13 @@ var starterCodePost = builder.readAndConcatHTMLFiles([
 ]);
 
 var importNonDebug = [
+  "<link rel='stylesheet' type='text/css' media='screen' href='style.css'>",
+  
   "<script src='../../../maps/testMap.js' type='text/javascript'></script>",
   "<script src='../../../maps/testMap_2_6.js' type='text/javascript'></script>",
 
   "<script src='engineDeps.js' type='text/javascript'></script>",
   "<script src='clientDeps.js' type='text/javascript'></script>",
-  "<script src='gameConf.js' type='text/javascript'></script>",
   "<script src='mod.js' type='text/javascript'></script>",
   "<script src='engine.js' type='text/javascript'></script>",
   "<script src='client.js' type='text/javascript'></script>"
@@ -60,5 +61,9 @@ var codeNorm = starterCodePre + importNonDebug.join("\n") + starterCodePost;
 
 // --------------------------------------------------------------------
 // WRITE STARTERS
+
+builder.fileCopy( "srcWebClient/css/style.css", "jsBin/nightly/min/style.css" );
+builder.fileCopy( "srcWebClient/css/style.css", "jsBin/nightly/normal/style.css" );
+
 builder.writeToFile( codeNorm, "jsBin/nightly/min/starter.html" );
 builder.writeToFile( codeNorm, "jsBin/nightly/normal/starter.html" );

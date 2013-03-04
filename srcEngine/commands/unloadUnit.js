@@ -35,31 +35,33 @@ controller.userAction({
     var load = model.units[ subEntry ];
     var loadS = model.sheets.unitSheets[ load.type ];
     var loadMvS = model.sheets.movetypeSheets[ loadS.moveType ];
+    
+    var weather = model.weather.ID;
 
     if( tx > 0 ){
       if( model.unitPosMap[tx-1][ty] === null &&
-        model.moveCosts( loadMvS, model.map[tx-1][ty] ) !== -1  ){
+        model.moveCosts( loadMvS, model.map[tx-1][ty] ,weather ) !== -1  ){
         mem.setSelectionValueAt( tx-1,ty,1 );
       }
     }
 
     if( ty > 0 ){
       if( model.unitPosMap[tx][ty-1] === null &&
-        model.moveCosts( loadMvS, model.map[tx][ty-1] ) !== -1  ){
+        model.moveCosts( loadMvS, model.map[tx][ty-1] ,weather ) !== -1  ){
         mem.setSelectionValueAt( tx,ty-1,1 );
       }
     }
 
     if( ty < model.mapHeight-1 ){
       if( model.unitPosMap[tx][ty+1] === null &&
-        model.moveCosts( loadMvS, model.map[tx][ty+1] ) !== -1  ){
+        model.moveCosts( loadMvS, model.map[tx][ty+1] ,weather ) !== -1  ){
         mem.setSelectionValueAt( tx,ty+1,1 );
       }
     }
 
     if( tx < model.mapWidth-1 ){
       if( model.unitPosMap[tx+1][ty] === null &&
-        model.moveCosts( loadMvS, model.map[tx+1][ty] ) !== -1  ){
+        model.moveCosts( loadMvS, model.map[tx+1][ty] ,weather ) !== -1  ){
         mem.setSelectionValueAt( tx+1,ty,1 );
       }
     }

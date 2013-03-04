@@ -41,18 +41,18 @@ exports.writeToFile = function( code, path ){
   fs.writeSync(out, code );
 };
 
-exports.fileCopy = function( file, target ){
-  if( file.substring( file.length-3, file.length ) === 'png'){
+exports.fileCopy = function( src, target ){
+  if( src.substring( src.length-3, src.length ) === 'png'){
     console.log("using image workaround");
-    fs.readFile( src+'/'+file , function(err, original_data){
+    fs.readFile( src , function(err, original_data){
       var base64Image = original_data.toString('base64');
       var decodedImage = new Buffer(base64Image, 'base64');
-      fs.writeFile( target+'/'+file , decodedImage, function(err) {});
+      fs.writeFile( target , decodedImage, function(err) {});
     });
   }
   else{
-    var fin = fs.readFileSync( src+'/'+file ).toString();
-    var fout = fs.openSync( target+'/'+file, 'w+');
+    var fin = fs.readFileSync( src ).toString();
+    var fout = fs.openSync( target, 'w+');
     fs.writeSync(fout, fin);
   }
 };

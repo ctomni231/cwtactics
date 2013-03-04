@@ -34,19 +34,44 @@ CWT_MOD_DEFAULT.weapons = [
     "damages"       :{
       "INFT":65,
       "MECH":55,
-      "AAIR":5,
-      "APCR":14,
-      "ARTY":15,
+      "AAIR":6,
+      "APCR":20,
+      "ARTY":32,
       "BCTR":9,
-      "TANK":5,
+      "TANK":6,
       "MDTK":1,
       "WRTK":1,
       "NTKN":1,
-      "PRNR":5,
-      "RECN":12,
-      "RCKT":25,
+      "PRNR":6,
+      "RECN":18,
+      "RCKT":35,
       "TCTR":35,
-      "MISS":26
+      "MISS":35
+    }
+  },
+  
+  {
+    "ID"            : "WP_MG3",
+    "useAmmo"       : 0,
+    "minRange"      : 1,
+    "maxRange"      : 1,
+    "fireType"      : "DIRECT",
+    "damages"       :{
+      "INFT":70,
+      "MECH":65,
+      "AAIR":4,
+      "APCR":45,
+      "ARTY":45,
+      "BCTR":10,
+      "TANK":6,
+      "MDTK":1,
+      "WRTK":1,
+      "NTKN":1,
+      "PRNR":6,
+      "RECN":35,
+      "RCKT":55,
+      "TCTR":35,
+      "MISS":28
     }
   },
 
@@ -427,7 +452,7 @@ CWT_MOD_DEFAULT.weapons = [
     "useAmmo"       : 1,
     "minRange"      : 3,
     "maxRange"      : 5,
-    "fireType"      : "DIRECT",
+    "fireType"      : "INDIRECT",
     "damages"       :{
       "INFT":95,
       "MECH":90,

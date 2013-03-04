@@ -12,6 +12,8 @@ controller.userAction({
     if( selectedUnit === null ) return false;
     if( mem.targetUnit !== null ) return false;
     
+    if( model.hasLoadedIds( mem.sourceUnitId ) ) return false; 
+    
     var unit = mem.targetUnit;
     return unit !== selectedUnit;
   },

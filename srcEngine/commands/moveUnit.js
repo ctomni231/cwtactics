@@ -107,7 +107,7 @@ controller.engineAction({
       }
 
       // INCREASE FUEL USAGE
-      fuelUsed += model.moveCosts( mType, model.map[cX][cY] );
+      fuelUsed += model.moveCosts( mType, model.map[cX][cY], model.weather.ID );
     }
 
     unit.fuel -= fuelUsed;

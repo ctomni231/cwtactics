@@ -9,14 +9,9 @@ controller.userAction({
   condition: function( mem ){
     if( model.players[ model.turnOwner ].gold < 500 ) return false;
 
-    var selectedUnit = mem.sourceUnit;
-    var unit = mem.targetUnit;
-    if( unit === null ) return false;
-    
-    if( selectedUnit !== null && unit !== selectedUnit ) return false;
-
     var property = mem.targetProperty;
-    if( unit === null && property === null ) return false;
+    if( property === null ) return false;
+    if( property.owner === model.turnOwner ) return false;
 
     return true;
   },

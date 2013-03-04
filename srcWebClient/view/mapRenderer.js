@@ -1,5 +1,8 @@
 var TILE_LENGTH = 16;
 
+/**
+ *
+ */
 controller.baseSize = CWT_MOD_DEFAULT.graphic.baseSize;
 
 /**
@@ -12,6 +15,14 @@ view.preventRenderUnit = null;
  */
 view.canvasCtx = controller.screenElement.getContext("2d");
 
+/**
+ *
+ */
+view.selectionRange = 2;
+
+/**
+ *
+ */
 view.colorArray = [
   view.COLOR_RED,
   view.COLOR_BLUE,
@@ -31,6 +42,8 @@ view.renderMap = function( scale ){
   var ctx = view.canvasCtx;
   var sx = controller.screenX;
   var sy = controller.screenY;
+  var cursx = controller.mapCursorX;
+  var cursy = controller.mapCursorY;
   var type;
   var pic;
   var scx;
@@ -46,6 +59,7 @@ view.renderMap = function( scale ){
   var sprStepProp = view.getSpriteStep("PROPERTY");
   var sprStepStat = view.getSpriteStep("STATUS");
   var BASESIZE = controller.baseSize;
+  var teamId = model.players[ model.turnOwner ].team;
   
   var focusExists = (
     controller.stateMachine.state === "MOVEPATH_SELECTION" ||
@@ -53,6 +67,8 @@ view.renderMap = function( scale ){
       controller.stateMachine.state === "ACTION_SELECT_TARGET_A" ||
       controller.stateMachine.state === "ACTION_SELECT_TARGET_B"
   );
+  
+  var inFreeSelection = ( controller.stateMachine.state === "ACTION_SELECT_TILE" );
 
   var inShadow;
 
@@ -246,12 +262,59 @@ view.renderMap = function( scale ){
             ctx.globalAlpha = 1;
           }
         }
+        
+        // --------------------------------------------------------------------
+        // FREE SELCTION WALLS 
+        
+        if( inFreeSelection ){
+          var dis = model.distance( cursx,cursy, x,y );
+          if( view.selectionRange === dis ){
+            
+            var pic = null;
+            if( dis === 0 ){
+              pic = view.getInfoImageForType("SILO_ALL");
+            }
+            else {
+              if( cursx === x ){
+                if( y < cursy ) pic = view.getInfoImageForType("SILO_N");
+                else pic = view.getInfoImageForType("SILO_S");
+              }
+              else if( cursy === y ){
+                if( x < cursx ) pic = view.getInfoImageForType("SILO_W");
+                else pic = view.getInfoImageForType("SILO_E");
+              }
+              else{
+                if( x < cursx ){
+                  if( y < cursy ) pic = view.getInfoImageForType("SILO_NW");
+                  else pic = view.getInfoImageForType("SILO_SW");
+                }
+                else {
+                  if( y < cursy ) pic = view.getInfoImageForType("SILO_NE");
+                  else pic = view.getInfoImageForType("SILO_SE");
+                }
+              }
+            }
+            
+            tcx = (x)*tileSize;
+            tcy = (y)*tileSize; 
+            if( pic !== null ){
+              ctx.drawImage(
+                pic,
+                tcx,tcy
+              );
+            }
+          }
+        }
 
         // --------------------------------------------------------------------
         // DRAW UNIT
 
         var unit = model.unitPosMap[x][y];
-        if( !inShadow && unit !== null ){
+        var stats = (unit !== null )? controller.getUnitStatusForUnit( unit ) : null;
+        if( !inShadow && unit !== null && 
+           ( !unit.hidden || unit.owner === model.turnOwner || model.players[ unit.owner ].team == teamId ||
+              stats.TURN_OWNER_VISIBLE ) ){
+          
           if( unit !== view.preventRenderUnit ){
             var color;
             if( unit.owner === -1 ){
@@ -314,8 +377,6 @@ view.renderMap = function( scale ){
               );
             }
 
-            var stats = controller.getUnitStatusForUnit( unit );
-
             pic = stats.HP_PIC;
             if( pic !== null ){
               ctx.drawImage(
@@ -336,7 +397,10 @@ view.renderMap = function( scale ){
               sprStepStat !== 9 &&
 
               sprStepStat !== 12 &&
-              sprStepStat !== 13 ){
+              sprStepStat !== 13 &&
+              
+              sprStepStat !== 16 &&
+              sprStepStat !== 17 ){
 
               var st = parseInt( sprStepStat/4 , 10 );
 
@@ -348,20 +412,23 @@ view.renderMap = function( scale ){
                 if( stIn === 0 && stats.LOW_AMMO ){
                   pic = view.getInfoImageForType("SYM_AMMO");
                 }
-                else if( stIn === 1 && stats.LOW_FUEL ){
-                  pic = view.getInfoImageForType("SYM_FUEL");
-                }
-                else if( stIn === 2 && stats.CAPTURES ){
+                else if( stIn === 1 && stats.CAPTURES ){
                   pic = view.getInfoImageForType("SYM_CAPTURE");
+                }
+                else if( stIn === 2 && stats.LOW_FUEL ){
+                  pic = view.getInfoImageForType("SYM_FUEL");
                 }
                 else if( stIn === 3 && stats.HAS_LOADS ){
                   pic = view.getInfoImageForType("SYM_LOAD");
+                }
+                else if( stIn === 4 && unit.hidden ){
+                  pic = view.getInfoImageForType("SYM_HIDDEN");
                 }
 
                 if( pic !== null ) break;
 
                 stIn++;
-                if( stIn === 4 ) stIn = 0;
+                if( stIn === 5 ) stIn = 0;
               }
               while( stIn !== st );
 

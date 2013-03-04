@@ -10,6 +10,8 @@ CWT_MOD_DEFAULT.units = [
       "vision"        : 2,
       "maxFuel"       : 99,
 
+      "canHide"       : true,
+      
       "captures"      : 10,
       "weight"        : 1,
 
@@ -49,7 +51,7 @@ CWT_MOD_DEFAULT.units = [
 
       "maxAmmo"       : 0,
 
-      "mainWeapon"    : "WP_MG"
+      "mainWeapon"    : "WP_MG3"
     },
 
     {
@@ -266,6 +268,8 @@ CWT_MOD_DEFAULT.units = [
       "vision"        : 5,
       "maxFuel"       : 70,
 
+      "canHide"       : true,
+      
       "weight"        : 1,
 
       "maxAmmo"       : 6,

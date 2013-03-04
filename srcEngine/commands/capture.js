@@ -70,8 +70,9 @@ controller.userAction({
         for( var i = pid*CWT_MAX_UNITS_PER_PLAYER,
                  e = i+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
 
-          model.units[i].owner = -1;
-          model.eraseUnitPosition(i);
+          if( model.units[i].owner !== CWT_INACTIVE_ID ){
+            controller.pushAction( i, "DEUN" );
+          }
         }
 
         for( var i = 0, e = model.properties.length; i<e; i++ ){
@@ -81,6 +82,8 @@ controller.userAction({
         }
 
         oldPlayer.team = -1;
+        
+        property.type = "CITY";
 
         // check win/loose
         var _teamFound = -1;
@@ -99,7 +102,7 @@ controller.userAction({
 
         // NO OPPOSITE TEAMS LEFT ?
         if( _teamFound !== -1 ){
-          controller.pushSharedAction("endGame");
+          controller.pushAction("EDGM");
         }
       }
 
@@ -109,7 +112,7 @@ controller.userAction({
 
       var capLimit = model.rules.captureWinLimit;
       if( capLimit !== 0 && capLimit <= model.countProperties() ){
-        controller.pushSharedAction("endGame");
+        controller.pushAction("EDGM");
       }
     }
 

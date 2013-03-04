@@ -1,3 +1,3 @@
 controller.registerMenuRenderer("GMTP",function( content, entry, index ){
-  entry.innerHTML = content+"$";
+  entry.innerHTML = content+"$"; 
 });

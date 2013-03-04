@@ -14,7 +14,7 @@ CWT_MOD_DEFAULT.tiles = [
 
     {
       "ID"                : "MNTN",
-      "defense"           : 5,
+      "defense"           : 4,
       "tags"              : [ "" ]
     },
 
@@ -33,7 +33,7 @@ CWT_MOD_DEFAULT.tiles = [
     {
       "ID"                : "BASE",
       "vision"            : 0,
-      "defense"           : 4,
+      "defense"           : 3,
       "capturePoints"     : 20,
       "funds"             : 1000,
       "repairs"           : {
@@ -51,7 +51,7 @@ CWT_MOD_DEFAULT.tiles = [
     {
       "ID"                : "APRT",
       "vision"            : 0,
-      "defense"           : 4,
+      "defense"           : 3,
       "capturePoints"     : 20,
       "funds"            : 1000,
       "repairs"           : {
@@ -64,7 +64,7 @@ CWT_MOD_DEFAULT.tiles = [
     {
       "ID"                : "PORT",
       "vision"            : 0,
-      "defense"           : 4,
+      "defense"           : 3,
       "capturePoints"     : 20,
       "funds"            : 1000,
       "repairs"           : {
@@ -76,20 +76,20 @@ CWT_MOD_DEFAULT.tiles = [
 
     {
       "ID"                : "SILO",
-      "defense"           : 2,
+      "defense"           : 3,
       "vision"            : 0
     },
 
     {
       "ID"                : "SILO_EMPTY",
-      "defense"           : 2,
+      "defense"           : 3,
       "vision"            : 0
     },
 
     {
       "ID"                : "HQTR",
       "vision"            : 0,
-      "defense"           : 5,
+      "defense"           : 4,
       "capturePoints"     : 20,
       "funds"            : 1000,
       "repairs"           : {
@@ -101,7 +101,7 @@ CWT_MOD_DEFAULT.tiles = [
     {
       "ID"                : "RADAR",
       "vision"            : 4,
-      "defense"           : 4,
+      "defense"           : 3,
       "capturePoints"     : 20,
       "tags"              : [ "PROPERTY", "SCOUT" ]
     },
@@ -126,7 +126,7 @@ CWT_MOD_DEFAULT.tiles = [
 
     {
       "ID"                : "REEF",
-      "defense"           : 3,
+      "defense"           : 1,
       "tags"              : [ "VISION_BLOCK" ]
     },
 

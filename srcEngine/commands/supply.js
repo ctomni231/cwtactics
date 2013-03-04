@@ -7,10 +7,7 @@ controller.userAction({
   unitAction: true,
 
   _resupplyUnitAt: function( x,y ){
-    var unit = model.unitPosMap[x][y];
-    var uSheet = model.sheets.unitSheets[ unit.type ];
-    unit.ammo = uSheet.maxAmmo;
-    unit.fuel = uSheet.maxFuel;
+    controller.pushAction( model.extractUnitId( model.unitPosMap[x][y] ), "RFRS" );
   },
 
   condition: function( mem ){

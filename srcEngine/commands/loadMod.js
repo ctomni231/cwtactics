@@ -40,6 +40,13 @@ controller.engineAction({
       );
     }
     
+    for( var i=0,e=CWT_MOD_DEFAULT.weathers.length; i<e; i++ ){
+      model.parseSheet(
+        CWT_MOD_DEFAULT.weathers[i],
+        model.sheets.WEATHER_TYPE_SHEET
+      );
+    }
+    
     var langs = Object.keys( CWT_MOD_DEFAULT.locale );
     for( var i=0,e=langs.length; i<e; i++ ){
       util.i18n_appendToLanguage(

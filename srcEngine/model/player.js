@@ -7,7 +7,11 @@ model.players = util.list( CWT_MAX_PLAYER+1, function( index ){
   return {
     gold: 0,
     team: ( neutral )? 9999 : CWT_INACTIVE_ID,
-    name: ( neutral )? "NEUTRAL" : null
+    name: ( neutral )? "NEUTRAL" : null,
+    
+    mainCo: null,
+    sideCo: null,
+    power: 0
   };
 });
 

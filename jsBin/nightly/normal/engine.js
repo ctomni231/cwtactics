@@ -75,7 +75,7 @@ var CWT_INACTIVE_ID = -1;
  *
  * @constant 
  */ 
-var CWT_VERSION = "Milestone 2.6";
+var CWT_VERSION = "Milestone 2.7";
 
 /**
  * The model layer holds all necessary data for a game round. This layer can be
@@ -398,6 +398,24 @@ model.ruleTable = {};
  */
 model.ruleTable.dataLevel = {
 
+  funds:                  1000,
+
+  noUnitsLeftLoose:       false,
+
+  autoSupplyAtTurnStart:  true,
+
+  cityRepair:             20,
+
+  captureWinLimit:        0,
+
+  turnTimeLimit:          3000000,
+  dayLimit:               0,
+  daysOfPeace:            0,
+
+  unitLimit:              50,
+
+  blockedUnits:           [],
+  
   /** attack damage modifier */
   att:100,
 
@@ -423,7 +441,13 @@ model.ruleTable.dataLevel = {
   fogEnabled:true,
   
   /** is a silo usable? */
-  usableSilo:true
+  usableSilo:true,
+  
+  resupplyUnitOnAlliedProperties: true,
+  
+  healUnitsOnProperties: true,
+  
+  healUnitsOnAlliedProperties: true
 };
 
 model.ruleTable.mapLevel = Object.create( model.ruleTable.dataLevel );
@@ -454,6 +478,26 @@ model.setRulesByOption = function( options ){
     } else{
       rules[key] = modRules[key];
     }
+  }
+};
+
+model.setRule = function( str ){
+  var tokens = str.split(" ");
+  
+  var property = tokens[0];
+  var value = tokens[1];
+  
+  switch( property ){
+      
+    case "siloRegenerationDays":
+      model.rules.siloRegeneration = model.daysToTurns( value );
+      break;
+      
+    case "siloRegenerationTurns":
+      model.rules.siloRegeneration = value;
+      break;
+      
+    default: util.raiseError("unknown gamerule", property); 
   }
 };
 /**
@@ -597,7 +641,8 @@ model.fillMoveMap = function( data ){
   var range  = type.moveRange;
   var x = data.sourceX;
   var y = data.sourceY;
-
+  var wth = model.weather.ID;
+  
   // DECREASE RANGE IF NOT ENOUGH FUEL IS AVAILABLE
   if( unit.fuel < range ) range = unit.fuel;
 
@@ -656,13 +701,14 @@ model.fillMoveMap = function( data ){
       var tx = checker[n  ];
       var ty = checker[n+1];
 
-      var cost = model.moveCosts( mType, model.map[ tx ][ ty ] );
+      var cost = model.moveCosts( mType, model.map[ tx ][ ty ], wth );
       if( cost !== 0 ){
 
         var cunit = model.unitPosMap[tx][ty];
         if( cunit !== null &&
-          model.fogData[tx][ty] > 0 &&
-          model.players[cunit.owner].team !== player.team ){
+            model.fogData[tx][ty] > 0 &&
+            !cunit.hidden &&
+            model.players[cunit.owner].team !== player.team ){
           continue;
         }
 
@@ -691,7 +737,7 @@ model.fillMoveMap = function( data ){
   for( var x=0,xe=model.mapWidth; x<xe; x++ ){
     for( var y=0,ye=model.mapHeight; y<ye; y++ ){
       if( data.getSelectionValueAt(x,y) !== -1 ){
-        var cost = model.moveCosts( mType, model.map[x][y] );
+        var cost = model.moveCosts( mType, model.map[x][y], wth );
         data.setSelectionValueAt( x, y, cost );
       }
     }
@@ -797,6 +843,7 @@ model.setPathByRecalculation = function( data, tx,ty ){
     movePath[i] = codesPath[i];
   }
 };
+
 /**
  * List that contains all player instances. An inactive player is marked 
  * with {@link CWT_INACTIVE_ID} as team number.
@@ -806,7 +853,11 @@ model.players = util.list( CWT_MAX_PLAYER+1, function( index ){
   return {
     gold: 0,
     team: ( neutral )? 9999 : CWT_INACTIVE_ID,
-    name: ( neutral )? "NEUTRAL" : null
+    name: ( neutral )? "NEUTRAL" : null,
+    
+    mainCo: null,
+    sideCo: null,
+    power: 0
   };
 });
 
@@ -898,7 +949,7 @@ model.propertyPosMap = util.matrix(
  */
 model.tileIsProperty = function( x,y ){
   var prop = model.propertyPosMap[x][y];
-  return prop !== undefined;
+  return prop !== null;
 };
 
 /**
@@ -1051,6 +1102,25 @@ model.canAct = function( uid ){
 model.isTurnOwner = function( pid ){
   return model.turnOwner === pid;
 };
+
+/**
+ * 
+ *
+ * @param {Number} v number in days
+ */
+model.daysToTurns = function( v ){
+  return model.players.length*v;
+};
+
+/**
+ *
+ */
+model.weather = null;
+
+/**
+ *
+ */
+model.weatherDays = 0;
 /**
  * Contains all data sheets of the game.
  * 
@@ -1178,7 +1248,8 @@ model.sheets.typeSheetValidators = {
   weatherValidator: {
     type: 'object',
     properties:{
-      ID: { type:'string', except:[], required:true }
+      ID: { type:'string', except:[], required:true },
+      visionChange: { type:'integer' }
     }
   },
 
@@ -1189,8 +1260,12 @@ model.sheets.typeSheetValidators = {
       ID: { type:'string', except:[], required:true },
       costs: {
         type: "object",
-        patternProperties: {
-          '[.]*': { type:"integer", minimum:0 } }
+        properties:{
+          type: "object",
+          patternProperties: {
+            '[.]*': { type:"integer", minimum:0 } 
+          }
+        }
       }
     }
   }
@@ -1364,13 +1439,12 @@ model.getBaseDamage = function( weapon, uType ){
  * @param movetype move type object
  * @param {String} tiletype tile type
  */
-model.moveCosts = function( movetype, tiletype ){
+model.moveCosts = function( movetype, tiletype, wth ){
   var c;
+  var set = movetype.costs[ wth ];
 
-  // search id
-  c = movetype.costs[ tiletype ];
-
-  if( c === undefined ) c = movetype.costs["*"];
+  c = set[ tiletype ];
+  if( c === undefined ) c = set["*"];
 
   return c;
 };
@@ -1469,6 +1543,8 @@ model.unloadUnitFrom = function( lid, tid ){
  * @param {Number} tid transporter id
  */
 model.canLoad = function( lid, tid ){
+  if( lid === tid ) util.raiseError();
+  
   var tp = model.units[ tid ];
   var lu = model.units[ lid ];
 
@@ -1533,10 +1609,11 @@ model.units = util.list( CWT_MAX_PLAYER*CWT_MAX_UNITS_PER_PLAYER, function(){
     y:0,
     hp: 99,
     ammo: 0,
+    fuel: 0,
     type: null,
     loadedIn: -1,
-    fuel: 0,
-    owner: CWT_INACTIVE_ID,
+    hidden: false,
+    owner: CWT_INACTIVE_ID
   };
 });
 
@@ -1593,13 +1670,35 @@ model.tileOccupiedByUnit = function( x,y ){
 model.countUnits = function( pid ){
   var startIndex = pid*CWT_MAX_UNITS_PER_PLAYER;
   var n = 0
-  for( var i=0, e=startIndex+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
+  for( var i=startIndex, e=startIndex+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
     if( model.units[i].owner !== CWT_INACTIVE_ID ){
       n++;
     }
   }
 
   return n;
+};
+
+/**
+ *
+ */
+model.unitHpPt = function( unit ){
+  return parseInt( unit.hp/10 )+1;
+};
+
+/**
+ *
+ */
+model.unitHpPtRest = function( unit ){
+  var pt = parseInt( unit.hp/10 )+1;
+  return unit.hp - pt;
+};
+
+/**
+ *
+ */
+model.ptToHp = function( pt ){
+  return (pt*10);
 };
 /**
  * Wrapper object to make actions locally callable without invoking a transaction context nor being
@@ -2119,7 +2218,59 @@ controller.sendNetworkMessage_ = function( args ){
   util.unexpectedSituationError();
 };
 
+controller.eventScripts_ = {};
 
+controller.scripts_ = {};
+
+controller.SCRIPT_TRIGGER = {
+  MOVE_ON_TILE :  0,
+  MOVE_OFF_TILE : 1,
+  UNIT_ATTACKED : 2
+};
+
+controller.SCRIPT_ACTIONS = {
+  LOG : 0
+};
+
+controller.addScriptEvent = function( id, trigger, action ){
+  controller.eventScripts_[trigger] = [];
+  controller.eventScripts_[trigger].push( action );
+};
+
+controller.triggerScriptEvent = function( name, obj ){
+
+};
+
+
+/**
+ *
+ *
+ *
+ */
+controller.ruleInterpreter = function( value, rules ){
+  for( var i=0,e=rules.length; i<e; i++ ){
+    
+    var ruleAst = rules[i];
+    var key = ruleAst[0];
+    switch( key ){
+      
+      case 0:
+        value += ruleAst[1];
+        break;
+      
+      case 1:
+        value *= ruleAst[1];
+        break;
+        
+      case 2:
+        value = ruleAst[1];
+        break;
+        
+    }
+  }
+    
+  return value;
+};
 /**
  * The central finite state machine of the game engine.
  *
@@ -2262,7 +2413,9 @@ controller.stateMachine.data = {
 
     // ----- UNIT -----
     refObj = isValid? model.unitPosMap[x][y] : null;
-    if( isValid && !inFog && refObj !== null ){
+    if( isValid && !inFog && refObj !== null && 
+        ( !refObj.hidden || refObj.owner === model.turnOwner || model.players[ refObj.owner ].team == model.players[ model.turnOwner ].team ) ){
+      
       this[tags[2]] = refObj;
       this[tags[3]] = model.extractUnitId(refObj);
     }
@@ -2592,7 +2745,11 @@ controller.stateMachine.data = {
         this.addEntry( commandKeys[i] );
       }
     }
-  }
+  },
+  
+  // -------------------------------------------------
+  
+  inMultiStep: false
 
 };
 /**
@@ -2671,10 +2828,12 @@ controller.stateMachine.structure.ACTION_MENU = {
 controller.stateMachine.structure.ACTION_SUBMENU = {
   
   onenter: function( ev, x,y ){
-    this.data.cleanMenu();
-    controller.getActionObject( this.data.action ).prepareMenu( this.data );
-    if( this.data.menuSize === 0 ){        
-      util.raiseError("sub menu cannot be empty");
+    if( !this.data.inMultiStep ){
+      this.data.cleanMenu();
+      controller.getActionObject( this.data.action ).prepareMenu( this.data );
+      if( this.data.menuSize === 0 ){        
+        util.raiseError("sub menu cannot be empty");
+      }
     }
   },
   
@@ -2711,69 +2870,65 @@ controller.stateMachine.structure.ACTION_SUBMENU = {
  */
 controller.stateMachine.structure.FLUSH_ACTION = {
   
-    actionState: function(){
-      var trapped = false;
-      if( this.data.movePath !== null ){
-        var way = this.data.movePath;
-
-        var cx = this.data.sourceX;
-        var cy = this.data.sourceY;
-        for( var i=0,e=way.length; i<e; i++ ){
-
-          switch( way[i] ){
-            case model.MOVE_CODE_DOWN  : cy++; break;
-            case model.MOVE_CODE_UP    : cy--; break;
-            case model.MOVE_CODE_LEFT  : cx--; break;
-            case model.MOVE_CODE_RIGHT : cx++; break;
-          }
-
-          // ONLY TILES THAT ARE IN FOG OF WAR MUST BE CHECKED AGAINST
-          // HIDDEN ENEMY UNITS
-          if( model.fogData[cx][cy] === 0 ){
-            var unit = model.unitPosMap[cx][cy];
-            if( unit != null ){
-
-              // TRAPPED ?
-              if( model.players[model.turnOwner].team !==
-                    model.players[unit.owner].team ){
-
-                // CONVERT TO TRAP WAIT
-                this.data.action = "TRWT";
-                this.data.setTarget(cx,cy);
-                way.splice( i );
-                trapped = true;
-              }
-            }
+  actionState: function(){
+    var trapped = false;
+    if( this.data.movePath !== null ){
+      var way = this.data.movePath;
+      
+      var cx = this.data.sourceX;
+      var cy = this.data.sourceY;
+      for( var i=0,e=way.length; i<e; i++ ){
+        
+        switch( way[i] ){
+          case model.MOVE_CODE_DOWN  : cy++; break;
+          case model.MOVE_CODE_UP    : cy--; break;
+          case model.MOVE_CODE_LEFT  : cx--; break;
+          case model.MOVE_CODE_RIGHT : cx++; break;
+        }
+        
+        var unit = model.unitPosMap[cx][cy];
+        if( unit !== null ){
+          
+          // TRAPPED ?
+          if( model.players[model.turnOwner].team !==
+             model.players[unit.owner].team ){
+            
+            // CONVERT TO TRAP WAIT
+            this.data.action = "TRWT";
+            this.data.setTarget(cx,cy);
+            way.splice( i );
+            trapped = true;
           }
         }
       }
-
-      // PUSH A COPY INTO THE COMMAND BUFFER
-      var action;
-      var actObj;
-      var actArgs;
-      
-      if( this.data.movePath.length > 0 ){
-        action = "MOVE";
-        actObj = controller.getActionObject( action );
-        actArgs = actObj.createDataSet( this.data );
-        actArgs.push(action);
-        controller.pushSharedAction.apply( null, actArgs );
-      }
-
-      action = this.data.action;
-      actObj = this.data.actionObject;
+    }
+    
+    // PUSH A COPY INTO THE COMMAND BUFFER
+    var action;
+    var actObj;
+    var actArgs;
+    
+    if( this.data.movePath.length > 0 ){
+      action = "MOVE";
+      actObj = controller.getActionObject( action );
       actArgs = actObj.createDataSet( this.data );
       actArgs.push(action);
       controller.pushSharedAction.apply( null, actArgs );
-
-      if( !trapped && actObj.multiStepAction ){
-        this.data.inMultiStep = true;
-        controller.pushSharedAction.apply( null, ["IVMS"] );
-        return "MULTISTEP_IDLE";
-      }
-      else return "IDLE";
     }
+    
+    action = this.data.action;
+    actObj = this.data.actionObject;
+    actArgs = actObj.createDataSet( this.data );
+    actArgs.push(action);
+    controller.pushSharedAction.apply( null, actArgs );
+    
+    if( !trapped && actObj.multiStepAction ){
+      this.data.inMultiStep = true;
+      controller.pushSharedAction.apply( null, ["IVMS"] );
+      return "MULTISTEP_IDLE";
+    }
+    else return "IDLE";
+  }
   
 };
 /**
@@ -2793,6 +2948,7 @@ controller.stateMachine.structure.IDLE = {
     this.data.setSource(-1,-1);
     this.data.setSelectionTarget(-1,-1);
     this.history.splice(0);
+    this.data.inMultiStep = false;
   },
 
   action: function(ev, x, y){
@@ -2801,6 +2957,9 @@ controller.stateMachine.structure.IDLE = {
     mem.setSource(x, y);
 
     if ( mem.sourceUnitId !== CWT_INACTIVE_ID && mem.sourceUnit.owner === model.turnOwner && model.canAct(mem.sourceUnitId)){
+      this.data.setTarget(x, y);
+      this.data.cleanMovepath();
+      model.fillMoveMap( this.data );
       return "MOVEPATH_SELECTION";
     } 
     else{
@@ -2836,11 +2995,7 @@ controller.stateMachine.structure.IDLE_R = {
 };
  controller.stateMachine.structure.MOVEPATH_SELECTION = {
   
-    onenter: function( ev, x,y ){
-      this.data.setTarget(x, y);
-      this.data.cleanMovepath();
-      model.fillMoveMap( this.data );
-    },
+    onenter: function( ev, x,y ){},
   
     action: function( ev,x,y ){
       if( this.data.getSelectionValueAt(x,y) < 0){
@@ -2894,6 +3049,8 @@ controller.stateMachine.structure.MULTISTEP_IDLE = {
 
       actObj.prepareMenu( this.data );
       this.data.addEntry("done");
+      
+      this.data.inMultiStep = true;
 
       return ( this.data.menuSize > 1 )? "ACTION_SUBMENU": "IDLE";
 
@@ -3063,16 +3220,20 @@ controller.userAction({
 
     if( mainWp !== undefined ){
       mainWp = model.sheets.weaponSheets[ mainWp ];
-      var minR = mainWp.minRange;
-      var maxR = mainWp.maxRange;
-      if( minR === 1 && maxR === 1 && dis === 1 ) return mainWp;
+      if( mainWp.usesAmmo === 0 || def.ammo > 0 ){
+        var minR = mainWp.minRange;
+        var maxR = mainWp.maxRange;
+        if( minR === 1 && maxR === 1 && dis === 1 ) return mainWp;
+      }
     }
 
     if( sideWp !== undefined ){
       sideWp = model.sheets.weaponSheets[ sideWp ];
-      var minR = sideWp.minRange;
-      var maxR = sideWp.maxRange;
-      if( minR === 1 && maxR === 1 && dis === 1 ) return sideWp;
+      if( sideWp.usesAmmo === 0 || def.ammo > 0 ){
+        var minR = sideWp.minRange;
+        var maxR = sideWp.maxRange;
+        if( minR === 1 && maxR === 1 && dis === 1 ) return sideWp;
+      }
     }
 
     // NO POSSIBLE COUNTER WEAPON
@@ -3146,6 +3307,10 @@ controller.userAction({
 
     if( wp === undefined ) return false;
 
+    if( wp.usesAmmo === 1 && unit.ammo === 0 ) return false;
+    
+    if( moved && wp.fireType === "INDIRECT" ) return false;
+    
     var minR = wp.minRange;
     var maxR = wp.maxRange;
 
@@ -3257,15 +3422,20 @@ controller.userAction({
     if( data.targetUnitId !== CWT_INACTIVE_ID && data.targetUnitId !== data.sourceUnitId ) return false;
 
     var selectedUnit = data.sourceUnit;
-
+    
+    var moved = false;
+    if( data.movePath.length > 0 ){
+      moved = true;
+    }
+    
     var x = data.targetX;
     var y = data.targetY;
 
     if(
       ( model.primaryWeaponOfUnit(selectedUnit) !== null &&
-        this.hasTargets( selectedUnit,model.PRIMARY_WEAPON_TAG,x,y, true )) ||
+        this.hasTargets( selectedUnit,model.PRIMARY_WEAPON_TAG,x,y, moved )) ||
         ( model.secondaryWeaponOfUnit(selectedUnit) !== null &&
-          this.hasTargets( selectedUnit,model.SECONDARY_WEAPON_TAG,x,y, true ))
+          this.hasTargets( selectedUnit,model.SECONDARY_WEAPON_TAG,x,y, moved ))
 
       ){
       return true;
@@ -3273,18 +3443,61 @@ controller.userAction({
     else return false;
   },
   
+  getEndDamage: function( attacker, wp, defender ){
+    
+    var BASE = model.getBaseDamage( wp, defender.type );
+    
+    var AHP = model.unitHpPt( attacker );
+    var ACO = 100;
+    var LUCK = parseInt( Math.random()*10, 10 );
+    
+    var DCO = 100;
+    
+    var ftype;
+    if( model.propertyPosMap[defender.x][defender.y] !== null ){
+      ftype = model.propertyPosMap[defender.x][defender.y].type;
+    }
+    else ftype = model.map[defender.x][defender.y];
+    
+    var DTR = model.sheets.tileSheets[ ftype ].defense;
+    var DHP = model.unitHpPt( defender );
+    
+    // D%=[B*ACO/100+R]*(AHP/10)*[(200-(DCO+DTR*DHP))/100]
+    var damage = (BASE*ACO/100+LUCK) * (AHP/10) * ( (200-( DCO+(DTR*DHP) ) ) /100 );
+    damage = parseInt( damage, 10 );
+    
+    if( DEBUG ){
+      util.log(
+        "attacker: ",model.extractUnitId( attacker ),
+        "[",BASE,"*",ACO,"/100+",LUCK,"]*(",AHP,"/10)*[(200-(",DCO,"+",DTR,"*",DHP,"))/100]",
+        "=",damage
+      );
+    }
+    
+    return damage;
+  },
+  
   createDataSet: function( data ){
-    var wp = ( data.subAction === 'mainWeapon')?
-      model.primaryWeaponOfUnit( data.sourceUnit ):
-      model.secondaryWeaponOfUnit( data.sourceUnit );
+    
+    var attWp = ( data.subAction === 'mainWeapon')? model.primaryWeaponOfUnit( data.sourceUnit ): model.secondaryWeaponOfUnit( data.sourceUnit );
+    var attDmg = this.getEndDamage( data.sourceUnit, attWp, data.selectionUnit );
+    
+    var defDmg = 0;
+    var defWp = this.counterWeapon( data.selectionX, data.selectionY, data.targetX, data.targetY );
+    if( defWp !== null ){
+      defDmg = this.getEndDamage( data.selectionUnit, defWp, data.sourceUnit );
+    }
     
     return [ 
+      
       data.sourceUnitId, 
-      model.getBaseDamage( wp, data.selectionUnit.type ),
-      data.subAction === model.PRIMARY_WEAPON_TAG,
+      attDmg,
+      attWp.usesAmmo !== 0,
+      
       data.selectionUnitId, 
-      0,
-      false
+      defDmg,
+      ( defWp !== null && defWp.usesAmmo !== 0 )
+      
     ];
   },
   
@@ -3307,30 +3520,30 @@ controller.userAction({
     controller.actions.damageUnit( did, admg );
     controller.actions.wait( aid );
     
+    if( aUseAmmo ) model.units[aid].ammo--;
+    
+    var dSheets = model.sheets.unitSheets[ model.units[did].type ];
+    controller.actions.givePower( 
+      model.units[aid].owner,  
+      ( 0.5*parseInt( admg/10, 10 )*dSheets.cost )
+    );
+    
     // COUNTER ATTACK
     if( model.units[did].owner !== CWT_INACTIVE_ID ){
       controller.actions.damageUnit( aid, ddmg );  
+      
+      if( dUseAmmo ) model.units[did].ammo--;
+      
+      var aSheets = model.sheets.unitSheets[ model.units[aid].type ];
+      controller.actions.givePower( 
+        model.units[did].owner,  
+        ( parseInt( admg/10, 10 )*dSheets.cost )
+      );
     }
   }
 });
 
 /********
-
- D%=[B*ACO/100+R]*(AHP/10)*[(200-(DCO+DTR*DHP))/100]
-
- D = Actual damage expressed as a percentage
-
- B = Base damage (in damage chart)
- ACO = Attacking CO attack value (example:130 for Kanbei)
-
- R = Random number 0-9
-
- AHP = HP of attacker
-
- DCO = Defending CO defense value (example:80 for Grimm)
- DTR = Defending Terrain Stars (IE plain = 1, wood = 2)
- DHP = HP of defender
-
  Denoted as xxxXXXX where x = small star and X = big star..for now.
  Every star is worth 9000 fund at the start of the game. Each additional
  use of CO Power(including SCOP) increase the value of each star by 1800
@@ -3459,13 +3672,20 @@ controller.engineAction({
    * @methodOf controller.actions
    * @name calculateFog
    */
-  action: function( pid ){
+  action: function( pid, weather ){
     var x;
     var y;
     var xe = model.mapWidth;
     var ye = model.mapHeight;
     var tid = model.players[pid].team;
     var fogEnabled = model.rules.fogEnabled;
+    
+    if( weather === undefined ) weather = model.weather.ID;
+    
+    var visionMod = model.sheets.weatherSheets[weather].visionChange;
+    if( visionMod === undefined ){
+      visionMod = 0;
+    }
     
     for( x=0 ;x<xe; x++ ){
       for( y=0 ;y<ye; y++ ){
@@ -3487,7 +3707,9 @@ controller.engineAction({
             if( unit !== null ){
               var sid = unit.owner;
               if( pid === sid || model.players[sid].team === tid ){
-                var vision = model.sheets.unitSheets[unit.type].vision;
+                var vision = model.sheets.unitSheets[unit.type].vision + visionMod;
+                if( vision < 0 ) vision = 0;
+                
                 controller.actions.addVision( x,y, vision );
               }
             }
@@ -3497,7 +3719,9 @@ controller.engineAction({
             if( property !== null ){
               var sid = property.owner;
               if( pid === sid || model.players[sid].team === tid ){
-                var vision = model.sheets.tileSheets[property.type].vision;
+                var vision = model.sheets.tileSheets[property.type].vision + visionMod;
+                if( vision < 0 ) vision = 0;
+                
                 controller.actions.addVision( x,y, vision );
               }
             }
@@ -3579,8 +3803,9 @@ controller.userAction({
         for( var i = pid*CWT_MAX_UNITS_PER_PLAYER,
                  e = i+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
 
-          model.units[i].owner = -1;
-          model.eraseUnitPosition(i);
+          if( model.units[i].owner !== CWT_INACTIVE_ID ){
+            controller.pushAction( i, "DEUN" );
+          }
         }
 
         for( var i = 0, e = model.properties.length; i<e; i++ ){
@@ -3590,6 +3815,8 @@ controller.userAction({
         }
 
         oldPlayer.team = -1;
+        
+        property.type = "CITY";
 
         // check win/loose
         var _teamFound = -1;
@@ -3608,7 +3835,7 @@ controller.userAction({
 
         // NO OPPOSITE TEAMS LEFT ?
         if( _teamFound !== -1 ){
-          controller.pushSharedAction("endGame");
+          controller.pushAction("EDGM");
         }
       }
 
@@ -3618,13 +3845,35 @@ controller.userAction({
 
       var capLimit = model.rules.captureWinLimit;
       if( capLimit !== 0 && capLimit <= model.countProperties() ){
-        controller.pushSharedAction("endGame");
+        controller.pushAction("EDGM");
       }
     }
 
     controller.actions.wait( cid );
   }
   
+});
+controller.engineAction({
+
+  name:"changeWeather",
+  
+  key:"CWTH",
+  
+  /**
+   * @methodOf controller.actions
+   * @name changeWeather
+   */
+  action: function( wth, duration ){
+    if( DEBUG ){
+      util.log( "changing weather to",wth,"for",duration, "days" );
+    }
+    
+    model.weatherDays = duration;
+    model.weather = model.sheets.weatherSheets[ wth ];
+    
+    // WILL BE DONE AUTOMATICALLY
+    // controller.pushAction("CCFO");
+  }
 });
 controller.engineAction({
 
@@ -3698,17 +3947,7 @@ controller.engineAction({
     var unit = model.units[uid];
     
     unit.hp -= hp;
-    if( unit.hp < 0 ){
-      controller.actions.destroyUnit( uid );
-    }
-    else{
-      
-      var num = -1;
-      if( unit.hp <= 90 ){
-        num = parseInt( unit.hp/10 , 10 )+1;
-      }
-      unit.ST_HP_NUM = num;
-    }
+    if( unit.hp <= 0 ) controller.pushAction( uid, "DEUN" );
   }
   
 });
@@ -3735,10 +3974,13 @@ controller.engineAction({
       controller.pushAction( unit.x, unit.y, model.sheets.unitSheets[ unit.type ].vision, "RVIS" );
     }
     
+    var pid = unit.owner;
     unit.owner = CWT_INACTIVE_ID;
-    model.unitPosMap[ unit.x ][ unit.y ] = null;
-    //unit.x = -1;
-    //unit.y = -1;
+    if( unit.x !== -1 ) model.unitPosMap[ unit.x ][ unit.y ] = null;
+    
+    if( model.rules.noUnitsLeftLoose && model.countUnits( pid ) === 0 ){
+      controller.pushAction("EDGM");
+    }
   }
 });
 controller.engineAction({
@@ -3772,14 +4014,9 @@ controller.userAction({
   condition: function( mem ){
     if( model.players[ model.turnOwner ].gold < 500 ) return false;
 
-    var selectedUnit = mem.sourceUnit;
-    var unit = mem.targetUnit;
-    if( unit === null ) return false;
-    
-    if( selectedUnit !== null && unit !== selectedUnit ) return false;
-
     var property = mem.targetProperty;
-    if( unit === null && property === null ) return false;
+    if( property === null ) return false;
+    if( property.owner === model.turnOwner ) return false;
 
     return true;
   },
@@ -3827,6 +4064,20 @@ controller.userAction({
   }
 
 });
+controller.engineAction({
+
+  name:"givePower",
+  
+  key:"GIPO",
+  
+  /**
+   * @methodOf controller.actions
+   * @name givePower
+   */
+  action: function( pid, power ){
+    model.players[ pid ].power += power;
+  }
+});
 controller.userAction({
 
   name:"givePropertyToPlayer",
@@ -3843,7 +4094,7 @@ controller.userAction({
   condition: function( mem ){
     var selected = mem.sourceProperty;
     if( selected === null ) return false;
-    if( selected.type === "HQ" ) return false;
+    if( selected.type === "HQTR" ) return false;
     return true;
   },
 
@@ -3901,6 +4152,8 @@ controller.userAction({
     var selectedUnit = mem.sourceUnit;
     if( selectedUnit === null ) return false;
     if( mem.targetUnit !== null ) return false;
+    
+    if( model.hasLoadedIds( mem.sourceUnitId ) ) return false; 
     
     var unit = mem.targetUnit;
     return unit !== selectedUnit;
@@ -3983,6 +4236,42 @@ controller.engineAction({
     unit.ST_HP_NUM = num;
   }
 });
+controller.userAction({
+
+  name:"hideUnit",
+  
+  key:"HIUN",
+  
+  unitAction: true,
+  
+  condition: function( mem ){
+    if( mem.targetUnit !== null ) return false;
+    
+    var unit = mem.sourceUnit;
+    if( unit === null ) return false;
+    if( unit.hidden ) return false;
+    
+    var sheet = model.sheets.unitSheets[ unit.type ];
+    
+    return sheet.canHide;
+  },
+  
+  createDataSet: function( mem ){
+    return [ mem.sourceUnitId ];
+  },
+  
+  /**
+   * Hides an unit.
+   *
+   * @param {Number} uid unit id
+   *
+   * @methodOf controller.actions
+   * @name hideUnit
+   */
+  action: function( uid ){
+    model.units[uid].hidden = true;
+  }
+});
 controller.engineAction({
 
   name:"invokeMultiStepAction",
@@ -4039,8 +4328,11 @@ controller.userAction({
     var joinTarget = model.units[tid];
     var junitSheet = model.sheets.unitSheets[ joinTarget.type ];
 
+    var sHp = model.unitHpPt( joinSource );
+    var tHp = model.unitHpPt( joinSource );
+    
     // HEALTH POINTS
-    controller.actions.healUnit( tid, joinSource.hp );
+    controller.actions.healUnit( tid, model.ptToHp(sHp) );
 
     // AMMO
     joinTarget.ammo += joinSource.ammo;
@@ -4085,8 +4377,10 @@ controller.engineAction({
     // LOAD RULES
     model.setRulesByOption({});
     
+    controller.actions.changeWeather( "SUN", 4+ parseInt( Math.random()*6, 10 ) );
+    
     controller.actions.calculateFog( model.turnOwner );
-
+    
     if( DEBUG ){
       util.log("game instance successfully loaded");
     }
@@ -4131,6 +4425,13 @@ controller.engineAction({
       model.parseSheet(
         CWT_MOD_DEFAULT.weapons[i],
         model.sheets.WEAPON_TYPE_SHEET
+      );
+    }
+    
+    for( var i=0,e=CWT_MOD_DEFAULT.weathers.length; i<e; i++ ){
+      model.parseSheet(
+        CWT_MOD_DEFAULT.weathers[i],
+        model.sheets.WEATHER_TYPE_SHEET
       );
     }
     
@@ -4326,7 +4627,7 @@ controller.engineAction({
       }
 
       // INCREASE FUEL USAGE
-      fuelUsed += model.moveCosts( mType, model.map[cX][cY] );
+      fuelUsed += model.moveCosts( mType, model.map[cX][cY], model.weather.ID );
     }
 
     unit.fuel -= fuelUsed;
@@ -4383,42 +4684,23 @@ controller.engineAction({
   }
 });
 controller.userAction({
-
+  
   name: "nextTurn",
-
+  
   key: "NXTR",
-
+  
   condition: function( mem ){
-
-    if( mem.sourceUnitId === CWT_INACTIVE_ID ){
-      // NO UNIT
-
-      if( mem.sourcePropertyId !== CWT_INACTIVE_ID && mem.sourceProperty.owner === model.turnOwner ){
-
-        // PROPERTY
-        return false;
-      }
-      else return true;
+    if( mem.sourceUnit === null ) return true;
+    if( mem.sourceUnit.owner === model.turnOwner ){
+      return !model.canAct( mem.sourceUnitId );
     }
-    else{
-      // UNIT
-
-      if( mem.sourceUnit.owner === model.turnOwner && model.canAct( mem.sourceUnitId ) ){
-
-        // ACT ABLE OWN
-        return false;
-      }
-      else return true;
-    }
-
-    // FALLBACK
-    return false;
+    else return true;
   },
-
+  
   createDataSet: function( mem ){
     return [];
   },
-
+  
   /**
    * Ends the turn for the current active player.
    *
@@ -4428,86 +4710,145 @@ controller.userAction({
   action: function(){
     var pid = model.turnOwner;
     var oid = pid;
-
+    var wtp;
+    
     // FIND NEXT PLAYER
     pid++;
+    var turns = 1;
     while( pid !== oid ){
-
+      
       if( pid === CWT_MAX_PLAYER ){
-
+        
         pid = 0;
         model.day++;
-
+        
+        model.weatherDays--;
+        if( model.weatherDays <= 0 ){
+          var days;
+          
+          var old = model.weather.ID;
+          if( old !== "SUN" ){
+            days = 4 + parseInt( Math.random()*6, 10 );
+            wtp = "SUN";
+          }
+          else{
+            days = 1;
+            
+            var weatherKeys = Object.keys(model.sheets.weatherSheets);
+            var oldIndex = weatherKeys.indexOf( old );
+            
+            if( oldIndex === -1 ) util.raiseError();
+            
+            weatherKeys.splice( oldIndex, 1 );
+            
+            var index = parseInt( Math.random()*weatherKeys.length, 10 );
+            wtp = weatherKeys[index];
+          }
+          
+          controller.pushSharedAction( wtp, days, "CWTH" );
+        }
+        
         var dayLimit = model.rules.dayLimit;
         if( dayLimit !== 0 && model.day === dayLimit ){
-          controller.pushSharedAction("endGame");
+          controller.pushSharedAction("EDGM");
         }
       }
-
+      
       if( model.players[pid].team !== CWT_INACTIVE_ID ){
-
+        
         // FOUND NEXT PLAYER
         break;
       }
-
+      
       // INCREASE ID
       pid++;
+      turns++;
     }
     if( pid === oid ){
       util.raiseError();
     }
-
+    
     model.turnOwner = pid;
-
+  
+    var turnOwnerObj = model.players[pid];  
+    var cityRepair = model.rules.cityRepair;
+    var fundsValue = model.rules.funds;
+    var autoSupply = model.rules.autoSupplyAtTurnStart;
+    var autoSupplyAllied = model.rules.resupplyUnitOnAlliedProperties;
+    var healUnits = model.rules.healUnitsOnProperties;
+    var healUnitsAllied = model.rules.healUnitsOnAlliedProperties;
+  
     var startIndex= pid* CWT_MAX_UNITS_PER_PLAYER;
     for( var i= startIndex, e= i+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
-
-      model.leftActors[i-startIndex] = (model.units[i] !== null);
+      var unit = model.units[i];
+      
+      model.leftActors[i-startIndex] = (unit !== null);
+      
+      if( unit !== null && unit.x !== -1  && unit.owner !== CWT_INACTIVE_ID ){
+        
+        // RESUPPLY APCR
+        if( autoSupply && model.sheets.unitSheets[unit.type].hasOwnProperty("supply") ){
+          controller.pushAction( i, unit.x, unit.y, "TSSP" );
+        }
+        
+        // RESUPPLY CITY
+        var property = model.propertyPosMap[ unit.x ][ unit.y ]
+        if( property !== null && property.owner !== CWT_INACTIVE_ID ){
+          
+          var alliedProp = (model.players[property.owner].team === turnOwnerObj.team);
+          
+          if( property.owner === pid || ( autoSupplyAllied && alliedProp ) ){
+            controller.pushAction( i, "RFRS" );
+          }
+          
+          if( healUnits && unit.hp < 99 ){
+            if( property.owner === pid || ( healUnitsAllied && alliedProp ) ){
+              controller.pushAction( i, 20, "HEUN" );
+            }
+          }
+        }
+      }
     }
     
     for( var i=0,e=CWT_MAX_PROPERTIES; i<e; i++ ){
+      
       if( model.properties[i].type === "SILO_EMPTY" ){
-        controller.actions.siloRegeneration(i);
+        controller.actions.siloRegeneration(i,turns);
+      }
+      
+      // FUNDS
+      if( model.properties[i].owner === pid ){
+        turnOwnerObj.gold += fundsValue;
       }
     }
     
-    /*
-    var dataObj = new controller.ActionData();
-    var autoSupply = model.rules.autoSupplyAtTurnStart;
-    dataObj.setAction("supplyTurnStart");
-    var startIndex= pid* CWT_MAX_UNITS_PER_PLAYER;
-    for( var i= startIndex, e= i+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
-
-      model.leftActors[i-startIndex] = (model.units[i] !== null);
-
-      // TODO make better
-      var unit = model.units[i];
-      if( autoSupply && unit.type === "APCR" ){
-
-        dataObj.setSource( unit.x, unit.y );
-        dataObj.setTarget( unit.x, unit.y );
-        dataObj.setSourceUnit( unit );
-        controller.invokeCommand( dataObj );
-      }
-    }
-
-    // TODO make better
-    var turnOwnerObj = model.players[pid];
-    var cityRepair = model.rules.cityRepair;
-    var fundsValue = model.rules.funds;
-    for( var i=0, e=model.properties.length; i<e; i++ ){
-      if( model.properties[i].owner === pid ){
-        turnOwnerObj.gold += fundsValue;
-
-      }
-    }
-    */
-
-    controller.actions.calculateFog( pid );
+    controller.actions.calculateFog( pid, wtp );
     
     controller.resetTurnTimer();
   }
+  
+});
+controller.engineAction({
 
+  name:"refillRessources",
+
+  key:"RFRS",
+
+  /**
+   * Refills ressources of an unit.
+   *
+   * @param {Number} x x coordinate of the supplier
+   * @param {Number} y y coordinate of the supplier
+   * 
+   * @methodOf controller.actions
+   * @name supplyTurnStart
+   */
+  action: function( uid ){
+    var unit = model.units[uid];
+    var uSheet = model.sheets.unitSheets[ unit.type ];
+    unit.ammo = uSheet.maxAmmo;
+    unit.fuel = uSheet.maxFuel;
+  }
 });
 controller.engineAction({
 
@@ -4666,15 +5007,15 @@ controller.engineAction({
    * @methodOf controller.actions
    * @name siloRegeneration
    */
-  action: function( pid ){
+  action: function( pid, turns ){
     
     var maxDays = model.rules.siloRegeneration;
     if( maxDays === -1 ) return;
     
     if( model.regeneratingSilos.hasOwnProperty(pid) ){
-      model.regeneratingSilos[pid]++;
+      model.regeneratingSilos[pid] += turns;
     }
-    else model.regeneratingSilos[pid] = 1;
+    else model.regeneratingSilos[pid] = turns;
     
     if( model.regeneratingSilos[pid] >= maxDays ){
       delete model.regeneratingSilos[pid];
@@ -4708,10 +5049,7 @@ controller.userAction({
   unitAction: true,
 
   _resupplyUnitAt: function( x,y ){
-    var unit = model.unitPosMap[x][y];
-    var uSheet = model.sheets.unitSheets[ unit.type ];
-    unit.ammo = uSheet.maxAmmo;
-    unit.fuel = uSheet.maxFuel;
+    controller.pushAction( model.extractUnitId( model.unitPosMap[x][y] ), "RFRS" );
   },
 
   condition: function( mem ){
@@ -4811,6 +5149,39 @@ controller.engineAction({
 });
 controller.userAction({
 
+  name:"unhideUnit",
+  
+  key:"UHUN",
+  
+  unitAction: true,
+  
+  condition: function( mem ){
+    if( mem.targetUnit !== null ) return false;
+    
+    var unit = mem.sourceUnit;
+    if( unit === null ) return false;
+    
+    return unit.hidden;
+  },
+  
+  createDataSet: function( mem ){
+    return [ mem.sourceUnitId ];
+  },
+  
+  /**
+   * Unhides an unit.
+   *
+   * @param {Number} uid unit id
+   *
+   * @methodOf controller.actions
+   * @name unhideUnit
+   */
+  action: function( uid ){
+    model.units[uid].hidden = false;
+  }
+});
+controller.userAction({
+
   name: "unloadUnit",
 
   key: "UNUN",
@@ -4846,31 +5217,33 @@ controller.userAction({
     var load = model.units[ subEntry ];
     var loadS = model.sheets.unitSheets[ load.type ];
     var loadMvS = model.sheets.movetypeSheets[ loadS.moveType ];
+    
+    var weather = model.weather.ID;
 
     if( tx > 0 ){
       if( model.unitPosMap[tx-1][ty] === null &&
-        model.moveCosts( loadMvS, model.map[tx-1][ty] ) !== -1  ){
+        model.moveCosts( loadMvS, model.map[tx-1][ty] ,weather ) !== -1  ){
         mem.setSelectionValueAt( tx-1,ty,1 );
       }
     }
 
     if( ty > 0 ){
       if( model.unitPosMap[tx][ty-1] === null &&
-        model.moveCosts( loadMvS, model.map[tx][ty-1] ) !== -1  ){
+        model.moveCosts( loadMvS, model.map[tx][ty-1] ,weather ) !== -1  ){
         mem.setSelectionValueAt( tx,ty-1,1 );
       }
     }
 
     if( ty < model.mapHeight-1 ){
       if( model.unitPosMap[tx][ty+1] === null &&
-        model.moveCosts( loadMvS, model.map[tx][ty+1] ) !== -1  ){
+        model.moveCosts( loadMvS, model.map[tx][ty+1] ,weather ) !== -1  ){
         mem.setSelectionValueAt( tx,ty+1,1 );
       }
     }
 
     if( tx < model.mapWidth-1 ){
       if( model.unitPosMap[tx+1][ty] === null &&
-        model.moveCosts( loadMvS, model.map[tx+1][ty] ) !== -1  ){
+        model.moveCosts( loadMvS, model.map[tx+1][ty] ,weather ) !== -1  ){
         mem.setSelectionValueAt( tx+1,ty,1 );
       }
     }

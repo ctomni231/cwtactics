@@ -38,6 +38,7 @@ controller.engineAction({
       document.onkeyup = function( ev ){
         if( controller.stateMachine.state === "IDLE_R" ){
           
+          var code = ev.keyCode;
           switch( code ){
             case controller.INPUT_KEYBOARD_CODE_LEFT:
             case controller.INPUT_KEYBOARD_CODE_UP:
@@ -93,15 +94,11 @@ controller.engineAction({
             break;
 
           case controller.INPUT_KEYBOARD_CODE_M:
-            if( controller.screenScale < 3 ){
-              controller.setScreenScale( controller.screenScale+1 );
-            }
+            controller.setScreenScale( controller.screenScale+1 );
             break;
 
           case controller.INPUT_KEYBOARD_CODE_N:
-            if( controller.screenScale > 1 ){
-              controller.setScreenScale( controller.screenScale-1 );
-            }
+            controller.setScreenScale( controller.screenScale-1 );
             break;
         }
 
@@ -122,26 +119,34 @@ controller.engineAction({
 
     // **************************************************************
     // MOUSE SUPPORT FOR DESKTOP DEVICES
-    if( detect.isDesktop() ){
+    if( head.desktop ){
       var canvas = document.getElementById( "cwt_canvas" );
+      var menuEl = document.getElementById( "cwt_menu" );
 
+      var inMenu = false;
+      
+      menuEl.onmouseout = function(){ 
+        inMenu=false; 
+      };
+      
+      menuEl.onmouseover = function(){ 
+        inMenu=true; 
+      };
+      
       function MouseWheelHandler(e){
         var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+        // var delta = (e.wheelDelta || -e.detail);
+        // if( delta > -10 && delta < 10 ) return;
         if( delta > 0 ){
           // ZOOM IN
-          if( controller.screenScale < 3 ){
-            controller.setScreenScale( controller.screenScale+1 );
-          }
+          controller.setScreenScale( controller.screenScale+1 );
         }
         else{
           // ZOOM OUT
-          if( controller.screenScale > 1 ){
-            controller.setScreenScale( controller.screenScale-1 );
-          }
+          controller.setScreenScale( controller.screenScale-1 );
         }
       }
 
-      /*
       if( canvas.addEventListener){
         // IE9, Chrome, Safari, Opera
         canvas.addEventListener("mousewheel", MouseWheelHandler, false);
@@ -150,7 +155,6 @@ controller.engineAction({
       }
       // IE 6/7/8
       else canvas.attachEvent("onmousewheel", MouseWheelHandler);
-      */
 
       canvas.onmousemove = function(ev){
         var x,y;
@@ -177,10 +181,17 @@ controller.engineAction({
       };
 
       canvas.onmousedown = function(ev){
-        switch(ev.which){
-          case 1: controller.cursorActionClick(); break;    // LEFT
-          case 2: break;                                    // MIDDLE
-          case 3: controller.cursorActionCancel(); break;   // RIGHT
+        var state = controller.stateMachine.state;
+        if( (state === "ACTION_MENU" || state === "ACTION_SUBMENU") && !inMenu ){
+          // MENU + MOUSE OUTSIDE === CANCEL
+          controller.cursorActionCancel()
+        }
+        else{
+          switch(ev.which){
+            case 1: controller.cursorActionClick(); break;    // LEFT
+            case 2: break;                                    // MIDDLE
+            case 3: controller.cursorActionCancel(); break;   // RIGHT
+          }
         }
       };
       
@@ -195,11 +206,12 @@ controller.engineAction({
 
     // **************************************************************
     // TOUCH SUPPORT FOR TOUCH DEVICES
-    if( detect.isAndroid() || detect.isTouchDevice() ){
+    if( head.mobile ){
       var appEl = document.getElementById( "cwt_canvas" );
       var hammer = new Hammer( appEl, { prevent_default: true });
-      // var dragDisX = 0;
-      // var dragDisY = 0;
+      var ios = head.browser.ios;
+      var drag_up = 0;
+      var drag_down = 0;
 
       hammer.ontap     = function( ev ){
         var cv = appEl;
@@ -229,6 +241,7 @@ controller.engineAction({
           userInput._input_touch_cDisX = x;
           userInput._input_touch_cDisY = y;
         }*/
+        
       };
 
       hammer.onhold    = function(){
@@ -240,39 +253,56 @@ controller.engineAction({
           controller.cursorActionCancel();
         }
       };
-
+      
       hammer.ondrag    = function(ev){
-        /*
-         var cv = document.getElementById( client.ID_CANVAS );
-
-         var disX = ev.distanceX - cv.offsetLeft;
-         var disY = ev.distanceY - cv.offsetTop;
-         userInput._input_touch_cDisTouchX = disX;
-         userInput._input_touch_cDisTouchY = disY;
-
-         var x = userInput._input_touch_cDisX+ parseInt( disX/ screen.tileSizeX, 10 );
-         var y = userInput._input_touch_cDisY+ parseInt( disY/ screen.tileSizeY, 10 );
-
-         userInput.appendToCurrentMovePath(x,y);
-         */
+        var state = controller.stateMachine.state;
+        if( state === "ACTION_MENU" || state === "ACTION_SUBMENU" ){
+          
+          var dis = ev.distanceY;
+          if( dis < drag_up ){
+            controller.decreaseMenuCursor();
+            drag_down = drag_up;
+            drag_up = drag_up-50;
+          }
+          else if( dis > drag_down ){
+            controller.increaseMenuCursor();
+            drag_up = drag_down;
+            drag_down = drag_down+50;
+          }
+        }
       };
 
       hammer.ondragend = function(ev){
-        var tileSize = TILE_LENGTH*controller.screenScale;
-        var a = ev.angle;
-        var d = 0;
-
-        // GET DIRECTION
-             if( a >= -135 && a < -45  ) d = model.MOVE_CODE_UP;
-        else if( a >= -45  && a < 45   ) d = model.MOVE_CODE_RIGHT;
-        else if( a >= 45   && a < 135  ) d = model.MOVE_CODE_DOWN;
-        else if( a >= 135  || a < -135 ) d = model.MOVE_CODE_LEFT;
-
-        // get distance
-        var dis = parseInt( ev.distance/tileSize, 10 );
-        if( dis === 0 ) dis = 1;
-
-        controller.shiftScreenPosition( d, dis );
+        
+        var state = controller.stateMachine.state;
+        if( state === "ACTION_MENU" || state === "ACTION_SUBMENU" ){
+          drag_up = -50;
+          drag_down = 50;
+        }
+        else{
+          var tileSize = TILE_LENGTH*controller.screenScale;
+          var a = ev.angle;
+          var d = 0;
+          
+          if( !ios ){
+                 if( a >= -135 && a < -45  ) d = model.MOVE_CODE_UP;
+            else if( a >= -45  && a < 45   ) d = model.MOVE_CODE_RIGHT;
+            else if( a >= 45   && a < 135  ) d = model.MOVE_CODE_DOWN;
+            else if( a >= 135  || a < -135 ) d = model.MOVE_CODE_LEFT;
+          }
+          else{
+                 if( a >= -135 && a < -45  ) d = model.MOVE_CODE_DOWN;
+            else if( a >= -45  && a < 45   ) d = model.MOVE_CODE_LEFT;
+            else if( a >= 45   && a < 135  ) d = model.MOVE_CODE_UP;
+            else if( a >= 135  || a < -135 ) d = model.MOVE_CODE_RIGHT;
+          }
+          
+          // get distance
+          var dis = parseInt( ev.distance/tileSize, 10 );
+          if( dis === 0 ) dis = 1;
+  
+          controller.shiftScreenPosition( d, dis );
+        }
 
         /* ==> MOVE STATE
          var x = cDisX+ parseInt( cDisTouchX / screen.tileSizeX, 10 );
@@ -290,15 +320,11 @@ controller.engineAction({
       hammer.ontransformend = function(ev){
         if( ev.scale > 1 ){
           // ZOOM IN
-          if( controller.screenScale < 3 ){
-            controller.setScreenScale( controller.screenScale+1 );
-          }
+          controller.setScreenScale( controller.screenScale+1 );
         }
         else{
           // ZOOM OUT
-          if( controller.screenScale > 1 ){
-            controller.setScreenScale( controller.screenScale-1 );
-          }
+          controller.setScreenScale( controller.screenScale-1 );
         }
         return false;
       };

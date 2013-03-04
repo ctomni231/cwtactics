@@ -14,10 +14,11 @@ model.units = util.list( CWT_MAX_PLAYER*CWT_MAX_UNITS_PER_PLAYER, function(){
     y:0,
     hp: 99,
     ammo: 0,
+    fuel: 0,
     type: null,
     loadedIn: -1,
-    fuel: 0,
-    owner: CWT_INACTIVE_ID,
+    hidden: false,
+    owner: CWT_INACTIVE_ID
   };
 });
 
@@ -74,11 +75,33 @@ model.tileOccupiedByUnit = function( x,y ){
 model.countUnits = function( pid ){
   var startIndex = pid*CWT_MAX_UNITS_PER_PLAYER;
   var n = 0
-  for( var i=0, e=startIndex+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
+  for( var i=startIndex, e=startIndex+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
     if( model.units[i].owner !== CWT_INACTIVE_ID ){
       n++;
     }
   }
 
   return n;
+};
+
+/**
+ *
+ */
+model.unitHpPt = function( unit ){
+  return parseInt( unit.hp/10 )+1;
+};
+
+/**
+ *
+ */
+model.unitHpPtRest = function( unit ){
+  var pt = parseInt( unit.hp/10 )+1;
+  return unit.hp - pt;
+};
+
+/**
+ *
+ */
+model.ptToHp = function( pt ){
+  return (pt*10);
 };

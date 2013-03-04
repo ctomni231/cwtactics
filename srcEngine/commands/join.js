@@ -39,8 +39,11 @@ controller.userAction({
     var joinTarget = model.units[tid];
     var junitSheet = model.sheets.unitSheets[ joinTarget.type ];
 
+    var sHp = model.unitHpPt( joinSource );
+    var tHp = model.unitHpPt( joinSource );
+    
     // HEALTH POINTS
-    controller.actions.healUnit( tid, joinSource.hp );
+    controller.actions.healUnit( tid, model.ptToHp(sHp) );
 
     // AMMO
     joinTarget.ammo += joinSource.ammo;
