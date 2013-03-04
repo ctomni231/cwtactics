@@ -50,7 +50,18 @@ var testMap = {
 
 // -------------------
 
-DEBUG = false;
+// DEBUG = false;
 
 controller.actions.loadMod();
 controller.stateMachine.event( "start" );
+
+(function(){
+  var resetFn = function(){ 
+    return "IDLE"; 
+  };
+  
+  var keys = Object.keys(controller.stateMachine.structure);
+  for( var i=0, e=keys.length; i<e; i++ ){
+    controller.stateMachine.structure[ keys[i] ].__reset__ = resetFn;
+  }
+})();

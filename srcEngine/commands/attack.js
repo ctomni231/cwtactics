@@ -317,7 +317,7 @@ controller.userAction({
   
   createDataSet: function( data ){
     
-    var attWp = ( data.subAction === 'mainWeapon')? model.primaryWeaponOfUnit( data.sourceUnit ): model.secondaryWeaponOfUnit( data.sourceUnit );
+    var attWp = ( data.subAction === model.PRIMARY_WEAPON_TAG )? model.primaryWeaponOfUnit( data.sourceUnit ): model.secondaryWeaponOfUnit( data.sourceUnit );
     var attDmg = this.getEndDamage( data.sourceUnit, attWp, data.selectionUnit );
     
     var defDmg = 0;

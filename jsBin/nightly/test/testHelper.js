@@ -6,19 +6,54 @@ var evalAllActions = function(){
 
 var loadTestMap = function(){ 
   controller.actions.loadGame( testMap ); 
+  controller.stateMachine.event("__reset__");
 };
 
-var simpleUnitAction = function( sx,sy, tx,ty, actKey ){
+var simplePropertyAction = function( sx,sy, actKey, subActKey ){  
+  controller.stateMachine.event( "action", sx,sy );
+  
+  var menuIndex;
+  menuIndex = controller.stateMachine.data.menu.indexOf( actKey );  
+  gt( menuIndex, -1, "action "+actKey+" must be available in the menu" );
+  controller.stateMachine.event( "action", menuIndex );
+  
+  if( arguments.length > 3 && arguments[3] !== null ){
+    
+    menuIndex = controller.stateMachine.data.menu.indexOf( subActKey );
+    gt( menuIndex, -1, "action "+subActKey+" must be available in the menu" );
+    controller.stateMachine.event( "action", menuIndex );
+  };
+  
+  evalAllActions();
+};
+
+var simpleUnitAction = function( sx,sy, tx,ty, actKey, subActKey, stx, sty ){
   unitByPosCanAct( sx,sy );
   
   controller.stateMachine.event( "action", sx,sy );
   controller.stateMachine.event( "action", tx,ty );
   
-  var menuIndex = controller.stateMachine.data.menu.indexOf( actKey );
+  // DOUBLE CLICK ON TARGET
+  if( sx !== tx || sy !== ty ){
+    controller.stateMachine.event( "action", tx,ty );
+  }
   
+  var menuIndex;
+  
+  menuIndex = controller.stateMachine.data.menu.indexOf( actKey );  
   gt( menuIndex, -1, "action "+actKey+" must be available in the menu" );
-  
   controller.stateMachine.event( "action", menuIndex );
+  
+  if( arguments.length > 5 && arguments[5] !== null ){
+    
+    menuIndex = controller.stateMachine.data.menu.indexOf( subActKey );
+    gt( menuIndex, -1, "action "+subActKey+" must be available in the menu" );
+    controller.stateMachine.event( "action", menuIndex );
+  };
+  
+  if( arguments.length > 6 ){
+    controller.stateMachine.event( "action", stx,sty );
+  }
   
   evalAllActions();
   
