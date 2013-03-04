@@ -3208,31 +3208,32 @@ controller.userAction({
     }
   },
   
-  counterWeapon: function( xdef, ydef, xatt, yatt ){
+  counterWeapon: function( xdef, ydef, xatt, yatt, attacker ){
     var dis = Math.abs(xdef-xatt) + Math.abs( ydef-yatt );
     if( dis > 1 ) return null; // INDIRECT ATTACK
 
     var def = model.unitPosMap[xdef][ydef];
-    var att = model.unitPosMap[xatt][yatt];
     var defsheet = model.sheets.unitSheets[ def.type ];
     var mainWp = defsheet[model.PRIMARY_WEAPON_TAG];
     var sideWp = defsheet[model.SECONDARY_WEAPON_TAG];
 
     if( mainWp !== undefined ){
       mainWp = model.sheets.weaponSheets[ mainWp ];
-      if( mainWp.usesAmmo === 0 || def.ammo > 0 ){
+      if( mainWp.useAmmo === 0 || def.ammo > 0 ){
         var minR = mainWp.minRange;
         var maxR = mainWp.maxRange;
-        if( minR === 1 && maxR === 1 && dis === 1 ) return mainWp;
+        var dmg = model.getBaseDamage( mainWp, attacker.type );
+        if( minR === 1 && maxR === 1 && dis === 1 && dmg > 0 ) return mainWp;
       }
     }
 
     if( sideWp !== undefined ){
       sideWp = model.sheets.weaponSheets[ sideWp ];
-      if( sideWp.usesAmmo === 0 || def.ammo > 0 ){
+      if( sideWp.useAmmo === 0 || def.ammo > 0 ){
         var minR = sideWp.minRange;
         var maxR = sideWp.maxRange;
-        if( minR === 1 && maxR === 1 && dis === 1 ) return sideWp;
+        var dmg = model.getBaseDamage( mainWp, attacker.type );
+        if( minR === 1 && maxR === 1 && dis === 1 && dmg > 0 ) return sideWp;
       }
     }
 
@@ -3483,7 +3484,7 @@ controller.userAction({
     var attDmg = this.getEndDamage( data.sourceUnit, attWp, data.selectionUnit );
     
     var defDmg = 0;
-    var defWp = this.counterWeapon( data.selectionX, data.selectionY, data.targetX, data.targetY );
+    var defWp = this.counterWeapon( data.selectionX, data.selectionY, data.targetX, data.targetY, data.sourceUnit );
     if( defWp !== null ){
       defDmg = this.getEndDamage( data.selectionUnit, defWp, data.sourceUnit );
     }
@@ -3529,7 +3530,7 @@ controller.userAction({
     );
     
     // COUNTER ATTACK
-    if( model.units[did].owner !== CWT_INACTIVE_ID ){
+    if( model.units[did].hp > 0 ){
       controller.actions.damageUnit( aid, ddmg );  
       
       if( dUseAmmo ) model.units[did].ammo--;
