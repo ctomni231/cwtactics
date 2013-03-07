@@ -133,6 +133,7 @@ util.injectMod = function( modName ){
 
 
 
+
 /**
  * Fills an array with a value. Works also for matrix objects.
  *
@@ -373,6 +374,334 @@ util.createRingBuffer = function( size ){
   buffer._size = size;
 
   return buffer;
+};
+/**
+
+  This is a small but very serialization friendly rule engine for JavaScript. It's originally designed
+  for Custom Wars Tactics (Link:) but can be used in other turn based games as well. 
+  
+  The main approach of the jsonRuleEngine is to provide a simple base with a solid API. Your program is 
+  able to control the rule flow and interpreting on top of this platform. The engine itself won't do 
+  complex things like interpreting! In our opinion this must be done by the program itself which is using
+  it. This is because only the highest level (the game itself) knows internal things about it's structure
+  and it's flow.
+  
+  Organization stuff will be done by the jsonRuleEngine. This combines several things like contexts, owners,
+  (de)serialization of rules and event management. 
+  
+  License (MIT):
+    
+    Copyright (c) 2013 BlackCat [blackcat.myako@googlemail.com] and JSR [ctomni231@googlemail.com]
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
+    associated documentation files (the "Software"), to deal in the Software without restriction, including 
+    without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+    copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the 
+    following conditions:
+
+    The above copyright notice and this permission notice shall be included in all copies or substantial 
+    portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT 
+    LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+  */
+
+if( jsonRuleEngine !== undefined ) throw Error("jsonRuleEngine is already defined in the global scope");
+
+/**
+ *
+ */
+var jsonRuleEngine = function(){
+  var engine = {};
+  
+  /**
+   * @private
+   */
+  engine.ruleContexts_ = {};
+  
+  /**
+   * @private
+   */
+  engine.attributeSolver_ = {};
+  
+  /**
+   * @private
+   */
+  engine.tagsSolver_ = {};
+  
+  /**
+   *
+   * @param {String} ctxKey context name
+   * @param {Object} rule rule object
+   */
+  engine.pushRuleToCtx = function( ctxKey, rule ){
+    if( !engine.ruleContexts_.hasOwnProperty(ctxKey) ){
+      engine.ruleContexts_[ctxKey] = {};
+    } 
+    
+    // MAP EVERY ATTRIBUTE TO CONTEXT
+    var attributes = Object.keys( rule );
+    for( var i=0,e=attributes.length; i<e; i++ ){
+      var attr = attributes[i];
+      
+      // WHEN IS A ENGINE KEYWORD
+      if( attr === "when" ) continue;
+      
+      if( !engine.ruleContexts_[ctxKey].hasOwnProperty(attr) ){
+        engine.ruleContexts_[ctxKey][attr] = [];
+      } 
+      
+      // PUSH RULE TO CONTEXT
+      engine.ruleContexts_[ctxKey][attr].push(rule);
+    }
+  };
+  
+  /**
+   *
+   * @param {String} ctxKey context name
+   * @param {Object} rule rule object
+   */
+  engine.removeRuleFromCtx = function( ctxKey, rule ){
+    if( !engine.ruleContexts_.hasOwnProperty(ctxKey) ){
+      throw Error("given context is not created"); 
+    }
+    
+    // MAP EVERY ATTRIBUTE TO CONTEXT
+    var attributes = Object.keys( rule );
+    for( var i=0,e=attributes.length; i<e; i++ ){
+      var attr = attributes[i];
+      
+      // WHEN IS A ENGINE KEYWORD
+      if( attr === "when" ) continue;
+      if( engine.ruleContexts_[ctxKey].hasOwnProperty(attr) ) continue;
+      
+      // REMOVE RULE TO CONTEXT
+      var attrList = engine.ruleContexts_[ctxKey][attr];
+      var index = attrList.indexOf( rule );
+      if( index !== -1 ){
+        attrList.splice( index, 1 );
+      }
+    }
+  };
+  
+  /**
+   *
+   * @param {Object} impl solver implementation
+   */
+  engine.registerResolver = function( impl ){
+    if( !impl.hasOwnProperty("key") ) throw Error("solver implementation needs a valid key");
+    
+    engine.eventSolver_[impl.key] = impl;
+  };
+  
+  /**
+   *
+   * @param {String} key solver key
+   * @param {Function} fn solver function
+   */
+  engine.registerAttributeSolver = function( key, fn ){    
+    engine.attributeSolver_[key] = fn;
+  };
+  
+  /**
+   *
+   * @param {String} key solver key
+   * @param {Function} fn solver function
+   */
+  engine.registerTagsSolver = function( key, fn ){    
+    engine.tagsSolver_[key] = fn;
+  };
+  
+  /**
+   *
+   * @param {Object...} solver arguments
+   * @param {String} tagsSolver identifier name of the solver
+   * @param {String} attributeSolver identifier name of the solver
+   * @param {String} attributeName attribute name
+   * @param {String} ctx name of the context
+   */
+  engine.solveAttribute = function(){
+    var tagsSolver      = arguments[ arguments.length-4 ];
+    var attributeSolver = arguments[ arguments.length-3 ];
+    var attribute       = arguments[ arguments.length-2 ];
+    var ctx             = arguments[ arguments.length-1 ];
+    
+    tagsSolver      = engine.tagsSolver_[tagsSolver];
+    attributeSolver = engine.attributeSolver_[attributeSolver];
+    
+    var tags = tagsSolver.apply(null, arguments);
+    
+    return attributeSolver.call( 
+      this, 
+      tags, 
+      attribute, 
+      engine.ruleContexts_[ctx][attribute]
+    );
+  };
+  
+  return engine;
+};
+/**
+
+  This is a small but state machine for JavaScript. It's originally designed
+  for Custom Wars Tactics (Link:) but can be used in other turn based games as well. 
+  
+  Target of this library is to provide a complex configurate able state machine in a very
+  small library (03.2013 => 1KB minified and 0.5KB gzipped). 
+  
+  This is why the complexity of this state machine is low overall. This engine
+  may suits for you if you only need to have a flow between states with basic on enter events 
+  and a small history.  
+  
+  ToDo:
+    - convert DEBUG statements to a more generic solution
+    - better constant for the last state transition
+    - may add onLeave event
+    - debug reset functionality
+    - error event for illegal transitions
+  
+  License (MIT):
+    
+    Copyright (c) 2013 BlackCat [blackcat.myako@googlemail.com]
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
+    associated documentation files (the "Software"), to deal in the Software without restriction, including 
+    without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+    copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the 
+    following conditions:
+
+    The above copyright notice and this permission notice shall be included in all copies or substantial 
+    portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT 
+    LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+  */
+
+if( simpleStateMachine !== undefined ) throw Error("simpleStateMachine is already defined in the global scope");
+
+/**
+ * The central finite state machine of the game engine. 
+ */
+var simpleStateMachine = function(){
+  
+  return /** @lends simpleStateMachine */ {
+    
+    /**
+     * Represents a breaking transition event. To break a transition it should
+     * be used in an event function of a state implementation.
+     * 
+     * @constant
+     * @example 
+     *    action: function(){
+     *        return this.BREAK_TRANSITION;
+     *    }
+     */
+    BREAK_TRANSITION: "__BREAK_TRS__",
+    
+    /**
+     * Current active state.
+     */
+    state:     "NONE",
+    
+    /**
+     * State history that contains a queue of the state flow.
+     * 
+     * @type Array
+     */
+    history:[],
+    
+    /**
+     * Represents a return to last state event. To return to the last state it 
+     * should be used in an event function of a state implementation. 
+     * 
+     * @constant
+     * @example 
+     *    cancel: function(){
+     *        return this.lastState;
+     *    }
+     */
+    lastState: "__LAST_STATE_TRS__",
+    
+    /**
+     * State machine construction diagram object. Every state and transition will 
+     * be defined in this descriptor object.
+     * 
+     * @namespace
+     */
+    structure: {},
+    
+    /**
+     * Invokes an event in the current active state.
+     * 
+     * @param {String} ev event name
+     * @param {...Object} arguments for the event
+     */
+    event: function( ev ){
+      if( DEBUG ) util.log("got event",ev);
+      
+      var stateEvent = this.structure[ this.state ][ ev ];
+      if( stateEvent === undefined ){
+        util.raiseError("missing event",ev,"in state",this.state);
+      }
+      
+      var nextState = stateEvent.apply( this, arguments );
+      if( nextState !== undefined ){
+        if( nextState !== this.BREAK_TRANSITION ){
+          
+          var goBack = nextState === this.lastState;
+          if( goBack ){
+            if( this.history.length === 1 ) nextState = "IDLE";
+            else nextState = this.history.pop();
+          }
+          
+          var nextStateImpl = this.structure[ nextState ];
+          if( nextStateImpl === undefined ){
+            util.raiseError("state",nextState,"is not defined");
+          }
+          
+          if( nextStateImpl.onenter !== undefined ){
+            
+            var breaker = nextStateImpl.onenter.apply( this, arguments );
+            if( breaker === this.BREAK_TRANSITION ){
+              
+              // BREAK TRANSITION
+              return;
+            }
+            else if( breaker !== undefined ){
+              
+              
+            }
+          }
+          
+          if( !goBack ){
+            this.history.push( this.state );
+          }
+          
+          this.state = nextState;
+          if( DEBUG ) util.log("changed state to",nextState);
+          
+          if( nextStateImpl.actionState !== undefined ){
+            this.event.call( this, "actionState" );
+          }
+          
+        }
+        else if( ev === "actionState" ){
+          util.raiseError("an action state cannot return a break transition"); 
+        }
+      }
+      else {
+        util.raiseError("an event must return a transition command"); 
+      }
+    }
+  };
 };
 /** 
  * @constant 
@@ -2218,174 +2547,17 @@ controller.sendNetworkMessage_ = function( args ){
   util.unexpectedSituationError();
 };
 
-controller.eventScripts_ = {};
-
-controller.scripts_ = {};
-
-controller.SCRIPT_TRIGGER = {
-  MOVE_ON_TILE :  0,
-  MOVE_OFF_TILE : 1,
-  UNIT_ATTACKED : 2
-};
-
-controller.SCRIPT_ACTIONS = {
-  LOG : 0
-};
-
-controller.addScriptEvent = function( id, trigger, action ){
-  controller.eventScripts_[trigger] = [];
-  controller.eventScripts_[trigger].push( action );
-};
-
-controller.triggerScriptEvent = function( name, obj ){
-
-};
-
-
 /**
- *
- *
- *
+ * Custom Wars Tactics scripting engine which uses the jsonScriptEngine. 
+ * This engine is used to realize the CO effects of the game. Furthermore 
+ * we use it in CWT to realize map scripts, client events, game configuration
+ * scripts and game mode helpers.
  */
-controller.ruleInterpreter = function( value, rules ){
-  for( var i=0,e=rules.length; i<e; i++ ){
-    
-    var ruleAst = rules[i];
-    var key = ruleAst[0];
-    switch( key ){
-      
-      case 0:
-        value += ruleAst[1];
-        break;
-      
-      case 1:
-        value *= ruleAst[1];
-        break;
-        
-      case 2:
-        value = ruleAst[1];
-        break;
-        
-    }
-  }
-    
-  return value;
-};
+controller.script = jsonRuleEngine();
 /**
  * The central finite state machine of the game engine.
- *
- * @namespace 
  */
-controller.stateMachine = /** @lends controller.stateMachine */ {
-  
-  /**
-   * Represents a breaking transition event. To break a transition it should
-   * be used in an event function of a state implementation.
-   * 
-   * @constant
-   * @example 
-   *    action: function(){
-   *        return this.BREAK_TRANSITION;
-   *    }
-   */
-  BREAK_TRANSITION: "__BREAK_TRS__",
-  
-  /**
-   * Current active state.
-   */
-  state:     "NONE",
-  
-  /**
-   * State history that contains a queue of the state flow.
-   * 
-   * @type Array
-   */
-  history:[],
-  
-  /**
-   * Represents a return to last state event. To return to the last state it 
-   * should be used in an event function of a state implementation. 
-   * 
-   * @constant
-   * @example 
-   *    cancel: function(){
-   *        return this.lastState;
-   *    }
-   */
-  lastState: "__LAST_STATE_TRS__",
-  
-  /**
-   * State machine construction diagram object. Every state and transition will 
-   * be defined in this descriptor object.
-   * 
-   * @namespace
-   */
-  structure: {},
-  
-  /**
-   * Invokes an event in the current active state.
-   * 
-   * @param {String} ev event name
-   * @param {...Object} arguments for the event
-   */
-  event: function( ev ){
-    if( DEBUG ) util.log("got event",ev);
-    
-    var stateEvent = this.structure[ this.state ][ ev ];
-    if( stateEvent === undefined ){
-      util.raiseError("missing event",ev,"in state",this.state);
-    }
-    
-    var nextState = stateEvent.apply( this, arguments );
-    if( nextState !== undefined ){
-      if( nextState !== this.BREAK_TRANSITION ){
-        
-        var goBack = nextState === this.lastState;
-        if( goBack ){
-          if( this.history.length === 1 ) nextState = "IDLE";
-          else nextState = this.history.pop();
-        }
-        
-        var nextStateImpl = this.structure[ nextState ];
-        if( nextStateImpl === undefined ){
-          util.raiseError("state",nextState,"is not defined");
-        }
-        
-        if( nextStateImpl.onenter !== undefined ){
-          
-          var breaker = nextStateImpl.onenter.apply( this, arguments );
-          if( breaker === this.BREAK_TRANSITION ){
-            
-            // BREAK TRANSITION
-            return;
-          }
-          else if( breaker !== undefined ){
-            
-            
-          }
-        }
-        
-        if( !goBack ){
-          this.history.push( this.state );
-        }
-        
-        this.state = nextState;
-        if( DEBUG ) util.log("changed state to",nextState);
-        
-        if( nextStateImpl.actionState !== undefined ){
-          this.event.call( this, "actionState" );
-        }
-        
-      }
-      else if( ev === "actionState" ){
-        util.raiseError("an action state cannot return a break transition"); 
-      }
-    }
-    else {
-      util.raiseError("an event must return a transition command"); 
-    }
-  }
-};
+controller.stateMachine = simpleStateMachine();
 /**
  * Action process data memory object. It is used as data holder to transport
  * data between the single states of the state machine of the game engine.
@@ -2779,6 +2951,63 @@ controller.updateTurnTimer = function( delta ){
     }
   }
 };
+
+controller.script.registerAttributeSolver( "valueResolver", 
+function(tags, attr, rules) {
+  var value = 0;
+  for( var i=0,ie=rules.length; i<ie; i++ ){
+  
+    var rule = rules[i];
+    if( rule.when ){
+      
+      var fails = false;
+      for( var j=0,je=rule.when.length; j<je; j++ ){
+        if( !tags[rule.when[j]] ){
+          fails = true;
+          break;
+        }
+      }
+        
+      if( fails ) continue;
+      else value += rule[attr];
+    }
+    else value += rule[attr];
+  }
+    
+  return value;
+});
+
+(function(){
+
+  var tags = {
+    vehicle:false,
+       tank:false,
+       foot:false,
+        air:false,
+      naval:false
+  };
+  
+  controller.script.registerTagsSolver( "unitValueResolver", 
+  function(unit) {
+    var unitSh = model.sheets.unitSheets[ unit.type ];
+    var movetype = unitSh.moveType;
+    
+    // MOVE TYPE
+    tags.vehicle = ( movetype === "MV_TIRE_A" || movetype === "MV_TIRE_B"  );
+    tags.tank = ( movetype === "MV_TANK"  );
+    tags.foot = ( movetype === "MV_INFANTRY" || movetype === "MV_MECH"  );
+    tags.air = ( movetype === "MV_AIR"  );
+    tags.naval = ( movetype === "MV_SHIP" || movetype === "MV_WATER_TRANSPORT"  );
+    
+    // FIRE TYPE
+    var mainWp = model.sheets.weaponSheets[ unitSh.mainWeapon ];
+    tags.direct = (mainWp !== undefined && mainWp.minRange === 1);
+    tags.indirect = !tags.direct;
+    
+    return tags;
+  });
+  
+})();
 /**
  * Action menu state that generates a list of possible action for a 
  * selected target tile.

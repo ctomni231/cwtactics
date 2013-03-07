@@ -8,6 +8,7 @@ builder.getFileList("srcEngine").forEach( addEl );
 builder.getFileList("srcEngine/util").forEach( addEl );
 builder.getFileList("srcEngine/model").forEach( addEl );
 builder.getFileList("srcEngine/controller").forEach( addEl );
+builder.getFileList("srcEngine/script").forEach( addEl );
 builder.getFileList("srcEngine/stateMachine").forEach( addEl );
 builder.getFileList("srcEngine/commands").forEach( addEl );
 
