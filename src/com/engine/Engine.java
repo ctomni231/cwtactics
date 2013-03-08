@@ -32,11 +32,11 @@ public class Engine {
     public static final String WORK_DIR = System.getProperty("user.dir");
 
     public final String[] FILES = new String[]{ 
-        "gameConf","engineDeps","engine","mod"
+        "engineDeps","engine","mod"
     };
 
     public final String[] DEV_FILES = new String[]{
-        "gameConf","engineDeps","engine_debug","mod"
+        "engineDeps","engine","mod"
     };
 
     public final String[] MAPS = new String[]{ "testMap" };
