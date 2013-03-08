@@ -6,7 +6,7 @@ PAGE_DATA.milestones = [
     subHeaderT: "Hot Fix",
     subHeaderB: "",
     
-    img: "images/milestones/m2_6.png",
+    img: "images/milestones/milestone2_69.png",
     
     text:[
       ""
@@ -32,7 +32,7 @@ PAGE_DATA.milestones = [
     subHeaderT: "Weather and",
     subHeaderB: "more Fixes",
     
-    img: "images/milestones/m2.4_pic_2.png",
+    img: "images/milestones/milestone2_68.png",
     
     text:[
       ""
@@ -69,7 +69,7 @@ PAGE_DATA.milestones = [
     subHeaderT: "Bugfixes",
     subHeaderB: "and more",
     
-    img: "images/milestones/m2.4_pic_1.png",
+    img: "images/milestones/milestone2_65.png",
     
     text:[
       ""
@@ -105,7 +105,7 @@ PAGE_DATA.milestones = [
     subHeaderT: "Internet Explorer",
     subHeaderB: "Fix",
     
-    img: "images/milestones/m2.6.png",
+    img: "images/milestones/milestone2_61.png",
     
     text:[
       "This first time ever in the complete history of Custom Wars Tactics... we are happy to announce the Internet Explorer 9 :D",
