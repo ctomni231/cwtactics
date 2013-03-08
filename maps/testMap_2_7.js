@@ -1,4 +1,4 @@
-var testMapNew ={
+var testMapNew2_7 ={
   format:"2.7",
 
   typeMap:[

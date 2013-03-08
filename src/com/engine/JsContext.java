@@ -5,10 +5,6 @@ import java.io.FileReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
@@ -22,41 +18,18 @@ import org.mozilla.javascript.ScriptableObject;
 /**
  * @author BlackCat
  */
-public class Engine {
+public class JsContext {
 
-    public static final Logger logger = Logger.getLogger("JS Engine");
-
-    public static final String SOURCE_PATH = "jsBin/nightly/normal/";
-    public static final String MAPS_PATH = "maps/";
-
-    public static final String WORK_DIR = System.getProperty("user.dir");
-
-    public final String[] FILES = new String[]{ 
-        "engineDeps","engine","mod"
-    };
-
-    public final String[] DEV_FILES = new String[]{
-        "engineDeps","engine","mod"
-    };
-
-    public final String[] MAPS = new String[]{ "testMap" };
+    public static final Logger logger = Logger.getLogger( JsContext.class.getSimpleName() );
 
     private final Context jsCtx;
     private final ScriptableObject rootScope;
-   
-    public final Map<String,Integer> configuration =
-            new HashMap<String, Integer>();
 
     /**
      * 
-     * @param pathEngine path of the game engine
-     * @param  pathDeps path of the dependencies
-     * @param devLoad if true all parts will be loaded as separate files 
-     *                (like coded in dev phase) else only one script 
-     *                "gameEngine.js" and "gameEngine_deps.js"
-     *                will be loaded
+     * @param devLoad 
      */
-    public Engine( boolean devLoad ){
+    public JsContext( boolean devLoad ){
 
         logger.addHandler( new ConsoleHandler() );
         for( Handler h : logger.getHandlers() ){
@@ -70,9 +43,7 @@ public class Engine {
         jsCtx.setOptimizationLevel(9); // BE AGGRESSIVE !!!
         this.rootScope = jsCtx.initStandardObjects();
 
-        // LOAD ENGINE
         loadDefaultObjects();
-        loadEngine(devLoad);
     }
 
     private void loadDefaultObjects() {
@@ -80,7 +51,7 @@ public class Engine {
         // WINDOW OBJECT AKA ROOT
         evalExpression(
           "if( typeof window === 'undefined' ){"
-	    +"window = (function(){return this;}).call(null);"
+             +"window = (function(){return this;}).call(null);"
          +"}");
 
         // DEFAULT LOGGER
@@ -88,44 +59,9 @@ public class Engine {
           "console = {"
            +"log: function( msg ){"
              +"msg = 'GameEngine, '+msg;"
-             +"com.engine.Engine.logger.fine(msg);"
+             +"com.engine.JsContext.logger.fine(msg);"
            +"}"
          +"}");
-    }
-
-    private void loadEngine( boolean devLoad ) {
-        logger.fine("start loading engine");
-
-        String[] files = (devLoad)? DEV_FILES : FILES;
-
-        logger.fine("load configuration");
-        Set<String> configKeys = configuration.keySet();
-        Iterator<String> configIt = configKeys.iterator();
-        while( configIt.hasNext() ){
-            String key = configIt.next();
-            String expr = MessageFormat.format("{0} = {1};",
-                    key ,
-                    configuration.get(key)
-            );
-
-            evalExpression( expr );
-        }
-        
-        logger.fine("load files");
-        for( int i=0,e= files.length; i<e; i++ ){
-          evaluateFile( getFile( SOURCE_PATH, files[i] ));
-        }
-
-        logger.fine("load maps");
-        for( int i=0,e= MAPS.length; i<e; i++ ){
-          evaluateFile( getFile( MAPS_PATH, MAPS[i] ));
-        }
-
-        logger.fine("load mod");
-        evalExpression("function __invoke( key ){ var data = controller.aquireActionDataObject(); data.setAction( key ); controller.pushActionDataIntoBuffer( data ); }");
-        evalExpression("__invoke( 'loadMod' );");
-        evalExpression("var data = controller.aquireActionDataObject(); data.setAction( 'loadGame' ); data.setSubAction( testMap ); controller.pushActionDataIntoBuffer( data );");
-        evalExpression("util.i18n_setLanguage('en');");
     }
 
     public Object evalExpression( String expr ){
@@ -145,7 +81,7 @@ public class Engine {
         }
     }
 
-    private Object evaluateFile( File file) {
+    public Object evaluateFile( File file) {
         try {
             logger.fine("evaluate file "+file.getAbsolutePath());
 
@@ -163,17 +99,9 @@ public class Engine {
         }
     }
 
-    private File getFile( String sPath, String fPath ){
-        return new File(
-          (new StringBuilder())
-            .append( WORK_DIR ).append("/")
-            .append( sPath )
-            .append( fPath )
-            .append(".js")
-            .toString()
-        );
-    }
-    
+    /**
+     * 
+     */
     public static class SingleLineFormatter extends Formatter {
 
         private String lineSeparator = "\n";
@@ -214,4 +142,6 @@ public class Engine {
             return sb.toString();
         }
     }
+    
+    
 }
