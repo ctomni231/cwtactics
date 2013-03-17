@@ -495,6 +495,7 @@ display:none;
 }
 
 .headerImg {
+  left: -20px;
   border: 0px solid #ebebeb;
   box-shadow: 0 0 0px #ebebeb;
   -webkit-box-shadow: 0 0 0px #ebebeb;
@@ -506,39 +507,6 @@ display:none;
 #sectionMain .buttonLink a {
   width: 100px;
 }
-
-/* ************************ MILESTONE SECTION ************************ */
-
-.changelogBox {
-  margin-top: 30px;
-}
-
-.changelogBox span {
-  font-weight: bold;
-}
-
-#sectionRelease .buttonLink {
-  margin-bottom: 120px;
-  margin-left: 100px;
-  margin-top: 30px;
-}
-
-#sectionRelease .buttonLink a {
-  width: 100px;
-  text-align: center;
-}
-
-
-/* ************************ LINKS SECTION ************************ */
-
-#sectionLinks li {
-  list-style: none;
-}
-
-#sectionLinks a {
-  width: 250px;
-}
-
 
 /* ************************ MISC ************************ */
 

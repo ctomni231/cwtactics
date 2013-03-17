@@ -32,21 +32,21 @@ PAGE_PROG.openSection = function( el, section ){
 /* ***************************** ON READY ***************************** */
 
 $(document).ready(function(){
-
+  
   // RENDER TEMPLATES
-  $("#navBar").render( PAGE_DATA, PAGE_DESC.navBar);
-  $("#sectionRelease").render( PAGE_DATA, PAGE_DESC.milestoneSection );
-  $("#sectionLegal").render( PAGE_DATA, PAGE_DESC.legalSection );
-  $("#sectionLinks").render( PAGE_DATA, PAGE_DESC.linkSection );
-      
+  PAGE_DESC.fillNavbarSection( document.getElementById("navbar") );
+  PAGE_DESC.fillLinkSection( document.getElementById("sectionLinks") );
+  PAGE_DESC.fillLegalsSection( document.getElementById("sectionLegal") );
+  PAGE_DESC.fillReleaseSection( document.getElementById("sectionRelease") );
+  PAGE_DESC.loadAndDisplayIssues( document.getElementById("sectionRoadmap") );
+  
+  $("#playLatestButton").attr("href", PAGE_DATA.latestMilestone.link );
+  
   // CONVERT RSS DATES TO HUMAN READABLE TIME
   $(".rss-date").each(function(i,element){
     element.innerHTML = moment( element.innerHTML, "YYYY-MM-DD HH:mm:ss.SSS-Z,ZZ").fromNow();;
   });
-      
-  $("#playLatestButton").attr("href", PAGE_DATA.latestMilestone.link );
-  
+
+  // OPEN MAIN SECTION
   PAGE_PROG.openSection( { href:"" }, "sectionMain" ); 
-  
-  loadAndDisplayIssues( document.getElementById("roadmap") );
 });

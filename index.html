@@ -8,15 +8,19 @@
 
     <!-- DEPENDENCIES -->
     <script src='libs/jquery.js' type='text/javascript'></script>
-    <script src='libs/pure.js' type='text/javascript'></script>
     <script src='libs/moment.js' type='text/javascript'></script>
-    
+    <script src='libs/mustache.js' type='text/javascript'></script>
     <script src='libs/head.js' type='text/javascript'></script>
+    
+    <!-- MAIN -->
+    <script src='scripts/stuff.js' type='text/javascript'></script>
     
     <!-- PROG AND TEMPLATE DESC -->
     <script src='scripts/issuesLoader.js' type='text/javascript'></script>
-    <script src='scripts/stuff.js' type='text/javascript'></script>
-    <script src='scripts/desc.js' type='text/javascript'></script>
+    <script src='scripts/navbarLoader.js' type='text/javascript'></script>
+    <script src='scripts/releasesLoader.js' type='text/javascript'></script>
+    <script src='scripts/linkLoader.js' type='text/javascript'></script>
+    <script src='scripts/legalLoader.js' type='text/javascript'></script>
     
     <!-- DATA -->
     <script src='content/milestones.js' type='text/javascript'></script>
@@ -26,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/site.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/cwt.css">
 
     <title>Custom Wars Tactics</title>
   </head>
@@ -39,10 +44,7 @@
       <header class="inner">
          
           <h1 id="project_title"><img class="headerImg" src="images/cwttitle.png"></h1>
-          <div>
-            <ul id="navBar" class="navigationBar">
-              <li><a target="_blank" onclick="return PAGE_PROG.openSection( this, this.attributes.section.value );"></a></li>
-            </ul>
+          <div id="navbar">
           </div>
          
       </header> 
@@ -100,76 +102,21 @@
       <!-- ######################################################################## -->
       
       <section id="sectionRoadmap" style="display:none;" class="inner">
-        <div id="roadmap">
-        
-        </div>
       </section>
       
       <!-- ######################################################################## -->
       
       <section id="sectionRelease" style="display:none;" class="inner">
-        
-        <div class="infoBox">
-          <div class="main infoBoxHeader">
-            <span class="role">
-              <span class="infoBoxSubHeaderTop"></span></br>
-              <span class="infoBoxSubHeaderBottom"></span>
-            </span>
-          </div>
-        
-          <p class="imgBox"></p>
-        
-          <p class="buttonLink leftSide">
-            <a class="play" href="" target="_blank">Play It</a>
-          </p>
-        
-          <p class="text"></p>
-        
-          <p class="changelogBox">
-            <span>Changelog:</span>
-            <ul>
-              <li class="changelog"></li>
-            </ul>
-          </p>
-        </div>
-        
       </section>
     
       <!-- ######################################################################## -->
     
       <section id="sectionLinks" style="display:none;" class="inner">
-        
-          <ul>
-            <li>
-              <p class="buttonLink middleSide">
-                <a href="" target="_blank"></a>
-              </p>
-            </li>
-          </ul>
-        
       </section>
       
       <!-- ######################################################################## -->
     
       <section id="sectionLegal" style="display:none;" class="inner">
-        
-        <div class="infoBox">
-          
-          <div class="main infoBoxHeader">
-            <span class="role">
-              <span class="infoBoxSubHeaderTop"></span></br>
-              <span class="infoBoxSubHeaderBottom"></span>
-            </span>
-          </div>
-        
-          <p class="text"></p>
-          
-          <p class="buttonLink rightSide">
-            <a href="" target="_blank">Read More</a>
-          </p>
-        
-        </div>
-
       </section>
       
       <!-- ######################################################################## -->
