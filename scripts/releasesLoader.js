@@ -18,7 +18,7 @@ PAGE_DESC.fillReleaseSection = function( target ){
               "</br>",
               "<p class=\"buttonLink\"> <a class=\"play\" href=\"{{link}}\" target=\"_blank\">Play It</a> </p>",
             "</td>",
-            "<td> <img src=\"{{img}}\" /> </td>",
+            "<td> {{#img}} <img src=\"{{img}}\" /> {{/img}} </td>",
           "</tr>",
         "</thead>",
         
