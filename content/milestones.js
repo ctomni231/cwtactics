@@ -5,9 +5,7 @@ PAGE_DATA.milestones = [
     version: "2.70",
     subHeaderT: "Testing",
     subHeaderB: "",
-    
-    img: "images/milestones/m2.7.png",
-    
+        
     text:[
       ""
     ],
