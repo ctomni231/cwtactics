@@ -47,4 +47,6 @@ $(document).ready(function(){
   $("#playLatestButton").attr("href", PAGE_DATA.latestMilestone.link );
   
   PAGE_PROG.openSection( { href:"" }, "sectionMain" ); 
+  
+  loadAndDisplayIssues( document.getElementById("roadmap") );
 });

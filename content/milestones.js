@@ -2,6 +2,28 @@ PAGE_DATA.milestones = [
   
   {
     header: "Milestone",
+    version: "2.70",
+    subHeaderT: "Testing",
+    subHeaderB: "",
+    
+    img: "images/milestones/m2.7.png",
+    
+    text:[
+      ""
+    ],
+    
+    link: "games/milestones/m2.7/starter.html",
+    
+    changelog:[
+      "Fix: unloading units breaks the engine",
+      "Fix: counter weapon was not found if target uses weapon without ammo while having no ammo"
+    ]
+  },
+  
+  // --------------------------------------------------------------------------------------------------------
+  
+  {
+    header: "Milestone",
     version: "2.69",
     subHeaderT: "Hot Fix",
     subHeaderB: "",
