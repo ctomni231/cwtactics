@@ -28,7 +28,7 @@ PAGE_DATA.milestones = [
     subHeaderT: "Hot Fix",
     subHeaderB: "",
     
-    img: "images/milestones/m2.69.png",
+    img: "images/milestones/milestone2_69.png",
     
     text:[
       ""
@@ -54,7 +54,7 @@ PAGE_DATA.milestones = [
     subHeaderT: "Weather and",
     subHeaderB: "more Fixes",
     
-    img: "images/milestones/m2.68.png",
+    img: "images/milestones/milestone2_68.png",
     
     text:[
       ""
@@ -91,7 +91,7 @@ PAGE_DATA.milestones = [
     subHeaderT: "Bugfixes",
     subHeaderB: "and more",
     
-    img: "images/milestones/m2.65.png",
+    img: "images/milestones/milestone2_65.png",
     
     text:[
       ""
@@ -127,7 +127,7 @@ PAGE_DATA.milestones = [
     subHeaderT: "Internet Explorer",
     subHeaderB: "Fix",
     
-    img: "images/milestones/m2.6.png",
+    img: "images/milestones/milestone2_61.png",
     
     text:[
       "This first time ever in the complete history of Custom Wars Tactics... we are happy to announce the Internet Explorer 9 :D",
@@ -150,7 +150,7 @@ PAGE_DATA.milestones = [
     subHeaderT: "Last Alpha",
     subHeaderB: "Standing",
     
-    img: "images/milestones/m2.6.png",
+    img: "images/milestones/milestone2_6.png",
     
     text:[
       "This is the last release of the alpha phase. The next release will officially starting the beta phase of Custom Wars Tactics. Instead of the naming schema Milestone X we using a new versioning schema. The next release will be Custom Wars Tactics 0.3 Beta.",
@@ -207,7 +207,7 @@ PAGE_DATA.milestones = [
     subHeaderT: "Fog of",
     subHeaderB: "War",
     
-    img: "images/milestones/m2.4_pic_1.png",
+    img: "images/milestones/milestone2_4.png",
     
     text:[
       "It will include the fog of war system.",
@@ -231,7 +231,7 @@ PAGE_DATA.milestones = [
     subHeaderT: "Firefox",
     subHeaderB: "Fixes",
     
-    img: "images/milestones/m2.2.png",
+    img: "images/milestones/milestone2_2.png",
     
     text:[
       "Solved the mouse control issues in firefox, but there are some coloring issues."
@@ -252,7 +252,7 @@ PAGE_DATA.milestones = [
     subHeaderT: "Touch Input",
     subHeaderB: "Fixes",
     
-    img: "images/milestones/m2.1.png",
+    img: "images/milestones/milestone2_1.png",
     
     text:[
       "Solved some control issues and implemented a version tag in the upper left coner."
@@ -273,7 +273,7 @@ PAGE_DATA.milestones = [
     subHeaderT: "Game",
     subHeaderB: "Rounds",
     
-    img: "images/milestones/m2.png",
+    img: "images/milestones/milestone2.png",
     
     text:[
       "This will be the last HTML client only milestone. The HTML client and the java client will be released in a similar state of functionality with the next milestone releases.",
@@ -296,7 +296,7 @@ PAGE_DATA.milestones = [
     subHeaderT: "We need",
     subHeaderB: "visual stuff",
     
-    img: "images/milestones/m1.png",
+    img: "images/milestones/milestone1.png",
     
     text:[
       "The first milestone tries to build the base for the web client and the java client. It provides a nearly complete model with first logic functionalities.",
