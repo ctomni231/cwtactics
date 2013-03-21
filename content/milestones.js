@@ -1,5 +1,6 @@
 PAGE_DATA.milestones = [
   
+  /*
   {
     header: "Milestone",
     version: "2.70",
@@ -16,7 +17,7 @@ PAGE_DATA.milestones = [
       "Fix: unloading units breaks the engine",
       "Fix: counter weapon was not found if target uses weapon without ammo while having no ammo"
     ]
-  },
+  },*/
   
   // --------------------------------------------------------------------------------------------------------
   
