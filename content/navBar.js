@@ -1,10 +1,10 @@
 PAGE_DATA.navbarLinks = [
   
-  { name:"News",          section:"sectionMain" },
-  { name:"Releases",      section:"sectionRelease" },
-  { name:"Working On",    section:"sectionRoadmap" },
-  { name:"Links",         section:"sectionLinks" },
-  { name:"Legal Notice",  section:"sectionLegal" },
+  { name:"News",          section:"news" },
+  { name:"Releases",      section:"releases" },
+  { name:"Working On",    section:"roadmap" },
+  { name:"Links",         section:"links" },
+  { name:"Legal Notice",  section:"legals" },
   { name:"Contact Us",    section:"mailto:ctomni231@gmail.com", target:"_self", link:true }
   
 ];

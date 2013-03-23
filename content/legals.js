@@ -51,41 +51,6 @@ PAGE_DATA.legals = [
   // --------------------------------------------------------------------------------------------------------
   
   {
-    header: "Pure",
-    version: "",
-    subHeaderT: "Template",
-    subHeaderB: "Engine",
-    
-    text:[
-      "Used as template engine for the Custom Wars Tactics web page.",
-      "PURE Unobtrusive Rendering Engine for HTML",
-	  "Licensed under the MIT licenses.<br/>More information at: http://www.opensource.org",
-	  "Copyright (c) 2012 Michael Cvilic - BeeBole.com",
-      "Thanks to Rog Peppe for the functional JS jump<br/>revision: 2.80"
-    ],
-    
-    link: "http://beebole.com/pure/"
-  },
-  
-  // --------------------------------------------------------------------------------------------------------
-  
-  {
-    header: "Moment Js",
-    version: "",
-    subHeaderT: "Date",
-    subHeaderB: "Formatter",
-    
-    text:[
-      "Used to format dates into a human read able format for the Custom Wars Tactics web page.",
-      "moment.js<br/>version : 2.0.0<br/>author : Tim Wood<br/>license : MIT"
-    ],
-    
-    link: "momentjs.com"
-  },
-  
-  // --------------------------------------------------------------------------------------------------------
-  
-  {
     header: "Javascript-astar",
     version: "",
     subHeaderT: "A*",

@@ -1,11 +1,10 @@
-PAGE_DESC.fillReleaseSection = function( target ){
+PAGE_PROG.sectionController.registerSection({
   
-  var partials = {
-    textBlock: "{{#text}}<p>{{{.}}}</p>{{/text}}",
-    changeLog: "{{#changelog}}<li class=\"changelog\">{{{.}}}</li>{{/changelog}}"
-  };
+  id: "releases",
   
-  var template = [
+  element: document.getElementById("sectionRelease"),
+  
+  template: [
     "{{#milestones}}",
       "<table>",  
     
@@ -34,9 +33,10 @@ PAGE_DESC.fillReleaseSection = function( target ){
         
       "</table>",
     "{{/milestones}}"
-  ].join("");
-  
-  var mEl = document.createElement("div");
-  mEl.innerHTML = Mustache.render( template, PAGE_DATA, partials );
-  target.appendChild( mEl );
-};
+  ].join(""),
+      
+  partials:{
+    textBlock: "{{#text}}<p>{{{.}}}</p>{{/text}}",
+    changeLog: "{{#changelog}}<li class=\"changelog\">{{{.}}}</li>{{/changelog}}"
+  }
+});

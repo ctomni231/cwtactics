@@ -40,7 +40,27 @@
   border-down-color: @color;
 }
 
+.transition( @property: all, @time: 0.2s ) {
+  -webkit-transition: @property @time;
+  -moz-transition: @property @time;
+  -ms-transition: @property @time;
+  -o-transition: @property @time;
+  transition: @property @time;
+}
+
+.transition-effect( @property: all, @time: 0.2s, @effect: ease-in-out ) {
+  -webkit-transition: @property @time @effect;
+  -moz-transition: @property @time @effect;
+  -ms-transition: @property @time @effect;
+  -o-transition: @property @time @effect;
+  transition: @property @time @effect;
+}
+
 /* -------------------- WORKING ON SECTION -------------------- */
+
+.inner {
+  .transition-effect( opacity, 1s );
+}
 
 #sectionRoadmap {
   

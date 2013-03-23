@@ -1,13 +1,11 @@
-PAGE_DESC.fillLinkSection = function( target ){
+PAGE_PROG.sectionController.registerSection({
   
-  var partials = {
-    //aComplex: "<table><tbody><tr> <td>{{name}}</td> <td>{{desc}}</td> </tr></tbody></table>"
-    aComplex: "<span>{{name}}</span> <span>{{desc}}</span>"
-  };
+  id: "links",
   
-  var template = [
+  element: document.getElementById("sectionLinks"),
+  
+  template: [
     "<ul>",
-    
       "{{#links}}",
         "<li>",  
             "<p class='buttonLink middleSide'>",
@@ -17,11 +15,10 @@ PAGE_DESC.fillLinkSection = function( target ){
             "</p>",
         "</li>",
       "{{/links}}",
-    
-    "</ul>",
-  ].join("");
-  
-  var el = document.createElement("div");
-  el.innerHTML = Mustache.render( template, PAGE_DATA, partials );
-  target.appendChild(el);
-};
+    "</ul>"
+  ].join(""),
+      
+  partials:{
+    aComplex: "<span>{{name}}</span> <span>{{desc}}</span>"
+  }
+});

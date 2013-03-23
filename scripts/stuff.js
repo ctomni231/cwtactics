@@ -2,51 +2,84 @@ var PAGE_DESC = {};
 var PAGE_DATA = {};
 var PAGE_PROG = {};
 
-/* ***************************** SECTION ***************************** */
-
-PAGE_PROG.oldSection_ = null;
-PAGE_PROG.newSection_ = null;
-
-PAGE_PROG.fadeSectionIn = function(){
-  $( "#"+PAGE_PROG.newSection_ ).fadeIn(500);
-  PAGE_PROG.newSection_ = null;
-};
-
-PAGE_PROG.openSection = function( el, section ){
-  if( el.href !== "" ) return true;
+/**
+ *
+ * @namespace
+ */ 
+PAGE_PROG.sectionController = {
   
-  if( PAGE_PROG.oldSection_ !== null ){
-    PAGE_PROG.newSection_ = section;
-    $("#"+PAGE_PROG.oldSection_).fadeOut(500,PAGE_PROG.fadeSectionIn);
+  /**
+   * Active page section.
+   * @private
+   */
+  _active:null,
+  
+  /**
+   * All known page sections.
+   * @private
+   */
+  _registered:{},
+  
+  /**
+   *
+   */
+  registerSection: function( factoryDesc ){
+    var sect = {};
+    
+    sect.element = factoryDesc.element;
+    sect.template = factoryDesc.template;
+    sect.partials = factoryDesc.partials;
+    sect.rendered = false;
+    
+    if( factoryDesc.dataLoader ) sect.dataLoader = factoryDesc.dataLoader;
+    
+    PAGE_PROG.sectionController._registered[ factoryDesc.id ] = sect;
+  },
+  
+  /** @private */
+  _renderSection: function( section, data ){
+    if( !data ) data = PAGE_DATA;
+    var el = document.createElement("div");
+    
+    el.innerHTML = Mustache.render( 
+      section.template, 
+      data,
+      section.partials 
+    );
+    
+    section.element.appendChild(el);
+    section.rendered = true;
+  },
+  
+  /**
+   * Opens a registered section on the page. If a section
+   * is already opened then it will be hidden by setting
+   * its opacity to zero.
+   */
+  openSection: function( invoker, id ){
+    if( invoker != null && invoker.href !== "" ) return true;
+    
+    // HIDE OLD
+    if( this._active !== null ){
+      var section = this._active;
+      section.element.style.display = "none";
+    }
+    
+    // SHOW NEW
+    var section = this._registered[id];
+    
+    // RENDER IT ( LAZY RENDERING )
+    if( !section.rendered ){
+      
+      if( section.dataLoader ){
+        section.dataLoader( section, this._renderSection );
+      }
+      else this._renderSection( section );  
+    }
+    
+    section.element.style.display = "";
+    this._active = section;
+    
+    return false;
   }
-  else{
-    PAGE_PROG.newSection_ = section;
-    PAGE_PROG.fadeSectionIn();
-  }
-  
-  PAGE_PROG.oldSection_ = section;
-  return false;
 };
-
-
-/* ***************************** ON READY ***************************** */
-
-$(document).ready(function(){
-  
-  // RENDER TEMPLATES
-  PAGE_DESC.fillNavbarSection( document.getElementById("navbar") );
-  PAGE_DESC.fillLinkSection( document.getElementById("sectionLinks") );
-  PAGE_DESC.fillLegalsSection( document.getElementById("sectionLegal") );
-  PAGE_DESC.fillReleaseSection( document.getElementById("sectionRelease") );
-  PAGE_DESC.loadAndDisplayIssues( document.getElementById("sectionRoadmap") );
-  
-  $("#playLatestButton").attr("href", PAGE_DATA.latestMilestone.link );
-  
-  // CONVERT RSS DATES TO HUMAN READABLE TIME
-  $(".rss-date").each(function(i,element){
-    element.innerHTML = moment( element.innerHTML, "YYYY-MM-DD HH:mm:ss.SSS-Z,ZZ").fromNow();;
-  });
-
-  // OPEN MAIN SECTION
-  PAGE_PROG.openSection( { href:"" }, "sectionMain" ); 
-});
