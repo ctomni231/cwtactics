@@ -46,7 +46,7 @@ public class VersusGameScreen extends Screen{
     	
     	//TODO: Something is wrong with the EngineBridge Rhino parser when reading maps
     	//Un-comment line below and go to menu option "Versus" in JMain.java to see the error.
-    	//mapScr.loadMapFromEngine();
+    	mapScr.loadMapFromEngine();
     	
     	
         //PixAnimate.getTags();

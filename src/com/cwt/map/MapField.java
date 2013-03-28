@@ -8,7 +8,7 @@ import org.newdawn.slick.Graphics;
 import com.cwt.game.ObjectLibrary;
 import com.cwt.menu.tools.MovingMenu;
 import com.cwt.tools.XML_Reader;
-import com.engine.EngineBridge;
+import com.engine.EngineApi;
 import com.jslix.state.ScreenSkeleton;
 import com.jslix.tools.RomanNumeral;
 
@@ -57,15 +57,14 @@ public class MapField extends MovingMenu implements ScreenSkeleton{
 	//TODO: Also make sure to finish off terrain connections and unit animations
 	//TODO: Finish up the CO images, and start to update the Graphics todo list
 	public void loadMapFromEngine(){
-		EngineBridge.setModule("CONTROLLER");	
-		while(!EngineBridge.callFunctionExists("isBufferEmpty"))
-			EngineBridge.callFunction("evalNextMessageFromBuffer");
+		while( EngineApi.hasNextAction() ){
+		    EngineApi.flushNextAction();
+		}
 		
-		EngineBridge.setModule("MODEL");
-		mapsx = EngineBridge.getPropertyAsInteger("mapWidth");
-		mapsy = EngineBridge.getPropertyAsInteger("mapHeight");
-		
-		System.out.println("Length: "+EngineBridge.getPropertyAsArray("map").length);
+	    mapsx = EngineApi.getModelObject().getPropertyAsInteger("mapWidth");
+	    mapsy = EngineApi.getModelObject().getPropertyAsInteger("mapHeight");
+	    
+		//System.out.println("Length: "+EngineBridge.getPropertyAsArray("map").length);
 		//System.out.println(EngineBridge.getProperty("map"));
 		//System.out.println("("+mapsx+","+mapsy+")");
 		drawMap = new MapItem[mapsx][mapsy];
