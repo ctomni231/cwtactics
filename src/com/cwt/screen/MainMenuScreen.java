@@ -11,7 +11,6 @@ import com.cwt.menu.tools.TextPix;
 import com.cwt.oldgame.PixAnimate;
 import com.cwt.tools.OptionHandler;
 import com.cwt.tools.XML_Reader;
-import com.engine.EngineApi;
 import com.jslix.SlixLibrary;
 import com.jslix.debug.MemoryTest;
 import com.jslix.debug.MessageDebug;
@@ -70,9 +69,6 @@ public class MainMenuScreen extends Screen{
      * of CWT. This function initializes all the screens.
      */
     public MainMenuScreen(){
-    	
-    	EngineApi.loadEngine();
-	    EngineApi.loadDevStuff();
 	    
         bgPic = new BackgroundHandler(scr_width, scr_height);
 

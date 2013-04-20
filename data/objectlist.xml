@@ -429,11 +429,13 @@
 	<list file="image/symbol/minus.png" />
 	<list file="image/symbol/paralyze.png" />
 	<list file="image/symbol/plus.png" />
+	<list file="image/symbol/problem.png" />
 	<list file="image/symbol/question.png" />
 	<list file="image/symbol/redcross.png" />
 	<list file="image/symbol/redup.png" />
 	<list file="image/symbol/smallplus.png" />
 	<list file="image/symbol/smallstar.png" />
+	<list file="image/symbol/target.png" />
 	<list file="image/symbol/two.png" />
 	<list file="image/symbol/unknown.png" />
 	<list file="image/symbol/veteran.png" />

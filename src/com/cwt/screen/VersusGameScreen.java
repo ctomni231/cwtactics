@@ -18,7 +18,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.26.12
+ * @version 4.20.13
  */
 
 public class VersusGameScreen extends Screen{
@@ -42,11 +42,7 @@ public class VersusGameScreen extends Screen{
     public VersusGameScreen(){
     	
     	mapScr = new MapField(10, 10, 0);
-    	//mapScr.loadMap("map/test.json");
-    	
-    	//TODO: Something is wrong with the EngineBridge Rhino parser when reading maps
-    	//Un-comment line below and go to menu option "Versus" in JMain.java to see the error.
-    	mapScr.loadMapFromEngine();
+    	mapScr.loadMap();
     	
     	
         //PixAnimate.getTags();

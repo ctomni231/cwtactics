@@ -3,6 +3,7 @@ package com.cwt.game;
 import com.cwt.game.tools.KeyStore;
 import com.cwt.game.tools.ListStore;
 import com.cwt.game.tools.RefStore;
+import com.engine.EngineApi;
 import com.jslix.io.FileFind;
 import com.jslix.io.FileIndex;
 import com.jslix.parser.XML_Parser;
@@ -16,7 +17,7 @@ import com.jslix.parser.XML_Writer;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 11.24.12
+ * @version 4.20.13
  */
 public class ObjectStorage implements Runnable{
 	
@@ -252,9 +253,12 @@ public class ObjectStorage implements Runnable{
     
     /**
      * This function is used to find and load the objects that will be used
-     * for the game. 
+     * for the game. This also loads the game engine that will be used
+     * for the map screen.
      */
     private void decodeFiles(){
+    	EngineApi.loadEngine();
+	    EngineApi.loadDevStuff();
         if(!isApplet)   findObjects();
         loadObjects();
         ready = true;

@@ -22,7 +22,7 @@ import com.jslix.tools.RomanNumeral;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 1.31.13
+ * @version 4.20.13
  */
 public class MapField extends MovingMenu implements ScreenSkeleton{
 	
@@ -53,6 +53,28 @@ public class MapField extends MovingMenu implements ScreenSkeleton{
         resetMap();
 	}
 	
+	public void loadMap(){
+		while( EngineApi.hasNextAction() ){
+		    EngineApi.flushNextAction();
+		}
+		
+		mapsx = EngineApi.getModelObject().getPropertyAsInteger("mapWidth");
+	    mapsy = EngineApi.getModelObject().getPropertyAsInteger("mapHeight");
+	    
+	    Object[] temp = EngineApi.getModelObject().getPropertyAsArray("map");
+	    System.out.println("TEMP STRING LENGTH:"+temp.length);
+	    System.out.println("MAP SIZE: ("+mapsx+","+mapsy+")");
+		
+		drawMap = new MapItem[mapsx][mapsy];
+		resetMap();
+		for(int i = 0; i < mapsx; i++){
+           for(int j = 0; j < mapsy; j++){
+            	drawMap[i][j].terrain = ObjectLibrary.getTerrainIndex("PLIN");
+           }    
+        }
+	}
+	
+	
 	//TODO: Use model.map to load the map and get all the data
 	//TODO: Also make sure to finish off terrain connections and unit animations
 	//TODO: Finish up the CO images, and start to update the Graphics todo list
@@ -76,7 +98,7 @@ public class MapField extends MovingMenu implements ScreenSkeleton{
         }	
 	}
 	
-	public void loadMap(String filename){
+	public void loadAMap(String filename){
 		XML_Reader.parse(filename);
 		mapsx = Integer.valueOf(XML_Reader.getJSONAttribute("mapWidth", 0));
 		mapsy = Integer.valueOf(XML_Reader.getJSONAttribute("mapHeight", 0));
