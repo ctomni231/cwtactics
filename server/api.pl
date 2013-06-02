@@ -1,20 +1,8 @@
 #!/usr/bin/perl
-# The main script for snail mode games in Custom Wars
-# Deals with everything except file saves/loads
-# available commands:
-# test     - Test connection, return "success"
-# qname    - Tests if a certain game exists, returns "yes" or "no"
-# newgame  - Creates a new game by reserving the game name
-# mpass    - Tests a master password
-# join     - Registers a player with a particular game
-# validup  - Checks if a player's user/pass is correct in general
-# canplay  - Checks if a player's user/pass is the current player's
-# getturn  - Returns the day and turn
-# nextturn - informs the server that the next turn has started
-# sendchat - puts a chat message in the game's .chat file
-# getsys   - returns the contents of the system log
-# getchat  - returns the contents of the chat log
-# dplay    - eliminates a specified player
+# create - creates a game session
+# delete - eliminates a game session
+# append - appends an action to a game session
+# retrieve - get the list of actions for a game session
 	
 use CGI;
 
@@ -31,15 +19,66 @@ sub rnd_str
 	return $output;
 }
 
+sub create
+{
+
+}
+
+sub delete
+{
+
+}
+
+sub append
+{
+
+}
+
+sub retrieve
+{
+
+}
+
 $cgi = new CGI;
 
 for $key ( $cgi->param() ) {
     $input{$key} = $cgi->param($key);
 }
 
-
 print $cgi->header('text/html');
 
+action;
+param;
+token;
+
 for $key ( keys %input ) {
-    print $key, ' = ', $input{$key}, "<br>\n";
+    if ( $key == "action" )
+    {
+        $action =  $input{$key};
+    }
+    else if ( $key == "param")
+    {
+        $param =  $input{$key};
+    }
+    else if ( $key == "token")
+    {
+        $token =  $input{$key};
+    }
+}
+
+if ( $action == "create" )
+{
+    
+} 
+else if ( $action == "delete" )
+{ 
+
+} 
+else if ( $action == "append" )
+{ 
+
+}
+else if ( $action == "retrive" )
+{ 
+
 }
