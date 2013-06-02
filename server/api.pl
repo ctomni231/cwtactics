@@ -22,11 +22,16 @@ sub rnd_str
 
 sub create
 {
-    my $session = rnd_str(24);
+    my $session = rnd_str(12);
+print $session;
+print " - open - ";
     my $dbh = DBI->connect("dbi:SQLite:dbname=test.db", "", "", { RaiseError => 1}) or die $DBI::errstr;
-    $dbh->do("INSERT INTO Session VALUES('$session','$2')");
-    open (MYFILE, ">$session") || die "Cannot Open File";
+print " - open - ";
+    $dbh->do("INSERT INTO Session VALUES('$session','$2')") || die "Error inserting to DB";
+print " - open - ";
+    open (MYFILE, ">$session" ) || die "Cannot Open File";
     $dbh->disconnect();
+print " - disconnect - ";
     return $session;
 }
 
@@ -107,43 +112,49 @@ message;
 
 for $key ( keys %input )
 {
-    if ( $key == "action" )
+    if ( $key eq "action" )
     {
         $action =  $input{$key};
     }
-    elsif ( $key == "param")
+    elsif ( $key eq "param")
     {
         $param =  $input{$key};
     }
-    elsif ( $key == "token")
+    elsif ( $key eq "token")
     {
         $token =  $input{$key};
     }
-    elsif ( $key == "message")
+    elsif ( $key eq "message")
     {
         $message =  $input{$key};
     }
 }
 
-if ( $action == "create" )
+if ( $action eq "create" )
 {
-    return create($token);
+    print "create: ";
+    print create($token);
 } 
-elsif ( $action == "delete" )
+elsif ( $action eq "delete" )
 { 
-    return dlete($param, $token);
+    print "delete: ";
+    print dlete($param, $token);
 } 
-elsif ( $action == "append" )
+elsif ( $action eq "append" )
 { 
-    return append($param, $token, $message);
+    print "append: ";
+    print append($param, $token, $message);
 }
-elsif ( $action == "retrive" )
+elsif ( $action eq "retrive" )
 { 
-    return retrieve($param, $token);
+    print "retrieve: ";
+    print retrieve($param, $token);
 }
 else
 {
     my $dbh = DBI->connect("dbi:SQLite:dbname=test.db", "", "", { RaiseError => 1}) or die $DBI::errstr;
+    $dbh->do("DROP TABLE IF EXISTS Session");
     $dbh->do("CREATE TABLE Session(uuid TEXT, password TEXT)");
     $dbh->disconnect();   
+    print "Default action";
 }
