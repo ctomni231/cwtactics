@@ -26,10 +26,15 @@ sub rnd_str
 sub create
 {
     my $session = rnd_str(12);
+print "g\n";
     my $dbh = DBI->connect("dbi:SQLite:dbname=$database", "", "", { RaiseError => 1}) or die $DBI::errstr;
+print "g\n";
     $dbh->do("INSERT INTO Session VALUES('$session','$_[0]')") || die "Error inserting to DB";
+print "g\n";
     open (MYFILE, ">$session_folder/$session" ) || die "Cannot Open File";
+print "g\n";
     $dbh->disconnect();
+print "g\n";
     return $session;
 }
 
@@ -126,13 +131,13 @@ for $key ( keys %input )
     }
 }
 
-$action = $ARGV[0];
-$param = $ARGV[1];
-$token = $ARGV[2];
+#$action = $ARGV[0];
+#$param = $ARGV[1];
+#$token = $ARGV[2];
 
-#print "$action \n";
-#print "$param \n";
-#print "$token \n";
+print "$action \n";
+print "$param \n";
+print "$token \n";
 
 if ( $action eq "create" )
 {
