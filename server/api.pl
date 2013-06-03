@@ -130,6 +130,10 @@ for $key ( keys %input )
     }
 }
 
+$action = $1;
+$param = $2;
+$token = $3;
+
 if ( $action eq "create" )
 {
     print "create: ";
