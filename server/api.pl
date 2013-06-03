@@ -26,9 +26,8 @@ sub rnd_str
 sub create
 {
     my $session = rnd_str(12);
-print "\n$_[1]\n";
     my $dbh = DBI->connect("dbi:SQLite:dbname=$database", "", "", { RaiseError => 1}) or die $DBI::errstr;
-    $dbh->do("INSERT INTO Session VALUES('$session','$_[1]')") || die "Error inserting to DB";
+    $dbh->do("INSERT INTO Session VALUES('$session','$_[0]')") || die "Error inserting to DB";
     open (MYFILE, ">$session_folder/$session" ) || die "Cannot Open File";
     $dbh->disconnect();
     return $session;
@@ -37,15 +36,15 @@ print "\n$_[1]\n";
 sub dlete
 {
     my $dbh = DBI->connect("dbi:SQLite:dbname=$database", { RaiseError => 1 }) or die $DBI::errstr;
-    my $sth = $dbh->prepare( "SELECT * FROM Session WHERE uuid=$_[1] AND token=$_[2]");  
+    my $sth = $dbh->prepare( "SELECT * FROM Session WHERE uuid=$_[0] AND token=$_[1]");  
     $sth->execute();
     $sth->fetchrow();
     if ( $sth->rows() == 1 )
     {
-        $sth = $dbh->prepare(" DELETE FROM Session WHERE uuid=$_[1] AND token=$_[2]");
+        $sth = $dbh->prepare(" DELETE FROM Session WHERE uuid=$_[0] AND token=$_[1]");
         $sth->execute();
         $dbh->disconnect();
-        unlink("$session_folder/$1");
+        unlink("$session_folder/$_[1]");
         return "Success";
     }
     else 
@@ -58,14 +57,14 @@ sub dlete
 sub append
 {
     my $dbh = DBI->connect("dbi:SQLite:dbname=$database", { RaiseError => 1 }) or die $DBI::err;
-    my $sth = $dbh->prepare( "SELECT * FROM Session WHERE uuid=$_[1] AND token=$_[2]");
+    my $sth = $dbh->prepare( "SELECT * FROM Session WHERE uuid=$_[0] AND token=$_[1]");
     $sth->execute();
     $sth->fetchrow();
     $dbh->disconnect();
     if ( $sth->rows() == 1 )
     {
-        my $message = $3;
-        open(DAT,">>$session_folder/$_[2]") || die("Cannot Open File");
+        my $message = $_[3];
+        open(DAT,">>$session_folder/$_[1]") || die("Cannot Open File");
         print DAT $message;
         return "Success";
     }
@@ -78,13 +77,13 @@ sub append
 sub retrieve
 {
     my $dbh = DBI->connect("dbi:SQLite:dbname=$database", { RaiseError => 1 }) or die $DBI::err;
-    my $sth = $dbh->prepare( "SELECT * FROM Session WHERE uuid=$_[1] AND token=$_[2]");
+    my $sth = $dbh->prepare( "SELECT * FROM Session WHERE uuid=$_[0] AND token=$_[1]");
     $sth->execute();
     $sth->fetchrow();
     $dbh->disconnect();
     if ( $sth->rows() == 1 )
     {
-        open (DAT, "$session_folder/$2");
+        open (DAT, "$session_folder/$_[1]");
         while (<MYFILE>) {
  	    chomp;
             print "$_\n";
@@ -131,9 +130,9 @@ $action = $ARGV[0];
 $param = $ARGV[1];
 $token = $ARGV[2];
 
-print "$action \n";
-print "$param \n";
-print "$token \n";
+#print "$action \n";
+#print "$param \n";
+#print "$token \n";
 
 if ( $action eq "create" )
 {
