@@ -1,23 +1,86 @@
 PAGE_DATA.milestones = [
   
-  /*
   {
-    header: "Milestone",
-    version: "2.70",
-    subHeaderT: "Testing",
-    subHeaderB: "",
+    header: "Version",
+    version: "0.3.1",
+    subHeaderT: "CO's, Scripting",
+    subHeaderB: "and Screens",
         
     text:[
-      ""
+      "The first version of CW:T that adds the screen mechanic to the mobile client. Furthermore this version adds new game mechanics like CO with day to day effects and basic scripting."
     ],
     
-    link: "games/milestones/m2.7/starter.html",
+    img: "images/milestones/v0_3_1.png",
     
     changelog:[
+      "Feature: soldiers get +3 vision on mountains",
+      "Feature: AWDS default mod",
+      "Feature: different terrain variants",
+      "Feature: game data tag values",
+      "Feature: round configuration values",
+      "Feature: if a joined unit has more than 99 health then the difference will be payed to the owners gold depot",
+      "Feature: CO mechanic (power gathering, names, music and day 2 day effects)",
+      "Feature: terrain has a defense value that gives defense bonus",
+      "Feature: units can counter attacks ( except indirect units )",
+      "Feature: weather system",
+      "Feature: simple rule engine",
+      "Feature: fuel consumption at turn start",
+      "Feature: auto supply by supply units at turn start",
+      "Feature: background music",
+      "Feature: mobile client caches music data",
+      "Feature: mobile client caches image data",
+      "Feature: map selection",
+      "Feature: simplified target selection during the select action target state",
+      "Feature: unit information screen",
+      "Feature: tile information screen",
+      "Feature: player information screen",
+      "Feature: attack range information selection map",
+      "Feature: information screens are access able with keyboard keys 1 to 4",
+      "Feature: information screens are access able with mouse drag up,left,right and down",
+      "Feature: information screens are access able with double finger swipe up,left,right and down",
+      "Feature: drag/swipe based input system on mobile devices",
+      "Feature: options screen to control volume and to wipe out cached data",
+      "Feature: ",
+      "Enhancement: ",
+      "Enhancement: moved timer logic into engine",
+      "Enhancement: rewritten input system",
+      "Enhancement: added WebSQL and IndexedDB backend for storage API for the mobile client",
+      "Enhancement: win by destroy all enemy units as config value",
+      "Enhancement: silo cursor while firing rocket in mobile client",
+      "Enhancement: better resuppling/repairing for allied objects",
+      "Enhancement: better scrolling on iOS",
+      "Enhancement: simpler weapon model",
+      "Enhancement: showing gold and power on top of the game screen",
+      "Enhancement: preventing text/element selection in the mobile client",
+      "Enhancement: more zoom levels",
+      "Enhancement: faster zoom speed",
+      "Enhancement: if you click outside of the menu then the game invokes a cancel action",
+      "Fix: fog bug after capturing player HQTR",
+      "Fix: attack crashes the game sometimes",
+      "Fix: transporters could be transfered to other players -> results in crash",
+      "Fix: if you cross the move path then the path will be weird",
+      "Fix: move path will be corrupted after invoking cancel in a sub menu",
+      "Fix: unload unit in fog breaks the model",
+      "Fix: units in fog was attackable",
+      "Fix: various Internet Explorer fixes",
+      "Fix: the damage calculation was wrong",
+      "Fix: indirect units can move and fire in the same turn",
+      "Fix: cannot win by capturing HQTR",
+      "Fix: cannot win by destroying all enemy units",
+      "Fix: ammo does not deplete",
+      "Fix: joining does not work in some situations",
+      "Fix: moving an unit into a tile that is occuppied by a hidden enemy unit crashes the game",
+      "Fix: done was missing in multi step actions",
+      "Fix: you can transer money to yourself",
+      "Fix: rocket silo action breaks menu in some situations",
+      "Fix: ",
+      "Fix: ",
+      "Fix: ",
+      "Fix: ",
       "Fix: unloading units breaks the engine",
       "Fix: counter weapon was not found if target uses weapon without ammo while having no ammo"
     ]
-  },*/
+  },
   
   // --------------------------------------------------------------------------------------------------------
   
@@ -28,12 +91,11 @@ PAGE_DATA.milestones = [
     subHeaderB: "",
     
     img: "images/milestones/milestone2_69.png",
+    link: "https://www.dropbox.com/s/v19tjt1asjkobe8/M2_69.zip",
     
     text:[
       ""
     ],
-    
-    link: "games/milestones/m2.69/starter.html",
     
     changelog:[
       "Fix: you cannot transfer units with loaded units",
@@ -54,6 +116,7 @@ PAGE_DATA.milestones = [
     subHeaderB: "more Fixes",
     
     img: "images/milestones/milestone2_68.png",
+    link: "https://www.dropbox.com/s/wn9t34f8w35f2md/M2_68.zip",
     
     text:[
       ""
@@ -91,12 +154,11 @@ PAGE_DATA.milestones = [
     subHeaderB: "and more",
     
     img: "images/milestones/milestone2_65.png",
+    link: "https://www.dropbox.com/s/2v617y8aduize7m/M2_65.zip",
     
     text:[
       ""
     ],
-    
-    link: "games/milestones/m2.65/starter.html",
     
     changelog:[
       "Fix: you can spend money to yourself",
@@ -127,13 +189,12 @@ PAGE_DATA.milestones = [
     subHeaderB: "Fix",
     
     img: "images/milestones/milestone2_61.png",
+    link: "https://www.dropbox.com/s/31rr0fy1rjzra46/M2_61.zip",
     
     text:[
       "This first time ever in the complete history of Custom Wars Tactics... we are happy to announce the Internet Explorer 9 :D",
       "It is now able to render the screen and do the zooming feature. Due a bug the Internet Explorer cannot open the menu yet."
     ],
-    
-    link: "games/milestones/m2.61/starter.html",
     
     changelog:[
       "IE 9 Canvas fix",
@@ -150,14 +211,13 @@ PAGE_DATA.milestones = [
     subHeaderB: "Standing",
     
     img: "images/milestones/milestone2_6.png",
+    link: "https://www.dropbox.com/s/6f42j5puf5z8yb7/M2_6.zip",
     
     text:[
       "This is the last release of the alpha phase. The next release will officially starting the beta phase of Custom Wars Tactics. Instead of the naming schema Milestone X we using a new versioning schema. The next release will be Custom Wars Tactics 0.3 Beta.",
       "This milestone is a refactoring milestone that has more internal enhancements." ,
       "Because the next branch (0.3x) adds the network features we worked a lot to decrease the memory footprint of the engine."
     ],
-    
-    link: "games/milestones/m2.6/starterDebug.html",
     
     changelog:[
       "Storage API",
@@ -207,14 +267,13 @@ PAGE_DATA.milestones = [
     subHeaderB: "War",
     
     img: "images/milestones/milestone2_4.png",
+    link: "https://www.dropbox.com/s/aegfqmroa283qkv/M2_4.zip",
     
     text:[
       "It will include the fog of war system.",
       "This will be the last milestone with the old data system. Future versions of Cwt will be moddable only on source level. We want to make the game optimized to use only a little of RAM while giving a modding ability.",
       "Our last approach to make Cwt itself as general platform for own AW style game is dropped! This is because this target is not realizable under normal conditions and furthermore the most users want more usability than customization."
     ],
-    
-    link: "games/milestones/m2.4/starterDebug.html",
     
     changelog:[
       "Added fog mode",
@@ -231,12 +290,11 @@ PAGE_DATA.milestones = [
     subHeaderB: "Fixes",
     
     img: "images/milestones/milestone2_2.png",
+    link: "https://www.dropbox.com/s/es0vucyopvwvnxl/M2_2.zip",
     
     text:[
       "Solved the mouse control issues in firefox, but there are some coloring issues."
     ],
-    
-    link: "games/milestones/m2.2/starterDebug.html",
     
     changelog:[
       "N/A"
@@ -252,12 +310,11 @@ PAGE_DATA.milestones = [
     subHeaderB: "Fixes",
     
     img: "images/milestones/milestone2_1.png",
+    link: "https://www.dropbox.com/s/lluh17153heb9qf/M2_1.zip",
     
     text:[
       "Solved some control issues and implemented a version tag in the upper left coner."
     ],
-    
-    link: "games/milestones/m2.6/starterDebug.html",
     
     changelog:[
       "N/A"
@@ -273,14 +330,13 @@ PAGE_DATA.milestones = [
     subHeaderB: "Rounds",
     
     img: "images/milestones/milestone2.png",
+    link: "https://www.dropbox.com/s/k7tqr1qmojd4ban/M2.zip",
     
     text:[
       "This will be the last HTML client only milestone. The HTML client and the java client will be released in a similar state of functionality with the next milestone releases.",
       "The second milestone is mostly a refactoring milestone because we fixed a lot of problems of the milestone 1. We did it to prepare the engine for next upcoming features. Beside of many under the hood updates, milestone 2 introduces some new features like information boxes, a complete game round, building units and so on.",
       "As one of first milestones, milestone 2 has a endable game round. If you conquer the enemy <strong>HQTR</strong>, the game will end. In this release you will get a message box which shows you the end of the game."
     ],
-    
-    link: "games/milestones/m2/starterDebug.html",
     
     changelog:[
       "N/A"
@@ -296,13 +352,12 @@ PAGE_DATA.milestones = [
     subHeaderB: "visual stuff",
     
     img: "images/milestones/milestone1.png",
+    link: "https://www.dropbox.com/s/p16htogdwul3vz4/M1.zip",
     
     text:[
       "The first milestone tries to build the base for the web client and the java client. It provides a nearly complete model with first logic functionalities.",
       "<strong>Note,</strong> this is an alpha milestone and contains many bugs. Hopefully milestone 2 will be a lot better. xD"
     ],
-    
-    link: "games/milestones/m1/webClient.html",
     
     changelog:[
       "N/A"

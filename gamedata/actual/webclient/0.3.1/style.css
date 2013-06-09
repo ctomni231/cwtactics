@@ -1,0 +1,349 @@
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+body {
+  overflow: hidden;
+}
+.scale4 {
+  -webkit-transform: scale(4, 4) !important;
+  -moz-transform: scale(4, 4);
+  -ms-transform: scale(4, 4);
+  -o-transform: scale(4, 4);
+  transform: scale(4, 4);
+}
+.scale3 {
+  -webkit-transform: scale(3, 3) !important;
+  -moz-transform: scale(3, 3);
+  -ms-transform: scale(3, 3);
+  -o-transform: scale(3, 3);
+  transform: scale(3, 3);
+}
+.scale2 {
+  -webkit-transform: scale(2, 2) !important;
+  -moz-transform: scale(2, 2);
+  -ms-transform: scale(2, 2);
+  -o-transform: scale(2, 2);
+  transform: scale(2, 2);
+}
+.scale1 {
+  -webkit-transform: scale(1, 1) !important;
+  -moz-transform: scale(1, 1);
+  -ms-transform: scale(1, 1);
+  -o-transform: scale(1, 1);
+  transform: scale(1, 1);
+}
+.scale0 {
+  -webkit-transform: scale(0.8, 0.8) !important;
+  -moz-transform: scale(0.8, 0.8);
+  -ms-transform: scale(0.8, 0.8);
+  -o-transform: scale(0.8, 0.8);
+  transform: scale(0.8, 0.8);
+}
+.scale-1 {
+  -webkit-transform: scale(0.7, 0.7) !important;
+  -moz-transform: scale(0.7, 0.7);
+  -ms-transform: scale(0.7, 0.7);
+  -o-transform: scale(0.7, 0.7);
+  transform: scale(0.7, 0.7);
+}
+#cwt_canvas {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  /* bottom: 0px; */
+
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+  box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.5);
+}
+#cwt_app {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  /* bottom: 0px; */
+
+  margin: 0;
+  padding: 0;
+}
+#cwt_menu td {
+  width: 20px;
+  text-align: left;
+  font-weight: bold;
+}
+#cwt_menu td:first-child {
+  width: 80px;
+  text-align: right;
+  font-weight: normal;
+}
+#cwt_menu .cwtwc_menu_entries {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: auto;
+  height: 100%;
+}
+#cwt_menu li {
+  height: 20px;
+}
+#cwt_menu button {
+  width: 100%;
+  outline: none;
+  text-align: center;
+  border-style: none;
+  background: transparent;
+  font-size: 14px !important;
+}
+.content_panel {
+  min-width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 94.2%;
+  margin-top: -250%;
+  position: absolute;
+  background: #000;
+  z-index: 2;
+  -webkit-transition: all 0.8s ease-in-out;
+  -moz-transition: all 0.8s ease-in-out;
+  -ms-transition: all 0.8s ease-in-out;
+  -o-transition: all 0.8s ease-in-out;
+  transition: all 0.8s ease-in-out;
+}
+.content_panel:target {
+  margin-top: 0%;
+  background-color: #ffcb00;
+}
+.chat-bubble-arrow-border {
+  border-color: #666666 transparent transparent transparent;
+  border-style: solid;
+  border-width: 10px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.chat-bubble-arrow {
+  border-style: solid;
+  border-width: 10px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.chat-bubble-arrow-border-bottom {
+  border-color: #666666 transparent transparent transparent;
+  border-style: solid;
+  border-width: 10px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  border-color: #EDEDED transparent transparent transparent;
+  left: 30px;
+  top: 67px;
+}
+.chat-bubble-arrow-bottom {
+  border-style: solid;
+  border-width: 10px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  border-color: #EDEDED transparent transparent transparent;
+  left: 30px;
+  top: 64px;
+}
+.chat-bubble-arrow-border-up {
+  border-color: #666666 transparent transparent transparent;
+  border-style: solid;
+  border-width: 10px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  border-color: transparent transparent #666666 transparent;
+  left: 6px;
+  top: -20px;
+}
+.chat-bubble-arrow-up {
+  border-style: solid;
+  border-width: 10px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  border-color: transparent transparent #666666 transparent;
+  left: 6px;
+  top: -17px;
+}
+.menuPopup {
+  display: none;
+  background-color: #EDEDED;
+  border: 2px solid #666666;
+  max-height: 120px;
+  margin: 10px auto;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  box-shadow: 0px 0px 5px #888888;
+  -webkit-box-shadow: 0px 0px 5px #888888;
+  -moz-box-shadow: 0px 0px 5px #888888;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.menuPopupContent {
+  height: 120px;
+  width: 200px;
+}
+.menuPopupContent,
+.menuPopupHeader {
+  float: left;
+}
+.activeButton {
+  background-color: #d3d3d3;
+}
+.tooltip,
+.arrow:after {
+  background: black;
+  border: 2px solid white;
+}
+.tooltip {
+  pointer-events: none;
+  opacity: 0;
+  display: inline-block;
+  position: absolute;
+  padding: 2px 10px;
+  color: white;
+  margin-top: 20px;
+  text-align: center;
+  font: bold 14px "Helvetica Neue", Sans-Serif;
+  font-stretch: condensed;
+  text-decoration: none;
+  text-transform: uppercase;
+  box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.5);
+}
+.tooltip.active {
+  opacity: 1;
+  margin-top: 5px;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.tooltip.out {
+  opacity: 0;
+  margin-top: -20px;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+#playerInfo {
+  position: absolute;
+  left: 300px;
+  top: 0px;
+  width: 150px;
+  z-index: 999;
+  color: white;
+  font-weight: bold;
+  font-size: 12pt;
+}
+.gamePanel {
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+#cwt_main_screen {
+  background-image: url(../../../image/background/AWDoRBattle.gif);
+  background-size: 100%;
+}
+
+#cwt_unitinfo_box td, #cwt_tileinfo_box td, #cwt_playerinfo_box td {
+  min-width: 100px;
+}
+
+/* ---------------------------- START SCREEN ---------------------------- */
+
+#cwt_mobileSound_screen, #cwt_main_screen, #cwt_options_screen, #cwt_load_screen, #cwt_versus_screen {
+  background: rgb(60, 140, 160);
+}
+
+#cwt_mobileSound_spacer {
+  height: 5%;
+  bottom: 0px;
+}
+
+.menuButton, #cwt_options_screen p, #cwt_versus_screen p {
+  position: relative;
+  background: rgb(60, 140, 160);
+  border: none;
+  font-size: 64px;
+  font-weight: bold;
+  font-family: Courier New;
+  color: rgb(252, 250, 209);
+  height: 100px;
+  width: 100%;
+  left: 0px;
+  text-align: center;
+}
+
+#cwt_load_screen p {
+  font-size: 64px;
+  font-weight: bold;
+  font-family: Courier New;
+  color: rgb(252, 250, 209);
+  height: 100px;
+  width: 100%;
+  text-align: center;
+}
+
+#logList {
+  font-size: 24px !important;
+}
+
+#cwt_main_screen .menuButton, #cwt_options_screen p, #cwt_versus_screen p {
+  font-size: 32px;
+  height: 50px;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+#cwt_options_mapIn {
+  -webkit-touch-callout: initial;
+  -webkit-user-select: initial;
+  -khtml-user-select: initial;
+  -moz-user-select: initial;
+  -ms-user-select: initial;
+  user-select: initial;
+}
+
+#cwt_main_screen .inactive {
+  color: red;
+  height: 100px;
+}
+
+#cwt_main_screen .active, #cwt_options_screen .active  {
+  color: blue;
+  height: 100px;
+}

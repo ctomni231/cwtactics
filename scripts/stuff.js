@@ -15,6 +15,12 @@ PAGE_PROG.sectionController = {
   _active:null,
   
   /**
+   * Active link.
+   * @private
+   */
+  _activeLink:null,
+  
+  /**
    * All known page sections.
    * @private
    */
@@ -30,6 +36,7 @@ PAGE_PROG.sectionController = {
     sect.template = factoryDesc.template;
     sect.partials = factoryDesc.partials;
     sect.rendered = false;
+    if( factoryDesc.onopen ) sect.onopen = factoryDesc.onopen ;
     
     if( factoryDesc.dataLoader ) sect.dataLoader = factoryDesc.dataLoader;
     
@@ -61,8 +68,8 @@ PAGE_PROG.sectionController = {
     
     // HIDE OLD
     if( this._active !== null ){
-      var section = this._active;
-      section.element.style.display = "none";
+      this._active.element.style.display = "none";
+      this._activeLink.className = "";
     }
     
     // SHOW NEW
@@ -77,9 +84,17 @@ PAGE_PROG.sectionController = {
       else this._renderSection( section );  
     }
     
-    section.element.style.display = "";
-    this._active = section;
+    if( section.onopen ){
+      section.onopen();
+    }
     
+    
+    section.element.style.display = "";
+    invoker.parentElement.className = "headerBarTabSelected";
+    
+    this._active = section;
+    this._activeLink = invoker.parentElement;
+        
     return false;
   }
 };

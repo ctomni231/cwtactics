@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
-
+  
   <head>
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     <meta name="description" content="Cwtactics : An effort to create an open engine to emulate the gaming experience of the Nintendo Advance Wars series." />
-
+    
     <!-- DEPENDENCIES -->
     <script src='libs/jquery.js' type='text/javascript'></script>
+    <script src='libs/jquery-ui-custom.js' type='text/javascript'></script>
     <script src='libs/moment.js' type='text/javascript'></script>
     <script src='libs/mustache.js' type='text/javascript'></script>
     <script src='libs/head.js' type='text/javascript'></script>
@@ -20,31 +21,32 @@
     <script src='content/navBar.js' type='text/javascript'></script>
     <script src='content/legals.js' type='text/javascript'></script>
     <script src='content/links.js' type='text/javascript'></script>
-
+    
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/jquery-ui.css">
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/site.css">
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/cwt.css">
-
-    <title>Custom Wars Tactics</title>
+    
+    <title>Custom Wars: Tactics</title>
   </head>
-
+  
   <body>
-
+    
     <div id="header_wrap" class="outer">
-
+      
       <!-- ######################################################################## -->
       
       <header class="inner">
-         
-          <h1 id="project_title"><img class="headerImg" src="images/cwttitle.png"></h1>
-          <div id="navbar">
-          </div>
-         
+        
+        <h1 id="project_title"><img class="headerImg" src="images/cwttitle.png"></h1>
+        <div id="navbar">
+        </div>
+        
       </header> 
       
       <!-- ######################################################################## -->
     </div>
-
+    
     <div id="main_content_wrap" class="outer">
       
       <!-- ######################################################################## -->
@@ -53,37 +55,27 @@
         
         <!-- REPLACE LATER -->
         <table class="fourColTable">
-                  
+          
           <tr>
+            <td class="colImage">
+              <img class="cwtImage" src="images/main.png">
+              
+              <p class="buttonLink middleSide">
+                <a id="playLatestButton" class="left" href="" target="_blank">Mobile (Light)</a>
+                <a class="right disabledButton" href="#" title="It will be available with the release of CW:T 0.3.5" >Desktop (Full)</a>
+              </p>
+            </td>
             
-            <td class="mainColLeft">  
-              <script language="JavaScript" src="http://feed2js.org//feed2js.php?src=http%3A%2F%2Fcwtactics.blogspot.de%2F%2Ffeeds%2Fposts%2Fdefault&num=5&desc=100&date=y&targ=y&utf=y&css=bloggerPosts"  charset="UTF-8" type="text/javascript"></script>
+            <td class="colNews">  
+              <div>
+                <script language="JavaScript" src="http://feed2js.org//feed2js.php?src=http%3A%2F%2Fcwtactics.blogspot.de%2F%2Ffeeds%2Fposts%2Fdefault&num=5&desc=100&date=y&targ=y&utf=y&css=bloggerPosts"  charset="UTF-8" type="text/javascript"></script>
+              </div>
             </td>  
             
-            <td class="mainColRight">
-              <div>
-                <table>
-                  <tr>
-                    <td>
-                      <img class="cwtImage" src="images/main.png">
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p class="buttonLink middleSide">
-                        <a id="playLatestButton" class="left" href="" target="_blank">Play Online</a>
-                        <a class="right disabledButton" href="#" >Download Jslix</a>
-                      </p>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-              
-            </td>
           </tr>
-         </table>
+        </table>
         
-                
+        
       </section>
       
       <!-- ######################################################################## -->
@@ -103,31 +95,16 @@
       
       <section id="sectionRelease" style="display:none;" class="inner">
       </section>
-    
+      
       <!-- ######################################################################## -->
-    
+      
       <section id="sectionLinks" style="display:none;" class="inner">
       </section>
       
       <!-- ######################################################################## -->
-    
+      
       <section id="sectionLegal" style="display:none;" class="inner">
       </section>
-      
-      <!-- ######################################################################## -->
-    
-    </div>
-    
-    <div id="footer_wrap" class="outer">
-      
-      <!-- ######################################################################## -->
-      
-      <footer class="inner">
-        <p class="copyright">Custom Wars Tactics is developed by <a id="mailToJSR" href="mailto:ctomni231@gmail.com">ctomni231</a> and <a href="mailto:blackcat.myako@gmail.com">BlackCat</a></p>
-        <p id="disclamer" class="copyright">
-          <strong>DISCLAMER:</strong> This game engine is in no way affiliated with Nintendo or Intelligent Systems.
-        </p>
-      </footer>
       
       <!-- ######################################################################## -->
       
@@ -144,6 +121,8 @@
   
   <script>
     $(document).ready(function(){
+      $( document ).tooltip();
+      
       $("#playLatestButton").attr("href", PAGE_DATA.latestMilestone.link );
       
       // CONVERT RSS DATES TO HUMAN READABLE TIME
@@ -151,11 +130,16 @@
         element.innerHTML = moment( element.innerHTML, "YYYY-MM-DD HH:mm:ss.SSS-Z,ZZ").fromNow();;
       });
       
-      // OPEN MAIN SECTION
-      PAGE_PROG.sectionController.openSection(null,"news");
       PAGE_PROG.sectionController._renderSection( 
         PAGE_PROG.sectionController._registered["navigation"]
       );
+      
+      // OPEN MAIN SECTION
+      PAGE_PROG.sectionController.openSection( 
+        document.getElementsByClassName("navigationBar")[0].children[0].children[0],
+        "news"
+      );
+      
     });
   </script>
 </html>

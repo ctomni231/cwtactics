@@ -3,22 +3,20 @@ PAGE_PROG.sectionController.registerSection({
   id: "links",
   
   element: document.getElementById("sectionLinks"),
-  
+    
   template: [
-    "<ul>",
-      "{{#links}}",
-        "<li>",  
-            "<p class='buttonLink middleSide'>",
-                "<a href='{{link}}' target='_blank'>",
-                  "{{> aComplex}}",
-                "</a>",
-            "</p>",
-        "</li>",
-      "{{/links}}",
-    "</ul>"
+    "<table>",
+      "<tbody>",
+        "{{#links}}",
+          "<tr>",
+            "<td>{{name}}</td>",
+            "<td>{{desc}}</td>",
+            "<td><a href=\"{{link}}\" target=\"_blank\">Homepage</a></td>",
+          "</tr>",
+        "{{/links}}",
+      "</tbody>",
+    "</table>"
   ].join(""),
-      
-  partials:{
-    aComplex: "<span>{{name}}</span> <span>{{desc}}</span>"
-  }
+  
+  partials:{}
 });

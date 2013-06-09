@@ -56,6 +56,183 @@
   transition: @property @time @effect;
 }
 
+/* --- MISC --- */
+
+.headerImg {
+  border: 0px solid #ebebeb;
+  box-shadow: 0 0 0px #ebebeb;
+  -webkit-box-shadow: 0 0 0px #ebebeb;
+  -ms-box-shadow: 0 0 0px #ebebeb;
+  -o-box-shadow: 0 0 0px #ebebeb;
+  -moz-box-shadow: 0 0 0px #ebebeb;
+}
+
+.leftSide {
+  text-align: left;
+}
+
+.middleSide {
+  text-align: center;
+}
+
+.rightSide {
+  text-align: right;
+}
+
+.centerP {
+  text-align: center;
+}
+
+.hidden { display:none; }
+
+.visible { display:block; }
+
+/* -------------------- RSS NEWS -------------------- */
+
+body {
+  overflow-y: scroll;
+}
+
+.rss-box-bloggerPosts {
+  display: inline-block;
+}
+
+.rss-box-bloggerPosts li {
+  list-style: none;
+}
+
+.rss-box-bloggerPosts .rss-item {
+  font-size: 12px;
+  font-weight: lighter;
+  text-align: left;
+  
+  a {
+    font-size: 16px;
+    white-space: nowrap;
+  }
+}
+
+.rss-date {
+  font-weight: bold;
+}
+
+.rss-box-bloggerPosts .item-link {
+  font-size: 18px;
+  color: #007edf;
+  font-weight: lighter;
+}
+
+.ui-tooltip {
+  padding: 10px 20px;
+  color: #007edf;
+  font: normal 14px "Helvetica Neue", Sans-Serif;
+  text-transform: uppercase;
+  box-shadow: 0 0 4px black;
+}
+
+/* -------------------- MAIN SECTION -------------------- */
+
+#sectionNews {
+  
+  .fourColTable td {
+    border-style: none;
+  }
+  
+  .colImage, .colPlay {
+    width: 420px;
+  }
+  
+  .cwtImage{
+    width: 400px;
+    height: 300px;
+    border-style: solid;
+    border-width: 1px;
+    
+    .box-shadow(0px 0px 5px,#333333);   
+  }
+  
+  .imgBox {
+    position: absolute;
+    top: 0px;
+    left: 370px;
+    
+    img {
+      width: 320px;
+      height: 240px;
+    }
+  }
+  
+  .buttonLink a {
+    width: 70px;
+  }
+}
+
+
+/* -------------------- NAVBAR SECTION -------------------- */
+
+
+#header_wrap{
+  height: 70px;
+}
+
+#main_content_wrap {
+  min-height: 600px;
+}
+
+#project_title {
+  font-size: 22px;
+  float: left;
+  position: absolute;
+  top: -3px;
+}
+
+#navbar {
+  
+  .navigationBar {
+    float: right;
+    margin-top: 28px;
+    
+    
+    li {
+      float: left;
+      list-style: none;
+      
+      border-top-right-radius: 1px;
+      border-top-left-radius: 1px;
+      
+      margin-left: 15px;
+      padding-left: 7px;
+      padding-right: 7px;
+    }
+    
+    a {
+      font-size: 16px;
+      
+      text-decoration: none;
+      color: #ffffff;
+      text-shadow: none;
+      
+      .transition-effect(color,0.5s,ease);
+    }
+    
+    a:hover {
+      color: #007edf;
+      text-shadow: #007edf 0px 0px 3px;
+    }
+  }
+  
+  .headerBarTabSelected {
+    .box-shadow(0px 0px 1px 2px, #f2f2f2 ); 
+    background: #f2f2f2;
+    
+    a {
+      color: #007edf;
+      .transition-effect(text-shadow,0.5s,ease);
+    }
+  }
+  
+}
+
 /* -------------------- WORKING ON SECTION -------------------- */
 
 #sectionRoadmap {
@@ -151,15 +328,8 @@
       
       // DUE IN
       tr:last-child {
-        text-align: right;
-        font-size: 14px;
-        
-        color: rgb(75, 72, 72);
-        
-        td {
-          padding-top:    6px;
-          padding-bottom: 6px;
-          padding-right: 10px;
+        div{
+          border-bottom: 0px solid rgb(235, 230, 230);
         }
       }
     }
@@ -194,10 +364,10 @@
   
 }
 
-/* ************************ LEGALS SECTION ************************ */
+/* ************************ LEGALS AND LINKS SECTION ************************ */
 
-#sectionLegal {
-
+#sectionLegal, #sectionLinks {
+  
   table {
     
     border: 1px solid rgb(136, 136, 136);
@@ -220,10 +390,21 @@
       padding-right: 10px;
     }
     
+    td:first-child {
+      font-size: 14px;
+      width: 130px;
+    }
+    
     td:nth-child(2) {
       border-bottom: 1px solid rgb(235, 230, 230);
       font-weight: 200;
     }
+    
+    td:last-child {
+      border:none;
+      width: 60px;
+    }
+    
     
     tr:last-child td {
       border:none;
@@ -233,13 +414,21 @@
       color: #007edf;
       text-shadow: #0090ff 0px 0px 2px;
     }
+    
+    .headerAlert {
+      color: rgb(170, 36, 17);
+    }
   }
 }
 
 /* ************************ RELEASES SECTION ************************ */
 
 #sectionRelease {
-
+  
+  select {
+    margin-bottom: 10px;
+  }
+  
   table {
     
     border: 1px solid rgb(136, 136, 136);
@@ -248,7 +437,7 @@
     .box-shadow(0px 0px 7px); 
     
     font-size: 12px;
-            
+    
     td {
       vertical-align: top;
       border:none;
@@ -261,10 +450,10 @@
     }
     
     thead {
-    
+      
       tr:first-child {
-        font-size: 18px;
-        color: rgb(51, 170, 170);
+        font-size: 20px;
+        color: #007edf;
         
         td {
           padding-left: 18px;
@@ -302,7 +491,7 @@
     }
     
     tbody {
-    
+      
       ul {
         padding-left: 10px;
         
@@ -311,8 +500,8 @@
         }
         
         li:before {
-		  content: "\00BB \0020";
-	    }
+          content: "\00BB \0020";
+        }
       }
     }
     
