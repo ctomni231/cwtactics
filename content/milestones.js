@@ -40,8 +40,6 @@ PAGE_DATA.milestones = [
       "Feature: information screens are access able with double finger swipe up,left,right and down",
       "Feature: drag/swipe based input system on mobile devices",
       "Feature: options screen to control volume and to wipe out cached data",
-      "Feature: ",
-      "Enhancement: ",
       "Enhancement: moved timer logic into engine",
       "Enhancement: rewritten input system",
       "Enhancement: added WebSQL and IndexedDB backend for storage API for the mobile client",
@@ -73,10 +71,6 @@ PAGE_DATA.milestones = [
       "Fix: done was missing in multi step actions",
       "Fix: you can transer money to yourself",
       "Fix: rocket silo action breaks menu in some situations",
-      "Fix: ",
-      "Fix: ",
-      "Fix: ",
-      "Fix: ",
       "Fix: unloading units breaks the engine",
       "Fix: counter weapon was not found if target uses weapon without ammo while having no ammo"
     ]
@@ -365,5 +359,4 @@ PAGE_DATA.milestones = [
   }
   
 ];
-
-PAGE_DATA.latestMilestone = PAGE_DATA.milestones[0];
+PAGE_DATA.latestMilestone = "gamedata/actual/webclient/0.3.1/startGame.html";
