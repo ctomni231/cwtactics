@@ -1,0 +1,36 @@
+controller.unitAction({
+  
+  key:"silofire",
+  
+  isTargetValid: function( data, x,y ){
+    return model.isValidPosition(x,y);
+  },
+  
+  selectionRange: 2,
+  
+  condition: function( data ){
+    var unitRel = data.thereIsUnitRelationShip( data.source, data.target );
+    if( unitRel !== model.MODE_SAME_OBJECT && unitRel !== model.MODE_NONE ) return false;
+    
+    if( !data.target.property ) return false;
+    
+    var propRel = data.thereIsUnitToPropertyRelationShip( data.source, data.target );
+    if( propRel !== model.MODE_NONE ) return false;
+    
+    var silo = data.target.property.type.rocketsilo;
+    if( typeof silo === "undefined" ) return false;
+    if( silo.indexOf(data.source.unit.type.ID) === -1 ) return false;
+    
+    return true;
+  },
+  
+  invoke: function( data ){
+    model.fireSilo.callAsCommand(
+      data.target.propertyId, 
+      data.targetselection.x, 
+      data.targetselection.y,
+      2,
+      data.source.unit.owner
+    );
+  }
+});

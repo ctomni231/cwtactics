@@ -8,12 +8,13 @@ var addEl = function( el ){
   files.push( el );
 };
 
+builder.getFileList("srcWebClient/core").forEach( addEl );
+builder.getFileList("srcWebClient/data").forEach( addEl );
 builder.getFileList("srcWebClient/controller").forEach( addEl );
-builder.getFileList("srcWebClient/view").forEach( addEl );
+builder.getFileList("srcWebClient/stateScope").forEach( addEl );
+builder.getFileList("srcWebClient/states").forEach( addEl );
 builder.getFileList("srcWebClient/hooks").forEach( addEl );
-builder.getFileList("srcWebClient/menuRenderer").forEach( addEl );
-builder.getFileList("srcWebClient/commands").forEach( addEl );
-builder.getFileList("srcWebClient").forEach( addEl );
+builder.getFileList("srcWebClient/gui").forEach( addEl );
 
 var code = builder.readAndConcatFiles( files );
 builder.writeToFile( code, "jsBin/nightly/normal/client.js" );
@@ -21,6 +22,7 @@ builder.writeToFile( code, "jsBin/nightly/normal/client.js" );
 var ugly_code = builder.uglifyCode( "jsBin/nightly/normal/client.js" );
 builder.writeToFile( ugly_code, "jsBin/nightly/min/client.js" );
 
+// --------------------------------------------------------------------
 // DEPS
 files.splice(0);
 builder.getFileList("libJs/client").forEach( addEl );
@@ -32,38 +34,12 @@ builder.writeToFile(
 ugly_code = builder.uglifyCode( "jsBin/nightly/normal/clientDeps.js" );
 builder.writeToFile( ugly_code,"jsBin/nightly/min/clientDeps.js");
 
-
 // --------------------------------------------------------------------
-// GENERATE STARTER IMPORTS
-
-var starterCodePre = builder.readAndConcatHTMLFiles([
-  "srcWebClient/starter_PRE.html"
-]);
-
-var starterCodePost = builder.readAndConcatHTMLFiles([
-  "srcWebClient/starter_POST.html"
-]);
-
-var importNonDebug = [
-  "<link rel='stylesheet' type='text/css' media='screen' href='style.css'>",
-  
-  "<script src='../../../maps/testMap.js' type='text/javascript'></script>",
-  "<script src='../../../maps/testMap_2_6.js' type='text/javascript'></script>",
-
-  "<script src='engineDeps.js' type='text/javascript'></script>",
-  "<script src='clientDeps.js' type='text/javascript'></script>",
-  "<script src='mod.js' type='text/javascript'></script>",
-  "<script src='engine.js' type='text/javascript'></script>",
-  "<script src='client.js' type='text/javascript'></script>"
-];
-
-var codeNorm = starterCodePre + importNonDebug.join("\n") + starterCodePost;
-
-// --------------------------------------------------------------------
-// WRITE STARTERS
+// FILES
 
 builder.fileCopy( "srcWebClient/css/style.css", "jsBin/nightly/min/style.css" );
 builder.fileCopy( "srcWebClient/css/style.css", "jsBin/nightly/normal/style.css" );
-
-builder.writeToFile( codeNorm, "jsBin/nightly/min/starter.html" );
-builder.writeToFile( codeNorm, "jsBin/nightly/normal/starter.html" );
+//builder.fileCopy( "srcWebClient/css/onepcssgrid.css", "jsBin/nightly/min/onepcssgrid.css" );
+//builder.fileCopy( "srcWebClient/css/onepcssgrid.css", "jsBin/nightly/normal/onepcssgrid.css" );
+builder.fileCopy( "srcWebClient/startGame.html", "jsBin/nightly/min/startGame.html" );
+builder.fileCopy( "srcWebClient/startGame.html", "jsBin/nightly/normal/startGame.html" );

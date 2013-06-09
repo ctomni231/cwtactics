@@ -3,14 +3,13 @@ var builder = require("./buildLibrary.js");
 var files = [];
 var addEl = function( el ){ files.push( el ); };
 
-files.push( "srcEngine/conf/gameConf.js" );
-builder.getFileList("srcEngine").forEach( addEl );
-builder.getFileList("srcEngine/util").forEach( addEl );
-builder.getFileList("srcEngine/model").forEach( addEl );
-builder.getFileList("srcEngine/controller").forEach( addEl );
-builder.getFileList("srcEngine/script").forEach( addEl );
-builder.getFileList("srcEngine/stateMachine").forEach( addEl );
-builder.getFileList("srcEngine/commands").forEach( addEl );
+builder.getFileList("srcEngine/core" ).forEach( addEl );
+builder.getFileList("srcEngine/util" ).forEach( addEl );
+builder.getFileList("srcEngine/model" ).forEach( addEl );
+builder.getFileList("srcEngine/controller" ).forEach( addEl );
+builder.getFileList("srcEngine/stateScope" ).forEach( addEl );
+builder.getFileList("srcEngine/states" ).forEach( addEl );
+builder.getFileList("srcEngine/commands" ).forEach( addEl );
 
 // TURN DEBUG ON TO HAVE LOG AND RUNTIME CHECKS
 builder.writeToFile(
@@ -20,7 +19,7 @@ builder.writeToFile(
 
 // WITH DEBUG ON ==> LEAVES THE STATEMENTS BUT CUTS THE DEBUG === TRUE CHECKS
 var ugly_code = builder.uglifyCode( "jsBin/nightly/normal/engine.js" );
-builder.writeToFile( ugly_code, "jsBin/nightly/min/engine.js" );
+                builder.writeToFile( ugly_code, "jsBin/nightly/min/engine.js" );
 
 // DEPS
 files.splice(0);
