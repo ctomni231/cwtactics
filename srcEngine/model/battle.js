@@ -87,7 +87,7 @@ model.attackRangeMod_ = function( uid, x, y, data, markAttackableTiles ){
   if(!markAttackableTiles) markAttackableTiles = false;
   
   var unit = model.units[uid];
-  var teamId = model.players[unit.owner];
+  var teamId = model.players[unit.owner].team;
   var attackSheet = unit.type.attack;
   if( arguments.length === 1 ){
     x = unit.x;
@@ -191,7 +191,7 @@ model.getBattleDamage = function( attacker, defender, luck, withMainWp, isCounte
   // DEFENDER VALUES
   controller.prepareTags( defender.x, defender.y );
   var DCO  = controller.scriptedValue( defender.owner, "def", 100 );
-  var DTR = controller.scriptedValue( defender.owner, "terrainDefense", model.map[defender.x][defender.y].defense );
+  var DTR = controller.scriptedValue( defender.owner, "terraindefense", model.map[defender.x][defender.y].defense );
   
   // D%=[B*ACO/100+R]*(AHP/10)*[(200-(DCO+DTR*DHP))/100]
   var damage = (BASE*ACO/100+LUCK) * (AHP/10) * ( (200-( DCO+(DTR*DHP) ) ) /100 );

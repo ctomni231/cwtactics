@@ -109,7 +109,7 @@ util.scoped(function(){
     
     var renderer = menuRenderer["__mainMenu__"];
     if( controller.stateMachine.state === "ACTION_SUBMENU" ){
-      var newRend = menuRenderer[ controller.stateMachine.data.action ];
+      var newRend = menuRenderer[ controller.stateMachine.data.action.selectedEntry ];
       if( newRend ) renderer = newRend;
     }
     

@@ -12,7 +12,7 @@ controller.propertyAction({
     
     var property = data.source.property;
     
-    var unitTypes = model.getListOfUnitTypes();
+    var unitTypes = model.listOfUnitTypes;
     for( var i=0,e=unitTypes.length; i<e; i++ ){
       if( model.isBuildableByFactory( property, unitTypes[i] ) ) return true;
     }
@@ -23,7 +23,7 @@ controller.propertyAction({
   prepareMenu: function( data ){
     var availGold = model.players[ model.turnOwner ].gold;
     var property = data.source.property;
-    var unitTypes = model.getListOfUnitTypes();
+    var unitTypes = model.listOfUnitTypes;
     for( var i=0,e=unitTypes.length; i<e; i++ ){
       var key = unitTypes[i];
       

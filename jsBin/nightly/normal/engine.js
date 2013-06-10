@@ -638,7 +638,7 @@ model.attackRangeMod_ = function( uid, x, y, data, markAttackableTiles ){
   if(!markAttackableTiles) markAttackableTiles = false;
   
   var unit = model.units[uid];
-  var teamId = model.players[unit.owner];
+  var teamId = model.players[unit.owner].team;
   var attackSheet = unit.type.attack;
   if( arguments.length === 1 ){
     x = unit.x;
@@ -742,7 +742,7 @@ model.getBattleDamage = function( attacker, defender, luck, withMainWp, isCounte
   // DEFENDER VALUES
   controller.prepareTags( defender.x, defender.y );
   var DCO  = controller.scriptedValue( defender.owner, "def", 100 );
-  var DTR = controller.scriptedValue( defender.owner, "terrainDefense", model.map[defender.x][defender.y].defense );
+  var DTR = controller.scriptedValue( defender.owner, "terraindefense", model.map[defender.x][defender.y].defense );
   
   // D%=[B*ACO/100+R]*(AHP/10)*[(200-(DCO+DTR*DHP))/100]
   var damage = (BASE*ACO/100+LUCK) * (AHP/10) * ( (200-( DCO+(DTR*DHP) ) ) /100 );
@@ -1168,6 +1168,7 @@ util.scoped(function(){
       }
     }
     
+    model.listOfUnitTypes.push( sheet.ID )
     model.unitTypes[sheet.ID] = sheet;
   };
   
@@ -1362,9 +1363,10 @@ util.scoped(function(){
     }
   };
   
+  // FILL LISTS DIRECTLY AT SHEET PARSING STEP :P
   
-  /** @private */
-  model.listOfUnitTypes_ = null;
+  
+  model.listOfUnitTypes = [];
   
   /** @private */
   model.listOfPropertyTypes_ = null;
@@ -5004,7 +5006,7 @@ controller.unitAction({
   
   condition: function( data ){
     var mode = data.thereIsUnitRelationShip( data.source, data.target );
-    if( mode !== model.MODE_NONE && mode !== model.MODE_SAME_OBJECT ) return false;
+    if( mode !== model.MODE_NONE && mode !== model.MODE_SAME_OBJECT && mode !== model.MODE_OWN ) return false;
     
     // CANNOT ATTACK IF PEACE PERIOD IS GIVEN
     if( model.day-1 < controller.configValue("daysOfPeace") ) return false;
@@ -5041,7 +5043,7 @@ controller.propertyAction({
     
     var property = data.source.property;
     
-    var unitTypes = model.getListOfUnitTypes();
+    var unitTypes = model.listOfUnitTypes;
     for( var i=0,e=unitTypes.length; i<e; i++ ){
       if( model.isBuildableByFactory( property, unitTypes[i] ) ) return true;
     }
@@ -5052,7 +5054,7 @@ controller.propertyAction({
   prepareMenu: function( data ){
     var availGold = model.players[ model.turnOwner ].gold;
     var property = data.source.property;
-    var unitTypes = model.getListOfUnitTypes();
+    var unitTypes = model.listOfUnitTypes;
     for( var i=0,e=unitTypes.length; i<e; i++ ){
       var key = unitTypes[i];
       

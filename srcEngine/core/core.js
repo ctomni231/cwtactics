@@ -1,59 +1,77 @@
 /** 
  * Represents an inactive identical number.
  *
- * @constant
+ * @property CWT_INACTIVE_ID
+ * @final
+ * @type Number
  */
 var CWT_INACTIVE_ID = -1;
 
 /** 
- * @constant 
+ * @property DEBUG
+ * @final 
+ * @type Boolean
  */
 var DEBUG = true;
 
 /** 
- * @constant 
+ * @property CWT_ACTIONS_BUFFER_SIZE
+ * @final 
+ * @type Number
  */
 var CWT_ACTIONS_BUFFER_SIZE = 200;
 
 /**
  * The greatest possible map width.
  *
- * @config
+ * @property CWT_MAX_MAP_WIDTH
+ * @final
+ * @type Number
  */
 var CWT_MAX_MAP_WIDTH = 100;
 
 /**
  * The greatest possible map height.
  *
- * @config
+ * @property CWT_MAX_MAP_HEIGHT
+ * @final
+ * @type Number
  */
 var CWT_MAX_MAP_HEIGHT = 100;
 
 /**
  * Maximum amount of players in the game.
  *
- * @config
+ * @property CWT_MAX_PLAYER
+ * @final
+ * @type Number
  */
 var CWT_MAX_PLAYER = 5;
 
 /**
  * The maximum amount of units a player can hold.
  *
- * @config
+ * @property CWT_MAX_UNITS_PER_PLAYER
+ * @final
+ * @type Number
  */
 var CWT_MAX_UNITS_PER_PLAYER = 50;
 
 /**
  * The maximum amount of properties on a map.
  *
- * @config
+ * @property CWT_MAX_PROPERTIES
+ * @final
+ * @type Number
  */
 var CWT_MAX_PROPERTIES = 200;
 
 /**
  * The maximum range to select a target from a selection range.
  *
- * @config
+ * @property CWT_MAX_SELECTION_RANGE
+ * @final
+ * @type Number
  */
 var CWT_MAX_SELECTION_RANGE = 15;
 
@@ -61,16 +79,20 @@ var CWT_MAX_SELECTION_RANGE = 15;
  * This constant can be overwritten for a custom size, but this must be done
  * before the engine will be initialized.
  *
- * @config
+ * @property CWT_MAX_BUFFER_SIZE
+ * @final
+ * @type Number
  */
 var CWT_MAX_BUFFER_SIZE = 200;
 
 /**
  * The engine version tag.
  *
- * @constant 
+ * @property CWT_VERSION
+ * @final 
+ * @type String
  */
-var CWT_VERSION = "0.3.1";
+var CWT_VERSION = "0.3.1.1";
 
 /**
  * The model layer holds all necessary data for a game round. This layer can be
@@ -83,7 +105,7 @@ var CWT_VERSION = "0.3.1";
  * Furthermore you should not place functions in this layer because this would
  * not follow the specification of this layer.
  *
- * @namespace
+ * @module model
  */
 var model      = {};
 
@@ -97,7 +119,7 @@ var model      = {};
  * empty (owned) property leads to a property actions like buying an unit. The
  * last option will be choosen if the tile is occupied by an own unit.
  *
- * @namespace
+ * @module controller
  */
 var controller  = {};
 
@@ -107,6 +129,6 @@ var controller  = {};
  * overwritable to have a custom log behaviour for the game client. As example
  * if you use a graphical logging solution like BlackbirdJs.
  *
- * @namespace
+ * @module util
  */
 var util        = {};

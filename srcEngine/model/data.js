@@ -260,6 +260,7 @@ util.scoped(function(){
       }
     }
     
+    model.listOfUnitTypes.push( sheet.ID )
     model.unitTypes[sheet.ID] = sheet;
   };
   
@@ -454,9 +455,10 @@ util.scoped(function(){
     }
   };
   
+  // FILL LISTS DIRECTLY AT SHEET PARSING STEP :P
   
-  /** @private */
-  model.listOfUnitTypes_ = null;
+  
+  model.listOfUnitTypes = [];
   
   /** @private */
   model.listOfPropertyTypes_ = null;
