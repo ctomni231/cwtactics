@@ -2,7 +2,7 @@ PAGE_DATA.milestones = [
   
   {
     header: "Version",
-    version: "0.3.1",
+    version: "0.3.1.1",
     subHeaderT: "CO's, Scripting",
     subHeaderB: "and Screens",
         
@@ -13,6 +13,11 @@ PAGE_DATA.milestones = [
     img: "images/milestones/v0_3_1.png",
     
     changelog:[
+      "------------------- v0.3.1.1 ----------------------",
+      "Fix: cannot build",
+      "Fix: attack does nothing",
+      "Fix: can attack own units",
+      "------------------- v0.3.1 ----------------------",
       "Feature: soldiers get +3 vision on mountains",
       "Feature: AWDS default mod",
       "Feature: different terrain variants",
