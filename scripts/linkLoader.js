@@ -11,7 +11,7 @@ PAGE_PROG.sectionController.registerSection({
           "<tr>",
             "<td>{{name}}</td>",
             "<td>{{desc}}</td>",
-            "<td><a href=\"{{link}}\" target=\"_blank\">Homepage</a></td>",
+            "<td><a href=\"{{link}}\" target=\"_blank\">Visit It</a></td>",
           "</tr>",
         "{{/links}}",
       "</tbody>",

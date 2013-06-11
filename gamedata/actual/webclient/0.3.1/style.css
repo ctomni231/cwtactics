@@ -340,6 +340,7 @@ body {
 
 #cwt_main_screen .inactive {
   color: red;
+  text-decoration: line-through;
   height: 100px;
 }
 
