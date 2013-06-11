@@ -76,6 +76,8 @@ util.scoped(function(){
       
       el.innerHTML = controller.loadError;
       el.style.display = "block";
+      
+      controller.loadError = null;
     }
     
     this.data.openSection(ID_MENU_SECTION_MAIN);

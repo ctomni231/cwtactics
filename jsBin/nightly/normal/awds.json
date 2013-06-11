@@ -8,7 +8,8 @@
     "en": {
       "INFT": "Infantry",
       "MECH": "Mech. Infantry",
-      "TANK": "Light Tank",
+      "TNTK": "Light Tank",
+      "NTNK": "Neo Tank",
       "MDTK": "Battle Tank",
       "WRTK": "Heavy Tank",
       "ARTY": "Artillery",
@@ -78,8 +79,8 @@
       "buildUnit":"Build",
       "capture":"Capture",
       "transferMoney":"Transfer Money",
-      "transferProperty":"Transfer Unit",
-      "transferUnit":"Transfer Property",
+      "transferProperty":"Transfer Property",
+      "transferUnit":"Transfer Unit",
       "hideUnit":"Hide",
       "unhideUnit":"Unhide",
       "joinUnits":"Join",
@@ -113,9 +114,10 @@
     "de": {
       "INFT": "Infanterie",
       "MECH": "Mech. Infanterie",
-      "TANK": "Leichter Panzer",
+      "TNTK": "Leichter Panzer",
       "MDTK": "Kampfpanzer",
       "WRTK": "Schw. Panzer",
+      "NTNK": "Neo Panzer",
       "ARTY": "Artillerie",
       "RCKT": "Raketenwerfer",
       "RECN": "Aufklärer",
@@ -192,8 +194,8 @@
       "buildUnit":"Bauen",
       "capture":"Erobern",
       "transferMoney":"Sende Geld",
-      "transferProperty":"Sende Einheit",
-      "transferUnit":"Sende Gebäude",
+      "transferProperty":"Sende Gebäude",
+      "transferUnit":"Sende Einheit",
       "hideUnit":"Tarnen",
       "unhideUnit":"Enttarnen",
       "joinUnits":"Vereinen",
@@ -325,7 +327,7 @@
         "../../../image/units/AWDS_MISS.png"
       ],
       [
-        "NTKN",
+        "NTNK",
         "../../../image/units/AWDS_NTNK.png"
       ],
       [
@@ -2109,7 +2111,7 @@
       "ID": "CRUS",
       "cost": 18000,
       "range": 6,
-      "movetype": "WATER_TRANSPORT",
+      "movetype": "SHIP",
       "vision": 3,
       "fuel": 99,
       "ammo": 9,
@@ -2368,8 +2370,19 @@
       "defense": 3,
       "points": 20,
       "funds": 1000,
+      "supply": [
+        "INFT",
+        "MECH",
+        "TIRE_A",
+        "TIRE_B",
+        "TANK"
+      ],
       "repairs": {
-        "*": 2
+        "INFT":2,
+        "MECH":2,
+        "TIRE_A":2,
+        "TIRE_B":2,
+        "TANK":2
       }
     },
     {
@@ -2378,8 +2391,19 @@
       "defense": 3,
       "points": 20,
       "funds": 1000,
+      "supply": [
+        "INFT",
+        "MECH",
+        "TIRE_A",
+        "TIRE_B",
+        "TANK"
+      ],
       "repairs": {
-        "*": 2
+        "INFT":2,
+        "MECH":2,
+        "TIRE_A":2,
+        "TIRE_B":2,
+        "TANK":2
       },
       "builds": [
         "INFT",
@@ -2395,8 +2419,11 @@
       "defense": 3,
       "points": 20,
       "funds": 1000,
+      "supply": [
+        "AIR"
+      ],
       "repairs": {
-        "*": 2
+        "AIR":2
       },
       "builds": [
         "AIR"
@@ -2408,11 +2435,18 @@
       "defense": 3,
       "points": 20,
       "funds": 1000,
+      
+      "supply": [
+        "SHIP",
+        "WATER_TRANSPORT"
+      ],
       "repairs": {
-        "*": 2
+        "SHIP":2,
+        "WATER_TRANSPORT":2
       },
       "builds": [
-        "SHIP"
+        "SHIP",
+        "WATER_TRANSPORT"
       ]
     },
     {
@@ -2435,6 +2469,14 @@
       "funds": 1000,
       "looseAfterCaptured": true,
       "changeAfterCaptured": "CITY",
+      "notTransferable":true,
+      "supply": [
+        "INFT",
+        "MECH",
+        "TIRE_A",
+        "TIRE_B",
+        "TANK"
+      ],
       "factionSprites":{
         "ORST":"HQTR_OS",
         "BLMN":"HQTR_BM",
@@ -2442,7 +2484,11 @@
         "YLCM":"HQTR_YC"
       },
       "repairs": {
-        "*": 2
+        "INFT":2,
+        "MECH":2,
+        "TIRE_A":2,
+        "TIRE_B":2,
+        "TANK":2
       }
     },
     {

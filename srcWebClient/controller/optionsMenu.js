@@ -34,7 +34,7 @@ controller.mapAction({
         break;
         
       case "options.yield":
-        controller.endGameRound();
+        model.playerGivesUp.callAsCommand();
         break;
     }
   }

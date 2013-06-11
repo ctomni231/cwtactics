@@ -16,10 +16,6 @@ model.buildUnit.listenCommand(function(){
   controller.renderPlayerInfo();
 });
 
-model.transferUnit.listenCommand(function( suid, tuid ){
-  controller.updateUnitStatus( tuid );
-});
-
 model.loadUnitInto.listenCommand(function( uid, tid ){
   controller.updateUnitStatus( tid );
 });
@@ -34,5 +30,9 @@ model.joinUnits.listenCommand(function( uid, tid ){
 
 model.refillResources.listenCommand(function( uid ){
   if( typeof uid.x === "number" ) uid = model.extractUnitId(uid);
+  controller.updateUnitStatus( uid );
+});
+
+model.setUnitPosition.listenCommand(function( uid ){
   controller.updateUnitStatus( uid );
 });

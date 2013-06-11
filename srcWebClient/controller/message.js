@@ -9,7 +9,7 @@ util.scoped(function(){
   view.updateMessagePanelTime = function(delta){
     if( timeLeft > 0 ){
       timeLeft -= delta;
-      if( timeLeft < 0 ){
+      if( timeLeft <= 0 ){
         panel.className = "tooltip out";
       }
     }

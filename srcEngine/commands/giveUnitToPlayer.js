@@ -5,7 +5,7 @@ controller.unitAction({
   
   condition: function( data ){
     var mode = data.thereIsUnitRelationShip( data.source, data.target );
-    if( mode !== model.MODE_NONE && mode !== model.MODE_SAME_OBJECT ) return false;
+    if( mode !== model.MODE_SAME_OBJECT ) return false;
     
     // LOADED UNITS CANNOT BE TRANSFERED TO OTHER PLAYERS (@TODO: ALLOW IN FUTURE)
     if( model.hasLoadedIds( data.source.unitId ) ) return false; 

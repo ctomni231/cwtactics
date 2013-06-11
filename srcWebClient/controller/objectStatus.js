@@ -77,12 +77,10 @@ controller.updateUnitStatus = function( uid ){
   }
   
   // HAS LOADS ?
-  if( uSheet.transport ){
-    if( !model.hasLoadedIds( uid ) ){
-      unitStatus.HAS_LOADS = false;
-    }
-    else unitStatus.HAS_LOADS = true;
+  if( unit.loadedIn < -1 ){
+    unitStatus.HAS_LOADS = true;
   }
+  else unitStatus.HAS_LOADS = false;
   
   // CAPTURES ?
   if( unit.x >= 0 ){

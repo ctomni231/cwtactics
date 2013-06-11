@@ -33,14 +33,15 @@ model.transferUnit = function( suid, tplid ){
 
   // REMOVE VISION
   if( model.players[tplid].team !== model.players[opid].team ){
-    model.modifyVisionAt(selectedUnit.x, selectedUnit.y, selectedUnit.type.vision, -1);
+    model.modifyVisionAt(tx, ty, selectedUnit.type.vision, -1);
   }
 
-  model.unitPosMap[ selectedUnit.x ][ selectedUnit.y ] = null;
+  // model.unitPosMap[ selectedUnit.x ][ selectedUnit.y ] = null;
+  model.clearUnitPosition( suid );
 
-  model.createUnit( tplid, selectedUnit.x, selectedUnit.y, selectedUnit.type.ID );
+  model.createUnit( tplid, tx, ty, selectedUnit.type.ID );
   
-  var targetUnit =  model.unitPosMap[ selectedUnit.x ][ selectedUnit.y ];
+  var targetUnit =  model.unitPosMap[ tx ][ ty ];
   targetUnit.hp = selectedUnit.hp;
   targetUnit.ammo = selectedUnit.ammo;
   targetUnit.fuel = selectedUnit.fuel;

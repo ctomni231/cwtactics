@@ -19,7 +19,9 @@ util.scoped(function(){
         
         // CHECK PROPERTY
         ref = data.target.property;
-        if( ref !== null && ref.owner !== plid ) return true;
+        if( ref !== null && ref.owner !== plid && ref.owner !== -1 ){
+          return true;
+        }
         
         return false;
       }

@@ -186,7 +186,7 @@ model.getBattleDamage = function( attacker, defender, luck, withMainWp, isCounte
   controller.prepareTags( attacker.x, attacker.y );
   var LUCK = parseInt( (luck/100)*controller.scriptedValue(attacker.owner,"luck",10), 10 );
   var ACO  = controller.scriptedValue( attacker.owner, "att", 100 );
-  if( isCounter ) ACO += controller.scriptedValue( unit.owner, "counterAtt", 0 );
+  if( isCounter ) ACO += controller.scriptedValue( defender.owner, "counteratt", 0 );
   
   // DEFENDER VALUES
   controller.prepareTags( defender.x, defender.y );

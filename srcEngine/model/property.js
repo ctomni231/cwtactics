@@ -81,6 +81,8 @@ model.buildUnit = function( x,y, type ){
   if( pl.gold < cost ) util.raiseError("buyer hasn't enough money");
   
   pl.gold -= cost;
+  
+  model.markUnitNonActable( model.extractUnitId( model.unitPosMap[x][y] ) );
 };
 
 /**
@@ -136,7 +138,7 @@ model.propertySupply = function( pid ){
   for( var i=0,e=props.length; i<e; i++ ){
     
     prop = props[i];
-    if( prop.owner === pid && prop.type.supply !== undefined ){
+    if( prop.owner === pid && prop.type.supply ){
       var x = prop.x;
       var y = prop.y;
       
@@ -145,7 +147,12 @@ model.propertySupply = function( pid ){
       var mode = model.MODE_OWN;
       if( controller.configValue("supplyAlliedUnits") === 1 ) mode = model.MODE_TEAM;
       
-      if( check(x,y,pid,mode) ) model.refillResources( model.unitPosMap[x][y] );
+      if( check(x,y,pid,mode) ){
+        var unitTp = model.unitPosMap[x][y].type;
+        if( controller.objectInList(prop.type.supply,unitTp.ID, unitTp.movetype ) ){
+          model.refillResources( model.unitPosMap[x][y] );
+        }
+      }
     }
   }
 };
@@ -161,7 +168,7 @@ model.propertyRepairs = function( pid ){
   for( var i=0,e=props.length; i<e; i++ ){
     
     prop = props[i];
-    if( prop.owner === pid ){
+    if( prop.owner === pid && prop.type.repairs ){
       
       var x = prop.x;
       var y = prop.y;
@@ -171,7 +178,12 @@ model.propertyRepairs = function( pid ){
       var mode = model.MODE_OWN;
       if( controller.configValue("repairAlliedUnits") === 1 ) mode = model.MODE_TEAM;
       
-      if( check(x,y,pid,mode) ) model.healUnit( model.extractUnitId(model.unitPosMap[x][y]),20,true);
+      if( check(x,y,pid,mode) ){
+        var unitTp = model.unitPosMap[x][y].type;
+        var value = controller.objectInMap(prop.type.repairs,unitTp.ID, unitTp.movetype );
+        
+        if( value > 0 ) model.healUnit( model.extractUnitId(model.unitPosMap[x][y]),model.ptToHp(value),true);
+      }
     }
   }
 };
@@ -193,22 +205,22 @@ model.captureProperty = function( cid, prid ){
     var x = property.x;
     var y = property.y;
     
-    if( DEBUG ) util.logInfo( "property",prid,"captured by",cid);
+    if( DEBUG ) util.log( "property",prid,"captured by",cid);
     
     model.modifyVisionAt( x,y, property.type.vision, 1 );
-    
-    // TYPE CHANGE ?
-    var changeType = property.type.changeAfterCaptured;
-    if( typeof changeType !== "undefined" ){
-      
-      if( DEBUG ) util.logInfo( "property",prid,"changes type to",changeType);
-      property.type = changeType;
-    }
     
     // CRITICAL PROPERTY
     if( property.type.looseAfterCaptured === true ){
       var pid = property.owner;      
       model.playerLooses(pid);
+    }
+    
+    // TYPE CHANGE ?
+    var changeType = property.type.changeAfterCaptured;
+    if( typeof changeType !== "undefined" ){
+      
+      if( DEBUG ) util.log( "property",prid,"changes type to",changeType);
+      property.type = model.tileTypes[changeType];
     }
     
     // SET NEW META DATA
@@ -221,6 +233,10 @@ model.captureProperty = function( cid, prid ){
       controller.endGameRound();
     }
   }
+};
+
+model.resetCapturePoints = function( prid ){
+  model.properties[prid].capturePoints = 20;
 };
 
 model.changePropertyType = function( pid, type ){
@@ -244,7 +260,7 @@ util.scoped(function(){
                         
     // SET EMPTY TYPE
     var type = model.properties[siloId].type;
-    model.changePropertyType(siloId, type.changeTo );
+    model.changePropertyType(siloId, model.tileTypes[type.changeTo] );
     
     // TIMER
     model.pushTimedEvent( model.daysToTurns(5), model.changePropertyType.callToList( siloId, type.ID ) );

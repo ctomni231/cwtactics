@@ -1,11 +1,11 @@
 controller.propertyAction({
   
   key:"transferProperty",
-  propertyAction:true,
   hasSubMenu: true,
   
   condition: function( data ){
-    if( data.source.property.type.noTransfer ) return false;
+    var type = data.source.property.type;
+    if( type.notTransferable ) return false;
     return true;
   },
   

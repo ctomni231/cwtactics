@@ -1401,22 +1401,26 @@ controller.loadInputDevices = util.singleLazyCall(function( err, baton ){
           var pinDis3 = Math.abs( pinDis2 - pinDis );
           if( pinDis3 <= 32 ){
             
-            // EXTRACT DIRECTION
-            var mode;
-            if( dx > dy ){
+            if( dx > 48 || dy > 48 ){
               
-              // LEFT OR RIGHT
-              if( sx > ex ) mode = "SPECIAL_2";
-              else mode = "SPECIAL_1";
-            }
-            else{
+              // EXTRACT DIRECTION
+              var mode;
+              if( dx > dy ){
+                
+                // LEFT OR RIGHT
+                if( sx > ex ) mode = "SPECIAL_2";
+                else mode = "SPECIAL_1";
+              }
+              else{
+                
+                // UP OR DOWN
+                if( sy > ey ) mode = "SPECIAL_3";
+                else mode = "SPECIAL_4";
+              }
               
-              // UP OR DOWN
-              if( sy > ey ) mode = "SPECIAL_3";
-              else mode = "SPECIAL_4";
+              controller.screenStateMachine.event( mode );
             }
-            
-            controller.screenStateMachine.event( mode );
+            else controller.screenStateMachine.event("CANCEL"); 
           }
           else{
             if( pinDis2<pinDis ){
@@ -1442,12 +1446,12 @@ controller.loadInputDevices = util.singleLazyCall(function( err, baton ){
             // SHORT TIME GAP MEAN TAP
             if( timeDiff <= 500 ){
               controller.screenStateMachine.event("ACTION"); 
+              //}
+              // ELSE CANCEL IF YOU AREN'T IN A DRAG SESSION
+              //else if( !isDrag ){
+              //controller.screenStateMachine.event("CANCEL"); 
             }
-            // ELSE CANCEL IF YOU AREN'T IN A DRAG SESSION
-            else if( !isDrag ){
-              controller.screenStateMachine.event("CANCEL"); 
-            }
-              }
+          }
           // A VERY SHORT AND FAST DRAG IS A SWIPE GESTURE
           else if( timeDiff <= 300 ) {
             
@@ -1792,7 +1796,9 @@ util.scoped(function(){
   var bufferMap = {};
   var sfxGainNode;
   var musicGainNode;
+  
   var currentMusic;
+  var currentMusicId;
   
   var sfxStorageParam = "__volume_sfx__";
   var musicStorageParam = "__music_sfx__";
@@ -1972,6 +1978,7 @@ util.scoped(function(){
    */
   controller.playMusic = function( id ){
     if( context === null ) return;
+    if( currentMusicId === id ) return;
     
     // STOP EXISTING BACKGROUND SOUND
     if( currentMusic ){
@@ -1979,7 +1986,10 @@ util.scoped(function(){
       currentMusic.disconnect(0);
     }
     
-    if( bufferMap[id] ) currentMusic = controller.playSound(id, true, true );
+    if( bufferMap[id] ){
+      currentMusic = controller.playSound(id, true, true );
+      currentMusicId = id;
+    }
   };
   
 });
@@ -2012,6 +2022,10 @@ controller.isEnvironmentSupported = function(){
 
   return notSupported === true;
 };
+/**
+ *
+ */
+controller.clientInstances = util.list( CWT_MAX_PLAYER, false );
 /**
  * X coordinate of the cursor.
  */
@@ -2889,7 +2903,7 @@ util.scoped(function(){
   view.updateMessagePanelTime = function(delta){
     if( timeLeft > 0 ){
       timeLeft -= delta;
-      if( timeLeft < 0 ){
+      if( timeLeft <= 0 ){
         panel.className = "tooltip out";
       }
     }
@@ -3133,12 +3147,10 @@ controller.updateUnitStatus = function( uid ){
   }
   
   // HAS LOADS ?
-  if( uSheet.transport ){
-    if( !model.hasLoadedIds( uid ) ){
-      unitStatus.HAS_LOADS = false;
-    }
-    else unitStatus.HAS_LOADS = true;
+  if( unit.loadedIn < -1 ){
+    unitStatus.HAS_LOADS = true;
   }
+  else unitStatus.HAS_LOADS = false;
   
   // CAPTURES ?
   if( unit.x >= 0 ){
@@ -3199,7 +3211,7 @@ controller.mapAction({
         break;
         
       case "options.yield":
-        controller.endGameRound();
+        model.playerGivesUp.callAsCommand();
         break;
     }
   }
@@ -4557,6 +4569,8 @@ util.scoped(function(){
       
       el.innerHTML = controller.loadError;
       el.style.display = "block";
+      
+      controller.loadError = null;
     }
     
     this.data.openSection(ID_MENU_SECTION_MAIN);
@@ -5290,6 +5304,18 @@ util.scoped(function(){
     
   });
 });
+model.transferMoney.listenCommand(function(){
+  controller.renderPlayerInfo();
+});
+
+model.transferUnit.listenCommand(function( suid ){
+  var unit = model.units[suid];
+  var x = -unit.x;
+  var y = -unit.y;
+  
+  // CHECK NEW UNIT
+  controller.updateUnitStatus( model.extractUnitId( model.unitPosMap[x][y] ) );
+});
 view.registerAnimationHook({
   
   key:"trapWait",
@@ -5343,10 +5369,6 @@ model.buildUnit.listenCommand(function(){
   controller.renderPlayerInfo();
 });
 
-model.transferUnit.listenCommand(function( suid, tuid ){
-  controller.updateUnitStatus( tuid );
-});
-
 model.loadUnitInto.listenCommand(function( uid, tid ){
   controller.updateUnitStatus( tid );
 });
@@ -5361,6 +5383,10 @@ model.joinUnits.listenCommand(function( uid, tid ){
 
 model.refillResources.listenCommand(function( uid ){
   if( typeof uid.x === "number" ) uid = model.extractUnitId(uid);
+  controller.updateUnitStatus( uid );
+});
+
+model.setUnitPosition.listenCommand(function( uid ){
   controller.updateUnitStatus( uid );
 });
 util.scoped(function(){

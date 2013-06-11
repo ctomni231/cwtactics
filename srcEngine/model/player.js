@@ -63,12 +63,12 @@ model.extractPlayerId = function( player ){
   if( player === null ){
     util.raiseError("player argument cannot be null");
   }
-
+  
   var players = model.players;
   for( var i=0,e=players.length; i<e; i++ ){
     if( players[i] === player ) return i;
   }
-
+  
   util.raiseError( "cannot find player", players );
 };
 
@@ -79,37 +79,46 @@ model.extractPlayerId = function( player ){
  * @param {Number} pid id of the player
  */
 model.playerLooses = function( pid ){
-  if( DEBUG ) util.logInfo( "player",pid,"looses this game round");
-
+  if( DEBUG ) util.log( "player",pid,"looses this game round");
+  
   // REMOVE ALL UNITS
   for( var i = pid*CWT_MAX_UNITS_PER_PLAYER, e = i+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
     if( model.units[i].owner !== CWT_INACTIVE_ID ) model.destroyUnit(i);
   }
-
+  
   // REMOVE ALL PROPERTIES
   for( var i = 0, e = model.properties.length; i<e; i++ ){
-    if( model.properties[i].owner === pid ) model.properties[i].owner = -1;
+    var prop = model.properties[i];
+    if( prop.owner === pid ){
+      prop.owner = -1;
+      
+      // SPECIALLY FOR BUILDNGS LIKE THE HQ
+      var changeType = prop.type.changeAfterCaptured;
+      if( changeType ){
+        prop.type = model.tileTypes[changeType];
+      }
+    }
   }
   
-  oldPlayer.team = -1;
+  model.players[pid].team = -1;
   
   // CHECK LEFT TEAMS
   var _teamFound = -1;
   for( var i=0,e=model.players.length; i<e; i++ ){
     var player = model.players[i];
     if( player.team !== -1 ){
-
+      
       // FOUND AN ALIVE PLAYER
       if( _teamFound === -1 ) _teamFound = player.team;
       else if( _teamFound !== player.team ){
         _teamFound = -1;
         break;
       }
-    }
+        }
   }
-
+  
   // NO OPPOSITE TEAMS LEFT ?
-  if( _teamFound !== -1 ) controller.endGameRound();
+  if( _teamFound !== -1 ) model.noTeamLeft.callAsCommand();
 };
 
 /**
@@ -124,7 +133,7 @@ model.playerLooses = function( pid ){
 model.thereIsUnitCheck = function( x,y,pid,mode ){
   if( !model.isValidPosition(x,y) ) return false;
   var unit = model.unitPosMap[x][y];
-  return unit !== null && model.relationShipCheck(pid,unit.owner,mode);
+  return unit !== null && model.relationShipCheck(pid,unit.owner) === mode;
 };
 
 /**
@@ -139,7 +148,7 @@ model.thereIsUnitCheck = function( x,y,pid,mode ){
 model.thereIsPropertyCheck = function( x,y,pid,mode ){
   if( !model.isValidPosition(x,y) ) return false;
   var property = model.propertyPosMap[x][y];
-  return property !== null && model.relationShipCheck(pid,property.owner,mode);
+  return property !== null && model.relationShipCheck(pid,property.owner) === mode;
 };
 
 /**
@@ -155,10 +164,10 @@ model.relationShipCheck = function( pidA, pidB ){
   if( pidA === null || pidB === null ) return model.MODE_NONE;
   if( pidA === -1   || pidB === -1   ) return model.MODE_NONE;
   if( model.players[pidA].team === -1 || model.players[pidB].team === -1 ) return model.MODE_NONE;
- 
+  
   // OWN
   if( pidA === pidB ) return model.MODE_OWN;
-   
+  
   var teamA = model.players[pidA].team;
   var teamB = model.players[pidB].team;
   if( teamA === -1 || teamB === -1 ) return model.MODE_NONE;
@@ -191,19 +200,31 @@ model.relationShipCheckUnitNeighbours = function( pid, x,y , mode ){
   
   // LEFT
   if( x > 0 && model.unitPosMap[x-1][y] !== null && 
-          check( pid, model.unitPosMap[x-1][y].owner ) === mode ) return true; 
+     check( pid, model.unitPosMap[x-1][y].owner ) === mode ) return true; 
   
   // UP
   if( y > 0 && model.unitPosMap[x][y-1] !== null && 
-          check( pid, model.unitPosMap[x][y-1].owner ) === mode ) return true; 
+     check( pid, model.unitPosMap[x][y-1].owner ) === mode ) return true; 
   
   // RIGHT
   if( x < model.mapWidth-1 && model.unitPosMap[x+1][y] !== null && 
-          check( pid, model.unitPosMap[x+1][y].owner ) === mode ) return true; 
+     check( pid, model.unitPosMap[x+1][y].owner ) === mode ) return true; 
   
   // DOWN
   if( y < model.mapHeight-1 && model.unitPosMap[x][y+1] !== null && 
-          check( pid, model.unitPosMap[x][y+1].owner ) === mode ) return true; 
+     check( pid, model.unitPosMap[x][y+1].owner ) === mode ) return true; 
   
   return false;
+};
+
+/**
+ * Allowed for the client. 
+ */
+model.playerGivesUp = function(){
+  model.playerLooses( model.turnOwner );
+  model.nextTurn();
+};
+
+model.noTeamLeft = function(){
+  controller.endGameRound();
 };

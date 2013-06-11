@@ -404,7 +404,7 @@ util.scoped(function(){
     }
     else model.globalRules.push(rule);
   };
-    
+  
   model.checkMap = function( map ){
     var list;
     
@@ -424,7 +424,7 @@ util.scoped(function(){
       expectNumber(list[i],6,true,true,0,99999);
     }
     
-     expectArray(map,"leftActors",true);
+    expectArray(map,"leftActors",true);
     list = map.leftActors;
     expectNumber(list,"length",true,true,1,50);
     for( i=0,e=list.length; i<e; i++ ){ 
@@ -508,4 +508,33 @@ util.scoped(function(){
     return model.listOfTileTypes_;
   };
   
+  controller.objectInMap = function( map, id, movetype ){
+    var v;
+    
+    v = map[id];
+    if( typeof v === "number" ) return v;
+    
+    v = list[movetype];
+    if( typeof v === "number" ) return v;
+    
+    v = map["*"];
+    if( typeof v === "number" ) return v;
+    
+    return -1;
+  };
+  
+  controller.objectInList = function( list, id, movetype ){
+    var v;
+    
+    v = list.indexOf(id);
+    if( v !== -1 ) return true;
+    
+    v = list.indexOf(movetype);
+    if( v !== -1 ) return true;
+    
+    v = list.indexOf("*");
+    if( v !== -1 ) return true;
+    
+    return false;
+  };
 });

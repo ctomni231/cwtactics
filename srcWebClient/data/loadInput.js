@@ -391,22 +391,26 @@ controller.loadInputDevices = util.singleLazyCall(function( err, baton ){
           var pinDis3 = Math.abs( pinDis2 - pinDis );
           if( pinDis3 <= 32 ){
             
-            // EXTRACT DIRECTION
-            var mode;
-            if( dx > dy ){
+            if( dx > 48 || dy > 48 ){
               
-              // LEFT OR RIGHT
-              if( sx > ex ) mode = "SPECIAL_2";
-              else mode = "SPECIAL_1";
-            }
-            else{
+              // EXTRACT DIRECTION
+              var mode;
+              if( dx > dy ){
+                
+                // LEFT OR RIGHT
+                if( sx > ex ) mode = "SPECIAL_2";
+                else mode = "SPECIAL_1";
+              }
+              else{
+                
+                // UP OR DOWN
+                if( sy > ey ) mode = "SPECIAL_3";
+                else mode = "SPECIAL_4";
+              }
               
-              // UP OR DOWN
-              if( sy > ey ) mode = "SPECIAL_3";
-              else mode = "SPECIAL_4";
+              controller.screenStateMachine.event( mode );
             }
-            
-            controller.screenStateMachine.event( mode );
+            else controller.screenStateMachine.event("CANCEL"); 
           }
           else{
             if( pinDis2<pinDis ){
@@ -432,12 +436,12 @@ controller.loadInputDevices = util.singleLazyCall(function( err, baton ){
             // SHORT TIME GAP MEAN TAP
             if( timeDiff <= 500 ){
               controller.screenStateMachine.event("ACTION"); 
+              //}
+              // ELSE CANCEL IF YOU AREN'T IN A DRAG SESSION
+              //else if( !isDrag ){
+              //controller.screenStateMachine.event("CANCEL"); 
             }
-            // ELSE CANCEL IF YOU AREN'T IN A DRAG SESSION
-            else if( !isDrag ){
-              controller.screenStateMachine.event("CANCEL"); 
-            }
-              }
+          }
           // A VERY SHORT AND FAST DRAG IS A SWIPE GESTURE
           else if( timeDiff <= 300 ) {
             

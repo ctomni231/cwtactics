@@ -60,7 +60,9 @@ model.markUnitActable = function( uid ){
  * 
  * @param {Number} uid
  */
-model.trapWait = function( uid ){};
+model.trapWait = function( uid ){
+  model.setActableStatus( uid, false );
+};
 
 /**
  * @param {Number} uid

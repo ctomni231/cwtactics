@@ -127,7 +127,14 @@ model.moveUnit = function( way, uid, x,y ){
   if( unit.fuel < 0 ) util.raiseError("illegal game state");
 
   // DO NOT ERASE POSITION IF UNIT WAS LOADED OR HIDDEN (NOT INGAME HIDDEN) SOMEWHERE
-  if( unit.x >= 0 && unit.y >= 0 ) model.clearUnitPosition(uid);
+  if( unit.x >= 0 && unit.y >= 0 ){
+    
+    // RESET CAPTURE POINTS
+    var prop = model.propertyPosMap[unit.x][unit.y];
+    if( prop ) model.resetCapturePoints( model.extractPropertyId(prop) );
+    
+    model.clearUnitPosition(uid);
+  }
 
   // DO NOT SET NEW POSITION IF THE POSITION IS OCCUPIED THE SET POSITION LOGIC MUST BE DONE BY THE ACTION
   if( model.unitPosMap[cX][cY] === null ) model.setUnitPosition( uid,cX,cY );

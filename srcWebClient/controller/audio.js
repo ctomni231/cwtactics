@@ -6,7 +6,9 @@ util.scoped(function(){
   var bufferMap = {};
   var sfxGainNode;
   var musicGainNode;
+  
   var currentMusic;
+  var currentMusicId;
   
   var sfxStorageParam = "__volume_sfx__";
   var musicStorageParam = "__music_sfx__";
@@ -186,6 +188,7 @@ util.scoped(function(){
    */
   controller.playMusic = function( id ){
     if( context === null ) return;
+    if( currentMusicId === id ) return;
     
     // STOP EXISTING BACKGROUND SOUND
     if( currentMusic ){
@@ -193,7 +196,10 @@ util.scoped(function(){
       currentMusic.disconnect(0);
     }
     
-    if( bufferMap[id] ) currentMusic = controller.playSound(id, true, true );
+    if( bufferMap[id] ){
+      currentMusic = controller.playSound(id, true, true );
+      currentMusicId = id;
+    }
   };
   
 });

@@ -1,59 +1,77 @@
 /** 
  * Represents an inactive identical number.
  *
- * @constant
+ * @property CWT_INACTIVE_ID
+ * @final
+ * @type Number
  */
 var CWT_INACTIVE_ID = -1;
 
 /** 
- * @constant 
+ * @property DEBUG
+ * @final 
+ * @type Boolean
  */
 var DEBUG = true;
 
 /** 
- * @constant 
+ * @property CWT_ACTIONS_BUFFER_SIZE
+ * @final 
+ * @type Number
  */
 var CWT_ACTIONS_BUFFER_SIZE = 200;
 
 /**
  * The greatest possible map width.
  *
- * @config
+ * @property CWT_MAX_MAP_WIDTH
+ * @final
+ * @type Number
  */
 var CWT_MAX_MAP_WIDTH = 100;
 
 /**
  * The greatest possible map height.
  *
- * @config
+ * @property CWT_MAX_MAP_HEIGHT
+ * @final
+ * @type Number
  */
 var CWT_MAX_MAP_HEIGHT = 100;
 
 /**
  * Maximum amount of players in the game.
  *
- * @config
+ * @property CWT_MAX_PLAYER
+ * @final
+ * @type Number
  */
 var CWT_MAX_PLAYER = 5;
 
 /**
  * The maximum amount of units a player can hold.
  *
- * @config
+ * @property CWT_MAX_UNITS_PER_PLAYER
+ * @final
+ * @type Number
  */
 var CWT_MAX_UNITS_PER_PLAYER = 50;
 
 /**
  * The maximum amount of properties on a map.
  *
- * @config
+ * @property CWT_MAX_PROPERTIES
+ * @final
+ * @type Number
  */
 var CWT_MAX_PROPERTIES = 200;
 
 /**
  * The maximum range to select a target from a selection range.
  *
- * @config
+ * @property CWT_MAX_SELECTION_RANGE
+ * @final
+ * @type Number
  */
 var CWT_MAX_SELECTION_RANGE = 15;
 
@@ -61,16 +79,20 @@ var CWT_MAX_SELECTION_RANGE = 15;
  * This constant can be overwritten for a custom size, but this must be done
  * before the engine will be initialized.
  *
- * @config
+ * @property CWT_MAX_BUFFER_SIZE
+ * @final
+ * @type Number
  */
 var CWT_MAX_BUFFER_SIZE = 200;
 
 /**
  * The engine version tag.
  *
- * @constant 
+ * @property CWT_VERSION
+ * @final 
+ * @type String
  */
-var CWT_VERSION = "0.3.1";
+var CWT_VERSION = "0.3.1.1";
 
 /**
  * The model layer holds all necessary data for a game round. This layer can be
@@ -83,7 +105,7 @@ var CWT_VERSION = "0.3.1";
  * Furthermore you should not place functions in this layer because this would
  * not follow the specification of this layer.
  *
- * @namespace
+ * @module model
  */
 var model      = {};
 
@@ -97,7 +119,7 @@ var model      = {};
  * empty (owned) property leads to a property actions like buying an unit. The
  * last option will be choosen if the tile is occupied by an own unit.
  *
- * @namespace
+ * @module controller
  */
 var controller  = {};
 
@@ -107,7 +129,7 @@ var controller  = {};
  * overwritable to have a custom log behaviour for the game client. As example
  * if you use a graphical logging solution like BlackbirdJs.
  *
- * @namespace
+ * @module util
  */
 var util        = {};
 /**
@@ -541,7 +563,9 @@ model.markUnitActable = function( uid ){
  * 
  * @param {Number} uid
  */
-model.trapWait = function( uid ){};
+model.trapWait = function( uid ){
+  model.setActableStatus( uid, false );
+};
 
 /**
  * @param {Number} uid
@@ -737,7 +761,7 @@ model.getBattleDamage = function( attacker, defender, luck, withMainWp, isCounte
   controller.prepareTags( attacker.x, attacker.y );
   var LUCK = parseInt( (luck/100)*controller.scriptedValue(attacker.owner,"luck",10), 10 );
   var ACO  = controller.scriptedValue( attacker.owner, "att", 100 );
-  if( isCounter ) ACO += controller.scriptedValue( unit.owner, "counterAtt", 0 );
+  if( isCounter ) ACO += controller.scriptedValue( defender.owner, "counteratt", 0 );
   
   // DEFENDER VALUES
   controller.prepareTags( defender.x, defender.y );
@@ -1312,7 +1336,7 @@ util.scoped(function(){
     }
     else model.globalRules.push(rule);
   };
-    
+  
   model.checkMap = function( map ){
     var list;
     
@@ -1332,7 +1356,7 @@ util.scoped(function(){
       expectNumber(list[i],6,true,true,0,99999);
     }
     
-     expectArray(map,"leftActors",true);
+    expectArray(map,"leftActors",true);
     list = map.leftActors;
     expectNumber(list,"length",true,true,1,50);
     for( i=0,e=list.length; i<e; i++ ){ 
@@ -1416,6 +1440,35 @@ util.scoped(function(){
     return model.listOfTileTypes_;
   };
   
+  controller.objectInMap = function( map, id, movetype ){
+    var v;
+    
+    v = map[id];
+    if( typeof v === "number" ) return v;
+    
+    v = list[movetype];
+    if( typeof v === "number" ) return v;
+    
+    v = map["*"];
+    if( typeof v === "number" ) return v;
+    
+    return -1;
+  };
+  
+  controller.objectInList = function( list, id, movetype ){
+    var v;
+    
+    v = list.indexOf(id);
+    if( v !== -1 ) return true;
+    
+    v = list.indexOf(movetype);
+    if( v !== -1 ) return true;
+    
+    v = list.indexOf("*");
+    if( v !== -1 ) return true;
+    
+    return false;
+  };
 });
 /** @private */
 model.turnTimedEvents_time_ = util.list( 50, null );
@@ -1809,7 +1862,14 @@ model.moveUnit = function( way, uid, x,y ){
   if( unit.fuel < 0 ) util.raiseError("illegal game state");
 
   // DO NOT ERASE POSITION IF UNIT WAS LOADED OR HIDDEN (NOT INGAME HIDDEN) SOMEWHERE
-  if( unit.x >= 0 && unit.y >= 0 ) model.clearUnitPosition(uid);
+  if( unit.x >= 0 && unit.y >= 0 ){
+    
+    // RESET CAPTURE POINTS
+    var prop = model.propertyPosMap[unit.x][unit.y];
+    if( prop ) model.resetCapturePoints( model.extractPropertyId(prop) );
+    
+    model.clearUnitPosition(uid);
+  }
 
   // DO NOT SET NEW POSITION IF THE POSITION IS OCCUPIED THE SET POSITION LOGIC MUST BE DONE BY THE ACTION
   if( model.unitPosMap[cX][cY] === null ) model.setUnitPosition( uid,cX,cY );
@@ -1967,12 +2027,12 @@ model.extractPlayerId = function( player ){
   if( player === null ){
     util.raiseError("player argument cannot be null");
   }
-
+  
   var players = model.players;
   for( var i=0,e=players.length; i<e; i++ ){
     if( players[i] === player ) return i;
   }
-
+  
   util.raiseError( "cannot find player", players );
 };
 
@@ -1983,37 +2043,46 @@ model.extractPlayerId = function( player ){
  * @param {Number} pid id of the player
  */
 model.playerLooses = function( pid ){
-  if( DEBUG ) util.logInfo( "player",pid,"looses this game round");
-
+  if( DEBUG ) util.log( "player",pid,"looses this game round");
+  
   // REMOVE ALL UNITS
   for( var i = pid*CWT_MAX_UNITS_PER_PLAYER, e = i+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
     if( model.units[i].owner !== CWT_INACTIVE_ID ) model.destroyUnit(i);
   }
-
+  
   // REMOVE ALL PROPERTIES
   for( var i = 0, e = model.properties.length; i<e; i++ ){
-    if( model.properties[i].owner === pid ) model.properties[i].owner = -1;
+    var prop = model.properties[i];
+    if( prop.owner === pid ){
+      prop.owner = -1;
+      
+      // SPECIALLY FOR BUILDNGS LIKE THE HQ
+      var changeType = prop.type.changeAfterCaptured;
+      if( changeType ){
+        prop.type = model.tileTypes[changeType];
+      }
+    }
   }
   
-  oldPlayer.team = -1;
+  model.players[pid].team = -1;
   
   // CHECK LEFT TEAMS
   var _teamFound = -1;
   for( var i=0,e=model.players.length; i<e; i++ ){
     var player = model.players[i];
     if( player.team !== -1 ){
-
+      
       // FOUND AN ALIVE PLAYER
       if( _teamFound === -1 ) _teamFound = player.team;
       else if( _teamFound !== player.team ){
         _teamFound = -1;
         break;
       }
-    }
+        }
   }
-
+  
   // NO OPPOSITE TEAMS LEFT ?
-  if( _teamFound !== -1 ) controller.endGameRound();
+  if( _teamFound !== -1 ) model.noTeamLeft.callAsCommand();
 };
 
 /**
@@ -2028,7 +2097,7 @@ model.playerLooses = function( pid ){
 model.thereIsUnitCheck = function( x,y,pid,mode ){
   if( !model.isValidPosition(x,y) ) return false;
   var unit = model.unitPosMap[x][y];
-  return unit !== null && model.relationShipCheck(pid,unit.owner,mode);
+  return unit !== null && model.relationShipCheck(pid,unit.owner) === mode;
 };
 
 /**
@@ -2043,7 +2112,7 @@ model.thereIsUnitCheck = function( x,y,pid,mode ){
 model.thereIsPropertyCheck = function( x,y,pid,mode ){
   if( !model.isValidPosition(x,y) ) return false;
   var property = model.propertyPosMap[x][y];
-  return property !== null && model.relationShipCheck(pid,property.owner,mode);
+  return property !== null && model.relationShipCheck(pid,property.owner) === mode;
 };
 
 /**
@@ -2059,10 +2128,10 @@ model.relationShipCheck = function( pidA, pidB ){
   if( pidA === null || pidB === null ) return model.MODE_NONE;
   if( pidA === -1   || pidB === -1   ) return model.MODE_NONE;
   if( model.players[pidA].team === -1 || model.players[pidB].team === -1 ) return model.MODE_NONE;
- 
+  
   // OWN
   if( pidA === pidB ) return model.MODE_OWN;
-   
+  
   var teamA = model.players[pidA].team;
   var teamB = model.players[pidB].team;
   if( teamA === -1 || teamB === -1 ) return model.MODE_NONE;
@@ -2095,21 +2164,33 @@ model.relationShipCheckUnitNeighbours = function( pid, x,y , mode ){
   
   // LEFT
   if( x > 0 && model.unitPosMap[x-1][y] !== null && 
-          check( pid, model.unitPosMap[x-1][y].owner ) === mode ) return true; 
+     check( pid, model.unitPosMap[x-1][y].owner ) === mode ) return true; 
   
   // UP
   if( y > 0 && model.unitPosMap[x][y-1] !== null && 
-          check( pid, model.unitPosMap[x][y-1].owner ) === mode ) return true; 
+     check( pid, model.unitPosMap[x][y-1].owner ) === mode ) return true; 
   
   // RIGHT
   if( x < model.mapWidth-1 && model.unitPosMap[x+1][y] !== null && 
-          check( pid, model.unitPosMap[x+1][y].owner ) === mode ) return true; 
+     check( pid, model.unitPosMap[x+1][y].owner ) === mode ) return true; 
   
   // DOWN
   if( y < model.mapHeight-1 && model.unitPosMap[x][y+1] !== null && 
-          check( pid, model.unitPosMap[x][y+1].owner ) === mode ) return true; 
+     check( pid, model.unitPosMap[x][y+1].owner ) === mode ) return true; 
   
   return false;
+};
+
+/**
+ * Allowed for the client. 
+ */
+model.playerGivesUp = function(){
+  model.playerLooses( model.turnOwner );
+  model.nextTurn();
+};
+
+model.noTeamLeft = function(){
+  controller.endGameRound();
 };
 /**
  * List of all available properties of a game round. If a property is not 
@@ -2194,6 +2275,8 @@ model.buildUnit = function( x,y, type ){
   if( pl.gold < cost ) util.raiseError("buyer hasn't enough money");
   
   pl.gold -= cost;
+  
+  model.markUnitNonActable( model.extractUnitId( model.unitPosMap[x][y] ) );
 };
 
 /**
@@ -2249,7 +2332,7 @@ model.propertySupply = function( pid ){
   for( var i=0,e=props.length; i<e; i++ ){
     
     prop = props[i];
-    if( prop.owner === pid && prop.type.supply !== undefined ){
+    if( prop.owner === pid && prop.type.supply ){
       var x = prop.x;
       var y = prop.y;
       
@@ -2258,7 +2341,12 @@ model.propertySupply = function( pid ){
       var mode = model.MODE_OWN;
       if( controller.configValue("supplyAlliedUnits") === 1 ) mode = model.MODE_TEAM;
       
-      if( check(x,y,pid,mode) ) model.refillResources( model.unitPosMap[x][y] );
+      if( check(x,y,pid,mode) ){
+        var unitTp = model.unitPosMap[x][y].type;
+        if( controller.objectInList(prop.type.supply,unitTp.ID, unitTp.movetype ) ){
+          model.refillResources( model.unitPosMap[x][y] );
+        }
+      }
     }
   }
 };
@@ -2274,7 +2362,7 @@ model.propertyRepairs = function( pid ){
   for( var i=0,e=props.length; i<e; i++ ){
     
     prop = props[i];
-    if( prop.owner === pid ){
+    if( prop.owner === pid && prop.type.repairs ){
       
       var x = prop.x;
       var y = prop.y;
@@ -2284,7 +2372,12 @@ model.propertyRepairs = function( pid ){
       var mode = model.MODE_OWN;
       if( controller.configValue("repairAlliedUnits") === 1 ) mode = model.MODE_TEAM;
       
-      if( check(x,y,pid,mode) ) model.healUnit( model.extractUnitId(model.unitPosMap[x][y]),20,true);
+      if( check(x,y,pid,mode) ){
+        var unitTp = model.unitPosMap[x][y].type;
+        var value = controller.objectInMap(prop.type.repairs,unitTp.ID, unitTp.movetype );
+        
+        if( value > 0 ) model.healUnit( model.extractUnitId(model.unitPosMap[x][y]),model.ptToHp(value),true);
+      }
     }
   }
 };
@@ -2306,22 +2399,22 @@ model.captureProperty = function( cid, prid ){
     var x = property.x;
     var y = property.y;
     
-    if( DEBUG ) util.logInfo( "property",prid,"captured by",cid);
+    if( DEBUG ) util.log( "property",prid,"captured by",cid);
     
     model.modifyVisionAt( x,y, property.type.vision, 1 );
-    
-    // TYPE CHANGE ?
-    var changeType = property.type.changeAfterCaptured;
-    if( typeof changeType !== "undefined" ){
-      
-      if( DEBUG ) util.logInfo( "property",prid,"changes type to",changeType);
-      property.type = changeType;
-    }
     
     // CRITICAL PROPERTY
     if( property.type.looseAfterCaptured === true ){
       var pid = property.owner;      
       model.playerLooses(pid);
+    }
+    
+    // TYPE CHANGE ?
+    var changeType = property.type.changeAfterCaptured;
+    if( typeof changeType !== "undefined" ){
+      
+      if( DEBUG ) util.log( "property",prid,"changes type to",changeType);
+      property.type = model.tileTypes[changeType];
     }
     
     // SET NEW META DATA
@@ -2334,6 +2427,10 @@ model.captureProperty = function( cid, prid ){
       controller.endGameRound();
     }
   }
+};
+
+model.resetCapturePoints = function( prid ){
+  model.properties[prid].capturePoints = 20;
 };
 
 model.changePropertyType = function( pid, type ){
@@ -2357,7 +2454,7 @@ util.scoped(function(){
                         
     // SET EMPTY TYPE
     var type = model.properties[siloId].type;
-    model.changePropertyType(siloId, type.changeTo );
+    model.changePropertyType(siloId, model.tileTypes[type.changeTo] );
     
     // TIMER
     model.pushTimedEvent( model.daysToTurns(5), model.changePropertyType.callToList( siloId, type.ID ) );
@@ -2490,14 +2587,15 @@ model.transferUnit = function( suid, tplid ){
 
   // REMOVE VISION
   if( model.players[tplid].team !== model.players[opid].team ){
-    model.modifyVisionAt(selectedUnit.x, selectedUnit.y, selectedUnit.type.vision, -1);
+    model.modifyVisionAt(tx, ty, selectedUnit.type.vision, -1);
   }
 
-  model.unitPosMap[ selectedUnit.x ][ selectedUnit.y ] = null;
+  // model.unitPosMap[ selectedUnit.x ][ selectedUnit.y ] = null;
+  model.clearUnitPosition( suid );
 
-  model.createUnit( tplid, selectedUnit.x, selectedUnit.y, selectedUnit.type.ID );
+  model.createUnit( tplid, tx, ty, selectedUnit.type.ID );
   
-  var targetUnit =  model.unitPosMap[ selectedUnit.x ][ selectedUnit.y ];
+  var targetUnit =  model.unitPosMap[ tx ][ ty ];
   targetUnit.hp = selectedUnit.hp;
   targetUnit.ammo = selectedUnit.ammo;
   targetUnit.fuel = selectedUnit.fuel;
@@ -4108,6 +4206,9 @@ controller.inGameRound = false;
   };
   
 })();
+/**
+ *
+ */
 controller.stateMachine.data.action = {
   
   /**
@@ -4179,6 +4280,8 @@ controller.stateMachine.data.menu = {
     return function() {
       if( !commandKeys ) commandKeys = Object.keys(controller.actionObjects);
       
+      var mapActable = false;
+      
       // ----- UNIT -----
       var unitActable = true;
       var selectedUnit = data.source.unit;
@@ -4197,6 +4300,8 @@ controller.stateMachine.data.menu = {
         propertyActable = false;
       }
       
+      if( !unitActable && !propertyActable ) mapActable = true;
+      
       for (var i = 0, e = commandKeys.length; i < e; i++) {
         var action = controller.actionObjects[commandKeys[i]];
         
@@ -4206,6 +4311,7 @@ controller.stateMachine.data.menu = {
         // PRE DEFINED CHECKERS
         if (action.unitAction === true && !unitActable) continue;
         if (action.propertyAction === true && !propertyActable) continue;
+        if (action.mapAction === true && !mapActable ) continue;
         
         // CHECK CONDITION
         if (action.condition(data)) {
@@ -5109,7 +5215,9 @@ util.scoped(function(){
         
         // CHECK PROPERTY
         ref = data.target.property;
-        if( ref !== null && ref.owner !== plid ) return true;
+        if( ref !== null && ref.owner !== plid && ref.owner !== -1 ){
+          return true;
+        }
         
         return false;
       }
@@ -5136,11 +5244,11 @@ util.scoped(function(){
 controller.propertyAction({
   
   key:"transferProperty",
-  propertyAction:true,
   hasSubMenu: true,
   
   condition: function( data ){
-    if( data.source.property.type.noTransfer ) return false;
+    var type = data.source.property.type;
+    if( type.notTransferable ) return false;
     return true;
   },
   
@@ -5161,7 +5269,7 @@ controller.unitAction({
   
   condition: function( data ){
     var mode = data.thereIsUnitRelationShip( data.source, data.target );
-    if( mode !== model.MODE_NONE && mode !== model.MODE_SAME_OBJECT ) return false;
+    if( mode !== model.MODE_SAME_OBJECT ) return false;
     
     // LOADED UNITS CANNOT BE TRANSFERED TO OTHER PLAYERS (@TODO: ALLOW IN FUTURE)
     if( model.hasLoadedIds( data.source.unitId ) ) return false; 
@@ -5241,12 +5349,13 @@ controller.mapAction({
   key:"nextTurn",
   
   condition: function( data ){
+    /*
     var unit = data.source.unit;
     if( unit !== null && unit.owner === model.turnOwner && model.canAct( data.source.unitId) ) return false;
        
     var property = data.source.property;
     if( property !== null && property.type.builds ) return false;
-    
+    */
     return true;
   },
   
@@ -5331,7 +5440,7 @@ controller.unitAction({
 
 util.scoped(function(){
   
-  function checkTile( x,y, movetype ){
+  function checkTile( x,y, movetype, loader ){
     if( model.isValidPosition(x,y) ){
       
       // CAN MOVE TECHNICALLY ?
@@ -5340,7 +5449,8 @@ util.scoped(function(){
       // IF TILE IS IN FOG THEN OCCUPYING UNITS AREN'T IMPORTANT
       if( model.fogData[x][y] === 0 ) return true;
       
-      if( model.unitPosMap[x][y] !== null ) return false;
+      var unit = model.unitPosMap[x][y];
+      if( unit !== null && unit !== loader ) return false;
       return true;
     }
   }
@@ -5354,15 +5464,51 @@ util.scoped(function(){
       var mode = data.thereIsUnitRelationShip( data.source, data.target );
       if( mode !== model.MODE_SAME_OBJECT && mode !== model.MODE_NONE ) return false;
       
+      
       var uid = data.source.unitId;
-      return model.isTransport( uid ) && model.hasLoadedIds( uid );
+      var loader = data.source.unit;
+      if( !( model.isTransport( uid ) && model.hasLoadedIds( uid ) ) ) return false;
+      
+      var x = data.target.x;
+      var y = data.target.y;
+      for( var i=CWT_MAX_UNITS_PER_PLAYER*model.turnOwner, 
+          e=i+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
+        
+        var unit = model.units[i];
+        if( unit.owner !== CWT_INACTIVE_ID && unit.loadedIn === uid ){
+          
+          var movetp = model.moveTypes[ unit.type.movetype ];
+          if( unit.owner !== CWT_INACTIVE_ID && unit.loadedIn === uid ){
+            if( checkTile(x-1,y,movetp,loader) || 
+               checkTile(x+1,y,movetp,loader) ||
+               checkTile(x,y-1,movetp,loader) || 
+               checkTile(x,y+1,movetp,loader) ) return true;   
+          }
+        }
+      }
+      
+      return false;
     },
     
     prepareMenu: function( data ){
+      
+      var x = data.target.x;
+      var y = data.target.y; 
+      var uid = data.source.unitId;
+      var loader = data.source.unit;
       for( var i=CWT_MAX_UNITS_PER_PLAYER*model.turnOwner, e=i+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
         var unit = model.units[i];
         if( unit.owner !== CWT_INACTIVE_ID && unit.loadedIn === data.source.unitId ){
-          data.menu.addEntry( i, true );
+          
+          var unit = model.units[i];
+          if( unit.owner !== CWT_INACTIVE_ID && unit.loadedIn === uid ){
+            
+            var movetp = model.moveTypes[ unit.type.movetype ];
+            if( checkTile(x-1,y,movetp,loader) || 
+               checkTile(x+1,y,movetp,loader) ||
+               checkTile(x,y-1,movetp,loader) || 
+               checkTile(x,y+1,movetp,loader) ) data.menu.addEntry( i, true );
+          }
         }
       }
     },
@@ -5371,12 +5517,13 @@ util.scoped(function(){
     prepareTargets: function( data ){
       var x = data.target.x;
       var y = data.target.y;
+      var loader = data.source.unit;
       var movetp = model.moveTypes[model.units[ data.action.selectedSubEntry ].type.movetype];
       
-      if( checkTile(x-1,y,movetp) ) data.selection.setValueAt( x-1,y, 1 );
-      if( checkTile(x+1,y,movetp) ) data.selection.setValueAt( x+1,y, 1 );
-      if( checkTile(x,y-1,movetp) ) data.selection.setValueAt( x,y-1, 1 );
-      if( checkTile(x,y+1,movetp) ) data.selection.setValueAt( x,y+1, 1 );
+      if( checkTile(x-1,y,movetp,loader) ) data.selection.setValueAt( x-1,y, 1 );
+      if( checkTile(x+1,y,movetp,loader) ) data.selection.setValueAt( x+1,y, 1 );
+      if( checkTile(x,y-1,movetp,loader) ) data.selection.setValueAt( x,y-1, 1 );
+      if( checkTile(x,y+1,movetp,loader) ) data.selection.setValueAt( x,y+1, 1 );
     },
     
     invoke: function( data ){

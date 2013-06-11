@@ -52,6 +52,8 @@ controller.stateMachine.data.menu = {
     return function() {
       if( !commandKeys ) commandKeys = Object.keys(controller.actionObjects);
       
+      var mapActable = false;
+      
       // ----- UNIT -----
       var unitActable = true;
       var selectedUnit = data.source.unit;
@@ -70,6 +72,8 @@ controller.stateMachine.data.menu = {
         propertyActable = false;
       }
       
+      if( !unitActable && !propertyActable ) mapActable = true;
+      
       for (var i = 0, e = commandKeys.length; i < e; i++) {
         var action = controller.actionObjects[commandKeys[i]];
         
@@ -79,6 +83,7 @@ controller.stateMachine.data.menu = {
         // PRE DEFINED CHECKERS
         if (action.unitAction === true && !unitActable) continue;
         if (action.propertyAction === true && !propertyActable) continue;
+        if (action.mapAction === true && !mapActable ) continue;
         
         // CHECK CONDITION
         if (action.condition(data)) {
