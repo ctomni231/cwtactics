@@ -2,7 +2,7 @@ PAGE_DATA.milestones = [
   
   {
     header: "Version",
-    version: "0.3.1.1",
+    version: "0.3.1.2",
     subHeaderT: "CO's, Scripting",
     subHeaderB: "and Screens",
         
