@@ -102,7 +102,12 @@ util.scoped(function(){
     /* **************************************************************************** */
     
     if( !prop ){
-      TILE_NAME.style.opacity = 0;
+      type = model.map[x][y];
+      
+      TILE_NAME.innerHTML = model.localized( type.ID );
+      DEFENSE.innerHTML = type.defense;
+      
+      TILE_NAME.style.opacity = 1;
       TILE_ROW1.style.opacity = 0;
       TILE_ROW2.style.opacity = 0;
     }
@@ -115,7 +120,6 @@ util.scoped(function(){
       
       DEFENSE.innerHTML = type.defense;
     
-      TILE_NAME.style.opacity = 1;
       TILE_ROW1.style.opacity = 1;
       TILE_ROW2.style.opacity = 1;
     }
