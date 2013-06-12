@@ -107,8 +107,8 @@ model.attackRangeMod_ = function( uid, x, y, data, markAttackableTiles ){
   if( unit.type.attack.minrange ){
     
     controller.prepareTags( x,y, uid );
-    minR = controller.scriptedValue( unit.owner, "minRange", unit.type.attack.minrange );
-    maxR = controller.scriptedValue( unit.owner, "maxRange", unit.type.attack.maxrange );
+    minR = controller.scriptedValue( unit.owner, "minrange", unit.type.attack.minrange );
+    maxR = controller.scriptedValue( unit.owner, "maxrange", unit.type.attack.maxrange );
   }
   
   var lX;

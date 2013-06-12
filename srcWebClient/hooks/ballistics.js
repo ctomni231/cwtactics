@@ -38,14 +38,16 @@ util.scoped(function(){
   
   view.registerAnimationHook({
     
-    key: "fireSilo",
+    key: "fireBombAt",
         
-    prepare: function( siloId, tx,ty, range, owner ){
+    prepare: function( tx,ty, range, damage, owner ){
       if( !expl_img ) expl_img = view.getInfoImageForType("EXPLOSION_GROUND");
+      controller.playSound("ROCKET_IMPACT");
       
       this.x = tx;
       this.y = ty;   
       this.range = range;
+      this.maxStep = 10+range+1;
       this.step = 0;
       this.time = 0;
     },
@@ -63,7 +65,7 @@ util.scoped(function(){
     },
     
     isDone: function(){
-      var done = this.step === 13;
+      var done = this.step === this.maxStep;
       
       // RENDER HP LOST
       if( done ) model.doInRange( this.x, this.y, this.range, checkStatus );

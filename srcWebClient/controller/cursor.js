@@ -131,7 +131,7 @@ controller.setCursorPosition = function( x,y,relativeToScreen ){
   //}
   
   if( x === controller.mapCursorX && y === controller.mapCursorY ) return;
-  
+    
   // CLEAN OLD
   view.markForRedraw( controller.mapCursorX, controller.mapCursorY );
   if( controller.mapCursorY < model.mapHeight -1 ) view.markForRedraw( controller.mapCursorX, controller.mapCursorY+1 );
@@ -142,12 +142,14 @@ controller.setCursorPosition = function( x,y,relativeToScreen ){
   controller.mapCursorX = x;
   controller.mapCursorY = y;
   
+  controller.updateTileInformation();
+  
   var scale = controller.screenScale;  
   if( scale === 0 ) scale = 0.8;
   else if( scale === -1 ) scale = 0.7;
   
-  var scw = parseInt( parseInt( window.innerWidth/16,10 ) / scale ,10 );
-  var sch = parseInt( parseInt( window.innerHeight/16,10 ) / scale ,10 );
+  var scw = parseInt( parseInt( (window.innerWidth-80)/16,10 ) / scale ,10 );
+  var sch = parseInt( parseInt( (window.innerHeight-80)/16,10 ) / scale ,10 );
   
   var moveCode = -1;
   if( x-controller.screenX <= 1 )          moveCode = model.MOVE_CODE_LEFT;

@@ -18,18 +18,20 @@ controller.unitAction({
     if( propRel !== model.MODE_NONE ) return false;
     
     var silo = data.target.property.type.rocketsilo;
-    if( typeof silo === "undefined" ) return false;
-    if( silo.indexOf(data.source.unit.type.ID) === -1 ) return false;
+    if( !silo ) return false;
+    if( silo.fireable.indexOf(data.source.unit.type.ID) === -1 ) return false;
     
     return true;
   },
   
   invoke: function( data ){
+    var silo = data.target.property.type.rocketsilo;
     model.fireSilo.callAsCommand(
       data.target.propertyId, 
       data.targetselection.x, 
       data.targetselection.y,
-      2,
+      silo.range,
+      model.ptToHp(silo.damage),
       data.source.unit.owner
     );
   }

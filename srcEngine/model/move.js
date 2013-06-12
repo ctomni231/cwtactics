@@ -120,7 +120,7 @@ model.moveUnit = function( way, uid, x,y ){
     }
 
     // INCREASE FUEL USAGE
-    fuelUsed += model.moveCosts( mType, model.map[cX][cY] );
+    fuelUsed += model.moveCosts( mType, cX, cY );
   }
 
   unit.fuel -= fuelUsed;
@@ -187,14 +187,15 @@ model.setUnitPosition = function( uid, x,y ){
  * Returns the movecosts to move with a given move type on a given tile type.
  * 
  * @param {model.moveType} movetype
- * @param {String} tile
  * @returns {Number} move costs or -1 if unmovable
  */
-model.moveCosts = function( movetype, tile ){
+model.moveCosts = function( movetype, x,y  ){
   var map = movetype.costs;
   var v;
   
-  v = map[tile.ID];
+  var prop = model.propertyPosMap[x][y];
+  var type = ( prop )? prop.type : model.map[x][y];
+  v = map[type.ID];
   if( typeof v === "number" ) return v;
   
   v = map["*"];

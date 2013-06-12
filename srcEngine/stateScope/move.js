@@ -236,7 +236,7 @@ controller.stateMachine.data.movePath = {
         var tx = checker[n  ];
         var ty = checker[n+1];
 
-        var cost = model.moveCosts( mType, model.map[ tx ][ ty ] );
+        var cost = model.moveCosts( mType, tx, ty );
         if( cost !== -1 ){
 
           var cunit = model.unitPosMap[tx][ty];
@@ -273,7 +273,7 @@ controller.stateMachine.data.movePath = {
       for( var y=0,ye=model.mapHeight; y<ye; y++ ){
         if( selection.getValueAt(x,y) !== this.ILLEGAL_MOVE_FIELD ){
           
-          var cost = model.moveCosts( mType, model.map[x][y] );
+          var cost = model.moveCosts( mType,x,y );
           selection.setValueAt( x, y, cost );
         }
       }

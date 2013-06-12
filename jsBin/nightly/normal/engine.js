@@ -682,8 +682,8 @@ model.attackRangeMod_ = function( uid, x, y, data, markAttackableTiles ){
   if( unit.type.attack.minrange ){
     
     controller.prepareTags( x,y, uid );
-    minR = controller.scriptedValue( unit.owner, "minRange", unit.type.attack.minrange );
-    maxR = controller.scriptedValue( unit.owner, "maxRange", unit.type.attack.maxrange );
+    minR = controller.scriptedValue( unit.owner, "minrange", unit.type.attack.minrange );
+    maxR = controller.scriptedValue( unit.owner, "maxrange", unit.type.attack.maxrange );
   }
   
   var lX;
@@ -1446,7 +1446,7 @@ util.scoped(function(){
     v = map[id];
     if( typeof v === "number" ) return v;
     
-    v = list[movetype];
+    v = map[movetype];
     if( typeof v === "number" ) return v;
     
     v = map["*"];
@@ -1855,7 +1855,7 @@ model.moveUnit = function( way, uid, x,y ){
     }
 
     // INCREASE FUEL USAGE
-    fuelUsed += model.moveCosts( mType, model.map[cX][cY] );
+    fuelUsed += model.moveCosts( mType, cX, cY );
   }
 
   unit.fuel -= fuelUsed;
@@ -1922,14 +1922,15 @@ model.setUnitPosition = function( uid, x,y ){
  * Returns the movecosts to move with a given move type on a given tile type.
  * 
  * @param {model.moveType} movetype
- * @param {String} tile
  * @returns {Number} move costs or -1 if unmovable
  */
-model.moveCosts = function( movetype, tile ){
+model.moveCosts = function( movetype, x,y  ){
   var map = movetype.costs;
   var v;
   
-  v = map[tile.ID];
+  var prop = model.propertyPosMap[x][y];
+  var type = ( prop )? prop.type : model.map[x][y];
+  v = map[type.ID];
   if( typeof v === "number" ) return v;
   
   v = map["*"];
@@ -2434,30 +2435,34 @@ model.resetCapturePoints = function( prid ){
 };
 
 model.changePropertyType = function( pid, type ){
-  model.properties[pid] = type;
+  model.properties[pid].type = type;
 };
 
 util.scoped(function(){
   
-  function doDamage( x,y,invokerPid ){
+  function doDamage( x,y, damage ){
     // var team = model.players[invokerPid].team;
     var unit = model.unitPosMap[x][y];
     
     // DO DAMAGE 
     if( unit !== null /* && model.players[ unit.owner ].team !== team */ ){
-      model.damageUnit( model.extractUnitId(unit),20,9);
+      model.damageUnit( model.extractUnitId(unit),damage,9);
     }
   }
   
-  model.fireSilo = function( siloId, tx,ty, range, owner ){  
-    model.doInRange( tx,ty,range, doDamage, owner );
-                        
+  model.fireBombAt = function( tx,ty, range, damage, owner ){
+    model.doInRange( tx,ty,range, doDamage, damage );
+  };
+  
+  model.fireSilo = function( siloId, tx,ty, range, damage, owner ){                          
     // SET EMPTY TYPE
     var type = model.properties[siloId].type;
     model.changePropertyType(siloId, model.tileTypes[type.changeTo] );
     
     // TIMER
     model.pushTimedEvent( model.daysToTurns(5), model.changePropertyType.callToList( siloId, type.ID ) );
+    
+    model.fireBombAt( tx,ty, range, damage, owner );
   };
 });
 /**
@@ -3169,7 +3174,7 @@ model.createUnit = function( pid, x, y, type ){
  * 
  * @param {Number} uid id number of the unit
  */
-model.destroyUnit = function( uid ){
+model.destroyUnit_silent = function( uid ){
   model.clearUnitPosition(uid);
   var unit = model.units[uid];
   
@@ -3180,6 +3185,16 @@ model.destroyUnit = function( uid ){
   if( controller.configValue("noUnitsLeftLoose") === 1 && model.countUnits( unit.owner ) === 0 ){
     controller.endGameRound();
   } 
+};
+
+/**
+ * Deregisters an unit object from the stock of a player. The tile, where the unit is placed on, will be
+ * freed from any position information.
+ * 
+ * @param {Number} uid id number of the unit
+ */
+model.destroyUnit = function( uid ){
+  model.destroyUnit_silent(uid);
 };
 /**
  * The type of the active weather.
@@ -4559,7 +4574,7 @@ controller.stateMachine.data.movePath = {
         var tx = checker[n  ];
         var ty = checker[n+1];
 
-        var cost = model.moveCosts( mType, model.map[ tx ][ ty ] );
+        var cost = model.moveCosts( mType, tx, ty );
         if( cost !== -1 ){
 
           var cunit = model.unitPosMap[tx][ty];
@@ -4596,7 +4611,7 @@ controller.stateMachine.data.movePath = {
       for( var y=0,ye=model.mapHeight; y<ye; y++ ){
         if( selection.getValueAt(x,y) !== this.ILLEGAL_MOVE_FIELD ){
           
-          var cost = model.moveCosts( mType, model.map[x][y] );
+          var cost = model.moveCosts( mType,x,y );
           selection.setValueAt( x, y, cost );
         }
       }
@@ -5112,7 +5127,7 @@ controller.unitAction({
   
   condition: function( data ){
     var mode = data.thereIsUnitRelationShip( data.source, data.target );
-    if( mode !== model.MODE_NONE && mode !== model.MODE_SAME_OBJECT && mode !== model.MODE_OWN ) return false;
+    if( mode !== model.MODE_NONE && mode !== model.MODE_SAME_OBJECT ) return false;
     
     // CANNOT ATTACK IF PEACE PERIOD IS GIVEN
     if( model.day-1 < controller.configValue("daysOfPeace") ) return false;
@@ -5148,9 +5163,14 @@ controller.propertyAction({
     if( !model.hasFreeUnitSlots( model.turnOwner ) ) return false;
     
     var property = data.source.property;
+    var money = model.players[ model.turnOwner ].gold;
     
     var unitTypes = model.listOfUnitTypes;
     for( var i=0,e=unitTypes.length; i<e; i++ ){
+      
+      // TODO LATER DISABLE ACTION ONLY
+      if( model.unitTypes[unitTypes[i]].cost > money ) continue;
+        
       if( model.isBuildableByFactory( property, unitTypes[i] ) ) return true;
     }
     
@@ -5163,6 +5183,9 @@ controller.propertyAction({
     var unitTypes = model.listOfUnitTypes;
     for( var i=0,e=unitTypes.length; i<e; i++ ){
       var key = unitTypes[i];
+      
+      // TODO LATER DISABLE ACTION ONLY
+      if( model.unitTypes[unitTypes[i]].cost > availGold ) continue;
       
       // ONLY ADD IF THE TYPE IS PRODUCE ABLE BY THE PROPERTY
       if( model.isBuildableByFactory( property, key ) ){
@@ -5384,22 +5407,48 @@ controller.unitAction({
     if( propRel !== model.MODE_NONE ) return false;
     
     var silo = data.target.property.type.rocketsilo;
-    if( typeof silo === "undefined" ) return false;
-    if( silo.indexOf(data.source.unit.type.ID) === -1 ) return false;
+    if( !silo ) return false;
+    if( silo.fireable.indexOf(data.source.unit.type.ID) === -1 ) return false;
     
     return true;
   },
   
   invoke: function( data ){
+    var silo = data.target.property.type.rocketsilo;
     model.fireSilo.callAsCommand(
       data.target.propertyId, 
       data.targetselection.x, 
       data.targetselection.y,
-      2,
+      silo.range,
+      model.ptToHp(silo.damage),
       data.source.unit.owner
     );
   }
 });
+controller.unitAction({
+  
+  key:"explode",
+  
+  condition: function( data ){
+    var mode = data.thereIsUnitRelationShip( data.source, data.target );
+    if( mode !== model.MODE_NONE && mode !== model.MODE_SAME_OBJECT ) return false;
+    
+    return data.source.unit.type.suicide;
+  },
+  
+  invoke: function( data ){
+    model.destroyUnit_silent.callAsCommand( data.source.unitId );
+    model.fireBombAt.callAsCommand(
+      data.target.x, 
+      data.target.y,
+      data.source.unit.type.suicide.range,
+      model.ptToHp(data.source.unit.type.suicide.damage),
+      data.source.unit.owner
+    );    
+  }
+  
+});
+
 controller.unitAction({
   
   key:"supplyUnit",
@@ -5444,7 +5493,7 @@ util.scoped(function(){
     if( model.isValidPosition(x,y) ){
       
       // CAN MOVE TECHNICALLY ?
-      if( model.moveCosts( movetype, model.map[x][y] ) === -1 ) return false;
+      if( model.moveCosts( movetype, x, y ) === -1 ) return false;
       
       // IF TILE IS IN FOG THEN OCCUPYING UNITS AREN'T IMPORTANT
       if( model.fogData[x][y] === 0 ) return true;

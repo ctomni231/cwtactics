@@ -33,7 +33,6 @@ view.markForRedraw = function( x,y ){
       }
     }
   }
-  else util.raiseError("illegal arguments ",x,",",y," -> out of view bounds");
 };
 
 /**

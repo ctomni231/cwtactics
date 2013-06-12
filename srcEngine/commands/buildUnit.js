@@ -11,9 +11,14 @@ controller.propertyAction({
     if( !model.hasFreeUnitSlots( model.turnOwner ) ) return false;
     
     var property = data.source.property;
+    var money = model.players[ model.turnOwner ].gold;
     
     var unitTypes = model.listOfUnitTypes;
     for( var i=0,e=unitTypes.length; i<e; i++ ){
+      
+      // TODO LATER DISABLE ACTION ONLY
+      if( model.unitTypes[unitTypes[i]].cost > money ) continue;
+        
       if( model.isBuildableByFactory( property, unitTypes[i] ) ) return true;
     }
     
@@ -26,6 +31,9 @@ controller.propertyAction({
     var unitTypes = model.listOfUnitTypes;
     for( var i=0,e=unitTypes.length; i<e; i++ ){
       var key = unitTypes[i];
+      
+      // TODO LATER DISABLE ACTION ONLY
+      if( model.unitTypes[unitTypes[i]].cost > availGold ) continue;
       
       // ONLY ADD IF THE TYPE IS PRODUCE ABLE BY THE PROPERTY
       if( model.isBuildableByFactory( property, key ) ){

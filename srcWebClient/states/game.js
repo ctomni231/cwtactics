@@ -3,7 +3,7 @@ util.scoped(function(){
   /** @private */
   function loadMapCb( obj ){
     controller.startGameRound( obj.value );
-      
+    
     // UPDATE SCREEN DATA
     controller.setCursorPosition(0,0);
     view.resizeCanvas();
@@ -43,18 +43,11 @@ util.scoped(function(){
       
       controller.gameLoop( delta );
     }
-        
+    
     // ENTER LOOP
     requestAnimationFrame( looper );
   }
   
-  function hideInfoScreens(){
-    if( controller.unitInfoVisible ) controller.hideUnitInfo();
-    if( controller.tileInfoVisible ) controller.hideTileInfo();
-    if( controller.playerInfoVisible ) controller.hidePlayerInfo();
-    if( controller.attackRangeVisible ) controller.hideAttackRangeInfo();
-  }
-    
   // -----------------------------------------------------------------------------------------------
   
   controller.screenStateMachine.structure.GAMEROUND = Object.create(controller.stateParent);
@@ -65,7 +58,6 @@ util.scoped(function(){
   };
   
   controller.screenStateMachine.structure.GAMEROUND.gameHasEnded = function(){
-    hideInfoScreens();
     return "MAIN";
   };
   
@@ -74,7 +66,7 @@ util.scoped(function(){
   // ++++++++++++ INPUT MOVE ++++++++++++
   
   controller.screenStateMachine.structure.GAMEROUND.LEFT = function( ev, distance ){
-    hideInfoScreens();
+    controller.hideAttackRangeInfo();
     
     // IN TARGET TILE SELECTION MODE ?
     var state = controller.stateMachine.state;
@@ -95,7 +87,7 @@ util.scoped(function(){
   };
   
   controller.screenStateMachine.structure.GAMEROUND.RIGHT = function( ev, distance ){
-    hideInfoScreens();
+    controller.hideAttackRangeInfo();
     
     // IN TARGET TILE SELECTION MODE ?
     var state = controller.stateMachine.state;
@@ -115,7 +107,7 @@ util.scoped(function(){
   };
   
   controller.screenStateMachine.structure.GAMEROUND.UP = function( ev, distance ){
-    hideInfoScreens();
+    controller.hideAttackRangeInfo();
     
     var state = controller.stateMachine.state;
     
@@ -141,7 +133,7 @@ util.scoped(function(){
   };
   
   controller.screenStateMachine.structure.GAMEROUND.DOWN = function( ev, distance ){
-    hideInfoScreens();
+    controller.hideAttackRangeInfo();
     
     var state = controller.stateMachine.state;
     
@@ -170,7 +162,7 @@ util.scoped(function(){
   // ++++++++++++ INPUT ACTIONS ++++++++++++
   
   controller.screenStateMachine.structure.GAMEROUND.ACTION = function( ev,x,y ){
-    hideInfoScreens();
+    controller.hideAttackRangeInfo();
     
     if( typeof x === "number" ) controller.setCursorPosition(x,y);
     controller.cursorActionClick();
@@ -183,7 +175,7 @@ util.scoped(function(){
   };
   
   controller.screenStateMachine.structure.GAMEROUND.CANCEL = function( ev,x,y ){
-    hideInfoScreens();
+    controller.hideAttackRangeInfo();
     
     if( typeof x === "number" ) controller.setCursorPosition(x,y);
     controller.cursorActionCancel();
@@ -195,45 +187,30 @@ util.scoped(function(){
   // ++++++++++++ INPUT SPECIAL ++++++++++++
   
   controller.screenStateMachine.structure.GAMEROUND.SPECIAL_1 = function(){
-    if( !controller.tileInfoVisible ){
-      hideInfoScreens();
-      controller.showTileInfo();
-    }
     return this.BREAK_TRANSITION;
   };
   
   controller.screenStateMachine.structure.GAMEROUND.SPECIAL_2 = function(){
-    if( !controller.unitInfoVisible ){
-      hideInfoScreens();
-      controller.showUnitInfo();
-    }
     return this.BREAK_TRANSITION;
   };
   
   controller.screenStateMachine.structure.GAMEROUND.SPECIAL_3 = function(){
     if( !controller.attackRangeVisible ){
-      hideInfoScreens();
       controller.showAttackRangeInfo();
     }
     return this.BREAK_TRANSITION;
   };
   
   controller.screenStateMachine.structure.GAMEROUND.SPECIAL_4 = function(){
-    if( !controller.playerInfoVisible ){
-      hideInfoScreens();
-      controller.showPlayerInfo();
-    }
     return this.BREAK_TRANSITION;
   };
   
   controller.screenStateMachine.structure.GAMEROUND.SPECIAL_5 = function(){
-    hideInfoScreens();
     controller.setScreenScale( controller.screenScale+1 );
     return this.BREAK_TRANSITION;
   };
   
   controller.screenStateMachine.structure.GAMEROUND.SPECIAL_6 = function(){
-    hideInfoScreens();
     controller.setScreenScale( controller.screenScale-1 );
     return this.BREAK_TRANSITION;
   };

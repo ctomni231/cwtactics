@@ -4,7 +4,7 @@ util.scoped(function(){
     if( model.isValidPosition(x,y) ){
       
       // CAN MOVE TECHNICALLY ?
-      if( model.moveCosts( movetype, model.map[x][y] ) === -1 ) return false;
+      if( model.moveCosts( movetype, x, y ) === -1 ) return false;
       
       // IF TILE IS IN FOG THEN OCCUPYING UNITS AREN'T IMPORTANT
       if( model.fogData[x][y] === 0 ) return true;

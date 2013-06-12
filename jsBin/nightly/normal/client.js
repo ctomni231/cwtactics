@@ -1112,17 +1112,6 @@ controller.loadInputDevices = util.singleLazyCall(function( err, baton ){
         case INPUT_KEYBOARD_CODE_ENTER:
           controller.screenStateMachine.event("ACTION");
           return false;
-          
-        case INPUT_KEYBOARD_CODE_M:
-          controller.screenStateMachine.event("ZOOM_IN");
-          return false;
-          
-        case INPUT_KEYBOARD_CODE_N:
-          controller.screenStateMachine.event("ZOOM_OUT");
-          return false;
-          
-        case INPUT_KEYBOARD_CODE_TAB: 
-          return false;
       }
       
       return true;
@@ -1140,7 +1129,9 @@ controller.loadInputDevices = util.singleLazyCall(function( err, baton ){
     
     function MouseWheelHandler(e){
       if( controller.inputCoolDown > 0 ) return false;
-      if( inClick ) return;
+      if( controller.menuVisible ) return false;
+      
+      // if( inClick ) return;
       
       var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
       if( delta > 0 ) controller.screenStateMachine.event("SPECIAL_5");
@@ -1161,31 +1152,56 @@ controller.loadInputDevices = util.singleLazyCall(function( err, baton ){
     var len = TILE_LENGTH;
     var msx = 0;
     var msy = 0;
+    var menusy = 0;
     document.addEventListener("mousemove", function(ev){
+      //if( controller.inputCoolDown > 0 ) return false;
+      
+      var id = ev.target.id;
+      if( id !== "cwt_canvas" && !controller.menuVisible ) return;
+      
       var x,y;
       ev = ev || window.event;
-      if( inClick ) return;
+      //if( inClick ) return;
       
-      if( typeof ev.offsetX === 'number' ){
-        x = ev.offsetX;
-        y = ev.offsetY;
+      if( controller.menuVisible ){
+        x = ev.pageX;
+        y = ev.pageY;
+        
+        if( menusy !== -1 ){      
+          if( y <= menusy-16 ){
+            controller.screenStateMachine.event("UP");
+            menusy = y;
+          }
+          else if( y >= menusy+16 ){
+            controller.screenStateMachine.event("DOWN");
+            menusy = y;
+          }
+            }
+        else menusy = y;
       }
-      else {
-        x = ev.layerX;
-        y = ev.layerY;
+      else{
+        
+        if( typeof ev.offsetX === 'number' ){
+          x = ev.offsetX;
+          y = ev.offsetY;
+        }
+        else {
+          x = ev.layerX;
+          y = ev.layerY;
+        }
+        
+        // TO TILE POSITION
+        x = parseInt( x/len , 10);
+        y = parseInt( y/len , 10);
+        
+        controller.screenStateMachine.event("HOVER",x,y);
       }
-      
-      // TO TILE POSITION
-      x = parseInt( x/len , 10);
-      y = parseInt( y/len , 10);
-      
-      controller.screenStateMachine.event("HOVER",x,y);
     });
     
-    var inClick = false;
+    //var inClick = false;
     document.onmousedown = function(ev){      
       ev = ev || window.event;
-      inClick = true;
+      //inClick = true;
       
       if( typeof ev.offsetX === 'number' ){
         msx = ev.offsetX;
@@ -1200,7 +1216,7 @@ controller.loadInputDevices = util.singleLazyCall(function( err, baton ){
     document.onmouseup = function(ev){    
       
       ev = ev || window.event;
-      inClick = false;
+      //inClick = false;
       
       var msex;
       var msey;
@@ -1215,42 +1231,39 @@ controller.loadInputDevices = util.singleLazyCall(function( err, baton ){
       
       var dex = Math.abs( msx-msex );
       var dey = Math.abs( msy-msey );
+      menusy = -1;
       
-      var state = controller.stateMachine.state;
-      if( (state === "ACTION_MENU" || state === "ACTION_SUBMENU") && !mouseInMenu ){
-        // MENU + MOUSE OUTSIDE === CANCEL
-        controller.cursorActionCancel()
-      }
-      else{
-        
-        switch(ev.which){
-            
-          case 1: controller.screenStateMachine.event("ACTION"); break; // LEFT
-          case 2: break;                                                // MIDDLE
-            
-            // RIGHT
-          case 3: 
-            if( dex > 32 || dey > 32 ){
-              // EXTRACT DIRECTION
-              var mode;
-              if( dex > dey ){
-                
-                // LEFT OR RIGHT
-                if( msx > msex ) mode = "SPECIAL_2";
-                else mode = "SPECIAL_1";
-              }
-              else{
-                
-                // UP OR DOWN
-                if( msy > msey ) mode = "SPECIAL_3";
-                else mode = "SPECIAL_4";
-              }
+      switch(ev.which){
+          
+        case 1: controller.screenStateMachine.event("ACTION"); break; // LEFT
+        case 2: break;                                                // MIDDLE
+          
+          // RIGHT
+        case 3: 
+          /*
+          if( dex > 32 || dey > 32 ){
+            // EXTRACT DIRECTION
+            var mode;
+            if( dex > dey ){
               
-              controller.screenStateMachine.event( mode );
+              // LEFT OR RIGHT
+              if( msx > msex ) mode = "SPECIAL_2";
+              else mode = "SPECIAL_1";
             }
-            else controller.screenStateMachine.event("CANCEL"); 
-            break; 
-        }
+            else{
+              
+              // UP OR DOWN
+              if( msy > msey ) mode = "SPECIAL_3";
+              else mode = "SPECIAL_4";
+            }
+            
+            controller.screenStateMachine.event( mode );
+          }
+          else 
+          */
+          
+          controller.screenStateMachine.event("CANCEL"); 
+          break; 
       }
     };
   }
@@ -2159,7 +2172,7 @@ controller.setCursorPosition = function( x,y,relativeToScreen ){
   //}
   
   if( x === controller.mapCursorX && y === controller.mapCursorY ) return;
-  
+    
   // CLEAN OLD
   view.markForRedraw( controller.mapCursorX, controller.mapCursorY );
   if( controller.mapCursorY < model.mapHeight -1 ) view.markForRedraw( controller.mapCursorX, controller.mapCursorY+1 );
@@ -2170,12 +2183,14 @@ controller.setCursorPosition = function( x,y,relativeToScreen ){
   controller.mapCursorX = x;
   controller.mapCursorY = y;
   
+  controller.updateTileInformation();
+  
   var scale = controller.screenScale;  
   if( scale === 0 ) scale = 0.8;
   else if( scale === -1 ) scale = 0.7;
   
-  var scw = parseInt( parseInt( window.innerWidth/16,10 ) / scale ,10 );
-  var sch = parseInt( parseInt( window.innerHeight/16,10 ) / scale ,10 );
+  var scw = parseInt( parseInt( (window.innerWidth-80)/16,10 ) / scale ,10 );
+  var sch = parseInt( parseInt( (window.innerHeight-80)/16,10 ) / scale ,10 );
   
   var moveCode = -1;
   if( x-controller.screenX <= 1 )          moveCode = model.MOVE_CODE_LEFT;
@@ -2692,28 +2707,6 @@ util.scoped(function(){
   
 });
 util.scoped(function(){
-
-  /**
-   * @param {type} el
-   * @param {type} index
-   * @private
-   */
-  function connectMenuListener( el, index ){
-    
-    /*
-    el.onclick = function(){
-      if( DEBUG ){
-        util.log("menu action will be triggered");
-      }
-      
-      controller.cursorActionClick();
-    };
-    */
-    
-    el.onmouseover = function(){
-      controller.setMenuIndex( index );
-    };
-  };
   
   /** @private */
   var menuRenderer = {};
@@ -2832,7 +2825,6 @@ util.scoped(function(){
         
         // PERFORMANCE HIT ?
         entry = document.createElement("button");
-        connectMenuListener( entry, i );
         var li = document.createElement("li");
         li.appendChild( entry );
         menuEntryListElement.appendChild( li );
@@ -2856,14 +2848,9 @@ util.scoped(function(){
     menuEntryListElement.children[ controller.menuCursorIndex ].className = "activeButton";
     menuEntryListElement.children[ controller.menuCursorIndex ].children[0].focus();
     
-    // SET MENU STYLE
-    var menuStyle = menuElement.style;
-    menuStyle.zIndex = -1;
-    menuStyle.display = "block";
-    menuStyle.left = parseInt( ((window.innerWidth/2) - (menuElement.offsetWidth/2)), 10 )+"px";
-    menuStyle.top = parseInt( ((window.innerHeight/2) - (menuElement.offsetHeight/2)), 10 )+"px";
-    menuStyle.zIndex = 9;
-    
+    // SHOW IT
+    menuElement.className = "uiPopup show";
+    controller.menuVisible = true;
     controller.setMenuIndex( 0 );
   };
   
@@ -2875,12 +2862,15 @@ util.scoped(function(){
     
     menuEntryListElement.children[ controller.menuCursorIndex ].className = "";
     
-    menuElement.style.display = "none";
+    menuElement.className = "uiPopup hide";
     controller.menuCursorIndex = -1;
+    controller.menuVisible = false;
   };
   
+  controller.menuVisible = false;
+  
   controller.isMenuOpen = function(){
-    return menuElement.style.display === "block";
+    return controller.menuVisible;
   };
   
   controller.registerMenuRenderer = function( key, renderer ){
@@ -2904,7 +2894,7 @@ util.scoped(function(){
     if( timeLeft > 0 ){
       timeLeft -= delta;
       if( timeLeft <= 0 ){
-        panel.className = "tooltip out";
+        panel.className = "uiPopup hide";
       }
     }
   };
@@ -2919,10 +2909,7 @@ util.scoped(function(){
     // panel.innerHTML = msg;
     contentDiv.innerHTML = msg;
     
-    panel.className = "tooltip active";
-    panel.style.position = "absolute";
-    panel.style.left = parseInt( ((window.innerWidth/2) - (panel.offsetWidth/2)), 10 )+"px";
-    panel.style.top = parseInt( ((window.innerHeight/2) - (panel.offsetHeight/2)), 10 )+"px";
+    panel.className = "uiPopup show";
     
     timeLeft = time;
   };
@@ -3080,7 +3067,7 @@ controller.unitStatusMap = util.list( CWT_MAX_UNITS_PER_PLAYER*CWT_MAX_PLAYER, f
     LOW_FUEL:false,
     HAS_LOADS:false,
     CAPTURES: false,
-    CLIENT_VISIBLE: false
+    VISIBLE: false
   };
 });
 
@@ -3093,88 +3080,103 @@ controller.getUnitStatusForUnit = function( unit ){
   return controller.unitStatusMap[id];
 };
 
-controller.inVision_ = function( x,y, pid,tid ){
-  if( !model.isValidPosition(x,y) ) return false;
+util.scoped(function(){
   
-  var unit = model.unitPosMap[x][y];
-  return ( 
-    unit !== null &&
-    ( unit.owner === pid || model.players[ unit.owner ].team == tid )
-  );
-};
-
-/**
+  
+  function inVision( x,y, tid, unitStatus ){
+    if( !model.isValidPosition(x,y) ) return;
+    
+    var unit = model.unitPosMap[x][y];
+    if( unit ){
+      if( model.players[unit.owner].team !== tid ) unitStatus.VISIBLE = true;
+      
+      // IF UNIT IS HIDDEN THEN YOU CAN SEE IT NOW
+      if( unit.hidden ) controller.unitStatusMap[ model.extractUnitId(unit) ].VISIBLE = true;
+    }
+  };
+  
+  function checkHiddenStatus( unit, unitStatus ){
+    if( !unitStatus ){
+      unitStatus = controller.unitStatusMap[ model.extractUnitId(unit) ];
+    }
+    
+    unitStatus.VISIBLE = true;
+    if( unit.hidden ){
+      unitStatus.VISIBLE = false;
+      
+      // CHECK NEIGHBOURS AND HIDDEN ON NEIGHBOURS
+      var x = unit.x;
+      var y = unit.y;
+      var ttid = model.players[unit.owner].team;
+      inVision( x-1,y, ttid, unitStatus );
+      inVision( x,y-1, ttid, unitStatus );
+      inVision( x,y+1, ttid, unitStatus );
+      inVision( x+1,y, ttid, unitStatus );
+    }
+  };
+  
+  /**
  * 
  * @param {type} uid
  */
-controller.updateUnitStatus = function( uid ){
-  var unit = model.units[uid];
-  var x = unit.x;
-  var y = unit.y;
-  var unitStatus = controller.unitStatusMap[uid];
-  var uSheet = unit.type;
-  
-  // LOW AMMO ?
-  var cAmmo = unit.ammo;
-  var mAmmo = uSheet.ammo;
-  if( cAmmo <= parseInt(mAmmo*0.25, 10) ) unitStatus.LOW_AMMO = true;
-  else                                    unitStatus.LOW_AMMO = false;
-  if( mAmmo === 0 )                       unitStatus.LOW_AMMO = false;
-  
-  // LOW FUEL
-  var cFuel = unit.fuel;
-  var mFuel = uSheet.fuel;
-  if( cFuel < parseInt(mFuel*0.25, 10) ) unitStatus.LOW_FUEL = true;
-  else                                   unitStatus.LOW_FUEL = false;
-  
-  // HP PICTURE
-  var num = -1;
-  if( unit.hp <= 90 ){
-    num = parseInt( unit.hp/10 , 10 )+1;
-  }
-  
-  switch ( num ){
-    case 1: unitStatus.HP_PIC = view.getInfoImageForType("HP_1"); break;
-    case 2: unitStatus.HP_PIC = view.getInfoImageForType("HP_2"); break;
-    case 3: unitStatus.HP_PIC = view.getInfoImageForType("HP_3"); break;
-    case 4: unitStatus.HP_PIC = view.getInfoImageForType("HP_4"); break;
-    case 5: unitStatus.HP_PIC = view.getInfoImageForType("HP_5"); break;
-    case 6: unitStatus.HP_PIC = view.getInfoImageForType("HP_6"); break;
-    case 7: unitStatus.HP_PIC = view.getInfoImageForType("HP_7"); break;
-    case 8: unitStatus.HP_PIC = view.getInfoImageForType("HP_8"); break;
-    case 9: unitStatus.HP_PIC = view.getInfoImageForType("HP_9"); break;
-    default: unitStatus.HP_PIC = null;
-  }
-  
-  // HAS LOADS ?
-  if( unit.loadedIn < -1 ){
-    unitStatus.HAS_LOADS = true;
-  }
-  else unitStatus.HAS_LOADS = false;
-  
-  // CAPTURES ?
-  if( unit.x >= 0 ){
-    var property = model.propertyPosMap[ unit.x ][ unit.y ];
-    if( property !== null && property.capturePoints < 20 ){
-      unitStatus.CAPTURES = true;
-    }
-    else unitStatus.CAPTURES = false;
-  }
-  
-  // VISIBLE FOR CLIENT ?
-  unitStatus.CLIENT_VISIBLE = false;
-  var tpid = model.turnOwner;
-  var ttid = model.players[tpid].team;
-  var inVis = controller.inVision_;
-  
-  if( inVis( x-1,y, tpid,ttid ) || 
-     inVis( x,y-1, tpid,ttid ) || 
-     inVis( x,y+1, tpid,ttid ) || 
-     inVis( x+1,y, tpid,ttid ) ){
+  controller.updateUnitStatus = function( uid ){
+    var unit = model.units[uid];
+    var x = unit.x;
+    var y = unit.y;
+    var unitStatus = controller.unitStatusMap[uid];
+    var uSheet = unit.type;
     
-    unitStatus.CLIENT_VISIBLE = true;
-  }
-};
+    // LOW AMMO ?
+    var cAmmo = unit.ammo;
+    var mAmmo = uSheet.ammo;
+    if( cAmmo <= parseInt(mAmmo*0.25, 10) ) unitStatus.LOW_AMMO = true;
+    else                                    unitStatus.LOW_AMMO = false;
+    if( mAmmo === 0 )                       unitStatus.LOW_AMMO = false;
+    
+    // LOW FUEL
+    var cFuel = unit.fuel;
+    var mFuel = uSheet.fuel;
+    if( cFuel < parseInt(mFuel*0.25, 10) ) unitStatus.LOW_FUEL = true;
+    else                                   unitStatus.LOW_FUEL = false;
+    
+    // HP PICTURE
+    var num = -1;
+    if( unit.hp <= 90 ){
+      num = parseInt( unit.hp/10 , 10 )+1;
+    }
+    
+    switch ( num ){
+      case 1: unitStatus.HP_PIC = view.getInfoImageForType("HP_1"); break;
+      case 2: unitStatus.HP_PIC = view.getInfoImageForType("HP_2"); break;
+      case 3: unitStatus.HP_PIC = view.getInfoImageForType("HP_3"); break;
+      case 4: unitStatus.HP_PIC = view.getInfoImageForType("HP_4"); break;
+      case 5: unitStatus.HP_PIC = view.getInfoImageForType("HP_5"); break;
+      case 6: unitStatus.HP_PIC = view.getInfoImageForType("HP_6"); break;
+      case 7: unitStatus.HP_PIC = view.getInfoImageForType("HP_7"); break;
+      case 8: unitStatus.HP_PIC = view.getInfoImageForType("HP_8"); break;
+      case 9: unitStatus.HP_PIC = view.getInfoImageForType("HP_9"); break;
+      default: unitStatus.HP_PIC = null;
+    }
+    
+    // HAS LOADS ?
+    if( unit.loadedIn < -1 ){
+      unitStatus.HAS_LOADS = true;
+    }
+    else unitStatus.HAS_LOADS = false;
+    
+    // CAPTURES ?
+    if( unit.x >= 0 ){
+      var property = model.propertyPosMap[ unit.x ][ unit.y ];
+      if( property !== null && property.capturePoints < 20 ){
+        unitStatus.CAPTURES = true;
+      }
+      else unitStatus.CAPTURES = false;
+    }
+    
+    checkHiddenStatus( unit, unitStatus );
+  };
+})
+
 controller.mapAction({
 
   key:"options",  
@@ -3252,7 +3254,6 @@ view.markForRedraw = function( x,y ){
       }
     }
   }
-  else util.raiseError("illegal arguments ",x,",",y," -> out of view bounds");
 };
 
 /**
@@ -3862,8 +3863,8 @@ view.renderMap = function( scale ){
         var unit = model.unitPosMap[x][y];
         var stats = (unit !== null )? controller.getUnitStatusForUnit( unit ) : null;
         if( !inShadow && unit !== null && 
-           ( !unit.hidden || unit.owner === model.turnOwner || model.players[ unit.owner ].team == teamId ||
-              stats.TURN_OWNER_VISIBLE ) ){
+           ( /* !unit.hidden || */ unit.owner === model.turnOwner || model.players[ unit.owner ].team == teamId ||
+              stats.VISIBLE ) ){
           
           if( unit !== view.preventRenderUnit ){
             var color;
@@ -4211,7 +4212,7 @@ util.scoped(function(){
   /** @private */
   function loadMapCb( obj ){
     controller.startGameRound( obj.value );
-      
+    
     // UPDATE SCREEN DATA
     controller.setCursorPosition(0,0);
     view.resizeCanvas();
@@ -4251,18 +4252,11 @@ util.scoped(function(){
       
       controller.gameLoop( delta );
     }
-        
+    
     // ENTER LOOP
     requestAnimationFrame( looper );
   }
   
-  function hideInfoScreens(){
-    if( controller.unitInfoVisible ) controller.hideUnitInfo();
-    if( controller.tileInfoVisible ) controller.hideTileInfo();
-    if( controller.playerInfoVisible ) controller.hidePlayerInfo();
-    if( controller.attackRangeVisible ) controller.hideAttackRangeInfo();
-  }
-    
   // -----------------------------------------------------------------------------------------------
   
   controller.screenStateMachine.structure.GAMEROUND = Object.create(controller.stateParent);
@@ -4273,7 +4267,6 @@ util.scoped(function(){
   };
   
   controller.screenStateMachine.structure.GAMEROUND.gameHasEnded = function(){
-    hideInfoScreens();
     return "MAIN";
   };
   
@@ -4282,7 +4275,7 @@ util.scoped(function(){
   // ++++++++++++ INPUT MOVE ++++++++++++
   
   controller.screenStateMachine.structure.GAMEROUND.LEFT = function( ev, distance ){
-    hideInfoScreens();
+    controller.hideAttackRangeInfo();
     
     // IN TARGET TILE SELECTION MODE ?
     var state = controller.stateMachine.state;
@@ -4303,7 +4296,7 @@ util.scoped(function(){
   };
   
   controller.screenStateMachine.structure.GAMEROUND.RIGHT = function( ev, distance ){
-    hideInfoScreens();
+    controller.hideAttackRangeInfo();
     
     // IN TARGET TILE SELECTION MODE ?
     var state = controller.stateMachine.state;
@@ -4323,7 +4316,7 @@ util.scoped(function(){
   };
   
   controller.screenStateMachine.structure.GAMEROUND.UP = function( ev, distance ){
-    hideInfoScreens();
+    controller.hideAttackRangeInfo();
     
     var state = controller.stateMachine.state;
     
@@ -4349,7 +4342,7 @@ util.scoped(function(){
   };
   
   controller.screenStateMachine.structure.GAMEROUND.DOWN = function( ev, distance ){
-    hideInfoScreens();
+    controller.hideAttackRangeInfo();
     
     var state = controller.stateMachine.state;
     
@@ -4378,7 +4371,7 @@ util.scoped(function(){
   // ++++++++++++ INPUT ACTIONS ++++++++++++
   
   controller.screenStateMachine.structure.GAMEROUND.ACTION = function( ev,x,y ){
-    hideInfoScreens();
+    controller.hideAttackRangeInfo();
     
     if( typeof x === "number" ) controller.setCursorPosition(x,y);
     controller.cursorActionClick();
@@ -4391,7 +4384,7 @@ util.scoped(function(){
   };
   
   controller.screenStateMachine.structure.GAMEROUND.CANCEL = function( ev,x,y ){
-    hideInfoScreens();
+    controller.hideAttackRangeInfo();
     
     if( typeof x === "number" ) controller.setCursorPosition(x,y);
     controller.cursorActionCancel();
@@ -4403,45 +4396,30 @@ util.scoped(function(){
   // ++++++++++++ INPUT SPECIAL ++++++++++++
   
   controller.screenStateMachine.structure.GAMEROUND.SPECIAL_1 = function(){
-    if( !controller.tileInfoVisible ){
-      hideInfoScreens();
-      controller.showTileInfo();
-    }
     return this.BREAK_TRANSITION;
   };
   
   controller.screenStateMachine.structure.GAMEROUND.SPECIAL_2 = function(){
-    if( !controller.unitInfoVisible ){
-      hideInfoScreens();
-      controller.showUnitInfo();
-    }
     return this.BREAK_TRANSITION;
   };
   
   controller.screenStateMachine.structure.GAMEROUND.SPECIAL_3 = function(){
     if( !controller.attackRangeVisible ){
-      hideInfoScreens();
       controller.showAttackRangeInfo();
     }
     return this.BREAK_TRANSITION;
   };
   
   controller.screenStateMachine.structure.GAMEROUND.SPECIAL_4 = function(){
-    if( !controller.playerInfoVisible ){
-      hideInfoScreens();
-      controller.showPlayerInfo();
-    }
     return this.BREAK_TRANSITION;
   };
   
   controller.screenStateMachine.structure.GAMEROUND.SPECIAL_5 = function(){
-    hideInfoScreens();
     controller.setScreenScale( controller.screenScale+1 );
     return this.BREAK_TRANSITION;
   };
   
   controller.screenStateMachine.structure.GAMEROUND.SPECIAL_6 = function(){
-    hideInfoScreens();
     controller.setScreenScale( controller.screenScale-1 );
     return this.BREAK_TRANSITION;
   };
@@ -4834,6 +4812,83 @@ util.scoped(function(){
     // START GAME
     return "GAMEROUND";
   };
+});
+util.scoped(function(){
+  
+  var expl_img;
+  
+  function renderSmoke( x,y, step, distance ){
+    step -= (distance-1);
+    if( step < 0 || step > 9 ) return;
+    
+    var tileSize = TILE_LENGTH;
+    var scx = 48*step;
+    var scy = 0;
+    var scw = 48;
+    var sch = 48;
+    var tcx = (x)*tileSize;
+    var tcy = (y)*tileSize;
+    var tcw = tileSize;
+    var tch = tileSize;
+    
+    view.canvasCtx.drawImage(
+      expl_img,
+      scx,scy,
+      scw,sch,
+      tcx,tcy,
+      tcw,tch
+    );
+    
+    view.markForRedraw(x,y);
+  }
+  
+  function checkStatus( x,y ){
+    if( model.isValidPosition(x,y) ){
+      var unit = model.unitPosMap[x][y];
+      if( unit !== null ){
+        controller.updateUnitStatus( model.extractUnitId(unit) );
+      }
+    }
+  }
+  
+  view.registerAnimationHook({
+    
+    key: "fireBombAt",
+        
+    prepare: function( tx,ty, range, damage, owner ){
+      if( !expl_img ) expl_img = view.getInfoImageForType("EXPLOSION_GROUND");
+      controller.playSound("ROCKET_IMPACT");
+      
+      this.x = tx;
+      this.y = ty;   
+      this.range = range;
+      this.maxStep = 10+range+1;
+      this.step = 0;
+      this.time = 0;
+    },
+    
+    render: function(){
+      model.doInRange( this.x, this.y, this.range, renderSmoke, this.step );
+    },
+    
+    update: function( delta ){
+      this.time += delta;
+      if( this.time > 75 ){
+        this.step++;
+        this.time = 0;
+      }
+    },
+    
+    isDone: function(){
+      var done = this.step === this.maxStep;
+      
+      // RENDER HP LOST
+      if( done ) model.doInRange( this.x, this.y, this.range, checkStatus );
+      
+      return done;
+    }
+    
+  });
 });
 view.registerAnimationHook({
 
@@ -5229,81 +5284,6 @@ view.registerAnimationHook({
   
 });
 
-util.scoped(function(){
-  
-  var expl_img;
-  
-  function renderSmoke( x,y, step, distance ){
-    step -= (distance-1);
-    if( step < 0 || step > 9 ) return;
-    
-    var tileSize = TILE_LENGTH;
-    var scx = 48*step;
-    var scy = 0;
-    var scw = 48;
-    var sch = 48;
-    var tcx = (x)*tileSize;
-    var tcy = (y)*tileSize;
-    var tcw = tileSize;
-    var tch = tileSize;
-    
-    view.canvasCtx.drawImage(
-      expl_img,
-      scx,scy,
-      scw,sch,
-      tcx,tcy,
-      tcw,tch
-    );
-    
-    view.markForRedraw(x,y);
-  }
-  
-  function checkStatus( x,y ){
-    if( model.isValidPosition(x,y) ){
-      var unit = model.unitPosMap[x][y];
-      if( unit !== null ){
-        controller.updateUnitStatus( model.extractUnitId(unit) );
-      }
-    }
-  }
-  
-  view.registerAnimationHook({
-    
-    key: "fireSilo",
-        
-    prepare: function( siloId, tx,ty, range, owner ){
-      if( !expl_img ) expl_img = view.getInfoImageForType("EXPLOSION_GROUND");
-      
-      this.x = tx;
-      this.y = ty;   
-      this.range = range;
-      this.step = 0;
-      this.time = 0;
-    },
-    
-    render: function(){
-      model.doInRange( this.x, this.y, this.range, renderSmoke, this.step );
-    },
-    
-    update: function( delta ){
-      this.time += delta;
-      if( this.time > 75 ){
-        this.step++;
-        this.time = 0;
-      }
-    },
-    
-    isDone: function(){
-      var done = this.step === 13;
-      
-      // RENDER HP LOST
-      if( done ) model.doInRange( this.x, this.y, this.range, checkStatus );
-      
-      return done;
-    }
-    
-  });
-});
 model.transferMoney.listenCommand(function(){
   controller.renderPlayerInfo();
 });
@@ -5386,7 +5366,27 @@ model.refillResources.listenCommand(function( uid ){
   controller.updateUnitStatus( uid );
 });
 
+model.clearUnitPosition.listenCommand(function( uid ){
+  var unit = model.units[uid];
+  var x = -unit.x;
+  var y = -unit.y;
+  
+  // CHECK HIDDEN, BUT VISIBLE NEIGHBOURS
+  if( model.isValidPosition(x-1,y) && model.unitPosMap[x-1][y] ) controller.updateUnitStatus( model.extractUnitId(model.unitPosMap[x-1][y]) );
+  if( model.isValidPosition(x+1,y) && model.unitPosMap[x+1][y] ) controller.updateUnitStatus( model.extractUnitId(model.unitPosMap[x+1][y]) );
+  if( model.isValidPosition(x,y+1) && model.unitPosMap[x][y+1] ) controller.updateUnitStatus( model.extractUnitId(model.unitPosMap[x][y+1]) );
+  if( model.isValidPosition(x,y-1) && model.unitPosMap[x][y-1] ) controller.updateUnitStatus( model.extractUnitId(model.unitPosMap[x][y-1]) );
+});
+
 model.setUnitPosition.listenCommand(function( uid ){
+  controller.updateUnitStatus( uid );
+});
+
+model.hideUnit.listenCommand(function( uid ){
+  controller.updateUnitStatus( uid );
+});
+
+model.unhideUnit.listenCommand(function( uid ){
   controller.updateUnitStatus( uid );
 });
 util.scoped(function(){
@@ -5460,155 +5460,165 @@ function( content, entry, index ){
   var cost = model.unitTypes[ content ].cost;
   entry.innerHTML = model.localized(content)+" ("+cost+"$)";
 });
+util.scoped(function(){
+  
+  var NAME = document.getElementById( "bottomBar_name" );
+  var ROW1 = document.getElementById( "bottomBar_unit_row1" );
+  var ROW2 = document.getElementById( "bottomBar_unit_row2" );
+  
+  var HP = document.getElementById( "bottomBar_hp");
+  var GAS = document.getElementById( "bottomBar_fuel" );
+  var AMMO = document.getElementById( "bottomBar_ammo" );
+  var GAS2 = document.getElementById( "bottomBar_fuel2" );
+  var AMMO2 = document.getElementById( "bottomBar_ammo2" );
+  var ATTRANGE = document.getElementById( "bottomBar_attrange" );
+  var ATTRANGE2 = document.getElementById( "bottomBar_attrange2" );
+  
+  var HP_D = document.getElementById( "bottomBar_hp_d" );
+  var GAS_D = document.getElementById( "bottomBar_fuel_d" );
+  var AMMO_D = document.getElementById( "bottomBar_ammo_d");
+  var ATTRANGE_D = document.getElementById( "bottomBar_attrange_d" );
+  
+  // -------------------------------------------------------------------------------------------
+  
+  var PLAYER_NAME = document.getElementById( "bottomBar_playerName" );
+  var PLAYER_POWER = document.getElementById( "bottomBar_playerpower" );
+  var PLAYER_GOLD = document.getElementById( "bottomBar_playergold" );
+  
+  var TPLAYER_NAME = document.getElementById( "bottomBar_tplayerName" );
+  var TPLAYER_POWER = document.getElementById( "bottomBar_tplayerpower" );
+  var TPLAYER_GOLDROW = document.getElementById( "bottomBar_tplayergoldrow" );
+  var TPLAYER_GOLD = document.getElementById( "bottomBar_tplayergold" );
+  
+  // -------------------------------------------------------------------------------------------
+  
+  var TILE_NAME = document.getElementById( "bottomBar_tilename" );
+  var TILE_ROW1 = document.getElementById( "bottomBar_tile_row1" );
+  var TILE_ROW2 = document.getElementById( "bottomBar_tile_row2" );
+  var DEFENSE_D = document.getElementById( "bottomBar_defense_d" );
+  var DEFENSE = document.getElementById( "bottomBar_defense" );
+  var CAPPT_D  = document.getElementById( "bottomBar_capPt_d" );
+  var CAPPT    = document.getElementById( "bottomBar_capPt" );
+  var CAPPT2   = document.getElementById( "bottomBar_capPt2" );
+  
+  var rendered = false;
+  
+  controller.updateTileInformation = function(){
+    var x = controller.mapCursorX;
+    var y = controller.mapCursorY;
+    var type;
+    var unit = model.unitPosMap[x][y];
+    var prop = model.propertyPosMap[x][y];
+    
+    if(!rendered){
+      
+      // UNIT SYMBOLS
+      HP_D.getContext("2d").drawImage( view.getInfoImageForType("SYM_HP"), 0, 0);
+      GAS_D.getContext("2d").drawImage( view.getInfoImageForType("SYM_FUEL"), 0, 0);
+      AMMO_D.getContext("2d").drawImage( view.getInfoImageForType("SYM_AMMO"), 0, 0);
+      ATTRANGE_D.getContext("2d").drawImage( view.getInfoImageForType("SYM_ATT"), 0, 0);
+      
+      DEFENSE_D.getContext("2d").drawImage( view.getInfoImageForType("SYM_DEFENSE"), 0, 0);
+      CAPPT_D.getContext("2d").drawImage( view.getInfoImageForType("SYM_CAPTURE"), 0, 0);
+      
+      rendered = true;
+    }
+    
+    /* **************************************************************************** */
+    
+    controller.renderPlayerInfo();
+
+    /* **************************************************************************** */
+    
+    if( !unit ){
+      NAME.style.opacity = 0;
+      ROW1.style.opacity = 0;
+      ROW2.style.opacity = 0;
+    }
+    else{
+      type = unit.type;
+      
+      NAME.innerHTML = model.localized( type.ID );
+      HP.innerHTML = unit.hp;
+      GAS.innerHTML = unit.fuel;
+      GAS2.innerHTML = type.fuel;
+      AMMO.innerHTML = unit.ammo;
+      AMMO2.innerHTML = type.ammo;
+      
+      // ATTACK DATA
+      var attack = type.attack;
+      if( attack ){
+        ATTRANGE.innerHTML = attack.minrange || 1;
+        ATTRANGE2.innerHTML = attack.maxrange || 1;
+      }
+      else{
+        ATTRANGE.innerHTML = "";
+        ATTRANGE2.innerHTML = "";
+      }
+            
+      NAME.style.opacity = 1;
+      ROW1.style.opacity = 1;
+      ROW2.style.opacity = 1;
+    }
+    
+    /* **************************************************************************** */
+    
+    if( !prop ){
+      TILE_NAME.style.opacity = 0;
+      TILE_ROW1.style.opacity = 0;
+      TILE_ROW2.style.opacity = 0;
+    }
+    else{
+      type = prop.type;
+      
+      TILE_NAME.innerHTML = model.localized( type.ID );
+      CAPPT.innerHTML = prop.capturePoints;
+      CAPPT2.innerHTML = 20;
+      
+      DEFENSE.innerHTML = type.defense;
+    
+      TILE_NAME.style.opacity = 1;
+      TILE_ROW1.style.opacity = 1;
+      TILE_ROW2.style.opacity = 1;
+    }
+    
+    /* **************************************************************************** */
+    
+    type = null;
+         if( unit && unit.owner !== model.turnOwner ) type = model.players[ unit.owner ];
+    else if( prop && prop.owner !== model.turnOwner ) type = model.players[ prop.owner ];
+      
+    if( type ){
+      TPLAYER_NAME.innerHTML = type.name;
+      TPLAYER_GOLD.innerHTML = type.gold;
+      TPLAYER_POWER.innerHTML = type.power;  
+      TPLAYER_NAME.style.opacity = 1;
+      TPLAYER_GOLDROW.style.opacity = 1;
+      TPLAYER_POWER.style.opacity = 1;     
+    }
+    else{
+      TPLAYER_NAME.style.opacity = 0;
+      TPLAYER_GOLDROW.style.opacity = 0;
+      TPLAYER_POWER.style.opacity = 0;   
+    }
+  }
+  
+  controller.renderPlayerInfo = function(){
+    var activePl = model.players[ model.turnOwner ];
+    
+    PLAYER_NAME.innerHTML = activePl.name;
+    PLAYER_GOLD.innerHTML = activePl.gold;
+    PLAYER_POWER.innerHTML = activePl.power;
+  };
+});
+controller.updateComplexTileInformation = function( source, target ){
+  
+  
+}
 controller.registerMenuRenderer("__mainMenu__",
 function( content, entry, index ){
   
   entry.innerHTML = model.localized( content );
-});
-controller.playerInfoEl_gold = document.getElementById("playerGold");
-controller.playerInfoEl_power = document.getElementById("playerPower");
-
-controller.renderPlayerInfo = function(){
-  var activePl = model.players[ model.turnOwner ];
-  
-  controller.playerInfoEl_gold.innerHTML = activePl.gold;
-  controller.playerInfoEl_power.innerHTML = activePl.power;
-};
-
-// ------------------------------------------------------------------------
-
-util.scoped(function(){
-  
-  var elements = {
-    BOX: document.getElementById( ID_ELMT_PLAYERINFOBOX),
-    
-    NAME: document.getElementById( ID_ELMT_PLAYERINFOBOX_NAME),
-    PIC: document.getElementById( ID_ELMT_PLAYERINFOBOX_PIC),
-    DESC: document.getElementById( ID_ELMT_PLAYERINFOBOX_DESC),
-    
-    POWER: document.getElementById( ID_ELMT_PLAYERINFOBOX_POWER),
-    POWER_D: document.getElementById( ID_ELMT_PLAYERINFOBOX_POWER_D),
-    
-    PROPS: document.getElementById( ID_ELMT_PLAYERINFOBOX_PROPS),
-    PROPS_D: document.getElementById( ID_ELMT_PLAYERINFOBOX_PROPS_D),
-    
-    UNITS: document.getElementById( ID_ELMT_PLAYERINFOBOX_UNITS),
-    UNITS_D: document.getElementById( ID_ELMT_PLAYERINFOBOX_UNITS_D)
-  }
-  
-  controller.showPlayerInfo = function(){
-    if( controller.playerInfoVisible ) return;
-    
-    var x = controller.mapCursorX;
-    var y = controller.mapCursorY;
-    var pid = -1;
-    
-    // TRY PROPERTY
-    var prop = model.propertyPosMap[x][y];
-    if( prop !== null ) pid = prop.owner;
-    else{
-    
-      // TRY UNIT
-      var unit = model.unitPosMap[x][y];
-      if( unit !== null ) pid = unit.owner;
-    }
-    
-    if( pid === -1 ) return;
-    var player = model.players[pid];
-    
-    if( DEBUG ) util.log("show player information screen");
-    
-    // BASE
-    elements.NAME.innerHTML = player.name;
-    
-    elements.POWER_D.innerHTML = "POWER_METER";
-    elements.POWER.innerHTML = player.power;
-    
-    elements.PROPS_D.innerHTML = "NUMBER PROPERTIES";
-    elements.PROPS.innerHTML = model.countProperties(pid);
-    
-    elements.UNITS_D.innerHTML = "NUMBER UNITS";
-    elements.UNITS.innerHTML = model.countUnits(pid);
-    
-    // SHOW ELEMENT
-    elements.BOX.className = "tooltip active";
-    elements.BOX.style.position = "absolute";
-    elements.BOX.style.left = parseInt( ((window.innerWidth/2) - (elements.BOX.offsetWidth/2)), 10 )+"px";
-    elements.BOX.style.top = parseInt( ((window.innerHeight/2) - (elements.BOX.offsetHeight/2)), 10 )+"px";
-    controller.playerInfoVisible = true;
-  };
-  
-  controller.playerInfoVisible = false;
-  
-  controller.hidePlayerInfo = function(){
-    if( !controller.playerInfoVisible ) return;
-    if( DEBUG ) util.log("hide player information screen");
-    
-    // HIDE ELEMENT
-    elements.BOX.className = "tooltip out";
-    controller.playerInfoVisible = false;
-  };
-  
-});
-util.scoped(function(){
-  
-  var elements = {
-    BOX: document.getElementById( ID_ELMT_TILEINFOBOX),
-    
-    NAME: document.getElementById( ID_ELMT_TILEINFOBOX_NAME),
-    PIC: document.getElementById( ID_ELMT_TILEINFOBOX_PIC),
-    DESC: document.getElementById( ID_ELMT_TILEINFOBOX_DESC),
-    
-    DEFENSE: document.getElementById( ID_ELMT_TILEINFOBOX_DEFENSE),
-    CAPPT: document.getElementById( ID_ELMT_TILEINFOBOX_CAPPT),
-    OWNER: document.getElementById( ID_ELMT_TILEINFOBOX_OWNER),
-    
-    DEFENSE_D: document.getElementById( ID_ELMT_TILEINFOBOX_DEFENSE_D),
-    OWNER_D: document.getElementById( ID_ELMT_TILEINFOBOX_OWNER_D),
-    CAPPT_D: document.getElementById( ID_ELMT_TILEINFOBOX_CAPPT_D)
-  }
-  
-  controller.showTileInfo = function(){
-    if( controller.tileInfoVisible ) return;
-    
-    var x = controller.mapCursorX;
-    var y = controller.mapCursorY;
-    var type = model.map[x][y];
-    var prop = model.propertyPosMap[x][y];
-    if( prop !== null ) type = prop.type;
-    
-    if( DEBUG ) util.log("show tile information screen");
-    
-    // BASE
-    elements.NAME.innerHTML = model.localized( type.ID );
-    elements.DEFENSE.innerHTML = type.defense;
-    elements.DEFENSE_D.innerHTML = model.localized( "DEFENSE" );
-    
-    elements.CAPPT_D.innerHTML = model.localized( "CAPTURE_PT" );
-    elements.CAPPT.innerHTML = ( prop !== null )? prop.capturePoints : "-";
-    
-    elements.OWNER_D.innerHTML = model.localized( "OWNER" );
-    elements.OWNER.innerHTML = ( prop !== null )? model.players[prop.owner].name : "-";
-    
-    // SHOW ELEMENT
-    elements.BOX.className = "tooltip active";
-    elements.BOX.style.position = "absolute";
-    elements.BOX.style.left = parseInt( ((window.innerWidth/2) - (elements.BOX.offsetWidth/2)), 10 )+"px";
-    elements.BOX.style.top = parseInt( ((window.innerHeight/2) - (elements.BOX.offsetHeight/2)), 10 )+"px";
-    controller.tileInfoVisible = true;
-  };
-  
-  controller.tileInfoVisible = false;
-  
-  controller.hideTileInfo = function(){
-    if( !controller.tileInfoVisible ) return;
-    if( DEBUG ) util.log("hide tile information screen");
-    
-    // HIDE ELEMENT
-    elements.BOX.className = "tooltip out";
-    controller.tileInfoVisible = false;
-  };
-  
 });
 controller.registerMenuRenderer("transferMoney",
 function( content, entry, index ){
@@ -5623,120 +5633,6 @@ util.scoped(function(){
 
   controller.registerMenuRenderer("transferProperty",extractPlayer);
   controller.registerMenuRenderer("transferUnit",extractPlayer);
-});
-util.scoped(function(){
-  
-  var elements = {
-    
-    BOX: document.getElementById( ID_ELMT_UNITINFOBOX),
-    
-    NAME: document.getElementById( ID_ELMT_UNITINFOBOX_NAME),
-    PIC: document.getElementById( ID_ELMT_UNITINFOBOX_PIC),
-    DESC: document.getElementById( ID_ELMT_UNITINFOBOX_DESC),
-    
-    CLASS: document.getElementById( ID_ELMT_UNITINFOBOX_CLASS),
-    MVTP: document.getElementById( ID_ELMT_UNITINFOBOX_MVTP),
-    MAINWP: document.getElementById( ID_ELMT_UNITINFOBOX_MAINWP),
-    SECWP: document.getElementById( ID_ELMT_UNITINFOBOX_SECWP),
-    HP: document.getElementById( ID_ELMT_UNITINFOBOX_HP),
-    GAS: document.getElementById( ID_ELMT_UNITINFOBOX_GAS),
-    AMMO: document.getElementById( ID_ELMT_UNITINFOBOX_AMMO),
-    GAS2: document.getElementById( ID_ELMT_UNITINFOBOX_GAS2),
-    AMMO2: document.getElementById( ID_ELMT_UNITINFOBOX_AMMO2),
-    MVRANGE: document.getElementById( ID_ELMT_UNITINFOBOX_MVRANGE),
-    VISION: document.getElementById( ID_ELMT_UNITINFOBOX_VISION),
-    ATTRANGE: document.getElementById( ID_ELMT_UNITINFOBOX_ATTRANGE),
-    ATTRANGE2: document.getElementById( ID_ELMT_UNITINFOBOX_ATTRANGE2),
-    AG_INF: document.getElementById( ID_ELMT_UNITINFOBOX_AG_INF),
-    AG_VEH: document.getElementById( ID_ELMT_UNITINFOBOX_AG_VEH),
-    AG_AIR: document.getElementById( ID_ELMT_UNITINFOBOX_AG_AIR),
-    AG_HELI: document.getElementById( ID_ELMT_UNITINFOBOX_AG_HELI),
-    AG_SHIP: document.getElementById( ID_ELMT_UNITINFOBOX_AG_SHIP),
-    AG_SUB: document.getElementById( ID_ELMT_UNITINFOBOX_AG_SUB),
-    
-    CLASS_D: document.getElementById( ID_ELMT_UNITINFOBOX_CLASS_D),
-    MVTP_D: document.getElementById( ID_ELMT_UNITINFOBOX_MVTP_D),
-    MAINWP_D: document.getElementById( ID_ELMT_UNITINFOBOX_MAINWP_D),
-    SECWP_D: document.getElementById( ID_ELMT_UNITINFOBOX_SECWP_D),
-    HP_D: document.getElementById( ID_ELMT_UNITINFOBOX_HP_D),
-    GAS_D: document.getElementById( ID_ELMT_UNITINFOBOX_GAS_D),
-    AMMO_D: document.getElementById( ID_ELMT_UNITINFOBOX_AMMO_D),
-    MVRANGE_D: document.getElementById( ID_ELMT_UNITINFOBOX_MVRANGE_D),
-    VISION_D: document.getElementById( ID_ELMT_UNITINFOBOX_VISION_D),
-    ATTRANGE_D: document.getElementById( ID_ELMT_UNITINFOBOX_ATTRANGE_D),
-    AG_INF_D: document.getElementById( ID_ELMT_UNITINFOBOX_AG_INF_D),
-    AG_VEH_D: document.getElementById( ID_ELMT_UNITINFOBOX_AG_VEH_D),
-    AG_AIR_D: document.getElementById( ID_ELMT_UNITINFOBOX_AG_AIR_D),
-    AG_HELI_D: document.getElementById( ID_ELMT_UNITINFOBOX_AG_HELI_D),
-    AG_SHIP_D: document.getElementById( ID_ELMT_UNITINFOBOX_AG_SHIP_D),
-    AG_SUB_D: document.getElementById( ID_ELMT_UNITINFOBOX_AG_SUB_D)
-  }
-  
-  controller.showUnitInfo = function(){
-    if( controller.unitInfoVisible ) return;
-    
-    var x = controller.mapCursorX;
-    var y = controller.mapCursorY;
-    var unit = model.unitPosMap[x][y];
-    if( !unit ) return; // NO UNIT SELECTED
-    var type = unit.type;
-    
-    if( DEBUG ) util.log("show unit information screen");
-    
-    // BASE
-    elements.NAME.innerHTML = model.localized( type.ID );
-    
-    // SUPPLY DATA
-    elements.MVTP_D.innerHTML = model.localized( "MOVETYPE" );
-    elements.MVTP.innerHTML = model.localized( type.movetype );
-    elements.MAINWP_D.innerHTML = model.localized( "PRIMARY_WP" );
-    elements.MAINWP.innerHTML = "";
-    elements.SECWP_D.innerHTML = model.localized( "SECONDARY_WP" );
-    elements.SECWP.innerHTML = "";
-    elements.HP_D.innerHTML = model.localized( "HP" );
-    elements.HP.innerHTML = unit.hp;
-    elements.GAS_D.innerHTML = model.localized( "FUEL" );
-    elements.GAS.innerHTML = unit.fuel;
-    elements.GAS2.innerHTML = type.fuel;
-    elements.AMMO_D.innerHTML = model.localized( "AMMO" );
-    elements.AMMO.innerHTML = unit.ammo;
-    elements.AMMO2.innerHTML = type.ammo;
-    elements.MVRANGE_D.innerHTML = model.localized( "MOVERANGE" );
-    elements.MVRANGE.innerHTML = type.range;
-    elements.VISION_D.innerHTML = model.localized( "VISION" );
-    elements.VISION.innerHTML = type.vision;
-    elements.ATTRANGE_D.innerHTML = model.localized( "ATTACK_RANGE" );
-    
-    // ATTACK DATA
-    var attack = type.attack;
-    if( attack ){
-      elements.ATTRANGE.innerHTML = attack.minrange || 1;
-      elements.ATTRANGE2.innerHTML = attack.maxrange || 1;
-    }
-    else{
-      elements.ATTRANGE.innerHTML = "";
-      elements.ATTRANGE2.innerHTML = "";
-    }
-    
-    // SHOW ELEMENT
-    elements.BOX.className = "tooltip active";
-    elements.BOX.style.position = "absolute";
-    elements.BOX.style.left = parseInt( ((window.innerWidth/2) - (elements.BOX.offsetWidth/2)), 10 )+"px";
-    elements.BOX.style.top = parseInt( ((window.innerHeight/2) - (elements.BOX.offsetHeight/2)), 10 )+"px";
-    controller.unitInfoVisible = true;
-  };
-  
-  controller.unitInfoVisible = false;
-  
-  controller.hideUnitInfo = function(){
-    if( !controller.unitInfoVisible ) return;
-    if( DEBUG ) util.log("hide unit information screen");
-    
-    // HIDE ELEMENT
-    elements.BOX.className = "tooltip out";
-    controller.unitInfoVisible = false;
-  };
-  
 });
 controller.registerMenuRenderer("unloadUnit",
 function( content, entry, index ){

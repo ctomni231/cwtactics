@@ -240,29 +240,33 @@ model.resetCapturePoints = function( prid ){
 };
 
 model.changePropertyType = function( pid, type ){
-  model.properties[pid] = type;
+  model.properties[pid].type = type;
 };
 
 util.scoped(function(){
   
-  function doDamage( x,y,invokerPid ){
+  function doDamage( x,y, damage ){
     // var team = model.players[invokerPid].team;
     var unit = model.unitPosMap[x][y];
     
     // DO DAMAGE 
     if( unit !== null /* && model.players[ unit.owner ].team !== team */ ){
-      model.damageUnit( model.extractUnitId(unit),20,9);
+      model.damageUnit( model.extractUnitId(unit),damage,9);
     }
   }
   
-  model.fireSilo = function( siloId, tx,ty, range, owner ){  
-    model.doInRange( tx,ty,range, doDamage, owner );
-                        
+  model.fireBombAt = function( tx,ty, range, damage, owner ){
+    model.doInRange( tx,ty,range, doDamage, damage );
+  };
+  
+  model.fireSilo = function( siloId, tx,ty, range, damage, owner ){                          
     // SET EMPTY TYPE
     var type = model.properties[siloId].type;
     model.changePropertyType(siloId, model.tileTypes[type.changeTo] );
     
     // TIMER
     model.pushTimedEvent( model.daysToTurns(5), model.changePropertyType.callToList( siloId, type.ID ) );
+    
+    model.fireBombAt( tx,ty, range, damage, owner );
   };
 });

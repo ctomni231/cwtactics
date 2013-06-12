@@ -1,26 +1,4 @@
 util.scoped(function(){
-
-  /**
-   * @param {type} el
-   * @param {type} index
-   * @private
-   */
-  function connectMenuListener( el, index ){
-    
-    /*
-    el.onclick = function(){
-      if( DEBUG ){
-        util.log("menu action will be triggered");
-      }
-      
-      controller.cursorActionClick();
-    };
-    */
-    
-    el.onmouseover = function(){
-      controller.setMenuIndex( index );
-    };
-  };
   
   /** @private */
   var menuRenderer = {};
@@ -139,7 +117,6 @@ util.scoped(function(){
         
         // PERFORMANCE HIT ?
         entry = document.createElement("button");
-        connectMenuListener( entry, i );
         var li = document.createElement("li");
         li.appendChild( entry );
         menuEntryListElement.appendChild( li );
@@ -163,14 +140,9 @@ util.scoped(function(){
     menuEntryListElement.children[ controller.menuCursorIndex ].className = "activeButton";
     menuEntryListElement.children[ controller.menuCursorIndex ].children[0].focus();
     
-    // SET MENU STYLE
-    var menuStyle = menuElement.style;
-    menuStyle.zIndex = -1;
-    menuStyle.display = "block";
-    menuStyle.left = parseInt( ((window.innerWidth/2) - (menuElement.offsetWidth/2)), 10 )+"px";
-    menuStyle.top = parseInt( ((window.innerHeight/2) - (menuElement.offsetHeight/2)), 10 )+"px";
-    menuStyle.zIndex = 9;
-    
+    // SHOW IT
+    menuElement.className = "uiPopup show";
+    controller.menuVisible = true;
     controller.setMenuIndex( 0 );
   };
   
@@ -182,12 +154,15 @@ util.scoped(function(){
     
     menuEntryListElement.children[ controller.menuCursorIndex ].className = "";
     
-    menuElement.style.display = "none";
+    menuElement.className = "uiPopup hide";
     controller.menuCursorIndex = -1;
+    controller.menuVisible = false;
   };
   
+  controller.menuVisible = false;
+  
   controller.isMenuOpen = function(){
-    return menuElement.style.display === "block";
+    return controller.menuVisible;
   };
   
   controller.registerMenuRenderer = function( key, renderer ){

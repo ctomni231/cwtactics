@@ -90,6 +90,7 @@
       "silofire":"Fire Silo",
       "supplyUnit":"Supply",
       "wait":"Wait",
+      "explode":"Explode",
       
       "options":"Options",
       "options.sfx":"SFX On/Off",
@@ -205,6 +206,7 @@
       "silofire":"Silo Abfeuer",
       "supplyUnit":"Versorgen",
       "wait":"Warten",
+      "explode":"Explodieren",
       
       "options":"Optionen",
       "options.sfx":"SFX An/Aus",
@@ -249,6 +251,7 @@
     { "src":"../../../sound/maptick.wav",      "id":"MAPTICK" }, 
     { "src":"../../../sound/menutick.wav",     "id":"MENUTICK" }, 
     { "src":"../../../sound/cancel.wav",       "id":"CANCEL" }, 
+    { "src":"../../../sound/rocketImpact.mp3", "id":"ROCKET_IMPACT" }, 
     { "src":"../../../sound/explode.wav",      "id":"EXPLODE" }
   ],
   "graphics": {
@@ -719,6 +722,18 @@
       [
         "SYM_CAPTURE",
         "../../../image/symbol/capture.png"
+      ],
+      [
+        "SYM_ATT",
+        "../../../image/symbol/attack.png"
+      ],
+      [
+        "SYM_VISION",
+        "../../../image/symbol/vision.png"
+      ],
+      [
+        "SYM_MOVE",
+        "../../../image/symbol/goldboot.png"
       ],
       [
         "SYM_UNKNOWN",
@@ -1767,7 +1782,7 @@
       "vision": 1,
       "fuel": 70,
       "ammo": 0,
-      "maxloads": 2,
+      "maxloads": 1,
       "canload": [
         "INFT",
         "MECH"
@@ -1952,7 +1967,8 @@
       "ammo": 0,
       "maxloads": 1,
       "canload": [
-        "MV_INFANTRY"
+        "INFT",
+        "MECH"
       ]
     },
     {
@@ -2358,7 +2374,8 @@
     },
     {
       "ID": "FRST",
-      "defense": 2
+      "defense": 2,
+      "blocksVision":true
     },
     {
       "ID": "MNTN",
@@ -2453,7 +2470,11 @@
       "ID": "SILO",
       "defense": 3,
       "vision": 0,
-      "rocketsilo":["INFT","MECH"],
+      "rocketsilo":{
+        "fireable":["INFT","MECH"],
+        "range":2,
+        "damage":3
+      },
       "changeTo":"SILO_EMPTY"
     },
     {
@@ -2511,7 +2532,8 @@
     },
     {
       "ID": "REEF",
-      "defense": 1
+      "defense": 1,
+      "blocksVision":true
     },
     {
       "ID": "SHOAL",

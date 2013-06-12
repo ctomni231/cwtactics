@@ -372,7 +372,7 @@ model.createUnit = function( pid, x, y, type ){
  * 
  * @param {Number} uid id number of the unit
  */
-model.destroyUnit = function( uid ){
+model.destroyUnit_silent = function( uid ){
   model.clearUnitPosition(uid);
   var unit = model.units[uid];
   
@@ -383,4 +383,14 @@ model.destroyUnit = function( uid ){
   if( controller.configValue("noUnitsLeftLoose") === 1 && model.countUnits( unit.owner ) === 0 ){
     controller.endGameRound();
   } 
+};
+
+/**
+ * Deregisters an unit object from the stock of a player. The tile, where the unit is placed on, will be
+ * freed from any position information.
+ * 
+ * @param {Number} uid id number of the unit
+ */
+model.destroyUnit = function( uid ){
+  model.destroyUnit_silent(uid);
 };

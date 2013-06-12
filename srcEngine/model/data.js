@@ -514,7 +514,7 @@ util.scoped(function(){
     v = map[id];
     if( typeof v === "number" ) return v;
     
-    v = list[movetype];
+    v = map[movetype];
     if( typeof v === "number" ) return v;
     
     v = map["*"];

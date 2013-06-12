@@ -326,8 +326,8 @@ view.renderMap = function( scale ){
         var unit = model.unitPosMap[x][y];
         var stats = (unit !== null )? controller.getUnitStatusForUnit( unit ) : null;
         if( !inShadow && unit !== null && 
-           ( !unit.hidden || unit.owner === model.turnOwner || model.players[ unit.owner ].team == teamId ||
-              stats.TURN_OWNER_VISIBLE ) ){
+           ( /* !unit.hidden || */ unit.owner === model.turnOwner || model.players[ unit.owner ].team == teamId ||
+              stats.VISIBLE ) ){
           
           if( unit !== view.preventRenderUnit ){
             var color;

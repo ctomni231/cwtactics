@@ -102,17 +102,6 @@ controller.loadInputDevices = util.singleLazyCall(function( err, baton ){
         case INPUT_KEYBOARD_CODE_ENTER:
           controller.screenStateMachine.event("ACTION");
           return false;
-          
-        case INPUT_KEYBOARD_CODE_M:
-          controller.screenStateMachine.event("ZOOM_IN");
-          return false;
-          
-        case INPUT_KEYBOARD_CODE_N:
-          controller.screenStateMachine.event("ZOOM_OUT");
-          return false;
-          
-        case INPUT_KEYBOARD_CODE_TAB: 
-          return false;
       }
       
       return true;
@@ -130,7 +119,9 @@ controller.loadInputDevices = util.singleLazyCall(function( err, baton ){
     
     function MouseWheelHandler(e){
       if( controller.inputCoolDown > 0 ) return false;
-      if( inClick ) return;
+      if( controller.menuVisible ) return false;
+      
+      // if( inClick ) return;
       
       var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
       if( delta > 0 ) controller.screenStateMachine.event("SPECIAL_5");
@@ -151,31 +142,56 @@ controller.loadInputDevices = util.singleLazyCall(function( err, baton ){
     var len = TILE_LENGTH;
     var msx = 0;
     var msy = 0;
+    var menusy = 0;
     document.addEventListener("mousemove", function(ev){
+      //if( controller.inputCoolDown > 0 ) return false;
+      
+      var id = ev.target.id;
+      if( id !== "cwt_canvas" && !controller.menuVisible ) return;
+      
       var x,y;
       ev = ev || window.event;
-      if( inClick ) return;
+      //if( inClick ) return;
       
-      if( typeof ev.offsetX === 'number' ){
-        x = ev.offsetX;
-        y = ev.offsetY;
+      if( controller.menuVisible ){
+        x = ev.pageX;
+        y = ev.pageY;
+        
+        if( menusy !== -1 ){      
+          if( y <= menusy-16 ){
+            controller.screenStateMachine.event("UP");
+            menusy = y;
+          }
+          else if( y >= menusy+16 ){
+            controller.screenStateMachine.event("DOWN");
+            menusy = y;
+          }
+            }
+        else menusy = y;
       }
-      else {
-        x = ev.layerX;
-        y = ev.layerY;
+      else{
+        
+        if( typeof ev.offsetX === 'number' ){
+          x = ev.offsetX;
+          y = ev.offsetY;
+        }
+        else {
+          x = ev.layerX;
+          y = ev.layerY;
+        }
+        
+        // TO TILE POSITION
+        x = parseInt( x/len , 10);
+        y = parseInt( y/len , 10);
+        
+        controller.screenStateMachine.event("HOVER",x,y);
       }
-      
-      // TO TILE POSITION
-      x = parseInt( x/len , 10);
-      y = parseInt( y/len , 10);
-      
-      controller.screenStateMachine.event("HOVER",x,y);
     });
     
-    var inClick = false;
+    //var inClick = false;
     document.onmousedown = function(ev){      
       ev = ev || window.event;
-      inClick = true;
+      //inClick = true;
       
       if( typeof ev.offsetX === 'number' ){
         msx = ev.offsetX;
@@ -190,7 +206,7 @@ controller.loadInputDevices = util.singleLazyCall(function( err, baton ){
     document.onmouseup = function(ev){    
       
       ev = ev || window.event;
-      inClick = false;
+      //inClick = false;
       
       var msex;
       var msey;
@@ -205,42 +221,39 @@ controller.loadInputDevices = util.singleLazyCall(function( err, baton ){
       
       var dex = Math.abs( msx-msex );
       var dey = Math.abs( msy-msey );
+      menusy = -1;
       
-      var state = controller.stateMachine.state;
-      if( (state === "ACTION_MENU" || state === "ACTION_SUBMENU") && !mouseInMenu ){
-        // MENU + MOUSE OUTSIDE === CANCEL
-        controller.cursorActionCancel()
-      }
-      else{
-        
-        switch(ev.which){
-            
-          case 1: controller.screenStateMachine.event("ACTION"); break; // LEFT
-          case 2: break;                                                // MIDDLE
-            
-            // RIGHT
-          case 3: 
-            if( dex > 32 || dey > 32 ){
-              // EXTRACT DIRECTION
-              var mode;
-              if( dex > dey ){
-                
-                // LEFT OR RIGHT
-                if( msx > msex ) mode = "SPECIAL_2";
-                else mode = "SPECIAL_1";
-              }
-              else{
-                
-                // UP OR DOWN
-                if( msy > msey ) mode = "SPECIAL_3";
-                else mode = "SPECIAL_4";
-              }
+      switch(ev.which){
+          
+        case 1: controller.screenStateMachine.event("ACTION"); break; // LEFT
+        case 2: break;                                                // MIDDLE
+          
+          // RIGHT
+        case 3: 
+          /*
+          if( dex > 32 || dey > 32 ){
+            // EXTRACT DIRECTION
+            var mode;
+            if( dex > dey ){
               
-              controller.screenStateMachine.event( mode );
+              // LEFT OR RIGHT
+              if( msx > msex ) mode = "SPECIAL_2";
+              else mode = "SPECIAL_1";
             }
-            else controller.screenStateMachine.event("CANCEL"); 
-            break; 
-        }
+            else{
+              
+              // UP OR DOWN
+              if( msy > msey ) mode = "SPECIAL_3";
+              else mode = "SPECIAL_4";
+            }
+            
+            controller.screenStateMachine.event( mode );
+          }
+          else 
+          */
+          
+          controller.screenStateMachine.event("CANCEL"); 
+          break; 
       }
     };
   }

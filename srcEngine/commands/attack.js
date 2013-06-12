@@ -11,7 +11,7 @@ controller.unitAction({
   
   condition: function( data ){
     var mode = data.thereIsUnitRelationShip( data.source, data.target );
-    if( mode !== model.MODE_NONE && mode !== model.MODE_SAME_OBJECT && mode !== model.MODE_OWN ) return false;
+    if( mode !== model.MODE_NONE && mode !== model.MODE_SAME_OBJECT ) return false;
     
     // CANNOT ATTACK IF PEACE PERIOD IS GIVEN
     if( model.day-1 < controller.configValue("daysOfPeace") ) return false;

@@ -10,7 +10,7 @@ util.scoped(function(){
     if( timeLeft > 0 ){
       timeLeft -= delta;
       if( timeLeft <= 0 ){
-        panel.className = "tooltip out";
+        panel.className = "uiPopup hide";
       }
     }
   };
@@ -25,10 +25,7 @@ util.scoped(function(){
     // panel.innerHTML = msg;
     contentDiv.innerHTML = msg;
     
-    panel.className = "tooltip active";
-    panel.style.position = "absolute";
-    panel.style.left = parseInt( ((window.innerWidth/2) - (panel.offsetWidth/2)), 10 )+"px";
-    panel.style.top = parseInt( ((window.innerHeight/2) - (panel.offsetHeight/2)), 10 )+"px";
+    panel.className = "uiPopup show";
     
     timeLeft = time;
   };
