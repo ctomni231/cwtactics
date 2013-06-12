@@ -130,15 +130,19 @@ for $key ( keys %input )
         $message =  $input{$key};
     }
 }
-
 #$action = $ARGV[0];
 #$param = $ARGV[1];
 #$token = $ARGV[2];
 
+$action = "append";
+$param = "vqZF4HCQnNGy";
+$token = "adslmode";
+$message = "line";
+
 print "$action \n";
 print "$param \n";
 print "$token \n";
-
+print "$message \n";
 if ( $action eq "create" )
 {
     print "create: ";
