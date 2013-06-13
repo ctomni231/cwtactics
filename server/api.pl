@@ -26,30 +26,25 @@ sub rnd_str
 sub create
 {
     my $session = rnd_str(12);
-print "g\n";
     my $dbh = DBI->connect("dbi:SQLite:dbname=$database", "", "", { RaiseError => 1}) or die $DBI::errstr;
-print "g\n";
     $dbh->do("INSERT INTO Session VALUES('$session','$_[0]')") || die "Error inserting to DB";
-print "g\n";
     open (MYFILE, ">$session_folder/$session" ) || die "Cannot Open File";
-print "g\n";
     $dbh->disconnect();
-print "g\n";
     return $session;
 }
 
 sub dlete
 {
     my $dbh = DBI->connect("dbi:SQLite:dbname=$database", { RaiseError => 1 }) or die $DBI::errstr;
-    my $sth = $dbh->prepare( "SELECT * FROM Session WHERE uuid=$_[0] AND token=$_[1]");  
-    $sth->execute();
+    my $sth = $dbh->prepare( "SELECT * FROM Session WHERE uuid = ? AND token = ?");  
+    $sth->execute($_[0], $_[1]);
     $sth->fetchrow();
     if ( $sth->rows() == 1 )
     {
-        $sth = $dbh->prepare(" DELETE FROM Session WHERE uuid=$_[0] AND token=$_[1]");
-        $sth->execute();
+        $sth = $dbh->prepare(" DELETE FROM Session WHERE uuid = ? AND token = ?");
+        $sth->execute($_[0], $_[1]);
         $dbh->disconnect();
-        unlink("$session_folder/$_[1]");
+        unlink("$session_folder/$_[0]");
         return "Success";
     }
     else 
@@ -62,44 +57,48 @@ sub dlete
 sub append
 {
     my $dbh = DBI->connect("dbi:SQLite:dbname=$database", { RaiseError => 1 }) or die $DBI::err;
-    my $sth = $dbh->prepare( "SELECT * FROM Session WHERE uuid=$_[0] AND token=$_[1]");
-    $sth->execute();
-    $sth->fetchrow();
-    $dbh->disconnect();
+    my $sth = $dbh->prepare( "SELECT * FROM Session WHERE uuid = ? AND token = ?");
+    $sth->execute($_[0], $_[1]);
+    my($uuid, $token) = $sth->fetchrow();
+    $sth->finish();
     if ( $sth->rows() == 1 )
     {
-        my $message = $_[3];
-        open(DAT,">>$session_folder/$_[1]") || die("Cannot Open File");
+        my $message = $_[2];
+        open(DAT,">>$session_folder/$uuid") || die("Cannot Open File");
         print DAT $message;
-        return "Success";
+        close(DAT);
     }
     else
     {
-       return "Fail";
+        $dbh->disconnect();
+        return "Fail";
     } 
+    $dbh->disconnect();
+    return "Success";
 }
 
 sub retrieve
 {
     my $dbh = DBI->connect("dbi:SQLite:dbname=$database", { RaiseError => 1 }) or die $DBI::err;
-    my $sth = $dbh->prepare( "SELECT * FROM Session WHERE uuid=$_[0] AND token=$_[1]");
-    $sth->execute();
+    my $sth = $dbh->prepare( "SELECT * FROM Session WHERE uuid = ? AND token = ?");
+    $sth->execute($_[0], $_[1]);
     $sth->fetchrow();
-    $dbh->disconnect();
+    $sth->finish();
+    my $content;
     if ( $sth->rows() == 1 )
     {
-        open (DAT, "$session_folder/$_[1]");
-        while (<MYFILE>) {
- 	    chomp;
-            print "$_\n";
-        }
-        close (MYFILE);
-        return "Success";
+        local $/;
+        open (DAT, "$session_folder/$_[0]") or die "Can't read file [$!]\n";
+        $content = <DAT>;
+        close (DAT);
+        $dbh->disconnect();
     }
     else 
     { 
+        $dbh->disconnect();
         return "Fail";
     }
+    return $content;
 }
 
 $cgi = new CGI;
@@ -108,8 +107,6 @@ for $key ( $cgi->param() )
 {
     $input{$key} = $cgi->param($key);
 }
-
-print $cgi->header('text/html');
 
 for $key ( keys %input )
 {
@@ -130,45 +127,44 @@ for $key ( keys %input )
         $message =  $input{$key};
     }
 }
-#$action = $ARGV[0];
-#$param = $ARGV[1];
-#$token = $ARGV[2];
 
-$action = "append";
-$param = "vqZF4HCQnNGy";
-$token = "adslmode";
-$message = "line";
-
-print "$action \n";
-print "$param \n";
-print "$token \n";
-print "$message \n";
-if ( $action eq "create" )
+if ( $ARGV[0] eq "-d") 
 {
-    print "create: ";
-    print create($token);
+    $action = $ARGV[1];
+    $param = $ARGV[2];
+    $token = $ARGV[3];
+    $message = $ARGV[4];
+
+    print "ACTION = $action \n";
+    print "PARAMETER = $param \n";
+    print "TOKEN = $token \n";
+    print "MESSAGE = $message \n";
 } 
-elsif ( $action eq "delete" )
-{ 
-    print "delete: ";
-    print dlete($param, $token);
-} 
-elsif ( $action eq "append" )
-{ 
-    print "append: ";
-    print append($param, $token, $message);
-}
-elsif ( $action eq "retrive" )
-{ 
-    print "retrieve: ";
-    print retrieve($param, $token);
-}
-else
+elsif ( $ARGV[0] eq "--create" ) 
 {
     mkdir "$session_folder" or die "Unable to create the folder: $session_folder\n";
     my $dbh = DBI->connect("dbi:SQLite:dbname=$database", "", "", { RaiseError => 1}) or die $DBI::errstr;
     $dbh->do("DROP TABLE IF EXISTS Session");
-    $dbh->do("CREATE TABLE Session(uuid TEXT, password TEXT)");
+    $dbh->do("CREATE TABLE Session(uuid TEXT, token TEXT)");
     $dbh->disconnect();   
-    print "Default action";
 }
+
+print $cgi->header('text/html');
+
+if ( $action eq "create" )
+{
+    print create($token);
+} 
+elsif ( $action eq "delete" )
+{ 
+    print dlete($param, $token);
+} 
+elsif ( $action eq "append" )
+{ 
+    print append($param, $token, $message);
+}
+elsif ( $action eq "retrieve" )
+{ 
+    print retrieve($param, $token);
+}
+
