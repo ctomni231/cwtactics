@@ -15,7 +15,7 @@ map editor.
 * 1 GhZ CPU X-86
 * 512 MB RAM
 
-#### Mobile
+#### Mobile Client
 
 The WebClient is designed as prototype to show the capabilities of HTML5 technologies. The main task is to provide the
 complete game mechanic while providing basic multimedia support. The long term task is to create a basic mobile playable
