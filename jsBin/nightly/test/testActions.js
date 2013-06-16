@@ -1,3 +1,5 @@
+"brackets-xunit: qunit";
+
 module( "game actions" , { setup:loadTestMap } );
 
 // USER ACTIONS

@@ -1,20 +1,21 @@
-/**
- * Returns true if a given unit is an indirect firing unit (e.g. artillery) else false
-. * 
- * @param {type} uid id of the unit
- * @returns {Boolean}
- */
+/*
+  ### isIndirectUnit
+
+  Returns true if a given unit is an indirect firing unit (e.g. artillery) else false. 
+ 
+  @param {type} uid id of the unit
+*/
 model.isIndirectUnit = function( uid ){
   return typeof model.units[uid].type.minrange === "number"; 
 };
 
-/**
- * Returns the base damage of an attacker against a defender. If the attacker cannot attack
- * the defender then -1 will be returned. This function recognizes the ammo usage of main weapons.
- * If the attacker cannot attack with his main weapon due low ammo then only the secondary weapon 
- * will be checked.
- * 
- * @returns {Boolean}
+/*
+   ### baseDamageAgainst
+   
+   Returns the base damage of an attacker against a defender. If the attacker cannot attack
+   the defender then -1 will be returned. This function recognizes the ammo usage of main weapons.
+   If the attacker cannot attack with his main weapon due low ammo then only the secondary weapon 
+   will be checked.
  */
 model.baseDamageAgainst = function( attacker, defender, withMainWp ){
   var attack = attacker.type.attack;
@@ -23,13 +24,13 @@ model.baseDamageAgainst = function( attacker, defender, withMainWp ){
   
   if( typeof withMainWp === "undefined" ) withMainWp = true;
   
-  // MAIN WEAPON
+  // check main weapon
   if( withMainWp && attacker.ammo > 0 && attack.main_wp !== undefined ){
     v = attack.main_wp[tType];
     if( typeof v === "number" ) return v;
   }
   
-  // SECONDARY WEAPON
+  // check secondary weapon
   if( attack.sec_wp !== undefined ){ 
     v = attack.sec_wp[tType];
     if( typeof v === "number" ) return v;
@@ -38,12 +39,18 @@ model.baseDamageAgainst = function( attacker, defender, withMainWp ){
   return -1;
 };
 
+/*
+  ### canUseMainWeapon
+  
+  Returns true if an attacker can use it's main weapon against a defender. The distance won't be
+  checked in case of indirect units.
+*/
 model.canUseMainWeapon = function( attacker, defender ){
   var attack = attacker.type.attack;
   var tType = defender.type.ID;
   var v;
   
-  // MAIN WEAPON
+  // check ammo and main weapon availability against the defender type
   if( attacker.ammo > 0 && attack.main_wp !== undefined ){
     v = attack.main_wp[tType];
     if( typeof v === "number" ) return true;
@@ -52,35 +59,174 @@ model.canUseMainWeapon = function( attacker, defender ){
   return false;
 };
 
-/**
- * Returns true if the unit type has a main weapon else false.
- * 
- * @param {UnitSheet} type
- * @returns {Boolean}
- */
+/*
+  ### hasMainWeapon
+  Returns true if the unit type has a main weapon else false.
+  
+  @param {UnitSheet} type
+*/
 model.hasMainWeapon = function( type ){
   var attack = type.attack;
   return typeof attack !== "undefined" && typeof attack.main_wp !== "undefined";
 };
 
-/**
- * Returns true if the unit type has a secondary weapon else false.
- * 
- * @param {UnitSheet} type
- * @returns {Boolean}
- */
+/*
+  ### hasSecondaryWeapon
+  Returns true if the unit type has a secondary weapon else false.
+  
+  @param {UnitSheet} type
+*/
 model.hasSecondaryWeapon = function( type ){
   var attack = type.attack;
   return typeof attack !== "undefined" && typeof attack.sec_wp !== "undefined";
 };
 
+/*
+  ### hasTargets
+  
+  Returns true if an unit has targets in sight, else false.
+  
+  @param {type} uid id of the unit
+  @param {Number} x (default: unit position)
+  @param {Number} y (default: unit position)
+*/
+model.hasTargets = function( uid,x,y ){
+  return model.attackRangeMod_(uid,x,y);
+};
+
 /**
- * 
- * @param {Number} uid
- * @param {Number} x
- * @param {Number} y
- * @param {SelectionData} data
- * @returns {Boolean}
+ *
+ */
+model.getBattleDamage = function( attacker, defender, luck, withMainWp, isCounter ){
+  var BASE = model.baseDamageAgainst(attacker,defender,withMainWp);
+  
+  var AHP  = model.unitHpPt( attacker );
+  var DHP = model.unitHpPt( defender );
+  
+  // ATTACKER VALUES
+  controller.prepareTags( attacker.x, attacker.y );
+  var LUCK = parseInt( (luck/100)*controller.scriptedValue(attacker.owner,"luck",10), 10 );
+  var ACO  = controller.scriptedValue( attacker.owner, "att", 100 );
+  if( isCounter ) ACO += controller.scriptedValue( defender.owner, "counteratt", 0 );
+  
+  // DEFENDER VALUES
+  controller.prepareTags( defender.x, defender.y );
+  var DCO  = controller.scriptedValue( defender.owner, "def", 100 );
+  var DTR = controller.scriptedValue( defender.owner, "terraindefense", model.map[defender.x][defender.y].defense );
+  
+  // D%=[B*ACO/100+R]*(AHP/10)*[(200-(DCO+DTR*DHP))/100]
+  var damage = (BASE*ACO/100+LUCK) * (AHP/10) * ( (200-( DCO+(DTR*DHP) ) ) /100 );
+  damage = parseInt( damage, 10 );
+  
+  if( DEBUG ){
+    util.log(
+      "attacker:",model.extractUnitId( attacker ),
+      "[",BASE,"*",ACO,"/100+",LUCK,"]*(",AHP,"/10)*[(200-(",DCO,"+",DTR,"*",DHP,"))/100]",
+      "=",damage
+    );
+  }
+  
+  return damage;
+};
+
+// ### battleBetween
+util.scoped(function(){
+  
+  /*
+    ##### searchTile
+    
+    local helper to search a surrounding tile that isn't occupied by an unit
+    and has a distance of to between itself and the tile at pos (ax,ay)
+    
+    @param {Number} rx
+    @param {Number} ry
+    @param {Number} ax
+    @param {Number} ay
+  */
+  function searchTile( rx,ry, ax,ay ){
+    var x=-1,y=-1;
+    
+    if( model.isValidPosition(rx-1,ry) && !model.unitPosMap[rx-1][ry] ){ x=rx-1; y=ry; }
+    if( model.isValidPosition(rx,ry-1) && !model.unitPosMap[rx][ry-1] ){ x=rx; y=ry-1; }
+    if( model.isValidPosition(rx,ry+1) && !model.unitPosMap[rx][ry+1] ){ x=rx; y=ry+1; }
+    if( model.isValidPosition(rx+1,ry) && !model.unitPosMap[rx+1][ry] ){ x=rx+1; y=ry; }
+    
+    if( model.isValidPosition(rx-1,ry-1) && !model.unitPosMap[rx-1][ry-1] ){ x=rx-1; y=ry-1; }
+    if( model.isValidPosition(rx-1,ry+1) && !model.unitPosMap[rx-1][ry+1] ){ x=rx-1; y=ry+1; }
+    if( model.isValidPosition(rx+1,ry-1) && !model.unitPosMap[rx+1][ry-1] ){ x=rx+1; y=ry-1; }
+    if( model.isValidPosition(rx+1,ry+1) && !model.unitPosMap[rx+1][ry+1] ){ x=rx+1; y=ry+1; }
+    
+    if( x !== -1 ){
+      
+    }
+  }
+  
+  /**
+    
+    @param {type} attId id of the attacker
+    @param {type} defId id of the defender
+    @param {type} attLuckRatio luck of the attacker (0-100)
+    @param {type} defLuckRatio luck of the defender (0-100)
+   */
+  model.battleBetween = function( attId, defId, attLuckRatio, defLuckRatio ){
+    var attacker = model.units[attId];
+    var defender = model.units[defId];
+    var aSheets = attacker.type;
+    var dSheets = defender.type;
+    var attOwner = attacker.owner;
+    var defOwner = defender.owner;
+    var powerAtt        = model.unitHpPt( defender );
+    var powerCounterAtt = model.unitHpPt( attacker );
+    
+    var retreatVal = powerAtt;
+    
+    // ATTACK
+    model.damageUnit( defId, model.getBattleDamage(attacker,defender,attLuckRatio) );
+    powerAtt -= model.unitHpPt( defender );
+    
+    if( model.canUseMainWeapon(attacker,defender) ) attacker.ammo--;
+    
+    powerAtt        = ( parseInt(        powerAtt*0.1*dSheets.cost, 10 ) );
+    model.modifyPowerLevel( attOwner, parseInt( 0.5*powerAtt, 10 ) );
+    model.modifyPowerLevel( defOwner, powerAtt );
+    
+    retreatVal = model.unitHpPt( defender )/retreatVal*100;
+    if( retreatVal < 20 ){
+      
+      // RETREAT
+      retreatVal = searchTile( defender.x,defender.y, attacker.x,attacker.y );
+    }
+    else retreatVal = false;
+    
+    // COUNTER ATTACK
+    if( retreatVal && defender.hp > 0 && !model.isIndirectUnit(defId) ){
+      var mainWpAttack = model.canUseMainWeapon(defender,attacker);
+      
+      model.damageUnit( attId, model.getBattleDamage(
+        defender,attacker,defLuckRatio, mainWpAttack, true
+      ));  
+      
+      powerCounterAtt -= model.unitHpPt( attacker );
+      
+      if( mainWpAttack ) defender.ammo--;
+      
+      powerCounterAtt = ( parseInt( powerCounterAtt*0.1*aSheets.cost, 10 ) );
+      model.modifyPowerLevel( defOwner, parseInt( 0.5*powerCounterAtt, 10 ) );
+      model.modifyPowerLevel( attOwner, powerCounterAtt );
+    }
+    
+  };
+});
+
+
+/*
+  ### attackRangeMod_
+ 
+  @private
+  @param {Number} uid
+  @param {Number} x
+  @param {Number} y
+  @param {SelectionData} data
  */
 model.attackRangeMod_ = function( uid, x, y, data, markAttackableTiles ){
   var markInData = (typeof data !== "undefined");
@@ -159,96 +305,4 @@ model.attackRangeMod_ = function( uid, x, y, data, markAttackableTiles ){
   }
   
   return false;
-};
-
-/**
- * Returns true if an unit has targets in sight, else false.
- * 
- * @param {type} uid id of the unit
- * @param {Number} x (default: unit position)
- * @param {Number} y (default: unit position)
- * @returns {Boolean}
- */
-model.hasTargets = function( uid,x,y ){
-  return model.attackRangeMod_(uid,x,y);
-};
-
-/**
- *
- */
-model.getBattleDamage = function( attacker, defender, luck, withMainWp, isCounter ){
-  var BASE = model.baseDamageAgainst(attacker,defender,withMainWp);
-  
-  var AHP  = model.unitHpPt( attacker );
-  var DHP = model.unitHpPt( defender );
-  
-  // ATTACKER VALUES
-  controller.prepareTags( attacker.x, attacker.y );
-  var LUCK = parseInt( (luck/100)*controller.scriptedValue(attacker.owner,"luck",10), 10 );
-  var ACO  = controller.scriptedValue( attacker.owner, "att", 100 );
-  if( isCounter ) ACO += controller.scriptedValue( defender.owner, "counteratt", 0 );
-  
-  // DEFENDER VALUES
-  controller.prepareTags( defender.x, defender.y );
-  var DCO  = controller.scriptedValue( defender.owner, "def", 100 );
-  var DTR = controller.scriptedValue( defender.owner, "terraindefense", model.map[defender.x][defender.y].defense );
-  
-  // D%=[B*ACO/100+R]*(AHP/10)*[(200-(DCO+DTR*DHP))/100]
-  var damage = (BASE*ACO/100+LUCK) * (AHP/10) * ( (200-( DCO+(DTR*DHP) ) ) /100 );
-  damage = parseInt( damage, 10 );
-  
-  if( DEBUG ){
-    util.log(
-      "attacker:",model.extractUnitId( attacker ),
-      "[",BASE,"*",ACO,"/100+",LUCK,"]*(",AHP,"/10)*[(200-(",DCO,"+",DTR,"*",DHP,"))/100]",
-      "=",damage
-    );
-  }
-  
-  return damage;
-};
-
-/**
- * 
- * @param {type} attId id of the attacker
- * @param {type} defId id of the defender
- * @param {type} attLuckRatio luck of the attacker (0-100)
- * @param {type} defLuckRatio luck of the defender (0-100)
- */
-model.battleBetween = function( attId, defId, attLuckRatio, defLuckRatio ){
-  var attacker = model.units[attId];
-  var defender = model.units[defId];
-  var aSheets = attacker.type;
-  var dSheets = defender.type;
-  var attOwner = attacker.owner;
-  var defOwner = defender.owner;
-  var powerAtt        = model.unitHpPt( defender );
-  var powerCounterAtt = model.unitHpPt( attacker );
-  
-  // ATTACK
-  model.damageUnit( defId, model.getBattleDamage(attacker,defender,attLuckRatio) );
-  powerAtt -= model.unitHpPt( defender );
-  
-  if( model.canUseMainWeapon(attacker,defender) ) attacker.ammo--;
-  
-  powerAtt        = ( parseInt(        powerAtt*0.1*dSheets.cost, 10 ) );
-  model.modifyPowerLevel( attOwner, parseInt( 0.5*powerAtt, 10 ) );
-  model.modifyPowerLevel( defOwner, powerAtt );
-  
-  // COUNTER ATTACK
-  if( defender.hp > 0 && !model.isIndirectUnit(defId) ){
-    var mainWpAttack = model.canUseMainWeapon(defender,attacker);
-    
-    model.damageUnit( attId, model.getBattleDamage(
-      defender,attacker,defLuckRatio, mainWpAttack, true
-    ));  
-    
-    powerCounterAtt -= model.unitHpPt( attacker );
-    
-    if( mainWpAttack ) defender.ammo--;
-    
-    powerCounterAtt = ( parseInt( powerCounterAtt*0.1*aSheets.cost, 10 ) );
-    model.modifyPowerLevel( defOwner, parseInt( 0.5*powerCounterAtt, 10 ) );
-    model.modifyPowerLevel( attOwner, powerCounterAtt );
-  }
 };
