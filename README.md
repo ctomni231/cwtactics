@@ -17,18 +17,18 @@ map editor.
 
 #### Mobile
 
-The WebClient is designed as prototype in HTML5 technologies. It is runnable on every up to date browser that supports
-mostly the HTML5 capabilities. The target of the web client is to connect more peoples with open technologies.
+The WebClient is designed as prototype to show the capabilities of HTML5 technologies. The main task is to provide the
+complete game mechanic while providing basic multimedia support. The long term task is to create a basic mobile playable
+more game mechanic oriented (*less fancy shiny*) client for the CW:T engine.
 
 ###### Requirements Android
 
 * A 2x1.2GHz CPU 
 * 512 MB RAM
-* Mobile Chome 25
+* Mobile Chrome 25
 
 ###### Requirements iOS
 
 * At least an iPad second generation, iPad Mini, iPod Touch fifth generation or an iPhone 5
-* An actual web browser (iOS5, *Android 4.1 , Chrome 20, Firefox 10* [not fully tested])
 * iOS 5 
 * iOS 6 to enable in-game sounds
