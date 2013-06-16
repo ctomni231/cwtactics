@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>tileSelection.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "Users/tapsi/Desktop/Dropbox/Dropbox/Dropsi Ordner/Custom Wars Tactics/cwt/srcEngine/states/tileSelection.js", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>tileSelection.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>The client selects a target tile in this step. Unlike {@link controller.stateMachine.structure.ACTION_SELECT_TARGET_A}
+and {@link controller.stateMachine.structure.ACTION_SELECT_TARGET_B} this state allows a free selection
+over the map. Normally this state will be invoked by actions with the isTargetValid attribute. </p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">controller</span><span class="p">.</span><span class="nx">stateMachine</span><span class="p">.</span><span class="nx">structure</span><span class="p">.</span><span class="nx">ACTION_SELECT_TILE</span> <span class="o">=</span> <span class="p">{</span>
+  
+  <span class="nx">onenter</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">targetselection</span><span class="p">.</span><span class="nx">clean</span><span class="p">();</span>
+  <span class="p">},</span>
+  
+  <span class="nx">action</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">ev</span><span class="p">,</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span> <span class="p">){</span>      
+    <span class="k">if</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">action</span><span class="p">.</span><span class="nx">object</span><span class="p">.</span><span class="nx">isTargetValid</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">)</span> <span class="p">){</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">targetselection</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">);</span>
+      
+      <span class="k">return</span> <span class="s2">&quot;FLUSH_ACTION&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">BREAK_TRANSITION</span><span class="p">;</span>
+  <span class="p">},</span>
+  
+  <span class="nx">cancel</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">targetselection</span><span class="p">.</span><span class="nx">clean</span><span class="p">();</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">lastState</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+<span class="p">};</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

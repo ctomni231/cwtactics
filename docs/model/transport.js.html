@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>transport.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "Users/tapsi/Desktop/Dropbox/Dropbox/Dropsi Ordner/Custom Wars Tactics/cwt/srcEngine/model/transport.js", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>transport.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Has a transporter unit with id tid loaded units? Returns true if yes, else
+false.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">tid</span>
+      <span class="dox_type">Number</span>
+      <span>transporter id</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">model</span><span class="p">.</span><span class="nx">hasLoadedIds</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">tid</span> <span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">pid</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span> <span class="nx">tid</span> <span class="p">].</span><span class="nx">owner</span><span class="p">;</span>
+  <span class="k">for</span><span class="p">(</span> <span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">CWT_MAX_UNITS_PER_PLAYER</span><span class="o">*</span><span class="nx">pid</span><span class="p">,</span>
+         <span class="nx">e</span><span class="o">=</span><span class="nx">i</span><span class="o">+</span><span class="nx">CWT_MAX_UNITS_PER_PLAYER</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">){</span>
+
+    <span class="k">if</span><span class="p">(</span> <span class="nx">i</span> <span class="o">!==</span> <span class="nx">tid</span> <span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">unit</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span> <span class="nx">i</span> <span class="p">];</span>
+      <span class="k">if</span><span class="p">(</span> <span class="nx">unit</span> <span class="o">!==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">loadedIn</span> <span class="o">===</span> <span class="nx">tid</span> <span class="p">){</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Returns true if the unit with the id lid is loaded by a transporter unit
+with id tid.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">lid</span>
+      <span class="dox_type">Number</span>
+      <span>load id</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">tid</span>
+      <span class="dox_type">Number</span>
+      <span>transporter id</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">isLoadedBy</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">lid</span><span class="p">,</span> <span class="nx">tid</span> <span class="p">){</span>
+  <span class="k">return</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span> <span class="nx">lid</span> <span class="p">].</span><span class="nx">loadedIn</span> <span class="o">===</span> <span class="nx">tid</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Loads the unit with id lid into a tranporter with the id tid.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">lid</span>
+      <span class="dox_type">Number</span>
+      <span>load id</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">tid</span>
+      <span class="dox_type">Number</span>
+      <span>transporter id</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">loadUnitInto</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">loadId</span><span class="p">,</span> <span class="nx">transportId</span> <span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="nx">model</span><span class="p">.</span><span class="nx">canLoad</span><span class="p">(</span> <span class="nx">loadId</span><span class="p">,</span> <span class="nx">transportId</span> <span class="p">)</span> <span class="p">){</span>
+    <span class="nx">util</span><span class="p">.</span><span class="nx">raiseError</span><span class="p">(</span><span class="s2">&quot;transporter unit&quot;</span><span class="p">,</span><span class="nx">transportId</span><span class="p">,</span><span class="s2">&quot;cannot load unit&quot;</span><span class="p">,</span><span class="nx">loadId</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span> <span class="nx">loadId</span> <span class="p">].</span><span class="nx">loadedIn</span> <span class="o">=</span> <span class="nx">transportId</span><span class="p">;</span>
+  <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span> <span class="nx">transportId</span> <span class="p">].</span><span class="nx">loadedIn</span><span class="o">--</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Unloads the unit with id lid from a tranporter with the id tid.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">lid</span>
+      <span class="dox_type">Number</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">tid
+</span>
+      <span class="dox_type">Number</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">unloadUnitFrom</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">transportId</span><span class="p">,</span> <span class="nx">trsx</span><span class="p">,</span> <span class="nx">trsy</span><span class="p">,</span> <span class="nx">loadId</span><span class="p">,</span> <span class="nx">tx</span><span class="p">,</span><span class="nx">ty</span> <span class="p">){</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<p>TRAPPED ?</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">tx</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span> <span class="o">||</span> <span class="nx">ty</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>SEND LOADED UNIT INTO WAIT</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span> <span class="nx">loadId</span> <span class="p">].</span><span class="nx">loadedIn</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span> <span class="nx">transportId</span> <span class="p">].</span><span class="nx">loadedIn</span><span class="o">++</span><span class="p">;</span>
+
+  <span class="kd">var</span> <span class="nx">moveCode</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">tx</span> <span class="o">&lt;</span> <span class="nx">trsx</span> <span class="p">)</span> <span class="nx">moveCode</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">MOVE_CODE_LEFT</span><span class="p">;</span>
+  <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="nx">tx</span> <span class="o">&gt;</span> <span class="nx">trsx</span> <span class="p">)</span> <span class="nx">moveCode</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">MOVE_CODE_RIGHT</span><span class="p">;</span>
+  <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="nx">ty</span> <span class="o">&lt;</span> <span class="nx">trsy</span> <span class="p">)</span> <span class="nx">moveCode</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">MOVE_CODE_UP</span><span class="p">;</span>
+  <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="nx">ty</span> <span class="o">&gt;</span> <span class="nx">trsy</span> <span class="p">)</span> <span class="nx">moveCode</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">MOVE_CODE_DOWN</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>MOVE OUT</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">model</span><span class="p">.</span><span class="nx">moveUnit</span><span class="p">([</span><span class="nx">moveCode</span><span class="p">],</span> <span class="nx">loadId</span><span class="p">,</span> <span class="nx">trsx</span><span class="p">,</span> <span class="nx">trsy</span><span class="p">);</span>
+  <span class="nx">model</span><span class="p">.</span><span class="nx">markUnitNonActable</span><span class="p">(</span> <span class="nx">loadId</span> <span class="p">);</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Returns true if a tranporter with id tid can load the unit with the id
+lid. This function also calculates the resulting weight if the transporter
+would load the unit. If the calculated weight is greater than the maxiumum
+loadable weight false will be returned.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">lid</span>
+      <span class="dox_type">Number</span>
+      <span>load id</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">tid</span>
+      <span class="dox_type">Number</span>
+      <span>transporter id</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">canLoad</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">lid</span><span class="p">,</span> <span class="nx">tid</span> <span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">lid</span> <span class="o">===</span> <span class="nx">tid</span> <span class="p">)</span> <span class="nx">util</span><span class="p">.</span><span class="nx">raiseError</span><span class="p">(</span><span class="s2">&quot;transporter cannot load itself&quot;</span><span class="p">);</span>
+  
+  <span class="kd">var</span> <span class="nx">transporter</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span> <span class="nx">tid</span> <span class="p">];</span>
+  <span class="kd">var</span> <span class="nx">load</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span> <span class="nx">lid</span> <span class="p">];</span>
+    
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p>LEFT SLOTS ?</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">maxLoads</span> <span class="o">=</span> <span class="nx">transporter</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">maxloads</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">transporter</span><span class="p">.</span><span class="nx">loadedIn</span> <span class="o">+</span> <span class="nx">maxLoads</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">===</span> <span class="mi">0</span> <span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span> <span class="c1">// LOADED IN OF TRNSP MARKS THE AMOUNT OF LOADS</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<p>LOADS = (LOADIN + 1) + MAX_LOADS</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+</div>
+<p>IS UNIT TYPE LOADABLE ?</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">tpsL</span> <span class="o">=</span> <span class="nx">transporter</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">canload</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span>
+    <span class="p">(</span> <span class="nx">tpsL</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span> <span class="nx">load</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">ID</span> <span class="p">)</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="c1">// ID</span>
+    <span class="p">(</span> <span class="nx">tpsL</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span> <span class="nx">load</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">movetype</span> <span class="p">)</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="c1">// MOVETYPE</span>
+    <span class="p">(</span> <span class="nx">tpsL</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">)</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="c1">// ALL TYPE</span>
+  <span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span> 
+
+  <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Returns true if the unit with id tid is a traensporter, else false.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">tid</span>
+      <span class="dox_type">Number</span>
+      <span>transporter id</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">isTransport</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">tid</span> <span class="p">){</span>
+  <span class="k">return</span> <span class="k">typeof</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span> <span class="nx">tid</span> <span class="p">].</span><span class="nx">type</span><span class="p">.</span><span class="nx">maxloads</span> <span class="o">===</span> <span class="s2">&quot;number&quot;</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

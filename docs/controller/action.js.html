@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>action.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "Users/tapsi/Desktop/Dropbox/Dropbox/Dropsi Ordner/Custom Wars Tactics/cwt/srcEngine/controller/action.js", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>action.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary">
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">controller</span><span class="p">.</span><span class="nx">actionMap</span> <span class="o">=</span> <span class="p">{};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Contains all known action objects.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">controller</span><span class="p">.</span><span class="nx">actionObjects</span> <span class="o">=</span> <span class="p">{};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Action buffer object that holds all actions that aren't invoked yet.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">controller</span><span class="p">.</span><span class="nx">actionBuffer_</span> <span class="o">=</span> <span class="nx">util</span><span class="p">.</span><span class="nx">createRingBuffer</span><span class="p">(</span><span class="nx">CWT_ACTIONS_BUFFER_SIZE</span><span class="p">);</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Registers an user callable action.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">impl</span>
+      <span>action implementation</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">controller</span><span class="p">.</span><span class="nx">defineAction_</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">impl</span><span class="p">)</span> <span class="p">{</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<p>CHECKS</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">impl</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="s2">&quot;condition&quot;</span><span class="p">))</span> <span class="nx">util</span><span class="p">.</span><span class="nx">raiseError</span><span class="p">(</span><span class="s2">&quot;condition needed&quot;</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">impl</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="s2">&quot;key&quot;</span><span class="p">))</span> <span class="nx">util</span><span class="p">.</span><span class="nx">raiseError</span><span class="p">(</span><span class="s2">&quot;action key isn&#39;t defined&quot;</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">impl</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="s2">&quot;invoke&quot;</span><span class="p">))</span> <span class="nx">util</span><span class="p">.</span><span class="nx">raiseError</span><span class="p">(</span><span class="s2">&quot;action implementation isn&#39;t defined&quot;</span><span class="p">);</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="nx">controller</span><span class="p">.</span><span class="nx">actionObjects</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">impl</span><span class="p">.</span><span class="nx">key</span><span class="p">))</span> <span class="nx">util</span><span class="p">.</span><span class="nx">raiseError</span><span class="p">(</span><span class="s2">&quot;action key is already registered&quot;</span><span class="p">);</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">impl</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="s2">&quot;prepareMenu&quot;</span><span class="p">))</span> <span class="nx">impl</span><span class="p">.</span><span class="nx">prepareMenu</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">impl</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="s2">&quot;prepareTargets&quot;</span><span class="p">))</span> <span class="nx">impl</span><span class="p">.</span><span class="nx">prepareTargets</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">impl</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="s2">&quot;isTargetValid&quot;</span><span class="p">))</span> <span class="nx">impl</span><span class="p">.</span><span class="nx">isTargetValid</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">impl</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="s2">&quot;multiStepAction&quot;</span><span class="p">))</span> <span class="nx">impl</span><span class="p">.</span><span class="nx">multiStepAction</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">impl</span><span class="p">.</span><span class="nx">prepareTargets</span> <span class="o">!==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">impl</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="s2">&quot;targetSelectionType&quot;</span><span class="p">))</span> <span class="nx">impl</span><span class="p">.</span><span class="nx">targetSelectionType</span> <span class="o">=</span> <span class="s2">&quot;A&quot;</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">impl</span><span class="p">.</span><span class="nx">prepareTargets</span> <span class="o">!==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">impl</span><span class="p">.</span><span class="nx">isTargetValid</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">util</span><span class="p">.</span><span class="nx">raiseError</span><span class="p">(</span><span class="s2">&quot;only one selection type can be used in an action&quot;</span><span class="p">);</span>
+  <span class="p">}</span> 
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>REGISTER PROGRAMATIC LINK</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">controller</span><span class="p">.</span><span class="nx">actionObjects</span><span class="p">[</span> <span class="nx">impl</span><span class="p">.</span><span class="nx">key</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">impl</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nx">controller</span><span class="p">.</span><span class="nx">unitAction</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">impl</span> <span class="p">){</span>
+  <span class="nx">impl</span><span class="p">.</span><span class="nx">mapAction</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="nx">impl</span><span class="p">.</span><span class="nx">unitAction</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="nx">impl</span><span class="p">.</span><span class="nx">propertyAction</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="nx">controller</span><span class="p">.</span><span class="nx">defineAction_</span><span class="p">(</span><span class="nx">impl</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">controller</span><span class="p">.</span><span class="nx">propertyAction</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">impl</span> <span class="p">){</span>
+  <span class="nx">impl</span><span class="p">.</span><span class="nx">mapAction</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="nx">impl</span><span class="p">.</span><span class="nx">unitAction</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="nx">impl</span><span class="p">.</span><span class="nx">propertyAction</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="nx">controller</span><span class="p">.</span><span class="nx">defineAction_</span><span class="p">(</span><span class="nx">impl</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">controller</span><span class="p">.</span><span class="nx">mapAction</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">impl</span> <span class="p">){</span>
+  <span class="nx">impl</span><span class="p">.</span><span class="nx">mapAction</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="nx">impl</span><span class="p">.</span><span class="nx">unitAction</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="nx">impl</span><span class="p">.</span><span class="nx">propertyAction</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="nx">controller</span><span class="p">.</span><span class="nx">defineAction_</span><span class="p">(</span><span class="nx">impl</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="cm">/** @private */</span>
+<span class="nx">controller</span><span class="p">.</span><span class="nx">callToList_</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>ADD KEY</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">args</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="k">for</span><span class="p">(</span> <span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nx">e</span><span class="o">=</span><span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">)</span> <span class="nx">args</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">arguments</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+  <span class="nx">args</span><span class="p">[</span> <span class="nx">args</span><span class="p">.</span><span class="nx">length</span> <span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__actionId__</span><span class="p">;</span>
+    
+  <span class="k">return</span> <span class="nx">args</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cm">/** @private */</span>
+<span class="nx">controller</span><span class="p">.</span><span class="nx">callAsCommand_</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<p>ADD KEY</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">args</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="k">for</span><span class="p">(</span> <span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nx">e</span><span class="o">=</span><span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">)</span> <span class="nx">args</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">arguments</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+  <span class="nx">args</span><span class="p">[</span> <span class="nx">args</span><span class="p">.</span><span class="nx">length</span> <span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__actionId__</span><span class="p">;</span>
+  
+  <span class="k">if</span><span class="p">(</span> <span class="nx">DEBUG</span> <span class="p">){</span>
+    <span class="nx">util</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
+      <span class="s2">&quot;adding&quot;</span><span class="p">,</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">args</span><span class="p">),</span>
+      <span class="s2">&quot;to the command stack as&quot;</span><span class="p">,</span><span class="nx">controller</span><span class="p">.</span><span class="nx">actionMap</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">__actionId__</span><span class="p">],</span>
+      <span class="s2">&quot;command&quot;</span><span class="p">)</span>
+  <span class="p">}</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p>SEND COMMAND</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">controller</span><span class="p">.</span><span class="nx">isNetworkGame</span><span class="p">()</span> <span class="p">)</span> <span class="nx">controller</span><span class="p">.</span><span class="nx">sendNetworkMessage</span><span class="p">(</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">);</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<p>REGISTER COMMAND</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">controller</span><span class="p">.</span><span class="nx">actionBuffer_</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="nx">args</span> <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="cm">/** @private */</span>
+<span class="nx">controller</span><span class="p">.</span><span class="nx">listenCommand_</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">){</span>
+  <span class="nx">controller</span><span class="p">.</span><span class="nx">listenCommand</span><span class="p">(</span> <span class="nx">controller</span><span class="p">.</span><span class="nx">actionMap</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">__actionId__</span><span class="p">],</span> <span class="nx">cb</span> <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">util</span><span class="p">.</span><span class="nx">scoped</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+  <span class="kd">var</span> <span class="nx">id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">keys</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">model</span><span class="p">);</span>
+  <span class="k">for</span><span class="p">(</span> <span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nx">e</span><span class="o">=</span><span class="nx">keys</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">){</span>
+    
+    <span class="kd">var</span> <span class="nx">actName</span> <span class="o">=</span> <span class="nx">keys</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+    <span class="kd">var</span> <span class="nx">propValue</span> <span class="o">=</span> <span class="nx">model</span><span class="p">[</span><span class="nx">actName</span><span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span> <span class="k">typeof</span> <span class="nx">propValue</span> <span class="o">===</span> <span class="s2">&quot;function&quot;</span> <span class="p">){</span>
+      <span class="nx">propValue</span><span class="p">.</span><span class="nx">__actionId__</span> <span class="o">=</span> <span class="nx">id</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
+      <span class="nx">propValue</span><span class="p">.</span><span class="nx">callAsCommand</span> <span class="o">=</span> <span class="nx">controller</span><span class="p">.</span><span class="nx">callAsCommand_</span><span class="p">;</span>
+      <span class="nx">propValue</span><span class="p">.</span><span class="nx">callToList</span> <span class="o">=</span> <span class="nx">controller</span><span class="p">.</span><span class="nx">callToList_</span><span class="p">;</span>
+      <span class="nx">propValue</span><span class="p">.</span><span class="nx">listenCommand</span> <span class="o">=</span> <span class="nx">controller</span><span class="p">.</span><span class="nx">listenCommand_</span><span class="p">;</span>
+      <span class="nx">controller</span><span class="p">.</span><span class="nx">actionMap</span><span class="p">[</span><span class="nx">id</span><span class="p">.</span><span class="nx">toString</span><span class="p">()]</span> <span class="o">=</span>  <span class="nx">keys</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+      <span class="nx">id</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

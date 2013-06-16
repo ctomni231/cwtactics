@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>sSM.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "Users/tapsi/Desktop/Dropbox/Dropbox/Dropsi Ordner/Custom Wars Tactics/cwt/srcEngine/util/sSM.js", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>sSM.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary">
+  </div>
+  <div class="body"><p>This is a small but state machine for JavaScript. It's originally designed
+for Custom Wars Tactics (Link:) but can be used in other turn based games as well. </p>
+
+<p>Target of this library is to provide a complex configurate able state machine in a very
+small library (03.2013 => 1KB minified and 0.5KB gzipped). </p>
+
+<p>This is why the complexity of this state machine is low overall. This engine
+may suits for you if you only need to have a flow between states with basic on enter events 
+and a small history.  </p>
+
+<p>ToDo:
+- convert DEBUG statements to a more generic solution
+- better constant for the last state transition
+- may add onLeave event
+- debug reset functionality
+- error event for illegal transitions</p>
+
+<p>License (MIT):</p>
+
+<p>Copyright (c) 2013 BlackCat [<a href='mailto:<a href='mailto:blackcat.myako@googlemail.com'>blackcat.myako@googlemail.com</a>'><a href='mailto:blackcat.myako@googlemail.com'>blackcat.myako@googlemail.com</a></a>]</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
+associated documentation files (the "Software"), to deal in the Software without restriction, including 
+without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the 
+following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all copies or substantial 
+portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT 
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="k">if</span><span class="p">(</span> <span class="nx">simpleStateMachine</span> <span class="o">!==</span> <span class="kc">undefined</span> <span class="p">)</span> <span class="k">throw</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;simpleStateMachine is already defined in the global scope&quot;</span><span class="p">);</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>The central finite state machine of the game engine. </p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">simpleStateMachine</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+  
+  <span class="k">return</span> <span class="cm">/** @lends simpleStateMachine */</span> <span class="p">{</span>
+    
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Represents a breaking transition event. To break a transition it should
+be used in an event function of a state implementation.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">BREAK_TRANSITION</span><span class="o">:</span> <span class="s2">&quot;__BREAK_TRS__&quot;</span><span class="p">,</span>
+    
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Current active state.</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">state</span><span class="o">:</span>     <span class="s2">&quot;NONE&quot;</span><span class="p">,</span>
+    
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>State history that contains a queue of the state flow.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Type</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">Array
+</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">history</span><span class="o">:</span><span class="p">[],</span>
+            
+    <span class="nx">name</span><span class="o">:</span><span class="s2">&quot;UNNAMED STATEMACHINE&quot;</span><span class="p">,</span>
+    
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Represents a return to last state event. To return to the last state it 
+should be used in an event function of a state implementation. </p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">lastState</span><span class="o">:</span> <span class="s2">&quot;__LAST_STATE_TRS__&quot;</span><span class="p">,</span>
+    
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>State machine construction diagram object. Every state and transition will 
+be defined in this descriptor object.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">structure</span><span class="o">:</span> <span class="p">{},</span>
+    
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Invokes an event in the current active state.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">ev</span>
+      <span class="dox_type">String</span>
+      <span>event name</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">arguments</span>
+      <span class="dox_type">...Object</span>
+      <span>for the event</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">event</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">ev</span> <span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span> <span class="nx">DEBUG</span> <span class="p">)</span> <span class="nx">util</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s2">&quot;: got event&quot;</span><span class="p">,</span><span class="nx">ev</span><span class="p">);</span>
+      
+      <span class="kd">var</span> <span class="nx">stateEvent</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">structure</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="p">][</span> <span class="nx">ev</span> <span class="p">];</span>
+      <span class="k">if</span><span class="p">(</span> <span class="nx">stateEvent</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="p">){</span>
+        <span class="nx">util</span><span class="p">.</span><span class="nx">raiseError</span><span class="p">(</span><span class="s2">&quot;missing event&quot;</span><span class="p">,</span><span class="nx">ev</span><span class="p">,</span><span class="s2">&quot;in state&quot;</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">);</span>
+      <span class="p">}</span>
+      
+      <span class="kd">var</span> <span class="nx">nextState</span> <span class="o">=</span> <span class="nx">stateEvent</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span> <span class="p">);</span>
+      <span class="k">if</span><span class="p">(</span> <span class="nx">nextState</span> <span class="o">!==</span> <span class="kc">undefined</span> <span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span> <span class="nx">nextState</span> <span class="o">!==</span> <span class="k">this</span><span class="p">.</span><span class="nx">BREAK_TRANSITION</span> <span class="p">){</span>
+          
+          <span class="kd">var</span> <span class="nx">goBack</span> <span class="o">=</span> <span class="nx">nextState</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">lastState</span><span class="p">;</span>
+          <span class="k">if</span><span class="p">(</span> <span class="nx">goBack</span> <span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">history</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">1</span> <span class="p">)</span> <span class="nx">nextState</span> <span class="o">=</span> <span class="s2">&quot;IDLE&quot;</span><span class="p">;</span>
+            <span class="k">else</span> <span class="nx">nextState</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">history</span><span class="p">.</span><span class="nx">pop</span><span class="p">();</span>
+          <span class="p">}</span>
+          
+          <span class="kd">var</span> <span class="nx">nextStateImpl</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">structure</span><span class="p">[</span> <span class="nx">nextState</span> <span class="p">];</span>
+          <span class="k">if</span><span class="p">(</span> <span class="nx">nextStateImpl</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="p">){</span>
+            <span class="nx">util</span><span class="p">.</span><span class="nx">raiseError</span><span class="p">(</span><span class="s2">&quot;state&quot;</span><span class="p">,</span><span class="nx">nextState</span><span class="p">,</span><span class="s2">&quot;is not defined&quot;</span><span class="p">);</span>
+          <span class="p">}</span>
+          
+          <span class="k">if</span><span class="p">(</span> <span class="nx">nextStateImpl</span><span class="p">.</span><span class="nx">onenter</span> <span class="o">!==</span> <span class="kc">undefined</span> <span class="p">){</span>
+            
+            <span class="kd">var</span> <span class="nx">breaker</span> <span class="o">=</span> <span class="nx">nextStateImpl</span><span class="p">.</span><span class="nx">onenter</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span> <span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span> <span class="nx">breaker</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">BREAK_TRANSITION</span> <span class="p">){</span>
+              
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p>BREAK TRANSITION</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+              <span class="k">return</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="nx">breaker</span> <span class="o">!==</span> <span class="kc">undefined</span> <span class="p">){</span>
+              
+              
+            <span class="p">}</span>
+          <span class="p">}</span>
+          
+          <span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="nx">goBack</span> <span class="p">){</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">history</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="p">);</span>
+          <span class="p">}</span>
+          
+          <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="nx">nextState</span><span class="p">;</span>
+          <span class="k">if</span><span class="p">(</span> <span class="nx">DEBUG</span> <span class="p">)</span> <span class="nx">util</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s2">&quot;: changed state to&quot;</span><span class="p">,</span><span class="nx">nextState</span><span class="p">);</span>
+          
+          <span class="k">if</span><span class="p">(</span> <span class="nx">nextStateImpl</span><span class="p">.</span><span class="nx">actionState</span> <span class="o">!==</span> <span class="kc">undefined</span> <span class="p">){</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">event</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="s2">&quot;actionState&quot;</span> <span class="p">);</span>
+          <span class="p">}</span>
+          
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="nx">ev</span> <span class="o">===</span> <span class="s2">&quot;actionState&quot;</span> <span class="p">){</span>
+          <span class="nx">util</span><span class="p">.</span><span class="nx">raiseError</span><span class="p">(</span><span class="s2">&quot;an action state cannot return a break transition&quot;</span><span class="p">);</span> 
+        <span class="p">}</span>
+      <span class="p">}</span>
+      <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">util</span><span class="p">.</span><span class="nx">raiseError</span><span class="p">(</span><span class="s2">&quot;an event must return a transition command&quot;</span><span class="p">);</span> 
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

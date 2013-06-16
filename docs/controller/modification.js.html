@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>modification.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "Users/tapsi/Desktop/Dropbox/Dropbox/Dropsi Ordner/Custom Wars Tactics/cwt/srcEngine/controller/modification.js", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>modification.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Loads a modification into the game engine.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">data
+</span>
+      <span class="dox_type">Object</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">model</span><span class="p">.</span><span class="nx">loadModification</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">data</span> <span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span><span class="nx">e</span><span class="p">;</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<p>WEATHERS</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">for</span><span class="p">(</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nx">e</span><span class="o">=</span><span class="nx">data</span><span class="p">.</span><span class="nx">weathers</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">)</span> <span class="nx">model</span><span class="p">.</span><span class="nx">parseWeatherType</span><span class="p">(</span> <span class="nx">data</span><span class="p">.</span><span class="nx">weathers</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">);</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p>TILES</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">for</span><span class="p">(</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nx">e</span><span class="o">=</span><span class="nx">data</span><span class="p">.</span><span class="nx">tiles</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">)</span> <span class="nx">model</span><span class="p">.</span><span class="nx">parseTileType</span><span class="p">(</span> <span class="nx">data</span><span class="p">.</span><span class="nx">tiles</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">);</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<p>MOVETYPES</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">for</span><span class="p">(</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nx">e</span><span class="o">=</span><span class="nx">data</span><span class="p">.</span><span class="nx">movetypes</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">)</span> <span class="nx">model</span><span class="p">.</span><span class="nx">parseMoveType</span><span class="p">(</span> <span class="nx">data</span><span class="p">.</span><span class="nx">movetypes</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">);</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<p>UNITS</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">for</span><span class="p">(</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nx">e</span><span class="o">=</span><span class="nx">data</span><span class="p">.</span><span class="nx">units</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">)</span> <span class="nx">model</span><span class="p">.</span><span class="nx">parseUnitType</span><span class="p">(</span> <span class="nx">data</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">);</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>FACTIONS</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">for</span><span class="p">(</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nx">e</span><span class="o">=</span><span class="nx">data</span><span class="p">.</span><span class="nx">factions</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">)</span> <span class="nx">model</span><span class="p">.</span><span class="nx">parseFactionType</span><span class="p">(</span> <span class="nx">data</span><span class="p">.</span><span class="nx">factions</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">);</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>COMMANDERS (CO)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">for</span><span class="p">(</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nx">e</span><span class="o">=</span><span class="nx">data</span><span class="p">.</span><span class="nx">commanders</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">)</span> <span class="nx">model</span><span class="p">.</span><span class="nx">parseCoType</span><span class="p">(</span> <span class="nx">data</span><span class="p">.</span><span class="nx">commanders</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">);</span>
+  
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<p>GLOBAL RULES (TODO: NEEDED?)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">for</span><span class="p">(</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nx">e</span><span class="o">=</span><span class="nx">data</span><span class="p">.</span><span class="nx">globalRules</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">)</span> <span class="nx">model</span><span class="p">.</span><span class="nx">parseRule</span><span class="p">(</span> <span class="nx">data</span><span class="p">.</span><span class="nx">globalRules</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="kc">false</span> <span class="p">);</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p>GRAPHICS AND SOUNDS</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">model</span><span class="p">.</span><span class="nx">graphics</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">graphics</span><span class="p">;</span>
+  <span class="nx">model</span><span class="p">.</span><span class="nx">sounds</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">sounds</span><span class="p">;</span>
+  <span class="nx">model</span><span class="p">.</span><span class="nx">maps</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">maps</span><span class="p">;</span>
+          
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<p>LANG</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">model</span><span class="p">.</span><span class="nx">language</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">language</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

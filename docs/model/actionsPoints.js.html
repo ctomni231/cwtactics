@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>actionsPoints.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "Users/tapsi/Desktop/Dropbox/Dropbox/Dropsi Ordner/Custom Wars Tactics/cwt/srcEngine/model/actionsPoints.js", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>actionsPoints.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Holds the identical numbers of all objects that can act during the turn.
+After a unit has acted, it should be removed from this list with
+{@link model.markUnitNonActable}.</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">model</span><span class="p">.</span><span class="nx">leftActors</span> <span class="o">=</span> <span class="nx">util</span><span class="p">.</span><span class="nx">list</span><span class="p">(</span> 
+  <span class="nx">CWT_MAX_UNITS_PER_PLAYER</span><span class="p">,</span> 
+  <span class="kc">false</span> 
+<span class="p">);</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Returns true if the selected uid can act in the current active turn,
+else false.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">uid</span>
+      <span>selected unit identical number</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">canAct</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">uid</span> <span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">startIndex</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">turnOwner</span> <span class="o">*</span> <span class="nx">CWT_MAX_UNITS_PER_PLAYER</span><span class="p">;</span>
+
+  <span class="k">if</span><span class="p">(</span> <span class="nx">uid</span> <span class="o">&gt;=</span> <span class="nx">startIndex</span> <span class="o">+</span> <span class="nx">CWT_MAX_UNITS_PER_PLAYER</span> <span class="o">||</span> <span class="nx">uid</span> <span class="o">&lt;</span> <span class="nx">startIndex</span> <span class="p">){</span>
+    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="k">return</span> <span class="nx">model</span><span class="p">.</span><span class="nx">leftActors</span><span class="p">[</span> <span class="nx">uid</span> <span class="o">-</span> <span class="nx">startIndex</span> <span class="p">]</span> <span class="o">===</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary">
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">uid</span>
+      <span class="dox_type">Number</span>
+      <span>selected unit identical number</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">canAct</span>
+      <span class="dox_type">Boolean</span>
+      <span>the target status </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">setActableStatus</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">uid</span><span class="p">,</span> <span class="nx">canAct</span> <span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">startIndex</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">turnOwner</span> <span class="o">*</span> <span class="nx">CWT_MAX_UNITS_PER_PLAYER</span><span class="p">;</span>
+
+  <span class="k">if</span><span class="p">(</span> <span class="nx">uid</span> <span class="o">&gt;=</span> <span class="nx">startIndex</span> <span class="o">+</span> <span class="nx">CWT_MAX_UNITS_PER_PLAYER</span> <span class="o">||</span> <span class="nx">uid</span> <span class="o">&lt;</span> <span class="nx">startIndex</span> <span class="p">){</span>
+    <span class="nx">util</span><span class="p">.</span><span class="nx">raiseError</span><span class="p">(</span><span class="s2">&quot;unit with id&quot;</span><span class="p">,</span><span class="nx">uid</span><span class="p">,</span><span class="s2">&quot;does not belongs to the turn owner&quot;</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="nx">model</span><span class="p">.</span><span class="nx">leftActors</span><span class="p">[</span> <span class="nx">uid</span> <span class="o">-</span> <span class="nx">startIndex</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">canAct</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary">
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">pid
+</span>
+      <span class="dox_type">Number</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">resetActableStatus</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">pid</span> <span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">startIndex</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">turnOwner</span> <span class="o">*</span> <span class="nx">CWT_MAX_UNITS_PER_PLAYER</span><span class="p">;</span>
+  <span class="k">for</span><span class="p">(</span> <span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">startIndex</span><span class="p">,</span><span class="nx">e</span><span class="o">=</span><span class="nx">i</span><span class="o">+</span><span class="nx">CWT_MAX_UNITS_PER_PLAYER</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">){</span>
+    <span class="nx">model</span><span class="p">.</span><span class="nx">leftActors</span><span class="p">[</span> <span class="nx">i</span> <span class="o">-</span> <span class="nx">startIndex</span> <span class="p">]</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary">
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">uid
+</span>
+      <span class="dox_type">Number</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">markUnitActable</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">uid</span> <span class="p">){</span>
+  <span class="nx">model</span><span class="p">.</span><span class="nx">setActableStatus</span><span class="p">(</span> <span class="nx">uid</span><span class="p">,</span> <span class="kc">true</span> <span class="p">);</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Called when an unit is trapped. Does not invoke any logic, useful for client listeners.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">uid
+</span>
+      <span class="dox_type">Number</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">trapWait</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">uid</span> <span class="p">){</span>
+  <span class="nx">model</span><span class="p">.</span><span class="nx">setActableStatus</span><span class="p">(</span> <span class="nx">uid</span><span class="p">,</span> <span class="kc">false</span> <span class="p">);</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary">
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">uid
+</span>
+      <span class="dox_type">Number</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">markUnitNonActable</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">uid</span> <span class="p">){</span>
+  <span class="nx">model</span><span class="p">.</span><span class="nx">setActableStatus</span><span class="p">(</span> <span class="nx">uid</span><span class="p">,</span> <span class="kc">false</span> <span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

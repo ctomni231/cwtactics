@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>unit.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "Users/tapsi/Desktop/Dropbox/Dropbox/Dropsi Ordner/Custom Wars Tactics/cwt/srcEngine/model/unit.js", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>unit.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Matrix with the same metrics like the map. Every unit is placed into the 
+cell that represents its position.</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span> <span class="o">=</span> <span class="nx">util</span><span class="p">.</span><span class="nx">matrix</span><span class="p">(</span> <span class="nx">CWT_MAX_MAP_WIDTH</span><span class="p">,</span> <span class="nx">CWT_MAX_MAP_HEIGHT</span><span class="p">,</span> <span class="kc">null</span> <span class="p">);</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>List of all unit objects. An inactive unit is marked with 
+{@link CWT_INACTIVE_ID} as owner.</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">units</span> <span class="o">=</span> <span class="nx">util</span><span class="p">.</span><span class="nx">list</span><span class="p">(</span> <span class="nx">CWT_MAX_PLAYER</span><span class="o">*</span><span class="nx">CWT_MAX_UNITS_PER_PLAYER</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="nx">x</span><span class="o">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="nx">y</span><span class="o">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="nx">hp</span><span class="o">:</span> <span class="mi">99</span><span class="p">,</span>
+    <span class="nx">ammo</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nx">fuel</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nx">type</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="nx">loadedIn</span><span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="nx">hidden</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nx">owner</span><span class="o">:</span> <span class="nx">CWT_INACTIVE_ID</span>
+  <span class="p">};</span>
+<span class="p">});</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Extracts the identical number from an unit object.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">unit
+</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">extractUnitId</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">unit</span> <span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">unit</span> <span class="o">===</span> <span class="kc">null</span> <span class="p">)</span> <span class="nx">util</span><span class="p">.</span><span class="nx">raiseError</span><span class="p">(</span><span class="s2">&quot;unit argument cannot be null&quot;</span><span class="p">);</span>
+
+  <span class="kd">var</span> <span class="nx">units</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">;</span>
+  <span class="k">for</span><span class="p">(</span> <span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nx">e</span><span class="o">=</span><span class="nx">units</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">units</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">===</span> <span class="nx">unit</span> <span class="p">)</span> <span class="k">return</span> <span class="nx">i</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nx">util</span><span class="p">.</span><span class="nx">raiseError</span><span class="p">(</span><span class="s2">&quot;cannot find unit&quot;</span><span class="p">,</span> <span class="nx">unit</span> <span class="p">);</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Returns true if a player with a given player id has free slots for new units.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">pid</span>
+      <span class="dox_type">Number</span>
+      <span>player id</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">hasFreeUnitSlots</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">pid</span> <span class="p">){</span>
+  
+  <span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">pid</span><span class="o">*</span><span class="nx">CWT_MAX_UNITS_PER_PLAYER</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">e</span><span class="o">=</span><span class="nx">i</span><span class="o">+</span><span class="nx">CWT_MAX_UNITS_PER_PLAYER</span><span class="p">;</span>
+  <span class="k">for</span><span class="p">(</span> <span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">owner</span> <span class="o">!==</span> <span class="nx">CWT_INACTIVE_ID</span> <span class="p">){</span>
+      <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Returns true if a given position is occupied by an unit, else false.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">x</span>
+      <span class="dox_type">Number</span>
+      <span>x coordinate</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">y</span>
+      <span class="dox_type">Number</span>
+      <span>y coordinate</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">Number</span>
+      <span>-1 if tile is not occupied else the id number from the unit that occupies the tile</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">isTileOccupiedByUnit</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">x</span><span class="p">,</span><span class="nx">y</span> <span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">unit</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">];</span>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">unit</span> <span class="o">===</span> <span class="kc">null</span> <span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="k">else</span> <span class="k">return</span> <span class="nx">model</span><span class="p">.</span><span class="nx">extractUnitId</span><span class="p">(</span> <span class="nx">unit</span> <span class="p">);</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Counts all units that are owned by the player with the given player id.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">pid</span>
+      <span class="dox_type">Number</span>
+      <span>player id</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">countUnits</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">pid</span> <span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">pid</span><span class="o">*</span><span class="nx">CWT_MAX_UNITS_PER_PLAYER</span><span class="p">;</span> 
+  <span class="kd">var</span> <span class="nx">e</span><span class="o">=</span><span class="nx">i</span><span class="o">+</span><span class="nx">CWT_MAX_UNITS_PER_PLAYER</span><span class="p">;</span>
+  
+  <span class="k">for</span><span class="p">(;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">owner</span> <span class="o">!==</span> <span class="nx">CWT_INACTIVE_ID</span> <span class="p">)</span> <span class="nx">n</span><span class="o">++</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="nx">n</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Converts and returns the HP points from the health value of an unit.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">unit
+</span>
+      <span class="dox_type">object</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">unitHpPt</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">unit</span> <span class="p">){</span>
+  <span class="k">return</span> <span class="nb">parseInt</span><span class="p">(</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">hp</span><span class="o">/</span><span class="mi">10</span> <span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Gets the rest of unit health </p>
+  </div>
+  <div class="body"><p>TODO CHECK THIS!</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">unit
+</span>
+      <span class="dox_type">object</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">unitHpPtRest</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">unit</span> <span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">pt</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">hp</span><span class="o">/</span><span class="mi">10</span> <span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">hp</span> <span class="o">-</span> <span class="nx">pt</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Converts HP points to a health value.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">pt
+</span>
+      <span class="dox_type">Number</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">ptToHp</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">pt</span> <span class="p">){</span>
+  <span class="k">return</span> <span class="p">(</span><span class="nx">pt</span><span class="o">*</span><span class="mi">10</span><span class="p">);</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Refills the resources of an unit.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">uid</span>
+      <span class="dox_type">Number</span>
+      <span class="dox_type">Unit</span>
+      <span>id of the unit or the unit object itself</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">refillResources</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">uid</span> <span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">unit</span> <span class="o">=</span> <span class="p">(</span> <span class="k">typeof</span> <span class="nx">uid</span><span class="p">.</span><span class="nx">x</span> <span class="o">===</span> <span class="s2">&quot;number&quot;</span> <span class="p">)</span><span class="o">?</span> <span class="nx">uid</span> <span class="o">:</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">uid</span><span class="p">];</span>
+  <span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">type</span><span class="p">;</span>
+  <span class="nx">unit</span><span class="p">.</span><span class="nx">ammo</span> <span class="o">=</span> <span class="nx">type</span><span class="p">.</span><span class="nx">ammo</span><span class="p">;</span>
+  <span class="nx">unit</span><span class="p">.</span><span class="nx">fuel</span> <span class="o">=</span> <span class="nx">type</span><span class="p">.</span><span class="nx">fuel</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>A supplier supplies all surrounding units that can 
+be supplied by the supplier.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">sid</span>
+      <span class="dox_type">Number</span>
+      <span>supplier id</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">x</span>
+      <span class="dox_type">Number</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">y
+</span>
+      <span class="dox_type">Number</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">unitSuppliesNeighbours</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">sid</span> <span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">selectedUnit</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span> <span class="nx">sid</span> <span class="p">];</span>  
+  <span class="k">if</span><span class="p">(</span> <span class="nx">selectedUnit</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">supply</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="p">)</span> <span class="nx">util</span><span class="p">.</span><span class="nx">raiseError</span><span class="p">(</span><span class="s2">&quot;unit is not a supplier unit&quot;</span><span class="p">);</span>
+  
+  <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">selectedUnit</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">selectedUnit</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">pid</span> <span class="o">=</span> <span class="nx">selectedUnit</span><span class="p">.</span><span class="nx">owner</span><span class="p">;</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+</div>
+<p>TODO check supply targets</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+</div>
+<p>CHECK TEAM REPAIR OR OWN SIDE REPAIR ONLY</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">mode</span> <span class="o">=</span> <span class="p">(</span> <span class="nx">controller</span><span class="p">.</span><span class="nx">configValue</span><span class="p">(</span><span class="s2">&quot;supplyAlliedUnits&quot;</span><span class="p">)</span> <span class="o">===</span> <span class="mi">1</span> <span class="p">)</span><span class="o">?</span> <span class="nx">model</span><span class="p">.</span><span class="nx">MODE_TEAM</span> <span class="o">:</span> <span class="nx">model</span><span class="p">.</span><span class="nx">MODE_OWN</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">check</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">relationShipCheck</span><span class="p">;</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
+</div>
+<p>LEFT</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">x</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="nx">y</span><span class="p">]</span> <span class="o">!==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> 
+          <span class="nx">check</span><span class="p">(</span> <span class="nx">pid</span><span class="p">,</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">x</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="nx">y</span><span class="p">].</span><span class="nx">owner</span><span class="p">,</span> <span class="nx">mode</span> <span class="p">)</span> <span class="p">)</span> <span class="nx">model</span><span class="p">.</span><span class="nx">refillResources</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">x</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="nx">y</span><span class="p">]</span> <span class="p">);</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
+</div>
+<p>UP</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">y</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> 
+          <span class="nx">check</span><span class="p">(</span> <span class="nx">pid</span><span class="p">,</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nx">owner</span><span class="p">,</span> <span class="nx">mode</span> <span class="p">)</span> <span class="p">)</span> <span class="nx">model</span><span class="p">.</span><span class="nx">refillResources</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="p">);</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+</div>
+<p>RIGHT</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="nx">model</span><span class="p">.</span><span class="nx">mapWidth</span><span class="o">-</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">x</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="nx">y</span><span class="p">]</span> <span class="o">!==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> 
+          <span class="nx">check</span><span class="p">(</span> <span class="nx">pid</span><span class="p">,</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">x</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="nx">y</span><span class="p">].</span><span class="nx">owner</span><span class="p">,</span> <span class="nx">mode</span> <span class="p">)</span> <span class="p">)</span> <span class="nx">model</span><span class="p">.</span><span class="nx">refillResources</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">x</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="nx">y</span><span class="p">]</span> <span class="p">);</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+</div>
+<p>DOWN</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">y</span> <span class="o">&lt;</span> <span class="nx">model</span><span class="p">.</span><span class="nx">mapHeight</span><span class="o">-</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">!==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> 
+          <span class="nx">check</span><span class="p">(</span> <span class="nx">pid</span><span class="p">,</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="o">+</span><span class="mi">1</span><span class="p">].</span><span class="nx">owner</span><span class="p">,</span> <span class="nx">mode</span> <span class="p">)</span> <span class="p">)</span> <span class="nx">model</span><span class="p">.</span><span class="nx">refillResources</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="p">);</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Inflicts damage to an unit.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">uid</span>
+      <span class="dox_type">Number</span>
+      <span class="dox_type">xofmodel.units</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">damage
+</span>
+      <span class="dox_type">Number</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">damageUnit</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">uid</span><span class="p">,</span> <span class="nx">damage</span><span class="p">,</span> <span class="nx">minRest</span> <span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span> <span class="k">typeof</span> <span class="nx">uid</span> <span class="o">!==</span> <span class="s2">&quot;number&quot;</span> <span class="p">)</span> <span class="nx">util</span><span class="p">.</span><span class="nx">raiseError</span><span class="p">(</span><span class="s2">&quot;id expected&quot;</span><span class="p">);</span>
+  
+  <span class="kd">var</span> <span class="nx">unit</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">uid</span><span class="p">];</span>
+  <span class="nx">unit</span><span class="p">.</span><span class="nx">hp</span> <span class="o">-=</span> <span class="nx">damage</span><span class="p">;</span>
+  
+  <span class="k">if</span><span class="p">(</span> <span class="nx">minRest</span> <span class="o">&amp;&amp;</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">hp</span> <span class="o">&lt;=</span> <span class="nx">minRest</span> <span class="p">){</span> 
+    <span class="nx">unit</span><span class="p">.</span><span class="nx">hp</span> <span class="o">=</span> <span class="nx">minRest</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">else</span><span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+</div>
+<p>DESTROY UNIT IF HEALTH FALLS TO ZERO</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">hp</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">){</span> 
+      <span class="nx">model</span><span class="p">.</span><span class="nx">destroyUnit</span><span class="p">(</span><span class="nx">uid</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Heals an unit. If the unit health will be greater than the maximum health value then the difference will 
+be added as gold to the owners gold depot.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">uid</span>
+      <span class="dox_type">Number</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">health</span>
+      <span class="dox_type">Number</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">diffAsGold</span>
+      <span class="dox_type">Boolean</span>
+      <span>if false then the difference won't be added as gold to the owners resource depot
+                 ( default = false )</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">healUnit</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">uid</span><span class="p">,</span> <span class="nx">health</span><span class="p">,</span> <span class="nx">diffAsGold</span> <span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span> <span class="k">typeof</span> <span class="nx">uid</span> <span class="o">!==</span> <span class="s2">&quot;number&quot;</span> <span class="p">)</span> <span class="nx">util</span><span class="p">.</span><span class="nx">raiseError</span><span class="p">(</span><span class="s2">&quot;id expected&quot;</span><span class="p">);</span>
+  
+  <span class="kd">var</span> <span class="nx">unit</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">uid</span><span class="p">];</span>
+    
+  <span class="nx">unit</span><span class="p">.</span><span class="nx">hp</span> <span class="o">+=</span> <span class="nx">health</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">hp</span> <span class="o">&gt;</span> <span class="mi">99</span> <span class="p">){</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
+</div>
+<p>PAY DIFFERENCE TO OWNERS GOLD DEPOT</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">diffAsGold</span> <span class="o">===</span> <span class="kc">true</span> <span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">diff</span> <span class="o">=</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">hp</span> <span class="o">-</span> <span class="mi">99</span><span class="p">;</span>
+      <span class="nx">model</span><span class="p">.</span><span class="nx">players</span><span class="p">[</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">owner</span> <span class="p">].</span><span class="nx">gold</span> <span class="o">+=</span> <span class="nb">parseInt</span><span class="p">(</span> <span class="p">(</span><span class="nx">unit</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">cost</span><span class="o">*</span><span class="nx">diff</span><span class="p">)</span><span class="o">/</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nx">unit</span><span class="p">.</span><span class="nx">hp</span> <span class="o">=</span> <span class="mi">99</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Hides an unit.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">uid
+</span>
+      <span class="dox_type">Number</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">hideUnit</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">uid</span> <span class="p">){</span>
+  <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">uid</span><span class="p">].</span><span class="nx">hidden</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Unhides an unit.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">uid
+</span>
+      <span class="dox_type">Number</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">unhideUnit</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">uid</span> <span class="p">){</span>
+  <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">uid</span><span class="p">].</span><span class="nx">hidden</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Joins two units together. If the combined health is greater than the maximum health then the difference will be
+payed to the owners resource depot.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">juid</span>
+      <span class="dox_type">Number</span>
+      <span>id of the joining unit</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">jtuid</span>
+      <span class="dox_type">Number</span>
+      <span>id of the join target unit</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">joinUnits</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">juid</span><span class="p">,</span> <span class="nx">jtuid</span> <span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">joinSource</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">juid</span><span class="p">];</span>
+  <span class="kd">var</span> <span class="nx">joinTarget</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">jtuid</span><span class="p">];</span>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">joinTarget</span><span class="p">.</span><span class="nx">type</span> <span class="o">!==</span> <span class="nx">joinSource</span><span class="p">.</span><span class="nx">type</span> <span class="p">)</span> <span class="nx">util</span><span class="p">.</span><span class="nx">raiseError</span><span class="p">(</span><span class="s2">&quot;both units has to be the same type of unit&quot;</span><span class="p">);</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+</div>
+<p>HP</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">model</span><span class="p">.</span><span class="nx">healUnit</span><span class="p">(</span><span class="nx">jtuid</span><span class="p">,</span> <span class="nx">model</span><span class="p">.</span><span class="nx">ptToHp</span><span class="p">(</span><span class="nx">model</span><span class="p">.</span><span class="nx">unitHpPt</span><span class="p">(</span> <span class="nx">joinSource</span> <span class="p">)),</span><span class="kc">true</span><span class="p">);</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
+</div>
+<p>AMMO</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">joinTarget</span><span class="p">.</span><span class="nx">ammo</span> <span class="o">+=</span> <span class="nx">joinSource</span><span class="p">.</span><span class="nx">ammo</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">joinTarget</span><span class="p">.</span><span class="nx">ammo</span> <span class="o">&gt;</span> <span class="nx">joinTarget</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">ammo</span> <span class="p">)</span> <span class="nx">joinTarget</span><span class="p">.</span><span class="nx">ammo</span> <span class="o">=</span> <span class="nx">joinTarget</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">ammo</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+</div>
+<p>FUEL</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">joinTarget</span><span class="p">.</span><span class="nx">fuel</span> <span class="o">+=</span> <span class="nx">joinSource</span><span class="p">.</span><span class="nx">fuel</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">joinTarget</span><span class="p">.</span><span class="nx">fuel</span> <span class="o">&gt;</span> <span class="nx">joinTarget</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">fuel</span> <span class="p">)</span> <span class="nx">joinTarget</span><span class="p">.</span><span class="nx">fuel</span> <span class="o">=</span> <span class="nx">joinTarget</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">fuel</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
+</div>
+<p>TODO EXP</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+</div>
+<p>DISBAND JOINER</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">joinSource</span><span class="p">.</span><span class="nx">owner</span> <span class="o">=</span> <span class="nx">CWT_INACTIVE_ID</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>The fuel of an unit will be drained if the unit is marked for using fuel to uptain. All units of a player will 
+be checked </p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">plid
+</span>
+      <span class="dox_type">Number</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">drainFuel</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">plid</span> <span class="p">){</span>
+  
+  <span class="kd">var</span> <span class="nx">unit</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">plid</span><span class="o">*</span><span class="nx">CWT_MAX_UNITS_PER_PLAYER</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">e</span><span class="o">=</span><span class="nx">i</span><span class="o">+</span><span class="nx">CWT_MAX_UNITS_PER_PLAYER</span><span class="p">;</span>
+  <span class="k">for</span><span class="p">(;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">){</span>
+    <span class="nx">unit</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">owner</span> <span class="o">===</span> <span class="nx">CWT_INACTIVE_ID</span> <span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+    
+    <span class="kd">var</span> <span class="nx">v</span> <span class="o">=</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">dailyFuelDrain</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span> <span class="k">typeof</span> <span class="nx">v</span> <span class="o">===</span> <span class="s2">&quot;number&quot;</span> <span class="p">){</span>
+      
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
+</div>
+<p>HIDDEN UNITS MAY DRAIN MORE FUEL</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="k">if</span><span class="p">(</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">hidden</span> <span class="o">&amp;&amp;</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">dailyFuelDrainHidden</span> <span class="p">){</span>
+        <span class="nx">v</span> <span class="o">=</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">dailyFuelUseHidden</span><span class="p">;</span>
+      <span class="p">}</span>
+      
+      <span class="nx">unit</span><span class="p">.</span><span class="nx">fuel</span> <span class="o">-=</span> <span class="nx">v</span><span class="p">;</span>
+      
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
+</div>
+<p>IF FUEL IS EMPTRY THEN DESTROY IT</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="k">if</span><span class="p">(</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">fuel</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">)</span> <span class="nx">model</span><span class="p">.</span><span class="nx">destroyUnit</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>The fuel of an unit will be drained if the unit is marked for using fuel to uptain. All units of a player will 
+be checked </p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">plid
+</span>
+      <span class="dox_type">Number</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">supplyUnitsBySupplierUnits</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">plid</span> <span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">plid</span><span class="o">*</span><span class="nx">CWT_MAX_UNITS_PER_PLAYER</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">e</span><span class="o">=</span><span class="nx">i</span><span class="o">+</span><span class="nx">CWT_MAX_UNITS_PER_PLAYER</span><span class="p">;</span>
+  <span class="k">for</span><span class="p">(;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">){</span>
+    <span class="nx">unit</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">owner</span> <span class="o">===</span> <span class="nx">CWT_INACTIVE_ID</span> <span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+    
+    <span class="k">if</span><span class="p">(</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">supply</span> <span class="o">!==</span> <span class="kc">undefined</span> <span class="p">)</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitSuppliesNeighbours</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Registers a new unit object in the stock of a player. The unit 
+will be created and placed into the tile at position (x,y).</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">pid</span>
+      <span class="dox_type">Number</span>
+      <span>id number of the player</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">x</span>
+      <span class="dox_type">Number</span>
+      <span>x coordinate of the target</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">y</span>
+      <span class="dox_type">Number</span>
+      <span>y coordinate of the target</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">type</span>
+      <span class="dox_type">String</span>
+      <span>type of the new unit</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">createUnit</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">pid</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">type</span> <span class="p">){</span>
+  
+  <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">pid</span><span class="o">*</span><span class="nx">CWT_MAX_UNITS_PER_PLAYER</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">e</span> <span class="o">=</span> <span class="nx">i</span><span class="o">+</span><span class="nx">CWT_MAX_UNITS_PER_PLAYER</span><span class="p">;</span>
+  <span class="k">for</span><span class="p">(</span> <span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">){</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
+</div>
+<p>FILL SLOT IF FREE</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">owner</span> <span class="o">===</span> <span class="nx">CWT_INACTIVE_ID</span> <span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">typeSheet</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitTypes</span><span class="p">[</span><span class="nx">type</span><span class="p">];</span>
+      <span class="kd">var</span> <span class="nx">unit</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+      
+      <span class="nx">unit</span><span class="p">.</span><span class="nx">hp</span> <span class="o">=</span> <span class="mi">99</span><span class="p">;</span>
+      <span class="nx">unit</span><span class="p">.</span><span class="nx">owner</span> <span class="o">=</span> <span class="nx">pid</span><span class="p">;</span>
+      <span class="nx">unit</span><span class="p">.</span><span class="nx">type</span> <span class="o">=</span> <span class="nx">typeSheet</span><span class="p">;</span>
+      <span class="nx">unit</span><span class="p">.</span><span class="nx">ammo</span> <span class="o">=</span> <span class="nx">typeSheet</span><span class="p">.</span><span class="nx">ammo</span><span class="p">;</span> 
+      <span class="nx">unit</span><span class="p">.</span><span class="nx">fuel</span> <span class="o">=</span> <span class="nx">typeSheet</span><span class="p">.</span><span class="nx">fuel</span><span class="p">;</span>
+      <span class="nx">unit</span><span class="p">.</span><span class="nx">loadedIn</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+      <span class="nx">model</span><span class="p">.</span><span class="nx">setUnitPosition</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">);</span>
+
+      <span class="k">if</span><span class="p">(</span> <span class="nx">DEBUG</span> <span class="p">)</span> <span class="nx">util</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;build unit for player&quot;</span><span class="p">,</span><span class="nx">pid</span><span class="p">,</span><span class="s2">&quot;in slot&quot;</span><span class="p">,</span><span class="nx">i</span><span class="p">);</span>
+      <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="nx">util</span><span class="p">.</span><span class="nx">raiseError</span><span class="p">(</span><span class="s2">&quot;cannot build unit for player&quot;</span><span class="p">,</span><span class="nx">pid</span><span class="p">,</span><span class="s2">&quot;because no slot is free&quot;</span><span class="p">);</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Deregisters an unit object from the stock of a player. The tile, where the unit is placed on, will be
+freed from any position information.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">uid</span>
+      <span class="dox_type">Number</span>
+      <span>id number of the unit</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">destroyUnit_silent</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">uid</span> <span class="p">){</span>
+  <span class="nx">model</span><span class="p">.</span><span class="nx">clearUnitPosition</span><span class="p">(</span><span class="nx">uid</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">unit</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">uid</span><span class="p">];</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
+</div>
+<p>MARK UNIT AS UNUSED</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">unit</span><span class="p">.</span><span class="nx">owner</span> <span class="o">=</span> <span class="nx">CWT_INACTIVE_ID</span><span class="p">;</span> 
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
+</div>
+<p>END GAME IF NO UNIT LEFT LOOSE CONDITION IS TRUE</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">controller</span><span class="p">.</span><span class="nx">configValue</span><span class="p">(</span><span class="s2">&quot;noUnitsLeftLoose&quot;</span><span class="p">)</span> <span class="o">===</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">model</span><span class="p">.</span><span class="nx">countUnits</span><span class="p">(</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">owner</span> <span class="p">)</span> <span class="o">===</span> <span class="mi">0</span> <span class="p">){</span>
+    <span class="nx">controller</span><span class="p">.</span><span class="nx">endGameRound</span><span class="p">();</span>
+  <span class="p">}</span> 
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Deregisters an unit object from the stock of a player. The tile, where the unit is placed on, will be
+freed from any position information.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">uid</span>
+      <span class="dox_type">Number</span>
+      <span>id number of the unit</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">destroyUnit</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">uid</span> <span class="p">){</span>
+  <span class="nx">model</span><span class="p">.</span><span class="nx">destroyUnit_silent</span><span class="p">(</span><span class="nx">uid</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

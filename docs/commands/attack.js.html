@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>attack.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "Users/tapsi/Desktop/Dropbox/Dropbox/Dropsi Ordner/Custom Wars Tactics/cwt/srcEngine/commands/attack.js", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>attack.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">controller</span><span class="p">.</span><span class="nx">unitAction</span><span class="p">({</span>
+  
+  <span class="nx">key</span><span class="o">:</span><span class="s2">&quot;attack&quot;</span><span class="p">,</span>
+  
+  <span class="nx">unitAction</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nx">targetSelectionType</span><span class="o">:</span><span class="s2">&quot;A&quot;</span><span class="p">,</span>
+  
+  <span class="nx">prepareTargets</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">data</span> <span class="p">){</span>
+    <span class="nx">model</span><span class="p">.</span><span class="nx">attackRangeMod_</span><span class="p">(</span> <span class="nx">data</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">unitId</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">selection</span> <span class="p">);</span>
+  <span class="p">},</span>
+  
+  <span class="nx">condition</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">data</span> <span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">mode</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">thereIsUnitRelationShip</span><span class="p">(</span> <span class="nx">data</span><span class="p">.</span><span class="nx">source</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">target</span> <span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">mode</span> <span class="o">!==</span> <span class="nx">model</span><span class="p">.</span><span class="nx">MODE_NONE</span> <span class="o">&amp;&amp;</span> <span class="nx">mode</span> <span class="o">!==</span> <span class="nx">model</span><span class="p">.</span><span class="nx">MODE_SAME_OBJECT</span> <span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<p>CANNOT ATTACK IF PEACE PERIOD IS GIVEN</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">day</span><span class="o">-</span><span class="mi">1</span> <span class="o">&lt;</span> <span class="nx">controller</span><span class="p">.</span><span class="nx">configValue</span><span class="p">(</span><span class="s2">&quot;daysOfPeace&quot;</span><span class="p">)</span> <span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p>CANNOT ATTACK IF INDIRECT UNIT WILL MOVE</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">isIndirectUnit</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">unitId</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">data</span><span class="p">.</span><span class="nx">movePath</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    
+    <span class="k">return</span> <span class="nx">model</span><span class="p">.</span><span class="nx">hasTargets</span><span class="p">(</span> <span class="nx">data</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">unitId</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">y</span> <span class="p">);</span>
+  <span class="p">},</span>
+          
+  <span class="nx">invoke</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">data</span> <span class="p">){</span>
+    <span class="nx">model</span><span class="p">.</span><span class="nx">battleBetween</span><span class="p">.</span><span class="nx">callAsCommand</span><span class="p">(</span> 
+      <span class="nx">data</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">unitId</span><span class="p">,</span> 
+      <span class="nx">data</span><span class="p">.</span><span class="nx">targetselection</span><span class="p">.</span><span class="nx">unitId</span><span class="p">,</span> 
+      <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span> <span class="p">),</span> 
+      <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span> <span class="p">)</span> 
+    <span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>tagBuilder.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "Users/tapsi/Desktop/Dropbox/Dropbox/Dropsi Ordner/Custom Wars Tactics/cwt/srcEngine/controller/tagBuilder.js", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>tagBuilder.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">controller</span><span class="p">.</span><span class="nx">scriptTags</span> <span class="o">=</span> <span class="p">{};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary">
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">controller</span><span class="p">.</span><span class="nx">prepareTags</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">,</span> <span class="nx">uid</span><span class="p">,</span> <span class="nx">fx</span><span class="p">,</span><span class="nx">fy</span><span class="p">,</span> <span class="nx">fuid</span> <span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">tags</span> <span class="o">=</span> <span class="nx">controller</span><span class="p">.</span><span class="nx">scriptTags</span><span class="p">;</span>
+  
+  <span class="k">if</span><span class="p">(</span> <span class="nx">tags</span><span class="p">.</span><span class="nx">__oldUnit__</span> <span class="p">)</span> <span class="nx">tags</span><span class="p">[</span> <span class="nx">tags</span><span class="p">.</span><span class="nx">__oldUnit__</span> <span class="p">]</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">tags</span><span class="p">.</span><span class="nx">__oldTile__</span> <span class="p">)</span> <span class="nx">tags</span><span class="p">[</span> <span class="nx">tags</span><span class="p">.</span><span class="nx">__oldTile__</span> <span class="p">]</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  
+  <span class="nx">tags</span><span class="p">.</span><span class="nx">INDIRECT</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="nx">tags</span><span class="p">.</span><span class="nx">DIRECT</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  
+  <span class="kd">var</span> <span class="nx">unit</span> <span class="o">=</span> <span class="p">(</span><span class="nx">uid</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">?</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">uid</span><span class="p">]</span> <span class="o">:</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">];</span>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">unit</span> <span class="p">){</span>
+    <span class="nx">tags</span><span class="p">.</span><span class="nx">__oldUnit__</span> <span class="o">=</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">ID</span><span class="p">;</span>
+    <span class="nx">tags</span><span class="p">[</span> <span class="nx">tags</span><span class="p">.</span><span class="nx">__oldUnit__</span> <span class="p">]</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    
+    <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">isIndirectUnit</span><span class="p">(</span> <span class="p">(</span><span class="nx">uid</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">?</span> <span class="nx">uid</span> <span class="o">:</span> <span class="nx">model</span><span class="p">.</span><span class="nx">extractUnitId</span><span class="p">(</span><span class="nx">unit</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span> <span class="nx">tags</span><span class="p">.</span><span class="nx">INDIRECT</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="k">else</span> <span class="nx">tags</span><span class="p">.</span><span class="nx">DIRECT</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    
+  <span class="p">}</span>
+  
+  <span class="kd">var</span> <span class="nx">tileTp</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">map</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">].</span><span class="nx">ID</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">prop</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">propertyPosMap</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">];</span>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">prop</span> <span class="p">){</span>
+    <span class="nx">tileTp</span> <span class="o">=</span> <span class="nx">prop</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">ID</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="nx">tags</span><span class="p">.</span><span class="nx">__oldTile__</span> <span class="o">=</span> <span class="nx">tileTp</span><span class="p">;</span>
+  <span class="nx">tags</span><span class="p">[</span> <span class="nx">tags</span><span class="p">.</span><span class="nx">__oldTile__</span> <span class="p">]</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p>FOCUS TILE GIVEN</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="p">){</span>
+    
+    <span class="nx">tags</span><span class="p">.</span><span class="nx">OTHER_INDIRECT</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="nx">tags</span><span class="p">.</span><span class="nx">OTHER_DIRECT</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    
+    <span class="nx">unit</span> <span class="o">=</span> <span class="p">(</span><span class="nx">fuid</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">?</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">fuid</span><span class="p">]</span> <span class="o">:</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">fx</span><span class="p">][</span><span class="nx">fy</span><span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">unit</span> <span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">isIndirectUnit</span><span class="p">(</span> <span class="p">(</span><span class="nx">fuid</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">?</span> <span class="nx">fuid</span> <span class="o">:</span> <span class="nx">model</span><span class="p">.</span><span class="nx">extractUnitId</span><span class="p">(</span><span class="nx">unit</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span> <span class="nx">tags</span><span class="p">.</span><span class="nx">OTHER_INDIRECT</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+      <span class="k">else</span> <span class="nx">tags</span><span class="p">.</span><span class="nx">OTHER_DIRECT</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

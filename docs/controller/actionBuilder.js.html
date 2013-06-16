@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>actionBuilder.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "Users/tapsi/Desktop/Dropbox/Dropbox/Dropsi Ordner/Custom Wars Tactics/cwt/srcEngine/controller/actionBuilder.js", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>actionBuilder.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">util</span><span class="p">.</span><span class="nx">scoped</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+  
+  <span class="kd">var</span> <span class="nx">scope</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Builds several commands from collected action data.</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">controller</span><span class="p">.</span><span class="nx">buildAction</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="nx">scope</span> <span class="p">)</span> <span class="nx">scope</span> <span class="o">=</span> <span class="nx">controller</span><span class="p">.</span><span class="nx">stateMachine</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
+    
+    <span class="kd">var</span> <span class="nx">targetDto</span> <span class="o">=</span> <span class="nx">scope</span><span class="p">.</span><span class="nx">target</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">sourceDto</span> <span class="o">=</span> <span class="nx">scope</span><span class="p">.</span><span class="nx">source</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">moveDto</span> <span class="o">=</span> <span class="nx">scope</span><span class="p">.</span><span class="nx">movePath</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">actionDto</span> <span class="o">=</span> <span class="nx">scope</span><span class="p">.</span><span class="nx">action</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">actionObject</span> <span class="o">=</span> <span class="nx">controller</span><span class="p">.</span><span class="nx">actionObjects</span><span class="p">[</span><span class="nx">actionDto</span><span class="p">.</span><span class="nx">selectedEntry</span><span class="p">];</span>
+    <span class="kd">var</span> <span class="nx">trapped</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p>ADD MOVE PATH</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">moveDto</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">){</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<p>TRAPPED ?</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="k">if</span><span class="p">(</span> <span class="nx">moveDto</span><span class="p">.</span><span class="nx">data</span> <span class="o">!==</span> <span class="kc">null</span> <span class="p">){</span>
+        <span class="kd">var</span> <span class="nx">way</span> <span class="o">=</span> <span class="nx">moveDto</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
+
+        <span class="kd">var</span> <span class="nx">cx</span> <span class="o">=</span> <span class="nx">sourceDto</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">cy</span> <span class="o">=</span> <span class="nx">sourceDto</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span> <span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nx">e</span><span class="o">=</span><span class="nx">way</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">){</span>
+
+          <span class="k">switch</span><span class="p">(</span> <span class="nx">way</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">){</span>
+            <span class="k">case</span> <span class="nx">model</span><span class="p">.</span><span class="nx">MOVE_CODE_DOWN</span>  <span class="o">:</span> <span class="nx">cy</span><span class="o">++</span><span class="p">;</span> <span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="nx">model</span><span class="p">.</span><span class="nx">MOVE_CODE_UP</span>    <span class="o">:</span> <span class="nx">cy</span><span class="o">--</span><span class="p">;</span> <span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="nx">model</span><span class="p">.</span><span class="nx">MOVE_CODE_LEFT</span>  <span class="o">:</span> <span class="nx">cx</span><span class="o">--</span><span class="p">;</span> <span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="nx">model</span><span class="p">.</span><span class="nx">MOVE_CODE_RIGHT</span> <span class="o">:</span> <span class="nx">cx</span><span class="o">++</span><span class="p">;</span> <span class="k">break</span><span class="p">;</span>
+          <span class="p">}</span>
+
+          <span class="kd">var</span> <span class="nx">unit</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">cx</span><span class="p">][</span><span class="nx">cy</span><span class="p">];</span>
+          <span class="k">if</span><span class="p">(</span> <span class="nx">unit</span> <span class="o">!==</span> <span class="kc">null</span> <span class="p">){</span>
+
+            <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">players</span><span class="p">[</span><span class="nx">model</span><span class="p">.</span><span class="nx">turnOwner</span><span class="p">].</span><span class="nx">team</span> <span class="o">!==</span>
+              <span class="nx">model</span><span class="p">.</span><span class="nx">players</span><span class="p">[</span><span class="nx">unit</span><span class="p">.</span><span class="nx">owner</span><span class="p">].</span><span class="nx">team</span> <span class="p">){</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<p>CONVERT TO TRAP WAIT</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+              <span class="nx">targetDto</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">cx</span><span class="p">,</span><span class="nx">cy</span><span class="p">);</span>
+              <span class="nx">way</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span> <span class="nx">i</span> <span class="p">);</span>
+              <span class="nx">trapped</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="p">}</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>MOVE COMMAND</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="nx">model</span><span class="p">.</span><span class="nx">moveUnit</span><span class="p">.</span><span class="nx">callAsCommand</span><span class="p">(</span> <span class="nx">moveDto</span><span class="p">.</span><span class="nx">clone</span><span class="p">(),</span> <span class="nx">sourceDto</span><span class="p">.</span><span class="nx">unitId</span><span class="p">,</span> <span class="nx">sourceDto</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">sourceDto</span><span class="p">.</span><span class="nx">y</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>ACTION COMMAND</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="nx">trapped</span> <span class="p">)</span> <span class="nx">actionObject</span><span class="p">.</span><span class="nx">invoke</span><span class="p">(</span> <span class="nx">scope</span> <span class="p">);</span>
+    <span class="k">else</span> <span class="nx">model</span><span class="p">.</span><span class="nx">trapWait</span><span class="p">.</span><span class="nx">callAsCommand</span><span class="p">(</span> <span class="nx">sourceDto</span><span class="p">.</span><span class="nx">unitId</span> <span class="p">);</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<p>UNIT ACTIONS LEADS INTO A WAIT COMMAND </p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">actionObject</span><span class="p">.</span><span class="nx">unitAction</span> <span class="o">&amp;&amp;</span> <span class="nx">actionDto</span><span class="p">.</span><span class="nx">selectedEntry</span> <span class="o">!==</span> <span class="s2">&quot;wait&quot;</span> <span class="p">){</span>
+      <span class="nx">model</span><span class="p">.</span><span class="nx">markUnitNonActable</span><span class="p">.</span><span class="nx">callAsCommand</span><span class="p">(</span> <span class="nx">sourceDto</span><span class="p">.</span><span class="nx">unitId</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nx">trapped</span><span class="p">;</span>
+  <span class="p">};</span>
+<span class="p">});</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>battle.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "Users/tapsi/Desktop/Dropbox/Dropbox/Dropsi Ordner/Custom Wars Tactics/cwt/srcEngine/model/battle.js", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h3">
+        <a href="#isindirectunit">isIndirectUnit</a>
+      </div>
+      <div class="heading h3">
+        <a href="#basedamageagainst">baseDamageAgainst</a>
+      </div>
+      <div class="heading h3">
+        <a href="#canusemainweapon">canUseMainWeapon</a>
+      </div>
+      <div class="heading h3">
+        <a href="#hasmainweapon">hasMainWeapon</a>
+      </div>
+      <div class="heading h3">
+        <a href="#hassecondaryweapon">hasSecondaryWeapon</a>
+      </div>
+      <div class="heading h3">
+        <a href="#hastargets">hasTargets</a>
+      </div>
+      <div class="heading h3">
+        <a href="#battlebetween">battleBetween</a>
+      </div>
+      <div class="heading h5">
+        <a href="#searchtile">searchTile</a>
+      </div>
+      <div class="heading h3">
+        <a href="#attackrangemod_">attackRangeMod_</a>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>battle.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="isindirectunit">
+  <h3>
+    <a href="#isindirectunit" name="isindirectunit" class="pilcrow">&#182;</a>
+    isIndirectUnit
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Returns true if a given unit is an indirect firing unit (e.g. artillery) else false. </p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">uid</span>
+      <span class="dox_type">type</span>
+      <span>id of the unit</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">model</span><span class="p">.</span><span class="nx">isIndirectUnit</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">uid</span> <span class="p">){</span>
+  <span class="k">return</span> <span class="k">typeof</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">uid</span><span class="p">].</span><span class="nx">type</span><span class="p">.</span><span class="nx">minrange</span> <span class="o">===</span> <span class="s2">&quot;number&quot;</span><span class="p">;</span> 
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="basedamageagainst">
+  <h3>
+    <a href="#basedamageagainst" name="basedamageagainst" class="pilcrow">&#182;</a>
+    baseDamageAgainst
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Returns the base damage of an attacker against a defender. If the attacker cannot attack
+the defender then -1 will be returned. This function recognizes the ammo usage of main weapons.
+If the attacker cannot attack with his main weapon due low ammo then only the secondary weapon 
+will be checked.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">baseDamageAgainst</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">attacker</span><span class="p">,</span> <span class="nx">defender</span><span class="p">,</span> <span class="nx">withMainWp</span> <span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">attack</span> <span class="o">=</span> <span class="nx">attacker</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">attack</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">tType</span> <span class="o">=</span> <span class="nx">defender</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">ID</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">v</span><span class="p">;</span>
+  
+  <span class="k">if</span><span class="p">(</span> <span class="k">typeof</span> <span class="nx">withMainWp</span> <span class="o">===</span> <span class="s2">&quot;undefined&quot;</span> <span class="p">)</span> <span class="nx">withMainWp</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p>check main weapon</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">withMainWp</span> <span class="o">&amp;&amp;</span> <span class="nx">attacker</span><span class="p">.</span><span class="nx">ammo</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">attack</span><span class="p">.</span><span class="nx">main_wp</span> <span class="o">!==</span> <span class="kc">undefined</span> <span class="p">){</span>
+    <span class="nx">v</span> <span class="o">=</span> <span class="nx">attack</span><span class="p">.</span><span class="nx">main_wp</span><span class="p">[</span><span class="nx">tType</span><span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span> <span class="k">typeof</span> <span class="nx">v</span> <span class="o">===</span> <span class="s2">&quot;number&quot;</span> <span class="p">)</span> <span class="k">return</span> <span class="nx">v</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<p>check secondary weapon</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">attack</span><span class="p">.</span><span class="nx">sec_wp</span> <span class="o">!==</span> <span class="kc">undefined</span> <span class="p">){</span> 
+    <span class="nx">v</span> <span class="o">=</span> <span class="nx">attack</span><span class="p">.</span><span class="nx">sec_wp</span><span class="p">[</span><span class="nx">tType</span><span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span> <span class="k">typeof</span> <span class="nx">v</span> <span class="o">===</span> <span class="s2">&quot;number&quot;</span> <span class="p">)</span> <span class="k">return</span> <span class="nx">v</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="canusemainweapon">
+  <h3>
+    <a href="#canusemainweapon" name="canusemainweapon" class="pilcrow">&#182;</a>
+    canUseMainWeapon
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Returns true if an attacker can use it's main weapon against a defender. The distance won't be
+checked in case of indirect units.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">canUseMainWeapon</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">attacker</span><span class="p">,</span> <span class="nx">defender</span> <span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">attack</span> <span class="o">=</span> <span class="nx">attacker</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">attack</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">tType</span> <span class="o">=</span> <span class="nx">defender</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">ID</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">v</span><span class="p">;</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>check ammo and main weapon availability against the defender type</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">attacker</span><span class="p">.</span><span class="nx">ammo</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">attack</span><span class="p">.</span><span class="nx">main_wp</span> <span class="o">!==</span> <span class="kc">undefined</span> <span class="p">){</span>
+    <span class="nx">v</span> <span class="o">=</span> <span class="nx">attack</span><span class="p">.</span><span class="nx">main_wp</span><span class="p">[</span><span class="nx">tType</span><span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span> <span class="k">typeof</span> <span class="nx">v</span> <span class="o">===</span> <span class="s2">&quot;number&quot;</span> <span class="p">)</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="hasmainweapon">
+  <h3>
+    <a href="#hasmainweapon" name="hasmainweapon" class="pilcrow">&#182;</a>
+    hasMainWeapon
+  </h3>
+</div>
+
+
+<p>Returns true if the unit type has a main weapon else false.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">type
+</span>
+      <span class="dox_type">UnitSheet</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">hasMainWeapon</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">type</span> <span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">attack</span> <span class="o">=</span> <span class="nx">type</span><span class="p">.</span><span class="nx">attack</span><span class="p">;</span>
+  <span class="k">return</span> <span class="k">typeof</span> <span class="nx">attack</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span> <span class="o">&amp;&amp;</span> <span class="k">typeof</span> <span class="nx">attack</span><span class="p">.</span><span class="nx">main_wp</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="hassecondaryweapon">
+  <h3>
+    <a href="#hassecondaryweapon" name="hassecondaryweapon" class="pilcrow">&#182;</a>
+    hasSecondaryWeapon
+  </h3>
+</div>
+
+
+<p>Returns true if the unit type has a secondary weapon else false.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">type
+</span>
+      <span class="dox_type">UnitSheet</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">hasSecondaryWeapon</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">type</span> <span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">attack</span> <span class="o">=</span> <span class="nx">type</span><span class="p">.</span><span class="nx">attack</span><span class="p">;</span>
+  <span class="k">return</span> <span class="k">typeof</span> <span class="nx">attack</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span> <span class="o">&amp;&amp;</span> <span class="k">typeof</span> <span class="nx">attack</span><span class="p">.</span><span class="nx">sec_wp</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="hastargets">
+  <h3>
+    <a href="#hastargets" name="hastargets" class="pilcrow">&#182;</a>
+    hasTargets
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Returns true if an unit has targets in sight, else false.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">uid</span>
+      <span class="dox_type">type</span>
+      <span>id of the unit</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">x</span>
+      <span class="dox_type">Number</span>
+      <span>(default: unit position)</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">y</span>
+      <span class="dox_type">Number</span>
+      <span>(default: unit position)</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">hasTargets</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">uid</span><span class="p">,</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span> <span class="p">){</span>
+  <span class="k">return</span> <span class="nx">model</span><span class="p">.</span><span class="nx">attackRangeMod_</span><span class="p">(</span><span class="nx">uid</span><span class="p">,</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">);</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary">
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">getBattleDamage</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">attacker</span><span class="p">,</span> <span class="nx">defender</span><span class="p">,</span> <span class="nx">luck</span><span class="p">,</span> <span class="nx">withMainWp</span><span class="p">,</span> <span class="nx">isCounter</span> <span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">BASE</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">baseDamageAgainst</span><span class="p">(</span><span class="nx">attacker</span><span class="p">,</span><span class="nx">defender</span><span class="p">,</span><span class="nx">withMainWp</span><span class="p">);</span>
+  
+  <span class="kd">var</span> <span class="nx">AHP</span>  <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitHpPt</span><span class="p">(</span> <span class="nx">attacker</span> <span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">DHP</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitHpPt</span><span class="p">(</span> <span class="nx">defender</span> <span class="p">);</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+</div>
+<p>ATTACKER VALUES</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">controller</span><span class="p">.</span><span class="nx">prepareTags</span><span class="p">(</span> <span class="nx">attacker</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">attacker</span><span class="p">.</span><span class="nx">y</span> <span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">LUCK</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span> <span class="p">(</span><span class="nx">luck</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span><span class="o">*</span><span class="nx">controller</span><span class="p">.</span><span class="nx">scriptedValue</span><span class="p">(</span><span class="nx">attacker</span><span class="p">.</span><span class="nx">owner</span><span class="p">,</span><span class="s2">&quot;luck&quot;</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="mi">10</span> <span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">ACO</span>  <span class="o">=</span> <span class="nx">controller</span><span class="p">.</span><span class="nx">scriptedValue</span><span class="p">(</span> <span class="nx">attacker</span><span class="p">.</span><span class="nx">owner</span><span class="p">,</span> <span class="s2">&quot;att&quot;</span><span class="p">,</span> <span class="mi">100</span> <span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">isCounter</span> <span class="p">)</span> <span class="nx">ACO</span> <span class="o">+=</span> <span class="nx">controller</span><span class="p">.</span><span class="nx">scriptedValue</span><span class="p">(</span> <span class="nx">defender</span><span class="p">.</span><span class="nx">owner</span><span class="p">,</span> <span class="s2">&quot;counteratt&quot;</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+</div>
+<p>DEFENDER VALUES</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">controller</span><span class="p">.</span><span class="nx">prepareTags</span><span class="p">(</span> <span class="nx">defender</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">defender</span><span class="p">.</span><span class="nx">y</span> <span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">DCO</span>  <span class="o">=</span> <span class="nx">controller</span><span class="p">.</span><span class="nx">scriptedValue</span><span class="p">(</span> <span class="nx">defender</span><span class="p">.</span><span class="nx">owner</span><span class="p">,</span> <span class="s2">&quot;def&quot;</span><span class="p">,</span> <span class="mi">100</span> <span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">DTR</span> <span class="o">=</span> <span class="nx">controller</span><span class="p">.</span><span class="nx">scriptedValue</span><span class="p">(</span> <span class="nx">defender</span><span class="p">.</span><span class="nx">owner</span><span class="p">,</span> <span class="s2">&quot;terraindefense&quot;</span><span class="p">,</span> <span class="nx">model</span><span class="p">.</span><span class="nx">map</span><span class="p">[</span><span class="nx">defender</span><span class="p">.</span><span class="nx">x</span><span class="p">][</span><span class="nx">defender</span><span class="p">.</span><span class="nx">y</span><span class="p">].</span><span class="nx">defense</span> <span class="p">);</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+</div>
+<p>D%=[B<em>ACO/100+R]</em>(AHP/10)<em>[(200-(DCO+DTR</em>DHP))/100]</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">damage</span> <span class="o">=</span> <span class="p">(</span><span class="nx">BASE</span><span class="o">*</span><span class="nx">ACO</span><span class="o">/</span><span class="mi">100</span><span class="o">+</span><span class="nx">LUCK</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="nx">AHP</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="p">(</span><span class="mi">200</span><span class="o">-</span><span class="p">(</span> <span class="nx">DCO</span><span class="o">+</span><span class="p">(</span><span class="nx">DTR</span><span class="o">*</span><span class="nx">DHP</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span> <span class="o">/</span><span class="mi">100</span> <span class="p">);</span>
+  <span class="nx">damage</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span> <span class="nx">damage</span><span class="p">,</span> <span class="mi">10</span> <span class="p">);</span>
+  
+  <span class="k">if</span><span class="p">(</span> <span class="nx">DEBUG</span> <span class="p">){</span>
+    <span class="nx">util</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
+      <span class="s2">&quot;attacker:&quot;</span><span class="p">,</span><span class="nx">model</span><span class="p">.</span><span class="nx">extractUnitId</span><span class="p">(</span> <span class="nx">attacker</span> <span class="p">),</span>
+      <span class="s2">&quot;[&quot;</span><span class="p">,</span><span class="nx">BASE</span><span class="p">,</span><span class="s2">&quot;*&quot;</span><span class="p">,</span><span class="nx">ACO</span><span class="p">,</span><span class="s2">&quot;/100+&quot;</span><span class="p">,</span><span class="nx">LUCK</span><span class="p">,</span><span class="s2">&quot;]*(&quot;</span><span class="p">,</span><span class="nx">AHP</span><span class="p">,</span><span class="s2">&quot;/10)*[(200-(&quot;</span><span class="p">,</span><span class="nx">DCO</span><span class="p">,</span><span class="s2">&quot;+&quot;</span><span class="p">,</span><span class="nx">DTR</span><span class="p">,</span><span class="s2">&quot;*&quot;</span><span class="p">,</span><span class="nx">DHP</span><span class="p">,</span><span class="s2">&quot;))/100]&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;=&quot;</span><span class="p">,</span><span class="nx">damage</span>
+    <span class="p">);</span>
+  <span class="p">}</span>
+  
+  <span class="k">return</span> <span class="nx">damage</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="battlebetween">
+  <h3>
+    <a href="#battlebetween" name="battlebetween" class="pilcrow">&#182;</a>
+    battleBetween
+  </h3>
+</div>
+
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">attId</span>
+      <span class="dox_type">type</span>
+      <span>id of the attacker</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">defId</span>
+      <span class="dox_type">type</span>
+      <span>id of the defender</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">attLuckRatio</span>
+      <span class="dox_type">type</span>
+      <span>luck of the attacker (0-100)</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">defLuckRatio</span>
+      <span class="dox_type">type</span>
+      <span>luck of the defender (0-100)</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">battleBetween</span> <span class="o">=</span> <span class="nx">util</span><span class="p">.</span><span class="nx">scoped</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="searchtile">
+  <h5>
+    <a href="#searchtile" name="searchtile" class="pilcrow">&#182;</a>
+    searchTile
+  </h5>
+</div>
+
+  </div>
+  <div class="body"><p>local helper to search a surrounding tile that isn't occupied by an unit
+and has a distance of to between itself and the tile at pos (ax,ay)</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">rx</span>
+      <span class="dox_type">Number</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">ry</span>
+      <span class="dox_type">Number</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">ax</span>
+      <span class="dox_type">Number</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">ay
+</span>
+      <span class="dox_type">Number</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">searchTile</span><span class="p">(</span> <span class="nx">rx</span><span class="p">,</span><span class="nx">ry</span><span class="p">,</span> <span class="nx">ax</span><span class="p">,</span><span class="nx">ay</span> <span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">x</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="nx">y</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span>
+    
+    <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">isValidPosition</span><span class="p">(</span><span class="nx">rx</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nx">ry</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">rx</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="nx">ry</span><span class="p">]</span> <span class="p">){</span> <span class="nx">x</span><span class="o">=</span><span class="nx">rx</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="nx">y</span><span class="o">=</span><span class="nx">ry</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">isValidPosition</span><span class="p">(</span><span class="nx">rx</span><span class="p">,</span><span class="nx">ry</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">rx</span><span class="p">][</span><span class="nx">ry</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="p">){</span> <span class="nx">x</span><span class="o">=</span><span class="nx">rx</span><span class="p">;</span> <span class="nx">y</span><span class="o">=</span><span class="nx">ry</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">isValidPosition</span><span class="p">(</span><span class="nx">rx</span><span class="p">,</span><span class="nx">ry</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">rx</span><span class="p">][</span><span class="nx">ry</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="p">){</span> <span class="nx">x</span><span class="o">=</span><span class="nx">rx</span><span class="p">;</span> <span class="nx">y</span><span class="o">=</span><span class="nx">ry</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">isValidPosition</span><span class="p">(</span><span class="nx">rx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="nx">ry</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">rx</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="nx">ry</span><span class="p">]</span> <span class="p">){</span> <span class="nx">x</span><span class="o">=</span><span class="nx">rx</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="nx">y</span><span class="o">=</span><span class="nx">ry</span><span class="p">;</span> <span class="p">}</span>
+    
+    <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">isValidPosition</span><span class="p">(</span><span class="nx">rx</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nx">ry</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">rx</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="nx">ry</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="p">){</span> <span class="nx">x</span><span class="o">=</span><span class="nx">rx</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="nx">y</span><span class="o">=</span><span class="nx">ry</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">isValidPosition</span><span class="p">(</span><span class="nx">rx</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nx">ry</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">rx</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="nx">ry</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="p">){</span> <span class="nx">x</span><span class="o">=</span><span class="nx">rx</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="nx">y</span><span class="o">=</span><span class="nx">ry</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">isValidPosition</span><span class="p">(</span><span class="nx">rx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="nx">ry</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">rx</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="nx">ry</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="p">){</span> <span class="nx">x</span><span class="o">=</span><span class="nx">rx</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="nx">y</span><span class="o">=</span><span class="nx">ry</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">isValidPosition</span><span class="p">(</span><span class="nx">rx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="nx">ry</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">rx</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="nx">ry</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="p">){</span> <span class="nx">x</span><span class="o">=</span><span class="nx">rx</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="nx">y</span><span class="o">=</span><span class="nx">ry</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
+    
+    <span class="k">if</span><span class="p">(</span> <span class="nx">x</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span> <span class="p">){</span>
+      
+    <span class="p">}</span>
+  <span class="p">}</span>
+  
+  <span class="k">return</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">attId</span><span class="p">,</span> <span class="nx">defId</span><span class="p">,</span> <span class="nx">attLuckRatio</span><span class="p">,</span> <span class="nx">defLuckRatio</span> <span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">attacker</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">attId</span><span class="p">];</span>
+    <span class="kd">var</span> <span class="nx">defender</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">defId</span><span class="p">];</span>
+    <span class="kd">var</span> <span class="nx">aSheets</span> <span class="o">=</span> <span class="nx">attacker</span><span class="p">.</span><span class="nx">type</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">dSheets</span> <span class="o">=</span> <span class="nx">defender</span><span class="p">.</span><span class="nx">type</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">attOwner</span> <span class="o">=</span> <span class="nx">attacker</span><span class="p">.</span><span class="nx">owner</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">defOwner</span> <span class="o">=</span> <span class="nx">defender</span><span class="p">.</span><span class="nx">owner</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">powerAtt</span>        <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitHpPt</span><span class="p">(</span> <span class="nx">defender</span> <span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">powerCounterAtt</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitHpPt</span><span class="p">(</span> <span class="nx">attacker</span> <span class="p">);</span>
+    
+    <span class="kd">var</span> <span class="nx">retreatVal</span> <span class="o">=</span> <span class="nx">powerAtt</span><span class="p">;</span>
+    
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+</div>
+<p>ATTACK</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">model</span><span class="p">.</span><span class="nx">damageUnit</span><span class="p">(</span> <span class="nx">defId</span><span class="p">,</span> <span class="nx">model</span><span class="p">.</span><span class="nx">getBattleDamage</span><span class="p">(</span><span class="nx">attacker</span><span class="p">,</span><span class="nx">defender</span><span class="p">,</span><span class="nx">attLuckRatio</span><span class="p">)</span> <span class="p">);</span>
+    <span class="nx">powerAtt</span> <span class="o">-=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitHpPt</span><span class="p">(</span> <span class="nx">defender</span> <span class="p">);</span>
+    
+    <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">canUseMainWeapon</span><span class="p">(</span><span class="nx">attacker</span><span class="p">,</span><span class="nx">defender</span><span class="p">)</span> <span class="p">)</span> <span class="nx">attacker</span><span class="p">.</span><span class="nx">ammo</span><span class="o">--</span><span class="p">;</span>
+    
+    <span class="nx">powerAtt</span>        <span class="o">=</span> <span class="p">(</span> <span class="nb">parseInt</span><span class="p">(</span>        <span class="nx">powerAtt</span><span class="o">*</span><span class="mf">0.1</span><span class="o">*</span><span class="nx">dSheets</span><span class="p">.</span><span class="nx">cost</span><span class="p">,</span> <span class="mi">10</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="nx">model</span><span class="p">.</span><span class="nx">modifyPowerLevel</span><span class="p">(</span> <span class="nx">attOwner</span><span class="p">,</span> <span class="nb">parseInt</span><span class="p">(</span> <span class="mf">0.5</span><span class="o">*</span><span class="nx">powerAtt</span><span class="p">,</span> <span class="mi">10</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="nx">model</span><span class="p">.</span><span class="nx">modifyPowerLevel</span><span class="p">(</span> <span class="nx">defOwner</span><span class="p">,</span> <span class="nx">powerAtt</span> <span class="p">);</span>
+    
+    <span class="nx">retreatVal</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitHpPt</span><span class="p">(</span> <span class="nx">defender</span> <span class="p">)</span><span class="o">/</span><span class="nx">retreatVal</span><span class="o">*</span><span class="mi">100</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">retreatVal</span> <span class="o">&lt;</span> <span class="mi">20</span> <span class="p">){</span>
+      
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+</div>
+<p>RETREAT</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="nx">retreatVal</span> <span class="o">=</span> <span class="nx">searchTile</span><span class="p">(</span> <span class="nx">defender</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span><span class="nx">defender</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">attacker</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span><span class="nx">attacker</span><span class="p">.</span><span class="nx">y</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="nx">retreatVal</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+</div>
+<p>COUNTER ATTACK</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">retreatVal</span> <span class="o">&amp;&amp;</span> <span class="nx">defender</span><span class="p">.</span><span class="nx">hp</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">model</span><span class="p">.</span><span class="nx">isIndirectUnit</span><span class="p">(</span><span class="nx">defId</span><span class="p">)</span> <span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">mainWpAttack</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">canUseMainWeapon</span><span class="p">(</span><span class="nx">defender</span><span class="p">,</span><span class="nx">attacker</span><span class="p">);</span>
+      
+      <span class="nx">model</span><span class="p">.</span><span class="nx">damageUnit</span><span class="p">(</span> <span class="nx">attId</span><span class="p">,</span> <span class="nx">model</span><span class="p">.</span><span class="nx">getBattleDamage</span><span class="p">(</span>
+        <span class="nx">defender</span><span class="p">,</span><span class="nx">attacker</span><span class="p">,</span><span class="nx">defLuckRatio</span><span class="p">,</span> <span class="nx">mainWpAttack</span><span class="p">,</span> <span class="kc">true</span>
+      <span class="p">));</span>  
+      
+      <span class="nx">powerCounterAtt</span> <span class="o">-=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitHpPt</span><span class="p">(</span> <span class="nx">attacker</span> <span class="p">);</span>
+      
+      <span class="k">if</span><span class="p">(</span> <span class="nx">mainWpAttack</span> <span class="p">)</span> <span class="nx">defender</span><span class="p">.</span><span class="nx">ammo</span><span class="o">--</span><span class="p">;</span>
+      
+      <span class="nx">powerCounterAtt</span> <span class="o">=</span> <span class="p">(</span> <span class="nb">parseInt</span><span class="p">(</span> <span class="nx">powerCounterAtt</span><span class="o">*</span><span class="mf">0.1</span><span class="o">*</span><span class="nx">aSheets</span><span class="p">.</span><span class="nx">cost</span><span class="p">,</span> <span class="mi">10</span> <span class="p">)</span> <span class="p">);</span>
+      <span class="nx">model</span><span class="p">.</span><span class="nx">modifyPowerLevel</span><span class="p">(</span> <span class="nx">defOwner</span><span class="p">,</span> <span class="nb">parseInt</span><span class="p">(</span> <span class="mf">0.5</span><span class="o">*</span><span class="nx">powerCounterAtt</span><span class="p">,</span> <span class="mi">10</span> <span class="p">)</span> <span class="p">);</span>
+      <span class="nx">model</span><span class="p">.</span><span class="nx">modifyPowerLevel</span><span class="p">(</span> <span class="nx">attOwner</span><span class="p">,</span> <span class="nx">powerCounterAtt</span> <span class="p">);</span>
+    <span class="p">}</span>
+    
+  <span class="p">};</span>
+<span class="p">});</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="attackrangemod_">
+  <h3>
+    <a href="#attackrangemod_" name="attackrangemod_" class="pilcrow">&#182;</a>
+    attackRangeMod_
+  </h3>
+</div>
+
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">uid</span>
+      <span class="dox_type">Number</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">x</span>
+      <span class="dox_type">Number</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">y</span>
+      <span class="dox_type">Number</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">data
+</span>
+      <span class="dox_type">SelectionData</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">model</span><span class="p">.</span><span class="nx">attackRangeMod_</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">uid</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">markAttackableTiles</span> <span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">markInData</span> <span class="o">=</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">data</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span><span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">markAttackableTiles</span><span class="p">)</span> <span class="nx">markAttackableTiles</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  
+  <span class="kd">var</span> <span class="nx">unit</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">uid</span><span class="p">];</span>
+  <span class="kd">var</span> <span class="nx">teamId</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">players</span><span class="p">[</span><span class="nx">unit</span><span class="p">.</span><span class="nx">owner</span><span class="p">].</span><span class="nx">team</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">attackSheet</span> <span class="o">=</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">attack</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">1</span> <span class="p">){</span>
+    <span class="nx">x</span> <span class="o">=</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+    <span class="nx">y</span> <span class="o">=</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span> 
+  <span class="p">}</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+</div>
+<p>NO BATTLE UNIT ?</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span><span class="p">(</span> <span class="k">typeof</span> <span class="nx">attackSheet</span> <span class="o">===</span> <span class="s2">&quot;undefined&quot;</span> <span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
+</div>
+<p>ONLY MAIN WEAPON WITHOUT AMMO ? </p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">hasMainWeapon</span><span class="p">(</span><span class="nx">unit</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">model</span><span class="p">.</span><span class="nx">hasSecondaryWeapon</span><span class="p">(</span><span class="nx">unit</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+     <span class="nx">unit</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">ammo</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">ammo</span> <span class="o">===</span> <span class="mi">0</span>    <span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+  
+  <span class="kd">var</span> <span class="nx">minR</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">maxR</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  
+  <span class="k">if</span><span class="p">(</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">attack</span><span class="p">.</span><span class="nx">minrange</span> <span class="p">){</span>
+    
+    <span class="nx">controller</span><span class="p">.</span><span class="nx">prepareTags</span><span class="p">(</span> <span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">,</span> <span class="nx">uid</span> <span class="p">);</span>
+    <span class="nx">minR</span> <span class="o">=</span> <span class="nx">controller</span><span class="p">.</span><span class="nx">scriptedValue</span><span class="p">(</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">owner</span><span class="p">,</span> <span class="s2">&quot;minrange&quot;</span><span class="p">,</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">attack</span><span class="p">.</span><span class="nx">minrange</span> <span class="p">);</span>
+    <span class="nx">maxR</span> <span class="o">=</span> <span class="nx">controller</span><span class="p">.</span><span class="nx">scriptedValue</span><span class="p">(</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">owner</span><span class="p">,</span> <span class="s2">&quot;maxrange&quot;</span><span class="p">,</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">attack</span><span class="p">.</span><span class="nx">maxrange</span> <span class="p">);</span>
+  <span class="p">}</span>
+  
+  <span class="kd">var</span> <span class="nx">lX</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">hX</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">lY</span> <span class="o">=</span> <span class="nx">y</span><span class="o">-</span><span class="nx">maxR</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">hY</span> <span class="o">=</span> <span class="nx">y</span><span class="o">+</span><span class="nx">maxR</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">lY</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="nx">lY</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">hY</span> <span class="o">&gt;=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">mapHeight</span> <span class="p">)</span> <span class="nx">hY</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">mapHeight</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="k">for</span><span class="p">(</span> <span class="p">;</span> <span class="nx">lY</span><span class="o">&lt;=</span><span class="nx">hY</span><span class="p">;</span> <span class="nx">lY</span><span class="o">++</span> <span class="p">){</span>
+    
+    <span class="kd">var</span> <span class="nx">disY</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span> <span class="nx">lY</span><span class="o">-</span><span class="nx">y</span> <span class="p">);</span>
+    <span class="nx">lX</span> <span class="o">=</span> <span class="nx">x</span><span class="o">-</span><span class="nx">maxR</span><span class="o">+</span><span class="nx">disY</span><span class="p">;</span>
+    <span class="nx">hX</span> <span class="o">=</span> <span class="nx">x</span><span class="o">+</span><span class="nx">maxR</span><span class="o">-</span><span class="nx">disY</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">lX</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="nx">lX</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">hX</span> <span class="o">&gt;=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">mapWidth</span> <span class="p">)</span> <span class="nx">hX</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">mapWidth</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span> <span class="p">;</span> <span class="nx">lX</span><span class="o">&lt;=</span><span class="nx">hX</span><span class="p">;</span> <span class="nx">lX</span><span class="o">++</span> <span class="p">){</span>
+      
+      <span class="k">if</span><span class="p">(</span> <span class="nx">markAttackableTiles</span> <span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">distance</span><span class="p">(</span> <span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">,</span> <span class="nx">lX</span><span class="p">,</span><span class="nx">lY</span> <span class="p">)</span> <span class="o">&gt;=</span> <span class="nx">minR</span> <span class="p">){</span>
+          
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+</div>
+<p>SYMBOLIC YES YOU CAN ATTACK THIS TILE</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+          <span class="nx">data</span><span class="p">.</span><span class="nx">setValueAt</span><span class="p">(</span><span class="nx">lX</span><span class="p">,</span><span class="nx">lY</span><span class="p">,</span> <span class="mi">1</span> <span class="p">);</span> 
+        <span class="p">}</span>
+      <span class="p">}</span>
+      <span class="k">else</span><span class="p">{</span>
+        
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+</div>
+<p>IN FOG ?</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">fogData</span><span class="p">[</span><span class="nx">lX</span><span class="p">][</span><span class="nx">lY</span><span class="p">]</span> <span class="o">===</span> <span class="mi">0</span> <span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+        
+        <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">distance</span><span class="p">(</span> <span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">,</span> <span class="nx">lX</span><span class="p">,</span><span class="nx">lY</span> <span class="p">)</span> <span class="o">&gt;=</span> <span class="nx">minR</span> <span class="p">){</span>
+          
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+</div>
+<p>ONLY UNIT FROM OTHER TEAMS ARE ATTACKABLE</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+          <span class="kd">var</span> <span class="nx">tUnit</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span> <span class="nx">lX</span> <span class="p">][</span> <span class="nx">lY</span> <span class="p">];</span>
+          <span class="k">if</span><span class="p">(</span> <span class="nx">tUnit</span> <span class="o">!==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">model</span><span class="p">.</span><span class="nx">players</span><span class="p">[</span> <span class="nx">tUnit</span><span class="p">.</span><span class="nx">owner</span> <span class="p">].</span><span class="nx">team</span> <span class="o">!==</span> <span class="nx">teamId</span> <span class="p">){</span>
+            
+            <span class="kd">var</span> <span class="nx">dmg</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">baseDamageAgainst</span><span class="p">(</span><span class="nx">unit</span><span class="p">,</span><span class="nx">tUnit</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span> <span class="nx">dmg</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">){</span>
+              
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+</div>
+<p>IF DATA MODE IS ON, THEN MARK THE POSITION 
+ELSE RETURN TRUE</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+              <span class="k">if</span><span class="p">(</span> <span class="nx">markInData</span> <span class="p">)</span> <span class="nx">data</span><span class="p">.</span><span class="nx">setValueAt</span><span class="p">(</span><span class="nx">lX</span><span class="p">,</span><span class="nx">lY</span><span class="p">,</span> <span class="nx">dmg</span> <span class="p">);</span>
+              <span class="k">else</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="p">}</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  
+  <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ringBuffer.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "Users/tapsi/Desktop/Dropbox/Dropbox/Dropsi Ordner/Custom Wars Tactics/cwt/srcEngine/util/ringBuffer.js", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>ringBuffer.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Creates a ring buffer with a fixed size.</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">util</span><span class="p">.</span><span class="nx">createRingBuffer</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">size</span> <span class="p">){</span>
+
+  <span class="kd">var</span> <span class="nx">buffer</span> <span class="o">=</span> <span class="cm">/** @lends util.RingBuffer */</span> <span class="p">{</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Pushes an element into the buffer</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">msg</span>
+      <span>object that will be pushed into the buffer</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">push</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">msg</span><span class="p">){</span>
+      <span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">_data</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">_wInd</span> <span class="p">]</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;message buffer is full&quot;</span><span class="p">);</span>
+      <span class="p">}</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p>WRITE MSG AND INCREASE COUNTER</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="k">this</span><span class="p">.</span><span class="nx">_data</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">_wInd</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">msg</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">_wInd</span><span class="o">++</span><span class="p">;</span>
+      <span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">_wInd</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">_size</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_wInd</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Returns true if the ring buffer is empty else false.</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">isEmpty</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">_data</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">_rInd</span> <span class="p">]</span> <span class="o">===</span> <span class="kc">null</span> <span class="p">);</span>
+    <span class="p">},</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Returns the next available entry from the buffer (FIFO).</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">pop</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">if</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">_data</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">_rInd</span> <span class="p">]</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;message buffer is empty&quot;</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_data</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">_rInd</span> <span class="p">];</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>INCREASE COUNTER AND FREE SPACE</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="k">this</span><span class="p">.</span><span class="nx">_data</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">_rInd</span> <span class="p">]</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">_rInd</span><span class="o">++</span><span class="p">;</span>
+      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_rInd</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">_size</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_rInd</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="p">}</span>
+
+      <span class="k">return</span> <span class="nx">msg</span><span class="p">;</span>
+    <span class="p">},</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Clears the buffer.</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">clear</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">_rInd</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">_wInd</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="k">for</span><span class="p">(</span> <span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">size</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">){</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_data</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+
+  <span class="nx">buffer</span><span class="p">.</span><span class="nx">_rInd</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="nx">buffer</span><span class="p">.</span><span class="nx">_wInd</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="nx">buffer</span><span class="p">.</span><span class="nx">_data</span> <span class="o">=</span> <span class="nx">util</span><span class="p">.</span><span class="nx">list</span><span class="p">(</span> <span class="nx">size</span><span class="p">,</span> <span class="kc">null</span> <span class="p">);</span>
+  <span class="nx">buffer</span><span class="p">.</span><span class="nx">_size</span> <span class="o">=</span> <span class="nx">size</span><span class="p">;</span>
+
+  <span class="k">return</span> <span class="nx">buffer</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

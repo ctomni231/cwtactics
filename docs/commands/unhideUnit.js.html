@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>unhideUnit.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "Users/tapsi/Desktop/Dropbox/Dropbox/Dropsi Ordner/Custom Wars Tactics/cwt/srcEngine/commands/unhideUnit.js", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>unhideUnit.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">controller</span><span class="p">.</span><span class="nx">unitAction</span><span class="p">({</span>
+  
+  <span class="nx">key</span><span class="o">:</span><span class="s2">&quot;unhideUnit&quot;</span><span class="p">,</span>
+  
+  <span class="nx">condition</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">data</span> <span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">mode</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">thereIsUnitRelationShip</span><span class="p">(</span> <span class="nx">data</span><span class="p">.</span><span class="nx">source</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">target</span> <span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">mode</span> <span class="o">!==</span> <span class="nx">model</span><span class="p">.</span><span class="nx">MODE_NONE</span> <span class="o">&amp;&amp;</span> <span class="nx">mode</span> <span class="o">!==</span> <span class="nx">model</span><span class="p">.</span><span class="nx">MODE_SAME_OBJECT</span> <span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    
+    <span class="k">return</span> <span class="nx">data</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">unit</span><span class="p">.</span><span class="nx">hidden</span><span class="p">;</span>
+  <span class="p">},</span>
+  
+  <span class="nx">invoke</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">data</span> <span class="p">){</span>
+    <span class="nx">model</span><span class="p">.</span><span class="nx">unhideUnit</span><span class="p">.</span><span class="nx">callAsCommand</span><span class="p">(</span> <span class="nx">data</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">unitId</span> <span class="p">);</span> 
+  <span class="p">}</span>
+  
+<span class="p">});</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

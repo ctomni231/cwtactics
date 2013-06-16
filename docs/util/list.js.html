@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>list.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "Users/tapsi/Desktop/Dropbox/Dropbox/Dropsi Ordner/Custom Wars Tactics/cwt/srcEngine/util/list.js", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>list.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="cm">/** @private */</span>
+<span class="nx">util</span><span class="p">.</span><span class="nx">fillList_</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="kd">var</span> <span class="nx">defValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__defValue__</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__length__</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">isFN</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">defValue</span> <span class="o">===</span> <span class="s1">&#39;function&#39;</span><span class="p">;</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<p>SIMPLE ARRAY OBJECT</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">e</span> <span class="o">=</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">isFN</span> <span class="p">)</span> <span class="k">this</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">defValue</span><span class="p">(</span> <span class="nx">i</span> <span class="p">);</span>
+    <span class="k">else</span>       <span class="k">this</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">defValue</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="cm">/** @private */</span>
+<span class="nx">util</span><span class="p">.</span><span class="nx">fillMatrix_</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="kd">var</span> <span class="nx">defValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__defValue__</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">w</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__width__</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__height__</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">isFN</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">defValue</span> <span class="o">===</span> <span class="s1">&#39;function&#39;</span><span class="p">;</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p>COMPLEX ARRAY (MATRIX) OBJECT</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">e</span> <span class="o">=</span> <span class="nx">w</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">ej</span> <span class="o">=</span> <span class="nx">h</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="nx">ej</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span> <span class="nx">isFN</span> <span class="p">)</span> <span class="k">this</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">]</span> <span class="o">=</span> <span class="nx">defValue</span><span class="p">(</span> <span class="nx">i</span><span class="p">,</span><span class="nx">j</span> <span class="p">);</span>
+      <span class="k">else</span>       <span class="k">this</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">]</span> <span class="o">=</span> <span class="nx">defValue</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="cm">/** @private */</span>
+<span class="nx">util</span><span class="p">.</span><span class="nx">cloneList_</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">list</span> <span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__length__</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">list</span><span class="p">.</span><span class="nx">__length__</span> <span class="o">!==</span> <span class="nx">len</span> <span class="p">)</span> <span class="k">throw</span> <span class="nb">Error</span><span class="p">();</span>
+  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">e</span> <span class="o">=</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="nx">list</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="cm">/** @private */</span>
+<span class="nx">util</span><span class="p">.</span><span class="nx">cloneMatrix_</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">matrix</span> <span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">w</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__width__</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__height__</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">matrix</span><span class="p">.</span><span class="nx">length</span> <span class="o">!==</span> <span class="k">this</span><span class="p">.</span><span class="nx">length</span> <span class="p">)</span> <span class="k">throw</span> <span class="nb">Error</span><span class="p">();</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<p>COMPLEX ARRAY (MATRIX) OBJECT</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">e</span> <span class="o">=</span> <span class="nx">w</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">ej</span> <span class="o">=</span> <span class="nx">h</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="nx">ej</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">){</span>
+      <span class="nx">matrix</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">];</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Creates a list and fills it with default values.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">len</span>
+      <span class="dox_type">Number</span>
+      <span>the length of the created list</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">defaultValue</span>
+      <span>the default value that will be inserted into the list slots </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">util</span><span class="p">.</span><span class="nx">list</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">len</span><span class="p">,</span> <span class="nx">defaultValue</span> <span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">defaultValue</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="p">){</span> <span class="nx">defaultValue</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span> <span class="p">}</span>
+  
+  <span class="kd">var</span> <span class="nx">warr</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="nx">warr</span><span class="p">.</span><span class="nx">__defValue__</span> <span class="o">=</span> <span class="nx">defaultValue</span><span class="p">;</span>
+  <span class="nx">warr</span><span class="p">.</span><span class="nx">__length__</span> <span class="o">=</span> <span class="nx">len</span><span class="p">;</span>
+  <span class="nx">warr</span><span class="p">.</span><span class="nx">resetValues</span> <span class="o">=</span> <span class="nx">util</span><span class="p">.</span><span class="nx">fillList_</span><span class="p">;</span>
+  <span class="nx">warr</span><span class="p">.</span><span class="nx">cloneValues</span> <span class="o">=</span> <span class="nx">util</span><span class="p">.</span><span class="nx">cloneList_</span><span class="p">;</span>
+  
+  <span class="nx">warr</span><span class="p">.</span><span class="nx">resetValues</span><span class="p">();</span>
+  
+  <span class="k">return</span> <span class="nx">warr</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Creates a matrix (table) and fills it with default values.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">w</span>
+      <span class="dox_type">Number</span>
+      <span>width of the matrix</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">h</span>
+      <span class="dox_type">Number</span>
+      <span>height of the matrix</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">defaultValue</span>
+      <span>the default value that will be inserted into the cells </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">util</span><span class="p">.</span><span class="nx">matrix</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">w</span><span class="p">,</span> <span class="nx">h</span><span class="p">,</span> <span class="nx">defaultValue</span> <span class="p">){</span>
+  
+  <span class="k">if</span><span class="p">(</span> <span class="nx">defaultValue</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="p">){</span> <span class="nx">defaultValue</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span> <span class="p">}</span>
+  
+  <span class="kd">var</span> <span class="nx">warr</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="nx">warr</span><span class="p">.</span><span class="nx">__defValue__</span> <span class="o">=</span> <span class="nx">defaultValue</span><span class="p">;</span>
+  <span class="nx">warr</span><span class="p">.</span><span class="nx">__width__</span> <span class="o">=</span> <span class="nx">w</span><span class="p">;</span>
+  <span class="nx">warr</span><span class="p">.</span><span class="nx">__height__</span> <span class="o">=</span> <span class="nx">h</span><span class="p">;</span>
+  <span class="nx">warr</span><span class="p">.</span><span class="nx">resetValues</span> <span class="o">=</span> <span class="nx">util</span><span class="p">.</span><span class="nx">fillMatrix_</span><span class="p">;</span>
+  <span class="nx">warr</span><span class="p">.</span><span class="nx">cloneValues</span> <span class="o">=</span> <span class="nx">util</span><span class="p">.</span><span class="nx">cloneMatrix_</span><span class="p">;</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>CREATE SUB ARRAYS</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">w</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span> <span class="nx">warr</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[];</span> <span class="p">}</span>
+  
+  <span class="nx">warr</span><span class="p">.</span><span class="nx">resetValues</span><span class="p">();</span>
+  
+  <span class="k">return</span> <span class="nx">warr</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

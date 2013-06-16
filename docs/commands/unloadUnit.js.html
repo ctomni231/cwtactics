@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>unloadUnit.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "Users/tapsi/Desktop/Dropbox/Dropbox/Dropsi Ordner/Custom Wars Tactics/cwt/srcEngine/commands/unloadUnit.js", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>unloadUnit.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">util</span><span class="p">.</span><span class="nx">scoped</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+  
+  <span class="kd">function</span> <span class="nx">checkTile</span><span class="p">(</span> <span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">,</span> <span class="nx">movetype</span><span class="p">,</span> <span class="nx">loader</span> <span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">isValidPosition</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">)</span> <span class="p">){</span>
+      
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<p>CAN MOVE TECHNICALLY ?</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">moveCosts</span><span class="p">(</span> <span class="nx">movetype</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="p">)</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+      
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p>IF TILE IS IN FOG THEN OCCUPYING UNITS AREN'T IMPORTANT</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="k">if</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">fogData</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">]</span> <span class="o">===</span> <span class="mi">0</span> <span class="p">)</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+      
+      <span class="kd">var</span> <span class="nx">unit</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">unitPosMap</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">];</span>
+      <span class="k">if</span><span class="p">(</span> <span class="nx">unit</span> <span class="o">!==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">unit</span> <span class="o">!==</span> <span class="nx">loader</span> <span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+      <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  
+  <span class="nx">controller</span><span class="p">.</span><span class="nx">unitAction</span><span class="p">({</span>
+    
+    <span class="nx">key</span><span class="o">:</span><span class="s2">&quot;unloadUnit&quot;</span><span class="p">,</span>
+    <span class="nx">multiStepAction</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    
+    <span class="nx">condition</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">data</span> <span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">mode</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">thereIsUnitRelationShip</span><span class="p">(</span> <span class="nx">data</span><span class="p">.</span><span class="nx">source</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">target</span> <span class="p">);</span>
+      <span class="k">if</span><span class="p">(</span> <span class="nx">mode</span> <span class="o">!==</span> <span class="nx">model</span><span class="p">.</span><span class="nx">MODE_SAME_OBJECT</span> <span class="o">&amp;&amp;</span> <span class="nx">mode</span> <span class="o">!==</span> <span class="nx">model</span><span class="p">.</span><span class="nx">MODE_NONE</span> <span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+      
+      
+      <span class="kd">var</span> <span class="nx">uid</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">unitId</span><span class="p">;</span>
+      <span class="kd">var</span> <span class="nx">loader</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">unit</span><span class="p">;</span>
+      <span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="p">(</span> <span class="nx">model</span><span class="p">.</span><span class="nx">isTransport</span><span class="p">(</span> <span class="nx">uid</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">model</span><span class="p">.</span><span class="nx">hasLoadedIds</span><span class="p">(</span> <span class="nx">uid</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+      
+      <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+      <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+      <span class="k">for</span><span class="p">(</span> <span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">CWT_MAX_UNITS_PER_PLAYER</span><span class="o">*</span><span class="nx">model</span><span class="p">.</span><span class="nx">turnOwner</span><span class="p">,</span> 
+          <span class="nx">e</span><span class="o">=</span><span class="nx">i</span><span class="o">+</span><span class="nx">CWT_MAX_UNITS_PER_PLAYER</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">){</span>
+        
+        <span class="kd">var</span> <span class="nx">unit</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+        <span class="k">if</span><span class="p">(</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">owner</span> <span class="o">!==</span> <span class="nx">CWT_INACTIVE_ID</span> <span class="o">&amp;&amp;</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">loadedIn</span> <span class="o">===</span> <span class="nx">uid</span> <span class="p">){</span>
+          
+          <span class="kd">var</span> <span class="nx">movetp</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">moveTypes</span><span class="p">[</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">movetype</span> <span class="p">];</span>
+          <span class="k">if</span><span class="p">(</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">owner</span> <span class="o">!==</span> <span class="nx">CWT_INACTIVE_ID</span> <span class="o">&amp;&amp;</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">loadedIn</span> <span class="o">===</span> <span class="nx">uid</span> <span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span> <span class="nx">checkTile</span><span class="p">(</span><span class="nx">x</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nx">y</span><span class="p">,</span><span class="nx">movetp</span><span class="p">,</span><span class="nx">loader</span><span class="p">)</span> <span class="o">||</span> 
+               <span class="nx">checkTile</span><span class="p">(</span><span class="nx">x</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="nx">y</span><span class="p">,</span><span class="nx">movetp</span><span class="p">,</span><span class="nx">loader</span><span class="p">)</span> <span class="o">||</span>
+               <span class="nx">checkTile</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nx">movetp</span><span class="p">,</span><span class="nx">loader</span><span class="p">)</span> <span class="o">||</span> 
+               <span class="nx">checkTile</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="nx">movetp</span><span class="p">,</span><span class="nx">loader</span><span class="p">)</span> <span class="p">)</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>   
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+      
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">},</span>
+    
+    <span class="nx">prepareMenu</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">data</span> <span class="p">){</span>
+      
+      <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+      <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span> 
+      <span class="kd">var</span> <span class="nx">uid</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">unitId</span><span class="p">;</span>
+      <span class="kd">var</span> <span class="nx">loader</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">unit</span><span class="p">;</span>
+      <span class="k">for</span><span class="p">(</span> <span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">CWT_MAX_UNITS_PER_PLAYER</span><span class="o">*</span><span class="nx">model</span><span class="p">.</span><span class="nx">turnOwner</span><span class="p">,</span> <span class="nx">e</span><span class="o">=</span><span class="nx">i</span><span class="o">+</span><span class="nx">CWT_MAX_UNITS_PER_PLAYER</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">){</span>
+        <span class="kd">var</span> <span class="nx">unit</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+        <span class="k">if</span><span class="p">(</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">owner</span> <span class="o">!==</span> <span class="nx">CWT_INACTIVE_ID</span> <span class="o">&amp;&amp;</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">loadedIn</span> <span class="o">===</span> <span class="nx">data</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">unitId</span> <span class="p">){</span>
+          
+          <span class="kd">var</span> <span class="nx">unit</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+          <span class="k">if</span><span class="p">(</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">owner</span> <span class="o">!==</span> <span class="nx">CWT_INACTIVE_ID</span> <span class="o">&amp;&amp;</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">loadedIn</span> <span class="o">===</span> <span class="nx">uid</span> <span class="p">){</span>
+            
+            <span class="kd">var</span> <span class="nx">movetp</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">moveTypes</span><span class="p">[</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">movetype</span> <span class="p">];</span>
+            <span class="k">if</span><span class="p">(</span> <span class="nx">checkTile</span><span class="p">(</span><span class="nx">x</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nx">y</span><span class="p">,</span><span class="nx">movetp</span><span class="p">,</span><span class="nx">loader</span><span class="p">)</span> <span class="o">||</span> 
+               <span class="nx">checkTile</span><span class="p">(</span><span class="nx">x</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="nx">y</span><span class="p">,</span><span class="nx">movetp</span><span class="p">,</span><span class="nx">loader</span><span class="p">)</span> <span class="o">||</span>
+               <span class="nx">checkTile</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nx">movetp</span><span class="p">,</span><span class="nx">loader</span><span class="p">)</span> <span class="o">||</span> 
+               <span class="nx">checkTile</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="nx">movetp</span><span class="p">,</span><span class="nx">loader</span><span class="p">)</span> <span class="p">)</span> <span class="nx">data</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">addEntry</span><span class="p">(</span> <span class="nx">i</span><span class="p">,</span> <span class="kc">true</span> <span class="p">);</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    
+    <span class="nx">targetSelectionType</span><span class="o">:</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span>
+    <span class="nx">prepareTargets</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">data</span> <span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+      <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+      <span class="kd">var</span> <span class="nx">loader</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">unit</span><span class="p">;</span>
+      <span class="kd">var</span> <span class="nx">movetp</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">moveTypes</span><span class="p">[</span><span class="nx">model</span><span class="p">.</span><span class="nx">units</span><span class="p">[</span> <span class="nx">data</span><span class="p">.</span><span class="nx">action</span><span class="p">.</span><span class="nx">selectedSubEntry</span> <span class="p">].</span><span class="nx">type</span><span class="p">.</span><span class="nx">movetype</span><span class="p">];</span>
+      
+      <span class="k">if</span><span class="p">(</span> <span class="nx">checkTile</span><span class="p">(</span><span class="nx">x</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nx">y</span><span class="p">,</span><span class="nx">movetp</span><span class="p">,</span><span class="nx">loader</span><span class="p">)</span> <span class="p">)</span> <span class="nx">data</span><span class="p">.</span><span class="nx">selection</span><span class="p">.</span><span class="nx">setValueAt</span><span class="p">(</span> <span class="nx">x</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nx">y</span><span class="p">,</span> <span class="mi">1</span> <span class="p">);</span>
+      <span class="k">if</span><span class="p">(</span> <span class="nx">checkTile</span><span class="p">(</span><span class="nx">x</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="nx">y</span><span class="p">,</span><span class="nx">movetp</span><span class="p">,</span><span class="nx">loader</span><span class="p">)</span> <span class="p">)</span> <span class="nx">data</span><span class="p">.</span><span class="nx">selection</span><span class="p">.</span><span class="nx">setValueAt</span><span class="p">(</span> <span class="nx">x</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="nx">y</span><span class="p">,</span> <span class="mi">1</span> <span class="p">);</span>
+      <span class="k">if</span><span class="p">(</span> <span class="nx">checkTile</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nx">movetp</span><span class="p">,</span><span class="nx">loader</span><span class="p">)</span> <span class="p">)</span> <span class="nx">data</span><span class="p">.</span><span class="nx">selection</span><span class="p">.</span><span class="nx">setValueAt</span><span class="p">(</span> <span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="p">);</span>
+      <span class="k">if</span><span class="p">(</span> <span class="nx">checkTile</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="nx">movetp</span><span class="p">,</span><span class="nx">loader</span><span class="p">)</span> <span class="p">)</span> <span class="nx">data</span><span class="p">.</span><span class="nx">selection</span><span class="p">.</span><span class="nx">setValueAt</span><span class="p">(</span> <span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="p">);</span>
+    <span class="p">},</span>
+    
+    <span class="nx">invoke</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">data</span> <span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">tx</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+      <span class="kd">var</span> <span class="nx">ty</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+      
+      <span class="nx">model</span><span class="p">.</span><span class="nx">unloadUnitFrom</span><span class="p">.</span><span class="nx">callAsCommand</span><span class="p">(</span> 
+        <span class="nx">data</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">unitId</span><span class="p">,</span> 
+        <span class="nx">data</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> 
+        <span class="nx">data</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> 
+        <span class="nx">data</span><span class="p">.</span><span class="nx">action</span><span class="p">.</span><span class="nx">selectedSubEntry</span><span class="p">,</span> 
+        <span class="nx">data</span><span class="p">.</span><span class="nx">targetselection</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> 
+        <span class="nx">data</span><span class="p">.</span><span class="nx">targetselection</span><span class="p">.</span><span class="nx">y</span> 
+      <span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

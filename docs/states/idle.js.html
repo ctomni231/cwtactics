@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>idle.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "Users/tapsi/Desktop/Dropbox/Dropbox/Dropsi Ordner/Custom Wars Tactics/cwt/srcEngine/states/idle.js", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>idle.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>The base state of a game round. An action process starts here, the 
+action data of the state machine is always empty in this state.</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">controller</span><span class="p">.</span><span class="nx">stateMachine</span><span class="p">.</span><span class="nx">structure</span><span class="p">.</span><span class="nx">IDLE</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">onenter</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">clean</span><span class="p">();</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">movePath</span><span class="p">.</span><span class="nx">clean</span><span class="p">();</span>
+    
+    <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">action</span><span class="p">.</span><span class="nx">selectedEntry</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">action</span><span class="p">.</span><span class="nx">selectedSubEntry</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">action</span><span class="p">.</span><span class="nx">object</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    
+    <span class="k">this</span><span class="p">.</span><span class="nx">history</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    
+    <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">inMultiStep</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">makeMultistep</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    
+    <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">clean</span><span class="p">();</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">clean</span><span class="p">();</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">targetselection</span><span class="p">.</span><span class="nx">clean</span><span class="p">();</span>
+  <span class="p">},</span>
+  
+  <span class="nx">action</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ev</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">);</span>
+    
+    <span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">unitId</span> <span class="o">!==</span> <span class="nx">CWT_INACTIVE_ID</span> <span class="o">&amp;&amp;</span> 
+        <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">unit</span><span class="p">.</span><span class="nx">owner</span> <span class="o">===</span> <span class="nx">model</span><span class="p">.</span><span class="nx">turnOwner</span> <span class="o">&amp;&amp;</span> 
+        <span class="nx">model</span><span class="p">.</span><span class="nx">canAct</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">unitId</span> <span class="p">)</span> <span class="p">){</span>
+      
+      <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">);</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">movePath</span><span class="p">.</span><span class="nx">clean</span><span class="p">();</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">movePath</span><span class="p">.</span><span class="nx">fillMoveMap</span><span class="p">();</span>
+      <span class="k">return</span> <span class="s2">&quot;MOVEPATH_SELECTION&quot;</span><span class="p">;</span>
+    <span class="p">}</span> 
+    <span class="k">else</span><span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span> <span class="nx">x</span><span class="p">,</span><span class="nx">y</span> <span class="p">);</span>
+      <span class="k">return</span> <span class="s2">&quot;ACTION_MENU&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  
+  <span class="nx">cancel</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">ev</span><span class="p">,</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">BREAK_TRANSITION</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>
