@@ -164,7 +164,11 @@ This shows how objects are organized within the object files for units, terrain(
 
 ## Inventions
 
-* (None Yet)
+* *BHMC* = Black Hole Mini-Cannon
+* *BHCN* = Black Hole Cannon
+* *BHDR* = Black Hole Death Ray
+* *BHFR* = Black Hole Fortress
+* *BHFT* = Black Hole Factory
 
 ## Army Factions
 

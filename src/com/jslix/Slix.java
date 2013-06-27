@@ -371,7 +371,7 @@ public class Slix extends JComponent implements Runnable, KeyListener,
     }
 
     /**
-     *The function rescales the background image when screen is
+     *The function re-scales the background image when screen is
      *resized and also creates the background image
      *
      *@param g2 The graphics object associated
