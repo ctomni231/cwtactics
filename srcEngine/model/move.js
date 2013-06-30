@@ -33,8 +33,9 @@ model.MOVE_CODE_LEFT  = 3;
  * @param {Number} uid id of the moving unit
  * @param {Number} x x coordinate of the source
  * @param {Number} y y coordinate of the source
+ * @param {Boolean} noFuelConsumption if true then fuel won't be decreases
 */
-model.moveUnit = function( way, uid, x,y ){
+model.moveUnit = function( way, uid, x,y, noFuelConsumption ){
   var cX = x;
   var cY = y;
   var unit = model.units[ uid ];
@@ -123,9 +124,13 @@ model.moveUnit = function( way, uid, x,y ){
     fuelUsed += model.moveCosts( mType, cX, cY );
   }
 
-  unit.fuel -= fuelUsed;
-  if( unit.fuel < 0 ) util.raiseError("illegal game state");
-
+  // consume fuel if `noFuelConsumption` is not true
+  // some actions like unloading does not consume fuel
+  if( noFuelConsumption !== true ){
+    unit.fuel -= fuelUsed;
+    if( unit.fuel < 0 ) util.raiseError("illegal game state");
+  }
+  
   // DO NOT ERASE POSITION IF UNIT WAS LOADED OR HIDDEN (NOT INGAME HIDDEN) SOMEWHERE
   if( unit.x >= 0 && unit.y >= 0 ){
     

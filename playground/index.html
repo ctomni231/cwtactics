@@ -8,137 +8,233 @@
     <meta content="yes" name="apple-mobile-web-app-capable" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, , maximum-scale=1, user-scalable=no" />
     
-    <style>
-      
-      #cwt_game_bottomBar{
-        
-        height: 48px;
-        bottom: 0px;
-        position: absolute;
-        left: 0px;
-        right: 0px;
-        
-        
-        border-top: 1px solid rgb(134, 134, 134);
-        display: block;
-        position: fixed;
-        
-        top: auto;
-        
-        color: #36A0C5;
-        
-        text-align: left;
-      }
-      
-      .bottomBarPart {
-        width: 22.5%;
-        height: 100%;
-        float: left;
-        font-family: Courier New;
-        font-weight: normal;
-        
-        -webkit-transition: all 0.5s;
-        -moz-transition: all 0.5s;
-        -ms-transition: all 0.5s;
-        -o-transition: all 0.5s;
-        transition: all 0.5s;
-        
-        /* border-left: 1px solid rgb(134, 134, 134); */
-      }
-      
-      canvas{
-        background: yellow;
-      }
-      
-      #cwt_game_bottomBar div {
-        margin: 0;
-      }
-      
-      #cwt_game_bottomBar .row > div{
-        float: left;
-        width: calc(25% - 5px);
-        width: -webkit-calc(25% - 5px);
-        padding-left: 5px;
-      }
-      
-      .headerRow {
-        font-family: Courier New;
-        height: 18px;
-        font-size: 16px;
-        font-weight: normal;
-        background-color: rgb(235, 235, 235);;
-        border-bottom: 1px solid rgb(190, 189, 189);
-      }
-      
-      .subRow {
-        font-family: Courier New;
-        font-weight: bold;
-        height: 14px;
-        font-size: 10px;
-        background-color: rgb(240, 239, 239);
-      }
-      
-      .filler{
-        width: 5%;
-      }
-      
-      .iconDiv {
-        padding-left: 5px;
-        width: 30%;
-        float: left;
-      }
-      
-    </style>
     
   </head>
   
   <body>
-    <div id="cwt_game_bottomBar">
-      
-      <div class="row headerRow">
-        <div>Player</div>
-        <div>INFANTRY</div>
-        <div>TILE/PROPERTY</div>
-        <div>Player Enemy</div>
-      </div>
-      
-      <div class="row subRow">
-        <div>Player</div>
-        <div>
-          <div class="iconDiv">
-            <canvas height="8" width="8" id="cwt_unitinfo_HP_D"></canvas>
-            <span class="colBold" id="cwt_unitinfo_HP_C">99</span>
-          </div>
-          <div class="iconDiv" >
-            <canvas height="8" width="8" id="bottomBar_ammo_d"></canvas>
-            <span id="bottomBar_ammo">10</span>/<span class="colBold" id="bottomBar_ammo2">99</span>
-          </div>
-        </div>
-        <div>TILE/PROPERTY</div>
-        <div>Player Enemy</div>
-      </div>
-      
-      <div class="row subRow">
-        <div>Player</div>
-        <div>
-          <div class="iconDiv" >
-            <canvas height="8" width="8" id="bottomBar_fuel_d"></canvas>
-            <span id="bottomBar_fuel">11</span>/<span class="colBold" id="bottomBar_fuel2">99</span>
-          </div>
-          <div class="iconDiv" >
-            <canvas height="8" width="8" id="bottomBar_attrange_d"></canvas>
-            <span class="colBold" id="bottomBar_attrange">1</span>-<span class="colBold" id="bottomBar_attrange2">8</span>
-          </div>
-        </div>
-        <div>TILE/PROPERTY</div>
-        <div>Player Enemy</div>
-      </div>
-      
-    </div>
     
   </body>
   
   <script>
+(function( exports ){
+
+  var modules = {};
+  var inLoad = {};
+  
+  function require( mod ){
+    var dep;
+    
+    dep = inLoad[mod];
+    if( dep ){
+      console.log("initialising module "+mod);
+      
+      delete inLoad[mod];
+      if( typeof dep === "function" ){
+        dep = dep( require );
+      }
+      modules[mod] = dep;
+      
+      console.log(mod+" module initialised");
+    }
+    
+    return modules[mod];
+  }
+  
+  exports.define = function( id, impl ){
+    console.log("registered module "+id);
+    
+    if( inLoad[id] ) throw Error("duplicate id "+id);
+    
+    inLoad[id] = impl;
+  };
+  
+  exports.require = require;
+
+})( window );
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    define("util.list",function( require ){
+  var error = require("util.log").error;
+  
+  var fillList = function(){
+    var defValue = this.__defValue__;
+    var len = this.__length__;
+    var isFN = typeof defValue === 'function';
+    
+    // SIMPLE ARRAY OBJECT
+    for(var i = 0, e = len; i < e; i++){
+      if( isFN ) this[i] = defValue( i );
+      else       this[i] = defValue;
+    }
+  };
+  
+  // ## List clone helper
+  var cloneList = function( list ){
+    var len = this.__length__;
+    if( list.__length__ !== len ) util.error();
+    for(var i = 0, e = len; i < e; i++){
+      list[i] = this[i];
+    }
+    
+    return list;
+  };
+    
+  // ## List grab helper
+  var grabList = function( list ){
+    var len = this.__length__;
+    if( list.__length__ !== len ) util.error();
+    for(var i = 0, e = len; i < e; i++){
+      this[i] = list[i];
+    }
+    
+    return list;
+  };
+  
+  /*
+    ## list()
+        
+    Creates a list and fills it with default values.
+   
+    @param {Number} len the length of the created list
+    @param defaultValue the default value that will be inserted into the list slots 
+  */
+  return function( len, defaultValue ){
+    if( typeof defaultValue === "undefined" ) defaultValue = null;
+    
+    var warr = [];
+    warr.__defValue__ = defaultValue;
+    warr.__length__ = len;
+    warr.resetValues = fillList;
+    warr.cloneValues = cloneList;
+    warr.grabValues  = grabList;
+    
+    warr.resetValues();
+    
+    return warr;
+  };
+  
+});
+    
+    
+    define("util.log",function( require ){
+  
+  var logfn = function( msg ){ 
+    console.log(msg);   
+  };
+  
+  var errorfn = function( msg ){
+    console.error(msg); 
+  };
+  
+  var arrayToMessage = function( args ){
+    return ( args.length > 1 )? Array.prototype.join.call( args, " " ) : args[0];
+  };
+  
+  return {
+    
+    logEnabled: require("constants").DEBUG,
+    
+    /*
+      ## log()
+          
+      This object can be false if the logging is deactivated by the clientLog module. 
+      So every usage should be checked *(for performance reasons)* with:
+          
+      ```js
+        if( cwtEngine.logEnabled ) cwtEngine.log("log my message");
+      ```
+        
+      @param {...Object} reason A number of arguments that will be used as message.
+                                If an argument isn't a String then it will be converted to
+                                String by the toString() function.
+    */
+    log: function(){
+      logfn( arrayToMessage.call( arguments ) );
+    },
+    
+    /*
+      ## error()
+      
+      Raises an error in the active Javascript environment.
+    
+      @param {...Object} reason A number of arguments that will be used as message.
+                                If an argument isn't a String then it will be converted to
+                                String by the toString() function.
+    */
+    error: function(){
+      var reason;
+      
+      if( arguments.length === 0 ) reason = "CW:T Debug:: An error was raised";
+      else reason = arrayToMessage.call( arguments );
+      
+      errorfn( reason );
+    },
+    
+    injectLogger: function( logFn, errorFn ){
+      logfn = logFn;
+      errorfn = errorFn;
+    }
+  };
+});
+    
+    define("constants",{
+  DEBUG:                true,
+  
+  INACTIVE_ID:          -1,
+  ACTIONS_BUFFER_SIZE:  200,
+  
+  MAX_PLAYER:           5,
+  MAX_MAP_WIDTH:        100,
+  MAX_MAP_HEIGHT:       100,
+  MAX_UNITS_PER_PLAYER: 50,
+  MAX_PROPERTIES:       200,
+  MAX_SELECTION_RANGE:  15,
+  MAX_BUFFER_SIZE:      200,
+  
+  // #### CW:T Version
+  VERSION:              "0.3.2.0 Beta"
+});
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
   </script>
   

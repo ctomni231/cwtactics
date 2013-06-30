@@ -68,9 +68,14 @@ model.isValidPosition = function( x,y ){
   );
 };
 
-/**
- *
- */
+// Invokes a callback on all tiles in a given 
+// range at a position (x,y)
+//
+// @param {Number} x x coordinate
+// @param {Number} y y coordinate
+// @param {Number} range range of the search field
+// @param {Function} cb callback function
+// @param {Any} arg argument that will be passed into the callback call
 model.doInRange = function( x,y, range, cb, arg ){
   
   var lX;

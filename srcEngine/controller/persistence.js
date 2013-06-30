@@ -306,3 +306,50 @@ util.scoped(function(){
   };
   
 });
+
+
+util.scoped(function(){
+  var persistence = [];
+  
+  controller.persisted = function( descr ){
+    util.hasProperties( descr, "object", "onsave", "onload" );
+    
+    if( typeof descr.onsave !== "function" ) util.raiseError("save callback has to be a function");
+    if( typeof descr.onload !== "function" ) util.raiseError("load callback has to be a function");
+    
+    // register saver/loader
+    persistence.push([
+      descr.object,
+      descr.onsave,
+      descr.onload
+    ]);
+    
+    return descr.object;
+  };
+  
+  // Saves the current game model to a JSON string.
+  controller.saveCompactModel = function(){
+    var dom = {};
+    
+    var obj;
+    for( var i=0,e=persistence.length; i<e; i++ ){
+      obj = persistence[i];
+      
+      obj[1].call( obj[0], dom );
+    }
+    
+    return JSON.stringify(dom);
+  };
+  
+  // Loads a given JSON string into the model. 
+  controller.loadCompactModel = function( data ){
+    var dom = JSON.parse(data);
+    
+    var obj;
+    for( var i=0,e=persistence.length; i<e; i++ ){
+      obj = persistence[i];
+      
+      obj[2].call( obj[0], dom );
+    }
+  };
+});
