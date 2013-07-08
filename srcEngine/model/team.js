@@ -1,63 +1,87 @@
-/**
- * Transfers money from one player to another player.
- * 
- * @param {Number} splid id of the source player
- * @param {Number} tplid id of the target player
- * @param {Number} money amount of money
- */
+// Define event
+controller.defineEvent("transferMoney");
+
+// Transfers money from one player to another player.
+// 
+// @param {Number} splid id of the source player
+// @param {Number} tplid id of the target player
+// @param {Number} money amount of money
 model.transferMoney = function( splid, tplid, money ){
+  
+  // check parameters
+  if( !model.isValidPlayerId(splid) || !model.isValidPlayerId(tplid) ){
+    model.criticalError( 
+      constants.error.ILLEGAL_PARAMETERS, 
+      constants.error.UNKNOWN_PLAYER_ID
+    );
+  }
+  
   var sPlayer = model.players[ splid ];
   var tPlayer = model.players[ tplid ];
 
-  // CHECK MONEY
-  if( money > sPlayer.gold ) util.raiseError("source player does not has",money,"units of money");
+  // check parameters
+  if( money > sPlayer.gold ){
+    model.criticalError( 
+      constants.error.ILLEGAL_PARAMETERS, 
+      constants.error.NOT_ENOUGH_MONEY 
+    );
+  }
 
-  // TRANSFER GOLD
+  // Transfer gold from one player to the other player
   sPlayer.gold -= money;
   tPlayer.gold += money;
+  
+  // Invoke event
+  var evCb = controller.events.transferMoney;
+  if( evCb ) evCb( splid, tplid, money ); 
 };
 
-/**
- * Transfers an unit from one player to another player.
- * 
- * @param {Number} suid
- * @param {Number} tplid
- */
+// Define event
+controller.defineEvent("transferUnit");
+
+// Transfers an unit from one player to another player.
+// 
+// @param {Number} suid
+// @param {Number} tplid 
 model.transferUnit = function( suid, tplid ){
   var selectedUnit = model.units[suid];
-  var tx = selectedUnit.x;
-  var ty = selectedUnit.y;
-  var opid = selectedUnit.owner;
+  var tx           = selectedUnit.x;
+  var ty           = selectedUnit.y;
+  var opid         = selectedUnit.owner;
 
-  selectedUnit.owner = CWT_INACTIVE_ID;
+  selectedUnit.owner = constants.INACTIVE_ID;
 
-  // REMOVE VISION
+  // Remove vision
   if( model.players[tplid].team !== model.players[opid].team ){
     model.modifyVisionAt(tx, ty, selectedUnit.type.vision, -1);
   }
 
-  // model.unitPosMap[ selectedUnit.x ][ selectedUnit.y ] = null;
   model.clearUnitPosition( suid );
-
   model.createUnit( tplid, tx, ty, selectedUnit.type.ID );
   
-  var targetUnit =  model.unitPosMap[ tx ][ ty ];
-  targetUnit.hp = selectedUnit.hp;
-  targetUnit.ammo = selectedUnit.ammo;
-  targetUnit.fuel = selectedUnit.fuel;
-  targetUnit.exp = selectedUnit.exp;
-  targetUnit.type = selectedUnit.type;
-  targetUnit.x = tx;
-  targetUnit.y = ty;
+  // TODO
+  var targetUnit      = model.unitPosMap[ tx ][ ty ];
+  targetUnit.hp       = selectedUnit.hp;
+  targetUnit.ammo     = selectedUnit.ammo;
+  targetUnit.fuel     = selectedUnit.fuel;
+  targetUnit.exp      = selectedUnit.exp;
+  targetUnit.type     = selectedUnit.type;
+  targetUnit.x        = tx;
+  targetUnit.y        = ty;
   targetUnit.loadedIn = selectedUnit.loadedIn;
+  
+  // Invoke event
+  var evCb = controller.events.transferUnit;
+  if( evCb ) evCb( suid, tplid ); 
 };
 
-/**
- * Transfers a property from one player to another player.
- * 
- * @param {Number} sprid
- * @param {Number} tplid
- */
+// Define event
+controller.defineEvent("transferProperty");
+
+// Transfers a property from one player to another player.
+//
+// @param {Number} sprid
+// @param {Number} tplid
 model.transferProperty = function( sprid, tplid ){
   var prop =  model.properties[sprid];
   prop.owner = tplid;
@@ -70,9 +94,12 @@ model.transferProperty = function( sprid, tplid ){
   for( x=0 ;x<xe; x++ ){
     for( y=0 ;y<ye; y++ ){
       if( model.propertyPosMap[x][y] === prop ){
-        // TODO 
-        return;
+        // TODO fog?
       }
     }
   }
+  
+  // Invoke event
+  var evCb = controller.events.transferProperty;
+  if( evCb ) evCb( sprid, tplid ); 
 };

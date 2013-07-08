@@ -10,6 +10,25 @@ util.scoped(function(){
   /** @type Number */
   model.turntimeElapsed = 0;
   
+  // Define persistence handler
+  controller.persistenceHandler(
+  
+  	// load
+  	function(dom){
+  		model.setupTimer();
+  		
+  		// set timer by dom when parameters are defined
+  		if( util.expectNumber( dom, "gmTm", true, true ) ) model.gametimeElapsed = dom.gmTm;
+  		if( util.expectNumber( dom, "tnTm", true, true ) ) model.turntimeElapsed = dom.tnTm;
+  	},
+  	
+  	// save
+  	function(dom){
+  		dom.gmTm = model.gametimeElapsed;
+  		dom.tnTm = model.turntimeElapsed;
+  	}
+  );
+  
   /**
    * Resets the game round timer.
    */

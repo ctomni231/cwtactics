@@ -1,30 +1,64 @@
-/**
- * The type of the active weather.
- */
+// The active weather type object.
 model.weather = null;
 
-/**
- * 
- */
+// Define persistence handler
+controller.persistenceHandler(
+  
+  // load
+  function( dom ){
+    if( dom.wth ){
+      
+      // check data
+      if( !util.isIn( dom.wth, model.weatherTypes ) ){
+        model.criticalError(
+          constants.error.ILLEGAL_MAP_FORMAT,
+          constants.error.SAVEDATA_WEATHER_MISSMATCH
+        );
+      }
+      
+      // set weather
+      model.weather = model.weatherTypes[dom.wth];
+    }
+    else model.weather = model.defaultWeatherType;
+  },
+  
+  // save
+  function( dom ){
+    dom.wth = model.weather.ID;
+  }
+);
+
+// Calculates the next weather and adds the result
+// as timed event to the day events. **Only invokable
+// by the host instance.**
+//
 model.calculateNextWeather = function(){  
   var newTp;
   var duration;
   
-  // SEARCH RANDOM WEATHER
+  if( !controller.isHost() ){
+    model.criticalError( 
+      constants.error.HOST_ONLY, 
+      constants.error.CALC_NEXT_WEATHER 
+    );
+  }
+  
+  // Search a random weather if the last weather was `null` or 
+  // the default weather type
   if( model.weather !== null && model.weather === model.defaultWeatherType ){
+    
     var list = model.nonDefaultWeatherType;
     newTp = list[ parseInt(Math.random()*list.length,10) ].ID;
     duration = 1;
   }
-  // TAKE DEFAULT WEATHER
   else{
+    
+    // Take default weather and calculate a random amount of days
     newTp = model.defaultWeatherType.ID;
     duration = controller.configValue("weatherMinDays") + parseInt( controller.configValue("weatherRandomDays")*Math.random(), 10);
   }
   
   model.changeWeather.callAsCommand(newTp);
-  
-  if( DEBUG ) util.log( "Weather will change in",duration,"days" );
   
   model.pushTimedEvent( 
     model.daysToTurns(duration), 
@@ -32,17 +66,24 @@ model.calculateNextWeather = function(){
   );
 };
 
-/**
- * 
- * @param {String} wth
- * @param {Number} duration
- */
+// Define event.
+controller.defineEvent("changeWeather");
+
+// Changes the weather to a given type. 
+// Invokes the `changeWeather` event.
+//
+// @param {String} wth
+//
 model.changeWeather = function( wth ){
-  if( !model.weatherTypes.hasOwnProperty(wth)){
-    util.raiseError("unknown weather type");
+  
+  // check weather type
+  if( !model.weatherTypes.hasOwnProperty(wth) ){
+    model.criticalError( constants.error.ILLEGAL_DATA, constants.error.UNKNOWN_WEATHER );
   }
   
-  if( DEBUG ) util.log( "changing weather to",wth);
-   
   model.weather = model.weatherTypes[wth];
+  
+  // Invoke event
+  var evCb = controller.events.changeWeather;
+  if( evCb ) evCb( wth );
 };

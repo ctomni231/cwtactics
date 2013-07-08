@@ -120,3 +120,11 @@ util.scoped(function(){
     }
   }
 });
+
+controller.localInvokement = function( key, args ){
+
+};
+
+controller.sharedInvokement = function( key, args ){
+
+};

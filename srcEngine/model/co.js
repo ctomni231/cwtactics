@@ -1,47 +1,18 @@
-model.coData = controller.persisted({
+model.coData = util.list( constants.MAX_PLAYER, function( i ){ 
+  return {
+    power:      0,      // acc. co power
+    timesUsed:  0,      // number of used co powers
+    level:      0,      // active co power level
+    coA:        null,   // main CO
+    coB:        null    // sub CO
+  };
+});
+
+// Define persitence handler
+controller.persistenceHandler(
   
-  object: util.list( constants.MAX_PLAYER, function( i ){ 
-    return {
-      power:      0, 
-      timesUsed:  0,
-      level:      0, 
-      coA:        null, 
-      coB:        null     
-    };
-  }),
-  
-  // #### Save the model from a document model here
-  onsave: function( dom ){
-    
-    // result document model for co data will be a matrix
-    var data = [];
-    var obj;
-    
-    for( var i=0,e=constants.MAX_PLAYER; i<e; i++ ){
-      obj = this[i];
-      
-      // persist the data as array
-      // if target player isn't active then 
-      // use a `0` as data
-      if( model.players[i].team === constants.INACTIVE_ID ){
-        data.push(0);
-      }        
-      else{
-        data.push([
-          obj.power,
-          obj.timesUsed,
-          obj.level,
-          obj.coA, 
-          obj.coB
-        ]);
-      }
-    }
-    
-    dom.co = data;
-  },
-  
-  // #### Load the model from a document model here
-  onload: function( dom ){
+  // load
+  function( dom ){
     var data = dom.co;
     
     // the length of a data set must be equal to the number
@@ -51,7 +22,7 @@ model.coData = controller.persisted({
     var source;
     var target;
     for( var i=0,e=constants.MAX_PLAYER; i<e; i++ ){
-      target = this[i];
+      target = model.coData[i];
       source = data[i];
       
       // read data from array back into the game model
@@ -76,61 +47,81 @@ model.coData = controller.persisted({
         target.coB = source[4];
       }
     }
-  }
+  },
   
-});
+  // save
+  function( dom ){
+    
+    // result document model for co data will be a matrix
+    var data = [];
+    var obj;
+    
+    for( var i=0,e=constants.MAX_PLAYER; i<e; i++ ){
+      obj = model.coData[i];
+      
+      // persist the data as array
+      // if target player isn't active then 
+      // use a `0` as data
+      if( model.players[i].team === constants.INACTIVE_ID ){
+        data.push(0);
+      }        
+      else{
+        data.push([
+          obj.power,
+          obj.timesUsed,
+          obj.level,
+          obj.coA, 
+          obj.coB
+        ]);
+      }
+    }
+    
+    dom.co = data;
+  }
+);
 
-/**
- * Indicates a non active power level of a CO.
- * 
- * @constant
- * @type Number
- */
-model.INACTIVE_POWER = 0;
-
-/**
- * Indicates an active normal power level of a CO.
- * 
- * @constant
- * @type Number
- */
-model.CO_POWER = 1;
-
-/**
- * Indicates an active super power level of a CO.
- * 
- * @constant
- * @type Number
- */
-model.SUPER_CO_POWER = 2;
-
-/**
- * Indicates an active tag power level of a CO.
- * 
- * @constant
- * @type Number
- */
-model.TAG_CO_POWER = 3;
+model.powerLevel = {
+  INACTIVE: 0,
+  COP:      1,
+  SCOP:     2,
+  TSCOP:    3
+};
 
 util.scoped(function(){
   
-  function activatePower( pid, level ){
-    var data = model.coData[pid];
+  function activatePower( pid, level, evName ){
+    if( !model.isValidPlayerId(pid) ){
+      model.criticalError(
+        constants.error.ILLEGAL_PARAMETERS,
+        constants.error.UNKNOWN_PLAYER_ID
+      );
+    }
     
+    // Alter co data of the player
+    var data = model.coData[pid];
     data.power = 0;
     data.level = level;
     data.timesUsed++;
+    
+    // Invoke model event
+    var evCb = controller.events[evName];
+    if( evCb ) evCb(pid);
   };
+  
+  // Define `deactivateCoPower` event
+  controller.defineEvent("deactivateCoPower");
   
   /**
    * Deactivates the CO power of a player.
    * 
    * @param {Number} pid
    */
-  model.activateCoPower = function( pid ){
-    activatePower(pid,model.INACTIVE_POWER);
+  model.deactivateCoPower = function( pid ){
+    activatePower( pid, model.powerLevel.INACTIVE,"deactivateCoPower");
   };
   
+  // Define `activateCoPower` event
+  controller.defineEvent("activateCoPower");
   
   /**
    * Activates the CO power of a player.
@@ -138,8 +129,11 @@ util.scoped(function(){
    * @param {Number} pid
    */
   model.activateCoPower = function( pid ){
-    activatePower(pid,model.CO_POWER);
+    activatePower( pid, model.powerLevel.COP, "activateCoPower" );
   };
+  
+  // Define `activateSuperCoPower` event
+  controller.defineEvent("activateSuperCoPower");
   
   /**
    * Activates the super CO power of a player.
@@ -147,10 +141,13 @@ util.scoped(function(){
    * @param {Number} pid
    */
   model.activateSuperCoPower = function( pid ){
-    activatePower(pid,model.SUPER_CO_POWER);
+    activatePower(pid, model.powerLevel.SCOP, "activateSuperCoPower");
   };
   
 });
+
+// Define `modifyPowerLevel` event
+controller.defineEvent("modifyPowerLevel");
 
 // Modifies the power level of a player.
 //  
@@ -161,6 +158,10 @@ model.modifyPowerLevel = function( pid, value ){
   
   data.power += value;
   if( data.power < 0 ) data.power = 0;
+  
+  // Invoke model event
+  var evCb = controller.events.modifyPowerLevel;
+  if( evCb ) evCb(pid,value);
 };
 
 // Returns the cost for one CO star for a given player.

@@ -1,20 +1,26 @@
 // Raises an error in the active Javascript environment.
 // 
-// @param {...Object} reason A number of arguments that will be used as error message.
-//                           If an argument isn't a String then it will be converted to
-//                           String by the toString() function.
-util.raiseError = function( reason ){
-     if( arguments.length === 0 ) reason = constants.ERROR_MSG;
-  else if( arguments.length > 1 ) reason = Array.prototype.join.call( arguments, " " );
+util.createCwtErrorObject = function( errorId, errorData, stackData ){
+  var e = Error( constants.ERROR_MSG );
   
-  console.error("ERROR:",reason);
+  e.errorID = errorId;
+  e.errorDataID = errorData;
+  e.errorActionData = stackData;
+  
+  return e;
+};
+
+// Raises an error in the active Javascript environment.
+// 
+util.error = function( errorId, errorData, stackData ){
+  console.error( util.createCwtErrorObject(errorId, errorData, stackData) );
 };
 
 // Logging function.
 // 
-// @param {...Object} reason A number of arguments that will be used as message.
-//                           If an argument isn't a String then it will be converted to
-//                           String by the toString() function.
+// @param {...Object} msg A number of arguments that will be used as message.
+//                        If an argument isn't a String then it will be converted to
+//                        String by the toString() function.
 util.log = function( msg ){
   if( arguments.length > 1 ) msg = Array.prototype.join.call( arguments, " " );
 

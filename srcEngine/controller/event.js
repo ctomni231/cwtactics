@@ -1,44 +1,45 @@
-(function(){
+// # Event Module
+//
+// This module defines the event system API. This API basically defines the define function
+// which is only used by the engine itself and the `onEvent` function. Only one handler is
+// allowed to be defined for an event type. If an observer pattern is needed for an event
+// type then the handler function should be defined as observer object which controls the 
+// data flow between the invoking model function and the listeners which are connected to
+// the observer event handler.
+
+controller.events = {};
+
+// Defines a listenable event name.
+//
+// @param {String} ev event name
+controller.defineEvent = function( ev ){
+  controller.events.[ev] = null;
+};
+
+// Registers an event handler callback.
+//
+// @param {String} ev event name
+// @param {Function} cb callback function
+controller.onEvent = function( ev, cb ){
+  var oldValue = controller.events.[ev];
   
-  var listeners = {};
+  // Only one handler is allowed to be connected to a model function.
+  // If more event handlers are needed then the event handler should be
+  // defined as observer.
+  if( typeof oldValue === "function" ){
+    model.criticalError(
+      constants.error.CLIENT_BREAKS_CONTRACT,
+      constants.error.EVENT_LISTENER_ALREADY_EXIST
+    );
+  }
   
-  /**
-   * @param {String} action name
-   * @param {Function} cb callback
-   */
-  controller.listenCommand = function( name, cb ){
-    if( typeof model[name].__actionId__ === "undefined" ){
-      util.raiseError(name+" isn't a valid command able action");
-    }
-    
-    // IF NO LISTENER IS REGISTERD
-    if( listeners[name] ){
-      util.raiseError("listener for",name,"is already registered");
-    }
-    
-    var propValue = model[name];
-    
-    // REGISTER NEW FUNCTION THAT INVOKES THE LISTENER AUTOMATICALLY
-    model[name] = function(){
-        
-      // INVOKE ACTION
-      var res = propValue.apply(model,arguments);
-        
-      // INVOKE LISTENER
-      cb.apply(null,arguments);
-      
-      return res;
-    };
-    
-    // SHORTCUTS
-    model[name].callAsCommand = function(){
-      propValue.callAsCommand.apply(propValue,arguments);
-    };
-    model[name].callToList = function(){
-      propValue.callToList.apply(propValue,arguments);
-    };
-        
-    listeners[name] = true;
-  };
+  // Only `null` means a define able model function
+  if( oldValue !== null ){
+    model.criticalError(
+      constants.error.CLIENT_BREAKS_CONTRACT,
+      constants.error.EVENT_LISTENER_DOES_NOT_EXIST
+    );
+  }
   
-})();
+  controller.events[ev] = cb;
+};

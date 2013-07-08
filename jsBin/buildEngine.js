@@ -10,6 +10,7 @@ builder.getFileList("srcEngine/model"      ).forEach( addEl );
 builder.getFileList("srcEngine/states"     ).forEach( addEl );
 builder.getFileList("srcEngine/stateScope" ).forEach( addEl );
 builder.getFileList("srcEngine/commands"   ).forEach( addEl );
+builder.getFileList("srcEngine/ai"         ).forEach( addEl );
 
 // TURN DEBUG ON TO HAVE LOG AND RUNTIME CHECKS
 builder.writeToFile(

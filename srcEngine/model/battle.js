@@ -1,22 +1,68 @@
-/*
-  ### isIndirectUnit
+// # Battle Module
+//
+// Provides several functions to do battles between different 
+// battle units.
 
-  Returns true if a given unit is an indirect firing unit (e.g. artillery) else false. 
- 
-  @param {type} uid id of the unit
-*/
+//  Returns true if a given unit is an indirect firing unit (e.g. artillery) else false. 
+// 
+//  @param {type} uid id of the unit
+//
 model.isIndirectUnit = function( uid ){
-  return typeof model.units[uid].type.minrange === "number"; 
+  var tp = model.units[uid].type;
+  
+  return model.hasMainWeapon(tp) && typeof tp.minrange === "number"; 
 };
 
-/*
-   ### baseDamageAgainst
-   
-   Returns the base damage of an attacker against a defender. If the attacker cannot attack
-   the defender then -1 will be returned. This function recognizes the ammo usage of main weapons.
-   If the attacker cannot attack with his main weapon due low ammo then only the secondary weapon 
-   will be checked.
- */
+//  Returns true if the unit type has a main weapon else false.
+//  
+//  @param {UnitSheet} type
+//
+model.hasMainWeapon = function( type ){
+  var attack = type.attack;
+  return typeof attack !== "undefined" && typeof attack.main_wp !== "undefined";
+};
+
+//  Returns true if the unit type has a secondary weapon else false.
+//  
+//  @param {UnitSheet} type
+//
+model.hasSecondaryWeapon = function( type ){
+  var attack = type.attack;
+  return typeof attack !== "undefined" && typeof attack.sec_wp !== "undefined";
+};
+
+//  Returns true if an attacker can use it's main weapon against a defender. The distance won't be
+//  checked in case of indirect units.
+//
+model.canUseMainWeapon = function( attacker, defender ){
+  var attack = attacker.type.attack;
+  var tType = defender.type.ID;
+  var v;
+  
+  // check ammo and main weapon availability against the defender type
+  if( attacker.ammo > 0 && attack.main_wp !== undefined ){
+    v = attack.main_wp[tType];
+    if( typeof v === "number" ) return true;
+  }
+  
+  return false;
+};
+
+//  Returns true if an unit has targets in sight, else false.
+//  
+//  @param {type} uid id of the unit
+//  @param {Number} x (default: unit position)
+//  @param {Number} y (default: unit position)
+//
+model.hasTargets = function( uid,x,y ){
+  return model.attackRangeMod_(uid,x,y);
+};
+
+//  Returns the base damage of an attacker against a defender. If the attacker cannot attack
+//  the defender then -1 will be returned. This function recognizes the ammo usage of main weapons.
+//  If the attacker cannot attack with his main weapon due low ammo then only the secondary weapon 
+//  will be checked. 
+//
 model.baseDamageAgainst = function( attacker, defender, withMainWp ){
   var attack = attacker.type.attack;
   var tType = defender.type.ID;
@@ -39,65 +85,9 @@ model.baseDamageAgainst = function( attacker, defender, withMainWp ){
   return -1;
 };
 
-/*
-  ### canUseMainWeapon
-  
-  Returns true if an attacker can use it's main weapon against a defender. The distance won't be
-  checked in case of indirect units.
-*/
-model.canUseMainWeapon = function( attacker, defender ){
-  var attack = attacker.type.attack;
-  var tType = defender.type.ID;
-  var v;
-  
-  // check ammo and main weapon availability against the defender type
-  if( attacker.ammo > 0 && attack.main_wp !== undefined ){
-    v = attack.main_wp[tType];
-    if( typeof v === "number" ) return true;
-  }
-  
-  return false;
-};
-
-/*
-  ### hasMainWeapon
-  Returns true if the unit type has a main weapon else false.
-  
-  @param {UnitSheet} type
-*/
-model.hasMainWeapon = function( type ){
-  var attack = type.attack;
-  return typeof attack !== "undefined" && typeof attack.main_wp !== "undefined";
-};
-
-/*
-  ### hasSecondaryWeapon
-  Returns true if the unit type has a secondary weapon else false.
-  
-  @param {UnitSheet} type
-*/
-model.hasSecondaryWeapon = function( type ){
-  var attack = type.attack;
-  return typeof attack !== "undefined" && typeof attack.sec_wp !== "undefined";
-};
-
-/*
-  ### hasTargets
-  
-  Returns true if an unit has targets in sight, else false.
-  
-  @param {type} uid id of the unit
-  @param {Number} x (default: unit position)
-  @param {Number} y (default: unit position)
-*/
-model.hasTargets = function( uid,x,y ){
-  return model.attackRangeMod_(uid,x,y);
-};
-
-/**
- *
- */
-model.getBattleDamage = function( attacker, defender, luck, withMainWp, isCounter ){
+//  Returns the battle damage against an other unit.
+//
+model.battleDamageAgainst = function( attacker, defender, luck, withMainWp, isCounter ){
   var BASE = model.baseDamageAgainst(attacker,defender,withMainWp);
   
   var AHP  = model.unitHpPt( attacker );
@@ -129,20 +119,16 @@ model.getBattleDamage = function( attacker, defender, luck, withMainWp, isCounte
   return damage;
 };
 
-// ### battleBetween
 util.scoped(function(){
   
-  /*
-    ##### searchTile
-    
-    local helper to search a surrounding tile that isn't occupied by an unit
-    and has a distance of to between itself and the tile at pos (ax,ay)
-    
-    @param {Number} rx
-    @param {Number} ry
-    @param {Number} ax
-    @param {Number} ay
-  */
+  //  local helper to search a surrounding tile that isn't occupied by an unit
+  //  and has a distance of to between itself and the tile at pos (ax,ay)
+  //    
+  //  @param {Number} rx
+  //  @param {Number} ry
+  //  @param {Number} ax
+  //  @param {Number} ay
+  //
   function searchTile( rx,ry, ax,ay ){
     var x=-1,y=-1;
     
@@ -161,13 +147,19 @@ util.scoped(function(){
     }
   }
   
-  /**
-    
-    @param {type} attId id of the attacker
-    @param {type} defId id of the defender
-    @param {type} attLuckRatio luck of the attacker (0-100)
-    @param {type} defLuckRatio luck of the defender (0-100)
-   */
+  // Define event
+  controller.defineEvent("battleBetween");
+  controller.defineEvent("mainAttack");
+  controller.defineEvent("counterAttack");
+  
+  // Invokes a battle between two units. If the defender is a direct attacking unit then
+  // the defender tries to counter attack if he is in range.
+  //
+  //  @param {type} attId id of the attacker
+  //  @param {type} defId id of the defender
+  //  @param {type} attLuckRatio luck of the attacker (0-100)
+  //  @param {type} defLuckRatio luck of the defender (0-100)
+  //
   model.battleBetween = function( attId, defId, attLuckRatio, defLuckRatio ){
     var attacker = model.units[attId];
     var defender = model.units[defId];
@@ -177,11 +169,21 @@ util.scoped(function(){
     var defOwner = defender.owner;
     var powerAtt        = model.unitHpPt( defender );
     var powerCounterAtt = model.unitHpPt( attacker );
-    
+    var evCb,damage;
     var retreatVal = powerAtt;
     
-    // ATTACK
-    model.damageUnit( defId, model.getBattleDamage(attacker,defender,attLuckRatio) );
+    // invoke introduction event
+    evCb = controller.events.battleBetween;
+    if( evCb ) evCb( attId, defId, damage );
+    
+    // main attack
+    damage = model.battleDamageAgainst(attacker,defender,attLuckRatio);
+    model.damageUnit( defId, damage );
+    
+    // invoke main attack event
+    evCb = controller.events.mainAttack;
+    if( evCb ) evCb( attId, defId, damage );
+    
     powerAtt -= model.unitHpPt( defender );
     
     if( model.canUseMainWeapon(attacker,defender) ) attacker.ammo--;
@@ -193,18 +195,22 @@ util.scoped(function(){
     retreatVal = model.unitHpPt( defender )/retreatVal*100;
     if( retreatVal < 20 ){
       
-      // RETREAT
+      // retreat into a neighbor tile if possible
       retreatVal = searchTile( defender.x,defender.y, attacker.x,attacker.y );
     }
     else retreatVal = false;
     
-    // COUNTER ATTACK
+    // counter attack when defender survives and defender is an indirect
+    // attacking unit
     if( retreatVal && defender.hp > 0 && !model.isIndirectUnit(defId) ){
       var mainWpAttack = model.canUseMainWeapon(defender,attacker);
       
-      model.damageUnit( attId, model.getBattleDamage(
-        defender,attacker,defLuckRatio, mainWpAttack, true
-      ));  
+      damage = model.battleDamageAgainst( defender,attacker,defLuckRatio, mainWpAttack, true );
+      model.damageUnit( attId, damage );  
+      
+      // invoke counter event
+      evCb = controller.events.counterAttack;
+      if( evCb ) evCb( defId, attId, damage );
       
       powerCounterAtt -= model.unitHpPt( attacker );
       
@@ -217,6 +223,55 @@ util.scoped(function(){
     
   };
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*

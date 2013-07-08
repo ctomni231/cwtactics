@@ -1,15 +1,47 @@
+// Man power data array that holds the amount
+// times that an unit can be builded
 model.manpower = util.list( constants.MAX_PLAYER, 999999 );
 
-controller.onsave( function(dom){
+// Define persitence handler
+controller.persistenceHandler(
   
-  // clone values into a new array and place
-  // it into the save dom
-  dom.mpw = model.manpower.cloneValues([]);
-});
+  // load
+  function( dom ){ 
+    
+    // clone values into a new array 
+    // and place it into the save dom
+    dom.mpw = model.manpower.cloneValues([]);
+  },
+  
+  // save
+  function( dom ){ 
+    model.manpower.resetValues();
+    
+    // grab values from dom model
+    if( dom.mpw.length > 0 ) model.manpower.grabValues( dom.mpw );
+  }
+);
 
-controller.onload( function(){
-  model.manpower.resetValues();
+// Returns true if a player has left man power else false.
+//
+// @param {Number} pid player id
+//
+model.hasLeftManpower = function( pid ){
+  return model.manpower[pid] > 0;
+};
+
+// Mark decrease manpower event
+controller.defineEvent("decreaseManpower");
+
+// Decreases the amount of man power.
+//
+// @param {Number} pid player id
+//
+model.decreaseManpower = function( pid ){
+  model.manpower[pid]--;
   
-  // grab values from dom model
-  if( dom.mpw.length > 0 ) model.manpower.grabValues( dom.mpw );
-});
+  // Invoke model event
+  var evCb = controller.events.decreaseManpower; 
+  if( evCb ) evCb(pid);
+};
+
