@@ -3,23 +3,23 @@
  TODO move into the modules
  */
 controller.scriptBoundaries_ = {
-  minrange:[              1,      CWT_MAX_SELECTION_RANGE-1 ],
-  maxrange:[              1,      CWT_MAX_SELECTION_RANGE   ],
-  moverange:[             1,      CWT_MAX_SELECTION_RANGE   ],
-  movecost:[              1,      CWT_MAX_SELECTION_RANGE   ],
-  vision:[                1,      40    ],
-  att:[                   50,     400   ],
-  counteratt:[            50,     400   ],
-  def:[                   50,     400   ],
-  luck:[                  -50,    50    ],
-  captureRate:[           50,     9999  ],
-  neutralizeWeather:[     0,      1     ],
-  firstcounter:[          0,      1     ],
-  funds:[                 1,      99999 ],
-  fuelDrain:[             1,      1     ],
-  comtowerbonus:[         1,      100   ],
-  terraindefense:[        0,      12    ],
-  terraindefensemodifier:[10,     300   ]
+  minrange:[                1,      constants.MAX_SELECTION_RANGE-1 ],
+  maxrange:[                1,      constants.MAX_SELECTION_RANGE   ],
+  moverange:[               1,      constants.MAX_SELECTION_RANGE   ],
+  movecost:[                1,      constants.MAX_SELECTION_RANGE   ],
+  vision:[                  1,      40    ],
+  att:[                     50,     400   ],
+  counteratt:[              50,     400   ],
+  def:[                     50,     400   ],
+  luck:[                    -50,    50    ],
+  captureRate:[             50,     9999  ],
+  neutralizeWeather:[       0,      1     ],
+  firstcounter:[            0,      1     ],
+  funds:[                   1,      99999 ],
+  fuelDrain:[               1,      1     ],
+  comtowerbonus:[           1,      100   ],
+  terraindefense:[          0,      12    ],
+  terraindefensemodifier:[  10,     300   ]
 };
 
 /**

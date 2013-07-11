@@ -1,3 +1,9 @@
+controller.registerInvokableCommand("battleBetween");
+
+controller.defineEvent("battleBetween");
+controller.defineEvent("mainAttack");
+controller.defineEvent("counterAttack");
+
 // # Battle Module
 //
 // Provides several functions to do battles between different 
@@ -146,11 +152,6 @@ util.scoped(function(){
       
     }
   }
-  
-  // Define event
-  controller.defineEvent("battleBetween");
-  controller.defineEvent("mainAttack");
-  controller.defineEvent("counterAttack");
   
   // Invokes a battle between two units. If the defender is a direct attacking unit then
   // the defender tries to counter attack if he is in range.

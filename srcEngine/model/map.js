@@ -1,3 +1,5 @@
+controller.registerInvokableCommand("doInRange");
+
 // Map table that holds all known tiles.
 model.map = util.matrix( constants.MAX_MAP_WIDTH, constants.MAX_MAP_HEIGHT, null );
 

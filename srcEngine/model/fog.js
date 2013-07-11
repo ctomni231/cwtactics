@@ -1,3 +1,9 @@
+controller.registerInvokableCommand("recalculateFogMap");
+controller.registerInvokableCommand("modifyVisionAt");
+
+controller.defineEvent("modifyVisionAt");
+controller.defineEvent("recalculateFogMap");
+
 // Contains the fog data map. A value 0 means a tile is not visible. 
 // A value greater than 0 means it is visible for n units ( n = fog value of the tile ).
 model.fogData = util.matrix( constants.MAX_MAP_WIDTH, constants.MAX_MAP_HEIGHT, 0 );
@@ -17,6 +23,7 @@ controller.persistenceHandler(
   // load
   function(){
     model.clientInstances.resetValues();
+    model.recalculateFogMap(0);
   },
   
   // save
@@ -55,9 +62,6 @@ model.remoteConnectOfPlayer = function( pid ){
   }
 };
 
-// Defines event
-controller.defineEvent("modifyVisionAt");
-
 // @param {Number} x x coordinate on the map
 // @param {Number} y y coordinate on the map
 // @param {Number} range
@@ -94,9 +98,6 @@ model.modifyVisionAt = function( x,y, pid, range, value ){
   var evCb = controller.events.modifyVisionAt;
   if( evCb ) evCb( x,y, pid, range, value );
 };
-
-// Defines event
-controller.defineEvent("recalculateFogMap");
 
 // @param {Number} pid id number of the target player
 model.recalculateFogMap = function( pid ){ 

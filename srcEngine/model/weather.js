@@ -1,3 +1,8 @@
+controller.registerInvokableCommand("changeWeather");
+controller.registerInvokableCommand("calculateNextWeather");
+
+controller.defineEvent("changeWeather");
+
 // The active weather type object.
 model.weather = null;
 
@@ -19,7 +24,10 @@ controller.persistenceHandler(
       // set weather
       model.weather = model.weatherTypes[dom.wth];
     }
-    else model.weather = model.defaultWeatherType;
+    else{
+      model.weather = model.defaultWeatherType;
+      if( controller.isHost() ) model.calculateNextWeather();
+    }
   },
   
   // save
@@ -65,9 +73,6 @@ model.calculateNextWeather = function(){
     model.calculateNextWeather.callToList() 
   );
 };
-
-// Define event.
-controller.defineEvent("changeWeather");
 
 // Changes the weather to a given type. 
 // Invokes the `changeWeather` event.

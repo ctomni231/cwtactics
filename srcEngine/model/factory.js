@@ -1,3 +1,5 @@
+controller.registerInvokableCommand("buildUnit");
+
 controller.defineEvent("buildUnit");
 
 // Contructs a unit for a player.

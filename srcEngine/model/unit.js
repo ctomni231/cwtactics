@@ -1,3 +1,12 @@
+controller.registerInvokableCommand("damageUnit");
+controller.registerInvokableCommand("healUnit");
+controller.registerInvokableCommand("hideUnit");
+controller.registerInvokableCommand("joinUnits");
+controller.registerInvokableCommand("unhideUnit");
+controller.registerInvokableCommand("drainFuel");
+controller.registerInvokableCommand("createUnit");
+controller.registerInvokableCommand("destroyUnit");
+
 // Matrix with the same metrics like the map. Every unit is placed into the 
 // cell that represents its position.
 //
@@ -90,6 +99,21 @@ model.getFirstUnitSlotId = function( pid ){
 //
 model.getLastUnitSlotId = function( pid ){
   return (constants.MAX_UNITS_PER_PLAYER * (pid+1) ) -1;
+};
+
+// Returns the unit at a given position or null 
+// if the position is not occupied by a unit.
+//
+model.getUnitByPos = function( x,y ){
+  var l = model.units;
+  var i = 0;
+  var e = l.length;
+  
+  for( ; i<e; i++ ){
+    if( l[i].x === x && l[i].y === y ) return l[i];
+  }
+  
+  return null;
 };
 
 // Extracts the identical number from an unit object.
@@ -321,23 +345,6 @@ model.drainFuel = function( uid ){
     
     // if fuel is empty then destroy it
     if( unit.fuel <= 0 ) model.destroyUnit(i);
-  }
-};
-
-// The fuel of an unit will be drained if the unit is marked for using fuel to uptain. All units of a player will 
-// be checked 
-// 
-// @param {Number} plid
-// 
-model.supplyUnitsBySupplierUnits = function( plid ){
-  var i = model.getFirstUnitSlotId(plid);
-  var e = model.getLastUnitSlotId(plid);
-  
-  for(; i<e; i++ ){
-    unit = model.units[i];
-    if( unit.owner === CWT_INACTIVE_ID ) continue;
-    
-    if( unit.type.supply !== undefined ) model.unitSuppliesNeighbours(i);
   }
 };
 

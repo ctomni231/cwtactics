@@ -1,3 +1,9 @@
+controller.registerInvokableCommand("setUnitPosition");
+controller.registerInvokableCommand("clearUnitPosition");
+controller.registerInvokableCommand("moveUnit");
+
+controller.defineEvent("setUnitPosition");
+
 // Possible move codes.
 //
 model.moveCodes = {
@@ -76,21 +82,10 @@ model.moveUnit = function( way, uid, x,y, noFuelConsumption ){
       // GP BACK
       switch( way[i] ){
           
-        case model.MOVE_CODE_UP:
-          cY++;
-          break;
-          
-        case model.MOVE_CODE_RIGHT:
-          cX--;
-          break;
-          
-        case model.MOVE_CODE_DOWN:
-          cY--;
-          break;
-          
-        case model.MOVE_CODE_LEFT:
-          cX++;
-          break;
+        case model.moveCodes.UP:    cY++; break;          
+        case model.moveCodes.RIGHT: cX--; break;
+        case model.moveCodes.DOWN:  cY--; break;
+        case model.moveCodes.LEFT:  cX++; break;
       }
       
       // THAT IS A FAULT
@@ -146,8 +141,6 @@ model.clearUnitPosition = function( uid ){
   unit.y = -unit.y;
 };
 
-controller.defineEvent("setUnitPosition");
-
 // Sets the position of an unit.
 // 
 // @param {Number} uid id number of the target unit
@@ -173,15 +166,13 @@ model.setUnitPosition = function( uid, x,y ){
 // @returns {Number} move costs or -1 if unmovable
 // 
 model.moveCosts = function( movetype, x,y  ){
-  var map = movetype.costs;
   var v;
+  var type = model.map[x][y];
   
-  var prop = model.propertyPosMap[x][y];
-  var type = ( prop )? prop.type : model.map[x][y];
-  v = map[type.ID];
+  v = movetype.costs[type.ID];
   if( typeof v === "number" ) return v;
   
-  v = map["*"];
+  v = movetype.costs["*"];
   if( typeof v === "number" ) return v;
   
   return -1;
@@ -196,13 +187,18 @@ model.moveCosts = function( movetype, x,y  ){
 //  @returns {entry of model.moveCodes}
 //
 model.moveCodeFromAtoB = function( sx,sy,tx,ty ){
-  if( model.distance(sx,sy,tx,ty) > 1 ){
-    model.criticalError( constants.error.ILLEGAL_PARAMETERS, constants.error.POSITIONS_SHOULD_BE_NEIGHBORS );
-  }
-  
+  if( model.distance(sx,sy,tx,ty) > 1 ) model.criticalError( 
+    constants.error.ILLEGAL_PARAMETERS, 
+    constants.error.POSITIONS_SHOULD_BE_NEIGHBORS 
+  );
+    
   if( sx < tx ) return model.moveCodes.RIGHT;
   if( sx > tx ) return model.moveCodes.LEFT;
   if( sy < ty ) return model.moveCodes.DOWN;
   if( sy > ty ) return model.moveCodes.UP;
-  model.criticalError( constants.error.ILLEGAL_PARAMETERS, constants.error.UNKNOWN );
+  
+  model.criticalError( 
+    constants.error.ILLEGAL_PARAMETERS, 
+    constants.error.UNKNOWN 
+  );
 };

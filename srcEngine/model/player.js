@@ -1,3 +1,11 @@
+controller.registerInvokableCommand("noTeamLeft");
+controller.registerInvokableCommand("playerGivesUp");
+controller.registerInvokableCommand("playerLooses");
+
+controller.defineEvent("playerGivesUp");
+controller.defineEvent("playerLooses");
+controller.defineEvent("noTeamLeft");
+
 // Different relationship modes between two objects
 model.relationModes = {
   SAME_OBJECT: -1,
@@ -248,9 +256,6 @@ model.relationShipCheckUnitNeighbours = function( pid, x,y , mode ){
   return false;
 };
 
-// Define event.
-controller.defineEvent("playerGivesUp");
-
 // This function yields the game for the turn owner and invokes directly the 
 // `nextTurn` action. 
 //
@@ -269,9 +274,6 @@ model.playerGivesUp = function(){
   var evCb = controller.events.playerGivesUp;
   if( evCb ) evCb( model.turnOwner );
 };
-
-// Define event.
-controller.defineEvent("noTeamLeft");
 
 // Invoked when the game ends because of a battle victory over 
 // all enemy players. 

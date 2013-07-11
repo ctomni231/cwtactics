@@ -6,7 +6,10 @@
     "MNTN",
     "FRST",
     "WATER",
-    "ROAD"
+    "ROAD",
+    "HQTR",
+    "BASE",
+    "CITY"
   ],
   
   "map":[

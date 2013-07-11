@@ -1,3 +1,7 @@
+controller.registerInvokableCommand("decreaseManpower");
+
+controller.defineEvent("decreaseManpower");
+
 // Man power data array that holds the amount
 // times that an unit can be builded
 model.manpower = util.list( constants.MAX_PLAYER, 999999 );
@@ -29,9 +33,6 @@ controller.persistenceHandler(
 model.hasLeftManpower = function( pid ){
   return model.manpower[pid] > 0;
 };
-
-// Mark decrease manpower event
-controller.defineEvent("decreaseManpower");
 
 // Decreases the amount of man power.
 //

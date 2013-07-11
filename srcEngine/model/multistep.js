@@ -1,3 +1,5 @@
+controller.registerInvokableCommand("invokeNextStep_");
+
 // Invokes the next step for multistep actions.
 //
 // @private

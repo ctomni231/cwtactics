@@ -1,5 +1,10 @@
-// Define event
+controller.registerInvokableCommand("transferMoney");
+controller.registerInvokableCommand("transferUnit");
+controller.registerInvokableCommand("transferProperty");
+
 controller.defineEvent("transferMoney");
+controller.defineEvent("transferUnit");
+controller.defineEvent("transferProperty");
 
 // Transfers money from one player to another player.
 // 
@@ -36,9 +41,6 @@ model.transferMoney = function( splid, tplid, money ){
   if( evCb ) evCb( splid, tplid, money ); 
 };
 
-// Define event
-controller.defineEvent("transferUnit");
-
 // Transfers an unit from one player to another player.
 // 
 // @param {Number} suid
@@ -74,9 +76,6 @@ model.transferUnit = function( suid, tplid ){
   var evCb = controller.events.transferUnit;
   if( evCb ) evCb( suid, tplid ); 
 };
-
-// Define event
-controller.defineEvent("transferProperty");
 
 // Transfers a property from one player to another player.
 //

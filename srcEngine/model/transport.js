@@ -1,3 +1,9 @@
+controller.registerInvokableCommand("loadUnitInto");
+controller.registerInvokableCommand("unloadUnitFrom");
+
+controller.defineEvent("loadUnitInto");
+controller.defineEvent("unloadUnitFrom");
+
 // Has a transporter unit with id tid loaded units? Returns true if yes, else
 // false.
 //
@@ -26,12 +32,11 @@ model.isLoadedBy = function( lid, tid ){
   return model.units[ lid ].loadedIn === tid;
 };
 
-/**
- * Loads the unit with id lid into a tranporter with the id tid.
- *
- * @param {Number} lid load id
- * @param {Number} tid transporter id
- */
+// Loads the unit with id lid into a tranporter with the id tid.
+//
+// @param {Number} lid load id
+// @param {Number} tid transporter id
+// 
 model.loadUnitInto = function( loadId, transportId ){
   if( !model.canLoad( loadId, transportId ) ){
     util.raiseError("transporter unit",transportId,"cannot load unit",loadId);
@@ -41,12 +46,11 @@ model.loadUnitInto = function( loadId, transportId ){
   model.units[ transportId ].loadedIn--;
 };
 
-/**
- * Unloads the unit with id lid from a tranporter with the id tid.
- *
- * @param {Number} lid
- * @param {Number} tid
- */
+// Unloads the unit with id lid from a tranporter with the id tid.
+//
+// @param {Number} lid
+// @param {Number} tid
+// 
 model.unloadUnitFrom = function( transportId, trsx, trsy, loadId, tx,ty ){
   
   // error check: is really loaded by `transportId` ?

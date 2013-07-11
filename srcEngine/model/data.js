@@ -1,176 +1,182 @@
-util.scoped(function(){
-  
-  function expectArray( obj, attr, mustDefined ){
-    var v = obj[attr];
+// Holds all available unit types
+model.unitTypes = {};
+
+// Holds a list of available tile types
+model.listOfUnitTypes = [];
+
+// Holds all available tile and property types
+model.tileTypes = {};
+
+// Holds a list of available tile types
+model.listOfPropertyTypes = [];
+
+// Holds a list of available property types
+model.listOfTileTypes = [];
+
+// Holds all available weather types
+model.weatherTypes = {};
+
+// Holds the default weather type
+model.defaultWeatherType = null;
+
+// Holds all non-defualt weather types
+model.nonDefaultWeatherType = [];
+
+// Holds all available move types
+model.moveTypes = {};
+
+model.factionTypes = {};
+
+model.coTypes = {};
+
+model.globalRules = [];
+
+model.mapRules = [];
+
+model.sounds = null;
+
+model.graphics = null;
+
+model.maps = null;
+
+model.wpKeys_ = ["main_wp","sec_wp"];
+
+// Language model holds all known language keys.
+//
+model.language = {};
+
+// Returns a localized string for a given key or if not exist the key itself.
+//
+// @param {String} key
+//
+model.localized = function( key ){
+  var result = model.language[key];
+  return ( result === undefined )? key: result;
+};
+
+// Returns all known type game of properties.
+// 
+model.getListOfPropertyTypes = function(){
+  if( model.listOfPropertyTypes === null ){
+    var tiles = model.tileTypes;
+    var l = Object.keys( tiles );
+    var r = [];
     
-    if( v === undefined && mustDefined === true ) util.raiseError(attr,"needs to be defined");
-    if( v === undefined ) return false;
-    
-    if( typeof v !== "object" && typeof v.length === undefined ){ 
-      util.raiseError(attr,"needs to be an array but is ",typeof v);
+    for( var i=l.length-1; i>=0; i-- ){
+      
+      // append type when it have capture points
+      if( tiles[l[i]].capturePoints > 0 ){
+        r.push( l[i] );
+      }
     }
     
-    return true;
+    model.listOfPropertyTypes = r;
   }
   
-  function expectString( obj, attr, mustDefined ){
-    var v = obj[attr];
+  return model.listOfPropertyTypes;
+};
+
+// Returns all known type game of tiles.
+// 
+model.getListOfTileTypes = function(){
+  if( model.listOfTileTypes === null ){
+    var tiles = model.tileTypes;
+    var l = Object.keys( tiles );
+    var r = [];
+    for( var i=l.length-1; i>=0; i-- ){
+      
+      // append type when it does not have any 
+      // capture points
+      if( tiles[l[i]].capturePoints === undefined ){
+        r.push( l[i] );
+      }
+    }
     
-    if( v === undefined && mustDefined === true ) util.raiseError(attr,"needs to be defined");
-    if( v === undefined ) return false;
-    
-    if( typeof v !== "string" ) util.raiseError(attr,"needs to be a string but is ",typeof v);
-    
-    return true;
+    model.listOfTileTypes = r;
   }
   
-  function expectObject( obj, attr, mustDefined ){
-    var v = obj[attr];
-    
-    if( v === undefined && mustDefined === true ) util.raiseError(attr,"needs to be defined");
-    if( v === undefined ) return false;
-    
-    if( typeof v !== "object" ) util.raiseError(attr,"needs to be an object but is ",typeof v);
-    
-    return true;
-  }
+  return model.listOfTileTypes;
+};
+
+util.scoped(function(){
   
-  function expectBoolean( obj, attr, mustDefined ){
-    var v = obj[attr];
-    
-    if( v === undefined && mustDefined === true ) util.raiseError(attr,"needs to be defined");
-    if( v === undefined ) return false;
-    
-    if( typeof v !== "boolean" ) util.raiseError(attr,"needs to be a boolean but is ",typeof v);
-    
-    return true;
-  }
-  
-  function notIn( attr, obj ){
-    if( obj.hasOwnProperty(attr) ) util.raiseError(attr,"is already registered");
-  } 
-  
-  function not( attr, obj, res ){
-    if( obj[attr] === res ) util.raiseError(attr,"cannot have value",res);
-  } 
-  
-  function isIn( attr, obj ){
-    if( !obj.hasOwnProperty(attr) ) util.raiseError(attr,"is not registered");
-  } 
-  
-  function expectNumber( obj, attr, mustDefined, integer, min, max ){
-    var v = obj[attr];
-    
-    if( v === undefined && mustDefined === true ) util.raiseError(attr,"needs to be defined");
-    if( v === undefined ) return false;
-    
-    if( typeof v !== "number" ) util.raiseError(attr,"needs to be a number but is ",typeof v);
-    if( integer === true && parseInt(v,10) !== v ) util.raiseError(attr,"needs to be an integer");
-    
-    if( min !== undefined && v < min ) util.raiseError(attr,"needs to be greater equal",min,"but is",v);
-    if( min !== undefined && isNaN(min) ) util.raiseError("wrong minimum parameter");
-    
-    if( max !== undefined && v > max ) util.raiseError(attr,"needs to be greater equal",max,"but is",v);
-    if( max !== undefined && isNaN(max) ) util.raiseError("wrong maximum parameter");
-    
-    return true;
-  }
-  
-  // --------------------------------------------------------------- //
-  
-  /**
-   *
-   */
-  model.unitTypes = {};
-  
-  /**
-   *
-   */
-  model.tileTypes = {};
-  
-  /**
-   *
-   */
-  model.weatherTypes = {};
-  
-  /**
-   *
-   */
-  model.defaultWeatherType = null;
-  
-  /**
-   *
-   */
-  model.nonDefaultWeatherType = [];
-  
-  /**
-   *
-   */
-  model.moveTypes = {};
-  
-  /**
-   *
-   */
-  model.factionTypes = {};
-  
-  /**
-   *
-   */
-  model.coTypes = {};
-  
-  /**
-   *
-   */
-  model.globalRules = [];
-  
-  /**
-   *
-   */
-  model.mapRules = [];
-  
-  /**
-   *
-   */
-  model.language = { en:{} };
-  
-  /**
-   *
-   */
-  model.sounds = null;
-  
-  /**
-   *
-   */
-  model.graphics = null;
-  
-  /**
-   *
-   */
-  model.maps = null;
-  
-  /**
-   *
-   */
-  model.wpKeys_ = ["main_wp","sec_wp"];
-  
-  var selectedLang = "en";
-  
-  /**
-   * Returns a localized string for a given key or if not exist the key itself.
-   *
-   * @param {String} key
-   */
-  model.localized = function( key ){
-    var result = model.language[selectedLang][key];
-    return ( result === undefined )? key: result;
+  var expectArray = function( obj, attr, mustDefined ){
+    if( !util.expectArray(obj, attr, mustDefined) ){
+      model.criticalError(
+        constants.error.MOD_DATA_FORMAT_FAULT,
+        constants.error.DATA_FAULT_ARRAY_FAULT
+      );
+    }
   };
   
-  /**
-   * Parses an unit sheet and adds it to the sheet database. If the 
-   * sheet is not correct then an error will be thrown.
-   * 
-   * @param {Object} sheet
-   */
+  var expectString = function( obj, attr, mustDefined ){
+    if( !util.expectString(obj, attr, mustDefined) ){
+      model.criticalError(
+        constants.error.MOD_DATA_FORMAT_FAULT,
+        constants.error.DATA_FAULT_STRING_FAULT
+      );
+    }
+  };
+  
+  var expectObject = function( obj, attr, mustDefined ){
+    if( !util.expectObject(obj, attr, mustDefined) ){
+      model.criticalError(
+        constants.error.MOD_DATA_FORMAT_FAULT,
+        constants.error.DATA_FAULT_STRING_FAULT
+      );
+    }
+  };
+  
+  var expectBoolean = function( obj, attr, mustDefined ){
+    if( !util.expectBoolean(obj, attr, mustDefined) ){
+      model.criticalError(
+        constants.error.MOD_DATA_FORMAT_FAULT,
+        constants.error.DATA_FAULT_STRING_FAULT
+      );
+    }
+  };
+  
+  var notIn = function( attr, obj ){
+    if( !util.notIn(attr, obj) ){
+      model.criticalError(
+        constants.error.MOD_DATA_FORMAT_FAULT,
+        constants.error.DATA_FAULT_STRING_FAULT
+      );
+    }
+  };
+  
+  var not = function( attr, obj, res ){
+    if( !util.not(attr, obj, res) ){
+      model.criticalError(
+        constants.error.MOD_DATA_FORMAT_FAULT,
+        constants.error.DATA_FAULT_STRING_FAULT
+      );
+    }
+  };
+  
+  var isIn = function( attr, obj ){
+    if( !util.isIn(attr, obj) ){
+      model.criticalError(
+        constants.error.MOD_DATA_FORMAT_FAULT,
+        constants.error.DATA_FAULT_STRING_FAULT
+      );
+    }
+  };
+  
+  var expectNumber = function( obj, attr, mustDefined, integer, min, max ){
+    if( !util.expectNumber(obj, attr, mustDefined, integer, min, max) ){
+      model.criticalError(
+        constants.error.MOD_DATA_FORMAT_FAULT,
+        constants.error.DATA_FAULT_STRING_FAULT
+      );
+    }
+  };
+  
+  // Parses an unit sheet and adds it to the sheet database. If the 
+  // sheet is not correct then an error will be thrown.
+  //   
+  // @param {Object} sheet
+  //  
   model.parseUnitType = function( sheet ){
     var keys,key,list,att,i1,i2,e1,e2,sub;
     
@@ -184,8 +190,8 @@ util.scoped(function(){
     isIn( sheet.movetype, model.moveTypes );
     
     // VISION, MOVE CAN BE THE MAX_MOVE_RANGE IN MAXIMUM
-    expectNumber(sheet,"range",true,true,0,CWT_MAX_SELECTION_RANGE);
-    expectNumber(sheet,"vision",true,true,1,CWT_MAX_SELECTION_RANGE);
+    expectNumber(sheet,"range",true,true,0, constants.MAX_SELECTION_RANGE);
+    expectNumber(sheet,"vision",true,true,1,constants.MAX_SELECTION_RANGE);
     
     // GENERAL STUFF
     expectNumber(sheet,"fuel",true,true,0,99);
@@ -217,7 +223,7 @@ util.scoped(function(){
     if( expectObject(sheet,"suicide",false) ){
       sub = sheet.suicide;
       expectNumber(sub,"damage",true,true,1,9);
-      expectNumber(sub,"range",true,true,1,CWT_MAX_SELECTION_RANGE);
+      expectNumber(sub,"range",true,true,1,constants.MAX_SELECTION_RANGE);
       
       // EXCEPTIONS?
       if( expectObject(sub,"nodamage",false ) ){
@@ -277,7 +283,7 @@ util.scoped(function(){
     notIn( sheet.ID, model.tileTypes );
     
     expectNumber(sheet,"defense",true,true,0,6);
-    expectNumber(sheet,"vision",false,true,0,CWT_MAX_SELECTION_RANGE);
+    expectNumber(sheet,"vision",false,true,0,constants.MAX_SELECTION_RANGE);
     expectNumber(sheet,"points",false,true,1,100);
     expectNumber(sheet,"funds",false,true,10,99999);
     
@@ -345,7 +351,7 @@ util.scoped(function(){
     var costs = sheet.costs;
     var costsKeys = Object.keys(costs);
     for( var i1=0,e1=costsKeys.length; i1<e1; i1++ ){
-      expectNumber(costs,costsKeys[i1],true,true,-1,CWT_MAX_SELECTION_RANGE);
+      expectNumber(costs,costsKeys[i1],true,true,-1,constants.MAX_SELECTION_RANGE);
       not(costs,costsKeys[i1],0);
     }
     
@@ -455,86 +461,4 @@ util.scoped(function(){
     }
   };
   
-  // FILL LISTS DIRECTLY AT SHEET PARSING STEP :P
-  
-  
-  model.listOfUnitTypes = [];
-  
-  /** @private */
-  model.listOfPropertyTypes_ = null;
-  
-  /**
-   * Returns all known type game of properties.
-   */
-  model.getListOfPropertyTypes = function(){
-    if( model.listOfTileTypes_ === null ){
-      var tiles = model.tileTypes;
-      var l = Object.keys( tiles );
-      
-      var r = [];
-      for( var i=l.length-1; i>=0; i-- ){
-        if( tiles[l[i]].capturePoints > 0 ){
-          r.push( l[i] );
-        }
-      }
-      
-      model.listOfPropertyTypes_ = r;
-    }
-    
-    return model.listOfPropertyTypes_;
-  };
-  
-  /** @private */
-  model.listOfTileTypes_ = null;
-  
-  /**
-   * Returns all known type game of tiles.
-   */
-  model.getListOfTileTypes = function(){
-    if( model.listOfTileTypes_ === null ){
-      var tiles = model.tileTypes;
-      var l = Object.keys( tiles );
-      
-      var r = [];
-      for( var i=l.length-1; i>=0; i-- ){
-        if( tiles[l[i]].capturePoints === undefined ){
-          r.push( l[i] );
-        }
-      }
-      
-      model.listOfTileTypes_ = r;
-    }
-    
-    return model.listOfTileTypes_;
-  };
-  
-  controller.objectInMap = function( map, id, movetype ){
-    var v;
-    
-    v = map[id];
-    if( typeof v === "number" ) return v;
-    
-    v = map[movetype];
-    if( typeof v === "number" ) return v;
-    
-    v = map["*"];
-    if( typeof v === "number" ) return v;
-    
-    return -1;
-  };
-  
-  controller.objectInList = function( list, id, movetype ){
-    var v;
-    
-    v = list.indexOf(id);
-    if( v !== -1 ) return true;
-    
-    v = list.indexOf(movetype);
-    if( v !== -1 ) return true;
-    
-    v = list.indexOf("*");
-    if( v !== -1 ) return true;
-    
-    return false;
-  };
 });

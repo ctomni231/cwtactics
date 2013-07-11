@@ -1,3 +1,13 @@
+controller.registerInvokableCommand("deactivateCoPower");
+controller.registerInvokableCommand("activateCoPower");
+controller.registerInvokableCommand("activateSuperCoPower");
+controller.registerInvokableCommand("modifyPowerLevel");
+
+controller.defineEvent("modifyPowerLevel");
+controller.defineEvent("activateSuperCoPower");
+controller.defineEvent("activateCoPower");
+controller.defineEvent("deactivateCoPower");
+
 model.coData = util.list( constants.MAX_PLAYER, function( i ){ 
   return {
     power:      0,      // acc. co power
@@ -108,46 +118,31 @@ util.scoped(function(){
     if( evCb ) evCb(pid);
   };
   
-  // Define `deactivateCoPower` event
-  controller.defineEvent("deactivateCoPower");
-  
-  /**
-   * Deactivates the CO power of a player.
-   * 
-   * @param {Number} pid
-   */
+  // Deactivates the CO power of a player.
+  // 
+  // @param {Number} pid
+  // 
   model.deactivateCoPower = function( pid ){
     activatePower( pid, model.powerLevel.INACTIVE,"deactivateCoPower");
   };
   
-  // Define `activateCoPower` event
-  controller.defineEvent("activateCoPower");
-  
-  /**
-   * Activates the CO power of a player.
-   * 
-   * @param {Number} pid
-   */
+  // Activates the CO power of a player.
+  // 
+  // @param {Number} pid
+  // 
   model.activateCoPower = function( pid ){
     activatePower( pid, model.powerLevel.COP, "activateCoPower" );
   };
   
-  // Define `activateSuperCoPower` event
-  controller.defineEvent("activateSuperCoPower");
-  
-  /**
-   * Activates the super CO power of a player.
-   * 
-   * @param {Number} pid
-   */
+  // Activates the super CO power of a player.
+  // 
+  // @param {Number} pid
+  // 
   model.activateSuperCoPower = function( pid ){
     activatePower(pid, model.powerLevel.SCOP, "activateSuperCoPower");
   };
   
 });
-
-// Define `modifyPowerLevel` event
-controller.defineEvent("modifyPowerLevel");
 
 // Modifies the power level of a player.
 //  

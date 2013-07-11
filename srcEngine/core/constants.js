@@ -21,16 +21,27 @@ var constants = {
   error:{
     
     // ###### Error type numbers
-    UNKNOWN:                  1,
-    HOST_ONLY:                2,
-    ILLEGAL_DATA:             3,
-    ILLEGAL_PARAMETERS:       4,
-    ILLEGAL_MAP_FORMAT:       5,
-    NON_ENGINE_FAULT:         6,
-    CLIENT_BREAKS_CONTRACT:   70,
+    
+    UNKNOWN:                        1,
+    HOST_ONLY:                      2,
+    ILLEGAL_DATA:                   3,
+    ILLEGAL_PARAMETERS:             4,
+    ILLEGAL_MAP_FORMAT:             5,
+    NON_ENGINE_FAULT:               6,
+    MOD_DATA_FORMAT_FAULT:          7,
+    CLIENT_BREAKS_CONTRACT:         70,
+    
+    STM_NO_EVENT:                   90,
+    STM_INVALID_NEXT_STATE:         91,
+    STM_ACTIONSTATE_BREAKS_TRANS:   92,
+    STM_NEXT_STATE_MISSING:         93,
 
     // ###### Error data numbers
 
+    ILLEGAL_ACTION_FUNCTION_ID:     9999,
+    NO_GAME_ROUND_ACTIVE:           9998,
+    GAME_ROUND_ACTIVE:              9997,
+    
     // ai errors
     AI_STEP_ON_NON_AI_PLAYER:       9001,
     
@@ -39,30 +50,54 @@ var constants = {
     EVENT_LISTENER_ALREADY_EXIST:   7002,
     EVENT_LISTENER_DOES_NOT_EXIST:  7001,
     
-    // transporter errors
-    LOAD_IS_NOT_IN_TRANSPORTER:     1103,
-    TRANSPORTER_EXPECTED:           1102,
-    TRANSPORTER_CANNOT_LOAD_ITSELF: 1101,
-    
     // save data errors
-    SAVEDATA_WEATHER_MISSMATCH:     1202,
-    SAVEDATA_PLAYER_MISSMATCH:      1201,
+    SAVEDATA_WEATHER_MISSMATCH:     6002,
+    SAVEDATA_PLAYER_MISSMATCH:      6001,
     
-    UNKNOWN_PLAYER_OBJECT:          1020,
-    SUPPLY_UNIT_EXPECTED:           1019,
-    PARAMETERS_MISSING:             1018,
-    JOIN_TYPE_MISSMATCH:            1017,
-    NO_SLOT_FREE:                   1016,
-    UNKNOWN_MOVE_CODE:              1015,
-    PROPERTY_NOT_FOUND:             1014,
-    GAME_STATE_BREAK:               1013,
-    POSITIONS_SHOULD_BE_NEIGHBORS:  1012,
-    UNKNOWN_OBJECT_TYPE:            1011,
-    UNIT_NOT_FOUND:                 1010,
-    PROPERTY_NOT_FOUND:             1009,
+    // player related errors
+    UNKNOWN_PLAYER_OBJECT:          5001,
+    
+    // unit related errors 
+    UNIT_NOT_FOUND:                 4006,
+    JOIN_TYPE_MISSMATCH:            4005,
+    SUPPLY_UNIT_EXPECTED:           4004,
+    TRANSPORTER_CANNOT_LOAD_ITSELF: 4003,
+    TRANSPORTER_EXPECTED:           4002,
+    LOAD_IS_NOT_IN_TRANSPORTER:     4001,
+    
+    // action errors
+    ACTION_CONDITION_MISSING:       8001,
+    ACTION_KEY_MISSING:             8002,
+    ACTION_IMPLEMENTATION_MISSING:  8003,
+    ACTION_KEY_ALREADY_DEFINED:     8004,
+    ACTION_ONLY_ONE_SELECTION_TYPE: 8005,
+  
+    // property related errors
+    PROPERTY_NOT_FOUND:             3004,
+    PROPERTY_NOT_FOUND:             3003,
+    CANNOT_FIND_NEXT_PLAYER:        3002,
+    UNKNOWN_PLAYER_ID:              3001,
+    
+    // data faults
+    DATA_FAULT_IS_SAME_FAULT:       2008,
+    DATA_FAULT_NUMBER_FAULT:        2007,
+    DATA_FAULT_STRING_FAULT:        2006,
+    DATA_FAULT_BOOLEAN_FAULT:       2005,
+    DATA_FAULT_IS_IN_FAULT:         2004,
+    DATA_FAULT_NOT_IN_FAULT:        2003,
+    DATA_FAULT_ARRAY_FAULT:         2002,
+    DATA_FAULT_OBJECT_FAULT:        2001,
+    
+    // other errors
+    NON_ACTION_CALL_FUNCTION:       1012,
+    NON_MODEL_FUNCTION:             1011,
+    NO_SLOT_FREE:                   1010,
+    PARAMETERS_MISSING:             1009,
+    GAME_STATE_BREAK:               1008,
+    POSITIONS_SHOULD_BE_NEIGHBORS:  1007,
     TURN_OWNER_ONLY:                1006,
-    UNKNOWN_PLAYER_ID:              1005,
-    CANNOT_FIND_NEXT_PLAYER:        1004,
+    UNKNOWN_MOVE_CODE:              1005,
+    UNKNOWN_OBJECT_TYPE:            1004,
     UNKNOWN_WEATHER:                1003,
     NOT_ENOUGH_MONEY:               1002,
     CALC_NEXT_WEATHER:              1001

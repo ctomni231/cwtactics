@@ -1,3 +1,11 @@
+controller.registerInvokableCommand("changePropertyType");
+controller.registerInvokableCommand("resetCapturePoints");
+controller.registerInvokableCommand("captureProperty");
+
+controller.defineEvent("changePropertyType");
+controller.defineEvent("resetCapturePoints");
+controller.defineEvent("captureProperty");
+
 // List of all available properties of a game round. If a property is not 
 // used it will be marked with an owner value {@link CWT_INACTIVE_ID}.
 //

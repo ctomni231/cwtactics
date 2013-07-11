@@ -1,3 +1,7 @@
+controller.registerInvokableCommand("nextTurn");
+
+controller.defineEvent("nextTurn");
+
 // Represents the current action day in the game. The day attribute increases
 // everytime if the first player starts its turn.
 // 
@@ -44,9 +48,6 @@ model.isTurnOwner = function( pid ){
 model.daysToTurns = function( v ){
   return model.players.length*v;
 };
-
-// Define event
-controller.defineEvent("nextTurn");
 
 // Ends the turn for the current active turn owner.
 // Invokes the `nextTurn` event.

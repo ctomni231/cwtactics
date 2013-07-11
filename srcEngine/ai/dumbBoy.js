@@ -1,25 +1,64 @@
-controller.registerAI({
-
-  name:    "DumbBoy",
-  version: "0.1",
-  desc:    "Very simple minded AI",
+util.scoped(function(){
     
-  init: function( memory ){
+  var stm = util.stateMachine({
     
-  },
+    // ---
+    
+    IDLE: {
+      start:function(){
+        return "START_TURN";
+      }
+    },
+    
+    // ---
+    
+    START_TURN: {
+      actionState:function(){
+        return "CAPTURE";
+      }
+    },    
+    
+    // ---
+    
+    ITERATE_UNITS: {
+      tick:function(){
+      
+      }
+    },
+    
+    // ---
+    
+    BUILD: {
+      tick:function(){
+      
+      }
+    },
+    
+    // ---
+    
+    END_TURN: {
+      actionState: function(){
+        return "START_TURN";
+      }
+    }
   
-  tick: function( memory, action ){
+  },{ noHistory:true });
   
-    // 1. SEARCH CAPTURE TARGETS
+  controller.registerAI({
     
-    // 2. SEARCH INDIRECT TARGETS
+    name:    "DumbBoy",
+    version: "0.2",
+    desc:    "Very simple minded AI",
+        
+    init: function( memory ){
+      stm.reset();
+      stm.memory = memory;
+    },
     
-    // 3. SEARCH DIRECT TARGETS
+    tick: function(){
+      stm.tick();
+    }
     
-    // 4. BUILD UNITS
-    
-    // no actions left 
-    action.doCommand("nextTurn"); 
-  }
-
+  });
+  
 });

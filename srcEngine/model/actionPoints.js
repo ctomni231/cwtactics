@@ -1,8 +1,16 @@
-/**
- * Holds the identical numbers of all objects that can act during the turn.
- * After a unit has acted, it should be removed from this list with
- * {@link model.markUnitNonActable}.
- */
+controller.registerInvokableCommand("markUnitActable");
+controller.registerInvokableCommand("markUnitNonActable");
+controller.registerInvokableCommand("trapWait");
+controller.registerInvokableCommand("setActableStatus");
+
+controller.defineEvent("markUnitNonActable");
+controller.defineEvent("markUnitActable");
+controller.defineEvent("trapWait");
+
+// Holds the identical numbers of all objects that can act during the turn.
+// After a unit has acted, it should be removed from this list with
+// {@link model.markUnitNonActable}.
+// 
 model.leftActors = util.list( constants.MAX_UNITS_PER_PLAYER, false );
 
 // Define persistence handler
@@ -66,14 +74,10 @@ model.setActableStatus = function( uid, canAct ){
   else model.leftActors[ uid - startIndex ] = canAct;
 };
 
-// Define event
-controller.defineEvent("trapWait");
-
-/**
- * Called when an unit is trapped. Invokes the `trapWait` event.
- * 
- * @param {Number} uid
- */
+// Called when an unit is trapped. Invokes the `trapWait` event.
+// 
+// @param {Number} uid
+// 
 model.trapWait = function( uid ){
   model.setActableStatus( uid, false );
   
@@ -82,12 +86,8 @@ model.trapWait = function( uid ){
   if( evCb ) evCb( uid );
 };
 
-// Define event
-controller.defineEvent("markUnitNonActable");
-
-/**
- * @param {Number} uid
- */
+// @param {Number} uid
+// 
 model.markUnitNonActable = function( uid ){
   model.setActableStatus( uid, false );
   
@@ -96,12 +96,8 @@ model.markUnitNonActable = function( uid ){
   if( evCb ) evCb( uid );
 };
 
-// Define event
-controller.defineEvent("markUnitActable");
-
-/**
- * @param {Number} uid
- */
+// @param {Number} uid
+// 
 model.markUnitActable = function( uid ){
   model.setActableStatus( uid, true );
   

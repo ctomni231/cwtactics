@@ -1,3 +1,16 @@
+controller.registerInvokableCommand("unitSuppliesNeighbours");
+controller.registerInvokableCommand("tryUnitSuppliesNeighbours");
+controller.registerInvokableCommand("refillResources");
+controller.registerInvokableCommand("propertyRepairs");
+controller.registerInvokableCommand("propertySupply");
+controller.registerInvokableCommand("doPropertyGiveFunds");
+
+controller.defineEvent("unitSuppliesNeighbours");
+controller.defineEvent("refillResources");
+controller.defineEvent("propertyRepairs");
+controller.defineEvent("propertySupply");
+controller.defineEvent("doPropertyGiveFunds");
+
 // Player gets funds from all properties.
 // 
 // @param {Number} prid id of the player

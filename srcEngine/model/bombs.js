@@ -1,3 +1,9 @@
+controller.registerInvokableCommand("doExplosionAt");
+controller.registerInvokableCommand("fireSilo");
+
+controller.defineEvent("doExplosionAt");
+controller.defineEvent("startFireSilo");
+
 util.scoped(function(){
   
   // inflicts damage to all units in a given range
@@ -8,9 +14,6 @@ util.scoped(function(){
     // inflict damage 
     if( unit ) model.damageUnit( model.extractUnitId(unit),damage,9);
   }
-  
-  // Define `doExplosionAt` event
-  controller.defineEvent("doExplosionAt");
   
   // fires a bomb at a given position (x,y) and inflicts damage
   // to all units in a range around the position.
@@ -23,9 +26,6 @@ util.scoped(function(){
     if( evCb ) evCb( uid );
   };
 });
-
-// Define `startFireSilo` event
-controller.defineEvent("startFireSilo");
 
 // fires a rocket to a given position (x,y) and inflicts damage
 // to all units in a range around the position.
