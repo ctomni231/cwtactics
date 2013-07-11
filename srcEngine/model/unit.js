@@ -7,6 +7,11 @@ controller.registerInvokableCommand("drainFuel");
 controller.registerInvokableCommand("createUnit");
 controller.registerInvokableCommand("destroyUnit");
 
+controller.defineGameScriptable("fuelDrain",1,1);
+
+controller.defineGameConfig("noUnitsLeftLoose",0,1,0);
+controller.defineGameConfig("unitLimit",0,constants.MAX_UNITS_PER_PLAYER,0);
+    
 // Matrix with the same metrics like the map. Every unit is placed into the 
 // cell that represents its position.
 //

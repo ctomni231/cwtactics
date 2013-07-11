@@ -1,3 +1,6 @@
+controller.defineGameConfig("turnTimeLimit",0,60,0);
+controller.defineGameConfig("gameTimeLimit",0,99999,0);
+
 util.scoped(function(){
   
   // CONFIG

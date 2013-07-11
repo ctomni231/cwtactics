@@ -4,6 +4,19 @@ controller.defineEvent("battleBetween");
 controller.defineEvent("mainAttack");
 controller.defineEvent("counterAttack");
 
+controller.defineGameConfig("daysOfPeace",0,50,0);
+    
+controller.defineGameScriptable("minrange",1,constants.MAX_SELECTION_RANGE-1);
+controller.defineGameScriptable("maxrange",1,constants.MAX_SELECTION_RANGE);
+controller.defineGameScriptable("att",50,400);
+controller.defineGameScriptable("def",50,400);
+controller.defineGameScriptable("counteratt",50,400);
+controller.defineGameScriptable("luck",-50,50);
+controller.defineGameScriptable("firstcounter",0,1);
+controller.defineGameScriptable("comtowerbonus",1,100);
+controller.defineGameScriptable("terraindefense",0,12);
+controller.defineGameScriptable("terraindefensemodifier",10,300);
+
 // # Battle Module
 //
 // Provides several functions to do battles between different 

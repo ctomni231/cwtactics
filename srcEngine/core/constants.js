@@ -41,6 +41,8 @@ var constants = {
     ILLEGAL_ACTION_FUNCTION_ID:     9999,
     NO_GAME_ROUND_ACTIVE:           9998,
     GAME_ROUND_ACTIVE:              9997,
+    ILLEGAL_CONFIG_VAR_DEFINTION:   9996,
+    ILLEGAL_SCRIPT_VAR_DEFINTION:   9995,
     
     // ai errors
     AI_STEP_ON_NON_AI_PLAYER:       9001,

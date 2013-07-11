@@ -7,6 +7,10 @@ controller.defineEvent("modifyPowerLevel");
 controller.defineEvent("activateSuperCoPower");
 controller.defineEvent("activateCoPower");
 controller.defineEvent("deactivateCoPower");
+  
+controller.defineGameConfig("coStarCost",5,50000,9000,5);
+controller.defineGameConfig("coStarCostIncrease",0,50000,1800,5);
+controller.defineGameConfig("coStarCostIncreaseSteps",0,50,10);
 
 model.coData = util.list( constants.MAX_PLAYER, function( i ){ 
   return {

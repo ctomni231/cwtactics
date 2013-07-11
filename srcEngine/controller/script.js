@@ -1,57 +1,83 @@
-/**
- * @private
- TODO move into the modules
- */
-controller.scriptBoundaries_ = {
-  minrange:[                1,      constants.MAX_SELECTION_RANGE-1 ],
-  maxrange:[                1,      constants.MAX_SELECTION_RANGE   ],
-  moverange:[               1,      constants.MAX_SELECTION_RANGE   ],
-  movecost:[                1,      constants.MAX_SELECTION_RANGE   ],
-  vision:[                  1,      40    ],
-  att:[                     50,     400   ],
-  counteratt:[              50,     400   ],
-  def:[                     50,     400   ],
-  luck:[                    -50,    50    ],
-  captureRate:[             50,     9999  ],
-  neutralizeWeather:[       0,      1     ],
-  firstcounter:[            0,      1     ],
-  funds:[                   1,      99999 ],
-  fuelDrain:[               1,      1     ],
-  comtowerbonus:[           1,      100   ],
-  terraindefense:[          0,      12    ],
-  terraindefensemodifier:[  10,     300   ]
+// Holds the current script tags
+controller.scriptTags = {};
+
+// Generates script tags based on a position pair
+controller.prepareTags = function( x,y, uid, fx,fy, fuid ){
+  var tags = controller.scriptTags;
+  
+  if( tags.__oldUnit__ ) tags[ tags.__oldUnit__ ] = false;
+  if( tags.__oldTile__ ) tags[ tags.__oldTile__ ] = false;
+  
+  tags.INDIRECT = false;
+  tags.DIRECT = false;
+  
+  var unit = (uid > -1)? model.units[uid] : model.unitPosMap[x][y];
+  if( unit ){
+    tags.__oldUnit__ = unit.type.ID;
+    tags[ tags.__oldUnit__ ] = true;
+    
+    if( model.isIndirectUnit( (uid > -1)? uid : model.extractUnitId(unit) ) ) tags.INDIRECT = true;
+    else tags.DIRECT = true;
+    
+  }
+  
+  var tileTp = model.map[x][y].ID;
+  var prop = model.propertyPosMap[x][y];
+  if( prop ){
+    tileTp = prop.type.ID;
+  }
+  
+  tags.__oldTile__ = tileTp;
+  tags[ tags.__oldTile__ ] = true;
+  
+  // FOCUS TILE GIVEN
+  if( arguments.length > 3 ){
+    
+    tags.OTHER_INDIRECT = false;
+    tags.OTHER_DIRECT = false;
+    
+    unit = (fuid > -1)? model.units[fuid] : model.unitPosMap[fx][fy];
+    if( unit ){
+      if( model.isIndirectUnit( (fuid > -1)? fuid : model.extractUnitId(unit) ) ) tags.OTHER_INDIRECT = true;
+      else tags.OTHER_DIRECT = true;
+    }
+  }
 };
 
-/**
- * @private
- TODO move into the modules
- */
-controller.configBoundaries_ = {
-  daysOfPeace:{             min:0, max:50,    defaultValue:0 },      
-  fogEnabled:{              min:0, max:1,     defaultValue:1 },     
-  dayLimit:{                min:0, max:999,   defaultValue:0 },  
-  noUnitsLeftLoose:{        min:0, max:1,     defaultValue:0 },      
-  supplyAlliedUnits:{       min:0, max:1,     defaultValue:0 },
-  captureLimit:{            min:0, max:constants.MAX_PROPERTIES,       defaultValue:0 },   
-  unitLimit:{               min:0, max:constants.MAX_UNITS_PER_PLAYER, defaultValue:0 },  
-  weatherMinDays:{          min:1, max:5,     defaultValue:1 },  
-  weatherRandomDays:{       min:0, max:5,     defaultValue:4 },  
+// Holds all configurable var boundaries
+controller.configBoundaries_ = {};
+
+// Defines a configurable variable to control the 
+// game rules.
+//
+controller.defineGameConfig = function( name, min, max, def, step ){
   
-  // TODO maybe as property action command        
-  repairAlliedUnits:{       min:0, max:1,     defaultValue:0 }, 
+  // check name
+  if( !name || controller.configBoundaries_.hasOwnProperty(name) ){
+    model.criticalError(
+      constants.error.ILLEGAL_PARAMETERS,
+      constants.error.ILLEGAL_CONFIG_VAR_DEFINTION
+    );
+  }
   
-  autoSupplyAtTurnStart:{   min:0, max:1,             defaultValue:1 },      
-  coStarCost:{              min:5, max:50000, step:5, defaultValue:9000 },      
-  coStarCostIncrease:{      min:0, max:50000, step:5, defaultValue:1800 },
-  coStarCostIncreaseSteps:{ min:0, max:50,            defaultValue:10 },
-  turnTimeLimit:{           min:0, max:60,            defaultValue:0 },
-  gameTimeLimit:{           min:0, max:99999,         defaultValue:0 }
+  // check meta data
+  if( max < min || def < min || def > max ){
+    model.criticalError(
+      constants.error.ILLEGAL_PARAMETERS,
+      constants.error.ILLEGAL_CONFIG_VAR_DEFINTION
+    );
+  }
+  
+  controller.configBoundaries_[name] = {
+    min:min,
+    max:max,
+    defaultValue: def,
+    step: (typeof step === "number")? step: 1
+  };
 };
 
-/**
- * 
- * @param {object} cfg
- */
+// Builds the round configuration data
+//
 controller.buildRoundConfig = function( cfg ){
   var boundaries = controller.configBoundaries_;
   
@@ -78,14 +104,32 @@ controller.buildRoundConfig = function( cfg ){
   }
 };
 
-/**
- * Returns the value of a game round configuration property.
- * 
- * @param {String} attr name of the attribute
- * @returns {Number}
- */
+// Returns the value of a game round configuration property.
+// 
+// @param {String} attr name of the attribute
+// @returns {Number}
+// 
 controller.configValue = function( attr ){
   return model.configRule[attr];
+};
+
+// Holds all scriptable var boundaries
+controller.scriptBoundaries_ = {};
+
+// Defines a scriptable variable to control the 
+// game data via rules.
+//
+controller.defineGameScriptable = function( name, min, max ){
+  
+  // check name and meta data
+  if( !name || controller.scriptBoundaries_.hasOwnProperty(name) || max < min ){
+    model.criticalError(
+      constants.error.ILLEGAL_PARAMETERS,
+      constants.error.ILLEGAL_CONFIG_VAR_DEFINTION
+    );
+  }
+  
+  controller.scriptBoundaries_[name] = [ min, max ];
 };
 
 util.scoped(function(){
@@ -141,21 +185,20 @@ util.scoped(function(){
     if( bounds !== undefined ){
       if( value < bounds[0] ) value = bounds[0];
       else if( value > bounds[1] ) value = bounds[1];
-    }
+        }
     else util.raiseError("no boundaries given for "+attrName);
     
     // RETURN RESULT
     return value;
   };
   
-  /**
-   * Returns the value of a game attribute.
-   * 
-   * @param {object} tags set of tags of the invoking object
-   * @param {Number} pid id number of the invoking player
-   * @param {String} attr name of the attribute
-   * @returns {Number}
-   */
+  // Returns the value of a game attribute.
+  //  
+  // @param {object} tags set of tags of the invoking object
+  // @param {Number} pid id number of the invoking player
+  // @param {String} attr name of the attribute
+  // @returns {Number}
+  //   
   controller.scriptedValue = function( pid, attr, value ){
     if( typeof value !== "number" ) util.raiseError("numberic value as parameter value expected");
     var tags = controller.scriptTags;
@@ -182,57 +225,10 @@ util.scoped(function(){
     
     // CHECK BOUNDARIES
     var bounds = controller.scriptBoundaries_[attr];
-         if( value < bounds[0] ) value = bounds[0];
+    if( value < bounds[0] ) value = bounds[0];
     else if( value > bounds[1] ) value = bounds[1];
       
       // RETURN CALCULATED RESULT
       return value;
   };
 });
-
-controller.scriptTags = {};
-
-/**
- *
- */
-controller.prepareTags = function( x,y, uid, fx,fy, fuid ){
-  var tags = controller.scriptTags;
-  
-  if( tags.__oldUnit__ ) tags[ tags.__oldUnit__ ] = false;
-  if( tags.__oldTile__ ) tags[ tags.__oldTile__ ] = false;
-  
-  tags.INDIRECT = false;
-  tags.DIRECT = false;
-  
-  var unit = (uid > -1)? model.units[uid] : model.unitPosMap[x][y];
-  if( unit ){
-    tags.__oldUnit__ = unit.type.ID;
-    tags[ tags.__oldUnit__ ] = true;
-    
-    if( model.isIndirectUnit( (uid > -1)? uid : model.extractUnitId(unit) ) ) tags.INDIRECT = true;
-    else tags.DIRECT = true;
-    
-  }
-  
-  var tileTp = model.map[x][y].ID;
-  var prop = model.propertyPosMap[x][y];
-  if( prop ){
-    tileTp = prop.type.ID;
-  }
-  
-  tags.__oldTile__ = tileTp;
-  tags[ tags.__oldTile__ ] = true;
-  
-  // FOCUS TILE GIVEN
-  if( arguments.length > 3 ){
-    
-    tags.OTHER_INDIRECT = false;
-    tags.OTHER_DIRECT = false;
-    
-    unit = (fuid > -1)? model.units[fuid] : model.unitPosMap[fx][fy];
-    if( unit ){
-      if( model.isIndirectUnit( (fuid > -1)? fuid : model.extractUnitId(unit) ) ) tags.OTHER_INDIRECT = true;
-      else tags.OTHER_DIRECT = true;
-    }
-  }
-};

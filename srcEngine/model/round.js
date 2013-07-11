@@ -2,6 +2,8 @@ controller.registerInvokableCommand("nextTurn");
 
 controller.defineEvent("nextTurn");
 
+controller.defineGameConfig("dayLimit",0,999,0);
+
 // Represents the current action day in the game. The day attribute increases
 // everytime if the first player starts its turn.
 // 

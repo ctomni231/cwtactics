@@ -4,6 +4,9 @@ controller.registerInvokableCommand("moveUnit");
 
 controller.defineEvent("setUnitPosition");
 
+controller.defineGameScriptable("moverange",1,constants.MAX_SELECTION_RANGE);
+controller.defineGameScriptable("movecost",1,constants.MAX_SELECTION_RANGE);
+
 // Possible move codes.
 //
 model.moveCodes = {

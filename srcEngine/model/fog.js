@@ -4,6 +4,10 @@ controller.registerInvokableCommand("modifyVisionAt");
 controller.defineEvent("modifyVisionAt");
 controller.defineEvent("recalculateFogMap");
 
+controller.defineGameScriptable("vision",1,40);
+
+controller.defineGameConfig("fogEnabled",0,1);
+
 // Contains the fog data map. A value 0 means a tile is not visible. 
 // A value greater than 0 means it is visible for n units ( n = fog value of the tile ).
 model.fogData = util.matrix( constants.MAX_MAP_WIDTH, constants.MAX_MAP_HEIGHT, 0 );

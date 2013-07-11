@@ -11,6 +11,8 @@ controller.defineEvent("propertyRepairs");
 controller.defineEvent("propertySupply");
 controller.defineEvent("doPropertyGiveFunds");
 
+controller.defineGameConfig("autoSupplyAtTurnStart",0,1,1);
+
 // Player gets funds from all properties.
 // 
 // @param {Number} prid id of the player

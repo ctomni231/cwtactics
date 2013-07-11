@@ -6,6 +6,11 @@ controller.defineEvent("changePropertyType");
 controller.defineEvent("resetCapturePoints");
 controller.defineEvent("captureProperty");
 
+controller.defineGameScriptable("captureRate",50,9999);
+controller.defineGameScriptable("funds",1,99999);
+
+controller.defineGameConfig("captureLimit",0,constants.MAX_PROPERTIES,0);
+
 // List of all available properties of a game round. If a property is not 
 // used it will be marked with an owner value {@link CWT_INACTIVE_ID}.
 //
