@@ -1,19 +1,39 @@
+// # Move Module
+//
+
+// ### Meta Data
+
 controller.registerInvokableCommand("setUnitPosition");
 controller.registerInvokableCommand("clearUnitPosition");
 controller.registerInvokableCommand("moveUnit");
 
 controller.defineEvent("setUnitPosition");
 
-controller.defineGameScriptable("moverange",1,constants.MAX_SELECTION_RANGE);
-controller.defineGameScriptable("movecost",1,constants.MAX_SELECTION_RANGE);
+controller.defineGameScriptable("moverange", 1, constants.MAX_SELECTION_RANGE);
+controller.defineGameScriptable("movecost", 1, constants.MAX_SELECTION_RANGE);
+
+model.moveTypeParser.addHandler(function(sheet){
+  if( !util.expectObject(sheet, "costs", true) ) return false;
+  
+  var costs = sheet.costs;
+  var costsKeys = Object.keys(costs);
+  for(var i1 = 0, e1 = costsKeys.length; i1 < e1; i1++){
+    if( !util.expectNumber(costs, costsKeys[i1], true, true, -1, constants.MAX_SELECTION_RANGE) ) return false;
+    if( !util.not(costs, costsKeys[i1], 0) ) return false;
+  }
+});
+
+// ---
+
+// ### Logic
 
 // Possible move codes.
 //
 model.moveCodes = {
-  UP:0,
-  RIGHT:1,
-  DOWN:2,
-  LEFT:3
+  UP: 0,
+  RIGHT: 1,
+  DOWN: 2,
+  LEFT: 3
 };
 
 // Moves an unit from one position to another position.
@@ -24,106 +44,115 @@ model.moveCodes = {
 // @param {Number} y y coordinate of the source
 // @param {Boolean} noFuelConsumption if true then fuel won't be decreases
 //
-model.moveUnit = function( way, uid, x,y, noFuelConsumption ){
+model.moveUnit = function(way, uid, x, y, noFuelConsumption){
   var cX = x;
   var cY = y;
   var unit = model.units[ uid ];
   var uType = unit.type;
   var mType = model.moveTypes[ uType.movetype ];
-  
+
   // check move way
-  var lastIndex = way.length-1;
+  var lastIndex = way.length - 1;
   var fuelUsed = 0;
-  for( var i=0,e=way.length; i<e; i++ ){
-    
+  for(var i = 0, e = way.length; i < e; i++){
+
     // GET NEW CURRENT POSITION
-    switch( way[i] ){
-        
+    switch(way[i]){
+
       case model.MOVE_CODE_UP:
-        if( cY === 0 ) util.logError(
-          "cannot do move command UP because",
-          "current position is at the border"
-        );
+        if(cY === 0)util.logError(
+            "cannot do move command UP because",
+            "current position is at the border"
+            );
         cY--;
         break;
-        
+
       case model.MOVE_CODE_RIGHT:
-        if( cX === model.mapWidth-1 ) util.logError(
-          "cannot do move command RIGHT because",
-          "current position is at the border"
-        );
+        if(cX === model.mapWidth - 1)util.logError(
+            "cannot do move command RIGHT because",
+            "current position is at the border"
+            );
         cX++;
         break;
-        
+
       case model.MOVE_CODE_DOWN:
-        if( cY === model.mapHeight-1 )util.logError(
-          "cannot do move command DOWN because",
-          "current position is at the border"
-        );
+        if(cY === model.mapHeight - 1)util.logError(
+            "cannot do move command DOWN because",
+            "current position is at the border"
+            );
         cY++;
         break;
-        
+
       case model.MOVE_CODE_LEFT:
-        if( cX === 0 ) util.logError(
-          "cannot do move command LEFT because",
-          "current position is at the border"
-        );
+        if(cX === 0)util.logError(
+            "cannot do move command LEFT because",
+            "current position is at the border"
+            );
         cX--;
         break;
-        
-      default: model.criticalError(
-        constants.error.ILLEGAL_PARAMETERS,
-        constants.error.UNKNOWN_MOVE_CODE
-      );
+
+      default:
+        model.criticalError(
+          constants.error.ILLEGAL_PARAMETERS,
+          constants.error.UNKNOWN_MOVE_CODE
+          );
     }
-    
+
     // IS WAY BLOCKED ? TODO
-    if( false && model.isWayBlocked( cX, cY, unit.owner, i == e-1 ) ){
-      
-      lastIndex = i-1;
-      
+    if(false && model.isWayBlocked(cX, cY, unit.owner, i == e - 1)){
+
+      lastIndex = i - 1;
+
       // GP BACK
-      switch( way[i] ){
-          
-        case model.moveCodes.UP:    cY++; break;          
-        case model.moveCodes.RIGHT: cX--; break;
-        case model.moveCodes.DOWN:  cY--; break;
-        case model.moveCodes.LEFT:  cX++; break;
+      switch(way[i]){
+
+        case model.moveCodes.UP:
+          cY++;
+          break;
+        case model.moveCodes.RIGHT:
+          cX--;
+          break;
+        case model.moveCodes.DOWN:
+          cY--;
+          break;
+        case model.moveCodes.LEFT:
+          cX++;
+          break;
       }
-      
+
       // THAT IS A FAULT
-      if( lastIndex === -1 ){  
+      if(lastIndex === -1){
         util.raiseError(
-          "unit is blocked by an enemy, but the enemy stands beside the start tile, that is a logic fault!" 
-        );
+          "unit is blocked by an enemy, but the enemy stands beside the start tile, that is a logic fault!"
+          );
       }
-      
+
       break;
     }
-    
+
     // INCREASE FUEL USAGE
-    fuelUsed += model.moveCosts( mType, cX, cY );
+    fuelUsed += model.moveCosts(mType, cX, cY);
   }
-  
+
   // consume fuel if `noFuelConsumption` is not true
   // some actions like unloading does not consume fuel
-  if( noFuelConsumption !== true ){
+  if(noFuelConsumption !== true){
     unit.fuel -= fuelUsed;
-    if( unit.fuel < 0 ) util.raiseError("illegal game state");
+    if(unit.fuel < 0)util.raiseError("illegal game state");
   }
-  
+
   // DO NOT ERASE POSITION IF UNIT WAS LOADED OR HIDDEN (NOT INGAME HIDDEN) SOMEWHERE
-  if( unit.x >= 0 && unit.y >= 0 ){
-    
+  if(unit.x >= 0 && unit.y >= 0){
+
     // RESET CAPTURE POINTS
     var prop = model.propertyPosMap[unit.x][unit.y];
-    if( prop ) model.resetCapturePoints( model.extractPropertyId(prop) );
-    
+    if(prop)model.resetCapturePoints(model.extractPropertyId(prop));
+
     model.clearUnitPosition(uid);
   }
-  
+
   // DO NOT SET NEW POSITION IF THE POSITION IS OCCUPIED THE SET POSITION LOGIC MUST BE DONE BY THE ACTION
-  if( model.unitPosMap[cX][cY] === null ) model.setUnitPosition( uid,cX,cY );
+  if(model.unitPosMap[cX][cY] === null)model.setUnitPosition(uid, cX, cY);
 };
 
 // Removes an unit from a position.
@@ -132,13 +161,13 @@ model.moveUnit = function( way, uid, x,y, noFuelConsumption ){
 // @param {Number} x x coordinate
 // @param {Number} y y coordinate
 // 
-model.clearUnitPosition = function( uid ){
+model.clearUnitPosition = function(uid){
   var unit = model.units[uid];
-  
+
   var x = unit.x;
   var y = unit.y;
-  
-  model.modifyVisionAt(x,y,unit.owner,unit.type.vision,-1);
+
+  model.modifyVisionAt(x, y, unit.owner, unit.type.vision, -1);
   //model.unitPosMap[x][y] = null;
   unit.x = -unit.x;
   unit.y = -unit.y;
@@ -150,17 +179,17 @@ model.clearUnitPosition = function( uid ){
 // @param {Number} x x coordinate
 // @param {Number} y y coordinate
 //
-model.setUnitPosition = function( uid, x,y ){
+model.setUnitPosition = function(uid, x, y){
   var unit = model.units[uid];
-  
+
   unit.x = x;
   unit.y = y;
   // model.unitPosMap[x][y] = unit;
-  model.modifyVisionAt(x,y,unit.owner,unit.type.vision,1);
-  
+  model.modifyVisionAt(x, y, unit.owner, unit.type.vision, 1);
+
   // Invoke event
   var evCb = controller.events.setUnitPosition;
-  if( evCb ) evCb( uid, x,y );
+  if(evCb)evCb(uid, x, y);
 };
 
 // Returns the movecosts to move with a given move type on a given tile type.
@@ -168,16 +197,16 @@ model.setUnitPosition = function( uid, x,y ){
 // @param {model.moveType} movetype
 // @returns {Number} move costs or -1 if unmovable
 // 
-model.moveCosts = function( movetype, x,y  ){
+model.moveCosts = function(movetype, x, y){
   var v;
   var type = model.map[x][y];
-  
+
   v = movetype.costs[type.ID];
-  if( typeof v === "number" ) return v;
-  
+  if(typeof v === "number")return v;
+
   v = movetype.costs["*"];
-  if( typeof v === "number" ) return v;
-  
+  if(typeof v === "number")return v;
+
   return -1;
 };
 
@@ -189,19 +218,19 @@ model.moveCosts = function( movetype, x,y  ){
 //  @param {type} ty target y coordinate
 //  @returns {entry of model.moveCodes}
 //
-model.moveCodeFromAtoB = function( sx,sy,tx,ty ){
-  if( model.distance(sx,sy,tx,ty) > 1 ) model.criticalError( 
-    constants.error.ILLEGAL_PARAMETERS, 
-    constants.error.POSITIONS_SHOULD_BE_NEIGHBORS 
-  );
-    
-  if( sx < tx ) return model.moveCodes.RIGHT;
-  if( sx > tx ) return model.moveCodes.LEFT;
-  if( sy < ty ) return model.moveCodes.DOWN;
-  if( sy > ty ) return model.moveCodes.UP;
-  
-  model.criticalError( 
-    constants.error.ILLEGAL_PARAMETERS, 
-    constants.error.UNKNOWN 
-  );
+model.moveCodeFromAtoB = function(sx, sy, tx, ty){
+  if(model.distance(sx, sy, tx, ty) > 1)model.criticalError(
+      constants.error.ILLEGAL_PARAMETERS,
+      constants.error.POSITIONS_SHOULD_BE_NEIGHBORS
+      );
+
+  if(sx < tx)return model.moveCodes.RIGHT;
+  if(sx > tx)return model.moveCodes.LEFT;
+  if(sy < ty)return model.moveCodes.DOWN;
+  if(sy > ty)return model.moveCodes.UP;
+
+  model.criticalError(
+    constants.error.ILLEGAL_PARAMETERS,
+    constants.error.UNKNOWN
+    );
 };

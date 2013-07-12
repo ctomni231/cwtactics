@@ -1,3 +1,10 @@
+// # Battle Module
+//
+// Provides several functions to do battles between different 
+// battle units.
+
+// ### Meta Data
+
 controller.registerInvokableCommand("battleBetween");
 
 controller.defineEvent("battleBetween");
@@ -17,20 +24,40 @@ controller.defineGameScriptable("comtowerbonus",1,100);
 controller.defineGameScriptable("terraindefense",0,12);
 controller.defineGameScriptable("terraindefensemodifier",10,300);
 
-// # Battle Module
-//
-// Provides several functions to do battles between different 
-// battle units.
+// Units can have an attack ability to attack other units
+// Several parsing stuff for unit types will be registered here
+model.unitTypeParser.addHandler(function(sheet){
+    var keys,key,i1,i2,e1,e2,list;
+    
+    if( !util.expectNumber(sheet,"ammo",true,true,0,9) ) return false;
+    
+    if( expectObject(sheet,"attack",false) === util.expectMode.DEFINED ){
+      att = sheet.attack;
+      
+      // MIN RANGE < MAX_RANGE IF DEFINED
+      if( !util.expectNumber(att,"minrange",false,true,1) ) return false;
+      if( !util.expectNumber(att,"maxrange",false,true,att.minrange+1) ) return false;
+      
+      // check attack values
+      for( i1=0,e1=model.wpKeys_.length; i1<e2; i1++ ){
+        if( expectObject(att,model.wpKeys_[i1],false) ){
+          list = att[model.wpKeys_[i1]];
+          keys = Object.keys(list);
+          for( i2=0,e2=keys.length; i2<e2; i2++ ){
+              
+            key = keys[i2];
+            if( !util.expectNumber( list, key, true, true, 1 ) ) return false;
+          }
+        }
+      }
+    }
+});
 
-//  Returns true if a given unit is an indirect firing unit (e.g. artillery) else false. 
-// 
-//  @param {type} uid id of the unit
-//
-model.isIndirectUnit = function( uid ){
-  var tp = model.units[uid].type;
-  
-  return model.hasMainWeapon(tp) && typeof tp.minrange === "number"; 
-};
+model.tileTypeParser.addHandler(function(sheet){
+  if(!util.expectNumber(sheet, "defense", true, true, 0, 6))return false;
+});
+
+model.wpKeys_ = ["main_wp","sec_wp"];
 
 //  Returns true if the unit type has a main weapon else false.
 //  
@@ -48,6 +75,32 @@ model.hasMainWeapon = function( type ){
 model.hasSecondaryWeapon = function( type ){
   var attack = type.attack;
   return typeof attack !== "undefined" && typeof attack.sec_wp !== "undefined";
+};
+
+model.getUnitFireType = function( type ){
+  if( !model.hasMainWeapon( type ) ) return model.unitFiretype.NONE;
+  
+  // main weapon decides fire type
+  if( typeof tp.minrange === "number" ){
+    var min = type.minrange;
+    
+    // min range of 1 means ballistic weapon
+    return ( min === 1 )? model.unitFiretype.BALLISTIC : 
+                          model.unitFiretype.INDIRECT;
+  }
+  else return model.unitFiretype.DIRECT;
+};
+
+//  Returns true if a given unit is an indirect firing unit (e.g. artillery) else false. 
+// 
+//  @param {type} uid id of the unit
+//
+model.isIndirectUnit = function( uid ){
+  return model.getUnitFireType(model.units[uid].type) === model.unitFiretype.INDIRECT;
+};
+
+model.isBallisticUnit = function( uid ){
+  return model.getUnitFireType(model.units[uid].type) === model.unitFiretype.BALLISTIC;
 };
 
 //  Returns true if an attacker can use it's main weapon against a defender. The distance won't be

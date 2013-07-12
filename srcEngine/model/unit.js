@@ -12,6 +12,18 @@ controller.defineGameScriptable("fuelDrain",1,1);
 controller.defineGameConfig("noUnitsLeftLoose",0,1,0);
 controller.defineGameConfig("unitLimit",0,constants.MAX_UNITS_PER_PLAYER,0);
     
+// Defines a parser handler for the basic unit abilities controlled
+// by this module
+model.unitTypeParser.addHandler(function(sheet){
+    var mxr = constants.MAX_SELECTION_RANGE;
+    
+    if( !util.expectString(sheet,"movetype",true) ) return false;
+    if( !util.isIn( sheet.movetype, model.moveTypes ) ) return false;
+    if( !util.expectNumber(sheet,"range",true,true,0, mxr) ) return false;
+    if( !util.expectNumber(sheet,"fuel",true,true,0,99) ) return false;
+    if( !util.expectBoolean(sheet,"stealth",false) ) return false;
+});
+    
 // Matrix with the same metrics like the map. Every unit is placed into the 
 // cell that represents its position.
 //

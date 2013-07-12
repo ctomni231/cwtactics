@@ -1,3 +1,8 @@
+// # Action Points Module
+//
+
+// ### Meta Data
+
 controller.registerInvokableCommand("markUnitActable");
 controller.registerInvokableCommand("markUnitNonActable");
 controller.registerInvokableCommand("trapWait");
@@ -6,6 +11,10 @@ controller.registerInvokableCommand("setActableStatus");
 controller.defineEvent("markUnitNonActable");
 controller.defineEvent("markUnitActable");
 controller.defineEvent("trapWait");
+
+// ---
+
+// ### Model
 
 // Holds the identical numbers of all objects that can act during the turn.
 // After a unit has acted, it should be removed from this list with
@@ -43,6 +52,10 @@ controller.persistenceHandler(
     dom.actr = arr;
   }
 );
+
+// ---
+
+// ### Logic
 
 // Returns true if the selected uid can act in the current active turn,
 // else false.

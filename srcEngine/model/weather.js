@@ -1,3 +1,8 @@
+// Weather Module
+// 
+
+// ### Meta Data
+
 controller.registerInvokableCommand("changeWeather");
 controller.registerInvokableCommand("calculateNextWeather");
 
@@ -7,6 +12,18 @@ controller.defineGameScriptable("neutralizeWeather",0,1);
 
 controller.defineGameConfig("weatherMinDays",1,5,1);
 controller.defineGameConfig("weatherRandomDays",0,5,4);
+
+model.weatherTypeParser.addHandler(function( sheet ){
+  if( !util.expectBoolean(sheet,"defaultWeather",false) ) return false;
+  if( !util.expectNumber(sheet,"vision",false,true,-5,+5) ) return false;
+  if( !util.expectNumber(sheet,"att",false,true,-100,+100) ) return false;
+  if( !util.expectNumber(sheet,"minRange",false,true,-5,+5) ) return false;
+  if( !util.expectNumber(sheet,"maxRange",false,true,-5,+5) ) return false;
+});
+
+// ---
+
+// ### Model
 
 // The active weather type object.
 model.weather = null;
@@ -40,6 +57,10 @@ controller.persistenceHandler(
     dom.wth = model.weather.ID;
   }
 );
+
+// ---
+
+// ### Logic
 
 // Calculates the next weather and adds the result
 // as timed event to the day events. **Only invokable

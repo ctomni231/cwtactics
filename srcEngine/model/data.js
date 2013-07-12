@@ -1,8 +1,82 @@
+// Creates a simple but extendable parser instance to validate javascript
+// objects. This will be used to allow modules to set own requirements
+// on object type sheets.
+//
+model.createDataParser = function(db, list){
+  var parserParts = [];
+  var listFn = (typeof list === "function");
+
+  return {
+    
+    addHandler: function(cb){
+      if(typeof cb !== "function"){
+        model.criticalError(
+          constants.error.ILLEGAL_DATA,
+          constants.error.ILLEGAL_SHEET_HANDLER );
+      }
+
+      parserParts.push(cb);
+    },
+      
+    // parsing function that parses a type sheet and adds it to the type
+    // list if no parsing part declines the sheet object by returning
+    // `false`
+    parse: function(sheet){
+
+      // check identical string first
+      if(!util.expectString(sheet, "ID", true)){
+        model.criticalError(
+          constants.error.ILLEGAL_DATA,
+          constants.error.ILLEGAL_SHEET_ID );
+      }
+
+      if(db[sheet.ID]){
+        model.criticalError(
+          constants.error.ILLEGAL_DATA,
+          constants.error.ILLEGAL_SHEET_ALREADY_DEFINED );
+      }
+
+      // check sheet by calling all parser parts
+      for(var i = 0, e = parserParts.length; i < e; i++){
+        if(!parserParts[i](sheet)){
+          model.criticalError(
+            constants.error.ILLEGAL_DATA,
+            constants.error.BREAKS_SHEET_CONTRACT );
+        }
+      }
+
+      // add sheet to the database
+      if(listFn) list(sheet);
+      else list.push(sheet.ID);
+      db[sheet.ID] = sheet;
+    },
+      
+    parseAll: function( list ){
+      for( var i=0,e=list.length; i<e; i++ ) this.parse( list[i] );
+    },
+      
+    clear: function(){
+      list.splice(0);
+      
+      var keys = Object.keys( db );
+      for( var i=0,e=keys.length; i<e; i++ ) delete db[keys[i]];
+    }
+
+  };
+};
+
+// ---
+
 // Holds all available unit types
 model.unitTypes = {};
 
 // Holds a list of available tile types
 model.listOfUnitTypes = [];
+
+// Unit type sheet parser object
+model.unitTypeParser = model.createDataParser( model.unitTypes, model.listOfUnitTypes );
+
+// ---
 
 // Holds all available tile and property types
 model.tileTypes = {};
@@ -13,6 +87,16 @@ model.listOfPropertyTypes = [];
 // Holds a list of available property types
 model.listOfTileTypes = [];
 
+// Tile type sheet parser object
+model.tileTypeParser = model.createDataParser( model.tileTypes,
+  function(sheet){
+    if(sheet.capturePoints)model.listOfPropertyTypes.push(sheet);
+    elsemodel.listOfTileTypes.push(sheet);
+  }
+);
+
+// ---
+
 // Holds all available weather types
 model.weatherTypes = {};
 
@@ -22,24 +106,51 @@ model.defaultWeatherType = null;
 // Holds all non-defualt weather types
 model.nonDefaultWeatherType = [];
 
+// Tile type sheet parser object
+model.weatherTypeParser = model.createDataParser( model.weatherTypes,
+  function(sheet){
+    if(sheet.defaultWeather)model.defaultWeatherType = sheet;
+    elsemodel.nonDefaultWeatherType.push(sheet);
+  }
+);
+
+// ---
+
 // Holds all available move types
 model.moveTypes = {};
 
+model.listOfMoveTypes = [];
+
+model.moveTypeParser = model.createDataParser( model.moveTypes, model.listOfMoveTypes );
+
+// ---
+
 model.factionTypes = {};
+
+model.listOfFactions = [];
+
+model.factionParser = model.createDataParser( model.factionTypes, model.listOfFactions );
+
+model.factionParser.addHandler(function(){
+  if( !util.expectString(sheet, "music", true) ) return false;
+});
+  
+// ---
 
 model.coTypes = {};
 
-model.globalRules = [];
+model.listOfCoTypes = [];
 
-model.mapRules = [];
+model.coTypeParser = model.createDataParser( model.coTypes, model.listOfCoTypes );
+
+// ---
+
 
 model.sounds = null;
 
 model.graphics = null;
 
 model.maps = null;
-
-model.wpKeys_ = ["main_wp","sec_wp"];
 
 // Language model holds all known language keys.
 //
@@ -49,416 +160,7 @@ model.language = {};
 //
 // @param {String} key
 //
-model.localized = function( key ){
+model.localized = function(key){
   var result = model.language[key];
-  return ( result === undefined )? key: result;
+  return (result === undefined) ? key : result;
 };
-
-// Returns all known type game of properties.
-// 
-model.getListOfPropertyTypes = function(){
-  if( model.listOfPropertyTypes === null ){
-    var tiles = model.tileTypes;
-    var l = Object.keys( tiles );
-    var r = [];
-    
-    for( var i=l.length-1; i>=0; i-- ){
-      
-      // append type when it have capture points
-      if( tiles[l[i]].capturePoints > 0 ){
-        r.push( l[i] );
-      }
-    }
-    
-    model.listOfPropertyTypes = r;
-  }
-  
-  return model.listOfPropertyTypes;
-};
-
-// Returns all known type game of tiles.
-// 
-model.getListOfTileTypes = function(){
-  if( model.listOfTileTypes === null ){
-    var tiles = model.tileTypes;
-    var l = Object.keys( tiles );
-    var r = [];
-    for( var i=l.length-1; i>=0; i-- ){
-      
-      // append type when it does not have any 
-      // capture points
-      if( tiles[l[i]].capturePoints === undefined ){
-        r.push( l[i] );
-      }
-    }
-    
-    model.listOfTileTypes = r;
-  }
-  
-  return model.listOfTileTypes;
-};
-
-util.scoped(function(){
-  
-  var expectArray = function( obj, attr, mustDefined ){
-    if( !util.expectArray(obj, attr, mustDefined) ){
-      model.criticalError(
-        constants.error.MOD_DATA_FORMAT_FAULT,
-        constants.error.DATA_FAULT_ARRAY_FAULT
-      );
-    }
-  };
-  
-  var expectString = function( obj, attr, mustDefined ){
-    if( !util.expectString(obj, attr, mustDefined) ){
-      model.criticalError(
-        constants.error.MOD_DATA_FORMAT_FAULT,
-        constants.error.DATA_FAULT_STRING_FAULT
-      );
-    }
-  };
-  
-  var expectObject = function( obj, attr, mustDefined ){
-    if( !util.expectObject(obj, attr, mustDefined) ){
-      model.criticalError(
-        constants.error.MOD_DATA_FORMAT_FAULT,
-        constants.error.DATA_FAULT_STRING_FAULT
-      );
-    }
-  };
-  
-  var expectBoolean = function( obj, attr, mustDefined ){
-    if( !util.expectBoolean(obj, attr, mustDefined) ){
-      model.criticalError(
-        constants.error.MOD_DATA_FORMAT_FAULT,
-        constants.error.DATA_FAULT_STRING_FAULT
-      );
-    }
-  };
-  
-  var notIn = function( attr, obj ){
-    if( !util.notIn(attr, obj) ){
-      model.criticalError(
-        constants.error.MOD_DATA_FORMAT_FAULT,
-        constants.error.DATA_FAULT_STRING_FAULT
-      );
-    }
-  };
-  
-  var not = function( attr, obj, res ){
-    if( !util.not(attr, obj, res) ){
-      model.criticalError(
-        constants.error.MOD_DATA_FORMAT_FAULT,
-        constants.error.DATA_FAULT_STRING_FAULT
-      );
-    }
-  };
-  
-  var isIn = function( attr, obj ){
-    if( !util.isIn(attr, obj) ){
-      model.criticalError(
-        constants.error.MOD_DATA_FORMAT_FAULT,
-        constants.error.DATA_FAULT_STRING_FAULT
-      );
-    }
-  };
-  
-  var expectNumber = function( obj, attr, mustDefined, integer, min, max ){
-    if( !util.expectNumber(obj, attr, mustDefined, integer, min, max) ){
-      model.criticalError(
-        constants.error.MOD_DATA_FORMAT_FAULT,
-        constants.error.DATA_FAULT_STRING_FAULT
-      );
-    }
-  };
-  
-  // Parses an unit sheet and adds it to the sheet database. If the 
-  // sheet is not correct then an error will be thrown.
-  //   
-  // @param {Object} sheet
-  //  
-  model.parseUnitType = function( sheet ){
-    var keys,key,list,att,i1,i2,e1,e2,sub;
-    
-    expectString(sheet,"ID",true);
-    if( DEBUG ) util.log("try parsing unit sheet",sheet.ID);
-    
-    notIn( sheet.ID, model.unitTypes );
-    
-    // MOVE TYPE MUST BE DEFINED
-    expectString(sheet,"movetype",true);
-    isIn( sheet.movetype, model.moveTypes );
-    
-    // VISION, MOVE CAN BE THE MAX_MOVE_RANGE IN MAXIMUM
-    expectNumber(sheet,"range",true,true,0, constants.MAX_SELECTION_RANGE);
-    expectNumber(sheet,"vision",true,true,1,constants.MAX_SELECTION_RANGE);
-    
-    // GENERAL STUFF
-    expectNumber(sheet,"fuel",true,true,0,99);
-    expectNumber(sheet,"ammo",true,true,0,9);
-    expectNumber(sheet,"cost",true,true,0,99999);
-    
-    // OPTIONAL SPECIAL ABILITIES
-    expectBoolean(sheet,"stealth",false);
-    expectBoolean(sheet,"suppliesloads",false);
-    expectNumber(sheet,"captures",false,true,1,10);
-    
-    // TRANSPORT ?
-    if( expectArray(sheet,"canload",false) ){
-      
-      // NEED MAX LOAD
-      expectNumber(sheet,"maxloads",true,true,1,5);
-      
-      list = sheet.canload;
-      for( i1=0,e1=list.length; i1<e1; i1++ ) expectString(list,i1,true);
-    }
-    
-    // SUPPLY ?
-    if( expectArray(sheet,"supply",false) ){
-      list = sheet.supply;
-      for( i1=0,e1=list.length; i1<e1; i1++ ) expectString(list,i1,true);
-    }
-    
-    // SUICIDER ?
-    if( expectObject(sheet,"suicide",false) ){
-      sub = sheet.suicide;
-      expectNumber(sub,"damage",true,true,1,9);
-      expectNumber(sub,"range",true,true,1,constants.MAX_SELECTION_RANGE);
-      
-      // EXCEPTIONS?
-      if( expectObject(sub,"nodamage",false ) ){
-        list = sub.nodamage;
-        for( i1=0,e1=list.length; i1<e1; i1++ ) expectString(list,i1,true);
-      }
-    }
-    
-    // REPAIRS ?
-    if( expectObject(sheet,"repairs",false)){
-      sub = sheet.repairs;
-      keys = Object.keys(sub);
-      for( i2=0,e2=keys.length; i2<e2; i2++ ){
-        key = keys[i2];
-        
-        // HARD HP REPAIR BETWEEN 1 AND 9 
-        // (10 IS NOT A POSSIBLE GAME STATE FOR A REPAIR)
-        expectNumber( sub, key, true, true, 1,9 );
-      }
-    }
-    
-    // ATTACKER ?
-    if( expectObject(sheet,"attack",false) ){
-      att = sheet.attack;
-      
-      // MIN RANGE < MAX_RANGE IF DEFINED
-      expectNumber(att,"minrange",false,true,1);
-      expectNumber(att,"maxrange",false,true,att.minrange+1);
-      
-      // CHECK WEAPONS
-      for( i1=0,e1=model.wpKeys_.length; i1<e2; i1++ ){
-        if( expectObject(att,model.wpKeys_[i1],false) ){
-          list = att[model.wpKeys_[i1]];
-          keys = Object.keys(list);
-          for( i2=0,e2=keys.length; i2<e2; i2++ ){
-            key = keys[i2];
-            expectNumber( list, key, true, true, 1 );
-          }
-        }
-      }
-    }
-    
-    model.listOfUnitTypes.push( sheet.ID )
-    model.unitTypes[sheet.ID] = sheet;
-  };
-  
-  /**
-   * Parses a tile sheet and adds it to the sheet database. If the 
-   * sheet is not correct then an error will be thrown.
-   * 
-   * @param {Object} sheet
-   */
-  model.parseTileType = function( sheet ){
-    expectString(sheet,"ID",true);
-    if( DEBUG ) util.log("try parsing tile sheet",sheet.ID);
-    
-    notIn( sheet.ID, model.tileTypes );
-    
-    expectNumber(sheet,"defense",true,true,0,6);
-    expectNumber(sheet,"vision",false,true,0,constants.MAX_SELECTION_RANGE);
-    expectNumber(sheet,"points",false,true,1,100);
-    expectNumber(sheet,"funds",false,true,10,99999);
-    
-    // REPAIRS ?
-    if( expectObject(sheet,"repairs",false)){
-      sub = sheet.repairs;
-      keys = Object.keys(sub);
-      for( i2=0,e2=keys.length; i2<e2; i2++ ){
-        key = keys[i2];
-        
-        // HARD HP REPAIR BETWEEN 1 AND 9 
-        // (10 IS NOT A POSSIBLE GAME STATE FOR A REPAIR)
-        expectNumber( sub, key, true, true, 1,9 );
-      }
-    }
-    
-    // BUILDS ?
-    if( expectArray(sheet,"builds",false) ){
-      list = sheet.builds;
-      for( i1=0,e1=list.length; i1<e1; i1++ ) expectString(list,i1,true);
-    }
-    
-    model.tileTypes[sheet.ID] = sheet;
-  };
-  
-  /**
-   * Parses a weather sheet and adds it to the sheet database. If the 
-   * sheet is not correct then an error will be thrown.
-   * 
-   * @param {Object} sheet
-   */
-  model.parseWeatherType = function( sheet ){
-    expectString(sheet,"ID",true);
-    if( DEBUG ) util.log("try parsing weather sheet",sheet.ID);
-    
-    notIn( sheet.ID, model.weatherTypes );
-    
-    // TODO AT LEAST ONE HAS TO BE DEFAULT
-    expectBoolean(sheet,"defaultWeather",false);
-    
-    expectNumber(sheet,"vision",false,true,-5,+5);
-    expectNumber(sheet,"att",false,true,-100,+100);
-    expectNumber(sheet,"minRange",false,true,-5,+5);
-    expectNumber(sheet,"maxRange",false,true,-5,+5);
-    
-    model.weatherTypes[sheet.ID] = sheet;
-    if( sheet.defaultWeather ) model.defaultWeatherType = sheet;
-    else model.nonDefaultWeatherType.push( sheet );
-  };
-  
-  /**
-   * Parses a movetype sheet and adds it to the sheet database. If the 
-   * sheet is not correct then an error will be thrown.
-   * 
-   * @param {Object} sheet
-   */
-  model.parseMoveType = function( sheet ){
-    expectString(sheet,"ID",true);
-    if( DEBUG ) util.log("try parsing movetype sheet",sheet.ID);
-    
-    notIn( sheet.ID, model.moveTypes );
-    
-    // MOVE COSTS
-    expectObject(sheet,"costs",true);
-    var costs = sheet.costs;
-    var costsKeys = Object.keys(costs);
-    for( var i1=0,e1=costsKeys.length; i1<e1; i1++ ){
-      expectNumber(costs,costsKeys[i1],true,true,-1,constants.MAX_SELECTION_RANGE);
-      not(costs,costsKeys[i1],0);
-    }
-    
-    model.moveTypes[sheet.ID] = sheet;
-  };
-  
-  /**
-   * Parses a CO sheet and adds it to the sheet database. If the 
-   * sheet is not correct then an error will be thrown.
-   * 
-   * @param {Object} sheet
-   */
-  model.parseCoType = function( sheet ){
-    expectString(sheet,"ID",true);
-    if( DEBUG ) util.log("try parsing co sheet",sheet.ID);
-    
-    notIn( sheet.ID, model.coTypes );
-    
-    expectNumber(sheet,"coStars",true,true,-1,10);
-    not(sheet,"coStars",0);
-    expectNumber(sheet,"scoStars",true,true,-1,10);
-    not(sheet,"scoStars",0);
-    
-    expectArray(sheet,"d2d",true);
-    expectArray(sheet,"cop",true);
-    expectArray(sheet,"scop",true);
-    
-    expectString(sheet,"faction",true);
-    isIn( sheet.faction, model.factionTypes );
-    
-    expectString(sheet,"music",false);
-    
-    model.coTypes[sheet.ID] = sheet;
-  };
-  
-  /**
-   * Parses a Faction sheet and adds it to the sheet database. If the 
-   * sheet is not correct then an error will be thrown.
-   * 
-   * @param {Object} sheet
-   */
-  model.parseFactionType = function( sheet ){
-    expectString(sheet,"ID",true);
-    if( DEBUG ) util.log("try parsing faction sheet",sheet.ID);
-    
-    notIn( sheet.ID, model.factionTypes );
-    
-    expectString(sheet,"music",true);
-    
-    model.factionTypes[sheet.ID] = sheet;
-  };
-  
-  model.parseRule = function( rule, isMapRule ){
-    if( isMapRule ){
-      model.mapRules.push(rule);
-    }
-    else model.globalRules.push(rule);
-  };
-  
-  model.checkMap = function( map ){
-    var list;
-    
-    expectString(map,"name",true);
-    
-    expectArray(map,"players",true);
-    list = map.players;
-    expectNumber(list,"length",true,true,1,4);
-    for( i=0,e=list.length; i<e; i++ ){ 
-      expectArray(list,i,true);
-      expectNumber(list[i],0,true,true,i,i);
-      expectString(list[i],1,true);
-      expectNumber(list[i],2,true,true,0,999999);
-      expectNumber(list[i],3,true,true,1,4);   
-      expectString(list[i],4,true);
-      expectString(list[i],5,true);
-      expectNumber(list[i],6,true,true,0,99999);
-    }
-    
-    expectArray(map,"leftActors",true);
-    list = map.leftActors;
-    expectNumber(list,"length",true,true,1,50);
-    for( i=0,e=list.length; i<e; i++ ){ 
-      expectNumber(list,i,true,true,0,49);
-    }
-    
-    expectArray(map,"timers",true);
-    expectArray(map,"rules",true);
-    
-    expectNumber(map,"day",true,true,0,9999);
-    expectNumber(map,"turnOwner",true,true,0,map.players.length-1);
-    expectNumber(map,"mapHeight",true,true,10,100);
-    expectNumber(map,"mapWidth",true,true,10,100);
-    
-    if( expectArray(map,"typeMap",true) ){
-      list = map.typeMap;
-      for( i=0,e=list.length; i<e; i++ ) expectString(list,i,true);
-    }
-    
-    if( expectArray(map,"map",true) ){
-      list = map.map;
-      
-      expectNumber(list,"length",true,true,10,100);
-      for( i=0,e=list.length; i<e; i++ ){ 
-        expectArray(list,i,true) ;
-        expectNumber(list[i],"length",true,true,10,100);
-      }
-    }
-  };
-  
-});

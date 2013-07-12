@@ -651,11 +651,11 @@ controller.stateMachine.data = {
       }
       
       // CONVERT LEFT POINTS TO MOVE COSTS
-      for( var x=0,xe=model.mapWidth; x<xe; x++ ){
-        for( var y=0,ye=model.mapHeight; y<ye; y++ ){
+      for( x=0,xe=model.mapWidth; x<xe; x++ ){
+        for( y=0,ye=model.mapHeight; y<ye; y++ ){
           if( selection.getValueAt(x,y) !== this.ILLEGAL_MOVE_FIELD ){
             
-            var cost = model.moveCosts( mType,x,y );
+            cost = model.moveCosts( mType,x,y );
             selection.setValueAt( x, y, cost );
           }
         }
@@ -748,7 +748,7 @@ controller.stateMachine.data = {
             this.addEntry(commandKeys[i]);
           }
         }
-      }
+      };
     })
   },
   
@@ -783,8 +783,8 @@ controller.stateMachine.data = {
       var e = data.length;
       var cx = x;
       var cy = y;
-      for (var x = 0; x < e; x++) {
-        for (var y = 0; y < e; y++) {
+      for ( x = 0; x < e; x++) {
+        for ( y = 0; y < e; y++) {
           data[x][y] = defValue;
         }
       }

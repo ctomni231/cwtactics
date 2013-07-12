@@ -26,15 +26,23 @@
     var stateEvent = this.structure[ this.state ][ ev ];
     
     // event must be defined in the current state
-    if( stateEvent === undefined ) this.onerror( ev, this.state, "N/A", constants.error.STM_NO_EVENT );
+    if( stateEvent === undefined ){
+        this.onerror( ev, this.state, "N/A", constants.error.STM_NO_EVENT );
+    } 
     
     // grab next state from the event function of the current state
     var nextState = stateEvent.apply( this, arguments ); 
-    if( !nextState ) this.onerror( ev, this.state, nextState, constants.error.STM_INVALID_NEXT_STATE );
+    if( !nextState ){
+        this.onerror( ev, this.state, nextState, 
+            constants.error.STM_INVALID_NEXT_STATE 
+        );
+    }
     
     // cannot break an action state transition
     if( nextState === BREAK_TRANSITION && ev === "actionState" ){
-      this.onerror( ev, this.state, nextState, constants.error.STM_ACTIONSTATE_BREAKS_TRANS );
+        this.onerror( ev, this.state, nextState, 
+            constants.error.STM_ACTIONSTATE_BREAKS_TRANS 
+        );
     }
     
     var goBack = nextState === this.lastState;

@@ -4,6 +4,22 @@ controller.registerInvokableCommand("unloadUnitFrom");
 controller.defineEvent("loadUnitInto");
 controller.defineEvent("unloadUnitFrom");
 
+// Defines some type sheet requirements for transport logics
+model.unitTypeParser.addHandler(function(sheet){
+    var list,i1,e1;
+    
+    if( !util.expectBoolean(sheet,"suppliesloads",false) ) return false;
+    
+    if( util.expectArray(sheet,"canload",false) === util.expectMode.DEFINED ){
+      if( !util.expectNumber(sheet,"maxloads",true,true,1,5) ) return false;
+      
+      list = sheet.canload;
+      for( i1=0,e1=list.length; i1<e1; i1++ ){
+        if( !expectString(list,i1,true) ) return false;  
+      } 
+    }
+});
+
 // Has a transporter unit with id tid loaded units? Returns true if yes, else
 // false.
 //

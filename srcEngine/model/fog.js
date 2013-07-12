@@ -1,3 +1,8 @@
+// Fog Module
+//
+
+// ### Meta Data
+
 controller.registerInvokableCommand("recalculateFogMap");
 controller.registerInvokableCommand("modifyVisionAt");
 
@@ -7,6 +12,17 @@ controller.defineEvent("recalculateFogMap");
 controller.defineGameScriptable("vision",1,40);
 
 controller.defineGameConfig("fogEnabled",0,1);
+
+model.unitTypeParser.addHandler(function(sheet){
+    if( !util.expectNumber(sheet,"vision",true,true,1,constants.MAX_SELECTION_RANGE) ) return false;
+});
+
+model.tileTypeParser.addHandler(function(sheet){
+    if( !util.expectNumber(sheet,"vision",false,true,0,constants.MAX_SELECTION_RANGE) ) return false;
+});
+
+// ---
+// ### Model
 
 // Contains the fog data map. A value 0 means a tile is not visible. 
 // A value greater than 0 means it is visible for n units ( n = fog value of the tile ).
@@ -33,6 +49,9 @@ controller.persistenceHandler(
   // save
   function(){}
 )
+
+// ---
+// ### Logic
 
 // Registers a player id as local player
 //
