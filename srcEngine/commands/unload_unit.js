@@ -31,14 +31,16 @@ util.scoped(function(){
       
       var x = data.target.x;
       var y = data.target.y;
-      for( var i=CWT_MAX_UNITS_PER_PLAYER*model.turnOwner, 
-          e=i+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
+      var i = model.getFirstUnitSlotId( model.turnOwner );
+      var e = model.getLastUnitSlotId( model.turnOwner );
+      for( ; i<=e; i++ ){
         
         var unit = model.units[i];
-        if( unit.owner !== CWT_INACTIVE_ID && unit.loadedIn === uid ){
+        if( unit.owner !== constants.INACTIVE_ID && unit.loadedIn === uid ){
           
           var movetp = model.moveTypes[ unit.type.movetype ];
-          if( unit.owner !== CWT_INACTIVE_ID && unit.loadedIn === uid ){
+          if( unit.owner !== constants.INACTIVE_ID && unit.loadedIn === uid ){
+            
             if( checkTile(x-1,y,movetp,loader) || 
                checkTile(x+1,y,movetp,loader) ||
                checkTile(x,y-1,movetp,loader) || 
@@ -51,23 +53,27 @@ util.scoped(function(){
     },
     
     prepareMenu: function( data ){
-      
+      var unit;
       var x = data.target.x;
       var y = data.target.y; 
       var uid = data.source.unitId;
       var loader = data.source.unit;
-      for( var i=CWT_MAX_UNITS_PER_PLAYER*model.turnOwner, e=i+CWT_MAX_UNITS_PER_PLAYER; i<e; i++ ){
-        var unit = model.units[i];
-        if( unit.owner !== CWT_INACTIVE_ID && unit.loadedIn === data.source.unitId ){
+      var i = model.getFirstUnitSlotId( model.turnOwner );
+      var e = model.getLastUnitSlotId( model.turnOwner );
+      
+      for( ;i<=e; i++ ){
+        
+        unit = model.units[i];
+        if( unit.owner !== constants.INACTIVE_ID && unit.loadedIn === data.source.unitId ){
           
           var unit = model.units[i];
-          if( unit.owner !== CWT_INACTIVE_ID && unit.loadedIn === uid ){
+          if( unit.owner !== constants.INACTIVE_ID && unit.loadedIn === uid ){
             
             var movetp = model.moveTypes[ unit.type.movetype ];
             if( checkTile(x-1,y,movetp,loader) || 
-               checkTile(x+1,y,movetp,loader) ||
-               checkTile(x,y-1,movetp,loader) || 
-               checkTile(x,y+1,movetp,loader) ) data.menu.addEntry( i, true );
+                checkTile(x+1,y,movetp,loader) ||
+                checkTile(x,y-1,movetp,loader) || 
+                checkTile(x,y+1,movetp,loader) ) data.menu.addEntry( i, true );
           }
         }
       }
@@ -87,10 +93,7 @@ util.scoped(function(){
     },
     
     invoke: function( data ){
-      var tx = data.target.x;
-      var ty = data.target.y;
-      
-      model.unloadUnitFrom.callAsCommand( 
+      controller.sharedInvokement( "unloadUnitFrom",[
         data.source.unitId, 
         data.target.x, 
         data.target.y, 
@@ -98,7 +101,8 @@ util.scoped(function(){
         data.targetselection.x, 
         data.targetselection.y,
         true
-      )
+      ]);
     }
+    
   });
 });

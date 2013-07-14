@@ -45,6 +45,8 @@ model.units = util.list( constants.MAX_PLAYER * constants.MAX_UNITS_PER_PLAYER, 
   };
 });
 
+model.unitPosMap = util.matrix( constants.MAX_MAP_WIDTH, constants.MAX_MAP_HEIGHT, null );
+
 // Defines a persistence handler 
 controller.persistenceHandler(
   
@@ -76,7 +78,7 @@ controller.persistenceHandler(
         unit.loadedIn = data[7];
         unit.owner    = data[8];
         
-        // model.unitPosMap[ data[2] ][ data[3] ] = unit;
+        model.unitPosMap[ data[2] ][ data[3] ] = unit;
       }
     }
   },
@@ -122,7 +124,7 @@ model.getLastUnitSlotId = function( pid ){
 // if the position is not occupied by a unit.
 //
 model.getUnitByPos = function( x,y ){
-  var l = model.units;
+  /* var l = model.units;
   var i = 0;
   var e = l.length;
   
@@ -130,7 +132,8 @@ model.getUnitByPos = function( x,y ){
     if( l[i].x === x && l[i].y === y ) return l[i];
   }
   
-  return null;
+  return null; */
+  return model.unitPosMap[x][y];
 };
 
 // Extracts the identical number from an unit object.

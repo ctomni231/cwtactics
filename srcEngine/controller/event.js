@@ -13,7 +13,7 @@ controller.events = {};
 //
 // @param {String} ev event name
 controller.defineEvent = function( ev ){
-  controller.events.[ev] = null;
+  controller.events[ev] = null;
 };
 
 // Registers an event handler callback.
@@ -21,7 +21,7 @@ controller.defineEvent = function( ev ){
 // @param {String} ev event name
 // @param {Function} cb callback function
 controller.onEvent = function( ev, cb ){
-  var oldValue = controller.events.[ev];
+  var oldValue = controller.events[ev];
   
   // Only one handler is allowed to be connected to a model function.
   // If more event handlers are needed then the event handler should be

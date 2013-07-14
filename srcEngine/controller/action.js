@@ -19,43 +19,44 @@ controller.actionBuffer_ = util.createRingBuffer( constants.ACTIONS_BUFFER_SIZE 
 // @param {Object} impl action implementation
 // @private
 //
-controller.defineAction_ = function( impl ) {
-  
+controller.defineAction_ = function( impl ){
+
   // check action parameters
-  
-  if (!impl.hasOwnProperty("condition")) model.criticalError(
-    constants.error.ILLEGAL_PARAMETERS, 
-    constants.error.ACTION_CONDITION_MISSING
-  );
-  
-  if (!impl.hasOwnProperty("key")) model.criticalError(
-    constants.error.ILLEGAL_PARAMETERS, 
-    constants.error.ACTION_KEY_MISSING
-  );
-  
-  if (!impl.hasOwnProperty("invoke")) model.criticalError(
-    constants.error.ILLEGAL_PARAMETERS, 
-    constants.error.ACTION_IMPLEMENTATION_MISSING
-  );
-  
-  if (controller.actionObjects.hasOwnProperty(impl.key)) model.criticalError(
-    constants.error.ILLEGAL_PARAMETERS, 
-    constants.error.ACTION_KEY_ALREADY_DEFINED
-  );
-  
-  if (!impl.hasOwnProperty("prepareMenu")) impl.prepareMenu = null;
-  if (!impl.hasOwnProperty("prepareTargets")) impl.prepareTargets = null;
-  if (!impl.hasOwnProperty("isTargetValid")) impl.isTargetValid = null;
-  if (!impl.hasOwnProperty("multiStepAction")) impl.multiStepAction = false;
-  if (impl.prepareTargets !== null && !impl.hasOwnProperty("targetSelectionType")) impl.targetSelectionType = "A";
-  
-  if (impl.prepareTargets !== null && impl.isTargetValid !== null) {
+
+  if( !impl.hasOwnProperty( "condition" ) ) model.criticalError(
+      constants.error.ILLEGAL_PARAMETERS,
+      constants.error.ACTION_CONDITION_MISSING
+      );
+
+  if( !impl.hasOwnProperty( "key" ) ) model.criticalError(
+      constants.error.ILLEGAL_PARAMETERS,
+      constants.error.ACTION_KEY_MISSING
+      );
+
+  if( !impl.hasOwnProperty( "invoke" ) ) model.criticalError(
+      constants.error.ILLEGAL_PARAMETERS,
+      constants.error.ACTION_IMPLEMENTATION_MISSING
+      );
+
+  if( controller.actionObjects.hasOwnProperty( impl.key ) ) model.criticalError(
+      constants.error.ILLEGAL_PARAMETERS,
+      constants.error.ACTION_KEY_ALREADY_DEFINED
+      );
+
+  if( !impl.hasOwnProperty( "prepareMenu" ) ) impl.prepareMenu = null;
+  if( !impl.hasOwnProperty( "prepareTargets" ) ) impl.prepareTargets = null;
+  if( !impl.hasOwnProperty( "prepareSelection" ) ) impl.prepareSelection = null;
+  if( !impl.hasOwnProperty( "isTargetValid" ) ) impl.isTargetValid = null;
+  if( !impl.hasOwnProperty( "multiStepAction" ) ) impl.multiStepAction = false;
+  if( impl.prepareTargets !== null && !impl.hasOwnProperty( "targetSelectionType" ) ) impl.targetSelectionType = "A";
+
+  if( impl.prepareTargets !== null && impl.isTargetValid !== null ) {
     model.criticalError(
       constants.error.ILLEGAL_PARAMETERS,
       constants.error.ACTION_ONLY_ONE_SELECTION_TYPE
-    );
-  } 
-  
+      );
+  }
+
   // register programatic link
   controller.actionObjects[ impl.key ] = impl;
 };
@@ -68,7 +69,7 @@ controller.unitAction = function( impl ){
   impl.mapAction = false;
   impl.unitAction = true;
   impl.propertyAction = false;
-  controller.defineAction_(impl);
+  controller.defineAction_( impl );
 };
 
 // Registers an user callable property action.
@@ -79,7 +80,7 @@ controller.propertyAction = function( impl ){
   impl.mapAction = false;
   impl.unitAction = false;
   impl.propertyAction = true;
-  controller.defineAction_(impl);
+  controller.defineAction_( impl );
 };
 
 // Registers an user callable map action. A map action
@@ -92,7 +93,7 @@ controller.mapAction = function( impl ){
   impl.mapAction = true;
   impl.unitAction = false;
   impl.propertyAction = false;
-  controller.defineAction_(impl);
+  controller.defineAction_( impl );
 };
 
 // Creates an action call array for the command stack.
@@ -101,14 +102,14 @@ controller.mapAction = function( impl ){
 // @param {Array} args function arguments
 //
 controller.getInvokementArguments = function( key, args ){
-  var result = [];
-  
+  var result = [ ];
+
   // add arguments
-  for( var i=0,e=args.length; i<e; i++ ) result[i] = args[i];
-  
+  for( var i = 0, e = args.length; i < e; i++ ) result[i] = args[i];
+
   // append action key
   result[ result.length ] = key;
-  
+
   return result;
 };
 
@@ -119,28 +120,23 @@ controller.getInvokementArguments = function( key, args ){
 // @param {Array} args function arguments
 //
 controller.localInvokement = function( key, args ){
-  if( (arguments.length === 2 && !controller.actionIdMap[key] ) || 
-      !controller.actionIdMap[ key[key.length-1] ] ){
-    
-    model.criticalError(
-      constants.error.ILLEGAL_DATA,
-      constants.error.NON_ACTION_CALL_FUNCTION
-    );
+  if( (arguments.length === 2 && !controller.actionIdMap[key]) || !controller.actionIdMap[ key[key.length - 1] ] ) {
+    model.criticalError( constants.error.ILLEGAL_DATA, constants.error.NON_ACTION_CALL_FUNCTION );
   }
-  
+
   // generate arguments for action call
-  if( arguments.length === 2 ) key = controller.getInvokementArguments(key,args);
-  
-  if( constants.DEBUG ){
+  if( arguments.length === 2 ) key = controller.getInvokementArguments( key, args );
+
+  if( constants.DEBUG ) {
     util.log(
       "adding",
-      JSON.stringify(key),
+      JSON.stringify( key ),
       "to the command stack as",
       controller.actionMap[this.__actionId__],
       "command"
     );
   }
-  
+
   // push to stack
   controller.actionBuffer_.push( key );
 };
@@ -152,49 +148,41 @@ controller.localInvokement = function( key, args ){
 // @param {Array} args function arguments
 //
 controller.sharedInvokement = function( key, args ){
-  if( (arguments.length === 2 && !controller.actionIdMap[key] ) || 
-      !controller.actionIdMap[ key[key.length-1] ] ){
-    
-    model.criticalError(
-      constants.error.ILLEGAL_DATA,
-      constants.error.NON_ACTION_CALL_FUNCTION
-    );
+  if( (arguments.length === 2 && !controller.actionIdMap[key]) || !controller.actionIdMap[ key[key.length - 1] ] ) {
+    model.criticalError( constants.error.ILLEGAL_DATA, constants.error.NON_ACTION_CALL_FUNCTION );
   }
-  
+
   // generate arguments for action call
-  if( arguments.length === 2 ) key = controller.getInvokementArguments(key,args);
-  
-  if( controller.isNetworkGame() ){
-    
+  if( arguments.length === 2 ) key = controller.getInvokementArguments( key, args );
+
+  if( controller.isNetworkGame() ) {
+
     // share message when the active session
     // is a network game
-    controller.sendNetworkMessage( JSON.stringify(key) );
+    controller.sendNetworkMessage( JSON.stringify( key ) );
   }
-  
+
   // append call locally
-  controller.localInvokement(key);
+  controller.localInvokement( key );
 };
 
-util.scoped(function(){
+util.scoped( function(){
   var id = 0;
-  
+
   // Registers an invokable command.
   //
   // @param {String} name action function name
   //
   controller.registerInvokableCommand = function( name ){
-    if( !util.expectFunction( model, name, true ) ){
-      model.criticalError(
-        constants.error.ILLEGAL_DATA,
-        constants.error.NON_MODEL_FUNCTION
-      );
+    if( !util.expectFunction( model, name, true ) ) {
+      model.criticalError( constants.error.ILLEGAL_DATA, constants.error.NON_MODEL_FUNCTION );
     }
-    
+
     controller.actionMap[id.toString()] = name;
-    controller.actionIdMap[name]        = id.toString();
-    
+    controller.actionIdMap[name] = id.toString();
+
     // increase counter
     id++;
   };
-  
-});
+
+} );

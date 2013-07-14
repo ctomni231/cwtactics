@@ -14,13 +14,13 @@ var constants = {
   
   ERROR_MSG:            "Custom Wars Tactics - Debug: An error was raised",
   
-  // #### CW:T Version
-  VERSION:              "0.3.2.0 Beta - Howaito Raitoningu",
+  // ### CW:T Version
+  VERSION:              "0.3.2.0 Beta - Burakku Raitoningu",
   
-  // #### CW:T Errors
+  // ### CW:T Errors
   error:{
     
-    // ###### Error type numbers
+    // #### Error type numbers
     
     UNKNOWN:                        1,
     HOST_ONLY:                      2,
@@ -36,7 +36,7 @@ var constants = {
     STM_ACTIONSTATE_BREAKS_TRANS:   92,
     STM_NEXT_STATE_MISSING:         93,
 
-    // ###### Error data numbers
+    // #### Error data numbers
 
     ILLEGAL_ACTION_FUNCTION_ID:     9999,
     NO_GAME_ROUND_ACTIVE:           9998,
@@ -79,11 +79,10 @@ var constants = {
     ACTION_KEY_ALREADY_DEFINED:     8004,
     ACTION_ONLY_ONE_SELECTION_TYPE: 8005,
   
-    // property related errors
-    PROPERTY_NOT_FOUND:             3004,
-    PROPERTY_NOT_FOUND:             3003,
-    CANNOT_FIND_NEXT_PLAYER:        3002,
-    UNKNOWN_PLAYER_ID:              3001,
+    // move fauls
+    ILLEGAL_MOVE_ENEMY_IS_NEIGHTBOR: 3003,
+    ILLEGAL_MOVE_PATH:               3002,
+    ILLEGAL_MOVE_CODE:               3001,
     
     // data faults
     DATA_FAULT_IS_SAME_FAULT:       2008,
@@ -96,6 +95,10 @@ var constants = {
     DATA_FAULT_OBJECT_FAULT:        2001,
     
     // other errors
+    SELECTION_DATA_OUT_OF_BOUNDS:   1016,
+    PROPERTY_NOT_FOUND:             1015,
+    CANNOT_FIND_NEXT_PLAYER:        1014,
+    UNKNOWN_PLAYER_ID:              1013,
     NON_ACTION_CALL_FUNCTION:       1012,
     NON_MODEL_FUNCTION:             1011,
     NO_SLOT_FREE:                   1010,
@@ -103,7 +106,7 @@ var constants = {
     GAME_STATE_BREAK:               1008,
     POSITIONS_SHOULD_BE_NEIGHBORS:  1007,
     TURN_OWNER_ONLY:                1006,
-    UNKNOWN_MOVE_CODE:              1005,
+    NOT_ENOUGH_FUEL:                1005,
     UNKNOWN_OBJECT_TYPE:            1004,
     UNKNOWN_WEATHER:                1003,
     NOT_ENOUGH_MONEY:               1002,

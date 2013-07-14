@@ -1,12 +1,24 @@
+// # Map Module
+//
+
+// ### Meta Data
+
 controller.registerInvokableCommand("doInRange");
 
+// ---
+
+// ### Model
+
 // Map table that holds all known tiles.
+//
 model.map = util.matrix( constants.MAX_MAP_WIDTH, constants.MAX_MAP_HEIGHT, null );
 
 // Returns the current active map height.
+//
 model.mapHeight = -1;
 
 // Returns the current active map width.
+//
 model.mapWidth = -1;
 
 // Define persistence handler
@@ -67,6 +79,7 @@ controller.persistenceHandler(
 // @param {Number} sy y coordinate of the source position
 // @param {Number} tx x coordinate of the target position
 // @param {Number} ty y coordinate of the target position
+//
 model.distance = function( sx,sy,tx,ty ){
   var dx = Math.abs(sx-tx);
   var dy = Math.abs(sy-ty);
@@ -77,6 +90,7 @@ model.distance = function( sx,sy,tx,ty ){
 // 
 // @param {Number} x
 // @param {Number} y
+//
 model.isValidPosition = function( x,y ){
   return ( 
     x >= 0 && 
@@ -94,6 +108,7 @@ model.isValidPosition = function( x,y ){
 // @param {Number} range range of the search field
 // @param {Function} cb callback function
 // @param {Any} arg argument that will be passed into the callback call
+//
 model.doInRange = function( x,y, range, cb, arg ){
   
   var lX;

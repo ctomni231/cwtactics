@@ -8,6 +8,7 @@ controller.propertyAction({
     var uLimit = controller.configValue("unitLimit");
     if( uLimit && model.countUnits(model.turnOwner) >= uLimit ) return false;
         
+    if( !model.hasLeftManpower( model.turnOwner )  ) return false;
     if( !model.hasFreeUnitSlots( model.turnOwner ) ) return false;
     
     var property = data.source.property;
@@ -27,13 +28,14 @@ controller.propertyAction({
   
   prepareMenu: function( data ){
     var availGold = model.players[ model.turnOwner ].gold;
-    var property = data.source.property;
     var unitTypes = model.listOfUnitTypes;
+    var property = data.source.property;
+    
     for( var i=0,e=unitTypes.length; i<e; i++ ){
       var key = unitTypes[i];
       
       // TODO LATER DISABLE ACTION ONLY
-      if( model.unitTypes[unitTypes[i]].cost > availGold ) continue;
+      if( model.unitTypes[ unitTypes[i] ].cost > availGold ) continue;
       
       // ONLY ADD IF THE TYPE IS PRODUCE ABLE BY THE PROPERTY
       if( model.isBuildableByFactory( property, key ) ){
@@ -43,7 +45,7 @@ controller.propertyAction({
   },
   
   invoke: function( data ){
-    model.buildUnit.callAsCommand( data.source.x, data.source.y, data.action.selectedSubEntry );
+    controller.sharedInvokement("buildUnit", [ data.source.x, data.source.y, data.action.selectedSubEntry ]);
   }
   
 });

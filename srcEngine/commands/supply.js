@@ -9,12 +9,11 @@ controller.unitAction({
     var x = data.target.x;
     var y = data.target.y;
     
-    // TODO CHECK CAN_SUPPORT IN FUTURE
-    return model.relationShipCheckUnitNeighbours( pid, x, y, model.MODE_OWN );
+    return model.relationShipCheckUnitNeighbours( pid, x, y, model.relationModes.OWN );
   },
   
   invoke: function( data ){
-    model.unitSuppliesNeighbours.callAsCommand( data.source.unitId );    
+    controller.sharedInvokement( "unitSuppliesNeighbours",[ data.source.unitId ]);
   }
   
 });

@@ -5,6 +5,7 @@
 
 controller.registerInvokableCommand("doExplosionAt");
 controller.registerInvokableCommand("fireSilo");
+controller.registerInvokableCommand("siloRegeneratesIn");
 
 controller.defineEvent("doExplosionAt");
 controller.defineEvent("startFireSilo");
@@ -65,9 +66,16 @@ model.fireSilo = function(siloId, tx, ty, range, damage, owner){
   // Invoke event
   var evCb = controller.events.startFireSilo;
   if(evCb)evCb(uid);
-
-  // TIMER
-  model.pushTimedEvent(model.daysToTurns(5), model.changePropertyType.callToList(siloId, type.ID));
-
+  
   model.doExplosionAt(tx, ty, range, damage, owner);
+  
+  model.pushTimedEvent( 
+    model.daysToTurns(turns), 
+    controller.getInvokementArguments("changePropertyType",[siloId, type])
+  );
+    
+  // Invoke change event
+  var evCb = controller.events.siloRegeneratesIn;
+  if(evCb)evCb( siloId, turns, type );
+  
 };

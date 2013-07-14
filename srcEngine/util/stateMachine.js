@@ -12,14 +12,16 @@
     return BREAK_TRANSITION;
   }
   
+  function clearHistory() {
+    if( machine.history ) machine.history.splice(0);
+  }
+  
   function reset(){
     
     // reset state
     machine.state = START_STATE;
-    
-    // clean memory
-    var keys = Object.keys( this.memory );
-    for( var i=0,e=keys.length; i<e; i++ ) delete this.memory[keys[i]];
+    machine.lastState = null;
+    this.clearHistory();
   }
   
   function event( ev ){
@@ -89,9 +91,10 @@
     // set functions
     machine.reset = reset;
     machine.event = event;
-    machine.onerror = ( config.onerror )? config.onerror: error;
+    machine.clearHistory = clearHistory;
     machine.backToLastState = backToLastState;
     machine.breakTransition = breakTransition;
+    machine.onerror = ( config.onerror )? config.onerror: error;
     
     return machine;
   }

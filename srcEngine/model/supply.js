@@ -171,7 +171,7 @@ model.unitSuppliesNeighbours = function(sid){
   for(; i < e; i++){
 
     // supply when neighbor
-    if(model.unitDistance(sid, i) === 1)model.refillResources(i);
+    if(model.unitDistance(sid, i) === 1) model.refillResources(i);
   }
 };
 

@@ -4,30 +4,32 @@ controller.mapAction({
   hasSubMenu: true,
   
   condition: function(){
-    var player = model.players[ model.turnOwner ];
+    var coData = model.coData[ model.turnOwner ];
     
-    if( player.mainCo === null ) return false;
-    if( player.coPower_active !== model.INACTIVE_POWER ) return false;
+    if( coData.coA === null ) return false;
+    if( coData.level !== model.powerLevel.INACTIVE ) return false;
     
-    return ( player.power >= model.coStarCost(model.turnOwner)*player.mainCo.coStars );
+    return ( coData.power >= model.coStarCost(model.turnOwner) * coData.coA.coStars );
   },
             
   prepareMenu: function( data ){
-    data.action.addEntry("cop", (player.power >= model.coStarCost(model.turnOwner)*player.mainCo.coStars) );
-    data.action.addEntry("scop", (player.power >= model.coStarCost(model.turnOwner)*player.mainCo.scoStars) );
+    var coData = model.coData[ model.turnOwner ];
+    
+    data.menu.addEntry("cop",  (coData.power >= model.coStarCost(model.turnOwner)* coData.coA.coStars)  );
+    data.menu.addEntry("scop", (coData.power >= model.coStarCost(model.turnOwner)* coData.coA.scoStars) );
   },
           
   invoke: function( data ){    
+    var cmd;
+    
     switch ( data.action.selectedSubEntry ){
-      
-      case "cop" : 
-        model.activateCoPower.callAsCommand(model.turnOwner);
-        break;
-        
-      case "scop" : 
-        model.activateSuperCoPower.callAsCommand(model.turnOwner);
-        break;
+      case "cop" :  cmd = "activateCoPower";      break;
+      case "scop" : cmd = "activateSuperCoPower"; break;
     }
+    
+    if(!cmd) model.criticalError( constants.error.ILLEGAL_PARAMETERS, constants.error.UNKNOWN );
+    
+    controller.sharedInvokement(cmd,[model.turnOwner]);
   }
   
 });

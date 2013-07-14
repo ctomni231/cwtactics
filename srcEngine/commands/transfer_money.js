@@ -39,7 +39,8 @@ util.scoped(function(){
     
     invoke: function( data ){
       var owner = (data.target.property !== null)? data.target.property.owner : data.target.unit.owner;
-      model.transferMoney.callAsCommand( model.turnOwner, owner, data.action.selectedSubEntry );
+      
+      controller.sharedInvokement("transferMoney",[ model.turnOwner, owner, data.action.selectedSubEntry ]);
     }
     
   });

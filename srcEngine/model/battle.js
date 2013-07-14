@@ -34,7 +34,7 @@ model.unitTypeParser.addHandler(function(sheet){
     if( expectObject(sheet,"attack",false) === util.expectMode.DEFINED ){
       att = sheet.attack;
       
-      // MIN RANGE < MAX_RANGE IF DEFINED
+      // check range rules if range is given
       if( !util.expectNumber(att,"minrange",false,true,1) ) return false;
       if( !util.expectNumber(att,"maxrange",false,true,att.minrange+1) ) return false;
       
@@ -57,7 +57,90 @@ model.tileTypeParser.addHandler(function(sheet){
   if(!util.expectNumber(sheet, "defense", true, true, 0, 6))return false;
 });
 
+// ---
+
+// ### Logic
+
 model.wpKeys_ = ["main_wp","sec_wp"];
+
+model.attackRangeMod_ = function( uid, x, y, data, markAttackableTiles ){
+  var markInData = (typeof data !== "undefined");
+  if(!markAttackableTiles) markAttackableTiles = false;
+  
+  var unit = model.units[uid];
+  var teamId = model.players[unit.owner].team;
+  var attackSheet = unit.type.attack;
+  if( arguments.length === 1 ){
+    x = unit.x;
+    y = unit.y; 
+  }
+  
+  // NO BATTLE UNIT ?
+  if( typeof attackSheet === "undefined" ) return false;
+  
+  // ONLY MAIN WEAPON WITHOUT AMMO ? 
+  if( model.hasMainWeapon(unit.type) && !model.hasSecondaryWeapon(unit.type) &&
+     unit.type.ammo > 0 && unit.ammo === 0    ) return false;
+  
+  var minR = 1;
+  var maxR = 1;
+  
+  if( unit.type.attack.minrange ){
+    
+    controller.prepareTags( x,y, uid );
+    minR = controller.scriptedValue( unit.owner, "minrange", unit.type.attack.minrange );
+    maxR = controller.scriptedValue( unit.owner, "maxrange", unit.type.attack.maxrange );
+  }
+  
+  var lX;
+  var hX;
+  var lY = y-maxR;
+  var hY = y+maxR;
+  if( lY < 0 ) lY = 0;
+  if( hY >= model.mapHeight ) hY = model.mapHeight-1;
+  for( ; lY<=hY; lY++ ){
+    
+    var disY = Math.abs( lY-y );
+    lX = x-maxR+disY;
+    hX = x+maxR-disY;
+    if( lX < 0 ) lX = 0;
+    if( hX >= model.mapWidth ) hX = model.mapWidth-1;
+    for( ; lX<=hX; lX++ ){
+      
+      if( markAttackableTiles ){
+        if( model.distance( x,y, lX,lY ) >= minR ){
+          
+          // SYMBOLIC YES YOU CAN ATTACK THIS TILE
+          data.setValueAt(lX,lY, 1 ); 
+        }
+      }
+      else{
+        
+        // IN FOG ?
+        if( model.fogData[lX][lY] === 0 ) continue;
+        
+        if( model.distance( x,y, lX,lY ) >= minR ){
+          
+          // ONLY UNIT FROM OTHER TEAMS ARE ATTACKABLE
+          var tUnit = model.unitPosMap[ lX ][ lY ];
+          if( tUnit !== null && model.players[ tUnit.owner ].team !== teamId ){
+            
+            var dmg = model.baseDamageAgainst(unit,tUnit);
+            if( dmg > 0 ){
+              
+              // IF DATA MODE IS ON, THEN MARK THE POSITION 
+              // ELSE RETURN TRUE
+              if( markInData ) data.setValueAt(lX,lY, dmg );
+              else return true;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  return false;
+};
 
 //  Returns true if the unit type has a main weapon else false.
 //  
@@ -204,11 +287,13 @@ util.scoped(function(){
   function searchTile( rx,ry, ax,ay ){
     var x=-1,y=-1;
     
+    // direct neighbors (distance 1)
     if( model.isValidPosition(rx-1,ry) && !model.unitPosMap[rx-1][ry] ){ x=rx-1; y=ry; }
     if( model.isValidPosition(rx,ry-1) && !model.unitPosMap[rx][ry-1] ){ x=rx; y=ry-1; }
     if( model.isValidPosition(rx,ry+1) && !model.unitPosMap[rx][ry+1] ){ x=rx; y=ry+1; }
     if( model.isValidPosition(rx+1,ry) && !model.unitPosMap[rx+1][ry] ){ x=rx+1; y=ry; }
     
+    // direct neighbors (distance 2) 
     if( model.isValidPosition(rx-1,ry-1) && !model.unitPosMap[rx-1][ry-1] ){ x=rx-1; y=ry-1; }
     if( model.isValidPosition(rx-1,ry+1) && !model.unitPosMap[rx-1][ry+1] ){ x=rx-1; y=ry+1; }
     if( model.isValidPosition(rx+1,ry-1) && !model.unitPosMap[rx+1][ry-1] ){ x=rx+1; y=ry-1; }
@@ -290,141 +375,3 @@ util.scoped(function(){
     
   };
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-  ### attackRangeMod_
- 
-  @private
-  @param {Number} uid
-  @param {Number} x
-  @param {Number} y
-  @param {SelectionData} data
- */
-model.attackRangeMod_ = function( uid, x, y, data, markAttackableTiles ){
-  var markInData = (typeof data !== "undefined");
-  if(!markAttackableTiles) markAttackableTiles = false;
-  
-  var unit = model.units[uid];
-  var teamId = model.players[unit.owner].team;
-  var attackSheet = unit.type.attack;
-  if( arguments.length === 1 ){
-    x = unit.x;
-    y = unit.y; 
-  }
-  
-  // NO BATTLE UNIT ?
-  if( typeof attackSheet === "undefined" ) return false;
-  
-  // ONLY MAIN WEAPON WITHOUT AMMO ? 
-  if( model.hasMainWeapon(unit.type) && !model.hasSecondaryWeapon(unit.type) &&
-     unit.type.ammo > 0 && unit.ammo === 0    ) return false;
-  
-  var minR = 1;
-  var maxR = 1;
-  
-  if( unit.type.attack.minrange ){
-    
-    controller.prepareTags( x,y, uid );
-    minR = controller.scriptedValue( unit.owner, "minrange", unit.type.attack.minrange );
-    maxR = controller.scriptedValue( unit.owner, "maxrange", unit.type.attack.maxrange );
-  }
-  
-  var lX;
-  var hX;
-  var lY = y-maxR;
-  var hY = y+maxR;
-  if( lY < 0 ) lY = 0;
-  if( hY >= model.mapHeight ) hY = model.mapHeight-1;
-  for( ; lY<=hY; lY++ ){
-    
-    var disY = Math.abs( lY-y );
-    lX = x-maxR+disY;
-    hX = x+maxR-disY;
-    if( lX < 0 ) lX = 0;
-    if( hX >= model.mapWidth ) hX = model.mapWidth-1;
-    for( ; lX<=hX; lX++ ){
-      
-      if( markAttackableTiles ){
-        if( model.distance( x,y, lX,lY ) >= minR ){
-          
-          // SYMBOLIC YES YOU CAN ATTACK THIS TILE
-          data.setValueAt(lX,lY, 1 ); 
-        }
-      }
-      else{
-        
-        // IN FOG ?
-        if( model.fogData[lX][lY] === 0 ) continue;
-        
-        if( model.distance( x,y, lX,lY ) >= minR ){
-          
-          // ONLY UNIT FROM OTHER TEAMS ARE ATTACKABLE
-          var tUnit = model.unitPosMap[ lX ][ lY ];
-          if( tUnit !== null && model.players[ tUnit.owner ].team !== teamId ){
-            
-            var dmg = model.baseDamageAgainst(unit,tUnit);
-            if( dmg > 0 ){
-              
-              // IF DATA MODE IS ON, THEN MARK THE POSITION 
-              // ELSE RETURN TRUE
-              if( markInData ) data.setValueAt(lX,lY, dmg );
-              else return true;
-            }
-          }
-        }
-      }
-    }
-  }
-  
-  return false;
-};

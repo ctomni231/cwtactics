@@ -7,7 +7,8 @@ controller.buildAction = function(){
   var sourceDto     = scope.source;
   var moveDto       = scope.movePath;
   var actionDto     = scope.action;
-  var actionObject  = controller.actionObjects[actionDto.selectedEntry];
+  // var actionObject  = controller.actionObjects[actionDto.selectedEntry];
+  var actionObject  = actionDto.object;
   var trapped       = false;
   
   // ADD MOVE PATH
@@ -22,10 +23,10 @@ controller.buildAction = function(){
       for( var i=0,e=way.length; i<e; i++ ){
         
         switch( way[i] ){
-          case model.MOVE_CODE_DOWN  : cy++; break;
-          case model.MOVE_CODE_UP    : cy--; break;
-          case model.MOVE_CODE_LEFT  : cx--; break;
-          case model.MOVE_CODE_RIGHT : cx++; break;
+          case model.moveCodes.DOWN  : cy++; break;
+          case model.moveCodes.UP    : cy--; break;
+          case model.moveCodes.LEFT  : cx--; break;
+          case model.moveCodes.RIGHT : cx++; break;
         }
         
         var unit = model.unitPosMap[cx][cy];
@@ -49,12 +50,11 @@ controller.buildAction = function(){
   
   // ACTION COMMAND
   if( !trapped ) actionObject.invoke( scope );
-  else model.trapWait.callAsCommand( sourceDto.unitId );
+  else controller.sharedInvokement( "trapWait", [ sourceDto.unitId ]);
   
   // UNIT ACTIONS LEADS INTO A WAIT COMMAND 
   if( actionObject.unitAction && actionDto.selectedEntry !== "wait" ){
     controller.sharedInvokement( "markUnitNonActable", [ sourceDto.unitId ]);
-    // model.markUnitNonActable.callAsCommand( sourceDto.unitId );
   }
   
   return trapped;

@@ -2,20 +2,22 @@ controller.unitAction({
   
   key:"silofire",
   
+  prepareSelection: function( data ){
+    data.selectionRange = data.target.property.type.rocketsilo.range;
+  },
+  
   isTargetValid: function( data, x,y ){
     return model.isValidPosition(x,y);
   },
-  
-  selectionRange: 2,
-  
+    
   condition: function( data ){
     var unitRel = data.thereIsUnitRelationShip( data.source, data.target );
-    if( unitRel !== model.MODE_SAME_OBJECT && unitRel !== model.MODE_NONE ) return false;
+    if( unitRel !== model.relationModes.SAME_OBJECT && unitRel !== model.relationModes.NONE ) return false;
     
     if( !data.target.property ) return false;
     
     var propRel = data.thereIsUnitToPropertyRelationShip( data.source, data.target );
-    if( propRel !== model.MODE_NONE ) return false;
+    if( propRel !== model.relationModes.NONE ) return false;
     
     var silo = data.target.property.type.rocketsilo;
     if( !silo ) return false;
