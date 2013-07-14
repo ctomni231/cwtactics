@@ -16,11 +16,7 @@ util.scoped(function(){
   /**
    *
    */
-  controller.saveSoundConfigs = function(){
-    if( DEBUG ){ 
-      util.log("saving volume config in storage");
-    }
-    
+  controller.saveSoundConfigs = function(){    
     controller.storage.set( sfxStorageParam, sfxGainNode.gain.value );
     controller.storage.set( musicStorageParam, musicGainNode.gain.value );
   };

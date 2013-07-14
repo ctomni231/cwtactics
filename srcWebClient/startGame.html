@@ -1,6 +1,5 @@
 <!DOCTYPE HTML>
-<!-- <html manifest="cache.manifest" debug="true"> -->
-<html>
+<html manifest="cache.manifest" >
 
   <!-- ##################################################################################### -->
 
@@ -14,6 +13,145 @@
   <!-- PART OF THE PROGRAM LOADER -->
   <script>
 
+    // jWorkflow.js
+// (c) 2010 tinyHippos inc.
+// jWorkflow is freely distributable under the terms of the MIT license.
+// Portions of jWorkflow are inspired by Underscore.js
+    var jWorkflow = (function(){
+      function _valid( func ){
+        if( typeof(func) !== 'function' ) {
+          throw "expected function but was " + typeof(func);
+        }
+      }
+
+      function _isWorkflow( func ){
+        return typeof func.andThen === 'function' &&
+          typeof func.start === 'function' &&
+          typeof func.chill === 'function';
+      }
+
+      function _isArray( func ){
+        return !!func.map && !!func.reduce;
+      }
+
+      var transfunctioner = {
+        order: function( func, context ){
+          var _workflow = [ ],
+            _tasks,
+            _callback = null,
+            _baton = (function(){
+            var _taken = false;
+            return {
+              take: function(){
+                _taken = true;
+              },
+              pass: function( result ){
+                var task;
+                _taken = false;
+
+                if( _tasks.length ) {
+                  task = _tasks.shift();
+                  result = task.func.apply( task.context, [ result, _baton ] );
+
+                  if( !_taken ) {
+                    _baton.pass( result );
+                  }
+                }
+                else {
+                  if( _callback.func ) {
+                    _callback.func.apply( _callback.context, [ result ] );
+                  }
+                }
+              },
+              drop: function( result ){
+                _taken = true;
+                _tasks = [ ];
+                setTimeout( function(){
+                  _baton.pass( result );
+                }, 1 );
+              }
+            };
+          }()),
+            _self = {
+            andThen: function( func, context ){
+              if( _isWorkflow( func ) ) {
+                var f = function( prev, baton ){
+                  baton.take();
+                  func.start( {
+                    callback: function( result ){
+                      baton.pass( result );
+                    },
+                    context: context,
+                    initialValue: prev
+                  } );
+                };
+                _workflow.push( {func: f,
+                  context: context} );
+              }
+              else if( _isArray( func ) ) {
+                var orch = function( prev, baton ){
+                  baton.take();
+
+                  var l = func.length,
+                    join = function(){
+                    return --l || baton.pass();
+                  };
+
+                  func.forEach( function( f ){
+                    jWorkflow.order( f ).start( join );
+                  } );
+                };
+                _workflow.push( {func: orch,
+                  context: context} );
+              }
+              else {
+                _valid( func );
+                _workflow.push( {func: func,
+                  context: context} );
+              }
+              return _self;
+            },
+            chill: function( time ){
+              return _self.andThen( function( prev, baton ){
+                baton.take();
+                setTimeout( function(){
+                  baton.pass( prev );
+                }, time );
+              } );
+            },
+            start: function(){
+              var callback,
+                context,
+                initialValue;
+
+              if( arguments[0] && typeof arguments[0] === 'object' ) {
+                callback = arguments[0].callback;
+                context = arguments[0].context;
+                initialValue = arguments[0].initialValue;
+              }
+              else {
+                callback = arguments[0];
+                context = arguments[1];
+              }
+
+              _callback = {func: callback,
+                context: context};
+              _tasks = _workflow.slice();
+              _baton.pass( initialValue );
+            }
+          };
+
+          return func ? _self.andThen( func, context ) : _self;
+        }
+      };
+
+      return transfunctioner;
+    }());
+
+    if( typeof module === "object" && typeof require === "function" ) {
+      module.exports = jWorkflow;
+    }
+
     (function(){
 
       var xmlHttpReq;
@@ -23,6 +161,31 @@
       } catch(ex) {
         xmlHttpReq = false;
       }
+
+      // Check if a new cache is available on page load.
+      window.addEventListener( 'load', function( e ){
+
+        window.applicationCache.addEventListener( 'updateready', function( e ){
+          if( window.applicationCache.status == window.applicationCache.UPDATEREADY ) {
+
+            // Browser downloaded a new app cache.
+            // Swap it in and reload the page to get the new hotness.
+            window.applicationCache.swapCache();
+            if( confirm( 'A new version of this site is available. Load it?' ) ) {
+              window.location.reload();
+            }
+          } else {
+            // Manifest didn't changed. Nothing new to server.
+          }
+        }, false );
+
+      }, false );
+
+      // The manifest returns 404 or 410, the download failed,
+      // or the manifest changed while the download was in progress.
+      window.applicationCache.addEventListener( 'error', function(){
+        alert( "could not download the game data into the offline storage" );
+      }, false );
 
       // FROM http://stackoverflow.com/questions/979975/how-to-get-the-value-from-url-parameter
       function getQueryParams( qs ){
@@ -99,8 +262,10 @@
 
         var engineDeps = server + "/dist/normal/engineDeps.js";
         var clientDeps = server + "/dist/normal/clientDeps.js";
-        var engine     = server + "/dist/normal/engine.js";
-        var client     = server + "/dist/normal/client.js";
+        var engine = server + "/dist/normal/engine.js";
+        var client = server + "/dist/normal/client.js";
+        var body = server + "/dist/normal/body.html";
+        var style = server + "/dist/normal/style.css";
 
         function error(){
           alert( "could not grab program files!" );
@@ -138,6 +303,28 @@
                         localStorage.cwt_prog_clt = text;
                         eval( text );
 
+                        // --- GRAB BODY ---
+                        grabRemoteFile( {
+                          path: body,
+                          failCallback: error,
+                          winCallback: function( text ){
+                            localStorage.cwt_body = text;
+
+                            document.getElementsByTagName( "body" )[0].innerHTML = text;
+
+                            // --- GRAB STYLE ---
+                            grabRemoteFile( {
+                              path: body,
+                              failCallback: error,
+                              winCallback: function( text ){
+                                localStorage.cwt_style = text;
+
+                                var el = document.createElement( "style" );
+                                el.innerHTML = text;
+
+                                document.getElementsByTagName( "html" )[0].appendChild( el );
+                              }} )
+                          }} )
                       }} )
                   }} )
               }} )
@@ -152,167 +339,7 @@
 
   <body onLoad="controller.screenStateMachine.event( 'start' );" oncontextmenu="return false;" >
 
-    <div id="cwt_app" class="gamePanel" >
 
-      <!-- ###################################### -->
-
-      <div id="cwt_error_screen" class="gamePanel" style="display:none;" >
-        !ERROR!
-        <p id="error_screen_errorMsgField"></p>
-      </div>
-
-      <!-- ###################################### -->
-
-      <div id="cwt_load_screen" class="gamePanel" style="display:none;" >
-        <p>...LOADING...</p>
-        <p id="logList"></p>
-      </div>
-
-      <!-- ###################################### -->
-
-      <div id="cwt_mobileSound_screen" class="gamePanel" style="display:none;" >
-        <p><button id="mobileSoundNext" key="NEXT"  class="menuButton" ></button></p>
-      </div>
-
-      <!-- ###################################### -->
-
-      <div id="cwt_main_screen" class="gamePanel" style="display:none;">
-
-        <div id="cwt_main_topBar"></div>
-
-        <div id="main_screen_error_msg" style="display: none; color:red; background: white;">
-
-        </div>
-
-        <p><button id="main_screen_enter_1" key="CAMPAIGN" class="menuButton" ></button></p> 
-        <p><button id="main_screen_enter_2" key="VERSUS"   class="menuButton" ></button></p> 
-        <p><button id="main_screen_enter_3" key="NETWORK"  class="menuButton" ></button></p> 
-        <p><button id="main_screen_enter_4" key="WARROOM"  class="menuButton" ></button></p> 
-        <p><button id="main_screen_enter_5" key="DESIGN"   class="menuButton" ></button></p> 
-        <p><button id="main_screen_enter_6" key="OPTIONS"   class="menuButton" ></button></p>
-      </div>
-
-      <!-- ###################################### -->
-
-      <div id="cwt_versus_screen" class="gamePanel" style="display:none;" >
-        <p id="map_selection"></p>
-        <p><button id="versus_start_btn" key="START" class="menuButton" ></button></p>
-      </div>
-
-      <!-- ###################################### -->
-
-      <div id="cwt_options_screen" class="gamePanel" style="display:none;" >
-        <p><span id="cwt_options_sfxVolume_desc" key="options.sfx"></span>: <span id="cwt_options_sfxVolume" class="menuButton" ></span>%</p>
-        <p><span id="cwt_options_musicVolume_desc" key="options.music"></span>: <span id="cwt_options_musicVolume" class="menuButton" ></span>%</p>
-        <p id="cwt_options_reset" key="options.resetData" class="menuButton" ></p>
-        <p><input type="text" id="cwt_options_mapIn" ></input></p>
-        <p id="cwt_options_addMap" key="options.addMap" class="menuButton" ></p>
-        <p id="cwt_options_goBack" key="options.goBack" class="menuButton"></p>
-      </div>
-
-      <!-- ###################################### -->
-
-      <div id="cwt_teamConfig_screen" class="gamePanel" style="display:none;" >
-
-      </div>
-
-      <!-- ###################################### -->
-
-      <div id="cwt_roundConfig_screen" class="gamePanel" style="display:none;" >
-
-      </div>
-
-      <!-- ###################################### -->
-
-      <div id="cwt_game_screen" class="gamePanel" style="display:none;" >
-
-        <div id="cwt_game_canvas">
-          <canvas id="cwt_canvas"></canvas>
-        </div>
-
-        <!-- #################################################################################################### --> 
-
-        <div id="cwt_info_box" class="uiPopup hide"> 
-          <div id="cwt_info_box_header">MESSAGE</div>
-          <span id="cwt_info_box_content" ></span> 
-        </div>
-
-        <!-- #################################################################################################### --> 
-
-        <div id="cwt_menu" class="uiPopup hide">
-
-          <div id="cwt_menu_header">MENU</div>
-
-          <div id="cwt_menu_content" class="menuPopupContent">
-            <ul id="cwt_menu_entries" class="cwtwc_menu_entries"></ul>
-          </div>
-
-        </div>
-
-        <!-- #################################################################################################### --> 
-
-        <div id="cwt_game_bottomBar">
-
-          <div class="row headerRow">
-            <div id="bottomBar_playerName" ></div>
-            <div id="bottomBar_name" ></div>
-            <div id="bottomBar_tilename" ></div>
-            <div id="bottomBar_tplayerName" ></div>
-          </div>
-
-          <div class="row subRow">
-
-            <div>G. <span id="bottomBar_playergold"></span></div>
-
-            <div id="bottomBar_unit_row1" class="twoRow">
-              <div class="iconDiv iconDivFirst">
-                <canvas height="8" width="8" id="bottomBar_hp_d"></canvas>
-                <span class="colBold" id="bottomBar_hp"></span>
-              </div>
-              <div class="iconDiv iconDivSecond" >
-                <canvas height="8" width="8" id="bottomBar_ammo_d"></canvas>
-                <span id="bottomBar_ammo"></span>/<span class="colBold" id="bottomBar_ammo2"></span>
-              </div>
-            </div>
-
-            <div id="bottomBar_tile_row1" class="oneRow">
-              <div class="iconDiv" >
-                <canvas height="8" width="8" id="bottomBar_defense_d"></canvas>
-                <span id="bottomBar_defense"></span>
-              </div>
-            </div>
-
-            <div id="bottomBar_tplayergoldrow" >G. <span id="bottomBar_tplayergold"></span></div>
-          </div>
-
-          <div class="row subRow">
-            <div id="bottomBar_playerpower"></div>
-
-            <div id="bottomBar_unit_row2" class="twoRow">
-              <div class="iconDiv iconDivFirst" >
-                <canvas height="8" width="8" id="bottomBar_fuel_d"></canvas>
-                <span id="bottomBar_fuel"></span>/<span class="colBold" id="bottomBar_fuel2"></span>
-              </div>
-              <div class="iconDiv iconDivSecond" >
-                <canvas height="8" width="8" id="bottomBar_attrange_d"></canvas>
-                <span class="colBold" id="bottomBar_attrange"></span>-<span class="colBold" id="bottomBar_attrange2"></span>
-              </div>
-            </div>
-
-            <div id="bottomBar_tile_row2" class="oneRow">
-              <div class="iconDiv" >
-                <canvas height="8" width="8" id="bottomBar_capPt_d"></canvas>
-                <span id="bottomBar_capPt"></span>/<span class="colBold" id="bottomBar_capPt2"></span>
-              </div>
-            </div>
-
-            <div id="bottomBar_tplayerpower"></div>
-          </div>
-
-        </div>
-      </div>
-
-    </div>
 
   </body>  
 

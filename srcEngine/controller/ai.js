@@ -1,3 +1,5 @@
+controller.registerInvokableCommand("nextAiStep");
+
 controller.activeAIs = util.list( constants.MAX_PLAYER, function(){
   return {
     memory:null,
@@ -43,24 +45,12 @@ controller.isPlayerAiControlled = function( pid ){
 
 // A set of AI helper functions.
 //
-controller.aiActions = {
+controller.doAiAction = function( key, args ){
   
-  // Ends the current active turn turn.
-  //
-  endTurn:function(){
-    
-  },
   
-  // Does an action as shared command.
-  //
-  // @param {String} key command name
-  // @param {Array} args argument array
-  //
-  doAction: function( key, args ){
-    
-    // tick next AI step
-    controller.doSharedCall( "nextAiStep" );
-  }
+  
+  // tick next AI step
+  controller.doSharedCall( "nextAiStep" );
 };
 
 // Invokes the next AI step. Will be called as command 

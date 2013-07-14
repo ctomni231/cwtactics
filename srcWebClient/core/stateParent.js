@@ -1,7 +1,6 @@
 util.scoped(function(){
   
   function dropInputCommand(){ 
-    if( DEBUG ) util.log("dropped input"); 
     return this.BREAK_TRANSITION;
   };
   

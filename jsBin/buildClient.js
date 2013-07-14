@@ -42,3 +42,5 @@ builder.fileCopy( "srcWebClient/css/style.css", "dist/nightly/min/style.css" );
 builder.fileCopy( "srcWebClient/css/style.css", "dist/nightly/normal/style.css" );
 builder.fileCopy( "srcWebClient/startGame.html", "dist/nightly/min/startGame.html" );
 builder.fileCopy( "srcWebClient/startGame.html", "dist/nightly/normal/startGame.html" );
+builder.fileCopy( "srcWebClient/gameElements.html", "dist/nightly/min/gameElements.html" );
+builder.fileCopy( "srcWebClient/gameElements.html", "dist/nightly/normal/gameElements.html" );

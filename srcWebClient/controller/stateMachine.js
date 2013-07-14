@@ -1,8 +1,3 @@
-/**
- *
- */
-controller.screenStateMachine = simpleStateMachine();
-
-controller.screenStateMachine.name = "CLIENT";
+controller.screenStateMachine = util.stateMachine({},{ noHistory:true });
 
 controller.screenStateMachine.data = {};
