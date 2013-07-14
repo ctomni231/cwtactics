@@ -1,51 +1,189 @@
 <!DOCTYPE HTML>
 <!-- <html manifest="cache.manifest" debug="true"> -->
-<html debug="true">
-  
+<html>
+
   <!-- ##################################################################################### -->
-  
+
   <head>
     <meta content="yes" name="apple-mobile-web-app-capable" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, , maximum-scale=1, user-scalable=no" />
-    
   </head>
-  
+
   <!-- ##################################################################################### -->
-  
-  <body onLoad="controller.screenStateMachine.event('start');" oncontextmenu="return false;" >
-    
+
+  <!-- PART OF THE PROGRAM LOADER -->
+  <script>
+
+    (function(){
+
+      var xmlHttpReq;
+      try {
+        new XMLHttpRequest();
+        xmlHttpReq = true;
+      } catch(ex) {
+        xmlHttpReq = false;
+      }
+
+      // FROM http://stackoverflow.com/questions/979975/how-to-get-the-value-from-url-parameter
+      function getQueryParams( qs ){
+        qs = qs.split( "+" ).join( " " );
+
+        var params = {}, tokens, re = /[?&]?([^=]+)=([^&]*)/g;
+
+        while(tokens = re.exec( qs )) {
+          params[decodeURIComponent( tokens[1] )] = decodeURIComponent( tokens[2] );
+        }
+
+        return params;
+      }
+
+      function reqListener(){
+        if( this.readyState == 4 ) {
+          // FINE
+          if( this.readyState == 4 && this.status == 200 ) {
+
+            // JSON OBJECT
+            if( this.asJSON ) {
+
+              try {
+                this.winCallback( JSON.parse( this.responseText ) );
+              }
+              // FAILED TO CONVERT JSON TEXT
+              catch(e) {
+                this.failCallback( e );
+              }
+            }
+            // PLAIN TEXT
+            else {
+              this.winCallback( this.responseText );
+            }
+          }
+          // ERROR
+          else {
+            this.failCallback( this.statusText );
+          }
+        }
+      }
+
+      function grabRemoteFile( options ){
+        var oReq;
+
+        // GENERATE REQUEST OBJECT
+        if( xmlHttpReq ) oReq = new XMLHttpRequest();
+        else oReq = new ActiveXObject( "Microsoft.XMLHTTP" );
+
+        // WIN / FAIL CALLBACK
+        oReq.asJSON = options.json;
+        oReq.winCallback = options.success;
+        oReq.failCallback = options.error;
+
+        // META DATA
+        oReq.onreadystatechange = reqListener;
+        oReq.open( "get", options.path, true );
+
+        // SEND IT
+        oReq.send();
+      }
+
+      var parameters = getQueryParams( document.location.search );
+
+      // Define some basic global stuff
+      CWT_DEBUG = (parameters.debugMode === "true");
+
+      CWT_IS_UP_TO_DATE = function(){
+
+      };
+
+      CWT_UPDATE_PROGRAM_FILES = function(){
+        var server = (CWT_DEBUG) ? "localhost:8000" : "ctomni231.github.io/cwtactics";
+
+        var engineDeps = server + "/dist/normal/engineDeps.js";
+        var clientDeps = server + "/dist/normal/clientDeps.js";
+        var engine     = server + "/dist/normal/engine.js";
+        var client     = server + "/dist/normal/client.js";
+
+        function error(){
+          alert( "could not grab program files!" );
+        }
+
+        // --- GRAB ENGINE DEPS ---
+        grabRemoteFile( {
+          path: engineDeps,
+          failCallback: error,
+          winCallback: function( text ){
+            localStorage.cwt_prog_eng_deps = text;
+            eval( text );
+
+            // --- GRAB CLIENT DEPS ---
+            grabRemoteFile( {
+              path: clientDeps,
+              failCallback: error,
+              winCallback: function( text ){
+                localStorage.cwt_prog_clt_deps = text;
+                eval( text );
+
+                // --- GRAB ENGINE ---
+                grabRemoteFile( {
+                  path: engine,
+                  failCallback: error,
+                  winCallback: function( text ){
+                    localStorage.cwt_prog_eng = text;
+                    eval( text );
+
+                    // --- GRAB CLIENT ---
+                    grabRemoteFile( {
+                      path: client,
+                      failCallback: error,
+                      winCallback: function( text ){
+                        localStorage.cwt_prog_clt = text;
+                        eval( text );
+
+                      }} )
+                  }} )
+              }} )
+          }} );
+      };
+
+    })();
+
+  </script>
+
+  <!-- ##################################################################################### -->
+
+  <body onLoad="controller.screenStateMachine.event( 'start' );" oncontextmenu="return false;" >
+
     <div id="cwt_app" class="gamePanel" >
-      
+
       <!-- ###################################### -->
-      
+
       <div id="cwt_error_screen" class="gamePanel" style="display:none;" >
         !ERROR!
         <p id="error_screen_errorMsgField"></p>
       </div>
-      
+
       <!-- ###################################### -->
-      
+
       <div id="cwt_load_screen" class="gamePanel" style="display:none;" >
         <p>...LOADING...</p>
         <p id="logList"></p>
       </div>
-      
+
       <!-- ###################################### -->
-      
+
       <div id="cwt_mobileSound_screen" class="gamePanel" style="display:none;" >
         <p><button id="mobileSoundNext" key="NEXT"  class="menuButton" ></button></p>
       </div>
-      
+
       <!-- ###################################### -->
-      
+
       <div id="cwt_main_screen" class="gamePanel" style="display:none;">
-        
+
         <div id="cwt_main_topBar"></div>
-        
+
         <div id="main_screen_error_msg" style="display: none; color:red; background: white;">
-          
+
         </div>
-        
+
         <p><button id="main_screen_enter_1" key="CAMPAIGN" class="menuButton" ></button></p> 
         <p><button id="main_screen_enter_2" key="VERSUS"   class="menuButton" ></button></p> 
         <p><button id="main_screen_enter_3" key="NETWORK"  class="menuButton" ></button></p> 
@@ -53,157 +191,129 @@
         <p><button id="main_screen_enter_5" key="DESIGN"   class="menuButton" ></button></p> 
         <p><button id="main_screen_enter_6" key="OPTIONS"   class="menuButton" ></button></p>
       </div>
-      
+
       <!-- ###################################### -->
-      
+
       <div id="cwt_versus_screen" class="gamePanel" style="display:none;" >
         <p id="map_selection"></p>
         <p><button id="versus_start_btn" key="START" class="menuButton" ></button></p>
       </div>
-      
+
       <!-- ###################################### -->
-      
+
       <div id="cwt_options_screen" class="gamePanel" style="display:none;" >
         <p><span id="cwt_options_sfxVolume_desc" key="options.sfx"></span>: <span id="cwt_options_sfxVolume" class="menuButton" ></span>%</p>
         <p><span id="cwt_options_musicVolume_desc" key="options.music"></span>: <span id="cwt_options_musicVolume" class="menuButton" ></span>%</p>
         <p id="cwt_options_reset" key="options.resetData" class="menuButton" ></p>
         <p><input type="text" id="cwt_options_mapIn" ></input></p>
-    <p id="cwt_options_addMap" key="options.addMap" class="menuButton" ></p>
-    <p id="cwt_options_goBack" key="options.goBack" class="menuButton"></p>
-  </div>
-  
-  <!-- ###################################### -->
-  
-  <div id="cwt_teamConfig_screen" class="gamePanel" style="display:none;" >
-    
-  </div>
-  
-  <!-- ###################################### -->
-  
-  <div id="cwt_roundConfig_screen" class="gamePanel" style="display:none;" >
-    
-  </div>
-  
-  <!-- ###################################### -->
-  
-  <div id="cwt_game_screen" class="gamePanel" style="display:none;" >
-    
-    <div id="cwt_game_canvas">
-      <canvas id="cwt_canvas"></canvas>
-    </div>
-    
-    <!-- #################################################################################################### --> 
-    
-    <div id="cwt_info_box" class="uiPopup hide"> 
-      <div id="cwt_info_box_header">MESSAGE</div>
-      <span id="cwt_info_box_content" ></span> 
-    </div>
-    
-    <!-- #################################################################################################### --> 
-    
-    <div id="cwt_menu" class="uiPopup hide">
-      
-      <div id="cwt_menu_header">MENU</div>
-      
-      <div id="cwt_menu_content" class="menuPopupContent">
-        <ul id="cwt_menu_entries" class="cwtwc_menu_entries"></ul>
+        <p id="cwt_options_addMap" key="options.addMap" class="menuButton" ></p>
+        <p id="cwt_options_goBack" key="options.goBack" class="menuButton"></p>
       </div>
-      
+
+      <!-- ###################################### -->
+
+      <div id="cwt_teamConfig_screen" class="gamePanel" style="display:none;" >
+
+      </div>
+
+      <!-- ###################################### -->
+
+      <div id="cwt_roundConfig_screen" class="gamePanel" style="display:none;" >
+
+      </div>
+
+      <!-- ###################################### -->
+
+      <div id="cwt_game_screen" class="gamePanel" style="display:none;" >
+
+        <div id="cwt_game_canvas">
+          <canvas id="cwt_canvas"></canvas>
+        </div>
+
+        <!-- #################################################################################################### --> 
+
+        <div id="cwt_info_box" class="uiPopup hide"> 
+          <div id="cwt_info_box_header">MESSAGE</div>
+          <span id="cwt_info_box_content" ></span> 
+        </div>
+
+        <!-- #################################################################################################### --> 
+
+        <div id="cwt_menu" class="uiPopup hide">
+
+          <div id="cwt_menu_header">MENU</div>
+
+          <div id="cwt_menu_content" class="menuPopupContent">
+            <ul id="cwt_menu_entries" class="cwtwc_menu_entries"></ul>
+          </div>
+
+        </div>
+
+        <!-- #################################################################################################### --> 
+
+        <div id="cwt_game_bottomBar">
+
+          <div class="row headerRow">
+            <div id="bottomBar_playerName" ></div>
+            <div id="bottomBar_name" ></div>
+            <div id="bottomBar_tilename" ></div>
+            <div id="bottomBar_tplayerName" ></div>
+          </div>
+
+          <div class="row subRow">
+
+            <div>G. <span id="bottomBar_playergold"></span></div>
+
+            <div id="bottomBar_unit_row1" class="twoRow">
+              <div class="iconDiv iconDivFirst">
+                <canvas height="8" width="8" id="bottomBar_hp_d"></canvas>
+                <span class="colBold" id="bottomBar_hp"></span>
+              </div>
+              <div class="iconDiv iconDivSecond" >
+                <canvas height="8" width="8" id="bottomBar_ammo_d"></canvas>
+                <span id="bottomBar_ammo"></span>/<span class="colBold" id="bottomBar_ammo2"></span>
+              </div>
+            </div>
+
+            <div id="bottomBar_tile_row1" class="oneRow">
+              <div class="iconDiv" >
+                <canvas height="8" width="8" id="bottomBar_defense_d"></canvas>
+                <span id="bottomBar_defense"></span>
+              </div>
+            </div>
+
+            <div id="bottomBar_tplayergoldrow" >G. <span id="bottomBar_tplayergold"></span></div>
+          </div>
+
+          <div class="row subRow">
+            <div id="bottomBar_playerpower"></div>
+
+            <div id="bottomBar_unit_row2" class="twoRow">
+              <div class="iconDiv iconDivFirst" >
+                <canvas height="8" width="8" id="bottomBar_fuel_d"></canvas>
+                <span id="bottomBar_fuel"></span>/<span class="colBold" id="bottomBar_fuel2"></span>
+              </div>
+              <div class="iconDiv iconDivSecond" >
+                <canvas height="8" width="8" id="bottomBar_attrange_d"></canvas>
+                <span class="colBold" id="bottomBar_attrange"></span>-<span class="colBold" id="bottomBar_attrange2"></span>
+              </div>
+            </div>
+
+            <div id="bottomBar_tile_row2" class="oneRow">
+              <div class="iconDiv" >
+                <canvas height="8" width="8" id="bottomBar_capPt_d"></canvas>
+                <span id="bottomBar_capPt"></span>/<span class="colBold" id="bottomBar_capPt2"></span>
+              </div>
+            </div>
+
+            <div id="bottomBar_tplayerpower"></div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
-    
-    <!-- #################################################################################################### --> 
-    
-    <div id="cwt_game_bottomBar">
-      
-      <div class="row headerRow">
-        <div id="bottomBar_playerName" ></div>
-        <div id="bottomBar_name" ></div>
-        <div id="bottomBar_tilename" ></div>
-        <div id="bottomBar_tplayerName" ></div>
-      </div>
-      
-      <div class="row subRow">
-        
-        <div>G. <span id="bottomBar_playergold"></span></div>
-        
-        <div id="bottomBar_unit_row1" class="twoRow">
-          <div class="iconDiv iconDivFirst">
-            <canvas height="8" width="8" id="bottomBar_hp_d"></canvas>
-            <span class="colBold" id="bottomBar_hp"></span>
-          </div>
-          <div class="iconDiv iconDivSecond" >
-            <canvas height="8" width="8" id="bottomBar_ammo_d"></canvas>
-            <span id="bottomBar_ammo"></span>/<span class="colBold" id="bottomBar_ammo2"></span>
-          </div>
-        </div>
-        
-        <div id="bottomBar_tile_row1" class="oneRow">
-          <div class="iconDiv" >
-            <canvas height="8" width="8" id="bottomBar_defense_d"></canvas>
-            <span id="bottomBar_defense"></span>
-          </div>
-        </div>
-        
-        <div id="bottomBar_tplayergoldrow" >G. <span id="bottomBar_tplayergold"></span></div>
-      </div>
-      
-      <div class="row subRow">
-        <div id="bottomBar_playerpower"></div>
-        
-        <div id="bottomBar_unit_row2" class="twoRow">
-          <div class="iconDiv iconDivFirst" >
-            <canvas height="8" width="8" id="bottomBar_fuel_d"></canvas>
-            <span id="bottomBar_fuel"></span>/<span class="colBold" id="bottomBar_fuel2"></span>
-          </div>
-          <div class="iconDiv iconDivSecond" >
-            <canvas height="8" width="8" id="bottomBar_attrange_d"></canvas>
-            <span class="colBold" id="bottomBar_attrange"></span>-<span class="colBold" id="bottomBar_attrange2"></span>
-          </div>
-        </div>
-        
-        <div id="bottomBar_tile_row2" class="oneRow">
-          <div class="iconDiv" >
-            <canvas height="8" width="8" id="bottomBar_capPt_d"></canvas>
-            <span id="bottomBar_capPt"></span>/<span class="colBold" id="bottomBar_capPt2"></span>
-          </div>
-        </div>
-        
-        <div id="bottomBar_tplayerpower"></div>
-      </div>
-                  
-    </div>
-  </div>
-  
-</div>
 
-</body>  
-
-<!-- ##################################################################################### -->
-
-<link rel='stylesheet' type='text/css' media='screen' href='style.css'>
-
-<script src="engineDeps.js" type="text/javascript"></script>
-<script src="clientDeps.js" type="text/javascript"></script>
-
-<script src="engine.js" type="text/javascript"></script>
-<script>
-  util.log = function( msg ){
-    
-    if( arguments.length > 1 ){
-      msg = Array.prototype.join.call( arguments, " " );
-    }
-    
-    document.getElementById("logList").innerHTML = msg;
-    console.log( msg );
-  }
-  
-  window.onerror = function(  ){
-    document.getElementById("logList").innerHTML = JSON.stringify(arguments);
-    console.error( JSON.stringify(arguments) );
-  }
-</script>
-<script src="client.js" type="text/javascript"></script>
-
-<!-- ##################################################################################### -->
+  </body>  
 
 </html>

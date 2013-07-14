@@ -113,6 +113,7 @@ model.modifyVisionAt = function( x,y, pid, range, value ){
     if( hX >= mW ) hX = mW-1;
     for( ; lX<=hX; lX++ ){
       
+      if( model.clientInstances[pid] ) model.clientFogData[lX][lY] += value;
       model.fogData[lX][lY] += value;
     }
   }
@@ -134,8 +135,16 @@ model.recalculateFogMap = function( pid ){
   // RESET FOG MAP
   for( x=0 ;x<xe; x++ ){
     for( y=0 ;y<ye; y++ ){
-      if( !fogEnabled ) model.fogData[x][y] = 1;
-      else model.fogData[x][y] = 0;
+      
+      if( !fogEnabled ){
+        if( model.clientInstances[pid] ) model.clientFogData[x][y] = 1;
+        model.fogData[x][y] = 1;
+      }
+      else{
+        if( model.clientInstances[pid] ) model.clientFogData[x][y] = 0;
+        model.fogData[x][y] = 0;
+      }
+      
     }
   }
   
