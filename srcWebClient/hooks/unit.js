@@ -1,39 +1,39 @@
-model.damageUnit.listenCommand(function( uid ){
+controller.onEvent("damageUnit",function( uid ){
   controller.updateUnitStatus( uid );
 });
 
-model.healUnit.listenCommand(function( uid ){
+controller.onEvent("healUnit",function( uid ){
   controller.updateUnitStatus( uid );
 });
 
-model.battleBetween.listenCommand(function( auid,duid ){
+controller.onEvent("battleBetween",function( auid,duid ){
   controller.renderPlayerInfo();
   controller.updateUnitStatus( auid );
   controller.updateUnitStatus( duid );
 });
 
-model.buildUnit.listenCommand(function(){
+controller.onEvent("buildUnit",function(){
   controller.renderPlayerInfo();
 });
 
-model.loadUnitInto.listenCommand(function( uid, tid ){
+controller.onEvent("loadUnitInto",function( uid, tid ){
   controller.updateUnitStatus( tid );
 });
 
-model.unloadUnitFrom.listenCommand(function( transportId, trsx, trsy, loadId, tx,ty ){
+controller.onEvent("unloadUnitFrom",function( transportId, trsx, trsy, loadId, tx,ty ){
   controller.updateUnitStatus( transportId );
 });
 
-model.joinUnits.listenCommand(function( uid, tid ){
+controller.onEvent("joinUnits",function( uid, tid ){
   controller.updateUnitStatus( tid );
 });
 
-model.refillResources.listenCommand(function( uid ){
+controller.onEvent("refillResources",function( uid ){
   if( typeof uid.x === "number" ) uid = model.extractUnitId(uid);
   controller.updateUnitStatus( uid );
 });
 
-model.clearUnitPosition.listenCommand(function( uid ){
+controller.onEvent("clearUnitPosition",function( uid ){
   var unit = model.units[uid];
   var x = -unit.x;
   var y = -unit.y;
@@ -45,14 +45,14 @@ model.clearUnitPosition.listenCommand(function( uid ){
   if( model.isValidPosition(x,y-1) && model.unitPosMap[x][y-1] ) controller.updateUnitStatus( model.extractUnitId(model.unitPosMap[x][y-1]) );
 });
 
-model.setUnitPosition.listenCommand(function( uid ){
+controller.onEvent("setUnitPosition",function( uid ){
   controller.updateUnitStatus( uid );
 });
 
-model.hideUnit.listenCommand(function( uid ){
+controller.onEvent("hideUnit",function( uid ){
   controller.updateUnitStatus( uid );
 });
 
-model.unhideUnit.listenCommand(function( uid ){
+controller.onEvent("unhideUnit",function( uid ){
   controller.updateUnitStatus( uid );
 });

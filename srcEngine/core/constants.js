@@ -1,5 +1,5 @@
 var constants = {
-  DEBUG:                (CWT_DEBUG)? true: false,
+  DEBUG:                (CWT_DEBUG)? true : false,
   
   INACTIVE_ID:          -1,
   ACTIONS_BUFFER_SIZE:  200,

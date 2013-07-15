@@ -3,7 +3,7 @@
  * 
  * @private
  */
-controller.unitStatusMap = util.list( CWT_MAX_UNITS_PER_PLAYER*CWT_MAX_PLAYER, function(){
+controller.unitStatusMap = util.list( constants.MAX_UNITS_PER_PLAYER * constants.MAX_PLAYER , function(){
   return {
     HP_PIC: null,
     LOW_AMMO:false,

@@ -44,3 +44,20 @@ builder.fileCopy( "srcWebClient/startGame.html", "dist/nightly/min/startGame.htm
 builder.fileCopy( "srcWebClient/startGame.html", "dist/nightly/normal/startGame.html" );
 builder.fileCopy( "srcWebClient/gameElements.html", "dist/nightly/min/gameElements.html" );
 builder.fileCopy( "srcWebClient/gameElements.html", "dist/nightly/normal/gameElements.html" );
+
+// builder.fileCopy( "srcWebClient/cache.manifest", "dist/nightly/min/cache.manifest" );
+// builder.fileCopy( "srcWebClient/cache.manifest", "dist/nightly/normal/cache.manifest" );
+var cacheContent = [
+  "CACHE MANIFEST",
+  "",
+  "# VERSION "+new Date(),
+  "",
+  "CHACHE:",
+  "startGame.html",
+  "",
+  "NETWORK:",
+  "*"
+].join("\n");
+
+builder.writeToFile( cacheContent,"dist/nightly/min/cache.manifest");
+builder.writeToFile( cacheContent,"dist/nightly/normal/cache.manifest");

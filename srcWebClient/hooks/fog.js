@@ -1,5 +1,4 @@
-model.modifyVisionAt.listenCommand(
-function( x,y, pid, range, value ){
+controller.onEvent("modifyVisionAt", function( x,y, pid, range, value ){
     range = 10; // TAKE THE MAXIMUM RANGE
   
     var lX;
@@ -26,7 +25,6 @@ function( x,y, pid, range, value ){
     }
 });
 
-model.recalculateFogMap.listenCommand(
-function(range){
+controller.onEvent("recalculateFogMap",function(range){
   view.completeRedraw();
 });

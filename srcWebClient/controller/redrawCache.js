@@ -7,7 +7,7 @@ view.drawScreenChanges = 0;
 /**
  *
  */
-view.drawScreen = util.matrix( CWT_MAX_MAP_WIDTH, CWT_MAX_MAP_HEIGHT, false );
+view.drawScreen = util.matrix( constants.MAX_MAP_WIDTH, constants.MAX_MAP_HEIGHT, false );
 
 /**
  * Marks a position for re-rendering.

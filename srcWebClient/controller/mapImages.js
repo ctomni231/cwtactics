@@ -1,7 +1,7 @@
 /**
  * Map of used map images.
  */
-view.mapImages = util.matrix( CWT_MAX_MAP_WIDTH, CWT_MAX_MAP_HEIGHT, null );
+view.mapImages = util.matrix( constants.MAX_MAP_WIDTH, constants.MAX_MAP_HEIGHT, null );
 
 util.scoped(function(){
   

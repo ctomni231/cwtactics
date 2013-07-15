@@ -1,4 +1,4 @@
-model.invokeNextStep_.listenCommand(function(){
+controller.onEvent("invokeNextStep_",function(){
   if( controller.stateMachine.state !== "IDLE" ){
     controller.showMenu(
       controller.stateMachine.data.menu,

@@ -8,6 +8,8 @@ controller.registerInvokableCommand( "clearUnitPosition" );
 controller.registerInvokableCommand( "moveUnit" );
 
 controller.defineEvent( "setUnitPosition" );
+controller.defineEvent( "clearUnitPosition" );
+controller.defineEvent( "moveUnit" );
 
 controller.defineGameScriptable( "moverange", 1, constants.MAX_SELECTION_RANGE );
 controller.defineGameScriptable( "movecost", 1, constants.MAX_SELECTION_RANGE );
@@ -145,6 +147,10 @@ model.moveUnit = function( way, uid, x, y, noFuelConsumption ){
   // do not set the new position if the position is already occupied 
   // the action logic must take care of this situation
   if( model.unitPosMap[cX][cY] === null ) model.setUnitPosition( uid, cX, cY );
+  
+  // Invoke event
+  var evCb = controller.events.moveUnit;
+  if( evCb ) evCb(uid);
 };
 
 // Removes an unit from a position.
@@ -164,6 +170,10 @@ model.clearUnitPosition = function( uid ){
   model.unitPosMap[x][y] = null;
   unit.x = -unit.x;
   unit.y = -unit.y;
+  
+  // Invoke event
+  var evCb = controller.events.clearUnitPosition;
+  if(evCb)evCb(uid);
 };
 
 // Sets the position of an unit.

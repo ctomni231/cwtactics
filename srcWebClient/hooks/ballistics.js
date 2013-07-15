@@ -38,7 +38,7 @@ util.scoped(function(){
   
   view.registerAnimationHook({
     
-    key: "fireBombAt",
+    key: "doExplosionAt",
         
     prepare: function( tx,ty, range, damage, owner ){
       if( !expl_img ) expl_img = view.getInfoImageForType("EXPLOSION_GROUND");

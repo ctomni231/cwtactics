@@ -20,7 +20,7 @@ model.relationModes = {
  * List that contains all player instances. An inactive player is marked 
  * with `constants.INACTIVE_ID` as team number.
  */
-model.players = util.list( CWT_MAX_PLAYER, function( index ){
+model.players = util.list( constants.MAX_PLAYER, function( index ){
   return {
     gold: 0,
     team: constants.INACTIVE_ID,

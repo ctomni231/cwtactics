@@ -124,15 +124,15 @@ controller.persistenceHandler(
 // @param {Number} prid property id
     model.getPropertyByPos = function( x, y ){
       /*var props = model.properties;
-      var prop;
-
-      for( var i = 0, e = props.length; i < e; i++ ) {
-        prop = props[i];
-
-        if( prop.x === x && prop.y === y ) return prop;
-      }
-
-      return null;*/
+       var prop;
+       
+       for( var i = 0, e = props.length; i < e; i++ ) {
+       prop = props[i];
+       
+       if( prop.x === x && prop.y === y ) return prop;
+       }
+       
+       return null;*/
       return model.propertyPosMap[x][y];
     };
 
@@ -236,6 +236,10 @@ controller.persistenceHandler(
           controller.endGameRound();
         }
       }
+
+      // Invoke event
+      var evCb = controller.events.captureProperty;
+      if( evCb ) evCb( uid );
     };
 
 // Resets the capture points of a property object

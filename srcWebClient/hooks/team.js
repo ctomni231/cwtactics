@@ -1,8 +1,8 @@
-model.transferMoney.listenCommand(function(){
+controller.onEvent("transferMoney",function(){
   controller.renderPlayerInfo();
 });
 
-model.transferUnit.listenCommand(function( suid ){
+controller.onEvent("transferUnit",function( suid ){
   var unit = model.units[suid];
   var x = -unit.x;
   var y = -unit.y;

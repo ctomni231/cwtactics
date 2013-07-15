@@ -83,10 +83,10 @@
     var machine = {};
     
     // set data
-    machine.struct = (impl)? impl: {};
+    machine.structure = (impl)? impl: {};
     machine.state = START_STATE;
     machine.lastState = null;   
-    machine.history = ( !config.noHistory )? []: null;
+    machine.history = ( config && !config.noHistory )? []: null;
     
     // set functions
     machine.reset = reset;
@@ -94,7 +94,7 @@
     machine.clearHistory = clearHistory;
     machine.backToLastState = backToLastState;
     machine.breakTransition = breakTransition;
-    machine.onerror = ( config.onerror )? config.onerror: error;
+    machine.onerror = ( config && config.onerror )? config.onerror: error;
     
     return machine;
   }

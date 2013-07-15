@@ -7,7 +7,7 @@
     
     // SIMPLE ARRAY OBJECT
     for(var i = 0, e = len; i < e; i++){
-      if( isFN ) this[i] = defValue( i, this[i][j] );
+      if( isFN ) this[i] = defValue( i, this[i] );
       else       this[i] = defValue;
     }
   };

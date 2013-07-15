@@ -1,4 +1,4 @@
 /**
  * @namespace
  */
-view = {};
+var view = window.view = {};
