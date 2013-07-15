@@ -1,0 +1,349 @@
+<script >
+
+  var clientUtil = {};
+
+  // jWorkflow.js
+  // (c) 2010 tinyHippos inc.
+  // jWorkflow is freely distributable under the terms of the MIT license.
+  // Portions of jWorkflow are inspired by Underscore.js
+  clientUtil.jWorkflow = (function(){
+    function _valid( func ){
+      if( typeof(func) !== 'function' ) {
+        throw "expected function but was " + typeof(func);
+      }
+    }
+
+    function _isWorkflow( func ){
+      return typeof func.andThen === 'function' &&
+        typeof func.start === 'function' &&
+        typeof func.chill === 'function';
+    }
+
+    function _isArray( func ){
+      return !!func.map && !!func.reduce;
+    }
+
+    var transfunctioner = {
+      order: function( func, context ){
+        var _workflow = [ ],
+          _tasks,
+          _callback = null,
+          _baton = (function(){
+          var _taken = false;
+          return {
+            take: function(){
+              _taken = true;
+            },
+            pass: function( result ){
+              var task;
+              _taken = false;
+
+              if( _tasks.length ) {
+                task = _tasks.shift();
+                result = task.func.apply( task.context, [ result, _baton ] );
+
+                if( !_taken ) {
+                  _baton.pass( result );
+                }
+              }
+              else {
+                if( _callback.func ) {
+                  _callback.func.apply( _callback.context, [ result ] );
+                }
+              }
+            },
+            drop: function( result ){
+              _taken = true;
+              _tasks = [ ];
+              setTimeout( function(){
+                _baton.pass( result );
+              }, 1 );
+            }
+          };
+        }()),
+          _self = {
+          andThen: function( func, context ){
+            if( _isWorkflow( func ) ) {
+              var f = function( prev, baton ){
+                baton.take();
+                func.start( {
+                  callback: function( result ){
+                    baton.pass( result );
+                  },
+                  context: context,
+                  initialValue: prev
+                } );
+              };
+              _workflow.push( {func: f,
+                context: context} );
+            }
+            else if( _isArray( func ) ) {
+              var orch = function( prev, baton ){
+                baton.take();
+
+                var l = func.length,
+                  join = function(){
+                  return --l || baton.pass();
+                };
+
+                func.forEach( function( f ){
+                  jWorkflow.order( f ).start( join );
+                } );
+              };
+              _workflow.push( {func: orch,
+                context: context} );
+            }
+            else {
+              _valid( func );
+              _workflow.push( {func: func,
+                context: context} );
+            }
+            return _self;
+          },
+          chill: function( time ){
+            return _self.andThen( function( prev, baton ){
+              baton.take();
+              setTimeout( function(){
+                baton.pass( prev );
+              }, time );
+            } );
+          },
+          start: function(){
+            var callback,
+              context,
+              initialValue;
+
+            if( arguments[0] && typeof arguments[0] === 'object' ) {
+              callback = arguments[0].callback;
+              context = arguments[0].context;
+              initialValue = arguments[0].initialValue;
+            }
+            else {
+              callback = arguments[0];
+              context = arguments[1];
+            }
+
+            _callback = {func: callback,
+              context: context};
+            _tasks = _workflow.slice();
+            _baton.pass( initialValue );
+          }
+        };
+
+        return func ? _self.andThen( func, context ) : _self;
+      }
+    };
+
+    return transfunctioner;
+  }());
+
+  (function(){
+
+    var xmlHttpReq;
+    try {
+      new XMLHttpRequest();
+      xmlHttpReq = true;
+    }
+    // FALL BACK
+    catch(ex) {
+      xmlHttpReq = false;
+    }
+
+    function reqListener(){
+      if( this.readyState === 4 ) {
+
+        // FINE
+        if( this.readyState === 4 && this.status === 200 ) {
+          console.log( "grabbed file successfully" );
+
+          // JSON OBJECT
+          if( this.asJSON ) {
+
+            try {
+              this.winCallback( JSON.parse( this.responseText ) );
+            }
+            // FAILED TO CONVERT JSON TEXT
+            catch(e) {
+              this.failCallback( e );
+            }
+          }
+          // PLAIN TEXT
+          else {
+            this.winCallback( this.responseText );
+          }
+        }
+        // ERROR
+        else {
+          console.log( "could not grab file" );
+          this.failCallback( this.statusText );
+        }
+      }
+    }
+
+    clientUtil.grabRemoteFile = function( options ){
+      var oReq;
+
+      console.log( "try to grab file", options.path );
+
+      // GENERATE REQUEST OBJECT
+      if( xmlHttpReq ) oReq = new XMLHttpRequest();
+      else oReq = new ActiveXObject( "Microsoft.XMLHTTP" );
+
+      // WIN / FAIL CALLBACK
+      oReq.asJSON = options.json;
+      oReq.winCallback = options.success;
+      oReq.failCallback = options.error;
+
+      // META DATA
+      oReq.onreadystatechange = reqListener;
+      oReq.open( "get", options.path, true );
+      oReq.responseType = "text";
+      /*
+       oReq.onload = function(e) {
+       if (this.status == 200) {
+       console.log(this.response);
+       }
+       };
+       */
+
+      // SEND IT
+      oReq.send();
+    };
+  })();
+
+  // Check if a new cache is available on page load.
+  window.addEventListener( 'load', function( e ){
+
+    window.applicationCache.addEventListener( 'updateready', function( e ){
+      if( window.applicationCache.status == window.applicationCache.UPDATEREADY ) {
+
+        // Browser downloaded a new app cache.
+        // Swap it in and reload the page to get the new hotness.
+        window.applicationCache.swapCache();
+        if( confirm( 'A new version of this site is available. Load it?' ) ) {
+          localStorage.clear(); // forces reload of all program files
+          window.location.reload();
+        }
+      } else {
+        // Manifest didn't changed. Nothing new to server.
+      }
+    }, false );
+
+  }, false );
+
+  // The manifest returns 404 or 410, the download failed,
+  // or the manifest changed while the download was in progress.
+  window.applicationCache.addEventListener( 'error', function(){
+    alert( "could not download the game data into the offline storage" );
+  }, false );
+
+  // FROM http://stackoverflow.com/questions/979975/how-to-get-the-value-from-url-parameter
+  clientUtil.getQueryParams = function( qs ){
+    qs = qs.split( "+" ).join( " " );
+
+    var params = {}, tokens, re = /[?&]?([^=]+)=([^&]*)/g;
+
+    while(tokens = re.exec( qs )) {
+      params[decodeURIComponent( tokens[1] )] = decodeURIComponent( tokens[2] );
+    }
+
+    return params;
+  }
+
+</script>
+
+<!-- ##################################################################################### -->
+
+<!-- PART OF THE PROGRAM LOADER -->
+<script>
+
+
+  window.addEventListener( 'load', function(){
+    var parameters = clientUtil.getQueryParams( document.location.search );
+
+    // Define some basic global stuff
+    CWT_DEBUG = (parameters.debugMode === "true");
+
+    var server = (CWT_DEBUG) ? "" : "";
+
+    var engineDeps = server + "engineDeps.js";
+    var clientDeps = server + "clientDeps.js";
+    var engine = server + "engine.js";
+    var client = server + "client.js";
+    var body = server + "gameElements.html";
+    var style = server + "style.css";
+
+    function errorFunction(){
+      alert( "could not grab program file!" );
+    }
+
+    function parseItem( path, varName, mode ){
+      return function( index, baton ){
+        var v;
+
+        if( CWT_DEBUG ) console.log( "start loading program item", varName );
+
+        function evalIt( text ){
+          if( !v ) localStorage.setItem( varName, text );
+
+          if( CWT_DEBUG ) console.log( "inserting program item", varName );
+
+          // EVAL ITEM
+          switch(mode) {
+
+            case 0:
+              eval.call( window, text );
+              break;
+
+            case 1:
+              document.getElementsByTagName( "body" )[0].innerHTML = text;
+              break;
+
+            case 2:
+              var el = document.createElement( "style" );
+              el.innerHTML = text;
+              document.getElementsByTagName( "html" )[0].appendChild( el );
+              break;
+          }
+
+          if( CWT_DEBUG ) console.log( "loaded program item", varName, "successfully" );
+
+          baton.pass();
+        }
+
+        baton.take();
+        v = localStorage.getItem( varName );
+        if( !v ) { // IS NOT IN STORAGE --> GRAB IT
+          if( CWT_DEBUG ) console.log( "loading program item", varName, "from remote location" );
+          clientUtil.grabRemoteFile( {
+            path: path,
+            error: errorFunction,
+            success: evalIt
+          } );
+        }
+        else {
+          if( CWT_DEBUG ) console.log( "loading program item", varName, "from locale storage" );
+          evalIt( v );
+        }
+      }
+    }
+
+    clientUtil.jWorkflow
+      // engine
+      .order( parseItem( engineDeps, "cwt_prog_eng_deps", 0 ) )
+      .andThen( parseItem( engine, "cwt_prog_eng", 0 ) )
+
+      // client
+      .andThen( parseItem( style, "cwt_style", 2 ) )
+      .andThen( parseItem( body, "cwt_body", 1 ) )
+      .andThen( parseItem( clientDeps, "cwt_prog_clt_deps", 0 ) )
+      .andThen( parseItem( client, "cwt_prog_clt", 0 ) )
+
+      .andThen( function(){
+      // controller.screenStateMachine.event( 'start' );
+    } )
+      .start();
+
+  }, false );
+
+</script>

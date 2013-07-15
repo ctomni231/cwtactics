@@ -1,0 +1,88 @@
+
+<div id="cwt_game_screen" class="gamePanel" style="display:none;" >
+
+  <div id="cwt_game_canvas">
+    <canvas id="cwt_canvas"></canvas>
+  </div>
+
+  <!-- #################################################################################################### --> 
+
+  <div id="cwt_info_box" class="uiPopup hide"> 
+    <div id="cwt_info_box_header">MESSAGE</div>
+    <span id="cwt_info_box_content" ></span> 
+  </div>
+
+  <!-- #################################################################################################### --> 
+
+  <div id="cwt_menu" class="uiPopup hide">
+
+    <div id="cwt_menu_header">MENU</div>
+
+    <div id="cwt_menu_content" class="menuPopupContent">
+      <ul id="cwt_menu_entries" class="cwtwc_menu_entries"></ul>
+    </div>
+
+  </div>
+
+  <!-- #################################################################################################### --> 
+
+  <div id="cwt_game_bottomBar">
+
+    <div class="row headerRow">
+      <div id="bottomBar_playerName" ></div>
+      <div id="bottomBar_name" ></div>
+      <div id="bottomBar_tilename" ></div>
+      <div id="bottomBar_tplayerName" ></div>
+    </div>
+
+    <div class="row subRow">
+
+      <div>G. <span id="bottomBar_playergold"></span></div>
+
+      <div id="bottomBar_unit_row1" class="twoRow">
+        <div class="iconDiv iconDivFirst">
+          <canvas height="8" width="8" id="bottomBar_hp_d"></canvas>
+          <span class="colBold" id="bottomBar_hp"></span>
+        </div>
+        <div class="iconDiv iconDivSecond" >
+          <canvas height="8" width="8" id="bottomBar_ammo_d"></canvas>
+          <span id="bottomBar_ammo"></span>/<span class="colBold" id="bottomBar_ammo2"></span>
+        </div>
+      </div>
+
+      <div id="bottomBar_tile_row1" class="oneRow">
+        <div class="iconDiv" >
+          <canvas height="8" width="8" id="bottomBar_defense_d"></canvas>
+          <span id="bottomBar_defense"></span>
+        </div>
+      </div>
+
+      <div id="bottomBar_tplayergoldrow" >G. <span id="bottomBar_tplayergold"></span></div>
+    </div>
+
+    <div class="row subRow">
+      <div id="bottomBar_playerpower"></div>
+
+      <div id="bottomBar_unit_row2" class="twoRow">
+        <div class="iconDiv iconDivFirst" >
+          <canvas height="8" width="8" id="bottomBar_fuel_d"></canvas>
+          <span id="bottomBar_fuel"></span>/<span class="colBold" id="bottomBar_fuel2"></span>
+        </div>
+        <div class="iconDiv iconDivSecond" >
+          <canvas height="8" width="8" id="bottomBar_attrange_d"></canvas>
+          <span class="colBold" id="bottomBar_attrange"></span>-<span class="colBold" id="bottomBar_attrange2"></span>
+        </div>
+      </div>
+
+      <div id="bottomBar_tile_row2" class="oneRow">
+        <div class="iconDiv" >
+          <canvas height="8" width="8" id="bottomBar_capPt_d"></canvas>
+          <span id="bottomBar_capPt"></span>/<span class="colBold" id="bottomBar_capPt2"></span>
+        </div>
+      </div>
+
+      <div id="bottomBar_tplayerpower"></div>
+    </div>
+
+  </div>
+</div>

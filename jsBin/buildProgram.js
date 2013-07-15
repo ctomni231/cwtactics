@@ -1,32 +1,101 @@
-var builder = require("./buildLibrary.js");
+var builder = require( "./buildLibrary.js" );
 
-var files = [];
-var addEl = function( el ){ files.push( el ); };
+[ "normal", "min" ].forEach( function( folder ){
+  var folderComplete = "dist/nightly/" + folder;
+  var minimize = ( folder.match( /min$/ ) );
+  var dirs, dir, i, e;
+  var fileList = [ ];
 
-builder.getFileList("srcEngine/core"       ).forEach( addEl );
-builder.getFileList("srcEngine/util"       ).forEach( addEl );
-builder.getFileList("srcEngine/controller" ).forEach( addEl );
-builder.getFileList("srcEngine/model"      ).forEach( addEl );
-builder.getFileList("srcEngine/commands"   ).forEach( addEl );
-builder.getFileList("srcEngine/ai"         ).forEach( addEl );
+  // WIPE OUT DIRECTORY CONTENT
+  builder.deleteFolderRecursive( folderComplete );
+  builder.createFolder( folderComplete );
 
-// TURN DEBUG ON TO HAVE LOG AND RUNTIME CHECKS
-builder.writeToFile(
-  builder.readAndConcatFiles( files ),
-  "dist/nightly/normal/engine.js"
-);
+  [ "srcEngine", "srcWebClient" ].forEach( function( masterDir ){
 
-// WITH DEBUG ON ==> LEAVES THE STATEMENTS BUT CUTS THE DEBUG === TRUE CHECKS
-var ugly_code = builder.uglifyCode( "dist/nightly/normal/engine.js" );
-                builder.writeToFile( ugly_code, "dist/nightly/min/engine.js" );
+    // READ ENGINE FILES
+    dirs = builder.getFileList( masterDir );
+    for( i = 0, e = dirs.length; i < e; i++ ) {
+      dir = dirs[i];
 
-// DEPS
-files.splice(0);
-builder.getFileList("libJs/engine").forEach( addEl );
-builder.writeToFile(
-  builder.readAndConcatFiles( files ),
-  "dist/nightly/normal/engineDeps.js"
-);
+      //if( dir === masterDir+"/.DS_Store") continue;
+      if( dir.match( /.DS_Store$/ ) ) continue;
 
-var ugly_code = builder.uglifyCode( "dist/nightly/normal/engineDeps.js" );
-builder.writeToFile( ugly_code,"dist/nightly/min/engineDeps.js");
+      // DO NOT BUILD HTML/CSS
+      var mode = 0;
+      if( dir.match( /css$/ ) ) mode = 1;
+      if( dir.match( /html$/ ) ) mode = 2;
+
+      var ext;
+      switch(mode) {
+
+        // JS
+        case 0:
+          ext = ".js";
+          builder.getFileList( dir ).forEach( function( el ){
+            if( builder.getExtension( el ) !== ext ) return;
+
+            var code;
+            if( !minimize ) code = builder.readAndConcatFiles( [ el ] );
+            else code = builder.uglifyCode( el );
+            
+            builder.writeToFile( code, folderComplete + "/" + fileList.length + ext );
+            fileList.push( fileList.length + ext );
+          } );
+          break;
+
+          // CSS
+        case 1:
+          ext = ".css";
+          builder.getFileList( dir ).forEach( function( el ){
+            if( builder.getExtension( el ) !== ext ) return;
+            
+            var code = builder.readAndConcatFiles( [ el ] );
+            
+            builder.writeToFile( code, folderComplete + "/" + fileList.length + ext );
+            fileList.push( fileList.length + ext );
+          } );
+          break;
+
+          // HTML
+        case 2:
+          ext = ".html";
+          var htmlFiles = [];
+          
+          builder.getFileList( dir ).forEach( function( el ){
+            if( builder.getExtension( el ) !== ext ) return;
+            htmlFiles.push(el);
+          } );
+          
+          var lastHtml = htmlFiles.pop();
+          
+          var htmlcode = [builder.readAndConcatFiles(htmlFiles)];
+          fileList.forEach( function( hel ){
+            if( hel.match( /css$/ ) ) htmlcode.push("<link rel=\"stylesheet\" href=\""+hel+"\">\n");
+            else if( hel.match( /js/ ) ) htmlcode.push("<script src=\""+hel+"\"></script>\n");
+            else throw Error();
+          } );
+          htmlcode.push(builder.readAndConcatFiles([lastHtml]));
+          
+          builder.writeToFile( htmlcode.join("\n"), folderComplete + "/cwt.html" );
+          fileList.push( "cwt.html" );
+          break;
+      }
+    }
+
+    // MANIFEST FILE
+
+    // HEAD
+    var manifestCode = [ "CACHE MANIFEST", "", "# VERSION " + new Date(), "", "CHACHE:" ];
+
+    // CACHE
+    fileList.forEach( function( el ){
+      manifestCode.push( el );
+    } );
+
+    // END
+    manifestCode.push( "", "NETWORK:", "*" );
+
+    // WRITE FILE
+    builder.writeToFile( manifestCode.join( "\n" ), folderComplete + "/cache.manifest" );
+  } );
+} );

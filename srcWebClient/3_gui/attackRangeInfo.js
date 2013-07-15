@@ -1,8 +1,8 @@
 util.scoped(function(){
   
   var tmpData = util.matrix(  
-    CWT_MAX_SELECTION_RANGE * 4 + 1, 
-    CWT_MAX_SELECTION_RANGE * 4 + 1, 
+    constants.MAX_SELECTION_RANGE * 4 + 1, 
+    constants.MAX_SELECTION_RANGE * 4 + 1, 
     0 
   );
   
