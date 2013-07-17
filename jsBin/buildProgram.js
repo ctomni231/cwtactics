@@ -1,6 +1,42 @@
 var builder = require( "./buildLibrary.js" );
 
-[ "normal", "min" ].forEach( function( folder ){
+function cleanFileList( path ){
+  var entries = builder.getFileList( path );
+    
+  // search for a build file
+  entries.forEach(function(el){
+      if( el.match( /cwt.build$/ ) ){
+        console.log("found build file for directory "+path);
+        
+        var newList = [];
+        var content = builder.readAndConcatFiles([el]);
+        var order = content.split("\n");
+        
+        order.forEach(function( sel ){
+          newList.push( path+"/"+sel );
+        });
+
+        entries = newList;
+      }
+  });
+  
+  return entries;
+}
+
+var profs;
+if( process.argv.length > 2 ){
+  profs = [ process.argv[2] ];
+}
+else{
+  profs = [ "normal", "min" ];
+}
+
+console.log("building profile(s) "+profs);
+  
+profs.forEach( function( folder ){
+  
+  console.log("doing build profile "+folder);
+    
   var folderComplete = "dist/nightly/" + folder;
   var minimize = ( folder.match( /min$/ ) );
   var dirs, dir, i, e;
@@ -10,12 +46,17 @@ var builder = require( "./buildLibrary.js" );
   builder.deleteFolderRecursive( folderComplete );
   builder.createFolder( folderComplete );
 
-  [ "srcEngine", "srcWebClient" ].forEach( function( masterDir ){
+  [ "srcEngine", "srcWebClient" ].forEach( function( masterDir, mI ){
 
+    console.log("check parent module "+masterDir);
+    
     // READ ENGINE FILES
-    dirs = builder.getFileList( masterDir );
+    dirs = cleanFileList( masterDir );
+        
     for( i = 0, e = dirs.length; i < e; i++ ) {
       dir = dirs[i];
+      
+      console.log("processing module "+dir);
 
       //if( dir === masterDir+"/.DS_Store") continue;
       if( dir.match( /.DS_Store$/ ) ) continue;
@@ -31,7 +72,7 @@ var builder = require( "./buildLibrary.js" );
         // JS
         case 0:
           ext = ".js";
-          builder.getFileList( dir ).forEach( function( el ){
+          cleanFileList( dir ).forEach( function( el ){
             if( builder.getExtension( el ) !== ext ) return;
 
             var code;
@@ -46,7 +87,7 @@ var builder = require( "./buildLibrary.js" );
           // CSS
         case 1:
           ext = ".css";
-          builder.getFileList( dir ).forEach( function( el ){
+          cleanFileList( dir ).forEach( function( el ){
             if( builder.getExtension( el ) !== ext ) return;
             
             var code = builder.readAndConcatFiles( [ el ] );
@@ -59,22 +100,20 @@ var builder = require( "./buildLibrary.js" );
           // HTML
         case 2:
           ext = ".html";
-          var htmlFiles = [];
           
-          builder.getFileList( dir ).forEach( function( el ){
+          var htmlcode = [];
+          cleanFileList( dir ).forEach( function( el ){
             if( builder.getExtension( el ) !== ext ) return;
-            htmlFiles.push(el);
-          } );
-          
-          var lastHtml = htmlFiles.pop();
-          
-          var htmlcode = [builder.readAndConcatFiles(htmlFiles)];
-          fileList.forEach( function( hel ){
-            if( hel.match( /css$/ ) ) htmlcode.push("<link rel=\"stylesheet\" href=\""+hel+"\">\n");
-            else if( hel.match( /js/ ) ) htmlcode.push("<script src=\""+hel+"\"></script>\n");
-            else throw Error();
-          } );
-          htmlcode.push(builder.readAndConcatFiles([lastHtml]));
+            
+            if( el.match( /__files__$/ ) ){
+              fileList.forEach( function( hel ){
+                if( hel.match( /css$/ ) ) htmlcode.push("<link rel=\"stylesheet\" href=\""+hel+"\">\n");
+                else if( hel.match( /js/ ) ) htmlcode.push("<script src=\""+hel+"\"></script>\n");
+                else throw Error();
+              });
+            }
+            else htmlcode.push(builder.readAndConcatFiles([el]));
+          });
           
           builder.writeToFile( htmlcode.join("\n"), folderComplete + "/cwt.html" );
           fileList.push( "cwt.html" );
