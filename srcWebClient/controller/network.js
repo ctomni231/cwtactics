@@ -1,6 +1,10 @@
 controller.isNetworkGame = function(){ 
   return false; 
-}
+};
+
+controller.isHost = function(){
+  return true;
+};
   
 /*
 

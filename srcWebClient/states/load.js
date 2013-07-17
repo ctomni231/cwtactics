@@ -3,7 +3,7 @@ controller.screenStateMachine.structure.LOAD = Object.create(controller.statePar
 controller.screenStateMachine.structure.LOAD.onenter = function(){
   this.data.openSection(ID_MENU_SECTION_LOAD);
   
-  var workflow = jWorkflow.order(controller.isEnvironmentSupported)
+  jWorkflow.order(controller.isEnvironmentSupported)
     .andThen(controller.loadStorageController)
     .andThen(function( err, baton ){
       if( err ) return err;
@@ -11,9 +11,10 @@ controller.screenStateMachine.structure.LOAD.onenter = function(){
       
       controller.storage.get("resetDataAtStart",function( obj ){
         var  wipeOut = (obj !== null && obj.value);
+        
         if( !wipeOut ) wipeOut = getQueryParams(document.location.search).wipeoutMod === "1";
         if(  wipeOut ){
-          if( DEBUG ) util.log("wipe out cached data");
+          if( constants.DEBUG ) util.log("wipe out cached data");
           
           // NUKE STORAGE
           controller.storage.clear( function(){

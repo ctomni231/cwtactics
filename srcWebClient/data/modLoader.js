@@ -3,11 +3,11 @@
  */
 controller.loadModification =  util.singleLazyCall( function( err, baton ){
   if( err ){
-    if( DEBUG ) util.log("break at load modification due error from previous inits"); 
+    if( constants.DEBUG ) util.log("break at load modification due error from previous inits"); 
     return baton.pass(true);
   }
   
-  if( DEBUG ) util.log("loading modification");
+  if( constants.DEBUG ) util.log("loading modification");
   
   baton.take();
   
@@ -16,7 +16,7 @@ controller.loadModification =  util.singleLazyCall( function( err, baton ){
     
     // USE EXISTING DATA
     if( exists ){
-      if( DEBUG ) util.log("modification available, grab from storage");
+      if( constants.DEBUG ) util.log("modification available, grab from storage");
       
       controller.storage.get("mod",function( obj ){
         try{
@@ -32,7 +32,7 @@ controller.loadModification =  util.singleLazyCall( function( err, baton ){
     }
     // LOAD IT VIA REQUEST
     else{
-      if( DEBUG ) util.log("modification not available, grab default one");
+      if( constants.DEBUG ) util.log("modification not available, grab default one");
       
       controller.storage.get("modificationPath",function( obj ){
         var modName = ( obj === null )? "awds.json" : obj.value;
@@ -44,11 +44,11 @@ controller.loadModification =  util.singleLazyCall( function( err, baton ){
             baton.pass(true);
           }, 
           success: function( resp ) {
-            if( DEBUG ) util.log("modification grabbed, saving it");
+            if( constants.DEBUG ) util.log("modification grabbed, saving it");
             
             // SAVE GRABBED DATA
             controller.storage.set("mod",resp,function(){
-              if( DEBUG ) util.log("modification saved, next initializing engine");
+              if( constants.DEBUG ) util.log("modification saved, next initializing engine");
               
               try{
                 controller.stateMachine.event("start", resp );

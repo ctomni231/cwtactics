@@ -96,7 +96,7 @@ util.scoped(function(){
       y = controller.menuPosY;
     }
     
-    if( !model.isValidPosition(x,y) ) util.raiseError("invalid menu position");
+    if( !model.isValidPosition(x,y) ) throw Error("invalid menu position");
     
     var entries = menuEntryListElement.children;
     

@@ -1,10 +1,10 @@
 controller.cutImages = util.singleLazyCall(function( err, baton ){
   if( err ){
-    if( DEBUG ) util.log("break at cutting images due error from previous inits"); 
+    if( constants.DEBUG ) util.log("break at cutting images due error from previous inits"); 
     return baton.pass(true);
   }
   
-  if( DEBUG ) util.log("cutting images");
+  if( constants.DEBUG ) util.log("cutting images");
   
   baton.take();
   
@@ -58,7 +58,7 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
     
     // ----------------------------------------------------------------------
     
-    if( DEBUG ){ util.log("cutting unit commands into single types"); }
+    if( constants.DEBUG ){ util.log("cutting unit commands into single types"); }
     
     var unitTypes = imageData.units;
     for( var i=0,e=unitTypes.length; i<e; i++ ){
@@ -130,7 +130,7 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
     
     // ----------------------------------------------------------------------
     
-    if( DEBUG ){ util.log("cutting misc into single types"); }
+    if( constants.DEBUG ){ util.log("cutting misc into single types"); }
     
     var misc = imageData.misc;
     for( var i=0,e=misc.length; i<e; i++ ){
@@ -197,7 +197,7 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
       }
     }
     
-    if( DEBUG ){ util.log("cutting misc into single types done"); } 
+    if( constants.DEBUG ){ util.log("cutting misc into single types done"); } 
     
     baton.pass(false);
   }

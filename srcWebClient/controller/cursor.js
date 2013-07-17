@@ -161,7 +161,7 @@ controller.setCursorPosition = function( x,y,relativeToScreen ){
     controller.shiftScreenPosition( moveCode, 5 );
   }
   
-  if( DEBUG ){
+  if( constants.DEBUG ){
     util.log(
       "set cursor position to",
       x,y,

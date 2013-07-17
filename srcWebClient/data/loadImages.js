@@ -1,6 +1,6 @@
 controller.loadImages = util.singleLazyCall(function( err, masterbaton ){
   if( err ){
-    if( DEBUG ) util.log("break at load images due error from previous inits"); 
+    if( constants.DEBUG ) util.log("break at load images due error from previous inits"); 
     return masterbaton.pass(true);
   }
   
@@ -10,7 +10,7 @@ controller.loadImages = util.singleLazyCall(function( err, masterbaton ){
   var i,e;
   
   function pictureSavedMsg( obj ){
-    if( DEBUG ) util.log("saved image type",obj.key);
+    if( constants.DEBUG ) util.log("saved image type",obj.key);
   }
   
   function insertPicture(){
@@ -135,7 +135,7 @@ controller.loadImages = util.singleLazyCall(function( err, masterbaton ){
   
   // CREAE WORKFLOW
   var workflow = jWorkflow.order(function(){
-    if( DEBUG ) util.log("start loading images");
+    if( constants.DEBUG ) util.log("start loading images");
     return worklist[0];
   });
   
@@ -148,11 +148,11 @@ controller.loadImages = util.singleLazyCall(function( err, masterbaton ){
   // END WORKFLOW AND START IT
   workflow.andThen(function( pipe ){
     if( pipe === true ){
-      if( DEBUG ) util.log("failed to load images");
+      if( constants.DEBUG ) util.log("failed to load images");
       masterbaton.pass(true);
     }
     else{
-      if( DEBUG ) util.log("finished loading images");
+      if( constants.DEBUG ) util.log("finished loading images");
       masterbaton.pass(false);
     }
   }).start(); 

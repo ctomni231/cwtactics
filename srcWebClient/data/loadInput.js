@@ -25,7 +25,7 @@ controller.loadInputDevices = util.singleLazyCall(function( err, baton ){
   
   baton.take(); 
   
-  if( DEBUG ) util.log("loading input devices");
+  if( constants.DEBUG ) util.log("loading input devices");
   
   var canvas = document.getElementById( ID_ELMT_GAME_CANVAS );
   var menuEl = document.getElementById( ID_ELMT_GAME_MENU );
@@ -35,7 +35,7 @@ controller.loadInputDevices = util.singleLazyCall(function( err, baton ){
   
   if( head.desktop ){
     
-    if( DEBUG ) util.log("initializing keyboard support");
+    if( constants.DEBUG ) util.log("initializing keyboard support");
     
     // KEY DOWN
     document.onkeydown = function( ev ){
@@ -110,7 +110,7 @@ controller.loadInputDevices = util.singleLazyCall(function( err, baton ){
     // -------------------------------------------- MOUSE CONTROLS --------------------------------------------
     // --------------------------------------------------------------------------------------------------------
     
-    if( DEBUG ) util.log("initializing mouse support");
+    if( constants.DEBUG ) util.log("initializing mouse support");
     
     // MENU HINTS
     var mouseInMenu = false;

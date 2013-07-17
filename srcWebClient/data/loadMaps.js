@@ -5,11 +5,11 @@ controller.mapList = [];
  */
 controller.loadMaps = util.singleLazyCall(function( err, masterbaton ){
   if( err ){
-    if( DEBUG ) util.log("break at load maps due error from previous inits"); 
+    if( constants.DEBUG ) util.log("break at load maps due error from previous inits"); 
     return masterbaton.pass(true);
   }
   
-  if( DEBUG ) util.log("loading maps");
+  if( constants.DEBUG ) util.log("loading maps");
   masterbaton.take();
   
   var cStep = 0;
@@ -35,7 +35,7 @@ controller.loadMaps = util.singleLazyCall(function( err, masterbaton ){
             baton.pass(true);
           }, 
           success: function( response ){
-            if( DEBUG ) util.log("map grabbed, saving as",map);
+            if( constants.DEBUG ) util.log("map grabbed, saving as",map);
             
             // SAVE GRABBED DATA
             controller.storage.set( map , response, function(){
@@ -57,7 +57,7 @@ controller.loadMaps = util.singleLazyCall(function( err, masterbaton ){
   
   // CREAE WORKFLOW
   var workflow = jWorkflow.order(function(){
-    if( DEBUG ) util.log("start loading maps");
+    if( constants.DEBUG ) util.log("start loading maps");
   });
   
   // FILL STEPS
@@ -66,11 +66,11 @@ controller.loadMaps = util.singleLazyCall(function( err, masterbaton ){
   // END WORKFLOW AND START IT
   workflow.andThen(function( pipe ){
     if( pipe === true ){
-      if( DEBUG ) util.log("failed to load maps");
+      if( constants.DEBUG ) util.log("failed to load maps");
       masterbaton.pass(true);
     }
     else{
-      if( DEBUG ) util.log("finished loading maps");
+      if( constants.DEBUG ) util.log("finished loading maps");
       masterbaton.pass(false);
     }
   }).start();

@@ -1,11 +1,11 @@
 util.scoped(function(){
   
   function saveComplete(){
-    if( DEBUG ) util.log("successfully set new mod path");
+    if( constants.DEBUG ) util.log("successfully set new mod path");
   }
   
   function wipeComplete(){
-    if( DEBUG ) util.log("successfully set wipe out... next start with clean data");
+    if( constants.DEBUG ) util.log("successfully set wipe out... next start with clean data");
   }
   
   var index = -1;

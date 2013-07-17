@@ -2,7 +2,7 @@
   
   var BACK_TO_LAST_STATE = "$_LAST_STATE";
   var BREAK_TRANSITION = "$_BREAK_TRANSITION";
-  var START_STATE = "initial";
+  var START_STATE = "NONE";
   
   function backToLastState(){
     return BACK_TO_LAST_STATE;
@@ -48,7 +48,7 @@
     }
     
     var goBack = nextState === this.lastState;
-    if( goBack ){
+    if( this.history !== null && goBack ){
       if( this.history.length === 1 ) nextState = "IDLE";
       else nextState = this.history.pop();
     }
@@ -62,7 +62,7 @@
     }
     
     // push state into history and select it
-    if( !goBack ) this.history.push( this.state );
+    if( this.history !== null && !goBack ) this.history.push( this.state );
     this.state = nextState;
     
     // if next state is an action state then

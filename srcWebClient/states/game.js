@@ -23,7 +23,7 @@ util.scoped(function(){
   }
   
   function setupAnimationFrame(){
-    if( DEBUG ) util.log("setup animation frame");
+    if( constants.DEBUG ) util.log("setup animation frame");
     
     // PREPARE LOOP
     controller.prepareGameLoop();

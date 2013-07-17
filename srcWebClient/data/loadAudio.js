@@ -44,7 +44,7 @@ util.scoped(function(){
       }
       // ELSE LOAD IT VIA HTTP
       else{
-        if( DEBUG ) util.log("load",key,"with HTTP request");
+        if( constants.DEBUG ) util.log("load",key,"with HTTP request");
         
         var request = new XMLHttpRequest();
         request.open("GET", src, true);
@@ -58,10 +58,10 @@ util.scoped(function(){
           }
           
           var audioData = request.response;
-          if( DEBUG ) util.log("saving",key,"in storage");
+          if( constants.DEBUG ) util.log("saving",key,"in storage");
           
           controller.storage.set(key, Base64Helper.encodeBuffer(audioData), function(){
-            if( DEBUG ) util.log("saved",key,"successfully in storage");
+            if( constants.DEBUG ) util.log("saved",key,"successfully in storage");
             
             context.decodeAudioData(audioData, function(buffer) {
               controller.registerSoundFile(key,buffer);
@@ -108,7 +108,7 @@ util.scoped(function(){
    */
   controller.loadSoundFiles = util.singleLazyCall(function( err, baton ){
     if( err ){
-      if( DEBUG ) util.log("break at init audio system due error from previous inits"); 
+      if( constants.DEBUG ) util.log("break at init audio system due error from previous inits"); 
       return baton.pass(true);
     }
     

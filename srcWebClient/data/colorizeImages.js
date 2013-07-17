@@ -1,10 +1,10 @@
 controller.colorizeImages = util.singleLazyCall(function( err, baton ){
   if( err ){
-    if( DEBUG ) util.log("break at colorize images due error from previous inits"); 
+    if( constants.DEBUG ) util.log("break at colorize images due error from previous inits"); 
     return baton.pass(true);
   }
   
-  if( DEBUG ) util.log("colorize images");
+  if( constants.DEBUG ) util.log("colorize images");
   
   baton.take();
   

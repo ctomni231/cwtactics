@@ -1,12 +1,12 @@
 controller.loadStorageController = util.singleLazyCall(function( err, baton ){
   if( err ){
-    if( DEBUG ) util.log("break at init storage system due error from previous inits"); 
+    if( constants.DEBUG ) util.log("break at init storage system due error from previous inits"); 
     return err;
   }
   
   baton.take();
   
-  if( DEBUG ) util.log("initializing storage system"); 
+  if( constants.DEBUG ) util.log("initializing storage system"); 
   
   var MAX_MOD_CHARACTERS = 10000000;
   var MAX_MAP_CHARACTERS = 14000000;
@@ -14,7 +14,7 @@ controller.loadStorageController = util.singleLazyCall(function( err, baton ){
   
   var browser = Browser;
   
-  if( DEBUG ) util.log("using lawnchair storage system with",((browser.mobile)? 'webkit-sqlite':'indexed-db'),"adapter"); 
+  if( constants.DEBUG ) util.log("using lawnchair storage system with",((browser.mobile)? 'webkit-sqlite':'indexed-db'),"adapter"); 
   
   var store = new Lawnchair({
     adaptor: (browser.mobile)? 'webkit-sqlite':'indexed-db',
