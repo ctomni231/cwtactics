@@ -3,6 +3,20 @@
 You simply need to run `buildAll.js` in nodeJs. The build script automatically contains a set of normal and minified
 files plus the cache manifest.
 
+Every module of the program must be smaller or equal 25 kilobytes in size. If the size of a module
+is greater than 25 kilobytes then the module is maybe not cache able by every supported device
+( *example: iPhone 4* ).
+
+**Build command pattern:**
+    
+    cd PATH/TO/YOUR/CWT/SOURCE/DIRECTORY
+
+    // builds normal and minified client and the docs
+    nodejs jsBin/buildAll.js
+    
+    // creates only normal client and the docs 
+    nodejs jsBin/buildAll.js
+
 ### HTML 
 
 The html stack will be builded by order. The files in the html folder are numbered. It is very important that the html

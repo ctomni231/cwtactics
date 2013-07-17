@@ -78,7 +78,13 @@ model.doPropertyGiveFunds = function(prid){
   controller.prepareTags(prop.x, prop.y);
   var funds = controller.scriptedValue(prop.owner, "funds", prop.type.funds);
 
-  if(typeof funds === "number")model.players[prop].gold += funds;
+  if(typeof funds === "number"){
+    model.players[prop].gold += funds;
+    
+    // Invoke event
+    var evCb = controller.events.doPropertyGiveFunds;
+    if( evCb ) evCb( i, x,y );
+  }
 };
 
 // Player gets resupply from all properties.
@@ -100,6 +106,10 @@ model.propertySupply = function(i){
       var unitTp = model.unitPosMap[x][y].type;
       if(controller.objectInList(prop.type.supply, unitTp.ID, unitTp.movetype)){
         model.refillResources(model.unitPosMap[x][y]);
+        
+        // Invoke event
+        var evCb = controller.events.propertySupply;
+        if( evCb ) evCb( i, x,y );
       }
     }
   }
@@ -132,7 +142,13 @@ model.propertyRepairs = function(i){
       var unitTp = model.unitPosMap[x][y].type;
       var value = controller.objectInMap(prop.type.repairs, unitTp.ID, unitTp.movetype);
 
-      if(value > 0)model.healUnit(model.extractUnitId(model.unitPosMap[x][y]), model.ptToHp(value), true);
+      if(value > 0){
+        model.healUnit(model.extractUnitId(model.unitPosMap[x][y]), model.ptToHp(value), true);
+        
+        // Invoke event
+        var evCb = controller.events.propertyRepairs;
+        if( evCb ) evCb( i, x,y );
+      }
     }
   }
 };
@@ -167,11 +183,25 @@ model.unitSuppliesNeighbours = function(sid){
   var i = model.getFirstUnitSlotId(pid);
   var e = model.getLastUnitSlotId(pid);
 
+  var unitsSupplied = false;
+  
   // check all
   for(; i < e; i++){
 
     // supply when neighbor
-    if(model.unitDistance(sid, i) === 1) model.refillResources(i);
+    if(model.unitDistance(sid, i) === 1){
+      
+      if( !unitsSupplied ){
+        
+        // Invoke event
+        var evCb = controller.events.unitSuppliesNeighbours;
+        if( evCb ) evCb( sid, x,y, i );
+      }
+      unitsSupplied = true;
+      
+      model.refillResources(i);
+    }
+    
   }
 };
 
@@ -184,4 +214,8 @@ model.refillResources = function(uid){
   var type = unit.type;
   unit.ammo = type.ammo;
   unit.fuel = type.fuel;
+  
+  // Invoke event
+  var evCb = controller.events.refillResources;
+  if( evCb ) evCb( uid );
 };

@@ -248,6 +248,10 @@ controller.persistenceHandler(
 //
     model.resetCapturePoints = function( prid ){
       model.properties[prid].capturePoints = 20;
+      
+      // invoke introduction event
+      var evCb = controller.events.resetCapturePoints;
+      if( evCb ) evCb( prid );
     };
 
 // Changes the type of a property object
@@ -269,6 +273,6 @@ controller.persistenceHandler(
       model.properties[prid].type = type;
 
       // invoke introduction event
-      evCb = controller.events.changedPropertyType;
+      var evCb = controller.events.changedPropertyType;
       if( evCb ) evCb( prid, type );
     };

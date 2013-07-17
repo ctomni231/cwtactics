@@ -7,6 +7,15 @@ controller.registerInvokableCommand("drainFuel");
 controller.registerInvokableCommand("createUnit");
 controller.registerInvokableCommand("destroyUnit");
 
+controller.defineEvent("damageUnit");
+controller.defineEvent("healUnit");
+controller.defineEvent("hideUnit");
+controller.defineEvent("joinUnits");
+controller.defineEvent("unhideUnit");
+controller.defineEvent("drainFuel");
+controller.defineEvent("createUnit");
+controller.defineEvent("destroyUnit");
+
 controller.defineGameScriptable("fuelDrain",1,1);
 
 controller.defineGameConfig("noUnitsLeftLoose",0,1,0);
@@ -256,6 +265,10 @@ model.damageUnit = function( uid, damage, minRest ){
   
   unit.hp -= damage;
   
+  // Invoke event
+  var evCb = controller.events.damageUnit;
+  if( evCb ) evCb( uid, damage, minRest );
+  
   if( minRest && unit.hp <= minRest ){ 
     unit.hp = minRest;
   }
@@ -295,6 +308,10 @@ model.healUnit = function( uid, health, diffAsGold ){
     
     unit.hp = 99;
   }
+  
+  // Invoke event
+  var evCb = controller.events.healUnit;
+  if( evCb ) evCb( uid, health );
 };
 
 // Hides an unit.
@@ -303,6 +320,10 @@ model.healUnit = function( uid, health, diffAsGold ){
 //
 model.hideUnit = function( uid ){
   model.units[uid].hidden = true;
+  
+  // Invoke event
+  var evCb = controller.events.hideUnit;
+  if( evCb ) evCb( uid );
 };
 
 // Unhides an unit.
@@ -311,6 +332,10 @@ model.hideUnit = function( uid ){
 //
 model.unhideUnit = function( uid ){
   model.units[uid].hidden = false;
+  
+  // Invoke event
+  var evCb = controller.events.unhideUnit;
+  if( evCb ) evCb( uid );
 };
 
 // Joins two units together. If the combined health is greater than the maximum health then the difference will be
@@ -343,6 +368,10 @@ model.joinUnits = function( juid, jtuid ){
   
   // disband joining unit
   joinSource.owner = constants.INACTIVE_ID;
+  
+  // Invoke event
+  var evCb = controller.events.joinUnits;
+  if( evCb ) evCb( juid, jtuid );  
 };
 
 // The fuel of an unit will be drained if the unit is marked for using fuel to uptain. All units of a player will 
@@ -362,6 +391,10 @@ model.drainFuel = function( uid ){
     }
     
     unit.fuel -= v;
+    
+    // Invoke event
+    var evCb = controller.events.drainFuel;
+    if( evCb ) evCb( uid, v );
     
     // if fuel is empty then destroy it
     if( unit.fuel <= 0 ) model.destroyUnit(i);
@@ -394,6 +427,10 @@ model.createUnit = function( pid, x, y, type ){
       unit.fuel = typeSheet.fuel;
       unit.loadedIn = -1;
       model.setUnitPosition(i,x,y);
+      
+      // Invoke event
+      var evCb = controller.events.createUnit;
+      if( evCb ) evCb( pid,x,y,type,i );
       
       return i;
     }
@@ -436,6 +473,10 @@ model.destroyUnitSilent = function( uid ){
   if( controller.configValue("noUnitsLeftLoose") === 1 && model.countUnits( unit.owner ) === 0 ){
     controller.endGameRound();
   } 
+  
+  // Invoke event
+  var evCb = controller.events.destroyUnit;
+  if( evCb ) evCb( uid );
 };
 
 // Deregisters an unit object from the stock of a player. The tile, where the unit is placed on, will be

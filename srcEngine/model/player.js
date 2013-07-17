@@ -106,6 +106,10 @@ model.extractPlayerId = function( player ){
 // 
 model.playerLooses = function( pid ){
   var i,e;
+    
+  // Invoke event
+  var evCb = controller.events.playerLooses;
+  if( evCb ) evCb( pid );
   
   // remove all unit
   i = model.getFirstUnitSlotId( pid ); 

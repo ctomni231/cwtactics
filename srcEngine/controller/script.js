@@ -61,7 +61,10 @@ controller.defineGameConfig = function( name, min, max, def, step ){
   }
   
   // check meta data
-  if( max < min || def < min || def > max ){
+  if( max < min ||
+      def < min ||
+      def > max ){
+      
     model.criticalError(
       constants.error.ILLEGAL_PARAMETERS,
       constants.error.ILLEGAL_CONFIG_VAR_DEFINTION

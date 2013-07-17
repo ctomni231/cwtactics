@@ -60,6 +60,10 @@ model.loadUnitInto = function( loadId, transportId ){
 
   model.units[ loadId ].loadedIn = transportId;
   model.units[ transportId ].loadedIn--;
+  
+  // Invoke event
+  var evCb = controller.events.loadUnitInto;
+  if( evCb ) evCb( loadId, transportId );
 };
 
 // Unloads the unit with id lid from a tranporter with the id tid.
@@ -90,6 +94,10 @@ model.unloadUnitFrom = function( transportId, trsx, trsy, loadId, tx,ty ){
   else if( ty < trsy ) moveCode = model.moveCodes.UP;
   else if( ty > trsy ) moveCode = model.moveCodes.DOWN;
 
+  // Invoke event
+  var evCb = controller.events.unloadUnitFrom;
+  if( evCb ) evCb( transportId, trsx, trsy, loadId, tx,ty );
+  
   // move load out of the transporter
   model.moveUnit([moveCode], loadId, trsx, trsy);
   model.markUnitNonActable( loadId );

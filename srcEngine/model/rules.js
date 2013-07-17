@@ -11,14 +11,12 @@ model.mapRules = util.list( 20, null );
 controller.persistenceHandler(
   
   // load
-  function( dom ){
+  function(  ){
     model.mapRules.resetValues();
   },
   
   // save
-  function( dom ){
-    
-  }
+  function(  ){}
 );
   
 // ---

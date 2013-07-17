@@ -38,7 +38,7 @@ model.buildUnit = function( x, y, type ){
   }
 
   // invoke introduction event
-  evCb = controller.events.buildUnit;
+  var evCb = controller.events.buildUnit;
   if( evCb ) evCb( x, y, type );
 
   var uid = model.createUnit( model.turnOwner, x, y, type );

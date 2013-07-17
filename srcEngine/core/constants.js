@@ -1,5 +1,5 @@
 var constants = {
-  DEBUG:                (CWT_DEBUG)? true : false,
+  DEBUG:                ( getQueryParams(document.location.search).debugMode === "1" )? true : false,
   
   INACTIVE_ID:          -1,
   ACTIONS_BUFFER_SIZE:  200,
