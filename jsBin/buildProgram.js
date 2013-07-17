@@ -46,7 +46,7 @@ profs.forEach( function( folder ){
   builder.deleteFolderRecursive( folderComplete );
   builder.createFolder( folderComplete );
 
-  [ "srcEngine", "srcWebClient" ].forEach( function( masterDir, mI ){
+  [ "libJs", "srcEngine", "srcWebClient" ].forEach( function( masterDir ){
 
     console.log("check parent module "+masterDir);
     
@@ -56,10 +56,9 @@ profs.forEach( function( folder ){
     for( i = 0, e = dirs.length; i < e; i++ ) {
       dir = dirs[i];
       
-      console.log("processing module "+dir);
-
-      //if( dir === masterDir+"/.DS_Store") continue;
       if( dir.match( /.DS_Store$/ ) ) continue;
+      
+      console.log("processing module "+dir);
 
       // DO NOT BUILD HTML/CSS
       var mode = 0;
@@ -103,16 +102,18 @@ profs.forEach( function( folder ){
           
           var htmlcode = [];
           cleanFileList( dir ).forEach( function( el ){
-            if( builder.getExtension( el ) !== ext ) return;
             
             if( el.match( /__files__$/ ) ){
               fileList.forEach( function( hel ){
-                if( hel.match( /css$/ ) ) htmlcode.push("<link rel=\"stylesheet\" href=\""+hel+"\">\n");
+                if( hel.match( /css$/ ) ) htmlcode.push("<link rel=\"stylesheet\" href=\""+hel+"\" />\n");
                 else if( hel.match( /js/ ) ) htmlcode.push("<script src=\""+hel+"\"></script>\n");
                 else throw Error();
               });
             }
-            else htmlcode.push(builder.readAndConcatFiles([el]));
+            else{
+              if( builder.getExtension( el ) !== ext ) return;
+              htmlcode.push(builder.readAndConcatFiles([el]));
+            }
           });
           
           builder.writeToFile( htmlcode.join("\n"), folderComplete + "/cwt.html" );
@@ -124,7 +125,7 @@ profs.forEach( function( folder ){
     // MANIFEST FILE
 
     // HEAD
-    var manifestCode = [ "CACHE MANIFEST", "", "# VERSION " + new Date(), "", "CHACHE:" ];
+    var manifestCode = [ "CACHE MANIFEST", "", "# VERSION " + new Date(), "" ];
 
     // CACHE
     fileList.forEach( function( el ){

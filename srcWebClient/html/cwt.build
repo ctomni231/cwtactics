@@ -1,4 +1,5 @@
 HEAD_START.html
+__files__
 HEAD_SCRIPT.html
 HEAD_END.html
 BODY_START.html
@@ -11,5 +12,4 @@ BODY_OPTION_SCR.html
 BODY_CONFIG_SCR.html
 BODY_GAME_SCR.html
 BODY_MESSAGE_DIALOG.html
-__files__
 HTML_END.html
