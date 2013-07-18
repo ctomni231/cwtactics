@@ -102,6 +102,7 @@ util.expectBoolean = function( obj, attr, mustDefined ){
 // @param {Any} obj object that will be inspected
 util.notIn = function( attr, obj ){
   if( obj.hasOwnProperty(attr) ) return util.expectMode.BREAKS_EXPECTION;
+  return util.expectMode.DEFINED;
 };
 
 // Expects that two object aren't the same.
@@ -110,6 +111,7 @@ util.notIn = function( attr, obj ){
 // @param {Any} obj object that will be inspected
 util.not = function( attr, obj, res ){
   if( obj[attr] === res ) return util.expectMode.BREAKS_EXPECTION;
+  return util.expectMode.DEFINED;
 };
 
 // Expects that an object has a given property.
@@ -118,6 +120,7 @@ util.not = function( attr, obj, res ){
 // @param {Any} obj object that will be inspected
 util.isIn = function( attr, obj ){
   if( !obj.hasOwnProperty(attr) ) return util.expectMode.BREAKS_EXPECTION;
+  return util.expectMode.DEFINED;
 };
 
 // Expects a number object in an inspected object.

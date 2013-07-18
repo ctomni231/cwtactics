@@ -223,7 +223,6 @@ controller.colorizeImages = util.singleLazyCall(function( err, baton ){
     baton.pass(false);
   }
   catch( e ){
-    controller.loadError = e;
-    baton.pass(true);
+    controller.loadFault(e,baton);
   }
 });

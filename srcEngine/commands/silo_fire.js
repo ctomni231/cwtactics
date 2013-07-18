@@ -29,7 +29,8 @@ controller.unitAction({
   invoke: function( data ){
     var silo = data.target.property.type.rocketsilo;
     model.fireSilo.callAsCommand(
-      data.target.propertyId, 
+      data.target.x, 
+      data.target.y, 
       data.targetselection.x, 
       data.targetselection.y,
       silo.range,

@@ -46,7 +46,7 @@ controller.loadStorageController = util.singleLazyCall(function( err, baton ){
     
     set = function( key, value, cb, isMod ){
       // ONLY AS INFORMATION AT THE MOMENT
-      if( DEBUG ){
+      if( constants.DEBUG ){
         chars += JSON.stringify( {key:key, value:value} ).length;
         util.log(chars,"used in storage");
       }

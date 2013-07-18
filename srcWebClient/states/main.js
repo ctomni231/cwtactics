@@ -47,7 +47,7 @@ util.scoped(function(){
   }
   
   function tick(){
-    if( DEBUG ) util.log("got click on button", elements[ index ].attributes.key.value);
+    if( constants.DEBUG ) util.log("got click on button", elements[ index ].attributes.key.value);
   }
   
   function register(i){

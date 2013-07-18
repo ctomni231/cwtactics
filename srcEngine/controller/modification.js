@@ -16,7 +16,7 @@ model.loadModification = function( data ){
   var i,e;
   
   // GLOBAL RULES (TODO: NEEDED?)
-  for( i=0,e=data.globalRules.length; i<e; i++ ) model.parseRule( data.globalRules[i], false );
+  for( i=0,e=data.globalRules.length; i<e; i++ ) model.pushRule( data.globalRules[i], false );
 
   model.language = data.language;
   

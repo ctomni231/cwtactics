@@ -73,7 +73,7 @@ controller.stateMachine = util.stateMachine({
       this.data.action.selectedSubEntry = null;
       this.data.action.object = null;
       
-      this.history.splice(0);
+      this.clearHistory();
       
       this.data.inMultiStep = false;
       this.data.makeMultistep = true;

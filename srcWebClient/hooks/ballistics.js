@@ -1,6 +1,7 @@
 util.scoped(function(){
   
   var expl_img;
+  var rocket_img;
   
   function renderSmoke( x,y, step, distance ){
     step -= (distance-1);
@@ -35,6 +36,75 @@ util.scoped(function(){
       }
     }
   }
+  
+  view.registerAnimationHook({
+    key: "startFireSilo",
+    
+    prepare: function( x,y, siloId, tx,ty ){
+      if( !rocket_img ) rocket_img = view.getInfoImageForType("FLYING_ROCKET");
+      
+      this.siloX = controller.getCanvasPosX(x);
+      this.siloY = controller.getCanvasPosY(y);
+      this.targetX = controller.getCanvasPosX(tx);
+      this.targetY = controller.getCanvasPosY(ty);
+      this.curX = this.siloX;
+      this.curY = this.siloY;
+      this.phase = 0;
+    },
+      
+    render: function(){
+      var tileSize = TILE_LENGTH;
+      var scx = 0;
+      var scy = 0;
+      var scw = 24;
+      var sch = 24;
+      var tcx = (this.curX)*tileSize -4;
+      var tcy = (this.curY)*tileSize -4;
+      var tcw = tileSize +8;
+      var tch = tileSize +8;
+
+      view.canvasCtx.drawImage(
+        rocket_img,
+        scx,scy,
+        scw,sch,
+        tcx,tcy,
+        tcw,tch
+      );
+
+      view.markForRedrawWithNeighboursRing( this.curX, this.curY );
+    },
+    
+    update: function( delta ){
+      var shift = ( delta/1000 ) * ( tileSize*8);
+      
+      if( this.phase === 0 ){
+        
+        // rocket flies up
+        this.curY -= shift;
+        
+        if( this.curY <= 0 ){
+          controller.setScreenPosition( this.targetX, this.targetY, true );
+          
+          this.curX = this.targetX;
+          this.curY = 0;
+          this.phase = 1;
+        }
+      }
+      else {
+        
+        // rocket flies down
+        this.curY += shift;
+        
+        if( this.curY >= this.targetX ){
+          this.phase = 2;
+        }
+      }
+    },
+    
+    isDone: function(){
+      return (this.phase === 2);
+    }
+  });
   
   view.registerAnimationHook({
     

@@ -57,15 +57,17 @@ util.scoped(function(){
 // fires a rocket to a given position (x,y) and inflicts damage
 // to all units in a range around the position.
 //
-model.fireSilo = function(siloId, tx, ty, range, damage, owner){
-
+model.fireSilo = function( x,y , tx, ty, range, damage, owner){
+  var silo = model.propertyPosMap[x][y];
+  var siloId = model.extractPropertyId(silo);
+  
   // SET EMPTY TYPE
-  var type = model.properties[siloId].type;
+  var type = silo.type;
   model.changePropertyType(siloId, model.tileTypes[type.changeTo]);
 
   // Invoke event
   var evCb = controller.events.startFireSilo;
-  if(evCb)evCb(uid);
+  if(evCb) evCb( x,y, siloId, tx,ty, range, damage, owner );
   
   model.doExplosionAt(tx, ty, range, damage, owner);
   

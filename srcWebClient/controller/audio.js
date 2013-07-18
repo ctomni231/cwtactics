@@ -68,7 +68,9 @@ util.scoped(function(){
       }
       // RETURN ERROR WHEN SOUND CONTEXT IS NOT INITIALIZE ABLE 
       catch(e){
-        if( DEBUG ) util.log("could not grab audio context, your environment seems to be out of webAudio API support err:",e);
+        if( constants.DEBUG ){
+          util.log("could not grab audio context, your environment seems to be out of webAudio API support err:",e);
+        }
         context = null;
       }
     }

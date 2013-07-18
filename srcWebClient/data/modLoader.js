@@ -25,8 +25,7 @@ controller.loadModification =  util.singleLazyCall( function( err, baton ){
           baton.pass(false);
         }
         catch( e ){
-          controller.loadError = e.message;
-          baton.pass(true);
+          controller.loadFault(e,baton);
         }
       });
     }
@@ -55,8 +54,7 @@ controller.loadModification =  util.singleLazyCall( function( err, baton ){
                 baton.pass(false);
               }
               catch( e ){
-                controller.loadError = e.message;
-                baton.pass(true);
+                controller.loadFault(e,baton);
               }
             });
           }

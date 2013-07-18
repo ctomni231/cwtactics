@@ -1,9 +1,4 @@
 {
-  "mod_name": "Advance Wars - Dual Strike",
-  "mod_key": "CWT_AWDS",
-  "mod_version": "0.5.0",
-  "mod_author": "The official 'Custom Wars Tactics' development team",
-  "mod_desc": "This modification is a re-implementation of the original Advance Wars - Dual Strike game data.",
   "language": {
     "en": {
       "INFT": "Infantry",
@@ -625,8 +620,8 @@
       ]
     ],
     "misc": [
-      [ "VERSUS_BG", "../../../image/background/CWTitle1.png" ],
-      [ "GAME_BG", "../../../image/background/CWTitle1.png" ],
+      [ "MAIN_BG", "../../../image/background/TheGreatOwl.jpg" ],
+      [ "FLYING_ROCKET", "../../../image/missileup.png" ],
       [
         "SILO_N",
         "../../../image/wall/AWDS_SILO~WNWW.png"

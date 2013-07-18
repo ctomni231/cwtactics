@@ -31,7 +31,7 @@ model.unitTypeParser.addHandler(function(sheet){
     
     if( !util.expectNumber(sheet,"ammo",true,true,0,9) ) return false;
     
-    if( expectObject(sheet,"attack",false) === util.expectMode.DEFINED ){
+    if( util.expectObject(sheet,"attack",false) === util.expectMode.DEFINED ){
       att = sheet.attack;
       
       // check range rules if range is given

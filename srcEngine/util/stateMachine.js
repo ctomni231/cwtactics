@@ -13,7 +13,7 @@
   }
   
   function clearHistory() {
-    if( machine.history ) machine.history.splice(0);
+    if( this.history !== null && machine.history ) machine.history.splice(0);
   }
   
   function reset(){

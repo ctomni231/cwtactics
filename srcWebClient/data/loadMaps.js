@@ -31,8 +31,7 @@ controller.loadMaps = util.singleLazyCall(function( err, masterbaton ){
           path:map,
           json:true,
           error: function( msg ){ 
-            controller.loadError = msg;
-            baton.pass(true);
+            controller.loadFault( msg ,baton);
           }, 
           success: function( response ){
             if( constants.DEBUG ) util.log("map grabbed, saving as",map);

@@ -2,43 +2,41 @@
 // objects. This will be used to allow modules to set own requirements
 // on object type sheets.
 //
-model.createDataParser = function(db, list){
-  var parserParts = [];
+model.createDataParser = function( db, list ){
+  var parserParts = [ ];
   var listFn = (typeof list === "function");
 
   return {
-    
-    addHandler: function(cb){
-      if(typeof cb !== "function"){
+    addHandler: function( cb ){
+      if( typeof cb !== "function" ) {
         model.criticalError(
           constants.error.ILLEGAL_DATA,
           constants.error.ILLEGAL_SHEET_HANDLER );
       }
 
-      parserParts.push(cb);
+      parserParts.push( cb );
     },
-      
     // parsing function that parses a type sheet and adds it to the type
     // list if no parsing part declines the sheet object by returning
     // `false`
-    parse: function(sheet){
+    parse: function( sheet ){
 
       // check identical string first
-      if(!util.expectString(sheet, "ID", true)){
+      if( !util.expectString( sheet, "ID", true ) ) {
         model.criticalError(
           constants.error.ILLEGAL_DATA,
           constants.error.ILLEGAL_SHEET_ID );
       }
 
-      if(db[sheet.ID]){
+      if( db[sheet.ID] ) {
         model.criticalError(
           constants.error.ILLEGAL_DATA,
           constants.error.ILLEGAL_SHEET_ALREADY_DEFINED );
       }
 
       // check sheet by calling all parser parts
-      for(var i = 0, e = parserParts.length; i < e; i++){
-        if(!parserParts[i](sheet)){
+      for( var i = 0, e = parserParts.length; i < e; i++ ) {
+        if( parserParts[i]( sheet ) === false ) {
           model.criticalError(
             constants.error.ILLEGAL_DATA,
             constants.error.BREAKS_SHEET_CONTRACT );
@@ -46,20 +44,18 @@ model.createDataParser = function(db, list){
       }
 
       // add sheet to the database
-      if(listFn) list(sheet);
-      else list.push(sheet.ID);
+      if( listFn ) list( sheet );
+      else list.push( sheet.ID );
       db[sheet.ID] = sheet;
     },
-      
     parseAll: function( list ){
-      for( var i=0,e=list.length; i<e; i++ ) this.parse( list[i] );
+      for( var i = 0, e = list.length; i < e; i++ ) this.parse( list[i] );
     },
-      
     clear: function(){
-      list.splice(0);
-      
+      list.splice( 0 );
+
       var keys = Object.keys( db );
-      for( var i=0,e=keys.length; i<e; i++ ) delete db[keys[i]];
+      for( var i = 0, e = keys.length; i < e; i++ ) delete db[keys[i]];
     }
 
   };
@@ -71,7 +67,7 @@ model.createDataParser = function(db, list){
 model.unitTypes = {};
 
 // Holds a list of available tile types
-model.listOfUnitTypes = [];
+model.listOfUnitTypes = [ ];
 
 // Unit type sheet parser object
 model.unitTypeParser = model.createDataParser( model.unitTypes, model.listOfUnitTypes );
@@ -82,16 +78,16 @@ model.unitTypeParser = model.createDataParser( model.unitTypes, model.listOfUnit
 model.tileTypes = {};
 
 // Holds a list of available tile types
-model.listOfPropertyTypes = [];
+model.listOfPropertyTypes = [ ];
 
 // Holds a list of available property types
-model.listOfTileTypes = [];
+model.listOfTileTypes = [ ];
 
 // Tile type sheet parser object
 model.tileTypeParser = model.createDataParser( model.tileTypes,
-  function(sheet){
-    if(sheet.capturePoints)model.listOfPropertyTypes.push(sheet);
-    elsemodel.listOfTileTypes.push(sheet);
+  function( sheet ){
+    if( sheet.capturePoints ) model.listOfPropertyTypes.push( sheet );
+    else model.listOfTileTypes.push( sheet );
   }
 );
 
@@ -104,13 +100,13 @@ model.weatherTypes = {};
 model.defaultWeatherType = null;
 
 // Holds all non-defualt weather types
-model.nonDefaultWeatherType = [];
+model.nonDefaultWeatherType = [ ];
 
 // Tile type sheet parser object
 model.weatherTypeParser = model.createDataParser( model.weatherTypes,
-  function(sheet){
-    if(sheet.defaultWeather)model.defaultWeatherType = sheet;
-    elsemodel.nonDefaultWeatherType.push(sheet);
+  function( sheet ){
+    if( sheet.defaultWeather ) model.defaultWeatherType = sheet;
+    else model.nonDefaultWeatherType.push( sheet );
   }
 );
 
@@ -119,7 +115,7 @@ model.weatherTypeParser = model.createDataParser( model.weatherTypes,
 // Holds all available move types
 model.moveTypes = {};
 
-model.listOfMoveTypes = [];
+model.listOfMoveTypes = [ ];
 
 model.moveTypeParser = model.createDataParser( model.moveTypes, model.listOfMoveTypes );
 
@@ -127,19 +123,19 @@ model.moveTypeParser = model.createDataParser( model.moveTypes, model.listOfMove
 
 model.factionTypes = {};
 
-model.listOfFactions = [];
+model.listOfFactions = [ ];
 
 model.factionParser = model.createDataParser( model.factionTypes, model.listOfFactions );
 
-model.factionParser.addHandler(function(){
-  if( !util.expectString(sheet, "music", true) ) return false;
-});
-  
+model.factionParser.addHandler( function( sheet ){
+  if( !util.expectString( sheet, "music", true ) ) return false;
+} );
+
 // ---
 
 model.coTypes = {};
 
-model.listOfCoTypes = [];
+model.listOfCoTypes = [ ];
 
 model.coTypeParser = model.createDataParser( model.coTypes, model.listOfCoTypes );
 
@@ -160,7 +156,7 @@ model.language = {};
 //
 // @param {String} key
 //
-model.localized = function(key){
+model.localized = function( key ){
   var result = model.language[key];
   return (result === undefined) ? key : result;
 };

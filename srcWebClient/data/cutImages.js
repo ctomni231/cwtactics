@@ -126,7 +126,7 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
       
     }
     
-    if( DEBUG ){ util.log("cutting unit commands into single types done"); }
+    if( constants.DEBUG ){ util.log("cutting unit commands into single types done"); }
     
     // ----------------------------------------------------------------------
     
@@ -202,7 +202,6 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
     baton.pass(false);
   }
   catch( e ){
-    controller.loadError = e;
-    baton.pass(true);
+    controller.loadFault(e,baton);
   }
 });

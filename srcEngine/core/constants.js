@@ -1,5 +1,5 @@
 var constants = {
-  DEBUG:                ( getQueryParams(document.location.search).debugMode === "1" )? true : false,
+  DEBUG:                true,
   
   INACTIVE_ID:          -1,
   ACTIONS_BUFFER_SIZE:  200,
@@ -22,6 +22,7 @@ var constants = {
     
     // #### Error type numbers
     
+    NON_CAUGHT_ERROR:               0,
     UNKNOWN:                        1,
     HOST_ONLY:                      2,
     ILLEGAL_DATA:                   3,

@@ -64,9 +64,6 @@ model.buildUnit = function( x, y, type ){
 //
 model.isBuildableByFactory = function( property, type ){
 
-  // decline when the owner of the factory does not have man power unit left
-  if( !model.hasLeftManpower( property.owner ) ) return false;
-
   var bList = property.type.builds;
   if( !bList ) return false;
 

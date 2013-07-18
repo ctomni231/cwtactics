@@ -20,10 +20,10 @@ util.scoped(function(){
       
       // IF YES THEN LOAD IT FROM STORAGE
       if( exists ){
-        if( DEBUG ) util.log(key,"is in storage");
+        if( constants.DEBUG ) util.log(key,"is in storage");
         
         controller.storage.get(key,function( obj ){
-          if( DEBUG ) util.log(key,"will be cached");
+          if( constants.DEBUG ) util.log(key,"will be cached");
           
           try{
             var audioData = Base64Helper.decodeBuffer( obj.value );
@@ -31,13 +31,11 @@ util.scoped(function(){
               controller.registerSoundFile(key,buffer);
               callback(list,baton);
             }, function( e ){ 
-              controller.loadError = e;
-              baton.pass(true);
+              controller.loadFault(e,baton);
             });
           }
           catch( e ){
-            controller.loadError = e;
-            baton.pass(true);
+            controller.loadFault(e,baton);
           }
         });
         
@@ -52,8 +50,7 @@ util.scoped(function(){
         request.onload = function(){
           
           if( this.status === 404 ){
-            controller.loadError = "failed to load music file "+key;
-            baton.pass(true);
+            controller.loadFault({message:"failed to load music file "+key, stack:null},baton);
             return;
           }
           
@@ -67,8 +64,7 @@ util.scoped(function(){
               controller.registerSoundFile(key,buffer);
               callback(list,baton);
             }, function( e ){  
-              controller.loadError = e;
-              baton.pass(true);
+              controller.loadFault(e,baton);
             });
           });
         };

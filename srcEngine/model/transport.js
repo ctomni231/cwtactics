@@ -15,7 +15,7 @@ model.unitTypeParser.addHandler(function(sheet){
       
       list = sheet.canload;
       for( i1=0,e1=list.length; i1<e1; i1++ ){
-        if( !expectString(list,i1,true) ) return false;  
+        if( !util.expectString(list,i1,true) ) return false;  
       } 
     }
 });

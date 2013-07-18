@@ -84,8 +84,7 @@ controller.loadImages = util.singleLazyCall(function( err, masterbaton ){
     img.list_   = list;
     img.saveIt_ = false;
     img.onerror = function(){
-      controller.loadError = { message:"could not load image "+img.pickey_ };
-      baton.pass(true);
+      controller.loadFault({ message:"could not load image "+img.pickey_ , stack:null },baton);
     };
     
     // ANIMATED ?
