@@ -325,16 +325,14 @@ util.scoped(function(){
     var retreatVal = powerAtt;
     
     // invoke introduction event
-    evCb = controller.events.battleBetween;
-    if( evCb ) evCb( attId, defId, damage );
+    controller.events.battleBetween( attId, defId, damage );
     
     // main attack
     damage = model.battleDamageAgainst(attacker,defender,attLuckRatio);
     model.damageUnit( defId, damage );
     
     // invoke main attack event
-    evCb = controller.events.mainAttack;
-    if( evCb ) evCb( attId, defId, damage );
+    controller.events.mainAttack( attId, defId, damage );
     
     powerAtt -= model.unitHpPt( defender );
     
@@ -361,8 +359,7 @@ util.scoped(function(){
       model.damageUnit( attId, damage );  
       
       // invoke counter event
-      evCb = controller.events.counterAttack;
-      if( evCb ) evCb( defId, attId, damage );
+      controller.events.counterAttack( defId, attId, damage );
       
       powerCounterAtt -= model.unitHpPt( attacker );
       

@@ -13,7 +13,7 @@ exports.deleteFolderRecursive = function(path) {
         files.forEach(function(file,index){
             var curPath = path + "/" + file;
             if(fs.statSync(curPath).isDirectory()) { // recurse
-                deleteFolderRecursive(curPath);
+                exports.deleteFolderRecursive(curPath);
             } else { // delete file
                 fs.unlinkSync(curPath);
             }

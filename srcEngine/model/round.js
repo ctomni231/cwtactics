@@ -115,9 +115,7 @@ model.nextTurn = function(){
   // Sets the new turn owner
   model.turnOwner = pid;
   
-  // Invoke event
-  var evCb = controller.events.nextTurn;
-  if( evCb ) evCb();
+	controller.events.nextTurn();
   
   // start AI logic if new turn owner is AI controlled
   // this local instance is the host

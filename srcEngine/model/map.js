@@ -27,8 +27,8 @@ controller.persistenceHandler(
   // load
   function( dom ){
     
-    model.mapWidth = dom.mpw;
-    model.mapHeight = dom.mph;
+    model.mapWidth = dom.mapWidth;
+    model.mapHeight = dom.mapHeight;
     
     for( var x=0,xe=model.mapWidth; x<xe; x++ ){
       for( var y=0,ye=model.mapHeight; y<ye; y++ ){
@@ -42,8 +42,8 @@ controller.persistenceHandler(
   // save
   function( dom ){
   
-    dom.mpw = model.mapWidth;
-    dom.mph = model.mapHeight;
+    dom.mapWidth = model.mapWidth;
+    dom.mapHeight = model.mapHeight;
     
     dom.map = [];
     var mostIdsMap = {};

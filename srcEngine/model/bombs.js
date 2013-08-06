@@ -49,8 +49,7 @@ util.scoped(function(){
     model.doInRange(tx, ty, range, doDamage, damage);
 
     // Invoke event
-    var evCb = controller.events.doExplosionAt;
-    if(evCb)evCb(uid);
+    controller.events.doExplosionAt(uid);
   };
 });
 
@@ -66,8 +65,7 @@ model.fireSilo = function( x,y , tx, ty, range, damage, owner){
   model.changePropertyType(siloId, model.tileTypes[type.changeTo]);
 
   // Invoke event
-  var evCb = controller.events.startFireSilo;
-  if(evCb) evCb( x,y, siloId, tx,ty, range, damage, owner );
+  controller.events.startFireSilo( x,y, siloId, tx,ty, range, damage, owner );
   
   model.doExplosionAt(tx, ty, range, damage, owner);
   

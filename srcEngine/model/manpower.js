@@ -42,7 +42,6 @@ model.decreaseManpower = function( pid ){
   model.manpower[pid]--;
   
   // Invoke model event
-  var evCb = controller.events.decreaseManpower; 
-  if( evCb ) evCb(pid);
+  controller.events.decreaseManpower(pid);
 };
 

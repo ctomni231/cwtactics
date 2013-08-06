@@ -1,5 +1,5 @@
 controller.playSoundForPlayer = function( pid ){
-  var co = model.players[pid].mainCo;
+  var co = model.coData[pid].coA;
   
   if( Browser.ios ){
     

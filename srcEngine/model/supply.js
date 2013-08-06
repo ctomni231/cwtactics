@@ -81,9 +81,7 @@ model.doPropertyGiveFunds = function(prid){
   if(typeof funds === "number"){
     model.players[prop].gold += funds;
     
-    // Invoke event
-    var evCb = controller.events.doPropertyGiveFunds;
-    if( evCb ) evCb( i, x,y );
+    controller.events.doPropertyGiveFunds( i, x,y );
   }
 };
 
@@ -107,9 +105,7 @@ model.propertySupply = function(i){
       if(controller.objectInList(prop.type.supply, unitTp.ID, unitTp.movetype)){
         model.refillResources(model.unitPosMap[x][y]);
         
-        // Invoke event
-        var evCb = controller.events.propertySupply;
-        if( evCb ) evCb( i, x,y );
+        controller.events.propertySupply( i, x,y );
       }
     }
   }
@@ -145,9 +141,7 @@ model.propertyRepairs = function(i){
       if(value > 0){
         model.healUnit(model.extractUnitId(model.unitPosMap[x][y]), model.ptToHp(value), true);
         
-        // Invoke event
-        var evCb = controller.events.propertyRepairs;
-        if( evCb ) evCb( i, x,y );
+        controller.events.propertyRepairs( i, x,y );
       }
     }
   }
@@ -193,9 +187,7 @@ model.unitSuppliesNeighbours = function(sid){
       
       if( !unitsSupplied ){
         
-        // Invoke event
-        var evCb = controller.events.unitSuppliesNeighbours;
-        if( evCb ) evCb( sid, x,y, i );
+        controller.events.unitSuppliesNeighbours( sid, x,y, i );
       }
       unitsSupplied = true;
       
@@ -215,7 +207,5 @@ model.refillResources = function(uid){
   unit.ammo = type.ammo;
   unit.fuel = type.fuel;
   
-  // Invoke event
-  var evCb = controller.events.refillResources;
-  if( evCb ) evCb( uid );
+  controller.events.refillResources( uid );
 };

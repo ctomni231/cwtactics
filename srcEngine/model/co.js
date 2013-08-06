@@ -148,8 +148,7 @@ controller.persistenceHandler(
         data.timesUsed++;
 
         // Invoke model event
-        var evCb = controller.events[evName];
-        if( evCb ) evCb( pid );
+        controller.events[evName]( pid );
       }
       ;
 
@@ -190,8 +189,7 @@ controller.persistenceHandler(
       if( data.power < 0 ) data.power = 0;
 
       // Invoke model event
-      var evCb = controller.events.modifyPowerLevel;
-      if( evCb ) evCb( pid, value );
+      controller.events.modifyPowerLevel( pid, value );
     };
 
 // Returns the cost for one CO star for a given player.

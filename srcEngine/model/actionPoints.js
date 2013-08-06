@@ -93,10 +93,7 @@ model.setActableStatus = function( uid, canAct ){
 // 
 model.trapWait = function( uid ){
   model.setActableStatus( uid, false );
-  
-  // Invoke event
-  var evCb = controller.events.trapWait;
-  if( evCb ) evCb( uid );
+  controller.events.trapWait( uid );
 };
 
 // @param {Number} uid

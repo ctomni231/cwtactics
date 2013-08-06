@@ -119,8 +119,7 @@ model.modifyVisionAt = function( x,y, pid, range, value ){
   }
   
   // Invoke event
-  var evCb = controller.events.modifyVisionAt;
-  if( evCb ) evCb( x,y, pid, range, value );
+  controller.events.modifyVisionAt( x,y, pid, range, value );
 };
 
 // @param {Number} pid id number of the target player
@@ -179,6 +178,5 @@ model.recalculateFogMap = function( pid ){
   }
   
   // Invoke event
-  var evCb = controller.events.recalculateFogMap;
-  if( evCb ) evCb( pid );
+  controller.events.recalculateFogMap( pid );
 };

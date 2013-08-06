@@ -12,7 +12,7 @@ util.scoped(function(){
     
     // UPDATE UNIT STATS
     for( var i=0,e=model.units.length; i<e; i++ ){
-      if( model.units[i].owner !== CWT_INACTIVE_ID ) controller.updateUnitStatus( i );
+      if( model.units[i].owner !== constants.INACTIVE_ID ) controller.updateUnitStatus( i );
     }
     
     controller.playSoundForPlayer( model.turnOwner );

@@ -18,13 +18,10 @@ util.scoped(function(){
   };
   
   // Loads a given JSON string into the model. 
-  controller.loadCompactModel = function( data ){
-    var dom = JSON.parse(data);
-    var obj;
-    
+  controller.loadCompactModel = function( data ){    
     try{
       for( var i=0,e=persistence.length; i<e; i+=2 ){
-        persistence[i].call( obj[0], dom );
+        persistence[i].call( obj[0], data );
       }
     }
     catch( e ){

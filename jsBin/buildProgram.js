@@ -41,13 +41,15 @@ profs.forEach( function( folder ){
   var minimize = ( folder.match( /min$/ ) );
   var dirs, dir, i, e;
   var fileList = [ ];
+  var fileListEng = [ ];
 
   // WIPE OUT DIRECTORY CONTENT
   builder.deleteFolderRecursive( folderComplete );
   builder.createFolder( folderComplete );
 
-  [ "libJs", "srcEngine", "srcWebClient" ].forEach( function( masterDir ){
+  [ "srcEngine", "srcWebClient" ].forEach( function( masterDir ){
 
+		var engineDir = (masterDir === "srcEngine");
     console.log("check parent module "+masterDir);
     
     // READ ENGINE FILES
@@ -80,6 +82,7 @@ profs.forEach( function( folder ){
             
             builder.writeToFile( code, folderComplete + "/" + fileList.length + ext );
             fileList.push( fileList.length + ext );
+						if( engineDir ) fileListEng.push( fileList.length + ext );
           } );
           break;
 
@@ -122,6 +125,7 @@ profs.forEach( function( folder ){
       }
     }
 
+		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // MANIFEST FILE
 
     // HEAD
@@ -137,5 +141,30 @@ profs.forEach( function( folder ){
 
     // WRITE FILE
     builder.writeToFile( manifestCode.join( "\n" ), folderComplete + "/cache.manifest" );
+		
+		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // TEST FILE
+		var testFileCode = [];
+		var testsCode = [];
+		
+		testFileCode.push(builder.readAndConcatFiles( [ "testEngine/html/testStart.html" ] ));
+		
+    fileListEng.forEach( function( el ){
+      testFileCode.push( "<script src=\"../"+el+"\"></script>\n" );
+    } );
+		
+		cleanFileList( "testEngine/tests" ).forEach( function( el ){
+			testsCode.push( builder.readAndConcatFiles([el]) );
+    } );
+		
+		testFileCode.push( "<script src=\"tests.js\"></script>\n" );
+		
+		testFileCode.push(builder.readAndConcatFiles( [ "testEngine/html/testEnd.html" ] ));
+		
+    // WRITE FILE
+		builder.deleteFolderRecursive( folderComplete+"/test" );
+		builder.createFolder( folderComplete+"/test" );
+    builder.writeToFile( testFileCode.join( "\n" ), folderComplete + "/test/testEngine.html" );
+    builder.writeToFile( testsCode.join( "\n" ), folderComplete + "/test/tests.js" );
   } );
 } );

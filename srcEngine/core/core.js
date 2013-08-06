@@ -11,7 +11,7 @@
  *
  * @module model
  */
-var model = window.model = {};
+var model = {};
 
 /**
  * This is the main access layer for the custom wars tactics game client. All
@@ -25,7 +25,7 @@ var model = window.model = {};
  *
  * @module controller
  */
-var controller = window.controller = {};
+var controller = {};
 
 /**
  * Some useful utility functions are stored in this layer. This layer contains
@@ -35,4 +35,4 @@ var controller = window.controller = {};
  *
  * @module util
  */
-var util = window.util = {};
+var util = {};

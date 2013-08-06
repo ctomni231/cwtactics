@@ -1,0 +1,11 @@
+{
+  "globalRules": [
+    
+		{ 
+			"$any": ["INFT","MECH"], 
+		 	"$all": ["MNTN"], 
+			"vision": 3 
+		}
+		
+  ]
+}

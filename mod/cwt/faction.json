@@ -1,0 +1,29 @@
+{
+	"factions":[
+		
+		{
+			"ID":"ORST",
+			"name":"Orange Star",
+			"music":"OS_MUSIC"
+		},
+		
+		{
+			"ID":"BLMN",
+			"name":"Blue Moon",
+			"music":"BM_MUSIC"
+		},
+		
+		{
+			"ID":"GRET",
+			"name":"Green Earth",
+			"music":"GE_MUSIC"
+		},
+		
+		{
+			"ID":"YLCM",
+			"name":"Yellow Comet",
+			"music":"YC_MUSIC"
+		}
+		
+	]
+}

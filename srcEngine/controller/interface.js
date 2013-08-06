@@ -31,5 +31,5 @@ util.scoped(function(){
    * @config
    */
   controller.sendNetworkMessage = clientNeedsToImplementMe("controller.sendNetworkMessage");
-
+	
 });

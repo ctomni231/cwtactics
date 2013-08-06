@@ -53,11 +53,7 @@ controller.stateMachine = util.stateMachine({
   // ---
   
   NONE: {
-    start: function( ev, mod ){
-      
-      // LOAD MODIFICATION
-      model.loadModification( mod );
-      
+    start: function( ev ){
       return "IDLE";
     }
   },

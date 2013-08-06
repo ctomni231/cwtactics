@@ -16,8 +16,7 @@ util.scoped(function() {
     var stackData = null;
 
     // Invoke event     
-    var evCb = controller.events.criticalError;
-    if (evCb) evCb(errorId, errorData, stackData);
+    controller.events.criticalError(errorId, errorData, stackData);
 
     // Log error
     util.error(errorId, errorData, stackData);

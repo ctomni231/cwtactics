@@ -71,7 +71,7 @@ controller.startGameRound = function( map ){
   controller.actionBuffer_.clear();
   
   // start loading
-  model.loadCompactModel(map);
+  controller.loadCompactModel(map);
 };
 
 // Ends the active game round.

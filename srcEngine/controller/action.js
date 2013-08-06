@@ -1,8 +1,12 @@
 // Holds the identical number to action name map.
 //
+// 		Map<Int,String>
+//
 controller.actionMap = {};
 
 // Holds the action name to action identical number map.
+//
+//		Map<String,Int>
 //
 controller.actionIdMap = {};
 

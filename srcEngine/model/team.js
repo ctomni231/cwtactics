@@ -36,9 +36,7 @@ model.transferMoney = function( splid, tplid, money ){
   sPlayer.gold -= money;
   tPlayer.gold += money;
   
-  // Invoke event
-  var evCb = controller.events.transferMoney;
-  if( evCb ) evCb( splid, tplid, money ); 
+  controller.events.transferMoney( splid, tplid, money ); 
 };
 
 // Transfers an unit from one player to another player.
@@ -72,9 +70,7 @@ model.transferUnit = function( suid, tplid ){
   targetUnit.y        = ty;
   targetUnit.loadedIn = selectedUnit.loadedIn;
   
-  // Invoke event
-  var evCb = controller.events.transferUnit;
-  if( evCb ) evCb( suid, tplid ); 
+  controller.events.transferUnit( suid, tplid ); 
 };
 
 // Transfers a property from one player to another player.
@@ -98,7 +94,5 @@ model.transferProperty = function( sprid, tplid ){
     }
   }
   
-  // Invoke event
-  var evCb = controller.events.transferProperty;
-  if( evCb ) evCb( sprid, tplid ); 
+  controller.events.transferProperty( sprid, tplid ); 
 };

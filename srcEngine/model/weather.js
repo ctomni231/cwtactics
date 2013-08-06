@@ -114,7 +114,5 @@ model.changeWeather = function( wth ){
   
   model.weather = model.weatherTypes[wth];
   
-  // Invoke event
-  var evCb = controller.events.changeWeather;
-  if( evCb ) evCb( wth );
+	controller.events.changeWeather( wth );
 };

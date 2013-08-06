@@ -7,7 +7,5 @@ controller.defineEvent("invokeNextStep_");
 // @private
 model.invokeNextStep_ = function(){
   controller.stateMachine.event("nextStep");
-  
-  var evCb = controller.events.invokeNextStep_;
-  if( evCb ) evCb();
+  controller.events.invokeNextStep_();
 };

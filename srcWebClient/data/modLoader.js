@@ -1,66 +1,99 @@
-/**
- * 
- */
-controller.loadModification =  util.singleLazyCall( function( err, baton ){
-  if( err ){
-    if( constants.DEBUG ) util.log("break at load modification due error from previous inits"); 
-    return baton.pass(true);
+// # Mod Loading Module
+//
+// Simple strategy here:
+// 
+// 1. Load the internal mod header 
+// 2. Load the external mod header
+// 3. If the internal mod header is not available or the internal one outdated then re-download mod file
+// 4. Use storage mod file 
+
+controller.loadModification = util.singleLazyCall( function( err, baton ){
+  if( err ) {
+    if( constants.DEBUG ) util.log( "break at load modification due error from previous inits" );
+    return baton.pass( true );
   }
-  
-  if( constants.DEBUG ) util.log("loading modification");
-  
+
+  var DEFAULT_MOD_PATH = "../../../mod/cwt";
+
+  if( constants.DEBUG ) util.log( "loading modification" );
   baton.take();
+
+  // create the loading workflow here
+  jsFlow
   
-  // TRY TO GRAB DATA FROM STORAGE
-  controller.storage.has("mod",function( exists ){
-    
-    // USE EXISTING DATA
-    if( exists ){
-      if( constants.DEBUG ) util.log("modification available, grab from storage");
-      
-      controller.storage.get("mod",function( obj ){
-        try{
-          var mod = obj.value;
-          controller.stateMachine.event("start", mod );
-          baton.pass(false);
-        }
-        catch( e ){
-          controller.loadFault(e,baton);
-        }
-      });
-    }
-    // LOAD IT VIA REQUEST
-    else{
-      if( constants.DEBUG ) util.log("modification not available, grab default one");
-      
-      controller.storage.get("modificationPath",function( obj ){
-        var modName = ( obj === null )? "awds.json" : obj.value;
-        util.grabRemoteFile({
-          path:"awds.json",
-          json:true,
-          error: function( msg ) { 
-            controller.loadError = msg;
-            baton.pass(true);
-          }, 
-          success: function( resp ) {
-            if( constants.DEBUG ) util.log("modification grabbed, saving it");
+    // **FIRST:** grab header files 
+    .andThen(function( p,b ){
+      b.take();
+      controller.storage.get( "mod.header", function( obj ){
+        util.grabRemoteFile( {
+          
+          path: DEFAULT_MOD_PATH + "/header.json",
+          json: true,
+          
+          error: function( msg ){
+            baton.drop({ message:msg , stack:null });
+          },
             
-            // SAVE GRABBED DATA
-            controller.storage.set("mod",resp,function(){
-              if( constants.DEBUG ) util.log("modification saved, next initializing engine");
-              
-              try{
-                controller.stateMachine.event("start", resp );
-                baton.pass(false);
-              }
-              catch( e ){
-                controller.loadFault(e,baton);
-              }
+          success: function( resp ){
+            b.pass( [obj.value,resp] );
+          }
+          
+        } );
+      } );
+    })
+    
+    // **SECOND:** grab body file
+    .andThen(function( p,b ){
+      var locale = p[0];
+      var remote = p[1];
+      
+      if( !locale || locale.version < remote.version ){
+        // grab new mod body if the current mod header is outdated or not available
+        
+        util.grabRemoteFile( {
+          
+          path: DEFAULT_MOD_PATH + "/body.json",
+          json: true,
+          
+          error: function( msg ){
+            baton.drop({ message:msg , stack:null });
+          },
+            
+          success: function( resp ){
+            controller.storage.set("mod.header",remote,function(){
+              controller.storage.set("mod.body",resp,function(){
+                b.pass( resp );
+              });
             });
           }
+          
         });
-      });
-    }
-  });
-  
-});
+      }
+      else{
+        // else use mod from the storage
+        
+        controller.storage.get("mod.body",function( obj ){
+          b.pass( obj.value );
+        });
+      }
+    })
+    
+    // **LAST:** load mod
+    .andThen(function( mod ){
+      controller.stateMachine.event( "start", mod );
+    })
+    
+    .start(function( p ){
+      if( p ){
+        // error was thrown
+        
+        baton.drop({ where:"modLoader", error:p });
+        
+      }
+      else{
+        // no errors at all
+        
+        baton.pass();
+      }
+    });
+} );

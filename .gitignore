@@ -172,3 +172,6 @@ CWTactics_Main
 applet.policy
 nbproject
 java.policy.applet
+
+build.xml
+netbeans.xml

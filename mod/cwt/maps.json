@@ -1,0 +1,6 @@
+{
+  "maps":[
+    "../../../maps/testmap.json",
+    "../../../maps/testmap_small.json"
+  ]
+}
