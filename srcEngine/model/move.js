@@ -221,6 +221,12 @@ model.moveCosts = function( movetype, x, y ){
 	return -1;
 };
 
+// Returns true if a movetype can move to position {x,y} else false.
+//
+//  @returns {data.Movetype} movetype
+//  @param {Number} x x coordinate
+//  @param {Number} y y coordinate
+//
 model.canTypeMoveTo = function( movetype, x,y ){
 	if( model.isValidPosition(x,y) ){
 		
