@@ -4,18 +4,17 @@ controller.propertyAction({
   hasSubMenu: true,
   
   condition: function( data ){
-    return data.source.property.type.notTransferable;
+    return model.isPropertyTransferable( data.source.propertyId );
   },
   
   prepareMenu: function( data ){
-    for( var i= 0,e=constants.MAX_PLAYER; i<e; i++ ){
-      if( i !== model.turnOwner && model.players[i].team !== constants.INACTIVE_ID ){
-        data.menu.addEntry(i,true);
-      }
-    }
+		model.addTransferTargets( data.source.unit.property, data.menu );
   },
   
   invoke: function( data ){
-    controller.sharedInvokement("transferProperty",[ data.source.propertyId, data.action.selectedSubEntry ]);
+    controller.sharedInvokement("transferProperty",[ 
+			data.source.propertyId, 
+			data.action.selectedSubEntry 
+		]);
   }
 });

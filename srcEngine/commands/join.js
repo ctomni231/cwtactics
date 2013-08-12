@@ -10,7 +10,8 @@ controller.unitAction({
   
   invoke: function( data ){
     controller.sharedInvokement("joinUnits",[ 
-			data.source.unitId, data.target.unitId 
+			data.source.unitId, 
+			data.target.unitId 
 		]);
   }
   

@@ -96,6 +96,7 @@ var constants = {
     DATA_FAULT_OBJECT_FAULT:        2001,
     
     // other errors
+    FACTORY_EXPECTED: 						  1017,
     SELECTION_DATA_OUT_OF_BOUNDS:   1016,
     PROPERTY_NOT_FOUND:             1015,
     CANNOT_FIND_NEXT_PLAYER:        1014,

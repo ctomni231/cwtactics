@@ -2,27 +2,21 @@ controller.unitAction({
   
   key:"transferUnit",
   hasSubMenu: true,
+	relation: ["S","T",model.relationModes.SAME_OBJECT],
   
   condition: function( data ){
-    var mode = data.thereIsUnitRelationShip( data.source, data.target );
-    if( mode !== model.relationModes.SAME_OBJECT ) return false;
-    
-    // LOADED UNITS CANNOT BE TRANSFERED TO OTHER PLAYERS (@TODO: ALLOW IN FUTURE)
-    if( model.hasLoadedIds( data.source.unitId ) ) return false; 
-    
-    return true;
+    return model.isUnitTransferable( data.source.unitId );
   },
   
   prepareMenu: function( data ){
-    for( var i= 0,e=constants.MAX_PLAYER; i<e; i++ ){
-      if( i !== model.turnOwner && model.players[i].team !== constants.INACTIVE_ID ){
-        data.menu.addEntry(i, true );
-      }
-    }
+		model.addTransferTargets( data.source.unit.owner, data.menu );
   },
   
   invoke: function( data ){
-    controller.sharedInvokement("transferUnit",[ data.source.unitId, data.action.selectedSubEntry ]);
+    controller.sharedInvokement("transferUnit",[ 
+			data.source.unitId, 
+			data.action.selectedSubEntry 
+		]);
   }
   
 });

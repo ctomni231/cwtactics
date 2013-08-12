@@ -1,19 +1,17 @@
 controller.unitAction({
   
   key:"supplyUnit",
+	
+	relation: ["S","T",model.relationModes.NONE,model.relationModes.SAME_OBJECT],
   
   condition: function( data ){
-    if( !data.source.unit.type.supply ) return false;
-    
-    var pid = data.source.unit.owner;
-    var x = data.target.x;
-    var y = data.target.y;
-    
-    return model.relationShipCheckUnitNeighbours( pid, x, y, model.relationModes.OWN );
+		return model.hasSupplyTargetsNearby( data.source.unitId, data.target.x, data.target.y );
   },
   
   invoke: function( data ){
-    controller.sharedInvokement( "unitSuppliesNeighbours",[ data.source.unitId ]);
+    controller.sharedInvokement( "unitSuppliesNeighbours",[ 
+			data.source.unitId 
+		]);
   }
   
 });

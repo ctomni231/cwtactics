@@ -1,12 +1,11 @@
 controller.unitAction({
   
   key:"explode",
+	
+	relation: ["S","T",model.relationModes.NONE,model.relationModes.SAME_OBJECT],
   
   condition: function( data ){
-    var mode = data.thereIsUnitRelationShip( data.source, data.target );
-    if( mode !== model.relationModes.NONE && mode !== model.relationModes.SAME_OBJECT ) return false;
-    
-    return data.source.unit.type.suicide;
+    return model.isSuicideUnit( data.source.unitId );
   },
   
   invoke: function( data ){
