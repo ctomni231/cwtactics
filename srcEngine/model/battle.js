@@ -53,6 +53,10 @@ model.unitTypeParser.addHandler(function(sheet){
     }
 });
 
+model.isPeacePhaseActive = function(){
+	return ( model.day-1 < controller.configValue("daysOfPeace") );
+};
+
 model.tileTypeParser.addHandler(function(sheet){
   if(!util.expectNumber(sheet, "defense", true, true, 0, 6))return false;
 });

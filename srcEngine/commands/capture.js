@@ -2,17 +2,18 @@ controller.unitAction({
   
   key:"capture",
   
+	relation:["S","T",model.relationModes.SAME_OBJECT, model.relationModes.NONE],
+	relationToProp:["S","T",model.relationModes.ENEMY, model.relationModes.NONE],
+	
   condition: function( data ){
-    if( data.target.property === null ) return null;
-    
-    var modeProp = data.thereIsUnitToPropertyRelationShip( data.source, data.target );
-    if( modeProp !== model.relationModes.ENEMY && modeProp !== model.relationModes.NONE ) return false;
-    
-    return data.target.property.type.points > 0 && data.source.unit.type.captures > 0;
+		return model.propertyIsCapturableBy( data.target.propertyId, data.source.unitId );
   },
   
   invoke: function( data ){
-    controller.sharedInvokement("captureProperty",[ data.source.unitId, data.target.propertyId ]);
+    controller.sharedInvokement("captureProperty",[ 
+			data.source.unitId, 
+			data.target.propertyId 
+		]);
   }
   
 });

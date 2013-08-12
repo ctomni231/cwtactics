@@ -12,14 +12,17 @@ util.scoped(function() {
   // @param {Number} errorData error data id
   model.criticalError = function(errorId, errorData) {
 
-    // TODO: grab action stack data
-    var stackData = null;
+		// print stack trace in the active javaScript environment
+    console.trace();
+		
+		// TODO get action stack data 
+		var stackData = [];
 
-    // Invoke event     
+    // invoke event     
     controller.events.criticalError(errorId, errorData, stackData);
 
-    // Log error
-    util.error(errorId, errorData, stackData);
+    // log error
+    util.error(errorId, errorData, stackData );
   };
 
 });

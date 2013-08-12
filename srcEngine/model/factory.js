@@ -47,7 +47,12 @@ model.buildUnit = function( x, y, type ){
 
   // check money, if the buyer does not have enough money 
   // then the game state is broken
-  if( pl.gold < cost ) model.criticalError( constants.error.ILLEGAL_DATA, constants.error.NOT_ENOUGH_MONEY );
+  if( pl.gold < cost ){
+		model.criticalError( 
+			constants.error.ILLEGAL_DATA, 
+			constants.error.NOT_ENOUGH_MONEY 
+		)
+	};
 
   pl.gold -= cost;
 

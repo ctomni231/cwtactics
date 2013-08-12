@@ -251,6 +251,17 @@ model.resetCapturePoints = function( prid ){
 	controller.events.resetCapturePoints( prid );
 };
 
+// Returns true if the property can be captured by the unit, else 
+// ( no capturable and/or no capturing unit ) false.
+//
+// prid {Number} property id
+// captId {Number} capturer unit id
+//
+model.propertyIsCapturableBy = function( prid, captId ){
+	return model.properties[prid].type.points > 0 && 
+				 model.units[captId].type.captures > 0;
+};
+
 // Changes the type of a property object
 //
 // prid {Number} property id

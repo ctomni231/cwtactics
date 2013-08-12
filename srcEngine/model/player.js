@@ -13,7 +13,8 @@ model.relationModes = {
 	OWN:          1,
 	ALLIED:       2,
 	TEAM:         3,
-	ENEMY:        4
+	ENEMY:        4,
+	NULL:					5
 };
 
 /**
@@ -201,7 +202,7 @@ model.thereIsPropertyCheck = function( x,y,pid,mode ){
 model.relationShipCheck = function( pidA, pidB ){
 	
 	// none
-	if( pidA === null || pidB === null ) return model.relationModes.NONE;
+	if( pidA === null || pidB === null ) return model.relationModes.NULL;
 	if( pidA === -1   || pidB === -1   ) return model.relationModes.NONE;
 	if( model.players[pidA].team === -1 || model.players[pidB].team === -1 ) return model.relationModes.NONE;
 	

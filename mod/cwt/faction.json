@@ -2,27 +2,31 @@
 	"factions":[
 		
 		{
-			"ID":"ORST",
-			"name":"Orange Star",
-			"music":"OS_MUSIC"
+			"ID"		: "ORST",
+			"name"	: "Orange Star",
+			"color" : 0,
+			"music"	: "OS_MUSIC"
 		},
 		
 		{
-			"ID":"BLMN",
-			"name":"Blue Moon",
-			"music":"BM_MUSIC"
+			"ID"		: "BLMN",
+			"name"	: "Blue Moon",
+			"color" : 1,
+			"music"	: "BM_MUSIC"
 		},
 		
 		{
-			"ID":"GRET",
-			"name":"Green Earth",
-			"music":"GE_MUSIC"
+			"ID"		: "GRET",
+			"name"	: "Green Earth",
+			"color" : 2,
+			"music"	: "GE_MUSIC"
 		},
 		
 		{
-			"ID":"YLCM",
-			"name":"Yellow Comet",
-			"music":"YC_MUSIC"
+			"ID"		: "YLCM",
+			"name"	: "Yellow Comet",
+			"color" : 3,
+			"music"	: "YC_MUSIC"
 		}
 		
 	]

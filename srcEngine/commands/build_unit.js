@@ -5,9 +5,6 @@ controller.propertyAction({
   hasSubMenu: true,
   
   condition: function( data ){
-    var uLimit = controller.configValue("unitLimit");
-    if( uLimit && model.countUnits(model.turnOwner) >= uLimit ) return false;
-        
     if( !model.hasLeftManpower( model.turnOwner )  ) return false;
     if( !model.hasFreeUnitSlots( model.turnOwner ) ) return false;
     
@@ -45,7 +42,11 @@ controller.propertyAction({
   },
   
   invoke: function( data ){
-    controller.sharedInvokement("buildUnit", [ data.source.x, data.source.y, data.action.selectedSubEntry ]);
+    controller.sharedInvokement("buildUnit", [ 
+			data.source.x, 
+			data.source.y, 
+			data.action.selectedSubEntry 
+		]);
   }
   
 });

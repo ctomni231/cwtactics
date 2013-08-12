@@ -174,14 +174,27 @@ model.extractUnitId = function( unit ){
 // @returns {Boolean}
 // 
 model.hasFreeUnitSlots = function( pid ){
+	var uLimit = controller.configValue("unitLimit");
+	if( !uLimit ) uLimit = 9999999;
+	
   var i = model.getFirstUnitSlotId(pid);
   var e = model.getLastUnitSlotId(pid);
+	var count = 0;
+	var res = false;
   
   for( ; i<e; i++ ){
-    if( model.units[i].owner !== constants.INACTIVE_ID ) return true;
+		
+		// found slot
+    if( model.units[i].owner === constants.INACTIVE_ID ) res = true;
+		else{
+			count++;
+			
+			// no new units possible due unit limit
+			if( count >= uLimit ) return false;
+		}
   }
-  
-  return false;
+	
+  return res;
 };
 
 // Returns true if a given position is occupied by an unit, else false.
@@ -328,6 +341,23 @@ model.unhideUnit = function( uid ){
   model.units[uid].hidden = false;
   
   controller.events.unhideUnit( uid );
+};
+
+// Returns true if two units can join each other in the current 
+// situation, else false. Transporters cannot join each other when
+// they loaded units.
+//
+// @param {Number} juid id of the joining unit
+// @param {Number} jtuid id of the join target unit
+// 
+model.canJoin = function( juid, jtuid ){
+  var joinSource = model.units[juid];
+  var joinTarget = model.units[jtuid];
+
+  // no merge of transporters with loads
+  if( model.hasLoadedIds( juid ) || model.hasLoadedIds( jtuid ) ) return false;
+    
+  return ( joinSource.type === joinTarget.type && joinTarget.hp < 90 ); 
 };
 
 // Joins two units together. If the combined health is greater than the maximum health then the difference will be

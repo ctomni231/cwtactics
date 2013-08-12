@@ -27,10 +27,7 @@ controller.defineAction_ = function( impl ){
 
   // check action parameters
 
-  if( !impl.hasOwnProperty( "condition" ) ) model.criticalError(
-      constants.error.ILLEGAL_PARAMETERS,
-      constants.error.ACTION_CONDITION_MISSING
-      );
+  if( !impl.hasOwnProperty( "condition" ) ) impl.condition = null;
 
   if( !impl.hasOwnProperty( "key" ) ) model.criticalError(
       constants.error.ILLEGAL_PARAMETERS,

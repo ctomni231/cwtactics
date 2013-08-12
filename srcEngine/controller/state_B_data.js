@@ -216,6 +216,11 @@ controller.stateMachine.data = {
         if( property === null || property.owner !== model.turnOwner ) propertyActable = false;
 
         if( !unitActable && !propertyActable ) mapActable = true;
+				
+				var st_mode = data.thereIsUnitRelationShip( data.source, data.target );
+				var sst_mode = data.thereIsUnitRelationShip( data.source, data.selection );
+				var pr_st_mode = data.thereIsUnitToPropertyRelationShip( data.source, data.target );
+				var pr_sst_mode = data.thereIsUnitToPropertyRelationShip( data.source, data.selection );
 
         for( var i = 0, e = commandKeys.length; i < e; i++ ) {
           var action = controller.actionObjects[commandKeys[i]];
@@ -224,12 +229,57 @@ controller.stateMachine.data = {
           if( !action.condition ) continue;
 
           // pre defined checkers
-          if( action.unitAction === true && !unitActable ) continue;
-          if( action.propertyAction === true && !propertyActable ) continue;
-          if( action.mapAction === true && !mapActable ) continue;
+					if( action.unitAction ){
+						if( !unitActable ) continue;
+    				
+						// relation to unit
+						if( action.relation ){
+							var checkMode = null;
+							if( 	 	 action.relation[0] === "S" && action.relation[0] === "T"  ) checkMode = st_mode;
+							else if( action.relation[0] === "S" && action.relation[0] === "ST" ) checkMode = sst_mode;
+							else model.criticalError( constants.error.UNKNOWN,constants.error.UNKNOWN );
+							
+							var result = false;
+							for( var i=2, e=action.relation.length; i<e; i++ ){
+								if( action.relation[i] === checkMode ) result = true;
+							}
+							
+							if( !result ) continue;
+						}
+						
+						// relation to property
+						if( action.relationToProp ){
+							var checkMode = null;
+							if( action.relation[0] === "S" && action.relationToProp[0] === "T"  ){
+								checkMode = pr_st_mode;
+							}
+							else if( action.relation[0] === "S" && action.relationToProp[0] === "ST" ){
+								checkMode = pr_sst_mode;
+							}
+							else model.criticalError( constants.error.UNKNOWN,constants.error.UNKNOWN );
+							
+							var result = false;
+							for( var i=2, e=action.relationToProp.length; i<e; i++ ){
+								if( action.relationToProp[i] === checkMode ) result = true;
+							}
+							
+							if( !result ) continue;
+						}
+					}
+					
+          // pre defined checkers
+					if( action.propertyAction ){
+						if( !propertyActable ) continue;
+					}
 
-          // if the condition matches then add the entry to the menu list
-          if( action.condition( data ) ) data.menu.addEntry( commandKeys[i] );
+          // pre defined checkers
+          if( action.mapAction 			=== true && !mapActable ) continue;
+
+          // if no condition is set or the condition matches 
+					// then add the entry to the menu list
+          if( !action.condition || action.condition( data ) ){
+						data.menu.addEntry( commandKeys[i] );
+					}
         }
       };
     } )
