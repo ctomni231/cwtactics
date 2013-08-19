@@ -1,6 +1,6 @@
-controller.screenStateMachine.data.openedSection = null;
+controller.openedSection = null;
   
-controller.screenStateMachine.data.openSection = function( id ){
+controller.openSection = function( id ){
   var element = document.getElementById(id);
   if( !element ) util.raiseError("unknown id",id);
 

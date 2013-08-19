@@ -36,6 +36,7 @@ var constants = {
     STM_INVALID_NEXT_STATE:         91,
     STM_ACTIONSTATE_BREAKS_TRANS:   92,
     STM_NEXT_STATE_MISSING:         93,
+    STM_STILL_IN_INITIAL_STATE: 		94,
 
     // #### Error data numbers
 

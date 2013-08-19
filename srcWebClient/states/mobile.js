@@ -1,9 +1,9 @@
 controller.screenStateMachine.structure.MOBILE = Object.create(controller.stateParent);
 
-controller.screenStateMachine.structure.MOBILE.onenter = function(){
-  this.data.openSection(ID_ELMT_SECTION_MOBILE);
-  
-  var button = document.getElementById(ID_ELMT_SECTION_MOBILE_NEXT);
+controller.screenStateMachine.structure.MOBILE.section = "cwt_mobileSound_screen";
+
+controller.screenStateMachine.structure.MOBILE.enterState = function(){
+  var button = document.getElementById("mobileSoundNext");
   button.innerHTML = model.localized( button.attributes.key.value );
 };
 

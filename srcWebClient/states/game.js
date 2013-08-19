@@ -52,8 +52,9 @@ util.scoped(function(){
   
   controller.screenStateMachine.structure.GAMEROUND = Object.create(controller.stateParent);
   
-  controller.screenStateMachine.structure.GAMEROUND.onenter = function(){
-    this.data.openSection( ID_MENU_SECTION_GAME );
+	controller.screenStateMachine.structure.GAMEROUND.section = "cwt_game_screen";
+	
+  controller.screenStateMachine.structure.GAMEROUND.enterState = function(){
     controller.storage.get( this.data.mapToLoad, loadMapCb );
   };
   

@@ -6,6 +6,13 @@ util.scoped(function(){
   
   controller.stateParent = {
     
+		onenter: function(){
+			controller.openSection( this.structure[this.state].section );
+			if( this.structure[this.state].enterState ){
+				this.structure[this.state].enterState.apply( this, arguments );
+			}
+		},
+		
     // MOVEMENT
     UP:        dropInputCommand,
     LEFT:      dropInputCommand,
@@ -24,5 +31,7 @@ util.scoped(function(){
     ACTION:   dropInputCommand,
     CANCEL:   dropInputCommand,
     HOVER:    dropInputCommand,
+		
+		onerror: controller.haltEngine
   };
 });

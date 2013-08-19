@@ -3,12 +3,12 @@ controller.loadError = null;
 util.scoped(function(){
   
   var elements = [
-    document.getElementById(ID_ELMT_SECTION_MAIN_BTN_1),
-    document.getElementById(ID_ELMT_SECTION_MAIN_BTN_2),
-    document.getElementById(ID_ELMT_SECTION_MAIN_BTN_3),
-    document.getElementById(ID_ELMT_SECTION_MAIN_BTN_4),
-    document.getElementById(ID_ELMT_SECTION_MAIN_BTN_5),
-    document.getElementById(ID_ELMT_SECTION_MAIN_BTN_6)
+    document.getElementById("main_screen_enter_1"),
+    document.getElementById("main_screen_enter_2"),
+    document.getElementById("main_screen_enter_3"),
+    document.getElementById("main_screen_enter_4"),
+    document.getElementById("main_screen_enter_5"),
+    document.getElementById("main_screen_enter_6")
   ];
   
   var index = -1;
@@ -63,7 +63,9 @@ util.scoped(function(){
   
   controller.screenStateMachine.structure.MAIN = Object.create(controller.stateParent);
   
-  controller.screenStateMachine.structure.MAIN.onenter = function(){
+	controller.screenStateMachine.structure.MAIN.onenter = "cwt_main_screen";
+	
+  controller.screenStateMachine.structure.MAIN.enterState = function(){
     controller.playEmptyAudio();
     controller.playMusic("BG");
     

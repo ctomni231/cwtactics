@@ -10,12 +10,12 @@ util.scoped(function(){
   
   var index = -1;
   var elements = [
-    document.getElementById(ID_ELMT_OTIONS_SFX_VOL),
-    document.getElementById(ID_ELMT_OTIONS_MUSIC_VOL),
-    document.getElementById(ID_ELMT_OTIONS_RESET),
+    document.getElementById("cwt_options_sfxVolume"),
+    document.getElementById("cwt_options_musicVolume"),
+    document.getElementById("cwt_options_reset"),
     document.getElementById("cwt_options_mapIn"),
     document.getElementById("cwt_options_addMap"),
-    document.getElementById(ID_ELMT_OTIONS_GOBACK)
+    document.getElementById("cwt_options_goBack")
   ];
   
   var label1 = document.getElementById("cwt_options_sfxVolume_desc");
@@ -27,7 +27,7 @@ util.scoped(function(){
   var nodeSfx   = document.getElementById( "cwt_options_sfxVolume" );
   var nodeMusic = document.getElementById( "cwt_options_musicVolume" );
   
-  var modText = document.getElementById( ID_ELMT_OTIONS_MOD_INFO );
+  var modText = document.getElementById( "cwt_options_modPath" );
   
   function register(i){
     elements[i].onmouseover = function(){
@@ -44,7 +44,9 @@ util.scoped(function(){
   
   controller.screenStateMachine.structure.OPTIONS = Object.create(controller.stateParent);
   
-  controller.screenStateMachine.structure.OPTIONS.onenter = function(){
+	controller.screenStateMachine.structure.OPTIONS.section = "cwt_options_screen";
+	
+  controller.screenStateMachine.structure.OPTIONS.enterState = function(){
     
     // SET LOCALIZED BUTTONS
     label1.innerHTML = model.localized( label1.attributes.key.value );
@@ -53,7 +55,6 @@ util.scoped(function(){
     label4.innerHTML = model.localized( label4.attributes.key.value );
     label5.innerHTML = model.localized( label5.attributes.key.value );
     
-    this.data.openSection( ID_MENU_SECTION_OPTIONS );
     if( index !== -1 && index !== 3 ) elements[index].className = "menuButton";
     
     index = 0;
@@ -88,13 +89,13 @@ util.scoped(function(){
     
     switch( selectedId ){
         
-      case ID_ELMT_OTIONS_MOD_TAKE: 
+      case "cwt_options_modPath_take": 
         var content = modText.value;
         controller.storage.set("modificationPath",content, saveComplete );
         controller.storage.set("resetDataAtStart",{value:true}, wipeComplete );
         break;
         
-      case ID_ELMT_OTIONS_RESET:
+      case "cwt_options_reset":
         controller.storage.set("resetDataAtStart",{value:true}, wipeComplete );
         break;
         
@@ -114,7 +115,7 @@ util.scoped(function(){
         });
         break;
         
-      case ID_ELMT_OTIONS_GOBACK: 
+      case "cwt_options_goBack": 
         controller.saveSoundConfigs();
         return "MAIN";
     }
@@ -127,12 +128,12 @@ util.scoped(function(){
     
     switch( selectedId ){
         
-      case ID_ELMT_OTIONS_SFX_VOL:
+      case "cwt_options_sfxVolume":
         controller.setSfxVolume( controller.getSfxVolume()-0.05 );
         nodeSfx.innerHTML = Math.round(controller.getSfxVolume()*100);
         break;
         
-      case ID_ELMT_OTIONS_MUSIC_VOL:
+      case "cwt_options_musicVolume":
         controller.setMusicVolume( controller.getMusicVolume()-0.05 );
         nodeMusic.innerHTML = Math.round(controller.getMusicVolume()*100);
         break;
@@ -146,12 +147,12 @@ util.scoped(function(){
     
     switch( selectedId ){
         
-      case ID_ELMT_OTIONS_SFX_VOL:
+      case "cwt_options_sfxVolume":
         controller.setSfxVolume( controller.getSfxVolume()+0.05 );
         nodeSfx.innerHTML = Math.round(controller.getSfxVolume()*100);
         break;
         
-      case ID_ELMT_OTIONS_MUSIC_VOL:
+      case "cwt_options_musicVolume":
         controller.setMusicVolume( controller.getMusicVolume()+0.05 );
         nodeMusic.innerHTML = Math.round(controller.getMusicVolume()*100);
         break;

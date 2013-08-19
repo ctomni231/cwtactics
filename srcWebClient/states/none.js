@@ -2,7 +2,8 @@ controller.screenStateMachine.structure.NONE = Object.create(controller.statePar
 
 controller.screenStateMachine.structure.NONE.start = function(){
   
-  window.onerror = function( e ){
+	// registers generic error listener
+	window.onerror = function( e ){
     model.criticalError(
       constants.error.UNKNOWN,
       constants.error.NON_CAUGHT_ERROR
@@ -10,6 +11,6 @@ controller.screenStateMachine.structure.NONE.start = function(){
       
     console.error("FOUND ERROR: "+e);
   };
-  
-  return "LOAD"; 
+	
+	return "LOAD"; 
 };

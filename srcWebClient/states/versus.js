@@ -12,9 +12,9 @@ util.scoped(function(){
   
   controller.screenStateMachine.structure.VERSUS = Object.create(controller.stateParent);
   
-  controller.screenStateMachine.structure.VERSUS.onenter = function(){
-    this.data.openSection("cwt_versus_screen");
-    
+	controller.screenStateMachine.structure.VERSUS.section = "cwt_versus_screen";
+	
+  controller.screenStateMachine.structure.VERSUS.enterState = function(){
     startButton.innerHTML = model.localized( startButton.attributes.key.value );
     
     mapIndex = 0;

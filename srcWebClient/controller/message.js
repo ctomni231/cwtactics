@@ -1,6 +1,6 @@
 util.scoped(function(){
   
-  var panel = document.getElementById("cwt_info_box");
+  var panel 		 = document.getElementById("cwt_info_box");
   var contentDiv = document.getElementById("cwt_info_box_content");
   
   var DEFAULT_MESSAGE_TIME = 1000;

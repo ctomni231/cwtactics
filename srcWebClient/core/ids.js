@@ -1,28 +1,10 @@
-/* VERSION SCREEN */
 
-var ID_MENU_SECTION_VERSION = "cwt_versus_screen";
-var ID_ELMT_SECTION_VERSION_LIST = "map_selection_field";
-var ID_ELMT_SECTION_VERSION_START = "versus_start";
-
-/* MOBILE SCREEN */
-
-var ID_ELMT_SECTION_MOBILE = "cwt_mobileSound_screen";
-var ID_ELMT_SECTION_MOBILE_NEXT = "mobileSoundNext";
-
-/* LOAD SCREEN */
 
 var ID_MENU_SECTION_LOAD = "cwt_load_screen";
 
 /* MAIN SCREEN */
 
-var ID_MENU_SECTION_MAIN = "cwt_main_screen";
 var ID_ELMT_SECTION_MAIN_ERROR = "main_screen_error_msg";
-var ID_ELMT_SECTION_MAIN_BTN_1 = "main_screen_enter_1";
-var ID_ELMT_SECTION_MAIN_BTN_2 = "main_screen_enter_2";
-var ID_ELMT_SECTION_MAIN_BTN_3 = "main_screen_enter_3";
-var ID_ELMT_SECTION_MAIN_BTN_4 = "main_screen_enter_4";
-var ID_ELMT_SECTION_MAIN_BTN_5 = "main_screen_enter_5";
-var ID_ELMT_SECTION_MAIN_BTN_6 = "main_screen_enter_6";
 
 /* GAME SCREEN */
 

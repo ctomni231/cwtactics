@@ -1,0 +1,96 @@
+util.scoped(function(){
+	var INPUT_KEYBOARD_CODE_LEFT  = 37;
+	var INPUT_KEYBOARD_CODE_UP    = 38;
+	var INPUT_KEYBOARD_CODE_RIGHT = 39;
+	var INPUT_KEYBOARD_CODE_DOWN  = 40;
+	
+	var INPUT_KEYBOARD_CODE_BACKSPACE = 8;
+	var INPUT_KEYBOARD_CODE_ENTER = 13;
+	
+	var INPUT_KEYBOARD_CODE_M = 77;
+	var INPUT_KEYBOARD_CODE_N = 78;
+	
+	var INPUT_KEYBOARD_CODE_1 = 49;
+	var INPUT_KEYBOARD_CODE_2 = 50;
+	var INPUT_KEYBOARD_CODE_3 = 51;
+	var INPUT_KEYBOARD_CODE_4 = 52;
+	var INPUT_KEYBOARD_CODE_5 = 53;
+	var INPUT_KEYBOARD_CODE_6 = 54;
+	
+	var INPUT_KEYBOARD_CODE_TAB = 9;
+	
+	controller.setupKeyboardControls = function( canvas, menuEl ){
+		if( constants.DEBUG ) util.log("initializing keyboard support");
+		
+		// KEY DOWN
+		document.onkeydown = function( ev ){
+			var code = ev.keyCode;
+			if( event.target.id === "cwt_options_mapIn" ){
+				switch( code ){            
+					case INPUT_KEYBOARD_CODE_UP:
+						controller.screenStateMachine.event("UP",1);
+						return false;
+						
+					case INPUT_KEYBOARD_CODE_DOWN:
+						controller.screenStateMachine.event("DOWN",1);
+						return false;
+				}
+				return true;
+			} 
+			
+			switch( code ){
+					
+				case INPUT_KEYBOARD_CODE_1:
+					controller.screenStateMachine.event("SPECIAL_1");
+					return false;
+					
+				case INPUT_KEYBOARD_CODE_2:
+					controller.screenStateMachine.event("SPECIAL_2");
+					return false;
+					
+				case INPUT_KEYBOARD_CODE_3:
+					controller.screenStateMachine.event("SPECIAL_3");
+					return false;
+					
+				case INPUT_KEYBOARD_CODE_4:
+					controller.screenStateMachine.event("SPECIAL_4");
+					return false;
+					
+				case INPUT_KEYBOARD_CODE_5:
+					controller.screenStateMachine.event("SPECIAL_5");
+					return false;
+					
+				case INPUT_KEYBOARD_CODE_6:
+					controller.screenStateMachine.event("SPECIAL_6");
+					return false;
+					
+				case INPUT_KEYBOARD_CODE_LEFT:
+					controller.screenStateMachine.event("LEFT",1);
+					return false;
+					
+				case INPUT_KEYBOARD_CODE_UP:
+					controller.screenStateMachine.event("UP",1);
+					return false;
+					
+				case INPUT_KEYBOARD_CODE_RIGHT:
+					controller.screenStateMachine.event("RIGHT",1);
+					return false;
+					
+				case INPUT_KEYBOARD_CODE_DOWN:
+					controller.screenStateMachine.event("DOWN",1);
+					return false;
+					
+				case INPUT_KEYBOARD_CODE_BACKSPACE:
+					controller.screenStateMachine.event("CANCEL");
+					return false;
+					
+				case INPUT_KEYBOARD_CODE_ENTER:
+					controller.screenStateMachine.event("ACTION");
+					return false;
+			}
+			
+			return true;
+		};
+		
+	};
+});

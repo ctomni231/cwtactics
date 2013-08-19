@@ -168,6 +168,10 @@ controller.stateMachine.data = {
     //   size is 3
     //   
     data: util.list( 20, null ),
+		
+		enabled: util.list( 20, null ),
+		
+		extraData: util.list( 20, null ),
       
     // Size of the menu.
     // 
@@ -177,12 +181,19 @@ controller.stateMachine.data = {
     // 
     // @param {Object} entry
     // 
-    addEntry: function( entry ){
+    addEntry: function( entry, enabled, extraData ){
       if( this.size === this.data.length ) {
         util.raiseError();
       }
 
       this.data[ this.size ] = entry;
+			
+			if( enabled !== false ) enabled = true;
+			this.enabled[ this.size ] = entry;
+			
+			if( !extraData ) extraData = null;
+			this.extraData[ this.size ] = extraData;
+			
       this.size++;
     },
       

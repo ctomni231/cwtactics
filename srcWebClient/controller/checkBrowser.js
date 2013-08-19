@@ -1,29 +1,41 @@
-controller.isEnvironmentSupported = function(){
-  if( constants.DEBUG ) util.log("checking HTML and Javascript environment");
-  
-  var notSupported = true;
-  var browser = head.browser;
+controller.clientFeatures = {
+	audioSFX: 	false,
+	audioMusic: false,
+	gamePad: 		false,
+	keyboard:		false,
+	mouse:			false,
+	touch:			false,
+	supported:  false
+};
 
-  if( head.mobile ){
-
-    // MOBILE
-    if( browser.ios    && browser.version >= 6                     ) notSupported = false;
-    if( browser.android && browser.version >= 4 )                    notSupported = false;
-    if( browser.safari && browser.version >= 6                     ) notSupported = false;
-    if( browser.chrome && browser.version >= 18 )                    notSupported = false;
-    if( browser.ff     && browser.version >= 17 ) notSupported = false;
-  }
-  else{
-
-    // DESKTOP
-    if( browser.ie     && browser.version >= 9  ) notSupported = false;
-    if( browser.safari && browser.version >= 6  ) notSupported = false;
-    if( browser.chrome && browser.version >= 18 ) notSupported = false;
-    if( browser.ff     && browser.version >= 17 ) notSupported = false;
-  }
-
-  if( constants.DEBUG ) util.log("brower is",((notSupported)?"not supported":"supported"));
-  if( notSupported ) alert("Attention!\nYour browser is not supported! --> "+JSON.stringify(browser) );
-
-  return notSupported === true;
+controller.calculateEnvironmentFeatures = function(){
+	
+	// Mobile Browser
+	if( Browser.mobile ){
+		
+		// ios has *A* support
+		if( Browser.ios ){
+			if( Browser.version >= 5 ) controller.clientFeatures.supported = true;
+			if( Browser.version >= 6 ) controller.clientFeatures.audioSFX = true;
+		} 
+		else if( Browser.android ){
+			controller.clientFeatures.supported = true;
+		}
+			
+		controller.clientFeatures.touch = true;
+	}
+	// Desktop Browser
+	else{
+		
+		// chrome has *A* support
+		if( Browser.chrome ){
+			controller.clientFeatures.supported = true;
+			controller.clientFeatures.audioSFX = true;
+			controller.clientFeatures.audioMusic = true;
+			controller.clientFeatures.gamePad = true;
+		}
+		
+		controller.clientFeatures.mouse = true;
+		controller.clientFeatures.keyboard = true;
+	}
 };
