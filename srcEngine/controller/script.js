@@ -62,9 +62,9 @@ controller.defineGameConfig = function( name, min, max, def, step ){
   
   // check meta data
   if( max < min ||
-      def < min ||
-      def > max ){
-      
+     def < min ||
+     def > max ){
+    
     model.criticalError(
       constants.error.ILLEGAL_PARAMETERS,
       constants.error.ILLEGAL_CONFIG_VAR_DEFINTION
@@ -83,13 +83,14 @@ controller.defineGameConfig = function( name, min, max, def, step ){
 //
 controller.buildRoundConfig = function( cfg ){
   var boundaries = controller.configBoundaries_;
+  model.configRule = {};
   
   var keys = Object.keys(boundaries);
   for( var i=0,e=keys.length; i<e; i++ ){
     var key = keys[i];
     
     var value;
-    if( cfg.hasOwnProperty(key) ){
+    if( cfg && cfg.hasOwnProperty(key) ){
       value = cfg[key];
       
       // CHECK MIN MAX

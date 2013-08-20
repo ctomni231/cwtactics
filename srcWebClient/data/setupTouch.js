@@ -99,14 +99,14 @@ controller.setupTouchControls = function( canvas, menuEl ){
 						if( dx > dy ){
 							
 							// LEFT OR RIGHT
-							if( sx > ex ) mode = "LEFT";
-							else mode = "RIGHT";
+							if( sx > ex ) mode = "INP_LEFT";
+							else mode = "INP_RIGHT";
 						}
 						else{
 							
 							// UP OR DOWN
-							if( sy > ey ) mode = "UP";
-							else mode = "DOWN";
+							if( sy > ey ) mode = "INP_UP";
+							else mode = "INP_DOWN";
 						}
 						
 						// RESET META DATA AND SET START POSITION TO THE 
@@ -148,26 +148,26 @@ controller.setupTouchControls = function( canvas, menuEl ){
 						if( dx > dy ){
 							
 							// LEFT OR RIGHT
-							if( sx > ex ) mode = "SPECIAL_2";
-							else mode = "SPECIAL_1";
+							if( sx > ex ) mode = "INP_SPECIAL_2";
+							else mode = "INP_SPECIAL_1";
 						}
 						else{
 							
 							// UP OR DOWN
-							if( sy > ey ) mode = "SPECIAL_3";
-							else mode = "SPECIAL_4";
+							if( sy > ey ) mode = "INP_SPECIAL_3";
+							else mode = "INP_SPECIAL_4";
 						}
 						
 						controller.screenStateMachine.event( mode );
 					}
-					else controller.screenStateMachine.event("CANCEL"); 
+					else controller.screenStateMachine.event("INP_CANCEL"); 
 				}
 				else{
 					if( pinDis2<pinDis ){
-						controller.screenStateMachine.event("SPECIAL_6"); 
+						controller.screenStateMachine.event("INP_SPECIAL_6"); 
 					}
 					else{
-						controller.screenStateMachine.event("SPECIAL_5"); 
+						controller.screenStateMachine.event("INP_SPECIAL_5"); 
 					}
 				}
 				
@@ -185,7 +185,7 @@ controller.setupTouchControls = function( canvas, menuEl ){
 					
 					// SHORT TIME GAP MEAN TAP
 					if( timeDiff <= 500 ){
-						controller.screenStateMachine.event("ACTION"); 
+						controller.screenStateMachine.event("INP_ACTION"); 
 						//}
 						// ELSE CANCEL IF YOU AREN'T IN A DRAG SESSION
 						//else if( !isDrag ){
@@ -200,14 +200,14 @@ controller.setupTouchControls = function( canvas, menuEl ){
 					if( dx > dy ){
 						
 						// LEFT OR RIGHT
-						if( sx > ex ) mode = "LEFT";
-						else mode = "RIGHT";
+						if( sx > ex ) mode = "INP_LEFT";
+						else mode = "INP_RIGHT";
 					}
 					else{
 						
 						// UP OR DOWN
-						if( sy > ey ) mode = "UP";
-						else mode = "DOWN";
+						if( sy > ey ) mode = "INP_UP";
+						else mode = "INP_DOWN";
 					}
 					
 					controller.screenStateMachine.event( mode ,1);

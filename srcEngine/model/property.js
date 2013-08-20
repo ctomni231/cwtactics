@@ -17,12 +17,12 @@ controller.defineGameScriptable( "funds", 1, 99999 );
 controller.defineGameConfig( "captureLimit", 0, constants.MAX_PROPERTIES, 0 );
 
 model.unitTypeParser.addHandler( function( sheet ){
-	if( !util.expectNumber( sheet, "captures", false, true, 1, 10 ) ) return false;
+  if( !util.expectNumber( sheet, "captures", false, true, 1, 10 ) ) return false;
 } );
 
 model.tileTypeParser.addHandler( function( sheet ){
-	if( !util.expectNumber( sheet, "points", false, true, 1, 100 ) ) return false;
-	if( !util.expectNumber( sheet, "funds", false, true, 10, 99999 ) ) return false;
+  if( !util.expectNumber( sheet, "points", false, true, 1, 100 ) ) return false;
+  if( !util.expectNumber( sheet, "funds", false, true, 10, 99999 ) ) return false;
 } );
 
 // ---
@@ -33,86 +33,87 @@ model.tileTypeParser.addHandler( function( sheet ){
 // used it will be marked with an owner value {@link CWT_INACTIVE_ID}.
 //
 model.properties = util.list( constants.MAX_PROPERTIES + 1, function(){
-	return {
-		capturePoints: 20,
-		owner: -1,
-		x: 0,
-		y: 0,
-		type: null
-	};
+  return {
+    capturePoints: 20,
+    owner: -1,
+    x: 0,
+    y: 0,
+    type: null
+  };
 } );
 
 model.propertyPosMap = util.matrix( constants.MAX_MAP_WIDTH, constants.MAX_MAP_HEIGHT, null );
 
 // Defines a persistence handler
 controller.persistenceHandler(
-	// load
-	function( dom ){
-		
-		// reset all properties in the model
-		for( var i = 0, e = model.properties.length; i < e; i++ ) model.properties[i].owner = constants.INACTIVE_ID;
-		
-		// set properties of the given document 
-		// model
-		for( var i = 0, e = dom.prps.length; i < e; i++ ) {
-			var data = dom.prps[i];
-			
-			// check data
-			var fail = false;
-			if( !fail && !util.expectNumber( data, 0, true, true, 0, constants.MAX_PLAYER ) ) fail = true;
-			if( !fail && !util.expectNumber( data, 5, true, true, 0, constants.MAX_PLAYER ) ) fail = true;
-			
-			// TODO: check by map sizes
-			if( !fail && !util.expectNumber( data, 1, true, true, 0, constants.MAX_MAP_WIDTH - 1 ) ) fail = true;
-			if( !fail && !util.expectNumber( data, 2, true, true, 0, constants.MAX_MAP_HEIGHT - 1 ) ) fail = true;
-			
-			// must be a property with capture points
-			if( !fail && !util.expectString( data, 3, true ) && util.notIn( data[3], model.tileTypes ) ) fail = true;
-			if( !model.tileTypes[data[3]].capturePoints || !model.tileTypes[data[3]].capturePoints <= 0 ) fail = true;
-			
-			// given points must be between 1 and max capturePoints of the type
-			if( !fail && !util.expectNumber( data, 4, true, true, 1, model.tileTypes[data[3]].capturePoints ) ) fail = true;
-			
-			// call error when data is illegal
-			if( fail ) {
-				model.criticalError( constants.error.ILLEGAL_MAP_FORMAT, constants.error.SAVEDATA_PLAYER_MISSMATCH );
-			}
-			
-			var property = model.properties[ data[0] ];
-			
-			// inject data into object
-			property.type = model.tileTypes[data[3]];
-			property.capturePoints = data[4];
-			property.owner = data[5];
-			property.x = data[1];
-			property.y = data[2];
-			
-			model.propertyPosMap[ data[1] ][ data[2] ] = property;
-		}
-	},
-	
-	// save
-	function( dom ){
-		var prop;
-		
-		dom.prps = [ ];
-		for( var i = 0, e = model.properties.length; i < e; i++ ) {
-			prop = model.properties[i];
-			
-			// persist it if the owner of the property is
-			// not INACTIVE
-			if( prop.owner !== constants.INACTIVE_ID ) {
-				dom.properties.push( [
-					i,
-					prop.x,
-					prop.y,
-					prop.type.ID,
-					prop.capturePoints,
-					prop.owner
-				] );
-			}
-		}
-	}
+  // load
+  function( dom ){
+    
+    // reset all properties in the model
+    for( var i = 0, e = model.properties.length; i < e; i++ ) model.properties[i].owner = constants.INACTIVE_ID;
+    
+    // set properties of the given document 
+    // model
+    for( var i = 0, e = dom.prps.length; i < e; i++ ) {
+      var data = dom.prps[i];
+      
+      // check data
+      var fail = false;
+      if( !fail && !util.expectNumber( data, 0, true, true, 0, constants.MAX_PROPERTIES-1 ) ) fail = true;
+      if( !fail && !util.expectNumber( data, 5, true, true, -1, constants.MAX_PLAYER-1 ) ) fail = true;
+      
+      // TODO: check by map sizes
+      if( !fail && !util.expectNumber( data, 1, true, true, 0, constants.MAX_MAP_WIDTH-1 ) ) fail = true;
+      if( !fail && !util.expectNumber( data, 2, true, true, 0, constants.MAX_MAP_HEIGHT-1 ) ) fail = true;
+      
+      // must be a property with capture points
+      if( !fail && !util.expectString( data, 3, true ) ) fail = true;
+      if( model.tileTypes[data[3]].capturePoints ){
+        
+        // given points must be between 1 and max capturePoints of the type
+        if( !fail && !util.expectNumber( data, 4, true, true, 1, model.tileTypes[data[3]].capturePoints ) ) fail = true;
+      }
+      
+      // call error when data is illegal
+      if( fail ) {
+        model.criticalError( constants.error.ILLEGAL_MAP_FORMAT, constants.error.SAVEDATA_PLAYER_MISSMATCH );
+      }
+      
+      var property = model.properties[ data[0] ];
+      
+      // inject data into object
+      property.type = model.tileTypes[data[3]];
+      property.capturePoints = data[4];
+      property.owner = data[5];
+      property.x = data[1];
+      property.y = data[2];
+      
+      model.propertyPosMap[ data[1] ][ data[2] ] = property;
+    }
+  },
+  
+  // save
+  function( dom ){
+    var prop;
+    
+    dom.prps = [ ];
+    for( var i = 0, e = model.properties.length; i < e; i++ ) {
+      prop = model.properties[i];
+      
+      // persist it if the owner of the property is
+      // not INACTIVE
+      if( prop.owner !== constants.INACTIVE_ID ) {
+        dom.properties.push( [
+          i,
+          prop.x,
+          prop.y,
+          prop.type.ID,
+          prop.capturePoints,
+          prop.owner
+        ] );
+      }
+    }
+  }
 );
 
 // ---
@@ -124,7 +125,7 @@ controller.persistenceHandler(
 //
 // @param {Number} prid property id
 model.getPropertyByPos = function( x, y ){
-	/*var props = model.properties;
+  /*var props = model.properties;
        var prop;
        
        for( var i = 0, e = props.length; i < e; i++ ) {
@@ -134,8 +135,8 @@ model.getPropertyByPos = function( x, y ){
        }
        
        return null;*/
-			return model.propertyPosMap[x][y];
-		};
+  return model.propertyPosMap[x][y];
+};
 
 // Matrix that has the same metrics as the game map. Every property will be 
 // placed in the cell that represents its position. A property will be 
@@ -153,7 +154,7 @@ model.getPropertyByPos = function( x, y ){
 // @param {Number} y y coordinate
 //
 model.isPropertyTile = function( x, y ){
-	return model.getPropertyByPos( x, y ) !== null;
+  return model.getPropertyByPos( x, y ) !== null;
 };
 
 // Extracts the identical number from a property object.
@@ -161,16 +162,16 @@ model.isPropertyTile = function( x, y ){
 // @param property
 //
 model.extractPropertyId = function( property ){
-	var index = model.properties.indexOf( property );
-	
-	// check result index when -1 then 
-	// the property object does not exists
-	if( index === -1 ) model.criticalError(
-		constants.error.ILLEGAL_PARAMETERS,
-		constants.error.PROPERTY_NOT_FOUND
-	);
-	
-	return index;
+  var index = model.properties.indexOf( property );
+  
+  // check result index when -1 then 
+  // the property object does not exists
+  if( index === -1 ) model.criticalError(
+    constants.error.ILLEGAL_PARAMETERS,
+    constants.error.PROPERTY_NOT_FOUND
+  );
+  
+  return index;
 };
 
 // Counts all properties owned by the player with the given player id.
@@ -178,20 +179,20 @@ model.extractPropertyId = function( property ){
 // @param {Number} pid player id
 //
 model.countPropertiesOfPlayer = function( pid ){
-	
-	// player must be valid and alive
-	if( !model.isValidPlayerId( pid ) ) model.criticalError( -1, -1 );
-	
-	var n = 0;
-	
-	var props = model.properties;
-	for( var i = 0, e = props.length; i < e; i++ ) {
-		
-		// count all properties that belongs to the selected pid
-		if( props[i].owner === pid ) n++;
-	}
-	
-	return n;
+  
+  // player must be valid and alive
+  if( !model.isValidPlayerId( pid ) ) model.criticalError( -1, -1 );
+  
+  var n = 0;
+  
+  var props = model.properties;
+  for( var i = 0, e = props.length; i < e; i++ ) {
+    
+    // count all properties that belongs to the selected pid
+    if( props[i].owner === pid ) n++;
+  }
+  
+  return n;
 };
 
 // Lets an unit captures a property. If the capture points of the property falls to zero then the owner of the 
@@ -201,44 +202,44 @@ model.countPropertiesOfPlayer = function( pid ){
 // @param {Number} prid id of the property 
 //
 model.captureProperty = function( cid, prid ){
-	var selectedUnit = model.units[cid];
-	var property = model.properties[prid];
-	var points = parseInt( selectedUnit.hp / 10, 10 ) + 1;
-	
-	property.capturePoints -= points;
-	if( property.capturePoints <= 0 ) {
-		var x = property.x;
-		var y = property.y;
-		
-		if( DEBUG ) util.log( "property", prid, "captured by", cid );
-		
-		model.modifyVisionAt( x, y, property.type.vision, 1 );
-		
-		// loose conditional property ?
-		if( property.type.looseAfterCaptured === true ) {
-			var pid = property.owner;
-			model.playerLooses( pid );
-		}
-		
-		// change type after capture ?
-		var changeType = property.type.changeAfterCaptured;
-		if( typeof changeType !== "undefined" ) {
-			model.changePropertyType( prid, changeType );
-		}
-		
-		// set new meta data
-		property.capturePoints = 20;
-		property.owner = selectedUnit.owner;
-		
-		// when capture limit is reached then 
-		// the game round ends
-		var capLimit = controller.configValue( "captureLimit" );
-		if( capLimit !== 0 && model.countProperties() >= capLimit ) {
-			controller.endGameRound();
-		}
-	}
-	
-	controller.events.captureProperty( uid );
+  var selectedUnit = model.units[cid];
+  var property = model.properties[prid];
+  var points = parseInt( selectedUnit.hp / 10, 10 ) + 1;
+  
+  property.capturePoints -= points;
+  if( property.capturePoints <= 0 ) {
+    var x = property.x;
+    var y = property.y;
+    
+    if( DEBUG ) util.log( "property", prid, "captured by", cid );
+    
+    model.modifyVisionAt( x, y, property.type.vision, 1 );
+    
+    // loose conditional property ?
+    if( property.type.looseAfterCaptured === true ) {
+      var pid = property.owner;
+      model.playerLooses( pid );
+    }
+    
+    // change type after capture ?
+    var changeType = property.type.changeAfterCaptured;
+    if( typeof changeType !== "undefined" ) {
+      model.changePropertyType( prid, changeType );
+    }
+    
+    // set new meta data
+    property.capturePoints = 20;
+    property.owner = selectedUnit.owner;
+    
+    // when capture limit is reached then 
+    // the game round ends
+    var capLimit = controller.configValue( "captureLimit" );
+    if( capLimit !== 0 && model.countProperties() >= capLimit ) {
+      controller.endGameRound();
+    }
+  }
+  
+  controller.events.captureProperty( uid );
 };
 
 // Resets the capture points of a property object
@@ -246,9 +247,9 @@ model.captureProperty = function( cid, prid ){
 // prid {Number} property id
 //
 model.resetCapturePoints = function( prid ){
-	model.properties[prid].capturePoints = 20;
-	
-	controller.events.resetCapturePoints( prid );
+  model.properties[prid].capturePoints = 20;
+  
+  controller.events.resetCapturePoints( prid );
 };
 
 // Returns true if the property can be captured by the unit, else 
@@ -258,8 +259,8 @@ model.resetCapturePoints = function( prid ){
 // captId {Number} capturer unit id
 //
 model.propertyIsCapturableBy = function( prid, captId ){
-	return model.properties[prid].type.points > 0 && 
-				 model.units[captId].type.captures > 0;
+  return model.properties[prid].type.points > 0 && 
+    model.units[captId].type.captures > 0;
 };
 
 // Changes the type of a property object
@@ -268,17 +269,17 @@ model.propertyIsCapturableBy = function( prid, captId ){
 // type {String} new type of the property
 //
 model.changePropertyType = function( prid, type ){
-	
-	// check tile type 
-	// throw error when type does not exists
-	if( !mode.tileTypes[type] ) {
-		model.criticalError(
-			constants.error.ILLEGAL_PARAMETERS,
-			constants.error.UNKNOWN_OBJECT_TYPE
-		);
-	}
-	
-	model.properties[prid].type = type;
-	
-	controller.events.changedPropertyType( prid, type );
+  
+  // check tile type 
+  // throw error when type does not exists
+  if( !mode.tileTypes[type] ) {
+    model.criticalError(
+      constants.error.ILLEGAL_PARAMETERS,
+      constants.error.UNKNOWN_OBJECT_TYPE
+    );
+  }
+  
+  model.properties[prid].type = type;
+  
+  controller.events.changedPropertyType( prid, type );
 };

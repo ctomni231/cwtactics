@@ -1,84 +1,82 @@
-{
-	"movetypes": [
-		{
-			"ID": "INFT",
-			"costs": {
-				"MNTN": 2,
-				"WATER": -1,
-				"REEF": -1,
-				"*": 1
-			}
-		},
-		{
-			"ID": "MECH",
-			"costs": {
-				"WATER": -1,
-				"REEF": -1,
-				"*": 1
-			}
-		},
-		{
-			"ID": "TIRE_A",
-			"costs": {
-				"PLIN": 2,
-				"FRST": 3,
-				"MNTN": -1,
-				"RIVER": -1,
-				"WATER": -1,
-				"REEF": -1,
-				"*": 1
-			}
-		},
-		{
-			"ID": "TANK",
-			"costs": {
-				"FRST": 2,
-				"MNTN": -1,
-				"RIVER": -1,
-				"WATER": -1,
-				"REEF": -1,
-				"*": 1
-			}
-		},
-		{
-			"ID": "AIR",
-			"costs": {
-				"*": 1
-			}
-		},
-		{
-			"ID": "SHIP",
-			"costs": {
-				"WATER": 1,
-				"PORT": 1,
-				"REEF": 2,
-				"*": -1
-			}
-		},
-		{
-			"ID": "WATER_TRANSPORT",
-			"costs": {
-				"WATER": 1,
-				"PORT": 1,
-				"REEF": 2,
-				"SHOAL": 1,
-				"*": -1
-			}
-		},
-		{
-			"ID": "SLIME",
-			"costs": {
-				"WATER": -1,
-				"REEF": -1,
-				"*": 1
-			}
-		},
-		{
-			"ID": "PIPELINE",
-			"costs": {
-				"PIPE": 1,
-				"*": -1
-			}
-		}
-	]
-}
+[
+  {
+    "ID": "INFT",
+    "costs": {
+      "MNTN": 2,
+      "WATER": -1,
+      "REEF": -1,
+      "*": 1
+    }
+  },
+  {
+    "ID": "MECH",
+    "costs": {
+      "WATER": -1,
+      "REEF": -1,
+      "*": 1
+    }
+  },
+  {
+    "ID": "TIRE_A",
+    "costs": {
+      "PLIN": 2,
+      "FRST": 3,
+      "MNTN": -1,
+      "RIVER": -1,
+      "WATER": -1,
+      "REEF": -1,
+      "*": 1
+    }
+  },
+  {
+    "ID": "TANK",
+    "costs": {
+      "FRST": 2,
+      "MNTN": -1,
+      "RIVER": -1,
+      "WATER": -1,
+      "REEF": -1,
+      "*": 1
+    }
+  },
+  {
+    "ID": "AIR",
+    "costs": {
+      "*": 1
+    }
+  },
+  {
+    "ID": "SHIP",
+    "costs": {
+      "WATER": 1,
+      "PORT": 1,
+      "REEF": 2,
+      "*": -1
+    }
+  },
+  {
+    "ID": "WATER_TRANSPORT",
+    "costs": {
+      "WATER": 1,
+      "PORT": 1,
+      "REEF": 2,
+      "SHOAL": 1,
+      "*": -1
+    }
+  },
+  {
+    "ID": "SLIME",
+    "costs": {
+      "WATER": -1,
+      "REEF": -1,
+      "*": 1
+    }
+  },
+  {
+    "ID": "PIPELINE",
+    "costs": {
+      "PIPE": 1,
+      "*": -1
+    }
+  }
+]

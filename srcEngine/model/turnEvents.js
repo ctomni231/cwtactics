@@ -1,7 +1,7 @@
 // Holds all connected day/turn events.
 //
 model.dayEvents = util.list( 50, function(){
-  return [ null, null ];
+  return [ null, null, null ];
 });
 
 // Define persistence handler
@@ -16,12 +16,17 @@ controller.persistenceHandler(
     for( i=0, e=list.length; i<e; i++ ){
       list[i][0] = null;
       list[i][1] = null;
+      list[i][2] = null;
     }
     
-    // load data from dom
-    for( i=0, e=dom.dyev.length; i<e; i++ ){
-      list[i][0] = dom.dyev[i][0];
-      list[i][1] = dom.dyev[i][1];
+    if( dom.dyev ){
+      
+      // load data from dom
+      for( i=0, e=dom.dyev.length; i<e; i++ ){
+        list[i][0] = dom.dyev[i][0];
+        list[i][1] = dom.dyev[i][1];
+        list[i][2] = dom.dyev[i][2];
+      }
     }
   },
   
@@ -51,11 +56,12 @@ model.pushTimedEvent = function( turn, action, args ){
   var list = model.dayEvents;
   
   for( var i=0,e=list.length; i<e; i++ ){
-    if( list[i] === null ){
+    if( list[i][0] === null ){
       
       // activate slot
       list[i][0] = turn;
       list[i][1] = action;
+      list[i][2] = args;
       return;
     }
   }
@@ -81,20 +87,26 @@ model.tickTimedEvents = function(){
     
     // activate event when 
     // timer reaches zero
-    if( list[i] === 0 ){
-      var args = list[i][1];
+    if( list[i][0] === 0 ){
+      var key = list[i][1];
+      var args = list[i][2];
       
       // deactivate slot
       list[i][0] = null;
       list[i][1] = null;
-      
+      list[i][2] = null;
+
+      /*      
       // share a command with other clients
       // when this session is a network game
       if( controller.isNetworkGame() ){
-        controller.sharedInvokement( args );
+        controller.sharedInvokement( key, args );
       }
       // call command local only
-      else controller.localInvokement( args );
+      else controller.localInvokement( key, args );
+      */
+      
+      controller.localInvokement( key, args );
     }
   }
 };

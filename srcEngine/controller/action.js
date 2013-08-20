@@ -109,7 +109,7 @@ controller.getInvokementArguments = function( key, args ){
   for( var i = 0, e = args.length; i < e; i++ ) result[i] = args[i];
 
   // append action key
-  result[ result.length ] = key;
+  result[ result.length ] = controller.actionIdMap[key];
 
   return result;
 };
@@ -121,7 +121,8 @@ controller.getInvokementArguments = function( key, args ){
 // @param {Array} args function arguments
 //
 controller.localInvokement = function( key, args ){
-  if( (arguments.length === 2 && !controller.actionIdMap[key]) || !controller.actionIdMap[ key[key.length - 1] ] ) {
+  if( (arguments.length === 2 && !controller.actionIdMap[key]) || 
+      (arguments.length === 1 && !controller.actionMap[ key[key.length - 1] ] ) ) {
     model.criticalError( constants.error.ILLEGAL_DATA, constants.error.NON_ACTION_CALL_FUNCTION );
   }
 
@@ -149,7 +150,8 @@ controller.localInvokement = function( key, args ){
 // @param {Array} args function arguments
 //
 controller.sharedInvokement = function( key, args ){
-  if( (arguments.length === 2 && !controller.actionIdMap[key]) || !controller.actionIdMap[ key[key.length - 1] ] ) {
+  if( (arguments.length === 2 && !controller.actionIdMap[key]) || 
+      (arguments.length === 1 && !controller.actionMap[ key[key.length - 1] ] ) ) {
     model.criticalError( constants.error.ILLEGAL_DATA, constants.error.NON_ACTION_CALL_FUNCTION );
   }
 

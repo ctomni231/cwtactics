@@ -1,36 +1,3 @@
-
-
-var ID_MENU_SECTION_LOAD = "cwt_load_screen";
-
-/* MAIN SCREEN */
-
-var ID_ELMT_SECTION_MAIN_ERROR = "main_screen_error_msg";
-
-/* GAME SCREEN */
-
-var ID_MENU_SECTION_GAME = "cwt_game_screen";
-var ID_ELMT_GAME_CANVAS = "cwt_canvas";
-var ID_ELMT_GAME_MENU = "cwt_menu";
-var ID_ELMT_MENU = "cwt_menu";
-var ID_ELMT_MENU_HEADER = "cwt_menu_header";
-var ID_ELMT_MENU_CONTENT = "cwt_menu_content";
-var ID_ELMT_MENU_ENTRIES = "cwt_menu_entries";
-
-/* ERROR SCREEN */
-
-var ID_MENU_SECTION_ERROR = "cwt_error_screen";
-var ID_ELMT_ERROR_MSG = "error_screen_errorMsgField";
-
-/* OPTIONS SCREEN */
-
-var ID_MENU_SECTION_OPTIONS = "cwt_options_screen";
-var ID_ELMT_OTIONS_SFX_VOL = "cwt_options_sfxVolume";
-var ID_ELMT_OTIONS_MUSIC_VOL = "cwt_options_musicVolume";
-var ID_ELMT_OTIONS_MOD_INFO = "cwt_options_modPath";
-var ID_ELMT_OTIONS_MOD_TAKE = "cwt_options_modPath_take";
-var ID_ELMT_OTIONS_RESET = "cwt_options_reset";
-var ID_ELMT_OTIONS_GOBACK = "cwt_options_goBack";
-
 /* UNIT PANEL */
 var ID_ELMT_UNITINFOBOX = "cwt_unitinfo_box";
 var ID_ELMT_UNITINFOBOX_NAME = "cwt_unitinfo_name";

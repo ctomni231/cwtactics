@@ -16,14 +16,15 @@ util.scoped(function(){
 				
 				// JSON OBJECT
 				if( this.asJSON ){
-					
+					var arg;
 					try{ 
-						this.winCallback( JSON.parse(this.responseText) ); 
+            arg = JSON.parse(this.responseText);
 					}
 					// FAILED TO CONVERT JSON TEXT
 					catch(e){ 
 						this.failCallback( e ); 
 					}
+          this.winCallback( arg ); 
 				}
 				// PLAIN TEXT
 				else{

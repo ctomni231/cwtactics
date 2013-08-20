@@ -1,3 +1,4 @@
 controller.onEvent("criticalError",function(){
-  document.getElementById("cwt_errorPanel").style.display = "block";
+  controller.errorPanel.style.display = "block";
+  controller.errorPanelVisible = true;
 });

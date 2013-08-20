@@ -1,7 +1,7 @@
 libs
 core
 util
-model
 controller
+model
 commands
 ai

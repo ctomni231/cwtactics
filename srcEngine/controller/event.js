@@ -10,42 +10,38 @@
 controller.events = {};
 
 util.scoped(function(){
-	
-	var emptyFn = function(){};
-	
-	// Defines a listenable event name.
-	//
-	// @param {String} ev event name
-	controller.defineEvent = function( ev ){
-		controller.events[ev] = emptyFn;
-	};
-	
+  
+  var emptyFn = function(){};
+  
+  // Defines a listenable event name.
+  //
+  // @param {String} ev event name
+  controller.defineEvent = function( ev ){
+    controller.events[ev] = emptyFn;
+  };
+  
+  // Registers an event handler callback.
+  //
+  // @param {String} ev event name
+  // @param {Function} cb callback function
+  controller.onEvent = function( ev, cb ){
+    if( !controller.events.hasOwnProperty(ev) ){
+      model.criticalError(
+        constants.error.CLIENT_BREAKS_CONTRACT,
+        constants.error.EVENT_LISTENER_DOES_NOT_EXIST
+      );
+    }
+    
+    // Only one handler is allowed to be connected to a model function.
+    // If more event handlers are needed then the event handler should be
+    // defined as observer.
+    if( controller.events[ev] !== emptyFn ){
+      model.criticalError(
+        constants.error.CLIENT_BREAKS_CONTRACT,
+        constants.error.EVENT_LISTENER_ALREADY_EXIST
+      );
+    }
+    
+    controller.events[ev] = cb;
+  };
 });
-
-// Registers an event handler callback.
-//
-// @param {String} ev event name
-// @param {Function} cb callback function
-controller.onEvent = function( ev, cb ){
-	var oldValue = controller.events[ev];
-	
-	// Only one handler is allowed to be connected to a model function.
-	// If more event handlers are needed then the event handler should be
-	// defined as observer.
-	if( typeof oldValue === "function" ){
-		model.criticalError(
-			constants.error.CLIENT_BREAKS_CONTRACT,
-			constants.error.EVENT_LISTENER_ALREADY_EXIST
-		);
-	}
-	
-	// Only `null` means a define able model function
-	if( oldValue !== null ){
-		model.criticalError(
-			constants.error.CLIENT_BREAKS_CONTRACT,
-			constants.error.EVENT_LISTENER_DOES_NOT_EXIST
-		);
-	}
-	
-	controller.events[ev] = cb;
-};

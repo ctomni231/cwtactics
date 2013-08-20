@@ -5,7 +5,7 @@
 clientConstants = {
 	
 	// URL to the default modification
-	DEFAULT_MOD: ( constants.DEBUG )? "localhost:8000/mod/cwt" :  "ctomni231.github.io/cwtactics/mods/cwt",
+	DEFAULT_MOD: ( constants.DEBUG )? "http://localhost:8000/mod/cwt" :  "http://ctomni231.github.io/cwtactics/mods/cwt",
 	MOD_KEY:						"data_mod",
 	
 	// differnt parts of a modification
@@ -21,20 +21,22 @@ clientConstants = {
 	MOD_FILE_SOUNDS: 		"/sounds.json",
 	MOD_FILE_TILES: 		"/tiles.json",
 	MOD_FILE_UNITS: 		"/units.json",
-	MOD_FILE_WEATHER: 	"/weather.json",
+	MOD_FILE_WEATHER: 	"/weathers.json",
+	MOD_FILE_GFX:   		"/graphics.json",
 	
 	MOD_KEY_HEADER: 		"header",
-	MOD_KEY_CO: 				"co",
+	MOD_KEY_CO: 				"commanders",
 	MOD_KEY_CREDITS: 		"credits",
-	MOD_KEY_FRACTION: 	"fraction",
-	MOD_KEY_GAMEMODE: 	"gamemode",
-	MOD_KEY_RULES: 			"globalrules",
+	MOD_KEY_FRACTION: 	"factions",
+	MOD_KEY_GAMEMODE: 	"gamemodes",
+	MOD_KEY_RULES: 			"globalRules",
 	MOD_KEY_LANGUAGE: 	"language",
 	MOD_KEY_MAPS: 			"maps",
 	MOD_KEY_MOVETYPES: 	"movetypes",
 	MOD_KEY_SOUNDS: 		"sounds",
 	MOD_KEY_TILES: 			"tiles",
 	MOD_KEY_UNITS: 			"units",
+	MOD_KEY_GFX:   		  "graphics",
 	MOD_KEY_WEATHER: 		"weathers"
 	
 };

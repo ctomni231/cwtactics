@@ -72,7 +72,6 @@ controller.persistenceHandler(
   }
 );
 
-
 // Returns the distance of two positions.
 // 
 // @param {Number} sx x coordinate of the source position

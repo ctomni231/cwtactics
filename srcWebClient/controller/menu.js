@@ -3,13 +3,13 @@ util.scoped(function(){
   /** @private */
   var menuRenderer = {};
   
-  var menuElement = document.getElementById( ID_ELMT_MENU );
+  var menuElement = document.getElementById("cwt_menu");
   
-  var menuHeaderElement = document.getElementById( ID_ELMT_MENU_HEADER );
+  var menuHeaderElement = document.getElementById("cwt_menu_header");
   
-  var menuEntryContentElement = document.getElementById( ID_ELMT_MENU_CONTENT );
+  var menuEntryContentElement = document.getElementById("cwt_menu_content");
   
-  var menuEntryListElement = document.getElementById( ID_ELMT_MENU_ENTRIES );
+  var menuEntryListElement = document.getElementById("cwt_menu_entries");
   
   /**
    *

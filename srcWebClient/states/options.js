@@ -5,40 +5,22 @@ util.scoped(function(){
   }
   
   function wipeComplete(){
-    if( constants.DEBUG ) util.log("successfully set wipe out... next start with clean data");
+    document.location.reload();
   }
   
-  var index = -1;
-  var elements = [
-    document.getElementById("cwt_options_sfxVolume"),
-    document.getElementById("cwt_options_musicVolume"),
-    document.getElementById("cwt_options_reset"),
-    document.getElementById("cwt_options_mapIn"),
-    document.getElementById("cwt_options_addMap"),
-    document.getElementById("cwt_options_goBack")
-  ];
-  
-  var label1 = document.getElementById("cwt_options_sfxVolume_desc");
-  var label2 = document.getElementById("cwt_options_musicVolume_desc");
-  var label3 = document.getElementById("cwt_options_reset");
-  var label4 = document.getElementById("cwt_options_goBack");
-  var label5 = document.getElementById("cwt_options_addMap");
-  
-  var nodeSfx   = document.getElementById( "cwt_options_sfxVolume" );
-  var nodeMusic = document.getElementById( "cwt_options_musicVolume" );
-  
-  var modText = document.getElementById( "cwt_options_modPath" );
-  
-  function register(i){
-    elements[i].onmouseover = function(){
-      if( index !== 3 ) elements[index].className = "menuButton";
-      index = i;
-      if( index !== 3 ) elements[index].className = "menuButton active";
-    };
+  var nodeSfx = document.getElementById("cwt_options_sfxVolume");
+  var nodeMusic = document.getElementById("cwt_options_musicVolume");
+  function updateSoundContent(){  
+    nodeSfx.innerHTML = Math.round(controller.getSfxVolume()*100);
+    nodeMusic.innerHTML = Math.round(controller.getMusicVolume()*100);
   }
   
-  // REGISTERS MOUSE ONHOVER EVENT
-  for( var i=0,e=elements.length; i<e; i++ ) register(i);
+  var btn = controller.generateButtonGroup( 
+    document.getElementById("cwt_options_screen"),
+    "menuButton ui-font ui-subheader ui-panel-button",
+    "menuButton ui-font ui-subheader ui-panel-button active",
+    "menuButton ui-font ui-subheader ui-panel-button inactive"
+  );
   
   // ------------------------------------------------------------------------------------------
   
@@ -46,121 +28,56 @@ util.scoped(function(){
   
 	controller.screenStateMachine.structure.OPTIONS.section = "cwt_options_screen";
 	
-  controller.screenStateMachine.structure.OPTIONS.enterState = function(){
-    
-    // SET LOCALIZED BUTTONS
-    label1.innerHTML = model.localized( label1.attributes.key.value );
-    label2.innerHTML = model.localized( label2.attributes.key.value );
-    label3.innerHTML = model.localized( label3.attributes.key.value );
-    label4.innerHTML = model.localized( label4.attributes.key.value );
-    label5.innerHTML = model.localized( label5.attributes.key.value );
-    
-    if( index !== -1 && index !== 3 ) elements[index].className = "menuButton";
-    
-    index = 0;
-    elements[index].className = "menuButton active";
-    
-    nodeSfx.innerHTML = Math.round(controller.getSfxVolume()*100);
-    nodeMusic.innerHTML = Math.round(controller.getMusicVolume()*100);
+  controller.screenStateMachine.structure.OPTIONS.enterState = function(){  
+    updateSoundContent();
+    btn.setIndex(1);
   };
   
   controller.screenStateMachine.structure.OPTIONS.UP = function(){
-    if( index !== 3 ) elements[index].className = "menuButton";
-    
-    index--;
-    if( index < 0 ) index = elements.length-1;
-    
-    if( index !== 3 ) elements[index].className = "menuButton active";
-    return this.BREAK_TRANSITION;
+    btn.decreaseIndex();
+    return this.breakTransition();
   };
   
   controller.screenStateMachine.structure.OPTIONS.DOWN = function(){
-    if( index !== 3 ) elements[index].className = "menuButton";
-    
-    index++;
-    if( index >= elements.length ) index = 0;
-    
-    if( index !== 3 ) elements[index].className = "menuButton active";
-    return this.BREAK_TRANSITION;    
+    btn.increaseIndex();
+    return this.breakTransition();
   };
   
   controller.screenStateMachine.structure.OPTIONS.ACTION = function(){
-    var selectedId = elements[index].id;
-    
-    switch( selectedId ){
+    switch( btn.getActiveKey() ){
         
-      case "cwt_options_modPath_take": 
-        var content = modText.value;
-        controller.storage.set("modificationPath",content, saveComplete );
+      case "options.sfx.down":
+        controller.setSfxVolume( controller.getSfxVolume()-0.05 );
+        updateSoundContent();
+        break;
+        
+      case "options.sfx.up":
+        controller.setSfxVolume( controller.getSfxVolume()+0.05 );
+        updateSoundContent();
+        break;
+        
+      case "options.music.down":
+        controller.setMusicVolume( controller.getMusicVolume()-0.05 );
+        updateSoundContent();
+        break;
+        
+      case "options.music.up":
+        controller.setMusicVolume( controller.getMusicVolume()+0.05 );
+        updateSoundContent();
+        break;
+        
+      case "options.resetData":
         controller.storage.set("resetDataAtStart",{value:true}, wipeComplete );
         break;
         
-      case "cwt_options_reset":
-        controller.storage.set("resetDataAtStart",{value:true}, wipeComplete );
-        break;
-        
-      case "cwt_options_addMap":
-        try{
-          var data = document.getElementById("cwt_options_mapIn").value;
-          data = JSON.parse( data );
-          model.checkMap( data );
-        }
-        catch( e ){
-          controller.loadError = "illegal map";
-          return "MAIN";
-        }
-        
-        controller.storage.set( data.name , data, function(){
-          controller.mapList.push({ name:data.name, key:data.name });
-        });
-        break;
-        
-      case "cwt_options_goBack": 
+      case "options.goBack": 
         controller.saveSoundConfigs();
         return "MAIN";
     }
     
-    return this.BREAK_TRANSITION;
+    return this.breakTransition();
   };
-  
-  controller.screenStateMachine.structure.OPTIONS.LEFT = function(){
-    var selectedId = elements[index].id;
     
-    switch( selectedId ){
-        
-      case "cwt_options_sfxVolume":
-        controller.setSfxVolume( controller.getSfxVolume()-0.05 );
-        nodeSfx.innerHTML = Math.round(controller.getSfxVolume()*100);
-        break;
-        
-      case "cwt_options_musicVolume":
-        controller.setMusicVolume( controller.getMusicVolume()-0.05 );
-        nodeMusic.innerHTML = Math.round(controller.getMusicVolume()*100);
-        break;
-    }
-    
-    return this.BREAK_TRANSITION;
-  };
-  
-  controller.screenStateMachine.structure.OPTIONS.RIGHT = function(){
-    var selectedId = elements[index].id;
-    
-    switch( selectedId ){
-        
-      case "cwt_options_sfxVolume":
-        controller.setSfxVolume( controller.getSfxVolume()+0.05 );
-        nodeSfx.innerHTML = Math.round(controller.getSfxVolume()*100);
-        break;
-        
-      case "cwt_options_musicVolume":
-        controller.setMusicVolume( controller.getMusicVolume()+0.05 );
-        nodeMusic.innerHTML = Math.round(controller.getMusicVolume()*100);
-        break;
-    }
-    
-    return this.BREAK_TRANSITION;
-  };
-  
   controller.screenStateMachine.structure.OPTIONS.CANCEL = function(){
     controller.saveSoundConfigs();
     return "MAIN";

@@ -26,7 +26,7 @@ util.scoped(function(){
     else mapIndex = controller.mapList.length-1;
     
     updateMapElement();
-    return this.BREAK_TRANSITION;
+    return this.breakTransition();
   };
   
   controller.screenStateMachine.structure.VERSUS.DOWN = function(){
@@ -34,7 +34,7 @@ util.scoped(function(){
     else mapIndex = 0;
     
     updateMapElement();
-    return this.BREAK_TRANSITION;
+    return this.breakTransition();
   };
   
   controller.screenStateMachine.structure.VERSUS.CANCEL = function(){
@@ -42,7 +42,7 @@ util.scoped(function(){
   };
   
   controller.screenStateMachine.structure.VERSUS.ACTION = function(){
-    if( !controller.mapList ) return this.BREAK_TRANSITION;
+    if( !controller.mapList ) return this.breakTransition();
     this.data.mapToLoad = controller.mapList[ mapIndex ].key;
     
     // START GAME

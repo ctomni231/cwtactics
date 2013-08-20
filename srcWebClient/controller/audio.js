@@ -27,51 +27,58 @@ util.scoped(function(){
   controller.audioContext = function(){
     if( !context ){
       
-      // LOAD SOUND CONTEXT
-      try{
-        util.log("init audio context");
-        
-        if( window.AudioContext ) {
-          util.log("using standardized one");
-          context = new window.AudioContext();
-        } 
-        else if ( window.webkitAudioContext ) {
-          util.log("using webkit prefixed one");
-          context = new window.webkitAudioContext();
-        }
-        else throw Error("no webaudio contructor found");
-        
-        // ------------------------------------------------------------------
-        
-        // SOUND VOLUME
-        sfxGainNode = context.createGainNode();
-        sfxGainNode.gain.value = 1;
-        sfxGainNode.connect(context.destination);   
-        
-        // MUSIC VOLUME
-        musicGainNode = context.createGainNode();
-        musicGainNode.gain.value = 0.5;
-        musicGainNode.connect(context.destination);  
-        
-        // ------------------------------------------------------------------
-        
-        // GET VOLUME FROM CONFIG
-        controller.storage.get( sfxStorageParam, function( obj ){
-          if( obj !== null ) sfxGainNode.gain.value = obj.value;
-        });
-        
-        controller.storage.get( musicStorageParam, function( obj ){
-          if( obj !== null ) musicGainNode.gain.value = obj.value;
-        });
-        
-        util.log("finished init audio context");
-      }
-      // RETURN ERROR WHEN SOUND CONTEXT IS NOT INITIALIZE ABLE 
-      catch(e){
-        if( constants.DEBUG ){
-          util.log("could not grab audio context, your environment seems to be out of webAudio API support err:",e);
-        }
+      // if audio sfx and music is deactivated then do not initialize the audio context
+      if( !controller.clientFeatures.audioSFX && !controller.clientFeatures.audioMusic ){
         context = null;
+      }
+      else{
+        
+        // try to initialize the audio context 
+        try{
+          util.log("init audio context");
+          
+          if( window.AudioContext ) {
+            util.log("using standardized one");
+            context = new window.AudioContext();
+          } 
+          else if ( window.webkitAudioContext ) {
+            util.log("using webkit prefixed one");
+            context = new window.webkitAudioContext();
+          }
+            else throw Error("no webaudio contructor found");
+          
+          // ------------------------------------------------------------------
+          
+          // SOUND VOLUME
+          sfxGainNode = context.createGainNode();
+          sfxGainNode.gain.value = 1;
+          sfxGainNode.connect(context.destination);   
+          
+          // MUSIC VOLUME
+          musicGainNode = context.createGainNode();
+          musicGainNode.gain.value = 0.5;
+          musicGainNode.connect(context.destination);  
+          
+          // ------------------------------------------------------------------
+          
+          // GET VOLUME FROM CONFIG
+          controller.storage.get( sfxStorageParam, function( obj ){
+            if( obj !== null ) sfxGainNode.gain.value = obj.value;
+          });
+          
+          controller.storage.get( musicStorageParam, function( obj ){
+            if( obj !== null ) musicGainNode.gain.value = obj.value;
+          });
+          
+          util.log("finished init audio context");
+        }
+        // RETURN ERROR WHEN SOUND CONTEXT IS NOT INITIALIZE ABLE 
+        catch(e){
+          if( constants.DEBUG ){
+            util.log("could not grab audio context, your environment seems to be out of webAudio API support err:",e);
+          }
+          context = null;
+        }
       }
     }
     
@@ -114,8 +121,8 @@ util.scoped(function(){
     
     if( vol < 0 ) vol = 0;
     else if( vol > 1 ) vol = 1;
-    
-    sfxGainNode.gain.value = vol;
+      
+      sfxGainNode.gain.value = vol;
   };
   
   /**
@@ -127,8 +134,8 @@ util.scoped(function(){
     
     if( vol < 0 ) vol = 0;
     else if( vol > 1 ) vol = 1;
-    
-    musicGainNode.gain.value = vol;
+      
+      musicGainNode.gain.value = vol;
   };
   
   
@@ -164,7 +171,7 @@ util.scoped(function(){
     
     return source;
   };
-    
+  
   controller.playEmptyAudio = function(){
     if( context === null ) return;
     

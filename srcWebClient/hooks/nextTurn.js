@@ -1,25 +1,14 @@
-controller.playSoundForPlayer = function( pid ){
-  var co = model.coData[pid].coA;
-  
-  if( Browser.ios ){
-    
-    // PLAY FACTION SOUND
-    controller.playMusic( model.factionTypes[co.faction].music );
-  }
-  else{ 
-    
-    // PLAY CO SOUND
-    controller.playMusic( co.music );
-  }
-};
-
 view.registerAnimationHook({
   key: "nextTurn",
   
   prepare: function(){
     controller.renderPlayerInfo();
     
-    controller.playSoundForPlayer( model.turnOwner );
+    if( controller.clientFeatures.audioMusic ){
+      controller.playMusic( 
+        model.coData[model.turnOwner].coA.music 
+      );
+    }
     
     view.showInfoMessage( model.localized("day")+" "+model.day );
   },

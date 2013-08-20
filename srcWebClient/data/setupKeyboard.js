@@ -28,11 +28,11 @@ util.scoped(function(){
 			if( event.target.id === "cwt_options_mapIn" ){
 				switch( code ){            
 					case INPUT_KEYBOARD_CODE_UP:
-						controller.screenStateMachine.event("UP",1);
+						controller.screenStateMachine.event("INP_UP",1);
 						return false;
 						
 					case INPUT_KEYBOARD_CODE_DOWN:
-						controller.screenStateMachine.event("DOWN",1);
+						controller.screenStateMachine.event("INP_DOWN",1);
 						return false;
 				}
 				return true;
@@ -41,51 +41,51 @@ util.scoped(function(){
 			switch( code ){
 					
 				case INPUT_KEYBOARD_CODE_1:
-					controller.screenStateMachine.event("SPECIAL_1");
+					controller.screenStateMachine.event("INP_SPECIAL_1");
 					return false;
 					
 				case INPUT_KEYBOARD_CODE_2:
-					controller.screenStateMachine.event("SPECIAL_2");
+					controller.screenStateMachine.event("INP_SPECIAL_2");
 					return false;
 					
 				case INPUT_KEYBOARD_CODE_3:
-					controller.screenStateMachine.event("SPECIAL_3");
+					controller.screenStateMachine.event("INP_SPECIAL_3");
 					return false;
 					
 				case INPUT_KEYBOARD_CODE_4:
-					controller.screenStateMachine.event("SPECIAL_4");
+					controller.screenStateMachine.event("INP_SPECIAL_4");
 					return false;
 					
 				case INPUT_KEYBOARD_CODE_5:
-					controller.screenStateMachine.event("SPECIAL_5");
+					controller.screenStateMachine.event("INP_SPECIAL_5");
 					return false;
 					
 				case INPUT_KEYBOARD_CODE_6:
-					controller.screenStateMachine.event("SPECIAL_6");
+					controller.screenStateMachine.event("INP_SPECIAL_6");
 					return false;
 					
 				case INPUT_KEYBOARD_CODE_LEFT:
-					controller.screenStateMachine.event("LEFT",1);
+					controller.screenStateMachine.event("INP_LEFT",1);
 					return false;
 					
 				case INPUT_KEYBOARD_CODE_UP:
-					controller.screenStateMachine.event("UP",1);
+					controller.screenStateMachine.event("INP_UP",1);
 					return false;
 					
 				case INPUT_KEYBOARD_CODE_RIGHT:
-					controller.screenStateMachine.event("RIGHT",1);
+					controller.screenStateMachine.event("INP_RIGHT",1);
 					return false;
 					
 				case INPUT_KEYBOARD_CODE_DOWN:
-					controller.screenStateMachine.event("DOWN",1);
+					controller.screenStateMachine.event("INP_DOWN",1);
 					return false;
 					
 				case INPUT_KEYBOARD_CODE_BACKSPACE:
-					controller.screenStateMachine.event("CANCEL");
+					controller.screenStateMachine.event("INP_CANCEL");
 					return false;
 					
 				case INPUT_KEYBOARD_CODE_ENTER:
-					controller.screenStateMachine.event("ACTION");
+					controller.screenStateMachine.event("INP_ACTION");
 					return false;
 			}
 			

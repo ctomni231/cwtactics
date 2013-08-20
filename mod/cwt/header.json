@@ -1,6 +1,6 @@
 {
-  "name"    : "Advance Wars - Dual Strike",
-  "key"     : "CWT_AWDS",
+  "name"    : "Custom Wars: Tactics",
+  "key"     : "CWT_DEF_MOD",
   "version" : 1,
   "author"  : "The official 'Custom Wars Tactics' development team",
   "desc"    : "This modification is a re-implementation of the original Advance Wars (1-4) game data."

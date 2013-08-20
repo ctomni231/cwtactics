@@ -84,8 +84,8 @@ controller.persistenceHandler(
 				target.power = source[0];
 				target.timesUsed = source[1];
 				target.level = source[2];
-				target.coA = source[3];
-				target.coB = source[4];
+				target.coA = (source[3])? model.coTypes[ source[3] ] : null;
+				target.coB = (source[4])? model.coTypes[ source[4] ] : null;
 			}
 		}
 	},

@@ -99,7 +99,17 @@ controller.stateMachine = util.stateMachine({
 				this.data.target.set(x,y);
 				this.data.movePath.clean();
 				this.data.movePath.fillMoveMap();
-				return "MOVEPATH_SELECTION";
+        
+        // cannot move atm
+        if( this.data.selection.getValueAt(x-1,y) < 0 &&
+            this.data.selection.getValueAt(x+1,y) < 0 &&
+            this.data.selection.getValueAt(x,y-1) < 0 &&
+            this.data.selection.getValueAt(x,y+1) < 0 ){
+          
+          this.data.target.set( x,y );
+          return "ACTION_MENU";
+        }
+        else return "MOVEPATH_SELECTION";
 			} 
 			else{
 				this.data.target.set( x,y );
@@ -108,7 +118,7 @@ controller.stateMachine = util.stateMachine({
 		},
 		
 		cancel: function ( ev,x,y ) {
-			return this.BREAK_TRANSITION;
+			return this.breakTransition();
 		}
 	},
 	
@@ -121,7 +131,7 @@ controller.stateMachine = util.stateMachine({
 		action: function( ev,x,y ){
 			if( this.data.selection.getValueAt(x,y) < 0){
 				if( DEBUG ) util.log("break event because selection is not in the selection map");
-				return this.BREAK_TRANSITION;
+				return this.breakTransition();
 			}
 			
 			var ox = this.data.target.x;
@@ -150,7 +160,7 @@ controller.stateMachine = util.stateMachine({
 		
 		cancel: function(){
 			this.data.target.clean();
-			return this.lastState;
+			return this.backToLastState();
 		}
 		
 	},
@@ -163,7 +173,7 @@ controller.stateMachine = util.stateMachine({
 			this.data.menu.generate();
 			if( this.data.menu.size === 0 ){        
 				this.data.target.clean();
-				return this.BREAK_TRANSITION;
+				return this.breakTransition();
 			}
 		},
 		
@@ -182,7 +192,7 @@ controller.stateMachine = util.stateMachine({
 		
 		cancel:function(){
 			this.data.target.clean();
-			return this.lastState;
+			return this.backToLastState();
 		}
 	},
 	
@@ -218,12 +228,12 @@ controller.stateMachine = util.stateMachine({
 		
 		
 		cancel: function(){
-			if( this.data.inMultiStep ) return this.lastState;
+			if( this.data.inMultiStep ) return this.backToLastState();
 			
 			this.data.menu.clean();
 			this.data.menu.generate();
 			
-			return this.lastState;
+			return this.backToLastState();
 		}
 	},
 	
@@ -242,7 +252,7 @@ controller.stateMachine = util.stateMachine({
 		action: function( ev,x,y ){
 			if( this.data.selection.getValueAt(x,y) < 0){
 				if( DEBUG ) util.log("break event because selection is not in the map");
-				return this.BREAK_TRANSITION;
+				return this.breakTransition();
 			}
 			
 			this.data.targetselection.set(x,y);
@@ -251,7 +261,7 @@ controller.stateMachine = util.stateMachine({
 		},
 		
 		cancel: function(){
-			return this.lastState;
+			return this.backToLastState();
 		}
 		
 	},
@@ -267,7 +277,7 @@ controller.stateMachine = util.stateMachine({
 		action: function( ev,x,y ){
 			if( this.data.selection.getValueAt(x,y) < 0){
 				if( DEBUG ) util.log("break event because selection is not in the map");
-				return this.BREAK_TRANSITION;
+				return this.breakTransition();
 			}
 			
 			this.data.targetselection.set(x,y);
@@ -276,7 +286,7 @@ controller.stateMachine = util.stateMachine({
 		},
 		
 		cancel: function(){
-			return this.lastState;
+			return this.backToLastState();
 		}
 		
 	},
@@ -299,12 +309,12 @@ controller.stateMachine = util.stateMachine({
 				
 				return "FLUSH_ACTION";
 			}
-			else return this.BREAK_TRANSITION;
+			else return this.breakTransition();
 		},
 		
 		cancel: function(){
 			this.data.targetselection.clean();
-			return this.lastState;
+			return this.backToLastState();
 		}
 		
 	},

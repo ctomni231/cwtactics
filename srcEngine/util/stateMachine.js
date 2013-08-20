@@ -29,23 +29,27 @@
     
     // event must be defined in the current state
     if( stateEvent === undefined ){
-        this.onerror( ev, this.state, "N/A", constants.error.STM_NO_EVENT );
+      this.onerror( ev, this.state, "N/A", constants.error.STM_NO_EVENT );
+      return;
     } 
     
     // grab next state from the event function of the current state
     var nextState = stateEvent.apply( this, arguments ); 
     if( !nextState ){
-        this.onerror( ev, this.state, nextState, 
-            constants.error.STM_INVALID_NEXT_STATE 
-        );
+      this.onerror( ev, this.state, nextState, 
+                   constants.error.STM_INVALID_NEXT_STATE 
+                  );
     }
     
     // cannot break an action state transition
     if( nextState === BREAK_TRANSITION && ev === "actionState" ){
-        this.onerror( ev, this.state, nextState, 
-            constants.error.STM_ACTIONSTATE_BREAKS_TRANS 
-        );
+      this.onerror( ev, this.state, nextState, 
+                   constants.error.STM_ACTIONSTATE_BREAKS_TRANS 
+                  );
+      return;
     }
+    
+    if( nextState === BREAK_TRANSITION ) return; 
     
     var goBack = nextState === this.lastState;
     if( this.history !== null && goBack ){
@@ -55,15 +59,24 @@
     
     // check next state and call `onenter` event
     var nextStateImpl = this.structure[ nextState ];
-    if( !nextStateImpl ) this.onerror( ev, this.state, nextState, constants.error.STM_NEXT_STATE_MISSING );
+    var oldState = this.state;
+    this.state = nextState;
+    
+    if( !nextStateImpl ){
+      this.state = oldState;
+      this.onerror( ev, this.state, nextState, constants.error.STM_NEXT_STATE_MISSING );
+      return;
+    }
     if( nextStateImpl.onenter ){
       var breaker = nextStateImpl.onenter.apply( this, arguments );
-      if( breaker === BREAK_TRANSITION ) return;
+      if( breaker === BREAK_TRANSITION ){
+        this.state = oldState;
+        return;
+      }
     }
     
     // push state into history and select it
     if( this.history !== null && !goBack ) this.history.push( this.state );
-    this.state = nextState;
     
     // if next state is an action state then
     // invoke it directly

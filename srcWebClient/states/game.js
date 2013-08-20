@@ -15,7 +15,12 @@ util.scoped(function(){
       if( model.units[i].owner !== constants.INACTIVE_ID ) controller.updateUnitStatus( i );
     }
     
-    controller.playSoundForPlayer( model.turnOwner );
+    if( controller.clientFeatures.audioMusic ){
+      controller.playMusic( 
+        model.coData[model.turnOwner].coA.music 
+      );
+    }
+    
     controller.renderPlayerInfo();
     
     // INIT LOOP

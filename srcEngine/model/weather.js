@@ -92,11 +92,12 @@ model.calculateNextWeather = function(){
     duration = controller.configValue("weatherMinDays") + parseInt( controller.configValue("weatherRandomDays")*Math.random(), 10);
   }
   
-  model.changeWeather.callAsCommand(newTp);
+  controller.sharedInvokement("changeWeather",[newTp]);
   
   model.pushTimedEvent( 
     model.daysToTurns(duration), 
-    model.calculateNextWeather.callToList() 
+    "calculateNextWeather",
+    []
   );
 };
 

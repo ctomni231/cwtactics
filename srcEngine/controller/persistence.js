@@ -11,7 +11,7 @@ util.scoped(function(){
     
     var obj;
     for( var i=1,e=persistence.length; i<e; i+=2 ){
-      persistence[i].call( obj[0], dom );
+      persistence[i].call(model, dom );
     }
     
     return JSON.stringify(dom);
@@ -21,7 +21,7 @@ util.scoped(function(){
   controller.loadCompactModel = function( data ){    
     try{
       for( var i=0,e=persistence.length; i<e; i+=2 ){
-        persistence[i].call( obj[0], data );
+        persistence[i].call(model, data );
       }
     }
     catch( e ){
@@ -29,10 +29,9 @@ util.scoped(function(){
       // unknown errors are possible here as well as 
       // known errors with error ID and error data ID
       if( typeof e.errorID === "undefined" ){
-        e = util.createCwtErrorObject( 
-          constants.error.UNKNOWN, 
-          constants.error.UNKNOWN, 
-          null
+        e = model.criticalError( 
+          constants.error.CLIENT_DATA_ERROR, 
+          constants.error.ILLEGAL_MAP_FORMAT
         );
       }
       

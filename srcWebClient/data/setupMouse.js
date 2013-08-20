@@ -13,8 +13,8 @@ controller.setupMouseControls = function( canvas, menuEl ){
 		// if( inClick ) return;
 		
 		var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-		if( delta > 0 ) controller.screenStateMachine.event("SPECIAL_5");
-		else            controller.screenStateMachine.event("SPECIAL_6");
+		if( delta > 0 ) controller.screenStateMachine.event("INP_SPECIAL_5");
+		else            controller.screenStateMachine.event("INP_SPECIAL_6");
 		
 		controller.inputCoolDown = 1000;
 	}
@@ -48,11 +48,11 @@ controller.setupMouseControls = function( canvas, menuEl ){
 			
 			if( menusy !== -1 ){      
 				if( y <= menusy-16 ){
-					controller.screenStateMachine.event("UP");
+					controller.screenStateMachine.event("INP_UP");
 					menusy = y;
 				}
 				else if( y >= menusy+16 ){
-					controller.screenStateMachine.event("DOWN");
+					controller.screenStateMachine.event("INP_DOWN");
 					menusy = y;
 				}
 					}
@@ -73,7 +73,7 @@ controller.setupMouseControls = function( canvas, menuEl ){
 			x = parseInt( x/len , 10);
 			y = parseInt( y/len , 10);
 			
-			controller.screenStateMachine.event("HOVER",x,y);
+			controller.screenStateMachine.event("INP_HOVER",x,y);
 		}
 	});
 	
@@ -114,7 +114,7 @@ controller.setupMouseControls = function( canvas, menuEl ){
 		
 		switch(ev.which){
 				
-			case 1: controller.screenStateMachine.event("ACTION"); break; // LEFT
+			case 1: controller.screenStateMachine.event("INP_ACTION"); break; // LEFT
 			case 2: break;                                                // MIDDLE
 				
 				// RIGHT
@@ -141,7 +141,7 @@ controller.setupMouseControls = function( canvas, menuEl ){
           else 
           */
 					
-					controller.screenStateMachine.event("CANCEL"); 
+					controller.screenStateMachine.event("INP_CANCEL"); 
 					break; 
 			}
 		};

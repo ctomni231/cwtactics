@@ -3,6 +3,8 @@ controller.screenStateMachine.structure.LOAD = Object.create(controller.statePar
 controller.screenStateMachine.structure.LOAD.section = "cwt_load_screen";
 
 controller.screenStateMachine.structure.LOAD.enterState = function(){
+  if( constants.DEBUG ) util.log("loading game assets");
+  
 	jWorkflow.order()
 	
 	// **1.A** check environment
@@ -10,7 +12,7 @@ controller.screenStateMachine.structure.LOAD.enterState = function(){
 	
 	// **1.B** show message when system isn't supported
 	.andThen(function(p,b){
-		if( controller.clientFeatures.supported ){
+		if( !controller.clientFeatures.supported ){
 			b.take();
 			if( confirm("Your system isn't supported by CW:T. Try to run it?") ) b.pass();
 		}
@@ -61,14 +63,22 @@ controller.screenStateMachine.structure.LOAD.enterState = function(){
 	
 	// **10.** check environment
 	.andThen(controller.loadInputDevices)
+  
+  // **11.** localize
+  .andThen(function(){
+    var els = document.querySelectorAll("[key]");
+    for( var i=0,e=els.length; i<e; i++ ){
+      els[i].innerHTML = model.localized( els[i].attributes.key.value );
+    }
+  })
 	
-	// **11.** start client 
+	// **12.** start client 
 	.andThen(function(){ 
 		controller.screenStateMachine.event("complete"); 
 	})
 	
 	.start(function(p){
-		if( p ) model.criticalError( constants.error.UNKNOWN, constants.error.UNKNOWN );
+		if( p ) model.criticalError( constants.error.CLIENT_ERROR, constants.error.CLIENT_LOAD_ERROR );
 	});
 };
 

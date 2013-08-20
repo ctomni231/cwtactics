@@ -30,6 +30,7 @@ var constants = {
     ILLEGAL_MAP_FORMAT:             5,
     NON_ENGINE_FAULT:               6,
     MOD_DATA_FORMAT_FAULT:          7,
+    CLIENT_ERROR:                   71,
     CLIENT_BREAKS_CONTRACT:         70,
     
     STM_NO_EVENT:                   90,
@@ -50,6 +51,8 @@ var constants = {
     BREAKS_SHEET_CONTRACT:          9992,
     ILLEGAL_SHEET_HANDLER:          9991,
     ILLEGAL_RULE_DEFINITION:        9990,
+    CLIENT_DATA_ERROR:              9989,
+    CLIENT_LOAD_ERROR:              9988,
     
     // ai errors
     AI_STEP_ON_NON_AI_PLAYER:       9001,

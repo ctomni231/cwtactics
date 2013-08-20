@@ -8,10 +8,6 @@ controller.loadStorageController = util.singleLazyCall(function( err, baton ){
   
   if( constants.DEBUG ) util.log("initializing storage system"); 
   
-  var MAX_MOD_CHARACTERS = 10000000;
-  var MAX_MAP_CHARACTERS = 14000000;
-  var chars = 0;
-  
   var browser = Browser;
   
   if( constants.DEBUG ) util.log("using lawnchair storage system with",((browser.mobile)? 'webkit-sqlite':'indexed-db'),"adapter"); 
@@ -45,12 +41,6 @@ controller.loadStorageController = util.singleLazyCall(function( err, baton ){
     };
     
     set = function( key, value, cb, isMod ){
-      // ONLY AS INFORMATION AT THE MOMENT
-      if( constants.DEBUG ){
-        chars += JSON.stringify( {key:key, value:value} ).length;
-        util.log(chars,"used in storage");
-      }
-      
       store.save({key:key, value:value},cb);
     };    
     

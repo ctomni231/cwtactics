@@ -2,8 +2,10 @@
   "globalRules": [
     
 		{ 
-			"$any": ["INFT","MECH"], 
-		 	"$all": ["MNTN"], 
+      "$when":[
+        "MOVETYPE",["INFT","MECH"],
+        "TILETYPE",["MNTN"] 
+      ],
 			"vision": 3 
 		}
 		

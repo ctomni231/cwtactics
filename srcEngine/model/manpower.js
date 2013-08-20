@@ -11,18 +11,17 @@ controller.persistenceHandler(
   
   // load
   function( dom ){ 
-    
-    // clone values into a new array 
-    // and place it into the save dom
-    dom.mpw = model.manpower.cloneValues([]);
-  },
-  
-  // save
-  function( dom ){ 
     model.manpower.resetValues();
     
     // grab values from dom model
     if( dom.mpw.length > 0 ) model.manpower.grabValues( dom.mpw );
+  },
+  
+  // save
+  function( dom ){ 
+    // clone values into a new array 
+    // and place it into the save dom
+    dom.mpw = model.manpower.cloneValues([]);
   }
 );
 
