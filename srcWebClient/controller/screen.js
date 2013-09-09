@@ -138,10 +138,10 @@ controller.shiftScreenPosition = function( code, len ){
   var x = controller.screenX;
   var y = controller.screenY;
   switch( code ){
-    case model.MOVE_CODE_DOWN:  y += len; break;
-    case model.MOVE_CODE_RIGHT: x += len; break;
-    case model.MOVE_CODE_UP:    y -= len; break;
-    case model.MOVE_CODE_LEFT:  x -= len; break;
+    case model.moveCodes.DOWN:  y += len; break;
+    case model.moveCodes.RIGHT: x += len; break;
+    case model.moveCodes.UP:    y -= len; break;
+    case model.moveCodes.LEFT:  x -= len; break;
   }
   
   // CORRECT BOUNDS

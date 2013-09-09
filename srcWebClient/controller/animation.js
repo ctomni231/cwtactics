@@ -97,7 +97,8 @@ view.registerSpriteAnimator( "UNIT", 3, 250, function(){
   for( ; x<xe; x++ ){
     for( var y=yS ; y<ye; y++ ){
       if( model.unitPosMap[x][y] !== null ){
-        view.markForRedrawWithNeighbours(x,y);
+        // view.markForRedrawWithNeighbours(x,y);
+        view.markForRedrawWithNeighboursRing(x,y);
       }
     }
   }
@@ -113,7 +114,8 @@ view.registerSpriteAnimator( "PROPERTY", 4, 400, function(){
   for( ; x<xe; x++ ){
     for( var y=yS ; y<ye; y++ ){
       if( model.propertyPosMap[x][y] !== null ){
-        view.markForRedrawWithNeighbours(x,y);
+        //view.markForRedrawWithNeighbours(x,y);
+        view.markForRedrawWithNeighboursRing(x,y);
       }
     }
   }

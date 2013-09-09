@@ -4,6 +4,8 @@ controller.mapAction({
 	hasSubMenu: true,
 	
 	condition: function( data ){
+    if( data.target.x === -1 ) return;
+    
 		return model.canTransferMoneyToTile(
 			model.turnOwner,
 			data.target.x,

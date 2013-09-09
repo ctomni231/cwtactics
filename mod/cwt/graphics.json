@@ -108,6 +108,22 @@
     [
       "OOZM",
       "../../../image/units/AWDS_OOZM.png"
+    ],
+    [
+      "BHMCN",
+      "../../../image/units/AWDS_BHMC_N.png"
+    ],
+    [
+      "BHMCS",
+      "../../../image/units/AWDS_BHMC_S.png"
+    ],
+    [
+      "BHMCE",
+      "../../../image/units/AWDS_BHMC_E.png"
+    ],
+    [
+      "BHMCW",
+      "../../../image/units/AWDS_BHMC_W.png"
     ]
   ],
   "tiles": [

@@ -31,7 +31,8 @@ util.scoped(function(){
       if( typeof e.errorID === "undefined" ){
         e = model.criticalError( 
           constants.error.CLIENT_DATA_ERROR, 
-          constants.error.ILLEGAL_MAP_FORMAT
+          constants.error.ILLEGAL_MAP_FORMAT,
+          e
         );
       }
       

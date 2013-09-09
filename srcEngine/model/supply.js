@@ -65,9 +65,12 @@ model.tileTypeParser.addHandler(function(sheet){
 // @param {Number} prid id of the player
 // 
 model.doPropertyGiveFunds = function(prid){
-	var prop = props[i];
+	var prop = model.properties[prid];
 	
-	// check parameters
+	var x = prop.x;
+  var y = prop.y;
+	
+  // check parameters
 	if(prop.owner === constants.INACTIVE_ID){
 		model.criticalError(
 			constants.error.ILLEGAL_PARAMETERS,
@@ -75,13 +78,13 @@ model.doPropertyGiveFunds = function(prid){
 		);
 	}
 	
-	controller.prepareTags(prop.x, prop.y);
+	controller.prepareTags(x, y);
 	var funds = controller.scriptedValue(prop.owner, "funds", prop.type.funds);
 	
 	if(typeof funds === "number"){
-		model.players[prop].gold += funds;
+		model.players[prop.owner].gold += funds;
 		
-		controller.events.doPropertyGiveFunds( i, x,y );
+		controller.events.doPropertyGiveFunds( prid, x, y );
 	}
 };
 
@@ -90,10 +93,12 @@ model.doPropertyGiveFunds = function(prid){
 // @param {Number} i id of the property
 // 
 model.propertySupply = function(i){
-	var prop = props[i];
+	var prop = model.properties[i];
 	if(prop.owner === pid && prop.type.supply){
+    
 		var x = prop.x;
 		var y = prop.y;
+    var pid = prop.owner;
 		
 		// CHECK TEAM REPAIR OR OWN SIDE REPAIR ONLY
 		var check = model.thereIsUnitCheck;
@@ -116,7 +121,7 @@ model.propertySupply = function(i){
 // @param {Number} i id of the property
 // 
 model.propertyRepairs = function(i){
-	var prop = props[i];
+	var prop = model.properties[i];
 	
 	// check parameters
 	if(prop.owner === constants.INACTIVE_ID){
@@ -129,6 +134,7 @@ model.propertyRepairs = function(i){
 	if(prop.type.repairs){
 		var x = prop.x;
 		var y = prop.y;
+    var pid = prop.owner;
 		
 		var check = model.thereIsUnitCheck;
 		var mode = model.MODE_OWN;

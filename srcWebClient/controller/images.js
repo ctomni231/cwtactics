@@ -141,6 +141,13 @@ view.setTileImageForType = function( image, type ){
   );
 };
 
+view.setTileShadowImageForType = function( image, type ){
+  view.setImageForType(
+    image, type,
+    view.IMAGE_CODE_STATELESS, view.COLOR_BLACK_MASK
+  );
+};
+
 view.setInfoImageForType = function( image, type ){
   view.setImageForType(
     image, type,
@@ -214,6 +221,12 @@ view.getPropertyImageForType = function( type, color ){
 view.getTileImageForType = function( type ){
   return view.getImageForType(
     type, view.IMAGE_CODE_STATELESS, view.COLOR_NONE
+  );
+};
+
+view.getTileShadowImageForType = function( type ){
+  return view.getImageForType(
+    type, view.IMAGE_CODE_STATELESS, view.COLOR_BLACK_MASK
   );
 };
 

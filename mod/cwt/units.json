@@ -805,5 +805,61 @@
       "minrange": 2,
       "maxrange": 6
     }
+  },
+  {
+    "ID": "BHMCE",
+    "cost": 0,
+    "range": 0,
+    "fuel":0,
+    "ammo":0,
+    "movetype": "NO_MOVE",
+    "vision": 1,
+    "cannon":{
+      "direction":"E",
+      "range":3,
+      "damage":3
+    }
+  },
+  {
+    "ID": "BHMCN",
+    "cost": 0,
+    "range": 0,
+    "fuel":0,
+    "ammo":0,
+    "movetype": "NO_MOVE",
+    "vision": 1,
+    "cannon":{
+      "direction":"N",
+      "range":3,
+      "damage":3
+    }
+  },
+  {
+    "ID": "BHMCS",
+    "cost": 0,
+    "range": 0,
+    "fuel":0,
+    "ammo":0,
+    "movetype": "NO_MOVE",
+    "vision": 1,
+    "cannon":{
+      "direction":"S",
+      "range":3,
+      "damage":3
+    }
+  },
+  {
+    "ID": "BHMCW",
+    "cost": 0,
+    "range": 0,
+    "fuel":0,
+    "ammo":0,
+    "movetype": "NO_MOVE",
+    "vision": 1,
+    "cannon":{
+      "direction":"W",
+      "range":3,
+      "damage":3
+    }
   }
 ]

@@ -2,6 +2,7 @@ controller.propertyAction({
   
   key:"transferProperty",
   hasSubMenu: true,
+	relationToProp:[ "S","T", model.relationModes.SAME_OBJECT ],
   
   condition: function( data ){
     return model.isPropertyTransferable( data.source.propertyId );

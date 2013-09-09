@@ -7,6 +7,7 @@ model.createDataParser = function( db, list ){
   var listFn = (typeof list === "function");
 
   return {
+    
     addHandler: function( cb ){
       if( typeof cb !== "function" ) {
         model.criticalError(
@@ -16,6 +17,7 @@ model.createDataParser = function( db, list ){
 
       parserParts.push( cb );
     },
+    
     // parsing function that parses a type sheet and adds it to the type
     // list if no parsing part declines the sheet object by returning
     // `false`

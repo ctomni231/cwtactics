@@ -1,4 +1,4 @@
-// Fog Module
+// # Fog Module
 //
 
 // ### Meta Data
@@ -11,7 +11,7 @@ controller.defineEvent("recalculateFogMap");
 
 controller.defineGameScriptable("vision",1,40);
 
-controller.defineGameConfig("fogEnabled",0,1);
+controller.defineGameConfig("fogEnabled",0,1,1);
 
 model.unitTypeParser.addHandler(function(sheet){
     if( !util.expectNumber(sheet,"vision",true,true,1,constants.MAX_SELECTION_RANGE) ) return false;
@@ -42,7 +42,7 @@ controller.persistenceHandler(
   
   // load
   function(){
-    model.clientInstances.resetValues();
+    //model.clientInstances.resetValues();
     model.recalculateFogMap(0);
   },
   
@@ -60,6 +60,14 @@ model.registerClientPlayer = function( pid ){
   
   model.clientInstances[pid] = true;
   return true;
+};
+
+model.isClientPlayer = function( pid ){
+  return model.clientInstances[pid] === true;
+};
+
+model.isFogVisible = function( pid ){
+  return model.clientInstances[pid] === true && !controller.isPlayerAiControlled(pid);
 };
 
 // Will be invoked when a player registers one player
@@ -113,7 +121,7 @@ model.modifyVisionAt = function( x,y, pid, range, value ){
     if( hX >= mW ) hX = mW-1;
     for( ; lX<=hX; lX++ ){
       
-      if( model.clientInstances[pid] ) model.clientFogData[lX][lY] += value;
+      if( model.isFogVisible(pid) ) model.clientFogData[lX][lY] += value;
       model.fogData[lX][lY] += value;
     }
   }
@@ -136,11 +144,11 @@ model.recalculateFogMap = function( pid ){
     for( y=0 ;y<ye; y++ ){
       
       if( !fogEnabled ){
-        if( model.clientInstances[pid] ) model.clientFogData[x][y] = 1;
+        if( model.isFogVisible(pid) ) model.clientFogData[x][y] = 1;
         model.fogData[x][y] = 1;
       }
       else{
-        if( model.clientInstances[pid] ) model.clientFogData[x][y] = 0;
+        if( model.isFogVisible(pid) ) model.clientFogData[x][y] = 0;
         model.fogData[x][y] = 0;
       }
       

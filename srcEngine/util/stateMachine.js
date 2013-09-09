@@ -13,14 +13,14 @@
   }
   
   function clearHistory() {
-    if( this.history !== null && machine.history ) machine.history.splice(0);
+    if( this.history !== null && this.history ) this.history.splice(0);
   }
   
   function reset(){
     
     // reset state
-    machine.state = START_STATE;
-    machine.lastState = null;
+    this.state = START_STATE;
+    this.lastState = null;
     this.clearHistory();
   }
   
@@ -43,18 +43,23 @@
     
     // cannot break an action state transition
     if( nextState === BREAK_TRANSITION && ev === "actionState" ){
-      this.onerror( ev, this.state, nextState, 
-                   constants.error.STM_ACTIONSTATE_BREAKS_TRANS 
-                  );
+      this.onerror( ev, this.state, nextState,constants.error.STM_ACTIONSTATE_BREAKS_TRANS );
       return;
     }
     
     if( nextState === BREAK_TRANSITION ) return; 
     
-    var goBack = nextState === this.lastState;
-    if( this.history !== null && goBack ){
+    var goBack = (nextState === this.backToLastState());
+    if( goBack ){
+      if( this.history === null ){
+        this.onerror( ev, this.state, nextState, constants.error.STM_BACK_TRANSITION_NO_HISTORY );
+      }
+        
       if( this.history.length === 1 ) nextState = "IDLE";
-      else nextState = this.history.pop();
+      else {
+        this.history.pop();
+        nextState = this.history[ this.history.length-1 ];
+      }
     }
     
     // check next state and call `onenter` event
@@ -99,7 +104,7 @@
     machine.structure = (impl)? impl: {};
     machine.state = START_STATE;
     machine.lastState = null;   
-    machine.history = ( config && !config.noHistory )? []: null;
+    machine.history = ( config && !config.noHistory )? null: [];
     
     // set functions
     machine.reset = reset;

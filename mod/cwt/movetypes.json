@@ -1,5 +1,11 @@
 [
   {
+    "ID": "NO_MOVE",
+    "costs": {
+      "*": -1
+    }
+  },
+  {
     "ID": "INFT",
     "costs": {
       "MNTN": 2,

@@ -81,15 +81,15 @@ util.scoped(function(){
         controller.mapCursorX, controller.mapCursorY,
         0, true, controller.setCursorPosition
       );
-      return this.BREAK_TRANSITION;
+      return this.breakTransition();
     }
     
     if( !distance ) distance = 1;
     
-    if( distance === 1 ) controller.moveCursor( model.MOVE_CODE_LEFT, distance );
-    else controller.shiftScreenPosition( model.MOVE_CODE_LEFT, distance );
+    if( distance === 1 ) controller.moveCursor( model.moveCodes.LEFT, distance );
+    else controller.shiftScreenPosition( model.moveCodes.LEFT, distance );
     
-    return this.BREAK_TRANSITION;
+    return this.breakTransition();
   };
   
   controller.screenStateMachine.structure.GAMEROUND.RIGHT = function( ev, distance ){
@@ -102,14 +102,14 @@ util.scoped(function(){
         controller.mapCursorX, controller.mapCursorY,
         0, false, controller.setCursorPosition
       );
-      return this.BREAK_TRANSITION;
+      return this.breakTransition();
     }
     
     if( !distance ) distance = 1;
     
-    if( distance === 1 ) controller.moveCursor( model.MOVE_CODE_RIGHT, distance );
-    else controller.shiftScreenPosition( model.MOVE_CODE_RIGHT, distance );
-    return this.BREAK_TRANSITION;
+    if( distance === 1 ) controller.moveCursor( model.moveCodes.RIGHT, distance );
+    else controller.shiftScreenPosition( model.moveCodes.RIGHT, distance );
+    return this.breakTransition();
   };
   
   controller.screenStateMachine.structure.GAMEROUND.UP = function( ev, distance ){
@@ -123,7 +123,7 @@ util.scoped(function(){
         controller.mapCursorX, controller.mapCursorY,
         0, true, controller.setCursorPosition
       );
-      return this.BREAK_TRANSITION;
+      return this.breakTransition();
     }
     
     var inMenu = ( state === "ACTION_MENU" || state === "ACTION_SUBMENU" );
@@ -131,11 +131,11 @@ util.scoped(function(){
     if( !distance ) distance = 1;
     
     if( !inMenu ){
-      if( distance === 1 ) controller.moveCursor( model.MOVE_CODE_UP, distance );
-      else controller.shiftScreenPosition( model.MOVE_CODE_UP, distance );
+      if( distance === 1 ) controller.moveCursor( model.moveCodes.UP, distance );
+      else controller.shiftScreenPosition( model.moveCodes.UP, distance );
     }
     else controller.decreaseMenuCursor();
-    return this.BREAK_TRANSITION;
+    return this.breakTransition();
   };
   
   controller.screenStateMachine.structure.GAMEROUND.DOWN = function( ev, distance ){
@@ -149,7 +149,7 @@ util.scoped(function(){
         controller.mapCursorX, controller.mapCursorY,
         0, false, controller.setCursorPosition
       );
-      return this.BREAK_TRANSITION;
+      return this.breakTransition();
     }
     
     var inMenu = ( state === "ACTION_MENU" || state === "ACTION_SUBMENU" );
@@ -157,11 +157,11 @@ util.scoped(function(){
     if( !distance ) distance = 1;
     
     if( !inMenu ){ 
-      if( distance === 1 ) controller.moveCursor( model.MOVE_CODE_DOWN, distance );
-      else controller.shiftScreenPosition( model.MOVE_CODE_DOWN, distance );
+      if( distance === 1 ) controller.moveCursor( model.moveCodes.DOWN, distance );
+      else controller.shiftScreenPosition( model.moveCodes.DOWN, distance );
     }
     else controller.increaseMenuCursor();
-    return this.BREAK_TRANSITION;
+    return this.breakTransition();
   };
   
   
@@ -170,22 +170,30 @@ util.scoped(function(){
   controller.screenStateMachine.structure.GAMEROUND.ACTION = function( ev,x,y ){
     controller.hideAttackRangeInfo();
     
-    if( typeof x === "number" ) controller.setCursorPosition(x,y);
+    if( typeof x === "number" ){
+      controller.eraseWantedCursorPosition();
+      controller.setCursorPosition(x,y);
+    }
+    
     controller.cursorActionClick();
-    return this.BREAK_TRANSITION;
+    return this.breakTransition();
   };
   
   controller.screenStateMachine.structure.GAMEROUND.HOVER = function( ev,x,y ){
-    controller.setCursorPosition(x,y);
-    return this.BREAK_TRANSITION;
+    controller.setWantedCursorPosition(x,y);
+    return this.breakTransition();
   };
   
   controller.screenStateMachine.structure.GAMEROUND.CANCEL = function( ev,x,y ){
     controller.hideAttackRangeInfo();
     
-    if( typeof x === "number" ) controller.setCursorPosition(x,y);
+    if( typeof x === "number" ){
+      controller.eraseWantedCursorPosition();
+      controller.setCursorPosition(x,y);
+    }
+    
     controller.cursorActionCancel();
-    return this.BREAK_TRANSITION;
+    return this.breakTransition();
   };
   
   
@@ -193,32 +201,32 @@ util.scoped(function(){
   // ++++++++++++ INPUT SPECIAL ++++++++++++
   
   controller.screenStateMachine.structure.GAMEROUND.SPECIAL_1 = function(){
-    return this.BREAK_TRANSITION;
+    return this.breakTransition();
   };
   
   controller.screenStateMachine.structure.GAMEROUND.SPECIAL_2 = function(){
-    return this.BREAK_TRANSITION;
+    return this.breakTransition();
   };
   
   controller.screenStateMachine.structure.GAMEROUND.SPECIAL_3 = function(){
     if( !controller.attackRangeVisible ){
       controller.showAttackRangeInfo();
     }
-    return this.BREAK_TRANSITION;
+    return this.breakTransition();
   };
   
   controller.screenStateMachine.structure.GAMEROUND.SPECIAL_4 = function(){
-    return this.BREAK_TRANSITION;
+    return this.breakTransition();
   };
   
   controller.screenStateMachine.structure.GAMEROUND.SPECIAL_5 = function(){
     controller.setScreenScale( controller.screenScale+1 );
-    return this.BREAK_TRANSITION;
+    return this.breakTransition();
   };
   
   controller.screenStateMachine.structure.GAMEROUND.SPECIAL_6 = function(){
     controller.setScreenScale( controller.screenScale-1 );
-    return this.BREAK_TRANSITION;
+    return this.breakTransition();
   };
   
 });

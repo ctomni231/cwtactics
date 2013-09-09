@@ -141,6 +141,8 @@ util.scoped(function(){
   function solve( ruleList, memory, attrName, value ){
     for( var i=0,e=ruleList.length; i<e; i++ ){    
       var rule = ruleList[i];
+      if( !rule ) continue;
+      
       var attrVal = rule[attrName];
       if( typeof attrVal === "number" ){
         var noMatch;

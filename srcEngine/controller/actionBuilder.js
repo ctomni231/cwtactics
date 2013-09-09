@@ -12,15 +12,18 @@ controller.buildAction = function(){
   var trapped       = false;
   
   // ADD MOVE PATH
-  if( moveDto.data.length > 0 ){
+  if( moveDto.data[0] !== -1 ){
     
     // TRAPPED ?
-    if( moveDto.data !== null ){
+    // if( moveDto.data !== null ){
       var way = moveDto.data;
       
       var cx = sourceDto.x;
       var cy = sourceDto.y;
       for( var i=0,e=way.length; i<e; i++ ){
+        
+        // end of way
+        if( way[i] === -1 ) break;
         
         switch( way[i] ){
           case model.moveCodes.DOWN  : cy++; break;
@@ -42,7 +45,8 @@ controller.buildAction = function(){
           }
         }
       }
-    }
+    
+    //}
     
     // MOVE COMMAND
     controller.sharedInvokement( "moveUnit", [ moveDto.clone(), sourceDto.unitId, sourceDto.x, sourceDto.y ]);

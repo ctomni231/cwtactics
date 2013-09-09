@@ -36,35 +36,49 @@ controller.registerAI = function( impl ){
   controller.aiImpls[impl.key] = impl;  
 };
 
-// Returns true if a player id is controlled by the
-// AI.
+// Returns true if a player id is controlled by the AI.
 //
 controller.isPlayerAiControlled = function( pid ){
   return controller.activeAIs[pid].ai !== null;
 };
 
-// A set of AI helper functions.
+// Grabs the AI object for the current turn owner. Throws an error
+// if the current turn owner isn't controlled by the AI.
 //
-controller.doAiAction = function( key, args ){
+controller.getAiForCurrentPlayer = function(){
+  var obj = controller.activeAIs[ model.turnOwner ];
   
+  // If the turn owner has no AI then it's a game state breaker 
+  if( !obj.ai ) model.criticalError( 
+    constants.error.ILLEGAL_DATA, constants.error.AI_STEP_ON_NON_AI_PLAYER 
+  );
   
+  return obj;
+};
+
+// Invokes the next AI step. Will be called as command 
+// but not shared with other clients.
+//
+model.prepareAiTurn = function(){
+  var obj = controller.getAiForCurrentPlayer();
   
-  // tick next AI step
-  controller.doSharedCall( "nextAiStep" );
+  // initialize AI turn logic
+  obj.ai.init( obj.memory, model.turnOwner );
+  
+  // start it
+  model.nextAiStep();
 };
 
 // Invokes the next AI step. Will be called as command 
 // but not shared with other clients.
 //
 model.nextAiStep = function(){
-  var obj = controller.activeAIs[ model.turnOwner ];
+  var obj = controller.getAiForCurrentPlayer();
   
-  // If the turn owner has no AI then 
-  // it's a game state breaker 
-  if( !obj.ai ) model.criticalError( 
-    constants.error.ILLEGAL_DATA, 
-    constants.error.AI_STEP_ON_NON_AI_PLAYER
-  );
-  
-  obj.ai.tick( obj.memory, controller.aiActions );
+  // do AI logic
+  if( obj.ai.tick( obj.memory, controller.aiActions ) !== false ){
+    
+    // remain in the AI loop
+    controller.localInvokement("nextAiStep",[]); 
+  }
 };

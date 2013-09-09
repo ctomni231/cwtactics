@@ -46,6 +46,6 @@ util.scoped(function(){
     this.data.mapToLoad = controller.mapList[ mapIndex ].key;
     
     // START GAME
-    return "GAMEROUND";
+    return "PLAYER_SETUP";
   };
 });

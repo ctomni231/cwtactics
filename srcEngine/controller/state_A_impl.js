@@ -55,19 +55,10 @@ controller.stateMachine = util.stateMachine({
 	// ---
 	
 	NONE:{
-		onenter: function(p,b){
+		start:function(){
 			if( constants.DEBUG ) util.log("Initializing game state machine");
 			return "IDLE";
 		}
-		
-		/*
-		"*":function(){
-			model.criticalError(
-				constants.error.ILLEGAL_DATA,
-				constants.error.STM_STILL_IN_INITIAL_STATE
-			);
-		}
-		*/
 	},
 	
 	IDLE: {
@@ -92,7 +83,7 @@ controller.stateMachine = util.stateMachine({
 		action: function(ev, x, y){
 			this.data.source.set(x,y);
 			
-			if ( this.data.source.unitId !== CWT_INACTIVE_ID && 
+			if ( this.data.source.unitId !== constants.INACTIVE_ID && 
 					this.data.source.unit.owner === model.turnOwner && 
 					model.canAct( this.data.source.unitId ) ){
 				

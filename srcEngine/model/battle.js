@@ -65,6 +65,13 @@ model.tileTypeParser.addHandler(function(sheet){
 
 // ### Logic
 
+model.unitFiretype = {
+  DIRECT:0,
+  INDIRECT:1,
+  BALLISTIC:2,
+  NONE:3
+};
+
 model.wpKeys_ = ["main_wp","sec_wp"];
 
 model.attackRangeMod_ = function( uid, x, y, data, markAttackableTiles ){
@@ -165,11 +172,11 @@ model.hasSecondaryWeapon = function( type ){
 };
 
 model.getUnitFireType = function( type ){
-  if( !model.hasMainWeapon( type ) ) return model.unitFiretype.NONE;
+  if( !model.hasMainWeapon( type ) && !model.hasSecondaryWeapon( type ) ) return model.unitFiretype.NONE;
   
   // main weapon decides fire type
-  if( typeof tp.minrange === "number" ){
-    var min = type.minrange;
+  if( typeof type.attack.minrange === "number" ){
+    var min = type.attack.minrange;
     
     // min range of 1 means ballistic weapon
     return ( min === 1 )? model.unitFiretype.BALLISTIC : 

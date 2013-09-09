@@ -63,10 +63,10 @@ view.renderMap = function( scale ){
   var teamId = model.players[ model.turnOwner ].team;
   
   var focusExists = (
-      controller.stateMachine.state === "MOVEPATH_SELECTION" ||
-      controller.stateMachine.state === "ACTION_SELECT_TARGET_A" ||
-      controller.stateMachine.state === "ACTION_SELECT_TARGET_B" ||
-      controller.attackRangeVisible
+    controller.stateMachine.state === "MOVEPATH_SELECTION" ||
+    controller.stateMachine.state === "ACTION_SELECT_TARGET_A" ||
+    controller.stateMachine.state === "ACTION_SELECT_TARGET_B" ||
+    controller.attackRangeVisible
   );
   
   var inFreeSelection = ( controller.stateMachine.state === "ACTION_SELECT_TILE" );
@@ -74,27 +74,27 @@ view.renderMap = function( scale ){
   var selection = stmData.selection;
   
   var inShadow;
-
+  
   // ITERATE BY ROW
   var ye = model.mapHeight-1;
   for(var y = 0; y<=ye; y++){
-
+    
     // ITERATE BY COLUMN
     var xe = model.mapWidth-1;
     for(var x= 0; x<=xe; x++){
-
-      inShadow = (model.fogData[x][y] === 0);
-
+      
+      inShadow = (model.clientFogData[x][y] === 0);
+      
       // RENDER IF NEEDED
       if( view.drawScreen[x][y] === true ){
-
+        
         // --------------------------------------------------------------------
         // DRAW TILE
-
+        
         //type = model.map[x][y];
         type = view.mapImages[x][y];
         pic = view.getTileImageForType( type );
-
+        
         scx = 0;
         scy = 0;
         
@@ -108,14 +108,14 @@ view.renderMap = function( scale ){
         tcy = (y)*tileSize - tileSize;
         tcw = tileSize;
         tch = tileSize*2;
-
+        
         if( tcy < 0 ){
           scy = scy + BASESIZE;
           sch = sch - BASESIZE;
           tcy = tcy + tileSize;
           tch = tch - tileSize;
         }
-
+        
         if( pic !== undefined ){
           ctx.drawImage(
             pic,
@@ -124,37 +124,44 @@ view.renderMap = function( scale ){
             tcx,tcy,
             tcw,tch
           );
-
-          // RENDER GRAY OVERLAY TO MARK AS USED
-          /*
-          if( inShadow && tch > 16 && view.OVERLAYER[type] === true ){
-
-            pic = view.getTileImageForType( type , view.COLOR_BLACK_MASK );
-
+          
+          if( inShadow ){
+            
+            /*
+          ctx.globalAlpha = 0.2;
+          ctx.fillStyle="black";
+          ctx.fillRect(
+            tcx,tcy,
+            tcw,tch
+          );
+          ctx.globalAlpha = 1;
+          */
+            
+            pic = view.getTileShadowImageForType( view.mapImages[x][y] );
+            
             ctx.globalAlpha = 0.35;
             ctx.drawImage(
               pic,
               scx,scy,
-              scw,sch/2,
+              scw,sch,
               tcx,tcy,
-              tcw,tch/2
+              tcw,tch
             );
             ctx.globalAlpha = 1;
           }
-          */
         }
         else{
           ctx.fillStyle="rgb(0,0,255)";
           ctx.fillRect( tcx,tcy, tileSize,tileSize );
         }
-
+        
         // continue;
         // --------------------------------------------------------------------
         // DRAW PROPERTY
-
+        
         var property = model.propertyPosMap[x][y];
         if( property !== null ){
-
+          
           var color;
           type = property.type.ID;
           if( property.owner === -1 ){
@@ -164,10 +171,10 @@ view.renderMap = function( scale ){
             color = view.colorArray[ property.owner ];
             
             if( property.type.factionSprites ){
-              type = property.type.factionSprites[ model.players[property.owner].mainCo.faction ]
+              type = property.type.factionSprites[ model.coData[property.owner].coA.faction ]
             }
           }
-
+          
           if( inShadow ) color = view.COLOR_NEUTRAL;
           
           pic = view.getPropertyImageForType( type, color );
@@ -179,14 +186,14 @@ view.renderMap = function( scale ){
           tcy = (y)*tileSize - tileSize;
           tcw = tileSize;
           tch = tileSize*2;
-
+          
           if( tcy < 0 ){
             scy = scy + BASESIZE;
             sch = sch - BASESIZE;
             tcy = tcy + tileSize;
             tch = tch - tileSize;
           }
-
+          
           if( pic !== undefined ){
             ctx.drawImage(
               pic,
@@ -195,14 +202,31 @@ view.renderMap = function( scale ){
               tcx,tcy,
               tcw,tch
             );
-
-            // RENDER GRAY OVERLAY TO MARK AS USED
-            if( inShadow && tch > 16 && property !== null ){
-
+            
+            if( inShadow ){
               pic = view.getPropertyImageForType(
                 property.type.ID, view.COLOR_BLACK_MASK
               );
-
+              
+              ctx.globalAlpha = 0.35;
+              ctx.drawImage(
+                pic,
+                scx,scy,
+                scw,sch,
+                tcx,tcy,
+                tcw,tch
+              );
+              ctx.globalAlpha = 1;
+            }
+            
+            /*
+            // RENDER GRAY OVERLAY TO MARK AS USED
+            if( inShadow && tch > 16 && property !== null ){
+              
+              pic = view.getPropertyImageForType(
+                property.type.ID, view.COLOR_BLACK_MASK
+              );
+              
               ctx.globalAlpha = 0.35;
               ctx.drawImage(
                 pic,
@@ -213,13 +237,14 @@ view.renderMap = function( scale ){
               );
               ctx.globalAlpha = 1;
             }
+            */
           }
           else{
             tcx = (x)*tileSize;
             tcy = (y)*tileSize;
             tcw = tileSize;
             tch = tileSize;
-
+            
             ctx.fillStyle="rgb(0,255,0)";
             ctx.fillRect(
               tcx,tcy,
@@ -227,35 +252,17 @@ view.renderMap = function( scale ){
             );
           }
         }
-
-        // --------------------------------------------------------------------
-        // DRAW SHADOW
-
-        if( inShadow ){
-          tcx = (x)*tileSize;
-          tcy = (y)*tileSize;
-          tcw = tileSize;
-          tch = tileSize;
-
-          ctx.globalAlpha = 0.2;
-          ctx.fillStyle="black";
-          ctx.fillRect(
-            tcx,tcy,
-            tcw,tch
-          );
-          ctx.globalAlpha = 1;
-        }
-
+        
         // --------------------------------------------------------------------
         // DRAW FOCUS
         if( focusExists ){
           pic = view.getInfoImageForType(
             ( controller.stateMachine.state === "MOVEPATH_SELECTION" )? "MOVE_FOC" : "ATK_FOC"
           );
-
+          
           var value = selection.getValueAt(x,y);
           if( value > 0 ){
-
+            
             scx = BASESIZE*sprStepSel;
             scy = 0;
             scw = BASESIZE;
@@ -264,7 +271,7 @@ view.renderMap = function( scale ){
             tcy = (y)*tileSize;
             tcw = tileSize;
             tch = tileSize;
-
+            
             ctx.globalAlpha = 0.65;
             ctx.drawImage(
               pic,
@@ -297,16 +304,16 @@ view.renderMap = function( scale ){
                 if( x < cursx ) pic = view.getInfoImageForType("SILO_W");
                 else pic = view.getInfoImageForType("SILO_E");
               }
-              else{
-                if( x < cursx ){
-                  if( y < cursy ) pic = view.getInfoImageForType("SILO_NW");
-                  else pic = view.getInfoImageForType("SILO_SW");
+                else{
+                  if( x < cursx ){
+                    if( y < cursy ) pic = view.getInfoImageForType("SILO_NW");
+                    else pic = view.getInfoImageForType("SILO_SW");
+                  }
+                  else {
+                    if( y < cursy ) pic = view.getInfoImageForType("SILO_NE");
+                    else pic = view.getInfoImageForType("SILO_SE");
+                  }
                 }
-                else {
-                  if( y < cursy ) pic = view.getInfoImageForType("SILO_NE");
-                  else pic = view.getInfoImageForType("SILO_SE");
-                }
-              }
             }
             
             tcx = (x)*tileSize;
@@ -319,15 +326,15 @@ view.renderMap = function( scale ){
             }
           }
         }
-
+        
         // --------------------------------------------------------------------
         // DRAW UNIT
-
+        
         var unit = model.unitPosMap[x][y];
         var stats = (unit !== null )? controller.getUnitStatusForUnit( unit ) : null;
         if( !inShadow && unit !== null && 
            ( /* !unit.hidden || */ unit.owner === model.turnOwner || model.players[ unit.owner ].team == teamId ||
-              stats.VISIBLE ) ){
+            stats.VISIBLE ) ){
           
           if( unit !== view.preventRenderUnit ){
             var color;
@@ -337,12 +344,13 @@ view.renderMap = function( scale ){
             else{
               color = view.colorArray[ unit.owner ];
             }
-
-            var state = ( unit.owner % 2 === 1 )?
-              view.IMAGE_CODE_IDLE : view.IMAGE_CODE_IDLE_INVERTED;
-
+            
+            var state;
+            if( unit.type.cannon ) state = view.IMAGE_CODE_IDLE;
+            else state = ( unit.owner % 2 === 1 )? view.IMAGE_CODE_IDLE : view.IMAGE_CODE_IDLE_INVERTED;
+                        
             pic = view.getUnitImageForType( unit.type.ID, state, color );
-
+            
             scx = (BASESIZE*2)*sprStepUnit;
             scy = 0;
             scw = BASESIZE*2;
@@ -351,7 +359,7 @@ view.renderMap = function( scale ){
             tcy = (y)*tileSize-tileSize/2;
             tcw = tileSize+tileSize;
             tch = tileSize+tileSize;
-
+            
             if( pic !== undefined ){
               ctx.drawImage(
                 pic,
@@ -360,11 +368,11 @@ view.renderMap = function( scale ){
                 tcx,tcy,
                 tcw,tch
               );
-
+              
               // RENDER GRAY OVERLAY TO MARK AS USED
               if( unit.owner === model.turnOwner &&
-                !model.canAct( model.extractUnitId( unit ) ) ){
-
+                 !model.canAct( model.extractUnitId( unit ) ) ){
+                
                 ctx.globalAlpha = 0.5;
                 ctx.drawImage(
                   view.getUnitImageForType(
@@ -383,14 +391,14 @@ view.renderMap = function( scale ){
               tcy = (y)*tileSize;
               tcw = tileSize;
               tch = tileSize;
-
+              
               ctx.fillStyle="rgb(255,0,0)";
               ctx.fillRect(
                 tcx,tcy,
                 tcw,tch
               );
             }
-
+            
             pic = stats.HP_PIC;
             if( pic !== null ){
               ctx.drawImage(
@@ -398,30 +406,30 @@ view.renderMap = function( scale ){
                 tcx+tileSize,tcy+tileSize
               );
             }
-
+            
             // ------------------------------------------------------------
-
+            
             if( sprStepStat !== 0 &&
-              sprStepStat !== 1 &&
-
-              sprStepStat !== 4 &&
-              sprStepStat !== 5 &&
-
-              sprStepStat !== 8 &&
-              sprStepStat !== 9 &&
-
-              sprStepStat !== 12 &&
-              sprStepStat !== 13 &&
+               sprStepStat !== 1 &&
+               
+               sprStepStat !== 4 &&
+               sprStepStat !== 5 &&
+               
+               sprStepStat !== 8 &&
+               sprStepStat !== 9 &&
+               
+               sprStepStat !== 12 &&
+               sprStepStat !== 13 &&
+               
+               sprStepStat !== 16 &&
+               sprStepStat !== 17 ){
               
-              sprStepStat !== 16 &&
-              sprStepStat !== 17 ){
-
               var st = parseInt( sprStepStat/4 , 10 );
-
+              
               pic = null;
               var stIn = st;
               do{
-
+                
                 // TODO
                 if( stIn === 0 && stats.LOW_AMMO ){
                   pic = view.getInfoImageForType("SYM_AMMO");
@@ -429,23 +437,23 @@ view.renderMap = function( scale ){
                 else if( stIn === 1 && stats.CAPTURES ){
                   pic = view.getInfoImageForType("SYM_CAPTURE");
                 }
-                else if( stIn === 2 && stats.LOW_FUEL ){
-                  pic = view.getInfoImageForType("SYM_FUEL");
-                }
-                else if( stIn === 3 && stats.HAS_LOADS ){
-                  pic = view.getInfoImageForType("SYM_LOAD");
-                }
-                else if( stIn === 4 && unit.hidden ){
-                  pic = view.getInfoImageForType("SYM_HIDDEN");
-                }
-
+                  else if( stIn === 2 && stats.LOW_FUEL ){
+                    pic = view.getInfoImageForType("SYM_FUEL");
+                  }
+                    else if( stIn === 3 && stats.HAS_LOADS ){
+                      pic = view.getInfoImageForType("SYM_LOAD");
+                    }
+                      else if( stIn === 4 && unit.hidden ){
+                        pic = view.getInfoImageForType("SYM_HIDDEN");
+                      }
+                
                 if( pic !== null ) break;
-
+                
                 stIn++;
                 if( stIn === 5 ) stIn = 0;
               }
               while( stIn !== st );
-
+              
               if( pic !== null ){
                 ctx.drawImage(
                   pic,
@@ -453,16 +461,16 @@ view.renderMap = function( scale ){
                 );
               }
             }
-
+            
             // ------------------------------------------------------------
           }
         }
-
+        
         view.drawScreen[x][y] = false;
       }
     }
   }
-
+  
   // DRAW ARROW
   if( controller.stateMachine.state === "MOVEPATH_SELECTION" ){
     var currentMovePath = stmData.movePath.data;
@@ -472,15 +480,15 @@ view.renderMap = function( scale ){
     var oY;
     var tX;
     var tY;
-
+    
     for( var i=0,e=currentMovePath.length; i<e; i++ ){
       if( currentMovePath[i] === null ) break;
-
+      
       oX = cX;
       oY = cY;
-
+      
       // TODO reduce 3 switches to 1
-
+      
       // CURRENT TILE
       switch( currentMovePath[i] ){
         case model.MOVE_CODE_UP :    cY--; break;
@@ -488,7 +496,7 @@ view.renderMap = function( scale ){
         case model.MOVE_CODE_DOWN :  cY++; break;
         case model.MOVE_CODE_LEFT :  cX--; break;
       }
-
+      
       // NEXT TILE
       if( i === e-1 || currentMovePath[i+1] === null ){
         tX = -1; tY = -1;
@@ -501,9 +509,9 @@ view.renderMap = function( scale ){
           case model.MOVE_CODE_LEFT :  tX = cX-1; tY = cY;   break;
         }
       }
-
+      
       if( tX == -1 ){
-
+        
         // TARGET TILE
         switch( currentMovePath[i] ){
           case model.MOVE_CODE_UP :
@@ -517,10 +525,10 @@ view.renderMap = function( scale ){
         }
       }
       else{
-
+        
         var diffX = Math.abs( tX-oX );
         var diffY = Math.abs( tY-oY );
-
+        
         // IN THE MIDDLE OF THE WAY
         if( diffX === 2 ){
           pic = view.getTileImageForType("ARROW_WE");
@@ -528,33 +536,33 @@ view.renderMap = function( scale ){
         else if( diffY === 2 ){
           pic = view.getTileImageForType("ARROW_NS");
         }
-        else if( (tX<cX && oY>cY) || (oX<cX && tY>cY)  ){
-          pic = view.getTileImageForType("ARROW_SW");
-        }
-        else if( (tX<cX && oY<cY) || (oX<cX && tY<cY) ){
-          pic = view.getTileImageForType("ARROW_WN");
-        }
-        else if( (tX>cX && oY<cY) || (oX>cX && tY<cY) ){
-          pic = view.getTileImageForType("ARROW_NE");
-        }
-        else if( (tX>cX && oY>cY) || (oX>cX && tY>cY) ){
-          pic = view.getTileImageForType("ARROW_ES");
-        }
-        else{
-          util.raiseError(
-            "illegal move arrow state",
-            "old (",oX,",",oY,")",
-            "current (",cX,",",cY,")",
-            "next (",tX,",",tY,")",
-            "path (", currentMovePath ,")"
-          );
-
-          continue;
-        }
+          else if( (tX<cX && oY>cY) || (oX<cX && tY>cY)  ){
+            pic = view.getTileImageForType("ARROW_SW");
+          }
+            else if( (tX<cX && oY<cY) || (oX<cX && tY<cY) ){
+              pic = view.getTileImageForType("ARROW_WN");
+            }
+              else if( (tX>cX && oY<cY) || (oX>cX && tY<cY) ){
+                pic = view.getTileImageForType("ARROW_NE");
+              }
+                else if( (tX>cX && oY>cY) || (oX>cX && tY>cY) ){
+                  pic = view.getTileImageForType("ARROW_ES");
+                }
+                  else{
+                    util.raiseError(
+                      "illegal move arrow state",
+                      "old (",oX,",",oY,")",
+                      "current (",cX,",",cY,")",
+                      "next (",tX,",",tY,")",
+                      "path (", currentMovePath ,")"
+                    );
+                    
+                    continue;
+                  }
       }
-
+      
       if( cX >= 0 && cY >= 0 &&
-        cX < controller.screenWidth && cY < controller.screenHeight ){
+         cX < controller.screenWidth && cY < controller.screenHeight ){
         ctx.drawImage(
           pic,
           cX*tileSize,
@@ -563,7 +571,7 @@ view.renderMap = function( scale ){
       }
     }
   }
-
+  
   // DRAW CURSOR
   ctx.lineWidth = 2;
   ctx.strokeStyle = '#f00';
@@ -572,6 +580,6 @@ view.renderMap = function( scale ){
     tileSize*controller.mapCursorY+1,
     tileSize-2,tileSize-2
   );
-
+  
   view.drawScreenChanges=0;
 };

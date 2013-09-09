@@ -38,6 +38,7 @@ var constants = {
     STM_ACTIONSTATE_BREAKS_TRANS:   92,
     STM_NEXT_STATE_MISSING:         93,
     STM_STILL_IN_INITIAL_STATE: 		94,
+    STM_BACK_TRANSITION_NO_HISTORY: 95,
 
     // #### Error data numbers
 

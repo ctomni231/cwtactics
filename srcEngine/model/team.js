@@ -21,11 +21,11 @@ model.canTransferMoneyToTile = function( pid, x,y ){
 	if( model.players[ pid ].gold < model.MONEY_TRANSFER_STEPS[0] ) return false;
 	
 	// CHECK UNIT
-	ref = model.unitPosMap[x][y].unit;
+	ref = model.unitPosMap[x][y];
 	if( ref === null || ref.owner === pid ){
 		
 		// CHECK PROPERTY
-		ref = model.propertyPosMap[x][y].property;
+		ref = model.propertyPosMap[x][y];
 		if( ref !== null && ref.owner !== pid && ref.owner !== -1 ){
 			return true;
 		}

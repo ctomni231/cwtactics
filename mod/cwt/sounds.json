@@ -10,6 +10,7 @@
   { "src":"../../../sound/cancel.wav",       "id":"CANCEL" }, 
   { "src":"../../../sound/rocketImpact.mp3", "id":"ROCKET_IMPACT" }, 
   { "src":"../../../sound/explode.wav",      "id":"EXPLODE" },		
+  { "src":"../../../sound/cannon.wav",       "id":"CANNON" },		
   
   { 
     "src":"../../../music/Epoch.mp3", 

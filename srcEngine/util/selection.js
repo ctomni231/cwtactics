@@ -40,7 +40,7 @@
     if( x < 0 || y < 0 || x >= maxLen || y >= maxLen ) {
       model.criticalError( constants.error.ILLEGAL_PARAMETERS, constants.error.SELECTION_DATA_OUT_OF_BOUNDS );
     }
-    elsedata[x][y] = value;
+    else data[x][y] = value;
   }
 
   function nextValidPosition( x, y, minValue, walkLeft, cb ){

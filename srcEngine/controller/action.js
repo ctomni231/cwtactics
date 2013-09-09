@@ -68,6 +68,7 @@ controller.defineAction_ = function( impl ){
 //
 controller.unitAction = function( impl ){
   impl.mapAction = false;
+  impl.clientAction = false;
   impl.unitAction = true;
   impl.propertyAction = false;
   controller.defineAction_( impl );
@@ -79,6 +80,7 @@ controller.unitAction = function( impl ){
 //
 controller.propertyAction = function( impl ){
   impl.mapAction = false;
+  impl.clientAction = false;
   impl.unitAction = false;
   impl.propertyAction = true;
   controller.defineAction_( impl );
@@ -92,6 +94,19 @@ controller.propertyAction = function( impl ){
 //
 controller.mapAction = function( impl ){
   impl.mapAction = true;
+  impl.clientAction = false;
+  impl.unitAction = false;
+  impl.propertyAction = false;
+  controller.defineAction_( impl );
+};
+
+// Registers an user callable cliebnt action.
+//
+// @param {Object} impl action implementation
+//
+controller.clientAction = function( impl ){
+  impl.mapAction = false;
+  impl.clientAction = true;
   impl.unitAction = false;
   impl.propertyAction = false;
   controller.defineAction_( impl );

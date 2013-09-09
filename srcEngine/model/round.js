@@ -62,7 +62,7 @@ model.nextTurn = function(){
   pid++;
   while( pid !== oid ){
     
-    if( pid === CWT_MAX_PLAYER ){
+    if( pid === constants.MAX_PLAYER ){
       pid = 0;
       
       // Next day 
@@ -102,7 +102,7 @@ model.nextTurn = function(){
   i= model.getFirstUnitSlotId( pid ); 
   e= model.getLastUnitSlotId( pid );
   for( ; i<e; i++ ){
-    if( model.units[i].owner !== constants.INACTIVE_ID ) continue;
+    if( model.units[i].owner === constants.INACTIVE_ID ) continue;
     
     model.drainFuel( i );
     if(turnStartSupply) model.tryUnitSuppliesNeighbours( i );
@@ -117,9 +117,8 @@ model.nextTurn = function(){
   
 	controller.events.nextTurn();
   
-  // start AI logic if new turn owner is AI controlled
-  // this local instance is the host
+  // start AI logic if new turn owner is AI controlled this local instance is the host
   if( controller.isHost() && controller.isPlayerAiControlled(pid) ){
-    controller.doSharedCall("nextAiStep");
+    controller.localInvokement("prepareAiTurn",[]);
   }
 };

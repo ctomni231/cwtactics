@@ -10,13 +10,23 @@ util.scoped(function() {
   //
   // @param {Number} errorId error id
   // @param {Number} errorData error data id
-  model.criticalError = function(errorId, errorData) {
+  model.criticalError = function(errorId, errorData, e) {
 
 		// print stack trace in the active javaScript environment
-    console.trace();
+    // console.trace();
 		
-		// TODO get action stack data 
-		var stackData = [];
+		var stackData;
+    if(e){
+      stackData = e.stack;
+    }
+    else{
+      try{
+        throw Error();
+      }
+      catch(ex){
+        stackData = ex.stack;
+      }
+    }
 
     // invoke event     
     controller.events.criticalError(errorId, errorData, stackData);

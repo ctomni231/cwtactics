@@ -34,7 +34,7 @@ controller.persistenceHandler(
 	
 	// load
 	function(dom){
-		var players = dom.plys;
+		var players = dom.players;
 		var data, player, id;
 		
 		// reset player data

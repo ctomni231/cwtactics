@@ -208,7 +208,7 @@ controller.stateMachine.data = {
     generate: util.scoped( function(){
       var commandKeys;
 
-      controller.generateActionList = function(){
+      return function(){
         if( !commandKeys ) commandKeys = Object.keys( controller.actionObjects );
 
         var data = controller.stateMachine.data;
@@ -229,9 +229,9 @@ controller.stateMachine.data = {
         if( !unitActable && !propertyActable ) mapActable = true;
 				
 				var st_mode = data.thereIsUnitRelationShip( data.source, data.target );
-				var sst_mode = data.thereIsUnitRelationShip( data.source, data.selection );
+				var sst_mode = data.thereIsUnitRelationShip( data.source, data.targetselection );
 				var pr_st_mode = data.thereIsUnitToPropertyRelationShip( data.source, data.target );
-				var pr_sst_mode = data.thereIsUnitToPropertyRelationShip( data.source, data.selection );
+				var pr_sst_mode = data.thereIsUnitToPropertyRelationShip( data.source, data.targetselection );
 
         for( var i = 0, e = commandKeys.length; i < e; i++ ) {
           var action = controller.actionObjects[commandKeys[i]];
@@ -246,13 +246,13 @@ controller.stateMachine.data = {
 						// relation to unit
 						if( action.relation ){
 							var checkMode = null;
-							if( 	 	 action.relation[0] === "S" && action.relation[0] === "T"  ) checkMode = st_mode;
-							else if( action.relation[0] === "S" && action.relation[0] === "ST" ) checkMode = sst_mode;
+							if( 	 	 action.relation[0] === "S" && action.relation[1] === "T"  ) checkMode = st_mode;
+							else if( action.relation[0] === "S" && action.relation[1] === "ST" ) checkMode = sst_mode;
 							else model.criticalError( constants.error.UNKNOWN,constants.error.UNKNOWN );
 							
 							var result = false;
-							for( var i=2, e=action.relation.length; i<e; i++ ){
-								if( action.relation[i] === checkMode ) result = true;
+							for( var si=2, se=action.relation.length; si<se; si++ ){
+								if( action.relation[si] === checkMode ) result = true;
 							}
 							
 							if( !result ) continue;
@@ -261,23 +261,28 @@ controller.stateMachine.data = {
 						// relation to property
 						if( action.relationToProp ){
 							var checkMode = null;
-							if( action.relation[0] === "S" && action.relationToProp[0] === "T"  ){
+							if( action.relation[0] === "S" && action.relationToProp[1] === "T"  ){
 								checkMode = pr_st_mode;
 							}
-							else if( action.relation[0] === "S" && action.relationToProp[0] === "ST" ){
+							else if( action.relation[0] === "S" && action.relationToProp[1] === "ST" ){
 								checkMode = pr_sst_mode;
 							}
 							else model.criticalError( constants.error.UNKNOWN,constants.error.UNKNOWN );
 							
 							var result = false;
-							for( var i=2, e=action.relationToProp.length; i<e; i++ ){
-								if( action.relationToProp[i] === checkMode ) result = true;
+							for( var si=2, se=action.relationToProp.length; si<se; si++ ){
+								if( action.relationToProp[si] === checkMode ) result = true;
 							}
 							
 							if( !result ) continue;
 						}
 					}
-					
+                    
+          // AI or remote players cannot be controlled by the a client
+          if( !action.clientAction	&& (
+                !model.isClientPlayer( model.turnOwner ) || controller.isPlayerAiControlled( model.turnOwner )
+          )) continue;
+          
           // pre defined checkers
 					if( action.propertyAction ){
 						if( !propertyActable ) continue;
@@ -285,10 +290,10 @@ controller.stateMachine.data = {
 
           // pre defined checkers
           if( action.mapAction 			=== true && !mapActable ) continue;
+          if( action.clientAction		=== true && !mapActable ) continue;
 
-          // if no condition is set or the condition matches 
-					// then add the entry to the menu list
-          if( !action.condition || action.condition( data ) ){
+          // if condition matches then add the entry to the menu list
+          if( action.condition && action.condition( data ) ){
 						data.menu.addEntry( commandKeys[i] );
 					}
         }

@@ -8,6 +8,10 @@ controller.mapCursorX = 0;
  */
 controller.mapCursorY = 0;
 
+controller.mapTargetCursorX = 0;
+
+controller.mapTargetCursorY = 0;
+
 /**
  *
  */
@@ -94,6 +98,8 @@ controller.cursorActionClick = function(){
 controller.moveCursor = function( dir, len ){
   if( arguments.length === 1 ) len = 1;
   
+  controller.eraseWantedCursorPosition();
+  
   var x = controller.mapCursorX;
   var y = controller.mapCursorY;
   
@@ -107,6 +113,15 @@ controller.moveCursor = function( dir, len ){
   controller.setCursorPosition(x,y);
 };
 
+controller.setWantedCursorPosition = function(x,y){
+  controller.mapTargetCursorX = x;
+  controller.mapTargetCursorY = y;
+};
+
+controller.eraseWantedCursorPosition = function(x,y){
+  controller.mapTargetCursorX = -1;
+  controller.mapTargetCursorY = -1;
+};
 
 /**
  * Moves the cursor to a given position. The view will be moved as well with
@@ -152,10 +167,10 @@ controller.setCursorPosition = function( x,y,relativeToScreen ){
   var sch = parseInt( parseInt( (window.innerHeight-80)/16,10 ) / scale ,10 );
   
   var moveCode = -1;
-  if( x-controller.screenX <= 1 )          moveCode = model.MOVE_CODE_LEFT;
-  else if( x-controller.screenX >= scw-1 ) moveCode = model.MOVE_CODE_RIGHT;
-  else if( y-controller.screenY <= 1 )     moveCode = model.MOVE_CODE_UP;
-  else if( y-controller.screenY >= sch-1 ) moveCode = model.MOVE_CODE_DOWN;
+  if( x-controller.screenX <= 1 )          moveCode = model.moveCodes.LEFT;
+  else if( x-controller.screenX >= scw-1 ) moveCode = model.moveCodes.RIGHT;
+  else if( y-controller.screenY <= 1 )     moveCode = model.moveCodes.UP;
+  else if( y-controller.screenY >= sch-1 ) moveCode = model.moveCodes.DOWN;
   
   if( moveCode !== -1 ){
     controller.shiftScreenPosition( moveCode, 5 );

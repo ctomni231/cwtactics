@@ -96,6 +96,18 @@ model.trapWait = function( uid ){
   controller.events.trapWait( uid );
 };
 
+model.resetActableStatus = function( pid ){
+  var i= model.getFirstUnitSlotId( pid ); 
+  var e= model.getLastUnitSlotId( pid );
+  var io = i;
+  for( ; i<e; i++ ){
+    if( model.units[i].owner === constants.INACTIVE_ID ){
+      model.leftActors[ i-io ] = false;
+    }
+    else model.leftActors[ i-io ] = true;
+  }
+};
+
 // @param {Number} uid
 // 
 model.markUnitNonActable = function( uid ){

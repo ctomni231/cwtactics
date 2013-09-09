@@ -102,6 +102,36 @@ controller.colorizeImages = util.singleLazyCall(function( err, baton ){
       return canvas;
     }
     
+    function blackifyColors( image ){
+      var canvas = document.createElement("canvas");
+      var canvasContext = canvas.getContext("2d");
+      
+      var imgW = image.width;
+      var imgH = image.height;
+      canvas.width = imgW;
+      canvas.height = imgH;
+      canvasContext.drawImage( image, 0, 0);
+      var imgPixels = canvasContext.getImageData(0, 0, imgW, imgH);
+      
+      var t = true;
+      for(var y = 0; y < imgPixels.height; y++){
+        for(var x = 0; x < imgPixels.width; x++){
+          var xi = (y * 4) * imgPixels.width + x * 4;
+          var oA = imgPixels.data[xi+3];
+          if( oA > 0 ){
+            imgPixels.data[xi  ] = 0;
+            imgPixels.data[xi+1] = 0;
+            imgPixels.data[xi+2] = 0;
+          }
+        }
+      }
+      
+      // util.log("replaced",replaced,"pixels for the type",tp);
+      // write changes back
+      canvasContext.putImageData(imgPixels, 0, 0 );
+      return canvas;
+    }
+    
     var UNIT_STATES = [
       view.IMAGE_CODE_IDLE,
       view.IMAGE_CODE_IDLE_INVERTED,
@@ -207,7 +237,8 @@ controller.colorizeImages = util.singleLazyCall(function( err, baton ){
         ),
         tp,view.COLOR_NEUTRAL
       );
-      
+
+      /*      
       view.setPropertyImageForType(
         replaceColors(
           redPic, 
@@ -217,6 +248,24 @@ controller.colorizeImages = util.singleLazyCall(function( err, baton ){
           PROPERTY_INDEXES.BLACK_MASK
         ),
         tp,view.COLOR_BLACK_MASK
+      );
+      */
+            
+      view.setPropertyImageForType(
+        blackifyColors( redPic ),
+        tp,view.COLOR_BLACK_MASK
+      );
+    }
+    
+    // FOR EVERY TILE
+    var tileTypes = imageData.tiles;
+    for( var i=0,e=tileTypes.length; i<e; i++ ){
+      var tp = tileTypes[i][0];
+      var redPic = view.getTileImageForType(tp);
+      
+      view.setTileShadowImageForType(
+        blackifyColors( redPic ), 
+        tp
       );
     }
     

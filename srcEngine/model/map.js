@@ -27,14 +27,14 @@ controller.persistenceHandler(
   // load
   function( dom ){
     
-    model.mapWidth = dom.mapWidth;
-    model.mapHeight = dom.mapHeight;
+    model.mapWidth = dom.mpw;
+    model.mapHeight = dom.mph;
     
     for( var x=0,xe=model.mapWidth; x<xe; x++ ){
       for( var y=0,ye=model.mapHeight; y<ye; y++ ){
         model.unitPosMap[x][y] = null;
         model.propertyPosMap[x][y] = null;
-        model.map[x][y] = model.tileTypes[ data.typeMap[ data.map[x][y] ] ];
+        model.map[x][y] = model.tileTypes[ dom.typeMap[ dom.map[x][y] ] ];
       }
     }
   },
@@ -42,8 +42,8 @@ controller.persistenceHandler(
   // save
   function( dom ){
   
-    dom.mapWidth = model.mapWidth;
-    dom.mapHeight = model.mapHeight;
+    dom.mpw = model.mapWidth;
+    dom.mph = model.mapHeight;
     
     dom.map = [];
     var mostIdsMap = {};

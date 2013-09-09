@@ -51,7 +51,7 @@ util.scoped(function(){
       this.curY = this.siloY;
       this.phase = 0;
     },
-      
+    
     render: function(){
       var tileSize = TILE_LENGTH;
       var scx = 0;
@@ -62,7 +62,7 @@ util.scoped(function(){
       var tcy = (this.curY)*tileSize -4;
       var tcw = tileSize +8;
       var tch = tileSize +8;
-
+      
       view.canvasCtx.drawImage(
         rocket_img,
         scx,scy,
@@ -70,7 +70,7 @@ util.scoped(function(){
         tcx,tcy,
         tcw,tch
       );
-
+      
       view.markForRedrawWithNeighboursRing( this.curX, this.curY );
     },
     
@@ -109,7 +109,7 @@ util.scoped(function(){
   view.registerAnimationHook({
     
     key: "doExplosionAt",
-        
+    
     prepare: function( tx,ty, range, damage, owner ){
       if( !expl_img ) expl_img = view.getInfoImageForType("EXPLOSION_GROUND");
       controller.playSound("ROCKET_IMPACT");
@@ -143,5 +143,10 @@ util.scoped(function(){
       return done;
     }
     
+  });
+  
+  
+  controller.onEvent("fireCannon",function( uid, x,y ){
+    controller.playSound("CANNON");
   });
 });

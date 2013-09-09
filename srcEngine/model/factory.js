@@ -101,6 +101,6 @@ model.getBuildMenu = function( prid, menu ){
 		// TODO FIND BETTER SOLUTION
 		// if( model.rules.blockedUnits.indexOf(uType) !== -1 ) return false;
 		
-		data.menu.addEntry( key );
+		menu.addEntry( key );
 	}
 };

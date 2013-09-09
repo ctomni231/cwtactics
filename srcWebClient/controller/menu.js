@@ -81,7 +81,7 @@ util.scoped(function(){
    * @param {type} y
    */
   controller.showMenu = function( menu, x, y ){
-    if( DEBUG ){ util.log("opening GUI menu"); }
+    if( constants.DEBUG ) util.log("opening GUI menu");
     
     var tileSize = TILE_LENGTH*controller.screenScale;
     
@@ -150,7 +150,7 @@ util.scoped(function(){
    *
    */
   controller.hideMenu = function(){
-    if( DEBUG ){ util.log("closing GUI menu"); }
+    if( constants.DEBUG ) util.log("closing GUI menu");
     
     menuEntryListElement.children[ controller.menuCursorIndex ].className = "";
     

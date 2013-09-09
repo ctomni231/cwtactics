@@ -278,8 +278,6 @@ model.damageUnit = function( uid, damage, minRest ){
   
   unit.hp -= damage;
   
-  controller.events.damageUnit( uid, damage, minRest );
-  
   if( minRest && unit.hp <= minRest ){ 
     unit.hp = minRest;
   }
@@ -288,6 +286,8 @@ model.damageUnit = function( uid, damage, minRest ){
     // destroy unit when health falls to zero
     if( unit.hp <= 0 ) model.destroyUnit(uid);
   }
+  
+  controller.events.damageUnit( uid, damage, minRest );
 };
 
 // Heals an unit. If the unit health will be greater than the maximum health value then the difference will 
