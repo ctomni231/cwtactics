@@ -1,25 +1,36 @@
-# File Organization
+# Attention: New Image Format
 
-This shows how the file names are organized within the object folders for units, terrain(fields), and properties(buildings/inventions). All files can follow the general file format, but the categories allow users to fine tune the data for specific images.
+## Introduction
 
-_*Opt* = Optional_
+After a lot of testing and organizing, the new image format is finally completed. This format will make it easier for us to show connections of terrain directly from the images. It will also be used for units, inventions, and properties to allow display of the different armies.
 
-## General File Format
+## Format
 
-`(Tileset)-(Weather[Opt])_(Object)-(Overlap[Opt])_(Army[Opt])~(8-Connection N-S-W-E-NW-NE-SW-SE[Opt])`
+`AWDS(C)_PLIN(L)$........`
+`AWDS(C)_INFT_OS`
 
+<Game Type>(<Weather Type>)_<Object Type>(<Connection Type>)_<Faction Type>$<8-Way Connection>
 
-## Terrain Format
+*Game Type:* This is the abbreviation for the objects game origin.
+*Weather Type*: This is the abbreviation for the objects weather type.
+*Object Type*: This is the 4-letter abbreviation for the object
+*Connection Type*: This is the type of connection this tile connects with.
+*Faction Type*: This is the abbreviation for the type of faction this object represents.
+*8-way Connection*: This orders the connections for N-S-W-E-NW-NE-SW-SE to show the best combination of connection for a certain tile.
 
-`(Tileset Type)-(Weather Type[Opt])_(Terrain Type)-(Overlap Type[Opt])~(4-Connection Type N-S-W-E [Opt])`
+### Folder Format
 
-## Properties Format
+Each folder will be used to separate the images. There will be a folder for each group of images and the corresponding animations.
 
-`(Tileset Type)-(Weather Type[Opt])_(Property Type)-(Overlap Type[Opt])_(Army Faction[Opt])`
+* Terrain
+* Properties
+* Inventions
+* Units
 
-## Units Format
+For extra images, like battle animations and overworld images, these folder sections will be denoted with a dash with the corresponding names. Image conventions will remain relatively the same for each image, with slight variations when needed.
 
-`(Tileset Type)_(Unit Type)_(Army Faction[Opt])`
+* Terrain - Overworld
+* Units - BattleAnim
 
 ***
 
@@ -41,7 +52,8 @@ This shows how objects are organized within the object files for units, terrain(
 
 ## Cursor and Terrain Connection Image Abbreviations
 
-* *L* = Land [Default]
+* *.* = Neutral
+* *L* = Land
 * *W* = Wall
 * *S* = Sea/Ocean
 * *B* = Shoal/Beach
@@ -203,3 +215,28 @@ This shows how objects are organized within the object files for units, terrain(
 * *T* = Thunderstorm
 * *A* = Acid Rain
 * *Q* = Earthquake
+
+***
+
+# File Organization (Deprecated)
+
+This shows how the file names are organized within the object folders for units, terrain(fields), and properties(buildings/inventions). All files can follow the general file format, but the categories allow users to fine tune the data for specific images.
+
+_*Opt* = Optional_
+
+## General File Format (Deprecated)
+
+`(Tileset)-(Weather[Opt])_(Object)-(Overlap[Opt])_(Army[Opt])~(8-Connection N-S-W-E-NW-NE-SW-SE[Opt])`
+
+
+## Terrain Format (Deprecated)
+
+`(Tileset Type)-(Weather Type[Opt])_(Terrain Type)-(Overlap Type[Opt])~(4-Connection Type N-S-W-E [Opt])`
+
+## Properties Format (Deprecated)
+
+`(Tileset Type)-(Weather Type[Opt])_(Property Type)-(Overlap Type[Opt])_(Army Faction[Opt])`
+
+## Units Format (Deprecated)
+
+`(Tileset Type)_(Unit Type)_(Army Faction[Opt])`
