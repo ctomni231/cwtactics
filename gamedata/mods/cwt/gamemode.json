@@ -1,0 +1,23 @@
+[
+  {
+    "id":"AW1",
+    "config":{},
+    "rules":[
+      { 
+        "$any": ["NTNK","WRTK"],
+        "disableBuild": 1
+      }	
+    ]
+  },
+  
+  {
+    "id":"AW2",
+    "config":{},
+    "rules":[
+      { 
+        "$any": ["WRTK"],
+        "disableBuild": 1
+      }	
+    ]
+  }
+]

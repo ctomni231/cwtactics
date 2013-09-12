@@ -1,0 +1,173 @@
+[
+  {
+    "ID": "PLIN",
+    "defense": 1
+  },
+  {
+    "ID": "FRST",
+    "defense": 2,
+    "blocksVision":true
+  },
+  {
+    "ID": "MNTN",
+    "defense": 4
+  },
+  {
+    "ID": "CITY",
+    "vision": 0,
+    "defense": 3,
+    "capturePoints": 20,
+    "funds": 1000,
+    "supply": [
+      "INFT",
+      "MECH",
+      "TIRE_A",
+      "TIRE_B",
+      "TANK"
+    ],
+    "repairs": {
+      "INFT":2,
+      "MECH":2,
+      "TIRE_A":2,
+      "TIRE_B":2,
+      "TANK":2
+    }
+  },
+  {
+    "ID": "BASE",
+    "vision": 0,
+    "defense": 3,
+    "capturePoints": 20,
+    "funds": 1000,
+    "supply": [
+      "INFT",
+      "MECH",
+      "TIRE_A",
+      "TIRE_B",
+      "TANK"
+    ],
+    "repairs": {
+      "INFT":2,
+      "MECH":2,
+      "TIRE_A":2,
+      "TIRE_B":2,
+      "TANK":2
+    },
+    "builds": [
+      "INFT",
+      "MECH",
+      "TIRE_A",
+      "TIRE_B",
+      "TANK"
+    ]
+  },
+  {
+    "ID": "APRT",
+    "vision": 0,
+    "defense": 3,
+    "capturePoints": 20,
+    "funds": 1000,
+    "supply": [
+      "AIR"
+    ],
+    "repairs": {
+      "AIR":2
+    },
+    "builds": [
+      "AIR"
+    ]
+  },
+  {
+    "ID": "PORT",
+    "vision": 0,
+    "defense": 3,
+    "capturePoints": 20,
+    "funds": 1000,
+    
+    "supply": [
+      "SHIP",
+      "WATER_TRANSPORT"
+    ],
+    "repairs": {
+      "SHIP":2,
+      "WATER_TRANSPORT":2
+    },
+    "builds": [
+      "SHIP",
+      "WATER_TRANSPORT"
+    ]
+  },
+  {
+    "ID": "SILO",
+    "defense": 3,
+    "vision": 0,
+    "rocketsilo":{
+      "fireable":["INFT","MECH"],
+      "range":2,
+      "damage":3
+    },
+    "changeTo":"SILO_EMPTY"
+  },
+  {
+    "ID": "SILO_EMPTY",
+    "defense": 3,
+    "vision": 0
+  },
+  {
+    "ID": "HQTR",
+    "vision": 0,
+    "defense": 4,
+    "capturePoints": 20,
+    "funds": 1000,
+    "looseAfterCaptured": true,
+    "changeAfterCaptured": "CITY",
+    "notTransferable":true,
+    "supply": [
+      "INFT",
+      "MECH",
+      "TIRE_A",
+      "TIRE_B",
+      "TANK"
+    ],
+    "factionSprites":{
+      "ORST":"HQTR_OS",
+      "BLMN":"HQTR_BM",
+      "GRET":"HQTR_GE",
+      "YLCM":"HQTR_YC"
+    },
+    "repairs": {
+      "INFT":2,
+      "MECH":2,
+      "TIRE_A":2,
+      "TIRE_B":2,
+      "TANK":2
+    }
+  },
+  {
+    "ID": "RADAR",
+    "vision": 4,
+    "defense": 3,
+    "points": 20
+  },
+  {
+    "ID": "ROAD",
+    "defense": 0
+  },
+  {
+    "ID": "RIVER",
+    "defense": 0
+  },
+  {
+    "ID": "WATER",
+    "defense": 0
+  },
+  {
+    "ID": "REEF",
+    "defense": 1,
+    "blocksVision":true
+  },
+  {
+    "ID": "SHOAL",
+    "defense": 0
+  }
+]

@@ -2,6 +2,34 @@ PAGE_DATA.milestones = [
   
   {
     header: "Version",
+    version: "0.3.4",
+    subHeaderT: "UI, Cannons, AI",
+    subHeaderB: "and Offline Mode",
+        
+    text:[
+      ""
+    ],
+    
+    img: "images/milestones/v0_3_4.png",
+    
+    changelog:[
+    	"When a unit cannot move due low fuel or something similar then the action menu will be opened directly",
+    	"New UI design and mechanic",
+    	"Client enabled player instance fog rendering",
+    	"Error Popup for debugging/issue collecting process",
+    	"Rule engine between condition",
+    	"Rule engine is condition",
+    	"Rule engine one of condition",
+    	"Rule engine DSL compiler (accessable in editor)",
+    	"Offline game mode (HTML5 offlince application cache)",
+    	"Refactored base structure with more contract based communication between client and engine"
+    ]
+  },
+  
+  // --------------------------------------------------------------------------------------------------------
+  
+  {
+    header: "Version",
     version: "0.3.1.2",
     subHeaderT: "CO's, Scripting",
     subHeaderB: "and Screens",

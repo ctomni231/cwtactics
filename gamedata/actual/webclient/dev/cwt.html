@@ -1,0 +1,614 @@
+<!DOCTYPE HTML>
+<html manifest="cache.manifest" >
+
+  <head>
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, , maximum-scale=1, user-scalable=no" />
+    
+<script >
+
+  // Check if a new cache is available on page load.
+  window.addEventListener( 'load', function( e ){
+    var appCache = window.applicationCache;
+
+    if( appCache ) {
+
+      // update is available
+      appCache.addEventListener( 'updateready', function( e ){
+        if( appCache.status === appCache.UPDATEREADY ) {
+
+          // Browser downloaded a new app cache. Swap it in and reload 
+          // the page to get the new hotness.
+          appCache.swapCache();
+
+          if( confirm( 'A new version of this site is available. Load it?' ) ) {
+
+            // forces reload of all program files
+            window.location.reload();
+          }
+        } else startGame();
+      }, false );
+      
+      appCache.addEventListener( 'noupdate', function(){
+        controller.screenStateMachine.event( 'start' );
+      }, false );
+      
+      appCache.addEventListener( 'downloading', function(){}, false );
+      
+      appCache.addEventListener( 'progress', function(){}, false );
+      
+      // Start when you collected all data
+      appCache.addEventListener( 'cached', function(){
+        controller.screenStateMachine.event( 'start' );
+      }, false );
+       
+      // The manifest returns 404 or 410, the download failed,
+      // or the manifest changed while the download was in progress.
+      appCache.addEventListener( 'error', function(){
+        alert( "could not download the game data into the offline storage" );
+      }, false );
+      
+    }
+  }, false );
+
+</script>
+  </head>
+  
+  <body oncontextmenu="return false;" >
+    
+<div id="cwt_app" class="gamePanel" >
+<div id="cwt_errorPanel" class="ui-box" style="display:none; width: 300px; height: 150px; position:absolute; left: calc(50% - 150px); top:calc(50% - 75px);">
+  <div class="ui-box-header">Error</div>
+  <div class="ui-box-content">
+    <table width="100%" >
+      <tbody>
+        
+        <tr>
+          <td style="width:100px;" class="ui-font ui-box-font" >Reason:</td>
+          <td style="width:200px;" class="ui-font ui-box-font" name="reason" ></td>
+        </tr>
+        
+        <tr>
+          <td class="ui-font ui-box-font" >Data:</td>
+          <td class="ui-font ui-box-font" name="data" ></td>
+        </tr>
+        
+        <tr style="width:30px;" >
+          <td colspan="2" class="ui-font" style="color:red;">Reset data before restart?</td>
+        </tr>
+        
+        <tr style="width:30px;">
+          <td colspan="2">
+            <button key="YES">
+              Yes
+            </button>
+            <button key="NO">
+              No
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!--
+<div id="messageDialog_dialog" >
+  <p id="messageDialog_message" ></p>
+
+  <button>CLOSE</button>
+</div>
+-->
+<div id="cwt_load_screen" class="gamePanel ui-panel" style="display:none;" >
+  <p class="ui-font ui-header">...LOADING...</p>
+  <p class="ui-font ui-subheader"id="logList"></p>
+</div>
+<div id="cwt_mobileSound_screen" class="gamePanel ui-panel" style="display:none;" >
+  <p>
+    <button id="mobileSoundNext" 
+            key="NEXT"  
+            class="ui-font ui-header ui-panel-button" > </button>
+  </p>
+</div>
+<div id="cwt_main_screen" class="gamePanel ui-panel" style="display:none;">
+
+  <p><button id="main_screen_enter_1" inactive="true" key="CAMPAIGN"  ></button></p> 
+  <p><button id="main_screen_enter_2" key="VERSUS"    ></button></p> 
+  <p><button id="main_screen_enter_3" inactive="true" key="NETWORK"   ></button></p> 
+  <p><button id="main_screen_enter_4" inactive="true" key="WARROOM"   ></button></p> 
+  <p><button id="main_screen_enter_5" inactive="true" key="DESIGN"    ></button></p> 
+  <p><button id="main_screen_enter_6" key="OPTIONS"   ></button></p>
+	
+	<div id="mainScreen_version"></div>
+</div>
+<div id="cwt_versus_screen" class="gamePanel ui-panel" style="display:none;" >
+  <p id="map_selection"></p>
+  <p>
+    <button id="versus_start_btn" 
+            key="NEXT"  
+            class="ui-font ui-header ui-panel-button" > </button></p>
+</div>
+<div id="cwt_player_setup_screen" class="gamePanel ui-panel" style="display:none;" >
+  
+  <!-- ##################################################### -->
+  
+  <p>
+    <button id="playersetup_p1_type"    key="P1_TYPE"    class="ui-font ui-header ui-panel-button" > </button>
+    <button id="playersetup_p1_co_main" key="P1_CO_MAIN" class="ui-font ui-header ui-panel-button" > </button>
+  </p>
+  
+  <p>
+    <button id="playersetup_p2_type"    key="P2_TYPE"    class="ui-font ui-header ui-panel-button" > </button>
+    <button id="playersetup_p2_co_main" key="P2_CO_MAIN" class="ui-font ui-header ui-panel-button" > </button>
+  </p>
+  
+  <p>
+    <button id="playersetup_p3_type"    key="P3_TYPE"    class="ui-font ui-header ui-panel-button" > </button>
+    <button id="playersetup_p3_co_main" key="P3_CO_MAIN" class="ui-font ui-header ui-panel-button" > </button>
+  </p>
+  
+  <p>
+    <button id="playersetup_p4_type"    key="P4_TYPE"    class="ui-font ui-header ui-panel-button" > </button>
+    <button id="playersetup_p4_co_main" key="P4_CO_MAIN" class="ui-font ui-header ui-panel-button" > </button>
+  </p>
+  
+  <!-- ##################################################### -->
+  
+  <p>
+    <button id="playersetup_start_btn" 
+            key="START"
+            class="ui-font ui-header ui-panel-button" > </button>
+  </p>
+</div>
+<div id="cwt_options_screen" class="gamePanel ui-panel" style="display:none;" >
+  
+  <table width="100%" >
+    <tbody>
+      
+      <tr>
+        <td colspan="2" class="ui-font ui-subheader" >
+          <span id="cwt_options_sfxVolume_desc" key="options.sfx"></span>:
+          <span id="cwt_options_sfxVolume" class="menuButton" ></span>%
+        </td>
+      </tr>
+      
+      <tr>
+        <td style="width:50%;" class="ui-font ui-subheader" >
+          <button id="cwt_options_sfx_down" key="options.sfx.down" > </button>
+        </td>
+        <td class="ui-font ui-subheader" >
+          <button id="cwt_options_sfx_up" key="options.sfx.up" > </button>
+        </td>
+      </tr>
+      
+      <tr>
+        <td colspan="2"  class="ui-font ui-subheader" >
+          <span id="cwt_options_musicVolume_desc" key="options.music"></span>:
+          <span id="cwt_options_musicVolume" class="menuButton" ></span>%
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="ui-font ui-subheader" >
+          <button id="cwt_options_music_down" key="options.music.down" > </button>
+        </td>
+        <td class="ui-font ui-subheader" >
+          <button id="cwt_options_music_up" key="options.music.up" > </button>
+        </td>
+      </tr>
+      
+      <tr style="width:30px;" >
+        <td colspan="2" class="ui-font ui-subheader" >
+          <button id="cwt_options_reset" 
+            key="options.resetData"  
+            style="color:red;" > </button>
+        </td>
+      </tr>
+      
+      <tr style="width:30px;" >
+        <td colspan="2" class="ui-font ui-subheader" >
+          <button id="cwt_options_goBack" 
+            key="options.goBack" > </button>
+        </td>
+      </tr>
+      
+    </tbody>
+  </table>
+</div>
+<div id="cwt_teamConfig_screen" class="gamePanel" style="display:none;" >
+
+</div>
+
+<div id="cwt_roundConfig_screen" class="gamePanel" style="display:none;" >
+
+</div>
+
+<div id="cwt_game_screen" class="gamePanel" style="display:none;" >
+
+  <div id="cwt_game_canvas">
+    <canvas id="cwt_canvas"></canvas>
+  </div>
+
+  <!-- #################################################################################################### --> 
+
+  <div id="cwt_info_box" class="uiPopup hide"> 
+    <div id="cwt_info_box_header">MESSAGE</div>
+    <span id="cwt_info_box_content" ></span> 
+  </div>
+
+  <!-- #################################################################################################### --> 
+
+  <div id="cwt_menu" class="uiPopup hide">
+
+    <div id="cwt_menu_header">MENU</div>
+
+    <div id="cwt_menu_content" class="menuPopupContent">
+      <ul id="cwt_menu_entries" class="cwtwc_menu_entries"></ul>
+    </div>
+
+  </div>
+
+  <!-- #################################################################################################### --> 
+
+  <div id="cwt_game_bottomBar">
+
+    <div class="row headerRow">
+      <div id="bottomBar_playerName" ></div>
+      <div id="bottomBar_name" ></div>
+      <div id="bottomBar_tilename" ></div>
+      <div id="bottomBar_tplayerName" ></div>
+    </div>
+
+    <div class="row subRow">
+
+      <div>G. <span id="bottomBar_playergold"></span></div>
+
+      <div id="bottomBar_unit_row1" class="twoRow">
+        <div class="iconDiv iconDivFirst">
+          <canvas height="8" width="8" id="bottomBar_hp_d"></canvas>
+          <span class="colBold" id="bottomBar_hp"></span>
+        </div>
+        <div class="iconDiv iconDivSecond" >
+          <canvas height="8" width="8" id="bottomBar_ammo_d"></canvas>
+          <span id="bottomBar_ammo"></span>/<span class="colBold" id="bottomBar_ammo2"></span>
+        </div>
+      </div>
+
+      <div id="bottomBar_tile_row1" class="oneRow">
+        <div class="iconDiv" >
+          <canvas height="8" width="8" id="bottomBar_defense_d"></canvas>
+          <span id="bottomBar_defense"></span>
+        </div>
+      </div>
+
+      <div id="bottomBar_tplayergoldrow" >G. <span id="bottomBar_tplayergold"></span></div>
+    </div>
+
+    <div class="row subRow">
+      <div id="bottomBar_playerpower"></div>
+
+      <div id="bottomBar_unit_row2" class="twoRow">
+        <div class="iconDiv iconDivFirst" >
+          <canvas height="8" width="8" id="bottomBar_fuel_d"></canvas>
+          <span id="bottomBar_fuel"></span>/<span class="colBold" id="bottomBar_fuel2"></span>
+        </div>
+        <div class="iconDiv iconDivSecond" >
+          <canvas height="8" width="8" id="bottomBar_attrange_d"></canvas>
+          <span class="colBold" id="bottomBar_attrange"></span>-<span class="colBold" id="bottomBar_attrange2"></span>
+        </div>
+      </div>
+
+      <div id="bottomBar_tile_row2" class="oneRow">
+        <div class="iconDiv" >
+          <canvas height="8" width="8" id="bottomBar_capPt_d"></canvas>
+          <span id="bottomBar_capPt"></span>/<span class="colBold" id="bottomBar_capPt2"></span>
+        </div>
+      </div>
+
+      <div id="bottomBar_tplayerpower"></div>
+    </div>
+
+  </div>
+</div>
+<div id="cwt_ruleEditScreen" class="gamePanel" style="display:none;" >
+	
+	
+</div>
+<script src="0.js"></script>
+
+<script src="1.js"></script>
+
+<script src="2.js"></script>
+
+<script src="3.js"></script>
+
+<script src="4.js"></script>
+
+<script src="5.js"></script>
+
+<script src="6.js"></script>
+
+<script src="7.js"></script>
+
+<script src="8.js"></script>
+
+<script src="9.js"></script>
+
+<script src="10.js"></script>
+
+<script src="11.js"></script>
+
+<script src="12.js"></script>
+
+<script src="13.js"></script>
+
+<script src="14.js"></script>
+
+<script src="15.js"></script>
+
+<script src="16.js"></script>
+
+<script src="17.js"></script>
+
+<script src="18.js"></script>
+
+<script src="19.js"></script>
+
+<script src="20.js"></script>
+
+<script src="21.js"></script>
+
+<script src="22.js"></script>
+
+<script src="23.js"></script>
+
+<script src="24.js"></script>
+
+<script src="25.js"></script>
+
+<script src="26.js"></script>
+
+<script src="27.js"></script>
+
+<script src="28.js"></script>
+
+<script src="29.js"></script>
+
+<script src="30.js"></script>
+
+<script src="31.js"></script>
+
+<script src="32.js"></script>
+
+<script src="33.js"></script>
+
+<script src="34.js"></script>
+
+<script src="35.js"></script>
+
+<script src="36.js"></script>
+
+<script src="37.js"></script>
+
+<script src="38.js"></script>
+
+<script src="39.js"></script>
+
+<script src="40.js"></script>
+
+<script src="41.js"></script>
+
+<script src="42.js"></script>
+
+<script src="43.js"></script>
+
+<script src="44.js"></script>
+
+<script src="45.js"></script>
+
+<script src="46.js"></script>
+
+<script src="47.js"></script>
+
+<script src="48.js"></script>
+
+<script src="49.js"></script>
+
+<script src="50.js"></script>
+
+<script src="51.js"></script>
+
+<script src="52.js"></script>
+
+<script src="53.js"></script>
+
+<script src="54.js"></script>
+
+<script src="55.js"></script>
+
+<script src="56.js"></script>
+
+<script src="57.js"></script>
+
+<script src="58.js"></script>
+
+<script src="59.js"></script>
+
+<script src="60.js"></script>
+
+<script src="61.js"></script>
+
+<script src="62.js"></script>
+
+<script src="63.js"></script>
+
+<script src="64.js"></script>
+
+<script src="65.js"></script>
+
+<script src="66.js"></script>
+
+<script src="67.js"></script>
+
+<script src="68.js"></script>
+
+<script src="69.js"></script>
+
+<script src="70.js"></script>
+
+<script src="71.js"></script>
+
+<script src="72.js"></script>
+
+<script src="73.js"></script>
+
+<script src="74.js"></script>
+
+<script src="75.js"></script>
+
+<script src="76.js"></script>
+
+<script src="77.js"></script>
+
+<script src="78.js"></script>
+
+<script src="79.js"></script>
+
+<script src="80.js"></script>
+
+<script src="81.js"></script>
+
+<script src="82.js"></script>
+
+<script src="83.js"></script>
+
+<script src="84.js"></script>
+
+<script src="85.js"></script>
+
+<script src="86.js"></script>
+
+<script src="87.js"></script>
+
+<script src="88.js"></script>
+
+<script src="89.js"></script>
+
+<script src="90.js"></script>
+
+<script src="91.js"></script>
+
+<script src="92.js"></script>
+
+<script src="93.js"></script>
+
+<script src="94.js"></script>
+
+<script src="95.js"></script>
+
+<script src="96.js"></script>
+
+<script src="97.js"></script>
+
+<script src="98.js"></script>
+
+<script src="99.js"></script>
+
+<script src="100.js"></script>
+
+<script src="101.js"></script>
+
+<script src="102.js"></script>
+
+<script src="103.js"></script>
+
+<script src="104.js"></script>
+
+<script src="105.js"></script>
+
+<script src="106.js"></script>
+
+<script src="107.js"></script>
+
+<script src="108.js"></script>
+
+<script src="109.js"></script>
+
+<script src="110.js"></script>
+
+<script src="111.js"></script>
+
+<script src="112.js"></script>
+
+<script src="113.js"></script>
+
+<script src="114.js"></script>
+
+<script src="115.js"></script>
+
+<script src="116.js"></script>
+
+<script src="117.js"></script>
+
+<script src="118.js"></script>
+
+<script src="119.js"></script>
+
+<script src="120.js"></script>
+
+<script src="121.js"></script>
+
+<script src="122.js"></script>
+
+<script src="123.js"></script>
+
+<script src="124.js"></script>
+
+<script src="125.js"></script>
+
+<script src="126.js"></script>
+
+<script src="127.js"></script>
+
+<script src="128.js"></script>
+
+<script src="129.js"></script>
+
+<script src="130.js"></script>
+
+<script src="131.js"></script>
+
+<script src="132.js"></script>
+
+<script src="133.js"></script>
+
+<script src="134.js"></script>
+
+<script src="135.js"></script>
+
+<script src="136.js"></script>
+
+<script src="137.js"></script>
+
+<script src="138.js"></script>
+
+<script src="139.js"></script>
+
+<script src="140.js"></script>
+
+<script src="141.js"></script>
+
+<script src="142.js"></script>
+
+<link rel="stylesheet" href="143.css" />
+
+<link rel="stylesheet" href="144.css" />
+
+<link rel="stylesheet" href="145.css" />
+
+<link rel="stylesheet" href="146.css" />
+
+
+    
+  </body>  
+
+</html>

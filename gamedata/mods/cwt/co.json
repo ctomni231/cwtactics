@@ -1,0 +1,51 @@
+[
+  
+  {
+    "ID":"ANDY",
+    "faction":"ORST",
+    "music":"ANDY_MUSIC",
+    "coStars": 3,
+    "scoStars": 3,
+    "d2d": [],
+    "cop": [],
+    "scop": [
+      { "att":30, "movepoints":1 }
+    ]
+  },
+  
+  {
+    "ID":"MAX",
+    "music":"MAX_MUSIC",
+    "faction":"BLMN",
+    "coStars": 3,
+    "scoStars": 3,
+    "d2d": [
+      { "$when":["FIRETYPE",["DIRECT"] ], "att":20 },
+      { "$when":["FIRETYPE",["INDIRECT"] ], "maxrange":-1 }
+    ],
+    "cop": [
+      { "$when":["FIRETYPE",["DIRECT"] ], "att":40 }
+    ],
+    "scop": [
+      { "$when":["FIRETYPE",["DIRECT"] ], "att":70 }
+    ]
+  },
+  
+  {
+    "ID":"SAMI",
+    "music":"SAMI_MUSIC",
+    "faction":"ORST",
+    "coStars": 3,
+    "scoStars": 5,
+    "d2d": [
+      { "$when":["FIRETYPE",["DIRECT"]   ], "att":-10 },
+      { "$when":["MOVETYPE",["INFT","MECH"] ], "att":30, "movepoints":1, "captureRate":50 }
+    ],
+    "cop": [
+      { "$when":["MOVETYPE",["INFT","MECH"] ], "att":40, "movepoints":1 }
+    ],
+    "scop": [
+      { "$when":["MOVETYPE",["INFT","MECH"] ], "att":70, "movepoints":2, "captureRate":9999 }
+    ]
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "globalRules": [
+    
+		{ 
+      "$when":[
+        "MOVETYPE",["INFT","MECH"],
+        "TILETYPE",["MNTN"] 
+      ],
+			"vision": 3 
+		}
+		
+  ]
+}
