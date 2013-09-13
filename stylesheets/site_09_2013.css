@@ -1,0 +1,186 @@
+@font-face { font-family: Caviar; src: url('text.ttf'); } 
+@font-face { font-family: CaviarHeader; src: url('header.ttf'); } 
+
+html, body, #contentPanel {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  height: 100%;
+  width: 100%;
+  font-family: 'Caviar', sans-serif;
+  font-size: 16px;
+}
+
+a {
+  color: #6e8ef7;
+  transition: all 1s;
+  text-decoration: none;
+}
+
+a:hover {
+  transition: all 1s;
+  color: #6e8ef7;
+  text-shadow: 0 0 0.2em #85bafa, 0 0 0.2em #85bafa, 0 0 0.2em #85bafa;
+}
+
+.hidden{ display:none; }
+.visible{ display:block; }
+
+.centerText{
+  text-align:center;
+}
+
+.fullHeight {
+  height: 100%;
+}
+
+.rightPanel {
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+
+.shadowR {
+  -webkit-box-shadow: 2px 0px 4px #666;
+  -moz-box-shadow: 2px 0px 4px #666;
+  box-shadow: 2px 0px 4px #666; 
+}
+
+.contentBlock {
+  text-align: left;
+  padding-left: 32px;
+  padding-right: 16px;
+}
+
+.contentBlock:nth-child(n+3) {
+  margin-top: 64px;
+}
+
+.contentBlock:last-child {
+  margin-bottom: 24px;
+}
+
+.contentBlock>div {
+  padding-left: 12px;
+}
+
+.headerImgBox{
+  margin-top: 12px;
+  padding-right: 12px;
+  text-align:right;
+}
+
+.navigationBar {
+  text-align: right;
+  padding-right: 12px;
+}
+
+.navigationBar li {
+  font-family: 'Caviar', sans-serif;
+  font-size: 22px;
+  list-style: none;
+  padding-bottom: 4px;
+  padding-top: 4px;
+}
+
+.navigationBar li a {
+  color: #000000;
+}
+
+.iconBox{
+  margin-left: 4px;
+}
+
+.navBarSubEntry a {
+  font-size: 0.8em;
+  color: #000000;
+}
+
+.highlightedButton a {
+  font-size: 1.2em;
+}
+
+.playButton a {
+  font-family: 'CaviarHeader', sans-serif;
+  color: #6e8ef7 !important;
+}
+
+.gapTop {
+  padding-top: 16px !important;
+}
+
+.rightPanel h1 {
+  text-align: left;
+  font-weight: normal;
+  /* color: #656565; */
+  color: #4e4e4e;
+  line-height: 32px;
+  border-bottom: 1px solid #b1abab;
+  
+  -webkit-box-shadow: 0px 2px 4px -3px #666;
+  -moz-box-shadow: 0px 2px 4px -3px #666;
+  box-shadow: 0px 2px 4px -3px #666;  
+}
+
+.rss-items {
+  padding-left: 0px;
+}
+
+.rss-items > li {
+  padding-bottom: 12px;
+  list-style: none;
+}
+
+.rss-date {
+  color: #6e8ef7;
+}
+
+.releaseNav {
+  text-align: center;
+}
+
+.releaseNavBt {
+  font-family: 'CaviarHeader', sans-serif;
+  padding-left: 4px;
+  padding-right: 4px;
+  text-decoration: none;
+}
+
+.releaseImg {
+  text-align: left;
+  padding-top: 10px;
+  padding-left: 20px;
+}
+
+.releaseImg img {
+  border: 1px solid #666;
+  
+  -webkit-box-shadow: 0px 2px 4px #666;
+  -moz-box-shadow: 0px 2px 4px #666;
+  box-shadow: 0px 2px 4px #666;  
+}
+
+.issueLabel{
+  padding-left: 4px;
+  font-size: 0.8em;
+}
+
+.issueNextVersion, .changelogBox, .releaseDesc, .rss-item a, .legalEntryHeader {
+  font-family: 'CaviarHeader', sans-serif;
+  font-size: 1.1em;
+}
+
+.issueEntry, .legalEntry{
+  margin-top: 12px;
+  border-bottom: 1px solid #e5e4e4;
+}
+
+.legalEntryTextBlock{
+  margin-top: 6px;
+  margin-bottom: 2px;
+}
+
+.changelogLeft {
+  width: 24px;
+  padding-left: 32px;
+  vertical-align: top;
+}

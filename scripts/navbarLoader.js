@@ -1,18 +1,37 @@
-PAGE_PROG.sectionController.registerSection({
+PAGE_PROG.registerSection({
   
   id: "navigation",
+  name: "",
   
-  element: document.getElementById("navbar"),
+  element: "sectionNavbar",
   
   template: [
-    "<ul class='navigationBar'>",
+    "<ul class='navigationBar navigationBarTop'>",
       "{{#navbarLinks}}",
-        "<li>",
-          "<a target='{{#generateTargetType}}{{target}}{{/generateTargetType}}' {{#link}}href=\"{{section}}\" {{/link}} {{^link}}onclick=\"return PAGE_PROG.sectionController.openSection( this, '{{section}}' );\"{{/link}} >",
-            "{{name}}",
-          "</a>",
-        "</li>",
+        
+          "{{#header}}",
+            "<li class=\"{{#class}}{{class}}{{/class}}\">",
+              "<span>",
+                "{{name}}",
+              "</span>",
+            "</li>",
+          "{{/header}}",
+    
+          "{{^header}}",
+            "<li class=\"{{#class}}{{class}}{{/class}}\">",
+              "<a target='{{#link}}{{target}}{{/link}}' href=\"{{section}}\" >",
+                "{{name}}",
+              "</a>",
+              "{{#icon}}<img class=\"iconBox\" src=\"{{icon}}\"></img>{{/icon}}",
+            "</li>",
+          "{{/header}}",
+    
       "{{/navbarLinks}}",
+      
+      "<li class='highlightedButton gapTop' >",
+        "<a target='_self' href='mailto:ctomni231@gmail.com'>Contact Us</a>",
+      "</li>",
+    
     "</ul>"
   ].join(""),
       

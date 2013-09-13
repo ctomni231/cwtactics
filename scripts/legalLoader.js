@@ -1,24 +1,24 @@
-PAGE_PROG.sectionController.registerSection({
+PAGE_PROG.registerSection({
   
   id: "legals",
+  name: "Legal Notice",
   
-  element: document.getElementById("sectionLegal"),
+  element: "sectionLegal",
   
   template: [
-    "<table>",
-      "<tbody>",
-        "{{#legals}}",
-          "<tr>",
-            "<td {{#headerAlert}}class=\"headerAlert\"{{/headerAlert}}>{{header}}</td>",
-            "<td>{{> textBlock}}</td>",
-            "<td>{{#link}}<a href=\"{{link}}\" target=\"_blank\">Homepage</a>{{/link}}</td>",
-          "</tr>",
-        "{{/legals}}",
-      "</tbody>",
-    "</table>"
+    "{{#legals}}",
+      "<div class=\"legalEntry\" >",
+        "<span class=\"legalEntryHeader\" >",
+          "{{#link}}<a href=\"{{link}}\" target=\"_blank\">{{header}}</a>{{/link}}",
+          "{{^link}} {{header}} {{/link}}",
+        "</span>",
+        "</br>",
+        "<span>{{> textBlock}}</span>",
+      "</div>",
+    "{{/legals}}"
   ].join(""),
       
   partials:{
-    textBlock: "{{#text}}<p>{{{.}}}</p>{{/text}}"
+    textBlock: "{{#text}}<p class=\"legalEntryTextBlock\">{{{.}}}</p>{{/text}}"
   }
 });

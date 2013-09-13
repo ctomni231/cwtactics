@@ -1,5 +1,6 @@
 PAGE_DATA.milestones = [
   
+  /*
   {
     header: "Version",
     version: "0.3.4",
@@ -13,18 +14,15 @@ PAGE_DATA.milestones = [
     img: "images/milestones/v0_3_4.png",
     
     changelog:[
-    	"When a unit cannot move due low fuel or something similar then the action menu will be opened directly",
-    	"New UI design and mechanic",
-    	"Client enabled player instance fog rendering",
-    	"Error Popup for debugging/issue collecting process",
-    	"Rule engine between condition",
-    	"Rule engine is condition",
-    	"Rule engine one of condition",
-    	"Rule engine DSL compiler (accessable in editor)",
-    	"Offline game mode (HTML5 offlince application cache)",
-    	"Refactored base structure with more contract based communication between client and engine"
+      "New Maps, Stand-Off (1vs1) and Spann-Island (1vs1)",
+    	"One-Step Action-Menu when an unit is out of fuel",
+    	"New UI",
+    	"Error Popup",
+    	"Enhanced Rule-Engine",
+    	"Offline Capability"
     ]
   },
+  */
   
   // --------------------------------------------------------------------------------------------------------
   

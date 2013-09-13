@@ -1,55 +1,83 @@
-var sectionRelease_selectBox_selected = null;
+  PAGE_PROG.releaseSelected = -1;
+  
+  PAGE_PROG.releases = null;
 
-PAGE_PROG.sectionController.registerSection({
-  
-  id: "releases",
-  
-  element: document.getElementById("sectionRelease"),
-  
-  template: [
-    "<select id='sectionRelease_selectBox' class='sectionReleaseBox' onchange='if(sectionRelease_selectBox_selected){ sectionRelease_selectBox_selected.className=\"hidden\"; } var box = document.getElementById(\"sectionRelease_selectBox\"); sectionRelease_selectBox_selected = document.getElementById(box.value); sectionRelease_selectBox_selected.className=\"visible\"; '>",
+  PAGE_PROG.updateReleaseBox = function( mode ){
+    if( !PAGE_PROG.releases ){
+      PAGE_PROG.releases = document.getElementsByName("releaseBlock");
+    }
+    
+    if( PAGE_PROG.releaseSelected !== -1 ){ 
+      PAGE_PROG.releases[PAGE_PROG.releaseSelected].className="hidden"; 
+    } 
+    else PAGE_PROG.releaseSelected = 0;
+      
+    if( mode === -1 && PAGE_PROG.releaseSelected > 0 ) PAGE_PROG.releaseSelected--;
+    if( mode === +1 && PAGE_PROG.releaseSelected < PAGE_PROG.releases.length-1 ) PAGE_PROG.releaseSelected++;
+      
+    PAGE_PROG.releases[PAGE_PROG.releaseSelected].className="visible"; 
+  };
+
+  PAGE_PROG.registerSection({
+    
+    id: "releases",
+    name: "Releases",
+    
+    element: "sectionRelease",
+    
+    template: [
+      
+      // controls
+      "<div class=\"releaseNav\" >",
+        "<a class=\"releaseNavBt\" href='#' onClick='PAGE_PROG.updateReleaseBox(-1); return false;' > \<\< Newer</a>",
+        "<a class=\"releaseNavBt\" href='#' onClick='PAGE_PROG.updateReleaseBox(+1); return false;' >Older \>\> </a>",
+      "</div>",
+      
+      // content
       "{{#milestones}}",
-        "<option value='{{header}}-{{version}}'>{{header}} {{version}}</option>",
-      "{{/milestones}}",
-    "</select>",
-    "{{#milestones}}",
-      "<table id='{{header}}-{{version}}' class='hidden'>",  
-        "<thead>",
-          "<tr>",
-            "<td>",
-              "{{header}} <span class=\"version\">{{version}}</span>",
-              "</br>",
-              "<span class=\"subdesc\"> {{subHeaderT}} {{subHeaderB}} </span>",
-              "</br>",
-              "<p class=\"buttonLink\">{{#link}}<a class=\"play\" href=\"{{link}}\" target=\"_blank\">Download</a>{{/link}}</p>",
-            "</td>",
-            "<td> {{#img}} <img src=\"{{img}}\" /> {{/img}} </td>",
-          "</tr>",
-        "</thead>",
-        
-        "<tbody>",
-          "<tr> <td colspan=\"2\"> {{> textBlock}} </td> </tr>",
-          "<tr> <td colspan=\"2\"> <p class=\"changelogBox\">",
-            "<span>Changelog:</span>",
-            "<ul>",
-              "{{> changeLog}}",
-            "</ul>",
-          "</p> </td> </tr>",
-        "</tbody>",
-        
-      "</table>",
-    "{{/milestones}}"
-  ].join(""),
-  
-  onopen: function(){
-    var box = document.getElementById("sectionRelease_selectBox");
-    box.selectedIndex = 0;
-    sectionRelease_selectBox_selected = document.getElementById(box.value);
-    sectionRelease_selectBox_selected.className = "visible";
-  },
-  
-  partials:{
-    textBlock: "{{#text}}<p>{{{.}}}</p>{{/text}}",
-    changeLog: "{{#changelog}}<li class=\"changelog\">{{{.}}}</li>{{/changelog}}"
-  }
-});
+        "<table id='{{header}}-{{version}}' name='releaseBlock' class='hidden'>",  
+          "<thead>",
+            "<tr>",
+              "<td colspan=\"2\">",
+                "<span class=\"releaseDesc\">{{header}} {{version}}</span>",
+                "</br>",
+                "<span class=\"releaseDesc\"> {{subHeaderT}} {{subHeaderB}} </span>",
+              "</td>",
+            "</tr>",
+            "<tr>",
+              "<td  colspan=\"2\" class=\"releaseImg\">",
+                "{{#img}} <img src=\"{{img}}\" /> {{/img}}",
+                "<p class=\"buttonLink\">{{#link}}<a class=\"play\" href=\"{{link}}\" target=\"_blank\">Download</a>{{/link}}</p>",
+              "</td>",
+            "</tr>",
+          "</thead>",
+          
+          "<tbody>",
+            "<tr> <td colspan=\"2\"> {{> textBlock}} </td> </tr>",
+      /*
+            "<tr> <td colspan=\"2\"> <p class=\"changelogBox\">",
+              "<span>Changelog:</span>",
+              "<ul>",
+                "{{> changeLog}}",
+              "</ul>",
+            "</p> </td> </tr>",
+      */
+      
+            "<tr>",
+              "<td colspan=\"2\">",
+                "<p class=\"changelogBox\"><span>Changelog:</span> </p>",
+              "</td>",
+            "</tr>",
+            "{{> changeLog}}",
+          "</tbody>",
+          
+        "</table>",
+      "{{/milestones}}"
+      
+    ].join(""),
+    
+    partials:{
+      textBlock: "{{#text}}<p>{{{.}}}</p>{{/text}}",
+      changeLog: "{{#changelog}}<tr class=\"changelog\"><td class=\"changelogLeft\">→</td><td>{{{.}}}</td></tr>{{/changelog}}"
+    }
+  });

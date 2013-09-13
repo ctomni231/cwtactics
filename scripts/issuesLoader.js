@@ -1,8 +1,9 @@
-PAGE_PROG.sectionController.registerSection({
+PAGE_PROG.registerSection({
+    
+  id: "issues",
+  name: "Working On",
   
-  id: "roadmap",
-  
-  element: document.getElementById("sectionRoadmap"),
+  element: "sectionRoadmap",
   
   dataLoader: function( section, cb ){
     
@@ -57,19 +58,17 @@ PAGE_PROG.sectionController.registerSection({
   },
   
   template: [
-    "<table>",
-      "<thead>",
-      "<tr> <td> {{header}} </td> </tr>",
-      "</thead>",
-      "<tbody>",
-        "{{#issues}}",
-        "<tr> <td> <div> <div> {{title}} </div> <div> {{> labelList}} </div> </div> </td> </tr>",
-        "{{/issues}}",
-      "</tbody>",  
-    "</table>"
+    "<p class=\"issueNextVersion\">{{header}}</p>",
+    "{{#issues}}",
+      "<div class=\"issueEntry\" >",
+        "<span>{{title}}</span>",
+        "</br>",
+        "<span>{{> labelList}}</span>",
+      "</div>",
+    "{{/issues}}",
   ].join(""),
   
   partials:{
-    labelList: "<ul> {{#labels}} <li style='background-color:#{{color}};' > {{name}} </li> {{/labels}} </ul> </td> </tr>"
+    labelList: "{{#labels}} <span class='issueLabel' style='color:#{{color}};' > {{name}} </span> {{/labels}} "
   }
 });

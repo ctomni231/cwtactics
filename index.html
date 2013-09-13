@@ -6,140 +6,117 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     <meta name="description" content="Cwtactics : An effort to create an open engine to emulate the gaming experience of the Nintendo Advance Wars series." />
     
-    <!-- DEPENDENCIES -->
-    <script src='libs/jquery.js' type='text/javascript'></script>
-    <script src='libs/jquery-ui-custom.js' type='text/javascript'></script>
-    <script src='libs/moment.js' type='text/javascript'></script>
-    <script src='libs/mustache.js' type='text/javascript'></script>
-    <script src='libs/head.js' type='text/javascript'></script>
+    <title>Custom Wars: Tactics</title>
     
-    <!-- MAIN -->
-    <script src='scripts/stuff.js' type='text/javascript'></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/site_09_2013.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/pure.css">
+    
+    <!-- DEPENDENCIES -->
+    <script src='libs/jquery.js'            type='text/javascript'></script>
+    <script src='libs/moment.js'            type='text/javascript'></script>
+    <script src='libs/mustache.js'          type='text/javascript'></script>
+    
+    <!-- STARTER -->
+    <script type='text/javascript'>
+      var PAGE_DATA = {};
+      
+      var PAGE_PROG = {
+        
+        _sections:[],
+        
+        registerSection: function( obj ){
+          this._sections.push( obj );
+        },
+        
+        inject: function( section , data ){        
+          var el;
+          
+          if( section.name ){
+            el = document.createElement("h1");
+            el.innerHTML = section.name ;
+            el.setAttribute("id",section.id);  
+            document.getElementById(section.element).appendChild(el);
+          }
+          
+          el = document.createElement("div");
+          el.innerHTML = Mustache.render( section.template, data, section.partials );
+          document.getElementById(section.element).appendChild(el);
+        },
+        
+        renderSections: function(){
+          for( var i=0,e=this._sections.length; i<e; i++ ){
+            var section = this._sections[i];    
+            
+            if( section.dataLoader ){
+              section.dataLoader( section, this.inject );
+            }
+            else this.inject( section, PAGE_DATA );
+          }
+        }
+      };
+      
+      $(document).ready(function(){
+        PAGE_PROG.renderSections();
+        PAGE_PROG.updateReleaseBox(0);
+        
+        // CONVERT RSS DATES TO HUMAN READABLE TIME
+        $(".rss-date").each(function(i,element){
+          element.innerHTML = moment( element.innerHTML, "YYYY-MM-DD HH:mm:ss.SSS-Z,ZZ").fromNow();;
+        });
+      });
+      
+    </script>
     
     <!-- DATA -->
     <script src='content/milestones.js' type='text/javascript'></script>
-    <script src='content/navBar.js' type='text/javascript'></script>
-    <script src='content/legals.js' type='text/javascript'></script>
-    <script src='content/links.js' type='text/javascript'></script>
+    <script src='content/navBar.js'     type='text/javascript'></script>
+    <script src='content/legals.js'     type='text/javascript'></script>
     
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/site.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/cwt.css">
+    <!-- PROG AND TEMPLATE DESC -->
+    <script src='scripts/newsLoader.js'     type='text/javascript'></script>
+    <script src='scripts/issuesLoader.js'   type='text/javascript'></script>
+    <script src='scripts/navbarLoader.js'   type='text/javascript'></script>
+    <script src='scripts/manualLoader.js'   type='text/javascript'></script>
+    <script src='scripts/releasesLoader.js' type='text/javascript'></script>
+    <script src='scripts/legalLoader.js'    type='text/javascript'></script>
     
-    <title>Custom Wars: Tactics</title>
   </head>
   
   <body>
     
-    <div id="header_wrap" class="outer">
+    <div class="pure-g-r centerText fullHeight">
       
-      <!-- ######################################################################## -->
-      
-      <header class="inner">
+      <!-- NAVIGATION BAR -->
+      <div class="pure-u-1-4 leftPanel fullHeight shadowR">
         
-        <h1 id="project_title"><img class="headerImg" src="images/cwttitle.png"></h1>
-        <div id="navbar">
+        <div class="headerImgBox" >
+          <img class="headerImg" src="images/cwttitle.png">
         </div>
         
-      </header> 
-      
-      <!-- ######################################################################## -->
-    </div>
-    
-    <div id="main_content_wrap" class="outer">
-      
-      <!-- ######################################################################## -->
-      
-      <section id="sectionNews"  style="display:none;"  class="inner">
+        <div id="sectionNavbar" > </div>
         
-        <!-- REPLACE LATER -->
-        <table class="fourColTable">
-          
-          <tr>
-            <td class="colImage">
-              <img class="cwtImage" src="images/main.png">
-              
-              <p class="buttonLink middleSide">
-                <a id="playLatestButton" class="left" href="" title="Version 0.3.1.2. Some mod file changes happened, so when you start the game then wipe out the content via URL parameter or via command from options menu." target="_blank">Mobile (Light)</a>
-                <a class="right disabledButton" href="#" title="It will be available with the release of CW:T 0.3.5" >Desktop (Full)</a>
-              </p>
-            </td>
-            
-            <td class="colNews">  
-              <div>
-                <script language="JavaScript" src="http://feed2js.org//feed2js.php?src=http%3A%2F%2Fcwtactics.blogspot.de%2F%2Ffeeds%2Fposts%2Fdefault&num=5&desc=100&date=y&targ=y&utf=y&css=bloggerPosts"  charset="UTF-8" type="text/javascript"></script>
-              </div>
-            </td>  
-            
-          </tr>
-        </table>
+      </div>
+      
+      <!-- CONTENT -->
+      <div class="pure-u-3-4 rightPanel fullHeight"> 
+                
+        <div id="sectionNews" class="contentBlock"></div>
         
+        <div class="contentBlock" >
+          <script language="JavaScript" 
+                  src="http://feed2js.org//feed2js.php?src=http%3A%2F%2Fcwtactics.blogspot.de%2F%2Ffeeds%2Fposts%2Fdefault&num=5&desc=100&date=y&targ=y&utf=y&css=bloggerPosts"  
+                  charset="UTF-8" 
+                  type="text/javascript">
+          </script>
+        </div>
         
-      </section>
-      
-      <!-- ######################################################################## -->
-      
-      <section id="sectionManual" style="display:none;" class="inner">
-        <p class="centerP">
-          I'm under construction.. visit me later. ;)
-        </p>
-      </section>
-      
-      <!-- ######################################################################## -->
-      
-      <section id="sectionRoadmap" style="display:none;" class="inner">
-      </section>
-      
-      <!-- ######################################################################## -->
-      
-      <section id="sectionRelease" style="display:none;" class="inner">
-      </section>
-      
-      <!-- ######################################################################## -->
-      
-      <section id="sectionLinks" style="display:none;" class="inner">
-      </section>
-      
-      <!-- ######################################################################## -->
-      
-      <section id="sectionLegal" style="display:none;" class="inner">
-      </section>
-      
-      <!-- ######################################################################## -->
-
+        <div id="sectionManual"   class="contentBlock"> </div>
+        <div id="sectionRelease"  class="contentBlock"> </div>
+        <div id="sectionRoadmap"  class="contentBlock"> </div>
+        <div id="sectionLegal"    class="contentBlock"> </div>
+        
+      </div>
     </div>
   </body>
   
-  <!-- PROG AND TEMPLATE DESC -->
-  <script src='scripts/newsLoader.js' type='text/javascript'></script>
-  <script src='scripts/issuesLoader.js' type='text/javascript'></script>
-  <script src='scripts/navbarLoader.js' type='text/javascript'></script>
-  <script src='scripts/releasesLoader.js' type='text/javascript'></script>
-  <script src='scripts/linkLoader.js' type='text/javascript'></script>
-  <script src='scripts/legalLoader.js' type='text/javascript'></script>
-  
-  <script>
-    $(document).ready(function(){
-      $( document ).tooltip();
-      
-      $("#playLatestButton").attr("href", PAGE_DATA.latestMilestone );
-      
-      // CONVERT RSS DATES TO HUMAN READABLE TIME
-      $(".rss-date").each(function(i,element){
-        element.innerHTML = moment( element.innerHTML, "YYYY-MM-DD HH:mm:ss.SSS-Z,ZZ").fromNow();;
-      });
-      
-      PAGE_PROG.sectionController._renderSection( 
-        PAGE_PROG.sectionController._registered["navigation"]
-      );
-      
-      // OPEN MAIN SECTION
-      PAGE_PROG.sectionController.openSection( 
-        document.getElementsByClassName("navigationBar")[0].children[0].children[0],
-        "news"
-      );
-      
-    });
-  </script>
 </html>
