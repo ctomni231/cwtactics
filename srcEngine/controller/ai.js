@@ -1,8 +1,9 @@
 controller.registerInvokableCommand("nextAiStep");
+controller.registerInvokableCommand("prepareAiTurn");
 
 controller.activeAIs = util.list( constants.MAX_PLAYER, function(){
   return {
-    memory:null,
+    memory:{},
     ai:null    
   };
 });
@@ -33,7 +34,17 @@ controller.registerAI = function( impl ){
     constants.error.ILLEGAL_PARAMETERS, constants.error.GAME_STATE_BREAK
   );
   
-  controller.aiImpls[impl.key] = impl;  
+  controller.aiImpls[impl.name] = impl;  
+};
+
+controller.setAIPlayer = function( pid, key ){
+  var impl = controller.aiImpls[key];
+  if( impl ){
+    
+    controller.activeAIs[pid].ai = impl;
+    return true;
+  }
+  else return false;
 };
 
 // Returns true if a player id is controlled by the AI.

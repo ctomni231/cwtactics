@@ -1,7 +1,18 @@
 util.scoped(function(){
   
-  var btn = controller.generateButtonGroup( document.getElementById("cwt_main_screen") );
+  var pageEl = document.getElementById("cwt_main_screen");
+
+  var btn = controller.generateButtonGroup(
+    pageEl,
+    "cwt_panel_header_big cwt_page_button w_400 cwt_panel_button",
+    "cwt_panel_header_big cwt_page_button w_400 cwt_panel_button button_active",
+    "cwt_panel_header_big cwt_page_button w_400 cwt_panel_button button_inactive"
+  );
   
+  document.getElementById("mainScreen_version").innerHTML = constants.VERSION;
+
+  // -------------------------------------------------------------------------------
+
   controller.screenStateMachine.structure.MAIN = Object.create(controller.stateParent);
   
 	controller.screenStateMachine.structure.MAIN.section = "cwt_main_screen";

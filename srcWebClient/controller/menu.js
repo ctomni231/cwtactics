@@ -10,6 +10,10 @@ util.scoped(function(){
   var menuEntryContentElement = document.getElementById("cwt_menu_content");
   
   var menuEntryListElement = document.getElementById("cwt_menu_entries");
+
+  var styleButton = "button_active";
+
+  // -----------------------------------------------------------------------------
   
   /**
    *
@@ -38,7 +42,7 @@ util.scoped(function(){
     
     menuEntryListElement.children[ controller.menuCursorIndex ].className = "";    
     controller.menuCursorIndex = index;  
-    menuEntryListElement.children[ controller.menuCursorIndex ].className = "activeButton";
+    menuEntryListElement.children[ controller.menuCursorIndex ].className = styleButton;
   };
   
   /**
@@ -54,7 +58,7 @@ util.scoped(function(){
     }
     else controller.playSound("MENUTICK");
     
-    menuEntryListElement.children[ controller.menuCursorIndex ].className = "activeButton";
+    menuEntryListElement.children[ controller.menuCursorIndex ].className = styleButton;
     menuEntryListElement.children[ controller.menuCursorIndex ].children[0].focus();
   };
   
@@ -69,7 +73,7 @@ util.scoped(function(){
     if( controller.menuCursorIndex < 0 ) controller.menuCursorIndex = 0;
     else controller.playSound("MENUTICK");
     
-    menuEntryListElement.children[ controller.menuCursorIndex ].className = "activeButton";
+    menuEntryListElement.children[ controller.menuCursorIndex ].className = styleButton;
     menuEntryListElement.children[ controller.menuCursorIndex ].children[0].focus();
   };
   
@@ -141,7 +145,9 @@ util.scoped(function(){
     menuEntryListElement.children[ controller.menuCursorIndex ].children[0].focus();
     
     // SHOW IT
-    menuElement.className = "uiPopup show";
+    menuElement.style.opacity = 1;
+    menuElement.style.top = "96px";
+
     controller.menuVisible = true;
     controller.setMenuIndex( 0 );
   };
@@ -154,7 +160,9 @@ util.scoped(function(){
     
     menuEntryListElement.children[ controller.menuCursorIndex ].className = "";
     
-    menuElement.className = "uiPopup hide";
+    menuElement.style.opacity = 0;
+    menuElement.style.top = "-1000px";
+
     controller.menuCursorIndex = -1;
     controller.menuVisible = false;
   };

@@ -1,1 +1,0 @@
-controller.screenStateMachine.data.mapToLoad = null;

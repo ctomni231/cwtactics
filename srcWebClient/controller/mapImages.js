@@ -7,9 +7,10 @@ util.scoped(function(){
   
   function checkTileForConnection( x,y, index, data, cKeys ){
     if( x < 0 || y < 0 ||
-       x >= model.mapWidth || y >= model.mapWidth ){
+       x >= model.mapWidth || y >= model.mapHeight ){
       
-      data[index] = "_";
+      //data[index] = "_";
+      data[index] = "";
       return;
     }
     

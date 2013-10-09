@@ -13,6 +13,18 @@ util.scoped(function(){
   var sfxStorageParam = "__volume_sfx__";
   var musicStorageParam = "__music_sfx__";
   
+  var cache = {};
+
+  controller.emptyMusicCache = function(){
+
+  };
+
+  controller.generateMusicCache = function(){
+    for( var i=0,e=constants.MAX_PLAYER; i<e; i++ ){
+      var coData = model.coData[i];
+    }
+  };
+
   /**
    *
    */
@@ -208,3 +220,10 @@ util.scoped(function(){
   };
   
 });
+
+controller.playMusicForPlayer = function( pid ){
+  if( controller.clientFeatures.audioMusic ){
+    var co = model.coData[pid].coA;
+    if( co ) controller.playMusic( co.music );
+  }
+};

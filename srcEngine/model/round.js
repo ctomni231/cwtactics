@@ -109,12 +109,15 @@ model.nextTurn = function(){
   }
   
   model.resetActableStatus(pid);
-  model.recalculateFogMap( pid );
   model.resetTurnTimer(); 
     
   // Sets the new turn owner
   model.turnOwner = pid;
+  if( model.isClientPlayer(pid) ) model.lastActiveClientPid = pid;
   
+  model.updateVisiblePid();
+  model.recalculateFogMap(); // needs to be done after setting new clientPid
+
 	controller.events.nextTurn();
   
   // start AI logic if new turn owner is AI controlled this local instance is the host

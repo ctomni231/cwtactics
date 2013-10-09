@@ -25,10 +25,9 @@ more game mechanic oriented *(less fancy shiny)* client for the CW:T engine.
 
 * A 2x1.2GHz CPU 
 * 512 MB RAM
-* Mobile Chrome 25
+* Mobile Chrome 30 and up
 
 ###### Requirements iOS
 
-* At least an iPad second generation, iPad Mini, iPod Touch fifth generation or an iPhone 5
-* iOS 5 
-* iOS 6 to enable in-game sounds
+* iPad 1G, iPad-Mini, iPod Touch 4G or iPhone4
+* iOS 6

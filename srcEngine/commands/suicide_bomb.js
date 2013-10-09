@@ -13,7 +13,7 @@ controller.unitAction({
       data.source.unitId 
     ]);
     
-    controller.sharedInvokement("fireBombAt",[ 
+    controller.sharedInvokement("doExplosionAt",[ 
       data.target.x, data.target.y,
       data.source.unit.type.suicide.range,
       model.ptToHp(data.source.unit.type.suicide.damage),

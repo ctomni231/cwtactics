@@ -7,19 +7,20 @@ util.scoped(function(){
   function wipeComplete(){
     document.location.reload();
   }
-  
-  var nodeSfx = document.getElementById("cwt_options_sfxVolume");
-  var nodeMusic = document.getElementById("cwt_options_musicVolume");
+
   function updateSoundContent(){  
     nodeSfx.innerHTML = Math.round(controller.getSfxVolume()*100);
     nodeMusic.innerHTML = Math.round(controller.getMusicVolume()*100);
   }
   
+  var nodeSfx   = document.getElementById("cwt_options_sfxVolume");
+  var nodeMusic = document.getElementById("cwt_options_musicVolume");
+  
   var btn = controller.generateButtonGroup( 
     document.getElementById("cwt_options_screen"),
-    "menuButton ui-font ui-subheader ui-panel-button",
-    "menuButton ui-font ui-subheader ui-panel-button active",
-    "menuButton ui-font ui-subheader ui-panel-button inactive"
+    "cwt_panel_header_big cwt_page_button w_400 cwt_panel_button",
+    "cwt_panel_header_big cwt_page_button w_400 cwt_panel_button button_active",
+    "cwt_panel_header_big cwt_page_button w_400 cwt_panel_button button_inactive"
   );
   
   // ------------------------------------------------------------------------------------------
@@ -34,12 +35,59 @@ util.scoped(function(){
   };
   
   controller.screenStateMachine.structure.OPTIONS.UP = function(){
-    btn.decreaseIndex();
+    switch( btn.getActiveKey() ){
+        
+      case "options.sfx.up":
+      case "options.music.up":
+      case "options.music.down":
+        btn.decreaseIndex();
+        btn.decreaseIndex();
+        break;
+
+      default: 
+        btn.decreaseIndex();
+    }
+
     return this.breakTransition();
   };
   
   controller.screenStateMachine.structure.OPTIONS.DOWN = function(){
-    btn.increaseIndex();
+    switch( btn.getActiveKey() ){
+        
+      case "options.sfx.up":
+      case "options.sfx.down":
+      case "options.music.down":
+        btn.increaseIndex();
+        btn.increaseIndex();
+        break;
+                
+      default: 
+        btn.increaseIndex();
+    }
+
+    return this.breakTransition();
+  };
+
+  controller.screenStateMachine.structure.OPTIONS.LEFT = function(){
+    switch( btn.getActiveKey() ){
+      case "options.sfx.up":
+      case "options.music.up":
+        btn.decreaseIndex();
+        break;
+    }
+
+    return this.breakTransition();
+  };
+
+
+  controller.screenStateMachine.structure.OPTIONS.RIGHT = function(){
+    switch( btn.getActiveKey() ){
+      case "options.sfx.down":
+      case "options.music.down":
+        btn.increaseIndex();
+        break;
+    }
+
     return this.breakTransition();
   };
   

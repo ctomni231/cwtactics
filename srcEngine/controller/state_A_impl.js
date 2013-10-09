@@ -121,7 +121,7 @@ controller.stateMachine = util.stateMachine({
 		
 		action: function( ev,x,y ){
 			if( this.data.selection.getValueAt(x,y) < 0){
-				if( DEBUG ) util.log("break event because selection is not in the selection map");
+				if( constants.DEBUG ) util.log("break event because selection is not in the selection map");
 				return this.breakTransition();
 			}
 			
@@ -139,13 +139,13 @@ controller.stateMachine = util.stateMachine({
 				// ADD TILE TO PATH
 				var code = model.moveCodeFromAtoB( ox,oy, x,y );
 				controller.stateMachine.data.movePath.addCodeToPath( x,y, code );
-				return this.BREAK_TRANSITION;
+				return this.breakTransition();
 			}
 				else{
 					
 					// GENERATE PATH
 					controller.stateMachine.data.movePath.setPathByRecalculation( x,y );
-					return this.BREAK_TRANSITION;
+					return this.breakTransition();
 				}
 		},
 		
@@ -242,7 +242,7 @@ controller.stateMachine = util.stateMachine({
 		
 		action: function( ev,x,y ){
 			if( this.data.selection.getValueAt(x,y) < 0){
-				if( DEBUG ) util.log("break event because selection is not in the map");
+				if( constants.DEBUG ) util.log("break event because selection is not in the map");
 				return this.breakTransition();
 			}
 			
@@ -267,7 +267,7 @@ controller.stateMachine = util.stateMachine({
 		
 		action: function( ev,x,y ){
 			if( this.data.selection.getValueAt(x,y) < 0){
-				if( DEBUG ) util.log("break event because selection is not in the map");
+				if( constants.DEBUG ) util.log("break event because selection is not in the map");
 				return this.breakTransition();
 			}
 			
@@ -320,7 +320,7 @@ controller.stateMachine = util.stateMachine({
 			if( !trapped && this.data.action.object.multiStepAction ){
 				
 				// this.data.inMultiStep = true;
-				model.invokeNextStep_.callAsCommand();
+    			controller.localInvokement( "invokeNextStep_", []);
 				return "MULTISTEP_IDLE";
 			}
 			else return "IDLE";

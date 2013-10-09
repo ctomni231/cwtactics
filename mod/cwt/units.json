@@ -362,6 +362,7 @@
     "cost": 9000,
     "range": 6,
     "movetype": "AIR",
+    "dailyFuelDrain":2,
     "vision": 3,
     "fuel": 99,
     "ammo": 6,
@@ -411,6 +412,7 @@
     "cost": 22000,
     "range": 7,
     "movetype": "AIR",
+    "dailyFuelDrain":5,
     "vision": 3,
     "fuel": 99,
     "ammo": 9,
@@ -444,6 +446,7 @@
     "cost": 25000,
     "range": 9,
     "movetype": "AIR",
+    "dailyFuelDrain":5,
     "vision": 1,
     "fuel": 45,
     "ammo": 0,
@@ -463,6 +466,8 @@
     "vision": 4,
     "fuel": 60,
     "ammo": 6,
+    "dailyFuelDrain":5,
+    "dailyFuelDrainHidden":8,
     "attack": {
       "main_wp": {
         "INFT": 90,
@@ -502,6 +507,7 @@
     "movetype": "AIR",
     "vision": 2,
     "fuel": 99,
+    "dailyFuelDrain":5,
     "ammo": 9,
     "attack": {
       "main_wp": {
@@ -521,6 +527,7 @@
     "movetype": "AIR",
     "vision": 2,
     "fuel": 99,
+    "dailyFuelDrain":2,
     "ammo": 0,
     "maxloads": 1,
     "canload": [
@@ -668,6 +675,8 @@
     "vision": 5,
     "fuel": 60,
     "stealth": true,
+    "dailyFuelDrain":1,
+    "dailyFuelDrainHidden":5,
     "ammo": 6,
     "attack": {
       "main_wp": {
@@ -688,6 +697,7 @@
     "vision": 3,
     "fuel": 99,
     "ammo": 9,
+    "dailyFuelDrain":1,
     "attack": {
       "main_wp": {
         "CRUS": 25,
@@ -719,6 +729,7 @@
     "vision": 1,
     "fuel": 60,
     "ammo": 0,
+    "dailyFuelDrain":1,
     "maxloads": 2,
     "canload": [
       "INFT",
@@ -735,6 +746,7 @@
     "movetype": "SHIP",
     "vision": 4,
     "fuel": 99,
+    "dailyFuelDrain":1,
     "ammo": 9,
     "maxloads": 2,
     "suppliesloads": true,
@@ -761,6 +773,7 @@
     "movetype": "WATER_TRANSPORT",
     "vision": 1,
     "fuel": 99,
+    "dailyFuelDrain":1,
     "ammo": 0,
     "maxloads": 1,
     "canload": [
@@ -778,6 +791,7 @@
     "movetype": "SHIP",
     "vision": 2,
     "fuel": 99,
+    "dailyFuelDrain":1,
     "ammo": 9,
     "attack": {
       "main_wp": {

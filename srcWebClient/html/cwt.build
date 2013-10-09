@@ -3,15 +3,12 @@ HEAD_SCRIPT.html
 HEAD_END.html
 BODY_START.html
 errorDialog.html
-messageDialog.html
 loadScreen.html
 mobileScreen.html
 mainScreen.html
 versusScreen.html
 playerSetup.html
 optionScreen.html
-configScreen.html
 gameScreen.html
-editorScreen.html
 __files__
 HTML_END.html

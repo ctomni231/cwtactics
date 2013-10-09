@@ -1,32 +1,5 @@
 util.scoped(function(){
-  
-  /** @private */
-  function loadMapCb( obj ){
-    controller.startGameRound( obj.value );
     
-    // UPDATE SCREEN DATA
-    controller.setCursorPosition(0,0);
-    view.resizeCanvas();
-    view.updateMapImages();
-    view.completeRedraw();
-    
-    // UPDATE UNIT STATS
-    for( var i=0,e=model.units.length; i<e; i++ ){
-      if( model.units[i].owner !== constants.INACTIVE_ID ) controller.updateUnitStatus( i );
-    }
-    
-    if( controller.clientFeatures.audioMusic ){
-      controller.playMusic( 
-        model.coData[model.turnOwner].coA.music 
-      );
-    }
-    
-    controller.renderPlayerInfo();
-    
-    // INIT LOOP
-    setupAnimationFrame();
-  }
-  
   function setupAnimationFrame(){
     if( constants.DEBUG ) util.log("setup animation frame");
     
@@ -60,7 +33,26 @@ util.scoped(function(){
 	controller.screenStateMachine.structure.GAMEROUND.section = "cwt_game_screen";
 	
   controller.screenStateMachine.structure.GAMEROUND.enterState = function(){
-    controller.storage.get( this.data.mapToLoad, loadMapCb );
+
+    // start
+    controller.setCursorPosition(0,0);
+    controller.startGameRound();
+
+    // update unit stats
+    for( var i=0,e=model.units.length; i<e; i++ ){
+      if( model.units[i].owner !== constants.INACTIVE_ID ) controller.updateUnitStatus( i );
+    }
+    
+    // prepare screen and screen data
+    view.resizeCanvas();
+    view.updateMapImages();
+    view.completeRedraw();
+    
+    // go into max zoom ( TODO: grab it from settings later on )
+    controller.setScreenScale(2);
+        
+    // INIT LOOP
+    setupAnimationFrame();
   };
   
   controller.screenStateMachine.structure.GAMEROUND.gameHasEnded = function(){

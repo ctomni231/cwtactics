@@ -38,8 +38,8 @@ controller.stateMachine.data = {
     if( posA.unit && posA.unit === posB.unit ) return model.relationModes.SAME_OBJECT;
 
     return model.relationShipCheck(
-      (posA.unit !== null) ? posA.unit.owner : null,
-      (posB.unit !== null) ? posB.unit.owner : null
+      (posA.unit !== null) ? posA.unit.owner : -1,
+      (posB.unit !== null) ? posB.unit.owner : -1
       );
   },
     
@@ -50,8 +50,8 @@ controller.stateMachine.data = {
   //
   thereIsUnitToPropertyRelationShip: function( posA, posB ){
     return model.relationShipCheck(
-      (posA.unit !== null) ? posA.unit.owner : null,
-      (posB.property !== null) ? posB.property.owner : null
+      (posA.unit !== null)      ? posA.unit.owner     : -1,
+      (posB.property !== null)  ? posB.property.owner : null
       );
   },
     
@@ -69,7 +69,27 @@ controller.stateMachine.data = {
   //
   movePath: {
     
-    data: util.list( constants.MAX_SELECTION_RANGE, constants.INACTIVE_ID ),
+    data: util.scoped( function(){
+      var list = util.list( constants.MAX_SELECTION_RANGE, constants.INACTIVE_ID );
+
+      list.getLastCode = function(){
+        for( var i = this.length - 1; i > 0; i-- ) {
+          if( this[i] !== constants.INACTIVE_ID ) return this[i];
+        }
+
+        return constants.INACTIVE_ID;
+      };
+
+      list.getSize = function(){
+        for( var i = this.length - 1; i > 0; i-- ) {
+          if( this[i] !== constants.INACTIVE_ID ) return i + 1;
+        }
+
+        return 0;
+      };
+      
+      return list;
+    }),
       
     // #### clean
     //
@@ -85,27 +105,7 @@ controller.stateMachine.data = {
     // Clones the current selected path and returns it as plain javascript array.
     //
     clone: function(){
-      var path = util.scoped( function(){
-        var list = util.list( constants.MAX_SELECTION_RANGE, constants.INACTIVE_ID );
-
-        list.getLastCode = function(){
-          for( var i = this.data.length - 1; i > 0; i-- ) {
-            if( this.data[i] !== constants.INACTIVE_ID ) return this.data[i];
-          }
-
-          return constants.INACTIVE_ID;
-        };
-
-        list.getSize = function(){
-          for( var i = this.data.length - 1; i > 0; i-- ) {
-            if( this.data[i] !== constants.INACTIVE_ID ) return i + 1;
-          }
-
-          return 0;
-        };
-
-        return list;
-      } );
+      var path = [];
 
       for( var i = 0, e = this.data.length; i < e; i++ ) {
 
@@ -126,8 +126,9 @@ controller.stateMachine.data = {
     //
     addCodeToPath: function( tx, ty, code ){
 
-      // add code to path
-      var wasAdded = model.addMoveCodeToPath( tx, ty, code, this.data );
+      // add code to path 
+      // var wasAdded = model.addMoveCodeToPath( tx, ty, code, this.data );
+      var wasAdded = model.addMoveCodeToPath( code, this.data );
 
       // if to much fuel would be needed then calculate a new (shortest) path to the next tile
       if( !wasAdded ) this.setPathByRecalculation( tx, ty );
@@ -236,9 +237,11 @@ controller.stateMachine.data = {
         for( var i = 0, e = commandKeys.length; i < e; i++ ) {
           var action = controller.actionObjects[commandKeys[i]];
 
-          // if the action is not user callable then continue with next action
-          if( !action.condition ) continue;
-
+          // AI or remote players cannot be controlled by the a client
+          if( !action.clientAction  && (
+                !model.isClientPlayer( model.turnOwner ) || controller.isPlayerAiControlled( model.turnOwner )
+          )) continue;
+          
           // pre defined checkers
 					if( action.unitAction ){
 						if( !unitActable ) continue;
@@ -277,23 +280,14 @@ controller.stateMachine.data = {
 							if( !result ) continue;
 						}
 					}
-                    
-          // AI or remote players cannot be controlled by the a client
-          if( !action.clientAction	&& (
-                !model.isClientPlayer( model.turnOwner ) || controller.isPlayerAiControlled( model.turnOwner )
-          )) continue;
-          
-          // pre defined checkers
-					if( action.propertyAction ){
+					else if( action.propertyAction ){
 						if( !propertyActable ) continue;
 					}
-
-          // pre defined checkers
-          if( action.mapAction 			=== true && !mapActable ) continue;
-          if( action.clientAction		=== true && !mapActable ) continue;
+          else if( action.mapAction 			=== true && !mapActable ) continue;
+          else if( action.clientAction		=== true && !mapActable ) continue;
 
           // if condition matches then add the entry to the menu list
-          if( action.condition && action.condition( data ) ){
+          if( !(action.condition && !action.condition( data )) ){
 						data.menu.addEntry( commandKeys[i] );
 					}
         }

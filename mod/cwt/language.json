@@ -24,9 +24,21 @@
   "ACAR": "Aircraft Carrier",
   "LNDR": "Transport Ship",
   "BSHP": "Battle Ship",
+
   "PLIN": "Plain",
   "MNTN": "Mountain",
   "FRST": "Forrest",
+
+  "ROAD": "Street",
+  "BASE": "Factory",
+  "HQTR": "Headquarter",
+  "BHMCE": "Mini-Cannon (East)",
+  "BHMCN": "Mini-Cannon (Nord)",
+  "BHMCS": "Mini-Cannon (South)",
+  "BHMCW": "Mini-Cannon (West)",
+  "PQRT" : "Port",
+  "APRT" : "Airport",
+
   "CTPR": "Capture Property",
   "UNUN": "Unload Unit",
   "LODU": "Load Unit",
@@ -86,8 +98,8 @@
   "explode":"Explode",
   
   "options":"Options",
-  "options.sfx":"SFX On/Off",
-  "options.music":"Music On/Off",
+  "options.sfx"  :"Toggle SFX",
+  "options.music":"Toggle Music",
   "options.yield": "Yield",
   
   "CAMPAIGN":"Play Campaign",
@@ -97,7 +109,7 @@
   "DESIGN":"Design Room",
   "HIDDEN":"Hidden",
   "START":"Start Game",
-  "NEXT":"Next",
+  "NEXT":"Start Game",
   "OPTIONS":"Options",
   "options.sfx":"Volume SFX",
   "options.music":"Volume Music",
@@ -107,5 +119,54 @@
   "options.sfx.up":"Higher",
   "options.goBack":"Go Back",
   "options.addMap":"Add Map",
-  "options.resetData":"Reset game data"
+  "options.resetData":"Reset game data",
+
+  "loading.loadMaps":"Loading Maps",
+  "loading.loadImages":"Loading Images",
+  "loading.cropImages":"Cropping Images",
+  "loading.colorizeImages":"Colorize Images",
+  "loading.loadSounds":"Loading Sounds",
+  "loading.prepareInput":"Preparing Input Systems",
+  "loading.prepareLanguage":"Localize Strings",
+  "loading.done":"Complete",
+
+  "menu.header":"Menu",
+  "menu.version":"Version",
+  
+  "player":"Player",
+  
+  "config.type.prev" : "<<",
+  "config.type.next" : ">>",
+  "config.co.prev"   : "<<",
+  "config.co.next"   : ">>",
+  "config.team.next" : ">>",
+  "config.team.prev" : "<<",
+
+  "config.playerCo"   : "CO",
+  "config.playerType" : "Type",
+  "config.playerTeam" : "Team",
+
+  "config.next":"Start Game",
+
+  "config.player.off":"Off",
+  "config.player.disabled":"Free",
+  "config.player.co.none":"None",
+  "config.player.AI":"AI",
+  "config.player.human":"Human",
+
+  "message.panel.header":"Message",
+
+  "versus.playerconfig":"Player Configuration",
+  "versus.mapSelection":"Select Map",
+  "versus.next":"Game Configuration",
+  "versus.prevMap":"Previous Map",
+  "versus.nextMap":"Next Map",
+
+  "error.panel.action":"Reset Game-Data?",
+  "error.panel.header":"Fatal Error",
+  "error.panel.reason":"Reason",
+  "error.panel.data":"Data",
+  "error.panel.no":"No",
+  "error.panel.yes":"Yes"
+
 }

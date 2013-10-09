@@ -51,7 +51,7 @@ util.scoped(function(){
     model.doInRange(tx, ty, range, doDamage, damage);
     
     // Invoke event
-    controller.events.doExplosionAt(uid);
+    controller.events.doExplosionAt(tx, ty, range, damage, owner);
   };
 });
 
@@ -133,7 +133,7 @@ model.tryToMarkCannonTargets = function( pid, selection, ox,oy, otx,oty, sx,sy, 
       if( (Math.abs(sx-otx) + Math.abs(sy-oty)) > range ) continue;
       
       // in fog
-      if( model.fogData[sx][sy] > 0) continue;
+      if( model.fogData[sx][sy] <= 0) continue;
       
       var unit = model.unitPosMap[sx][sy];
       if( unit ){

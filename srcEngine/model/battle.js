@@ -274,7 +274,7 @@ model.battleDamageAgainst = function( attacker, defender, luck, withMainWp, isCo
   var damage = (BASE*ACO/100+LUCK) * (AHP/10) * ( (200-( DCO+(DTR*DHP) ) ) /100 );
   damage = parseInt( damage, 10 );
   
-  if( DEBUG ){
+  if( constants.DEBUG ){
     util.log(
       "attacker:",model.extractUnitId( attacker ),
       "[",BASE,"*",ACO,"/100+",LUCK,"]*(",AHP,"/10)*[(200-(",DCO,"+",DTR,"*",DHP,"))/100]",

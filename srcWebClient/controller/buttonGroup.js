@@ -1,6 +1,6 @@
-controller.BUTTON_GROUP_DEFAULT_STYLE = "menuButton ui-font ui-subheader ui-panel-button";
-controller.BUTTON_GROUP_DEFAULT_STYLE_ACT = "menuButton ui-font ui-subheader ui-panel-button active";
-controller.BUTTON_GROUP_DEFAULT_STYLE_INACT = "menuButton ui-font ui-subheader ui-panel-button inactive";
+controller.BUTTON_GROUP_DEFAULT_STYLE       = "cwt_panel_header_big cwt_page_button cwt_panel_button";
+controller.BUTTON_GROUP_DEFAULT_STYLE_ACT   = "cwt_panel_header_big cwt_page_button cwt_panel_button active";
+controller.BUTTON_GROUP_DEFAULT_STYLE_INACT = "cwt_panel_header_big cwt_page_button cwt_panel_button inactive";
 
 controller.ButtonGroup = {
   
@@ -57,6 +57,10 @@ controller.ButtonGroup = {
   
   getActiveKey: function(){
     return (this.elements[ this.index ].attributes.key.value);
+  },
+
+  getActiveData: function(){
+    return (this.elements[ this.index ].attributes.data.value);
   },
   
   getActiveElement: function(){

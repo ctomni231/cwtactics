@@ -1,34 +1,39 @@
-<div id="cwt_errorPanel" class="ui-box" style="display:none; width: 300px; height: 150px; position:absolute; left: calc(50% - 150px); top:calc(50% - 75px);">
-  <div class="ui-box-header">Error</div>
-  <div class="ui-box-content">
-    <table width="100%" >
-      <tbody>
-        
-        <tr>
-          <td style="width:100px;" class="ui-font ui-box-font" >Reason:</td>
-          <td style="width:200px;" class="ui-font ui-box-font" name="reason" ></td>
-        </tr>
-        
-        <tr>
-          <td class="ui-font ui-box-font" >Data:</td>
-          <td class="ui-font ui-box-font" name="data" ></td>
-        </tr>
-        
-        <tr style="width:30px;" >
-          <td colspan="2" class="ui-font" style="color:red;">Reset data before restart?</td>
-        </tr>
-        
-        <tr style="width:30px;">
-          <td colspan="2">
-            <button key="YES">
-              Yes
-            </button>
-            <button key="NO">
-              No
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<div id="cwt_errorPanel" 
+     class="cwt_panel centerIt w_400 detachedtInFront" 
+     style="display:none; margin: auto; margin-top: 96px; left: calc(50% - 200px);" >
+
+  <p class="cwt_panel_header cwt_panel_header_small" style="color:red;">
+    <span key="error.panel.header"></span>
+  </p>
+
+  <!-- ###### ERROR REASON ######-->
+  <table>
+
+    <tr>
+      <td class="cwt_panel_header_small w_100">
+        <span key="error.panel.reason"></span>:
+      </td>
+      <td class="cwt_panel_header_small w_300">
+        <span id="cwt_errorPanel_reason"></span>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="cwt_panel_header_small w_100">
+        <span key="error.panel.data"></span>:
+      </td>
+      <td class="cwt_panel_header_small w_300">
+        <span id="cwt_errorPanel_data"></span>
+      </td>
+    </tr>
+
+  </table>
+
+  <!-- ###### ERROR ACTIONS ######-->
+  <p class="cwt_panel_footer cwt_panel_header_small" key="error.panel.action" style="color: #3A3A3A;"></p>
+
+  <p style="text-align: center; margin-bottom: 4px;">
+    <button key="error.panel.yes"></button>
+    <button key="error.panel.no"></button>
+  </p>
 </div>

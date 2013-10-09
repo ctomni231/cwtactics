@@ -401,13 +401,13 @@ model.joinUnits = function( juid, jtuid ){
 // 
 model.drainFuel = function( uid ){
   var unit = model.units[uid];
-  var v = unit.type.dailyFuelDrain;
   
+  var v = unit.type.dailyFuelDrain;
   if( typeof v === "number" ){
     
     // hidden units may drain more fuel
     if( unit.hidden && unit.type.dailyFuelDrainHidden ){
-      v = unit.type.dailyFuelUseHidden;
+      v = unit.type.dailyFuelDrainHidden;
     }
     
     unit.fuel -= v;
@@ -415,7 +415,7 @@ model.drainFuel = function( uid ){
     controller.events.drainFuel( uid, v );
     
     // if fuel is empty then destroy it
-    if( unit.fuel <= 0 ) model.destroyUnit(i);
+    if( unit.fuel <= 0 ) model.destroyUnit( uid );
   }
 };
 

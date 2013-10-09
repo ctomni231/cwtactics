@@ -7,13 +7,13 @@ controller.onEvent("healUnit",function( uid ){
 });
 
 controller.onEvent("battleBetween",function( auid,duid ){
-  controller.renderPlayerInfo();
+  controller.updateSimpleTileInformation();
   controller.updateUnitStatus( auid );
   controller.updateUnitStatus( duid );
 });
 
 controller.onEvent("buildUnit",function(){
-  controller.renderPlayerInfo();
+  controller.updateSimpleTileInformation();
 });
 
 controller.onEvent("loadUnitInto",function( uid, tid ){

@@ -158,6 +158,10 @@
       "../../../image/terrain/AWDS_SEAS~LLLS.png"
     ],
     [
+      "WATER_LLLLSLLL",
+      "../../../image/terrain/AWDS_SEAS~LSLL.png"
+    ],
+    [
       "WATER_LLLLLLSL",
       "../../../image/terrain/AWDS_SEAS~LLSL.png"
     ],
@@ -275,11 +279,11 @@
     ],
     [
       "WATER_SSSLSSSS",
-      "../../../image/terrain/AWDS_SEAS~SSSSSSLS.png"
+      "../../../image/terrain/AWDS_SEAS~SSSSSSSL.png"
     ],
     [
       "WATER_SSSSSLSS",
-      "../../../image/terrain/AWDS_SEAS~SSSSSSSL.png"
+      "../../../image/terrain/AWDS_SEAS~SSSSSSLS.png"
     ],
     [
       "ROAD",
@@ -385,7 +389,7 @@
     ]
   ],
   "misc": [
-    [ "MAIN_BG", "../../../image/background/TheGreatOwl.jpg" ],
+    [ "MAIN_BG", "../../../image/mobile/background/RedStar.jpg" ],
     [ "FLYING_ROCKET", "../../../image/missileup.png" ],
     [
       "SILO_N",
@@ -709,24 +713,35 @@
       [
         "WATER_LLSLLLLL",
         "L",
-        "L",
+        "",
         "S",
+        "",
         "L",
+        "",
         "L",
-        "L",
-        "L",
-        "L"
+        ""
       ],
       [
         "WATER_LLLLLLSL",
         "L",
+        "",
         "L",
+        "",
         "L",
-        "L",
-        "L",
-        "L",
+        "",
         "S",
-        "L"
+        ""
+      ],
+      [
+        "WATER_LLLLSLLL",
+        "L",
+        "",
+        "L",
+        "",
+        "S",
+        "",
+        "L",
+        ""
       ],
       [
         "WATER_LLSLLLSL",
@@ -742,13 +757,13 @@
       [
         "WATER_SLLLLLLL",
         "S",
+        "",
         "L",
+        "",
         "L",
+        "",
         "L",
-        "L",
-        "L",
-        "L",
-        "L"
+        ""
       ],
       [
         "WATER_LLSSSLLL",
@@ -764,13 +779,13 @@
       [
         "WATER_LLSSSLLL",
         "L",
+        "",
+        "S",
+        "S",
+        "S",
+        "",
         "L",
-        "S",
-        "S",
-        "S",
-        "S",
-        "L",
-        "L"
+        ""
       ],
       [
         "WATER_LLLLSSSL",
@@ -786,13 +801,13 @@
       [
         "WATER_LLLLSSSL",
         "L",
+        "",
         "L",
-        "L",
+        "",
         "S",
         "S",
         "S",
-        "S",
-        "L"
+        ""
       ],
       [
         "WATER_LLSSSSSL",
@@ -841,24 +856,24 @@
       [
         "WATER_SLLLLLSS",
         "S",
+        "",
         "L",
+        "",
         "L",
-        "L",
-        "L",
-        "L",
+        "",
         "S",
         "S"
       ],
       [
         "WATER_SSSLLLSS",
         "S",
+        "",
         "S",
+        "",
+        "L",
+        "",
         "S",
-        "L",
-        "L",
-        "L",
-        "S",
-        "S"
+        ""
       ],
       [
         "WATER_SSSLRLSS",
@@ -874,13 +889,13 @@
       [
         "WATER_SSSSSLLL",
         "S",
+        "",
         "S",
+        "",
         "S",
-        "S",
-        "S",
+        "",
         "L",
-        "L",
-        "L"
+        ""
       ],
       [
         "WATER_SSSSSLRL",
@@ -896,13 +911,13 @@
       [
         "WATER_SLLLSSSS",
         "S",
+        "",
         "L",
-        "L",
-        "L",
+        "",
         "S",
-        "S",
-        "S",
-        "S"
+        "",
+        "",
+        ""
       ],
       [
         "WATER_SLRLSSSS",
@@ -1083,6 +1098,28 @@
       [
         "WATER_LLSSSSSL",
         "L",
+        "L",
+        "S",
+        "S",
+        "S",
+        "S",
+        "S",
+        "S"
+      ],
+      [
+        "WATER_LLSSSSSL",
+        "L",
+        "S",
+        "S",
+        "S",
+        "S",
+        "S",
+        "S",
+        "L"
+      ],
+      [
+        "WATER_LLSSSSSL",
+        "L",
         "S",
         "S",
         "S",
@@ -1199,5 +1236,9 @@
         ""
       ]
     ]
+  },
+  "simpleAnimatedUnits":{
+    "BCTR":true,
+    "TCTR":true
   }
 }

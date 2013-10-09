@@ -12,7 +12,7 @@ controller.unitAction({
 	
 	targetSelectionType: "A",
 	prepareTargets: function( data ){
-    model.markCannonTargets( data.target.unitId, data.selection );
+    	model.markCannonTargets( data.target.unitId, data.selection );
 	},
 	
 	invoke: function( data ){

@@ -24,9 +24,21 @@
   "ACAR": "Flugzeugträger",
   "LNDR": "Transportboot",
   "BSHP": "Schlachtschiff",
+
   "PLIN": "Wiese",
   "MNTN": "Berg",
   "FRST": "Wald",
+  
+  "ROAD": "Straße",
+  "BASE": "Fabrik",
+  "HQTR": "Hauptquartiert",
+  "BHMCE": "Mini-Kanone (Ost)",
+  "BHMCN": "Mini-Kanone (Nord)",
+  "BHMCS": "Mini-Kanone (Süd)",
+  "BHMCW": "Mini-Kanone (West)",
+  "PQRT" : "Hafen",
+  "APRT" : "Flughafen",
+
   "CTPR": "Besetze Geb&auml;ude",
   "UNUN": "Einheit ausladen",
   "LODU": "Einheit einladen",
@@ -106,15 +118,63 @@
   "DESIGN":"Design Raum",
   "HIDDEN":"Versteckt",
   "START":"Spiel Starten",
-  "NEXT":"Weiter",
+  "NEXT":"Starte Spiel",
   "OPTIONS":"Optionen",
-  "options.sfx":"Lautsärke Soundeffekte",
-  "options.music":"Lautstärke Musik",
+  "options.sfx":"Soundeffekte An/Aus",
+  "options.music":"Musik An/Aus",
   "options.music.down":"Leiser",
   "options.music.up":"Lauter",
   "options.sfx.down":"Leiser",
   "options.sfx.up":"Lauter",
   "options.goBack":"Zurück",
   "options.addMap":"Karte hinzufügen",
-  "options.resetData":"Spieldaten zurücksetzen"
+  "options.resetData":"Spieldaten zurücksetzen",
+
+  "loading.loadMaps":"Lade Karten",
+  "loading.loadImages":"Lade Grafiken",
+  "loading.cropImages":"Schneide Grafiken zu",
+  "loading.colorizeImages":"Färbe Grafiken ein",
+  "loading.loadSounds":"Lade Soundeffekte",
+  "loading.prepareInput":"Initialisiere Eingabesysteme",
+  "loading.prepareLanguage":"Wechsle Sprache",
+  "loading.done":"Fertig",
+
+  "menu.header":"Menü",
+  "menu.version":"Version",
+
+  "player":"Spieler",
+
+  "config.type.prev" : "<<",
+  "config.type.next" : ">>",
+  "config.co.prev"   : "<<",
+  "config.co.next"   : ">>",
+  "config.team.next" : ">>",
+  "config.team.prev" : "<<",
+
+  "config.playerCo"   : "CO",
+  "config.playerType" : "Typ",
+  "config.playerTeam" : "Team",
+
+  "config.next":"Spiel Starten",
+
+  "config.player.off":"Aus",
+  "config.player.disabled":"Frei",
+  "config.player.co.none":"Kein",
+  "config.player.AI":"KI",
+  "config.player.human":"Spieler",
+
+  "message.panel.header":"Nachricht",
+  
+  "versus.playerconfig":"Spielerkonfiguration",
+  "versus.next":"Spielerkonfiguration",
+  "versus.mapSelection":"Kartenauswahl",
+  "versus.prevMap":"Vorherige Karte",
+  "versus.nextMap":"Nächste Karte",
+
+  "error.panel.action":"Spieldaten zurücksetzen?",
+  "error.panel.header":"Schwerwiegender Fehler",
+  "error.panel.reason":"Grund",
+  "error.panel.data":"Daten",
+  "error.panel.no":"Nein",
+  "error.panel.yes":"Ja"
 }

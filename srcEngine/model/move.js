@@ -56,6 +56,9 @@ model.moveUnit = function( way, uid, x, y, noFuelConsumption ){
 	var lastIndex = way.length - 1;
 	var fuelUsed = 0;
 	
+	// Invoke event
+	controller.events.moveUnit( way, uid, x, y );
+	
 	// check move way by iterate through all move codes and build the path
 	//
 	// 1. check the correctness of the given move code
@@ -93,7 +96,12 @@ model.moveUnit = function( way, uid, x, y, noFuelConsumption ){
 		
 		// when the way contains an illegal value that isn't part of `model.moveCodes` then break 
 		// the move process.
-		if( !wayIsIllegal ) model.criticalError( constants.error.ILLEGAL_PARAMETERS, constants.error.ILLEGAL_MOVE_PATH );
+		if( wayIsIllegal ){
+		  model.criticalError( 
+		  	constants.error.ILLEGAL_PARAMETERS, 
+		  	constants.error.ILLEGAL_MOVE_PATH 
+		  );
+		}
 		
 		// is way blocked ? (niy!)
 		if( false && model.isWayBlocked( cX, cY, unit.owner, (i === e - 1) ) ) {
@@ -148,9 +156,6 @@ model.moveUnit = function( way, uid, x, y, noFuelConsumption ){
 	// the action logic must take care of this situation
 	if( model.unitPosMap[cX][cY] === null ) model.setUnitPosition( uid, cX, cY );
 	
-	// Invoke event
-	var evCb = controller.events.moveUnit;
-	if( evCb ) evCb(uid);
 };
 
 // Removes an unit from a position.
@@ -354,7 +359,7 @@ model.addMoveCodeToPath = function( code, movePath ){
 	// calculate fuel consumption for the current move path
 	var cx = source.x;
 	var cy = source.y;
-	for( var i = 0, e = getSize(); i < e; i++ ) {
+	for( var i = 0, e = movePath.getSize(); i < e; i++ ) {
 		switch(movePath[i]) {
 				
 			case model.moveCodes.UP:
@@ -429,7 +434,7 @@ model.fillMoveMap = function( source, selection, x, y, unit ){
 	if( unit.fuel < range ) range = unit.fuel;
 	
 	// add start tile to the map
-	selection.setCenter( x, y, this.ILLEGAL_MOVE_FIELD );
+	selection.setCenter( x, y, constants.INACTIVE_ID );
 	selection.setValueAt( x, y, range );
 	
 	// fill map ( one struct is X;Y;LEFT_POINTS )

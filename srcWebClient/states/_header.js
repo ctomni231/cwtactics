@@ -9,7 +9,7 @@ util.scoped(function(){
         else if( origName === "RIGHT" ) controller.errorButtons.increaseIndex();
           else if( origName === "ACTION" ){
             var key = controller.errorButtons.getActiveKey();
-            if( key === "YES" ){
+            if( key === "error.panel.yes" ){
               controller.storage.clear( function(){ 
                 window.location.reload(); 
               });

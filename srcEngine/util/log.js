@@ -1,19 +1,10 @@
 // Raises an error in the active Javascript environment.
 // 
-util.createCwtErrorObject = function( errorId, errorData, stackData ){
-  var e = Error( constants.ERROR_MSG );
-  
-  e.errorID = errorId;
-  e.errorDataID = errorData;
-  e.errorActionData = stackData;
-  
-  return e;
-};
-
-// Raises an error in the active Javascript environment.
-// 
 util.error = function( errorId, errorData, stackData ){
-  console.error( util.createCwtErrorObject(errorId, errorData, stackData) );
+  console.log( "%cCW:T ERROR", 			"color:red;" );
+  console.log( "%c .ERROR_ID:"+errorId, "color:red;" );
+  console.log( "%c .DATA:"+errorData, 	"color:red;" );
+  console.log( "%c .STACK:"+stackData, 	"color:red;" );
 };
 
 // Logging function.

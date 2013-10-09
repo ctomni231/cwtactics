@@ -1,7 +1,42 @@
-<div id="cwt_versus_screen" class="gamePanel ui-panel" style="display:none;" >
-  <p id="map_selection"></p>
-  <p>
-    <button id="versus_start_btn" 
-            key="NEXT"  
-            class="ui-font ui-header ui-panel-button" > </button></p>
+<div id="cwt_versus_screen" 
+     class="cwt_page" 
+     style="display:none;" >
+  
+  <p class="cwt_panel_header cwt_panel_header_small cwt_page_bottom_margin"><span key="versus.mapSelection"></span></p>
+
+  <table class="w_800 table_center table_collapse semiAlpha" >
+    <tbody>
+      
+      <!-- #################### MAP SELECT #################### -->
+
+      <tr>
+        <td colspan="2">
+          <div class="cwt_panel_header_big cwt_page_button cwt_panel_button cwt_panel_button_inverted
+                      noEgdeBR noEgdeBL"
+               style="border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;"  >
+
+            <span id="map_selection"></span>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="noRightBorder noTopBorder noEgdeTR noEgdeTL noEgdeBR">
+          <button key="versus.prevMap" />
+        </td>
+
+        <td class="noLeftBorder noTopBorder noEgdeTR noEgdeTL noEgdeBL" >
+          <button key="versus.nextMap" />
+        </td>
+      </tr>
+      
+      <!-- #################### START GAME #################### -->
+
+      <tr>
+        <td class="w_800 buttonTopGap" colspan="2">
+          <button key="versus.next" /></td>
+      </tr>
+      
+    </tbody>
+  </table>
 </div>

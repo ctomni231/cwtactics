@@ -2,15 +2,8 @@ view.registerAnimationHook({
   key: "nextTurn",
   
   prepare: function(){
-    controller.renderPlayerInfo();
-    
-    if( controller.clientFeatures.audioMusic ){
-      controller.playMusic( 
-        model.coData[model.turnOwner].coA.music 
-      );
-    }
-    
-    view.showInfoMessage( model.localized("day")+" "+model.day );
+    controller.playMusicForPlayer(model.turnOwner);
+    view.showInfoMessage( model.localized("day")+" "+model.day+" - "+model.players[model.turnOwner].name );
   },
   
   render: function(){},

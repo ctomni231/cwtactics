@@ -1,115 +1,136 @@
 util.scoped(function(){
   
-  var NAME = document.getElementById( "bottomBar_name" );
-  var ROW1 = document.getElementById( "bottomBar_unit_row1" );
-  var ROW2 = document.getElementById( "bottomBar_unit_row2" );
+  var PANEL       = document.getElementById( "cwt_game_infoBar" );
+
+  // -------------------------------------------------------------------------------------------
   
-  var HP = document.getElementById( "bottomBar_hp");
-  var GAS = document.getElementById( "bottomBar_fuel" );
-  var AMMO = document.getElementById( "bottomBar_ammo" );
-  var GAS2 = document.getElementById( "bottomBar_fuel2" );
-  var AMMO2 = document.getElementById( "bottomBar_ammo2" );
-  var ATTRANGE = document.getElementById( "bottomBar_attrange" );
-  var ATTRANGE2 = document.getElementById( "bottomBar_attrange2" );
-  
-  var HP_D = document.getElementById( "bottomBar_hp_d" );
-  var GAS_D = document.getElementById( "bottomBar_fuel_d" );
-  var AMMO_D = document.getElementById( "bottomBar_ammo_d");
-  var ATTRANGE_D = document.getElementById( "bottomBar_attrange_d" );
+  var ROW1        = document.getElementById( "infoBox_unitRow1" );
+  var ROW2        = document.getElementById( "infoBox_unitRow2" );
+  var ROW3        = document.getElementById( "infoBox_unitRow3" );
+
+  var NAME        = document.getElementById( "infoBox_name" );
+  var HP          = document.getElementById( "infoBox_hp");
+  var GAS         = document.getElementById( "infoBox_fuel" );
+  var AMMO        = document.getElementById( "infoBox_ammo" );
+  var GAS2        = document.getElementById( "infoBox_fuel2" );
+  var AMMO2       = document.getElementById( "infoBox_ammo2" );
+  var ATTRANGE    = document.getElementById( "infoBox_attrange" );
+  var ATTRANGE2   = document.getElementById( "infoBox_attrange2" );
+  var HP_D        = document.getElementById( "infoBox_hp_d" );
+  var GAS_D       = document.getElementById( "infoBox_fuel_d" );
+  var AMMO_D      = document.getElementById( "infoBox_ammo_d");
+  var ATTRANGE_D  = document.getElementById( "infoBox_attrange_d" );
   
   // -------------------------------------------------------------------------------------------
   
-  var PLAYER_NAME = document.getElementById( "bottomBar_playerName" );
-  var PLAYER_POWER = document.getElementById( "bottomBar_playerpower" );
-  var PLAYER_GOLD = document.getElementById( "bottomBar_playergold" );
-  
-  var TPLAYER_NAME = document.getElementById( "bottomBar_tplayerName" );
-  var TPLAYER_POWER = document.getElementById( "bottomBar_tplayerpower" );
-  var TPLAYER_GOLDROW = document.getElementById( "bottomBar_tplayergoldrow" );
-  var TPLAYER_GOLD = document.getElementById( "bottomBar_tplayergold" );
+  var PLAYER_NAME     = document.getElementById( "infoBox_playerName" );
+  var PLAYER_POWER    = document.getElementById( "infoBox_playerpower" );
+  var PLAYER_GOLD     = document.getElementById( "infoBox_playergold" );
   
   // -------------------------------------------------------------------------------------------
   
-  var TILE_NAME = document.getElementById( "bottomBar_tilename" );
-  var TILE_ROW1 = document.getElementById( "bottomBar_tile_row1" );
-  var TILE_ROW2 = document.getElementById( "bottomBar_tile_row2" );
-  var DEFENSE_D = document.getElementById( "bottomBar_defense_d" );
-  var DEFENSE = document.getElementById( "bottomBar_defense" );
-  var CAPPT_D  = document.getElementById( "bottomBar_capPt_d" );
-  var CAPPT    = document.getElementById( "bottomBar_capPt" );
-  var CAPPT2   = document.getElementById( "bottomBar_capPt2" );
+  var TILE_ROW1   = document.getElementById( "infoBox_tileRow1" );
+  var TILE_ROW2   = document.getElementById( "infoBox_tileRow2" );
+  var TILE_ROW2D2 = document.getElementById( "infoBox_tileRow2d2" );
+
+  var TILE_NAME   = document.getElementById( "infoBox_tilename" );
+  var DEFENSE_D   = document.getElementById( "infoBox_defense_d" );
+  var DEFENSE     = document.getElementById( "infoBox_defense" );
+  var CAPPT_D     = document.getElementById( "infoBox_capPt_d" );
+  var CAPPT       = document.getElementById( "infoBox_capPt" );
+  var CAPPT2      = document.getElementById( "infoBox_capPt2" );
   
-  var rendered = false;
+  // -------------------------------------------------------------------------------------------
   
-  controller.updateTileInformation = function(){
+  var symbolsRendered = false;
+
+  controller.sideSimpleTileInformationPanel = -1;
+
+  controller.moveSimpleTileInformationToLeft = function(){
+    if( controller.sideSimpleTileInformationPanel < 0 ) return;
+
+    PANEL.style.left = "4px";
+    PANEL.style.right = "";
+
+    controller.sideSimpleTileInformationPanel = -1;
+  };
+
+  controller.moveSimpleTileInformationToRight = function(){
+    if( controller.sideSimpleTileInformationPanel > 0 ) return;
+
+    PANEL.style.right = "4px";
+    PANEL.style.left = "";
+
+    controller.sideSimpleTileInformationPanel = +1;
+  };
+  
+  controller.updateSimpleTileInformation = function(  ){
     var x = controller.mapCursorX;
     var y = controller.mapCursorY;
-    var type;
     var unit = model.unitPosMap[x][y];
     var prop = model.propertyPosMap[x][y];
     
-    if(!rendered){
+    var type; 
+    
+    // ### Render Symbols
+    if( !symbolsRendered ){
       
-      // UNIT SYMBOLS
       HP_D.getContext("2d").drawImage( view.getInfoImageForType("SYM_HP"), 0, 0);
       GAS_D.getContext("2d").drawImage( view.getInfoImageForType("SYM_FUEL"), 0, 0);
       AMMO_D.getContext("2d").drawImage( view.getInfoImageForType("SYM_AMMO"), 0, 0);
-      ATTRANGE_D.getContext("2d").drawImage( view.getInfoImageForType("SYM_ATT"), 0, 0);
-      
+      ATTRANGE_D.getContext("2d").drawImage( view.getInfoImageForType("SYM_ATT"), 0, 0);    
       DEFENSE_D.getContext("2d").drawImage( view.getInfoImageForType("SYM_DEFENSE"), 0, 0);
       CAPPT_D.getContext("2d").drawImage( view.getInfoImageForType("SYM_CAPTURE"), 0, 0);
       
-      rendered = true;
+      symbolsRendered = true;
     }
-    
-    /* **************************************************************************** */
-    
-    controller.renderPlayerInfo();
 
-    /* **************************************************************************** */
+    // ------------------------------------------------------------------------------------
     
+    // Render unit information
     if( !unit ){
       NAME.style.opacity = 0;
       ROW1.style.opacity = 0;
       ROW2.style.opacity = 0;
+      ROW3.style.opacity = 0;
     }
     else{
       type = unit.type;
       
-      NAME.innerHTML = model.localized( type.ID );
-      HP.innerHTML = unit.hp;
-      GAS.innerHTML = unit.fuel;
-      GAS2.innerHTML = type.fuel;
-      AMMO.innerHTML = unit.ammo;
+      NAME.innerHTML  = model.localized( type.ID );
+      HP.innerHTML    = unit.hp;
+      GAS.innerHTML   = unit.fuel;
+      GAS2.innerHTML  = type.fuel;
+      AMMO.innerHTML  = unit.ammo;
       AMMO2.innerHTML = type.ammo;
       
       // ATTACK DATA
       var attack = type.attack;
       if( attack ){
-        ATTRANGE.innerHTML = attack.minrange || 1;
+        ATTRANGE.innerHTML  = attack.minrange || 1;
         ATTRANGE2.innerHTML = attack.maxrange || 1;
       }
       else{
-        ATTRANGE.innerHTML = "";
+        ATTRANGE.innerHTML  = "";
         ATTRANGE2.innerHTML = "";
       }
             
       NAME.style.opacity = 1;
       ROW1.style.opacity = 1;
       ROW2.style.opacity = 1;
+      ROW3.style.opacity = 1;
     }
     
-    /* **************************************************************************** */
-    
+    // ------------------------------------------------------------------------------------
+
+    // Render tile / property information
     if( !prop ){
       type = model.map[x][y];
       
       TILE_NAME.innerHTML = model.localized( type.ID );
-      DEFENSE.innerHTML = type.defense;
+      DEFENSE.innerHTML   = type.defense;
       
-      TILE_NAME.style.opacity = 1;
-      TILE_ROW1.style.opacity = 0;
-      TILE_ROW2.style.opacity = 0;
+      TILE_ROW2D2.style.opacity = 0;
     }
     else{
       type = prop.type;
@@ -119,37 +140,37 @@ util.scoped(function(){
       CAPPT2.innerHTML = 20;
       
       DEFENSE.innerHTML = type.defense;
-    
-      TILE_ROW1.style.opacity = 1;
-      TILE_ROW2.style.opacity = 1;
+      TILE_ROW2D2.style.opacity = 1;
     }
     
-    /* **************************************************************************** */
+    // ------------------------------------------------------------------------------------
+
+    // Render owner information
     
+    // The rendered information will be calculated by the tile objects if a unit is on a 
+    // tile then the owner of it will be rendered as player information else the owner
+    // of the property. (**TODO:**) If both objects are null then the active client will
+    // be rendered
     type = null;
-         if( unit && unit.owner !== model.turnOwner ) type = model.players[ unit.owner ];
-    else if( prop && prop.owner !== model.turnOwner ) type = model.players[ prop.owner ];
+    var id = -1;
+    
+    // grab identical number
+    if( unit  )                                             id = unit.owner;
+    else if( prop && prop.owner !== constants.INACTIVE_ID ) id = prop.owner;
+    else                                                    id = model.turnOwner;
+    
+    if( id > -1 ){
+      type = model.players[ id ];
       
-    if( type ){
-      TPLAYER_NAME.innerHTML = type.name;
-      TPLAYER_GOLD.innerHTML = type.gold;
-      TPLAYER_POWER.innerHTML = type.power;  
-      TPLAYER_NAME.style.opacity = 1;
-      TPLAYER_GOLDROW.style.opacity = 1;
-      TPLAYER_POWER.style.opacity = 1;     
+      PLAYER_NAME.innerHTML  = type.name;
+      PLAYER_GOLD.innerHTML  = type.gold;
+      PLAYER_POWER.innerHTML = model.coData[id].power;
     }
     else{
-      TPLAYER_NAME.style.opacity = 0;
-      TPLAYER_GOLDROW.style.opacity = 0;
-      TPLAYER_POWER.style.opacity = 0;   
+      
+      PLAYER_NAME.innerHTML  = "";
+      PLAYER_GOLD.innerHTML  = "";
+      PLAYER_POWER.innerHTML = "";
     }
-  }
-  
-  controller.renderPlayerInfo = function(){
-    var activePl = model.players[ model.turnOwner ];
-    
-    PLAYER_NAME.innerHTML = activePl.name;
-    PLAYER_GOLD.innerHTML = activePl.gold;
-    PLAYER_POWER.innerHTML = activePl.power;
   };
 });

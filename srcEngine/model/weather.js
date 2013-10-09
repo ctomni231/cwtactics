@@ -112,8 +112,10 @@ model.changeWeather = function( wth ){
   if( !model.weatherTypes.hasOwnProperty(wth) ){
     model.criticalError( constants.error.ILLEGAL_DATA, constants.error.UNKNOWN_WEATHER );
   }
-  
+
   model.weather = model.weatherTypes[wth];
-  
+
+  model.recalculateFogMap();
+
 	controller.events.changeWeather( wth );
 };

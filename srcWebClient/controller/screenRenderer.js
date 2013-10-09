@@ -56,11 +56,13 @@ view.renderMap = function( scale ){
   var tch;
   var sprStepSel = view.getSpriteStep("SELECTION");
   var sprStepUnit = view.getSpriteStep("UNIT");
+  var sprStepUnitSimple = view.getSpriteStep("UNIT_SIMPLE");
   var sprStepProp = view.getSpriteStep("PROPERTY");
   var sprStepStat = view.getSpriteStep("STATUS");
   var sprStepTiles = view.getSpriteStep("ANIM_TILES");
   var BASESIZE = controller.baseSize;
-  var teamId = model.players[ model.turnOwner ].team;
+  var simpleUnitAnimTypes = model.graphics.simpleAnimatedUnits;
+  var teamId = (model.lastActiveClientPid !== -1)? model.players[ model.lastActiveClientPid ].team : -1;
   
   var focusExists = (
     controller.stateMachine.state === "MOVEPATH_SELECTION" ||
@@ -171,7 +173,8 @@ view.renderMap = function( scale ){
             color = view.colorArray[ property.owner ];
             
             if( property.type.factionSprites ){
-              type = property.type.factionSprites[ model.coData[property.owner].coA.faction ]
+              var co = model.coData[property.owner].coA;
+              if( co ) type = property.type.factionSprites[ co.faction ];
             }
           }
           
@@ -337,6 +340,9 @@ view.renderMap = function( scale ){
             stats.VISIBLE ) ){
           
           if( unit !== view.preventRenderUnit ){
+
+            var uStep = (simpleUnitAnimTypes[unit.type.ID])? sprStepUnitSimple : sprStepUnit;
+
             var color;
             if( unit.owner === -1 ){
               color = view.COLOR_NEUTRAL;
@@ -351,7 +357,7 @@ view.renderMap = function( scale ){
                         
             pic = view.getUnitImageForType( unit.type.ID, state, color );
             
-            scx = (BASESIZE*2)*sprStepUnit;
+            scx = (BASESIZE*2)*uStep;
             scy = 0;
             scw = BASESIZE*2;
             sch = BASESIZE*2;
@@ -482,7 +488,7 @@ view.renderMap = function( scale ){
     var tY;
     
     for( var i=0,e=currentMovePath.length; i<e; i++ ){
-      if( currentMovePath[i] === null ) break;
+      if( currentMovePath[i] === -1 || currentMovePath[i] === null ) break;
       
       oX = cX;
       oY = cY;
@@ -491,22 +497,22 @@ view.renderMap = function( scale ){
       
       // CURRENT TILE
       switch( currentMovePath[i] ){
-        case model.MOVE_CODE_UP :    cY--; break;
-        case model.MOVE_CODE_RIGHT : cX++; break;
-        case model.MOVE_CODE_DOWN :  cY++; break;
-        case model.MOVE_CODE_LEFT :  cX--; break;
+        case model.moveCodes.UP :    cY--; break;
+        case model.moveCodes.RIGHT : cX++; break;
+        case model.moveCodes.DOWN :  cY++; break;
+        case model.moveCodes.LEFT :  cX--; break;
       }
       
       // NEXT TILE
-      if( i === e-1 || currentMovePath[i+1] === null ){
+      if( currentMovePath[i+1] === -1 || currentMovePath[i+1] === null ){
         tX = -1; tY = -1;
       }
       else{
         switch( currentMovePath[i+1] ){
-          case model.MOVE_CODE_UP :    tX = cX;   tY = cY-1; break;
-          case model.MOVE_CODE_RIGHT : tX = cX+1; tY = cY;   break;
-          case model.MOVE_CODE_DOWN :  tX = cX;   tY = cY+1; break;
-          case model.MOVE_CODE_LEFT :  tX = cX-1; tY = cY;   break;
+          case model.moveCodes.UP :    tX = cX;   tY = cY-1; break;
+          case model.moveCodes.RIGHT : tX = cX+1; tY = cY;   break;
+          case model.moveCodes.DOWN :  tX = cX;   tY = cY+1; break;
+          case model.moveCodes.LEFT :  tX = cX-1; tY = cY;   break;
         }
       }
       
@@ -514,13 +520,13 @@ view.renderMap = function( scale ){
         
         // TARGET TILE
         switch( currentMovePath[i] ){
-          case model.MOVE_CODE_UP :
+          case model.moveCodes.UP :
             pic = view.getTileImageForType("ARROW_N"); break;
-          case model.MOVE_CODE_RIGHT :
+          case model.moveCodes.RIGHT :
             pic = view.getTileImageForType("ARROW_E"); break;
-          case model.MOVE_CODE_DOWN :
+          case model.moveCodes.DOWN :
             pic = view.getTileImageForType("ARROW_S"); break;
-          case model.MOVE_CODE_LEFT :
+          case model.moveCodes.LEFT :
             pic = view.getTileImageForType("ARROW_W"); break;
         }
       }

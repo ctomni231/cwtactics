@@ -4,10 +4,12 @@ util.scoped(function(){
   
   var spriteAnimators_ = [];
   
+  spriteAnimation["UNIT_SIMPLE"] = { step:0 }; 
+
   /**
    *
    */
-  view.registerSpriteAnimator = function( key, steps, timePerStep, updatorFn ){
+  view.registerSpriteAnimator = function( key, steps, timePerStep, updatorFn, upDown ){
     
     var holder = {};
     holder.stps = steps;
@@ -15,6 +17,8 @@ util.scoped(function(){
     holder.upt = updatorFn;
     holder.step = 0;
     holder.time = 0;
+    holder.mod  = 1;
+    holder.upDw = ( upDown === true );
     
     spriteAnimation[key] = holder;
     spriteAnimators_.push( holder );
@@ -39,14 +43,24 @@ util.scoped(function(){
         
         // INCREASE STEP AND RESET TIMER
         anim.time = 0;
-        anim.step++;
+        anim.step += anim.mod;
         
         if( anim.step >= anim.stps ){
-          anim.step = 0;
+          if( anim.upDw ){
+            anim.mod = -1;
+            anim.step -= 2;
+          }
+          else{
+            anim.step = 0;
+          }
+        }
+        else if( anim.step < 0 ){
+          anim.mod = 1;
+          anim.step = 1;
         }
         
         // CALL UPDATER
-        anim.upt();
+        anim.upt(spriteAnimation);
       }
     }
   };
@@ -87,11 +101,17 @@ view.registerSpriteAnimator( "STATUS", 20, 375, function(){
   
 });
 
-view.registerSpriteAnimator( "UNIT", 3, 250, function(){
+view.registerSpriteAnimator( "UNIT", 3, 250, function(spriteAnimation){
   var x  = 0;
   var yS = 0;
   var xe = model.mapWidth;
   var ye = model.mapHeight;
+
+  // hack for simple 0,1,2 animation
+  spriteAnimation["UNIT_SIMPLE"].step++;
+  if( spriteAnimation["UNIT_SIMPLE"].step === 3 ){
+    spriteAnimation["UNIT_SIMPLE"].step = 0;
+  }
   
   // ITERATE THROUGH THE SCREEN
   for( ; x<xe; x++ ){
@@ -102,7 +122,7 @@ view.registerSpriteAnimator( "UNIT", 3, 250, function(){
       }
     }
   }
-});
+}, true );
 
 view.registerSpriteAnimator( "PROPERTY", 4, 400, function(){
   var x  = 0;

@@ -138,29 +138,33 @@ model.playerLooses = function( pid ){
 	// its team reference
 	model.players[pid].team = -1;
 	
-	// check left teams
-	var _teamFound = -1;
-	i = 0;
-	e = model.players.length;
+	// when no opposite teams are found then the game has ended
+	if( !model.atLeastTwoTeamsLeft() ){
+		controller.localInvokement("noTeamLeft");
+	}
+};
+
+model.atLeastTwoTeamsLeft = function(){
+	var foundTeam = -1;
+	var player;
+	var i = 0;
+	var e = model.players.length;
+
 	for( ; i<e; i++ ){
-		var player = model.players[i];
+		player = model.players[i];
 		
 		if( player.team !== -1 ){
 			
 			// found alive player
-			if( _teamFound === -1 ) _teamFound = player.team;
-			else if( _teamFound !== player.team ){
-				_teamFound = -1;
+			if( foundTeam === -1 ) foundTeam = player.team;
+			else if( foundTeam !== player.team ){
+				foundTeam = -1;
 				break;
 			}
-				}
+		}
 	}
-	
-	// when no opposite teams are found then
-	// the game has ended
-	if( _teamFound !== -1 ){
-		controller.localInvokement("noTeamLeft");
-	}
+
+	return foundTeam === -1;
 };
 
 // Returns true if there is an unit with a given relationship on a tile at a given position (x,y).
@@ -267,6 +271,8 @@ model.relationShipCheckUnitNeighbours = function( pid, x,y , mode ){
 // **Allowed to be called directly by the client.**
 //
 model.playerGivesUp = function(){
+	if( !model.isClientPlayer( model.turnOwner ) ) model.criticalError(0,0);
+
 	model.playerLooses( model.turnOwner );
 	model.nextTurn();
 	

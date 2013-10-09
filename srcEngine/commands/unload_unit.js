@@ -23,7 +23,7 @@ controller.unitAction({
 	
 	targetSelectionType: "B",
 	prepareTargets: function( data ){
-		model.addUnloadTargetsToMenu( 
+		model.addUnloadTargetsToSelection( 
 			data.source.unitId, 
 			data.target.x, 
 			data.target.y,

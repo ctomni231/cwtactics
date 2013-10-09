@@ -104,10 +104,10 @@ controller.moveCursor = function( dir, len ){
   var y = controller.mapCursorY;
   
   switch( dir ){
-    case model.MOVE_CODE_UP    : y--; break;
-    case model.MOVE_CODE_RIGHT : x++; break;
-    case model.MOVE_CODE_DOWN  : y++; break;
-    case model.MOVE_CODE_LEFT  : x--; break;
+    case model.moveCodes.UP    : y--; break;
+    case model.moveCodes.RIGHT : x++; break;
+    case model.moveCodes.DOWN  : y++; break;
+    case model.moveCodes.LEFT  : x--; break;
   }
   
   controller.setCursorPosition(x,y);
@@ -157,7 +157,7 @@ controller.setCursorPosition = function( x,y,relativeToScreen ){
   controller.mapCursorX = x;
   controller.mapCursorY = y;
   
-  controller.updateTileInformation();
+  controller.updateSimpleTileInformation();
   
   var scale = controller.screenScale;  
   if( scale === 0 ) scale = 0.8;
@@ -165,13 +165,19 @@ controller.setCursorPosition = function( x,y,relativeToScreen ){
   
   var scw = parseInt( parseInt( (window.innerWidth-80)/16,10 ) / scale ,10 );
   var sch = parseInt( parseInt( (window.innerHeight-80)/16,10 ) / scale ,10 );
+
+  // shift tile information panel if necessary
+  if( controller.sideSimpleTileInformationPanel < 0 && (x-controller.screenX) <  (scw*0.25) ) controller.moveSimpleTileInformationToRight();
+  if( controller.sideSimpleTileInformationPanel > 0 && (x-controller.screenX) >= (scw*0.75) ) controller.moveSimpleTileInformationToLeft();
   
+  // extract move code
   var moveCode = -1;
   if( x-controller.screenX <= 1 )          moveCode = model.moveCodes.LEFT;
   else if( x-controller.screenX >= scw-1 ) moveCode = model.moveCodes.RIGHT;
   else if( y-controller.screenY <= 1 )     moveCode = model.moveCodes.UP;
   else if( y-controller.screenY >= sch-1 ) moveCode = model.moveCodes.DOWN;
   
+  // shift screen of you're reach a border
   if( moveCode !== -1 ){
     controller.shiftScreenPosition( moveCode, 5 );
   }

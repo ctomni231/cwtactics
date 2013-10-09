@@ -1,52 +1,70 @@
-<div id="cwt_options_screen" class="gamePanel ui-panel" style="display:none;" >
+<div id="cwt_options_screen" 
+     class="cwt_page" 
+     style="display:none;" >
   
-  <table width="100%" >
+  <p class="cwt_panel_header cwt_panel_header_small cwt_page_bottom_margin"><span key="OPTIONS"></span></p>
+
+  <table class="w_800 table_center table_collapse semiAlpha" >
     <tbody>
       
+      <!-- #################### SFX VOLUME #################### -->
+
+      <tr >
+        <td colspan="2">
+
+          <div class="cwt_panel_header_big cwt_page_button cwt_panel_button cwt_panel_button_inverted
+                      noEgdeBL noEgdeBR" >
+
+            <span id="cwt_options_sfxVolume_desc" key="options.sfx"></span>:<span id="cwt_options_sfxVolume" ></span>%
+          </div>
+        </td>
+      </tr>
+      
+      <tr >
+        <td class="noRightBorder noTopBorder noEgdeAll">
+            <button key="options.sfx.down" />
+          </td>
+
+        <td class="noLeftBorder noTopBorder noEgdeAll" >
+            <button key="options.sfx.up" />
+          </td>
+      </tr>
+
+      <!-- #################### MUSIC VOLUME #################### -->
+
       <tr>
-        <td colspan="2" class="ui-font ui-subheader" >
-          <span id="cwt_options_sfxVolume_desc" key="options.sfx"></span>:
-          <span id="cwt_options_sfxVolume" class="menuButton" ></span>%
+        <td colspan="2">
+          <div class="cwt_panel_header_big cwt_page_button cwt_panel_button cwt_panel_button_inverted 
+                      noTopBorder noEgdeAll" >
+
+            <span id="cwt_options_musicVolume_desc" key="options.music"></span>:<span id="cwt_options_musicVolume"></span>%
+          </div>
         </td>
       </tr>
       
       <tr>
-        <td style="width:50%;" class="ui-font ui-subheader" >
-          <button id="cwt_options_sfx_down" key="options.sfx.down" > </button>
+        <td class="noRightBorder noTopBorder noEgdeTR noEgdeTL noEgdeBR" >
+          <button key="options.music.down" />
         </td>
-        <td class="ui-font ui-subheader" >
-          <button id="cwt_options_sfx_up" key="options.sfx.up" > </button>
+
+        <td class="noLeftBorder noTopBorder noEgdeTR noEgdeTL noEgdeBL" >
+          <button key="options.music.up" />
         </td>
       </tr>
       
+      <!-- #################### RESET DATA #################### -->
+
+      <tr >
+        <td class="w_800 buttonTopGap" colspan="2" >
+            <button key="options.resetData" > </button>
+        </td>
+      </tr>
+      
+      <!-- #################### GO BACK #################### -->
+
       <tr>
-        <td colspan="2"  class="ui-font ui-subheader" >
-          <span id="cwt_options_musicVolume_desc" key="options.music"></span>:
-          <span id="cwt_options_musicVolume" class="menuButton" ></span>%
-        </td>
-      </tr>
-      
-      <tr>
-        <td class="ui-font ui-subheader" >
-          <button id="cwt_options_music_down" key="options.music.down" > </button>
-        </td>
-        <td class="ui-font ui-subheader" >
-          <button id="cwt_options_music_up" key="options.music.up" > </button>
-        </td>
-      </tr>
-      
-      <tr style="width:30px;" >
-        <td colspan="2" class="ui-font ui-subheader" >
-          <button id="cwt_options_reset" 
-            key="options.resetData"  
-            style="color:red;" > </button>
-        </td>
-      </tr>
-      
-      <tr style="width:30px;" >
-        <td colspan="2" class="ui-font ui-subheader" >
-          <button id="cwt_options_goBack" 
-            key="options.goBack" > </button>
+        <td class="w_800 buttonTopGap" colspan="2">
+            <button key="options.goBack" />
         </td>
       </tr>
       

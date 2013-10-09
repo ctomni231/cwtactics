@@ -12,6 +12,7 @@ co.js
 factory.js
 map.js
 player.js
+clientInstances.js
 rules.js
 timer.js
 unit.js

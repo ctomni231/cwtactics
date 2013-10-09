@@ -239,3 +239,8 @@ model.coStarCost = function( pid ){
 	
 	return cost;
 };
+
+model.setMainCo = function( pid, type ){
+	if( type === null ) model.coData[pid].coA = null;
+	else model.coData[pid].coA = model.coTypes[type];	
+};

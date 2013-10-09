@@ -13,7 +13,7 @@ controller.unitAction({
   
   condition: function( data ){
 		if( model.isPeacePhaseActive() ) return false;
-		if( model.isIndirectUnit(data.source.unitId) && data.movePath.data.length > 0 ) return false;
+		if( model.isIndirectUnit(data.source.unitId) && data.movePath.data.getSize() > 0 ) return false;
     return model.hasTargets( data.source.unitId, data.target.x, data.target.y );
   },
           

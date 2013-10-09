@@ -10,7 +10,9 @@ controller.clientAction({
   prepareMenu: function( data ){
     data.menu.addEntry("options.sfx");
     data.menu.addEntry("options.music");
-    data.menu.addEntry("options.yield");
+
+    // you only can yield when you're the turn owner
+    if( model.isClientPlayer(model.turnOwner) ) data.menu.addEntry("options.yield");
   },
   
   invoke: function( data ){
@@ -28,7 +30,7 @@ controller.clientAction({
         break;
         
       case "options.yield":
-        model.playerGivesUp.callAsCommand();
+        controller.sharedInvokement("playerGivesUp", []);
         break;
     }
   }

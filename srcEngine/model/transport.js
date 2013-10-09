@@ -143,7 +143,7 @@ model.canUnloadUnitAt = function( uid, x,y ){
 // @param {Menu} menu
 // 
 model.addUnloadTargetsToMenu = function( uid, x,y, menu ){
-	if( !( model.isTransport( uid ) && model.hasLoadedIds( uid ) ) ){
+	if( !( model.isTransport( uid ) ) ){
 		model.criticalError( 
 			constants.error.ILLEGAL_PARAMETERS, 
 			constants.error.ILLEGAL_PARAMETERS 
@@ -176,7 +176,7 @@ model.addUnloadTargetsToMenu = function( uid, x,y, menu ){
 // @param {Number} y
 // @param {Menu} menu
 // 
-model.addUnloadTargetsToMenu = function( uid, x,y, loadId, selection ){
+model.addUnloadTargetsToSelection = function( uid, x,y, loadId, selection ){
 	var loader = model.units[uid];
 	var movetp = model.moveTypes[ model.units[ loadId ].type.movetype ];
 	
@@ -217,7 +217,7 @@ model.canLoad = function( lid, tid ){
 	if( transporter.loadedIn + transporter.type.maxloads + 1 === 0 ) return false; 
 	
 	// is unit technically load able ?
-	return ( transporter.type.canload.indexOf( load.type.class ) !== -1 );
+	return ( transporter.type.canload.indexOf( load.type.movetype ) !== -1 );
 };
 
 // Returns true if the unit with id tid is a traensporter, else false.
@@ -227,5 +227,5 @@ model.canLoad = function( lid, tid ){
 model.isTransport = function( tid ){
 	
 	// if `maxloads` is defined then it is a transport
-	return util.isIn( "maxloads", model.units[ tid ].type );
+	return model.units[ tid ].type.maxloads;
 };

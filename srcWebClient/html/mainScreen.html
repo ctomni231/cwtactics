@@ -1,11 +1,51 @@
-<div id="cwt_main_screen" class="gamePanel ui-panel" style="display:none;">
+<div id="cwt_main_screen" 
+     class="cwt_page" 
+     style="display:none;" >
 
-  <p><button id="main_screen_enter_1" inactive="true" key="CAMPAIGN"  ></button></p> 
-  <p><button id="main_screen_enter_2" key="VERSUS"    ></button></p> 
-  <p><button id="main_screen_enter_3" inactive="true" key="NETWORK"   ></button></p> 
-  <p><button id="main_screen_enter_4" inactive="true" key="WARROOM"   ></button></p> 
-  <p><button id="main_screen_enter_5" inactive="true" key="DESIGN"    ></button></p> 
-  <p><button id="main_screen_enter_6" key="OPTIONS"   ></button></p>
-	
-	<div id="mainScreen_version"></div>
+  <p class="cwt_panel_header cwt_panel_header_small cwt_page_bottom_margin">
+    <span key="menu.header"></span> <span style="font-size: 0.8em;">(<span key="menu.version"></span> <span id="mainScreen_version"></span>)</span>
+  </p>
+
+  <table class="w_400 table_center table_collapse semiAlpha" >
+    <tbody>
+      
+      <tr>
+        <td class="w_400 noEgdeBL noEgdeBR noBottomBorder">
+            <button key="CAMPAIGN" inactive="true" />
+        </td>
+      </tr>
+
+      <tr>
+        <td class="w_400 noEgdeAll noBottomBorder noTopBorder">
+            <button key="VERSUS"  />
+        </td>
+      </tr>
+
+      <tr>
+        <td class="w_400 noEgdeAll noBottomBorder noTopBorder">
+            <button key="NETWORK" inactive="true" />
+        </td>
+      </tr>
+
+      <tr>
+        <td class="w_400 noEgdeAll noBottomBorder noTopBorder">
+            <button key="WARROOM" inactive="true" />
+        </td>
+      </tr>
+
+      <tr>
+        <td class="w_400 noEgdeAll noBottomBorder noTopBorder">
+            <button key="DESIGN" inactive="true" />
+        </td>
+      </tr>
+
+      <tr>
+        <td class="w_400 noEgdeTL noEgdeTR noTopBorder">
+            <button key="OPTIONS"  />
+        </td>
+      </tr>
+      
+    </tbody>
+  </table>
+
 </div>

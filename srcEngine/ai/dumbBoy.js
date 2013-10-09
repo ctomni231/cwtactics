@@ -17,7 +17,8 @@ controller.registerAI({
         case "START_TURN":
           if( constants.DEBUG ) util.log("DumbBoy:: starts turn");
           
-          memory.state  = "MOVE_ATTACK";
+          //memory.state  = "MOVE_ATTACK";
+          memory.state  = "END_TURN";
           memory.cIndex = model.getFirstUnitSlotId( memory.pid );
           memory.eIndex = model.getLastUnitSlotId( memory.pid );
           break;
@@ -40,7 +41,7 @@ controller.registerAI({
         
           memory.cIndex++;
           if( memory.cIndex > memory.eIndex ){
-            memory.state  = "BUY";
+            memory.state  = "BUILD";
             memory.cIndex = 0;
             memory.eIndex = constants.MAX_PROPERTIES;
           } 

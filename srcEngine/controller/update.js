@@ -52,12 +52,14 @@ controller.updateState = function( delta ){
   model[ actionId ].apply(model, data);
 };
 
-// Starts a new game round by a given map 
-// data.
+controller.prepareGameRound = function( ){
+  controller.evaledChars_ = 0;
+  controller.actionBuffer_.clear();
+};
+
+// Starts a new game round.
 //
-// @param {Object} map map data
-//
-controller.startGameRound = function( map ){
+controller.startGameRound = function( ){
   if( controller.inGameRound ){
     model.criticalError( 
       constants.error.ILLEGAL_DATA, 
@@ -67,11 +69,10 @@ controller.startGameRound = function( map ){
   
   // initializer controllers
   controller.inGameRound = true;
-  controller.evaledChars_ = 0;
-  controller.actionBuffer_.clear();
-  
-  // start loading
-  controller.loadCompactModel(map);
+
+  // start first turn
+  model.turnOwner--;
+  controller.localInvokement( "nextTurn", []);
 };
 
 // Ends the active game round.
