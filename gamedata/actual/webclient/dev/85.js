@@ -1,10 +1,1 @@
-controller.errorPanel = document.getElementById("cwt_errorPanel");
-
-controller.errorButtons = controller.generateButtonGroup( 
-  controller.errorPanel,
-  "ui-font ui-box-font ui-box-button",
-  "ui-font ui-box-font ui-box-button active",
-  "ui-font ui-box-font ui-box-button inactive"
-);
-
-controller.errorPanelVisible = false;
+controller.clientFeatures={audioSFX:!1,audioMusic:!1,gamePad:!1,keyboard:!1,mouse:!1,touch:!1,supported:!1},controller.calculateEnvironmentFeatures=function(){Browser.mobile?(Browser.ios?(Browser.version>=5&&(controller.clientFeatures.supported=!0),Browser.version>=6&&(controller.clientFeatures.audioSFX=!0)):Browser.android&&(controller.clientFeatures.supported=!0),controller.clientFeatures.touch=!0):(Browser.chrome&&(controller.clientFeatures.supported=!0,controller.clientFeatures.audioSFX=!0,controller.clientFeatures.audioMusic=!0,controller.clientFeatures.gamePad=!0),controller.clientFeatures.mouse=!0,controller.clientFeatures.keyboard=!0)};

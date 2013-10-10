@@ -1,16 +1,1 @@
-// Define persistence handler
-controller.persistenceHandler(
-  
-  // load
-  function( dom ){
-    controller.buildRoundConfig( dom.cfg );
-  },
-  
-  // save
-  function( dom ){
-    dom.cfg = model.configRule;
-  }
-  
-);
-
-model.configRule = null;
+controller.persistenceHandler(function(t){controller.buildRoundConfig(t.cfg)},function(t){t.cfg=model.configRule}),model.configRule=null;

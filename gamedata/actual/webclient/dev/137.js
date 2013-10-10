@@ -1,10 +1,1 @@
-controller.screenStateMachine.structure.MOBILE = Object.create(controller.stateParent);
-
-controller.screenStateMachine.structure.MOBILE.section = "cwt_mobileSound_screen";
-
-controller.screenStateMachine.structure.MOBILE.enterState = function(){};
-
-controller.screenStateMachine.structure.MOBILE.ACTION = function(){ 
-  controller.stateMachine.event("start");
-  return "MAIN"; 
-};
+controller.screenStateMachine.structure.MOBILE=Object.create(controller.stateParent),controller.screenStateMachine.structure.MOBILE.section="cwt_mobileSound_screen",controller.screenStateMachine.structure.MOBILE.enterState=function(){controller.storage.get("MAIN_BG",controller.imgToBg)},controller.screenStateMachine.structure.MOBILE.ACTION=function(){return controller.stateMachine.event("start"),"MAIN"};

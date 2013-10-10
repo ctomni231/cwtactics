@@ -1,9 +1,1 @@
-util.scoped(function(){
-  
-  var extractPlayer = function( content, entry, index ){
-    entry.innerHTML = model.players[content].name;  
-  };
-
-  controller.registerMenuRenderer("transferProperty",extractPlayer);
-  controller.registerMenuRenderer("transferUnit",extractPlayer);
-});
+util.scoped(function(){var e=function(e,t){t.innerHTML=model.players[e].name};controller.registerMenuRenderer("transferProperty",e),controller.registerMenuRenderer("transferUnit",e)});

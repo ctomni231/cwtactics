@@ -1,13 +1,1 @@
-controller.mapAction({
-  
-  key:"nextTurn",
-  
-  condition: function(){
-    return true;
-  },
-  
-  invoke: function(){
-    controller.sharedInvokement("nextTurn",[]);
-  }
-  
-});
+controller.unitAction({key:"capture",relation:["S","T",model.relationModes.SAME_OBJECT,model.relationModes.NONE],relationToProp:["S","T",model.relationModes.ENEMY,model.relationModes.NONE],condition:function(e){return model.propertyIsCapturableBy(e.target.propertyId,e.source.unitId)},invoke:function(e){controller.sharedInvokement("captureProperty",[e.source.unitId,e.target.propertyId])}});

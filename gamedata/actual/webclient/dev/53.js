@@ -1,18 +1,1 @@
-controller.unitAction({
-  
-  key:"hideUnit",
-	
-	relation: ["S","T",model.relationModes.NONE,model.relationModes.SAME_OBJECT],
-  
-  condition: function( data ){
-    var unit = data.source.unit;
-    return unit.type.stealth && !unit.hidden;
-  },
-          
-  invoke: function( data ){
-    controller.sharedInvokement("hideUnit",[ 
-			data.source.unitId 
-		]);
-  }
-  
-});
+controller.mapAction({key:"nextTurn",condition:function(){return!0},invoke:function(){controller.sharedInvokement("nextTurn",[])}});

@@ -1,3 +1,1 @@
-controller.screenStateMachine = util.stateMachine({},{ noHistory:true });
-
-controller.screenStateMachine.data = {};
+controller.loadStorageController=util.singleLazyCall(function(e,t){if(e)return constants.DEBUG&&util.log("break at init storage system due error from previous inits"),e;t.take(),constants.DEBUG&&util.log("initializing storage system");var o=Browser;constants.DEBUG&&util.log("using lawnchair storage system with",o.mobile?"webkit-sqlite":"indexed-db","adapter");var n=new Lawnchair({adaptor:o.mobile?"webkit-sqlite":"indexed-db",maxSize:47104,name:"cwt"},function(){var e,o,r,i,l,a;e=function(e,t){n.get(e,t)},o=function(e,t){n.exists(e,t)},r=function(e){n.nuke(e)},a=function(e){n.keys(e)},i=function(e,t){n.get(e,obj,t)},l=function(e,t,o){n.save({key:e,value:t},o)},controller.storage={get:e,has:o,set:l,keys:a,clear:r,remove:i},t.pass(!1)})});

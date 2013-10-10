@@ -1,4 +1,1 @@
-controller.updateComplexTileInformation = function( source, target ){
-  
-  
-}
+controller.updateComplexTileInformation=function(){};

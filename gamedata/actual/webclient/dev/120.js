@@ -1,8 +1,1 @@
-controller.registerMenuRenderer("unloadUnit",
-function( content, entry, index ){
-  
-  if( content === "done" ){
-    entry.innerHTML = model.localized( "done" );  
-  }
-  else entry.innerHTML = model.localized( model.units[ content ].type.ID );  
-});
+controller.registerMenuRenderer("unloadUnit",function(e,t){t.innerHTML="done"===e?model.localized("done"):model.localized(model.units[e].type.ID)});

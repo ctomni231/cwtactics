@@ -1,9 +1,1 @@
-controller.onEvent("invokeNextStep_",function(){
-  if( controller.stateMachine.state !== "IDLE" ){
-    controller.showMenu(
-      controller.stateMachine.data.menu,
-      controller.mapCursorX,
-      controller.mapCursorY
-    );
-  }
-});
+controller.onEvent("invokeNextStep_",function(){"IDLE"!==controller.stateMachine.state&&controller.showMenu(controller.stateMachine.data.menu,controller.mapCursorX,controller.mapCursorY)});

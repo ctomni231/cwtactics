@@ -1,10 +1,1 @@
-controller.loadInputDevices = util.singleLazyCall(function( err, baton ){
-  if( constants.DEBUG ) util.log("loading input devices");
-  
-  var canvas = document.getElementById( "cwt_canvas" );
-  var menuEl = document.getElementById( "cwt_menu" );
-  
-  if( controller.clientFeatures.keyboard ) controller.setupKeyboardControls( canvas, menuEl );
-  if( controller.clientFeatures.mouse    ) controller.setupMouseControls( canvas, menuEl );
-  if( controller.clientFeatures.touch    ) controller.setupTouchControls( canvas, menuEl );
-});
+controller.loadInputDevices=util.singleLazyCall(function(){constants.DEBUG&&util.log("loading input devices");var e=document.getElementById("cwt_canvas"),t=document.getElementById("cwt_menu");controller.clientFeatures.keyboard&&controller.setupKeyboardControls(e,t),controller.clientFeatures.mouse&&controller.setupMouseControls(e,t),controller.clientFeatures.touch&&controller.setupTouchControls(e,t)});

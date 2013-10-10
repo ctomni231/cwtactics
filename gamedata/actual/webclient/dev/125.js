@@ -1,4 +1,1 @@
-controller.onEvent("criticalError",function(){
-  controller.errorPanel.style.display = "block";
-  controller.errorPanelVisible = true;
-});
+controller.onEvent("criticalError",function(e,t,o){controller.showErrorPanel(e,t,o)});

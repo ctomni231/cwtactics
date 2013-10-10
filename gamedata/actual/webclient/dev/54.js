@@ -1,18 +1,1 @@
-controller.unitAction({
-  
-  key:"joinUnits",
-  
-	relation:["S","T",model.relationModes.OWN],
-	
-  condition: function( data ){
-    return model.canJoin( data.source.unitId, data.target.unitId );
-  },
-  
-  invoke: function( data ){
-    controller.sharedInvokement("joinUnits",[ 
-			data.source.unitId, 
-			data.target.unitId 
-		]);
-  }
-  
-});
+controller.unitAction({key:"hideUnit",relation:["S","T",model.relationModes.NONE,model.relationModes.SAME_OBJECT],condition:function(e){var t=e.source.unit;return t.type.stealth&&!t.hidden},invoke:function(e){controller.sharedInvokement("hideUnit",[e.source.unitId])}});

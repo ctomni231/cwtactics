@@ -1,5 +1,1 @@
-controller.registerMenuRenderer("transferMoney",
-function( content, entry, index ){
-  
-  entry.innerHTML = content+"$"; 
-});
+controller.registerMenuRenderer("transferMoney",function(e,t){t.innerHTML=e+"$"});
