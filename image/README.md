@@ -177,10 +177,15 @@ This shows how objects are organized within the object files for units, terrain(
 ## Inventions
 
 * *BHMC* = Black Hole Mini-Cannon
-* *BHCN* = Black Hole Cannon
-* *BHDR* = Black Hole Death Ray
-* *BHFR* = Black Hole Fortress
-* *BHFT* = Black Hole Factory
+* *BHCN* = Black Hole Cannon (3x3 Tiles)
+* *BHDR* = Black Hole Death Ray (3x3 Tiles)
+* *BHFR* = Black Hole Fortress (4x4 Tiles)
+* *BHFT* = Black Hole Factory (3x3 Tiles)
+* *BHLZ* = Black Hole Lazer
+* *BHMS* = Black Hole Missile (4x4 Tiles)
+* *BRBL* = Big Rubble (3x3 Tiles)
+* *SRBL* = Small Rubble
+
 
 ## Army Factions
 
