@@ -9,13 +9,15 @@ After a lot of testing and organizing, the new image format is finally completed
 `AWDS(C)_PLIN(L)$........`
 `AWDS(C)_INFT_OS`
 
-<Game Type>(<Weather Type>)_<Object Type>(<Connection Type>)_<Faction Type>$<8-Way Connection>
+<Game Type>(<Weather Type>)_<Object Type>(<Connection Type>)_<Faction Type>-<Direction>$<8-Way Connection>
 
 *Game Type:* This is the abbreviation for the objects game origin.
 *Weather Type*: This is the abbreviation for the objects weather type.
 *Object Type*: This is the 4-letter abbreviation for the object
 *Connection Type*: This is the type of connection this tile connects with.
 *Faction Type*: This is the abbreviation for the type of faction this object represents.
+*Direction*: This is the abbreviation for the direction this
+object is facing. 
 *8-way Connection*: This orders the connections for N-S-W-E-NW-NE-SW-SE to show the best combination of connection for a certain tile.
 
 ### Folder Format
