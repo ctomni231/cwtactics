@@ -40,15 +40,7 @@ util.scoped(function(){
     INP_LEFT:      generateHandler("LEFT"),
     INP_RIGHT:     generateHandler("RIGHT"),
     INP_DOWN:      generateHandler("DOWN"),
-    
-    // SPECIAL KEYS
-    INP_SPECIAL_1: generateHandler("SPECIAL_1"),
-    INP_SPECIAL_2: generateHandler("SPECIAL_2"),
-    INP_SPECIAL_3: generateHandler("SPECIAL_3"),
-    INP_SPECIAL_4: generateHandler("SPECIAL_4"),
-    INP_SPECIAL_5: generateHandler("SPECIAL_5"),
-    INP_SPECIAL_6: generateHandler("SPECIAL_6"),
-    
+
     // BASIC ACTIONS
     INP_ACTION:    generateHandler("ACTION"),
     INP_CANCEL:    generateHandler("CANCEL"),

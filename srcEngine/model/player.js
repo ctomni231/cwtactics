@@ -19,12 +19,12 @@ model.relationModes = {
 
 /**
  * List that contains all player instances. An inactive player is marked 
- * with `constants.INACTIVE_ID` as team number.
+ * with `INACTIVE_ID` as team number.
  */
-model.players = util.list( constants.MAX_PLAYER, function( index ){
+model.players = util.list( MAX_PLAYER, function( index ){
 	return {
 		gold: 0,
-		team: constants.INACTIVE_ID,
+		team: INACTIVE_ID,
 		name: null
 	};
 });
@@ -38,11 +38,11 @@ controller.persistenceHandler(
 		var data, player, id;
 		
 		// reset player data
-		for( var i=0,e=constants.MAX_PLAYER; i<e; i++ ){
+		for( var i=0,e=MAX_PLAYER; i<e; i++ ){
 			player = model.players[i];
 			player.name = null;
 			player.gold = 0;
-			player.team = constants.INACTIVE_ID;
+			player.team = INACTIVE_ID;
 		}
 		
 		// set player data if given
@@ -52,14 +52,14 @@ controller.persistenceHandler(
 				
 				// check data
 				var fail = false;
-				if( !fail && !util.expectNumber( data, 0, true, true, 0, constants.MAX_PLAYER-1 ) ) fail = true;
+				if( !fail && !util.expectNumber( data, 0, true, true, 0, MAX_PLAYER-1 ) ) fail = true;
 				if( !fail && !util.expectString( data, 1, true ) ) fail = true;
 				if( !fail && !util.expectNumber( data, 2, true, true, 0, 999999 ) ) fail = true;
-				if( !fail && !util.expectNumber( data, 3, true, true, 0, constants.MAX_PLAYER-1 ) ) fail = true;
+				if( !fail && !util.expectNumber( data, 3, true, true, 0, MAX_PLAYER-1 ) ) fail = true;
 				
 				// call error when data is illegal
 				if( fail ){
-					model.criticalError( constants.error.ILLEGAL_MAP_FORMAT, constants.error.SAVEDATA_PLAYER_MISSMATCH );
+					model.criticalError( error.ILLEGAL_MAP_FORMAT, error.SAVEDATA_PLAYER_MISSMATCH );
 				}
 				
 				// set player data
@@ -80,8 +80,8 @@ controller.persistenceHandler(
 // Returns true if a given player id is valid or false if not
 //
 model.isValidPlayerId = function( pid ){
-	if( pid < 0 || pid >= constants.MAX_PLAYER ) return false;
-	return model.players[pid].team !== constants.INACTIVE_ID;
+	if( pid < 0 || pid >= MAX_PLAYER ) return false;
+	return model.players[pid].team !== INACTIVE_ID;
 };
 
 // Extracts the identical number from an player object.
@@ -93,8 +93,8 @@ model.extractPlayerId = function( player ){
 	
 	// player was not found in the model
 	if( index === -1 ) model.criticalError(
-		constants.error.ILLEGAL_PARAMETERS,
-		constants.error.UNKNOWN_PLAYER_OBJECT
+		error.ILLEGAL_PARAMETERS,
+		error.UNKNOWN_PLAYER_OBJECT
 	);
 	
 	return index;
@@ -116,7 +116,7 @@ model.playerLooses = function( pid ){
 	i = model.getFirstUnitSlotId( pid ); 
 	e = model.getLastUnitSlotId( pid );
 	for( ; i<e; i++ ){
-		if( model.units[i].owner !== constants.INACTIVE_ID ) model.destroyUnit(i);
+		if( model.units[i].owner !== INACTIVE_ID ) model.destroyUnit(i);
 	}
 	
 	// remove all properties

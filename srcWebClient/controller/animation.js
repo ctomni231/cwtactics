@@ -1,160 +1,154 @@
 util.scoped(function(){
-  
-  var spriteAnimation = {};
-  
-  var spriteAnimators_ = [];
-  
-  spriteAnimation["UNIT_SIMPLE"] = { step:0 }; 
 
-  /**
-   *
-   */
-  view.registerSpriteAnimator = function( key, steps, timePerStep, updatorFn, upDown ){
+  var selection = controller.stateMachine.data.selection;
+
+  var animations = [
     
-    var holder = {};
-    holder.stps = steps;
-    holder.tps = timePerStep;
-    holder.upt = updatorFn;
-    holder.step = 0;
-    holder.time = 0;
-    holder.mod  = 1;
-    holder.upDw = ( upDown === true );
+    // UNIT
+    0,  3, 0, 250, 0,
     
-    spriteAnimation[key] = holder;
-    spriteAnimators_.push( holder );
-  };
-  
+    // UNIT SIMPLE
+    0,  3, 0, 250, 0,
+
+    // SELECTION
+    0,  7, 0, 150, 0,
+
+    // STATUS
+    0, 20, 0, 300, 0,
+
+    // PROPERTY
+    0,  4, 0, 400, 0,
+
+    // ANIMATED TILES
+    0,  4, 0, 300, 0
+  ];
+
+  var unitStepper = +1;
+
   /**
    *
    */
   view.getSpriteStep = function( key ){
-    return spriteAnimation[key].step;
+    switch( key ){
+      case "UNIT":          return animations[0];
+      case "UNIT_SIMPLE":   return animations[5];
+      case "SELECTION":     return animations[10];
+      case "STATUS":        return animations[15];
+      case "PROPERTY":      return animations[20];
+      case "ANIM_TILES":    return animations[25];
+    }
+
+    return 0;
   };
-  
+
   /**
    *
    */
   view.updateSpriteAnimations = function( delta ){
-    for( var i=0,e=spriteAnimators_.length; i<e; i++ ){
+    var flagged = false;
+
+    for( var i=0, e=animations.length; i<e ; i+=5 ) {
+
+      // add time to animation slot
+      animations[i+2] += delta;
       
-      var anim = spriteAnimators_[i];
-      anim.time += delta;
-      if( anim.time >= anim.tps ){
-        
-        // INCREASE STEP AND RESET TIMER
-        anim.time = 0;
-        anim.step += anim.mod;
-        
-        if( anim.step >= anim.stps ){
-          if( anim.upDw ){
-            anim.mod = -1;
-            anim.step -= 2;
+      // if slot reaches maximum time per step
+      if( animations[i+2] >= animations[i+3] ){
+        animations[i+2] = 0;
+
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        // special unit animation
+        if( i === 0 ){
+          animations[i] += unitStepper;
+
+          if( unitStepper === -1 ){
+
+            // breaks lower border
+            if( animations[i] === -1 ){
+              animations[i] = 1;
+              unitStepper   = +1;
+            }
           }
           else{
-            anim.step = 0;
+
+            // breaks upper border
+            if( animations[i] === animations[i+1] ){
+              animations[i] = (animations[i+1] - 2);
+              unitStepper   = -1;
+            }
           }
         }
-        else if( anim.step < 0 ){
-          anim.mod = 1;
-          anim.step = 1;
+        // normal animations
+        else{
+          animations[i] += 1;
+          if( animations[i] === animations[i+1] ) animations[i] = 0;
         }
-        
-        // CALL UPDATER
-        anim.upt(spriteAnimation);
+
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        // set rerender flag
+        flagged = true;
+        animations[i+4] = 1;
+
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        if( flagged ){
+          var x  = 0;
+          var yS = 0;
+          var xe = model.mapWidth;
+          var ye = model.mapHeight;
+
+          for( ; x<xe; x++ ){
+            for( var y=yS ; y<ye; y++ ){
+
+              // units or selection tiles
+              if( animations[4] === 1 ||
+                  animations[9] === 1 ){
+
+                if( model.unitPosMap[x][y] !== null ) view.markForRedrawWithNeighboursRing(x,y);
+              }
+
+              // units or selection tiles
+              if( animations[14] === 1 ){
+
+                // TODO : do not check all
+                if( selection.getValueAt( x, y ) > -1 ) view.markForRedraw( x,y );
+              }
+
+              // status needs only an updated step number
+              // the graphics will be updated with unit redraws
+
+              // properties
+              if( animations[24] === 1 ){
+
+                if( model.propertyPosMap[x][y] !== null ) view.markForRedrawWithNeighboursRing(x,y);
+              }
+
+              // animated tiles
+              if( animations[29] === 1 ){
+
+                if( view.animatedTiles[ view.mapImages[x][y] ] ) view.markForRedraw( x,y );
+              }
+
+            }
+          }
+        }
+
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        // reset all "render" flags
+        animations[4] = 0;
+        animations[9] = 0;
+        animations[14] = 0;
+        animations[19] = 0;
+        animations[24] = 0;
+        animations[29] = 0;
+
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
       }
-    }
+    };
   };
-  
-});
 
-util.scoped(function(){
-  
-  // CACHE
-  var selection = controller.stateMachine.data.selection;
-  
-  view.registerSpriteAnimator( "SELECTION", 7, 150, function(){
-    var state = controller.stateMachine.state;
-    if( state !== "MOVEPATH_SELECTION" &&
-        state !== "ACTION_SELECT_TARGET_A" &&
-        state !== "ACTION_SELECT_TARGET_B" &&
-        !controller.attackRangeVisible ) return;
-    
-    var x  = 0;
-    var yS = 0;
-    var xe = model.mapWidth;
-    var ye = model.mapHeight;
-    
-    // ITERATE THROUGH THE SCREEN
-    for( ; x<xe; x++ ){
-      for( var y=yS ; y<ye; y++ ){
-        if( selection.getValueAt( x, y ) > -1 ){
-          
-        // TODO : do not check all 
-          view.markForRedraw( x,y );
-        }
-      }
-    }
-  });
-});
-
-view.registerSpriteAnimator( "STATUS", 20, 375, function(){
-  
-});
-
-view.registerSpriteAnimator( "UNIT", 3, 250, function(spriteAnimation){
-  var x  = 0;
-  var yS = 0;
-  var xe = model.mapWidth;
-  var ye = model.mapHeight;
-
-  // hack for simple 0,1,2 animation
-  spriteAnimation["UNIT_SIMPLE"].step++;
-  if( spriteAnimation["UNIT_SIMPLE"].step === 3 ){
-    spriteAnimation["UNIT_SIMPLE"].step = 0;
-  }
-  
-  // ITERATE THROUGH THE SCREEN
-  for( ; x<xe; x++ ){
-    for( var y=yS ; y<ye; y++ ){
-      if( model.unitPosMap[x][y] !== null ){
-        // view.markForRedrawWithNeighbours(x,y);
-        view.markForRedrawWithNeighboursRing(x,y);
-      }
-    }
-  }
-}, true );
-
-view.registerSpriteAnimator( "PROPERTY", 4, 400, function(){
-  var x  = 0;
-  var yS = 0;
-  var xe = model.mapWidth;
-  var ye = model.mapHeight;
-  
-  // ITERATE THROUGH THE SCREEN
-  for( ; x<xe; x++ ){
-    for( var y=yS ; y<ye; y++ ){
-      if( model.propertyPosMap[x][y] !== null ){
-        //view.markForRedrawWithNeighbours(x,y);
-        view.markForRedrawWithNeighboursRing(x,y);
-      }
-    }
-  }
-});
-
-view.registerSpriteAnimator( "ANIM_TILES", 4, 300, function(){
-  var x  = 0;
-  var yS = 0;
-  var xe = model.mapWidth;
-  var ye = model.mapHeight;
-  
-  // ITERATE THROUGH THE SCREEN
-  for( ; x<xe; x++ ){
-    for( var y=yS ; y<ye; y++ ){
-      
-      // TODO : cache list with animated tiles
-      if( view.animatedTiles[ view.mapImages[x][y] ] ){
-        view.markForRedraw( x,y );
-      }
-    }
-  }
 });

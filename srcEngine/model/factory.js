@@ -29,12 +29,12 @@ model.buildUnit = function( x, y, type ){
 	// get factory object
 	var prop = model.getPropertyByPos( x, y );
 	if( !prop ) {
-		model.criticalError( constants.error.ILLEGAL_PARAMETERS, constants.error.PROPERTY_NOT_FOUND );
+		model.criticalError( error.ILLEGAL_PARAMETERS, error.PROPERTY_NOT_FOUND );
 	}
 	
 	// cannot be a neutral factory
-	if( prop.owner === constants.INACTIVE_ID ) {
-		model.criticalError( constants.error.ILLEGAL_PARAMETERS, constants.error.UNKNOWN_PLAYER_ID );
+	if( prop.owner === INACTIVE_ID ) {
+		model.criticalError( error.ILLEGAL_PARAMETERS, error.UNKNOWN_PLAYER_ID );
 	}
 	
 	// invoke introduction event
@@ -49,8 +49,8 @@ model.buildUnit = function( x, y, type ){
 	// then the game state is broken
 	if( pl.gold < cost ){
 		model.criticalError( 
-			constants.error.ILLEGAL_DATA, 
-			constants.error.NOT_ENOUGH_MONEY 
+			error.ILLEGAL_DATA,
+			error.NOT_ENOUGH_MONEY
 		)
 	};
 	
@@ -79,8 +79,8 @@ model.isFactory = function( prid ){
 model.getBuildMenu = function( prid, menu ){
 	if( !model.isFactory(prid) ){
 		model.criticalError( 
-			constants.error.ILLEGAL_DATA, 
-			constants.error.FACTORY_EXPECTED
+			error.ILLEGAL_DATA,
+			error.FACTORY_EXPECTED
 		);
 	}
 	

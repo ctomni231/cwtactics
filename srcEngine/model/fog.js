@@ -14,11 +14,11 @@ controller.defineGameScriptable("vision",1,40);
 controller.defineGameConfig("fogEnabled",0,1,1);
 
 model.unitTypeParser.addHandler(function(sheet){
-    if( !util.expectNumber(sheet,"vision",true,true,1,constants.MAX_SELECTION_RANGE) ) return false;
+    if( !util.expectNumber(sheet,"vision",true,true,1,MAX_SELECTION_RANGE) ) return false;
 });
 
 model.tileTypeParser.addHandler(function(sheet){
-    if( !util.expectNumber(sheet,"vision",false,true,0,constants.MAX_SELECTION_RANGE) ) return false;
+    if( !util.expectNumber(sheet,"vision",false,true,0,MAX_SELECTION_RANGE) ) return false;
 });
 
 // ---
@@ -26,14 +26,14 @@ model.tileTypeParser.addHandler(function(sheet){
 
 // Contains the fog data map. A value 0 means a tile is not visible. 
 // A value greater than 0 means it is visible for n units ( n = fog value of the tile ).
-model.fogData = util.matrix( constants.MAX_MAP_WIDTH, constants.MAX_MAP_HEIGHT, 0 );
+model.fogData = util.matrix( MAX_MAP_WIDTH, MAX_MAP_HEIGHT, 0 );
 
 // Same as `model.fogData` but this map is the fog data for
 // the player id that is visible on the local client.
-model.clientFogData = util.matrix( constants.MAX_MAP_WIDTH, constants.MAX_MAP_HEIGHT, 0 );
+model.clientFogData = util.matrix( MAX_MAP_WIDTH, MAX_MAP_HEIGHT, 0 );
 
-model.clientFogVisible = util.matrix( constants.MAX_PLAYER, false );
-model.turnOwnerFogVisible = util.matrix( constants.MAX_PLAYER, false );
+model.clientFogVisible = util.matrix( MAX_PLAYER, false );
+model.turnOwnerFogVisible = util.matrix( MAX_PLAYER, false );
 
 // Define persistence handler for 
 // recognize game initializing event
@@ -57,8 +57,8 @@ controller.persistenceHandler(
 model.remoteConnectOfPlayer = function( pid ){
   if( !model.isValidPlayerId(pid) ){
     model.criticalError( 
-      constants.error.ILLEGAL_PARAMETERS,
-      constants.error.UNKNOWN_PLAYER_ID
+      error.ILLEGAL_PARAMETERS,
+      error.UNKNOWN_PLAYER_ID
     );
   }
   
@@ -66,8 +66,8 @@ model.remoteConnectOfPlayer = function( pid ){
   // then it's a game state break
   if( model.clientInstances[pid] ){
     model.criticalError( 
-      constants.error.ILLEGAL_PARAMETERS,
-      constants.error.GAME_STATE_BREAK
+      error.ILLEGAL_PARAMETERS,
+      error.GAME_STATE_BREAK
     );
   }
 };
@@ -75,7 +75,7 @@ model.remoteConnectOfPlayer = function( pid ){
 model.updateVisiblePid = function(){
   var tid = model.players[model.lastActiveClientPid].team;
   var totid = model.players[model.turnOwner].team;
-  for( var i=0,e=constants.MAX_PLAYER; i<e; i++ ){
+  for( var i=0,e=MAX_PLAYER; i<e; i++ ){
 
     // the active client can see what his and all allied objects can see
     model.clientFogVisible[i] = (model.clientInstances[i] === true || tid === model.players[i].team);

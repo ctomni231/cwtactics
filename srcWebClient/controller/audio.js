@@ -221,6 +221,31 @@ util.scoped(function(){
   
 });
 
+var cache = [];
+
+controller.buildGameRoundCache = function(){
+  for (var i = constants.MAX_PLAYER - 1; i >= 0; i--) {
+    var coData = model.coData[i];
+    if( coData.coA ){ // co sound ( one co )
+
+      if( coData.coB ){ // co sound ( tag co )
+
+      }
+    }
+    else{ // fraction sound
+
+    }
+  };
+};
+
+controller.clearGameRoundCache = function(){
+  for (var i = cache.length - 1; i >= 0; i--) {
+    if( cache[i] ){
+      // remove buffer data
+    }
+  };
+};
+
 controller.playMusicForPlayer = function( pid ){
   if( controller.clientFeatures.audioMusic ){
     var co = model.coData[pid].coA;

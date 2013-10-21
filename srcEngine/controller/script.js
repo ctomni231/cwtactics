@@ -55,8 +55,8 @@ controller.defineGameConfig = function( name, min, max, def, step ){
   // check name
   if( !name || controller.configBoundaries_.hasOwnProperty(name) ){
     model.criticalError(
-      constants.error.ILLEGAL_PARAMETERS,
-      constants.error.ILLEGAL_CONFIG_VAR_DEFINTION
+      error.ILLEGAL_PARAMETERS,
+      error.ILLEGAL_CONFIG_VAR_DEFINTION
     );
   }
   
@@ -66,8 +66,8 @@ controller.defineGameConfig = function( name, min, max, def, step ){
      def > max ){
     
     model.criticalError(
-      constants.error.ILLEGAL_PARAMETERS,
-      constants.error.ILLEGAL_CONFIG_VAR_DEFINTION
+      error.ILLEGAL_PARAMETERS,
+      error.ILLEGAL_CONFIG_VAR_DEFINTION
     );
   }
   
@@ -128,8 +128,8 @@ controller.defineGameScriptable = function( name, min, max ){
   // check name and meta data
   if( !name || controller.scriptBoundaries_.hasOwnProperty(name) || max < min ){
     model.criticalError(
-      constants.error.ILLEGAL_PARAMETERS,
-      constants.error.ILLEGAL_CONFIG_VAR_DEFINTION
+      error.ILLEGAL_PARAMETERS,
+      error.ILLEGAL_CONFIG_VAR_DEFINTION
     );
   }
   

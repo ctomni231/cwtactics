@@ -68,8 +68,8 @@ model.pushTimedEvent = function( turn, action, args ){
   
   // no free slot found
   model.criticalError( 
-    constants.error.ILLEGAL_DATA, 
-    constants.error.NO_EVENT_SLOT_IS_FREE 
+    error.ILLEGAL_DATA,
+    error.NO_EVENT_SLOT_IS_FREE
   );
 };
 

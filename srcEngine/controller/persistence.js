@@ -1,41 +1,39 @@
 util.scoped(function(){
   var persistence = [];
   
+  // ### Controller.persistenceHandler
+  // Registers a persistence handler that defines `load` and `save` function. This functions will be invoked during map/save loading or saving process. The order is defined by the time the functions get registered in relation to other persistence handlers.
+  //
   controller.persistenceHandler = function(load,save){
     persistence.push(load,save);
   };
   
-  // Saves the current game model to a JSON string.
+  // ### Controller.saveCompactModel
+  // Converts the current game model into a JSON compatible string by invoking all registered `save` functions of the persistence handlers.
+  //
   controller.saveCompactModel = function(){
     var dom = {};
     
     var obj;
     for( var i=1,e=persistence.length; i<e; i+=2 ){
+      // TODO do checks
       persistence[i].call(model, dom );
     }
     
     return JSON.stringify(dom);
   };
   
-  // Loads a given JSON string into the model. 
+  // ### Controller.loadCompactModel
+  // Loads a given JSON compatible string and calls all `load`functions of the persistence handlers with this object as argument.
+  //
   controller.loadCompactModel = function( data ){    
     try{
       for( var i=0,e=persistence.length; i<e; i+=2 ){
+        // TODO do checks
         persistence[i].call(model, data );
       }
     }
     catch( e ){
-      
-      // unknown errors are possible here as well as 
-      // known errors with error ID and error data ID
-      if( typeof e.errorID === "undefined" ){
-        e = model.criticalError( 
-          constants.error.CLIENT_DATA_ERROR, 
-          constants.error.ILLEGAL_MAP_FORMAT,
-          e
-        );
-      }
-      
       return e;
     }
   };

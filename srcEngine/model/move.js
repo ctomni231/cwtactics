@@ -11,8 +11,8 @@ controller.defineEvent( "setUnitPosition" );
 controller.defineEvent( "clearUnitPosition" );
 controller.defineEvent( "moveUnit" );
 
-controller.defineGameScriptable( "moverange", 1, constants.MAX_SELECTION_RANGE );
-controller.defineGameScriptable( "movecost", 1, constants.MAX_SELECTION_RANGE );
+controller.defineGameScriptable( "moverange", 1, MAX_SELECTION_RANGE );
+controller.defineGameScriptable( "movecost", 1, MAX_SELECTION_RANGE );
 
 model.moveTypeParser.addHandler( function( sheet ){
 	if( !util.expectObject( sheet, "costs", true ) ) return false;
@@ -20,7 +20,7 @@ model.moveTypeParser.addHandler( function( sheet ){
 	var costs = sheet.costs;
 	var costsKeys = Object.keys( costs );
 	for( var i1 = 0, e1 = costsKeys.length; i1 < e1; i1++ ) {
-		if( !util.expectNumber( costs, costsKeys[i1], true, true, -1, constants.MAX_SELECTION_RANGE ) ) return false;
+		if( !util.expectNumber( costs, costsKeys[i1], true, true, -1, MAX_SELECTION_RANGE ) ) return false;
 		if( !util.not( costs, costsKeys[i1], 0 ) ) return false;
 	}
 } );
@@ -98,8 +98,8 @@ model.moveUnit = function( way, uid, x, y, noFuelConsumption ){
 		// the move process.
 		if( wayIsIllegal ){
 		  model.criticalError( 
-		  	constants.error.ILLEGAL_PARAMETERS, 
-		  	constants.error.ILLEGAL_MOVE_PATH 
+		  	error.ILLEGAL_PARAMETERS,
+		  	error.ILLEGAL_MOVE_PATH
 		  );
 		}
 		
@@ -127,7 +127,7 @@ model.moveUnit = function( way, uid, x, y, noFuelConsumption ){
 			// this is normally not possible, except other modules makes a fault in this case the moving system could not 
 			// recognize a enemy in front of the mover that causes a `trap`
 			if( lastIndex === -1 ) {
-				model.criticalError( constants.error.ILLEGAL_PARAMETERS, constants.error.ILLEGAL_MOVE_ENEMY_IS_NEIGHTBOR );
+				model.criticalError( error.ILLEGAL_PARAMETERS, error.ILLEGAL_MOVE_ENEMY_IS_NEIGHTBOR );
 			}
 			
 			break;
@@ -140,7 +140,7 @@ model.moveUnit = function( way, uid, x, y, noFuelConsumption ){
 	
 	// consume fuel ( if `noFuelConsumption` is `true` then the costs will be `0` )
 	unit.fuel -= fuelUsed;
-	if( unit.fuel < 0 ) model.criticalError( constants.error.ILLEGAL_DATA, constants.error.NOT_ENOUGH_FUEL );
+	if( unit.fuel < 0 ) model.criticalError( error.ILLEGAL_DATA, error.NOT_ENOUGH_FUEL );
 	
 	// DO NOT ERASE POSITION IF UNIT WAS LOADED OR HIDDEN (NOT INGAME HIDDEN) SOMEWHERE
 	if( unit.x >= 0 && unit.y >= 0 ) {
@@ -255,7 +255,7 @@ model.canTypeMoveTo = function( movetype, x,y ){
 //
 model.moveCodeFromAtoB = function( sx, sy, tx, ty ){
 	if( model.distance( sx, sy, tx, ty ) > 1 ) {
-		model.criticalError( constants.error.ILLEGAL_PARAMETERS, constants.error.POSITIONS_SHOULD_BE_NEIGHBORS );
+		model.criticalError( error.ILLEGAL_PARAMETERS, error.POSITIONS_SHOULD_BE_NEIGHBORS );
 	}
 	
 	if( sx < tx ) return model.moveCodes.RIGHT;
@@ -264,7 +264,7 @@ model.moveCodeFromAtoB = function( sx, sy, tx, ty ){
 	if( sy > ty ) return model.moveCodes.UP;
 	
 	// this situation should not be possible normally
-	model.criticalError( constants.error.ILLEGAL_PARAMETERS, constants.error.UNKNOWN );
+	model.criticalError( error.ILLEGAL_PARAMETERS, error.UNKNOWN );
 };
 
 // Generates a path from a start position { `stx` , `sty` } to { `tx` , `ty` } with a 
@@ -298,7 +298,7 @@ model.generatePath = function( stx, sty, tx, ty, selection, movePath ){
 		else if( cNode.x < cx ) dir = model.moveCodes.LEFT;
 			else if( cNode.y > cy ) dir = model.moveCodes.DOWN;
 			else if( cNode.y < cy ) dir = model.moveCodes.UP;
-				else model.criticalError( constants.error.ILLEGAL_DATA, constants.error.ILLEGAL_MOVE_CODE );
+				else model.criticalError( error.ILLEGAL_DATA, error.ILLEGAL_MOVE_CODE );
 		
 		// add code to move path
 		movePath[movePathIndex] = dir;
@@ -337,12 +337,12 @@ model.addMoveCodeToPath = function( code, movePath ){
 			break;
 			
 		default :
-			model.criticalError( constants.error.ILLEGAL_DATA, constants.error.ILLEGAL_MOVE_PATH );
+			model.criticalError( error.ILLEGAL_DATA, error.ILLEGAL_MOVE_PATH );
 	}
 	
 	// if move is a go back then pop the lest code
 	if( lastCode === goBackCode ) {
-		movePath[ movePath.getSize() - 1 ] = constants.INACTIVE_ID;
+		movePath[ movePath.getSize() - 1 ] = INACTIVE_ID;
 		return true;
 	}
 	
@@ -379,7 +379,7 @@ model.addMoveCodeToPath = function( code, movePath ){
 				break;
 				
 			default :
-				model.criticalError( constants.error.ILLEGAL_DATA, constants.error.ILLEGAL_MOVE_CODE );
+				model.criticalError( error.ILLEGAL_DATA, error.ILLEGAL_MOVE_CODE );
 		}
 		
 		// acc. fuel consumption
@@ -388,7 +388,7 @@ model.addMoveCodeToPath = function( code, movePath ){
 	
 	// if to much fuel would be needed then decline
 	if( fuelUsed > points ){
-		movePath[ movePath.getSize() - 1 ] = constants.INACTIVE_ID; // remove the code that you placed before
+		movePath[ movePath.getSize() - 1 ] = INACTIVE_ID; // remove the code that you placed before
 		return false;
 	}
 	else return true;
@@ -434,7 +434,7 @@ model.fillMoveMap = function( source, selection, x, y, unit ){
 	if( unit.fuel < range ) range = unit.fuel;
 	
 	// add start tile to the map
-	selection.setCenter( x, y, constants.INACTIVE_ID );
+	selection.setCenter( x, y, INACTIVE_ID );
 	selection.setValueAt( x, y, range );
 	
 	// fill map ( one struct is X;Y;LEFT_POINTS )
@@ -552,7 +552,7 @@ model.fillMoveMap = function( source, selection, x, y, unit ){
 	// convert left points back to absolute costs
 	for( x = 0, xe = model.mapWidth; x < xe; x++ ) {
 		for( y = 0, ye = model.mapHeight; y < ye; y++ ) {
-			if( selection.getValueAt( x, y ) !== constants.INACTIVE_ID ) {
+			if( selection.getValueAt( x, y ) !== INACTIVE_ID ) {
 				
 				cost = model.moveCosts( mType, x, y );
 				selection.setValueAt( x, y, cost );

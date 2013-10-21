@@ -9,7 +9,7 @@ util.scoped(function(){
     "cwt_panel_header_big cwt_page_button w_400 cwt_panel_button button_inactive"
   );
   
-  document.getElementById("mainScreen_version").innerHTML = constants.VERSION;
+  document.getElementById("mainScreen_version").innerHTML = VERSION;
 
   // -------------------------------------------------------------------------------
 

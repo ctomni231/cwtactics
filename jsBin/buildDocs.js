@@ -1,5 +1,9 @@
-var sys = require('sys')
-var exec = require('child_process').exec;
+// delete dist
+require("./buildLibrary.js").deleteFolderRecursive(	"dist/nightly/docs");
+require("./buildLibrary.js").createFolder(			"dist/nightly/docs");
+require("./buildLibrary.js").deleteFolderRecursive(	"dist/nightly/docsClient");
+require("./buildLibrary.js").createFolder(			"dist/nightly/docsClient");
 
-exec("docker -o dist/nightly/docs -i srcEngine -u -n -c tango --extras fileSearch");
-exec("docker -o dist/nightly/docsClient -i srcWebClient -u -n -c tango --extras fileSearch");
+// build docs
+require("./buildEngineDocs.js");
+require("./buildClientDocs.js");

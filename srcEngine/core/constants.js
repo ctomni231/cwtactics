@@ -1,4 +1,6 @@
 var constants = {
+
+    /*
   DEBUG:                true,
   
   INACTIVE_ID:          -1,
@@ -12,6 +14,7 @@ var constants = {
   MAX_PROPERTIES:       200,
   MAX_SELECTION_RANGE:  15,
   MAX_BUFFER_SIZE:      200,
+  */
   
   ERROR_MSG:            "Custom Wars Tactics - Debug: An error was raised",
   

@@ -144,9 +144,12 @@ util.scoped(function(){
     }
     
   });
+
+  controller.onEvent("fireCannon",function( prid, x,y ){
+    controller.playSound( model.properties[prid].type.cannon.fireSound);
+  });
   
-  
-  controller.onEvent("fireCannon",function( uid, x,y ){
-    controller.playSound("CANNON");
+  controller.onEvent("fireCannon",function( prid,ox,oy ){
+    controller.playSound( model.properties[prid].type.laser.fireSound);
   });
 });

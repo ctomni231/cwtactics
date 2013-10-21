@@ -38,7 +38,7 @@
     x = x - cx;
     y = y - cy;
     if( x < 0 || y < 0 || x >= maxLen || y >= maxLen ) {
-      model.criticalError( constants.error.ILLEGAL_PARAMETERS, constants.error.SELECTION_DATA_OUT_OF_BOUNDS );
+      model.criticalError( error.ILLEGAL_PARAMETERS, error.SELECTION_DATA_OUT_OF_BOUNDS );
     }
     else data[x][y] = value;
   }

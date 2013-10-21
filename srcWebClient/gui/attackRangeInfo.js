@@ -17,11 +17,11 @@ util.scoped(function(){
     if( unit === null ) return;
     var unitId = model.extractUnitId(unit);
     
-    if( DEBUG ) util.log("show attack range information");
+    if( constants.DEBUG ) util.log("show attack range information");
     
     var selection = controller.stateMachine.data.selection;
     
-    selection.setCenter(x,y,CWT_INACTIVE_ID);
+    selection.setCenter(x,y, constants.INACTIVE_ID);
     
     if( model.isIndirectUnit( unitId) ){
       
@@ -33,7 +33,7 @@ util.scoped(function(){
       // GET MOVE DATA
       controller.stateMachine.data.movePath.fillMoveMap( x,y, unit );
       selection.data.cloneValues( tmpData );
-      selection.setCenter(x,y,CWT_INACTIVE_ID);
+      selection.setCenter(x,y, constants.INACTIVE_ID);
       
       // FOR EVERY MOVE TILE
       var e = tmpData.length;
@@ -56,7 +56,7 @@ util.scoped(function(){
   controller.hideAttackRangeInfo = function(){
     if( !controller.attackRangeVisible ) return;
     
-    if( DEBUG ) util.log("hide attack range information");
+    if( constants.DEBUG ) util.log("hide attack range information");
     view.markSelectionMapForRedraw( controller.stateMachine.data );
     
     controller.attackRangeVisible = false;

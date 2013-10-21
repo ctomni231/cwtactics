@@ -77,8 +77,8 @@ model.unloadUnitFrom = function( transportId, trsx, trsy, loadId, tx,ty ){
 	
 	// error check: is really loaded by `transportId` ?
 	if( model.units[ loadId ].loadedIn !== transportId ) model.criticalError( 
-		constants.error.ILLEGAL_PARAMETERS, 
-		constants.error.LOAD_IS_NOT_IN_TRANSPORTER 
+		error.ILLEGAL_PARAMETERS,
+		error.LOAD_IS_NOT_IN_TRANSPORTER
 	);
 	
 	// TODO: remove this later
@@ -123,7 +123,7 @@ model.canUnloadUnitAt = function( uid, x,y ){
 	for( ; i<=e; i++ ){
 		
 		unit = model.units[i];
-		if( unit.owner !== constants.INACTIVE_ID && unit.loadedIn === uid ){
+		if( unit.owner !== INACTIVE_ID && unit.loadedIn === uid ){
 			var movetp = model.moveTypes[ unit.type.movetype ];
 			
 			if( model.canTypeMoveTo(movetp,x-1,y) ) return true;
@@ -145,8 +145,8 @@ model.canUnloadUnitAt = function( uid, x,y ){
 model.addUnloadTargetsToMenu = function( uid, x,y, menu ){
 	if( !( model.isTransport( uid ) ) ){
 		model.criticalError( 
-			constants.error.ILLEGAL_PARAMETERS, 
-			constants.error.ILLEGAL_PARAMETERS 
+			error.ILLEGAL_PARAMETERS,
+			error.ILLEGAL_PARAMETERS
 		);
 	}
 	
@@ -159,7 +159,7 @@ model.addUnloadTargetsToMenu = function( uid, x,y, menu ){
 	for( ;i<=e; i++ ){
 		unit = model.units[i];
 		
-		if( unit.owner !== constants.INACTIVE_ID && unit.loadedIn === uid ){
+		if( unit.owner !== INACTIVE_ID && unit.loadedIn === uid ){
 			var movetp = model.moveTypes[ unit.type.movetype ];
 			
 			if( model.canTypeMoveTo(movetp,x-1,y) ||
@@ -198,16 +198,16 @@ model.canLoad = function( lid, tid ){
 	
 	// error check: transporters cannot load itself
 	if( lid === tid ) model.criticalError( 
-		constants.error.ILLEGAL_PARAMETERS, 
-		constants.error.TRANSPORTER_CANNOT_LOAD_ITSELF 
+		error.ILLEGAL_PARAMETERS,
+		error.TRANSPORTER_CANNOT_LOAD_ITSELF
 	);
 	
 	var transporter = model.units[ tid ];
 	
 	// error check: non-transporters cannot load anything
 	if( util.notIn( "maxloads", transporter.type ) ) model.criticalError( 
-		constants.error.ILLEGAL_PARAMETERS, 
-		constants.error.TRANSPORTER_EXPECTED 
+		error.ILLEGAL_PARAMETERS,
+		error.TRANSPORTER_EXPECTED
 	);
 	
 	var load = model.units[ lid ];

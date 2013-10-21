@@ -18,11 +18,20 @@ controller.unitAction({
   },
           
   invoke: function( data ){
-    controller.sharedInvokement("battleBetween",[
-      data.source.unitId, 
-      data.targetselection.unitId, 
-      Math.round( Math.random()*100 ), 
-      Math.round( Math.random()*100 ) 
-    ]);
+    if( data.targetselection.unitId !== -1 ){
+      controller.sharedInvokement("battleBetween",[
+        data.source.unitId,
+        data.targetselection.unitId,
+        Math.round( Math.random()*100 ),
+        Math.round( Math.random()*100 )
+      ]);
+    }
+    else if( data.targetselection.propertyId !== -1 ){
+      controller.sharedInvokement("attackBattleProperty",[
+        data.source.unitId,
+        data.targetselection.propertyId
+      ]);
+    }
+    else model.errorIllegalArguments("attack","no valid target");
   }
 });

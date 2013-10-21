@@ -12,10 +12,10 @@ is greater than 25 kilobytes then the module is maybe not cache able by every su
     cd PATH/TO/YOUR/CWT/SOURCE/DIRECTORY
 
     // builds normal and minified client and the docs
-    nodejs jsBin/buildAll.js
+    node jsBin/buildAll.js
     
     // creates only normal client and the docs 
-    nodejs jsBin/buildAll.js
+    node jsBin/buildAll.js
 
 ### HTML 
 

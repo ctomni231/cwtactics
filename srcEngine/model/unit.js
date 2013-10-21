@@ -19,12 +19,12 @@ controller.defineEvent("destroyUnit");
 controller.defineGameScriptable("fuelDrain",1,1);
 
 controller.defineGameConfig("noUnitsLeftLoose",0,1,0);
-controller.defineGameConfig("unitLimit",0,constants.MAX_UNITS_PER_PLAYER,0);
+controller.defineGameConfig("unitLimit",0,MAX_UNITS_PER_PLAYER,0);
     
 // Defines a parser handler for the basic unit abilities controlled
 // by this module
 model.unitTypeParser.addHandler(function(sheet){
-    var mxr = constants.MAX_SELECTION_RANGE;
+    var mxr = MAX_SELECTION_RANGE;
     
     if( !util.expectString(sheet,"movetype",true) ) return false;
     if( !util.isIn( sheet.movetype, model.moveTypes ) ) return false;
@@ -39,8 +39,8 @@ model.unitTypeParser.addHandler(function(sheet){
 // model.unitPosMap = util.matrix( CWT_MAX_MAP_WIDTH, CWT_MAX_MAP_HEIGHT, null );
 
 // List of all unit objects. An inactive unit is marked with 
-// {@link constants.INACTIVE_ID} as owner.
-model.units = util.list( constants.MAX_PLAYER * constants.MAX_UNITS_PER_PLAYER, function(){
+// {@link INACTIVE_ID} as owner.
+model.units = util.list( MAX_PLAYER * MAX_UNITS_PER_PLAYER, function(){
   return {
     hp:       99,
     x:        0,
@@ -50,11 +50,11 @@ model.units = util.list( constants.MAX_PLAYER * constants.MAX_UNITS_PER_PLAYER, 
     loadedIn: -1,
     type:     null,
     hidden:   false,
-    owner:    constants.INACTIVE_ID
+    owner:    INACTIVE_ID
   };
 });
 
-model.unitPosMap = util.matrix( constants.MAX_MAP_WIDTH, constants.MAX_MAP_HEIGHT, null );
+model.unitPosMap = util.matrix( MAX_MAP_WIDTH, MAX_MAP_HEIGHT, null );
 
 // Defines a persistence handler 
 controller.persistenceHandler(
@@ -65,7 +65,7 @@ controller.persistenceHandler(
     
     // reset model data
     for( var i=0,e=model.units.length; i<e; i++ ){
-      model.units[i].owner = constants.INACTIVE_ID;
+      model.units[i].owner = INACTIVE_ID;
     }
     
     // place model data by dom if given
@@ -100,7 +100,7 @@ controller.persistenceHandler(
     for( var i=0,e=model.units.length; i<e; i++ ){
       unit = model.units[i];
       
-      if( unit.owner !== constants.INACTIVE_ID ){
+      if( unit.owner !== INACTIVE_ID ){
         dom.units.push([
           model.extractUnitId(unit),
           unit.type.ID,
@@ -120,13 +120,13 @@ controller.persistenceHandler(
 // Returns the first unit id of a player
 //
 model.getFirstUnitSlotId = function( pid ){
-  return constants.MAX_UNITS_PER_PLAYER * pid;
+  return MAX_UNITS_PER_PLAYER * pid;
 };
 
 // Returns the last unit id of a player
 //
 model.getLastUnitSlotId = function( pid ){
-  return (constants.MAX_UNITS_PER_PLAYER * (pid+1) ) -1;
+  return (MAX_UNITS_PER_PLAYER * (pid+1) ) -1;
 };
 
 // Returns the unit at a given position or null 
@@ -153,16 +153,16 @@ model.extractUnitId = function( unit ){
   
   // check unit object
   if( !unit ) model.criticalError(
-    constants.error.ILLEGAL_PARAMETERS, 
-    constants.error.PARAMETERS_MISSING
+    error.ILLEGAL_PARAMETERS,
+    error.PARAMETERS_MISSING
   );
   
   var index = model.units.indexOf(unit);
   
   // not found when no index is found
   if( index === -1 ) model.criticalError(
-    constants.error.ILLEGAL_PARAMETERS, 
-    constants.error.UNIT_NOT_FOUND
+    error.ILLEGAL_PARAMETERS,
+    error.UNIT_NOT_FOUND
   );
   
   return index;
@@ -185,7 +185,7 @@ model.hasFreeUnitSlots = function( pid ){
   for( ; i<e; i++ ){
 		
 		// found slot
-    if( model.units[i].owner === constants.INACTIVE_ID ) res = true;
+    if( model.units[i].owner === INACTIVE_ID ) res = true;
 		else{
 			count++;
 			
@@ -219,7 +219,7 @@ model.countUnits = function( pid ){
   var e = model.getLastUnitSlotId(pid);
   
   for(; i<e; i++ ){
-    if( model.units[i].owner !== constants.INACTIVE_ID ) n++;
+    if( model.units[i].owner !== INACTIVE_ID ) n++;
   }
   
   return n;
@@ -273,7 +273,7 @@ model.damageUnit = function( uid, damage, minRest ){
   
   // check grabbed unit
   if( !unit ) model.criticalError(
-    constants.error.ILLEGAL_PARAMETERS, constants.error.UNIT_NOT_FOUND
+    error.ILLEGAL_PARAMETERS, error.UNIT_NOT_FOUND
   );
   
   unit.hp -= damage;
@@ -303,7 +303,7 @@ model.healUnit = function( uid, health, diffAsGold ){
   
   // check grabbed unit
   if( !unit ) model.criticalError(
-    constants.error.ILLEGAL_PARAMETERS, constants.error.UNIT_NOT_FOUND
+    error.ILLEGAL_PARAMETERS, error.UNIT_NOT_FOUND
   );
   
   unit.hp += health;
@@ -372,7 +372,7 @@ model.joinUnits = function( juid, jtuid ){
   
   // check types
   if( joinTarget.type !== joinSource.type ) model.criticalError(
-    constants.error.ILLEGAL_PARAMETERS, constants.error.JOIN_TYPE_MISSMATCH
+    error.ILLEGAL_PARAMETERS, error.JOIN_TYPE_MISSMATCH
   );
   
   // health
@@ -389,7 +389,7 @@ model.joinUnits = function( juid, jtuid ){
   // TODO experience points
   
   // disband joining unit
-  joinSource.owner = constants.INACTIVE_ID;
+  joinSource.owner = INACTIVE_ID;
   
   controller.events.joinUnits( juid, jtuid );  
 };
@@ -434,7 +434,7 @@ model.createUnit = function( pid, x, y, type ){
   for( ; i<e; i++ ){
     
     // FILL SLOT IF FREE
-    if( model.units[i].owner === constants.INACTIVE_ID ){
+    if( model.units[i].owner === INACTIVE_ID ){
       var typeSheet = model.unitTypes[type];
       var unit = model.units[i];
       
@@ -453,7 +453,7 @@ model.createUnit = function( pid, x, y, type ){
   }
   
   // no free slot found
-  model.criticalError( constants.error.ILLEGAL_DATA, constants.error.NO_SLOT_FREE );
+  model.criticalError( error.ILLEGAL_DATA, error.NO_SLOT_FREE );
 };
 
 // Returns the distance between two units
@@ -483,7 +483,7 @@ model.destroyUnitSilent = function( uid ){
   var unit = model.units[uid];
   
   // mark slot as unused
-  unit.owner = constants.INACTIVE_ID; 
+  unit.owner = INACTIVE_ID;
   
   // end game when the player does not have any unit left
   if( controller.configValue("noUnitsLeftLoose") === 1 && model.countUnits( unit.owner ) === 0 ){

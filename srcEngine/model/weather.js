@@ -38,8 +38,8 @@ controller.persistenceHandler(
       // check data
       if( !util.isIn( dom.wth, model.weatherTypes ) ){
         model.criticalError(
-          constants.error.ILLEGAL_MAP_FORMAT,
-          constants.error.SAVEDATA_WEATHER_MISSMATCH
+          error.ILLEGAL_MAP_FORMAT,
+          error.SAVEDATA_WEATHER_MISSMATCH
         );
       }
       
@@ -72,8 +72,8 @@ model.calculateNextWeather = function(){
   
   if( !controller.isHost() ){
     model.criticalError( 
-      constants.error.HOST_ONLY, 
-      constants.error.CALC_NEXT_WEATHER 
+      error.HOST_ONLY,
+      error.CALC_NEXT_WEATHER
     );
   }
   
@@ -110,7 +110,7 @@ model.changeWeather = function( wth ){
   
   // check weather type
   if( !model.weatherTypes.hasOwnProperty(wth) ){
-    model.criticalError( constants.error.ILLEGAL_DATA, constants.error.UNKNOWN_WEATHER );
+    model.criticalError( error.ILLEGAL_DATA, error.UNKNOWN_WEATHER );
   }
 
   model.weather = model.weatherTypes[wth];

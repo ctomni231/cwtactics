@@ -65,10 +65,10 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
       
       var nCanvas;
       var nContext;
-      var red = view.COLOR_RED;
+      var red = .COLOR_RED;
       var tp = unitTypes[i][0];
       
-      var img = view.getUnitImageForType( tp, view.IMAGE_CODE_IDLE, red );
+      var img = .getUnitImageForType( tp, .IMAGE_CODE_IDLE, red );
       
       // LEFT
       nCanvas = document.createElement('canvas');
@@ -76,7 +76,7 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
       nCanvas.width  = 32*3;
       nContext = nCanvas.getContext('2d');
       nContext.drawImage( img, 0, 0, 32*3, 32, 0, 0, 32*3, 32 );
-      view.setUnitImageForType( nCanvas, tp, view.IMAGE_CODE_IDLE, red );
+      .setUnitImageForType( nCanvas, tp, .IMAGE_CODE_IDLE, red );
       
       // LEFT INVERTED
       nCanvas = document.createElement('canvas');
@@ -84,9 +84,9 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
       nCanvas.width  = 32*3;
       nContext = nCanvas.getContext('2d');
       nContext.drawImage( img, 0, 0, 32*3, 32, 0, 0, 32*3, 32 );
-      view.setUnitImageForType(
+      .setUnitImageForType(
         flipImage( nCanvas, true, false), tp,
-        view.IMAGE_CODE_IDLE_INVERTED, red
+        .IMAGE_CODE_IDLE_INVERTED, red
       );
       
       // MOVE LEFT
@@ -95,7 +95,7 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
       nCanvas.width  = 32*3;
       nContext = nCanvas.getContext('2d');
       nContext.drawImage( img, 32*9, 0, 32*3, 32, 0, 0, 32*3, 32 );
-      view.setUnitImageForType( nCanvas, tp, view.IMAGE_CODE_LEFT, red );
+      .setUnitImageForType( nCanvas, tp, .IMAGE_CODE_LEFT, red );
       
       // MOVE LEFT INVERTED
       nCanvas = document.createElement('canvas');
@@ -103,9 +103,9 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
       nCanvas.width  = 32*3;
       nContext = nCanvas.getContext('2d');
       nContext.drawImage( img, 32*9, 0, 32*3, 32, 0, 0, 32*3, 32 );
-      view.setUnitImageForType(
+      .setUnitImageForType(
         flipImage( nCanvas, true, false), tp,
-        view.IMAGE_CODE_RIGHT, red
+        .IMAGE_CODE_RIGHT, red
       );
       
       // MOVE UP
@@ -114,7 +114,7 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
       nCanvas.width  = 32*3;
       nContext = nCanvas.getContext('2d');
       nContext.drawImage( img, 32*3, 0, 32*3, 32, 0, 0, 32*3, 32 );
-      view.setUnitImageForType( nCanvas, tp, view.IMAGE_CODE_UP, red );
+      .setUnitImageForType( nCanvas, tp, .IMAGE_CODE_UP, red );
       
       // MOVE DOWN
       nCanvas = document.createElement('canvas');
@@ -122,7 +122,7 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
       nCanvas.width  = 32*3;
       nContext = nCanvas.getContext('2d');
       nContext.drawImage( img, 32*6, 0, 32*3, 32, 0, 0, 32*3, 32 );
-      view.setUnitImageForType( nCanvas, tp, view.IMAGE_CODE_DOWN, red );
+      .setUnitImageForType( nCanvas, tp, .IMAGE_CODE_DOWN, red );
       
     }
     
@@ -138,7 +138,7 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
       if( miscType.length > 2 ){
         
         // CUT
-        var img = view.getInfoImageForType( miscType[0] );
+        var img = .getInfoImageForType( miscType[0] );
         
         nCanvas = document.createElement('canvas');
         nContext = nCanvas.getContext('2d');
@@ -193,7 +193,7 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
           nContext.restore();
         }
         
-        view.setInfoImageForType( nCanvas, miscType[0] );
+        .setInfoImageForType( nCanvas, miscType[0] );
       }
     }
     

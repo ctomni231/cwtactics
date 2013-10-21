@@ -146,6 +146,22 @@ if( constants.DEBUG ) util.log("loading game assets");
 
   // -------------------------------------------------------------------------------------
 
+  .andThen(function(){
+    loadDescComponent.innerHTML = model.localized("loading.prepareInput");
+    loadBarComponent.className = "loadBar_93"; })
+
+  .chill(150)
+
+  // **10.** check environment
+  .andThen(function(err, baton){
+    baton.take();
+    controller.loadKeyMapping(function(){
+      baton.pass();
+    });
+  })
+
+  // -------------------------------------------------------------------------------------
+
   .andThen(function(){    
     loadDescComponent.innerHTML = model.localized("loading.prepareLanguage");
     loadBarComponent.className = "loadBar_95"; })

@@ -133,21 +133,21 @@ controller.colorizeImages = util.singleLazyCall(function( err, baton ){
     }
     
     var UNIT_STATES = [
-      view.IMAGE_CODE_IDLE,
-      view.IMAGE_CODE_IDLE_INVERTED,
-      view.IMAGE_CODE_DOWN,
-      view.IMAGE_CODE_UP,
-      view.IMAGE_CODE_RIGHT,
-      view.IMAGE_CODE_LEFT
+      .IMAGE_CODE_IDLE,
+      .IMAGE_CODE_IDLE_INVERTED,
+      .IMAGE_CODE_DOWN,
+      .IMAGE_CODE_UP,
+      .IMAGE_CODE_RIGHT,
+      .IMAGE_CODE_LEFT
     ];
     
     // EXTRACT PROPERTY COLORS
     var IMG_MAP_PROP = getImageDataArray(
-      view.getInfoImageForType( view.IMG_COLOR_MAP_PROPERTIES_ID )
+      .getInfoImageForType( .IMG_COLOR_MAP_PROPERTIES_ID )
     );
     
     var IMG_MAP_UNIT = getImageDataArray(
-      view.getInfoImageForType( view.IMG_COLOR_MAP_UNITS_ID )
+      .getInfoImageForType( .IMG_COLOR_MAP_UNITS_ID )
     );
     
     // FOR EVERY UNIT
@@ -158,9 +158,9 @@ controller.colorizeImages = util.singleLazyCall(function( err, baton ){
       for( var si=0,se=UNIT_STATES.length; si<se; si++ ){
         
         var cCode = UNIT_STATES[si];
-        var redPic = view.getUnitImageForType(tp,cCode,view.COLOR_RED);
+        var redPic = .getUnitImageForType(tp,cCode,.COLOR_RED);
         
-        view.setUnitImageForType(
+        .setUnitImageForType(
           replaceColors(
             redPic, 
             IMG_MAP_UNIT,
@@ -169,10 +169,10 @@ controller.colorizeImages = util.singleLazyCall(function( err, baton ){
             UNIT_INDEXES.BLUE,
             tp
           ),
-          tp,cCode,view.COLOR_BLUE
+          tp,cCode,.COLOR_BLUE
         );
         
-        view.setUnitImageForType(
+        .setUnitImageForType(
           replaceColors(
             redPic, 
             IMG_MAP_UNIT,
@@ -181,10 +181,10 @@ controller.colorizeImages = util.singleLazyCall(function( err, baton ){
             UNIT_INDEXES.GREEN,
             tp
           ),
-          tp,cCode,view.COLOR_GREEN
+          tp,cCode,.COLOR_GREEN
         );
         
-        view.setUnitImageForType(
+        .setUnitImageForType(
           replaceColors(
             redPic, 
             IMG_MAP_UNIT,
@@ -193,7 +193,7 @@ controller.colorizeImages = util.singleLazyCall(function( err, baton ){
             UNIT_INDEXES.BLACK_MASK,
             tp
           ),
-          tp,cCode,view.COLOR_BLACK_MASK
+          tp,cCode,.COLOR_BLACK_MASK
         );
       }
     }
@@ -203,9 +203,9 @@ controller.colorizeImages = util.singleLazyCall(function( err, baton ){
     for( var i=0,e=propTypes.length; i<e; i++ ){
       var tp = propTypes[i][0];
       
-      var redPic = view.getPropertyImageForType(tp,view.COLOR_RED);
+      var redPic = .getPropertyImageForType(tp,.COLOR_RED);
       
-      view.setPropertyImageForType(
+      .setPropertyImageForType(
         replaceColors(
           redPic, 
           IMG_MAP_PROP,
@@ -213,10 +213,10 @@ controller.colorizeImages = util.singleLazyCall(function( err, baton ){
           PROPERTY_INDEXES.RED, 
           PROPERTY_INDEXES.BLUE
         ),
-        tp,view.COLOR_BLUE
+        tp,.COLOR_BLUE
       );
       
-      view.setPropertyImageForType(
+      .setPropertyImageForType(
         replaceColors(
           redPic, 
           IMG_MAP_PROP,
@@ -224,10 +224,10 @@ controller.colorizeImages = util.singleLazyCall(function( err, baton ){
           PROPERTY_INDEXES.RED,
           PROPERTY_INDEXES.GREEN
         ),
-        tp,view.COLOR_GREEN
+        tp,.COLOR_GREEN
       );
       
-      view.setPropertyImageForType(
+      .setPropertyImageForType(
         replaceColors(
           redPic, 
           IMG_MAP_PROP,
@@ -235,11 +235,11 @@ controller.colorizeImages = util.singleLazyCall(function( err, baton ){
           PROPERTY_INDEXES.RED, 
           PROPERTY_INDEXES.GRAY
         ),
-        tp,view.COLOR_NEUTRAL
+        tp,.COLOR_NEUTRAL
       );
 
       /*      
-      view.setPropertyImageForType(
+      .setPropertyImageForType(
         replaceColors(
           redPic, 
           IMG_MAP_PROP,
@@ -247,13 +247,13 @@ controller.colorizeImages = util.singleLazyCall(function( err, baton ){
           PROPERTY_INDEXES.RED, 
           PROPERTY_INDEXES.BLACK_MASK
         ),
-        tp,view.COLOR_BLACK_MASK
+        tp,.COLOR_BLACK_MASK
       );
       */
             
-      view.setPropertyImageForType(
+      .setPropertyImageForType(
         blackifyColors( redPic ),
-        tp,view.COLOR_BLACK_MASK
+        tp,.COLOR_BLACK_MASK
       );
     }
     
@@ -261,9 +261,9 @@ controller.colorizeImages = util.singleLazyCall(function( err, baton ){
     var tileTypes = imageData.tiles;
     for( var i=0,e=tileTypes.length; i<e; i++ ){
       var tp = tileTypes[i][0];
-      var redPic = view.getTileImageForType(tp);
+      var redPic = .getTileImageForType(tp);
       
-      view.setTileShadowImageForType(
+      .setTileShadowImageForType(
         blackifyColors( redPic ), 
         tp
       );

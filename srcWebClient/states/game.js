@@ -1,10 +1,6 @@
 util.scoped(function(){
     
   function setupAnimationFrame(){
-    if( constants.DEBUG ) util.log("setup animation frame");
-    
-    // PREPARE LOOP
-    controller.prepareGameLoop();
     
     var oldTime = new Date().getTime();
     function looper(){
@@ -40,7 +36,7 @@ util.scoped(function(){
 
     // update unit stats
     for( var i=0,e=model.units.length; i<e; i++ ){
-      if( model.units[i].owner !== constants.INACTIVE_ID ) controller.updateUnitStatus( i );
+      if( model.units[i].owner !== INACTIVE_ID ) controller.updateUnitStatus( i );
     }
     
     // prepare screen and screen data
@@ -51,11 +47,13 @@ util.scoped(function(){
     // go into max zoom ( TODO: grab it from settings later on )
     controller.setScreenScale(2);
         
-    // INIT LOOP
-    setupAnimationFrame();
+    // allow game loop
+    controller.inGameLoop = true;
+    controller.prepareGameLoop();
   };
-  
+
   controller.screenStateMachine.structure.GAMEROUND.gameHasEnded = function(){
+    controller.inGameLoop = false;
     return "MAIN";
   };
   
@@ -64,7 +62,6 @@ util.scoped(function(){
   // ++++++++++++ INPUT MOVE ++++++++++++
   
   controller.screenStateMachine.structure.GAMEROUND.LEFT = function( ev, distance ){
-    controller.hideAttackRangeInfo();
     
     // IN TARGET TILE SELECTION MODE ?
     var state = controller.stateMachine.state;
@@ -85,7 +82,6 @@ util.scoped(function(){
   };
   
   controller.screenStateMachine.structure.GAMEROUND.RIGHT = function( ev, distance ){
-    controller.hideAttackRangeInfo();
     
     // IN TARGET TILE SELECTION MODE ?
     var state = controller.stateMachine.state;
@@ -105,8 +101,6 @@ util.scoped(function(){
   };
   
   controller.screenStateMachine.structure.GAMEROUND.UP = function( ev, distance ){
-    controller.hideAttackRangeInfo();
-    
     var state = controller.stateMachine.state;
     
     // IN TARGET TILE SELECTION MODE ?
@@ -131,8 +125,6 @@ util.scoped(function(){
   };
   
   controller.screenStateMachine.structure.GAMEROUND.DOWN = function( ev, distance ){
-    controller.hideAttackRangeInfo();
-    
     var state = controller.stateMachine.state;
     
     // IN TARGET TILE SELECTION MODE ?
@@ -160,7 +152,10 @@ util.scoped(function(){
   // ++++++++++++ INPUT ACTIONS ++++++++++++
   
   controller.screenStateMachine.structure.GAMEROUND.ACTION = function( ev,x,y ){
-    controller.hideAttackRangeInfo();
+    if( controller.attackRangeVisible ){
+      controller.hideAttackRangeInfo();
+      return this.breakTransition();
+    }
     
     if( typeof x === "number" ){
       controller.eraseWantedCursorPosition();
@@ -177,7 +172,17 @@ util.scoped(function(){
   };
   
   controller.screenStateMachine.structure.GAMEROUND.CANCEL = function( ev,x,y ){
-    controller.hideAttackRangeInfo();
+    if( !controller.attackRangeVisible ){
+      var unit = model.unitPosMap[controller.mapCursorX][controller.mapCursorY];
+      if( unit ){
+        controller.showAttackRangeInfo();
+        return this.breakTransition();
+      }
+    }
+    else {
+      controller.hideAttackRangeInfo();
+      return this.breakTransition();
+    }
     
     if( typeof x === "number" ){
       controller.eraseWantedCursorPosition();
@@ -187,38 +192,5 @@ util.scoped(function(){
     controller.cursorActionCancel();
     return this.breakTransition();
   };
-  
-  
-  
-  // ++++++++++++ INPUT SPECIAL ++++++++++++
-  
-  controller.screenStateMachine.structure.GAMEROUND.SPECIAL_1 = function(){
-    return this.breakTransition();
-  };
-  
-  controller.screenStateMachine.structure.GAMEROUND.SPECIAL_2 = function(){
-    return this.breakTransition();
-  };
-  
-  controller.screenStateMachine.structure.GAMEROUND.SPECIAL_3 = function(){
-    if( !controller.attackRangeVisible ){
-      controller.showAttackRangeInfo();
-    }
-    return this.breakTransition();
-  };
-  
-  controller.screenStateMachine.structure.GAMEROUND.SPECIAL_4 = function(){
-    return this.breakTransition();
-  };
-  
-  controller.screenStateMachine.structure.GAMEROUND.SPECIAL_5 = function(){
-    controller.setScreenScale( controller.screenScale+1 );
-    return this.breakTransition();
-  };
-  
-  controller.screenStateMachine.structure.GAMEROUND.SPECIAL_6 = function(){
-    controller.setScreenScale( controller.screenScale-1 );
-    return this.breakTransition();
-  };
-  
+
 });

@@ -1,8 +1,12 @@
+// ### TaggedPosition
+// Object that holds information about objects at a given position (x,y).
+//
 controller.TaggedPosition = {
 	
+  // ### TaggedPosition.clean
+  // Cleans all data of the object.
+  //
 	clean: function(){
-		
-		// POSITION DATA
 		this.x = -1;
 		this.y = -1;
 		this.unit = null;
@@ -11,6 +15,9 @@ controller.TaggedPosition = {
 		this.propertyId = -1;
 	},
 	
+  // ### TaggedPosition.set
+  // Sets a position. All information
+  //
 	set: function( x,y ){
 		this.x = x;
 		this.y = y;
@@ -19,10 +26,12 @@ controller.TaggedPosition = {
 		var isValid = (x !== -1 && y !== -1);
 		var inFog = isValid ? (model.fogData[x][y] === 0) : false;
 		
-		// ----- UNIT -----
+		// generate meta data for the unit
 		refObj = isValid ? model.getUnitByPos(x,y): null;
-		if( isValid && !inFog && refObj !== null && ( !refObj.hidden || refObj.owner === model.turnOwner || 
-																								 model.players[ refObj.owner ].team === model.players[ model.turnOwner ].team ) ){
+		if( isValid && !inFog && refObj !== null && (
+          !refObj.hidden || refObj.owner === model.turnOwner || model.players[ refObj.owner ].team === model.players[ model.turnOwner ].team
+        )
+      ){
 			
 			this.unit = refObj;
 			this.unitId = model.extractUnitId(refObj);
@@ -32,7 +41,7 @@ controller.TaggedPosition = {
 			this.unitId = -1;
 		}
 		
-		// ----- PROPERTY -----
+		// generate meta data for the property
 		refObj = isValid ? model.getPropertyByPos(x,y) : null;
 		if( isValid /* && !inFog */ && refObj !== null ){
 			
@@ -46,21 +55,22 @@ controller.TaggedPosition = {
 	}
 };
 
-// ---
-
-// The central finite state machine of the game engine.
+// ### StateMachine
+// The central finite state machine of the game engine. The player only interacts with this machine with the input system of the client.
 //
 controller.stateMachine = util.stateMachine({
 	
-	// ---
-	
+	// ### State::NONE
+	//
 	NONE:{
 		start:function(){
-			if( constants.DEBUG ) util.log("Initializing game state machine");
+			if( DEBUG ) util.log("Initializing game state machine");
 			return "IDLE";
 		}
 	},
 	
+  // ### State::IDLE
+  //
 	IDLE: {
 		onenter: function(){
 			this.data.menu.clean();
@@ -83,7 +93,7 @@ controller.stateMachine = util.stateMachine({
 		action: function(ev, x, y){
 			this.data.source.set(x,y);
 			
-			if ( this.data.source.unitId !== constants.INACTIVE_ID && 
+			if ( this.data.source.unitId !== INACTIVE_ID &&
 					this.data.source.unit.owner === model.turnOwner && 
 					model.canAct( this.data.source.unitId ) ){
 				
@@ -121,7 +131,7 @@ controller.stateMachine = util.stateMachine({
 		
 		action: function( ev,x,y ){
 			if( this.data.selection.getValueAt(x,y) < 0){
-				if( constants.DEBUG ) util.log("break event because selection is not in the selection map");
+				if( DEBUG ) util.log("break event because selection is not in the selection map");
 				return this.breakTransition();
 			}
 			
@@ -242,7 +252,7 @@ controller.stateMachine = util.stateMachine({
 		
 		action: function( ev,x,y ){
 			if( this.data.selection.getValueAt(x,y) < 0){
-				if( constants.DEBUG ) util.log("break event because selection is not in the map");
+				if( DEBUG ) util.log("break event because selection is not in the map");
 				return this.breakTransition();
 			}
 			
@@ -267,7 +277,7 @@ controller.stateMachine = util.stateMachine({
 		
 		action: function( ev,x,y ){
 			if( this.data.selection.getValueAt(x,y) < 0){
-				if( constants.DEBUG ) util.log("break event because selection is not in the map");
+				if( DEBUG ) util.log("break event because selection is not in the map");
 				return this.breakTransition();
 			}
 			

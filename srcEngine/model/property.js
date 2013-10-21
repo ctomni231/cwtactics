@@ -14,7 +14,7 @@ controller.defineEvent( "captureProperty" );
 controller.defineGameScriptable( "captureRate", 50, 9999 );
 controller.defineGameScriptable( "funds", 1, 99999 );
 
-controller.defineGameConfig( "captureLimit", 0, constants.MAX_PROPERTIES, 0 );
+controller.defineGameConfig( "captureLimit", 0, MAX_PROPERTIES, 0 );
 
 model.unitTypeParser.addHandler( function( sheet ){
   if( !util.expectNumber( sheet, "captures", false, true, 1, 10 ) ) return false;
@@ -32,7 +32,7 @@ model.tileTypeParser.addHandler( function( sheet ){
 // List of all available properties of a game round. If a property is not 
 // used it will be marked with an owner value {@link CWT_INACTIVE_ID}.
 //
-model.properties = util.list( constants.MAX_PROPERTIES + 1, function(){
+model.properties = util.list( MAX_PROPERTIES + 1, function(){
   return {
     capturePoints: 20,
     owner: -1,
@@ -42,7 +42,7 @@ model.properties = util.list( constants.MAX_PROPERTIES + 1, function(){
   };
 } );
 
-model.propertyPosMap = util.matrix( constants.MAX_MAP_WIDTH, constants.MAX_MAP_HEIGHT, null );
+model.propertyPosMap = util.matrix( MAX_MAP_WIDTH, MAX_MAP_HEIGHT, null );
 
 // Defines a persistence handler
 controller.persistenceHandler(
@@ -50,7 +50,7 @@ controller.persistenceHandler(
   function( dom ){
     
     // reset all properties in the model
-    for( var i = 0, e = model.properties.length; i < e; i++ ) model.properties[i].owner = constants.INACTIVE_ID;
+    for( var i = 0, e = model.properties.length; i < e; i++ ) model.properties[i].owner = INACTIVE_ID;
     
     // set properties of the given document 
     // model
@@ -59,12 +59,12 @@ controller.persistenceHandler(
       
       // check data
       var fail = false;
-      if( !fail && !util.expectNumber( data, 0, true, true, 0, constants.MAX_PROPERTIES-1 ) ) fail = true;
-      if( !fail && !util.expectNumber( data, 5, true, true, -1, constants.MAX_PLAYER-1 ) ) fail = true;
+      if( !fail && !util.expectNumber( data, 0, true, true, 0, MAX_PROPERTIES-1 ) ) fail = true;
+      if( !fail && !util.expectNumber( data, 5, true, true, -1, MAX_PLAYER-1 ) ) fail = true;
       
       // TODO: check by map sizes
-      if( !fail && !util.expectNumber( data, 1, true, true, 0, constants.MAX_MAP_WIDTH-1 ) ) fail = true;
-      if( !fail && !util.expectNumber( data, 2, true, true, 0, constants.MAX_MAP_HEIGHT-1 ) ) fail = true;
+      if( !fail && !util.expectNumber( data, 1, true, true, 0, MAX_MAP_WIDTH-1 ) ) fail = true;
+      if( !fail && !util.expectNumber( data, 2, true, true, 0, MAX_MAP_HEIGHT-1 ) ) fail = true;
       
       // must be a property with capture points
       if( !fail && !util.expectString( data, 3, true ) ) fail = true;
@@ -76,7 +76,7 @@ controller.persistenceHandler(
       
       // call error when data is illegal
       if( fail ) {
-        model.criticalError( constants.error.ILLEGAL_MAP_FORMAT, constants.error.SAVEDATA_PLAYER_MISSMATCH );
+        model.criticalError( error.ILLEGAL_MAP_FORMAT, error.SAVEDATA_PLAYER_MISSMATCH );
       }
       
       var property = model.properties[ data[0] ];
@@ -102,7 +102,7 @@ controller.persistenceHandler(
       
       // persist it if the owner of the property is
       // not INACTIVE
-      if( prop.owner !== constants.INACTIVE_ID ) {
+      if( prop.owner !== INACTIVE_ID ) {
         dom.properties.push( [
           i,
           prop.x,
@@ -167,8 +167,8 @@ model.extractPropertyId = function( property ){
   // check result index when -1 then 
   // the property object does not exists
   if( index === -1 ) model.criticalError(
-    constants.error.ILLEGAL_PARAMETERS,
-    constants.error.PROPERTY_NOT_FOUND
+    error.ILLEGAL_PARAMETERS,
+    error.PROPERTY_NOT_FOUND
   );
   
   return index;
@@ -274,8 +274,8 @@ model.changePropertyType = function( prid, type ){
   // throw error when type does not exists
   if( !mode.tileTypes[type] ) {
     model.criticalError(
-      constants.error.ILLEGAL_PARAMETERS,
-      constants.error.UNKNOWN_OBJECT_TYPE
+      error.ILLEGAL_PARAMETERS,
+      error.UNKNOWN_OBJECT_TYPE
     );
   }
   

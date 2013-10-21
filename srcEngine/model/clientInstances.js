@@ -1,7 +1,7 @@
 
 // Contains all player instances that will be controlled
 // by the local client including AI instances
-model.clientInstances = util.list( constants.MAX_PLAYER, false );
+model.clientInstances = util.list( MAX_PLAYER, false );
 
 model.lastActiveClientPid = -1;
 

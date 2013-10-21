@@ -40,13 +40,24 @@ model.coTypeParser.addHandler( function( sheet ){
 
 // ### Model
 
-model.coData = util.list( constants.MAX_PLAYER, function( i ){
+model.CO_MODES = {
+	NONE:0,
+	AW1:1,
+	AW2:2,
+	AWDS:3,
+	AWDR:4
+};
+
+model.coMode = model.CO_MODES.AW1;
+
+model.coData = util.list( MAX_PLAYER, function( i ){
 	return {
-		power: 0, // acc. co power
-		timesUsed: 0, // number of used co powers
-		level: 0, // active co power level
-		coA: null, // main CO
-		coB: null    // sub CO
+		power: 0, 		// acc. co power
+		timesUsed: 0, 	// number of used co powers
+		level: 0, 		// active co power level
+		coA: null, 		// main CO
+		coB: null,  	// sub CO
+		detachedTo: -1  // CO detached to a specific unit
 	};
 });
 
@@ -58,11 +69,11 @@ controller.persistenceHandler(
 		
 		// the length of a data set must be equal to the number
 		// of maximum players
-		if( constants.MAX_PLAYER !== data.length ) util.raiseError( "" );
+		if( MAX_PLAYER !== data.length ) util.raiseError( "" );
 		
 		var source;
 		var target;
-		for( var i = 0, e = constants.MAX_PLAYER; i < e; i++ ) {
+		for( var i = 0, e = MAX_PLAYER; i < e; i++ ) {
 			target = model.coData[i];
 			source = data[i];
 			
@@ -96,13 +107,13 @@ controller.persistenceHandler(
 		var data = [ ];
 		var obj;
 		
-		for( var i = 0, e = constants.MAX_PLAYER; i < e; i++ ) {
+		for( var i = 0, e = MAX_PLAYER; i < e; i++ ) {
 			obj = model.coData[i];
 			
 			// persist the data as array
 			// if target player isn't active then 
 			// use a `0` as data
-			if( model.players[i].team === constants.INACTIVE_ID ) {
+			if( model.players[i].team === INACTIVE_ID ) {
 				data.push( 0 );
 			}
 			else {
@@ -136,8 +147,8 @@ util.scoped( function(){
 	function activatePower( pid, level, evName ){
 		if( !model.isValidPlayerId( pid ) ) {
 			model.criticalError(
-				constants.error.ILLEGAL_PARAMETERS,
-				constants.error.UNKNOWN_PLAYER_ID
+				error.ILLEGAL_PARAMETERS,
+				error.UNKNOWN_PLAYER_ID
 			);
 		}
 		
@@ -212,8 +223,8 @@ model.canActivatePower = function( pid, powerType ){
 			
 		default:
 			model.criticalError( 
-				constants.error.ILLEGAL_PARAMETERS, 
-				constants.error.UNKNOWN
+				error.ILLEGAL_PARAMETERS,
+				error.UNKNOWN
 			);
 	};
 	
@@ -243,4 +254,27 @@ model.coStarCost = function( pid ){
 model.setMainCo = function( pid, type ){
 	if( type === null ) model.coData[pid].coA = null;
 	else model.coData[pid].coA = model.coTypes[type];	
+};
+
+// Clears the reference of a commander to an unit
+//
+model.clearCommanderDetachment = function( pid ){
+	if( DEVMODE ) expect(
+		model.coData[pid].detachedTo !== INACTIVE_ID
+	);
+
+	model.coData[pid].detachedTo = INACTIVE_ID;
+}
+
+// Detach a commander from a player pool to a given unit
+//
+model.detachCommander = function( pid, id ){
+	if( DEVMODE ) expect(
+		model.coData[pid].detachedTo === INACTIVE_ID
+	);
+
+	var unit = model.units[id];
+	if( !unit ){ /* ERROR */ }
+
+	model.coData[pid].detachedTo = id;
 };

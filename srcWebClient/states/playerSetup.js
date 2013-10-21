@@ -37,16 +37,16 @@ util.scoped(function(){
     // grab next entry
     if( prev ){
       cSelect--;
-      if( cSelect < constants.INACTIVE_ID ) cSelect = model.listOfCoTypes.length-1;
+      if( cSelect < INACTIVE_ID ) cSelect = model.listOfCoTypes.length-1;
     }
     else{
       cSelect++;
-      if( cSelect >= model.listOfCoTypes.length ) cSelect = constants.INACTIVE_ID;
+      if( cSelect >= model.listOfCoTypes.length ) cSelect = INACTIVE_ID;
     }
     
     // update model
     coSelected[playerId] = cSelect;
-    if( cSelect !== constants.INACTIVE_ID ){
+    if( cSelect !== INACTIVE_ID ){
       model.setMainCo( playerId, model.listOfCoTypes[cSelect] );
     } 
     else model.setMainCo( playerId, null );
@@ -66,11 +66,11 @@ util.scoped(function(){
     do{
       if( prev ){
         player.team--;
-        if( player.team < 0 ) player.team = constants.MAX_PLAYER-1;
+        if( player.team < 0 ) player.team = MAX_PLAYER-1;
       }
       else{
         player.team++; 
-        if( player.team === constants.MAX_PLAYER ) player.team=0;
+        if( player.team === MAX_PLAYER ) player.team=0;
       }
     }
     while( !model.atLeastTwoTeamsLeft() );
@@ -82,7 +82,7 @@ util.scoped(function(){
 
     // reset generic data
     model.coData[playerId].coA  = null;
-    coSelected[playerId]        = constants.INACTIVE_ID;
+    coSelected[playerId]        = INACTIVE_ID;
     
     // update UI
     update(playerId);
@@ -92,12 +92,12 @@ util.scoped(function(){
     var btns = buttons[playerId];
     var player = model.players[playerId];
 
-    if( player.team === constants.INACTIVE_ID ){
+    if( player.team === INACTIVE_ID ){
       btns[0].innerHTML = model.localized("config.player.off");
       btns[1].innerHTML = "";
       btns[2].innerHTML = "";
     }
-    else if( player.team === constants.DESELECT_ID ){
+    else if( player.team === DESELECT_ID ){
       btns[0].innerHTML = model.localized("config.player.disabled");
       btns[1].innerHTML = "";
       btns[2].innerHTML = "";
@@ -331,7 +331,7 @@ util.scoped(function(){
           case "4": value = 3; break;
         }
 
-        if( model.players[value].team === constants.INACTIVE_ID ) break;
+        if( model.players[value].team === INACTIVE_ID ) break;
         
         // do correct action
         switch( btn.getActiveKey() ){

@@ -1,12 +1,34 @@
 var fs = require('fs');
 var ugly = require('uglify-js');
+var sys = require('sys')
+var exec = require('child_process').exec;
 
-exports.getExtension = function(filename) {
-    var i = filename.lastIndexOf('.');
-    return (i < 0) ? '' : filename.substr(i);
-}
+exports.DIST_DIR = "dist/nightly/";
 
-exports.deleteFolderRecursive = function(path) {
+exports.UGLIFY_CMD =  "uglifyjs "+
+                      "$SOURCE_DIR$ "+
+                      "-o "+exports.DIST_DIR+"$TARGET_NAME$.js "+
+                      "--source-map "+exports.DIST_DIR+"$TARGET_NAME$-source-map.js "+
+                      "--source-map-root localhost "+
+                      "-m "+
+                      "-d $DEFINE$ "+
+                      "-c "+
+                      "--screw-ie8 ";
+
+exports.doCommand = function( cmd ){
+  console.log( "EXEC:\n"+cmd+"\n" );
+  exec( cmd );
+};
+
+exports.createFolder = function( path ) {
+  fs.mkdirSync(path);
+};
+
+exports.wipeOutSpecial = function( text ){
+  return text.replace(/(\r\n|\n|\r)/gm,"").replace(/\s/gm,"").replace(/\t/gm,"");
+};
+
+exports.deleteFolderRecursive = function( path ) {
     var files = [];
     if( fs.existsSync(path) ) {
         files = fs.readdirSync(path);
@@ -22,10 +44,6 @@ exports.deleteFolderRecursive = function(path) {
     }
 };
 
-exports.createFolder = function(path) {
-  fs.mkdirSync(path);
-};
-
 exports.getFileList = function( dir ){
   var result = fs.readdirSync( dir );
   for( var i=0,e=result.length; i<e; i++ ){
@@ -35,30 +53,23 @@ exports.getFileList = function( dir ){
   return result;
 };
 
-exports.readAndConcatFiles = function( files ){
+exports.createFolder = function(path) {
+  fs.mkdirSync(path);
+};
+
+exports.readAndConcatFiles = function( files,ext ){
   var all = [];
   files.forEach(function(file, i) {
     if( file.match(/.DS_Store$/) ) return;
-    //all[all.length] = file.match(/.js$/)? fs.readFileSync( file ).toString(): "";
+
+    // check ext
+    if( ext==="html" && !file.match(/.html$/) ) return;
+    if( ext==="css"  && !file.match(/.css$/)  ) return;
+
     all[all.length] = fs.readFileSync( file ).toString();
   });
 
-  return all.join('\n');
-};
-
-exports.readAndConcatHTMLFiles = function( files ){
-  var all = [];
-  files.forEach(function(file, i) {
-    if( file.match(/.DS_Store$/) ) return;
-    all[all.length] = file.match(/.html$/)?
-      fs.readFileSync( file ).toString(): "";
-  });
-
-  return all.join('\n');
-};
-
-exports.uglifyCode = function( file ){
-  return ugly.minify( file ).code;
+  return all.join( (ext===false)? '':'\n' );
 };
 
 exports.writeToFile = function( code, path ){

@@ -62,7 +62,7 @@ model.nextTurn = function(){
   pid++;
   while( pid !== oid ){
     
-    if( pid === constants.MAX_PLAYER ){
+    if( pid === MAX_PLAYER ){
       pid = 0;
       
       // Next day 
@@ -76,7 +76,7 @@ model.nextTurn = function(){
     }
     
     // Found next player
-    if( model.players[pid].team !== constants.INACTIVE_ID ) break;
+    if( model.players[pid].team !== INACTIVE_ID ) break;
     
     pid++;
   }
@@ -84,7 +84,7 @@ model.nextTurn = function(){
   // If the new player id is the same as the old 
   // player id then the game data is corrupted
   if( pid === oid ){
-    model.criticalError( constants.error.ILLEGAL_DATA, constants.error.CANNOT_FIND_NEXT_PLAYER );
+    model.criticalError( error.ILLEGAL_DATA, error.CANNOT_FIND_NEXT_PLAYER );
   }
   
   // do turn start stuff for all **properties**
@@ -102,7 +102,7 @@ model.nextTurn = function(){
   i= model.getFirstUnitSlotId( pid ); 
   e= model.getLastUnitSlotId( pid );
   for( ; i<e; i++ ){
-    if( model.units[i].owner === constants.INACTIVE_ID ) continue;
+    if( model.units[i].owner === INACTIVE_ID ) continue;
     
     model.drainFuel( i );
     if(turnStartSupply) model.tryUnitSuppliesNeighbours( i );

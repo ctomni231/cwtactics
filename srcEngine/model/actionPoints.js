@@ -20,7 +20,7 @@ controller.defineEvent("trapWait");
 // After a unit has acted, it should be removed from this list with
 // {@link model.markUnitNonActable}.
 // 
-model.leftActors = util.list( constants.MAX_UNITS_PER_PLAYER, false );
+model.leftActors = util.list( MAX_UNITS_PER_PLAYER, false );
 
 // Define persistence handler
 controller.persistenceHandler(
@@ -62,9 +62,9 @@ controller.persistenceHandler(
 //
 // @param uid selected unit id 
 model.canAct = function( uid ){
-  var startIndex = model.turnOwner * constants.MAX_UNITS_PER_PLAYER;
+  var startIndex = model.turnOwner * MAX_UNITS_PER_PLAYER;
 
-  if( uid >= startIndex + constants.MAX_UNITS_PER_PLAYER || uid < startIndex ){
+  if( uid >= startIndex + MAX_UNITS_PER_PLAYER || uid < startIndex ){
     return false;
   }
   else return model.leftActors[ uid - startIndex ] === true;
@@ -76,12 +76,12 @@ model.canAct = function( uid ){
 // @param {Number} uid selected unit identical number
 // @param {Boolean} canAct the target status  
 model.setActableStatus = function( uid, canAct ){
-  var startIndex = model.turnOwner * constants.MAX_UNITS_PER_PLAYER;
+  var startIndex = model.turnOwner * MAX_UNITS_PER_PLAYER;
 
-  if( uid >= startIndex + constants.MAX_UNITS_PER_PLAYER || uid < startIndex ){
+  if( uid >= startIndex + MAX_UNITS_PER_PLAYER || uid < startIndex ){
     model.criticalError(
-      constants.error.ILLEGAL_PARAMETERS,
-      constants.error.TURN_OWNER_ONLY
+      error.ILLEGAL_PARAMETERS,
+      error.TURN_OWNER_ONLY
     );
   }
   else model.leftActors[ uid - startIndex ] = canAct;
@@ -101,7 +101,7 @@ model.resetActableStatus = function( pid ){
   var e= model.getLastUnitSlotId( pid );
   var io = i;
   for( ; i<e; i++ ){
-    if( model.units[i].owner === constants.INACTIVE_ID ){
+    if( model.units[i].owner === INACTIVE_ID ){
       model.leftActors[ i-io ] = false;
     }
     else model.leftActors[ i-io ] = true;

@@ -71,10 +71,10 @@ model.doPropertyGiveFunds = function(prid){
   var y = prop.y;
 	
   // check parameters
-	if(prop.owner === constants.INACTIVE_ID){
+	if(prop.owner === INACTIVE_ID){
 		model.criticalError(
-			constants.error.ILLEGAL_PARAMETERS,
-			constants.error.UNKNOWN_PLAYER_ID
+			error.ILLEGAL_PARAMETERS,
+			error.UNKNOWN_PLAYER_ID
 		);
 	}
 	
@@ -124,10 +124,10 @@ model.propertyRepairs = function(i){
 	var prop = model.properties[i];
 	
 	// check parameters
-	if(prop.owner === constants.INACTIVE_ID){
+	if(prop.owner === INACTIVE_ID){
 		model.criticalError(
-			constants.error.ILLEGAL_PARAMETERS,
-			constants.error.UNKNOWN_PLAYER_ID
+			error.ILLEGAL_PARAMETERS,
+			error.UNKNOWN_PLAYER_ID
 		);
 	}
 	
@@ -200,7 +200,7 @@ model.unitSuppliesNeighbours = function(sid){
 	
 	// unit must be a supply unit
 	if(!selectedUnit.type.supply)model.criticalError(
-		constants.error.ILLEGAL_PARAMETERS, constants.error.SUPPLY_UNIT_EXPECTED
+		error.ILLEGAL_PARAMETERS, error.SUPPLY_UNIT_EXPECTED
 	);
 	
 	var x = selectedUnit.x;

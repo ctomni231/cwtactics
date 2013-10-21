@@ -17,7 +17,7 @@ view.registerAnimationHook({
     this.moveAnimationDustStep = -1;
     this.moveAnimationDustPic = null;
     
-    view.preventRenderUnit = model.units[ uid ];
+    .preventRenderUnit = model.units[ uid ];
     var mvType = model.units[ uid ].type.movetype;
     
     /*
@@ -46,7 +46,7 @@ view.registerAnimationHook({
     // MOVE 4 TILES / SECOND
     this.moveAnimationShift += ( delta/1000 ) * ( tileSize*8);
     
-    view.markForRedrawWithNeighboursRing(
+    .markForRedrawWithNeighboursRing(
       this.moveAnimationX, this.moveAnimationY
     );
     
@@ -77,22 +77,22 @@ view.registerAnimationHook({
           
         case model.moveCodes.UP :
           this.moveAnimationY--;
-          this.moveAnimationDustPic = view.getInfoImageForType("DUST_U");
+          this.moveAnimationDustPic = .getInfoImageForType("DUST_U");
           break;
           
         case model.moveCodes.RIGHT :
           this.moveAnimationX++;
-          this.moveAnimationDustPic = view.getInfoImageForType("DUST_R");
+          this.moveAnimationDustPic = .getInfoImageForType("DUST_R");
           break;
           
         case model.moveCodes.DOWN :
           this.moveAnimationY++;
-          this.moveAnimationDustPic = view.getInfoImageForType("DUST_D");
+          this.moveAnimationDustPic = .getInfoImageForType("DUST_D");
           break;
           
         case model.moveCodes.LEFT :
           this.moveAnimationX--;
-          this.moveAnimationDustPic = view.getInfoImageForType("DUST_L");
+          this.moveAnimationDustPic = .getInfoImageForType("DUST_L");
           break;
       }
       
@@ -108,7 +108,7 @@ view.registerAnimationHook({
         this.moveAnimationPath  = null;
         this.moveAnimationUid   = -1;
         this.moveAnimationShift = 0;
-        view.preventRenderUnit = null; // RENDER UNIT NOW NORMALLY
+        .preventRenderUnit = null; // RENDER UNIT NOW NORMALLY
       }
     }
   },
@@ -120,23 +120,23 @@ view.registerAnimationHook({
     var shift    = this.moveAnimationShift;
     var moveCode = this.moveAnimationPath[ this.moveAnimationIndex ];
     var unit     = model.units[ uid ];
-    var color = view.colorArray[ unit.owner ];
+    var color = .colorArray[ unit.owner ];
     var state;
     var tp = unit.type;
     
     // GET CORRECT IMAGE STATE
     switch( moveCode ){
-      case model.moveCodes.UP :    state = view.IMAGE_CODE_UP;    break;
-      case model.moveCodes.RIGHT : state = view.IMAGE_CODE_RIGHT; break;
-      case model.moveCodes.DOWN :  state = view.IMAGE_CODE_DOWN;  break;
-      case model.moveCodes.LEFT :  state = view.IMAGE_CODE_LEFT;  break;
+      case model.moveCodes.UP :    state = .IMAGE_CODE_UP;    break;
+      case model.moveCodes.RIGHT : state = .IMAGE_CODE_RIGHT; break;
+      case model.moveCodes.DOWN :  state = .IMAGE_CODE_DOWN;  break;
+      case model.moveCodes.LEFT :  state = .IMAGE_CODE_LEFT;  break;
     }
     
-    var pic = view.getUnitImageForType( tp.ID, state, color );
+    var pic = .getUnitImageForType( tp.ID, state, color );
     
     var tileSize = TILE_LENGTH;
     var BASESIZE = controller.baseSize;
-    var scx = (BASESIZE*2)*view.getSpriteStep("UNIT");
+    var scx = (BASESIZE*2)*.getSpriteStep("UNIT");
     var scy = 0;
     var scw = BASESIZE*2;
     var sch = BASESIZE*2;
@@ -155,7 +155,7 @@ view.registerAnimationHook({
     
     // DRAW IT
     if( pic !== undefined ){
-      view.canvasCtx.drawImage(
+      .canvasCtx.drawImage(
         pic,
         scx,scy,
         scw,sch,
@@ -177,8 +177,8 @@ view.registerAnimationHook({
         case model.moveCodes.DOWN:  tcy += shift; break;
       }
       
-      view.canvasCtx.fillStyle="rgb(255,0,0)";
-      view.canvasCtx.fillRect(
+      .canvasCtx.fillStyle="rgb(255,0,0)";
+      .canvasCtx.fillRect(
         tcx,tcy,
         tcw,tch
       );
@@ -197,7 +197,7 @@ view.registerAnimationHook({
       tcw = tileSize+tileSize;
       tch = tileSize+tileSize;
       
-      view.canvasCtx.drawImage(
+      .canvasCtx.drawImage(
         this.moveAnimationDustPic,
         scx,scy,
         scw,sch,

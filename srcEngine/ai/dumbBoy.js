@@ -15,7 +15,7 @@ controller.registerAI({
         // #### Start 
         
         case "START_TURN":
-          if( constants.DEBUG ) util.log("DumbBoy:: starts turn");
+          if( DEBUG ) util.log("DumbBoy:: starts turn");
           
           //memory.state  = "MOVE_ATTACK";
           memory.state  = "END_TURN";
@@ -26,10 +26,10 @@ controller.registerAI({
         // #### Moving and Attack
         
         case "MOVE_ATTACK":
-          if( constants.DEBUG ) util.log("DumbBoy:: moving and attack with units");  
+          if( DEBUG ) util.log("DumbBoy:: moving and attack with units");
         
           var unit = model.units[ memory.cIndex ];
-          if( unit.owner === constants.INACTIVE_ID ){
+          if( unit.owner === INACTIVE_ID ){
             
             // if unit has a capture ability then try to capture or move near a property
             
@@ -50,7 +50,7 @@ controller.registerAI({
         // #### Building units
         
         case "BUILD":
-          if( constants.DEBUG ) util.log("DumbBoy:: building units");
+          if( DEBUG ) util.log("DumbBoy:: building units");
           
           // property belongs to the AI player
           if( model.properties[memory.cIndex].owner === memory.pid ){
@@ -74,8 +74,10 @@ controller.registerAI({
         // #### End 
         
         case "END_TURN":
-          if( constants.DEBUG ) util.log("DumbBoy:: ends turn");
+          if( DEBUG ) util.log("DumbBoy:: ends turn");
+
           controller.sharedInvokement("nextTurn",[]);
+
           return false; // END AI TURN
     }
 	}

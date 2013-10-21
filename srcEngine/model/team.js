@@ -61,8 +61,8 @@ model.transferMoney = function( spid, tpid, money ){
 	// check parameters
 	if( !model.isValidPlayerId(spid) || !model.isValidPlayerId(tpid) ){
 		model.criticalError( 
-			constants.error.ILLEGAL_PARAMETERS, 
-			constants.error.UNKNOWN_PLAYER_ID
+			error.ILLEGAL_PARAMETERS,
+			error.UNKNOWN_PLAYER_ID
 		);
 	}
 	
@@ -72,8 +72,8 @@ model.transferMoney = function( spid, tpid, money ){
 	// check parameters
 	if( money > sPlayer.gold ){
 		model.criticalError( 
-			constants.error.ILLEGAL_PARAMETERS, 
-			constants.error.NOT_ENOUGH_MONEY 
+			error.ILLEGAL_PARAMETERS,
+			error.NOT_ENOUGH_MONEY
 		);
 	}
 	
@@ -99,7 +99,7 @@ model.transferUnit = function( suid, tplid ){
 	var ty           = selectedUnit.y;
 	var opid         = selectedUnit.owner;
 	
-	selectedUnit.owner = constants.INACTIVE_ID;
+	selectedUnit.owner = INACTIVE_ID;
 	
 	// Remove vision
 	if( model.players[tplid].team !== model.players[opid].team ){
@@ -137,8 +137,8 @@ model.isUnitTransferable = function( uid ){
 // @param {Number} uid
 //
 model.addTransferTargets = function( pid, menu ){
-	for( var i=0,e=constants.MAX_PLAYER; i<e; i++ ){
-		if( i !== pid && model.players[i].team !== constants.INACTIVE_ID ){
+	for( var i=0,e=MAX_PLAYER; i<e; i++ ){
+		if( i !== pid && model.players[i].team !== INACTIVE_ID ){
 			menu.addEntry(i, true );
 		}
 	}

@@ -1,3 +1,4 @@
+// ### Controller.buildAction
 // Builds several commands from collected action data.
 //
 controller.buildAction = function(){
@@ -11,52 +12,54 @@ controller.buildAction = function(){
   var actionObject  = actionDto.object;
   var trapped       = false;
   
-  // ADD MOVE PATH
+  // generate move path -> check traps
   if( moveDto.data[0] !== -1 ){
     
-    // TRAPPED ?
-    // if( moveDto.data !== null ){
-      var way = moveDto.data;
+    if( DEBUG ){
+      if( sourceDto.unitId === INACTIVE_ID ){
+        model.errorLogicFault("flush actions","move path given, but not a mover");
+      }
+    }
+
+    var way = moveDto.data;
+    var cx = sourceDto.x;
+    var cy = sourceDto.y;
+
+    for( var i=0,e=way.length; i<e; i++ ){
       
-      var cx = sourceDto.x;
-      var cy = sourceDto.y;
-      for( var i=0,e=way.length; i<e; i++ ){
+      // end of way
+      if( way[i] === -1 ) break;
+
+      switch( way[i] ){
+        case model.moveCodes.DOWN  : cy++; break;
+        case model.moveCodes.UP    : cy--; break;
+        case model.moveCodes.LEFT  : cx--; break;
+        case model.moveCodes.RIGHT : cx++; break;
+      }
+
+      var unit = model.unitPosMap[cx][cy];
+      if( unit !== null ){
         
-        // end of way
-        if( way[i] === -1 ) break;
-        
-        switch( way[i] ){
-          case model.moveCodes.DOWN  : cy++; break;
-          case model.moveCodes.UP    : cy--; break;
-          case model.moveCodes.LEFT  : cx--; break;
-          case model.moveCodes.RIGHT : cx++; break;
-        }
-        
-        var unit = model.unitPosMap[cx][cy];
-        if( unit !== null ){
+        if( model.players[model.turnOwner].team !==
+           model.players[unit.owner].team ){
           
-          if( model.players[model.turnOwner].team !==
-             model.players[unit.owner].team ){
-            
-            // CONVERT TO TRAP WAIT
-            targetDto.set(cx,cy);
-            way.splice( i );
-            trapped = true;
-          }
+          // convert to `trapWait`
+          targetDto.set(cx,cy);
+          way.splice( i );
+          trapped = true;
         }
       }
+    }
     
-    //}
-    
-    // MOVE COMMAND
+    // move command
     controller.sharedInvokement( "moveUnit", [ moveDto.clone(), sourceDto.unitId, sourceDto.x, sourceDto.y ]);
   }
   
-  // ACTION COMMAND
+  // action command
   if( !trapped ) actionObject.invoke( scope );
   else controller.sharedInvokement( "trapWait", [ sourceDto.unitId ]);
   
-  // UNIT ACTIONS LEADS INTO A WAIT COMMAND 
+  // all unit actions invokes automatically waiting
   if( actionObject.unitAction && actionDto.selectedEntry !== "wait" ){
     controller.sharedInvokement( "markUnitNonActable", [ sourceDto.unitId ]);
   }

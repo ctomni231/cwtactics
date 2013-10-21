@@ -16,6 +16,31 @@ view.drawScreen = util.matrix( constants.MAX_MAP_WIDTH, constants.MAX_MAP_HEIGHT
  * @param y
  */
 view.markForRedraw = function( x,y ){
+  if( !(x >= 0 && y >= 0 && x < model.mapWidth && y < model.mapHeight ) ) return;
+
+  while( true ){
+    if( view.drawScreen[x][y] ) break;
+
+    // mark tile for rerendering
+    view.drawScreen[x][y] = true;
+    view.drawScreenChanges++;
+
+    // move one tile to the south
+    y++;
+    if( y === model.mapHeight ) break;
+
+    if( model.propertyPosMap[x][y] === null &&
+        view.overlayImages[ view.mapImages[x][y] ] !== true ){
+
+      // if the bottom neighbour is not a
+      // overlapping tile then stop checkup
+      break;
+    }
+  }
+};
+
+ /*
+view.markForRedraw = function( x,y ){
   if( x >= 0 && y >= 0 && x < model.mapWidth && y < model.mapHeight ){
 
     if( view.drawScreen[x][y] === true ) return;
@@ -27,13 +52,12 @@ view.markForRedraw = function( x,y ){
     y++;
     if( y < model.mapHeight ){
       if( model.propertyPosMap[x][y] !== null ) view.markForRedraw(x,y);
-      // else if( view.overlayImages[ model.map[x][y]] === true ){
       else if( view.overlayImages[ view.mapImages[x][y] ] === true ){
         view.markForRedraw(x,y);
       }
     }
   }
-};
+};*/
 
 /**
  * Rerenders a tile and all neightbours in a range around it.

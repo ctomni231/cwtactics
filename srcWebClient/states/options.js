@@ -1,7 +1,7 @@
 util.scoped(function(){
   
   function saveComplete(){
-    if( constants.DEBUG ) util.log("successfully set new mod path");
+    if( DEBUG ) util.log("successfully set new mod path");
   }
   
   function wipeComplete(){
@@ -18,9 +18,9 @@ util.scoped(function(){
   
   var btn = controller.generateButtonGroup( 
     document.getElementById("cwt_options_screen"),
-    "cwt_panel_header_big cwt_page_button w_400 cwt_panel_button",
-    "cwt_panel_header_big cwt_page_button w_400 cwt_panel_button button_active",
-    "cwt_panel_header_big cwt_page_button w_400 cwt_panel_button button_inactive"
+    "cwt_panel_header_small cwt_page_button w_400 cwt_panel_button",
+    "cwt_panel_header_small cwt_page_button w_400 cwt_panel_button button_active",
+    "cwt_panel_header_small cwt_page_button w_400 cwt_panel_button button_inactive"
   );
   
   // ------------------------------------------------------------------------------------------
@@ -114,6 +114,14 @@ util.scoped(function(){
         updateSoundContent();
         break;
         
+      case "options.setKeyboad":
+        controller.activeMapping = controller.KEY_MAPPINGS.KEYBOARD;
+        return "REMAP_KEYS";
+
+      case "options.setGamepad":
+        controller.activeMapping = controller.KEY_MAPPINGS.GAMEPAD;
+        return "REMAP_KEYS";
+
       case "options.resetData":
         controller.storage.set("resetDataAtStart",{value:true}, wipeComplete );
         break;

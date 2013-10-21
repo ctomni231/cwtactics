@@ -6,15 +6,18 @@
 // ### Meta Data
 
 controller.registerInvokableCommand("battleBetween");
+controller.registerInvokableCommand("attackBattleProperty");
 
 controller.defineEvent("battleBetween");
 controller.defineEvent("mainAttack");
 controller.defineEvent("counterAttack");
+controller.defineEvent("propertyDestroyed");
+controller.defineEvent("attackBattleProperty");
 
 controller.defineGameConfig("daysOfPeace",0,50,0);
     
-controller.defineGameScriptable("minrange",1,constants.MAX_SELECTION_RANGE-1);
-controller.defineGameScriptable("maxrange",1,constants.MAX_SELECTION_RANGE);
+controller.defineGameScriptable("minrange",1,MAX_SELECTION_RANGE-1);
+controller.defineGameScriptable("maxrange",1,MAX_SELECTION_RANGE);
 controller.defineGameScriptable("att",50,400);
 controller.defineGameScriptable("def",50,400);
 controller.defineGameScriptable("counteratt",50,400);
@@ -132,11 +135,26 @@ model.attackRangeMod_ = function( uid, x, y, data, markAttackableTiles ){
         
         if( model.distance( x,y, lX,lY ) >= minR ){
           
+          var dmg = -1;
+
           // ONLY UNIT FROM OTHER TEAMS ARE ATTACKABLE
           var tUnit = model.unitPosMap[ lX ][ lY ];
           if( tUnit !== null && model.players[ tUnit.owner ].team !== teamId ){
-            
-            var dmg = model.baseDamageAgainst(unit,tUnit);
+            dmg = model.baseDamageAgainst(unit,tUnit);
+            if( dmg > 0 ){
+
+              // IF DATA MODE IS ON, THEN MARK THE POSITION
+              // ELSE RETURN TRUE
+              if( markInData ) data.setValueAt(lX,lY, dmg );
+              else return true;
+            }
+          }
+
+          var tProp = model.propertyPosMap[lX][lY];
+          if( tProp !== null && tProp.capturePoints < 0 &&
+              model.players[ tProp.owner ].team !== teamId ){
+
+            dmg = model.baseDamageAgainst(unit,tProp);
             if( dmg > 0 ){
               
               // IF DATA MODE IS ON, THEN MARK THE POSITION 
@@ -145,6 +163,7 @@ model.attackRangeMod_ = function( uid, x, y, data, markAttackableTiles ){
               else return true;
             }
           }
+
         }
       }
     }
@@ -274,7 +293,7 @@ model.battleDamageAgainst = function( attacker, defender, luck, withMainWp, isCo
   var damage = (BASE*ACO/100+LUCK) * (AHP/10) * ( (200-( DCO+(DTR*DHP) ) ) /100 );
   damage = parseInt( damage, 10 );
   
-  if( constants.DEBUG ){
+  if( DEBUG ){
     util.log(
       "attacker:",model.extractUnitId( attacker ),
       "[",BASE,"*",ACO,"/100+",LUCK,"]*(",AHP,"/10)*[(200-(",DCO,"+",DTR,"*",DHP,"))/100]",
@@ -314,6 +333,30 @@ util.scoped(function(){
       
     }
   }
+
+  model.attackBattleProperty = function( attId, propId ){
+    var attacker = model.units[attId];
+    var defender = model.properties[propId];
+    var aSheets = attacker.type;
+    var dmg = model.baseDamageAgainst(attacker,defender,true);
+
+    controller.events.attackBattleProperty( attId, propId );
+
+    // decrease prop hp
+    if( defender.capturePoints >= 0 ){ /* ERROR */ }
+    else{
+
+      defender.capturePoints += dmg;
+      if( defender.capturePoints >= 0 ){
+
+        // change property type from battle property to a non-battle type property (e.g. ruins)
+        model.changePropertyType( propId, defender.type.destroyedType );
+        defender.capturePoints = 0;
+
+        controller.events.propertyDestroyed( propId );
+      }
+    }
+  };
   
   // Invokes a battle between two units. If the defender is a direct attacking unit then
   // the defender tries to counter attack if he is in range.

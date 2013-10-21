@@ -1,6 +1,5 @@
+// ### Controller.loadModification
 // Loads a modification into the game engine.
-// 
-// @param {Object} data
 //
 model.loadModification = function( data ){
   
@@ -15,11 +14,12 @@ model.loadModification = function( data ){
   // register localization
   var i,e;
   
-  // GLOBAL RULES (TODO: NEEDED?)
+  // TODO: GLOBAL RULES needed ?
   for( i=0,e=data.globalRules.length; i<e; i++ ) model.pushRule( data.globalRules[i], false );
 
   model.language = data.language;
   
+  // TODO: re-check this after graphic relayout
   // register graphic and sound locations
   model.graphics = data.graphics;
   model.sounds = data.sounds;

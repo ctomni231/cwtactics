@@ -4,7 +4,7 @@ controller.defineEvent("decreaseManpower");
 
 // Man power data array that holds the amount
 // times that an unit can be builded
-model.manpower = util.list( constants.MAX_PLAYER, 999999 );
+model.manpower = util.list( MAX_PLAYER, 999999 );
 
 // Define persitence handler
 controller.persistenceHandler(

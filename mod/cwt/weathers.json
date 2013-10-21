@@ -8,28 +8,42 @@
     "ID": "RAIN",
     "rules":[
       { "vision":-1 },
-      { "$any": ["PLIN","FRST"], "$all": ["TANK","RAIN"], "movecost": 1 },
-      { "$any": ["PLIN","FRST"], "$all": ["TIRE_A","RAIN"], "movecost": 1 }
+      { "$when":[ "TILE_TYPE", ["PLIN","FRST"],
+                  "MOVE_TYPE", ["TANK","TIRE_A"] ],
+        "movecost": 1 }
     ]
   },
   {
     "ID": "SNOW",
     "rules":[
+
       { "vision":-1 },
-      { "$any": ["WATER","PORT"],        "$all": ["WATER_TRANSPORT"], "movecost": 1 },
-      { "$any": ["WATER","PORT"],        "$all": ["SHIP"], "movecost": 1 },
-      {                                  "$all": ["AIR"], "movecost": 1 },
-      { "$any": ["PLIN","FRST"],         "$all": ["TANK"], "movecost": 1 },
-      { "$any": ["PLIN","FRST"],         "$all": ["TIRE_A"], "movecost": 1 },
-      { "$any": ["PLIN","RIVER","FRST"], "$all": ["INFT"], "movecost": 1 },
-      {                                  "$all": ["MNTN","MECH"], "movecost": 1 },
-      {                                  "$all": ["MNTN","INFT"], "movecost":2 }
+
+      { "$when":[ "MOVE_TYPE", ["TIRE_A","TANK"], "TILE_TYPE", ["PLIN","FRST"] ],
+        "movecost": 1 },
+
+      { "$when":[ "MOVE_TYPE", ["SHIP","WATER_TRANSPORT"], "TILE_TYPE", ["WATER","PORT"] ],
+        "movecost": 1 },
+
+      { "$when":[ "MOVE_TYPE", ["MECH"], "TILE_TYPE", ["MNTN"] ],
+        "movecost": 1 },
+
+      { "$when":[ "MOVE_TYPE", ["INFT"], "TILE_TYPE", ["PLIN","RIVER","FRST"] ],
+        "movecost": 1 },
+
+      { "$when":[ "MOVE_TYPE", ["INFT"], "TILE_TYPE", ["MNTN"] ],
+        "movecost": 2 },
+
+      { "$when":[ "MOVE_TYPE", ["AIR"] ],
+        "movecost": 1 }
     ]
   },
   {
     "ID": "SNST",
     "rules":[
-      { "att": -30, "maxRange": -1 }
+      { "att": -30 },
+      { "$when":[ "ATTACK_TYPE", ["INDIRECT"] ],
+        "maxRange": -1 }
     ]
   }
 ]

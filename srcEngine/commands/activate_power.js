@@ -4,7 +4,12 @@ controller.mapAction({
   hasSubMenu: true,
   
   condition: function(){
-		return model.canActivatePower( model.turnOwner, model.powerLevel.COP );
+		return (
+			( model.coMode === model.CO_MODES.AW1 ||
+			  model.coMode === model.CO_MODES.AW2 ||
+			  model.coMode === model.CO_MODES.AWDS   ) &&
+			model.canActivatePower( model.turnOwner, model.powerLevel.COP )
+		);
   },
             
   prepareMenu: function( data ){
@@ -27,11 +32,7 @@ controller.mapAction({
 				cmd = "activateSuperCoPower"; 
 				break;
 				
-			default:
-				model.criticalError( 
-					constants.error.ILLEGAL_PARAMETERS, 
-					constants.error.UNKNOWN 
-				);
+			default: model.errorUnknown("activatePower");
     }
     
     controller.sharedInvokement(cmd,[model.turnOwner]);

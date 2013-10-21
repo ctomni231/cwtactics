@@ -7,17 +7,19 @@ controller.registerInvokableCommand("doExplosionAt");
 controller.registerInvokableCommand("fireSilo");
 controller.registerInvokableCommand("siloRegeneratesIn");
 controller.registerInvokableCommand("fireCannon");
+controller.registerInvokableCommand("fireLaser");
 
 controller.defineEvent("doExplosionAt");
 controller.defineEvent("startFireSilo");
 controller.defineEvent("fireCannon");
+controller.defineEvent("fireLaser");
 
 model.unitTypeParser.addHandler(function(sheet){
   if( util.expectObject(sheet, "suicide", false) === util.expectMode.DEFINED ){
     
     var sub = sheet.suicide;
     if( !util.expectNumber(sub, "damage", true, true, 1, 9) ) return false;
-    if( !util.expectNumber(sub, "range", true, true, 1, constants.MAX_SELECTION_RANGE) ) return false;
+    if( !util.expectNumber(sub, "range", true, true, 1, MAX_SELECTION_RANGE) ) return false;
     
     if( util.expectObject(sub, "nodamage", false) === util.expectMode.DEFINED ){
       
@@ -224,4 +226,36 @@ model.fireCannon = function( uid, x,y ){
   
   // Invoke event
   controller.events.fireCannon( uid, x,y );
+};
+
+model.isLaser = function( prid ){
+  return model.properties[prid].type.laser;
+};
+
+model.fireLaser = function( pid, ox,oy ){
+
+  controller.events.fireCannon( pid, ox,oy );
+
+  for( var x=0,xe=model.mapWidth; x<xe; x++ ){
+    for( var y=0,ye=model.mapHeight; y<ye; y++ ){
+
+      // must be on the cross
+      if( ox === x ||
+          oy === y ){
+
+        var unit = model.unitPosMap[x][y];
+        if( unit ){
+
+          if( unit.owner !== pid ){
+            model.damageUnit(
+              model.extractUnitId(target),
+              model.ptToHp(type.laser.damage),
+              9
+            );
+          }
+        }
+      }
+
+    }
+  }
 };

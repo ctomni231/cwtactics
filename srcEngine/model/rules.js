@@ -30,8 +30,8 @@ model.isValidRule = function(rule, isMapRule){
 model.pushRule = function(rule, isMapRule){
   if( !model.isValidRule(rule,isMapRule) ){
     model.criticalError(
-      constants.error.ILLEGAL_PARAMETERS,
-      constants.error.ILLEGAL_RULE_DEFINITION );
+      error.ILLEGAL_PARAMETERS,
+      error.ILLEGAL_RULE_DEFINITION );
   }
   
   if(isMapRule) model.mapRules.push(rule);

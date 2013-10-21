@@ -1,27 +1,28 @@
-// Holds the identical number to action name map.
-//
-// 		Map<Int,String>
+// ### Controller.actionMap
+// Holds the identical number to action name
+// map.
 //
 controller.actionMap = {};
 
-// Holds the action name to action identical number map.
-//
-//		Map<String,Int>
+// ### Controller.actionIdMap
+// Holds the action name to action identical
+// number map.
 //
 controller.actionIdMap = {};
 
+// ### Controller.actionObjects
 // Contains all known action objects.
 //
 controller.actionObjects = {};
 
-// Action buffer object that holds all actions that aren't invoked yet.
+// ### Controller.actionBuffer_
+// Action buffer object that holds all actions
+// that aren't invoked yet.
 //
-controller.actionBuffer_ = util.createRingBuffer( constants.ACTIONS_BUFFER_SIZE );
+controller.actionBuffer_ = util.createRingBuffer( ACTIONS_BUFFER_SIZE );
 
+// ### Controller.defineAction_
 // Registers an user callable action.
-//
-// @param {Object} impl action implementation
-// @private
 //
 controller.defineAction_ = function( impl ){
 
@@ -29,42 +30,25 @@ controller.defineAction_ = function( impl ){
 
   if( !impl.hasOwnProperty( "condition" ) ) impl.condition = null;
 
-  if( !impl.hasOwnProperty( "key" ) ) model.criticalError(
-      constants.error.ILLEGAL_PARAMETERS,
-      constants.error.ACTION_KEY_MISSING
-      );
+  if( !impl.hasOwnProperty( "key" )                       ) model.errorIllegalArguments("define action","action key missing");
+  if( !impl.hasOwnProperty( "invoke" )                    ) model.errorIllegalArguments("define action","action invokement function missing");
+  if( controller.actionObjects.hasOwnProperty( impl.key ) ) model.errorIllegalArguments("define action","action key is already registered");
 
-  if( !impl.hasOwnProperty( "invoke" ) ) model.criticalError(
-      constants.error.ILLEGAL_PARAMETERS,
-      constants.error.ACTION_IMPLEMENTATION_MISSING
-      );
-
-  if( controller.actionObjects.hasOwnProperty( impl.key ) ) model.criticalError(
-      constants.error.ILLEGAL_PARAMETERS,
-      constants.error.ACTION_KEY_ALREADY_DEFINED
-      );
-
-  if( !impl.hasOwnProperty( "prepareMenu" ) ) impl.prepareMenu = null;
-  if( !impl.hasOwnProperty( "prepareTargets" ) ) impl.prepareTargets = null;
-  if( !impl.hasOwnProperty( "prepareSelection" ) ) impl.prepareSelection = null;
-  if( !impl.hasOwnProperty( "isTargetValid" ) ) impl.isTargetValid = null;
-  if( !impl.hasOwnProperty( "multiStepAction" ) ) impl.multiStepAction = false;
+  if( !impl.hasOwnProperty( "prepareMenu" )       ) impl.prepareMenu = null;
+  if( !impl.hasOwnProperty( "prepareTargets" )    ) impl.prepareTargets = null;
+  if( !impl.hasOwnProperty( "prepareSelection" )  ) impl.prepareSelection = null;
+  if( !impl.hasOwnProperty( "isTargetValid" )     ) impl.isTargetValid = null;
+  if( !impl.hasOwnProperty( "multiStepAction" )   ) impl.multiStepAction = false;
   if( impl.prepareTargets !== null && !impl.hasOwnProperty( "targetSelectionType" ) ) impl.targetSelectionType = "A";
 
-  if( impl.prepareTargets !== null && impl.isTargetValid !== null ) {
-    model.criticalError(
-      constants.error.ILLEGAL_PARAMETERS,
-      constants.error.ACTION_ONLY_ONE_SELECTION_TYPE
-      );
-  }
+  if( impl.prepareTargets !== null && impl.isTargetValid !== null ) model.errorIllegalArguments("define action","unclear selection mode");
 
   // register programatic link
   controller.actionObjects[ impl.key ] = impl;
 };
 
+// ### Controller.unitAction
 // Registers an user callable unit action.
-//
-// @param {Object} impl action implementation
 //
 controller.unitAction = function( impl ){
   impl.mapAction = false;
@@ -74,9 +58,8 @@ controller.unitAction = function( impl ){
   controller.defineAction_( impl );
 };
 
+// ### Controller.propertyAction
 // Registers an user callable property action.
-//
-// @param {Object} impl action implementation
 //
 controller.propertyAction = function( impl ){
   impl.mapAction = false;
@@ -86,11 +69,10 @@ controller.propertyAction = function( impl ){
   controller.defineAction_( impl );
 };
 
+// ### Controller.mapAction
 // Registers an user callable map action. A map action
 // is only possible when no property and unit will 
 // we selected.
-//
-// @param {Object} impl action implementation
 //
 controller.mapAction = function( impl ){
   impl.mapAction = true;
@@ -100,9 +82,8 @@ controller.mapAction = function( impl ){
   controller.defineAction_( impl );
 };
 
+// ### Controller.clientAction
 // Registers an user callable cliebnt action.
-//
-// @param {Object} impl action implementation
 //
 controller.clientAction = function( impl ){
   impl.mapAction = false;
@@ -112,12 +93,23 @@ controller.clientAction = function( impl ){
   controller.defineAction_( impl );
 };
 
+// ### Controller.actionCheckKeyArgs
+// Checks a key and argument array for the correctness in
+// the current active code base.
+//
+controller.actionCheckKeyArgs = function( key, args ){
+  if( (arguments.length === 2 && !controller.actionIdMap[key]) ||
+      (arguments.length === 1 && !controller.actionMap[ key[key.length - 1] ] ) ) {
+    model.errorIllegalArguments("actionCheckKeyArgs","key and arguments does not match data base");
+  }
+};
+
+// ### Controller.getInvokementArguments
 // Creates an action call array for the command stack.
 //
-// @param {String} key action function name
-// @param {Array} args function arguments
-//
 controller.getInvokementArguments = function( key, args ){
+  if( DEBUG ) controller.actionCheckKeyArgs(key,args);
+
   var result = [ ];
 
   // add arguments
@@ -129,22 +121,17 @@ controller.getInvokementArguments = function( key, args ){
   return result;
 };
 
+// ### Controller.localInvokement
 // Invokes an action function locally by the action 
 // stack.
 //
-// @param {String} key action function name
-// @param {Array} args function arguments
-//
 controller.localInvokement = function( key, args ){
-  if( (arguments.length === 2 && !controller.actionIdMap[key]) || 
-      (arguments.length === 1 && !controller.actionMap[ key[key.length - 1] ] ) ) {
-    model.criticalError( constants.error.ILLEGAL_DATA, constants.error.NON_ACTION_CALL_FUNCTION );
-  }
+  if( DEBUG ) controller.actionCheckKeyArgs(key,args);
 
   // generate arguments for action call
   if( arguments.length === 2 ) key = controller.getInvokementArguments( key, args );
 
-  if( constants.DEBUG ) {
+  if( DEBUG ) {
     util.log(
       "adding",
       JSON.stringify( key ),
@@ -158,17 +145,12 @@ controller.localInvokement = function( key, args ){
   controller.actionBuffer_.push( key );
 };
 
+// ### Controller.sharedInvokement
 // Invokes an action function shared by the action 
 // stack.
 //
-// @param {String} key action function name
-// @param {Array} args function arguments
-//
 controller.sharedInvokement = function( key, args ){
-  if( (arguments.length === 2 && !controller.actionIdMap[key]) || 
-      (arguments.length === 1 && !controller.actionMap[ key[key.length - 1] ] ) ) {
-    model.criticalError( constants.error.ILLEGAL_DATA, constants.error.NON_ACTION_CALL_FUNCTION );
-  }
+  if( DEBUG ) controller.actionCheckKeyArgs(key,args);
 
   // generate arguments for action call
   if( arguments.length === 2 ) key = controller.getInvokementArguments( key, args );
@@ -184,18 +166,23 @@ controller.sharedInvokement = function( key, args ){
   controller.localInvokement( key );
 };
 
+// Special scope to generate unique indexes for the model functions.
+//
 util.scoped( function(){
   var id = 0;
 
+  // ### Controller.registerInvokableCommand
   // Registers an invokable command.
-  //
-  // @param {String} name action function name
   //
   controller.registerInvokableCommand = function( name ){
     if( !util.expectFunction( model, name, true ) ) {
-      model.criticalError( constants.error.ILLEGAL_DATA, constants.error.NON_MODEL_FUNCTION );
+      model.errorIllegalArguments(
+        "register invoke cmd",
+        "function signature does not exists"
+      );
     }
 
+    // register function name
     controller.actionMap[id.toString()] = name;
     controller.actionIdMap[name] = id.toString();
 

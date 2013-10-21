@@ -27,8 +27,10 @@
         "BCTR": 7,
         "TCTR": 30
       }
-    }
+    },
+    "graphics":"../../../image/units/AWDS_INFT.png"
   },
+
   {
     "ID": "MECH",
     "cost": 3000,
@@ -71,8 +73,10 @@
         "BCTR": 9,
         "TCTR": 35
       }
-    }
+    },
+    "graphics":"../../../image/units/AWDS_MECH.png"
   },
+
   {
     "ID": "RECN",
     "cost": 4000,
@@ -100,8 +104,10 @@
         "BCTR": 10,
         "TCTR": 35
       }
-    }
+    },
+    "graphics":"../../../image/units/AWDS_RECN.png"
   },
+
   {
     "ID": "TNTK",
     "cost": 7000,
@@ -149,8 +155,10 @@
         "BCTR": 10,
         "TCTR": 40
       }
-    }
+    },
+    "graphics":"../../../image/units/AWDS_TANK.png"
   },
+
   {
     "ID": "MDTK",
     "cost": 16000,
@@ -198,8 +206,10 @@
         "BCTR": 12,
         "TCTR": 45
       }
-    }
+    },
+    "graphics":"../../../image/units/AWDS_MDTK.png"
   },
+
   {
     "ID": "NTNK",
     "cost": 22000,
@@ -247,8 +257,10 @@
         "BCTR": 22,
         "TCTR": 55
       }
-    }
+    },
+    "graphics":"../../../image/units/AWDS_NTNK.png"
   },
+
   {
     "ID": "WRTK",
     "cost": 28000,
@@ -296,8 +308,10 @@
         "BCTR": 22,
         "TCTR": 55
       }
-    }
+    },
+    "graphics":"../../../image/units/AWDS_WRTK.png"
   },
+
   {
     "ID": "AAIR",
     "cost": 8000,
@@ -329,8 +343,10 @@
         "TCTR": 105,
         "BKBM": 120
       }
-    }
+    },
+    "graphics":"../../../image/units/AWDS_AAIR.png"
   },
+
   {
     "ID": "APCR",
     "cost": 5000,
@@ -346,8 +362,10 @@
     ],
     "supply": [
       "*"
-    ]
+    ],
+    "graphics":"../../../image/units/AWDS_APCR.png"
   },
+
   {
     "ID": "OOZM",
     "cost": 0,
@@ -355,8 +373,10 @@
     "movetype": "SLIME",
     "vision": 1,
     "fuel": 0,
-    "ammo": 0
+    "ammo": 0,
+    "graphics":"../../../image/units/AWDS_OOZM.png"
   },
+
   {
     "ID": "BCTR",
     "cost": 9000,
@@ -405,8 +425,11 @@
         "BCTR": 65,
         "TCTR": 95
       }
-    }
+    },
+    "simpleAnimation":true,
+    "graphics":"../../../image/units/AWDS_BCTR.png"
   },
+
   {
     "ID": "BMBR",
     "cost": 22000,
@@ -439,8 +462,10 @@
         "LNDR": 95,
         "BLBT": 75
       }
-    }
+    },
+    "graphics":"../../../image/units/AWDS_BMBR.png"
   },
+
   {
     "ID": "BKBM",
     "cost": 25000,
@@ -456,8 +481,10 @@
       "nodamage": [
         "OOZM"
       ]
-    }
+    },
+    "graphics":"../../../image/units/AWDS_BKBM.png"
   },
+
   {
     "ID": "STLH",
     "cost": 24000,
@@ -498,8 +525,10 @@
         "BLBT": 65
       }
     },
-    "stealth": true
+    "stealth": true,
+    "graphics":"../../../image/units/AWDS_STLH.png"
   },
+
   {
     "ID": "FGTR",
     "cost": 20000,
@@ -518,8 +547,10 @@
         "TCTR": 120,
         "BKBM": 120
       }
-    }
+    },
+    "graphics":"../../../image/units/AWDS_FGTR.png"
   },
+
   {
     "ID": "TCTR",
     "cost": 5000,
@@ -533,8 +564,11 @@
     "canload": [
       "INFT",
       "MECH"
-    ]
+    ],
+    "simpleAnimation":true,
+    "graphics":"../../../image/units/AWDS_TCTR.png"
   },
+
   {
     "ID": "ARTY",
     "cost": 6000,
@@ -568,8 +602,10 @@
       },
       "minrange": 2,
       "maxrange": 3
-    }
+    },
+    "graphics":"../../../image/units/AWDS_ARTY.png"
   },
+
   {
     "ID": "MISS",
     "cost": 12000,
@@ -589,8 +625,10 @@
       },
       "minrange": 3,
       "maxrange": 5
-    }
+    },
+    "graphics":"../../../image/units/AWDS_MISS.png"
   },
+
   {
     "ID": "PIPR",
     "cost": 20000,
@@ -630,8 +668,10 @@
       },
       "minrange": 2,
       "maxrange": 5
-    }
+    },
+    "graphics":"../../../image/units/AWDS_PRNR.png"
   },
+
   {
     "ID": "RCKT",
     "cost": 15000,
@@ -665,8 +705,10 @@
       },
       "minrange": 3,
       "maxrange": 5
-    }
+    },
+    "graphics":"../../../image/units/AWDS_RCKT.png"
   },
+
   {
     "ID": "SUBM",
     "cost": 20000,
@@ -687,8 +729,10 @@
         "LNDR": 95,
         "BLBT": 95
       }
-    }
+    },
+    "graphics":"../../../image/units/AWDS_SUBM.png"
   },
+
   {
     "ID": "CRUS",
     "cost": 18000,
@@ -719,8 +763,10 @@
     "maxloads": 2,
     "canload": [
       "AIR"
-    ]
+    ],
+    "graphics":"../../../image/units/AWDS_CRUS.png"
   },
+
   {
     "ID": "BLBT",
     "cost": 7500,
@@ -737,8 +783,10 @@
     ],
     "repairs": {
       "SHIP": 1
-    }
+    },
+    "graphics":null
   },
+
   {
     "ID": "ACAR",
     "cost": 30000,
@@ -764,8 +812,10 @@
       },
       "minrange": 3,
       "maxrange": 8
-    }
+    },
+    "graphics":"../../../image/units/AWDS_ACAR.png"
   },
+
   {
     "ID": "LNDR",
     "cost": 12000,
@@ -782,8 +832,10 @@
       "TIRE_A",
       "TIRE_B",
       "TANK"
-    ]
+    ],
+    "graphics":"../../../image/units/AWDS_LNDR.png"
   },
+
   {
     "ID": "BSHP",
     "cost": 28000,
@@ -818,62 +870,7 @@
       },
       "minrange": 2,
       "maxrange": 6
-    }
-  },
-  {
-    "ID": "BHMCE",
-    "cost": 0,
-    "range": 0,
-    "fuel":0,
-    "ammo":0,
-    "movetype": "NO_MOVE",
-    "vision": 1,
-    "cannon":{
-      "direction":"E",
-      "range":3,
-      "damage":3
-    }
-  },
-  {
-    "ID": "BHMCN",
-    "cost": 0,
-    "range": 0,
-    "fuel":0,
-    "ammo":0,
-    "movetype": "NO_MOVE",
-    "vision": 1,
-    "cannon":{
-      "direction":"N",
-      "range":3,
-      "damage":3
-    }
-  },
-  {
-    "ID": "BHMCS",
-    "cost": 0,
-    "range": 0,
-    "fuel":0,
-    "ammo":0,
-    "movetype": "NO_MOVE",
-    "vision": 1,
-    "cannon":{
-      "direction":"S",
-      "range":3,
-      "damage":3
-    }
-  },
-  {
-    "ID": "BHMCW",
-    "cost": 0,
-    "range": 0,
-    "fuel":0,
-    "ammo":0,
-    "movetype": "NO_MOVE",
-    "vision": 1,
-    "cannon":{
-      "direction":"W",
-      "range":3,
-      "damage":3
-    }
+    },
+    "graphics":"../../../image/units/AWDS_BSHP.png"
   }
 ]

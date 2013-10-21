@@ -17,6 +17,7 @@ util.scoped(function(){
   var ATTRANGE    = document.getElementById( "infoBox_attrange" );
   var ATTRANGE2   = document.getElementById( "infoBox_attrange2" );
   var HP_D        = document.getElementById( "infoBox_hp_d" );
+  var PR_HP_D     = document.getElementById( "infoBox_pr_hp_d" );
   var GAS_D       = document.getElementById( "infoBox_fuel_d" );
   var AMMO_D      = document.getElementById( "infoBox_ammo_d");
   var ATTRANGE_D  = document.getElementById( "infoBox_attrange_d" );
@@ -43,6 +44,7 @@ util.scoped(function(){
   // -------------------------------------------------------------------------------------------
   
   var symbolsRendered = false;
+  var capCanvasRendered = true;
 
   controller.sideSimpleTileInformationPanel = -1;
 
@@ -76,6 +78,7 @@ util.scoped(function(){
     if( !symbolsRendered ){
       
       HP_D.getContext("2d").drawImage( view.getInfoImageForType("SYM_HP"), 0, 0);
+      PR_HP_D.getContext("2d").drawImage( view.getInfoImageForType("SYM_HP"), 0, 0);
       GAS_D.getContext("2d").drawImage( view.getInfoImageForType("SYM_FUEL"), 0, 0);
       AMMO_D.getContext("2d").drawImage( view.getInfoImageForType("SYM_AMMO"), 0, 0);
       ATTRANGE_D.getContext("2d").drawImage( view.getInfoImageForType("SYM_ATT"), 0, 0);    
@@ -137,6 +140,23 @@ util.scoped(function(){
       
       TILE_NAME.innerHTML = model.localized( type.ID );
       CAPPT.innerHTML = prop.capturePoints;
+
+      // is normal property --> show property symbol
+      if( prop.capturePoints < 0 ){
+        if( !capCanvasRendered ){ // prevent additional css changes
+          PR_HP_D.style.display = "none";
+          CAPPT_D.style.display = "";
+          capCanvasRendered     = true;
+        }
+      }
+      // is battle property --> show heart symbol
+      else{
+        if( capCanvasRendered ){ // prevent additional css changes
+          PR_HP_D.style.display = "";
+          CAPPT_D.style.display = "none";
+          capCanvasRendered     = false;
+        }
+      }
       CAPPT2.innerHTML = 20;
       
       DEFENSE.innerHTML = type.defense;

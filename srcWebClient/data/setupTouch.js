@@ -140,7 +140,7 @@ controller.setupTouchControls = function( canvas, menuEl ){
 				
 				var pinDis3 = Math.abs( pinDis2 - pinDis );
 				if( pinDis3 <= 32 ){
-					
+					/*
 					if( dx > 48 || dy > 48 ){
 						
 						// EXTRACT DIRECTION
@@ -160,14 +160,16 @@ controller.setupTouchControls = function( canvas, menuEl ){
 						
 						controller.screenStateMachine.event( mode );
 					}
-					else controller.screenStateMachine.event("INP_CANCEL"); 
+					else
+          */
+          controller.screenStateMachine.event("INP_CANCEL");
 				}
 				else{
 					if( pinDis2<pinDis ){
-						controller.screenStateMachine.event("INP_SPECIAL_6"); 
+						//controller.screenStateMachine.event("INP_SPECIAL_6");
 					}
 					else{
-						controller.screenStateMachine.event("INP_SPECIAL_5"); 
+						//controller.screenStateMachine.event("INP_SPECIAL_5");
 					}
 				}
 				

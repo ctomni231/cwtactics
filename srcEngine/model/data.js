@@ -11,8 +11,8 @@ model.createDataParser = function( db, list ){
     addHandler: function( cb ){
       if( typeof cb !== "function" ) {
         model.criticalError(
-          constants.error.ILLEGAL_DATA,
-          constants.error.ILLEGAL_SHEET_HANDLER );
+          error.ILLEGAL_DATA,
+          error.ILLEGAL_SHEET_HANDLER );
       }
 
       parserParts.push( cb );
@@ -26,22 +26,22 @@ model.createDataParser = function( db, list ){
       // check identical string first
       if( !util.expectString( sheet, "ID", true ) ) {
         model.criticalError(
-          constants.error.ILLEGAL_DATA,
-          constants.error.ILLEGAL_SHEET_ID );
+          error.ILLEGAL_DATA,
+          error.ILLEGAL_SHEET_ID );
       }
 
       if( db[sheet.ID] ) {
         model.criticalError(
-          constants.error.ILLEGAL_DATA,
-          constants.error.ILLEGAL_SHEET_ALREADY_DEFINED );
+          error.ILLEGAL_DATA,
+          error.ILLEGAL_SHEET_ALREADY_DEFINED );
       }
 
       // check sheet by calling all parser parts
       for( var i = 0, e = parserParts.length; i < e; i++ ) {
         if( parserParts[i]( sheet ) === false ) {
           model.criticalError(
-            constants.error.ILLEGAL_DATA,
-            constants.error.BREAKS_SHEET_CONTRACT );
+            error.ILLEGAL_DATA,
+            error.BREAKS_SHEET_CONTRACT );
         }
       }
 

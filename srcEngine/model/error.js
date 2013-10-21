@@ -3,36 +3,32 @@ controller.defineEvent("criticalError");
 
 util.scoped(function() {
 
-  // Called when a known/catched error will be recognized 
-  // by the engine. This function throws the `criticalError`
-  // event which allows the client to render error messages
-  // (*e.g. for debug mode*).
-  //
-  // @param {Number} errorId error id
-  // @param {Number} errorData error data id
-  model.criticalError = function(errorId, errorData, e) {
+  function error( type,where,desc ){
+    if( !where ) where = "unknown place";
+    if( !desc ) desc = "";
 
-		// print stack trace in the active javaScript environment
-    // console.trace();
-		
-		var stackData;
-    if(e){
-      stackData = e.stack;
-    }
-    else{
-      try{
-        throw Error();
-      }
-      catch(ex){
-        stackData = ex.stack;
-      }
-    }
+    controller.events.trownError( type,where,desc );
+    util.error( "Error ("+type+"): "+desc+" in "+where );
+  };
 
-    // invoke event     
-    controller.events.criticalError(errorId, errorData, stackData);
+  model.errorClient = function( where,desc ){
+    error( "Client",where,desc );
+  };
 
-    // log error
-    util.error(errorId, errorData, stackData );
+  model.errorUnknown = function( where,desc ){
+    error( "Unknown",where,desc );
+  };
+
+  model.errorIllegalArguments = function( where,desc ){
+    error( "Illegal Arguments",where,desc );
+  };
+
+  model.errorCorruptDataModel = function( where,desc ){
+    error( "Corrupt Data Model",where,desc );
+  };
+
+  model.errorLogicFault = function( where,desc ){
+    error( "Logic Fault",where,desc );
   };
 
 });

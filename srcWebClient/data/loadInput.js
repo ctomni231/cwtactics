@@ -5,6 +5,7 @@ controller.loadInputDevices = util.singleLazyCall(function( err, baton ){
   var menuEl = document.getElementById( "cwt_menu" );
   
   if( controller.clientFeatures.keyboard ) controller.setupKeyboardControls( canvas, menuEl );
+  if( controller.clientFeatures.gamePad  ) controller.setupGamePadControls( canvas, menuEl );
   if( controller.clientFeatures.mouse    ) controller.setupMouseControls( canvas, menuEl );
   if( controller.clientFeatures.touch    ) controller.setupTouchControls( canvas, menuEl );
 });

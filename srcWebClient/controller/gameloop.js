@@ -30,6 +30,7 @@ util.scoped(function(){
    * @returns {undefined}
    */
   controller.gameLoop = function( delta ){
+
     savedDelta += delta; // SAVE DELTAS FOR UPDATE LOGIC ( --> TURN TIMER AND SO ON )
     
     controller.updateInputCoolDown( delta );
@@ -151,6 +152,8 @@ util.scoped(function(){
     
   };
   
+  controller.inGameLoop = false;
+
   controller.inAnimationHookPhase = function(){
     return hasHocks;
   };

@@ -12,8 +12,8 @@ view.registerAnimationHook({
   },
 
   render: function(){
-    var pic = view.getInfoImageForType("TRAPPED");
-    view.canvasCtx.drawImage( pic, this.x, this.y );
+    var pic = .getInfoImageForType("TRAPPED");
+    .canvasCtx.drawImage( pic, this.x, this.y );
   },
 
   update: function( delta ){
@@ -23,10 +23,10 @@ view.registerAnimationHook({
   isDone: function(){
     var res = this.time > 1000;
     if( res ){
-      var pic = view.getInfoImageForType("TRAPPED");
+      var pic = .getInfoImageForType("TRAPPED");
       var y = this.yp;
       for( var i=this.xp,e=i+( parseInt(pic.width/TILE_LENGTH,10) ); i<=e; i++ ){
-        view.markForRedraw( i , y );
+        .markForRedraw( i , y );
       }
     }
     return res;

@@ -5,3 +5,14 @@
 util.scoped = function( cb ){
   return cb();
 };
+
+util.copy = function( from ){
+  var to = {};
+  var list = Object.keys(from);
+  for( var i=0,e=list.length; i<e; i++ ){
+    var key = list[i];
+    to[key] = from[key];
+  }
+
+  return to;
+};

@@ -14,7 +14,8 @@ controller.unitAction({
     ]);
     
     controller.sharedInvokement("doExplosionAt",[ 
-      data.target.x, data.target.y,
+      data.target.x,
+      data.target.y,
       data.source.unit.type.suicide.range,
       model.ptToHp(data.source.unit.type.suicide.damage),
       data.source.unit.owner

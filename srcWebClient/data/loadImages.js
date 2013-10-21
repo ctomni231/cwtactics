@@ -37,19 +37,19 @@ controller.loadImages = util.singleLazyCall(function( err, masterbaton ){
     switch( mode ){
         
       case "UNIT": 
-        view.setUnitImageForType( this, key, view.IMAGE_CODE_IDLE, view.COLOR_RED ); 
+        .setUnitImageForType( this, key, .IMAGE_CODE_IDLE, .COLOR_RED );
         break;
         
       case "PROPERTY": 
-        view.setPropertyImageForType( this, key, view.COLOR_RED );
+        .setPropertyImageForType( this, key, .COLOR_RED );
         break;
         
       case "TILE": 
-        view.setTileImageForType( this, key );
+        .setTileImageForType( this, key );
         break;
         
       case "MISC": 
-        view.setInfoImageForType( this, key );
+        .setInfoImageForType( this, key );
         break;
         
       default: util.raiseError("unknown mode key",mode);
@@ -89,11 +89,11 @@ controller.loadImages = util.singleLazyCall(function( err, masterbaton ){
     
     // ANIMATED ?
     if( desc[2] === "ANIMATED" ){
-      view.animatedTiles[ img.pickey_ ] = true;
+      .animatedTiles[ img.pickey_ ] = true;
     }
     // OVERLAYER ?
     else if( desc[2] === "OVERLAYER" ){
-      view.overlayImages[ img.pickey_ ] = true;
+      .overlayImages[ img.pickey_ ] = true;
     }
       
       controller.storage.has( desc[0], function( exists ){

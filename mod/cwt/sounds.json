@@ -10,59 +10,6 @@
   { "src":"../../../sound/cancel.wav",       "id":"CANCEL" }, 
   { "src":"../../../sound/rocketImpact.mp3", "id":"ROCKET_IMPACT" }, 
   { "src":"../../../sound/explode.wav",      "id":"EXPLODE" },		
-  { "src":"../../../sound/cannon.wav",       "id":"CANNON" },		
-  
-  { 
-    "src":"../../../music/Epoch.mp3", 
-    "music":true, 
-    "id":"BG" 
-  },
-  
-  { 
-    "src":"../../../music/OrangeStarTheme.mp3", 
-    "music":true, 
-    "id":"OS_MUSIC"
-  },
-  
-  { 
-    "src":"../../../music/BlueMoonTheme.mp3", 
-    "music":true, 
-    "id":"BM_MUSIC" 
-  },
-  
-  { 
-    "src":"../../../music/YellowCometTheme.mp3", 
-    "music":true, 
-    "id":"YC_MUSIC" 
-  },
-  
-  { 
-    "src":"../../../music/GreenEarthTheme.mp3", 
-    "music":true, 
-    "id":"GE_MUSIC"
-  },
-  
-  { 
-    "src":"../../../music/BlackHoleTheme.mp3", 
-    "music":true, 
-    "id":"BH_MUSIC" 
-  },
-  
-  { 
-    "src":"../../../music/Andy.mp3", 
-    "co_music":true, 
-    "id":"ANDY_MUSIC" 
-  },
-  
-  { 
-    "src":"../../../music/Max.mp3", 
-    "co_music":true, 
-    "id":"MAX_MUSIC" 
-  },
-  
-  { 
-    "src":"../../../music/sami.mp3", 
-    "co_music":true, 
-    "id":"SAMI_MUSIC" 
-  }
+  { "src":"../../../sound/cannon.wav",       "id":"CANNON" }
+
 ]
