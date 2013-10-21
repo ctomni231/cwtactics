@@ -1,43 +1,38 @@
 controller.registerInvokableCommand("nextAiStep");
 controller.registerInvokableCommand("prepareAiTurn");
 
-controller.activeAIs = util.list( constants.MAX_PLAYER, function(){
+// ### Controller.activeAIs
+// Holds the active AI objects.
+//
+controller.activeAIs = util.list( MAX_PLAYER, function(){
   return {
     memory:{},
     ai:null    
   };
 });
 
+// ### Controller.aiImpls
 // Holds the different artificial intelligence implementations.
 //
 controller.aiImpls = {};
 
+// ### Controller.registerAI
 // Registers an artificial intelligence implementation.
-//
-// @param {Object} impl implementation object
 //
 controller.registerAI = function( impl ){
   
-  // Identical key needs to be defined
-  if( !util.expectString( impl, "key", true ) ||
-      !util.expectString( controller.aiImpls, "key", true ) ) model.criticalError( 
-    constants.error.ILLEGAL_PARAMETERS, constants.error.GAME_STATE_BREAK
-  );
-  
-  // Initializer function must be defined
-  if( !util.expectFunction( impl, "init", true ) ) model.criticalError( 
-    constants.error.ILLEGAL_PARAMETERS, constants.error.GAME_STATE_BREAK
-  );
-  
-  // Tick function must be defined
-  if( !util.expectFunction( impl, "tick", true ) ) model.criticalError( 
-    constants.error.ILLEGAL_PARAMETERS, constants.error.GAME_STATE_BREAK
-  );
+  // check implementation meta data
+  if( !util.expectString( impl, "key", true ) || !util.expectString( controller.aiImpls, "key", true ) ) model.errorIllegalArguments("register AI","illegal AI key");
+  if( !util.expectFunction( impl, "init", true )                                                       ) model.errorIllegalArguments("register AI","needs init function");
+  if( !util.expectFunction( impl, "tick", true )                                                       ) model.errorIllegalArguments("register AI","needs tick function");
   
   controller.aiImpls[impl.name] = impl;  
 };
 
-controller.setAIPlayer = function( pid, key ){
+// ### Controller.setAiPlayer
+// Sets a AI player for a given player id `pid`.
+//
+controller.setAiPlayer = function( pid, key ){
   var impl = controller.aiImpls[key];
   if( impl ){
     
@@ -47,28 +42,27 @@ controller.setAIPlayer = function( pid, key ){
   else return false;
 };
 
+// ### Controller.isPlayerAiControlled
 // Returns true if a player id is controlled by the AI.
 //
 controller.isPlayerAiControlled = function( pid ){
   return controller.activeAIs[pid].ai !== null;
 };
 
-// Grabs the AI object for the current turn owner. Throws an error
-// if the current turn owner isn't controlled by the AI.
+// ### Controller.getAiForCurrentPlayer
+// Grabs the AI object for the current turn owner. Throws an error if the current turn owner isn't controlled by the AI.
 //
 controller.getAiForCurrentPlayer = function(){
   var obj = controller.activeAIs[ model.turnOwner ];
   
   // If the turn owner has no AI then it's a game state breaker 
-  if( !obj.ai ) model.criticalError( 
-    constants.error.ILLEGAL_DATA, constants.error.AI_STEP_ON_NON_AI_PLAYER 
-  );
+  if( !obj.ai ) model.errorCorruptDataModel("getAiForCurrentPlayer","current player is not controlled by the AI");
   
   return obj;
 };
 
-// Invokes the next AI step. Will be called as command 
-// but not shared with other clients.
+// ### Controller.prepareAiTurn
+// Invokes the next AI step. Will be called as command but not shared with other clients.
 //
 model.prepareAiTurn = function(){
   var obj = controller.getAiForCurrentPlayer();
@@ -80,8 +74,8 @@ model.prepareAiTurn = function(){
   model.nextAiStep();
 };
 
-// Invokes the next AI step. Will be called as command 
-// but not shared with other clients.
+// ### Controller.nextAiStep
+// Invokes the next AI step. Will be called as command but not shared with other clients.
 //
 model.nextAiStep = function(){
   var obj = controller.getAiForCurrentPlayer();
