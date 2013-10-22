@@ -31,11 +31,9 @@ controller.registerAI({
           var unit = model.units[ memory.cIndex ];
           if( unit.owner === INACTIVE_ID ){
             
-            // if unit has a capture ability then try to capture or move near a property
-            
-            // else if enemy unit is in sight then try to move to it and attack
-            
-            // else move to a enemy HQ
+            // if unit has a capture ability then try to capture or move
+            // near a property else if enemy unit is in sight then try to 
+            // move to it and attack else move to a enemy HQ
             
           }
         
