@@ -25,7 +25,7 @@ Every file is a module and has a name. The name is also it's file name and the n
 
 The file name itself defines by the pattern:
 
-    #{moduleName}.js
+    #{moduleName}.js  :> fog.js
     
 ## Module-Content
     
@@ -39,9 +39,15 @@ The content of the file follows a simple order.
 
 The modules shares the same scope because they attached to one of the global variables of `CWT`. Because of this you have to use the name schema also on variable names to minimize the chance of naming collisions. Every property name will be constructed like this:
 
-    #{moduleName}VariableName
+    #{moduleName}VariableName  :>  fogMap
     
 Important is that the first letter of your variable name is written as capital letter, because we use a camel case schema for variable names as well.
+
+## Module-Events
+
+Module event names follows the same pattern as module properties. Example:
+
+    #{moduleName}Event  :>  fogRecalculated
 
 ## Private variables
 
