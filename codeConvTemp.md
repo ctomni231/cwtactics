@@ -47,7 +47,7 @@ Important is that the first letter of your variable name is written as capital l
 
 *JavaScript* does not allow the declaration and usage of private variables. We like the *information hiding* pattern, but it's quite unusable for games in our opionion due drawbacks in terms of resource usage overhead. If you really need a property that can only used by your module, then you have two options. The first one is to define it as a public variable (which is the preferred one) with the following naming pattern.
 
-    _#{moduleName}VariableName
+    #{moduleName}VariableName_
 
 Another way to do this is to wrap the entire variable into a self executing function. This is pattern maybe more difficult to read sometimes. Atm we try to use it only when we need something like function constructing functions like in the following example. Pleas try to use the above pattern whenever it's possible. 
 
