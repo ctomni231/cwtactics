@@ -43,6 +43,28 @@ The modules shares the same scope because they attached to one of the global var
     
 Important is that the first letter of your variable name is written as capital letter, because we use a camel case schema for variable names as well.
 
+## Private variables
+
+*JavaScript* does not allow the declaration and usage of private variables. We like the *information hiding* pattern, but it's quite unusable for games in our opionion due drawbacks in terms of resource usage overhead. If you really need a property that can only used by your module, then you have two options. The first one is to define it as a public variable (which is the preferred one) with the following naming pattern.
+
+    _#{moduleName}VariableName
+
+Another way to do this is to wrap the entire variable into a self executing function. This is pattern maybe more difficult to read sometimes. Atm we try to use it only when we need something like function constructing functions like in the following example. Pleas try to use the above pattern whenever it's possible. 
+
+    (function(){
+      
+      function creaseMsgLogger( header ){
+        return function( msg ){
+          console.log( header+": "+msg );
+        }
+      }
+      
+      util.errorLog = createMsgLogger("ERROR");
+      util.warnLog = createMsgLogger("WARN");
+      util.log = createMsgLogger("FINE");
+        
+    })();
+
 ## Persistence Handlers
 
 Some modules may want to define persistence handler for the save/loading process and the for the data-sheet loaders. This stuff won't be added to the module file. Instead you create another module file with the same name in the foler `persistence`. This structure makes easy to find persistence stuff and decouples the model structure from the save game structure and data-sheet descriptions.
