@@ -1,3 +1,22 @@
+# Maximum Line Width
+
+Every line has a maximum length of `100` characters.
+
+## Indent function calls
+
+If your function call would break the character limit of a single line, then you have to soft-wrap the call. We prefere to have every argument of the call in a single line then. Futhermore the arguments should have a greater indent as the name of the called function. Example:
+
+    myCallOfAVeryLongFunction(
+      myLongArgumentWhichContainsAVeryBadNamingSchema,
+      myShortArgument,
+      (checkSomeThing)? succValue: failValue,
+      you,
+      know,
+      what,
+      we,
+      mean
+    );
+
 # Modules
 
 Every file is a module and has a name. The name is also it's file name and the naming pattern for properties that can be placed in the global variables.
