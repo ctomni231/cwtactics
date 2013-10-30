@@ -1,4 +1,4 @@
-# Quick Readme: About the Weapons Folder.
+# Quick Readme: About the Object_Firing Folder.
 
 ## Intro
 
@@ -16,6 +16,7 @@ BHLZ-E - (2x2) Black Hole Lazer - East Fire
 
 ## Special Instructions
 
-BHLZ-E - [Move image 4 pixels up for accurate animation]
+BHLZ-E - [Place img 4 pixels further up for accurate animation]
+BHLZ-W - [Place img 4 pixels further up for accurate animation]
 
 
