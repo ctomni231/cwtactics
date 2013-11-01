@@ -15,7 +15,10 @@ BHLZ-S - (2x2) Black Hole Laser - South Fire
 
 ## Special Instructions
 
+BHLZ-N - [Place img 3 pixels further up for accurate animation]
+BHLZ-S - [Place img 8 pixels further down for accurate anim]
 BHLZ-E - [Place img 4 pixels further up for accurate animation]
 BHLZ-W - [Place img 4 pixels further up for accurate animation]
+
 
 

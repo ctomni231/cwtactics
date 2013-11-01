@@ -16,8 +16,10 @@ BHLZ-N - (2x2) Black Hole Lazer - North Fire
 BHLZ-S - (2x2) Black Hole Lazer - South Fire
 BHLZ-E - (2x2) Black Hole Lazer - East Fire
 BHLZ-W - (2x2) Black Hole Lazer - West Fire
-
-BHMC-S - (1x1) Black Hole Mini-Cannon - South Fire
+BHMC-N - (2x2) Black Hole Mini-Cannon - North Fire
+BHMC-S - (2x2) Black Hole Mini-Cannon - South Fire
+BHMC-E - (2x2) Black Hole Mini-Cannon - East Fire
+BHMC-W - (2x2) Black Hole Mini-Cannon - West Fire
 
 
 ## Special Instructions
@@ -27,5 +29,4 @@ BHLZ-S - [Place img 8 pixels further down for accurate anim]
 BHLZ-E - [Place img 4 pixels further up for accurate animation]
 BHLZ-W - [Place img 4 pixels further up for accurate animation]
 
-BHMC-S - [Use at own discretion as image might change for it]
 
