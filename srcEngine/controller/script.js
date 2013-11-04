@@ -11,18 +11,18 @@ controller.prepareTags = function( x,y, uid, fx,fy, fuid ){
   tags.INDIRECT = false;
   tags.DIRECT = false;
   
-  var unit = (uid > -1)? model.units[uid] : model.unitPosMap[x][y];
+  var unit = (uid > -1)? model.unit_data[uid] : model.unit_posData[x][y];
   if( unit ){
     tags.__oldUnit__ = unit.type.ID;
     tags[ tags.__oldUnit__ ] = true;
     
-    if( model.isIndirectUnit( (uid > -1)? uid : model.extractUnitId(unit) ) ) tags.INDIRECT = true;
+    if( model.battle_isIndirectUnit( (uid > -1)? uid : model.unit_extractId(unit) ) ) tags.INDIRECT = true;
     else tags.DIRECT = true;
     
   }
   
-  var tileTp = model.map[x][y].ID;
-  var prop = model.propertyPosMap[x][y];
+  var tileTp = model.map_data[x][y].ID;
+  var prop = model.property_posMap[x][y];
   if( prop ){
     tileTp = prop.type.ID;
   }
@@ -36,9 +36,9 @@ controller.prepareTags = function( x,y, uid, fx,fy, fuid ){
     tags.OTHER_INDIRECT = false;
     tags.OTHER_DIRECT = false;
     
-    unit = (fuid > -1)? model.units[fuid] : model.unitPosMap[fx][fy];
+    unit = (fuid > -1)? model.unit_data[fuid] : model.unit_posData[fx][fy];
     if( unit ){
-      if( model.isIndirectUnit( (fuid > -1)? fuid : model.extractUnitId(unit) ) ) tags.OTHER_INDIRECT = true;
+      if( model.battle_isIndirectUnit( (fuid > -1)? fuid : model.unit_extractId(unit) ) ) tags.OTHER_INDIRECT = true;
       else tags.OTHER_DIRECT = true;
     }
   }
@@ -83,7 +83,7 @@ controller.defineGameConfig = function( name, min, max, def, step ){
 //
 controller.buildRoundConfig = function( cfg ){
   var boundaries = controller.configBoundaries_;
-  model.configRule = {};
+  model.cfg_configuration = {};
   
   var keys = Object.keys(boundaries);
   for( var i=0,e=keys.length; i<e; i++ ){
@@ -104,7 +104,7 @@ controller.buildRoundConfig = function( cfg ){
     }
     else value = boundaries[key].defaultValue;
     
-    model.configRule[key] = value;
+    model.cfg_configuration[key] = value;
   }
 };
 
@@ -114,7 +114,7 @@ controller.buildRoundConfig = function( cfg ){
 // @returns {Number}
 // 
 controller.configValue = function( attr ){
-  return model.configRule[attr];
+  return model.cfg_configuration[attr];
 };
 
 // Holds all scriptable var boundaries
@@ -206,17 +206,17 @@ util.scoped(function(){
   // @returns {Number}
   //   
   controller.scriptedValue = function( pid, attr, value ){
-    if( typeof value !== "number" ) util.raiseError("numberic value as parameter value expected");
+    if( typeof value !== "number" ) util.raiseError("numberic value as parameter value util.expected");
     var tags = controller.scriptTags;
     
     // GLOBAL RULES
-    value = solve( model.globalRules, tags, attr, value );
+    value = solve( model.rule_global, tags, attr, value );
     
     // MAP RULES
-    value = solve( model.mapRules, tags, attr, value );
+    value = solve( model.rule_map, tags, attr, value );
     
     // PLAYER CO RULES
-    var co = model.players[pid].mainCo;
+    var co = model.player_data[pid].mainCo;
     var weather = true;
     if( co ){
       value = solve( co.d2d, tags, attr, value );
@@ -226,7 +226,7 @@ util.scoped(function(){
     }
     
     // WEATHER
-    var wth = model.weather;
+    var wth = model.weather_data;
     if( weather && wth ) value = solve( wth.rules, tags, attr, value );
     
     // CHECK BOUNDARIES

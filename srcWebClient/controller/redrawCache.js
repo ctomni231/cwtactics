@@ -16,7 +16,7 @@ view.drawScreen = util.matrix( constants.MAX_MAP_WIDTH, constants.MAX_MAP_HEIGHT
  * @param y
  */
 view.markForRedraw = function( x,y ){
-  if( !(x >= 0 && y >= 0 && x < model.mapWidth && y < model.mapHeight ) ) return;
+  if( !(x >= 0 && y >= 0 && x < model.map_width && y < model.map_height ) ) return;
 
   while( true ){
     if( view.drawScreen[x][y] ) break;
@@ -27,9 +27,9 @@ view.markForRedraw = function( x,y ){
 
     // move one tile to the south
     y++;
-    if( y === model.mapHeight ) break;
+    if( y === model.map_height ) break;
 
-    if( model.propertyPosMap[x][y] === null &&
+    if( model.property_posMap[x][y] === null &&
         view.overlayImages[ view.mapImages[x][y] ] !== true ){
 
       // if the bottom neighbour is not a
@@ -41,7 +41,7 @@ view.markForRedraw = function( x,y ){
 
  /*
 view.markForRedraw = function( x,y ){
-  if( x >= 0 && y >= 0 && x < model.mapWidth && y < model.mapHeight ){
+  if( x >= 0 && y >= 0 && x < model.map_width && y < model.map_height ){
 
     if( view.drawScreen[x][y] === true ) return;
 
@@ -50,8 +50,8 @@ view.markForRedraw = function( x,y ){
 
     // check bottom tile
     y++;
-    if( y < model.mapHeight ){
-      if( model.propertyPosMap[x][y] !== null ) view.markForRedraw(x,y);
+    if( y < model.map_height ){
+      if( model.property_posMap[x][y] !== null ) view.markForRedraw(x,y);
       else if( view.overlayImages[ view.mapImages[x][y] ] === true ){
         view.markForRedraw(x,y);
       }
@@ -82,14 +82,14 @@ view.markForRedrawRange = function( x,y,r ){
   var lY = y-r;
   var hY = y+r;
   if( lY < 0 ) lY = 0;
-  if( hY >= model.mapHeight ) hY = model.mapHeight-1;
+  if( hY >= model.map_height ) hY = model.map_height-1;
   for( ; lY<=hY; lY++ ){
 
     var disY = Math.abs( lY-y );
     lX = x-r+disY;
     hX = x+r-disY;
     if( lX < 0 ) lX = 0;
-    if( hX >= model.mapWidth ) hX = model.mapWidth-1;
+    if( hX >= model.map_width ) hX = model.map_width-1;
     for( ; lX<=hX; lX++ ){
 
       view.markForRedraw(lX,lY);
@@ -113,8 +113,8 @@ view.markForRedrawWithNeighbours = function( x,y ){
   if( y>0 ) view.markForRedraw(x,y-1);
   if( x>0 ) view.markForRedraw(x-1,y);
             view.markForRedraw(x,y);
-  if( y< model.mapHeight-1 ) view.markForRedraw(x,y+1);
-  if( x< model.mapWidth-1 )  view.markForRedraw(x+1,y);
+  if( y< model.map_height-1 ) view.markForRedraw(x,y+1);
+  if( x< model.map_width-1 )  view.markForRedraw(x+1,y);
 };
 
 /**
@@ -129,8 +129,8 @@ view.markForRedrawWithNeighbours = function( x,y ){
  * @param y
  */
 view.markForRedrawWithNeighboursRing = function( x,y ){
-  var gW = model.mapWidth;
-  var gH = model.mapHeight;
+  var gW = model.map_width;
+  var gH = model.map_height;
 
   // LEFT COLUMN
   if( x>0 ){
@@ -157,8 +157,8 @@ view.markForRedrawWithNeighboursRing = function( x,y ){
  */
 view.completeRedraw = function(){
   view.drawScreenChanges = 1;
-  for(var x=0,xe=model.mapWidth; x<xe; x++){
-    for(var y=0,ye=model.mapHeight; y<ye; y++){
+  for(var x=0,xe=model.map_width; x<xe; x++){
+    for(var y=0,ye=model.map_height; y<ye; y++){
       view.drawScreen[x][y] = true;
     }
   }

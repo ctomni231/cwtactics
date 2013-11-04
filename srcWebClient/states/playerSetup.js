@@ -47,9 +47,9 @@ util.scoped(function(){
     // update model
     coSelected[playerId] = cSelect;
     if( cSelect !== INACTIVE_ID ){
-      model.setMainCo( playerId, model.listOfCoTypes[cSelect] );
+      model.co_setMainCo( playerId, model.listOfCoTypes[cSelect] );
     } 
-    else model.setMainCo( playerId, null );
+    else model.co_setMainCo( playerId, null );
 
     // update UI
     update(playerId);
@@ -61,7 +61,7 @@ util.scoped(function(){
   }
 
   function changeTeam( playerId, prev ){
-    var player = model.players[playerId];
+    var player = model.player_data[playerId];
 
     do{
       if( prev ){
@@ -73,7 +73,7 @@ util.scoped(function(){
         if( player.team === MAX_PLAYER ) player.team=0;
       }
     }
-    while( !model.atLeastTwoTeamsLeft() );
+    while( !model.player_areEnemyTeamsLeft() );
 
     update(playerId);
   }
@@ -81,7 +81,7 @@ util.scoped(function(){
   function prepare( playerId ){
 
     // reset generic data
-    model.coData[playerId].coA  = null;
+    model.co_data[playerId].coA  = null;
     coSelected[playerId]        = INACTIVE_ID;
     
     // update UI
@@ -90,7 +90,7 @@ util.scoped(function(){
 
   function update( playerId ){
     var btns = buttons[playerId];
-    var player = model.players[playerId];
+    var player = model.player_data[playerId];
 
     if( player.team === INACTIVE_ID ){
       btns[0].innerHTML = model.localized("config.player.off");
@@ -108,7 +108,7 @@ util.scoped(function(){
       // update player type
       if( playerId === 0 || !sp ){
         btns[0].innerHTML = model.localized("config.player.human");
-        model.registerClientPlayer(playerId);
+        model.client_registerPlayer(playerId);
       }
       else{
         btns[0].innerHTML = model.localized("config.player.AI");
@@ -116,7 +116,7 @@ util.scoped(function(){
       }
       
       // update player co
-      var co = model.coData[playerId].coA; 
+      var co = model.co_data[playerId].coA; 
       btns[1].innerHTML = (co !== null)? co.ID : model.localized("config.player.co.none");
 
       // update player team
@@ -128,8 +128,8 @@ util.scoped(function(){
     var map = obj.value;
 
     // load it
-    controller.prepareGameRound();
-    controller.loadCompactModel(map);
+    controller.update_prepareGameRound();
+    controller.persistence_loadModel(map);
 
     // prepare buttons
     prepare(0);
@@ -331,7 +331,7 @@ util.scoped(function(){
           case "4": value = 3; break;
         }
 
-        if( model.players[value].team === INACTIVE_ID ) break;
+        if( model.player_data[value].team === INACTIVE_ID ) break;
         
         // do correct action
         switch( btn.getActiveKey() ){

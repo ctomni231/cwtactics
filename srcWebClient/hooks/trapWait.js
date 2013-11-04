@@ -1,9 +1,9 @@
 view.registerAnimationHook({
   
-  key:"trapWait",
+  key:"actions_trapWait",
   
   prepare: function( uid ){
-    var unit = model.units[ uid ];
+    var unit = model.unit_data[ uid ];
     this.time = 0;
     this.xp = unit.x+1;
     this.yp = unit.y;

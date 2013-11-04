@@ -1,93 +1,71 @@
-// # Factory module
+// commands
+controller.action_registerCommands( "factory_produceUnit" );
 
-// ### Meta Data
+// events
+controller.event_define( "factory_produceUnit" );
 
-controller.registerInvokableCommand( "buildUnit" );
+// Contructs a unit for a player. At least one slot must be free to do this.
+//
+model.factory_produceUnit = function( x, y, type ){
+  if( DEBUG ) util.log("factory at postion (",x,",",y,") produces a",type);
+  
+  assert( model.map_isValidPosition(x,y) );
+  assert( model.unitTypes.hasOwnProperty(type)));
 
-controller.defineEvent( "buildUnit" );
-
-model.unitTypeParser.addHandler( function( sheet ){
-	if( !util.expectNumber( sheet, "cost", true, true, 0, 99999 ) ) return false;
-} );
-
-model.tileTypeParser.addHandler( function( sheet ){
-	if( util.expectArray( sheet, "builds", false ) === util.expectMode.DEFINED ) {
-		var list = sheet.builds;
-		for( var i = 0, e = list.length; i < e; i++ ) {
-			if( !util.expectString( list, i, true ) ) return false;
-		}
-	}
-} );
-
-// ---
-
-// ### Logic
-
-// Contructs a unit for a player.
-model.buildUnit = function( x, y, type ){
-	
 	// get factory object
-	var prop = model.getPropertyByPos( x, y );
-	if( !prop ) {
-		model.criticalError( error.ILLEGAL_PARAMETERS, error.PROPERTY_NOT_FOUND );
-	}
+	var prop = model.property_posMap[x][y];
+  assert( prop !== null );
+  
+	controller.events.factory_produceUnit( x, y, type );
 	
-	// cannot be a neutral factory
-	if( prop.owner === INACTIVE_ID ) {
-		model.criticalError( error.ILLEGAL_PARAMETERS, error.UNKNOWN_PLAYER_ID );
-	}
-	
-	// invoke introduction event
-	var evCb = controller.events.buildUnit;
-	if( evCb ) evCb( x, y, type );
-	
-	var uid = model.createUnit( model.turnOwner, x, y, type );
+	var uid  = model.unit_create( model.round_turnOwner, x, y, type );
 	var cost = model.unitTypes[ type ].cost;
-	var pl = model.players[ prop.owner ];
-	
-	// check money, if the buyer does not have enough money 
-	// then the game state is broken
-	if( pl.gold < cost ){
-		model.criticalError( 
-			error.ILLEGAL_DATA,
-			error.NOT_ENOUGH_MONEY
-		)
-	};
-	
+	var pl   = model.player_data[ prop.owner ];
+		
 	pl.gold -= cost;
+  assert( pl.gold >= 0 );
 	
-	// factory builds reduces the man power of the factory owner
-	model.decreaseManpower( model.turnOwner );
-	
-	model.markUnitNonActable( uid );
+	model.manpower_decreaseManpower( model.round_turnOwner );
+	model.actions_markUnitNonActable( uid );
 };
 
-model.propertyCanBuild = function( prid ){
-	if( !model.isFactory( prid ) ) return false;
+// Returns `true` when the given factory object (by its `prid`) is a factory and can produce 
+// something technically, else `false`.
+//
+model.factory_canProduceSomething = function( prid ){  
+	if( !model.factory_isFactory( prid ) ) return false;
 	
-	var pid = model.properties[prid].owner;
-	if( !model.hasLeftManpower( pid )  ) return false;
-  if( !model.hasFreeUnitSlots( pid ) ) return false;
+	var pid = model.property_data[prid].owner;
+  assert( model.player_isValidPid(pid) );
+  
+	if( !model.manpower_hasLeftManpower( pid )  ) return false;
+  if( !model.unit_hasFreeSlots( pid ) ) return false;
     
 	return true;
 };
 
-model.isFactory = function( prid ){
-	return model.properties[prid].type.builds;
+// Returns `true` when the given factory object (by its `prid`) is a factory, else `false`.
+//
+model.factory_isFactory = function( prid ){
+  assert( model.property_isValidPropId(prid) );
+  
+	return model.property_data[prid].type.builds;
 };
 
-model.getBuildMenu = function( prid, menu ){
-	if( !model.isFactory(prid) ){
-		model.criticalError( 
-			error.ILLEGAL_DATA,
-			error.FACTORY_EXPECTED
-		);
-	}
+// Generates the build menu for a given factory object (by its `prid`).
+//
+model.factoryGenerateBuildMenu = function( prid, menu ){
+  assert( model.property_isValidPropId(prid) );
+  assert( model.factory_isFactory(prid));
 	
-	var property  = model.properties[prid];
-	var availGold = model.players[ property.owner ].gold;
-	var unitTypes = model.listOfUnitTypes;
-	var bList = property.type.builds;
+	var property   = model.property_data[prid];
+  
+  // the factory must be ownerd by someone
+  assert( model.player_isValidPid(property.owner) );
+  
+	var availGold  = model.player_data[ property.owner ].gold;
+	var unitTypes  = model.listOfUnitTypes;
+	var bList      = property.type.builds;
 	
 	for( var i=0,e=unitTypes.length; i<e; i++ ){
 		var key  = unitTypes[i];

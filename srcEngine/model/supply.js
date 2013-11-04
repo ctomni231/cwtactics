@@ -1,99 +1,50 @@
-// # Supply Module
-//
+// commands
+controller.action_registerCommands("supply_suppliesNeighbours");
+controller.action_registerCommands("supply_tryUnitSuppliesNeighbours");
+controller.action_registerCommands("supply_refillResources");
+controller.action_registerCommands("supply_propertyRepairs");
+controller.action_registerCommands("supply_propertySupply");
+controller.action_registerCommands("supply_giveFunds");
 
-// ### Meta Data
+// events
+controller.event_define("supply_suppliesNeighbours");
+controller.event_define("supply_refillResources");
+controller.event_define("supply_propertyRepairs");
+controller.event_define("supply_propertySupply");
+controller.event_define("supply_giveFunds");
 
-controller.registerInvokableCommand("unitSuppliesNeighbours");
-controller.registerInvokableCommand("tryUnitSuppliesNeighbours");
-controller.registerInvokableCommand("refillResources");
-controller.registerInvokableCommand("propertyRepairs");
-controller.registerInvokableCommand("propertySupply");
-controller.registerInvokableCommand("doPropertyGiveFunds");
-
-controller.defineEvent("unitSuppliesNeighbours");
-controller.defineEvent("refillResources");
-controller.defineEvent("propertyRepairs");
-controller.defineEvent("propertySupply");
-controller.defineEvent("doPropertyGiveFunds");
-
+// configs
 controller.defineGameConfig("autoSupplyAtTurnStart", 0, 1, 1);
-
-model.unitTypeParser.addHandler(function(sheet){
-	var sub, key, keys, list, i, e;
-	
-	if(util.expectArray(sheet, "supply", false) === util.expectMode.DEFINED){
-		
-		list = sheet.supply;
-		for(i = 0, e = list.length; i < e; i++){
-			if(!util.expectString(list, i, true))return false;
-		}
-	}
-	
-	if(util.expectObject(sheet, "repairs", false) === util.expectMode.DEFINED){
-		sub = sheet.repairs;
-		keys = Object.keys(sub);
-		
-		for(i = 0, e = keys.length; i < e; i++){
-			key = keys[i];
-			
-			// hard repair values between 1 and 9 
-			if(!util.expectNumber(sub, key, true, true, 1, 9))return false;
-		}
-	}
-});
-
-model.tileTypeParser.addHandler(function(sheet){
-	if( util.expectObject(sheet, "repairs", false) === util.expectMode.DEFINED){
-		
-		var sub = sheet.repairs;
-		var keys = Object.keys(sub);
-		for( var i2 = 0, e2 = keys.length; i2 < e2; i2++){
-			var key = keys[i2];
-			
-			// hard repair values between 1 and 9 ( 10 is impossible because no unit can have 0 HP )
-			if( !util.expectNumber(sub, key, true, true, 1, 9) ) return false;
-		}
-	}
-});
-
-// ---
-
-// ### Logic
 
 // Player gets funds from all properties.
 // 
-// @param {Number} prid id of the player
-// 
-model.doPropertyGiveFunds = function(prid){
-	var prop = model.properties[prid];
+model.supply_giveFunds = function(prid){
+  assert( model.property_isValidPropId(prid) );
+
+	var prop = model.property_data[prid];
+  assert( prop.owner !== INACTIVE_ID );
 	
 	var x = prop.x;
   var y = prop.y;
-	
-  // check parameters
-	if(prop.owner === INACTIVE_ID){
-		model.criticalError(
-			error.ILLEGAL_PARAMETERS,
-			error.UNKNOWN_PLAYER_ID
-		);
-	}
-	
+		
 	controller.prepareTags(x, y);
 	var funds = controller.scriptedValue(prop.owner, "funds", prop.type.funds);
 	
 	if(typeof funds === "number"){
-		model.players[prop.owner].gold += funds;
+		model.player_data[prop.owner].gold += funds;
 		
-		controller.events.doPropertyGiveFunds( prid, x, y );
+		controller.events.supply_giveFunds( prid, x, y );
 	}
 };
 
 // Player gets resupply from all properties.
 // 
-// @param {Number} i id of the property
-// 
-model.propertySupply = function(i){
-	var prop = model.properties[i];
+model.supply_propertySupply = function(i){
+  assert( model.property_isValidPropId(i) );
+
+	var prop = model.property_data[i];
+  assert( prop.owner !== INACTIVE_ID );
+  
 	if(prop.owner === pid && prop.type.supply){
     
 		var x = prop.x;
@@ -101,16 +52,16 @@ model.propertySupply = function(i){
     var pid = prop.owner;
 		
 		// CHECK TEAM REPAIR OR OWN SIDE REPAIR ONLY
-		var check = model.thereIsUnitCheck;
+		var check = model.unit_thereIsAUnit;
 		var mode = model.MODE_OWN;
 		if(controller.configValue("supplyAlliedUnits") === 1)mode = model.MODE_TEAM;
 		
 		if(check(x, y, pid, mode)){
-			var unitTp = model.unitPosMap[x][y].type;
+			var unitTp = model.unit_posData[x][y].type;
 			if(controller.objectInList(prop.type.supply, unitTp.ID, unitTp.movetype)){
-				model.refillResources(model.unitPosMap[x][y]);
+				model.supply_refillResources(model.unit_posData[x][y]);
 				
-				controller.events.propertySupply( i, x,y );
+				controller.events.supply_propertySupply( i, x,y );
 			}
 		}
 	}
@@ -118,36 +69,30 @@ model.propertySupply = function(i){
 
 // Player properties repairs if possible.
 //
-// @param {Number} i id of the property
-// 
-model.propertyRepairs = function(i){
-	var prop = model.properties[i];
-	
-	// check parameters
-	if(prop.owner === INACTIVE_ID){
-		model.criticalError(
-			error.ILLEGAL_PARAMETERS,
-			error.UNKNOWN_PLAYER_ID
-		);
-	}
-	
+model.supply_propertyRepairs = function(i){
+  assert( model.property_isValidPropId(i) );
+
+	var prop = model.property_data[i];
+  assert( prop.owner !== INACTIVE_ID );
+		
 	if(prop.type.repairs){
 		var x = prop.x;
 		var y = prop.y;
     var pid = prop.owner;
 		
-		var check = model.thereIsUnitCheck;
+		var check = model.unit_thereIsAUnit;
 		var mode = model.MODE_OWN;
 		if(controller.configValue("repairAlliedUnits") === 1)mode = model.MODE_TEAM;
 		
 		if(check(x, y, pid, mode)){
-			var unitTp = model.unitPosMap[x][y].type;
+			var unitTp = model.unit_posData[x][y].type;
 			var value = controller.objectInMap(prop.type.repairs, unitTp.ID, unitTp.movetype);
 			
 			if(value > 0){
-				model.healUnit(model.extractUnitId(model.unitPosMap[x][y]), model.ptToHp(value), true);
+				model.unit_heal(model.unit_extractId(model.unit_posData[x][y]), 
+					model.unit_convertPointsToHealth(value), true);
 				
-				controller.events.propertyRepairs( i, x,y );
+				controller.events.supply_propertyRepairs( i, x,y );
 			}
 		}
 	}
@@ -155,22 +100,21 @@ model.propertyRepairs = function(i){
 
 // Returns true if a given unit id represents a supplier unit.
 //
-// @param {Number} uref supplier id
-//
-model.isSupplyUnit = function( uref ){
-	return model.units[uref].type.supply;
+model.supply_isSupplyUnit = function( uid ){
+  assert( model.unit_isValidUnitId(uid) );
+
+	return model.unit_data[uid].type.supply;
 };
 
 // Returns true if a given unit id has possible supply targets nearby.
 //
-// @param {Number} sref supplier id
-// @param {Number} x target x position where the supply starts
-// @param {Number} y target y position where the supply starts
-//
-model.hasSupplyTargetsNearby = function( sref, x, y ){
-	if( !model.isSupplyUnit( sref ) ) return false;
+model.supply_hasSupplyTargetsNearby = function( uid, x, y ){
+  assert( model.unit_isValidUnitId(uid) );
+  assert( model.map_isValidPosition(x,y) );
+  
+	if( !model.supply_isSupplyUnit( uid ) ) return false;
 	
-	var supplier = model.units[sref];
+	var supplier = model.unit_data[uid];
 	//if( x > 0 ) 
 	
 	return false;
@@ -178,16 +122,12 @@ model.hasSupplyTargetsNearby = function( sref, x, y ){
 
 // Tries to supply surrounding units with a unit.
 //
-// @param {Number} sid supplier id
-//
-model.tryUnitSuppliesNeighbours = function(sid){
-	if( model.isSupplyUnit(sid) ) model.unitSuppliesNeighbours(sid);
+model.supply_tryUnitSuppliesNeighbours = function(sid){
+	if( model.supply_isSupplyUnit(sid) ) model.supply_suppliesNeighbours(sid);
 };
 
 // A supplier supplies all surrounding units that can 
 // be supplied by the supplier.
-// 
-// @param {Number} sid supplier id
 // 
 // @example
 //  cross pattern
@@ -195,19 +135,18 @@ model.tryUnitSuppliesNeighbours = function(sid){
 //    x o x
 //      x
 // 
-model.unitSuppliesNeighbours = function(sid){
-	var selectedUnit = model.units[ sid ];
+model.supply_suppliesNeighbours = function(sid){
+  assert( model.unit_isValidUnitId(sid) );
+
+	var selectedUnit = model.unit_data[ sid ];
 	
-	// unit must be a supply unit
-	if(!selectedUnit.type.supply)model.criticalError(
-		error.ILLEGAL_PARAMETERS, error.SUPPLY_UNIT_EXPECTED
-	);
+  assert( typeof selectedUnit.type.supply !== "undefined" );
 	
-	var x = selectedUnit.x;
-	var y = selectedUnit.y;
-	var pid = selectedUnit.owner;
-	var i = model.getFirstUnitSlotId(pid);
-	var e = model.getLastUnitSlotId(pid);
+	var x    = selectedUnit.x;
+	var y    = selectedUnit.y;
+	var pid  = selectedUnit.owner;
+	var i    = model.unit_firstUnitId(pid);
+	var e    = model.unit_lastUnitId(pid);
 	
 	var unitsSupplied = false;
 	
@@ -215,15 +154,15 @@ model.unitSuppliesNeighbours = function(sid){
 	for(; i < e; i++){
 		
 		// supply when neighbor
-		if(model.unitDistance(sid, i) === 1){
+		if(model.unit_getDistance(sid, i) === 1){
 			
 			if( !unitsSupplied ){
 				
-				controller.events.unitSuppliesNeighbours( sid, x,y, i );
+				controller.events.supply_suppliesNeighbours( sid, x,y, i );
 			}
 			unitsSupplied = true;
 			
-			model.refillResources(i);
+			model.supply_refillResources(i);
 		}
 		
 	}
@@ -231,13 +170,13 @@ model.unitSuppliesNeighbours = function(sid){
 
 // Refills the resources of an unit.
 // 
-// @param {Number|Unit} uid id of the unit or the unit object itself
-// 
-model.refillResources = function(uid){
-	var unit = model.units[uid];
-	var type = unit.type;
+model.supply_refillResources = function(uid){
+  assert( model.unit_isValidUnitId(uid) );
+  
+	var unit 	= model.unit_data[uid];
+	var type 	= unit.type;
 	unit.ammo = type.ammo;
 	unit.fuel = type.fuel;
 	
-	controller.events.refillResources( uid );
+	controller.events.supply_refillResources( uid );
 };

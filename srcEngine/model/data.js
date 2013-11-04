@@ -24,7 +24,7 @@ model.createDataParser = function( db, list ){
     parse: function( sheet ){
 
       // check identical string first
-      if( !util.expectString( sheet, "ID", true ) ) {
+      if( !util.util.expectString( sheet, "ID", true ) ) {
         model.criticalError(
           error.ILLEGAL_DATA,
           error.ILLEGAL_SHEET_ID );
@@ -130,7 +130,7 @@ model.listOfFactions = [ ];
 model.factionParser = model.createDataParser( model.factionTypes, model.listOfFactions );
 
 model.factionParser.addHandler( function( sheet ){
-  if( !util.expectString( sheet, "music", true ) ) return false;
+  if( !util.util.expectString( sheet, "music", true ) ) return false;
 } );
 
 // ---
@@ -148,7 +148,7 @@ model.sounds = null;
 
 model.graphics = null;
 
-model.maps = null;
+model.map_datas = null;
 
 // Language model holds all known language keys.
 //

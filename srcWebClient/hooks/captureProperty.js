@@ -1,9 +1,9 @@
 view.registerAnimationHook({
 
-  key: "captureProperty",
+  key: "property_capture",
 
   prepare: function( cid, prid, px,py, points ){
-    var property = model.properties[ prid ];
+    var property = model.property_data[ prid ];
     controller.updateUnitStatus( cid );
 
     if( property.capturePoints === 20 ){

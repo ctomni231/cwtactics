@@ -1,13 +1,16 @@
-controller.registerInvokableCommand("noTeamLeft");
-controller.registerInvokableCommand("playerGivesUp");
-controller.registerInvokableCommand("playerLooses");
+// commands
+controller.action_registerCommands("player_noTeamsAreLeft");
+controller.action_registerCommands("player_playerGivesUp");
+controller.action_registerCommands("player_deactivatePlayer");
 
-controller.defineEvent("playerGivesUp");
-controller.defineEvent("playerLooses");
-controller.defineEvent("noTeamLeft");
+// events
+controller.event_define("player_playerGivesUp");
+controller.event_define("player_deactivatePlayer");
+controller.event_define("player_noTeamsAreLeft");
 
 // Different relationship modes between two objects
-model.relationModes = {
+//
+model.player_RELATION_MODES = {
 	SAME_OBJECT: -1,
 	NONE:         0,
 	OWN:          1,
@@ -17,11 +20,10 @@ model.relationModes = {
 	NULL:					5
 };
 
-/**
- * List that contains all player instances. An inactive player is marked 
- * with `INACTIVE_ID` as team number.
- */
-model.players = util.list( MAX_PLAYER, function( index ){
+// List that contains all player instances. An inactive player is marked with `INACTIVE_ID` 
+// as team number.
+//
+model.player_data = util.list( MAX_PLAYER, function( index ){
 	return {
 		gold: 0,
 		team: INACTIVE_ID,
@@ -29,129 +31,77 @@ model.players = util.list( MAX_PLAYER, function( index ){
 	};
 });
 
-// Define persistence handler
-controller.persistenceHandler(
-	
-	// load
-	function(dom){
-		var players = dom.players;
-		var data, player, id;
-		
-		// reset player data
-		for( var i=0,e=MAX_PLAYER; i<e; i++ ){
-			player = model.players[i];
-			player.name = null;
-			player.gold = 0;
-			player.team = INACTIVE_ID;
-		}
-		
-		// set player data if given
-		if( players ){
-			for( var i=0,e=players.length; i<e; i++ ){
-				data = players[i];
-				
-				// check data
-				var fail = false;
-				if( !fail && !util.expectNumber( data, 0, true, true, 0, MAX_PLAYER-1 ) ) fail = true;
-				if( !fail && !util.expectString( data, 1, true ) ) fail = true;
-				if( !fail && !util.expectNumber( data, 2, true, true, 0, 999999 ) ) fail = true;
-				if( !fail && !util.expectNumber( data, 3, true, true, 0, MAX_PLAYER-1 ) ) fail = true;
-				
-				// call error when data is illegal
-				if( fail ){
-					model.criticalError( error.ILLEGAL_MAP_FORMAT, error.SAVEDATA_PLAYER_MISSMATCH );
-				}
-				
-				// set player data
-				player = model.players[data[0]];
-				player.name = data[1];
-				player.gold = data[2];
-				player.team = data[3];
-			}
-		}
-	},
-	
-	// save
-	function(dom){
-		
-	}
-);
-
-// Returns true if a given player id is valid or false if not
+// Returns true if a given player id is valid or false if not.
 //
-model.isValidPlayerId = function( pid ){
+model.player_isValidPid = function( pid ){
+  assert( model.property_isValidPropId(pid) );
+
 	if( pid < 0 || pid >= MAX_PLAYER ) return false;
-	return model.players[pid].team !== INACTIVE_ID;
+	return model.player_data[pid].team !== INACTIVE_ID;
 };
 
 // Extracts the identical number from an player object.
 //
-// @param {Object} player player object
-//
-model.extractPlayerId = function( player ){
-	var index = model.players.indexOf( player );
-	
-	// player was not found in the model
-	if( index === -1 ) model.criticalError(
-		error.ILLEGAL_PARAMETERS,
-		error.UNKNOWN_PLAYER_OBJECT
-	);
-	
+model.player_extractId = function( player ){
+	var index = model.player_data.indexOf( player );
+  assert( index > -1 );
+
 	return index;
 };
 
-// A player has loosed the game round due a specific reason. This function removes all of his units and properties. 
-// Furthermore the left teams will be checked. If only one team is left then the end game event will be invoked.
+// A player has loosed the game round due a specific reason. This function removes all of his 
+// units and properties. Furthermore the left teams will be checked. If only one team is left 
+// then the end game event will be invoked.
 // 
-// @param {Number} pid id of the player
-// 
-model.playerLooses = function( pid ){
+model.player_deactivatePlayer = function( pid ){
+  assert( model.property_isValidPropId(pid) );
+  
 	var i,e;
 	
-	// Invoke event
-	var evCb = controller.events.playerLooses;
-	if( evCb ) evCb( pid );
+  controller.events.player_deactivatePlayer( pid );
 	
 	// remove all unit
-	i = model.getFirstUnitSlotId( pid ); 
-	e = model.getLastUnitSlotId( pid );
+	i = model.unit_firstUnitId( pid ); 
+	e = model.unit_lastUnitId( pid );
 	for( ; i<e; i++ ){
-		if( model.units[i].owner !== INACTIVE_ID ) model.destroyUnit(i);
+		if( model.unit_data[i].owner !== INACTIVE_ID ) model.unit_destroy(i);
 	}
 	
 	// remove all properties
 	i = 0; 
-	e = model.properties.length;
+	e = model.property_data.length;
 	for( ; i<e; i++ ){
-		var prop = model.properties[i];
+		var prop = model.property_data[i];
 		if( prop.owner === pid ){
 			prop.owner = -1;
 			
 			// change type when the property is a 
 			// changing type property
 			var changeType = prop.type.changeAfterCaptured;
-			if( changeType ) model.changePropertyType( i, changeType );
+			if( changeType ) model.property_changeType( i, changeType );
 		}
 	}
 	
 	// mark player slot as remove by removing
 	// its team reference
-	model.players[pid].team = -1;
+	model.player_data[pid].team = -1;
 	
 	// when no opposite teams are found then the game has ended
-	if( !model.atLeastTwoTeamsLeft() ){
-		controller.localInvokement("noTeamLeft");
+	if( !model.player_areEnemyTeamsLeft() ){
+		controller.action_localInvoke("player_noTeamsAreLeft");
 	}
 };
 
-model.atLeastTwoTeamsLeft = function(){
-	var foundTeam = -1;
+// Returns `true` when at least two opposite teams are left, else `false`.
+//
+model.player_areEnemyTeamsLeft = function(){
 	var player;
-	var i = 0;
-	var e = model.players.length;
+	var foundTeam  = -1;
+	var i          = 0;
+	var e          = model.player_data.length;
 
 	for( ; i<e; i++ ){
-		player = model.players[i];
+		player = model.player_data[i];
 		
 		if( player.team !== -1 ){
 			
@@ -164,101 +114,68 @@ model.atLeastTwoTeamsLeft = function(){
 		}
 	}
 
-	return foundTeam === -1;
+	return (foundTeam === -1);
 };
 
 // Returns true if there is an unit with a given relationship on a tile at a given position (x,y).
 // 
-// @param {Number} x
-// @param {Number} y
-// @param {Number} pid
-// @param {model.relationModes} mode check mode
-// @returns {Boolean}
-// 
-model.thereIsUnitCheck = function( x,y,pid,mode ){
-	if( !model.isValidPosition(x,y) ) return false;
-	
-	var unit = model.unitPosMap[x][y];
-	return unit !== null && model.relationShipCheck(pid,unit.owner) === mode;
-};
-
-// Returns true if there is an unit with a given relationship on a tile at a given position (x,y).
-// 
-// @param {Number} x
-// @param {Number} y
-// @param {Number} pid
-// @param {model.relationModes} mode check mode
-// @returns {Boolean}
-// 
-model.thereIsPropertyCheck = function( x,y,pid,mode ){
-	if( !model.isValidPosition(x,y) ) return false;
-	
-	var property = model.propertyPosMap[x][y];
-	return property !== null && model.relationShipCheck(pid,property.owner) === mode;
-};
-
-// Returns true if there is an unit with a given relationship on a tile at a given position (x,y).
-// 
-// @param {Number} pidA
-// @param {Number} pidB
-// @return {model.relationModes} mode
-// 
-model.relationShipCheck = function( pidA, pidB ){
+model.player_getRelationship = function( pidA, pidB ){
+  assert( model.property_isValidPropId(pidA) );
+  assert( model.property_isValidPropId(pidB) );
 	
 	// none
-	if( pidA === null || pidB === null ) return model.relationModes.NULL;
-	if( pidA === -1   || pidB === -1   ) return model.relationModes.NONE;
-	if( model.players[pidA].team === -1 || model.players[pidB].team === -1 ) return model.relationModes.NONE;
+	if( pidA === null || pidB === null ) return model.player_RELATION_MODES.NULL;
+	if( pidA === -1   || pidB === -1   ) return model.player_RELATION_MODES.NONE;
+	if( model.player_data[pidA].team === -1 || 
+      model.player_data[pidB].team === -1 ) return model.player_RELATION_MODES.NONE;
 	
 	// own
-	if( pidA === pidB ) return model.relationModes.OWN;
+	if( pidA === pidB ) return model.player_RELATION_MODES.OWN;
 	
-	var teamA = model.players[pidA].team;
-	var teamB = model.players[pidB].team;
-	if( teamA === -1 || teamB === -1 ) return model.relationModes.NONE;
+	var teamA = model.player_data[pidA].team;
+	var teamB = model.player_data[pidB].team;
+	if( teamA === -1 || teamB === -1 ) return model.player_RELATION_MODES.NONE;
 	
 	// allied
-	if( teamA === teamB ) return model.relationModes.ALLIED;
+	if( teamA === teamB ) return model.player_RELATION_MODES.ALLIED;
 	
 	// enemy
-	if( teamA !== teamB ) return model.relationModes.ENEMY;
+	if( teamA !== teamB ) return model.player_RELATION_MODES.ENEMY;
 	
-	return model.relationModes.NONE;
+	return model.player_RELATION_MODES.NONE;
 };
 
-// Returns true if there is an unit with a given relationship in one of the neighbour tiles at a given position (x,y).
-// 
-// @param {Number} pid
-// @param {Number} x
-// @param {Number} y
-// @param {model.relationModes} mode check mode
-// @returns {Boolean}
+// Returns true if there is an unit with a given relationship in one of the neighbour 
+// tiles at a given position (x,y).
 // 
 // @example
 //       x
 //     x o x
 //       x
 // 
-model.relationShipCheckUnitNeighbours = function( pid, x,y , mode ){
-	var check = model.relationShipCheck;
+model.player_getRelationshipUnitNeighbours = function( pid, x,y , mode ){
+  assert( model.property_isValidPropId(pid) );
+  assert( model.map_isValidPosition(x,y) );
+  
+	var check = model.player_getRelationship;
 	
-	var ownCheck = ( mode === model.relationModes.OWN );
+	var ownCheck = ( mode === model.player_RELATION_MODES.OWN );
 	var i = 0;
-	var e = model.units.length;
+	var e = model.unit_data.length;
 	
 	// enhance lookup when only 
 	// own units are checked
 	if( ownCheck ){
-		i = model.getFirstUnitSlotId(pid);
-		e = model.getLastUnitSlotId(pid);
+		i = model.unit_firstUnitId(pid);
+		e = model.unit_lastUnitId(pid);
 	}
 	
 	// check all
 	for( ; i<e; i++ ){
 		
 		// true when neighbor is given and mode is correct
-		if( model.unitDistance( sid, i ) === 1 ){
-			if( ownCheck || check( pid, model.units[i].owner ) === mode ) return true;
+		if( model.unit_getDistance( sid, i ) === 1 ){
+			if( ownCheck || check( pid, model.unit_data[i].owner ) === mode ) return true;
 		}
 	}
 	
@@ -270,25 +187,24 @@ model.relationShipCheckUnitNeighbours = function( pid, x,y , mode ){
 //
 // **Allowed to be called directly by the client.**
 //
-model.playerGivesUp = function(){
-	if( !model.isClientPlayer( model.turnOwner ) ) model.criticalError(0,0);
+model.player_playerGivesUp = function(){
+	assert( model.client_isLocalPid( model.round_turnOwner ) );
 
-	model.playerLooses( model.turnOwner );
-	model.nextTurn();
+	model.player_deactivatePlayer( model.round_turnOwner );
+	model.round_nextTurn();
 	
 	// TODO: check this here
-	// if model.playerGivesUp was called from network context
+	// if model.player_playerGivesUp was called from network context
 	// and the turn owner in in the local player instances then
 	// it's an illegal action 
 	
-	controller.events.playerGivesUp( model.turnOwner );
+	controller.events.player_playerGivesUp( model.round_turnOwner );
 };
 
-// Invoked when the game ends because of a battle victory over 
-// all enemy players. 
+// Invoked when the game ends because of a battle victory over all enemy player_data. 
 //
-model.noTeamLeft = function(){
-	controller.endGameRound();
+model.player_noTeamsAreLeft = function(){
+	controller.update_endGameRound();
 	
-	controller.events.noTeamLeft();
+	controller.events.player_noTeamsAreLeft();
 };

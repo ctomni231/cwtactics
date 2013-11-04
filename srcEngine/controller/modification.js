@@ -1,7 +1,6 @@
-// ### Controller.loadModification
 // Loads a modification into the game engine.
 //
-model.loadModification = function( data ){
+model.modification_load = function( data ){
   
   // register data types
   model.weatherTypeParser.parseAll(data.weathers);
@@ -15,13 +14,13 @@ model.loadModification = function( data ){
   var i,e;
   
   // TODO: GLOBAL RULES needed ?
-  for( i=0,e=data.globalRules.length; i<e; i++ ) model.pushRule( data.globalRules[i], false );
+  for( i=0,e=data.rule_global.length; i<e; i++ ) model.rule_push( data.rule_global[i], false );
 
   model.language = data.language;
   
   // TODO: re-check this after graphic relayout
   // register graphic and sound locations
-  model.graphics = data.graphics;
-  model.sounds = data.sounds;
-  model.maps = data.maps;
+  model.graphics  = data.graphics;
+  model.sounds    = data.sounds;
+  model.map_datas = data.maps;
 };

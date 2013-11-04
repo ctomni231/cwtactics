@@ -1,11 +1,11 @@
-controller.unitAction({
+controller.action_unitAction({
 	
 	key:"unloadUnit",
 	multiStepAction: true,
-	relation:[ "S","T", model.relationModes.SAME_OBJECT, model.relationModes.NONE],
+	relation:[ "S","T", model.player_RELATION_MODES.SAME_OBJECT, model.player_RELATION_MODES.NONE],
 	
 	condition: function( data ){
-		return model.canUnloadUnitAt( 
+		return model.transport_canUnloadUnitsAt( 
 			data.source.unitId, 
 			data.target.x, 
 			data.target.y 
@@ -13,7 +13,7 @@ controller.unitAction({
 	},
 	
 	prepareMenu: function( data ){
-		model.addUnloadTargetsToMenu( 
+		model.transport_addUnloadTargetsToMenu( 
 			data.source.unitId, 
 			data.target.x, 
 			data.target.y, 
@@ -23,7 +23,7 @@ controller.unitAction({
 	
 	targetSelectionType: "B",
 	prepareTargets: function( data ){
-		model.addUnloadTargetsToSelection( 
+		model.transport_addUnloadTargetsToSelection( 
 			data.source.unitId, 
 			data.target.x, 
 			data.target.y,
@@ -33,7 +33,7 @@ controller.unitAction({
 	},
 	
 	invoke: function( data ){
-		controller.sharedInvokement( "unloadUnitFrom",[
+		controller.action_sharedInvoke( "transport_unloadFrom",[
 			data.source.unitId, 
 			data.target.x, 
 			data.target.y, 

@@ -62,7 +62,7 @@ view.renderMap = function( scale ){
   var sprStepTiles = view.getSpriteStep("ANIM_TILES");
   var BASESIZE = controller.baseSize;
   var simpleUnitAnimTypes = model.graphics.simpleAnimatedUnits;
-  var teamId = (model.lastActiveClientPid !== -1)? model.players[ model.lastActiveClientPid ].team : -1;
+  var teamId = (model.client_lastPid !== -1)? model.player_data[ model.client_lastPid ].team : -1;
   
   var focusExists = (
     controller.stateMachine.state === "MOVEPATH_SELECTION" ||
@@ -78,14 +78,14 @@ view.renderMap = function( scale ){
   var inShadow;
   
   // ITERATE BY ROW
-  var ye = model.mapHeight-1;
+  var ye = model.map_height-1;
   for(var y = 0; y<=ye; y++){
     
     // ITERATE BY COLUMN
-    var xe = model.mapWidth-1;
+    var xe = model.map_width-1;
     for(var x= 0; x<=xe; x++){
       
-      inShadow = (model.clientFogData[x][y] === 0);
+      inShadow = (model.fog_clientData[x][y] === 0);
       
       // RENDER IF NEEDED
       if( view.drawScreen[x][y] === true ){
@@ -93,7 +93,7 @@ view.renderMap = function( scale ){
         // --------------------------------------------------------------------
         // DRAW TILE
         
-        //type = model.map[x][y];
+        //type = model.map_data[x][y];
         type = view.mapImages[x][y];
         pic = view.getTileImageForType( type );
         
@@ -161,7 +161,7 @@ view.renderMap = function( scale ){
         // --------------------------------------------------------------------
         // DRAW PROPERTY
         
-        var property = model.propertyPosMap[x][y];
+        var property = model.property_posMap[x][y];
         if( property !== null ){
           
           var color;
@@ -173,7 +173,7 @@ view.renderMap = function( scale ){
             color = view.colorArray[ property.owner ];
             
             if( property.type.factionSprites ){
-              var co = model.coData[property.owner].coA;
+              var co = model.co_data[property.owner].coA;
               if( co ) type = property.type.factionSprites[ co.faction ];
             }
           }
@@ -291,7 +291,7 @@ view.renderMap = function( scale ){
         // FREE SELCTION WALLS 
         
         if( inFreeSelection ){
-          var dis = model.distance( cursx,cursy, x,y );
+          var dis = model.map_getDistance( cursx,cursy, x,y );
           if( view.selectionRange === dis ){
             
             var pic = null;
@@ -333,10 +333,10 @@ view.renderMap = function( scale ){
         // --------------------------------------------------------------------
         // DRAW UNIT
         
-        var unit = model.unitPosMap[x][y];
+        var unit = model.unit_posData[x][y];
         var stats = (unit !== null )? controller.getUnitStatusForUnit( unit ) : null;
         if( !inShadow && unit !== null && 
-           ( /* !unit.hidden || */ unit.owner === model.turnOwner || model.players[ unit.owner ].team == teamId ||
+           ( /* !unit.hidden || */ unit.owner === model.round_turnOwner || model.player_data[ unit.owner ].team == teamId ||
             stats.VISIBLE ) ){
           
           if( unit !== view.preventRenderUnit ){
@@ -376,8 +376,8 @@ view.renderMap = function( scale ){
               );
               
               // RENDER GRAY OVERLAY TO MARK AS USED
-              if( unit.owner === model.turnOwner &&
-                 !model.canAct( model.extractUnitId( unit ) ) ){
+              if( unit.owner === model.round_turnOwner &&
+                 !model.actions_canAct( model.unit_extractId( unit ) ) ){
                 
                 ctx.globalAlpha = 0.5;
                 ctx.drawImage(
@@ -497,10 +497,10 @@ view.renderMap = function( scale ){
       
       // CURRENT TILE
       switch( currentMovePath[i] ){
-        case model.moveCodes.UP :    cY--; break;
-        case model.moveCodes.RIGHT : cX++; break;
-        case model.moveCodes.DOWN :  cY++; break;
-        case model.moveCodes.LEFT :  cX--; break;
+        case model.move_MOVE_CODES.UP :    cY--; break;
+        case model.move_MOVE_CODES.RIGHT : cX++; break;
+        case model.move_MOVE_CODES.DOWN :  cY++; break;
+        case model.move_MOVE_CODES.LEFT :  cX--; break;
       }
       
       // NEXT TILE
@@ -509,10 +509,10 @@ view.renderMap = function( scale ){
       }
       else{
         switch( currentMovePath[i+1] ){
-          case model.moveCodes.UP :    tX = cX;   tY = cY-1; break;
-          case model.moveCodes.RIGHT : tX = cX+1; tY = cY;   break;
-          case model.moveCodes.DOWN :  tX = cX;   tY = cY+1; break;
-          case model.moveCodes.LEFT :  tX = cX-1; tY = cY;   break;
+          case model.move_MOVE_CODES.UP :    tX = cX;   tY = cY-1; break;
+          case model.move_MOVE_CODES.RIGHT : tX = cX+1; tY = cY;   break;
+          case model.move_MOVE_CODES.DOWN :  tX = cX;   tY = cY+1; break;
+          case model.move_MOVE_CODES.LEFT :  tX = cX-1; tY = cY;   break;
         }
       }
       
@@ -520,13 +520,13 @@ view.renderMap = function( scale ){
         
         // TARGET TILE
         switch( currentMovePath[i] ){
-          case model.moveCodes.UP :
+          case model.move_MOVE_CODES.UP :
             pic = view.getTileImageForType("ARROW_N"); break;
-          case model.moveCodes.RIGHT :
+          case model.move_MOVE_CODES.RIGHT :
             pic = view.getTileImageForType("ARROW_E"); break;
-          case model.moveCodes.DOWN :
+          case model.move_MOVE_CODES.DOWN :
             pic = view.getTileImageForType("ARROW_S"); break;
-          case model.moveCodes.LEFT :
+          case model.move_MOVE_CODES.LEFT :
             pic = view.getTileImageForType("ARROW_W"); break;
         }
       }

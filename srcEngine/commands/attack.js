@@ -1,25 +1,25 @@
-controller.unitAction({
+controller.action_unitAction({
   
   key:"attack",
   
   unitAction: true,
   targetSelectionType:"A",
 	
-	relation:[ "S", "T", model.relationModes.NONE, model.relationModes.SAME_OBJECT ],
+	relation:[ "S", "T", model.player_RELATION_MODES.NONE, model.player_RELATION_MODES.SAME_OBJECT ],
   
   prepareTargets: function( data ){
-    model.attackRangeMod_( data.source.unitId, data.target.x, data.target.y, data.selection );
+    model.battle_calculateTargets( data.source.unitId, data.target.x, data.target.y, data.selection );
   },
   
   condition: function( data ){
-		if( model.isPeacePhaseActive() ) return false;
-		if( model.isIndirectUnit(data.source.unitId) && data.movePath.data.getSize() > 0 ) return false;
-    return model.hasTargets( data.source.unitId, data.target.x, data.target.y );
+		if( model.battle_isPeacePhaseActive() ) return false;
+		if( model.battle_isIndirectUnit(data.source.unitId) && data.movePath.data.getSize() > 0 ) return false;
+    return model.battle_hasTargets( data.source.unitId, data.target.x, data.target.y );
   },
           
   invoke: function( data ){
     if( data.targetselection.unitId !== -1 ){
-      controller.sharedInvokement("battleBetween",[
+      controller.action_sharedInvoke("battle_invokeBattle",[
         data.source.unitId,
         data.targetselection.unitId,
         Math.round( Math.random()*100 ),
@@ -27,7 +27,7 @@ controller.unitAction({
       ]);
     }
     else if( data.targetselection.propertyId !== -1 ){
-      controller.sharedInvokement("attackBattleProperty",[
+      controller.action_sharedInvoke("battle_attackProperty",[
         data.source.unitId,
         data.targetselection.propertyId
       ]);

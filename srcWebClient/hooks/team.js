@@ -1,12 +1,12 @@
-controller.onEvent("transferMoney",function(){
+controller.event_on("team_transferMoney",function(){
   controller.renderPlayerInfo();
 });
 
-controller.onEvent("transferUnit",function( suid ){
-  var unit = model.units[suid];
+controller.event_on("team_transferUnit",function( suid ){
+  var unit = model.unit_data[suid];
   var x = -unit.x;
   var y = -unit.y;
   
   // CHECK NEW UNIT
-  controller.updateUnitStatus( model.extractUnitId( model.unitPosMap[x][y] ) );
+  controller.updateUnitStatus( model.unit_extractId( model.unit_posData[x][y] ) );
 });

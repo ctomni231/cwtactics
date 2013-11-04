@@ -1,280 +1,198 @@
-// # CO Module
+// commands
+controller.action_registerCommands( "co_deactivateCOP" );
+controller.action_registerCommands( "co_activateCOP" );
+controller.action_registerCommands( "co_activateSCOP" );
+controller.action_registerCommands( "co_modifyPowerLevel" );
+
+// events
+controller.event_define( "co_modifyPowerLevel" );
+controller.event_define( "co_activateSCOP" );
+controller.event_define( "co_activateCOP" );
+controller.event_define( "co_deactivateCOP" );
+
+// configs
+controller.defineGameConfig( "co_getStarCost", 							5, 50000, 9000, 5 );
+controller.defineGameConfig( "co_getStarCostIncrease", 			0, 50000, 1800, 5 );
+controller.defineGameConfig( "co_getStarCostIncreaseSteps", 0, 50, 		10 );
+
+// Contains all co modes, that are available in `Custom Wars: Tactics`.
 //
-
-// ### Meta Data
-
-controller.registerInvokableCommand( "deactivateCoPower" );
-controller.registerInvokableCommand( "activateCoPower" );
-controller.registerInvokableCommand( "activateSuperCoPower" );
-controller.registerInvokableCommand( "modifyPowerLevel" );
-
-controller.defineEvent( "modifyPowerLevel" );
-controller.defineEvent( "activateSuperCoPower" );
-controller.defineEvent( "activateCoPower" );
-controller.defineEvent( "deactivateCoPower" );
-
-controller.defineGameConfig( "coStarCost", 5, 50000, 9000, 5 );
-controller.defineGameConfig( "coStarCostIncrease", 0, 50000, 1800, 5 );
-controller.defineGameConfig( "coStarCostIncreaseSteps", 0, 50, 10 );
-
-model.coTypeParser.addHandler( function( sheet ){
-	
-	if( !util.expectNumber( sheet, "coStars", true, true, -1, 10 ) ) return true;
-	if( !util.not( sheet, "coStars", 0 ) ) return true;
-	
-	if( !util.expectNumber( sheet, "scoStars", true, true, -1, 10 ) ) return true;
-	if( !util.not( sheet, "scoStars", 0 ) ) return true;
-	
-	if( !util.expectArray( sheet, "d2d", true ) ) return true;
-	if( !util.expectArray( sheet, "cop", true ) ) return true;
-	if( !util.expectArray( sheet, "scop", true ) ) return true;
-	
-	if( !util.expectString( sheet, "faction", true ) ) return true;
-	if( !util.isIn( sheet.faction, model.factionTypes ) ) return true;
-	
-	if( !util.expectString( sheet, "music", false ) ) return true;
-	
-} );
-
-// ---
-
-// ### Model
-
-model.CO_MODES = {
-	NONE:0,
-	AW1:1,
-	AW2:2,
-	AWDS:3,
-	AWDR:4
+model.co_MODES = {
+  NONE:0,
+  AW1:1,
+  AW2:2,
+  AWDS:3,
+  AWDR:4
 };
 
-model.coMode = model.CO_MODES.AW1;
+// Contains all co power levels.
+//
+model.co_POWER_LEVEL = {
+  INACTIVE: 0,
+  COP: 1,
+  SCOP: 2,
+  TSCOP: 3
+};
 
-model.coData = util.list( MAX_PLAYER, function( i ){
-	return {
-		power: 0, 		// acc. co power
-		timesUsed: 0, 	// number of used co powers
-		level: 0, 		// active co power level
-		coA: null, 		// main CO
-		coB: null,  	// sub CO
-		detachedTo: -1  // CO detached to a specific unit
-	};
+// The current active co mode.
+//
+model.co_activeMode = model.co_MODES.AW1;
+
+//
+//
+model.co_data = util.list( MAX_PLAYER, function( i ){
+  return {
+    power: 0, 				// acc. co power
+    timesUsed: 0, 		// number of used co powers
+    level: 0, 				// active co power level
+    coA: null, 				// main CO
+    coB: null,  			// sub CO
+    detachedTo: -1  	// CO detached to a specific unit
+  };
 });
 
-// Define persitence handler
-controller.persistenceHandler(
-	// load
-	function( dom ){
-		var data = dom.co;
-		
-		// the length of a data set must be equal to the number
-		// of maximum players
-		if( MAX_PLAYER !== data.length ) util.raiseError( "" );
-		
-		var source;
-		var target;
-		for( var i = 0, e = MAX_PLAYER; i < e; i++ ) {
-			target = model.coData[i];
-			source = data[i];
-			
-			// read data from array back into the game model
-			// if source is `0` then the data for this slot
-			// is empty because the player is not active or
-			// the document model is a map not a save
-			if( source === 0 ) {
-				
-				// TODO: use map configurations here
-				target.power = 0;
-				target.timesUsed = 0;
-				target.level = model.INACTIVE_POWER;
-				target.coA = null;
-				target.coB = null;
-			}
-			else {
-				
-				target.power = source[0];
-				target.timesUsed = source[1];
-				target.level = source[2];
-				target.coA = (source[3])? model.coTypes[ source[3] ] : null;
-				target.coB = (source[4])? model.coTypes[ source[4] ] : null;
-			}
-		}
-	},
-	// save
-	function( dom ){
-		
-		// result document model for co data will be a matrix
-		var data = [ ];
-		var obj;
-		
-		for( var i = 0, e = MAX_PLAYER; i < e; i++ ) {
-			obj = model.coData[i];
-			
-			// persist the data as array
-			// if target player isn't active then 
-			// use a `0` as data
-			if( model.players[i].team === INACTIVE_ID ) {
-				data.push( 0 );
-			}
-			else {
-				data.push( [
-					obj.power,
-					obj.timesUsed,
-					obj.level,
-					obj.coA,
-					obj.coB
-				] );
-			}
-		}
-		
-		dom.co = data;
-	}
-);
-
-// ---
-
-// ### Logic
-
-model.powerLevel = {
-	INACTIVE: 0,
-	COP: 1,
-	SCOP: 2,
-	TSCOP: 3
+// Activates a power of a player.
+// 
+model.co_activatePower_ = function( pid, level, evName ){
+  if( DEBUG ) util.log("activate power level",level,"for player",pid);
+  
+  assert( model.player_isValidPid(pid) );
+  
+  // Alter co data of the player
+  var data = model.co_data[pid];
+  data.power = 0;
+  data.level = level;
+  data.timesUsed++;
+  
+  // Invoke model event
+  controller.events[evName]( pid );
 };
 
-util.scoped( function(){
-	
-	function activatePower( pid, level, evName ){
-		if( !model.isValidPlayerId( pid ) ) {
-			model.criticalError(
-				error.ILLEGAL_PARAMETERS,
-				error.UNKNOWN_PLAYER_ID
-			);
-		}
-		
-		// Alter co data of the player
-		var data = model.coData[pid];
-		data.power = 0;
-		data.level = level;
-		data.timesUsed++;
-		
-		// Invoke model event
-		controller.events[evName]( pid );
-	}
-	;
-	
-	// Deactivates the CO power of a player.
-	// 
-	// @param {Number} pid
-	// 
-	model.deactivateCoPower = function( pid ){
-		activatePower( pid, model.powerLevel.INACTIVE, "deactivateCoPower" );
-	};
-	
-	// Activates the CO power of a player.
-	// 
-	// @param {Number} pid
-	// 
-	model.activateCoPower = function( pid ){
-		activatePower( pid, model.powerLevel.COP, "activateCoPower" );
-	};
-	
-	// Activates the super CO power of a player.
-	// 
-	// @param {Number} pid
-	// 
-	model.activateSuperCoPower = function( pid ){
-		activatePower( pid, model.powerLevel.SCOP, "activateSuperCoPower" );
-	};
-	
-} );
+// Deactivates the CO power of a player.
+// 
+model.co_deactivateCOP = function( pid ){
+  model.co_activatePower_( pid, model.co_POWER_LEVEL.INACTIVE, "co_deactivateCOP" );
+};
+
+// Activates the CO power of a player.
+// 
+model.co_activateCOP = function( pid ){
+  model.co_activatePower_( pid, model.co_POWER_LEVEL.COP, "co_activateCOP" );
+};
+
+// Activates the super CO power of a player.
+// 
+model.co_activateSCOP = function( pid ){
+  model.co_activatePower_( pid, model.co_POWER_LEVEL.SCOP, "co_activateSCOP" );
+};
 
 // Modifies the power level of a player.
 //  
-// @param {Number} pid
-// @param {Number} value 
-model.modifyPowerLevel = function( pid, value ){
-	var data = model.coData[pid];
-	
-	data.power += value;
-	if( data.power < 0 ) data.power = 0;
-	
-	// Invoke model event
-	controller.events.modifyPowerLevel( pid, value );
+model.co_modifyPowerLevel = function( pid, value ){
+  assert( model.player_isValidPid(pid) );
+  
+  var data = model.co_data[pid];
+  
+  data.power += value;
+  if( data.power < 0 ) data.power = 0;
+  
+  // Invoke model event
+  controller.events.co_modifyPowerLevel( pid, value );
 };
 
-model.canActivatePower = function( pid, powerType ){
-	var coData = model.coData[ model.turnOwner ];
-	
-	// co must be available and current power must be inactive
-	if( coData.coA === null ) return false;
-	if( coData.level !== model.powerLevel.INACTIVE ) return false;
-	
-	var stars;
-	switch( powerType ){
-			
-		case model.powerLevel.COP: 
-			stars = coData.coA.coStars;
-			break;
-			
-		case model.powerLevel.SCOP:
-			stars = coData.coA.scoStars;
-			break;
-			
-		default:
-			model.criticalError( 
-				error.ILLEGAL_PARAMETERS,
-				error.UNKNOWN
-			);
-	};
-	
-	return ( coData.power >= model.coStarCost(model.turnOwner) * stars );
+// Returns `true`when a given player can acitvate a power level.
+//
+model.co_canActivatePower = function( pid, powerType ){
+  assert( model.player_isValidPid(pid) );
+  assert( util.intRange(powerType,model.co_POWER_LEVEL.INACTIVE,model.co_POWER_LEVEL.TSCOP) );
+  
+  var co_data = model.co_data[ model.round_turnOwner ];
+  
+  // co must be available and current power must be inactive
+  if( co_data.coA === null ) return false;
+  if( co_data.level !== model.co_POWER_LEVEL.INACTIVE ) return false;
+  
+  var stars;
+  switch( powerType ){
+      
+    case model.co_POWER_LEVEL.COP: 
+      stars = co_data.coA.coStars;
+      break;
+      
+    case model.co_POWER_LEVEL.SCOP:
+      stars = co_data.coA.scoStars;
+      break;
+      
+      // TODO
+  };
+  
+  return ( co_data.power >= model.co_getStarCost(model.round_turnOwner) * stars );
 };
 
 // Returns the cost for one CO star for a given player.
 //
-// @param {type} pid id of the player
-// @returns {Number} 
-model.coStarCost = function( pid ){
-	var cost = controller.configValue( "coStarCost" );
-	var used = model.coData[pid].timesPowerUsed;
-	
-	// if usage counter is greater
-	// than max usage counter then
-	// use only the maximum increase
-	// counter for calculation
-	var maxUsed = controller.configValue( "coStarCostIncreaseSteps" );
-	if( used > maxUsed ) used = maxUsed;
-	
-	cost += used * controller.configValue( "coStarCostIncrease" );
-	
-	return cost;
+model.co_getStarCost = function( pid ){
+  assert( model.player_isValidPid(pid) );
+  
+  var cost = controller.configValue( "co_getStarCost" );
+  var used = model.co_data[pid].timesPowerUsed;
+  
+  // if usage counter is greater than max usage counter then use 
+  // only the maximum increase counter for calculation
+  var maxUsed = controller.configValue( "co_getStarCostIncreaseSteps" );
+  if( used > maxUsed ) used = maxUsed;
+  
+  cost += used * controller.configValue( "co_getStarCostIncrease" );
+  
+  return cost;
 };
 
-model.setMainCo = function( pid, type ){
-	if( type === null ) model.coData[pid].coA = null;
-	else model.coData[pid].coA = model.coTypes[type];	
+// Specification of a co type
+//
+model.co_specCoType = [util.expect.STRING,util.expect.IS_IN,model.coTypes];
+
+// Sets the main CO of a player.
+//
+model.co_setMainCo = function( pid, type ){
+  assert( model.player_isValidPid(pid) );
+  assert( model.coTypes.hasOwnProperty(type) );
+  
+  if( type === null ) model.co_data[pid].coA = null;
+  else model.co_data[pid].coA = model.coTypes[type];	
 };
 
-// Clears the reference of a commander to an unit
+// Sets the side CO of a player.
 //
-model.clearCommanderDetachment = function( pid ){
-	if( DEVMODE ) expect(
-		model.coData[pid].detachedTo !== INACTIVE_ID
-	);
+model.co_setSideCo = function( pid, type ){
+  assert( model.player_isValidPid(pid) );
+  assert( model.coTypes.hasOwnProperty(type) );
+  
+  if( type === null ) model.co_data[pid].coB = null;
+  else model.co_data[pid].coB = model.coTypes[type];	
+};
 
-	model.coData[pid].detachedTo = INACTIVE_ID;
-}
-
-// Detach a commander from a player pool to a given unit
+// Detaches a commander from a given unit back to the player pool.
 //
-model.detachCommander = function( pid, id ){
-	if( DEVMODE ) expect(
-		model.coData[pid].detachedTo === INACTIVE_ID
-	);
+model.detachCommander = function( pid, uid ){
+  assert( model.player_isValidPid(pid) );
+  assert( model.unit_isValidUnitId(uid) );
+  assert( model.unit_data[uid].owner !== INACTIVE_ID );
+  
+  // co must detached to the unit
+  assert( model.co_data[pid].detachedTo !== uid );
+  
+  model.co_data[pid].detachedTo = INACTIVE_ID;
+};
 
-	var unit = model.units[id];
-	if( !unit ){ /* ERROR */ }
-
-	model.coData[pid].detachedTo = id;
+// Attaches a commander from a player pool to a given unit.
+//
+model.attachCommander = function( pid, uid ){
+  assert( model.player_isValidPid(pid) );
+  assert( model.unit_isValidUnitId(uid) );
+  assert( model.unit_data[uid].owner !== INACTIVE_ID );
+  
+  // co cennot be detached to anything
+  assert( model.co_data[pid].detachedTo === INACTIVE_ID );
+  
+  model.co_data[pid].detachedTo = id;
 };

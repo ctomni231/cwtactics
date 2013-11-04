@@ -1,85 +1,33 @@
-// Weather Module
-// 
+// commands
+controller.action_registerCommands("weather_change");
+controller.action_registerCommands("weather_calculateNext");
 
-// ### Meta Data
+// event
+controller.event_define("weather_change");
 
-controller.registerInvokableCommand("changeWeather");
-controller.registerInvokableCommand("calculateNextWeather");
-
-controller.defineEvent("changeWeather");
-
+// scriptables
 controller.defineGameScriptable("neutralizeWeather",0,1);
 
+// configs
 controller.defineGameConfig("weatherMinDays",1,5,1);
 controller.defineGameConfig("weatherRandomDays",0,5,4);
 
-model.weatherTypeParser.addHandler(function( sheet ){
-  if( !util.expectBoolean(sheet,"defaultWeather",false) ) return false;
-  if( !util.expectNumber(sheet,"vision",false,true,-5,+5) ) return false;
-  if( !util.expectNumber(sheet,"att",false,true,-100,+100) ) return false;
-  if( !util.expectNumber(sheet,"minRange",false,true,-5,+5) ) return false;
-  if( !util.expectNumber(sheet,"maxRange",false,true,-5,+5) ) return false;
-});
-
-// ---
-
-// ### Model
-
 // The active weather type object.
-model.weather = null;
-
-// Define persistence handler
-controller.persistenceHandler(
-  
-  // load
-  function( dom ){
-    if( dom.wth ){
-      
-      // check data
-      if( !util.isIn( dom.wth, model.weatherTypes ) ){
-        model.criticalError(
-          error.ILLEGAL_MAP_FORMAT,
-          error.SAVEDATA_WEATHER_MISSMATCH
-        );
-      }
-      
-      // set weather
-      model.weather = model.weatherTypes[dom.wth];
-    }
-    else{
-      model.weather = model.defaultWeatherType;
-      if( controller.isHost() ) model.calculateNextWeather();
-    }
-  },
-  
-  // save
-  function( dom ){
-    dom.wth = model.weather.ID;
-  }
-);
-
-// ---
-
-// ### Logic
+//
+model.weather_data = null;
 
 // Calculates the next weather and adds the result
 // as timed event to the day events. **Only invokable
 // by the host instance.**
 //
-model.calculateNextWeather = function(){  
+model.weather_calculateNext = function(){  
   var newTp;
   var duration;
   
-  if( !controller.isHost() ){
-    model.criticalError( 
-      error.HOST_ONLY,
-      error.CALC_NEXT_WEATHER
-    );
-  }
+  util.expect(util.expect.isTrue,controller.isHost());
   
-  // Search a random weather if the last weather was `null` or 
-  // the default weather type
-  if( model.weather !== null && model.weather === model.defaultWeatherType ){
+  // Search a random weather if the last weather was `null` or the default weather type
+  if( model.weather_data !== null && model.weather_data === model.defaultWeatherType ){
     
     var list = model.nonDefaultWeatherType;
     newTp = list[ parseInt(Math.random()*list.length,10) ].ID;
@@ -89,33 +37,28 @@ model.calculateNextWeather = function(){
     
     // Take default weather and calculate a random amount of days
     newTp = model.defaultWeatherType.ID;
-    duration = controller.configValue("weatherMinDays") + parseInt( controller.configValue("weatherRandomDays")*Math.random(), 10);
+    duration = controller.configValue("weatherMinDays") + parseInt(
+      controller.configValue("weatherRandomDays")*Math.random(), 10
+    );
   }
   
-  controller.sharedInvokement("changeWeather",[newTp]);
+  controller.action_sharedInvoke("weather_change",[newTp]);
   
-  model.pushTimedEvent( 
-    model.daysToTurns(duration), 
-    "calculateNextWeather",
+  model.dayEvents_push( 
+    model.round_daysToTurns(duration), 
+    "weather_calculateNext",
     []
   );
 };
 
 // Changes the weather to a given type. 
-// Invokes the `changeWeather` event.
+// Invokes the `weather_change` event.
 //
-// @param {String} wth
-//
-model.changeWeather = function( wth ){
+model.weather_change = function( wth ){
+  assert( model.weather_dataTypes.hasOwnProperty(wth) );
   
-  // check weather type
-  if( !model.weatherTypes.hasOwnProperty(wth) ){
-    model.criticalError( error.ILLEGAL_DATA, error.UNKNOWN_WEATHER );
-  }
+  model.weather_data = model.weather_dataTypes[wth];
+  model.fog_recalculateFogMap();
 
-  model.weather = model.weatherTypes[wth];
-
-  model.recalculateFogMap();
-
-	controller.events.changeWeather( wth );
+	controller.events.weather_change( wth );
 };

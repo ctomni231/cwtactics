@@ -29,7 +29,7 @@ clientConstants = {
 	MOD_KEY_CREDITS: 		"credits",
 	MOD_KEY_FRACTION: 	"factions",
 	MOD_KEY_GAMEMODE: 	"gamemodes",
-	MOD_KEY_RULES: 			"globalRules",
+	MOD_KEY_RULES: 			"rule_global",
 	MOD_KEY_LANGUAGE: 	"language",
 	MOD_KEY_MAPS: 			"maps",
 	MOD_KEY_MOVETYPES: 	"movetypes",

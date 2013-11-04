@@ -76,7 +76,7 @@ if( constants.DEBUG ) util.log("loading game assets");
   .chill(150)
 
   // **4.** check environment
-  .andThen(controller.loadModification)
+  .andThen(controller.modification_load)
 
   // -------------------------------------------------------------------------------------
 

@@ -1,6 +1,6 @@
 view.registerAnimationHook({
 
-  key: "changeWeather",
+  key: "weather_change",
 
   prepare: function( wth ){
     view.showInfoMessage( model.localized("weatherChange")+" "+model.localized( wth ) );

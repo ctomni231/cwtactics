@@ -6,7 +6,7 @@
 // 2. Load new mod if 1. resolves to null
 // 3. Load modification into the engine
 //
-controller.loadModification = util.singleLazyCall( function( err, baton ){
+controller.modification_load = util.singleLazyCall( function( err, baton ){
   if( constants.DEBUG ) util.log( "loading modification" );
   
   function addModPart( file, key, baton ){
@@ -128,7 +128,7 @@ controller.loadModification = util.singleLazyCall( function( err, baton ){
   
   // **3.** place mod
   .andThen(function(){
-    model.loadModification( mod );
+    model.modification_load( mod );
   })
   
   // **4.** end flow callback

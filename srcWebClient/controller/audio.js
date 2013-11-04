@@ -21,7 +21,7 @@ util.scoped(function(){
 
   controller.generateMusicCache = function(){
     for( var i=0,e=constants.MAX_PLAYER; i<e; i++ ){
-      var coData = model.coData[i];
+      var co_data = model.co_data[i];
     }
   };
 
@@ -225,10 +225,10 @@ var cache = [];
 
 controller.buildGameRoundCache = function(){
   for (var i = constants.MAX_PLAYER - 1; i >= 0; i--) {
-    var coData = model.coData[i];
-    if( coData.coA ){ // co sound ( one co )
+    var co_data = model.co_data[i];
+    if( co_data.coA ){ // co sound ( one co )
 
-      if( coData.coB ){ // co sound ( tag co )
+      if( co_data.coB ){ // co sound ( tag co )
 
       }
     }
@@ -248,7 +248,7 @@ controller.clearGameRoundCache = function(){
 
 controller.playMusicForPlayer = function( pid ){
   if( controller.clientFeatures.audioMusic ){
-    var co = model.coData[pid].coA;
+    var co = model.co_data[pid].coA;
     if( co ) controller.playMusic( co.music );
   }
 };

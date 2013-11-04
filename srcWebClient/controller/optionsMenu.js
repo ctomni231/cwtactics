@@ -1,4 +1,4 @@
-controller.clientAction({
+controller.action_clientAction({
 
   key:"options",  
   hasSubMenu: true,
@@ -12,7 +12,7 @@ controller.clientAction({
     data.menu.addEntry("options.music");
 
     // you only can yield when you're the turn owner
-    if( model.isClientPlayer(model.turnOwner) ) data.menu.addEntry("options.yield");
+    if( model.client_isLocalPid(model.round_turnOwner) ) data.menu.addEntry("options.yield");
   },
   
   invoke: function( data ){
@@ -30,7 +30,7 @@ controller.clientAction({
         break;
         
       case "options.yield":
-        controller.sharedInvokement("playerGivesUp", []);
+        controller.action_sharedInvoke("player_playerGivesUp", []);
         break;
     }
   }

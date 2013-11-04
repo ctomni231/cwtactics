@@ -69,8 +69,8 @@ util.scoped(function(){
   controller.updateSimpleTileInformation = function(  ){
     var x = controller.mapCursorX;
     var y = controller.mapCursorY;
-    var unit = model.unitPosMap[x][y];
-    var prop = model.propertyPosMap[x][y];
+    var unit = model.unit_posData[x][y];
+    var prop = model.property_posMap[x][y];
     
     var type; 
     
@@ -128,7 +128,7 @@ util.scoped(function(){
 
     // Render tile / property information
     if( !prop ){
-      type = model.map[x][y];
+      type = model.map_data[x][y];
       
       TILE_NAME.innerHTML = model.localized( type.ID );
       DEFENSE.innerHTML   = type.defense;
@@ -177,14 +177,14 @@ util.scoped(function(){
     // grab identical number
     if( unit  )                                             id = unit.owner;
     else if( prop && prop.owner !== constants.INACTIVE_ID ) id = prop.owner;
-    else                                                    id = model.turnOwner;
+    else                                                    id = model.round_turnOwner;
     
     if( id > -1 ){
-      type = model.players[ id ];
+      type = model.player_data[ id ];
       
       PLAYER_NAME.innerHTML  = type.name;
       PLAYER_GOLD.innerHTML  = type.gold;
-      PLAYER_POWER.innerHTML = model.coData[id].power;
+      PLAYER_POWER.innerHTML = model.co_data[id].power;
     }
     else{
       

@@ -1,23 +1,23 @@
-controller.unitAction({
+controller.action_unitAction({
   
   key:"silofire",
-	relation:[ "S","T", model.relationModes.SAME_OBJECT, model.relationModes.NONE],
-	relationToProp:[ "S","T", model.relationModes.NONE],
+	relation:[ "S","T", model.player_RELATION_MODES.SAME_OBJECT, model.player_RELATION_MODES.NONE],
+	relationToProp:[ "S","T", model.player_RELATION_MODES.NONE],
   
   prepareSelection: function( data ){
     data.selectionRange = data.target.property.type.rocketsilo.range;
   },
   
   isTargetValid: function( data, x,y ){
-    return model.isValidPosition(x,y);
+    return model.map_isValidPosition(x,y);
   },
     
   condition: function( data ){
-    return model.isSiloFirableBy( data.target.propertyId, data.source.unitId );
+    return model.bombs_canBeFiredBy( data.target.propertyId, data.source.unitId );
   },
   
   invoke: function( data ){
-    model.fireSilo.callAsCommand(
+    model.bombs_fireSilo.callAsCommand(
       data.target.x, 
       data.target.y, 
       data.targetselection.x, 

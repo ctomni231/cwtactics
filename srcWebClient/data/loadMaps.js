@@ -13,7 +13,7 @@ controller.loadMaps = util.singleLazyCall(function( err, masterbaton ){
   masterbaton.take();
   
   var cStep = 0;
-  var maps = model.maps;
+  var maps = model.map_datas;
   
   function loadMap( pipe, baton ){
     

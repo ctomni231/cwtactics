@@ -1,6 +1,6 @@
 view.registerAnimationHook({
   
-  key: "moveUnit",
+  key: "move_moveUnitByPath",
   
   prepare: function( way, uid, x,y ){
     
@@ -17,8 +17,8 @@ view.registerAnimationHook({
     this.moveAnimationDustStep = -1;
     this.moveAnimationDustPic = null;
     
-    .preventRenderUnit = model.units[ uid ];
-    var mvType = model.units[ uid ].type.movetype;
+    .preventRenderUnit = model.unit_data[ uid ];
+    var mvType = model.unit_data[ uid ].type.movetype;
     
     /*
     var mvSoundId;
@@ -75,22 +75,22 @@ view.registerAnimationHook({
       // UPDATE ANIMATION POS
       switch( this.moveAnimationPath[ this.moveAnimationIndex ] ){
           
-        case model.moveCodes.UP :
+        case model.move_MOVE_CODES.UP :
           this.moveAnimationY--;
           this.moveAnimationDustPic = .getInfoImageForType("DUST_U");
           break;
           
-        case model.moveCodes.RIGHT :
+        case model.move_MOVE_CODES.RIGHT :
           this.moveAnimationX++;
           this.moveAnimationDustPic = .getInfoImageForType("DUST_R");
           break;
           
-        case model.moveCodes.DOWN :
+        case model.move_MOVE_CODES.DOWN :
           this.moveAnimationY++;
           this.moveAnimationDustPic = .getInfoImageForType("DUST_D");
           break;
           
-        case model.moveCodes.LEFT :
+        case model.move_MOVE_CODES.LEFT :
           this.moveAnimationX--;
           this.moveAnimationDustPic = .getInfoImageForType("DUST_L");
           break;
@@ -119,17 +119,17 @@ view.registerAnimationHook({
     var cy       = this.moveAnimationY;
     var shift    = this.moveAnimationShift;
     var moveCode = this.moveAnimationPath[ this.moveAnimationIndex ];
-    var unit     = model.units[ uid ];
+    var unit     = model.unit_data[ uid ];
     var color = .colorArray[ unit.owner ];
     var state;
     var tp = unit.type;
     
     // GET CORRECT IMAGE STATE
     switch( moveCode ){
-      case model.moveCodes.UP :    state = .IMAGE_CODE_UP;    break;
-      case model.moveCodes.RIGHT : state = .IMAGE_CODE_RIGHT; break;
-      case model.moveCodes.DOWN :  state = .IMAGE_CODE_DOWN;  break;
-      case model.moveCodes.LEFT :  state = .IMAGE_CODE_LEFT;  break;
+      case model.move_MOVE_CODES.UP :    state = .IMAGE_CODE_UP;    break;
+      case model.move_MOVE_CODES.RIGHT : state = .IMAGE_CODE_RIGHT; break;
+      case model.move_MOVE_CODES.DOWN :  state = .IMAGE_CODE_DOWN;  break;
+      case model.move_MOVE_CODES.LEFT :  state = .IMAGE_CODE_LEFT;  break;
     }
     
     var pic = .getUnitImageForType( tp.ID, state, color );
@@ -147,10 +147,10 @@ view.registerAnimationHook({
     
     // ADD SHIFT
     switch( moveCode ){
-      case model.moveCodes.UP:    tcy -= shift; break;
-      case model.moveCodes.LEFT:  tcx -= shift; break;
-      case model.moveCodes.RIGHT: tcx += shift; break;
-      case model.moveCodes.DOWN:  tcy += shift; break;
+      case model.move_MOVE_CODES.UP:    tcy -= shift; break;
+      case model.move_MOVE_CODES.LEFT:  tcx -= shift; break;
+      case model.move_MOVE_CODES.RIGHT: tcx += shift; break;
+      case model.move_MOVE_CODES.DOWN:  tcy += shift; break;
     }
     
     // DRAW IT
@@ -171,10 +171,10 @@ view.registerAnimationHook({
       
       // ADD SHIFT
       switch( moveCode ){
-        case model.moveCodes.UP:    tcy -= shift; break;
-        case model.moveCodes.LEFT:  tcx -= shift; break;
-        case model.moveCodes.RIGHT: tcx += shift; break;
-        case model.moveCodes.DOWN:  tcy += shift; break;
+        case model.move_MOVE_CODES.UP:    tcy -= shift; break;
+        case model.move_MOVE_CODES.LEFT:  tcx -= shift; break;
+        case model.move_MOVE_CODES.RIGHT: tcx += shift; break;
+        case model.move_MOVE_CODES.DOWN:  tcy += shift; break;
       }
       
       .canvasCtx.fillStyle="rgb(255,0,0)";

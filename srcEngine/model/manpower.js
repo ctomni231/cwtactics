@@ -1,46 +1,27 @@
-controller.registerInvokableCommand("decreaseManpower");
+// commands
+controller.action_registerCommands("manpower_decreaseManpower");
 
-controller.defineEvent("decreaseManpower");
+// events
+controller.event_define("manpower_decreaseManpower");
 
-// Man power data array that holds the amount
-// times that an unit can be builded
-model.manpower = util.list( MAX_PLAYER, 999999 );
-
-// Define persitence handler
-controller.persistenceHandler(
-  
-  // load
-  function( dom ){ 
-    model.manpower.resetValues();
-    
-    // grab values from dom model
-    if( dom.mpw.length > 0 ) model.manpower.grabValues( dom.mpw );
-  },
-  
-  // save
-  function( dom ){ 
-    // clone values into a new array 
-    // and place it into the save dom
-    dom.mpw = model.manpower.cloneValues([]);
-  }
-);
+// Man power data array that holds the amount times that an unit can be builded
+model.manpower_data = util.list( MAX_PLAYER, 999999 );
 
 // Returns true if a player has left man power else false.
 //
-// @param {Number} pid player id
-//
-model.hasLeftManpower = function( pid ){
-  return model.manpower[pid] > 0;
+model.manpower_hasLeftManpower = function( pid ){
+  assert( model.player_isValidPid(pid) );
+  
+  return model.manpower_data[pid] > 0;
 };
 
 // Decreases the amount of man power.
 //
-// @param {Number} pid player id
-//
-model.decreaseManpower = function( pid ){
-  model.manpower[pid]--;
+model.manpower_decreaseManpower = function( pid ){
+  assert( model.player_isValidPid(pid) );
+
+  model.manpower_data[pid]--;
   
   // Invoke model event
-  controller.events.decreaseManpower(pid);
+  controller.events.manpower_decreaseManpower(pid);
 };
-

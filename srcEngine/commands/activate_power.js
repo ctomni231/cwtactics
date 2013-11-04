@@ -1,22 +1,22 @@
-controller.mapAction({
+controller.action_mapAction({
   
-  key:"activatePower",
+  key:"model.co_model.co_activatePower__",
   hasSubMenu: true,
   
   condition: function(){
 		return (
-			( model.coMode === model.CO_MODES.AW1 ||
-			  model.coMode === model.CO_MODES.AW2 ||
-			  model.coMode === model.CO_MODES.AWDS   ) &&
-			model.canActivatePower( model.turnOwner, model.powerLevel.COP )
+			( model.co_activeMode === model.co_MODES.AW1 ||
+			  model.co_activeMode === model.co_MODES.AW2 ||
+			  model.co_activeMode === model.co_MODES.AWDS   ) &&
+			model.co_canActivatePower( model.round_turnOwner, model.co_POWER_LEVEL.COP )
 		);
   },
             
   prepareMenu: function( data ){
-    var coData = model.coData[ model.turnOwner ];
+    var co_data = model.co_data[ model.round_turnOwner ];
     
 		data.menu.addEntry("cop");
-		if( model.canActivatePower( model.turnOwner, model.powerLevel.SCOP ) ) data.menu.addEntry("scop");
+		if( model.co_canActivatePower( model.round_turnOwner, model.co_POWER_LEVEL.SCOP ) ) data.menu.addEntry("scop");
   },
           
   invoke: function( data ){    
@@ -25,17 +25,17 @@ controller.mapAction({
     switch ( data.action.selectedSubEntry ){
 				
       case "cop":  
-				cmd = "activateCoPower";      
+				cmd = "co_activateCOP";      
 				break;
 				
       case "scop": 
-				cmd = "activateSuperCoPower"; 
+				cmd = "co_activateSCOP"; 
 				break;
 				
-			default: model.errorUnknown("activatePower");
+			default: model.errorUnknown("model.co_model.co_activatePower__");
     }
     
-    controller.sharedInvokement(cmd,[model.turnOwner]);
+    controller.action_sharedInvoke(cmd,[model.round_turnOwner]);
   }
   
 });

@@ -1,9 +1,7 @@
-// ### TaggedPosition
 // Object that holds information about objects at a given position (x,y).
 //
 controller.TaggedPosition = {
-	
-  // ### TaggedPosition.clean
+
   // Cleans all data of the object.
   //
 	clean: function(){
@@ -14,8 +12,7 @@ controller.TaggedPosition = {
 		this.property = null;
 		this.propertyId = -1;
 	},
-	
-  // ### TaggedPosition.set
+
   // Sets a position. All information
   //
 	set: function( x,y ){
@@ -24,17 +21,20 @@ controller.TaggedPosition = {
 		
 		var refObj;
 		var isValid = (x !== -1 && y !== -1);
-		var inFog = isValid ? (model.fogData[x][y] === 0) : false;
+		var inFog = isValid ? (model.fog_turnOwnerData[x][y] === 0) : false;
 		
 		// generate meta data for the unit
-		refObj = isValid ? model.getUnitByPos(x,y): null;
+		refObj = isValid ? model.unit_getByPos(x,y): null;
 		if( isValid && !inFog && refObj !== null && (
-          !refObj.hidden || refObj.owner === model.turnOwner || model.players[ refObj.owner ].team === model.players[ model.turnOwner ].team
+          !refObj.hidden ||
+          refObj.owner === model.round_turnOwner ||
+          model.player_data[ refObj.owner ].team ===
+            model.player_data[ model.round_turnOwner ].team
         )
       ){
 			
 			this.unit = refObj;
-			this.unitId = model.extractUnitId(refObj);
+			this.unitId = model.unit_extractId(refObj);
 		}
 		else {
 			this.unit = null;
@@ -42,11 +42,11 @@ controller.TaggedPosition = {
 		}
 		
 		// generate meta data for the property
-		refObj = isValid ? model.getPropertyByPos(x,y) : null;
+		refObj = isValid ? model.property_getByPos(x,y) : null;
 		if( isValid /* && !inFog */ && refObj !== null ){
 			
 			this.property = refObj;
-			this.propertyId = model.extractPropertyId(refObj);
+			this.propertyId = model.property_extractId(refObj);
 		}
 		else {
 			this.property = null;
@@ -55,23 +55,23 @@ controller.TaggedPosition = {
 	}
 };
 
-// ### StateMachine
-// The central finite state machine of the game engine. The player only interacts with this machine with the input system of the client.
+// The central finite state machine of the game engine. The player only interacts with this
+// machine with the input system of the client.
 //
 controller.stateMachine = util.stateMachine({
-	
-	// ### State::NONE
-	//
-	NONE:{
+
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+  NONE:{
 		start:function(){
 			if( DEBUG ) util.log("Initializing game state machine");
 			return "IDLE";
 		}
 	},
-	
-  // ### State::IDLE
-  //
-	IDLE: {
+
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+  IDLE: {
 		onenter: function(){
 			this.data.menu.clean();
 			this.data.movePath.clean();
@@ -94,12 +94,12 @@ controller.stateMachine = util.stateMachine({
 			this.data.source.set(x,y);
 			
 			if ( this.data.source.unitId !== INACTIVE_ID &&
-					this.data.source.unit.owner === model.turnOwner && 
-					model.canAct( this.data.source.unitId ) ){
+					this.data.source.unit.owner === model.round_turnOwner && 
+					model.actions_canAct( this.data.source.unitId ) ){
 				
 				this.data.target.set(x,y);
 				this.data.movePath.clean();
-				this.data.movePath.fillMoveMap();
+				this.data.movePath.move_fillMoveMap();
         
         // cannot move atm
         if( this.data.selection.getValueAt(x-1,y) < 0 &&
@@ -122,8 +122,10 @@ controller.stateMachine = util.stateMachine({
 			return this.breakTransition();
 		}
 	},
-	
-	MOVEPATH_SELECTION: {
+
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+  MOVEPATH_SELECTION: {
 		
 		onenter: function( ev, x,y ){
 			//this.data.target.clean();
@@ -137,7 +139,7 @@ controller.stateMachine = util.stateMachine({
 			
 			var ox = this.data.target.x;
 			var oy = this.data.target.y;
-			var dis = model.distance( ox,oy, x,y );
+			var dis = model.map_getDistance( ox,oy, x,y );
 			
 			this.data.target.set( x,y );
 			
@@ -147,7 +149,7 @@ controller.stateMachine = util.stateMachine({
 			else if( dis === 1 ){
 				
 				// ADD TILE TO PATH
-				var code = model.moveCodeFromAtoB( ox,oy, x,y );
+				var code = model.move_codeFromAtoB( ox,oy, x,y );
 				controller.stateMachine.data.movePath.addCodeToPath( x,y, code );
 				return this.breakTransition();
 			}
@@ -166,7 +168,7 @@ controller.stateMachine = util.stateMachine({
 		
 	},
 	
-	// ---
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
 	ACTION_MENU:{
 		onenter: function(){
@@ -180,14 +182,15 @@ controller.stateMachine = util.stateMachine({
 		
 		action:function( ev, index ){
 			var action = this.data.menu.data[ index ];
-			var actObj = controller.actionObjects[action];
+			var actObj = controller.action_objects[action];
 			
 			this.data.action.selectedEntry = action;
 			this.data.action.object = actObj;
 			
 			if( actObj.prepareMenu !== null ) return "ACTION_SUBMENU";
 			else if( actObj.isTargetValid !== null ) return "ACTION_SELECT_TILE";
-				else if( actObj.prepareTargets !== null && actObj.targetSelectionType === "A" ) return this.data.selection.prepare();
+				else if( actObj.prepareTargets !== null &&
+          actObj.targetSelectionType === "A" ) return this.data.selection.prepare();
 				else return "FLUSH_ACTION";
 		},
 		
@@ -197,7 +200,7 @@ controller.stateMachine = util.stateMachine({
 		}
 	},
 	
-	// ---
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
 	ACTION_SUBMENU:{
 		onenter: function(){
@@ -238,14 +241,13 @@ controller.stateMachine = util.stateMachine({
 		}
 	},
 	
-	// ---
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
 	
 	
-	// ---
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
 	ACTION_SELECT_TARGET_A: {
-		
 		onenter: function(){
 			this.data.targetselection.clean();
 		},
@@ -266,8 +268,8 @@ controller.stateMachine = util.stateMachine({
 		}
 		
 	},
-	
-	// ---
+
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
 	ACTION_SELECT_TARGET_B: {
 		
@@ -291,8 +293,8 @@ controller.stateMachine = util.stateMachine({
 		}
 		
 	},
-	
-	// ---
+
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
 	ACTION_SELECT_TILE: {
 		
@@ -319,25 +321,25 @@ controller.stateMachine = util.stateMachine({
 		}
 		
 	},
-	
-	// ---
+
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
 	FLUSH_ACTION: {
 		actionState: function(){
-			var trapped = controller.buildAction();
+			var trapped = controller.actionBuilder_buildFromUserData();
 			
 			// IF ACTION IS A MULTISTEP ACTION THEN PLACE A SYMBOLIC WAIT COMMAND
 			if( !trapped && this.data.action.object.multiStepAction ){
 				
 				// this.data.inMultiStep = true;
-    			controller.localInvokement( "invokeNextStep_", []);
+    			controller.action_localInvoke( "multistep_nextStep_", []);
 				return "MULTISTEP_IDLE";
 			}
 			else return "IDLE";
 		}  
 	},
 	
-	// ---
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
 	MULTISTEP_IDLE: {
 		nextStep: function(){
@@ -354,7 +356,7 @@ controller.stateMachine = util.stateMachine({
 			
 		}
 	}
-	
-	// ---
+
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
 });

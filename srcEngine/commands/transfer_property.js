@@ -1,19 +1,19 @@
-controller.propertyAction({
+controller.action_propertyAction({
   
-  key:"transferProperty",
+  key:"team_transferProperty",
   hasSubMenu: true,
-	relationToProp:[ "S","T", model.relationModes.SAME_OBJECT ],
+	relationToProp:[ "S","T", model.player_RELATION_MODES.SAME_OBJECT ],
   
   condition: function( data ){
-    return model.isPropertyTransferable( data.source.propertyId );
+    return model.team_isPropertyTransferable( data.source.propertyId );
   },
   
   prepareMenu: function( data ){
-		model.addTransferTargets( data.source.unit.property, data.menu );
+		model.team_addTransferTargets( data.source.unit.property, data.menu );
   },
   
   invoke: function( data ){
-    controller.sharedInvokement("transferProperty",[ 
+    controller.action_sharedInvoke("team_transferProperty",[ 
 			data.source.propertyId, 
 			data.action.selectedSubEntry 
 		]);

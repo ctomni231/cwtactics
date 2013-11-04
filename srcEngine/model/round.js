@@ -1,60 +1,38 @@
-controller.registerInvokableCommand("nextTurn");
+// commands
+controller.action_registerCommands("round_nextTurn");
 
-controller.defineEvent("nextTurn");
+// events
+controller.event_define("round_nextTurn");
 
-controller.defineGameConfig("dayLimit",0,999,0);
+// config
+controller.defineGameConfig("round_dayLimit",0,999,0);
 
 // Represents the current action day in the game. The day attribute increases
 // everytime if the first player starts its turn.
 // 
-// @type {Number}
-model.day = 0;
+model.round_day = 0;
 
 // Holds the identical number of the current turn owner.
 // 
-// @type {Number}  
-model.turnOwner = -1;
-
-// Define persitence handler
-controller.persistenceHandler(
-  
-  // load
-  function( dom ){ 
-    
-    // grab turn owner
-    if( typeof dom.trOw !== "undefined" ) model.turnOwner = dom.trOw; 
-    else model.turnOwner = 0;
-    
-    // grab day
-    if( typeof dom.day !== "undefined" ) model.day = dom.day;
-    else model.day = 0;
-  },
-  
-  // save
-  function( dom ){ 
-    dom.trOw = model.turnOwner; 
-    dom.day  = model.day; 
-  }
-);
+model.round_turnOwner = -1;
 
 // Returns true if the given player id is the current turn owner.
 //
-// @param pid player id
-model.isTurnOwner = function( pid ){
-  return model.turnOwner === pid;
+model.round_isTurnOwner = function( pid ){
+  return model.round_turnOwner === pid;
 };
 
 // Converts a number of days into turns.
 //
 // @param {Number} v number in days 
-model.daysToTurns = function( v ){
-  return model.players.length*v;
+model.round_daysToTurns = function( v ){
+  return model.player_data.length*v;
 };
 
 // Ends the turn for the current active turn owner.
-// Invokes the `nextTurn` event.
-model.nextTurn = function(){
-  var pid = model.turnOwner;
+// Invokes the `round_nextTurn` event.
+model.round_nextTurn = function(){
+  var pid = model.round_turnOwner;
   var oid = pid;
   var i,e;
   
@@ -66,62 +44,60 @@ model.nextTurn = function(){
       pid = 0;
       
       // Next day 
-      model.day++;
-      model.tickTimedEvents();
+      model.round_day++;
+      model.dayEvents_tick();
       
-      var dayLimit = controller.configValue("dayLimit");
-      if( dayLimit > 0 && model.day === dayLimit ){
-        controller.endGameRound();
+      var round_dayLimit = controller.configValue("round_dayLimit");
+      if( round_dayLimit > 0 && model.round_day === round_dayLimit ){
+        controller.update_endGameRound();
       }
     }
     
     // Found next player
-    if( model.players[pid].team !== INACTIVE_ID ) break;
+    if( model.player_data[pid].team !== INACTIVE_ID ) break;
     
     pid++;
   }
   
   // If the new player id is the same as the old 
   // player id then the game data is corrupted
-  if( pid === oid ){
-    model.criticalError( error.ILLEGAL_DATA, error.CANNOT_FIND_NEXT_PLAYER );
-  }
+  util.expect( util.expect.isTrue, ( pid !== oid ));
   
   // do turn start stuff for all **properties**
-  for( i=0,e=model.properties.length; i<e; i++ ){
-    if( model.properties[i].owner !== pid ) continue;
+  for( i=0,e=model.property_data.length; i<e; i++ ){
+    if( model.property_data[i].owner !== pid ) continue;
     
-    model.doPropertyGiveFunds( i );
-    model.propertyRepairs( i );
-    model.propertySupply( i );
+    model.supply_giveFunds( i );
+    model.supply_propertyRepairs( i );
+    model.supply_propertySupply( i );
   }
   
   var turnStartSupply = ( controller.configValue("autoSupplyAtTurnStart") === 1 );
   
   // do turn start stuff for all **units**
-  i= model.getFirstUnitSlotId( pid ); 
-  e= model.getLastUnitSlotId( pid );
+  i= model.unit_firstUnitId( pid ); 
+  e= model.unit_lastUnitId( pid );
   for( ; i<e; i++ ){
-    if( model.units[i].owner === INACTIVE_ID ) continue;
+    if( model.unit_data[i].owner === INACTIVE_ID ) continue;
     
-    model.drainFuel( i );
-    if(turnStartSupply) model.tryUnitSuppliesNeighbours( i );
+    model.unit_drainFuel( i );
+    if(turnStartSupply) model.supply_tryUnitSuppliesNeighbours( i );
   }
   
-  model.resetActableStatus(pid);
-  model.resetTurnTimer(); 
+  model.actions_prepareActors(pid);
+  model.timer_resetTurnTimer(); 
     
   // Sets the new turn owner
-  model.turnOwner = pid;
-  if( model.isClientPlayer(pid) ) model.lastActiveClientPid = pid;
+  model.round_turnOwner = pid;
+  if( model.client_isLocalPid(pid) ) model.client_lastPid = pid;
   
-  model.updateVisiblePid();
-  model.recalculateFogMap(); // needs to be done after setting new clientPid
+  model.fog_updateVisiblePid();
+  model.fog_recalculateFogMap(); // needs to be done after setting new clientPid
 
-	controller.events.nextTurn();
+	controller.events.round_nextTurn();
   
   // start AI logic if new turn owner is AI controlled this local instance is the host
-  if( controller.isHost() && controller.isPlayerAiControlled(pid) ){
-    controller.localInvokement("prepareAiTurn",[]);
+  if( controller.isHost() && !controller.ai_isHuman(pid) ){
+    controller.ai_machine.event("tick");
   }
 };

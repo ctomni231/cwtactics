@@ -34,7 +34,7 @@ controller.screenStateMachine.structure.NONE.start = function(){
       // if the system is in the game loop, then update the game data
       if( controller.inGameLoop ){
 
-        if( controller.inGameRound ) controller.gameLoop( delta );
+        if( controller.update_inGameRound ) controller.gameLoop( delta );
         else controller.screenStateMachine.event("gameHasEnded"); // game ends --> stop game loop
       }
     }

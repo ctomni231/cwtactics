@@ -1,4 +1,4 @@
-controller.registerMenuRenderer("buildUnit",
+controller.registerMenuRenderer("factory_produceUnit",
 function( content, entry, index ){
   
   var cost = model.unitTypes[ content ].cost;
