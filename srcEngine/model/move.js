@@ -103,7 +103,7 @@ model.move_moveUnitByPath = function( way, uid, x, y, noFuelConsumption ){
   
   // consume fuel ( if `noFuelConsumption` is `true` then the costs will be `0` )
   unit.fuel -= fuelUsed;
-  util.expect( util.expect.isTrue, unit.fuel >= 0 );
+  assert( unit.fuel >= 0 );
   
   // DO NOT ERASE POSITION IF UNIT WAS LOADED OR HIDDEN (NOT INGAME HIDDEN) SOMEWHERE
   if( unit.x >= 0 && unit.y >= 0 ) {
