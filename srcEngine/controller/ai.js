@@ -158,6 +158,23 @@ controller.ai_searchJoinTarget_ = function( x,y, data ){
   }
 };
 
+// Searches...
+//
+controller.ai_searchBatleTarget_ = function( x,y, data ){
+  var unit = model.unit_posMap[x][y];
+  if( unit && model.player_data[unit.owner].team !== model.player_data[data.pid].team ){
+    
+    // unit can attack
+    if( model.battle_getBaseDamageAgainst(model.units[data.uid], unit, true) > 0 ){
+      data.x = x;
+      data.y = y;
+        
+      // stop here
+      return false; 
+    }
+  }
+};
+
 // The state machine of the ai, contains the whole decision making process.
 //
 //    START               => IDLE
@@ -245,6 +262,25 @@ controller.ai_machine = util.stateMachine({
           // ++++++++++++++++++++++++++++++++++++++++++++++++
 
           case controller.ai_CHECKS.ATTACK :
+            
+            // if the unit can move and attack then do it
+            if( model.battle_isDirectUnit(i) || model.battle_isBallisticUnit(i) ){
+              
+              // TODO: use attack selection here
+              model.map_doInSelection( 
+                controller.ai_active.hlp.move, 
+                controller.ai_searchBatleTarget_, 
+                controller.ai_active.hlp 
+              );
+            }
+            // indirect
+            else if( model.battle_isIndirectUnit(i) ){
+              
+            }
+            // no battle unit
+            else{
+              
+            }
             break;
 
           // ++++++++++++++++++++++++++++++++++++++++++++++++
