@@ -33,8 +33,7 @@ model.map_isValidPosition = function( x,y ){
   );
 };
 
-// Invokes a callback on all tiles in a given 
-// range at a position (x,y)
+// Invokes a callback on all tiles in a given range at a position (x,y).
 //
 model.map_doInRange = function( x,y, range, cb, arg ){
   assert( model.map_isValidPosition(x,y) );
@@ -62,4 +61,10 @@ model.map_doInRange = function( x,y, range, cb, arg ){
       
     }
   }
+};
+
+// Invokes a callback on all tiles in a given selection.
+//
+model.map_doInSelection = function( selection, cb, arg ){
+  
 };
