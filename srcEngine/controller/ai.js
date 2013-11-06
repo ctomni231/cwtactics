@@ -29,19 +29,52 @@
 //
 controller.ai_spec = "DumbBoy [0.1]";
 
+// Sets the default priority in a priority list of a AI controlled player.
+//
+controller.ai_orderDefaultPrio = function(list){
+  
+  // first try to capture if you can 
+  // because nothing is more important
+  // than the amount of income
+  list[5] = controller.ai_CHECKS.CAPTURE;
+  
+  // try to attack enemy targets
+  list[4] = controller.ai_CHECKS.ATTACK;
+  
+  // if above not fits but a unit is damaged then it 
+  // should be repaired by join or repair
+  list[3] = controller.ai_CHECKS.JOIN;
+  list[2] = controller.ai_CHECKS.REPAIR;
+  
+  // fallback actions when no special actions matches are trying 
+  // to move near the enemy or the enemy HQ 
+  // (TODO: could be merged to one check)
+  list[1] = controller.ai_CHECKS.MOVE_TO_ENEMY;
+  list[0] = controller.ai_CHECKS.MOVE_TO_HQ;
+  
+  return list;
+};
+
 // The memory of the ai. Holds different data of the game state for all ai controlled 
 // player instances.
 //
 controller.ai_data = util.list( MAX_PLAYER-1, function(){
   return {
+    
+    // The id of the controlled player.
+    //
     pid         : INACTIVE_ID,
-    prio        : [
-      controller.ai_CHECKS.MOVE_TO_HQ,
-      controller.ai_CHECKS.MOVE_TO_ENEMY,
-      controller.ai_CHECKS.REPAIR,
-      controller.ai_CHECKS.ATTACK,
-      controller.ai_CHECKS.CAPTURE
-    ],
+    
+    // Controls the priority of the checks. Every AI player can independtly handle
+    // it's own priority list. This list reorderable in relation to the situation 
+    // on the battlefield. Needed for version 0.2 of dumbBoy to change it's handling
+    // dynamically at runtime.
+    //
+    prio        : controller.ai_orderDefaultPrio([0,0,0,0,0,0]),
+    
+    // Data transfer object for several checks during a AI turn.
+    // TODO: can be transfered to a single object in the module
+    //
     hlp         : { 
       pid:-1,
       move: null,
@@ -49,28 +82,38 @@ controller.ai_data = util.list( MAX_PLAYER-1, function(){
       x:-1,
       y:-1
     },
+    
+    // number of tasks in the list
+    //
     taskCount   : 0,
+    
+    // task list for the unit objects
+    //
     markedTasks : util.list( MAX_UNITS_PER_PLAYER )
   };
 });
 
-// Steps for the ai.
+// Check modes of the AI. Every mode realizes a specialized check for a situation. Every
+// situation can cause different actions for units.
 //
 controller.ai_CHECKS  = {
   CAPTURE       : 0,
   ATTACK        : 1,
   MOVE_TO_ENEMY : 2,
   MOVE_TO_HQ    : 3,
-  REPAIR        : 4
+  REPAIR        : 4,
+  JOIN          : 5
 };
 
-// Targets for the ai.
+// Target actions for the AI. These ones are the result of the checks above. Every unit can 
+// have one of this tasks.
 //
 controller.ai_TARGETS = {
   NOTHING             : 0,
   DEFEND_SELF         : 1,
   ATTACK_ENEMY_HQ     : 2,
-  CAPTURE_NEXT_PROP   : 3
+  CAPTURE_NEXT_PROP   : 3,
+  JOIN                : 4
 };
 
 // Link to the current active player instance.
@@ -82,9 +125,6 @@ controller.ai_active = null;
 controller.ai_searchNeutralProp_ = function( x,y, data ){
   // TODO search best property
   
-  // drop this tile when the unit cannot move there
-  // if( data.move.getValueAt(x,y) < 0 ) return;
-  
   var prop = model.property_posMap[x][y];
   if( prop && prop.owner !== data.pid ){
     
@@ -93,6 +133,26 @@ controller.ai_searchNeutralProp_ = function( x,y, data ){
     
     // stop here
     return false;
+  }
+};
+
+// Searches for a good join target.
+//
+controller.ai_searchJoinTarget_ = function( x,y, data ){
+  // check all and search best target
+  
+  var sunit = model.units[data.uid];
+  var unit = model.unit_posMap[x][y];
+  if( unit && unit.type === sunit.type && unit.owner === data.pid ){
+    if( unit.hp <= 50 ||            // other unit is damaged a lot too
+       (unit.hp+sunit.hp < 124) ){  // both together drops max. 25 health to cash (TODO: if cash is low join more)
+         
+      data.x = x;
+      data.y = y;
+      
+      // stop here
+      return false;
+    }
   }
 };
 
@@ -162,17 +222,22 @@ controller.ai_machine = util.stateMachine({
           case controller.ai_CHECKS.CAPTURE :
             if( type.captures ){
               controller.ai_active.hlp.pid  = unit.owner;
+              controller.ai_active.hlp.uid  = i;
               controller.ai_active.hlp.x    = -1;
               controller.ai_active.hlp.y    = -1;
               
-              //model.map_doInRange(unit.x,unit.y,2,controller.ai_active.hlp);
-              model.map_doInSelection( controller.ai_active.hlp.move, controller.ai_active.hlp );
+              model.map_doInSelection( 
+                controller.ai_active.hlp.move, 
+                controller.ai_searchNeutralProp_, 
+                controller.ai_active.hlp 
+              );
               
               if( controller.ai_active.hlp.x !== -1 ){
-                controller.ai_active.markedTask[i] = controller.ai_TARGETS.CAPTURE_NEXT_PROP;
+                controller.ai_active.markedTask[i] = controller.ai_TARGETS.JOIN;
                 found = true;
               }
             }
+            
             break;
 
           // ++++++++++++++++++++++++++++++++++++++++++++++++
@@ -191,8 +256,39 @@ controller.ai_machine = util.stateMachine({
             break;
 
           // ++++++++++++++++++++++++++++++++++++++++++++++++
+          // If unit is damaged a lot, then try to repair it
+          // by joining two units of the same type togehter.
+          //
 
+          case controller.ai_CHECKS.JOIN :
+            if( unit.hp < 50 ){
+              controller.ai_active.hlp.pid  = unit.owner;
+              controller.ai_active.hlp.x    = -1;
+              controller.ai_active.hlp.y    = -1;
+                
+              model.map_doInSelection( 
+                controller.ai_active.hlp.move, 
+                controller.ai_searchJoinTarget_, 
+                controller.ai_active.hlp 
+              );
+                
+              if( controller.ai_active.hlp.x !== -1 ){
+                controller.ai_active.markedTask[i] = controller.ai_TARGETS.CAPTURE_NEXT_PROP;
+                found = true;
+              }
+            }
+            break;
+            
+          // ++++++++++++++++++++++++++++++++++++++++++++++++
+          // If unit is damaged a lot, then try to repair it
+          // by moving onto a property with healing ability.
+          //
+          
           case controller.ai_CHECKS.REPAIR :
+            
+            // when unit is low on health then try to reach the next repair property
+            if( unit.hp < 50 ) found = true;
+            
             break;
 
           // ++++++++++++++++++++++++++++++++++++++++++++++++
@@ -221,6 +317,15 @@ controller.ai_machine = util.stateMachine({
       if( list[i] !== controller.ai_TARGETS.NOTHING ){
         
         // do it
+        switch(){
+          
+          // +++++++++++++++++++++++++++++++++++++++++++++++++
+          
+          case controller.ai_TARGETS.JOIN:
+            break;
+            
+          // +++++++++++++++++++++++++++++++++++++++++++++++++  
+        }
         
         // decrease counter
         controller.ai_active.taskCount--;
