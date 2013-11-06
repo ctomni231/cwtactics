@@ -44,8 +44,10 @@ controller.ai_data = util.list( MAX_PLAYER-1, function(){
     ],
     hlp         : { 
       pid:-1,
+      move: null,
       uid:-1,
-      x:-1,y:-1
+      x:-1,
+      y:-1
     },
     taskCount   : 0,
     markedTasks : util.list( MAX_UNITS_PER_PLAYER )
@@ -75,11 +77,22 @@ controller.ai_TARGETS = {
 //
 controller.ai_active = null;
 
+// Searches for neutral or enemy properties in range and marks them if found.
+//
 controller.ai_searchNeutralProp_ = function( x,y, data ){
-  if( data.uid)
+  // TODO search best property
+  
+  // drop this tile when the unit cannot move there
+  // if( data.move.getValueAt(x,y) < 0 ) return;
+  
   var prop = model.property_posMap[x][y];
   if( prop && prop.owner !== data.pid ){
     
+    data.x = x;
+    data.y = y;
+    
+    // stop here
+    return false;
   }
 };
 
@@ -126,6 +139,8 @@ controller.ai_machine = util.stateMachine({
 
       unit = model.units[i];
       if( !unit ) continue;
+      
+      // TODO: generate move path here
 
       type = unit.type;
 
@@ -150,7 +165,8 @@ controller.ai_machine = util.stateMachine({
               controller.ai_active.hlp.x    = -1;
               controller.ai_active.hlp.y    = -1;
               
-              model.map_doInRange(unit.x,unit.y,2,controller.ai_active.hlp);
+              //model.map_doInRange(unit.x,unit.y,2,controller.ai_active.hlp);
+              model.map_doInSelection( controller.ai_active.hlp.move, controller.ai_active.hlp );
               
               if( controller.ai_active.hlp.x !== -1 ){
                 controller.ai_active.markedTask[i] = controller.ai_TARGETS.CAPTURE_NEXT_PROP;
