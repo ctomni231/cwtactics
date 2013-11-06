@@ -11,9 +11,9 @@ controller.event_define( "co_activateCOP" );
 controller.event_define( "co_deactivateCOP" );
 
 // configs
-controller.defineGameConfig( "co_getStarCost", 							5, 50000, 9000, 5 );
-controller.defineGameConfig( "co_getStarCostIncrease", 			0, 50000, 1800, 5 );
-controller.defineGameConfig( "co_getStarCostIncreaseSteps", 0, 50, 		10 );
+controller.defineGameConfig( "co_getStarCost",              5, 50000, 9000, 5 );
+controller.defineGameConfig( "co_getStarCostIncrease",      0, 50000, 1800, 5 );
+controller.defineGameConfig( "co_getStarCostIncreaseSteps", 0, 50,    10 );
 
 // Contains all co modes, that are available in `Custom Wars: Tactics`.
 //
@@ -213,7 +213,7 @@ model.co_setSideCo = function( pid, type ){
 
 // Detaches a commander from a given unit back to the player pool.
 //
-model.detachCommander = function( pid, uid ){
+model.co_detachCommander = function( pid, uid ){
   assert( model.player_isValidPid(pid) );
   assert( model.unit_isValidUnitId(uid) );
   assert( model.unit_data[uid].owner !== INACTIVE_ID );
@@ -226,7 +226,7 @@ model.detachCommander = function( pid, uid ){
 
 // Attaches a commander from a player pool to a given unit.
 //
-model.attachCommander = function( pid, uid ){
+model.co_attachCommander = function( pid, uid ){
   assert( model.player_isValidPid(pid) );
   assert( model.unit_isValidUnitId(uid) );
   assert( model.unit_data[uid].owner !== INACTIVE_ID );
