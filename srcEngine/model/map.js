@@ -57,7 +57,8 @@ model.map_doInRange = function( x,y, range, cb, arg ){
     for( ; lX<=hX; lX++ ){
       
       // invoke the callback on all tiles in range
-      cb( lX,lY, arg, Math.abs(lX-x)+disY );
+      // if a callback returns `false` then the process will be stopped
+      if( cb( lX,lY, arg, Math.abs(lX-x)+disY ) === false ) return;
       
     }
   }
