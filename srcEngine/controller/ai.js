@@ -42,7 +42,13 @@ controller.ai_data = util.list( MAX_PLAYER-1, function(){
       controller.ai_CHECKS.ATTACK,
       controller.ai_CHECKS.CAPTURE
     ],
-    markedTasks : util.list( MAX_UNITS_PER_PLAYER ) // TODO: maybe a ring buffer is better
+    hlp         : { 
+      pid:-1,
+      uid:-1,
+      x:-1,y:-1
+    },
+    taskCount   : 0,
+    markedTasks : util.list( MAX_UNITS_PER_PLAYER )
   };
 });
 
@@ -68,6 +74,14 @@ controller.ai_TARGETS = {
 // Link to the current active player instance.
 //
 controller.ai_active = null;
+
+controller.ai_searchNeutralProp_ = function( x,y, data ){
+  if( data.uid)
+  var prop = model.property_posMap[x][y];
+  if( prop && prop.owner !== data.pid ){
+    
+  }
+};
 
 // The state machine of the ai, contains the whole decision making process.
 //
@@ -132,7 +146,16 @@ controller.ai_machine = util.stateMachine({
 
           case controller.ai_CHECKS.CAPTURE :
             if( type.captures ){
-
+              controller.ai_active.hlp.pid  = unit.owner;
+              controller.ai_active.hlp.x    = -1;
+              controller.ai_active.hlp.y    = -1;
+              
+              model.map_doInRange(unit.x,unit.y,2,controller.ai_active.hlp);
+              
+              if( controller.ai_active.hlp.x !== -1 ){
+                controller.ai_active.markedTask[i] = controller.ai_TARGETS.CAPTURE_NEXT_PROP;
+                found = true;
+              }
             }
             break;
 
@@ -175,20 +198,23 @@ controller.ai_machine = util.stateMachine({
 
   PHASE_FLUSH_TASK: { tick: function(){
 
+    // TODO: priority ?
     // flush a command from the tasks list
-
-    // are commands left 
     var list = controller.ai_active.markedTasks;
     for( var i=MAX_UNITS_PER_PLAYER-1; i>=0; i-- ){
       if( list[i] !== controller.ai_TARGETS.NOTHING ){
-
-        // at least one object has a task, so re-check the whole 
-        // thing for all objects again (analyse the new situation)
-        return "PHASE_FLUSH_TASK";
+        
+        // do it
+        
+        // decrease counter
+        controller.ai_active.taskCount--;
+        
+        break;
       }
     }
-
-    return "BUILD_OBJECTS";
+    
+    // are commands left ?
+    return ( controller.ai_active.taskCount > 0 )? "PHASE_FLUSH_TASK" : "BUILD_OBJECTS";
   }},
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
