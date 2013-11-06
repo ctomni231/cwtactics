@@ -18,20 +18,20 @@ controller.defineGameConfig( "co_getStarCostIncreaseSteps", 0, 50, 		10 );
 // Contains all co modes, that are available in `Custom Wars: Tactics`.
 //
 model.co_MODES = {
-  NONE:0,
-  AW1:1,
-  AW2:2,
-  AWDS:3,
-  AWDR:4
+  NONE      :0,
+  AW1       :1,
+  AW2       :2,
+  AWDS      :3,
+  AWDR      :4
 };
 
 // Contains all co power levels.
 //
 model.co_POWER_LEVEL = {
-  INACTIVE: 0,
-  COP: 1,
-  SCOP: 2,
-  TSCOP: 3
+  INACTIVE  : 0,
+  COP       : 1,
+  SCOP      : 2,
+  TSCOP     : 3
 };
 
 // The current active co mode.
@@ -47,9 +47,49 @@ model.co_data = util.list( MAX_PLAYER, function( i ){
     level: 0, 				// active co power level
     coA: null, 				// main CO
     coB: null,  			// sub CO
-    detachedTo: -1  	// CO detached to a specific unit
+    detachedTo: INACTIVE_ID  	// CO detached to a specific unit
   };
 });
+
+// Returns the range of a commander.
+//
+model.co_commanderRange = function( pid ){
+  assert( util.intRange(pid,0,MAX_PLAYER-1) );
+  assert( co_activeMode === model.co_MODES.AWDR );
+  
+  if( model.co_data[pid].detachedTo === INACTIVE_ID ) return -1;
+  
+  return -1; // TODO
+};
+
+// Returns `true` when an unit is in the range of a commander, else `false`.
+//
+model.co_isInCommanderFocus = function( uid, tpid ){
+  
+  // are we playing Commander mode ?
+  if( co_activeMode !== model.co_MODES.AWDR ) return false;
+  
+  // is commander active ?
+  if( model.co_data[pid].detachedTo === INACTIVE_ID ) return false;
+  
+  var com   = model.units[model.co_data[pid].detachedTo];
+  var cx    = com.x;
+  var cy    = com.y;
+  var cr    = model.co_commanderRange(pid);
+  var unit  = model.units[uid];
+  var x     = unit.x;
+  var y     = unit.y;
+  
+  // check distance to commander
+  var disX = Math.abs( x-cx );
+  if( disX > cr ) return false;
+  
+  var disY = Math.abs( y-cy );
+  if( disX+disY > cr ) return false;
+  
+  // in range of the commander
+  return true;
+};
 
 // Activates a power of a player.
 // 
