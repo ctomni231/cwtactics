@@ -5,7 +5,7 @@
 // a concept of a clean designed AI that can be extended by differen't people. That's why DumbBoy gets
 // a modular and clean design instead of hacky code. 
 //
-// TASKS 0.1: (v. 0.3.5)
+// TASKS 0.25: DO SOMETHING ON THE BATTLEFIELD (v. 0.3.5)
 //  - DB builds objects on his properties
 //  - When neutral properties are left on the map then DB will
 //    build at least one capturer unit
@@ -16,7 +16,7 @@
 //  - DB attacks with units in range
 //  - DB tries to position indirect units
 //
-// TASKS 0.2: (v. 0.4)
+// TASKS 0.5: BEING DYNAMIC AND LESS CALCULATE ABLE (v. 0.4)
 //  - DB should define long term tasks for himself to 
 //    organize his actions to fulfill this tasks
 //  - DB can ignore long term tasks to handle difficult 
@@ -27,7 +27,9 @@
 //  - DB should use transports to reach far away properties
 //  - DB uses CO powers
 //
-controller.ai_spec = "DumbBoy [0.1]";
+// TASKS 0.75: ANALYSE YOUR ENEMIES (v. 0.5)
+//
+controller.ai_spec = "DumbBoy [0.25]";
 
 // Sets the default priority in a priority list of a AI controlled player.
 //
