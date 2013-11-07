@@ -2,7 +2,7 @@
 // Our target is to build a first version of a dynamic AI that can change it's tasks at runtime
 // in relation to the situation on the battlefield. DumbBoy won't be a next super gen AI. This
 // is not our task ( we wouldn't have enough time to do this... to be true :P ). It should be more
-// a concept of a clean designed AI that can be extended by differen't people. That's why DumbBoy gets
+// a concept of a clean designed AI that can be extended by different people. That's why DumbBoy gets
 // a modular and clean design instead of hacky code. 
 //
 // TASKS 0.25: DO SOMETHING ON THE BATTLEFIELD (v. 0.3.5)
