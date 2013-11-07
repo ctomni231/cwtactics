@@ -20,19 +20,18 @@
 //
 // **TASKS 0.5: BEING DYNAMIC AND LESS CALCULATE ABLE (v. 0.4)**
 //
-//  - DB should define long term tasks for himself to 
-//    organize his actions to fulfill this tasks
-//  - DB can ignore long term tasks to handle difficult 
-//    situations dynamical
-//  - Long term tasks changes during game play
+//  - DB should define long term tasks for himself to organize his actions 
+//    to fulfill this tasks (AGGRESIVE,DEFENSIVE,MONEY,PRESSING,SPAMMING)
+//  - DB can ignore long term tasks to handle difficult situations dynamical
+//  - Long term tasks changes during game play (maybe re-analyse it every 5 days)
 //  - DB should analyse the objects that a player owns and uses to
 //    counter play it (without cheating through the fog)
-//  - DB should use transports to reach far away properties
-//  - DB uses CO powers
+//  - DB uses CO powers and mechanic
 //  - *Actions:* Activate_Power,Fire_Cannon,Fire_Laser,At/Detach Commander,Transfer XYZ,
 //
 // **TASKS 0.75: ANALYSE YOUR ENEMIES (v. 0.5)**
 //
+//  - DB should use transports to reach far away properties
 //  - *Actions:* Hide/Unhide,Supply,Load/Unload,Suicide_Bomb
 // 
 // **COMMANDS USED BY DB (sticky)**
