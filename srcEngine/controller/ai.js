@@ -69,7 +69,7 @@ controller.ai_data = util.list( MAX_PLAYER-1, function(){
     
     // Controls the priority of the checks. Every AI player can independtly handle
     // it's own priority list. This list reorderable in relation to the situation 
-    // on the battlefield. Needed for version 0.2 of dumbBoy to change it's handling
+    // on the battlefield. Needed for version 0.5 of dumbBoy to change it's handling
     // dynamically at runtime.
     //
     prio        : controller.ai_orderDefaultPrio([0,0,0,0,0,0]),
