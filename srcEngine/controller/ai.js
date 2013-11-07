@@ -16,6 +16,7 @@
 //  - Capturers try to capture properties or move near to them
 //  - DB attacks with units in range
 //  - DB tries to position indirect units
+//  - *Actions:* Wait,Move,Capture,End_Turn,Build_Unit,Attack,Join
 //
 // **TASKS 0.5: BEING DYNAMIC AND LESS CALCULATE ABLE (v. 0.4)**
 //
@@ -28,10 +29,11 @@
 //    counter play it (without cheating through the fog)
 //  - DB should use transports to reach far away properties
 //  - DB uses CO powers
+//  - *Actions:* Activate_Power,Fire_Cannon,Fire_Laser,At/Detach Commander,Transfer XYZ,
 //
 // **TASKS 0.75: ANALYSE YOUR ENEMIES (v. 0.5)**
 //
-//  -
+//  - *Actions:* Hide/Unhide,Supply,Load/Unload,Suicide_Bomb
 // 
 // **COMMANDS USED BY DB (sticky)**
 //
