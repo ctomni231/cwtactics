@@ -28,7 +28,31 @@
 //  - DB uses CO powers
 //
 // TASKS 0.75: ANALYSE YOUR ENEMIES (v. 0.5)
-//
+//  -
+// 
+// COMMANDS USED BY DB (sticky):
+//  - activate_power        [ ]
+//  - attack                [ ]
+//  - build_unit            [ ]
+//  - capture               [ ]
+//  - attachCommander       [ ]
+//  - detachCommander       [ ]
+//  - end_turn              [x]
+//  - fireCannon            [ ]
+//  - fireLaser             [ ]
+//  - hide_unit             [ ]
+//  - join                  [ ]
+//  - load_unit             [ ]
+//  - silo_fire             [ ]
+//  - suicide_bomb          [ ]
+//  - supply                [ ]
+//  - transfer_money        [ ]
+//  - transfer_property     [ ]
+//  - transfer_unit         [ ]
+//  - unhide_unit           [ ]
+//  - unload_unit           [ ]
+//  - wait                  [ ]
+//  
 controller.ai_spec = "DumbBoy [0.25]";
 
 // Check modes of the AI. Every mode realizes a specialized check for a situation. Every
