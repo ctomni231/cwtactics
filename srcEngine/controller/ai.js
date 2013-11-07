@@ -3,14 +3,14 @@
 // in relation to the situation on the battlefield. DumbBoy won't be a next super gen AI. This
 // is not our task ( we wouldn't have enough time to do this... to be true :P ). It should be more
 // a concept of a clean designed AI that can be extended by different people. That's why DumbBoy gets
-// a modular and clean design instead of hacky code. 
+// a clean design instead of hacky code. 
 //
 // TASKS 0.25: DO SOMETHING ON THE BATTLEFIELD (v. 0.3.5)
 //  - DB builds objects on his properties
 //  - When neutral properties are left on the map then DB will
 //    build at least one capturer unit
 //  - DB tries to fulfill a percentage (AIR,VS,TANKS etc.)
-//  - ~~Damaged units (<=5HP) may move back to properties for repair~~
+//  - Damaged units (<=5HP) may move back to properties for repair
 //  - Units move to the enemy players
 //  - Capturers try to capture properties or move near to them
 //  - DB attacks with units in range
@@ -30,6 +30,29 @@
 // TASKS 0.75: ANALYSE YOUR ENEMIES (v. 0.5)
 //
 controller.ai_spec = "DumbBoy [0.25]";
+
+// Check modes of the AI. Every mode realizes a specialized check for a situation. Every
+// situation can cause different actions for units.
+//
+controller.ai_CHECKS  = {
+  CAPTURE       : 0,
+  ATTACK        : 1,
+  MOVE_TO_ENEMY : 2,
+  MOVE_TO_HQ    : 3,
+  REPAIR        : 4,
+  JOIN          : 5
+};
+
+// Target actions for the AI. These ones are the result of the checks above. Every unit can 
+// have one of this tasks.
+//
+controller.ai_TARGETS = {
+  NOTHING : 0,
+  JOIN    : 1,
+  ATTACK  : 2,
+  CAPTURE : 3,
+  WAIT    : 4
+};
 
 // Sets the default priority in a priority list of a AI controlled player.
 //
@@ -97,27 +120,17 @@ controller.ai_data = util.list( MAX_PLAYER-1, function(){
   };
 });
 
-// Check modes of the AI. Every mode realizes a specialized check for a situation. Every
-// situation can cause different actions for units.
+// Returns `true` when the given player id is not controlled by the AI, else `false`.
 //
-controller.ai_CHECKS  = {
-  CAPTURE       : 0,
-  ATTACK        : 1,
-  MOVE_TO_ENEMY : 2,
-  MOVE_TO_HQ    : 3,
-  REPAIR        : 4,
-  JOIN          : 5
-};
+controller.ai_isHuman = function(pid){
 
-// Target actions for the AI. These ones are the result of the checks above. Every unit can 
-// have one of this tasks.
-//
-controller.ai_TARGETS = {
-  NOTHING             : 0,
-  DEFEND_SELF         : 1,
-  ATTACK_ENEMY_HQ     : 2,
-  CAPTURE_NEXT_PROP   : 3,
-  JOIN                : 4
+  // search in all slots
+  for( var i=controller.ai_data.lenght-1; i>=0; i-- ){
+    if( controller.ai_data[i].pid === pid ) return false;
+  }
+
+  // no slot is used by the pid -> human
+  return true;
 };
 
 // Link to the current active player instance.
@@ -242,123 +255,124 @@ controller.ai_machine = util.stateMachine({
     var i    = data.step_i;
     
       unit = model.units[i];
-      if( !unit ) continue;
+      if( unit && model.actions_canAct(i) ){ 
       
-      // TODO: generate move path here
-
-      type = unit.type;
-
-      // check situation and decide what to do
-      var pi = prio.length-1;
-      for( ; pi>=0 ; pi-- ){
-
-        found = false;
-        switch( prio[pi] ){
-
-          // ++++++++++++++++++++++++++++++++++++++++++++++++
-          // Check possible capture targets here. Capturing 
-          // units should always target neutral and enemy
-          // properties, to capture them. This does not mean
-          // that capturing units should only capture, but
-          // they should be primary used by AI for that.
-          //
-
-          case controller.ai_CHECKS.CAPTURE :
-            if( type.captures ){
-              controller.ai_active.hlp.pid  = unit.owner;
-              controller.ai_active.hlp.uid  = i;
-              controller.ai_active.hlp.x    = -1;
-              controller.ai_active.hlp.y    = -1;
-              
-              model.map_doInSelection( 
-                controller.ai_active.hlp.move, 
-                controller.ai_searchNeutralProp_, 
-                controller.ai_active.hlp 
-              );
-              
-              if( controller.ai_active.hlp.x !== -1 ){
-                controller.ai_active.markedTask[i] = controller.ai_TARGETS.JOIN;
-                found = true;
-              }
-            }
-            
-            break;
-
-          // ++++++++++++++++++++++++++++++++++++++++++++++++
-
-          case controller.ai_CHECKS.ATTACK :
-            
-            // if the unit can move and attack then do it
-            if( model.battle_isDirectUnit(i) || model.battle_isBallisticUnit(i) ){
-              
-              // TODO: use attack selection here
-              model.map_doInSelection( 
-                controller.ai_active.hlp.move, 
-                controller.ai_searchBatleTarget_, 
-                controller.ai_active.hlp 
-              );
-            }
-            // indirect
-            else if( model.battle_isIndirectUnit(i) ){
-              
-            }
-            // no battle unit
-            else{
-              
-            }
-            break;
-
-          // ++++++++++++++++++++++++++++++++++++++++++++++++
-
-          case controller.ai_CHECKS.MOVE_TO_ENEMY :
-            break;
-
-          // ++++++++++++++++++++++++++++++++++++++++++++++++
-
-          case controller.ai_CHECKS.MOVE_TO_HQ :
-            break;
-
-          // ++++++++++++++++++++++++++++++++++++++++++++++++
-          // If unit is damaged a lot, then try to repair it
-          // by joining two units of the same type togehter.
-          //
-
-          case controller.ai_CHECKS.JOIN :
-            if( unit.hp < 50 ){
-              controller.ai_active.hlp.pid  = unit.owner;
-              controller.ai_active.hlp.x    = -1;
-              controller.ai_active.hlp.y    = -1;
+        // TODO: generate move path here
+  
+        type = unit.type;
+  
+        // check situation and decide what to do
+        var pi = prio.length-1;
+        for( ; pi>=0 ; pi-- ){
+  
+          found = false;
+          switch( prio[pi] ){
+  
+            // ++++++++++++++++++++++++++++++++++++++++++++++++
+            // Check possible capture targets here. Capturing 
+            // units should always target neutral and enemy
+            // properties, to capture them. This does not mean
+            // that capturing units should only capture, but
+            // they should be primary used by AI for that.
+            //
+  
+            case controller.ai_CHECKS.CAPTURE :
+              if( type.captures ){
+                controller.ai_active.hlp.pid  = unit.owner;
+                controller.ai_active.hlp.uid  = i;
+                controller.ai_active.hlp.x    = -1;
+                controller.ai_active.hlp.y    = -1;
                 
-              model.map_doInSelection( 
-                controller.ai_active.hlp.move, 
-                controller.ai_searchJoinTarget_, 
-                controller.ai_active.hlp 
-              );
+                model.map_doInSelection( 
+                  controller.ai_active.hlp.move, 
+                  controller.ai_searchNeutralProp_, 
+                  controller.ai_active.hlp 
+                );
                 
-              if( controller.ai_active.hlp.x !== -1 ){
-                controller.ai_active.markedTask[i] = controller.ai_TARGETS.CAPTURE_NEXT_PROP;
-                found = true;
+                if( controller.ai_active.hlp.x !== -1 ){
+                  controller.ai_active.markedTask[i] = controller.ai_TARGETS.JOIN;
+                  found = true;
+                }
               }
-            }
-            break;
+              
+              break;
+  
+            // ++++++++++++++++++++++++++++++++++++++++++++++++
+  
+            case controller.ai_CHECKS.ATTACK :
+              
+              // if the unit can move and attack then do it
+              if( model.battle_isDirectUnit(i) || model.battle_isBallisticUnit(i) ){
+                
+                // TODO: use attack selection here
+                model.map_doInSelection( 
+                  controller.ai_active.hlp.move, 
+                  controller.ai_searchBatleTarget_, 
+                  controller.ai_active.hlp 
+                );
+              }
+              // indirect
+              else if( model.battle_isIndirectUnit(i) ){
+                
+              }
+              // no battle unit
+              else{
+                
+              }
+              break;
+  
+            // ++++++++++++++++++++++++++++++++++++++++++++++++
+  
+            case controller.ai_CHECKS.MOVE_TO_ENEMY :
+              break;
+  
+            // ++++++++++++++++++++++++++++++++++++++++++++++++
+  
+            case controller.ai_CHECKS.MOVE_TO_HQ :
+              break;
+  
+            // ++++++++++++++++++++++++++++++++++++++++++++++++
+            // If unit is damaged a lot, then try to repair it
+            // by joining two units of the same type togehter.
+            //
+  
+            case controller.ai_CHECKS.JOIN :
+              if( unit.hp < 50 ){
+                controller.ai_active.hlp.pid  = unit.owner;
+                controller.ai_active.hlp.x    = -1;
+                controller.ai_active.hlp.y    = -1;
+                  
+                model.map_doInSelection( 
+                  controller.ai_active.hlp.move, 
+                  controller.ai_searchJoinTarget_, 
+                  controller.ai_active.hlp 
+                );
+                  
+                if( controller.ai_active.hlp.x !== -1 ){
+                  controller.ai_active.markedTask[i] = controller.ai_TARGETS.CAPTURE_NEXT_PROP;
+                  found = true;
+                }
+              }
+              break;
+              
+            // ++++++++++++++++++++++++++++++++++++++++++++++++
+            // If unit is damaged a lot, then try to repair it
+            // by moving onto a property with healing ability.
+            //
             
-          // ++++++++++++++++++++++++++++++++++++++++++++++++
-          // If unit is damaged a lot, then try to repair it
-          // by moving onto a property with healing ability.
-          //
-          
-          case controller.ai_CHECKS.REPAIR :
-            
-            // when unit is low on health then try to reach the next repair property
-            if( unit.hp < 50 ) found = true;
-            
-            break;
-
-          // ++++++++++++++++++++++++++++++++++++++++++++++++
-
+            case controller.ai_CHECKS.REPAIR :
+              
+              // when unit is low on health then try to reach the next repair property
+              if( unit.hp < 50 ) found = true;
+              
+              break;
+  
+            // ++++++++++++++++++++++++++++++++++++++++++++++++
+  
+          }
+  
+          if( found ) break;
         }
-
-        if( found ) break;
       }
       
       data.step_i++;
@@ -377,9 +391,26 @@ controller.ai_machine = util.stateMachine({
     for( var i=MAX_UNITS_PER_PLAYER-1; i>=0; i-- ){
       if( list[i] !== controller.ai_TARGETS.NOTHING ){
         
-        // do it
-        switch(){
+        // Do the action by mocking a user action object and checking
+        // it against the game commands (try to be like a real player)
+        //
+        switch(list[i]){
           
+          // +++++++++++++++++++++++++++++++++++++++++++++++++
+          
+          case controller.ai_TARGETS.ATTACK:
+            break;
+            
+          // +++++++++++++++++++++++++++++++++++++++++++++++++
+          
+          case controller.ai_TARGETS.CAPTURE:
+            break;
+            
+          // +++++++++++++++++++++++++++++++++++++++++++++++++
+          
+          case controller.ai_TARGETS.WAIT:
+            break;
+            
           // +++++++++++++++++++++++++++++++++++++++++++++++++
           
           case controller.ai_TARGETS.JOIN:
@@ -387,6 +418,9 @@ controller.ai_machine = util.stateMachine({
             
           // +++++++++++++++++++++++++++++++++++++++++++++++++  
         }
+        
+        // clear slot
+        list[i] = controller.ai_TARGETS.NOTHING;
         
         // decrease counter
         controller.ai_active.taskCount--;
@@ -472,16 +506,3 @@ controller.ai_machine = util.stateMachine({
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 });
-
-// Returns `true` when the given player id is not controlled by the AI, else `false`.
-//
-controller.ai_isHuman = function(pid){
-
-  // search in all slots
-  for( var i=controller.ai_data.lenght-1; i>=0; i-- ){
-    if( controller.ai_data[i].pid === pid ) return false;
-  }
-
-  // no slot is used by the pid -> human
-  return true;
-};
