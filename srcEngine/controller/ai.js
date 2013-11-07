@@ -100,6 +100,7 @@ controller.ai_data = util.list( MAX_PLAYER-1, function(){
     // Data transfer object for several checks during a AI turn.
     // TODO: can be transfered to a single object in the module
     //
+    /*
     hlp         : { 
       step_i:-1,
       step_e:-1,
@@ -109,6 +110,7 @@ controller.ai_data = util.list( MAX_PLAYER-1, function(){
       x:-1,
       y:-1
     },
+    */
     
     // number of tasks in the list
     //
@@ -119,6 +121,22 @@ controller.ai_data = util.list( MAX_PLAYER-1, function(){
     markedTasks : util.list( MAX_UNITS_PER_PLAYER )
   };
 });
+
+// Like a copy from the state machine data to mock user action data. Every AI
+// action should be checked against the real game command objects to prevent
+// errors and an unfair AI.
+//
+controller.ai_actionHolder_ = {
+  source          : null,
+  target          : null,
+  selectionTarget : null,
+  moveSelection   : null,
+  attackSelection : null,
+  ai_data         : { 
+    step_i:-1,
+    step_e:-1
+  }
+};
 
 // Returns `true` when the given player id is not controlled by the AI, else `false`.
 //
@@ -390,6 +408,7 @@ controller.ai_machine = util.stateMachine({
     var list = controller.ai_active.markedTasks;
     for( var i=MAX_UNITS_PER_PLAYER-1; i>=0; i-- ){
       if( list[i] !== controller.ai_TARGETS.NOTHING ){
+        var action;
         
         // Do the action by mocking a user action object and checking
         // it against the game commands (try to be like a real player)
@@ -409,6 +428,7 @@ controller.ai_machine = util.stateMachine({
           // +++++++++++++++++++++++++++++++++++++++++++++++++
           
           case controller.ai_TARGETS.WAIT:
+            controller.action_objects.wait;
             break;
             
           // +++++++++++++++++++++++++++++++++++++++++++++++++
@@ -418,6 +438,10 @@ controller.ai_machine = util.stateMachine({
             
           // +++++++++++++++++++++++++++++++++++++++++++++++++  
         }
+        
+        // TODO: use action builder here
+        assert( util.isUndefined(action.condition) || action.condition(controller.ai_actionHolder_) );
+        action.invoke(controller.ai_actionHolder_);
         
         // clear slot
         list[i] = controller.ai_TARGETS.NOTHING;
