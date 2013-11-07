@@ -10,7 +10,7 @@
 //  - When neutral properties are left on the map then DB will
 //    build at least one capturer unit
 //  - DB tries to fulfill a percentage (AIR,VS,TANKS etc.)
-//  - Damaged units (<4HP) may move back to properties for repair
+//  - ~~Damaged units (<=5HP) may move back to properties for repair~~
 //  - Units move to the enemy players
 //  - Capturers try to capture properties or move near to them
 //  - DB attacks with units in range
@@ -78,6 +78,8 @@ controller.ai_data = util.list( MAX_PLAYER-1, function(){
     // TODO: can be transfered to a single object in the module
     //
     hlp         : { 
+      step_i:-1,
+      step_e:-1,
       pid:-1,
       move: null,
       uid:-1,
@@ -177,20 +179,26 @@ controller.ai_searchBatleTarget_ = function( x,y, data ){
 
 // The state machine of the ai, contains the whole decision making process.
 //
-//    START               => IDLE
-//    IDLE                => START_TURN
-//    START_TURN          => PHASE_SEARCH_TASKS
-//    PHASE_SEARCH_TASKS  => PHASE_CHECK_TASKS
-//    PHASE_CHECK_TASKS   => PHASE_FLUSH_TASK
-//    PHASE_FLUSH_TASK    => PHASE_SEARCH_TASKS (when actors are left)
-//                           BUILD_OBJECTS      (when no actors are left)
-//    BUILD_OBJECTS       => END_TURN
-//    END_TURN            => IDLE
-//
+//    START                       => IDLE
+//    IDLE                        => START_TURN
+//    START_TURN                  => PHASE_PREPARE_SEARCH_TASKS
+//    PHASE_PREPARE_SEARCH_TASKS  => PHASE_SEARCH_TASKS
+//    PHASE_SEARCH_TASK           => PHASE_SEARCH_TASK  (when    actors left)
+//                                   PHASE_FLUSH_TASK   (when no actors left)
+//    PHASE_FLUSH_TASK            => PHASE_CHECK_LEFT_TASKS
+//    PHASE_CHECK_LEFT_TASKS      => PHASE_SEARCH_TASKS (when    actors left)
+//                                   BUILD_OBJECTS      (when no actors left)
+//    BUILD_OBJECTS               => END_TURN
+//    END_TURN                    => IDLE
+//    
 controller.ai_machine = util.stateMachine({
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
+  // This state must be active at the start of a AI turn. If not then something gone 
+  // wrong. At least no logic will be done here. It only symbolizes a meta state to 
+  // say "Hey I'm ready for a new AI turn".
+  //
+  
   IDLE:{ tick: function(){
     // TODO: setup meta data
 
@@ -198,24 +206,41 @@ controller.ai_machine = util.stateMachine({
   }},
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Start turn actions. At the moment nothing will be done here too. Later this could
+  // be the place to make a first analyse of the battlefield and the enemy players. 
+  // I think this will be a good place to define the long term task of the AI player
+  // based on the situation on the battlefield.
+  //
 
   START_TURN:{ tick: function(){
-    return "END_TURN";
+    return "PHASE_PREPARE_SEARCH_TASKS";
   }},
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Prepares the search step.
+  //
+  
+  PHASE_PREPARE_SEARCH_TASKS: { tick: function(){
+    controller.ai_active.hlp.step_i = model.unit_firstUnitId( model.round_turnOwner );
+    controller.ai_active.hlp.step_e = model.unit_lastUnitId( model.round_turnOwner );
+    
+    return "PHASE_SEARCH_TASK";
+  }},
+  
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Searches proper tasks for every actor of the AI player. This state only searces one
+  // task for one unit per event `tick` and returns to itself when left actors has to 
+  // be checked after the event, else it returns to flush tasks.
+  //
 
   PHASE_SEARCH_TASKS: { tick: function(){
     var type;
     var unit;
     var found;
     var prio = controller.ai_active.prio;
-
-    // check all actable objects
-    var i = model.unit_firstUnitId( model.round_turnOwner )
-    var e = model.unit_lastUnitId( model.round_turnOwner );
-    for( ; i<=e; i++ ){
-
+    var data = controller.ai_active.hlp;
+    var i    = data.step_i;
+    
       unit = model.units[i];
       if( !unit ) continue;
       
@@ -335,20 +360,18 @@ controller.ai_machine = util.stateMachine({
 
         if( found ) break;
       }
-    }
+      
+      data.step_i++;
+      return ( data.step_i <= data.step_e )? "PHASE_SEARCH_TASK" : "PHASE_FLUSH_TASK";
   }},
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-  PHASE_CHECK_TASKS: { tick: function(){
-    return "PHASE_FLUSH_TASK";
-  }},
-
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Flushes one task from the list. At the moment the first proper task will be choosen
+  // and flushed.
+  //
 
   PHASE_FLUSH_TASK: { tick: function(){
-
-    // TODO: priority ?
+    
     // flush a command from the tasks list
     var list = controller.ai_active.markedTasks;
     for( var i=MAX_UNITS_PER_PLAYER-1; i>=0; i-- ){
@@ -372,12 +395,56 @@ controller.ai_machine = util.stateMachine({
       }
     }
     
-    // are commands left ?
-    return ( controller.ai_active.taskCount > 0 )? "PHASE_FLUSH_TASK" : "BUILD_OBJECTS";
+    return "PHASE_CHECK_LEFT_TASKS";
   }},
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // If further tasks are left in the stack then re-analyse the actions for all other 
+  // units. This is quite expensive!
+  // 
+  // The extrem case means something like 50 units on the field. If the AI follows this
+  // pattern it has to check 50 units first, act with one and recheck the others...
+  //
+  // We get the formular `(n*(n+1))/2 while n=50`. As long every frame has 16ms, this means 
+  // an extrem AI turn needs around 20400ms to calculate all actions. I think it's okay
+  // but can be optimized. 
+  //
+  // At the moment this algorithm is useless because the actions will be done by iteration 
+  // from unit 0 to 50 ( in relation to the player ). That means you could optimize this by 
+  // simply doing it with the costs of `n` instead of `(n(n+1))/2`. 
+  // Crecen`s intention of making an AI is more complex, that's why this algorithm is used.
+  //
+  // Why is this pattern better? 
+  // Because the AI does every action after re-analyse thesituation which results in better 
+  // anaylse->action situations. If we add priority to the calculated tasks then we get this
+  // benefit. The AI calculates all possible tasks like before, but does the action with 
+  // the best resulting outcome first and recalculates then. 
+  //
+  // In order to optimize that:
+  //
+  // Some actions like capture changes the situation on the battlefield in a differen't manner.
+  // E.g. if you attack an unit and loose a lot of HP you may create a `join` situation. That
+  // means `attack` creates a new game situation. Also if you kill an enemy unit you may nullify
+  // the reason to move an indirect unit to (x,y). Something like build unit or capture changes
+  // the battlefield but not other actions. Thats why this actions could be done as bulk process
+  // without re-checking the others. 
+  //
+  //    ==> At all test will show how long this system will need to do actions in an extrem case
+  //        Maybe this `20s` window isn't dramatic (whith animations anyway :P)
+  //
+  
+  PHASE_CHECK_LEFT_TASKS:{ tick: function(){
+    
+    // when commands left, then re-analyse the actions for the other
+    // units because the game situation has changed
+    return ( controller.ai_active.taskCount > 0 )? "PHASE_PREPARE_SEARCH_TASKS" : "BUILD_OBJECTS";
+    // return ( controller.ai_active.taskCount > 0 )? "PHASE_FLUSH_TASK" : "BUILD_OBJECTS";
+  }},
 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // The AI should build things here. :P
+  //
+  
   BUILD_OBJECTS:{ tick: function(){
 
     // make stupid things
@@ -391,7 +458,9 @@ controller.ai_machine = util.stateMachine({
   }},
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
+  // Turn end.
+  //
+  
   END_TURN:{ tick: function(){
 
     // end the ai turn here, it's nothing more to do now
