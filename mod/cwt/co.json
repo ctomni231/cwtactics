@@ -1,61 +1,102 @@
 [
   
   {
-    "ID":"ANDY",
-    "faction":"ORST",
-    "music":"../../../music/Andy.mp3",
-    "coStars": 3,
-    "scoStars": 3,
-    "d2d": [],
-    "cop": [],
-    "scop": [
-      { "att":30, "movepoints":1 }
+    "ID"        : "ANDY",
+    "faction"   : "ORST",
+    "music"     : "Andy.mp3",
+    "coStars"   : 3,
+    "scoStars"  : 3,
+    "d2d"       : [
+    ],
+    "cop" : [
+    ],
+    "scop" : [
+      {
+        "att"        : 30,
+        "movepoints" : 1
+      }
     ]
   },
   
   {
-    "ID":"MAX",
-    "faction":"BLMN",
-    "music":"../../../music/Max.mp3",
-    "coStars": 3,
-    "scoStars": 3,
-    "d2d": [
-      { "$when":["ATTACK_TYPE",["DIRECT"] ],
-        "att":20 },
+    "ID"       : "MAX",
+    "faction"  : "BLMN",
+    "music"    : "Max.mp3",
+    "coStars"  : 3,
+    "scoStars" : 3,
+    "d2d"      : [
+      {
+        "$when":[
+          "ATTACK_TYPE",["DIRECT"]
+        ],
+        "att":20
+      },
 
-      { "$when":["ATTACK_TYPE",["INDIRECT"] ],
-        "maxrange":-1 }
+      {
+        "$when":[
+          "ATTACK_TYPE",["INDIRECT"]
+        ],
+        "maxrange":-1
+      }
     ],
-    "cop": [
-      { "$when":["ATTACK_TYPE",["DIRECT"] ],
-        "att":40 }
+    "cop" : [
+      {
+        "$when":[
+          "ATTACK_TYPE",["DIRECT"]
+        ],
+        "att":40
+      }
     ],
-    "scop": [
-      { "$when":["ATTACK_TYPE",["DIRECT"] ],
-        "att":70 }
+    "scop" : [
+      {
+        "$when":[
+          "ATTACK_TYPE",["DIRECT"]
+        ],
+        "att":70
+      }
     ]
   },
   
   {
-    "ID":"SAMI",
-    "faction":"ORST",
-    "music":"../../../music/sami.mp3",
-    "coStars": 3,
-    "scoStars": 5,
-    "d2d": [
-      { "$when":["ATTACK_TYPE",["DIRECT"]   ],
-        "att":-10 },
-
-      { "$when":["MOVETYPE",["INFT","MECH"] ],
-        "att":30, "movepoints":1, "captureRate":50 }
+    "ID"       : "SAMI",
+    "faction"  : "ORST",
+    "music"    : "sami.mp3",
+    "coStars"  : 3,
+    "scoStars" : 5,
+    "d2d"      : [
+      {
+        "$when":[
+          "ATTACK_TYPE",["DIRECT"]
+        ],
+        "att":-10
+      },
+      {
+        "$when":[
+          "MOVETYPE",["INFT","MECH"]
+        ],
+        "att":30,
+        "movepoints":1,
+        "captureRate":50
+      }
     ],
-    "cop": [
-      { "$when":["MOVE_TYPE",["INFT","MECH"] ],
-        "att":40, "movepoints":1 }
+    "cop" : [
+      {
+        "$when":[
+          "MOVE_TYPE",["INFT","MECH"]
+        ],
+        "att":40,
+        "movepoints":1
+      }
     ],
-    "scop": [
-      { "$when":["MOVE_TYPE",["INFT","MECH"] ],
-        "att":70, "movepoints":2, "captureRate":9999 }
+    "scop" : [
+      {
+        "$when":[
+          "MOVE_TYPE",["INFT","MECH"]
+        ],
+        "att":70,
+        "movepoints":2,
+        "captureRate":9999
+      }
     ]
   }
 ]

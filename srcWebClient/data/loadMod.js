@@ -110,7 +110,8 @@ controller.modification_load = util.singleLazyCall( function( err, baton ){
       .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_SOUNDS, 		clientConstants.MOD_KEY_SOUNDS, 		b ); })
       .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_TILES, 		clientConstants.MOD_KEY_TILES, 			b ); })
       .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_UNITS, 		clientConstants.MOD_KEY_UNITS, 			b ); })
-      .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_WEATHER, 	clientConstants.MOD_KEY_WEATHER, 		b ); })
+        .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_WEATHER, 	clientConstants.MOD_KEY_WEATHER, 		b ); })
+        .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_ASSETS, 	clientConstants.MOD_KEY_ASSETS, 		b ); })
       .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_GFX, 	   clientConstants.MOD_KEY_GFX, 		   b ); })
       .andThen( loadLanguage )
       .start(function(p){

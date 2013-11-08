@@ -3,8 +3,12 @@
     "id":"AW1",
     "config":{},
     "rules":[
-      { "$when": [ "UNIT_TYPE", ["NTNK","WRTK"] ],
-        "disableBuild": 1 }
+      {
+        "$when": [
+          "UNIT_TYPE", ["NTNK","WRTK"]
+        ],
+        "disableBuild": 1
+      }
     ]
   },
   
@@ -12,8 +16,12 @@
     "id":"AW2",
     "config":{},
     "rules":[
-      { "$when": [ "UNIT_TYPE", ["WRTK"] ],
-        "disableBuild": 1 }
+      {
+        "$when": [
+          "UNIT_TYPE", ["WRTK"]
+        ],
+        "disableBuild": 1
+      }
     ]
   }
 ]

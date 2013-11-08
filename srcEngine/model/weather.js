@@ -24,7 +24,7 @@ model.weather_calculateNext = function(){
   var newTp;
   var duration;
   
-  util.expect(util.expect.isTrue,controller.isHost());
+  assert(controller.isHost());
   
   // Search a random weather if the last weather was `null` or the default weather type
   if( model.weather_data !== null && model.weather_data === model.defaultWeatherType ){
@@ -55,9 +55,9 @@ model.weather_calculateNext = function(){
 // Invokes the `weather_change` event.
 //
 model.weather_change = function( wth ){
-  assert( model.weather_dataTypes.hasOwnProperty(wth) );
+  assert( model.weatherTypes.hasOwnProperty(wth) );
   
-  model.weather_data = model.weather_dataTypes[wth];
+  model.weather_data = model.weatherTypes[wth];
   model.fog_recalculateFogMap();
 
 	controller.events.weather_change( wth );

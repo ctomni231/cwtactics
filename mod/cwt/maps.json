@@ -1,5 +1,5 @@
 [
-  "../../../maps/testmap.json",
-  "../../../maps/stand-off.json",
-  "../../../maps/spann-island.json"
+  "testmap.json",
+  "stand-off.json",
+  "spann-island.json"
 ]

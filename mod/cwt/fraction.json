@@ -4,28 +4,28 @@
     "ID"		: "ORST",
     "name"	: "Orange Star",
     "color" : 0,
-    "music"	: "../../../music/OrangeStarTheme.mp3"
+    "music"	: "OrangeStarTheme.mp3"
   },
   
   {
     "ID"		: "BLMN",
     "name"	: "Blue Moon",
     "color" : 1,
-    "music"	: "../../../music/BlueMoonTheme.mp3"
+    "music"	: "BlueMoonTheme.mp3"
   },
   
   {
     "ID"		: "GRET",
     "name"	: "Green Earth",
     "color" : 2,
-    "music"	: "../../../music/GreenEarthTheme.mp3"
+    "music"	: "GreenEarthTheme.mp3"
   },
   
   {
     "ID"		: "YLCM",
     "name"	: "Yellow Comet",
     "color" : 3,
-    "music"	: "../../../music/YellowCometTheme.mp3"
+    "music"	: "YellowCometTheme.mp3"
   }
   
 ]

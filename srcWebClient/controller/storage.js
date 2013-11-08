@@ -6,16 +6,16 @@ controller.loadStorageController = util.singleLazyCall(function( err, baton ){
   
   baton.take();
   
-  if( constants.DEBUG ) util.log("initializing storage system"); 
+  if( DEBUG ) util.log("initializing storage system");
   
   var browser = Browser;
   
-  if( constants.DEBUG ) util.log("using lawnchair storage system with",((browser.mobile)? 'webkit-sqlite':'indexed-db'),"adapter"); 
+  if( DEBUG ) util.log("using lawnchair storage system with",((browser.mobile)? 'webkit-sqlite':'indexed-db'),"adapter");
   
   var store = new Lawnchair({
-    adaptor: (browser.mobile)? 'webkit-sqlite':'indexed-db',
-    maxSize: 45*1024+1024,
-    name:'cwt'
+    adaptor : (browser.mobile)? 'webkit-sqlite':'indexed-db',
+    maxSize : 45*1024+1024,
+    name    :'cwt'
   },function(){
     
     var get,has,clear,remove,set,keys;
@@ -36,26 +36,26 @@ controller.loadStorageController = util.singleLazyCall(function( err, baton ){
       store.keys(cb);
     };
     
-    remove = function( key, cb, isMod ){
-      store.get(key,obj,cb);
+    remove = function( key, cb ){
+      store.remove( key, cb );
     };
     
-    set = function( key, value, cb, isMod ){
-      store.save({key:key, value:value},cb);
+    set = function( key, value, cb ){
+      store.save({
+        key   : key,
+        value : value
+      },cb);
     };    
     
-    /**
-   * Storage controller.
-   * 
-   * @namespace
-   */
+    // Storage controller object.
+    //
     controller.storage = {
-      get: get,
-      has: has,
-      set: set,
-      keys: keys,
-      clear: clear,
-      remove: remove
+      get     : get,
+      has     : has,
+      set     : set,
+      keys    : keys,
+      clear   : clear,
+      remove  : remove
     };
     
     baton.pass( false ); 
