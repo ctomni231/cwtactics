@@ -431,6 +431,7 @@
     },
     "changeTo":"SILO_EMPTY",
     "assets":{
+      "fireSound":"rocketImpact.mp3",
       "gfx":"properties/AWDS_SILO.png"
     }
   },
@@ -497,18 +498,18 @@
     "cannon":{
       "direction":"E",
       "range":3,
-      "damage":3,
-      "fireAnimation":[
-        "weapons/AWDS_BHCN_E.png",
-        64,64,
-         0,16
-      ]
+      "damage":3
     },
     "assets":{
       "gfx":"inventions/AWDS_BHMC_E.png",
-      "fireSound" : "cannon.wav"
-    },
-    "animated":false
+      "fireSound" : "cannon.wav",
+      "fireAnimation":[
+        "weapons/AWDS_BHCN_E.png",
+        64,64,
+        0,16
+      ],
+      "animated":false
+    }
   },
 
   {
@@ -520,18 +521,18 @@
     "cannon":{
       "direction":"N",
       "range":3,
-      "damage":3,
+      "damage":3
+    },
+    "assets":{
+      "gfx":"inventions/AWDS_BHMC_N.png",
+      "fireSound" : "cannon.wav",
+      "animated":false,
       "fireAnimation":[
         "weapons/AWDS_BHCN_N.png",
         64,64,
         -16,0
       ]
-    },
-    "assets":{
-      "gfx":"inventions/AWDS_BHMC_N.png",
-      "fireSound" : "cannon.wav"
-    },
-    "animated":false
+    }
   },
 
   {
@@ -543,18 +544,18 @@
     "cannon":{
       "direction":"S",
       "range":3,
-      "damage":3,
+      "damage":3
+    },
+    "assets":{
+      "gfx":"inventions/AWDS_BHMC_S.png",
+      "fireSound" : "cannon.wav",
+      "animated"  : false,
       "fireAnimation":[
         "weapons/AWDS_BHCN_S.png",
         64,64,
         -16,0
       ]
-    },
-    "assets":{
-      "gfx":"inventions/AWDS_BHMC_S.png",
-      "fireSound" : "cannon.wav"
-    },
-    "animated":false
+    }
   },
 
   {
@@ -566,18 +567,18 @@
     "cannon":{
       "direction":"W",
       "range":3,
-      "damage":3,
-      "fireAnimation":[
-        "weapons/AWDS_BHCN_W.png",
-        64,64,
-         0,16
-      ]
+      "damage":3
     },
     "assets":{
       "gfx":"inventions/AWDS_BHMC_W.png",
-      "fireSound":"cannon.wav"
-    },
-    "animated":false
+      "fireSound":"cannon.wav",
+      "fireAnimation":[
+        "weapons/AWDS_BHCN_W.png",
+        64,64,
+        0,16
+      ],
+      "animated":false
+    }
   },
 
   {
@@ -589,18 +590,18 @@
     "cannon":{
       "direction":"S",
       "range":9,
-      "damage":5,
+      "damage":5
+    },
+    "assets":{
+      "gfx"       : "inventions/AWDS_BHCN.png",
+      "fireSound" : "cannon.wav",
+      "animated":false,
       "fireAnimation":[
         "weapons/AWDS_BHCN_S.png",
         64,64,
         -16,0
       ]
-    },
-    "assets":{
-      "gfx"       : "inventions/AWDS_BHCN.png",
-      "fireSound" : "cannon.wav"
-    },
-    "animated":false
+    }
   },
 
   {
@@ -614,9 +615,9 @@
     },
     "assets":{
       "gfx"       : "inventions/AWDS_BHMC_E.png",
-      "fireSound" : "laser.wav"
-    },
-    "animated":false
+      "fireSound" : "laser.wav",
+      "animated":false
+    }
   },
 
   {
