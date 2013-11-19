@@ -21,7 +21,9 @@ PAGE_DATA.navbarLinks = [
   { name:"Youtube Playlist",  link:true, class:"", 
     section:"http://www.youtube.com/watch?v=GfRJiSylfPc&list=PLIJ4AW02hN2FcMLF8ka-puq1mza2VuOJb" },
   { name:"Blog",              link:true, class:"", 
-    section:"http://cwtactics.blogspot.de/" }
+    section:"http://cwtactics.blogspot.de/" },
+  { name:"Facebook",          link:true, class:"",
+    section:"https://www.facebook.com/customwarstactics" }
   
   /*
   { name:"Useful Links",      header:true, class:"navBarHeader gapTop" },
@@ -38,6 +40,8 @@ PAGE_DATA.navbarLinks = [
   { name:"Youtube Playlist",  link:true, class:"navBarSubEntry", 
     section:"http://www.youtube.com/watch?v=GfRJiSylfPc&list=PLIJ4AW02hN2FcMLF8ka-puq1mza2VuOJb" },
   { name:"Blog",              link:true, class:"navBarSubEntry", 
-    section:"http://cwtactics.blogspot.de/" }
+    section:"http://cwtactics.blogspot.de/" },
+  { name:"Facebook"           link:true, class:"navBarSubEntry",
+    section:"https://www.facebook.com/customwarstactics" }
   */
 ];
