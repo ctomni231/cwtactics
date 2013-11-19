@@ -11,7 +11,7 @@ view.registerAnimationHook({
     this.x = -unit.x;
     this.y = -unit.y;
     
-    controller.playSound("EXPLODE");
+    controller.audio_playSound("EXPLODE");
   },
   
   render: function(){

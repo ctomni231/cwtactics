@@ -38,7 +38,7 @@ util.scoped(function(){
   };
   
   controller.setMenuIndex = function( index ){
-    controller.playSound("MENUTICK");
+    controller.audio_playSound("MENUTICK");
     
     menuEntryListElement.children[ controller.menuCursorIndex ].className = "";    
     controller.menuCursorIndex = index;  
@@ -56,7 +56,7 @@ util.scoped(function(){
     if( controller.menuCursorIndex === controller.stateMachine.data.menu.size ){
       controller.menuCursorIndex--;
     }
-    else controller.playSound("MENUTICK");
+    else controller.audio_playSound("MENUTICK");
     
     menuEntryListElement.children[ controller.menuCursorIndex ].className = styleButton;
     menuEntryListElement.children[ controller.menuCursorIndex ].children[0].focus();
@@ -71,7 +71,7 @@ util.scoped(function(){
     
     controller.menuCursorIndex--;
     if( controller.menuCursorIndex < 0 ) controller.menuCursorIndex = 0;
-    else controller.playSound("MENUTICK");
+    else controller.audio_playSound("MENUTICK");
     
     menuEntryListElement.children[ controller.menuCursorIndex ].className = styleButton;
     menuEntryListElement.children[ controller.menuCursorIndex ].children[0].focus();

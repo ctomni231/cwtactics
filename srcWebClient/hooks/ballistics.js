@@ -112,7 +112,7 @@ util.scoped(function(){
     
     prepare: function( tx,ty, range, damage, owner ){
       if( !expl_img ) expl_img = view.getInfoImageForType("EXPLOSION_GROUND");
-      controller.playSound("ROCKET_IMPACT");
+      controller.audio_playSound("ROCKET_IMPACT");
       
       this.x = tx;
       this.y = ty;   
@@ -146,10 +146,10 @@ util.scoped(function(){
   });
 
   controller.event_on("bombs_fireCannon",function( prid, x,y ){
-    controller.playSound( model.property_data[prid].type.cannon.fireSound);
+    controller.audio_playSound( model.property_data[prid].type.cannon.fireSound);
   });
   
   controller.event_on("bombs_fireCannon",function( prid,ox,oy ){
-    controller.playSound( model.property_data[prid].type.laser.fireSound);
+    controller.audio_playSound( model.property_data[prid].type.laser.fireSound);
   });
 });

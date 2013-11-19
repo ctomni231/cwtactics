@@ -4,8 +4,8 @@ controller.loadInputDevices = util.singleLazyCall(function( err, baton ){
   var canvas = document.getElementById( "cwt_canvas" );
   var menuEl = document.getElementById( "cwt_menu" );
   
-  if( controller.clientFeatures.keyboard ) controller.setupKeyboardControls( canvas, menuEl );
-  if( controller.clientFeatures.gamePad  ) controller.setupGamePadControls( canvas, menuEl );
-  if( controller.clientFeatures.mouse    ) controller.setupMouseControls( canvas, menuEl );
-  if( controller.clientFeatures.touch    ) controller.setupTouchControls( canvas, menuEl );
+  if( controller.features_client.keyboard ) controller.setupKeyboardControls( canvas, menuEl );
+  if( controller.features_client.gamePad  ) controller.setupGamePadControls( canvas, menuEl );
+  if( controller.features_client.mouse    ) controller.setupMouseControls( canvas, menuEl );
+  if( controller.features_client.touch    ) controller.setupTouchControls( canvas, menuEl );
 });

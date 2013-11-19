@@ -1,254 +1,217 @@
-util.scoped(function(){
-  
-  // TODO: REMOVE FUNCTION CONSTRUCTION IN EVERY STEP
-  
-  var context = null; 
-  var bufferMap = {};
-  var sfxGainNode;
-  var musicGainNode;
-  
-  var currentMusic;
-  var currentMusicId;
-  
-  var sfxStorageParam = "__volume_sfx__";
-  var musicStorageParam = "__music_sfx__";
-  
-  var cache = {};
+controller.audio_SFX_STORAGE_PARAMETER   = "__volume_sfx__";
+controller.audio_MUSIC_STORAGE_PARAMETER = "__music_sfx__";
 
-  controller.emptyMusicCache = function(){
+// WebAudio context object.
+//
+controller.audio_ctx_ = false;
 
-  };
+// Music audio node.
+//
+controller.audio_gainNode_music_ = null;
 
-  controller.generateMusicCache = function(){
-    for( var i=0,e=constants.MAX_PLAYER; i<e; i++ ){
-      var co_data = model.co_data[i];
+// SFX audio node.
+//
+controller.audio_gainNode_sfx_ = null;
+
+// Returns a web audio context. If no context is initialized then it will be created first.
+//
+controller.audio_grabContext = function(){
+  if( controller.audio_ctx_ === false ){
+    util.log("initializing audio context");
+
+    // if audio sfx and music is deactivated then do not initialize the audio context
+    if( !controller.features_client.audioSFX && !controller.features_client.audioMusic ){
+      controller.audio_ctx_ = null;
+      return null;
     }
-  };
 
-  /**
-   *
-   */
-  controller.saveSoundConfigs = function(){    
-    controller.storage.set( sfxStorageParam, sfxGainNode.gain.value );
-    controller.storage.set( musicStorageParam, musicGainNode.gain.value );
-  };
-  
-  /**
-   * Returns a web audio context. If no context is initialized then it will be created first.
-   */
-  controller.audioContext = function(){
-    if( !context ){
-      
-      // if audio sfx and music is deactivated then do not initialize the audio context
-      if( !controller.clientFeatures.audioSFX && !controller.clientFeatures.audioMusic ){
-        context = null;
-      }
-      else{
-        
-        // try to initialize the audio context 
-        try{
-          util.log("init audio context");
-          
-          if( window.AudioContext ) {
-            util.log("using standardized one");
-            context = new window.AudioContext();
-          } 
-          else if ( window.webkitAudioContext ) {
-            util.log("using webkit prefixed one");
-            context = new window.webkitAudioContext();
-          }
-            else throw Error("no webaudio contructor found");
-          
-          // ------------------------------------------------------------------
-          
-          // SOUND VOLUME
-          sfxGainNode = context.createGainNode();
-          sfxGainNode.gain.value = 1;
-          sfxGainNode.connect(context.destination);   
-          
-          // MUSIC VOLUME
-          musicGainNode = context.createGainNode();
-          musicGainNode.gain.value = 0.5;
-          musicGainNode.connect(context.destination);  
-          
-          // ------------------------------------------------------------------
-          
-          // GET VOLUME FROM CONFIG
-          controller.storage.get( sfxStorageParam, function( obj ){
-            if( obj !== null ) sfxGainNode.gain.value = obj.value;
-          });
-          
-          controller.storage.get( musicStorageParam, function( obj ){
-            if( obj !== null ) musicGainNode.gain.value = obj.value;
-          });
-          
-          util.log("finished init audio context");
-        }
-        // RETURN ERROR WHEN SOUND CONTEXT IS NOT INITIALIZE ABLE 
-        catch(e){
-          if( constants.DEBUG ){
-            util.log("could not grab audio context, your environment seems to be out of webAudio API support err:",e);
-          }
-          context = null;
-        }
-      }
+    try{
+
+      // construct new context
+      if( window.AudioContext )             controller.audio_ctx_ = new window.AudioContext();
+      else if ( window.webkitAudioContext ) controller.audio_ctx_ = new window.webkitAudioContext();
+      else throw Error("no AudioContext contructor found");
+
+      // construct audio nodes
+      controller.audio_gainNode_sfx_            = controller.audio_ctx_.createGainNode();
+      controller.audio_gainNode_sfx_.gain.value = 1;
+      controller.audio_gainNode_sfx_.connect(controller.audio_ctx_.destination);
+      controller.audio_gainNode_music_            = controller.audio_ctx_.createGainNode();
+      controller.audio_gainNode_music_.gain.value = 0.5;
+      controller.audio_gainNode_music_.connect(controller.audio_ctx_.destination);
+
+      // load volume from config
+      controller.storage_general.get( controller.audio_SFX_STORAGE_PARAMETER,function( obj ){
+        if( obj !== null ) controller.audio_gainNode_sfx_.gain.value = obj.value;
+      });
+      controller.storage_general.get( controller.audio_MUSIC_STORAGE_PARAMETER,function( obj ){
+        if( obj !== null ) controller.audio_gainNode_music_.gain.value = obj.value;
+      });
     }
-    
-    return context;
-  };
-  
-  /**
-   * 
-   * @param {type} key
-   * @param {type} buffer
-   */
-  controller.registerSoundFile = function( key, buffer ){
-    bufferMap[key] = buffer;
-  };
-  
-  /**
-   * 
-   */
-  controller.getSfxVolume = function( vol ){   
-    if( !context ) return 0;
-    
-    return sfxGainNode.gain.value;
-  };
-  
-  /**
-   * 
-   */
-  controller.getMusicVolume = function( vol ){  
-    if( !context ) return 0;
-    
-    return musicGainNode.gain.value;
-  };
-  
-  /**
-   * 
-   * @param {Number} vol
-   */
-  controller.setSfxVolume = function( vol ){    
-    if( !context ) return;
-    
-    if( vol < 0 ) vol = 0;
-    else if( vol > 1 ) vol = 1;
-      
-      sfxGainNode.gain.value = vol;
-  };
-  
-  /**
-   * 
-   * @param {Number} vol
-   */
-  controller.setMusicVolume = function( vol ){    
-    if( !context ) return;
-    
-    if( vol < 0 ) vol = 0;
-    else if( vol > 1 ) vol = 1;
-      
-      musicGainNode.gain.value = vol;
-  };
-  
-  
-  /*
-    // http://www.html5rocks.com/en/tutorials/webaudio/intro/
-     
-    source.loop = false;
-    source.noteOff(0);
-    source.noteOn(0); // Play immediately.
-   */
-  
-  /**
-   * Plays a sound effect.
-   * 
-   * @param {String} id
-   * @param {Boolean} loop
-   * @param {Boolean} isMusic
-   */
-  controller.playSound = function( id, loop, isMusic ){
-    if( context === null ) return;
-    
-    var gainNode = (isMusic)? musicGainNode : sfxGainNode;
-    var source = context.createBufferSource(); 
-    
-    // LOOP IF LOOP ATTRIBUTE IS TRUE
-    if( loop ) source.loop = true;
-    
-    source.buffer = bufferMap[id];  
-    source.connect(gainNode);
-    
-    //source.start(0);
-    source.noteOn(0);
-    
-    return source;
-  };
-  
-  controller.playEmptyAudio = function(){
-    if( context === null ) return;
-    
-    var buffer = context.createBuffer(1, 1, 22050);
-    var source = context.createBufferSource();
-    source.buffer = buffer;
-    
-    // connect to output (your speakers)
-    source.connect(context.destination);
-    
-    // play the file
-    source.noteOn(0);
+    catch(e){
+      if( DEBUG ) util.log("could not grab audio context (Error:",e,")");
+      controller.audio_ctx_ = null;
+      return null;
+    }
   }
-  
-  /**
-   * Plays a background music.
-   * 
-   * @param {String} id
-   */
-  controller.playMusic = function( id ){
-    if( context === null ) return;
-    if( currentMusicId === id ) return;
-    
-    // STOP EXISTING BACKGROUND SOUND
-    if( currentMusic ){
-      currentMusic.noteOff(0);
-      currentMusic.disconnect(0);
-    }
-    
-    if( bufferMap[id] ){
-      currentMusic = controller.playSound(id, true, true );
-      currentMusicId = id;
-    }
-  };
-  
-});
 
-var cache = [];
-
-controller.buildGameRoundCache = function(){
-  for (var i = constants.MAX_PLAYER - 1; i >= 0; i--) {
-    var co_data = model.co_data[i];
-    if( co_data.coA ){ // co sound ( one co )
-
-      if( co_data.coB ){ // co sound ( tag co )
-
-      }
-    }
-    else{ // fraction sound
-
-    }
-  };
+  return controller.audio_ctx_;
 };
 
-controller.clearGameRoundCache = function(){
-  for (var i = cache.length - 1; i >= 0; i--) {
-    if( cache[i] ){
-      // remove buffer data
-    }
-  };
+//
+//
+controller.audio_buffer_ = {};
+
+//
+//
+controller.audio_currentMusic_ = null;
+
+//
+//
+controller.audio_currentMusicId_ = null;
+
+//
+//
+controller.audio_registerAudioBuffer = function( id, buff ){
+  if( DEBUG ) util.log("register",id,"in the audio cache");
+
+  controller.audio_buffer_[id] = buff;
 };
 
-controller.playMusicForPlayer = function( pid ){
-  if( controller.clientFeatures.audioMusic ){
-    var co = model.co_data[pid].coA;
-    if( co ) controller.playMusic( co.music );
+// Loads a sound into the audio system
+//
+controller.audio_loadByArrayBuffer = function( id, audioData, callback ){
+  assert( util.isString(id) );
+
+  if( DEBUG ) util.log("decode audio data of",id);
+
+  controller.audio_grabContext().decodeAudioData( audioData,
+
+    // success handling
+    function(buffer) {
+      controller.audio_registerAudioBuffer(id,buffer);
+      if( callback ) callback(true);
+    },
+
+    // error handling
+    function( e ){
+      if( callback ) callback(false);
+    }
+  );
+};
+
+// Removes a buffer from the cache.
+//
+controller.audio_unloadBuffer = function( id ){
+  assert( util.isString(id) );
+
+  if( DEBUG ) util.log("de-register",id,"from the audio cache");
+
+  delete controller.audio_buffer_[id];
+};
+
+// Returns the value of the sfx audio node.
+//
+controller.audio_getSfxVolume = function(){
+  if( !controller.audio_ctx_ ) return;
+
+  return controller.audio_gainNode_sfx_.gain.value;
+};
+
+// Returns the value of the music audio node.
+//
+controller.audio_getMusicVolume = function(){
+  if( !controller.audio_ctx_ ) return;
+
+  return controller.audio_gainNode_music_.gain.value;
+};
+
+// Sets the value of the sfx audio node.
+//
+controller.audio_setSfxVolume = function( vol ){
+  if( !controller.audio_ctx_ ) return;
+
+  if( vol < 0 ) vol = 0;
+  else if( vol > 1 ) vol = 1;
+
+  controller.audio_gainNode_sfx_.gain.value = vol;
+};
+
+// Sets the value of the music audio node.
+//
+controller.audio_setMusicVolume = function( vol ){
+  if( !controller.audio_ctx_ ) return;
+
+  if( vol < 0 ) vol = 0;
+  else if( vol > 1 ) vol = 1;
+
+  controller.audio_gainNode_music_.gain.value = vol;
+};
+
+// Saves the configurations for the audio output.
+//
+controller.audio_saveConfigs = function(){
+  controller.storage_general.set(
+    controller.audio_SFX_STORAGE_PARAMETER,
+    controller.audio_gainNode_sfx_.gain.value
+  );
+  controller.storage_general.set(
+    controller.audio_MUSIC_STORAGE_PARAMETER,
+    controller.audio_gainNode_music_.gain.value
+  );
+};
+
+// Plays a sound effect.
+//
+controller.audio_playSound = function( id, loop, isMusic ){
+  if( !controller.audio_ctx_ ) return;
+
+  var gainNode = (isMusic)? controller.audio_gainNode_music_ : controller.audio_gainNode_sfx_;
+  var source = controller.audio_ctx_.createBufferSource();
+
+  if( loop ) source.loop = true;
+  source.buffer = controller.audio_buffer_[id];
+  source.connect(gainNode);
+  source.noteOn(0);
+
+  return source;
+};
+
+// Plays an empty sound buffer. Useful to initialize the audio system.
+//
+controller.audio_playNullSound = function(){
+  if( !controller.audio_ctx_ ) return;
+  var context = controller.audio_ctx_;
+  var buffer  = context.createBuffer(1, 1, 22050);
+  var source  = context.createBufferSource();
+
+  source.buffer = buffer;
+  source.connect(context.destination);
+  source.noteOn(0);
+}
+
+// Plays a background music.
+//
+controller.audio_playMusic = function( id ){
+  if( !controller.audio_ctx_ ) return;
+  if( controller.audio_currentMusicId_ === id ) return;
+
+  controller.audio_stopMusic();
+
+  assert(controller.audio_buffer_[id]);
+
+  controller.audio_currentMusic_   = controller.audio_playSound(id, true, true );
+  controller.audio_currentMusicId_ = id;
+};
+
+// stop existing background music.
+//
+controller.audio_stopMusic = function(){
+  if( controller.audio_currentMusic_ ){
+    controller.audio_currentMusic_.noteOff(0);
+    controller.audio_currentMusic_.disconnect(0);
   }
+
+  controller.audio_currentMusic_   = null;
+  controller.audio_currentMusicId_ = null;
 };

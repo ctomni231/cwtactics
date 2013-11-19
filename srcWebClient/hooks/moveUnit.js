@@ -27,7 +27,7 @@ view.registerAnimationHook({
     else if( mvType === "MV_AIR" ) mvSoundId = "MV_AIR";
     else mvSoundId = "MV_VHCL";
     
-    this.snd = controller.playSound( mvSoundId );
+    this.snd = controller.audio_playSound( mvSoundId );
     */
     
     if( constants.DEBUG ){

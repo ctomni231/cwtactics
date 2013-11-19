@@ -79,7 +79,7 @@ controller.cursorAction = function( isCancel ){
  */
 controller.cursorActionCancel = function(){
   controller.cursorAction(true);
-  controller.playSound("CANCEL");
+  controller.audio_playSound("CANCEL");
 };
 
 /**
@@ -87,7 +87,7 @@ controller.cursorActionCancel = function(){
  */
 controller.cursorActionClick = function(){
   controller.cursorAction(false);
-  controller.playSound("ACTION");
+  controller.audio_playSound("ACTION");
 };
 
 /**
@@ -151,7 +151,7 @@ controller.setCursorPosition = function( x,y,relativeToScreen ){
   view.markForRedraw( controller.mapCursorX, controller.mapCursorY );
   if( controller.mapCursorY < model.map_height -1 ) view.markForRedraw( controller.mapCursorX, controller.mapCursorY+1 );
   
-  controller.playSound("MAPTICK");
+  controller.audio_playSound("MAPTICK");
   view.markForRedraw( controller.mapCursorX, controller.mapCursorY );
   
   controller.mapCursorX = x;

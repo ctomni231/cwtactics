@@ -99,20 +99,20 @@ controller.modification_load = util.singleLazyCall( function( err, baton ){
       
       // load single components
       jWorkflow.order()
-      .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_HEADER, 	clientConstants.MOD_KEY_HEADER, 		b ); })
-      .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_CO, 			clientConstants.MOD_KEY_CO, 				b ); })
-      .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_CREDITS,  clientConstants.MOD_KEY_CREDITS, 	b ); })
-      .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_FRACTION, clientConstants.MOD_KEY_FRACTION, 	b ); })
-      .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_GAMEMODE, clientConstants.MOD_KEY_GAMEMODE, 	b ); })
+      .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_HEADER, 	  clientConstants.MOD_KEY_HEADER, 		b ); })
+      .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_CO, 			  clientConstants.MOD_KEY_CO, 				b ); })
+      .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_CREDITS,   clientConstants.MOD_KEY_CREDITS, 	  b ); })
+      .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_FRACTION,  clientConstants.MOD_KEY_FRACTION, 	b ); })
+      .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_GAMEMODE,  clientConstants.MOD_KEY_GAMEMODE, 	b ); })
       .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_MAPS, 			clientConstants.MOD_KEY_MAPS, 			b ); })
       .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_MOVETYPES,	clientConstants.MOD_KEY_MOVETYPES, 	b ); })
       .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_RULES, 		clientConstants.MOD_KEY_RULES, 			b ); })
       .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_SOUNDS, 		clientConstants.MOD_KEY_SOUNDS, 		b ); })
       .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_TILES, 		clientConstants.MOD_KEY_TILES, 			b ); })
       .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_UNITS, 		clientConstants.MOD_KEY_UNITS, 			b ); })
-        .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_WEATHER, 	clientConstants.MOD_KEY_WEATHER, 		b ); })
-        .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_ASSETS, 	clientConstants.MOD_KEY_ASSETS, 		b ); })
-      .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_GFX, 	   clientConstants.MOD_KEY_GFX, 		   b ); })
+      .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_WEATHER, 	clientConstants.MOD_KEY_WEATHER, 		b ); })
+      .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_ASSETS, 	  clientConstants.MOD_KEY_ASSETS, 		b ); })
+      .andThen(function(p,b){ addModPart( clientConstants.MOD_FILE_GFX, 	    clientConstants.MOD_KEY_GFX, 		    b ); })
       .andThen( loadLanguage )
       .start(function(p){
         if( p ){

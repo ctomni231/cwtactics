@@ -20,13 +20,13 @@ controller.action_clientAction({
     switch( cmd ){
         
       case "options.sfx":
-        if( controller.getSfxVolume() > 0 ) controller.setSfxVolume(0);
-        else controller.setSfxVolume(1);
+        if( controller.audio_getSfxVolume() > 0 ) controller.audio_setSfxVolume(0);
+        else controller.audio_setSfxVolume(1);
         break;
         
       case "options.music":
-        if( controller.getMusicVolume() > 0 ) controller.setMusicVolume(0);
-        else controller.setMusicVolume(1);
+        if( controller.audio_getMusicVolume() > 0 ) controller.audio_setMusicVolume(0);
+        else controller.audio_setMusicVolume(1);
         break;
         
       case "options.yield":

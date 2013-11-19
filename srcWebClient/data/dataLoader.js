@@ -1,5 +1,7 @@
 controller.startLoadingProcess = function( loadDescComponent, loadBarComponent ){
-if( constants.DEBUG ) util.log("loading game assets");
+  assert( loadDescComponent && loadBarComponent );
+
+  if( DEBUG ) util.log("loading game assets");
   
   jWorkflow.order()
 
@@ -12,7 +14,7 @@ if( constants.DEBUG ) util.log("loading game assets");
   .chill(150)
 
   // **1.A** check environment
-  .andThen(controller.calculateEnvironmentFeatures)
+  .andThen(controller.features_analyseClient)
   
   // -------------------------------------------------------------------------------------
 
@@ -23,7 +25,7 @@ if( constants.DEBUG ) util.log("loading game assets");
 
   // **1.B** show message when system isn't supported
   .andThen(function(p,b){
-    if( !controller.clientFeatures.supported ){
+    if( !controller.features_client.supported ){
       b.take();
       if( confirm("Your system isn't supported by CW:T. Try to run it?") ) b.pass();
     }
@@ -37,7 +39,7 @@ if( constants.DEBUG ) util.log("loading game assets");
   .chill(150)
 
   // **2.** load correct storage system
-  .andThen(controller.loadStorageController)
+  .andThen(controller.storage_initialize)
 
   // -------------------------------------------------------------------------------------
 
@@ -98,7 +100,7 @@ if( constants.DEBUG ) util.log("loading game assets");
   .chill(150)
 
   // **6.** check environment
-  .andThen(controller.loadImages)
+  .andThen(controller.loadImages_doIt)
 
   // -------------------------------------------------------------------------------------
 
@@ -131,7 +133,7 @@ if( constants.DEBUG ) util.log("loading game assets");
   .chill(150)
 
   // **9.** check environment
-  .andThen(controller.loadSoundFiles)
+  .andThen(controller.loadAudio_doIt)
 
   // -------------------------------------------------------------------------------------
 

@@ -2,7 +2,7 @@ view.registerAnimationHook({
   key: "nextTurn",
   
   prepare: function(){
-    controller.playMusicForPlayer(model.round_turnOwner);
+    controller.audio_playMusicForPlayer(model.round_turnOwner);
     .showInfoMessage( model.localized("day")+" "+model.round_day+" - "+model.player_data[model.round_turnOwner].name );
   },
   
