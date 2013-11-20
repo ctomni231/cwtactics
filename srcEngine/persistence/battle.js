@@ -1,4 +1,4 @@
-model.unitTypeParser.addHandler(function(sheet){
+model.data_unitParser.addHandler(function(sheet){
   assert( util.intRange(sheet.ammo, 0,9 ) );
   
   // attack can be set
@@ -18,6 +18,6 @@ model.unitTypeParser.addHandler(function(sheet){
   }
 });
 
-model.tileTypeParser.addHandler(function(sheet){
+model.data_tileParser.addHandler(function(sheet){
   assert( util.intRange(sheet.defense, 0,6 ) );
 });

@@ -100,7 +100,7 @@ util.scoped(function(){
     else{
       type = unit.type;
       
-      NAME.innerHTML  = model.localized( type.ID );
+      NAME.innerHTML  = model.data_localized( type.ID );
       HP.innerHTML    = unit.hp;
       GAS.innerHTML   = unit.fuel;
       GAS2.innerHTML  = type.fuel;
@@ -130,7 +130,7 @@ util.scoped(function(){
     if( !prop ){
       type = model.map_data[x][y];
       
-      TILE_NAME.innerHTML = model.localized( type.ID );
+      TILE_NAME.innerHTML = model.data_localized( type.ID );
       DEFENSE.innerHTML   = type.defense;
       
       TILE_ROW2D2.style.opacity = 0;
@@ -138,7 +138,7 @@ util.scoped(function(){
     else{
       type = prop.type;
       
-      TILE_NAME.innerHTML = model.localized( type.ID );
+      TILE_NAME.innerHTML = model.data_localized( type.ID );
       CAPPT.innerHTML = prop.capturePoints;
 
       // is normal property --> show property symbol

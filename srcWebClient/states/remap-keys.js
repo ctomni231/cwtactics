@@ -23,7 +23,7 @@ controller.screenStateMachine.structure.REMAP_KEYS.enterState = function(){
       break;
   }
 
-  controller._state_remapKeys_message.innerHTML = model.localized(
+  controller._state_remapKeys_message.innerHTML = model.data_localized(
     controller._state_remapKeys_steps[controller._state_remapKeys_step]
   );
 };
@@ -65,7 +65,7 @@ controller.screenStateMachine.structure.REMAP_KEYS.INPUT_SET = function( ev, key
     return "OPTIONS";
   }
   else{
-    controller._state_remapKeys_message.innerHTML = model.localized(
+    controller._state_remapKeys_message.innerHTML = model.data_localized(
       controller._state_remapKeys_steps[controller._state_remapKeys_step]
     );
 

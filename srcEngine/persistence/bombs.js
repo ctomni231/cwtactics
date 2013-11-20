@@ -1,4 +1,4 @@
-model.unitTypeParser.addHandler(function(sheet){
+model.data_unitParser.addHandler(function(sheet){
 
   if( !util.isUndefined(sheet.suicide) ){
     assert( util.intRange(sheet.suicide.damage,1,9) );

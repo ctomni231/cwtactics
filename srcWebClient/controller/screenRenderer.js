@@ -61,7 +61,7 @@ view.renderMap = function( scale ){
   var sprStepStat = view.getSpriteStep("STATUS");
   var sprStepTiles = view.getSpriteStep("ANIM_TILES");
   var BASESIZE = controller.baseSize;
-  var simpleUnitAnimTypes = model.graphics.simpleAnimatedUnits;
+  var simpleUnitAnimTypes = model.data_graphics.simpleAnimatedUnits;
   var teamId = (model.client_lastPid !== -1)? model.player_data[ model.client_lastPid ].team : -1;
   
   var focusExists = (

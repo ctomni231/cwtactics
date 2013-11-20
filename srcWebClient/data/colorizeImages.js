@@ -10,7 +10,7 @@ controller.colorizeImages = util.singleLazyCall(function( err, baton ){
   
   try{
     
-    var imageData = model.graphics;
+    var imageData = model.data_graphics;
     
     var UNIT_INDEXES = {
       BLACK_MASK:8,

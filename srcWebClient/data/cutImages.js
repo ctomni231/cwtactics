@@ -10,7 +10,7 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
   
   try{
     
-    var imageData = model.graphics;
+    var imageData = model.data_graphics;
     
     var BASE_SIZE = imageData.baseSize;
     

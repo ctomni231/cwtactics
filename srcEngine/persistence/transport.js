@@ -1,4 +1,4 @@
-model.unitTypeParser.addHandler(function(sheet){
+model.data_unitParser.addHandler(function(sheet){
 
 	if( typeof sheet.canload !== "undefined" ){
     assert( util.isBoolean(sheet.suppliesloads) );

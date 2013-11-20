@@ -1,8 +1,8 @@
-model.unitTypeParser.addHandler( function( sheet ){
+model.data_unitParser.addHandler( function( sheet ){
   assert( util.intRange(sheet.cost,0,999999) );
 });
 
-model.tileTypeParser.addHandler( function( sheet ){
+model.data_tileParser.addHandler( function( sheet ){
   if( !util.isUndefined(sheet.builds) ){
     assert( Array.isArray(sheet.builds) );
 

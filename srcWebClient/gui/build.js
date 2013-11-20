@@ -1,6 +1,6 @@
 controller.registerMenuRenderer("factory_produceUnit",
 function( content, entry, index ){
   
-  var cost = model.unitTypes[ content ].cost;
-  entry.innerHTML = model.localized(content)+" ("+cost+"$)";
+  var cost = model.data_unitSheets[ content ].cost;
+  entry.innerHTML = model.data_localized(content)+" ("+cost+"$)";
 });

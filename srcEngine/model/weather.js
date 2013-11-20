@@ -27,16 +27,16 @@ model.weather_calculateNext = function(){
   assert(controller.isHost());
   
   // Search a random weather if the last weather was `null` or the default weather type
-  if( model.weather_data !== null && model.weather_data === model.defaultWeatherType ){
+  if( model.weather_data !== null && model.weather_data === model.data_defaultWeatherSheet ){
     
-    var list = model.nonDefaultWeatherType;
+    var list = model.data_nonDefaultWeatherTypes;
     newTp = list[ parseInt(Math.random()*list.length,10) ].ID;
     duration = 1;
   }
   else{
     
     // Take default weather and calculate a random amount of days
-    newTp = model.defaultWeatherType.ID;
+    newTp = model.data_defaultWeatherSheet.ID;
     duration = controller.configValue("weatherMinDays") + parseInt(
       controller.configValue("weatherRandomDays")*Math.random(), 10
     );
@@ -55,9 +55,9 @@ model.weather_calculateNext = function(){
 // Invokes the `weather_change` event.
 //
 model.weather_change = function( wth ){
-  assert( model.weatherTypes.hasOwnProperty(wth) );
+  assert( model.data_weatherSheets.hasOwnProperty(wth) );
   
-  model.weather_data = model.weatherTypes[wth];
+  model.weather_data = model.data_weatherSheets[wth];
   model.fog_recalculateFogMap();
 
 	controller.events.weather_change( wth );

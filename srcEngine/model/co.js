@@ -189,26 +189,26 @@ model.co_getStarCost = function( pid ){
 
 // Specification of a co type
 //
-model.co_specCoType = [util.expect.STRING,util.expect.IS_IN,model.coTypes];
+model.co_specCoType = [util.expect.STRING,util.expect.IS_IN,model.data_coSheets];
 
 // Sets the main CO of a player.
 //
 model.co_setMainCo = function( pid, type ){
   assert( model.player_isValidPid(pid) );
-  assert( model.coTypes.hasOwnProperty(type) );
+  assert( model.data_coSheets.hasOwnProperty(type) );
   
   if( type === null ) model.co_data[pid].coA = null;
-  else model.co_data[pid].coA = model.coTypes[type];	
+  else model.co_data[pid].coA = model.data_coSheets[type];	
 };
 
 // Sets the side CO of a player.
 //
 model.co_setSideCo = function( pid, type ){
   assert( model.player_isValidPid(pid) );
-  assert( model.coTypes.hasOwnProperty(type) );
+  assert( model.data_coSheets.hasOwnProperty(type) );
   
   if( type === null ) model.co_data[pid].coB = null;
-  else model.co_data[pid].coB = model.coTypes[type];	
+  else model.co_data[pid].coB = model.data_coSheets[type];	
 };
 
 // Detaches a commander from a given unit back to the player pool.

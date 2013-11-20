@@ -122,7 +122,7 @@ controller.loadAudio_doIt = util.scoped(function(){
         return;
       }
 
-      if( DEBUG ) util.log("initialize audio system");
+      if( DEBUG ) util.log("loading modification sounds");
 
       var context = controller.audio_grabContext();
       if( context ) return false;
@@ -130,17 +130,20 @@ controller.loadAudio_doIt = util.scoped(function(){
       baton.take();
 
       var flow = jWorkflow.order(function(){
-        return {
-          i:         0,
-          list:      null,
-          basePath:  model.data_assets.sound
-        };
+        return { i: 0, list: null };
       });
 
-      // prepare flow structure
-      loadList(flow,model.data_sounds,        0);
-      loadList(flow,model.listOfPropertyTypes,1);
-      loadList(flow,model.listOfUnitTypes,    2);
+      util.iterateListByFlow(flow,model.data_sounds, function(data,baton){
+
+      });
+
+      util.iterateListByFlow(flow,model.data_propertyTypes, function(data,baton){
+
+      });
+
+      util.iterateListByFlow(flow,model.data_unitTypes, function(data,baton){
+
+      });
 
       // start loading
       flow.start(function( e ){

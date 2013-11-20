@@ -198,7 +198,7 @@ model.bombs_fireSilo = function( x,y, tx, ty, owner){
   var damage  = model.unit_convertPointsToHealth(type.rocketsilo.damage);
   
   // SET EMPTY TYPE
-  model.property_changeType(siloId, model.tileTypes[type.changeTo]);
+  model.property_changeType(siloId, model.data_tileSheets[type.changeTo]);
   
   // Invoke event
   controller.events.bombs_startFireSilo( x,y, siloId, tx,ty, range, damage, owner );

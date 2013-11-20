@@ -103,7 +103,7 @@ model.transport_canUnloadUnitsAt = function( uid, x,y ){
 		
 		unit = model.unit_data[i];
 		if( unit.owner !== INACTIVE_ID && unit.loadedIn === uid ){
-			var movetp = model.moveTypes[ unit.type.movetype ];
+			var movetp = model.data_movetypeSheets[ unit.type.movetype ];
 			
 			if( model.move_canTypeMoveTo(movetp,x-1,y) ) return true;
 			if( model.move_canTypeMoveTo(movetp,x+1,y) ) return true;
@@ -131,7 +131,7 @@ model.transport_addUnloadTargetsToMenu = function( uid, x,y, menu ){
 		unit = model.unit_data[i];
 		
 		if( unit.owner !== INACTIVE_ID && unit.loadedIn === uid ){
-			var movetp = model.moveTypes[ unit.type.movetype ];
+			var movetp = model.data_movetypeSheets[ unit.type.movetype ];
 			
 			if( model.move_canTypeMoveTo(movetp,x-1,y) ||
 				 model.move_canTypeMoveTo(movetp,x+1,y) ||
@@ -149,7 +149,7 @@ model.transport_addUnloadTargetsToSelection = function( uid, x,y, loadId, select
   assert( model.map_isValidPosition(x,y) );
   
 	var loader = model.unit_data[uid];
-	var movetp = model.moveTypes[ model.unit_data[ loadId ].type.movetype ];
+	var movetp = model.data_movetypeSheets[ model.unit_data[ loadId ].type.movetype ];
 	
 	if( model.move_canTypeMoveTo(movetp,x-1,y) ) selection.setValueAt( x-1,y, 1 );
 	if( model.move_canTypeMoveTo(movetp,x+1,y) ) selection.setValueAt( x+1,y, 1 );

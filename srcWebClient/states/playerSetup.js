@@ -37,17 +37,17 @@ util.scoped(function(){
     // grab next entry
     if( prev ){
       cSelect--;
-      if( cSelect < INACTIVE_ID ) cSelect = model.listOfCoTypes.length-1;
+      if( cSelect < INACTIVE_ID ) cSelect = model.data_coTypes.length-1;
     }
     else{
       cSelect++;
-      if( cSelect >= model.listOfCoTypes.length ) cSelect = INACTIVE_ID;
+      if( cSelect >= model.data_coTypes.length ) cSelect = INACTIVE_ID;
     }
     
     // update model
     coSelected[playerId] = cSelect;
     if( cSelect !== INACTIVE_ID ){
-      model.co_setMainCo( playerId, model.listOfCoTypes[cSelect] );
+      model.co_setMainCo( playerId, model.data_coTypes[cSelect] );
     } 
     else model.co_setMainCo( playerId, null );
 
@@ -93,12 +93,12 @@ util.scoped(function(){
     var player = model.player_data[playerId];
 
     if( player.team === INACTIVE_ID ){
-      btns[0].innerHTML = model.localized("config.player.off");
+      btns[0].innerHTML = model.data_localized("config.player.off");
       btns[1].innerHTML = "";
       btns[2].innerHTML = "";
     }
     else if( player.team === DESELECT_ID ){
-      btns[0].innerHTML = model.localized("config.player.disabled");
+      btns[0].innerHTML = model.data_localized("config.player.disabled");
       btns[1].innerHTML = "";
       btns[2].innerHTML = "";
     }
@@ -107,17 +107,17 @@ util.scoped(function(){
 
       // update player type
       if( playerId === 0 || !sp ){
-        btns[0].innerHTML = model.localized("config.player.human");
+        btns[0].innerHTML = model.data_localized("config.player.human");
         model.client_registerPlayer(playerId);
       }
       else{
-        btns[0].innerHTML = model.localized("config.player.AI");
+        btns[0].innerHTML = model.data_localized("config.player.AI");
         controller.setAIPlayer( playerId, "dumbBoy");
       }
       
       // update player co
       var co = model.co_data[playerId].coA; 
-      btns[1].innerHTML = (co !== null)? co.ID : model.localized("config.player.co.none");
+      btns[1].innerHTML = (co !== null)? co.ID : model.data_localized("config.player.co.none");
 
       // update player team
       btns[2].innerHTML = player.team;

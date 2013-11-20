@@ -10,7 +10,7 @@ model.factory_produceUnit = function( x, y, type ){
   if( DEBUG ) util.log("factory at postion (",x,",",y,") produces a",type);
   
   assert( model.map_isValidPosition(x,y) );
-  assert( model.unitTypes.hasOwnProperty(type)));
+  assert( model.data_unitSheets.hasOwnProperty(type)));
 
 	// get factory object
 	var prop = model.property_posMap[x][y];
@@ -19,7 +19,7 @@ model.factory_produceUnit = function( x, y, type ){
 	controller.events.factory_produceUnit( x, y, type );
 	
 	var uid  = model.unit_create( model.round_turnOwner, x, y, type );
-	var cost = model.unitTypes[ type ].cost;
+	var cost = model.data_unitSheets[ type ].cost;
 	var pl   = model.player_data[ prop.owner ];
 		
 	pl.gold -= cost;
@@ -64,12 +64,12 @@ model.factoryGenerateBuildMenu = function( prid, menu ){
   assert( model.player_isValidPid(property.owner) );
   
 	var availGold  = model.player_data[ property.owner ].gold;
-	var unitTypes  = model.listOfUnitTypes;
+	var unitTypes  = model.data_unitTypes;
 	var bList      = property.type.builds;
 	
 	for( var i=0,e=unitTypes.length; i<e; i++ ){
 		var key  = unitTypes[i];
-		var type = model.unitTypes[key];
+		var type = model.data_unitSheets[key];
 		
 		// TODO LATER DISABLE ACTION ONLY
 		if( type.cost > availGold ) continue;

@@ -3,13 +3,13 @@ model.property_specCaptures = util.expect.intRange(1,10);
 model.property_specPoints = util.expect.intRange(1,100);
 model.property_specFunds = util.expect.intRange(10,99999);
 
-model.unitTypeParser.addHandler( function( sheet ){
+model.data_unitParser.addHandler( function( sheet ){
   if( !util.isUndefined(sheet.captures) ){
     assert( util.intRange(sheet.captures,1,10) );
   }
 });
 
-model.tileTypeParser.addHandler( function( sheet ){
+model.data_tileParser.addHandler( function( sheet ){
   if( !util.isUndefined(sheet.points) ){ assert( util.intRange(sheet.points,1,100)  ); }
   if( !util.isUndefined(sheet.funds) ){  assert( util.intRange(sheet.funds,1,99999) ); }
 });
@@ -33,12 +33,12 @@ controller.persistence_defineHandler(
       assert( util.intRange(data[1],0,MAX_MAP_WIDTH-1) );
       assert( util.intRange(data[2],0,MAX_MAP_HEIGHT-1) );
       assert( util.intRange(data[4],0,MAX_MAP_HEIGHT-1) );
-      assert( util.isString(data[3]) && !util.isUndefined(model.tileTypes[data[3]].capturePoints));
-      assert( util.intRange(data[5],1,model.tileTypes[data[3]].capturePoints) );
+      assert( util.isString(data[3]) && !util.isUndefined(model.data_tileSheets[data[3]].capturePoints));
+      assert( util.intRange(data[5],1,model.data_tileSheets[data[3]].capturePoints) );
 
       // copy data into model
       property                                    = model.property_data[ data[0] ];
-      property.type                               = model.tileTypes[data[3]];
+      property.type                               = model.data_tileSheets[data[3]];
       property.capturePoints                      = data[4];
       property.owner                              = data[5];
       property.x                                  = data[1];

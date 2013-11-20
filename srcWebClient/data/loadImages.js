@@ -1,300 +1,149 @@
+// Load error handler.
 //
+controller.loadImages_loadFailed_ = function( ){
+  if( DEBUG ) util.log("could not load",this.pickey_);
+}
+
+// Generic image loader.
 //
-controller.loadImages_doIt = util.scoped(function(){
+controller.loadImages_loadSuccessful_ = function(){
+  var mode    = this.mode_;
+  var baton   = this.baton_;
+  var key     = this.pickey_;
 
-  // The sound loading handler
-  //
-  function loadIt( data, baton ){
-    var res;
-    var music = false;
-
-    switch( data.type ){
-
-      default: assert(false);
-    }
-
-    // some clients does not support playback of music files
-    if( music && !controller.features_client.audioMusic ){
-      if( DEBUG ) util.log("skip audio",res,", because client does not support music playback");
-      return;
-    }
-
-    if( DEBUG ) util.log("loading audio",res);
-
-    baton.take();
-    controller.storage_assets.get(res,function( obj ){
-
-      // not in the cache
-      if( !obj ){
-        if( DEBUG ) util.log(" ..is not in the cache");
-
-        var request = new XMLHttpRequest();
-
-        request.open("GET", res, true);
-        request.responseType = "arraybuffer";
-        request.onload       = function(){
-
-          // is the requested resource not available?
-          if( this.status === 404 ){
-            baton.pass();
-            return;
-          }
-
-          var audioData  = request.response;
-
-          // stringify buffer
-          var stringData = Base64Helper.encodeBuffer(audioData);
-
-          // save it in the storage
-          if( DEBUG ) util.log(" ..saving "+res);
-          controller.storage.set( res, stringData, function(){
-            controller.audio_loadByArrayBuffer(res,audioData,function(){
-              baton.pass();
-            });
-          });
-        };
-
-        request.send();
-      }
-      // already in the cache
-      else{
-        if( DEBUG ) util.log(" ..is in the cache");
-
-        controller.storage_assets.get(res,function( obj ){
-          assert( obj.value );
-
-          var audioData = Base64Helper.decodeBuffer( obj.value );
-          controller.audio_loadByArrayBuffer(res,audioData,function(){
-            baton.pass();
-          });
-        });
-      }
-    });
+  if( this.saveIt_ ){
+    controller.storage.set(
+      this.src,
+      Base64Helper.canvasToBase64(this),
+      controller.loadImages_pictureSaved_
+    );
   }
 
-  // Loads a list by the sound loading handler
-  //
-  function loadList( flow, list, tp ){
+  // delete temporary data in the image object... just to be safe :P
+  delete this.pickey_;
+  delete this.baton_;
+  delete this.mode_;
+  delete this.saveIt_;
 
-    // prepare loading
-    flow.andThen(function(data,b){
-      data.i    = 0;
-      data.list = list;
-      data.type = tp;
-    });
+  // check mode and save the image to the correct game image slot.
+  switch( mode ){
 
-    // load elements
-    for( var i=0,e=list.length; i<e; i++ ){
-      flow.andThen(loadIt);
-    }
+    case "U": view.setUnitImageForType( this, key, view.IMAGE_CODE_IDLE, view.COLOR_RED ); break;
+    case "P": view.setPropertyImageForType( this, key, view.COLOR_RED ); break;
+    case "T": view.setTileImageForType( this, key ); break;
+    case "M": view.setInfoImageForType( this, key ); break;
 
-    // check some things
-    flow.andThen(function(data){
-      assert(list   === data.list);
-      assert(data.i === data.list.length);
-    });
-  };
+    // error!
+    default: assert(false);
+  }
 
-  // public
-  return util.singleLazyCall(
-    function( err, baton ){
-      if( !controller.features_client.audioSFX && !controller.features_client.audioMusic ){
-        if( DEBUG ) util.log("client does not support audio system, skip init...");
-        return;
+  // go on with the next image
+  baton.pass();
+};
+
+// Save success handler.
+//
+controller.loadImages_pictureSaved_ = function( obj ){
+  if( DEBUG ) util.log("saved image type",obj.key);
+}
+
+// Image loading process.
+//
+controller.loadImages_prepareImg_ = function(key,path,mode,baton){
+
+  // append base path to the path
+  path = model.data_paths.images + path;
+
+  var img = new Image();
+
+  // insert some meta data
+  img.pickey_ = key;
+  img.baton_  = baton;
+  img.mode_   = mode;
+  img.saveIt_ = false;
+  img.onerror = controller.loadImages_loadFailed_;
+  img.onload  = controller.loadImages_loadSuccessful_;
+
+  controller.storage_assets.get(
+    path,
+    function(exists){
+
+      if( exists ){
+        // load it from cache
+
+        controller.storage.get( key, function( obj ){
+          img.src = "data:image/png;base64,"+obj.value;
+        });
+
+      } else {
+        // load it from remote path
+
+        img.saveIt_ = true;
+        img.src     = path;
       }
-
-      if( DEBUG ) util.log("initialize audio system");
-
-      var context = controller.audio_grabContext();
-      if( context ) return false;
-
-      baton.take();
-
-      var flow = jWorkflow.order(function(){
-        return {
-          i:         0,
-          list:      null,
-          basePath:  model.data_assets.sound
-        };
-      });
-
-      // prepare flow structure
-      loadList(flow,model.data_sounds,        0);
-      loadList(flow,model.listOfPropertyTypes,1);
-      loadList(flow,model.listOfUnitTypes,    2);
-
-      // start loading
-      flow.start(function( e ){
-        baton.pass();
-      })
     }
   );
-});
+};
 
+//
+//
+controller.loadImages_doIt = util.singleLazyCall(
+  function( err, baton ){
+    if( DEBUG ) util.log("loading modification images");
 
-
-
-
-
-
-
-
-
-controller.loadImages_doIt = util.singleLazyCall(function( err, masterbaton ){
-  if( err ){
-    if( constants.DEBUG ) util.log("break at load images due error from previous inits"); 
-    return masterbaton.pass(true);
-  }
-  
-  masterbaton.take();
-  
-  // TODO MOVE HOOKS INTO SCOPE VARIABLES
-  var i,e;
-  
-  function pictureSavedMsg( obj ){
-    if( constants.DEBUG ) util.log("saved image type",obj.key);
-  }
-  
-  function insertPicture(){
-    var mode = this.mode_;
-    var baton = this.baton_;
-    var list = this.list_;
-    var key = this.pickey_;
-    var saveIt = this.saveIt_;
-    
-    if( saveIt ){
-      controller.storage.set( key,Base64Helper.canvasToBase64(this), pictureSavedMsg);
-    }
-    
-    //if( DEBUG ) util.log("finished loading image type",key);
-    
-    // CLEAN IMAGE OBJECT
-    delete this.pickey_;
-    delete this.baton_;
-    delete this.list_;
-    delete this.mode_;
-    delete this.saveIt_;
-    
-    // CHECK MODE
-    switch( mode ){
-        
-      case "UNIT":
-        view.setUnitImageForType( this, key, view.IMAGE_CODE_IDLE, view.COLOR_RED );
-        break;
-        
-      case "PROPERTY":
-        view.setPropertyImageForType( this, key, view.COLOR_RED );
-        break;
-        
-      case "TILE":
-        view.setTileImageForType( this, key );
-        break;
-        
-      case "MISC":
-        view.setInfoImageForType( this, key );
-        break;
-        
-      default: util.raiseError("unknown mode key",mode);
-    }
-    
-    if( list.curStep_ === list.length ){
-      worklistStep++;
-      if( worklistStep < worklist.length ) list = worklist[worklistStep];
-      else list = null;
-    }
-    
-    baton.pass(list);
-  }
-  
-  function loadListPicture( list, baton ){
-    
-    // ERROR 
-    if( list === true ) baton.pass(true);
-      
     baton.take();
-    
-    if( list.curStep_ === list.length ) util.raiseError("illegal index");
-    var desc = list[list.curStep_];
-    list.curStep_++;
-    
-    img = new Image();
-    
-    // INSERT META DATA
-    img.pickey_ = desc[0];
-    img.baton_  = baton;
-    img.mode_   = list.mode_;
-    img.list_   = list;
-    img.saveIt_ = false;
-    img.onerror = function(){
-      controller.loadFault({ message:"could not load image "+img.pickey_ , stack:null },baton);
-    };
-    
-    // ANIMATED ?
-    if( desc[2] === "ANIMATED" ){
-      view.animatedTiles[ img.pickey_ ] = true;
-    }
-    // OVERLAYER ?
-    else if( desc[2] === "OVERLAYER" ){
-      view.overlayImages[ img.pickey_ ] = true;
-    }
-      
-      controller.storage.has( desc[0], function( exists ){
-        
-        // IMAGE EXISTS IN THE STORAGE
-        if( exists ){
-          // if( DEBUG ) util.log("try loading image",desc[0],"from storage");
-          
-          controller.storage.get( desc[0], function( obj ){
-            img.onload  = insertPicture;
-            img.src = "data:image/png;base64,"+obj.value;
-          });
-        }
-        // IMAGE NEEDS TO BE LOADED
-        else{
-          // if( DEBUG ) util.log("try loading image",desc[0],"from remote server");
-          
-          img.saveIt_ = true;
-          img.onload  = insertPicture;
-          img.src     = desc[1];
-        }
-      });
+
+    var flow = jWorkflow.order(function(){
+      return { i: 0, list: null };
+    });
+
+    // loading units
+    util.iterateListByFlow(flow,model.data_unitTypes, function(data,baton){
+      var obj = model.data_unitSheets[data.list[data.i]];
+      controller.loadImages_prepareImg_( data.list[data.i],obj.assets.gfx,"U",baton );
+    });
+
+    // loading tiles
+    util.iterateListByFlow(flow,model.data_tileTypes, function(data,baton){
+      var key = data.list[data.i];
+      var obj = model.data_tileSheets[key];
+      controller.loadImages_prepareImg_( key,obj.assets.gfx,"T",baton );
+
+      if( obj.assets.gfxOverlay ) view.overlayImages[ key ] = true;
+      //view.animatedTiles[ img.pickey_ ] = true;
+    });
+
+    // loading properties
+    util.iterateListByFlow(flow,model.data_propertyTypes, function(data,baton){
+      var obj = model.data_tileSheets[data.list[data.i]];
+      controller.loadImages_prepareImg_( data.list[data.i],obj.assets.gfx,"P",baton );
+    });
+
+    // loading cannon animations
+    util.iterateListByFlow(flow,model.data_propertyTypes, function(data,baton){
+      var obj = model.data_tileSheets[data.list[data.i]];
+      if( obj.assets.fireAnimation ){
+        controller.loadImages_prepareImg_(
+          data.list[data.i],
+          obj.assets.fireAnimation[0],
+          "M",
+          baton
+        );
+      }
+    });
+
+    // menu background images
+    util.iterateListByFlow(flow,model.data_menu, function(data,baton){
+      var obj = model.data_tileSheets[data.list[data.i]];
+      controller.loadImages_prepareImg_( data.list[data.i],obj.assets.gfx,"M",baton );
+    });
+
+    // start loading
+    flow.start(function( e ){
+      if( e && DEBUG ) util.list("could not load modification images");
+      if(!e && DEBUG ) util.list("loaded all modification images");
+
+      baton.pass();
+    })
   }
-  
-  // PREPARE LISTS
-  var imageData = model.graphics;
-  imageData.units.curStep_ = 0;
-  imageData.units.mode_ = "UNIT";
-  imageData.properties.curStep_ = 0;
-  imageData.properties.mode_ = "PROPERTY";
-  imageData.tiles.curStep_ = 0;
-  imageData.tiles.mode_ = "TILE";
-  imageData.misc.curStep_ = 0;
-  imageData.misc.mode_ = "MISC";
-  
-  var worklistStep = 0;
-  var worklist = [ imageData.units, imageData.properties, imageData.tiles, imageData.misc ];
-  
-  // CREAE WORKFLOW
-  var workflow = jWorkflow.order(function(){
-    if( constants.DEBUG ) util.log("start loading images");
-    return worklist[0];
-  });
-  
-  // FILL STEPS
-  for( i=0,e=imageData.units.length; i<e; i++ )       workflow.andThen(loadListPicture);
-  for( i=0,e=imageData.properties.length; i<e; i++ )  workflow.andThen(loadListPicture);
-  for( i=0,e=imageData.tiles.length; i<e; i++ )       workflow.andThen(loadListPicture);
-  for( i=0,e=imageData.misc.length; i<e; i++ )        workflow.andThen(loadListPicture);
-  
-  // END WORKFLOW AND START IT
-  workflow.andThen(function( pipe ){
-    if( pipe === true ){
-      if( constants.DEBUG ) util.log("failed to load images");
-      masterbaton.pass(true);
-    }
-    else{
-      if( constants.DEBUG ) util.log("finished loading images");
-      masterbaton.pass(false);
-    }
-  }).start(); 
-});
+);

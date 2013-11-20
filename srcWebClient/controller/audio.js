@@ -1,5 +1,10 @@
-controller.audio_SFX_STORAGE_PARAMETER   = "__volume_sfx__";
-controller.audio_MUSIC_STORAGE_PARAMETER = "__music_sfx__";
+// Storage parameter for sfx volume.
+//
+controller.audio_SFX_STORAGE_PARAMETER   = "volume_sfx";
+
+// Storage parameter for music volume.
+//
+controller.audio_MUSIC_STORAGE_PARAMETER = "music_sfx";
 
 // WebAudio context object.
 //
@@ -30,7 +35,7 @@ controller.audio_grabContext = function(){
       // construct new context
       if( window.AudioContext )             controller.audio_ctx_ = new window.AudioContext();
       else if ( window.webkitAudioContext ) controller.audio_ctx_ = new window.webkitAudioContext();
-      else throw Error("no AudioContext contructor found");
+      else throw Error("no AudioContext constructor found");
 
       // construct audio nodes
       controller.audio_gainNode_sfx_            = controller.audio_ctx_.createGainNode();

@@ -33,7 +33,7 @@ model.move_moveUnitByPath = function( way, uid, x, y, noFuelConsumption ){
   var cY = y;
   var unit = model.unit_data[ uid ];
   var uType = unit.type;
-  var mType = model.moveTypes[ uType.movetype ];
+  var mType = model.data_movetypeSheets[ uType.movetype ];
   var wayIsIllegal = false;
   var lastIndex = way.length - 1;
   var fuelUsed = 0;
@@ -358,7 +358,7 @@ model.move_fillMoveMap = function( source, selection, x, y, unit ){
   else toBeChecked = [ ];
   
   
-  var mType   = model.moveTypes[ unit.type.movetype ];
+  var mType   = model.data_movetypeSheets[ unit.type.movetype ];
   var player  = model.player_data[unit.owner];
   
   controller.prepareTags( x, y, model.unit_extractId( unit ) );

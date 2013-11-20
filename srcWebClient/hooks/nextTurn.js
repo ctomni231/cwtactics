@@ -3,7 +3,7 @@ view.registerAnimationHook({
   
   prepare: function(){
     controller.audio_playMusicForPlayer(model.round_turnOwner);
-    .showInfoMessage( model.localized("day")+" "+model.round_day+" - "+model.player_data[model.round_turnOwner].name );
+    .showInfoMessage( model.data_localized("day")+" "+model.round_day+" - "+model.player_data[model.round_turnOwner].name );
   },
   
   render: function(){},

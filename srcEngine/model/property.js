@@ -171,7 +171,7 @@ model.property_isCapturableBy = function( prid, captId ){
 
 // Specification of a tile type.
 //
-model.property_specTileType = [util.expect.STRING,util.expect.PROP_OF,model.tileTypes];
+model.property_specTileType = [util.expect.STRING,util.expect.PROP_OF,model.data_tileSheets];
 
 // Changes the type of a property object.
 //

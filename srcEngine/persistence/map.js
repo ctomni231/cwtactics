@@ -10,7 +10,7 @@ controller.persistence_defineHandler(
       for( var y=0,ye=model.map_height; y<ye; y++ ){
         model.unit_posData[x][y]    = null;
         model.property_posMap[x][y] = null;
-        model.map_data[x][y]        = model.tileTypes[ dom.typeMap[ dom.map[x][y] ] ];
+        model.map_data[x][y]        = model.data_tileSheets[ dom.typeMap[ dom.map[x][y] ] ];
       }
     }
   },

@@ -338,7 +338,7 @@ model.unit_drainFuel = function( uid ){
 model.unit_create = function( pid, x, y, type ){
   assert( model.map_isValidPosition(x,y) );
   assert( model.player_isValidPid(pid) );
-  assert( model.unitTypes.hasOwnProperty(type) );
+  assert( model.data_unitSheets.hasOwnProperty(type) );
 
   var i = model.unit_firstUnitId(pid);
   var e = model.unit_lastUnitId(pid);
@@ -350,7 +350,7 @@ model.unit_create = function( pid, x, y, type ){
     
     // if slot is freem then use it
     if( model.unit_data[i].owner === INACTIVE_ID ){
-      var typeSheet    = model.unitTypes[type];
+      var typeSheet    = model.data_unitSheets[type];
       var unit        = model.unit_data[i];
       
       unit.hp         = 99;

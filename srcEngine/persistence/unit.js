@@ -1,6 +1,6 @@
-model.unitTypeParser.addHandler(function(sheet){
+model.data_unitParser.addHandler(function(sheet){
 
-  assert( model.moveTypes.hasOwnProperty(sheet.movetype) );
+  assert( model.data_movetypeSheets.hasOwnProperty(sheet.movetype) );
 
   assert( util.intRange( sheet.range, 0, MAX_SELECTION_RANGE ) );
   assert( util.intRange( sheet.fuel, 0, 99 ) );
@@ -30,9 +30,9 @@ controller.persistence_defineHandler(
         // check data of the data block this save handler uses a differn't saving schema
         assert( util.isInt(data[0]) );
         assert( typeof data[1] === "string" );
-        assert( model.unitTypes.hasOwnProperty(data[1]));
+        assert( model.data_unitSheets.hasOwnProperty(data[1]));
 
-        var type = model.unitTypes[data[1]];
+        var type = model.data_unitSheets[data[1]];
 
         assert( model.map_isValidPosition(data[2],data[3]) );
         assert( util.intRange( data[4] , 1, 99 ) );

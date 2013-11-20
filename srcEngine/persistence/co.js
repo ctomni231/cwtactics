@@ -1,4 +1,4 @@
-model.coTypeParser.addHandler( function( sheet ){
+model.data_coParser.addHandler( function( sheet ){
 
   // stars
   assert( util.intRange(sheet.coStars,-1,10) && sheet.coStars !== 0 );
@@ -45,16 +45,16 @@ controller.persistence_defineHandler(
           assert( util.intRange(source[0],0,999999) );
           assert( util.intRange(source[1],0,999999) );
           assert( util.intRange(source[2],model.co_MODES.NONE,model.co_MODES.AWDR) );
-          assert( util.isString(source[3]) && model.coTypes.hasOwnProperty(source[3]) );
-          assert( util.isString(source[4]) && model.coTypes.hasOwnProperty(source[4]) );
+          assert( util.isString(source[3]) && model.data_coSheets.hasOwnProperty(source[3]) );
+          assert( util.isString(source[4]) && model.data_coSheets.hasOwnProperty(source[4]) );
 
           // load data
           target            = model.co_data[i];
           target.power      = source[0];
           target.timesUsed  = source[1];
           target.level      = source[2];
-          target.coA        = (source[3])? model.coTypes[ source[3] ] : null;
-          target.coB        = (source[4])? model.coTypes[ source[4] ] : null;
+          target.coA        = (source[3])? model.data_coSheets[ source[3] ] : null;
+          target.coB        = (source[4])? model.data_coSheets[ source[4] ] : null;
         }
       }
     }

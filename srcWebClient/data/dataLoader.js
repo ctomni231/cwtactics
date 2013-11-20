@@ -1,7 +1,7 @@
 controller.startLoadingProcess = function( loadDescComponent, loadBarComponent ){
   assert( loadDescComponent && loadBarComponent );
 
-  if( DEBUG ) util.log("loading game assets");
+  if( DEBUG ) util.log("loading game data");
   
   jWorkflow.order()
 
@@ -48,7 +48,7 @@ controller.startLoadingProcess = function( loadDescComponent, loadBarComponent )
   
   .chill(150)
 
-  // **3.** check environment
+  // **3.** reset game data ?
   .andThen(function( err, baton ){
     if( err ) return err;
     baton.take();
@@ -77,84 +77,84 @@ controller.startLoadingProcess = function( loadDescComponent, loadBarComponent )
   
   .chill(150)
 
-  // **4.** check environment
+  // **4.** load modification
   .andThen(controller.modification_load)
 
   // -------------------------------------------------------------------------------------
 
   .andThen(function(){  
-    loadDescComponent.innerHTML = model.localized("loading.loadMaps");
+    loadDescComponent.innerHTML = model.data_localized("loading.loadMaps");
     loadBarComponent.className = "loadBar_30"; })
   
   .chill(150)
 
-  // **5.** check environment
+  // **5.** load maps
   .andThen(controller.loadMaps)
 
   // -------------------------------------------------------------------------------------
 
   .andThen(function(){   
-    loadDescComponent.innerHTML = model.localized("loading.loadImages");
+    loadDescComponent.innerHTML = model.data_localized("loading.loadImages");
     loadBarComponent.className = "loadBar_40"; })
   
   .chill(150)
 
-  // **6.** check environment
+  // **6.** load images
   .andThen(controller.loadImages_doIt)
 
   // -------------------------------------------------------------------------------------
 
   .andThen(function(){   
-    loadDescComponent.innerHTML = model.localized("loading.cropImages");
+    loadDescComponent.innerHTML = model.data_localized("loading.cropImages");
     loadBarComponent.className = "loadBar_60"; })
   
   .chill(150)
 
-  // **7.** check environment
+  // **7.** crop images
   .andThen(controller.cutImages)
 
   // -------------------------------------------------------------------------------------
 
   .andThen(function(){   
-    loadDescComponent.innerHTML = model.localized("loading.colorizeImages");
+    loadDescComponent.innerHTML = model.data_localized("loading.colorizeImages");
     loadBarComponent.className = "loadBar_65"; })
 
   .chill(150)
 
-  // **8.** check environment
+  // **8.** colorize images
   .andThen(controller.colorizeImages)
 
   // -------------------------------------------------------------------------------------
 
   .andThen(function(){   
-    loadDescComponent.innerHTML = model.localized("loading.loadSounds");
+    loadDescComponent.innerHTML = model.data_localized("loading.loadSounds");
     loadBarComponent.className = "loadBar_70"; })
   
   .chill(150)
 
-  // **9.** check environment
+  // **9.** load audio files
   .andThen(controller.loadAudio_doIt)
 
   // -------------------------------------------------------------------------------------
 
   .andThen(function(){    
-    loadDescComponent.innerHTML = model.localized("loading.prepareInput");
+    loadDescComponent.innerHTML = model.data_localized("loading.prepareInput");
     loadBarComponent.className = "loadBar_90"; })
   
   .chill(150)
 
-  // **10.** check environment
+  // **10.** load input system
   .andThen(controller.loadInputDevices)
 
   // -------------------------------------------------------------------------------------
 
   .andThen(function(){
-    loadDescComponent.innerHTML = model.localized("loading.prepareInput");
+    loadDescComponent.innerHTML = model.data_localized("loading.prepareInput");
     loadBarComponent.className = "loadBar_93"; })
 
   .chill(150)
 
-  // **10.** check environment
+  // **11.** load custom input mappings
   .andThen(function(err, baton){
     baton.take();
     controller.loadKeyMapping(function(){
@@ -165,28 +165,28 @@ controller.startLoadingProcess = function( loadDescComponent, loadBarComponent )
   // -------------------------------------------------------------------------------------
 
   .andThen(function(){    
-    loadDescComponent.innerHTML = model.localized("loading.prepareLanguage");
+    loadDescComponent.innerHTML = model.data_localized("loading.prepareLanguage");
     loadBarComponent.className = "loadBar_95"; })
 
   .chill(150)
 
-  // **11.** localize
+  // **12.** localize
   .andThen(function(){
     var els = document.querySelectorAll("[key]");
     for( var i=0,e=els.length; i<e; i++ ){
-      els[i].innerHTML = model.localized( els[i].attributes.key.value );
+      els[i].innerHTML = model.data_localized( els[i].attributes.key.value );
     }
   })
 
   // -------------------------------------------------------------------------------------
 
   .andThen(function(){    
-    loadDescComponent.innerHTML = model.localized("loading.done");
+    loadDescComponent.innerHTML = model.data_localized("loading.done");
     loadBarComponent.className = "loadBar_100"; })
 
   .chill(500)
 
-  // **12.** start client 
+  // **13.** start client
   .andThen(function(){ 
     controller.screenStateMachine.event("complete"); 
   })

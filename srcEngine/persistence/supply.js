@@ -10,7 +10,7 @@ model.supply_parseRepair_ = function( sheet ){
   }
 };
 
-model.unitTypeParser.addHandler(function(sheet){
+model.data_unitParser.addHandler(function(sheet){
   var keys,i;
 
   if( !util.isUndefined(sheet.supply) ){
@@ -23,4 +23,4 @@ model.unitTypeParser.addHandler(function(sheet){
   model.supply_parseRepair_(sheet);
 });
 
-model.tileTypeParser.addHandler(model.supply_parseRepair_);
+model.data_tileParser.addHandler(model.supply_parseRepair_);

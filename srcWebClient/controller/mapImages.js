@@ -63,10 +63,10 @@ util.scoped(function(){
         
         // DO MAGIC HERE
         var tile = model.map_data[lX][lY].ID;
-        if( model.graphics.connected[tile] ){
+        if( model.data_graphics.connected[tile] ){
           
-          var cKeys = model.graphics.connectedKeys[tile];
-          if( model.graphics.connected[tile][0].length === 5 ){
+          var cKeys = model.data_graphics.connectedKeys[tile];
+          if( model.data_graphics.connected[tile][0].length === 5 ){
             
             // ----------------------------
             check( x,y-1, 0, sdata, cKeys );
@@ -75,7 +75,7 @@ util.scoped(function(){
             check( x-1,y, 3, sdata, cKeys );
             
             view.mapImages[x][y] = resultCheck( 
-              model.graphics.connected[tile], 
+              model.data_graphics.connected[tile], 
               sdata,
               true,
               tile
@@ -94,7 +94,7 @@ util.scoped(function(){
             check( x-1,y-1, 7, sdata, cKeys );
             
             view.mapImages[x][y] = resultCheck( 
-              model.graphics.connected[tile], 
+              model.data_graphics.connected[tile], 
               sdata,
               false,
               tile

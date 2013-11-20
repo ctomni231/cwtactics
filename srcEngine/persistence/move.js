@@ -1,4 +1,4 @@
-model.moveTypeParser.addHandler( function( sheet ){
+model.data_movetypeParser.addHandler( function( sheet ){
   var keys,key, i,value;
 
   assert( Array.isArray( sheet.costs ) );
@@ -8,7 +8,7 @@ model.moveTypeParser.addHandler( function( sheet ){
 
     key = keys[i];
     assert( util.isString(key) );
-    assert( key === "*" || model.tileTypes.hasOwnProperty(key) );
+    assert( key === "*" || model.data_tileSheets.hasOwnProperty(key) );
 
     value = sheet.costs[key];
     assert( util.intRange(value,-1,MAX_SELECTION_RANGE) );

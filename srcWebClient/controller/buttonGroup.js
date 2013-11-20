@@ -95,7 +95,7 @@ controller.generateButtonGroup = function( parent, normalCls, activeCls, inactiv
   
   // localize values
   for( var i=0,e=buttons.length; i<e; i++ ){
-    // buttons[i].innerHTML = model.localized( buttons[i].attributes.key.value );
+    // buttons[i].innerHTML = model.data_localized( buttons[i].attributes.key.value );
     buttons[i].className = grp.cls;
     controller.registerButtonGroupHover( grp, buttons[i], i );
   }
