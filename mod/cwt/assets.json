@@ -1,6 +1,5 @@
 {
-  "music"   : "localhost:8000/sound",
-  "sound"   : "localhost:8000/sound",
+  "sounds"   : "localhost:8000/sound",
   "images"  : "localhost:8000/images",
   "maps"    : "localhost:8000/maps"
 }

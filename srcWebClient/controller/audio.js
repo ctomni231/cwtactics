@@ -115,6 +115,12 @@ controller.audio_unloadBuffer = function( id ){
   delete controller.audio_buffer_[id];
 };
 
+//
+//
+controller.audio_isBuffered = function( id ){
+  return controller.audio_buffer_.hasOwnProperty(id);
+};
+
 // Returns the value of the sfx audio node.
 //
 controller.audio_getSfxVolume = function(){

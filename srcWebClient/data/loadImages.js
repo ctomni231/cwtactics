@@ -52,7 +52,7 @@ controller.loadImages_pictureSaved_ = function( obj ){
 controller.loadImages_prepareImg_ = function(key,path,mode,baton){
 
   // append base path to the path
-  path = model.data_paths.images + path;
+  path = model.data_assets.images + "/" + path;
 
   var img = new Image();
 
@@ -124,7 +124,7 @@ controller.loadImages_doIt = util.singleLazyCall(
       var obj = model.data_tileSheets[data.list[data.i]];
       if( obj.assets.fireAnimation ){
         controller.loadImages_prepareImg_(
-          data.list[data.i],
+          obj.assets.fireAnimation[0],
           obj.assets.fireAnimation[0],
           "M",
           baton
@@ -133,9 +133,8 @@ controller.loadImages_doIt = util.singleLazyCall(
     });
 
     // menu background images
-    util.iterateListByFlow(flow,model.data_menu, function(data,baton){
-      var obj = model.data_tileSheets[data.list[data.i]];
-      controller.loadImages_prepareImg_( data.list[data.i],obj.assets.gfx,"M",baton );
+    util.iterateListByFlow(flow,model.data_menu.bgs, function(data,baton){
+      controller.loadImages_prepareImg_( data.list[data.i],data.list[data.i],"M",baton );
     });
 
     // start loading
