@@ -1,74 +1,76 @@
-// ### Controller.nGameRound
 // Is `true` when a game round is active else `false`
 //
-controller.inGameRound = false;
+controller.update_inGameRound = false;
 
-// ### Controller.evaledChars_
 // Holds the number of evaluated characters so far. (only active in `DEBUG` mode)
 //
-if( DEBUG ) controller.evaledChars_ = 0;
+if( DEBUG ) controller.update_evaledChars_ = 0;
 
-// ### Controller.updateState
 // Updates the current state of the game engine.
 //
-controller.updateState = function( delta ){
-  if( DEBUG && !controller.inGameRound ) model.errorCorruptDataModel("update state","no game round is active");
-  
+controller.update_tickFrame = function( delta ){
+  assert( controller.update_inGameRound );
+
   // update the internal timer
-  model.updateTimer( delta );
+  model.timer_updateTimer( delta );
   
   // the timer can end the game round if the round ends then leave update step
-  if( !controller.inGameRound ) return;
+  if( !controller.update_inGameRound ) return;
   
   // when no commands left in the buffer then leave
-  if( controller.actionBuffer_.isEmpty()) return;
+  if( controller.action_buffer_.isEmpty()) return;
   
   // grab next action and search correct shared function context
-  var data = controller.actionBuffer_.pop();
-  var actionId = controller.actionMap[data[data.length - 1]];
-  
+  var data      = controller.action_buffer_.pop();
+  var actionId  = controller.action_map[data[data.length - 1]];
+
+  assert( actionId );
+
   if( DEBUG ){
-    if( !actionId ) model.errorCorruptDataModel("update state","unknown action id => "+actionId);
+    var command                     = JSON.stringify(data);
+    controller.update_evaledChars_ += command.length;
 
-    var command = JSON.stringify(data);
-    controller.evaledChars_ += command.length;
-
-    // NOTE logs actual evaluated characters by incoming commands, this isn't needed for the game, but gives the possible answers for the design of the save games
-    util.log( "evaluate action data", command, "\n * action key :", actionId, "\n * evaluated characters (acc.) :", controller.evaledChars_ );
+    // NOTE logs actual evaluated characters by incoming commands, this isn't needed for the
+    // game, but gives the possible answers for the design of the save games
+    util.log(
+      "evaluate action data",
+      command,
+      "\n * action key :",
+      actionId,
+      "\n * evaluated characters (acc.) :",
+      controller.update_evaledChars_
+    );
   }
   
   // invoke the action function with the given action data
   model[ actionId ].apply(model, data);
 };
 
-// ### Controller.prepareGameRound
 // Does some preparations for the active game round
 //
-controller.prepareGameRound = function( ){
-  if( DEBUG ) controller.evaledChars_ = 0;
+controller.update_prepareGameRound = function( ){
+  if( DEBUG ) controller.update_evaledChars_ = 0;
 
-  controller.actionBuffer_.clear();
+  controller.action_buffer_.clear();
 };
 
-// ### Controller.startGameRound
 // Starts a new game round.
 //
-controller.startGameRound = function( ){
-  if( DEBUG && !controller.inGameRound ) model.errorLogicFault("start game round","game round is already active");
+controller.update_startGameRound = function( ){
+  assert( !controller.update_inGameRound );
   
   // initializer controllers
-  controller.inGameRound = true;
+  controller.update_inGameRound = true;
 
   // start first turn
-  model.turnOwner--;
-  controller.localInvokement( "nextTurn", []);
+  model.round_turnOwner--;
+  controller.action_localInvoke( "nextTurn", []);
 };
 
-// ### Controller.endGameRound
 // Ends the active game round.
 //
-controller.endGameRound = function(){
-  if( DEBUG && !controller.inGameRound ) model.errorLogicFault("end game round","no game round is active");
+controller.update_endGameRound = function(){
+  assert( controller.update_inGameRound );
   
-  controller.inGameRound = false;
+  controller.update_inGameRound = false;
 };

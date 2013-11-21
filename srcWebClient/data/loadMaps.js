@@ -5,15 +5,15 @@ controller.mapList = [];
  */
 controller.loadMaps = util.singleLazyCall(function( err, masterbaton ){
   if( err ){
-    if( constants.DEBUG ) util.log("break at load maps due error from previous inits"); 
+    if( DEBUG ) util.log("break at load maps due error from previous inits");
     return masterbaton.pass(true);
   }
   
-  if( constants.DEBUG ) util.log("loading maps");
+  if( DEBUG ) util.log("loading maps");
   masterbaton.take();
   
   var cStep = 0;
-  var maps = model.maps;
+  var maps = model.data_maps;
   
   function loadMap( pipe, baton ){
     
@@ -56,7 +56,7 @@ controller.loadMaps = util.singleLazyCall(function( err, masterbaton ){
   
   // CREAE WORKFLOW
   var workflow = jWorkflow.order(function(){
-    if( constants.DEBUG ) util.log("start loading maps");
+    if( DEBUG ) util.log("start loading maps");
   });
   
   // FILL STEPS
@@ -65,11 +65,11 @@ controller.loadMaps = util.singleLazyCall(function( err, masterbaton ){
   // END WORKFLOW AND START IT
   workflow.andThen(function( pipe ){
     if( pipe === true ){
-      if( constants.DEBUG ) util.log("failed to load maps");
+      if( DEBUG ) util.log("failed to load maps");
       masterbaton.pass(true);
     }
     else{
-      if( constants.DEBUG ) util.log("finished loading maps");
+      if( DEBUG ) util.log("finished loading maps");
       masterbaton.pass(false);
     }
   }).start();

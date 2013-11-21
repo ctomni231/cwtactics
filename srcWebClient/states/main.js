@@ -18,8 +18,8 @@ util.scoped(function(){
 	controller.screenStateMachine.structure.MAIN.section = "cwt_main_screen";
 	
   controller.screenStateMachine.structure.MAIN.enterState = function(){
-    controller.playEmptyAudio();
-    controller.playMusic("BG");
+    controller.audio_playNullSound();
+    controller.audio_playMusic("BG");
     
     btn.setIndex(1);
   };

@@ -1,4 +1,4 @@
-controller.onEvent("modifyVisionAt", function( x,y, pid, range, value ){
+controller.event_on("fog_modifyVisionAt", function( x,y, pid, range, value ){
     range = 10; // TAKE THE MAXIMUM RANGE
   
     var lX;
@@ -6,25 +6,25 @@ controller.onEvent("modifyVisionAt", function( x,y, pid, range, value ){
     var lY = y-range;
     var hY = y+range;
     if( lY < 0 ) lY = 0;
-    if( hY >= model.mapHeight ) hY = model.mapHeight-1;
+    if( hY >= model.map_height ) hY = model.map_height-1;
     for( ; lY<=hY; lY++ ){
 
       var disY = Math.abs( lY-y );
       lX = x-range+disY;
       hX = x+range-disY;
       if( lX < 0 ) lX = 0;
-      if( hX >= model.mapWidth ) hX = model.mapWidth-1;
+      if( hX >= model.map_width ) hX = model.map_width-1;
       for( ; lX<=hX; lX++ ){
         view.markForRedraw( lX,lY );
         
-        var unit = model.unitPosMap[lX][lY];
+        var unit = model.unit_posData[lX][lY];
         if( unit !== null && unit.hidden ){
-          controller.updateUnitStatus( model.extractUnitId( unit ) );
+          controller.updateUnitStatus( model.unit_extractId( unit ) );
         }
       }
     }
 });
 
-controller.onEvent("recalculateFogMap",function(range){
+controller.event_on("fog_recalculateFogMap",function(range){
   view.completeRedraw();
 });

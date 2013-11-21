@@ -1,91 +1,64 @@
-controller.registerInvokableCommand("weatherChange");
-controller.registerInvokableCommand("weatherCalcNext");
+// commands
+controller.action_registerCommands("weather_change");
+controller.action_registerCommands("weather_calculateNext");
 
-controller.defineEvent(             "weatherChanged");
+// event
+controller.event_define("weather_change");
 
-controller.defineGameScriptable(    "weatherNeutralized",0,1);
+// scriptables
+controller.defineGameScriptable("neutralizeWeather",0,1);
 
-controller.defineGameConfig(        "weatherMinDays",   1,5,1);
-controller.defineGameConfig(        "weatherRandomDays",0,5,4);
-
-// TODO -> into persistence
-model.weatherTypeParser.addHandler(function( sheet ){
-  if( typeof sheet.defaultWeather !== "undefined" ) expect(sheet.defaultWeather).boolean();
-  expect(sheet.rules).list();
-});
-
-controller.persistenceHandler(
-  
-  // load
-  function( dom ){
-    if( typeof dom.wth !== "undefined" ){
-      expect(dom.wth).string().notEmpty().isIn(model.weatherTypes);
-      model.weather = model.weatherTypes[dom.wth];
-    } else {
-      model.weather = model.defaultWeatherType;
-      
-      // the host tries to calculate the next weather which will be activated after a random number of days
-      if( controller.isHost() ) model.weatherCalcNext();
-    }
-  },
-  
-  // save
-  function( dom ){
-    dom.wth = model.weather.ID;
-  }
-);
-// TODO -> into persistence
-
+// configs
+controller.defineGameConfig("weatherMinDays",1,5,1);
+controller.defineGameConfig("weatherRandomDays",0,5,4);
 
 // The active weather type object.
 //
-model.weather = null;
+model.weather_data = null;
 
-// Calculates the next weather and adds the result as timed event to the day events. **Only invokable
+// Calculates the next weather and adds the result
+// as timed event to the day events. **Only invokable
 // by the host instance.**
 //
-model.weatherCalcNext =/* model.calculateNextWeather = */ function(){  
-  var newTp,duration;
+model.weather_calculateNext = function(){  
+  var newTp;
+  var duration;
   
-  // expect().isHost();
-  model.clientAssertIsHost();
+  assert(controller.isHost());
   
-  // Search a random weather if the current weather is `null` or the default weather type
-  if( model.weather !== null && model.weather === model.defaultWeatherType ){
+  // Search a random weather if the last weather was `null` or the default weather type
+  if( model.weather_data !== null && model.weather_data === model.data_defaultWeatherSheet ){
     
-    // Calculates a special weather that durates for one turn
-    newTp     = model.nonDefaultWeatherType[ parseInt(Math.random()*model.nonDefaultWeatherType.length,10) ].ID;
-    duration  = 1;
-  } else {
+    var list = model.data_nonDefaultWeatherTypes;
+    newTp = list[ parseInt(Math.random()*list.length,10) ].ID;
+    duration = 1;
+  }
+  else{
     
     // Take default weather and calculate a random amount of days
-    newTp     = model.defaultWeatherType.ID;
-    duration  = controller.configValue("weatherMinDays") + 
-                parseInt( controller.configValue("weatherRandomDays")*Math.random(), 10 );
-    // duration  = model.weatherMinDays() + parseInt( model.weatherRandomDays()*Math.random(), 10 );
+    newTp = model.data_defaultWeatherSheet.ID;
+    duration = controller.configValue("weatherMinDays") + parseInt(
+      controller.configValue("weatherRandomDays")*Math.random(), 10
+    );
   }
   
-  controller.sharedInvokement("changeWeather",[newTp]);
+  controller.action_sharedInvoke("weather_change",[newTp]);
   
-  model.pushTimedEvent( 
-    model.daysToTurns(duration), 
-    "weatherCalcNext",
+  model.dayEvents_push( 
+    model.round_daysToTurns(duration), 
+    "weather_calculateNext",
     []
   );
 };
 
-// Expactation that expects a value to be a valid ID for a weather type.
+// Changes the weather to a given type. 
+// Invokes the `weather_change` event.
 //
-model.weatherAssertValidId = expectation(expect.string,expect.notEmpty,expect.isIn,model.weatherTypes);
-
-// Changes the weather to a given type. Invokes the `weatherChanged` event.
-//
-model.weatherChange = /*model.changeWeather =*/ function( wth ){
-  if( DEBUG ) expect(wth).string().notEmpty().isIn(model.weatherTypes);
-  if( DEBUG ) model.weatherAssertValidId(wth);
+model.weather_change = function( wth ){
+  assert( model.data_weatherSheets.hasOwnProperty(wth) );
   
-  model.weather = model.weatherTypes[wth];
-  model.recalculateFogMap();
+  model.weather_data = model.data_weatherSheets[wth];
+  model.fog_recalculateFogMap();
 
-	controller.events.weatherChanged( wth );
+	controller.events.weather_change( wth );
 };

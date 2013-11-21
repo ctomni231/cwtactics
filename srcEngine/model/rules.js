@@ -1,39 +1,22 @@
-// ### Model
-
-// Holds all game rules
+// Holds all game rules.
 //
-model.globalRules = [];
+model.rule_global = [];
 
-// Holds all map rules
+// Holds all map rules.
 //
-model.mapRules = util.list( 20, null );
+model.rule_map = util.list( 20, null );
 
-controller.persistenceHandler(
-  
-  // load
-  function(  ){
-    model.mapRules.resetValues();
-  },
-  
-  // save
-  function(  ){}
-);
-  
-// ---
-
-// ### Logic
-
-model.isValidRule = function(rule, isMapRule){
+// Checks a rule.
+//
+model.rule_isValid = function(rule, isMapRule){
   return true;
 };
 
-model.pushRule = function(rule, isMapRule){
-  if( !model.isValidRule(rule,isMapRule) ){
-    model.criticalError(
-      error.ILLEGAL_PARAMETERS,
-      error.ILLEGAL_RULE_DEFINITION );
-  }
+// Pushes a rule into the model.
+//
+model.rule_push = function(rule, isMapRule){
+  assert( model.rule_isValid(rule,isMapRule) );
   
-  if(isMapRule) model.mapRules.push(rule);
-  else model.globalRules.push(rule);
+  if(isMapRule) model.rule_map.push(rule);
+  else          model.rule_global.push(rule);
 };

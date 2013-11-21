@@ -1,4 +1,4 @@
-controller.mapAction({
+controller.action_mapAction({
   
   key:"nextTurn",
   
@@ -7,7 +7,7 @@ controller.mapAction({
   },
   
   invoke: function(){
-    controller.sharedInvokement("nextTurn",[]);
+    controller.action_sharedInvoke("nextTurn",[]);
   }
   
 });

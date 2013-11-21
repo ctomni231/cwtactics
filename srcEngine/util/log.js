@@ -8,10 +8,7 @@ util.error = function( errorId, errorData, stackData ){
 };
 
 // Logging function.
-// 
-// @param {...Object} msg A number of arguments that will be used as message.
-//                        If an argument isn't a String then it will be converted to
-//                        String by the toString() function.
+//
 util.log = function( msg ){
   if( arguments.length > 1 ) msg = Array.prototype.join.call( arguments, " " );
 

@@ -3,304 +3,320 @@
   {
     "ID": "PLIN",
     "defense": 1,
-    "graphics":"terrain/AWDS_PLIN.png"
+    "assets":{
+      "gfx":"terrain/AWDS_PLIN.png"
+    }
   },
 
   {
     "ID": "FRST",
     "defense": 2,
     "blocksVision":true,
-    "graphicOverlays":true,
-    "graphics":"terrain/AWDS_FRST.png"
+    "assets":{
+      "gfx":"terrain/AWDS_FRST.png",
+      "gfxOverlay":true
+    }
   },
 
   {
     "ID": "MNTN",
     "defense": 4,
-    "graphicOverlays":true,
-    "graphics":"terrain/AWDS_MNTN.png"
+    "assets":{
+      "gfx":"terrain/AWDS_MNTN.png",
+      "gfxOverlay":true
+    }
   },
 
 
   {
     "ID": "ROAD",
     "defense": 0,
-    "graphics":[
-      {
-        "ROAD": "R",
-        "WATER": "S",
-        "RIVER": "RV",
-        "PLIN": "L",
-        "FRST": "L",
-        "MNTN": "L",
-        "REEF": "S",
-        "DEFAULT": ""
-      },
-      [
+    "assets":{
+      "gfx":[
+        {
+          "ROAD": "R",
+          "WATER": "S",
+          "RIVER": "RV",
+          "PLIN": "L",
+          "FRST": "L",
+          "MNTN": "L",
+          "REEF": "S",
+          "DEFAULT": ""
+        },
         [
-          "terrain/AWDS_ROAD~OOOO.png",
-          "R","R","R","R"
-        ],
-        [
-          "terrain/AWDS_ROAD~LOOO.png",
-          "","R","R","R"
-        ],
-        [
-          "terrain/AWDS_ROAD~OLOO.pngs",
-          "R","R","","R"
-        ],
-        [
-          "terrain/AWDS_ROAD~OOLO.png",
-          "R","R","R",""
-        ],
-        [
-          "terrain/AWDS_ROAD~OOOL.png",
-          "R","","R","R"
-        ],
-        [
-          "terrain/AWDS_ROAD~LLOO.png",
-          "","R","","R"
-        ],
-        [
-          "terrain/AWDS_ROAD~LOLO.png",
-          "","R","R",""
-        ],
-        [
-          "terrain/AWDS_ROAD~LOOL.png",
-          "","","R","R"
-        ],
-        [
-          "terrain/AWDS_ROAD~OLLO.png",
-          "R","R","",""
-        ],
-        [
-          "terrain/AWDS_ROAD~OLOL.png",
-          "R","","","R"
-        ],
-        [
-          "terrain/AWDS_ROAD~OOLL.png",
-          "R","","R",""
-        ],
-        [
-          "terrain/AWDS_ROAD~OOLL.png",
-          "","","R",""
-        ],
-        [
-          "terrain/AWDS_ROAD~OOLL.png",
-          "R","","",""
-        ],
-        [
-          "terrain/AWDS_ROAD~LLOO.png",
-          "","","","R"
-        ],
-        [
-          "terrain/AWDS_ROAD~LLOO.png",
-          "","R","",""
-        ],
-        [
-          "terrain/AWDS_ROAD.png",
-          "","","",""
+          [
+            "terrain/AWDS_ROAD~OOOO.png",
+            "R","R","R","R"
+          ],
+          [
+            "terrain/AWDS_ROAD~LOOO.png",
+            "","R","R","R"
+          ],
+          [
+            "terrain/AWDS_ROAD~OLOO.pngs",
+            "R","R","","R"
+          ],
+          [
+            "terrain/AWDS_ROAD~OOLO.png",
+            "R","R","R",""
+          ],
+          [
+            "terrain/AWDS_ROAD~OOOL.png",
+            "R","","R","R"
+          ],
+          [
+            "terrain/AWDS_ROAD~LLOO.png",
+            "","R","","R"
+          ],
+          [
+            "terrain/AWDS_ROAD~LOLO.png",
+            "","R","R",""
+          ],
+          [
+            "terrain/AWDS_ROAD~LOOL.png",
+            "","","R","R"
+          ],
+          [
+            "terrain/AWDS_ROAD~OLLO.png",
+            "R","R","",""
+          ],
+          [
+            "terrain/AWDS_ROAD~OLOL.png",
+            "R","","","R"
+          ],
+          [
+            "terrain/AWDS_ROAD~OOLL.png",
+            "R","","R",""
+          ],
+          [
+            "terrain/AWDS_ROAD~OOLL.png",
+            "","","R",""
+          ],
+          [
+            "terrain/AWDS_ROAD~OOLL.png",
+            "R","","",""
+          ],
+          [
+            "terrain/AWDS_ROAD~LLOO.png",
+            "","","","R"
+          ],
+          [
+            "terrain/AWDS_ROAD~LLOO.png",
+            "","R","",""
+          ],
+          [
+            "terrain/AWDS_ROAD.png",
+            "","","",""
+          ]
         ]
       ]
-    ]
+    }
   },
 
   {
     "ID": "RIVER",
     "defense": 0,
-    "graphics":"terrain/AWDS_RIVR.png"
+    "assets":{
+      "gfx":"terrain/AWDS_RIVR.png"
+    }
   },
 
   {
     "ID": "WATER",
     "defense": 0,
-    "graphics":[
-      {
-        "ROAD": "L",
-        "WATER": "S",
-        "RIVER": "RV",
-        "PLIN": "L",
-        "FRST": "L",
-        "MNTN": "L",
-        "REEF": "S",
-        "DEFAULT": ""
-      },
-      [
+    "assets":{
+      "gfx":[
+        {
+          "ROAD": "L",
+          "WATER": "S",
+          "RIVER": "RV",
+          "PLIN": "L",
+          "FRST": "L",
+          "MNTN": "L",
+          "REEF": "S",
+          "DEFAULT": ""
+        },
         [
-          "terrain/AWDS_SEAS.png",
-          "S","S","S","S","S","S","S","S"
-        ],
-        [
-          "terrain/AWDS_SEAS~LLLL.png",
-          "L","L","L","L","L","L","L","L"
-        ],
-        [
-          "terrain/AWDS_SEAS~LLLS.png",
-          "L","","S","","L","","L",""
-        ],
-        [
-          "terrain/AWDS_SEAS~LLSL.png",
-          "L","","L","","L","","S",""
-        ],
-        [
-          "terrain/AWDS_SEAS~LSLL.png",
-          "L","","L","","S","","L",""
-        ],
-        [
-          "terrain/AWDS_SEAS~LLSS.png",
-          "L","L","S","L","L","L","S","L"
-        ],
-        [
-          "terrain/AWDS_SEAS~LSLL.png",
-          "S","","L","","L","","L",""
-        ],
-        [
-          "terrain/AWDS_SEAS~LSLS.png",
-          "L","L","S","S","S","L","L","L"
-        ],
-        [
-          "terrain/AWDS_SEAS~LSLS.png",
-          "L","","S","S","S","","L",""
-        ],
-        [
-          "terrain/AWDS_SEAS~LSSL.png",
-          "L","L","L","L","S","S","S","L"
-        ],
-        [
-          "terrain/AWDS_SEAS~LSSL.png",
-          "L","","L","","S","S","S",""
-        ],
-        [
-          "terrain/AWDS_SEAS~LSSS.png",
-          "L","L","S","S","S","S","S","L"
-        ],
-        [
-          "terrain/AWDS_SEAS~RSSS.png",
-          "RV","L","S","S","S","S","S","L"
-        ],
-        [
-          "terrain/AWDS_SEAS~SLLL.png",
-          "S","L","L","L","L","L","L","L"
-        ],
-        [
-          "terrain/AWDS_SEAS~SLLS.png",
-          "S","S","S","L","L","L","L","L"
-        ],
-        [
-          "terrain/AWDS_SEAS~SLSL.png",
-          "S","","L","","L","","S","S"
-        ],
-        [
-          "terrain/AWDS_SEAS~SLSS.png",
-          "S","","S","","L","","S",""
-        ],
-        [
-          "terrain/AWDS_SEAS~SRSS.png",
-          "S","S","S","L","RV","L","S","S"
-        ],
-        [
-          "terrain/AWDS_SEAS~SSLS.png",
-          "S","","S","","S","","L",""
-        ],
-        [
-          "terrain/AWDS_SEAS~SSRS.png",
-          "S","S","S","S","S","L","RV","L"
-        ],
-        [
-          "terrain/AWDS_SEAS~SSSL.png",
-          "S","","L","","S","","",""
-        ],
-        [
-          "terrain/AWDS_SEAS~SSSR.png",
-          "S","L","RV","L","S","S","S","S"
-        ],
-        [
-          "terrain/AWDS_SEAS~SSSS.png",
-          "S","L","S","L","S","L","S","L"
-        ],
-        [
-          "terrain/AWDS_SEAS~SSSSLLLS.png",
-          "S","L","S","S","S","L","S","L"
-        ],
-        [
-          "terrain/AWDS_SEAS~SSSSLLSL.png",
-          "S","L","S","L","S","S","S","L"
-        ],
-        [
-          "terrain/AWDS_SEAS~SSSSLLSS.png",
-          "S","L","S","S","S","S","S","L"
-        ],
-        [
-          "terrain/AWDS_SEAS~SSSSLSLL.png",
-          "S","S","S","L","S","L","S","L"
-        ],
-        [
-          "terrain/AWDS_SEAS~SSSSLSLS.png",
-          "S","S","S","S","S","L","S","L"
-        ],
-        [
-          "terrain/AWDS_SEAS~SSSSLSSL.png",
-          "S","S","S","L","S","S","S","L"
-        ],
-        [
-          "terrain/AWDS_SEAS~SSSSLSSS.png",
-          "S","S","S","S","S","S","S","L"
-        ],
-        [
-          "terrain/AWDS_SEAS~SSSSSLLL.png",
-          "S","L","S","L","S","L","S","S"
-        ],
-        [
-          "terrain/AWDS_SEAS~SSSSSLLS.png",
-          "S","L","S","S","S","L","S","S"
-        ],
-        [
-          "terrain/AWDS_SEAS~SSSSSLSL.png",
-          "S","L","S","L","S","S","S","S"
-        ],
-        [
-          "terrain/AWDS_SEAS~SSSSSLSS.png",
-          "S","L","S","S","S","S","S","S"
-        ],
-        [
-          "terrain/AWDS_SEAS~SSSSSSLL.png",
-          "S","S","S","L","S","L","S","S"
-        ],
-        [
-          "terrain/AWDS_SEAS~SSSSSSSL.png",
-          "S","S","S","L","S","S","S","S"
-        ],
-        [
-          "terrain/AWDS_SEAS~SSSSSSLS.png",
-          "S","S","S","S","S","L","S","S"
-        ],
-        [
-          "terrain/AWDS_SEAS~LSSS.png",
-          "L","L","S","S","S","S","S","S"
-        ],
-        [
-          "terrain/AWDS_SEAS~LSSS.png",
-          "L","S","S","S","S","S","S","L"
-        ],
-        [
-          "terrain/AWDS_SEAS~LSSS.png",
-          "L","S","S","S","S","S","S","S"
+          [
+            "terrain/AWDS_SEAS.png",
+            "S","S","S","S","S","S","S","S"
+          ],
+          [
+            "terrain/AWDS_SEAS~LLLL.png",
+            "L","L","L","L","L","L","L","L"
+          ],
+          [
+            "terrain/AWDS_SEAS~LLLS.png",
+            "L","","S","","L","","L",""
+          ],
+          [
+            "terrain/AWDS_SEAS~LLSL.png",
+            "L","","L","","L","","S",""
+          ],
+          [
+            "terrain/AWDS_SEAS~LSLL.png",
+            "L","","L","","S","","L",""
+          ],
+          [
+            "terrain/AWDS_SEAS~LLSS.png",
+            "L","L","S","L","L","L","S","L"
+          ],
+          [
+            "terrain/AWDS_SEAS~LSLL.png",
+            "S","","L","","L","","L",""
+          ],
+          [
+            "terrain/AWDS_SEAS~LSLS.png",
+            "L","L","S","S","S","L","L","L"
+          ],
+          [
+            "terrain/AWDS_SEAS~LSLS.png",
+            "L","","S","S","S","","L",""
+          ],
+          [
+            "terrain/AWDS_SEAS~LSSL.png",
+            "L","L","L","L","S","S","S","L"
+          ],
+          [
+            "terrain/AWDS_SEAS~LSSL.png",
+            "L","","L","","S","S","S",""
+          ],
+          [
+            "terrain/AWDS_SEAS~LSSS.png",
+            "L","L","S","S","S","S","S","L"
+          ],
+          [
+            "terrain/AWDS_SEAS~RSSS.png",
+            "RV","L","S","S","S","S","S","L"
+          ],
+          [
+            "terrain/AWDS_SEAS~SLLL.png",
+            "S","L","L","L","L","L","L","L"
+          ],
+          [
+            "terrain/AWDS_SEAS~SLLS.png",
+            "S","S","S","L","L","L","L","L"
+          ],
+          [
+            "terrain/AWDS_SEAS~SLSL.png",
+            "S","","L","","L","","S","S"
+          ],
+          [
+            "terrain/AWDS_SEAS~SLSS.png",
+            "S","","S","","L","","S",""
+          ],
+          [
+            "terrain/AWDS_SEAS~SRSS.png",
+            "S","S","S","L","RV","L","S","S"
+          ],
+          [
+            "terrain/AWDS_SEAS~SSLS.png",
+            "S","","S","","S","","L",""
+          ],
+          [
+            "terrain/AWDS_SEAS~SSRS.png",
+            "S","S","S","S","S","L","RV","L"
+          ],
+          [
+            "terrain/AWDS_SEAS~SSSL.png",
+            "S","","L","","S","","",""
+          ],
+          [
+            "terrain/AWDS_SEAS~SSSR.png",
+            "S","L","RV","L","S","S","S","S"
+          ],
+          [
+            "terrain/AWDS_SEAS~SSSS.png",
+            "S","L","S","L","S","L","S","L"
+          ],
+          [
+            "terrain/AWDS_SEAS~SSSSLLLS.png",
+            "S","L","S","S","S","L","S","L"
+          ],
+          [
+            "terrain/AWDS_SEAS~SSSSLLSL.png",
+            "S","L","S","L","S","S","S","L"
+          ],
+          [
+            "terrain/AWDS_SEAS~SSSSLLSS.png",
+            "S","L","S","S","S","S","S","L"
+          ],
+          [
+            "terrain/AWDS_SEAS~SSSSLSLL.png",
+            "S","S","S","L","S","L","S","L"
+          ],
+          [
+            "terrain/AWDS_SEAS~SSSSLSLS.png",
+            "S","S","S","S","S","L","S","L"
+          ],
+          [
+            "terrain/AWDS_SEAS~SSSSLSSL.png",
+            "S","S","S","L","S","S","S","L"
+          ],
+          [
+            "terrain/AWDS_SEAS~SSSSLSSS.png",
+            "S","S","S","S","S","S","S","L"
+          ],
+          [
+            "terrain/AWDS_SEAS~SSSSSLLL.png",
+            "S","L","S","L","S","L","S","S"
+          ],
+          [
+            "terrain/AWDS_SEAS~SSSSSLLS.png",
+            "S","L","S","S","S","L","S","S"
+          ],
+          [
+            "terrain/AWDS_SEAS~SSSSSLSL.png",
+            "S","L","S","L","S","S","S","S"
+          ],
+          [
+            "terrain/AWDS_SEAS~SSSSSLSS.png",
+            "S","L","S","S","S","S","S","S"
+          ],
+          [
+            "terrain/AWDS_SEAS~SSSSSSLL.png",
+            "S","S","S","L","S","L","S","S"
+          ],
+          [
+            "terrain/AWDS_SEAS~SSSSSSSL.png",
+            "S","S","S","L","S","S","S","S"
+          ],
+          [
+            "terrain/AWDS_SEAS~SSSSSSLS.png",
+            "S","S","S","S","S","L","S","S"
+          ],
+          [
+            "terrain/AWDS_SEAS~LSSS.png",
+            "L","L","S","S","S","S","S","S"
+          ],
+          [
+            "terrain/AWDS_SEAS~LSSS.png",
+            "L","S","S","S","S","S","S","L"
+          ],
+          [
+            "terrain/AWDS_SEAS~LSSS.png",
+            "L","S","S","S","S","S","S","S"
+          ]
         ]
       ]
-    ]
+    }
   },
 
   {
     "ID": "REEF",
     "defense": 1,
     "blocksVision":true,
-    "graphics":"terrain/AWDS_REEF.png"
+    "assets":{
+      "gfx":"terrain/AWDS_REEF.png"
+    }
   },
 
   {
     "ID": "SHOAL",
     "defense": 0,
-    "graphics":"terrain/AWDS_SHOA.png"
+    "assets":{
+      "gfx":"terrain/AWDS_SHOA.png"
+    }
   },
 
   {
@@ -323,7 +339,9 @@
       "TIRE_B":2,
       "TANK":2
     },
-    "graphics":"properties/AWDS_CITY.png"
+    "assets":{
+      "gfx":"properties/AWDS_CITY.png"
+    }
   },
 
 
@@ -354,7 +372,9 @@
       "TIRE_B",
       "TANK"
     ],
-    "graphics":"properties/AWDS_BASE.png"
+    "assets":{
+      "gfx":"properties/AWDS_BASE.png"
+    }
   },
 
   {
@@ -372,7 +392,9 @@
     "builds": [
       "AIR"
     ],
-    "graphics":"properties/AWDS_APRT.png"
+    "assets":{
+      "gfx":"properties/AWDS_APRT.png"
+    }
   },
 
   {
@@ -381,7 +403,6 @@
     "defense": 3,
     "capturePoints": 20,
     "funds": 1000,
-    
     "supply": [
       "SHIP",
       "WATER_TRANSPORT"
@@ -394,7 +415,9 @@
       "SHIP",
       "WATER_TRANSPORT"
     ],
-    "graphics":"properties/AWDS_PORT.png"
+    "assets":{
+      "gfx":"properties/AWDS_PORT.png"
+    }
   },
 
   {
@@ -407,14 +430,19 @@
       "damage":3
     },
     "changeTo":"SILO_EMPTY",
-    "graphics":"properties/AWDS_SILO.png"
+    "assets":{
+      "fireSound":"rocketImpact.mp3",
+      "gfx":"properties/AWDS_SILO.png"
+    }
   },
 
   {
     "ID": "SILO_EMPTY",
     "defense": 3,
     "vision": 0,
-    "graphics":"properties/AWDS_PLTF.png"
+    "assets":{
+      "gfx":"properties/AWDS_PLTF.png"
+    }
   },
 
   {
@@ -433,12 +461,6 @@
       "TIRE_B",
       "TANK"
     ],
-    "factionSprites":{
-      "ORST":"HQTR_OS",
-      "BLMN":"HQTR_BM",
-      "GRET":"HQTR_GE",
-      "YLCM":"HQTR_YC"
-    },
     "repairs": {
       "INFT":2,
       "MECH":2,
@@ -446,7 +468,15 @@
       "TIRE_B":2,
       "TANK":2
     },
-    "graphics":"properties/AWDS_HQTR.png"
+    "assets":{
+      "gfx":"properties/AWDS_HQTR.png",
+      "factionSprites":{
+        "ORST":"properties/AWDS_HQTR_OS.png",
+        "BLMN":"properties/AWDS_HQTR_BM.png",
+        "GRET":"properties/AWDS_HQTR_GE.png",
+        "YLCM":"properties/AWDS_HQTR_YC.png"
+      }
+    }
   },
 
   {
@@ -454,7 +484,9 @@
     "vision": 4,
     "defense": 3,
     "points": 20,
-    "graphics":"properties/AWDR_RADR.png"
+    "assets":{
+      "gfx":"properties/AWDR_RADR.png"
+    }
   },
 
   {
@@ -466,16 +498,18 @@
     "cannon":{
       "direction":"E",
       "range":3,
-      "damage":3,
-      "fireSound":"cannon.wav",
-      "fireAnimation":[
-        "weapons/AWDS_BHCN_E.png"
-        64,64,
-         0,16
-      ]
+      "damage":3
     },
-    "graphic":"inventions/AWDS_BHMC_E.png",
-    "animated":false
+    "assets":{
+      "gfx":"inventions/AWDS_BHMC_E.png",
+      "fireSound" : "cannon.wav",
+      "fireAnimation":[
+        "weapons/AWDS_BHCN_E.png",
+        64,64,
+        0,16
+      ],
+      "animated":false
+    }
   },
 
   {
@@ -487,16 +521,18 @@
     "cannon":{
       "direction":"N",
       "range":3,
-      "damage":3,
-      "fireSound":"cannon.wav",
+      "damage":3
+    },
+    "assets":{
+      "gfx":"inventions/AWDS_BHMC_N.png",
+      "fireSound" : "cannon.wav",
+      "animated":false,
       "fireAnimation":[
-        "weapons/AWDS_BHCN_N.png"
+        "weapons/AWDS_BHCN_N.png",
         64,64,
         -16,0
       ]
-    },
-    "graphic":"inventions/AWDS_BHMC_N.png",
-    "animated":false
+    }
   },
 
   {
@@ -508,16 +544,18 @@
     "cannon":{
       "direction":"S",
       "range":3,
-      "damage":3,
-      "fireSound":"cannon.wav",
+      "damage":3
+    },
+    "assets":{
+      "gfx":"inventions/AWDS_BHMC_S.png",
+      "fireSound" : "cannon.wav",
+      "animated"  : false,
       "fireAnimation":[
-        "weapons/AWDS_BHCN_S.png"
+        "weapons/AWDS_BHCN_S.png",
         64,64,
         -16,0
       ]
-    },
-    "graphic":"inventions/AWDS_BHMC_S.png",
-    "animated":false
+    }
   },
 
   {
@@ -529,16 +567,18 @@
     "cannon":{
       "direction":"W",
       "range":3,
-      "damage":3,
+      "damage":3
+    },
+    "assets":{
+      "gfx":"inventions/AWDS_BHMC_W.png",
       "fireSound":"cannon.wav",
       "fireAnimation":[
-        "weapons/AWDS_BHCN_W.png"
+        "weapons/AWDS_BHCN_W.png",
         64,64,
-         0,16
-      ]
-    },
-    "graphic":"inventions/AWDS_BHMC_W.png",
-    "animated":false
+        0,16
+      ],
+      "animated":false
+    }
   },
 
   {
@@ -550,16 +590,18 @@
     "cannon":{
       "direction":"S",
       "range":9,
-      "damage":5,
-      "fireSound":"cannon.wav",
+      "damage":5
+    },
+    "assets":{
+      "gfx"       : "inventions/AWDS_BHCN.png",
+      "fireSound" : "cannon.wav",
+      "animated":false,
       "fireAnimation":[
-        "weapons/AWDS_BHCN_S.png"
+        "weapons/AWDS_BHCN_S.png",
         64,64,
         -16,0
       ]
-    },
-    "graphic":"inventions/AWDS_BHCN.png",
-    "animated":false
+    }
   },
 
   {
@@ -569,22 +611,28 @@
     "hp": 99,
     "destroyedType":"RUIS",
     "laser":{
-      "damage":3,
-      "fireSound":"laser.wav"
+      "damage":3
     },
-    "graphic":"inventions/AWDS_BHMC_E.png",
-    "animated":false
+    "assets":{
+      "gfx"       : "inventions/AWDS_BHMC_E.png",
+      "fireSound" : "laser.wav",
+      "animated":false
+    }
   },
 
   {
     "ID": "RUIS",
     "defense":0,
-    "graphic":"inventions/AWDS_SRBL.png",
+    "assets":{
+      "gfx":"inventions/AWDS_SRBL.png"
+    }
   },
 
   {
     "ID": "RUIB",
     "defense":0,
-    "graphic":"inventions/AWDS_BRBL.png",
+    "assets":{
+      "gfx":"inventions/AWDS_BRBL.png"
+    }
   }
 ]

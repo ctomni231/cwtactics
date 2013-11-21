@@ -4,7 +4,7 @@ util.scoped(function(){
     
     var oldTime = new Date().getTime();
     function looper(){
-      if( !controller.inGameRound ){
+      if( !controller.update_inGameRound ){
         controller.screenStateMachine.event("gameHasEnded");
         return;
       }
@@ -32,11 +32,11 @@ util.scoped(function(){
 
     // start
     controller.setCursorPosition(0,0);
-    controller.startGameRound();
+    controller.update_startGameRound();
 
     // update unit stats
-    for( var i=0,e=model.units.length; i<e; i++ ){
-      if( model.units[i].owner !== INACTIVE_ID ) controller.updateUnitStatus( i );
+    for( var i=0,e=model.unit_data.length; i<e; i++ ){
+      if( model.unit_data[i].owner !== INACTIVE_ID ) controller.updateUnitStatus( i );
     }
     
     // prepare screen and screen data
@@ -75,8 +75,8 @@ util.scoped(function(){
     
     if( !distance ) distance = 1;
     
-    if( distance === 1 ) controller.moveCursor( model.moveCodes.LEFT, distance );
-    else controller.shiftScreenPosition( model.moveCodes.LEFT, distance );
+    if( distance === 1 ) controller.moveCursor( model.move_MOVE_CODES.LEFT, distance );
+    else controller.shiftScreenPosition( model.move_MOVE_CODES.LEFT, distance );
     
     return this.breakTransition();
   };
@@ -95,8 +95,8 @@ util.scoped(function(){
     
     if( !distance ) distance = 1;
     
-    if( distance === 1 ) controller.moveCursor( model.moveCodes.RIGHT, distance );
-    else controller.shiftScreenPosition( model.moveCodes.RIGHT, distance );
+    if( distance === 1 ) controller.moveCursor( model.move_MOVE_CODES.RIGHT, distance );
+    else controller.shiftScreenPosition( model.move_MOVE_CODES.RIGHT, distance );
     return this.breakTransition();
   };
   
@@ -117,8 +117,8 @@ util.scoped(function(){
     if( !distance ) distance = 1;
     
     if( !inMenu ){
-      if( distance === 1 ) controller.moveCursor( model.moveCodes.UP, distance );
-      else controller.shiftScreenPosition( model.moveCodes.UP, distance );
+      if( distance === 1 ) controller.moveCursor( model.move_MOVE_CODES.UP, distance );
+      else controller.shiftScreenPosition( model.move_MOVE_CODES.UP, distance );
     }
     else controller.decreaseMenuCursor();
     return this.breakTransition();
@@ -141,8 +141,8 @@ util.scoped(function(){
     if( !distance ) distance = 1;
     
     if( !inMenu ){ 
-      if( distance === 1 ) controller.moveCursor( model.moveCodes.DOWN, distance );
-      else controller.shiftScreenPosition( model.moveCodes.DOWN, distance );
+      if( distance === 1 ) controller.moveCursor( model.move_MOVE_CODES.DOWN, distance );
+      else controller.shiftScreenPosition( model.move_MOVE_CODES.DOWN, distance );
     }
     else controller.increaseMenuCursor();
     return this.breakTransition();
@@ -173,7 +173,7 @@ util.scoped(function(){
   
   controller.screenStateMachine.structure.GAMEROUND.CANCEL = function( ev,x,y ){
     if( !controller.attackRangeVisible ){
-      var unit = model.unitPosMap[controller.mapCursorX][controller.mapCursorY];
+      var unit = model.unit_posData[controller.mapCursorX][controller.mapCursorY];
       if( unit ){
         controller.showAttackRangeInfo();
         return this.breakTransition();

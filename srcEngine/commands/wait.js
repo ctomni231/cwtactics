@@ -1,11 +1,11 @@
-controller.unitAction({
+controller.action_unitAction({
   
   key:"wait",
   
-	relation: ["S","T",model.relationModes.NONE,model.relationModes.SAME_OBJECT],
+	relation: ["S","T",model.player_RELATION_MODES.NONE,model.player_RELATION_MODES.SAME_OBJECT],
   
   invoke: function( data ){
-    controller.sharedInvokement("markUnitNonActable",[data.source.unitId]);
+    controller.action_sharedInvoke("actions_markUnitNonActable",[data.source.unitId]);
   }
   
 });

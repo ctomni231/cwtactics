@@ -3,7 +3,7 @@ controller.screenStateMachine.structure.LOAD = Object.create(controller.statePar
 controller.screenStateMachine.structure.LOAD.section = "cwt_load_screen";
 
 controller.screenStateMachine.structure.LOAD.enterState = function(){
-  controller.startLoadingProcess(
+  controller.dataLoader_start(
   	document.getElementById("loading_text"),
   	document.getElementById("loading_bar")
   );

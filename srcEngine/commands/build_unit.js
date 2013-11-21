@@ -1,19 +1,19 @@
-controller.propertyAction({
+controller.action_propertyAction({
   
-  key:"buildUnit",  
+  key:"factory_produceUnit",  
   propertyAction: true,
   hasSubMenu: true,
   
   condition: function( data ){
-    return model.propertyCanBuild( data.source.propertyId );
+    return model.factory_canProduceSomething( data.source.propertyId );
   },
   
   prepareMenu: function( data ){
-    model.getBuildMenu( data.source.propertyId, data.menu );
+    model.factoryGenerateBuildMenu( data.source.propertyId, data.menu );
   },
   
   invoke: function( data ){
-    controller.sharedInvokement("buildUnit", [ 
+    controller.action_sharedInvoke("factory_produceUnit", [ 
 			data.source.x, 
 			data.source.y, 
 			data.action.selectedSubEntry 

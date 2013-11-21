@@ -22,7 +22,7 @@ view.registerAnimationHook = function(  impl ){
   view.animationHooks[ key ] = impl;
   
   // REGISTER LISTENER
-  controller.onEvent(key,function(){
+  controller.event_on(key,function(){
     var data = [];
     
     for( var i=0,e=arguments.length; i<e; i++ ) data[i] = arguments[i];

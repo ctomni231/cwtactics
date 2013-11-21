@@ -1,72 +1,53 @@
-controller.defineGameConfig("turnTimeLimit",0,60,0);
-controller.defineGameConfig("gameTimeLimit",0,99999,0);
+// configs
+controller.defineGameConfig("model.timer_turnTimeLimit",0,60,0);
+controller.defineGameConfig("model.timer_gameTimeLimit",0,99999,0);
 
-util.scoped(function(){
-  
-  // CONFIG
-  var turnTimeLimit = 0;
-  var gameTimeLimit = 0;
-  
-  /** @type Number */
-  model.gametimeElapsed = 0;
-  
-  /** @type Number */
-  model.turntimeElapsed = 0;
-  
-  // Define persistence handler
-  controller.persistenceHandler(
-  
-  	// load
-  	function(dom){
-  		model.setupTimer();
-  		
-  		// set timer by dom when parameters are defined
-  		if( util.expectNumber( dom, "gmTm", true, true ) ) model.gametimeElapsed = dom.gmTm;
-  		if( util.expectNumber( dom, "tnTm", true, true ) ) model.turntimeElapsed = dom.tnTm;
-  	},
-  	
-  	// save
-  	function(dom){
-  		dom.gmTm = model.gametimeElapsed;
-  		dom.tnTm = model.turntimeElapsed;
-  	}
-  );
-  
-  /**
-   * Resets the game round timer.
-   */
-  model.resetTurnTimer = function(){ 
-    model.turntimeElapsed = 0;
-  };
+// Maximum turn time limit in ms.
+//
+model.timer_turnTimeLimit = 0;
 
-  /**
-   * @param {Number} delta
-   */
-  model.updateTimer = function( delta ){
-    model.turntimeElapsed += delta;
-    model.gametimeElapsed += delta;
-    
-    // FORCE END TURN ?
-    if( turnTimeLimit && model.turntimeElapsed >= turnTimeLimit ){
-      model.nextTurn.callAsCommand();
-    }
-    
-    // END GAME ?
-    if( gameTimeLimit && model.gametimeElapsed >= gameTimeLimit ){
-      controller.endGameRound();
-    }
-  };
+// Maximum game time limit in ms.
+//
+model.timer_gameTimeLimit = 0;
+
+// Current elapsed game time in ms.
+//
+model.timer_gameTimeElapsed = 0;
+
+// Current elapsed turn time in ms.
+//
+model.timer_turnTimeElapsed = 0;
+
+// Resets the turn time limit timer.
+//
+model.timer_resetTurnTimer = function(){ 
+  model.timer_turnTimeElapsed = 0;
+};
+
+// Updates the timers.
+//
+model.timer_updateTimer = function( delta ){
+  assert( util.isInt(delta) && delta >= 0 );
+
+  model.timer_turnTimeElapsed += delta;
+  model.timer_gameTimeElapsed += delta;
   
-  /**
-   * 
-   */
-  model.setupTimer = function(){
-    model.turntimeElapsed = 0;
-    model.gametimeElapsed = 0;
-    
-    // CONVERT TO MILLISECONDS AND CACHE THEM
-    turnTimeLimit = controller.configValue("turnTimeLimit")*60000;
-    gameTimeLimit = controller.configValue("gameTimeLimit")*60000;
-    
-  };
-});
+  // check turn time
+  if( model.timer_turnTimeElapsed >= model.timer_turnTimeLimit ){
+    model.round_nextTurn.callAsCommand();
+  }
+
+  // check game time
+  if( model.timer_gameTimeElapsed >= model.timer_gameTimeLimit ){
+    controller.update_endGameRound();
+  }
+};
+
+// Setups the timers.
+//
+model.timer_setupTimer = function(){
+  model.timer_turnTimeElapsed = 0;
+  model.timer_gameTimeElapsed = 0;
+  model.timer_turnTimeLimit = controller.configValue("model.timer_turnTimeLimit")*60000;
+  model.timer_gameTimeLimit = controller.configValue("model.timer_gameTimeLimit")*60000;
+};

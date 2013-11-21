@@ -138,17 +138,17 @@ controller.shiftScreenPosition = function( code, len ){
   var x = controller.screenX;
   var y = controller.screenY;
   switch( code ){
-    case model.moveCodes.DOWN:  y += len; break;
-    case model.moveCodes.RIGHT: x += len; break;
-    case model.moveCodes.UP:    y -= len; break;
-    case model.moveCodes.LEFT:  x -= len; break;
+    case model.move_MOVE_CODES.DOWN:  y += len; break;
+    case model.move_MOVE_CODES.RIGHT: x += len; break;
+    case model.move_MOVE_CODES.UP:    y -= len; break;
+    case model.move_MOVE_CODES.LEFT:  x -= len; break;
   }
   
   // CORRECT BOUNDS
   if( x < 0 ) x = 0;
   if( y < 0 ) y = 0;
-  if( x >= model.mapWidth ) x = model.mapWidth-1;
-  if( y >= model.mapHeight ) y = model.mapHeight-1;
+  if( x >= model.map_width ) x = model.map_width-1;
+  if( y >= model.map_height ) y = model.map_height-1;
   
   controller.setScreenPosition( x,y, false );
 };
@@ -159,8 +159,8 @@ controller.shiftScreenPosition = function( code, len ){
 view.resizeCanvas = function(){
   var canvEl = controller.screenElement;
 
-  canvEl.width = TILE_LENGTH*model.mapWidth;
-  canvEl.height = TILE_LENGTH*model.mapHeight;
+  canvEl.width = TILE_LENGTH*model.map_width;
+  canvEl.height = TILE_LENGTH*model.map_height;
 
   controller.screenWidth  = parseInt( window.innerWidth/  TILE_LENGTH, 10 );
   controller.screenHeight = parseInt( window.innerHeight/ TILE_LENGTH, 10 );

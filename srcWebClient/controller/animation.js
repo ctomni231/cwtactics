@@ -96,8 +96,8 @@ util.scoped(function(){
         if( flagged ){
           var x  = 0;
           var yS = 0;
-          var xe = model.mapWidth;
-          var ye = model.mapHeight;
+          var xe = model.map_width;
+          var ye = model.map_height;
 
           for( ; x<xe; x++ ){
             for( var y=yS ; y<ye; y++ ){
@@ -106,7 +106,7 @@ util.scoped(function(){
               if( animations[4] === 1 ||
                   animations[9] === 1 ){
 
-                if( model.unitPosMap[x][y] !== null ) view.markForRedrawWithNeighboursRing(x,y);
+                if( model.unit_posData[x][y] !== null ) view.markForRedrawWithNeighboursRing(x,y);
               }
 
               // units or selection tiles
@@ -122,7 +122,7 @@ util.scoped(function(){
               // properties
               if( animations[24] === 1 ){
 
-                if( model.propertyPosMap[x][y] !== null ) view.markForRedrawWithNeighboursRing(x,y);
+                if( model.property_posMap[x][y] !== null ) view.markForRedrawWithNeighboursRing(x,y);
               }
 
               // animated tiles

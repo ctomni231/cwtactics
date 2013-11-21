@@ -19,7 +19,7 @@ controller.unitStatusMap = util.list( constants.MAX_UNITS_PER_PLAYER * constants
  * @param {type} unit
  */
 controller.getUnitStatusForUnit = function( unit ){
-  var id = model.extractUnitId(unit);
+  var id = model.unit_extractId(unit);
   return controller.unitStatusMap[id];
 };
 
@@ -27,20 +27,20 @@ util.scoped(function(){
   
   
   function inVision( x,y, tid, unitStatus ){
-    if( !model.isValidPosition(x,y) ) return;
+    if( !model.map_isValidPosition(x,y) ) return;
     
-    var unit = model.unitPosMap[x][y];
+    var unit = model.unit_posData[x][y];
     if( unit ){
-      if( model.players[unit.owner].team !== tid ) unitStatus.VISIBLE = true;
+      if( model.player_data[unit.owner].team !== tid ) unitStatus.VISIBLE = true;
       
       // IF UNIT IS HIDDEN THEN YOU CAN SEE IT NOW
-      if( unit.hidden ) controller.unitStatusMap[ model.extractUnitId(unit) ].VISIBLE = true;
+      if( unit.hidden ) controller.unitStatusMap[ model.unit_extractId(unit) ].VISIBLE = true;
     }
   };
   
   function checkHiddenStatus( unit, unitStatus ){
     if( !unitStatus ){
-      unitStatus = controller.unitStatusMap[ model.extractUnitId(unit) ];
+      unitStatus = controller.unitStatusMap[ model.unit_extractId(unit) ];
     }
     
     unitStatus.VISIBLE = true;
@@ -50,7 +50,7 @@ util.scoped(function(){
       // CHECK NEIGHBOURS AND HIDDEN ON NEIGHBOURS
       var x = unit.x;
       var y = unit.y;
-      var ttid = model.players[unit.owner].team;
+      var ttid = model.player_data[unit.owner].team;
       inVision( x-1,y, ttid, unitStatus );
       inVision( x,y-1, ttid, unitStatus );
       inVision( x,y+1, ttid, unitStatus );
@@ -63,7 +63,7 @@ util.scoped(function(){
  * @param {type} uid
  */
   controller.updateUnitStatus = function( uid ){
-    var unit = model.units[uid];
+    var unit = model.unit_data[uid];
     var x = unit.x;
     var y = unit.y;
     var unitStatus = controller.unitStatusMap[uid];
@@ -109,7 +109,7 @@ util.scoped(function(){
     
     // CAPTURES ?
     if( unit.x >= 0 ){
-      var property = model.propertyPosMap[ unit.x ][ unit.y ];
+      var property = model.property_posMap[ unit.x ][ unit.y ];
       if( property !== null && property.capturePoints < 20 ){
         unitStatus.CAPTURES = true;
       }

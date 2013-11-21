@@ -1,15 +1,15 @@
-controller.unitAction({
+controller.action_unitAction({
   
-  key:"unhideUnit",
+  key:"ununit_hide",
   
-	relation: ["S","T",model.relationModes.NONE,model.relationModes.SAME_OBJECT],
+	relation: ["S","T",model.player_RELATION_MODES.NONE,model.player_RELATION_MODES.SAME_OBJECT],
   
   condition: function( data ){
     return data.source.unit.hidden;
   },
   
   invoke: function( data ){
-    controller.sharedInvokement("unhideUnit",[ 
+    controller.action_sharedInvoke("ununit_hide",[ 
 			data.source.unitId 
 		]);
   }

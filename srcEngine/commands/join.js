@@ -1,15 +1,15 @@
-controller.unitAction({
+controller.action_unitAction({
   
-  key:"joinUnits",
+  key:"unit_join",
   
-	relation:["S","T",model.relationModes.OWN],
+	relation:["S","T",model.player_RELATION_MODES.OWN],
 	
   condition: function( data ){
-    return model.canJoin( data.source.unitId, data.target.unitId );
+    return model.unit_areJoinable( data.source.unitId, data.target.unitId );
   },
   
   invoke: function( data ){
-    controller.sharedInvokement("joinUnits",[ 
+    controller.action_sharedInvoke("unit_join",[ 
 			data.source.unitId, 
 			data.target.unitId 
 		]);

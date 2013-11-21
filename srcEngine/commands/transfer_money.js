@@ -1,25 +1,25 @@
-controller.mapAction({
+controller.action_mapAction({
 	
-	key:"transferMoney",
+	key:"team_transferMoney",
 	hasSubMenu: true,
 	
 	condition: function( data ){
     if( data.target.x === -1 ) return;
     
-		return model.canTransferMoneyToTile(
-			model.turnOwner,
+		return model.team_canTransferMoneyToTile(
+			model.round_turnOwner,
 			data.target.x,
 			data.target.y
 		);
 	},
 	
 	prepareMenu: function( data ){
-		model.addGoldTransferEntries( model.turnOwner, data.menu );
+		model.team_addGoldTransferEntries( model.round_turnOwner, data.menu );
 	},
 	
 	invoke: function( data ){
-		controller.sharedInvokement("transferMoneyByTile",[ 
-			model.turnOwner, 
+		controller.action_sharedInvoke("team_transferMoneyByTile",[ 
+			model.round_turnOwner, 
 			data.target.x,
 			data.target.y,
 			data.action.selectedSubEntry 

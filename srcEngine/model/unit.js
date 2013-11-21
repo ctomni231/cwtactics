@@ -1,46 +1,33 @@
-controller.registerInvokableCommand("damageUnit");
-controller.registerInvokableCommand("healUnit");
-controller.registerInvokableCommand("hideUnit");
-controller.registerInvokableCommand("joinUnits");
-controller.registerInvokableCommand("unhideUnit");
-controller.registerInvokableCommand("drainFuel");
-controller.registerInvokableCommand("createUnit");
-controller.registerInvokableCommand("destroyUnit");
+// commands
+controller.action_registerCommands("unit_inflictDamage");
+controller.action_registerCommands("unit_heal");
+controller.action_registerCommands("unit_hide");
+controller.action_registerCommands("unit_join");
+controller.action_registerCommands("unit_unhide");
+controller.action_registerCommands("unit_drainFuel");
+controller.action_registerCommands("unit_create");
+controller.action_registerCommands("unit_destroy");
 
-controller.defineEvent("damageUnit");
-controller.defineEvent("healUnit");
-controller.defineEvent("hideUnit");
-controller.defineEvent("joinUnits");
-controller.defineEvent("unhideUnit");
-controller.defineEvent("drainFuel");
-controller.defineEvent("createUnit");
-controller.defineEvent("destroyUnit");
+// events
+controller.event_define("unit_inflictDamage");
+controller.event_define("unit_heal");
+controller.event_define("unit_hide");
+controller.event_define("unit_join");
+controller.event_define("unit_unhide");
+controller.event_define("unit_drainFuel");
+controller.event_define("unit_create");
+controller.event_define("unit_destroy");
 
+// scriptables
 controller.defineGameScriptable("fuelDrain",1,1);
 
+// configs
 controller.defineGameConfig("noUnitsLeftLoose",0,1,0);
 controller.defineGameConfig("unitLimit",0,MAX_UNITS_PER_PLAYER,0);
-    
-// Defines a parser handler for the basic unit abilities controlled
-// by this module
-model.unitTypeParser.addHandler(function(sheet){
-    var mxr = MAX_SELECTION_RANGE;
-    
-    if( !util.expectString(sheet,"movetype",true) ) return false;
-    if( !util.isIn( sheet.movetype, model.moveTypes ) ) return false;
-    if( !util.expectNumber(sheet,"range",true,true,0, mxr) ) return false;
-    if( !util.expectNumber(sheet,"fuel",true,true,0,99) ) return false;
-    if( !util.expectBoolean(sheet,"stealth",false) ) return false;
-});
-    
-// Matrix with the same metrics like the map. Every unit is placed into the 
-// cell that represents its position.
-//
-// model.unitPosMap = util.matrix( CWT_MAX_MAP_WIDTH, CWT_MAX_MAP_HEIGHT, null );
 
-// List of all unit objects. An inactive unit is marked with 
-// {@link INACTIVE_ID} as owner.
-model.units = util.list( MAX_PLAYER * MAX_UNITS_PER_PLAYER, function(){
+// List of all unit objects. An inactive unit is marked with {@link INACTIVE_ID} as owner.
+//
+model.unit_data = util.list( MAX_PLAYER * MAX_UNITS_PER_PLAYER, function(){
   return {
     hp:       99,
     x:        0,
@@ -54,138 +41,81 @@ model.units = util.list( MAX_PLAYER * MAX_UNITS_PER_PLAYER, function(){
   };
 });
 
-model.unitPosMap = util.matrix( MAX_MAP_WIDTH, MAX_MAP_HEIGHT, null );
+// Matrix with the same metrics like the map. Every unit is placed into the 
+// cell that represents its position.
+//
+model.unit_posData = util.matrix( MAX_MAP_WIDTH, MAX_MAP_HEIGHT, null );
 
-// Defines a persistence handler 
-controller.persistenceHandler(
+// True when uid is a valid unit id else false.
+//
+model.unit_isValidUnitId = function( uid ){
+  return uid >= 0 && 
+          uid < (MAX_UNITS_PER_PLAYER*MAX_PLAYER) && 
+          model.unit_data[uid].owner !== INACTIVE_ID;
+};
+
+// Returns true if there is an unit with a given relationship on a tile at a given position (x,y).
+// 
+model.unit_thereIsAUnit = function( x,y,pid,mode ){
+  if( !model.map_isValidPosition(x,y) ) return false;
+
+  assert( model.player_isValidPid(pid) );
   
-  // load
-  function(dom){
-    var data;
-    
-    // reset model data
-    for( var i=0,e=model.units.length; i<e; i++ ){
-      model.units[i].owner = INACTIVE_ID;
-    }
-    
-    // place model data by dom if given
-    if( dom.units ){
-      for( var i=0,e=dom.units.length; i<e; i++ ){
-        data = dom.units[i];
-        
-        // get unit object
-        var id = data[0];
-        var unit = model.units[id];
-        
-        // inject data
-        unit.type     = model.unitTypes[data[1]];
-        unit.x        = data[2];
-        unit.y        = data[3];
-        unit.hp       = data[4];
-        unit.ammo     = data[5];
-        unit.fuel     = data[6];
-        unit.loadedIn = data[7];
-        unit.owner    = data[8];
-        
-        model.unitPosMap[ data[2] ][ data[3] ] = unit;
-      }
-    }
-  },
-  
-  // save
-  function(dom){    
-    var unit;
-    
-    dom.units = [];    
-    for( var i=0,e=model.units.length; i<e; i++ ){
-      unit = model.units[i];
-      
-      if( unit.owner !== INACTIVE_ID ){
-        dom.units.push([
-          model.extractUnitId(unit),
-          unit.type.ID,
-          unit.x,
-          unit.y,
-          unit.hp,
-          unit.ammo,
-          unit.fuel,
-          unit.loadedIn,
-          unit.owner
-        ]);
-      }
-    }
-  }
-);
+  var unit = model.unit_posData[x][y];
+  return unit !== null && model.player_getRelationship(pid,unit.owner) === mode;
+};
 
 // Returns the first unit id of a player
 //
-model.getFirstUnitSlotId = function( pid ){
+model.unit_firstUnitId = function( pid ){
+  assert( model.player_isValidPid(pid) );
+  
   return MAX_UNITS_PER_PLAYER * pid;
 };
 
 // Returns the last unit id of a player
 //
-model.getLastUnitSlotId = function( pid ){
+model.unit_lastUnitId = function( pid ){
+  assert( model.player_isValidPid(pid) );
+
   return (MAX_UNITS_PER_PLAYER * (pid+1) ) -1;
 };
 
-// Returns the unit at a given position or null 
-// if the position is not occupied by a unit.
+// Returns the unit at a given position or null if the position is not occupied by a unit.
 //
-model.getUnitByPos = function( x,y ){
-  /* var l = model.units;
-  var i = 0;
-  var e = l.length;
-  
-  for( ; i<e; i++ ){
-    if( l[i].x === x && l[i].y === y ) return l[i];
-  }
-  
-  return null; */
-  return model.unitPosMap[x][y];
+model.unit_getByPos = function( x,y ){
+  assert( model.map_isValidPosition(x,y) );
+
+  return model.unit_posData[x][y];
 };
 
 // Extracts the identical number from an unit object.
 //
-// @param unit
-// 
-model.extractUnitId = function( unit ){
+model.unit_extractId = function( unit ){
+  assert( unit !== null );
   
-  // check unit object
-  if( !unit ) model.criticalError(
-    error.ILLEGAL_PARAMETERS,
-    error.PARAMETERS_MISSING
-  );
-  
-  var index = model.units.indexOf(unit);
-  
-  // not found when no index is found
-  if( index === -1 ) model.criticalError(
-    error.ILLEGAL_PARAMETERS,
-    error.UNIT_NOT_FOUND
-  );
-  
+  var index = model.unit_data.indexOf(unit);
+
+  assert( index > -1 );
   return index;
 };
 
 // Returns true if a player with a given player id has free slots for new units.
 // 
-// @param {Number} pid player id
-// @returns {Boolean}
-// 
-model.hasFreeUnitSlots = function( pid ){
+model.unit_hasFreeSlots = function( pid ){
+  assert( model.player_isValidPid(pid) );
+
 	var uLimit = controller.configValue("unitLimit");
 	if( !uLimit ) uLimit = 9999999;
 	
-  var i = model.getFirstUnitSlotId(pid);
-  var e = model.getLastUnitSlotId(pid);
+  var i     = model.unit_firstUnitId(pid);
+  var e     = model.unit_lastUnitId(pid);
 	var count = 0;
-	var res = false;
-  
+	var res   = false;
   for( ; i<e; i++ ){
 		
 		// found slot
-    if( model.units[i].owner === INACTIVE_ID ) res = true;
+    if( model.unit_data[i].owner === INACTIVE_ID ) res = true;
 		else{
 			count++;
 			
@@ -199,27 +129,24 @@ model.hasFreeUnitSlots = function( pid ){
 
 // Returns true if a given position is occupied by an unit, else false.
 //
-// @param {Number} x x coordinate
-// @param {Number} y y coordinate
-// @return {Number} -1 if tile is not occupied else the id number from the unit that occupies the tile
-// 
-model.isTileOccupiedByUnit = function( x,y ){
-  var unit = model.unitPosMap[x][y];
-  if( unit === null ) return -1;
-  else return model.extractUnitId( unit );
+model.unit_isTileOccupied = function( x,y ){
+  assert( model.map_isValidPosition(x,y) );
+
+  var unit = model.unit_posData[x][y];
+  return ( unit === null )? -1 : model.unit_extractId( unit );
 };
 
 // Counts all units that are owned by the player with the given player id.
 //
-// @param {Number} pid player id
-// 
-model.countUnits = function( pid ){
+model.unit_countUnits = function( pid ){
+  assert( model.player_isValidPid(pid) );
+
   var n = 0;
-  var i = model.getFirstUnitSlotId(pid);
-  var e = model.getLastUnitSlotId(pid);
+  var i = model.unit_firstUnitId(pid);
+  var e = model.unit_lastUnitId(pid);
   
   for(; i<e; i++ ){
-    if( model.units[i].owner !== INACTIVE_ID ) n++;
+    if( model.unit_data[i].owner !== INACTIVE_ID ) n++;
   }
   
   return n;
@@ -234,21 +161,20 @@ model.countUnits = function( pid ){
 //    50   ->   6
 //    99   ->  10
 //
-// @param {object} unit
-// 
-model.unitHpPt = function( unit ){
+model.unit_convertHealthToPoints = function( unit ){
+  // TODO: change API later ( should be not using an unit )
+  assert( unit.hp > 0 && unit.hp <= 99 && unit.hp%1 === 0 );
+
   return parseInt( unit.hp/10 )+1;
 };
 
 // Gets the rest of unit health 
 // 
-// TODO CHECK THIS!
-//    
-// @param {object} unit
-// 
-model.unitHpPtRest = function( unit ){
-  var pt = parseInt( unit.hp/10 )+1;
-  return unit.hp - pt;
+model.unit_convertHealthToPointsRest = function( unit ){
+  // TODO: change API later ( should be not using an unit )
+  assert( util.intRange(unit.hp,0,99) );
+
+  return unit.hp - (parseInt( unit.hp/10 )+1);
 };
 
 // Converts HP points to a health value.
@@ -257,24 +183,21 @@ model.unitHpPtRest = function( unit ){
 //   6 HP -> 60 health
 //   3 HP -> 30 health
 // 
-// @param {Number} pt
-// 
-model.ptToHp = function( pt ){
+model.unit_convertPointsToHealth = function( pt ){
+  assert( util.intRange(pt,0,10) );
+
   return (pt*10);
 };
 
 // Inflicts damage to an unit.
 // 
-// @param {Number|x of model.units} uid
-// @param {Number} damage
-// 
-model.damageUnit = function( uid, damage, minRest ){
-  var unit = model.units[uid];
-  
-  // check grabbed unit
-  if( !unit ) model.criticalError(
-    error.ILLEGAL_PARAMETERS, error.UNIT_NOT_FOUND
-  );
+model.unit_inflictDamage = function( uid, damage, minRest ){
+  assert( model.unit_isValidUnitId(uid) );
+  assert( util.isInt(damage) );
+  assert( util.isUndefined(minRest) || util.intRange(minRest,0,10) );
+
+  var unit = model.unit_data[uid];
+  assert( unit !== null );
   
   unit.hp -= damage;
   
@@ -284,27 +207,22 @@ model.damageUnit = function( uid, damage, minRest ){
   else{
     
     // destroy unit when health falls to zero
-    if( unit.hp <= 0 ) model.destroyUnit(uid);
+    if( unit.hp <= 0 ) model.unit_destroy(uid);
   }
   
-  controller.events.damageUnit( uid, damage, minRest );
+  controller.events.unit_inflictDamage( uid, damage, minRest );
 };
 
-// Heals an unit. If the unit health will be greater than the maximum health value then the difference will 
-// be added as gold to the owners gold depot.
+// Heals an unit. If the unit health will be greater than the maximum health value then 
+// the difference will be added as gold to the owners gold depot.
 // 
-// @param {Number} uid
-// @param {Number} health
-// @param {Boolean} diffAsGold if false then the difference won't be added as gold to the owners resource depot
-//                  ( default = false )
-// 
-model.healUnit = function( uid, health, diffAsGold ){  
-  var unit = model.units[uid];
-  
-  // check grabbed unit
-  if( !unit ) model.criticalError(
-    error.ILLEGAL_PARAMETERS, error.UNIT_NOT_FOUND
-  );
+model.unit_heal = function( uid, health, diffAsGold ){  
+  assert( model.unit_isValidUnitId(uid) );
+  assert( health >= 0 && health%1 === 0 );
+  assert( util.isBoolean(diffAsGold) || util.isUndefined(diffAsGold) );
+
+  var unit = model.unit_data[uid];
+  assert( unit !== null );
   
   unit.hp += health;
   if( unit.hp > 99 ){
@@ -314,69 +232,64 @@ model.healUnit = function( uid, health, diffAsGold ){
     // unit owners gold depot
     if( diffAsGold === true ){
       var diff = unit.hp - 99;
-      model.players[ unit.owner ].gold += parseInt( (unit.type.cost*diff)/100, 10 );
+      model.player_data[ unit.owner ].gold += parseInt( (unit.type.cost*diff)/100, 10 );
     }
     
     unit.hp = 99;
   }
   
-  controller.events.healUnit( uid, health );
+  controller.events.unit_heal( uid, health );
 };
 
 // Hides an unit.
 // 
-// @param {Number} uid
-//
-model.hideUnit = function( uid ){
-  model.units[uid].hidden = true;
-  
-  controller.events.hideUnit( uid );
+model.unit_hide = function( uid ){ 
+  assert( model.unit_isValidUnitId(uid) );
+
+  model.unit_data[uid].hidden = true;
+  controller.events.unit_hide( uid );
 };
 
 // Unhides an unit.
 // 
-// @param {Number} uid
-//
-model.unhideUnit = function( uid ){
-  model.units[uid].hidden = false;
-  
-  controller.events.unhideUnit( uid );
+model.unit_unhide = function( uid ){ 
+  assert( model.unit_isValidUnitId(uid) );
+
+  model.unit_data[uid].hidden = false;
+  controller.events.unit_unhide( uid );
 };
 
-// Returns true if two units can join each other in the current 
-// situation, else false. Transporters cannot join each other when
-// they loaded units.
+// Returns true if two units can join each other in the current situation, else false. 
+// Transporters cannot join each other when they loaded units.
 //
-// @param {Number} juid id of the joining unit
-// @param {Number} jtuid id of the join target unit
-// 
-model.canJoin = function( juid, jtuid ){
-  var joinSource = model.units[juid];
-  var joinTarget = model.units[jtuid];
+model.unit_areJoinable = function( juid, jtuid ){
+  assert( model.unit_isValidUnitId(juid) );
+  assert( model.unit_isValidUnitId(jtuid) );
+
+  var joinSource = model.unit_data[juid];
+  var joinTarget = model.unit_data[jtuid];
 
   // no merge of transporters with loads
-  if( model.hasLoadedIds( juid ) || model.hasLoadedIds( jtuid ) ) return false;
+  if( model.transport_hasLoads( juid ) || model.transport_hasLoads( jtuid ) ) return false;
     
   return ( joinSource.type === joinTarget.type && joinTarget.hp < 90 ); 
 };
 
-// Joins two units together. If the combined health is greater than the maximum health then the difference will be
-// payed to the owners resource depot.
+// Joins two units together. If the combined health is greater than the maximum health then 
+// the difference will be payed to the owners resource depot.
 // 
-// @param {Number} juid id of the joining unit
-// @param {Number} jtuid id of the join target unit
-// 
-model.joinUnits = function( juid, jtuid ){
-  var joinSource = model.units[juid];
-  var joinTarget = model.units[jtuid];
+model.unit_join = function( juid, jtuid ){
+  assert( model.unit_isValidUnitId(juid) );
+  assert( model.unit_isValidUnitId(jtuid) );
+
+  var joinSource = model.unit_data[juid];
+  var joinTarget = model.unit_data[jtuid];
   
-  // check types
-  if( joinTarget.type !== joinSource.type ) model.criticalError(
-    error.ILLEGAL_PARAMETERS, error.JOIN_TYPE_MISSMATCH
-  );
-  
+  assert(joinTarget.type === joinSource.type);
+
   // health
-  model.healUnit(jtuid, model.ptToHp(model.unitHpPt( joinSource )),true);
+  model.unit_heal(jtuid, model.unit_convertPointsToHealth(
+    model.unit_convertHealthToPoints( joinSource )),true);
   
   // ammo
   joinTarget.ammo += joinSource.ammo;
@@ -391,16 +304,16 @@ model.joinUnits = function( juid, jtuid ){
   // disband joining unit
   joinSource.owner = INACTIVE_ID;
   
-  controller.events.joinUnits( juid, jtuid );  
+  controller.events.unit_join( juid, jtuid );  
 };
 
-// The fuel of an unit will be drained if the unit is marked for using fuel to uptain. All units of a player will 
-// be checked 
+// The fuel of an unit will be drained if the unit is marked for using fuel to uptain. All units 
+// of a player will be checked 
 //  
-// @param {Number} uid unit id
-// 
-model.drainFuel = function( uid ){
-  var unit = model.units[uid];
+model.unit_drainFuel = function( uid ){
+  assert( model.unit_isValidUnitId(uid) );
+
+  var unit = model.unit_data[uid];
   
   var v = unit.type.dailyFuelDrain;
   if( typeof v === "number" ){
@@ -412,60 +325,59 @@ model.drainFuel = function( uid ){
     
     unit.fuel -= v;
     
-    controller.events.drainFuel( uid, v );
+    controller.events.unit_drainFuel( uid, v );
     
     // if fuel is empty then destroy it
-    if( unit.fuel <= 0 ) model.destroyUnit( uid );
+    if( unit.fuel <= 0 ) model.unit_destroy( uid );
   }
 };
 
 // Registers a new unit object in the stock of a player. The unit 
 // will be created and placed into the tile at position (x,y).
 // 
-// @param {Number} pid id number of the player
-// @param {Number} x x coordinate of the target
-// @param {Number} y y coordinate of the target
-// @param {String} type type of the new unit
-// 
-model.createUnit = function( pid, x, y, type ){
-  var i = model.getFirstUnitSlotId(pid);
-  var e = model.getLastUnitSlotId(pid);
+model.unit_create = function( pid, x, y, type ){
+  assert( model.map_isValidPosition(x,y) );
+  assert( model.player_isValidPid(pid) );
+  assert( model.data_unitSheets.hasOwnProperty(type) );
+
+  var i = model.unit_firstUnitId(pid);
+  var e = model.unit_lastUnitId(pid);
   
+  // at least one slot must be free
+  assert( model.unit_hasFreeSlots(pid) );
+
   for( ; i<e; i++ ){
     
-    // FILL SLOT IF FREE
-    if( model.units[i].owner === INACTIVE_ID ){
-      var typeSheet = model.unitTypes[type];
-      var unit = model.units[i];
+    // if slot is freem then use it
+    if( model.unit_data[i].owner === INACTIVE_ID ){
+      var typeSheet    = model.data_unitSheets[type];
+      var unit        = model.unit_data[i];
       
-      unit.hp = 99;
-      unit.owner = pid;
-      unit.type = typeSheet;
-      unit.ammo = typeSheet.ammo; 
-      unit.fuel = typeSheet.fuel;
-      unit.loadedIn = -1;
-      model.setUnitPosition(i,x,y);
+      unit.hp         = 99;
+      unit.owner      = pid;
+      unit.type       = typeSheet;
+      unit.ammo       = typeSheet.ammo; 
+      unit.fuel       = typeSheet.fuel;
+      unit.loadedIn   = -1;
+      model.move_setUnitPosition(i,x,y);
       
-      controller.events.createUnit( pid,x,y,type,i );
+      controller.events.unit_create( pid,x,y,type,i );
       
       return i;
     }
   }
-  
-  // no free slot found
-  model.criticalError( error.ILLEGAL_DATA, error.NO_SLOT_FREE );
 };
 
-// Returns the distance between two units
+// Returns the distance between two units.
 //
-// @param {Number} uidA id number of the unit A
-// @param {Number} uidB id number of the unit B
-//
-model.unitDistance = function( uidA, uidB ){
+model.unit_getDistance = function( uidA, uidB ){
+  assert( model.unit_isValidUnitId(uidA) );
+  assert( model.unit_isValidUnitId(uidB) );
+
   var uA,uB;
   
-  uA = model.units[uidA];
-  uB = model.units[uidB];
+  uA = model.unit_data[uidA];
+  uB = model.unit_data[uidB];
   
   // one of the units is off map
   if( uB.x === -1 || uA.x === -1 ) return -1;
@@ -473,31 +385,30 @@ model.unitDistance = function( uidA, uidB ){
   return ( Math.abs( uA.x - uB.x ) + Math.abs( uA.y - uB.y ) );
 };
 
-// Deregisters an unit object from the stock of a player. The tile, where the unit is placed on, will be
-// freed from any position information.
+// Deregisters an unit object from the stock of a player. The tile, where the unit is placed on,
+// will be freed from any position information.
 // 
-// @param {Number} uid id number of the unit
-// 
-model.destroyUnitSilent = function( uid ){
-  model.clearUnitPosition(uid);
-  var unit = model.units[uid];
+model.unit_destroySilently = function( uid ){
+  assert( model.unit_isValidUnitId(uid) );
+  
+  model.move_clearUnitPosition(uid);
+  var unit = model.unit_data[uid];
   
   // mark slot as unused
   unit.owner = INACTIVE_ID;
   
   // end game when the player does not have any unit left
-  if( controller.configValue("noUnitsLeftLoose") === 1 && model.countUnits( unit.owner ) === 0 ){
-    controller.endGameRound();
+  if( controller.configValue("noUnitsLeftLoose") === 1 && 
+      model.unit_countUnits( unit.owner ) === 0 ){
+    controller.update_endGameRound();
   } 
   
-  controller.events.destroyUnit( uid );
+  controller.events.unit_destroy( uid );
 };
 
-// Deregisters an unit object from the stock of a player. The tile, where the unit is placed on, will be
-// freed from any position information.
+// Deregisters an unit object from the stock of a player. The tile, where the unit is placed on, 
+// will be freed from any position information.
 // 
-// @param {Number} uid id number of the unit
-// 
-model.destroyUnit = function( uid ){
-  model.destroyUnitSilent(uid);
+model.unit_destroy = function( uid ){
+  model.unit_destroySilently(uid);
 };

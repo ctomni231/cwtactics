@@ -29,16 +29,16 @@ util.scoped(function(){
   }
   
   function checkStatus( x,y ){
-    if( model.isValidPosition(x,y) ){
-      var unit = model.unitPosMap[x][y];
+    if( model.map_isValidPosition(x,y) ){
+      var unit = model.unit_posData[x][y];
       if( unit !== null ){
-        controller.updateUnitStatus( model.extractUnitId(unit) );
+        controller.updateUnitStatus( model.unit_extractId(unit) );
       }
     }
   }
   
   view.registerAnimationHook({
-    key: "startFireSilo",
+    key: "bonbs_startFireSilo",
     
     prepare: function( x,y, siloId, tx,ty ){
       if( !rocket_img ) rocket_img = view.getInfoImageForType("FLYING_ROCKET");
@@ -108,11 +108,11 @@ util.scoped(function(){
   
   view.registerAnimationHook({
     
-    key: "doExplosionAt",
+    key: "bombs_explosionAt",
     
     prepare: function( tx,ty, range, damage, owner ){
       if( !expl_img ) expl_img = view.getInfoImageForType("EXPLOSION_GROUND");
-      controller.playSound("ROCKET_IMPACT");
+      controller.audio_playSound("ROCKET_IMPACT");
       
       this.x = tx;
       this.y = ty;   
@@ -123,7 +123,7 @@ util.scoped(function(){
     },
     
     render: function(){
-      model.doInRange( this.x, this.y, this.range, renderSmoke, this.step );
+      model.map_doInRange( this.x, this.y, this.range, renderSmoke, this.step );
     },
     
     update: function( delta ){
@@ -138,18 +138,18 @@ util.scoped(function(){
       var done = this.step === this.maxStep;
       
       // RENDER HP LOST
-      if( done ) model.doInRange( this.x, this.y, this.range, checkStatus );
+      if( done ) model.map_doInRange( this.x, this.y, this.range, checkStatus );
       
       return done;
     }
     
   });
 
-  controller.onEvent("fireCannon",function( prid, x,y ){
-    controller.playSound( model.properties[prid].type.cannon.fireSound);
+  controller.event_on("bombs_fireCannon",function( prid, x,y ){
+    controller.audio_playSound( model.property_data[prid].type.cannon.fireSound);
   });
   
-  controller.onEvent("fireCannon",function( prid,ox,oy ){
-    controller.playSound( model.properties[prid].type.laser.fireSound);
+  controller.event_on("bombs_fireCannon",function( prid,ox,oy ){
+    controller.audio_playSound( model.property_data[prid].type.laser.fireSound);
   });
 });

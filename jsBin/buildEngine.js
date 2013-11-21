@@ -5,6 +5,7 @@ var PATH =  "srcEngine/libs/*.js "+
 			"srcEngine/util/*.js "+
 			"srcEngine/controller/*.js "+
 			"srcEngine/model/*.js "+
+			"srcEngine/persistence/*.js "+
 			"srcEngine/commands/*.js "+
 			"srcEngine/ai/*.js ";
 

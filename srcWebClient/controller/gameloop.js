@@ -97,7 +97,7 @@ util.scoped(function(){
         if( !hasHocks ){
           
           // UPDATE LOGIC
-          controller.updateState( savedDelta );
+          controller.update_tickFrame( savedDelta );
           savedDelta = 0;
           
           // CHECK HOOKS
@@ -134,14 +134,14 @@ util.scoped(function(){
         var lY = y-r;
         var hY = y+r;
         if( lY < 0 ) lY = 0;
-        if( hY >= model.mapHeight ) hY = model.mapHeight-1;
+        if( hY >= model.map_height ) hY = model.map_height-1;
         for( ; lY<=hY; lY++ ){
           
           var disY = Math.abs( lY-y );
           lX = x-r+disY;
           hX = x+r-disY;
           if( lX < 0 ) lX = 0;
-          if( hX >= model.mapWidth ) hX = model.mapWidth-1;
+          if( hX >= model.map_width ) hX = model.map_width-1;
           for( ; lX<=hX; lX++ ){
             
             view.markForRedraw(lX,lY);

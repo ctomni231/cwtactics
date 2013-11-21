@@ -27,7 +27,9 @@ util.scoped(function(){
 		  prevTimestamps[i] = gamepad.timestamp;
 
       // in key mapping
-      if( controller.activeMapping !== null && controller.activeMapping === controller.KEY_MAPPINGS.GAMEPAD ){
+      if( controller.activeMapping !== null &&
+          controller.activeMapping === controller.KEY_MAPPINGS.GAMEPAD ){
+
         var code = -1;
 
         // grab key

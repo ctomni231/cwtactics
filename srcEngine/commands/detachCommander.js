@@ -1,14 +1,14 @@
-controller.unitAction({
+controller.action_unitAction({
 
   key:"detachCommander",
 
   condition: function(){
-		return model.coMode === model.CO_MODES.AWDR;
+		return model.co_activeMode === model.co_MODES.AWDR;
   },
 
   invoke: function( data ){
-    controller.sharedInvokement("detachCommander",[
-    	model.turnOwner,
+    controller.action_sharedInvoke("detachCommander",[
+    	model.round_turnOwner,
     	data.target.x,
     	data.target.y
     ]);

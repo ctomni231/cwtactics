@@ -1,134 +1,70 @@
-// # Map Module
-//
-
-// ### Meta Data
-
-controller.registerInvokableCommand("doInRange");
-
-// ---
-
-// ### Model
+// commands
+controller.action_registerCommands("map_doInRange");
 
 // Map table that holds all known tiles.
 //
-model.map = util.matrix( MAX_MAP_WIDTH, MAX_MAP_HEIGHT, null );
+model.map_data = util.matrix( MAX_MAP_WIDTH, MAX_MAP_HEIGHT, null );
 
 // Returns the current active map height.
 //
-model.mapHeight = -1;
+model.map_height = -1;
 
 // Returns the current active map width.
 //
-model.mapWidth = -1;
-
-// Define persistence handler
-controller.persistenceHandler(
-  
-  // load
-  function( dom ){
-    
-    model.mapWidth = dom.mpw;
-    model.mapHeight = dom.mph;
-    
-    for( var x=0,xe=model.mapWidth; x<xe; x++ ){
-      for( var y=0,ye=model.mapHeight; y<ye; y++ ){
-        model.unitPosMap[x][y] = null;
-        model.propertyPosMap[x][y] = null;
-        model.map[x][y] = model.tileTypes[ dom.typeMap[ dom.map[x][y] ] ];
-      }
-    }
-  },
-  
-  // save
-  function( dom ){
-  
-    dom.mpw = model.mapWidth;
-    dom.mph = model.mapHeight;
-    
-    dom.map = [];
-    var mostIdsMap = {};
-    var mostIdsMapCurIndex = 0;
-    for( var x=0,xe=model.mapWidth; x<xe; x++ ){
-      
-      dom.map[x] = [];
-      for( var y=0,ye=model.mapHeight; y<ye; y++ ){
-        
-        var type = dom.map[x][y].ID;
-        
-        if( !mostIdsMap.hasOwnProperty(type) ){
-          mostIdsMap[type] = mostIdsMapCurIndex;
-          mostIdsMapCurIndex++;
-        }
-        
-        dom.map[x][y] = mostIdsMap[type];
-      }
-    }
-    
-    dom.typeMap = [];
-    var typeKeys = Object.keys( mostIdsMap );
-    for( var i=0,e=typeKeys.length; i<e; i++ ){
-      dom.typeMap[ mostIdsMap[typeKeys[i]] ] = typeKeys[i];
-    }
-  }
-);
+model.map_width = -1;
 
 // Returns the distance of two positions.
 // 
-// @param {Number} sx x coordinate of the source position
-// @param {Number} sy y coordinate of the source position
-// @param {Number} tx x coordinate of the target position
-// @param {Number} ty y coordinate of the target position
-//
-model.distance = function( sx,sy,tx,ty ){
-  var dx = Math.abs(sx-tx);
-  var dy = Math.abs(sy-ty);
-  return dx+dy;
+model.map_getDistance = function( sx,sy,tx,ty ){
+  assert( model.map_isValidPosition(sx,sy) );
+  assert( model.map_isValidPosition(tx,ty) );
+  
+  return Math.abs(sx-tx)+Math.abs(sy-ty);
 };
 
 // Returns true if the given position (x,y) is valid on the current active map, else false.
 // 
-// @param {Number} x
-// @param {Number} y
-//
-model.isValidPosition = function( x,y ){
+model.map_isValidPosition = function( x,y ){
   return ( 
     x >= 0 && 
     y >= 0 && 
-    x < model.mapWidth && 
-    y < model.mapHeight 
+    x < model.map_width && 
+    y < model.map_height 
   );
 };
 
-// Invokes a callback on all tiles in a given 
-// range at a position (x,y)
+// Invokes a callback on all tiles in a given range at a position (x,y).
 //
-// @param {Number} x x coordinate
-// @param {Number} y y coordinate
-// @param {Number} range range of the search field
-// @param {Function} cb callback function
-// @param {Any} arg argument that will be passed into the callback call
-//
-model.doInRange = function( x,y, range, cb, arg ){
+model.map_doInRange = function( x,y, range, cb, arg ){
+  assert( model.map_isValidPosition(x,y) );
+  assert( util.isInt(range) && range>=0 );
+  assert( typeof cb === "function" );
   
   var lX;
   var hX;
   var lY = y-range;
   var hY = y+range;
   if( lY < 0 ) lY = 0;
-  if( hY >= model.mapHeight ) hY = model.mapHeight-1;
+  if( hY >= model.map_height ) hY = model.map_height-1;
   for( ; lY<=hY; lY++ ){
     
     var disY = Math.abs( lY-y );
     lX = x-range+disY;
     hX = x+range-disY;
     if( lX < 0 ) lX = 0;
-    if( hX >= model.mapWidth ) hX = model.mapWidth-1;
+    if( hX >= model.map_width ) hX = model.map_width-1;
     for( ; lX<=hX; lX++ ){
       
-      // invoke the callback on all 
-      // tiles in range
-      cb( lX,lY, arg, Math.abs(lX-x)+disY );
+      // invoke the callback on all tiles in range
+      // if a callback returns `false` then the process will be stopped
+      if( cb( lX,lY, arg, Math.abs(lX-x)+disY ) === false ) return;
       
     }
   }
+};
+
+// Invokes a callback on all tiles in a given selection.
+//
+model.map_doInSelection = function( selection, cb, arg ){
+  
 };

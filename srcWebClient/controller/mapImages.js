@@ -7,14 +7,14 @@ util.scoped(function(){
   
   function checkTileForConnection( x,y, index, data, cKeys ){
     if( x < 0 || y < 0 ||
-       x >= model.mapWidth || y >= model.mapHeight ){
+       x >= model.map_width || y >= model.map_height ){
       
       //data[index] = "_";
       data[index] = "";
       return;
     }
     
-    var short = cKeys[ model.map[x][y].ID ];
+    var short = cKeys[ model.map_data[x][y].ID ];
     if( short === undefined ) short = "";
     data[index] = short;
   };
@@ -49,8 +49,8 @@ util.scoped(function(){
   view.updateMapImages = function(){
     var x;
     var y;
-    var xe = model.mapWidth;
-    var ye = model.mapHeight;
+    var xe = model.map_width;
+    var ye = model.map_height;
     var check = checkTileForConnection;
     var resultCheck = getTileTypeForConnection;
     var sdata = [];
@@ -62,11 +62,11 @@ util.scoped(function(){
         var lY = y;
         
         // DO MAGIC HERE
-        var tile = model.map[lX][lY].ID;
-        if( model.graphics.connected[tile] ){
+        var tile = model.map_data[lX][lY].ID;
+        if( model.data_graphics.connected[tile] ){
           
-          var cKeys = model.graphics.connectedKeys[tile];
-          if( model.graphics.connected[tile][0].length === 5 ){
+          var cKeys = model.data_graphics.connectedKeys[tile];
+          if( model.data_graphics.connected[tile][0].length === 5 ){
             
             // ----------------------------
             check( x,y-1, 0, sdata, cKeys );
@@ -75,7 +75,7 @@ util.scoped(function(){
             check( x-1,y, 3, sdata, cKeys );
             
             view.mapImages[x][y] = resultCheck( 
-              model.graphics.connected[tile], 
+              model.data_graphics.connected[tile], 
               sdata,
               true,
               tile
@@ -94,7 +94,7 @@ util.scoped(function(){
             check( x-1,y-1, 7, sdata, cKeys );
             
             view.mapImages[x][y] = resultCheck( 
-              model.graphics.connected[tile], 
+              model.data_graphics.connected[tile], 
               sdata,
               false,
               tile

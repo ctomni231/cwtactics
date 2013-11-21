@@ -1,58 +1,49 @@
-// Creates a simple but extendable parser instance to validate javascript
-// objects. This will be used to allow modules to set own requirements
-// on object type sheets.
+// Creates a simple but extend able parser instance to validate javascript objects. This will be
+// used to allow modules to set own requirements on object type sheets.
 //
-model.createDataParser = function( db, list ){
+model.data_createParser = function( db, list ){
   var parserParts = [ ];
-  var listFn = (typeof list === "function");
+  var listFn = util.isFunction(list);
 
+  // defines the public API
   return {
-    
+
+    // Adds a handler to the parser object.
+    //
     addHandler: function( cb ){
-      if( typeof cb !== "function" ) {
-        model.criticalError(
-          error.ILLEGAL_DATA,
-          error.ILLEGAL_SHEET_HANDLER );
-      }
+      assert( util.isFunction(cb) );
 
       parserParts.push( cb );
     },
     
-    // parsing function that parses a type sheet and adds it to the type
-    // list if no parsing part declines the sheet object by returning
-    // `false`
+    // Parsing function that parses a type sheet and adds it to the type
+    // list.
+    //
     parse: function( sheet ){
-
-      // check identical string first
-      if( !util.expectString( sheet, "ID", true ) ) {
-        model.criticalError(
-          error.ILLEGAL_DATA,
-          error.ILLEGAL_SHEET_ID );
-      }
-
-      if( db[sheet.ID] ) {
-        model.criticalError(
-          error.ILLEGAL_DATA,
-          error.ILLEGAL_SHEET_ALREADY_DEFINED );
-      }
+      assert( util.isString(sheet.ID) );
+      assert( !db.hasOwnProperty(sheet.ID) );
 
       // check sheet by calling all parser parts
       for( var i = 0, e = parserParts.length; i < e; i++ ) {
-        if( parserParts[i]( sheet ) === false ) {
-          model.criticalError(
-            error.ILLEGAL_DATA,
-            error.BREAKS_SHEET_CONTRACT );
-        }
+        parserParts[i]( sheet );
       }
 
-      // add sheet to the database
+      // add sheet to the type list
       if( listFn ) list( sheet );
       else list.push( sheet.ID );
+
+      // add sheet to the database
       db[sheet.ID] = sheet;
     },
+
+    // Parses all objects in a list.
+    //
     parseAll: function( list ){
       for( var i = 0, e = list.length; i < e; i++ ) this.parse( list[i] );
     },
+
+    //
+    //
     clear: function(){
       list.splice( 0 );
 
@@ -63,102 +54,124 @@ model.createDataParser = function( db, list ){
   };
 };
 
-// ---
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // Holds all available unit types
-model.unitTypes = {};
+model.data_unitSheets = {};
 
 // Holds a list of available tile types
-model.listOfUnitTypes = [ ];
+model.data_unitTypes = [ ];
 
 // Unit type sheet parser object
-model.unitTypeParser = model.createDataParser( model.unitTypes, model.listOfUnitTypes );
+model.data_unitParser = model.data_createParser( model.data_unitSheets, model.data_unitTypes );
 
-// ---
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // Holds all available tile and property types
-model.tileTypes = {};
+model.data_tileSheets = {};
 
 // Holds a list of available tile types
-model.listOfPropertyTypes = [ ];
+model.data_propertyTypes = [ ];
 
 // Holds a list of available property types
-model.listOfTileTypes = [ ];
+model.data_tileTypes = [ ];
 
 // Tile type sheet parser object
-model.tileTypeParser = model.createDataParser( model.tileTypes,
+model.data_tileParser = model.data_createParser( model.data_tileSheets,
   function( sheet ){
-    if( sheet.capturePoints ) model.listOfPropertyTypes.push( sheet );
-    else model.listOfTileTypes.push( sheet );
+    if( sheet.capturePoints ) model.data_propertyTypes.push( sheet );
+    else model.data_tileTypes.push( sheet );
   }
 );
 
-// ---
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // Holds all available weather types
-model.weatherTypes = {};
+model.data_weatherSheets = {};
 
 // Holds the default weather type
-model.defaultWeatherType = null;
+model.data_defaultWeatherSheet = null;
 
 // Holds all non-defualt weather types
-model.nonDefaultWeatherType = [ ];
+model.data_nonDefaultWeatherTypes = [ ];
 
 // Tile type sheet parser object
-model.weatherTypeParser = model.createDataParser( model.weatherTypes,
+model.data_weatherParser = model.data_createParser( model.data_weatherSheets,
   function( sheet ){
-    if( sheet.defaultWeather ) model.defaultWeatherType = sheet;
-    else model.nonDefaultWeatherType.push( sheet );
+    if( sheet.defaultWeather ) model.data_defaultWeatherSheet = sheet;
+    else                       model.data_nonDefaultWeatherTypes.push( sheet );
   }
 );
 
-// ---
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // Holds all available move types
-model.moveTypes = {};
+model.data_movetypeSheets = {};
 
-model.listOfMoveTypes = [ ];
+model.data_movetypeTypes = [ ];
 
-model.moveTypeParser = model.createDataParser( model.moveTypes, model.listOfMoveTypes );
+model.data_movetypeParser = model.data_createParser(
+  model.data_movetypeSheets,
+  model.data_movetypeTypes
+);
 
-// ---
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-model.factionTypes = {};
+model.data_gameModeSheets = {};
 
-model.listOfFactions = [ ];
+model.data_gameModeTypes = [ ];
 
-model.factionParser = model.createDataParser( model.factionTypes, model.listOfFactions );
+model.data_gameModeParser = model.data_createParser(
+  model.data_gameModeSheets,
+  model.data_gameModeTypes
+);
 
-model.factionParser.addHandler( function( sheet ){
-  if( !util.expectString( sheet, "music", true ) ) return false;
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+model.data_fractionSheets = {};
+
+model.data_fractionTypes = [ ];
+
+model.data_fractionParser = model.data_createParser(
+  model.data_fractionSheets,
+  model.data_fractionTypes
+);
+
+model.data_fractionParser.addHandler( function( sheet ){
+  assert( sheet.hasOwnProperty("music") );
 } );
 
-// ---
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-model.coTypes = {};
+model.data_coSheets = {};
 
-model.listOfCoTypes = [ ];
+model.data_coTypes = [ ];
 
-model.coTypeParser = model.createDataParser( model.coTypes, model.listOfCoTypes );
+model.data_coParser = model.data_createParser( model.data_coSheets, model.data_coTypes );
 
-// ---
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+model.data_sounds    = null;
 
-model.sounds = null;
+model.data_graphics  = null;
 
-model.graphics = null;
+model.data_menu      = null;
 
-model.maps = null;
+model.data_maps      = null;
+
+model.data_header    = null;
+
+model.data_assets    = null;
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // Language model holds all known language keys.
 //
-model.language = {};
+model.data_language = {};
 
 // Returns a localized string for a given key or if not exist the key itself.
 //
-// @param {String} key
-//
-model.localized = function( key ){
-  var result = model.language[key];
+model.data_localized = function( key ){
+  var result = model.data_language[key];
   return (result === undefined) ? key : result;
 };

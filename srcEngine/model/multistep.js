@@ -1,11 +1,12 @@
-controller.registerInvokableCommand("invokeNextStep_");
+// commands
+controller.action_registerCommands("multistep_nextStep_");
 
-controller.defineEvent("invokeNextStep_");
+// events
+controller.event_define("multistep_nextStep_");
 
 // Invokes the next step for multistep actions.
 //
-// @private
-model.invokeNextStep_ = function(){
+model.multistep_nextStep_ = function(){
   controller.stateMachine.event("nextStep");
-  controller.events.invokeNextStep_();
+  controller.events.multistep_nextStep_();
 };

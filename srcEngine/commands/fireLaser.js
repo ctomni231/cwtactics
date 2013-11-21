@@ -1,14 +1,14 @@
-controller.propertyAction({
+controller.action_propertyAction({
 
-	key:"fireLaser",
-	relation:[ "S","T", model.relationModes.SAME_OBJECT],
+	key:"bombs_fireLaser",
+	relation:[ "S","T", model.player_RELATION_MODES.SAME_OBJECT],
 
 	condition: function( data ){
-		return model.isCannon( data.target.unitId );
+		return model.bombs_isCannon( data.target.unitId );
 	},
 
 	invoke: function( data ){
-		controller.sharedInvokement( "fireLaser", [ data.target.propertyId ]);
+		controller.action_sharedInvoke( "bombs_fireLaser", [ data.target.propertyId ]);
 	}
 
 });

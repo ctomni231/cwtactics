@@ -1,16 +1,11 @@
 controller.cutImages = util.singleLazyCall(function( err, baton ){
-  if( err ){
-    if( constants.DEBUG ) util.log("break at cutting images due error from previous inits"); 
-    return baton.pass(true);
-  }
-  
-  if( constants.DEBUG ) util.log("cutting images");
+  if( DEBUG ) util.log("crop images");
   
   baton.take();
   
   try{
     
-    var imageData = model.graphics;
+    var imageData = model.data_graphics;
     
     var BASE_SIZE = imageData.baseSize;
     
@@ -58,17 +53,17 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
     
     // ----------------------------------------------------------------------
     
-    if( constants.DEBUG ){ util.log("cutting unit commands into single types"); }
+    if( constants.DEBUG ){ util.log("crop unit commands into single types"); }
     
     var unitTypes = imageData.units;
     for( var i=0,e=unitTypes.length; i<e; i++ ){
       
       var nCanvas;
       var nContext;
-      var red = .COLOR_RED;
+      var red = view.COLOR_RED;
       var tp = unitTypes[i][0];
       
-      var img = .getUnitImageForType( tp, .IMAGE_CODE_IDLE, red );
+      var img = view.getUnitImageForType( tp, view.IMAGE_CODE_IDLE, red );
       
       // LEFT
       nCanvas = document.createElement('canvas');
@@ -76,7 +71,7 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
       nCanvas.width  = 32*3;
       nContext = nCanvas.getContext('2d');
       nContext.drawImage( img, 0, 0, 32*3, 32, 0, 0, 32*3, 32 );
-      .setUnitImageForType( nCanvas, tp, .IMAGE_CODE_IDLE, red );
+      view.setUnitImageForType( nCanvas, tp, view.IMAGE_CODE_IDLE, red );
       
       // LEFT INVERTED
       nCanvas = document.createElement('canvas');
@@ -84,9 +79,9 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
       nCanvas.width  = 32*3;
       nContext = nCanvas.getContext('2d');
       nContext.drawImage( img, 0, 0, 32*3, 32, 0, 0, 32*3, 32 );
-      .setUnitImageForType(
+      view.setUnitImageForType(
         flipImage( nCanvas, true, false), tp,
-        .IMAGE_CODE_IDLE_INVERTED, red
+        view.IMAGE_CODE_IDLE_INVERTED, red
       );
       
       // MOVE LEFT
@@ -95,7 +90,7 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
       nCanvas.width  = 32*3;
       nContext = nCanvas.getContext('2d');
       nContext.drawImage( img, 32*9, 0, 32*3, 32, 0, 0, 32*3, 32 );
-      .setUnitImageForType( nCanvas, tp, .IMAGE_CODE_LEFT, red );
+      view.setUnitImageForType( nCanvas, tp, view.IMAGE_CODE_LEFT, red );
       
       // MOVE LEFT INVERTED
       nCanvas = document.createElement('canvas');
@@ -103,9 +98,9 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
       nCanvas.width  = 32*3;
       nContext = nCanvas.getContext('2d');
       nContext.drawImage( img, 32*9, 0, 32*3, 32, 0, 0, 32*3, 32 );
-      .setUnitImageForType(
+      view.setUnitImageForType(
         flipImage( nCanvas, true, false), tp,
-        .IMAGE_CODE_RIGHT, red
+        view.IMAGE_CODE_RIGHT, red
       );
       
       // MOVE UP
@@ -114,7 +109,7 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
       nCanvas.width  = 32*3;
       nContext = nCanvas.getContext('2d');
       nContext.drawImage( img, 32*3, 0, 32*3, 32, 0, 0, 32*3, 32 );
-      .setUnitImageForType( nCanvas, tp, .IMAGE_CODE_UP, red );
+      view.setUnitImageForType( nCanvas, tp, view.IMAGE_CODE_UP, red );
       
       // MOVE DOWN
       nCanvas = document.createElement('canvas');
@@ -122,15 +117,15 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
       nCanvas.width  = 32*3;
       nContext = nCanvas.getContext('2d');
       nContext.drawImage( img, 32*6, 0, 32*3, 32, 0, 0, 32*3, 32 );
-      .setUnitImageForType( nCanvas, tp, .IMAGE_CODE_DOWN, red );
+      view.setUnitImageForType( nCanvas, tp, view.IMAGE_CODE_DOWN, red );
       
     }
     
-    if( constants.DEBUG ){ util.log("cutting unit commands into single types done"); }
+    if( DEBUG ){ util.log("crop unit commands into single types done"); }
     
     // ----------------------------------------------------------------------
     
-    if( constants.DEBUG ){ util.log("cutting misc into single types"); }
+    if( DEBUG ){ util.log("crop misc into single types"); }
     
     var misc = imageData.misc;
     for( var i=0,e=misc.length; i<e; i++ ){
@@ -138,7 +133,7 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
       if( miscType.length > 2 ){
         
         // CUT
-        var img = .getInfoImageForType( miscType[0] );
+        var img = view.getInfoImageForType( miscType[0] );
         
         nCanvas = document.createElement('canvas');
         nContext = nCanvas.getContext('2d');
@@ -192,16 +187,16 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
         if( miscType.length > 6 ){
           nContext.restore();
         }
-        
-        .setInfoImageForType( nCanvas, miscType[0] );
+
+        view.setInfoImageForType( nCanvas, miscType[0] );
       }
     }
     
-    if( constants.DEBUG ){ util.log("cutting misc into single types done"); } 
+    if( DEBUG ){ util.log("crop misc into single types done"); }
     
     baton.pass(false);
-  }
-  catch( e ){
-    controller.loadFault(e,baton);
+
+  } catch( e ) {
+    assert(false,"failed to crop images ("+e+")");
   }
 });

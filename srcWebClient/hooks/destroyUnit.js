@@ -1,9 +1,9 @@
 view.registerAnimationHook({
 
-  key: "destroyUnit",
+  key: "unit_destroy",
 
   prepare: function( id ){
-    var unit = model.units[ id ];
+    var unit = model.unit_data[ id ];
 
     this.step = 0;
     this.time = 0;
@@ -11,7 +11,7 @@ view.registerAnimationHook({
     this.x = -unit.x;
     this.y = -unit.y;
     
-    controller.playSound("EXPLODE");
+    controller.audio_playSound("EXPLODE");
   },
   
   render: function(){

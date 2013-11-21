@@ -9,8 +9,8 @@ util.scoped(function(){
   }
 
   function updateSoundContent(){  
-    nodeSfx.innerHTML = Math.round(controller.getSfxVolume()*100);
-    nodeMusic.innerHTML = Math.round(controller.getMusicVolume()*100);
+    nodeSfx.innerHTML = Math.round(controller.audio_getSfxVolume()*100);
+    nodeMusic.innerHTML = Math.round(controller.audio_getMusicVolume()*100);
   }
   
   var nodeSfx   = document.getElementById("cwt_options_sfxVolume");
@@ -95,22 +95,22 @@ util.scoped(function(){
     switch( btn.getActiveKey() ){
         
       case "options.sfx.down":
-        controller.setSfxVolume( controller.getSfxVolume()-0.05 );
+        controller.audio_setSfxVolume( controller.audio_getSfxVolume()-0.05 );
         updateSoundContent();
         break;
         
       case "options.sfx.up":
-        controller.setSfxVolume( controller.getSfxVolume()+0.05 );
+        controller.audio_setSfxVolume( controller.audio_getSfxVolume()+0.05 );
         updateSoundContent();
         break;
         
       case "options.music.down":
-        controller.setMusicVolume( controller.getMusicVolume()-0.05 );
+        controller.audio_setMusicVolume( controller.audio_getMusicVolume()-0.05 );
         updateSoundContent();
         break;
         
       case "options.music.up":
-        controller.setMusicVolume( controller.getMusicVolume()+0.05 );
+        controller.audio_setMusicVolume( controller.audio_getMusicVolume()+0.05 );
         updateSoundContent();
         break;
         
@@ -127,7 +127,7 @@ util.scoped(function(){
         break;
         
       case "options.goBack": 
-        controller.saveSoundConfigs();
+        controller.audio_saveConfigs();
         return "MAIN";
     }
     
@@ -135,7 +135,7 @@ util.scoped(function(){
   };
     
   controller.screenStateMachine.structure.OPTIONS.CANCEL = function(){
-    controller.saveSoundConfigs();
+    controller.audio_saveConfigs();
     return "MAIN";
   };
   

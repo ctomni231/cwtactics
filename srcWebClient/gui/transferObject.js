@@ -1,9 +1,9 @@
 util.scoped(function(){
   
   var extractPlayer = function( content, entry, index ){
-    entry.innerHTML = model.players[content].name;  
+    entry.innerHTML = model.player_data[content].name;  
   };
 
-  controller.registerMenuRenderer("transferProperty",extractPlayer);
-  controller.registerMenuRenderer("transferUnit",extractPlayer);
+  controller.registerMenuRenderer("team_transferProperty",extractPlayer);
+  controller.registerMenuRenderer("team_transferUnit",extractPlayer);
 });

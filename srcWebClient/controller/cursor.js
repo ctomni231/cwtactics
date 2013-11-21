@@ -79,7 +79,7 @@ controller.cursorAction = function( isCancel ){
  */
 controller.cursorActionCancel = function(){
   controller.cursorAction(true);
-  controller.playSound("CANCEL");
+  controller.audio_playSound("CANCEL");
 };
 
 /**
@@ -87,7 +87,7 @@ controller.cursorActionCancel = function(){
  */
 controller.cursorActionClick = function(){
   controller.cursorAction(false);
-  controller.playSound("ACTION");
+  controller.audio_playSound("ACTION");
 };
 
 /**
@@ -104,10 +104,10 @@ controller.moveCursor = function( dir, len ){
   var y = controller.mapCursorY;
   
   switch( dir ){
-    case model.moveCodes.UP    : y--; break;
-    case model.moveCodes.RIGHT : x++; break;
-    case model.moveCodes.DOWN  : y++; break;
-    case model.moveCodes.LEFT  : x--; break;
+    case model.move_MOVE_CODES.UP    : y--; break;
+    case model.move_MOVE_CODES.RIGHT : x++; break;
+    case model.move_MOVE_CODES.DOWN  : y++; break;
+    case model.move_MOVE_CODES.LEFT  : x--; break;
   }
   
   controller.setCursorPosition(x,y);
@@ -139,7 +139,7 @@ controller.setCursorPosition = function( x,y,relativeToScreen ){
   }
   
   //if( CLIENT_DEBUG ){
-  if( !model.isValidPosition(x,y) ){
+  if( !model.map_isValidPosition(x,y) ){
     //util.illegalPositionError();
     return ; // TODO
   }
@@ -149,9 +149,9 @@ controller.setCursorPosition = function( x,y,relativeToScreen ){
     
   // CLEAN OLD
   view.markForRedraw( controller.mapCursorX, controller.mapCursorY );
-  if( controller.mapCursorY < model.mapHeight -1 ) view.markForRedraw( controller.mapCursorX, controller.mapCursorY+1 );
+  if( controller.mapCursorY < model.map_height -1 ) view.markForRedraw( controller.mapCursorX, controller.mapCursorY+1 );
   
-  controller.playSound("MAPTICK");
+  controller.audio_playSound("MAPTICK");
   view.markForRedraw( controller.mapCursorX, controller.mapCursorY );
   
   controller.mapCursorX = x;
@@ -172,10 +172,10 @@ controller.setCursorPosition = function( x,y,relativeToScreen ){
   
   // extract move code
   var moveCode = -1;
-  if( x-controller.screenX <= 1 )          moveCode = model.moveCodes.LEFT;
-  else if( x-controller.screenX >= scw-1 ) moveCode = model.moveCodes.RIGHT;
-  else if( y-controller.screenY <= 1 )     moveCode = model.moveCodes.UP;
-  else if( y-controller.screenY >= sch-1 ) moveCode = model.moveCodes.DOWN;
+  if( x-controller.screenX <= 1 )          moveCode = model.move_MOVE_CODES.LEFT;
+  else if( x-controller.screenX >= scw-1 ) moveCode = model.move_MOVE_CODES.RIGHT;
+  else if( y-controller.screenY <= 1 )     moveCode = model.move_MOVE_CODES.UP;
+  else if( y-controller.screenY >= sch-1 ) moveCode = model.move_MOVE_CODES.DOWN;
   
   // shift screen of you're reach a border
   if( moveCode !== -1 ){

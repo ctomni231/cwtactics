@@ -1,58 +1,58 @@
-controller.onEvent("damageUnit",function( uid ){
+controller.event_on("unit_inflictDamage",function( uid ){
   controller.updateUnitStatus( uid );
 });
 
-controller.onEvent("healUnit",function( uid ){
+controller.event_on("unit_heal",function( uid ){
   controller.updateUnitStatus( uid );
 });
 
-controller.onEvent("battleBetween",function( auid,duid ){
+controller.event_on("battle_invokeBattle",function( auid,duid ){
   controller.updateSimpleTileInformation();
   controller.updateUnitStatus( auid );
   controller.updateUnitStatus( duid );
 });
 
-controller.onEvent("buildUnit",function(){
+controller.event_on("factory_produceUnit",function(){
   controller.updateSimpleTileInformation();
 });
 
-controller.onEvent("loadUnitInto",function( uid, tid ){
+controller.event_on("transport_loadInto",function( uid, tid ){
   controller.updateUnitStatus( tid );
 });
 
-controller.onEvent("unloadUnitFrom",function( transportId, trsx, trsy, loadId, tx,ty ){
+controller.event_on("transport_unloadFrom",function( transportId, trsx, trsy, loadId, tx,ty ){
   controller.updateUnitStatus( transportId );
 });
 
-controller.onEvent("joinUnits",function( uid, tid ){
+controller.event_on("unit_join",function( uid, tid ){
   controller.updateUnitStatus( tid );
 });
 
-controller.onEvent("refillResources",function( uid ){
-  if( typeof uid.x === "number" ) uid = model.extractUnitId(uid);
+controller.event_on("supply_refillResources",function( uid ){
+  if( typeof uid.x === "number" ) uid = model.unit_extractId(uid);
   controller.updateUnitStatus( uid );
 });
 
-controller.onEvent("clearUnitPosition",function( uid ){
-  var unit = model.units[uid];
+controller.event_on("move_clearUnitPosition",function( uid ){
+  var unit = model.unit_data[uid];
   var x = -unit.x;
   var y = -unit.y;
   
   // CHECK HIDDEN, BUT VISIBLE NEIGHBOURS
-  if( model.isValidPosition(x-1,y) && model.unitPosMap[x-1][y] ) controller.updateUnitStatus( model.extractUnitId(model.unitPosMap[x-1][y]) );
-  if( model.isValidPosition(x+1,y) && model.unitPosMap[x+1][y] ) controller.updateUnitStatus( model.extractUnitId(model.unitPosMap[x+1][y]) );
-  if( model.isValidPosition(x,y+1) && model.unitPosMap[x][y+1] ) controller.updateUnitStatus( model.extractUnitId(model.unitPosMap[x][y+1]) );
-  if( model.isValidPosition(x,y-1) && model.unitPosMap[x][y-1] ) controller.updateUnitStatus( model.extractUnitId(model.unitPosMap[x][y-1]) );
+  if( model.map_isValidPosition(x-1,y) && model.unit_posData[x-1][y] ) controller.updateUnitStatus( model.unit_extractId(model.unit_posData[x-1][y]) );
+  if( model.map_isValidPosition(x+1,y) && model.unit_posData[x+1][y] ) controller.updateUnitStatus( model.unit_extractId(model.unit_posData[x+1][y]) );
+  if( model.map_isValidPosition(x,y+1) && model.unit_posData[x][y+1] ) controller.updateUnitStatus( model.unit_extractId(model.unit_posData[x][y+1]) );
+  if( model.map_isValidPosition(x,y-1) && model.unit_posData[x][y-1] ) controller.updateUnitStatus( model.unit_extractId(model.unit_posData[x][y-1]) );
 });
 
-controller.onEvent("setUnitPosition",function( uid ){
+controller.event_on("move_setUnitPosition",function( uid ){
   controller.updateUnitStatus( uid );
 });
 
-controller.onEvent("hideUnit",function( uid ){
+controller.event_on("unit_hide",function( uid ){
   controller.updateUnitStatus( uid );
 });
 
-controller.onEvent("unhideUnit",function( uid ){
+controller.event_on("ununit_hide",function( uid ){
   controller.updateUnitStatus( uid );
 });

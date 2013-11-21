@@ -1,14 +1,14 @@
 [
   {
-    "ID": "INFT",
-    "cost": 1000,
-    "range": 3,
-    "movetype": "INFT",
-    "vision": 2,
-    "fuel": 99,
-    "captures": 10,
-    "ammo": 0,
-    "attack": {
+    "ID"        : "INFT",
+    "cost"      : 1000,
+    "range"     : 3,
+    "movetype"  : "INFT",
+    "vision"    : 2,
+    "fuel"      : 99,
+    "captures"  : 10,
+    "ammo"      : 0,
+    "attack"    : {
       "sec_wp": {
         "INFT": 55,
         "MECH": 45,
@@ -28,19 +28,22 @@
         "TCTR": 30
       }
     },
-    "graphics":"../../../image/units/AWDS_INFT.png"
+    "assets": {
+      "gfx"           : "units/AWDS_INFT.png",
+      "sec_att_sound" : "cannon.wav"
+    }
   },
 
   {
-    "ID": "MECH",
-    "cost": 3000,
-    "range": 2,
-    "movetype": "MECH",
-    "vision": 2,
-    "fuel": 70,
-    "captures": 10,
-    "ammo": 3,
-    "attack": {
+    "ID"        : "MECH",
+    "cost"      : 3000,
+    "range"     : 2,
+    "movetype"  : "MECH",
+    "vision"    : 2,
+    "fuel"      : 70,
+    "captures"  : 10,
+    "ammo"      : 3,
+    "attack"    : {
       "main_wp": {
         "RECN": 85,
         "TNTK": 55,
@@ -74,18 +77,22 @@
         "TCTR": 35
       }
     },
-    "graphics":"../../../image/units/AWDS_MECH.png"
+    "assets": {
+      "gfx"           : "units/AWDS_MECH.png",
+      "pri_att_sound" : "cannon.wav",
+      "sec_att_sound" : "cannon.wav"
+    }
   },
 
   {
-    "ID": "RECN",
-    "cost": 4000,
-    "range": 8,
-    "movetype": "TIRE_A",
-    "vision": 5,
-    "fuel": 80,
-    "ammo": 0,
-    "attack": {
+    "ID"        : "RECN",
+    "cost"      : 4000,
+    "range"     : 8,
+    "movetype"  : "TIRE_A",
+    "vision"    : 5,
+    "fuel"      : 80,
+    "ammo"      : 0,
+    "attack"    : {
       "sec_wp": {
         "INFT": 70,
         "MECH": 65,
@@ -105,18 +112,21 @@
         "TCTR": 35
       }
     },
-    "graphics":"../../../image/units/AWDS_RECN.png"
+    "assets": {
+      "gfx"           : "units/AWDS_RECN.png",
+      "sec_att_sound" : "cannon.wav"
+    }
   },
 
   {
-    "ID": "TNTK",
-    "cost": 7000,
-    "range": 6,
-    "movetype": "TANK",
-    "vision": 3,
-    "fuel": 70,
-    "ammo": 9,
-    "attack": {
+    "ID"        : "TNTK",
+    "cost"      : 7000,
+    "range"     : 6,
+    "movetype"  : "TANK",
+    "vision"    : 3,
+    "fuel"      : 70,
+    "ammo"      : 9,
+    "attack"    : {
       "main_wp": {
         "RECN": 85,
         "TNTK": 55,
@@ -156,18 +166,22 @@
         "TCTR": 40
       }
     },
-    "graphics":"../../../image/units/AWDS_TANK.png"
+    "assets": {
+      "gfx"           : "units/AWDS_TANK.png",
+      "pri_att_sound" : "cannon.wav",
+      "sec_att_sound" : "cannon.wav"
+    }
   },
 
   {
-    "ID": "MDTK",
-    "cost": 16000,
-    "range": 5,
-    "movetype": "TANK",
-    "vision": 1,
-    "fuel": 50,
-    "ammo": 8,
-    "attack": {
+    "ID"        : "MDTK",
+    "cost"      : 16000,
+    "range"     : 5,
+    "movetype"  : "TANK",
+    "vision"    : 1,
+    "fuel"      : 50,
+    "ammo"      : 8,
+    "attack"    : {
       "main_wp": {
         "RECN": 105,
         "TNTK": 85,
@@ -207,7 +221,11 @@
         "TCTR": 45
       }
     },
-    "graphics":"../../../image/units/AWDS_MDTK.png"
+    "assets": {
+      "gfx"           : "units/AWDS_MDTK.png",
+      "pri_att_sound" : "cannon.wav",
+      "sec_att_sound" : "cannon.wav"
+    }
   },
 
   {
@@ -258,7 +276,11 @@
         "TCTR": 55
       }
     },
-    "graphics":"../../../image/units/AWDS_NTNK.png"
+    "assets": {
+      "gfx"           : "units/AWDS_NTNK.png",
+      "pri_att_sound" : "cannon.wav",
+      "sec_att_sound" : "cannon.wav"
+    }
   },
 
   {
@@ -309,7 +331,11 @@
         "TCTR": 55
       }
     },
-    "graphics":"../../../image/units/AWDS_WRTK.png"
+    "assets": {
+      "gfx"           : "units/AWDS_WRTK.png",
+      "pri_att_sound" : "cannon.wav",
+      "sec_att_sound" : "cannon.wav"
+    }
   },
 
   {
@@ -344,7 +370,11 @@
         "BKBM": 120
       }
     },
-    "graphics":"../../../image/units/AWDS_AAIR.png"
+    "assets": {
+      "gfx"           : "units/AWDS_AAIR.png",
+      "pri_att_sound" : "cannon.wav",
+      "sec_att_sound" : "cannon.wav"
+    }
   },
 
   {
@@ -363,7 +393,9 @@
     "supply": [
       "*"
     ],
-    "graphics":"../../../image/units/AWDS_APCR.png"
+    "assets": {
+      "gfx" :"units/AWDS_APCR.png"
+    }
   },
 
   {
@@ -374,7 +406,9 @@
     "vision": 1,
     "fuel": 0,
     "ammo": 0,
-    "graphics":"../../../image/units/AWDS_OOZM.png"
+    "assets": {
+      "gfx" :"units/AWDS_OOZM.png"
+    }
   },
 
   {
@@ -427,7 +461,11 @@
       }
     },
     "simpleAnimation":true,
-    "graphics":"../../../image/units/AWDS_BCTR.png"
+    "assets": {
+      "gfx"           : "units/AWDS_BCTR.png",
+      "pri_att_sound" : "cannon.wav",
+      "sec_att_sound" : "cannon.wav"
+    }
   },
 
   {
@@ -463,7 +501,11 @@
         "BLBT": 75
       }
     },
-    "graphics":"../../../image/units/AWDS_BMBR.png"
+    "assets": {
+      "gfx"           : "units/AWDS_BMBR.png",
+      "pri_att_sound" : "cannon.wav",
+      "sec_att_sound" : "cannon.wav"
+    }
   },
 
   {
@@ -482,7 +524,11 @@
         "OOZM"
       ]
     },
-    "graphics":"../../../image/units/AWDS_BKBM.png"
+    "assets": {
+      "gfx"           : "units/AWDS_BKBM.png",
+      "pri_att_sound" : "cannon.wav",
+      "sec_att_sound" : "cannon.wav"
+    }
   },
 
   {
@@ -526,7 +572,11 @@
       }
     },
     "stealth": true,
-    "graphics":"../../../image/units/AWDS_STLH.png"
+    "assets": {
+      "gfx"           : "units/AWDS_STLH.png",
+      "pri_att_sound" : "cannon.wav",
+      "sec_att_sound" : "cannon.wav"
+    }
   },
 
   {
@@ -548,7 +598,11 @@
         "BKBM": 120
       }
     },
-    "graphics":"../../../image/units/AWDS_FGTR.png"
+    "assets": {
+      "gfx"           : "units/AWDS_FGTR.png",
+      "pri_att_sound" : "cannon.wav",
+      "sec_att_sound" : "cannon.wav"
+    }
   },
 
   {
@@ -566,7 +620,9 @@
       "MECH"
     ],
     "simpleAnimation":true,
-    "graphics":"../../../image/units/AWDS_TCTR.png"
+    "assets": {
+      "gfx" :"units/AWDS_TCTR.png"
+    }
   },
 
   {
@@ -603,7 +659,10 @@
       "minrange": 2,
       "maxrange": 3
     },
-    "graphics":"../../../image/units/AWDS_ARTY.png"
+    "assets": {
+      "gfx"           : "units/AWDS_ARTY.png",
+      "pri_att_sound" : "cannon.wav"
+    }
   },
 
   {
@@ -626,7 +685,10 @@
       "minrange": 3,
       "maxrange": 5
     },
-    "graphics":"../../../image/units/AWDS_MISS.png"
+    "assets": {
+      "gfx"           : "units/AWDS_MISS.png",
+      "pri_att_sound" : "cannon.wav"
+    }
   },
 
   {
@@ -669,7 +731,10 @@
       "minrange": 2,
       "maxrange": 5
     },
-    "graphics":"../../../image/units/AWDS_PRNR.png"
+    "assets": {
+      "gfx"           : "units/AWDS_PRNR.png",
+      "pri_att_sound" : "cannon.wav"
+    }
   },
 
   {
@@ -706,7 +771,10 @@
       "minrange": 3,
       "maxrange": 5
     },
-    "graphics":"../../../image/units/AWDS_RCKT.png"
+    "assets": {
+      "gfx"           : "units/AWDS_RCKT.png",
+      "pri_att_sound" : "cannon.wav"
+    }
   },
 
   {
@@ -730,7 +798,10 @@
         "BLBT": 95
       }
     },
-    "graphics":"../../../image/units/AWDS_SUBM.png"
+    "assets": {
+      "gfx"           : "units/AWDS_SUBM.png",
+      "pri_att_sound" : "cannon.wav"
+    }
   },
 
   {
@@ -764,7 +835,11 @@
     "canload": [
       "AIR"
     ],
-    "graphics":"../../../image/units/AWDS_CRUS.png"
+    "assets": {
+      "gfx"           : "units/AWDS_CRUS.png",
+      "pri_att_sound" : "cannon.wav",
+      "sec_att_sound" : "cannon.wav"
+    }
   },
 
   {
@@ -784,7 +859,9 @@
     "repairs": {
       "SHIP": 1
     },
-    "graphics":null
+    "assets": {
+      "gfx" : ""
+    }
   },
 
   {
@@ -813,7 +890,10 @@
       "minrange": 3,
       "maxrange": 8
     },
-    "graphics":"../../../image/units/AWDS_ACAR.png"
+    "assets": {
+      "gfx"           : "units/AWDS_ACAR.png",
+      "pri_att_sound" : "cannon.wav"
+    }
   },
 
   {
@@ -833,7 +913,9 @@
       "TIRE_B",
       "TANK"
     ],
-    "graphics":"../../../image/units/AWDS_LNDR.png"
+    "assets": {
+      "gfx" :"units/AWDS_LNDR.png"
+    }
   },
 
   {
@@ -871,6 +953,9 @@
       "minrange": 2,
       "maxrange": 6
     },
-    "graphics":"../../../image/units/AWDS_BSHP.png"
+    "assets": {
+      "gfx"           : "units/AWDS_BSHP.png",
+      "pri_att_sound" : "cannon.wav"
+    }
   }
 ]

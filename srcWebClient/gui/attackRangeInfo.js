@@ -13,9 +13,9 @@ util.scoped(function(){
     
     var x = controller.mapCursorX;
     var y = controller.mapCursorY;
-    var unit = model.unitPosMap[x][y];
+    var unit = model.unit_posData[x][y];
     if( unit === null ) return;
-    var unitId = model.extractUnitId(unit);
+    var unitId = model.unit_extractId(unit);
     
     if( constants.DEBUG ) util.log("show attack range information");
     
@@ -23,15 +23,15 @@ util.scoped(function(){
     
     selection.setCenter(x,y, constants.INACTIVE_ID);
     
-    if( model.isIndirectUnit( unitId) ){
+    if( model.battle_isIndirectUnit( unitId) ){
       
       // CALCULATE ATTACKABLE TILES
-      model.attackRangeMod_( unitId, x, y, selection );
+      model.battle_calculateTargets( unitId, x, y, selection );
     }
     else{
       
       // GET MOVE DATA
-      controller.stateMachine.data.movePath.fillMoveMap( x,y, unit );
+      controller.stateMachine.data.movePath.move_fillMoveMap( x,y, unit );
       selection.data.cloneValues( tmpData );
       selection.setCenter(x,y, constants.INACTIVE_ID);
       
@@ -44,7 +44,7 @@ util.scoped(function(){
           if( tmpData[ax][ay] >= 0 ){
             
             // CALCULATE ATTACKABLE TILES
-            model.attackRangeMod_( unitId, ax, ay, selection, true );
+            model.battle_calculateTargets( unitId, ax, ay, selection, true );
           }
         }
       }
