@@ -6,9 +6,7 @@ This folder holds the animations for destroying objects within the game world. I
 
 ## Unit
 
-UNIT_AIR - Holds the air explosion for units
-UNIT_LAND - Holds the ground explosion for units
-UNIT_SEA - Holds the sea explosion for units
-UNIT_DUST - Holds the dust trail animtion for units
-
-
+UNIT_AIR - Holds the air explosion for units  
+UNIT_LAND - Holds the ground explosion for units  
+UNIT_SEA - Holds the sea explosion for units  
+UNIT_DUST - Holds the dust trail animation for units  
