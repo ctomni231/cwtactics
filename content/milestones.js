@@ -148,7 +148,7 @@ PAGE_DATA.milestones = [
     subHeaderB: "",
     
     img: "images/milestones/milestone2_69.png",
-    link: "https://www.dropbox.com/s/v19tjt1asjkobe8/M2_69.zip",
+    link: "https://code.google.com/p/cwtactics/downloads/detail?name=cwpages.zip",
     
     text:[
       ""
@@ -173,7 +173,7 @@ PAGE_DATA.milestones = [
     subHeaderB: "more Fixes",
     
     img: "images/milestones/milestone2_68.png",
-    link: "https://www.dropbox.com/s/wn9t34f8w35f2md/M2_68.zip",
+    link: "https://code.google.com/p/cwtactics/downloads/detail?name=cwpages.zip",
     
     text:[
       ""
@@ -211,7 +211,7 @@ PAGE_DATA.milestones = [
     subHeaderB: "and more",
     
     img: "images/milestones/milestone2_65.png",
-    link: "https://www.dropbox.com/s/2v617y8aduize7m/M2_65.zip",
+    link: "https://code.google.com/p/cwtactics/downloads/detail?name=cwpages.zip",
     
     text:[
       ""
@@ -246,7 +246,7 @@ PAGE_DATA.milestones = [
     subHeaderB: "Fix",
     
     img: "images/milestones/milestone2_61.png",
-    link: "https://www.dropbox.com/s/31rr0fy1rjzra46/M2_61.zip",
+    link: "https://code.google.com/p/cwtactics/downloads/detail?name=cwpages.zip",
     
     text:[
       "This first time ever in the complete history of Custom Wars Tactics... we are happy to announce the Internet Explorer 9 :D",
@@ -268,7 +268,7 @@ PAGE_DATA.milestones = [
     subHeaderB: "Standing",
     
     img: "images/milestones/milestone2_6.png",
-    link: "https://www.dropbox.com/s/6f42j5puf5z8yb7/M2_6.zip",
+    link: "https://code.google.com/p/cwtactics/downloads/detail?name=cwpages.zip",
     
     text:[
       "This is the last release of the alpha phase. The next release will officially starting the beta phase of Custom Wars Tactics. Instead of the naming schema Milestone X we using a new versioning schema. The next release will be Custom Wars Tactics 0.3 Beta.",
@@ -324,7 +324,7 @@ PAGE_DATA.milestones = [
     subHeaderB: "War",
     
     img: "images/milestones/milestone2_4.png",
-    link: "https://www.dropbox.com/s/aegfqmroa283qkv/M2_4.zip",
+    link: "https://code.google.com/p/cwtactics/downloads/detail?name=cwpages.zip",
     
     text:[
       "It will include the fog of war system.",
@@ -347,7 +347,7 @@ PAGE_DATA.milestones = [
     subHeaderB: "Fixes",
     
     img: "images/milestones/milestone2_2.png",
-    link: "https://www.dropbox.com/s/es0vucyopvwvnxl/M2_2.zip",
+    link: "https://code.google.com/p/cwtactics/downloads/detail?name=cwpages.zip",
     
     text:[
       "Solved the mouse control issues in firefox, but there are some coloring issues."
@@ -367,7 +367,7 @@ PAGE_DATA.milestones = [
     subHeaderB: "Fixes",
     
     img: "images/milestones/milestone2_1.png",
-    link: "https://www.dropbox.com/s/lluh17153heb9qf/M2_1.zip",
+    link: "https://code.google.com/p/cwtactics/downloads/detail?name=cwpages.zip",
     
     text:[
       "Solved some control issues and implemented a version tag in the upper left coner."
@@ -387,7 +387,7 @@ PAGE_DATA.milestones = [
     subHeaderB: "Rounds",
     
     img: "images/milestones/milestone2.png",
-    link: "https://www.dropbox.com/s/k7tqr1qmojd4ban/M2.zip",
+    link: "https://code.google.com/p/cwtactics/downloads/detail?name=cwpages.zip",
     
     text:[
       "This will be the last HTML client only milestone. The HTML client and the java client will be released in a similar state of functionality with the next milestone releases.",
@@ -409,7 +409,7 @@ PAGE_DATA.milestones = [
     subHeaderB: "visual stuff",
     
     img: "images/milestones/milestone1.png",
-    link: "https://www.dropbox.com/s/p16htogdwul3vz4/M1.zip",
+    link: "https://code.google.com/p/cwtactics/downloads/detail?name=cwpages.zip",
     
     text:[
       "The first milestone tries to build the base for the web client and the java client. It provides a nearly complete model with first logic functionalities.",
