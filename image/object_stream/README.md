@@ -16,14 +16,12 @@ Each animation is designed to play from left-to-right once in that order. The ti
 
 ## Invention
 
-BHLZ-E - (2x2) Black Hole Laser - East Fire
-BHLZ-W - (2x2) Black Hole Laser - West Fire
-BHLZ-N - (2x2) Black Hole Laser - North Fire
-BHLZ-S - (2x2) Black Hole Laser - South Fire
+BHLZ-E - (2x2) Black Hole Laser - East Fire  
+BHLZ-W - (2x2) Black Hole Laser - West Fire  
+BHLZ-N - (2x2) Black Hole Laser - North Fire  
+BHLZ-S - (2x2) Black Hole Laser - South Fire  
 
 ## Special Instructions
 
-BHLZ-E - [Place img 4 pixels further up for accurate animation]
-BHLZ-W - [Place img 4 pixels further up for accurate animation]
-
-
+BHLZ-E - [Place img 4 pixels further up for accurate animation]  
+BHLZ-W - [Place img 4 pixels further up for accurate animation]  
