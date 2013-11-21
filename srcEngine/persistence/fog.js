@@ -3,5 +3,7 @@ model.data_unitParser.addHandler(function(sheet){
 });
 
 model.data_tileParser.addHandler(function(sheet){
-  assert(util.intRange(sheet.vision,0,MAX_SELECTION_RANGE));
+  if( !util.isUndefined(sheet.vision) ){
+    assert(util.intRange(sheet.vision,0,MAX_SELECTION_RANGE));
+  }
 });

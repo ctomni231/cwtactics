@@ -8,15 +8,13 @@ view.hooksBuffer = util.createRingBuffer(50);
  */
 view.animationHooks = {};
 
-/**
- * 
- * @param {type} impl
- */
-view.registerAnimationHook = function(  impl ){
+//
+//
+view.registerAnimationHook = function( impl ){
   var key = impl.key;
   
   if( view.animationHooks.hasOwnProperty(key) ){
-    util.raiseError("animation algorithm for",key,"is already registered");
+    assert(false,"animation algorithm for",key,"is already registered");
   }
   
   view.animationHooks[ key ] = impl;

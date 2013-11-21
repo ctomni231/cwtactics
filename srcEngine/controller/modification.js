@@ -7,7 +7,7 @@ model.modification_load = function( data ){
   model.data_tileParser.parseAll(       data.tiles);
   model.data_movetypeParser.parseAll(   data.movetypes);
   model.data_unitParser.parseAll(       data.units);
-  model.data_fractionParser.parseAll(   data.fractions);
+  model.data_fractionParser.parseAll(   data.fraction);
   model.data_coParser.parseAll(         data.co);
   model.data_gameModeParser.parseAll(   data.gamemode);
 

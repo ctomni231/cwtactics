@@ -1,6 +1,6 @@
 [
   {
-    "id":"AW1",
+    "ID":"AW1",
     "config":{},
     "rules":[
       {
@@ -13,7 +13,7 @@
   },
   
   {
-    "id":"AW2",
+    "ID":"AW2",
     "config":{},
     "rules":[
       {

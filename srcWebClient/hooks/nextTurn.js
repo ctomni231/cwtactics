@@ -1,9 +1,15 @@
 view.registerAnimationHook({
-  key: "nextTurn",
+  key: "round_nextTurn",
   
   prepare: function(){
-    controller.audio_playMusicForPlayer(model.round_turnOwner);
-    .showInfoMessage( model.data_localized("day")+" "+model.round_day+" - "+model.player_data[model.round_turnOwner].name );
+    //controller.audio_playMusicForPlayer(model.round_turnOwner);
+    view.showInfoMessage(
+      model.data_localized("day")+
+        " "+
+      model.round_day+
+        " - "+
+      model.player_data[model.round_turnOwner].name
+    );
   },
   
   render: function(){},
@@ -11,7 +17,7 @@ view.registerAnimationHook({
   update: function( delta ){},
   
   isDone: function(){
-    return !.hasInfoMessage();
+    return !view.hasInfoMessage();
   }
   
 });

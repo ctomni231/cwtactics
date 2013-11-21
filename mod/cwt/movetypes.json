@@ -95,15 +95,5 @@
       "REEF": -1,
       "*": 1
     }
-  },
-
-  {
-    "ID"    : "PIPELINE",
-    "sound" : null,
-    "costs" : {
-      "PIPE": 1,
-      "*": -1
-    }
   }
-
 ]

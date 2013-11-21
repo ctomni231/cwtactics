@@ -4,16 +4,6 @@ controller.screenStateMachine.structure.NONE.section = null;
 
 controller.screenStateMachine.structure.NONE.start = function(){
   if( DEBUG ) util.log("start client");
-  
-  // registers generic error listener
-	window.onerror = function( e ){
-    model.criticalError(
-      error.UNKNOWN,
-      error.NON_CAUGHT_ERROR
-    );
-      
-    console.error("FOUND ERROR: "+e);
-  };
 
   (function setupAnimationFrame(){
     if( DEBUG ) util.log("setup animation frame");

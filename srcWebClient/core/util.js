@@ -3,7 +3,7 @@
 util.singleLazyCall = function( fn ){
   var called = false;
   return function(){
-    if( called ) util.raiseError("this function cannot be called twice");
+    if( called ) assert(false,"this function cannot be called twice");
     //called = true;
     
     fn.apply( null, arguments );
@@ -14,20 +14,18 @@ util.singleLazyCall = function( fn ){
 //
 util.iterateListByFlow = function( flow, list, cb ){
 
-  // prepare loading
-  flow.andThen(function(data,b){
-    data.i    = 0;
-    data.list = list;
-  });
+  var data = {
+    i:0,list:list
+  };
 
   // load elements
   for( var i=0,e=list.length; i<e; i++ ){
-    flow.andThen(cb);
+    flow.andThen(cb,data);
   }
 
   // check some things
   flow.andThen(function(data){
     assert(list   === data.list);
     assert(data.i === data.list.length);
-  });
+  },data);
 };

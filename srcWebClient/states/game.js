@@ -1,27 +1,5 @@
 util.scoped(function(){
-    
-  function setupAnimationFrame(){
-    
-    var oldTime = new Date().getTime();
-    function looper(){
-      if( !controller.update_inGameRound ){
-        controller.screenStateMachine.event("gameHasEnded");
-        return;
-      }
-      
-      requestAnimationFrame( looper );
-      
-      var now = new Date().getTime();
-      var delta = now - oldTime;
-      oldTime = now;
-      
-      controller.gameLoop( delta );
-    }
-    
-    // ENTER LOOP
-    requestAnimationFrame( looper );
-  }
-  
+
   // -----------------------------------------------------------------------------------------------
   
   controller.screenStateMachine.structure.GAMEROUND = Object.create(controller.stateParent);

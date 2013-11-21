@@ -555,7 +555,7 @@ view.renderMap = function( scale ){
                   pic = view.getTileImageForType("ARROW_ES");
                 }
                   else{
-                    util.raiseError(
+                    assert(false,
                       "illegal move arrow state",
                       "old (",oX,",",oY,")",
                       "current (",cX,",",cY,")",

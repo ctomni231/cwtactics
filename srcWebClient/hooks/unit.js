@@ -39,10 +39,18 @@ controller.event_on("move_clearUnitPosition",function( uid ){
   var y = -unit.y;
   
   // CHECK HIDDEN, BUT VISIBLE NEIGHBOURS
-  if( model.map_isValidPosition(x-1,y) && model.unit_posData[x-1][y] ) controller.updateUnitStatus( model.unit_extractId(model.unit_posData[x-1][y]) );
-  if( model.map_isValidPosition(x+1,y) && model.unit_posData[x+1][y] ) controller.updateUnitStatus( model.unit_extractId(model.unit_posData[x+1][y]) );
-  if( model.map_isValidPosition(x,y+1) && model.unit_posData[x][y+1] ) controller.updateUnitStatus( model.unit_extractId(model.unit_posData[x][y+1]) );
-  if( model.map_isValidPosition(x,y-1) && model.unit_posData[x][y-1] ) controller.updateUnitStatus( model.unit_extractId(model.unit_posData[x][y-1]) );
+  if( model.map_isValidPosition(x-1,y) && model.unit_posData[x-1][y] ){
+    controller.updateUnitStatus( model.unit_extractId(model.unit_posData[x-1][y]) );
+  }
+  if( model.map_isValidPosition(x+1,y) && model.unit_posData[x+1][y] ){
+    controller.updateUnitStatus( model.unit_extractId(model.unit_posData[x+1][y]) );
+  }
+  if( model.map_isValidPosition(x,y+1) && model.unit_posData[x][y+1] ){
+    controller.updateUnitStatus( model.unit_extractId(model.unit_posData[x][y+1]) );
+  }
+  if( model.map_isValidPosition(x,y-1) && model.unit_posData[x][y-1] ){
+    controller.updateUnitStatus( model.unit_extractId(model.unit_posData[x][y-1]) );
+  }
 });
 
 controller.event_on("move_setUnitPosition",function( uid ){
@@ -53,6 +61,6 @@ controller.event_on("unit_hide",function( uid ){
   controller.updateUnitStatus( uid );
 });
 
-controller.event_on("ununit_hide",function( uid ){
+controller.event_on("unit_unhide",function( uid ){
   controller.updateUnitStatus( uid );
 });

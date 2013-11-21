@@ -1,1 +1,336 @@
-(function(){var e=function(e){"string"==typeof e&&(e=JSON.parse(e));for(var r=0,n=e.length;n>r;r++){var t=e[r];if(t.$set!==void 0&&"boolean"!=typeof t.$set)throw Error("rule.$set value must be a boolean");if(t.$when!==void 0){var o=t.$when;if(0!==o.length%2)throw Error("rule.$when lenght must be odd");for(var s=0,E=o.length;E>s;s+=2);}}},r=function(e,r,n,t){"number"!=typeof t&&(t=0);for(var o=0,s=e.length;s>o;o++){var E=e[o],i=E[n];if("number"==typeof i){var p=!0,u=E.$when;if(u)for(var a=0,h=u.length;h>a;a+=2){var f=r[u[a]],l=u[a+1],w=!1;if(l[0]===!0)f>=l[1]&&l[2]>=f&&(w=!0);else for(var d=0,c=l.length;c>d;d++)if(f===l[d]){w=!0;break}if(!w){p=!1;break}}p&&(E.$set&&(t=0),t+=i)}}return t};"undefined"!=typeof exports&&(exports.mapStrings=e,exports.solve=r),"undefined"!=typeof window&&(window.jsonScript||(window.jsonScript={}),window.jsonScript.mapStrings=e,window.jsonScript.solve=r)})(),function(){var e={"":["RULE"],END:["RULE",null],RULE:["WHEN","THEN"],WHEN:["SLOT","THEN"],SLOT:["IS","IN","BETWEEN"],IS:["SLOT","THEN"],IN:["SLOT","THEN"],BETWEEN:["SLOT","THEN"],THEN:["INCREASE","DECREASE","END"],INCREASE:["INCREASE","DECREASE","END"],DECREASE:["INCREASE","DECREASE","END"]},r=function(r){var n,t,o,s,E,i;i=e[""],o=[],r=r.replace(/(\r\n|\n|\r|\n|\t)/gm," "),t=r.split(" ");for(var p=0,u=t.length;u>p;p++)if(n=t[p],0!==n.length){if(-1===i.indexOf(n))throw Error(n+" token not allowed => util.expected "+JSON.stringify(i));switch(n){case"RULE":s={},o.push(s);break;case"WHEN":E=[];break;case"THEN":null!==E&&(s.$when=E,E=null);break;case"SLOT":E.push(t[p+1]),p+=1;break;case"IS":E.push([!0,t[p+1],t[p+1]]),p+=1;break;case"BETWEEN":if(E.push(t[p+1].split(",")),2!==E[E.length-1].length)throw Error("BETWEEN util.expects list with two values (lower,upper)");p+=1;break;case"IN":E.push(t[p+1].split(",")),p+=1;break;case"INCREASE":if("BY"!==t[p+2])throw Error("by util.expected after attribute but found "+t[p+2]);var a=parseInt(t[p+3],10);if("number"!=typeof a)throw Error("number util.expected by increase");s[t[p+1]]=a,p+=3;break;case"DECREASE":if("BY"!==t[p+2])throw Error("by util.expected after attribute but found "+t[p+2]);var a=-parseInt(t[p+3],10);if("number"!=typeof a)throw Error("number util.expected by decrease");s[t[p+1]]=a,p+=3;break;case"END":s=null;break;default:throw Error("unknown token => "+n)}i=e[n]}if(-1===i.indexOf(null))throw Error("end of rule defintion is not allowed");return o},n=function(e){for(var r,n,t=[],o=0,s=e.length;s>o;o++){if(r=e[o],n=Object.keys(r),t.push("RULE"),t.push("\n"),r.$when)for(var E=r.$when,i=0,p=E.length;p>i;i+=2)t.push(" SLOT"),t.push(E[i]),E[i+1][0]===!0?E[i+1][1]===E[i+1][2]?(t.push("IS"),t.push(E[i+1][1])):(t.push("BETWEEN"),t.push(E[i+1][1]+","+E[i+1][2])):(t.push("IN"),t.push(E[i+1].join(","))),t.push("\n");t.push("THEN"),t.push("\n");for(var i=0,p=n.length;p>i;i++)"$when"!==n[i]&&(0>r[n[i]]?t.push(" DECREASE"):t.push(" INCREASE"),t.push(n[i]),t.push("BY"),t.push(0>r[n[i]]?-r[n[i]]:r[n[i]]),t.push("\n"));t.push("END"),t.push("\n")}return t.join(" ")};"undefined"!=typeof exports&&(exports.compile=r,exports.decompile=n),"undefined"!=typeof window&&(window.jsonScript||(window.jsonScript={}),window.jsonScript.compile=r,window.jsonScript.decompile=n)}();
+/*
+
+ # Runtime Module
+
+ This file contains the _jsonScript_ interpreter. This file is needed to run precompiled _jsonScript_ rule lists.
+
+ */
+(function(){
+
+  /**
+   Parses a set of rules into a rule list.
+
+   @param {Array|json} data
+   @param {Function} listener will be invoked when a non numeric value will be parsed in a condition
+   @param {Array} targetList (default=[])
+   */
+  var mapStrings = function( data, listener ){
+
+    // convert data into a js object
+    if( typeof data === "string" ) data = JSON.parse(data);
+
+    // parse every rule
+    for( var ri=0,re=data.length; ri<re; ri++ ){
+      var rule = data[ri];
+
+      // check $set
+      if( typeof rule.$set !== 'undefined' && typeof rule.$set !== 'boolean' ){
+        throw Error("rule.$set value must be a boolean");
+      }
+
+      // check $when
+      if( typeof rule.$when !== 'undefined'  ){
+        var whenBlock = rule.$when;
+
+        // slot -> values
+        if( whenBlock.length%2 !== 0 ){
+          throw Error("rule.$when lenght must be odd");
+        }
+
+        for( var wi=0,we=whenBlock.length; wi<we; wi+=2 ){
+
+
+        }
+      }
+    }
+  };
+
+  /**
+   Solves an attribute by iterating all rules from a list of rules
+   in interconnection to a given memory set.
+
+   @param {Array} ruleList
+   @param {Array} memory
+   @param {String} attrName
+   @param {Number} value (default=0)
+   */
+  var solve = function( ruleList, memory, attrName, value ){
+    if( typeof value !== 'number' ) value = 0;
+
+    for( var i=0,e=ruleList.length; i<e; i++ ){
+      var rule = ruleList[i];
+      var attrVal = rule[attrName];
+      if( typeof attrVal === "number" ){
+
+        var ruleSolvesTrue = true;
+        var list = rule.$when;
+        if( list ){
+
+          for( var li=0,le=list.length; li<le; li+=2 ){
+            var slot = memory[list[li]];
+            var check = list[li+1];
+
+            var attrSolvesTrue = false;
+
+            if( check[0] === true ){
+              if( slot >= check[1] && slot <= check[2] ){
+                attrSolvesTrue = true;
+              }
+            }
+            else{
+              for( var ci=0,ce=check.length; ci<ce; ci++ ){
+                if( slot === check[ci] ){
+                  attrSolvesTrue = true;
+                  break;
+                }
+              }
+            }
+
+            if(!attrSolvesTrue){
+              ruleSolvesTrue = false;
+              break;
+            }
+          }
+        }
+
+        if( ruleSolvesTrue ){
+          if( rule.$set ) value = 0;
+
+          value += attrVal;
+        }
+      }
+    }
+
+    // RETURN RESULT
+    return value;
+  };
+
+  // NodeJS/AMD export
+  if( typeof exports !== 'undefined' ){
+    exports.mapStrings 	= mapStrings;
+    exports.solve 			= solve;
+  }
+
+  // Browser export
+  if( typeof window !== 'undefined' ){
+    if( !window.jsonScript ) window.jsonScript = {};
+    window.jsonScript.mapStrings 	= mapStrings;
+    window.jsonScript.solve 			= solve;
+  }
+
+})();/*
+
+ # Compiler Module
+
+ This file contains the _jsonScript_ compiler. Normally the compiler is not needed when the target environment only wants to run precompiled _jsonScript_ rules. Include this file into your Mod SDK to allow simple string representations of your scripts.
+
+ */
+(function(){
+
+  var SYNTAX = {
+    "":["RULE"],
+    "END":["RULE",null],
+    "RULE":["WHEN","THEN"],
+    "WHEN":["SLOT","THEN"],
+    "SLOT":["IS","IN","BETWEEN"],
+    "IS":["SLOT","THEN"],
+    "IN":["SLOT","THEN"],
+    "BETWEEN":["SLOT","THEN"],
+    "THEN":["INCREASE","DECREASE","END"],
+    "INCREASE":["INCREASE","DECREASE","END"],
+    "DECREASE":["INCREASE","DECREASE","END"]
+  };
+
+
+  /**
+   Compiles a given string to an _jsonScript_ compatible rule list. The generated rule is fully compatible to the JSON specification. This means you can serialize and deserialize it with the JSON object.
+
+   @example
+
+   Syntax:
+   $RULE 					:= (RULE) $CONDITIONBLOCK (THEN) $ACTION{1,*} (END)
+   $CONDITIONBLOCK := (WHEN) $CONDITION{1,*}
+   $CONDITION 			:= (SLOT) $LITERAL ($IS|$IN|$BETWEEN)
+   $IS							:= (IS) $LITERAL
+   $IN							:= (IN) $LITERAL([,]$LITERAL){0,*}
+   $BETWEEN				:= (BETWEEN) $NUMBER[,]$NUMBER
+   $ACTION					:= (INCREASE|DECREASE) $LITERAL (BY) $NUMBER
+   $NUMBER					:= [0-9]
+   $LITERAL				:= [A-Za-z0-9]
+
+   Example:
+   RULE
+   WHEN
+   SLOT X IS Y
+   SLOT Z IN A,B,C
+   SLOT W BETWEEN 0,10
+   THEN
+   INCREASE attrA BY 10
+   DECREASE attrB BY 1
+   END
+   */
+  var compile = function( text ){
+    var token, tokens, list, curRule, curWhen, next;
+
+    next = SYNTAX[""];
+    list = [];
+    text = text.replace(/(\r\n|\n|\r|\n|\t)/gm," ");
+    tokens = text.split(" ");
+
+    for( var ti=0,te=tokens.length; ti<te; ti++ ){
+      token = tokens[ti];
+
+      // ignore this empty strings
+      if( token.length === 0 ) continue;
+
+      // check next
+      if( next.indexOf( token ) === -1 ) throw Error(token+" token not allowed => expected "+JSON.stringify(next) );
+
+      switch( token ){
+
+        case "RULE":
+          curRule = {};
+          list.push(curRule);
+          break;
+
+        case "WHEN":
+          curWhen = [];
+          break;
+
+        case "THEN":
+          if( curWhen !== null ){
+            curRule.$when = curWhen;
+            curWhen = null;
+          }
+          break;
+
+        case "SLOT":
+          curWhen.push(tokens[ti+1]);
+          ti += 1;
+          break;
+
+        case "IS":
+          curWhen.push([true,tokens[ti+1],tokens[ti+1]]);
+          ti += 1;
+          break;
+
+        case "BETWEEN":
+          curWhen.push( tokens[ti+1].split(",") );
+          if( curWhen[curWhen.length-1].length !== 2 ) throw Error("BETWEEN expects list with two values (lower,upper)");
+          ti += 1;
+          break;
+
+        case "IN":
+          curWhen.push( tokens[ti+1].split(",") );
+          ti += 1;
+          break;
+
+        case "INCREASE":
+          if( tokens[ti+2] !== "BY" ) throw Error("by expected after attribute but found "+tokens[ti+2]);
+          var value = parseInt( tokens[ti+3], 10 );
+          if( typeof value !== 'number' ) throw Error("number expected by increase");
+          curRule[tokens[ti+1]] = value;
+          ti += 3;
+          break;
+
+        case "DECREASE":
+          if( tokens[ti+2] !== "BY" ) throw Error("by expected after attribute but found "+tokens[ti+2]);
+          var value = -parseInt( tokens[ti+3], 10 );
+          if( typeof value !== 'number' ) throw Error("number expected by decrease");
+          curRule[tokens[ti+1]] = value;
+          ti += 3;
+          break;
+
+        case "END":
+          curRule = null;
+          break;
+
+        default: throw Error("unknown token => "+token);
+      }
+
+      next = SYNTAX[token];
+    }
+
+    if( next.indexOf(null) === -1 ) throw Error("end of rule defintion is not allowed");
+
+    return list;
+  };
+
+  /**
+   Decompiles a given _jsonScript_ compatible rule list back to a string.
+
+   @example
+
+   [{ $when:["A",["C"]], attrA:+1 }] -> RULE WHEN A IS C THEN INCREASE attrA BY 1 END
+   */
+  var decompile = function( ruleList ){
+    var rule,keys;
+    var tokens = [];
+
+    for( var ri=0,re=ruleList.length; ri<re; ri++ ){
+      rule = ruleList[ri];
+      keys = Object.keys( rule );
+
+      tokens.push("RULE");
+      tokens.push("\n");
+
+      if( rule.$when ){
+        var when = rule.$when;
+        for( var ki=0,ke=when.length; ki<ke; ki+=2 ){
+          tokens.push(" SLOT");
+          tokens.push(when[ki]);
+
+          if( when[ki+1][0] === true ){
+            if( when[ki+1][1] === when[ki+1][2] ){
+              tokens.push("IS");
+              tokens.push( when[ki+1][1] );
+            }
+            else{
+              tokens.push("BETWEEN");
+              tokens.push( when[ki+1][1]+","+when[ki+1][2] );
+            }
+          }
+          else{
+            tokens.push("IN");
+            tokens.push( when[ki+1].join(",") );
+          }
+          tokens.push("\n");
+        }
+      }
+
+      tokens.push("THEN");
+      tokens.push("\n");
+
+      for( var ki=0,ke=keys.length; ki<ke; ki++ ){
+        if( keys[ki] === "$when" ) continue;
+        else{
+          if( rule[keys[ki]] < 0 ) tokens.push(" DECREASE");
+          else tokens.push(" INCREASE");
+          tokens.push( keys[ki] );
+          tokens.push("BY");
+          tokens.push( (rule[keys[ki]]<0)? -rule[keys[ki]] : rule[keys[ki]] );
+          tokens.push("\n");
+        }
+      }
+
+      tokens.push("END");
+      tokens.push("\n");
+    }
+
+    return tokens.join(" ");
+  }
+
+  // NodeJS/AMD export
+  if( typeof exports !== 'undefined' ){
+    exports.compile 	= compile;
+    exports.decompile = decompile;
+  }
+
+  // Browser export
+  if( typeof window !== 'undefined' ){
+    if( !window.jsonScript ) window.jsonScript = {};
+    window.jsonScript.compile 	= compile;
+    window.jsonScript.decompile = decompile;
+  }
+
+})();

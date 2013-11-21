@@ -1,76 +1,44 @@
-controller.mapList = [];
+controller.loadMaps_load_ = function(path,baton){
+  baton.take();
 
-/**
- * 
- */
-controller.loadMaps = util.singleLazyCall(function( err, masterbaton ){
-  if( err ){
-    if( DEBUG ) util.log("break at load maps due error from previous inits");
-    return masterbaton.pass(true);
-  }
-  
+  controller.storage_maps.exists(path,function(exits){
+    if( !exits ){
+      if( DEBUG ) util.log("going to cache map "+path);
+
+      util.grabRemoteFile({
+        path: model.data_assets.maps + "/" + file + ".json",
+        json: true,
+
+        error: function( msg ){
+          baton.drop(msg);
+        },
+
+        success: function( resp ){
+          controller.storage_maps.set(path,resp,function(){
+            if( DEBUG ) util.log("cached map "+path);
+          });
+          baton.pass();
+        }
+      });
+    }
+    else baton.pass();
+  })
+};
+
+controller.loadMaps_doIt = util.singleLazyCall(function( p,baton ){
   if( DEBUG ) util.log("loading maps");
-  masterbaton.take();
-  
-  var cStep = 0;
-  var maps = model.data_maps;
-  
-  function loadMap( pipe, baton ){
-    
-    // ERROR
-    if( pipe === true ) return true;
-    
-    baton.take();
-    
-    var map = maps[cStep];
-    controller.storage.get( map, function( obj ){
-      
-      // DOES NOT EXISTS
-      if( obj === null ){
-        util.grabRemoteFile({
-          path:map,
-          json:true,
-          error: function( msg ){ 
-            controller.loadFault( msg ,baton);
-          }, 
-          success: function( response ){
-            if( constants.DEBUG ) util.log("map grabbed, saving as",map);
-            
-            // SAVE GRABBED DATA
-            controller.storage.set( map , response, function(){
-              cStep++;
-              controller.mapList.push({name:response.name, key:map});
-              baton.pass();
-            });
-          }
-        });
-      }
-      // DOES EXISTS
-      else{
-        cStep++;
-        controller.mapList.push({name:obj.value.name, key:map});
-        baton.pass();
-      }
-    });
-  }
-  
-  // CREAE WORKFLOW
-  var workflow = jWorkflow.order(function(){
-    if( DEBUG ) util.log("start loading maps");
+
+  var flow = jWorkflow.order(
+    function(){
+      baton.take();
+    })
+
+  util.iterateListByFlow(flow,model.data_maps, function(data,b){
+    controller.loadMaps_doIt(this.list[this.i],b);
   });
-  
-  // FILL STEPS
-  for( var i=0,e=maps.length; i<e; i++ ) workflow.andThen(loadMap);
-  
-  // END WORKFLOW AND START IT
-  workflow.andThen(function( pipe ){
-    if( pipe === true ){
-      if( DEBUG ) util.log("failed to load maps");
-      masterbaton.pass(true);
-    }
-    else{
-      if( DEBUG ) util.log("finished loading maps");
-      masterbaton.pass(false);
-    }
-  }).start();
+
+  flow.start(function(){
+    baton.pass();
+  });
+
 });

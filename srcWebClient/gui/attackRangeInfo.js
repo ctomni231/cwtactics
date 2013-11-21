@@ -1,8 +1,8 @@
 util.scoped(function(){
   
   var tmpData = util.matrix(  
-    constants.MAX_SELECTION_RANGE * 4 + 1, 
-    constants.MAX_SELECTION_RANGE * 4 + 1, 
+    MAX_SELECTION_RANGE * 4 + 1,
+    MAX_SELECTION_RANGE * 4 + 1,
     0 
   );
   
@@ -17,7 +17,7 @@ util.scoped(function(){
     if( unit === null ) return;
     var unitId = model.unit_extractId(unit);
     
-    if( constants.DEBUG ) util.log("show attack range information");
+    if( DEBUG ) util.log("show attack range information");
     
     var selection = controller.stateMachine.data.selection;
     
@@ -56,7 +56,7 @@ util.scoped(function(){
   controller.hideAttackRangeInfo = function(){
     if( !controller.attackRangeVisible ) return;
     
-    if( constants.DEBUG ) util.log("hide attack range information");
+    if( DEBUG ) util.log("hide attack range information");
     view.markSelectionMapForRedraw( controller.stateMachine.data );
     
     controller.attackRangeVisible = false;

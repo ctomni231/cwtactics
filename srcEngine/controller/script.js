@@ -94,12 +94,12 @@ controller.buildRoundConfig = function( cfg ){
       value = cfg[key];
       
       // CHECK MIN MAX
-      if( value < boundaries[key].min ) util.raiseError(key,"is greater than it's minimum value");
-      if( value > boundaries[key].max ) util.raiseError(key,"is greater than it's maximum value");
+      if( value < boundaries[key].min ) assert(false,key,"is greater than it's minimum value");
+      if( value > boundaries[key].max ) assert(false,key,"is greater than it's maximum value");
       
       // CHECK STEP
       if( boundaries[key].hasOwnProperty("step") ){
-        if( value % boundaries[key].step !== 0 ) util.raiseError(key,"is does not fits one of it's possible values");
+        if( value % boundaries[key].step !== 0 ) assert(false,key,"is does not fits one of it's possible values");
       }
     }
     else value = boundaries[key].defaultValue;
@@ -192,7 +192,7 @@ util.scoped(function(){
       if( value < bounds[0] ) value = bounds[0];
       else if( value > bounds[1] ) value = bounds[1];
         }
-    else util.raiseError("no boundaries given for "+attrName);
+    else assert(false,"no boundaries given for "+attrName);
     
     // RETURN RESULT
     return value;
@@ -206,7 +206,7 @@ util.scoped(function(){
   // @returns {Number}
   //   
   controller.scriptedValue = function( pid, attr, value ){
-    if( typeof value !== "number" ) util.raiseError("numberic value as parameter value util.expected");
+    if( typeof value !== "number" ) assert(false,"numberic value as parameter value util.expected");
     var tags = controller.scriptTags;
     
     // GLOBAL RULES

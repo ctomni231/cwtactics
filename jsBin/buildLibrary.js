@@ -8,16 +8,20 @@ exports.DIST_DIR = "dist/nightly/";
 exports.UGLIFY_CMD =  "uglifyjs "+
                       "$SOURCE_DIR$ "+
                       "-o "+exports.DIST_DIR+"$TARGET_NAME$.js "+
-                      "--source-map "+exports.DIST_DIR+"$TARGET_NAME$-source-map.js "+
-                      "--source-map-root localhost "+
-                      "-m "+
+                      //"--source-map $TARGET_SOURCE_NAME$-source-map.js "+
+                      //"--source-map-root http://localhost:8000/ "+
                       "-d $DEFINE$ "+
-                      "-c "+
+                      "$COMPRESS$ "+
                       "--screw-ie8 ";
 
-exports.doCommand = function( cmd ){
+exports.doCommand = function( cmd,cb ){
   console.log( "EXEC:\n"+cmd+"\n" );
-  exec( cmd );
+  exec( cmd , function(error, stdout, stderr){
+    console.log( ' stdout: ' + stdout);
+    console.log( ' stderr: ' + stderr);
+    console.log( "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
+    if( cb ) cb();
+  });
 };
 
 exports.createFolder = function( path ) {
@@ -92,4 +96,8 @@ exports.fileCopy = function( src, target ){
     var fout = fs.openSync( target, 'w+');
     fs.writeSync(fout, fin);
   }
+};
+
+exports.deleteFile = function( path ){
+  fs.unlinkSync(path);
 };

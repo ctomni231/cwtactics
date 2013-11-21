@@ -367,11 +367,11 @@ model.battle_invokeBattle = function( attId, defId, attLuckRatio, defLuckRatio )
     "start battle between",
     attId,
     "luck(",
-    attLuckRatio
+    attLuckRatio,
     ") and",
     defId,
     "luck(",
-    defLuckRatio
+    defLuckRatio,
     ")"
   );
   

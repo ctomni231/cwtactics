@@ -1,2 +1,13 @@
-DEBUG=true,
-MOD_PATH="localhost:8000/cwt/mod/cwt/"
+var INACTIVE_ID=-1;
+var DESELECT_ID=-2;
+var ACTIONS_BUFFER_SIZE=200;
+var MAX_PLAYER=4;
+var MAX_MAP_WIDTH=100;
+var MAX_MAP_HEIGHT=100;
+var MAX_UNITS_PER_PLAYER=50;
+var MAX_PROPERTIES=300;
+var MAX_SELECTION_RANGE=15;
+var MAX_BUFFER_SIZE=200;
+var VERSION="0.3.5";
+var DEBUG=true;
+var MOD_PATH="http://localhost:8000/mod/cwt/"

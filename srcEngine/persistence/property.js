@@ -1,8 +1,3 @@
-// some specs
-model.property_specCaptures = util.expect.intRange(1,10);
-model.property_specPoints = util.expect.intRange(1,100);
-model.property_specFunds = util.expect.intRange(10,99999);
-
 model.data_unitParser.addHandler( function( sheet ){
   if( !util.isUndefined(sheet.captures) ){
     assert( util.intRange(sheet.captures,1,10) );

@@ -1,7 +1,7 @@
 model.data_movetypeParser.addHandler( function( sheet ){
   var keys,key, i,value;
 
-  assert( Array.isArray( sheet.costs ) );
+  assert( util.isObject( sheet.costs ) );
   keys  = Object.keys( sheet.costs );
   i     = keys.length;
   while( i-- ){

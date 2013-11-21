@@ -24,7 +24,7 @@ controller.action_define_ = function( impl ){
   // check action parameters
   assert( impl.hasOwnProperty( "key" ) );
   assert( impl.hasOwnProperty( "invoke" ) );
-  assert( controller.action_objects.hasOwnProperty( impl.key ) );
+  assert( !controller.action_objects.hasOwnProperty( impl.key ) );
 
   if( !impl.hasOwnProperty( "prepareMenu" )       ) impl.prepareMenu = null;
   if( !impl.hasOwnProperty( "prepareTargets" )    ) impl.prepareTargets = null;
@@ -156,7 +156,6 @@ util.scoped( function(){
   // Registers an invokable command.
   //
   controller.action_registerCommands = function( name ){
-    assert( util.isFunction( model[name] ) );
 
     // register function name
     controller.action_map[id.toString()]  = name;

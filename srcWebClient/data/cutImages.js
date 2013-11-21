@@ -53,7 +53,7 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
     
     // ----------------------------------------------------------------------
     
-    if( constants.DEBUG ){ util.log("crop unit commands into single types"); }
+    if( DEBUG ){ util.log("crop unit commands into single types"); }
     
     var unitTypes = imageData.units;
     for( var i=0,e=unitTypes.length; i<e; i++ ){

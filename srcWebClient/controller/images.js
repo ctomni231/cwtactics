@@ -124,7 +124,7 @@ view.setImageForType = function( image, type, state, color ){
       view.CodeUpview[color][type]           = image;
       break;
 
-    default: util.raiseError("unknown image state code ",state );
+    default: assert(false,"unknown image state code ",state );
   }
 };
 
@@ -187,7 +187,7 @@ view.getImageForType = function( type, code, color ){
     case view.IMAGE_CODE_STATELESS :
       return view.CodeStatelessview[color][type];
 
-    default: util.raiseError("unknown image state code ",code );
+    default: assert(false,"unknown image state code ",code );
   }
 };
 

@@ -41,6 +41,12 @@ util.isFunction = function(value){
   return ( typeof value === "function" );
 };
 
+// True when value is an object.
+//
+util.isObject = function(value){
+  return typeof value === "object";
+};
+
 // True when value is an integer.
 //
 util.isInt = function(value){

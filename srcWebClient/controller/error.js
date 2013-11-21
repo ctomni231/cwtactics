@@ -1,8 +1,8 @@
 util.scoped(function(){
 
-	var errorPanel = document.getElementById("cwt_errorPanel");
-	var reason = document.getElementById("cwt_errorPanel_reason");
-	var data = document.getElementById("cwt_errorPanel_data");
+	var errorPanel  = document.getElementById("cwt_errorPanel");
+  var header      = document.getElementById("cwt_errorPanel_reason");
+  var stack       = document.getElementById("cwt_errorPanel_data");
 
 	controller.errorButtons = controller.generateButtonGroup( 
 	 	errorPanel,
@@ -13,15 +13,15 @@ util.scoped(function(){
 
 	controller.errorPanelVisible = false;
 
-	controller.showErrorPanel = function(errorId, errorData, stackData){
-	  	errorPanel.style.display = "block";
-	  	reason.innerHTML = errorId;
-	  	data.innerHTML = errorData;
-	  	controller.errorPanelVisible = true;
+	controller.showErrorPanel = function(msg,stackData){
+    stack.innerHTML               = stackData;
+    header.innerHTML              = msg;
+    errorPanel.style.display      = "block";
+    controller.errorPanelVisible  = true;
 	};
 
 	controller.hideErrorPanel = function(){
-	  	errorPanel.style.display = "none";
-		controller.errorPanelVisible = false;
+	  errorPanel.style.display      = "none";
+    controller.errorPanelVisible  = false;
 	};
 });

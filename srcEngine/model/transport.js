@@ -39,7 +39,7 @@ model.transport_loadInto = function( loadId, transportId ){
   assert( model.unit_isValidUnitId(transportId) );
   
 	if( !model.transport_canLoadUnit( loadId, transportId ) ){
-		util.raiseError("transporter unit",transportId,"cannot load unit",loadId);
+		assert(false,"transporter unit",transportId,"cannot load unit",loadId);
 	}
 	
 	model.unit_data[ loadId ].loadedIn = transportId;

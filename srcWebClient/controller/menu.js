@@ -85,7 +85,7 @@ util.scoped(function(){
    * @param {type} y
    */
   controller.showMenu = function( menu, x, y ){
-    if( constants.DEBUG ) util.log("opening GUI menu");
+    if( DEBUG ) util.log("opening GUI menu");
     
     var tileSize = TILE_LENGTH*controller.screenScale;
     
@@ -156,7 +156,7 @@ util.scoped(function(){
    *
    */
   controller.hideMenu = function(){
-    if( constants.DEBUG ) util.log("closing GUI menu");
+    if( DEBUG ) util.log("closing GUI menu");
     
     menuEntryListElement.children[ controller.menuCursorIndex ].className = "";
     
@@ -175,7 +175,7 @@ util.scoped(function(){
   
   controller.registerMenuRenderer = function( key, renderer ){
     if( menuRenderer.hasOwnProperty( key ) ){
-      util.raiseError("renderer for",key,"is already registered");
+      assert(false,"renderer for",key,"is already registered");
     }
     
     menuRenderer[ key ] = renderer;

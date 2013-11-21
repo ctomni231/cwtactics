@@ -1,3 +1,140 @@
-var jWorkflow=function(){return{order:function(j,k){var f=[],g,h=null,i=function(){var a=false;return{take:function(){a=true},pass:function(b){var c;a=false;g.length?(c=g.shift(),b=c.func.apply(c.context,[b,i]),a||i.pass(b)):h.func&&h.func.apply(h.context,[b])},drop:function(b){a=true;g=[];setTimeout(function(){i.pass(b)},1)}}}(),e={andThen:function(a,b){if(typeof a.andThen==="function"&&typeof a.start==="function"&&typeof a.chill==="function")f.push({func:function(c,d){d.take();a.start({callback:function(a){d.pass(a)},
-context:b,initialValue:c})},context:b});else if(a.map&&a.reduce)f.push({func:function(b,d){d.take();var f=a.length,g=function(){return--f||d.pass()};a.forEach(function(a){jWorkflow.order(a).start(g)})},context:b});else{if(typeof a!=="function")throw"util.expected function but was "+typeof a;f.push({func:a,context:b})}return e},chill:function(a){return e.andThen(function(b,c){c.take();setTimeout(function(){c.pass(b)},a)})},start:function(a,b){var c,d,e;a&&typeof a==="object"?(c=a.callback,d=a.context,e=
-a.initialValue):(c=a,d=b);h={func:c,context:d};g=f.slice();i.pass(e)}};return j?e.andThen(j,k):e}}}();if(typeof module==="object"&&typeof require==="function")module.exports=jWorkflow;
+// jWorkflow.js
+// (c) 2010 tinyHippos inc.
+// jWorkflow is freely distributable under the terms of the MIT license.
+// Portions of jWorkflow are inspired by Underscore.js
+var jWorkflow = (function () {
+  function _valid(func) {
+    if (typeof(func) !== 'function') {
+      throw "expected function but was " + typeof(func);
+    }
+  }
+
+  function _isWorkflow(func) {
+    return typeof func.andThen === 'function' &&
+      typeof func.start === 'function' &&
+      typeof func.chill === 'function';
+  }
+
+  function _isArray(func) {
+    return !!func.map && !!func.reduce;
+  }
+
+  var transfunctioner =  {
+    order: function (func, context) {
+      var _workflow = [],
+        _tasks,
+        _callback = null,
+        _baton = (function () {
+          var _taken = false;
+          return {
+
+            take: function () {
+              _taken = true;
+            },
+
+            pass: function (result) {
+              var task;
+              _taken = false;
+
+              if (_tasks.length) {
+                task = _tasks.shift();
+                result = task.func.apply(task.context, [result, _baton]);
+
+                if (!_taken) {
+                  _baton.pass(result);
+                }
+              }
+              else {
+                if (_callback.func) {
+                  _callback.func.apply(_callback.context, [result]);
+                }
+              }
+            },
+
+            drop: function (result) {
+              _taken = true;
+              _tasks = [];
+              setTimeout(function () {
+                _baton.pass(result);
+              }, 1);
+            }
+          };
+        }()),
+        _self = {
+
+          andThen: function (func, context) {
+            if (_isWorkflow(func)) {
+              var f = function (prev, baton) {
+                baton.take();
+                func.start({
+                  callback: function (result) {
+                    baton.pass(result);
+                  },
+                  context: context,
+                  initialValue: prev
+                });
+              };
+              _workflow.push({func: f, context: context});
+            }
+            else if (_isArray(func)) {
+              var orch = function (prev, baton) {
+                baton.take();
+
+                var l = func.length,
+                  join = function () {
+                    return --l || baton.pass();
+                  };
+
+                func.forEach(function (f) {
+                  jWorkflow.order(f).start(join);
+                });
+              };
+              _workflow.push({func: orch, context: context});
+            }
+            else {
+              _valid(func);
+              _workflow.push({func: func, context: context});
+            }
+            return _self;
+          },
+
+          chill: function (time) {
+            return _self.andThen(function (prev, baton) {
+              baton.take();
+              setTimeout(function () {
+                baton.pass(prev);
+              }, time);
+            });
+          },
+
+          start: function () {
+            var callback,
+              context,
+              initialValue;
+
+            if (arguments[0] && typeof arguments[0] === 'object') {
+              callback = arguments[0].callback;
+              context = arguments[0].context;
+              initialValue = arguments[0].initialValue;
+            }
+            else {
+              callback = arguments[0];
+              context = arguments[1];
+            }
+
+            _callback = {func: callback, context: context};
+            _tasks = _workflow.slice();
+            _baton.pass(initialValue);
+          }
+        };
+
+      return func ? _self.andThen(func, context) : _self;
+    }
+  };
+
+  return transfunctioner;
+}());
+
+if (typeof module === "object" && typeof require === "function") {
+  module.exports = jWorkflow;
+}

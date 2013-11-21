@@ -187,10 +187,6 @@ model.co_getStarCost = function( pid ){
   return cost;
 };
 
-// Specification of a co type
-//
-model.co_specCoType = [util.expect.STRING,util.expect.IS_IN,model.data_coSheets];
-
 // Sets the main CO of a player.
 //
 model.co_setMainCo = function( pid, type ){

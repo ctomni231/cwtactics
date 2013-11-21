@@ -208,7 +208,7 @@ controller.stateMachine = util.stateMachine({
 				this.data.menu.clean();
 				this.data.action.object.prepareMenu( this.data );
 				if( this.data.menu.size === 0 ){        
-					util.raiseError("sub menu cannot be empty");
+					assert(false,"sub menu cannot be empty");
 				}
 			}
 		},

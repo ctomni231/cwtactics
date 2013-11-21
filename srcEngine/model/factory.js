@@ -10,7 +10,7 @@ model.factory_produceUnit = function( x, y, type ){
   if( DEBUG ) util.log("factory at postion (",x,",",y,") produces a",type);
   
   assert( model.map_isValidPosition(x,y) );
-  assert( model.data_unitSheets.hasOwnProperty(type)));
+  assert( model.data_unitSheets.hasOwnProperty(type));
 
 	// get factory object
 	var prop = model.property_posMap[x][y];

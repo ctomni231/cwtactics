@@ -27,10 +27,6 @@ model.property_data = util.list( MAX_PROPERTIES + 1, function(){
     type: null
   };
 } );
- 
-// Specification of a property id.
-//
-model.property_specPropId = [util.expect.INT,util.expect.GE,0,util.expect.LE,MAX_PROPERTIES-1];
 
 // Holds all properties by their position.
 //
@@ -45,10 +41,9 @@ model.property_isValidPropId = function( prid ){
 // Returns true if there is an unit with a given relationship on a tile at a given position (x,y).
 // 
 model.property_thereIsAProperty = function( x,y,pid,mode ){
-	util.expect( model.map_specPosX, x );
-  util.expect( model.map_specPosY, y );
-  util.expect( model.player_specPlayerId, pid );
-	
+  assert( model.map_isValidPosition(x,y) );
+  assert( model.player_isValidPid(pid) );
+
 	var property = model.property_posMap[x][y];
 	return property !== null && model.player_getRelationship(pid,property.owner) === mode;
 };
@@ -56,8 +51,7 @@ model.property_thereIsAProperty = function( x,y,pid,mode ){
 // Returns a property object by its position or null.
 //
 model.property_getByPos = function( x, y ){
-	util.expect( model.map_specPosX, x );
-  util.expect( model.map_specPosY, y );
+  assert( model.map_isValidPosition(x,y) );
   
   return model.property_posMap[x][y];
 };
@@ -65,8 +59,7 @@ model.property_getByPos = function( x, y ){
 // Returns true if the tile at position x,y is a property, else false.
 //
 model.property_isPropertyAtTile = function( x, y ){
-	util.expect( model.map_specPosX, x );
-  util.expect( model.map_specPosY, y );
+  assert( model.map_isValidPosition(x,y) );
   
   return model.property_getByPos( x, y ) !== null;
 };
@@ -77,7 +70,7 @@ model.property_extractId = function( property ){
   var index = model.property_data.indexOf( property );
   
   // check result index when -1 then the property object does not exists
-  util.expect( util.expect.isTrue, (index !== -1) );
+  assert( index !== -1 );
   
   return index;
 };
@@ -85,7 +78,7 @@ model.property_extractId = function( property ){
 // Counts all properties owned by the player with the given player id.
 //
 model.property_countProperties = function( pid ){
-  util.expect( model.player_specPlayerId, pid );
+  assert( model.player_isValidPid(pid) );
   
   var n = 0;
   
@@ -104,10 +97,10 @@ model.property_countProperties = function( pid ){
 // 
 model.property_capture = function( cid, prid ){
   if( DEBUG ) util.log( "unit",cid,"capturing property",cid );
-  
-  util.expect( model.property_specPropId, prid );
-  util.expect( model.specUnitId, cid );
-  
+
+  assert( model.property_isValidPropId(prid) );
+  assert( model.unit_isValidUnitId(cid) );
+
   var selectedUnit  = model.unit_data[cid];
   var property      = model.property_data[prid];
   var points        = parseInt( selectedUnit.hp / 10, 10 ) + 1;
@@ -151,7 +144,7 @@ model.property_capture = function( cid, prid ){
 // Resets the capture points of a property object
 //
 model.property_resetCapturePoints = function( prid ){
-  util.expect( model.property_specPropId, prid );
+  assert( model.property_isValidPropId(prid) );
   
   model.property_data[prid].capturePoints = 20;
   
@@ -162,22 +155,18 @@ model.property_resetCapturePoints = function( prid ){
 // no capturing unit ) false.
 //
 model.property_isCapturableBy = function( prid, captId ){
-  util.expect( model.property_specPropId, prid );
-  util.expect( model.specUnitId, captId );
+  assert( model.property_isValidPropId(prid) );
+  assert( model.unit_isValidUnitId(captId) );
   
   return model.property_data[prid].type.points > 0 && 
           model.unit_data[captId].type.captures > 0;
 };
 
-// Specification of a tile type.
-//
-model.property_specTileType = [util.expect.STRING,util.expect.PROP_OF,model.data_tileSheets];
-
 // Changes the type of a property object.
 //
 model.property_changeType = function( prid, type ){
-  util.expect( model.property_specPropId, prid );
-  util.expect( model.property_specTileType, type );
+  assert( model.property_isValidPropId(prid) );
+  assert( model.data_propertyTypes.indexOf(type) !== -1 );
   
   model.property_data[prid].type = type;
   

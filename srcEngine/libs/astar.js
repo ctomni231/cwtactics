@@ -1,14 +1,336 @@
 // javascript-astar
 // http://github.com/bgrins/javascript-astar
 // Freely distributable under the MIT License.
-// Implements the astar search algorithm in javascript using a binary heap.
-// Includes Binary Heap (with modifications) from Marijn Haverbeke. 
+// Includes Binary Heap (with modifications) from Marijn Haverbeke.
 // http://eloquentjavascript.net/appendix2.html
 
-var GraphNodeType={OPEN:1,WALL:-1};function Graph(a){for(var b=[],d=0;d<a.length;d++){b[d]=[];for(var e=0,c=a[d];e<c.length;e++)b[d][e]=new GraphNode(d,e,c[e])}this.input=a;this.nodes=b}Graph.prototype.toString=function(){for(var a="\n",b=this.nodes,d,e,c,f,h=0,k=b.length;h<k;h++){d="";e=b[h];c=0;for(f=e.length;c<f;c++)d+=e[c].type+" ";a=a+d+"\n"}return a};function GraphNode(a,b,d){this.data={};this.x=a;this.y=b;this.pos={x:a,y:b};this.type=d}
-GraphNode.prototype.toString=function(){return"["+this.x+" "+this.y+"]"};GraphNode.prototype.isWall=function(){return this.type==GraphNodeType.WALL};function BinaryHeap(a){this.content=[];this.scoreFunction=a}
-BinaryHeap.prototype={push:function(a){this.content.push(a);this.sinkDown(this.content.length-1)},pop:function(){var a=this.content[0],b=this.content.pop();0<this.content.length&&(this.content[0]=b,this.bubbleUp(0));return a},remove:function(a){var b=this.content.indexOf(a),d=this.content.pop();b!==this.content.length-1&&(this.content[b]=d,this.scoreFunction(d)<this.scoreFunction(a)?this.sinkDown(b):this.bubbleUp(b))},size:function(){return this.content.length},rescoreElement:function(a){this.sinkDown(this.content.indexOf(a))},
-sinkDown:function(a){for(var b=this.content[a];0<a;){var d=(a+1>>1)-1,e=this.content[d];if(this.scoreFunction(b)<this.scoreFunction(e))this.content[d]=b,this.content[a]=e,a=d;else break}},bubbleUp:function(a){for(var b=this.content.length,d=this.content[a],e=this.scoreFunction(d);;){var c=a+1<<1,f=c-1,h=null;if(f<b){var k=this.scoreFunction(this.content[f]);k<e&&(h=f)}c<b&&this.scoreFunction(this.content[c])<(null===h?e:k)&&(h=c);if(null!==h)this.content[a]=this.content[h],this.content[h]=d,a=h;else break}}};
-var astar={init:function(a){for(var b=0,d=a.length;b<d;b++)for(var e=0,c=a[b].length;e<c;e++){var f=a[b][e];f.f=0;f.g=0;f.h=0;f.cost=f.type;f.visited=!1;f.closed=!1;f.parent=null}},heap:function(){return new BinaryHeap(function(a){return a.f})},search:function(a,b,d,e,c){astar.init(a);c=c||astar.manhattan;e=!!e;var f=astar.heap();for(f.push(b);0<f.size();){b=f.pop();if(b===d){a=b;for(d=[];a.parent;)d.push(a),a=a.parent;return d.reverse()}b.closed=!0;for(var h=astar.neighbors(a,b,e),k=0,n=h.length;k<
-n;k++){var g=h[k];if(!g.closed&&!g.isWall()){var l=b.g+g.cost,m=g.visited;if(!m||l<g.g)g.visited=!0,g.parent=b,g.h=g.h||c(g.pos,d.pos),g.g=l,g.f=g.g+g.h,m?f.rescoreElement(g):f.push(g)}}}return[]},manhattan:function(a,b){var d=Math.abs(b.x-a.x),e=Math.abs(b.y-a.y);return d+e},neighbors:function(a,b,d){var e=[],c=b.x;b=b.y;a[c-1]&&a[c-1][b]&&e.push(a[c-1][b]);a[c+1]&&a[c+1][b]&&e.push(a[c+1][b]);a[c]&&a[c][b-1]&&e.push(a[c][b-1]);a[c]&&a[c][b+1]&&e.push(a[c][b+1]);d&&(a[c-1]&&a[c-1][b-1]&&e.push(a[c-
-1][b-1]),a[c+1]&&a[c+1][b-1]&&e.push(a[c+1][b-1]),a[c-1]&&a[c-1][b+1]&&e.push(a[c-1][b+1]),a[c+1]&&a[c+1][b+1]&&e.push(a[c+1][b+1]));return e}};
+
+var GraphNodeType = {
+  OPEN: 1,
+  WALL: 0
+};
+
+// Creates a Graph class used in the astar search algorithm.
+function Graph(grid) {
+  var nodes = [];
+
+  for (var x = 0; x < grid.length; x++) {
+    nodes[x] = [];
+
+    for (var y = 0, row = grid[x]; y < row.length; y++) {
+      nodes[x][y] = new GraphNode(x, y, row[y]);
+    }
+  }
+
+  this.input = grid;
+  this.nodes = nodes;
+}
+
+Graph.prototype.toString = function() {
+  var graphString = "\n";
+  var nodes = this.nodes;
+  var rowDebug, row, y, l;
+  for (var x = 0, len = nodes.length; x < len; x++) {
+    rowDebug = "";
+    row = nodes[x];
+    for (y = 0, l = row.length; y < l; y++) {
+      rowDebug += row[y].type + " ";
+    }
+    graphString = graphString + rowDebug + "\n";
+  }
+  return graphString;
+};
+
+function GraphNode(x,y,type) {
+  this.data = { };
+  this.x = x;
+  this.y = y;
+  this.pos = {
+    x: x,
+    y: y
+  };
+  this.type = type;
+}
+
+GraphNode.prototype.toString = function() {
+  return "[" + this.x + " " + this.y + "]";
+};
+
+GraphNode.prototype.isWall = function() {
+  return this.type == GraphNodeType.WALL;
+};
+
+
+function BinaryHeap(scoreFunction){
+  this.content = [];
+  this.scoreFunction = scoreFunction;
+}
+
+BinaryHeap.prototype = {
+  push: function(element) {
+    // Add the new element to the end of the array.
+    this.content.push(element);
+
+    // Allow it to sink down.
+    this.sinkDown(this.content.length - 1);
+  },
+  pop: function() {
+    // Store the first element so we can return it later.
+    var result = this.content[0];
+    // Get the element at the end of the array.
+    var end = this.content.pop();
+    // If there are any elements left, put the end element at the
+    // start, and let it bubble up.
+    if (this.content.length > 0) {
+      this.content[0] = end;
+      this.bubbleUp(0);
+    }
+    return result;
+  },
+  remove: function(node) {
+    var i = this.content.indexOf(node);
+
+    // When it is found, the process seen in 'pop' is repeated
+    // to fill up the hole.
+    var end = this.content.pop();
+
+    if (i !== this.content.length - 1) {
+      this.content[i] = end;
+
+      if (this.scoreFunction(end) < this.scoreFunction(node)) {
+        this.sinkDown(i);
+      }
+      else {
+        this.bubbleUp(i);
+      }
+    }
+  },
+  size: function() {
+    return this.content.length;
+  },
+  rescoreElement: function(node) {
+    this.sinkDown(this.content.indexOf(node));
+  },
+  sinkDown: function(n) {
+    // Fetch the element that has to be sunk.
+    var element = this.content[n];
+
+    // When at 0, an element can not sink any further.
+    while (n > 0) {
+
+      // Compute the parent element's index, and fetch it.
+      var parentN = ((n + 1) >> 1) - 1,
+        parent = this.content[parentN];
+      // Swap the elements if the parent is greater.
+      if (this.scoreFunction(element) < this.scoreFunction(parent)) {
+        this.content[parentN] = element;
+        this.content[n] = parent;
+        // Update 'n' to continue at the new position.
+        n = parentN;
+      }
+
+      // Found a parent that is less, no need to sink any further.
+      else {
+        break;
+      }
+    }
+  },
+  bubbleUp: function(n) {
+    // Look up the target element and its score.
+    var length = this.content.length,
+      element = this.content[n],
+      elemScore = this.scoreFunction(element);
+
+    while(true) {
+      // Compute the indices of the child elements.
+      var child2N = (n + 1) << 1, child1N = child2N - 1;
+      // This is used to store the new position of the element,
+      // if any.
+      var swap = null;
+      // If the first child exists (is inside the array)...
+      if (child1N < length) {
+        // Look it up and compute its score.
+        var child1 = this.content[child1N],
+          child1Score = this.scoreFunction(child1);
+
+        // If the score is less than our element's, we need to swap.
+        if (child1Score < elemScore)
+          swap = child1N;
+      }
+
+      // Do the same checks for the other child.
+      if (child2N < length) {
+        var child2 = this.content[child2N],
+          child2Score = this.scoreFunction(child2);
+        if (child2Score < (swap === null ? elemScore : child1Score)) {
+          swap = child2N;
+        }
+      }
+
+      // If the element needs to be moved, swap it, and continue.
+      if (swap !== null) {
+        this.content[n] = this.content[swap];
+        this.content[swap] = element;
+        n = swap;
+      }
+
+      // Otherwise, we are done.
+      else {
+        break;
+      }
+    }
+  }
+};
+
+// javascript-astar
+// http://github.com/bgrins/javascript-astar
+// Freely distributable under the MIT License.
+// Implements the astar search algorithm in javascript using a binary heap.
+
+var astar = {
+  init: function(grid) {
+    for(var x = 0, xl = grid.length; x < xl; x++) {
+      for(var y = 0, yl = grid[x].length; y < yl; y++) {
+        var node = grid[x][y];
+        node.f = 0;
+        node.g = 0;
+        node.h = 0;
+        node.cost = node.type;
+        node.visited = false;
+        node.closed = false;
+        node.parent = null;
+      }
+    }
+  },
+  heap: function() {
+    return new BinaryHeap(function(node) {
+      return node.f;
+    });
+  },
+  search: function(grid, start, end, diagonal, heuristic) {
+    astar.init(grid);
+    heuristic = heuristic || astar.manhattan;
+    diagonal = !!diagonal;
+
+    var openHeap = astar.heap();
+
+    openHeap.push(start);
+
+    while(openHeap.size() > 0) {
+
+      // Grab the lowest f(x) to process next.  Heap keeps this sorted for us.
+      var currentNode = openHeap.pop();
+
+      // End case -- result has been found, return the traced path.
+      if(currentNode === end) {
+        var curr = currentNode;
+        var ret = [];
+        while(curr.parent) {
+          ret.push(curr);
+          curr = curr.parent;
+        }
+        return ret.reverse();
+      }
+
+      // Normal case -- move currentNode from open to closed, process each of its neighbors.
+      currentNode.closed = true;
+
+      // Find all neighbors for the current node. Optionally find diagonal neighbors as well (false by default).
+      var neighbors = astar.neighbors(grid, currentNode, diagonal);
+
+      for(var i=0, il = neighbors.length; i < il; i++) {
+        var neighbor = neighbors[i];
+
+        if(neighbor.closed || neighbor.isWall()) {
+          // Not a valid node to process, skip to next neighbor.
+          continue;
+        }
+
+        // The g score is the shortest distance from start to current node.
+        // We need to check if the path we have arrived at this neighbor is the shortest one we have seen yet.
+        var gScore = currentNode.g + neighbor.cost;
+        var beenVisited = neighbor.visited;
+
+        if(!beenVisited || gScore < neighbor.g) {
+
+          // Found an optimal (so far) path to this node.  Take score for node to see how good it is.
+          neighbor.visited = true;
+          neighbor.parent = currentNode;
+          neighbor.h = neighbor.h || heuristic(neighbor.pos, end.pos);
+          neighbor.g = gScore;
+          neighbor.f = neighbor.g + neighbor.h;
+
+          if (!beenVisited) {
+            // Pushing to heap will put it in proper place based on the 'f' value.
+            openHeap.push(neighbor);
+          }
+          else {
+            // Already seen the node, but since it has been rescored we need to reorder it in the heap
+            openHeap.rescoreElement(neighbor);
+          }
+        }
+      }
+    }
+
+    // No result was found - empty array signifies failure to find path.
+    return [];
+  },
+  manhattan: function(pos0, pos1) {
+    // See list of heuristics: http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
+
+    var d1 = Math.abs (pos1.x - pos0.x);
+    var d2 = Math.abs (pos1.y - pos0.y);
+    return d1 + d2;
+  },
+  neighbors: function(grid, node, diagonals) {
+    var ret = [];
+    var x = node.x;
+    var y = node.y;
+
+    // West
+    if(grid[x-1] && grid[x-1][y]) {
+      ret.push(grid[x-1][y]);
+    }
+
+    // East
+    if(grid[x+1] && grid[x+1][y]) {
+      ret.push(grid[x+1][y]);
+    }
+
+    // South
+    if(grid[x] && grid[x][y-1]) {
+      ret.push(grid[x][y-1]);
+    }
+
+    // North
+    if(grid[x] && grid[x][y+1]) {
+      ret.push(grid[x][y+1]);
+    }
+
+    if (diagonals) {
+
+      // Southwest
+      if(grid[x-1] && grid[x-1][y-1]) {
+        ret.push(grid[x-1][y-1]);
+      }
+
+      // Southeast
+      if(grid[x+1] && grid[x+1][y-1]) {
+        ret.push(grid[x+1][y-1]);
+      }
+
+      // Northwest
+      if(grid[x-1] && grid[x-1][y+1]) {
+        ret.push(grid[x-1][y+1]);
+      }
+
+      // Northeast
+      if(grid[x+1] && grid[x+1][y+1]) {
+        ret.push(grid[x+1][y+1]);
+      }
+
+    }
+
+    return ret;
+  }
+};

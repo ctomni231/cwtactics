@@ -145,8 +145,7 @@ util.scoped(function(){
 	controller.screenStateMachine.structure.PLAYER_SETUP.section = "cwt_player_setup_screen";
 	
   controller.screenStateMachine.structure.PLAYER_SETUP.enterState = function(){
-    var mapName = this.data.mapToLoad;
-    controller.storage.get( this.data.mapToLoad, loadMap );
+    controller.storage_maps.get( this.data.mapToLoad, loadMap );
   };
   
   controller.screenStateMachine.structure.PLAYER_SETUP.UP = function(){

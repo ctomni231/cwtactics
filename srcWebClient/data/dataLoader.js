@@ -59,12 +59,12 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
       if( err ) return err;
       baton.take();
 
-      controller.storage.get("resetDataAtStart",function( obj ){
-        var  wipeOut = (obj !== null && obj.value);
-
+      controller.storage_general.get("resetDataAtStart",function( obj ){
+        var  wipeOut = (obj && obj.value === true);
         if( !wipeOut ) wipeOut = getQueryParams(document.location.search).wipeoutMod === "1";
+
         if(  wipeOut ){
-          if( constants.DEBUG ) util.log("wipe out cached data");
+          if( DEBUG ) util.log("wipe out cached data");
 
           // NUKE STORAGE
           controller.storage.clear( function(){
@@ -95,7 +95,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
     .chill(SMALL_WAIT)
 
     // **5.** load maps
-    .andThen(controller.loadMaps)
+    .andThen(controller.loadMaps_doIt)
 
     // -------------------------------------------------------------------------------------
 

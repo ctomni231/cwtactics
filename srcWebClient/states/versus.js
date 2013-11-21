@@ -12,7 +12,7 @@ util.scoped(function(){
   );
 
   function updateMapElement(){
-    mapElement.innerHTML = controller.mapList[ mapIndex ].name;
+    mapElement.innerHTML = model.data_maps[ mapIndex ];
   }
   
   // ----------------------------------------------------------------------------------------
@@ -77,19 +77,19 @@ util.scoped(function(){
     switch( btn.getActiveKey() ){
       case "versus.prevMap":
         if( mapIndex > 0 ) mapIndex--;
-        else mapIndex = controller.mapList.length-1;
+        else mapIndex = model.data_maps.length-1;
         updateMapElement();
         break;
 
       case "versus.nextMap":
-        if( mapIndex < controller.mapList.length-1 ) mapIndex++;
+        if( mapIndex < model.data_maps.length-1 ) mapIndex++;
         else mapIndex = 0;
         updateMapElement();
         break;
 
       case "versus.next":
         if( !controller.mapList ) return this.breakTransition();
-        this.data.mapToLoad = controller.mapList[ mapIndex ].key;
+        this.data.mapToLoad = model.data_maps[ mapIndex ];
         return "PLAYER_SETUP";
     }
     

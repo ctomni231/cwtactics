@@ -8,7 +8,7 @@ controller.modification_load = util.singleLazyCall( function( err, baton ){
   function addModPart( file, baton ){
     baton.take();
     util.grabRemoteFile({
-      path: MOD_PATH + "/" + file + "json",
+      path: MOD_PATH + "/" + file + ".json",
       json: true,
       
       error: function( msg ){
@@ -72,8 +72,8 @@ controller.modification_load = util.singleLazyCall( function( err, baton ){
     // **1.** check stored data
     .andThen(function( p,b ){
       b.take();
-      controller.storage.get( MOD_KEY,function( obj ){
-        if( obj === null ){
+      controller.storage_general.get( MOD_KEY,function( obj ){
+        if( !obj ){
           mod = {};
           b.pass(true);
         }

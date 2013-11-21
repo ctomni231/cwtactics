@@ -16,8 +16,8 @@ view.registerAnimationHook({
     this.moveAnimationDustTime = -1;
     this.moveAnimationDustStep = -1;
     this.moveAnimationDustPic = null;
-    
-    .preventRenderUnit = model.unit_data[ uid ];
+
+    view.preventRenderUnit = model.unit_data[ uid ];
     var mvType = model.unit_data[ uid ].type.movetype;
     
     /*
@@ -30,7 +30,7 @@ view.registerAnimationHook({
     this.snd = controller.audio_playSound( mvSoundId );
     */
     
-    if( constants.DEBUG ){
+    if( DEBUG ){
       util.log(
         "drawing move from",
         "(",this.moveAnimationX,",",this.moveAnimationY,")",
@@ -45,8 +45,8 @@ view.registerAnimationHook({
     
     // MOVE 4 TILES / SECOND
     this.moveAnimationShift += ( delta/1000 ) * ( tileSize*8);
-    
-    .markForRedrawWithNeighboursRing(
+
+    view.markForRedrawWithNeighboursRing(
       this.moveAnimationX, this.moveAnimationY
     );
     
@@ -77,22 +77,22 @@ view.registerAnimationHook({
           
         case model.move_MOVE_CODES.UP :
           this.moveAnimationY--;
-          this.moveAnimationDustPic = .getInfoImageForType("DUST_U");
+          this.moveAnimationDustPic = view.getInfoImageForType("DUST_U");
           break;
           
         case model.move_MOVE_CODES.RIGHT :
           this.moveAnimationX++;
-          this.moveAnimationDustPic = .getInfoImageForType("DUST_R");
+          this.moveAnimationDustPic = view.getInfoImageForType("DUST_R");
           break;
           
         case model.move_MOVE_CODES.DOWN :
           this.moveAnimationY++;
-          this.moveAnimationDustPic = .getInfoImageForType("DUST_D");
+          this.moveAnimationDustPic = view.getInfoImageForType("DUST_D");
           break;
           
         case model.move_MOVE_CODES.LEFT :
           this.moveAnimationX--;
-          this.moveAnimationDustPic = .getInfoImageForType("DUST_L");
+          this.moveAnimationDustPic = view.getInfoImageForType("DUST_L");
           break;
       }
       
@@ -108,7 +108,7 @@ view.registerAnimationHook({
         this.moveAnimationPath  = null;
         this.moveAnimationUid   = -1;
         this.moveAnimationShift = 0;
-        .preventRenderUnit = null; // RENDER UNIT NOW NORMALLY
+        view.preventRenderUnit = null; // RENDER UNIT NOW NORMALLY
       }
     }
   },
@@ -120,23 +120,23 @@ view.registerAnimationHook({
     var shift    = this.moveAnimationShift;
     var moveCode = this.moveAnimationPath[ this.moveAnimationIndex ];
     var unit     = model.unit_data[ uid ];
-    var color = .colorArray[ unit.owner ];
+    var color = view.colorArray[ unit.owner ];
     var state;
     var tp = unit.type;
     
     // GET CORRECT IMAGE STATE
     switch( moveCode ){
-      case model.move_MOVE_CODES.UP :    state = .IMAGE_CODE_UP;    break;
-      case model.move_MOVE_CODES.RIGHT : state = .IMAGE_CODE_RIGHT; break;
-      case model.move_MOVE_CODES.DOWN :  state = .IMAGE_CODE_DOWN;  break;
-      case model.move_MOVE_CODES.LEFT :  state = .IMAGE_CODE_LEFT;  break;
+      case model.move_MOVE_CODES.UP :    state = view.IMAGE_CODE_UP;    break;
+      case model.move_MOVE_CODES.RIGHT : state = view.IMAGE_CODE_RIGHT; break;
+      case model.move_MOVE_CODES.DOWN :  state = view.IMAGE_CODE_DOWN;  break;
+      case model.move_MOVE_CODES.LEFT :  state = view.IMAGE_CODE_LEFT;  break;
     }
     
-    var pic = .getUnitImageForType( tp.ID, state, color );
+    var pic = view.getUnitImageForType( tp.ID, state, color );
     
     var tileSize = TILE_LENGTH;
     var BASESIZE = controller.baseSize;
-    var scx = (BASESIZE*2)*.getSpriteStep("UNIT");
+    var scx = (BASESIZE*2)*view.getSpriteStep("UNIT");
     var scy = 0;
     var scw = BASESIZE*2;
     var sch = BASESIZE*2;
@@ -155,7 +155,7 @@ view.registerAnimationHook({
     
     // DRAW IT
     if( pic !== undefined ){
-      .canvasCtx.drawImage(
+      view.canvasCtx.drawImage(
         pic,
         scx,scy,
         scw,sch,
@@ -176,9 +176,9 @@ view.registerAnimationHook({
         case model.move_MOVE_CODES.RIGHT: tcx += shift; break;
         case model.move_MOVE_CODES.DOWN:  tcy += shift; break;
       }
-      
-      .canvasCtx.fillStyle="rgb(255,0,0)";
-      .canvasCtx.fillRect(
+
+      view.canvasCtx.fillStyle="rgb(255,0,0)";
+      view.canvasCtx.fillRect(
         tcx,tcy,
         tcw,tch
       );
@@ -196,8 +196,8 @@ view.registerAnimationHook({
       tcy = ( this.moveAnimationDustY )*tileSize -tileSize/2;
       tcw = tileSize+tileSize;
       tch = tileSize+tileSize;
-      
-      .canvasCtx.drawImage(
+
+      view.canvasCtx.drawImage(
         this.moveAnimationDustPic,
         scx,scy,
         scw,sch,

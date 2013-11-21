@@ -692,52 +692,6 @@
   },
 
   {
-    "ID": "PIPR",
-    "cost": 20000,
-    "range": 9,
-    "movetype": "PIPELINE",
-    "vision": 4,
-    "fuel": 99,
-    "ammo": 9,
-    "attack": {
-      "main_wp": {
-        "INFT": 95,
-        "MECH": 90,
-        "RECN": 90,
-        "TNTK": 80,
-        "MDTK": 55,
-        "NTNK": 50,
-        "WRTK": 25,
-        "AAIR": 85,
-        "ARTY": 80,
-        "RCKT": 85,
-        "PIPR": 80,
-        "MISS": 90,
-        "APCR": 80,
-        "OOZM": 15,
-        "FGTR": 65,
-        "BMBR": 75,
-        "STLH": 75,
-        "BCTR": 105,
-        "TCTR": 105,
-        "BKBM": 120,
-        "CRUS": 60,
-        "SUBM": 85,
-        "BSHP": 55,
-        "ACAR": 60,
-        "LNDR": 60,
-        "BLBT": 60
-      },
-      "minrange": 2,
-      "maxrange": 5
-    },
-    "assets": {
-      "gfx"           : "units/AWDS_PRNR.png",
-      "pri_att_sound" : "cannon.wav"
-    }
-  },
-
-  {
     "ID": "RCKT",
     "cost": 15000,
     "range": 5,

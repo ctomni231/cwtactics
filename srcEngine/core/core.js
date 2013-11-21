@@ -18,6 +18,6 @@ var assert = function(expr,msg){
 
     // raise error
     if( console.error ) console.error(msg); 
-    else throw new Error(msg);
+    throw new Error(msg);
   }
 };

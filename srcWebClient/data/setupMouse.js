@@ -1,5 +1,5 @@
 controller.setupMouseControls = function( canvas, menuEl ){
-  if( constants.DEBUG ) util.log("initializing mouse support");
+  if( DEBUG ) util.log("initializing mouse support");
 
   // MENU HINTS
   var mouseInMenu = false;

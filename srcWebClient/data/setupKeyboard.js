@@ -1,6 +1,6 @@
 util.scoped(function(){
 	controller.setupKeyboardControls = function( canvas, menuEl ){
-		if( constants.DEBUG ) util.log("initializing keyboard support");
+		if( DEBUG ) util.log("initializing keyboard support");
 
 		document.onkeydown = function( ev ){
 

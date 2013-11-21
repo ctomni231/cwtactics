@@ -58,7 +58,8 @@ model.supply_propertySupply = function(i){
 		
 		if(check(x, y, pid, mode)){
 			var unitTp = model.unit_posData[x][y].type;
-			if(controller.objectInList(prop.type.supply, unitTp.ID, unitTp.movetype)){
+      if( prop.type.supply.indexOf(unitTp.ID) !== -1 ||
+          prop.type.supply.indexOf(unitTp.movetype) !== -1 ){
 				model.supply_refillResources(model.unit_posData[x][y]);
 				
 				controller.events.supply_propertySupply( i, x,y );
@@ -86,7 +87,9 @@ model.supply_propertyRepairs = function(i){
 		
 		if(check(x, y, pid, mode)){
 			var unitTp = model.unit_posData[x][y].type;
-			var value = controller.objectInMap(prop.type.repairs, unitTp.ID, unitTp.movetype);
+			var value;
+      value = prop.type.repairs.get(unitTp.ID);
+      if( !value ) value = prop.type.repairs.get(unitTp.movetype);
 			
 			if(value > 0){
 				model.unit_heal(model.unit_extractId(model.unit_posData[x][y]), 

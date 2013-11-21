@@ -38,7 +38,7 @@ util.scoped(function(){
   }
   
   view.registerAnimationHook({
-    key: "bonbs_startFireSilo",
+    key: "bombs_startFireSilo",
     
     prepare: function( x,y, siloId, tx,ty ){
       if( !rocket_img ) rocket_img = view.getInfoImageForType("FLYING_ROCKET");
@@ -149,7 +149,7 @@ util.scoped(function(){
     controller.audio_playSound( model.property_data[prid].type.cannon.fireSound);
   });
   
-  controller.event_on("bombs_fireCannon",function( prid,ox,oy ){
+  controller.event_on("bombs_fireLaser",function( prid,ox,oy ){
     controller.audio_playSound( model.property_data[prid].type.laser.fireSound);
   });
 });

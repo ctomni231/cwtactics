@@ -1,7 +1,7 @@
 /**
  * Map of used map images.
  */
-view.mapImages = util.matrix( constants.MAX_MAP_WIDTH, constants.MAX_MAP_HEIGHT, null );
+view.mapImages = util.matrix( MAX_MAP_WIDTH, MAX_MAP_HEIGHT, null );
 
 util.scoped(function(){
   

@@ -103,17 +103,17 @@ controller.loadAudio_doIt = util.singleLazyCall(function(){
 
       // fractions
       util.iterateListByFlow(flow,Object.keys(model.data_fractionTypes), function(data,baton){
-        loadIt(model.data_fractionSheets[data.list[data.i]].music, true, baton);
+        loadIt(model.data_fractionSheets[this.list[this.i]].music, true, baton);
       });
 
       // COs
       util.iterateListByFlow(flow,Object.keys(model.data_coTypes), function(data,baton){
-        loadIt(model.data_coSheets[data.list[data.i]].music, true, baton);
+        loadIt(model.data_coSheets[this.list[this.i]].music, true, baton);
       });
 
       // cannon sounds
       util.iterateListByFlow(flow,model.data_propertyTypes, function(data,baton){
-        var key = data.list[data.i];
+        var key = this.list[this.i];
         var obj = model.data_propertyTypes[key];
         if( obj.assets && obj.assets.fireSound ){
           loadIt(obj.assets.fireSound, false, baton);
@@ -124,7 +124,7 @@ controller.loadAudio_doIt = util.singleLazyCall(function(){
 
       // attack sounds (primary)
       util.iterateListByFlow(flow,model.data_unitTypes, function(data,baton){
-        var key = data.list[data.i];
+        var key = this.list[this.i];
         var obj = model.data_unitSheets[key];
         if( obj.assets && obj.assets.pri_att_sound ){
           loadIt(obj.assets.pri_att_sound, false, baton);
@@ -133,7 +133,7 @@ controller.loadAudio_doIt = util.singleLazyCall(function(){
 
       // attack sounds (secondary)
       util.iterateListByFlow(flow,model.data_unitTypes, function(data,baton){
-        var key = data.list[data.i];
+        var key = this.list[this.i];
         var obj = model.data_tileSheets[key];
         if( obj.assets && obj.assets.sec_att_sound ){
           loadIt(obj.assets.sec_att_sound, false, baton);

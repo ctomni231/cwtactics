@@ -5,9 +5,9 @@ model.data_coParser.addHandler( function( sheet ){
   assert( util.intRange(sheet.scoStars,-1,10) && sheet.scoStars !== 0 );
 
   // rules
-  assert( Array.isArra(sheet.d2d) );
-  assert( Array.isArra(sheet.cop) );
-  assert( Array.isArra(sheet.scop) );
+  assert( Array.isArray(sheet.d2d) );
+  assert( Array.isArray(sheet.cop) );
+  assert( Array.isArray(sheet.scop) );
 
   assert( util.isString(sheet.faction) );
   assert( util.isString(sheet.music) );

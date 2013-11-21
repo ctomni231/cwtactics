@@ -12,7 +12,7 @@ model.data_unitParser.addHandler(function(sheet){
     }
     
     // check attack values
-    for( var i=0,e=model.wpKeys_.length; i<e; i++ ){
+    for( var i=0,e=model.battle_WEAPON_KEYS.length; i<e; i++ ){
       // TODO: check attack values
     }
   }

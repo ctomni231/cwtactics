@@ -14,7 +14,7 @@ controller.storage_NAMES = {
   general: "GENERAL"
 };
 
-controller.storage_type = (browser.mobile)? 'webkit-sqlite':'indexed-db';
+controller.storage_type = (Browser.mobile)? 'webkit-sqlite':'indexed-db';
 
 // Creates a new
 //
@@ -94,7 +94,3 @@ controller.storage_assets  = null;
 // Storage for general data like settings.
 //
 controller.storage_general = null;
-
-// Link to `controller.storage_general`. Deprecated!
-//
-controller.storage         = null;
