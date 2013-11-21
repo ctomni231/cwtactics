@@ -94,18 +94,17 @@ controller.loadImages_doIt = util.singleLazyCall(
     baton.take();
 
     var flow = jWorkflow.order(function(){
-      return { i: 0, list: null };
     });
 
     // loading units
     util.iterateListByFlow(flow,model.data_unitTypes, function(data,baton){
-      var obj = model.data_unitSheets[data.list[data.i]];
-      controller.loadImages_prepareImg_( data.list[data.i],obj.assets.gfx,"U",baton );
+      var obj = model.data_unitSheets[this.list[this.i]];
+      controller.loadImages_prepareImg_( this.list[this.i],obj.assets.gfx,"U",baton );
     });
 
     // loading tiles
     util.iterateListByFlow(flow,model.data_tileTypes, function(data,baton){
-      var key = data.list[data.i];
+      var key = this.list[this.i];
       var obj = model.data_tileSheets[key];
       controller.loadImages_prepareImg_( key,obj.assets.gfx,"T",baton );
 
@@ -115,13 +114,13 @@ controller.loadImages_doIt = util.singleLazyCall(
 
     // loading properties
     util.iterateListByFlow(flow,model.data_propertyTypes, function(data,baton){
-      var obj = model.data_tileSheets[data.list[data.i]];
-      controller.loadImages_prepareImg_( data.list[data.i],obj.assets.gfx,"P",baton );
+      var obj = model.data_tileSheets[this.list[this.i]];
+      controller.loadImages_prepareImg_( this.list[this.i],obj.assets.gfx,"P",baton );
     });
 
     // loading cannon animations
     util.iterateListByFlow(flow,model.data_propertyTypes, function(data,baton){
-      var obj = model.data_tileSheets[data.list[data.i]];
+      var obj = model.data_tileSheets[this.list[this.i]];
       if( obj.assets.fireAnimation ){
         controller.loadImages_prepareImg_(
           obj.assets.fireAnimation[0],
@@ -134,7 +133,7 @@ controller.loadImages_doIt = util.singleLazyCall(
 
     // menu background images
     util.iterateListByFlow(flow,model.data_menu.bgs, function(data,baton){
-      controller.loadImages_prepareImg_( data.list[data.i],data.list[data.i],"M",baton );
+      controller.loadImages_prepareImg_( this.list[this.i],this.list[this.i],"M",baton );
     });
 
     // start loading

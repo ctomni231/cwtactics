@@ -88,7 +88,6 @@ controller.loadAudio_doIt = util.singleLazyCall(function(){
       baton.take();
 
       var flow = jWorkflow.order(function(){
-        return { i: 0, list: null };
       });
 
       // menu bg
@@ -98,7 +97,7 @@ controller.loadAudio_doIt = util.singleLazyCall(function(){
 
       // sfx sounds
       util.iterateListByFlow(flow,Object.keys(model.data_sounds), function(data,baton){
-        loadIt(data.list[data.i], false, baton);
+        loadIt(this.list[this.i], false, baton);
       });
 
       // fractions

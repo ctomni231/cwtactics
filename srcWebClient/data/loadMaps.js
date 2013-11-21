@@ -34,7 +34,7 @@ controller.loadMaps_doIt = util.singleLazyCall(function( p,baton ){
     })
 
   util.iterateListByFlow(flow,model.data_maps, function(data,b){
-    controller.loadMaps_doIt(this.list[this.i],b);
+    controller.loadMaps_load_(this.list[this.i],b);
   });
 
   flow.start(function(){
