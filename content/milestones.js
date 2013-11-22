@@ -179,8 +179,6 @@ PAGE_DATA.milestones = [
       ""
     ],
     
-    link: "games/milestones/m2.68/starter.html",
-    
     changelog:[
       "Feature: implemented weather (functional) with affects on vision and move costs",
       "Feature: game rule that enables/disables healing of units on properties",
