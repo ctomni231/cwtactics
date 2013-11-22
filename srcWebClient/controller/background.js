@@ -19,7 +19,7 @@ controller.background_addImage = function( base64 ){
   var css = document.createElement("style");
 
   // add new css for the image with inlined image content
-  css.innerHTML = ".cwt_page bg_"+controller.background_images_+" {"+
+  css.innerHTML = ".cwt_page .bg_"+controller.background_images_+" {"+
    "background-image: url(data:image/jpeg;base64,"+base64+");"+
    "background-repeat: no-repeat;"+
    "background-position: 0px 45px;"+
