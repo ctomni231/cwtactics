@@ -2,13 +2,9 @@
 //
 controller.background_images_ = 0;
 
-// The base class of the main menu element.
-//
-controller.background_BASE_CLASS = "cwt_page";
-
 // The class of the background element.
 //
-controller.background_BG_CLASS = " bg_";
+controller.background_BG_CLASS = "cwt_page bg_";
 
 // Adds an image to the background image controller. The type of the argument is an `base64` encoded
 // `jpeg` image.
@@ -38,7 +34,7 @@ controller.background_addImage = function( base64 ){
 //
 controller.background_setRandomBG = function( el ){
   var newBG = parseInt( Math.random()*controller.background_images_ , 10 );
-  el.class = controller.background_BASE_CLASS + controller.background_BG_CLASS + newBG;
+  el.class = controller.background_BG_CLASS + newBG;
 };
 
 controller.imgToBg = function( obj ){
