@@ -10,14 +10,17 @@ controller.background_BASE_CLASS = "cwt_page";
 //
 controller.background_BG_CLASS = " bg_";
 
-// Adds an image to the background image controller.
+// Adds an image to the background image controller. The type of the argument is an `base64` encoded
+// `jpeg` image.
 //
 controller.background_addImage = function( base64 ){
+  assert( util.isString(base64) && base64.length > 0 );
+	
   var css = document.createElement("style");
 
   // add new css for the image with inlined image content
   css.innerHTML = ".cwt_page bg_"+controller.background_images_+" {"+
-   "background-image: url(data:image/jpeg;base64,"+obj.value+");"+
+   "background-image: url(data:image/jpeg;base64,"+base64+");"+
    "background-repeat: no-repeat;"+
    "background-position: 0px 45px;"+
    "background-size: 100% calc(100% - 44px);"+
