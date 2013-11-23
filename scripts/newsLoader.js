@@ -6,6 +6,7 @@ PAGE_PROG.registerSection({
   element: "sectionNews",
   
   template: [
+    "<a href=\"http://cwtactics.blogspot.de/\" >Redirect to CustomWars: Tactics blog</a>"
     /*
     "<table class='fourColTable'>",
       "<tr>",
