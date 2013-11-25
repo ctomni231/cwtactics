@@ -64,7 +64,7 @@ controller.ai_spec = "DumbBoy [0.25]";
 // situation can cause different actions for units.
 //
 controller.ai_CHECKS  = {
-  CAPTURE      : 0,
+  CAPTURE       : 0,
   ATTACK        : 1,
   MOVE_TO_ENEMY : 2,
   MOVE_TO_HQ    : 3,
@@ -86,7 +86,8 @@ controller.ai_TARGETS = {
 // Sets the default priority in a priority list of a AI controlled player.
 //
 controller.ai_orderDefaultPrio = function(list){
-
+  assert( list.length === 6 ); 
+  
   // first try to capture if you can
   // because nothing is more important
   // than the amount of income
@@ -152,12 +153,18 @@ controller.ai_actionHolder_ = {
   }
 };
 
+// Link to the current active player instance.
+//
+controller.ai_active = null;
+
 // Registers a player id as ai controlled instance.
 //
 controller.ai_register = function(pid){
   assert( model.player_isValidPid(pid) );
 
   for (var i = 0; i < controller.ai_data.length; i++) {
+    
+    // if the slot is empty then occupy it
     if( controller.ai_data[i].pid === INACTIVE_ID ){
         controller.ai_data[i].pid = pid;
     }
@@ -176,10 +183,6 @@ controller.ai_isHuman = function(pid){
   // no slot is used by the pid -> human
   return true;
 };
-
-// Link to the current active player instance.
-//
-controller.ai_active = null;
 
 // Searches for neutral or enemy properties in range and marks them if found.
 //
@@ -205,7 +208,7 @@ controller.ai_searchJoinTarget_ = function( x,y, data ){
   var sunit = model.units[data.uid];
   var unit = model.unit_posMap[x][y];
   if( unit && unit.type === sunit.type && unit.owner === data.pid ){
-    if( unit.hp <= 50 ||            // other unit is damaged a lot too
+    if( unit.hp <= 50 ||           // other unit is damaged a lot too
       (unit.hp+sunit.hp < 124) ){  // both together drops max. 25 health to cash (TODO: if cash is low join more)
 
       data.x = x;
@@ -557,7 +560,7 @@ controller.ai_machine = util.stateMachine({
     // make stupid things
     for( var i=model.properties.length-1; i>=0; i-- ){
       if( model.properties[i].owner === model.turn_owner ){
-        controller.action_sharedInvoke("buildUnit",[i,"INFT"]);
+        // controller.action_sharedInvoke("buildUnit",[i,"INFT"]);
       }
     };
 
@@ -574,6 +577,7 @@ controller.ai_machine = util.stateMachine({
     // end the ai turn here, it's nothing more to do now
     controller.action_sharedInvoke("nextTurn",[]);
 
+    // release reference
     controller.ai_active = null;
 
     return "IDLE";
@@ -583,5 +587,5 @@ controller.ai_machine = util.stateMachine({
 
 });
 
-// init ai
+// initializing AI state machine
 controller.ai_machine.event("tick");
