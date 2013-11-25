@@ -72,6 +72,27 @@ controller.ai_CHECKS  = {
   JOIN          : 5
 };
 
+controller.ai_CHECKS_N = {};
+
+controller.ai_definedRoutine = function(){
+  
+};
+
+controller.ai_definedRoutine({
+  key:"endTurn",
+  
+  scoring:function( currentScore, selfScore ){
+    if( currentScore > selfScore ) return -1;
+    
+    return selfScore;
+  },
+  
+  prepare:function(){
+    
+  }
+})
+
+
 // Target actions for the AI. These ones are the result of the checks above. Every unit can
 // have one of this tasks.
 //
@@ -133,7 +154,11 @@ controller.ai_data = util.list( MAX_PLAYER-1, function(){
 
     // task list for the unit objects
     //
-    markedTasks : util.list( MAX_UNITS_PER_PLAYER, null )
+    markedTasks : util.list( MAX_UNITS_PER_PLAYER, null ),
+    
+    // score list for the unit objects
+    //
+    markedScores : util.list( MAX_UNITS_PER_PLAYER, null )
   };
 });
 
@@ -254,6 +279,8 @@ controller.ai_searchBatleTarget_ = function( x,y, data ){
 controller.ai_machine = util.stateMachine({
 
   NONE: { tick: function() {
+    util.log("AI:: initializing AI core");
+    
     return "IDLE";
   }},
 
@@ -264,7 +291,7 @@ controller.ai_machine = util.stateMachine({
   //
 
   IDLE:{ tick: function(){
-    util.log("AI:: IDLE");
+    util.log("AI:: doing step in idle state");
     // TODO: setup meta data
 
     assert( !controller.ai_active );
@@ -288,7 +315,7 @@ controller.ai_machine = util.stateMachine({
   //
 
   START_TURN:{ tick: function(){
-    util.log("AI:: PHASE_PREPARE_SEARCH_TASKS");
+    util.log("AI:: starting turn");
 
     return "PHASE_PREPARE_SEARCH_TASKS";
   }},
@@ -298,7 +325,7 @@ controller.ai_machine = util.stateMachine({
   //
 
   PHASE_PREPARE_SEARCH_TASKS: { tick: function(){
-    util.log("AI:: PHASE_SEARCH_TASK");
+    util.log("AI:: searching tasks for objects");
 
     controller.ai_actionHolder_.ai_data.step_i = model.unit_firstUnitId( model.round_turnOwner );
     controller.ai_actionHolder_.ai_data.step_e = model.unit_lastUnitId( model.round_turnOwner );
@@ -313,7 +340,6 @@ controller.ai_machine = util.stateMachine({
   //
 
   PHASE_SEARCH_TASKS: { tick: function(){
-    util.log("AI:: PHASE_SEARCH_TASKS");
 
     var type;
     var unit;
@@ -321,9 +347,11 @@ controller.ai_machine = util.stateMachine({
     var prio    = controller.ai_active.prio;
     var data    = controller.ai_actionHolder_.ai_data;
     var i       = data.step_i;
+    
 
     unit = model.units[i];
     if( unit && model.actions_canAct(i) ){
+      util.log("AI:: searching task for unit",i);
 
       // TODO: generate move path here
 
@@ -453,7 +481,7 @@ controller.ai_machine = util.stateMachine({
   //
 
   PHASE_FLUSH_TASK: { tick: function(){
-    util.log("AI:: PHASE_FLUSH_TASK");
+    util.log("AI:: flushing task into command stack");
 
     // flush a command from the tasks list
     var list = controller.ai_active.markedTasks;
@@ -543,7 +571,7 @@ controller.ai_machine = util.stateMachine({
   //
 
   PHASE_CHECK_LEFT_TASKS:{ tick: function(){
-    util.log("AI:: PHASE_CHECK_LEFT_TASKS");
+    util.log("AI:: checking left tasks");
 
     // when commands left, then re-analyse the actions for the other
     // units because the game situation has changed
@@ -555,7 +583,7 @@ controller.ai_machine = util.stateMachine({
   //
 
   BUILD_OBJECTS:{ tick: function(){
-    util.log("AI:: BUILD_OBJECTS");
+    util.log("AI:: producing units");
 
     // make stupid things
     for( var i=model.properties.length-1; i>=0; i-- ){
@@ -572,7 +600,7 @@ controller.ai_machine = util.stateMachine({
   //
 
   END_TURN:{ tick: function(){
-    util.log("AI:: END_TURN");
+    util.log("AI:: ending turn");
 
     // end the ai turn here, it's nothing more to do now
     controller.action_sharedInvoke("nextTurn",[]);
