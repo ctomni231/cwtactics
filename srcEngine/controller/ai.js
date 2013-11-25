@@ -72,6 +72,27 @@ controller.ai_CHECKS  = {
   JOIN          : 5
 };
 
+controller.ai_CHECKS_N = {};
+
+controller.ai_definedRoutine = function(){
+  
+};
+
+controller.ai_definedRoutine({
+  key:"endTurn",
+  
+  scoring:function( currentScore, selfScore ){
+    if( currentScore > selfScore ) return -1;
+    
+    return selfScore;
+  },
+  
+  prepare:function(){
+    
+  }
+})
+
+
 // Target actions for the AI. These ones are the result of the checks above. Every unit can
 // have one of this tasks.
 //
