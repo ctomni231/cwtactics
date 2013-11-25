@@ -39,23 +39,23 @@
 //  - activate_power        [ ]
 //  - attack                [ ]
 //  - build_unit            [ ]
-//  - capture              [ ]
-//  - attachCommander      [ ]
-//  - detachCommander      [ ]
+//  - capture               [ ]
+//  - attachCommander       [ ]
+//  - detachCommander       [ ]
 //  - end_turn              [x]
 //  - fireCannon            [ ]
-//  - fireLaser            [ ]
-//  - hide_unit            [ ]
+//  - fireLaser             [ ]
+//  - hide_unit             [ ]
 //  - join                  [ ]
-//  - load_unit            [ ]
-//  - silo_fire            [ ]
+//  - load_unit             [ ]
+//  - silo_fire             [ ]
 //  - suicide_bomb          [ ]
 //  - supply                [ ]
 //  - transfer_money        [ ]
-//  - transfer_property    [ ]
-//  - transfer_unit        [ ]
-//  - unhide_unit          [ ]
-//  - unload_unit          [ ]
+//  - transfer_property     [ ]
+//  - transfer_unit         [ ]
+//  - unhide_unit           [ ]
+//  - unload_unit           [ ]
 //  - wait                  [ ]
 //
 controller.ai_spec = "DumbBoy [0.25]";
@@ -126,21 +126,6 @@ controller.ai_data = util.list( MAX_PLAYER-1, function(){
     //
     prio        : controller.ai_orderDefaultPrio([0,0,0,0,0,0]),
 
-    // Data transfer object for several checks during a AI turn.
-    // TODO: can be transfered to a single object in the module
-    //
-    /*
-     hlp        : {
-     step_i:-1,
-     step_e:-1,
-     pid:-1,
-     move: null,
-     uid:-1,
-     x:-1,
-     y:-1
-     },
-     */
-
     // number of tasks in the list
     //
     taskCount  : 0,
@@ -159,9 +144,9 @@ controller.ai_actionHolder_ = {
   source          : null,
   target          : null,
   selectionTarget : null,
-  moveSelection  : null,
+  moveSelection   : null,
   attackSelection : null,
-  ai_data        : {
+  ai_data         : {
     step_i:-1,
     step_e:-1
   }
