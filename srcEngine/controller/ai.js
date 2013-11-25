@@ -133,7 +133,11 @@ controller.ai_data = util.list( MAX_PLAYER-1, function(){
 
     // task list for the unit objects
     //
-    markedTasks : util.list( MAX_UNITS_PER_PLAYER, null )
+    markedTasks : util.list( MAX_UNITS_PER_PLAYER, null ),
+    
+    // score list for the unit objects
+    //
+    markedScores : util.list( MAX_UNITS_PER_PLAYER, null )
   };
 });
 
