@@ -184,3 +184,8 @@ a:hover {
   padding-left: 32px;
   vertical-align: top;
 }
+
+.playButton {
+  text-decoration: line-through;
+  color: red;
+}
