@@ -9,7 +9,7 @@ controller.action_unitAction({
   },
   
   invoke: function( data ){
-    controller.action_sharedInvoke("unit_destroy_silent",[ 
+    controller.action_sharedInvoke("unit_destroySilently",[
       data.source.unitId 
     ]);
     

@@ -23,13 +23,19 @@ controller.persistence_defineHandler(
     for( var i = 0, e = dom.prps.length; i < e; i++ ) {
       var data = dom.prps[i];
       
-      // check data
-      assert( util.intRange(data[0],0,MAX_PROPERTIES-1) );
-      assert( util.intRange(data[1],0,MAX_MAP_WIDTH-1) );
-      assert( util.intRange(data[2],0,MAX_MAP_HEIGHT-1) );
-      assert( util.intRange(data[4],0,MAX_MAP_HEIGHT-1) );
-      assert( util.isString(data[3]) && !util.isUndefined(model.data_tileSheets[data[3]].capturePoints));
-      assert( util.intRange(data[5],1,model.data_tileSheets[data[3]].capturePoints) );
+      // check data  [0,0,9,"HQTR",20,0],
+      assert( util.intRange(data[0],0,MAX_PROPERTIES-1) );  // id
+      assert( util.intRange(data[1],0,MAX_MAP_WIDTH-1) );   // x
+      assert( util.intRange(data[2],0,MAX_MAP_HEIGHT-1) );  // y
+      assert( (util.isString(data[3]) && !util.isUndefined( // type
+        model.data_tileSheets[data[3]].capturePoints) ) ||
+        typeof model.data_tileSheets[data[3]].rocketsilo !== "undefined"
+      );
+      assert( (util.intRange(data[4],1,                     // capture points
+        model.data_tileSheets[data[3]].capturePoints)) ||
+        typeof model.data_tileSheets[data[3]].rocketsilo !== "undefined"
+      );
+      assert( util.intRange(data[5],-1,MAX_PLAYER-1) );     // owner
 
       // copy data into model
       property                                    = model.property_data[ data[0] ];

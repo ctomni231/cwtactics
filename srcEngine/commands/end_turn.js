@@ -7,7 +7,7 @@ controller.action_mapAction({
   },
   
   invoke: function(){
-    controller.action_sharedInvoke("nextTurn",[]);
+    controller.action_sharedInvoke("round_nextTurn",[]);
   }
   
 });

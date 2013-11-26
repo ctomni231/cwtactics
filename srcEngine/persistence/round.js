@@ -1,11 +1,11 @@
-// Define persitence handler
+// Define persistence handler
 controller.persistence_defineHandler(
   
   // load
   function( dom ){
 
-    model.round_turnOwner = 0;
-    model.round_day       = 0;
+    model.round_turnOwner = -1;
+    model.round_day       = -1;
 
     // check turn owner from save
     if( !util.isUndefined(dom.trOw) ){

@@ -21,7 +21,7 @@ util.scoped(function(){
     
     var selection = controller.stateMachine.data.selection;
     
-    selection.setCenter(x,y, constants.INACTIVE_ID);
+    selection.setCenter(x,y, INACTIVE_ID);
     
     if( model.battle_isIndirectUnit( unitId) ){
       
@@ -33,7 +33,7 @@ util.scoped(function(){
       // GET MOVE DATA
       controller.stateMachine.data.movePath.move_fillMoveMap( x,y, unit );
       selection.data.cloneValues( tmpData );
-      selection.setCenter(x,y, constants.INACTIVE_ID);
+      selection.setCenter(x,y, INACTIVE_ID);
       
       // FOR EVERY MOVE TILE
       var e = tmpData.length;

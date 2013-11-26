@@ -120,9 +120,7 @@ model.player_areEnemyTeamsLeft = function(){
 // Returns true if there is an unit with a given relationship on a tile at a given position (x,y).
 // 
 model.player_getRelationship = function( pidA, pidB ){
-  assert( model.property_isValidPropId(pidA) );
-  assert( model.property_isValidPropId(pidB) );
-	
+
 	// none
 	if( pidA === null || pidB === null ) return model.player_RELATION_MODES.NULL;
 	if( pidA === -1   || pidB === -1   ) return model.player_RELATION_MODES.NONE;

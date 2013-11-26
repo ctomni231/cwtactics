@@ -26,7 +26,7 @@ controller.persistence_defineHandler(
       target            = model.co_data[i];
       target.power      = 0;
       target.timesUsed  = 0;
-      target.level      = INACTIVE_POWER;
+      target.level      = INACTIVE_ID;
       target.coA        = null;
       target.coB        = null;
     }

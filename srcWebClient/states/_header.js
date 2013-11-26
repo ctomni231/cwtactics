@@ -10,9 +10,16 @@ util.scoped(function(){
           else if( origName === "ACTION" ){
             var key = controller.errorButtons.getActiveKey();
             if( key === "error.panel.yes" ){
-              controller.storage.clear( function(){ 
-                window.location.reload(); 
+
+              // NUKE STORAGE
+              controller.storage_general.clear( function(){
+                controller.storage_assets.clear( function(){
+                  controller.storage_maps.clear( function(){
+                    window.location.reload();
+                  });
+                });
               });
+
             }
             else window.location.reload();
           }

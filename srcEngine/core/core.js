@@ -12,12 +12,13 @@ var util = {};
 
 // Assertion. 
 //
-var assert = function(expr,msg){
+var assert = function(expr,msgA){
   if( !expr ){
-    if( !msg ) msg = "Assertion failed";
+    if( typeof msgA === "undefined" ) msgA = "FAIL";
+
+    if( console.error ) console.error(msgA);
 
     // raise error
-    if( console.error ) console.error(msg); 
-    throw new Error(msg);
+    throw new Error(msgA);
   }
 };

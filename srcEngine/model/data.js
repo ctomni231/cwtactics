@@ -42,8 +42,6 @@ model.data_createParser = function( db, list ){
       for( var i = 0, e = list.length; i < e; i++ ) this.parse( list[i] );
     },
 
-    //
-    //
     clear: function(){
       list.splice( 0 );
 
@@ -62,8 +60,13 @@ model.data_unitSheets = {};
 // Holds a list of available tile types
 model.data_unitTypes = [ ];
 
+model.data_simpleAnimatedUnits = {};
+
 // Unit type sheet parser object
-model.data_unitParser = model.data_createParser( model.data_unitSheets, model.data_unitTypes );
+model.data_unitParser = model.data_createParser( model.data_unitSheets, function( sheet ){
+  model.data_unitTypes.push( sheet.ID );
+  if( sheet.assets.simpleAnimated ) model.data_simpleAnimatedUnits[sheet.ID] = true;
+} );
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -79,8 +82,8 @@ model.data_tileTypes = [ ];
 // Tile type sheet parser object
 model.data_tileParser = model.data_createParser( model.data_tileSheets,
   function( sheet ){
-    if( sheet.capturePoints ) model.data_propertyTypes.push( sheet );
-    else model.data_tileTypes.push( sheet );
+    if( sheet.capturePoints || sheet.rocketsilo ) model.data_propertyTypes.push( sheet.ID );
+    else model.data_tileTypes.push( sheet.ID );
   }
 );
 

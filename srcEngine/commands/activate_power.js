@@ -32,7 +32,7 @@ controller.action_mapAction({
 				cmd = "co_activateSCOP"; 
 				break;
 				
-			default: model.errorUnknown("model.co_model.co_activatePower__");
+			default: assert(false,"model.co_model.co_activatePower__");
     }
     
     controller.action_sharedInvoke(cmd,[model.round_turnOwner]);

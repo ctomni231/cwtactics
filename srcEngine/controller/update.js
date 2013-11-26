@@ -63,8 +63,10 @@ controller.update_startGameRound = function( ){
   controller.update_inGameRound = true;
 
   // start first turn
-  model.round_turnOwner--;
-  controller.action_localInvoke( "nextTurn", []);
+  if( model.round_turnOwner === -1 ){
+    controller.action_localInvoke( "round_nextTurn", []);
+    if( controller.isHost() ) model.weather_calculateNext();
+  }
 };
 
 // Ends the active game round.

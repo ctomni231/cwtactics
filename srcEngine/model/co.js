@@ -3,6 +3,8 @@ controller.action_registerCommands( "co_deactivateCOP" );
 controller.action_registerCommands( "co_activateCOP" );
 controller.action_registerCommands( "co_activateSCOP" );
 controller.action_registerCommands( "co_modifyPowerLevel" );
+controller.action_registerCommands( "co_detachCommander" );
+controller.action_registerCommands( "co_attachCommander" );
 
 // events
 controller.event_define( "co_modifyPowerLevel" );
@@ -55,7 +57,7 @@ model.co_data = util.list( MAX_PLAYER, function( i ){
 //
 model.co_commanderRange = function( pid ){
   assert( util.intRange(pid,0,MAX_PLAYER-1) );
-  assert( co_activeMode === model.co_MODES.AWDR );
+  assert( model.co_activeMode === model.co_MODES.AWDR );
   
   if( model.co_data[pid].detachedTo === INACTIVE_ID ) return -1;
   
@@ -64,10 +66,10 @@ model.co_commanderRange = function( pid ){
 
 // Returns `true` when an unit is in the range of a commander, else `false`.
 //
-model.co_isInCommanderFocus = function( uid, tpid ){
+model.co_isInCommanderFocus = function( uid, pid ){
   
   // are we playing Commander mode ?
-  if( co_activeMode !== model.co_MODES.AWDR ) return false;
+  if( model.co_activeMode !== model.co_MODES.AWDR ) return false;
   
   // is commander active ?
   if( model.co_data[pid].detachedTo === INACTIVE_ID ) return false;
@@ -140,7 +142,7 @@ model.co_modifyPowerLevel = function( pid, value ){
   controller.events.co_modifyPowerLevel( pid, value );
 };
 
-// Returns `true`when a given player can acitvate a power level.
+// Returns `true`when a given player can activate a power level.
 //
 model.co_canActivatePower = function( pid, powerType ){
   assert( model.player_isValidPid(pid) );
@@ -227,8 +229,8 @@ model.co_attachCommander = function( pid, uid ){
   assert( model.unit_isValidUnitId(uid) );
   assert( model.unit_data[uid].owner !== INACTIVE_ID );
   
-  // co cennot be detached to anything
+  // co cannot be detached to anything
   assert( model.co_data[pid].detachedTo === INACTIVE_ID );
   
-  model.co_data[pid].detachedTo = id;
+  model.co_data[pid].detachedTo = uid;
 };

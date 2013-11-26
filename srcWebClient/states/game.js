@@ -6,28 +6,33 @@ util.scoped(function(){
   
 	controller.screenStateMachine.structure.GAMEROUND.section = "cwt_game_screen";
 	
-  controller.screenStateMachine.structure.GAMEROUND.enterState = function(){
+  controller.screenStateMachine.structure.GAMEROUND.enterState = function(ev,noInit){
 
-    // start
-    controller.setCursorPosition(0,0);
-    controller.update_startGameRound();
+    if( typeof noInit !== true ){
 
-    // update unit stats
-    for( var i=0,e=model.unit_data.length; i<e; i++ ){
-      if( model.unit_data[i].owner !== INACTIVE_ID ) controller.updateUnitStatus( i );
+      controller.audio_stopMusic();
+
+      // start
+      controller.setCursorPosition(0,0);
+      controller.update_startGameRound();
+
+      // update unit stats
+      for( var i=0,e=model.unit_data.length; i<e; i++ ){
+        if( model.unit_data[i].owner !== INACTIVE_ID ) controller.updateUnitStatus( i );
+      }
+
+      // prepare screen and screen data
+      view.resizeCanvas();
+      view.updateMapImages();
+      view.completeRedraw();
+
+      // go into max zoom ( TODO: grab it from settings later on )
+      controller.setScreenScale(2);
+
+      // allow game loop
+      controller.inGameLoop = true;
+      controller.prepareGameLoop();
     }
-    
-    // prepare screen and screen data
-    view.resizeCanvas();
-    view.updateMapImages();
-    view.completeRedraw();
-    
-    // go into max zoom ( TODO: grab it from settings later on )
-    controller.setScreenScale(2);
-        
-    // allow game loop
-    controller.inGameLoop = true;
-    controller.prepareGameLoop();
   };
 
   controller.screenStateMachine.structure.GAMEROUND.gameHasEnded = function(){
@@ -169,6 +174,14 @@ util.scoped(function(){
     
     controller.cursorActionCancel();
     return this.breakTransition();
+  };
+
+  // Must be called by controller.screenStateMachine.event("toOptions_",true);
+  //
+  controller.screenStateMachine.structure.GAMEROUND.toOptions_ = function(){
+    assert( arguments.length === 2 && arguments[1] === true );
+
+    return "OPTIONS";
   };
 
 });

@@ -176,7 +176,7 @@ util.scoped(function(){
     
     // grab identical number
     if( unit  )                                             id = unit.owner;
-    else if( prop && prop.owner !== constants.INACTIVE_ID ) id = prop.owner;
+    else if( prop && prop.owner !== INACTIVE_ID )           id = prop.owner;
     else                                                    id = model.round_turnOwner;
     
     if( id > -1 ){

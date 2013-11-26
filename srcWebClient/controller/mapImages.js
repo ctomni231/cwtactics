@@ -1,6 +1,5 @@
-/**
- * Map of used map images.
- */
+// Map of used map images.
+//
 view.mapImages = util.matrix( MAX_MAP_WIDTH, MAX_MAP_HEIGHT, null );
 
 util.scoped(function(){
@@ -43,9 +42,9 @@ util.scoped(function(){
     return type;
   };
   
-  /**
-   *
-   */
+  // Updates all of the map images. If a tile has variants, then all surrounding
+  // tiles will be checked to grab the best fitting tile variant.
+  //
   view.updateMapImages = function(){
     var x;
     var y;
@@ -60,13 +59,16 @@ util.scoped(function(){
         
         var lX = x;
         var lY = y;
-        
-        // DO MAGIC HERE
         var tile = model.map_data[lX][lY].ID;
-        if( model.data_graphics.connected[tile] ){
+        var data = model.data_tileSheets[tile].assets.gfx_variants;
+
+        if( !data ){
+          view.mapImages[lX][lY] = tile;
+        }
+        else{
           
-          var cKeys = model.data_graphics.connectedKeys[tile];
-          if( model.data_graphics.connected[tile][0].length === 5 ){
+          var cKeys = data[0];
+          if( data[1][0].length === 5 ){
             
             // ----------------------------
             check( x,y-1, 0, sdata, cKeys );
@@ -74,8 +76,8 @@ util.scoped(function(){
             check( x,y+1, 2, sdata, cKeys );
             check( x-1,y, 3, sdata, cKeys );
             
-            view.mapImages[x][y] = resultCheck( 
-              model.data_graphics.connected[tile], 
+            view.mapImages[x][y] = resultCheck(
+              data[1],
               sdata,
               true,
               tile
@@ -93,15 +95,14 @@ util.scoped(function(){
             check( x-1,y  , 6, sdata, cKeys );
             check( x-1,y-1, 7, sdata, cKeys );
             
-            view.mapImages[x][y] = resultCheck( 
-              model.data_graphics.connected[tile], 
+            view.mapImages[x][y] = resultCheck(
+              data[1],
               sdata,
               false,
               tile
             );
           }
         }
-        else view.mapImages[lX][lY] = tile;
       }
     }
   };

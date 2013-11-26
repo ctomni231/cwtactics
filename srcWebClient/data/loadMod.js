@@ -8,7 +8,7 @@ controller.modification_load = util.singleLazyCall( function( err, baton ){
   function addModPart( file, baton ){
     baton.take();
     util.grabRemoteFile({
-      path: MOD_PATH + "/" + file + ".json",
+      path: MOD_PATH + file + ".json",
       json: true,
       
       error: function( msg ){

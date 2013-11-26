@@ -7,7 +7,7 @@ controller.action_unitAction({
   },
 
   invoke: function( data ){
-    controller.action_sharedInvoke("detachCommander",[
+    controller.action_sharedInvoke("co_detachCommander",[
     	model.round_turnOwner,
     	data.target.x,
     	data.target.y

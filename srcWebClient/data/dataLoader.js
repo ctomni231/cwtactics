@@ -67,8 +67,12 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
           if( DEBUG ) util.log("wipe out cached data");
 
           // NUKE STORAGE
-          controller.storage.clear( function(){
-            baton.pass(false);
+          controller.storage_general.clear( function(){
+            controller.storage_assets.clear( function(){
+              controller.storage_maps.clear( function(){
+                baton.pass(false);
+              });
+            });
           });
         }
         else baton.pass(false);
@@ -105,8 +109,23 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
 
     .chill(SMALL_WAIT)
 
-    // **6.** load images
+    // **6.A** load images
     .andThen(controller.loadImages_doIt)
+
+    // **6.B** set custom background for this game instance
+    .andThen(function(p,b){
+      b.take();
+
+      var el = model.data_menu.bgs[ parseInt( model.data_menu.bgs.length*Math.random(), 10 ) ];
+      controller.storage_assets.get( model.data_assets.images + "/"+el,function( obj ){
+        if( obj ){
+          if( DEBUG ) util.log("set custom background to",el);
+          controller.background_registerAsBackground( obj.value );
+        }
+
+        b.pass();
+      });
+    })
 
     // -------------------------------------------------------------------------------------
 
@@ -139,6 +158,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
     .chill(SMALL_WAIT)
 
     // **9.** load audio files
+    .andThen(controller.audio_initialize)
     .andThen(controller.loadAudio_doIt)
 
     // -------------------------------------------------------------------------------------

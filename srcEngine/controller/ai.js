@@ -308,7 +308,7 @@ controller.ai_machine = util.stateMachine({
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 });
-controller.ai_machine.state = IDLE;
+controller.ai_machine.state = "IDLE";
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Ai action objects. This objects works more or less like rules in a rule engine because of
@@ -316,6 +316,7 @@ controller.ai_machine.state = IDLE;
 // The ai does the action with the highest score first.
 //
 
+/*
 controller.ai_definedRoutine({
   key:"endTurn",
   mapAction:true,
@@ -353,3 +354,4 @@ controller.ai_definedRoutine({
   scoring:function( data ){},
   prepare:function( data ){}
 });
+*/

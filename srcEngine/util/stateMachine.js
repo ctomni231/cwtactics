@@ -29,7 +29,7 @@
     
     // event must be defined in the current state
     if( stateEvent === undefined ){
-      this.onerror( ev, this.state, "N/A", error.STM_NO_EVENT );
+      this.onerror( ev, this.state, "N/A", "NO EVENT" );
       return;
     } 
     
@@ -43,7 +43,7 @@
     
     // cannot break an action state transition
     if( nextState === BREAK_TRANSITION && ev === "actionState" ){
-      this.onerror( ev, this.state, nextState,error.STM_ACTIONSTATE_BREAKS_TRANS );
+      this.onerror( ev, this.state, nextState,"BREAKS TRANSITION" );
       return;
     }
     
@@ -52,7 +52,7 @@
     var goBack = (nextState === this.backToLastState());
     if( goBack ){
       if( this.history === null ){
-        this.onerror( ev, this.state, nextState, error.STM_BACK_TRANSITION_NO_HISTORY );
+        this.onerror( ev, this.state, nextState, "NO HISTORY GIVEN" );
       }
         
       if( this.history.length === 1 ) nextState = "IDLE";
@@ -69,7 +69,7 @@
     
     if( !nextStateImpl ){
       this.state = oldState;
-      this.onerror( ev, this.state, nextState, error.STM_NEXT_STATE_MISSING );
+      this.onerror( ev, this.state, nextState, "NO NEXT STATE" );
       return;
     }
     if( nextStateImpl.onenter ){
