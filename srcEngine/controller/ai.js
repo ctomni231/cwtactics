@@ -47,22 +47,43 @@ controller.ai_SCORE = {
 
 // Contains all check/action logics for the DumbBoy ai.
 //
-controller.ai_CHECKS = {};
+controller.ai_CHECKS = [];
 
-// Like a copy from the state machine data to mock user action data. Every AI
-// action should be checked against the real game command objects to prevent
-// errors and an unfair AI.
+// The memory of the ai. Holds different data of the game state for all ai controlled
+// player instances.
 //
-controller.ai_actionHolder_ = {
+controller.ai_data = util.list( MAX_PLAYER-1, function(){
+  return {
+    pid: INACTIVE_ID
+  };
+});
+
+//
+//
+controller.ai_loopHolder_ = {
+  i    : -1,
+  e    : -1,
+  prop : -1
+};
+
+// 
+//
+controller.ai_scoreDataHolder_ = {
   source          : null,
   target          : null,
   selectionTarget : null,
   moveSelection   : null,
-  attackSelection : null,
-  ai_data         : {
-    step_i:-1,
-    step_e:-1
-  }
+  attackSelection : null
+};
+
+// 
+//
+controller.ai_actionDataHolder_ = {
+  source          : null,
+  target          : null,
+  selectionTarget : null,
+  moveSelection   : null,
+  attackSelection : null
 };
 
 // Registers a AI action.
@@ -74,8 +95,22 @@ controller.ai_definedRoutine = function(impl){
   assert( util.isFunction(impl.scoring) );
   assert( util.isFunction(impl.prepare) );
   
-  controller.ai_CHECKS[impl.key] = impl;
-  delete impl.key;
+  controller.ai_CHECKS.push(impl);
+};
+
+// Returns a AI action object.
+//
+controller.ai_definedRoutine = function(key){
+  assert( util.isString(key) );
+  
+  var i = 0;
+  var e = controller.ai_CHECKS.length;
+  while( i<e ){
+    if( controller.ai_CHECKS[i].key === key ) return controller.ai_CHECKS[i];
+    i++;
+  }
+  
+  return null;
 };
 
 // Registers a player id as ai controlled instance.
@@ -107,29 +142,23 @@ controller.ai_isHuman = function(pid){
 
 // The state machine of the ai, contains the whole decision making process.
 //
-//    NONE                        => IDLE
+//    NONE                             => IDLE
 //
-//    IDLE                        => SET_UP_AI_TURN
+//    IDLE                             => SET_UP_AI_TURN
 //
-//    SET_UP_AI_TURN              => PHASE_PREPARE_SEARCH_TASKS
+//    SET_UP_AI_TURN                   => PHASE_PREPARE_SEARCH_TASKS
 //
-//    PHASE_PREPARE_SEARCH_TASKS  => PHASE_SEARCH_TASKS
+//    PHASE_PREPARE_SEARCH_TASKS       => PHASE_SEARCH_TASKS
 //
-//    PHASE_SEARCH_TASK           => PHASE_SEARCH_TASK              (when    actors left)
-//                                   PHASE_FLUSH_TASK               (when no actors left)
+//    PHASE_SEARCH_TASK                => PHASE_SEARCH_TASK              (when    actors left)
+//                                     => PHASE_FLUSH_TASK               (when no actors left)
 //
-//    PHASE_FLUSH_TASK            => PHASE_PREPARE_SEARCH_TASKS     (when normal action)
-//                                => TEAR_DOWN_AI_TURN              (when endTurn action)
+//    PHASE_FLUSH_TASK                 => PHASE_PREPARE_SEARCH_TASKS     (when normal action)
+//                                     => TEAR_DOWN_AI_TURN              (when endTurn action)
 //
-//    TEAR_DOWN_AI_TURN           => IDLE
+//    TEAR_DOWN_AI_TURN                => IDLE
 //
 controller.ai_machine = util.stateMachine({
-
-  NONE: { tick: function() {
-    util.log(controller.ai_spec,"- initializing",controller.ai_spec);
-    
-    return "IDLE";
-  }},
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // This state must be active at the start of a AI turn. If not then something gone
@@ -139,19 +168,21 @@ controller.ai_machine = util.stateMachine({
 
   IDLE:{ tick: function(){
     util.log(controller.ai_spec,"- doing step in idle state");
-    // TODO: setup meta data
-
+    
+    // no ai is selected now
     assert( !controller.ai_active );
-
+    
+    // select ai
     for( var i=controller.ai_data.length-1; i>=0; i-- ){
       if( controller.ai_data[i].pid === model.turnOwner ){
         controller.ai_active = controller.ai_data[i];
       }
     }
-
+    
+    // ai is selected now
     assert( controller.ai_active );
-
-    return "START_TURN";
+    
+    return "SET_UP_AI_TURN";
   }},
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -161,297 +192,113 @@ controller.ai_machine = util.stateMachine({
   // based on the situation on the battlefield.
   //
 
-  START_TURN:{ tick: function(){
-    util.log("AI:: starting turn");
+  SET_UP_AI_TURN:{ tick: function(){
+    util.log(controller.ai_spec,"- setup turn");
 
-    return "PHASE_PREPARE_SEARCH_TASKS";
+    return "PHASE_PREPARE_SEARCH_UNIT_TASKS";
   }},
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  // Prepares the search step.
+  // Prepares the search tasks for units step.
   //
 
   PHASE_PREPARE_SEARCH_TASKS: { tick: function(){
-    util.log("AI:: searching tasks for objects");
+    util.log(controller.ai_spec,"- prepare search unit tasks");
 
-    controller.ai_actionHolder_.ai_data.step_i = model.unit_firstUnitId( model.round_turnOwner );
-    controller.ai_actionHolder_.ai_data.step_e = model.unit_lastUnitId( model.round_turnOwner );
+    var data  = controller.ai_loopHolder_;
+    data.i    = model.unit_firstUnitId( model.round_turnOwner );
+    data.e    = model.unit_lastUnitId(  model.round_turnOwner )+MAX_PROPERTIES; // units+properties
+    data.prop = MAX_UNITS_PER_PLAYER;                                           // position of the first prop
 
     return "PHASE_SEARCH_TASK";
   }},
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  // Searches proper tasks for every actor of the AI player. This state only searces one
-  // task for one unit per event `tick` and returns to itself when left actors has to
-  // be checked after the event, else it returns to flush tasks.
+  // Searches proper tasks for every unit of the ai player.
   //
 
-  PHASE_SEARCH_TASKS: { tick: function(){
-
-    var type;
-    var unit;
-    var found;
-    var prio    = controller.ai_active.prio;
-    var data    = controller.ai_actionHolder_.ai_data;
-    var i       = data.step_i;
+  PHASE_SEARCH_TASK: { tick: function(){
+    util.log(controller.ai_spec,"- search task");
     
-
-    unit = model.units[i];
-    if( unit && model.actions_canAct(i) ){
-      util.log("AI:: searching task for unit",i);
-
-      // TODO: generate move path here
-
-      type = unit.type;
-
-      // check situation and decide what to do
-      var pi = prio.length-1;
-      for( ; pi>=0 ; pi-- ){
-
-        found = false;
-        switch( prio[pi] ){
-
-          // ++++++++++++++++++++++++++++++++++++++++++++++++
-          // Check possible capture targets here. Capturing
-          // units should always target neutral and enemy
-          // properties, to capture them. This does not mean
-          // that capturing units should only capture, but
-          // they should be primary used by AI for that.
-          //
-
-          case controller.ai_CHECKS.CAPTURE :
-            if( type.captures ){
-              controller.ai_active.hlp.pid  = unit.owner;
-              controller.ai_active.hlp.uid  = i;
-              controller.ai_active.hlp.x    = -1;
-              controller.ai_active.hlp.y    = -1;
-
-              model.map_doInSelection(
-                controller.ai_active.hlp.move,
-                controller.ai_searchNeutralProp_,
-                controller.ai_active.hlp
-              );
-
-              if( controller.ai_active.hlp.x !== -1 ){
-                controller.ai_active.markedTask[i] = controller.ai_TARGETS.JOIN;
-                found = true;
-              }
-            }
-
-            break;
-
-          // ++++++++++++++++++++++++++++++++++++++++++++++++
-
-          case controller.ai_CHECKS.ATTACK :
-
-            // if the unit can move and attack then do it
-            if( model.battle_isDirectUnit(i) || model.battle_isBallisticUnit(i) ){
-
-              // TODO: use attack selection here
-              model.map_doInSelection(
-                controller.ai_active.hlp.move,
-                controller.ai_searchBatleTarget_,
-                controller.ai_active.hlp
-              );
-            }
-            // indirect
-            else if( model.battle_isIndirectUnit(i) ){
-
-            }
-            // no battle unit
-            else{
-
-            }
-            break;
-
-          // ++++++++++++++++++++++++++++++++++++++++++++++++
-
-          case controller.ai_CHECKS.MOVE_TO_ENEMY :
-            break;
-
-          // ++++++++++++++++++++++++++++++++++++++++++++++++
-
-          case controller.ai_CHECKS.MOVE_TO_HQ :
-            break;
-
-          // ++++++++++++++++++++++++++++++++++++++++++++++++
-          // If unit is damaged a lot, then try to repair it
-          // by joining two units of the same type togehter.
-          //
-
-          case controller.ai_CHECKS.JOIN :
-            if( unit.hp < 50 ){
-              controller.ai_active.hlp.pid  = unit.owner;
-              controller.ai_active.hlp.x    = -1;
-              controller.ai_active.hlp.y    = -1;
-
-              model.map_doInSelection(
-                controller.ai_active.hlp.move,
-                controller.ai_searchJoinTarget_,
-                controller.ai_active.hlp
-              );
-
-              if( controller.ai_active.hlp.x !== -1 ){
-                controller.ai_active.markedTask[i] = controller.ai_TARGETS.CAPTURE_NEXT_PROP;
-                found = true;
-              }
-            }
-            break;
-
-          // ++++++++++++++++++++++++++++++++++++++++++++++++
-          // If unit is damaged a lot, then try to repair it
-          // by moving onto a property with healing ability.
-          //
-
-          case controller.ai_CHECKS.REPAIR :
-
-            // when unit is low on health then try to reach the next repair property
-            if( unit.hp < 50 ) found = true;
-
-            break;
-
-          // ++++++++++++++++++++++++++++++++++++++++++++++++
-
-        }
-
-        if( found ) break;
+    var loopData   = controller.ai_loopHolder_;
+    var scoreData  = controller.ai_actionDataHolder_;
+    var actionData = controller.ai_actionDataHolder_;
+    
+    // prepare data object
+    if( loopData.i <= loopData.e ){
+      
+      if( loopData.i < loopData.prop ){
+        
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // unit check  
+        //
+    
+        util.log(controller.ai_spec,"- ..for unit",loopData.i);
+        
+        
+        
+      } else {
+        
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // propety check
+        //
+        
+        util.log(controller.ai_spec,"- ..for property",data.step_i);
+        
+        
+        
       }
+    } else {
+      
+      // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+      // map check
+      //
+      
+      util.log(controller.ai_spec,"- ..for map");
+      
     }
-
-    data.step_i++;
-    return ( data.step_i <= data.step_e )? "PHASE_SEARCH_TASK" : "PHASE_FLUSH_TASK";
+    
+    // do all checks
+    var cScore = 0;
+    var nScore;
+    var i = 0;
+    var e = controller.ai_CHECKS.length;
+    while( i<e ){
+      
+      // call scoring
+      nScore = controller.ai_CHECKS[i].scoring(scoreData);
+      
+      // new object got better scores -> select it's action
+      if( nScore > cScore ){
+        
+      }
+      
+      i++;
+    }
+    
+    loopData.i++;
+    return ( loopData.i <= loopData.e+1 )? "PHASE_SEARCH_TASK" : "PHASE_FLUSH_TASK";
   }},
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  // Flushes one task from the list. At the moment the first proper task will be choosen
-  // and flushed.
+  // Flushes the current selected task, which is the action with the highest priority.
+  // The ai machine moves into the tear down state when the flush state calls an 
+  // endAiTurn action or no valid action could be found.
   //
 
   PHASE_FLUSH_TASK: { tick: function(){
-    util.log("AI:: flushing task into command stack");
-
-    // flush a command from the tasks list
-    var list = controller.ai_active.markedTasks;
-    for( var i=MAX_UNITS_PER_PLAYER-1; i>=0; i-- ){
-      if( list[i] !== controller.ai_TARGETS.NOTHING ){
-        var action;
-
-        // Do the action by mocking a user action object and checking
-        // it against the game commands (try to be like a real player)
-        //
-        switch(list[i]){
-
-          // +++++++++++++++++++++++++++++++++++++++++++++++++
-
-          case controller.ai_TARGETS.ATTACK:
-            break;
-
-          // +++++++++++++++++++++++++++++++++++++++++++++++++
-
-          case controller.ai_TARGETS.CAPTURE:
-            break;
-
-          // +++++++++++++++++++++++++++++++++++++++++++++++++
-
-          case controller.ai_TARGETS.WAIT:
-            controller.action_objects.wait;
-            break;
-
-          // +++++++++++++++++++++++++++++++++++++++++++++++++
-
-          case controller.ai_TARGETS.JOIN:
-            break;
-
-          // +++++++++++++++++++++++++++++++++++++++++++++++++
-        }
-
-        // TODO: use action builder here
-        assert( util.isUndefined(action.condition) || action.condition(controller.ai_actionHolder_) );
-        action.invoke(controller.ai_actionHolder_);
-
-        // clear slot
-        list[i] = controller.ai_TARGETS.NOTHING;
-
-        // decrease counter
-        controller.ai_active.taskCount--;
-
-        break;
-      }
-    }
+    util.log(controller.ai_spec,"- flush most important command");
 
     return "PHASE_CHECK_LEFT_TASKS";
   }},
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  // If further tasks are left in the stack then re-analyse the actions for all other
-  // units. This is quite expensive!
-  //
-  // The extrem case means something like 50 units on the field. If the AI follows this
-  // pattern it has to check 50 units first, act with one and recheck the others...
-  //
-  // We get the formular `(n*(n+1))/2 while n=50`. As long every frame has 16ms, this means
-  // an extrem AI turn needs around 20400ms to calculate all actions. I think it's okay
-  // but can be optimized.
-  //
-  // At the moment this algorithm is useless because the actions will be done by iteration
-  // from unit 0 to 50 ( in relation to the player ). That means you could optimize this by
-  // simply doing it with the costs of `n` instead of `(n(n+1))/2`.
-  // Crecen`s intention of making an AI is more complex, that's why this algorithm is used.
-  //
-  // Why is this pattern better?
-  // Because the AI does every action after re-analyse thesituation which results in better
-  // anaylse->action situations. If we add priority to the calculated tasks then we get this
-  // benefit. The AI calculates all possible tasks like before, but does the action with
-  // the best resulting outcome first and recalculates then.
-  //
-  // In order to optimize that:
-  //
-  // Some actions like capture changes the situation on the battlefield in a differen't manner.
-  // E.g. if you attack an unit and loose a lot of HP you may create a `join` situation. That
-  // means `attack` creates a new game situation. Also if you kill an enemy unit you may nullify
-  // the reason to move an indirect unit to (x,y). Something like build unit or capture changes
-  // the battlefield but not other actions. Thats why this actions could be done as bulk process
-  // without re-checking the others.
-  //
-  //    ==> At all test will show how long this system will need to do actions in an extrem case
-  //        Maybe this `20s` window isn't dramatic (whith animations anyway :P)
+  // The ai turn ends here. 
   //
 
-  PHASE_CHECK_LEFT_TASKS:{ tick: function(){
-    util.log("AI:: checking left tasks");
-
-    // when commands left, then re-analyse the actions for the other
-    // units because the game situation has changed
-    return ( controller.ai_active.taskCount > 0 )? "PHASE_PREPARE_SEARCH_TASKS" : "BUILD_OBJECTS";
-  }},
-
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  // The AI should build things here. :P
-  //
-
-  BUILD_OBJECTS:{ tick: function(){
-    util.log("AI:: producing units");
-
-    // make stupid things
-    for( var i=model.properties.length-1; i>=0; i-- ){
-      if( model.properties[i].owner === model.turn_owner ){
-        // controller.action_sharedInvoke("buildUnit",[i,"INFT"]);
-      }
-    };
-
-    return "END_TURN";
-  }},
-
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  // Turn end.
-  //
-
-  END_TURN:{ tick: function(){
-    util.log("AI:: ending turn");
-
-    // end the ai turn here, it's nothing more to do now
-    controller.action_sharedInvoke("nextTurn",[]);
-
+  TEAR_DOWN_AI_TURN:{ tick: function(){
+    util.log(controller.ai_spec,"- tear down turn");
+    
     // release reference
     controller.ai_active = null;
 
@@ -461,9 +308,7 @@ controller.ai_machine = util.stateMachine({
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 });
-
-// initializing AI state machine
-controller.ai_machine.event("tick");
+controller.ai_machine.state = IDLE;
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Ai action objects. This objects works more or less like rules in a rule engine because of
@@ -489,10 +334,22 @@ controller.ai_definedRoutine({
   key:"moveToNextProperty",
   unitAction:true,
   
-  scoring:function( data ){
-    return 2;
-  },
+  scoring:function( data ){},
+  prepare:function( data ){}
+});
+
+controller.ai_definedRoutine({
+  key:"unitAttackEnemy",
+  unitAction:true,
   
-  prepare:function( data ){
-  }
+  scoring:function( data ){},
+  prepare:function( data ){}
+});
+
+controller.ai_definedRoutine({
+  key:"unitRetreat",
+  unitAction:true,
+  
+  scoring:function( data ){},
+  prepare:function( data ){}
 });
