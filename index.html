@@ -64,6 +64,9 @@
         $(".rss-date").each(function(i,element){
           element.innerHTML = moment( element.innerHTML, "YYYY-MM-DD HH:mm:ss.SSS-Z,ZZ").fromNow();;
         });
+        
+        // DEACTIVATE BUTTON FOR NOW
+        $(".playButton a").attr("title","Currently broken, fix will be released together with CWT 0.3.5. :)").attr("href","#");
       });
       
     </script>
