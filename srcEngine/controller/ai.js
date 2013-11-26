@@ -90,7 +90,6 @@ controller.ai_actionDataHolder_ = {
 //
 controller.ai_definedRoutine = function(impl){
   assert( util.isString(impl.key) );
-  assert( util.isInt(impl.baseScore) );
   assert( controller.ai_CHECKS.hasOwnProperty(impl.key) );
   assert( util.isFunction(impl.scoring) );
   assert( util.isFunction(impl.prepare) );
@@ -221,9 +220,16 @@ controller.ai_machine = util.stateMachine({
     util.log(controller.ai_spec,"- search task");
     
     var loopData   = controller.ai_loopHolder_;
-    var scoreData  = controller.ai_actionDataHolder_;
+    var scoreData  = controller.ai_scoreDataHolder_;
     var actionData = controller.ai_actionDataHolder_;
-    
+
+    // clean action data
+    actionData.source          = null;
+    actionData.target          = null;
+    actionData.selectionTarget = null;
+    actionData.moveSelection   = null;
+    actionData.attackSelection = null;
+
     // prepare data object
     if( loopData.i <= loopData.e ){
       
@@ -240,10 +246,10 @@ controller.ai_machine = util.stateMachine({
       } else {
         
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        // propety check
+        // property check
         //
         
-        util.log(controller.ai_spec,"- ..for property",data.step_i);
+        util.log(controller.ai_spec,"- ..for property",loopData.i);
         
         
         
@@ -259,8 +265,8 @@ controller.ai_machine = util.stateMachine({
     }
     
     // do all checks
-    var cScore = 0;
-    var nScore;
+    var cScore = -1;
+    var nScore = -1;
     var i = 0;
     var e = controller.ai_CHECKS.length;
     while( i<e ){
@@ -270,7 +276,12 @@ controller.ai_machine = util.stateMachine({
       
       // new object got better scores -> select it's action
       if( nScore > cScore ){
-        
+
+        actionData.source          = scoreData.source;
+        actionData.target          = scoreData.target;
+        actionData.selectionTarget = scoreData.selectionTarget;
+        actionData.moveSelection   = scoreData.moveSelection;
+        actionData.attackSelection = scoreData.attackSelection;
       }
       
       i++;
@@ -316,42 +327,18 @@ controller.ai_machine.state = "IDLE";
 // The ai does the action with the highest score first.
 //
 
-/*
 controller.ai_definedRoutine({
-  key:"endTurn",
-  mapAction:true,
-  endsAiTurn:true,
-  
-  scoring:function( data ){
-    // 1 as low score to be sure that end turn will be used at last by the AI
-    return 1; 
+  key        : "endTurn",
+  mapAction  : true,
+  endsAiTurn : true,
+
+  // 1 as low score to be sure that end turn will be used at last by the AI
+  scoring : function( data ){
+    if( data.unit || data.property ) return -1;
+    return 1;
   },
-  
-  prepare:function( data ){
+
+  prepare : function( data ){
+    controller.action_objects.nextTurn.invoke(data);
   }
 });
-
-controller.ai_definedRoutine({
-  key:"moveToNextProperty",
-  unitAction:true,
-  
-  scoring:function( data ){},
-  prepare:function( data ){}
-});
-
-controller.ai_definedRoutine({
-  key:"unitAttackEnemy",
-  unitAction:true,
-  
-  scoring:function( data ){},
-  prepare:function( data ){}
-});
-
-controller.ai_definedRoutine({
-  key:"unitRetreat",
-  unitAction:true,
-  
-  scoring:function( data ){},
-  prepare:function( data ){}
-});
-*/
