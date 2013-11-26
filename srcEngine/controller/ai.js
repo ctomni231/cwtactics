@@ -34,133 +34,20 @@
 //  - DB should use transports to reach far away properties
 //  - *Actions:* Hide/Unhide,Supply,Load/Unload,Suicide_Bomb
 //
-// **COMMANDS USED BY DB (sticky)**
-//
-//  - activate_power        [ ]
-//  - attack                [ ]
-//  - build_unit            [ ]
-//  - capture               [ ]
-//  - attachCommander       [ ]
-//  - detachCommander       [ ]
-//  - end_turn              [x]
-//  - fireCannon            [ ]
-//  - fireLaser             [ ]
-//  - hide_unit             [ ]
-//  - join                  [ ]
-//  - load_unit             [ ]
-//  - silo_fire             [ ]
-//  - suicide_bomb          [ ]
-//  - supply                [ ]
-//  - transfer_money        [ ]
-//  - transfer_property     [ ]
-//  - transfer_unit         [ ]
-//  - unhide_unit           [ ]
-//  - unload_unit           [ ]
-//  - wait                  [ ]
-//
 controller.ai_spec = "DumbBoy [0.25]";
 
-// Check modes of the AI. Every mode realizes a specialized check for a situation. Every
-// situation can cause different actions for units.
+// Some base scores.
 //
-controller.ai_CHECKS  = {
-  CAPTURE       : 0,
-  ATTACK        : 1,
-  MOVE_TO_ENEMY : 2,
-  MOVE_TO_HQ    : 3,
-  REPAIR        : 4,
-  JOIN          : 5
+controller.ai_SCORE = {
+  LOW      : 100,
+  NORMAL   : 200,
+  HIGH     : 300,
+  CRITICAL : 999
 };
 
-controller.ai_CHECKS_N = {};
-
-controller.ai_definedRoutine = function(){
-  
-};
-
-controller.ai_definedRoutine({
-  key:"endTurn",
-  
-  scoring:function( currentScore, selfScore ){
-    if( currentScore > selfScore ) return -1;
-    
-    return selfScore;
-  },
-  
-  prepare:function(){
-    
-  }
-})
-
-
-// Target actions for the AI. These ones are the result of the checks above. Every unit can
-// have one of this tasks.
+// Contains all check/action logics for the DumbBoy ai.
 //
-controller.ai_TARGETS = {
-  NOTHING : 0,
-  JOIN    : 1,
-  ATTACK  : 2,
-  CAPTURE : 3,
-  WAIT    : 4
-};
-
-// Sets the default priority in a priority list of a AI controlled player.
-//
-controller.ai_orderDefaultPrio = function(list){
-  assert( list.length === 6 ); 
-  
-  // first try to capture if you can
-  // because nothing is more important
-  // than the amount of income
-  list[5] = controller.ai_CHECKS.CAPTURE;
-
-  // try to attack enemy targets
-  list[4] = controller.ai_CHECKS.ATTACK;
-
-  // if above not fits but a unit is damaged then it
-  // should be repaired by join or repair
-  list[3] = controller.ai_CHECKS.JOIN;
-  list[2] = controller.ai_CHECKS.REPAIR;
-
-  // fallback actions when no special actions matches are trying
-  // to move near the enemy or the enemy HQ
-  // (TODO: could be merged to one check)
-  list[1] = controller.ai_CHECKS.MOVE_TO_ENEMY;
-  list[0] = controller.ai_CHECKS.MOVE_TO_HQ;
-
-  return list;
-};
-
-// The memory of the ai. Holds different data of the game state for all ai controlled
-// player instances.
-//
-controller.ai_data = util.list( MAX_PLAYER-1, function(){
-  return {
-
-    // The id of the controlled player.
-    //
-    pid        : INACTIVE_ID,
-
-    // Controls the priority of the checks. Every AI player can independtly handle
-    // it's own priority list. This list reorderable in relation to the situation
-    // on the battlefield. Needed for version 0.5 of dumbBoy to change it's handling
-    // dynamically at runtime.
-    //
-    prio        : controller.ai_orderDefaultPrio([0,0,0,0,0,0]),
-
-    // number of tasks in the list
-    //
-    taskCount  : 0,
-
-    // task list for the unit objects
-    //
-    markedTasks : util.list( MAX_UNITS_PER_PLAYER, null ),
-    
-    // score list for the unit objects
-    //
-    markedScores : util.list( MAX_UNITS_PER_PLAYER, null )
-  };
-});
+controller.ai_CHECKS = {};
 
 // Like a copy from the state machine data to mock user action data. Every AI
 // action should be checked against the real game command objects to prevent
@@ -178,9 +65,18 @@ controller.ai_actionHolder_ = {
   }
 };
 
-// Link to the current active player instance.
+// Registers a AI action.
 //
-controller.ai_active = null;
+controller.ai_definedRoutine = function(impl){
+  assert( util.isString(impl.key) );
+  assert( util.isInt(impl.baseScore) );
+  assert( controller.ai_CHECKS.hasOwnProperty(impl.key) );
+  assert( util.isFunction(impl.scoring) );
+  assert( util.isFunction(impl.prepare) );
+  
+  controller.ai_CHECKS[impl.key] = impl;
+  delete impl.key;
+};
 
 // Registers a player id as ai controlled instance.
 //
@@ -209,77 +105,28 @@ controller.ai_isHuman = function(pid){
   return true;
 };
 
-// Searches for neutral or enemy properties in range and marks them if found.
-//
-controller.ai_searchNeutralProp_ = function( x,y, data ){
-  // TODO search best property
-
-  var prop = model.property_posMap[x][y];
-  if( prop && prop.owner !== data.pid ){
-
-    data.x = x;
-    data.y = y;
-
-    // stop here
-    return false;
-  }
-};
-
-// Searches for a good join target.
-//
-controller.ai_searchJoinTarget_ = function( x,y, data ){
-  // check all and search best target
-
-  var sunit = model.units[data.uid];
-  var unit = model.unit_posMap[x][y];
-  if( unit && unit.type === sunit.type && unit.owner === data.pid ){
-    if( unit.hp <= 50 ||           // other unit is damaged a lot too
-      (unit.hp+sunit.hp < 124) ){  // both together drops max. 25 health to cash (TODO: if cash is low join more)
-
-      data.x = x;
-      data.y = y;
-
-      // stop here
-      return false;
-    }
-  }
-};
-
-// Searches...
-//
-controller.ai_searchBatleTarget_ = function( x,y, data ){
-  var unit = model.unit_posMap[x][y];
-  if( unit && model.player_data[unit.owner].team !== model.player_data[data.pid].team ){
-
-    // unit can attack
-    if( model.battle_getBaseDamageAgainst(model.units[data.uid], unit, true) > 0 ){
-      data.x = x;
-      data.y = y;
-
-      // stop here
-      return false;
-    }
-  }
-};
-
 // The state machine of the ai, contains the whole decision making process.
 //
-//    START                       => IDLE
-//    IDLE                        => START_TURN
-//    START_TURN                  => PHASE_PREPARE_SEARCH_TASKS
+//    NONE                        => IDLE
+//
+//    IDLE                        => SET_UP_AI_TURN
+//
+//    SET_UP_AI_TURN              => PHASE_PREPARE_SEARCH_TASKS
+//
 //    PHASE_PREPARE_SEARCH_TASKS  => PHASE_SEARCH_TASKS
-//    PHASE_SEARCH_TASK           => PHASE_SEARCH_TASK  (when    actors left)
-//                                   PHASE_FLUSH_TASK   (when no actors left)
-//    PHASE_FLUSH_TASK            => PHASE_CHECK_LEFT_TASKS
-//    PHASE_CHECK_LEFT_TASKS      => PHASE_SEARCH_TASKS (when    actors left)
-//                                   BUILD_OBJECTS      (when no actors left)
-//    BUILD_OBJECTS               => END_TURN
-//    END_TURN                    => IDLE
+//
+//    PHASE_SEARCH_TASK           => PHASE_SEARCH_TASK              (when    actors left)
+//                                   PHASE_FLUSH_TASK               (when no actors left)
+//
+//    PHASE_FLUSH_TASK            => PHASE_PREPARE_SEARCH_TASKS     (when normal action)
+//                                => TEAR_DOWN_AI_TURN              (when endTurn action)
+//
+//    TEAR_DOWN_AI_TURN           => IDLE
 //
 controller.ai_machine = util.stateMachine({
 
   NONE: { tick: function() {
-    util.log("AI:: initializing AI core");
+    util.log(controller.ai_spec,"- initializing",controller.ai_spec);
     
     return "IDLE";
   }},
@@ -291,7 +138,7 @@ controller.ai_machine = util.stateMachine({
   //
 
   IDLE:{ tick: function(){
-    util.log("AI:: doing step in idle state");
+    util.log(controller.ai_spec,"- doing step in idle state");
     // TODO: setup meta data
 
     assert( !controller.ai_active );
@@ -617,3 +464,35 @@ controller.ai_machine = util.stateMachine({
 
 // initializing AI state machine
 controller.ai_machine.event("tick");
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// Ai action objects. This objects works more or less like rules in a rule engine because of
+// the scoring model. Every action can define a score based on the situation on the battlefield. 
+// The ai does the action with the highest score first.
+//
+
+controller.ai_definedRoutine({
+  key:"endTurn",
+  mapAction:true,
+  endsAiTurn:true,
+  
+  scoring:function( data ){
+    // 1 as low score to be sure that end turn will be used at last by the AI
+    return 1; 
+  },
+  
+  prepare:function( data ){
+  }
+});
+
+controller.ai_definedRoutine({
+  key:"moveToNextProperty",
+  unitAction:true,
+  
+  scoring:function( data ){
+    return 2;
+  },
+  
+  prepare:function( data ){
+  }
+});
