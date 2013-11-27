@@ -69,22 +69,24 @@ controller.ai_loopHolder_ = {
 // 
 //
 controller.ai_scoreDataHolder_ = {
-  source          : null,
-  target          : null,
-  selectionTarget : null,
-  moveSelection   : null,
-  attackSelection : null
+  source          : Object.create( controller.TaggedPosition ),
+  target          : Object.create( controller.TaggedPosition ),
+  selectionTarget : Object.create( controller.TaggedPosition ),
+  selection       : util.selectionMap( MAX_SELECTION_RANGE * 4 + 1 )
 };
 
 // 
 //
 controller.ai_actionDataHolder_ = {
-  source          : null,
-  target          : null,
-  selectionTarget : null,
-  moveSelection   : null,
-  attackSelection : null
+  source          : Object.create( controller.TaggedPosition ),
+  target          : Object.create( controller.TaggedPosition ),
+  selectionTarget : Object.create( controller.TaggedPosition ),
+  selection       : util.selectionMap( MAX_SELECTION_RANGE * 4 + 1 )
 };
+
+// 
+//
+controller.ai_active = null;
 
 // Registers a AI action.
 //
@@ -159,9 +161,11 @@ controller.ai_isHuman = function(pid){
 //
 controller.ai_machine = util.stateMachine({
 
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  // This state must be active at the start of a AI turn. If not then something gone
-  // wrong. At least no logic will be done here. It only symbolizes a meta state to
+  // ++++++++++++++++++++++++++++++++++++++++
+  // This state must be active at the start 
+  // of a AI turn. If not then something gone
+  // wrong. At least no logic will be done 
+  // here. It only symbolizes a meta state to
   // say "Hey I'm ready for a new AI turn".
   //
 
@@ -184,11 +188,15 @@ controller.ai_machine = util.stateMachine({
     return "SET_UP_AI_TURN";
   }},
 
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  // Start turn actions. At the moment nothing will be done here too. Later this could
-  // be the place to make a first analyse of the battlefield and the enemy players.
-  // I think this will be a good place to define the long term task of the AI player
-  // based on the situation on the battlefield.
+  // ++++++++++++++++++++++++++++++++++++++++
+  // Start turn actions. At the moment 
+  // nothing will be done here too. Later 
+  // this could be the place to make a first 
+  // analyse of the battlefield and the enemy 
+  // players. I think this will be a good 
+  // place to define the long term task of
+  // the AI player based on the situation 
+  // on the battlefield.
   //
 
   SET_UP_AI_TURN:{ tick: function(){
@@ -197,7 +205,7 @@ controller.ai_machine = util.stateMachine({
     return "PHASE_PREPARE_SEARCH_UNIT_TASKS";
   }},
 
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // ++++++++++++++++++++++++++++++++++++++++
   // Prepares the search tasks for units step.
   //
 
@@ -212,8 +220,9 @@ controller.ai_machine = util.stateMachine({
     return "PHASE_SEARCH_TASK";
   }},
 
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  // Searches proper tasks for every unit of the ai player.
+  // ++++++++++++++++++++++++++++++++++++++++
+  // Searches proper tasks for every unit 
+  // of the ai player.
   //
 
   PHASE_SEARCH_TASK: { tick: function(){
@@ -224,44 +233,46 @@ controller.ai_machine = util.stateMachine({
     var actionData = controller.ai_actionDataHolder_;
 
     // clean action data
-    actionData.source          = null;
-    actionData.target          = null;
-    actionData.selectionTarget = null;
-    actionData.moveSelection   = null;
-    actionData.attackSelection = null;
-
+    actionData.source.set(-1,-1);
+    actionData.target.set(-1,-1);
+    actionData.selectionTarget.set(-1,-1);
+    actionData.selection.clear(-1);
+    
     // prepare data object
+    var dataTp = -1;
     if( loopData.i <= loopData.e ){
-      
       if( loopData.i < loopData.prop ){
-        
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // unit check  
-        //
     
         util.log(controller.ai_spec,"- ..for unit",loopData.i);
+        dataTp = 0;
         
-        
+        var unit = model.unit_data[loopData.i];
+        if( unit.owner !== INACTIVE_ID && unit.loadedIn === INACTIVE_ID ){
+          
+          actionData.source.set( unit.x, unit.y );
+          model.move_fillMoveMap( actionData.source, actionData.selection );
+        }
+          
         
       } else {
-        
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // property check
-        //
         
         util.log(controller.ai_spec,"- ..for property",loopData.i);
+        dataTp = 1;
         
-        
-        
+        var prop = model.property_data[loopData.i];
+        if( prop.owner === controller.ai_active.pid ){
+          
+          actionData.source.set( prop.x, prop.y );
+        }
       }
-    } else {
       
-      // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    } else {
       // map check
-      //
       
       util.log(controller.ai_spec,"- ..for map");
-      
+      dataTp = 2;
     }
     
     // do all checks
@@ -271,17 +282,20 @@ controller.ai_machine = util.stateMachine({
     var e = controller.ai_CHECKS.length;
     while( i<e ){
       
+      // meta check
+      if( dataTp !== 0 && controller.ai_CHECKS[i].unitAction ) continue;
+      if( dataTp !== 1 && controller.ai_CHECKS[i].propAction ) continue;
+      if( dataTp !== 2 && controller.ai_CHECKS[i].mapAction ) continue;
+      
       // call scoring
       nScore = controller.ai_CHECKS[i].scoring(scoreData);
-      
+        
       // new object got better scores -> select it's action
       if( nScore > cScore ){
-
-        actionData.source          = scoreData.source;
-        actionData.target          = scoreData.target;
-        actionData.selectionTarget = scoreData.selectionTarget;
-        actionData.moveSelection   = scoreData.moveSelection;
-        actionData.attackSelection = scoreData.attackSelection;
+        scoreData.source.grab(          actionData.source)
+        scoreData.target.grab(          actionData.target)
+        scoreData.selectionTarget.grab( actionData.selectionTarget)
+        scoreData.selection.grab(       actionData.selection);
       }
       
       i++;
@@ -291,10 +305,13 @@ controller.ai_machine = util.stateMachine({
     return ( loopData.i <= loopData.e+1 )? "PHASE_SEARCH_TASK" : "PHASE_FLUSH_TASK";
   }},
 
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  // Flushes the current selected task, which is the action with the highest priority.
-  // The ai machine moves into the tear down state when the flush state calls an 
-  // endAiTurn action or no valid action could be found.
+  // ++++++++++++++++++++++++++++++++++++++++
+  // Flushes the current selected task, which 
+  // is the action with the highest priority.
+  // The ai machine moves into the tear down 
+  // state when the flush state calls an
+  // endAiTurn action or no valid action 
+  // could be found.
   //
 
   PHASE_FLUSH_TASK: { tick: function(){
@@ -303,7 +320,7 @@ controller.ai_machine = util.stateMachine({
     return "PHASE_CHECK_LEFT_TASKS";
   }},
 
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // ++++++++++++++++++++++++++++++++++++++++
   // The ai turn ends here. 
   //
 
@@ -316,7 +333,7 @@ controller.ai_machine = util.stateMachine({
     return "IDLE";
   }}
 
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // ++++++++++++++++++++++++++++++++++++++++
 
 });
 controller.ai_machine.state = "IDLE";
@@ -334,7 +351,6 @@ controller.ai_definedRoutine({
 
   // 1 as low score to be sure that end turn will be used at last by the AI
   scoring : function( data ){
-    if( data.unit || data.property ) return -1;
     return 1;
   },
 
