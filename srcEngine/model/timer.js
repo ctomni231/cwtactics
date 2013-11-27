@@ -33,12 +33,12 @@ model.timer_updateTimer = function( delta ){
   model.timer_gameTimeElapsed += delta;
   
   // check turn time
-  if( model.timer_turnTimeElapsed >= model.timer_turnTimeLimit ){
-    model.round_nextTurn.callAsCommand();
+  if( model.timer_turnTimeLimit > 0 && model.timer_turnTimeElapsed >= model.timer_turnTimeLimit ){
+    controller.action_localInvoke("round_nextTurn",[]);
   }
 
   // check game time
-  if( model.timer_gameTimeElapsed >= model.timer_gameTimeLimit ){
+  if( model.timer_gameTimeLimit > 0 && model.timer_gameTimeElapsed >= model.timer_gameTimeLimit ){
     controller.update_endGameRound();
   }
 };

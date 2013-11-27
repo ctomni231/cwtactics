@@ -6,11 +6,11 @@ controller.loadMaps_load_ = function(path,baton){
       if( DEBUG ) util.log("going to cache map "+path);
 
       util.grabRemoteFile({
-        path: model.data_assets.maps + "/" + file + ".json",
+        path: model.data_assets.maps + "/" + path ,
         json: true,
 
         error: function( msg ){
-          baton.drop(msg);
+          baton.pass();
         },
 
         success: function( resp ){

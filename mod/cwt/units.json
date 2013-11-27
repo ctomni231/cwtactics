@@ -460,8 +460,8 @@
         "TCTR": 95
       }
     },
-    "simpleAnimation":true,
     "assets": {
+      "simpleAnimated": true,
       "gfx"           : "units/AWDS_BCTR.png",
       "pri_att_sound" : "cannon.wav",
       "sec_att_sound" : "cannon.wav"
@@ -619,8 +619,8 @@
       "INFT",
       "MECH"
     ],
-    "simpleAnimation":true,
     "assets": {
+      "simpleAnimated": true,
       "gfx" :"units/AWDS_TCTR.png"
     }
   },
@@ -814,7 +814,7 @@
       "SHIP": 1
     },
     "assets": {
-      "gfx" : ""
+      "gfx" : "units/AWDS_CRUS.png"
     }
   },
 

@@ -112,7 +112,7 @@ util.scoped(function(){
       }
       else{
         btns[0].innerHTML = model.data_localized("config.player.AI");
-        controller.setAIPlayer( playerId, "dumbBoy");
+        controller.ai_register( playerId, "dumbBoy");
       }
       
       // update player co

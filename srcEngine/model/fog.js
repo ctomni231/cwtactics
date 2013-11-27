@@ -61,10 +61,12 @@ model.fog_updateVisiblePid = function(){
 // Changes the vision value at a given field by a given range.
 //
 model.fog_modifyVisionAt = function( x,y, pid, range, value ){
+  if( pid === INACTIVE_ID ) return; // ignore neutral objects
+
   if( !controller.configValue("fogEnabled") ) return;
   
   assert( model.map_isValidPosition(x,y) );
-  assert( model.player_isValidPid(pid) );
+  // assert( model.player_isValidPid(pid) );
   assert( util.isInt(range) && range >= 0 );
   
   controller.prepareTags( x, y );
@@ -103,7 +105,7 @@ model.fog_modifyVisionAt = function( x,y, pid, range, value ){
       if( hX >= mW ) hX = mW-1;
       for( ; lX<=hX; lX++ ){
         
-        if( DEBUG ) util.log( "(",lX,",",lY,") changed fog by (",value,")" );
+        // if( DEBUG ) util.log( "(",lX,",",lY,") changed fog by (",value,")" );
 
         if( clientVisible )    model.fog_clientData[lX][lY]     += value;
         if( turnOwnerVisible ) model.fog_turnOwnerData[lX][lY]  += value;

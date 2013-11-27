@@ -54,14 +54,14 @@ view.renderMap = function( scale ){
   var tcy;
   var tcw;
   var tch;
-  var sprStepSel = view.getSpriteStep("SELECTION");
-  var sprStepUnit = view.getSpriteStep("UNIT");
-  var sprStepUnitSimple = view.getSpriteStep("UNIT_SIMPLE");
-  var sprStepProp = view.getSpriteStep("PROPERTY");
-  var sprStepStat = view.getSpriteStep("STATUS");
-  var sprStepTiles = view.getSpriteStep("ANIM_TILES");
-  var BASESIZE = controller.baseSize;
-  var simpleUnitAnimTypes = model.data_graphics.simpleAnimatedUnits;
+  var sprStepSel          = view.getSpriteStep("SELECTION");
+  var sprStepUnit         = view.getSpriteStep("UNIT");
+  var sprStepUnitSimple   = view.getSpriteStep("UNIT_SIMPLE");
+  var sprStepProp         = view.getSpriteStep("PROPERTY");
+  var sprStepStat         = view.getSpriteStep("STATUS");
+  var sprStepTiles        = view.getSpriteStep("ANIM_TILES");
+  var BASESIZE            = controller.baseSize;
+  var simpleUnitAnimTypes = model.data_simpleAnimatedUnits;
   var teamId = (model.client_lastPid !== -1)? model.player_data[ model.client_lastPid ].team : -1;
   
   var focusExists = (

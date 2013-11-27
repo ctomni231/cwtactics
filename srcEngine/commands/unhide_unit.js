@@ -9,7 +9,7 @@ controller.action_unitAction({
   },
   
   invoke: function( data ){
-    controller.action_sharedInvoke("ununit_hide",[ 
+    controller.action_sharedInvoke("unit_unhide",[
 			data.source.unitId 
 		]);
   }

@@ -19,7 +19,7 @@ controller.persistence_defineHandler(
 				
 				// check data
         assert( util.intRange(data[0],0,MAX_PLAYER-1) );
-        assert( util.isInt(   data[1]) );
+        assert( util.isString(data[1]) );
         assert( util.intRange(data[2],0,999999) );
         assert( util.intRange(data[3],0,MAX_PLAYER-1) );
 				

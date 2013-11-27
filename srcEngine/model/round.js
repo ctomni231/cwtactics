@@ -61,7 +61,7 @@ model.round_nextTurn = function(){
   
   // If the new player id is the same as the old 
   // player id then the game data is corrupted
-  util.expect( util.expect.isTrue, ( pid !== oid ));
+  assert( pid !== oid );
   
   // do turn start stuff for all **properties**
   for( i=0,e=model.property_data.length; i<e; i++ ){

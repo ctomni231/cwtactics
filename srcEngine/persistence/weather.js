@@ -15,7 +15,7 @@ controller.persistence_defineHandler(
     }
     else{
       model.weather_data = model.data_defaultWeatherSheet;
-      if( controller.isHost() ) model.weather_calculateNext();
+      // if( controller.isHost() ) model.weather_calculateNext();
     }
   },
   

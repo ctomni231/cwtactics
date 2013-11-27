@@ -19,7 +19,7 @@ util.scoped(function(){
 	
   controller.screenStateMachine.structure.MAIN.enterState = function(){
     controller.audio_playNullSound();
-    controller.audio_playMusic("BG");
+    controller.audio_playMusic( model.data_menu.music );
     
     btn.setIndex(1);
   };
@@ -35,9 +35,18 @@ util.scoped(function(){
   };
   
   controller.screenStateMachine.structure.MAIN.ACTION = function(){
+    var ret,snd;
+
     if( btn.isIndexInactive() ){
-      return this.breakTransition();
+      snd = model.data_sounds.CANCEL;
+      ret = this.breakTransition();
+    } else {
+      snd = model.data_sounds.MENUTICK;
+      ret = btn.getActiveKey();
     }
-    return btn.getActiveKey();
+
+    // play sound and return
+    controller.audio_playSound(snd);
+    return ret;
   };
 });

@@ -1,7 +1,9 @@
 // Load error handler.
 //
 controller.loadImages_loadFailed_ = function( ){
-  if( DEBUG ) util.log("could not load",this.pickey_);
+  var msg = "could not load "+this.pickey_;
+  if( DEBUG ) util.log(msg);
+  assert(false,msg);
 }
 
 // Generic image loader.
@@ -12,7 +14,7 @@ controller.loadImages_loadSuccessful_ = function(){
   var key     = this.pickey_;
 
   if( this.saveIt_ ){
-    controller.storage.set(
+    controller.storage_assets.set(
       this.src,
       Base64Helper.canvasToBase64(this),
       controller.loadImages_pictureSaved_
@@ -44,15 +46,16 @@ controller.loadImages_loadSuccessful_ = function(){
 // Save success handler.
 //
 controller.loadImages_pictureSaved_ = function( obj ){
-  if( DEBUG ) util.log("saved image type",obj.key);
+  if( DEBUG ) util.log("caching image",obj.key);
 }
 
 // Image loading process.
 //
 controller.loadImages_prepareImg_ = function(key,path,mode,baton){
-
   // append base path to the path
   path = model.data_assets.images + "/" + path;
+
+  if( DEBUG ) util.log("searching image",path);
 
   var img = new Image();
 
@@ -64,19 +67,22 @@ controller.loadImages_prepareImg_ = function(key,path,mode,baton){
   img.onerror = controller.loadImages_loadFailed_;
   img.onload  = controller.loadImages_loadSuccessful_;
 
+  baton.take();
   controller.storage_assets.get(
     path,
-    function(exists){
+    function( obj ){
 
-      if( exists ){
+      if( obj ){
         // load it from cache
+        if( DEBUG ) util.log("load image",path,"from cache");
 
-        controller.storage.get( key, function( obj ){
+        controller.storage_assets.get( path, function( obj ){
           img.src = "data:image/png;base64,"+obj.value;
         });
 
       } else {
         // load it from remote path
+        if( DEBUG ) util.log("load image",path,"from remote path");
 
         img.saveIt_ = true;
         img.src     = path;
@@ -118,6 +124,20 @@ controller.loadImages_doIt = util.singleLazyCall(
       controller.loadImages_prepareImg_( this.list[this.i],obj.assets.gfx,"P",baton );
     });
 
+    // tile variants
+    model.data_tileTypes.forEach(function( el ){
+      var obj = model.data_tileSheets[el];
+      if( obj.assets.gfx_variants ){
+        var subFlow = jWorkflow.order(function(){})
+        obj.assets.gfx_variants[1].forEach(function( sel ){
+          subFlow.andThen(function(p,baton){
+            controller.loadImages_prepareImg_( sel[0],sel[0],"T",baton );
+          });
+        });
+        flow.andThen(subFlow);
+      }
+    });
+
     // loading cannon animations
     util.iterateListByFlow(flow,model.data_propertyTypes, function(data,baton){
       var obj = model.data_tileSheets[this.list[this.i]];
@@ -136,10 +156,15 @@ controller.loadImages_doIt = util.singleLazyCall(
       controller.loadImages_prepareImg_( this.list[this.i],this.list[this.i],"M",baton );
     });
 
+    // misc
+    util.iterateListByFlow(flow,model.data_graphics.misc, function(data,baton){
+      controller.loadImages_prepareImg_( this.list[this.i][0],this.list[this.i][1],"M",baton );
+    });
+
     // start loading
     flow.start(function( e ){
-      if( e && DEBUG ) util.list("could not load modification images");
-      if(!e && DEBUG ) util.list("loaded all modification images");
+      if( e && DEBUG ) util.log("could not load modification images");
+      if(!e && DEBUG ) util.log("loaded all modification images");
 
       baton.pass();
     })

@@ -29,11 +29,11 @@ controller.keyMaps = {
 };
 
 controller.saveKeyMapping = function(){
-  controller.storage.set( controller.KEYMAP_STORAGE_KEY, controller.keyMaps );
+  controller.storage_general.set( controller.KEYMAP_STORAGE_KEY, controller.keyMaps );
 };
 
 controller.loadKeyMapping = function( cb ){
-  controller.storage.get( controller.KEYMAP_STORAGE_KEY , function( obj ){
+  controller.storage_general.get( controller.KEYMAP_STORAGE_KEY , function( obj ){
     if( obj ){
       if( DEBUG ) util.log("loading custom key configuration");
       controller.keyMaps = obj.value;

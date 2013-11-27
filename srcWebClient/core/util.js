@@ -20,12 +20,15 @@ util.iterateListByFlow = function( flow, list, cb ){
 
   // load elements
   for( var i=0,e=list.length; i<e; i++ ){
-    flow.andThen(cb,data);
+    flow.andThen(function(p,b){
+      cb.call(this,p,b);
+      this.i++;
+    },data);
   }
 
   // check some things
   flow.andThen(function(data){
-    assert(list   === data.list);
-    assert(data.i === data.list.length);
+    assert(list   === this.list);
+    assert(this.i === this.list.length);
   },data);
 };

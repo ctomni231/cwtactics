@@ -85,10 +85,10 @@ controller.action_clientAction = function( impl ){
 // Checks a key and argument array for the correctness in the current active code base.
 //
 controller.action_checkInvokeArgs = function( key, args ){
-  assert( !(
-    (arguments.length === 2 && !controller.action_idmap[key]) ||
-    (arguments.length === 1 && !controller.action_map[ key[key.length - 1] ] )
-   ));
+  assert(
+    ( typeof args !== "undefined" && typeof controller.action_idmap[key] !== "undefined" ) ||
+    ( typeof controller.action_map[ key[key.length - 1] ] !== "undefined" )
+  );
 };
 
 // Creates an action call array for the command stack.

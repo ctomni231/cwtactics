@@ -13,17 +13,25 @@
   };
   
   var clone = function( list ){
-    var len = this.__length__;
-    if( list.__length__ !== len ) throw Error();
-    for(var i = 0, e = len; i < e; i++){
+    var lenA = this.__length__;
+    var lenB = list.__length__;
+    if( typeof lenB ) lenB = list.length;
+
+    if( lenB !== lenA ) throw Error("source and target list have different lengths");
+
+    for(var i = 0, e = lenA; i < e; i++){
       list[i] = this[i];
     }
   };
   
   var grab = function( list ){
-    var len = this.__length__;
-    if( list.__length__ !== len ) throw Error();
-    for(var i = 0, e = len; i < e; i++){
+    var lenA = this.__length__;
+    var lenB = list.__length__;
+    if( typeof lenB ) lenB = list.length;
+
+    if( lenB !== lenA ) throw Error("source and target list have different lengths");
+
+    for(var i = 0, e = lenA; i < e; i++){
       this[i] = list[i];
     }
   };

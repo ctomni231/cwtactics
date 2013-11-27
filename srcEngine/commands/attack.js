@@ -32,6 +32,6 @@ controller.action_unitAction({
         data.targetselection.propertyId
       ]);
     }
-    else model.errorIllegalArguments("attack","no valid target");
+    else assert(false,"no valid target");
   }
 });

@@ -7,6 +7,7 @@ controller.action_registerCommands("unit_unhide");
 controller.action_registerCommands("unit_drainFuel");
 controller.action_registerCommands("unit_create");
 controller.action_registerCommands("unit_destroy");
+controller.action_registerCommands("unit_destroySilently");
 
 // events
 controller.event_define("unit_inflictDamage");

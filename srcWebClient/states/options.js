@@ -1,9 +1,5 @@
 util.scoped(function(){
-  
-  function saveComplete(){
-    if( DEBUG ) util.log("successfully set new mod path");
-  }
-  
+
   function wipeComplete(){
     document.location.reload();
   }
@@ -22,6 +18,8 @@ util.scoped(function(){
     "cwt_panel_header_small cwt_page_button w_400 cwt_panel_button button_active",
     "cwt_panel_header_small cwt_page_button w_400 cwt_panel_button button_inactive"
   );
+
+  var sourceState;
   
   // ------------------------------------------------------------------------------------------
   
@@ -29,7 +27,9 @@ util.scoped(function(){
   
 	controller.screenStateMachine.structure.OPTIONS.section = "cwt_options_screen";
 	
-  controller.screenStateMachine.structure.OPTIONS.enterState = function(){  
+  controller.screenStateMachine.structure.OPTIONS.enterState = function(_,source){
+    sourceState = ( typeof source !== "undefined" )? source : null;
+
     updateSoundContent();
     btn.setIndex(1);
   };
@@ -123,12 +123,12 @@ util.scoped(function(){
         return "REMAP_KEYS";
 
       case "options.resetData":
-        controller.storage.set("resetDataAtStart",{value:true}, wipeComplete );
+        controller.storage_general.set("resetDataAtStart",{value:true}, wipeComplete );
         break;
         
       case "options.goBack": 
         controller.audio_saveConfigs();
-        return "MAIN";
+        return (sourceState !== null)? sourceState : "MAIN";
     }
     
     return this.breakTransition();
@@ -136,7 +136,7 @@ util.scoped(function(){
     
   controller.screenStateMachine.structure.OPTIONS.CANCEL = function(){
     controller.audio_saveConfigs();
-    return "MAIN";
+    return (sourceState !== null)? sourceState : "MAIN";
   };
   
 });

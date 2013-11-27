@@ -88,7 +88,6 @@ util.scoped(function(){
         break;
 
       case "versus.next":
-        if( !controller.mapList ) return this.breakTransition();
         this.data.mapToLoad = model.data_maps[ mapIndex ];
         return "PLAYER_SETUP";
     }

@@ -17,12 +17,12 @@ controller.action_unitAction({
   },
   
   invoke: function( data ){
-    model.bombs_fireSilo.callAsCommand(
+    controller.action_sharedInvoke("bombs_fireSilo",[
       data.target.x, 
       data.target.y, 
       data.targetselection.x, 
       data.targetselection.y,
       data.source.unit.owner
-    );
+    ]);
   }
 });

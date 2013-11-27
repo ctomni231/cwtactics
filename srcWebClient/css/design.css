@@ -80,7 +80,7 @@
   color: #3A3A3A;
 }
 
-.cwt_panel_text {
+.cwt_panel_text {
   	
 }
 
@@ -159,8 +159,9 @@
 }
 
 .button_inactive, .button_inactive button {
-  background-color: rgb(168, 66, 47);
-  color: white !important;
+  background-color: #aaaaaa;
+  text-decoration: line-through;
+  color: red !important;
 }
 
 .noEgdeAll,
