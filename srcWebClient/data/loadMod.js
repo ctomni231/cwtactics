@@ -108,6 +108,7 @@ controller.modification_load = util.singleLazyCall( function( err, baton ){
           .andThen(function(p,b){ addModPart( "weathers",   b ); })
           .andThen(function(p,b){ addModPart( "assets",     b ); })
           .andThen(function(p,b){ addModPart( "graphics",   b ); })
+          .andThen(function(p,b){ addModPart( "tips",       b ); })
           .andThen(loadLanguage)
           .start(function(p){
 

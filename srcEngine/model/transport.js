@@ -77,7 +77,7 @@ model.transport_unloadFrom = function( transportId, trsx, trsy, loadId, tx,ty ){
 	controller.events.transport_unloadFrom( transportId, trsx, trsy, loadId, tx,ty );
 	
 	// move load out of the transporter
-	model.move_moveUnitByPath([moveCode], loadId, trsx, trsy);
+	model.move_moveUnitByPath([moveCode], loadId, trsx, trsy, true);
 	model.actions_markUnitNonActable( loadId );
 };
 

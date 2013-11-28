@@ -49,7 +49,8 @@ controller.actionBuilder_buildFromUserData = function(){
       moveDto.clone(),
       sourceDto.unitId,
       sourceDto.x,
-      sourceDto.y
+      sourceDto.y,
+      false
     ]);
   }
   

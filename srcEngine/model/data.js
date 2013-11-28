@@ -166,6 +166,8 @@ model.data_header    = null;
 
 model.data_assets    = null;
 
+model.data_tips      = null;
+
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // Language model holds all known language keys.

@@ -6,8 +6,12 @@ model.data_coParser.addHandler( function( sheet ){
 
   // rules
   assert( Array.isArray(sheet.d2d) );
-  assert( Array.isArray(sheet.cop) );
-  assert( Array.isArray(sheet.scop) );
+  //assert( Array.isArray(sheet.cop) );
+  //assert( Array.isArray(sheet.scop) );
+  assert( Array.isArray(sheet.cop.turn) );
+  assert( sheet.cop.power );
+  assert( Array.isArray(sheet.scop.turn) );
+  assert( sheet.scop.power );
 
   assert( util.isString(sheet.faction) );
   assert( util.isString(sheet.music) );

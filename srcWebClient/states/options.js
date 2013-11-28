@@ -128,7 +128,7 @@ util.scoped(function(){
         
       case "options.goBack": 
         controller.audio_saveConfigs();
-        return (sourceState !== null)? sourceState : "MAIN";
+        return (sourceState !== null)? "GAMEROUND" : "MAIN";
     }
     
     return this.breakTransition();
@@ -136,7 +136,7 @@ util.scoped(function(){
     
   controller.screenStateMachine.structure.OPTIONS.CANCEL = function(){
     controller.audio_saveConfigs();
-    return (sourceState !== null)? sourceState : "MAIN";
+    return (sourceState !== null)? "GAMEROUND" : "MAIN";
   };
   
 });

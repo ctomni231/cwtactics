@@ -168,7 +168,7 @@
     },
     "assets": {
       "gfx"           : "units/AWDS_TANK.png",
-      "pri_att_sound" : "cannon.wav",
+      "pri_att_sound" : "tnk_cannon_small.wav",
       "sec_att_sound" : "cannon.wav"
     }
   },
@@ -223,7 +223,7 @@
     },
     "assets": {
       "gfx"           : "units/AWDS_MDTK.png",
-      "pri_att_sound" : "cannon.wav",
+      "pri_att_sound" : "tnk_cannon_big.wav",
       "sec_att_sound" : "cannon.wav"
     }
   },
@@ -278,7 +278,7 @@
     },
     "assets": {
       "gfx"           : "units/AWDS_NTNK.png",
-      "pri_att_sound" : "cannon.wav",
+      "pri_att_sound" : "tnk_cannon_big.wav",
       "sec_att_sound" : "cannon.wav"
     }
   },
@@ -333,7 +333,7 @@
     },
     "assets": {
       "gfx"           : "units/AWDS_WRTK.png",
-      "pri_att_sound" : "cannon.wav",
+      "pri_att_sound" : "tnk_cannon_big.wav",
       "sec_att_sound" : "cannon.wav"
     }
   },
@@ -661,7 +661,7 @@
     },
     "assets": {
       "gfx"           : "units/AWDS_ARTY.png",
-      "pri_att_sound" : "cannon.wav"
+      "pri_att_sound" : "tnk_cannon_big.wav"
     }
   },
 
@@ -909,7 +909,7 @@
     },
     "assets": {
       "gfx"           : "units/AWDS_BSHP.png",
-      "pri_att_sound" : "cannon.wav"
+      "pri_att_sound" : "tnk_cannon_big.wav"
     }
   }
 ]

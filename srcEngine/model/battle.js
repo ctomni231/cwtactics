@@ -19,10 +19,10 @@ controller.defineGameScriptable("att",50,400);
 controller.defineGameScriptable("def",50,400);
 controller.defineGameScriptable("counteratt",50,400);
 controller.defineGameScriptable("luck",-50,50);
-controller.defineGameScriptable("firstcounter",0,1);
-controller.defineGameScriptable("comtowerbonus",1,100);
-controller.defineGameScriptable("terraindefense",0,12);
-controller.defineGameScriptable("terraindefensemodifier",10,300);
+controller.defineGameScriptable("firstCounter",0,1);
+// controller.defineGameScriptable("comtowerbonus",1,100);
+controller.defineGameScriptable("terrainDefense",0,12);
+controller.defineGameScriptable("terrainDefenseModifier",10,300);
 
 // Returns `true` when the game is in the peace phase.
 //
@@ -265,6 +265,8 @@ model.battle_getBattleDamageAgainst = function( attacker, defender, luck, withMa
   assert( util.isBoolean(isCounter) );
   
   var BASE  = model.battle_getBaseDamageAgainst(attacker,defender,withMainWp);
+  if( BASE === -1 ) return -1;
+
   var AHP   = model.unit_convertHealthToPoints( attacker );
   var DHP   = model.unit_convertHealthToPoints( defender );
   
@@ -277,9 +279,14 @@ model.battle_getBattleDamageAgainst = function( attacker, defender, luck, withMa
   // defender values
   controller.prepareTags( defender.x, defender.y );
   var DCO = controller.scriptedValue( defender.owner, "def", 100 );
-  var DTR = controller.scriptedValue( defender.owner, "terraindefense", 
-                                     model.map_data[defender.x][defender.y].defense 
-                                    );
+
+  var def = model.map_data[defender.x][defender.y].defense;
+  var DTR = parseInt(
+    controller.scriptedValue( defender.owner, "terrainDefense",def)*
+    controller.scriptedValue( defender.owner, "terrainDefenseModifier",100)/
+    100,
+    10
+  );
   
   // **Formular:** `D%=[B*ACO/100+R]*(AHP/10)*[(200-(DCO+DTR*DHP))/100]`
   var damage = (BASE*ACO/100+LUCK) * (AHP/10) * ( (200-( DCO+(DTR*DHP) ) ) /100 );
@@ -382,64 +389,83 @@ model.battle_invokeBattle = function( attId, defId, attLuckRatio, defLuckRatio )
   
   var attacker        = model.unit_data[attId];
   var defender        = model.unit_data[defId];
+  var indirectAttack  = model.battle_isIndirectUnit(attId);
+
+  // **check firstCounter:** if first counter is active then the defender
+  // attacks first. In this case swap attacker and defender.
+  if( !indirectAttack && controller.scriptedValue( defender.owner, "firstCounter",0) === 1 ){
+    if( !model.battle_isIndirectUnit(defId) ){
+      var tmp_ = defender;
+      defender = attacker;
+      attacker = tmp_;
+    }
+  }
+
   var aSheets         = attacker.type;
   var dSheets         = defender.type;
   var attOwner        = attacker.owner;
   var defOwner        = defender.owner;
   var powerAtt        = model.unit_convertHealthToPoints( defender );
   var powerCounterAtt = model.unit_convertHealthToPoints( attacker );
-  var evCb,damage;
+  var damage;
   var retreatVal      = powerAtt;
   
   // invoke introduction event
   controller.events.battle_invokeBattle( attId, defId, damage );
   
   // main attack
+  var mainWpAttack = model.battle_canUseMainWeapon(attacker,defender);
   damage = model.battle_getBattleDamageAgainst(attacker,defender,attLuckRatio);
-  model.unit_inflictDamage( defId, damage );
-  
-  // invoke main attack event
-  controller.events.battle_mainAttack( attId, defId, damage );
-  
-  powerAtt -= model.unit_convertHealthToPoints( defender );
-  
-  if( model.battle_canUseMainWeapon(attacker,defender) ) attacker.ammo--;
-  
-  powerAtt        = ( parseInt(        powerAtt*0.1*dSheets.cost, 10 ) );
-  model.co_modifyPowerLevel( attOwner, parseInt( 0.5*powerAtt, 10 ) );
-  model.co_modifyPowerLevel( defOwner, powerAtt );
-  
-  retreatVal = model.unit_convertHealthToPoints( defender )/retreatVal*100;
-  if( retreatVal < 20 ){
-    
-    // retreat into a neighbor tile if possible
-    retreatVal = model.battle_searchTile_( defender.x,defender.y, attacker.x,attacker.y );
+
+  if( damage !== -1 ){
+    model.unit_inflictDamage( defId, damage );
+
+    // invoke main attack event
+    controller.events.battle_mainAttack( attId, defId, damage, mainWpAttack );
+
+    powerAtt -= model.unit_convertHealthToPoints( defender );
+
+    if( mainWpAttack ) attacker.ammo--;
+
+    powerAtt        = ( parseInt(        powerAtt*0.1*dSheets.cost, 10 ) );
+    model.co_modifyPowerLevel( attOwner, parseInt( 0.5*powerAtt, 10 ) );
+    model.co_modifyPowerLevel( defOwner, powerAtt );
+
+    retreatVal = model.unit_convertHealthToPoints( defender )/retreatVal*100;
+    if( retreatVal < 20 ){
+
+      // retreat into a neighbor tile if possible
+      retreatVal = model.battle_searchTile_( defender.x,defender.y, attacker.x,attacker.y );
+    }
+    else retreatVal = false;
   }
-  else retreatVal = false;
   
   // counter attack when defender survives and defender is an indirect
   // attacking unit
   if( retreatVal && defender.hp > 0 && !model.battle_isIndirectUnit(defId) ){
-    var mainWpAttack = model.battle_canUseMainWeapon(defender,attacker);
-    
+    mainWpAttack = model.battle_canUseMainWeapon(defender,attacker);
+
     damage = model.battle_getBattleDamageAgainst( 
       defender,attacker,
       defLuckRatio, 
       mainWpAttack, 
       true 
     );
-    model.unit_inflictDamage( attId, damage );  
-    
-    // invoke counter event
-    controller.events.battle_counterAttack( defId, attId, damage );
-    
-    powerCounterAtt -= model.unit_convertHealthToPoints( attacker );
-    
-    if( mainWpAttack ) defender.ammo--;
-    
-    powerCounterAtt = ( parseInt( powerCounterAtt*0.1*aSheets.cost, 10 ) );
-    model.co_modifyPowerLevel( defOwner, parseInt( 0.5*powerCounterAtt, 10 ) );
-    model.co_modifyPowerLevel( attOwner, powerCounterAtt );
+
+    if( damage !== -1 ){
+      model.unit_inflictDamage( attId, damage );
+
+      // invoke counter event
+      controller.events.battle_counterAttack( defId, attId, damage, mainWpAttack );
+
+      powerCounterAtt -= model.unit_convertHealthToPoints( attacker );
+
+      if( mainWpAttack ) defender.ammo--;
+
+      powerCounterAtt = ( parseInt( powerCounterAtt*0.1*aSheets.cost, 10 ) );
+      model.co_modifyPowerLevel( defOwner, parseInt( 0.5*powerCounterAtt, 10 ) );
+      model.co_modifyPowerLevel( attOwner, powerCounterAtt );
+    }
   }
   
 };

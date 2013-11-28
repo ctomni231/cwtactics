@@ -19,6 +19,7 @@ model.modification_load = function( data ){
   model.data_assets    = data.assets;
   model.data_menu      = data.menu;
   model.data_maps      = data.maps;
+  model.data_tips      = data.tips;
 
   // for( i=0,e=data.rule_global.length; i<e; i++ ) model.rule_push( data.rule_global[i], false );
 };

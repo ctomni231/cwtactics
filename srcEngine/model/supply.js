@@ -13,6 +13,8 @@ controller.event_define("supply_propertyRepairs");
 controller.event_define("supply_propertySupply");
 controller.event_define("supply_giveFunds");
 
+controller.defineGameScriptable("propertyHeal",1,10);
+
 // configs
 controller.defineGameConfig("autoSupplyAtTurnStart", 0, 1, 1);
 
@@ -90,7 +92,10 @@ model.supply_propertyRepairs = function(i){
 			var value;
       value = prop.type.repairs.get(unitTp.ID);
       if( !value ) value = prop.type.repairs.get(unitTp.movetype);
-			
+
+      // script it :P
+      value = controller.scriptedValue(pid,"propertyHeal",value);
+
 			if(value > 0){
 				model.unit_heal(model.unit_extractId(model.unit_posData[x][y]), 
 					model.unit_convertPointsToHealth(value), true);

@@ -1,6 +1,6 @@
 controller.action_unitAction({
   
-  key:"ununit_hide",
+  key:"unhideUnit",
   
 	relation: ["S","T",model.player_RELATION_MODES.NONE,model.player_RELATION_MODES.SAME_OBJECT],
   

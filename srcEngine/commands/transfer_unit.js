@@ -1,6 +1,6 @@
 controller.action_unitAction({
   
-  key:"team_transferUnit",
+  key:"transferUnit",
   hasSubMenu: true,
 	relation: ["S","T",model.player_RELATION_MODES.SAME_OBJECT],
   
