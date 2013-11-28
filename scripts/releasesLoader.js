@@ -47,7 +47,7 @@
             "<tr>",
               "<td  colspan=\"2\" class=\"releaseImg\">",
                 "{{#img}} <img src=\"{{img}}\" /> {{/img}}",
-                "<p class=\"buttonLink\">{{#link}}<a class=\"play\" href=\"{{link}}\" target=\"_blank\">Download</a>{{/link}}</p>",
+                "<p class=\"buttonLink\">{{#link}}<a class=\"play\" href=\"{{link}}\" target=\"_blank\">Play It</a>{{/link}}</p>",
               "</td>",
             "</tr>",
           "</thead>",
