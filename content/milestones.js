@@ -148,7 +148,7 @@ PAGE_DATA.milestones = [
     subHeaderB: "",
     
     img: "images/milestones/milestone2_69.png",
-    link: "https://code.google.com/p/cwtactics/downloads/detail?name=cwpages.zip",
+    link: "http://battle.customwars.com/cwpages/games/milestones/m2.69/starter.html",
     
     text:[
       ""
@@ -173,7 +173,7 @@ PAGE_DATA.milestones = [
     subHeaderB: "more Fixes",
     
     img: "images/milestones/milestone2_68.png",
-    link: "https://code.google.com/p/cwtactics/downloads/detail?name=cwpages.zip",
+    link: "http://battle.customwars.com/cwpages/games/milestones/m2.68/starter.html",
     
     text:[
       ""
@@ -209,7 +209,7 @@ PAGE_DATA.milestones = [
     subHeaderB: "and more",
     
     img: "images/milestones/milestone2_65.png",
-    link: "https://code.google.com/p/cwtactics/downloads/detail?name=cwpages.zip",
+    link: "http://battle.customwars.com/cwpages/games/milestones/m2.65/starter.html",
     
     text:[
       ""
@@ -244,7 +244,7 @@ PAGE_DATA.milestones = [
     subHeaderB: "Fix",
     
     img: "images/milestones/milestone2_61.png",
-    link: "https://code.google.com/p/cwtactics/downloads/detail?name=cwpages.zip",
+    link: "http://battle.customwars.com/cwpages/games/milestones/m2.61/starter.html",
     
     text:[
       "This first time ever in the complete history of Custom Wars Tactics... we are happy to announce the Internet Explorer 9 :D",
@@ -266,7 +266,7 @@ PAGE_DATA.milestones = [
     subHeaderB: "Standing",
     
     img: "images/milestones/milestone2_6.png",
-    link: "https://code.google.com/p/cwtactics/downloads/detail?name=cwpages.zip",
+    link: "http://battle.customwars.com/cwpages/games/milestones/m2.6/starterDebug.html",
     
     text:[
       "This is the last release of the alpha phase. The next release will officially starting the beta phase of Custom Wars Tactics. Instead of the naming schema Milestone X we using a new versioning schema. The next release will be Custom Wars Tactics 0.3 Beta.",
@@ -322,7 +322,7 @@ PAGE_DATA.milestones = [
     subHeaderB: "War",
     
     img: "images/milestones/milestone2_4.png",
-    link: "https://code.google.com/p/cwtactics/downloads/detail?name=cwpages.zip",
+    link: "http://battle.customwars.com/cwpages/games/milestones/m2.4/starterDebug.html",
     
     text:[
       "It will include the fog of war system.",
@@ -345,7 +345,7 @@ PAGE_DATA.milestones = [
     subHeaderB: "Fixes",
     
     img: "images/milestones/milestone2_2.png",
-    link: "https://code.google.com/p/cwtactics/downloads/detail?name=cwpages.zip",
+    link: "http://battle.customwars.com/cwpages/games/milestones/m2.2/starterDebug.html",
     
     text:[
       "Solved the mouse control issues in firefox, but there are some coloring issues."
@@ -365,7 +365,7 @@ PAGE_DATA.milestones = [
     subHeaderB: "Fixes",
     
     img: "images/milestones/milestone2_1.png",
-    link: "https://code.google.com/p/cwtactics/downloads/detail?name=cwpages.zip",
+    link: "http://battle.customwars.com/cwpages/games/milestones/m2.1/starterDebug.html",
     
     text:[
       "Solved some control issues and implemented a version tag in the upper left coner."
@@ -385,7 +385,7 @@ PAGE_DATA.milestones = [
     subHeaderB: "Rounds",
     
     img: "images/milestones/milestone2.png",
-    link: "https://code.google.com/p/cwtactics/downloads/detail?name=cwpages.zip",
+    link: "http://battle.customwars.com/cwpages/games/milestones/m2/starterDebug.html",
     
     text:[
       "This will be the last HTML client only milestone. The HTML client and the java client will be released in a similar state of functionality with the next milestone releases.",
@@ -407,7 +407,7 @@ PAGE_DATA.milestones = [
     subHeaderB: "visual stuff",
     
     img: "images/milestones/milestone1.png",
-    link: "https://code.google.com/p/cwtactics/downloads/detail?name=cwpages.zip",
+    link: "http://battle.customwars.com/cwpages/games/milestones/m1/starterDebug.html",
     
     text:[
       "The first milestone tries to build the base for the web client and the java client. It provides a nearly complete model with first logic functionalities.",
