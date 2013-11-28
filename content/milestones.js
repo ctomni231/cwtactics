@@ -407,7 +407,7 @@ PAGE_DATA.milestones = [
     subHeaderB: "visual stuff",
     
     img: "images/milestones/milestone1.png",
-    link: "http://battle.customwars.com/cwpages/games/milestones/m1/starterDebug.html",
+    link: "http://battle.customwars.com/cwpages/games/milestones/m1/webClient.html",
     
     text:[
       "The first milestone tries to build the base for the web client and the java client. It provides a nearly complete model with first logic functionalities.",
