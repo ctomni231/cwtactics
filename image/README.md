@@ -54,7 +54,8 @@ This shows how objects are organized within the object files for units, terrain(
 
 ## Cursor and Terrain Connection Image Abbreviations
 
-* *.* = Neutral
+* *~* = Neutral/Wildcard
+* *N* = Neutral/Wildcard 
 * *L* = Land
 * *W* = Wall
 * *S* = Sea/Ocean
@@ -63,7 +64,6 @@ This shows how objects are organized within the object files for units, terrain(
 * *O* = Road/Bridge
 * *P* = Pipe/PipeSeam
 * *Z* = Meteor/Plazma
-* *N* = Neutral/Wildcard 
 
 ## Tileset Types
 
