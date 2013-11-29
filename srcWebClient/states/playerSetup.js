@@ -27,69 +27,8 @@ util.scoped(function(){
     ]
   ];
 
-  var coSelected = [
-    0,0,0,0
-  ];
-
-  function changeCo( playerId, prev ){
-    var cSelect = coSelected[playerId];
-
-    // grab next entry
-    if( prev ){
-      cSelect--;
-      if( cSelect < INACTIVE_ID ) cSelect = model.data_coTypes.length-1;
-    }
-    else{
-      cSelect++;
-      if( cSelect >= model.data_coTypes.length ) cSelect = INACTIVE_ID;
-    }
-    
-    // update model
-    coSelected[playerId] = cSelect;
-    if( cSelect !== INACTIVE_ID ){
-      model.co_setMainCo( playerId, model.data_coTypes[cSelect] );
-    } 
-    else model.co_setMainCo( playerId, null );
-
-    // update UI
-    update(playerId);
-  }
-
-  function changeType( playerId, prev ){
-
-    update(playerId);
-  }
-
-  function changeTeam( playerId, prev ){
-    var player = model.player_data[playerId];
-
-    do{
-      if( prev ){
-        player.team--;
-        if( player.team < 0 ) player.team = MAX_PLAYER-1;
-      }
-      else{
-        player.team++; 
-        if( player.team === MAX_PLAYER ) player.team=0;
-      }
-    }
-    while( !model.player_areEnemyTeamsLeft() );
-
-    update(playerId);
-  }
-
-  function prepare( playerId ){
-
-    // reset generic data
-    model.co_data[playerId].coA  = null;
-    coSelected[playerId]        = INACTIVE_ID;
-    
-    // update UI
-    update(playerId);
-  };
-
   function update( playerId ){
-    var btns = buttons[playerId];
+    var btns   = buttons[playerId];
     var player = model.player_data[playerId];
 
     if( player.team === INACTIVE_ID ){
@@ -127,15 +66,12 @@ util.scoped(function(){
   function loadMap( obj ){
     var map = obj.value;
 
-    // load it
-    controller.update_prepareGameRound();
+    // update model
     controller.persistence_loadModel(map);
+    controller.roundConfig_prepare();
 
-    // prepare buttons
-    prepare(0);
-    prepare(1);
-    prepare(2);
-    prepare(3);
+    // update UI
+    for( var i= 0, e=MAX_PLAYER; i<e; i++ ) update(i);
   }
     
   // ----------------------------------------------------------------------------------------
@@ -334,13 +270,21 @@ util.scoped(function(){
         
         // do correct action
         switch( btn.getActiveKey() ){
-          case "config.type.prev": changeType(value,true);  break;
-          case "config.type.next": changeType(value,false); break;
-          case "config.team.prev": changeTeam(value,true);  break;
-          case "config.team.next": changeTeam(value,false); break;
-          case "config.co.prev"  : changeCo(value,true);    break;
-          case "config.co.next"  : changeCo(value,false);   break;
+          case "config.type.prev": controller.roundConfig_changeConfig(value,
+            controller.roundConfig_CHANGE_TYPE.PLAYER_TYPE,true);  break;
+          case "config.type.next": controller.roundConfig_changeConfig(value,
+            controller.roundConfig_CHANGE_TYPE.PLAYER_TYPE,false);  break;
+          case "config.team.prev": controller.roundConfig_changeConfig(value,
+            controller.roundConfig_CHANGE_TYPE.TEAM,true);  break;
+          case "config.team.next": controller.roundConfig_changeConfig(value,
+            controller.roundConfig_CHANGE_TYPE.TEAM,false);  break;
+          case "config.co.prev"  : controller.roundConfig_changeConfig(value,
+            controller.roundConfig_CHANGE_TYPE.CO_MAIN,false);  break;
+          case "config.co.next"  : controller.roundConfig_changeConfig(value,
+            controller.roundConfig_CHANGE_TYPE.CO_MAIN,false);  break;
         }
+
+        update(value);
 
         break;
 

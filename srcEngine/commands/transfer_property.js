@@ -1,6 +1,6 @@
 controller.action_propertyAction({
   
-  key:"team_transferProperty",
+  key:"transferProperty",
   hasSubMenu: true,
 	relationToProp:[ "S","T", model.player_RELATION_MODES.SAME_OBJECT ],
   

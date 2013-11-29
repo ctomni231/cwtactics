@@ -1,6 +1,6 @@
 controller.action_mapAction({
 	
-	key:"team_transferMoney",
+	key:"transferMoney",
 	hasSubMenu: true,
 	
 	condition: function( data ){

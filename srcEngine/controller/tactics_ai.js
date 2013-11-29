@@ -90,9 +90,9 @@ controller.ai_active = null;
 
 // Registers a AI action.
 //
-controller.ai_definedRoutine = function(impl){
+controller.ai_defineRoutine = function(impl){
   assert( util.isString(impl.key) );
-  assert( controller.ai_CHECKS.hasOwnProperty(impl.key) );
+  assert( !controller.ai_CHECKS.hasOwnProperty(impl.key) );
   assert( util.isFunction(impl.scoring) );
   assert( util.isFunction(impl.prepare) );
   
@@ -101,7 +101,7 @@ controller.ai_definedRoutine = function(impl){
 
 // Returns a AI action object.
 //
-controller.ai_definedRoutine = function(key){
+controller.ai_getRoutine = function(key){
   assert( util.isString(key) );
   
   var i = 0;
@@ -344,7 +344,7 @@ controller.ai_machine.state = "IDLE";
 // The ai does the action with the highest score first.
 //
 
-controller.ai_definedRoutine({
+controller.ai_defineRoutine({
   key        : "endTurn",
   mapAction  : true,
   endsAiTurn : true,

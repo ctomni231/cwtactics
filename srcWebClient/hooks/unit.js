@@ -6,6 +6,16 @@ controller.event_on("unit_heal",function( uid ){
   controller.updateUnitStatus( uid );
 });
 
+controller.event_on("battle_mainAttack",function( auid,duid,dmg,mainWeap ){
+  var type = model.data_unitSheets[ model.unit_data[auid].type ];
+  controller.audio_playSound( (mainWeap)? type.assets.pri_att_sound : type.assets.sec_att_sound );
+});
+
+controller.event_on("battle_counterAttack",function( auid,duid,dmg,mainWeap ){
+  var type = model.data_unitSheets[ model.unit_data[auid].type ];
+  controller.audio_playSound( (mainWeap)? type.assets.pri_att_sound : type.assets.sec_att_sound );
+});
+
 controller.event_on("battle_invokeBattle",function( auid,duid ){
   controller.updateSimpleTileInformation();
   controller.updateUnitStatus( auid );

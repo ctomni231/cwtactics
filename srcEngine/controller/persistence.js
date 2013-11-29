@@ -38,6 +38,8 @@ util.scoped(function(){
   // handlers with this object as argument.
   //
   controller.persistence_loadModel = function( data ){
+    controller.update_prepareGameRound();
+
     var i = 0;
     try{
 

@@ -1,14 +1,15 @@
 util.scoped(function(){
 
+  var noInit = false;
+
   // -----------------------------------------------------------------------------------------------
   
   controller.screenStateMachine.structure.GAMEROUND = Object.create(controller.stateParent);
   
 	controller.screenStateMachine.structure.GAMEROUND.section = "cwt_game_screen";
 	
-  controller.screenStateMachine.structure.GAMEROUND.enterState = function(ev,noInit){
-
-    if( typeof noInit !== true ){
+  controller.screenStateMachine.structure.GAMEROUND.enterState = function(){
+    if( noInit !== true ){
 
       controller.audio_stopMusic();
 
@@ -33,6 +34,8 @@ util.scoped(function(){
       controller.inGameLoop = true;
       controller.prepareGameLoop();
     }
+
+    noInit = false;
   };
 
   controller.screenStateMachine.structure.GAMEROUND.gameHasEnded = function(){
@@ -180,7 +183,7 @@ util.scoped(function(){
   //
   controller.screenStateMachine.structure.GAMEROUND.toOptions_ = function(){
     assert( arguments.length === 2 && arguments[1] === true );
-
+    noInit = true;
     return "OPTIONS";
   };
 

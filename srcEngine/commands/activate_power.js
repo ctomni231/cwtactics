@@ -1,6 +1,6 @@
 controller.action_mapAction({
   
-  key:"model.co_model.co_activatePower__",
+  key:"activatePower",
   hasSubMenu: true,
   
   condition: function(){

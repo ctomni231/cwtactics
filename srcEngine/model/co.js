@@ -44,11 +44,11 @@ model.co_activeMode = model.co_MODES.AW1;
 //
 model.co_data = util.list( MAX_PLAYER, function( i ){
   return {
-    power: 0, 				// acc. co power
-    timesUsed: 0, 		// number of used co powers
-    level: 0, 				// active co power level
-    coA: null, 				// main CO
-    coB: null,  			// sub CO
+    power: 0, 				        // acc. co power
+    timesUsed: 0, 		        // number of used co powers
+    level: 0, 				        // active co power level
+    coA: null, 				        // main CO
+    coB: null,  			        // sub CO
     detachedTo: INACTIVE_ID  	// CO detached to a specific unit
   };
 });
@@ -101,7 +101,7 @@ model.co_activatePower_ = function( pid, level, evName ){
   assert( model.player_isValidPid(pid) );
   
   // Alter co data of the player
-  var data = model.co_data[pid];
+  var data   = model.co_data[pid];
   data.power = 0;
   data.level = level;
   data.timesUsed++;
@@ -193,10 +193,12 @@ model.co_getStarCost = function( pid ){
 //
 model.co_setMainCo = function( pid, type ){
   assert( model.player_isValidPid(pid) );
-  assert( model.data_coSheets.hasOwnProperty(type) );
   
   if( type === null ) model.co_data[pid].coA = null;
-  else model.co_data[pid].coA = model.data_coSheets[type];	
+  else {
+    assert( model.data_coSheets.hasOwnProperty(type) );
+    model.co_data[pid].coA = model.data_coSheets[type];
+  }
 };
 
 // Sets the side CO of a player.
@@ -206,7 +208,10 @@ model.co_setSideCo = function( pid, type ){
   assert( model.data_coSheets.hasOwnProperty(type) );
   
   if( type === null ) model.co_data[pid].coB = null;
-  else model.co_data[pid].coB = model.data_coSheets[type];	
+  else {
+    assert( model.data_coSheets.hasOwnProperty(type) );
+    model.co_data[pid].coB = model.data_coSheets[type];
+  }
 };
 
 // Detaches a commander from a given unit back to the player pool.

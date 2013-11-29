@@ -104,7 +104,12 @@ model.property_capture = function( cid, prid ){
   var selectedUnit  = model.unit_data[cid];
   var property      = model.property_data[prid];
   var points        = parseInt( selectedUnit.hp / 10, 10 ) + 1;
-  
+
+  // script it
+  points = parseInt(
+    points*controller.scriptedValue( selectedUnit.owner , "captureRate", 100 )/100,
+  10);
+
   property.capturePoints -= points;
   if( property.capturePoints <= 0 ) {
     var x = property.x;

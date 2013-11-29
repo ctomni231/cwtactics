@@ -1,6 +1,6 @@
 controller.action_unitAction({
 
-	key:"bombs_fireCannon",
+	key:"fireCannon",
 	relation:[ "S","T", model.player_RELATION_MODES.SAME_OBJECT],
 
 	condition: function( data ){

@@ -15,10 +15,10 @@ controller.defineGameScriptable( "movecost", 1, MAX_SELECTION_RANGE );
 // Possible move codes.
 //
 model.move_MOVE_CODES = {
-  UP: 0,
-  RIGHT: 1,
-  DOWN: 2,
-  LEFT: 3
+  UP    : 0,
+  RIGHT : 1,
+  DOWN  : 2,
+  LEFT  : 3
 };
 
 // Moves an unit from one position to another position.
@@ -26,7 +26,9 @@ model.move_MOVE_CODES = {
 model.move_moveUnitByPath = function( way, uid, x, y, noFuelConsumption ){
   assert( model.map_isValidPosition(x,y) );
   assert( model.unit_isValidUnitId(uid) );
-  assert( util.isBoolean(noFuelConsumption) );
+  assert( !util.isUndefined( noFuelConsumption ) &&
+           util.isBoolean(   noFuelConsumption ) );
+
   // TODO: check move way
   
   var cX = x;
@@ -45,7 +47,7 @@ model.move_moveUnitByPath = function( way, uid, x, y, noFuelConsumption ){
   //
   // 1. check the correctness of the given move code
   // 2. check all tiles to recognize trapped moves
-  // 3. accumulate fuel consumption ( expcept `noFuelConsumption` is `true` )
+  // 3. accumulate fuel consumption ( except `noFuelConsumption` is `true` )
   //
   for( var i = 0, e = way.length; i < e; i++ ) {
     
@@ -73,12 +75,12 @@ model.move_moveUnitByPath = function( way, uid, x, y, noFuelConsumption ){
         break;
     }
     
-    // when the way contains an illegal value that isn't part of `model.move_MOVE_CODES` 
-    // then break the move process.
-    util.expect( util.expect.isTrue, !wayIsIllegal );
-    
+    // when the way contains an illegal value that isn't part of
+    // `model.move_MOVE_CODES` then break the move process.
+    assert( !wayIsIllegal );
+
     // is way blocked ? (niy!)
-    if( false && model.isWayBlocked( cX, cY, unit.owner, (i === e - 1) ) ) {
+    if( false /* && model.isWayBlocked( cX, cY, unit.owner, (i === e - 1) )  */ ) {
       lastIndex = i - 1;
       
       // go back until you find a valid tile
@@ -91,7 +93,7 @@ model.move_moveUnitByPath = function( way, uid, x, y, noFuelConsumption ){
       
       // this is normally not possible, except other modules makes a fault in this case 
       // the moving system could not recognize a enemy in front of the mover that causes a `trap`
-      util.expect( util.expect.isTrue, lastIndex !== -1 );
+      assert( lastIndex !== -1 );
       
       break;
     }

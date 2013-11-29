@@ -67,6 +67,7 @@ controller.update_startGameRound = function( ){
     controller.action_localInvoke( "round_nextTurn", []);
     if( controller.isHost() ) model.weather_calculateNext();
   }
+  else model.round_startsTurn(model.round_turnOwner);
 };
 
 // Ends the active game round.

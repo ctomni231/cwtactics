@@ -242,3 +242,20 @@
        -o-transition: opacity 0.3s;
           transition: opacity 0.3s;  
 }
+
+#startScreen_toolTip{
+  padding: 5px;
+
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 5px;
+
+  background-color: white;
+  font-size: 22px;
+  color: #36a0c5;
+  border: 2px solid #36a0c5;
+
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+}

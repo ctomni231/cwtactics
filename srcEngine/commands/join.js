@@ -1,6 +1,6 @@
 controller.action_unitAction({
   
-  key:"unit_join",
+  key:"joinUnits",
   
 	relation:["S","T",model.player_RELATION_MODES.OWN],
 	

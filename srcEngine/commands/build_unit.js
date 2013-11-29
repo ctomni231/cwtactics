@@ -1,6 +1,6 @@
 controller.action_propertyAction({
   
-  key:"factory_produceUnit",  
+  key:"buildUnit",
   propertyAction: true,
   hasSubMenu: true,
   

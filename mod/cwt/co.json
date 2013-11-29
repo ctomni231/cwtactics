@@ -8,14 +8,33 @@
     "scoStars"  : 3,
     "d2d"       : [
     ],
-    "cop" : [
-    ],
-    "scop" : [
-      {
-        "att"        : 30,
-        "movepoints" : 1
+    "cop" : {
+      "turn":[],
+      "power":{
+        "healUnits":[
+          {
+            "target":0,
+            "amount":2
+          }
+        ]
       }
-    ]
+    },
+    "scop" : {
+      "turn":[
+        {
+          "att"        : 30,
+          "movepoints" : 1
+        }
+      ],
+      "power":{
+        "healUnits":[
+          {
+            "target":0,
+            "amount":5
+          }
+        ]
+      }
+    }
   },
   
   {
@@ -39,22 +58,28 @@
         "maxrange":-1
       }
     ],
-    "cop" : [
-      {
-        "$when":[
-          "ATTACK_TYPE",["DIRECT"]
-        ],
-        "att":40
-      }
-    ],
-    "scop" : [
-      {
-        "$when":[
-          "ATTACK_TYPE",["DIRECT"]
-        ],
-        "att":70
-      }
-    ]
+    "cop" : {
+      "turn":[
+        {
+          "$when":[
+            "ATTACK_TYPE",["DIRECT"]
+          ],
+          "att":40
+        }
+      ],
+      "power":{}
+    },
+    "scop" : {
+      "turn":[
+        {
+          "$when":[
+            "ATTACK_TYPE",["DIRECT"]
+          ],
+          "att":70
+        }
+      ],
+      "power":{}
+    }
   },
   
   {
@@ -79,24 +104,30 @@
         "captureRate":50
       }
     ],
-    "cop" : [
-      {
-        "$when":[
-          "MOVE_TYPE",["INFT","MECH"]
-        ],
-        "att":40,
-        "movepoints":1
-      }
-    ],
-    "scop" : [
-      {
-        "$when":[
-          "MOVE_TYPE",["INFT","MECH"]
-        ],
-        "att":70,
-        "movepoints":2,
-        "captureRate":9999
-      }
-    ]
+    "cop" : {
+      "turn":[
+        {
+          "$when":[
+            "MOVE_TYPE",["INFT","MECH"]
+          ],
+          "att":40,
+          "movepoints":1
+        }
+      ],
+      "power":{}
+    },
+    "scop" : {
+      "turn":[
+        {
+          "$when":[
+            "MOVE_TYPE",["INFT","MECH"]
+          ],
+          "att":70,
+          "movepoints":2,
+          "captureRate":9999
+        }
+      ],
+      "power":{}
+    }
   }
 ]

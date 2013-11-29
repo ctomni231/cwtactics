@@ -10,6 +10,8 @@ model.data_unitParser.addHandler(function(sheet){
       assert( util.intRange(sheet.attack.maxRange, 2,15 ) );
       assert( sheet.attack.maxRange>sheet.attack.minRange );
     }
+
+    // TODO: indirect has only one main weapon, no side weapon
     
     // check attack values
     for( var i=0,e=model.battle_WEAPON_KEYS.length; i<e; i++ ){

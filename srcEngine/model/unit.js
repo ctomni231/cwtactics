@@ -20,7 +20,8 @@ controller.event_define("unit_create");
 controller.event_define("unit_destroy");
 
 // scriptables
-controller.defineGameScriptable("fuelDrain",1,1);
+controller.defineGameScriptable("fuelDrainRate",50,100);
+controller.defineGameScriptable("fuelDrain",    1, 99);
 
 // configs
 controller.defineGameConfig("noUnitsLeftLoose",0,1,0);
@@ -323,6 +324,9 @@ model.unit_drainFuel = function( uid ){
     if( unit.hidden && unit.type.dailyFuelDrainHidden ){
       v = unit.type.dailyFuelDrainHidden;
     }
+
+    v = parseInt( controller.scriptedValue( unit.owner, "fuelDrain", v )/100*
+                  controller.scriptedValue( unit.owner, "fuelDrainRate", 100 ), 10);
     
     unit.fuel -= v;
     

@@ -83,19 +83,27 @@ model.round_nextTurn = function(){
     model.unit_drainFuel( i );
     if(turnStartSupply) model.supply_tryUnitSuppliesNeighbours( i );
   }
-  
+
+  // starts the turn
+  model.round_startTurn(pid);
+};
+
+// Starts a turn for player with id (`pid`).
+//
+model.round_startsTurn = function( pid ){
+
   model.actions_prepareActors(pid);
-  model.timer_resetTurnTimer(); 
-    
+  model.timer_resetTurnTimer();
+
   // Sets the new turn owner
   model.round_turnOwner = pid;
   if( model.client_isLocalPid(pid) ) model.client_lastPid = pid;
-  
+
   model.fog_updateVisiblePid();
   model.fog_recalculateFogMap(); // needs to be done after setting new clientPid
 
-	controller.events.round_nextTurn();
-  
+  controller.events.round_nextTurn();
+
   // start AI logic if new turn owner is AI controlled this local instance is the host
   if( controller.isHost() && !controller.ai_isHuman(pid) ){
     controller.ai_machine.event("tick");
