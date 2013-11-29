@@ -29,8 +29,8 @@
       
       // controls
       "<div class=\"releaseNav\" >",
-        "<a class=\"releaseNavBt\" href='#' onClick='PAGE_PROG.updateReleaseBox(-1); return false;' > \<\< Newer</a>",
-        "<a class=\"releaseNavBt\" href='#' onClick='PAGE_PROG.updateReleaseBox(+1); return false;' >Older \>\> </a>",
+        "<a class=\"releaseNavBt\" href='#' onClick='PAGE_PROG.updateReleaseBox(-1); return false;' > \<\< Newer Releases -</a>",
+        "<a class=\"releaseNavBt\" href='#' onClick='PAGE_PROG.updateReleaseBox(+1); return false;' >- Older Releases \>\> </a>",
       "</div>",
       
       // content
