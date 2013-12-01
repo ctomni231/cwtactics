@@ -5,8 +5,8 @@ controller.action_unitAction({
 
 	condition: function( data ){
 		return (
-      model.bombs_isCannon( data.target.unitId ) &&
-      model.bombs_markCannonTargets( data.target.unitId, data.selection )
+      model.bombs_isCannon( data.target.propertyId ) &&
+      model.bombs_markCannonTargets( data.target.propertyId, data.selection )
     );
 	},
 

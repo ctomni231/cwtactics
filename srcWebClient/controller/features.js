@@ -35,12 +35,13 @@ controller.features_analyseClient = function(){
 	else{
 		
 		// chrome has *AAA* support
-		if( Browser.chrome ){
+		if( Browser.chrome || Browser.safari){
 			controller.features_client.supported 	= true;
 			controller.features_client.audioSFX 		= true;
 			controller.features_client.audioMusic 	= true;
-			controller.features_client.gamePad 		= true;
 		}
+
+		if( Browser.chrome ) controller.features_client.gamePad = true;
 		
 		controller.features_client.mouse 	= true;
 		controller.features_client.keyboard 	= true;

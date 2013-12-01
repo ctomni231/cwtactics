@@ -19,7 +19,9 @@ util.scoped(function(){
 	
   controller.screenStateMachine.structure.MAIN.enterState = function(){
     controller.audio_playNullSound();
-    controller.audio_playMusic( model.data_menu.music );
+    if( controller.features_client.audioMusic ){
+      controller.audio_playMusic( model.data_menu.music );
+    }
     
     btn.setIndex(1);
   };

@@ -184,6 +184,7 @@ controller.audio_saveConfigs = function(){
 //
 controller.audio_playSound = function( id, loop, isMusic ){
   if( !controller.audio_ctx_ ) return;
+  if( !controller.audio_buffer_[id] ) return;
 
   var gainNode = (isMusic)? controller.audio_gainNode_music_ : controller.audio_gainNode_sfx_;
   var source = controller.audio_ctx_.createBufferSource();
@@ -214,11 +215,9 @@ controller.audio_playNullSound = function(){
 controller.audio_playMusic = function( id ){
   if( !controller.audio_ctx_ ) return;
   if( controller.audio_currentMusicId_ === id ) return;
+  if( !controller.audio_buffer_[id] ) return;
 
   controller.audio_stopMusic();
-
-  assert(controller.audio_buffer_[id]);
-
   controller.audio_currentMusic_   = controller.audio_playSound(id, true, true );
   controller.audio_currentMusicId_ = id;
 };
