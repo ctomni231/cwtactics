@@ -43,6 +43,19 @@
     else data[x][y] = value;
   }
 
+  function grab( otherSelection ){
+    if( this.data.length !== otherSelection.data.length ) throw Error("illegal grab selection");
+    this.centerX = otherSelection.centerX;
+    this.centerY = otherSelection.centerY;
+
+    var e = this.data.length;
+    for( x = 0; x < e; x++ ) {
+      for( y = 0; y < e; y++ ) {
+        this.data[x][y] = otherSelection.data[x][y];
+      }
+    }
+  }
+
   function nextValidPosition( x, y, minValue, walkLeft, cb ){
     var data = this.data;
     var cy = this.centerX;
@@ -95,7 +108,8 @@
     obj.nextValidPosition = nextValidPosition;
     obj.setValueAt = setValueAt;
     obj.getValueAt = getValueAt;
-    obj.setCenter = setCenter;
+    obj.setCenter  = setCenter;
+    obj.grab       = grab;
 
     return obj;
   };

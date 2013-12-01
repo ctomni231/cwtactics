@@ -5,6 +5,7 @@ view.imageProcessor_UNIT_INDEXES = {
   RED:0,
   BLUE:3,
   GREEN:4,
+  GREEN:5,
   colors:6
 };
 
@@ -215,6 +216,17 @@ view.imageProcessor_colorizeUnit = util.scoped(function(){
       );
 
       view.setUnitImageForType(
+        view.imageProcessor_replaceColors(
+          redPic,
+          IMG_MAP_UNIT,
+          UNIT_INDEXES.colors,
+          UNIT_INDEXES.RED,
+          UNIT_INDEXES.YELLOW
+        ),
+        tp,cCode,view.COLOR_YELLOW
+      );
+
+      view.setUnitImageForType(
         view.imageProcessor_convertToBlackMask(redPic),
         tp,cCode,view.COLOR_BLACK_MASK
       );
@@ -251,6 +263,17 @@ view.imageProcessor_colorizeProperty = function(tp){
       PROPERTY_INDEXES.GREEN
     ),
     tp,view.COLOR_GREEN
+  );
+
+  view.setPropertyImageForType(
+    view.imageProcessor_replaceColors(
+      redPic,
+      IMG_MAP_PROP,
+      PROPERTY_INDEXES.colors,
+      PROPERTY_INDEXES.RED,
+      PROPERTY_INDEXES.YELLOW
+    ),
+    tp,view.COLOR_YELLOW
   );
 
   view.setPropertyImageForType(

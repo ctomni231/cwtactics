@@ -63,7 +63,8 @@ controller.ai_data = util.list( MAX_PLAYER-1, function(){
 controller.ai_loopHolder_ = {
   i    : -1,
   e    : -1,
-  prop : -1
+  prop : -1,
+  score : -1
 };
 
 // 
@@ -72,7 +73,11 @@ controller.ai_scoreDataHolder_ = {
   source          : Object.create( controller.TaggedPosition ),
   target          : Object.create( controller.TaggedPosition ),
   selectionTarget : Object.create( controller.TaggedPosition ),
-  selection       : util.selectionMap( MAX_SELECTION_RANGE * 4 + 1 )
+  selection       : util.selectionMap( MAX_SELECTION_RANGE * 4 + 1 ),
+  action          : {
+    selectedSubEntry: ""
+  },
+  cacheInt        : 0
 };
 
 // 
@@ -81,7 +86,14 @@ controller.ai_actionDataHolder_ = {
   source          : Object.create( controller.TaggedPosition ),
   target          : Object.create( controller.TaggedPosition ),
   selectionTarget : Object.create( controller.TaggedPosition ),
-  selection       : util.selectionMap( MAX_SELECTION_RANGE * 4 + 1 )
+  selection       : util.selectionMap( MAX_SELECTION_RANGE * 4 + 1 ),
+  used            : false,
+  check_index     : -1,
+  endsAiTurn      : false,
+  action          : {
+    selectedSubEntry: ""
+  },
+  cacheInt        : 0
 };
 
 // 
@@ -177,7 +189,7 @@ controller.ai_machine = util.stateMachine({
     
     // select ai
     for( var i=controller.ai_data.length-1; i>=0; i-- ){
-      if( controller.ai_data[i].pid === model.turnOwner ){
+      if( controller.ai_data[i].pid === model.round_turnOwner ){
         controller.ai_active = controller.ai_data[i];
       }
     }
@@ -202,7 +214,7 @@ controller.ai_machine = util.stateMachine({
   SET_UP_AI_TURN:{ tick: function(){
     util.log(controller.ai_spec,"- setup turn");
 
-    return "PHASE_PREPARE_SEARCH_UNIT_TASKS";
+    return "PHASE_PREPARE_SEARCH_TASKS";
   }},
 
   // ++++++++++++++++++++++++++++++++++++++++
@@ -214,8 +226,9 @@ controller.ai_machine = util.stateMachine({
 
     var data  = controller.ai_loopHolder_;
     data.i    = model.unit_firstUnitId( model.round_turnOwner );
-    data.e    = model.unit_lastUnitId(  model.round_turnOwner )+MAX_PROPERTIES; // units+properties
-    data.prop = MAX_UNITS_PER_PLAYER;                                           // position of the first prop
+    data.e    = model.unit_lastUnitId(  model.round_turnOwner )+MAX_PROPERTIES+1; // units+properties
+    data.prop = data.i+MAX_UNITS_PER_PLAYER;                                      // position of the first prop
+    data.score = -1;
 
     return "PHASE_SEARCH_TASK";
   }},
@@ -232,77 +245,96 @@ controller.ai_machine = util.stateMachine({
     var scoreData  = controller.ai_scoreDataHolder_;
     var actionData = controller.ai_actionDataHolder_;
 
-    // clean action data
-    actionData.source.set(-1,-1);
-    actionData.target.set(-1,-1);
-    actionData.selectionTarget.set(-1,-1);
-    actionData.selection.clear(-1);
-    
-    // prepare data object
-    var dataTp = -1;
-    if( loopData.i <= loopData.e ){
-      if( loopData.i < loopData.prop ){
-        // unit check  
-    
-        util.log(controller.ai_spec,"- ..for unit",loopData.i);
-        dataTp = 0;
-        
-        var unit = model.unit_data[loopData.i];
-        if( unit.owner !== INACTIVE_ID && unit.loadedIn === INACTIVE_ID ){
+    while( true ){
+
+      // clean score data
+      scoreData.source.set(-1,-1);
+      scoreData.target.set(-1,-1);
+      scoreData.selectionTarget.set(-1,-1);
+      scoreData.selection.setCenter(0,0,-1);
+      scoreData.used = false;
+      scoreData.selectedSubEntry = "";
+      scoreData.cacheInt         = -1;
+
+      // prepare data object
+      var dataTp = -1;
+      if( loopData.i < loopData.e ){
+        if( loopData.i < loopData.prop ){
+          // unit check  
+      
+          util.log(controller.ai_spec,"- ..for unit",loopData.i);
           
-          actionData.source.set( unit.x, unit.y );
-          model.move_fillMoveMap( actionData.source, actionData.selection );
+          var unit = model.unit_data[loopData.i];
+          if( unit.owner !== INACTIVE_ID && unit.loadedIn === INACTIVE_ID ){
+            dataTp = 0;
+            scoreData.source.set( unit.x, unit.y );
+            model.move_fillMoveMap( scoreData.source, scoreData.selection );
+          }
+            
+          
+        } else {
+          // property check
+          
+          util.log(controller.ai_spec,"- ..for property",loopData.i);
+          
+          // grab property; convert relative id to absolute id 
+          var prop = model.property_data[loopData.i-loopData.prop];
+          if( prop.owner === controller.ai_active.pid ){
+            dataTp = 1;
+            scoreData.source.set( prop.x, prop.y );
+          }
         }
-          
         
       } else {
-        // property check
+        // map check
         
-        util.log(controller.ai_spec,"- ..for property",loopData.i);
-        dataTp = 1;
-        
-        var prop = model.property_data[loopData.i];
-        if( prop.owner === controller.ai_active.pid ){
+        util.log(controller.ai_spec,"- ..for map");
+        dataTp = 2;
+      }
+      
+      // do all checks
+      var cScore  = -1;
+      var nScore  = -1;
+      var i       = 0;
+      var e       = controller.ai_CHECKS.length;
+      if( dataTp !== -1 ){
+        while( i<e ){
+          var check = controller.ai_CHECKS[i];
+          i++;
+
+          // meta check
+          if( dataTp !== 0 && check.unitAction ) continue;
+          if( dataTp !== 1 && check.propAction ) continue;
+          if( dataTp !== 2 && check.mapAction ) continue;
           
-          actionData.source.set( prop.x, prop.y );
+          // call scoring
+          nScore = check.scoring(scoreData);
+            
+          // new object got better scores -> select it's action
+          if( nScore > loopData.score ){
+            actionData.source.grab(          scoreData.source)
+            actionData.target.grab(          scoreData.target)
+            actionData.selectionTarget.grab( scoreData.selectionTarget)
+            actionData.selection.grab(       scoreData.selection);
+            actionData.used             = true;
+            actionData.check_index      = i-1;
+            actionData.endsAiTurn       = (check.endsAiTurn === true);
+            actionData.cacheInt         = scoreData.cacheInt;
+            loopData.score              = nScore;
+            actionData.action.selectedSubEntry = scoreData.action.selectedSubEntry;
+          }
         }
       }
       
-    } else {
-      // map check
-      
-      util.log(controller.ai_spec,"- ..for map");
-      dataTp = 2;
+      loopData.i++;
+
+      // jump out of the loop when
+      //  a) you find a valid action to do 
+      //  b) no object can handle ( just to be safe, should not happen )
+      if( ( dataTp !== -1 && nScore !== -1 ) || (loopData.i > loopData.e) ) break;
     }
-    
-    // do all checks
-    var cScore = -1;
-    var nScore = -1;
-    var i = 0;
-    var e = controller.ai_CHECKS.length;
-    while( i<e ){
-      
-      // meta check
-      if( dataTp !== 0 && controller.ai_CHECKS[i].unitAction ) continue;
-      if( dataTp !== 1 && controller.ai_CHECKS[i].propAction ) continue;
-      if( dataTp !== 2 && controller.ai_CHECKS[i].mapAction ) continue;
-      
-      // call scoring
-      nScore = controller.ai_CHECKS[i].scoring(scoreData);
-        
-      // new object got better scores -> select it's action
-      if( nScore > cScore ){
-        scoreData.source.grab(          actionData.source)
-        scoreData.target.grab(          actionData.target)
-        scoreData.selectionTarget.grab( actionData.selectionTarget)
-        scoreData.selection.grab(       actionData.selection);
-      }
-      
-      i++;
-    }
-    
-    loopData.i++;
-    return ( loopData.i <= loopData.e+1 )? "PHASE_SEARCH_TASK" : "PHASE_FLUSH_TASK";
+
+    return ( loopData.i <= loopData.e )? "PHASE_SEARCH_TASK" : "PHASE_FLUSH_TASK";
   }},
 
   // ++++++++++++++++++++++++++++++++++++++++
@@ -317,7 +349,20 @@ controller.ai_machine = util.stateMachine({
   PHASE_FLUSH_TASK: { tick: function(){
     util.log(controller.ai_spec,"- flush most important command");
 
-    return "PHASE_CHECK_LEFT_TASKS";
+    var actionData = controller.ai_actionDataHolder_;
+    if( actionData.used ){
+
+      var action = controller.ai_CHECKS[ actionData.check_index ];
+      if( DEBUG ) util.log("invoke action",action.key);
+
+      // do actions
+      action.prepare( actionData );
+
+      // end turn with an end turn action
+      return (actionData.endsAiTurn === true)? "TEAR_DOWN_AI_TURN" : "PHASE_PREPARE_SEARCH_TASKS";
+    }
+    
+    throw Error("at least one action must explicit ending AI turn");
   }},
 
   // ++++++++++++++++++++++++++++++++++++++++
@@ -326,9 +371,12 @@ controller.ai_machine = util.stateMachine({
 
   TEAR_DOWN_AI_TURN:{ tick: function(){
     util.log(controller.ai_spec,"- tear down turn");
-    
+  
     // release reference
     controller.ai_active = null;
+
+    // end turn now
+    controller.action_objects.nextTurn.invoke();
 
     return "IDLE";
   }}
@@ -337,24 +385,3 @@ controller.ai_machine = util.stateMachine({
 
 });
 controller.ai_machine.state = "IDLE";
-
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// Ai action objects. This objects works more or less like rules in a rule engine because of
-// the scoring model. Every action can define a score based on the situation on the battlefield. 
-// The ai does the action with the highest score first.
-//
-
-controller.ai_defineRoutine({
-  key        : "endTurn",
-  mapAction  : true,
-  endsAiTurn : true,
-
-  // 1 as low score to be sure that end turn will be used at last by the AI
-  scoring : function( data ){
-    return 1;
-  },
-
-  prepare : function( data ){
-    controller.action_objects.nextTurn.invoke(data);
-  }
-});

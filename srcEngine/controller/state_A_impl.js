@@ -5,12 +5,21 @@ controller.TaggedPosition = {
   // Cleans all data of the object.
   //
 	clean: function(){
-		this.x = -1;
-		this.y = -1;
-		this.unit = null;
-		this.unitId = -1;
-		this.property = null;
+		this.x 					= -1;
+		this.y 					= -1;
+		this.unit 			= null;
+		this.unitId 		= -1;
+		this.property 	= null;
 		this.propertyId = -1;
+	},
+
+	grab: function( otherPos ){
+		this.x 					= otherPos.x;
+		this.y 					= otherPos.y;
+		this.unit 			= otherPos.unit;
+		this.unitId 		= otherPos.unitId;
+		this.property 	= otherPos.property;
+		this.propertyId = otherPos.propertyId;
 	},
 
   // Sets a position. All information

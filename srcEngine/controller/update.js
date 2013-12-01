@@ -18,7 +18,10 @@ controller.update_tickFrame = function( delta ){
   if( !controller.update_inGameRound ) return;
   
   // when no commands left in the buffer then leave
-  if( controller.action_buffer_.isEmpty()) return;
+  if( controller.action_buffer_.isEmpty()){
+    if( controller.ai_active ) controller.ai_machine.event("tick");
+    return;
+  }
   
   // grab next action and search correct shared function context
   var data      = controller.action_buffer_.pop();

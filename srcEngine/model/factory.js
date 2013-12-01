@@ -4,6 +4,10 @@ controller.action_registerCommands( "factory_produceUnit" );
 // events
 controller.event_define( "factory_produceUnit" );
 
+model.factory_produceUnit = function(){
+
+};
+
 // Contructs a unit for a player. At least one slot must be free to do this.
 //
 model.factory_produceUnit = function( x, y, type ){
