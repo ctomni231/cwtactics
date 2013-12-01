@@ -309,6 +309,21 @@ controller.stateMachine.data = {
       return (actObj.targetSelectionType === "A") ? "ACTION_SELECT_TARGET_A" :
                                                     "ACTION_SELECT_TARGET_B";
     };
+
+    //
+    //
+    sMap.rerenderNonInactive = function(){
+      var e  = this.data.length;
+      var cx = this.centerX;
+      var cy = this.centerY;
+
+      // rerender data
+      for( x = 0; x < e; x++ ) {
+        for( y = 0; y < e; y++ ) {
+          if( this.data[x+cx][y+cy] > INACTIVE_ID ) view.markForRedraw( x+cx, y+cy );
+        }
+      }
+    };
     
     return sMap;
   } ),

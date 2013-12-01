@@ -8,10 +8,6 @@ controller.mapCursorX = 0;
  */
 controller.mapCursorY = 0;
 
-controller.mapTargetCursorX = 0;
-
-controller.mapTargetCursorY = 0;
-
 /**
  *
  */
@@ -97,9 +93,7 @@ controller.cursorActionClick = function(){
  */
 controller.moveCursor = function( dir, len ){
   if( arguments.length === 1 ) len = 1;
-  
-  controller.eraseWantedCursorPosition();
-  
+    
   var x = controller.mapCursorX;
   var y = controller.mapCursorY;
   
@@ -111,16 +105,6 @@ controller.moveCursor = function( dir, len ){
   }
   
   controller.setCursorPosition(x,y);
-};
-
-controller.setWantedCursorPosition = function(x,y){
-  controller.mapTargetCursorX = x;
-  controller.mapTargetCursorY = y;
-};
-
-controller.eraseWantedCursorPosition = function(x,y){
-  controller.mapTargetCursorX = -1;
-  controller.mapTargetCursorY = -1;
 };
 
 /**

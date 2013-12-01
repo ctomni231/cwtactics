@@ -9,7 +9,7 @@ controller.action_propertyAction({
   },
   
   prepareMenu: function( data ){
-		model.team_addTransferTargets( data.source.unit.property, data.menu );
+		model.team_addTransferTargets( data.source.property.owner, data.menu );
   },
   
   invoke: function( data ){

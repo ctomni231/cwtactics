@@ -27,7 +27,9 @@ controller.storage_create = function( name, sizeMb, storage_type, cb ){
         get     : function( key, cb ){        store.get( key, cb ); },
         has     : function( key, cb ){        store.exists( key, cb ); },
         exists  : function( key, cb ){        store.exists( key, cb ); },
-        set     : function( key, value, cb ){ store.save({ key : key, value : value }, cb ); },
+        set     : function( key, value, cb ){ 
+          store.save({ key : key, value : value }, cb ); 
+        },
         keys    : function( cb ){             store.keys(cb); },
         clear   : function( cb ){             store.nuke(cb); },
         remove  : function( key, cb ){        store.remove( key, cb ); }

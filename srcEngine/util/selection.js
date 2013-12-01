@@ -89,7 +89,7 @@
     // meta data
     obj.centerX = 0;
     obj.centerY = 0;
-    obj.data = util.matrix( size, size, 0 );
+    obj.data = util.matrix( size, size, INACTIVE_ID );
 
     // api
     obj.nextValidPosition = nextValidPosition;

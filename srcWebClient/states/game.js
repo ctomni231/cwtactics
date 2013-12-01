@@ -138,13 +138,15 @@ util.scoped(function(){
   // ++++++++++++ INPUT ACTIONS ++++++++++++
   
   controller.screenStateMachine.structure.GAMEROUND.ACTION = function( ev,x,y ){
-    if( controller.attackRangeVisible ){
-      controller.hideAttackRangeInfo();
-      return this.breakTransition();
+    var state = controller.stateMachine.state;
+    if( state === "IDLE" ){
+      if( controller.attackRangeVisible ){
+        controller.hideAttackRangeInfo();
+        return this.breakTransition();
+      }
     }
-    
+
     if( typeof x === "number" ){
-      controller.eraseWantedCursorPosition();
       controller.setCursorPosition(x,y);
     }
     
@@ -153,27 +155,27 @@ util.scoped(function(){
   };
   
   controller.screenStateMachine.structure.GAMEROUND.HOVER = function( ev,x,y ){
-    controller.setWantedCursorPosition(x,y);
+    controller.setCursorPosition(x,y);
     return this.breakTransition();
   };
   
   controller.screenStateMachine.structure.GAMEROUND.CANCEL = function( ev,x,y ){
-    if( !controller.attackRangeVisible ){
-      var unit = model.unit_posData[controller.mapCursorX][controller.mapCursorY];
-      if( unit ){
-        controller.showAttackRangeInfo();
+    var state = controller.stateMachine.state;
+    if( state === "IDLE" ){
+      if( !controller.attackRangeVisible ){
+        var unit = model.unit_posData[controller.mapCursorX][controller.mapCursorY];
+        if( unit ){
+          controller.showAttackRangeInfo();
+          return this.breakTransition();
+        }
+      }
+      else {
+        controller.hideAttackRangeInfo();
         return this.breakTransition();
       }
     }
-    else {
-      controller.hideAttackRangeInfo();
-      return this.breakTransition();
-    }
     
-    if( typeof x === "number" ){
-      controller.eraseWantedCursorPosition();
-      controller.setCursorPosition(x,y);
-    }
+    if( typeof x === "number" ) controller.setCursorPosition(x,y);
     
     controller.cursorActionCancel();
     return this.breakTransition();

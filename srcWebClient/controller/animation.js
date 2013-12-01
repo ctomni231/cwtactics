@@ -99,39 +99,44 @@ util.scoped(function(){
           var xe = model.map_width;
           var ye = model.map_height;
 
-          for( ; x<xe; x++ ){
-            for( var y=yS ; y<ye; y++ ){
 
-              // units or selection tiles
-              if( animations[4] === 1 ||
-                  animations[9] === 1 ){
+          if( animations[4] === 1 || 
+              animations[9] === 1 || 
+              animations[24] === 1 || 
+              animations[29] === 1 ){
 
-                if( model.unit_posData[x][y] !== null ) view.markForRedrawWithNeighboursRing(x,y);
+            for( ; x<xe; x++ ){
+              for( var y=yS ; y<ye; y++ ){
+
+                // units or selection tiles
+                if( animations[4] === 1 ||
+                    animations[9] === 1 ){
+
+                  if( model.unit_posData[x][y] !== null ) view.markForRedrawWithNeighboursRing(x,y);
+                }
+
+                // status needs only an updated step number
+                // the graphics will be updated with unit redraws
+
+                // properties
+                if( animations[24] === 1 ){
+
+                  if( model.property_posMap[x][y] !== null ) view.markForRedrawWithNeighboursRing(x,y);
+                }
+
+                // animated tiles
+                if( animations[29] === 1 ){
+
+                  if( view.animatedTiles[ view.mapImages[x][y] ] ) view.markForRedraw( x,y );
+                }
+
               }
-
-              // units or selection tiles
-              if( animations[14] === 1 ){
-
-                // TODO : do not check all
-                if( selection.getValueAt( x, y ) > -1 ) view.markForRedraw( x,y );
-              }
-
-              // status needs only an updated step number
-              // the graphics will be updated with unit redraws
-
-              // properties
-              if( animations[24] === 1 ){
-
-                if( model.property_posMap[x][y] !== null ) view.markForRedrawWithNeighboursRing(x,y);
-              }
-
-              // animated tiles
-              if( animations[29] === 1 ){
-
-                if( view.animatedTiles[ view.mapImages[x][y] ] ) view.markForRedraw( x,y );
-              }
-
             }
+          }
+
+          // units or selection tiles
+          if( animations[14] === 1 ){
+            selection.rerenderNonInactive();
           }
         }
 

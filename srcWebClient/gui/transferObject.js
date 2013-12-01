@@ -4,6 +4,6 @@ util.scoped(function(){
     entry.innerHTML = model.player_data[content].name;  
   };
 
-  controller.registerMenuRenderer("team_transferProperty",extractPlayer);
-  controller.registerMenuRenderer("team_transferUnit",extractPlayer);
+  controller.registerMenuRenderer("transferProperty",extractPlayer);
+  controller.registerMenuRenderer("transferUnit",extractPlayer);
 });

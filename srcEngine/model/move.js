@@ -201,7 +201,7 @@ model.move_codeFromAtoB = function( sx, sy, tx, ty ){
   assert( model.map_isValidPosition(sx,sy) );
   assert( model.map_isValidPosition(tx,ty) );
   
-  util.expect( util.expect.isTrue, (model.map_getDistance( sx, sy, tx, ty ) === 1));
+  assert(model.map_getDistance( sx, sy, tx, ty ) === 1);
   
   if( sx < tx ) return model.move_MOVE_CODES.RIGHT;
   if( sx > tx ) return model.move_MOVE_CODES.LEFT;

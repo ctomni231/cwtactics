@@ -37,50 +37,6 @@ util.scoped(function(){
     
     var inMove = (controller.moveScreenX !== 0 || controller.moveScreenY !== 0);
     
-    // update mouse move
-    if( controller.mapTargetCursorX !== -1 ){
-      
-      var mpx = controller.mapCursorX;
-      var mpy = controller.mapCursorY;
-      
-      view.markForRedrawWithNeighboursRing( mpx, mpy );
-      
-      var dis = 0;
-      
-      if( mpx !== controller.mapTargetCursorX ){
-        dis = mpx - controller.mapTargetCursorX;
-        if( dis < 0 ) dis = -dis;
-        
-        if( dis > 25 )        dis = 5;
-        else if( dis > 15 )   dis = 3;
-        else if( dis > 5 )    dis = 2;
-        else                  dis = 1;
-        
-        if( mpx < controller.mapTargetCursorX ) mpx += dis;
-        else mpx -= dis;
-      }
-      
-      if( mpy !== controller.mapTargetCursorY ){
-        dis = mpy - controller.mapTargetCursorY;
-        if( dis < 0 ) dis = -dis;
-        
-        if( dis > 25 )        dis = 5;
-        else if( dis > 15 )   dis = 3;
-        else if( dis > 5 )    dis = 2;
-        else                  dis = 1;
-        
-        if( mpy < controller.mapTargetCursorY ) mpy += dis;
-        else mpy -= dis;
-      }
-      
-      controller.setCursorPosition(mpx,mpy);
-      
-      if( mpx === controller.mapTargetCursorX && 
-          mpy === controller.mapTargetCursorY ){
-        controller.eraseWantedCursorPosition();
-      }
-    }
-    
     // IF SCREEN IS IN MOVEMENT THEN UPDATE THE MAP SHIFT
     if( inMove ) controller.solveMapShift();
     // ELSE UPDATE THE LOGIC

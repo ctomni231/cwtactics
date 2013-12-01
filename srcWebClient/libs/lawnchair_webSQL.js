@@ -32,7 +32,7 @@ Lawnchair.adapter('webkit-sqlite', (function () {
       if (cb && typeof cb != 'function') throw 'callback not valid';
 
       // open a connection and create the db if it doesn't exist
-      this.db = openDatabase(this.name, '1.0.0', this.name, 65536)
+      this.db = openDatabase(this.name, '1.0.0', this.name, options.maxSize || 65536 )
       this.db.transaction(function (t) {
         t.executeSql(create, [])
       }, fail, win)
@@ -65,7 +65,7 @@ Lawnchair.adapter('webkit-sqlite', (function () {
         ,   objs = (this.isArray(obj) ? obj : [obj]).map(function(o){if(!o.key) { o.key = that.uuid()} return o})
         ,   ins  = "INSERT OR REPLACE INTO " + this.record + " (value, timestamp, id) VALUES (?,?,?)"
         ,   win  = function () { if (callback) { that.lambda(callback).call(that, that.isArray(obj)?objs:objs[0]) }}
-        ,   error= error || function() {}
+        ,   error= error || null
         ,   insvals = []
         ,   ts = now()
 
@@ -74,14 +74,14 @@ Lawnchair.adapter('webkit-sqlite', (function () {
           insvals[i] = [JSON.stringify(objs[i]), ts, objs[i].key];
         }
       } catch (e) {
-        fail(e)
+        (error)? error(e) : fail(e);
         throw e;
       }
 
       that.db.transaction(function(t) {
         for (var i = 0, l = objs.length; i < l; i++)
           t.executeSql(ins, insvals[i])
-      }, function(e,i){fail(e,i)}, win)
+      }, (error)? error : fail, win)
 
       return this
     },

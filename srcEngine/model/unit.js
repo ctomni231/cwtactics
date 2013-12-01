@@ -393,7 +393,7 @@ model.unit_getDistance = function( uidA, uidB ){
 // Deregisters an unit object from the stock of a player. The tile, where the unit is placed on,
 // will be freed from any position information.
 // 
-model.unit_destroySilently = function( uid ){
+model.unit_destroySilently = function( uid, noEvent ){
   assert( model.unit_isValidUnitId(uid) );
   
   model.move_clearUnitPosition(uid);
@@ -408,12 +408,12 @@ model.unit_destroySilently = function( uid ){
     controller.update_endGameRound();
   } 
   
-  controller.events.unit_destroy( uid );
+  if( !noEvent ) controller.events.unit_destroy( uid );
 };
 
 // Deregisters an unit object from the stock of a player. The tile, where the unit is placed on, 
 // will be freed from any position information.
 // 
 model.unit_destroy = function( uid ){
-  model.unit_destroySilently(uid);
+  model.unit_destroySilently(uid,true);
 };

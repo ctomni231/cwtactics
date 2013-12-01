@@ -85,7 +85,7 @@ model.round_nextTurn = function(){
   }
 
   // starts the turn
-  model.round_startTurn(pid);
+  model.round_startsTurn(pid);
 };
 
 // Starts a turn for player with id (`pid`).
