@@ -23,8 +23,12 @@ import java.util.ArrayList;
  * @version 11.07.10
  */
 
+//There is a workaround for Linux files
+//String path = (new File(SomeClass.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent());
+//If you use the current path, you might run into problems with Linux
+
 public class FileFind {
-	/** Holds the temporary file for storage */
+    /** Holds the temporary file for storage */
     private File theFile;
     /** BasePath of .jar */
     private String basePath;

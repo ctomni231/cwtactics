@@ -4,6 +4,14 @@
 
 After a lot of testing and organizing, the new image format is finally completed. This format will make it easier for us to show connections of terrain directly from the images. It will also be used for units, inventions, and properties to allow display of the different armies.
 
+## Enhancements
+
+The new image convention allows for a lot more flexibility than its predecessor.
+
+* Connection Type allows for multiple connections ex. (SB)
+* Connection Type allows all letters and numbers for multiple connection types. Accepts characters (A-Z)(a-z)(~)(0-9).
+* Better support for weather, connections, and direction
+
 ## Format
 
 `AWDS(C)_PLIN(L)$........`
@@ -14,7 +22,7 @@ After a lot of testing and organizing, the new image format is finally completed
 *Game Type:* This is the abbreviation for the objects game origin.
 *Weather Type*: This is the abbreviation for the objects weather type.
 *Object Type*: This is the 4-letter abbreviation for the object
-*Connection Type*: This is the type of connection this tile connects with.
+*Connection Type*: This is the type of connection this tile connects with. 
 *Faction Type*: This is the abbreviation for the type of faction this object represents.
 *Direction*: This is the abbreviation for the direction this
 object is facing. 
@@ -54,8 +62,7 @@ This shows how objects are organized within the object files for units, terrain(
 
 ## Cursor and Terrain Connection Image Abbreviations
 
-* *~* = Neutral/Wildcard
-* *N* = Neutral/Wildcard 
+* *~* = Land/Neutral/Wildcard
 * *L* = Land
 * *W* = Wall
 * *S* = Sea/Ocean
