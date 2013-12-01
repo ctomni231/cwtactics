@@ -29,10 +29,12 @@ controller.persistence_defineHandler(
       assert( util.intRange(data[2],0,MAX_MAP_HEIGHT-1) );  // y
       assert( (util.isString(data[3]) && !util.isUndefined( // type
         model.data_tileSheets[data[3]].capturePoints) ) ||
+        typeof model.data_tileSheets[data[3]].cannon !== "undefined" ||
         typeof model.data_tileSheets[data[3]].rocketsilo !== "undefined"
       );
       assert( (util.intRange(data[4],1,                     // capture points
         model.data_tileSheets[data[3]].capturePoints)) ||
+              (util.intRange(data[4],-99,-1)) ||
         typeof model.data_tileSheets[data[3]].rocketsilo !== "undefined"
       );
       assert( util.intRange(data[5],-1,MAX_PLAYER-1) );     // owner

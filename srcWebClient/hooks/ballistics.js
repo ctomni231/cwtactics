@@ -145,11 +145,85 @@ util.scoped(function(){
     
   });
 
-  controller.event_on("bombs_fireCannon",function( prid, x,y ){
-    controller.audio_playSound( model.property_data[prid].type.cannon.fireSound);
+  view.registerAnimationHook({
+    
+    key: "bombs_fireCannon",
+    
+    prepare: function( prid, x,y ){
+      var fireAnim = model.property_data[prid].type.assets.fireAnimation;
+      assert( fireAnim.length === 5 );
+      
+      this.pic     = view.getInfoImageForType(fireAnim[0]);
+      this.sizeX   = fireAnim[1];
+      this.sizeY   = fireAnim[2];
+      this.offsetX = fireAnim[3];
+      this.offsetY = fireAnim[4];
+
+      var prop = model.property_data[prid];
+      this.curX    = prop.x;
+      this.curY    = prop.y;
+
+      this.step    = 0;
+      this.time    = 0;
+
+      controller.audio_playSound( model.property_data[prid].type.assets.fireSound);
+    },
+    
+    render: function(){
+      var tileSize = TILE_LENGTH;
+      var scx = this.sizeX*this.step;
+      var scy = 0;
+      var scw = this.sizeX;
+      var sch = this.sizeY;
+      var tcx = (this.curX)*tileSize + this.offsetX;
+      var tcy = (this.curY)*tileSize + this.offsetY;
+      var tcw = this.sizeX;
+      var tch = this.sizeY;
+      
+      view.canvasCtx.drawImage(
+        this.pic,
+        scx,scy,
+        scw,sch,
+        tcx,tcy,
+        tcw,tch
+      );
+      
+    },
+    
+    update: function( delta ){
+      this.time += delta;
+      if( this.time > 100 ){
+        this.step++;
+        this.time = 0;
+      }
+    },
+    
+    isDone: function(){
+      return this.step === 6;
+    }
+    
   });
-  
-  controller.event_on("bombs_fireLaser",function( prid,ox,oy ){
-    controller.audio_playSound( model.property_data[prid].type.laser.fireSound);
+
+  view.registerAnimationHook({
+    
+    key: "bombs_fireLaser",
+    
+    prepare: function( tx,ty, range, damage, owner ){
+      controller.audio_playSound( model.property_data[prid].type.assets.fireSound );
+    },
+    
+    render: function(){
+      
+    },
+    
+    update: function( delta ){
+      
+    },
+    
+    isDone: function(){
+      
+    }
+    
   });
+
 });

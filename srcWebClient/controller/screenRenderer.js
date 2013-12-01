@@ -196,6 +196,16 @@ view.renderMap = function( scale ){
             tcy = tcy + tileSize;
             tch = tch - tileSize;
           }
+
+          if( property.type.assets.gfxOffset ){
+            scx = 0 + property.type.assets.gfxOffset[0]*sprStepProp;
+            scw = property.type.assets.gfxOffset[0];
+            sch = property.type.assets.gfxOffset[1];
+            tcx += property.type.assets.gfxOffset[2];
+            tcy += property.type.assets.gfxOffset[3];
+            tcw = property.type.assets.gfxOffset[0];
+            tch = property.type.assets.gfxOffset[1];
+          }
           
           if( pic !== undefined ){
             ctx.drawImage(

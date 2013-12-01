@@ -82,7 +82,9 @@ model.data_tileTypes = [ ];
 // Tile type sheet parser object
 model.data_tileParser = model.data_createParser( model.data_tileSheets,
   function( sheet ){
-    if( sheet.capturePoints || sheet.rocketsilo ) model.data_propertyTypes.push( sheet.ID );
+    if( sheet.capturePoints || sheet.rocketsilo || sheet.cannon || sheet.laser  ){
+      model.data_propertyTypes.push( sheet.ID );
+    }
     else model.data_tileTypes.push( sheet.ID );
   }
 );

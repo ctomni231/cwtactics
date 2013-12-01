@@ -4,7 +4,7 @@ controller.action_propertyAction({
 	relation:[ "S","T", model.player_RELATION_MODES.SAME_OBJECT],
 
 	condition: function( data ){
-		return model.bombs_isCannon( data.target.propertyId );
+		return model.bombs_isLaser( data.target.propertyId );
 	},
 
 	invoke: function( data ){

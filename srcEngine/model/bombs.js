@@ -35,10 +35,6 @@ model.bombs_explosionAt = function(tx, ty, range, damage, owner){
 // `sx,sy` to `tx,ty`. The cannon is on the tile `ox,oy` with a given `range`.
 // TODO : refa
 model.bombs_tryToMarkCannonTargets = function(pid,selection,ox,oy,otx,oty,sx,sy,tx,ty,range ){
-  assert( model.map_isValidPosition(ox,oy) );
-  assert( model.map_isValidPosition(otx,oty) );
-  assert( model.map_isValidPosition(sx,sy) );
-  assert( model.map_isValidPosition(tx,ty) );
   assert( model.player_isValidPid(pid) );
   
   var tid = model.player_data[pid].team;
@@ -70,64 +66,64 @@ model.bombs_tryToMarkCannonTargets = function(pid,selection,ox,oy,otx,oty,sx,sy,
 
 // Marks all cannon targets in a given selection model.
 //
-model.bombs_markCannonTargets = function( uid, selection ){
+model.bombs_markCannonTargets = function( prid, selection ){
   var result;
   
-  var unit = model.unit_data[uid];
-  var type = unit.type;
+  var prop = model.property_data[prid];
+  var type = prop.type;
   
   // no cannon
   if( !type.cannon ) return false;
   
-  selection.setCenter( unit.x, unit.y, 0 );
+  selection.setCenter( prop.x, prop.y, 0 );
   
   var max = type.cannon.range;
   switch( type.cannon.direction ){
       
     case "N": 
       result = model.bombs_tryToMarkCannonTargets( 
-        unit.owner, 
+        prop.owner, 
         selection, 
-        unit.x, unit.y, 
-        unit.x, unit.y-max-1, 
-        unit.x-max+1, unit.y-1, 
-        unit.x+max-1, unit.y-max, 
+        prop.x,         prop.y, 
+        prop.x,         prop.y-max-1, 
+        prop.x-prop+1,  prop.y-1, 
+        prop.x+prop-1,  prop.y-max, 
         max 
       ); 
       break;
       
     case "E": 
       result = model.bombs_tryToMarkCannonTargets( 
-        unit.owner, 
+        prop.owner, 
         selection, 
-        unit.x, unit.y, 
-        unit.x+max+1, unit.y, 
-        unit.x+1, unit.y+max-1, 
-        unit.x+max, unit.y-max+1, 
+        prop.x,         prop.y, 
+        prop.x+max+1,   prop.y, 
+        prop.x+1,       prop.y+max-1, 
+        prop.x+max,     prop.y-max+1, 
         max 
       ); 
       break;
       
     case "W": 
       result = model.bombs_tryToMarkCannonTargets( 
-        unit.owner, 
+        prop.owner, 
         selection, 
-        unit.x, unit.y, 
-        unit.x-max-1, unit.y, 
-        unit.x-max, unit.y+max-1, 
-        unit.x-1, unit.y-max+1, 
+        prop.x,       prop.y, 
+        prop.x-max-1, prop.y, 
+        prop.x-max,   prop.y+max-1, 
+        prop.x-1,     prop.y-max+1, 
         max
       ); 
       break;
       
     case "S": 
       result = model.bombs_tryToMarkCannonTargets( 
-        unit.owner, 
+        prop.owner, 
         selection, 
-        unit.x, unit.y, 
-        unit.x, unit.y+max+1, 
-        unit.x-max+1, unit.y+max, 
-        unit.x+max-1, unit.y+1, 
+        prop.x,       prop.y, 
+        prop.x,       prop.y+max+1, 
+        prop.x-max+1, prop.y+max, 
+        prop.x+max-1, prop.y+1, 
         max 
       ); 
       break;
@@ -216,28 +212,32 @@ model.bombs_fireSilo = function( x,y, tx, ty, owner){
 
 // Fires a cannon at a given position.
 //
-model.bombs_fireCannon = function( uid, x,y ){
+model.bombs_fireCannon = function( prid, x,y ){
   assert( model.map_isValidPosition(x,y) );
-  assert( model.unit_isValidUnitId(uid));
+  assert( model.property_isValidPropId(prid));
   
-  var unit    = model.unit_data[uid];
+  var prop    = model.property_data[prid];
   var target  = model.unit_posData[x][y];
-  var type    = unit.type;
+  var type    = prop.type;
   
   var target = model.unit_posData[x][y];
-  model.unit_inflictDamage( model.unit_extractId(target), model.unit_convertPointsToHealth(type.cannon.damage), 9);
+  model.unit_inflictDamage( 
+    model.unit_extractId(target), 
+    model.unit_convertPointsToHealth(type.cannon.damage), 
+    9
+  );
   
   // Invoke event
-  controller.events.bombs_fireCannon( uid, x,y );
+  controller.events.bombs_fireCannon( prid, x,y );
 };
 
 // Fires a laser at a given position.
 //
-model.bombs_fireLaser = function( pid, ox,oy ){
+model.bombs_fireLaser = function( prid, ox,oy ){
   assert( model.map_isValidPosition(ox,oy) );
-  assert( model.player_isValidPid(pid) );
+  assert( model.property_isValidPropId(prid));
   
-  controller.events.bombs_fireLaser( pid, ox,oy );
+  controller.events.bombs_fireLaser( prid, ox,oy );
   
   // check all tiles on the map
   for( var x=0,xe=model.map_width; x<xe; x++ ){
@@ -248,7 +248,11 @@ model.bombs_fireLaser = function( pid, ox,oy ){
         
         var unit = model.unit_posData[x][y];
         if( unit && unit.owner !== pid ){
-          model.unit_inflictDamage( model.unit_extractId(target), model.unit_convertPointsToHealth(type.laser.damage), 9 );
+          model.unit_inflictDamage( 
+            model.unit_extractId(target), 
+            model.unit_convertPointsToHealth(type.laser.damage), 
+            9 
+          );
         }
       }
       
