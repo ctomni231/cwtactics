@@ -5,7 +5,7 @@ view.imageProcessor_UNIT_INDEXES = {
   RED:0,
   BLUE:3,
   GREEN:4,
-  GREEN:5,
+  YELLOW:5,
   colors:6
 };
 
