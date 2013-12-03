@@ -1,7 +1,13 @@
 var fs = require('fs');
 var ugly = require('uglify-js');
 var sys = require('sys')
-var exec = require('child_process').exec;
+var exec= require('child_process').exec;
+
+var isWindows = ( process.platform === 'win32' );
+
+function pathReplace( path ){
+  if( isWindows ) return path.replaceAll("/","\\");
+};
 
 exports.DIST_DIR = "dist/nightly/";
 
@@ -15,6 +21,8 @@ exports.UGLIFY_CMD =  "uglifyjs "+
                       "--screw-ie8 ";
 
 exports.doCommand = function( cmd,cb ){
+  cmd = pathReplace(cmd);
+  
   console.log( "EXEC:\n"+cmd+"\n" );
   exec( cmd , function(error, stdout, stderr){
     console.log( ' stdout: ' + stdout);
