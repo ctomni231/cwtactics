@@ -64,6 +64,7 @@ exports.doIt = function( p,baton ){
       var HTML_CODE = builder.readAndConcatFiles([
         "srcWebClient/html/start.html",
         "srcWebClient/html/errorDialog.html",
+        "srcWebClient/html/updatePanel.html",
         "srcWebClient/html/loadScreen.html",
         "srcWebClient/html/mobileScreen.html",
         "srcWebClient/html/mainScreen.html",
