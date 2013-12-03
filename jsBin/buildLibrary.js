@@ -24,7 +24,7 @@ exports.dirJsToString = function( dir ){
   var res = [];
   var result = fs.readdirSync( dir );
   for( var i=0,e=result.length; i<e; i++ ){
-    if( file.match(/.js$/) ) res.push( pathReplace( dir+"/"+result[i] ) );
+    if( result[i].match(/.js$/) ) res.push( pathReplace( dir+"/"+result[i] ) );
   }
 
   return res.join(" ");
