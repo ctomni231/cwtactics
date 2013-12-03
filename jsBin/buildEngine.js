@@ -1,6 +1,6 @@
 var builder = require( "./buildLibrary.js" );
 
-var PATH =  "srcEngine/libs/*.js "+
+var PATH = " "+builder.dirJsToString("srcEngine/libs")+" "+
 			builder.dirJsToString("srcEngine/core")+" "+
 			builder.dirJsToString("srcEngine/util")+" "+
 			builder.dirJsToString("srcEngine/controller")+" "+
