@@ -12,7 +12,7 @@ util.scoped(function(){
   controller.screenStateMachine.structure.MOBILE.section = "cwt_mobileSound_screen";
 
   controller.screenStateMachine.structure.MOBILE.enterState = function(){
-    toolTipId = 0;
+    toolTipId = parseInt( Math.random()*model.data_tips.length, 10);
     updateTooltip();
   };
 
