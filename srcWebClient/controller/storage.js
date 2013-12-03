@@ -14,6 +14,18 @@ controller.storage_NAMES = {
   general: "GENERAL"
 };
 
+// Storage for maps.
+//
+controller.storage_maps    = null;
+
+// Storage for assets data like images and sounds.
+//
+controller.storage_assets  = null;
+
+// Storage for general data like settings.
+//
+controller.storage_general = null;
+
 // Creates a new storage module.
 //
 controller.storage_create = function( name, sizeMb, storage_type, cb ){
@@ -90,14 +102,28 @@ controller.storage_initialize = function( p,mb ){
     });
 };
 
-// Storage for maps.
+// Nukes the storage.
 //
-controller.storage_maps    = null;
-
-// Storage for assets data like images and sounds.
-//
-controller.storage_assets  = null;
-
-// Storage for general data like settings.
-//
-controller.storage_general = null;
+controller.storage_wipeOut = function(){
+  function wipeoutStorage( flow, storage ){
+    flow.andThen(function( _,b ){
+      b.take();
+      storage.clear( function(){
+        b.pass();
+      });
+    });
+  };
+  
+  var flow = jWorkflow.order();
+  
+  // clear storage blocks
+  if( controller.storage_general ) wipeoutStorage( flow, controller.storage_general );
+  if( controller.storage_assets ) wipeoutStorage( flow, controller.storage_assets );
+  if( controller.storage_maps ) wipeoutStorage( flow, controller.storage_maps  );
+  
+  flow.start(function(){
+    
+    // reload window
+    window.location.reload();
+  });
+};
