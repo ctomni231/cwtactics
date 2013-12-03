@@ -7,6 +7,7 @@ var isWindows = ( process.platform === 'win32' );
 
 function pathReplace( path ){
   if( isWindows ) return path.replace(/\//g,"\\");
+  else return path;
 };
 
 exports.DIST_DIR = "dist/nightly/";
@@ -26,7 +27,7 @@ exports.dirJsToString = function( dir ){
   for( var i=0,e=result.length; i<e; i++ ){
     if( result[i].match(/.js$/) ) res.push( pathReplace( dir+"/"+result[i] ) );
   }
-
+  
   return res.join(" ");
 };
 
