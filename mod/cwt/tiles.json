@@ -274,6 +274,7 @@
     "ID": "SILO_EMPTY",
     "defense": 3,
     "vision": 0,
+    "rocketsilo":{},
     "assets":{
       "gfx":"properties/AWDS_PLTF.png"
     }
