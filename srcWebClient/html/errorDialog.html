@@ -45,10 +45,11 @@
   <p style="text-align: center; margin-bottom: 4px;">
   
     <button key="error.panel.yes" onclick="
-       if( controller.storage_wipeOut ) controller.storage_wipeOut(function(){
-         document.location.reload();
-       })
-       else document.location.reload();
+       if( controller.storage_wipeOut ){
+         controller.storage_wipeOut(function(){
+           document.location.reload();
+         });
+       } else document.location.reload();
       ">
       Yes
     </button>
