@@ -9,24 +9,21 @@
 
 	  // Check if a new cache is available on page load.
 	  window.addEventListener( 'load', function( e ){
+	  	
 	    var appCache = window.applicationCache;
-
 	    if( appCache ) {
 
 	      // update is available
 	      appCache.addEventListener( 'updateready', function( e ){
 	        if( appCache.status === appCache.UPDATEREADY ) {
 
-	          // Browser downloaded a new app cache. Swap it in and reload
-	          // the page to get the new hotness.
+	          // Browser downloaded a new app cache. Swap it in and reload the page to get the new hotness.
 	          appCache.swapCache();
-
-	          if( confirm( 'A new version of this site is available. Load it?' ) ) {
-
-	            // forces reload of all program files
-	            window.location.reload();
-	          }
-	        } else startGame();
+	          
+	          // Shows the update information panel
+	          document.getElementById("cwt_updatePanel").style.display = "block";
+	          
+	        }
 	      }, false );
 
 	      appCache.addEventListener( 'noupdate', function(){
@@ -49,6 +46,7 @@
 	      }, false );
 
 	    }
+	    
 	  }, false );
 
 	</script>
