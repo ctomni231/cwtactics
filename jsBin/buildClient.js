@@ -3,13 +3,13 @@ var builder = require( "./buildLibrary.js" );
 // -------------- build code --------------
 
 var PATH =  "srcWebClient/libs/*.js "+
-			"srcWebClient/core/*.js "+
-			"srcWebClient/controller/*.js "+
-			"srcWebClient/data/*.js "+
-			"srcWebClient/gui/*.js "+
-			"srcWebClient/hooks/*.js "+
-			"srcWebClient/states/*.js "+
-			"srcWebClient/stateScope/*.js ";
+			builder.dirJsToString("srcWebClient/core")+" "+
+			builder.dirJsToString("srcWebClient/controller")+" "+
+			builder.dirJsToString("srcWebClient/data")+" "+
+			builder.dirJsToString("srcWebClient/gui")+" "+
+			builder.dirJsToString("srcWebClient/hooks")+" "+
+			builder.dirJsToString("srcWebClient/states")+" "+
+			builder.dirJsToString("srcWebClient/stateScope")+" ";
 
 
 exports.doIt = function( p,baton ){
