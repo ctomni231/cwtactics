@@ -27,6 +27,10 @@ controller.screenStateMachine.structure.NONE.start = function(){
         if( controller.update_inGameRound ) controller.gameLoop( delta );
         else controller.screenStateMachine.event("gameHasEnded"); // game ends --> stop game loop
       }
+
+      if( controller.screenStateMachine.state === "MOBILE" ){
+        controller.screenStateMachine.event("decreaseTimer", delta );
+      }
     }
 
     // ENTER LOOP
