@@ -6,7 +6,7 @@ var exec= require('child_process').exec;
 var isWindows = ( process.platform === 'win32' );
 
 function pathReplace( path ){
-  if( isWindows ) return path.replaceAll("/","\\");
+  if( isWindows ) return path.replace(/\//g,"\\");
 };
 
 exports.DIST_DIR = "dist/nightly/";
