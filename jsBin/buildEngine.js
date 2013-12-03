@@ -2,15 +2,11 @@ var builder = require( "./buildLibrary.js" );
 
 var PATH =  "srcEngine/libs/*.js "+
 			builder.dirJsToString("srcEngine/core")+" "+
-			builder.dirJsToString("srcEngine/core")+" "+
-			builder.dirJsToString("srcEngine/core")+" "+
-			builder.dirJsToString("srcEngine/core")+" "+
-			builder.dirJsToString("srcEngine/core")+" "+
-			"srcEngine/util/*.js "+
-			"srcEngine/controller/*.js "+
-			"srcEngine/model/*.js "+
-			"srcEngine/persistence/*.js "+
-			"srcEngine/commands/*.js ";
+			builder.dirJsToString("srcEngine/util")+" "+
+			builder.dirJsToString("srcEngine/controller")+" "+
+			builder.dirJsToString("srcEngine/model")+" "+
+			builder.dirJsToString("srcEngine/persistence")+" "+
+			builder.dirJsToString("srcEngine/commands")+" ";
 
 exports.doIt = function( p,baton ){
   baton.take();
