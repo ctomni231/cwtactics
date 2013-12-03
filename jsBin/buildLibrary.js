@@ -20,8 +20,17 @@ exports.UGLIFY_CMD =  "uglifyjs "+
                       "$COMPRESS$ "+
                       "--screw-ie8 ";
 
+exports.dirJsToString = function( dir ){
+  var res = [];
+  var result = fs.readdirSync( dir );
+  for( var i=0,e=result.length; i<e; i++ ){
+    if( file.match(/.js$/) ) res.push( pathReplace( dir+"/"+result[i] ) );
+  }
+
+  return res.join(" ");
+};
+
 exports.doCommand = function( cmd,cb ){
-  cmd = pathReplace(cmd);
   
   console.log( "EXEC:\n"+cmd+"\n" );
   exec( cmd , function(error, stdout, stderr){
