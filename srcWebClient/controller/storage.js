@@ -104,7 +104,7 @@ controller.storage_initialize = function( p,mb ){
 
 // Nukes the storage.
 //
-controller.storage_wipeOut = function(){
+controller.storage_wipeOut = function( cb ){
   function wipeoutStorage( flow, storage ){
     flow.andThen(function( _,b ){
       b.take();
@@ -122,8 +122,6 @@ controller.storage_wipeOut = function(){
   if( controller.storage_maps ) wipeoutStorage( flow, controller.storage_maps  );
   
   flow.start(function(){
-    
-    // reload window
-    window.location.reload();
+    if( cb ) cb();
   });
 };
