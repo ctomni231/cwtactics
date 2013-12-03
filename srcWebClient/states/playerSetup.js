@@ -27,39 +27,50 @@ util.scoped(function(){
     ]
   ];
 
-  function update( playerId ){
-    var btns   = buttons[playerId];
-    var player = model.player_data[playerId];
+  function updateButtons( id, a,b,c ){
+    var btns          = buttons[id];
+    btns[0].innerHTML = model.data_localized(a);
+    btns[1].innerHTML = (b)? model.data_localized(b) : b;
+    btns[2].innerHTML = c;
+  }
 
-    if( player.team === INACTIVE_ID ){
-      btns[0].innerHTML = model.data_localized("config.player.off");
-      btns[1].innerHTML = "";
-      btns[2].innerHTML = "";
-    }
-    else if( player.team === DESELECT_ID ){
-      btns[0].innerHTML = model.data_localized("config.player.disabled");
-      btns[1].innerHTML = "";
-      btns[2].innerHTML = "";
-    }
-    else{
-      var sp = controller.screenStateMachine.data.isSinglePlayer;
-
-      // update player type
-      if( playerId === 0 || !sp ){
-        btns[0].innerHTML = model.data_localized("config.player.human");
-        model.client_registerPlayer(playerId);
-      }
-      else{
-        btns[0].innerHTML = model.data_localized("config.player.AI");
-        controller.ai_register( playerId, "dumbBoy");
-      }
+  function update( pid ){
+    var type = controller.roundConfig_typeSelected[pid];
+    if( type === INACTIVE_ID ){
       
-      // update player co
-      var co = model.co_data[playerId].coA; 
-      btns[1].innerHTML = (co !== null)? co.ID : model.data_localized("config.player.co.none");
+      // player is disabled by hoster ( could be activated )
+      updateButtons(pid, "config.player.off", "", "");
 
-      // update player team
-      btns[2].innerHTML = player.team;
+    } else if( type === DESELECT_ID ){
+
+      // player is disabled by map ( cannot be activated )
+      updateButtons(pid, "config.player.disabled", "", "");
+
+    } else {
+      var a,b;
+
+      // player is active ( AI or human )
+      if( type === 0 ){
+        
+        // human
+        a = "config.player.human";
+
+      } else {
+
+        // ai
+        a = "config.player.AI";
+
+      }
+
+      // grab co
+      b = "config.player.co.none";
+      if(controller.roundConfig_coSelected[pid] !== INACTIVE_ID){
+        b = model.data_coSheets[ 
+          model.data_coTypes[ controller.roundConfig_coSelected[pid] ]
+        ].ID;
+      }
+
+      updateButtons(pid, a, b, controller.roundConfig_teamSelected[pid]);
     }
   }
 
@@ -289,6 +300,7 @@ util.scoped(function(){
         break;
 
       case "config.next":
+        controller.roundConfig_evalAfterwards();
         return "GAMEROUND";
     }
 

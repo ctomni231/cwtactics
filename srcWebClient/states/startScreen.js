@@ -1,5 +1,7 @@
 util.scoped(function(){
 
+  var TIMEOUT_TIPS = 10000;
+
   var toolTipId;
   var toolTipElement  = document.getElementById("startScreen_toolTip");
 
@@ -16,13 +18,13 @@ util.scoped(function(){
   controller.screenStateMachine.structure.MOBILE.enterState = function(){
     toolTipId = parseInt( Math.random()*model.data_tips.length, 10);
     updateTooltip();
-    controller.screenStateMachine.structure.MOBILE.timer = 3500;
+    controller.screenStateMachine.structure.MOBILE.timer = TIMEOUT_TIPS;
   };
 
   controller.screenStateMachine.structure.MOBILE.decreaseTimer = function( _,delta ){
     controller.screenStateMachine.structure.MOBILE.timer -= delta;
     if( controller.screenStateMachine.structure.MOBILE.timer <= 0 ){
-      controller.screenStateMachine.structure.MOBILE.timer = 3500;
+      controller.screenStateMachine.structure.MOBILE.timer = TIMEOUT_TIPS;
       
       toolTipId++;
       if( toolTipId >= model.data_tips.length ) toolTipId = 0;
@@ -43,7 +45,7 @@ util.scoped(function(){
   controller.screenStateMachine.structure.MOBILE.LEFT = function(){
     toolTipId--;
     if( toolTipId < 0 ) toolTipId = model.data_tips.length-1;
-    controller.screenStateMachine.structure.MOBILE.timer = 3500;
+    controller.screenStateMachine.structure.MOBILE.timer = TIMEOUT_TIPS;
 
     updateTooltip();
 
@@ -56,7 +58,7 @@ util.scoped(function(){
   controller.screenStateMachine.structure.MOBILE.RIGHT = function(){
     toolTipId++;
     if( toolTipId >= model.data_tips.length ) toolTipId = 0;
-    controller.screenStateMachine.structure.MOBILE.timer = 3500;
+    controller.screenStateMachine.structure.MOBILE.timer = TIMEOUT_TIPS;
 
     updateTooltip();
 

@@ -134,8 +134,16 @@ util.scoped(function(){
             }
           }
 
+          var focusExists = (
+            controller.stateMachine.state === "MOVEPATH_SELECTION" ||
+            controller.stateMachine.state === "ACTION_SELECT_TARGET_A" ||
+            controller.stateMachine.state === "ACTION_SELECT_TARGET_B" ||
+            controller.attackRangeVisible
+          );
+
           // units or selection tiles
-          if( animations[14] === 1 ){
+          
+          if( focusExists && animations[14] === 1 ){
             selection.rerenderNonInactive();
           }
         }

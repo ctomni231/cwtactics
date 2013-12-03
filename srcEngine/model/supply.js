@@ -30,6 +30,9 @@ model.supply_giveFunds = function(prid){
   var y = prop.y;
 		
 	controller.prepareTags(x, y);
+
+	if( typeof prop.type.funds !== "number" ) return;
+
 	var funds = controller.scriptedValue(prop.owner, "funds", prop.type.funds);
 	
 	if(typeof funds === "number"){
@@ -160,7 +163,8 @@ model.supply_suppliesNeighbours = function(sid){
 	
 	// check all
 	for(; i < e; i++){
-		
+		if( !model.unit_isValidUnitId(i) ) continue;
+
 		// supply when neighbor
 		if(model.unit_getDistance(sid, i) === 1){
 			

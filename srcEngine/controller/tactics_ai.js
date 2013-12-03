@@ -98,6 +98,14 @@ controller.ai_actionDataHolder_ = {
 
 // 
 //
+controller.ai_reset = function(){
+  for( var i= 0, e=MAX_PLAYER-1; i<e; i++ ){
+    controller.ai_data[i].pid = INACTIVE_ID;
+  }
+};
+
+// 
+//
 controller.ai_active = null;
 
 // Registers a AI action.
@@ -136,8 +144,25 @@ controller.ai_register = function(pid){
     // if the slot is empty then occupy it
     if( controller.ai_data[i].pid === INACTIVE_ID ){
         controller.ai_data[i].pid = pid;
+        return;
     }
   }
+};
+
+// Registers a player id as ai controlled instance.
+//
+controller.ai_deregister = function(pid){
+  for (var i = 0; i < controller.ai_data.length; i++) {
+    
+    // if the slot is empty then occupy it
+    if( controller.ai_data[i].pid === pid ){
+        controller.ai_data[i].pid = INACTIVE_ID;
+        return;
+    }
+
+  }
+
+  assert(false,"player isn't ai controlled");
 };
 
 // Returns `true` when the given player id is not controlled by the AI, else `false`.

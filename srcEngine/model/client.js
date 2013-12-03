@@ -7,6 +7,14 @@ model.client_instances = util.list( MAX_PLAYER, false );
 //
 model.client_lastPid = INACTIVE_ID;
 
+// Deregisters all players.
+//
+model.client_deregisterPlayers = function(){
+  for( var i= 0, e=MAX_PLAYER; i<e; i++ ){
+    model.client_instances[i] = false;
+  }
+};
+
 // Registers a player `pid` as local player.
 //
 model.client_registerPlayer = function( pid ){
