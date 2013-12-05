@@ -70,7 +70,173 @@
     "ID": "RIVER",
     "defense": 0,
     "assets":{
-      "gfx":"terrain/AWDS_RIVR~LLRR.png"
+      "gfx":"terrain/AWDS_RIVR~LLRR.png",
+      "gfx_variants":[
+        {
+          "RIVER": "R",
+          "DEFAULT": ""
+        },
+        [
+          [ "terrain/AWDS_RIVR~RRRR.png",  "R","R","R","R" ],
+          [ "terrain/AWDS_RIVR~LRRR.png",  "","R","R","R" ],
+          [ "terrain/AWDS_RIVR~RLRR.png",  "R","R","","R" ],
+          [ "terrain/AWDS_RIVR~RRLR.png",  "R","R","R","" ],
+          [ "terrain/AWDS_RIVR~RRRL.png",  "R","","R","R" ],
+          [ "terrain/AWDS_RIVR~LLRR.png",  "","R","","R" ],
+          [ "terrain/AWDS_RIVR~LRLR.png",  "","R","R","" ],
+          [ "terrain/AWDS_RIVR~LRRL.png",  "","","R","R" ],
+          [ "terrain/AWDS_RIVR~RLLR.png",  "R","R","","" ],
+          [ "terrain/AWDS_RIVR~RLRL.png",  "R","","","R" ],
+          [ "terrain/AWDS_RIVR~RRLL.png",  "R","","R","" ],
+          [ "terrain/AWDS_RIVR~LLRR.png",  "","","","" ]
+        ]
+      ]
+    }
+  },
+
+  {
+    "ID": "BRDG",
+    "defense": 0,
+    "assets":{
+      "gfx":"terrain/AWDS_BRDG~NNOO.png",
+      "gfx_variants":[
+        {
+          "ROAD": "R",
+          "BRDG": "B",
+          "DEFAULT": ""
+        },
+        [
+          
+          [ "terrain/AWDS_BRDG~OOOO.png",  "R","R","R","R" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "B","B","B","B" ],
+          
+          [ "terrain/AWDS_BRDG~OOOO.png",  "B","B","B","" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "B","B","","B" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "B","","B","B" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "","B","B","B" ],
+          
+          [ "terrain/AWDS_BRDG~OOOO.png",  "B","B","B","" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "B","B","","B" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "B","","B","B" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "","B","B","B" ],
+          
+          [ "terrain/AWDS_BRDG~OOOO.png",  "B","B","B","" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "B","B","","B" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "B","","B","B" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "","B","B","B" ],
+          
+          [ "terrain/AWDS_BRDG~OOOO.png",  "B","B","","" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "B","","B","" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "B","","","B" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "","B","B","" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "","B","","B" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "","","B","B" ],
+          
+          [ "terrain/AWDS_BRDG~OOOO.png",  "R","R","","" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "R","","R","" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "R","","","R" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "","R","R","" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "","R","","R" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "","","R","R" ],
+          
+          [ "terrain/AWDS_BRDG~OOOO.png",  "B","R","","" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "B","","R","" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "B","","","R" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "","B","R","" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "","B","","R" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "","","B","R" ],
+          
+          [ "terrain/AWDS_BRDG~OOOO.png",  "R","B","","" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "R","","B","" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "R","","","B" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "","R","B","" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "","R","","B" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "","","R","B" ],
+          
+          
+          [ "terrain/AWDS_BRDG~OOOO.png",  "B","","","" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "","B","","" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "","","B","" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "","","","B" ],
+          
+          [ "terrain/AWDS_BRDG~OOOO.png",  "R","","","" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "","R","","" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "","","R","" ],
+          [ "terrain/AWDS_BRDG~OOOO.png",  "","","","R" ],
+          
+          [ "terrain/AWDS_BRDG~NOOO.png",  "","R","R","R" ],
+          [ "terrain/AWDS_BRDG~NOOO.png",  "","B","B","B" ],
+          [ "terrain/AWDS_BRDG~NOOO.png",  "","B","R","R" ],
+          [ "terrain/AWDS_BRDG~NOOO.png",  "","R","B","R" ],
+          [ "terrain/AWDS_BRDG~NOOO.png",  "","R","R","B" ],
+          [ "terrain/AWDS_BRDG~NOOO.png",  "","B","B","R" ],
+          [ "terrain/AWDS_BRDG~NOOO.png",  "","B","R","B" ],
+          [ "terrain/AWDS_BRDG~NOOO.png",  "","R","B","B" ],
+          [ "terrain/AWDS_BRDG~NOOO.png",  "","B","R","B" ],
+          
+          [ "terrain/AWDS_BRDG~ONOO.png",  "R","R","","R" ],
+          [ "terrain/AWDS_BRDG~ONOO.png",  "B","B","","B" ],
+          [ "terrain/AWDS_BRDG~ONOO.png",  "B","R","","R" ],
+          [ "terrain/AWDS_BRDG~ONOO.png",  "R","B","","R" ],
+          [ "terrain/AWDS_BRDG~ONOO.png",  "R","R","","B" ],
+          [ "terrain/AWDS_BRDG~ONOO.png",  "B","B","","R" ],
+          [ "terrain/AWDS_BRDG~ONOO.png",  "B","R","","B" ],
+          [ "terrain/AWDS_BRDG~ONOO.png",  "R","B","","B" ],
+          [ "terrain/AWDS_BRDG~ONOO.png",  "B","R","","B" ],
+          
+          [ "terrain/AWDS_BRDG~OONO.png",  "R","R","R","" ],
+          [ "terrain/AWDS_BRDG~OONO.png",  "B","B","B","" ],
+          [ "terrain/AWDS_BRDG~OONO.png",  "B","R","R","" ],
+          [ "terrain/AWDS_BRDG~OONO.png",  "R","B","R","" ],
+          [ "terrain/AWDS_BRDG~OONO.png",  "R","R","B","" ],
+          [ "terrain/AWDS_BRDG~OONO.png",  "B","B","R","" ],
+          [ "terrain/AWDS_BRDG~OONO.png",  "B","R","B","" ],
+          [ "terrain/AWDS_BRDG~OONO.png",  "R","B","B","" ],
+          [ "terrain/AWDS_BRDG~OONO.png",  "B","R","B","" ],
+          
+          [ "terrain/AWDS_BRDG~OOON.png",  "R","","R","R" ],
+          [ "terrain/AWDS_BRDG~OOON.png",  "B","","B","B" ],
+          [ "terrain/AWDS_BRDG~OOON.png",  "B","","R","R" ],
+          [ "terrain/AWDS_BRDG~OOON.png",  "R","","B","R" ],
+          [ "terrain/AWDS_BRDG~OOON.png",  "R","","R","B" ],
+          [ "terrain/AWDS_BRDG~OOON.png",  "B","","B","R" ],
+          [ "terrain/AWDS_BRDG~OOON.png",  "B","","R","B" ],
+          [ "terrain/AWDS_BRDG~OOON.png",  "R","","B","B" ],
+          [ "terrain/AWDS_BRDG~OOON.png",  "B","","R","B" ],
+          
+          [ "terrain/AWDS_BRDG~NOON.png",  "","","R","R" ],
+          [ "terrain/AWDS_BRDG~NOON.png",  "","","B","B" ],
+          [ "terrain/AWDS_BRDG~NOON.png",  "","","R","B" ],
+          [ "terrain/AWDS_BRDG~NOON.png",  "","","B","R" ],
+          
+          [ "terrain/AWDS_BRDG~ONON.png",  "R","","","R" ],
+          [ "terrain/AWDS_BRDG~ONON.png",  "B","","","B" ],
+          [ "terrain/AWDS_BRDG~ONON.png",  "R","","","B" ],
+          [ "terrain/AWDS_BRDG~ONON.png",  "B","","","R" ],
+          
+          [ "terrain/AWDS_BRDG~ONNO.png",  "R","R","","" ],
+          [ "terrain/AWDS_BRDG~ONNO.png",  "B","B","","" ],
+          [ "terrain/AWDS_BRDG~ONNO.png",  "R","B","","" ],
+          [ "terrain/AWDS_BRDG~ONNO.png",  "B","R","","" ],
+          
+          [ "terrain/AWDS_BRDG~NONO.png",  "","R","R","" ],
+          [ "terrain/AWDS_BRDG~NONO.png",  "","B","B","" ],
+          [ "terrain/AWDS_BRDG~NONO.png",  "","B","R","" ],
+          [ "terrain/AWDS_BRDG~NONO.png",  "","R","B","" ],
+          
+          [ "terrain/AWDS_BRDG~NNOO.png",  "R","","R",""],
+          [ "terrain/AWDS_BRDG~NNOO.png",  "B","","B",""],
+          [ "terrain/AWDS_BRDG~NNOO.png",  "B","","R",""],
+          [ "terrain/AWDS_BRDG~NNOO.png",  "R","","B",""],
+          
+          [ "terrain/AWDS_BRDG~OONN.png",  "","R","","R"],
+          [ "terrain/AWDS_BRDG~OONN.png",  "","B","","B"],
+          [ "terrain/AWDS_BRDG~OONN.png",  "","B","","R"],
+          [ "terrain/AWDS_BRDG~OONN.png",  "","R","","B"],
+          
+          [ "terrain/AWDS_BRDG~NNOO.png",  "","","","" ]
+        ]
+      ]
     }
   },
 
