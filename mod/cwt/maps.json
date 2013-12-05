@@ -1,8 +1,8 @@
 [
-  "testmap.json",
-  "stand-off.json",
   "spann-island.json",
+  "stand-off.json",
   "shuriken-valley-v1.json",
   "outpost-plus-v1.json",
-  "minus-hills-v1.json"
+  "minus-hills-v1.json",
+  "testmap.json"
 ]
