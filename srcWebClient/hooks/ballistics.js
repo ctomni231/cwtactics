@@ -209,19 +209,118 @@ util.scoped(function(){
     key: "bombs_fireLaser",
     
     prepare: function( tx,ty, range, damage, owner ){
-      controller.audio_playSound( model.property_data[prid].type.assets.fireSound );
+      var type = model.property_data[prid].type;
+      var fireAnimA = type.assets.chargeAnimation;
+      var fireAnimB = type.assets.fireAnimation;
+      var fireAnimC = type.assets.fireAnimationStream;
+      assert( fireAnimA.length === 5 );
+      assert( fireAnimB.length === 5 );
+      assert( fireAnimC.length === 5 );
+      
+      this.a      = {
+        pic     : view.getInfoImageForType(fireAnimB[0]),
+        sizeX   : fireAnimA[1],
+        sizeY   : fireAnimA[2],
+        offsetX : fireAnimA[3],
+        offsetY : fireAnimA[4]
+      };
+      
+      this.b      = {
+        pic     : view.getInfoImageForType(fireAnimA[0]),
+        sizeX   : fireAnimB[1],
+        sizeY   : fireAnimB[2],
+        offsetX : fireAnimB[3],
+        offsetY : fireAnimB[4]
+      };
+      
+      this.c      = {
+        pic     : view.getInfoImageForType(fireAnimC[0]),
+        sizeX   : fireAnimC[1],
+        sizeY   : fireAnimC[2],
+        offsetX : fireAnimC[3],
+        offsetY : fireAnimC[4]
+      };
+      
+      var prop = model.property_data[prid];
+      this.curX    = prop.x;
+      this.curY    = prop.y;
+
+      this.phase   = 0;
+      this.step    = 0;
+      this.time    = 0;
+      
+      controller.audio_playSound( model.property_data[prid].type.assets.fireSound );  
     },
     
     render: function(){
+      var data = (this.phase === 0)? this.a : this.b;
       
+      var tileSize = TILE_LENGTH;
+      var scx = data.sizeX*this.step;
+      var scy = 0;
+      var scw = data.sizeX;
+      var sch = data.sizeY;
+      var tcx = (this.curX)*tileSize + data.offsetX;
+      var tcy = (this.curY)*tileSize + data.offsetY;
+      var tcw = data.sizeX;
+      var tch = data.sizeY;
+      
+      // drawn at the neighbors
+      view.canvasCtx.drawImage(
+        data.pic,
+        scx,scy,
+        scw,sch,
+        tcx,tcy,
+        tcw,tch
+      );
+      
+      // TODO: streched over all tiles in the cross
+      if( data === this.b ){
+        data = this.c;
+        var scx = data.sizeX*this.step;
+        var scy = 0;
+        var scw = data.sizeX;
+        var sch = data.sizeY;
+        var tcx = (this.curX)*tileSize + data.offsetX;
+        var tcy = (this.curY)*tileSize + data.offsetY;
+        var tcw = data.sizeX;
+        var tch = data.sizeY;
+        
+        view.canvasCtx.drawImage(
+          data.pic,
+          scx,scy,
+          scw,sch,
+          tcx,tcy,
+          tcw,tch
+        );
+      }
     },
     
     update: function( delta ){
-      
+      this.time += delta;
+      if( this.time > 100 ){
+        this.step++;
+        this.time = 0;
+        
+        switch( this.phase ){
+          
+          // charge phase
+          case 0: 
+            if( this.step === 10 ){
+              this.phase++;
+            }
+          
+          // fire phase
+          case 1: 
+            if( this.step === 12 ){
+              this.phase++;
+            }
+        }
+      }
     },
     
     isDone: function(){
-      
+      return this.phase === 2;
     }
     
   });
