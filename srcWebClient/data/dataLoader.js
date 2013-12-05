@@ -54,14 +54,14 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
 
     .chill(SMALL_WAIT)
 
-    // **3.** reset game data ?
+    // **3.A** reset game data ?
     .andThen(function( err, baton ){
       if( err ) return err;
       baton.take();
 
-      controller.storage_general.get("resetDataAtStart",function( obj ){
+      controller.storage_general.get("cwt_resetData",function( obj ){
         var  wipeOut = (obj && obj.value === true);
-        if( !wipeOut ) wipeOut = getQueryParams(document.location.search).wipeoutMod === "1";
+        if( !wipeOut ) wipeOut = getQueryParams(document.location.search).cwt_resetData === "1";
 
         if(  wipeOut ){
           if( DEBUG ) util.log("wipe out cached data");
@@ -76,6 +76,28 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
           });
         }
         else baton.pass(false);
+      });
+
+    })
+    
+    // **3.B** force touch controls ?
+    .andThen(function( err, baton ){
+      if( err ) return err;
+      baton.take();
+
+      controller.storage_general.get("cwt_forceTouch_",function( obj ){
+        var  doIt = (obj && obj.value === true);
+        if( !doIt ) doIt = getQueryParams(document.location.search).cwt_forceTouch_ === "1";
+
+        if(  wipeOut ){
+          if( DEBUG ) util.log("force to use touch controls");
+          
+          // enable touch and disable mouse ( cannot work together )
+          controller.features_client.mouse = false;
+          controller.features_client.touch = true;
+        }
+        
+        baton.pass(false);
       });
 
     })
