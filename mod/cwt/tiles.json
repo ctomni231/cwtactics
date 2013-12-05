@@ -116,8 +116,12 @@
           [ "terrain/AWDS_BRDG~ONON.png",  "R","","","R" ],
           [ "terrain/AWDS_BRDG~ONNO.png",  "R","R","","" ],
           [ "terrain/AWDS_BRDG~NONO.png",  "","R","R","" ],
-          [ "terrain/AWDS_BRDG~NNOO.png",  "R","","R",""],
-          [ "terrain/AWDS_BRDG~OONN.png",  "","R","","R"],
+          [ "terrain/AWDS_BRDG~OONN.png",  "R","","R",""],
+          [ "terrain/AWDS_BRDG~OONN.png",  "","","R",""],
+          [ "terrain/AWDS_BRDG~OONN.png",  "R","","",""],
+          [ "terrain/AWDS_BRDG~NNOO.png",  "","R","","R"],
+          [ "terrain/AWDS_BRDG~NNOO.png",  "","","","R"],
+          [ "terrain/AWDS_BRDG~NNOO.png",  "","R","",""],
           [ "terrain/AWDS_BRDG~NNOO.png",  "","","","" ]
         ]
       ]
