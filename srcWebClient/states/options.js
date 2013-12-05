@@ -3,6 +3,15 @@ util.scoped(function(){
   function wipeComplete(){
     document.location.reload();
   }
+  
+  function changeForceTouch(){
+    controller.screenStateMachine.structure.OPTIONS.forceTouch = !controller.screenStateMachine.structure.OPTIONS.forceTouch;
+    updateforceTouchContent();
+  }
+  
+  function updateforceTouchContent(){  
+    nodeTouch.innerHTML = (forceTouchEnabled)? model.localized("yes") : model.localized("no");
+  }
 
   function updateSoundContent(){  
     nodeSfx.innerHTML = Math.round(controller.audio_getSfxVolume()*100);
@@ -11,6 +20,7 @@ util.scoped(function(){
   
   var nodeSfx   = document.getElementById("cwt_options_sfxVolume");
   var nodeMusic = document.getElementById("cwt_options_musicVolume");
+  var nodeTouch = document.getElementById("cwt_options_forceTouch");
   
   var btn = controller.generateButtonGroup( 
     document.getElementById("cwt_options_screen"),
@@ -25,12 +35,15 @@ util.scoped(function(){
   
   controller.screenStateMachine.structure.OPTIONS = Object.create(controller.stateParent);
   
-	controller.screenStateMachine.structure.OPTIONS.section = "cwt_options_screen";
+  controller.screenStateMachine.structure.OPTIONS.forceTouch = false;
+  
+  controller.screenStateMachine.structure.OPTIONS.section = "cwt_options_screen";
 	
   controller.screenStateMachine.structure.OPTIONS.enterState = function(_,source){
     sourceState = ( typeof source !== "undefined" )? source : null;
 
     updateSoundContent();
+    updateforceTouchContent();
     btn.setIndex(1);
   };
   
@@ -123,11 +136,18 @@ util.scoped(function(){
         return "REMAP_KEYS";
 
       case "options.resetData":
-        controller.storage_general.set("resetDataAtStart",{value:true}, wipeComplete );
+        controller.storage_general.set("cwt_resetData",{value:true}, wipeComplete );
+        break;
+        
+      case "options.forceTouch":
+        changeForceTouch();
         break;
         
       case "options.goBack": 
         controller.audio_saveConfigs();
+        controller.storage_general.set("cwt_forceTouch",{
+          value:controller.screenStateMachine.structure.OPTIONS.forceTouch
+        });
         return (sourceState !== null)? "GAMEROUND" : "MAIN";
     }
     
