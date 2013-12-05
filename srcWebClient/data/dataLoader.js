@@ -85,9 +85,9 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
       if( err ) return err;
       baton.take();
 
-      controller.storage_general.get("cwt_forceTouch_",function( obj ){
+      controller.storage_general.get("cwt_forceTouch",function( obj ){
         var  doIt = (obj && obj.value === true);
-        if( !doIt ) doIt = getQueryParams(document.location.search).cwt_forceTouch_ === "1";
+        if( !doIt ) doIt = getQueryParams(document.location.search).cwt_forceTouch === "1";
 
         if(  wipeOut ){
           if( DEBUG ) util.log("force to use touch controls");
