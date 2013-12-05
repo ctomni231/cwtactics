@@ -95,6 +95,9 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
           // enable touch and disable mouse ( cannot work together )
           controller.features_client.mouse = false;
           controller.features_client.touch = true;
+          
+          // mark forceTouch in the options
+          controller.screenStateMachine.structure.OPTIONS.forceTouch = true;
         }
         
         baton.pass(false);
