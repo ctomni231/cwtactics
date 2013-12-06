@@ -39,7 +39,7 @@ The content of the file follows a simple order.
 
 The modules shares the same scope because they attached to one of the global variables of `CWT`. Because of this you have to use the name schema also on variable names to minimize the chance of naming collisions. Every property name will be constructed like this:
 
-    #{moduleName}VariableName  :>  fogMap
+    #{moduleName}_VariableName  :>  fog_map
     
 Important is that the first letter of your variable name is written as capital letter, because we use a camel case schema for variable names as well.
 
@@ -47,13 +47,13 @@ Important is that the first letter of your variable name is written as capital l
 
 Module event names follows the same pattern as module properties. Example:
 
-    #{moduleName}Event  :>  fogRecalculated
+    #{moduleName}_Event  :>  fog_recalculated
 
 ## Private variables
 
 *JavaScript* does not allow the declaration and usage of private variables. We like the *information hiding* pattern, but it's quite unusable for games in our opionion due drawbacks in terms of resource usage overhead. If you really need a property that can only used by your module, then you have two options. The first one is to define it as a public variable (which is the preferred one) with the following naming pattern.
 
-    #{moduleName}VariableName_
+    #{moduleName}_VariableName_
 
 Another way to do this is to wrap the entire variable into a self executing function. This is pattern maybe more difficult to read sometimes. Atm we try to use it only when we need something like function constructing functions like in the following example. Pleas try to use the above pattern whenever it's possible. 
 
