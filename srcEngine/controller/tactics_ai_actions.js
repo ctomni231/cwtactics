@@ -21,6 +21,34 @@ controller.ai_defineRoutine({
   }
 });
 
+
+util.scoped(function(){
+  
+  function selectProperty(){
+        
+  }
+  
+  //
+  //
+  controller.ai_defineRoutine({
+    key        : "captureProperty",
+    unitAction : true,
+  
+    scoring : function( data ){
+      return controller.search_inSelection( 
+        controller.search_TYPE.PROPERTY,  
+        controller.search_OWNER.NEUTRAL, 
+        data, 
+        selectProperty 
+      );
+    },
+  
+    prepare : function( data ){
+      // end turn will be done by machine
+    }
+  });
+});
+
 util.scoped(function(){
 
   var menu = {
