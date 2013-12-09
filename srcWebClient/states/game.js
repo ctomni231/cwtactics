@@ -25,7 +25,7 @@ util.scoped(function(){
       // prepare screen and screen data
       view.resizeCanvas();
       view.updateMapImages();
-      view.completeRedraw();
+      view.redraw_markAll();
 
       // go into max zoom ( TODO: grab it from settings later on )
       controller.setScreenScale(2);

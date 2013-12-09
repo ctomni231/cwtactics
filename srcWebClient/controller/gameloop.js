@@ -71,7 +71,7 @@ util.scoped(function(){
     }
     
     // RENDER SCREEN
-    if( view.drawScreenChanges > 0 ) view.renderMap( controller.screenScale );
+    if( view.redraw_dataChanges > 0 ) view.renderMap( controller.screenScale );
     
     // RENDER ACTIVE HOCK AND POP NEXT ONE WHEN DONE
     if( hasHocks ){
@@ -100,7 +100,7 @@ util.scoped(function(){
           if( hX >= model.map_width ) hX = model.map_width-1;
           for( ; lX<=hX; lX++ ){
             
-            view.markForRedraw(lX,lY);
+            view.redraw_markPos(lX,lY);
           }
         }
       }

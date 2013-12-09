@@ -30,6 +30,7 @@ controller.persistence_defineHandler(
       assert( (util.isString(data[3]) && !util.isUndefined( // type
         model.data_tileSheets[data[3]].capturePoints) ) ||
         typeof model.data_tileSheets[data[3]].cannon !== "undefined" ||
+        typeof model.data_tileSheets[data[3]].laser !== "undefined" ||
         typeof model.data_tileSheets[data[3]].rocketsilo !== "undefined"
       );
       assert( (util.intRange(data[4],1,                     // capture points

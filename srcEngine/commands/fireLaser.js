@@ -1,6 +1,7 @@
 controller.action_propertyAction({
 
 	key:"fireLaser",
+  propertyAction: true,
 	relation:[ "S","T", model.player_RELATION_MODES.SAME_OBJECT],
 
 	condition: function( data ){
@@ -8,7 +9,9 @@ controller.action_propertyAction({
 	},
 
 	invoke: function( data ){
-		controller.action_sharedInvoke( "bombs_fireLaser", [ data.target.propertyId ]);
+		controller.action_sharedInvoke( "bombs_fireLaser", [ 
+      data.target.propertyId 
+    ]);
 	}
 
 });

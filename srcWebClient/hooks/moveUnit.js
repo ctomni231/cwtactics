@@ -46,7 +46,7 @@ view.registerAnimationHook({
     // MOVE 4 TILES / SECOND
     this.moveAnimationShift += ( delta/1000 ) * ( tileSize*8);
 
-    view.markForRedrawWithNeighboursRing(
+    view.redraw_markPosWithNeighboursRing(
       this.moveAnimationX, this.moveAnimationY
     );
     

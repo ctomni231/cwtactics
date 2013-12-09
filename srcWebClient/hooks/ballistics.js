@@ -25,7 +25,7 @@ util.scoped(function(){
       tcw,tch
     );
     
-    view.markForRedraw(x,y);
+    view.redraw_markPos(x,y);
   }
   
   function checkStatus( x,y ){
@@ -71,7 +71,7 @@ util.scoped(function(){
         tcw,tch
       );
       
-      view.markForRedrawWithNeighboursRing( this.curX, this.curY );
+      view.redraw_markPosWithNeighboursRing( this.curX, this.curY );
     },
     
     update: function( delta ){
@@ -208,24 +208,18 @@ util.scoped(function(){
     
     key: "bombs_fireLaser",
     
-    prepare: function( tx,ty, range, damage, owner ){
+    prepare: function( prid, ox,oy ){
       var type = model.property_data[prid].type;
+
+            
+      // E
       var fireAnimA = type.assets.chargeAnimation;
       var fireAnimB = type.assets.fireAnimation;
-      var fireAnimC = type.assets.fireAnimationStream;
+      var fireAnimC = type.assets.streamAnimation;
       assert( fireAnimA.length === 5 );
       assert( fireAnimB.length === 5 );
       assert( fireAnimC.length === 5 );
-      
       this.a      = {
-        pic     : view.getInfoImageForType(fireAnimB[0]),
-        sizeX   : fireAnimA[1],
-        sizeY   : fireAnimA[2],
-        offsetX : fireAnimA[3],
-        offsetY : fireAnimA[4]
-      };
-      
-      this.b      = {
         pic     : view.getInfoImageForType(fireAnimA[0]),
         sizeX   : fireAnimB[1],
         sizeY   : fireAnimB[2],
@@ -233,7 +227,111 @@ util.scoped(function(){
         offsetY : fireAnimB[4]
       };
       
+      this.b      = {
+        pic     : view.getInfoImageForType(fireAnimB[0]),
+        sizeX   : fireAnimA[1],
+        sizeY   : fireAnimA[2],
+        offsetX : fireAnimA[3],
+        offsetY : fireAnimA[4]
+      };
+
       this.c      = {
+        pic     : view.getInfoImageForType(fireAnimC[0]),
+        sizeX   : fireAnimC[1],
+        sizeY   : fireAnimC[2],
+        offsetX : fireAnimC[3],
+        offsetY : fireAnimC[4]
+      };
+
+      //W
+      fireAnimA = type.assets.chargeAnimation3;
+      fireAnimB = type.assets.fireAnimation3;
+      fireAnimC = type.assets.streamAnimation3;
+      assert( fireAnimA.length === 5 );
+      assert( fireAnimB.length === 5 );
+      assert( fireAnimC.length === 5 );
+            
+      this.a2      = {
+        pic     : view.getInfoImageForType(fireAnimA[0]),
+        sizeX   : fireAnimB[1],
+        sizeY   : fireAnimB[2],
+        offsetX : fireAnimB[3],
+        offsetY : fireAnimB[4]
+      };
+      
+      this.b2      = {
+        pic     : view.getInfoImageForType(fireAnimB[0]),
+        sizeX   : fireAnimA[1],
+        sizeY   : fireAnimA[2],
+        offsetX : fireAnimA[3],
+        offsetY : fireAnimA[4]
+      };
+
+      this.c2      = {
+        pic     : view.getInfoImageForType(fireAnimC[0]),
+        sizeX   : fireAnimC[1],
+        sizeY   : fireAnimC[2],
+        offsetX : fireAnimC[3],
+        offsetY : fireAnimC[4]
+      };
+
+      //S
+      fireAnimA = type.assets.chargeAnimation2;
+      fireAnimB = type.assets.fireAnimation2;
+      fireAnimC = type.assets.streamAnimation2;
+      assert( fireAnimA.length === 5 );
+      assert( fireAnimB.length === 5 );
+      assert( fireAnimC.length === 5 );
+            
+      this.a3      = {
+        pic     : view.getInfoImageForType(fireAnimA[0]),
+        sizeX   : fireAnimB[1],
+        sizeY   : fireAnimB[2],
+        offsetX : fireAnimB[3],
+        offsetY : fireAnimB[4]
+      };
+      
+      this.b3      = {
+        pic     : view.getInfoImageForType(fireAnimB[0]),
+        sizeX   : fireAnimA[1],
+        sizeY   : fireAnimA[2],
+        offsetX : fireAnimA[3],
+        offsetY : fireAnimA[4]
+      };
+
+      this.c3      = {
+        pic     : view.getInfoImageForType(fireAnimC[0]),
+        sizeX   : fireAnimC[1],
+        sizeY   : fireAnimC[2],
+        offsetX : fireAnimC[3],
+        offsetY : fireAnimC[4]
+      };
+
+      //N
+      fireAnimA = type.assets.chargeAnimation4;
+      fireAnimB = type.assets.fireAnimation4;
+      fireAnimC = type.assets.streamAnimation4;
+      assert( fireAnimA.length === 5 );
+      assert( fireAnimB.length === 5 );
+      assert( fireAnimC.length === 5 );
+            
+      this.a4      = {
+        pic     : view.getInfoImageForType(fireAnimA[0]),
+        sizeX   : fireAnimB[1],
+        sizeY   : fireAnimB[2],
+        offsetX : fireAnimB[3],
+        offsetY : fireAnimB[4]
+      };
+      
+      this.b4      = {
+        pic     : view.getInfoImageForType(fireAnimB[0]),
+        sizeX   : fireAnimA[1],
+        sizeY   : fireAnimA[2],
+        offsetX : fireAnimA[3],
+        offsetY : fireAnimA[4]
+      };
+
+      this.c4      = {
         pic     : view.getInfoImageForType(fireAnimC[0]),
         sizeX   : fireAnimC[1],
         sizeY   : fireAnimC[2],
@@ -254,7 +352,11 @@ util.scoped(function(){
     
     render: function(){
       var data = (this.phase === 0)? this.a : this.b;
+      var data2 = (this.phase === 0)? this.a2 : this.b2;
+      var data3 = (this.phase === 0)? this.a3 : this.b3;
+      var data4 = (this.phase === 0)? this.a4 : this.b4;
       
+      // E
       var tileSize = TILE_LENGTH;
       var scx = data.sizeX*this.step;
       var scy = 0;
@@ -264,8 +366,6 @@ util.scoped(function(){
       var tcy = (this.curY)*tileSize + data.offsetY;
       var tcw = data.sizeX;
       var tch = data.sizeY;
-      
-      // drawn at the neighbors
       view.canvasCtx.drawImage(
         data.pic,
         scx,scy,
@@ -274,25 +374,170 @@ util.scoped(function(){
         tcw,tch
       );
       
+      //W
+      tileSize = TILE_LENGTH;
+      scx = data2.sizeX*this.step;
+      scy = 0;
+      scw = data2.sizeX;
+      sch = data2.sizeY;
+      tcx = (this.curX)*tileSize + data2.offsetX;
+      tcy = (this.curY)*tileSize + data2.offsetY;
+      tcw = data2.sizeX;
+      tch = data2.sizeY;
+      view.canvasCtx.drawImage(
+        data2.pic,
+        scx,scy,
+        scw,sch,
+        tcx,tcy,
+        tcw,tch
+      );
+
+      //S
+      tileSize = TILE_LENGTH;
+      scx = data3.sizeX*this.step;
+      scy = 0;
+      scw = data3.sizeX;
+      sch = data3.sizeY;
+      tcx = (this.curX)*tileSize + data3.offsetX;
+      tcy = (this.curY)*tileSize + data3.offsetY;
+      tcw = data3.sizeX;
+      tch = data3.sizeY;
+      view.canvasCtx.drawImage(
+        data3.pic,
+        scx,scy,
+        scw,sch,
+        tcx,tcy,
+        tcw,tch
+      );
+
+      //N
+      tileSize = TILE_LENGTH;
+      scx = data4.sizeX*this.step;
+      scy = 0;
+      scw = data4.sizeX;
+      sch = data4.sizeY;
+      tcx = (this.curX)*tileSize + data4.offsetX;
+      tcy = (this.curY)*tileSize + data4.offsetY;
+      tcw = data4.sizeX;
+      tch = data4.sizeY;
+      view.canvasCtx.drawImage(
+        data4.pic,
+        scx,scy,
+        scw,sch,
+        tcx,tcy,
+        tcw,tch
+      );
+      
+
+      // redraw
+      view.redraw_markPos( this.curX, this.curY-1 );
+      view.redraw_markPos( this.curX, this.curY );
+      view.redraw_markPos( this.curX, this.curY+1 );
+      view.redraw_markPos( this.curX+1, this.curY );
+      view.redraw_markPos( this.curX-1, this.curY );
+
       // TODO: streched over all tiles in the cross
       if( data === this.b ){
         data = this.c;
-        var scx = data.sizeX*this.step;
-        var scy = 0;
-        var scw = data.sizeX;
-        var sch = data.sizeY;
-        var tcx = (this.curX)*tileSize + data.offsetX;
-        var tcy = (this.curY)*tileSize + data.offsetY;
-        var tcw = data.sizeX;
-        var tch = data.sizeY;
-        
-        view.canvasCtx.drawImage(
-          data.pic,
-          scx,scy,
-          scw,sch,
-          tcx,tcy,
-          tcw,tch
-        );
+        data2 = this.c2;
+        data3 = this.c3;
+        data4 = this.c4;
+
+        // E
+        scx = data.sizeX*this.step;
+        scy = 0;
+        scw = data.sizeX;
+        sch = data.sizeY;
+        for( var ci = this.curX+1, ce=model.map_width; ci < ce; ci++ ){
+          tcx = (ci)*tileSize + data.offsetX;
+          tcy = (this.curY)*tileSize + data.offsetY;
+          tcw = data.sizeX;
+          tch = data.sizeY;
+          
+          view.canvasCtx.drawImage(
+            data.pic,
+            scx,scy,
+            scw,sch,
+            tcx,tcy,
+            tcw,tch
+          );
+
+          view.redraw_markPos( ci, this.curY-1 );
+          view.redraw_markPos( ci, this.curY );
+          view.redraw_markPos( ci, this.curY+1 );
+        }
+
+        // W
+        scx = data2.sizeX*this.step;
+        scy = 0;
+        scw = data2.sizeX;
+        sch = data2.sizeY;
+        for( var ci = this.curX-1, ce=0; ci >= ce; ci-- ){
+          tcx = (ci)*tileSize + data2.offsetX;
+          tcy = (this.curY)*tileSize + data2.offsetY;
+          tcw = data2.sizeX;
+          tch = data2.sizeY;
+          
+          view.canvasCtx.drawImage(
+            data2.pic,
+            scx,scy,
+            scw,sch,
+            tcx,tcy,
+            tcw,tch
+          );
+
+          view.redraw_markPos( ci, this.curY-1 );
+          view.redraw_markPos( ci, this.curY );
+          view.redraw_markPos( ci, this.curY+1 );
+        }
+
+        // S
+        scx = data3.sizeX*this.step;
+        scy = 0;
+        scw = data3.sizeX;
+        sch = data3.sizeY;
+        for( var ci = this.curY+1, ce=model.map_height; ci < ce; ci++ ){
+          tcx = (this.curX)*tileSize + data3.offsetX;
+          tcy = (ci)*tileSize + data3.offsetY;
+          tcw = data3.sizeX;
+          tch = data3.sizeY;
+          
+          view.canvasCtx.drawImage(
+            data3.pic,
+            scx,scy,
+            scw,sch,
+            tcx,tcy,
+            tcw,tch
+          );
+
+          view.redraw_markPos( this.curX+1,ci );
+          view.redraw_markPos( this.curX,ci );
+          view.redraw_markPos( this.curX-1,ci);
+        }
+
+        // N
+        scx = data4.sizeX*this.step;
+        scy = 0;
+        scw = data4.sizeX;
+        sch = data4.sizeY;
+        for( var ci = this.curY-1, ce=0; ci >= 0; ci-- ){
+          tcx = (this.curX)*tileSize + data4.offsetX;
+          tcy = (ci)*tileSize + data4.offsetY;
+          tcw = data4.sizeX;
+          tch = data4.sizeY;
+          
+          view.canvasCtx.drawImage(
+            data4.pic,
+            scx,scy,
+            scw,sch,
+            tcx,tcy,
+            tcw,tch
+          );
+
+          view.redraw_markPos( this.curX+1,ci );
+          view.redraw_markPos( this.curX,ci );
+          view.redraw_markPos( this.curX-1,ci );
+        }
       }
     },
     
@@ -307,12 +552,14 @@ util.scoped(function(){
           // charge phase
           case 0: 
             if( this.step === 10 ){
+              this.step = 0;
               this.phase++;
             }
           
           // fire phase
           case 1: 
             if( this.step === 12 ){
+              this.step = 0;
               this.phase++;
             }
         }

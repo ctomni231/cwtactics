@@ -150,6 +150,127 @@ controller.loadImages_doIt = util.singleLazyCall(
         );
       }
     });
+    util.iterateListByFlow(flow,model.data_propertyTypes, function(data,baton){
+      var obj = model.data_tileSheets[this.list[this.i]];
+      if( obj.assets.streamAnimation ){
+        controller.loadImages_prepareImg_(
+          obj.assets.streamAnimation[0],
+          obj.assets.streamAnimation[0],
+          "M",
+          baton
+        );
+      }
+    });
+    util.iterateListByFlow(flow,model.data_propertyTypes, function(data,baton){
+      var obj = model.data_tileSheets[this.list[this.i]];
+      if( obj.assets.chargeAnimation ){
+        controller.loadImages_prepareImg_(
+          obj.assets.chargeAnimation[0],
+          obj.assets.chargeAnimation[0],
+          "M",
+          baton
+        );
+      }
+    });
+    util.iterateListByFlow(flow,model.data_propertyTypes, function(data,baton){
+      var obj = model.data_tileSheets[this.list[this.i]];
+      if( obj.assets.fireAnimation2 ){
+        controller.loadImages_prepareImg_(
+          obj.assets.fireAnimation2[0],
+          obj.assets.fireAnimation2[0],
+          "M",
+          baton
+        );
+      }
+    });
+    util.iterateListByFlow(flow,model.data_propertyTypes, function(data,baton){
+      var obj = model.data_tileSheets[this.list[this.i]];
+      if( obj.assets.streamAnimation2 ){
+        controller.loadImages_prepareImg_(
+          obj.assets.streamAnimation2[0],
+          obj.assets.streamAnimation2[0],
+          "M",
+          baton
+        );
+      }
+    });
+    util.iterateListByFlow(flow,model.data_propertyTypes, function(data,baton){
+      var obj = model.data_tileSheets[this.list[this.i]];
+      if( obj.assets.chargeAnimation2 ){
+        controller.loadImages_prepareImg_(
+          obj.assets.chargeAnimation2[0],
+          obj.assets.chargeAnimation2[0],
+          "M",
+          baton
+        );
+      }
+    });
+    util.iterateListByFlow(flow,model.data_propertyTypes, function(data,baton){
+      var obj = model.data_tileSheets[this.list[this.i]];
+      if( obj.assets.fireAnimation3 ){
+        controller.loadImages_prepareImg_(
+          obj.assets.fireAnimation3[0],
+          obj.assets.fireAnimation3[0],
+          "M",
+          baton
+        );
+      }
+    });
+    util.iterateListByFlow(flow,model.data_propertyTypes, function(data,baton){
+      var obj = model.data_tileSheets[this.list[this.i]];
+      if( obj.assets.streamAnimation3 ){
+        controller.loadImages_prepareImg_(
+          obj.assets.streamAnimation3[0],
+          obj.assets.streamAnimation3[0],
+          "M",
+          baton
+        );
+      }
+    });
+    util.iterateListByFlow(flow,model.data_propertyTypes, function(data,baton){
+      var obj = model.data_tileSheets[this.list[this.i]];
+      if( obj.assets.chargeAnimation3 ){
+        controller.loadImages_prepareImg_(
+          obj.assets.chargeAnimation3[0],
+          obj.assets.chargeAnimation3[0],
+          "M",
+          baton
+        );
+      }
+    });
+    util.iterateListByFlow(flow,model.data_propertyTypes, function(data,baton){
+      var obj = model.data_tileSheets[this.list[this.i]];
+      if( obj.assets.fireAnimation4 ){
+        controller.loadImages_prepareImg_(
+          obj.assets.fireAnimation4[0],
+          obj.assets.fireAnimation4[0],
+          "M",
+          baton
+        );
+      }
+    });
+    util.iterateListByFlow(flow,model.data_propertyTypes, function(data,baton){
+      var obj = model.data_tileSheets[this.list[this.i]];
+      if( obj.assets.streamAnimation4 ){
+        controller.loadImages_prepareImg_(
+          obj.assets.streamAnimation4[0],
+          obj.assets.streamAnimation4[0],
+          "M",
+          baton
+        );
+      }
+    });
+    util.iterateListByFlow(flow,model.data_propertyTypes, function(data,baton){
+      var obj = model.data_tileSheets[this.list[this.i]];
+      if( obj.assets.chargeAnimation4 ){
+        controller.loadImages_prepareImg_(
+          obj.assets.chargeAnimation4[0],
+          obj.assets.chargeAnimation4[0],
+          "M",
+          baton
+        );
+      }
+    });
 
     // menu background images
     util.iterateListByFlow(flow,model.data_menu.bgs, function(data,baton){
