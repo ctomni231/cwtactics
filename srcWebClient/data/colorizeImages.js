@@ -7,6 +7,8 @@ controller.colorizeImages = util.singleLazyCall(function( err, baton ){
 
   // units
   model.data_unitTypes.forEach(function(el){
+    if( ! model.data_unitSheets[el].assets.gfx ) return;
+
     flow.andThen(function(){
       view.imageProcessor_colorizeUnit(el);
     });
@@ -14,6 +16,8 @@ controller.colorizeImages = util.singleLazyCall(function( err, baton ){
 
   // properties
   model.data_propertyTypes.forEach(function(el){
+    if( ! model.data_tileSheets[el].assets.gfx ) return;
+
     flow.andThen(function(){
       view.imageProcessor_colorizeProperty(el);
     });

@@ -55,17 +55,27 @@ view.redraw_markPos = function( x,y, sizeX, sizeY, redrawMode ){
         view.redraw_data[x][y] = true;
         view.redraw_dataChanges++;
       }
+
+      // check special properties
+      if( model.property_posMap[x][y] && model.property_posMap[x][y].type.ID === "PROP_INV" ){
+        if( x === xe ){
+          xe++;
+          if( y > ye ) ye = y;
+        } 
+      }
     
       y++;
 
       // break when you go out of bounds
       if( y === model.map_height ) break;
 
+      // continue when the bottom neighbour is a property
+      if( model.property_posMap[x][y] !== null ){
+        continue;
+      }
+
       // continue when you still in the redraw rectangle
       if( y <= ye ) continue;
-
-      // continue when the bottom neighbour is a property
-      if( model.property_posMap[x][y] !== null ) continue;
 
       // continue when the bottom neighbour is a overlapping tile
       if( view.overlayImages[ view.mapImages[x][y] ] === true ) continue;

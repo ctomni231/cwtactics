@@ -105,7 +105,7 @@ controller.loadImages_doIt = util.singleLazyCall(
     // loading units
     util.iterateListByFlow(flow,model.data_unitTypes, function(data,baton){
       var obj = model.data_unitSheets[this.list[this.i]];
-      controller.loadImages_prepareImg_( this.list[this.i],obj.assets.gfx,"U",baton );
+      if( obj.assets.gfx ) controller.loadImages_prepareImg_( this.list[this.i],obj.assets.gfx,"U",baton );
     });
 
     // loading tiles
@@ -121,7 +121,7 @@ controller.loadImages_doIt = util.singleLazyCall(
     // loading properties
     util.iterateListByFlow(flow,model.data_propertyTypes, function(data,baton){
       var obj = model.data_tileSheets[this.list[this.i]];
-      controller.loadImages_prepareImg_( this.list[this.i],obj.assets.gfx,"P",baton );
+      if( obj.assets.gfx ) controller.loadImages_prepareImg_( this.list[this.i],obj.assets.gfx,"P",baton );
     });
 
     // tile variants

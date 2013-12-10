@@ -75,6 +75,28 @@ model.property_extractId = function( property ){
   return index;
 };
 
+// 
+//
+model.property_createProperty = function( pid, x, y, type ){
+
+  var props = model.property_data;
+  for( var i = 0, e = props.length; i < e; i++ ) {
+
+    if( props[i].owner === INACTIVE_ID ){
+
+      props[i].owner         = pid;
+      props[i].type          = model.data_tileSheets[type];
+      props[i].capturePoints = 1;
+      props[i].x             = x;
+      props[i].y             = y;
+      model.property_posMap[x][y] = props[i]; 
+      return;
+    }
+  }
+
+  assert(false);
+};
+
 // Counts all properties owned by the player with the given player id.
 //
 model.property_countProperties = function( pid ){

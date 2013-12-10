@@ -9,6 +9,8 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
 
   // units
   model.data_unitTypes.forEach(function(el){
+    if( ! model.data_unitSheets[el].assets.gfx ) return;
+
     flow.andThen(function(){
       view.imageProcessor_cropUnitSprite(el);
     });

@@ -135,18 +135,26 @@ model.bombs_markCannonTargets = function( prid, selection ){
 
 // Returns `true` if a given property id is a cannon property.
 //
-model.bombs_isCannon = function( prid ){
-  assert( model.property_isValidPropId(prid) );
-  
-  return typeof model.property_data[prid].type.cannon !== "undefined";
+model.bombs_isCannon = function( uid ){
+  assert( model.unit_isValidUnitId(uid) );
+  var unit = model.unit_data[uid];
+
+  return ( unit.type.ID === "CANNON_UNIT_INV");
+
+  //assert( model.property_isValidPropId(prid) );
+  //return typeof model.property_data[prid].type.cannon !== "undefined";
 };
 
 // Returns `true` if a given property id is a laser property.
 //
-model.bombs_isLaser = function( prid ){
-  assert( model.property_isValidPropId(prid) );
-  
-  return typeof model.property_data[prid].type.laser !== "undefined";
+model.bombs_isLaser = function( uid ){
+  assert( model.unit_isValidUnitId(uid) );
+  var unit = model.unit_data[uid];
+
+  return ( unit.type.ID === "LASER_UNIT_INV");
+
+  //assert( model.property_isValidPropId(prid) );
+  //return typeof model.property_data[prid].type.laser !== "undefined";
 };
 
 // Returns `true` if a unit id is a suicide unit. A suicide unit has the ability to blow 
@@ -174,6 +182,90 @@ model.bombs_isSilo = function( prid, uid ){
   }
   
   return true;
+};
+
+model.bombs_placeMetaObjectsForCannon_ = function( x,y ){
+  var prop   = model.property_posMap[x][y];
+  var cannon = prop.type.cannon;
+  var size   = prop.type.bigProperty;
+
+  assert( x - size.x >= 0 );
+  assert( y - size.y >= 0 );
+
+  var ax = x - size.actor[0];
+  var ay = y - size.actor[1];
+  var ox = x;
+  var oy = y;
+  for( var xe = x-size.x; x>xe; x-- ){
+
+    y = oy;
+    for( var ye = y-size.y; y>ye; y-- ){
+    
+      // place blocker
+      if( x !== ox || y !== oy ){
+        if( DEBUG ) util.log("creating invisible property at",x,",",y);
+        model.property_createProperty( prop.owner, x, y, "PROP_INV" );
+      }
+
+      // place actor
+      if( x === ax && y === ay ){
+        if( DEBUG ) util.log("creating cannon unit at",x,",",y);
+        model.unit_create( prop.owner, x, y, "CANNON_UNIT_INV" );
+      }
+
+    } 
+  }
+};
+
+// Places the necessary meta units for bigger properties.
+//
+model.bombs_placeMetaObjects = function(){
+  for(var x=0,xe=model.map_width; x<xe; x++){
+    for(var y=0,ye=model.map_height; y<ye; y++){
+
+      var prop = model.property_posMap[x][y];
+      if( prop ){
+        
+        if( prop.type.bigProperty && prop.type.cannon ){
+          model.bombs_placeMetaObjectsForCannon_( x,y );
+        }
+        else if(prop.type.cannon){
+          if( DEBUG ) util.log("creating cannon unit at",x,",",y);
+          model.unit_create( prop.owner, x, y, "CANNON_UNIT_INV" );
+        }
+        else if(prop.type.laser){
+          if( DEBUG ) util.log("creating laser unit at",x,",",y);
+          model.unit_create( prop.owner, x, y, "LASER_UNIT_INV" );
+        }
+
+      }
+    }
+  }
+};
+
+model.bombs_grabPropTypeFromPos = function( x,y ){
+  while(true){
+
+    if( y+1 < model.map_height && model.property_posMap[x][y+1] && 
+        model.property_posMap[x][y+1].type.ID === "PROP_INV" ){
+      y++;
+      continue;
+    }
+
+    break;
+  }
+
+  while(true){
+
+    if( x+1 < model.map_width && model.property_posMap[x+1][y] && 
+        model.property_posMap[x+1][y].type.ID !== "PROP_INV" ){
+      return model.property_posMap[x+1][y].type;
+    }
+
+    break;
+  }
+
+  assert(false);
 };
 
 // Returns `true` when a silo can be fired by a given unit else false.
@@ -213,13 +305,14 @@ model.bombs_fireSilo = function( x,y, tx, ty, owner){
 
 // Fires a cannon at a given position.
 //
-model.bombs_fireCannon = function( prid, x,y ){
+model.bombs_fireCannon = function( ox,oy, x,y ){
   assert( model.map_isValidPosition(x,y) );
-  assert( model.property_isValidPropId(prid));
+  assert( model.map_isValidPosition(ox,oy) );
   
-  var prop    = model.property_data[prid];
+  var prop    = model.property_posMap[x][y];
   var target  = model.unit_posData[x][y];
-  var type    = prop.type;
+  // var type    = prop.type;
+  var type    = model.bombs_grabPropTypeFromPos(ox,oy);
   
   var target = model.unit_posData[x][y];
   model.unit_inflictDamage( 
@@ -229,19 +322,20 @@ model.bombs_fireCannon = function( prid, x,y ){
   );
   
   // Invoke event
-  controller.events.bombs_fireCannon( prid, x,y );
+  controller.events.bombs_fireCannon( ox,oy,x,y, type );
 };
 
 // Fires a laser at a given position.
 //
-model.bombs_fireLaser = function( prid ){
-  assert( model.property_isValidPropId(prid));
-  var prop = model.property_data[prid];
-  var ox   = prop.x;
-  var oy   = prop.y;
+model.bombs_fireLaser = function( x,y ){
+  var prop = model.property_posMap[x][y];
+  assert(prop);
+
+  var ox   = x;
+  var oy   = y;
   var pid  = prop.owner;
 
-  controller.events.bombs_fireLaser( prid, ox,oy );
+  controller.events.bombs_fireLaser( ox,oy,prop.type.ID );
   
   // check all tiles on the map
   for( var x=0,xe=model.map_width; x<xe; x++ ){

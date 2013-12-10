@@ -162,7 +162,7 @@ view.renderMap = function( scale ){
         // DRAW PROPERTY
         
         var property = model.property_posMap[x][y];
-        if( property !== null ){
+        if( property !== null && property.type.assets.gfx ){
           
           var color;
           type = property.type.ID;
@@ -345,7 +345,7 @@ view.renderMap = function( scale ){
         
         var unit = model.unit_posData[x][y];
         var stats = (unit !== null )? controller.getUnitStatusForUnit( unit ) : null;
-        if( !inShadow && unit !== null && 
+        if( !inShadow && unit !== null && unit.type.assets.gfx && 
            ( /* !unit.hidden || */ unit.owner === model.round_turnOwner || model.player_data[ unit.owner ].team == teamId ||
             stats.VISIBLE ) ){
           
