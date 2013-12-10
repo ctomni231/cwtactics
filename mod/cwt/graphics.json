@@ -1,7 +1,6 @@
 {
   "misc": [
     [ "MAIN_BG", "mobile/background/RedStar.jpg" ],
-    [ "FLYING_ROCKET", "missileup.png" ],
     [ "SILO_N", "wall/AWDS_SILO~WNWW.png" ],
     [ "SILO_S", "wall/AWDS_SILO~NWWW.png" ],
     [ "SILO_W", "wall/AWDS_SILO~WWWN.png" ],
@@ -45,6 +44,8 @@
     [ "EXPLOSION_AIR", "object_explode/UNIT_AIR.png" ],
     [ "EXPLOSION_DUST", "object_explode/UNIT_DUST.png" ],
     [ "EXPLOSION_SEA", "object_explode/UNIT_SEA.png" ],
+    [ "FLYING_ROCKET", "missileup.png" ],
+    [ "FLYING_ROCKET_INV", "missileup.png",0,0,24,24, 180 ],
     [ "ARROW_N", "arrow.png", 0, 0, 16, 16 ],
     [ "ARROW_E", "arrow.png", 0, 0, 16, 16, 90 ],
     [ "ARROW_S", "arrow.png", 0, 0, 16, 16, 180 ],

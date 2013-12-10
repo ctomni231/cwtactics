@@ -8,6 +8,7 @@ controller.action_registerCommands("bombs_fireLaser");
 // events
 controller.event_define("bombs_explosionAt");
 controller.event_define("bombs_startFireSilo");
+controller.event_define("bombs_siloRegeneratesIn");
 controller.event_define("bombs_fireCannon");
 controller.event_define("bombs_fireLaser");
 
@@ -202,12 +203,12 @@ model.bombs_fireSilo = function( x,y, tx, ty, owner){
   model.bombs_explosionAt(tx, ty, range, damage, owner);
   
   model.dayEvents_push( 
-    model.round_daysToTurns(turns), 
+    model.round_daysToTurns(5), 
     controller.action_convertToInvokeDataArray("property_changeType",[siloId, type])
   );
   
   // Invoke change event
-  controller.events.bonbs_siloRegeneratesIn( siloId, turns, type );
+  controller.events.bombs_siloRegeneratesIn( siloId, 5, type );
 };
 
 // Fires a cannon at a given position.

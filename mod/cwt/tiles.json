@@ -529,17 +529,17 @@
       "chargeAnimation2":[
         "object_charge/AWDS_BHLZ-S.png",
         32,32,
-        -8,12
+        -10,2
       ],
       "fireAnimation2":[
         "object_firing/AWDS_BHLZ-S.png",
         32,32,
-        -8,12
+        -9,2
       ],
       "streamAnimation2":[
         "object_stream/AWDS_BHLZ-S.png",
         32,32,
-        -8,12
+        -9,2
       ],
       "chargeAnimation3":[
         "object_charge/AWDS_BHLZ-W.png",
@@ -559,17 +559,17 @@
       "chargeAnimation4":[
         "object_charge/AWDS_BHLZ-N.png",
         32,32,
-        -8,-28
+        -10,-26
       ],
       "fireAnimation4":[
         "object_firing/AWDS_BHLZ-N.png",
         32,32,
-        -8,-28
+        -9,-26
       ],
       "streamAnimation4":[
         "object_stream/AWDS_BHLZ-N.png",
         32,32,
-        -8,-28
+        -9,-26
       ]
     }
   },

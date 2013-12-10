@@ -329,6 +329,16 @@ view.imageProcessor_cropMiscSprite = function( miscType ){
 
         nContext = nCanvas.getContext('2d');
       }
+      else if( miscType[6] === false ){
+
+        //TODO FIX THAT
+        nCanvas.height = 32;
+        nCanvas.width  = 32*3;
+
+        nCanvas = view.imageProcessor_flipImage( nCanvas, false, true);
+
+        nContext = nCanvas.getContext('2d');
+      }
       else{
 
         nCanvas.height = 16;

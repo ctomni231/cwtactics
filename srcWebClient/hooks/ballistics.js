@@ -2,6 +2,7 @@ util.scoped(function(){
   
   var expl_img;
   var rocket_img;
+  var rocket_img_inv;
   
   function renderSmoke( x,y, step, distance ){
     step -= (distance-1);
@@ -42,13 +43,14 @@ util.scoped(function(){
     
     prepare: function( x,y, siloId, tx,ty ){
       if( !rocket_img ) rocket_img = view.getInfoImageForType("FLYING_ROCKET");
+      if( !rocket_img_inv ) rocket_img_inv = view.getInfoImageForType("FLYING_ROCKET_INV");
       
-      this.siloX = controller.getCanvasPosX(x);
-      this.siloY = controller.getCanvasPosY(y);
+      this.siloX   = controller.getCanvasPosX(x);
+      this.siloY   = controller.getCanvasPosY(y);
       this.targetX = controller.getCanvasPosX(tx);
       this.targetY = controller.getCanvasPosY(ty);
-      this.curX = this.siloX;
-      this.curY = this.siloY;
+      this.curX    = this.siloX;
+      this.curY    = this.siloY;
       this.phase = 0;
     },
     
@@ -58,24 +60,27 @@ util.scoped(function(){
       var scy = 0;
       var scw = 24;
       var sch = 24;
-      var tcx = (this.curX)*tileSize -4;
-      var tcy = (this.curY)*tileSize -4;
+      var tcx = this.curX;
+      var tcy = this.curY;
       var tcw = tileSize +8;
       var tch = tileSize +8;
       
       view.canvasCtx.drawImage(
-        rocket_img,
+        (this.phase===0)? rocket_img : rocket_img_inv,
         scx,scy,
         scw,sch,
         tcx,tcy,
         tcw,tch
       );
       
-      view.redraw_markPosWithNeighboursRing( this.curX, this.curY );
+      view.redraw_markPosWithNeighboursRing( 
+        parseInt(this.curX/TILE_LENGTH, 10), 
+        parseInt(this.curY/TILE_LENGTH, 10)
+      );
     },
     
     update: function( delta ){
-      var shift = ( delta/1000 ) * ( tileSize*8);
+      var shift = ( delta/1000 ) * ( TILE_LENGTH*14);
       
       if( this.phase === 0 ){
         
@@ -83,7 +88,7 @@ util.scoped(function(){
         this.curY -= shift;
         
         if( this.curY <= 0 ){
-          controller.setScreenPosition( this.targetX, this.targetY, true );
+          // controller.setScreenPosition( this.targetX, this.targetY, true );
           
           this.curX = this.targetX;
           this.curY = 0;
@@ -95,7 +100,7 @@ util.scoped(function(){
         // rocket flies down
         this.curY += shift;
         
-        if( this.curY >= this.targetX ){
+        if( this.curY >= this.targetY ){
           this.phase = 2;
         }
       }

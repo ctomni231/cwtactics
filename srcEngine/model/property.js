@@ -175,5 +175,5 @@ model.property_changeType = function( prid, type ){
   
   model.property_data[prid].type = type;
   
-  controller.events.changedPropertyType( prid, type );
+  controller.events.property_changeType( prid, type );
 };

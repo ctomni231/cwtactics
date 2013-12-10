@@ -83,11 +83,11 @@ controller.setScreenScale = function( scale ){
 };
 
 controller.getCanvasPosX = function( x ){
-  return ( x * TILE_LENGTH * controller.screenScale );
+  return ( x * TILE_LENGTH );
 };
 
 controller.getCanvasPosY = function( y ){
-  return ( y * TILE_LENGTH * controller.screenScale );
+  return ( y * TILE_LENGTH );
 };
 
 /**
