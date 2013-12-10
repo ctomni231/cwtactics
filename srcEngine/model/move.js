@@ -161,20 +161,15 @@ model.move_setUnitPosition = function( uid, x, y ){
 // 
 model.move_getMoveCosts = function( movetype, x, y ){
   assert( model.map_isValidPosition(x,y) );
-  // TODO: check movetype
   
   var v;
-  var type = model.map_data[x][y];
-  
-  // check unit type id first
-  v = movetype.costs[type.ID];
+  var tmp;
+
+  tmp = model.property_posMap[x][y];
+  if( tmp )  v = movetype.costs[tmp.type.ID];
+  else       v = movetype.costs[model.map_data[x][y].ID];
   if( typeof v === "number" ) return v;
   
-  // check move type id after that
-  v = movetype.costs[type.movetype];
-  if( typeof v === "number" ) return v;
-  
-  // try wildcard at last
   v = movetype.costs["*"];
   if( typeof v === "number" ) return v;
   
