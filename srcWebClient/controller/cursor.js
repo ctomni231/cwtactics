@@ -52,7 +52,7 @@ controller.cursorAction = function( isCancel ){
   
   // RERENDERING
   if( ( bfocus && !afocus ) || afocus ){
-    view.markSelectionMapForRedraw( controller.stateMachine.data );
+    view.redraw_markSelection( controller.stateMachine.data );
   }
   
   // MENU
@@ -132,11 +132,11 @@ controller.setCursorPosition = function( x,y,relativeToScreen ){
   if( x === controller.mapCursorX && y === controller.mapCursorY ) return;
     
   // CLEAN OLD
-  view.markForRedraw( controller.mapCursorX, controller.mapCursorY );
-  if( controller.mapCursorY < model.map_height -1 ) view.markForRedraw( controller.mapCursorX, controller.mapCursorY+1 );
+  view.redraw_markPos( controller.mapCursorX, controller.mapCursorY );
+  if( controller.mapCursorY < model.map_height -1 ) view.redraw_markPos( controller.mapCursorX, controller.mapCursorY+1 );
   
   controller.audio_playSound(model.data_sounds.MAPTICK);
-  view.markForRedraw( controller.mapCursorX, controller.mapCursorY );
+  view.redraw_markPos( controller.mapCursorX, controller.mapCursorY );
   
   controller.mapCursorX = x;
   controller.mapCursorY = y;
@@ -175,5 +175,5 @@ controller.setCursorPosition = function( x,y,relativeToScreen ){
     );
   }
   
-  view.markForRedraw( x,y );
+  view.redraw_markPos( x,y );
 };

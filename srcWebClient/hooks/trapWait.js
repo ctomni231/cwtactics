@@ -26,7 +26,7 @@ view.registerAnimationHook({
       var pic = view.getInfoImageForType("TRAPPED");
       var y = this.yp;
       for( var i=this.xp,e=i+( parseInt(pic.width/TILE_LENGTH,10) ); i<=e; i++ ){
-        view.markForRedraw( i , y );
+        view.redraw_markPos( i , y );
       }
     }
     return res;

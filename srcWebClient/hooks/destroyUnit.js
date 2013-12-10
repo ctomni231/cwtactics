@@ -40,7 +40,7 @@ view.registerAnimationHook({
       tcw,tch
     );
 
-    view.markForRedraw(x,y);
+    view.redraw_markPos(x,y);
   },
 
   update: function( delta ){

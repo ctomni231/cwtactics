@@ -57,7 +57,7 @@ util.scoped(function(){
     if( !controller.attackRangeVisible ) return;
     
     if( DEBUG ) util.log("hide attack range information");
-    view.markSelectionMapForRedraw( controller.stateMachine.data );
+    view.redraw_markSelection( controller.stateMachine.data );
     
     controller.attackRangeVisible = false;
   };

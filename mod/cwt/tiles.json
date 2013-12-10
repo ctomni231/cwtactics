@@ -133,6 +133,7 @@
     "defense": 0,
     "assets":{
       "gfx":"terrain/AWDS_SEAS.png",
+      "animatedTile":true,
       "gfx_variants":[
         {
           "ROAD": "L",
@@ -395,7 +396,7 @@
       "fireAnimation":[
         "object_firing/AWDS_BHMC-E.png",
         32,32,
-        0,8
+        8,-12
       ],
       "animated":false
     }
@@ -419,7 +420,7 @@
       "fireAnimation":[
         "object_firing/AWDS_BHMC-N.png",
         32,32,
-        -8,0
+        -12,-8
       ]
     }
   },
@@ -442,7 +443,7 @@
       "fireAnimation":[
         "object_firing/AWDS_BHMC-S.png",
         32,32,
-        -8,0
+        -12,8
       ]
     }
   },
@@ -464,7 +465,7 @@
       "fireAnimation":[
         "object_firing/AWDS_BHMC-W.png",
         32,32,
-        0,8
+        8,-12
       ],
       "animated":false
     }
@@ -498,18 +499,78 @@
   },
 
   {
-    "ID": "BHLZ",
-    "vision": 0,
-    "defense":0,
-    "hp": 99,
-    "destroyedType":"RUIS",
-    "laser":{
-      "damage":3
+    "ID"            : "BHLZ",
+    "vision"        : 0,
+    "defense"       : 0,
+    "hp"            : 99,
+    "destroyedType" : "RUIS",
+    "laser"         : {
+      "damage"      : 3
     },
     "assets":{
-      "gfx"       : "inventions/AWDS_BHMC-E.png",
-      "fireSound" : "laser.wav",
-      "animated":false
+      "gfx"         : "inventions/AWDS_BHLZ.png",
+      "fireSound"   : "laser.wav",
+      "animated"    : false,
+      "chargeAnimation":[
+        "object_charge/AWDS_BHLZ-E.png",
+        32,32,
+        8,-12
+      ],
+      "fireAnimation":[
+        "object_firing/AWDS_BHLZ-E.png",
+        32,32,
+        8,-12
+      ],
+      "streamAnimation":[
+        "object_stream/AWDS_BHLZ-E.png",
+        32,32,
+        8,-12
+      ],
+      "chargeAnimation2":[
+        "object_charge/AWDS_BHLZ-S.png",
+        32,32,
+        -8,12
+      ],
+      "fireAnimation2":[
+        "object_firing/AWDS_BHLZ-S.png",
+        32,32,
+        -8,12
+      ],
+      "streamAnimation2":[
+        "object_stream/AWDS_BHLZ-S.png",
+        32,32,
+        -8,12
+      ],
+      "chargeAnimation3":[
+        "object_charge/AWDS_BHLZ-W.png",
+        32,32,
+        -24,-12
+      ],
+      "fireAnimation3":[
+        "object_firing/AWDS_BHLZ-W.png",
+        32,32,
+        -24,-12
+      ],
+      "streamAnimation3":[
+        "object_stream/AWDS_BHLZ-W.png",
+        32,32,
+        -24,-12
+      ],
+      "chargeAnimation4":[
+        "object_charge/AWDS_BHLZ-N.png",
+        32,32,
+        -8,-28
+      ],
+      "fireAnimation4":[
+        "object_firing/AWDS_BHLZ-N.png",
+        32,32,
+        -8,-28
+      ],
+      "streamAnimation4":[
+        "object_stream/AWDS_BHLZ-N.png",
+        32,32,
+        -8,-28
+      ]
     }
   },
 

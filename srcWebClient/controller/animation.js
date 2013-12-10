@@ -112,7 +112,7 @@ util.scoped(function(){
                 if( animations[4] === 1 ||
                     animations[9] === 1 ){
 
-                  if( model.unit_posData[x][y] !== null ) view.markForRedrawWithNeighboursRing(x,y);
+                  if( model.unit_posData[x][y] !== null ) view.redraw_markPosWithNeighboursRing(x,y);
                 }
 
                 // status needs only an updated step number
@@ -121,13 +121,13 @@ util.scoped(function(){
                 // properties
                 if( animations[24] === 1 ){
 
-                  if( model.property_posMap[x][y] !== null ) view.markForRedrawWithNeighboursRing(x,y);
+                  if( model.property_posMap[x][y] !== null ) view.redraw_markPosWithNeighboursRing(x,y);
                 }
 
                 // animated tiles
                 if( animations[29] === 1 ){
 
-                  if( view.animatedTiles[ view.mapImages[x][y] ] ) view.markForRedraw( x,y );
+                  if( view.animatedTiles[ view.mapImages[x][y] ] ) view.redraw_markPos( x,y );
                 }
 
               }

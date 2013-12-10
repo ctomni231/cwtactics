@@ -88,7 +88,7 @@ view.renderMap = function( scale ){
       inShadow = (model.fog_clientData[x][y] === 0);
       
       // RENDER IF NEEDED
-      if( view.drawScreen[x][y] === true ){
+      if( view.redraw_data[x][y] === true ){
         
         // --------------------------------------------------------------------
         // DRAW TILE
@@ -482,7 +482,7 @@ view.renderMap = function( scale ){
           }
         }
         
-        view.drawScreen[x][y] = false;
+        view.redraw_data[x][y] = false;
       }
     }
   }
@@ -597,5 +597,5 @@ view.renderMap = function( scale ){
     tileSize-2,tileSize-2
   );
   
-  view.drawScreenChanges=0;
+  view.redraw_dataChanges=0;
 };

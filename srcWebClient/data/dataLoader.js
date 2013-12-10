@@ -89,7 +89,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
         var  doIt = (obj && obj.value === true);
         if( !doIt ) doIt = getQueryParams(document.location.search).cwt_forceTouch === "1";
 
-        if(  wipeOut ){
+        if(  doIt ){
           if( DEBUG ) util.log("force to use touch controls");
           
           // enable touch and disable mouse ( cannot work together )

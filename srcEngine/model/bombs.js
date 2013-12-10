@@ -233,10 +233,13 @@ model.bombs_fireCannon = function( prid, x,y ){
 
 // Fires a laser at a given position.
 //
-model.bombs_fireLaser = function( prid, ox,oy ){
-  assert( model.map_isValidPosition(ox,oy) );
+model.bombs_fireLaser = function( prid ){
   assert( model.property_isValidPropId(prid));
-  
+  var prop = model.property_data[prid];
+  var ox   = prop.x;
+  var oy   = prop.y;
+  var pid  = prop.owner;
+
   controller.events.bombs_fireLaser( prid, ox,oy );
   
   // check all tiles on the map
@@ -249,8 +252,8 @@ model.bombs_fireLaser = function( prid, ox,oy ){
         var unit = model.unit_posData[x][y];
         if( unit && unit.owner !== pid ){
           model.unit_inflictDamage( 
-            model.unit_extractId(target), 
-            model.unit_convertPointsToHealth(type.laser.damage), 
+            model.unit_extractId(unit), 
+            model.unit_convertPointsToHealth(prop.type.laser.damage), 
             9 
           );
         }

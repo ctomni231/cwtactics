@@ -15,7 +15,7 @@ controller.event_on("fog_modifyVisionAt", function( x,y, pid, range, value ){
       if( lX < 0 ) lX = 0;
       if( hX >= model.map_width ) hX = model.map_width-1;
       for( ; lX<=hX; lX++ ){
-        view.markForRedraw( lX,lY );
+        view.redraw_markPos( lX,lY );
         
         var unit = model.unit_posData[lX][lY];
         if( unit !== null && unit.hidden ){
@@ -26,5 +26,5 @@ controller.event_on("fog_modifyVisionAt", function( x,y, pid, range, value ){
 });
 
 controller.event_on("fog_recalculateFogMap",function(range){
-  view.completeRedraw();
+  view.redraw_markAll();
 });
