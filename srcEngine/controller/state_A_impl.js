@@ -204,7 +204,7 @@ controller.stateMachine = util.stateMachine({
 		},
 		
 		cancel:function(){
-			this.data.target.clean();
+			this.data.target.grab( this.data.source );
 			return this.backToLastState();
 		}
 	},
