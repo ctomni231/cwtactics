@@ -545,7 +545,7 @@
       "streamAnimation2":[
         "object_stream/AWDS_BHLZ-S.png",
         32,32,
-        -9,2
+        -10,2
       ],
       "chargeAnimation3":[
         "object_charge/AWDS_BHLZ-W.png",
@@ -575,7 +575,7 @@
       "streamAnimation4":[
         "object_stream/AWDS_BHLZ-N.png",
         32,32,
-        -9,-26
+        -10,-26
       ]
     }
   },
