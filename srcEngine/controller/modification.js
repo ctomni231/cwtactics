@@ -2,6 +2,9 @@
 //
 model.modification_load = function( data ){
   
+
+  model.data_addEngineTypeSheets();
+  
   // register data sheets
   model.data_weatherParser.parseAll(    data.weathers);
   model.data_tileParser.parseAll(       data.tiles);

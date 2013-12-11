@@ -1,13 +1,4 @@
 [
-
-  {
-    "ID"    : "NO_MOVE",
-    "sound" : null,
-    "costs" : {
-      "*": -1
-    }
-  },
-
   {
     "ID"    : "INFT",
     "sound" : null,
@@ -15,7 +6,6 @@
       "MNTN": 2,
       "WATER": -1,
       "REEF": -1,
-      "BLOC":-1,
       "*": 1
     }
   },
@@ -26,7 +16,6 @@
     "costs" : {
       "WATER": -1,
       "REEF": -1,
-      "BLOC":-1,
       "*": 1
     }
   },
@@ -40,7 +29,6 @@
       "MNTN": -1,
       "RIVER": -1,
       "WATER": -1,
-      "BLOC":-1,
       "REEF": -1,
       "*": 1
     }
@@ -54,7 +42,6 @@
       "MNTN": -1,
       "RIVER": -1,
       "WATER": -1,
-      "BLOC":-1,
       "REEF": -1,
       "*": 1
     }
@@ -64,7 +51,6 @@
     "ID"    : "AIR",
     "sound" : null,
     "costs" : {
-      "BLOC":-1,
       "*": 1
     }
   },
@@ -76,7 +62,6 @@
       "WATER": 1,
       "PORT": 1,
       "REEF": 2,
-      "BLOC":-1,
       "*": -1
     }
   },
@@ -88,7 +73,6 @@
       "WATER": 1,
       "PORT": 1,
       "REEF": 2,
-      "BLOC":-1,
       "SHOAL": 1,
       "*": -1
     }
@@ -100,7 +84,6 @@
     "costs" : {
       "WATER": -1,
       "REEF": -1,
-      "BLOC":-1,
       "*": 1
     }
   }

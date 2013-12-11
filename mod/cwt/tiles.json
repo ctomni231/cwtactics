@@ -477,16 +477,21 @@
     "defense":0,
     "hp": 99,
     "destroyedType":"RUIB",
+    "bigProperty":{
+      "y"     : 3,
+      "x"     : 3,
+      "actor" : [1,0]
+    },
     "cannon":{
-      "direction":"S",
-      "range":9,
-      "damage":5
+      "direction" : "S",
+      "range"     : 9,
+      "damage"    : 5
     },
     "assets":{
       "gfx"       : "inventions/AWDS_BHCN-S.png",
       "gfxOffset" : [
         48,64,
-        -16,-32
+        -32,-32
       ],
       "fireSound" : "cannon.wav",
       "animated":false,
@@ -589,16 +594,6 @@
     "vision": 0,
     "assets":{
       "gfx":"inventions/AWDS_BRBL-S.png"
-    }
-  },
-
-  {
-    "ID": "BLOC",
-    "defense":0,
-    "vision": 0,
-    "capturePoints":1,
-    "assets":{
-      "gfx":"inventions/AWDS_BLOCK.png"
     }
   }
 ]

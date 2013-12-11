@@ -154,8 +154,10 @@ util.scoped(function(){
     
     key: "bombs_fireCannon",
     
-    prepare: function( prid, x,y ){
-      var fireAnim = model.property_data[prid].type.assets.fireAnimation;
+    prepare: function( ox,oy,x,y,tp ){
+      var type = model.data_tileSheets[tp];
+
+      var fireAnim = type.assets.fireAnimation;
       assert( fireAnim.length === 5 );
       
       this.pic     = view.getInfoImageForType(fireAnim[0]);
@@ -164,14 +166,13 @@ util.scoped(function(){
       this.offsetX = fireAnim[3];
       this.offsetY = fireAnim[4];
 
-      var prop = model.property_data[prid];
-      this.curX    = prop.x;
-      this.curY    = prop.y;
+      this.curX    = ox;
+      this.curY    = oy;
 
       this.step    = 0;
       this.time    = 0;
 
-      controller.audio_playSound( model.property_data[prid].type.assets.fireSound);
+      controller.audio_playSound( type.assets.fireSound);
     },
     
     render: function(){
@@ -213,8 +214,8 @@ util.scoped(function(){
     
     key: "bombs_fireLaser",
     
-    prepare: function( prid, ox,oy ){
-      var type = model.property_data[prid].type;
+    prepare: function( ox,oy,tp){
+      var type = model.data_tileSheets[tp];
 
             
       // E
@@ -435,11 +436,7 @@ util.scoped(function(){
       
 
       // redraw
-      view.redraw_markPos( this.curX, this.curY-1 );
-      view.redraw_markPos( this.curX, this.curY );
-      view.redraw_markPos( this.curX, this.curY+1 );
-      view.redraw_markPos( this.curX+1, this.curY );
-      view.redraw_markPos( this.curX-1, this.curY );
+      view.redraw_markPosWithNeighboursRing(this.curX, this.curY);
 
       // TODO: streched over all tiles in the cross
       if( data === this.b ){
