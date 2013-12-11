@@ -224,8 +224,8 @@ controller.stateMachine.data = {
             selectedUnit.owner !== model.round_turnOwner     ) unitActable     = false;
         else if( !model.actions_canAct( data.source.unitId ) ) unitActable     = false;
         if( selectedUnit !== null                            ) propertyActable = false;
-        if( property === null || property.owner !==
-            model.round_turnOwner                            ) propertyActable = false;
+        if( property === null || property.owner !== model.round_turnOwner ||
+              property.type.blocker                          ) propertyActable = false;
         if( !unitActable && !propertyActable                 ) mapActable      = true;
         
         // check all meta-data in relation to all available game actions

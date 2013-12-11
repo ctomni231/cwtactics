@@ -1,7 +1,6 @@
-controller.action_propertyAction({
+controller.action_unitAction({
 
 	key:"fireCannon",
-  unitAction: true,
 	relation:[ "S","T", model.player_RELATION_MODES.SAME_OBJECT],
 
 	condition: function( data ){
