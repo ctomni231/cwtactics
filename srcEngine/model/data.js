@@ -91,6 +91,7 @@ model.data_addEngineTypeSheets = function(){
     "defense"       : 0,
     "vision"        : 0,
     "capturePoints" : 1,
+    "blocker"       : true,
     "assets"        : {}
   });
 };
