@@ -185,7 +185,7 @@ model.property_isCapturableBy = function( prid, captId ){
   assert( model.property_isValidPropId(prid) );
   assert( model.unit_isValidUnitId(captId) );
   
-  return model.property_data[prid].type.points > 0 && 
+  return model.property_data[prid].type.capturePoints > 0 && 
           model.unit_data[captId].type.captures > 0;
 };
 
