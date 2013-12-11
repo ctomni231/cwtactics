@@ -13,6 +13,9 @@ controller.action_unitAction({
 			data.source.unitId, 
 			data.target.unitId 
 		]);
+    controller.action_sharedInvoke("actions_markUnitNonActable",[
+      data.target.unitId
+    ]);
   }
   
 });
