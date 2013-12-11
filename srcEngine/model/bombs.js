@@ -67,64 +67,65 @@ model.bombs_tryToMarkCannonTargets = function(pid,selection,ox,oy,otx,oty,sx,sy,
 
 // Marks all cannon targets in a given selection model.
 //
-model.bombs_markCannonTargets = function( prid, selection ){
+model.bombs_markCannonTargets = function( uid, selection ){
   var result;
-  
-  var prop = model.property_data[prid];
-  var type = prop.type;
+  var unit = model.unit_data[uid];
+  var prop = model.property_posMap[unit.x][unit.y];
+  var type = (prop.type.ID !== "PROP_INV" )? prop.type : model.bombs_grabPropTypeFromPos(unit.x,unit.y);
   
   // no cannon
-  if( !type.cannon ) return false;
+  // if( !type.cannon ) return false;
+  assert( type.cannon );
   
-  selection.setCenter( prop.x, prop.y, 0 );
+  selection.setCenter( unit.x, unit.y, INACTIVE_ID );
   
   var max = type.cannon.range;
   switch( type.cannon.direction ){
       
     case "N": 
       result = model.bombs_tryToMarkCannonTargets( 
-        prop.owner, 
+        unit.owner, 
         selection, 
-        prop.x,         prop.y, 
-        prop.x,         prop.y-max-1, 
-        prop.x-prop+1,  prop.y-1, 
-        prop.x+prop-1,  prop.y-max, 
+        unit.x,         unit.y, 
+        unit.x,         unit.y-max-1, 
+        unit.x-unit+1,  unit.y-1, 
+        unit.x+unit-1,  unit.y-max, 
         max 
       ); 
       break;
       
     case "E": 
       result = model.bombs_tryToMarkCannonTargets( 
-        prop.owner, 
+        unit.owner, 
         selection, 
-        prop.x,         prop.y, 
-        prop.x+max+1,   prop.y, 
-        prop.x+1,       prop.y+max-1, 
-        prop.x+max,     prop.y-max+1, 
+        unit.x,         unit.y, 
+        unit.x+max+1,   unit.y, 
+        unit.x+1,       unit.y+max-1, 
+        unit.x+max,     unit.y-max+1, 
         max 
       ); 
       break;
       
     case "W": 
       result = model.bombs_tryToMarkCannonTargets( 
-        prop.owner, 
+        unit.owner, 
         selection, 
-        prop.x,       prop.y, 
-        prop.x-max-1, prop.y, 
-        prop.x-max,   prop.y+max-1, 
-        prop.x-1,     prop.y-max+1, 
+        unit.x,       unit.y, 
+        unit.x-max-1, unit.y, 
+        unit.x-max,   unit.y+max-1, 
+        unit.x-1,     unit.y-max+1, 
         max
       ); 
       break;
       
     case "S": 
       result = model.bombs_tryToMarkCannonTargets( 
-        prop.owner, 
+        unit.owner, 
         selection, 
-        prop.x,       prop.y, 
-        prop.x,       prop.y+max+1, 
-        prop.x-max+1, prop.y+max, 
-        prop.x+max-1, prop.y+1, 
+        unit.x,       unit.y, 
+        unit.x,       unit.y+max+1, 
+        unit.x-max+1, unit.y+max, 
+        unit.x+max-1, unit.y+1, 
         max 
       ); 
       break;
@@ -255,8 +256,12 @@ model.bombs_grabPropTypeFromPos = function( x,y ){
     break;
   }
 
+  if( model.property_posMap[x][y].type.ID !== "PROP_INV" ){
+    return model.property_posMap[x][y].type;
+  }
+  
   while(true){
-
+    
     if( x+1 < model.map_width && model.property_posMap[x+1][y] && 
         model.property_posMap[x+1][y].type.ID !== "PROP_INV" ){
       return model.property_posMap[x+1][y].type;
@@ -322,7 +327,7 @@ model.bombs_fireCannon = function( ox,oy, x,y ){
   );
   
   // Invoke event
-  controller.events.bombs_fireCannon( ox,oy,x,y, type );
+  controller.events.bombs_fireCannon( ox,oy,x,y, type.ID );
 };
 
 // Fires a laser at a given position.

@@ -345,15 +345,14 @@ util.scoped(function(){
         offsetY : fireAnimC[4]
       };
       
-      var prop = model.property_data[prid];
-      this.curX    = prop.x;
-      this.curY    = prop.y;
+      this.curX    = ox;
+      this.curY    = oy;
 
       this.phase   = 0;
       this.step    = 0;
       this.time    = 0;
       
-      controller.audio_playSound( model.property_data[prid].type.assets.fireSound );  
+      controller.audio_playSound( type.assets.fireSound );  
     },
     
     render: function(){
