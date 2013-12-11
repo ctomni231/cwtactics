@@ -10,25 +10,29 @@ model.data_tileParser.addHandler( function( sheet ){
 });
 
 controller.persistence_defineHandler(
-  // load
-  function( dom ){
-    var property;
+  
+  // -----------------------------------------------------------------------
+  // load map data
+  //
 
-    // reset all properties in the model
+  function(dom){
+    var property,data;
+
+    // reset all 
     for( var i = 0, e = model.property_data.length; i < e; i++ ){
       model.property_data[i].owner = INACTIVE_ID;
+      model.property_data[i].type  = null;
     }
     
-    // set properties from a save
     for( var i = 0, e = dom.prps.length; i < e; i++ ) {
-      var data = dom.prps[i];
+      data = dom.prps[i];
       
-      // check data  [0,0,9,"HQTR",20,0],
       assert( util.intRange(data[0],0,MAX_PROPERTIES-1) );  // id
       assert( util.intRange(data[1],0,MAX_MAP_WIDTH-1) );   // x
       assert( util.intRange(data[2],0,MAX_MAP_HEIGHT-1) );  // y
-      assert( (util.isString(data[3]) && !util.isUndefined( // type
-        model.data_tileSheets[data[3]].capturePoints) ) ||
+      assert( 
+        ( util.isString(data[3]) && 
+         !util.isUndefined( model.data_tileSheets[data[3]].capturePoints) ) ||
         typeof model.data_tileSheets[data[3]].cannon !== "undefined" ||
         typeof model.data_tileSheets[data[3]].laser !== "undefined" ||
         typeof model.data_tileSheets[data[3]].rocketsilo !== "undefined"
@@ -43,7 +47,7 @@ controller.persistence_defineHandler(
       // copy data into model
       property                                    = model.property_data[ data[0] ];
       property.type                               = model.data_tileSheets[data[3]];
-      property.capturePoints                      = data[4];
+      property.capturePoints                      = 20;
       property.owner                              = data[5];
       property.x                                  = data[1];
       property.y                                  = data[2];
@@ -51,7 +55,24 @@ controller.persistence_defineHandler(
     }
   },
 
-  // save
+  // -----------------------------------------------------------------------
+  // load save game data
+  //
+
+  function( dom ){
+    var property;
+    for( var i = 0, e = dom.prps.length; i < e; i++ ) {
+      var data = dom.prps[i];
+
+      property               = model.property_data[ data[0] ];
+      property.capturePoints = data[4];
+    }
+  },
+
+  // -----------------------------------------------------------------------
+  // save game data
+  //
+  
   function( dom ){
     var prop;
     

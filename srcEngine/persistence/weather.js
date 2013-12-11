@@ -4,22 +4,30 @@ model.data_weatherParser.addHandler(function( sheet ){
 
 controller.persistence_defineHandler(
   
-  // load
-  function( dom ){
-    if( dom.wth ){
+  
+  // -----------------------------------------------------------------------
+  // load map data
+  //
 
-      assert( model.data_weatherSheets.hasOwnProperty(dom.wth) );
+  function(){
+    model.weather_data = model.data_defaultWeatherSheet;
+  },
+
+  // -----------------------------------------------------------------------
+  // load save game data
+  //
+
+  function( dom ){
+    assert( model.data_weatherSheets.hasOwnProperty(dom.wth) );
       
-      // set weather
-      model.weather_data = model.data_weatherSheets[dom.wth];
-    }
-    else{
-      model.weather_data = model.data_defaultWeatherSheet;
-      // if( controller.isHost() ) model.weather_calculateNext();
-    }
+    // set weather
+    model.weather_data = model.data_weatherSheets[dom.wth];
   },
   
-  // save
+  // -----------------------------------------------------------------------
+  // save game data
+  //
+  
   function( dom ){
     dom.wth = model.weather_data.ID;
   }

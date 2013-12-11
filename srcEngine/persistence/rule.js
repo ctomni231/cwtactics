@@ -1,10 +1,25 @@
 controller.persistence_defineHandler(
   
-  // load
-  function(  ){
+  
+  // -----------------------------------------------------------------------
+  // load map data
+  //
+
+  function(){
     model.rule_map.resetValues();
   },
+
+  // -----------------------------------------------------------------------
+  // load save game data
+  //
+
+  function(){
+  },
   
-  // save
-  function(  ){}
+  // -----------------------------------------------------------------------
+  // save game data
+  //
+  
+  function(){
+  }
 );

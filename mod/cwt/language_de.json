@@ -165,8 +165,8 @@
 
   "config.next":"Spiel Starten",
 
-  "config.player.off":"Aus",
-  "config.player.disabled":"Frei",
+  "config.player.off":"Frei",
+  "config.player.disabled":"-",
   "config.player.co.none":"Kein",
   "config.player.AI":"KI",
   "config.player.human":"Spieler",

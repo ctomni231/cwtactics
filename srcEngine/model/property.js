@@ -82,7 +82,7 @@ model.property_createProperty = function( pid, x, y, type ){
   var props = model.property_data;
   for( var i = 0, e = props.length; i < e; i++ ) {
 
-    if( props[i].owner === INACTIVE_ID ){
+    if( props[i].owner === INACTIVE_ID && !props[i].type ){
 
       props[i].owner         = pid;
       props[i].type          = model.data_tileSheets[type];

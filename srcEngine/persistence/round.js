@@ -1,26 +1,32 @@
 // Define persistence handler
 controller.persistence_defineHandler(
   
-  // load
-  function( dom ){
+  
+  // -----------------------------------------------------------------------
+  // load map data
+  //
 
+  function(){
     model.round_turnOwner = -1;
     model.round_day       = -1;
+  },
 
-    // check turn owner from save
-    if( !util.isUndefined(dom.trOw) ){
-      assert( util.intRange(dom.trOw,0,999999) );
-      model.round_turnOwner = dom.trOw;
-    }
+  // -----------------------------------------------------------------------
+  // load save game data
+  //
 
-    // check day from save
-    if( !util.isUndefined(dom.day) ){
-      assert( util.intRange(dom.day,0,999999) );
-      model.round_day = dom.day;
-    }
+  function( dom ){
+    assert( util.intRange(dom.trOw,0,999999) );
+    assert( util.intRange(dom.day,0,999999) );
+
+    model.round_turnOwner = dom.trOw;
+    model.round_day       = dom.day;
   },
   
-  // save
+  // -----------------------------------------------------------------------
+  // save game data
+  //
+  
   function( dom ){ 
     
     dom.trOw = model.round_turnOwner;

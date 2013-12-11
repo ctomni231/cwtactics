@@ -8,19 +8,19 @@ controller.roundConfig_CHANGE_TYPE = {
   TEAM        : 4
 };
 
-//
+// 
 //
 controller.roundConfig_coSelected = util.list( MAX_PLAYER , INACTIVE_ID );
 
-//
+// 
 //
 controller.roundConfig_typeSelected = util.list( MAX_PLAYER , INACTIVE_ID );
 
-//
+// 
 //
 controller.roundConfig_teamSelected = util.list( MAX_PLAYER , 0 );
 
-//
+// 
 //
 controller.roundConfig_prepare     = function(){
   controller.roundConfig_coSelected.resetValues();
@@ -80,6 +80,25 @@ controller.roundConfig_evalAfterwards = function(){
 
       // deactivate player
       model.player_data[i].team = INACTIVE_ID;
+      
+      // remove all units
+      var firstUid = model.unit_firstUnitId(i);
+      var lastUid = model.unit_lastUnitId(i);
+      for( ; firstUid<=lastUid; firstUid++ ){
+        var unit = model.unit_data[firstUid];
+        if( unit ){ 
+          model.unit_posData[unit.x][unit.y] = null;
+          model.unit_data[firstUid].owner = INACTIVE_ID;
+        }
+      }
+      
+      // remove all properties
+      for( var pi = 0, pe = model.property_data.length; pi < pe; pi++ ){
+        var prop = model.property_data[pi];
+        if( prop && prop.owner === i ){
+          prop.owner = INACTIVE_ID;
+        }
+      }
     } 
   }
 };
@@ -125,6 +144,7 @@ controller.roundConfig_changeConfig = function( pid, type, prev ){
 
     case controller.roundConfig_CHANGE_TYPE.PLAYER_TYPE:
       var cSelect = controller.roundConfig_typeSelected[pid];
+      if( cSelect === DESELECT_ID ) break;
       if( prev ){
         cSelect--;
         if( cSelect < INACTIVE_ID ) cSelect = 1;

@@ -1,8 +1,10 @@
 controller.persistence_defineHandler(
   
-  // load
+  // -----------------------------------------------------------------------
+  // load map data
+  //
+
   function( dom ){
-    
     model.map_width   = dom.mpw;
     model.map_height  = dom.mph;
 
@@ -14,8 +16,18 @@ controller.persistence_defineHandler(
       }
     }
   },
+
+  // -----------------------------------------------------------------------
+  // load save game data
+  //
+
+  function( dom ){
+  },
   
-  // save
+  // -----------------------------------------------------------------------
+  // save game data
+  //
+  
   function( dom ){
   
     dom.mpw = model.map_width;

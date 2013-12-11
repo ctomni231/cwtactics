@@ -78,7 +78,7 @@ util.scoped(function(){
     var map = obj.value;
 
     // update model
-    controller.persistence_loadModel(map);
+    controller.persistence_prepareModel(map);
     controller.roundConfig_prepare();
 
     // update UI

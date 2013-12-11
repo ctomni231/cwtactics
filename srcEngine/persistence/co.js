@@ -6,11 +6,9 @@ model.data_coParser.addHandler( function( sheet ){
 
   // rules
   assert( Array.isArray(sheet.d2d) );
-  //assert( Array.isArray(sheet.cop) );
-  //assert( Array.isArray(sheet.scop) );
   assert( Array.isArray(sheet.cop.turn) );
-  assert( sheet.cop.power );
   assert( Array.isArray(sheet.scop.turn) );
+  assert( sheet.cop.power );
   assert( sheet.scop.power );
 
   assert( util.isString(sheet.faction) );
@@ -19,9 +17,12 @@ model.data_coParser.addHandler( function( sheet ){
 
 controller.persistence_defineHandler(
 
-  // load
-  function( dom ){
-    var source, target, i, e;
+  // -----------------------------------------------------------------------
+  // load map data
+  //
+
+  function(){
+    var target, i, e;
 
     // reset data
     i = 0;
@@ -35,36 +36,45 @@ controller.persistence_defineHandler(
       target.coB        = null;
     }
 
-    // load data from save
-    if( !util.isUndefined(dom.co)){
-      assert( Array.isArray(dom.co) && dom.co.length === MAX_PLAYER );
+  },
 
-      i = 0;
-      e = MAX_PLAYER;
-      for( ;i<e;i++ ){
-        source = dom.co[i];
-        if( source > 0 ){
+  // -----------------------------------------------------------------------
+  // load save game data
+  //
 
-          // check data
-          assert( util.intRange(source[0],0,999999) );
-          assert( util.intRange(source[1],0,999999) );
-          assert( util.intRange(source[2],model.co_MODES.NONE,model.co_MODES.AWDR) );
-          assert( util.isString(source[3]) && model.data_coSheets.hasOwnProperty(source[3]) );
-          assert( util.isString(source[4]) && model.data_coSheets.hasOwnProperty(source[4]) );
+  function( dom ){
+    var source, target, i, e;
+      
+    assert( Array.isArray(dom.co) && dom.co.length === MAX_PLAYER );
 
-          // load data
-          target            = model.co_data[i];
-          target.power      = source[0];
-          target.timesUsed  = source[1];
-          target.level      = source[2];
-          target.coA        = (source[3])? model.data_coSheets[ source[3] ] : null;
-          target.coB        = (source[4])? model.data_coSheets[ source[4] ] : null;
-        }
+    i = 0;
+    e = MAX_PLAYER;
+    for( ;i<e;i++ ){
+      source = dom.co[i];
+      if( source > 0 ){
+
+        // check data
+        assert( util.intRange(source[0],0,999999) );
+        assert( util.intRange(source[1],0,999999) );
+        assert( util.intRange(source[2],model.co_MODES.NONE,model.co_MODES.AWDR) );
+        assert( util.isString(source[3]) && model.data_coSheets.hasOwnProperty(source[3]) );
+        assert( util.isString(source[4]) && model.data_coSheets.hasOwnProperty(source[4]) );
+
+        // load data
+        target            = model.co_data[i];
+        target.power      = source[0];
+        target.timesUsed  = source[1];
+        target.level      = source[2];
+        target.coA        = (source[3])? model.data_coSheets[ source[3] ] : null;
+        target.coB        = (source[4])? model.data_coSheets[ source[4] ] : null;
       }
     }
   },
   
-  // save
+  // -----------------------------------------------------------------------
+  // save game data
+  //
+  
   function( dom ){
     
     // result document model for co data will be a matrix

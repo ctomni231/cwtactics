@@ -70,16 +70,12 @@ model.unit_thereIsAUnit = function( x,y,pid,mode ){
 // Returns the first unit id of a player
 //
 model.unit_firstUnitId = function( pid ){
-  assert( model.player_isValidPid(pid) );
-  
   return MAX_UNITS_PER_PLAYER * pid;
 };
 
 // Returns the last unit id of a player
 //
 model.unit_lastUnitId = function( pid ){
-  assert( model.player_isValidPid(pid) );
-
   return (MAX_UNITS_PER_PLAYER * (pid+1) ) -1;
 };
 

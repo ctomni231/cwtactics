@@ -1,26 +1,33 @@
 controller.persistence_defineHandler(
   
-  // load
+  // -----------------------------------------------------------------------
+  // load map data
+  //
+
+  function(){
+    controller.buildRoundConfig( null );
+  },
+
+  // -----------------------------------------------------------------------
+  // load save game data
+  //
+
   function( dom ){
-    var cfg = null;
-
-    if( !util.isUndefined(dom.cfg) ){
-
-      // check values
-      var keys = Object.keys(dom.cfg);
-      var i    = keys.length;
-      while( i-- ){
-        assert( util.isInt(dom.cfg[keys[i]]) );
-      }
-
-      cfg = dom.cfg;
+    // check values
+    var keys = Object.keys(dom.cfg);
+    var i    = keys.length;
+    while( i-- ){
+      assert( util.isInt(dom.cfg[keys[i]]) );
     }
 
-    // load configuration
-    controller.buildRoundConfig( cfg );
+    // load save game config
+    controller.buildRoundConfig( dom.cfg );
   },
   
-  // save
+  // -----------------------------------------------------------------------
+  // save game data
+  //
+
   function( dom ){
     dom.cfg = model.cfg_configuration;
   }

@@ -156,8 +156,8 @@
 
   "config.next":"Start Game",
 
-  "config.player.off":"Off",
-  "config.player.disabled":"Free",
+  "config.player.off":"Free",
+  "config.player.disabled":"-",
   "config.player.co.none":"None",
   "config.player.AI":"AI",
   "config.player.human":"Human",

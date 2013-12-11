@@ -1,3 +1,3 @@
 // Holds the configuration data of the actual game round.
 //
-model.cfg_configuration = null;
+model.cfg_configuration = {};

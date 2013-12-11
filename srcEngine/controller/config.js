@@ -38,7 +38,7 @@ controller.defineGameConfig = function( name, min, max, def, step ){
 //
 controller.buildRoundConfig = function( cfg ){
   var boundaries = controller.configBoundaries_;
-  model.cfg_configuration = {};
+  // model.cfg_configuration = {};
 
   var keys = Object.keys(boundaries);
   for( var i=0,e=keys.length; i<e; i++ ){

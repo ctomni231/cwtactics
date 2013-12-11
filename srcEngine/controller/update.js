@@ -70,6 +70,8 @@ controller.update_startGameRound = function( ){
     
     model.bombs_placeMetaObjects();
 
+    model.timer_setupTimer();
+
     controller.action_localInvoke( "round_nextTurn", []);
     if( controller.isHost() ) model.weather_calculateNext();
 
