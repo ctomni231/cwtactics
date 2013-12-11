@@ -170,7 +170,7 @@ model.move_getMoveCosts = function( movetype, x, y ){
   if( tmp ){
     
     // nobody can move onto an invisible property
-    if( tmp.type.ID === "PROP_INV" ) v = -1;
+    if( tmp.type.blocker           ) v = -1;
     else                             v = movetype.costs[tmp.type.ID];
   }
   else       v = movetype.costs[model.map_data[x][y].ID];
