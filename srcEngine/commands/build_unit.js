@@ -9,7 +9,7 @@ controller.action_propertyAction({
   },
   
   prepareMenu: function( data ){
-    model.factoryGenerateBuildMenu( data.source.propertyId, data.menu );
+    model.factoryGenerateBuildMenu( data.source.propertyId, data.menu, true );
   },
   
   invoke: function( data ){

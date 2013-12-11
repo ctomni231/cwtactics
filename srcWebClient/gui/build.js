@@ -1,6 +1,7 @@
 controller.registerMenuRenderer("buildUnit",
-function( content, entry, index ){
+function( content, entry, index, enabled ){
   
   var cost = model.data_unitSheets[ content ].cost;
-  entry.innerHTML = model.data_localized(content)+" ("+cost+"$)";
+  if( enabled ) entry.innerHTML = model.data_localized(content)+" ("+cost+"$)";
+  else entry.innerHTML = "<span style='color:red;'>"+model.data_localized(content)+" ("+cost+"$) </span>";
 });

@@ -58,7 +58,7 @@ model.factory_isFactory = function( prid ){
 
 // Generates the build menu for a given factory object (by its `prid`).
 //
-model.factoryGenerateBuildMenu = function( prid, menu ){
+model.factoryGenerateBuildMenu = function( prid, menu, markDisabled ){
   assert( model.property_isValidPropId(prid) );
   assert( model.factory_isFactory(prid));
 	
@@ -74,15 +74,12 @@ model.factoryGenerateBuildMenu = function( prid, menu ){
 	for( var i=0,e=unitTypes.length; i<e; i++ ){
 		var key  = unitTypes[i];
 		var type = model.data_unitSheets[key];
-		
-		// TODO LATER DISABLE ACTION ONLY
-		if( type.cost > availGold ) continue;
-		
+				
 		if( bList.indexOf( type.movetype ) === -1 ) continue;
 		
 		// TODO FIND BETTER SOLUTION
 		// if( model.rules.blockedUnits.indexOf(uType) !== -1 ) return false;
 		
-		menu.addEntry( key );
+		if( type.cost <= availGold || markDisabled ) menu.addEntry( key, (type.cost < availGold) );
 	}
 };

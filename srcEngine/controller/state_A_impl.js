@@ -223,8 +223,14 @@ controller.stateMachine = util.stateMachine({
 		},
 		
 		action: function( ev, index ){
-			var action = this.data.menu.data[ index ];
 			
+      // break transition when entry is disabled
+      if( !this.data.menu.enabled[index] ){
+        return this.breakTransition();
+      }
+      
+      var action = this.data.menu.data[ index ];
+			      
 			if( action === "done" ){
 				return "IDLE";
 			}

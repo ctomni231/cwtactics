@@ -126,7 +126,7 @@ util.scoped(function(){
         menuEntryListElement.appendChild( li );
       }
       
-      renderer( menu.data[i], entry, i );
+      renderer( menu.data[i], entry, i, menu.enabled[i] );
       // entry.innerHTML = util.i18n_localized( menu[i] );
       
       entries[i].style.display = "";

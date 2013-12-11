@@ -164,7 +164,7 @@ controller.stateMachine.data = {
     
     /* TODO: PREPARATION FOR EXTENDED MENUS - (0.3.6 - 0.4.0) */
     //
-    // enabled: util.list( 20, null ),
+    enabled: util.list( 20, true ),
     
     /* TODO: PREPARATION FOR EXTENDED MENUS - (0.3.6 - 0.4.0) */
     //
@@ -181,9 +181,10 @@ controller.stateMachine.data = {
       
       this.data[ this.size ] = entry;
       
+      if( typeof enabled === "undefined" ) enabled = true;
+      this.enabled[ this.size ] = (enabled === true);
+      
       /* TODO: PREPARATION FOR EXTENDED MENUS - (0.3.6 - 0.4.0) */
-      //if( enabled !== false ) enabled = true;
-      //this.enabled[ this.size ]       = entry;
       //if( !extraData ) extraData      = null;
       //this.extraData[ this.size ]     = extraData;
       
