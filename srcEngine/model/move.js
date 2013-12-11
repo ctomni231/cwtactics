@@ -165,11 +165,18 @@ model.move_getMoveCosts = function( movetype, x, y ){
   var v;
   var tmp;
 
+  // grab costs from property or  if not given from tile
   tmp = model.property_posMap[x][y];
-  if( tmp )  v = movetype.costs[tmp.type.ID];
+  if( tmp ){
+    
+    // nobody can move onto an invisible property
+    if( tmp.type.ID === "PROP_INV" ) v = -1;
+    else                             v = movetype.costs[tmp.type.ID];
+  }
   else       v = movetype.costs[model.map_data[x][y].ID];
   if( typeof v === "number" ) return v;
   
+  // check wildcard
   v = movetype.costs["*"];
   if( typeof v === "number" ) return v;
   
