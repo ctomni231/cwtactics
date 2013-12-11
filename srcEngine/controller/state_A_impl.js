@@ -184,7 +184,7 @@ controller.stateMachine = util.stateMachine({
 			this.data.menu.clean();
 			this.data.menu.generate();
 			if( this.data.menu.size === 0 ){        
-				this.data.target.clean();
+				//this.data.target.clean();
 				return this.breakTransition();
 			}
 		},
