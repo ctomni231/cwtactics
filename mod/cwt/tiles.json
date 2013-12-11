@@ -482,6 +482,7 @@
       "x"     : 3,
       "actor" : [1,0]
     },
+    "blocker":true,
     "cannon":{
       "direction" : "S",
       "range"     : 9,
