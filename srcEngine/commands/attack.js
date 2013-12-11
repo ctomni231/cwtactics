@@ -1,8 +1,6 @@
 controller.action_unitAction({
   
   key:"attack",
-  
-  unitAction: true,
   targetSelectionType:"A",
 	
 	relation:[ "S", "T", model.player_RELATION_MODES.NONE, model.player_RELATION_MODES.SAME_OBJECT ],

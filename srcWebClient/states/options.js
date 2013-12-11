@@ -10,7 +10,8 @@ util.scoped(function(){
   }
   
   function updateforceTouchContent(){  
-    nodeTouch.innerHTML = (forceTouchEnabled)? model.localized("yes") : model.localized("no");
+    nodeTouch.innerHTML = (controller.screenStateMachine.structure.OPTIONS.forceTouch)? model.data_localized("yes") :
+                                                                                        model.data_localized("no");
   }
 
   function updateSoundContent(){  
@@ -136,7 +137,7 @@ util.scoped(function(){
         return "REMAP_KEYS";
 
       case "options.resetData":
-        controller.storage_general.set("cwt_resetData",{value:true}, wipeComplete );
+        controller.storage_general.set("cwt_resetData",true, wipeComplete );
         break;
         
       case "options.forceTouch":
@@ -145,9 +146,7 @@ util.scoped(function(){
         
       case "options.goBack": 
         controller.audio_saveConfigs();
-        controller.storage_general.set("cwt_forceTouch",{
-          value:controller.screenStateMachine.structure.OPTIONS.forceTouch
-        });
+        controller.storage_general.set("cwt_forceTouch",controller.screenStateMachine.structure.OPTIONS.forceTouch);
         return (sourceState !== null)? "GAMEROUND" : "MAIN";
     }
     

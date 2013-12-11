@@ -27,7 +27,7 @@ util.scoped(function(){
   function selectProperty(){
         
   }
-  
+  /*
   //
   //
   controller.ai_defineRoutine({
@@ -47,6 +47,7 @@ util.scoped(function(){
       // end turn will be done by machine
     }
   });
+  */
 });
 
 util.scoped(function(){

@@ -27,7 +27,7 @@ controller.defineGameScriptable("terrainDefenseModifier",10,300);
 // Returns `true` when the game is in the peace phase.
 //
 model.battle_isPeacePhaseActive = function(){
-  return ( model.round_day-1 < controller.configValue("daysOfPeace") );
+  return ( model.round_day < controller.configValue("daysOfPeace") );
 };
 
 // Different possible unit battle types.
@@ -121,20 +121,6 @@ model.battle_calculateTargets = function( uid, x, y, data, markAttackableTiles )
             if( dmg > 0 ){
               
               // IF DATA MODE IS ON, THEN MARK THE POSITION
-              // ELSE RETURN TRUE
-              if( markInData ) data.setValueAt(lX,lY, dmg );
-              else return true;
-            }
-          }
-          
-          var tProp = model.property_posMap[lX][lY];
-          if( tProp !== null && tProp.capturePoints < 0 &&
-             model.player_data[ tProp.owner ].team !== teamId ){
-            
-            dmg = model.battle_getBaseDamageAgainst(unit,tProp);
-            if( dmg > 0 ){
-              
-              // IF DATA MODE IS ON, THEN MARK THE POSITION 
               // ELSE RETURN TRUE
               if( markInData ) data.setValueAt(lX,lY, dmg );
               else return true;
@@ -238,13 +224,13 @@ model.battle_getBaseDamageAgainst = function( attacker, defender, withMainWp ){
   // check main weapon
   if( withMainWp && attacker.ammo > 0 && attack.main_wp !== undefined ){
     v = attack.main_wp[tType];
-    if( typeof v === "undefined" ) return v;
+    if( typeof v !== "undefined" ) return v;
   }
   
   // check secondary weapon
   if( attack.sec_wp !== undefined ){ 
     v = attack.sec_wp[tType];
-    if( typeof v === "undefined" ) return v;
+    if( typeof v !== "undefined" ) return v;
   }
   
   return -1;

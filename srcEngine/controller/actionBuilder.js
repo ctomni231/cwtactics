@@ -59,9 +59,10 @@ controller.actionBuilder_buildFromUserData = function(){
   else controller.action_sharedInvoke( "actions_trapWait", [ sourceDto.unitId ]);
   
   // all unit actions invokes automatically waiting
-  if( actionObject.unitAction && (
+  if( trapped || actionObject.unitAction && (
     actionDto.selectedEntry !== "wait" &&
-    actionDto.selectedEntry !== "explode" 
+    actionDto.selectedEntry !== "explode" &&
+    actionDto.selectedEntry !== "joinUnits" 
   )){
     controller.action_sharedInvoke( "actions_markUnitNonActable", [ sourceDto.unitId ]);
   }

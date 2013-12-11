@@ -46,7 +46,7 @@ model.team_addGoldTransferEntries = function( pid, menu ){
 	var availGold = model.player_data[ pid ].gold;
 	for( var i=0,e=model.team_MONEY_TRANSFER_STEPS.length; i<e; i++ ){
 		if( availGold >= model.team_MONEY_TRANSFER_STEPS[i] ){
-			data.menu.addEntry( model.team_MONEY_TRANSFER_STEPS[i] );
+			menu.addEntry( model.team_MONEY_TRANSFER_STEPS[i] );
 		}
 	}
 };

@@ -8,7 +8,7 @@ controller.persistence_defineHandler(
 
   function(){
     model.round_turnOwner = -1;
-    model.round_day       = -1;
+    model.round_day       = 0;
   },
 
   // -----------------------------------------------------------------------
