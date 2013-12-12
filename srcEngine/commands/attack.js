@@ -21,13 +21,8 @@ controller.action_unitAction({
         data.source.unitId,
         data.targetselection.unitId,
         Math.round( Math.random()*100 ),
-        Math.round( Math.random()*100 )
-      ]);
-    }
-    else if( data.targetselection.propertyId !== -1 ){
-      controller.action_sharedInvoke("battle_attackProperty",[
-        data.source.unitId,
-        data.targetselection.propertyId
+        Math.round( Math.random()*100 ),
+        false
       ]);
     }
     else assert(false,"no valid target");
