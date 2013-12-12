@@ -246,6 +246,8 @@ model.battle_getBattleDamageAgainst = function( attacker, defender, luck, withMa
     model.unit_extractId(attacker) 
   );
   
+  if( typeof isCounter === "undefined" ) isCounter = false;
+  
   assert( util.intRange(luck,0,100) );
   assert( util.isBoolean(withMainWp) );
   assert( util.isBoolean(isCounter) );
