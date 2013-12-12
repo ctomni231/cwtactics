@@ -3,11 +3,11 @@ controller.action_registerCommands("battle_invokeBattle");
 controller.action_registerCommands("battle_attackProperty");
 
 // events
-controller.event_define("battle_invokeBattle");
-controller.event_define("battle_mainAttack");
-controller.event_define("battle_counterAttack");
-controller.event_define("battle_propertyDestroyed");
-controller.event_define("battle_attackProperty");
+model.event_define("battle_invokeBattle");
+model.event_define("battle_mainAttack");
+model.event_define("battle_counterAttack");
+model.event_define("battle_propertyDestroyed");
+model.event_define("battle_attackProperty");
 
 // config
 controller.defineGameConfig("daysOfPeace",0,50,0);
@@ -327,33 +327,6 @@ model.battle_searchTile_ = function( rx,ry, ax,ay ){
   }
 };
 
-model.battle_attackProperty = function( attId, propId ){
-  assert( model.unit_isValidUnitId(attId) );
-  assert( model.property_isValidPropId(propId) );
-
-  var attacker  = model.unit_data[attId];
-  var defender  = model.property_data[propId];
-  var aSheets   = attacker.type;
-  var dmg       = model.battle_getBaseDamageAgainst(attacker,defender,true);
-  
-  controller.events.battle_attackProperty( attId, propId );
-  
-  // decrease prop hp
-  if( defender.capturePoints >= 0 ){ /* ERROR */ }
-  else{
-    
-    defender.capturePoints += dmg;
-    if( defender.capturePoints >= 0 ){
-      
-      // change property type from battle property to a non-battle type property (e.g. ruins)
-      model.property_changeType( propId, defender.type.destroyedType );
-      defender.capturePoints = 0;
-      
-      controller.events.battle_propertyDestroyed( propId );
-    }
-  }
-};
-
 // Invokes a battle between two units. If the defender is a direct attacking unit then
 // the defender tries to counter attack if he is in range.
 //
@@ -399,17 +372,17 @@ model.battle_invokeBattle = function( attId, defId, attLuckRatio, defLuckRatio )
   var retreatVal      = powerAtt;
   
   // invoke introduction event
-  controller.events.battle_invokeBattle( attId, defId, damage );
+  model.events.battle_invokeBattle( attId, defId, damage );
   
   // main attack
   var mainWpAttack = model.battle_canUseMainWeapon(attacker,defender);
-  damage = model.battle_getBattleDamageAgainst(attacker,defender,attLuckRatio);
+  damage = model.battle_getBattleDamageAgainst(attacker,defender,attLuckRatio,mainWpAttack,false);
 
   if( damage !== -1 ){
     model.unit_inflictDamage( defId, damage );
 
     // invoke main attack event
-    controller.events.battle_mainAttack( attId, defId, damage, mainWpAttack );
+    model.events.battle_mainAttack( attId, defId, damage, mainWpAttack );
 
     powerAtt -= model.unit_convertHealthToPoints( defender );
 
@@ -434,7 +407,8 @@ model.battle_invokeBattle = function( attId, defId, attLuckRatio, defLuckRatio )
     mainWpAttack = model.battle_canUseMainWeapon(defender,attacker);
 
     damage = model.battle_getBattleDamageAgainst( 
-      defender,attacker,
+      defender,
+      attacker,
       defLuckRatio, 
       mainWpAttack, 
       true 
@@ -444,7 +418,7 @@ model.battle_invokeBattle = function( attId, defId, attLuckRatio, defLuckRatio )
       model.unit_inflictDamage( attId, damage );
 
       // invoke counter event
-      controller.events.battle_counterAttack( defId, attId, damage, mainWpAttack );
+      model.events.battle_counterAttack( defId, attId, damage, mainWpAttack );
 
       powerCounterAtt -= model.unit_convertHealthToPoints( attacker );
 

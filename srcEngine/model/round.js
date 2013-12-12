@@ -2,7 +2,7 @@
 controller.action_registerCommands("round_nextTurn");
 
 // events
-controller.event_define("round_nextTurn");
+model.event_define("round_nextTurn");
 
 // config
 controller.defineGameConfig("round_dayLimit",0,999,0);
@@ -104,7 +104,7 @@ model.round_startsTurn = function( pid ){
   model.fog_updateVisiblePid();
   model.fog_recalculateFogMap(); // needs to be done after setting new clientPid
 
-  controller.events.round_nextTurn();
+  model.events.round_nextTurn();
 
   // start AI logic if new turn owner is AI controlled this local instance is the host
   if( controller.isHost() && !controller.ai_isHuman(pid) ){

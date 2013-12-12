@@ -9,16 +9,3 @@ var controller = {};
 // Utility namespace.
 //
 var util = {};
-
-// Assertion. 
-//
-var assert = function(expr,msgA){
-  if( !expr ){
-    if( typeof msgA === "undefined" ) msgA = "FAIL";
-
-    if( console.error ) console.error(msgA);
-
-    // raise error
-    throw new Error(msgA);
-  }
-};

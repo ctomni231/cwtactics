@@ -10,14 +10,14 @@ controller.action_registerCommands("unit_destroy");
 controller.action_registerCommands("unit_destroySilently");
 
 // events
-controller.event_define("unit_inflictDamage");
-controller.event_define("unit_heal");
-controller.event_define("unit_hide");
-controller.event_define("unit_join");
-controller.event_define("unit_unhide");
-controller.event_define("unit_drainFuel");
-controller.event_define("unit_create");
-controller.event_define("unit_destroy");
+model.event_define("unit_inflictDamage");
+model.event_define("unit_heal");
+model.event_define("unit_hide");
+model.event_define("unit_join");
+model.event_define("unit_unhide");
+model.event_define("unit_drainFuel");
+model.event_define("unit_create");
+model.event_define("unit_destroy");
 
 // scriptables
 controller.defineGameScriptable("fuelDrainRate",50,100);
@@ -47,6 +47,29 @@ model.unit_data = util.list( MAX_PLAYER * MAX_UNITS_PER_PLAYER, function(){
 // cell that represents its position.
 //
 model.unit_posData = util.matrix( MAX_MAP_WIDTH, MAX_MAP_HEIGHT, null );
+
+// Unit limit declining event.
+model.event_on( "buildUnit_check",
+  function( wish, factoryId, playerId, type ){
+    var uLimit = controller.configValue("unitLimit");
+    var count = model.unit_countUnits(playerId);
+    if( !uLimit ) uLimit = 9999999;
+    
+    if( count >= uLimit               ) wish.decline();
+    if( count >= MAX_UNITS_PER_PLAYER ) wish.decline();
+  }
+);
+
+
+
+
+
+
+
+
+
+
+
 
 // True when uid is a valid unit id else false.
 //
@@ -208,7 +231,7 @@ model.unit_inflictDamage = function( uid, damage, minRest ){
     if( unit.hp <= 0 ) model.unit_destroy(uid);
   }
   
-  controller.events.unit_inflictDamage( uid, damage, minRest );
+  model.events.unit_inflictDamage( uid, damage, minRest );
 };
 
 // Heals an unit. If the unit health will be greater than the maximum health value then 
@@ -236,7 +259,7 @@ model.unit_heal = function( uid, health, diffAsGold ){
     unit.hp = 99;
   }
   
-  controller.events.unit_heal( uid, health );
+  model.events.unit_heal( uid, health );
 };
 
 // Hides an unit.
@@ -245,7 +268,7 @@ model.unit_hide = function( uid ){
   assert( model.unit_isValidUnitId(uid) );
 
   model.unit_data[uid].hidden = true;
-  controller.events.unit_hide( uid );
+  model.events.unit_hide( uid );
 };
 
 // Unhides an unit.
@@ -254,7 +277,7 @@ model.unit_unhide = function( uid ){
   assert( model.unit_isValidUnitId(uid) );
 
   model.unit_data[uid].hidden = false;
-  controller.events.unit_unhide( uid );
+  model.events.unit_unhide( uid );
 };
 
 // Returns true if two units can join each other in the current situation, else false. 
@@ -302,7 +325,7 @@ model.unit_join = function( juid, jtuid ){
   // disband joining unit
   joinSource.owner = INACTIVE_ID;
   
-  controller.events.unit_join( juid, jtuid );  
+  model.events.unit_join( juid, jtuid );  
 };
 
 // The fuel of an unit will be drained if the unit is marked for using fuel to uptain. All units 
@@ -326,7 +349,7 @@ model.unit_drainFuel = function( uid ){
     
     unit.fuel -= v;
     
-    controller.events.unit_drainFuel( uid, v );
+    model.events.unit_drainFuel( uid, v );
     
     // if fuel is empty then destroy it
     if( unit.fuel <= 0 ) model.unit_destroy( uid );
@@ -362,7 +385,7 @@ model.unit_create = function( pid, x, y, type ){
       unit.loadedIn   = -1;
       model.move_setUnitPosition(i,x,y);
       
-      controller.events.unit_create( pid,x,y,type,i );
+      model.events.unit_create( pid,x,y,type,i );
       
       return i;
     }
@@ -404,7 +427,7 @@ model.unit_destroySilently = function( uid, noEvent ){
     controller.update_endGameRound();
   } 
   
-  if( !noEvent ) controller.events.unit_destroy( uid );
+  if( !noEvent ) model.events.unit_destroy( uid );
 };
 
 // Deregisters an unit object from the stock of a player. The tile, where the unit is placed on, 

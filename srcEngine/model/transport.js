@@ -3,8 +3,8 @@ controller.action_registerCommands("transport_loadInto");
 controller.action_registerCommands("transport_unloadFrom");
 
 // events
-controller.event_define("transport_loadInto");
-controller.event_define("transport_unloadFrom");
+model.event_define("transport_loadInto");
+model.event_define("transport_unloadFrom");
 
 // Has a transporter unit with id tid loaded units? Returns true if yes, else false.
 //
@@ -45,7 +45,7 @@ model.transport_loadInto = function( loadId, transportId ){
 	model.unit_data[ loadId ].loadedIn = transportId;
 	model.unit_data[ transportId ].loadedIn--;
 	
-	controller.events.transport_loadInto( loadId, transportId );
+	model.events.transport_loadInto( loadId, transportId );
 };
 
 // Unloads the unit with id lid from a tranporter with the id tid.
@@ -76,7 +76,7 @@ model.transport_unloadFrom = function( transportId, trsx, trsy, loadId, tx,ty ){
 	else if( ty < trsy ) moveCode = model.move_MOVE_CODES.UP;
 	else if( ty > trsy ) moveCode = model.move_MOVE_CODES.DOWN;
 			
-	controller.events.transport_unloadFrom( transportId, trsx, trsy, loadId, tx,ty );
+	model.events.transport_unloadFrom( transportId, trsx, trsy, loadId, tx,ty );
 	
 	// move load out of the transporter
 	model.move_moveUnitByPath([moveCode], loadId, trsx, trsy, true);

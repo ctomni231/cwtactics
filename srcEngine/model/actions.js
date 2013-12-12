@@ -5,9 +5,9 @@ controller.action_registerCommands("actions_trapWait");
 controller.action_registerCommands("actions_setStatus");
 
 // events
-controller.event_define("actions_markUnitNonActable");
-controller.event_define("actions_markUnitActable");
-controller.event_define("actions_trapWait");
+model.event_define("actions_markUnitNonActable");
+model.event_define("actions_markUnitActable");
+model.event_define("actions_trapWait");
 
 // Holds the identical numbers of all objects that can act during the turn. After a unit has acted, 
 // it should be removed from this list with `model.actions_markUnitNonActable`.
@@ -42,14 +42,14 @@ model.actions_setStatus = function( uid, canAct ){
 // 
 model.actions_markUnitNonActable = function( uid ){
   model.actions_setStatus( uid, false );
-  controller.events.actions_markUnitNonActable( uid );
+  model.events.actions_markUnitNonActable( uid );
 };
 
 // Marks an unit as actable.
 // 
 model.actions_markUnitActable = function( uid ){
   model.actions_setStatus( uid, true );
-  controller.events.actions_markUnitActable( uid );
+  model.events.actions_markUnitActable( uid );
 };
 
 // Called when an unit is trapped. Invokes the `actions_trapWait` event.
@@ -58,7 +58,7 @@ model.actions_trapWait = function( uid ){
   if( DEBUG ) util.log("unit id:",uid," got trapped");
   
   model.actions_setStatus( uid, false );
-  controller.events.actions_trapWait( uid );
+  model.events.actions_trapWait( uid );
 };
 
 // Resets the actable status of all objects of the current turn owner.

@@ -1,49 +1,51 @@
-controller.event_on("unit_inflictDamage",function( uid ){
+model.event_on("unit_inflictDamage",function( uid ){
   controller.updateUnitStatus( uid );
 });
 
-controller.event_on("unit_heal",function( uid ){
+model.event_on("unit_heal",function( uid ){
   controller.updateUnitStatus( uid );
 });
 
-controller.event_on("battle_mainAttack",function( auid,duid,dmg,mainWeap ){
-  var type = model.data_unitSheets[ model.unit_data[auid].type ];
-  controller.audio_playSound( (mainWeap)? type.assets.pri_att_sound : type.assets.sec_att_sound );
+model.event_on("battle_mainAttack",function( auid,duid,dmg,mainWeap ){
+  var type = model.unit_data[auid].type;
+  var sound = (mainWeap)? type.assets.pri_att_sound : type.assets.sec_att_sound;
+  if( sound ) controller.audio_playSound( sound );
 });
 
-controller.event_on("battle_counterAttack",function( auid,duid,dmg,mainWeap ){
-  var type = model.data_unitSheets[ model.unit_data[auid].type ];
-  controller.audio_playSound( (mainWeap)? type.assets.pri_att_sound : type.assets.sec_att_sound );
+model.event_on("battle_counterAttack",function( auid,duid,dmg,mainWeap ){
+  var type = model.unit_data[auid].type;
+  var sound = (mainWeap)? type.assets.pri_att_sound : type.assets.sec_att_sound;
+  if( sound ) controller.audio_playSound( sound );
 });
 
-controller.event_on("battle_invokeBattle",function( auid,duid ){
+model.event_on("battle_invokeBattle",function( auid,duid ){
   controller.updateSimpleTileInformation();
   controller.updateUnitStatus( auid );
   controller.updateUnitStatus( duid );
 });
 
-controller.event_on("factory_produceUnit",function(){
+model.event_on("factory_produceUnit",function(){
   controller.updateSimpleTileInformation();
 });
 
-controller.event_on("transport_loadInto",function( uid, tid ){
+model.event_on("transport_loadInto",function( uid, tid ){
   controller.updateUnitStatus( tid );
 });
 
-controller.event_on("transport_unloadFrom",function( transportId, trsx, trsy, loadId, tx,ty ){
+model.event_on("transport_unloadFrom",function( transportId, trsx, trsy, loadId, tx,ty ){
   controller.updateUnitStatus( transportId );
 });
 
-controller.event_on("unit_join",function( uid, tid ){
+model.event_on("unit_join",function( uid, tid ){
   controller.updateUnitStatus( tid );
 });
 
-controller.event_on("supply_refillResources",function( uid ){
+model.event_on("supply_refillResources",function( uid ){
   if( typeof uid.x === "number" ) uid = model.unit_extractId(uid);
   controller.updateUnitStatus( uid );
 });
 
-controller.event_on("move_clearUnitPosition",function( uid ){
+model.event_on("move_clearUnitPosition",function( uid ){
   var unit = model.unit_data[uid];
   var x = -unit.x;
   var y = -unit.y;
@@ -63,14 +65,14 @@ controller.event_on("move_clearUnitPosition",function( uid ){
   }
 });
 
-controller.event_on("move_setUnitPosition",function( uid ){
+model.event_on("move_setUnitPosition",function( uid ){
   controller.updateUnitStatus( uid );
 });
 
-controller.event_on("unit_hide",function( uid ){
+model.event_on("unit_hide",function( uid ){
   controller.updateUnitStatus( uid );
 });
 
-controller.event_on("unit_unhide",function( uid ){
+model.event_on("unit_unhide",function( uid ){
   controller.updateUnitStatus( uid );
 });

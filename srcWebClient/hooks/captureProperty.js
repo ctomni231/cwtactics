@@ -2,7 +2,7 @@ view.registerAnimationHook({
 
   key: "property_capture",
 
-  prepare: function( cid, prid, px,py, points ){
+  prepare: function( cid, prid ){
     var property = model.property_data[ prid ];
     controller.updateUnitStatus( cid );
 

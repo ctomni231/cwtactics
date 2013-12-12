@@ -1,4 +1,4 @@
-controller.event_on("fog_modifyVisionAt", function( x,y, pid, range, value ){
+model.event_on("fog_modifyVisionAt", function( x,y, pid, range, value ){
     range = 10; // TAKE THE MAXIMUM RANGE
   
     var lX;
@@ -25,6 +25,6 @@ controller.event_on("fog_modifyVisionAt", function( x,y, pid, range, value ){
     }
 });
 
-controller.event_on("fog_recalculateFogMap",function(range){
+model.event_on("fog_recalculateFogMap",function(range){
   view.redraw_markAll();
 });

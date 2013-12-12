@@ -6,6 +6,14 @@ util.scoped = function( cb ){
   return cb();
 };
 
+util.wish = function(){
+  return {
+    declined : false,
+    approve  : function(){ this.declined = false; },
+    decline  : function(){ this.declined = true;  }
+  };
+};
+
 util.copy = function( from ){
   var to = {};
   var list = Object.keys(from);

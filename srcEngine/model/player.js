@@ -4,9 +4,9 @@ controller.action_registerCommands("player_playerGivesUp");
 controller.action_registerCommands("player_deactivatePlayer");
 
 // events
-controller.event_define("player_playerGivesUp");
-controller.event_define("player_deactivatePlayer");
-controller.event_define("player_noTeamsAreLeft");
+model.event_define("player_playerGivesUp");
+model.event_define("player_deactivatePlayer");
+model.event_define("player_noTeamsAreLeft");
 
 // Different relationship modes between two objects
 //
@@ -58,7 +58,7 @@ model.player_deactivatePlayer = function( pid ){
   
 	var i,e;
 	
-  controller.events.player_deactivatePlayer( pid );
+  model.events.player_deactivatePlayer( pid );
 	
 	// remove all unit
 	i = model.unit_firstUnitId( pid ); 
@@ -196,7 +196,7 @@ model.player_playerGivesUp = function(){
 	// and the turn owner in in the local player instances then
 	// it's an illegal action 
 	
-	controller.events.player_playerGivesUp( model.round_turnOwner );
+	model.events.player_playerGivesUp( model.round_turnOwner );
 };
 
 // Invoked when the game ends because of a battle victory over all enemy player_data. 
@@ -204,5 +204,5 @@ model.player_playerGivesUp = function(){
 model.player_noTeamsAreLeft = function(){
 	controller.update_endGameRound();
 	
-	controller.events.player_noTeamsAreLeft();
+	model.events.player_noTeamsAreLeft();
 };

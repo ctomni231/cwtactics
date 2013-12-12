@@ -30,7 +30,7 @@
     },
     "assets": {
       "gfx"           : "units/AWDS_INFT.png",
-      "sec_att_sound" : "cannon.wav"
+      "sec_att_sound" : "mg.wav"
     }
   },
 
@@ -79,8 +79,8 @@
     },
     "assets": {
       "gfx"           : "units/AWDS_MECH.png",
-      "pri_att_sound" : "cannon.wav",
-      "sec_att_sound" : "cannon.wav"
+      "pri_att_sound" : "rocket.wav",
+      "sec_att_sound" : "mg.wav"
     }
   },
 
@@ -114,7 +114,7 @@
     },
     "assets": {
       "gfx"           : "units/AWDS_RECN.png",
-      "sec_att_sound" : "cannon.wav"
+      "sec_att_sound" : "mg.wav"
     }
   },
 
@@ -169,7 +169,7 @@
     "assets": {
       "gfx"           : "units/AWDS_TANK.png",
       "pri_att_sound" : "tnk_cannon_small.wav",
-      "sec_att_sound" : "cannon.wav"
+      "sec_att_sound" : "mg.wav"
     }
   },
 
@@ -224,7 +224,7 @@
     "assets": {
       "gfx"           : "units/AWDS_MDTK.png",
       "pri_att_sound" : "tnk_cannon_big.wav",
-      "sec_att_sound" : "cannon.wav"
+      "sec_att_sound" : "mg.wav"
     }
   },
 
@@ -279,7 +279,7 @@
     "assets": {
       "gfx"           : "units/AWDS_NTNK.png",
       "pri_att_sound" : "tnk_cannon_big.wav",
-      "sec_att_sound" : "cannon.wav"
+      "sec_att_sound" : "mg.wav"
     }
   },
 
@@ -334,7 +334,7 @@
     "assets": {
       "gfx"           : "units/AWDS_WRTK.png",
       "pri_att_sound" : "tnk_cannon_big.wav",
-      "sec_att_sound" : "cannon.wav"
+      "sec_att_sound" : "mg.wav"
     }
   },
 
@@ -372,8 +372,8 @@
     },
     "assets": {
       "gfx"           : "units/AWDS_AAIR.png",
-      "pri_att_sound" : "cannon.wav",
-      "sec_att_sound" : "cannon.wav"
+      "pri_att_sound" : "mg.wav",
+      "sec_att_sound" : "mg.wav"
     }
   },
 
@@ -463,8 +463,8 @@
     "assets": {
       "simpleAnimated": true,
       "gfx"           : "units/AWDS_BCTR.png",
-      "pri_att_sound" : "cannon.wav",
-      "sec_att_sound" : "cannon.wav"
+      "pri_att_sound" : "rocket.wav",
+      "sec_att_sound" : "mg.wav"
     }
   },
 
@@ -503,8 +503,8 @@
     },
     "assets": {
       "gfx"           : "units/AWDS_BMBR.png",
-      "pri_att_sound" : "cannon.wav",
-      "sec_att_sound" : "cannon.wav"
+      "pri_att_sound" : "mg.wav",
+      "sec_att_sound" : "mg.wav"
     }
   },
 
@@ -526,8 +526,8 @@
     },
     "assets": {
       "gfx"           : "units/AWDS_BKBM.png",
-      "pri_att_sound" : "cannon.wav",
-      "sec_att_sound" : "cannon.wav"
+      "pri_att_sound" : "mg.wav",
+      "sec_att_sound" : "mg.wav"
     }
   },
 
@@ -574,8 +574,8 @@
     "stealth": true,
     "assets": {
       "gfx"           : "units/AWDS_STLH.png",
-      "pri_att_sound" : "cannon.wav",
-      "sec_att_sound" : "cannon.wav"
+      "pri_att_sound" : "mg.wav",
+      "sec_att_sound" : "mg.wav"
     }
   },
 
@@ -600,8 +600,8 @@
     },
     "assets": {
       "gfx"           : "units/AWDS_FGTR.png",
-      "pri_att_sound" : "cannon.wav",
-      "sec_att_sound" : "cannon.wav"
+      "pri_att_sound" : "mg.wav",
+      "sec_att_sound" : "mg.wav"
     }
   },
 
@@ -687,7 +687,7 @@
     },
     "assets": {
       "gfx"           : "units/AWDS_MISS.png",
-      "pri_att_sound" : "cannon.wav"
+      "pri_att_sound" : "mg.wav"
     }
   },
 
@@ -727,7 +727,7 @@
     },
     "assets": {
       "gfx"           : "units/AWDS_RCKT.png",
-      "pri_att_sound" : "cannon.wav"
+      "pri_att_sound" : "rocket.wav"
     }
   },
 
@@ -754,7 +754,7 @@
     },
     "assets": {
       "gfx"           : "units/AWDS_SUBM.png",
-      "pri_att_sound" : "cannon.wav"
+      "pri_att_sound" : "mg.wav"
     }
   },
 
@@ -791,8 +791,8 @@
     ],
     "assets": {
       "gfx"           : "units/AWDS_CRUS.png",
-      "pri_att_sound" : "cannon.wav",
-      "sec_att_sound" : "cannon.wav"
+      "pri_att_sound" : "mg.wav",
+      "sec_att_sound" : "mg.wav"
     }
   },
 
@@ -846,7 +846,7 @@
     },
     "assets": {
       "gfx"           : "units/AWDS_ACAR.png",
-      "pri_att_sound" : "cannon.wav"
+      "pri_att_sound" : "mg.wav"
     }
   },
 

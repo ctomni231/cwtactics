@@ -94,7 +94,7 @@
   // @param {...Object} arguments for the event
   //     
   function error( event, fromState, toState, errCode ){
-    util.log( "state machine error (code:",errCode,"ev:",event,"from:",fromState,"to:",toState,")" );
+    util.log( "state machine error (code:",errCode,"ev:",event,"from:",fromState,"to:",toState,")");
   }
   
   function create( impl, config ){

@@ -10,4 +10,7 @@ var MAX_SELECTION_RANGE=15;
 var MAX_BUFFER_SIZE=200;
 var VERSION="0.3.5";
 var DEBUG=true;
-var MOD_PATH="http://localhost:8000/mod/cwt/"
+var MOD_PATH="http://localhost:8000/mod/cwt/";
+
+var EV_FACTORY_TYPE_CHECK = "ev_fac_canBuild";
+var EV_FACTORY_TYPE_BUILDED = "ev_fac_builded";

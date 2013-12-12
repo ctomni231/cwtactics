@@ -7,11 +7,11 @@ controller.action_registerCommands("supply_propertySupply");
 controller.action_registerCommands("supply_giveFunds");
 
 // events
-controller.event_define("supply_suppliesNeighbours");
-controller.event_define("supply_refillResources");
-controller.event_define("supply_propertyRepairs");
-controller.event_define("supply_propertySupply");
-controller.event_define("supply_giveFunds");
+model.event_define("supply_suppliesNeighbours");
+model.event_define("supply_refillResources");
+model.event_define("supply_propertyRepairs");
+model.event_define("supply_propertySupply");
+model.event_define("supply_giveFunds");
 
 controller.defineGameScriptable("propertyHeal",1,10);
 
@@ -38,7 +38,7 @@ model.supply_giveFunds = function(prid){
 	if(typeof funds === "number"){
 		model.player_data[prop.owner].gold += funds;
 		
-		controller.events.supply_giveFunds( prid, x, y );
+		model.events.supply_giveFunds( prid, x, y );
 	}
 };
 
@@ -67,7 +67,7 @@ model.supply_propertySupply = function(i){
           prop.type.supply.indexOf(unitTp.movetype) !== -1 ){
 				model.supply_refillResources(model.unit_posData[x][y]);
 				
-				controller.events.supply_propertySupply( i, x,y );
+				model.events.supply_propertySupply( i, x,y );
 			}
 		}
 	}
@@ -103,7 +103,7 @@ model.supply_propertyRepairs = function(i){
 				model.unit_heal(model.unit_extractId(model.unit_posData[x][y]), 
 					model.unit_convertPointsToHealth(value), true);
 				
-				controller.events.supply_propertyRepairs( i, x,y );
+				model.events.supply_propertyRepairs( i, x,y );
 			}
 		}
 	}
@@ -170,7 +170,7 @@ model.supply_suppliesNeighbours = function(sid){
 			
 			if( !unitsSupplied ){
 				
-				controller.events.supply_suppliesNeighbours( sid, x,y, i );
+				model.events.supply_suppliesNeighbours( sid, x,y, i );
 			}
 			unitsSupplied = true;
 			
@@ -190,5 +190,5 @@ model.supply_refillResources = function(uid){
 	unit.ammo = type.ammo;
 	unit.fuel = type.fuel;
 	
-	controller.events.supply_refillResources( uid );
+	model.events.supply_refillResources( uid );
 };

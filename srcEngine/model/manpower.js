@@ -1,27 +1,17 @@
-// commands
-controller.action_registerCommands("manpower_decreaseManpower");
-
-// events
-controller.event_define("manpower_decreaseManpower");
-
-// Man power data array that holds the amount times that an unit can be builded
+// Man power data array that holds the amount times that an unit can be builded.
+//
 model.manpower_data = util.list( MAX_PLAYER, 999999 );
 
-// Returns true if a player has left man power else false.
-//
-model.manpower_hasLeftManpower = function( pid ){
-  assert( model.player_isValidPid(pid) );
-  
-  return model.manpower_data[pid] > 0;
-};
+// Declines build wish when the manpower is le 0
+model.event_on( "buildUnit_check", 
+  function( wish, factoryId, playerId, type ){
+    if( model.manpower_data[playerId] <= 0 ) wish.decline();
+  }
+);
 
-// Decreases the amount of man power.
-//
-model.manpower_decreaseManpower = function( pid ){
-  assert( model.player_isValidPid(pid) );
-
-  model.manpower_data[pid]--;
-  
-  // Invoke model event
-  controller.events.manpower_decreaseManpower(pid);
-};
+// Decreases manpower when a factory builds an unit
+model.event_on( "buildUnit_invoked",
+  function( factoryId, playerId, type ){
+    model.manpower_data[pid]--;
+  }
+);

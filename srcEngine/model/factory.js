@@ -2,11 +2,7 @@
 controller.action_registerCommands( "factory_produceUnit" );
 
 // events
-controller.event_define( "factory_produceUnit" );
-
-model.factory_produceUnit = function(){
-
-};
+model.event_define( "factory_produceUnit" );
 
 // Contructs a unit for a player. At least one slot must be free to do this.
 //
@@ -20,7 +16,7 @@ model.factory_produceUnit = function( x, y, type ){
 	var prop = model.property_posMap[x][y];
   assert( prop !== null );
   
-	controller.events.factory_produceUnit( x, y, type );
+	model.events.factory_produceUnit( x, y, type );
 	
 	var uid  = model.unit_create( model.round_turnOwner, x, y, type );
 	var cost = model.data_unitSheets[ type ].cost;
@@ -33,19 +29,21 @@ model.factory_produceUnit = function( x, y, type ){
 	model.actions_markUnitNonActable( uid );
 };
 
+model.factory_wish = util.wish();
+
 // Returns `true` when the given factory object (by its `prid`) is a factory and can produce 
 // something technically, else `false`.
 //
-model.factory_canProduceSomething = function( prid ){  
-	if( !model.factory_isFactory( prid ) ) return false;
-	
-	var pid = model.property_data[prid].owner;
-  assert( model.player_isValidPid(pid) );
+model.factory_canProduceSomething = function( _prid  ){  
+  if( !model.factory_isFactory( prid ) ) return false;
+
+  var pid = model.property_data[prid].owner;
+  if( pid === INACTIVE_ID              ) return false;
   
-	if( !model.manpower_hasLeftManpower( pid )  ) return false;
-  if( !model.unit_hasFreeSlots( pid ) ) return false;
-    
-	return true;
+  model.factory_wish.approve();
+  model.events[EV_FACTORY_TYPE_CHECK]( model.factory_wish, prid, pid );
+
+  return !model.factory_wish.declined;
 };
 
 // Returns `true` when the given factory object (by its `prid`) is a factory, else `false`.

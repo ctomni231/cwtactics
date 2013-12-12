@@ -4,8 +4,14 @@ controller.action_propertyAction({
   propertyAction: true,
   hasSubMenu: true,
   
-  condition: function( data ){
-    return model.factory_canProduceSomething( data.source.propertyId );
+  condition: function( data, wish ){
+    model.events["buildUnit_check"]( 
+      wish, 
+      data.source.propertyId, 
+      model.property_data[data.source.propertyId].owner; 
+    );
+
+    //return model.factory_canProduceSomething( data.source.propertyId );
   },
   
   prepareMenu: function( data ){

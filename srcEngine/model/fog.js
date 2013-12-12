@@ -3,8 +3,8 @@ controller.action_registerCommands("fog_recalculateFogMap");
 controller.action_registerCommands("fog_modifyVisionAt");
 
 // events
-controller.event_define("fog_modifyVisionAt");
-controller.event_define("fog_recalculateFogMap");
+model.event_define("fog_modifyVisionAt");
+model.event_define("fog_recalculateFogMap");
 
 // scriptables
 controller.defineGameScriptable("vision",1,40);
@@ -115,7 +115,7 @@ model.fog_modifyVisionAt = function( x,y, pid, range, value ){
   
   
   // Invoke event
-  controller.events.fog_modifyVisionAt( x,y, pid, range, value );
+  model.events.fog_modifyVisionAt( x,y, pid, range, value );
 };
 
 // Recalculates the fog map for the client and the turn owner.
@@ -168,5 +168,5 @@ model.fog_recalculateFogMap = function(){
   }
   
   // Invoke event
-  controller.events.fog_recalculateFogMap();
+  model.events.fog_recalculateFogMap();
 };

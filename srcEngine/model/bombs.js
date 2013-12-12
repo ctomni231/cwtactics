@@ -6,11 +6,11 @@ controller.action_registerCommands("bombs_fireCannon");
 controller.action_registerCommands("bombs_fireLaser");
 
 // events
-controller.event_define("bombs_explosionAt");
-controller.event_define("bombs_startFireSilo");
-controller.event_define("bombs_siloRegeneratesIn");
-controller.event_define("bombs_fireCannon");
-controller.event_define("bombs_fireLaser");
+model.event_define("bombs_explosionAt");
+model.event_define("bombs_startFireSilo");
+model.event_define("bombs_siloRegeneratesIn");
+model.event_define("bombs_fireCannon");
+model.event_define("bombs_fireLaser");
 
 // Inflicts damage to all units in a given range at a given position.
 //
@@ -29,7 +29,7 @@ model.bombs_explosionAt = function(tx, ty, range, damage, owner){
   model.map_doInRange(tx, ty, range, model.bombs_doDamage_, damage);
   
   // Invoke event
-  controller.events.bombs_explosionAt(tx, ty, range, damage, owner);
+  model.events.bombs_explosionAt(tx, ty, range, damage, owner);
 };
 
 // Marks all cannon targets in a selection. The area of fire will be defined by the rectangle from
@@ -295,7 +295,7 @@ model.bombs_fireSilo = function( x,y, tx, ty, owner){
   model.property_changeType(siloId, model.data_tileSheets[type.changeTo]);
   
   // Invoke event
-  controller.events.bombs_startFireSilo( x,y, siloId, tx,ty, range, damage, owner );
+  model.events.bombs_startFireSilo( x,y, siloId, tx,ty, range, damage, owner );
   
   model.bombs_explosionAt(tx, ty, range, damage, owner);
   
@@ -305,7 +305,7 @@ model.bombs_fireSilo = function( x,y, tx, ty, owner){
   );
   
   // Invoke change event
-  controller.events.bombs_siloRegeneratesIn( siloId, 5, type );
+  model.events.bombs_siloRegeneratesIn( siloId, 5, type );
 };
 
 // Fires a cannon at a given position.
@@ -327,7 +327,7 @@ model.bombs_fireCannon = function( ox,oy, x,y ){
   );
   
   // Invoke event
-  controller.events.bombs_fireCannon( ox,oy,x,y, type.ID );
+  model.events.bombs_fireCannon( ox,oy,x,y, type.ID );
 };
 
 // Fires a laser at a given position.
@@ -340,7 +340,7 @@ model.bombs_fireLaser = function( x,y ){
   var oy   = y;
   var pid  = prop.owner;
 
-  controller.events.bombs_fireLaser( ox,oy,prop.type.ID );
+  model.events.bombs_fireLaser( ox,oy,prop.type.ID );
   
   // check all tiles on the map
   for( var x=0,xe=model.map_width; x<xe; x++ ){

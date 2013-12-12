@@ -4,9 +4,9 @@ controller.action_registerCommands("team_transferUnit");
 controller.action_registerCommands("team_transferProperty");
 
 // events
-controller.event_define("team_transferMoney");
-controller.event_define("team_transferUnit");
-controller.event_define("team_transferProperty");
+model.event_define("team_transferMoney");
+model.event_define("team_transferUnit");
+model.event_define("team_transferProperty");
 
 // Different available money transfer steps.
 //
@@ -70,7 +70,7 @@ model.team_transferMoney = function( spid, tpid, money ){
 	sPlayer.gold -= money;
 	tPlayer.gold += money;
 	
-	controller.events.team_transferMoney( spid, tpid, money ); 
+	model.events.team_transferMoney( spid, tpid, money ); 
 };
 
 // Transfers money from one player to another by a given tile.
@@ -122,7 +122,7 @@ model.team_transferUnit = function( suid, tplid ){
 	targetUnit.y        = ty;
 	targetUnit.loadedIn = selectedUnit.loadedIn;
 	
-	controller.events.team_transferUnit( suid, tplid ); 
+	model.events.team_transferUnit( suid, tplid ); 
 };
 
 // Returns true when a given unit id is transferable to another player.
@@ -167,7 +167,7 @@ model.team_transferProperty = function( sprid, tplid ){
 		}
 	}
 	
-	controller.events.team_transferProperty( sprid, tplid ); 
+	model.events.team_transferProperty( sprid, tplid ); 
 };
 
 // Returns true when a given property id is transferable to another player.

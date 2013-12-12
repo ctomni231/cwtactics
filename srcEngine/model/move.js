@@ -4,9 +4,9 @@ controller.action_registerCommands( "move_clearUnitPosition" );
 controller.action_registerCommands( "move_moveUnitByPath" );
 
 // events
-controller.event_define( "move_setUnitPosition" );
-controller.event_define( "move_clearUnitPosition" );
-controller.event_define( "move_moveUnitByPath" );
+model.event_define( "move_setUnitPosition" );
+model.event_define( "move_clearUnitPosition" );
+model.event_define( "move_moveUnitByPath" );
 
 // scriptables
 controller.defineGameScriptable( "moverange", 1, MAX_SELECTION_RANGE );
@@ -41,7 +41,7 @@ model.move_moveUnitByPath = function( way, uid, x, y, noFuelConsumption ){
   var fuelUsed = 0;
   
   // Invoke event
-  controller.events.move_moveUnitByPath( way, uid, x, y );
+  model.events.move_moveUnitByPath( way, uid, x, y );
   
   // check move way by iterate through all move codes and build the path
   //
@@ -138,7 +138,7 @@ model.move_clearUnitPosition = function( uid ){
   unit.x = -unit.x;
   unit.y = -unit.y;
   
-  controller.events.move_clearUnitPosition(uid);
+  model.events.move_clearUnitPosition(uid);
 };
 
 // Sets the position of an unit.
@@ -154,7 +154,7 @@ model.move_setUnitPosition = function( uid, x, y ){
   
   model.fog_modifyVisionAt( x, y, unit.owner, unit.type.vision, 1 );
   
-  controller.events.move_setUnitPosition( uid, x, y );
+  model.events.move_setUnitPosition( uid, x, y );
 };
 
 // Returns the movecosts to move with a given move type on a given tile type.

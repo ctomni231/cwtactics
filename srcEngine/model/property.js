@@ -4,9 +4,9 @@ controller.action_registerCommands( "property_resetCapturePoints" );
 controller.action_registerCommands( "property_capture" );
 
 // events
-controller.event_define( "property_changeType" );
-controller.event_define( "property_resetCapturePoints" );
-controller.event_define( "property_capture" );
+model.event_define( "property_changeType" );
+model.event_define( "property_resetCapturePoints" );
+model.event_define( "property_capture" );
 
 // scriptables
 controller.defineGameScriptable( "captureRate", 50, 9999 );
@@ -165,7 +165,7 @@ model.property_capture = function( cid, prid ){
     }
   }
   
-  controller.events.property_capture( uid );
+  model.events.property_capture( cid, prid );
 };
 
 // Resets the capture points of a property object
@@ -175,7 +175,7 @@ model.property_resetCapturePoints = function( prid ){
   
   model.property_data[prid].capturePoints = 20;
   
-  controller.events.property_resetCapturePoints( prid );
+  model.events.property_resetCapturePoints( prid );
 };
 
 // Returns true if the property can be captured by the unit, else ( no capturable and/or 
@@ -193,9 +193,13 @@ model.property_isCapturableBy = function( prid, captId ){
 //
 model.property_changeType = function( prid, type ){
   assert( model.property_isValidPropId(prid) );
-  assert( model.data_propertyTypes.indexOf(type.ID) !== -1 );
+  if( typeof type === "string" ){
+    assert( model.data_propertyTypes.indexOf(type) !== -1 );
+    model.data_tileSheets[type]
+  }
+  else assert( model.data_propertyTypes.indexOf(type.ID) !== -1 );
   
   model.property_data[prid].type = type;
   
-  controller.events.property_changeType( prid, type );
+  model.events.property_changeType( prid, type );
 };

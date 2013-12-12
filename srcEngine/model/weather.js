@@ -3,7 +3,7 @@ controller.action_registerCommands("weather_change");
 controller.action_registerCommands("weather_calculateNext");
 
 // event
-controller.event_define("weather_change");
+model.event_define("weather_change");
 
 // scriptables
 controller.defineGameScriptable("neutralizeWeather",0,1);
@@ -60,5 +60,5 @@ model.weather_change = function( wth ){
   model.weather_data = model.data_weatherSheets[wth];
   model.fog_recalculateFogMap();
 
-	controller.events.weather_change( wth );
+	model.events.weather_change( wth );
 };

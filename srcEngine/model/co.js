@@ -7,10 +7,10 @@ controller.action_registerCommands( "co_detachCommander" );
 controller.action_registerCommands( "co_attachCommander" );
 
 // events
-controller.event_define( "co_modifyPowerLevel" );
-controller.event_define( "co_activateSCOP" );
-controller.event_define( "co_activateCOP" );
-controller.event_define( "co_deactivateCOP" );
+model.event_define( "co_modifyPowerLevel" );
+model.event_define( "co_activateSCOP" );
+model.event_define( "co_activateCOP" );
+model.event_define( "co_deactivateCOP" );
 
 // configs
 controller.defineGameConfig( "co_getStarCost",              5, 50000, 9000, 5 );
@@ -107,7 +107,7 @@ model.co_activatePower_ = function( pid, level, evName ){
   data.timesUsed++;
   
   // Invoke model event
-  controller.events[evName]( pid );
+  model.events[evName]( pid );
 };
 
 // Deactivates the CO power of a player.
@@ -139,7 +139,7 @@ model.co_modifyPowerLevel = function( pid, value ){
   if( data.power < 0 ) data.power = 0;
   
   // Invoke model event
-  controller.events.co_modifyPowerLevel( pid, value );
+  model.events.co_modifyPowerLevel( pid, value );
 };
 
 // Returns `true`when a given player can activate a power level.

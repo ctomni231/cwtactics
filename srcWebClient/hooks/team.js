@@ -1,8 +1,8 @@
-controller.event_on("team_transferMoney",function(){
+model.event_on("team_transferMoney",function(){
   controller.renderPlayerInfo();
 });
 
-controller.event_on("team_transferUnit",function( suid ){
+model.event_on("team_transferUnit",function( suid ){
   var unit = model.unit_data[suid];
   var x = -unit.x;
   var y = -unit.y;
