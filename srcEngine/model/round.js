@@ -78,9 +78,11 @@ model.round_nextTurn = function(){
   i= model.unit_firstUnitId( pid ); 
   e= model.unit_lastUnitId( pid );
   for( ; i<e; i++ ){
-    if( model.unit_data[i].owner === INACTIVE_ID ) continue;
     
+    if( model.unit_data[i].owner === INACTIVE_ID ) continue;
     model.unit_drainFuel( i );
+    
+    if( model.unit_data[i].owner === INACTIVE_ID ) continue;
     if(turnStartSupply) model.supply_tryUnitSuppliesNeighbours( i );
   }
 

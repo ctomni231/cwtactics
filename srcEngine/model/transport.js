@@ -61,7 +61,9 @@ model.transport_unloadFrom = function( transportId, trsx, trsy, loadId, tx,ty ){
 		
 	// TODO: remove this later
 	// trapped ?
-	if( tx === -1 || ty === -1 ) return;
+	if( tx === -1 || ty === -1 || model.unit_posData[tx][ty] ){
+    return;
+  }
 	
 	// remove transport link
 	model.unit_data[ loadId 			].loadedIn = -1;
