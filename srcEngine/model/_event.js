@@ -17,11 +17,15 @@ model.event_define = function(ev){
   assertUndef( model.event_callbacks[ev] );
 
   model.event_callbacks[ev] = [];
-  model.events[ev]          = function(){
+  model.events[ev]          = function( wish ){
+    var isWish = (typeof wish.defined !== (void 0));
     
     var list = model.event_callbacks[ev];
     for (var i = 0, e = list.length; i < e; i++) {
       list[i].apply(null,arguments);
+      
+      // one of the listerners declined the wish -> break execution
+      if( isWish && wish.declined ) return;
     };
   };
 };
