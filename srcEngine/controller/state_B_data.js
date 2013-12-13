@@ -196,6 +196,8 @@ controller.stateMachine.data = {
     clean: function(){
       this.size = 0;
     },
+    
+    wish: util.wish(),
 
     // Prepares the menu for a given source and target position.
     // 
@@ -280,8 +282,10 @@ controller.stateMachine.data = {
             else if( action.mapAction 			=== true && !mapActable ) continue;
               else if( action.clientAction		=== true && !mapActable ) continue;
           
+          data.wish.approve();
+          
           // if condition matches then add the entry to the menu list
-          if( !(action.condition && !action.condition( data )) ){
+          if( !(action.condition && !action.condition( data, data.wish )) || !wish.declined ){
             data.menu.addEntry( commandKeys[i] );
           }
         }
