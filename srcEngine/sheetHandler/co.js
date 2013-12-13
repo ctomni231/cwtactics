@@ -1,16 +1,18 @@
-model.data_coParser.addHandler( function( sheet ){
+model.event_on("parse_co",function( sheet ){
 
   // stars
-  assert( util.intRange(sheet.coStars,-1,10) && sheet.coStars !== 0 );
-  assert( util.intRange(sheet.scoStars,-1,10) && sheet.scoStars !== 0 );
+  assertIntRange( sheet.coStars,-1,10 );
+  assertIntRange( sheet.scoStars,-1,10);
+  assert( sheet.coStars !== 0 );
+  assert( sheet.scoStars !== 0 );
 
   // rules
-  assert( Array.isArray(sheet.d2d) );
-  assert( Array.isArray(sheet.cop.turn) );
-  assert( Array.isArray(sheet.scop.turn) );
+  assertList( sheet.d2d );
+  assertList( sheet.cop.turn );
+  assertList( sheet.scop.turn );
   assert( sheet.cop.power );
   assert( sheet.scop.power );
 
-  assert( util.isString(sheet.faction) );
-  assert( util.isString(sheet.music) );
+  assertStr( sheet.faction );
+  assertStr( sheet.music );
 });

@@ -282,10 +282,11 @@ controller.stateMachine.data = {
             else if( action.mapAction 			=== true && !mapActable ) continue;
               else if( action.clientAction		=== true && !mapActable ) continue;
           
-          data.wish.approve();
+          data.menu.wish.approve();
           
           // if condition matches then add the entry to the menu list
-          if( !(action.condition && !action.condition( data, data.wish )) || !wish.declined ){
+          if( !(action.condition && !action.condition( data, data.menu.wish )) ){
+
             data.menu.addEntry( commandKeys[i] );
           }
         }

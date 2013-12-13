@@ -8,10 +8,10 @@ controller.action_propertyAction({
     model.events["buildUnit_check"]( 
       wish, 
       data.source.propertyId, 
-      model.property_data[data.source.propertyId].owner; 
+      model.property_data[data.source.propertyId].owner
     );
 
-    //return model.factory_canProduceSomething( data.source.propertyId );
+    return !wish.declined;
   },
   
   prepareMenu: function( data ){

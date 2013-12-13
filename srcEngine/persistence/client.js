@@ -1,24 +1,6 @@
-controller.persistence_defineHandler(
-  
-  // -----------------------------------------------------------------------
-  // load map data
-  //
+model.event_on("prepare_game",function( dom ){
+  model.client_lastPid = INACTIVE_ID;
+});
 
-  function(){
-    model.client_lastPid = INACTIVE_ID;
-  },
-
-  // -----------------------------------------------------------------------
-  // load save game data
-  //
-
-  function(){
-  },
-  
-  // -----------------------------------------------------------------------
-  // save game data
-  //
-
-  function(){
-  }
-)
+//model.event_on("load_game",function( dom ){});
+//model.event_on("save_game",function( dom ){});

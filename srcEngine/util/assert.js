@@ -1,4 +1,4 @@
-// Assertion. 
+// Assertion.
 //
 var assert = function(expr,msgA){
   if( !expr ){
@@ -16,7 +16,12 @@ var assertFn = function( v ){
 };
 
 var assertInt = function( v ){
-  assert( typeof value === "number" && value % 1 === 0 );
+  assert( typeof v === "number" && v % 1 === 0 );
+};
+
+var assertIntRange = function( v, from, to ){
+  assertInt(v);
+  assert( v >= from && v <= to );
 };
 
 var assertBool = function( v ){
@@ -25,6 +30,10 @@ var assertBool = function( v ){
 
 var assertStr = function( v ){
   assert( typeof v === "string" );
+};
+
+var assertList = function( v ){
+  assert( Array.isArray(v) );
 };
 
 var assertDef = function( v ){

@@ -1,3 +1,3 @@
-model.data_weatherParser.addHandler(function( sheet ){
-  assert( util.isUndefined(sheet.defaultWeather) || util.isBoolean(sheet.defaultWeather) );
+model.event_on("parse_weather",function( sheet ){
+  if( sheet.defaultWeather !== void 0 ) assertBool( sheet.defaultWeather );
 });

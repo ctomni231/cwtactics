@@ -1,9 +1,11 @@
 // Creates a simple but extend able parser instance to validate javascript objects. This will be
 // used to allow modules to set own requirements on object type sheets.
 //
-model.data_createParser = function( db, list ){
+model.data_createParser = function( name, db, list ){
   var parserParts = [ ];
   var listFn = util.isFunction(list);
+
+  model.event_define("parse_"+name);
 
   // defines the public API
   return {
@@ -15,7 +17,7 @@ model.data_createParser = function( db, list ){
 
       parserParts.push( cb );
     },
-    
+
     // Parsing function that parses a type sheet and adds it to the type
     // list.
     //
@@ -23,10 +25,7 @@ model.data_createParser = function( db, list ){
       assert( util.isString(sheet.ID) );
       assert( !db.hasOwnProperty(sheet.ID) );
 
-      // check sheet by calling all parser parts
-      for( var i = 0, e = parserParts.length; i < e; i++ ) {
-        parserParts[i]( sheet );
-      }
+      model.events["parse_"+name]( sheet );
 
       // add sheet to the type list
       if( listFn ) list( sheet );
@@ -40,15 +39,7 @@ model.data_createParser = function( db, list ){
     //
     parseAll: function( list ){
       for( var i = 0, e = list.length; i < e; i++ ) this.parse( list[i] );
-    },
-
-    clear: function(){
-      list.splice( 0 );
-
-      var keys = Object.keys( db );
-      for( var i = 0, e = keys.length; i < e; i++ ) delete db[keys[i]];
     }
-
   };
 };
 
@@ -105,7 +96,7 @@ model.data_unitTypes = [ ];
 model.data_simpleAnimatedUnits = {};
 
 // Unit type sheet parser object
-model.data_unitParser = model.data_createParser( model.data_unitSheets, function( sheet ){
+model.data_unitParser = model.data_createParser( "unit", model.data_unitSheets, function( sheet ){
   model.data_unitTypes.push( sheet.ID );
   if( sheet.assets.simpleAnimated ) model.data_simpleAnimatedUnits[sheet.ID] = true;
 } );
@@ -122,8 +113,8 @@ model.data_propertyTypes = [ ];
 model.data_tileTypes = [ ];
 
 // Tile type sheet parser object
-model.data_tileParser = model.data_createParser( model.data_tileSheets,
-  function( sheet ){ 
+model.data_tileParser = model.data_createParser( "tile", model.data_tileSheets,
+  function( sheet ){
     if( sheet.capturePoints || sheet.rocketsilo || sheet.cannon || sheet.laser  ){
       model.data_propertyTypes.push( sheet.ID );
     }
@@ -143,7 +134,7 @@ model.data_defaultWeatherSheet = null;
 model.data_nonDefaultWeatherTypes = [ ];
 
 // Tile type sheet parser object
-model.data_weatherParser = model.data_createParser( model.data_weatherSheets,
+model.data_weatherParser = model.data_createParser( "weather", model.data_weatherSheets,
   function( sheet ){
     if( sheet.defaultWeather ) model.data_defaultWeatherSheet = sheet;
     else                       model.data_nonDefaultWeatherTypes.push( sheet );
@@ -158,6 +149,7 @@ model.data_movetypeSheets = {};
 model.data_movetypeTypes = [ ];
 
 model.data_movetypeParser = model.data_createParser(
+  "movetype",
   model.data_movetypeSheets,
   model.data_movetypeTypes
 );
@@ -169,6 +161,7 @@ model.data_gameModeSheets = {};
 model.data_gameModeTypes = [ ];
 
 model.data_gameModeParser = model.data_createParser(
+  "gameMode",
   model.data_gameModeSheets,
   model.data_gameModeTypes
 );
@@ -180,6 +173,7 @@ model.data_fractionSheets = {};
 model.data_fractionTypes = [ ];
 
 model.data_fractionParser = model.data_createParser(
+  "fraction",
   model.data_fractionSheets,
   model.data_fractionTypes
 );
@@ -194,7 +188,7 @@ model.data_coSheets = {};
 
 model.data_coTypes = [ ];
 
-model.data_coParser = model.data_createParser( model.data_coSheets, model.data_coTypes );
+model.data_coParser = model.data_createParser( "co",model.data_coSheets, model.data_coTypes );
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

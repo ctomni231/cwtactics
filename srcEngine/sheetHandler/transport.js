@@ -1,12 +1,10 @@
-model.data_unitParser.addHandler(function(sheet){
+model.event_on("parse_unit",function( sheet ){
+  if( sheet.canload ){
+    assertIntRange( sheet.maxloads,1,5 );
+    assertList( sheet.canload );
 
-	if( typeof sheet.canload !== "undefined" ){
-    //assert( util.isBoolean(sheet.suppliesloads) );
-		assert( util.intRange( sheet.maxloads,1,5) );
-
-    assert( Array.isArray( sheet.canload) );
     for( var i=0,e=sheet.canload.length; i<e; i++ ){
-      assert( util.isString(sheet.canload[i]) )
+      assertStr( sheet.canload[i] );
     }
-	}
+  }
 });

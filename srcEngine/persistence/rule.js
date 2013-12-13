@@ -1,25 +1,7 @@
-controller.persistence_defineHandler(
-  
-  
-  // -----------------------------------------------------------------------
-  // load map data
-  //
+model.event_on("prepare_game",function( dom ){
+  model.rule_map.resetValues();
+});
 
-  function(){
-    model.rule_map.resetValues();
-  },
+//model.event_on("load_game",function( dom ){});
 
-  // -----------------------------------------------------------------------
-  // load save game data
-  //
-
-  function(){
-  },
-  
-  // -----------------------------------------------------------------------
-  // save game data
-  //
-  
-  function(){
-  }
-);
+//model.event_on("save_game",function( dom ){});
