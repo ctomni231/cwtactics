@@ -1,3 +1,0 @@
-(assert\()(.+)(\);)
-
-if( !( $2 ) ) throw Error("assert failed");
