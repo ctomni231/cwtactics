@@ -1,0 +1,601 @@
+[
+
+  {
+    "ID": "PLIN",
+    "defense": 1,
+    "assets":{
+      "gfx":"terrain/AWDS_PLIN.png"
+    }
+  },
+
+  {
+    "ID": "FRST",
+    "defense": 2,
+    "blocksVision":true,
+    "assets":{
+      "gfx":"terrain/AWDS_FRST.png",
+      "gfxOverlay":true
+    }
+  },
+
+  {
+    "ID": "MNTN",
+    "defense": 4,
+    "assets":{
+      "gfx":"terrain/AWDS_MNTN.png",
+      "gfxOverlay":true
+    }
+  },
+
+
+  {
+    "ID": "ROAD",
+    "defense": 0,
+    "assets":{
+      "gfx":"terrain/AWDS_ROAD~LLOO.png",
+      "gfx_variants":[
+        {
+          "ROAD": "R",
+          "WATER": "S",
+          "RIVER": "RV",
+          "PLIN": "L",
+          "FRST": "L",
+          "MNTN": "L",
+          "REEF": "S",
+          "DEFAULT": ""
+        },
+        [
+          [ "terrain/AWDS_ROAD~OOOO.png",  "R","R","R","R" ],
+          [ "terrain/AWDS_ROAD~LOOO.png",  "","R","R","R" ],
+          [ "terrain/AWDS_ROAD~OLOO.png",  "R","R","","R" ],
+          [ "terrain/AWDS_ROAD~OOLO.png",  "R","R","R","" ],
+          [ "terrain/AWDS_ROAD~OOOL.png",  "R","","R","R" ],
+          [ "terrain/AWDS_ROAD~LLOO.png",  "","R","","R" ],
+          [ "terrain/AWDS_ROAD~LOLO.png",  "","R","R","" ],
+          [ "terrain/AWDS_ROAD~LOOL.png",  "","","R","R" ],
+          [ "terrain/AWDS_ROAD~OLLO.png",  "R","R","","" ],
+          [ "terrain/AWDS_ROAD~OLOL.png",  "R","","","R" ],
+          [ "terrain/AWDS_ROAD~OOLL.png",  "R","","R","" ],
+          [ "terrain/AWDS_ROAD~OOLL.png",  "","","R","" ],
+          [ "terrain/AWDS_ROAD~OOLL.png",  "R","","","" ],
+          [ "terrain/AWDS_ROAD~LLOO.png",  "","","","R" ],
+          [ "terrain/AWDS_ROAD~LLOO.png",  "","R","","" ],
+          [ "terrain/AWDS_ROAD~LLOO.png",  "","","","" ]
+        ]
+      ]
+    }
+  },
+
+  {
+    "ID": "RIVER",
+    "defense": 0,
+    "assets":{
+      "gfx":"terrain/AWDS_RIVR~LLRR.png",
+      "gfx_variants":[
+        {
+          "RIVER": "R",
+          "DEFAULT": ""
+        },
+        [
+          [ "terrain/AWDS_RIVR~RRRR.png",  "R","R","R","R" ],
+          [ "terrain/AWDS_RIVR~LRRR.png",  "","R","R","R" ],
+          [ "terrain/AWDS_RIVR~RLRR.png",  "R","R","","R" ],
+          [ "terrain/AWDS_RIVR~RRLR.png",  "R","R","R","" ],
+          [ "terrain/AWDS_RIVR~RRRL.png",  "R","","R","R" ],
+          [ "terrain/AWDS_RIVR~LLRR.png",  "","R","","R" ],
+          [ "terrain/AWDS_RIVR~LRLR.png",  "","R","R","" ],
+          [ "terrain/AWDS_RIVR~LRRL.png",  "","","R","R" ],
+          [ "terrain/AWDS_RIVR~RLLR.png",  "R","R","","" ],
+          [ "terrain/AWDS_RIVR~RLRL.png",  "R","","","R" ],
+          [ "terrain/AWDS_RIVR~RRLL.png",  "R","","R","" ],
+          [ "terrain/AWDS_RIVR~LLRR.png",  "","","","" ]
+        ]
+      ]
+    }
+  },
+
+  {
+    "ID": "BRDG",
+    "defense": 0,
+    "assets":{
+      "gfx":"terrain/AWDS_BRDG~NNOO.png",
+      "gfx_variants":[
+        {
+          "ROAD": "R",
+          "BRDG": "R",
+          "DEFAULT": ""
+        },
+        [
+         
+          [ "terrain/AWDS_BRDG~OOOO.png",  "R","R","R","R" ],
+          [ "terrain/AWDS_BRDG~NOOO.png",  "","R","R","R" ],
+          [ "terrain/AWDS_BRDG~ONOO.png",  "R","R","","R" ],
+          [ "terrain/AWDS_BRDG~OONO.png",  "R","R","R","" ],
+          [ "terrain/AWDS_BRDG~OOON.png",  "R","","R","R" ],
+          [ "terrain/AWDS_BRDG~NOON.png",  "","","R","R" ],
+          [ "terrain/AWDS_BRDG~ONON.png",  "R","","","R" ],
+          [ "terrain/AWDS_BRDG~ONNO.png",  "R","R","","" ],
+          [ "terrain/AWDS_BRDG~NONO.png",  "","R","R","" ],
+          [ "terrain/AWDS_BRDG~OONN.png",  "R","","R",""],
+          [ "terrain/AWDS_BRDG~OONN.png",  "","","R",""],
+          [ "terrain/AWDS_BRDG~OONN.png",  "R","","",""],
+          [ "terrain/AWDS_BRDG~NNOO.png",  "","R","","R"],
+          [ "terrain/AWDS_BRDG~NNOO.png",  "","","","R"],
+          [ "terrain/AWDS_BRDG~NNOO.png",  "","R","",""],
+          [ "terrain/AWDS_BRDG~NNOO.png",  "","","","" ]
+        ]
+      ]
+    }
+  },
+
+  {
+    "ID": "WATER",
+    "defense": 0,
+    "assets":{
+      "gfx":"terrain/AWDS_SEAS.png",
+      "animatedTile":true,
+      "gfx_variants":[
+        {
+          "ROAD": "L",
+          "WATER": "S",
+          "RIVER": "RV",
+          "PLIN": "L",
+          "FRST": "L",
+          "MNTN": "L",
+          "REEF": "S",
+          "DEFAULT": ""
+        },
+        [
+          [ "terrain/AWDS_SEAS.png", "S","S","S","S","S","S","S","S" ],
+          [ "terrain/AWDS_SEAS~LLLL.png", "L","L","L","L","L","L","L","L" ],
+          [ "terrain/AWDS_SEAS~LLLS.png", "L","","S","","L","","L","" ],
+          [ "terrain/AWDS_SEAS~LLSL.png", "L","","L","","L","","S","" ],
+          [ "terrain/AWDS_SEAS~LSLL.png", "L","","L","","S","","L","" ],
+          [ "terrain/AWDS_SEAS~LLSS.png", "L","L","S","L","L","L","S","L" ],
+          [ "terrain/AWDS_SEAS~LSLL.png", "S","","L","","L","","L","" ],
+          [ "terrain/AWDS_SEAS~LSLS.png", "L","L","S","S","S","L","L","L" ],
+          [ "terrain/AWDS_SEAS~LSLS.png", "L","","S","S","S","","L","" ],
+          [ "terrain/AWDS_SEAS~LSSL.png", "L","L","L","L","S","S","S","L" ],
+          [ "terrain/AWDS_SEAS~LSSL.png", "L","","L","","S","S","S","" ],
+          [ "terrain/AWDS_SEAS~LSSS.png", "L","L","S","S","S","S","S","L" ],
+          [ "terrain/AWDS_SEAS~RSSS.png", "RV","L","S","S","S","S","S","L" ],
+          [ "terrain/AWDS_SEAS~SLLL.png", "S","L","L","L","L","L","L","L" ],
+          [ "terrain/AWDS_SEAS~SLLS.png", "S","S","S","L","L","L","L","L" ],
+          [ "terrain/AWDS_SEAS~SLSL.png", "S","","L","","L","","S","S" ],
+          [ "terrain/AWDS_SEAS~SLSS.png", "S","","S","","L","","S","" ],
+          [ "terrain/AWDS_SEAS~SRSS.png", "S","S","S","L","RV","L","S","S" ],
+          [ "terrain/AWDS_SEAS~SSLS.png", "S","","S","","S","","L","" ],
+          [ "terrain/AWDS_SEAS~SSRS.png", "S","S","S","S","S","L","RV","L" ],
+          [ "terrain/AWDS_SEAS~SSSL.png", "S","","L","","S","","","" ],
+          [ "terrain/AWDS_SEAS~SSSR.png", "S","L","RV","L","S","S","S","S" ],
+          [ "terrain/AWDS_SEAS~SSSS.png", "S","L","S","L","S","L","S","L" ],
+          [ "terrain/AWDS_SEAS~SSSSLLLS.png", "S","L","S","S","S","L","S","L" ],
+          [ "terrain/AWDS_SEAS~SSSSLLSL.png", "S","L","S","L","S","S","S","L" ],
+          [ "terrain/AWDS_SEAS~SSSSLLSS.png", "S","L","S","S","S","S","S","L" ],
+          [ "terrain/AWDS_SEAS~SSSSLSLL.png", "S","S","S","L","S","L","S","L" ],
+          [ "terrain/AWDS_SEAS~SSSSLSLS.png", "S","S","S","S","S","L","S","L" ],
+          [ "terrain/AWDS_SEAS~SSSSLSSL.png", "S","S","S","L","S","S","S","L" ],
+          [ "terrain/AWDS_SEAS~SSSSLSSS.png", "S","S","S","S","S","S","S","L" ],
+          [ "terrain/AWDS_SEAS~SSSSSLLL.png", "S","L","S","L","S","L","S","S" ],
+          [ "terrain/AWDS_SEAS~SSSSSLLS.png", "S","L","S","S","S","L","S","S" ],
+          [ "terrain/AWDS_SEAS~SSSSSLSL.png", "S","L","S","L","S","S","S","S" ],
+          [ "terrain/AWDS_SEAS~SSSSSLSS.png", "S","L","S","S","S","S","S","S" ],
+          [ "terrain/AWDS_SEAS~SSSSSSLL.png", "S","S","S","L","S","L","S","S" ],
+          [ "terrain/AWDS_SEAS~SSSSSSSL.png", "S","S","S","L","S","S","S","S" ],
+          [ "terrain/AWDS_SEAS~SSSSSSLS.png", "S","S","S","S","S","L","S","S" ],
+          [ "terrain/AWDS_SEAS~LSSS.png", "L","L","S","S","S","S","S","S" ],
+          [ "terrain/AWDS_SEAS~LSSS.png", "L","S","S","S","S","S","S","L" ],
+          [ "terrain/AWDS_SEAS~LSSS.png", "L","S","S","S","S","S","S","S" ]
+        ]
+      ]
+    }
+  },
+
+  {
+    "ID": "REEF",
+    "defense": 1,
+    "blocksVision":true,
+    "assets":{
+      "gfx":"terrain/AWDS_REEF.png"
+    }
+  },
+
+  {
+    "ID": "SHOAL",
+    "defense": 0,
+    "assets":{
+      "gfx":"terrain/AWDS_SHOA~BBLS.png"
+    }
+  },
+
+  {
+    "ID": "CITY",
+    "vision": 0,
+    "defense": 3,
+    "capturePoints": 20,
+    "funds": 1000,
+    "supply": [
+      "INFT",
+      "MECH",
+      "TIRE_A",
+      "TIRE_B",
+      "TANK"
+    ],
+    "repairs": {
+      "INFT":2,
+      "MECH":2,
+      "TIRE_A":2,
+      "TIRE_B":2,
+      "TANK":2
+    },
+    "assets":{
+      "gfx":"properties/AWDS_CITY.png"
+    }
+  },
+
+
+  {
+    "ID": "BASE",
+    "vision": 0,
+    "defense": 3,
+    "capturePoints": 20,
+    "funds": 1000,
+    "supply": [
+      "INFT",
+      "MECH",
+      "TIRE_A",
+      "TIRE_B",
+      "TANK"
+    ],
+    "repairs": {
+      "INFT":2,
+      "MECH":2,
+      "TIRE_A":2,
+      "TIRE_B":2,
+      "TANK":2
+    },
+    "builds": [
+      "INFT",
+      "MECH",
+      "TIRE_A",
+      "TIRE_B",
+      "TANK"
+    ],
+    "assets":{
+      "gfx":"properties/AWDS_BASE.png"
+    }
+  },
+
+  {
+    "ID": "APRT",
+    "vision": 0,
+    "defense": 3,
+    "capturePoints": 20,
+    "funds": 1000,
+    "supply": [
+      "AIR"
+    ],
+    "repairs": {
+      "AIR":2
+    },
+    "builds": [
+      "AIR"
+    ],
+    "assets":{
+      "gfx":"properties/AWDS_APRT.png"
+    }
+  },
+
+  {
+    "ID": "PORT",
+    "vision": 0,
+    "defense": 3,
+    "capturePoints": 20,
+    "funds": 1000,
+    "supply": [
+      "SHIP",
+      "WATER_TRANSPORT"
+    ],
+    "repairs": {
+      "SHIP":2,
+      "WATER_TRANSPORT":2
+    },
+    "builds": [
+      "SHIP",
+      "WATER_TRANSPORT"
+    ],
+    "assets":{
+      "gfx":"properties/AWDS_PORT.png"
+    }
+  },
+
+  {
+    "ID": "SILO",
+    "defense": 3,
+    "vision": 0,
+    "rocketsilo":{
+      "fireable":["INFT","MECH"],
+      "range":2,
+      "damage":3
+    },
+    "changeTo":"SILO_EMPTY",
+    "assets":{
+      "fireSound":"rocketImpact.mp3",
+      "gfx":"properties/AWDS_SILO.png"
+    }
+  },
+
+  {
+    "ID": "SILO_EMPTY",
+    "defense": 3,
+    "vision": 0,
+    "rocketsilo":{},
+    "assets":{
+      "gfx":"properties/AWDS_PLTF.png"
+    }
+  },
+
+  {
+    "ID": "HQTR",
+    "vision": 0,
+    "defense": 4,
+    "capturePoints": 20,
+    "funds": 1000,
+    "looseAfterCaptured": true,
+    "changeAfterCaptured": "CITY",
+    "notTransferable":true,
+    "supply": [
+      "INFT",
+      "MECH",
+      "TIRE_A",
+      "TIRE_B",
+      "TANK"
+    ],
+    "repairs": {
+      "INFT":2,
+      "MECH":2,
+      "TIRE_A":2,
+      "TIRE_B":2,
+      "TANK":2
+    },
+    "assets":{
+      "gfx":"properties/AWDS_HQTR.png",
+      "factionSprites":{
+        "ORST":"properties/AWDS_HQTR_OS.png",
+        "BLMN":"properties/AWDS_HQTR_BM.png",
+        "GRET":"properties/AWDS_HQTR_GE.png",
+        "YLCM":"properties/AWDS_HQTR_YC.png"
+      }
+    }
+  },
+
+  {
+    "ID": "RADAR",
+    "vision": 4,
+    "defense": 3,
+    "points": 20,
+    "assets":{
+      "gfx":"properties/AWDR_RADR.png"
+    }
+  },
+
+  {
+    "ID": "BHMC_E",
+    "vision": 0,
+    "defense":0,
+    "hp": 99,
+    "destroyedType":"RUIS",
+    "cannon":{
+      "direction":"E",
+      "range":3,
+      "damage":3
+    },
+    "assets":{
+      "gfx":"inventions/AWDS_BHMC-E.png",
+      "fireSound" : "cannon.wav",
+      "fireAnimation":[
+        "object_firing/AWDS_BHMC-E.png",
+        32,32,
+        8,-12
+      ],
+      "animated":false
+    }
+  },
+
+  {
+    "ID": "BHMC_N",
+    "vision": 0,
+    "defense":0,
+    "hp": 99,
+    "destroyedType":"RUIS",
+    "cannon":{
+      "direction":"N",
+      "range":3,
+      "damage":3
+    },
+    "assets":{
+      "gfx":"inventions/AWDS_BHMC-N.png",
+      "fireSound" : "cannon.wav",
+      "animated":false,
+      "fireAnimation":[
+        "object_firing/AWDS_BHMC-N.png",
+        32,32,
+        -12,-8
+      ]
+    }
+  },
+
+  {
+    "ID": "BHMC_S",
+    "vision": 0,
+    "defense":0,
+    "hp": 99,
+    "destroyedType":"RUIS",
+    "cannon":{
+      "direction":"S",
+      "range":3,
+      "damage":3
+    },
+    "assets":{
+      "gfx":"inventions/AWDS_BHMC-S.png",
+      "fireSound" : "cannon.wav",
+      "animated"  : false,
+      "fireAnimation":[
+        "object_firing/AWDS_BHMC-S.png",
+        32,32,
+        -12,8
+      ]
+    }
+  },
+
+  {
+    "ID": "BHMC_W",
+    "vision": 0,
+    "defense":0,
+    "hp": 99,
+    "destroyedType":"RUIS",
+    "cannon":{
+      "direction":"W",
+      "range":3,
+      "damage":3
+    },
+    "assets":{
+      "gfx":"inventions/AWDS_BHMC-W.png",
+      "fireSound":"cannon.wav",
+      "fireAnimation":[
+        "object_firing/AWDS_BHMC-W.png",
+        32,32,
+        8,-12
+      ],
+      "animated":false
+    }
+  },
+
+  {
+    "ID": "BHCN",
+    "vision": 0,
+    "defense":0,
+    "hp": 99,
+    "destroyedType":"RUIB",
+    "bigProperty":{
+      "y"     : 3,
+      "x"     : 3,
+      "actor" : [1,0]
+    },
+    "blocker":true,
+    "cannon":{
+      "direction" : "S",
+      "range"     : 9,
+      "damage"    : 5
+    },
+    "assets":{
+      "gfx"       : "inventions/AWDS_BHCN-S.png",
+      "gfxOffset" : [
+        48,64,
+        -32,-32
+      ],
+      "fireSound" : "cannon.wav",
+      "animated":false,
+      "fireAnimation":[
+        "object_firing/AWDS_BHCN-S.png",
+        48,64,
+        -16,-36
+      ]
+    }
+  },
+
+  {
+    "ID"            : "BHLZ",
+    "vision"        : 0,
+    "defense"       : 0,
+    "hp"            : 99,
+    "destroyedType" : "RUIS",
+    "laser"         : {
+      "damage"      : 3
+    },
+    "assets":{
+      "gfx"         : "inventions/AWDS_BHLZ.png",
+      "fireSound"   : "laser.wav",
+      "animated"    : false,
+      "chargeAnimation":[
+        "object_charge/AWDS_BHLZ-E.png",
+        32,32,
+        8,-12
+      ],
+      "fireAnimation":[
+        "object_firing/AWDS_BHLZ-E.png",
+        32,32,
+        8,-12
+      ],
+      "streamAnimation":[
+        "object_stream/AWDS_BHLZ-E.png",
+        32,32,
+        8,-12
+      ],
+      "chargeAnimation2":[
+        "object_charge/AWDS_BHLZ-S.png",
+        32,32,
+        -10,2
+      ],
+      "fireAnimation2":[
+        "object_firing/AWDS_BHLZ-S.png",
+        32,32,
+        -9,2
+      ],
+      "streamAnimation2":[
+        "object_stream/AWDS_BHLZ-S.png",
+        32,32,
+        -10,2
+      ],
+      "chargeAnimation3":[
+        "object_charge/AWDS_BHLZ-W.png",
+        32,32,
+        -24,-12
+      ],
+      "fireAnimation3":[
+        "object_firing/AWDS_BHLZ-W.png",
+        32,32,
+        -24,-12
+      ],
+      "streamAnimation3":[
+        "object_stream/AWDS_BHLZ-W.png",
+        32,32,
+        -24,-12
+      ],
+      "chargeAnimation4":[
+        "object_charge/AWDS_BHLZ-N.png",
+        32,32,
+        -10,-26
+      ],
+      "fireAnimation4":[
+        "object_firing/AWDS_BHLZ-N.png",
+        32,32,
+        -9,-26
+      ],
+      "streamAnimation4":[
+        "object_stream/AWDS_BHLZ-N.png",
+        32,32,
+        -10,-26
+      ]
+    }
+  },
+
+  {
+    "ID": "RUIS",
+    "defense":0,
+    "vision": 0,
+    "assets":{
+      "gfx":"inventions/AWDS_SRBL.png"
+    }
+  },
+
+  {
+    "ID": "RUIB",
+    "defense":0,
+    "vision": 0,
+    "assets":{
+      "gfx":"inventions/AWDS_BRBL-S.png"
+    }
+  }
+]
+

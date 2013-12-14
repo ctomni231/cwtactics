@@ -1,1 +1,0 @@
-window.getQueryParams=function(e){e=e.split("+").join(" ");for(var t,o={},n=/[?&]?([^=]+)=([^&]*)/g;t=n.exec(e);)o[decodeURIComponent(t[1])]=decodeURIComponent(t[2]);return o};

@@ -1,1 +1,0 @@
-controller.propertyAction({key:"buildUnit",propertyAction:!0,hasSubMenu:!0,condition:function(e){return model.propertyCanBuild(e.source.propertyId)},prepareMenu:function(e){model.getBuildMenu(e.source.propertyId,e.menu)},invoke:function(e){controller.sharedInvokement("buildUnit",[e.source.x,e.source.y,e.action.selectedSubEntry])}});

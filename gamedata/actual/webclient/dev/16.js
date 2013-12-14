@@ -1,1 +1,0 @@
-util.scoped(function(){function t(t){var e="client has to implement interface "+t;return function(){util.raiseError(e)}}controller.isNetworkGame=t("controller.isNetworkGame"),controller.isHost=t("controller.isHost"),controller.parseNetworkMessage=t("controller.parseNetworkMessage"),controller.sendNetworkMessage=t("controller.sendNetworkMessage")});

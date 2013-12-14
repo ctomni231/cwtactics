@@ -1,0 +1,133 @@
+[
+  
+  {
+    "ID"        : "ANDY",
+    "faction"   : "ORST",
+    "music"     : "Andy.mp3",
+    "coStars"   : 3,
+    "scoStars"  : 3,
+    "d2d"       : [
+    ],
+    "cop" : {
+      "turn":[],
+      "power":{
+        "healUnits":[
+          {
+            "target":0,
+            "amount":2
+          }
+        ]
+      }
+    },
+    "scop" : {
+      "turn":[
+        {
+          "att"        : 30,
+          "movepoints" : 1
+        }
+      ],
+      "power":{
+        "healUnits":[
+          {
+            "target":0,
+            "amount":5
+          }
+        ]
+      }
+    }
+  },
+  
+  {
+    "ID"       : "MAX",
+    "faction"  : "BLMN",
+    "music"    : "Max.mp3",
+    "coStars"  : 3,
+    "scoStars" : 3,
+    "d2d"      : [
+      {
+        "$when":[
+          "ATTACK_TYPE",["DIRECT"]
+        ],
+        "att":20
+      },
+
+      {
+        "$when":[
+          "ATTACK_TYPE",["INDIRECT"]
+        ],
+        "maxrange":-1
+      }
+    ],
+    "cop" : {
+      "turn":[
+        {
+          "$when":[
+            "ATTACK_TYPE",["DIRECT"]
+          ],
+          "att":40
+        }
+      ],
+      "power":{}
+    },
+    "scop" : {
+      "turn":[
+        {
+          "$when":[
+            "ATTACK_TYPE",["DIRECT"]
+          ],
+          "att":70
+        }
+      ],
+      "power":{}
+    }
+  },
+  
+  {
+    "ID"       : "SAMI",
+    "faction"  : "ORST",
+    "music"    : "sami.mp3",
+    "coStars"  : 3,
+    "scoStars" : 5,
+    "d2d"      : [
+      {
+        "$when":[
+          "ATTACK_TYPE",["DIRECT"]
+        ],
+        "att":-10
+      },
+      {
+        "$when":[
+          "MOVETYPE",["INFT","MECH"]
+        ],
+        "att":30,
+        "movepoints":1,
+        "captureRate":50
+      }
+    ],
+    "cop" : {
+      "turn":[
+        {
+          "$when":[
+            "MOVE_TYPE",["INFT","MECH"]
+          ],
+          "att":40,
+          "movepoints":1
+        }
+      ],
+      "power":{}
+    },
+    "scop" : {
+      "turn":[
+        {
+          "$when":[
+            "MOVE_TYPE",["INFT","MECH"]
+          ],
+          "att":70,
+          "movepoints":2,
+          "captureRate":9999
+        }
+      ],
+      "power":{}
+    }
+  }
+]

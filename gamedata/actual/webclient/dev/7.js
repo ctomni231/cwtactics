@@ -1,1 +1,0 @@
-util.error=function(t,e,n){console.log("%cCW:T ERROR","color:red;"),console.log("%c .ERROR_ID:"+t,"color:red;"),console.log("%c .DATA:"+e,"color:red;"),console.log("%c .STACK:"+n,"color:red;")},util.log=function(t){arguments.length>1&&(t=Array.prototype.join.call(arguments," ")),console.log(t)};

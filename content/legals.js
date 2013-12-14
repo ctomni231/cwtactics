@@ -11,7 +11,20 @@ PAGE_DATA.legals = [
     ]
   },
     
-  // --------------------------------------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------------------
+  
+  {
+    header: "Flat Social Media Icons",
+    
+    text:[
+      "Flat Social Media Icons is licensed under a Creative Commons Attribution 3.0",
+      "Unported (CC BY 3.0) (http://creativecommons.org/licenses/by/3.0/)."
+    ],
+    
+    link: "http://designmodo.com/flat/"
+  },
+
+  // -----------------------------------------------------------------------------------------
   
   {
     header: "Lawnchair",
@@ -24,7 +37,7 @@ PAGE_DATA.legals = [
     link: "http://brian.io/lawnchair/"
   },
   
-  // --------------------------------------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------------------
   
   {
     header: "Javascript-astar",
@@ -37,9 +50,8 @@ PAGE_DATA.legals = [
     link: "http://github.com/bgrins/javascript-astar"
   },
   
-  
-  // --------------------------------------------------------------------------------------------------------
-  
+  // -----------------------------------------------------------------------------------------
+
   {
     header: "Dosis Font",
     
@@ -51,34 +63,7 @@ PAGE_DATA.legals = [
     link: "http://www.fontspace.com/pablo-impallari/dosis"
   },
   
-  // --------------------------------------------------------------------------------------------------------
-  
-  /*
-  {
-    header: "Iconic Icons",
-    
-    text:[
-      "License: Creative Commons Attribution-Share Alike 3.0 license <br> Author: P.J. Onori",
-      "Iconic is a minimal set of icons consisting of 136 marks in raster, vector and font formats — free for public use. To give the greatest flexibility, the icon set packages all icons in PNG, SVG, SWC, OFT/TTF/EOT and Omnigraffle stencil formats. Iconic tries to work with various tools/workflows to make your life a bit easier.All raster-format icons come in a wide variety of colors in order for greater convenience. The colors hit all the major hues in the spectrum as well as many colors used in the scheme on this site.As well as coming in many colors, the raster-format icons also come in (roughly) 8×8, 12×12, 16×16, 24×24 & 32×32 pixels. If those sizes do not work for you, you can always make your own with the SVG originals."
-    ],
-    
-    link: "http://www.designyourway.net/drb/iconic/"
-  },
-  */
-  
-  // --------------------------------------------------------------------------------------------------------
-  
-  {
-    header: "Subtle",
-    
-    text:[
-      "Generated and shared on cssbutton.me"
-    ],
-    
-    link: "http://www.cssbutton.me/robdozier"
-  },
-  
-  // --------------------------------------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------------------
   
   {
     header: "jQuery",
@@ -94,7 +79,7 @@ PAGE_DATA.legals = [
     link: "http://jquery.com/"
   },
   
-  // --------------------------------------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------------------
   
   {
     header: "Moment Js",

@@ -1,0 +1,31 @@
+[
+
+  {
+    "ID"		: "ORST",
+    "name"	: "Orange Star",
+    "color" : 0,
+    "music"	: "OrangeStarTheme.mp3"
+  },
+  
+  {
+    "ID"		: "BLMN",
+    "name"	: "Blue Moon",
+    "color" : 1,
+    "music"	: "BlueMoonTheme.mp3"
+  },
+  
+  {
+    "ID"		: "GRET",
+    "name"	: "Green Earth",
+    "color" : 2,
+    "music"	: "GreenEarthTheme.mp3"
+  },
+  
+  {
+    "ID"		: "YLCM",
+    "name"	: "Yellow Comet",
+    "color" : 3,
+    "music"	: "YellowCometTheme.mp3"
+  }
+  
+]

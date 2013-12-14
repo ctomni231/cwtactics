@@ -1,0 +1,7 @@
+{
+  "ACTION"   : "ok.wav",
+  "CANCEL"   : "cancel.wav",
+  "MENUTICK" : "menutick.wav",
+  "ROCKET_IMPACT" : "rocketImpact.mp3",
+  "MAPTICK"  : "maptick.wav"
+}

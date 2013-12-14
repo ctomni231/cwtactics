@@ -1,1 +1,0 @@
-controller.unitAction({key:"transferUnit",hasSubMenu:!0,relation:["S","T",model.relationModes.SAME_OBJECT],condition:function(e){return model.isUnitTransferable(e.source.unitId)},prepareMenu:function(e){model.addTransferTargets(e.source.unit.owner,e.menu)},invoke:function(e){controller.sharedInvokement("transferUnit",[e.source.unitId,e.action.selectedSubEntry])}});

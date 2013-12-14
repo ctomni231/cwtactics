@@ -1,1 +1,0 @@
-model.globalRules=[],model.mapRules=util.list(20,null),controller.persistenceHandler(function(){model.mapRules.resetValues()},function(){}),model.isValidRule=function(){return!0},model.pushRule=function(e,t){model.isValidRule(e,t)||model.criticalError(constants.error.ILLEGAL_PARAMETERS,constants.error.ILLEGAL_RULE_DEFINITION),t?model.mapRules.push(e):model.globalRules.push(e)};

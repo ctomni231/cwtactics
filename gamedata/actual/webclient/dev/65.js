@@ -1,1 +1,0 @@
-controller.unitAction({key:"wait",relation:["S","T",model.relationModes.NONE,model.relationModes.SAME_OBJECT],invoke:function(e){controller.sharedInvokement("markUnitNonActable",[e.source.unitId])}});

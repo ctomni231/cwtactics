@@ -1,1 +1,0 @@
-controller.unitAction({key:"supplyUnit",relation:["S","T",model.relationModes.NONE,model.relationModes.SAME_OBJECT],condition:function(e){return model.hasSupplyTargetsNearby(e.source.unitId,e.target.x,e.target.y)},invoke:function(e){controller.sharedInvokement("unitSuppliesNeighbours",[e.source.unitId])}});

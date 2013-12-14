@@ -1,1 +1,0 @@
-controller.unitAction({key:"joinUnits",relation:["S","T",model.relationModes.OWN],condition:function(e){return model.canJoin(e.source.unitId,e.target.unitId)},invoke:function(e){controller.sharedInvokement("joinUnits",[e.source.unitId,e.target.unitId])}});

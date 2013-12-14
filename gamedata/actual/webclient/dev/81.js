@@ -1,1 +1,0 @@
-controller.imgToBg=function(e){if(e){var t=document.createElement("style");t.innerHTML=".cwt_page {background-image: url(data:image/jpeg;base64,"+e.value+");"+"background-repeat: no-repeat;"+"background-position: 0px 45px;"+"background-size: 100% calc(100% - 44px);"+"}",document.getElementsByTagName("head")[0].appendChild(t)}};

@@ -1,24 +1,33 @@
 PAGE_PROG.registerSection({
   
   id: "legals",
-  name: "Legal Notice",
-  
   element: "sectionLegal",
   
   template: [
+    "<h1>Legal Notice</h1>",
+
     "{{#legals}}",
-      "<div class=\"legalEntry\" >",
-        "<span class=\"legalEntryHeader\" >",
-          "{{#link}}<a href=\"{{link}}\" target=\"_blank\">{{header}}</a>{{/link}}",
+
+      "<div class='legalEntry' >",
+        "<div class='legalEntryHeader' >",
+          "{{#link}} <a href='{{link}}' target='_blank' ",
+                                         "title='Goto Homepage'>{{header}}</a> {{/link}}",
           "{{^link}} {{header}} {{/link}}",
-        "</span>",
-        "</br>",
-        "<span>{{> textBlock}}</span>",
+        "</div>",
+        "<div class='legalEntryText' >{{> textBlock}}</div>",
       "</div>",
+
     "{{/legals}}"
   ].join(""),
       
   partials:{
-    textBlock: "{{#text}}<p class=\"legalEntryTextBlock\">{{{.}}}</p>{{/text}}"
+    textBlock: "{{#text}}<p>{{{.}}}</p>{{/text}}"
+  },
+
+  after:function(){ 
+    $('#sectionLegal a[title]').qtip({
+            position: { my: 'right middle', at: 'left middle' },
+            style:    { classes: 'qtip-bootstrap' }
+    }); 
   }
 });

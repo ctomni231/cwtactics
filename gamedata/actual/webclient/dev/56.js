@@ -1,1 +1,0 @@
-controller.unitAction({key:"loadUnit",relation:["S","T",model.relationModes.OWN],condition:function(e){var t=e.target.unitId;return model.isTransport(t)&&model.canLoad(e.source.unitId,t)},invoke:function(e){controller.sharedInvokement("loadUnitInto",[e.source.unitId,e.target.unitId])}});

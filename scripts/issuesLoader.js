@@ -10,16 +10,24 @@ PAGE_PROG.registerSection({
     function render(){
       var issueData = JSON.parse( localStorage.issueData );      
       cb( section, issueData );
+      
+      $('#sectionRoadmap a[title]').qtip({
+              position: { my: 'right middle', at: 'left middle' },
+              style:    { classes: 'qtip-bootstrap' }
+      }); 
     }
     
     // UP TO DATE DATA IN STORAGE ?  
-    if( localStorage.endDate === undefined || moment().isAfter(localStorage.endDate) ){
+    if( localStorage.issueEndDate === undefined || moment().isAfter(localStorage.issueEndDate) ){
       
       // NEXT MILESTONE
-      var NEXT_VERSION = 8;
+      var NEXT_VERSION        = 8;
       var NEXT_VERSION_HEADER = "Version 0.3.5";
       
-      var url = "https://api.github.com/repos/ctomni231/cwtactics/issues?milestone="+NEXT_VERSION+"&callback=?";
+      var url = "https://api.github.com/repos/ctomni231/cwtactics/issues?"+
+                "milestone="+NEXT_VERSION+
+                "&callback=?";
+
       $.getJSON( url, function( respone ){
           
           var data = {
@@ -31,7 +39,8 @@ PAGE_PROG.registerSection({
             
             // META DATA
             obj.title = respone.data[i].title;
-            obj.body = respone.data[i].body;
+            //obj.body = respone.data[i].body;
+            obj.url = respone.data[i].html_url;
             
             // GET LABELS
             obj.labels = [];
@@ -47,7 +56,7 @@ PAGE_PROG.registerSection({
           
           // SAVE DATA AS CACHE FOR THE NEXT HOUR
           localStorage.issueData = JSON.stringify( data );
-          localStorage.endDate = moment().add('m', 60);
+          localStorage.issueEndDate = moment().add('m', 360);
           
           // RENDER IT 
           render();
@@ -58,17 +67,25 @@ PAGE_PROG.registerSection({
   },
   
   template: [
-    "<p class=\"issueNextVersion\">{{header}}</p>",
+    "<h1>Working On</h1>",
+    
+    "<div class=\"issueNextVersion\">{{header}}</div>",
+
     "{{#issues}}",
       "<div class=\"issueEntry\" >",
-        "<span>{{title}}</span>",
-        "</br>",
-        "<span>{{> labelList}}</span>",
+        "<div class='issueLabel'>{{> labelList}}</div>",
+        "<div class='issueTitle'><a target='_blank' href='{{url}}' title='Goto Github'>{{title}}</a></div>",
       "</div>",
-    "{{/issues}}",
+    "{{/issues}}"
   ].join(""),
   
   partials:{
-    labelList: "{{#labels}} <span class='issueLabel' style='color:#{{color}};' > {{name}} </span> {{/labels}} "
+    labelList: "{{#labels}} <span class='issueLabel' style='"+
+                  "color:#{{color}}; "+
+                  "border:1px solid #{{color}}; "+
+                  "border-radius: 15px; "+
+                  "padding-left: 5px; "+
+                  "padding-right: 5px; "+
+                "' > {{name}} </span> {{/labels}} "
   }
 });

@@ -1,1 +1,0 @@
-controller.openedSection=null,controller.openSection=function(e){if(null!==e){var t=document.getElementById(e);t||model.criticalError(constants.error.CLIENT_ERROR,constants.error.CLIENT_DATA_ERROR),null!==this.openedSection&&(this.openedSection.style.display="none"),t.style.display="",this.openedSection=t}};

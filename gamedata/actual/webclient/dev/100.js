@@ -1,1 +1,0 @@
-controller.screenStateMachine=util.stateMachine({},{noHistory:!0}),controller.screenStateMachine.data={};

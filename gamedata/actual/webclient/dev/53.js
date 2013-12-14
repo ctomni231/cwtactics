@@ -1,1 +1,0 @@
-controller.mapAction({key:"nextTurn",condition:function(){return!0},invoke:function(){controller.sharedInvokement("nextTurn",[])}});

@@ -1,1 +1,0 @@
-var view=window.view={};

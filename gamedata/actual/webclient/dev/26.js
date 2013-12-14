@@ -1,1 +1,0 @@
-controller.defineEvent("criticalError"),util.scoped(function(){model.criticalError=function(t,e,r){var n;if(r)n=r.stack;else try{throw Error()}catch(o){n=o.stack}controller.events.criticalError(t,e,n),util.error(t,e,n)}});

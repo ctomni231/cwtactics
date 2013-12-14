@@ -1,14 +1,15 @@
 PAGE_PROG.registerSection({
   
   id: "manuals",
-  name: "Manuals",
-  
-  element: "sectionManual",
+    element: "sectionManual",
   
   template: [
-    "<p class='centerP'>",
-      "I'm under construction.. visit me later. ;)",
-    "</p>"
+    "<h1>Documentation</h1>",
+    "<div class=\"pure-g-r content_block\">",
+      "<div class=\"pure-u-1 manualsEntry\">",
+        "I'm under construction.. visit me later. ;)",
+      "</div>",
+    "</div>"
   ].join(""),
       
   partials:{}

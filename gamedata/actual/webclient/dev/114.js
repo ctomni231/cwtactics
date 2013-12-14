@@ -1,1 +1,0 @@
-controller.registerMenuRenderer("buildUnit",function(e,t){var o=model.unitTypes[e].cost;t.innerHTML=model.localized(e)+" ("+o+"$)"});

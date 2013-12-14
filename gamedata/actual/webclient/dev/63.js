@@ -1,1 +1,0 @@
-controller.unitAction({key:"unhideUnit",relation:["S","T",model.relationModes.NONE,model.relationModes.SAME_OBJECT],condition:function(e){return e.source.unit.hidden},invoke:function(e){controller.sharedInvokement("unhideUnit",[e.source.unitId])}});

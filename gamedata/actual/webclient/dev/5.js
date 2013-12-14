@@ -1,1 +1,0 @@
-util.scoped=function(t){return t()};

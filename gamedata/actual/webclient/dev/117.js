@@ -1,1 +1,0 @@
-controller.registerMenuRenderer("__mainMenu__",function(e,t){t.innerHTML=model.localized(e)});

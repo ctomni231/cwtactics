@@ -1,1 +1,0 @@
-controller.persistenceHandler(function(t){controller.buildRoundConfig(t.cfg)},function(t){t.cfg=model.configRule}),model.configRule=null;

@@ -1,0 +1,954 @@
+<!DOCTYPE HTML>
+<html manifest="cache.manifest" >
+
+  <head>
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, , maximum-scale=1, user-scalable=no" />
+
+    <script >
+
+	  // Check if a new cache is available on page load.
+	  window.addEventListener( 'load', function( e ){
+	  	
+	    var appCache = window.applicationCache;
+	    if( appCache ) {
+
+	      // update is available
+	      appCache.addEventListener( 'updateready', function( e ){
+	        if( appCache.status === appCache.UPDATEREADY ) {
+
+	          // Browser downloaded a new app cache. Swap it in and reload the page to get the new hotness.
+	          appCache.swapCache();
+	          
+	          // Shows the update information panel
+	          document.getElementById("cwt_updatePanel").style.display = "block";
+	          
+	        }
+	      }, false );
+
+	      appCache.addEventListener( 'noupdate', function(){
+	        controller.screenStateMachine.event( 'start' );
+	      }, false );
+
+	      appCache.addEventListener( 'downloading', function(){}, false );
+
+	      appCache.addEventListener( 'progress', function(){}, false );
+
+	      // Start when you collected all data
+	      appCache.addEventListener( 'cached', function(){
+	        controller.screenStateMachine.event( 'start' );
+	      }, false );
+
+	      // The manifest returns 404 or 410, the download failed,
+	      // or the manifest changed while the download was in progress.
+	      appCache.addEventListener( 'error', function(){
+	        alert( "could not download the game data into the offline storage" );
+	      }, false );
+
+	    }
+	    
+	  }, false );
+
+	</script>
+
+  </head>
+
+  <body oncontextmenu="return false;" >
+  	<div id="cwt_app" class="gamePanel" >
+
+<div id="cwt_errorPanel" 
+     class="cwt_panel centerIt w_400 detachedtInFront" 
+     style="display:none; margin: auto; margin-top: 96px; left: calc(50% - 200px);" >
+
+   <!--
+     Some values are already set here when an error will be thrown
+     before the language will be loaded.
+   -->
+
+  <p class="cwt_panel_header cwt_panel_header_small" style="color:red;">
+    <span key="error.panel.header">
+        Error
+    </span>
+  </p>
+
+  <!-- ###### ERROR REASON ######-->
+  <table>
+
+    <tr>
+      <td class="cwt_panel_header_small w_100">
+        <span key="error.panel.reason">Type</span>:
+      </td>
+      <td class="cwt_panel_header_small w_300">
+        <span id="cwt_errorPanel_reason"></span>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="cwt_panel_header_small w_100">
+        <span key="error.panel.data">Stack</span>:
+      </td>
+      <td class="cwt_panel_header_small w_300">
+        <span id="cwt_errorPanel_data"></span>
+      </td>
+    </tr>
+
+  </table>
+
+  <!-- ###### ERROR ACTIONS ######-->
+  <p class="cwt_panel_footer cwt_panel_header_small"
+     key="error.panel.action" style="color: #3A3A3A;">
+      Reset game data and reload?
+  </p>
+
+  <p style="text-align: center; margin-bottom: 4px;">
+  
+    <button key="error.panel.yes" onclick="
+       if( controller.storage_wipeOut ){
+         controller.storage_wipeOut(function(){
+           document.location.reload();
+         });
+       } else document.location.reload();
+      ">
+      Yes
+    </button>
+    
+    <button key="error.panel.no" onclick="document.location.reload();" >
+      No
+    </button>
+    
+  </p>
+</div>
+
+<div id="cwt_updatePanel" 
+     class="cwt_panel centerIt w_400 detachedtInFront" 
+     style="display:none; margin: auto; margin-top: 96px; left: calc(50% - 200px);" >
+
+  <p class="cwt_panel_header cwt_panel_header_small" style="color:red;">
+    <span key="update.panel.header">
+        Update
+    </span>
+  </p>
+
+  <p class="cwt_panel_header_small"
+    key="update.panel.text" style="color: #3A3A3A;">
+    
+    Custom Wars Tactics has been updated.<br/>
+    Restarting now.
+  </p>
+
+  <p style="text-align: center; margin-bottom: 4px;">
+    <button key="update.panel.ok" 
+            class="cwt_panel_header_small cwt_page_button cwt_panel_button button_active"
+            onclick="document.location.reload();" >
+      Ok
+    </button>
+  </p>
+  
+</div>
+
+<div id="cwt_load_screen" 
+     class="cwt_page" 
+     style="display:none;" >
+
+  <p class="cwt_panel_header cwt_panel_header_small">Loading</p>
+
+  <p id="loading_text" 
+     class="cwt_panel_header_big cwt_page_top_gap" ></p>
+
+  <table id="loading_bar_table" >
+    <tbody>
+      <tr>
+
+        <td id="loading_bar" 
+            class="loadBar_0" ></td>
+
+        <td id="loading_bar_bg" ></td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+<div id="cwt_mobileSound_screen" 
+     class="cwt_page" 
+     style="display:none;" >
+
+  <p class="cwt_panel_header cwt_panel_header_small cwt_page_bottom_margin">Custom Wars : Tactics</p>
+
+  <p id="startScreen_toolTip">
+
+  </p>
+
+  <p id="loading_text" 
+     class="cwt_panel_header_big" >
+
+	<button id="mobileSoundNext" 
+            key="NEXT"  
+            class="cwt_panel_header_big w_400 cwt_page_button cwt_panel_button semiAlpha" >
+    </button>
+  </p>
+
+</div>
+<div id="cwt_main_screen" 
+     class="cwt_page" 
+     style="display:none;" >
+
+  <p class="cwt_panel_header cwt_panel_header_small cwt_page_bottom_margin">
+    <span key="menu.header"></span> <span style="font-size: 0.8em;">(<span key="menu.version"></span> <span id="mainScreen_version"></span>)</span>
+  </p>
+
+  <table class="w_400 table_center table_collapse semiAlpha" >
+    <tbody>
+      
+      <tr>
+        <td class="w_400 noEgdeBL noEgdeBR noBottomBorder">
+            <button key="CAMPAIGN" inactive="true" />
+        </td>
+      </tr>
+
+      <tr>
+        <td class="w_400 noEgdeAll noBottomBorder noTopBorder">
+            <button key="VERSUS"  />
+        </td>
+      </tr>
+
+      <tr>
+        <td class="w_400 noEgdeAll noBottomBorder noTopBorder">
+            <button key="NETWORK" inactive="true" />
+        </td>
+      </tr>
+
+      <tr>
+        <td class="w_400 noEgdeAll noBottomBorder noTopBorder">
+            <button key="WARROOM" inactive="true" />
+        </td>
+      </tr>
+
+      <tr>
+        <td class="w_400 noEgdeAll noBottomBorder noTopBorder">
+            <button key="DESIGN" inactive="true" />
+        </td>
+      </tr>
+
+      <tr>
+        <td class="w_400 noEgdeTL noEgdeTR noTopBorder">
+            <button key="OPTIONS"  />
+        </td>
+      </tr>
+      
+    </tbody>
+  </table>
+
+</div>
+<div id="cwt_versus_screen" 
+     class="cwt_page" 
+     style="display:none;" >
+  
+  <p class="cwt_panel_header cwt_panel_header_small cwt_page_bottom_margin"><span key="versus.mapSelection"></span></p>
+
+  <table class="w_800 table_center table_collapse semiAlpha" >
+    <tbody>
+      
+      <!-- #################### MAP SELECT #################### -->
+
+      <tr>
+        <td colspan="2">
+          <div class="cwt_panel_header_big cwt_page_button cwt_panel_button cwt_panel_button_inverted
+                      noEgdeBR noEgdeBL"
+               style="border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;"  >
+
+            <span id="map_selection"></span>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="noRightBorder noTopBorder noEgdeTR noEgdeTL noEgdeBR">
+          <button key="versus.prevMap" />
+        </td>
+
+        <td class="noLeftBorder noTopBorder noEgdeTR noEgdeTL noEgdeBL" >
+          <button key="versus.nextMap" />
+        </td>
+      </tr>
+      
+      <!-- #################### START GAME #################### -->
+
+      <tr>
+        <td class="w_800 buttonTopGap" colspan="2">
+          <button key="versus.next" /></td>
+      </tr>
+      
+    </tbody>
+  </table>
+</div>
+<div id="cwt_player_setup_screen" 
+     class="cwt_page" 
+     style="display:none;" >
+  
+  <p class="cwt_panel_header cwt_panel_header_small cwt_page_bottom_margin"><span key="versus.playerconfig"></span></p>
+
+  <table class="w_800 table_center table_collapse table_fixed semiAlpha" >
+    <tbody>
+      
+      <!-- #################### PLAYER 1-2 CONFIG #################### -->
+
+      <tr class="w_800">
+
+        <td class="w_380" 
+            colspan="4">
+
+          <div class="cwt_panel_header_small cwt_page_button cwt_panel_button cwt_panel_button_inverted
+                      noEgdeBL noEgdeBR"  
+
+            <span><span key="player"></span> 1</span>
+          </div>
+        </td>
+        
+        <td class="w_40" ></td>
+
+        <td class="w_380" 
+            colspan="4">
+
+          <div class="cwt_panel_header_small cwt_page_button cwt_panel_button cwt_panel_button_inverted
+                      noEgdeBL noEgdeBR" >
+
+            <span><span key="player"></span> 2</span>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+
+        <td class="w_95 cwt_smallButton noTopBorder noBottomBorder noRightBorder noEgdeAll" >
+          <button data="1" key="config.type.prev" />
+        </td>
+
+        <td class="w_95 cwt_smallButton noLeftBorder noBottomBorder noTopBorder noEgdeAll" >
+          <button data="1" key="config.type.next" />
+        </td>
+
+        <td class="w_190" 
+            colspan="2">
+
+          <div class="cwt_page_button cwt_panel_button cwt_panel_button_inverted
+                      noTopBorder noLeftBorder noBottomBorder noEgdeAll" >
+
+            <span>
+              <span class="cwt_panel_header_small" key="config.playerType"></span>
+              <span class="cwt_panel_header_small">:</span>
+              <span class="cwt_panel_header_small" id="playerConfig_p1_type"></span>
+            </span>
+          </div>
+        </td>
+
+        <!-- ################################################################### -->
+        <td class="w_40" ></td>
+        <!-- ################################################################### -->
+
+        <td class="w_95 cwt_smallButton noTopBorder noBottomBorder noRightBorder noEgdeAll" >
+          <button data="2" key="config.type.prev" />
+        </td>
+
+        <td class="w_95 cwt_smallButton noLeftBorder noBottomBorder noTopBorder noEgdeAll" >
+          <button data="2" key="config.type.next" />
+        </td>
+
+        <td class="w_190" 
+            colspan="2">
+
+          <div class="cwt_page_button cwt_panel_button cwt_panel_button_inverted
+                      noTopBorder noLeftBorder noBottomBorder noEgdeAll" >
+
+            <span>
+              <span class="cwt_panel_header_small" key="config.playerType"></span>
+              <span class="cwt_panel_header_small">:</span>
+              <span class="cwt_panel_header_small" id="playerConfig_p2_type"></span>
+            </span>
+          </div>
+        </td>
+
+      </tr>
+
+
+      <tr>
+
+        <td class="w_95 cwt_smallButton noTopBorder noRightBorder noBottomBorder noEgdeAll" >
+          <button data="1" key="config.co.prev" />
+        </td>
+
+        <td class="w_95 cwt_smallButton noLeftBorder noBottomBorder noTopBorder noEgdeAll" >
+          <button data="1" key="config.co.next" />
+        </td>
+
+        <td class="w_190" 
+            colspan="2">
+
+          <div class="cwt_page_button cwt_panel_button cwt_panel_button_inverted
+                      noTopBorder noLeftBorder noBottomBorder noEgdeAll" >
+
+            <span>
+              <span class="cwt_panel_header_small" key="config.playerCo"></span>
+              <span class="cwt_panel_header_small">:</span>
+              <span class="cwt_panel_header_small" id="playerConfig_p1_co"></span>
+            </span>
+          </div>
+        </td>
+
+        <!-- ################################################################### -->
+        <td class="w_40" ></td>
+        <!-- ################################################################### -->
+
+        <td class="w_95 cwt_smallButton noTopBorder noRightBorder noBottomBorder noEgdeAll" >
+          <button data="2" key="config.co.prev" />
+        </td>
+
+        <td class="w_95 cwt_smallButton noLeftBorder noBottomBorder noTopBorder noEgdeAll" >
+          <button data="2" key="config.co.next" />
+        </td>
+
+        <td class="w_190" 
+            colspan="2">
+
+          <div class="cwt_page_button cwt_panel_button cwt_panel_button_inverted
+                      noTopBorder noLeftBorder noBottomBorder noEgdeAll" >
+
+            <span>
+              <span class="cwt_panel_header_small" key="config.playerCo"></span>
+              <span class="cwt_panel_header_small">:</span>
+              <span class="cwt_panel_header_small" id="playerConfig_p2_co"></span>
+            </span>
+          </div>
+        </td>
+
+      </tr>
+
+
+      <tr>
+
+        <td class="w_95 cwt_smallButton noTopBorder noRightBorder noEgdeTR noEgdeTL noEgdeBR" >
+          <button data="1" key="config.team.prev" />
+        </td>
+
+        <td class="w_95 cwt_smallButton noLeftBorder noLeftBorder noTopBorder noEgdeAll" >
+          <button data="1" key="config.team.next" />
+        </td>
+
+        <td class="w_190" 
+            colspan="2">
+
+          <div class="cwt_page_button cwt_panel_button cwt_panel_button_inverted
+                      noLeftBorder noTopBorder noEgdeTR noEgdeTL noEgdeBL" >
+
+            <span>
+              <span class="cwt_panel_header_small" key="config.playerTeam"></span>
+              <span class="cwt_panel_header_small">:</span>
+              <span class="cwt_panel_header_small" id="playerConfig_p1_team"></span>
+            </span>
+          </div>
+        </td>
+
+        <!-- ################################################################### -->
+        <td class="w_40" ></td>
+        <!-- ################################################################### -->
+
+        <td class="w_95 cwt_smallButton noTopBorder noRightBorder noEgdeTR noEgdeTL noEgdeBR" >
+          <button data="2" key="config.team.prev" />
+        </td>
+
+        <td class="w_95 cwt_smallButton noLeftBorder noTopBorder noEgdeAll" >
+          <button data="2" key="config.team.next" />
+        </td>
+
+        <td class="w_190" 
+            colspan="2">
+
+          <div class="cwt_page_button cwt_panel_button cwt_panel_button_inverted
+                      noTopBorder noLeftBorder noEgdeTR noEgdeTL noEgdeBL" >
+
+            <span>
+              <span class="cwt_panel_header_small" key="config.playerTeam"></span>
+              <span class="cwt_panel_header_small">:</span>
+              <span class="cwt_panel_header_small" id="playerConfig_p2_team"></span>
+            </span>
+          </div>
+        </td>
+
+      </tr>
+
+      <!-- #################### PLAYER 3-4 CONFIG #################### -->
+
+      <tr class="w_800">
+
+        <td class="w_380 buttonTopGap" 
+            colspan="4">
+
+          <div class="cwt_panel_header_small cwt_page_button cwt_panel_button cwt_panel_button_inverted
+                      noEgdeBL noEgdeBR"  
+
+            <span><span key="player"></span> 3</span>
+          </div>
+        </td>
+        
+        <td class="w_40" ></td>
+
+        <td class="w_380 buttonTopGap" 
+            colspan="4">
+
+          <div class="cwt_panel_header_small cwt_page_button cwt_panel_button cwt_panel_button_inverted
+                      noEgdeBL noEgdeBR" >
+
+            <span><span key="player"></span> 4</span>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+
+        <td class="w_95 cwt_smallButton noTopBorder noBottomBorder noRightBorder noEgdeAll" >
+          <button data="3" key="config.type.prev" />
+        </td>
+
+        <td class="w_95 cwt_smallButton noLeftBorder noBottomBorder noTopBorder noEgdeAll" >
+          <button data="3" key="config.type.next" />
+        </td>
+
+        <td class="w_190" 
+            colspan="2">
+
+          <div class="cwt_page_button cwt_panel_button cwt_panel_button_inverted
+                      noTopBorder noLeftBorder noBottomBorder noEgdeAll" >
+
+            <span>
+              <span class="cwt_panel_header_small" key="config.playerType"></span>
+              <span class="cwt_panel_header_small">:</span>
+              <span class="cwt_panel_header_small" id="playerConfig_p3_type"></span>
+            </span>
+          </div>
+        </td>
+
+        <!-- ################################################################### -->
+        <td class="w_40" ></td>
+        <!-- ################################################################### -->
+
+        <td class="w_95 cwt_smallButton noTopBorder noBottomBorder noRightBorder noEgdeAll" >
+          <button data="4" key="config.type.prev" />
+        </td>
+
+        <td class="w_95 cwt_smallButton noLeftBorder noBottomBorder noTopBorder noEgdeAll" >
+          <button data="4" key="config.type.next" />
+        </td>
+
+        <td class="w_190" 
+            colspan="2">
+
+          <div class="cwt_page_button cwt_panel_button cwt_panel_button_inverted
+                      noTopBorder noLeftBorder noBottomBorder noEgdeAll" >
+
+            <span>
+              <span class="cwt_panel_header_small" key="config.playerType"></span>
+              <span class="cwt_panel_header_small">:</span>
+              <span class="cwt_panel_header_small" id="playerConfig_p4_type"></span>
+            </span>
+          </div>
+        </td>
+
+      </tr>
+
+
+      <tr>
+
+        <td class="w_95 cwt_smallButton noTopBorder noRightBorder noBottomBorder noEgdeAll" >
+          <button data="3" key="config.co.prev" />
+        </td>
+
+        <td class="w_95 cwt_smallButton noLeftBorder noBottomBorder noTopBorder noEgdeAll" >
+          <button data="3" key="config.co.next" />
+        </td>
+
+        <td class="w_190" 
+            colspan="2">
+
+          <div class="cwt_page_button cwt_panel_button cwt_panel_button_inverted
+                      noTopBorder noLeftBorder noBottomBorder noEgdeAll" >
+
+            <span>
+              <span class="cwt_panel_header_small" key="config.playerCo"></span>
+              <span class="cwt_panel_header_small">:</span>
+              <span class="cwt_panel_header_small" id="playerConfig_p3_co"></span>
+            </span>
+          </div>
+        </td>
+
+        <!-- ################################################################### -->
+        <td class="w_40" ></td>
+        <!-- ################################################################### -->
+
+        <td class="w_95 cwt_smallButton noTopBorder noRightBorder noBottomBorder noEgdeAll" >
+          <button data="4" key="config.co.prev" />
+        </td>
+
+        <td class="w_95 cwt_smallButton noLeftBorder noBottomBorder noTopBorder noEgdeAll" >
+          <button data="4" key="config.co.next" />
+        </td>
+
+        <td class="w_190" 
+            colspan="2">
+
+          <div class="cwt_page_button cwt_panel_button cwt_panel_button_inverted
+                      noTopBorder noLeftBorder noBottomBorder noEgdeAll" >
+
+            <span>
+              <span class="cwt_panel_header_small" key="config.playerCo"></span>
+              <span class="cwt_panel_header_small">:</span>
+              <span class="cwt_panel_header_small" id="playerConfig_p4_co"></span>
+            </span>
+          </div>
+        </td>
+
+      </tr>
+
+
+      <tr>
+
+        <td class="w_95 cwt_smallButton noTopBorder noRightBorder noEgdeTR noEgdeTL noEgdeBR" >
+          <button data="3" key="config.team.prev" />
+        </td>
+
+        <td class="w_95 cwt_smallButton noLeftBorder noLeftBorder noTopBorder noEgdeAll" >
+          <button data="3" key="config.team.next" />
+        </td>
+
+        <td class="w_190" 
+            colspan="2">
+
+          <div class="cwt_page_button cwt_panel_button cwt_panel_button_inverted
+                      noLeftBorder noTopBorder noEgdeTR noEgdeTL noEgdeBL" >
+
+            <span>
+              <span class="cwt_panel_header_small" key="config.playerTeam"></span>
+              <span class="cwt_panel_header_small">:</span>
+              <span class="cwt_panel_header_small" id="playerConfig_p3_team"></span>
+            </span>
+          </div>
+        </td>
+
+        <!-- ################################################################### -->
+        <td class="w_40" ></td>
+        <!-- ################################################################### -->
+
+        <td class="w_95 cwt_smallButton noTopBorder noRightBorder noEgdeTR noEgdeTL noEgdeBR" >
+          <button data="4" key="config.team.prev" />
+        </td>
+
+        <td class="w_95 cwt_smallButton noLeftBorder noTopBorder noEgdeAll" >
+          <button data="4" key="config.team.next" />
+        </td>
+
+        <td class="w_190" 
+            colspan="2">
+
+          <div class="cwt_page_button cwt_panel_button cwt_panel_button_inverted
+                      noTopBorder noLeftBorder noEgdeTR noEgdeTL noEgdeBL" >
+
+            <span>
+              <span class="cwt_panel_header_small" key="config.playerTeam"></span>
+              <span class="cwt_panel_header_small">:</span>
+              <span class="cwt_panel_header_small" id="playerConfig_p4_team"></span>
+            </span>
+          </div>
+        </td>
+
+      </tr>
+      
+      <!-- #################### START GAME #################### -->
+
+      <tr>
+        <td class="w_800 buttonTopGap" colspan="9">
+          <button key="config.next" /></td>
+      </tr>
+      
+    </tbody>
+  </table>
+</div>
+<div id="cwt_keyMapping_screen"
+     class="cwt_page"
+     style="display:none;" >
+
+  <p class="cwt_panel_header cwt_panel_header_small"><span key="option.setKeys"></span></p>
+
+  <p id="keyMappingText"
+     class="cwt_panel_header_big cwt_page_top_gap" ></p>
+
+</div>
+
+<div id="cwt_options_screen" 
+     class="cwt_page" 
+     style="display:none;" >
+  
+  <p class="cwt_panel_header cwt_panel_header_small cwt_page_bottom_margin"><span key="OPTIONS"></span></p>
+
+  <table class="w_800 table_center table_collapse semiAlpha" >
+    <tbody>
+      
+      <!-- #################### SFX VOLUME #################### -->
+
+      <tr >
+        <td colspan="2">
+
+          <div class="cwt_panel_header_small cwt_page_button cwt_panel_button cwt_panel_button_inverted
+                      noEgdeBL noEgdeBR" >
+
+            <span id="cwt_options_sfxVolume_desc" key="options.sfx"></span>:<span id="cwt_options_sfxVolume" ></span>%
+          </div>
+        </td>
+      </tr>
+      
+      <tr >
+        <td class="noRightBorder noTopBorder noEgdeAll cwt_panel_header_small">
+            <button key="options.sfx.down" />
+          </td>
+
+        <td class="noLeftBorder noTopBorder noEgdeAll cwt_panel_header_small" >
+            <button key="options.sfx.up" />
+          </td>
+      </tr>
+
+      <!-- #################### MUSIC VOLUME #################### -->
+
+      <tr>
+        <td colspan="2">
+          <div class="cwt_panel_header_small cwt_page_button cwt_panel_button cwt_panel_button_inverted
+                      noTopBorder noEgdeAll" >
+
+            <span id="cwt_options_musicVolume_desc" key="options.music"></span>:<span id="cwt_options_musicVolume"></span>%
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="noRightBorder noTopBorder noEgdeTR noEgdeBR" >
+          <button key="options.music.down" />
+        </td>
+
+        <td class="noLeftBorder noTopBorder noEgdeTL noEgdeBL" >
+          <button key="options.music.up" />
+        </td>
+      </tr>
+
+      <!-- #################### SET KEY MAPPING #################### -->
+      
+      <tr>
+        <td colspan="2" class="buttonTopGap" >
+          <div class="cwt_panel_header_small cwt_page_button cwt_panel_button cwt_panel_button_inverted
+                      noTopBorder noEgdeAll" >
+
+            <span id="cwt_options_forceTouch"></span>
+          </div>
+        </td>
+      </tr>
+      
+      <tr >
+        <td class="w_800 buttonTopGap cwt_panel_header_small" colspan="2" >
+            <button key="options.forceTouch" > </button>
+        </td>
+      </tr>
+      
+      <!-- #################### SET KEY MAPPING #################### -->
+
+      <tr >
+        <td class="w_400 buttonTopGap noRightBorder noEgdeTR noEgdeTL noEgdeBR" >
+            <button key="options.setKeyboad" > </button>
+        </td>
+        <td class="w_400 buttonTopGap noLeftBorder noEgdeTR noEgdeTL noEgdeBL" >
+            <button key="options.setGamepad" > </button>
+        </td>
+      </tr>
+      
+      <!-- #################### RESET DATA #################### -->
+
+      <tr >
+        <td class="w_800 buttonTopGap cwt_panel_header_small" colspan="2" >
+            <button key="options.resetData" > </button>
+        </td>
+      </tr>
+      
+      <!-- #################### GO BACK #################### -->
+
+      <tr>
+        <td class="w_800 buttonTopGap" colspan="2">
+            <button key="options.goBack" />
+        </td>
+      </tr>
+      
+    </tbody>
+  </table>
+</div>
+
+
+<div id="cwt_game_screen" 
+     class="" 
+     style="display:none;" >
+  
+  <!-- #################################################################################################### --> 
+  
+  <div id="cwt_game_canvas">
+    <canvas id="cwt_canvas"></canvas>
+  </div>
+  
+  <!-- #################################################################################################### --> 
+  
+  <div id="cwt_info_box" 
+       style="opacity:0; left: calc( 50% - 200px); top: -1000px; padding-bottom: 4px;"
+       class="cwt_panel w_400 detachedInFront fadeAnimation">
+    
+    <p class="cwt_panel_header cwt_panel_header_small">
+      <span key="message.panel.header"></span>
+    </p>    
+    
+    <span id="cwt_info_box_content" 
+          class="cwt_panel_header_small"
+          style="text-align: center;"></span> 
+    
+  </div>
+  
+  <!-- #################################################################################################### --> 
+  
+  <div id="cwt_menu" 
+       style="opacity:0; left: calc( 50% - 100px); top: -1000px;"
+       class="cwt_panel w_200 detachedInFront fadeAnimation">
+    
+    <p class="cwt_panel_header cwt_panel_header_small">
+      <span key="menu.header"></span>
+    </p>
+    
+    <div id="cwt_menu_content" 
+         class="">
+
+      <ul id="cwt_menu_entries" 
+          class=""></ul>
+
+    </div>
+    
+  </div>
+  
+  <!-- #################################################################################################### --> 
+  
+  <div id="cwt_game_infoBar" 
+       style="bottom: 4px;"
+       class="cwt_panel w_120 detachedInFront" >
+
+    <table style="text-align: left; word-break: break-word;">
+      <tbody>
+        
+        <!-- *************************************************** -->
+        
+        <tr>
+          <td colspan="2" id="infoBox_playerName" class=""></td>
+        </tr>
+        
+        <tr>
+          <td colspan="2">G. <span id="infoBox_playergold"></span></td>
+        </tr>
+        
+        <tr>
+          <td colspan="2">P. <span id="infoBox_playerpower"></span></td>
+        </tr>
+        
+        
+        <!-- *************************************************** -->
+        
+        <tr id="infoBox_tileRow1" >
+          <td colspan="2" id="infoBox_tilename" class="lightPanelTopBorder"></td>
+        </tr>
+        
+        <tr id="infoBox_tileRow2" >
+          <td class="icontd" >
+            <canvas height="8" width="8" id="infoBox_defense_d"></canvas>
+            <span id="infoBox_defense"></span>
+          </td>
+
+          <td class="icontd" id="infoBox_tileRow2d2" >
+            <canvas height="8" width="8" id="infoBox_capPt_d"></canvas>
+            <canvas height="8" width="8" style="display: none;" id="infoBox_pr_hp_d"></canvas>
+            <span id="infoBox_capPt"></span>/<span class="colBold" id="infoBox_capPt2"></span>
+          </td>
+        </tr>
+
+        <!-- *************************************************** -->
+        
+        <tr id="infoBox_unitRow1" >
+          <td colspan="2" id="infoBox_name" class="lightPanelTopBorder" ></td>
+        </tr>
+        
+        <tr id="infoBox_unitRow2" >
+          <td class="icontd w_60">
+            <canvas height="8" width="8" id="infoBox_hp_d"></canvas>
+            <span class="colBold" id="infoBox_hp"></span>
+          </td>
+          <td class="icontd w_60" >
+            <canvas height="8" width="8" id="infoBox_ammo_d"></canvas>
+            <span id="infoBox_ammo"></span>/<span class="colBold" id="infoBox_ammo2"></span>
+          </td>
+        </tr>
+        
+        <tr id="infoBox_unitRow3" >
+          <td class="icontd w_60" >
+            <canvas height="8" width="8" id="infoBox_fuel_d"></canvas>
+            <span id="infoBox_fuel"></span>/<span class="colBold" id="infoBox_fuel2"></span>
+          </td> 
+          <td class="icontd w_60" >
+            <canvas height="8" width="8" id="infoBox_attrange_d"></canvas>
+            <span class="colBold" id="infoBox_attrange"></span>-<span class="colBold" id="infoBox_attrange2"></span>
+          </td>
+        </tr>
+        
+        <!-- *************************************************** -->
+        
+      </tbody>
+    </table>
+    
+  </div>
+  
+  <!-- #################################################################################################### --> 
+  
+</div>
+<link href='style.css' rel='stylesheet' type='text/css' /><script type='text/javascript' src='game.js'></script><script type='text/javascript' src='client.js'></script>
+
+  </body>
+
+  <script type="text/javascript">
+    var reg = /function\s*\(\s*(\w*)\s*[,]*\s*(\w*)\s*[,]*\s*(\w*)\s*[,]*\s*(\w*)\s*[,]*\s*(\w*)\s*[,]*\s*(\w*)\s*[,]*\s*(\w*)\s*[,]*\s*(\w*)\s*[,]*\s*(\w*)\s*[,]*\s*(\w*)\)/;
+
+    var aopThat = function( fn ){
+      var str = fn.toString();
+      var typeMap = [];
+      str.replace(reg, function () {
+        for( var i=1; i<11; i++ ){
+            if( arguments[i] ){
+                if( arguments[i].indexOf("num") === 0 ) typeMap[i-1] = 1;
+                else typeMap[i-1] = 0;
+            }
+            else typeMap[i-1] = 0;
+        }
+      });
+        
+      return function(){
+        for( var i=0; i<arguments.length; i++ ){
+          if( typeMap[i] ){
+              if( typeMap[i] === 1 && typeof arguments[i] !== "number" ){
+                throw Error("type fail");   
+              }
+          }
+        }
+        return fn.apply(this,arguments);
+      };
+    };
+
+    var keys = Object.keys(model);
+    for (var i = keys.length - 1; i >= 0; i--) {
+      var fn = model[keys[i]];
+      if( typeof fn === "function") model[keys[i]] = aopThat(fn);
+    };
+  </script>
+
+</html>

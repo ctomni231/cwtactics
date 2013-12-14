@@ -1,1 +1,0 @@
-controller.unitAction({key:"hideUnit",relation:["S","T",model.relationModes.NONE,model.relationModes.SAME_OBJECT],condition:function(e){var t=e.source.unit;return t.type.stealth&&!t.hidden},invoke:function(e){controller.sharedInvokement("hideUnit",[e.source.unitId])}});
