@@ -22,7 +22,7 @@ var VERSION = "0.3.5";
 
 var DEBUG = true;
 
-var MOD_PATH = "http://ctomni231.github.io/cwtactics/_121213_dev_0_3_5/mod/cwt/";
+var MOD_PATH = "http://ctomni231.github.io/cwtactics/121213_dev_0_3_5/mod/cwt/";
 
 var EV_FACTORY_TYPE_CHECK = "ev_fac_canBuild";
 
