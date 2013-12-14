@@ -24,9 +24,8 @@ PAGE_DATA.shortLinks = [
     title:"CW:T Mailing-List",
     imgLink:"stylesheets/googleplus.png" },
 
-  { link:"", 
+  { link:"mailto:ctomni231@gmail.com", 
     title:"Contact us",
     imgLink:"stylesheets/contactUs.png" }
 
-  
 ];
