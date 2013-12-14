@@ -1,6 +1,6 @@
 PAGE_DATA.navbarLinks = [
   
-  { name:"Play CW:T",     section:"gamedata/actual/webclient/0.3.1/startGame.html" },
+  { name:"Play CW:T",     section:"121213_dev_0_3_5/game/game.html" },
   { name:"Recent News",   section:"#sectionNews" },
   { name:"Documentation", section:"#sectionManual" },
   { name:"Releases",      section:"#sectionRelease"},
