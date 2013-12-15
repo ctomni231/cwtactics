@@ -43,11 +43,6 @@
       $(document).ready(function(){
         PAGE_PROG.renderSections();
         PAGE_PROG.updateReleaseBox(0);
-
-        // prevent view port scroll
-        $('body').bind("touchmove", {}, function(event){
-          event.preventDefault();
-        });
       });
     </script>
 
