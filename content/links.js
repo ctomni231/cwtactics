@@ -4,17 +4,17 @@ PAGE_DATA.shortLinks = [
     title:"Follow us on Facebook",
     imgLink:"stylesheets/facebook.png" },
 
-  { link:"http://www.youtube.com/watch?v=GfRJiSylfPc&list=PLIJ4AW02hN2FcMLF8ka-puq1mza2VuOJb", 
-    title:"CW:T Youtube Channel",
-    imgLink:"stylesheets/youtube.png" },
+  { link:"http://github.com/ctomni231/cwtactics", 
+    title:"CW-T Github Repository",
+    imgLink:"stylesheets/github.png" },
+
+  { link:"https://code.google.com/p/cwtactics/", 
+    title:"CW-T Google Repository",
+    imgLink:"stylesheets/code.png" },
 
   { link:"http://cwtactics.blogspot.de", 
     title:"CW:T Blog",
     imgLink:"stylesheets/blogger.png" },
-
-  { link:"http://github.com/ctomni231/cwtactics", 
-    title:"CW:T Code-Repository",
-    imgLink:"stylesheets/github.png" },
 
   { link:"http://forums.customwars.com", 
     title:"CW:T Forum",
@@ -22,7 +22,11 @@ PAGE_DATA.shortLinks = [
 
   { link:"http://groups.google.com/group/cwtactics", 
     title:"CW:T Mailing-List",
-    imgLink:"stylesheets/googleplus.png" },
+    imgLink:"stylesheets/groups.png" },
+
+  { link:"http://www.youtube.com/watch?v=GfRJiSylfPc&list=PLIJ4AW02hN2FcMLF8ka-puq1mza2VuOJb", 
+    title:"CW:T Youtube Channel",
+    imgLink:"stylesheets/youtube.png" },
 
   { link:"mailto:ctomni231@gmail.com", 
     title:"Contact us",
