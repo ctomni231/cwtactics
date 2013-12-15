@@ -1,17 +1,22 @@
 controller.action_unitAction({
 
-	key:"fireLaser",
-	relation:[ "S","T", model.player_RELATION_MODES.SAME_OBJECT],
+  key:"fireLaser",
 
-	condition: function( data ){
-		return model.bombs_isLaser( data.target.unitId );
-	},
+  relation:[
+    "S","T",
+    model.player_RELATION_MODES.SAME_OBJECT
+  ],
 
-	invoke: function( data ){
-		controller.action_sharedInvoke( "bombs_fireLaser", [ 
+  condition: function( data ){
+    return model.events.fireLaser_check( data.target.unitId );
+  },
+
+  invoke: function( data ){
+    controller.commandStack_sharedInvokement(
+      "bombs_fireLaser",
       data.target.x,
-      data.target.y 
-    ]);
-	}
+      data.target.y
+    );
+  }
 
 });

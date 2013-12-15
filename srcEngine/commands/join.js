@@ -1,21 +1,29 @@
 controller.action_unitAction({
-  
+
   key:"joinUnits",
-  
-	relation:["S","T",model.player_RELATION_MODES.OWN],
-	
+  noAutoWait: true,
+
+  relation:[
+    "S","T",
+    model.player_RELATION_MODES.OWN
+  ],
+
   condition: function( data ){
-    return model.unit_areJoinable( data.source.unitId, data.target.unitId );
+    return model.events.joinUnits_check(data.source.unitId, data.target.unitId);
   },
-  
+
   invoke: function( data ){
-    controller.action_sharedInvoke("unit_join",[ 
-			data.source.unitId, 
-			data.target.unitId 
-		]);
-    controller.action_sharedInvoke("actions_markUnitNonActable",[
+    controller.commandStack_sharedInvokement(
+      "joinUnits_invoked",
+      data.source.unitId,
       data.target.unitId
-    ]);
+    );
+
+    // set target unit into wait mode
+    controller.commandStack_sharedInvokement(
+      "wait_invoked",
+      data.target.unitId
+    );
   }
-  
+
 });

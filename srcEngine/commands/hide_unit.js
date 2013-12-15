@@ -1,18 +1,22 @@
 controller.action_unitAction({
-  
+
   key:"unitHide",
-	
-	relation: ["S","T",model.player_RELATION_MODES.NONE,model.player_RELATION_MODES.SAME_OBJECT],
-  
+
+  relation: [
+    "S","T",
+    model.player_RELATION_MODES.NONE,
+    model.player_RELATION_MODES.SAME_OBJECT
+  ],
+
   condition: function( data ){
-    var unit = data.source.unit;
-    return unit.type.stealth && !unit.hidden;
+    return model.events.unitHide_check(data.source.unitId);
   },
-          
+
   invoke: function( data ){
-    controller.action_sharedInvoke("unit_hide",[ 
-			data.source.unitId 
-		]);
+    controller.commandStack_sharedInvokement(
+      "unitHide_invoked",
+      data.source.unitId
+    );
   }
-  
+
 });

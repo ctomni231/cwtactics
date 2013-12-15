@@ -1,13 +1,13 @@
 controller.action_mapAction({
-  
+
   key:"nextTurn",
-  
-  condition: function(){
-    return true;
+
+  condition: function(data){
+    return model.events.nextTurn_check(wish);
   },
-  
+
   invoke: function(){
-    controller.action_sharedInvoke("round_nextTurn",[]);
+    controller.commandStack_sharedInvokement("nextTurn_invoked");
   }
-  
+
 });

@@ -1,19 +1,22 @@
 controller.action_unitAction({
-  
+
   key:"loadUnit",
-  
-	relation: ["S","T",model.player_RELATION_MODES.OWN],
-	
+
+  relation: [
+    "S","T",
+    model.player_RELATION_MODES.OWN
+  ],
+
   condition: function( data ){
-    var tuid = data.target.unitId;
-    return model.transport_isTransportUnit( tuid ) && model.transport_canLoadUnit( data.source.unitId, tuid );
+    return model.events.loadUnit_check(data.source.unitId,data.target.unitId);
   },
-  
+
   invoke: function( data ){
-    controller.action_sharedInvoke( "transport_loadInto",[ 
-			data.source.unitId, 
-			data.target.unitId 
-		]);
+    controller.commandStack_sharedInvokement(
+      "loadUnit_invoked",
+      data.source.unitId,
+      data.target.unitId
+    );
   }
- 
+
 });

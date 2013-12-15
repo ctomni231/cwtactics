@@ -2,16 +2,19 @@ controller.action_unitAction({
 
   key:"attachCommander",
 
-  condition: function(){
-		if( model.co_activeMode !== model.co_MODES.AWDR ) return false;
+  condition: function(data){
+    return model.events.attachCommander_check(
 
+      model.round_turnOwner
+    );
   },
 
   invoke: function( data ){
-    controller.action_sharedInvoke("co_attachCommander",[
-    	model.round_turnOwner,
-    	data.source.unitId
-    ]);
+    controller.commandStack_sharedInvokement(
+      "co_attachCommander",
+      model.round_turnOwner,
+      data.source.unitId
+    );
   }
 
 });

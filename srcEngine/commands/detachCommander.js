@@ -2,16 +2,20 @@ controller.action_unitAction({
 
   key:"detachCommander",
 
-  condition: function(){
-		return model.co_activeMode === model.co_MODES.AWDR;
+  condition: function(data){
+    return model.events.detachCommander_check(
+
+      model.round_turnOwner
+    );
   },
 
   invoke: function( data ){
-    controller.action_sharedInvoke("co_detachCommander",[
-    	model.round_turnOwner,
-    	data.target.x,
-    	data.target.y
-    ]);
+    controller.commandStack_sharedInvokement(
+      "detachCommander_invoked",
+      model.round_turnOwner,
+      data.target.x,
+      data.target.y
+    );
   }
 
 });

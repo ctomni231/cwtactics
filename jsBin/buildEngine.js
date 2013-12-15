@@ -1,13 +1,14 @@
 var builder = require( "./buildLibrary.js" );
 
 var PATH = " "+builder.dirJsToString("srcEngine/libs")+" "+
-			builder.dirJsToString("srcEngine/core"         )+" "+
-			builder.dirJsToString("srcEngine/util"         )+" "+
-			builder.dirJsToString("srcEngine/controller"   )+" "+
-			builder.dirJsToString("srcEngine/model"        )+" "+
+      builder.dirJsToString("srcEngine/core"         )+" "+
+      builder.dirJsToString("srcEngine/util"         )+" "+
+      builder.dirJsToString("srcEngine/controller"   )+" "+
+      builder.dirJsToString("srcEngine/model"        )+" "+
+      builder.dirJsToString("srcEngine/events"       )+" "+
       builder.dirJsToString("srcEngine/persistence"  )+" "+
       builder.dirJsToString("srcEngine/sheetHandler" )+" "+
-			builder.dirJsToString("srcEngine/commands"     )+" "+
+      builder.dirJsToString("srcEngine/commands"     )+" "+
       builder.dirJsToString("srcEngine/commands_ai"  )+" ";
 
 exports.doIt = function( p,baton ){

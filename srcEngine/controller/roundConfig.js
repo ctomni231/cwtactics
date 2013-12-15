@@ -1,4 +1,4 @@
-//
+// Changing types of the round configuration.
 //
 controller.roundConfig_CHANGE_TYPE = {
   CO_MAIN     : 0,
@@ -8,19 +8,19 @@ controller.roundConfig_CHANGE_TYPE = {
   TEAM        : 4
 };
 
-// 
+// Data holder to remember selected co's.
 //
 controller.roundConfig_coSelected = util.list( MAX_PLAYER , INACTIVE_ID );
 
-// 
+// Data holder to remember selected player types.
 //
 controller.roundConfig_typeSelected = util.list( MAX_PLAYER , INACTIVE_ID );
 
-// 
+// Data holder to remember selected teams.
 //
 controller.roundConfig_teamSelected = util.list( MAX_PLAYER , 0 );
 
-// 
+// Prepares a new game round by reset the configuration data.
 //
 controller.roundConfig_prepare     = function(){
   controller.roundConfig_coSelected.resetValues();
@@ -29,7 +29,7 @@ controller.roundConfig_prepare     = function(){
 
   for( var i= 0, e=MAX_PLAYER; i<e; i++ ){
     if( model.player_data[i].team > INACTIVE_ID ){
-      
+
       if( i === 0 ){
         controller.roundConfig_typeSelected[i] = 0;
       } else controller.roundConfig_typeSelected[i] = 1;
@@ -42,7 +42,9 @@ controller.roundConfig_prepare     = function(){
   }
 };
 
-//
+// Evaluates the selected data. The data will be transfered
+// into the model when the data model as whole object is
+// correct.
 //
 controller.roundConfig_evalAfterwards = function(){
   var tmp;
@@ -71,7 +73,7 @@ controller.roundConfig_evalAfterwards = function(){
       }
 
       // co
-      tmp = ( controller.roundConfig_coSelected[i] !== INACTIVE_ID)? 
+      tmp = ( controller.roundConfig_coSelected[i] !== INACTIVE_ID)?
         model.data_coTypes[controller.roundConfig_coSelected[i]] : null;
 
       model.co_setMainCo( i, tmp );
@@ -80,18 +82,18 @@ controller.roundConfig_evalAfterwards = function(){
 
       // deactivate player
       model.player_data[i].team = INACTIVE_ID;
-      
+
       // remove all units
       var firstUid = model.unit_firstUnitId(i);
       var lastUid = model.unit_lastUnitId(i);
       for( ; firstUid<=lastUid; firstUid++ ){
         var unit = model.unit_data[firstUid];
-        if( unit ){ 
+        if( unit ){
           model.unit_posData[unit.x][unit.y] = null;
           model.unit_data[firstUid].owner = INACTIVE_ID;
         }
       }
-      
+
       // remove all properties
       for( var pi = 0, pe = model.property_data.length; pi < pe; pi++ ){
         var prop = model.property_data[pi];
@@ -99,11 +101,11 @@ controller.roundConfig_evalAfterwards = function(){
           prop.owner = INACTIVE_ID;
         }
       }
-    } 
+    }
   }
 };
 
-//
+// Changes a parameter of the configuration data.
 //
 controller.roundConfig_changeConfig = function( pid, type, prev ){
   assert(
@@ -168,13 +170,13 @@ controller.roundConfig_changeConfig = function( pid, type, prev ){
         else{
           cSelect++;
           if( cSelect >= 4 ) cSelect = 0;
-        }  
+        }
 
         var s = false;
         for( var i= 0, e=MAX_PLAYER; i<e; i++ ){
           if( i === pid ) continue;
 
-          if( controller.roundConfig_typeSelected[i] >= 0 && 
+          if( controller.roundConfig_typeSelected[i] >= 0 &&
             controller.roundConfig_teamSelected[i] !== cSelect ){
             s = true;
           }

@@ -1,11 +1,24 @@
-// DumbBoy (DB) is the old forgotten AI from MiniWars. We will resurrected him for Custom Wars: Tactics. 
+// DumbBoy (DB) is the old forgotten AI from MiniWars. We will resurrected him for Custom Wars: Tactics.
 // Our target is to build a first version of a dynamic AI that can change it's tasks at runtime
 // in relation to the situation on the battlefield. DumbBoy won't be a next super gen AI. This
 // is not our task ( we wouldn't have enough time to do this... to be true :P ). It should be more
 // a concept of a clean designed AI that can be extended by different people. That's why DumbBoy gets
-// a clean design instead of hacky code. 
+// a clean design instead of hacky code.
 //
-// **TASKS 0.25: DO SOMETHING ON THE BATTLEFIELD (v. 0.3.5)**
+// **TASKS 0.10: DO SOMETHING ON THE BATTLEFIELD (v. 0.3.5)**
+//
+//  - DB builds objects on his properties
+//  - When neutral properties are left on the map then DB will
+//    build at least one capturer unit
+//  - DB tries to fulfill a percentage (AIR,VS,TANKS etc.)
+//  - Damaged units (<=5HP) may move back to properties for repair
+//  - Units move to the enemy players
+//  - Capturers try to capture properties or move near to them
+//  - DB attacks with units in range
+//  - DB tries to position indirect units
+//  - *Actions:* Wait,Move,Capture,End_Turn,Build_Unit,Attack,Join
+//
+// **TASKS 0.25: DO SOMETHING MORE (v. 0.3.6)**
 //
 //  - DB builds objects on his properties
 //  - When neutral properties are left on the map then DB will
@@ -20,7 +33,7 @@
 //
 // **TASKS 0.5: BEING DYNAMIC AND LESS CALCULATE ABLE (v. 0.4)**
 //
-//  - DB should define long term tasks for himself to organize his actions 
+//  - DB should define long term tasks for himself to organize his actions
 //    to fulfill this tasks (AGGRESIVE,DEFENSIVE,MONEY,PRESSING,SPAMMING)
 //  - DB can ignore long term tasks to handle difficult situations dynamical
 //  - Long term tasks changes during game play (maybe re-analyse it every 5 days)
@@ -34,7 +47,7 @@
 //  - DB should use transports to reach far away properties
 //  - *Actions:* Hide/Unhide,Supply,Load/Unload,Suicide_Bomb
 //
-controller.ai_spec = "DumbBoy [0.25]";
+controller.ai_spec = "DumbBoy [0.10]";
 
 // Some base scores.
 //
@@ -67,7 +80,7 @@ controller.ai_loopHolder_ = {
   score : -1
 };
 
-// 
+//
 //
 controller.ai_scoreDataHolder_ = {
   source          : Object.create( controller.TaggedPosition ),
@@ -80,7 +93,7 @@ controller.ai_scoreDataHolder_ = {
   cacheInt        : 0
 };
 
-// 
+//
 //
 controller.ai_actionDataHolder_ = {
   source          : Object.create( controller.TaggedPosition ),
@@ -96,7 +109,7 @@ controller.ai_actionDataHolder_ = {
   cacheInt        : 0
 };
 
-// 
+//
 //
 controller.ai_reset = function(){
   for( var i= 0, e=MAX_PLAYER-1; i<e; i++ ){
@@ -104,7 +117,7 @@ controller.ai_reset = function(){
   }
 };
 
-// 
+//
 //
 controller.ai_active = null;
 
@@ -115,7 +128,7 @@ controller.ai_defineRoutine = function(impl){
   assert( !controller.ai_CHECKS.hasOwnProperty(impl.key) );
   assert( util.isFunction(impl.scoring) );
   assert( util.isFunction(impl.prepare) );
-  
+
   controller.ai_CHECKS.push(impl);
 };
 
@@ -123,14 +136,14 @@ controller.ai_defineRoutine = function(impl){
 //
 controller.ai_getRoutine = function(key){
   assert( util.isString(key) );
-  
+
   var i = 0;
   var e = controller.ai_CHECKS.length;
   while( i<e ){
     if( controller.ai_CHECKS[i].key === key ) return controller.ai_CHECKS[i];
     i++;
   }
-  
+
   return null;
 };
 
@@ -140,7 +153,7 @@ controller.ai_register = function(pid){
   assert( model.player_isValidPid(pid) );
 
   for (var i = 0; i < controller.ai_data.length; i++) {
-    
+
     // if the slot is empty then occupy it
     if( controller.ai_data[i].pid === INACTIVE_ID ){
         controller.ai_data[i].pid = pid;
@@ -153,7 +166,7 @@ controller.ai_register = function(pid){
 //
 controller.ai_deregister = function(pid){
   for (var i = 0; i < controller.ai_data.length; i++) {
-    
+
     // if the slot is empty then occupy it
     if( controller.ai_data[i].pid === pid ){
         controller.ai_data[i].pid = INACTIVE_ID;
@@ -199,40 +212,40 @@ controller.ai_isHuman = function(pid){
 controller.ai_machine = util.stateMachine({
 
   // ++++++++++++++++++++++++++++++++++++++++
-  // This state must be active at the start 
+  // This state must be active at the start
   // of a AI turn. If not then something gone
-  // wrong. At least no logic will be done 
+  // wrong. At least no logic will be done
   // here. It only symbolizes a meta state to
   // say "Hey I'm ready for a new AI turn".
   //
 
   IDLE:{ tick: function(){
     util.log(controller.ai_spec,"- doing step in idle state");
-    
+
     // no ai is selected now
     assert( !controller.ai_active );
-    
+
     // select ai
     for( var i=controller.ai_data.length-1; i>=0; i-- ){
       if( controller.ai_data[i].pid === model.round_turnOwner ){
         controller.ai_active = controller.ai_data[i];
       }
     }
-    
+
     // ai is selected now
     assert( controller.ai_active );
-    
+
     return "SET_UP_AI_TURN";
   }},
 
   // ++++++++++++++++++++++++++++++++++++++++
-  // Start turn actions. At the moment 
-  // nothing will be done here too. Later 
-  // this could be the place to make a first 
-  // analyse of the battlefield and the enemy 
-  // players. I think this will be a good 
+  // Start turn actions. At the moment
+  // nothing will be done here too. Later
+  // this could be the place to make a first
+  // analyse of the battlefield and the enemy
+  // players. I think this will be a good
   // place to define the long term task of
-  // the AI player based on the situation 
+  // the AI player based on the situation
   // on the battlefield.
   //
 
@@ -259,13 +272,13 @@ controller.ai_machine = util.stateMachine({
   }},
 
   // ++++++++++++++++++++++++++++++++++++++++
-  // Searches proper tasks for every unit 
+  // Searches proper tasks for every unit
   // of the ai player.
   //
 
   PHASE_SEARCH_TASK: { tick: function(){
     util.log(controller.ai_spec,"- search task");
-    
+
     var loopData   = controller.ai_loopHolder_;
     var scoreData  = controller.ai_scoreDataHolder_;
     var actionData = controller.ai_actionDataHolder_;
@@ -285,38 +298,38 @@ controller.ai_machine = util.stateMachine({
       var dataTp = -1;
       if( loopData.i < loopData.e ){
         if( loopData.i < loopData.prop ){
-          // unit check  
-      
+          // unit check
+
           util.log(controller.ai_spec,"- ..for unit",loopData.i);
-          
+
           var unit = model.unit_data[loopData.i];
           if( unit.owner !== INACTIVE_ID && unit.loadedIn === INACTIVE_ID ){
             dataTp = 0;
             scoreData.source.set( unit.x, unit.y );
             model.move_fillMoveMap( scoreData.source, scoreData.selection );
           }
-            
-          
+
+
         } else {
           // property check
-          
+
           util.log(controller.ai_spec,"- ..for property",loopData.i);
-          
-          // grab property; convert relative id to absolute id 
+
+          // grab property; convert relative id to absolute id
           var prop = model.property_data[loopData.i-loopData.prop];
           if( prop.owner === controller.ai_active.pid ){
             dataTp = 1;
             scoreData.source.set( prop.x, prop.y );
           }
         }
-        
+
       } else {
         // map check
-        
+
         util.log(controller.ai_spec,"- ..for map");
         dataTp = 2;
       }
-      
+
       // do all checks
       var cScore  = -1;
       var nScore  = -1;
@@ -331,10 +344,10 @@ controller.ai_machine = util.stateMachine({
           if( dataTp !== 0 && check.unitAction ) continue;
           if( dataTp !== 1 && check.propAction ) continue;
           if( dataTp !== 2 && check.mapAction ) continue;
-          
+
           // call scoring
           nScore = check.scoring(scoreData);
-            
+
           // new object got better scores -> select it's action
           if( nScore > loopData.score ){
             actionData.source.grab(          scoreData.source)
@@ -350,11 +363,11 @@ controller.ai_machine = util.stateMachine({
           }
         }
       }
-      
+
       loopData.i++;
 
       // jump out of the loop when
-      //  a) you find a valid action to do 
+      //  a) you find a valid action to do
       //  b) no object can handle ( just to be safe, should not happen )
       if( ( dataTp !== -1 && nScore !== -1 ) || (loopData.i > loopData.e) ) break;
     }
@@ -363,11 +376,11 @@ controller.ai_machine = util.stateMachine({
   }},
 
   // ++++++++++++++++++++++++++++++++++++++++
-  // Flushes the current selected task, which 
+  // Flushes the current selected task, which
   // is the action with the highest priority.
-  // The ai machine moves into the tear down 
+  // The ai machine moves into the tear down
   // state when the flush state calls an
-  // endAiTurn action or no valid action 
+  // endAiTurn action or no valid action
   // could be found.
   //
 
@@ -386,17 +399,17 @@ controller.ai_machine = util.stateMachine({
       // end turn with an end turn action
       return (actionData.endsAiTurn === true)? "TEAR_DOWN_AI_TURN" : "PHASE_PREPARE_SEARCH_TASKS";
     }
-    
+
     throw Error("at least one action must explicit ending AI turn");
   }},
 
   // ++++++++++++++++++++++++++++++++++++++++
-  // The ai turn ends here. 
+  // The ai turn ends here.
   //
 
   TEAR_DOWN_AI_TURN:{ tick: function(){
     util.log(controller.ai_spec,"- tear down turn");
-  
+
     // release reference
     controller.ai_active = null;
 

@@ -1,13 +1,13 @@
-/** 
+/**
  * Creates a ring buffer with a fixed size.
  */
-util.createRingBuffer = function( size ){
+util.createRingBuffer = function( size, initFn ){
 
   var buffer = /** @lends util.RingBuffer */ {
 
     /**
      * Pushes an element into the buffer
-     * 
+     *
      * @param msg object that will be pushed into the buffer
      */
     push: function (msg){
@@ -63,7 +63,7 @@ util.createRingBuffer = function( size ){
 
   buffer._rInd = 0;
   buffer._wInd = 0;
-  buffer._data = util.list( size, null );
+  buffer._data = util.list( size, (initFn)? initFn : null );
   buffer._size = size;
 
   return buffer;

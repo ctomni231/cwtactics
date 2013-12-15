@@ -1,17 +1,17 @@
 (function(){
-  
+
   var fill = function(){
     var defValue = this.__defValue__;
     var len = this.__length__;
     var isFN = typeof defValue === 'function';
-    
+
     // SIMPLE ARRAY OBJECT
     for(var i = 0, e = len; i < e; i++){
       if( isFN ) this[i] = defValue( i, this[i] );
       else       this[i] = defValue;
     }
   };
-  
+
   var clone = function( list ){
     var lenA = this.__length__;
     var lenB = list.__length__;
@@ -23,7 +23,7 @@
       list[i] = this[i];
     }
   };
-  
+
   var grab = function( list ){
     var lenA = this.__length__;
     var lenB = list.__length__;
@@ -35,25 +35,24 @@
       this[i] = list[i];
     }
   };
-  
-  // Creates a list and fills it with default values.
-  // 
-  // @param {Number} len the length of the created list
-  // @param defaultValue the default value that will be inserted into the list slots 
+
+  // Creates a list with a given length and fills it with a
+  // default value.
+  //
   util.list = function( len, defaultValue ){
     if( defaultValue === undefined ){ defaultValue = null; }
-    
+
     var warr = [];
     warr.__defValue__ = defaultValue;
     warr.__length__ = len;
     warr.resetValues = fill;
     warr.cloneValues = clone;
     warr.grabValues = grab;
-    
+
     warr.resetValues();
-    
+
     return warr;
   };
-  
-  
+
+
 })();

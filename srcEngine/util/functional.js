@@ -1,7 +1,6 @@
  // Creates a scoped context by calling the callback immediatetly after the
 // `util.scoped` is called.
 //
-// @param {Function} cb call back function that will be invoked in the created scope
 util.scoped = function( cb ){
   return cb();
 };
@@ -60,7 +59,7 @@ util.isObject = function(value){
 util.isInt = function(value){
   return (
     typeof value === "number" &&
-    value % 1 === 0 
+    value % 1 === 0
   );
 };
 

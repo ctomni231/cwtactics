@@ -1,17 +1,25 @@
 controller.action_unitAction({
-  
-  key:"unhideUnit",
-  
-	relation: ["S","T",model.player_RELATION_MODES.NONE,model.player_RELATION_MODES.SAME_OBJECT],
-  
+
+  key:"unitUnhide",
+
+  relation: [
+    "S","T",
+    model.player_RELATION_MODES.NONE,
+    model.player_RELATION_MODES.SAME_OBJECT
+  ],
+
   condition: function( data ){
-    return data.source.unit.hidden;
+    return model.events.unitUnhide_check(
+
+      data.source.unitId
+    );
   },
-  
+
   invoke: function( data ){
-    controller.action_sharedInvoke("unit_unhide",[
-			data.source.unitId 
-		]);
+    controller.commandStack_sharedInvokement(
+      "unitUnhide_invoked",
+      data.source.unitId
+    );
   }
-  
+
 });

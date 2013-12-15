@@ -1,41 +1,33 @@
-controller.action_mapAction({
-  
+-controller.action_mapAction({
+
   key:"activatePower",
-  hasSubMenu: true,
-  
-  condition: function(){
-		return (
-			( model.co_activeMode === model.co_MODES.AW1 ||
-			  model.co_activeMode === model.co_MODES.AW2 ||
-			  model.co_activeMode === model.co_MODES.AWDS   ) &&
-			model.co_canActivatePower( model.round_turnOwner, model.co_POWER_LEVEL.COP )
-		);
+
+  condition: function(data){
+    return model.events.activatePower_check(
+      model.round_turnOwner
+    );
   },
-            
+
+  hasSubMenu: true,
   prepareMenu: function( data ){
     var co_data = model.co_data[ model.round_turnOwner ];
-    
-		data.menu.addEntry("cop");
-		if( model.co_canActivatePower( model.round_turnOwner, model.co_POWER_LEVEL.SCOP ) ) data.menu.addEntry("scop");
+
+    data.menu.addEntry("cop");
+    if( model.co_canActivatePower( model.round_turnOwner, model.co_POWER_LEVEL.SCOP ) ){
+      data.menu.addEntry("scop");
+    }
   },
-          
-  invoke: function( data ){    
-		
+
+  invoke: function( data ){
     var cmd;
     switch ( data.action.selectedSubEntry ){
-				
-      case "cop":  
-				cmd = "co_activateCOP";      
-				break;
-				
-      case "scop": 
-				cmd = "co_activateSCOP"; 
-				break;
-				
-			default: assert(false,"model.co_model.co_activatePower__");
+      case "cop"  : cmd = model.co_POWER_LEVEL.COP; break;
+      case "scop" : cmd = model.co_POWER_LEVEL.SCOP; break;
+      default: assert(false);
     }
-    
-    controller.action_sharedInvoke(cmd,[model.round_turnOwner]);
+
+    controller.commandStack_sharedInvokement(
+      "activatePower_invoked", model.round_turnOwner, cmd
+    );
   }
-  
 });
