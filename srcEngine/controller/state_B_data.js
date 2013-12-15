@@ -281,7 +281,7 @@ controller.stateMachine.data = {
               else if( action.clientAction    === true && !mapActable ) continue;
 
           // if condition matches then add the entry to the menu list
-          if( action.condition && action.condition( data ) === true ){
+          if( action.condition && action.condition( data ) !== false ){
             data.menu.addEntry( commandKeys[i] );
           }
         }
@@ -294,7 +294,8 @@ controller.stateMachine.data = {
   selection: util.scoped( function(){
     var sMap = util.selectionMap( MAX_SELECTION_RANGE * 4 + 1 );
 
-    // Extension to the selection map. This one prepares the selection for the current data model.
+    // Extension to the selection map. This one prepares the selection
+    // for the current data model.
     //
     sMap.prepare = function(){
       var target = controller.stateMachine.data.target;

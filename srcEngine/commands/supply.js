@@ -9,8 +9,7 @@ controller.action_unitAction({
   ],
 
   condition: function( data ){
-    return model.events.supplyUnit(
-
+    return model.events.supplyUnit_check(
       data.source.unitId,
       data.target.x,
       data.target.y

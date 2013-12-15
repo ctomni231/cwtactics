@@ -5,7 +5,6 @@ model.event_on("transferMoney_check",function(  pid, x,y ){
 
   if( model.player_data[ pid ].gold < model.team_MONEY_TRANSFER_STEPS[0] ){
     return false;
-    return;
   }
 
   // check unit first
@@ -69,14 +68,14 @@ model.event_on("transferUnit_invoked",function( suid, tplid ){
 
   // Remove vision
   if( model.player_data[tplid].team !== model.player_data[opid].team ){
-    model.fog_modifyVisionAt(tx, ty, selectedUnit.type.vision, -1);
+    model.events.fog_modifyVisionAt(tx, ty, selectedUnit.type.vision, -1);
   }
 
-  model.move_clearUnitPosition( suid );
-  model.unit_create( tplid, tx, ty, selectedUnit.type.ID );
+  var tSlot = model.unit_getFreeSlot(tplid);
+  model.events.clearUnitPosition(suid);
+  model.events.createUnit( tSlot, tplid, tx, ty, selectedUnit.type.ID );
 
-  // TODO
-  var targetUnit      = model.unit_posData[ tx ][ ty ];
+  var targetUnit      = model.unit_data[ tSlot ];
   targetUnit.hp       = selectedUnit.hp;
   targetUnit.ammo     = selectedUnit.ammo;
   targetUnit.fuel     = selectedUnit.fuel;
@@ -115,6 +114,4 @@ model.event_on("transferProperty_invoked",function( sprid, tplid ){
       }
     }
   }
-
-  model.events.team_transferProperty( sprid, tplid );
 });

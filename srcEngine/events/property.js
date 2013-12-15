@@ -27,14 +27,12 @@ model.event_on( "capture_invoked",function(  prid, cid ){
     var x = property.x;
     var y = property.y;
 
-    if( DEBUG ) util.log( "property", prid,"captured" );
-
-    model.fog_modifyVisionAt( x, y, property.type.vision, 1 );
+    model.events.fog_modifyVisionAt( x, y, property.type.vision, 1 );
 
     // loose conditional property ?
     if( property.type.looseAfterCaptured === true ) {
       var pid = property.owner;
-      model.player_deactivatePlayer( pid );
+      model.events.player_deactivatePlayer( pid );
     }
 
     // change type after capture ?
@@ -65,11 +63,11 @@ model.event_on("property_createProperty", function( pid, x, y, type ){
 
     if( props[i].owner === INACTIVE_ID && !props[i].type ){
 
-      props[i].owner         = pid;
-      props[i].type          = model.data_tileSheets[type];
-      props[i].capturePoints = 1;
-      props[i].x             = x;
-      props[i].y             = y;
+      props[i].owner              = pid;
+      props[i].type               = model.data_tileSheets[type];
+      props[i].capturePoints      = 1;
+      props[i].x                  = x;
+      props[i].y                  = y;
       model.property_posMap[x][y] = props[i];
       return;
     }
@@ -84,8 +82,6 @@ model.event_on("property_resetCapturePoints", function( prid ){
   assert( model.property_isValidPropId(prid) );
 
   model.property_data[prid].capturePoints = 20;
-
-  model.events.property_resetCapturePoints( prid );
 });
 
 // Changes the type of a property object.
@@ -94,11 +90,13 @@ model.event_on("property_changeType", function( prid, type ){
   assert( model.property_isValidPropId(prid) );
   if( typeof type === "string" ){
     assert( model.data_propertyTypes.indexOf(type) !== -1 );
-    model.data_tileSheets[type]
-  }
-  else assert( model.data_propertyTypes.indexOf(type.ID) !== -1 );
+  } else assert( model.data_propertyTypes.indexOf(type.ID) !== -1 );
 
   model.property_data[prid].type = type;
+});
 
-  model.events.property_changeType( prid, type );
+// Changes the type of a property object.
+//
+model.event_on("property_changeTypeById", function( prid, typeId ){
+  model.events.property_changeType( prid, model.data_propertyTypes[typeId] );
 });

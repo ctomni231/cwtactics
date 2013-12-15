@@ -26,9 +26,9 @@ model.event_on( "attack_invoked",function( attId, defId, attLuckRatio, defLuckRa
   assertIntRange(attLuckRatio,0,100);
   assertIntRange(defLuckRatio,0,100);
 
-  var attacker        = model.unit_data[attId];
-  var defender        = model.unit_data[defId];
-  var indirectAttack  = model.battle_isIndirectUnit(attId);
+  var attacker       = model.unit_data[attId];
+  var defender       = model.unit_data[defId];
+  var indirectAttack = model.battle_isIndirectUnit(attId);
 
   // **check firstCounter:** if first counter is active then the defender
   // attacks first. In this case swap attacker and defender.

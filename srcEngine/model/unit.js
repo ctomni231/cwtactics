@@ -1,29 +1,5 @@
-// commands
-controller.action_registerCommands("unit_inflictDamage");
-controller.action_registerCommands("unit_heal");
-controller.action_registerCommands("unit_hide");
-controller.action_registerCommands("unit_join");
-controller.action_registerCommands("unit_unhide");
-controller.action_registerCommands("unit_drainFuel");
-controller.action_registerCommands("unit_create");
-controller.action_registerCommands("unit_destroy");
-controller.action_registerCommands("unit_destroySilently");
-
-// events
-model.event_define("unit_inflictDamage");
-model.event_define("unit_heal");
-model.event_define("unit_hide");
-model.event_define("unit_join");
-model.event_define("unit_unhide");
-model.event_define("unit_drainFuel");
-model.event_define("unit_create");
-model.event_define("unit_destroy");
-
-// scriptables
 controller.defineGameScriptable("fuelDrainRate",50,100);
 controller.defineGameScriptable("fuelDrain",    1, 99);
-
-// configs
 controller.defineGameConfig("noUnitsLeftLoose",0,1,0);
 controller.defineGameConfig("unitLimit",0,MAX_UNITS_PER_PLAYER,0);
 
@@ -83,7 +59,7 @@ model.unit_getFreeSlot = function( pid ){
   for( ; i<e; i++ ){
     if( model.unit_data[i].owner === INACTIVE_ID ) return i;
   }
-}
+};
 
 // Returns true if there is an unit with a given relationship on a tile at a given position (x,y).
 //

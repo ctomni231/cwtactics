@@ -17,5 +17,5 @@ model.event_on("buildUnit_invoked", function( x, y, type ){
   pl.gold -= cost;
   assert( pl.gold >= 0 );
 
-
+  model.events.createUnit( model.unit_getFreeSlot(prop.owner), prop.owner, x, y, type );
 });

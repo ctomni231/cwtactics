@@ -1,4 +1,4 @@
-model.event_on("multistep_nextStep_",function(){
+model.event_on("multistep_next",function(){
   if( controller.stateMachine.state !== "IDLE" ){
     controller.showMenu(
       controller.stateMachine.data.menu,

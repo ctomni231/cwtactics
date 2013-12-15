@@ -23,6 +23,7 @@ model.event_on("move_appendToWayCache",function(){
 });
 
 model.event_on("move_moveByCache",function( uid, x, y, noFuelConsumption ){
+  var way          = model.move_pathCache;
   var cX           = x;
   var cY           = y;
   var unit         = model.unit_data[ uid ];
@@ -39,6 +40,7 @@ model.event_on("move_moveByCache",function( uid, x, y, noFuelConsumption ){
   // 3. accumulate fuel consumption ( except `noFuelConsumption` is `true` )
   //
   for( var i = 0, e = way.length; i < e; i++ ) {
+    if( way[i] === INACTIVE_ID ) break;
 
     // set current position by current move code
     switch(way[i]) {

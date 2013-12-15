@@ -68,7 +68,6 @@ model.event_firstOn("createUnit", function( slotId, pid, x, y, type ){
 // will be freed from any position information.
 //
 model.event_firstOn("destroyUnitSilent", function( uid ){
-  model.move_clearUnitPosition(uid);
   var unit = model.unit_data[uid];
 
   // mark slot as unused

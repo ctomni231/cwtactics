@@ -18,7 +18,7 @@ util.scoped(function(){
   /* END - MOVE INTO AUDIO */
 
   view.registerAnimationHook({
-    key: "round_nextTurn",
+    key: "nextTurn_invoked",
 
     prepare: function(){
 

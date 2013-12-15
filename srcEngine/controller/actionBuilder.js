@@ -47,6 +47,7 @@ controller.actionBuilder_buildFromUserData = function(){
     controller.commandStack_sharedInvokement("move_clearWayCache");
 
     for( var i = 0, e = moveDto.data.length; i < e; i+=6 ){
+      if( moveDto.data[i  ] === INACTIVE_ID ) break;
       controller.commandStack_sharedInvokement(
         "move_appendToWayCache",
         moveDto.data[i  ],
@@ -59,11 +60,11 @@ controller.actionBuilder_buildFromUserData = function(){
     }
 
     controller.commandStack_sharedInvokement(
-      "move_moveUnitByPath",
+      "move_moveByCache",
       sourceDto.unitId,
       sourceDto.x,
       sourceDto.y,
-      false
+      0
     );
   }
 

@@ -1,9 +1,5 @@
 //
 //
-controller.action_registerCommands("coPower_heal");
-
-//
-//
 model.coPower_invokePower = function( pid, powerType ){
   assert( model.player_isValidPid(pid) );
   assert( powerType === model.co_POWER_LEVEL.COP || powerType === model.co_POWER_LEVEL.SCOP );

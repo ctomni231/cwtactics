@@ -53,7 +53,7 @@ controller.roundConfig_evalAfterwards = function(){
 
   // deregister old players
   controller.ai_reset();
-  model.client_deregisterPlayers();
+  model.events.client_deregisterPlayers();
 
   // update model
   for( var i= 0, e=MAX_PLAYER; i<e; i++ ){
@@ -69,14 +69,14 @@ controller.roundConfig_evalAfterwards = function(){
       if( controller.roundConfig_typeSelected[i] === 1 ){
         controller.ai_register(i);
       } else {
-        model.client_registerPlayer(i);
+        model.events.client_registerPlayer(i);
       }
 
       // co
       tmp = ( controller.roundConfig_coSelected[i] !== INACTIVE_ID)?
         model.data_coTypes[controller.roundConfig_coSelected[i]] : null;
 
-      model.co_setMainCo( i, tmp );
+      model.events.setMainCo( i, tmp );
 
     } else {
 

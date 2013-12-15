@@ -31,16 +31,10 @@ controller.update_startGameRound = function( ){
 
   // start first turn
   if( model.round_turnOwner === -1 ){
-
-    model.bombs_placeMetaObjects();
-
-    model.timer_setupTimer();
-
-    controller.action_localInvoke( "round_nextTurn", []);
-    if( controller.isHost() ) model.weather_calculateNext();
-
+    model.events.gameround_start();
+    controller.commandStack_localInvokement( "nextTurn_invoked" );
+    if( controller.isHost() ) model.events.weather_calculateNext();
   }
-  else model.round_startsTurn(model.round_turnOwner);
 };
 
 // Ends the active game round.

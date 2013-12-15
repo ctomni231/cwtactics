@@ -1,6 +1,3 @@
-// commands
-controller.action_registerCommands("map_doInRange");
-
 // Map table that holds all known tiles.
 //
 model.map_data = util.matrix( MAX_MAP_WIDTH, MAX_MAP_HEIGHT, null );

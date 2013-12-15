@@ -23,7 +23,7 @@ model.event_on( "joinUnits_invoked",function( juid, jtuid ){
   assert(joinTarget.type === joinSource.type);
 
   // health
-  model.unit_heal(jtuid, model.unit_convertPointsToHealth(
+  model.events.healUnit(jtuid, model.unit_convertPointsToHealth(
     model.unit_convertHealthToPoints( joinSource )),true);
 
   // ammo

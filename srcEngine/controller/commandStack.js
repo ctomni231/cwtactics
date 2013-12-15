@@ -1,10 +1,10 @@
 // Current read position.
 //
-controller.commandStack_curReadPos = -1;
+controller.commandStack_curReadPos = 0;
 
 // Current write position.
 //
-controller.commandStack_curWritePos = -1;
+controller.commandStack_curWritePos = 0;
 
 // Command buffer.
 //
@@ -16,7 +16,9 @@ controller.commandStack_buffer_ = util.list(
 //
 //
 controller.commandStack_resetData       = function(){
-  controller.commandStack_buffer_.resetValues(INACTIVE_ID);
+  controller.commandStack_buffer_.resetValues();
+  controller.commandStack_curReadPos  = 0;
+  controller.commandStack_curWritePos = 0;
 };
 
 //
@@ -34,7 +36,19 @@ controller.commandStack_invokeNext      = function(){
   var i = controller.commandStack_curReadPos*(6+1);
   var e = i + 6 + 1;
   var data  = controller.commandStack_buffer_;
-  var event = model.event_eventName[ model.event_eventIndex[ data[i] ]];
+  var event = model.event_eventName[ data[i] ];
+
+  if( DEBUG ){
+    util.log(
+      "invoke",event,"with arguments",
+      data[i+1],
+      data[i+2],
+      data[i+3],
+      data[i+4],
+      data[i+5],
+      data[i+6]
+    );
+  }
 
   // invoke event with given data
   model.events[event](
@@ -65,14 +79,15 @@ controller.commandStack_invokeNext      = function(){
 //
 controller.commandStack_localInvokement = function( cmd ){
   assertStr( cmd );
-  assert( controller.commandStack_curWritePos !== controller.commandStack_curReadPos );
   assertIntRange( arguments.length, 1, 7 );
 
   // write content
-  var i = controller.commandStack_curWritePos*(6+1);
-  var e = i + 6 + 1;
+  var offset = controller.commandStack_curWritePos*(6+1);
+  var i = 0;
+  var e = 7;
 
-  controller.commandStack_buffer_[i] = cmd; //TODO to number
+  assert( controller.commandStack_buffer_[i+offset] === INACTIVE_ID );
+  controller.commandStack_buffer_[i+offset] = model.event_eventIndex[cmd]; //TODO to number
   i++;
 
   while( i < e ){
@@ -80,8 +95,14 @@ controller.commandStack_localInvokement = function( cmd ){
       util.log("!! warning !! used a command invocation with non numeric types on command",cmd);
     }
 
-    controller.commandStack_buffer_[i] = (arguments.length > i )? arguments[i] : INACTIVE_ID;
+    controller.commandStack_buffer_[i+offset] = (arguments.length > i )?
+      arguments[i] : INACTIVE_ID;
+
     i++;
+  }
+
+  if( DEBUG ){
+    util.log("adding",JSON.stringify(arguments),"to the command stack");
   }
 
   // increase writing index

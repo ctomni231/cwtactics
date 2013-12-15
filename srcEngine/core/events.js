@@ -12,8 +12,13 @@ model.event_eventName = [];
 //
 model.event_eventIndex = {};
 
+// Holds first callbacks.
+//
 model.event_eventFirst    = {};
-model.event_eventCallback = {};
+
+// Holds all calllbacks.
+//
+model.event_callbacks = {};
 
 // Holds all known game events.
 //
@@ -23,21 +28,26 @@ model.events = {};
 //
 model.event_define = function(ev){
   assertStr(ev);
-  assertUndef( model.event_eventIndex[ev] );
+  if( model.event_eventIndex[ev] !== void 0 ) return;
 
   var index = model.event_eventName.length;
   var list  = [];
   model.event_eventName[index] = ev;
   model.event_eventIndex[ev]   = index;
-  event_eventCallback[ev]      = list
+  model.event_callbacks[ev]    = list
 
   // define event handler
   model.events[ev] = function(){
-    if( model.event_eventFirst[ev] ) model.event_eventFirst[ev].apply(null,arguments);
+    if( model.event_eventFirst[ev] ){
+      if( model.event_eventFirst[ev].apply(null,arguments) === false ) return false;
+    }
+
     for (var i = 0, e = list.length; i < e; i++) {
-      if( list[i].apply(null,arguments) === false ) return;
+      if( list[i].apply(null,arguments) === false ) return false;
     };
   };
+
+  return true;
 };
 
 // Registers a callback as first listener in an event node.
@@ -45,9 +55,6 @@ model.event_define = function(ev){
 model.event_firstOn = function( ev, cb ){
   assertStr(ev);
   assertFn(cb);
-
-  if( !model.event_eventCallback[ev] ) model.event_define(ev);
-
   model.event_eventFirst[ev] = cb;
 };
 
@@ -55,13 +62,13 @@ model.event_firstOn = function( ev, cb ){
 //
 model.event_on = function( ev, cb ){
   if( Array.isArray(ev) ){
-    for( var i = 0,e = ev.length; i<e; i++ ) model.event_on(ev[i],cb,mod);
+    for( var i = 0,e = ev.length; i<e; i++ ) model.event_on(ev[i],cb);
     return;
   }
 
   assertStr(ev);
   assertFn(cb);
 
-  if( !model.event_eventCallback[ev] ) model.event_define(ev);
+  if( !model.event_callbacks[ev] ) model.event_define(ev);
   model.event_callbacks[ev].push(cb);
 };

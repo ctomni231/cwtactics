@@ -1,11 +1,7 @@
-model.event_on("prepare_game",function( dom ){
-  model.timer_resetTurnTimer();
-});
-
 model.event_on("load_game",function( dom ){
   assert( util.isInt(dom.gmTm) && dom.gmTm >= 0 );
   assert( util.isInt(dom.tnTm) && dom.tnTm >= 0 );
-  
+
   model.timer_gameTimeElapsed = dom.gmTm;
   model.timer_turnTimeElapsed = dom.tnTm;
 });

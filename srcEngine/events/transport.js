@@ -20,7 +20,6 @@ model.event_on( "unloadUnit_check",function(  uid, x,y ){
   if( !( model.transport_isTransportUnit( uid ) &&
           model.transport_hasLoads( uid ) ) ){
     return false;
-    return;
   }
 
   var i = model.unit_firstUnitId( pid );
@@ -67,9 +66,9 @@ model.event_on( "unloadUnit_addUnloadTargetsToMenu", function( uid, x,y, menu ){
       var movetp = model.data_movetypeSheets[ unit.type.movetype ];
 
       if( model.move_canTypeMoveTo(movetp,x-1,y) ||
-         model.move_canTypeMoveTo(movetp,x+1,y) ||
-         model.move_canTypeMoveTo(movetp,x,y-1) ||
-         model.move_canTypeMoveTo(movetp,x,y+1) ) menu.addEntry( i, true );
+          model.move_canTypeMoveTo(movetp,x+1,y) ||
+          model.move_canTypeMoveTo(movetp,x,y-1) ||
+          model.move_canTypeMoveTo(movetp,x,y+1) ) menu.addEntry( i, true );
     }
   }
 });
@@ -111,6 +110,8 @@ model.event_on( "unloadUnit_invoked", function( transportId, trsx, trsy, loadId,
   else if( ty > trsy ) moveCode = model.move_MOVE_CODES.DOWN;
 
   // move load out of the transporter
-  model.move_moveUnitByPath([moveCode], loadId, trsx, trsy, true);
-  model.actions_markUnitNonActable( loadId );
+  move_pathCache[0] = moveCode;
+  move_pathCache[1] = INACTIVE_ID;
+  model.events.move_moveByCache( loadId, trsx, trsy, 1);
+  model.events.wait_invoked( loadId );
 });

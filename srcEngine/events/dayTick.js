@@ -2,6 +2,9 @@
 // Adds a timed event to the engine. The action will be invoked in `turn` turns.
 //
 model.event_on("dayEvent", function( days, action, argA, argB ){
+  if( argA === void 0 ) argA = INACTIVE_ID;
+  if( argB === void 0 ) argB = INACTIVE_ID;
+
   var list = model.dayTick_dataTime;
   for( var i=0,e=list.length; i<e; i++ ){
 
@@ -15,7 +18,7 @@ model.event_on("dayEvent", function( days, action, argA, argB ){
   }
 
   assert(false,"day event buffer overflow");
-};
+});
 
 // Ticks a turn.
 //

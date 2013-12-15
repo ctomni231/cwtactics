@@ -1,6 +1,6 @@
 // Decline attach commander action on game modes that isn't AW4.
 //
-model.events_on("attachCommander_check",function(  pid ){
+model.event_on("attachCommander_check",function(  pid ){
   if( model.co_activeMode !== model.co_MODES.AWDR ) return false;
 });
 
@@ -13,20 +13,20 @@ model.event_on("attachCommander_invoked", function( pid, uid ){
 
 // Decline detach commander action on game modes that isn't AW4.
 //
-model.events_on("detachCommander_check",function(  pid ){
+model.event_on("detachCommander_check",function(  pid ){
   if( model.co_activeMode !== model.co_MODES.AWDR ) return false;
 });
 
 // Detaches a commander from a given unit back to the player pool.
 //
-model.events_on("detachCommander_invoked", function( pid, uid ){
+model.event_on("detachCommander_invoked", function( pid, uid ){
   assert( model.co_data[pid].detachedTo !== uid );
   model.co_data[pid].detachedTo = INACTIVE_ID;
 });
 
 // Decline activate power action on game modes that aren't AW1-3.
 //
-model.events_on("activatePower_check",function(  pid ){
+model.event_on("activatePower_check",function(  pid ){
   if( model.co_activeMode !== model.co_MODES.AW1 &&
      model.co_activeMode !== model.co_MODES.AW2 &&
      model.co_activeMode !== model.co_MODES.AWDS ) return false;
@@ -34,13 +34,13 @@ model.events_on("activatePower_check",function(  pid ){
 
 // Decline activate power action when a player cannot activate the base cop level.
 //
-model.events_on("activatePower_check",function(  pid ){
+model.event_on("activatePower_check",function(  pid ){
   if( !model.co_canActivatePower(pid,model.co_POWER_LEVEL.COP) ) return false;
 });
 
 // Decline activate power action when a player cannot activate the base cop level.
 //
-model.events_on("activatePower_invoked",function( pid, level ){
+model.event_on("activatePower_invoked",function( pid, level ){
   var data   = model.co_data[pid];
   data.power = 0;
   data.level = level;
@@ -76,15 +76,11 @@ model.events_on("activatePower_invoked",function( pid, level ){
 
 // Modifies the power level of a player.
 //
-model.co_modifyPowerLevel = function( pid, value ){
+model.event_on("co_modifyPowerLevel", function( pid, value ){
   assert( model.player_isValidPid(pid) );
 
   var data = model.co_data[pid];
 
   data.power += value;
   if( data.power < 0 ) data.power = 0;
-
-  // Invoke model event
-  model.events.co_modifyPowerLevel( pid, value );
-};
-
+});

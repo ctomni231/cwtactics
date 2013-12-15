@@ -32,13 +32,22 @@ model.event_on("nextTurn_invoked",function(){
   // player id then the game data is corrupted
   assert( pid !== oid );
 
+  // starts the turn
+  model.events.nextTurn_pidStartsTurn(pid);
+});
+
+// Starts a turn for player with id (`pid`).
+//
+model.event_on("nextTurn_pidStartsTurn",function(pid){
+
+  // Sets the new turn owner
+  model.round_turnOwner = pid;
+  if( model.client_isLocalPid(pid) ) model.client_lastPid = pid;
+
   // do turn start stuff for all **properties**
   for( i=0,e=model.property_data.length; i<e; i++ ){
     if( model.property_data[i].owner !== pid ) continue;
-
-    model.supply_giveFunds( i );
-    model.supply_propertyRepairs( i );
-    model.supply_propertySupply( i );
+    model.events.nextTurn_propertyCheck(i);
   }
 
   var turnStartSupply = ( controller.configValue("autoSupplyAtTurnStart") === 1 );
@@ -49,30 +58,8 @@ model.event_on("nextTurn_invoked",function(){
   for( ; i<e; i++ ){
 
     if( model.unit_data[i].owner === INACTIVE_ID ) continue;
-    model.unit_drainFuel( i );
-
-    if( model.unit_data[i].owner === INACTIVE_ID ) continue;
-    if(turnStartSupply) model.supply_tryUnitSuppliesNeighbours( i );
+    model.events.nextTurn_unitCheck(i);
   }
-
-  // starts the turn
-  model.events.nextTurn_pidStartsTurn(pid);
-});
-
-// Starts a turn for player with id (`pid`).
-//
-model.event_on("nextTurn_pidStartsTurn",function(pid){
-  model.actions_prepareActors(pid);
-  model.timer_resetTurnTimer();
-
-  // Sets the new turn owner
-  model.round_turnOwner = pid;
-  if( model.client_isLocalPid(pid) ) model.client_lastPid = pid;
-
-  model.fog_updateVisiblePid();
-  model.fog_recalculateFogMap(); // needs to be done after setting new clientPid
-
-  model.events.round_nextTurn();
 
   // start AI logic if new turn owner is AI controlled this local instance is the host
   if( controller.isHost() && !controller.ai_isHuman(pid) ){

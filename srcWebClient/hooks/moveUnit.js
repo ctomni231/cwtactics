@@ -1,16 +1,16 @@
 view.registerAnimationHook({
-  
-  key: "move_moveUnitByPath",
-  
-  prepare: function( way, uid, x,y ){
-    
+
+  key: "move_moveByCache",
+
+  prepare: function( uid, x,y ){
+
     this.moveAnimationX     = x;
     this.moveAnimationY     = y;
     this.moveAnimationIndex = 0;
-    this.moveAnimationPath  = way;
+    this.moveAnimationPath  = model.move_pathCache;
     this.moveAnimationUid   = uid;
     this.moveAnimationShift = 0;
-    
+
     this.moveAnimationDustX = -1;
     this.moveAnimationDustY = -1;
     this.moveAnimationDustTime = -1;
@@ -19,17 +19,17 @@ view.registerAnimationHook({
 
     view.preventRenderUnit = model.unit_data[ uid ];
     var mvType = model.unit_data[ uid ].type.movetype;
-    
+
     /*
     var mvSoundId;
     if( mvType === "MV_INFANTRY" || mvType === "MV_MECH" ) mvSoundId = "MV_FOOT";
     else if( mvType === "MV_TANK" ) mvSoundId = "MV_TANK";
     else if( mvType === "MV_AIR" ) mvSoundId = "MV_AIR";
     else mvSoundId = "MV_VHCL";
-    
+
     this.snd = controller.audio_playSound( mvSoundId );
     */
-    
+
     if( DEBUG ){
       util.log(
         "drawing move from",
@@ -39,69 +39,70 @@ view.registerAnimationHook({
       );
     }
   },
-  
+
   update: function( delta ){
     var tileSize = TILE_LENGTH;
-    
+
     // MOVE 4 TILES / SECOND
     this.moveAnimationShift += ( delta/1000 ) * ( tileSize*8);
 
     view.redraw_markPosWithNeighboursRing(
       this.moveAnimationX, this.moveAnimationY
     );
-    
+
     // DUST
     if( this.moveAnimationDustStep !== -1 ){
-      
+
       this.moveAnimationDustTime += delta;
       if( this.moveAnimationDustTime > 30 ){
-        
+
         this.moveAnimationDustStep++;
         this.moveAnimationDustTime = 0;
-        
+
         if( this.moveAnimationDustStep === 3 ){
           this.moveAnimationDustStep = -1;
         }
       }
     }
-    
+
     if( this.moveAnimationShift > tileSize ){
-      
+
       this.moveAnimationDustX = this.moveAnimationX;
       this.moveAnimationDustY = this.moveAnimationY;
       this.moveAnimationDustTime = 0;
       this.moveAnimationDustStep = 0;
-      
+
       // UPDATE ANIMATION POS
       switch( this.moveAnimationPath[ this.moveAnimationIndex ] ){
-          
+
         case model.move_MOVE_CODES.UP :
           this.moveAnimationY--;
           this.moveAnimationDustPic = view.getInfoImageForType("DUST_U");
           break;
-          
+
         case model.move_MOVE_CODES.RIGHT :
           this.moveAnimationX++;
           this.moveAnimationDustPic = view.getInfoImageForType("DUST_R");
           break;
-          
+
         case model.move_MOVE_CODES.DOWN :
           this.moveAnimationY++;
           this.moveAnimationDustPic = view.getInfoImageForType("DUST_D");
           break;
-          
+
         case model.move_MOVE_CODES.LEFT :
           this.moveAnimationX--;
           this.moveAnimationDustPic = view.getInfoImageForType("DUST_L");
           break;
       }
-      
+
       this.moveAnimationIndex++;
-      
+
       this.moveAnimationShift -= tileSize;
       // this.moveAnimationShift = 0;
-      
-      if( this.moveAnimationIndex === this.moveAnimationPath.length ){
+
+      if( this.moveAnimationIndex === this.moveAnimationPath.length ||
+          this.moveAnimationPath[this.moveAnimationIndex] === INACTIVE_ID ){
         this.moveAnimationX     = 0;
         this.moveAnimationY     = 0;
         this.moveAnimationIndex = 0;
@@ -112,7 +113,7 @@ view.registerAnimationHook({
       }
     }
   },
-  
+
   render: function(){
     var uid      = this.moveAnimationUid;
     var cx       = this.moveAnimationX;
@@ -123,7 +124,7 @@ view.registerAnimationHook({
     var color = view.colorArray[ unit.owner ];
     var state;
     var tp = unit.type;
-    
+
     // GET CORRECT IMAGE STATE
     switch( moveCode ){
       case model.move_MOVE_CODES.UP :    state = view.IMAGE_CODE_UP;    break;
@@ -131,9 +132,9 @@ view.registerAnimationHook({
       case model.move_MOVE_CODES.DOWN :  state = view.IMAGE_CODE_DOWN;  break;
       case model.move_MOVE_CODES.LEFT :  state = view.IMAGE_CODE_LEFT;  break;
     }
-    
+
     var pic = view.getUnitImageForType( tp.ID, state, color );
-    
+
     var tileSize = TILE_LENGTH;
     var BASESIZE = controller.baseSize;
     var scx = (BASESIZE*2)*view.getSpriteStep("UNIT");
@@ -144,7 +145,7 @@ view.registerAnimationHook({
     var tcy = ( cy )*tileSize -tileSize/2;
     var tcw = tileSize+tileSize;
     var tch = tileSize+tileSize;
-    
+
     // ADD SHIFT
     switch( moveCode ){
       case model.move_MOVE_CODES.UP:    tcy -= shift; break;
@@ -152,7 +153,7 @@ view.registerAnimationHook({
       case model.move_MOVE_CODES.RIGHT: tcx += shift; break;
       case model.move_MOVE_CODES.DOWN:  tcy += shift; break;
     }
-    
+
     // DRAW IT
     if( pic !== undefined ){
       view.canvasCtx.drawImage(
@@ -168,7 +169,7 @@ view.registerAnimationHook({
       tcy = ( cy )*tileSize;
       tcw = tileSize;
       tch = tileSize;
-      
+
       // ADD SHIFT
       switch( moveCode ){
         case model.move_MOVE_CODES.UP:    tcy -= shift; break;
@@ -183,10 +184,10 @@ view.registerAnimationHook({
         tcw,tch
       );
     }
-    
+
     // DUST
     if( this.moveAnimationDustStep !== -1 ){
-      
+
       var tileSize = TILE_LENGTH;
       scx = (BASESIZE*2)*this.moveAnimationDustStep;
       scy = 0;
@@ -206,10 +207,10 @@ view.registerAnimationHook({
       );
     }
   },
-  
+
   isDone: function(){
     var done = (this.moveAnimationUid === -1);
     return done;
   }
-  
+
 });

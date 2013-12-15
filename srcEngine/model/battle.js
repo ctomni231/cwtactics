@@ -288,26 +288,3 @@ model.battle_getBattleDamageAgainst = function( attacker, defender, luck, withMa
 
   return damage;
 };
-
-//  local helper to search a surrounding tile that isn't occupied by an unit
-//  and has a distance of to between itself and the tile at pos (ax,ay)
-//
-model.battle_searchTile_ = function( rx,ry, ax,ay ){
-  var x=-1,y=-1;
-
-  // direct neighbors (distance 1)
-  if( model.map_isValidPosition(rx-1,ry) && !model.unit_posData[rx-1][ry] ){ x=rx-1; y=ry; }
-  if( model.map_isValidPosition(rx,ry-1) && !model.unit_posData[rx][ry-1] ){ x=rx; y=ry-1; }
-  if( model.map_isValidPosition(rx,ry+1) && !model.unit_posData[rx][ry+1] ){ x=rx; y=ry+1; }
-  if( model.map_isValidPosition(rx+1,ry) && !model.unit_posData[rx+1][ry] ){ x=rx+1; y=ry; }
-
-  // direct neighbors (distance 2)
-  if( model.map_isValidPosition(rx-1,ry-1) && !model.unit_posData[rx-1][ry-1] ){ x=rx-1; y=ry-1; }
-  if( model.map_isValidPosition(rx-1,ry+1) && !model.unit_posData[rx-1][ry+1] ){ x=rx-1; y=ry+1; }
-  if( model.map_isValidPosition(rx+1,ry-1) && !model.unit_posData[rx+1][ry-1] ){ x=rx+1; y=ry-1; }
-  if( model.map_isValidPosition(rx+1,ry+1) && !model.unit_posData[rx+1][ry+1] ){ x=rx+1; y=ry+1; }
-
-  if( x !== -1 ){
-
-  }
-};

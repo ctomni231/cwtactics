@@ -81,23 +81,24 @@ model.event_on("recalculateFogMap", function(){
 
   // 2. add vision objects
   if( fogEnabled ){
+    var vision;
     for( x=0 ;x<xe; x++ ){
       for( y=0 ;y<ye; y++ ){
 
         var unit = model.unit_posData[x][y];
         if( unit !== null ){
-          var vision = unit.type.vision;
+          vision = unit.type.vision;
           if( vision < 0 ) vision = 0;
 
-          model.events.fog_modifyVisionAt( x,y, unit.owner, vision,1 );
+          model.events.modifyVisionAt( x,y, unit.owner, vision,1 );
         }
 
         var property = model.property_posMap[x][y];
         if( property !== null ){
-          var vision = property.type.vision;
+          vision = property.type.vision;
           if( vision < 0 ) vision = 0;
 
-          model.events.fog_modifyVisionAt( x,y, property.owner, vision,1 );
+          model.events.modifyVisionAt( x,y, property.owner, vision,1 );
         }
       }
     }
@@ -107,9 +108,9 @@ model.event_on("recalculateFogMap", function(){
 
 // Updates the visible player id meta data for the client as well for the turn owner.
 //
-model.event_on("nextTurn_pidStartsTurn", function(){
+model.event_on("nextTurn_pidStartsTurn", function(pid){
   var tid   = model.player_data[model.client_lastPid].team;
-  var totid = model.player_data[model.round_turnOwner].team;
+  var totid = model.player_data[pid].team;
 
   // the active client can see what his and all allied objects can see
   for( var i=0,e=MAX_PLAYER; i<e; i++ ){
@@ -117,7 +118,9 @@ model.event_on("nextTurn_pidStartsTurn", function(){
     model.fog_visibleClientPids[i]    = (model.client_instances[i] === true ||
                                          model.player_data[i].team === tid );
 
-    model.fog_visibleTurnOwnerPids[i] = (i === model.round_turnOwner ||
+    model.fog_visibleTurnOwnerPids[i] = (i === pid ||
                                      totid === model.player_data[i].team);
   }
-};
+
+  model.events.recalculateFogMap();
+});

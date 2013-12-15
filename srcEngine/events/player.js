@@ -1,4 +1,3 @@
-
 // A player has loosed the game round due a specific reason. This function removes all of his
 // units and properties. Furthermore the left teams will be checked. If only one team is left
 // then the end game event will be invoked.
@@ -6,15 +5,12 @@
 model.event_on("player_deactivatePlayer", function( pid ){
   assert( model.property_isValidPropId(pid) );
 
+  // remove all units
   var i,e;
-
-  model.events.player_deactivatePlayer( pid );
-
-  // remove all unit
   i = model.unit_firstUnitId( pid );
   e = model.unit_lastUnitId( pid );
   for( ; i<e; i++ ){
-    if( model.unit_data[i].owner !== INACTIVE_ID ) model.unit_destroy(i);
+    if( model.unit_data[i].owner !== INACTIVE_ID ) model.events.destroyUnit(i);
   }
 
   // remove all properties
@@ -28,7 +24,7 @@ model.event_on("player_deactivatePlayer", function( pid ){
       // change type when the property is a
       // changing type property
       var changeType = prop.type.changeAfterCaptured;
-      if( changeType ) model.property_changeType( i, changeType );
+      if( changeType ) model.events.property_changeType( i, changeType );
     }
   }
 
@@ -38,7 +34,7 @@ model.event_on("player_deactivatePlayer", function( pid ){
 
   // when no opposite teams are found then the game has ended
   if( !model.player_areEnemyTeamsLeft() ){
-    controller.action_localInvoke("player_noTeamsAreLeft");
+    controller.controller.commandStack_localInvokement("player_noTeamsAreLeft");
   }
 });
 
@@ -50,15 +46,12 @@ model.event_on("player_deactivatePlayer", function( pid ){
 model.event_on("player_playerGivesUp", function(){
   assert( model.client_isLocalPid( model.round_turnOwner ) );
 
-  model.player_deactivatePlayer( model.round_turnOwner );
-  model.round_nextTurn();
+  model.events.nextTurn_invoked();
 
   // TODO: check this here
   // if model.player_playerGivesUp was called from network context
   // and the turn owner in in the local player instances then
   // it's an illegal action
-
-  model.events.player_playerGivesUp( model.round_turnOwner );
 });
 
 // Invoked when the game ends because of a battle victory over all enemy player_data.

@@ -2,9 +2,7 @@
 // Deregisters all players.
 //
 model.event_on("client_deregisterPlayers",function(){
-  for( var i= 0, e=MAX_PLAYER; i<e; i++ ){
-    model.client_instances[i] = false;
-  }
+  model.client_instances.resetValues();
 });
 
 // Registers a player `pid` as local player.
