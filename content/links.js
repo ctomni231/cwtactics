@@ -5,11 +5,11 @@ PAGE_DATA.shortLinks = [
     imgLink:"stylesheets/facebook.png" },
 
   { link:"http://github.com/ctomni231/cwtactics", 
-    title:"CW-T Github Repository",
+    title:"CW:T Github Repository",
     imgLink:"stylesheets/github.png" },
 
   { link:"https://code.google.com/p/cwtactics/", 
-    title:"CW-T Google Repository",
+    title:"CW:T Google Repository",
     imgLink:"stylesheets/code.png" },
 
   { link:"http://cwtactics.blogspot.de", 
