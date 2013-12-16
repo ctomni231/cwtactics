@@ -27,7 +27,7 @@ model.event_on( "capture_invoked",function(  prid, cid ){
     var x = property.x;
     var y = property.y;
 
-    model.events.fog_modifyVisionAt( x, y, property.type.vision, 1 );
+    model.events.modifyVisionAt( x, y, property.type.vision, 1 );
 
     // loose conditional property ?
     if( property.type.looseAfterCaptured === true ) {
@@ -90,7 +90,10 @@ model.event_on("property_changeType", function( prid, type ){
   assert( model.property_isValidPropId(prid) );
   if( typeof type === "string" ){
     assert( model.data_propertyTypes.indexOf(type) !== -1 );
-  } else assert( model.data_propertyTypes.indexOf(type.ID) !== -1 );
+    type = model.data_tileSheets[type];
+  } else {
+    assert( model.data_propertyTypes.indexOf(type.ID) !== -1 );
+  }
 
   model.property_data[prid].type = type;
 });

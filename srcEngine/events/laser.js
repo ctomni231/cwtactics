@@ -1,7 +1,7 @@
 //
 //
 model.event_on("fireLaser_check", function( uid ){
-  if(!model.bombs_isLaser( util ) ) return false;
+  if(!model.bombs_isLaser(uid) ) return false;
 });
 
 // Fires a laser at a given position.

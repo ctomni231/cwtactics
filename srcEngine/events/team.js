@@ -46,7 +46,7 @@ model.event_on("transferMoney_invoked",function( spid, tpid, money ){
   assert( sPlayer.gold >= 0 );
 });
 
-model.event_on("transferUnit_check",function( wish ){
+model.event_on("transferUnit_check",function( uid ){
   if( model.transport_hasLoads( uid ) ) return false;
 });
 
