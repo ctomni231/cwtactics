@@ -14,40 +14,40 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 /**
- * SnowExample.java
+ * RainExample.java
  * 
  * I really do not want to spend too much time commenting on this class. It only serves
- * as a place holder to show how snow is rendered on an AW game.
+ * as a place holder to show how rain is rendered on an AW game.
  *  
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
  * @version 12.16.13
  */
 
-public class SnowExample extends JComponent implements Runnable{
+public class RainExample extends JComponent implements Runnable{
 
 	private JFrame window;
 	private BufferedImage bimg;
 	
 	public static void main(String args[]){
-		SnowExample cool = new SnowExample();
+		RainExample cool = new RainExample();
 		cool.showWindow();
 	}
 	
 	/** How often the snow is produced */
-	public final int FREQUENCY = 500;
+	public final int FREQUENCY = 50;
 	/** The maximum amount of particles allowed */
 	public final int MAX_PARTICLE = 100;
 	
 	/** The random number generator */
 	public Random rand;
-	/** The type of snow ball to draw */
+	/** The type of rain drop to draw */
 	public int[] type;
-	/** The x-axis position of the snow ball */
+	/** The x-axis position of the rain drop */
 	public double[] posx;
-	/** The y-axis position of the snow ball */
+	/** The y-axis position of the rain drop */
 	public double[] posy;
-	/** The flash of the snow ball */
+	/** The flash of the rain drop */
 	public boolean[] flash;
 	/** Temporary variable */
 	public int temp;
@@ -64,10 +64,10 @@ public class SnowExample extends JComponent implements Runnable{
 	
 	public void updateRender(Graphics2D g, int w, int h){
 		
-		//Create new snow particles
+		//Create new rain particles
 		for(int i = 0; i < MAX_PARTICLE; i++){
 			if(type[i] == -1 && rand.nextInt(FREQUENCY) == 0){
-				type[i] = rand.nextInt(3);
+				type[i] = rand.nextInt(2);
 				posx[i] = (rand.nextInt((w+100)/10)*10) - 100;
 				posy[i] = -10;
 				flash[i] = rand.nextBoolean();
@@ -75,16 +75,13 @@ public class SnowExample extends JComponent implements Runnable{
 			}
 		}
 		
-		//Snow particle updates
+		//Rain particle updates
 		for(int i = 0; i < MAX_PARTICLE; i++){
 			if(type[i] == -1)
 				continue;
 			
-			if(type[i] == 2){
-				posx[i] += 0.5;
-			}
-			posx[i] += 0.5;
-			posy[i] += 2;
+			posx[i] += 2;
+			posy[i] += 8;
 			flash[i] = !flash[i];
 			
 			//Destroy particles
@@ -98,11 +95,9 @@ public class SnowExample extends JComponent implements Runnable{
 			if(type[i] == -1)
 				continue;
 			if(type[i] == 0 && flash[i])
-				g.fillOval((int)posx[i], (int)posy[i], 4, 4);
+				g.drawLine((int)posx[i], (int)posy[i], (int)(posx[i]+4), (int)(posy[i]+12));
 			else if(type[i] == 1 && flash[i])
-				g.fillOval((int)posx[i], (int)posy[i], 6, 6);
-			else if(type[i] == 2 && flash[i])
-				g.fillOval((int)posx[i], (int)posy[i], 8, 8);
+				g.drawLine((int)posx[i], (int)posy[i], (int)(posx[i]+3), (int)(posy[i]+8));
 		}
 	}
 	
@@ -110,8 +105,8 @@ public class SnowExample extends JComponent implements Runnable{
 	//The infrastructure stuff under here...
 	/////////////////////////////////////
 	
-	public SnowExample(){
-		 window = new JFrame("Snow Example");
+	public RainExample(){
+		 window = new JFrame("Rain Example");
         window.setBackground(Color.BLACK);
         setBackground(Color.BLACK);
         init();
@@ -120,14 +115,14 @@ public class SnowExample extends JComponent implements Runnable{
 	public void showWindow(){
 		 Thread looper = new Thread(this);
          looper.start();
-		 window.add(this, BorderLayout.CENTER);
-		 window.addWindowListener(new WindowAdapter() {
+         window.addWindowListener(new WindowAdapter() {
              @Override
               public void windowClosing(WindowEvent e) {
                   window.dispose();
                   System.exit(0);
               }
           });
+		 window.add(this, BorderLayout.CENTER);
 	     window.validate();
 	     window.setVisible(true);
 	     window.pack();
