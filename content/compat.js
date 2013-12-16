@@ -26,13 +26,16 @@ PAGE_DATA.compat_link_body   = "Hi I want to give you my compatibility report."+
 "\n OS: "+
 "\n OS-Version: "+
 "\n "+
-"\n Found Bugs:"+
+"\n Bugs:"+
+"\n "+
 "\n   1) Situation:"+
 "\n      Expected:"+
-"\n   1) Situation:"+
+"\n      Fix-Priority (for you):"+
+"\n "+
+"\n Notes / Wishes / Advises:"+
+"\n "+
 "\n "+
 "\n Do you cleared your cache?: Yes/No"+
 "\n "+
-"\n Do you cleared your cache?: Yes/No"+
 "\n "+
 "\n Greets"+;
