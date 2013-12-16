@@ -1,7 +1,7 @@
 // Declines wish if two units can join each other in the current situation.
 // Transporters cannot join each other when they loaded units.
 //
-model.event_on( "joinUnits_check",function( wish , juid, jtuid ){
+model.event_on( "joinUnits_check",function( juid, jtuid ){
   var joinSource = model.unit_data[juid];
   var joinTarget = model.unit_data[jtuid];
 

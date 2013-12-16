@@ -337,6 +337,7 @@ controller.stateMachine.data = {
   // If this value is true, then the state machine is in a multi step action that does some
   // actions while holding the source object even after flush some sub actions.
   //
-  inMultiStep: false
+  inMultiStep: false,
+  breakMultiStep: false
 
 };

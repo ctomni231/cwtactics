@@ -79,7 +79,8 @@ model.event_on("property_createProperty", function( pid, x, y, type ){
 // Resets the capture points of a property object
 //
 model.event_on("move_moveByCache",function( uid, x, y ){
-  model.property_posMap[x][y].capturePoints = 20;
+  var prop = model.property_posMap[x][y];
+  if( prop ) prop.capturePoints = 20;
 });
 
 // Changes the type of a property object.
