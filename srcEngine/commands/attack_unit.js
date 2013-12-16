@@ -31,7 +31,7 @@ controller.action_unitAction({
   invoke: function( data ){
     if( data.targetselection.unitId !== -1 ){
       controller.commandStack_sharedInvokement(
-        "battle_invokeBattle",
+        "attack_invoked",
         data.source.unitId,
         data.targetselection.unitId,
         Math.round( Math.random()*100 ),
