@@ -6,8 +6,27 @@ PAGE_DATA.compat = [
     { version:"ios7", stat:3 }
   ]},
   
+  { name:"Apple Safari", data:[
+    { version:"5",     stat:0 },
+    { version:"6",     stat:0 },
+    { version:"7",     stat:3 }
+  ]},
+  
+  { name:"Mozilla Firefox", data:[
+  ]},
+  
+  { name:"Mozilla Firefox Mobile", data:[
+  ]},
+  
   { name:"Google Chrome", data:[
-    { version:"30", stat:3 }
+    { version:"30",     stat:3 }
+  ]},
+  
+  { name:"Google Chrome Mobile", data:[
+    { version:"30",     stat:3, info:"Needs a current device. Tested on Nexus 7 (2013)" }
+  ]},
+  
+  { name:"Internet Explorer", data:[
   ]},
 
 ];
