@@ -369,6 +369,9 @@ controller.stateMachine = util.stateMachine({
       this.data.inMultiStep = true;
       return ( this.data.menu.size > 1 )? "ACTION_SUBMENU": "IDLE";
 
+    },
+    nextStepBreak: function(){
+      return "IDLE";
     }
   }
 
