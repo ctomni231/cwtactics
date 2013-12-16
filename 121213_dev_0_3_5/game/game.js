@@ -18,7 +18,7 @@ var MAX_SELECTION_RANGE = 15;
 
 var MAX_BUFFER_SIZE = 200;
 
-var VERSION = "0.3.5";
+var VERSION = "0.3.5 - RC2";
 
 var DEBUG = true;
 
@@ -1080,12 +1080,20 @@ controller.roundConfig_evalAfterwards = function() {
     var tmp;
     controller.ai_reset();
     model.events.client_deregisterPlayers();
+    var onlyAI = true;
+    for (var i = 0, e = MAX_PLAYER; i < e; i++) {
+        if (controller.roundConfig_typeSelected[i] === 0) {
+            onlyAI = false;
+            break;
+        }
+    }
     for (var i = 0, e = MAX_PLAYER; i < e; i++) {
         if (controller.roundConfig_typeSelected[i] >= 0) {
             model.player_data[i].gold = 0;
             model.player_data[i].team = controller.roundConfig_teamSelected[i];
             if (controller.roundConfig_typeSelected[i] === 1) {
                 controller.ai_register(i);
+                if (onlyAI) model.events.client_registerPlayer(i);
             } else {
                 model.events.client_registerPlayer(i);
             }
@@ -1455,6 +1463,7 @@ controller.stateMachine = util.stateMachine({
         actionState: function() {
             var trapped = controller.actionBuilder_buildFromUserData();
             if (!trapped && this.data.action.object.multiStepAction) {
+                this.data.breakMultiStep = false;
                 controller.commandStack_localInvokement("multistep_next");
                 return "MULTISTEP_IDLE";
             } else return "IDLE";
@@ -1469,6 +1478,9 @@ controller.stateMachine = util.stateMachine({
             this.data.menu.addEntry("done");
             this.data.inMultiStep = true;
             return this.data.menu.size > 1 ? "ACTION_SUBMENU" : "IDLE";
+        },
+        nextStepBreak: function() {
+            return "IDLE";
         }
     }
 });
@@ -1619,7 +1631,8 @@ controller.stateMachine.data = {
         return sMap;
     }),
     selectionRange: -1,
-    inMultiStep: false
+    inMultiStep: false,
+    breakMultiStep: false
 };
 
 controller.ai_spec = "DumbBoy [0.10]";
@@ -3477,7 +3490,7 @@ model.event_on("nextTurn_pidStartsTurn", function(pid) {
     model.events.recalculateFogMap();
 });
 
-model.event_on("joinUnits_check", function(wish, juid, jtuid) {
+model.event_on("joinUnits_check", function(juid, jtuid) {
     var joinSource = model.unit_data[juid];
     var joinTarget = model.unit_data[jtuid];
     if (model.transport_hasLoads(juid) || model.transport_hasLoads(jtuid) || joinSource.type !== joinTarget.type || joinTarget.hp >= 90) return false;
@@ -3605,8 +3618,6 @@ model.event_on("move_moveByCache", function(uid, x, y, noFuelConsumption) {
     unit.fuel -= fuelUsed;
     assert(unit.fuel >= 0);
     if (unit.x >= 0 && unit.y >= 0) {
-        var prop = model.property_posMap[unit.x][unit.y];
-        if (prop) model.property_resetCapturePoints(model.property_extractId(prop));
         model.events.clearUnitPosition(uid);
     }
     if (model.unit_posData[cX][cY] === null) model.events.setUnitPosition(uid, cX, cY);
@@ -3637,7 +3648,7 @@ model.event_on([ "clearUnitPosition", "destroyUnitSilent" ], function(uid) {
 });
 
 model.event_on("multistep_next", function() {
-    controller.stateMachine.event("nextStep");
+    if (!controller.stateMachine.data.breakMultiStep) controller.stateMachine.event("nextStep"); else controller.stateMachine.event("nextStepBreak");
 });
 
 model.event_on("player_deactivatePlayer", function(pid) {
@@ -3724,9 +3735,9 @@ model.event_on("property_createProperty", function(pid, x, y, type) {
     assert(false);
 });
 
-model.event_on("property_resetCapturePoints", function(prid) {
-    assert(model.property_isValidPropId(prid));
-    model.property_data[prid].capturePoints = 20;
+model.event_on("move_moveByCache", function(uid, x, y) {
+    var prop = model.property_posMap[x][y];
+    if (prop) prop.capturePoints = 20;
 });
 
 model.event_on("property_changeType", function(prid, type) {
@@ -4121,16 +4132,17 @@ model.event_on("unloadUnit_addUnloadTargetsToSelection", function(uid, x, y, loa
 model.event_on("unloadUnit_invoked", function(transportId, trsx, trsy, loadId, tx, ty) {
     assert(model.unit_data[loadId].loadedIn === transportId);
     if (tx === -1 || ty === -1 || model.unit_posData[tx][ty]) {
+        controller.stateMachine.data.breakMultiStep = true;
         return;
     }
     model.unit_data[loadId].loadedIn = -1;
     model.unit_data[transportId].loadedIn++;
     var moveCode;
     if (tx < trsx) moveCode = model.move_MOVE_CODES.LEFT; else if (tx > trsx) moveCode = model.move_MOVE_CODES.RIGHT; else if (ty < trsy) moveCode = model.move_MOVE_CODES.UP; else if (ty > trsy) moveCode = model.move_MOVE_CODES.DOWN;
-    move_pathCache[0] = moveCode;
-    move_pathCache[1] = INACTIVE_ID;
-    model.events.move_moveByCache(loadId, trsx, trsy, 1);
-    model.events.wait_invoked(loadId);
+    controller.commandStack_localInvokement("move_clearWayCache");
+    controller.commandStack_localInvokement("move_appendToWayCache", moveCode);
+    controller.commandStack_localInvokement("move_moveByCache", loadId, trsx, trsy, 1);
+    controller.commandStack_localInvokement("wait_invoked", loadId);
 });
 
 model.event_on("buildUnit_check", function(factoryId, playerId, type) {

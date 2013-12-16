@@ -18,7 +18,7 @@ var MAX_SELECTION_RANGE = 15;
 
 var MAX_BUFFER_SIZE = 200;
 
-var VERSION = "0.3.5";
+var VERSION = "0.3.5 - RC2";
 
 var DEBUG = true;
 
