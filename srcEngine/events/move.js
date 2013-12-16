@@ -113,21 +113,29 @@ model.event_on("move_moveByCache",function( uid, x, y, noFuelConsumption ){
   if( model.unit_posData[cX][cY] === null ) model.events.setUnitPosition( uid, cX, cY );
 });
 
-// Set position
-//
-model.event_on(["setUnitPosition","createUnit"],function(uid,x,y){
-  var unit = model.unit_data[uid];
+(function(){
 
-  unit.x = x;
-  unit.y = y;
-  model.unit_posData[x][y] = unit;
+  function setPos(uid,x,y){
+    var unit = model.unit_data[uid];
 
-  model.events.modifyVisionAt( x, y, unit.owner, unit.type.vision, 1 );
-});
+    unit.x = x;
+    unit.y = y;
+    model.unit_posData[x][y] = unit;
+
+    model.events.modifyVisionAt( x, y, unit.owner, unit.type.vision, 1 );
+  }
+
+  // Set position
+  //
+  model.event_on("setUnitPosition",setPos);
+  model.event_on("createUnit",function( slot, pid, x,y, type ){
+    setPos(slot,x,y);
+  });
+})();
 
 // Clear position.
 //
-model.event_on(["clearUnitPosition","destroyUnitSilently"],function(uid){
+model.event_on(["clearUnitPosition","destroyUnitSilent"],function(uid){
   var unit = model.unit_data[uid];
   var x    = unit.x;
   var y    = unit.y;

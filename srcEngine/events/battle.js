@@ -49,27 +49,22 @@ model.event_on( "attack_invoked",function( attId, defId, attLuckRatio, defLuckRa
   var damage;
   var retreatVal      = powerAtt;
 
-  // invoke introduction event
-  model.events.battle_invokeBattle( attId, defId, damage );
-
   // main attack
   var mainWpAttack = model.battle_canUseMainWeapon(attacker,defender);
   damage = model.battle_getBattleDamageAgainst(attacker,defender,attLuckRatio,mainWpAttack,false);
 
   if( damage !== -1 ){
-    model.unit_inflictDamage( defId, damage );
-
-    // invoke main attack event
-    model.events.battle_mainAttack( attId, defId, damage, mainWpAttack );
+    model.events.damageUnit( defId, damage );
 
     powerAtt -= model.unit_convertHealthToPoints( defender );
 
     if( mainWpAttack ) attacker.ammo--;
 
     powerAtt        = ( parseInt(        powerAtt*0.1*dSheets.cost, 10 ) );
-    model.co_modifyPowerLevel( attOwner, parseInt( 0.5*powerAtt, 10 ) );
-    model.co_modifyPowerLevel( defOwner, powerAtt );
+    model.events.co_modifyPowerLevel( attOwner, parseInt( 0.5*powerAtt, 10 ) );
+    model.events.co_modifyPowerLevel( defOwner, powerAtt );
 
+    /*
     retreatVal = model.unit_convertHealthToPoints( defender )/retreatVal*100;
     if( retreatVal < 20 ){
 
@@ -77,11 +72,12 @@ model.event_on( "attack_invoked",function( attId, defId, attLuckRatio, defLuckRa
       retreatVal = model.battle_searchTile_( defender.x,defender.y, attacker.x,attacker.y );
     }
     else retreatVal = false;
+    */
   }
 
   // counter attack when defender survives and defender is an indirect
   // attacking unit
-  if( retreatVal && defender.hp > 0 && !model.battle_isIndirectUnit(defId) ){
+  if( /* retreatVal && */ defender.hp > 0 && !model.battle_isIndirectUnit(defId) ){
     mainWpAttack = model.battle_canUseMainWeapon(defender,attacker);
 
     damage = model.battle_getBattleDamageAgainst(
@@ -93,18 +89,15 @@ model.event_on( "attack_invoked",function( attId, defId, attLuckRatio, defLuckRa
     );
 
     if( damage !== -1 ){
-      model.unit_inflictDamage( attId, damage );
-
-      // invoke counter event
-      model.events.battle_counterAttack( defId, attId, damage, mainWpAttack );
+      model.events.damageUnit( attId, damage );
 
       powerCounterAtt -= model.unit_convertHealthToPoints( attacker );
 
       if( mainWpAttack ) defender.ammo--;
 
       powerCounterAtt = ( parseInt( powerCounterAtt*0.1*aSheets.cost, 10 ) );
-      model.co_modifyPowerLevel( defOwner, parseInt( 0.5*powerCounterAtt, 10 ) );
-      model.co_modifyPowerLevel( attOwner, powerCounterAtt );
+      model.events.co_modifyPowerLevel( defOwner, parseInt( 0.5*powerCounterAtt, 10 ) );
+      model.events.co_modifyPowerLevel( attOwner, powerCounterAtt );
     }
   }
 });

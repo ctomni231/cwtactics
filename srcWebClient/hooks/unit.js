@@ -30,6 +30,11 @@ model.event_on("buildUnit_invoked",function(){
   controller.updateSimpleTileInformation();
 });
 
+
+model.event_on("createUnit",function( id ){
+  controller.updateUnitStatus( id );
+});
+
 model.event_on("loadUnit_invoked",function( uid, tid ){
   controller.updateUnitStatus( tid );
 });

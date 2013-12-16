@@ -6,6 +6,6 @@ model.event_on( "buildUnit_check",function(  factoryId, playerId, type ){
 
 // Decreases manpower when a factory builds an unit
 //
-model.event_on( "buildUnit_invoked",function( factoryId, playerId, type ){
-  model.manpower_data[pid]--;
+model.event_on( "buildUnit_invoked",function( x, y, type ){
+  model.manpower_data[model.property_posMap[x][y].owner]--;
 });

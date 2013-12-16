@@ -10,7 +10,6 @@ model.event_on("buildUnit_check", function( prid, pid ){
 //
 model.event_on("buildUnit_invoked", function( x, y, type ){
   var prop = model.property_posMap[x][y];
-  var uid  = model.unit_create( model.round_turnOwner, x, y, type );
   var cost = model.data_unitSheets[ type ].cost;
   var pl   = model.player_data[     prop.owner ];
 

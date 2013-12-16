@@ -1,7 +1,7 @@
 //
 //
 model.event_on( "silofire_check", function( prid,uid ){
-  if( !model.bombs_canBeFiredBy( prid,uid ) ) return false;
+  if( !model.bombs_isSilo( prid,uid ) ) return false;
 });
 
 //
@@ -21,6 +21,7 @@ model.event_on( "silofire_invoked", function( x,y, tx, ty, owner){
   var damage  = model.unit_convertPointsToHealth(type.rocketsilo.damage);
 
   model.events.property_changeType(siloId, model.data_tileSheets[type.changeTo]);
+  model.events.rocketFly( x,y, tx, ty);
   model.events.explode_invoked(tx, ty, range, damage, owner);
 });
 
