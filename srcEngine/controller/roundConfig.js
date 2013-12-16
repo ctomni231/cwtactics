@@ -55,6 +55,14 @@ controller.roundConfig_evalAfterwards = function(){
   controller.ai_reset();
   model.events.client_deregisterPlayers();
 
+  var onlyAI = true;
+  for( var i= 0, e=MAX_PLAYER; i<e; i++ ){
+    if( controller.roundConfig_typeSelected[i] === 0 ){
+      onlyAI = false;
+      break;
+    }
+  }
+
   // update model
   for( var i= 0, e=MAX_PLAYER; i<e; i++ ){
     if( controller.roundConfig_typeSelected[i] >= 0 ){
@@ -68,6 +76,7 @@ controller.roundConfig_evalAfterwards = function(){
       // type
       if( controller.roundConfig_typeSelected[i] === 1 ){
         controller.ai_register(i);
+        if( onlyAI ) model.events.client_registerPlayer(i);
       } else {
         model.events.client_registerPlayer(i);
       }
