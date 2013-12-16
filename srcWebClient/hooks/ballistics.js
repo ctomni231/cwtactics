@@ -39,9 +39,9 @@ util.scoped(function(){
   }
 
   view.registerAnimationHook({
-    key: "bombs_startFireSilo",
+    key: "rocketFly",
 
-    prepare: function( x,y, siloId, tx,ty ){
+    prepare: function( x,y, tx,ty,siloId ){
       if( !rocket_img ) rocket_img = view.getInfoImageForType("FLYING_ROCKET");
       if( !rocket_img_inv ) rocket_img_inv = view.getInfoImageForType("FLYING_ROCKET_INV");
 
@@ -113,7 +113,7 @@ util.scoped(function(){
 
   view.registerAnimationHook({
 
-    key: "bombs_explosionAt",
+    key: "explode_invoked",
 
     prepare: function( tx,ty, range, damage, owner ){
       if( !expl_img ) expl_img = view.getInfoImageForType("EXPLOSION_GROUND");
