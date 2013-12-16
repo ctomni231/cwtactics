@@ -22,8 +22,8 @@ model.event_on("dayEvent", function( days, action, argA, argB ){
 
 // Ticks a turn.
 //
-model.event_on("dayChange", function(){
-  var list = model.dayEvents_data;
+model.event_on("nextTurn_invoked", function(){
+  var list = model.dayTick_dataTime;
   for( var i=0,e=list.length; i<e; i++ ){
     if( list[i] === INACTIVE_ID ) continue;
 

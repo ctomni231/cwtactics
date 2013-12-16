@@ -45,9 +45,9 @@ model.event_define = function(ev){
     for (var i = 0, e = list.length; i < e; i++) {
       if( list[i].apply(null,arguments) === false ) return false;
     };
-  };
 
-  return true;
+    return true;
+  };
 };
 
 // Registers a callback as first listener in an event node.

@@ -300,7 +300,7 @@ controller.ai_machine = util.stateMachine({
         if( loopData.i < loopData.prop ){
           // unit check
 
-          util.log(controller.ai_spec,"- ..for unit",loopData.i);
+          //util.log(controller.ai_spec,"- ..for unit",loopData.i);
 
           var unit = model.unit_data[loopData.i];
           if( unit.owner !== INACTIVE_ID && unit.loadedIn === INACTIVE_ID ){
@@ -313,7 +313,7 @@ controller.ai_machine = util.stateMachine({
         } else {
           // property check
 
-          util.log(controller.ai_spec,"- ..for property",loopData.i);
+          //util.log(controller.ai_spec,"- ..for property",loopData.i);
 
           // grab property; convert relative id to absolute id
           var prop = model.property_data[loopData.i-loopData.prop];
@@ -326,7 +326,7 @@ controller.ai_machine = util.stateMachine({
       } else {
         // map check
 
-        util.log(controller.ai_spec,"- ..for map");
+        //util.log(controller.ai_spec,"- ..for map");
         dataTp = 2;
       }
 

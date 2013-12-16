@@ -32,7 +32,7 @@ util.scoped(function(){
       if( !model.factory_isFactory(prid)) return -1;
 
       // there aren't any unit slots left or the man power is zero
-      if( !model.factory_canProduceSomething(prid) ){
+      if( !model.factory_canProduceSomething(prid,model.property_data[prid].owner) ){
         if( DEBUG ) util.log("cannot build capturers because no slots left or no man power left");
       }
 
@@ -53,7 +53,7 @@ util.scoped(function(){
           data.action.selectedSubEntry = type.ID;
 
           // some scoring ideas:
-          //  a) score */ number of neutral properties 
+          //  a) score */ number of neutral properties
           //  b) score */ number of enemy properties in range X
           //  c) score */ distance to nearest (enemy) property
 

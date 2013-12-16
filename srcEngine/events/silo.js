@@ -1,7 +1,7 @@
 //
 //
 model.event_on( "silofire_check", function( prid,uid ){
-  if( !model.bombs_canBeFiredBy( prid,uid ) ) return false;
+  if( !model.bombs_isSilo( prid,uid ) ) return false;
 });
 
 //

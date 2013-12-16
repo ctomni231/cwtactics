@@ -14,7 +14,6 @@ model.event_on("nextTurn_invoked",function(){
 
       // Next day
       model.round_day++;
-      model.dayEvents_tick();
 
       var round_dayLimit = controller.configValue("round_dayLimit");
       if( round_dayLimit > 0 && model.round_day === round_dayLimit ){
