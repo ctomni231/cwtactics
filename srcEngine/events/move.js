@@ -135,7 +135,7 @@ model.event_on("move_moveByCache",function( uid, x, y, noFuelConsumption ){
 
 // Clear position.
 //
-model.event_on(["clearUnitPosition","destroyUnitSilently"],function(uid){
+model.event_on(["clearUnitPosition","destroyUnitSilent"],function(uid){
   var unit = model.unit_data[uid];
   var x    = unit.x;
   var y    = unit.y;
