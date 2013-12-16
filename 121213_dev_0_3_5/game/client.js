@@ -4116,8 +4116,8 @@ util.scoped(function() {
         }
     }
     view.registerAnimationHook({
-        key: "bombs_startFireSilo",
-        prepare: function(x, y, siloId, tx, ty) {
+        key: "rocketFly",
+        prepare: function(x, y, tx, ty, siloId) {
             if (!rocket_img) rocket_img = view.getInfoImageForType("FLYING_ROCKET");
             if (!rocket_img_inv) rocket_img_inv = view.getInfoImageForType("FLYING_ROCKET_INV");
             this.siloX = controller.getCanvasPosX(x);
@@ -4162,7 +4162,7 @@ util.scoped(function() {
         }
     });
     view.registerAnimationHook({
-        key: "bombs_explosionAt",
+        key: "explode_invoked",
         prepare: function(tx, ty, range, damage, owner) {
             if (!expl_img) expl_img = view.getInfoImageForType("EXPLOSION_GROUND");
             controller.audio_playSound("ROCKET_IMPACT");
@@ -4231,8 +4231,8 @@ util.scoped(function() {
     });
     view.registerAnimationHook({
         key: "bombs_fireLaser",
-        prepare: function(ox, oy, tp) {
-            var type = model.data_tileSheets[tp];
+        prepare: function(ox, oy) {
+            var type = model.property_posMap[ox][oy].type;
             var fireAnimA = type.assets.chargeAnimation;
             var fireAnimB = type.assets.fireAnimation;
             var fireAnimC = type.assets.streamAnimation;
@@ -4512,7 +4512,7 @@ view.registerAnimationHook({
 });
 
 view.registerAnimationHook({
-    key: "unit_destroy",
+    key: "destroyUnit",
     prepare: function(id) {
         var unit = model.unit_data[id];
         this.step = 0;
@@ -4550,7 +4550,7 @@ view.registerAnimationHook({
     }
 });
 
-model.event_on("fog_modifyVisionAt", function(x, y, pid, range, value) {
+model.event_on("modifyVisionAt", function(x, y, pid, range, value) {
     range = 10;
     var lX;
     var hX;
@@ -4574,17 +4574,17 @@ model.event_on("fog_modifyVisionAt", function(x, y, pid, range, value) {
     }
 });
 
-model.event_on("fog_recalculateFogMap", function(range) {
+model.event_on("recalculateFogMap", function(range) {
     view.redraw_markAll();
 });
 
 view.registerAnimationHook({
-    key: "move_moveUnitByPath",
-    prepare: function(way, uid, x, y) {
+    key: "move_moveByCache",
+    prepare: function(uid, x, y) {
         this.moveAnimationX = x;
         this.moveAnimationY = y;
         this.moveAnimationIndex = 0;
-        this.moveAnimationPath = way;
+        this.moveAnimationPath = model.move_pathCache;
         this.moveAnimationUid = uid;
         this.moveAnimationShift = 0;
         this.moveAnimationDustX = -1;
@@ -4640,7 +4640,7 @@ view.registerAnimationHook({
             }
             this.moveAnimationIndex++;
             this.moveAnimationShift -= tileSize;
-            if (this.moveAnimationIndex === this.moveAnimationPath.length) {
+            if (this.moveAnimationIndex === this.moveAnimationPath.length || this.moveAnimationPath[this.moveAnimationIndex] === INACTIVE_ID) {
                 this.moveAnimationX = 0;
                 this.moveAnimationY = 0;
                 this.moveAnimationIndex = 0;
@@ -4752,7 +4752,7 @@ view.registerAnimationHook({
     }
 });
 
-model.event_on("multistep_nextStep_", function() {
+model.event_on("multistep_next", function() {
     if (controller.stateMachine.state !== "IDLE") {
         controller.showMenu(controller.stateMachine.data.menu, controller.mapCursorX, controller.mapCursorY);
     }
@@ -4770,7 +4770,7 @@ util.scoped(function() {
         controller.storage_assets.get(key, storeAudio);
     }
     view.registerAnimationHook({
-        key: "round_nextTurn",
+        key: "nextTurn_invoked",
         prepare: function() {
             var co = model.co_data[model.round_turnOwner].coA;
             if (co) {
@@ -4790,11 +4790,11 @@ util.scoped(function() {
     });
 });
 
-model.event_on("team_transferMoney", function() {
+model.event_on("transferMoney_invoked", function() {
     controller.renderPlayerInfo();
 });
 
-model.event_on("team_transferUnit", function(suid) {
+model.event_on("transferUnit_invoked", function(suid) {
     var unit = model.unit_data[suid];
     var x = -unit.x;
     var y = -unit.y;
@@ -4802,7 +4802,7 @@ model.event_on("team_transferUnit", function(suid) {
 });
 
 view.registerAnimationHook({
-    key: "actions_trapWait",
+    key: "trapwait_invoked",
     prepare: function(uid) {
         var unit = model.unit_data[uid];
         this.time = 0;
@@ -4831,45 +4831,37 @@ view.registerAnimationHook({
     }
 });
 
-model.event_on("unit_inflictDamage", function(uid) {
+model.event_on("damageUnit", function(uid) {
     controller.updateUnitStatus(uid);
 });
 
-model.event_on("unit_heal", function(uid) {
+model.event_on("healUnit", function(uid) {
     controller.updateUnitStatus(uid);
 });
 
-model.event_on("battle_mainAttack", function(auid, duid, dmg, mainWeap) {
-    var type = model.unit_data[auid].type;
-    var sound = mainWeap ? type.assets.pri_att_sound : type.assets.sec_att_sound;
-    if (sound) controller.audio_playSound(sound);
-});
-
-model.event_on("battle_counterAttack", function(auid, duid, dmg, mainWeap) {
-    var type = model.unit_data[auid].type;
-    var sound = mainWeap ? type.assets.pri_att_sound : type.assets.sec_att_sound;
-    if (sound) controller.audio_playSound(sound);
-});
-
-model.event_on("battle_invokeBattle", function(auid, duid) {
+model.event_on("attack_invoked", function(auid, duid) {
     controller.updateSimpleTileInformation();
     controller.updateUnitStatus(auid);
     controller.updateUnitStatus(duid);
 });
 
-model.event_on("factory_produceUnit", function() {
+model.event_on("buildUnit_invoked", function() {
     controller.updateSimpleTileInformation();
 });
 
-model.event_on("transport_loadInto", function(uid, tid) {
+model.event_on("createUnit", function(id) {
+    controller.updateUnitStatus(id);
+});
+
+model.event_on("loadUnit_invoked", function(uid, tid) {
     controller.updateUnitStatus(tid);
 });
 
-model.event_on("transport_unloadFrom", function(transportId, trsx, trsy, loadId, tx, ty) {
+model.event_on("unloadUnit_invoked", function(transportId, trsx, trsy, loadId, tx, ty) {
     controller.updateUnitStatus(transportId);
 });
 
-model.event_on("unit_join", function(uid, tid) {
+model.event_on("joinUnits_invoked", function(uid, tid) {
     controller.updateUnitStatus(tid);
 });
 
@@ -4878,7 +4870,7 @@ model.event_on("supply_refillResources", function(uid) {
     controller.updateUnitStatus(uid);
 });
 
-model.event_on("move_clearUnitPosition", function(uid) {
+model.event_on("clearUnitPosition", function(uid) {
     var unit = model.unit_data[uid];
     var x = -unit.x;
     var y = -unit.y;
@@ -4896,15 +4888,15 @@ model.event_on("move_clearUnitPosition", function(uid) {
     }
 });
 
-model.event_on("move_setUnitPosition", function(uid) {
+model.event_on("setUnitPosition", function(uid) {
     controller.updateUnitStatus(uid);
 });
 
-model.event_on("unit_hide", function(uid) {
+model.event_on("unitHide_invoked", function(uid) {
     controller.updateUnitStatus(uid);
 });
 
-model.event_on("unit_unhide", function(uid) {
+model.event_on("unitUnhide_invoked", function(uid) {
     controller.updateUnitStatus(uid);
 });
 
@@ -5162,7 +5154,7 @@ util.scoped(function() {
     controller.screenStateMachine.structure.OPTIONS.forceTouch = false;
     controller.screenStateMachine.structure.OPTIONS.section = "cwt_options_screen";
     controller.screenStateMachine.structure.OPTIONS.enterState = function(_, source) {
-        sourceState = typeof source !== "undefined" ? source : null;
+        sourceState = source === true ? true : false;
         updateSoundContent();
         updateforceTouchContent();
         btn.setIndex(1);
@@ -5254,13 +5246,13 @@ util.scoped(function() {
           case "options.goBack":
             controller.audio_saveConfigs();
             controller.storage_general.set("cwt_forceTouch", controller.screenStateMachine.structure.OPTIONS.forceTouch);
-            return sourceState !== null ? "GAMEROUND" : "MAIN";
+            return sourceState ? "GAMEROUND" : "MAIN";
         }
         return this.breakTransition();
     };
     controller.screenStateMachine.structure.OPTIONS.CANCEL = function() {
         controller.audio_saveConfigs();
-        return sourceState !== null ? "GAMEROUND" : "MAIN";
+        return sourceState ? "GAMEROUND" : "MAIN";
     };
 });
 

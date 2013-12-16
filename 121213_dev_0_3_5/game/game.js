@@ -328,23 +328,47 @@ var controller = {};
 
 var util = {};
 
+model.event_eventName = [];
+
+model.event_eventIndex = {};
+
+model.event_eventFirst = {};
+
 model.event_callbacks = {};
 
 model.events = {};
 
 model.event_define = function(ev) {
     assertStr(ev);
-    assertUndef(model.event_callbacks[ev]);
-    model.event_callbacks[ev] = [];
+    if (model.event_eventIndex[ev] !== void 0) return;
+    var index = model.event_eventName.length;
+    var list = [];
+    model.event_eventName[index] = ev;
+    model.event_eventIndex[ev] = index;
+    model.event_callbacks[ev] = list;
     model.events[ev] = function() {
-        var list = model.event_callbacks[ev];
-        for (var i = 0, e = list.length; i < e; i++) {
-            list[i].apply(null, arguments);
+        if (model.event_eventFirst[ev]) {
+            if (model.event_eventFirst[ev].apply(null, arguments) === false) return false;
         }
+        for (var i = 0, e = list.length; i < e; i++) {
+            if (list[i].apply(null, arguments) === false) return false;
+        }
+        return true;
     };
 };
 
+model.event_firstOn = function(ev, cb) {
+    assertStr(ev);
+    assertFn(cb);
+    if (!model.event_callbacks[ev]) model.event_define(ev);
+    model.event_eventFirst[ev] = cb;
+};
+
 model.event_on = function(ev, cb) {
+    if (Array.isArray(ev)) {
+        for (var i = 0, e = ev.length; i < e; i++) model.event_on(ev[i], cb);
+        return;
+    }
     assertStr(ev);
     assertFn(cb);
     if (!model.event_callbacks[ev]) model.event_define(ev);
@@ -548,7 +572,7 @@ util.log = function(msg) {
     };
 })();
 
-util.createRingBuffer = function(size) {
+util.createRingBuffer = function(size, initFn) {
     var buffer = {
         push: function(msg) {
             if (this._data[this._wInd] !== null) {
@@ -585,7 +609,7 @@ util.createRingBuffer = function(size) {
     };
     buffer._rInd = 0;
     buffer._wInd = 0;
-    buffer._data = util.list(size, null);
+    buffer._data = util.list(size, initFn ? initFn : null);
     buffer._size = size;
     return buffer;
 };
@@ -757,13 +781,7 @@ util.createRingBuffer = function(size) {
     util.stateMachine = create;
 })();
 
-controller.action_map = {};
-
-controller.action_idmap = {};
-
 controller.action_objects = {};
-
-controller.action_buffer_ = util.createRingBuffer(ACTIONS_BUFFER_SIZE);
 
 controller.action_define_ = function(impl) {
     if (!impl.hasOwnProperty("condition")) impl.condition = null;
@@ -780,6 +798,10 @@ controller.action_define_ = function(impl) {
     }
     assert(impl.prepareTargets === null || impl.isTargetValid === null);
     controller.action_objects[impl.key] = impl;
+    if (!impl.noImplictEvents) {
+        model.event_define(impl.key + "_check");
+        model.event_define(impl.key + "_invoked");
+    }
 };
 
 controller.action_unitAction = function(impl) {
@@ -813,45 +835,6 @@ controller.action_clientAction = function(impl) {
     impl.propertyAction = false;
     controller.action_define_(impl);
 };
-
-controller.action_checkInvokeArgs = function(key, args) {
-    assert(typeof args !== "undefined" && typeof controller.action_idmap[key] !== "undefined" || typeof controller.action_map[key[key.length - 1]] !== "undefined");
-};
-
-controller.action_convertToInvokeDataArray = function(key, args) {
-    controller.action_checkInvokeArgs(key, args);
-    var result = [];
-    for (var i = 0, e = args.length; i < e; i++) result[i] = args[i];
-    result[result.length] = controller.action_idmap[key];
-    return result;
-};
-
-controller.action_localInvoke = function(key, args) {
-    controller.action_checkInvokeArgs(key, args);
-    if (arguments.length === 2) key = controller.action_convertToInvokeDataArray(key, args);
-    if (DEBUG) {
-        util.log("adding", JSON.stringify(key), "to the command stack as", controller.action_map[key[key.length - 1]], "command");
-    }
-    controller.action_buffer_.push(key);
-};
-
-controller.action_sharedInvoke = function(key, args) {
-    controller.action_checkInvokeArgs(key, args);
-    if (arguments.length === 2) key = controller.action_convertToInvokeDataArray(key, args);
-    if (controller.isNetworkGame()) {
-        controller.sendNetworkMessage(JSON.stringify(key));
-    }
-    controller.action_localInvoke(key);
-};
-
-util.scoped(function() {
-    var id = 0;
-    controller.action_registerCommands = function(name) {
-        controller.action_map[id.toString()] = name;
-        controller.action_idmap[name] = id.toString();
-        id++;
-    };
-});
 
 controller.actionBuilder_buildFromUserData = function() {
     var scope = controller.stateMachine.data;
@@ -889,18 +872,88 @@ controller.actionBuilder_buildFromUserData = function() {
             if (unit !== null) {
                 if (model.player_data[model.round_turnOwner].team !== model.player_data[unit.owner].team) {
                     targetDto.set(cx, cy);
-                    way.splice(i);
+                    way[i] = INACTIVE_ID;
                     trapped = true;
                 }
             }
         }
-        controller.action_sharedInvoke("move_moveUnitByPath", [ moveDto.clone(), sourceDto.unitId, sourceDto.x, sourceDto.y, false ]);
+        controller.commandStack_sharedInvokement("move_clearWayCache");
+        for (var i = 0, e = moveDto.data.length; i < e; i += 6) {
+            if (moveDto.data[i] === INACTIVE_ID) break;
+            controller.commandStack_sharedInvokement("move_appendToWayCache", moveDto.data[i], moveDto.data[i + 1], moveDto.data[i + 2], moveDto.data[i + 3], moveDto.data[i + 4], moveDto.data[i + 5]);
+        }
+        controller.commandStack_sharedInvokement("move_moveByCache", sourceDto.unitId, sourceDto.x, sourceDto.y, 0);
     }
-    if (!trapped) actionObject.invoke(scope); else controller.action_sharedInvoke("actions_trapWait", [ sourceDto.unitId ]);
-    if (trapped || actionObject.unitAction && actionDto.selectedEntry !== "wait" && actionDto.selectedEntry !== "explode" && actionDto.selectedEntry !== "joinUnits") {
-        controller.action_sharedInvoke("actions_markUnitNonActable", [ sourceDto.unitId ]);
+    if (!trapped) actionObject.invoke(scope); else controller.action_sharedInvoke("trapwait_invoked", [ sourceDto.unitId ]);
+    if (trapped || actionObject.unitAction && !actionObject.noAutoWait) {
+        controller.commandStack_sharedInvokement("wait_invoked", sourceDto.unitId);
     }
     return trapped;
+};
+
+controller.commandStack_curReadPos = 0;
+
+controller.commandStack_curWritePos = 0;
+
+controller.commandStack_buffer_ = util.list((1 + 6) * ACTIONS_BUFFER_SIZE, INACTIVE_ID);
+
+controller.commandStack_resetData = function() {
+    controller.commandStack_buffer_.resetValues();
+    controller.commandStack_curReadPos = 0;
+    controller.commandStack_curWritePos = 0;
+};
+
+controller.commandStack_hasData = function() {
+    return controller.commandStack_curReadPos !== controller.commandStack_curWritePos;
+};
+
+controller.commandStack_invokeNext = function() {
+    assert(controller.commandStack_hasData());
+    var i = controller.commandStack_curReadPos * (6 + 1);
+    var e = i + 6 + 1;
+    var data = controller.commandStack_buffer_;
+    var event = model.event_eventName[data[i]];
+    if (DEBUG) {
+        util.log("invoke", event, "with arguments", data[i + 1], data[i + 2], data[i + 3], data[i + 4], data[i + 5], data[i + 6]);
+    }
+    model.events[event](data[i + 1], data[i + 2], data[i + 3], data[i + 4], data[i + 5], data[i + 6]);
+    data[i] = INACTIVE_ID;
+    controller.commandStack_curReadPos++;
+    if (controller.commandStack_curReadPos >= ACTIONS_BUFFER_SIZE) {
+        controller.commandStack_curReadPos = 0;
+    }
+};
+
+controller.commandStack_localInvokement = function(cmd) {
+    assertStr(cmd);
+    assertIntRange(arguments.length, 1, 7);
+    var offset = controller.commandStack_curWritePos * (6 + 1);
+    var i = 0;
+    var e = 7;
+    assert(controller.commandStack_buffer_[i + offset] === INACTIVE_ID);
+    controller.commandStack_buffer_[i + offset] = model.event_eventIndex[cmd];
+    i++;
+    while (i < e) {
+        if (DEBUG && arguments.length > i && typeof arguments[i] !== "number") {
+            util.log("!! warning !! used a command invocation with non numeric types on command", cmd);
+        }
+        controller.commandStack_buffer_[i + offset] = arguments.length > i ? arguments[i] : INACTIVE_ID;
+        i++;
+    }
+    if (DEBUG) {
+        util.log("adding", JSON.stringify(arguments), "to the command stack");
+    }
+    controller.commandStack_curWritePos++;
+    if (controller.commandStack_curWritePos >= ACTIONS_BUFFER_SIZE) {
+        controller.commandStack_curWritePos = 0;
+    }
+};
+
+controller.commandStack_sharedInvokement = function(cmd) {
+    if (controller.isNetworkGame()) {
+        controller.sendNetworkMessage(JSON.stringify(arguments));
+    }
+    controller.commandStack_localInvokement.apply(this, arguments);
 };
 
 controller.configBoundaries_ = {};
@@ -942,18 +995,6 @@ controller.configValue = function(attr) {
     return model.cfg_configuration[attr];
 };
 
-util.scoped(function() {
-    function clientNeedsToImplementMe(name) {
-        return function() {
-            assert(false, "client has to implement interface " + name);
-        };
-    }
-    controller.isNetworkGame = clientNeedsToImplementMe("controller.isNetworkGame");
-    controller.isHost = clientNeedsToImplementMe("controller.isHost");
-    controller.parseNetworkMessage = clientNeedsToImplementMe("controller.parseNetworkMessage");
-    controller.sendNetworkMessage = clientNeedsToImplementMe("controller.sendNetworkMessage");
-});
-
 model.modification_load = function(data) {
     model.data_addEngineTypeSheets();
     model.data_weatherParser.parseAll(data.weathers);
@@ -972,6 +1013,18 @@ model.modification_load = function(data) {
     model.data_maps = data.maps;
     model.data_tips = data.tips;
 };
+
+util.scoped(function() {
+    function clientNeedsToImplementMe(name) {
+        return function() {
+            assert(false, "client has to implement interface " + name);
+        };
+    }
+    controller.isNetworkGame = clientNeedsToImplementMe("controller.isNetworkGame");
+    controller.isHost = clientNeedsToImplementMe("controller.isHost");
+    controller.parseNetworkMessage = clientNeedsToImplementMe("controller.parseNetworkMessage");
+    controller.sendNetworkMessage = clientNeedsToImplementMe("controller.sendNetworkMessage");
+});
 
 model.event_define("prepare_game");
 
@@ -1026,7 +1079,7 @@ controller.roundConfig_prepare = function() {
 controller.roundConfig_evalAfterwards = function() {
     var tmp;
     controller.ai_reset();
-    model.client_deregisterPlayers();
+    model.events.client_deregisterPlayers();
     for (var i = 0, e = MAX_PLAYER; i < e; i++) {
         if (controller.roundConfig_typeSelected[i] >= 0) {
             model.player_data[i].gold = 0;
@@ -1034,10 +1087,10 @@ controller.roundConfig_evalAfterwards = function() {
             if (controller.roundConfig_typeSelected[i] === 1) {
                 controller.ai_register(i);
             } else {
-                model.client_registerPlayer(i);
+                model.events.client_registerPlayer(i);
             }
             tmp = controller.roundConfig_coSelected[i] !== INACTIVE_ID ? model.data_coTypes[controller.roundConfig_coSelected[i]] : null;
-            model.co_setMainCo(i, tmp);
+            model.events.setMainCo(i, tmp);
         } else {
             model.player_data[i].team = INACTIVE_ID;
             var firstUid = model.unit_firstUnitId(i);
@@ -1402,7 +1455,7 @@ controller.stateMachine = util.stateMachine({
         actionState: function() {
             var trapped = controller.actionBuilder_buildFromUserData();
             if (!trapped && this.data.action.object.multiStepAction) {
-                controller.action_localInvoke("multistep_nextStep_", []);
+                controller.commandStack_localInvokement("multistep_next");
                 return "MULTISTEP_IDLE";
             } else return "IDLE";
         }
@@ -1491,7 +1544,6 @@ controller.stateMachine.data = {
         clean: function() {
             this.size = 0;
         },
-        wish: util.wish(),
         generate: util.scoped(function() {
             var commandKeys;
             return function() {
@@ -1536,8 +1588,7 @@ controller.stateMachine.data = {
                             if (!result) continue;
                         }
                     } else if (action.propertyAction && !propertyActable) continue; else if (action.mapAction === true && !mapActable) continue; else if (action.clientAction === true && !mapActable) continue;
-                    data.menu.wish.approve();
-                    if (!(action.condition && !action.condition(data, data.menu.wish))) {
+                    if (action.condition && action.condition(data) !== false) {
                         data.menu.addEntry(commandKeys[i]);
                     }
                 }
@@ -1571,7 +1622,7 @@ controller.stateMachine.data = {
     inMultiStep: false
 };
 
-controller.ai_spec = "DumbBoy [0.25]";
+controller.ai_spec = "DumbBoy [0.10]";
 
 controller.ai_SCORE = {
     LOW: 100,
@@ -1722,7 +1773,6 @@ controller.ai_machine = util.stateMachine({
                 var dataTp = -1;
                 if (loopData.i < loopData.e) {
                     if (loopData.i < loopData.prop) {
-                        util.log(controller.ai_spec, "- ..for unit", loopData.i);
                         var unit = model.unit_data[loopData.i];
                         if (unit.owner !== INACTIVE_ID && unit.loadedIn === INACTIVE_ID) {
                             dataTp = 0;
@@ -1730,7 +1780,6 @@ controller.ai_machine = util.stateMachine({
                             model.move_fillMoveMap(scoreData.source, scoreData.selection);
                         }
                     } else {
-                        util.log(controller.ai_spec, "- ..for property", loopData.i);
                         var prop = model.property_data[loopData.i - loopData.prop];
                         if (prop.owner === controller.ai_active.pid) {
                             dataTp = 1;
@@ -1738,7 +1787,6 @@ controller.ai_machine = util.stateMachine({
                         }
                     }
                 } else {
-                    util.log(controller.ai_spec, "- ..for map");
                     dataTp = 2;
                 }
                 var cScore = -1;
@@ -1800,61 +1848,32 @@ controller.ai_machine.state = "IDLE";
 
 controller.update_inGameRound = false;
 
-if (DEBUG) controller.update_evaledChars_ = 0;
-
 controller.update_tickFrame = function(delta) {
     assert(controller.update_inGameRound);
-    model.timer_updateTimer(delta);
-    if (!controller.update_inGameRound) return;
-    if (controller.action_buffer_.isEmpty()) {
+    model.events.gameround_update(delta);
+    if (!controller.commandStack_hasData()) {
         if (controller.ai_active) controller.ai_machine.event("tick");
-        return;
-    }
-    var data = controller.action_buffer_.pop();
-    var actionId = controller.action_map[data[data.length - 1]];
-    assert(actionId);
-    if (DEBUG) {
-        var command = JSON.stringify(data);
-        controller.update_evaledChars_ += command.length;
-        util.log("evaluate action data", command, "\n * action key :", actionId, "\n * evaluated characters (acc.) :", controller.update_evaledChars_);
-    }
-    model[actionId].apply(model, data);
+    } else controller.commandStack_invokeNext();
 };
 
 controller.update_prepareGameRound = function() {
-    if (DEBUG) controller.update_evaledChars_ = 0;
-    controller.action_buffer_.clear();
+    controller.commandStack_resetData();
 };
 
 controller.update_startGameRound = function() {
     assert(!controller.update_inGameRound);
     controller.update_inGameRound = true;
     if (model.round_turnOwner === -1) {
-        model.bombs_placeMetaObjects();
-        model.timer_setupTimer();
-        controller.action_localInvoke("round_nextTurn", []);
-        if (controller.isHost()) model.weather_calculateNext();
-    } else model.round_startsTurn(model.round_turnOwner);
+        model.events.gameround_start();
+        controller.commandStack_localInvokement("nextTurn_invoked");
+        if (controller.isHost()) model.events.weather_calculateNext();
+    }
 };
 
 controller.update_endGameRound = function() {
     assert(controller.update_inGameRound);
     controller.update_inGameRound = false;
 };
-
-controller.action_registerCommands("actions_markUnitActable");
-
-controller.action_registerCommands("actions_markUnitNonActable");
-
-controller.action_registerCommands("actions_trapWait");
-
-controller.action_registerCommands("actions_setStatus");
-
-model.event_define("actions_markUnitNonActable");
-
-model.event_define("actions_markUnitActable");
-
-model.event_define("actions_trapWait");
 
 model.actions_leftActors = util.list(MAX_UNITS_PER_PLAYER, false);
 
@@ -1865,54 +1884,6 @@ model.actions_canAct = function(uid) {
         return false;
     } else return model.actions_leftActors[uid - startIndex] === true;
 };
-
-model.actions_setStatus = function(uid, canAct) {
-    if (DEBUG) util.log("set actable state of uid:", uid, " to ", canAct);
-    assert(model.unit_isValidUnitId(uid));
-    assert(util.isBoolean(canAct));
-    model.actions_leftActors[uid - model.round_turnOwner * MAX_UNITS_PER_PLAYER] = canAct;
-};
-
-model.actions_markUnitNonActable = function(uid) {
-    model.actions_setStatus(uid, false);
-    model.events.actions_markUnitNonActable(uid);
-};
-
-model.actions_markUnitActable = function(uid) {
-    model.actions_setStatus(uid, true);
-    model.events.actions_markUnitActable(uid);
-};
-
-model.actions_trapWait = function(uid) {
-    if (DEBUG) util.log("unit id:", uid, " got trapped");
-    model.actions_setStatus(uid, false);
-    model.events.actions_trapWait(uid);
-};
-
-model.actions_prepareActors = function(pid) {
-    if (DEBUG) util.log("prepare actable stats for player id:", pid);
-    assert(model.player_isValidPid(pid));
-    var i = model.unit_firstUnitId(pid);
-    var e = model.unit_lastUnitId(pid);
-    var io = i;
-    for (;i < e; i++) {
-        model.actions_leftActors[i - io] = model.unit_data[i].owner !== INACTIVE_ID;
-    }
-};
-
-controller.action_registerCommands("battle_invokeBattle");
-
-controller.action_registerCommands("battle_attackProperty");
-
-model.event_define("battle_invokeBattle");
-
-model.event_define("battle_mainAttack");
-
-model.event_define("battle_counterAttack");
-
-model.event_define("battle_propertyDestroyed");
-
-model.event_define("battle_attackProperty");
 
 controller.defineGameConfig("daysOfPeace", 0, 50, 0);
 
@@ -1934,10 +1905,6 @@ controller.defineGameScriptable("terrainDefense", 0, 12);
 
 controller.defineGameScriptable("terrainDefenseModifier", 10, 300);
 
-model.battle_isPeacePhaseActive = function() {
-    return model.round_day < controller.configValue("daysOfPeace");
-};
-
 model.battle_FIRETYPES = {
     DIRECT: 0,
     INDIRECT: 1,
@@ -1946,6 +1913,10 @@ model.battle_FIRETYPES = {
 };
 
 model.battle_WEAPON_KEYS = [ "main_wp", "sec_wp" ];
+
+model.battle_isPeacePhaseActive = function() {
+    return model.round_day < controller.configValue("daysOfPeace");
+};
 
 model.battle_calculateTargets = function(uid, x, y, data, markAttackableTiles) {
     var markInData = typeof data !== "undefined";
@@ -2092,130 +2063,6 @@ model.battle_getBattleDamageAgainst = function(attacker, defender, luck, withMai
     return damage;
 };
 
-model.battle_searchTile_ = function(rx, ry, ax, ay) {
-    var x = -1, y = -1;
-    if (model.map_isValidPosition(rx - 1, ry) && !model.unit_posData[rx - 1][ry]) {
-        x = rx - 1;
-        y = ry;
-    }
-    if (model.map_isValidPosition(rx, ry - 1) && !model.unit_posData[rx][ry - 1]) {
-        x = rx;
-        y = ry - 1;
-    }
-    if (model.map_isValidPosition(rx, ry + 1) && !model.unit_posData[rx][ry + 1]) {
-        x = rx;
-        y = ry + 1;
-    }
-    if (model.map_isValidPosition(rx + 1, ry) && !model.unit_posData[rx + 1][ry]) {
-        x = rx + 1;
-        y = ry;
-    }
-    if (model.map_isValidPosition(rx - 1, ry - 1) && !model.unit_posData[rx - 1][ry - 1]) {
-        x = rx - 1;
-        y = ry - 1;
-    }
-    if (model.map_isValidPosition(rx - 1, ry + 1) && !model.unit_posData[rx - 1][ry + 1]) {
-        x = rx - 1;
-        y = ry + 1;
-    }
-    if (model.map_isValidPosition(rx + 1, ry - 1) && !model.unit_posData[rx + 1][ry - 1]) {
-        x = rx + 1;
-        y = ry - 1;
-    }
-    if (model.map_isValidPosition(rx + 1, ry + 1) && !model.unit_posData[rx + 1][ry + 1]) {
-        x = rx + 1;
-        y = ry + 1;
-    }
-    if (x !== -1) {}
-};
-
-model.battle_invokeBattle = function(attId, defId, attLuckRatio, defLuckRatio) {
-    if (DEBUG) util.log("start battle between", attId, "luck(", attLuckRatio, ") and", defId, "luck(", defLuckRatio, ")");
-    assert(model.unit_isValidUnitId(attId));
-    assert(util.intRange(attLuckRatio, 0, 100));
-    assert(model.unit_isValidUnitId(defId));
-    assert(util.intRange(defLuckRatio, 0, 100));
-    var attacker = model.unit_data[attId];
-    var defender = model.unit_data[defId];
-    var indirectAttack = model.battle_isIndirectUnit(attId);
-    if (!indirectAttack && controller.scriptedValue(defender.owner, "firstCounter", 0) === 1) {
-        if (!model.battle_isIndirectUnit(defId)) {
-            var tmp_ = defender;
-            defender = attacker;
-            attacker = tmp_;
-        }
-    }
-    var aSheets = attacker.type;
-    var dSheets = defender.type;
-    var attOwner = attacker.owner;
-    var defOwner = defender.owner;
-    var powerAtt = model.unit_convertHealthToPoints(defender);
-    var powerCounterAtt = model.unit_convertHealthToPoints(attacker);
-    var damage;
-    var retreatVal = powerAtt;
-    model.events.battle_invokeBattle(attId, defId, damage);
-    var mainWpAttack = model.battle_canUseMainWeapon(attacker, defender);
-    damage = model.battle_getBattleDamageAgainst(attacker, defender, attLuckRatio, mainWpAttack, false);
-    if (damage !== -1) {
-        model.unit_inflictDamage(defId, damage);
-        model.events.battle_mainAttack(attId, defId, damage, mainWpAttack);
-        powerAtt -= model.unit_convertHealthToPoints(defender);
-        if (mainWpAttack) attacker.ammo--;
-        powerAtt = parseInt(powerAtt * .1 * dSheets.cost, 10);
-        model.co_modifyPowerLevel(attOwner, parseInt(.5 * powerAtt, 10));
-        model.co_modifyPowerLevel(defOwner, powerAtt);
-        retreatVal = model.unit_convertHealthToPoints(defender) / retreatVal * 100;
-        if (retreatVal < 20) {
-            retreatVal = model.battle_searchTile_(defender.x, defender.y, attacker.x, attacker.y);
-        } else retreatVal = false;
-    }
-    if (retreatVal && defender.hp > 0 && !model.battle_isIndirectUnit(defId)) {
-        mainWpAttack = model.battle_canUseMainWeapon(defender, attacker);
-        damage = model.battle_getBattleDamageAgainst(defender, attacker, defLuckRatio, mainWpAttack, true);
-        if (damage !== -1) {
-            model.unit_inflictDamage(attId, damage);
-            model.events.battle_counterAttack(defId, attId, damage, mainWpAttack);
-            powerCounterAtt -= model.unit_convertHealthToPoints(attacker);
-            if (mainWpAttack) defender.ammo--;
-            powerCounterAtt = parseInt(powerCounterAtt * .1 * aSheets.cost, 10);
-            model.co_modifyPowerLevel(defOwner, parseInt(.5 * powerCounterAtt, 10));
-            model.co_modifyPowerLevel(attOwner, powerCounterAtt);
-        }
-    }
-};
-
-controller.action_registerCommands("bombs_explosionAt");
-
-controller.action_registerCommands("bombs_fireSilo");
-
-controller.action_registerCommands("bonbs_siloRegeneratesIn");
-
-controller.action_registerCommands("bombs_fireCannon");
-
-controller.action_registerCommands("bombs_fireLaser");
-
-model.event_define("bombs_explosionAt");
-
-model.event_define("bombs_startFireSilo");
-
-model.event_define("bombs_siloRegeneratesIn");
-
-model.event_define("bombs_fireCannon");
-
-model.event_define("bombs_fireLaser");
-
-model.bombs_doDamage_ = function(x, y, damage) {
-    assert(model.map_isValidPosition(x, y));
-    assert(util.isInt(damage) && damage >= 0);
-    var unit = model.unit_posData[x][y];
-    if (unit) model.unit_inflictDamage(model.unit_extractId(unit), damage, 9);
-};
-
-model.bombs_explosionAt = function(tx, ty, range, damage, owner) {
-    model.map_doInRange(tx, ty, range, model.bombs_doDamage_, damage);
-    model.events.bombs_explosionAt(tx, ty, range, damage, owner);
-};
-
 model.bombs_tryToMarkCannonTargets = function(pid, selection, ox, oy, otx, oty, sx, sy, tx, ty, range) {
     assert(model.player_isValidPid(pid));
     var tid = model.player_data[pid].team;
@@ -2296,50 +2143,6 @@ model.bombs_isSilo = function(prid, uid) {
     return true;
 };
 
-model.bombs_placeMetaObjectsForCannon_ = function(x, y) {
-    var prop = model.property_posMap[x][y];
-    var cannon = prop.type.cannon;
-    var size = prop.type.bigProperty;
-    assert(x - size.x >= 0);
-    assert(y - size.y >= 0);
-    var ax = x - size.actor[0];
-    var ay = y - size.actor[1];
-    var ox = x;
-    var oy = y;
-    for (var xe = x - size.x; x > xe; x--) {
-        y = oy;
-        for (var ye = y - size.y; y > ye; y--) {
-            if (x !== ox || y !== oy) {
-                if (DEBUG) util.log("creating invisible property at", x, ",", y);
-                model.property_createProperty(prop.owner, x, y, "PROP_INV");
-            }
-            if (x === ax && y === ay) {
-                if (DEBUG) util.log("creating cannon unit at", x, ",", y);
-                model.unit_create(prop.owner, x, y, "CANNON_UNIT_INV");
-            }
-        }
-    }
-};
-
-model.bombs_placeMetaObjects = function() {
-    for (var x = 0, xe = model.map_width; x < xe; x++) {
-        for (var y = 0, ye = model.map_height; y < ye; y++) {
-            var prop = model.property_posMap[x][y];
-            if (prop) {
-                if (prop.type.bigProperty && prop.type.cannon) {
-                    model.bombs_placeMetaObjectsForCannon_(x, y);
-                } else if (prop.type.cannon) {
-                    if (DEBUG) util.log("creating cannon unit at", x, ",", y);
-                    model.unit_create(prop.owner, x, y, "CANNON_UNIT_INV");
-                } else if (prop.type.laser) {
-                    if (DEBUG) util.log("creating laser unit at", x, ",", y);
-                    model.unit_create(prop.owner, x, y, "LASER_UNIT_INV");
-                }
-            }
-        }
-    }
-};
-
 model.bombs_grabPropTypeFromPos = function(x, y) {
     while (true) {
         if (y + 1 < model.map_height && model.property_posMap[x][y + 1] && model.property_posMap[x][y + 1].type.ID === "PROP_INV") {
@@ -2360,103 +2163,16 @@ model.bombs_grabPropTypeFromPos = function(x, y) {
     assert(false);
 };
 
-model.bombs_canBeFiredBy = model.bombs_isSilo;
-
-model.bombs_fireSilo = function(x, y, tx, ty, owner) {
-    assert(model.map_isValidPosition(x, y));
-    assert(model.map_isValidPosition(tx, ty));
-    assert(model.player_isValidPid(owner));
-    var silo = model.property_posMap[x][y];
-    var siloId = model.property_extractId(silo);
-    var type = silo.type;
-    var range = type.rocketsilo.range;
-    var damage = model.unit_convertPointsToHealth(type.rocketsilo.damage);
-    model.property_changeType(siloId, model.data_tileSheets[type.changeTo]);
-    model.events.bombs_startFireSilo(x, y, siloId, tx, ty, range, damage, owner);
-    model.bombs_explosionAt(tx, ty, range, damage, owner);
-    model.dayEvents_push(model.round_daysToTurns(5), controller.action_convertToInvokeDataArray("property_changeType", [ siloId, type ]));
-    model.events.bombs_siloRegeneratesIn(siloId, 5, type);
-};
-
-model.bombs_fireCannon = function(ox, oy, x, y) {
-    assert(model.map_isValidPosition(x, y));
-    assert(model.map_isValidPosition(ox, oy));
-    var prop = model.property_posMap[x][y];
-    var target = model.unit_posData[x][y];
-    var type = model.bombs_grabPropTypeFromPos(ox, oy);
-    var target = model.unit_posData[x][y];
-    model.unit_inflictDamage(model.unit_extractId(target), model.unit_convertPointsToHealth(type.cannon.damage), 9);
-    model.events.bombs_fireCannon(ox, oy, x, y, type.ID);
-};
-
-model.bombs_fireLaser = function(x, y) {
-    var prop = model.property_posMap[x][y];
-    assert(prop);
-    var ox = x;
-    var oy = y;
-    var pid = prop.owner;
-    model.events.bombs_fireLaser(ox, oy, prop.type.ID);
-    for (var x = 0, xe = model.map_width; x < xe; x++) {
-        for (var y = 0, ye = model.map_height; y < ye; y++) {
-            if (ox === x || oy === y) {
-                var unit = model.unit_posData[x][y];
-                if (unit && unit.owner !== pid) {
-                    model.unit_inflictDamage(model.unit_extractId(unit), model.unit_convertPointsToHealth(prop.type.laser.damage), 9);
-                }
-            }
-        }
-    }
-};
-
 model.cfg_configuration = {};
 
 model.client_instances = util.list(MAX_PLAYER, false);
 
 model.client_lastPid = INACTIVE_ID;
 
-model.client_deregisterPlayers = function() {
-    for (var i = 0, e = MAX_PLAYER; i < e; i++) {
-        model.client_instances[i] = false;
-    }
-};
-
-model.client_registerPlayer = function(pid) {
-    assert(model.player_isValidPid(pid));
-    model.client_instances[pid] = true;
-    if (model.client_lastPid === -1) model.client_lastPid = pid;
-    return true;
-};
-
-model.client_deregisterPlayer = function(pid) {
-    assert(model.player_isValidPid(pid));
-    model.client_instances[pid] = false;
-    return true;
-};
-
 model.client_isLocalPid = function(pid) {
     assert(model.player_isValidPid(pid));
     return model.client_instances[pid] === true;
 };
-
-controller.action_registerCommands("co_deactivateCOP");
-
-controller.action_registerCommands("co_activateCOP");
-
-controller.action_registerCommands("co_activateSCOP");
-
-controller.action_registerCommands("co_modifyPowerLevel");
-
-controller.action_registerCommands("co_detachCommander");
-
-controller.action_registerCommands("co_attachCommander");
-
-model.event_define("co_modifyPowerLevel");
-
-model.event_define("co_activateSCOP");
-
-model.event_define("co_activateCOP");
-
-model.event_define("co_deactivateCOP");
 
 controller.defineGameConfig("co_getStarCost", 5, 5e4, 9e3, 5);
 
@@ -2516,36 +2232,6 @@ model.co_isInCommanderFocus = function(uid, pid) {
     return true;
 };
 
-model.co_activatePower_ = function(pid, level, evName) {
-    if (DEBUG) util.log("activate power level", level, "for player", pid);
-    assert(model.player_isValidPid(pid));
-    var data = model.co_data[pid];
-    data.power = 0;
-    data.level = level;
-    data.timesUsed++;
-    model.events[evName](pid);
-};
-
-model.co_deactivateCOP = function(pid) {
-    model.co_activatePower_(pid, model.co_POWER_LEVEL.INACTIVE, "co_deactivateCOP");
-};
-
-model.co_activateCOP = function(pid) {
-    model.co_activatePower_(pid, model.co_POWER_LEVEL.COP, "co_activateCOP");
-};
-
-model.co_activateSCOP = function(pid) {
-    model.co_activatePower_(pid, model.co_POWER_LEVEL.SCOP, "co_activateSCOP");
-};
-
-model.co_modifyPowerLevel = function(pid, value) {
-    assert(model.player_isValidPid(pid));
-    var data = model.co_data[pid];
-    data.power += value;
-    if (data.power < 0) data.power = 0;
-    model.events.co_modifyPowerLevel(pid, value);
-};
-
 model.co_canActivatePower = function(pid, powerType) {
     assert(model.player_isValidPid(pid));
     assert(util.intRange(powerType, model.co_POWER_LEVEL.INACTIVE, model.co_POWER_LEVEL.TSCOP));
@@ -2574,41 +2260,6 @@ model.co_getStarCost = function(pid) {
     cost += used * controller.configValue("co_getStarCostIncrease");
     return cost;
 };
-
-model.co_setMainCo = function(pid, type) {
-    assert(model.player_isValidPid(pid));
-    if (type === null) model.co_data[pid].coA = null; else {
-        assert(model.data_coSheets.hasOwnProperty(type));
-        model.co_data[pid].coA = model.data_coSheets[type];
-    }
-};
-
-model.co_setSideCo = function(pid, type) {
-    assert(model.player_isValidPid(pid));
-    assert(model.data_coSheets.hasOwnProperty(type));
-    if (type === null) model.co_data[pid].coB = null; else {
-        assert(model.data_coSheets.hasOwnProperty(type));
-        model.co_data[pid].coB = model.data_coSheets[type];
-    }
-};
-
-model.co_detachCommander = function(pid, uid) {
-    assert(model.player_isValidPid(pid));
-    assert(model.unit_isValidUnitId(uid));
-    assert(model.unit_data[uid].owner !== INACTIVE_ID);
-    assert(model.co_data[pid].detachedTo !== uid);
-    model.co_data[pid].detachedTo = INACTIVE_ID;
-};
-
-model.co_attachCommander = function(pid, uid) {
-    assert(model.player_isValidPid(pid));
-    assert(model.unit_isValidUnitId(uid));
-    assert(model.unit_data[uid].owner !== INACTIVE_ID);
-    assert(model.co_data[pid].detachedTo === INACTIVE_ID);
-    model.co_data[pid].detachedTo = uid;
-};
-
-controller.action_registerCommands("coPower_heal");
 
 model.coPower_invokePower = function(pid, powerType) {
     assert(model.player_isValidPid(pid));
@@ -2796,68 +2447,16 @@ model.data_localized = function(key) {
     return result === undefined ? key : result;
 };
 
-model.dayEvents_data = util.list(50, function() {
-    return [ null, null, null ];
-});
+model.dayTick_dataTime = util.list(50, INACTIVE_ID);
 
-model.dayEvents_push = function(turn, action, args) {
-    var list = model.dayEvents_data;
-    for (var i = 0, e = list.length; i < e; i++) {
-        if (list[i][0] === null) {
-            list[i][0] = turn;
-            list[i][1] = action;
-            list[i][2] = args;
-            return;
-        }
-    }
-    assert(false, "day event buffer overflow");
-};
+model.dayTick_dataEvent = util.list(50, null);
 
-model.dayEvents_tick = function() {
-    var list = model.dayEvents_data;
-    for (var i = 0, e = list.length; i < e; i++) {
-        if (list[i][0] === null) continue;
-        list[i][0]--;
-        if (list[i][0] === 0) {
-            var key = list[i][1];
-            var args = list[i][2];
-            list[i][0] = null;
-            list[i][1] = null;
-            list[i][2] = null;
-            controller.action_localInvoke(key, args);
-        }
-    }
-};
-
-controller.action_registerCommands("factory_produceUnit");
-
-model.event_define("factory_produceUnit");
-
-model.factory_produceUnit = function(x, y, type) {
-    if (DEBUG) util.log("factory at postion (", x, ",", y, ") produces a", type);
-    assert(model.map_isValidPosition(x, y));
-    assert(model.data_unitSheets.hasOwnProperty(type));
-    var prop = model.property_posMap[x][y];
-    assert(prop !== null);
-    model.events.factory_produceUnit(x, y, type);
-    var uid = model.unit_create(model.round_turnOwner, x, y, type);
-    var cost = model.data_unitSheets[type].cost;
-    var pl = model.player_data[prop.owner];
-    pl.gold -= cost;
-    assert(pl.gold >= 0);
-    model.manpower_decreaseManpower(model.round_turnOwner);
-    model.actions_markUnitNonActable(uid);
-};
+model.dayTick_dataArgs = util.list(100, INACTIVE_ID);
 
 model.factory_wish = util.wish();
 
-model.factory_canProduceSomething = function(_prid) {
-    if (!model.factory_isFactory(prid)) return false;
-    var pid = model.property_data[prid].owner;
-    if (pid === INACTIVE_ID) return false;
-    model.factory_wish.approve();
-    model.events[EV_FACTORY_TYPE_CHECK](model.factory_wish, prid, pid);
-    return !model.factory_wish.declined;
+model.factory_canProduceSomething = function(prid, pid) {
+    model.events.buildUnit_check(prid, pid);
 };
 
 model.factory_isFactory = function(prid) {
@@ -2881,14 +2480,6 @@ model.factoryGenerateBuildMenu = function(prid, menu, markDisabled) {
     }
 };
 
-controller.action_registerCommands("fog_recalculateFogMap");
-
-controller.action_registerCommands("fog_modifyVisionAt");
-
-model.event_define("fog_modifyVisionAt");
-
-model.event_define("fog_recalculateFogMap");
-
 controller.defineGameScriptable("vision", 1, 40);
 
 controller.defineGameConfig("fogEnabled", 0, 1, 1);
@@ -2905,101 +2496,7 @@ model.fog_remoteConnectOfPlayer = function(pid) {
     assert(model.player_isValidPid(pid));
 };
 
-model.fog_updateVisiblePid = function() {
-    var tid = model.player_data[model.client_lastPid].team;
-    var totid = model.player_data[model.round_turnOwner].team;
-    for (var i = 0, e = MAX_PLAYER; i < e; i++) {
-        model.fog_visibleClientPids[i] = model.client_instances[i] === true || model.player_data[i].team === tid;
-        model.fog_visibleTurnOwnerPids[i] = i === model.round_turnOwner || totid === model.player_data[i].team;
-    }
-};
-
-model.fog_modifyVisionAt = function(x, y, pid, range, value) {
-    if (pid === INACTIVE_ID) return;
-    if (!controller.configValue("fogEnabled")) return;
-    assert(model.map_isValidPosition(x, y));
-    assert(util.isInt(range) && range >= 0);
-    controller.prepareTags(x, y);
-    if (range > 0) range = controller.scriptedValue(pid, "vision", range);
-    var clientVisible = model.fog_visibleClientPids[pid];
-    var turnOwnerVisible = model.fog_visibleTurnOwnerPids[pid];
-    if (!clientVisible && !turnOwnerVisible) return;
-    if (range === 0) {
-        if (clientVisible) model.fog_clientData[x][y] += value;
-        if (turnOwnerVisible) model.fog_turnOwnerData[x][y] += value;
-    } else {
-        var mH = model.map_height;
-        var mW = model.map_width;
-        var lX;
-        var hX;
-        var lY = y - range;
-        var hY = y + range;
-        if (lY < 0) lY = 0;
-        if (hY >= mH) hY = mH - 1;
-        for (;lY <= hY; lY++) {
-            var disY = Math.abs(lY - y);
-            lX = x - range + disY;
-            hX = x + range - disY;
-            if (lX < 0) lX = 0;
-            if (hX >= mW) hX = mW - 1;
-            for (;lX <= hX; lX++) {
-                if (clientVisible) model.fog_clientData[lX][lY] += value;
-                if (turnOwnerVisible) model.fog_turnOwnerData[lX][lY] += value;
-            }
-        }
-    }
-    model.events.fog_modifyVisionAt(x, y, pid, range, value);
-};
-
-model.fog_recalculateFogMap = function() {
-    var x;
-    var y;
-    var xe = model.map_width;
-    var ye = model.map_height;
-    var fogEnabled = controller.configValue("fogEnabled") === 1;
-    for (x = 0; x < xe; x++) {
-        for (y = 0; y < ye; y++) {
-            if (!fogEnabled) {
-                model.fog_clientData[x][y] = 1;
-                model.fog_turnOwnerData[x][y] = 1;
-            } else {
-                model.fog_clientData[x][y] = 0;
-                model.fog_turnOwnerData[x][y] = 0;
-            }
-        }
-    }
-    if (fogEnabled) {
-        for (x = 0; x < xe; x++) {
-            for (y = 0; y < ye; y++) {
-                var unit = model.unit_posData[x][y];
-                if (unit !== null) {
-                    var vision = unit.type.vision;
-                    if (vision < 0) vision = 0;
-                    model.fog_modifyVisionAt(x, y, unit.owner, vision, 1);
-                }
-                var property = model.property_posMap[x][y];
-                if (property !== null) {
-                    var vision = property.type.vision;
-                    if (vision < 0) vision = 0;
-                    model.fog_modifyVisionAt(x, y, property.owner, vision, 1);
-                }
-            }
-        }
-    }
-    model.events.fog_recalculateFogMap();
-};
-
 model.manpower_data = util.list(MAX_PLAYER, 999999);
-
-model.event_on("buildUnit_check", function(wish, factoryId, playerId, type) {
-    if (model.manpower_data[playerId] <= 0) wish.decline();
-});
-
-model.event_on("buildUnit_invoked", function(factoryId, playerId, type) {
-    model.manpower_data[pid]--;
-});
-
-controller.action_registerCommands("map_doInRange");
 
 model.map_data = util.matrix(MAX_MAP_WIDTH, MAX_MAP_HEIGHT, null);
 
@@ -3039,20 +2536,6 @@ model.map_doInRange = function(x, y, range, cb, arg) {
     }
 };
 
-model.map_doInSelection = function(selection, cb, arg) {};
-
-controller.action_registerCommands("move_setUnitPosition");
-
-controller.action_registerCommands("move_clearUnitPosition");
-
-controller.action_registerCommands("move_moveUnitByPath");
-
-model.event_define("move_setUnitPosition");
-
-model.event_define("move_clearUnitPosition");
-
-model.event_define("move_moveUnitByPath");
-
 controller.defineGameScriptable("moverange", 1, MAX_SELECTION_RANGE);
 
 controller.defineGameScriptable("movecost", 1, MAX_SELECTION_RANGE);
@@ -3064,98 +2547,7 @@ model.move_MOVE_CODES = {
     LEFT: 3
 };
 
-model.move_moveUnitByPath = function(way, uid, x, y, noFuelConsumption) {
-    assert(model.map_isValidPosition(x, y));
-    assert(model.unit_isValidUnitId(uid));
-    assert(!util.isUndefined(noFuelConsumption) && util.isBoolean(noFuelConsumption));
-    var cX = x;
-    var cY = y;
-    var unit = model.unit_data[uid];
-    var uType = unit.type;
-    var mType = model.data_movetypeSheets[uType.movetype];
-    var wayIsIllegal = false;
-    var lastIndex = way.length - 1;
-    var fuelUsed = 0;
-    model.events.move_moveUnitByPath(way, uid, x, y);
-    for (var i = 0, e = way.length; i < e; i++) {
-        switch (way[i]) {
-          case model.move_MOVE_CODES.UP:
-            if (cY === 0) wayIsIllegal = true;
-            cY--;
-            break;
-
-          case model.move_MOVE_CODES.RIGHT:
-            if (cX === model.map_width - 1) wayIsIllegal = true;
-            cX++;
-            break;
-
-          case model.move_MOVE_CODES.DOWN:
-            if (cY === model.map_height - 1) wayIsIllegal = true;
-            cY++;
-            break;
-
-          case model.move_MOVE_CODES.LEFT:
-            if (cX === 0) wayIsIllegal = true;
-            cX--;
-            break;
-        }
-        assert(!wayIsIllegal);
-        if (false) {
-            lastIndex = i - 1;
-            switch (way[i]) {
-              case model.move_MOVE_CODES.UP:
-                cY++;
-                break;
-
-              case model.move_MOVE_CODES.RIGHT:
-                cX--;
-                break;
-
-              case model.move_MOVE_CODES.DOWN:
-                cY--;
-                break;
-
-              case model.move_MOVE_CODES.LEFT:
-                cX++;
-                break;
-            }
-            assert(lastIndex !== -1);
-            break;
-        }
-        if (noFuelConsumption) fuelUsed += model.move_getMoveCosts(mType, cX, cY);
-    }
-    unit.fuel -= fuelUsed;
-    assert(unit.fuel >= 0);
-    if (unit.x >= 0 && unit.y >= 0) {
-        var prop = model.property_posMap[unit.x][unit.y];
-        if (prop) model.property_resetCapturePoints(model.property_extractId(prop));
-        model.move_clearUnitPosition(uid);
-    }
-    if (model.unit_posData[cX][cY] === null) model.move_setUnitPosition(uid, cX, cY);
-};
-
-model.move_clearUnitPosition = function(uid) {
-    assert(model.unit_isValidUnitId(uid));
-    var unit = model.unit_data[uid];
-    var x = unit.x;
-    var y = unit.y;
-    model.fog_modifyVisionAt(x, y, unit.owner, unit.type.vision, -1);
-    model.unit_posData[x][y] = null;
-    unit.x = -unit.x;
-    unit.y = -unit.y;
-    model.events.move_clearUnitPosition(uid);
-};
-
-model.move_setUnitPosition = function(uid, x, y) {
-    assert(model.unit_isValidUnitId(uid));
-    assert(model.map_isValidPosition(x, y));
-    var unit = model.unit_data[uid];
-    unit.x = x;
-    unit.y = y;
-    model.unit_posData[x][y] = unit;
-    model.fog_modifyVisionAt(x, y, unit.owner, unit.type.vision, 1);
-    model.events.move_setUnitPosition(uid, x, y);
-};
+model.move_pathCache = util.list(MAX_SELECTION_RANGE, INACTIVE_ID);
 
 model.move_getMoveCosts = function(movetype, x, y) {
     assert(model.map_isValidPosition(x, y));
@@ -3389,27 +2781,6 @@ model.move_fillMoveMap = function(source, selection, x, y, unit) {
     }
 };
 
-controller.action_registerCommands("multistep_nextStep_");
-
-model.event_define("multistep_nextStep_");
-
-model.multistep_nextStep_ = function() {
-    controller.stateMachine.event("nextStep");
-    model.events.multistep_nextStep_();
-};
-
-controller.action_registerCommands("player_noTeamsAreLeft");
-
-controller.action_registerCommands("player_playerGivesUp");
-
-controller.action_registerCommands("player_deactivatePlayer");
-
-model.event_define("player_playerGivesUp");
-
-model.event_define("player_deactivatePlayer");
-
-model.event_define("player_noTeamsAreLeft");
-
 model.player_RELATION_MODES = {
     SAME_OBJECT: -1,
     NONE: 0,
@@ -3438,31 +2809,6 @@ model.player_extractId = function(player) {
     var index = model.player_data.indexOf(player);
     assert(index > -1);
     return index;
-};
-
-model.player_deactivatePlayer = function(pid) {
-    assert(model.property_isValidPropId(pid));
-    var i, e;
-    model.events.player_deactivatePlayer(pid);
-    i = model.unit_firstUnitId(pid);
-    e = model.unit_lastUnitId(pid);
-    for (;i < e; i++) {
-        if (model.unit_data[i].owner !== INACTIVE_ID) model.unit_destroy(i);
-    }
-    i = 0;
-    e = model.property_data.length;
-    for (;i < e; i++) {
-        var prop = model.property_data[i];
-        if (prop.owner === pid) {
-            prop.owner = -1;
-            var changeType = prop.type.changeAfterCaptured;
-            if (changeType) model.property_changeType(i, changeType);
-        }
-    }
-    model.player_data[pid].team = -1;
-    if (!model.player_areEnemyTeamsLeft()) {
-        controller.action_localInvoke("player_noTeamsAreLeft");
-    }
 };
 
 model.player_areEnemyTeamsLeft = function() {
@@ -3514,30 +2860,6 @@ model.player_getRelationshipUnitNeighbours = function(pid, x, y, mode) {
     return false;
 };
 
-model.player_playerGivesUp = function() {
-    assert(model.client_isLocalPid(model.round_turnOwner));
-    model.player_deactivatePlayer(model.round_turnOwner);
-    model.round_nextTurn();
-    model.events.player_playerGivesUp(model.round_turnOwner);
-};
-
-model.player_noTeamsAreLeft = function() {
-    controller.update_endGameRound();
-    model.events.player_noTeamsAreLeft();
-};
-
-controller.action_registerCommands("property_changeType");
-
-controller.action_registerCommands("property_resetCapturePoints");
-
-controller.action_registerCommands("property_capture");
-
-model.event_define("property_changeType");
-
-model.event_define("property_resetCapturePoints");
-
-model.event_define("property_capture");
-
 controller.defineGameScriptable("captureRate", 50, 9999);
 
 controller.defineGameScriptable("funds", 1, 99999);
@@ -3583,22 +2905,6 @@ model.property_extractId = function(property) {
     return index;
 };
 
-model.property_createProperty = function(pid, x, y, type) {
-    var props = model.property_data;
-    for (var i = 0, e = props.length; i < e; i++) {
-        if (props[i].owner === INACTIVE_ID && !props[i].type) {
-            props[i].owner = pid;
-            props[i].type = model.data_tileSheets[type];
-            props[i].capturePoints = 1;
-            props[i].x = x;
-            props[i].y = y;
-            model.property_posMap[x][y] = props[i];
-            return;
-        }
-    }
-    assert(false);
-};
-
 model.property_countProperties = function(pid) {
     assert(model.player_isValidPid(pid));
     var n = 0;
@@ -3609,63 +2915,11 @@ model.property_countProperties = function(pid) {
     return n;
 };
 
-model.property_capture = function(cid, prid) {
-    if (DEBUG) util.log("unit", cid, "capturing property", cid);
-    assert(model.property_isValidPropId(prid));
-    assert(model.unit_isValidUnitId(cid));
-    var selectedUnit = model.unit_data[cid];
-    var property = model.property_data[prid];
-    var points = parseInt(selectedUnit.hp / 10, 10) + 1;
-    points = parseInt(points * controller.scriptedValue(selectedUnit.owner, "captureRate", 100) / 100, 10);
-    property.capturePoints -= points;
-    if (property.capturePoints <= 0) {
-        var x = property.x;
-        var y = property.y;
-        if (DEBUG) util.log("property", prid, "captured");
-        model.fog_modifyVisionAt(x, y, property.type.vision, 1);
-        if (property.type.looseAfterCaptured === true) {
-            var pid = property.owner;
-            model.player_deactivatePlayer(pid);
-        }
-        var changeType = property.type.changeAfterCaptured;
-        if (typeof changeType !== "undefined") {
-            model.property_changeType(prid, changeType);
-        }
-        property.capturePoints = 20;
-        property.owner = selectedUnit.owner;
-        var capLimit = controller.configValue("captureLimit");
-        if (capLimit !== 0 && model.countProperties() >= capLimit) {
-            controller.update_endGameRound();
-        }
-    }
-    model.events.property_capture(cid, prid);
-};
-
-model.property_resetCapturePoints = function(prid) {
-    assert(model.property_isValidPropId(prid));
-    model.property_data[prid].capturePoints = 20;
-    model.events.property_resetCapturePoints(prid);
-};
-
 model.property_isCapturableBy = function(prid, captId) {
     assert(model.property_isValidPropId(prid));
     assert(model.unit_isValidUnitId(captId));
     return model.property_data[prid].type.capturePoints > 0 && model.unit_data[captId].type.captures > 0;
 };
-
-model.property_changeType = function(prid, type) {
-    assert(model.property_isValidPropId(prid));
-    if (typeof type === "string") {
-        assert(model.data_propertyTypes.indexOf(type) !== -1);
-        model.data_tileSheets[type];
-    } else assert(model.data_propertyTypes.indexOf(type.ID) !== -1);
-    model.property_data[prid].type = type;
-    model.events.property_changeType(prid, type);
-};
-
-controller.action_registerCommands("round_nextTurn");
-
-model.event_define("round_nextTurn");
 
 controller.defineGameConfig("round_dayLimit", 0, 999, 0);
 
@@ -3681,155 +2935,13 @@ model.round_daysToTurns = function(v) {
     return model.player_data.length * v;
 };
 
-model.round_nextTurn = function() {
-    var pid = model.round_turnOwner;
-    var oid = pid;
-    var i, e;
-    pid++;
-    while (pid !== oid) {
-        if (pid === MAX_PLAYER) {
-            pid = 0;
-            model.round_day++;
-            model.dayEvents_tick();
-            var round_dayLimit = controller.configValue("round_dayLimit");
-            if (round_dayLimit > 0 && model.round_day === round_dayLimit) {
-                controller.update_endGameRound();
-            }
-        }
-        if (model.player_data[pid].team !== INACTIVE_ID) break;
-        pid++;
-    }
-    assert(pid !== oid);
-    for (i = 0, e = model.property_data.length; i < e; i++) {
-        if (model.property_data[i].owner !== pid) continue;
-        model.supply_giveFunds(i);
-        model.supply_propertyRepairs(i);
-        model.supply_propertySupply(i);
-    }
-    var turnStartSupply = controller.configValue("autoSupplyAtTurnStart") === 1;
-    i = model.unit_firstUnitId(pid);
-    e = model.unit_lastUnitId(pid);
-    for (;i < e; i++) {
-        if (model.unit_data[i].owner === INACTIVE_ID) continue;
-        model.unit_drainFuel(i);
-        if (model.unit_data[i].owner === INACTIVE_ID) continue;
-        if (turnStartSupply) model.supply_tryUnitSuppliesNeighbours(i);
-    }
-    model.round_startsTurn(pid);
-};
-
-model.round_startsTurn = function(pid) {
-    model.actions_prepareActors(pid);
-    model.timer_resetTurnTimer();
-    model.round_turnOwner = pid;
-    if (model.client_isLocalPid(pid)) model.client_lastPid = pid;
-    model.fog_updateVisiblePid();
-    model.fog_recalculateFogMap();
-    model.events.round_nextTurn();
-    if (controller.isHost() && !controller.ai_isHuman(pid)) {
-        controller.ai_machine.event("tick");
-    }
-};
-
 model.rule_global = [];
 
 model.rule_map = util.list(20, null);
 
-model.rule_isValid = function(rule, isMapRule) {
-    return true;
-};
-
-model.rule_push = function(rule, isMapRule) {
-    assert(model.rule_isValid(rule, isMapRule));
-    if (isMapRule) model.rule_map.push(rule); else model.rule_global.push(rule);
-};
-
-controller.action_registerCommands("supply_suppliesNeighbours");
-
-controller.action_registerCommands("supply_tryUnitSuppliesNeighbours");
-
-controller.action_registerCommands("supply_refillResources");
-
-controller.action_registerCommands("supply_propertyRepairs");
-
-controller.action_registerCommands("supply_propertySupply");
-
-controller.action_registerCommands("supply_giveFunds");
-
-model.event_define("supply_suppliesNeighbours");
-
-model.event_define("supply_refillResources");
-
-model.event_define("supply_propertyRepairs");
-
-model.event_define("supply_propertySupply");
-
-model.event_define("supply_giveFunds");
-
 controller.defineGameScriptable("propertyHeal", 1, 10);
 
 controller.defineGameConfig("autoSupplyAtTurnStart", 0, 1, 1);
-
-model.supply_giveFunds = function(prid) {
-    assert(model.property_isValidPropId(prid));
-    var prop = model.property_data[prid];
-    assert(prop.owner !== INACTIVE_ID);
-    var x = prop.x;
-    var y = prop.y;
-    controller.prepareTags(x, y);
-    if (typeof prop.type.funds !== "number") return;
-    var funds = controller.scriptedValue(prop.owner, "funds", prop.type.funds);
-    if (typeof funds === "number") {
-        model.player_data[prop.owner].gold += funds;
-        model.events.supply_giveFunds(prid, x, y);
-    }
-};
-
-model.supply_propertySupply = function(i) {
-    assert(model.property_isValidPropId(i));
-    var prop = model.property_data[i];
-    assert(prop.owner !== INACTIVE_ID);
-    if (prop.owner === pid && prop.type.supply) {
-        var x = prop.x;
-        var y = prop.y;
-        var pid = prop.owner;
-        var check = model.unit_thereIsAUnit;
-        var mode = model.MODE_OWN;
-        if (controller.configValue("supplyAlliedUnits") === 1) mode = model.MODE_TEAM;
-        if (check(x, y, pid, mode)) {
-            var unitTp = model.unit_posData[x][y].type;
-            if (prop.type.supply.indexOf(unitTp.ID) !== -1 || prop.type.supply.indexOf(unitTp.movetype) !== -1) {
-                model.supply_refillResources(model.unit_posData[x][y]);
-                model.events.supply_propertySupply(i, x, y);
-            }
-        }
-    }
-};
-
-model.supply_propertyRepairs = function(i) {
-    assert(model.property_isValidPropId(i));
-    var prop = model.property_data[i];
-    assert(prop.owner !== INACTIVE_ID);
-    if (prop.type.repairs) {
-        var x = prop.x;
-        var y = prop.y;
-        var pid = prop.owner;
-        var check = model.unit_thereIsAUnit;
-        var mode = model.MODE_OWN;
-        if (controller.configValue("repairAlliedUnits") === 1) mode = model.MODE_TEAM;
-        if (check(x, y, pid, mode)) {
-            var unitTp = model.unit_posData[x][y].type;
-            var value;
-            value = prop.type.repairs.get(unitTp.ID);
-            if (!value) value = prop.type.repairs.get(unitTp.movetype);
-            value = controller.scriptedValue(pid, "propertyHeal", value);
-            if (value > 0) {
-                model.unit_heal(model.unit_extractId(model.unit_posData[x][y]), model.unit_convertPointsToHealth(value), true);
-                model.events.supply_propertyRepairs(i, x, y);
-            }
-        }
-    }
-};
 
 model.supply_isSupplyUnit = function(uid) {
     assert(model.unit_isValidUnitId(uid));
@@ -3844,161 +2956,7 @@ model.supply_hasSupplyTargetsNearby = function(uid, x, y) {
     return false;
 };
 
-model.supply_tryUnitSuppliesNeighbours = function(sid) {
-    if (model.supply_isSupplyUnit(sid)) model.supply_suppliesNeighbours(sid);
-};
-
-model.supply_suppliesNeighbours = function(sid) {
-    assert(model.unit_isValidUnitId(sid));
-    var selectedUnit = model.unit_data[sid];
-    assert(typeof selectedUnit.type.supply !== "undefined");
-    var x = selectedUnit.x;
-    var y = selectedUnit.y;
-    var pid = selectedUnit.owner;
-    var i = model.unit_firstUnitId(pid);
-    var e = model.unit_lastUnitId(pid);
-    var unitsSupplied = false;
-    for (;i < e; i++) {
-        if (!model.unit_isValidUnitId(i)) continue;
-        if (model.unit_getDistance(sid, i) === 1) {
-            if (!unitsSupplied) {
-                model.events.supply_suppliesNeighbours(sid, x, y, i);
-            }
-            unitsSupplied = true;
-            model.supply_refillResources(i);
-        }
-    }
-};
-
-model.supply_refillResources = function(uid) {
-    assert(model.unit_isValidUnitId(uid));
-    var unit = model.unit_data[uid];
-    var type = unit.type;
-    unit.ammo = type.ammo;
-    unit.fuel = type.fuel;
-    model.events.supply_refillResources(uid);
-};
-
-controller.action_registerCommands("team_transferMoney");
-
-controller.action_registerCommands("team_transferUnit");
-
-controller.action_registerCommands("team_transferProperty");
-
-model.event_define("team_transferMoney");
-
-model.event_define("team_transferUnit");
-
-model.event_define("team_transferProperty");
-
 model.team_MONEY_TRANSFER_STEPS = [ 1e3, 2500, 5e3, 1e4, 25e3, 5e4 ];
-
-model.team_canTransferMoneyToTile = function(pid, x, y) {
-    assert(model.map_isValidPosition(x, y));
-    assert(model.player_isValidPid(pid));
-    var ref;
-    if (model.player_data[pid].gold < model.team_MONEY_TRANSFER_STEPS[0]) return false;
-    ref = model.unit_posData[x][y];
-    if (ref === null || ref.owner === pid) {
-        ref = model.property_posMap[x][y];
-        if (ref !== null && ref.owner !== pid && ref.owner !== -1) {
-            return true;
-        }
-        return false;
-    }
-    return true;
-};
-
-model.team_addGoldTransferEntries = function(pid, menu) {
-    assert(model.player_isValidPid(pid));
-    var availGold = model.player_data[pid].gold;
-    for (var i = 0, e = model.team_MONEY_TRANSFER_STEPS.length; i < e; i++) {
-        if (availGold >= model.team_MONEY_TRANSFER_STEPS[i]) {
-            menu.addEntry(model.team_MONEY_TRANSFER_STEPS[i]);
-        }
-    }
-};
-
-model.team_transferMoney = function(spid, tpid, money) {
-    assert(model.player_isValidPid(spid));
-    assert(model.player_isValidPid(tpid));
-    assert(util.inRange(money, model.team_MONEY_TRANSFER_STEPS[0], model.team_MONEY_TRANSFER_STEPS[model.team_MONEY_TRANSFER_STEPS.length - 1]));
-    var sPlayer = model.player_data[spid];
-    var tPlayer = model.player_data[tpid];
-    util.expect(util.expect.isTrue, money <= sPlayer);
-    sPlayer.gold -= money;
-    tPlayer.gold += money;
-    model.events.team_transferMoney(spid, tpid, money);
-};
-
-model.team_transferMoneyByTile = function(spid, x, y, money) {
-    assert(model.player_isValidPid(spid));
-    assert(model.map_isValidPosition(x, y));
-    assert(util.inRange(money, model.team_MONEY_TRANSFER_STEPS[0], model.team_MONEY_TRANSFER_STEPS[model.team_MONEY_TRANSFER_STEPS.length - 1]));
-    var owner = model.property_posMap[x][y] !== null ? model.property_posMap[x][y].owner : model.unit_posData[x][y].owner;
-    model.team_transferMoney(spid, owner, money);
-};
-
-model.team_transferUnit = function(suid, tplid) {
-    assert(model.unit_isValidUnitId(suid));
-    assert(model.player_isValidPid(tplid));
-    var selectedUnit = model.unit_data[suid];
-    var tx = selectedUnit.x;
-    var ty = selectedUnit.y;
-    var opid = selectedUnit.owner;
-    selectedUnit.owner = INACTIVE_ID;
-    if (model.player_data[tplid].team !== model.player_data[opid].team) {
-        model.fog_modifyVisionAt(tx, ty, selectedUnit.type.vision, -1);
-    }
-    model.move_clearUnitPosition(suid);
-    model.unit_create(tplid, tx, ty, selectedUnit.type.ID);
-    var targetUnit = model.unit_posData[tx][ty];
-    targetUnit.hp = selectedUnit.hp;
-    targetUnit.ammo = selectedUnit.ammo;
-    targetUnit.fuel = selectedUnit.fuel;
-    targetUnit.exp = selectedUnit.exp;
-    targetUnit.type = selectedUnit.type;
-    targetUnit.x = tx;
-    targetUnit.y = ty;
-    targetUnit.loadedIn = selectedUnit.loadedIn;
-    model.events.team_transferUnit(suid, tplid);
-};
-
-model.team_isUnitTransferable = function(uid) {
-    assert(model.unit_isValidUnitId(uid));
-    return model.transport_hasLoads(uid);
-};
-
-model.team_addTransferTargets = function(pid, menu) {
-    assert(model.player_isValidPid(pid));
-    for (var i = 0, e = MAX_PLAYER; i < e; i++) {
-        if (i !== pid && model.player_data[i].team !== INACTIVE_ID) {
-            menu.addEntry(i, true);
-        }
-    }
-};
-
-model.team_transferProperty = function(sprid, tplid) {
-    assert(model.property_isValidPropId(sprid));
-    assert(model.player_isValidPid(tplid));
-    var prop = model.property_data[sprid];
-    prop.owner = tplid;
-    var x;
-    var y;
-    var xe = model.map_width;
-    var ye = model.map_height;
-    for (x = 0; x < xe; x++) {
-        for (y = 0; y < ye; y++) {
-            if (model.property_posMap[x][y] === prop) {}
-        }
-    }
-    model.events.team_transferProperty(sprid, tplid);
-};
-
-model.team_isPropertyTransferable = function(prid) {
-    assert(model.property_isValidPropId(prid));
-    return !model.property_data[prid].type.notTransferable;
-};
 
 controller.defineGameConfig("model.timer_turnTimeLimit", 0, 60, 0);
 
@@ -4011,37 +2969,6 @@ model.timer_gameTimeLimit = 0;
 model.timer_gameTimeElapsed = 0;
 
 model.timer_turnTimeElapsed = 0;
-
-model.timer_resetTurnTimer = function() {
-    model.timer_turnTimeElapsed = 0;
-};
-
-model.timer_updateTimer = function(delta) {
-    assert(util.isInt(delta) && delta >= 0);
-    model.timer_turnTimeElapsed += delta;
-    model.timer_gameTimeElapsed += delta;
-    if (model.timer_turnTimeLimit > 0 && model.timer_turnTimeElapsed >= model.timer_turnTimeLimit) {
-        controller.action_localInvoke("round_nextTurn", []);
-    }
-    if (model.timer_gameTimeLimit > 0 && model.timer_gameTimeElapsed >= model.timer_gameTimeLimit) {
-        controller.update_endGameRound();
-    }
-};
-
-model.timer_setupTimer = function() {
-    model.timer_turnTimeElapsed = 0;
-    model.timer_gameTimeElapsed = 0;
-    model.timer_turnTimeLimit = controller.configValue("model.timer_turnTimeLimit") * 6e4;
-    model.timer_gameTimeLimit = controller.configValue("model.timer_gameTimeLimit") * 6e4;
-};
-
-controller.action_registerCommands("transport_loadInto");
-
-controller.action_registerCommands("transport_unloadFrom");
-
-model.event_define("transport_loadInto");
-
-model.event_define("transport_unloadFrom");
 
 model.transport_hasLoads = function(tid) {
     assert(model.unit_isValidUnitId(tid));
@@ -4062,86 +2989,6 @@ model.transport_isLoadedBy = function(lid, tid) {
     return model.unit_data[lid].loadedIn === tid;
 };
 
-model.transport_loadInto = function(loadId, transportId) {
-    assert(model.unit_isValidUnitId(loadId));
-    assert(model.unit_isValidUnitId(transportId));
-    if (!model.transport_canLoadUnit(loadId, transportId)) {
-        assert(false, "transporter unit", transportId, "cannot load unit", loadId);
-    }
-    model.unit_data[loadId].loadedIn = transportId;
-    model.unit_data[transportId].loadedIn--;
-    model.events.transport_loadInto(loadId, transportId);
-};
-
-model.transport_unloadFrom = function(transportId, trsx, trsy, loadId, tx, ty) {
-    assert(model.unit_isValidUnitId(loadId));
-    assert(model.unit_isValidUnitId(transportId));
-    assert(model.map_isValidPosition(tx, ty));
-    assert(model.map_isValidPosition(trsx, trsy));
-    assert(model.unit_data[loadId].loadedIn === transportId);
-    if (tx === -1 || ty === -1 || model.unit_posData[tx][ty]) {
-        return;
-    }
-    model.unit_data[loadId].loadedIn = -1;
-    model.unit_data[transportId].loadedIn++;
-    var moveCode;
-    if (tx < trsx) moveCode = model.move_MOVE_CODES.LEFT; else if (tx > trsx) moveCode = model.move_MOVE_CODES.RIGHT; else if (ty < trsy) moveCode = model.move_MOVE_CODES.UP; else if (ty > trsy) moveCode = model.move_MOVE_CODES.DOWN;
-    model.events.transport_unloadFrom(transportId, trsx, trsy, loadId, tx, ty);
-    model.move_moveUnitByPath([ moveCode ], loadId, trsx, trsy, true);
-    model.actions_markUnitNonActable(loadId);
-};
-
-model.transport_canUnloadUnitsAt = function(uid, x, y) {
-    assert(model.unit_isValidUnitId(uid));
-    assert(model.map_isValidPosition(x, y));
-    var loader = model.unit_data[uid];
-    var pid = loader.owner;
-    var unit;
-    if (!(model.transport_isTransportUnit(uid) && model.transport_hasLoads(uid))) return false;
-    var i = model.unit_firstUnitId(pid);
-    var e = model.unit_lastUnitId(pid);
-    for (;i <= e; i++) {
-        unit = model.unit_data[i];
-        if (unit.owner !== INACTIVE_ID && unit.loadedIn === uid) {
-            var movetp = model.data_movetypeSheets[unit.type.movetype];
-            if (model.move_canTypeMoveTo(movetp, x - 1, y)) return true;
-            if (model.move_canTypeMoveTo(movetp, x + 1, y)) return true;
-            if (model.move_canTypeMoveTo(movetp, x, y - 1)) return true;
-            if (model.move_canTypeMoveTo(movetp, x, y + 1)) return true;
-        }
-    }
-    return false;
-};
-
-model.transport_addUnloadTargetsToMenu = function(uid, x, y, menu) {
-    assert(model.unit_isValidUnitId(uid));
-    assert(model.map_isValidPosition(x, y));
-    var loader = model.unit_data[uid];
-    var pid = loader.owner;
-    var i = model.unit_firstUnitId(pid);
-    var e = model.unit_lastUnitId(pid);
-    var unit;
-    for (;i <= e; i++) {
-        unit = model.unit_data[i];
-        if (unit.owner !== INACTIVE_ID && unit.loadedIn === uid) {
-            var movetp = model.data_movetypeSheets[unit.type.movetype];
-            if (model.move_canTypeMoveTo(movetp, x - 1, y) || model.move_canTypeMoveTo(movetp, x + 1, y) || model.move_canTypeMoveTo(movetp, x, y - 1) || model.move_canTypeMoveTo(movetp, x, y + 1)) menu.addEntry(i, true);
-        }
-    }
-};
-
-model.transport_addUnloadTargetsToSelection = function(uid, x, y, loadId, selection) {
-    assert(model.unit_isValidUnitId(uid));
-    assert(model.unit_isValidUnitId(loadId));
-    assert(model.map_isValidPosition(x, y));
-    var loader = model.unit_data[uid];
-    var movetp = model.data_movetypeSheets[model.unit_data[loadId].type.movetype];
-    if (model.move_canTypeMoveTo(movetp, x - 1, y)) selection.setValueAt(x - 1, y, 1);
-    if (model.move_canTypeMoveTo(movetp, x + 1, y)) selection.setValueAt(x + 1, y, 1);
-    if (model.move_canTypeMoveTo(movetp, x, y - 1)) selection.setValueAt(x, y - 1, 1);
-    if (model.move_canTypeMoveTo(movetp, x, y + 1)) selection.setValueAt(x, y + 1, 1);
-};
-
 model.transport_canLoadUnit = function(lid, tid) {
     assert(model.unit_isValidUnitId(lid));
     assert(model.unit_isValidUnitId(tid));
@@ -4158,40 +3005,6 @@ model.transport_isTransportUnit = function(tid) {
     assert(model.unit_isValidUnitId(tid));
     return typeof model.unit_data[tid].type.maxloads === "number";
 };
-
-controller.action_registerCommands("unit_inflictDamage");
-
-controller.action_registerCommands("unit_heal");
-
-controller.action_registerCommands("unit_hide");
-
-controller.action_registerCommands("unit_join");
-
-controller.action_registerCommands("unit_unhide");
-
-controller.action_registerCommands("unit_drainFuel");
-
-controller.action_registerCommands("unit_create");
-
-controller.action_registerCommands("unit_destroy");
-
-controller.action_registerCommands("unit_destroySilently");
-
-model.event_define("unit_inflictDamage");
-
-model.event_define("unit_heal");
-
-model.event_define("unit_hide");
-
-model.event_define("unit_join");
-
-model.event_define("unit_unhide");
-
-model.event_define("unit_drainFuel");
-
-model.event_define("unit_create");
-
-model.event_define("unit_destroy");
 
 controller.defineGameScriptable("fuelDrainRate", 50, 100);
 
@@ -4217,16 +3030,27 @@ model.unit_data = util.list(MAX_PLAYER * MAX_UNITS_PER_PLAYER, function() {
 
 model.unit_posData = util.matrix(MAX_MAP_WIDTH, MAX_MAP_HEIGHT, null);
 
-model.event_on("buildUnit_check", function(wish, factoryId, playerId, type) {
-    var uLimit = controller.configValue("unitLimit");
-    var count = model.unit_countUnits(playerId);
-    if (!uLimit) uLimit = 9999999;
-    if (count >= uLimit) wish.decline();
-    if (count >= MAX_UNITS_PER_PLAYER) wish.decline();
-});
+model.unit_getDistance = function(uidA, uidB) {
+    assert(model.unit_isValidUnitId(uidA));
+    assert(model.unit_isValidUnitId(uidB));
+    var uA, uB;
+    uA = model.unit_data[uidA];
+    uB = model.unit_data[uidB];
+    if (uB.x === -1 || uA.x === -1) return -1;
+    return Math.abs(uA.x - uB.x) + Math.abs(uA.y - uB.y);
+};
 
 model.unit_isValidUnitId = function(uid) {
     return uid >= 0 && uid < MAX_UNITS_PER_PLAYER * MAX_PLAYER && model.unit_data[uid].owner !== INACTIVE_ID;
+};
+
+model.unit_getFreeSlot = function(pid) {
+    if (!model.unit_hasFreeSlots(pid)) return -1;
+    var i = model.unit_firstUnitId(pid);
+    var e = model.unit_lastUnitId(pid);
+    for (;i < e; i++) {
+        if (model.unit_data[i].owner === INACTIVE_ID) return i;
+    }
 };
 
 model.unit_thereIsAUnit = function(x, y, pid, mode) {
@@ -4291,7 +3115,6 @@ model.unit_countUnits = function(pid) {
 };
 
 model.unit_convertHealthToPoints = function(unit) {
-    assert(unit.hp > 0 && unit.hp <= 99 && unit.hp % 1 === 0);
     return parseInt(unit.hp / 10) + 1;
 };
 
@@ -4305,144 +3128,6 @@ model.unit_convertPointsToHealth = function(pt) {
     return pt * 10;
 };
 
-model.unit_inflictDamage = function(uid, damage, minRest) {
-    assert(model.unit_isValidUnitId(uid));
-    assert(util.isInt(damage));
-    assert(util.isUndefined(minRest) || util.intRange(minRest, 0, 10));
-    var unit = model.unit_data[uid];
-    assert(unit !== null);
-    unit.hp -= damage;
-    if (minRest && unit.hp <= minRest) {
-        unit.hp = minRest;
-    } else {
-        if (unit.hp <= 0) model.unit_destroy(uid);
-    }
-    model.events.unit_inflictDamage(uid, damage, minRest);
-};
-
-model.unit_heal = function(uid, health, diffAsGold) {
-    assert(model.unit_isValidUnitId(uid));
-    assert(health >= 0 && health % 1 === 0);
-    assert(util.isBoolean(diffAsGold) || util.isUndefined(diffAsGold));
-    var unit = model.unit_data[uid];
-    assert(unit !== null);
-    unit.hp += health;
-    if (unit.hp > 99) {
-        if (diffAsGold === true) {
-            var diff = unit.hp - 99;
-            model.player_data[unit.owner].gold += parseInt(unit.type.cost * diff / 100, 10);
-        }
-        unit.hp = 99;
-    }
-    model.events.unit_heal(uid, health);
-};
-
-model.unit_hide = function(uid) {
-    assert(model.unit_isValidUnitId(uid));
-    model.unit_data[uid].hidden = true;
-    model.events.unit_hide(uid);
-};
-
-model.unit_unhide = function(uid) {
-    assert(model.unit_isValidUnitId(uid));
-    model.unit_data[uid].hidden = false;
-    model.events.unit_unhide(uid);
-};
-
-model.unit_areJoinable = function(juid, jtuid) {
-    assert(model.unit_isValidUnitId(juid));
-    assert(model.unit_isValidUnitId(jtuid));
-    var joinSource = model.unit_data[juid];
-    var joinTarget = model.unit_data[jtuid];
-    if (model.transport_hasLoads(juid) || model.transport_hasLoads(jtuid)) return false;
-    return joinSource.type === joinTarget.type && joinTarget.hp < 90;
-};
-
-model.unit_join = function(juid, jtuid) {
-    assert(model.unit_isValidUnitId(juid));
-    assert(model.unit_isValidUnitId(jtuid));
-    var joinSource = model.unit_data[juid];
-    var joinTarget = model.unit_data[jtuid];
-    assert(joinTarget.type === joinSource.type);
-    model.unit_heal(jtuid, model.unit_convertPointsToHealth(model.unit_convertHealthToPoints(joinSource)), true);
-    joinTarget.ammo += joinSource.ammo;
-    if (joinTarget.ammo > joinTarget.type.ammo) joinTarget.ammo = joinTarget.type.ammo;
-    joinTarget.fuel += joinSource.fuel;
-    if (joinTarget.fuel > joinTarget.type.fuel) joinTarget.fuel = joinTarget.type.fuel;
-    joinSource.owner = INACTIVE_ID;
-    model.events.unit_join(juid, jtuid);
-};
-
-model.unit_drainFuel = function(uid) {
-    assert(model.unit_isValidUnitId(uid));
-    var unit = model.unit_data[uid];
-    var v = unit.type.dailyFuelDrain;
-    if (typeof v === "number") {
-        if (unit.hidden && unit.type.dailyFuelDrainHidden) {
-            v = unit.type.dailyFuelDrainHidden;
-        }
-        v = parseInt(controller.scriptedValue(unit.owner, "fuelDrain", v) / 100 * controller.scriptedValue(unit.owner, "fuelDrainRate", 100), 10);
-        unit.fuel -= v;
-        model.events.unit_drainFuel(uid, v);
-        if (unit.fuel <= 0) model.unit_destroy(uid);
-    }
-};
-
-model.unit_create = function(pid, x, y, type) {
-    assert(model.map_isValidPosition(x, y));
-    assert(model.player_isValidPid(pid));
-    assert(model.data_unitSheets.hasOwnProperty(type));
-    var i = model.unit_firstUnitId(pid);
-    var e = model.unit_lastUnitId(pid);
-    assert(model.unit_hasFreeSlots(pid));
-    for (;i < e; i++) {
-        if (model.unit_data[i].owner === INACTIVE_ID) {
-            var typeSheet = model.data_unitSheets[type];
-            var unit = model.unit_data[i];
-            unit.hp = 99;
-            unit.owner = pid;
-            unit.type = typeSheet;
-            unit.ammo = typeSheet.ammo;
-            unit.fuel = typeSheet.fuel;
-            unit.loadedIn = -1;
-            model.move_setUnitPosition(i, x, y);
-            model.events.unit_create(pid, x, y, type, i);
-            return i;
-        }
-    }
-};
-
-model.unit_getDistance = function(uidA, uidB) {
-    assert(model.unit_isValidUnitId(uidA));
-    assert(model.unit_isValidUnitId(uidB));
-    var uA, uB;
-    uA = model.unit_data[uidA];
-    uB = model.unit_data[uidB];
-    if (uB.x === -1 || uA.x === -1) return -1;
-    return Math.abs(uA.x - uB.x) + Math.abs(uA.y - uB.y);
-};
-
-model.unit_destroySilently = function(uid, noEvent) {
-    assert(model.unit_isValidUnitId(uid));
-    model.move_clearUnitPosition(uid);
-    var unit = model.unit_data[uid];
-    unit.owner = INACTIVE_ID;
-    if (controller.configValue("noUnitsLeftLoose") === 1 && model.unit_countUnits(unit.owner) === 0) {
-        controller.update_endGameRound();
-    }
-    if (!noEvent) model.events.unit_destroy(uid);
-};
-
-model.unit_destroy = function(uid) {
-    model.unit_destroySilently(uid, true);
-};
-
-controller.action_registerCommands("weather_change");
-
-controller.action_registerCommands("weather_calculateNext");
-
-model.event_define("weather_change");
-
 controller.defineGameScriptable("neutralizeWeather", 0, 1);
 
 controller.defineGameConfig("weatherMinDays", 1, 5, 1);
@@ -4451,7 +3136,1060 @@ controller.defineGameConfig("weatherRandomDays", 0, 5, 4);
 
 model.weather_data = null;
 
-model.weather_calculateNext = function() {
+(function() {
+    function deact(uid) {
+        var si = model.unit_data[uid].owner * MAX_UNITS_PER_PLAYER;
+        model.actions_leftActors[uid - si] = false;
+    }
+    model.event_on("wait_invoked", deact);
+    model.event_on("trapwait_invoked", deact);
+})();
+
+model.event_on("nextTurn_pidStartsTurn", function(pid) {
+    var i = model.unit_firstUnitId(pid);
+    var e = model.unit_lastUnitId(pid);
+    var io = i;
+    for (;i < e; i++) {
+        model.actions_leftActors[i - io] = model.unit_data[i].owner !== INACTIVE_ID;
+    }
+});
+
+model.event_on("attack_check", function(wish) {
+    if (model.round_day < controller.configValue("daysOfPeace")) return false;
+});
+
+model.event_on("attack_check", function(uid, x, y, move) {
+    if (model.battle_isIndirectUnit(uid) && move.data.getSize() > 0) {
+        return false;
+    }
+});
+
+model.event_on("attack_check", function(uid, x, y) {
+    if (!model.battle_calculateTargets(uid, x, y)) return false;
+});
+
+model.event_on("attack_invoked", function(attId, defId, attLuckRatio, defLuckRatio) {
+    assert(model.unit_isValidUnitId(attId));
+    assert(model.unit_isValidUnitId(defId));
+    assertIntRange(attLuckRatio, 0, 100);
+    assertIntRange(defLuckRatio, 0, 100);
+    var attacker = model.unit_data[attId];
+    var defender = model.unit_data[defId];
+    var indirectAttack = model.battle_isIndirectUnit(attId);
+    if (!indirectAttack && controller.scriptedValue(defender.owner, "firstCounter", 0) === 1) {
+        if (!model.battle_isIndirectUnit(defId)) {
+            var tmp_ = defender;
+            defender = attacker;
+            attacker = tmp_;
+        }
+    }
+    var aSheets = attacker.type;
+    var dSheets = defender.type;
+    var attOwner = attacker.owner;
+    var defOwner = defender.owner;
+    var powerAtt = model.unit_convertHealthToPoints(defender);
+    var powerCounterAtt = model.unit_convertHealthToPoints(attacker);
+    var damage;
+    var retreatVal = powerAtt;
+    var mainWpAttack = model.battle_canUseMainWeapon(attacker, defender);
+    damage = model.battle_getBattleDamageAgainst(attacker, defender, attLuckRatio, mainWpAttack, false);
+    if (damage !== -1) {
+        model.events.damageUnit(defId, damage);
+        powerAtt -= model.unit_convertHealthToPoints(defender);
+        if (mainWpAttack) attacker.ammo--;
+        powerAtt = parseInt(powerAtt * .1 * dSheets.cost, 10);
+        model.events.co_modifyPowerLevel(attOwner, parseInt(.5 * powerAtt, 10));
+        model.events.co_modifyPowerLevel(defOwner, powerAtt);
+    }
+    if (defender.hp > 0 && !model.battle_isIndirectUnit(defId)) {
+        mainWpAttack = model.battle_canUseMainWeapon(defender, attacker);
+        damage = model.battle_getBattleDamageAgainst(defender, attacker, defLuckRatio, mainWpAttack, true);
+        if (damage !== -1) {
+            model.events.damageUnit(attId, damage);
+            powerCounterAtt -= model.unit_convertHealthToPoints(attacker);
+            if (mainWpAttack) defender.ammo--;
+            powerCounterAtt = parseInt(powerCounterAtt * .1 * aSheets.cost, 10);
+            model.events.co_modifyPowerLevel(defOwner, parseInt(.5 * powerCounterAtt, 10));
+            model.events.co_modifyPowerLevel(attOwner, powerCounterAtt);
+        }
+    }
+});
+
+model.event_on("attackUnit_unitAttacks", function(uid) {});
+
+model.event_on("fireCannon_check", function(uid, selection) {
+    return model.bombs_isCannon(uid) && model.bombs_markCannonTargets(uid, selection);
+});
+
+model.event_on("fireCannon_fillTargets", function(uid, selection) {
+    model.bombs_markCannonTargets(uid, selection);
+});
+
+model.event_on("fireCannon_invoked", function(ox, oy, x, y) {
+    var prop = model.property_posMap[x][y];
+    var target = model.unit_posData[x][y];
+    var type = model.bombs_grabPropTypeFromPos(ox, oy);
+    model.events.damageUnit(model.unit_extractId(target), model.unit_convertPointsToHealth(type.cannon.damage), 9);
+});
+
+(function() {
+    function placeCannonMetaData(x, y) {
+        var prop = model.property_posMap[x][y];
+        var cannon = prop.type.cannon;
+        var size = prop.type.bigProperty;
+        assert(x - size.x >= 0);
+        assert(y - size.y >= 0);
+        var ax = x - size.actor[0];
+        var ay = y - size.actor[1];
+        var ox = x;
+        var oy = y;
+        for (var xe = x - size.x; x > xe; x--) {
+            y = oy;
+            for (var ye = y - size.y; y > ye; y--) {
+                if (x !== ox || y !== oy) {
+                    if (DEBUG) util.log("creating invisible property at", x, ",", y);
+                    model.events.property_createProperty(prop.owner, x, y, "PROP_INV");
+                }
+                if (x === ax && y === ay) {
+                    if (DEBUG) util.log("creating cannon unit at", x, ",", y);
+                    model.events.createUnit(model.unit_getFreeSlot(prop.owner), prop.owner, x, y, "CANNON_UNIT_INV");
+                }
+            }
+        }
+    }
+    model.event_on("gameround_start", function() {
+        for (var x = 0, xe = model.map_width; x < xe; x++) {
+            for (var y = 0, ye = model.map_height; y < ye; y++) {
+                var prop = model.property_posMap[x][y];
+                if (prop) {
+                    if (prop.type.bigProperty && prop.type.cannon) {
+                        placeCannonMetaData(x, y);
+                    } else if (prop.type.cannon) {
+                        if (DEBUG) util.log("creating cannon unit at", x, ",", y);
+                        model.events.createUnit(model.unit_getFreeSlot(prop.owner), prop.owner, x, y, "CANNON_UNIT_INV");
+                    } else if (prop.type.laser) {
+                        if (DEBUG) util.log("creating laser unit at", x, ",", y);
+                        model.events.createUnit(model.unit_getFreeSlot(prop.owner), prop.owner, x, y, "LASER_UNIT_INV");
+                    }
+                }
+            }
+        }
+    });
+})();
+
+model.event_on("client_deregisterPlayers", function() {
+    model.client_instances.resetValues();
+});
+
+model.event_on("client_registerPlayer", function(pid) {
+    assert(model.player_isValidPid(pid));
+    model.client_instances[pid] = true;
+    if (model.client_lastPid === -1) model.client_lastPid = pid;
+    return true;
+});
+
+model.event_on("client_deregisterPlayer", function(pid) {
+    assert(model.player_isValidPid(pid));
+    model.client_instances[pid] = false;
+    return true;
+});
+
+model.event_on("attachCommander_check", function(pid) {
+    if (model.co_activeMode !== model.co_MODES.AWDR) return false;
+});
+
+model.event_on("attachCommander_invoked", function(pid, uid) {
+    assert(model.co_data[pid].detachedTo === INACTIVE_ID);
+    model.co_data[pid].detachedTo = uid;
+});
+
+model.event_on("detachCommander_check", function(pid) {
+    if (model.co_activeMode !== model.co_MODES.AWDR) return false;
+});
+
+model.event_on("detachCommander_invoked", function(pid, uid) {
+    assert(model.co_data[pid].detachedTo !== uid);
+    model.co_data[pid].detachedTo = INACTIVE_ID;
+});
+
+model.event_on("activatePower_check", function(pid) {
+    if (model.co_activeMode !== model.co_MODES.AW1 && model.co_activeMode !== model.co_MODES.AW2 && model.co_activeMode !== model.co_MODES.AWDS) return false;
+});
+
+model.event_on("activatePower_check", function(pid) {
+    if (!model.co_canActivatePower(pid, model.co_POWER_LEVEL.COP)) return false;
+});
+
+model.event_on("activatePower_invoked", function(pid, level) {
+    var data = model.co_data[pid];
+    data.power = 0;
+    data.level = level;
+    data.timesUsed++;
+});
+
+(function() {
+    function setCo(pid, type, isMain) {
+        if (type === null) {
+            if (isMain) model.co_data[pid].coA = null; else model.co_data[pid].coB = null;
+        } else {
+            assert(model.data_coSheets.hasOwnProperty(type));
+            if (isMain) model.co_data[pid].coA = model.data_coSheets[type]; else model.co_data[pid].coB = model.data_coSheets[type];
+        }
+    }
+    model.event_on("setMainCo", function(pid, type) {
+        setCo(pid, type, true);
+    });
+    model.event_on("setSideCo", function(pid, type) {
+        setCo(pid, type, false);
+    });
+})();
+
+model.event_on("co_modifyPowerLevel", function(pid, value) {
+    assert(model.player_isValidPid(pid));
+    var data = model.co_data[pid];
+    data.power += value;
+    if (data.power < 0) data.power = 0;
+});
+
+model.event_on("dayEvent", function(days, action, argA, argB) {
+    if (argA === void 0) argA = INACTIVE_ID;
+    if (argB === void 0) argB = INACTIVE_ID;
+    var list = model.dayTick_dataTime;
+    for (var i = 0, e = list.length; i < e; i++) {
+        if (list[i] === INACTIVE_ID) {
+            list[i] = model.round_daysToTurns(days);
+            model.dayTick_dataEvent[i] = action;
+            model.dayTick_dataArgs[i * 2] = argA;
+            model.dayTick_dataArgs[i * 2 + 1] = argB;
+            return;
+        }
+    }
+    assert(false, "day event buffer overflow");
+});
+
+model.event_on("nextTurn_invoked", function() {
+    var list = model.dayTick_dataTime;
+    for (var i = 0, e = list.length; i < e; i++) {
+        if (list[i] === INACTIVE_ID) continue;
+        list[i]--;
+        if (!list[i]) {
+            list[i] = INACTIVE_ID;
+            model.events[model.dayTick_dataEvent[i]](model.dayTick_dataArgs[i * 2], model.dayTick_dataArgs[i * 2 + 1]);
+        }
+    }
+});
+
+model.event_on("buildUnit_check", function(prid, pid) {
+    if (!model.factory_isFactory(prid)) return false;
+    if (pid === INACTIVE_ID) return false;
+});
+
+model.event_on("buildUnit_invoked", function(x, y, type) {
+    var prop = model.property_posMap[x][y];
+    var cost = model.data_unitSheets[type].cost;
+    var pl = model.player_data[prop.owner];
+    pl.gold -= cost;
+    assert(pl.gold >= 0);
+    model.events.createUnit(model.unit_getFreeSlot(prop.owner), prop.owner, x, y, type);
+});
+
+model.event_on("modifyVisionAt", function(x, y, pid, range, value) {
+    if (pid === INACTIVE_ID) return;
+    if (!controller.configValue("fogEnabled")) return;
+    assert(model.map_isValidPosition(x, y));
+    assert(util.isInt(range) && range >= 0);
+    controller.prepareTags(x, y);
+    if (range > 0) range = controller.scriptedValue(pid, "vision", range);
+    var clientVisible = model.fog_visibleClientPids[pid];
+    var turnOwnerVisible = model.fog_visibleTurnOwnerPids[pid];
+    if (!clientVisible && !turnOwnerVisible) return;
+    if (range === 0) {
+        if (clientVisible) model.fog_clientData[x][y] += value;
+        if (turnOwnerVisible) model.fog_turnOwnerData[x][y] += value;
+    } else {
+        var mH = model.map_height;
+        var mW = model.map_width;
+        var lX;
+        var hX;
+        var lY = y - range;
+        var hY = y + range;
+        if (lY < 0) lY = 0;
+        if (hY >= mH) hY = mH - 1;
+        for (;lY <= hY; lY++) {
+            var disY = Math.abs(lY - y);
+            lX = x - range + disY;
+            hX = x + range - disY;
+            if (lX < 0) lX = 0;
+            if (hX >= mW) hX = mW - 1;
+            for (;lX <= hX; lX++) {
+                if (clientVisible) model.fog_clientData[lX][lY] += value;
+                if (turnOwnerVisible) model.fog_turnOwnerData[lX][lY] += value;
+            }
+        }
+    }
+});
+
+model.event_on("recalculateFogMap", function() {
+    var x;
+    var y;
+    var xe = model.map_width;
+    var ye = model.map_height;
+    var fogEnabled = controller.configValue("fogEnabled") === 1;
+    for (x = 0; x < xe; x++) {
+        for (y = 0; y < ye; y++) {
+            if (!fogEnabled) {
+                model.fog_clientData[x][y] = 1;
+                model.fog_turnOwnerData[x][y] = 1;
+            } else {
+                model.fog_clientData[x][y] = 0;
+                model.fog_turnOwnerData[x][y] = 0;
+            }
+        }
+    }
+    if (fogEnabled) {
+        var vision;
+        for (x = 0; x < xe; x++) {
+            for (y = 0; y < ye; y++) {
+                var unit = model.unit_posData[x][y];
+                if (unit !== null) {
+                    vision = unit.type.vision;
+                    if (vision < 0) vision = 0;
+                    model.events.modifyVisionAt(x, y, unit.owner, vision, 1);
+                }
+                var property = model.property_posMap[x][y];
+                if (property !== null) {
+                    vision = property.type.vision;
+                    if (vision < 0) vision = 0;
+                    model.events.modifyVisionAt(x, y, property.owner, vision, 1);
+                }
+            }
+        }
+    }
+});
+
+model.event_on("nextTurn_pidStartsTurn", function(pid) {
+    var tid = model.player_data[model.client_lastPid].team;
+    var totid = model.player_data[pid].team;
+    for (var i = 0, e = MAX_PLAYER; i < e; i++) {
+        model.fog_visibleClientPids[i] = model.client_instances[i] === true || model.player_data[i].team === tid;
+        model.fog_visibleTurnOwnerPids[i] = i === pid || totid === model.player_data[i].team;
+    }
+    model.events.recalculateFogMap();
+});
+
+model.event_on("joinUnits_check", function(wish, juid, jtuid) {
+    var joinSource = model.unit_data[juid];
+    var joinTarget = model.unit_data[jtuid];
+    if (model.transport_hasLoads(juid) || model.transport_hasLoads(jtuid) || joinSource.type !== joinTarget.type || joinTarget.hp >= 90) return false;
+});
+
+model.event_on("joinUnits_invoked", function(juid, jtuid) {
+    var joinSource = model.unit_data[juid];
+    var joinTarget = model.unit_data[jtuid];
+    assert(joinTarget.type === joinSource.type);
+    model.events.healUnit(jtuid, model.unit_convertPointsToHealth(model.unit_convertHealthToPoints(joinSource)), true);
+    joinTarget.ammo += joinSource.ammo;
+    if (joinTarget.ammo > joinTarget.type.ammo) joinTarget.ammo = joinTarget.type.ammo;
+    joinTarget.fuel += joinSource.fuel;
+    if (joinTarget.fuel > joinTarget.type.fuel) joinTarget.fuel = joinTarget.type.fuel;
+    joinSource.owner = INACTIVE_ID;
+});
+
+model.event_on("fireLaser_check", function(uid) {
+    if (!model.bombs_isLaser(uid)) return false;
+});
+
+model.event_on("fireLaser_invoked", function(x, y) {
+    var prop = model.property_posMap[x][y];
+    assert(prop);
+    var ox = x;
+    var oy = y;
+    var pid = prop.owner;
+    for (x = 0, xe = model.map_width; x < xe; x++) {
+        for (y = 0, ye = model.map_height; y < ye; y++) {
+            if (ox === x || oy === y) {
+                var unit = model.unit_posData[x][y];
+                if (unit && unit.owner !== pid) {
+                    model.events.damageUnit(model.unit_extractId(unit), model.unit_convertPointsToHealth(prop.type.laser.damage), 9);
+                }
+            }
+        }
+    }
+});
+
+model.event_on("buildUnit_check", function(factoryId, playerId, type) {
+    if (model.manpower_data[playerId] <= 0) return false;
+});
+
+model.event_on("buildUnit_invoked", function(x, y, type) {
+    model.manpower_data[model.property_posMap[x][y].owner]--;
+});
+
+model.event_on("move_clearWayCache", function() {
+    model.move_pathCache.resetValues();
+});
+
+model.event_on("move_appendToWayCache", function() {
+    var i = 0;
+    while (model.move_pathCache[i] !== INACTIVE_ID) {
+        i++;
+        if (i >= MAX_SELECTION_RANGE) assert(false);
+    }
+    var argI = 0;
+    while (argI < arguments.length) {
+        model.move_pathCache[i] = arguments[argI];
+        argI++;
+        i++;
+        if (i >= MAX_SELECTION_RANGE) assert(false);
+    }
+});
+
+model.event_on("move_moveByCache", function(uid, x, y, noFuelConsumption) {
+    var way = model.move_pathCache;
+    var cX = x;
+    var cY = y;
+    var unit = model.unit_data[uid];
+    var uType = unit.type;
+    var mType = model.data_movetypeSheets[uType.movetype];
+    var wayIsIllegal = false;
+    var lastIndex = way.length - 1;
+    var fuelUsed = 0;
+    for (var i = 0, e = way.length; i < e; i++) {
+        if (way[i] === INACTIVE_ID) break;
+        switch (way[i]) {
+          case model.move_MOVE_CODES.UP:
+            if (cY === 0) wayIsIllegal = true;
+            cY--;
+            break;
+
+          case model.move_MOVE_CODES.RIGHT:
+            if (cX === model.map_width - 1) wayIsIllegal = true;
+            cX++;
+            break;
+
+          case model.move_MOVE_CODES.DOWN:
+            if (cY === model.map_height - 1) wayIsIllegal = true;
+            cY++;
+            break;
+
+          case model.move_MOVE_CODES.LEFT:
+            if (cX === 0) wayIsIllegal = true;
+            cX--;
+            break;
+        }
+        assert(!wayIsIllegal);
+        if (false) {
+            lastIndex = i - 1;
+            switch (way[i]) {
+              case model.move_MOVE_CODES.UP:
+                cY++;
+                break;
+
+              case model.move_MOVE_CODES.RIGHT:
+                cX--;
+                break;
+
+              case model.move_MOVE_CODES.DOWN:
+                cY--;
+                break;
+
+              case model.move_MOVE_CODES.LEFT:
+                cX++;
+                break;
+            }
+            assert(lastIndex !== -1);
+            break;
+        }
+        if (noFuelConsumption) fuelUsed += model.move_getMoveCosts(mType, cX, cY);
+    }
+    unit.fuel -= fuelUsed;
+    assert(unit.fuel >= 0);
+    if (unit.x >= 0 && unit.y >= 0) {
+        var prop = model.property_posMap[unit.x][unit.y];
+        if (prop) model.property_resetCapturePoints(model.property_extractId(prop));
+        model.events.clearUnitPosition(uid);
+    }
+    if (model.unit_posData[cX][cY] === null) model.events.setUnitPosition(uid, cX, cY);
+});
+
+(function() {
+    function setPos(uid, x, y) {
+        var unit = model.unit_data[uid];
+        unit.x = x;
+        unit.y = y;
+        model.unit_posData[x][y] = unit;
+        model.events.modifyVisionAt(x, y, unit.owner, unit.type.vision, 1);
+    }
+    model.event_on("setUnitPosition", setPos);
+    model.event_on("createUnit", function(slot, pid, x, y, type) {
+        setPos(slot, x, y);
+    });
+})();
+
+model.event_on([ "clearUnitPosition", "destroyUnitSilent" ], function(uid) {
+    var unit = model.unit_data[uid];
+    var x = unit.x;
+    var y = unit.y;
+    model.events.modifyVisionAt(x, y, unit.owner, unit.type.vision, -1);
+    model.unit_posData[x][y] = null;
+    unit.x = -unit.x;
+    unit.y = -unit.y;
+});
+
+model.event_on("multistep_next", function() {
+    controller.stateMachine.event("nextStep");
+});
+
+model.event_on("player_deactivatePlayer", function(pid) {
+    assert(model.property_isValidPropId(pid));
+    var i, e;
+    i = model.unit_firstUnitId(pid);
+    e = model.unit_lastUnitId(pid);
+    for (;i < e; i++) {
+        if (model.unit_data[i].owner !== INACTIVE_ID) model.events.destroyUnit(i);
+    }
+    i = 0;
+    e = model.property_data.length;
+    for (;i < e; i++) {
+        var prop = model.property_data[i];
+        if (prop.owner === pid) {
+            prop.owner = -1;
+            var changeType = prop.type.changeAfterCaptured;
+            if (changeType) model.events.property_changeType(i, changeType);
+        }
+    }
+    model.player_data[pid].team = -1;
+    if (!model.player_areEnemyTeamsLeft()) {
+        controller.controller.commandStack_localInvokement("player_noTeamsAreLeft");
+    }
+});
+
+model.event_on("player_playerGivesUp", function() {
+    assert(model.client_isLocalPid(model.round_turnOwner));
+    model.events.nextTurn_invoked();
+});
+
+model.event_on("player_noTeamsAreLeft", function() {
+    controller.update_endGameRound();
+});
+
+model.event_on("capture_check", function(prid, uid) {
+    if (!model.property_isCapturableBy(prid, uid)) {
+        return false;
+    }
+});
+
+model.event_on("capture_invoked", function(prid, cid) {
+    assert(model.property_isValidPropId(prid));
+    assert(model.unit_isValidUnitId(cid));
+    var selectedUnit = model.unit_data[cid];
+    var property = model.property_data[prid];
+    var points = parseInt(selectedUnit.hp / 10, 10) + 1;
+    points = parseInt(points * controller.scriptedValue(selectedUnit.owner, "captureRate", 100) / 100, 10);
+    property.capturePoints -= points;
+    if (property.capturePoints <= 0) {
+        var x = property.x;
+        var y = property.y;
+        model.events.modifyVisionAt(x, y, property.type.vision, 1);
+        if (property.type.looseAfterCaptured === true) {
+            var pid = property.owner;
+            model.events.player_deactivatePlayer(pid);
+        }
+        var changeType = property.type.changeAfterCaptured;
+        if (typeof changeType !== "undefined") {
+            model.events.property_changeType(prid, changeType);
+        }
+        property.capturePoints = 20;
+        property.owner = selectedUnit.owner;
+        var capLimit = controller.configValue("captureLimit");
+        if (capLimit !== 0 && model.countProperties() >= capLimit) {
+            controller.update_endGameRound();
+        }
+    }
+});
+
+model.event_on("property_createProperty", function(pid, x, y, type) {
+    var props = model.property_data;
+    for (var i = 0, e = props.length; i < e; i++) {
+        if (props[i].owner === INACTIVE_ID && !props[i].type) {
+            props[i].owner = pid;
+            props[i].type = model.data_tileSheets[type];
+            props[i].capturePoints = 1;
+            props[i].x = x;
+            props[i].y = y;
+            model.property_posMap[x][y] = props[i];
+            return;
+        }
+    }
+    assert(false);
+});
+
+model.event_on("property_resetCapturePoints", function(prid) {
+    assert(model.property_isValidPropId(prid));
+    model.property_data[prid].capturePoints = 20;
+});
+
+model.event_on("property_changeType", function(prid, type) {
+    assert(model.property_isValidPropId(prid));
+    if (typeof type === "string") {
+        assert(model.data_propertyTypes.indexOf(type) !== -1);
+        type = model.data_tileSheets[type];
+    } else {
+        assert(model.data_propertyTypes.indexOf(type.ID) !== -1);
+    }
+    model.property_data[prid].type = type;
+});
+
+model.event_on("property_changeTypeById", function(prid, typeId) {
+    model.events.property_changeType(prid, model.data_propertyTypes[typeId]);
+});
+
+model.event_on("nextTurn_invoked", function() {
+    var pid = model.round_turnOwner;
+    var oid = pid;
+    var i, e;
+    pid++;
+    while (pid !== oid) {
+        if (pid === MAX_PLAYER) {
+            pid = 0;
+            model.round_day++;
+            var round_dayLimit = controller.configValue("round_dayLimit");
+            if (round_dayLimit > 0 && model.round_day === round_dayLimit) {
+                controller.update_endGameRound();
+            }
+        }
+        if (model.player_data[pid].team !== INACTIVE_ID) break;
+        pid++;
+    }
+    assert(pid !== oid);
+    model.events.nextTurn_pidStartsTurn(pid);
+});
+
+model.event_on("nextTurn_pidStartsTurn", function(pid) {
+    model.round_turnOwner = pid;
+    if (model.client_isLocalPid(pid)) model.client_lastPid = pid;
+    for (i = 0, e = model.property_data.length; i < e; i++) {
+        if (model.property_data[i].owner !== pid) continue;
+        model.events.nextTurn_propertyCheck(i);
+    }
+    var turnStartSupply = controller.configValue("autoSupplyAtTurnStart") === 1;
+    i = model.unit_firstUnitId(pid);
+    e = model.unit_lastUnitId(pid);
+    for (;i < e; i++) {
+        if (model.unit_data[i].owner === INACTIVE_ID) continue;
+        model.events.nextTurn_unitCheck(i);
+    }
+    if (controller.isHost() && !controller.ai_isHuman(pid)) {
+        controller.ai_machine.event("tick");
+    }
+});
+
+model.event_on("silofire_check", function(prid, uid) {
+    if (!model.bombs_isSilo(prid, uid)) return false;
+});
+
+model.event_on("silofire_validPos", function(x, y) {
+    if (!model.map_isValidPosition(x, y)) return false;
+});
+
+model.event_on("silofire_invoked", function(x, y, tx, ty, owner) {
+    var silo = model.property_posMap[x][y];
+    var siloId = model.property_extractId(silo);
+    var type = silo.type;
+    var range = type.rocketsilo.range;
+    var damage = model.unit_convertPointsToHealth(type.rocketsilo.damage);
+    model.events.property_changeType(siloId, model.data_tileSheets[type.changeTo]);
+    model.events.rocketFly(x, y, tx, ty);
+    model.events.explode_invoked(tx, ty, range, damage, owner);
+});
+
+model.event_on("silofire_invoked", function(x, y, tx, ty, owner) {
+    var silo = model.property_posMap[x][y];
+    var siloId = model.property_extractId(silo);
+    var type = silo.type;
+    model.events.dayEvent(5, "property_changeTypeById", siloId, model.data_propertyTypes.indexOf(type));
+});
+
+model.event_on("unitHide_check", function(uid) {
+    var unit = model.unit_data[uid];
+    if (!unit.type.stealth || unit.hidden) return false;
+});
+
+model.event_on("unitUnhide_check", function(uid) {
+    var unit = model.unit_data[uid];
+    if (!unit.type.stealth || !unit.hidden) return false;
+});
+
+model.event_on("unitHide_invoked", function(uid) {
+    model.unit_data[uid].hidden = true;
+});
+
+model.event_on("unitUnhide_invoked", function(uid) {
+    model.unit_data[uid].hidden = false;
+});
+
+model.event_on("explode_check", function(uid) {
+    if (!model.bombs_isSuicideUnit(uid)) return false;
+});
+
+(function() {
+    function explDam(x, y, damage) {
+        var unit = model.unit_posData[x][y];
+        if (unit) model.events.damageUnit(model.unit_extractId(unit), damage, 9);
+    }
+    model.event_on("explode_invoked", function(tx, ty, range, damage, owner) {
+        model.map_doInRange(tx, ty, range, explDam, damage);
+    });
+})();
+
+model.event_on("supplyUnit_check", function(uid, x, y) {
+    if (!model.supply_hasSupplyTargetsNearby(uid, x, y)) return false;
+});
+
+model.event_on("supplyUnit_invoked", function(sid) {
+    var selectedUnit = model.unit_data[sid];
+    assert(selectedUnit.type.supply);
+    var x = selectedUnit.x;
+    var y = selectedUnit.y;
+    var pid = selectedUnit.owner;
+    var i = model.unit_firstUnitId(pid);
+    var e = model.unit_lastUnitId(pid);
+    var unitsSupplied = false;
+    for (;i < e; i++) {
+        if (!model.unit_isValidUnitId(i)) continue;
+        if (model.unit_getDistance(sid, i) === 1) {
+            model.events.supply_refillResources(i);
+        }
+    }
+});
+
+model.event_on("supply_refillResources", function(uid) {
+    assert(model.unit_isValidUnitId(uid));
+    var unit = model.unit_data[uid];
+    var type = unit.type;
+    unit.ammo = type.ammo;
+    unit.fuel = type.fuel;
+});
+
+model.event_on("nextTurn_unitCheck", function(uid) {
+    var unit = model.unit_data[uid];
+    if (model.events.supplyUnit_check(uid, unit.x, unit.y)) {
+        model.events.supplyUnit_invoked(uid);
+    }
+});
+
+model.event_on("nextTurn_unitCheck", function(uid) {
+    var unit = model.unit_data[uid];
+    var v = unit.type.dailyFuelDrain;
+    if (typeof v === "number") {
+        if (unit.hidden && unit.type.dailyFuelDrainHidden) {
+            v = unit.type.dailyFuelDrainHidden;
+        }
+        v = parseInt(controller.scriptedValue(unit.owner, "fuelDrain", v) / 100 * controller.scriptedValue(unit.owner, "fuelDrainRate", 100), 10);
+        unit.fuel -= v;
+        if (unit.fuel <= 0) {
+            model.events.destroyUnit(uid);
+            return false;
+        }
+    }
+});
+
+model.event_on("nextTurn_propertyCheck", function(prid) {
+    var prop = model.property_data[prid];
+    if (typeof prop.type.funds !== "number") return;
+    var x = prop.x;
+    var y = prop.y;
+    controller.prepareTags(x, y);
+    var funds = controller.scriptedValue(prop.owner, "funds", prop.type.funds);
+    model.player_data[prop.owner].gold += funds;
+});
+
+model.event_on("nextTurn_propertyCheck", function(prid) {
+    var prop = model.property_data[i];
+    if (prop.type.supply) {
+        var x = prop.x;
+        var y = prop.y;
+        var pid = prop.owner;
+        var check = model.unit_thereIsAUnit;
+        var mode = model.MODE_OWN;
+        if (controller.configValue("supplyAlliedUnits") === 1) mode = model.MODE_TEAM;
+        if (check(x, y, pid, mode)) {
+            var unitTp = model.unit_posData[x][y].type;
+            if (prop.type.supply.indexOf(unitTp.ID) !== -1 || prop.type.supply.indexOf(unitTp.movetype) !== -1) {
+                model.events.supply_refillResources(model.unit_posData[x][y]);
+            }
+        }
+    }
+});
+
+model.event_on("nextTurn_propertyCheck", function(prid) {
+    var prop = model.property_data[i];
+    if (prop.type.repairs) {
+        var x = prop.x;
+        var y = prop.y;
+        var pid = prop.owner;
+        var check = model.unit_thereIsAUnit;
+        var mode = model.MODE_OWN;
+        if (controller.configValue("repairAlliedUnits") === 1) mode = model.MODE_TEAM;
+        if (check(x, y, pid, mode)) {
+            var unitTp = model.unit_posData[x][y].type;
+            var value;
+            value = prop.type.repairs.get(unitTp.ID);
+            if (!value) value = prop.type.repairs.get(unitTp.movetype);
+            value = controller.scriptedValue(pid, "propertyHeal", value);
+            if (value > 0) {
+                model.events.healUnit(model.unit_extractId(model.unit_posData[x][y]), model.unit_convertPointsToHealth(value), true);
+            }
+        }
+    }
+});
+
+model.event_on("transferMoney_check", function(pid, x, y) {
+    var ref;
+    if (model.player_data[pid].gold < model.team_MONEY_TRANSFER_STEPS[0]) {
+        return false;
+    }
+    ref = model.unit_posData[x][y];
+    if (ref === null || ref.owner === pid) {
+        ref = model.property_posMap[x][y];
+        if (ref !== null && ref.owner !== pid && ref.owner !== -1) {
+            return;
+        }
+        return false;
+    }
+});
+
+model.event_on("transferMoney_addEntries", function(pid, menu) {
+    assert(model.player_isValidPid(pid));
+    var availGold = model.player_data[pid].gold;
+    for (var i = 0, e = model.team_MONEY_TRANSFER_STEPS.length; i < e; i++) {
+        if (availGold >= model.team_MONEY_TRANSFER_STEPS[i]) {
+            menu.addEntry(model.team_MONEY_TRANSFER_STEPS[i]);
+        }
+    }
+});
+
+model.event_on("transferMoney_invoked", function(spid, tpid, money) {
+    var sPlayer = model.player_data[spid];
+    var tPlayer = model.player_data[tpid];
+    sPlayer.gold -= money;
+    tPlayer.gold += money;
+    assert(sPlayer.gold >= 0);
+});
+
+model.event_on("transferUnit_check", function(uid) {
+    if (model.transport_hasLoads(uid)) return false;
+});
+
+model.event_on("transferUnit_addEntries", function(pid, menu) {
+    for (var i = 0, e = MAX_PLAYER; i < e; i++) {
+        if (i !== pid && model.player_data[i].team !== INACTIVE_ID) {
+            menu.addEntry(i, true);
+        }
+    }
+});
+
+model.event_on("transferUnit_invoked", function(suid, tplid) {
+    var selectedUnit = model.unit_data[suid];
+    var tx = selectedUnit.x;
+    var ty = selectedUnit.y;
+    var opid = selectedUnit.owner;
+    selectedUnit.owner = INACTIVE_ID;
+    if (model.player_data[tplid].team !== model.player_data[opid].team) {
+        model.events.fog_modifyVisionAt(tx, ty, selectedUnit.type.vision, -1);
+    }
+    var tSlot = model.unit_getFreeSlot(tplid);
+    model.events.clearUnitPosition(suid);
+    model.events.createUnit(tSlot, tplid, tx, ty, selectedUnit.type.ID);
+    var targetUnit = model.unit_data[tSlot];
+    targetUnit.hp = selectedUnit.hp;
+    targetUnit.ammo = selectedUnit.ammo;
+    targetUnit.fuel = selectedUnit.fuel;
+    targetUnit.exp = selectedUnit.exp;
+    targetUnit.type = selectedUnit.type;
+    targetUnit.x = tx;
+    targetUnit.y = ty;
+    targetUnit.loadedIn = selectedUnit.loadedIn;
+});
+
+model.event_on("transferProperty_check", function(prid) {
+    if (model.property_data[prid].type.notTransferable) return false;
+});
+
+model.event_on("transferProperty_addEntries", function(pid, menu) {
+    for (var i = 0, e = MAX_PLAYER; i < e; i++) {
+        if (i !== pid && model.player_data[i].team !== INACTIVE_ID) {
+            menu.addEntry(i, true);
+        }
+    }
+});
+
+model.event_on("transferProperty_invoked", function(sprid, tplid) {
+    var prop = model.property_data[sprid];
+    prop.owner = tplid;
+    var x;
+    var y;
+    var xe = model.map_width;
+    var ye = model.map_height;
+    for (x = 0; x < xe; x++) {
+        for (y = 0; y < ye; y++) {
+            if (model.property_posMap[x][y] === prop) {}
+        }
+    }
+});
+
+model.event_on("gameround_start", function() {
+    model.timer_turnTimeElapsed = 0;
+    model.timer_gameTimeElapsed = 0;
+    model.timer_turnTimeLimit = controller.configValue("model.timer_turnTimeLimit") * 6e4;
+    model.timer_gameTimeLimit = controller.configValue("model.timer_gameTimeLimit") * 6e4;
+});
+
+model.event_on("nextTurn_pidStartsTurn", function(pid) {
+    model.timer_turnTimeElapsed = 0;
+});
+
+model.event_on("gameround_update", function(delta) {
+    model.timer_turnTimeElapsed += delta;
+    model.timer_gameTimeElapsed += delta;
+    if (model.timer_turnTimeLimit > 0 && model.timer_turnTimeElapsed >= model.timer_turnTimeLimit) {
+        controller.commandStack_sharedInvokement("nextTurn_invoked");
+    }
+    if (model.timer_gameTimeLimit > 0 && model.timer_gameTimeElapsed >= model.timer_gameTimeLimit) {
+        controller.update_endGameRound();
+    }
+});
+
+model.event_on("loadUnit_check", function(loid, tuid) {
+    if (!model.transport_isTransportUnit(tuid) || !model.transport_canLoadUnit(loid, tuid)) {
+        return false;
+    }
+});
+
+model.event_on("unloadUnit_check", function(uid, x, y) {
+    var loader = model.unit_data[uid];
+    var pid = loader.owner;
+    var unit;
+    if (!(model.transport_isTransportUnit(uid) && model.transport_hasLoads(uid))) {
+        return false;
+    }
+    var i = model.unit_firstUnitId(pid);
+    var e = model.unit_lastUnitId(pid);
+    for (;i <= e; i++) {
+        unit = model.unit_data[i];
+        if (unit.owner !== INACTIVE_ID && unit.loadedIn === uid) {
+            var movetp = model.data_movetypeSheets[unit.type.movetype];
+            if (model.move_canTypeMoveTo(movetp, x - 1, y)) return;
+            if (model.move_canTypeMoveTo(movetp, x + 1, y)) return;
+            if (model.move_canTypeMoveTo(movetp, x, y - 1)) return;
+            if (model.move_canTypeMoveTo(movetp, x, y + 1)) return;
+        }
+    }
+    return false;
+});
+
+model.event_on("loadUnit_invoked", function(loid, tuid) {
+    assert(model.transport_canLoadUnit(loid, tuid), "transporter unit", tuid, "cannot load unit", loid);
+    model.unit_data[loid].loadedIn = tuid;
+    model.unit_data[tuid].loadedIn--;
+});
+
+model.event_on("unloadUnit_addUnloadTargetsToMenu", function(uid, x, y, menu) {
+    var loader = model.unit_data[uid];
+    var pid = loader.owner;
+    var i = model.unit_firstUnitId(pid);
+    var e = model.unit_lastUnitId(pid);
+    var unit;
+    for (;i <= e; i++) {
+        unit = model.unit_data[i];
+        if (unit.owner !== INACTIVE_ID && unit.loadedIn === uid) {
+            var movetp = model.data_movetypeSheets[unit.type.movetype];
+            if (model.move_canTypeMoveTo(movetp, x - 1, y) || model.move_canTypeMoveTo(movetp, x + 1, y) || model.move_canTypeMoveTo(movetp, x, y - 1) || model.move_canTypeMoveTo(movetp, x, y + 1)) menu.addEntry(i, true);
+        }
+    }
+});
+
+model.event_on("unloadUnit_addUnloadTargetsToSelection", function(uid, x, y, loadId, selection) {
+    var loader = model.unit_data[uid];
+    var movetp = model.data_movetypeSheets[model.unit_data[loadId].type.movetype];
+    if (model.move_canTypeMoveTo(movetp, x - 1, y)) selection.setValueAt(x - 1, y, 1);
+    if (model.move_canTypeMoveTo(movetp, x + 1, y)) selection.setValueAt(x + 1, y, 1);
+    if (model.move_canTypeMoveTo(movetp, x, y - 1)) selection.setValueAt(x, y - 1, 1);
+    if (model.move_canTypeMoveTo(movetp, x, y + 1)) selection.setValueAt(x, y + 1, 1);
+});
+
+model.event_on("unloadUnit_invoked", function(transportId, trsx, trsy, loadId, tx, ty) {
+    assert(model.unit_data[loadId].loadedIn === transportId);
+    if (tx === -1 || ty === -1 || model.unit_posData[tx][ty]) {
+        return;
+    }
+    model.unit_data[loadId].loadedIn = -1;
+    model.unit_data[transportId].loadedIn++;
+    var moveCode;
+    if (tx < trsx) moveCode = model.move_MOVE_CODES.LEFT; else if (tx > trsx) moveCode = model.move_MOVE_CODES.RIGHT; else if (ty < trsy) moveCode = model.move_MOVE_CODES.UP; else if (ty > trsy) moveCode = model.move_MOVE_CODES.DOWN;
+    move_pathCache[0] = moveCode;
+    move_pathCache[1] = INACTIVE_ID;
+    model.events.move_moveByCache(loadId, trsx, trsy, 1);
+    model.events.wait_invoked(loadId);
+});
+
+model.event_on("buildUnit_check", function(factoryId, playerId, type) {
+    var uLimit = controller.configValue("unitLimit");
+    var count = model.unit_countUnits(playerId);
+    if (!uLimit) uLimit = 9999999;
+    if (count >= uLimit) return false;
+    if (count >= MAX_UNITS_PER_PLAYER) return false;
+});
+
+model.event_on("damageUnit", function(uid, damage, minRest) {
+    var unit = model.unit_data[uid];
+    assert(unit);
+    unit.hp -= damage;
+    if (minRest && unit.hp <= minRest) {
+        unit.hp = minRest;
+    } else {
+        if (unit.hp <= 0) model.events.destroyUnit(uid);
+    }
+});
+
+model.event_on("healUnit", function(uid, health, diffAsGold) {
+    var unit = model.unit_data[uid];
+    assert(unit);
+    unit.hp += health;
+    if (unit.hp > 99) {
+        if (diffAsGold === true) {
+            var diff = unit.hp - 99;
+            model.player_data[unit.owner].gold += parseInt(unit.type.cost * diff / 100, 10);
+        }
+        unit.hp = 99;
+    }
+});
+
+model.event_firstOn("createUnit", function(slotId, pid, x, y, type) {
+    assert(model.unit_data[slotId].owner === INACTIVE_ID);
+    var typeSheet = model.data_unitSheets[type];
+    var unit = model.unit_data[slotId];
+    unit.hp = 99;
+    unit.owner = pid;
+    unit.type = typeSheet;
+    unit.ammo = typeSheet.ammo;
+    unit.fuel = typeSheet.fuel;
+    unit.loadedIn = -1;
+});
+
+model.event_firstOn("destroyUnitSilent", function(uid) {
+    var unit = model.unit_data[uid];
+    unit.owner = INACTIVE_ID;
+    if (controller.configValue("noUnitsLeftLoose") === 1 && model.unit_countUnits(unit.owner) === 0) {
+        controller.update_endGameRound();
+    }
+});
+
+model.event_on("destroyUnit", function(uid) {
+    model.events.destroyUnitSilent(uid);
+});
+
+model.event_on("weather_calculateNext", function(wth) {
     var newTp;
     var duration;
     assert(controller.isHost());
@@ -4463,16 +4201,14 @@ model.weather_calculateNext = function() {
         newTp = model.data_defaultWeatherSheet.ID;
         duration = controller.configValue("weatherMinDays") + parseInt(controller.configValue("weatherRandomDays") * Math.random(), 10);
     }
-    controller.action_sharedInvoke("weather_change", [ newTp ]);
-    model.dayEvents_push(model.round_daysToTurns(duration), "weather_calculateNext", []);
-};
+    controller.commandStack_sharedInvokement("weather_change", newTp);
+    model.events.dayEvent(duration, "weather_calculateNext");
+});
 
-model.weather_change = function(wth) {
-    assert(model.data_weatherSheets.hasOwnProperty(wth));
+model.event_on("weather_change", function(wth) {
     model.weather_data = model.data_weatherSheets[wth];
-    model.fog_recalculateFogMap();
-    model.events.weather_change(wth);
-};
+    model.events.recalculateFogMap();
+});
 
 model.event_on("prepare_game", function(dom) {
     for (var i = 0, e = model.actions_leftActors.length; i < e; i++) {
@@ -4570,35 +4306,37 @@ model.event_on("save_game", function(dom) {
 });
 
 model.event_on("prepare_game", function(dom) {
-    var list = model.dayEvents_data;
-    for (i = 0, e = list.length; i < e; i++) {
-        list[i][0] = null;
-        list[i][1] = null;
-        list[i][2] = null;
-    }
+    model.dayTick_dataTime.resetValues();
+    model.dayTick_dataEvent.resetValues();
+    model.dayTick_dataArgs.resetValues();
 });
 
 model.event_on("load_game", function(dom) {
-    var list = model.dayEvents_data;
     var i = 0;
     var e = dom.dyev.length;
+    assert(dom.dyea.length === e * 2);
     for (;i < e; i++) {
-        assert(util.isInt(list[i][0]) && list[i][0] >= 0);
-        assert(util.isString(list[i][1]));
-        assert(Array.isArray(list[i][2]));
-        list[i][0] = dom.dyev[i][0];
-        list[i][1] = dom.dyev[i][1];
-        list[i][2] = dom.dyev[i][2];
+        assertInt(dom.dyev[i]);
+        assertStr(dom.dyee[i]);
+        assert(dom.dyev[i] > 0);
+        model.dayTick_dataTime[i] = dom.dyev[i];
+        model.dayTick_dataEvent[i] = dom.dyee[i];
+        model.dayTick_dataArgs[2 * i] = dom.dyea[2 * i];
+        model.dayTick_dataArgs[2 * i + 1] = dom.dyea[2 * i + 1];
     }
 });
 
 model.event_on("save_game", function(dom) {
-    dom.dyev = [];
+    dom.dyet = [];
+    dom.dyee = [];
+    dom.dyea = [];
     var i = 0;
-    var e = model.dayEvents_data.length;
+    var e = model.dayTick_dataTime.length;
     for (;i < e; i++) {
-        if (model.dayEvents_data[i] !== null) {
-            dom.dyev.push(model.dayEvents_data[i]);
+        if (list[i] !== INACTIVE_ID) {
+            dom.dyet.push(list[i]);
+            dom.dyee.push(model.dayTick_dataEvent[i]);
+            dom.dyea.push(model.dayTick_dataArgs[2 * i], model.dayTick_dataArgs[2 * i + 1]);
         }
     }
 });
@@ -4746,10 +4484,6 @@ model.event_on("save_game", function(dom) {
 
 model.event_on("prepare_game", function(dom) {
     model.rule_map.resetValues();
-});
-
-model.event_on("prepare_game", function(dom) {
-    model.timer_resetTurnTimer();
 });
 
 model.event_on("load_game", function(dom) {
@@ -4965,77 +4699,75 @@ model.event_on("parse_weather", function(sheet) {
     if (sheet.defaultWeather !== void 0) assertBool(sheet.defaultWeather);
 });
 
-controller.action_mapAction({
+-controller.action_mapAction({
     key: "activatePower",
-    hasSubMenu: true,
-    condition: function() {
-        return (model.co_activeMode === model.co_MODES.AW1 || model.co_activeMode === model.co_MODES.AW2 || model.co_activeMode === model.co_MODES.AWDS) && model.co_canActivatePower(model.round_turnOwner, model.co_POWER_LEVEL.COP);
+    condition: function(data) {
+        return model.events.activatePower_check(model.round_turnOwner);
     },
+    hasSubMenu: true,
     prepareMenu: function(data) {
         var co_data = model.co_data[model.round_turnOwner];
         data.menu.addEntry("cop");
-        if (model.co_canActivatePower(model.round_turnOwner, model.co_POWER_LEVEL.SCOP)) data.menu.addEntry("scop");
+        if (model.co_canActivatePower(model.round_turnOwner, model.co_POWER_LEVEL.SCOP)) {
+            data.menu.addEntry("scop");
+        }
     },
     invoke: function(data) {
         var cmd;
         switch (data.action.selectedSubEntry) {
           case "cop":
-            cmd = "co_activateCOP";
+            cmd = model.co_POWER_LEVEL.COP;
             break;
 
           case "scop":
-            cmd = "co_activateSCOP";
+            cmd = model.co_POWER_LEVEL.SCOP;
             break;
 
           default:
-            assert(false, "model.co_model.co_activatePower__");
+            assert(false);
         }
-        controller.action_sharedInvoke(cmd, [ model.round_turnOwner ]);
+        controller.commandStack_sharedInvokement("activatePower_invoked", model.round_turnOwner, cmd);
     }
 });
 
 controller.action_unitAction({
     key: "attachCommander",
-    condition: function() {
-        if (model.co_activeMode !== model.co_MODES.AWDR) return false;
+    condition: function(data) {
+        return model.events.attachCommander_check(model.round_turnOwner);
     },
     invoke: function(data) {
-        controller.action_sharedInvoke("co_attachCommander", [ model.round_turnOwner, data.source.unitId ]);
+        controller.commandStack_sharedInvokement("co_attachCommander", model.round_turnOwner, data.source.unitId);
     }
 });
 
 controller.action_unitAction({
     key: "attack",
-    targetSelectionType: "A",
     relation: [ "S", "T", model.player_RELATION_MODES.NONE, model.player_RELATION_MODES.SAME_OBJECT ],
+    targetSelectionType: "A",
     prepareTargets: function(data) {
         model.battle_calculateTargets(data.source.unitId, data.target.x, data.target.y, data.selection);
     },
     condition: function(data) {
-        if (model.battle_isPeacePhaseActive()) return false;
-        if (model.battle_isIndirectUnit(data.source.unitId) && data.movePath.data.getSize() > 0) return false;
-        return model.battle_hasTargets(data.source.unitId, data.target.x, data.target.y);
+        return model.events.attack_check(data.source.unitId, data.target.x, data.target.y, data.movePath);
     },
     invoke: function(data) {
         if (data.targetselection.unitId !== -1) {
-            controller.action_sharedInvoke("battle_invokeBattle", [ data.source.unitId, data.targetselection.unitId, Math.round(Math.random() * 100), Math.round(Math.random() * 100), false ]);
+            controller.commandStack_sharedInvokement("attack_invoked", data.source.unitId, data.targetselection.unitId, Math.round(Math.random() * 100), Math.round(Math.random() * 100), 0);
         } else assert(false, "no valid target");
     }
 });
 
 controller.action_propertyAction({
     key: "buildUnit",
-    propertyAction: true,
-    hasSubMenu: true,
-    condition: function(data, wish) {
-        model.events["buildUnit_check"](wish, data.source.propertyId, model.property_data[data.source.propertyId].owner);
-        return !wish.declined;
+    condition: function(data) {
+        return model.events.buildUnit_check(data.source.propertyId, model.property_data[data.source.propertyId].owner);
     },
+    hasSubMenu: true,
     prepareMenu: function(data) {
         model.factoryGenerateBuildMenu(data.source.propertyId, data.menu, true);
     },
     invoke: function(data) {
-        controller.action_sharedInvoke("factory_produceUnit", [ data.source.x, data.source.y, data.action.selectedSubEntry ]);
+        controller.commandStack_sharedInvokement("buildUnit_invoked", data.source.x, data.source.y, data.action.selectedSubEntry);
     }
 });
 
@@ -5044,30 +4776,28 @@ controller.action_unitAction({
     relation: [ "S", "T", model.player_RELATION_MODES.SAME_OBJECT, model.player_RELATION_MODES.NONE ],
     relationToProp: [ "S", "T", model.player_RELATION_MODES.ENEMY, model.player_RELATION_MODES.NONE ],
     condition: function(data) {
-        return model.property_isCapturableBy(data.target.propertyId, data.source.unitId);
+        return model.events.capture_check(data.target.propertyId, data.source.unitId);
     },
     invoke: function(data) {
-        controller.action_sharedInvoke("property_capture", [ data.source.unitId, data.target.propertyId ]);
+        controller.commandStack_sharedInvokement("capture_invoked", data.target.propertyId, data.source.unitId);
     }
 });
 
 controller.action_unitAction({
     key: "detachCommander",
-    condition: function() {
-        return model.co_activeMode === model.co_MODES.AWDR;
+    condition: function(data) {
+        return model.events.detachCommander_check(model.round_turnOwner);
     },
     invoke: function(data) {
-        controller.action_sharedInvoke("co_detachCommander", [ model.round_turnOwner, data.target.x, data.target.y ]);
+        controller.commandStack_sharedInvokement("detachCommander_invoked", model.round_turnOwner, data.target.x, data.target.y);
     }
 });
 
 controller.action_mapAction({
     key: "nextTurn",
-    condition: function() {
-        return true;
-    },
+    condition: function(data) {},
     invoke: function() {
-        controller.action_sharedInvoke("round_nextTurn", []);
+        controller.commandStack_sharedInvokement("nextTurn_invoked");
     }
 });
 
@@ -5075,14 +4805,14 @@ controller.action_unitAction({
     key: "fireCannon",
     relation: [ "S", "T", model.player_RELATION_MODES.SAME_OBJECT ],
     condition: function(data) {
-        return model.bombs_isCannon(data.target.unitId) && model.bombs_markCannonTargets(data.target.unitId, data.selection);
+        return model.events.fireCannon_check(data.source.unitId, data.selection);
     },
     targetSelectionType: "A",
     prepareTargets: function(data) {
-        model.bombs_markCannonTargets(data.target.unitId, data.selection);
+        model.events.fireCannon_fillTargets(data.source.unitId, data.selection);
     },
     invoke: function(data) {
-        controller.action_sharedInvoke("bombs_fireCannon", [ data.target.x, data.target.y, data.targetselection.x, data.targetselection.y ]);
+        controller.commandStack_sharedInvokement("fireCannon_invoked", data.target.x, data.target.y, data.targetselection.x, data.targetselection.y);
     }
 });
 
@@ -5090,10 +4820,10 @@ controller.action_unitAction({
     key: "fireLaser",
     relation: [ "S", "T", model.player_RELATION_MODES.SAME_OBJECT ],
     condition: function(data) {
-        return model.bombs_isLaser(data.target.unitId);
+        return model.events.fireLaser_check(data.target.unitId);
     },
     invoke: function(data) {
-        controller.action_sharedInvoke("bombs_fireLaser", [ data.target.x, data.target.y ]);
+        controller.commandStack_sharedInvokement("bombs_fireLaser", data.target.x, data.target.y);
     }
 });
 
@@ -5101,23 +4831,23 @@ controller.action_unitAction({
     key: "unitHide",
     relation: [ "S", "T", model.player_RELATION_MODES.NONE, model.player_RELATION_MODES.SAME_OBJECT ],
     condition: function(data) {
-        var unit = data.source.unit;
-        return unit.type.stealth && !unit.hidden;
+        return model.events.unitHide_check(data.source.unitId);
     },
     invoke: function(data) {
-        controller.action_sharedInvoke("unit_hide", [ data.source.unitId ]);
+        controller.commandStack_sharedInvokement("unitHide_invoked", data.source.unitId);
     }
 });
 
 controller.action_unitAction({
     key: "joinUnits",
+    noAutoWait: true,
     relation: [ "S", "T", model.player_RELATION_MODES.OWN ],
     condition: function(data) {
-        return model.unit_areJoinable(data.source.unitId, data.target.unitId);
+        return model.events.joinUnits_check(data.source.unitId, data.target.unitId);
     },
     invoke: function(data) {
-        controller.action_sharedInvoke("unit_join", [ data.source.unitId, data.target.unitId ]);
-        controller.action_sharedInvoke("actions_markUnitNonActable", [ data.target.unitId ]);
+        controller.commandStack_sharedInvokement("joinUnits_invoked", data.source.unitId, data.target.unitId);
+        controller.commandStack_sharedInvokement("wait_invoked", data.target.unitId);
     }
 });
 
@@ -5125,11 +4855,10 @@ controller.action_unitAction({
     key: "loadUnit",
     relation: [ "S", "T", model.player_RELATION_MODES.OWN ],
     condition: function(data) {
-        var tuid = data.target.unitId;
-        return model.transport_isTransportUnit(tuid) && model.transport_canLoadUnit(data.source.unitId, tuid);
+        return model.events.loadUnit_check(data.source.unitId, data.target.unitId);
     },
     invoke: function(data) {
-        controller.action_sharedInvoke("transport_loadInto", [ data.source.unitId, data.target.unitId ]);
+        controller.commandStack_sharedInvokement("loadUnit_invoked", data.source.unitId, data.target.unitId);
     }
 });
 
@@ -5141,25 +4870,26 @@ controller.action_unitAction({
         data.selectionRange = data.target.property.type.rocketsilo.range;
     },
     isTargetValid: function(data, x, y) {
-        return model.map_isValidPosition(x, y);
+        return model.events.silofire_validPos(x, y);
     },
     condition: function(data) {
-        return model.bombs_canBeFiredBy(data.target.propertyId, data.source.unitId);
+        return model.events.silofire_check(data.target.propertyId, data.source.unitId);
     },
     invoke: function(data) {
-        controller.action_sharedInvoke("bombs_fireSilo", [ data.target.x, data.target.y, data.targetselection.x, data.targetselection.y, data.source.unit.owner ]);
+        controller.commandStack_sharedInvokement("silofire_invoked", data.target.x, data.target.y, data.targetselection.x, data.targetselection.y, data.source.unit.owner);
     }
 });
 
 controller.action_unitAction({
     key: "explode",
+    noAutoWait: true,
     relation: [ "S", "T", model.player_RELATION_MODES.NONE, model.player_RELATION_MODES.SAME_OBJECT ],
     condition: function(data) {
-        return model.bombs_isSuicideUnit(data.source.unitId);
+        return model.events.explode_check(data.source.unitId);
     },
     invoke: function(data) {
-        controller.action_sharedInvoke("unit_destroySilently", [ data.source.unitId ]);
-        controller.action_sharedInvoke("bombs_explosionAt", [ data.target.x, data.target.y, data.source.unit.type.suicide.range, model.unit_convertPointsToHealth(data.source.unit.type.suicide.damage), data.source.unit.owner ]);
+        controller.commandStack_sharedInvokement("unit_destroySilently", data.source.unitId);
+        controller.commandStack_sharedInvokement("explode_invoked", data.target.x, data.target.y, data.source.unit.type.suicide.range, model.unit_convertPointsToHealth(data.source.unit.type.suicide.damage), data.source.unit.owner);
     }
 });
 
@@ -5167,66 +4897,65 @@ controller.action_unitAction({
     key: "supplyUnit",
     relation: [ "S", "T", model.player_RELATION_MODES.NONE, model.player_RELATION_MODES.SAME_OBJECT ],
     condition: function(data) {
-        return model.supply_hasSupplyTargetsNearby(data.source.unitId, data.target.x, data.target.y);
+        return model.events.supplyUnit_check(data.source.unitId, data.target.x, data.target.y);
     },
     invoke: function(data) {
-        controller.action_sharedInvoke("supply_suppliesNeighbours", [ data.source.unitId ]);
+        controller.commandStack_sharedInvokement("supplyUnit_invoked", data.source.unitId);
     }
 });
 
 controller.action_mapAction({
     key: "transferMoney",
-    hasSubMenu: true,
     condition: function(data) {
-        if (data.target.x === -1) return;
-        return model.team_canTransferMoneyToTile(model.round_turnOwner, data.target.x, data.target.y);
+        return model.events.transferMoney_check(model.round_turnOwner, data.target.x, data.target.y);
     },
+    hasSubMenu: true,
     prepareMenu: function(data) {
-        model.team_addGoldTransferEntries(model.round_turnOwner, data.menu);
+        model.events.transferMoney_addEntries(model.round_turnOwner, data.menu);
     },
     invoke: function(data) {
-        controller.action_sharedInvoke("team_transferMoneyByTile", [ model.round_turnOwner, data.target.x, data.target.y, data.action.selectedSubEntry ]);
+        controller.commandStack_sharedInvokement("transferMoney_invoked", data.target.x, data.target.y, data.action.selectedSubEntry);
     }
 });
 
 controller.action_propertyAction({
     key: "transferProperty",
-    hasSubMenu: true,
     relationToProp: [ "S", "T", model.player_RELATION_MODES.SAME_OBJECT ],
     condition: function(data) {
-        return model.team_isPropertyTransferable(data.source.propertyId);
+        return model.events.transferProperty_check(data.source.propertyId);
     },
+    hasSubMenu: true,
     prepareMenu: function(data) {
-        model.team_addTransferTargets(data.source.property.owner, data.menu);
+        model.events.transferProperty_addEntries(data.source.property.owner, data.menu);
     },
     invoke: function(data) {
-        controller.action_sharedInvoke("team_transferProperty", [ data.source.propertyId, data.action.selectedSubEntry ]);
+        controller.commandStack_sharedInvokement("transferProperty_invoked", data.source.propertyId, data.action.selectedSubEntry);
     }
 });
 
 controller.action_unitAction({
     key: "transferUnit",
-    hasSubMenu: true,
     relation: [ "S", "T", model.player_RELATION_MODES.SAME_OBJECT ],
     condition: function(data) {
-        return model.team_isUnitTransferable(data.source.unitId);
+        return model.events.transferUnit_check(data.source.unitId);
     },
+    hasSubMenu: true,
     prepareMenu: function(data) {
-        model.team_addTransferTargets(data.source.unit.owner, data.menu);
+        model.events.transferUnit_addEntries(data.source.unit.owner, data.menu);
     },
     invoke: function(data) {
-        controller.action_sharedInvoke("team_transferUnit", [ data.source.unitId, data.action.selectedSubEntry ]);
+        controller.commandStack_sharedInvokement("transferUnit_invoked", data.source.unitId, data.action.selectedSubEntry);
     }
 });
 
 controller.action_unitAction({
-    key: "unhideUnit",
+    key: "unitUnhide",
     relation: [ "S", "T", model.player_RELATION_MODES.NONE, model.player_RELATION_MODES.SAME_OBJECT ],
     condition: function(data) {
-        return data.source.unit.hidden;
+        return model.events.unitUnhide_check(data.source.unitId);
     },
     invoke: function(data) {
-        controller.action_sharedInvoke("unit_unhide", [ data.source.unitId ]);
+        controller.commandStack_sharedInvokement("unitUnhide_invoked", data.source.unitId);
     }
 });
 
@@ -5235,25 +4964,29 @@ controller.action_unitAction({
     multiStepAction: true,
     relation: [ "S", "T", model.player_RELATION_MODES.SAME_OBJECT, model.player_RELATION_MODES.NONE ],
     condition: function(data) {
-        return model.transport_canUnloadUnitsAt(data.source.unitId, data.target.x, data.target.y);
+        return model.events.unloadUnit_check(data.source.unitId, data.target.x, data.target.y);
     },
     prepareMenu: function(data) {
-        model.transport_addUnloadTargetsToMenu(data.source.unitId, data.target.x, data.target.y, data.menu);
+        model.events.unloadUnit_addUnloadTargetsToMenu(data.source.unitId, data.target.x, data.target.y, data.menu);
     },
     targetSelectionType: "B",
     prepareTargets: function(data) {
-        model.transport_addUnloadTargetsToSelection(data.source.unitId, data.target.x, data.target.y, data.action.selectedSubEntry, data.selection);
+        model.events.unloadUnit_addUnloadTargetsToSelection(data.source.unitId, data.target.x, data.target.y, data.action.selectedSubEntry, data.selection);
     },
     invoke: function(data) {
-        controller.action_sharedInvoke("transport_unloadFrom", [ data.source.unitId, data.target.x, data.target.y, data.action.selectedSubEntry, data.targetselection.x, data.targetselection.y, true ]);
+        controller.commandStack_sharedInvokement("unloadUnit_invoked", data.source.unitId, data.target.x, data.target.y, data.action.selectedSubEntry, data.targetselection.x, data.targetselection.y);
     }
 });
 
 controller.action_unitAction({
     key: "wait",
+    noAutoWait: true,
     relation: [ "S", "T", model.player_RELATION_MODES.NONE, model.player_RELATION_MODES.SAME_OBJECT ],
+    condition: function(data) {
+        return model.events.wait_check(data.source.unitId);
+    },
     invoke: function(data) {
-        controller.action_sharedInvoke("actions_markUnitNonActable", [ data.source.unitId ]);
+        controller.commandStack_sharedInvokement("wait_invoked", data.source.unitId);
     }
 });
 
@@ -5277,7 +5010,7 @@ util.scoped(function() {
             var prid = data.source.propertyId;
             if (data.source.unit) return -1;
             if (!model.factory_isFactory(prid)) return -1;
-            if (!model.factory_canProduceSomething(prid)) {
+            if (!model.factory_canProduceSomething(prid, model.property_data[prid].owner)) {
                 if (DEBUG) util.log("cannot build capturers because no slots left or no man power left");
             }
             menu.clear();
