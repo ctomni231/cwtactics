@@ -55,6 +55,7 @@ model.event_define = function(ev){
 model.event_firstOn = function( ev, cb ){
   assertStr(ev);
   assertFn(cb);
+  if( !model.event_callbacks[ev] ) model.event_define(ev);
   model.event_eventFirst[ev] = cb;
 };
 
