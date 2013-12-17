@@ -32,9 +32,9 @@ PAGE_DATA.compat = [
 
 ];
 
-PAGE_DATA.compat_link = "mailto:ctomni231@gmail.com?"+encodeURIComponent(
-  "subject=Compatibility Report"+
-  "&amp;body=Hi I want to give you my compatibility report."+
+PAGE_DATA.compat_link = "mailto:ctomni231@gmail.com?"+
+  "subject="+encodeURIComponent("Compatibility Report")+
+  "&body="+encodeURIComponent("Hi I want to give you my compatibility report."+
   "\n "+
   "\n Date: "+
   "\n Used the \"Play CW:T\" button: Yes/No"+
