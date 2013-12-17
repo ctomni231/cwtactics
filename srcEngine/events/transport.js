@@ -95,6 +95,7 @@ model.event_on( "unloadUnit_invoked", function( transportId, trsx, trsy, loadId,
   // TODO: remove this later
   // trapped ?
   if( tx === -1 || ty === -1 || model.unit_posData[tx][ty] ){
+    controller.stateMachine.data.breakMultiStep = true;
     return;
   }
 
@@ -110,8 +111,8 @@ model.event_on( "unloadUnit_invoked", function( transportId, trsx, trsy, loadId,
   else if( ty > trsy ) moveCode = model.move_MOVE_CODES.DOWN;
 
   // move load out of the transporter
-  move_pathCache[0] = moveCode;
-  move_pathCache[1] = INACTIVE_ID;
-  model.events.move_moveByCache( loadId, trsx, trsy, 1);
-  model.events.wait_invoked( loadId );
+  controller.commandStack_localInvokement("move_clearWayCache");
+  controller.commandStack_localInvokement("move_appendToWayCache",moveCode);
+  controller.commandStack_localInvokement("move_moveByCache",loadId,trsx,trsy,1);
+  controller.commandStack_localInvokement("wait_invoked",loadId);
 });

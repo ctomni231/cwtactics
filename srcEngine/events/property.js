@@ -78,10 +78,9 @@ model.event_on("property_createProperty", function( pid, x, y, type ){
 
 // Resets the capture points of a property object
 //
-model.event_on("property_resetCapturePoints", function( prid ){
-  assert( model.property_isValidPropId(prid) );
-
-  model.property_data[prid].capturePoints = 20;
+model.event_on("move_moveByCache",function( uid, x, y ){
+  var prop = model.property_posMap[x][y];
+  if( prop ) prop.capturePoints = 20;
 });
 
 // Changes the type of a property object.

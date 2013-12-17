@@ -13,12 +13,12 @@ model.supply_isSupplyUnit = function( uid ){
 //
 model.supply_hasSupplyTargetsNearby = function( uid, x, y ){
   assert( model.unit_isValidUnitId(uid) );
-  assert( model.map_isValidPosition(x,y) );
-
-  if( !model.supply_isSupplyUnit( uid ) ) return false;
 
   var supplier = model.unit_data[uid];
-  //if( x > 0 )
+  if( supplier.loadedIn !== INACTIVE_ID ) return false;
+
+  assert( model.map_isValidPosition(x,y) );
+  if( !model.supply_isSupplyUnit( uid ) ) return false;
 
   return false;
 };

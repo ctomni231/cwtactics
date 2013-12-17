@@ -345,7 +345,7 @@ controller.stateMachine = util.stateMachine({
 
       // IF ACTION IS A MULTISTEP ACTION THEN PLACE A SYMBOLIC WAIT COMMAND
       if( !trapped && this.data.action.object.multiStepAction ){
-
+          this.data.breakMultiStep = false;
         // this.data.inMultiStep = true;
           controller.commandStack_localInvokement( "multistep_next" );
         return "MULTISTEP_IDLE";
@@ -369,6 +369,9 @@ controller.stateMachine = util.stateMachine({
       this.data.inMultiStep = true;
       return ( this.data.menu.size > 1 )? "ACTION_SUBMENU": "IDLE";
 
+    },
+    nextStepBreak: function(){
+      return "IDLE";
     }
   }
 

@@ -101,10 +101,6 @@ model.event_on("move_moveByCache",function( uid, x, y, noFuelConsumption ){
   // DO NOT ERASE POSITION IF UNIT WAS LOADED OR HIDDEN (NOT INGAME HIDDEN) SOMEWHERE
   if( unit.x >= 0 && unit.y >= 0 ) {
 
-    // RESET CAPTURE POINTS
-    var prop = model.property_posMap[unit.x][unit.y];
-    if( prop ) model.property_resetCapturePoints( model.property_extractId( prop ) );
-
     model.events.clearUnitPosition( uid );
   }
 
