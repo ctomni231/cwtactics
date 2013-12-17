@@ -85,8 +85,9 @@ controller.ai_loopHolder_ = {
 controller.ai_scoreDataHolder_ = {
   source          : Object.create( controller.TaggedPosition ),
   target          : Object.create( controller.TaggedPosition ),
-  selectionTarget : Object.create( controller.TaggedPosition ),
+  targetselection : Object.create( controller.TaggedPosition ),
   selection       : util.selectionMap( MAX_SELECTION_RANGE * 4 + 1 ),
+  move            : util.list(MAX_SELECTION_RANGE, INACTIVE_ID),
   action          : {
     selectedSubEntry: ""
   },
@@ -98,9 +99,10 @@ controller.ai_scoreDataHolder_ = {
 controller.ai_actionDataHolder_ = {
   source          : Object.create( controller.TaggedPosition ),
   target          : Object.create( controller.TaggedPosition ),
-  selectionTarget : Object.create( controller.TaggedPosition ),
+  targetselection : Object.create( controller.TaggedPosition ),
   selection       : util.selectionMap( MAX_SELECTION_RANGE * 4 + 1 ),
   used            : false,
+  move            : util.list(MAX_SELECTION_RANGE, INACTIVE_ID),
   check_index     : -1,
   endsAiTurn      : false,
   action          : {
@@ -288,7 +290,7 @@ controller.ai_machine = util.stateMachine({
       // clean score data
       scoreData.source.set(-1,-1);
       scoreData.target.set(-1,-1);
-      scoreData.selectionTarget.set(-1,-1);
+      scoreData.targetselection.set(-1,-1);
       scoreData.selection.setCenter(0,0,-1);
       scoreData.used = false;
       scoreData.selectedSubEntry = "";
@@ -303,7 +305,8 @@ controller.ai_machine = util.stateMachine({
           //util.log(controller.ai_spec,"- ..for unit",loopData.i);
 
           var unit = model.unit_data[loopData.i];
-          if( unit.owner !== INACTIVE_ID && unit.loadedIn === INACTIVE_ID ){
+          if( unit.owner !== INACTIVE_ID && unit.loadedIn === INACTIVE_ID && 
+              model.actions_canAct(loopData.i)){
             dataTp = 0;
             scoreData.source.set( unit.x, unit.y );
             model.move_fillMoveMap( scoreData.source, scoreData.selection );
@@ -346,18 +349,19 @@ controller.ai_machine = util.stateMachine({
           if( dataTp !== 2 && check.mapAction ) continue;
 
           // call scoring
-          nScore = check.scoring(scoreData);
+          nScore = check.scoring(scoreData,loopData.score);
 
           // new object got better scores -> select it's action
           if( nScore > loopData.score ){
             actionData.source.grab(          scoreData.source)
             actionData.target.grab(          scoreData.target)
-            actionData.selectionTarget.grab( scoreData.selectionTarget)
+            actionData.targetselection.grab( scoreData.targetselection)
             actionData.selection.grab(       scoreData.selection);
             actionData.used             = true;
             actionData.check_index      = i-1;
             actionData.endsAiTurn       = (check.endsAiTurn === true);
             actionData.cacheInt         = scoreData.cacheInt;
+            actionData.move.grabValues(scoreData.move);
             loopData.score              = nScore;
             actionData.action.selectedSubEntry = scoreData.action.selectedSubEntry;
           }

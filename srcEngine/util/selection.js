@@ -56,7 +56,7 @@
     }
   }
 
-  function nextValidPosition( x, y, minValue, walkLeft, cb ){
+  function nextValidPosition( x, y, minValue, walkLeft, cb, arg  ){
     var data = this.data;
     var cy = this.centerX;
     var cx = this.centerY;
@@ -88,7 +88,7 @@
 
         // VALID POSITION
         if( data[x][y] >= minValue ) {
-          cb( x, y );
+          cb( x, y, arg );
           return;
         }
       }
