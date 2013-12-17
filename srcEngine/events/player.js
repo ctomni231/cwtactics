@@ -34,7 +34,7 @@ model.event_on("player_deactivatePlayer", function( pid ){
 
   // when no opposite teams are found then the game has ended
   if( !model.player_areEnemyTeamsLeft() ){
-    controller.controller.commandStack_localInvokement("player_noTeamsAreLeft");
+    controller.commandStack_localInvokement("player_noTeamsAreLeft");
   }
 });
 
