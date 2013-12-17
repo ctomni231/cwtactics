@@ -1,13 +1,13 @@
 // Declines when game round is in peace phase.
 //
-model.event_on( "attack_check",function( wish ){
+model.event_on( "attack_check",function( ){
   if( model.round_day < controller.configValue("daysOfPeace") ) return false;
 });
 
 // Declines when the attacker is an indirect unit and moved this turn.
 //
 model.event_on( "attack_check",function(  uid, x,y, move ){
-  if( model.battle_isIndirectUnit(uid) && move.data.getSize() > 0 ){
+  if( model.battle_isIndirectUnit(uid) && ( move === true || move.data.getSize() > 0 ) ){
     return false;
   }
 });

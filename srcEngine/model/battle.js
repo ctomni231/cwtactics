@@ -37,6 +37,7 @@ model.battle_calculateTargets = function( uid, x, y, data, markAttackableTiles )
   if(!markAttackableTiles) markAttackableTiles = false;
 
   assert( model.unit_isValidUnitId(uid) );
+  if( markInData ) data.setCenter(x,y,INACTIVE_ID);
 
   var unit        = model.unit_data[uid];
   var teamId      = model.player_data[unit.owner].team;
@@ -228,7 +229,7 @@ model.battle_getBattleDamageAgainst = function( attacker, defender, luck, withMa
     "calculating battle damage",
     model.unit_extractId(attacker),
     "against",
-    model.unit_extractId(attacker)
+    model.unit_extractId(defender)
   );
 
   if( typeof isCounter === "undefined" ) isCounter = false;
