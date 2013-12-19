@@ -62,6 +62,15 @@ util.scoped(function(){
     menuEntryListElement.children[ controller.menuCursorIndex ].children[0].focus();
   };
 
+  controller.createButtonConnector = function( element, index ){
+    element.onmouseover = function(){
+      controller.setMenuIndex(index,false);
+    };
+    element.onclick = function(){
+      controller.screenStateMachine.event("INP_ACTION");
+    };
+  };
+
   /**
    *
    */
@@ -121,6 +130,7 @@ util.scoped(function(){
 
         // PERFORMANCE HIT ?
         entry = document.createElement("button");
+        controller.createButtonConnector( entry, i );
         var li = document.createElement("li");
         li.appendChild( entry );
         menuEntryListElement.appendChild( li );

@@ -58,28 +58,36 @@ controller.moveScreenY = 0;
  * @throws Error if the screen scale is not an integer
  */
 controller.setScreenScale = function( scale ){
-  if( scale < -1 || scale > 3 ){
+  if( scale < 1 || scale > 3 ){
     return;
   }
-  
+
   controller.screenScale = scale;
-  
+
   // INVOKES SCALING TRANSITION
   controller.screenElement.className = "scale"+scale;
-  
-  if( scale === 0 ) scale = 0.8;
-  else if( scale === -1 ) scale = 0.7;
-  
+
+  //if( scale === 0 ) scale = 0.8;
+  //else if( scale === -1 ) scale = 0.7;
+
   // TODO: UPDATE SCREEN PARAMETERS
   var tileLen = TILE_LENGTH*scale;
   controller.screenWidth  = parseInt( window.innerWidth/  tileLen, 10 );
   controller.screenHeight = parseInt( window.innerHeight/ tileLen, 10 );
-  
+
   controller.setScreenPosition(
     controller.screenX,
     controller.screenY,
     false
   );
+};
+
+controller.getMapXByScreenX = function( x ){
+  return controller.screenX + parseInt(x/(TILE_LENGTH*controller.screenScale),10);
+};
+
+controller.getMapXByScreenY = function( y ){
+  return controller.screenY + parseInt(y/(TILE_LENGTH*controller.screenScale),10);
 };
 
 controller.getCanvasPosX = function( x ){
@@ -98,28 +106,28 @@ controller.getCanvasPosY = function( y ){
  *                 that makes the given position x,y the center of the screen.
  */
 controller.setScreenPosition = function( x,y, centerIt ){
-  
+
   controller.screenX = x;
   controller.screenY = y;
-  
+
   var style = controller.screenElement.style;
   var scale = controller.screenScale;
   var left = -( controller.screenX * TILE_LENGTH * scale );
   var top = -( controller.screenY * TILE_LENGTH * scale );
-  
+
   switch( scale ){
-      
+
     case 2:
       left += controller.screenElement.width/2;
       top += controller.screenElement.height/2;
       break;
-      
+
     case 3:
       left += controller.screenElement.width;
       top += controller.screenElement.height;
       break;
   }
-  
+
   style.position = "absolute";
   style.left = left+"px";
   style.top = top+"px";
@@ -134,7 +142,7 @@ controller.setScreenPosition = function( x,y, centerIt ){
  */
 controller.shiftScreenPosition = function( code, len ){
   if( arguments.length === 1 ) len = 1;
-  
+
   var x = controller.screenX;
   var y = controller.screenY;
   switch( code ){
@@ -143,18 +151,18 @@ controller.shiftScreenPosition = function( code, len ){
     case model.move_MOVE_CODES.UP:    y -= len; break;
     case model.move_MOVE_CODES.LEFT:  x -= len; break;
   }
-  
+
   // CORRECT BOUNDS
   if( x < 0 ) x = 0;
   if( y < 0 ) y = 0;
   if( x >= model.map_width ) x = model.map_width-1;
   if( y >= model.map_height ) y = model.map_height-1;
-  
+
   controller.setScreenPosition( x,y, false );
 };
 
 /**
- * 
+ *
  */
 view.resizeCanvas = function(){
   var canvEl = controller.screenElement;

@@ -3,11 +3,11 @@ util.scoped(function(){
   var noInit = false;
 
   // -----------------------------------------------------------------------------------------------
-  
+
   controller.screenStateMachine.structure.GAMEROUND = Object.create(controller.stateParent);
-  
-	controller.screenStateMachine.structure.GAMEROUND.section = "cwt_game_screen";
-	
+
+  controller.screenStateMachine.structure.GAMEROUND.section = "cwt_game_screen";
+
   controller.screenStateMachine.structure.GAMEROUND.enterState = function(){
     if( noInit !== true ){
 
@@ -42,13 +42,13 @@ util.scoped(function(){
     controller.inGameLoop = false;
     return "MAIN";
   };
-  
-  
-  
+
+
+
   // ++++++++++++ INPUT MOVE ++++++++++++
-  
+
   controller.screenStateMachine.structure.GAMEROUND.LEFT = function( ev, distance ){
-    
+
     // IN TARGET TILE SELECTION MODE ?
     var state = controller.stateMachine.state;
     if( state === "ACTION_SELECT_TARGET_A" || state === "ACTION_SELECT_TARGET_B" ){
@@ -58,17 +58,17 @@ util.scoped(function(){
       );
       return this.breakTransition();
     }
-    
+
     if( !distance ) distance = 1;
-    
+
     if( distance === 1 ) controller.moveCursor( model.move_MOVE_CODES.LEFT, distance );
     else controller.shiftScreenPosition( model.move_MOVE_CODES.LEFT, distance );
-    
+
     return this.breakTransition();
   };
-  
+
   controller.screenStateMachine.structure.GAMEROUND.RIGHT = function( ev, distance ){
-    
+
     // IN TARGET TILE SELECTION MODE ?
     var state = controller.stateMachine.state;
     if( state === "ACTION_SELECT_TARGET_A" || state === "ACTION_SELECT_TARGET_B" ){
@@ -78,17 +78,17 @@ util.scoped(function(){
       );
       return this.breakTransition();
     }
-    
+
     if( !distance ) distance = 1;
-    
+
     if( distance === 1 ) controller.moveCursor( model.move_MOVE_CODES.RIGHT, distance );
     else controller.shiftScreenPosition( model.move_MOVE_CODES.RIGHT, distance );
     return this.breakTransition();
   };
-  
+
   controller.screenStateMachine.structure.GAMEROUND.UP = function( ev, distance ){
     var state = controller.stateMachine.state;
-    
+
     // IN TARGET TILE SELECTION MODE ?
     if( state === "ACTION_SELECT_TARGET_A" || state === "ACTION_SELECT_TARGET_B" ){
       controller.stateMachine.data.selection.nextValidPosition(
@@ -97,11 +97,11 @@ util.scoped(function(){
       );
       return this.breakTransition();
     }
-    
+
     var inMenu = ( state === "ACTION_MENU" || state === "ACTION_SUBMENU" );
-    
+
     if( !distance ) distance = 1;
-    
+
     if( !inMenu ){
       if( distance === 1 ) controller.moveCursor( model.move_MOVE_CODES.UP, distance );
       else controller.shiftScreenPosition( model.move_MOVE_CODES.UP, distance );
@@ -109,10 +109,10 @@ util.scoped(function(){
     else controller.decreaseMenuCursor();
     return this.breakTransition();
   };
-  
+
   controller.screenStateMachine.structure.GAMEROUND.DOWN = function( ev, distance ){
     var state = controller.stateMachine.state;
-    
+
     // IN TARGET TILE SELECTION MODE ?
     if( state === "ACTION_SELECT_TARGET_A" || state === "ACTION_SELECT_TARGET_B" ){
       controller.stateMachine.data.selection.nextValidPosition(
@@ -121,22 +121,45 @@ util.scoped(function(){
       );
       return this.breakTransition();
     }
-    
+
     var inMenu = ( state === "ACTION_MENU" || state === "ACTION_SUBMENU" );
-    
+
     if( !distance ) distance = 1;
-    
-    if( !inMenu ){ 
+
+    if( !inMenu ){
       if( distance === 1 ) controller.moveCursor( model.move_MOVE_CODES.DOWN, distance );
       else controller.shiftScreenPosition( model.move_MOVE_CODES.DOWN, distance );
     }
     else controller.increaseMenuCursor();
     return this.breakTransition();
   };
-  
-  
+
+  controller.screenStateMachine.structure.GAMEROUND.SHIFT_DOWN = function( ev, distance ){
+    controller.shiftScreenPosition( model.move_MOVE_CODES.DOWN, distance );
+    controller.moveCursor(   model.move_MOVE_CODES.DOWN, distance );
+    return this.breakTransition();
+  };
+
+  controller.screenStateMachine.structure.GAMEROUND.SHIFT_UP = function( ev, distance ){
+    controller.shiftScreenPosition( model.move_MOVE_CODES.UP, distance );
+    controller.moveCursor(   model.move_MOVE_CODES.UP, distance );
+    return this.breakTransition();
+  };
+
+  controller.screenStateMachine.structure.GAMEROUND.SHIFT_LEFT = function( ev, distance ){
+    controller.shiftScreenPosition( model.move_MOVE_CODES.LEFT, distance );
+    controller.moveCursor(   model.move_MOVE_CODES.LEFT, distance );
+    return this.breakTransition();
+  };
+
+  controller.screenStateMachine.structure.GAMEROUND.SHIFT_RIGHT = function( ev, distance ){
+    controller.shiftScreenPosition( model.move_MOVE_CODES.RIGHT, distance );
+    controller.moveCursor(   model.move_MOVE_CODES.RIGHT, distance );
+    return this.breakTransition();
+  };
+
   // ++++++++++++ INPUT ACTIONS ++++++++++++
-  
+
   controller.screenStateMachine.structure.GAMEROUND.ACTION = function( ev,x,y ){
     var state = controller.stateMachine.state;
     if( state === "IDLE" ){
@@ -149,16 +172,16 @@ util.scoped(function(){
     if( typeof x === "number" ){
       controller.setCursorPosition(x,y);
     }
-    
+
     controller.cursorActionClick();
     return this.breakTransition();
   };
-  
+
   controller.screenStateMachine.structure.GAMEROUND.HOVER = function( ev,x,y ){
     controller.setCursorPosition(x,y);
     return this.breakTransition();
   };
-  
+
   controller.screenStateMachine.structure.GAMEROUND.CANCEL = function( ev,x,y ){
     var state = controller.stateMachine.state;
     if( state === "IDLE" ){
@@ -174,9 +197,9 @@ util.scoped(function(){
         return this.breakTransition();
       }
     }
-    
+
     if( typeof x === "number" ) controller.setCursorPosition(x,y);
-    
+
     controller.cursorActionCancel();
     return this.breakTransition();
   };
