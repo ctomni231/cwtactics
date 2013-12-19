@@ -4,6 +4,9 @@ controller.setupTouchControls = function (canvas, menuEl) {
     // Called when an one finger tap occur
     //
     function oneFingerTap(event,x,y){
+      x = controller.getMapXByScreenX(x);
+      y = controller.getMapXByScreenY(y);
+
       var focusExists = (
         controller.stateMachine.state === "MOVEPATH_SELECTION" ||
         controller.stateMachine.state === "ACTION_SELECT_TARGET_A" ||
@@ -20,6 +23,8 @@ controller.setupTouchControls = function (canvas, menuEl) {
         } else   controller.screenStateMachine.event("INP_ACTION",x,y);
 
       } else {
+
+
 
         if (event.target.id === "cwt_menu"){
                controller.screenStateMachine.event("INP_ACTION");
@@ -40,14 +45,14 @@ controller.setupTouchControls = function (canvas, menuEl) {
     //
     function swipe(event,dx,dy){
       if( controller.screenStateMachine.state === "GAME_ROUND" ){
-        if( dx === 1  ) controller.screenStateMachine.event("INP_SHIFT_RIGHT", 1);
-        if( dx === -1 ) controller.screenStateMachine.event("INP_SHIFT_LEFT",  1);
-        if( dy === 1  ) controller.screenStateMachine.event("INP_SHIFT_DOWN",  1);
-        if( dy === -1 ) controller.screenStateMachine.event("INP_SHIFT_UP",    1);
+        if( dx === +1  ) controller.screenStateMachine.event("SHIFT_RIGHT", 10);
+        if( dx === -1 ) controller.screenStateMachine.event("SHIFT_LEFT",   10);
+        if( dy === +1  ) controller.screenStateMachine.event("SHIFT_DOWN",  10);
+        if( dy === -1 ) controller.screenStateMachine.event("SHIFT_UP",     10);
       } else {
-        if( dx === 1  ) controller.screenStateMachine.event("INP_RIGHT", 1);
+        if( dx === +1  ) controller.screenStateMachine.event("INP_RIGHT", 1);
         if( dx === -1 ) controller.screenStateMachine.event("INP_LEFT",  1);
-        if( dy === 1  ) controller.screenStateMachine.event("INP_DOWN",  1);
+        if( dy === +1  ) controller.screenStateMachine.event("INP_DOWN",  1);
         if( dy === -1 ) controller.screenStateMachine.event("INP_UP",    1);
       }
     }
@@ -74,7 +79,7 @@ controller.setupTouchControls = function (canvas, menuEl) {
           //MOVE SELECTION IN DIRECTION OF DRAG
         } else {
           //OUTSIDE THE MENU
-          controller.screenStateMachine.event("INP_CANCEL",x,y);
+          controller.screenStateMachine.event("INP_CANCEL");
         }
       }
 
@@ -138,22 +143,22 @@ controller.setupTouchControls = function (canvas, menuEl) {
     var isDrag = false;
 
     // TOUCH STARTS
-    document.addEventListener('touchstart', function (event) {
-      if (event.target.id !== "cwt_options_mapIn") event.preventDefault();
+    controller.screenElement.addEventListener('touchstart', function (event) {
+      event.preventDefault();
 
       // SAVE POSITION AND CLEAR OLD DATA
-      sx = event.touches[0].screenX;
-      sy = event.touches[0].screenY;
-      ex = sx;
-      ey = sy;
+      sx     = event.touches[0].clientX;
+      sy     = event.touches[0].clientY;
+      ex     = sx;
+      ey     = sy;
       isDrag = false;
 
       // IF A SECOND FINGER IS ON THE SCREEN THEN REMEMBER ITS POSITION
       if (event.touches.length === 2) {
 
         // SAVE POSITION AND CLEAR OLD DATA
-        s2x = event.touches[1].screenX;
-        s2y = event.touches[1].screenY;
+        s2x = event.touches[1].clientX;
+        s2y = event.touches[1].clientY;
         e2x = s2x;
         e2y = s2y;
 
@@ -169,31 +174,31 @@ controller.setupTouchControls = function (canvas, menuEl) {
     }, false);
 
     // TOUCH MOVES
-    document.addEventListener('touchmove', function (event) {
-      if (event.target.id !== "cwt_options_mapIn") event.preventDefault();
+    controller.screenElement.addEventListener('touchmove', function (event) {
+      event.preventDefault();
 
       var dx,dy;
-      ex = event.touches[0].screenX;
-      ey = event.touches[0].screenY;
+      ex = event.touches[0].clientX;
+      ey = event.touches[0].clientY;
 
       // IF A SECOND FINGER IS ON THE SCREEN THEN REMEMBER ITS POSITION
       if (event.touches.length === 2) {
 
         // SAVE POSITION
-        e2x = event.touches[1].screenX;
-        e2y = event.touches[1].screenY;
+        e2x = event.touches[1].clientX;
+        e2y = event.touches[1].clientY;
 
         // REMEMBER NEW DISTANCE BETWEEN FIRST AND SECOND FINGER
         // TO BE ABLE TO CALCULATION A PINCH MOVE IF TOUCH END EVENT
         // WILL BE TRIGGERED
-        dx = Math.abs(ex - e2x);
-        dy = Math.abs(ey - e2y);
-        pinDis2 = Math.sqrt(dx * dx + dy * dy)
+        dx       = Math.abs(ex - e2x);
+        dy       = Math.abs(ey - e2y);
+        pinDis2  = Math.sqrt(dx * dx + dy * dy)
       } else s2x = -1;
 
-      dx = Math.abs(sx - ex);
-      dy = Math.abs(sy - ey);
-      var d = Math.sqrt(dx * dx + dy * dy);
+      dx           = Math.abs(sx - ex);
+      dy           = Math.abs(sy - ey);
+      var d        = Math.sqrt(dx * dx + dy * dy);
       var timeDiff = event.timeStamp - st;
 
       if (d > 16) {
@@ -202,8 +207,8 @@ controller.setupTouchControls = function (canvas, menuEl) {
 
           isDrag = true;
           if (dragDiff > 75) {
-            if (dx > dy) drag(event, (sx > ex)? -1 : +1, 0 );
-            else         drag(event, 0, (sx > ex)? -1 : +1 );
+            if (dx > dy) oneFingerDrag(event, (sx > ex)? -1 : +1, 0 );
+            else         oneFingerDrag(event, 0, (sy > ey)? -1 : +1 );
             dragDiff = 0;
             sx = ex;
             sy = ey;
@@ -215,8 +220,8 @@ controller.setupTouchControls = function (canvas, menuEl) {
     }, false);
 
     // TOUCH END
-    document.addEventListener('touchend', function (event) {
-      if (event.target.id !== "cwt_options_mapIn") event.preventDefault();
+    controller.screenElement.addEventListener('touchend', function (event) {
+      event.preventDefault();
 
       if (controller.inputCoolDown > 0) return;
 
@@ -225,21 +230,19 @@ controller.setupTouchControls = function (canvas, menuEl) {
       var dy       = Math.abs(sy - ey);
       var d        = Math.sqrt(dx * dx + dy * dy);
       var timeDiff = event.timeStamp - st;
-      var px       = parseInt(x / TILE_LENGTH, 10);
-      var py       = parseInt(y / TILE_LENGTH, 10);
 
       // IS IT A TWO PINCH GESTURE?
       if (s2x !== -1) {
         if (Math.abs(pinDis2 - pinDis) <= 32){
-               twoFingerTap(event,px,py);
+               twoFingerTap(event,ex,ey);
         } else pinch( event, (pinDis2 < pinDis)? 1 : -1 );
         controller.inputCoolDown = 500;
       } else {
         if (d <= 16) {
-               if (timeDiff <= 500) oneFingerTap(event,px,py);
+               if (timeDiff <= 500) oneFingerTap(event,ex,ey);
         } else if (timeDiff <= 300) {
           if (dx > dy) swipe(event, (sx > ex)? -1 : +1, 0 );
-          else         swipe(event, 0, (sx > ex)? -1 : +1 );
+          else         swipe(event, 0, (sy > ey)? -1 : +1 );
         }
       }
 

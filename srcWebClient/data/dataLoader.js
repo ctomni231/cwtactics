@@ -8,7 +8,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
   var BIG_WAIT = 500;
 
   if( DEBUG ) util.log("loading game data");
-  
+
   jWorkflow.order()
 
     // -------------------------------------------------------------------------------------
@@ -17,7 +17,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
       loadDescComponent.innerHTML = "Loading";
       loadBarComponent.className = "loadBar_0"; })
 
-    .chill(SMALL_WAIT)
+    //.chill(SMALL_WAIT)
 
     // **1.A** check environment
     .andThen(controller.features_analyseClient)
@@ -27,7 +27,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
     .andThen(function(){
       loadBarComponent.className = "loadBar_5"; })
 
-    .chill(SMALL_WAIT)
+    //.chill(SMALL_WAIT)
 
     // **1.B** show message when system isn't supported
     .andThen(function(p,b){
@@ -42,7 +42,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
     .andThen(function(){
       loadBarComponent.className = "loadBar_10"; })
 
-    .chill(SMALL_WAIT)
+    //.chill(SMALL_WAIT)
 
     // **2.** load correct storage system
     .andThen(controller.storage_initialize)
@@ -52,7 +52,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
     .andThen(function(){
       loadBarComponent.className = "loadBar_15"; })
 
-    .chill(SMALL_WAIT)
+    //.chill(SMALL_WAIT)
 
     // **3.A** reset game data ?
     .andThen(function( err, baton ){
@@ -79,7 +79,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
       });
 
     })
-    
+
     // **3.B** force touch controls ?
     .andThen(function( err, baton ){
       if( err ) return err;
@@ -91,15 +91,15 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
 
         if(  doIt ){
           if( DEBUG ) util.log("force to use touch controls");
-          
+
           // enable touch and disable mouse ( cannot work together )
           controller.features_client.mouse = false;
           controller.features_client.touch = true;
-          
+
           // mark forceTouch in the options
           controller.screenStateMachine.structure.OPTIONS.forceTouch = true;
         }
-        
+
         baton.pass(false);
       });
 
