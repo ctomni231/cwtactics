@@ -192,6 +192,7 @@
           [ "cwt_anim/terrain/CWT_SEAS(S)$~SSS~~SS.png", "L","L","S","S","S","S","S","S" ],
           [ "cwt_anim/terrain/CWT_SEAS(S)$~SSS~~SS.png", "L","S","S","S","S","S","S","L" ],
           [ "cwt_anim/terrain/CWT_SEAS(S)$~SSS~~SS.png", "L","S","S","S","S","S","S","S" ],
+          [ "cwt_anim/terrain/CWT_SEAS(S)$~SSS~~S~.png", "L","L","S","L","S","","S","L" ],
           [ "cwt_anim/terrain/CWT_SEAS(S)$SSSSS~SS.png", "S","L","S","","","","","" ],
           [ "cwt_anim/terrain/CWT_SEAS(S)$SSSSSSS~.png", "","","S","L","S","","","" ],
           [ "cwt_anim/terrain/CWT_SEAS(S)$SSSSSS~S.png", "","","","","S","L","S","" ],
