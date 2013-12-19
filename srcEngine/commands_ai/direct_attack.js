@@ -12,6 +12,8 @@
 
     scoring : function( data , cScore ){
       if( cScore >= 5 ) return -1;
+
+      if( !data.source.unit.type.attack ) return -1;
       
       var x,y,ye,xe;
       var tx,ty;
