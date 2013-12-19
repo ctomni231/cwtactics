@@ -202,6 +202,7 @@ model.battle_hasTargets = function( uid,x,y ){
 //
 model.battle_getBaseDamageAgainst = function( attacker, defender, withMainWp ){
   var attack  = attacker.type.attack;
+  if( !attack ) return -1;
   var tType   = defender.type.ID;
   var v;
 
