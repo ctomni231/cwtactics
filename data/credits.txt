@@ -2,11 +2,24 @@
  
 <FORUM HOSTING - LEAD>
 Xenesis
-  
+ 
 <MAIN CODERS>
 JakeSamiRulz
 Tapsi
 CesarRamsan
+ 
+<DESIGN MANAGER>
+MaraSargon
+ 
+<DESIGN DEVELOPERS - WIKI>
+MarinePower
+I Blame Video Games
+Lord Spyro
+ 
+<DESIGN DEVELOPERS - CW BETA 27>
+CoconutTank
+Captain Vimes
+Veggie
  
 <BACKGROUND GRAPHICS>
 Kosheh
@@ -30,13 +43,12 @@ Eagle
 TruthSeeker
 Gipface
 Walker
+Simon
+theether
+eazar001
 mgb2625
 Howdy_McGee
- 
-<DESIGN DEVELOPERS>
-CoconutTank
-Captain Vimes
-Veggie
+UltraStorm
  
 <FORUM MODDERS>
 DiamondPhoenix
@@ -46,7 +58,7 @@ Kiwi
 <FORUM CONTRIBUTORS>
 UserShadow7989
 BlackEther
-Simon
+BiggaBertha
  
 <HOSTING>
 Ohloh
