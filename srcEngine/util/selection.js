@@ -96,6 +96,24 @@
     }
   }
 
+  function nextRandomPosition( cb, arg, minValue ){
+    if( minValue === void 0 ) minValue = 0;
+
+    var n = parseInt( Math.random( this.data.length ) , 10 );
+    var x,y;
+    for( x = 0; x < e; x++ ) {
+      for( y = 0; y < e; y++ ) {
+        if( this.data[x][y] >= minValue ){
+          n--;
+          if( n < 0 ){
+            cb(x,y,arg);
+            return;
+          }
+        }
+      }
+    }
+  };
+
   util.selectionMap = function( size ){
     var obj = {};
 
@@ -105,7 +123,8 @@
     obj.data = util.matrix( size, size, INACTIVE_ID );
 
     // api
-    obj.nextValidPosition = nextValidPosition;
+    obj.nextValidPosition  = nextValidPosition;
+    obj.nextRandomPosition = nextRandomPosition;
     obj.setValueAt = setValueAt;
     obj.getValueAt = getValueAt;
     obj.setCenter  = setCenter;

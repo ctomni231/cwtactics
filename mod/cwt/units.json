@@ -29,7 +29,7 @@
       }
     },
     "assets": {
-      "gfx"           : "units/AWDS_INFT.png",
+      "gfx"           : "cwt_anim/units/CWT_INFT.png",
       "sec_att_sound" : "mg.wav"
     }
   },
@@ -78,7 +78,7 @@
       }
     },
     "assets": {
-      "gfx"           : "units/AWDS_MECH.png",
+      "gfx"           : "cwt_anim/units/CWT_MECH.png",
       "pri_att_sound" : "rocket.wav",
       "sec_att_sound" : "mg.wav"
     }
@@ -113,7 +113,7 @@
       }
     },
     "assets": {
-      "gfx"           : "units/AWDS_RECN.png",
+      "gfx"           : "cwt_anim/units/CWT_RECN.png",
       "sec_att_sound" : "mg.wav"
     }
   },
@@ -167,7 +167,7 @@
       }
     },
     "assets": {
-      "gfx"           : "units/AWDS_TANK.png",
+      "gfx"           : "cwt_anim/units/CWT_TANK.png",
       "pri_att_sound" : "tnk_cannon_small.wav",
       "sec_att_sound" : "mg.wav"
     }
@@ -222,7 +222,7 @@
       }
     },
     "assets": {
-      "gfx"           : "units/AWDS_MDTK.png",
+      "gfx"           : "cwt_anim/units/CWT_MDTK.png",
       "pri_att_sound" : "tnk_cannon_big.wav",
       "sec_att_sound" : "mg.wav"
     }
@@ -277,7 +277,7 @@
       }
     },
     "assets": {
-      "gfx"           : "units/AWDS_NTNK.png",
+      "gfx"           : "cwt_anim/units/CWT_NTNK.png",
       "pri_att_sound" : "tnk_cannon_big.wav",
       "sec_att_sound" : "mg.wav"
     }
@@ -332,7 +332,7 @@
       }
     },
     "assets": {
-      "gfx"           : "units/AWDS_WRTK.png",
+      "gfx"           : "cwt_anim/units/CWT_WRTK.png",
       "pri_att_sound" : "tnk_cannon_big.wav",
       "sec_att_sound" : "mg.wav"
     }
@@ -371,7 +371,7 @@
       }
     },
     "assets": {
-      "gfx"           : "units/AWDS_AAIR.png",
+      "gfx"           : "cwt_anim/units/CWT_AAIR.png",
       "pri_att_sound" : "mg.wav",
       "sec_att_sound" : "mg.wav"
     }
@@ -394,7 +394,7 @@
       "*"
     ],
     "assets": {
-      "gfx" :"units/AWDS_APCR.png"
+      "gfx" :"cwt_anim/units/CWT_APCR.png"
     }
   },
 
@@ -407,7 +407,7 @@
     "fuel": 0,
     "ammo": 0,
     "assets": {
-      "gfx" :"units/AWDS_OOZM.png"
+      "gfx" :"cwt_anim/units/CWT_OOZM.png"
     }
   },
 
@@ -462,7 +462,7 @@
     },
     "assets": {
       "simpleAnimated": true,
-      "gfx"           : "units/AWDS_BCTR.png",
+      "gfx"           : "cwt_anim/units/CWT_BCTR.png",
       "pri_att_sound" : "rocket.wav",
       "sec_att_sound" : "mg.wav"
     }
@@ -502,7 +502,7 @@
       }
     },
     "assets": {
-      "gfx"           : "units/AWDS_BMBR.png",
+      "gfx"           : "cwt_anim/units/CWT_BMBR.png",
       "pri_att_sound" : "mg.wav",
       "sec_att_sound" : "mg.wav"
     }
@@ -525,7 +525,7 @@
       ]
     },
     "assets": {
-      "gfx"           : "units/AWDS_BKBM.png",
+      "gfx"           : "cwt_anim/units/CWT_BKBM.png",
       "pri_att_sound" : "mg.wav",
       "sec_att_sound" : "mg.wav"
     }
@@ -573,7 +573,7 @@
     },
     "stealth": true,
     "assets": {
-      "gfx"           : "units/AWDS_STLH.png",
+      "gfx"           : "cwt_anim/units/CWT_STLH.png",
       "pri_att_sound" : "mg.wav",
       "sec_att_sound" : "mg.wav"
     }
@@ -599,7 +599,7 @@
       }
     },
     "assets": {
-      "gfx"           : "units/AWDS_FGTR.png",
+      "gfx"           : "cwt_anim/units/CWT_FGTR.png",
       "pri_att_sound" : "mg.wav",
       "sec_att_sound" : "mg.wav"
     }
@@ -621,7 +621,7 @@
     ],
     "assets": {
       "simpleAnimated": true,
-      "gfx" :"units/AWDS_TCTR.png"
+      "gfx" :"cwt_anim/units/CWT_TCTR.png"
     }
   },
 
@@ -660,7 +660,7 @@
       "maxrange": 3
     },
     "assets": {
-      "gfx"           : "units/AWDS_ARTY.png",
+      "gfx"           : "cwt_anim/units/CWT_ARTY.png",
       "pri_att_sound" : "tnk_cannon_big.wav"
     }
   },
@@ -686,7 +686,7 @@
       "maxrange": 5
     },
     "assets": {
-      "gfx"           : "units/AWDS_MISS.png",
+      "gfx"           : "cwt_anim/units/CWT_MISS.png",
       "pri_att_sound" : "mg.wav"
     }
   },
@@ -726,7 +726,7 @@
       "maxrange": 5
     },
     "assets": {
-      "gfx"           : "units/AWDS_RCKT.png",
+      "gfx"           : "cwt_anim/units/CWT_RCKT.png",
       "pri_att_sound" : "rocket.wav"
     }
   },
@@ -753,7 +753,7 @@
       }
     },
     "assets": {
-      "gfx"           : "units/AWDS_SUBM.png",
+      "gfx"           : "cwt_anim/units/CWT_SUBM.png",
       "pri_att_sound" : "mg.wav"
     }
   },
@@ -790,7 +790,7 @@
       "AIR"
     ],
     "assets": {
-      "gfx"           : "units/AWDS_CRUS.png",
+      "gfx"           : "cwt_anim/units/CWT_CRUS.png",
       "pri_att_sound" : "mg.wav",
       "sec_att_sound" : "mg.wav"
     }
@@ -814,7 +814,7 @@
       "SHIP": 1
     },
     "assets": {
-      "gfx" : "units/AWDS_CRUS.png"
+      "gfx" : "cwt_anim/units/CWT_CRUS.png"
     }
   },
 
@@ -845,7 +845,7 @@
       "maxrange": 8
     },
     "assets": {
-      "gfx"           : "units/AWDS_ACAR.png",
+      "gfx"           : "cwt_anim/units/CWT_ACAR.png",
       "pri_att_sound" : "mg.wav"
     }
   },
@@ -868,7 +868,7 @@
       "TANK"
     ],
     "assets": {
-      "gfx" :"units/AWDS_LNDR.png"
+      "gfx" :"cwt_anim/units/CWT_LNDR.png"
     }
   },
 
@@ -908,7 +908,7 @@
       "maxrange": 6
     },
     "assets": {
-      "gfx"           : "units/AWDS_BSHP.png",
+      "gfx"           : "cwt_anim/units/CWT_BSHP.png",
       "pri_att_sound" : "tnk_cannon_big.wav"
     }
   }

@@ -3,10 +3,10 @@ util.scoped(function(){
   var selection = controller.stateMachine.data.selection;
 
   var animations = [
-    
+
     // UNIT
     0,  3, 0, 250, 0,
-    
+
     // UNIT SIMPLE
     0,  3, 0, 250, 0,
 
@@ -19,8 +19,11 @@ util.scoped(function(){
     // PROPERTY
     0,  4, 0, 400, 0,
 
-    // ANIMATED TILES
-    0,  4, 0, 300, 0
+    // ANIMATED TILES (4)
+    0,  4, 0, 350, 0,
+
+    // ANIMATED TILES (8)
+    0,  8, 0, 350, 0
   ];
 
   var unitStepper = +1;
@@ -30,12 +33,13 @@ util.scoped(function(){
    */
   view.getSpriteStep = function( key ){
     switch( key ){
-      case "UNIT":          return animations[0];
-      case "UNIT_SIMPLE":   return animations[5];
-      case "SELECTION":     return animations[10];
-      case "STATUS":        return animations[15];
-      case "PROPERTY":      return animations[20];
-      case "ANIM_TILES":    return animations[25];
+      case "UNIT":           return animations[0];
+      case "UNIT_SIMPLE":    return animations[5];
+      case "SELECTION":      return animations[10];
+      case "STATUS":         return animations[15];
+      case "PROPERTY":       return animations[20];
+      case "ANIM_TILES":     return animations[25];
+      case "ANIM_TILES_EXT": return animations[30];
     }
 
     return 0;
@@ -51,7 +55,7 @@ util.scoped(function(){
 
       // add time to animation slot
       animations[i+2] += delta;
-      
+
       // if slot reaches maximum time per step
       if( animations[i+2] >= animations[i+3] ){
         animations[i+2] = 0;
@@ -100,9 +104,9 @@ util.scoped(function(){
           var ye = model.map_height;
 
 
-          if( animations[4] === 1 || 
-              animations[9] === 1 || 
-              animations[24] === 1 || 
+          if( animations[4] === 1 ||
+              animations[9] === 1 ||
+              animations[24] === 1 ||
               animations[29] === 1 ){
 
             for( ; x<xe; x++ ){
@@ -124,10 +128,10 @@ util.scoped(function(){
                   if( model.property_posMap[x][y] !== null ) view.redraw_markPosWithNeighboursRing(x,y);
                 }
 
-                // animated tiles
-                if( animations[29] === 1 ){
+                // animated tiles (solves also extendet anims)
+                if( animations[29] === 1 || animations[34] === 1 ){
 
-                  if( view.animatedTiles[ view.mapImages[x][y] ] ) view.redraw_markPos( x,y );
+                  if( view.animatedTiles[ model.map_data[x][y].ID ] ) view.redraw_markPos( x,y );
                 }
 
               }
@@ -142,7 +146,7 @@ util.scoped(function(){
           );
 
           // units or selection tiles
-          
+
           if( focusExists && animations[14] === 1 ){
             selection.rerenderNonInactive();
           }
@@ -157,6 +161,7 @@ util.scoped(function(){
         animations[19] = 0;
         animations[24] = 0;
         animations[29] = 0;
+        animations[34] = 0;
 
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

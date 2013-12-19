@@ -13,6 +13,15 @@
     scoring : function( data , cScore ){
       if( cScore >= 1 ) return -1;
 
+      var n = 0;
+      while( true ){
+        data.selection.nextRandomPosition( setTarget, data, 0 );
+        if( data.target.x >= 0 && data.target.y >= 0 && !data.target.unit ) break;
+        n++;
+        if( n === 10 ) return -1;
+      }
+
+      /*
       var range = data.source.unit.type.range;
 
       var rX =  data.source.x - range + parseInt((Math.random()*(range*2)),10)
@@ -36,6 +45,7 @@
         n++;
         if( n === 10 ) return -1;
       }
+      */
       
       model.move_generatePath( 
         data.source.x, data.source.y, 

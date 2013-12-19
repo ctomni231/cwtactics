@@ -115,7 +115,9 @@ controller.loadImages_doIt = util.singleLazyCall(
       controller.loadImages_prepareImg_( key,obj.assets.gfx,"T",baton );
 
       if( obj.assets.gfxOverlay ) view.overlayImages[ key ] = true;
-      //view.animatedTiles[ img.pickey_ ] = true;
+      if( obj.assets.animated === 1 || obj.assets.animated === 2 ){
+        view.animatedTiles[ key ] = true;
+      }
     });
 
     // loading properties
