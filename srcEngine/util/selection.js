@@ -64,7 +64,7 @@
 
     x = x - cx;
     y = y - cy;
-    
+
     // OUT OF BOUNDS ?
     if( x < 0 || y < 0 || x >= maxLen || y >= maxLen ) {
 
@@ -99,7 +99,8 @@
   function nextRandomPosition( cb, arg, minValue ){
     if( minValue === void 0 ) minValue = 0;
 
-    var n = parseInt( Math.random( this.data.length ) , 10 );
+    var e = this.data.length;
+    var n = parseInt( Math.random()*e , 10 );
     var x,y;
     for( x = 0; x < e; x++ ) {
       for( y = 0; y < e; y++ ) {

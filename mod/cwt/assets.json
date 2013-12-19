@@ -1,6 +1,6 @@
 {
-  "sounds"  : "http://192.168.1.15:8000/sound",
-  "images"  : "http://192.168.1.15:8000/image",
-  "music"   : "http://192.168.1.15:8000/music",
-  "maps"    : "http://192.168.1.15:8000/maps"
+  "sounds"  : "http://localhost:8000/sound",
+  "images"  : "http://localhost:8000/image",
+  "music"   : "http://localhost:8000/music",
+  "maps"    : "http://localhost:8000/maps"
 }
