@@ -141,31 +141,33 @@
       "gfx_variants":[
         {
           "ROAD": "L",
-          "WATER": "S",
-          "RIVER": "RV",
           "PLIN": "L",
           "FRST": "L",
           "MNTN": "L",
+          "BRDG": "S",
           "REEF": "S",
+          "WATER": "S",
+          "RIVER": "RV",
           "DEFAULT": ""
         },
         [
           [ "cwt_anim/terrain/CWT_SEAS(S).png", "S","S","S","S","S","S","S","S" ],
           [ "cwt_anim/terrain/CWT_SEAS(S)$~~~~~~~~.png", "L","L","L","L","L","L","L","L" ],
+          [ "cwt_anim/terrain/CWT_SEAS(S)$~~SS~~~~.png", "L","","S","","L","","S","" ],
+          [ "cwt_anim/terrain/CWT_SEAS(S)$SS~~~~~~.png", "S","","L","","S","","L","" ],
           [ "cwt_anim/terrain/CWT_SEAS(S)$~~~S~~~~.png", "L","","S","","L","","L","" ],
           [ "cwt_anim/terrain/CWT_SEAS(S)$~~S~~~~~.png", "L","","L","","L","","S","" ],
           [ "cwt_anim/terrain/CWT_SEAS(S)$~S~~~~~~.png", "L","","L","","S","","L","" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$~~SS~~~~.png", "L","L","S","L","L","L","S","L" ],
           [ "cwt_anim/terrain/CWT_SEAS(S)$~S~~~~~~.png", "S","","L","","L","","L","" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$~S~S~~~~.png", "L","L","S","S","S","L","L","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$~S~S~~~~.png", "L","","S","S","S","","L","" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$~SS~~~~~.png", "L","L","L","L","S","S","S","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$~SS~~~~~.png", "L","","L","","S","S","S","" ],
+          [ "cwt_anim/terrain/CWT_SEAS(S)$~S~S~~~S.png", "L","L","S","S","S","L","L","L" ],
+          [ "cwt_anim/terrain/CWT_SEAS(S)$~S~S~~~S.png", "L","","S","S","S","","L","" ],
+          [ "cwt_anim/terrain/CWT_SEAS(S)$~SS~~~S~.png", "L","L","L","L","S","S","S","L" ],
+          [ "cwt_anim/terrain/CWT_SEAS(S)$~SS~~~S~.png", "L","","L","","S","S","S","" ],
           [ "cwt_anim/terrain/CWT_SEAS(S)$~SSS~~SS.png", "L","L","S","S","S","S","S","L" ],
           [ "cwt_anim/terrain/CWT_SEAS(S)$RSSS~~SS.png", "RV","L","S","S","S","S","S","L" ],
           [ "cwt_anim/terrain/CWT_SEAS(S)$S~~~~~~~.png", "S","L","L","L","L","L","L","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$S~~S~~~~.png", "S","S","S","L","L","L","L","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$S~S~~~~~.png", "S","","L","","L","","S","S" ],
+          [ "cwt_anim/terrain/CWT_SEAS(S)$S~~S~S~~.png", "S","S","S","L","L","L","L","L" ],
+          [ "cwt_anim/terrain/CWT_SEAS(S)$S~S~S~~~.png", "S","","L","","L","","S","S" ],
           [ "cwt_anim/terrain/CWT_SEAS(S)$S~SSSS~~.png", "S","","S","","L","","S","" ],
           [ "cwt_anim/terrain/CWT_SEAS(S)$SRSSSS~~.png", "S","S","S","L","RV","L","S","S" ],
           [ "cwt_anim/terrain/CWT_SEAS(S)$SS~S~S~S.png", "S","","S","","S","","L","" ],
@@ -189,7 +191,11 @@
           [ "cwt_anim/terrain/CWT_SEAS(S)$SSSSSS~S.png", "S","S","S","S","S","L","S","S" ],
           [ "cwt_anim/terrain/CWT_SEAS(S)$~SSS~~SS.png", "L","L","S","S","S","S","S","S" ],
           [ "cwt_anim/terrain/CWT_SEAS(S)$~SSS~~SS.png", "L","S","S","S","S","S","S","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$~SSS~~SS.png", "L","S","S","S","S","S","S","S" ]
+          [ "cwt_anim/terrain/CWT_SEAS(S)$~SSS~~SS.png", "L","S","S","S","S","S","S","S" ],
+          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSSS~SS.png", "S","L","S","","","","","" ],
+          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSSSSS~.png", "","","S","L","S","","","" ],
+          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSSSS~S.png", "","","","","S","L","S","" ],
+          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSS~SSS.png", "S","","","","","","S","L" ]
         ]
       ]
     }
