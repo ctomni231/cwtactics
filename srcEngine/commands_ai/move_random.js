@@ -20,39 +20,47 @@
         n++;
         if( n === 10 ) return -1;
       }
-
-      /*
-      var range = data.source.unit.type.range;
-
-      var rX =  data.source.x - range + parseInt((Math.random()*(range*2)),10)
-      var rY =  data.source.y - range + parseInt((Math.random()*(range*2)),10)
-      
-      if( rX < 0 ) rX = 0;
-      if( rY < 0 ) rY = 0;
-      if( rX >= model.map_width  ) rX = model.map_width-1;
-      if( rY >= model.map_height ) rY = model.map_height-1;
-
-      var n = 0;
-      while( true ){
-        data.selection.nextValidPosition( 
-          data.source.x, data.source.y, 
-          0, ( Math.random()<0.5 )? true: false, 
-          setTarget,
-          data
-        );
-
-        if( data.target.x >= 0 && data.target.y >= 0 && !data.target.unit ) break;
-        n++;
-        if( n === 10 ) return -1;
-      }
-      */
-      
+            
       model.move_generatePath( 
         data.source.x, data.source.y, 
         data.target.x, data.target.y, 
         data.selection, 
         data.move 
       );
+
+      var way = data.move;
+      var cx  = data.source.x;
+      var cy  = data.source.y;
+      var cBx;
+      var cBy;
+      var trapped = false;
+      for( var i=0,e=way.length; i<e; i++ ){
+
+        // end of way
+        if( way[i] === -1 ) break;
+
+        cBx = cx;
+        cBy = cy;
+        switch( way[i] ){
+          case model.move_MOVE_CODES.DOWN  : cy++; break;
+          case model.move_MOVE_CODES.UP    : cy--; break;
+          case model.move_MOVE_CODES.LEFT  : cx--; break;
+          case model.move_MOVE_CODES.RIGHT : cx++; break;
+        }
+
+        var unit = model.unit_posData[cx][cy];
+        if( unit !== null ){
+
+          if( model.player_data[model.round_turnOwner].team !==
+              model.player_data[unit.owner].team ){
+
+            data.target.set(cBx,cBy);
+            way[i]  = INACTIVE_ID;
+            trapped = true;
+            break;
+          }
+        }
+      }
 
       return 1;
     },
