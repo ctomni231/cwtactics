@@ -47,6 +47,9 @@ model.event_on("modifyVisionAt", function( x,y, pid, range, value ){
 
         // if( DEBUG ) util.log( "(",lX,",",lY,") changed fog by (",value,")" );
 
+        if( model.map_data[lX][lY].blocksVision && 
+            model.map_getDistance(x,y,lX,lY) > 1  ) continue;
+
         if( clientVisible )    model.fog_clientData[lX][lY]     += value;
         if( turnOwnerVisible ) model.fog_turnOwnerData[lX][lY]  += value;
       }
