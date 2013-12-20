@@ -109,17 +109,22 @@ model.event_on("recalculateFogMap", function(){
 // Updates the visible player id meta data for the client as well for the turn owner.
 //
 model.event_on("nextTurn_pidStartsTurn", function(pid){
-  var tid   = model.player_data[model.client_lastPid].team;
-  var totid = model.player_data[pid].team;
+  var toTid = model.player_data[pid].team;
+
+  // update last pid
+  if( model.client_instances[pid] ) model.client_lastPid = pid;
+
+  var clTid = model.client_lastPid;
 
   // the active client can see what his and all allied objects can see
   for( var i=0,e=MAX_PLAYER; i<e; i++ ){
+    model.fog_visibleClientPids[i]    = false;
+    model.fog_visibleTurnOwnerPids[i] = false;
 
-    model.fog_visibleClientPids[i]    = (model.client_instances[i] === true ||
-                                         model.player_data[i].team === tid );
+    if( model.player_data[i].team === INACTIVE_ID ) continue;
 
-    model.fog_visibleTurnOwnerPids[i] = (i === pid ||
-                                     totid === model.player_data[i].team);
+    if( model.player_data[i].team === clTid ) model.fog_visibleClientPids[i] = true;
+    if( model.player_data[i].team === toTid ) model.fog_visibleTurnOwnerPids[i] = true;
   }
 
   model.events.recalculateFogMap();

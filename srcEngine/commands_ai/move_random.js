@@ -28,69 +28,18 @@
         data.move 
       );
 
-      var way = data.move;
-      var cx  = data.source.x;
-      var cy  = data.source.y;
-      var cBx;
-      var cBy;
-      var trapped = false;
-      for( var i=0,e=way.length; i<e; i++ ){
-
-        // end of way
-        if( way[i] === -1 ) break;
-
-        cBx = cx;
-        cBy = cy;
-        switch( way[i] ){
-          case model.move_MOVE_CODES.DOWN  : cy++; break;
-          case model.move_MOVE_CODES.UP    : cy--; break;
-          case model.move_MOVE_CODES.LEFT  : cx--; break;
-          case model.move_MOVE_CODES.RIGHT : cx++; break;
-        }
-
-        var unit = model.unit_posData[cx][cy];
-        if( unit !== null ){
-
-          if( model.player_data[model.round_turnOwner].team !==
-              model.player_data[unit.owner].team ){
-
-            data.target.set(cBx,cBy);
-            way[i]  = INACTIVE_ID;
-            trapped = true;
-            break;
-          }
-        }
-      }
+      model.move_trapCheck(data.move,data.source,data.target);
 
       return 1;
     },
 
     prepare : function( data ){
 
-      // move command
-      controller.commandStack_sharedInvokement("move_clearWayCache");
-
-      for( var i = 0, e = data.move.length; i < e; i+=6 ){
-        if( data.move[i] === INACTIVE_ID ) break;
-        controller.commandStack_sharedInvokement(
-          "move_appendToWayCache",
-          data.move[i  ],
-          data.move[i+1],
-          data.move[i+2],
-          data.move[i+3],
-          data.move[i+4],
-          data.move[i+5]
-        );
-      }
-
-      controller.commandStack_sharedInvokement(
-        "move_moveByCache",
-        data.source.unitId,
-        data.source.x,
-        data.source.y,
-        0
+      model.events.move_flushMoveData( 
+        data.move, 
+        data.source 
       );
-
+      
       controller.commandStack_sharedInvokement(
         "wait_invoked",
         data.source.unitId

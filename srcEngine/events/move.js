@@ -1,3 +1,30 @@
+model.event_on("move_flushMoveData",function( move, source ){
+  controller.commandStack_sharedInvokement(
+    "move_clearWayCache"
+  );
+
+  for (var i = 0, e = move.length; i < e; i += 6) {
+    if (move[i] === INACTIVE_ID) break;
+    controller.commandStack_sharedInvokement(
+      "move_appendToWayCache",
+      move[i],
+      move[i + 1],
+      move[i + 2],
+      move[i + 3],
+      move[i + 4],
+      move[i + 5]
+    );
+  }
+
+  controller.commandStack_sharedInvokement(
+    "move_moveByCache",
+    source.unitId,
+    source.x,
+    source.y,
+    0
+  );
+});
+
 model.event_on("move_clearWayCache",function(){
   model.move_pathCache.resetValues();
 });

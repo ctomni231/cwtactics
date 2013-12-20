@@ -38,6 +38,6 @@ model.factoryGenerateBuildMenu = function( prid, menu, markDisabled ){
     // TODO FIND BETTER SOLUTION
     // if( model.rules.blockedUnits.indexOf(uType) !== -1 ) return false;
 
-    if( type.cost <= availGold || markDisabled ) menu.addEntry( key, (type.cost < availGold) );
+    if( type.cost <= availGold || markDisabled ) menu.addEntry( key, (type.cost <= availGold) );
   }
 };

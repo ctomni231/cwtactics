@@ -20,16 +20,6 @@ view.registerAnimationHook({
     view.preventRenderUnit = model.unit_data[ uid ];
     var mvType = model.unit_data[ uid ].type.movetype;
 
-    /*
-    var mvSoundId;
-    if( mvType === "MV_INFANTRY" || mvType === "MV_MECH" ) mvSoundId = "MV_FOOT";
-    else if( mvType === "MV_TANK" ) mvSoundId = "MV_TANK";
-    else if( mvType === "MV_AIR" ) mvSoundId = "MV_AIR";
-    else mvSoundId = "MV_VHCL";
-
-    this.snd = controller.audio_playSound( mvSoundId );
-    */
-
     if( DEBUG ){
       util.log(
         "drawing move from",
@@ -124,6 +114,11 @@ view.registerAnimationHook({
     var color = view.colorArray[ unit.owner ];
     var state;
     var tp = unit.type;
+
+    // check visibility
+    if( !model.fog_clientData[cx][cy] ){
+      return;
+    }
 
     // GET CORRECT IMAGE STATE
     switch( moveCode ){

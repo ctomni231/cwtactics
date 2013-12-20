@@ -199,6 +199,7 @@ model.move_move_fillMoveMapHelper_ = [ ];
 // Fills a move map for possible move able tiles in a selection map.
 //
 model.move_fillMoveMap = function( source, selection, x, y, unit ){
+  var cost;
 
   // grab object data from `source` position if no explicit data is given
   if( typeof x !== "number" ) x = source.x;
@@ -308,7 +309,7 @@ model.move_fillMoveMap = function( source, selection, x, y, unit ){
       var tx = checker[n  ];
       var ty = checker[n + 1];
 
-      var cost = model.move_getMoveCosts( mType, tx, ty );
+      cost = model.move_getMoveCosts( mType, tx, ty );
       if( cost !== -1 ) {
 
         var cunit = model.unit_posData[tx][ty];
@@ -347,10 +348,59 @@ model.move_fillMoveMap = function( source, selection, x, y, unit ){
   for( x = 0, xe = model.map_width; x < xe; x++ ) {
     for( y = 0, ye = model.map_height; y < ye; y++ ) {
       if( selection.getValueAt( x, y ) !== INACTIVE_ID ) {
-
         cost = model.move_getMoveCosts( mType, x, y );
         selection.setValueAt( x, y, cost );
       }
     }
   }
+};
+
+//
+//
+model.move_trapCheck = function(way,source,target){
+  var cBx;
+  var cBy;
+  var cx = source.x;
+  var cy = source.y;
+  var sourceTeamId = model.player_data[source.unit.owner].team;
+  for (var i = 0, e = way.length; i < e; i++) {
+
+    // end of way
+    if (way[i] === -1) break;
+
+    switch (way[i]) {
+
+      case model.move_MOVE_CODES.DOWN:
+        cy++;
+        break;
+
+      case model.move_MOVE_CODES.UP:
+        cy--;
+        break;
+
+      case model.move_MOVE_CODES.LEFT:
+        cx--;
+        break;
+
+      case model.move_MOVE_CODES.RIGHT:
+        cx++;
+        break;
+    }
+
+    var unit = model.unit_posData[cx][cy];
+
+    // position is valid when no unit is there
+    if ( !unit ) {
+      cBx = cx;
+      cBy = cy;
+
+    } else if ( sourceTeamId !== model.player_data[unit.owner].team ) {
+
+      target.set(cBx, cBy);
+      way[i] = INACTIVE_ID;
+      return true;
+    }
+  }
+  
+  return false;
 };
