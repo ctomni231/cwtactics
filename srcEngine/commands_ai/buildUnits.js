@@ -28,6 +28,13 @@ util.scoped(function(){
 
       if( data.source.unit ) return -1;
 
+      var uLimit = controller.configValue("unitLimit");
+      var count  = model.unit_countUnits(data.source.property.owner);
+      if( !uLimit ) uLimit = 9999999;
+
+      if( count >= uLimit               ) return false;
+      if( count >= MAX_UNITS_PER_PLAYER ) return false;
+
       // isn't a factory
       if( !model.factory_isFactory(prid)) return -1;
 

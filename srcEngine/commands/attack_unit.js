@@ -24,7 +24,7 @@ controller.action_unitAction({
       data.source.unitId,
       data.target.x,
       data.target.y,
-      data.movePath
+      data.movePath.data[0] !== INACTIVE_ID
     );
   },
 

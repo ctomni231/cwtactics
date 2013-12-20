@@ -7,7 +7,7 @@ model.event_on( "attack_check",function( ){
 // Declines when the attacker is an indirect unit and moved this turn.
 //
 model.event_on( "attack_check",function(  uid, x,y, move ){
-  if( model.battle_isIndirectUnit(uid) && ( move === true || move.data.getSize() > 0 ) ){
+  if( model.battle_isIndirectUnit(uid) && move === true ){
     return false;
   }
 });

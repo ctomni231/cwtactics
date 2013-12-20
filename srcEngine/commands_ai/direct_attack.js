@@ -50,12 +50,7 @@
 
       // attack map
       model.battle_calculateTargets( data.source.unitId, tx, ty, data.selection, false );
-      data.selection.nextValidPosition( 
-          tx, ty, 
-          0, ( Math.random()<0.5 )? true: false, 
-          setTarget,
-          data
-        );
+      data.selection.nextRandomPosition( setTarget, data, 1 );
 
       if( data.targetselection.unitId === -1 ) return -1;
 
@@ -64,48 +59,31 @@
 
     prepare : function( data ){
 
-      // move command
-      if( data.move[0] !== INACTIVE_ID ){
-
-        controller.commandStack_sharedInvokement("move_clearWayCache");
-
-        for( var i = 0, e = data.move.length; i < e; i+=6 ){
-          if( data.move[i] === INACTIVE_ID ) break;
-          controller.commandStack_sharedInvokement(
-            "move_appendToWayCache",
-            data.move[i  ],
-            data.move[i+1],
-            data.move[i+2],
-            data.move[i+3],
-            data.move[i+4],
-            data.move[i+5]
-          );
-        }
-
-        controller.commandStack_sharedInvokement(
-          "move_moveByCache",
-          data.source.unitId,
-          data.source.x,
-          data.source.y,
-          0
-        );
-
+      var trapped = false;
+      if (data.move[0] !== -1) {
+        trapped = model.move_trapCheck(data.move, data.source, data.target);
+        model.events.move_flushMoveData(data.move, data.source);
       }
 
-      // attack
-      controller.commandStack_sharedInvokement(
-        "attack_invoked",
-        data.source.unitId, 
-        data.targetselection.unitId, 
-        Math.round( Math.random()*100 ),
-        Math.round( Math.random()*100 ),
-        0
-      );
-
-      controller.commandStack_sharedInvokement(
-        "wait_invoked",
-        data.source.unitId
-      );
+      if (!trapped){
+        controller.commandStack_sharedInvokement(
+          "attack_invoked",
+          data.source.unitId,
+          data.targetselection.unitId,
+          Math.round(Math.random() * 100),
+          Math.round(Math.random() * 100),
+          0
+        );
+        controller.commandStack_sharedInvokement(
+          "wait_invoked",
+          data.source.unitId
+        );
+      } else {
+        controller.commandStack_sharedInvokement(
+          "trapwait_invoked",
+          sourceDto.unitId
+        );
+      }
     }
   });
 })();

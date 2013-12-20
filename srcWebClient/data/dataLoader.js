@@ -110,7 +110,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
     .andThen(function(){
       loadBarComponent.className = "loadBar_20"; })
 
-    .chill(SMALL_WAIT)
+    //.chill(SMALL_WAIT)
 
     // **4.** load modification
     .andThen(controller.modification_load)
@@ -121,7 +121,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
       loadDescComponent.innerHTML = model.data_localized("loading.loadMaps");
       loadBarComponent.className = "loadBar_30"; })
 
-    .chill(SMALL_WAIT)
+    //.chill(SMALL_WAIT)
 
     // **5.** load maps
     .andThen(controller.loadMaps_doIt)
@@ -132,7 +132,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
       loadDescComponent.innerHTML = model.data_localized("loading.loadImages");
       loadBarComponent.className = "loadBar_40"; })
 
-    .chill(SMALL_WAIT)
+    //.chill(SMALL_WAIT)
 
     // **6.A** load images
     .andThen(controller.loadImages_doIt)
@@ -158,7 +158,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
       loadDescComponent.innerHTML = model.data_localized("loading.cropImages");
       loadBarComponent.className = "loadBar_60"; })
 
-    .chill(SMALL_WAIT)
+    //.chill(SMALL_WAIT)
 
     // **7.** crop images
     .andThen(controller.cutImages)
@@ -169,7 +169,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
       loadDescComponent.innerHTML = model.data_localized("loading.colorizeImages");
       loadBarComponent.className = "loadBar_65"; })
 
-    .chill(SMALL_WAIT)
+    //.chill(SMALL_WAIT)
 
     // **8.** colorize images
     .andThen(controller.colorizeImages)
@@ -180,7 +180,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
       loadDescComponent.innerHTML = model.data_localized("loading.loadSounds");
       loadBarComponent.className = "loadBar_70"; })
 
-    .chill(SMALL_WAIT)
+    //.chill(SMALL_WAIT)
 
     // **9.** load audio files
     .andThen(controller.audio_initialize)
@@ -192,7 +192,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
       loadDescComponent.innerHTML = model.data_localized("loading.prepareInput");
       loadBarComponent.className = "loadBar_90"; })
 
-    .chill(SMALL_WAIT)
+    //.chill(SMALL_WAIT)
 
     // **10.** load input system
     .andThen(controller.loadInputDevices)
@@ -203,7 +203,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
       loadDescComponent.innerHTML = model.data_localized("loading.prepareInput");
       loadBarComponent.className = "loadBar_93"; })
 
-    .chill(SMALL_WAIT)
+    //.chill(SMALL_WAIT)
 
     // **11.** load custom input mappings
     .andThen(function(err, baton){
@@ -219,7 +219,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
       loadDescComponent.innerHTML = model.data_localized("loading.prepareLanguage");
       loadBarComponent.className = "loadBar_95"; })
 
-    .chill(SMALL_WAIT)
+    //.chill(SMALL_WAIT)
 
     // **12.** localize
     .andThen(function(){
@@ -235,7 +235,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
       loadDescComponent.innerHTML = model.data_localized("loading.done");
       loadBarComponent.className = "loadBar_100"; })
 
-    .chill(BIG_WAIT)
+    //.chill(SMALL_WAIT)
 
     // **13.** start client
     .andThen(function(){
