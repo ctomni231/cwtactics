@@ -65,7 +65,7 @@ controller.ai_CHECKS = [];
 // The memory of the ai. Holds different data of the game state for all ai controlled
 // player instances.
 //
-controller.ai_data = util.list( MAX_PLAYER-1, function(){
+controller.ai_data = util.list( MAX_PLAYER, function(){
   return {
     pid: INACTIVE_ID
   };
@@ -114,7 +114,7 @@ controller.ai_actionDataHolder_ = {
 //
 //
 controller.ai_reset = function(){
-  for( var i= 0, e=MAX_PLAYER-1; i<e; i++ ){
+  for( var i= 0, e=MAX_PLAYER; i<e; i++ ){
     controller.ai_data[i].pid = INACTIVE_ID;
   }
 };
