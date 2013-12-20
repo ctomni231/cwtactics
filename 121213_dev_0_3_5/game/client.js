@@ -18,7 +18,7 @@ var MAX_SELECTION_RANGE = 15;
 
 var MAX_BUFFER_SIZE = 200;
 
-var VERSION = "0.3.5 - RC2";
+var VERSION = "0.3.5 - RC3";
 
 var DEBUG = true;
 
@@ -882,7 +882,7 @@ util.scoped(function() {
 
 util.scoped(function() {
     var selection = controller.stateMachine.data.selection;
-    var animations = [ 0, 3, 0, 250, 0, 0, 3, 0, 250, 0, 0, 7, 0, 150, 0, 0, 20, 0, 300, 0, 0, 4, 0, 400, 0, 0, 4, 0, 300, 0 ];
+    var animations = [ 0, 3, 0, 250, 0, 0, 3, 0, 250, 0, 0, 7, 0, 150, 0, 0, 20, 0, 300, 0, 0, 4, 0, 400, 0, 0, 4, 0, 350, 0, 0, 8, 0, 350, 0 ];
     var unitStepper = +1;
     view.getSpriteStep = function(key) {
         switch (key) {
@@ -903,6 +903,9 @@ util.scoped(function() {
 
           case "ANIM_TILES":
             return animations[25];
+
+          case "ANIM_TILES_EXT":
+            return animations[30];
         }
         return 0;
     };
@@ -945,8 +948,8 @@ util.scoped(function() {
                                 if (animations[24] === 1) {
                                     if (model.property_posMap[x][y] !== null) view.redraw_markPosWithNeighboursRing(x, y);
                                 }
-                                if (animations[29] === 1) {
-                                    if (view.animatedTiles[view.mapImages[x][y]]) view.redraw_markPos(x, y);
+                                if (animations[29] === 1 || animations[34] === 1) {
+                                    if (view.animatedTiles[model.map_data[x][y].ID]) view.redraw_markPos(x, y);
                                 }
                             }
                         }
@@ -962,6 +965,7 @@ util.scoped(function() {
                 animations[19] = 0;
                 animations[24] = 0;
                 animations[29] = 0;
+                animations[34] = 0;
             }
         }
     };
@@ -1175,6 +1179,9 @@ controller.registerButtonGroupHover = function(group, element, i) {
     element.onmouseover = function() {
         group.setIndex(i, false);
     };
+    element.onclick = function() {
+        controller.screenStateMachine.event("INP_ACTION");
+    };
 };
 
 controller.generateButtonGroup = function(parent, normalCls, activeCls, inactiveCls) {
@@ -1249,19 +1256,19 @@ controller.moveCursor = function(dir, len) {
     var y = controller.mapCursorY;
     switch (dir) {
       case model.move_MOVE_CODES.UP:
-        y--;
+        y -= len;
         break;
 
       case model.move_MOVE_CODES.RIGHT:
-        x++;
+        x += len;
         break;
 
       case model.move_MOVE_CODES.DOWN:
-        y++;
+        y += len;
         break;
 
       case model.move_MOVE_CODES.LEFT:
-        x--;
+        x -= len;
         break;
     }
     controller.setCursorPosition(x, y);
@@ -1273,9 +1280,10 @@ controller.setCursorPosition = function(x, y, relativeToScreen) {
         x = x + controller.screenX;
         y = y + controller.screenY;
     }
-    if (!model.map_isValidPosition(x, y)) {
-        return;
-    }
+    if (x < 0) x = 0;
+    if (y < 0) y = 0;
+    if (x >= model.map_width) x = model.map_width - 1;
+    if (y >= model.map_height) y = model.map_height - 1;
     if (x === controller.mapCursorX && y === controller.mapCursorY) return;
     view.redraw_markPos(controller.mapCursorX, controller.mapCursorY);
     if (controller.mapCursorY < model.map_height - 1) view.redraw_markPos(controller.mapCursorX, controller.mapCursorY + 1);
@@ -2147,6 +2155,14 @@ util.scoped(function() {
         menuEntryListElement.children[controller.menuCursorIndex].className = styleButton;
         menuEntryListElement.children[controller.menuCursorIndex].children[0].focus();
     };
+    controller.createButtonConnector = function(element, index) {
+        element.onmouseover = function() {
+            controller.setMenuIndex(index, false);
+        };
+        element.onclick = function() {
+            controller.screenStateMachine.event("INP_ACTION");
+        };
+    };
     controller.decreaseMenuCursor = function() {
         menuEntryListElement.children[controller.menuCursorIndex].className = "";
         controller.menuCursorIndex--;
@@ -2178,6 +2194,7 @@ util.scoped(function() {
                 entry = entries[i].children[0];
             } else {
                 entry = document.createElement("button");
+                controller.createButtonConnector(entry, i);
                 var li = document.createElement("li");
                 li.appendChild(entry);
                 menuEntryListElement.appendChild(li);
@@ -2465,16 +2482,23 @@ controller.moveScreenX = 0;
 controller.moveScreenY = 0;
 
 controller.setScreenScale = function(scale) {
-    if (scale < -1 || scale > 3) {
+    if (scale < 1 || scale > 3) {
         return;
     }
     controller.screenScale = scale;
     controller.screenElement.className = "scale" + scale;
-    if (scale === 0) scale = .8; else if (scale === -1) scale = .7;
     var tileLen = TILE_LENGTH * scale;
     controller.screenWidth = parseInt(window.innerWidth / tileLen, 10);
     controller.screenHeight = parseInt(window.innerHeight / tileLen, 10);
     controller.setScreenPosition(controller.screenX, controller.screenY, false);
+};
+
+controller.getMapXByScreenX = function(x) {
+    return controller.screenX + parseInt(x / (TILE_LENGTH * controller.screenScale), 10);
+};
+
+controller.getMapXByScreenY = function(y) {
+    return controller.screenY + parseInt(y / (TILE_LENGTH * controller.screenScale), 10);
 };
 
 controller.getCanvasPosX = function(x) {
@@ -2579,6 +2603,7 @@ view.renderMap = function(scale) {
     var sprStepProp = view.getSpriteStep("PROPERTY");
     var sprStepStat = view.getSpriteStep("STATUS");
     var sprStepTiles = view.getSpriteStep("ANIM_TILES");
+    var sprStepTilesExt = view.getSpriteStep("ANIM_TILES_EXT");
     var BASESIZE = controller.baseSize;
     var simpleUnitAnimTypes = model.data_simpleAnimatedUnits;
     var teamId = model.client_lastPid !== -1 ? model.player_data[model.client_lastPid].team : -1;
@@ -2597,8 +2622,10 @@ view.renderMap = function(scale) {
                 pic = view.getTileImageForType(type);
                 scx = 0;
                 scy = 0;
-                if (view.animatedTiles[type]) {
-                    scx += BASESIZE * sprStepTiles;
+                if (view.animatedTiles[model.map_data[x][y].ID]) {
+                    if (model.map_data[x][y].assets.animated === 2) {
+                        scx += BASESIZE * sprStepTilesExt;
+                    } else scx += BASESIZE * sprStepTiles;
                 }
                 scw = BASESIZE;
                 sch = BASESIZE * 2;
@@ -3082,18 +3109,18 @@ controller.dataLoader_start = function(loadDescComponent, loadBarComponent) {
     jWorkflow.order().andThen(function() {
         loadDescComponent.innerHTML = "Loading";
         loadBarComponent.className = "loadBar_0";
-    }).chill(SMALL_WAIT).andThen(controller.features_analyseClient).andThen(function() {
+    }).andThen(controller.features_analyseClient).andThen(function() {
         loadBarComponent.className = "loadBar_5";
-    }).chill(SMALL_WAIT).andThen(function(p, b) {
+    }).andThen(function(p, b) {
         if (!controller.features_client.supported) {
             b.take();
             if (confirm("Your system isn't supported by CW:T. Try to run it?")) b.pass();
         }
     }).andThen(function() {
         loadBarComponent.className = "loadBar_10";
-    }).chill(SMALL_WAIT).andThen(controller.storage_initialize).andThen(function() {
+    }).andThen(controller.storage_initialize).andThen(function() {
         loadBarComponent.className = "loadBar_15";
-    }).chill(SMALL_WAIT).andThen(function(err, baton) {
+    }).andThen(function(err, baton) {
         if (err) return err;
         baton.take();
         controller.storage_general.get("cwt_resetData", function(obj) {
@@ -3371,6 +3398,9 @@ controller.loadImages_doIt = util.singleLazyCall(function(err, baton) {
         var obj = model.data_tileSheets[key];
         controller.loadImages_prepareImg_(key, obj.assets.gfx, "T", baton);
         if (obj.assets.gfxOverlay) view.overlayImages[key] = true;
+        if (obj.assets.animated === 1 || obj.assets.animated === 2) {
+            view.animatedTiles[key] = true;
+        }
     });
     util.iterateListByFlow(flow, model.data_propertyTypes, function(data, baton) {
         var obj = model.data_tileSheets[this.list[this.i]];
@@ -3717,71 +3747,27 @@ util.scoped(function() {
 
 controller.setupMouseControls = function(canvas, menuEl) {
     if (DEBUG) util.log("initializing mouse support");
-    var mouseInMenu = false;
-    menuEl.onmouseout = function() {
-        mouseInMenu = false;
-    };
-    menuEl.onmouseover = function() {
-        mouseInMenu = true;
-    };
-    var len = TILE_LENGTH;
-    var msx = 0;
-    var msy = 0;
-    var menusy = 0;
-    document.addEventListener("mousemove", function(ev) {
+    controller.screenElement.addEventListener("mousemove", function(ev) {
         var id = ev.target.id;
-        if (id !== "cwt_canvas" && !controller.menuVisible) return;
         var x, y;
         ev = ev || window.event;
-        if (controller.menuVisible) {
-            x = ev.pageX;
-            y = ev.pageY;
-            if (menusy !== -1) {
-                if (y <= menusy - 16) {
-                    controller.screenStateMachine.event("INP_UP");
-                    menusy = y;
-                } else if (y >= menusy + 16) {
-                    controller.screenStateMachine.event("INP_DOWN");
-                    menusy = y;
-                }
-            } else menusy = y;
+        if (typeof ev.offsetX === "number") {
+            x = ev.offsetX;
+            y = ev.offsetY;
         } else {
-            if (typeof ev.offsetX === "number") {
-                x = ev.offsetX;
-                y = ev.offsetY;
-            } else {
-                x = ev.layerX;
-                y = ev.layerY;
-            }
-            x = parseInt(x / len, 10);
-            y = parseInt(y / len, 10);
-            controller.screenStateMachine.event("INP_HOVER", x, y);
+            x = ev.layerX;
+            y = ev.layerY;
         }
+        x = parseInt(x / TILE_LENGTH, 10);
+        y = parseInt(y / TILE_LENGTH, 10);
+        controller.screenStateMachine.event("INP_HOVER", x, y);
     });
-    document.onmousedown = function(ev) {
-        ev = ev || window.event;
-        if (typeof ev.offsetX === "number") {
-            msx = ev.offsetX;
-            msy = ev.offsetY;
-        } else {
-            msx = ev.layerX;
-            msy = ev.layerY;
+    controller.screenElement.onmouseup = function(ev) {
+        if (controller.menuVisible) {
+            controller.screenStateMachine.event("INP_CANCEL");
+            return;
         }
-    };
-    document.onmouseup = function(ev) {
         ev = ev || window.event;
-        var msex;
-        var msey;
-        if (typeof ev.offsetX === "number") {
-            msex = ev.offsetX;
-            msey = ev.offsetY;
-        } else {
-            msex = ev.layerX;
-            msey = ev.layerY;
-        }
-        var dex = Math.abs(msx - msex);
-        var dey = Math.abs(msy - msey);
-        menusy = -1;
         switch (ev.which) {
           case 1:
             controller.screenStateMachine.event("INP_ACTION");
@@ -3799,6 +3785,61 @@ controller.setupMouseControls = function(canvas, menuEl) {
 
 controller.setupTouchControls = function(canvas, menuEl) {
     util.scoped(function() {
+        function oneFingerTap(event, x, y) {
+            x = controller.getMapXByScreenX(x);
+            y = controller.getMapXByScreenY(y);
+            var focusExists = controller.stateMachine.state === "MOVEPATH_SELECTION" || controller.stateMachine.state === "ACTION_SELECT_TARGET_A" || controller.stateMachine.state === "ACTION_SELECT_TARGET_B" || controller.attackRangeVisible;
+            if (!controller.menuVisible) {
+                if (focusExists) {
+                    if (controller.stateMachine.data.selection.getValueAt(x, y) > 0) {
+                        controller.screenStateMachine.event("INP_ACTION", x, y);
+                    } else controller.screenStateMachine.event("INP_CANCEL", x, y);
+                } else controller.screenStateMachine.event("INP_ACTION", x, y);
+            } else {
+                if (event.target.id === "cwt_menu") {
+                    controller.screenStateMachine.event("INP_ACTION");
+                } else controller.screenStateMachine.event("INP_CANCEL");
+            }
+        }
+        function twoFingerTap(event, x, y) {
+            controller.screenStateMachine.event("INP_CANCEL");
+        }
+        function swipe(event, dx, dy) {
+            if (controller.screenStateMachine.state === "GAME_ROUND") {
+                if (dx === +1) controller.screenStateMachine.event("SHIFT_RIGHT", 10);
+                if (dx === -1) controller.screenStateMachine.event("SHIFT_LEFT", 10);
+                if (dy === +1) controller.screenStateMachine.event("SHIFT_DOWN", 10);
+                if (dy === -1) controller.screenStateMachine.event("SHIFT_UP", 10);
+            } else {
+                if (dx === +1) controller.screenStateMachine.event("INP_RIGHT", 1);
+                if (dx === -1) controller.screenStateMachine.event("INP_LEFT", 1);
+                if (dy === +1) controller.screenStateMachine.event("INP_DOWN", 1);
+                if (dy === -1) controller.screenStateMachine.event("INP_UP", 1);
+            }
+        }
+        function oneFingerDrag(event, dx, dy) {
+            if (dx === 1) controller.screenStateMachine.event("INP_RIGHT", 1);
+            if (dx === -1) controller.screenStateMachine.event("INP_LEFT", 1);
+            if (dy === 1) controller.screenStateMachine.event("INP_DOWN", 1);
+            if (dy === -1) controller.screenStateMachine.event("INP_UP", 1);
+            if (!controller.menuVisible) {} else {
+                if (event.target.id === "cwt_menu") {} else {
+                    controller.screenStateMachine.event("INP_CANCEL");
+                }
+            }
+        }
+        function holdOneFingerTap(event, x, y) {
+            if (!controller.menuVisible) {
+                controller.screenStateMachine.event("INP_ACTION", x, y);
+                controller.screenStateMachine.event("INP_CANCEL", x, y);
+                controller.screenStateMachine.event("INP_ACTION", x, y);
+            } else {
+                if (event.target.id === "cwt_menu") {} else {}
+            }
+        }
+        function pinch(event, delta) {
+            if (delta < 0) controller.setScreenScale(controller.screenScale - 1); else controller.setScreenScale(controller.screenScale + 1);
+        }
         var sx, sy;
         var ex, ey;
         var s2x, s2y;
@@ -3807,16 +3848,16 @@ controller.setupTouchControls = function(canvas, menuEl) {
         var pinDis, pinDis2;
         var dragDiff = 0;
         var isDrag = false;
-        document.addEventListener("touchstart", function(event) {
-            if (event.target.id !== "cwt_options_mapIn") event.preventDefault();
-            sx = event.touches[0].screenX;
-            sy = event.touches[0].screenY;
+        controller.screenElement.addEventListener("touchstart", function(event) {
+            event.preventDefault();
+            sx = event.touches[0].clientX;
+            sy = event.touches[0].clientY;
             ex = sx;
             ey = sy;
             isDrag = false;
             if (event.touches.length === 2) {
-                s2x = event.touches[1].screenX;
-                s2y = event.touches[1].screenY;
+                s2x = event.touches[1].clientX;
+                s2y = event.touches[1].clientY;
                 e2x = s2x;
                 e2y = s2y;
                 var dx = Math.abs(sx - s2x);
@@ -3825,67 +3866,53 @@ controller.setupTouchControls = function(canvas, menuEl) {
             } else s2x = -1;
             st = event.timeStamp;
         }, false);
-        document.addEventListener("touchmove", function(event) {
-            if (event.target.id !== "cwt_options_mapIn") event.preventDefault();
-            ex = event.touches[0].screenX;
-            ey = event.touches[0].screenY;
+        controller.screenElement.addEventListener("touchmove", function(event) {
+            event.preventDefault();
+            var dx, dy;
+            ex = event.touches[0].clientX;
+            ey = event.touches[0].clientY;
             if (event.touches.length === 2) {
-                e2x = event.touches[1].screenX;
-                e2y = event.touches[1].screenY;
-                var dx = Math.abs(ex - e2x);
-                var dy = Math.abs(ey - e2y);
+                e2x = event.touches[1].clientX;
+                e2y = event.touches[1].clientY;
+                dx = Math.abs(ex - e2x);
+                dy = Math.abs(ey - e2y);
                 pinDis2 = Math.sqrt(dx * dx + dy * dy);
             } else s2x = -1;
-            var dx = Math.abs(sx - ex);
-            var dy = Math.abs(sy - ey);
+            dx = Math.abs(sx - ex);
+            dy = Math.abs(sy - ey);
             var d = Math.sqrt(dx * dx + dy * dy);
             var timeDiff = event.timeStamp - st;
             if (d > 16) {
                 if (timeDiff > 300) {
                     isDrag = true;
                     if (dragDiff > 75) {
-                        var mode;
-                        if (dx > dy) {
-                            if (sx > ex) mode = "INP_LEFT"; else mode = "INP_RIGHT";
-                        } else {
-                            if (sy > ey) mode = "INP_UP"; else mode = "INP_DOWN";
-                        }
+                        if (dx > dy) oneFingerDrag(event, sx > ex ? -1 : +1, 0); else oneFingerDrag(event, 0, sy > ey ? -1 : +1);
                         dragDiff = 0;
                         sx = ex;
                         sy = ey;
-                        controller.screenStateMachine.event(mode, 1);
-                    } else dragDiff += timeDiff;
+                    } else {
+                        dragDiff += timeDiff;
+                    }
                 }
             }
         }, false);
-        document.addEventListener("touchend", function(event) {
-            if (event.target.id !== "cwt_options_mapIn") event.preventDefault();
+        controller.screenElement.addEventListener("touchend", function(event) {
+            event.preventDefault();
             if (controller.inputCoolDown > 0) return;
             var dx = Math.abs(sx - ex);
             var dy = Math.abs(sy - ey);
             var d = Math.sqrt(dx * dx + dy * dy);
             var timeDiff = event.timeStamp - st;
             if (s2x !== -1) {
-                var pinDis3 = Math.abs(pinDis2 - pinDis);
-                if (pinDis3 <= 32) {
-                    controller.screenStateMachine.event("INP_CANCEL");
-                } else {
-                    if (pinDis2 < pinDis) {} else {}
-                }
+                if (Math.abs(pinDis2 - pinDis) <= 32) {
+                    twoFingerTap(event, ex, ey);
+                } else pinch(event, pinDis2 < pinDis ? 1 : -1);
                 controller.inputCoolDown = 500;
             } else {
                 if (d <= 16) {
-                    if (timeDiff <= 500) {
-                        controller.screenStateMachine.event("INP_ACTION");
-                    }
+                    if (timeDiff <= 500) oneFingerTap(event, ex, ey);
                 } else if (timeDiff <= 300) {
-                    var mode;
-                    if (dx > dy) {
-                        if (sx > ex) mode = "INP_LEFT"; else mode = "INP_RIGHT";
-                    } else {
-                        if (sy > ey) mode = "INP_UP"; else mode = "INP_DOWN";
-                    }
-                    controller.screenStateMachine.event(mode, 1);
+                    if (dx > dy) swipe(event, sx > ex ? -1 : +1, 0); else swipe(event, 0, sy > ey ? -1 : +1);
                 }
             }
         }, false);
@@ -5011,6 +5038,26 @@ util.scoped(function() {
         } else controller.increaseMenuCursor();
         return this.breakTransition();
     };
+    controller.screenStateMachine.structure.GAMEROUND.SHIFT_DOWN = function(ev, distance) {
+        controller.shiftScreenPosition(model.move_MOVE_CODES.DOWN, distance);
+        controller.moveCursor(model.move_MOVE_CODES.DOWN, distance);
+        return this.breakTransition();
+    };
+    controller.screenStateMachine.structure.GAMEROUND.SHIFT_UP = function(ev, distance) {
+        controller.shiftScreenPosition(model.move_MOVE_CODES.UP, distance);
+        controller.moveCursor(model.move_MOVE_CODES.UP, distance);
+        return this.breakTransition();
+    };
+    controller.screenStateMachine.structure.GAMEROUND.SHIFT_LEFT = function(ev, distance) {
+        controller.shiftScreenPosition(model.move_MOVE_CODES.LEFT, distance);
+        controller.moveCursor(model.move_MOVE_CODES.LEFT, distance);
+        return this.breakTransition();
+    };
+    controller.screenStateMachine.structure.GAMEROUND.SHIFT_RIGHT = function(ev, distance) {
+        controller.shiftScreenPosition(model.move_MOVE_CODES.RIGHT, distance);
+        controller.moveCursor(model.move_MOVE_CODES.RIGHT, distance);
+        return this.breakTransition();
+    };
     controller.screenStateMachine.structure.GAMEROUND.ACTION = function(ev, x, y) {
         var state = controller.stateMachine.state;
         if (state === "IDLE") {
@@ -5587,6 +5634,8 @@ util.scoped(function() {
     var TIMEOUT_TIPS = 1e4;
     var toolTipId;
     var toolTipElement = document.getElementById("startScreen_toolTip");
+    var pageEl = document.getElementById("cwt_mobileSound_screen");
+    var btn = controller.generateButtonGroup(pageEl, "cwt_panel_header_big cwt_page_button w_400 cwt_panel_button", "cwt_panel_header_big cwt_page_button w_400 cwt_panel_button button_active", "cwt_panel_header_big cwt_page_button w_400 cwt_panel_button button_inactive");
     function updateTooltip() {
         if (model.data_tips.length > 0) toolTipElement.innerHTML = model.data_tips[toolTipId];
     }

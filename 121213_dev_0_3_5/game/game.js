@@ -18,7 +18,7 @@ var MAX_SELECTION_RANGE = 15;
 
 var MAX_BUFFER_SIZE = 200;
 
-var VERSION = "0.3.5 - RC2";
+var VERSION = "0.3.5 - RC3";
 
 var DEBUG = true;
 
@@ -658,7 +658,7 @@ util.createRingBuffer = function(size, initFn) {
             }
         }
     }
-    function nextValidPosition(x, y, minValue, walkLeft, cb) {
+    function nextValidPosition(x, y, minValue, walkLeft, cb, arg) {
         var data = this.data;
         var cy = this.centerX;
         var cx = this.centerY;
@@ -679,11 +679,28 @@ util.createRingBuffer = function(size, initFn) {
         for (;walkLeft ? x >= 0 : x < maxLen; x += mod) {
             for (;walkLeft ? y >= 0 : y < maxLen; y += mod) {
                 if (data[x][y] >= minValue) {
-                    cb(x, y);
+                    cb(x, y, arg);
                     return;
                 }
             }
             y = walkLeft ? maxLen - 1 : 0;
+        }
+    }
+    function nextRandomPosition(cb, arg, minValue) {
+        if (minValue === void 0) minValue = 0;
+        var e = this.data.length;
+        var n = parseInt(Math.random() * e, 10);
+        var x, y;
+        for (x = 0; x < e; x++) {
+            for (y = 0; y < e; y++) {
+                if (this.data[x][y] >= minValue) {
+                    n--;
+                    if (n < 0) {
+                        cb(x, y, arg);
+                        return;
+                    }
+                }
+            }
         }
     }
     util.selectionMap = function(size) {
@@ -692,6 +709,7 @@ util.createRingBuffer = function(size, initFn) {
         obj.centerY = 0;
         obj.data = util.matrix(size, size, INACTIVE_ID);
         obj.nextValidPosition = nextValidPosition;
+        obj.nextRandomPosition = nextRandomPosition;
         obj.setValueAt = setValueAt;
         obj.getValueAt = getValueAt;
         obj.setCenter = setCenter;
@@ -1662,8 +1680,9 @@ controller.ai_loopHolder_ = {
 controller.ai_scoreDataHolder_ = {
     source: Object.create(controller.TaggedPosition),
     target: Object.create(controller.TaggedPosition),
-    selectionTarget: Object.create(controller.TaggedPosition),
+    targetselection: Object.create(controller.TaggedPosition),
     selection: util.selectionMap(MAX_SELECTION_RANGE * 4 + 1),
+    move: util.list(MAX_SELECTION_RANGE, INACTIVE_ID),
     action: {
         selectedSubEntry: ""
     },
@@ -1673,9 +1692,10 @@ controller.ai_scoreDataHolder_ = {
 controller.ai_actionDataHolder_ = {
     source: Object.create(controller.TaggedPosition),
     target: Object.create(controller.TaggedPosition),
-    selectionTarget: Object.create(controller.TaggedPosition),
+    targetselection: Object.create(controller.TaggedPosition),
     selection: util.selectionMap(MAX_SELECTION_RANGE * 4 + 1),
     used: false,
+    move: util.list(MAX_SELECTION_RANGE, INACTIVE_ID),
     check_index: -1,
     endsAiTurn: false,
     action: {
@@ -1778,7 +1798,7 @@ controller.ai_machine = util.stateMachine({
             while (true) {
                 scoreData.source.set(-1, -1);
                 scoreData.target.set(-1, -1);
-                scoreData.selectionTarget.set(-1, -1);
+                scoreData.targetselection.set(-1, -1);
                 scoreData.selection.setCenter(0, 0, -1);
                 scoreData.used = false;
                 scoreData.selectedSubEntry = "";
@@ -1787,7 +1807,7 @@ controller.ai_machine = util.stateMachine({
                 if (loopData.i < loopData.e) {
                     if (loopData.i < loopData.prop) {
                         var unit = model.unit_data[loopData.i];
-                        if (unit.owner !== INACTIVE_ID && unit.loadedIn === INACTIVE_ID) {
+                        if (unit.owner !== INACTIVE_ID && unit.loadedIn === INACTIVE_ID && model.actions_canAct(loopData.i)) {
                             dataTp = 0;
                             scoreData.source.set(unit.x, unit.y);
                             model.move_fillMoveMap(scoreData.source, scoreData.selection);
@@ -1813,16 +1833,17 @@ controller.ai_machine = util.stateMachine({
                         if (dataTp !== 0 && check.unitAction) continue;
                         if (dataTp !== 1 && check.propAction) continue;
                         if (dataTp !== 2 && check.mapAction) continue;
-                        nScore = check.scoring(scoreData);
+                        nScore = check.scoring(scoreData, loopData.score);
                         if (nScore > loopData.score) {
                             actionData.source.grab(scoreData.source);
                             actionData.target.grab(scoreData.target);
-                            actionData.selectionTarget.grab(scoreData.selectionTarget);
+                            actionData.targetselection.grab(scoreData.targetselection);
                             actionData.selection.grab(scoreData.selection);
                             actionData.used = true;
                             actionData.check_index = i - 1;
                             actionData.endsAiTurn = check.endsAiTurn === true;
                             actionData.cacheInt = scoreData.cacheInt;
+                            actionData.move.grabValues(scoreData.move);
                             loopData.score = nScore;
                             actionData.action.selectedSubEntry = scoreData.action.selectedSubEntry;
                         }
@@ -1935,6 +1956,7 @@ model.battle_calculateTargets = function(uid, x, y, data, markAttackableTiles) {
     var markInData = typeof data !== "undefined";
     if (!markAttackableTiles) markAttackableTiles = false;
     assert(model.unit_isValidUnitId(uid));
+    if (markInData) data.setCenter(x, y, INACTIVE_ID);
     var unit = model.unit_data[uid];
     var teamId = model.player_data[unit.owner].team;
     var attackSheet = unit.type.attack;
@@ -2036,6 +2058,7 @@ model.battle_hasTargets = function(uid, x, y) {
 
 model.battle_getBaseDamageAgainst = function(attacker, defender, withMainWp) {
     var attack = attacker.type.attack;
+    if (!attack) return -1;
     var tType = defender.type.ID;
     var v;
     if (typeof withMainWp === "undefined") withMainWp = true;
@@ -2051,7 +2074,7 @@ model.battle_getBaseDamageAgainst = function(attacker, defender, withMainWp) {
 };
 
 model.battle_getBattleDamageAgainst = function(attacker, defender, luck, withMainWp, isCounter) {
-    if (DEBUG) util.log("calculating battle damage", model.unit_extractId(attacker), "against", model.unit_extractId(attacker));
+    if (DEBUG) util.log("calculating battle damage", model.unit_extractId(attacker), "against", model.unit_extractId(defender));
     if (typeof isCounter === "undefined") isCounter = false;
     assert(util.intRange(luck, 0, 100));
     assert(util.isBoolean(withMainWp));
@@ -2963,9 +2986,10 @@ model.supply_isSupplyUnit = function(uid) {
 
 model.supply_hasSupplyTargetsNearby = function(uid, x, y) {
     assert(model.unit_isValidUnitId(uid));
+    var supplier = model.unit_data[uid];
+    if (supplier.loadedIn !== INACTIVE_ID) return false;
     assert(model.map_isValidPosition(x, y));
     if (!model.supply_isSupplyUnit(uid)) return false;
-    var supplier = model.unit_data[uid];
     return false;
 };
 
@@ -3167,12 +3191,12 @@ model.event_on("nextTurn_pidStartsTurn", function(pid) {
     }
 });
 
-model.event_on("attack_check", function(wish) {
+model.event_on("attack_check", function() {
     if (model.round_day < controller.configValue("daysOfPeace")) return false;
 });
 
 model.event_on("attack_check", function(uid, x, y, move) {
-    if (model.battle_isIndirectUnit(uid) && move.data.getSize() > 0) {
+    if (model.battle_isIndirectUnit(uid) && (move === true || move.data.getSize() > 0)) {
         return false;
     }
 });
@@ -3671,7 +3695,7 @@ model.event_on("player_deactivatePlayer", function(pid) {
     }
     model.player_data[pid].team = -1;
     if (!model.player_areEnemyTeamsLeft()) {
-        controller.controller.commandStack_localInvokement("player_noTeamsAreLeft");
+        controller.commandStack_localInvokement("player_noTeamsAreLeft");
     }
 });
 
@@ -5016,7 +5040,7 @@ util.scoped(function() {
         }
     };
     controller.ai_defineRoutine({
-        key: "buildCapturers",
+        key: "buildUnits",
         propAction: true,
         scoring: function(data) {
             var prid = data.source.propertyId;
@@ -5029,12 +5053,20 @@ util.scoped(function() {
             model.factoryGenerateBuildMenu(prid, menu);
             if (menu.size === 0) return -1;
             var gold = model.player_data[data.source.property.owner].gold;
-            for (var i = 0, e = menu.size; i < e; i++) {
-                var type = model.data_unitSheets[menu.data[i]];
-                if (type.captures && type.cost <= gold) {
-                    data.action.selectedSubEntry = type.ID;
-                    return controller.ai_SCORE.HIGH;
+            var rand = parseInt(Math.random() * menu.size * 2, 10);
+            var oldRand = rand;
+            while (true) {
+                for (var i = 0, e = menu.size; i < e; i++) {
+                    var type = model.data_unitSheets[menu.data[i]];
+                    if (type.cost <= gold) {
+                        rand--;
+                        if (rand < 0) {
+                            data.action.selectedSubEntry = type.ID;
+                            return 20;
+                        }
+                    }
                 }
+                if (rand === oldRand) return -1;
             }
             return -1;
         },
@@ -5043,6 +5075,56 @@ util.scoped(function() {
         }
     });
 });
+
+(function() {
+    function setTarget(x, y, data) {
+        data.targetselection.set(x, y);
+    }
+    controller.ai_defineRoutine({
+        key: "attackDirect",
+        unitAction: true,
+        scoring: function(data, cScore) {
+            if (cScore >= 5) return -1;
+            if (!data.source.unit.type.attack) return -1;
+            var x, y, ye, xe;
+            var tx, ty;
+            var found = false;
+            var dataL = data.selection.data;
+            for (x = 0, xe = dataL.length; x < xe; x++) {
+                for (y = 0, ye = dataL[x].length; y < ye; y++) {
+                    if (dataL[x][y] >= 0) {
+                        if (model.unit_posData[x][y]) continue;
+                        if (model.events.attack_check(data.source.unitId, x, y, true)) {
+                            tx = x;
+                            ty = y;
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+                if (found) break;
+            }
+            if (!found) return -1;
+            model.move_generatePath(data.source.x, data.source.y, tx, ty, data.selection, data.move);
+            model.battle_calculateTargets(data.source.unitId, tx, ty, data.selection, false);
+            data.selection.nextValidPosition(tx, ty, 0, Math.random() < .5 ? true : false, setTarget, data);
+            if (data.targetselection.unitId === -1) return -1;
+            return 5;
+        },
+        prepare: function(data) {
+            if (data.move[0] !== INACTIVE_ID) {
+                controller.commandStack_sharedInvokement("move_clearWayCache");
+                for (var i = 0, e = data.move.length; i < e; i += 6) {
+                    if (data.move[i] === INACTIVE_ID) break;
+                    controller.commandStack_sharedInvokement("move_appendToWayCache", data.move[i], data.move[i + 1], data.move[i + 2], data.move[i + 3], data.move[i + 4], data.move[i + 5]);
+                }
+                controller.commandStack_sharedInvokement("move_moveByCache", data.source.unitId, data.source.x, data.source.y, 0);
+            }
+            controller.commandStack_sharedInvokement("attack_invoked", data.source.unitId, data.targetselection.unitId, Math.round(Math.random() * 100), Math.round(Math.random() * 100), 0);
+            controller.commandStack_sharedInvokement("wait_invoked", data.source.unitId);
+        }
+    });
+})();
 
 controller.ai_defineRoutine({
     key: "endTurn",
@@ -5053,3 +5135,71 @@ controller.ai_defineRoutine({
     },
     prepare: function(data) {}
 });
+
+(function() {
+    function setTarget(x, y, data) {
+        data.target.set(x, y);
+    }
+    controller.ai_defineRoutine({
+        key: "moveRandom",
+        unitAction: true,
+        scoring: function(data, cScore) {
+            if (cScore >= 1) return -1;
+            var n = 0;
+            while (true) {
+                data.selection.nextRandomPosition(setTarget, data, 0);
+                if (data.target.x >= 0 && data.target.y >= 0 && !data.target.unit) break;
+                n++;
+                if (n === 10) return -1;
+            }
+            model.move_generatePath(data.source.x, data.source.y, data.target.x, data.target.y, data.selection, data.move);
+            var way = data.move;
+            var cx = data.source.x;
+            var cy = data.source.y;
+            var cBx;
+            var cBy;
+            var trapped = false;
+            for (var i = 0, e = way.length; i < e; i++) {
+                if (way[i] === -1) break;
+                cBx = cx;
+                cBy = cy;
+                switch (way[i]) {
+                  case model.move_MOVE_CODES.DOWN:
+                    cy++;
+                    break;
+
+                  case model.move_MOVE_CODES.UP:
+                    cy--;
+                    break;
+
+                  case model.move_MOVE_CODES.LEFT:
+                    cx--;
+                    break;
+
+                  case model.move_MOVE_CODES.RIGHT:
+                    cx++;
+                    break;
+                }
+                var unit = model.unit_posData[cx][cy];
+                if (unit !== null) {
+                    if (model.player_data[model.round_turnOwner].team !== model.player_data[unit.owner].team) {
+                        data.target.set(cBx, cBy);
+                        way[i] = INACTIVE_ID;
+                        trapped = true;
+                        break;
+                    }
+                }
+            }
+            return 1;
+        },
+        prepare: function(data) {
+            controller.commandStack_sharedInvokement("move_clearWayCache");
+            for (var i = 0, e = data.move.length; i < e; i += 6) {
+                if (data.move[i] === INACTIVE_ID) break;
+                controller.commandStack_sharedInvokement("move_appendToWayCache", data.move[i], data.move[i + 1], data.move[i + 2], data.move[i + 3], data.move[i + 4], data.move[i + 5]);
+            }
+            controller.commandStack_sharedInvokement("move_moveByCache", data.source.unitId, data.source.x, data.source.y, 0);
+            controller.commandStack_sharedInvokement("wait_invoked", data.source.unitId);
+        }
+    });
+})();
