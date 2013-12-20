@@ -9,6 +9,8 @@ view.registerAnimationHook({
     this.moveAnimationIndex = 0;
     this.moveAnimationPath  = model.move_pathCache;
     this.moveAnimationUid   = uid;
+    this.moveAnimationClientOwned = model.fog_visibleClientPids[
+                                        model.unit_data[ uid ].owner ];
     this.moveAnimationShift = 0;
 
     this.moveAnimationDustX = -1;
@@ -116,7 +118,7 @@ view.registerAnimationHook({
     var tp = unit.type;
 
     // check visibility
-    if( !model.fog_clientData[cx][cy] ){
+    if( !this.moveAnimationClientOwned && !model.fog_clientData[cx][cy] ){
       return;
     }
 

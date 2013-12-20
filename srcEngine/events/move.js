@@ -118,7 +118,7 @@ model.event_on("move_moveByCache",function( uid, x, y, noFuelConsumption ){
 
     // calculate the used fuel to move onto the current tile
     // if `noFuelConsumption` is not `true` some actions like unloading does not consume fuel
-    if( noFuelConsumption ) fuelUsed += model.move_getMoveCosts( mType, cX, cY );
+    if( noFuelConsumption !== true ) fuelUsed += model.move_getMoveCosts( mType, cX, cY );
   }
 
   // consume fuel ( if `noFuelConsumption` is `true` then the costs will be `0` )
