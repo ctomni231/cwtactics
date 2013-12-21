@@ -1,6 +1,6 @@
 [
   {
-    "ID"    : "INFT",
+    "ID"    : "MV_INFT",
     "sound" : null,
     "costs" : {
       "MNTN": 2,
@@ -11,7 +11,7 @@
   },
 
   {
-    "ID"    : "MECH",
+    "ID"    : "MV_MECH",
     "sound" : null,
     "costs" : {
       "WATER": -1,

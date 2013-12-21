@@ -10,7 +10,7 @@ PAGE_DATA.milestones = [
       ""
     ],
 
-    img: "images/milestones/v0_3_4.png",
+    img: "images/milestones/v0_3_5.png",
 
     log:{
       "NEW":[
@@ -19,7 +19,7 @@ PAGE_DATA.milestones = [
         "2 new 2-players maps: Spann-Island and Stand-Off",
         "3 new 4-players maps: Minus-Hills, Shuriken-Valley and Outpost-Plus (incomplete)",
         "Offline mode",
-        "Added some animated tiles (needs fast device) (????)",
+        "Added some animated tiles (needs fast device)",
         "S-Bomb suicide unit",
         "Added river and bridges",
         "Added CO's: Andy, Max and Sami",
@@ -28,12 +28,11 @@ PAGE_DATA.milestones = [
         "Some game tips will be shown randomly in the start screen",
         "Language will be selected automatically",
         "Added a random background image selection",
-        "Experimental <code>HTML5 Game-Pad</code> support on <code>Google Chrome</code>",
+        "<code>HTML5 Game-Pad</code> support on <code>Chrome</code> (experimental)",
         "The input buttons are configurable now",
         "Sounds are played when one unit attacks another unit",
-        "Usable Co-Power and Super-Co-Power",
         "Several new scripting attributes (including scripted Co-Powers)",
-        "Rocket silo has now a rocket animation (????)",
+        "Rocket silo has now a rocket animation",
         "Some units drains fuel at turn start now",
         "Error Panel which indicates an error when the game breaks",
         "Added option to force touch controls on touch capable desktop systems"
@@ -495,4 +494,6 @@ PAGE_DATA.milestones = [
 
 ];
 
+// Grabs the latest link
+//
 PAGE_DATA.latestMilestone = PAGE_DATA.milestones[0].link;
