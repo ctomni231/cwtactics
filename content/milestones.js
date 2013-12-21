@@ -76,6 +76,7 @@ PAGE_DATA.milestones = [
     ],
 
     img: "images/milestones/v0_3_1.png",
+    link: "http://battle.customwars.com/gamedata/actual/webclient/0.3.1/startGame.html",
 
     log:{
       "NEW":[
