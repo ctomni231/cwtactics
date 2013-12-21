@@ -115,7 +115,7 @@ model.unit_hasFreeSlots = function( pid ){
   var e     = model.unit_lastUnitId(pid);
   var count = 0;
   var res   = false;
-  for( ; i<e; i++ ){
+  for( ; i<=e; i++ ){
 
     // found slot
     if( model.unit_data[i].owner === INACTIVE_ID ) res = true;
@@ -148,7 +148,7 @@ model.unit_countUnits = function( pid ){
   var i = model.unit_firstUnitId(pid);
   var e = model.unit_lastUnitId(pid);
 
-  for(; i<e; i++ ){
+  for(; i<=e; i++ ){
     if( model.unit_data[i].owner !== INACTIVE_ID ) n++;
   }
 
