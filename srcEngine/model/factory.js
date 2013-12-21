@@ -4,7 +4,7 @@ model.factory_wish = util.wish();
 // something technically, else `false`.
 //
 model.factory_canProduceSomething = function( prid, pid  ){
-  model.events.buildUnit_check( prid, pid );
+  return model.events.buildUnit_check( prid, pid );
 };
 
 // Returns `true` when the given factory object (by its `prid`) is a factory, else `false`.

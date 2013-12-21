@@ -130,10 +130,9 @@ controller.modification_load = util.singleLazyCall( function( err, baton ){
 
       // do not save the modification in the debug mode
       if(!DEBUG){
-
         if( modGrabbed ){
           b.take();
-          controller.storage_general.set(null,function(){
+          controller.storage_general.set(MOD_KEY,mod,function(){
             b.pass();
           });
         }

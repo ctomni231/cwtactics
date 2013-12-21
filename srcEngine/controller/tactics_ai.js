@@ -8,15 +8,8 @@
 // **TASKS 0.10: DO SOMETHING ON THE BATTLEFIELD (v. 0.3.5)**
 //
 //  - DB builds objects on his properties
-//  - When neutral properties are left on the map then DB will
-//    build at least one capturer unit
-//  - DB tries to fulfill a percentage (AIR,VS,TANKS etc.)
-//  - Damaged units (<=5HP) may move back to properties for repair
-//  - Units move to the enemy players
 //  - Capturers try to capture properties or move near to them
 //  - DB attacks with units in range
-//  - DB tries to position indirect units
-//  - *Actions:* Wait,Move,Capture,End_Turn,Build_Unit,Attack,Join
 //
 // **TASKS 0.25: DO SOMETHING MORE (v. 0.3.6)**
 //
@@ -47,7 +40,7 @@
 //  - DB should use transports to reach far away properties
 //  - *Actions:* Hide/Unhide,Supply,Load/Unload,Suicide_Bomb
 //
-controller.ai_spec = "DumbBoy [0.10]";
+controller.ai_spec = AI_VERSION;
 
 // Some base scores.
 //

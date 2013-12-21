@@ -97,7 +97,7 @@
       },
       {
         "$when":[
-          "MOVETYPE",["INFT","MECH"]
+          "MOVE_TYPE",["MV_INFT","MV_MECH"]
         ],
         "att":30,
         "movepoints":1,
@@ -108,7 +108,7 @@
       "turn":[
         {
           "$when":[
-            "MOVE_TYPE",["INFT","MECH"]
+            "MOVE_TYPE",["MV_INFT","MV_MECH"]
           ],
           "att":40,
           "movepoints":1
@@ -120,7 +120,7 @@
       "turn":[
         {
           "$when":[
-            "MOVE_TYPE",["INFT","MECH"]
+            "MOVE_TYPE",["MV_INFT","MV_MECH"]
           ],
           "att":70,
           "movepoints":2,

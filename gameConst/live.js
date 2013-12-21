@@ -9,5 +9,6 @@ MAX_PROPERTIES=300,
 MAX_SELECTION_RANGE=15,
 MAX_BUFFER_SIZE=200,
 VERSION=\"0.3.5\",
+AI_VERSION=\"DumbBoy v. 0.1 Alpha\",
 DEBUG=false,
 MOD_PATH=\"http://ctomni231.github.io/cwtactics/mod/cwt/\"

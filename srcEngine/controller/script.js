@@ -1,10 +1,23 @@
 //
 //
 controller.script_DESCRITORS = {
+
+  // source positon
   MOVE_TYPE: 0,
   TILE_TYPE: 1,
-  UNIT_TYPE: 2,
-  ATTACK_TYPE: 3
+  PROP_TYPE: 2,
+  UNIT_TYPE: 3,
+  ATTACK_TYPE: 4,
+
+  // target/selection position
+  __TARGET_START__: 20,
+  TARGET_MOVE_TYPE: 20,
+  TARGET_TILE_TYPE: 21,
+  TARGET_PROP_TYPE: 22,
+  TARGET_UNIT_TYPE: 23,
+  TARGET_ATTACK_TYPE: 24,
+
+  __END_MARKER__: 24
 };
 
 //
@@ -14,85 +27,20 @@ controller.script_VALUES = {
   // attack types
   DIRECT: 0,
   INDIRECT: 1,
-  BALLISTIC: 2
+  BALLISTIC: 2,
+
+  // special null type
+  NONE: -1
 
 };
 
-// Holds the current script tags
+// Script memory that holds the data of the current object in focus.
 //
-controller.scriptTags = {};
+controller.script_memory_ = util.list(controller.script_DESCRITORS.__END_MARKER__,INACTIVE_ID);
 
 // Holds all scriptable var boundaries
 //
 controller.scriptBoundaries_ = {};
-
-// Script memory that holds the data of the current object in focus.
-//
-controller.script_memory_ = util.list(200);
-
-(function() {
-  //
-  //
-  controller.script_memoryMapperFn_ = function(string, isValue) {
-    var value;
-
-    if (isValue) {
-      // check value strings
-
-      // try to extract static values
-      value = controller.script_VALUES[string];
-      if (value !== void 0) return value;
-
-      // try to extract sheet indexes
-      for (var i = 1; i >= 0; i--) {
-        switch (i) {
-
-          case 0: // units types
-            value = model.data_unitSheets[string];
-            break;
-
-          case 1: // tile/property types
-            value = model.data_tileSheets[string];
-            break;
-        }
-
-        // extract index (=value) from sheet object itself
-        if (value) return value.__sheetIndex__;
-      }
-    } else  {
-      // check descriptor strings
-      value = controller.script_DESCRITORS[string];
-    }
-
-    assert(value !== void 0, "unknown script string mapping");
-    return value;
-  };
-
-  // Parses a set of rules in a list `data` or a string that represents the same, into
-  // a valid jsonScript rule list. A converter (`listener`) converts all strings in the
-  // list to numeric representations. This numbers must map to correct positions in the
-  // used memory array.
-  //
-  controller.script_memoryMapper = function(data) {
-    for (var ri = 0, re = data.length; ri < re; ri++) {
-      var rule = data[ri];
-
-      // check $when
-      if (typeof rule.$when !== 'undefined') {
-        
-        var whenBlock = rule.$when;
-        assert(whenBlock.length % 2 === 0,"when block length must be odd");
-
-        for (var wi = 0, we = whenBlock.length; wi < we; wi += 2) {
-
-        }
-      }
-    }
-
-    // return converted rule list
-    return data;
-  };
-})();
 
 // Defines a scriptable variable to control the 
 // game data via rules.
@@ -110,51 +58,123 @@ controller.defineGameScriptable = function(name, min, max) {
   controller.scriptBoundaries_[name] = [min, max];
 };
 
-// Generates script tags based on a position pair
-//
-controller.prepareTags = function(x, y, uid, fx, fy, fuid) {
-  var tags = controller.scriptTags;
+(function() {
 
-  if (tags.__oldUnit__) tags[tags.__oldUnit__] = false;
-  if (tags.__oldTile__) tags[tags.__oldTile__] = false;
+  //
+  //
+  function mapperFunction(string, isValue) {
+    var value;
 
-  tags.INDIRECT = false;
-  tags.DIRECT = false;
+    if (isValue) {
+      // check value strings
 
-  var unit = (uid > -1) ? model.unit_data[uid] : model.unit_posData[x][y];
-  if (unit) {
-    tags.__oldUnit__ = unit.type.ID;
-    tags[tags.__oldUnit__] = true;
+      // try to extract static values
+      value = controller.script_VALUES[string];
+      if (value !== void 0) return value;
 
-    if (model.battle_isIndirectUnit((uid > -1) ? uid :
-      model.unit_extractId(unit))) tags.INDIRECT = true;
-    else tags.DIRECT = true;
+      // try to extract sheet indexes
+      for (var i = 2; i >= 0; i--) {
+        switch (i) {
 
+          case 0: // units types
+            value = model.data_unitSheets[string];
+            break;
+
+          case 1: // tile/property types
+            value = model.data_tileSheets[string];
+            break;
+
+          case 2: // move types
+            value = model.data_movetypeSheets[string];
+            break;
+        }
+
+        // extract index (=value) from sheet object itself
+        if (value) return value.__sheetIndex__;
+      }
+    } else  {
+      // check descriptor strings
+      value = controller.script_DESCRITORS[string];
+    }
+
+    assert(value !== void 0, "unknown script string mapping");
+    return value;
   }
 
-  var tileTp = model.map_data[x][y].ID;
-  var prop = model.property_posMap[x][y];
-  if (prop) {
-    tileTp = prop.type.ID;
-  }
+  // Parses a set of rules in a list `data` or a string that represents the same, into
+  // a valid jsonScript rule list. A converter (`listener`) converts all strings in the
+  // list to numeric representations. This numbers must map to correct positions in the
+  // used memory array.
+  //
+  controller.script_parseRule = function(data) {
+    for (var ri = 0, re = data.length; ri < re; ri++) {
+      var rule = data[ri];
 
-  tags.__oldTile__ = tileTp;
-  tags[tags.__oldTile__] = true;
+      // check $when
+      if (typeof rule.$when !== 'undefined') {
 
-  // FOCUS TILE GIVEN
-  if (arguments.length > 3) {
+        var whenBlock = rule.$when;
+        assert(whenBlock.length % 2 === 0, "when block length must be odd");
 
-    tags.OTHER_INDIRECT = false;
-    tags.OTHER_DIRECT = false;
+        for (var wi = 0, we = whenBlock.length; wi < we; wi += 2) {
 
-    unit = (fuid > -1) ? model.unit_data[fuid] : model.unit_posData[fx][fy];
+          // desc
+          assertStr(whenBlock[wi]);
+          whenBlock[wi] = mapperFunction(whenBlock[wi], false);
+
+          // values
+          for (var wvi = 0, wve = whenBlock[wi + 1].length; wvi < wve; wvi++) {
+            if (typeof whenBlock[wi + 1][wvi] === "string") {
+              whenBlock[wi + 1][wvi] = mapperFunction(whenBlock[wi + 1][wvi], true);
+            }
+          }
+        }
+      }
+    }
+
+    // return converted rule list
+    return data;
+  };
+})();
+
+(function() {
+
+  function setTags(x, y, uid, sIndex) {
+    var tags = controller.scriptTags;
+    var mem = controller.script_memory_;
+    var descMap = controller.script_DESCRITORS;
+    var valueMap = controller.script_VALUES;
+
+    // set unit meta-data
+    var unit = (uid > -1) ? model.unit_data[uid] : model.unit_posData[x][y];
     if (unit) {
-      if (model.battle_isIndirectUnit((fuid > -1) ? fuid :
-        model.unit_extractId(unit))) tags.OTHER_INDIRECT = true;
-      else tags.OTHER_DIRECT = true;
+      var indirect = model.battle_isIndirectUnit((uid > -1) ? uid : model.unit_extractId(unit));
+
+      mem[sIndex+descMap.UNIT_TYPE] = unit.type.__sheetIndex__;
+      mem[sIndex+descMap.ATTACK_TYPE] = (indirect) ? valueMap.INDIRECT : valueMap.DIRECT;
+      mem[sIndex+descMap.MOVE_TYPE] = model.data_movetypeSheets[unit.type.movetype].__sheetIndex__;
+    }
+
+    // set tile meta-data
+    mem[sIndex+descMap.TILE_TYPE] = model.map_data[x][y].__sheetIndex__;
+
+    // set property meta-data
+    var prop = model.property_posMap[x][y];
+    if (prop) {
+      mem[sIndex+descMap.PROP_TYPE] = prop.type.__sheetIndex__;
     }
   }
-};
+
+  // Generates script tags based on a position pair
+  //
+  controller.prepareTags = function(x, y, uid, fx, fy, fuid) {
+    setTags(x, y, uid, 0);
+    if (arguments.length > 3) {
+      setTags(fx, fy, fuid, controller.script_DESCRITORS.__TARGET_START__);
+    }
+  };
+
+})();
 
 (function() {
 
@@ -163,9 +183,7 @@ controller.prepareTags = function(x, y, uid, fx, fy, fuid) {
   // value `0` will be used as start value.
   //
   var solve = function(ruleList, memory, attrName, value) {
-
-    // default start value is `0`
-    if (typeof value !== 'number') value = 0;
+    if(!ruleList) return value;
 
     // evaluate all rules in the rule list
     for (var i = 0, e = ruleList.length; i < e; i++) {
@@ -236,13 +254,13 @@ controller.prepareTags = function(x, y, uid, fx, fy, fuid) {
   controller.scriptedValue = function(pid, attr, value) {
     assert(util.isInt(value));
 
-    var tags = controller.scriptTags;
+    var tags = controller.script_memory_;
 
     // global effects
-    value = solve(model.rule_global, tags, attr, value);
+    value = solve(model.data_globalRules, tags, attr, value);
 
     // map effects
-    value = solve(model.rule_map, tags, attr, value);
+    // value = solve(model.rule_map, tags, attr, value);
 
     // co effects
     var co = model.co_data[pid].coA;

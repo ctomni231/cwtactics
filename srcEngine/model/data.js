@@ -156,7 +156,10 @@ model.data_movetypeTypes = [ ];
 model.data_movetypeParser = model.data_createParser(
   "movetype",
   model.data_movetypeSheets,
-  model.data_movetypeTypes
+  function( sheet ){
+    model.data_movetypeTypes.push( sheet.ID );
+    sheet.__sheetIndex__ = model.data_movetypeTypes.length-1;
+  }
 );
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -193,9 +196,13 @@ model.data_coSheets = {};
 
 model.data_coTypes = [ ];
 
-model.data_coParser = model.data_createParser( "co",model.data_coSheets, model.data_coTypes );
+model.data_coParser = model.data_createParser( "co",model.data_coSheets, function( sheet ){
+  model.data_coTypes.push( sheet.ID );
+});
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+model.data_globalRules  = null;
 
 model.data_sounds    = null;
 

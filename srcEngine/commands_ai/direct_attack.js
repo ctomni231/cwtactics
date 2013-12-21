@@ -81,7 +81,7 @@
       } else {
         controller.commandStack_sharedInvokement(
           "trapwait_invoked",
-          sourceDto.unitId
+          data.source.unitId
         );
       }
     }

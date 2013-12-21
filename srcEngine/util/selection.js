@@ -108,12 +108,14 @@
           n--;
           if( n < 0 ){
             cb(x,y,arg);
-            return;
+            return true;
           }
         }
       }
     }
-  };
+
+    return false;
+  }
 
   util.selectionMap = function( size ){
     var obj = {};

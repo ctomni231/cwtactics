@@ -15,10 +15,15 @@
 
       var n = 0;
       while( true ){
-        data.selection.nextRandomPosition( setTarget, data, 0 );
-        if( data.target.x >= 0 && data.target.y >= 0 && !data.target.unit ) break;
-        n++;
-        if( n === 10 ) return -1;
+        if( n >= 10 ) return -1;
+
+        if( !data.selection.nextRandomPosition( setTarget, data, 0 ) ){
+          n++;
+          continue;  
+        }
+
+        if( !data.target.unit ) break;
+        else n++;
       }
             
       model.move_generatePath( 
