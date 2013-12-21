@@ -98,6 +98,7 @@ model.data_simpleAnimatedUnits = {};
 // Unit type sheet parser object
 model.data_unitParser = model.data_createParser( "unit", model.data_unitSheets, function( sheet ){
   model.data_unitTypes.push( sheet.ID );
+  sheet.__sheetIndex__ = model.data_unitTypes.length-1;
   if( sheet.assets.simpleAnimated ) model.data_simpleAnimatedUnits[sheet.ID] = true;
 } );
 
@@ -117,8 +118,12 @@ model.data_tileParser = model.data_createParser( "tile", model.data_tileSheets,
   function( sheet ){
     if( sheet.capturePoints || sheet.rocketsilo || sheet.cannon || sheet.laser  ){
       model.data_propertyTypes.push( sheet.ID );
+      sheet.__sheetIndex__ = model.data_propertyTypes.length-1;
     }
-    else model.data_tileTypes.push( sheet.ID );
+    else {
+      model.data_tileTypes.push( sheet.ID );
+      sheet.__sheetIndex__ = model.data_tileTypes.length-1;
+    }
   }
 );
 
