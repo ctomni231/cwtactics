@@ -27,16 +27,20 @@
 
   "PLIN": "Plain",
   "MNTN": "Mountain",
-  "FRST": "Forrest",
+  "FRST": "Forest",
+  "SEAS": "Sea",
+  "RIVR": "River",
+  "BRDG": "Bridge",
 
   "ROAD": "Road",
   "BASE": "Base",
   "HQTR": "Headquarter",
+  "CITY": "City",
   "BHMCE": "Mini-Cannon (East)",
   "BHMCN": "Mini-Cannon (Nord)",
   "BHMCS": "Mini-Cannon (South)",
   "BHMCW": "Mini-Cannon (West)",
-  "PQRT" : "SeaPort",
+  "SPRT" : "Seaport",
   "APRT" : "Airport",
 
   "CTPR": "Capture Property",

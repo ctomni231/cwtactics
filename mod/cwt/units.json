@@ -797,7 +797,7 @@
   },
 
   {
-    "ID": "BLBT",
+    "ID": "BKBT",
     "cost": 7500,
     "range": 7,
     "movetype": "WATER_TRANSPORT",
@@ -814,7 +814,7 @@
       "SHIP": 1
     },
     "assets": {
-      "gfx" : "cwt_anim/units/CWT_CRUS.png"
+      "gfx" : "cwt_anim/units/CWT_BKBT.png"
     }
   },
 
