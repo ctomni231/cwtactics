@@ -387,8 +387,8 @@
     "ammo": 0,
     "maxloads": 1,
     "canload": [
-      "INFT",
-      "MECH"
+      "MV_INFT",
+      "MV_MECH"
     ],
     "supply": [
       "*"
@@ -616,8 +616,8 @@
     "ammo": 0,
     "maxloads": 1,
     "canload": [
-      "INFT",
-      "MECH"
+      "MV_INFT",
+      "MV_MECH"
     ],
     "assets": {
       "simpleAnimated": true,
@@ -861,8 +861,8 @@
     "ammo": 0,
     "maxloads": 1,
     "canload": [
-      "MECH",
-      "INFT",
+      "MV_MECH",
+      "MV_INFT",
       "TIRE_A",
       "TIRE_B",
       "TANK"
