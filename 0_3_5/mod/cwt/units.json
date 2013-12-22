@@ -387,8 +387,8 @@
     "ammo": 0,
     "maxloads": 1,
     "canload": [
-      "INFT",
-      "MECH"
+      "MV_INFT",
+      "MV_MECH"
     ],
     "supply": [
       "*"
@@ -616,8 +616,8 @@
     "ammo": 0,
     "maxloads": 1,
     "canload": [
-      "INFT",
-      "MECH"
+      "MV_INFT",
+      "MV_MECH"
     ],
     "assets": {
       "simpleAnimated": true,
@@ -797,7 +797,7 @@
   },
 
   {
-    "ID": "BLBT",
+    "ID": "BKBT",
     "cost": 7500,
     "range": 7,
     "movetype": "WATER_TRANSPORT",
@@ -814,7 +814,7 @@
       "SHIP": 1
     },
     "assets": {
-      "gfx" : "cwt_anim/units/CWT_CRUS.png"
+      "gfx" : "cwt_anim/units/CWT_BKBT.png"
     }
   },
 
@@ -861,8 +861,8 @@
     "ammo": 0,
     "maxloads": 1,
     "canload": [
-      "MECH",
-      "INFT",
+      "MV_MECH",
+      "MV_INFT",
       "TIRE_A",
       "TIRE_B",
       "TANK"
