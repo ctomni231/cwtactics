@@ -16,6 +16,7 @@ PAGE_DATA.milestones = [
     ],
 
     img: "images/milestones/v0_3_5.png",
+    link: "http://ctomni231.github.io/cwtactics/0_3_5/game/game.html",
 
     log:{
       "NEW":[
