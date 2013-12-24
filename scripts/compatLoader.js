@@ -10,7 +10,9 @@ PAGE_PROG.registerSection({
       "<div class='compatEntry'>{{> entries}}</div>",
     "{{/compat}}",
 
-    "<div class='linkCompa'><a href='{{compat_link}}'>Report Compatibility</a></div>"
+    "<div class='linkCompa'><a href='{{compat_link}}'>Report Compatibility</a></div>",
+
+    "<div class='linkCompa'><a href='{{report_link}}'>Report Features &amp; Bugs</a></div>"
   ].join(""),
 
   partials:{
