@@ -4,79 +4,88 @@
   
   <p class="cwt_panel_header cwt_panel_header_small cwt_page_bottom_margin"><span key="OPTIONS"></span></p>
 
-  <table class="w_800 table_center table_collapse semiAlpha" >
+  <table class="w_100 table_center table_collapse semiAlpha" >
     <tbody>
       
-      <!-- #################### SFX VOLUME #################### -->
+      <tr>
+        <td class="w_10" ></td>
+        <td class="w_10" ></td>
+        <td class="w_10" ></td>
+        <td class="w_10" ></td>
+        <td class="w_10" ></td>        
+        <td class="w_10" ></td>
+        <td class="w_10" ></td>
+        <td class="w_10" ></td>
+        <td class="w_10" ></td>
+        <td class="w_10" ></td>
+      </tr>
+      
+      <!-- #################### SFX & MUSIC VOLUME #################### -->
 
-      <tr >
-        <td colspan="2">
+      <tr>
+        <td colspan="2" class="w_20 small_element_h noRightBorder noBottomBorder noEgdeTR noEgdeBL noEgdeBR">
+          <button key="options.sfx.down" />
+        </td>
 
-          <div class="cwt_panel_header_small cwt_page_button cwt_panel_button cwt_panel_button_inverted
-                      noEgdeBL noEgdeBR" >
-
+        <td colspan="6" class="w_60 small_element_h noBottomBorder noEgdeAll" >
+          <button ignore="true" class="cwt_border cwt_panel_button_inverted " >
             <span id="cwt_options_sfxVolume_desc" key="options.sfx"></span>:<span id="cwt_options_sfxVolume" ></span>%
-          </div>
+          </button>
         </td>
-      </tr>
-      
-      <tr >
-        <td class="noRightBorder noTopBorder noEgdeAll cwt_panel_header_small">
-            <button key="options.sfx.down" />
-          </td>
-
-        <td class="noLeftBorder noTopBorder noEgdeAll cwt_panel_header_small" >
-            <button key="options.sfx.up" />
-          </td>
-      </tr>
-
-      <!-- #################### MUSIC VOLUME #################### -->
-
-      <tr>
-        <td colspan="2">
-          <div class="cwt_panel_header_small cwt_page_button cwt_panel_button cwt_panel_button_inverted
-                      noTopBorder noEgdeAll" >
-
-            <span id="cwt_options_musicVolume_desc" key="options.music"></span>:<span id="cwt_options_musicVolume"></span>%
-          </div>
+          
+        <td colspan="2" class="w_20 small_element_h noLeftBorder noBottomBorder noEgdeBL noEgdeTL noEgdeBR" >
+          <button key="options.sfx.up" />
         </td>
       </tr>
       
       <tr>
-        <td class="noRightBorder noTopBorder noEgdeTR noEgdeBR" >
+        <td colspan="2" class="w_20 small_element_h noRightBorder noTopBorder noEgdeTR noEgdeTL noEgdeBR" >
           <button key="options.music.down" />
         </td>
+          
+        <td colspan="6" class="w_60 small_element_h noTopBorder noEgdeAll" >
+          <button ignore="true" class="cwt_border cwt_panel_button_inverted " >
+            <span id="cwt_options_musicVolume_desc" key="options.music"></span>:<span id="cwt_options_musicVolume"></span>%
+          </button>
+        </td>
 
-        <td class="noLeftBorder noTopBorder noEgdeTL noEgdeBL" >
+        <td colspan="2" class="w_20 small_element_h noLeftBorder noTopBorder noEgdeTR noEgdeTL noEgdeBL" >
           <button key="options.music.up" />
         </td>
       </tr>
 
-      <!-- #################### SET KEY MAPPING #################### -->
+      <!-- #################### BOOLEAN OPTIONS #################### -->
       
       <tr>
-        <td colspan="2" class="buttonTopGap" >
-          <div class="cwt_panel_header_small cwt_page_button cwt_panel_button cwt_panel_button_inverted
-                      noTopBorder noEgdeAll" >
-
-            <span id="cwt_options_forceTouch"></span>
-          </div>
+        <td colspan="8" class="w_80 small_element_h buttonTopGap noRightBorder noBottomBorder noEgdeBL noEgdeTR noEgdeBR" >
+          <button key="options.forceTouch" > </button>
+        </td>
+        
+        <td colspan="2" class="w_20 small_element_h buttonTopGap noBottomBorder noEgdeTL noEgdeBR noEgdeBL" >
+          <button ignore="true" id="cwt_options_forceTouch" class="cwt_border cwt_panel_button_inverted "/>
         </td>
       </tr>
       
-      <tr >
-        <td class="w_800 buttonTopGap cwt_panel_header_small" colspan="2" >
-            <button key="options.forceTouch" > </button>
+      <tr>
+        <td colspan="8" class="w_80 small_element_h noRightBorder noTopBorder noEgdeTL noEgdeTR noEgdeBR" >
+          <button key="options.animatedTiles" > </button>
+        </td>
+        
+        <td colspan="2" class="w_20 small_element_h noTopBorder noEgdeTL noEgdeTR noEgdeBL" >
+          <button ignore="true" id="cwt_options_animatedTiles" class="cwt_border cwt_panel_button_inverted "/>
         </td>
       </tr>
       
       <!-- #################### SET KEY MAPPING #################### -->
 
       <tr >
-        <td class="w_400 buttonTopGap noRightBorder noEgdeTR noEgdeTL noEgdeBR" >
+        <td colspan="10" class="w_100 small_element_h buttonTopGap noBottomBorder noEgdeBL noEgdeBR" >
             <button key="options.setKeyboad" > </button>
         </td>
-        <td class="w_400 buttonTopGap noLeftBorder noEgdeTR noEgdeTL noEgdeBL" >
+      </tr>
+      
+      <tr >
+        <td colspan="10" class="w_100 small_element_h noTopBorder noEgdeTL noEgdeTR" >
             <button key="options.setGamepad" > </button>
         </td>
       </tr>
@@ -84,7 +93,7 @@
       <!-- #################### RESET DATA #################### -->
 
       <tr >
-        <td class="w_800 buttonTopGap cwt_panel_header_small" colspan="2" >
+        <td colspan="10" class="w_100 small_element_h buttonTopGap" colspan="2" >
             <button key="options.resetData" > </button>
         </td>
       </tr>
@@ -92,7 +101,7 @@
       <!-- #################### GO BACK #################### -->
 
       <tr>
-        <td class="w_800 buttonTopGap" colspan="2">
+        <td colspan="10" class="w_100 small_element_h buttonTopGap" colspan="2">
             <button key="options.goBack" />
         </td>
       </tr>

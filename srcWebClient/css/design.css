@@ -113,6 +113,13 @@
   margin-bottom: 48px;
 }
 
+.cwt_border{
+  border: 2px solid #36a0c5;
+  border-radius: 8px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+}
+
 .cwt_page_button{
   font-family: 'dosisbook';
   

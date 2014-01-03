@@ -1,0 +1,179 @@
+/* --------------------------- HEIGHT --------------------------- */
+
+@media (max-height: 400px) {
+    .big_element_h,
+    .big_element_h button,
+    .big_element_h td {
+        height:    40px;
+        font-size: 18pt;
+    }
+    .small_element_h,
+    .small_element_h button,
+    .small_element_h td {
+        height:    28px;
+        font-size: 10pt;
+    }
+    .cwt_font_small{
+        font-size: 10pt;
+    }
+}
+@media (min-height: 401px) and (max-height: 500px) {
+    .big_element_h,
+    .big_element_h button,
+    .big_element_h td {
+        height:    50px;
+        font-size: 24pt;
+    }
+    .small_element_h,
+    .small_element_h button,
+    .small_element_h td {
+        height:    30px;
+        font-size: 11pt;
+    }
+    .cwt_font_small{
+        font-size: 11pt;
+    }
+}
+@media (min-height: 501px) and (max-height: 600px) {
+    .big_element_h,
+    .big_element_h button,
+    .big_element_h td {
+        height:    66px;
+        font-size: 34pt;
+    }
+    .small_element_h,
+    .small_element_h button,
+    .small_element_h td {
+        height:    38px;
+        font-size: 16pt;
+    }
+    .cwt_font_small{
+        font-size: 16pt;
+    }
+}
+@media (min-height: 601px) and (min-width: 401px) {
+    .big_element_h,
+    .big_element_h button,
+    .big_element_h td {
+        height:    82px;
+        font-size: 44pt;
+    }
+    .small_element_h,
+    .small_element_h button,
+    .small_element_h td {
+        height:    50px;
+        font-size: 19pt;
+    }
+    .cwt_font_small{
+        font-size: 19pt;
+    }
+}
+
+@media (min-height: 601px) and (max-width: 400px) {
+    .big_element_h,
+    .big_element_h button,
+    .big_element_h td {
+        height:    82px;
+        font-size: 38pt;
+    }
+    .small_element_h,
+    .small_element_h button,
+    .small_element_h td {
+        height:    50px;
+        font-size: 16pt;
+    }
+    .cwt_font_small{
+        font-size: 16pt;
+    }
+}
+
+/* --------------------------- WIDHT --------------------------- */
+
+@media (max-width: 400px) {
+    .big_element,
+    .big_element td,
+    .big_element button {
+        width: 300px;
+    }
+    .small_element,
+    .small_element td,
+    .small_element button {
+        width: 150px;
+    }
+    .w_10,.w_10 > button,.w_10 > td {    width: 30px;  }
+    .w_20,.w_20 > button,.w_20 > td {    width: 60px;  }
+    .w_40,.w_40 > button,.w_40 > td {    width: 120px; }
+    .w_60,.w_60 > button,.w_60 > td {    width: 180px; }
+    .w_80,.w_80 > button,.w_80 > td {    width: 240px; }
+    .w_25,.w_25 > button,.w_25 > td {    width: 75px;  }
+    .w_50,.w_50 > button,.w_50 > td {    width: 150px; }
+    .w_75,.w_75 > button,.w_75 > td {    width: 225px; }
+    .w_100,.w_100 > button,.w_100 > td { width: 300px; }
+}
+@media (min-width: 401px) and (max-width: 500px) {
+    .big_element,
+    .big_element td,
+    .big_element button {
+        width: 400px;
+    }
+    .small_element,
+    .small_element td,
+    .small_element button {
+        width: 200px;
+    }
+    .w_10,.w_10 > button,.w_10 > td {    width: 40px;  }
+    .w_20,.w_20 > button,.w_20 > td {    width: 80px;  }
+    .w_40,.w_40 > button,.w_40 > td {    width: 160px; }
+    .w_60,.w_60 > button,.w_60 > td {    width: 240px; }
+    .w_80,.w_80 > button,.w_80 > td {    width: 320px; }
+    .w_25,.w_25 > button,.w_25 > td {    width: 100px; }
+    .w_50,.w_50 > button,.w_50 > td {    width: 200px; }
+    .w_75,.w_75 > button,.w_75 > td {    width: 300px; }
+    .w_100,.w_100 > button,.w_100 > td { width: 400px; }
+}
+@media (min-width: 501px) and (max-width: 600px) {
+    .big_element,
+    .big_element td,
+    .big_element button {
+        width: 500px;
+    }
+    .small_element,
+    .small_element td,
+    .small_element button {
+        width: 250px;
+    }
+    .w_10,.w_10 > button,.w_10 > td {    width: 50px;  }
+    .w_20,.w_20 > button,.w_20 > td {    width: 100px; }
+    .w_40,.w_40 > button,.w_40 > td {    width: 200px; }
+    .w_60,.w_60 > button,.w_60 > td {    width: 300px; }
+    .w_80,.w_80 > button,.w_80 > td {    width: 400px; }
+    .w_25,.w_25 > button,.w_25 > td {    width: 125px; }
+    .w_50,.w_50 > button,.w_50 > td {    width: 250px; }
+    .w_75,.w_75 > button,.w_75 > td {    width: 375px; }
+    .w_100,.w_100 > button,.w_100 > td { width: 500px; }
+}
+@media (min-width: 601px){
+    .big_element,
+    .big_element td,
+    .big_element button {
+        width: 600px;
+    }
+    .small_element,
+    .small_element td,
+    .small_element button {
+        width: 300px;
+    }
+    .w_10,.w_10 > button,.w_10 > td {    width: 60px;  }
+    .w_20,.w_20 > button,.w_20 > td {    width: 120px; }
+    .w_40,.w_40 > button,.w_40 > td {    width: 240px; }
+    .w_60,.w_60 > button,.w_60 > td {    width: 360px; }
+    .w_80,.w_80 > button,.w_80 > td {    width: 480px; }
+    .w_25,.w_25 > button,.w_25 > td {    width: 150px; }
+    .w_50,.w_50 > button,.w_50 > td {    width: 300px; }
+    .w_75,.w_75 > button,.w_75 > td {    width: 450px; }
+    .w_100,.w_100 > button,.w_100 > td { width: 600px; }
+}
+
+.info_element {
+    width: 120px;
+}

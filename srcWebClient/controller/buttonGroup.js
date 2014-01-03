@@ -78,7 +78,15 @@ controller.registerButtonGroupHover = function(group,element,i){
 };
 
 controller.generateButtonGroup = function( parent, normalCls, activeCls, inactiveCls ){
-  var buttons = parent.getElementsByTagName("button");
+  var buttonsOrig = parent.getElementsByTagName("button");
+  var buttons = [];
+  
+  for( var i=0,e=buttonsOrig.length; i<e; i++ ){
+    if( !buttonsOrig[i].attributes.ignore || buttonsOrig[i].attributes.ignore.value !== "true" ){
+      buttons.push(buttonsOrig[i]);
+    }
+  }
+
 
   // create group
   var grp = Object.create( controller.ButtonGroup );

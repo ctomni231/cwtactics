@@ -44,6 +44,8 @@ controller.loadKeyMapping = function( cb ){
   });
 };
 
+controller.input_genericInputRequest = false;
+
 controller.inputCoolDown = 0;
 
 controller.updateInputCoolDown = function( delta ){

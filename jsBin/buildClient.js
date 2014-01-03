@@ -70,8 +70,10 @@ exports.doIt = function( p,baton ){
         "srcWebClient/html/mainScreen.html",
         "srcWebClient/html/versusScreen.html",
         "srcWebClient/html/playerSetup.html",
+        "srcWebClient/html/parameterSetup.html",
         "srcWebClient/html/setMapping.html",
         "srcWebClient/html/optionScreen.html",
+        "srcWebClient/html/confirmWipeOut.html",
         "srcWebClient/html/gameScreen.html"
       ])+
         "<link href='style.css' rel='stylesheet' type='text/css' />"+

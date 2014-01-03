@@ -12,6 +12,16 @@ util.scoped(function(){
   function updateforceTouchContent(){
     nodeTouch.innerHTML = (controller.screenStateMachine.structure.OPTIONS.forceTouch)? model.data_localized("yes") :
                                                                                         model.data_localized("no");
+  }  
+  
+  function changeAnimatedTiles(){
+    controller.screenStateMachine.structure.OPTIONS.animatedTiles = !controller.screenStateMachine.structure.OPTIONS.animatedTiles;
+    updateAnimatedTilesContent();
+  }
+
+  function updateAnimatedTilesContent(){
+    nodeAnimTiles.innerHTML = (controller.screenStateMachine.structure.OPTIONS.animatedTiles)? model.data_localized("yes") :
+                                                                                               model.data_localized("no");
   }
 
   function updateSoundContent(){
@@ -22,6 +32,7 @@ util.scoped(function(){
   var nodeSfx   = document.getElementById("cwt_options_sfxVolume");
   var nodeMusic = document.getElementById("cwt_options_musicVolume");
   var nodeTouch = document.getElementById("cwt_options_forceTouch");
+  var nodeAnimTiles = document.getElementById("cwt_options_animatedTiles");
 
   var btn = controller.generateButtonGroup(
     document.getElementById("cwt_options_screen"),
@@ -38,6 +49,8 @@ util.scoped(function(){
 
   controller.screenStateMachine.structure.OPTIONS.forceTouch = false;
 
+  controller.screenStateMachine.structure.OPTIONS.animatedTiles = true;
+
   controller.screenStateMachine.structure.OPTIONS.section = "cwt_options_screen";
 
   controller.screenStateMachine.structure.OPTIONS.enterState = function(_,source){
@@ -45,6 +58,7 @@ util.scoped(function(){
 
     updateSoundContent();
     updateforceTouchContent();
+    updateAnimatedTilesContent();
     btn.setIndex(1);
   };
 
@@ -129,24 +143,26 @@ util.scoped(function(){
         break;
 
       case "options.setKeyboad":
-        controller.activeMapping = controller.KEY_MAPPINGS.KEYBOARD;
-        return "REMAP_KEYS";
+        return "REMAP_KEYBOARD";
 
       case "options.setGamepad":
-        controller.activeMapping = controller.KEY_MAPPINGS.GAMEPAD;
-        return "REMAP_KEYS";
+        return "REMAP_GAMEPAD";
 
       case "options.resetData":
-        controller.storage_general.set("cwt_resetData",true, wipeComplete );
-        break;
+        return "WIPEOUT";
 
       case "options.forceTouch":
         changeForceTouch();
+        break;
+        
+      case "options.animatedTiles":
+        changeAnimatedTiles();
         break;
 
       case "options.goBack":
         controller.audio_saveConfigs();
         controller.storage_general.set("cwt_forceTouch",controller.screenStateMachine.structure.OPTIONS.forceTouch);
+        controller.storage_general.set("cwt_animatedTiles",controller.screenStateMachine.structure.OPTIONS.animatedTiles);
         return (sourceState)? "GAMEROUND" : "MAIN";
     }
 

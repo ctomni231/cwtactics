@@ -104,6 +104,27 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
       });
 
     })
+  
+    // **3.C** animated tiles ?
+    .andThen(function( err, baton ){
+      if( err ) return err;
+      baton.take();
+
+      controller.storage_general.get("cwt_animatedTiles",function( obj ){        
+        if( obj ){
+          if( obj.value === true ) controller.screenStateMachine.structure.OPTIONS.animatedTiles = true;
+          else                     controller.screenStateMachine.structure.OPTIONS.animatedTiles = false;
+          
+        } else if( getQueryParams(document.location.search).cwt_animatedTiles === "1" ){
+          controller.screenStateMachine.structure.OPTIONS.animatedTiles = true;
+        } else if( getQueryParams(document.location.search).cwt_animatedTiles === "0" ){
+          controller.screenStateMachine.structure.OPTIONS.animatedTiles = false;
+        }       
+        
+        baton.pass(false);
+      });
+
+    })
 
     // -------------------------------------------------------------------------------------
 
