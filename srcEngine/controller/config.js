@@ -2,30 +2,18 @@
 //
 controller.configBoundaries_ = {};
 
+//
+//
+controller.configNames_ = [];
+
 // Defines a configurable variable to control the
 // game rules.
 //
 controller.defineGameConfig = function( name, min, max, def, step ){
+  assert( name && !controller.configBoundaries_.hasOwnProperty(name) );
+  assert( max >= min && def >= min && def <= max );
 
-  // check name
-  if( !name || controller.configBoundaries_.hasOwnProperty(name) ){
-    model.criticalError(
-      error.ILLEGAL_PARAMETERS,
-      error.ILLEGAL_CONFIG_VAR_DEFINTION
-    );
-  }
-
-  // check meta data
-  if( max < min ||
-    def < min ||
-    def > max ){
-
-    model.criticalError(
-      error.ILLEGAL_PARAMETERS,
-      error.ILLEGAL_CONFIG_VAR_DEFINTION
-    );
-  }
-
+  controller.configNames_.push(name);
   controller.configBoundaries_[name] = {
     min:min,
     max:max,

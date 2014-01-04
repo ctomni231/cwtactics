@@ -3,7 +3,7 @@
 controller.roundConfig_CHANGE_TYPE = {
   CO_MAIN     : 0,
   CO_SIDE     : 1,
-  CO_TYPE     : 2,
+  GAME_TYPE   : 2,
   PLAYER_TYPE : 3,
   TEAM        : 4
 };
@@ -147,8 +147,16 @@ controller.roundConfig_changeConfig = function( pid, type, prev ){
 
     /* ---------------------------------------------------------- */
 
-    case controller.roundConfig_CHANGE_TYPE.CO_TYPE:
-      assert(false,"not supported yet");
+    case controller.roundConfig_CHANGE_TYPE.GAME_TYPE:
+      if( prev ){
+        if( model.co_activeMode === model.co_MODES.NONE ) model.co_activeMode = model.co_MODES.AW2;
+        else if( model.co_activeMode === model.co_MODES.AW1 ) model.co_activeMode = model.co_MODES.NONE;
+        else if( model.co_activeMode === model.co_MODES.AW2 ) model.co_activeMode = model.co_MODES.AW1;
+      } else{
+        if( model.co_activeMode === model.co_MODES.NONE ) model.co_activeMode = model.co_MODES.AW1;
+        else if( model.co_activeMode === model.co_MODES.AW1 ) model.co_activeMode = model.co_MODES.AW2;
+        else if( model.co_activeMode === model.co_MODES.AW2 ) model.co_activeMode = model.co_MODES.NONE;
+      }
       break;
 
     /* ---------------------------------------------------------- */

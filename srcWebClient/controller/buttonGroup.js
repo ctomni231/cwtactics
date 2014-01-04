@@ -12,12 +12,11 @@ controller.ButtonGroup = {
 
     // CHANGE INDEX
     if( relative ){
+      this.index += mode;
       if( mode > 0 ){
-        this.index++;
         if( this.index >= this.elements.length ) this.index = 0;
       }
       else{
-        this.index--;
         if( this.index < 0 ) this.index = this.elements.length-1;
       }
     }
@@ -39,11 +38,16 @@ controller.ButtonGroup = {
   },
 
   increaseIndex:function( amount ){
-    this.changeIndex(1,true);
+    if( amount === void 0 ) amount = 1;
+    
+    this.changeIndex(amount,true);
   },
 
-  decreaseIndex:function(){
-    this.changeIndex(-1,true);
+  decreaseIndex:function( amount ){
+    if( amount === void 0 ) amount = -1;
+    else amount = -amount;
+    
+    this.changeIndex(amount,true);
   },
 
   setIndex: function( value ){
