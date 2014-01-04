@@ -1,7 +1,7 @@
 PAGE_DATA.shortLinks = [
 
   { link:"https://www.facebook.com/customwarstactics",
-    title:"Follow us on Facebook",
+    title:"Follow our development diary on Facebook",
     imgLink:"stylesheets/facebook.png" },
 
   { link:"http://github.com/ctomni231/cwtactics",
@@ -13,19 +13,19 @@ PAGE_DATA.shortLinks = [
     imgLink:"stylesheets/code.png" },
 
   { link:"http://cwtactics.blogspot.de",
-    title:"CW:T Blog",
+    title:"Grab important news from the blog",
     imgLink:"stylesheets/blogger.png" },
 
   { link:"http://forums.customwars.com",
-    title:"CW:T Forum",
+    title:"Talk with us in our forum",
     imgLink:"stylesheets/forum_new.png" },
 
   { link:"http://groups.google.com/group/cwtactics",
-    title:"CW:T Mailing-List",
+    title:"Bug and feature discussions on the mailing-list",
     imgLink:"stylesheets/groups.png" },
 
-  { link:"http://www.youtube.com/watch?v=GfRJiSylfPc&list=PLIJ4AW02hN2FcMLF8ka-puq1mza2VuOJb",
-    title:"CW:T Youtube Channel",
+  { link:"http://www.youtube.com/channel/UCY9_WmJVNgPSh-zVC6vBEVQ",
+    title:"Grab videos from our youtube channel",
     imgLink:"stylesheets/youtube.png" },
 
   { link:"mailto:ctomni231@gmail.com",
