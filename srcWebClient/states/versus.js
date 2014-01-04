@@ -1,71 +1,122 @@
 util.scoped(function(){
   
-  var mapElement = document.getElementById("map_selection");
-  var startButton = document.getElementById("versus_start_btn");
-  var mapIndex;
-  
   var btn = controller.generateButtonGroup( 
     document.getElementById("cwt_versus_screen"),
     "cwt_panel_header_big cwt_page_button w_400 cwt_panel_button",
     "cwt_panel_header_big cwt_page_button w_400 cwt_panel_button button_active",
     "cwt_panel_header_big cwt_page_button w_400 cwt_panel_button button_inactive"
   );
+  
+  var cPage = 0;
+  var cCategory = 0;
+  
+  var nameBtns = [
+    document.getElementById("options.versus.map.1"),
+    document.getElementById("options.versus.map.2"),
+    document.getElementById("options.versus.map.3"),
+    document.getElementById("options.versus.map.4"),
+    document.getElementById("options.versus.map.5")
+  ];
+  
+  var nameValues = [
+    null,
+    null,
+    null,
+    null,
+    null
+  ];
+  
+  var selectedMap = null;
+  
+  var mapNamBtn = document.getElementById("versus.mapSelect.mapName");
+  var pageBtn = document.getElementById("versus.mapSelect.page");
+  
+  function setCategory( index ){
+    
+  }
+  
+  function selectIndex( index ){
+    assert( nameValues[index] );
+    mapNamBtn.innerHTML = nameValues[index];
+    selectedMap = nameValues[index];
+  }
+  
+  function updateButton( index, value ){
+    if( value ){
+      nameBtns[index].innerHTML = value;
+      nameValues[index] = value;      
+    } else {
+      nameBtns[index].innerHTML = "&#160;";
+      nameValues[index] = null;
+    }
+  }
+  
+  function setPage( index ){
+    var newV = 5*index;
+    if( newV >= 0 && newV < model.data_maps.length ){
+      
+      updateButton( 0, model.data_maps[newV] );
+      updateButton( 1, (newV+1 < model.data_maps.length)? model.data_maps[newV+1] : null );
+      updateButton( 2, (newV+2 < model.data_maps.length)? model.data_maps[newV+2] : null );
+      updateButton( 3, (newV+3 < model.data_maps.length)? model.data_maps[newV+3] : null );
+      updateButton( 4, (newV+4 < model.data_maps.length)? model.data_maps[newV+4] : null );
+      
+      pageBtn.innerHTML = index+1;
+      cPage = index;
+    }
+  }
+  
+  function loadMap( obj ){
+    var map = obj.value;
 
-  function updateMapElement(){
-    mapElement.innerHTML = model.data_maps[ mapIndex ];
+    // update model
+    controller.persistence_prepareModel(map);
+    controller.roundConfig_prepare();
+  }
+  
+  function loadMapExtPlay( obj ){
+    loadMap(obj);
+    controller.screenStateMachine.event("_toConf");
+  }
+  
+  function loadMapQuickPlay( obj ){
+    loadMap(obj);        
+    controller.roundConfig_evalAfterwards();
+    controller.screenStateMachine.event("_toMap");
   }
   
   // ----------------------------------------------------------------------------------------
   
   controller.screenStateMachine.structure.VERSUS = Object.create(controller.stateParent);
   
-	controller.screenStateMachine.structure.VERSUS.section = "cwt_versus_screen";
+  controller.screenStateMachine.structure.VERSUS.section = "cwt_versus_screen";
 	
+  controller.screenStateMachine.structure.VERSUS._toConf = function(){
+    return "PLAYER_SETUP";
+  };
+  
+  controller.screenStateMachine.structure.VERSUS._toMap = function(){
+    return "GAMEROUND";
+  };
+  
   controller.screenStateMachine.structure.VERSUS.enterState = function(){
-    mapIndex = 0;
-    this.data.isSinglePlayer = true;
-    updateMapElement();
+    setPage(0);
+    selectedMap = null;
   };
   
   controller.screenStateMachine.structure.VERSUS.UP = function(){
-    switch( btn.getActiveKey() ){
-      case "versus.nextMap":
-        btn.decreaseIndex();
-        break;
-    }
-
-    btn.decreaseIndex();
     return this.breakTransition();
   };
   
   controller.screenStateMachine.structure.VERSUS.DOWN = function(){
-    switch( btn.getActiveKey() ){
-      case "versus.prevMap":
-        btn.increaseIndex();
-        break;
-    }
-
-    btn.increaseIndex();
     return this.breakTransition();
   };
 
   controller.screenStateMachine.structure.VERSUS.LEFT = function(){
-    switch( btn.getActiveKey() ){
-      case "versus.nextMap":
-        btn.decreaseIndex();
-        break;
-    }
-
     return this.breakTransition();
   };
 
-  controller.screenStateMachine.structure.VERSUS.RIGHT = function(){
-    switch( btn.getActiveKey() ){
-      case "versus.prevMap":
-        btn.increaseIndex();
-        break;
-    }
-    
+  controller.screenStateMachine.structure.VERSUS.RIGHT = function(){  
     return this.breakTransition();
   };
     
@@ -75,23 +126,42 @@ util.scoped(function(){
   
   controller.screenStateMachine.structure.VERSUS.ACTION = function(){
     switch( btn.getActiveKey() ){
-      case "versus.prevMap":
-        if( mapIndex > 0 ) mapIndex--;
-        else mapIndex = model.data_maps.length-1;
-        updateMapElement();
+        
+      case "options.goBack":
+        return "MAIN";
+        
+      case "options.versus.configuredMatch":
+        if( selectedMap ){
+          controller.storage_maps.get( selectedMap, loadMapExtPlay );
+        }
         break;
-
-      case "versus.nextMap":
-        if( mapIndex < model.data_maps.length-1 ) mapIndex++;
-        else mapIndex = 0;
-        updateMapElement();
+        
+      case "options.versus.quickMatch":
+        if( selectedMap ){
+          controller.storage_maps.get( selectedMap, loadMapQuickPlay );
+        }
         break;
-
-      case "versus.next":
-        this.data.mapToLoad = model.data_maps[ mapIndex ];
-        return "PLAYER_SETUP";
+        
+      case "options.prevPage.small":
+        setPage(cPage-1);
+        break;
+        
+      case "options.nextPage.small":
+        setPage(cPage+1);
+        break;
+      
+      // map button
+      default:
+        var index = -1;
+        switch( btn.getActiveData() ){
+            case "1": index = 0; break;
+            case "2": index = 1; break;
+            case "3": index = 2; break;
+            case "4": index = 3; break;
+            case "5": index = 4; break;
+        }
+        selectIndex(index);
     }
-    
     return this.breakTransition();
   };
 });

@@ -15,7 +15,7 @@ util.scoped(function(){
 
   controller.screenStateMachine.structure.MAIN = Object.create(controller.stateParent);
   
-	controller.screenStateMachine.structure.MAIN.section = "cwt_main_screen";
+  controller.screenStateMachine.structure.MAIN.section = "cwt_main_screen";
 	
   controller.screenStateMachine.structure.MAIN.enterState = function(){
     controller.audio_playNullSound();

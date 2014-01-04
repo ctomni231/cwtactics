@@ -165,6 +165,10 @@
   "options.playerConf.mode.NONE":"Keine COs",
   "options.prevPage":"Voherige Seite",
   "options.nextPage":"Nächste Seite",
+  "options.prevPage.small":"<<",
+  "options.nextPage.small":">>",
+  "options.versus.quickMatch":"Schnelle Runde",
+  "options.versus.configuredMatch":"Konfigurierte Runde",
 
   "daysOfPeace":"Tage des Friedens",
   "co_getStarCost":"Star Kosten",

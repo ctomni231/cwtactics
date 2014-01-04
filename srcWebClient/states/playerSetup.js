@@ -50,20 +50,7 @@ util.scoped(function(){
     );
     selPlayerBtn.innerHTML = pid+1;
   }
-  
-  function loadMap( obj ){
-    var map = obj.value;
-
-    // update model
-    controller.persistence_prepareModel(map);
-    controller.roundConfig_prepare();
-
-    // update UI
-    selectedPid = 0;
-    updateButtonsForPlayer( selectedPid );
-    updateGamemodeBtn();
-  }
-  
+    
   // ----------------------------------------------------------------------------------------
   
   controller.screenStateMachine.structure.PLAYER_SETUP = Object.create(controller.stateParent);
@@ -71,7 +58,9 @@ util.scoped(function(){
   controller.screenStateMachine.structure.PLAYER_SETUP.section = "cwt_player_setup_screen";
 	
   controller.screenStateMachine.structure.PLAYER_SETUP.enterState = function(){
-    controller.storage_maps.get( this.data.mapToLoad, loadMap );
+    selectedPid = 0;
+    updateButtonsForPlayer( selectedPid );
+    updateGamemodeBtn();
   };
   
   // ***************** D-PAD *****************

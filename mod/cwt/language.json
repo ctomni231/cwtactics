@@ -160,6 +160,10 @@
   "options.playerConf.mode.NONE":"No COs",
   "options.prevPage":"Previous Page",
   "options.nextPage":"Next Page",
+  "options.prevPage.small":"<<",
+  "options.nextPage.small":">>",
+  "options.versus.quickMatch":"Quick Match",
+  "options.versus.configuredMatch":"Configurated Match",
   
   "daysOfPeace":"Days of Peace",
   "co_getStarCost":"Star Costs",
