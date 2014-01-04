@@ -24,6 +24,8 @@
   "ACAR": "Aircraft Carrier",
   "LNDR": "Lander",
   "BSHP": "Battleship",
+  "LASER_UNIT_INV":"Laser",
+  "CANNON_UNIT_INV":"Cannon",
 
   "PLIN": "Plain",
   "MNTN": "Mountain",
@@ -31,10 +33,12 @@
   "SEAS": "Sea",
   "RIVR": "River",
   "BRDG": "Bridge",
+  "REEF": "Reef",
+  "WATER":"Sea",
 
   "ROAD": "Road",
   "BASE": "Base",
-  "HQTR": "Headquarter",
+  "HQTR": "Headquarters",
   "CITY": "City",
   "BHMCE": "Mini-Cannon (East)",
   "BHMCN": "Mini-Cannon (Nord)",
@@ -105,6 +109,8 @@
   "supplyUnit":"Supply",
   "wait":"Wait",
   "explode":"Explode",
+  "fireLaser":"Fire Laser",
+  "fireCannon":"Fire Cannon",
   
   "options":"Options",
   "options.sfx"  :"Toggle SFX",

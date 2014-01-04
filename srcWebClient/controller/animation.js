@@ -20,10 +20,10 @@ util.scoped(function(){
     0,  4, 0, 400, 0,
 
     // ANIMATED TILES (4)
-    0,  4, 0, 350, 0,
+    0,  4, 0, 500, 0,
 
     // ANIMATED TILES (8)
-    0,  8, 0, 350, 0
+    0,  8, 0, 500, 0
   ];
 
   var unitStepper = +1;

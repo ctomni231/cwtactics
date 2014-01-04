@@ -54,7 +54,7 @@ util.scoped(function(){
   controller.screenStateMachine.structure.OPTIONS.section = "cwt_options_screen";
 
   controller.screenStateMachine.structure.OPTIONS.enterState = function(_,source){
-    sourceState = ( source === true )? true : false;
+    sourceState = ( sourceState || source === true )? true : false;
 
     updateSoundContent();
     updateforceTouchContent();
@@ -163,7 +163,10 @@ util.scoped(function(){
         controller.audio_saveConfigs();
         controller.storage_general.set("cwt_forceTouch",controller.screenStateMachine.structure.OPTIONS.forceTouch);
         controller.storage_general.set("cwt_animatedTiles",controller.screenStateMachine.structure.OPTIONS.animatedTiles);
-        return (sourceState)? "GAMEROUND" : "MAIN";
+        
+        var target = (sourceState)? "GAMEROUND" : "MAIN";
+        sourceState = false;
+        return target;
     }
 
     return this.breakTransition();

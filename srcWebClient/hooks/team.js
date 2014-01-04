@@ -1,5 +1,5 @@
 model.event_on("transferMoney_invoked",function(){
-  controller.renderPlayerInfo();
+  controller.updateSimpleTileInformation();
 });
 
 model.event_on("transferUnit_invoked",function( suid ){

@@ -10,7 +10,7 @@ controller.features_client = {
 	mouse:		  false,
 	touch:		  false,
 	supported:  false,
-  scaledImg:  false
+    scaledImg:  false
 };
 
 // Calculates the available features of the active environment.

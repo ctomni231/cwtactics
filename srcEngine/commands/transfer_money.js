@@ -19,8 +19,8 @@ controller.action_mapAction({
   invoke: function( data ){
     controller.commandStack_sharedInvokement(
       "transferMoney_invoked",
-      data.target.x,
-      data.target.y,
+      model.round_turnOwner,
+      ( data.target.unit )? data.target.unit.owner : data.target.property.owner,
       data.action.selectedSubEntry
     );
   }

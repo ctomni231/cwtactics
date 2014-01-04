@@ -7,6 +7,8 @@ model.event_on("transferMoney_check",function(  pid, x,y ){
     return false;
   }
 
+  if( model.fog_turnOwnerData[x][y] === 0 ) return false;
+  
   // check unit first
   ref = model.unit_posData[x][y];
   if( ref === null || ref.owner === pid ){
@@ -68,7 +70,7 @@ model.event_on("transferUnit_invoked",function( suid, tplid ){
 
   // Remove vision
   if( model.player_data[tplid].team !== model.player_data[opid].team ){
-    model.events.fog_modifyVisionAt(tx, ty, selectedUnit.type.vision, -1);
+    model.events.modifyVisionAt(tx, ty, selectedUnit.type.vision, -1);
   }
 
   var tSlot = model.unit_getFreeSlot(tplid);
