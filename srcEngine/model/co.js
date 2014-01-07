@@ -1,11 +1,11 @@
 controller.defineGameConfig( "co_getStarCost",              5, 50000, 9000, 5 );
 controller.defineGameConfig( "co_getStarCostIncrease",      0, 50000, 1800, 5 );
 controller.defineGameConfig( "co_getStarCostIncreaseSteps", 0, 50,    10 );
+controller.defineGameConfig( "co_enabledCoPower",           0, 1,     1 );
 
 // Contains all co modes, that are available in `Custom Wars: Tactics`.
 //
 model.co_MODES = {
-  NONE      :0,
   AW1       :1,
   AW2       :2,
   AWDS      :3,
@@ -29,12 +29,12 @@ model.co_activeMode = model.co_MODES.AW1;
 //
 model.co_data = util.list( MAX_PLAYER, function( i ){
   return {
-    power: 0,                 // acc. co power
-    timesUsed: 0,             // number of used co powers
-    level: 0,                 // active co power level
-    coA: null,                 // main CO
-    coB: null,                // sub CO
-    detachedTo: INACTIVE_ID    // CO detached to a specific unit
+    power: 0,                             // acc. co power
+    timesUsed: 0,                         // number of used co powers
+    level: model.co_POWER_LEVEL.INACTIVE, // active co power level
+    coA: null,                            // main CO
+    coB: null,                            // sub CO
+    detachedTo: INACTIVE_ID               // CO detached to a specific unit
   };
 });
 
@@ -113,7 +113,7 @@ model.co_getStarCost = function( pid ){
   assert( model.player_isValidPid(pid) );
 
   var cost = controller.configValue( "co_getStarCost" );
-  var used = model.co_data[pid].timesPowerUsed;
+  var used = model.co_data[pid].timesUsed;
 
   // if usage counter is greater than max usage counter then use
   // only the maximum increase counter for calculation

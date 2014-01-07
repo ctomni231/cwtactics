@@ -31,8 +31,8 @@ util.scoped(function(){
     var key = null;
     
     if( model.co_activeMode === model.co_MODES.AW1 ) key = "options.playerConf.mode.AW1";
-    if( model.co_activeMode === model.co_MODES.AW2 ) key = "options.playerConf.mode.AW2";
-    if( model.co_activeMode === model.co_MODES.NONE ) key = "options.playerConf.mode.NONE";
+    else if( model.co_activeMode === model.co_MODES.AW2 ) key = "options.playerConf.mode.AW2";
+    //if( model.co_activeMode === model.co_MODES.NONE ) key = "options.playerConf.mode.NONE";
     
     modeBtn.innerHTML = model.data_localized(key);
   }

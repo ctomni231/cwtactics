@@ -27,6 +27,8 @@ model.event_on("detachCommander_invoked", function( pid, uid ){
 // Decline activate power action on game modes that aren't AW1-3.
 //
 model.event_on("activatePower_check",function(  pid ){
+  if(  controller.configValue( "co_enabledCoPower" ) === 0 ) return false;
+  
   if( model.co_activeMode !== model.co_MODES.AW1 &&
      model.co_activeMode !== model.co_MODES.AW2 &&
      model.co_activeMode !== model.co_MODES.AWDS ) return false;

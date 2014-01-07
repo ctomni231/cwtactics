@@ -1,4 +1,4 @@
--controller.action_mapAction({
+controller.action_mapAction({
 
   key:"activatePower",
 

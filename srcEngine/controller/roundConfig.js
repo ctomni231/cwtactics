@@ -149,13 +149,11 @@ controller.roundConfig_changeConfig = function( pid, type, prev ){
 
     case controller.roundConfig_CHANGE_TYPE.GAME_TYPE:
       if( prev ){
-        if( model.co_activeMode === model.co_MODES.NONE ) model.co_activeMode = model.co_MODES.AW2;
-        else if( model.co_activeMode === model.co_MODES.AW1 ) model.co_activeMode = model.co_MODES.NONE;
+        if( model.co_activeMode === model.co_MODES.AW1 ) model.co_activeMode = model.co_MODES.AW2;
         else if( model.co_activeMode === model.co_MODES.AW2 ) model.co_activeMode = model.co_MODES.AW1;
       } else{
-        if( model.co_activeMode === model.co_MODES.NONE ) model.co_activeMode = model.co_MODES.AW1;
-        else if( model.co_activeMode === model.co_MODES.AW1 ) model.co_activeMode = model.co_MODES.AW2;
-        else if( model.co_activeMode === model.co_MODES.AW2 ) model.co_activeMode = model.co_MODES.NONE;
+        if( model.co_activeMode === model.co_MODES.AW1 ) model.co_activeMode = model.co_MODES.AW2;
+        else if( model.co_activeMode === model.co_MODES.AW2 ) model.co_activeMode = model.co_MODES.AW1;
       }
       break;
 

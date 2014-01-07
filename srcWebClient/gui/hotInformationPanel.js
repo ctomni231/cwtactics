@@ -101,7 +101,7 @@ util.scoped(function(){
       type = unit.type;
       
       NAME.innerHTML  = model.data_localized( type.ID );
-      HP.innerHTML    = unit.hp;
+      HP.innerHTML    = model.unit_convertHealthToPoints(unit.hp);
       GAS.innerHTML   = unit.fuel;
       GAS2.innerHTML  = type.fuel;
       AMMO.innerHTML  = unit.ammo;

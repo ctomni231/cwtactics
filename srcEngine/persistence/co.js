@@ -8,7 +8,7 @@ model.event_on("prepare_game",function( dom ){
     target            = model.co_data[i];
     target.power      = 0;
     target.timesUsed  = 0;
-    target.level      = INACTIVE_ID;
+    target.level      = model.co_POWER_LEVEL.INACTIVE;
     target.coA        = null;
     target.coB        = null;
   }

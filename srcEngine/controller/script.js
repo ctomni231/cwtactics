@@ -293,8 +293,8 @@ controller.defineGameScriptable = function(name, min, max) {
     // return calculated value
     return value;
   };
+  
+  controller.scriptedValueByRules = function(rules, pid, attr, value) {
+    return solve(rules, controller.script_memory_, attr, value);
+  };
 })();
-
-controller.scriptedValueByRules = function(rules, pid, attr, value) {
-  console.log("::WARNING:: this should not be used! ::WARNING::");
-};

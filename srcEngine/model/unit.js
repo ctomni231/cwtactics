@@ -164,11 +164,12 @@ model.unit_countUnits = function( pid ){
 //    50   ->   6
 //    99   ->  10
 //
-model.unit_convertHealthToPoints = function( unit ){
-  // TODO: change API later ( should be not using an unit )
-  // assert( unit.hp > 0 && unit.hp <= 99 && unit.hp%1 === 0 );
-
-  return parseInt( unit.hp/10 )+1;
+// @TODO : set hp to number only
+model.unit_convertHealthToPoints = function( hp ){
+  // try to extract health when hp is an object
+  if( typeof hp !== "number" ) hp = unit.hp; 
+  
+  return parseInt( hp/10, 10 )+1;
 };
 
 // Gets the rest of unit health
