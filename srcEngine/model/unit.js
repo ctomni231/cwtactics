@@ -167,7 +167,7 @@ model.unit_countUnits = function( pid ){
 // @TODO : set hp to number only
 model.unit_convertHealthToPoints = function( hp ){
   // try to extract health when hp is an object
-  if( typeof hp !== "number" ) hp = unit.hp; 
+  if( typeof hp !== "number" ) hp = hp.hp; 
   
   return parseInt( hp/10, 10 )+1;
 };

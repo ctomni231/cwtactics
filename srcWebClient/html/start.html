@@ -2,8 +2,16 @@
 <html manifest="cache.manifest" >
 
   <head>
-    <meta content="yes" name="apple-mobile-web-app-capable" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, , maximum-scale=1, user-scalable=no" />
+    
+    <meta content="yes" 
+          name="apple-mobile-web-app-capable" />
+    
+    <meta name="viewport" 
+          content="width=device-width, 
+                   minimal-ui,
+                   initial-scale=1.0, 
+                   maximum-scale=1, 
+                   user-scalable=no" />
 
     <script >
 
@@ -17,7 +25,8 @@
 	      appCache.addEventListener( 'updateready', function( e ){
 	        if( appCache.status === appCache.UPDATEREADY ) {
 
-	          // Browser downloaded a new app cache. Swap it in and reload the page to get the new hotness.
+	          // Browser downloaded a new app cache. Swap it in 
+              // and reload the page to get the new hotness.
 	          appCache.swapCache();
 	          
 	          // Shows the update information panel

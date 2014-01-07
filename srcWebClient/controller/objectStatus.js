@@ -85,7 +85,7 @@ util.scoped(function(){
     // HP PICTURE
     var num = -1;
     if( unit.hp <= 90 ){
-      num = unit_convertHealthToPoints( unit.hp );
+      num = model.unit_convertHealthToPoints( unit.hp );
     }
     
     switch ( num ){

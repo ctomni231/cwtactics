@@ -1,15 +1,23 @@
 view.registerAnimationHook({
 
-  key: "property_capture",
+  key: "capture_invoked",
 
-  prepare: function( cid, prid ){
-    var property = model.property_data[ prid ];
+  prepare: function( prid, cid ){
     controller.updateUnitStatus( cid );
-
-    if( property.capturePoints === 20 ){
-      view.showInfoMessage( model.data_localized("propertyCaptured") );
+    
+    var property = model.property_data[ prid ];
+    if( model.fog_clientData[property.x][property.y] > 0 ){
+      
+      if( property.capturePoints === 20 ){
+        view.showInfoMessage( 
+          model.data_localized("propertyCaptured") 
+        );
+      } else {
+        view.showInfoMessage( 
+          model.data_localized("propertyPointsLeft")+" "+property.capturePoints 
+        );
+      }
     }
-    else view.showInfoMessage( model.data_localized("propertyPointsLeft")+" "+property.capturePoints );
   },
 
   render: function(){},
