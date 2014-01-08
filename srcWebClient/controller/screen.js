@@ -3,6 +3,10 @@
  */
 controller.screenElement = document.getElementById("cwt_canvas");
 
+//
+//
+controller.infoElement = document.getElementById( "cwt_game_infoBar" );
+
 /**
  * Screen position on x axis.
  *
@@ -67,19 +71,7 @@ controller.setScreenScale = function( scale ){
   // INVOKES SCALING TRANSITION
   controller.screenElement.className = "scale"+scale;
 
-  //if( scale === 0 ) scale = 0.8;
-  //else if( scale === -1 ) scale = 0.7;
-
-  // TODO: UPDATE SCREEN PARAMETERS
-  var tileLen = TILE_LENGTH*scale;
-  controller.screenWidth  = parseInt( window.innerWidth/  tileLen, 10 );
-  controller.screenHeight = parseInt( window.innerHeight/ tileLen, 10 );
-
-  controller.setScreenPosition(
-    controller.screenX,
-    controller.screenY,
-    false
-  );
+  view.updateScreenPosition();
 };
 
 controller.getMapXByScreenX = function( x ){
@@ -161,15 +153,69 @@ controller.shiftScreenPosition = function( code, len ){
   controller.setScreenPosition( x,y, false );
 };
 
-/**
- *
- */
+// Resizes the canvas to fit with the actual map size.
+//
 view.resizeCanvas = function(){
   var canvEl = controller.screenElement;
-
   canvEl.width = TILE_LENGTH*model.map_width;
   canvEl.height = TILE_LENGTH*model.map_height;
-
-  controller.screenWidth  = parseInt( window.innerWidth/  TILE_LENGTH, 10 );
-  controller.screenHeight = parseInt( window.innerHeight/ TILE_LENGTH, 10 );
+  view.updateScreenPosition();
 };
+
+(function(){
+  
+  function checkSide( sW, cW, oP ){
+    if( cW > sW ){
+      // greater than screen
+      return oP;
+    } else {
+      // smaller than screen
+      cW = parseInt( cW/2, 10 );
+      sW = parseInt( sW/2, 10 );
+      return -sW+cW;
+    }  
+  }
+  
+  // Updates the screen position and screen meta data. 
+  // When the map size is smaller than the screen, then the map
+  // will be centered. When the map is greater than the screen, 
+  // then map will be placed on top at the current shifted position.
+  //
+  view.updateScreenPosition = function(){
+    var tileLen = TILE_LENGTH*controller.screenScale;
+    
+    // screen area bounds
+    var swidth = controller.screenWidth  = parseInt( window.innerWidth/  tileLen, 10 );
+    var sheight = controller.screenHeight = parseInt( window.innerHeight/ tileLen, 10 );
+    
+    // real size of the canvas
+    var cwidth = model.map_width;
+    var cheight = model.map_height;
+    
+    var nPosX = checkSide( swidth,cwidth,controller.screenX );
+    var nPosY = checkSide( sheight,cheight,controller.screenY )
+    
+    // set new screen position
+    controller.setScreenPosition(nPosX,nPosY,false);
+    
+    // set position of the info box
+    if( nPosX < 0 ){
+      var nPos = ((-nPosX)*tileLen)-160;
+      controller.infoElement.style.right = ((nPos>0)? nPos:"4px")+"px";
+      //controller.infoElement.style.right = "";
+    } else {
+      controller.infoElement.style.right = "4px";
+      //controller.infoElement.style.right = "";
+    }
+    
+    if( nPosY < 0 ){
+      var nPos = ((-nPosY)*tileLen);
+      controller.infoElement.style.bottom = ((nPos>0)? nPos:"4px")+"px";
+    } else {
+      controller.infoElement.style.bottom = "4px";
+    }
+  };
+  
+})();
+
+window.addEventListener( "resize", view.updateScreenPosition, true );

@@ -311,12 +311,15 @@ model.move_fillMoveMap = function( source, selection, x, y, unit ){
 
       cost = model.move_getMoveCosts( mType, tx, ty );
       if( cost !== -1 ) {
-
+        
         var cunit = model.unit_posData[tx][ty];
         if( cunit !== null && model.fog_turnOwnerData[tx][ty] > 0 &&
             !cunit.hidden && model.player_data[cunit.owner].team !== player.team ) {
           continue;
         }
+        
+        // scripted movecosts
+        cost = controller.scriptedValue( unit.owner, "movecost", cost );
 
         var rest = cp - cost;
         if( rest >= 0 && rest > selection.getValueAt( tx, ty ) ) {

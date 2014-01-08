@@ -154,20 +154,18 @@ controller.stateMachine = util.stateMachine({
 
       if( dis === 0 ){
         return "ACTION_MENU";
-      }
-      else if( dis === 1 ){
+      } else if( dis === 1 ){
 
         // ADD TILE TO PATH
         var code = model.move_codeFromAtoB( ox,oy, x,y );
         controller.stateMachine.data.movePath.addCodeToPath( x,y, code );
-        return this.breakTransition();
-      }
-        else{
+        return (this.data.fastClickMode)? "ACTION_MENU" : this.breakTransition();
+      } else{
 
-          // GENERATE PATH
-          controller.stateMachine.data.movePath.setPathByRecalculation( x,y );
-          return this.breakTransition();
-        }
+        // GENERATE PATH
+        controller.stateMachine.data.movePath.setPathByRecalculation( x,y );
+        return (this.data.fastClickMode)? "ACTION_MENU" : this.breakTransition();
+      }
     },
 
     cancel: function(){

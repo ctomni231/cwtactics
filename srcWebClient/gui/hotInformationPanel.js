@@ -51,8 +51,8 @@ util.scoped(function(){
   controller.moveSimpleTileInformationToLeft = function(){
     if( controller.sideSimpleTileInformationPanel < 0 ) return;
 
-    PANEL.style.left = "4px";
-    PANEL.style.right = "";
+    //PANEL.style.left = "4px";
+    //PANEL.style.right = "";
 
     controller.sideSimpleTileInformationPanel = -1;
   };
@@ -60,8 +60,8 @@ util.scoped(function(){
   controller.moveSimpleTileInformationToRight = function(){
     if( controller.sideSimpleTileInformationPanel > 0 ) return;
 
-    PANEL.style.right = "4px";
-    PANEL.style.left = "";
+    //PANEL.style.right = "4px";
+    //PANEL.style.left = "";
 
     controller.sideSimpleTileInformationPanel = +1;
   };

@@ -2,6 +2,8 @@
 // Action process data memory object. It is used as data holder to transport data between the single states of the state machine of the game engine.
 //
 controller.stateMachine.data = {
+  
+  fastClickMode: false,
 
   // Position object ( instance of `controller.TaggedPosition` ) with rich information about the
   // source position and some relations.

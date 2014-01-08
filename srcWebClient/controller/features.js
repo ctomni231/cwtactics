@@ -33,7 +33,9 @@ controller.features_analyseClient = function(){
 	}
 	// Desktop Browser
 	else{
-		
+      
+		controller.stateMachine.data.fastClickMode = true;
+      
 		// chrome has *AAA* support
 		if( Browser.chrome || Browser.safari){
 			controller.features_client.supported 	= true;

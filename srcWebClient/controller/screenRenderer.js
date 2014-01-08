@@ -71,6 +71,12 @@ view.renderMap = function( scale ){
     controller.stateMachine.state === "ACTION_SELECT_TARGET_B" ||
     controller.attackRangeVisible
   );
+  
+  var movePathVisible = (
+    controller.stateMachine.state === "MOVEPATH_SELECTION" ||
+    controller.stateMachine.state === "ACTION_MENU" ||
+    controller.stateMachine.state === "ACTION_SUBMENU"
+  );
 
   var inFreeSelection = ( controller.stateMachine.state === "ACTION_SELECT_TILE" );
   var stmData = controller.stateMachine.data;
@@ -492,7 +498,7 @@ view.renderMap = function( scale ){
   }
 
   // DRAW ARROW
-  if( controller.stateMachine.state === "MOVEPATH_SELECTION" ){
+  if( movePathVisible ){
     var currentMovePath = stmData.movePath.data;
     var cX = stmData.source.x;
     var cY = stmData.source.y;

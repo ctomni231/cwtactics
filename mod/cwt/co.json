@@ -100,7 +100,7 @@
           "MOVE_TYPE",["MV_INFT","MV_MECH"]
         ],
         "att":30,
-        "movepoints":1,
+        "moverange":1,
         "captureRate":50
       }
     ],
@@ -111,7 +111,7 @@
             "MOVE_TYPE",["MV_INFT","MV_MECH"]
           ],
           "att":40,
-          "movepoints":1
+          "moverange":1
         }
       ],
       "power":{}
@@ -123,7 +123,7 @@
             "MOVE_TYPE",["MV_INFT","MV_MECH"]
           ],
           "att":70,
-          "movepoints":2,
+          "moverange":2,
           "captureRate":9999
         }
       ],
