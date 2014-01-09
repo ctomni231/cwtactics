@@ -27,7 +27,10 @@ util.scoped(function () {
       // check timestamp
       if (prevTimestamps[i] && (gamepad.timestamp == prevTimestamps[i])) continue;
       prevTimestamps[i] = gamepad.timestamp;
-
+      
+      // blocked input ?
+      if( controller.input_blocked ) return false;
+      
       // in key mapping
       if ( controller.input_genericInputRequest && controller.screenStateMachine.state === "REMAP_GAMEPAD" ) {
 

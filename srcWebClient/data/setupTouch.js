@@ -145,6 +145,7 @@ controller.setupTouchControls = function (canvas, menuEl) {
     // TOUCH STARTS
     controller.screenElement.addEventListener('touchstart', function (event) {
       event.preventDefault();
+      if( controller.input_blocked ) return false;
 
       // SAVE POSITION AND CLEAR OLD DATA
       sx     = event.touches[0].clientX;
@@ -176,6 +177,7 @@ controller.setupTouchControls = function (canvas, menuEl) {
     // TOUCH MOVES
     controller.screenElement.addEventListener('touchmove', function (event) {
       event.preventDefault();
+      if( controller.input_blocked ) return false;
 
       var dx,dy;
       ex = event.touches[0].clientX;
@@ -222,6 +224,7 @@ controller.setupTouchControls = function (canvas, menuEl) {
     // TOUCH END
     controller.screenElement.addEventListener('touchend', function (event) {
       event.preventDefault();
+      if( controller.input_blocked ) return false;
 
       if (controller.inputCoolDown > 0) return;
 

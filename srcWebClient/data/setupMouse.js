@@ -25,6 +25,8 @@ controller.setupMouseControls = function( canvas, menuEl ){
 
   controller.screenElement.onmouseup = function(ev){
 
+    if( controller.input_blocked ) return false;
+    
     // click on canvas while menu is open -> cancel always
     if( controller.menuVisible ){
       controller.screenStateMachine.event("INP_CANCEL");

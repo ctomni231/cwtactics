@@ -4,7 +4,8 @@
     "ID": "PLIN",
     "defense": 1,
     "assets":{
-      "gfx":"cwt_anim/terrain/CWT_PLIN.png"
+      "gfx":"cwt_anim/terrain/CWT_PLIN.png",
+      "mmap4x_gfx":["minimap.png",0,0]
     }
   },
 
@@ -14,6 +15,7 @@
     "blocksVision":true,
     "assets":{
       "gfx":"cwt_anim/terrain/CWT_FRST.png",
+      "mmap4x_gfx":["minimap.png",4,0],
       "gfxOverlay":true
     }
   },
@@ -23,6 +25,7 @@
     "defense": 4,
     "assets":{
       "gfx":"cwt_anim/terrain/CWT_MNTN.png",
+      "mmap4x_gfx":["minimap.png",8,0],
       "gfxOverlay":true
     }
   },
@@ -33,6 +36,7 @@
     "defense": 0,
     "assets":{
       "gfx":"cwt_anim/terrain/CWT_ROAD(O)$~~OO~~~~.png",
+      "mmap4x_gfx":["minimap.png",12,0],
       "gfx_variants":[
         {
           "ROAD": "R",
@@ -72,6 +76,7 @@
     "assets":{
       "animated": 2,
       "gfx":"cwt_anim/terrain/CWT_RIVR(R)$~~RR~~~~.png",
+      "mmap4x_gfx":["minimap.png",20,0],
       "gfx_variants":[
         {
           "RIVER": "R",
@@ -100,6 +105,7 @@
     "defense": 0,
     "assets":{
       "gfx":"cwt_anim/terrain/CWT_BRDG(ORB)$~~OO~~~~.png",
+      "mmap4x_gfx":["minimap.png",12,0],
       "gfx_variants":[
         {
           "ROAD": "R",
@@ -137,6 +143,7 @@
     "defense": 0,
     "assets":{
       "gfx":"cwt_anim/terrain/CWT_SEAS(S).png",
+      "mmap4x_gfx":["minimap.png",24,0],
       "animated": 2,
       "gfx_variants":[
         {
@@ -208,7 +215,8 @@
     "blocksVision":true,
     "assets":{
       "animated": 2,
-      "gfx":"cwt_anim/terrain/CWT_REEF(S).png"
+      "gfx":"cwt_anim/terrain/CWT_REEF(S).png",
+      "mmap4x_gfx":["minimap.png",28,0]
     }
   },
 
@@ -217,6 +225,7 @@
     "defense": 0,
     "assets":{
       "animated": 2,
+      "mmap4x_gfx":["minimap.png",32,0],
       "gfx":"cwt_anim/terrain/CWT_SHOA(BS)$BB~S~S~S.png"
     }
   },

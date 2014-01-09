@@ -21,6 +21,23 @@ controller.DEFAULT_KEY_MAP = {
 
 };
 
+//
+//
+controller.input_blocked = false;
+
+//
+//
+controller.input_requestBlock = function(){
+  assert(!controller.input_blocked);
+  controller.input_blocked = true;
+};
+
+//
+//
+controller.input_releaseBlock = function(){
+  controller.input_blocked = false;
+};
+
 controller.KEYMAP_STORAGE_KEY = "__user_key_map__";
 
 controller.keyMaps = {

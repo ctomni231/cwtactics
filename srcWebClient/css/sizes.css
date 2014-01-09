@@ -16,6 +16,9 @@
     .cwt_font_small{
         font-size: 10pt;
     }
+    .cwt_font_mini, .cwt_font_mini button{
+        font-size: 8pt;
+    }
 }
 @media (min-height: 401px) and (max-height: 500px) {
     .big_element_h,
@@ -32,6 +35,9 @@
     }
     .cwt_font_small{
         font-size: 11pt;
+    }
+    .cwt_font_mini, .cwt_font_mini button{
+        font-size: 8pt;
     }
 }
 @media (min-height: 501px) and (max-height: 600px) {
@@ -50,6 +56,9 @@
     .cwt_font_small{
         font-size: 16pt;
     }
+    .cwt_font_mini, .cwt_font_mini button{
+        font-size: 8pt;
+    }
 }
 @media (min-height: 601px) and (min-width: 401px) {
     .big_element_h,
@@ -66,6 +75,9 @@
     }
     .cwt_font_small{
         font-size: 19pt;
+    }
+    .cwt_font_mini, .cwt_font_mini button{
+        font-size: 10pt;
     }
 }
 
@@ -84,6 +96,9 @@
     }
     .cwt_font_small{
         font-size: 16pt;
+    }
+    .cwt_font_mini, .cwt_font_mini button{
+        font-size: 10pt;
     }
 }
 

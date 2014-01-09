@@ -273,6 +273,19 @@ controller.loadImages_doIt = util.singleLazyCall(
         );
       }
     });
+    
+    // minimap    
+    util.iterateListByFlow(flow,model.data_tileTypes, function(data,baton){
+      var obj = model.data_tileSheets[this.list[this.i]];
+      if( obj.assets.mmap4x_gfx ){
+        controller.loadImages_prepareImg_(
+          obj.assets.mmap4x_gfx[0],
+          obj.assets.mmap4x_gfx[0],
+          "M",
+          baton
+        );
+      }
+    });
 
     // menu background images
     util.iterateListByFlow(flow,model.data_menu.bgs, function(data,baton){

@@ -31,14 +31,50 @@ util.scoped(function(){
   var mapNamBtn = document.getElementById("versus.mapSelect.mapName");
   var pageBtn = document.getElementById("versus.mapSelect.page");
   
+  // meta
+  var meta_sizex_btn = document.getElementById("map_meta_sizex");
+  var meta_sizey_btn = document.getElementById("map_meta_sizey");
+  var meta_prop_btn = document.getElementById("map_meta_properties");
+  var meta_players_btn = document.getElementById("map_meta_players");
+  
   function setCategory( index ){
     
   }
   
+  function mapLoadStart( mapName ){
+    controller.input_requestBlock();
+    controller.storage_maps.get( mapName, mapLoadFinish );
+  }
+  
+  function mapLoadFinish( obj ){
+    
+    // set meta data
+    meta_sizex_btn.innerHTML = controller.metadata_grabFromMapData( obj.value, controller.metadata_TYPES.SIZE_X );
+    meta_sizey_btn.innerHTML = controller.metadata_grabFromMapData( obj.value, controller.metadata_TYPES.SIZE_Y );
+    meta_prop_btn.innerHTML = controller.metadata_grabFromMapData( obj.value, controller.metadata_TYPES.NUM_PROPERTIES );
+    meta_players_btn.innerHTML = controller.metadata_grabFromMapData( obj.value, controller.metadata_TYPES.MAX_PLAYER );
+    
+    // generate mini map
+    
+    // release input lock
+    controller.input_releaseBlock();
+  }
+  
+  
   function selectIndex( index ){
-    assert( nameValues[index] );
+    
+    // is there a map element ?
+    if( !nameValues[index] ) return;
+    
+    // reset meta data
+    meta_sizex_btn.innerHTML = "&#160;";
+    meta_sizey_btn.innerHTML = "&#160;";
+    meta_prop_btn.innerHTML  = "&#160;";
+    meta_players_btn.innerHTML = "&#160;";
+    
     mapNamBtn.innerHTML = nameValues[index];
-    selectedMap = nameValues[index];
+    selectedMap         = nameValues[index];
+    mapLoadStart(nameValues[index]);
   }
   
   function updateButton( index, value ){
@@ -102,6 +138,12 @@ util.scoped(function(){
   controller.screenStateMachine.structure.VERSUS.enterState = function(){
     setPage(0);
     selectedMap = null;
+    
+    // reset meta data
+    meta_sizex_btn.innerHTML = "&#160;";
+    meta_sizey_btn.innerHTML = "&#160;";
+    meta_prop_btn.innerHTML  = "&#160;";
+    meta_players_btn.innerHTML = "&#160;";
   };
   
   controller.screenStateMachine.structure.VERSUS.UP = function(){

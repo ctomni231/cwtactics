@@ -3,6 +3,8 @@ util.scoped(function () {
     if (DEBUG) util.log("initializing keyboard support");
 
     document.onkeydown = function (ev) {
+      
+      if( controller.input_blocked ) return false;
 
       // in key mapping
       if (controller.input_genericInputRequest && controller.screenStateMachine.state === "REMAP_KEYBOARD") {

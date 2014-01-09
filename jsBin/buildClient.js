@@ -8,8 +8,8 @@ var PATH =  " "+builder.dirJsToString("srcWebClient/libs")+" "+
 			builder.dirJsToString("srcWebClient/data")+" "+
 			builder.dirJsToString("srcWebClient/gui")+" "+
 			builder.dirJsToString("srcWebClient/hooks")+" "+
-			builder.dirJsToString("srcWebClient/states")+" "+
-			builder.dirJsToString("srcWebClient/stateScope")+" ";
+			builder.dirJsToString("srcWebClient/states")+" ";
+//			builder.dirJsToString("srcWebClient/stateScope")+" "
 
 
 exports.doIt = function( p,baton ){
