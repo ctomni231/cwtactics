@@ -78,10 +78,21 @@ model.event_on("property_createProperty", function( pid, x, y, type ){
 
 // Resets the capture points of a property object
 //
-model.event_on("move_moveByCache",function( uid, x, y ){
+/*model.event_on("move_moveByCache",function( uid, x, y ){
+  var prop = model.property_posMap[x][y];
+  if( prop ) prop.capturePoints = 20;
+});*/
+model.event_on("clearUnitPosition",function(uid){
+  var unit = model.unit_data[uid];
+  var x = unit.x;
+  var y = unit.y;
+  if( x < 0 ) x = -x;
+  if( y < 0 ) y = -y;
+  
   var prop = model.property_posMap[x][y];
   if( prop ) prop.capturePoints = 20;
 });
+
 
 // Changes the type of a property object.
 //

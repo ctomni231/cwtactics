@@ -263,8 +263,40 @@ model.battle_getBattleDamageAgainst = function( attacker, defender, luck, withMa
     10
   );
 
+  /*
+    AW1-3
+    
+    D=Damage (as shown onscreen)
+    b=base damage
+    o=offense (total)
+    d=defense (total)
+    h=HP of attacker
+    
+    Decimals are rounded down. Please note that AWDS and AWDoR use 
+    different values for defense (less than 1 and greater than 1, respectively).
+  */
+  // **Formular:** `D=b*[o-(o*d)]*(h/10)`
+  var damage = BASE*(ACO/100-(ACO/100*(DCO-100)/100))*(AHP/10);
+  
+  /*
+    AWDOR
+    
+    D=Damage (as shown onscreen)
+    b=base damage
+    o=offense (total)
+    d=defense (total)
+    h=HP of attacker
+    
+    Decimals are rounded down. Please note that AWDS and AWDoR use 
+    different values for defense (less than 1 and greater than 1, respectively).
+    
+    **Formular:** `D=b*(o/d)*(h/10)`
+    var damage = BASE*(ACO/100*DCO/100)*(AHP/10)
+  */
+  
   // **Formular:** `D%=[B*ACO/100+R]*(AHP/10)*[(200-(DCO+DTR*DHP))/100]`
-  var damage = (BASE*ACO/100+LUCK) * (AHP/10) * ( (200-( DCO+(DTR*DHP) ) ) /100 );
+  //var damage = (BASE*ACO/100+LUCK) * (AHP/10) * ( (200-( DCO+(DTR*DHP) ) ) /100 );
+  
   damage = parseInt( damage, 10 );
 
   if( DEBUG ){

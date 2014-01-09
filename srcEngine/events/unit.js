@@ -69,7 +69,9 @@ model.event_firstOn("createUnit", function( slotId, pid, x, y, type ){
 //
 model.event_firstOn("destroyUnitSilent", function( uid ){
   var unit = model.unit_data[uid];
-
+  
+  model.events.clearUnitPosition(uid);
+  
   // mark slot as unused
   unit.owner = INACTIVE_ID;
 
