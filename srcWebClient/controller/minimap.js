@@ -2,6 +2,10 @@
 //
 controller.minimap_mapSelectionCanvas = document.getElementById("cwt_ingame_minimap_canvas");
 
+//
+//
+controller.minimap_ingameCanvas = document.getElementById("cwt_ingame_minimap_canvas");
+
 // Draws the minimap for a given map data to a canvas.
 //
 controller.minimap_drawToCanvas = function( canvas, mapData ){
@@ -52,7 +56,7 @@ controller.minimap_drawToCanvasByMapName = function( canvas, mapName, blockInput
 //
 controller.minimap_loadWithoutBlock_ = function( obj ){
   assert( obj.value );
-  controller.minimap_drawToCanvas( controller.minimap_mapSelectionCanvas, mapData );
+  controller.minimap_drawToCanvas( controller.minimap_ingameCanvas, mapData );
 };
  
 //
@@ -60,6 +64,6 @@ controller.minimap_loadWithoutBlock_ = function( obj ){
 controller.minimap_loadWithBlock_ = function( obj ){
   assert( obj.value );
   
-  controller.minimap_drawToCanvas( controller.minimap_mapSelectionCanvas, mapData );
+  controller.minimap_drawToCanvas( controller.minimap_ingameCanvas, mapData );
   controller.input_releaseBlock();
 };
