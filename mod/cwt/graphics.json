@@ -10,6 +10,8 @@
     [ "SILO_NW", "cwt_anim/wall/CWT_SILO$W~W~~~~~.png" ],
     [ "SILO_NE", "cwt_anim/wall/CWT_SILO$W~~W~~~~.png" ],
     [ "SILO_ALL","cwt_anim/wall/CWT_SILO$WWWW~~~~.png" ],
+    [ "MINIMAP4X", "map/AWDS(C)-4x4.png" ],
+    [ "MINIMAP2X", "map/AWDS(C)-2x2.png" ],
     [ "HP_0", "symbol/0.png" ],
     [ "HP_1", "symbol/1.png" ],
     [ "HP_2", "symbol/2.png" ],

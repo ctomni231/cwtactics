@@ -1,0 +1,19 @@
+#cwt_ingame_minimap_blend {
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	background-color: rgba(0,0,0,0.5);
+	z-index: 5;
+}
+
+#cwt_ingame_minimap_canvas {
+	border: 1px solid #00ABE7;
+	position: absolute;
+	z-index: 6;
+
+	box-shadow: 0 0 10px 1px #5F5F5F;
+	-moz-box-shadow: 0 0 10px 1px #5F5F5F;
+	-webkit-box-shadow: 0 0 10px 1px;
+}

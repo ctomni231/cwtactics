@@ -33,7 +33,21 @@ controller.screenWidth = -1;
  *
  * @example read_only
  */
-controller.screenHeight = -1;
+controller.screenHeight = -1; 
+
+/**
+ * Screen width in pixels.
+ *
+ * @example read_only
+ */
+controller.screenWidthPx = -1;
+
+/**
+ * Screen height in pixels.
+ *
+ * @example read_only
+ */
+controller.screenHeightPx = -1;
 
 /**
  *
@@ -187,7 +201,9 @@ view.resizeCanvas = function(){
     // screen area bounds
     var swidth = controller.screenWidth  = parseInt( window.innerWidth/  tileLen, 10 );
     var sheight = controller.screenHeight = parseInt( window.innerHeight/ tileLen, 10 );
-    
+    controller.screenWidthPx = window.innerWidth;
+    controller.screenHeightPx = window.innerHeight;
+
     // real size of the canvas
     var cwidth = model.map_width;
     var cheight = model.map_height;
