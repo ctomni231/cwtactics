@@ -92,12 +92,16 @@ controller.minimap_renderMinimap_ = function(canvas,w,h,map,typeMap,biggerMap){
 // from the given mapData which is a loaded map file data model.
 //
 controller.minimap_renderMapSelectionMinimap = function( mapData ){
+  var cv = controller.minimap_mapSelectionCanvas;
+
   controller.minimap_renderMinimap_(
-    controller.minimap_mapSelectionCanvas,
+    cv,
     mapData.mpw,
     mapData.mph,
     mapData.map,
     mapData.typeMap,
     ( mapData.mph <= MAX_MAP_HEIGHT/2 && mapData.mpw <= MAX_MAP_WIDTH )
   );
+
+  cv.style.top =  "calc(50% - "+parseInt( (cv.height/2) , 10 )+"px)";
 };

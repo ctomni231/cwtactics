@@ -13,6 +13,9 @@
         height:    28px;
         font-size: 10pt;
     }
+    .h_5_small {        
+        height:    140px;
+    }
     .cwt_font_small{
         font-size: 10pt;
     }
@@ -32,6 +35,9 @@
     .small_element_h td {
         height:    30px;
         font-size: 11pt;
+    }
+    .h_5_small {        
+        height:    150px;
     }
     .cwt_font_small{
         font-size: 11pt;
@@ -53,6 +59,9 @@
         height:    38px;
         font-size: 16pt;
     }
+    .h_5_small {        
+        height:    190px;
+    }
     .cwt_font_small{
         font-size: 16pt;
     }
@@ -72,6 +81,9 @@
     .small_element_h td {
         height:    50px;
         font-size: 19pt;
+    }
+    .h_5_small {        
+        height:    250px;
     }
     .cwt_font_small{
         font-size: 19pt;
@@ -94,6 +106,9 @@
         height:    50px;
         font-size: 16pt;
     }
+    .h_5_small {        
+        height:    250px;
+    }
     .cwt_font_small{
         font-size: 16pt;
     }
@@ -102,7 +117,7 @@
     }
 }
 
-/* --------------------------- WIDHT --------------------------- */
+/* --------------------------- WIDTH --------------------------- */
 
 @media (max-width: 400px) {
     .big_element,

@@ -266,8 +266,6 @@
   -webkit-border-radius: 4px;
 }
 
-button{
-  box-shadow: 3px 4px 5px 0px #5F5F5E;
-  -moz-box-shadow: 3px 4px 5px 0px #5F5F5E;
-  -webkit-box-shadow: 3px 4px 5px 0px #5F5F5E;
+td button {
+  width: 100%;
 }

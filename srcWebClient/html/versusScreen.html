@@ -52,14 +52,11 @@
         </td>
         
         <td colspan="6" rowspan="5" class="w_60 small_element_h
-                               noEgdeTR noEgdeBR noEgdeBL noEgdeTL
-                               noTopBorder noBottomBorder noTopBorder" >
-          <button ignore="true" 
-                  style="height:100%"
-                  class="cwt_border cwt_panel_button_inverted" >
-            <canvas id="cwt_versus_minimap_canvas">
-            </canvas>
-          </button>
+                                           noEgdeTR noEgdeBR noEgdeBL noEgdeTL
+                                           noTopBorder noBottomBorder noLeftBorder" >
+            <div class="h_5_small cwt_border cwt_panel_button_inverted">
+              <canvas style="position: relative;" id="cwt_versus_minimap_canvas"></canvas>
+            </div>
         </td>
       </tr>
       
@@ -117,44 +114,56 @@
         </td>
         
         <td colspan="1" class="w_10 small_element_h
-                               noEgdeBL noEgdeTL noEgdeTR
+                               noEgdeBL noEgdeTL noEgdeBR noEgdeTR
                                noLeftBorder" >
           <button key="options.nextPage.small" data="map"/>
         </td>
 
         <!-- ########################## -->
         
-        <td colspan="1" class="w_10 small_element_h" >
+        <td colspan="1" class="w_10 small_element_h
+                               noLeftBorder noRightBorder
+                               noEgdeBL noEgdeTL noEgdeBR noEgdeTR" >
           <button ignore="true" 
                   class="cwt_border cwt_panel_button_inverted"
                   id="options.versus.meta.1"/>
         </td>
 
-        <td colspan="1" class="w_10 small_element_h" >
+        <td colspan="1" class="w_10 small_element_h
+                               noLeftBorder noRightBorder
+                               noEgdeBL noEgdeTL noEgdeBR noEgdeTR" >
           <button ignore="true" 
                   class="cwt_border cwt_panel_button_inverted"
                   id="options.versus.meta.2"/>
         </td>
 
-        <td colspan="1" class="w_10 small_element_h" >
+        <td colspan="1" class="w_10 small_element_h
+                               noLeftBorder noRightBorder
+                               noEgdeBL noEgdeTL noEgdeBR noEgdeTR" >
           <button ignore="true" 
                   class="cwt_border cwt_panel_button_inverted"
                   id="options.versus.meta.3"/>
         </td>
 
-        <td colspan="1" class="w_10 small_element_h" >
+        <td colspan="1" class="w_10 small_element_h
+                               noLeftBorder noRightBorder
+                               noEgdeBL noEgdeTL noEgdeBR noEgdeTR" >
           <button ignore="true" 
                   class="cwt_border cwt_panel_button_inverted"
                   id="options.versus.meta.4"/>
         </td>
 
-        <td colspan="1" class="w_10 small_element_h" >
+        <td colspan="1" class="w_10 small_element_h
+                               noLeftBorder noRightBorder
+                               noEgdeBL noEgdeTL noEgdeBR noEgdeTR" >
           <button ignore="true" 
                   class="cwt_border cwt_panel_button_inverted"
                   id="options.versus.meta.5"/>
         </td>
 
-        <td colspan="1" class="w_10 small_element_h" >
+        <td colspan="1" class="w_10 small_element_h
+                               noLeftBorder
+                               noEgdeBL noEgdeTL noEgdeTR" >
           <button ignore="true" 
                   class="cwt_border cwt_panel_button_inverted"
                   id="options.versus.meta.6"/>
@@ -173,12 +182,16 @@
         
         
         <td colspan="3" class="w_30 small_element_h
-                              buttonTopGap" >
+                               buttonTopGap
+                              noEgdeTR noEgdeBR
+                              noRightBorder" >
           <button key="options.versus.configuredMatch" />
         </td>
         
         <td colspan="3" class="w_30 small_element_h
-                               buttonTopGap" >
+                               buttonTopGap
+                               noEgdeBL noEgdeTL
+                               noLeftBorder" >
           <button key="options.versus.quickMatch" />
         </td>
       </tr>
