@@ -17,6 +17,15 @@ util.scoped(function(){
     document.getElementById("options.versus.map.4"),
     document.getElementById("options.versus.map.5")
   ];
+
+  var metaBtns = [
+    document.getElementById("options.versus.meta.1"),
+    document.getElementById("options.versus.meta.2"),
+    document.getElementById("options.versus.meta.3"),
+    document.getElementById("options.versus.meta.4"),
+    document.getElementById("options.versus.meta.5"),
+    document.getElementById("options.versus.meta.6")
+  ];
   
   var nameValues = [
     null,
@@ -47,15 +56,10 @@ util.scoped(function(){
   }
   
   function mapLoadFinish( obj ){
-    
-    // set meta data
-    /*
-    meta_sizex_btn.innerHTML = controller.metadata_grabFromMapData( obj.value, controller.metadata_TYPES.SIZE_X );
-    meta_sizey_btn.innerHTML = controller.metadata_grabFromMapData( obj.value, controller.metadata_TYPES.SIZE_Y );
-    meta_prop_btn.innerHTML = controller.metadata_grabFromMapData( obj.value, controller.metadata_TYPES.NUM_PROPERTIES );
-    meta_players_btn.innerHTML = controller.metadata_grabFromMapData( obj.value, controller.metadata_TYPES.MAX_PLAYER );
-    */
 
+    // set meta data
+    controller.metadata_grabFromMapData( obj.value, metaBtns, model.data_header.map_meta );
+    
     // generate mini map
     controller.minimap_renderMapSelectionMinimap(obj.value);
     
@@ -70,12 +74,7 @@ util.scoped(function(){
     if( !nameValues[index] ) return;
     
     // reset meta data
-    /*
-    meta_sizex_btn.innerHTML = "&#160;";
-    meta_sizey_btn.innerHTML = "&#160;";
-    meta_prop_btn.innerHTML  = "&#160;";
-    meta_players_btn.innerHTML = "&#160;";
-    */
+    controller.metadata_grabFromMapData( null, metaBtns, null );
 
     mapNamBtn.innerHTML = nameValues[index];
     selectedMap         = nameValues[index];

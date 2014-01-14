@@ -9,21 +9,19 @@ controller.metadata_TYPES = {
 
 //
 //
-controller.metadata_grabFromMapData = function( mapData, type ){
-  switch( type ){
-      
-      case controller.metadata_TYPES.SIZE_X:
-        return mapData.mpw;
-      
-      case controller.metadata_TYPES.SIZE_Y:
-        return mapData.mph;
-      
-      case controller.metadata_TYPES.NUM_PROPERTIES:
-        return mapData.prps.length;
-      
-      case controller.metadata_TYPES.MAX_PLAYER:
-        return mapData.player;
-  }
-  
-  return -1;
+controller.metadata_grabFromMapData = function( mapData, btns, types ){
+  var props;
+  for( var i = 0; i < btns.length; i++ ){
+    if( mapData === null || types === null || i >= types.length ){
+      btns[i].innerHTML = "&#160;";
+    }else{
+      if( !props ) props = mapData.prps;
+      var n = 0;
+      var type = types[i];
+      for( var j = 0; j < props.length; j++){
+        if( props[j][3] === type ) n++;
+      };
+      btns[i].innerHTML = n;
+    }
+  };
 };
