@@ -9,9 +9,11 @@ controller.metadata_TYPES = {
 
 //
 //
-controller.metadata_grabFromMapData = function( mapData, btns, types ){
+controller.metadata_grabFromMapData = function( mapData, btns, canvases, types ){
   var props;
   for( var i = 0; i < btns.length; i++ ){
+    var ctx = canvases[i].getContext("2d");
+    ctx.clearRect(0,0,16,32);
     if( mapData === null || types === null || i >= types.length ){
       btns[i].innerHTML = "&#160;";
     }else{
@@ -22,6 +24,13 @@ controller.metadata_grabFromMapData = function( mapData, btns, types ){
         if( props[j][3] === type ) n++;
       };
       btns[i].innerHTML = n;
+      ctx.drawImage(
+        view.getPropertyImageForType( type, view.COLOR_NEUTRAL ), 
+        0,0, 
+        16,32, 
+        0,0,
+        16,32
+      );
     }
   };
 };
