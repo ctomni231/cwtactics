@@ -8,7 +8,7 @@ util.scoped(function(){
   controller.screenStateMachine.structure.GAMEROUND = Object.create(controller.stateParent);
 
   controller.screenStateMachine.structure.GAMEROUND.section = "cwt_game_screen";
-
+  
   controller.screenStateMachine.structure.GAMEROUND.enterState = function(){
     if( noInit !== true ){
 
@@ -44,8 +44,6 @@ util.scoped(function(){
     controller.inGameLoop = false;
     return "MAIN";
   };
-
-
 
   // ++++++++++++ INPUT MOVE ++++++++++++
 
@@ -180,7 +178,7 @@ util.scoped(function(){
   };
 
   controller.screenStateMachine.structure.GAMEROUND.HOVER = function( ev,x,y ){
-    controller.setCursorPosition(x,y);
+    controller.setCursorPosition(x,y,false,true);
     return this.breakTransition();
   };
 

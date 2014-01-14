@@ -114,7 +114,7 @@ controller.moveCursor = function( dir, len ){
  * @param tx
  * @param ty
  */
-controller.setCursorPosition = function( x,y,relativeToScreen ){
+controller.setCursorPosition = function( x,y,relativeToScreen, preventSound ){
   if( controller.isMenuOpen() ) return;
 
   if( relativeToScreen ){
@@ -133,13 +133,38 @@ controller.setCursorPosition = function( x,y,relativeToScreen ){
   view.redraw_markPos( controller.mapCursorX, controller.mapCursorY );
   if( controller.mapCursorY < model.map_height -1 ) view.redraw_markPos( controller.mapCursorX, controller.mapCursorY+1 );
 
-  controller.audio_playSound(model.data_sounds.MAPTICK);
+  // in attack mode ? 
+  //  yes -> show damage
+  var dmg = -1;
+  var state = controller.stateMachine.state;
+  if( state === "ACTION_SELECT_TARGET_A" ){
+    var data = controller.stateMachine.data;
+    if( data.selection.getValueAt(x,y) > 0 ){
+      var targetUnit = model.unit_posData[x][y];
+      if( targetUnit ){
+        dmg = model.battle_getBattleDamageAgainst( 
+          data.source.unit, 
+          targetUnit, 
+          0, 
+          model.battle_canUseMainWeapon( 
+            data.source.unit, 
+            targetUnit 
+          ), 
+          false, 
+          data.source.x,
+          data.source.y 
+        );
+      }
+    }
+  }
+
+  if( preventSound !== true ) controller.audio_playSound(model.data_sounds.MAPTICK);
   view.redraw_markPos( controller.mapCursorX, controller.mapCursorY );
 
   controller.mapCursorX = x;
   controller.mapCursorY = y;
 
-  controller.updateSimpleTileInformation();
+  controller.updateSimpleTileInformation(dmg);
 
   var scale = controller.screenScale;
   if( scale === 0 ) scale = 0.8;

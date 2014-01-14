@@ -28,7 +28,7 @@ util.scoped(function(){
   
   var selectedMap = null;
   
-  var mapNamBtn = document.getElementById("versus.mapSelect.mapName");
+  var mapNamBtn = document.getElementById("versus.map.category");
   var pageBtn = document.getElementById("versus.mapSelect.page");
   
   // meta
@@ -49,12 +49,15 @@ util.scoped(function(){
   function mapLoadFinish( obj ){
     
     // set meta data
+    /*
     meta_sizex_btn.innerHTML = controller.metadata_grabFromMapData( obj.value, controller.metadata_TYPES.SIZE_X );
     meta_sizey_btn.innerHTML = controller.metadata_grabFromMapData( obj.value, controller.metadata_TYPES.SIZE_Y );
     meta_prop_btn.innerHTML = controller.metadata_grabFromMapData( obj.value, controller.metadata_TYPES.NUM_PROPERTIES );
     meta_players_btn.innerHTML = controller.metadata_grabFromMapData( obj.value, controller.metadata_TYPES.MAX_PLAYER );
-    
+    */
+
     // generate mini map
+    controller.minimap_renderMapSelectionMinimap(obj.value);
     
     // release input lock
     controller.input_releaseBlock();
@@ -67,11 +70,13 @@ util.scoped(function(){
     if( !nameValues[index] ) return;
     
     // reset meta data
+    /*
     meta_sizex_btn.innerHTML = "&#160;";
     meta_sizey_btn.innerHTML = "&#160;";
     meta_prop_btn.innerHTML  = "&#160;";
     meta_players_btn.innerHTML = "&#160;";
-    
+    */
+
     mapNamBtn.innerHTML = nameValues[index];
     selectedMap         = nameValues[index];
     mapLoadStart(nameValues[index]);
@@ -140,10 +145,12 @@ util.scoped(function(){
     selectedMap = null;
     
     // reset meta data
+    /*
     meta_sizex_btn.innerHTML = "&#160;";
     meta_sizey_btn.innerHTML = "&#160;";
     meta_prop_btn.innerHTML  = "&#160;";
     meta_players_btn.innerHTML = "&#160;";
+    */
   };
   
   controller.screenStateMachine.structure.VERSUS.UP = function(){

@@ -2,6 +2,9 @@ util.scoped(function(){
   
   var PANEL       = document.getElementById( "cwt_game_infoBar" );
 
+  var damageDivEl = document.getElementById("game_infobox_damage");
+  var damageDivHolderEl = document.getElementById("game_infobox_damage_holder");
+
   // -------------------------------------------------------------------------------------------
   
   var ROW1        = document.getElementById( "infoBox_unitRow1" );
@@ -65,8 +68,8 @@ util.scoped(function(){
 
     controller.sideSimpleTileInformationPanel = +1;
   };
-  
-  controller.updateSimpleTileInformation = function(  ){
+
+  controller.updateSimpleTileInformation = function( dmg ){
     var x = controller.mapCursorX;
     var y = controller.mapCursorY;
     var unit = model.unit_posData[x][y];
@@ -191,6 +194,17 @@ util.scoped(function(){
       PLAYER_NAME.innerHTML  = "";
       PLAYER_GOLD.innerHTML  = "";
       PLAYER_POWER.innerHTML = "";
+    }
+    
+    // ------------------------------------------------------------------------------------
+
+    // Render damage information
+
+    if( dmg >= 0 ){
+      damageDivHolderEl.style.display = "block";
+      damageDivEl.innerHTML = dmg;
+    }else{
+      damageDivHolderEl.style.display = "none";
     }
   };
 });

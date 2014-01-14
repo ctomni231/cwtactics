@@ -17,3 +17,28 @@
 	-moz-box-shadow: 0 0 10px 1px #5F5F5F;
 	-webkit-box-shadow: 0 0 10px 1px;
 }
+
+#game_infobox_damage_holder {
+	position: inherit;
+
+	left: 60px;
+	top: -18px;
+	width: 50px;
+	height: 22px;
+
+	text-align: center;
+	font-size: 17px;
+	font-weight: bold;
+
+	color: rgb(255, 255, 255);
+	background: rgb(218, 0, 0);
+
+	border: 1px solid rgb(246, 153, 153);
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+
+	box-shadow: 0 0 10px 1px #5F5F5F;
+	-moz-box-shadow: 0 0 10px 1px #5F5F5F;
+	-webkit-box-shadow: 0 0 10px 1px #5F5F5F;	
+}

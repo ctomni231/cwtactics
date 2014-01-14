@@ -225,7 +225,12 @@ model.battle_getBaseDamageAgainst = function( attacker, defender, withMainWp ){
 
 //  Returns the battle damage against an other unit.
 //
-model.battle_getBattleDamageAgainst = function( attacker, defender, luck, withMainWp, isCounter ){
+model.battle_getBattleDamageAgainst = function( attacker, defender, luck, withMainWp, isCounter, ax,ay ){
+  if( arguments.length < 7 ){
+    ax = attacker.x;
+    ay = attacker.y;
+  }
+
   if( DEBUG ) util.log(
     "calculating battle damage",
     model.unit_extractId(attacker),
@@ -246,7 +251,11 @@ model.battle_getBattleDamageAgainst = function( attacker, defender, luck, withMa
   var DHP   = model.unit_convertHealthToPoints( defender );
 
   // attacker values
-  controller.prepareTags( attacker.x, attacker.y );
+  controller.prepareTags( 
+    ax,         ay,         model.unit_extractId(attacker),
+    defender.x, defender.y, model.unit_extractId(defender) 
+  );
+
   var LUCK = parseInt( (luck/100)*controller.scriptedValue(attacker.owner,"luck",10), 10 );
   var ACO  = controller.scriptedValue( attacker.owner, "att", 100 );
   if( isCounter ) ACO += controller.scriptedValue( defender.owner, "counteratt", 0 );

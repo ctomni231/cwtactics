@@ -29,10 +29,12 @@
           <button key="options.prevPage.small" data="mapType"/>
         </td>
         
-        <td colspan="2" class="w_20 small_element_h
+        <td colspan="8" class="w_80 small_element_h
                                noEgdeBR noEgdeBL noEgdeTL noEgdeTR
                                noLeftBorder noRightBorder" >
-          <button ignore="true" class="cwt_border cwt_panel_button_inverted" >&#160;</button>
+          <button ignore="true" 
+                  id="versus.map.category"
+                  class="cwt_border cwt_panel_button_inverted" >&#160;</button>
         </td>
         
         <td colspan="1" class="w_10 small_element_h
@@ -40,40 +42,22 @@
                                noLeftBorder" >
           <button key="options.nextPage.small" data="mapType"/>
         </td>
-        
-        <td colspan="1" class="w_10 small_element_h" ></td>
-        
-        <td colspan="5" class="w_50 small_element_h
-                               noEgdeBR noEgdeBL" >
-          <button ignore="true" 
-                  id="versus.mapSelect.mapName"
-                  class="cwt_border cwt_panel_button_inverted" >&#160;</button>
-        </td>
       </tr>
       
       <tr>
-        
         <td colspan="4" class="w_40 small_element_h
                                noEgdeTR noEgdeBR noEgdeBL noEgdeTL
                                noBottomBorder noTopBorder" >
           <button id="options.versus.map.1" key="" data="1" />
         </td>
         
-        <td colspan="1" class="w_10 small_element_h" ></td>
-        
-        <td colspan="1" class="w_10 small_element_h cwt_font_mini" >
-          <button ignore="true" class="cwt_border cwt_panel_button_inverted" >
-            W:<span id="map_meta_sizex">
-          </button>
-        </td>
-        
-        <td colspan="4" rowspan="4" class="w_40 small_element_h
+        <td colspan="6" rowspan="5" class="w_60 small_element_h
                                noEgdeTR noEgdeBR noEgdeBL noEgdeTL
                                noTopBorder noBottomBorder noTopBorder" >
           <button ignore="true" 
                   style="height:100%"
                   class="cwt_border cwt_panel_button_inverted" >
-            <canvas>
+            <canvas id="cwt_versus_minimap_canvas">
             </canvas>
           </button>
         </td>
@@ -85,22 +69,6 @@
                                noBottomBorder noTopBorder" >
           <button id="options.versus.map.2" key="" data="2"/>
         </td>
-        
-        <td colspan="1" class="w_10 small_element_h" ></td>
-        
-        <td colspan="1" class="w_10 small_element_h cwt_font_mini" >
-          <button ignore="true" class="cwt_border cwt_panel_button_inverted" >
-            H:</span><span id="map_meta_sizey">
-          </button>
-        </td>
-        
-        <!--
-        <td colspan="4" class="w_40 small_element_h
-                               noEgdeTR noEgdeBR noEgdeBL noEgdeTL
-                               noBottomBorder noTopBorder" >
-          <button ignore="true" class="cwt_border cwt_panel_button_inverted" >&#160;</button>
-        </td>
-        -->
       </tr>
       
       <tr>
@@ -109,22 +77,6 @@
                                noBottomBorder noTopBorder" >
           <button id="options.versus.map.3" key="" data="3" />
         </td>
-        
-        <td colspan="1" class="w_10 small_element_h" ></td>
-        
-        <td colspan="1" class="w_10 small_element_h cwt_font_mini" >
-          <button ignore="true" class="cwt_border cwt_panel_button_inverted" >
-            PR:</span><span id="map_meta_properties"></span>
-          </button>
-        </td>
-        
-        <!--
-        <td colspan="4" class="w_40 small_element_h
-                               noEgdeTR noEgdeBR noEgdeBL noEgdeTL
-                               noBottomBorder noTopBorder" >
-          <button ignore="true" class="cwt_border cwt_panel_button_inverted" >&#160;</button>
-        </td>
-        -->
       </tr>
       
       <tr>
@@ -133,22 +85,6 @@
                                noBottomBorder noTopBorder" >
           <button id="options.versus.map.4" key="" data="4" />
         </td>
-        
-        <td colspan="1" class="w_10 small_element_h" ></td>
-        
-        <td colspan="1" class="w_10 small_element_h cwt_font_mini" >
-          <button ignore="true" class="cwt_border cwt_panel_button_inverted" >
-            PL:</span><span id="map_meta_players"></span>
-          </button>
-        </td>
-        
-        <!--
-        <td colspan="4" class="w_40 small_element_h
-                               noEgdeTR noEgdeTL
-                               noTopBorder" >
-          <button ignore="true" class="cwt_border cwt_panel_button_inverted" >&#160;</button>
-        </td>
-        -->
       </tr>
       
       <tr>
@@ -157,8 +93,6 @@
                                noTopBorder noBottomBorder" >
           <button id="options.versus.map.5" key="" data="5"/>
         </td>
-        
-        <td colspan="6" class="w_10 small_element_h" ></td>
       </tr>
       
       <!-- ######################### CONTROLS ######################### -->
@@ -187,12 +121,43 @@
                                noLeftBorder" >
           <button key="options.nextPage.small" data="map"/>
         </td>
+
+        <!-- ########################## -->
         
-        <td colspan="2" class="w_20 small_element_h" ></td>
-        
-        <td colspan="4" class="w_40 small_element_h
-                              " >
-          <button key="options.versus.configuredMatch" />
+        <td colspan="1" class="w_10 small_element_h" >
+          <button ignore="true" 
+                  class="cwt_border cwt_panel_button_inverted"
+                  id="options.versus.meta.1"/>
+        </td>
+
+        <td colspan="1" class="w_10 small_element_h" >
+          <button ignore="true" 
+                  class="cwt_border cwt_panel_button_inverted"
+                  id="options.versus.meta.2"/>
+        </td>
+
+        <td colspan="1" class="w_10 small_element_h" >
+          <button ignore="true" 
+                  class="cwt_border cwt_panel_button_inverted"
+                  id="options.versus.meta.3"/>
+        </td>
+
+        <td colspan="1" class="w_10 small_element_h" >
+          <button ignore="true" 
+                  class="cwt_border cwt_panel_button_inverted"
+                  id="options.versus.meta.4"/>
+        </td>
+
+        <td colspan="1" class="w_10 small_element_h" >
+          <button ignore="true" 
+                  class="cwt_border cwt_panel_button_inverted"
+                  id="options.versus.meta.5"/>
+        </td>
+
+        <td colspan="1" class="w_10 small_element_h" >
+          <button ignore="true" 
+                  class="cwt_border cwt_panel_button_inverted"
+                  id="options.versus.meta.6"/>
         </td>
       </tr>
       
@@ -201,11 +166,19 @@
                                buttonTopGap" >
           <button key="options.goBack" />
         </td>
+
+        <td colspan="2" class="w_20 small_element_h
+                               buttonTopGap" >
+        </td>
         
-        <td colspan="4" class="w_40 small_element_h" ></td>
         
-        <td colspan="4" class="w_40 small_element_h
-                               " >
+        <td colspan="3" class="w_30 small_element_h
+                              buttonTopGap" >
+          <button key="options.versus.configuredMatch" />
+        </td>
+        
+        <td colspan="3" class="w_30 small_element_h
+                               buttonTopGap" >
           <button key="options.versus.quickMatch" />
         </td>
       </tr>
