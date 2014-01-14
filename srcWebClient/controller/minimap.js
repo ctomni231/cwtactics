@@ -18,7 +18,14 @@ controller.minimap_showIngameMinimap = function(){
   var cv = cvEl.style;
 
   // render it
-  controller.minimap_renderIngameMinimap();
+  controller.minimap_renderMinimap_(
+    cvEl,
+    model.map_width,
+    model.map_height,
+    model.map_data,
+    null,
+    true
+  );
 
   // show it
   blend.display = "block";
@@ -79,20 +86,6 @@ controller.minimap_renderMinimap_ = function(canvas,w,h,map,typeMap,biggerMap){
       }
       
   }}
-};
-
-// Draws the ingame minimap. The data will be read from
-// the domain model.
-//
-controller.minimap_renderIngameMinimap = function(){
-  controller.minimap_renderMinimap_(
-    controller.minimap_mapSelectionCanvas,
-    model.map_width,
-    model.map_height,
-    model.map_data,
-    null,
-    true
-  );
 };
 
 // Draws the map selection mini map. The data will be extracted 

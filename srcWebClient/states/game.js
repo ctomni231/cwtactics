@@ -204,7 +204,10 @@ util.scoped(function(){
       var unit = model.unit_posData[mx][my];
       
       // if minimap is not open and the click happens on an empty tile, then show it
-      if(  !model.fog_turnOwnerData[mx][my] || ( !prop && !unit )){
+      if( controller.stateMachine.state === "IDLE" && (
+         !model.fog_turnOwnerData[mx][my] || ( !prop && !unit ) ) 
+        ){
+        
         controller.minimap_showIngameMinimap();
         miniMapOpen = true;   
         return this.breakTransition();
