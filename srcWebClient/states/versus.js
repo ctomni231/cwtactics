@@ -152,12 +152,6 @@ util.scoped(function(){
   controller.screenStateMachine.structure.VERSUS.enterState = function(){
     setPage(0);
     selectedMap = null;
-    
-    // reset meta data
-    for (var i = 0; i < metaCanvasBtns.length; i++) {
-      metaCanvasBtns[i].width = 16;
-      metaCanvasBtns[i].height = 32;
-    };
   };
   
   controller.screenStateMachine.structure.VERSUS.UP = function(){

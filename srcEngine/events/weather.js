@@ -6,7 +6,7 @@ model.event_on("weather_calculateNext",function( wth ){
   var duration;
 
   // this event is only host invocable
-  assert(controller.isHost());
+  assert(controller.network_isHost());
 
   // Search a random weather if the last weather was `null` or the default weather type
   if( model.weather_data !== null && model.weather_data === model.data_defaultWeatherSheet ){

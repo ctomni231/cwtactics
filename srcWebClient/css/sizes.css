@@ -16,6 +16,10 @@
     .h_5_small {        
         height:    140px;
     }
+    .small_h_canvas{
+        height: 16px;
+        width: 8px;
+    }
     .cwt_font_small{
         font-size: 10pt;
     }
@@ -39,6 +43,10 @@
     .h_5_small {        
         height:    150px;
     }
+    .small_h_canvas{
+        height: 16px;
+        width: 8px;
+    }
     .cwt_font_small{
         font-size: 11pt;
     }
@@ -58,6 +66,10 @@
     .small_element_h td {
         height:    38px;
         font-size: 16pt;
+    }
+    .small_h_canvas{
+        height: 28px;
+        width: 13px;
     }
     .h_5_small {        
         height:    190px;
@@ -85,6 +97,10 @@
     .h_5_small {        
         height:    250px;
     }
+    .small_h_canvas{
+        height: 32px;
+        width: 16px;
+    }
     .cwt_font_small{
         font-size: 19pt;
     }
@@ -108,6 +124,10 @@
     }
     .h_5_small {        
         height:    250px;
+    }
+    .small_h_canvas{
+        height: 32px;
+        width: 16px;
     }
     .cwt_font_small{
         font-size: 16pt;

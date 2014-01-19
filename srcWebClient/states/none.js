@@ -5,19 +5,23 @@ controller.screenStateMachine.structure.NONE.section = null;
 controller.screenStateMachine.structure.NONE.start = function(){
   if( DEBUG ) util.log("start client");
 
+  var deltaEL = document.getElementById("DELTA");
+  var drops = 0;
   (function setupAnimationFrame(){
     if( DEBUG ) util.log("setup animation frame");
 
     var oldTime = new Date().getTime();
     function looper(){
-
-      // acquire next frame
-      requestAnimationFrame( looper );
-
+      
       // calculate delta
       var now = new Date().getTime();
       var delta = now - oldTime;
       oldTime = now;
+      
+      if( delta > 18 ){
+        drops++;
+        deltaEL.innerHTML = drops;
+      }      
 
       controller.updateGamePadControls(delta);
 
@@ -31,6 +35,9 @@ controller.screenStateMachine.structure.NONE.start = function(){
       if( controller.screenStateMachine.state === "MOBILE" ){
         controller.screenStateMachine.event("decreaseTimer", delta );
       }
+      
+      // acquire next frame
+      requestAnimationFrame( looper );
     }
 
     // ENTER LOOP

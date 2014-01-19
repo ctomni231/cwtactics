@@ -12,6 +12,8 @@ controller.metadata_TYPES = {
 controller.metadata_grabFromMapData = function( mapData, btns, canvases, types ){
   var props;
   for( var i = 0; i < btns.length; i++ ){
+    canvases[i].width = 16;
+    canvases[i].height = 32;
     var ctx = canvases[i].getContext("2d");
     ctx.clearRect(0,0,16,32);
     if( mapData === null || types === null || i >= types.length ){
@@ -27,7 +29,7 @@ controller.metadata_grabFromMapData = function( mapData, btns, canvases, types )
       ctx.drawImage(
         view.getPropertyImageForType( type, view.COLOR_NEUTRAL ), 
         0,0, 
-        16,32, 
+        16,32,
         0,0,
         16,32
       );

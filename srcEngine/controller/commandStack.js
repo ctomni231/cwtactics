@@ -117,8 +117,8 @@ controller.commandStack_localInvokement = function( cmd ){
 // the activation of the action.
 //
 controller.commandStack_sharedInvokement = function( cmd ){
-  if( controller.isNetworkGame() ) {
-    controller.sendNetworkMessage( JSON.stringify( arguments ) );
+  if( controller.network_isActive() ) {
+    controller.network_sendMessage( JSON.stringify( arguments ) );
   }
 
   controller.commandStack_localInvokement.apply(this,arguments);

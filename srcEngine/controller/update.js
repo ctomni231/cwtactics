@@ -33,7 +33,7 @@ controller.update_startGameRound = function( ){
   if( model.round_turnOwner === -1 ){
     model.events.gameround_start();
     controller.commandStack_localInvokement( "nextTurn_invoked" );
-    if( controller.isHost() ) model.events.weather_calculateNext();
+    if( controller.network_isHost() ) model.events.weather_calculateNext();
   }
 };
 

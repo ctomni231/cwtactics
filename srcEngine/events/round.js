@@ -61,7 +61,7 @@ model.event_on("nextTurn_pidStartsTurn",function(pid){
   }
 
   // start AI logic if new turn owner is AI controlled this local instance is the host
-  if( controller.isHost() && !controller.ai_isHuman(pid) ){
+  if( controller.network_isHost() && !controller.ai_isHuman(pid) ){
     controller.ai_machine.event("tick");
   }
 });
