@@ -29,7 +29,7 @@ util.scoped(function(){
    * @param {type} delta
    * @returns {undefined}
    */
-  controller.gameLoop = function( delta ){
+  controller.gameLoop = function( delta, updateLogic ){
 
     savedDelta += delta; // SAVE DELTAS FOR UPDATE LOGIC ( --> TURN TIMER AND SO ON )
     
@@ -48,21 +48,22 @@ util.scoped(function(){
         view.updateMessagePanelTime(delta);
       }
       else{
-        
-        // IF NO HOCKS ARE IN THE BUFFER THEN UPDATE THE LOGIC
-        if( !hasHocks ){
-          
-          // UPDATE LOGIC
-          controller.update_tickFrame( savedDelta );
-          savedDelta = 0;
-          
-          // CHECK HOOKS
-          tryToPopNextHook();
-        }
-        // ELSE EVALUATE ACTIVE HOCK
-        else{
-          activeHock.update(delta);
-          if( activeHock.isDone() ) tryToPopNextHook();
+        if( updateLogic ){
+          // IF NO HOCKS ARE IN THE BUFFER THEN UPDATE THE LOGIC
+          if( !hasHocks ){
+            
+            // UPDATE LOGIC
+            controller.update_tickFrame( savedDelta );
+            savedDelta = 0;
+            
+            // CHECK HOOKS
+            tryToPopNextHook();
+          }
+          // ELSE EVALUATE ACTIVE HOCK
+          else{
+            activeHock.update(delta);
+            if( activeHock.isDone() ) tryToPopNextHook();
+          }
         }
       }
       
@@ -71,39 +72,42 @@ util.scoped(function(){
     }
     
     // RENDER SCREEN
-    if( view.redraw_dataChanges > 0 ) view.renderMap( controller.screenScale );
+    if( !updateLogic ){
+      if( view.redraw_dataChanges > 0 ) view.renderMap( controller.screenScale );
     
-    // RENDER ACTIVE HOCK AND POP NEXT ONE WHEN DONE
-    if( hasHocks ){
-      activeHock.render();
-    }
-    else{
-      
-      // UPDATE SELECTION CURSOR
-      if( controller.stateMachine.state === "ACTION_SELECT_TILE" ){
+      // RENDER ACTIVE HOCK AND POP NEXT ONE WHEN DONE
+      if( hasHocks ){
+        activeHock.render();
+      }
+      else{
         
-        var r = view.selectionRange;
-        var x = controller.mapCursorX;
-        var y = controller.mapCursorY;
-        var lX;
-        var hX;
-        var lY = y-r;
-        var hY = y+r;
-        if( lY < 0 ) lY = 0;
-        if( hY >= model.map_height ) hY = model.map_height-1;
-        for( ; lY<=hY; lY++ ){
+        // UPDATE SELECTION CURSOR
+        if( controller.stateMachine.state === "ACTION_SELECT_TILE" ){
           
-          var disY = Math.abs( lY-y );
-          lX = x-r+disY;
-          hX = x+r-disY;
-          if( lX < 0 ) lX = 0;
-          if( hX >= model.map_width ) hX = model.map_width-1;
-          for( ; lX<=hX; lX++ ){
+          var r = view.selectionRange;
+          var x = controller.mapCursorX;
+          var y = controller.mapCursorY;
+          var lX;
+          var hX;
+          var lY = y-r;
+          var hY = y+r;
+          if( lY < 0 ) lY = 0;
+          if( hY >= model.map_height ) hY = model.map_height-1;
+          for( ; lY<=hY; lY++ ){
             
-            view.redraw_markPos(lX,lY);
+            var disY = Math.abs( lY-y );
+            lX = x-r+disY;
+            hX = x+r-disY;
+            if( lX < 0 ) lX = 0;
+            if( hX >= model.map_width ) hX = model.map_width-1;
+            for( ; lX<=hX; lX++ ){
+              
+              view.redraw_markPos(lX,lY);
+            }
           }
         }
       }
+      
     }
     
   };

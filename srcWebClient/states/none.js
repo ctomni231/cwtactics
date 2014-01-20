@@ -6,7 +6,10 @@ controller.screenStateMachine.structure.NONE.start = function(){
   if( DEBUG ) util.log("start client");
 
   var deltaEL = document.getElementById("DELTA");
+  var deltaEL2 = document.getElementById("DELTA2");
   var drops = 0;
+  var drops2 = 0;
+  var evenFrame = false;
   (function setupAnimationFrame(){
     if( DEBUG ) util.log("setup animation frame");
 
@@ -19,16 +22,20 @@ controller.screenStateMachine.structure.NONE.start = function(){
       oldTime = now;
       
       if( delta > 18 ){
-        drops++;
+        if( evenFrame ) drops++
+        else drops2++;
         deltaEL.innerHTML = drops;
+        deltaEL2.innerHTML = drops2;
       }      
 
+      evenFrame = !evenFrame;
+      
       controller.updateGamePadControls(delta);
 
       // if the system is in the game loop, then update the game data
       if( controller.inGameLoop ){
 
-        if( controller.update_inGameRound ) controller.gameLoop( delta );
+        if( controller.update_inGameRound ) controller.gameLoop( delta , evenFrame );
         else controller.screenStateMachine.event("gameHasEnded"); // game ends --> stop game loop
       }
 

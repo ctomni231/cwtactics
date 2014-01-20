@@ -19,8 +19,8 @@ var log = (function(){
 
 // try to grab PORT from arguments when given
 if(process.argv.length > 1){
-  PORT = parseInt(process.argv[1],10);
-  if( PORT.isNaN() ){
+  PORT = parseInt(process.argv[2],10);
+  if( isNaN(PORT) ){
     log("could not read PORT from arguments! PORT must be an integer");
     return;
   }
