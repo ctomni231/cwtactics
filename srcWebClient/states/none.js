@@ -9,6 +9,7 @@ controller.screenStateMachine.structure.NONE.start = function(){
   var deltaEL2 = document.getElementById("DELTA2");
   var drops = 0;
   var drops2 = 0;
+  var lastDelta = 0;
   var evenFrame = false;
   (function setupAnimationFrame(){
     if( DEBUG ) util.log("setup animation frame");
@@ -35,10 +36,12 @@ controller.screenStateMachine.structure.NONE.start = function(){
       // if the system is in the game loop, then update the game data
       if( controller.inGameLoop ){
 
-        if( controller.update_inGameRound ) controller.gameLoop( delta , evenFrame );
+        if( controller.update_inGameRound ) controller.gameLoop( delta+lastDelta , evenFrame );
         else controller.screenStateMachine.event("gameHasEnded"); // game ends --> stop game loop
       }
 
+      lastDelta = delta;
+      
       if( controller.screenStateMachine.state === "MOBILE" ){
         controller.screenStateMachine.event("decreaseTimer", delta );
       }
