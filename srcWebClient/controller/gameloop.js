@@ -29,7 +29,7 @@ util.scoped(function(){
    * @param {type} delta
    * @returns {undefined}
    */
-  controller.gameLoop = function( delta, updateLogic ){
+  controller.gameLoop = function( delta, updateLogic, inputUsed ){
 
     savedDelta += delta; // SAVE DELTAS FOR UPDATE LOGIC ( --> TURN TIMER AND SO ON )
     
@@ -49,15 +49,18 @@ util.scoped(function(){
       }
       else{
         if( updateLogic ){
-          // IF NO HOCKS ARE IN THE BUFFER THEN UPDATE THE LOGIC
+          
+          // only update game state when no hooks are in the hooks cache
           if( !hasHocks ){
-            
-            // UPDATE LOGIC
-            controller.update_tickFrame( savedDelta );
-            savedDelta = 0;
-            
-            // CHECK HOOKS
-            tryToPopNextHook();
+            if( !inputUsed ){
+              
+              // UPDATE LOGIC
+              controller.update_tickFrame( savedDelta );
+              savedDelta = 0;
+                
+              // CHECK HOOKS
+              tryToPopNextHook();
+            }
           }
           // ELSE EVALUATE ACTIVE HOCK
           else{

@@ -7,42 +7,40 @@ util.scoped(function () {
       if( controller.input_blocked ) return false;
 
       // in key mapping
-      if (controller.input_genericInputRequest && controller.screenStateMachine.state === "REMAP_KEYBOARD") {
+      if (controller.input_genericInputRequest && 
+          controller.screenStateMachine.state === "REMAP_KEYBOARD") {
         controller.screenStateMachine.event("INPUT_SET", ev.keyCode);
       } else {
+        
+        var key = null;
         var keymap = controller.keyMaps.KEYBOARD;
         switch (ev.keyCode) {
 
           // +++++++++++++++++++++ d-pad +++++++++++++++++++++++
 
         case keymap.LEFT:
-          controller.screenStateMachine.event("INP_LEFT", 1);
-          return false;
+          key = controller.DEFAULT_KEY_MAP.KEYBOARD.LEFT; break;
 
         case keymap.UP:
-          controller.screenStateMachine.event("INP_UP", 1);
-          return false;
+          key = controller.DEFAULT_KEY_MAP.KEYBOARD.UP; break;
 
         case keymap.RIGHT:
-          controller.screenStateMachine.event("INP_RIGHT", 1);
-          return false;
+          key = controller.DEFAULT_KEY_MAP.KEYBOARD.RIGHT; break;
 
         case keymap.DOWN:
-          controller.screenStateMachine.event("INP_DOWN", 1);
-          return false;
+          key = controller.DEFAULT_KEY_MAP.KEYBOARD.DOWN; break;
 
           // +++++++++++++++++++++ actions +++++++++++++++++++++
 
         case keymap.CANCEL:
-          controller.screenStateMachine.event("INP_CANCEL");
-          return false;
+          key = controller.DEFAULT_KEY_MAP.KEYBOARD.CANCEL; break;
 
         case keymap.ACTION:
-          controller.screenStateMachine.event("INP_ACTION");
-          return false;
+          key = controller.DEFAULT_KEY_MAP.KEYBOARD.ACTION; break;
         }
       }
 
+      if( key !== null ) controller.input_pushKey( key, INACTIVE_ID, INACTIVE_ID  );        
       return false;
     };
 

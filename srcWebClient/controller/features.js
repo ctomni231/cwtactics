@@ -25,7 +25,7 @@ controller.features_analyseClient = function(){
 		if( Browser.ios ){
 			if( Browser.version >= 5 ) controller.features_client.supported = true;
 			if( Browser.version >= 6 ) controller.features_client.audioSFX = true;
-            if( Browser.version === 7 ) controller.features_client.iosWebSQLFix = true;
+            controller.features_client.iosWebSQLFix = true;
 		} 
 		else if( Browser.android ){
 			controller.features_client.supported = true;

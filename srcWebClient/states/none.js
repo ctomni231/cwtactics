@@ -33,11 +33,14 @@ controller.screenStateMachine.structure.NONE.start = function(){
       
       controller.updateGamePadControls(delta);
 
+      var usedInput = controller.input_evalNextKey();
+      
       // if the system is in the game loop, then update the game data
       if( controller.inGameLoop ){
 
-        if( controller.update_inGameRound ) controller.gameLoop( delta+lastDelta , evenFrame );
-        else controller.screenStateMachine.event("gameHasEnded"); // game ends --> stop game loop
+        if( controller.update_inGameRound ){
+          controller.gameLoop( delta+lastDelta , evenFrame, usedInput );
+        } else controller.screenStateMachine.event("gameHasEnded"); // game ends --> stop game loop
       }
 
       lastDelta = delta;

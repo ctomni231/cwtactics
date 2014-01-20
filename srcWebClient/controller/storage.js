@@ -31,7 +31,7 @@ controller.storage_general = null;
 controller.storage_create = function( name, sizeMb, storage_type, cb ){
   var store = new Lawnchair({
       adaptor : storage_type,
-      maxSize : (controller.features_client.iosWebSQLFix ? 5 : sizeMb )*1024*1024,
+      maxSize : (controller.features_client.iosWebSQLFix ? 4 : sizeMb )*1024*1024,
       name    : name
     },
     function(){
