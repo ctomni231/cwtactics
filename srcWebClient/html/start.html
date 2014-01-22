@@ -51,7 +51,11 @@
 	      // The manifest returns 404 or 410, the download failed,
 	      // or the manifest changed while the download was in progress.
 	      appCache.addEventListener( 'error', function(){
-	        alert( "could not download the game data into the offline storage" );
+	        if(navigator.onLine && confirm( 
+              "Could not download the game data into the offline storage. Try to start?" ) ){
+              
+              controller.screenStateMachine.event( 'start' );
+            } else if( !navigator.onLine ) controller.screenStateMachine.event( 'start' );
 	      }, false );
 
 	    }
