@@ -70,6 +70,8 @@ util.scoped(function(){
     controller.metadata_grabFromMapData( obj.value, 
       metaBtns, metaCanvasBtns, model.data_header.map_meta );
     
+    mapNamBtn.innerHTML = obj.value.name;
+    
     // generate mini map
     controller.minimap_renderMapSelectionMinimap(obj.value);
     
@@ -86,7 +88,6 @@ util.scoped(function(){
     // reset meta data
     controller.metadata_grabFromMapData( null, metaBtns, metaCanvasBtns, null );
 
-    mapNamBtn.innerHTML = nameValues[index];
     selectedMap         = nameValues[index];
     mapLoadStart(nameValues[index]);
   }
@@ -155,18 +156,66 @@ util.scoped(function(){
   };
   
   controller.screenStateMachine.structure.VERSUS.UP = function(){
+    switch( btn.getActiveKey() ){
+        
+      case "options.versus.quickMatch":
+        btn.decreaseIndex(3);
+        break;
+                
+      case "options.goBack":
+      case "options.nextPage.small":
+      case "options.versus.configuredMatch":
+        btn.decreaseIndex(2);
+        break;
+                
+      default: 
+        btn.decreaseIndex();
+    }
+    
     return this.breakTransition();
   };
   
   controller.screenStateMachine.structure.VERSUS.DOWN = function(){
+    switch( btn.getActiveKey() ){
+        
+      case "options.goBack":
+      case "options.versus.quickMatch":
+        btn.increaseIndex(3);
+        break;
+        
+      case "options.prevPage.small":
+      case "options.versus.configuredMatch":
+        btn.increaseIndex(2);
+        break;
+                
+      default: 
+        btn.increaseIndex();
+    }   
+    
     return this.breakTransition();
   };
 
   controller.screenStateMachine.structure.VERSUS.LEFT = function(){
+    switch( btn.getActiveKey() ){
+      case "options.nextPage.small":
+      case "options.versus.configuredMatch":
+      case "options.versus.quickMatch":
+        btn.decreaseIndex();
+        break;
+    }
+    
     return this.breakTransition();
   };
 
-  controller.screenStateMachine.structure.VERSUS.RIGHT = function(){  
+  controller.screenStateMachine.structure.VERSUS.RIGHT = function(){ 
+    switch( btn.getActiveKey() ){
+      case "options.prevPage.small":
+      case "options.versus.configuredMatch":
+      case "options.goBack":
+        btn.increaseIndex();
+        break;
+    }
+    
     return this.breakTransition();
   };
     

@@ -1,7 +1,6 @@
 controller.setupMouseControls = function( canvas, menuEl ){
   if( DEBUG ) util.log("initializing mouse support");
 
-  /*
   controller.screenElement.addEventListener("mousemove", function(ev){
     var id = ev.target.id;
 
@@ -20,16 +19,16 @@ controller.setupMouseControls = function( canvas, menuEl ){
     // TO TILE POSITION
     x = parseInt( x/TILE_LENGTH , 10);
     y = parseInt( y/TILE_LENGTH , 10);
-
-    controller.screenStateMachine.event("INP_HOVER",x,y);
+    if( x !== controller.mapCursorX || y !== controller.mapCursorY ){
+      controller.input_pushKey( controller.DEFAULT_KEY_MAP.MOUSE.HOVER, x,y  );  
+    }
   });
-  */
 
   controller.screenElement.onmouseup = function(ev){
 
     if( controller.input_blocked ) return false;
     
-    var keymap = controller.keyMaps.KEYBOARD;
+    var keymap = controller.DEFAULT_KEY_MAP.KEYBOARD;
     
     // click on canvas while menu is open -> cancel always
     if( controller.menuVisible ){
@@ -37,29 +36,13 @@ controller.setupMouseControls = function( canvas, menuEl ){
       return;
     }
 
-
-    var x,y;
     ev = ev || window.event;
-
-    if( typeof ev.offsetX === 'number' ){
-      x = ev.offsetX;
-      y = ev.offsetY;
-    }
-    else {
-      x = ev.layerX;
-      y = ev.layerY;
-    }
-
-    // TO TILE POSITION
-    x = parseInt( x/TILE_LENGTH , 10);
-    y = parseInt( y/TILE_LENGTH , 10);
-    
     switch(ev.which){
       
       // LEFT
       case 1: 
         
-        controller.input_pushKey( keymap.ACTION, x, y  );   
+        controller.input_pushKey( keymap.ACTION, INACTIVE_ID, INACTIVE_ID);   
         break; 
       
       // MIDDLE
@@ -67,7 +50,7 @@ controller.setupMouseControls = function( canvas, menuEl ){
       
       // RIGHT
       case 3: 
-        controller.input_pushKey( keymap.CANCEL, x, y  );   
+        controller.input_pushKey( keymap.CANCEL, INACTIVE_ID, INACTIVE_ID);   
         break; 
     }
   };

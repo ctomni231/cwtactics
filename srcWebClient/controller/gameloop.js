@@ -32,9 +32,7 @@ util.scoped(function(){
   controller.gameLoop = function( delta, updateLogic, inputUsed ){
 
     savedDelta += delta; // SAVE DELTAS FOR UPDATE LOGIC ( --> TURN TIMER AND SO ON )
-    
-    controller.updateInputCoolDown( delta );
-    
+        
     var inMove = (controller.moveScreenX !== 0 || controller.moveScreenY !== 0);
     
     // IF SCREEN IS IN MOVEMENT THEN UPDATE THE MAP SHIFT

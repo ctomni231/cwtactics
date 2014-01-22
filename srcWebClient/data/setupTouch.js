@@ -18,24 +18,39 @@ controller.setupTouchControls = function (canvas, menuEl) {
 
         if( focusExists ){
           if( controller.stateMachine.data.selection.getValueAt(x,y) > 0 ){
-                 controller.screenStateMachine.event("INP_ACTION",x,y);
-          } else controller.screenStateMachine.event("INP_CANCEL",x,y);
-        } else   controller.screenStateMachine.event("INP_ACTION",x,y);
+                 // controller.screenStateMachine.event("INP_ACTION",x,y);
+                 controller.input_pushKey( controller.keyMaps.KEYBOARD.ACTION, x, y );
+          } else { 
+            // controller.screenStateMachine.event("INP_CANCEL",x,y);
+            controller.input_pushKey( controller.keyMaps.KEYBOARD.CANCEL, x, y );
+          }
+        } else {
+          // controller.screenStateMachine.event("INP_ACTION",x,y);
+          controller.input_pushKey( controller.keyMaps.KEYBOARD.ACTION, x, y );
+        }
 
       } else {
 
 
 
         if (event.target.id === "cwt_menu"){
-               controller.screenStateMachine.event("INP_ACTION");
-        } else controller.screenStateMachine.event("INP_CANCEL");
+               // controller.screenStateMachine.event("INP_ACTION");
+               controller.input_pushKey( controller.keyMaps.KEYBOARD.ACTION, 
+                  INACTIVE_ID, INACTIVE_ID );
+        } else {
+          // controller.screenStateMachine.event("INP_CANCEL");
+          controller.input_pushKey( controller.keyMaps.KEYBOARD.CANCEL, 
+            INACTIVE_ID, INACTIVE_ID );
+        }
       }
     }
 
     // Called when a two finger tap occur
     //
     function twoFingerTap(event,x,y){
-      controller.screenStateMachine.event("INP_CANCEL");
+      // controller.screenStateMachine.event("INP_CANCEL");
+      controller.input_pushKey( controller.keyMaps.KEYBOARD.CANCEL, 
+        INACTIVE_ID, INACTIVE_ID );
     }
 
     // Called when a swipe occur
@@ -44,17 +59,15 @@ controller.setupTouchControls = function (canvas, menuEl) {
     // if dy is not 0 then dx is 0
     //
     function swipe(event,dx,dy){
-      if( controller.screenStateMachine.state === "GAME_ROUND" ){
-        if( dx === +1  ) controller.screenStateMachine.event("SHIFT_RIGHT", 10);
-        if( dx === -1 ) controller.screenStateMachine.event("SHIFT_LEFT",   10);
-        if( dy === +1  ) controller.screenStateMachine.event("SHIFT_DOWN",  10);
-        if( dy === -1 ) controller.screenStateMachine.event("SHIFT_UP",     10);
-      } else {
-        if( dx === +1  ) controller.screenStateMachine.event("INP_RIGHT", 1);
-        if( dx === -1 ) controller.screenStateMachine.event("INP_LEFT",  1);
-        if( dy === +1  ) controller.screenStateMachine.event("INP_DOWN",  1);
-        if( dy === -1 ) controller.screenStateMachine.event("INP_UP",    1);
-      }
+      var key = null;
+      
+      if( dx === 1  ) key = controller.keyMaps.KEYBOARD.RIGHT;
+      if( dx === -1 ) key = controller.keyMaps.KEYBOARD.LEFT;
+      if( dy === 1  ) key = controller.keyMaps.KEYBOARD.DOWN;
+      if( dy === -1 ) key = controller.keyMaps.KEYBOARD.UP;
+        
+      controller.input_pushKey( key, ( controller.screenStateMachine.state === 
+                                          "GAME_ROUND" )? 10:1, INACTIVE_ID );
     }
 
     // Called when a drag occur. A drag happens when a one finger tap occurs
@@ -65,10 +78,14 @@ controller.setupTouchControls = function (canvas, menuEl) {
     // if dy is not 0 then dx is 0
     //
     function oneFingerDrag(event,dx,dy){
-      if( dx === 1  ) controller.screenStateMachine.event("INP_RIGHT", 1);
-      if( dx === -1 ) controller.screenStateMachine.event("INP_LEFT",  1);
-      if( dy === 1  ) controller.screenStateMachine.event("INP_DOWN",  1);
-      if( dy === -1 ) controller.screenStateMachine.event("INP_UP",    1);
+      var key = null;
+      
+      if( dx === 1  ) key = controller.keyMaps.KEYBOARD.RIGHT;
+      if( dx === -1 ) key = controller.keyMaps.KEYBOARD.LEFT;
+      if( dy === 1  ) key = controller.keyMaps.KEYBOARD.DOWN;
+      if( dy === -1 ) key = controller.keyMaps.KEYBOARD.UP;
+      
+      controller.input_pushKey( key, 1, INACTIVE_ID );
 
       if( !controller.menuVisible ){
         //ON THE
@@ -77,9 +94,12 @@ controller.setupTouchControls = function (canvas, menuEl) {
         if (event.target.id === "cwt_menu"){
           //INSIDE THE MENU
           //MOVE SELECTION IN DIRECTION OF DRAG
+          
         } else {
           //OUTSIDE THE MENU
-          controller.screenStateMachine.event("INP_CANCEL");
+          // controller.screenStateMachine.event("INP_CANCEL");
+          controller.input_pushKey( controller.keyMaps.KEYBOARD.CANCEL, 
+             INACTIVE_ID, INACTIVE_ID );
         }
       }
 
@@ -97,11 +117,17 @@ controller.setupTouchControls = function (canvas, menuEl) {
       if( !controller.menuVisible ){
         // IF ATTACK RANGE VISIBLE
         //   IN RANGE
-        controller.screenStateMachine.event("INP_ACTION",x,y);
+        // controller.screenStateMachine.event("INP_ACTION",x,y);
+        controller.input_pushKey( controller.keyMaps.KEYBOARD.ACTION, x,y );
+        
         //  OUTSIDE RANGE
-        controller.screenStateMachine.event("INP_CANCEL",x,y);
+        // controller.screenStateMachine.event("INP_CANCEL",x,y);
+        controller.input_pushKey( controller.keyMaps.KEYBOARD.CANCEL, x,y );
+        
         // IF ATTACK RANGE IS NOT  VISIBLE
-        controller.screenStateMachine.event("INP_ACTION",x,y);
+        // controller.screenStateMachine.event("INP_ACTION",x,y);
+        controller.input_pushKey( controller.keyMaps.KEYBOARD.ACTION, x,y );
+        
       } else {
         if (event.target.id === "cwt_menu"){
           // WHEN HOLD HAPPENS IN THE MENU THEN

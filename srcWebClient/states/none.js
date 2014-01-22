@@ -22,7 +22,7 @@ controller.screenStateMachine.structure.NONE.start = function(){
       var delta = now - oldTime;
       oldTime = now;
       
-      if( delta > 18 ){
+      if( delta > 32 ){
         if( evenFrame ) drops++
         else drops2++;
         deltaEL.innerHTML = drops;
@@ -31,6 +31,7 @@ controller.screenStateMachine.structure.NONE.start = function(){
 
       evenFrame = !evenFrame;
       
+      controller.updateInputCoolDown( delta );
       controller.updateGamePadControls(delta);
 
       var usedInput = controller.input_evalNextKey();
@@ -57,5 +58,5 @@ controller.screenStateMachine.structure.NONE.start = function(){
     requestAnimationFrame( looper );
   })();
 	
-	return "LOAD"; 
+  return "LOAD"; 
 };

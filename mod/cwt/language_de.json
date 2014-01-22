@@ -176,8 +176,8 @@
   "options.nextPage":"Nächste Seite",
   "options.prevPage.small":"<<",
   "options.nextPage.small":">>",
-  "options.versus.quickMatch":"Schnelle Runde",
-  "options.versus.configuredMatch":"Konfigurierte Runde",
+  "options.versus.quickMatch":"Schnell",
+  "options.versus.configuredMatch":"Konfiguriert",
 
   "daysOfPeace":"Tage des Friedens",
   "co_getStarCost":"Star Kosten",

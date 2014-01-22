@@ -27,7 +27,7 @@ model.event_on( "capture_invoked",function(  prid, cid ){
     var x = property.x;
     var y = property.y;
 
-    model.events.modifyVisionAt( x, y, property.type.vision, 1 );
+    model.events.modifyVisionAt( x, y, selectedUnit.owner, property.type.vision, 1 );
 
     // loose conditional property ?
     if( property.type.looseAfterCaptured === true ) {

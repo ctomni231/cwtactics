@@ -168,8 +168,8 @@
   "options.nextPage":"Next Page",
   "options.prevPage.small":"<<",
   "options.nextPage.small":">>",
-  "options.versus.quickMatch":"Quick Match",
-  "options.versus.configuredMatch":"Configurated Match",
+  "options.versus.quickMatch":"Quick",
+  "options.versus.configuredMatch":"Configurated",
   
   "daysOfPeace":"Days of Peace",
   "co_getStarCost":"Star Costs",

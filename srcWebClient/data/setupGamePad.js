@@ -56,22 +56,23 @@ util.scoped(function () {
       } else {
         // extract triggered keys
         var keymap = controller.keyMaps.GAMEPAD;
+        var keymapAct = controller.keyMaps.KEYBOARD;
         var key = null;
 
         // ++++++++++++++++++++++++++++++++ axis ++++++++++++++++++++++++++++++++++
 
-        if (gamepad.axes[1] < -0.5) key = "INP_UP";
-        else if (gamepad.axes[1] > +0.5) key = "INP_DOWN";
-        if (gamepad.axes[0] < -0.5) key = "INP_LEFT";
-        else if (gamepad.axes[0] > +0.5) key = "INP_RIGHT";
+        if (gamepad.axes[1] < -0.5)      key = keymapAct.UP;
+        else if (gamepad.axes[1] > +0.5) key = keymapAct.DOWN;
+        if (gamepad.axes[0] < -0.5)      key = keymapAct.LEFT;
+        else if (gamepad.axes[0] > +0.5) key = keymapAct.RIGHT;
 
         // ++++++++++++++++++++++++++++++ actions +++++++++++++++++++++++++++++++++
 
-        if (gamepad.buttons[keymap.ACTION] === 1) key = "INP_ACTION";
-        else if (gamepad.buttons[keymap.CANCEL] === 1) key = "INP_CANCEL";
+        if (gamepad.buttons[keymap.ACTION] === 1)      key = keymapAct.ACTION;
+        else if (gamepad.buttons[keymap.CANCEL] === 1) key = keymapAct.CANCEL;
 
         // invoke input event when a known key was pressed
-        if (key) controller.screenStateMachine.event(key, 1);
+        if (key) controller.input_pushKey( key, INACTIVE_ID, INACTIVE_ID  ); 
       }
     }
   }

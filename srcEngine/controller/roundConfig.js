@@ -10,7 +10,7 @@ controller.roundConfig_CHANGE_TYPE = {
 
 // Data holder to remember selected co's.
 //
-controller.roundConfig_coSelected = util.list( MAX_PLAYER , INACTIVE_ID );
+controller.roundConfig_coSelected = util.list( MAX_PLAYER , 0 );
 
 // Data holder to remember selected player types.
 //
@@ -130,11 +130,11 @@ controller.roundConfig_changeConfig = function( pid, type, prev ){
       var cSelect = controller.roundConfig_coSelected[pid];
       if( prev ){
         cSelect--;
-        if( cSelect < INACTIVE_ID ) cSelect = model.data_coTypes.length-1;
+        if( cSelect < 0 ) cSelect = model.data_coTypes.length-1;
       }
       else{
         cSelect++;
-        if( cSelect >= model.data_coTypes.length ) cSelect = INACTIVE_ID;
+        if( cSelect >= model.data_coTypes.length ) cSelect = 0;
       }
       controller.roundConfig_coSelected[pid] = cSelect;
       break;

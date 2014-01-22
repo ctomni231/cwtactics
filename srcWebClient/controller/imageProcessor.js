@@ -339,6 +339,15 @@ view.imageProcessor_cropMiscSprite = function( miscType ){
 
         nContext = nCanvas.getContext('2d');
       }
+      else if( miscType.length > 7 && miscType[7] === 3 ){
+
+        nCanvas.height = 24;
+        nCanvas.width  = 24;
+        nContext.save();
+        nContext.translate(8,8);
+        nContext.rotate( miscType[6] * Math.PI/180);
+        nContext.translate(-8,-8);
+      }
       else{
 
         nCanvas.height = 16;
@@ -362,6 +371,16 @@ view.imageProcessor_cropMiscSprite = function( miscType ){
         miscType[4], miscType[5],
         0, 0,
         32*3, 32
+      );
+    }
+    else if( miscType.length > 7 && miscType[7] === 3 ){
+      // TODO FIX THAT
+      nContext.drawImage(
+        img,
+        miscType[2], miscType[3],
+        miscType[4], miscType[5],
+        0, 0,
+        24,24
       );
     }
     else{

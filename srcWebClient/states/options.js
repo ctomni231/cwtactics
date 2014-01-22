@@ -100,7 +100,7 @@ util.scoped(function(){
     switch( btn.getActiveKey() ){
       case "options.sfx.up":
       case "options.music.up":
-        btn.decreaseIndex();
+        btn.increaseIndex();
         break;
     }
 
@@ -115,7 +115,7 @@ util.scoped(function(){
         btn.increaseIndex();
         break;
     }
-
+    
     return this.breakTransition();
   };
 

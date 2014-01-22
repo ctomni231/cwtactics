@@ -64,6 +64,12 @@ util.scoped(function(){
       var tcy = this.curY;
       var tcw = tileSize +8;
       var tch = tileSize +8;
+      
+      if( tcy < 0 ){
+        scw += tcy;
+        scy -= tcy;
+        tcy = 0;
+      }
 
       view.canvasCtx.drawImage(
         (this.phase===0)? rocket_img : rocket_img_inv,
