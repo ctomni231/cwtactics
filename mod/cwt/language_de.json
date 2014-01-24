@@ -243,5 +243,8 @@
   "error.panel.reason":"Grund",
   "error.panel.data":"Daten",
   "error.panel.no":"Nein",
-  "error.panel.yes":"Ja"
+  "error.panel.yes":"Ja",
+  
+  "menu.page.down":"Nächst. Seite",
+  "menu.page.up":"Voher. Seite"
 }

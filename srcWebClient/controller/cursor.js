@@ -36,8 +36,8 @@ controller.cursorAction = function( isCancel ){
     controller.stateMachine.event("cancel", controller.mapCursorX, controller.mapCursorY );
   }
   else{
-    if( controller.menuCursorIndex !== -1 ){
-      controller.stateMachine.event( "action",controller.menuCursorIndex );
+    if( controller.menuVisible ){
+      controller.stateMachine.event( "action",controller.menu_getSelectedIndex() );
     }
     else {
       controller.stateMachine.event( "action", controller.mapCursorX, controller.mapCursorY );

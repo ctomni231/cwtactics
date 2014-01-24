@@ -235,6 +235,9 @@
   "error.panel.reason":"Reason",
   "error.panel.data":"Data",
   "error.panel.no":"No",
-  "error.panel.yes":"Yes"
+  "error.panel.yes":"Yes",
+  
+  "menu.page.down":"Next Page",
+  "menu.page.up":"Prev. Page"
 
 }

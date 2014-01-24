@@ -4,6 +4,8 @@ controller.screenStateMachine.structure.NONE.section = null;
 
 controller.screenStateMachine.structure.NONE.start = function(){
   if( DEBUG ) util.log("start client");
+  
+  controller.hideMenu();
 
   var deltaEL = document.getElementById("DELTA");
   var deltaEL2 = document.getElementById("DELTA2");
@@ -40,7 +42,7 @@ controller.screenStateMachine.structure.NONE.start = function(){
       if( controller.inGameLoop ){
 
         if( controller.update_inGameRound ){
-          controller.gameLoop( delta+lastDelta , evenFrame, usedInput );
+          controller.gameLoop( delta , evenFrame, usedInput );
         } else controller.screenStateMachine.event("gameHasEnded"); // game ends --> stop game loop
       }
 
