@@ -58,7 +58,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
     .andThen(function( err, baton ){
       if( err ) return err;
       baton.take();
-
+      
       controller.storage_general.get("cwt_resetData",function( obj ){
         var  wipeOut = (obj && obj.value === true);
         if( !wipeOut ) wipeOut = getQueryParams(document.location.search).cwt_resetData === "1";
@@ -77,7 +77,6 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
         }
         else baton.pass(false);
       });
-
     })
 
     // **3.B** force touch controls ?

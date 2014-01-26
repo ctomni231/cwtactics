@@ -57,7 +57,7 @@ util.scoped(function(){
   
   // Size of a menu page.
   //
-  var menuSize = 10;
+  var menuSize = 8;
   
   // Current page of the menu.
   //

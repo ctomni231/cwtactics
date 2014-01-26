@@ -11,7 +11,7 @@ var MAX_BUFFER_SIZE=200;
 var VERSION="0.3.6";
 var DEBUG=true;
 var AI_VERSION="DumbBoy v. 0.1 Alpha";
-var MOD_PATH="http://localhost:8000/mod/cwt/";
+var MOD_PATH="http://192.168.1.26:8000/mod/cwt/";
 
 var EV_FACTORY_TYPE_CHECK = "ev_fac_canBuild";
 var EV_FACTORY_TYPE_BUILDED = "ev_fac_builded";

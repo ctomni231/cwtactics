@@ -277,5 +277,11 @@ controller.setupTouchControls = function (canvas, menuEl) {
 
     }, false);
 
+    /*
+    document.addEventListener('touchend', function (event) {
+      event.preventDefault();
+      return false;
+    });
+    */
   });
 };

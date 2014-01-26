@@ -96,6 +96,7 @@ controller.loadImages_prepareImg_ = function(key,path,mode,baton){
 controller.loadImages_doIt = util.singleLazyCall(
   function( err, baton ){
     if( DEBUG ) util.log("loading modification images");
+    var d1 = new Date().getTime();
 
     baton.take();
 
@@ -289,6 +290,7 @@ controller.loadImages_doIt = util.singleLazyCall(
       if( e && DEBUG ) util.log("could not load modification images");
       if(!e && DEBUG ) util.log("loaded all modification images");
 
+      util.log("Load Images: "+(new Date().getTime()-d1)+"ms");
       baton.pass();
     })
   }

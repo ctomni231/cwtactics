@@ -1,0 +1,14 @@
+/**
+ * 
+ */
+cwt.MenuData = {
+  
+  music: "Epoch.mp3",
+  
+  bgs: [
+    "mobile/background/RedStar.jpg",
+    "mobile/background/YellowComet.jpg",
+    "mobile/background/GreenEarth.jpg",
+    "mobile/background/BlueMoon.jpg"
+  ]
+};

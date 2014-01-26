@@ -1,5 +1,5 @@
 controller.cutImages = util.singleLazyCall(function( err, baton ){
-
+  var d1 = new Date().getTime();
   
   baton.take();
 
@@ -25,6 +25,7 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
 
   flow.start(function(){
     if( DEBUG ) util.log("cropped images");
+    util.log("Cutting Images: "+(new Date().getTime()-d1)+"ms");
     baton.pass();
   });
 });
