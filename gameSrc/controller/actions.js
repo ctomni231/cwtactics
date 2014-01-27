@@ -8,6 +8,11 @@ cwt.Action = my.Class({
     MAP_ACTION: 0,
     UNIT_ACTION: 1,
     PROPERTY_ACTION: 2,
+    
+    /**
+     * Engine actions are callable by the engine itself. 
+     */
+    ENGINE_ACTION: 3,
 
     /**
      * Holds all actions
@@ -69,21 +74,33 @@ cwt.Action = my.Class({
     this.targetSelectionType = "A";
     this.noAutoWait = false;
     this.relation = null;
+    this.marshall = null;
 
     cwt.Action.registerAction(name, this);
     return this;
   },
 
   /**
-   * 
+   * Condition function. Returns true, when the action is callable with
+   * the given game data, else false. Can be null.
    */
   condition: function (fn) {
     this.condition = fn;
     return this;
   },
+  
+  /**
+   * The marshall function will be called when the action was flushed and
+   * will be added to the command stack.
+   */
+  marshall: function(fn){
+    this.marshall = fn;
+    return this;
+  },
 
   /**
-   * 
+   * Action handler. When called, this function will change the game
+   * model.
    */
   action: function (fn) {
     this.action = fn;
