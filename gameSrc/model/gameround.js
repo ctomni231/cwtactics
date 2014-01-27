@@ -106,4 +106,4 @@ cwt.Gameround = {
     return model.player_data.length * v;
   }
 
-}
+};
