@@ -2,7 +2,7 @@
  * Holds some information about the current selection map.
  */
 cwt.gameFlowData.selection = util.scoped(function () {
-  
+
   var sMap = util.selectionMap(MAX_SELECTION_RANGE * 4 + 1);
 
   // Extension to the selection map. This one prepares the selection
@@ -42,7 +42,26 @@ cwt.gameFlowData.selection = util.scoped(function () {
 });
 
 /**
- * The range of the selection cursor. Only needed in the free 
+ * Adds unload targets for a transporter at a given position to the selection.
+ *
+ * @param uid
+ * @param x
+ * @param y
+ * @param loadId
+ * @param selection
+ */
+cwt.gameFlowData.addUnloadTargetsToSelection = function (uid, x, y, loadId, selection) {
+  var loader = model.unit_data[uid];
+  var movetp = model.data_movetypeSheets[ model.unit_data[ loadId ].type.movetype ];
+
+  if (model.move_canTypeMoveTo(movetp, x - 1, y)) selection.setValueAt(x - 1, y, 1);
+  if (model.move_canTypeMoveTo(movetp, x + 1, y)) selection.setValueAt(x + 1, y, 1);
+  if (model.move_canTypeMoveTo(movetp, x, y - 1)) selection.setValueAt(x, y - 1, 1);
+  if (model.move_canTypeMoveTo(movetp, x, y + 1)) selection.setValueAt(x, y + 1, 1);
+}
+
+/**
+ * The range of the selection cursor. Only needed in the free
  * target selection screen.
  */
 cwt.gameFlowData.selectionRange = INACTIVE_ID;

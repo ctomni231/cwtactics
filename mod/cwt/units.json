@@ -1,0 +1,915 @@
+[
+  {
+    "ID"        : "INFT",
+    "cost"      : 1000,
+    "range"     : 3,
+    "movetype"  : "MV_INFT",
+    "vision"    : 2,
+    "fuel"      : 99,
+    "captures"  : 10,
+    "ammo"      : 0,
+    "attack"    : {
+      "sec_wp": {
+        "INFT": 55,
+        "MECH": 45,
+        "RECN": 12,
+        "TNTK": 5,
+        "MDTK": 1,
+        "NTNK": 1,
+        "WRTK": 1,
+        "APCR": 14,
+        "ARTY": 15,
+        "RCKT": 25,
+        "AAIR": 5,
+        "MISS": 25,
+        "PIPR": 5,
+        "OOZM": 20,
+        "BCTR": 7,
+        "TCTR": 30
+      }
+    },
+    "assets": {
+      "gfx"           : "cwt_anim/units/CWT_INFT.png",
+      "sec_att_sound" : "mg.wav"
+    }
+  },
+
+  {
+    "ID"        : "MECH",
+    "cost"      : 3000,
+    "range"     : 2,
+    "movetype"  : "MV_MECH",
+    "vision"    : 2,
+    "fuel"      : 70,
+    "captures"  : 10,
+    "ammo"      : 3,
+    "attack"    : {
+      "main_wp": {
+        "RECN": 85,
+        "TNTK": 55,
+        "MDTK": 15,
+        "NTNK": 15,
+        "WRTK": 5,
+        "APCR": 75,
+        "ARTY": 70,
+        "RCKT": 85,
+        "AAIR": 65,
+        "MISS": 85,
+        "PIPR": 55,
+        "OOZM": 30
+      },
+      "sec_wp": {
+        "INFT": 65,
+        "MECH": 55,
+        "RECN": 18,
+        "TNTK": 6,
+        "MDTK": 1,
+        "NTNK": 1,
+        "WRTK": 1,
+        "APCR": 20,
+        "ARTY": 32,
+        "RCKT": 35,
+        "AAIR": 6,
+        "MISS": 35,
+        "PIPR": 6,
+        "OOZM": 20,
+        "BCTR": 9,
+        "TCTR": 35
+      }
+    },
+    "assets": {
+      "gfx"           : "cwt_anim/units/CWT_MECH.png",
+      "pri_att_sound" : "rocket.wav",
+      "sec_att_sound" : "mg.wav"
+    }
+  },
+
+  {
+    "ID"        : "RECN",
+    "cost"      : 4000,
+    "range"     : 8,
+    "movetype"  : "TIRE_A",
+    "vision"    : 5,
+    "fuel"      : 80,
+    "ammo"      : 0,
+    "attack"    : {
+      "sec_wp": {
+        "INFT": 70,
+        "MECH": 65,
+        "RECN": 35,
+        "TNTK": 6,
+        "MDTK": 1,
+        "NTNK": 1,
+        "WRTK": 1,
+        "APCR": 45,
+        "ARTY": 45,
+        "RCKT": 55,
+        "AAIR": 4,
+        "MISS": 28,
+        "PIPR": 6,
+        "OOZM": 20,
+        "BCTR": 10,
+        "TCTR": 35
+      }
+    },
+    "assets": {
+      "gfx"           : "cwt_anim/units/CWT_RECN.png",
+      "sec_att_sound" : "mg.wav"
+    }
+  },
+
+  {
+    "ID"        : "TNTK",
+    "cost"      : 7000,
+    "range"     : 6,
+    "movetype"  : "TANK",
+    "vision"    : 3,
+    "fuel"      : 70,
+    "ammo"      : 9,
+    "attack"    : {
+      "main_wp": {
+        "RECN": 85,
+        "TNTK": 55,
+        "MDTK": 15,
+        "NTNK": 15,
+        "WRTK": 10,
+        "APCR": 75,
+        "ARTY": 70,
+        "RCKT": 85,
+        "AAIR": 65,
+        "MISS": 85,
+        "PIPR": 55,
+        "OOZM": 20,
+        "CRUS": 5,
+        "SUBM": 1,
+        "BSHP": 1,
+        "ACAR": 1,
+        "LNDR": 10,
+        "BLBT": 10
+      },
+      "sec_wp": {
+        "INFT": 75,
+        "MECH": 70,
+        "RECN": 40,
+        "TNTK": 6,
+        "MDTK": 1,
+        "NTNK": 1,
+        "WRTK": 1,
+        "APCR": 45,
+        "ARTY": 45,
+        "RCKT": 55,
+        "AAIR": 6,
+        "MISS": 30,
+        "PIPR": 6,
+        "OOZM": 20,
+        "BCTR": 10,
+        "TCTR": 40
+      }
+    },
+    "assets": {
+      "gfx"           : "cwt_anim/units/CWT_TANK.png",
+      "pri_att_sound" : "tnk_cannon_small.wav",
+      "sec_att_sound" : "mg.wav"
+    }
+  },
+
+  {
+    "ID"        : "MDTK",
+    "cost"      : 16000,
+    "range"     : 5,
+    "movetype"  : "TANK",
+    "vision"    : 1,
+    "fuel"      : 50,
+    "ammo"      : 8,
+    "attack"    : {
+      "main_wp": {
+        "RECN": 105,
+        "TNTK": 85,
+        "MDTK": 55,
+        "NTNK": 45,
+        "WRTK": 25,
+        "AAIR": 105,
+        "ARTY": 105,
+        "RCKT": 105,
+        "PIPR": 85,
+        "MISS": 105,
+        "APCR": 105,
+        "OOZM": 30,
+        "CRUS": 30,
+        "SUBM": 10,
+        "BSHP": 10,
+        "ACAR": 10,
+        "LNDR": 35,
+        "BLBT": 35
+      },
+      "sec_wp": {
+        "INFT": 105,
+        "MECH": 95,
+        "RECN": 45,
+        "TNTK": 8,
+        "MDTK": 1,
+        "NTNK": 1,
+        "WRTK": 1,
+        "AAIR": 7,
+        "ARTY": 45,
+        "RCKT": 55,
+        "PIPR": 8,
+        "MISS": 35,
+        "APCR": 45,
+        "OOZM": 20,
+        "BCTR": 12,
+        "TCTR": 45
+      }
+    },
+    "assets": {
+      "gfx"           : "cwt_anim/units/CWT_MDTK.png",
+      "pri_att_sound" : "tnk_cannon_big.wav",
+      "sec_att_sound" : "mg.wav"
+    }
+  },
+
+  {
+    "ID": "NTNK",
+    "cost": 22000,
+    "range": 6,
+    "movetype": "TANK",
+    "vision": 1,
+    "fuel": 99,
+    "ammo": 9,
+    "attack": {
+      "main_wp": {
+        "RECN": 125,
+        "TNTK": 105,
+        "MDTK": 75,
+        "NTNK": 55,
+        "WRTK": 35,
+        "AAIR": 115,
+        "ARTY": 115,
+        "RCKT": 125,
+        "PIPR": 105,
+        "MISS": 125,
+        "APCR": 125,
+        "OOZM": 35,
+        "CRUS": 30,
+        "SUBM": 15,
+        "BSHP": 15,
+        "ACAR": 15,
+        "LNDR": 40,
+        "BLBT": 40
+      },
+      "sec_wp": {
+        "INFT": 125,
+        "MECH": 115,
+        "RECN": 65,
+        "TNTK": 10,
+        "MDTK": 1,
+        "NTNK": 1,
+        "WRTK": 1,
+        "AAIR": 17,
+        "ARTY": 65,
+        "RCKT": 75,
+        "PIPR": 10,
+        "MISS": 55,
+        "APCR": 65,
+        "OOZM": 20,
+        "BCTR": 22,
+        "TCTR": 55
+      }
+    },
+    "assets": {
+      "gfx"           : "cwt_anim/units/CWT_NTNK.png",
+      "pri_att_sound" : "tnk_cannon_big.wav",
+      "sec_att_sound" : "mg.wav"
+    }
+  },
+
+  {
+    "ID": "WRTK",
+    "cost": 28000,
+    "range": 4,
+    "movetype": "TANK",
+    "vision": 1,
+    "fuel": 70,
+    "ammo": 3,
+    "attack": {
+      "main_wp": {
+        "RECN": 195,
+        "TNTK": 180,
+        "MDTK": 125,
+        "NTNK": 115,
+        "WRTK": 65,
+        "AAIR": 195,
+        "ARTY": 195,
+        "RCKT": 195,
+        "PIPR": 180,
+        "MISS": 195,
+        "APCR": 195,
+        "OOZM": 45,
+        "CRUS": 65,
+        "SUBM": 45,
+        "BSHP": 45,
+        "ACAR": 45,
+        "LNDR": 75,
+        "BLBT": 105
+      },
+      "sec_wp": {
+        "INFT": 135,
+        "MECH": 125,
+        "RECN": 65,
+        "TNTK": 10,
+        "MDTK": 1,
+        "NTNK": 1,
+        "WRTK": 1,
+        "AAIR": 17,
+        "ARTY": 65,
+        "RCKT": 75,
+        "PIPR": 10,
+        "MISS": 55,
+        "APCR": 65,
+        "OOZM": 30,
+        "BCTR": 22,
+        "TCTR": 55
+      }
+    },
+    "assets": {
+      "gfx"           : "cwt_anim/units/CWT_WRTK.png",
+      "pri_att_sound" : "tnk_cannon_big.wav",
+      "sec_att_sound" : "mg.wav"
+    }
+  },
+
+  {
+    "ID": "AAIR",
+    "cost": 8000,
+    "range": 6,
+    "movetype": "TANK",
+    "vision": 2,
+    "fuel": 60,
+    "ammo": 9,
+    "attack": {
+      "main_wp": {
+        "INFT": 105,
+        "MECH": 105,
+        "RECN": 60,
+        "TNTK": 25,
+        "MDTK": 10,
+        "NTNK": 5,
+        "WRTK": 1,
+        "AAIR": 45,
+        "ARTY": 50,
+        "RCKT": 55,
+        "PIPR": 25,
+        "MISS": 55,
+        "APCR": 50,
+        "OOZM": 30,
+        "FGTR": 65,
+        "BMBR": 75,
+        "STLH": 75,
+        "BCTR": 105,
+        "TCTR": 105,
+        "BKBM": 120
+      }
+    },
+    "assets": {
+      "gfx"           : "cwt_anim/units/CWT_AAIR.png",
+      "pri_att_sound" : "mg.wav",
+      "sec_att_sound" : "mg.wav"
+    }
+  },
+
+  {
+    "ID": "APCR",
+    "cost": 5000,
+    "range": 6,
+    "movetype": "TANK",
+    "vision": 1,
+    "fuel": 70,
+    "ammo": 0,
+    "maxloads": 1,
+    "canload": [
+      "MV_INFT",
+      "MV_MECH"
+    ],
+    "supply": [
+      "*"
+    ],
+    "assets": {
+      "gfx" :"cwt_anim/units/CWT_APCR.png"
+    }
+  },
+
+  {
+    "ID": "OOZM",
+    "cost": 0,
+    "range": 1,
+    "movetype": "SLIME",
+    "vision": 1,
+    "fuel": 0,
+    "ammo": 0,
+    "assets": {
+      "gfx" :"cwt_anim/units/CWT_OOZM.png"
+    }
+  },
+
+  {
+    "ID": "BCTR",
+    "cost": 9000,
+    "range": 6,
+    "movetype": "AIR",
+    "dailyFuelDrain":2,
+    "vision": 3,
+    "fuel": 99,
+    "ammo": 6,
+    "attack": {
+      "main_wp": {
+        "RECN": 55,
+        "TNTK": 55,
+        "MDTK": 25,
+        "NTNK": 20,
+        "WRTK": 10,
+        "AAIR": 25,
+        "ARTY": 65,
+        "RCKT": 65,
+        "PIPR": 55,
+        "MISS": 65,
+        "APCR": 60,
+        "OOZM": 25,
+        "CRUS": 25,
+        "SUBM": 25,
+        "BSHP": 25,
+        "ACAR": 25,
+        "LNDR": 25,
+        "BLBT": 25
+      },
+      "sec_wp": {
+        "INFT": 75,
+        "MECH": 75,
+        "RECN": 30,
+        "TNTK": 6,
+        "MDTK": 1,
+        "NTNK": 1,
+        "WRTK": 1,
+        "AAIR": 6,
+        "ARTY": 25,
+        "RCKT": 35,
+        "PIPR": 6,
+        "MISS": 35,
+        "APCR": 20,
+        "OOZM": 20,
+        "BCTR": 65,
+        "TCTR": 95
+      }
+    },
+    "assets": {
+      "simpleAnimated": true,
+      "gfx"           : "cwt_anim/units/CWT_BCTR.png",
+      "pri_att_sound" : "rocket.wav",
+      "sec_att_sound" : "mg.wav"
+    }
+  },
+
+  {
+    "ID": "BMBR",
+    "cost": 22000,
+    "range": 7,
+    "movetype": "AIR",
+    "dailyFuelDrain":5,
+    "vision": 3,
+    "fuel": 99,
+    "ammo": 9,
+    "attack": {
+      "main_wp": {
+        "INFT": 110,
+        "MECH": 110,
+        "RECN": 105,
+        "TNTK": 105,
+        "MDTK": 95,
+        "NTNK": 90,
+        "WRTK": 35,
+        "AAIR": 95,
+        "ARTY": 105,
+        "RCKT": 105,
+        "PIPR": 105,
+        "MISS": 105,
+        "APCR": 105,
+        "OOZM": 35,
+        "CRUS": 50,
+        "SUBM": 95,
+        "BSHP": 75,
+        "ACAR": 105,
+        "LNDR": 95,
+        "BLBT": 75
+      }
+    },
+    "assets": {
+      "gfx"           : "cwt_anim/units/CWT_BMBR.png",
+      "pri_att_sound" : "mg.wav",
+      "sec_att_sound" : "mg.wav"
+    }
+  },
+
+  {
+    "ID": "BKBM",
+    "cost": 25000,
+    "range": 9,
+    "movetype": "AIR",
+    "dailyFuelDrain":5,
+    "vision": 1,
+    "fuel": 45,
+    "ammo": 0,
+    "suicide": {
+      "damage": 5,
+      "range": 3,
+      "nodamage": [
+        "OOZM"
+      ]
+    },
+    "assets": {
+      "gfx"           : "cwt_anim/units/CWT_BKBM.png",
+      "pri_att_sound" : "mg.wav",
+      "sec_att_sound" : "mg.wav"
+    }
+  },
+
+  {
+    "ID": "STLH",
+    "cost": 24000,
+    "range": 6,
+    "movetype": "AIR",
+    "vision": 4,
+    "fuel": 60,
+    "ammo": 6,
+    "dailyFuelDrain":5,
+    "dailyFuelDrainHidden":8,
+    "attack": {
+      "main_wp": {
+        "INFT": 90,
+        "MECH": 90,
+        "RECN": 85,
+        "TNTK": 75,
+        "MDTK": 70,
+        "NTNK": 60,
+        "WRTK": 15,
+        "AAIR": 50,
+        "ARTY": 75,
+        "RCKT": 85,
+        "PIPR": 80,
+        "MISS": 85,
+        "APCR": 85,
+        "OOZM": 30,
+        "FGTR": 45,
+        "BMBR": 70,
+        "STLH": 55,
+        "BCTR": 85,
+        "TCTR": 95,
+        "BKBM": 120,
+        "CRUS": 35,
+        "SUBM": 55,
+        "BSHP": 45,
+        "ACAR": 45,
+        "LNDR": 65,
+        "BLBT": 65
+      }
+    },
+    "stealth": true,
+    "assets": {
+      "gfx"           : "cwt_anim/units/CWT_STLH.png",
+      "pri_att_sound" : "mg.wav",
+      "sec_att_sound" : "mg.wav"
+    }
+  },
+
+  {
+    "ID": "FGTR",
+    "cost": 20000,
+    "range": 9,
+    "movetype": "AIR",
+    "vision": 2,
+    "fuel": 99,
+    "dailyFuelDrain":5,
+    "ammo": 9,
+    "attack": {
+      "main_wp": {
+        "FGTR": 55,
+        "BMBR": 100,
+        "STLH": 85,
+        "BCTR": 120,
+        "TCTR": 120,
+        "BKBM": 120
+      }
+    },
+    "assets": {
+      "gfx"           : "cwt_anim/units/CWT_FGTR.png",
+      "pri_att_sound" : "mg.wav",
+      "sec_att_sound" : "mg.wav"
+    }
+  },
+
+  {
+    "ID": "TCTR",
+    "cost": 5000,
+    "range": 6,
+    "movetype": "AIR",
+    "vision": 2,
+    "fuel": 99,
+    "dailyFuelDrain":2,
+    "ammo": 0,
+    "maxloads": 1,
+    "canload": [
+      "MV_INFT",
+      "MV_MECH"
+    ],
+    "assets": {
+      "simpleAnimated": true,
+      "gfx" :"cwt_anim/units/CWT_TCTR.png"
+    }
+  },
+
+  {
+    "ID": "ARTY",
+    "cost": 6000,
+    "range": 5,
+    "movetype": "TANK",
+    "vision": 1,
+    "fuel": 50,
+    "ammo": 6,
+    "attack": {
+      "main_wp": {
+        "INFT": 90,
+        "MECH": 85,
+        "RECN": 80,
+        "TNTK": 70,
+        "MDTK": 45,
+        "NTNK": 40,
+        "WRTK": 15,
+        "AAIR": 75,
+        "ARTY": 75,
+        "RCKT": 80,
+        "PIPR": 70,
+        "MISS": 80,
+        "APCR": 70,
+        "OOZM": 5,
+        "CRUS": 50,
+        "SUBM": 60,
+        "BSHP": 40,
+        "ACAR": 45,
+        "LNDR": 55,
+        "BLBT": 55
+      },
+      "minrange": 2,
+      "maxrange": 3
+    },
+    "assets": {
+      "gfx"           : "cwt_anim/units/CWT_ARTY.png",
+      "pri_att_sound" : "tnk_cannon_big.wav"
+    }
+  },
+
+  {
+    "ID": "MISS",
+    "cost": 12000,
+    "range": 4,
+    "movetype": "TIRE_A",
+    "vision": 5,
+    "fuel": 50,
+    "ammo": 6,
+    "attack": {
+      "main_wp": {
+        "FGTR": 100,
+        "BMBR": 100,
+        "STLH": 100,
+        "BCTR": 115,
+        "TCTR": 115,
+        "BKBM": 120
+      },
+      "minrange": 3,
+      "maxrange": 5
+    },
+    "assets": {
+      "gfx"           : "cwt_anim/units/CWT_MISS.png",
+      "pri_att_sound" : "mg.wav"
+    }
+  },
+
+  {
+    "ID": "RCKT",
+    "cost": 15000,
+    "range": 5,
+    "movetype": "TIRE_A",
+    "vision": 1,
+    "fuel": 50,
+    "ammo": 6,
+    "attack": {
+      "main_wp": {
+        "INFT": 95,
+        "MECH": 90,
+        "RECN": 90,
+        "TNTK": 80,
+        "MDTK": 55,
+        "NTNK": 50,
+        "WRTK": 25,
+        "AAIR": 85,
+        "ARTY": 80,
+        "RCKT": 85,
+        "PIPR": 80,
+        "MISS": 90,
+        "APCR": 80,
+        "OOZM": 15,
+        "CRUS": 60,
+        "SUBM": 85,
+        "BSHP": 55,
+        "ACAR": 60,
+        "LNDR": 60,
+        "BLBT": 60
+      },
+      "minrange": 3,
+      "maxrange": 5
+    },
+    "assets": {
+      "gfx"           : "cwt_anim/units/CWT_RCKT.png",
+      "pri_att_sound" : "rocket.wav"
+    }
+  },
+
+  {
+    "ID": "SUBM",
+    "cost": 20000,
+    "range": 5,
+    "movetype": "SHIP",
+    "vision": 5,
+    "fuel": 60,
+    "stealth": true,
+    "dailyFuelDrain":1,
+    "dailyFuelDrainHidden":5,
+    "ammo": 6,
+    "attack": {
+      "main_wp": {
+        "CRUS": 25,
+        "SUBM": 55,
+        "BSHP": 65,
+        "ACAR": 75,
+        "LNDR": 95,
+        "BLBT": 95
+      }
+    },
+    "assets": {
+      "gfx"           : "cwt_anim/units/CWT_SUBM.png",
+      "pri_att_sound" : "mg.wav"
+    }
+  },
+
+  {
+    "ID": "CRUS",
+    "cost": 18000,
+    "range": 6,
+    "movetype": "SHIP",
+    "vision": 3,
+    "fuel": 99,
+    "ammo": 9,
+    "dailyFuelDrain":1,
+    "attack": {
+      "main_wp": {
+        "CRUS": 25,
+        "SUBM": 90,
+        "BSHP": 5,
+        "ACAR": 5,
+        "LNDR": 25,
+        "BLBT": 25
+      },
+      "sec_wp": {
+        "FGTR": 85,
+        "BMBR": 100,
+        "STLH": 100,
+        "BCTR": 105,
+        "TCTR": 105,
+        "BKBM": 120
+      }
+    },
+    "maxloads": 2,
+    "canload": [
+      "AIR"
+    ],
+    "assets": {
+      "gfx"           : "cwt_anim/units/CWT_CRUS.png",
+      "pri_att_sound" : "mg.wav",
+      "sec_att_sound" : "mg.wav"
+    }
+  },
+
+  {
+    "ID": "BKBT",
+    "cost": 7500,
+    "range": 7,
+    "movetype": "WATER_TRANSPORT",
+    "vision": 1,
+    "fuel": 60,
+    "ammo": 0,
+    "dailyFuelDrain":1,
+    "maxloads": 2,
+    "canload": [
+      "INFT",
+      "MECH"
+    ],
+    "repairs": {
+      "SHIP": 1
+    },
+    "assets": {
+      "gfx" : "cwt_anim/units/CWT_BKBT.png"
+    }
+  },
+
+  {
+    "ID": "ACAR",
+    "cost": 30000,
+    "range": 5,
+    "movetype": "SHIP",
+    "vision": 4,
+    "fuel": 99,
+    "dailyFuelDrain":1,
+    "ammo": 9,
+    "maxloads": 2,
+    "suppliesloads": true,
+    "canload": [
+      "AIR"
+    ],
+    "attack": {
+      "main_wp": {
+        "FGTR": 100,
+        "BMBR": 100,
+        "STLH": 100,
+        "BCTR": 115,
+        "TCTR": 115,
+        "BKBM": 120
+      },
+      "minrange": 3,
+      "maxrange": 8
+    },
+    "assets": {
+      "gfx"           : "cwt_anim/units/CWT_ACAR.png",
+      "pri_att_sound" : "mg.wav"
+    }
+  },
+
+  {
+    "ID": "LNDR",
+    "cost": 12000,
+    "range": 6,
+    "movetype": "WATER_TRANSPORT",
+    "vision": 1,
+    "fuel": 99,
+    "dailyFuelDrain":1,
+    "ammo": 0,
+    "maxloads": 1,
+    "canload": [
+      "MV_MECH",
+      "MV_INFT",
+      "TIRE_A",
+      "TIRE_B",
+      "TANK"
+    ],
+    "assets": {
+      "gfx" :"cwt_anim/units/CWT_LNDR.png"
+    }
+  },
+
+  {
+    "ID": "BSHP",
+    "cost": 28000,
+    "range": 5,
+    "movetype": "SHIP",
+    "vision": 2,
+    "fuel": 99,
+    "dailyFuelDrain":1,
+    "ammo": 9,
+    "attack": {
+      "main_wp": {
+        "INFT": 95,
+        "MECH": 90,
+        "RECN": 90,
+        "TNTK": 80,
+        "MDTK": 55,
+        "NTNK": 50,
+        "WRTK": 25,
+        "AAIR": 85,
+        "ARTY": 80,
+        "RCKT": 85,
+        "PIPR": 80,
+        "MISS": 90,
+        "APCR": 80,
+        "OOZM": 20,
+        "CRUS": 95,
+        "SUBM": 95,
+        "BSHP": 50,
+        "ACAR": 60,
+        "LNDR": 95,
+        "BLBT": 95
+      },
+      "minrange": 2,
+      "maxrange": 6
+    },
+    "assets": {
+      "gfx"           : "cwt_anim/units/CWT_BSHP.png",
+      "pri_att_sound" : "tnk_cannon_big.wav"
+    }
+  }
+]

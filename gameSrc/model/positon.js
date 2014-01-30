@@ -21,8 +21,8 @@ cwt.Position = my.Class({
    * Grabs the data from another position object.
    */
   grab: function (otherPos) {
-    assert( otherPos instanceof cwt.Position );
-    
+    assert(otherPos instanceof cwt.Position);
+
     this.x = otherPos.x;
     this.y = otherPos.y;
     this.unit = otherPos.unit;
@@ -47,8 +47,8 @@ cwt.Position = my.Class({
     if (isValid && !inFog && refObj !== null && (!refObj.hidden ||
       refObj.owner === model.round_turnOwner ||
       model.player_data[refObj.owner].team ===
-      model.player_data[model.round_turnOwner].team
-    )) {
+        model.player_data[model.round_turnOwner].team
+      )) {
 
       this.unit = refObj;
       this.unitId = model.unit_extractId(refObj);

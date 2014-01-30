@@ -5,8 +5,13 @@ cwt.gameFlow.FLUSH_ACTION = {
     // IF ACTION IS A MULTISTEP ACTION THEN PLACE A SYMBOLIC WAIT COMMAND
     if (!trapped && this.data.action.object.multiStepAction) {
       this.data.breakMultiStep = false;
-      // this.data.inMultiStep = true;
-      controller.commandStack_localInvokement("multistep_next");
+
+      if( !controller.stateMachine.data.breakMultiStep ){
+        controller.stateMachine.event("nextStep");
+      } else {
+        controller.stateMachine.event("nextStepBreak");
+      }
+
       return "MULTISTEP_IDLE";
     } else return "IDLE";
   }

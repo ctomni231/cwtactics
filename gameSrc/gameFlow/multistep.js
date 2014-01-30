@@ -1,4 +1,5 @@
 cwt.gameFlow.MULTISTEP_IDLE = {
+
   nextStep: function () {
     var actObj = this.data.action.object;
 
@@ -12,7 +13,9 @@ cwt.gameFlow.MULTISTEP_IDLE = {
     return (this.data.menu.size > 1) ? "ACTION_SUBMENU" : "IDLE";
 
   },
+
   nextStepBreak: function () {
     return "IDLE";
   }
+
 };

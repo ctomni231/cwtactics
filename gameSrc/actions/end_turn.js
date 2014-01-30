@@ -1,11 +1,5 @@
-controller.action_mapAction({
+new cwt.Action("nextTurn")
+  .mapAction()
+  .action(function (data) {
 
-  key:"nextTurn",
-
-  condition: function(data){},
-
-  invoke: function(){
-    controller.commandStack_sharedInvokement("nextTurn_invoked");
-  }
-
-});
+  });

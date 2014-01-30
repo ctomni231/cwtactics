@@ -1,0 +1,3 @@
+new cwt.Input("mouse",{
+
+})

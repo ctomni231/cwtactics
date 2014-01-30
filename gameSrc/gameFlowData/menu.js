@@ -137,5 +137,34 @@ cwt.gameFlowData.menu = {
         }
       }
     };
-  })
+  }),
+
+  /**
+   * Adds unload targets for a transporter at a given position to the menu.
+   *
+   * @param uid
+   * @param x
+   * @param y
+   * @param menu
+   */
+  addUnloadTargetsToMenu: function( uid, x,y, menu ){
+    var loader = model.unit_data[uid];
+    var pid    = loader.owner;
+    var i      = model.unit_firstUnitId( pid );
+    var e      = model.unit_lastUnitId( pid );
+    var unit;
+
+    for( ;i<=e; i++ ){
+      unit = model.unit_data[i];
+
+      if( unit.owner !== INACTIVE_ID && unit.loadedIn === uid ){
+        var movetp = model.data_movetypeSheets[ unit.type.movetype ];
+
+        if( model.move_canTypeMoveTo(movetp,x-1,y) ||
+          model.move_canTypeMoveTo(movetp,x+1,y) ||
+          model.move_canTypeMoveTo(movetp,x,y-1) ||
+          model.move_canTypeMoveTo(movetp,x,y+1) ) menu.addEntry( i, true );
+      }
+    }
+  }
 };

@@ -22,7 +22,17 @@ cwt.Config = my.Class({
       assert( !this.registeredValues_.hasOwnProperty(name) );
       this.registeredValues_[name] = config;
       this.registeredNames_.push(name);
-    },    
+    },
+
+    resetAll: function(){
+      for (var i = this.registeredNames_.length - 1; i >= 0; i--) {
+        var key = this.registeredNames_[i];
+        var cfg = this.registeredValues_[key];
+
+        // reset value
+        cfg.resetValue();
+      };
+    },
     
     /**
      * 
@@ -39,7 +49,7 @@ cwt.Config = my.Class({
     }
   },
   
-  initialize: function( name, min, max, defaultValue, step ){
+  constructor: function( name, min, max, defaultValue, step ){
     this.min = min;
     this.max = max;
     this.def = defaultValue;

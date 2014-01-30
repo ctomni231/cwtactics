@@ -3,7 +3,7 @@
  */
 cwt.Map = my.Class({
 
-  initialize: function () {
+  constructor: function () {
     this.data = null; // cwt.List.generateMatrix(MAX_WIDTH,MAX_HEIGHT);
     this.properties = null; // list properties
     this.width = 0;

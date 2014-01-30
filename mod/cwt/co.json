@@ -100,7 +100,7 @@
           "MOVE_TYPE",["MV_INFT","MV_MECH"]
         ],
         "att":30,
-        "moverange":1,
+        "movepoints":1,
         "captureRate":50
       }
     ],
@@ -111,7 +111,7 @@
             "MOVE_TYPE",["MV_INFT","MV_MECH"]
           ],
           "att":40,
-          "moverange":1
+          "movepoints":1
         }
       ],
       "power":{}
@@ -123,95 +123,9 @@
             "MOVE_TYPE",["MV_INFT","MV_MECH"]
           ],
           "att":70,
-          "moverange":2,
+          "movepoints":2,
           "captureRate":9999
         }
-      ],
-      "power":{}
-    }
-  },
-
-  {
-    "ID"       : "OLAF",
-    "faction"  : "BLMN",
-    "music"    : "sami.mp3",
-    "coStars"  : 3,
-    "scoStars" : 7,
-    "d2d"      : [
-      { "neutralizeWeather":1 }
-    ],
-    "cop" : {
-      "turn":[],
-      "power":{
-        "changeWeather":{ "days":1, "weather":"SNOW" }
-      }
-    },
-    "scop" : {
-      "turn":[],
-      "power":{
-        "changeWeather":{ "days":1, "weather":"SNOW" },
-        "damageUnits":{   "amount":2,"target":3 }
-      }
-    }
-  },
-
-  {
-    "ID"       : "GRIT",
-    "faction"  : "BLMN",
-    "music"    : "sami.mp3",
-    "coStars"  : 3,
-    "scoStars" : 6,
-    "d2d"      : [
-      {
-        "$when":[ "ATTACK_TYPE",["INDIRECT"] ],
-        "maxrange":1,
-        "att":20
-      },
-      {
-        "$when":[ "ATTACK_TYPE",["DIRECT"] ],
-        "att":-20
-      }
-    ],
-    "cop" : {
-      "turn":[
-        {
-          "$when":[ "ATTACK_TYPE",["INDIRECT"] ],
-          "maxrange":1,
-          "att":30
-        }
-      ],
-      "power":{}
-    },
-    "scop" : {
-      "turn":[
-        {
-          "$when":[ "ATTACK_TYPE",["INDIRECT"] ],
-          "maxrange":2,
-          "att":30
-        }
-      ],
-      "power":{}
-    }
-  },
-
-  {
-    "ID"       : "KNBI",
-    "faction"  : "YLCM",
-    "music"    : "sami.mp3",
-    "coStars"  : 4,
-    "scoStars" : 7,
-    "d2d"      : [
-      { "att":30, "def":30, "costMod":20 }
-    ],
-    "cop" : {
-      "turn":[
-        { "att":20, "def":10 }
-      ],
-      "power":{}
-    },
-    "scop" : {
-      "turn":[
-        { "att":20, "def":10, "counteratt":50 }
       ],
       "power":{}
     }
