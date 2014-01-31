@@ -2,25 +2,43 @@
  *
  */
 cwt.SheetDatabase = my.Class({
-  STATIC: {
 
-    /**
-     * Holds all sheet objects.
-     */
-    sheets: {},
+  /**
+   * Registers a sheet in the database.
+   */
+  registerSheet: function (sheet) {
+    this.sheets[sheet.ID] = sheet;
+    this.types.push(sheet.ID);
+  },
 
-    /**
-     * Holds all sheet names.
-     */
-    types: [],
-
-    /**
-     * Registers a sheet in the database.
-     */
-    registerSheet: function (sheet) {
-      this.sheets[sheet.ID] = sheet;
-      this.types.push(sheet.ID);
+  checkDatabase: function () {
+    for( var i= 0, e=this.types.length; i<e; i++ ){
+      this.impl.check( this.sheets[this.types[i]] );
     }
+  },
 
+  constructor: function( impl ) {
+    assert(impl);
+
+    /**
+     * Implementation for checker. Has at least the check function.
+     *
+     * @type {*}
+     */
+    this.impl = impl;
+
+    /**
+     * Holds all type sheet objects.
+     *
+     * @type {Object}
+     */
+    this.sheets = {};
+
+    /**
+     * Holds all type names.
+     *
+     * @type {Array}
+     */
+    this.types = [];
   }
 });

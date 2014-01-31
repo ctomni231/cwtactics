@@ -3,6 +3,9 @@
  */
 cwt.Gameround = {
 
+  GAME_MODE_AW1 : 0,
+  GAME_MODE_AW2 : 1,
+
   /**
    * Returns `true` when the game is in the peace phase.
    */
@@ -13,7 +16,7 @@ cwt.Gameround = {
   /**
    * The current active co mode.
    */
-  gamemode: model.co_MODES.AW1,
+  gamemode: INACTIVE_ID,
 
   /**
    * Holds the identical numbers of all objects that can act during
@@ -32,17 +35,6 @@ cwt.Gameround = {
    * can do actions.
    */
   turnOwner: null,
-
-  /**
-   * The active weather type object.
-   */
-  weather: null,
-
-  /**
-   * The amount of days until the weather will be
-   * changed.
-   */
-  weatherLeftDays: 0,
 
   /**
    * Maximum turn time limit in ms.
@@ -110,7 +102,7 @@ cwt.Gameround = {
    * Converts a number of days into turns.
    */
   convertDaysToTurns: function (days) {
-    return model.player_data.length * v;
+    return this.players.length * v;
   },
 
   /**
@@ -271,6 +263,17 @@ cwt.Gameround = {
      }
      */
   },
+
+  /**
+   * The active weather type object.
+   */
+  weather: null,
+
+  /**
+   * The amount of days until the weather will be
+   * changed.
+   */
+  weatherLeftDays: 0,
 
   /**
    * Calculates the next weather and adds the result as timed event to

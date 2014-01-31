@@ -1,3 +1,9 @@
+new cwt.Action("joinUnits")
+  .unitAction()
+  .condition(function (data) {
+
+  })
+
 controller.action_unitAction({
 
   key:"joinUnits",
