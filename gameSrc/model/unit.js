@@ -7,11 +7,6 @@ cwt.Unit = my.Class({
     FIRETYPE_DIRECT: 2,
     FIRETYPE_BALLISTIC: 3,
 
-    MOVE_CODES_UP: 0,
-    MOVE_CODES_RIGHT: 1,
-    MOVE_CODES_DOWN: 2,
-    MOVE_CODES_LEFT: 3,
-
     /**
      * Converts HP points to a health value.
      *

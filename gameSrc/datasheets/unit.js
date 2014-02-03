@@ -1,9 +1,8 @@
 /**
  * Unit sheet holds the static data of an unit type.
  *
- * @class
  */
-cwt.UnitSheet = my.Class(cwt.SheetDatabase, {
+cwt.UnitSheet = new cwt.SheetDatabase({
 
   /**
    * Accepts key,value pairs where the key is a unit sheet id or movetype id or *.
@@ -95,4 +94,32 @@ cwt.UnitSheet = my.Class(cwt.SheetDatabase, {
       if (sheet.attack.sec_wp) cwt.doObjectCheck(sheet.attack.sec_wp, sheet.attackTargetCheck_);
     }
   }
+});
+
+/**
+ *
+ */
+cwt.UnitSheet.registerSheet({
+  "ID"       : "CANNON_UNIT_INV",
+  "cost"     : 0,
+  "range"    : 0,
+  "movetype" : "NO_MOVE",
+  "vision"   : 1,
+  "fuel"     : 0,
+  "ammo"     : 0,
+  "assets"   : {}
+});
+
+/**
+ *
+ */
+cwt.UnitSheet.registerSheet({
+  "ID"       : "LASER_UNIT_INV",
+  "cost"     : 0,
+  "range"    : 0,
+  "movetype" : "NO_MOVE",
+  "vision"   : 1,
+  "fuel"     : 0,
+  "ammo"     : 0,
+  "assets"   : {}
 });

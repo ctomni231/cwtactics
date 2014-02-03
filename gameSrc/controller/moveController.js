@@ -1,4 +1,28 @@
+/**
+ *
+ * @namespace
+ */
 cwt.Move = {
+
+  /**
+   * @constant
+   */
+  MOVE_CODES_UP: 0,
+
+  /**
+   * @constant
+   */
+  MOVE_CODES_RIGHT: 1,
+
+  /**
+   * @constant
+   */
+  MOVE_CODES_DOWN: 2,
+
+  /**
+   * @constant
+   */
+  MOVE_CODES_LEFT: 3,
 
   movePathCache: util.list(MAX_SELECTION_RANGE, INACTIVE_ID),
 

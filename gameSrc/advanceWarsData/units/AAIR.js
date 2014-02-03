@@ -1,4 +1,4 @@
-new cwt.UnitSheet({
+cwt.UnitSheet.registerSheet({
   "ID": "AAIR",
   "cost": 8000,
   "range": 6,

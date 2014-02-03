@@ -1,4 +1,4 @@
-new cwt.UnitSheet({
+cwt.UnitSheet.registerSheet({
   "ID": "BSHP",
   "cost": 28000,
   "range": 5,

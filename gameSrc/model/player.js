@@ -5,6 +5,17 @@ cwt.Player = my.Class({
 
   STATIC: {
 
+    POWER_LEVEL_COP: 0,
+    POWER_LEVEL_SCOP: 1,
+
+    RELATION_SAMETHING:-1,
+    RELATION_NONE:0,
+    RELATION_OWN:1,
+    RELATION_ALLIED:2,
+    RELATION_TEAM:3,
+    RELATION_ENEMY:4,
+    RELATION_NULL:5,
+
     /**
      * Different relationships between two objects.
      */
@@ -39,6 +50,10 @@ cwt.Player = my.Class({
     this.powerUsed = 0;
     this.manpower = Math.POSITIVE_INFINITY;
     this.coA = null;
+  },
+
+  isPowerActive: function ( level ) {
+
   },
 
   /**

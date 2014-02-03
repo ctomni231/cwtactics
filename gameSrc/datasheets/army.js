@@ -1,8 +1,11 @@
-cwt.ArmySheet = my.Class(cwt.SheetDatabase,{
+/**
+ * Database for army sheet objects.
+ *
+ * @type {cwt.SheetDatabase}
+ */
+cwt.ArmySheet = new cwt.SheetDatabase({
 
-  constructor: function ( impl ) {
-    this.ID = impl.ID;
-    
-    cwt.ArmySheet.registerSheet(this);
+  check: function () {
+
   }
 });

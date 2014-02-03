@@ -3,20 +3,21 @@
  */
 cwt.Gameround = {
 
+  /**
+   * Advance Wars 1 game mode. The first ever released game mode
+   * of the advance wars series (GBA and up).
+   */
   GAME_MODE_AW1 : 0,
-  GAME_MODE_AW2 : 1,
 
   /**
-   * Returns `true` when the game is in the peace phase.
+   * Advance Wars 2 game mode. It introduced the Super CO Power.
    */
-  inPeacePhase: function () {
-    return (this.day < cwt.Config.getValue("daysOfPeace"));
-  },
+  GAME_MODE_AW2 : 1,
 
   /**
    * The current active co mode.
    */
-  gamemode: INACTIVE_ID,
+  gamemode: this.GAME_MODE_AW1,
 
   /**
    * Holds the identical numbers of all objects that can act during
@@ -283,7 +284,7 @@ cwt.Gameround = {
     var newTp;
     var duration;
 
-    // this event is only host invocable
+    // this event is only host invokable
     assert(controller.network_isHost());
 
     // Search a random weather if the last weather was `null` or the default weather type
@@ -312,6 +313,13 @@ cwt.Gameround = {
   changeWeather: function (wth) {
     model.weather_data = model.data_weatherSheets[wth];
     model.events.recalculateFogMap();
+  },
+
+  /**
+   * Returns `true` when the game is in the peace phase.
+   */
+  inPeacePhase: function () {
+    return (this.day < cwt.Config.getValue("daysOfPeace"));
   }
 
 };

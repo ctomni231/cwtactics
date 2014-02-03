@@ -19,18 +19,18 @@ cwt.Map = my.Class({
 
     return Math.abs(sx - tx) + Math.abs(sy - ty);
   },
-  
+
   /**
    * Returns true if the tile at position x,y is a property, else false.
    */
-  isProperty: function( x, y ){
-    assert( model.map_isValidPosition(x,y) );
-  
-    return model.property_getByPos( x, y ) !== null;
+  isProperty: function (x, y) {
+    assert(this.map_isValidPosition(x, y));
+
+    return model.property_getByPos(x, y) !== null;
   },
 
   /**
-   * Returns true if the given position (x,y) is valid on the current 
+   * Returns true if the given position (x,y) is valid on the current
    * active map, else false.
    */
   isValidPosition: function (x, y) {
@@ -41,9 +41,9 @@ cwt.Map = my.Class({
    * Invokes a callback on all tiles in a given range at a position (x,y).
    */
   doInRange: function (x, y, range, cb, arg) {
-    assert(model.map_isValidPosition(x, y));
-    assert(util.isInt(range) && range >= 0);
+    assert(this.map_isValidPosition(x, y));
     assert(typeof cb === "function");
+    assert(range >= 0);
 
     var lX;
     var hX;

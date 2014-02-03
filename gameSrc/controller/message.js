@@ -1,49 +1,78 @@
-util.scoped(function(){
-  
-  var panel 		 = document.getElementById("cwt_info_box");
-  var contentDiv     = document.getElementById("cwt_info_box_content");
-  
-  var DEFAULT_MESSAGE_TIME = 2000;
-  var timeLeft = 0;
-  
-  // -------------------------------------------------------------------
+/**
+ *
+ * @namespace
+ * @type {Object}
+ */
+cwt.MessagePanel = {
 
-  view.updateMessagePanelTime = function(delta){
-    if( timeLeft > 0 ){
-      timeLeft -= delta;
-      if( timeLeft <= 0 ){
-        panel.style.opacity = 0;
-        panel.style.top = "-1000px";
-        
-        controller.input_releaseBlock();
+  /**
+   * Time that a panel will be opened when no time was given
+   * by the message request.
+   */
+  DEFAULT_MESSAGE_TIME: 2000,
+
+  /**
+   *
+   */
+  panel: document.getElementById("cwt_info_box"),
+
+  /**
+   *
+   */
+  contentDiv: document.getElementById("cwt_info_box_content"),
+
+  /**
+   *
+   */
+  timeLeft: 0,
+
+  /**
+   *
+   * @param delta
+   */
+  update: function (delta) {
+    if (this.timeLeft > 0) {
+      this.timeLeft -= delta;
+      if (this.timeLeft <= 0) {
+        this.panel.style.opacity = 0;
+        this.panel.style.top = "-1000px";
+
+        cwt.Input.releaseBlock();
       }
     }
-  };
-  
-  //
-  //
-  view.message_closePanel = function(delay){
-    timeLeft = (delay)? delay:1;
-  };
-  
-  //
-  //
-  view.hasInfoMessage = function(){
-    return timeLeft > 0;
-  };
-  
-  //
-  //
-  view.showInfoMessage = function( msg, time ){
-    if( arguments.length === 1 ) time = DEFAULT_MESSAGE_TIME;
-    
-    contentDiv.innerHTML = msg;
-    
-    panel.style.opacity = 1;
-    panel.style.top = "96px";
-    
-    timeLeft = time;
-    controller.input_requestBlock();
-  };
-  
-});
+  },
+
+  /**
+   *
+   * @param delay
+   */
+  close: function (delay) {
+    this.timeLeft = (delay) ? delay : 1;
+  },
+
+  /**
+   *
+   * @return {Boolean}
+   */
+  hasMessage: function () {
+    return this.timeLeft > 0;
+  },
+
+  /**
+   *
+   * @param msg
+   * @param time
+   */
+  show: function (msg, time) {
+    if (arguments.length === 1) time = this.DEFAULT_MESSAGE_TIME;
+
+    this.contentDiv.innerHTML = msg;
+
+    this.panel.style.opacity = 1;
+    this.panel.style.top = "96px";
+
+    this.timeLeft = time;
+    cwt.Input.requestBlock();
+  }
+
+};
