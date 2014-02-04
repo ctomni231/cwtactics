@@ -7,16 +7,16 @@ model.event_on("healUnit",function( uid ){
 });
 
 /*
-model.event_on("battle_mainAttack",function( auid,duid,dmg,mainWeap ){
-  var type = model.unit_data[auid].type;
+model (2b).event_on("battle_mainAttack",function( auid,duid,dmg,mainWeap ){
+  var type = model (2b).unit_data[auid].type;
   var sound = (mainWeap)? type.assets.pri_att_sound : type.assets.sec_att_sound;
-  if( sound ) controller.audio_playSound( sound );
+  if( sound ) controller (3).audio_playSound( sound );
 });
 
-model.event_on("battle_counterAttack",function( auid,duid,dmg,mainWeap ){
-  var type = model.unit_data[auid].type;
+model (2b).event_on("battle_counterAttack",function( auid,duid,dmg,mainWeap ){
+  var type = model (2b).unit_data[auid].type;
   var sound = (mainWeap)? type.assets.pri_att_sound : type.assets.sec_att_sound;
-  if( sound ) controller.audio_playSound( sound );
+  if( sound ) controller (3).audio_playSound( sound );
 });
 */
 

@@ -10,7 +10,7 @@ cwt.Background = {
   cssEl_: null,
 
   /**
-   * Adds an image to the background image controller. The type of the argument is
+   * Adds an image to the background image controller (3). The type of the argument is
    * an `base64` encoded `jpeg` image.
    *
    * @param base64

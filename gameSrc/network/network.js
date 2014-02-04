@@ -1,60 +1,82 @@
-// Id of the game in the connected network session.
-//
-controller.network_gameId = null;
+/**
+ *
+ * @namespace
+ */
+cwt.Network = {
 
-// Id of the client in the connected network session.
-//
-controller.network_clientId = -1;
+  /**
+   * Id of the game in the connected network session.
+   */
+  gameId: null,
 
-// The target URL of the network server.
-//
-controller.network_target = null;
+  /**
+   * Id of the client in the connected network session.
+   */
+  clientId: INACTIVE_ID,
 
-// @Override Interface from networkInterface.js
-//
-controller.network_isActive = function () {
-  return controller.network_gameId !== null;
-};
+  /**
+   * The target URL of the network server.
+   */
+  targetURL: null,
 
-// @Override Interface from networkInterface.js
-//
-controller.network_isHost = function () {
-  return !controller.network_isActive() || controller.network_clientId === 0;
-};
+  /**
+   *
+   * @return {Boolean}
+   */
+  isActive: function () {
+    return this.gameId !== null;
+  },
 
-// @Override Interface from networkInterface.js
-//
-controller.network_parseMessage = (function () {
+  /**
+   *
+   * @return {Boolean}
+   */
+  isHost: function () {
+    return this.gameId === null || this.clientId !== INACTIVE_ID;
+  },
 
-  var parser = function () {
-    if (xmlHttp.readyState == 4) {
-      var res = xmlHttp.responseText;
-      if (res !== "") {
-        var data = res.split("_&_");
-        for (var i = 0, e = data.length; i < e; i++) {
+  /**
+   * @private
+   */
+  urlBuilder_: [null,"?cmd=",null,"&gameId=",null,"&userId=",null],
 
-          if (data[i] !== undefined && data[i].length > 0) network._incomingMessage(data[i]);
+  /**
+   *
+   */
+  parseMessage: (function () {
+
+    var parser = function () {
+      if (xmlHttp.readyState == 4) {
+        var res = xmlHttp.responseText;
+        if (res !== "") {
+          var data = res.split("_&_");
+          for (var i = 0, e = data.length; i < e; i++) {
+
+            if (data[i] !== undefined && data[i].length > 0) network._incomingMessage(data[i]);
+          }
         }
       }
-    }
-  };
+    };
 
-  return function () {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open(
-      'GET',
-      controller.network_target+
-      "?cmd=GRABCMD&gameId="+controller.network_gameId+
-      "&userId="+controller.network_clientId, 
-      true
-    );
-    xmlHttp.onreadystatechange = parser;
-    xmlHttp.send(null);
-  };
-})();
+    return function () {
+      var xmlHttp = new XMLHttpRequest();
 
-// @Override Interface from networkInterface.js
-//
-controller.network_sendMessage = function (obj) {
+      this.urlBuilder_[0] = this.targetURL;
+      this.urlBuilder_[2] = "GRABCMD";
+      this.urlBuilder_[4] = this.gameId;
+      this.urlBuilder_[6] = this.clientId;
 
+      xmlHttp.open('GET',this.urlBuilder_.join(""),true);
+      xmlHttp.onreadystatechange = parser;
+      xmlHttp.send(null);
+    };
+  })(),
+
+  /**
+   *
+   * @param obj
+   */
+  sendMessage: function (obj) {
+
+  }
 };

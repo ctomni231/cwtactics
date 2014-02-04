@@ -31,8 +31,11 @@ cwt.Input = my.Class({
     }
   },
 
-  constructor: function (key, impl) {
+  constructor: function (key, constr ) {
+    this.disabled = false;
 
+    // call initializer function
+    constr( this );
   }
 });
 

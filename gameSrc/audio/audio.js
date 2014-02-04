@@ -1,3 +1,8 @@
+cwt.Audio = {
+
+  context_ : null
+};
+
 // Storage parameter for sfx volume.
 //
 controller.audio_SFX_STORAGE_PARAMETER   = "volume_sfx";

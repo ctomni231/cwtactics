@@ -9,8 +9,9 @@ cwt.Persistence.loadModel = function (dom) {
   assert(Array.isArray(dom.actr));
   i = dom.actr.length;
   while (i--) {
-    assert(dom.actr[i] >= 0 && dom.actr[i] < MAX_UNITS_PER_PLAYER));
-  cwt.Gameround.actors[dom.actr[i]] = true;
+    assert(dom.actr[i] >= 0 && dom.actr[i] < MAX_UNITS_PER_PLAYER);
+    cwt.Gameround.actors[dom.actr[i]] = true;
+  }
 
   // ---------------------------------------------
 

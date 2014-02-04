@@ -26,7 +26,7 @@ util.scoped(function(){
           return this.breakTransition();
       }
       
-      // else doing normal actions if defined
+      // else doing normal actions (4) if defined
       var fn = this.structure[this.state][origName];
       if( fn ) return fn.apply( this, arguments );
       else return this.breakTransition();

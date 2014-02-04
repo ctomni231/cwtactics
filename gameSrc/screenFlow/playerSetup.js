@@ -32,7 +32,7 @@ util.scoped(function(){
     
     if( model.co_activeMode === model.co_MODES.AW1 ) key = "options.playerConf.mode.AW1";
     else if( model.co_activeMode === model.co_MODES.AW2 ) key = "options.playerConf.mode.AW2";
-    //if( model.co_activeMode === model.co_MODES.NONE ) key = "options.playerConf.mode.NONE";
+    //if( model (2b).co_activeMode === model (2b).co_MODES.NONE ) key = "options.playerConf.mode.NONE";
     
     modeBtn.innerHTML = model.data_localized(key);
   }

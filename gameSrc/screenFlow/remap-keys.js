@@ -270,7 +270,7 @@
         codeToChar( btnVal.RIGHT, keyId, toChar );
         break;
   
-      // actions
+      // actions (4)
       case 4:
         keySet.ACTION = keyId;
         codeToChar( btnVal.ACTION, keyId, toChar );

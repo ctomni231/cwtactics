@@ -94,7 +94,7 @@ util.scoped(function(){
         this.curY -= shift;
 
         if( this.curY <= 0 ){
-          // controller.setScreenPosition( this.targetX, this.targetY, true );
+          // controller (3).setScreenPosition( this.targetX, this.targetY, true );
 
           this.curX = this.targetX;
           this.curY = 0;
@@ -221,7 +221,7 @@ util.scoped(function(){
     key: "bombs_fireLaser",
 
     prepare: function( ox,oy ){
-      // var type = model.data_tileSheets[tp];
+      // var type = model (2b).data_tileSheets[tp];
       var type = model.property_posMap[ox][oy].type;
 
       var fireAnimA = type.assets.chargeAnimation;

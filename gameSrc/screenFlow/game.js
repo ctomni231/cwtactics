@@ -235,7 +235,7 @@ util.scoped(function(){
     return this.breakTransition();
   };
 
-  // Must be called by controller.screenStateMachine.event("toOptions_",true);
+  // Must be called by controller (3).screenStateMachine.event("toOptions_",true);
   //
   controller.screenStateMachine.structure.GAMEROUND.toOptions_ = function(){
     assert( arguments.length === 2 && arguments[1] === true );

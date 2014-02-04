@@ -6,7 +6,7 @@ cwt.gameFlowData.selection = util.scoped(function () {
   var sMap = util.selectionMap(MAX_SELECTION_RANGE * 4 + 1);
 
   // Extension to the selection map. This one prepares the selection
-  // for the current data model.
+  // for the current data model (2b).
   //
   sMap.prepare = function () {
     var target = controller.stateMachine.data.target;

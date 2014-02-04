@@ -96,7 +96,7 @@ cwt.Persistence.saveModel = function () {
 
   // ---------------------------------------------
 
-  // result document model for co data will be a matrix
+  // result document model (2b) for co data will be a matrix
   var data = [];
   var obj;
 

@@ -238,7 +238,7 @@ util.scoped(function(){
   function loadMap( obj ){
     var map = obj.value;
 
-    // update model
+    // update model (2b)
     controller.persistence_prepareModel(map);
     controller.roundConfig_prepare();
   }

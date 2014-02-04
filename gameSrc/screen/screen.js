@@ -218,10 +218,10 @@ view.resizeCanvas = function(){
     if( nPosX < 0 ){
       var nPos = ((-nPosX)*tileLen)-160;
       controller.infoElement.style.right = ((nPos>0)? nPos:"4px")+"px";
-      //controller.infoElement.style.right = "";
+      //controller (3).infoElement.style.right = "";
     } else {
       controller.infoElement.style.right = "4px";
-      //controller.infoElement.style.right = "";
+      //controller (3).infoElement.style.right = "";
     }
     
     if( nPosY < 0 ){

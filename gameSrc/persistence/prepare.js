@@ -114,7 +114,7 @@ cwt.Persistence.prepareModel = function (dom) {
     );
     assert(util.intRange(data[5], -1, MAX_PLAYER - 1)); // owner
 
-    // copy data into model
+    // copy data into model (2b)
     property = model.property_data[data[0]];
     property.type = model.data_tileSheets[data[3]];
     property.capturePoints = 20;
@@ -159,7 +159,7 @@ cwt.Persistence.prepareModel = function (dom) {
    (function () {
 
    function placeCannonMetaData(x, y) {
-   var prop = model.property_posMap[x][y];
+   var prop = model (2b).property_posMap[x][y];
    var cannon = prop.type.cannon;
    var size = prop.type.bigProperty;
 
@@ -178,13 +178,13 @@ cwt.Persistence.prepareModel = function (dom) {
    // place blocker
    if (x !== ox || y !== oy) {
    if (DEBUG) util.log("creating invisible property at", x, ",", y);
-   model.events.property_createProperty(prop.owner, x, y, "PROP_INV");
+   model (2b).events.property_createProperty(prop.owner, x, y, "PROP_INV");
    }
 
    // place actor
    if (x === ax && y === ay) {
    if (DEBUG) util.log("creating cannon unit at", x, ",", y);
-   model.events.createUnit(model.unit_getFreeSlot(prop.owner), prop.owner,
+   model (2b).events.createUnit(model (2b).unit_getFreeSlot(prop.owner), prop.owner,
    x, y, "CANNON_UNIT_INV");
    }
 
@@ -194,22 +194,22 @@ cwt.Persistence.prepareModel = function (dom) {
 
    // // Places the necessary meta units for bigger properties.
    //
-   model.event_on("gameround_start", function () {
-   for (var x = 0, xe = model.map_width; x < xe; x++) {
-   for (var y = 0, ye = model.map_height; y < ye; y++) {
+   model (2b).event_on("gameround_start", function () {
+   for (var x = 0, xe = model (2b).map_width; x < xe; x++) {
+   for (var y = 0, ye = model (2b).map_height; y < ye; y++) {
 
-   var prop = model.property_posMap[x][y];
+   var prop = model (2b).property_posMap[x][y];
    if (prop) {
 
    if (prop.type.bigProperty && prop.type.cannon) {
    placeCannonMetaData(x, y);
    } else if (prop.type.cannon) {
    if (DEBUG) util.log("creating cannon unit at", x, ",", y);
-   model.events.createUnit(model.unit_getFreeSlot(prop.owner), prop.owner,
+   model (2b).events.createUnit(model (2b).unit_getFreeSlot(prop.owner), prop.owner,
    x, y, "CANNON_UNIT_INV");
    } else if (prop.type.laser) {
    if (DEBUG) util.log("creating laser unit at", x, ",", y);
-   model.events.createUnit(model.unit_getFreeSlot(prop.owner), prop.owner,
+   model (2b).events.createUnit(model (2b).unit_getFreeSlot(prop.owner), prop.owner,
    x, y, "LASER_UNIT_INV");
    }
 

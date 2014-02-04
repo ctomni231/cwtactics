@@ -8,7 +8,7 @@ cwt.gameFlowData.menu = {
   /**
    * Menu list that contains all menu entries. This implementation is a 
    * cached list. The real size of the menu is marked by 
-   *  `controller.stateMachine.data.menuSize`.
+   *  `controller (3).stateMachine.data.menuSize`.
    * 
    * @example
    *   data is [ entryA, entryB, entryC, null, null ]
@@ -83,7 +83,7 @@ cwt.gameFlowData.menu = {
         property.type.blocker) propertyActable = false;
       if (!unitActable && !propertyActable) mapActable = true;
 
-      // check all meta-data in relation to all available game actions
+      // check all meta-data in relation to all available game actions (4)
       for (var i = 0, e = commandKeys.length; i < e; i++) {
         var action = controller.action_objects[commandKeys[i]];
 
