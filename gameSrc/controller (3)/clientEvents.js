@@ -13,7 +13,7 @@ cwt.ClientEvents = {
   },
 
   goldChange: function ( player, money, x,y ) {
-
+    // Play a money down animation
   },
 
   unitDestroyed: function ( unit ) {
