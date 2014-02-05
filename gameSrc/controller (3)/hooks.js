@@ -1,6 +1,8 @@
-cwt.Hook = my.Class({
+cwt.Hook = my.Class(null,cwt.IdHolder,{
 
-    
+  constructor: function (id) {
+    cwt.Hook.registerType(id,this);
+  }
   
 });
 
