@@ -1,6 +1,10 @@
+/**
+ * Defines functionality to store objects in the static part
+ * of the class. Useful for data sheet holders.
+ */
 cwt.IdHolder = my.Class({
 
-  STATIC: function () {
+  STATIC: {
   
     registeredTypes_: {},
   

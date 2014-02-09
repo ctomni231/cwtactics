@@ -4,7 +4,7 @@ var builder = require( "./buildLibrary.js" );
 
 var PATH =  " "+builder.dirJsToString("srcWebClient/libs")+" "+
 			builder.dirJsToString("srcWebClient/core")+" "+
-			builder.dirJsToString("srcWebClient/controller (3)")+" "+
+			builder.dirJsToString("srcWebClient/controller")+" "+
 			builder.dirJsToString("srcWebClient/data")+" "+
 			builder.dirJsToString("srcWebClient/gui")+" "+
 			builder.dirJsToString("srcWebClient/hooks")+" "+
@@ -59,32 +59,32 @@ exports.doIt = function( p,baton ){
 
     // BUILD HTML
     .andThen(function(){
-      console.log("building html starter");
+      console.log("building dom starter");
 
       var HTML_CODE = builder.readAndConcatFiles([
-        "srcWebClient/html/start.html",
-        "srcWebClient/html/errorDialog.html",
-        "srcWebClient/html/updatePanel.html",
-        "srcWebClient/html/loadScreen.html",
-        "srcWebClient/html/mobileScreen.html",
-        "srcWebClient/html/mainScreen.html",
-        "srcWebClient/html/versusScreen.html",
-        "srcWebClient/html/playerSetup.html",
-        "srcWebClient/html/parameterSetup.html",
-        "srcWebClient/html/setMapping.html",
-        "srcWebClient/html/optionScreen.html",
-        "srcWebClient/html/confirmWipeOut.html",
-        "srcWebClient/html/gameScreen.html"
+        "srcWebClient/dom/start.dom",
+        "srcWebClient/dom/errorDialog.dom",
+        "srcWebClient/dom/updatePanel.dom",
+        "srcWebClient/dom/loadScreen.dom",
+        "srcWebClient/dom/mobileScreen.dom",
+        "srcWebClient/dom/mainScreen.dom",
+        "srcWebClient/dom/versusScreen.dom",
+        "srcWebClient/dom/playerSetup.dom",
+        "srcWebClient/dom/parameterSetup.dom",
+        "srcWebClient/dom/setMapping.dom",
+        "srcWebClient/dom/optionScreen.dom",
+        "srcWebClient/dom/confirmWipeOut.dom",
+        "srcWebClient/dom/gameScreen.dom"
       ])+
         "<link href='style.css' rel='stylesheet' type='text/css' />"+
         "<script type='text/javascript' src='game.js'></script>"+
         "<script type='text/javascript' src='client.js'></script>"+
         builder.readAndConcatFiles([
-          "srcWebClient/html/end.html"
+          "srcWebClient/dom/end.dom"
         ]);
 
-      builder.writeToFile( HTML_CODE, builder.DIST_DIR+"game/game.html" );
-      builder.writeToFile( HTML_CODE,	builder.DIST_DIR+"game_dev/game.html" );
+      builder.writeToFile( HTML_CODE, builder.DIST_DIR+"game/game.dom" );
+      builder.writeToFile( HTML_CODE,	builder.DIST_DIR+"game_dev/game.dom" );
     })
 
     // BUILD CSS
@@ -108,7 +108,7 @@ exports.doIt = function( p,baton ){
         "client.js",
         "game.js",
         "style.css",
-        "game.html",
+        "game.dom",
         "",
         "NETWORK:",
         "*"

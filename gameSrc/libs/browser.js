@@ -7,7 +7,7 @@
       mobile = /mobile|android|kindle|silk|midp|(windows nt 6\.2.+arm|touch)/.test(ua);
   
   // http://www.zytrax.com/tech/web/browser_ids.htm
-  // http://www.zytrax.com/tech/web/mobile_ids.html
+  // http://www.zytrax.com/tech/web/mobile_ids.dom
   ua = /(chrome|firefox)[ \/]([\w.]+)/.exec(ua) ||               // Chrome & Firefox
     /(iphone|ipad|ipod)(?:.*version)?[ \/]([\w.]+)/.exec(ua) ||  // Mobile IOS
     /(android)(?:.*version)?[ \/]([\w.]+)/.exec(ua) ||           // Mobile Webkit
