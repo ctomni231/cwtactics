@@ -1,11 +1,14 @@
-my.extendClass(cwt.Unit, {
+/**
+ *
+ * @namespace
+ */
+cwt.Laser = my.extendClass( cwt.Unit, {
 
   /**
-   *
+   * Returns true when the unit is a laser unit, else false.
    */
   isLaser: function () {
-    var unit = model.unit_data[uid];
-    return (unit.type.ID === "LASER_UNIT_INV");
+    return (this.type.ID === "LASER_UNIT_INV");
   },
 
   /**
@@ -20,8 +23,8 @@ my.extendClass(cwt.Unit, {
     var pid = prop.owner;
 
     // check all tiles on the map
-    for (x = 0, xe = model.map_width; x < xe; x++) {
-      for (y = 0, ye = model.map_height; y < ye; y++) {
+    for (var x = 0, xe = model.map_width; x < xe; x++) {
+      for (var y = 0, ye = model.map_height; y < ye; y++) {
 
         // every tile on the cross ( same y or x coordinate ) will be damaged
         if (ox === x || oy === y) {
@@ -40,4 +43,5 @@ my.extendClass(cwt.Unit, {
     }
 
   }
+
 });

@@ -1,59 +1,35 @@
-my.extendClass(cwt.Game, {
-  STATIC: {
+/**
+ *
+ * @namespace
+ */
+cwt.MoveTrait = {
+
+  STATIC:{
 
     /**
-     * Possible move codes.
+     * @constant
      */
-    MOVE_CODES = {
-      UP: 0,
-      RIGHT: 1,
-      DOWN: 2,
-      LEFT: 3
-    },
-
-    movePathCache: util.list(MAX_SELECTION_RANGE, INACTIVE_ID),
+    MOVE_CODES_UP: 0,
 
     /**
-     * Returns the movecosts to move with a given move type on a 
-     * given tile type.
+     * @constant
      */
-    getMoveCosts: function (movetype, x, y) {
-      assert(model.map_isValidPosition(x, y));
-
-      var v;
-      var tmp;
-
-      // grab costs from property or  if not given from tile
-      tmp = model.property_posMap[x][y];
-      if (tmp) {
-
-        // nobody can move onto an invisible property
-        if (tmp.type.blocker) v = -1;
-        else v = movetype.costs[tmp.type.ID];
-      } else v = movetype.costs[model.map_data[x][y].ID];
-      if (typeof v === "number") return v;
-
-      // check wildcard
-      v = movetype.costs["*"];
-      if (typeof v === "number") return v;
-
-      // no match then return `-1`as not move able
-      return -1;
-    },
+    MOVE_CODES_RIGHT: 1,
 
     /**
-     * Returns true if a movetype can move to position {x,y} else false.
+     * @constant
      */
-    canTypeMoveTo: function (movetype, x, y) {
-      if (model.map_isValidPosition(x, y)) {
+    MOVE_CODES_DOWN: 2,
 
-        if (model.move_getMoveCosts(movetype, x, y) === -1) return false;
-        if (model.fog_turnOwnerData[x][y] === 0) return true;
-        if (model.unit_posData[x][y] !== null) return false;
+    /**
+     * @constant
+     */
+    MOVE_CODES_LEFT: 3,
 
-        return true;
-      }
-    },
+    /**
+     *
+     */
+    movePathCache: cwt.list(MAX_SELECTION_RANGE, INACTIVE_ID),
 
     /**
      * Extracts the move code between two positions.
@@ -73,7 +49,7 @@ my.extendClass(cwt.Game, {
     },
 
     /**
-     * Generates a path from a start position { `stx` , `sty` } to { `tx` , `ty` } with a 
+     * Generates a path from a start position { `stx` , `sty` } to { `tx` , `ty` } with a
      * given selection ( `util.selectionMap` ) map. The result will be stored in the `movePath`.
      */
     generateMovePath: function (stx, sty, tx, ty, selection, movePath) {
@@ -115,9 +91,9 @@ my.extendClass(cwt.Game, {
     },
 
     /**
-     * Appends a move `code` to a given `movePath` and returns `true` if the 
-     * insertion was possible else `false`. If the new code is a backwards move 
-     * to the previous tile in the path then the actual last tile will be 
+     * Appends a move `code` to a given `movePath` and returns `true` if the
+     * insertion was possible else `false`. If the new code is a backwards move
+     * to the previous tile in the path then the actual last tile will be
      * dropped. In this function returns also `true` in this case.
      */
     addCodeToMovePath: function (code, movePath) {
@@ -128,21 +104,21 @@ my.extendClass(cwt.Game, {
       var goBackCode;
       switch (code) {
 
-      case model.move_MOVE_CODES.UP:
-        goBackCode = model.move_MOVE_CODES.DOWN;
-        break;
+        case model.move_MOVE_CODES.UP:
+          goBackCode = model.move_MOVE_CODES.DOWN;
+          break;
 
-      case model.move_MOVE_CODES.DOWN:
-        goBackCode = model.move_MOVE_CODES.UP;
-        break;
+        case model.move_MOVE_CODES.DOWN:
+          goBackCode = model.move_MOVE_CODES.UP;
+          break;
 
-      case model.move_MOVE_CODES.LEFT:
-        goBackCode = model.move_MOVE_CODES.RIGHT;
-        break;
+        case model.move_MOVE_CODES.LEFT:
+          goBackCode = model.move_MOVE_CODES.RIGHT;
+          break;
 
-      case model.move_MOVE_CODES.RIGHT:
-        goBackCode = model.move_MOVE_CODES.LEFT;
-        break;
+        case model.move_MOVE_CODES.RIGHT:
+          goBackCode = model.move_MOVE_CODES.LEFT;
+          break;
       }
 
       // if move is a go back then pop the lest code
@@ -167,21 +143,21 @@ my.extendClass(cwt.Game, {
       for (var i = 0, e = movePath.getSize(); i < e; i++) {
         switch (movePath[i]) {
 
-        case model.move_MOVE_CODES.UP:
-          cy--;
-          break;
+          case model.move_MOVE_CODES.UP:
+            cy--;
+            break;
 
-        case model.move_MOVE_CODES.DOWN:
-          cy++;
-          break;
+          case model.move_MOVE_CODES.DOWN:
+            cy++;
+            break;
 
-        case model.move_MOVE_CODES.LEFT:
-          cx--;
-          break;
+          case model.move_MOVE_CODES.LEFT:
+            cx--;
+            break;
 
-        case model.move_MOVE_CODES.RIGHT:
-          cx++;
-          break;
+          case model.move_MOVE_CODES.RIGHT:
+            cx++;
+            break;
         }
 
         // acc. fuel consumption
@@ -196,10 +172,10 @@ my.extendClass(cwt.Game, {
     },
 
     /**
-     * Little helper array object for `model.move_fillMoveMap`. This will be used 
-     * only by one process. If the helper is not available then a temp object will 
-     * be created in `model.move_fillMoveMap`. If the engine is used without client 
-     * hacking then this situation never happen and the `model.move_fillMoveMap` 
+     * Little helper array object for `model.move_fillMoveMap`. This will be used
+     * only by one process. If the helper is not available then a temp object will
+     * be created in `model.move_fillMoveMap`. If the engine is used without client
+     * hacking then this situation never happen and the `model.move_fillMoveMap`
      * will use this helper to prevent unnecessary array creation.
      */
     fillMoveMapHelper_: [],
@@ -358,7 +334,7 @@ my.extendClass(cwt.Game, {
     },
 
     /**
-     * 
+     *
      */
     trapCheck: function (way, source, target) {
       var cBx;
@@ -373,21 +349,21 @@ my.extendClass(cwt.Game, {
 
         switch (way[i]) {
 
-        case model.move_MOVE_CODES.DOWN:
-          cy++;
-          break;
+          case model.move_MOVE_CODES.DOWN:
+            cy++;
+            break;
 
-        case model.move_MOVE_CODES.UP:
-          cy--;
-          break;
+          case model.move_MOVE_CODES.UP:
+            cy--;
+            break;
 
-        case model.move_MOVE_CODES.LEFT:
-          cx--;
-          break;
+          case model.move_MOVE_CODES.LEFT:
+            cx--;
+            break;
 
-        case model.move_MOVE_CODES.RIGHT:
-          cx++;
-          break;
+          case model.move_MOVE_CODES.RIGHT:
+            cx++;
+            break;
         }
 
         var unit = model.unit_posData[cx][cy];
@@ -407,179 +383,143 @@ my.extendClass(cwt.Game, {
 
       return false;
     }
+  },
 
-  }
-               
-               model.event_on("move_flushMoveData",function( move, source ){
-  controller.commandStack_sharedInvokement(
-    "move_clearWayCache"
-  );
 
-  for (var i = 0, e = move.length; i < e; i += 6) {
-    if (move[i] === INACTIVE_ID) break;
-    controller.commandStack_sharedInvokement(
-      "move_appendToWayCache",
-      move[i],
-      move[i + 1],
-      move[i + 2],
-      move[i + 3],
-      move[i + 4],
-      move[i + 5]
-    );
-  }
+  /**
+   * Returns the movecosts to move with a given move type on a
+   * given tile type.
+   */
+  getMoveCosts: function (movetype, x, y) {
+    assert(model.map_isValidPosition(x, y));
 
-  controller.commandStack_sharedInvokement(
-    "move_moveByCache",
-    source.unitId,
-    source.x,
-    source.y,
-    0
-  );
-});
+    var v;
+    var tmp;
 
-model.event_on("move_clearWayCache",function(){
-  model.move_pathCache.resetValues();
-});
+    // grab costs from property or  if not given from tile
+    tmp = model.property_posMap[x][y];
+    if (tmp) {
 
-model.event_on("move_appendToWayCache",function(){
-  var i = 0;
+      // nobody can move onto an invisible property
+      if (tmp.type.blocker) v = -1;
+      else v = movetype.costs[tmp.type.ID];
+    } else v = movetype.costs[model.map_data[x][y].ID];
+    if (typeof v === "number") return v;
 
-  // search first free slot in the cache list
-  while( model.move_pathCache[i] !== INACTIVE_ID ){
-    i++;
-    if( i >= MAX_SELECTION_RANGE ) assert(false);
-  }
+    // check wildcard
+    v = movetype.costs["*"];
+    if (typeof v === "number") return v;
 
-  // add tiles to cache path
-  var argI = 0;
-  while( argI < arguments.length ){
-    model.move_pathCache[i] = arguments[argI];
-    argI++;
-    i++;
+    // no match then return `-1`as not move able
+    return -1;
+  },
 
-    if( i >= MAX_SELECTION_RANGE ) assert(false);
-  }
-});
+  /**
+   * Returns true if a movetype can move to position {x,y} else false.
+   */
+  canTypeMoveTo: function (movetype, x, y) {
+    if (model.map_isValidPosition(x, y)) {
 
-model.event_on("move_moveByCache",function( uid, x, y, noFuelConsumption ){
-  var way          = model.move_pathCache;
-  var cX           = x;
-  var cY           = y;
-  var unit         = model.unit_data[ uid ];
-  var uType        = unit.type;
-  var mType        = model.data_movetypeSheets[ uType.movetype ];
-  var wayIsIllegal = false;
-  var lastIndex    = way.length - 1;
-  var fuelUsed     = 0;
+      if (model.move_getMoveCosts(movetype, x, y) === -1) return false;
+      if (model.fog_turnOwnerData[x][y] === 0) return true;
+      if (model.unit_posData[x][y] !== null) return false;
 
-  // check move way by iterate through all move codes and build the path
-  //
-  // 1. check the correctness of the given move code
-  // 2. check all tiles to recognize trapped moves
-  // 3. accumulate fuel consumption ( except `noFuelConsumption` is `true` )
-  //
-  for( var i = 0, e = way.length; i < e; i++ ) {
-    if( way[i] === INACTIVE_ID ) break;
-
-    // set current position by current move code
-    switch(way[i]) {
-
-      case model.move_MOVE_CODES.UP:
-        if( cY === 0 ) wayIsIllegal = true;
-        cY--;
-        break;
-
-      case model.move_MOVE_CODES.RIGHT:
-        if( cX === model.map_width - 1 ) wayIsIllegal = true;
-        cX++;
-        break;
-
-      case model.move_MOVE_CODES.DOWN:
-        if( cY === model.map_height - 1 ) wayIsIllegal = true;
-        cY++;
-        break;
-
-      case model.move_MOVE_CODES.LEFT:
-        if( cX === 0 ) wayIsIllegal = true;
-        cX--;
-        break;
+      return true;
     }
+  },
 
-    // when the way contains an illegal value that isn't part of
-    // `model.move_MOVE_CODES` then break the move process.
-    assert( !wayIsIllegal );
+  move: function (uid, x, y, noFuelConsumption) {
+    var way = model.move_pathCache;
+    var cX = x;
+    var cY = y;
+    var unit = model.unit_data[ uid ];
+    var uType = unit.type;
+    var mType = model.data_movetypeSheets[ uType.movetype ];
+    var wayIsIllegal = false;
+    var lastIndex = way.length - 1;
+    var fuelUsed = 0;
 
-    // is way blocked ? (niy!)
-    if( false /* && model.isWayBlocked( cX, cY, unit.owner, (i === e - 1) )  */ ) {
-      lastIndex = i - 1;
+    // check move way by iterate through all move codes and build the path
+    //
+    // 1. check the correctness of the given move code
+    // 2. check all tiles to recognize trapped moves
+    // 3. accumulate fuel consumption ( except `noFuelConsumption` is `true` )
+    //
+    for (var i = 0, e = way.length; i < e; i++) {
+      if (way[i] === INACTIVE_ID) break;
 
-      // go back until you find a valid tile
-      switch(way[i]) {
-        case model.move_MOVE_CODES.UP:    cY++; break;
-        case model.move_MOVE_CODES.RIGHT: cX--; break;
-        case model.move_MOVE_CODES.DOWN:  cY--; break;
-        case model.move_MOVE_CODES.LEFT:  cX++; break;
+      // set current position by current move code
+      switch (way[i]) {
+
+        case model.move_MOVE_CODES.UP:
+          if (cY === 0) wayIsIllegal = true;
+          cY--;
+          break;
+
+        case model.move_MOVE_CODES.RIGHT:
+          if (cX === model.map_width - 1) wayIsIllegal = true;
+          cX++;
+          break;
+
+        case model.move_MOVE_CODES.DOWN:
+          if (cY === model.map_height - 1) wayIsIllegal = true;
+          cY++;
+          break;
+
+        case model.move_MOVE_CODES.LEFT:
+          if (cX === 0) wayIsIllegal = true;
+          cX--;
+          break;
       }
 
-      // this is normally not possible, except other modules makes a fault in this case
-      // the moving system could not recognize a enemy in front of the mover that causes a `trap`
-      assert( lastIndex !== -1 );
+      // when the way contains an illegal value that isn't part of
+      // `model.move_MOVE_CODES` then break the move process.
+      assert(!wayIsIllegal);
 
-      break;
+      // is way blocked ? (niy!)
+      if (false /* && model.isWayBlocked( cX, cY, unit.owner, (i === e - 1) )  */) {
+        lastIndex = i - 1;
+
+        // go back until you find a valid tile
+        switch (way[i]) {
+          case model.move_MOVE_CODES.UP:
+            cY++;
+            break;
+          case model.move_MOVE_CODES.RIGHT:
+            cX--;
+            break;
+          case model.move_MOVE_CODES.DOWN:
+            cY--;
+            break;
+          case model.move_MOVE_CODES.LEFT:
+            cX++;
+            break;
+        }
+
+        // this is normally not possible, except other modules makes a fault in this case
+        // the moving system could not recognize a enemy in front of the mover that causes a `trap`
+        assert(lastIndex !== -1);
+
+        break;
+      }
+
+      // calculate the used fuel to move onto the current tile
+      // if `noFuelConsumption` is not `true` some actions like unloading does not consume fuel
+      if (noFuelConsumption !== true) fuelUsed += model.move_getMoveCosts(mType, cX, cY);
     }
 
-    // calculate the used fuel to move onto the current tile
-    // if `noFuelConsumption` is not `true` some actions like unloading does not consume fuel
-    if( noFuelConsumption !== true ) fuelUsed += model.move_getMoveCosts( mType, cX, cY );
+    // consume fuel ( if `noFuelConsumption` is `true` then the costs will be `0` )
+    unit.fuel -= fuelUsed;
+    assert(unit.fuel >= 0);
+
+    // DO NOT ERASE POSITION IF UNIT WAS LOADED OR HIDDEN (NOT INGAME HIDDEN) SOMEWHERE
+    if (unit.x >= 0 && unit.y >= 0) {
+
+      model.events.clearUnitPosition(uid);
+    }
+
+    // do not set the new position if the position is already occupied
+    // the action logic must take care of this situation
+    if (model.unit_posData[cX][cY] === null) model.events.setUnitPosition(uid, cX, cY);
   }
-
-  // consume fuel ( if `noFuelConsumption` is `true` then the costs will be `0` )
-  unit.fuel -= fuelUsed;
-  assert( unit.fuel >= 0 );
-
-  // DO NOT ERASE POSITION IF UNIT WAS LOADED OR HIDDEN (NOT INGAME HIDDEN) SOMEWHERE
-  if( unit.x >= 0 && unit.y >= 0 ) {
-
-    model.events.clearUnitPosition( uid );
-  }
-
-  // do not set the new position if the position is already occupied
-  // the action logic must take care of this situation
-  if( model.unit_posData[cX][cY] === null ) model.events.setUnitPosition( uid, cX, cY );
-});
-
-(function(){
-
-  function setPos(uid,x,y){
-    var unit = model.unit_data[uid];
-
-    unit.x = x;
-    unit.y = y;
-    model.unit_posData[x][y] = unit;
-
-    model.events.modifyVisionAt( x, y, unit.owner, unit.type.vision, 1 );
-  }
-
-  // Set position
-  //
-  model.event_on("setUnitPosition",setPos);
-  model.event_on("createUnit",function( slot, pid, x,y, type ){
-    setPos(slot,x,y);
-  });
-})();
-
-// Clear position.
-//
-model.event_on("clearUnitPosition",function(uid){
-  var unit = model.unit_data[uid];
-  var x    = unit.x;
-  var y    = unit.y;
-
-  model.events.modifyVisionAt( x, y, unit.owner, unit.type.vision, -1 );
-
-  model.unit_posData[x][y] = null;
-  unit.x = -unit.x;
-  unit.y = -unit.y;
-});
-
-});
+};

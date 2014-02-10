@@ -85,7 +85,7 @@ exports.readAndConcatFiles = function( files,ext ){
     if( file.match(/.DS_Store$/) ) return;
 
     // check ext
-    if( ext==="html" && !file.match(/.html$/) ) return;
+    if( ext==="dom" && !file.match(/.html$/) ) return;
     if( ext==="css"  && !file.match(/.css$/)  ) return;
 
     all[all.length] = fs.readFileSync( file ).toString();

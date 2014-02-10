@@ -1,18 +1,20 @@
-my.extendClass(cwt.Player, {
-  STATIC: {
+/**
+ *
+ * @namespace
+ */
+cwt.Team = {
 
-    /**
-     * Different available money transfer steps.
-     */
-    MONEY_TRANSFER_STEPS: [
-      1000,
-      2500,
-      5000,
-      10000,
-      25000,
-      50000
-    ]
-  },
+  /**
+   * Different available money transfer steps.
+   */
+  MONEY_TRANSFER_STEPS: [
+    1000,
+    2500,
+    5000,
+    10000,
+    25000,
+    50000
+  ],
 
   /**
    * Returns `true` when a player can transfer money to a tile owner.
@@ -41,15 +43,12 @@ my.extendClass(cwt.Player, {
   },
 
   /**
-   * Returns `true` when a player can transfer money 
+   * Returns `true` when a player can transfer money
    * to a tile owner.
    */
   getTransferMoneyTargets: function(menu) {
-    assert(model.player_isValidPid(pid));
-
-    var availGold = model.player_data[pid].gold;
     for (var i = 0, e = cwt.Player.MONEY_TRANSFER_STEPS.length; i < e; i++) {
-      if (availGold >= cwt.Player.MONEY_TRANSFER_STEPS[i]) {
+      if (this.gold >= cwt.Player.MONEY_TRANSFER_STEPS[i]) {
         menu.addEntry(cwt.Player.MONEY_TRANSFER_STEPS[i]);
       }
     }
@@ -61,55 +60,13 @@ my.extendClass(cwt.Player, {
   transferMoney: function( player, money) {
     this.gold -= money;
     player.gold += money;
-    
+
+    // the amount of gold cannot be lower 0 after the transfer
     assert(this.gold >= 0);
-  }
 
-});
-
-my.extendClass(cwt.Property, {
-
-  /**
-   * 
-   */
-  canBeTransfered: function () {
-    if (model.property_data[prid].type.notTransferable) return false;
+    cwt.ClientEvents.goldChange(this,money);
+    cwt.ClientEvents.goldChange(player,money);
   },
-
-  /**
-   * 
-   */
-  getTransferTargets: function (menu) {
-    for (var i = 0, e = MAX_PLAYER; i < e; i++) {
-      if (i !== pid && model.player_data[i].team !== INACTIVE_ID) {
-        menu.addEntry(i, true);
-      }
-    }
-  },
-
-  /**
-   * 
-   */
-  transferToPlayer: function (player) {
-    var prop = model.property_data[sprid];
-    prop.owner = tplid;
-
-    var x;
-    var y;
-    var xe = model.map_width;
-    var ye = model.map_height;
-
-    for (x = 0; x < xe; x++) {
-      for (y = 0; y < ye; y++) {
-        if (model.property_posMap[x][y] === prop) {
-          // TODO fog?
-        }
-      }
-    }
-  }
-});
-
-my.extendClass(cwt.Unit, {
 
   /**
    *
@@ -159,6 +116,44 @@ my.extendClass(cwt.Unit, {
     targetUnit.x = tx;
     targetUnit.y = ty;
     targetUnit.loadedIn = selectedUnit.loadedIn;
-  }
+  },
 
-});
+  /**
+   *
+   */
+  canBeTransfered: function () {
+    if (model.property_data[prid].type.notTransferable) return false;
+  },
+
+  /**
+   *
+   */
+  getTransferTargets: function (menu) {
+    for (var i = 0, e = MAX_PLAYER; i < e; i++) {
+      if (i !== pid && model.player_data[i].team !== INACTIVE_ID) {
+        menu.addEntry(i, true);
+      }
+    }
+  },
+
+  /**
+   *
+   */
+  transferToPlayer: function (player) {
+    var prop = model.property_data[sprid];
+    prop.owner = tplid;
+
+    var x;
+    var y;
+    var xe = model.map_width;
+    var ye = model.map_height;
+
+    for (x = 0; x < xe; x++) {
+      for (y = 0; y < ye; y++) {
+        if (model.property_posMap[x][y] === prop) {
+          // TODO fog?
+        }
+      }
+    }
+  }
+};

@@ -10,7 +10,7 @@ cwt.Action = my.Class({
     PROPERTY_ACTION: 2,
     
     /**
-     * Engine actions are callable by the engine itself. 
+     * Engine actions are callable by the engine itself.
      */
     ENGINE_ACTION: 3,
 

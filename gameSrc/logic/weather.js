@@ -1,44 +1,51 @@
-my.extendClass(cwt.Game, {
-  STATIC: {
+/**
+ *
+ * @namespace
+ */
+cwt.Weather = {
 
-    /**
-     * Calculates the next weather and adds the result as timed event to
-     * the day events. **Only invokable by the host instance.**
-     */
-    calculateNextWeather: function (wth) {
-      var newTp;
-      var duration;
+  /**
+   * Calculates the next weather and adds the result as timed event to
+   * the day events. **Only invokable by the host instance.**
+   */
+  calculateNextWeather: function (wth) {
 
-      // this event is only host invocable
-      assert(controller.network_isHost());
+    // this event is only host invokable
+    assert(cwt.Network.isHost());
 
-      // Search a random weather if the last weather was `null` or the default weather type
-      if (model.weather_data !== null && model.weather_data === model.data_defaultWeatherSheet) {
+    // Search a random weather if the last weather
+    // was `null` or the default weather type
+    var newTp;
+    var duration;
+    if (cwt.Gameround.weather && cwt.Gameround.weather.defaultWeather) {
 
-        var list = model.data_nonDefaultWeatherTypes;
-        newTp = list[parseInt(Math.random() * list.length, 10)].ID;
-        duration = 1;
+      var list = model.data_nonDefaultWeatherTypes;
+      newTp = list[parseInt(Math.random() * list.length, 10)].ID;
+      duration = 1;
 
-      } else {
+    } else {
 
-        // Take default weather and calculate a random amount of days
-        newTp = model.data_defaultWeatherSheet.ID;
-        duration = controller.configValue("weatherMinDays") + parseInt(
-          controller.configValue("weatherRandomDays") * Math.random(), 10
-        );
-      }
-
-      controller.commandStack_sharedInvokement("weather_change", newTp);
-      model.events.dayEvent(duration, "weather_calculateNext");
-    },
-
-    /**
-     * 
-     */
-    changeWeather: function (wth) {
-      model.weather_data = model.data_weatherSheets[wth];
-      model.events.recalculateFogMap();
+      // Take default weather and calculate a random amount of days
+      newTp = model.data_defaultWeatherSheet.ID;
+      duration = cwt.Config.getValue("weatherMinDays") +
+        parseInt(cwt.Config.getValue("weatherRandomDays") * Math.random(), 10);
     }
 
+    cwt.Gameround.weatherLeftDays = duration;
+    this.changeWeather(newTp);
+  },
+
+  /**
+   *
+   */
+  changeWeather: function (weather) {
+    if (DEBUG) assert(cwt.WeatherSheet.isValidSheet(weather));
+
+    cwt.Gameround.weather = weather;
+
+    // recalculate fog map for client and turn owner due
+    // possible weather effects
+    this.fog.fullRecalculation();
+    cwt.Client.fog.fullRecalculation();
   }
-});
+};

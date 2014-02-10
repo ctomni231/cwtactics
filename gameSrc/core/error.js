@@ -1,4 +1,4 @@
-// registers generic error listener
-window.onerror = function( e ){
-  controller.showErrorPanel( "Critical Game Fault", e.stack );
+/* Registers generic error listener. */
+window.onerror = function (e) {
+  cwt.ErrorPanel.show("Critical Game Fault", e.stack);
 };
