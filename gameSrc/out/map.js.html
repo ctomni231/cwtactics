@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: model/map.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: model/map.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @class
+ */
+cwt.Map = {
+
+  /**
+   * Current width of the map.
+   *
+   * @type {Number}
+   */
+  width: 0,
+
+  /**
+   * Current height of the map.
+   *
+   * @type {Number}
+   */
+  height: 0,
+
+  /**
+   * All tiles of the map.
+   *
+   * @type {Array.&lt;Array.&lt;cwt.Tile>>}
+   */
+  data: (function () {
+    var data = cwt.matrix(MAX_MAP_WIDTH, MAX_MAP_HEIGHT);
+    for (var x = 0, xe = model.map_width; x &lt; xe; x++) {
+      for (var y = 0, ye = model.map_height; y &lt; ye; y++) {
+        data[x][y] = new cwt.Tile();
+      }
+    }
+
+    return data;
+  })(),
+
+  /**
+   * Returns the distance of two positions.
+   */
+  getDistance: function (sx, sy, tx, ty) {
+    assert(this.isValidPosition(sx, sy));
+    assert(this.isValidPosition(tx, ty));
+
+    return Math.abs(sx - tx) + Math.abs(sy - ty);
+  },
+
+  /**
+   * Returns true if the given position (x,y) is valid on the current
+   * active map, else false.
+   */
+  isValidPosition: function (x, y) {
+    return ( x >= 0 &amp;&amp; y >= 0 &amp;&amp; x &lt; this.width &amp;&amp; y &lt; this.height );
+  },
+
+  /**
+   *
+   * @param x
+   * @param y
+   * @return {*}
+   */
+  getUnit: function (x, y) {
+    var Unit = cwt.Unit;
+    for (var i = 0, e = MAX_UNITS_PER_PLAYER*MAX_PLAYER; i &lt; e; i++) {
+      var unit = Unit.getInstance(i, true);
+      if (unit &amp;&amp; unit.x === x &amp;&amp; unit.y === y) return unit;
+    }
+
+    return null;
+  },
+
+  /**
+   *
+   * @param x
+   * @param y
+   * @return {*}
+   */
+  getProperty: function (x, y) {
+    var Property = cwt.Property;
+    for (var i = 0, e = MAX_PROPERTIES; i &lt; e; i++) {
+      var prop = Property.getInstance(i, true);
+      if (prop &amp;&amp; prop.x === x &amp;&amp; prop.y === y) return prop;
+    }
+
+    return null;
+  },
+
+  /**
+   *
+   * @return {Boolean}
+   */
+  isOccupied: function (x, y) {
+    return (this.getUnit(x, y) !== null);
+  },
+
+  /**
+   * Invokes a callback on all tiles in a given range at a position (x,y).
+   */
+  doInRange: function (x, y, range, cb, arg) {
+    assert(this.map_isValidPosition(x, y));
+    assert(typeof cb === "function");
+    assert(range >= 0);
+
+    var lX;
+    var hX;
+    var lY = y - range;
+    var hY = y + range;
+    if (lY &lt; 0) lY = 0;
+    if (hY >= this.height) hY = this.height - 1;
+    for (; lY &lt;= hY; lY++) {
+
+      var disY = Math.abs(lY - y);
+      lX = x - range + disY;
+      hX = x + range - disY;
+      if (lX &lt; 0) lX = 0;
+      if (hX >= this.width) hX = this.width - 1;
+      for (; lX &lt;= hX; lX++) {
+
+        // invoke the callback on all tiles in range
+        // if a callback returns `false` then the process will be stopped
+        if (cb(lX, lY, arg, Math.abs(lX - x) + disY) === false) return;
+
+      }
+    }
+  }
+
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="cwt.Action.html">Action</a></li><li><a href="cwt.Config.html">Config</a></li><li><a href="cwt.FogMap.html">FogMap</a></li><li><a href="cwt.Map.html">Map</a></li><li><a href="cwt.Multiton.html">Multiton</a></li><li><a href="cwt.Player.html">Player</a></li><li><a href="cwt.Position.html">Position</a></li><li><a href="cwt.Property.html">Property</a></li><li><a href="cwt.screeFlowState.html">screeFlowState</a></li><li><a href="cwt.Storage.html">Storage</a></li><li><a href="cwt.Tile.html">Tile</a></li><li><a href="cwt.Unit.html">Unit</a></li></ul><h3>Namespaces</h3><ul><li><a href="Base64Helper.html">Base64Helper</a></li><li><a href="cwt.html">cwt</a></li><li><a href="cwt.Attack.html">Attack</a></li><li><a href="cwt.Cannon.html">Cannon</a></li><li><a href="cwt.Client.html">Client</a></li><li><a href="cwt.ClientEvents.html">ClientEvents</a></li><li><a href="cwt.CO.html">CO</a></li><li><a href="cwt.Cursor.html">Cursor</a></li><li><a href="cwt.Factory.html">Factory</a></li><li><a href="cwt.Fog.html">Fog</a></li><li><a href="cwt.Gameround.html">Gameround</a></li><li><a href="cwt.Join.html">Join</a></li><li><a href="cwt.Laser.html">Laser</a></li><li><a href="cwt.MoveTrait.html">MoveTrait</a></li><li><a href="cwt.Silo.html">Silo</a></li><li><a href="cwt.Suicide.html">Suicide</a></li><li><a href="cwt.Supply.html">Supply</a></li><li><a href="cwt.Team.html">Team</a></li><li><a href="cwt.Transport.html">Transport</a></li><li><a href="cwt.Update.html">Update</a></li><li><a href="cwt.Weather.html">Weather</a></li></ul><h3>Global</h3><ul><li><a href="global.html#action">action</a></li><li><a href="global.html#assert">assert</a></li><li><a href="global.html#canBeCapturedBy">canBeCapturedBy</a></li><li><a href="global.html#captureProperty">captureProperty</a></li><li><a href="global.html#clean">clean</a></li><li><a href="global.html#condition">condition</a></li><li><a href="global.html#constructor">constructor</a></li><li><a href="global.html#data">data</a></li><li><a href="global.html#deactivate">deactivate</a></li><li><a href="global.html#destroy">destroy</a></li><li><a href="global.html#drainFuel">drainFuel</a></li><li><a href="global.html#fireLaser">fireLaser</a></li><li><a href="global.html#getFreeUnitSlot">getFreeUnitSlot</a></li><li><a href="global.html#getRelationship">getRelationship</a></li><li><a href="global.html#getRelationshipUnitNeighbours">getRelationshipUnitNeighbours</a></li><li><a href="global.html#giveUp">giveUp</a></li><li><a href="global.html#grab">grab</a></li><li><a href="global.html#hasFreeUnitSlot">hasFreeUnitSlot</a></li><li><a href="global.html#heal">heal</a></li><li><a href="global.html#isLaser">isLaser</a></li><li><a href="global.html#isNeutral">isNeutral</a></li><li><a href="global.html#isPowerActive">isPowerActive</a></li><li><a href="global.html#isTargetValid">isTargetValid</a></li><li><a href="global.html#Lawnchair">Lawnchair</a></li><li><a href="global.html#mapAction">mapAction</a></li><li><a href="global.html#marshall">marshall</a></li><li><a href="global.html#multiStepAction">multiStepAction</a></li><li><a href="global.html#noAutoWait">noAutoWait</a></li><li><a href="global.html#noTeamsAreLeft">noTeamsAreLeft</a></li><li><a href="global.html#owner">owner</a></li><li><a href="global.html#pids">pids</a></li><li><a href="global.html#prepareMenu">prepareMenu</a></li><li><a href="global.html#prepareSelection">prepareSelection</a></li><li><a href="global.html#prepareTargets">prepareTargets</a></li><li><a href="global.html#property">property</a></li><li><a href="global.html#propertyAction">propertyAction</a></li><li><a href="global.html#raiseFunds">raiseFunds</a></li><li><a href="global.html#resetValue">resetValue</a></li><li><a href="global.html#set">set</a></li><li><a href="global.html#setValue">setValue</a></li><li><a href="global.html#takeDamage">takeDamage</a></li><li><a href="global.html#targetSelectionType">targetSelectionType</a></li><li><a href="global.html#unit">unit</a></li><li><a href="global.html#unitAction">unitAction</a></li><li><a href="global.html#visionClient">visionClient</a></li><li><a href="global.html#visionTurnOwner">visionTurnOwner</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Thu Feb 13 2014 21:07:27 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

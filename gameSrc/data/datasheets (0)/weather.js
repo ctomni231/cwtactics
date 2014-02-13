@@ -8,3 +8,10 @@ cwt.WeatherSheet = new cwt.SheetDatabase({
   }
 
 });
+
+/**
+ * Holds the default weather type.
+ *
+ * @type {null}
+ */
+cwt.WeatherSheet.defaultWeather = null;

@@ -11,6 +11,8 @@ cwt.Suicide = {
    * @param {cwt.Unit} unit
    */
   canExplode: function (unit) {
+    if (DEBUG) assert(unit instanceof cwt.Unit);
+
     return unit.type.suicide !== undefined;
   },
 

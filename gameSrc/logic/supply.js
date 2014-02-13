@@ -10,6 +10,8 @@ cwt.Supply = {
    * @param {cwt.Unit} unit
    */
   isSupplier: function (unit) {
+    if (DEBUG) assert(unit instanceof cwt.Unit);
+
     return unit.type.supply;
   },
 
@@ -32,6 +34,8 @@ cwt.Supply = {
    * @param {cwt.Unit} unit
    */
   resupplyTarget: function (unit) {
+    if (DEBUG) assert(unit instanceof cwt.Unit);
+
     unit.ammo = unit.type.ammo;
     unit.fuel = unit.type.fuel;
   },
@@ -42,7 +46,8 @@ cwt.Supply = {
    * @param {cwt.Unit} supplyUnit
    */
   supplyNeighbours: function (supplyUnit) {
-    if (DEBUG) assert(supplyUnit.isSupplier(supplyUnit));
+    if (DEBUG) assert(supplyUnit instanceof cwt.Unit);
+    if (DEBUG) assert(this.isSupplier(supplyUnit));
 
     for (var i= 0,e=cwt.Unit.MULTITON_INSTANCES; i < e; i++) {
       if (!model.unit_isValidUnitId(i)) continue;

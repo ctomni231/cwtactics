@@ -1,17 +1,20 @@
-new cwt.Action("wait")
-  .unitAction()
-  .noAutoWait() // wait is already the wait action :P
-  .relation([
-    "S", "T",
-    cwt.Player.RELATION_NONE,
-    cwt.Player.RELATION_SAMETHING
-  ])  
-  .condition(function (data) {
-    return cwt.Gameround.canAct(data.source.unitId);
-  })
-  .action(function (data) {
+cwt.Action.unitAction({
+  key:"wait",
+
+  relation:[
+    "S","T",
+    model.player_RELATION_MODES.SAME_OBJECT,
+    model.player_RELATION_MODES.NONE
+  ],
+
+  condition: function( data ){
+    return cwt.Gameround.canAct(data.source.unit);
+  },
+
+  invoke: function( data ){
     controller.commandStack_sharedInvokement(
       "wait_invoked",
       data.source.unitId
     );
-  });
+  }
+});

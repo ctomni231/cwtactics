@@ -1,17 +1,10 @@
-new cwt.Action("joinUnits")
-  .unitAction()
-  .condition(function (data) {
-
-  })
-
-controller.action_unitAction({
-
+cwt.Action.unitAction({
   key:"joinUnits",
   noAutoWait: true,
 
   relation:[
     "S","T",
-    model.player_RELATION_MODES.OWN
+    cwt.Player.RELATION_OWN
   ],
 
   condition: function( data ){

@@ -1,17 +1,16 @@
-controller.action_unitAction({
-
+cwt.Action.unitAction({
   key:"capture",
 
-  relation      :[
+  relation:[
     "S","T",
-    model.player_RELATION_MODES.SAME_OBJECT,
-    model.player_RELATION_MODES.NONE
+    cwt.Player.RELATION_SAMETHING,
+    cwt.Player.RELATION_NONE
   ],
 
   relationToProp:[
     "S","T",
-    model.player_RELATION_MODES.ENEMY,
-    model.player_RELATION_MODES.NONE
+    cwt.Player.RELATION_ENEMY,
+    cwt.Player.RELATION_NONE
   ],
 
   condition: function( data  ){
@@ -29,5 +28,4 @@ controller.action_unitAction({
       data.source.unitId
     );
   }
-
 });

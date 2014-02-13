@@ -14,6 +14,9 @@ cwt.Cursor = {
    */
   y: 0,
 
+  /**
+   *
+   */
   reset: function () {
     this.x = 0;
     this.y = 0;
@@ -192,9 +195,9 @@ cwt.Cursor = {
 
     // extract move code
     var moveCode = -1;
-    if (x - controller.screenX <= 1)          moveCode = model.move_MOVE_CODES.LEFT;
+    if (x - controller.screenX <= 1)            moveCode = model.move_MOVE_CODES.LEFT;
     else if (x - controller.screenX >= scw - 1) moveCode = model.move_MOVE_CODES.RIGHT;
-    else if (y - controller.screenY <= 1)     moveCode = model.move_MOVE_CODES.UP;
+    else if (y - controller.screenY <= 1)       moveCode = model.move_MOVE_CODES.UP;
     else if (y - controller.screenY >= sch - 1) moveCode = model.move_MOVE_CODES.DOWN;
 
     // shift screen of you're reach a border

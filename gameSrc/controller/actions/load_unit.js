@@ -1,10 +1,9 @@
-controller.action_unitAction({
-
+cwt.Action.unitAction({
   key:"loadUnit",
 
   relation: [
     "S","T",
-    model.player_RELATION_MODES.OWN
+    cwt.Player.RELATION_OWN
   ],
 
   condition: function( data ){

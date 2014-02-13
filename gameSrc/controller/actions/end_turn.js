@@ -1,5 +1,6 @@
-new cwt.Action("nextTurn")
-  .mapAction()
-  .action(function (data) {
+cwt.Action.mapAction({
+  key: "nextTurn",
+  invoke: function () {
 
-  });
+  }
+})

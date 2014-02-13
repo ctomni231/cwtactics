@@ -1,9 +1,12 @@
-controller.action_unitAction({
-
+cwt.Player.unitAction({
   key:"explode",
   noAutoWait: true,
 
-  relation: ["S","T",model.player_RELATION_MODES.NONE,model.player_RELATION_MODES.SAME_OBJECT],
+  relation: [
+    "S","T",
+    cwt.Player.RELATION_NONE,
+    cwt.Player.RELATION_SAMETHING
+  ],
 
   condition: function( data ){
     return model.events.explode_check(data.source.unitId);
@@ -20,5 +23,4 @@ controller.action_unitAction({
       data.source.unit.owner
     );
   }
-
 });

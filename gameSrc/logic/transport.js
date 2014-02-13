@@ -11,6 +11,8 @@ cwt.Transport = {
    * @param {cwt.Unit} unit
    */
   isTransportUnit: function (unit) {
+    if (DEBUG) assert(unit instanceof cwt.Unit);
+
     return typeof unit.type.maxloads === "number";
   },
 
@@ -21,6 +23,8 @@ cwt.Transport = {
    * @param {cwt.Unit} unit
    */
   hasLoads: function (unit) {
+    if (DEBUG) assert(unit instanceof cwt.Unit);
+
     var pid = model.unit_data[tid].owner;
     for (var i = model.unit_firstUnitId(pid),
            e = model.unit_lastUnitId(pid); i < e; i++) {
@@ -45,6 +49,9 @@ cwt.Transport = {
    * weight false will be returned.
    */
   canLoadUnit: function (transporter, load) {
+    if (DEBUG) assert(transporter instanceof cwt.Unit);
+    if (DEBUG) assert(load instanceof cwt.Unit);
+
     assert(model.unit_isValidUnitId(lid));
     assert(model.unit_isValidUnitId(tid));
     assert(tid !== lid);
@@ -67,11 +74,13 @@ cwt.Transport = {
    *
    * @param loid
    */
-  load: function (loid) {
-    assert(this.isTransportUnit());
+  load: function (transporter, load) {
+    if (DEBUG) assert(transporter instanceof cwt.Unit);
+    if (DEBUG) assert(load instanceof cwt.Unit);
+    if (DEBUG) assert(this.isTransportUnit(transporter));
 
-    model.unit_data[ loid ].loadedIn = tuid;
-    model.unit_data[ tuid ].loadedIn--;
+    transporter.loadedIn = tuid;
+    load.loadedIn--;
   },
 
   /**

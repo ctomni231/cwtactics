@@ -13,6 +13,8 @@ cwt.Join = {
    * @param {cwt.Unit} target
    */
   canJoin: function (source, target) {
+    if( DEBUG ) assert(source instanceof cwt.Unit);
+    if( DEBUG ) assert(target instanceof cwt.Unit);
 
     if (source.type !== target.type) return false;
 
@@ -33,7 +35,9 @@ cwt.Join = {
    * @param {cwt.Unit} target
    */
   join: function (source, target) {
-    assert(source.type === target.type);
+    if( DEBUG ) assert(source instanceof cwt.Unit);
+    if( DEBUG ) assert(target instanceof cwt.Unit);
+    if( DEBUG ) assert(source.type === target.type);
 
     // hp
     target.heal(cwt.Unit.pointsToHealth(cwt.Unit.healthToPoints(source)), true);

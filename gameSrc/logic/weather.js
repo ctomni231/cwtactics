@@ -1,4 +1,5 @@
 /**
+ * Weather logic module.
  *
  * @namespace
  */
@@ -19,14 +20,14 @@ cwt.Weather = {
     var duration;
     if (cwt.Gameround.weather && cwt.Gameround.weather.defaultWeather) {
 
-      var list = model.data_nonDefaultWeatherTypes;
-      newTp = list[parseInt(Math.random() * list.length, 10)].ID;
+      var list = cwt.WeatherSheet.types;
+      newTp = cwt.selectRandomListElement(list,cwt.Gameround.weather);
       duration = 1;
 
     } else {
 
       // Take default weather and calculate a random amount of days
-      newTp = model.data_defaultWeatherSheet.ID;
+      newTp = cwt.WeatherSheet.defaultWeather;
       duration = cwt.Config.getValue("weatherMinDays") +
         parseInt(cwt.Config.getValue("weatherRandomDays") * Math.random(), 10);
     }

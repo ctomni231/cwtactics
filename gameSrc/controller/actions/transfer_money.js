@@ -1,5 +1,4 @@
-controller.action_mapAction({
-
+cwt.Action.mapAction({
   key:"transferMoney",
 
   condition: function( data ){

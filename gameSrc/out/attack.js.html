@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: logic/attack.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: logic/attack.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ *
+ * @namespace
+ */
+cwt.Attack = {
+
+  /**
+   * Signal for units that cannot attack.
+   *
+   * @constant
+   */
+  FIRETYPE_NONE: 0,
+
+  /**
+   * Indirect fire type that can fire from range 2 to x.
+   *
+   * @constant
+   */
+  FIRETYPE_INDIRECT: 1,
+
+  /**
+   * Direct fire type that can fire from range 1 to 1.
+   *
+   * @constant
+   */
+  FIRETYPE_DIRECT: 2,
+
+  /**
+   * Ballistic fire type that can fire from range 1 to x.
+   *
+   * @constant
+   */
+  FIRETYPE_BALLISTIC: 3,
+
+  /**
+   * Calculates the targets of a battle unit. If `data` is given, then
+   * the attack targets will be marked in this object.
+   */
+  calculateTargets: function (uid, x, y, data, markAttackableTiles) {
+    var markInData = (typeof data !== "undefined");
+    if (!markAttackableTiles) markAttackableTiles = false;
+
+    assert(model.unit_isValidUnitId(uid));
+    if (markInData) data.setCenter(x, y, INACTIVE_ID);
+
+    var unit = model.unit_data[uid];
+    var teamId = model.player_data[unit.owner].team;
+    var attackSheet = unit.type.attack;
+
+    if (arguments.length === 1) {
+      x = unit.x;
+      y = unit.y;
+    }
+
+    if (DEBUG) util.log("calculate targets for unit id", uid, "at", x, ",", y);
+
+    assert(model.map_isValidPosition(x, y));
+    if (arguments.length === 3) assert(util.isBoolean(markAttackableTiles));
+
+    // NO BATTLE UNIT ?
+    if (typeof attackSheet === "undefined") return false;
+
+    // ONLY MAIN WEAPON WITHOUT AMMO ?
+    if (model.battle_hasMainWeapon(unit.type) &amp;&amp; !model.battle_hasSecondaryWeapon(unit.type) &amp;&amp;
+      unit.type.ammo > 0 &amp;&amp; unit.ammo === 0) return false;
+
+    var minR = 1;
+    var maxR = 1;
+
+    if (unit.type.attack.minrange) {
+
+      controller.prepareTags(x, y, uid);
+      minR = controller.scriptedValue(unit.owner, "minrange", unit.type.attack.minrange);
+      maxR = controller.scriptedValue(unit.owner, "maxrange", unit.type.attack.maxrange);
+    }
+
+    var lX;
+    var hX;
+    var lY = y - maxR;
+    var hY = y + maxR;
+    if (lY &lt; 0) lY = 0;
+    if (hY >= model.map_height) hY = model.map_height - 1;
+    for (; lY &lt;= hY; lY++) {
+
+      var disY = Math.abs(lY - y);
+      lX = x - maxR + disY;
+      hX = x + maxR - disY;
+      if (lX &lt; 0) lX = 0;
+      if (hX >= model.map_width) hX = model.map_width - 1;
+      for (; lX &lt;= hX; lX++) {
+
+        if (markAttackableTiles) {
+          if (model.map_getDistance(x, y, lX, lY) >= minR) {
+
+            // SYMBOLIC YES YOU CAN ATTACK THIS TILE
+            data.setValueAt(lX, lY, 1);
+          }
+        } else {
+
+          // IN FOG ?
+          if (model.fog_turnOwnerData[lX][lY] === 0) continue;
+
+          if (model.map_getDistance(x, y, lX, lY) >= minR) {
+
+            var dmg = -1;
+
+            // ONLY UNIT FROM OTHER TEAMS ARE ATTACK ABLE
+            var tUnit = model.unit_posData[lX][lY];
+            if (tUnit !== null &amp;&amp; model.player_data[tUnit.owner].team !== teamId) {
+              dmg = model.battle_getBaseDamageAgainst(unit, tUnit);
+              if (dmg > 0) {
+
+                // IF DATA MODE IS ON, THEN MARK THE POSITION
+                // ELSE RETURN TRUE
+                if (markInData) data.setValueAt(lX, lY, dmg);
+                else return true;
+              }
+            }
+
+          }
+        }
+      }
+    }
+
+    return false;
+  },
+
+
+  /**
+   * Returns the fire type.
+   */
+  getFireType: function () {
+    if (!this.hasMainWeapon() &amp;&amp; !this.hasSecondaryWeapon()) {
+      return cwt.Unit.FIRETYPE_NONE;
+    }
+
+    // main weapon decides fire type
+    if (typeof this.type.attack.minrange === "number") {
+      var min = this.type.attack.minrange;
+
+      // min range of 1 means ballistic weapon
+      if (min === 1) {
+        return cwt.Unit.FIRETYPE_BALLISTIC;
+      } else {
+        return cwt.Unit.FIRETYPE_INDIRECT;
+      }
+    } else {
+      return cwt.Unit.FIRETYPE_DIRECT;
+    }
+  },
+
+  /**
+   * Returns `true` if a given unit is an indirect firing
+   * unit ( *e.g. artillery* ) else `false`.
+   *
+   * @return {boolean}
+   */
+  isIndirect: function () {
+    return this.getFireType() === cwt.Unit.FIRETYPE_INDIRECT;
+  },
+
+  /**
+   * Returns `true` if a given unit is an ballistic firing
+   * unit ( *e.g. anti-tank-gun* ) else `false`.
+   *
+   * @return {boolean}
+   */
+  isBallistic: function () {
+    return this.getFireType() === cwt.Unit.FIRETYPE_BALLISTIC;
+  },
+
+  /**
+   * Returns true if the unit type has a main weapon else false.
+   */
+  hasMainWeapon: function () {
+    var attack = this.type.attack;
+    return (attack &amp;&amp; attack.main_wp);
+  },
+
+  /**
+   * Returns true if the unit type has a secondary
+   * weapon else false.
+   */
+  hasSecondaryWeapon: function () {
+    var attack = this.type.attack;
+    return (attack &amp;&amp; attack.sec_wp);
+  },
+
+  /**
+   * Returns true if an attacker can use it's main weapon against a
+   * defender. The distance won't be checked in case of indirect units.
+   */
+  canUseMainWeapon: function (defender) {
+    var attack = this.type.attack;
+    var tType = defender.type.ID;
+    var v;
+
+    // check ammo and main weapon availability against the defender type
+    if (this.ammo > 0 &amp;&amp; attack.main_wp) {
+      v = attack.main_wp[tType];
+      if (v &amp;&amp; v > 0) {
+        return true;
+      }
+    }
+
+    return false;
+  },
+
+  /**
+   * Returns true if an unit has targets in sight, else false.
+   */
+  hasTargets: function (uid, x, y) {
+    return cwt.Attack.battle_calculateTargets(uid, x, y);
+  },
+
+  /**
+   * Returns the base damage of an attacker against a defender. If
+   * the attacker cannot attack the defender then -1 will be returned.
+   * This function recognizes the ammo usage of main weapons. If the
+   * attacker cannot attack with his main weapon due low ammo then only
+   * the secondary weapon will be checked.
+   */
+  getBaseDamageAgainst: function (attacker, defender, withMainWp) {
+    var attack = attacker.type.attack;
+    if (!attack) return -1;
+    var tType = defender.type.ID;
+    var v;
+
+    if (typeof withMainWp === "undefined") withMainWp = true;
+
+    // check main weapon
+    if (withMainWp &amp;&amp; attacker.ammo > 0 &amp;&amp; attack.main_wp !== undefined) {
+      v = attack.main_wp[tType];
+      if (typeof v !== "undefined") return v;
+    }
+
+    // check secondary weapon
+    if (attack.sec_wp !== undefined) {
+      v = attack.sec_wp[tType];
+      if (typeof v !== "undefined") return v;
+    }
+
+    return -1;
+  },
+
+  /**
+   * Returns the battle damage against an other unit.
+   */
+  getBattleDamageAgainst: function (attacker, defender, luck, withMainWp, isCounter, ax, ay) {
+    if (arguments.length &lt; 7) {
+      ax = attacker.x;
+      ay = attacker.y;
+    }
+
+    if (DEBUG) util.log(
+      "calculating battle damage",
+      model.unit_extractId(attacker),
+      "against",
+      model.unit_extractId(defender)
+    );
+
+    if (typeof isCounter === "undefined") isCounter = false;
+
+    assert(util.intRange(luck, 0, 100));
+    assert(util.isBoolean(withMainWp));
+    assert(util.isBoolean(isCounter));
+
+    var BASE = model.battle_getBaseDamageAgainst(attacker, defender, withMainWp);
+    if (BASE === -1) return -1;
+
+    var AHP = model.unit_convertHealthToPoints(attacker);
+    var DHP = model.unit_convertHealthToPoints(defender);
+
+    // attacker values
+    controller.prepareTags(
+      ax, ay, model.unit_extractId(attacker),
+      defender.x, defender.y, model.unit_extractId(defender)
+    );
+
+    var LUCK = parseInt((luck / 100) * controller.scriptedValue(attacker.owner, "luck", 10), 10);
+    var ACO = controller.scriptedValue(attacker.owner, "att", 100);
+    if (isCounter) ACO += controller.scriptedValue(defender.owner, "counteratt", 0);
+
+    // defender values
+    controller.prepareTags(defender.x, defender.y);
+    var DCO = controller.scriptedValue(defender.owner, "def", 100);
+
+    var def = model.map_data[defender.x][defender.y].defense;
+    var DTR = parseInt(
+      controller.scriptedValue(defender.owner, "terrainDefense", def) *
+        controller.scriptedValue(defender.owner, "terrainDefenseModifier", 100) /
+        100,
+      10
+    );
+
+    /*
+     AW1-3
+
+     D=Damage (as shown onscreen)
+     b=base damage
+     o=offense (total)
+     d=defense (total)
+     h=HP of attacker
+
+     Decimals are rounded down. Please note that AWDS and AWDoR use
+     different values for defense (less than 1 and greater than 1, respectively).
+     */
+    // **Formular:** `D=b*[o-(o*d)]*(h/10)`
+    var damage = BASE * (ACO / 100 - (ACO / 100 * (DCO - 100) / 100)) * (AHP / 10);
+
+    /*
+     AWDOR
+
+     D=Damage (as shown onscreen)
+     b=base damage
+     o=offense (total)
+     d=defense (total)
+     h=HP of attacker
+
+     Decimals are rounded down. Please note that AWDS and AWDoR use
+     different values for defense (less than 1 and greater than 1, respectively).
+
+     **Formular:** `D=b*(o/d)*(h/10)`
+     var damage = BASE*(ACO/100*DCO/100)*(AHP/10)
+     */
+
+    // **Formular:** `D%=[B*ACO/100+R]*(AHP/10)*[(200-(DCO+DTR*DHP))/100]`
+    //var damage = (BASE*ACO/100+LUCK) * (AHP/10) * ( (200-( DCO+(DTR*DHP) ) ) /100 );
+
+    return parseInt(damage, 10);
+  },
+
+  /**
+   * Declines when the attacker does not have targets in range.
+   *
+   * @param attId
+   * @param defId
+   * @param attLuckRatio
+   * @param defLuckRatio
+   */
+  attack: function (attId, defId, attLuckRatio, defLuckRatio) {
+    assert(model.unit_isValidUnitId(attId));
+    assert(model.unit_isValidUnitId(defId));
+    assertIntRange(attLuckRatio, 0, 100);
+    assertIntRange(defLuckRatio, 0, 100);
+
+    var attacker = model.unit_data[attId];
+    var defender = model.unit_data[defId];
+    var indirectAttack = model.battle_isIndirectUnit(attId);
+
+    // **check firstCounter:** if first counter is active then the defender
+    // attacks first. In this case swap attacker and defender.
+    if (!indirectAttack &amp;&amp; controller.scriptedValue(defender.owner, "firstCounter", 0) === 1) {
+      if (!model.battle_isIndirectUnit(defId)) {
+        var tmp_ = defender;
+        defender = attacker;
+        attacker = tmp_;
+      }
+    }
+
+    var aSheets = attacker.type;
+    var dSheets = defender.type;
+    var attOwner = attacker.owner;
+    var defOwner = defender.owner;
+    var powerAtt = model.unit_convertHealthToPoints(defender);
+    var powerCounterAtt = model.unit_convertHealthToPoints(attacker);
+    var damage;
+    var retreatVal = powerAtt;
+
+    // main attack
+    var mainWpAttack = model.battle_canUseMainWeapon(attacker, defender);
+    damage = model.battle_getBattleDamageAgainst(attacker, defender, attLuckRatio, mainWpAttack, false);
+
+    if (damage !== -1) {
+      model.events.damageUnit(defId, damage);
+
+      powerAtt -= model.unit_convertHealthToPoints(defender);
+
+      if (mainWpAttack) attacker.ammo--;
+
+      powerAtt = ( parseInt(powerAtt * 0.1 * dSheets.cost, 10) );
+      model.events.co_modifyPowerLevel(attOwner, parseInt(0.5 * powerAtt, 10));
+      model.events.co_modifyPowerLevel(defOwner, powerAtt);
+
+      /*
+       retreatVal = model.unit_convertHealthToPoints( defender )/retreatVal*100;
+       if( retreatVal &lt; 20 ){
+
+       // retreat into a neighbor tile if possible
+       retreatVal = model.battle_searchTile_( defender.x,defender.y, attacker.x,attacker.y );
+       }
+       else retreatVal = false;
+       */
+    }
+
+    // counter attack when defender survives and defender is an indirect
+    // attacking unit
+    if (/* retreatVal &amp;&amp; */ defender.hp > 0 &amp;&amp; !model.battle_isIndirectUnit(defId)) {
+      mainWpAttack = model.battle_canUseMainWeapon(defender, attacker);
+
+      damage = model.battle_getBattleDamageAgainst(
+        defender,
+        attacker,
+        defLuckRatio,
+        mainWpAttack,
+        true
+      );
+
+      if (damage !== -1) {
+        model.events.damageUnit(attId, damage);
+
+        powerCounterAtt -= model.unit_convertHealthToPoints(attacker);
+
+        if (mainWpAttack) defender.ammo--;
+
+        powerCounterAtt = ( parseInt(powerCounterAtt * 0.1 * aSheets.cost, 10) );
+        model.events.co_modifyPowerLevel(defOwner, parseInt(0.5 * powerCounterAtt, 10));
+        model.events.co_modifyPowerLevel(attOwner, powerCounterAtt);
+      }
+    }
+  }
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="cwt.Action.html">Action</a></li><li><a href="cwt.Config.html">Config</a></li><li><a href="cwt.FogMap.html">FogMap</a></li><li><a href="cwt.Map.html">Map</a></li><li><a href="cwt.Multiton.html">Multiton</a></li><li><a href="cwt.Player.html">Player</a></li><li><a href="cwt.Position.html">Position</a></li><li><a href="cwt.Property.html">Property</a></li><li><a href="cwt.screeFlowState.html">screeFlowState</a></li><li><a href="cwt.Storage.html">Storage</a></li><li><a href="cwt.Tile.html">Tile</a></li><li><a href="cwt.Unit.html">Unit</a></li></ul><h3>Namespaces</h3><ul><li><a href="Base64Helper.html">Base64Helper</a></li><li><a href="cwt.html">cwt</a></li><li><a href="cwt.Attack.html">Attack</a></li><li><a href="cwt.Cannon.html">Cannon</a></li><li><a href="cwt.Client.html">Client</a></li><li><a href="cwt.ClientEvents.html">ClientEvents</a></li><li><a href="cwt.CO.html">CO</a></li><li><a href="cwt.Cursor.html">Cursor</a></li><li><a href="cwt.Factory.html">Factory</a></li><li><a href="cwt.Fog.html">Fog</a></li><li><a href="cwt.Gameround.html">Gameround</a></li><li><a href="cwt.Join.html">Join</a></li><li><a href="cwt.Laser.html">Laser</a></li><li><a href="cwt.MoveTrait.html">MoveTrait</a></li><li><a href="cwt.Silo.html">Silo</a></li><li><a href="cwt.Suicide.html">Suicide</a></li><li><a href="cwt.Supply.html">Supply</a></li><li><a href="cwt.Team.html">Team</a></li><li><a href="cwt.Transport.html">Transport</a></li><li><a href="cwt.Update.html">Update</a></li><li><a href="cwt.Weather.html">Weather</a></li></ul><h3>Global</h3><ul><li><a href="global.html#action">action</a></li><li><a href="global.html#assert">assert</a></li><li><a href="global.html#canBeCapturedBy">canBeCapturedBy</a></li><li><a href="global.html#captureProperty">captureProperty</a></li><li><a href="global.html#clean">clean</a></li><li><a href="global.html#condition">condition</a></li><li><a href="global.html#constructor">constructor</a></li><li><a href="global.html#data">data</a></li><li><a href="global.html#deactivate">deactivate</a></li><li><a href="global.html#destroy">destroy</a></li><li><a href="global.html#drainFuel">drainFuel</a></li><li><a href="global.html#fireLaser">fireLaser</a></li><li><a href="global.html#getFreeUnitSlot">getFreeUnitSlot</a></li><li><a href="global.html#getRelationship">getRelationship</a></li><li><a href="global.html#getRelationshipUnitNeighbours">getRelationshipUnitNeighbours</a></li><li><a href="global.html#giveUp">giveUp</a></li><li><a href="global.html#grab">grab</a></li><li><a href="global.html#hasFreeUnitSlot">hasFreeUnitSlot</a></li><li><a href="global.html#heal">heal</a></li><li><a href="global.html#isLaser">isLaser</a></li><li><a href="global.html#isNeutral">isNeutral</a></li><li><a href="global.html#isPowerActive">isPowerActive</a></li><li><a href="global.html#isTargetValid">isTargetValid</a></li><li><a href="global.html#Lawnchair">Lawnchair</a></li><li><a href="global.html#mapAction">mapAction</a></li><li><a href="global.html#marshall">marshall</a></li><li><a href="global.html#multiStepAction">multiStepAction</a></li><li><a href="global.html#noAutoWait">noAutoWait</a></li><li><a href="global.html#noTeamsAreLeft">noTeamsAreLeft</a></li><li><a href="global.html#owner">owner</a></li><li><a href="global.html#pids">pids</a></li><li><a href="global.html#prepareMenu">prepareMenu</a></li><li><a href="global.html#prepareSelection">prepareSelection</a></li><li><a href="global.html#prepareTargets">prepareTargets</a></li><li><a href="global.html#property">property</a></li><li><a href="global.html#propertyAction">propertyAction</a></li><li><a href="global.html#raiseFunds">raiseFunds</a></li><li><a href="global.html#resetValue">resetValue</a></li><li><a href="global.html#set">set</a></li><li><a href="global.html#setValue">setValue</a></li><li><a href="global.html#takeDamage">takeDamage</a></li><li><a href="global.html#targetSelectionType">targetSelectionType</a></li><li><a href="global.html#unit">unit</a></li><li><a href="global.html#unitAction">unitAction</a></li><li><a href="global.html#visionClient">visionClient</a></li><li><a href="global.html#visionTurnOwner">visionTurnOwner</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Thu Feb 13 2014 21:07:27 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,10 +1,9 @@
-controller.action_unitAction({
-
+cwt.Action.unitAction({
   key:"fireLaser",
 
   relation:[
     "S","T",
-    model.player_RELATION_MODES.SAME_OBJECT
+    cwt.Player.RELATION_SAMETHING
   ],
 
   condition: function( data ){

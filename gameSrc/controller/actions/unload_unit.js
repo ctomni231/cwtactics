@@ -1,5 +1,4 @@
-controller.action_unitAction({
-
+cwt.Action.unitAction({
   key:"unloadUnit",
   multiStepAction: true,
 
@@ -49,5 +48,4 @@ controller.action_unitAction({
       data.targetselection.y
     );
   }
-
 });

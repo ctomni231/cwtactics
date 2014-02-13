@@ -1,11 +1,10 @@
-controller.action_unitAction({
-
+cwt.Action.unitAction({
   key:"attack",
 
   relation:[
     "S", "T",
-    model.player_RELATION_MODES.NONE,
-    model.player_RELATION_MODES.SAME_OBJECT
+    cwt.Player.RELATION_NONE,
+    cwt.Player.RELATION_SAMETHING
   ],
 
   targetSelectionType:"A",

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: logic/cannon.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: logic/cannon.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ *
+ * @namespace
+ */
+cwt.Cannon = {
+
+  /**
+   * Returns `true` if a given property id is a cannon property.
+   */
+  isCannonUnit: function (unit) {
+    assert(model.unit_isValidUnitId(uid));
+    var unit = model.unit_data[uid];
+    return (unit.type.ID === "CANNON_UNIT_INV");
+  },
+
+  /**
+   * Marks all cannon targets in a selection. The area of fire will be defined by
+   * the rectangle from  `sx,sy` to `tx,ty`. The cannon is on the tile `ox,oy`
+   * with a given `range`.
+   */
+  tryToMarkCannonTargets: function (pid, selection, ox, oy, otx, oty, sx, sy, tx, ty, range) {
+    assert(model.player_isValidPid(pid));
+
+    var tid = model.player_data[pid].team;
+    var osy = sy;
+    var result = false;
+    for (; sx &lt;= tx; sx++) {
+      for (sy = osy; sy >= ty; sy--) {
+        if (!model.map_isValidPosition(sx, sy)) continue;
+
+        // range maybe don't match
+        if ((Math.abs(sx - ox) + Math.abs(sy - oy)) > range) continue;
+        if ((Math.abs(sx - otx) + Math.abs(sy - oty)) > range) continue;
+
+        // in fog
+        if (model.fog_turnOwnerData[sx][sy] &lt;= 0) continue;
+
+        var unit = model.unit_posData[sx][sy];
+        if (unit) {
+          if (unit.owner !== pid &amp;&amp; model.player_data[unit.owner].team !== tid) {
+            selection.setValueAt(sx, sy, 1);
+            result = true;
+          }
+        }
+      }
+    }
+
+    return result;
+  },
+
+  /**
+   * Marks all cannon targets in a given selection model.
+   */
+  markCannonTargets: function (uid, selection) {
+    var result;
+    var unit = model.unit_data[uid];
+    var prop = model.property_posMap[unit.x][unit.y];
+    var type = (prop.type.ID !== "PROP_INV") ? prop.type : model.bombs_grabPropTypeFromPos(unit.x, unit.y);
+
+    // no cannon
+    // if( !type.cannon ) return false;
+    assert(type.cannon);
+
+    selection.setCenter(unit.x, unit.y, INACTIVE_ID);
+
+    var max = type.cannon.range;
+    switch (type.cannon.direction) {
+
+      case "N":
+        result = model.bombs_tryToMarkCannonTargets(
+          unit.owner,
+          selection,
+          unit.x, unit.y,
+          unit.x, unit.y - max - 1,
+          unit.x - unit + 1, unit.y - 1,
+          unit.x + unit - 1, unit.y - max,
+          max
+        );
+        break;
+
+      case "E":
+        result = model.bombs_tryToMarkCannonTargets(
+          unit.owner,
+          selection,
+          unit.x, unit.y,
+          unit.x + max + 1, unit.y,
+          unit.x + 1, unit.y + max - 1,
+          unit.x + max, unit.y - max + 1,
+          max
+        );
+        break;
+
+      case "W":
+        result = model.bombs_tryToMarkCannonTargets(
+          unit.owner,
+          selection,
+          unit.x, unit.y,
+          unit.x - max - 1, unit.y,
+          unit.x - max, unit.y + max - 1,
+          unit.x - 1, unit.y - max + 1,
+          max
+        );
+        break;
+
+      case "S":
+        result = model.bombs_tryToMarkCannonTargets(
+          unit.owner,
+          selection,
+          unit.x, unit.y,
+          unit.x, unit.y + max + 1,
+          unit.x - max + 1, unit.y + max,
+          unit.x + max - 1, unit.y + 1,
+          max
+        );
+        break;
+    }
+
+    return result;
+  },
+
+  /**
+   *
+   */
+  grabBombPropTypeFromPos: function (x, y) {
+    while (true) {
+
+      if (y + 1 &lt; model.map_height &amp;&amp; model.property_posMap[x][y + 1] &amp;&amp;
+        model.property_posMap[x][y + 1].type.ID === "PROP_INV") {
+        y++;
+        continue;
+      }
+
+      break;
+    }
+
+    if (model.property_posMap[x][y].type.ID !== "PROP_INV") {
+      return model.property_posMap[x][y].type;
+    }
+
+    while (true) {
+
+      if (x + 1 &lt; model.map_width &amp;&amp; model.property_posMap[x + 1][y] &amp;&amp;
+        model.property_posMap[x + 1][y].type.ID !== "PROP_INV") {
+        return model.property_posMap[x + 1][y].type;
+      }
+
+      break;
+    }
+
+    assert(false);
+  },
+
+  fireCannon_check: function (uid, selection) {
+    return (
+      model.bombs_isCannon(uid) &amp;&amp;
+        model.bombs_markCannonTargets(uid, selection)
+      );
+  },
+
+  fireCannon_fillTargets: function (uid, selection) {
+    model.bombs_markCannonTargets(uid, selection);
+  },
+
+  /**
+   * Fires a cannon at a given position.
+   */
+  fireCannon_invoked: function (ox, oy, x, y) {
+    var prop = model.property_posMap[x][y];
+    var target = model.unit_posData[x][y];
+    var type = model.bombs_grabPropTypeFromPos(ox, oy);
+    model.events.damageUnit(
+      model.unit_extractId(target),
+      model.unit_convertPointsToHealth(type.cannon.damage),
+      9
+    );
+  }
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="cwt.Action.html">Action</a></li><li><a href="cwt.Config.html">Config</a></li><li><a href="cwt.FogMap.html">FogMap</a></li><li><a href="cwt.Map.html">Map</a></li><li><a href="cwt.Multiton.html">Multiton</a></li><li><a href="cwt.Player.html">Player</a></li><li><a href="cwt.Position.html">Position</a></li><li><a href="cwt.Property.html">Property</a></li><li><a href="cwt.screeFlowState.html">screeFlowState</a></li><li><a href="cwt.Storage.html">Storage</a></li><li><a href="cwt.Tile.html">Tile</a></li><li><a href="cwt.Unit.html">Unit</a></li></ul><h3>Namespaces</h3><ul><li><a href="Base64Helper.html">Base64Helper</a></li><li><a href="cwt.html">cwt</a></li><li><a href="cwt.Attack.html">Attack</a></li><li><a href="cwt.Cannon.html">Cannon</a></li><li><a href="cwt.Client.html">Client</a></li><li><a href="cwt.ClientEvents.html">ClientEvents</a></li><li><a href="cwt.CO.html">CO</a></li><li><a href="cwt.Cursor.html">Cursor</a></li><li><a href="cwt.Factory.html">Factory</a></li><li><a href="cwt.Fog.html">Fog</a></li><li><a href="cwt.Gameround.html">Gameround</a></li><li><a href="cwt.Join.html">Join</a></li><li><a href="cwt.Laser.html">Laser</a></li><li><a href="cwt.MoveTrait.html">MoveTrait</a></li><li><a href="cwt.Silo.html">Silo</a></li><li><a href="cwt.Suicide.html">Suicide</a></li><li><a href="cwt.Supply.html">Supply</a></li><li><a href="cwt.Team.html">Team</a></li><li><a href="cwt.Transport.html">Transport</a></li><li><a href="cwt.Update.html">Update</a></li><li><a href="cwt.Weather.html">Weather</a></li></ul><h3>Global</h3><ul><li><a href="global.html#action">action</a></li><li><a href="global.html#assert">assert</a></li><li><a href="global.html#canBeCapturedBy">canBeCapturedBy</a></li><li><a href="global.html#captureProperty">captureProperty</a></li><li><a href="global.html#clean">clean</a></li><li><a href="global.html#condition">condition</a></li><li><a href="global.html#constructor">constructor</a></li><li><a href="global.html#data">data</a></li><li><a href="global.html#deactivate">deactivate</a></li><li><a href="global.html#destroy">destroy</a></li><li><a href="global.html#drainFuel">drainFuel</a></li><li><a href="global.html#fireLaser">fireLaser</a></li><li><a href="global.html#getFreeUnitSlot">getFreeUnitSlot</a></li><li><a href="global.html#getRelationship">getRelationship</a></li><li><a href="global.html#getRelationshipUnitNeighbours">getRelationshipUnitNeighbours</a></li><li><a href="global.html#giveUp">giveUp</a></li><li><a href="global.html#grab">grab</a></li><li><a href="global.html#hasFreeUnitSlot">hasFreeUnitSlot</a></li><li><a href="global.html#heal">heal</a></li><li><a href="global.html#isLaser">isLaser</a></li><li><a href="global.html#isNeutral">isNeutral</a></li><li><a href="global.html#isPowerActive">isPowerActive</a></li><li><a href="global.html#isTargetValid">isTargetValid</a></li><li><a href="global.html#Lawnchair">Lawnchair</a></li><li><a href="global.html#mapAction">mapAction</a></li><li><a href="global.html#marshall">marshall</a></li><li><a href="global.html#multiStepAction">multiStepAction</a></li><li><a href="global.html#noAutoWait">noAutoWait</a></li><li><a href="global.html#noTeamsAreLeft">noTeamsAreLeft</a></li><li><a href="global.html#owner">owner</a></li><li><a href="global.html#pids">pids</a></li><li><a href="global.html#prepareMenu">prepareMenu</a></li><li><a href="global.html#prepareSelection">prepareSelection</a></li><li><a href="global.html#prepareTargets">prepareTargets</a></li><li><a href="global.html#property">property</a></li><li><a href="global.html#propertyAction">propertyAction</a></li><li><a href="global.html#raiseFunds">raiseFunds</a></li><li><a href="global.html#resetValue">resetValue</a></li><li><a href="global.html#set">set</a></li><li><a href="global.html#setValue">setValue</a></li><li><a href="global.html#takeDamage">takeDamage</a></li><li><a href="global.html#targetSelectionType">targetSelectionType</a></li><li><a href="global.html#unit">unit</a></li><li><a href="global.html#unitAction">unitAction</a></li><li><a href="global.html#visionClient">visionClient</a></li><li><a href="global.html#visionTurnOwner">visionTurnOwner</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Thu Feb 13 2014 21:07:27 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

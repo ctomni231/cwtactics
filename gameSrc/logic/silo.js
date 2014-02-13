@@ -10,6 +10,8 @@ cwt.Silo = {
    * has the ability to fire a rocket to a position with an impact.
    */
   isRocketSilo: function (property) {
+    if (DEBUG) assert(property instanceof cwt.Property);
+
     if (!property.type.rocketsilo) return false;
     if (arguments.length === 2) {
       var fuidType = model.unit_data[uid].type.ID;
@@ -27,6 +29,8 @@ cwt.Silo = {
    * has the ability to fire a rocket to a position with an impact.
    */
   siloCanBeFired: function (unit) {
+    if (DEBUG) assert(unit instanceof cwt.Unit);
+
     if (this.type.rocketsilo.fireable.indexOf(unit.type.ID) === -1) return false;
     return true;
   },
@@ -35,6 +39,8 @@ cwt.Silo = {
    *
    */
   rocketCanBeFiredTo: function (x, y) {
+    if (DEBUG) assert(property instanceof cwt.Property);
+
     if (!model.map_isValidPosition(x, y)) return false;
   },
 
@@ -43,6 +49,8 @@ cwt.Silo = {
    * all units in a range around the position.
    */
   fireSilo: function (x, y, tx, ty, owner) {
+    if (DEBUG) assert(property instanceof cwt.Property);
+
     var silo = model.property_posMap[x][y];
     var siloId = model.property_extractId(silo);
     var type = silo.type;
