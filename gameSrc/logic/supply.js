@@ -57,6 +57,41 @@ cwt.Supply = {
         model.events.supply_refillResources(i);
       }
     }
+  },
+
+  /**
+   * Drains fuel. When the unit does not have enough fuel then it
+   * will be removed from game and the event will be stopped.
+   *
+   * @param uid
+   * @return {Boolean}
+   */
+  drainFuel: function (uid) {
+    var v = this.type.dailyFuelDrain;
+    if (typeof v === "number") {
+
+      // hidden units may drain more fuel
+      if (this.hidden && this.type.dailyFuelDrainHidden) {
+        v = this.type.dailyFuelDrainHidden;
+      }
+
+      this.fuel -= v;
+
+      // if fuel is empty then destroy it
+      if (this.fuel <= 0) {
+        this.destroy();
+      }
+    }
+  },
+
+  /**
+   * Gives funds.
+   */
+  raiseFunds: function () {
+    if (typeof this.type.funds !== "number") return;
+    this.owner.gold += this.type.funds;
+
+    cwt.ClientEvents.goldChange(this.owner, this.type.funds);
   }
 
 };

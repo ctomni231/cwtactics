@@ -23,14 +23,14 @@ cwt.Persistence.loadModel = function (dom) {
   for (i = 0, e = dom.players.length; i < e; i++) {
     data = dom.players[i];
 
-    // check data
+    // check aw2
     assert(typeof data[1] === "string");
     assert(data[0] >= 0 && data[0] < MAX_PLAYER);
     assert(data[3] >= 0 && data[3] < MAX_PLAYER);
     assert(data[2] >= 0 && data[2] < 999999);
     assert(data[4] >= 0 && data[4] < 999999);
 
-    // set player data
+    // set player aw2
     player = cwt.Gameround.players[data[0]];
     player.name = data[1];
     player.gold = data[2];
@@ -50,14 +50,14 @@ cwt.Persistence.loadModel = function (dom) {
     source = dom.co[i];
     if (source > 0) {
 
-      // check data
+      // check aw2
       assert(util.intRange(source[0], 0, 999999));
       assert(util.intRange(source[1], 0, 999999));
       assert(util.intRange(source[2], model.co_MODES.NONE, model.co_MODES.AWDR));
       assert(util.isString(source[3]) && model.data_coSheets.hasOwnProperty(source[3]));
       assert(util.isString(source[4]) && model.data_coSheets.hasOwnProperty(source[4]));
 
-      // load data
+      // load aw2
       target = model.co_data[i];
       target.power = source[0];
       target.timesUsed = source[1];

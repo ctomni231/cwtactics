@@ -42,35 +42,36 @@ cwt.Network = {
 
   /**
    *
+   * @private
    */
-  parseMessage: (function () {
+  parser_: function () {
+    if (this.readyState == 4) {
+      var res = this.responseText;
+      if (res !== "") {
+        var data = res.split("_&_");
+        for (var i = 0, e = data.length; i < e; i++) {
 
-    var parser = function () {
-      if (xmlHttp.readyState == 4) {
-        var res = xmlHttp.responseText;
-        if (res !== "") {
-          var data = res.split("_&_");
-          for (var i = 0, e = data.length; i < e; i++) {
-
-            if (data[i] !== undefined && data[i].length > 0) network._incomingMessage(data[i]);
-          }
+          if (data[i] !== undefined && data[i].length > 0) network._incomingMessage(data[i]);
         }
       }
-    };
+    }
+  },
 
-    return function () {
-      var xmlHttp = new XMLHttpRequest();
+  /**
+   *
+   */
+  parseMessage: function () {
+    var xmlHttp = new XMLHttpRequest();
 
-      this.urlBuilder_[0] = this.targetURL;
-      this.urlBuilder_[2] = "GRABCMD";
-      this.urlBuilder_[4] = this.gameId;
-      this.urlBuilder_[6] = this.clientId;
+    this.urlBuilder_[0] = this.targetURL;
+    this.urlBuilder_[2] = "GRABCMD";
+    this.urlBuilder_[4] = this.gameId;
+    this.urlBuilder_[6] = this.clientId;
 
-      xmlHttp.open('GET',this.urlBuilder_.join(""),true);
-      xmlHttp.onreadystatechange = parser;
-      xmlHttp.send(null);
-    };
-  })(),
+    xmlHttp.open('GET',this.urlBuilder_.join(""),true);
+    xmlHttp.onreadystatechange = this.parser_;
+    xmlHttp.send(null);
+  },
 
   /**
    *

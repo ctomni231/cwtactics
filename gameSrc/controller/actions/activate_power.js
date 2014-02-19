@@ -1,40 +1,25 @@
 cwt.Action.mapAction({
   key: "activatePower",
 
-  condition: function (data) {
-    return model.events.activatePower_check(
-      model.round_turnOwner
-    );
+  condition: function () {
+    return cwt.CO.canActivatePower(cwt.Gameround.turnOwner, cwt.CO.POWER_LEVEL_COP);
   },
 
   hasSubMenu: true,
   prepareMenu: function (data) {
-    var co_data = model.co_data[ model.round_turnOwner ];
 
     data.menu.addEntry("cop");
-    if (model.co_canActivatePower(model.round_turnOwner, cwt.CO.POWER_LEVEL_SCOP)) {
+    if (cwt.CO.canActivatePower(cwt.Gameround.turnOwner, cwt.CO.POWER_LEVEL_SCOP)) {
       data.menu.addEntry("scop");
     }
   },
 
-  invoke: function (data) {
-    var cmd;
-    switch (data.action.selectedSubEntry) {
+  toDataBlock: function (data, dataBlock) {
+    dataBlock.p1 = (data.action.selectedSubEntry === "cop" ? cwt.CO.POWER_LEVEL_COP : -1);
+    dataBlock.p1 = (data.action.selectedSubEntry === "scop" ? cwt.CO.POWER_LEVEL_SCOP : -1);
+  },
 
-      case "cop"  :
-        cmd = cwt.CO.POWER_LEVEL_COP;
-        break;
-
-      case "scop" :
-        cmd = cwt.CO.POWER_LEVEL_SCOP;
-        break;
-
-      default:
-        assert(false);
-    }
-
-    controller.commandStack_sharedInvokement(
-      "activatePower_invoked", model.round_turnOwner, cmd
-    );
+  parseDataBlock: function (dataBlock) {
+    cwt.CO.activatePower(cwt.Gameround.turnOwner,dataBlock.p1);
   }
 });

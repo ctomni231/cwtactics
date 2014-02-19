@@ -6,7 +6,7 @@
 cwt.Position = my.Class({
 
   /**
-   * Cleans all data of the object.
+   * Cleans all aw2 of the object.
    */
   clean: function () {
     this.x = -1;
@@ -18,7 +18,7 @@ cwt.Position = my.Class({
   },
 
   /**
-   * Grabs the data from another position object.
+   * Grabs the aw2 from another position object.
    */
   grab: function (otherPos) {
     assert(otherPos instanceof cwt.Position);
@@ -42,7 +42,7 @@ cwt.Position = my.Class({
     var isValid = (x !== -1 && y !== -1);
     var inFog = isValid ? (model.fog_turnOwnerData[x][y] === 0) : false;
 
-    // generate meta data for the unit
+    // generate meta aw2 for the unit
     refObj = isValid ? model.unit_getByPos(x, y) : null;
     if (isValid && !inFog && refObj !== null && (!refObj.hidden ||
       refObj.owner === model.round_turnOwner ||
@@ -57,7 +57,7 @@ cwt.Position = my.Class({
       this.unitId = -1;
     }
 
-    // generate meta data for the property
+    // generate meta aw2 for the property
     refObj = isValid ? model.property_getByPos(x, y) : null;
     if (isValid /* && !inFog */ && refObj !== null) {
 

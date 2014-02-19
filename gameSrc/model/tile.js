@@ -2,7 +2,7 @@
  *
  * @class
  */
-cwt.Tile = my.Class({
+cwt.Tile = my.Class( /* @lends cwt.Tile */ {
 
   constructor: function () {
 
@@ -27,8 +27,20 @@ cwt.Tile = my.Class({
     this.visionClient = 0;
   },
 
+  /**
+   *
+   * @return {boolean}
+   */
   isOccupied:  function () {
     return this.unit !== null;
+  },
+
+  /**
+   *
+   * @return {boolean}
+   */
+  isVisible: function () {
+    return this.visionTurnOwner > 0;
   }
 
 });

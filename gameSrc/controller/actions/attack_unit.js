@@ -18,6 +18,8 @@ cwt.Action.unitAction({
   },
 
   condition: function( data ){
+    if (cwt.Gameround.inPeacePhase()) return false;
+
     return model.events.attack_check(
 
       data.source.unitId,

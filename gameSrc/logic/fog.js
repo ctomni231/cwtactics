@@ -69,7 +69,7 @@ cwt.Fog = {
   },
 
   /**
-   * Completely recalculates the fog data.
+   * Completely recalculates the fog aw2.
    */
   fullRecalculation: function () {
     var x;

@@ -52,8 +52,7 @@ cwt.Join = {
 
     // TODO experience points
 
-    // disband joining unit
-    source.owner = INACTIVE_ID;
+    cwt.Lifecycle.destroyUnit(source,true);
   }
 
 };

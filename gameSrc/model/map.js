@@ -24,11 +24,10 @@ cwt.Map = {
    */
   data: (function () {
     var data = cwt.matrix(MAX_MAP_WIDTH, MAX_MAP_HEIGHT);
-    for (var x = 0, xe = model.map_width; x < xe; x++) {
-      for (var y = 0, ye = model.map_height; y < ye; y++) {
+    for (var x = 0, xe = cwt.Map.map_width; x < xe; x++) {
+      for (var y = 0, ye = cwt.Map.map_height; y < ye; y++) {
         data[x][y] = new cwt.Tile();
-      }
-    }
+      }}
 
     return data;
   })(),
@@ -37,8 +36,8 @@ cwt.Map = {
    * Returns the distance of two positions.
    */
   getDistance: function (sx, sy, tx, ty) {
-    assert(this.isValidPosition(sx, sy));
-    assert(this.isValidPosition(tx, ty));
+    if (DEBUG) assert(this.isValidPosition(sx, sy));
+    if (DEBUG) assert(this.isValidPosition(tx, ty));
 
     return Math.abs(sx - tx) + Math.abs(sy - ty);
   },
@@ -52,52 +51,12 @@ cwt.Map = {
   },
 
   /**
-   *
-   * @param x
-   * @param y
-   * @return {*}
-   */
-  getUnit: function (x, y) {
-    var Unit = cwt.Unit;
-    for (var i = 0, e = MAX_UNITS_PER_PLAYER*MAX_PLAYER; i < e; i++) {
-      var unit = Unit.getInstance(i, true);
-      if (unit && unit.x === x && unit.y === y) return unit;
-    }
-
-    return null;
-  },
-
-  /**
-   *
-   * @param x
-   * @param y
-   * @return {*}
-   */
-  getProperty: function (x, y) {
-    var Property = cwt.Property;
-    for (var i = 0, e = MAX_PROPERTIES; i < e; i++) {
-      var prop = Property.getInstance(i, true);
-      if (prop && prop.x === x && prop.y === y) return prop;
-    }
-
-    return null;
-  },
-
-  /**
-   *
-   * @return {Boolean}
-   */
-  isOccupied: function (x, y) {
-    return (this.getUnit(x, y) !== null);
-  },
-
-  /**
    * Invokes a callback on all tiles in a given range at a position (x,y).
    */
   doInRange: function (x, y, range, cb, arg) {
-    assert(this.map_isValidPosition(x, y));
-    assert(typeof cb === "function");
-    assert(range >= 0);
+    if (DEBUG) assert(this.isValidPosition(x, y));
+    if (DEBUG) assert(typeof cb === "function");
+    if (DEBUG) assert(range >= 0);
 
     var lX;
     var hX;

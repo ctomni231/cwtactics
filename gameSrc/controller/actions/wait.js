@@ -1,20 +1,21 @@
 cwt.Action.unitAction({
-  key:"wait",
+  key: "wait",
 
-  relation:[
-    "S","T",
-    model.player_RELATION_MODES.SAME_OBJECT,
-    model.player_RELATION_MODES.NONE
+  relation: [
+    "S", "T",
+    cwt.Player.RELATION_NONE,
+    cwt.Player.RELATION_SAMETHING
   ],
 
-  condition: function( data ){
+  condition: function (data) {
     return cwt.Gameround.canAct(data.source.unit);
   },
 
-  invoke: function( data ){
-    controller.commandStack_sharedInvokement(
-      "wait_invoked",
-      data.source.unitId
-    );
+  toDataBlock: function (data, dataBlock) {
+    dataBlock.p1 = data.source.unitId;
+  },
+
+  parseDataBlock: function (dataBlock) {
+    cwt.Gameround.setActableStatus(dataBlock.p1,false);
   }
 });

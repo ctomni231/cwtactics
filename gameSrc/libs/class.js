@@ -1,1 +1,80 @@
-/*globals define:true, window:true, module:true*/(function(){var a={};typeof define!="undefined"?define([],function(){return a}):typeof window!="undefined"?window.my=a:module.exports=a,a.Class=function(){var a=arguments.length,d=arguments[a-1],e=a>1?arguments[0]:null,f=a>2,g,h;d.constructor===Object?g=function(){}:(g=d.constructor,delete d.constructor),e&&(h=function(){},h.prototype=e.prototype,g.prototype=new h,g.prototype.constructor=g,g.Super=e,c(g,e,!1));if(f)for(var i=1;i<a-1;i++)c(g.prototype,arguments[i].prototype,!1);return b(g,d),g};var b=a.extendClass=function(a,b,d){b.STATIC&&(c(a,b.STATIC,d),delete b.STATIC),c(a.prototype,b,d)},c=function(a,b,c){var d;if(c===!1)for(d in b)d in a||(a[d]=b[d]);else{for(d in b)a[d]=b[d];b.toString!==Object.prototype.toString&&(a.toString=b.toString)}}})();
+/*globals define:true, window:true, module:true*/
+(function () {
+  // Namespace object
+  var my = {};
+  // Return as AMD module or attach to head object
+  if (typeof define !== 'undefined')
+    define([], function () {
+      return my;
+    });
+  else if (typeof window !== 'undefined')
+    window.my = my;
+  else
+    module.exports = my;
+
+  //============================================================================
+  // @method my.Class
+  // @params body:Object
+  // @params SuperClass:function, ImplementClasses:function..., body:Object
+  // @return function
+  my.Class = function () {
+
+    var len = arguments.length;
+    var body = arguments[len - 1];
+    var SuperClass = len > 1 ? arguments[0] : null;
+    var hasImplementClasses = len > 2;
+    var Class, SuperClassEmpty;
+
+    if (body.constructor === Object) {
+      Class = function() {};
+    } else {
+      Class = body.constructor;
+      delete body.constructor;
+    }
+
+    if (SuperClass) {
+      SuperClassEmpty = function() {};
+      SuperClassEmpty.prototype = SuperClass.prototype;
+      Class.prototype = new SuperClassEmpty();
+      Class.prototype.constructor = Class;
+      Class.Super = SuperClass;
+      extend(Class, SuperClass, false);
+    }
+
+    if (hasImplementClasses)
+      for (var i = 1; i < len - 1; i++)
+        extend(Class.prototype, arguments[i].prototype, false);
+
+    extendClass(Class, body);
+
+    return Class;
+
+  };
+
+  //============================================================================
+  // @method my.extendClass
+  // @params Class:function, extension:Object, ?override:boolean=true
+  var extendClass = my.extendClass = function (Class, extension, override) {
+    if (extension.STATIC) {
+      extend(Class, extension.STATIC, override);
+      delete extension.STATIC;
+    }
+    extend(Class.prototype, extension, override);
+  };
+
+  //============================================================================
+  var extend = function (obj, extension, override) {
+    var prop;
+    if (override === false) {
+      for (prop in extension)
+        if (!(prop in obj))
+          obj[prop] = extension[prop];
+    } else {
+      for (prop in extension)
+        obj[prop] = extension[prop];
+      if (extension.toString !== Object.prototype.toString)
+        obj.toString = extension.toString;
+    }
+  };
+
+})();

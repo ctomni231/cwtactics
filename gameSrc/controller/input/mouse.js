@@ -1,4 +1,4 @@
-new cwt.Input("mouse",function(){
+cwt.Input.define("mouse",function(){
 
   // not supported ?
   if( !cwt.ClientFeatures.mouse ){

@@ -53,7 +53,7 @@ cwt.Persistence.prepareModel = function (dom) {
     for (var i = 0, e = dom.units.length; i < e; i++) {
       data = dom.units[i];
 
-      // check data of the data block this save handler uses a differn't saving schema
+      // check aw2 of the aw2 block this save handler uses a differn't saving schema
       assert(util.isInt(data[0]));
       assert(typeof data[1] === "string");
       assert(model.data_unitSheets.hasOwnProperty(data[1]));
@@ -71,7 +71,7 @@ cwt.Persistence.prepareModel = function (dom) {
       var id = data[0];
       var unit = model.unit_data[id];
 
-      // inject data
+      // inject aw2
       unit.type = type;
       unit.x = data[2];
       unit.y = data[3];
@@ -114,7 +114,7 @@ cwt.Persistence.prepareModel = function (dom) {
     );
     assert(util.intRange(data[5], -1, MAX_PLAYER - 1)); // owner
 
-    // copy data into model
+    // copy aw2 into model
     property = model.property_data[data[0]];
     property.type = model.data_tileSheets[data[3]];
     property.capturePoints = 20;
@@ -141,7 +141,7 @@ cwt.Persistence.prepareModel = function (dom) {
 
   var target, i, e;
 
-  // reset data
+  // reset aw2
   i = 0;
   e = MAX_PLAYER;
   for (; i < e; i++) {

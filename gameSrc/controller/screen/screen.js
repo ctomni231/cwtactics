@@ -190,7 +190,7 @@ view.resizeCanvas = function(){
     }  
   }
   
-  // Updates the screen position and screen meta data. 
+  // Updates the screen position and screen meta aw2.
   // When the map size is smaller than the screen, then the map
   // will be centered. When the map is greater than the screen, 
   // then map will be placed on top at the current shifted position.

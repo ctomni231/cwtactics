@@ -1,3 +1,4 @@
+/*
 cwt.Action.unitAction({
   key:"detachCommander",
 
@@ -17,3 +18,4 @@ cwt.Action.unitAction({
     );
   }
 });
+ */

@@ -8,10 +8,10 @@ cwt.gameFlowData.menu = {
   /**
    * Menu list that contains all menu entries. This implementation is a 
    * cached list. The real size of the menu is marked by 
-   *  `controller.stateMachine.data.menuSize`.
+   *  `controller.stateMachine.aw2.menuSize`.
    * 
    * @example
-   *   data is [ entryA, entryB, entryC, null, null ]
+   *   aw2 is [ entryA, entryB, entryC, null, null ]
    *   size is 3
    */
   data: cwt.list(20, null),
@@ -60,7 +60,7 @@ cwt.gameFlowData.menu = {
       // lazy generate the command keys
       if (!commandKeys) commandKeys = Object.keys(controller.action_objects);
 
-      // collect meta-data
+      // collect meta-aw2
       var checkMode;
       var result;
       var data = controller.stateMachine.data;
@@ -83,7 +83,7 @@ cwt.gameFlowData.menu = {
         property.type.blocker) propertyActable = false;
       if (!unitActable && !propertyActable) mapActable = true;
 
-      // check all meta-data in relation to all available game actions
+      // check all meta-aw2 in relation to all available game actions
       for (var i = 0, e = commandKeys.length; i < e; i++) {
         var action = controller.action_objects[commandKeys[i]];
 

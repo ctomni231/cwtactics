@@ -1,4 +1,4 @@
-cwt.emptyFunction = function(){};
+var emptyFunction = function(){};
 
 cwt.doObjectCheck = function ( obj, checkFn ) {
   var keys = Object.keys(obj);

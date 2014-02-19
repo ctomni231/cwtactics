@@ -2,11 +2,14 @@
  * @class
  * @extends cwt.Multiton
  */
-cwt.Property = my.Class(cwt.Multiton, {
+cwt.Property = my.Class(null,cwt.Multiton, {
 
   STATIC: {
 
-    MULTITON_INSTANCES: MAX_PROPERTIES,
+    /**
+     * Number of maximum properties.
+     */
+    MULTITON_INSTANCES: 200,
 
     CAPTURE_POINTS: 20,
 
@@ -44,40 +47,6 @@ cwt.Property = my.Class(cwt.Multiton, {
    */
   isNeutral: function () {
     return this.owner === null;
-  },
-
-  /**
-   * Returns true, when a unit can capture a property,
-   * else false.
-   */
-  canBeCapturedBy: function (unit) {
-    return this.type.capturePoints > 0 && unit.type.captures > 0;
-  },
-
-  /**
-   *
-   */
-  captureProperty: function (unit) {
-    if (DEBUG) assert(unit);
-
-    this.points -= cwt.Property.CAPTURE_STEP;
-    cwt.ClientEvents.unitCaptures(this,unit);
-
-    if (this.points <= 0) {
-      this.owner = unit.owner;
-      this.points = cwt.Property.CAPTURE_POINTS;
-      cwt.ClientEvents.propertyCaptured(this,unit);
-    }
-  },
-
-  /**
-   * Gives funds.
-   */
-  raiseFunds: function () {
-    if (typeof this.type.funds !== "number") return;
-    this.owner.gold += this.type.funds;
-
-    cwt.ClientEvents.goldChange(this.owner, this.type.funds);
   }
 
 });

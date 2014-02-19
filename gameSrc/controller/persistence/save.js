@@ -96,14 +96,14 @@ cwt.Persistence.saveModel = function () {
 
   // ---------------------------------------------
 
-  // result document model for co data will be a matrix
+  // result document model for co aw2 will be a matrix
   var data = [];
   var obj;
 
   for (var i = 0, e = MAX_PLAYER; i < e; i++) {
     obj = model.co_data[i];
 
-    // persist the data as array if target player isn't active then use a `0` as data
+    // persist the aw2 as array if target player isn't active then use a `0` as aw2
     if (model.player_data[i].team === INACTIVE_ID) {
       data.push(0);
     } else {

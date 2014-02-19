@@ -8,21 +8,22 @@ cwt.Action.unitAction({
   ],
 
   condition: function( data ){
-    return model.events.joinUnits_check(data.source.unitId, data.target.unitId);
+    return cwt.Join.canJoin(data.source.unit,data.target.unit);
   },
 
-  invoke: function( data ){
-    controller.commandStack_sharedInvokement(
-      "joinUnits_invoked",
-      data.source.unitId,
-      data.target.unitId
+
+  toDataBlock: function (data, dataBlock) {
+    dataBlock.p1 = data.source.unitId;
+    dataBlock.p2 = data.target.unitId;
+  },
+
+  parseDataBlock: function (dataBlock) {
+    cwt.Join.join(
+      /** @type {cwt.Unit} */ cwt.Unit.getInstance(dataBlock.p1),
+      /** @type {cwt.Unit} */ cwt.Unit.getInstance(dataBlock.p2)
     );
 
-    // set target unit into wait mode
-    controller.commandStack_sharedInvokement(
-      "wait_invoked",
-      data.target.unitId
-    );
+    cwt.Gameround.setActableStatus(dataBlock.p1,false);
   }
 
 });

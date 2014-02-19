@@ -7,7 +7,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
   var SMALL_WAIT = 150;
   var BIG_WAIT = 500;
 
-  if( DEBUG ) util.log("loading game data");
+  if( DEBUG ) util.log("loading game aw2");
 
   jWorkflow.order()
 
@@ -54,7 +54,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
 
     //.chill(SMALL_WAIT)
 
-    // **3.A** reset game data ?
+    // **3.A** reset game aw2 ?
     .andThen(function( err, baton ){
       if( err ) return err;
       baton.take();
@@ -64,7 +64,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
         if( !wipeOut ) wipeOut = getQueryParams(document.location.search).cwt_resetData === "1";
 
         if(  wipeOut ){
-          if( DEBUG ) util.log("wipe out cached data");
+          if( DEBUG ) util.log("wipe out cached aw2");
 
           // NUKE STORAGE
           controller.storage_general.clear( function(){
@@ -265,7 +265,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
     // -------------------------------------------------------------------------------------
 
     .start(function(p){
-      if( p ) assert(false,"data loader failed ("+p+")");
+      if( p ) assert(false,"aw2 loader failed ("+p+")");
     });
 
 };

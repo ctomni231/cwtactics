@@ -20,15 +20,26 @@ cwt.CO = {
   POWER_LEVEL_SCOP: 1,
 
   /**
+   * Modifies the power level of a player.
+   */
+  modifyStarPower: function (player, value) {
+    if (DEBUG) assert(player instanceof cwt.Player);
+
+    player.power += value;
+    if (player.power < 0) player.power = 0;
+  },
+
+  /**
    * Decline activate power action on game modes that aren't AW1-3.
    * Decline activate power action when a player cannot activate the base cop level.
    * Returns `true`when a given player can activate a power level.
+   *
+   * @param player
+   * @param powerType
+   * @return {boolean}
    */
   canActivatePower: function (player,powerType) {
-    if (controller.configValue("co_enabledCoPower") === 0) return false;
-
-    if (cwt.Gameround.gamemode !== cwt.Gameround.GAME_MODE_AW1 &&
-      cwt.Gameround.gamemode !== cwt.Gameround.GAME_MODE_AW2) return false;
+    if (cwt.Config.getValue("co_enabledCoPower") === 0) return false;
 
     if (DEBUG) assert(player instanceof cwt.Player);
     if (DEBUG) assert(powerType >= INACTIVE_ID && powerType <= this.POWER_LEVEL_SCOP);
@@ -44,28 +55,69 @@ cwt.CO = {
         break;
 
       case this.POWER_LEVEL_SCOP:
+        if (cwt.Gameround.gamemode < cwt.Gameround.GAME_MODE_AW2) return false;
         stars = player.coA.scoStars;
         break;
 
       // TODO
     }
 
-    return (player.power >= (this.getStarCost(model.turnOwner) * stars));
+    return (player.power >= (this.getStarCost(player) * stars));
   },
 
   /**
+   * Activates the CO power of a player.
    *
+   * @param {cwt.Player} player
+   * @param level
    */
   activatePower: function (player, level) {
     if (DEBUG) assert(player instanceof cwt.Player);
+    if (DEBUG) assert(level === cwt.CO.POWER_LEVEL_COP || level === cwt.CO.POWER_LEVEL_SCOP);
 
     player.power = 0;
-    player.activePower = 0;
+    player.activePower = level;
     player.powerUsed++;
   },
 
-  // Sets the main CO of a player.
-  //
+  /**
+   * Deactivates the CO power of a player.
+   *
+   * @param {cwt.Player} player
+   */
+  deactivatePower: function (player) {
+    if (DEBUG) assert(player instanceof cwt.Player);
+
+    player.activePower = INACTIVE_ID;
+  },
+
+  /**
+   * Returns the cost for one CO star for a given player.
+   *
+   * @param {cwt.Player} player
+   */
+  getStarCost: function (player) {
+    if (DEBUG) assert(player instanceof cwt.Player);
+
+    var cost = cwt.Config.getValue("co_getStarCost");
+    var used = player.powerUsed;
+
+    // if usage counter is greater than max usage counter then use
+    // only the maximum increase counter for calculation
+    var maxUsed = cwt.Config.getValue("co_getStarCostIncreaseSteps");
+    if (used > maxUsed) used = maxUsed;
+
+    cost += used * cwt.Config.getValue("co_getStarCostIncrease");
+
+    return cost;
+  },
+
+  /**
+   * Sets the main CO of a player.
+   *
+   * @param {cwt.Player} player
+   * @param type
+   */
   setMainCo: function (player, type) {
     if (DEBUG) assert(player instanceof cwt.Player);
 
@@ -76,34 +128,5 @@ cwt.CO = {
 
       player.coA = type;
     }
-  },
-
-  /**
-   * Modifies the power level of a player.
-   */
-  modifyPower: function (player, value) {
-    if (DEBUG) assert(player instanceof cwt.Player);
-
-    player.power += value;
-    if (player.power < 0) player.power = 0;
-  },
-
-  /**
-   * Returns the cost for one CO star for a given player.
-   */
-  getStarCost: function (player) {
-    if (DEBUG) assert(player instanceof cwt.Player);
-
-    var cost = controller.configValue("co_getStarCost");
-    var used = player.timesUsed;
-
-    // if usage counter is greater than max usage counter then use
-    // only the maximum increase counter for calculation
-    var maxUsed = controller.configValue("co_getStarCostIncreaseSteps");
-    if (used > maxUsed) used = maxUsed;
-
-    cost += used * controller.configValue("co_getStarCostIncrease");
-
-    return cost;
   }
 };

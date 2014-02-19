@@ -6,7 +6,7 @@ cwt.gameFlowData.selection = util.scoped(function () {
   var sMap = util.selectionMap(MAX_SELECTION_RANGE * 4 + 1);
 
   // Extension to the selection map. This one prepares the selection
-  // for the current data model.
+  // for the current aw2 model.
   //
   sMap.prepare = function () {
     var target = controller.stateMachine.data.target;
@@ -30,7 +30,7 @@ cwt.gameFlowData.selection = util.scoped(function () {
     var cx = this.centerX;
     var cy = this.centerY;
 
-    // rerender data
+    // rerender aw2
     for (x = 0; x < e; x++) {
       for (y = 0; y < e; y++) {
         if (this.data[x + cx][y + cy] > INACTIVE_ID) view.redraw_markPos(x + cx, y + cy);
