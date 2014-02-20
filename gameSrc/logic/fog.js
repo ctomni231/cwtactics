@@ -1,3 +1,6 @@
+cwt.Config.create("fogEnabled",0,1,1);
+cwt.Config.create("daysOfPeace",0,50,0);
+
 /**
  *
  * @namespace
@@ -35,8 +38,8 @@ cwt.Fog = {
     }
     else {
 
-      var mW = cwt.Gameround.map.width;
-      var mH = cwt.Gameround.map.height
+      var mW = cwt.Map.width;
+      var mH = cwt.Map.height
       var lX;
       var hX;
       var lY = y - range;
@@ -66,7 +69,7 @@ cwt.Fog = {
   },
 
   /**
-   * Completely recalculates the fog data.
+   * Completely recalculates the fog aw2.
    */
   fullRecalculation: function () {
     var x;

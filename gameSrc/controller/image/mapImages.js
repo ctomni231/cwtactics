@@ -8,7 +8,7 @@ util.scoped(function(){
     if( x < 0 || y < 0 ||
        x >= model.map_width || y >= model.map_height ){
       
-      //data[index] = "_";
+      //aw2[index] = "_";
       data[index] = "";
       return;
     }

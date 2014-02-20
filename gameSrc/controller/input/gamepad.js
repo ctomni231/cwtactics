@@ -1,4 +1,4 @@
-new cwt.Input("gamepad",function(){
+cwt.Input.define("gamepad",function(){
 
   // not supported ?
   if( !cwt.ClientFeatures.gamePad ){

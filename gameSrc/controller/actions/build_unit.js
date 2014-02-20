@@ -1,5 +1,4 @@
-controller.action_propertyAction({
-
+cwt.Action.propertyAction({
   key:"buildUnit",
 
   condition: function( data ){
@@ -26,5 +25,4 @@ controller.action_propertyAction({
       data.action.selectedSubEntry
     );
   }
-
 });

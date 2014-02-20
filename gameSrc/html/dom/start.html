@@ -1,71 +1,73 @@
+
+
 <!DOCTYPE HTML>
 <html manifest="cache.manifest" >
 
-  <head>
-    
-    <meta content="yes" 
-          name="apple-mobile-web-app-capable" />
-    
-    <meta name="viewport" 
-          content="width=device-width, 
+<head>
+
+  <meta content="yes"
+        name="apple-mobile-web-app-capable" />
+
+  <meta name="viewport"
+        content="width=device-width,
                    minimal-ui,
                    initial-scale=1.0, 
                    maximum-scale=1, 
                    user-scalable=no" />
 
-    <script >
+  <script >
 
-	  // Check if a new cache is available on page load.
-	  window.addEventListener( 'load', function( e ){
-	  	
-	    var appCache = window.applicationCache;
-	    if( appCache ) {
+    // Check if a new cache is available on page load.
+    window.addEventListener( 'load', function( e ){
 
-	      // update is available
-	      appCache.addEventListener( 'updateready', function( e ){
-	        if( appCache.status === appCache.UPDATEREADY ) {
+      var appCache = window.applicationCache;
+      if( appCache ) {
 
-	          // Browser downloaded a new app cache. Swap it in 
-              // and reload the page to get the new hotness.
-	          appCache.swapCache();
-	          
-	          // Shows the update information panel
-	          document.getElementById("cwt_updatePanel").style.display = "block";
-	          
-	        }
-	      }, false );
+        // update is available
+        appCache.addEventListener( 'updateready', function( e ){
+          if( appCache.status === appCache.UPDATEREADY ) {
 
-	      appCache.addEventListener( 'noupdate', function(){
-	        controller.screenStateMachine.event( 'start' );
-	      }, false );
+            // Browser downloaded a new app cache. Swap it in
+            // and reload the page to get the new hotness.
+            appCache.swapCache();
 
-	      appCache.addEventListener( 'downloading', function(){}, false );
+            // Shows the update information panel
+            document.getElementById("cwt_updatePanel").style.display = "block";
 
-	      appCache.addEventListener( 'progress', function(){}, false );
+          }
+        }, false );
 
-	      // Start when you collected all data
-	      appCache.addEventListener( 'cached', function(){
-	        controller.screenStateMachine.event( 'start' );
-	      }, false );
+        appCache.addEventListener( 'noupdate', function(){
+          controller.screenStateMachine.event( 'start' );
+        }, false );
 
-	      // The manifest returns 404 or 410, the download failed,
-	      // or the manifest changed while the download was in progress.
-	      appCache.addEventListener( 'error', function(){
-	        if(navigator.onLine && confirm( 
+        appCache.addEventListener( 'downloading', function(){}, false );
+
+        appCache.addEventListener( 'progress', function(){}, false );
+
+        // Start when you collected all aw2
+        appCache.addEventListener( 'cached', function(){
+          controller.screenStateMachine.event( 'start' );
+        }, false );
+
+        // The manifest returns 404 or 410, the download failed,
+        // or the manifest changed while the download was in progress.
+        appCache.addEventListener( 'error', function(){
+          if(navigator.onLine && confirm(
               "Could not download the game data into the offline storage. Try to start?" ) ){
-              
-              controller.screenStateMachine.event( 'start' );
-            } else if( !navigator.onLine ) controller.screenStateMachine.event( 'start' );
-	      }, false );
 
-	    }
-	    
-	  }, false );
+            controller.screenStateMachine.event( 'start' );
+          } else if( !navigator.onLine ) controller.screenStateMachine.event( 'start' );
+        }, false );
 
-	</script>
+      }
 
-  </head>
+    }, false );
 
-  <body oncontextmenu="return false;" >
-    <div style="z-index:10; position: absolute;">FRAME DROPS // LOGIC:<span id="DELTA"></span> - GRAPHIC:<span id="DELTA2"></span></div>
-  	<div id="cwt_app" class="gamePanel" >
+  </script>
+
+</head>
+
+<body oncontextmenu="return false;" >
+<div style="z-index:10; position: absolute;">FRAME DROPS // LOGIC:<span id="DELTA"></span> - GRAPHIC:<span id="DELTA2"></span></div>
+<div id="cwt_app" class="gamePanel" >

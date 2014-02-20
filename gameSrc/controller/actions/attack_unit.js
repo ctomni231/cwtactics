@@ -1,11 +1,10 @@
-controller.action_unitAction({
-
+cwt.Action.unitAction({
   key:"attack",
 
   relation:[
     "S", "T",
-    model.player_RELATION_MODES.NONE,
-    model.player_RELATION_MODES.SAME_OBJECT
+    cwt.Player.RELATION_NONE,
+    cwt.Player.RELATION_SAMETHING
   ],
 
   targetSelectionType:"A",
@@ -19,6 +18,8 @@ controller.action_unitAction({
   },
 
   condition: function( data ){
+    if (cwt.Gameround.inPeacePhase()) return false;
+
     return model.events.attack_check(
 
       data.source.unitId,

@@ -9,6 +9,8 @@ cwt.Factory = {
    * a factory, else `false`.
    */
   isFactory: function (property) {
+    if (DEBUG) assert(property instanceof cwt.Property);
+
     return property.type.builds;
   },
 
@@ -17,6 +19,8 @@ cwt.Factory = {
    * and can produce something technically, else `false`.
    */
   canProduce: function (property) {
+    if (DEBUG) assert(property instanceof cwt.Property);
+
     // check manpower
     if (!property.owner || !property.owner.manpower) return false;
 
@@ -37,6 +41,8 @@ cwt.Factory = {
    * must be free to do this.
    */
   buildUnit: function (factory,type) {
+    if (DEBUG) assert(factory instanceof cwt.Property);
+    if (DEBUG) assert(cwt.PropertySheet.isValidSheet(type));
 
     // decrease manpower
     factory.owner.manpower--;

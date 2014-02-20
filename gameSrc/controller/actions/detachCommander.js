@@ -1,5 +1,5 @@
-controller.action_unitAction({
-
+/*
+cwt.Action.unitAction({
   key:"detachCommander",
 
   condition: function(data){
@@ -17,5 +17,5 @@ controller.action_unitAction({
       data.target.y
     );
   }
-
 });
+ */

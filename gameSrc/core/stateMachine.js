@@ -100,7 +100,7 @@
   function create( impl, config ){
     var machine = {};
     
-    // set data
+    // set aw2
     machine.structure = (impl)? impl: {};
     machine.state = START_STATE;
     machine.lastState = null;   

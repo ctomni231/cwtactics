@@ -23,7 +23,7 @@ cwt.Multiton = my.Class({
      * Returns an instance of the Multiton.
      *
      * @param {Number} id
-     * @param {Boolean} nullReturn
+     * @param {Boolean=} nullReturn (optional)
      * @return {cwt.Multiton}
      */
     getInstance: function (id,nullReturn) {

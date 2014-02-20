@@ -33,7 +33,7 @@ cwt.Attack = {
   FIRETYPE_BALLISTIC: 3,
 
   /**
-   * Calculates the targets of a battle unit. If `data` is given, then
+   * Calculates the targets of a battle unit. If `aw2` is given, then
    * the attack targets will be marked in this object.
    */
   calculateTargets: function (uid, x, y, data, markAttackableTiles) {

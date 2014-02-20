@@ -1,5 +1,5 @@
-controller.action_unitAction({
-
+/*
+cwt.Action.unitAction({
   key:"attachCommander",
 
   condition: function(data){
@@ -16,5 +16,5 @@ controller.action_unitAction({
       data.source.unitId
     );
   }
-
 });
+*/

@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html manifest="cache.manifest">
+
+  <head>
+
+    <title>Custom Wars: Tactics</title>
+
+    <meta content="yes"
+          name="apple-mobile-web-app-capable"/>
+
+    <meta name="viewport"
+          content="width=device-width,
+                     minimal-ui,
+                     initial-scale=1.0,
+                     maximum-scale=1,
+                     user-scalable=no"/>
+
+    <style>
+
+      #canvas_layer1,
+      #canvas_layer2,
+      #canvas_layer3 {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+
+      #canvas_layer1 {
+        z-index: 1;
+      }
+
+      #canvas_layer2 {
+        z-index: 2;
+      }
+
+      #canvas_layer3 {
+        z-index: 3;
+      }
+    </style>
+  </head>
+
+  <body oncontextmenu="return false;">
+
+    <!-- Layer 1 : Background -->
+    <canvas id="canvas_layer1"></canvas>
+
+    <!-- Layer 2 : Map -->
+    <canvas id="canvas_layer2"></canvas>
+
+    <!-- Layer 3 : UI Elements -->
+    <canvas id="canvas_layer3"></canvas>
+  </body>
+</html>

@@ -1,4 +1,4 @@
-controller.action_propertyAction({
+cwt.Action.propertyAction({
 
   key:"transferProperty",
 

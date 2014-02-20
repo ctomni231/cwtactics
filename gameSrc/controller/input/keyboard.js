@@ -1,4 +1,4 @@
-new cwt.Input("keyboard",function(){
+cwt.Input.define("keyboard",function(){
 
   // not supported ?
   if( !cwt.ClientFeatures.keyboard ){

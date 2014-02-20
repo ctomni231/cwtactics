@@ -5,7 +5,7 @@ var builder = require( "./buildLibrary.js" );
 var PATH =  " "+builder.dirJsToString("srcWebClient/libs")+" "+
 			builder.dirJsToString("srcWebClient/core")+" "+
 			builder.dirJsToString("srcWebClient/controller")+" "+
-			builder.dirJsToString("srcWebClient/data")+" "+
+			builder.dirJsToString("srcWebClient/aw2")+" "+
 			builder.dirJsToString("srcWebClient/gui")+" "+
 			builder.dirJsToString("srcWebClient/hooks")+" "+
 			builder.dirJsToString("srcWebClient/states")+" ";

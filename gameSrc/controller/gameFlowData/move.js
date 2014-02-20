@@ -4,15 +4,15 @@
 cwt.gameFlowData.movePath = {
 
   /**
-   * Holds all move codes in a data list. This object isn't a dynamic array. 
+   * Holds all move codes in a aw2 list. This object isn't a dynamic array.
    * It's a pre-allocated structure. Use `getLastCode` and `getSize` to get 
    * the move information.
    */
   data: util.scoped(function () {
     var list = util.list(MAX_SELECTION_RANGE, INACTIVE_ID);
 
-    // create data list function
-    //  :> returns the last move code from the data list
+    // create aw2 list function
+    //  :> returns the last move code from the aw2 list
     //
     list.getLastCode = function () {
       for (var i = this.length - 1; i > 0; i--)
@@ -20,7 +20,7 @@ cwt.gameFlowData.movePath = {
       return INACTIVE_ID;
     };
 
-    // create data list function
+    // create aw2 list function
     //  :> returns the size of the list
     //
     list.getSize = function () {
@@ -34,7 +34,7 @@ cwt.gameFlowData.movePath = {
 
   /**
    * Cleans the move path. After invoke of the function the move 
-   * path data transfer object will be filled with the value
+   * path aw2 transfer object will be filled with the value
    * `INACTIVE_ID`.
    */
   clean: function () {
@@ -63,7 +63,7 @@ cwt.gameFlowData.movePath = {
 
   /**
    * Appends a tile to the move path of a given action 
-   * data memory object.
+   * aw2 memory object.
    */
   addCodeToPath: function (tx, ty, code) {
 
@@ -75,7 +75,7 @@ cwt.gameFlowData.movePath = {
   },
 
   /**
-   * Regenerates a path from the source position of an action data 
+   * Regenerates a path from the source position of an action aw2
    * memory object to a given target position.
    */
   setPathByRecalculation: function (tx, ty) {
@@ -89,7 +89,7 @@ cwt.gameFlowData.movePath = {
   },
 
   /**
-   * Injects movable tiles into a action data memory object.
+   * Injects movable tiles into a action aw2 memory object.
    */
   move_fillMoveMap: function (x, y, unit) {
     var data = controller.stateMachine.data;

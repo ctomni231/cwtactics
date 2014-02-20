@@ -20,7 +20,7 @@ controller.roundConfig_typeSelected = util.list( MAX_PLAYER , INACTIVE_ID );
 //
 controller.roundConfig_teamSelected = util.list( MAX_PLAYER , 0 );
 
-// Prepares a new game round by reset the configuration data.
+// Prepares a new game round by reset the configuration aw2.
 //
 controller.roundConfig_prepare     = function(){
   controller.roundConfig_coSelected.resetValues();
@@ -42,8 +42,8 @@ controller.roundConfig_prepare     = function(){
   }
 };
 
-// Evaluates the selected data. The data will be transfered
-// into the model when the data model as whole object is
+// Evaluates the selected aw2. The aw2 will be transfered
+// into the model when the aw2 model as whole object is
 // correct.
 //
 controller.roundConfig_evalAfterwards = function(){
@@ -67,7 +67,7 @@ controller.roundConfig_evalAfterwards = function(){
   for( var i= 0, e=MAX_PLAYER; i<e; i++ ){
     if( controller.roundConfig_typeSelected[i] >= 0 ){
 
-      // game data
+      // game aw2
       model.player_data[i].gold = 0;
 
       // team
@@ -114,7 +114,7 @@ controller.roundConfig_evalAfterwards = function(){
   }
 };
 
-// Changes a parameter of the configuration data.
+// Changes a parameter of the configuration aw2.
 //
 controller.roundConfig_changeConfig = function( pid, type, prev ){
   assert(

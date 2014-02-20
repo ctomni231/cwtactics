@@ -139,14 +139,13 @@ cwt.Team = {
   /**
    *
    */
-  transferToPlayer: function (player) {
-    var prop = model.property_data[sprid];
-    prop.owner = tplid;
+  transferToPlayer: function (property,player) {
+    property.owner = player;
 
     var x;
     var y;
-    var xe = model.map_width;
-    var ye = model.map_height;
+    var xe = cwt.Map.width;
+    var ye = cwt.Map.height;
 
     for (x = 0; x < xe; x++) {
       for (y = 0; y < ye; y++) {

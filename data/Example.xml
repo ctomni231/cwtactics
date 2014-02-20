@@ -24,5 +24,5 @@
             <!-- Graphic (multiple calls to graphics w/ the same attributes randomizes the tiles; w/o the same attributes creates new tiles) -->
 
      </Data>
-     <!-- Data (multiple calls to data changes the type of terrain and terrain name; first one overwrites all others) -->
+     <!-- Data (multiple calls to aw2 changes the type of terrain and terrain name; first one overwrites all others) -->
 </Terrain>

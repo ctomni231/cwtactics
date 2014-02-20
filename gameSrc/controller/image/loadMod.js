@@ -69,7 +69,7 @@ controller.modification_load = util.singleLazyCall( function( err, baton ){
   // create the loading workflow here
   jWorkflow.order()
   
-    // **1.** check stored data
+    // **1.** check stored aw2
     .andThen(function( p,b ){
       b.take();
       controller.storage_general.get( MOD_KEY,function( obj ){
@@ -137,7 +137,7 @@ controller.modification_load = util.singleLazyCall( function( err, baton ){
           });
         }
       } else {
-        util.log("will not caching modification data because being in debug mode");
+        util.log("will not caching modification aw2 because being in debug mode");
       }
     })
 

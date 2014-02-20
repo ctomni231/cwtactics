@@ -21,7 +21,7 @@ controller.loadImages_loadSuccessful_ = function(){
     );
   }
 
-  // delete temporary data in the image object... just to be safe :P
+  // delete temporary aw2 in the image object... just to be safe :P
   delete this.pickey_;
   delete this.baton_;
   delete this.mode_;
@@ -59,7 +59,7 @@ controller.loadImages_prepareImg_ = function(key,path,mode,baton){
 
   var img = new Image();
 
-  // insert some meta data
+  // insert some meta aw2
   img.pickey_ = key;
   img.baton_  = baton;
   img.mode_   = mode;

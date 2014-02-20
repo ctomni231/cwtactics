@@ -1,17 +1,21 @@
-new cwt.Action("wait")
-  .unitAction()
-  .noAutoWait() // wait is already the wait action :P
-  .relation([
+cwt.Action.unitAction({
+  key: "wait",
+
+  relation: [
     "S", "T",
     cwt.Player.RELATION_NONE,
     cwt.Player.RELATION_SAMETHING
-  ])  
-  .condition(function (data) {
-    return cwt.Gameround.canAct(data.source.unitId);
-  })
-  .action(function (data) {
-    controller.commandStack_sharedInvokement(
-      "wait_invoked",
-      data.source.unitId
-    );
-  });
+  ],
+
+  condition: function (data) {
+    return cwt.Gameround.canAct(data.source.unit);
+  },
+
+  toDataBlock: function (data, dataBlock) {
+    dataBlock.p1 = data.source.unitId;
+  },
+
+  parseDataBlock: function (dataBlock) {
+    cwt.Gameround.setActableStatus(dataBlock.p1,false);
+  }
+});

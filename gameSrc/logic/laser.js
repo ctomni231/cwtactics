@@ -7,8 +7,10 @@ cwt.Laser = my.extendClass( cwt.Unit, {
   /**
    * Returns true when the unit is a laser unit, else false.
    */
-  isLaser: function () {
-    return (this.type.ID === "LASER_UNIT_INV");
+  isLaser: function (unit) {
+    if (DEBUG) assert(unit instanceof cwt.Unit);
+
+    return (unit.type.ID === "LASER_UNIT_INV");
   },
 
   /**

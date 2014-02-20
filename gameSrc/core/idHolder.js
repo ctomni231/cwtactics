@@ -5,18 +5,36 @@
 cwt.IdHolder = my.Class({
 
   STATIC: {
-  
+
+    /**
+     *
+     */
     registeredTypes_: {},
-  
+
+    /**
+     *
+     * @param id
+     * @param object
+     */
     registerType: function ( id, object ) {
       if( DEBUG ) assert( !this.registeredTypes_.hasOwnProperty(id) );
       this.registeredTypes_[id] = object;
     },
-    
+
+    /**
+     *
+     * @param id
+     * @returns {boolean}
+     */
     hasType: function ( id ) {
       return this.registeredTypes_.hasOwnProperty(id);
     },
-    
+
+    /**
+     *
+     * @param id
+     * @returns {*}
+     */
     getType: function ( id ) { 
       var obj = this.registeredTypes_[id];
       assert( obj );

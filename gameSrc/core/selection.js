@@ -5,7 +5,7 @@
     var cx = x;
     var cy = y;
 
-    // reset data
+    // reset aw2
     for( x = 0; x < e; x++ ) {
       for( y = 0; y < e; y++ ) {
         this.data[x][y] = defValue;
@@ -120,7 +120,7 @@
   cwt.selectionMap = function( size ){
     var obj = {};
 
-    // meta data
+    // meta aw2
     obj.centerX = 0;
     obj.centerY = 0;
     obj.data = util.matrix( size, size, INACTIVE_ID );

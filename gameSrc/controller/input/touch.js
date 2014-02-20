@@ -1,4 +1,4 @@
-new cwt.Input("touch",function(){
+cwt.Input.define("touch",function(){
 
   // not supported ?
   if( !cwt.ClientFeatures.touch ){

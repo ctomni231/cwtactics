@@ -1,31 +1,40 @@
-controller.action_unitAction({
+cwt.Action.unitAction({
+  key: "silofire",
 
-  key:"silofire",
-
-  relation:[
-    "S","T",
-    model.player_RELATION_MODES.SAME_OBJECT,
-    model.player_RELATION_MODES.NONE
+  relation: [
+    "S", "T",
+    cwt.Player.RELATION_SAMETHING,
+    cwt.Player.RELATION_NONE
   ],
 
-  relationToProp:[
-    "S","T",
-    model.player_RELATION_MODES.NONE
+  relationToProp: [
+    "S", "T",
+    cwt.Player.RELATION_NONE
   ],
 
-  prepareSelection: function( data ){
+  condition: function (data) {
+    if (!cwt.Silo.isRocketSilo(data.target.property)) return false;
+    if (!cwt.Silo.canBeFired(data.target.property, data.source.unit)) return false;
+    return true;
+  },
+
+  prepareSelection: function (data) {
     data.selectionRange = data.target.property.type.rocketsilo.range;
   },
 
-  isTargetValid: function( data, x,y ){
-    return model.events.silofire_validPos( x,y );
+  isTargetValid: function (data, x, y) {
+    return cwt.Silo.canBeFiredTo(data.target.property, x, y);
   },
 
-  condition: function( data ){
-    return model.events.silofire_check( data.target.propertyId, data.source.unitId );
+  toDataBlock: function (data, dataBlock) {
+
   },
 
-  invoke: function( data ){
+  parseDataBlock: function (dataBlock) {
+
+  }
+
+  invoke: function (data) {
     controller.commandStack_sharedInvokement(
       "silofire_invoked",
       data.target.x,

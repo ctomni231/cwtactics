@@ -26,7 +26,7 @@ cwt.Background = {
 
     // add new css for the image with inline image content
     this.cssEl_.innerHTML = ".cwt_page {" +
-        "background-image: url(data:image/jpeg;base64," + base64 + ");" +
+        "background-image: url(aw2:image/jpeg;base64," + base64 + ");" +
         "background-repeat: no-repeat;" +
         "background-position: 0px 45px;" +
         "background-size: 100% calc(100% - 44px);" +

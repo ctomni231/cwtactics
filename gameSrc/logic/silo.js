@@ -10,6 +10,8 @@ cwt.Silo = {
    * has the ability to fire a rocket to a position with an impact.
    */
   isRocketSilo: function (property) {
+    if (DEBUG) assert(property instanceof cwt.Property);
+
     if (!property.type.rocketsilo) return false;
     if (arguments.length === 2) {
       var fuidType = model.unit_data[uid].type.ID;
@@ -26,28 +28,44 @@ cwt.Silo = {
    * Returns true if a property id is a rocket silo. A rocket silo
    * has the ability to fire a rocket to a position with an impact.
    */
-  siloCanBeFired: function (unit) {
+  canBeFired: function (property,unit) {
+    if (DEBUG) assert(unit instanceof cwt.Unit);
+
     if (this.type.rocketsilo.fireable.indexOf(unit.type.ID) === -1) return false;
     return true;
   },
 
   /**
    *
+   * @param property
+   * @param x
+   * @param y
+   * @return {boolean}
    */
-  rocketCanBeFiredTo: function (x, y) {
-    if (!model.map_isValidPosition(x, y)) return false;
+  canBeFiredTo: function (property, x, y) {
+    if (DEBUG) assert(property instanceof cwt.Property);
+
+    if (!cwt.Map.isValidPosition(x, y)) return false;
   },
 
   /**
    * Fires a rocket to a given position (x,y) and inflicts damage to
    * all units in a range around the position.
+   *
+   * @param x
+   * @param y
+   * @param tx
+   * @param ty
+   * @param owner
    */
   fireSilo: function (x, y, tx, ty, owner) {
+    if (DEBUG) assert(property instanceof cwt.Property);
+
     var silo = model.property_posMap[x][y];
     var siloId = model.property_extractId(silo);
     var type = silo.type;
     var range = type.rocketsilo.range;
-    var damage = model.unit_convertPointsToHealth(type.rocketsilo.damage);
+    var damage = cwt.Unit.pointsToHealth(type.rocketsilo.damage);
 
     model.events.property_changeType(siloId, model.data_tileSheets[type.changeTo]);
     model.events.rocketFly(x, y, tx, ty);
