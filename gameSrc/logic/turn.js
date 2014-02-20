@@ -1,10 +1,14 @@
+/**
+ *
+ * @namespace
+ */
 cwt.Turn = {
 
   /**
    * Ends the turn for the current active turn owner.
    */
   next: function () {
-    var pid = this.players.indexOf(this.turnOwner);
+    var pid = cwt.Gameround.turnOwner.id;
     var oid = pid;
     var i, e;
 
@@ -12,15 +16,14 @@ cwt.Turn = {
     pid++;
     while (pid !== oid) {
 
-      if (pid === MAX_PLAYER) {
+      if (pid === cwt.Player.MULTITON_INSTANCES) {
         pid = 0;
 
         // Next day
-        model.round_day++;
-
+        cwt.Gameround.day++;
         cwt.Gameround.weatherLeftDays--;
 
-        var round_dayLimit = controller.configValue("round_dayLimit");
+        var round_dayLimit = cwt.Config.getValue("round_dayLimit");
         if (round_dayLimit > 0 && this.day >= round_dayLimit) {
 
           // TODO
@@ -29,7 +32,7 @@ cwt.Turn = {
       }
 
       // Found next player
-      if (this.players[pid].team !== INACTIVE_ID) break;
+      if (cwt.Player.getInstance(pid).team !== INACTIVE_ID) break;
 
       // Try next player
       pid++;
@@ -40,8 +43,8 @@ cwt.Turn = {
     if (DEBUG) assert(pid !== oid);
 
     // Do end/start turn logic
-    this.endsTurn_(this.players[oid]);
-    this.startsTurn_(this.players[pid]);
+    this.endsTurn_(cwt.Player.getInstance(oid));
+    this.startsTurn_(cwt.Player.getInstance(pid));
   },
 
   /**
@@ -59,41 +62,50 @@ cwt.Turn = {
     this.turnOwner = player;
     if (cwt.Client.isLocal(player)) cwt.Client.lastPlayer = player;
 
-
     // the active client can see what his and all allied objects can see
     // TODO
-    var clTid = model.client_lastPid;
-    for (var i = 0, e = MAX_PLAYER; i < e; i++) {
-      model.fog_visibleClientPids[i] = false;
-      model.fog_visibleTurnOwnerPids[i] = false;
+    var clTid = cwt.Player.activeClientPlayer.team;
+    for (var i = 0, e = cwt.Player.MULTITON_INSTANCES; i < e; i++) {
+      var cPlayer = cwt.Player.getInstance(i);
 
-      if (model.player_data[i].team === INACTIVE_ID) continue;
+      cPlayer.turnOwnerVisible = false;
+      cPlayer.clientVisible = false;
 
-      if (model.player_data[i].team === clTid) model.fog_visibleClientPids[i] = true;
-      if (model.player_data[i].team === toTid) model.fog_visibleTurnOwnerPids[i] = true;
+      // player isn't registered
+      if (cPlayer.team === INACTIVE_ID) continue;
+
+      if (cPlayer.team === clTid) cPlayer.clientVisible = true;
+      if (cPlayer.team === player.team) cPlayer.turnOwnerVisible = true;
     }
 
     // recalculate fog
-    this.fog.fullRecalculation();
+    cwt.Fog.fullRecalculation();
+
+    // *******************************************************
 
     // Do turn start stuff for all **properties**
-    for (i = 0, e = MAX_PROPERTIES; i < e; i++) {
-      if (model.property_data[i].owner !== player) continue;
+    for (i = 0, e = cwt.Property.MULTITON_INSTANCES; i < e; i++) {
+      if (cwt.Property.getInstance(i).owner !== player) continue;
 
 
     }
+
+    // *******************************************************
 
     // Do turn start stuff for all **units**
-    for (var i = 0, e = MAX_UNITS_PER_PLAYER; i < e; i++) {
-
+    for (var i = 0, e = cwt.Unit.MULTITON_INSTANCES; i < e; i++) {
       cwt.Gameround.actors[i] = (model.unit_data[i].owner !== INACTIVE_ID);
+
+
     }
+
+    // *******************************************************
 
     // Do host only actions
     if (cwt.Network.isHost()) {
 
       // Generate new weather
-      if (this.weatherLeftDays === 0) {
+      if (cwt.Gameround.weatherLeftDays === 0) {
 
       }
 

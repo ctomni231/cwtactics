@@ -3,19 +3,19 @@ cwt.Action.unitAction({
 
   relation:[
     "S","T",
-    cwt.Player.RELATION_SAMETHING
+    cwt.Relationship.RELATION_SAMETHING
   ],
 
   condition: function( data ){
-    return model.events.fireLaser_check( data.target.unitId );
+    return cwt.Laser.isLaser(data.target.unit);
   },
 
-  invoke: function( data ){
-    controller.commandStack_sharedInvokement(
-      "bombs_fireLaser",
-      data.target.x,
-      data.target.y
-    );
-  }
+  toDataBlock: function (data, dataBlock) {
+    dataBlock.p1 = data.target.x;
+    dataBlock.p2 = data.target.y;
+  },
 
+  parseDataBlock: function (dataBlock) {
+    cwt.Laser.fireLaser(dataBlock.p1,dataBlock.p2);
+  }
 });

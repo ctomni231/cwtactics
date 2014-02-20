@@ -1,5 +1,5 @@
 /**
- * @class
+ * @namespace
  */
 cwt.Map = {
 

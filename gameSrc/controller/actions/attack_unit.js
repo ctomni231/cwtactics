@@ -3,8 +3,8 @@ cwt.Action.unitAction({
 
   relation:[
     "S", "T",
-    cwt.Player.RELATION_NONE,
-    cwt.Player.RELATION_SAMETHING
+    cwt.Relationship.RELATION_NONE,
+    cwt.Relationship.RELATION_SAMETHING
   ],
 
   targetSelectionType:"A",

@@ -4,7 +4,7 @@ cwt.Action.propertyAction({
 
   relationToProp:[
     "S","T",
-    model.player_RELATION_MODES.SAME_OBJECT
+    cwt.Relationship.RELATION_SAMETHING
   ],
 
   condition: function( data  ){

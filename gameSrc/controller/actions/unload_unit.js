@@ -4,8 +4,8 @@ cwt.Action.unitAction({
 
   relation:[
     "S","T",
-    model.player_RELATION_MODES.SAME_OBJECT,
-    model.player_RELATION_MODES.NONE
+    cwt.Relationship.RELATION_SAMETHING,
+    cwt.Relationship.RELATION_NONE
   ],
 
   condition: function( data ){

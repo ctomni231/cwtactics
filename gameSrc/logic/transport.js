@@ -25,21 +25,12 @@ cwt.Transport = {
   hasLoads: function (unit) {
     if (DEBUG) assert(unit instanceof cwt.Unit);
 
-    var pid = model.unit_data[tid].owner;
-    for (var i = model.unit_firstUnitId(pid),
-           e = model.unit_lastUnitId(pid); i < e; i++) {
-
-      if (i !== tid) {
-        var unit = model.unit_data[i];
-        if (unit !== null && unit.loadedIn === tid) return true;
-      }
+    for (var i = 0, e = cwt.Unit.MULTITON_INSTANCES; i < e; i++) {
+      var cUnit = cwt.Unit.getInstance(i);
+      if (cUnit.owner && unit.loadedIn === cUnit) return true;
     }
 
-    assert(model.unit_isValidUnitId(lid));
-    assert(model.unit_isValidUnitId(tid));
-    assert(lid !== tid);
-
-    return model.unit_data[lid].loadedIn === tid;
+    return false;
   },
 
   /**
@@ -51,20 +42,10 @@ cwt.Transport = {
   canLoadUnit: function (transporter, load) {
     if (DEBUG) assert(transporter instanceof cwt.Unit);
     if (DEBUG) assert(load instanceof cwt.Unit);
+    if (DEBUG) assert(load !== transporter);
 
-    assert(model.unit_isValidUnitId(lid));
-    assert(model.unit_isValidUnitId(tid));
-    assert(tid !== lid);
-
-    var transporter = model.unit_data[tid];
-    var load = model.unit_data[lid];
-
-    assert(model.transport_isTransportUnit(tid));
-    assert(load.loadedIn !== tid);
-
-    // `loadedIn` of transporter units marks the amount of loads
-    // `LOADS = (LOADIN + 1) + MAX_LOADS`
-    if (transporter.loadedIn + transporter.type.maxloads + 1 === 0) return false;
+    if (DEBUG) assert(this.isTransportUnit(transporter));
+    if (DEBUG) assert(load.loadedIn !== transporter);
 
     return (transporter.type.canload.indexOf(load.type.movetype) !== -1);
   },
@@ -79,8 +60,7 @@ cwt.Transport = {
     if (DEBUG) assert(load instanceof cwt.Unit);
     if (DEBUG) assert(this.isTransportUnit(transporter));
 
-    transporter.loadedIn = tuid;
-    load.loadedIn--;
+    load.loadedIn = transporter;
   },
 
   /**
@@ -133,9 +113,8 @@ cwt.Transport = {
    * @param y
    * @return {*}
    */
-  canUnloadSomethingAt: function (uid, x, y) {
-    var loader = model.unit_data[uid];
-    var pid = loader.owner;
+  canUnloadSomethingAt: function (transpoter, x, y) {
+    var pid = transpoter.owner;
     var unit;
 
     // only transporters with loads can unload things

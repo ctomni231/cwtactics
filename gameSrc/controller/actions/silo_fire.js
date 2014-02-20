@@ -3,8 +3,8 @@ cwt.Action.unitAction({
 
   relation: [
     "S", "T",
-    cwt.Player.RELATION_SAMETHING,
-    cwt.Player.RELATION_NONE
+    cwt.Relationship.RELATION_SAMETHING,
+    cwt.Relationship.RELATION_NONE
   ],
 
   relationToProp: [
@@ -27,21 +27,18 @@ cwt.Action.unitAction({
   },
 
   toDataBlock: function (data, dataBlock) {
-
+    dataBlock.p1 = data.source.x;
+    dataBlock.p2 = data.source.y;
+    dataBlock.p3 = data.targetselection.x;
+    dataBlock.p4 = data.targetselection.y;
+    dataBlock.p5 = data.source.unit.owner.id;
   },
 
   parseDataBlock: function (dataBlock) {
-
-  }
-
-  invoke: function (data) {
-    controller.commandStack_sharedInvokement(
-      "silofire_invoked",
-      data.target.x,
-      data.target.y,
-      data.targetselection.x,
-      data.targetselection.y,
-      data.source.unit.owner
+    cwt.Silo.fireSilo(
+      dataBlock.p1,dataBlock.p2,
+      dataBlock.p3,dataBlock.p4,
+      cwt.Player.getInstance(dataBlock.p5)
     );
   }
 });

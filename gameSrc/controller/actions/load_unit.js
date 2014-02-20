@@ -3,7 +3,7 @@ cwt.Action.unitAction({
 
   relation: [
     "S","T",
-    cwt.Player.RELATION_OWN
+    cwt.Relationship.RELATION_OWN
   ],
 
   condition: function( data ){

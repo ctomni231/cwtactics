@@ -4,57 +4,46 @@
 cwt.Client = {
 
   /**
-   * Contains all player instances that will be controlled by the local
-   * client including AI instances.
-   */
-  instances: null,
-
-  /**
-   * The `pid` of the last active local player.
-   */
-  lastPlayer: null,
-
-  /**
-   * Visible tiles for the client.
-   */
-  fog: new cwt.Fog(),
-
-  /**
    * Returns `true` when the given `pid` is controlled by the active client.
    */
   isLocal: function (player) {
     if (DEBUG) assert(player instanceof cwt.Player);
-    return this.instances[pid] === true;
+
+    return this.clientControlled;
   },
 
   /**
-   * Deregisters all players.
+   * De-Registers all players.
    */
-  deregisterClientPlayers: function () {
-    this.instances.resetValues();
-  },
-
-  /**
-   * Registers a player `pid` as local player.
-   */
-  registerClientPlayer: function (pid) {
-    assert(model.player_isValidPid(pid));
-
-    this.instances[pid] = true;
-
-    // set at least one player id
-    if( this.lastPlayer === -1 ) this.lastPlayer = pid;
-
-    return true;
+  deRegisterClientPlayers: function () {
+    for (var i = 0, e = cwt.Player.MULTITON_INSTANCES; i < e; i++) {
+      this.deRegisterClientPlayer(cwt.Player.getInstance(i));
+    }
   },
 
   /**
    * Registers a player `pid` as local player.
    */
-  deregisterClientPlayer: function (pid) {
-    this.instances[pid] = false;
-    return true;
+  registerClientPlayer: function (player) {
+    if (DEBUG) assert(player instanceof cwt.Player);
+
+    player.clientControlled = false;
+    if (cwt.Player.activeClientPlayer) {
+      cwt.Player.activeClientPlayer = player;
+    }
+  },
+
+  /**
+   * Registers a player `pid` as local player.
+   */
+  deRegisterClientPlayer: function (player) {
+    if (DEBUG) assert(player instanceof cwt.Player);
+
+    player.clientControlled = false;
+    player.clientVisible = false;
+    if (cwt.Player.activeClientPlayer === player) {
+      cwt.Player.activeClientPlayer = null;
+    }
   }
-
 
 };

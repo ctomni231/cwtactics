@@ -33,7 +33,7 @@ cwt.Weather = {
     }
 
     cwt.Gameround.weatherLeftDays = duration;
-    this.changeWeather(newTp);
+    this.changeWeather(newTp);       // TODO : send message here
   },
 
   /**
@@ -44,9 +44,8 @@ cwt.Weather = {
 
     cwt.Gameround.weather = weather;
 
-    // recalculate fog map for client and turn owner due
-    // possible weather effects
-    this.fog.fullRecalculation();
-    cwt.Client.fog.fullRecalculation();
+    // recalculate fog map for client and turn
+    // owner due possible weather effects
+    cwt.Fog.fullRecalculation();
   }
 };

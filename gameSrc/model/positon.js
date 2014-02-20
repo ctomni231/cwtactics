@@ -3,7 +3,7 @@
  *
  * @class
  */
-cwt.Position = my.Class({
+cwt.Position = my.Class( /** @lends cwt.Position.prototype */ {
 
   /**
    * Cleans all aw2 of the object.

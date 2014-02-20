@@ -1,9 +1,9 @@
 /**
  * @class
  */
-cwt.Config = my.Class({
+cwt.Config = my.Class( /** @lends cwt.Config.prototype */ {
   
-  STATIC:{
+  STATIC: /** @lends cwt.Config */ {
     
     /**
      * Holds all registered configuration parameters.

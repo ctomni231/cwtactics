@@ -1,22 +1,16 @@
 /**
  * @class
  */
-cwt.Player = my.Class(null,cwt.Multiton,{
+cwt.Player = my.Class(null,cwt.Multiton, /** @lends cwt.Player.prototype */ {
 
-  STATIC: {
+  STATIC: /** @lends cwt.Player */ {
 
     /**
      * Maximum number of instances.
      */
     MULTITON_INSTANCES: 4,
 
-    RELATION_SAMETHING:-1,
-    RELATION_NONE:0,
-    RELATION_OWN:1,
-    RELATION_ALLIED:2,
-    RELATION_TEAM:3,
-    RELATION_ENEMY:4,
-    RELATION_NULL:5,
+    activeClientPlayer: null,
 
     /**
      * Number of maximum units per player.
@@ -39,6 +33,7 @@ cwt.Player = my.Class(null,cwt.Multiton,{
     this.unitSlotFree = INACTIVE_ID;
 
     this.turnOwnerVisible = false;
+    this.clientControlled = false;
     this.clientVisible = false;
   },
 

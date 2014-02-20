@@ -1,6 +1,16 @@
+/**
+ *
+ * @namespace
+ */
 cwt.Relationship = {
 
-
+  RELATION_SAMETHING:-1,
+  RELATION_NONE:0,
+  RELATION_OWN:1,
+  RELATION_ALLIED:2,
+  RELATION_TEAM:3,
+  RELATION_ENEMY:4,
+  RELATION_NULL:5,
 
   /**
    * Returns true if there is an unit with a given relationship on a tile

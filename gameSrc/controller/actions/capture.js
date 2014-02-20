@@ -3,14 +3,14 @@ cwt.Action.unitAction({
 
   relation: [
     "S", "T",
-    cwt.Player.RELATION_SAMETHING,
-    cwt.Player.RELATION_NONE
+    cwt.Relationship.RELATION_SAMETHING,
+    cwt.Relationship.RELATION_NONE
   ],
 
   relationToProp: [
     "S", "T",
-    cwt.Player.RELATION_ENEMY,
-    cwt.Player.RELATION_NONE
+    cwt.Relationship.RELATION_ENEMY,
+    cwt.Relationship.RELATION_NONE
   ],
 
   condition: function (data) {

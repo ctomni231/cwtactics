@@ -59,17 +59,20 @@ cwt.Silo = {
    * @param owner
    */
   fireSilo: function (x, y, tx, ty, owner) {
+    var silo = cwt.Map.data[x][y].property;
+
     if (DEBUG) assert(property instanceof cwt.Property);
 
-    var silo = model.property_posMap[x][y];
-    var siloId = model.property_extractId(silo);
     var type = silo.type;
-    var range = type.rocketsilo.range;
-    var damage = cwt.Unit.pointsToHealth(type.rocketsilo.damage);
+    var targetType = cwt.PropertySheet.sheets[type.changeTo];
 
-    model.events.property_changeType(siloId, model.data_tileSheets[type.changeTo]);
-    model.events.rocketFly(x, y, tx, ty);
-    model.events.explode_invoked(tx, ty, range, damage, owner);
+    cwt.ClientEvents.propertyTypeChanged(silo,silo.type,targetType);
+    silo.type = targetType;
+
+    // var damage = cwt.Unit.pointsToHealth(type.rocketsilo.damage);
+    // var range = type.rocketsilo.range;
+    //model.events.rocketFly(x, y, tx, ty);
+    //model.events.explode_invoked(tx, ty, range, damage, owner);
   }
 
 };

@@ -2,9 +2,11 @@
  *
  * @class
  */
-cwt.Tile = my.Class( /* @lends cwt.Tile */ {
+cwt.Tile = my.Class( /** @lends cwt.Tile.property */ {
 
   constructor: function () {
+
+    this.type = null;
 
     /**
      * @type {cwt.Unit}

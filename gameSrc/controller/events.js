@@ -26,6 +26,10 @@ cwt.ClientEvents = {
 
   propertyCaptured: function (property,capturer) {
 
+  },
+
+  propertyTypeChanged: function (property,typeOld,typeNew) {
+
   }
 
 };

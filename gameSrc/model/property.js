@@ -2,9 +2,9 @@
  * @class
  * @extends cwt.Multiton
  */
-cwt.Property = my.Class(null,cwt.Multiton, {
+cwt.Property = my.Class(null,cwt.Multiton, /** @lends cwt.Property.prototype */ {
 
-  STATIC: {
+  STATIC: /** @lends cwt.Property */ {
 
     /**
      * Number of maximum properties.

@@ -8,38 +8,29 @@ cwt.Config.create("daysOfPeace",0,50,0);
 cwt.Fog = {
 
   /**
-   * Modifies a visioner at a given position and player id.
+   * Modifies a vision at a given position and player id.
    */
-  modifyVision_: function (x, y, pid, range, value) {
-    if (pid === INACTIVE_ID) return; // ignore neutral objects
+  modifyVision_: function (x, y, owner, range, value) {
+
+    // ignore neutral objects
+    if (owner.team === INACTIVE_ID) return;
 
     if (cwt.Config.getValue("fogEnabled") !== 1) return;
 
-    assert(model.map_isValidPosition(x, y));
-    // assert( model.player_isValidPid(pid) );
-    assert(util.isInt(range) && range >= 0);
+    var clientVisible = owner.clientVisible;
+    var turnOwnerVisible = owner.turnOwnerVisible;
 
-    controller.prepareTags(x, y);
-
-    // only real visioners ( units and radar properties ) can
-    // alter the vision value via rules
-    if (range > 0) range = controller.scriptedValue(pid, "vision", range);
-
-    var clientVisible = cwt.Gameround.fog.pids[pid];
-    var turnOwnerVisible = cwt.Gameround.fog.pids[pid];
-
-    // no active player owns this visioner
+    // no active player owns this vision
     if (!clientVisible && !turnOwnerVisible) return;
 
+    var map = cwt.Map.data;
     if (range === 0) {
+      if (clientVisible)    map[x][y].visionClient += value;
+      if (turnOwnerVisible) map[x][y].visionTurnOwner += value;
 
-      if (clientVisible)    cwt.Client.fog.data[x][y] += value;
-      if (turnOwnerVisible) cwt.Gameround.fog.data[x][y] += value;
-    }
-    else {
-
+    } else {
       var mW = cwt.Map.width;
-      var mH = cwt.Map.height
+      var mH = cwt.Map.height;
       var lX;
       var hX;
       var lY = y - range;
@@ -56,13 +47,11 @@ cwt.Fog = {
         if (hX >= mW) hX = mW - 1;
         for (; lX <= hX; lX++) {
 
-          // if( DEBUG ) util.log( "(",lX,",",lY,") changed fog by (",value,")" );
+          // does the tile block vision ?
+          if (map[lX][lY].type.blocksVision && cwt.Map.getDistance(x, y, lX, lY) > 1) continue;
 
-          if (model.map_data[lX][lY].blocksVision &&
-            model.map_getDistance(x, y, lX, lY) > 1) continue;
-
-          if (clientVisible)    cwt.Client.fog.data[lX][lY] += value;
-          if (turnOwnerVisible) cwt.Gameround.fog.data[lX][lY] += value;
+          if (clientVisible)    map[lX][lY].visionClient += value;
+          if (turnOwnerVisible) map[lX][lY].visionTurnOwner += value;
         }
       }
     }
@@ -74,45 +63,50 @@ cwt.Fog = {
   fullRecalculation: function () {
     var x;
     var y;
-    var xe = cwt.Gameround.map.width;
-    var ye = cwt.Gameround.map.height;
+    var xe = cwt.Map.width;
+    var ye = cwt.Map.height;
     var fogEnabled = (cwt.Config.getValue("fogEnabled") === 1);
+    var map = cwt.Map.data;
 
     // 1. reset fog maps
     for (x = 0; x < xe; x++) {
       for (y = 0; y < ye; y++) {
 
         if (!fogEnabled) {
-          cwt.Gameround.fog.data[x][y] = 1;
-          cwt.Client.fog.data[x][y] = 1;
-        }
-        else {
-          cwt.Gameround.fog.data[x][y] = 0;
-          cwt.Client.fog.data[x][y] = 0;
+          map[x][y].visionTurnOwner = 1;
+          map[x][y].visionClient = 1;
+        } else {
+          map[x][y].visionTurnOwner = 0;
+          map[x][y].visionClient = 0;
         }
       }
     }
 
-    // 2. add vision objects
+    // 2. add vision-object
     if (fogEnabled) {
       var vision;
+      var unit;
+      var tile;
+      var property;
+
       for (x = 0; x < xe; x++) {
         for (y = 0; y < ye; y++) {
+          tile = map[x][y];
 
-          var unit = model.unit_posData[x][y];
+          unit = tile.unit;
           if (unit !== null) {
             vision = unit.type.vision;
             if (vision < 0) vision = 0;
 
-            model.events.modifyVisionAt(x, y, unit.owner, vision, 1);
+            this.modifyVision_(x, y, unit.owner, vision, 1);
           }
 
-          var property = model.property_posMap[x][y];
+          property = tile.property;
           if (property !== null) {
             vision = property.type.vision;
             if (vision < 0) vision = 0;
 
-            model.events.modifyVisionAt(x, y, property.owner, vision, 1);
+            this.modifyVision_(x, y, property.owner, vision, 1);
           }
         }
       }
@@ -120,16 +114,16 @@ cwt.Fog = {
   },
 
   /**
-   * Removes a visioner from the fog map.
+   * Removes a vision-object from the fog map.
    */
-  removeVisioner: function (x, y, pid, range) {
-    this.modifyVision_(x, y, pid, range, +1);
+  removeVision: function (x, y, owner, range) {
+    this.modifyVision_(x, y, owner, range, +1);
   },
 
   /**
-   * Adds a visioner from the fog map.
+   * Adds a vision-object from the fog map.
    */
-  addVisioner: function (x, y, range) {
-    this.modifyVision_(x, y, pid, range, -1);
+  addVision: function (x, y, owner, range) {
+    this.modifyVision_(x, y, owner, range, -1);
   }
 };

@@ -2,7 +2,7 @@
  *
  * @namespace
  */
-cwt.Laser = my.extendClass( cwt.Unit, {
+cwt.Laser = my.extendClass(cwt.Unit, {
 
   /**
    * Returns true when the unit is a laser unit, else false.
@@ -17,33 +17,29 @@ cwt.Laser = my.extendClass( cwt.Unit, {
    * Fires a laser at a given position.
    */
   fireLaser: function (x, y) {
-    var prop = model.property_posMap[x][y];
-    assert(prop);
+    var map = cwt.Map.data;
+
+    var prop = map[x][y].property;
+    if (DEBUG) assert(prop);
 
     var ox = x;
     var oy = y;
-    var pid = prop.owner;
+    var owner = prop.owner;
 
     // check all tiles on the map
-    for (var x = 0, xe = model.map_width; x < xe; x++) {
-      for (var y = 0, ye = model.map_height; y < ye; y++) {
+    for (var x = 0, xe = cwt.Map.width; x < xe; x++) {
+      for (var y = 0, ye = cwt.Map.height; y < ye; y++) {
 
         // every tile on the cross ( same y or x coordinate ) will be damaged
         if (ox === x || oy === y) {
 
-          var unit = model.unit_posData[x][y];
-          if (unit && unit.owner !== pid) {
-            model.events.damageUnit(
-              model.unit_extractId(unit),
-              model.unit_convertPointsToHealth(prop.type.laser.damage),
-              9
-            );
+          var unit = map[x][y].unit;
+          if (unit && unit.owner !== owner) {
+            unit.takeDamage(cwt.Unit.pointsToHealth(prop.type.laser.damage),9);
           }
         }
-
       }
     }
-
   }
 
 });

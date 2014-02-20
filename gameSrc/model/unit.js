@@ -3,9 +3,9 @@
  * @class
  * @extends cwt.Multiton
  */
-cwt.Unit = my.Class(null,cwt.Multiton,{
+cwt.Unit = my.Class(null,cwt.Multiton, /** @lends cwt.Unit.prototype */ {
 
-  STATIC: {
+  STATIC: /** @lends cwt.Unit */ {
 
     /**
      * Maximum number of unit objects for the whole game.
