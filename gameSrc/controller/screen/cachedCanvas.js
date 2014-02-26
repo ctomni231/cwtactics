@@ -27,3 +27,61 @@ cwt.CachedCanvas = my.Class( /** @lends cwt.CachedCanvas */ {
   }
 
 });
+
+/*
+
+
+var renderTileMap = function (layer) {
+  var map = cwt.Map.data;
+  
+  var lx;
+  var rx;
+  var uy;
+  var dy;
+  for (var xi = ly, xe = ry; xi<=xe; xi++) {
+    for (var yi = uy, ye = dy; yi<=ye; yi++) {
+      var tile = map[xi][yi];
+      
+      if (tile.property) {
+        cwt.Draw.drawTile(xi,yi,tile);
+      } else {
+          if (tile.visionClient === 0) {
+              cwt.Draw.drawProperty(xi,yi,tile);
+          } else {
+              cwt.Draw.drawPropertyGray(xi,yi,tile.property);
+          }
+      }
+    }
+  }
+};
+
+var renderFogMap = function () {
+  var map = cwt.Map.data;
+  
+  var lx;
+  var rx;
+  var uy;
+  var dy;
+  for (var xi = ly, xe = ry; xi<=xe; xi++) {
+    for (var yi = uy, ye = dy; yi<=ye; yi++) {
+      
+    }
+  }
+};
+
+var renderUnitMap = function () {
+  var map = cwt.Map.data;
+  
+  var lx;
+  var rx;
+  var uy;
+  var dy;
+  for (var xi = ly, xe = ry; xi<=xe; xi++) {
+    for (var yi = uy, ye = dy; yi<=ye; yi++) {
+      
+    }
+  }
+};
+
+
+*/
