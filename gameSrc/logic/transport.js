@@ -13,7 +13,7 @@ cwt.Transport = {
   isTransportUnit: function (unit) {
     if (DEBUG) assert(unit instanceof cwt.Unit);
 
-    return typeof unit.type.maxloads === "number";
+    return (typeof unit.type.maxloads === "number");
   },
 
   /**
@@ -26,24 +26,26 @@ cwt.Transport = {
     if (DEBUG) assert(unit instanceof cwt.Unit);
 
     for (var i = 0, e = cwt.Unit.MULTITON_INSTANCES; i < e; i++) {
-      var cUnit = cwt.Unit.getInstance(i);
-      if (cUnit.owner && unit.loadedIn === cUnit) return true;
+      var cUnit = cwt.Unit.getInstance(i,true);
+      if (cUnit && unit.loadedIn === cUnit) return true;
     }
 
     return false;
   },
 
   /**
-   * Returns true if a tranporter with id tid can load the unit with the id lid.
+   * Returns true if a transporter with id tid can load the unit with the id lid.
    * This function also calculates the resulting weight if the transporter would
-   * load the unit. If the calculated weight is greater than the maxiumum loadable
+   * load the unit. If the calculated weight is greater than the maximum loadable
    * weight false will be returned.
+   *
+   * @param {cwt.Unit} transporter
+   * @param {cwt.Unit} load
    */
   canLoadUnit: function (transporter, load) {
     if (DEBUG) assert(transporter instanceof cwt.Unit);
     if (DEBUG) assert(load instanceof cwt.Unit);
     if (DEBUG) assert(load !== transporter);
-
     if (DEBUG) assert(this.isTransportUnit(transporter));
     if (DEBUG) assert(load.loadedIn !== transporter);
 
@@ -53,7 +55,8 @@ cwt.Transport = {
   /**
    * Loads the unit with id lid into a transporter with the id tid.
    *
-   * @param loid
+   * @param {cwt.Unit} transporter
+   * @param {cwt.Unit} load
    */
   load: function (transporter, load) {
     if (DEBUG) assert(transporter instanceof cwt.Unit);

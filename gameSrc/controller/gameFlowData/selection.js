@@ -31,8 +31,8 @@ cwt.gameFlowData.selection = util.scoped(function () {
     var cy = this.centerY;
 
     // rerender aw2
-    for (x = 0; x < e; x++) {
-      for (y = 0; y < e; y++) {
+    for (var x = 0; x < e; x++) {
+      for (var y = 0; y < e; y++) {
         if (this.data[x + cx][y + cy] > INACTIVE_ID) view.redraw_markPos(x + cx, y + cy);
       }
     }

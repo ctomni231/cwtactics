@@ -33,7 +33,7 @@ cwt.Tile = my.Class( /** @lends cwt.Tile.property */ {
    *
    * @return {boolean}
    */
-  isOccupied:  function () {
+  isOccupied: function () {
     return this.unit !== null;
   },
 

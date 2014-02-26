@@ -12,23 +12,27 @@ cwt.ClientEvents = {
 
   },
 
-  goldChange: function ( player, money, x,y ) {
+  goldChange: function (player, money, x, y) {
     // Play a money down animation
   },
 
-  unitDestroyed: function ( unit ) {
+  unitCreated: function (x, y, unit) {
 
   },
 
-  unitCaptures: function (property,capturer) {
+  unitDestroyed: function (x, y, unit) {
 
   },
 
-  propertyCaptured: function (property,capturer) {
+  unitCaptures: function (property, capturer) {
 
   },
 
-  propertyTypeChanged: function (property,typeOld,typeNew) {
+  propertyCaptured: function (property, capturer) {
+
+  },
+
+  propertyTypeChanged: function (property, typeOld, typeNew) {
 
   }
 

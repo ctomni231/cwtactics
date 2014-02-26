@@ -3,7 +3,7 @@
  * @class
  * @extends cwt.Multiton
  */
-cwt.Unit = my.Class(null,cwt.Multiton, /** @lends cwt.Unit.prototype */ {
+cwt.Unit = my.Class(null, cwt.Multiton, /** @lends cwt.Unit.prototype */ {
 
   STATIC: /** @lends cwt.Unit */ {
 
@@ -45,6 +45,24 @@ cwt.Unit = my.Class(null,cwt.Multiton, /** @lends cwt.Unit.prototype */ {
      */
     healthToPointsRest: function (health) {
       return health - (parseInt(health / 10) + 1);
+    },
+
+    /**
+     * Counts the number of units of a player.
+     *
+     * @param player
+     * @return {number}
+     */
+    countUnitsOfPlayer: function (player) {
+      var n = 0;
+      for (var i = 0, e = cwt.Unit.MULTITON_INSTANCES; i < e; i++) {
+        var unit = cwt.Unit.getInstance(i, false);
+        if (unit && unit.owner === player) {
+          n++;
+        }
+      }
+
+      return n;
     }
 
   },
@@ -57,6 +75,7 @@ cwt.Unit = my.Class(null,cwt.Multiton, /** @lends cwt.Unit.prototype */ {
     this.loadedIn = INACTIVE_ID;
 
     this.type = null;
+    this.canAct = false;
 
     /**
      * If the value is null then unit does not exists on the map.
@@ -64,6 +83,10 @@ cwt.Unit = my.Class(null,cwt.Multiton, /** @lends cwt.Unit.prototype */ {
      * @type {cwt.Player}
      */
     this.owner = null;
+  },
+
+  initByType: function (type) {
+
   },
 
   /**

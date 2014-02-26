@@ -7,19 +7,23 @@ cwt.Action.unitAction({
   ],
 
   condition: function( data ){
-    return model.events.transferUnit_check(data.source.unitId);
+    return cwt.Team.canTransferUnit(data.source.unit);
   },
 
   hasSubMenu: true,
   prepareMenu: function( data ){
-    model.events.transferUnit_addEntries(data.source.unit.owner, data.menu);
+    cwt.Team.getUnitTransferTargets(data.source.unit.owner, data.menu);
   },
 
-  invoke: function( data ){
-    controller.commandStack_sharedInvokement(
-      "transferUnit_invoked",
-      data.source.unitId,
-      data.action.selectedSubEntry
+  toDataBlock: function (data, dataBlock) {
+    dataBlock.p1 = data.source.unitId,
+    dataBlock.p2 = data.selectedSubEntry;
+  },
+
+  parseDataBlock: function (dataBlock) {
+    cwt.Team.transferUnitToPlayer(
+      /** @type {cwt.Unit} */ cwt.Unit.getInstance(dataBlock.p1),
+      /** @type {cwt.Player} */ cwt.Player.getInstance(dataBlock.p2)
     );
   }
 

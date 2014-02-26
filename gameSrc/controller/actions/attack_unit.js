@@ -1,45 +1,46 @@
 cwt.Action.unitAction({
-  key:"attack",
+  key: "attack",
 
-  relation:[
+  relation: [
     "S", "T",
     cwt.Relationship.RELATION_NONE,
     cwt.Relationship.RELATION_SAMETHING
   ],
 
-  targetSelectionType:"A",
-  prepareTargets: function( data ){
-    model.battle_calculateTargets(
-      data.source.unitId,
-      data.target.x,
-      data.target.y,
-      data.selection
-    );
-  },
-
-  condition: function( data ){
+  condition: function (data) {
     if (cwt.Gameround.inPeacePhase()) return false;
 
-    return model.events.attack_check(
-
-      data.source.unitId,
+    return cwt.Attack.hasTargets(
+      data.source.unit,
       data.target.x,
       data.target.y,
       data.movePath.data[0] !== INACTIVE_ID
     );
   },
 
-  invoke: function( data ){
-    if( data.targetselection.unitId !== -1 ){
-      controller.commandStack_sharedInvokement(
-        "attack_invoked",
-        data.source.unitId,
-        data.targetselection.unitId,
-        Math.round( Math.random()*100 ),
-        Math.round( Math.random()*100 ),
-        0
-      );
-    }
-    else assert(false,"no valid target");
+  targetSelectionType: "A",
+  prepareTargets: function (data) {
+    cwt.Attack.calculateTargets(
+      data.source.unit,
+      data.target.x,
+      data.target.y,
+      data.selection
+    );
+  },
+
+  toDataBlock: function (data, dataBlock) {
+    dataBlock.p1 = data.source.unitId;
+    dataBlock.p2 = data.targetselection.unitId;
+    dataBlock.p3 = Math.round(Math.random() * 100);
+    dataBlock.p4 = Math.round(Math.random() * 100);
+  },
+
+  parseDataBlock: function (dataBlock) {
+    cwt.Attack.attack(
+      /** @type {cwt.Unit} */ cwt.Unit.getInstance(dataBlock.p1),
+      /** @type {cwt.Unit} */ cwt.Unit.getInstance(dataBlock.p2),
+      dataBlock.p3,
+      dataBlock.p4
+    );
   }
 });

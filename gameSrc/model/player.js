@@ -30,7 +30,7 @@ cwt.Player = my.Class(null,cwt.Multiton, /** @lends cwt.Player.prototype */ {
     this.coA = null;
 
     // use a variable for performance reasons
-    this.unitSlotFree = INACTIVE_ID;
+    this.numberOfUnits = 0;
 
     this.turnOwnerVisible = false;
     this.clientControlled = false;

@@ -10,7 +10,6 @@ cwt.Turn = {
   next: function () {
     var pid = cwt.Gameround.turnOwner.id;
     var oid = pid;
-    var i, e;
 
     // Try to find next player from the player pool
     pid++;
@@ -25,9 +24,7 @@ cwt.Turn = {
 
         var round_dayLimit = cwt.Config.getValue("round_dayLimit");
         if (round_dayLimit > 0 && this.day >= round_dayLimit) {
-
-          // TODO
-          controller.update_endGameRound();
+          cwt.Update.endGameRound();
         }
       }
 
@@ -49,12 +46,16 @@ cwt.Turn = {
 
   /**
    *
+   * @param {cwt.Player} player
+   * @private
    */
   endsTurn_: function (player) {
   },
 
   /**
    *
+   * @param {cwt.Player} player
+   * @private
    */
   startsTurn_: function (player) {
 
@@ -81,22 +82,51 @@ cwt.Turn = {
     // recalculate fog
     cwt.Fog.fullRecalculation();
 
+    var cUnit, cProp;
+
     // *******************************************************
 
-    // Do turn start stuff for all **properties**
     for (i = 0, e = cwt.Property.MULTITON_INSTANCES; i < e; i++) {
-      if (cwt.Property.getInstance(i).owner !== player) continue;
+      cProp = cwt.Property.getInstance(i, false);
+      if (!cProp || cProp.owner !== player) continue;
 
+      cwt.Supply.raiseFunds(cProp);
+    }
 
+    for (var i = 0, e = cwt.Unit.MULTITON_INSTANCES; i < e; i++) {
+      cUnit = /** @type {cwt.Unit} */ cwt.Unit.getInstance(i, true);
+      if (!cUnit || cUnit.owner !== player) continue;
+
+      cUnit.canAct = true;
+      cwt.Supply.drainFuel(cUnit);
     }
 
     // *******************************************************
 
-    // Do turn start stuff for all **units**
-    for (var i = 0, e = cwt.Unit.MULTITON_INSTANCES; i < e; i++) {
-      cwt.Gameround.actors[i] = (model.unit_data[i].owner !== INACTIVE_ID);
+    var turnStartSupply = (cwt.Config.getValue("autoSupplyAtTurnStart") === 1);
 
+    var map = cwt.Map.data;
+    for (var x = 0, xe = cwt.Map.map_width; x < xe; x++) {
+      for (var y = 0, ye = cwt.Map.map_height; y < ye; y++) {
+        cUnit = map[x][y].unit;
+        if (cUnit && cUnit.owner === player) {
 
+          // supply units
+          if (turnStartSupply && cwt.Supply.isSupplier(cUnit)) {
+            cwt.supplyNeighbours(x, y);
+          }
+
+          // heal by property
+          if (map[x][y].property && map[x][y].property.owner === player && cwt.Supply.canPropertyHeal(x, y)) {
+            cwt.Supply.propertyHeal(x, y);
+          }
+
+          // unit is out of fuel
+          if (cUnit.fuel <= 0) {
+            cwt.Lifecycle.destroyUnit(x, y, false);
+          }
+        }
+      }
     }
 
     // *******************************************************
@@ -106,84 +136,17 @@ cwt.Turn = {
 
       // Generate new weather
       if (cwt.Gameround.weatherLeftDays === 0) {
-
+        cwt.Weather.calculateNextWeather();
       }
 
       // Do AI-Turn
       // TODO
+      /*
+       if (controller.network_isHost() && !controller.ai_isHuman(pid)) {
+       controller.ai_machine.event("tick");
+       }
+       */
     }
-
-    /*
-
-     var turnStartSupply = (controller.configValue("autoSupplyAtTurnStart") === 1);
-
-     // do turn start stuff for all **units**
-     i = model.unit_firstUnitId(pid);
-     e = model.unit_lastUnitId(pid);
-     for (; i < e; i++) {
-
-     if (model.unit_data[i].owner === INACTIVE_ID) continue;
-     model.events.nextTurn_unitCheck(i);
-     }
-
-     // start AI logic if new turn owner is AI controlled
-     // this local instance is the host
-     if (controller.network_isHost() && !controller.ai_isHuman(pid)) {
-     controller.ai_machine.event("tick");
-     }
-
-     var prop = model.property_data[i];
-     if (prop.type.supply) {
-
-     var x = prop.x;
-     var y = prop.y;
-     var pid = prop.owner;
-
-     var check = model.unit_thereIsAUnit;
-     var mode = model.MODE_OWN;
-     if (controller.configValue("supplyAlliedUnits") === 1) mode = model.MODE_TEAM;
-
-     if (check(x, y, pid, mode)) {
-     var unitTp = model.unit_posData[x][y].type;
-     if (prop.type.supply.indexOf(unitTp.ID) !== -1 ||
-     prop.type.supply.indexOf(unitTp.movetype) !== -1) {
-
-     model.events.supply_refillResources(model.unit_posData[x][y]);
-     }
-     }
-     }
-     */
-
-    /*
-     var prop = model.property_data[i];
-     if (prop.type.repairs) {
-     var x = prop.x;
-     var y = prop.y;
-     var pid = prop.owner;
-
-     var check = model.unit_thereIsAUnit;
-     var mode = model.MODE_OWN;
-     if (controller.configValue("repairAlliedUnits") === 1) mode = model.MODE_TEAM;
-
-     if (check(x, y, pid, mode)) {
-     var unitTp = model.unit_posData[x][y].type;
-     var value;
-     value = prop.type.repairs.get(unitTp.ID);
-     if (!value) value = prop.type.repairs.get(unitTp.movetype);
-
-     // script it :P
-     value = controller.scriptedValue(pid, "propertyHeal", value);
-
-     if (value > 0) {
-     model.events.healUnit(
-     model.unit_extractId(model.unit_posData[x][y]),
-     model.unit_convertPointsToHealth(value),
-     true
-     );
-     }
-     }
-     }
-     */
   }
 
 };

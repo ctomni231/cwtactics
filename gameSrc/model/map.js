@@ -27,7 +27,8 @@ cwt.Map = {
     for (var x = 0, xe = cwt.Map.map_width; x < xe; x++) {
       for (var y = 0, ye = cwt.Map.map_height; y < ye; y++) {
         data[x][y] = new cwt.Tile();
-      }}
+      }
+    }
 
     return data;
   })(),
@@ -48,6 +49,40 @@ cwt.Map = {
    */
   isValidPosition: function (x, y) {
     return ( x >= 0 && y >= 0 && x < this.width && y < this.height );
+  },
+
+  /**
+   *
+   * @param property
+   * @param cb
+   * @param cbThis
+   * @param arg
+   */
+  searchProperty: function (property, cb, cbThis, arg) {
+    for (var x = 0, xe = this.width; x < xe; x++) {
+      for (var y = 0, ye = this.height; y < ye; y++) {
+        if (this.data[x][y].property === property) {
+          cb.call(cbThis,x,y,property,arg);
+        }
+      }
+    }
+  },
+
+  /**
+   *
+   * @param unit
+   * @param cb
+   * @param cbThis
+   * @param {Object=} arg
+   */
+  searchUnit: function (unit, cb, cbThis, arg) {
+    for (var x = 0, xe = this.width; x < xe; x++) {
+      for (var y = 0, ye = this.height; y < ye; y++) {
+        if (this.data[x][y].unit === unit) {
+          return cb.call(cbThis,x,y,unit,arg);
+        }
+      }
+    }
   },
 
   /**
@@ -75,7 +110,7 @@ cwt.Map = {
 
         // invoke the callback on all tiles in range
         // if a callback returns `false` then the process will be stopped
-        if (cb(lX, lY, arg, Math.abs(lX - x) + disY) === false) return;
+        if (cb(lX, lY, this.data[lX][lY], arg, Math.abs(lX - x) + disY) === false) return;
 
       }
     }

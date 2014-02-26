@@ -21,7 +21,7 @@ cwt.Property = my.Class(null,cwt.Multiton, /** @lends cwt.Property.prototype */ 
     countProperties: function (player) {
       var n = 0;
 
-      for (var i = 0, e = MAX_PROPERTIES; i < e; i++) {
+      for (var i = 0, e = this.MULTITON_INSTANCES; i < e; i++) {
         var prop = cwt.Property.getInstance(i, true);
         if (prop && prop.owner === player) n++;
       }

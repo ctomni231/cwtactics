@@ -14,16 +14,15 @@ cwt.Action.unitAction({
 
   toDataBlock: function (data, dataBlock) {
     dataBlock.p1 = data.source.unitId;
-    dataBlock.p2 = data.target.unitId;
+    dataBlock.p2 = data.target.x;
+    dataBlock.p2 = data.target.y;
   },
 
   parseDataBlock: function (dataBlock) {
     cwt.Join.join(
       /** @type {cwt.Unit} */ cwt.Unit.getInstance(dataBlock.p1),
-      /** @type {cwt.Unit} */ cwt.Unit.getInstance(dataBlock.p2)
+      dataBlock.p2, dataBlock.p3
     );
-
-    cwt.Gameround.setActableStatus(dataBlock.p1,false);
   }
 
 });

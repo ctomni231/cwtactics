@@ -1,19 +1,65 @@
+/**
+ *
+ * @namespace
+ */
 cwt.Lifecycle = {
 
-  createUnit: function () {
+  /**
+   *
+   * @param {number} x
+   * @param {number} y
+   * @param {cwt.Player|cwt.Unit|cwt.Property} player
+   * @param type
+   */
+  createUnit: function (x, y, player, type) {
+    if (player instanceof cwt.Unit || player instanceof cwt.Property) {
+      player = player.owner;
+    }
 
+    if (DEBUG) assert(cwt.Map.isValidPosition(x, y));
+
+    var tile = cwt.Map.data[x][y];
+
+    if (DEBUG) assert(player instanceof cwt.Player);
+    if (DEBUG) assert(this.hasFreeUnitSlot(player));
+
+    var unit = this.getFreeUnitSlot();
+
+    // set references
+    unit.owner = player;
+    tile.unit = unit;
+    player.numberOfUnits++;
+
+    unit.initByType(type);
+
+    cwt.Fog.addUnitVision(x, y, player);
+
+    cwt.ClientEvents.unitCreated(x, y, unit);
   },
 
-  destroyUnit: function (unit,silent) {
-    model.events.clearUnitPosition(uid);
+  /**
+   *
+   * @param {number} x
+   * @param {number} y
+   * @param {boolean} silent
+   */
+  destroyUnit: function (x, y, silent) {
+    var tile = cwt.Map.data[x][y];
+    if (DEBUG) assert(tile.unit);
 
-    this.owner = null;
-    cwt.ClientEvents.unitDestroyed(this);
+    cwt.ClientEvents.unitDestroyed(x, y, tile.unit);
+
+    cwt.Fog.removeUnitVision(x, y, tile.unit.owner);
+
+    // remove references
+    tile.unit.owner.numberOfUnits--;
+    if (DEBUG) assert(tile.unit.owner.numberOfUnits >= 0);
+    tile.unit.owner = null;
+    tile.unit = null;
 
     // end game when the player does not have any unit left
-    if (cwt.Config.getValue("noUnitsLeftLoose") === 1 &&
-      model.unit_countUnits(this.owner) === 0) {
-      controller.update_endGameRound();
+    if (cwt.Config.getValue("noUnitsLeftLoose") === 1 && cwt.Unit.countUnitsOfPlayer(this.owner) === 0) {
+      cwt.Player.deactivate();
     }
   },
 
@@ -21,17 +67,23 @@ cwt.Lifecycle = {
    *
    * @return {boolean}
    */
-  hasFreeUnitSlot: function () {
-    return this.unitSlotFree !== INACTIVE_ID;
+  hasFreeUnitSlot: function (player) {
+    return player.numberOfUnits < cwt.Player.MAX_UNITS;
   },
 
   /**
    * Returns the index of the next free unit slot.
    *
-   * @return {cwt.Unit}
+   * @return {cwt.Unit|null}
    */
   getFreeUnitSlot: function () {
-    return /** @type {cwt.Unit} */ cwt.Unit.getInstance(this.unitSlotFree);
+    for (var i = 0, e = cwt.Unit.MULTITON_INSTANCES; i < e; i++) {
+      var unit = cwt.Unit.getInstance(i);
+      if (!unit.owner) {
+        return /** @type {cwt.Unit} */ unit;
+      }
+    }
+    return null;
   }
 
 };

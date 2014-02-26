@@ -38,21 +38,28 @@ cwt.Explode = {
 
   /**
    *
+   * @param {number} x
+   * @param {number} y
+   * @param {number} range (x >= 1)
+   * @param {number} damage (x >= 0)
    */
   explode: function (x, y, range, damage) {
     if (DEBUG) assert(this.canExplode(cwt.Gameround.map.data[x][y].unit));
     if (DEBUG) assert(range >= 1);
 
-    // TODO self-destroy
-
+    cwt.Lifecycle.destroyUnit(x, y, false);
     cwt.Gameround.map.doInRange(x, y, range, this.exploderDamage_, damage);
   },
 
   /**
    *
+   * @param {number} x
+   * @param {number} y
+   * @param {number} damage (x >= 0)
+   * @private
    */
-  exploderDamage_: function (x, y, damage) {
-    var unit = cwt.Gameround.map.data[x][y].unit;
+  exploderDamage_: function (x, y, tile, damage) {
+    var unit = tile.unit;
     if (unit) {
       unit.takeDamage(damage, 9);
     }

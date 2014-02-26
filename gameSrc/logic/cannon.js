@@ -8,9 +8,40 @@ cwt.Cannon = {
    * Returns `true` if a given property id is a cannon property.
    */
   isCannonUnit: function (unit) {
-    assert(model.unit_isValidUnitId(uid));
-    var unit = model.unit_data[uid];
+    if (DEBUG) assert(unit instanceof cwt.Unit);
+
     return (unit.type.ID === "CANNON_UNIT_INV");
+  },
+
+  /**
+   *
+   * @param {number} x
+   * @param {number} y
+   * @param {cwt.SelectionMap} selection
+   * @return {boolean}
+   */
+  hasTargets: function (x, y, selection) {
+    return this.isCannonUnit(cwt.Map.data[x][y].unit) && this.markCannonTargets(x, y, selection);
+  },
+
+  /**
+   *
+   * @param {number} x
+   * @param {number} y
+   * @param {cwt.SelectionMap} selection
+   */
+  fillCannonTargets: function (x, y, selection) {
+    this.markCannonTargets(x, y, selection);
+  },
+
+  /**
+   * Fires a cannon at a given position.
+   */
+  fireCannon: function (ox, oy, x, y) {
+    var target = cwt.Map.data[x][y].unit;
+    var type = this.grabBombPropTypeFromPos(ox, oy);
+
+    target.takeDamage(cwt.Unit.pointsToHealth(type.cannon.damage), 9);
   },
 
   /**
@@ -18,27 +49,29 @@ cwt.Cannon = {
    * the rectangle from  `sx,sy` to `tx,ty`. The cannon is on the tile `ox,oy`
    * with a given `range`.
    */
-  tryToMarkCannonTargets: function (pid, selection, ox, oy, otx, oty, sx, sy, tx, ty, range) {
-    assert(model.player_isValidPid(pid));
+  tryToMarkCannonTargets: function (player, selection, ox, oy, otx, oty, sx, sy, tx, ty, range) {
+    if (DEBUG) assert(player instanceof cwt.Player);
 
-    var tid = model.player_data[pid].team;
+    var tid = player.team;
     var osy = sy;
     var result = false;
     for (; sx <= tx; sx++) {
       for (sy = osy; sy >= ty; sy--) {
-        if (!model.map_isValidPosition(sx, sy)) continue;
+        if (!cwt.Map.isValidPosition(sx, sy)) continue;
+        var tile = cwt.Map.data[sx][sy];
 
         // range maybe don't match
         if ((Math.abs(sx - ox) + Math.abs(sy - oy)) > range) continue;
         if ((Math.abs(sx - otx) + Math.abs(sy - oty)) > range) continue;
 
         // in fog
-        if (model.fog_turnOwnerData[sx][sy] <= 0) continue;
+        if (tile.visionTurnOwner <= 0) continue;
 
-        var unit = model.unit_posData[sx][sy];
+        var unit = tile.unit;
         if (unit) {
-          if (unit.owner !== pid && model.player_data[unit.owner].team !== tid) {
-            selection.setValueAt(sx, sy, 1);
+          if (unit.owner.team !== tid) {
+            if(selection) selection.setValueAt(sx, sy, 1);
+            else return true;
             result = true;
           }
         }
@@ -50,82 +83,83 @@ cwt.Cannon = {
 
   /**
    * Marks all cannon targets in a given selection model.
+   *
+   * @param {cwt.Unit} cannon
+   * @param {cwt.SelectionMap} selection
    */
-  markCannonTargets: function (uid, selection) {
-    var result;
-    var unit = model.unit_data[uid];
-    var prop = model.property_posMap[unit.x][unit.y];
-    var type = (prop.type.ID !== "PROP_INV") ? prop.type : model.bombs_grabPropTypeFromPos(unit.x, unit.y);
+  markCannonTargets: function (x, y, selection) {
+    var prop = cwt.Map.data[x][y].property;
+    var type = (prop.type.ID !== "PROP_INV") ? prop.type : this.grabBombPropTypeFromPos(x, y);
 
-    // no cannon
-    // if( !type.cannon ) return false;
-    assert(type.cannon);
+    if (DEBUG) assert(type.cannon);
 
-    selection.setCenter(unit.x, unit.y, INACTIVE_ID);
+    selection.setCenter(x, y, INACTIVE_ID);
 
+    var otx, oty, sx, sy, tx, ty;
     var max = type.cannon.range;
+    var ox = x;
+    var oy = y;
     switch (type.cannon.direction) {
 
       case "N":
-        result = model.bombs_tryToMarkCannonTargets(
-          unit.owner,
-          selection,
-          unit.x, unit.y,
-          unit.x, unit.y - max - 1,
-          unit.x - unit + 1, unit.y - 1,
-          unit.x + unit - 1, unit.y - max,
-          max
-        );
+        otx = x;
+        oty = y-max-1;
+        sx = x - max + 1;
+        sy = y - 1;
+        tx = x + max - 1;
+        ty = y - max;
         break;
 
       case "E":
-        result = model.bombs_tryToMarkCannonTargets(
-          unit.owner,
-          selection,
-          unit.x, unit.y,
-          unit.x + max + 1, unit.y,
-          unit.x + 1, unit.y + max - 1,
-          unit.x + max, unit.y - max + 1,
-          max
-        );
+        otx = x + max + 1;
+        oty = y;
+        sx = x + 1;
+        sy = y + max - 1;
+        tx = x + max;
+        ty = y - max + 1;
         break;
 
       case "W":
-        result = model.bombs_tryToMarkCannonTargets(
-          unit.owner,
-          selection,
-          unit.x, unit.y,
-          unit.x - max - 1, unit.y,
-          unit.x - max, unit.y + max - 1,
-          unit.x - 1, unit.y - max + 1,
-          max
-        );
+        otx = x - max -1;
+        oty = y;
+        sx = x - max;
+        sy = y + max - 1;
+        tx = x - 1;
+        ty = y - max + 1;
         break;
 
       case "S":
-        result = model.bombs_tryToMarkCannonTargets(
-          unit.owner,
-          selection,
-          unit.x, unit.y,
-          unit.x, unit.y + max + 1,
-          unit.x - max + 1, unit.y + max,
-          unit.x + max - 1, unit.y + 1,
-          max
-        );
+        otx = x;
+        oty = y + max + 1;
+        sx = x - max + 1;
+        sy = y + max;
+        tx = x + max - 1;
+        ty = y + 1;
         break;
     }
 
-    return result;
+    return this.tryToMarkCannonTargets(
+      cwt.Map.data[x][y].unit.owner,
+      selection,
+      ox,oy,
+      otx,oty,
+      sx,sy,
+      tx,ty,
+      max
+    );
   },
 
   /**
    *
+   * @param x
+   * @param y
+   * @return {cwt.PropertySheet}
    */
   grabBombPropTypeFromPos: function (x, y) {
+    var map = cwt.Map.data;
     while (true) {
-
-      if (y + 1 < model.map_height && model.property_posMap[x][y + 1] &&
-        model.property_posMap[x][y + 1].type.ID === "PROP_INV") {
+      if (y + 1 < cwt.Map.height && map[x][y + 1].property &&
+        map[x][y + 1].property.type.ID === "PROP_INV") {
         y++;
         continue;
       }
@@ -133,45 +167,19 @@ cwt.Cannon = {
       break;
     }
 
-    if (model.property_posMap[x][y].type.ID !== "PROP_INV") {
-      return model.property_posMap[x][y].type;
+    if (map[x][y].property.type.ID !== "PROP_INV") {
+      return map[x][y].property.type;
     }
 
     while (true) {
-
-      if (x + 1 < model.map_width && model.property_posMap[x + 1][y] &&
-        model.property_posMap[x + 1][y].type.ID !== "PROP_INV") {
-        return model.property_posMap[x + 1][y].type;
+      if (x + 1 < cwt.Map.width && map[x + 1][y].property &&
+        map[x + 1][y].property.type.ID !== "PROP_INV") {
+        return map[x + 1][y].property.type;
       }
 
       break;
     }
 
     assert(false);
-  },
-
-  fireCannon_check: function (uid, selection) {
-    return (
-      model.bombs_isCannon(uid) &&
-        model.bombs_markCannonTargets(uid, selection)
-      );
-  },
-
-  fireCannon_fillTargets: function (uid, selection) {
-    model.bombs_markCannonTargets(uid, selection);
-  },
-
-  /**
-   * Fires a cannon at a given position.
-   */
-  fireCannon_invoked: function (ox, oy, x, y) {
-    var prop = model.property_posMap[x][y];
-    var target = model.unit_posData[x][y];
-    var type = model.bombs_grabPropTypeFromPos(ox, oy);
-    model.events.damageUnit(
-      model.unit_extractId(target),
-      model.unit_convertPointsToHealth(type.cannon.damage),
-      9
-    );
   }
 };

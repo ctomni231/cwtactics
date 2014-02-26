@@ -120,10 +120,38 @@ cwt.Fog = {
     this.modifyVision_(x, y, owner, range, +1);
   },
 
+  removeUnitVision: function (x, y, owner) {
+    var unit = cwt.Map.data[x][y].unit;
+    if (!owner) owner = unit.owner;
+
+    this.removeVision(x, y, owner, unit.type.vision);
+  },
+
+  removePropertyVision: function (x, y, owner) {
+    var prop = cwt.Map.data[x][y].property;
+    if (!owner) owner = prop.owner;
+
+    this.removeVision(x, y, owner, prop.type.vision);
+  },
+
   /**
    * Adds a vision-object from the fog map.
    */
   addVision: function (x, y, owner, range) {
     this.modifyVision_(x, y, owner, range, -1);
+  },
+
+  addUnitVision: function (x, y, owner) {
+    var unit = cwt.Map.data[x][y].unit;
+    if (!owner) owner = unit.owner;
+
+    this.addVision(x, y, owner, unit.type.vision);
+  },
+
+  addPropertyVision: function (x, y, owner) {
+    var prop = cwt.Map.data[x][y].property;
+    if (!owner) owner = prop.owner;
+
+    this.addVision(x, y, owner, prop.type.vision);
   }
 };

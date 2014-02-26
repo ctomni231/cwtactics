@@ -1,6 +1,3 @@
-cwt.Config.create("timer_turnTimeLimit",0,60,0);
-cwt.Config.create("timer_gameTimeLimit",0,99999,0);
-
 /**
  * @namespace
  */
@@ -21,13 +18,6 @@ cwt.Gameround = {
    * The current active co mode.
    */
   gamemode: this.GAME_MODE_AW1,
-
-  /**
-   * Holds the identical numbers of all objects that can act during
-   * the turn. After a unit has acted, it should be removed from this
-   * list with `model.actions_markUnitNonActable`.
-   */
-  actors: [],
 
   /**
    * The current active day.
@@ -71,36 +61,16 @@ cwt.Gameround = {
   gameTimeElapsed: 0,
 
   /**
-   * Returns true if the selected uid can act in the current
-   * active turn, else false.
-   */
-  canAct: function (unit) {
-    assert(model.unit_isValidUnitId(uid));
-
-    var startIndex = model.round_turnOwner * MAX_UNITS_PER_PLAYER;
-    if (uid >= startIndex + MAX_UNITS_PER_PLAYER || uid < startIndex) {
-      return false;
-    } else return (model.actions_leftActors[uid - startIndex] === true);
-  },
-
-  /**
-   *
-   */
-  setActableStatus: function (uid, value) {
-    this.actors[uid] = value;
-  },
-
-  /**
    * Returns `true` when at least two opposite teams are left, else `false`.
    */
   areEnemyTeamsLeft: function () {
     var player;
     var foundTeam = -1;
     var i = 0;
-    var e = this.players.length;
+    var e = cwt.Player.MULTITON_INSTANCES;
 
     for (; i < e; i++) {
-      player = this.players[i];
+      player = cwt.Player.getInstance(i);
 
       if (player.team !== -1) {
 

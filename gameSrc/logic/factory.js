@@ -7,16 +7,22 @@ cwt.Factory = {
   /**
    * Returns `true` when the given factory object (by its `prid`) is
    * a factory, else `false`.
+   *
+   * @param {cwt.Property} property
+   * @return {boolean}
    */
   isFactory: function (property) {
     if (DEBUG) assert(property instanceof cwt.Property);
 
-    return property.type.builds;
+    return (property.type.builds !== void 0);
   },
 
   /**
    * Returns `true` when the given factory object is a factory
    * and can produce something technically, else `false`.
+   *
+   * @param {cwt.Property} property
+   * @return {boolean}
    */
   canProduce: function (property) {
     if (DEBUG) assert(property instanceof cwt.Property);
@@ -39,51 +45,52 @@ cwt.Factory = {
   /**
    * Constructs a unit for a player. At least one slot
    * must be free to do this.
+   *
+   * @param {cwt.Property} factory
+   * @param {String} type
    */
-  buildUnit: function (factory,type) {
+  buildUnit: function (factory, type) {
     if (DEBUG) assert(factory instanceof cwt.Property);
-    if (DEBUG) assert(cwt.PropertySheet.isValidSheet(type));
+    if (DEBUG) assert(cwt.UnitSheet.isValidSheet(type));
 
-    // decrease manpower
+    var sheet = cwt.UnitSheet.sheets[type];
+
     factory.owner.manpower--;
+    factory.owner.gold -= sheet.cost;
 
-    var prop = model.property_posMap[x][y];
-    var cost = model.data_unitSheets[type].cost;
-    var pl = model.player_data[prop.owner];
+    if (DEBUG) assert(factory.owner.gold >= 0);
 
-    pl.gold -= cost;
-    assert(pl.gold >= 0);
-
-    model.events.createUnit(model.unit_getFreeSlot(prop.owner), prop.owner, x, y, type);
+    cwt.Map.searchProperty(factory,cwt.Lifecycle.createUnit,cwt.Lifecycle,type);
   },
 
   /**
    * Generates the build menu for a given factory object (by its `prid`).
+   *
+   * @param {cwt.Property} factory
+   * @param {cwt.Menu} menu
+   * @param {boolean=} markDisabled
+   * @return {boolean}
    */
-  generateBuildMenu: function (prid, menu, markDisabled) {
-    assert(model.property_isValidPropId(prid));
-    assert(model.factory_isFactory(prid));
+  generateBuildMenu: function (factory, menu, markDisabled) {
+    if (DEBUG) assert(factory instanceof cwt.Property);
+    if (DEBUG) assert(menu instanceof cwt.Menu);
+    if (DEBUG) assert(factory.owner);
 
-    var property = model.property_data[prid];
-
-    // the factory must be owner by someone
-    assert(model.player_isValidPid(property.owner));
-
-    var availGold = model.player_data[property.owner].gold;
-    var unitTypes = model.data_unitTypes;
-    var bList = property.type.builds;
+    var unitTypes = cwt.UnitSheet.types;
+    var bList = factory.type.builds;
+    var gold = factory.owner.gold;
 
     for (var i = 0, e = unitTypes.length; i < e; i++) {
       var key = unitTypes[i];
-      var type = model.data_unitSheets[key];
+      var type = cwt.UnitSheet.sheets[key];
 
       if (bList.indexOf(type.movetype) === -1) continue;
 
       // Is the tile blocked ?
-      if( type.blocked ) return false;
+      if (type.blocked) return false;
 
-      if (type.cost <= availGold || markDisabled) {
-        menu.addEntry(key, (type.cost <= availGold));
+      if (type.cost <= gold || markDisabled) {
+        menu.addEntry(key, (type.cost <= gold));
       }
     }
   }

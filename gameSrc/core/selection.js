@@ -1,23 +1,49 @@
-(function(){
+/**
+ *
+ * @class
+ */
+cwt.SelectionMap = my.Class({
 
-  function setCenter( x, y, defValue ){
+  constructor: function (size) {
+    this.centerX = 0;
+    this.centerY = 0;
+
+    /**
+     * @type {cwt.Matrix}
+     */
+    this.data = new cwt.Matrix(size, size, INACTIVE_ID);
+  },
+
+  /**
+   *
+   * @param x
+   * @param y
+   * @param defValue
+   */
+  setCenter: function (x, y, defValue) {
     var e = this.data.length;
     var cx = x;
     var cy = y;
 
     // reset aw2
-    for( x = 0; x < e; x++ ) {
-      for( y = 0; y < e; y++ ) {
+    for (x = 0; x < e; x++) {
+      for (y = 0; y < e; y++) {
         this.data[x][y] = defValue;
       }
     }
 
     // right bounds are not important
-    this.centerX = Math.max( 0, cx - (e - 1) );
-    this.centerY = Math.max( 0, cy - (e - 1) );
-  }
+    this.centerX = Math.max(0, cx - (e - 1));
+    this.centerY = Math.max(0, cy - (e - 1));
+  },
 
-  function getValueAt( x, y ){
+  /**
+   *
+   * @param x
+   * @param y
+   * @return {*}
+   */
+  getValueAt: function (x, y) {
     var data = this.data;
     var cy = this.centerX;
     var cx = this.centerY;
@@ -25,11 +51,17 @@
 
     x = x - cx;
     y = y - cy;
-    if( x < 0 || y < 0 || x >= maxLen || y >= maxLen ) return -1;
+    if (x < 0 || y < 0 || x >= maxLen || y >= maxLen) return -1;
     else return data[x][y];
-  }
+  },
 
-  function setValueAt( x, y, value ){
+  /**
+   *
+   * @param x
+   * @param y
+   * @param value
+   */
+  setValueAt: function (x, y, value) {
     var data = this.data;
     var cy = this.centerX;
     var cx = this.centerY;
@@ -37,26 +69,39 @@
 
     x = x - cx;
     y = y - cy;
-    if( x < 0 || y < 0 || x >= maxLen || y >= maxLen ) {
-      model.criticalError( error.ILLEGAL_PARAMETERS, error.SELECTION_DATA_OUT_OF_BOUNDS );
+    if (x < 0 || y < 0 || x >= maxLen || y >= maxLen) {
+      model.criticalError(error.ILLEGAL_PARAMETERS, error.SELECTION_DATA_OUT_OF_BOUNDS);
     }
     else data[x][y] = value;
-  }
+  },
 
-  function grab( otherSelection ){
-    if( this.data.length !== otherSelection.data.length ) throw Error("illegal grab selection");
+  /**
+   *
+   * @param otherSelection
+   */
+  grab: function (otherSelection) {
+    if (this.data.length !== otherSelection.data.length) throw Error("illegal grab selection");
     this.centerX = otherSelection.centerX;
     this.centerY = otherSelection.centerY;
 
     var e = this.data.length;
-    for( x = 0; x < e; x++ ) {
-      for( y = 0; y < e; y++ ) {
+    for (var x = 0; x < e; x++) {
+      for (var y = 0; y < e; y++) {
         this.data[x][y] = otherSelection.data[x][y];
       }
     }
-  }
+  },
 
-  function nextValidPosition( x, y, minValue, walkLeft, cb, arg  ){
+  /**
+   *
+   * @param x
+   * @param y
+   * @param minValue
+   * @param walkLeft
+   * @param cb
+   * @param arg
+   */
+  nextValidPosition: function (x, y, minValue, walkLeft, cb, arg) {
     var data = this.data;
     var cy = this.centerX;
     var cx = this.centerY;
@@ -66,10 +111,10 @@
     y = y - cy;
 
     // OUT OF BOUNDS ?
-    if( x < 0 || y < 0 || x >= maxLen || y >= maxLen ) {
+    if (x < 0 || y < 0 || x >= maxLen || y >= maxLen) {
 
       // START BOTTOM RIGHT
-      if( walkLeft ) {
+      if (walkLeft) {
         x = maxLen - 1;
         y = maxLen - 1;
       }
@@ -83,31 +128,38 @@
     // WALK TO THE NEXT TARGET
     var mod = (walkLeft) ? -1 : +1;
     y += mod;
-    for( ; (walkLeft) ? x >= 0 : x < maxLen; x += mod ) {
-      for( ; (walkLeft) ? y >= 0 : y < maxLen; y += mod ) {
+    for (; (walkLeft) ? x >= 0 : x < maxLen; x += mod) {
+      for (; (walkLeft) ? y >= 0 : y < maxLen; y += mod) {
 
         // VALID POSITION
-        if( data[x][y] >= minValue ) {
-          cb( x, y, arg );
+        if (data[x][y] >= minValue) {
+          cb(x, y, arg);
           return;
         }
       }
       y = (walkLeft) ? maxLen - 1 : 0;
     }
-  }
+  },
 
-  function nextRandomPosition( cb, arg, minValue ){
-    if( minValue === void 0 ) minValue = 0;
+  /**
+   *
+   * @param cb
+   * @param arg
+   * @param minValue
+   * @return {boolean}
+   */
+  nextRandomPosition: function (cb, arg, minValue) {
+    if (minValue === void 0) minValue = 0;
 
     var e = this.data.length;
-    var n = parseInt( Math.random()*e , 10 );
-    var x,y;
-    for( x = 0; x < e; x++ ) {
-      for( y = 0; y < e; y++ ) {
-        if( this.data[x][y] >= minValue ){
+    var n = parseInt(Math.random() * e, 10);
+    var x, y;
+    for (x = 0; x < e; x++) {
+      for (y = 0; y < e; y++) {
+        if (this.data[x][y] >= minValue) {
           n--;
-          if( n < 0 ){
-            cb(x,y,arg);
+          if (n < 0) {
+            cb(x, y, arg);
             return true;
           }
         }
@@ -116,24 +168,4 @@
 
     return false;
   }
-
-  cwt.selectionMap = function( size ){
-    var obj = {};
-
-    // meta aw2
-    obj.centerX = 0;
-    obj.centerY = 0;
-    obj.data = util.matrix( size, size, INACTIVE_ID );
-
-    // api
-    obj.nextValidPosition  = nextValidPosition;
-    obj.nextRandomPosition = nextRandomPosition;
-    obj.setValueAt = setValueAt;
-    obj.getValueAt = getValueAt;
-    obj.setCenter  = setCenter;
-    obj.grab       = grab;
-
-    return obj;
-  };
-
-})();
+});

@@ -1,55 +1,59 @@
-(function(){
-  
-  var fill = function(){
-    var defValue = this.__defValue__;
-    var w = this.__width__;
-    var h = this.__height__;
-    var isFN = typeof defValue === 'function';
-    
-    // COMPLEX ARRAY (MATRIX) OBJECT
-    for(var i = 0, e = w; i < e; i++){
-      for(var j = 0, ej = h; j < ej; j++){
-        if( isFN ) this[i][j] = defValue( i,j,this[i][j] );
-        else       this[i][j] = defValue;
-      }
+/**
+ *
+ * @class
+ */
+cwt.Matrix = my.Class({
+
+  constructor: function (w, h, defaultValue) {
+    if (defaultValue === undefined) {
+      defaultValue = null;
     }
-  };
-  
-  var clone = function( matrix ){
-    var w = this.__width__;
-    var h = this.__height__;
-    if( matrix.length !== this.length ) throw Error();
-    
-    // COMPLEX ARRAY (MATRIX) OBJECT
-    for(var i = 0, e = w; i < e; i++){
-      for(var j = 0, ej = h; j < ej; j++){
-        matrix[i][j] = this[i][j];
-      }
-    }
-  };
-  
-  // Creates a matrix (table) and fills it with default values.
-  // 
-  // @param {Number} w width of the matrix
-  // @param {Number} h height of the matrix
-  // @param defaultValue the default value that will be inserted into the cells 
-  cwt.matrix = function( w, h, defaultValue ){
-    
-    if( defaultValue === undefined ){ defaultValue = null; }
-    
-    var warr = [];
-    warr.__defValue__ = defaultValue;
-    warr.__width__ = w;
-    warr.__height__ = h;
-    warr.resetValues = fill;
-    warr.cloneValues = clone;
-    
+
+    this.data = [];
+    this.defValue = defaultValue;
+    this.width = w;
+    this.height = h;
+
     // CREATE SUB ARRAYS
-    for (var i = 0; i < w; i++){ warr[i] = []; }
-    
-    warr.resetValues();
-    
-    return warr;
-  };
-  
-})();
+    for (var i = 0; i < w; i++) {
+      this.data[i] = [];
+    }
+
+    this.resetValues();
+  },
+
+  /**
+   *
+   */
+  resetValues: function () {
+    var defValue = this.defValue;
+    var w = this.width;
+    var h = this.height;
+    var isFN = typeof defValue === 'function';
+
+    // COMPLEX ARRAY (MATRIX) OBJECT
+    for (var i = 0, e = w; i < e; i++) {
+      for (var j = 0, ej = h; j < ej; j++) {
+        if (isFN) this.data[i][j] = defValue(i, j, this.data[i][j]);
+        else       this.data[i][j] = defValue;
+      }
+    }
+  },
+
+  /**
+   *
+   * @param {cwt.Matrix} matrix
+   */
+  clone: function (matrix) {
+    var w = this.width;
+    var h = this.height;
+    if (matrix.data.length !== this.data.length) throw Error();
+
+    // COMPLEX ARRAY (MATRIX) OBJECT
+    for (var i = 0, e = w; i < e; i++) {
+      for (var j = 0, ej = h; j < ej; j++) {
+        matrix.data[i][j] = this.data[i][j];
+      }
+    }
+  }
+});

@@ -2,9 +2,8 @@ cwt.Action.mapAction({
   key:"transferMoney",
 
   condition: function( data ){
-    return model.events.transferMoney_check(
-
-      model.round_turnOwner,
+    return cwt.Team.canTransferMoney(
+      cwt.Gameround.turnOwner,
       data.target.x,
       data.target.y
     );
@@ -12,15 +11,20 @@ cwt.Action.mapAction({
 
   hasSubMenu: true,
   prepareMenu: function( data ){
-    model.events.transferMoney_addEntries( model.round_turnOwner, data.menu );
+    cwt.Team.getTransferMoneyTargets(cwt.Gameround.turnOwner,data.menu);
   },
 
-  invoke: function( data ){
-    controller.commandStack_sharedInvokement(
-      "transferMoney_invoked",
-      model.round_turnOwner,
-      ( data.target.unit )? data.target.unit.owner : data.target.property.owner,
-      data.action.selectedSubEntry
+  toDataBlock: function (data, dataBlock) {
+    dataBlock.p1 = cwt.Gameround.turnOwner.id;
+    dataBlock.p2 = data.target.property.owner.id;
+    dataBlock.p3 = data.selectedSubEntry;
+  },
+
+  parseDataBlock: function (dataBlock) {
+    cwt.Team.transferMoney(
+      /** @type {cwt.Player} */ cwt.Player.getInstance(dataBlock.p1),
+      /** @type {cwt.Player} */ cwt.Player.getInstance(dataBlock.p2),
+      dataBlock.p3
     );
   }
 

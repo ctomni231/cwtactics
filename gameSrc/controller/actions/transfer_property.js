@@ -8,19 +8,23 @@ cwt.Action.propertyAction({
   ],
 
   condition: function( data  ){
-    return model.events.transferProperty_check(data.source.propertyId);
+    return cwt.Team.canTransferProperty(data.source.property);
   },
 
   hasSubMenu: true,
   prepareMenu: function( data ){
-    model.events.transferProperty_addEntries(data.source.property.owner, data.menu);
+    cwt.Team.getPropertyTransferTargets(data.source.property.owner, data.menu);
   },
 
-  invoke: function( data ){
-    controller.commandStack_sharedInvokement(
-      "transferProperty_invoked",
-      data.source.propertyId,
-      data.action.selectedSubEntry
+  toDataBlock: function (data, dataBlock) {
+    dataBlock.p1 = data.source.propertyId;
+    dataBlock.p2 = data.selectedSubEntry;
+  },
+
+  parseDataBlock: function (dataBlock) {
+    cwt.Team.transferPropertyToPlayer(
+      /** @type {cwt.Property} */ cwt.Property.getInstance(dataBlock.p1),
+      /** @type {cwt.Player} */ cwt.Player.getInstance(dataBlock.p2)
     );
   }
 });

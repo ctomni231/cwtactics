@@ -7,6 +7,11 @@ cwt.Move = {
   /**
    * @constant
    */
+  MAX_LENGTH: 15,
+
+  /**
+   * @constant
+   */
   MOVE_CODES_UP: 0,
 
   /**
@@ -27,32 +32,87 @@ cwt.Move = {
   /**
    *
    */
-  movePathCache: cwt.list(MAX_SELECTION_RANGE, INACTIVE_ID),
+  movePathCache: new cwt.List(this.MAX_LENGTH, INACTIVE_ID),
 
   /**
    * Extracts the move code between two positions.
    */
   codeFromAtoB: function (sx, sy, tx, ty) {
-    assert(model.map_isValidPosition(sx, sy));
-    assert(model.map_isValidPosition(tx, ty));
+    if (DEBUG) assert(cwt.Map.isValidPosition(sx, sy));
+    if (DEBUG) assert(cwt.Map.isValidPosition(tx, ty));
+    if (DEBUG) assert(cwt.Map.getDistance(sx, sy, tx, ty) === 1);
 
-    assert(model.map_getDistance(sx, sy, tx, ty) === 1);
+    if (sx < tx) return this.MOVE_CODES_RIGHT;
+    if (sx > tx) return this.MOVE_CODES_LEFT;
+    if (sy < ty) return this.MOVE_CODES_DOWN;
+    if (sy > ty) return this.MOVE_CODES_UP;
 
-    if (sx < tx) return model.move_MOVE_CODES.RIGHT;
-    if (sx > tx) return model.move_MOVE_CODES.LEFT;
-    if (sy < ty) return model.move_MOVE_CODES.DOWN;
-    if (sy > ty) return model.move_MOVE_CODES.UP;
+    return INACTIVE_ID;
+  },
 
-    return null;
+
+  /**
+   * Returns the movecosts to move with a given move type on a
+   * given tile type.
+   */
+  getMoveCosts: function (movetype, x, y) {
+    if (DEBUG) assert(cwt.Map.isValidPosition(x, y));
+
+    var v;
+    var tmp = cwt.Map.data[x][y];
+
+    // grab costs from property or  if not given from tile
+    tmp = (tmp.property) ? tmp.property : tmp;
+    if (tmp.type.blocker) {
+      v = -1;
+    } else {
+      v = movetype.costs[tmp.type.ID];
+    }
+
+    if (typeof v === "number") return v;
+
+    // check wildcard
+    v = movetype.costs["*"];
+    if (typeof v === "number") return v;
+
+    // no match then return `-1`as not move able
+    return -1;
+  },
+
+  /**
+   * Returns true if a movetype can move to position {x,y} else false.
+   *
+   * @param movetype
+   * @param {number} x
+   * @param {number} y
+   * @return {boolean}
+   */
+  canTypeMoveTo: function (movetype, x, y) {
+    if (cwt.Map.isValidPosition(x, y)) {
+      if (this.getMoveCosts(movetype, x, y) === -1) return false;
+
+      var tile = cwt.Map.data[x][y];
+      if (tile.visionTurnOwner === 0) return true;
+      if (tile.unit) return false;
+
+      return true;
+    } else return false;
   },
 
   /**
    * Generates a path from a start position { `stx` , `sty` } to { `tx` , `ty` } with a
    * given selection ( `util.selectionMap` ) map. The result will be stored in the `movePath`.
+   *
+   * @param {number} stx
+   * @param {number} sty
+   * @param {number} tx
+   * @param {number} ty
+   * @param {cwt.SelectionMap} selection
+   * @param movePath
    */
   generateMovePath: function (stx, sty, tx, ty, selection, movePath) {
-    assert(model.map_isValidPosition(stx, sty));
-    assert(model.map_isValidPosition(tx, ty));
+    if (DEBUG) assert(cwt.Map.isValidPosition(stx, sty));
+    if (DEBUG) assert(cwt.Map.isValidPosition(tx, ty));
 
     var graph = new Graph(selection.data);
 
@@ -73,11 +133,11 @@ cwt.Move = {
       cNode = path[i];
 
       var dir;
-      if (cNode.x > cx) dir = model.move_MOVE_CODES.RIGHT;
-      else if (cNode.x < cx) dir = model.move_MOVE_CODES.LEFT;
-      else if (cNode.y > cy) dir = model.move_MOVE_CODES.DOWN;
-      else if (cNode.y < cy) dir = model.move_MOVE_CODES.UP;
-      else util.expect(util.expect.isTrue, false);
+      if (cNode.x > cx) dir = this.MOVE_CODES_RIGHT;
+      else if (cNode.x < cx) dir = this.MOVE_CODES_LEFT;
+      else if (cNode.y > cy) dir = this.MOVE_CODES_DOWN;
+      else if (cNode.y < cy) dir = this.MOVE_CODES_UP;
+      else assert(false);
 
       // add code to move path
       movePath[movePathIndex] = dir;
@@ -95,27 +155,27 @@ cwt.Move = {
    * dropped. In this function returns also `true` in this case.
    */
   addCodeToMovePath: function (code, movePath) {
-    assert(util.intRange(code, model.move_MOVE_CODES.UP, model.move_MOVE_CODES.LEFT));
+    if (DEBUG) assert(code >= this.MOVE_CODES_UP && code <= this.MOVE_CODES_LEFT);
 
     // is the move a go back to the last tile ?
     var lastCode = movePath.getLastCode();
     var goBackCode;
     switch (code) {
 
-      case model.move_MOVE_CODES.UP:
-        goBackCode = model.move_MOVE_CODES.DOWN;
+      case this.MOVE_CODES_UP:
+        goBackCode = this.MOVE_CODES_DOWN;
         break;
 
-      case model.move_MOVE_CODES.DOWN:
-        goBackCode = model.move_MOVE_CODES.UP;
+      case this.MOVE_CODES_DOWN:
+        goBackCode = this.MOVE_CODES_UP;
         break;
 
-      case model.move_MOVE_CODES.LEFT:
-        goBackCode = model.move_MOVE_CODES.RIGHT;
+      case this.MOVE_CODES_LEFT:
+        goBackCode = this.MOVE_CODES_RIGHT;
         break;
 
-      case model.move_MOVE_CODES.RIGHT:
-        goBackCode = model.move_MOVE_CODES.LEFT;
+      case this.MOVE_CODES_RIGHT:
+        goBackCode = this.MOVE_CODES_LEFT;
         break;
     }
 
@@ -141,19 +201,19 @@ cwt.Move = {
     for (var i = 0, e = movePath.getSize(); i < e; i++) {
       switch (movePath[i]) {
 
-        case model.move_MOVE_CODES.UP:
+        case this.MOVE_CODES_UP:
           cy--;
           break;
 
-        case model.move_MOVE_CODES.DOWN:
+        case this.MOVE_CODES_DOWN:
           cy++;
           break;
 
-        case model.move_MOVE_CODES.LEFT:
+        case this.MOVE_CODES_LEFT:
           cx--;
           break;
 
-        case model.move_MOVE_CODES.RIGHT:
+        case this.MOVE_CODES_RIGHT:
           cx++;
           break;
       }
@@ -189,22 +249,19 @@ cwt.Move = {
     if (typeof y !== "number") y = source.y;
     if (!unit) unit = source.unit;
 
-    assert(model.map_isValidPosition(x, y));
+    if (DEBUG) assert(cwt.Map.isValidPosition(x, y));
 
     var toBeChecked;
     var releaseHelper = false;
-    if (model.move_move_fillMoveMapHelper_ !== null) {
-      toBeChecked = model.move_move_fillMoveMapHelper_;
-      model.move_move_fillMoveMapHelper_ = null;
+    if (this.fillMoveMapHelper_ !== null) {
+      toBeChecked = this.fillMoveMapHelper_;
+      this.fillMoveMapHelper_ = null;
       releaseHelper = true;
     } else toBeChecked = [];
 
-
-    var mType = model.data_movetypeSheets[unit.type.movetype];
-    var player = model.player_data[unit.owner];
-
-    controller.prepareTags(x, y, model.unit_extractId(unit));
-    var range = controller.scriptedValue(unit.owner, "moverange", unit.type.range);
+    var mType = unit.type.movetype;
+    var player = unit.owner;
+    var range = unit.type.range;
 
     // decrease range if not enough fuel is available
     if (unit.fuel < range) range = unit.fuel;
@@ -213,13 +270,12 @@ cwt.Move = {
     selection.setCenter(x, y, INACTIVE_ID);
     selection.setValueAt(x, y, range);
 
-    // fill map ( one struct is X;Y;LEFT_POINTS )
+    // fill map ( one structure is X;Y;LEFT_POINTS )
     toBeChecked[0] = x;
     toBeChecked[1] = y;
     toBeChecked[2] = range;
 
-    var checker = [
-      -1, -1, -1, -1, -1, -1, -1, -1];
+    var checker = [-1, -1, -1, -1, -1, -1, -1, -1];
 
     while (true) {
       var cHigh = -1;
@@ -254,7 +310,7 @@ cwt.Move = {
         checker[0] = -1;
         checker[1] = -1;
       }
-      if (cx < model.map_width - 1) {
+      if (cx < cwt.Map.width - 1) {
         checker[2] = cx + 1;
         checker[3] = cy;
       } else {
@@ -268,7 +324,7 @@ cwt.Move = {
         checker[4] = -1;
         checker[5] = -1;
       }
-      if (cy < model.map_height - 1) {
+      if (cy < cwt.Map.height - 1) {
         checker[6] = cx;
         checker[7] = cy + 1;
       } else {
@@ -316,18 +372,21 @@ cwt.Move = {
 
     // release helper if you grabbed it
     if (releaseHelper) {
-      for (var hi = 0, he = toBeChecked.length; hi < he; hi++) toBeChecked[hi] = null;
-      model.move_move_fillMoveMapHelper_ = toBeChecked;
+      for (var hi = 0, he = toBeChecked.length; hi < he; hi++) {
+        toBeChecked[hi] = null;
+      }
+      this.fillMoveMapHelper_ = toBeChecked;
     }
 
     // convert left points back to absolute costs
-    for (x = 0, xe = model.map_width; x < xe; x++) {
-      for (y = 0, ye = model.map_height; y < ye; y++) {
+    for (var x = 0, xe = cwt.Map.width; x < xe; x++) {
+      for (var y = 0, ye = cwt.Map.height; y < ye; y++) {
         if (selection.getValueAt(x, y) !== INACTIVE_ID) {
-          cost = model.move_getMoveCosts(mType, x, y);
+          cost = this.getMoveCosts(mType, x, y);
           selection.setValueAt(x, y, cost);
         }
       }
+
     }
   },
 
@@ -382,48 +441,6 @@ cwt.Move = {
     return false;
   },
 
-  /**
-   * Returns the movecosts to move with a given move type on a
-   * given tile type.
-   */
-  getMoveCosts: function (movetype, x, y) {
-    assert(model.map_isValidPosition(x, y));
-
-    var v;
-    var tmp;
-
-    // grab costs from property or  if not given from tile
-    tmp = model.property_posMap[x][y];
-    if (tmp) {
-
-      // nobody can move onto an invisible property
-      if (tmp.type.blocker) v = -1;
-      else v = movetype.costs[tmp.type.ID];
-    } else v = movetype.costs[model.map_data[x][y].ID];
-    if (typeof v === "number") return v;
-
-    // check wildcard
-    v = movetype.costs["*"];
-    if (typeof v === "number") return v;
-
-    // no match then return `-1`as not move able
-    return -1;
-  },
-
-  /**
-   * Returns true if a movetype can move to position {x,y} else false.
-   */
-  canTypeMoveTo: function (movetype, x, y) {
-    if (model.map_isValidPosition(x, y)) {
-
-      if (model.move_getMoveCosts(movetype, x, y) === -1) return false;
-      if (model.fog_turnOwnerData[x][y] === 0) return true;
-      if (model.unit_posData[x][y] !== null) return false;
-
-      return true;
-    }
-  },
-
   move: function (uid, x, y, noFuelConsumption) {
     var way = model.move_pathCache;
     var cX = x;
@@ -447,22 +464,22 @@ cwt.Move = {
       // set current position by current move code
       switch (way[i]) {
 
-        case model.move_MOVE_CODES.UP:
+        case this.MOVE_CODES_UP:
           if (cY === 0) wayIsIllegal = true;
           cY--;
           break;
 
-        case model.move_MOVE_CODES.RIGHT:
-          if (cX === model.map_width - 1) wayIsIllegal = true;
+        case this.MOVE_CODES_RIGHT:
+          if (cX === cwt.Map.width - 1) wayIsIllegal = true;
           cX++;
           break;
 
-        case model.move_MOVE_CODES.DOWN:
-          if (cY === model.map_height - 1) wayIsIllegal = true;
+        case this.MOVE_CODES_DOWN:
+          if (cY === cwt.Map.height - 1) wayIsIllegal = true;
           cY++;
           break;
 
-        case model.move_MOVE_CODES.LEFT:
+        case this.MOVE_CODES_LEFT:
           if (cX === 0) wayIsIllegal = true;
           cX--;
           break;
@@ -473,21 +490,21 @@ cwt.Move = {
       assert(!wayIsIllegal);
 
       // is way blocked ? (niy!)
-      if (false /* && model.isWayBlocked( cX, cY, unit.owner, (i === e - 1) )  */) {
+      if (false /* && model.isWayBlocked( cX, cY, unit.owner, (i === e - 1) ) */ ) {
         lastIndex = i - 1;
 
         // go back until you find a valid tile
         switch (way[i]) {
-          case model.move_MOVE_CODES.UP:
+          case this.MOVE_CODES_UP:
             cY++;
             break;
-          case model.move_MOVE_CODES.RIGHT:
+          case this.MOVE_CODES_RIGHT:
             cX--;
             break;
-          case model.move_MOVE_CODES.DOWN:
+          case this.MOVE_CODES_DOWN:
             cY--;
             break;
-          case model.move_MOVE_CODES.LEFT:
+          case this.MOVE_CODES_LEFT:
             cX++;
             break;
         }
@@ -501,7 +518,7 @@ cwt.Move = {
 
       // calculate the used fuel to move onto the current tile
       // if `noFuelConsumption` is not `true` some actions like unloading does not consume fuel
-      if (noFuelConsumption !== true) fuelUsed += model.move_getMoveCosts(mType, cX, cY);
+      if (noFuelConsumption !== true) fuelUsed += this.getMoveCosts(mType, cX, cY);
     }
 
     // consume fuel ( if `noFuelConsumption` is `true` then the costs will be `0` )
@@ -519,92 +536,3 @@ cwt.Move = {
     if (model.unit_posData[cX][cY] === null) model.events.setUnitPosition(uid, cX, cY);
   }
 };
-
-
-/*
- (function(){
-
- function setPos(uid,x,y){
- var unit = model.unit_data[uid];
-
- unit.x = x;
- unit.y = y;
- model.unit_posData[x][y] = unit;
-
- model.events.modifyVisionAt( x, y, unit.owner, unit.type.vision, 1 );
- }
-
- // Set position
- //
- model.event_on("setUnitPosition",setPos);
- model.event_on("createUnit",function( slot, pid, x,y, type ){
- setPos(slot,x,y);
- });
- })();
-
- // Clear position.
- //
- model.event_on("clearUnitPosition",function(uid){
- var unit = model.unit_data[uid];
- var x    = unit.x;
- var y    = unit.y;
-
- model.events.modifyVisionAt( x, y, unit.owner, unit.type.vision, -1 );
-
- model.unit_posData[x][y] = null;
- unit.x = -unit.x;
- unit.y = -unit.y;
- });
-
-
- model.event_on("move_flushMoveData",function( move, source ){
- controller.commandStack_sharedInvokement(
- "move_clearWayCache"
- );
-
- for (var i = 0, e = move.length; i < e; i += 6) {
- if (move[i] === INACTIVE_ID) break;
- controller.commandStack_sharedInvokement(
- "move_appendToWayCache",
- move[i],
- move[i + 1],
- move[i + 2],
- move[i + 3],
- move[i + 4],
- move[i + 5]
- );
- }
-
- controller.commandStack_sharedInvokement(
- "move_moveByCache",
- source.unitId,
- source.x,
- source.y,
- 0
- );
- });
-
- model.event_on("move_clearWayCache",function(){
- model.move_pathCache.resetValues();
- });
-
- model.event_on("move_appendToWayCache",function(){
- var i = 0;
-
- // search first free slot in the cache list
- while( model.move_pathCache[i] !== INACTIVE_ID ){
- i++;
- if( i >= MAX_SELECTION_RANGE ) assert(false);
- }
-
- // add tiles to cache path
- var argI = 0;
- while( argI < arguments.length ){
- model.move_pathCache[i] = arguments[argI];
- argI++;
- i++;
-
- if( i >= MAX_SELECTION_RANGE ) assert(false);
- }
- });
- */

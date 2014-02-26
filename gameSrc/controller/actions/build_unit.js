@@ -2,27 +2,30 @@ cwt.Action.propertyAction({
   key:"buildUnit",
 
   condition: function( data ){
-    return model.events.buildUnit_check(
-      data.source.propertyId,
-      model.property_data[data.source.propertyId].owner
+    return (
+      cwt.Factory.isFactory(data.source.property) &&
+      cwt.Factory.canProduce(data.source.property)
     );
   },
 
   hasSubMenu: true,
   prepareMenu: function( data ){
-    model.factoryGenerateBuildMenu(
-      data.source.propertyId,
+    cwt.Factory.generateBuildMenu(
+      data.source.property,
       data.menu,
       true
     );
   },
 
-  invoke: function( data ){
-    controller.commandStack_sharedInvokement(
-      "buildUnit_invoked",
-      data.source.x,
-      data.source.y,
-      data.action.selectedSubEntry
+  toDataBlock: function (data, dataBlock) {
+    dataBlock.p1 = cwt.Gameround.turnOwner.id;
+    dataBlock.p2 = data.target.property.owner.id;
+  },
+
+  parseDataBlock: function (dataBlock) {
+    cwt.Factory.buildUnit(
+      /** @type {cwt.Property} */ cwt.Property.getInstance(dataBlock.p1),
+      dataBlock.p2
     );
   }
 });

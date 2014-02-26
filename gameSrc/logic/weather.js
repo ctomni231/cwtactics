@@ -9,7 +9,7 @@ cwt.Weather = {
    * Calculates the next weather and adds the result as timed event to
    * the day events. **Only invokable by the host instance.**
    */
-  calculateNextWeather: function (wth) {
+  calculateNextWeather: function () {
 
     // this event is only host invokable
     assert(cwt.Network.isHost());
@@ -21,7 +21,7 @@ cwt.Weather = {
     if (cwt.Gameround.weather && cwt.Gameround.weather.defaultWeather) {
 
       var list = cwt.WeatherSheet.types;
-      newTp = cwt.selectRandomListElement(list,cwt.Gameround.weather);
+      newTp = cwt.selectRandomListElement(list, cwt.Gameround.weather);
       duration = 1;
 
     } else {
@@ -33,7 +33,7 @@ cwt.Weather = {
     }
 
     cwt.Gameround.weatherLeftDays = duration;
-    this.changeWeather(newTp);       // TODO : send message here
+    this.changeWeather(newTp); // TODO: send message here
   },
 
   /**

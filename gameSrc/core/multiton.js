@@ -7,7 +7,7 @@
  * @class
  */
 cwt.Multiton = my.Class({
-  STATIC:{
+  STATIC: {
 
     /**
      * Should be overwritten by the client class.
@@ -17,7 +17,14 @@ cwt.Multiton = my.Class({
     /**
      * Holds all created instances.
      */
-    multiton_instances_:[],
+    multiton_instances_: [],
+
+    getId: function (obj) {
+      for (var i = 0, e = this.MULTITON_INSTANCES; i < e; i++) {
+        if (this.multiton_instances_[i] === obj) return i;
+      }
+      return INACTIVE_ID;
+    },
 
     /**
      * Returns an instance of the Multiton.
@@ -26,19 +33,19 @@ cwt.Multiton = my.Class({
      * @param {Boolean=} nullReturn (optional)
      * @return {cwt.Multiton}
      */
-    getInstance: function (id,nullReturn) {
-      if( typeof id !== "number" || id < 0 || id >= this.MULTITON_INSTANCES ){
+    getInstance: function (id, nullReturn) {
+      if (typeof id !== "number" || id < 0 || id >= this.MULTITON_INSTANCES) {
         throw Error("illegal id");
       }
 
       var l = this.multiton_instances_;
-      if( !l[id] ){
+      if (!l[id]) {
 
         // allow null as result for some calls (like turn start actions
         // checks all units -> we won't want to create all units then)
-        if( nullReturn ) return null;
+        if (nullReturn) return null;
 
-        if( DEBUG ) console.log("creating instance with id "+id);
+        if (DEBUG) console.log("creating instance with id " + id);
         l[id] = new this();
       }
 

@@ -16,16 +16,39 @@ cwt.Supply = {
   },
 
   /**
+   *
+   * @param {cwt.Unit} supplier
+   * @param {number} x
+   * @param {number} y
+   * @return {boolean}
+   */
+  canSupplyTile: function (supplier, x, y) {
+    if (DEBUG) assert(this.isSupplier(supplier));
+
+    if (!cwt.Map.isValidPosition(x, y)) return false;
+    return (cwt.Map.data[x][y].unit !== null);
+  },
+
+  /**
    * Returns true if a given unit id has possible supply
    * targets nearby.
    */
   hasSupplyTargetsNearby: function (x, y) {
-    if (this.loadedIn !== INACTIVE_ID) return false;
+    if (DEBUG) assert(cwt.Map.isValidPosition(x, y));
 
-    assert(model.map_isValidPosition(x, y));
-    if (!model.supply_isSupplyUnit(uid)) return false;
+    var supplier = cwt.Map.data[x][y].unit;
+    return (
+      this.canSupplyTile(supplier, x + 1, y),
+        this.canSupplyTile(supplier, x - 1, y),
+        this.canSupplyTile(supplier, x, y + 1),
+        this.canSupplyTile(supplier, x, y - 1) );
+  },
 
-    return true;
+  resupplyTargetByPos: function (x, y) {
+    var unit = cwt.Map.data[x][y];
+    if (DEBUG) assert(unit);
+
+    this.resupplyTarget(unit);
   },
 
   /**
@@ -43,31 +66,31 @@ cwt.Supply = {
   /**
    * A supplier supplies all surrounding units that can be supplied by the supplier.
    *
-   * @param {cwt.Unit} supplyUnit
+   * @param x
+   * @param y
    */
-  supplyNeighbours: function (supplyUnit) {
-    if (DEBUG) assert(supplyUnit instanceof cwt.Unit);
+  supplyNeighbours: function (x, y) {
+    if (DEBUG) assert(cwt.Map.isValidPosition(x, y));
+
+    var supplyUnit = cwt.Map.data[x][y].property;
     if (DEBUG) assert(this.isSupplier(supplyUnit));
 
-    for (var i= 0,e=cwt.Unit.MULTITON_INSTANCES; i < e; i++) {
-      if (!model.unit_isValidUnitId(i)) continue;
-
-      // supply when neighbor
-      if (model.unit_getDistance(sid, i) === 1) {
-        model.events.supply_refillResources(i);
-      }
-    }
+    if (this.canSupplyTile(supplyUnit, x + 1, y)) this.resupplyTargetByPos(x + 1, y);
+    if (this.canSupplyTile(supplyUnit, x - 1, y)) this.resupplyTargetByPos(x - 1, y);
+    if (this.canSupplyTile(supplyUnit, x, y + 1)) this.resupplyTargetByPos(x, y + 1);
+    if (this.canSupplyTile(supplyUnit, x, y - 1)) this.resupplyTargetByPos(x, y - 1);
   },
 
   /**
-   * Drains fuel. When the unit does not have enough fuel then it
-   * will be removed from game and the event will be stopped.
+   * Drains fuel.
    *
-   * @param uid
-   * @return {Boolean}
+   * @param {cwt.Unit} unit
+   * @return {boolean}
    */
-  drainFuel: function (uid) {
-    var v = this.type.dailyFuelDrain;
+  drainFuel: function (unit) {
+    if (DEBUG) assert(unit instanceof cwt.Unit);
+
+    var v = unit.type.dailyFuelDrain;
     if (typeof v === "number") {
 
       // hidden units may drain more fuel
@@ -76,22 +99,40 @@ cwt.Supply = {
       }
 
       this.fuel -= v;
-
-      // if fuel is empty then destroy it
-      if (this.fuel <= 0) {
-        this.destroy();
-      }
     }
   },
 
   /**
-   * Gives funds.
+   *
+   * @param property
    */
-  raiseFunds: function () {
-    if (typeof this.type.funds !== "number") return;
-    this.owner.gold += this.type.funds;
+  raiseFunds: function (property) {
+    if (typeof property.type.funds !== "number") return;
+    property.owner.gold += property.type.funds;
 
-    cwt.ClientEvents.goldChange(this.owner, this.type.funds);
+    cwt.ClientEvents.goldChange(property.owner, property.type.funds, x, y);
+  },
+
+  canPropertyHeal: function (x, y) {
+    var tile = cwt.Map.data[x][y];
+    var prop = tile.property;
+    var unit = tile.unit;
+    if (prop && unit) {
+      if (typeof prop.type.repairs[unit.movetype.ID] === "number") {
+        return true;
+      }
+    }
+    return false;
+  },
+
+  propertyHeal: function (x, y) {
+    if (DEBUG) assert(this.canPropertyHeal(x, y));
+
+    var tile = cwt.Map.data[x][y];
+    var prop = tile.property;
+    var unit = tile.unit;
+
+    unit.heal( prop.type.repairs[unit.movetype.ID], true );
   }
 
 };

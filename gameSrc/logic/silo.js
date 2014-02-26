@@ -8,17 +8,29 @@ cwt.Silo = {
   /**
    * Returns true if a property id is a rocket silo. A rocket silo
    * has the ability to fire a rocket to a position with an impact.
+   *
+   * @param property
+   * @return {boolean}
    */
   isRocketSilo: function (property) {
     if (DEBUG) assert(property instanceof cwt.Property);
 
     if (!property.type.rocketsilo) return false;
-    if (arguments.length === 2) {
-      var fuidType = model.unit_data[uid].type.ID;
+    return true;
+  },
 
-      if (property.type.rocketsilo.fireable.indexOf(fuidType) === -1) {
-        return false;
-      }
+  /**
+   *
+   * @param property
+   * @param unit
+   * @return {boolean}
+   */
+  canBeFiredBy: function (property, unit) {
+    if (DEBUG) assert(unit instanceof cwt.Unit);
+    if (DEBUG) assert(this.isRocketSilo(property));
+
+    if (property.type.rocketsilo.fireable.indexOf(unit.type.ID) === -1) {
+      return false;
     }
 
     return true;
@@ -27,8 +39,12 @@ cwt.Silo = {
   /**
    * Returns true if a property id is a rocket silo. A rocket silo
    * has the ability to fire a rocket to a position with an impact.
+   *
+   * @param property
+   * @param unit
+   * @return {boolean}
    */
-  canBeFired: function (property,unit) {
+  canBeFired: function (property, unit) {
     if (DEBUG) assert(unit instanceof cwt.Unit);
 
     if (this.type.rocketsilo.fireable.indexOf(unit.type.ID) === -1) return false;
@@ -61,7 +77,8 @@ cwt.Silo = {
   fireSilo: function (x, y, tx, ty, owner) {
     var silo = cwt.Map.data[x][y].property;
 
-    if (DEBUG) assert(property instanceof cwt.Property);
+    if (DEBUG) assert(silo);
+    if (DEBUG) assert(this.isRocketSilo(silo));
 
     var type = silo.type;
     var targetType = cwt.PropertySheet.sheets[type.changeTo];
@@ -69,10 +86,24 @@ cwt.Silo = {
     cwt.ClientEvents.propertyTypeChanged(silo,silo.type,targetType);
     silo.type = targetType;
 
-    // var damage = cwt.Unit.pointsToHealth(type.rocketsilo.damage);
-    // var range = type.rocketsilo.range;
-    //model.events.rocketFly(x, y, tx, ty);
-    //model.events.explode_invoked(tx, ty, range, damage, owner);
+    var damage = cwt.Unit.pointsToHealth(type.rocketsilo.damage);
+    var range = type.rocketsilo.range;
+
+    cwt.Map.doInRange(tx, ty, range, this.exploderDamage_, damage);
+  },
+
+  /**
+   *
+   * @param {number} x
+   * @param {number} y
+   * @param {number} damage (x >= 0)
+   * @private
+   */
+  exploderDamage_: function (x, y, tile, damage) {
+    var unit = tile.unit;
+    if (unit) {
+      unit.takeDamage(damage, 9);
+    }
   }
 
 };

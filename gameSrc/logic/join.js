@@ -13,8 +13,8 @@ cwt.Join = {
    * @param {cwt.Unit} target
    */
   canJoin: function (source, target) {
-    if( DEBUG ) assert(source instanceof cwt.Unit);
-    if( DEBUG ) assert(target instanceof cwt.Unit);
+    if (DEBUG) assert(source instanceof cwt.Unit);
+    if (DEBUG) assert(target instanceof cwt.Unit);
 
     if (source.type !== target.type) return false;
 
@@ -32,12 +32,15 @@ cwt.Join = {
    * health then the difference will be payed to the owners resource depot.
    *
    * @param {cwt.Unit} source
-   * @param {cwt.Unit} target
+   * @param {number} x
+   * @param {number} y
    */
-  join: function (source, target) {
-    if( DEBUG ) assert(source instanceof cwt.Unit);
-    if( DEBUG ) assert(target instanceof cwt.Unit);
-    if( DEBUG ) assert(source.type === target.type);
+  join: function (source, x, y) {
+    if (DEBUG) assert(source instanceof cwt.Unit);
+
+    var target = cwt.Map.data[x][y].unit;
+    if (DEBUG) assert(target instanceof cwt.Unit);
+    if (DEBUG) assert(source.type === target.type);
 
     // hp
     target.heal(cwt.Unit.pointsToHealth(cwt.Unit.healthToPoints(source)), true);
@@ -52,7 +55,7 @@ cwt.Join = {
 
     // TODO experience points
 
-    cwt.Lifecycle.destroyUnit(source,true);
+    cwt.Lifecycle.destroyUnit(x, y, true);
   }
 
 };
