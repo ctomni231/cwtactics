@@ -153,8 +153,12 @@ cwt.Move = {
    * insertion was possible else `false`. If the new code is a backwards move
    * to the previous tile in the path then the actual last tile will be
    * dropped. In this function returns also `true` in this case.
+   * 
+   * @param {cwt.Move.MOVE_CODES_DOWN|cwt.Move.MOVE_CODES_RIGHT|cwt.Move.MOVE_CODES_LEFT|cwt.Move.MOVE_CODES_UP} code
+   * @param movePath
+   * @param {cwt.SelectionMap} data
    */
-  addCodeToMovePath: function (code, movePath) {
+  addCodeToMovePath: function (code, movePath, data) {
     if (DEBUG) assert(code >= this.MOVE_CODES_UP && code <= this.MOVE_CODES_LEFT);
 
     // is the move a go back to the last tile ?
@@ -219,7 +223,7 @@ cwt.Move = {
       }
 
       // acc. fuel consumption
-      fuelUsed += controller.stateMachine.data.selection.getValueAt(cx, cy);
+      fuelUsed += data.getValueAt(cx, cy);
     }
 
     // if to much fuel would be needed then decline
