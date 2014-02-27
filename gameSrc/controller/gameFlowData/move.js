@@ -9,15 +9,15 @@ cwt.gameFlowData.movePath = {
    * the move information.
    */
   data: util.scoped(function () {
-    var list = util.list(MAX_SELECTION_RANGE, INACTIVE_ID);
+    var list = util.list(MAX_SELECTION_RANGE, cwt.INACTIVE);
 
     // create aw2 list function
     //  :> returns the last move code from the aw2 list
     //
     list.getLastCode = function () {
       for (var i = this.length - 1; i > 0; i--)
-        if (this[i] !== INACTIVE_ID) return this[i];
-      return INACTIVE_ID;
+        if (this[i] !== cwt.INACTIVE) return this[i];
+      return cwt.INACTIVE;
     };
 
     // create aw2 list function
@@ -25,7 +25,7 @@ cwt.gameFlowData.movePath = {
     //
     list.getSize = function () {
       for (var i = this.length - 1; i > 0; i--)
-        if (this[i] !== INACTIVE_ID) return i + 1;
+        if (this[i] !== cwt.INACTIVE) return i + 1;
       return 0;
     };
 
@@ -35,7 +35,7 @@ cwt.gameFlowData.movePath = {
   /**
    * Cleans the move path. After invoke of the function the move 
    * path aw2 transfer object will be filled with the value
-   * `INACTIVE_ID`.
+   * `cwt.INACTIVE`.
    */
   clean: function () {
     this.data.resetValues();

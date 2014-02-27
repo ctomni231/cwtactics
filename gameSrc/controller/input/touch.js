@@ -45,11 +45,11 @@ cwt.Input.define("touch",function(){
       if (event.target.id === "cwt_menu"){
         // controller.screenStateMachine.event("INP_ACTION");
         controller.input_pushKey( controller.keyMaps.KEYBOARD.ACTION,
-          INACTIVE_ID, INACTIVE_ID );
+          cwt.INACTIVE, cwt.INACTIVE );
       } else {
         // controller.screenStateMachine.event("INP_CANCEL");
         controller.input_pushKey( controller.keyMaps.KEYBOARD.CANCEL,
-          INACTIVE_ID, INACTIVE_ID );
+          cwt.INACTIVE, cwt.INACTIVE );
       }
     }
   }
@@ -61,7 +61,7 @@ cwt.Input.define("touch",function(){
 
     // controller.screenStateMachine.event("INP_CANCEL");
     controller.input_pushKey( controller.keyMaps.KEYBOARD.CANCEL,
-      INACTIVE_ID, INACTIVE_ID );
+      cwt.INACTIVE, cwt.INACTIVE );
   }
 
   // Called when a swipe occur
@@ -80,7 +80,7 @@ cwt.Input.define("touch",function(){
     if( dy === -1 ) key = controller.keyMaps.KEYBOARD.UP;
 
     controller.input_pushKey( key, ( controller.screenStateMachine.state ===
-      "GAME_ROUND" )? 10:1, INACTIVE_ID );
+      "GAME_ROUND" )? 10:1, cwt.INACTIVE );
   }
 
   // Called when a drag occur. A drag happens when a one finger tap occurs
@@ -100,7 +100,7 @@ cwt.Input.define("touch",function(){
     if( dy === 1  ) key = controller.keyMaps.KEYBOARD.DOWN;
     if( dy === -1 ) key = controller.keyMaps.KEYBOARD.UP;
 
-    controller.input_pushKey( key, 1, INACTIVE_ID );
+    controller.input_pushKey( key, 1, cwt.INACTIVE );
 
     if( !controller.menuVisible ){
       //ON THE
@@ -114,7 +114,7 @@ cwt.Input.define("touch",function(){
         //OUTSIDE THE MENU
         // controller.screenStateMachine.event("INP_CANCEL");
         controller.input_pushKey( controller.keyMaps.KEYBOARD.CANCEL,
-          INACTIVE_ID, INACTIVE_ID );
+          cwt.INACTIVE, cwt.INACTIVE );
       }
     }
 

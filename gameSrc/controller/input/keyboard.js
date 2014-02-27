@@ -47,7 +47,7 @@ cwt.Input.define("keyboard",function(){
       }
     }
 
-    if( key !== null ) controller.input_pushKey( key, INACTIVE_ID, INACTIVE_ID  );
+    if( key !== null ) controller.input_pushKey( key, cwt.INACTIVE, cwt.INACTIVE  );
     return false;
   };
 

@@ -14,7 +14,7 @@ controller.roundConfig_coSelected = util.list( MAX_PLAYER , 0 );
 
 // Data holder to remember selected player types.
 //
-controller.roundConfig_typeSelected = util.list( MAX_PLAYER , INACTIVE_ID );
+controller.roundConfig_typeSelected = util.list( MAX_PLAYER , cwt.INACTIVE );
 
 // Data holder to remember selected teams.
 //
@@ -28,7 +28,7 @@ controller.roundConfig_prepare     = function(){
   controller.roundConfig_teamSelected.resetValues();
 
   for( var i= 0, e=MAX_PLAYER; i<e; i++ ){
-    if( model.player_data[i].team > INACTIVE_ID ){
+    if( model.player_data[i].team > cwt.INACTIVE ){
 
       if( i === 0 ){
         controller.roundConfig_typeSelected[i] = 0;
@@ -82,7 +82,7 @@ controller.roundConfig_evalAfterwards = function(){
       }
 
       // co
-      tmp = ( controller.roundConfig_coSelected[i] !== INACTIVE_ID)?
+      tmp = ( controller.roundConfig_coSelected[i] !== cwt.INACTIVE)?
         model.data_coTypes[controller.roundConfig_coSelected[i]] : null;
 
       model.events.setMainCo( i, tmp );
@@ -90,7 +90,7 @@ controller.roundConfig_evalAfterwards = function(){
     } else {
 
       // deactivate player
-      model.player_data[i].team = INACTIVE_ID;
+      model.player_data[i].team = cwt.INACTIVE;
 
       // remove all units
       var firstUid = model.unit_firstUnitId(i);
@@ -99,7 +99,7 @@ controller.roundConfig_evalAfterwards = function(){
         var unit = model.unit_data[firstUid];
         if( unit ){
           model.unit_posData[unit.x][unit.y] = null;
-          model.unit_data[firstUid].owner = INACTIVE_ID;
+          model.unit_data[firstUid].owner = cwt.INACTIVE;
         }
       }
 
@@ -107,7 +107,7 @@ controller.roundConfig_evalAfterwards = function(){
       for( var pi = 0, pe = model.property_data.length; pi < pe; pi++ ){
         var prop = model.property_data[pi];
         if( prop && prop.owner === i ){
-          prop.owner = INACTIVE_ID;
+          prop.owner = cwt.INACTIVE;
         }
       }
     }
@@ -164,11 +164,11 @@ controller.roundConfig_changeConfig = function( pid, type, prev ){
       if( cSelect === DESELECT_ID ) break;
       if( prev ){
         cSelect--;
-        if( cSelect < INACTIVE_ID ) cSelect = 1;
+        if( cSelect < cwt.INACTIVE ) cSelect = 1;
       }
       else{
         cSelect++;
-        if( cSelect >= 2 ) cSelect = INACTIVE_ID;
+        if( cSelect >= 2 ) cSelect = cwt.INACTIVE;
       }
       controller.roundConfig_typeSelected[pid] = cSelect;
       break;

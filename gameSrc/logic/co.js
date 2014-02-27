@@ -42,10 +42,10 @@ cwt.CO = {
     if (cwt.Config.getValue("co_enabledCoPower") === 0) return false;
 
     if (DEBUG) assert(player instanceof cwt.Player);
-    if (DEBUG) assert(powerType >= INACTIVE_ID && powerType <= this.POWER_LEVEL_SCOP);
+    if (DEBUG) assert(powerType >= cwt.INACTIVE && powerType <= this.POWER_LEVEL_SCOP);
 
     // co must be available and current power must be inactive
-    if (player.coA === null || player.activePower !== INACTIVE_ID) return false;
+    if (player.coA === null || player.activePower !== cwt.INACTIVE) return false;
 
     var stars;
     switch (powerType) {
@@ -88,7 +88,7 @@ cwt.CO = {
   deactivatePower: function (player) {
     if (DEBUG) assert(player instanceof cwt.Player);
 
-    player.activePower = INACTIVE_ID;
+    player.activePower = cwt.INACTIVE;
   },
 
   /**

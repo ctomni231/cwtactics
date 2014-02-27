@@ -27,7 +27,7 @@ cwt.Persistence.saveModel = function () {
   for (var i = 0, e = model.unit_data.length; i < e; i++) {
     unit = model.unit_data[i];
 
-    if (unit.owner !== INACTIVE_ID) {
+    if (unit.owner !== cwt.INACTIVE) {
       dom.units.push([
          model.unit_extractId(unit),
          unit.type.ID,
@@ -51,7 +51,7 @@ cwt.Persistence.saveModel = function () {
     prop = model.property_data[i];
 
     // persist it if the owner of the property is not INACTIVE
-    if (prop.owner !== INACTIVE_ID) {
+    if (prop.owner !== cwt.INACTIVE) {
       dom.prps.push([
         i,
         prop.x,
@@ -104,7 +104,7 @@ cwt.Persistence.saveModel = function () {
     obj = model.co_data[i];
 
     // persist the aw2 as array if target player isn't active then use a `0` as aw2
-    if (model.player_data[i].team === INACTIVE_ID) {
+    if (model.player_data[i].team === cwt.INACTIVE) {
       data.push(0);
     } else {
       data.push([

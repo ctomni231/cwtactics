@@ -14,7 +14,7 @@ cwt.Action.unitAction({
       data.source.unit,
       data.target.x,
       data.target.y,
-      data.movePath.data[0] !== INACTIVE_ID
+      data.movePath.data[0] !== cwt.INACTIVE
     );
   },
 

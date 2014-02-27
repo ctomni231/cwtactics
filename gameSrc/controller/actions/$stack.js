@@ -86,7 +86,7 @@ cwt.ActionStack = {
     );
 
     // free slot
-    data[i] = INACTIVE_ID;
+    data[i] = cwt.INACTIVE;
 
     // increase writing index
     controller.commandStack_curReadPos++;
@@ -112,7 +112,7 @@ cwt.ActionStack = {
     var i = 0;
     var e = 7;
 
-    assert(this.buffer_[i + offset] === INACTIVE_ID);
+    assert(this.buffer_[i + offset] === cwt.INACTIVE);
     this.buffer_[i + offset] = model.event_eventIndex[cmd]; //TODO to number
     i++;
 
@@ -122,7 +122,7 @@ cwt.ActionStack = {
       }
 
       this.buffer_[i + offset] = (arguments.length > i) ?
-        arguments[i] : INACTIVE_ID;
+        arguments[i] : cwt.INACTIVE;
 
       i++;
     }

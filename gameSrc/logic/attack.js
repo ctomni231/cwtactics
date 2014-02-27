@@ -51,7 +51,7 @@ cwt.Attack = {
     var teamId = unit.owner.team;
     var attackSheet = unit.type.attack;
 
-    if (markInData) data.setCenter(x, y, INACTIVE_ID);
+    if (markInData) data.setCenter(x, y, cwt.INACTIVE);
 
     // no battle unit ?
     if (typeof attackSheet === "undefined") return false;

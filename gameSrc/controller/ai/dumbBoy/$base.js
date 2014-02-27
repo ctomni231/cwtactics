@@ -60,7 +60,7 @@ controller.ai_CHECKS = [];
 //
 controller.ai_data = util.list( MAX_PLAYER, function(){
   return {
-    pid: INACTIVE_ID
+    pid: cwt.INACTIVE
   };
 });
 
@@ -80,7 +80,7 @@ controller.ai_scoreDataHolder_ = {
   target          : Object.create( controller.TaggedPosition ),
   targetselection : Object.create( controller.TaggedPosition ),
   selection       : util.selectionMap( MAX_SELECTION_RANGE * 4 + 1 ),
-  move            : util.list(MAX_SELECTION_RANGE, INACTIVE_ID),
+  move            : util.list(MAX_SELECTION_RANGE, cwt.INACTIVE),
   action          : {
     selectedSubEntry: ""
   },
@@ -95,7 +95,7 @@ controller.ai_actionDataHolder_ = {
   targetselection : Object.create( controller.TaggedPosition ),
   selection       : util.selectionMap( MAX_SELECTION_RANGE * 4 + 1 ),
   used            : false,
-  move            : util.list(MAX_SELECTION_RANGE, INACTIVE_ID),
+  move            : util.list(MAX_SELECTION_RANGE, cwt.INACTIVE),
   check_index     : -1,
   endsAiTurn      : false,
   action          : {
@@ -108,7 +108,7 @@ controller.ai_actionDataHolder_ = {
 //
 controller.ai_reset = function(){
   for( var i= 0, e=MAX_PLAYER; i<e; i++ ){
-    controller.ai_data[i].pid = INACTIVE_ID;
+    controller.ai_data[i].pid = cwt.INACTIVE;
   }
 };
 
@@ -150,7 +150,7 @@ controller.ai_register = function(pid){
   for (var i = 0; i < controller.ai_data.length; i++) {
 
     // if the slot is empty then occupy it
-    if( controller.ai_data[i].pid === INACTIVE_ID ){
+    if( controller.ai_data[i].pid === cwt.INACTIVE ){
         controller.ai_data[i].pid = pid;
         return;
     }
@@ -164,7 +164,7 @@ controller.ai_deregister = function(pid){
 
     // if the slot is empty then occupy it
     if( controller.ai_data[i].pid === pid ){
-        controller.ai_data[i].pid = INACTIVE_ID;
+        controller.ai_data[i].pid = cwt.INACTIVE;
         return;
     }
 
@@ -298,7 +298,7 @@ controller.ai_machine = util.stateMachine({
           //util.log(controller.ai_spec,"- ..for unit",loopData.i);
 
           var unit = model.unit_data[loopData.i];
-          if( unit.owner !== INACTIVE_ID && unit.loadedIn === INACTIVE_ID && 
+          if( unit.owner !== cwt.INACTIVE && unit.loadedIn === cwt.INACTIVE && 
               model.actions_canAct(loopData.i)){
             dataTp = 0;
             scoreData.source.set( unit.x, unit.y );

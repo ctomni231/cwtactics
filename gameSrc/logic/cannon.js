@@ -93,7 +93,7 @@ cwt.Cannon = {
 
     if (DEBUG) assert(type.cannon);
 
-    selection.setCenter(x, y, INACTIVE_ID);
+    selection.setCenter(x, y, cwt.INACTIVE);
 
     var otx, oty, sx, sy, tx, ty;
     var max = type.cannon.range;

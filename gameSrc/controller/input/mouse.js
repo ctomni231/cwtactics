@@ -42,7 +42,7 @@ cwt.Input.define("mouse",function(){
 
     // click on canvas while menu is open -> cancel always
     if( controller.menuVisible ){
-      controller.input_pushKey( keymap.CANCEL, INACTIVE_ID, INACTIVE_ID  );
+      controller.input_pushKey( keymap.CANCEL, cwt.INACTIVE, cwt.INACTIVE  );
       return;
     }
 
@@ -52,7 +52,7 @@ cwt.Input.define("mouse",function(){
       // LEFT
       case 1:
 
-        controller.input_pushKey( keymap.ACTION, INACTIVE_ID, INACTIVE_ID);
+        controller.input_pushKey( keymap.ACTION, cwt.INACTIVE, cwt.INACTIVE);
         break;
 
       // MIDDLE
@@ -60,7 +60,7 @@ cwt.Input.define("mouse",function(){
 
       // RIGHT
       case 3:
-        controller.input_pushKey( keymap.CANCEL, INACTIVE_ID, INACTIVE_ID);
+        controller.input_pushKey( keymap.CANCEL, cwt.INACTIVE, cwt.INACTIVE);
         break;
     }
   };

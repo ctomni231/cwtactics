@@ -72,7 +72,7 @@ cwt.Unit = my.Class(null, cwt.Multiton, /** @lends cwt.Unit.prototype */ {
     this.ammo = 0;
     this.fuel = 0;
     this.hidden = false;
-    this.loadedIn = INACTIVE_ID;
+    this.loadedIn = cwt.INACTIVE;
 
     this.type = null;
     this.canAct = false;

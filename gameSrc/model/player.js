@@ -21,10 +21,10 @@ cwt.Player = my.Class(null,cwt.Multiton, /** @lends cwt.Player.prototype */ {
   constructor: function () {
     this.id = -1;
 
-    this.team = INACTIVE_ID;
+    this.team = cwt.INACTIVE;
     this.gold = 0;
     this.power = 0;
-    this.activePower = INACTIVE_ID;
+    this.activePower = cwt.INACTIVE;
     this.powerUsed = 0;
     this.manpower = Math.POSITIVE_INFINITY;
     this.coA = null;
@@ -59,7 +59,7 @@ cwt.Player = my.Class(null,cwt.Multiton, /** @lends cwt.Player.prototype */ {
     i = model.unit_firstUnitId(pid);
     e = model.unit_lastUnitId(pid);
     for (; i < e; i++) {
-      if (model.unit_data[i].owner !== INACTIVE_ID) model.events.destroyUnit(i);
+      if (model.unit_data[i].owner !== cwt.INACTIVE) model.events.destroyUnit(i);
     }
 
     // remove all properties

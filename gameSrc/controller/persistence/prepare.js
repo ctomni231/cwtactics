@@ -41,7 +41,7 @@ cwt.Persistence.prepareModel = function (dom) {
   // ---------------------------------------------
 
   for (var i = 0, e = model.unit_data.length; i < e; i++) {
-    model.unit_data[i].owner = INACTIVE_ID;
+    model.unit_data[i].owner = cwt.INACTIVE;
   }
 
   model.unit_posData.resetValues();
@@ -91,7 +91,7 @@ cwt.Persistence.prepareModel = function (dom) {
 
   // reset all 
   for (var i = 0, e = model.property_data.length; i < e; i++) {
-    model.property_data[i].owner = INACTIVE_ID;
+    model.property_data[i].owner = cwt.INACTIVE;
     model.property_data[i].type = null;
   }
 

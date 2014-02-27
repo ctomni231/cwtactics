@@ -12,7 +12,7 @@ cwt.Network = {
   /**
    * Id of the client in the connected network session.
    */
-  clientId: INACTIVE_ID,
+  clientId: cwt.INACTIVE,
 
   /**
    * The target URL of the network server.
@@ -32,7 +32,7 @@ cwt.Network = {
    * @return {Boolean}
    */
   isHost: function () {
-    return this.gameId === null || this.clientId !== INACTIVE_ID;
+    return this.gameId === null || this.clientId !== cwt.INACTIVE;
   },
 
   /**

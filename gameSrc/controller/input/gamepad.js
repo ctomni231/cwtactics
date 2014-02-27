@@ -81,7 +81,7 @@ cwt.Input.define("gamepad",function(){
         else if (gamepad.buttons[keymap.CANCEL] === 1) key = keymapAct.CANCEL;
 
         // invoke input event when a known key was pressed
-        if (key) controller.input_pushKey( key, INACTIVE_ID, INACTIVE_ID  );
+        if (key) controller.input_pushKey( key, cwt.INACTIVE, cwt.INACTIVE  );
       }
     }
   }

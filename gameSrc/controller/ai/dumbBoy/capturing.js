@@ -19,7 +19,7 @@
       var prop = null;
       var move = false;
       var cprop = model.property_posMap[data.source.x][data.source.y];
-      if ( cprop && ( cprop.owner === INACTIVE_ID || 
+      if ( cprop && ( cprop.owner === cwt.INACTIVE || 
         model.player_data[cprop.owner].team !== tid ) &&
         model.property_isCapturableBy(model.property_extractId(cprop), data.source.unitId)) {
 
@@ -39,7 +39,7 @@
               if( model.unit_posData[x][y] ) continue;
 
               cprop = model.property_posMap[x][y];
-              if (cprop && ( cprop.owner === INACTIVE_ID || 
+              if (cprop && ( cprop.owner === cwt.INACTIVE || 
                 model.player_data[cprop.owner].team !== tid ) &&
                 model.property_isCapturableBy(
                   model.property_extractId(cprop), data.source.unitId)) {
@@ -66,7 +66,7 @@
           data.selection,
           data.move
         );
-      } else data.move.resetValues(INACTIVE_ID);
+      } else data.move.resetValues(cwt.INACTIVE);
 
       return 20;
     },

@@ -30,7 +30,7 @@ cwt.Gameflow.addState({
     if (input && input.key === cwt.Input.TYPE_ACTION) {
       this.data.source.set(x, y);
 
-      if (this.data.source.unitId !== INACTIVE_ID &&
+      if (this.data.source.unitId !== cwt.INACTIVE &&
         this.data.source.unit.owner === model.round_turnOwner &&
         model.actions_canAct(this.data.source.unitId)) {
 

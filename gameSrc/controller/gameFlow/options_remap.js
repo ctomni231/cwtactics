@@ -252,7 +252,7 @@ cwt.Gameflow.addState({
   }
 
   function enterState(keySet,toChar) {
-    curBtn = INACTIVE_ID;
+    curBtn = cwt.INACTIVE;
     codeToChar(btnVal.LEFT,keySet.LEFT,toChar);
     codeToChar(btnVal.DOWN,keySet.DOWN,toChar);
     codeToChar(btnVal.UP,keySet.UP,toChar);
@@ -302,7 +302,7 @@ cwt.Gameflow.addState({
         break;
     }
 
-    curBtn = INACTIVE_ID;
+    curBtn = cwt.INACTIVE;
     controller.input_genericInputRequest = false;
     return this.breakTransition();
   }

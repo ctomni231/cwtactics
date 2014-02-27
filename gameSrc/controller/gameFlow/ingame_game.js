@@ -40,7 +40,7 @@ util.scoped(function(){
 
       // update unit stats
       for( var i=0,e=model.unit_data.length; i<e; i++ ){
-        if( model.unit_data[i].owner !== INACTIVE_ID ) controller.updateUnitStatus( i );
+        if( model.unit_data[i].owner !== cwt.INACTIVE ) controller.updateUnitStatus( i );
       }
 
       // prepare screen and screen aw2

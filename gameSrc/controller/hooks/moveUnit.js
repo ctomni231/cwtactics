@@ -94,7 +94,7 @@ view.registerAnimationHook({
       // this.moveAnimationShift = 0;
 
       if( this.moveAnimationIndex === this.moveAnimationPath.length ||
-          this.moveAnimationPath[this.moveAnimationIndex] === INACTIVE_ID ){
+          this.moveAnimationPath[this.moveAnimationIndex] === cwt.INACTIVE ){
         this.moveAnimationX     = 0;
         this.moveAnimationY     = 0;
         this.moveAnimationIndex = 0;

@@ -3,4 +3,6 @@
  *
  * @namespace
  */
-var cwt = {};
+var cwt = {
+  INACTIVE:-1
+};

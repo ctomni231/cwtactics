@@ -39,7 +39,7 @@ util.scoped(function(){
   var coABtn = document.getElementById("options.playerConf.coA");
   
   // current selected ids
-  var selectedPid = INACTIVE_ID;
+  var selectedPid = cwt.INACTIVE;
   
   function updateButtons( a,b,c ){
     typeBtn.innerHTML = model.data_localized(a);
@@ -59,11 +59,11 @@ util.scoped(function(){
   
   function updateButtonsForPlayer( pid ){
     var type = controller.roundConfig_typeSelected[pid];
-    if( type === INACTIVE_ID ) updateButtons("config.player.off", "&#160;", -1);
+    if( type === cwt.INACTIVE ) updateButtons("config.player.off", "&#160;", -1);
     else if( type === DESELECT_ID ) updateButtons("config.player.disabled", "&#160;", -1);
     else updateButtons(
       ( type === 0 )? "config.player.human" : "config.player.AI", 
-      (controller.roundConfig_coSelected[pid] !== INACTIVE_ID)? 
+      (controller.roundConfig_coSelected[pid] !== cwt.INACTIVE)? 
         model.data_coSheets[ model.data_coTypes[ controller.roundConfig_coSelected[pid] ] ].ID : 
         "config.player.co.none", 
       controller.roundConfig_teamSelected[pid]
@@ -193,7 +193,7 @@ util.scoped(function(){
   };
   
   controller.screenStateMachine.structure.PLAYER_SETUP.ACTION = function(){
-    assert(selectedPid !== INACTIVE_ID);
+    assert(selectedPid !== cwt.INACTIVE);
     
     // skip changes when player slot is offline
     switch( btn.getActiveKey() ){
@@ -201,7 +201,7 @@ util.scoped(function(){
       case "config.co.next":
       case "config.team.prev":        
       case "config.team.next":
-        if( model.player_data[selectedPid].team === INACTIVE_ID ) return;
+        if( model.player_data[selectedPid].team === cwt.INACTIVE ) return;
     }
     
     switch( btn.getActiveKey() ){

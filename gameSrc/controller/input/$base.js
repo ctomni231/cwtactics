@@ -112,15 +112,15 @@ controller.input_blocked = false;
 
 // Input stack.
 //
-controller.input_stack = util.list(10, INACTIVE_ID);
+controller.input_stack = util.list(10, cwt.INACTIVE);
 
 // Input stack.
 //
-controller.input_data1 = util.list(10, INACTIVE_ID);
+controller.input_data1 = util.list(10, cwt.INACTIVE);
 
 // Input stack.
 //
-controller.input_data2 = util.list(10, INACTIVE_ID);
+controller.input_data2 = util.list(10, cwt.INACTIVE);
 
 // Read index of the input stack.
 //
@@ -137,10 +137,10 @@ controller.input_pushKey = function (key, d1, d2) {
   if (controller.input_blocked || controller.inputCoolDown > 0) return;
 
   // convert undefined / null to numbers
-  if (d1 !== 0 && !d1) d1 = INACTIVE_ID;
-  if (d2 !== 0 && !d2) d2 = INACTIVE_ID;
+  if (d1 !== 0 && !d1) d1 = cwt.INACTIVE;
+  if (d2 !== 0 && !d2) d2 = cwt.INACTIVE;
 
-  if (controller.input_stack[controller.input_stack_w_] === INACTIVE_ID) {
+  if (controller.input_stack[controller.input_stack_w_] === cwt.INACTIVE) {
     controller.input_stack[controller.input_stack_w_] = key;
     controller.input_data1[controller.input_stack_w_] = d1;
     controller.input_data2[controller.input_stack_w_] = d2;
@@ -162,9 +162,9 @@ controller.input_evalNextKey = function () {
   // grab value
   var ri = controller.input_stack_r_;
   var value = controller.input_stack[controller.input_stack_r_];
-  if (value === INACTIVE_ID) return false;
+  if (value === cwt.INACTIVE) return false;
 
-  controller.input_stack[ri] = INACTIVE_ID;
+  controller.input_stack[ri] = cwt.INACTIVE;
 
   var d1 = controller.input_data1[ri];
   var d2 = controller.input_data2[ri];
@@ -202,7 +202,7 @@ controller.input_evalNextKey = function () {
       return false;
   }
 
-  if (d1 !== INACTIVE_ID && d2 !== INACTIVE_ID) {
+  if (d1 !== cwt.INACTIVE && d2 !== cwt.INACTIVE) {
     controller.screenStateMachine.event(event, d1, d2);
   } else controller.screenStateMachine.event(event);
 

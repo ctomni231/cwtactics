@@ -157,7 +157,7 @@ cwt.gameFlowData.menu = {
     for( ;i<=e; i++ ){
       unit = model.unit_data[i];
 
-      if( unit.owner !== INACTIVE_ID && unit.loadedIn === uid ){
+      if( unit.owner !== cwt.INACTIVE && unit.loadedIn === uid ){
         var movetp = model.data_movetypeSheets[ unit.type.movetype ];
 
         if( model.move_canTypeMoveTo(movetp,x-1,y) ||

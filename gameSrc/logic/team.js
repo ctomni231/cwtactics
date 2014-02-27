@@ -85,7 +85,7 @@ cwt.Team = {
       if (i === origI) continue;
 
       var player = cwt.Player.getInstance(i, true);
-      if (player && player.team !== INACTIVE_ID) {
+      if (player && player.team !== cwt.INACTIVE) {
         menu.addEntry(i, true);
       }
     }
@@ -128,7 +128,7 @@ cwt.Team = {
       if (i === origI) continue;
 
       var player = cwt.Player.getInstance(i, true);
-      if (player && player.team !== INACTIVE_ID) {
+      if (player && player.team !== cwt.INACTIVE) {
         menu.addEntry(i, true);
       }
     }

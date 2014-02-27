@@ -11,7 +11,7 @@ cwt.SelectionMap = my.Class({
     /**
      * @type {cwt.Matrix}
      */
-    this.data = new cwt.Matrix(size, size, INACTIVE_ID);
+    this.data = new cwt.Matrix(size, size, cwt.INACTIVE);
   },
 
   /**

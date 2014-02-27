@@ -23,7 +23,7 @@ cwt.Multiton = my.Class({
       for (var i = 0, e = this.MULTITON_INSTANCES; i < e; i++) {
         if (this.multiton_instances_[i] === obj) return i;
       }
-      return INACTIVE_ID;
+      return cwt.INACTIVE;
     },
 
     /**
