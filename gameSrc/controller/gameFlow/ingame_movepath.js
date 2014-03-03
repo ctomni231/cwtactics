@@ -26,7 +26,7 @@ cwt.gameFlow.MOVEPATH_SELECTION = {
 
   action: function (ev, x, y) {
     if (this.data.selection.getValueAt(x, y) < 0) {
-      if (DEBUG) util.log("break event because selection is not in the selection map");
+      if (this.DEBUG) util.log("break event because selection is not in the selection map");
       return this.breakTransition();
     }
 

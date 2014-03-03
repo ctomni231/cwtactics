@@ -3,7 +3,7 @@ controller.loadMaps_load_ = function(path,baton){
 
   controller.storage_maps.exists(path,function(exits){
     if( !exits ){
-      if( DEBUG ) util.log("going to cache map "+path);
+      if( this.DEBUG ) util.log("going to cache map "+path);
 
       util.grabRemoteFile({
         path: model.data_assets.maps + "/" + path ,
@@ -15,7 +15,7 @@ controller.loadMaps_load_ = function(path,baton){
 
         success: function( resp ){
           controller.storage_maps.set(path,resp,function(){
-            if( DEBUG ) util.log("cached map "+path);
+            if( this.DEBUG ) util.log("cached map "+path);
           });
           baton.pass();
         }
@@ -26,7 +26,7 @@ controller.loadMaps_load_ = function(path,baton){
 };
 
 controller.loadMaps_doIt = util.singleLazyCall(function( p,baton ){
-  if( DEBUG ) util.log("loading maps");
+  if( this.DEBUG ) util.log("loading maps");
 
   var flow = jWorkflow.order(
     function(){

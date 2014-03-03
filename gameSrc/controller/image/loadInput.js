@@ -1,5 +1,5 @@
 controller.loadInputDevices = util.singleLazyCall(function( err, baton ){
-  if( DEBUG ) util.log("loading input devices");
+  if( this.DEBUG ) util.log("loading input devices");
   
   var canvas = document.getElementById( "cwt_canvas" );
   var menuEl = document.getElementById( "cwt_menu" );

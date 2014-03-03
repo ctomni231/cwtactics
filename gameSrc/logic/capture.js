@@ -25,7 +25,7 @@ cwt.Capture = {
    *
    */
   captureProperty: function (property,unit) {
-    if (DEBUG) assert(unit);
+    if (this.DEBUG) assert(unit);
 
     this.points -= cwt.Property.CAPTURE_STEP;
     cwt.ClientEvents.unitCaptures(this,unit);

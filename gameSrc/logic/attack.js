@@ -44,8 +44,8 @@ cwt.Attack = {
    * @return {boolean}
    */
   calculateTargets: function (unit, x, y, data, markTiles) {
-    if (DEBUG) assert(unit instanceof cwt.Unit);
-    if (DEBUG) assert(cwt.Map.isValidPosition(x, y));
+    if (this.DEBUG) assert(unit instanceof cwt.Unit);
+    if (this.DEBUG) assert(cwt.Map.isValidPosition(x, y));
 
     var markInData = (typeof data !== "undefined");
     var teamId = unit.owner.team;
@@ -277,10 +277,10 @@ cwt.Attack = {
    * @param defLuckRatio
    */
   attack: function (attacker, defender, attLuckRatio, defLuckRatio) {
-    if (DEBUG) assert(attacker instanceof cwt.Unit);
-    if (DEBUG) assert(defender instanceof cwt.Unit);
-    if (DEBUG) assert(attLuckRatio >= 0 && attLuckRatio <= 100);
-    if (DEBUG) assert(defLuckRatio >= 0 && defLuckRatio <= 100);
+    if (this.DEBUG) assert(attacker instanceof cwt.Unit);
+    if (this.DEBUG) assert(defender instanceof cwt.Unit);
+    if (this.DEBUG) assert(attLuckRatio >= 0 && attLuckRatio <= 100);
+    if (this.DEBUG) assert(defLuckRatio >= 0 && defLuckRatio <= 100);
 
     var indirectAttack = this.isIndirect(attacker);
 

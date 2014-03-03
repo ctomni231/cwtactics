@@ -388,7 +388,7 @@ controller.ai_machine = util.stateMachine({
     if( actionData.used ){
 
       var action = controller.ai_CHECKS[ actionData.check_index ];
-      if( DEBUG ) util.log("invoke action",action.key);
+      if( this.DEBUG ) util.log("invoke action",action.key);
 
       // do actions
       action.prepare( actionData );

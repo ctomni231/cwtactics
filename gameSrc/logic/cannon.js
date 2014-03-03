@@ -8,7 +8,7 @@ cwt.Cannon = {
    * Returns `true` if a given property id is a cannon property.
    */
   isCannonUnit: function (unit) {
-    if (DEBUG) assert(unit instanceof cwt.Unit);
+    if (this.DEBUG) assert(unit instanceof cwt.Unit);
 
     return (unit.type.ID === "CANNON_UNIT_INV");
   },
@@ -50,7 +50,7 @@ cwt.Cannon = {
    * with a given `range`.
    */
   tryToMarkCannonTargets: function (player, selection, ox, oy, otx, oty, sx, sy, tx, ty, range) {
-    if (DEBUG) assert(player instanceof cwt.Player);
+    if (this.DEBUG) assert(player instanceof cwt.Player);
 
     var tid = player.team;
     var osy = sy;
@@ -91,7 +91,7 @@ cwt.Cannon = {
     var prop = cwt.Map.data[x][y].property;
     var type = (prop.type.ID !== "PROP_INV") ? prop.type : this.grabBombPropTypeFromPos(x, y);
 
-    if (DEBUG) assert(type.cannon);
+    if (this.DEBUG) assert(type.cannon);
 
     selection.setCenter(x, y, cwt.INACTIVE);
 

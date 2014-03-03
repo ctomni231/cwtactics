@@ -40,7 +40,7 @@ cwt.Weather = {
    *
    */
   changeWeather: function (weather) {
-    if (DEBUG) assert(cwt.WeatherSheet.isValidSheet(weather));
+    if (this.DEBUG) assert(cwt.WeatherSheet.isValidSheet(weather));
 
     cwt.Gameround.weather = weather;
 

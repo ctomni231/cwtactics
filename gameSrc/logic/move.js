@@ -33,9 +33,9 @@ cwt.Move = {
    * Extracts the move code between two positions.
    */
   codeFromAtoB: function (sx, sy, tx, ty) {
-    if (DEBUG) assert(cwt.Map.isValidPosition(sx, sy));
-    if (DEBUG) assert(cwt.Map.isValidPosition(tx, ty));
-    if (DEBUG) assert(cwt.Map.getDistance(sx, sy, tx, ty) === 1);
+    if (this.DEBUG) assert(cwt.Map.isValidPosition(sx, sy));
+    if (this.DEBUG) assert(cwt.Map.isValidPosition(tx, ty));
+    if (this.DEBUG) assert(cwt.Map.getDistance(sx, sy, tx, ty) === 1);
 
     if (sx < tx) return this.MOVE_CODES_RIGHT;
     if (sx > tx) return this.MOVE_CODES_LEFT;
@@ -51,7 +51,7 @@ cwt.Move = {
    * given tile type.
    */
   getMoveCosts: function (movetype, x, y) {
-    if (DEBUG) assert(cwt.Map.isValidPosition(x, y));
+    if (this.DEBUG) assert(cwt.Map.isValidPosition(x, y));
 
     var v;
     var tmp = cwt.Map.data[x][y];
@@ -106,8 +106,8 @@ cwt.Move = {
    * @param movePath
    */
   generateMovePath: function (stx, sty, tx, ty, selection, movePath) {
-    if (DEBUG) assert(cwt.Map.isValidPosition(stx, sty));
-    if (DEBUG) assert(cwt.Map.isValidPosition(tx, ty));
+    if (this.DEBUG) assert(cwt.Map.isValidPosition(stx, sty));
+    if (this.DEBUG) assert(cwt.Map.isValidPosition(tx, ty));
 
     var graph = new Graph(selection.data);
 
@@ -185,7 +185,7 @@ cwt.Move = {
    * @param {number} sy
    */
   addCodeToMovePath: function (code, movePath, selection, sx, sy) {
-    if (DEBUG) assert(code >= this.MOVE_CODES_UP && code <= this.MOVE_CODES_LEFT);
+    if (this.DEBUG) assert(code >= this.MOVE_CODES_UP && code <= this.MOVE_CODES_LEFT);
 
     if (this.isGoBackCommand_(code, movePath)) {
       return true;
@@ -264,7 +264,7 @@ cwt.Move = {
     if (typeof y !== "number") y = source.y;
     if (!unit) unit = source.unit;
 
-    if (DEBUG) assert(cwt.Map.isValidPosition(x, y));
+    if (this.DEBUG) assert(cwt.Map.isValidPosition(x, y));
 
     var toBeChecked;
     var releaseHelper = false;
@@ -447,7 +447,7 @@ cwt.Move = {
         cBy = cy;
 
       } else if (teamId !== unit.owner.team) {
-        if (DEBUG) assert(typeof cBx !== "number" && typeof cBy !== "number");
+        if (this.DEBUG) assert(typeof cBx !== "number" && typeof cBy !== "number");
 
         target.set(cBx, cBy); // ? this looks ugly here...
         movePath.data[i] = cwt.INACTIVE;
@@ -512,22 +512,22 @@ cwt.Move = {
       switch (movePath.data[i]) {
 
         case this.MOVE_CODES_UP:
-          if (DEBUG) assert(cY === 0);
+          if (this.DEBUG) assert(cY === 0);
           cY--;
           break;
 
         case this.MOVE_CODES_RIGHT:
-          if (DEBUG) assert(cX === cwt.Map.width - 1);
+          if (this.DEBUG) assert(cX === cwt.Map.width - 1);
           cX++;
           break;
 
         case this.MOVE_CODES_DOWN:
-          if (DEBUG) assert(cY === cwt.Map.height - 1);
+          if (this.DEBUG) assert(cY === cwt.Map.height - 1);
           cY++;
           break;
 
         case this.MOVE_CODES_LEFT:
-          if (DEBUG) assert(cX === 0);
+          if (this.DEBUG) assert(cX === 0);
           cX--;
           break;
       }
@@ -559,7 +559,7 @@ cwt.Move = {
     // consume fuel except when no fuel consumption is on
     if (noFuelConsumption !== true) {
       unit.fuel -= lastFuel;
-      if (DEBUG) assert(unit.fuel >= 0);
+      if (this.DEBUG) assert(unit.fuel >= 0);
     }
 
     // sometimes we prevent to set the unit at the target position because it moves

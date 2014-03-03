@@ -45,7 +45,7 @@ cwt.Multiton = my.Class({
         // checks all units -> we won't want to create all units then)
         if (nullReturn) return null;
 
-        if (DEBUG) console.log("creating instance with id " + id);
+        if (this.DEBUG) console.log("creating instance with id " + id);
         l[id] = new this();
       }
 

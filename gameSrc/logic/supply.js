@@ -10,7 +10,7 @@ cwt.Supply = {
    * @param {cwt.Unit} unit
    */
   isSupplier: function (unit) {
-    if (DEBUG) assert(unit instanceof cwt.Unit);
+    if (this.DEBUG) assert(unit instanceof cwt.Unit);
 
     return unit.type.supply;
   },
@@ -23,7 +23,7 @@ cwt.Supply = {
    * @return {boolean}
    */
   canSupplyTile: function (supplier, x, y) {
-    if (DEBUG) assert(this.isSupplier(supplier));
+    if (this.DEBUG) assert(this.isSupplier(supplier));
 
     if (!cwt.Map.isValidPosition(x, y)) return false;
     return (cwt.Map.data[x][y].unit !== null);
@@ -34,7 +34,7 @@ cwt.Supply = {
    * targets nearby.
    */
   hasSupplyTargetsNearby: function (x, y) {
-    if (DEBUG) assert(cwt.Map.isValidPosition(x, y));
+    if (this.DEBUG) assert(cwt.Map.isValidPosition(x, y));
 
     var supplier = cwt.Map.data[x][y].unit;
     return (
@@ -46,7 +46,7 @@ cwt.Supply = {
 
   resupplyTargetByPos: function (x, y) {
     var unit = cwt.Map.data[x][y];
-    if (DEBUG) assert(unit);
+    if (this.DEBUG) assert(unit);
 
     this.resupplyTarget(unit);
   },
@@ -57,7 +57,7 @@ cwt.Supply = {
    * @param {cwt.Unit} unit
    */
   resupplyTarget: function (unit) {
-    if (DEBUG) assert(unit instanceof cwt.Unit);
+    if (this.DEBUG) assert(unit instanceof cwt.Unit);
 
     unit.ammo = unit.type.ammo;
     unit.fuel = unit.type.fuel;
@@ -70,10 +70,10 @@ cwt.Supply = {
    * @param y
    */
   supplyNeighbours: function (x, y) {
-    if (DEBUG) assert(cwt.Map.isValidPosition(x, y));
+    if (this.DEBUG) assert(cwt.Map.isValidPosition(x, y));
 
     var supplyUnit = cwt.Map.data[x][y].property;
-    if (DEBUG) assert(this.isSupplier(supplyUnit));
+    if (this.DEBUG) assert(this.isSupplier(supplyUnit));
 
     if (this.canSupplyTile(supplyUnit, x + 1, y)) this.resupplyTargetByPos(x + 1, y);
     if (this.canSupplyTile(supplyUnit, x - 1, y)) this.resupplyTargetByPos(x - 1, y);
@@ -88,7 +88,7 @@ cwt.Supply = {
    * @return {boolean}
    */
   drainFuel: function (unit) {
-    if (DEBUG) assert(unit instanceof cwt.Unit);
+    if (this.DEBUG) assert(unit instanceof cwt.Unit);
 
     var v = unit.type.dailyFuelDrain;
     if (typeof v === "number") {
@@ -126,7 +126,7 @@ cwt.Supply = {
   },
 
   propertyHeal: function (x, y) {
-    if (DEBUG) assert(this.canPropertyHeal(x, y));
+    if (this.DEBUG) assert(this.canPropertyHeal(x, y));
 
     var tile = cwt.Map.data[x][y];
     var prop = tile.property;

@@ -25,7 +25,7 @@ cwt.gameFlow.ACTION_SELECT_TARGET_A = {
 
   action: function (ev, x, y) {
     if (this.data.selection.getValueAt(x, y) < 0) {
-      if (DEBUG) util.log("break event because selection is not in the map");
+      if (this.DEBUG) util.log("break event because selection is not in the map");
       return this.breakTransition();
     }
 

@@ -1,7 +1,7 @@
 //
 //
 controller.modification_load = util.singleLazyCall( function( err, baton ){
-  if( DEBUG ) util.log( "loading modification" );
+  if( this.DEBUG ) util.log( "loading modification" );
 
   var MOD_KEY = "modification_data";
 
@@ -87,7 +87,7 @@ controller.modification_load = util.singleLazyCall( function( err, baton ){
     // **2.** exists then skip loading
     .andThen(function( modExists,subBaton ){
       if( modExists ){
-        if( DEBUG ) util.log( "grab new modification" );
+        if( this.DEBUG ) util.log( "grab new modification" );
 
         subBaton.take();
 
@@ -113,10 +113,10 @@ controller.modification_load = util.singleLazyCall( function( err, baton ){
           .start(function(p){
 
             if( p ){
-              if( DEBUG ) util.log( "failed to grab modification" );
+              if( this.DEBUG ) util.log( "failed to grab modification" );
               subBaton.drop(p);
             } else {
-              if( DEBUG ) util.log( "finished grabbing modification" );
+              if( this.DEBUG ) util.log( "finished grabbing modification" );
               subBaton.pass(true);
             }
           });
@@ -129,7 +129,7 @@ controller.modification_load = util.singleLazyCall( function( err, baton ){
     .andThen(function(modGrabbed,b){
 
       // do not save the modification in the debug mode
-      if(!DEBUG){
+      if(!this.DEBUG){
         if( modGrabbed ){
           b.take();
           controller.storage_general.set(MOD_KEY,mod,function(){

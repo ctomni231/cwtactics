@@ -23,7 +23,7 @@ cwt.CO = {
    * Modifies the power level of a player.
    */
   modifyStarPower: function (player, value) {
-    if (DEBUG) assert(player instanceof cwt.Player);
+    if (this.DEBUG) assert(player instanceof cwt.Player);
 
     player.power += value;
     if (player.power < 0) player.power = 0;
@@ -41,8 +41,8 @@ cwt.CO = {
   canActivatePower: function (player,powerType) {
     if (cwt.Config.getValue("co_enabledCoPower") === 0) return false;
 
-    if (DEBUG) assert(player instanceof cwt.Player);
-    if (DEBUG) assert(powerType >= cwt.INACTIVE && powerType <= this.POWER_LEVEL_SCOP);
+    if (this.DEBUG) assert(player instanceof cwt.Player);
+    if (this.DEBUG) assert(powerType >= cwt.INACTIVE && powerType <= this.POWER_LEVEL_SCOP);
 
     // co must be available and current power must be inactive
     if (player.coA === null || player.activePower !== cwt.INACTIVE) return false;
@@ -72,8 +72,8 @@ cwt.CO = {
    * @param level
    */
   activatePower: function (player, level) {
-    if (DEBUG) assert(player instanceof cwt.Player);
-    if (DEBUG) assert(level === cwt.CO.POWER_LEVEL_COP || level === cwt.CO.POWER_LEVEL_SCOP);
+    if (this.DEBUG) assert(player instanceof cwt.Player);
+    if (this.DEBUG) assert(level === cwt.CO.POWER_LEVEL_COP || level === cwt.CO.POWER_LEVEL_SCOP);
 
     player.power = 0;
     player.activePower = level;
@@ -86,7 +86,7 @@ cwt.CO = {
    * @param {cwt.Player} player
    */
   deactivatePower: function (player) {
-    if (DEBUG) assert(player instanceof cwt.Player);
+    if (this.DEBUG) assert(player instanceof cwt.Player);
 
     player.activePower = cwt.INACTIVE;
   },
@@ -97,7 +97,7 @@ cwt.CO = {
    * @param {cwt.Player} player
    */
   getStarCost: function (player) {
-    if (DEBUG) assert(player instanceof cwt.Player);
+    if (this.DEBUG) assert(player instanceof cwt.Player);
 
     var cost = cwt.Config.getValue("co_getStarCost");
     var used = player.powerUsed;
@@ -119,12 +119,12 @@ cwt.CO = {
    * @param type
    */
   setMainCo: function (player, type) {
-    if (DEBUG) assert(player instanceof cwt.Player);
+    if (this.DEBUG) assert(player instanceof cwt.Player);
 
     if (type === null) {
       player.coA = null;
     } else {
-      if (DEBUG) assert(cwt.CoSheet.isValidSheet(type));
+      if (this.DEBUG) assert(cwt.CoSheet.isValidSheet(type));
 
       player.coA = type;
     }

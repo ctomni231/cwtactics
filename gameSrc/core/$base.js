@@ -4,5 +4,8 @@
  * @namespace
  */
 var cwt = {
-  INACTIVE:-1
+
+  INACTIVE:-1,
+
+  DEBUG: false
 };

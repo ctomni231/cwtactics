@@ -3,7 +3,7 @@ controller.colorizeImages = util.singleLazyCall(function( err, baton ){
   var d1 = new Date().getTime();
   
   var flow = jWorkflow.order(function(){
-      if( DEBUG ) util.log("colorize images");
+      if( this.DEBUG ) util.log("colorize images");
   });
 
   // units
@@ -44,7 +44,7 @@ controller.colorizeImages = util.singleLazyCall(function( err, baton ){
   });
 
   flow.start(function(){
-    if( DEBUG ) util.log("colorized images");
+    if( this.DEBUG ) util.log("colorized images");
     util.log("Colorized Images: "+(new Date().getTime()-d1)+"ms");
     baton.pass();
   });

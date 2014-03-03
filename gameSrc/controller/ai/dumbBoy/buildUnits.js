@@ -38,7 +38,7 @@ util.scoped(function(){
 
       // there aren't any unit slots left or the man power is zero
       if( !model.factory_canProduceSomething(prid,model.property_data[prid].owner) ){
-        if( DEBUG ) util.log("cannot build capturers because no slots left or no man power left");
+        if( this.DEBUG ) util.log("cannot build capturers because no slots left or no man power left");
         return -1;
       }
 

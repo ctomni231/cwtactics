@@ -59,7 +59,7 @@ cwt.Storage = my.Class( /** @lends cwt.Storage.prototype */ {
       }
 
       // create all storages
-      callAsSquence([
+      callAsSequence([
         createStorage(cwt.Storage.STORAGE_MAPS,cwt.Storage.STORAGE_MAPS_SIZE,"mapStorage"),
         createStorage(cwt.Storage.STORAGE_ASSETS,cwt.Storage.STORAGE_ASSETS_SIZE,"assetsStorage"),
         createStorage(cwt.Storage.STORAGE_GENERAL,cwt.Storage.STORAGE_GENERAL_SIZE,"generalStorage")
@@ -97,7 +97,7 @@ cwt.Storage = my.Class( /** @lends cwt.Storage.prototype */ {
         };
       };
 
-      callAsSquence([
+      callAsSequence([
         wipeOutStorage(cwt.Storage.generalStorage),
         wipeOutStorage(cwt.Storage.assetsStorage),
         wipeOutStorage(cwt.Storage.mapStorage)

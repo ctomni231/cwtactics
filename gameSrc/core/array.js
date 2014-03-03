@@ -20,7 +20,7 @@ cwt.Array = my.Class({
   },
 
   push: function (el) {
-    if (DEBUG) assert(this.index < this.maxSize_);
+    if (this.DEBUG) assert(this.index < this.maxSize_);
 
     this.data[this.index] = el;
     this.index++;

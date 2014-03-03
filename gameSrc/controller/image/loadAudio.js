@@ -4,24 +4,24 @@ controller.loadAudio_loadIt_ = function( path, music, baton, loadIt ){
 
   // some clients does not support playback of music files
   if( music && !controller.features_client.audioMusic ){
-    if( DEBUG ) util.log("skip audio",path,", because client does not support music playback");
+    if( this.DEBUG ) util.log("skip audio",path,", because client does not support music playback");
     return;
   }
 
   // don't reload already loaded audio
   if( controller.audio_isBuffered(path) ){
-    if( DEBUG ) util.log("skip audio",path,", because already loaded it");
+    if( this.DEBUG ) util.log("skip audio",path,", because already loaded it");
     return;
   }
 
-  if( DEBUG ) util.log("loading audio",path);
+  if( this.DEBUG ) util.log("loading audio",path);
 
   baton.take();
   controller.storage_assets.get(path,function( obj ){
 
     // not in the cache
     if( !obj ){
-      if( DEBUG ) util.log(" ..is not in the cache");
+      if( this.DEBUG ) util.log(" ..is not in the cache");
 
       var request = new XMLHttpRequest();
 
@@ -32,7 +32,7 @@ controller.loadAudio_loadIt_ = function( path, music, baton, loadIt ){
 
         // is the requested resource not available?
         if( this.status === 404 ){
-          if( DEBUG ) util.log(" ..could not find",path);
+          if( this.DEBUG ) util.log(" ..could not find",path);
           baton.pass();
           return;
         }
@@ -43,11 +43,11 @@ controller.loadAudio_loadIt_ = function( path, music, baton, loadIt ){
         var stringData = Base64Helper.encodeBuffer(audioData);
 
         // save it in the storage
-        if( DEBUG ) util.log(" ..saving",path);
+        if( this.DEBUG ) util.log(" ..saving",path);
         controller.storage_assets.set( path, stringData, function(){
 
           if( loadIt ){
-            if( DEBUG ) util.log("loading it directly into the cache");
+            if( this.DEBUG ) util.log("loading it directly into the cache");
             controller.audio_loadByArrayBuffer(path,audioData,function(){
               baton.pass();
             });
@@ -60,10 +60,10 @@ controller.loadAudio_loadIt_ = function( path, music, baton, loadIt ){
     }
     // already in the cache
     else{
-      if( DEBUG ) util.log(" ..is in the cache");
+      if( this.DEBUG ) util.log(" ..is in the cache");
 
       if( loadIt ){
-        if( DEBUG ) util.log("loading it directly into the cache");
+        if( this.DEBUG ) util.log("loading it directly into the cache");
         controller.storage_assets.get(path,function( obj ){
           assert( obj.value );
 
@@ -84,7 +84,7 @@ controller.loadAudio_loadIt_ = function( path, music, baton, loadIt ){
 //
 controller.loadAudio_doIt = util.singleLazyCall( function( _, baton ){
   if( !controller.features_client.audioSFX && !controller.features_client.audioMusic ){
-    if( DEBUG ) util.log("client does not support audio system, skip init...");
+    if( this.DEBUG ) util.log("client does not support audio system, skip init...");
     return;
   }
 
@@ -93,7 +93,7 @@ controller.loadAudio_doIt = util.singleLazyCall( function( _, baton ){
 
   baton.take();
   var flow = jWorkflow.order(function(){
-    if( DEBUG ) util.log("loading modification sounds");
+    if( this.DEBUG ) util.log("loading modification sounds");
   });
 
   if( controller.features_client.audioMusic ){
@@ -169,7 +169,7 @@ controller.loadAudio_doIt = util.singleLazyCall( function( _, baton ){
 
   // start loading
   flow.start(function(){
-    if( DEBUG ) util.log("loaded modification sounds");
+    if( this.DEBUG ) util.log("loaded modification sounds");
     baton.pass();
   });
 });

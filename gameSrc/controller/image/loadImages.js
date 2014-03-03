@@ -2,7 +2,7 @@
 //
 controller.loadImages_loadFailed_ = function( ){
   var msg = "could not load "+this.pickey_;
-  if( DEBUG ) util.log(msg);
+  if( this.DEBUG ) util.log(msg);
   assert(false,msg);
 }
 
@@ -46,7 +46,7 @@ controller.loadImages_loadSuccessful_ = function(){
 // Save success handler.
 //
 controller.loadImages_pictureSaved_ = function( obj ){
-  if( DEBUG ) util.log("caching image",obj.key);
+  if( this.DEBUG ) util.log("caching image",obj.key);
 }
 
 // Image loading process.
@@ -55,7 +55,7 @@ controller.loadImages_prepareImg_ = function(key,path,mode,baton){
   // append base path to the path
   path = model.data_assets.images + "/" + path;
 
-  if( DEBUG ) util.log("searching image",path);
+  if( this.DEBUG ) util.log("searching image",path);
 
   var img = new Image();
 
@@ -74,7 +74,7 @@ controller.loadImages_prepareImg_ = function(key,path,mode,baton){
 
       if( obj ){
         // load it from cache
-        if( DEBUG ) util.log("load image",path,"from cache");
+        if( this.DEBUG ) util.log("load image",path,"from cache");
 
         controller.storage_assets.get( path, function( obj ){
           img.src = "data:image/png;base64,"+obj.value;
@@ -82,7 +82,7 @@ controller.loadImages_prepareImg_ = function(key,path,mode,baton){
 
       } else {
         // load it from remote path
-        if( DEBUG ) util.log("load image",path,"from remote path");
+        if( this.DEBUG ) util.log("load image",path,"from remote path");
 
         img.saveIt_ = true;
         img.src     = path;
@@ -95,7 +95,7 @@ controller.loadImages_prepareImg_ = function(key,path,mode,baton){
 //
 controller.loadImages_doIt = util.singleLazyCall(
   function( err, baton ){
-    if( DEBUG ) util.log("loading modification images");
+    if( this.DEBUG ) util.log("loading modification images");
     var d1 = new Date().getTime();
 
     baton.take();
@@ -287,8 +287,8 @@ controller.loadImages_doIt = util.singleLazyCall(
 
     // start loading
     flow.start(function( e ){
-      if( e && DEBUG ) util.log("could not load modification images");
-      if(!e && DEBUG ) util.log("loaded all modification images");
+      if( e && this.DEBUG ) util.log("could not load modification images");
+      if(!e && this.DEBUG ) util.log("loaded all modification images");
 
       util.log("Load Images: "+(new Date().getTime()-d1)+"ms");
       baton.pass();

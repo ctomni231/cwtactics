@@ -17,7 +17,7 @@ util.scoped(function(){
     if( unit === null ) return;
     var unitId = model.unit_extractId(unit);
     
-    if( DEBUG ) util.log("show attack range information");
+    if( this.DEBUG ) util.log("show attack range information");
     
     var selection = controller.stateMachine.data.selection;
     
@@ -56,7 +56,7 @@ util.scoped(function(){
   controller.hideAttackRangeInfo = function(){
     if( !controller.attackRangeVisible ) return;
     
-    if( DEBUG ) util.log("hide attack range information");
+    if( this.DEBUG ) util.log("hide attack range information");
     view.redraw_markSelection( controller.stateMachine.data );
     
     controller.attackRangeVisible = false;

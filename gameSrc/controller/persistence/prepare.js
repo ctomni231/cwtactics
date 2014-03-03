@@ -177,13 +177,13 @@ cwt.Persistence.prepareModel = function (dom) {
 
    // place blocker
    if (x !== ox || y !== oy) {
-   if (DEBUG) util.log("creating invisible property at", x, ",", y);
+   if (this.DEBUG) util.log("creating invisible property at", x, ",", y);
    model.events.property_createProperty(prop.owner, x, y, "PROP_INV");
    }
 
    // place actor
    if (x === ax && y === ay) {
-   if (DEBUG) util.log("creating cannon unit at", x, ",", y);
+   if (this.DEBUG) util.log("creating cannon unit at", x, ",", y);
    model.events.createUnit(model.unit_getFreeSlot(prop.owner), prop.owner,
    x, y, "CANNON_UNIT_INV");
    }
@@ -204,11 +204,11 @@ cwt.Persistence.prepareModel = function (dom) {
    if (prop.type.bigProperty && prop.type.cannon) {
    placeCannonMetaData(x, y);
    } else if (prop.type.cannon) {
-   if (DEBUG) util.log("creating cannon unit at", x, ",", y);
+   if (this.DEBUG) util.log("creating cannon unit at", x, ",", y);
    model.events.createUnit(model.unit_getFreeSlot(prop.owner), prop.owner,
    x, y, "CANNON_UNIT_INV");
    } else if (prop.type.laser) {
-   if (DEBUG) util.log("creating laser unit at", x, ",", y);
+   if (this.DEBUG) util.log("creating laser unit at", x, ",", y);
    model.events.createUnit(model.unit_getFreeSlot(prop.owner), prop.owner,
    x, y, "LASER_UNIT_INV");
    }

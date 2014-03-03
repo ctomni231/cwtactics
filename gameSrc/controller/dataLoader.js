@@ -7,7 +7,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
   var SMALL_WAIT = 150;
   var BIG_WAIT = 500;
 
-  if( DEBUG ) util.log("loading game aw2");
+  if( this.DEBUG ) util.log("loading game aw2");
 
   jWorkflow.order()
 
@@ -64,7 +64,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
         if( !wipeOut ) wipeOut = getQueryParams(document.location.search).cwt_resetData === "1";
 
         if(  wipeOut ){
-          if( DEBUG ) util.log("wipe out cached aw2");
+          if( this.DEBUG ) util.log("wipe out cached aw2");
 
           // NUKE STORAGE
           controller.storage_general.clear( function(){
@@ -89,7 +89,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
         if( !doIt ) doIt = getQueryParams(document.location.search).cwt_forceTouch === "1";
 
         if(  doIt ){
-          if( DEBUG ) util.log("force to use touch controls");
+          if( this.DEBUG ) util.log("force to use touch controls");
 
           // enable touch and disable mouse ( cannot work together )
           controller.features_client.mouse = false;
@@ -164,7 +164,7 @@ controller.dataLoader_start = function( loadDescComponent, loadBarComponent ){
       var el = model.data_menu.bgs[ parseInt( model.data_menu.bgs.length*Math.random(), 10 ) ];
       controller.storage_assets.get( model.data_assets.images + "/"+el,function( obj ){
         if( obj ){
-          if( DEBUG ) util.log("set custom background to",el);
+          if( this.DEBUG ) util.log("set custom background to",el);
           controller.background_registerAsBackground( obj.value );
         }
 

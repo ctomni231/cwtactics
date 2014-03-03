@@ -63,7 +63,7 @@ cwt.ActionStack = {
     var data = this.buffer_;
     var event = model.event_eventName[data[i]];
 
-    if (DEBUG) {
+    if (this.DEBUG) {
       console.log(
         "invoke", event, "with arguments",
         data[i + 1],
@@ -117,7 +117,7 @@ cwt.ActionStack = {
     i++;
 
     while (i < e) {
-      if (DEBUG && arguments.length > i && typeof arguments[i] !== "number") {
+      if (this.DEBUG && arguments.length > i && typeof arguments[i] !== "number") {
         util.log("!! warning !! used a command invocation with non numeric types on command", cmd);
       }
 
@@ -133,7 +133,7 @@ cwt.ActionStack = {
     }
 
 
-    if (DEBUG) {
+    if (this.DEBUG) {
       console.log("adding", JSON.stringify(arguments), "to the command stack");
     }
 

@@ -11,7 +11,7 @@ cwt.Transport = {
    * @param {cwt.Unit} unit
    */
   isTransportUnit: function (unit) {
-    if (DEBUG) assert(unit instanceof cwt.Unit);
+    if (this.DEBUG) assert(unit instanceof cwt.Unit);
 
     return (typeof unit.type.maxloads === "number");
   },
@@ -23,7 +23,7 @@ cwt.Transport = {
    * @param {cwt.Unit} unit
    */
   hasLoads: function (unit) {
-    if (DEBUG) assert(unit instanceof cwt.Unit);
+    if (this.DEBUG) assert(unit instanceof cwt.Unit);
 
     for (var i = 0, e = cwt.Unit.MULTITON_INSTANCES; i < e; i++) {
       var cUnit = cwt.Unit.getInstance(i,true);
@@ -43,11 +43,11 @@ cwt.Transport = {
    * @param {cwt.Unit} load
    */
   canLoadUnit: function (transporter, load) {
-    if (DEBUG) assert(transporter instanceof cwt.Unit);
-    if (DEBUG) assert(load instanceof cwt.Unit);
-    if (DEBUG) assert(load !== transporter);
-    if (DEBUG) assert(this.isTransportUnit(transporter));
-    if (DEBUG) assert(load.loadedIn !== transporter);
+    if (this.DEBUG) assert(transporter instanceof cwt.Unit);
+    if (this.DEBUG) assert(load instanceof cwt.Unit);
+    if (this.DEBUG) assert(load !== transporter);
+    if (this.DEBUG) assert(this.isTransportUnit(transporter));
+    if (this.DEBUG) assert(load.loadedIn !== transporter);
 
     return (transporter.type.canload.indexOf(load.type.movetype) !== -1);
   },
@@ -59,9 +59,9 @@ cwt.Transport = {
    * @param {cwt.Unit} load
    */
   load: function (transporter, load) {
-    if (DEBUG) assert(transporter instanceof cwt.Unit);
-    if (DEBUG) assert(load instanceof cwt.Unit);
-    if (DEBUG) assert(this.isTransportUnit(transporter));
+    if (this.DEBUG) assert(transporter instanceof cwt.Unit);
+    if (this.DEBUG) assert(load instanceof cwt.Unit);
+    if (this.DEBUG) assert(this.isTransportUnit(transporter));
 
     load.loadedIn = transporter;
   },
@@ -77,7 +77,7 @@ cwt.Transport = {
    * @param {number} ty
    */
   unload: function (transport, trsx, trsy, load, tx, ty) {
-    if (DEBUG) assert(load.loadedIn === transport);
+    if (this.DEBUG) assert(load.loadedIn === transport);
 
     // TODO: remove this later
     // trapped ?
@@ -119,7 +119,7 @@ cwt.Transport = {
     var pid = transporter.owner;
     var unit;
 
-    if (DEBUG) assert(this.isTransportUnit(transporter));
+    if (this.DEBUG) assert(this.isTransportUnit(transporter));
 
     for (var i = 0, e = cwt.Unit.MULTITON_INSTANCES; i <= e; i++) {
 

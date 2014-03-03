@@ -4,7 +4,7 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
   baton.take();
 
   var flow = jWorkflow.order(function(){
-    if( DEBUG ) util.log("crop images");
+    if( this.DEBUG ) util.log("crop images");
   });
 
   // units
@@ -24,7 +24,7 @@ controller.cutImages = util.singleLazyCall(function( err, baton ){
   });
 
   flow.start(function(){
-    if( DEBUG ) util.log("cropped images");
+    if( this.DEBUG ) util.log("cropped images");
     util.log("Cutting Images: "+(new Date().getTime()-d1)+"ms");
     baton.pass();
   });

@@ -22,7 +22,7 @@ view.registerAnimationHook({
     view.preventRenderUnit = model.unit_data[ uid ];
     var mvType = model.unit_data[ uid ].type.movetype;
 
-    if( DEBUG ){
+    if( this.DEBUG ){
       util.log(
         "drawing move from",
         "(",this.moveAnimationX,",",this.moveAnimationY,")",

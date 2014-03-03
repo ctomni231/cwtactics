@@ -1,4 +1,4 @@
-var callAsSquence = function(fns, callback) {
+var callAsSequence = function(fns, callback) {
   if (fns.length === 0){
     if( callback ) return callback();
     else return;

@@ -46,7 +46,7 @@ cwt.Audio = {
       });
     }
     catch (e) {
-      if (DEBUG) console.error("could not grab audio context (Error:", e, ")");
+      if (this.DEBUG) console.error("could not grab audio context (Error:", e, ")");
     }
 
     // remove initializer
@@ -82,7 +82,7 @@ cwt.Audio = {
   currentMusicId_: null,
 
   registerAudioBuffer: function (id, buff) {
-    if (DEBUG) util.log("register", id, "in the audio cache");
+    if (this.DEBUG) util.log("register", id, "in the audio cache");
 
     controller.audio_buffer_[id] = buff;
   },
@@ -93,7 +93,7 @@ cwt.Audio = {
   loadByArrayBuffer: function (id, audioData, callback) {
     assert(util.isString(id));
 
-    if (DEBUG) util.log("decode audio aw2 of", id);
+    if (this.DEBUG) util.log("decode audio aw2 of", id);
 
     controller.audio_grabContext().decodeAudioData(audioData,
 
@@ -116,7 +116,7 @@ cwt.Audio = {
   unloadBuffer: function (id) {
     assert(util.isString(id));
 
-    if (DEBUG) util.log("de-register", id, "from the audio cache");
+    if (this.DEBUG) util.log("de-register", id, "from the audio cache");
 
     delete controller.audio_buffer_[id];
   },

@@ -19,7 +19,10 @@
 
       #canvas_layer1,
       #canvas_layer2,
-      #canvas_layer3 {
+      #canvas_layer3,
+      #canvas_layer4,
+      #canvas_layer5,
+      #canvas_layer6 {
         position: absolute;
         top: 0;
         left: 0;
@@ -38,6 +41,18 @@
       #canvas_layer3 {
         z-index: 3;
       }
+
+      #canvas_layer4 {
+        z-index: 4;
+      }
+
+      #canvas_layer5 {
+        z-index: 5;
+      }
+
+      #canvas_layer6 {
+        z-index: 6;
+      }
     </style>
   </head>
 
@@ -49,7 +64,19 @@
     <!-- Layer 2 : Map -->
     <canvas id="canvas_layer2"></canvas>
 
-    <!-- Layer 3 : UI Elements -->
+    <!-- Layer 3 : Fog -->
     <canvas id="canvas_layer3"></canvas>
+
+    <!-- Layer 4 : Unit -->
+    <canvas id="canvas_layer4"></canvas>
+
+    <!-- Layer 5 : Weather -->
+    <canvas id="canvas_layer5"></canvas>
+
+    <!-- Layer 6 : UI Elements -->
+    <canvas id="canvas_layer6"></canvas>
   </body>
+
+  <script src="game.js" type="application/javascript" ></script>
+
 </html>

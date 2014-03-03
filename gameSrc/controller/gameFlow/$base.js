@@ -25,7 +25,7 @@ cwt.Gameflow = {
    * @param desc
    */
   addState: function (desc) {
-    if (DEBUG) assert(!this.states_.hasOwnProperty(desc.id));
+    if (this.DEBUG) assert(!this.states_.hasOwnProperty(desc.id));
 
     this.states_[desc.id] = new cwt.GameState(
       desc.init ? desc.init : emptyFunction,
@@ -100,7 +100,7 @@ cwt.Gameflow = {
    * @param stateId
    */
   setState: function (stateId) {
-    if (DEBUG) assert(this.states_.hasOwnProperty(stateId));
+    if (this.DEBUG) assert(this.states_.hasOwnProperty(stateId));
 
     this.activeState = this.states_[stateId];
     this.activeState.enter();

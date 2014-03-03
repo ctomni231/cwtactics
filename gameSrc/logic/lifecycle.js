@@ -16,12 +16,12 @@ cwt.Lifecycle = {
       player = player.owner;
     }
 
-    if (DEBUG) assert(cwt.Map.isValidPosition(x, y));
+    if (this.DEBUG) assert(cwt.Map.isValidPosition(x, y));
 
     var tile = cwt.Map.data[x][y];
 
-    if (DEBUG) assert(player instanceof cwt.Player);
-    if (DEBUG) assert(this.hasFreeUnitSlot(player));
+    if (this.DEBUG) assert(player instanceof cwt.Player);
+    if (this.DEBUG) assert(this.hasFreeUnitSlot(player));
 
     var unit = this.getFreeUnitSlot();
 
@@ -45,7 +45,7 @@ cwt.Lifecycle = {
    */
   destroyUnit: function (x, y, silent) {
     var tile = cwt.Map.data[x][y];
-    if (DEBUG) assert(tile.unit);
+    if (this.DEBUG) assert(tile.unit);
 
     cwt.ClientEvents.unitDestroyed(x, y, tile.unit);
 
@@ -53,7 +53,7 @@ cwt.Lifecycle = {
 
     // remove references
     tile.unit.owner.numberOfUnits--;
-    if (DEBUG) assert(tile.unit.owner.numberOfUnits >= 0);
+    if (this.DEBUG) assert(tile.unit.owner.numberOfUnits >= 0);
     tile.unit.owner = null;
     tile.unit = null;
 

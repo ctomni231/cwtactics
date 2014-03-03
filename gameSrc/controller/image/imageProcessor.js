@@ -184,7 +184,7 @@ view.imageProcessor_colorizeUnit = util.scoped(function(){
   ];
 
   return function(tp){
-    if( DEBUG ) util.log("colorize type",tp);
+    if( this.DEBUG ) util.log("colorize type",tp);
 
     for( var si=0,se=UNIT_STATES.length; si<se; si++ ){
 
@@ -237,7 +237,7 @@ view.imageProcessor_colorizeUnit = util.scoped(function(){
 //
 //
 view.imageProcessor_colorizeProperty = function(tp){
-  if( DEBUG ) util.log("colorize type",tp);
+  if( this.DEBUG ) util.log("colorize type",tp);
 
   var redPic = view.getPropertyImageForType(tp,view.COLOR_RED);
   var IMG_MAP_PROP = view.imageProcessor_getPropertyColorData();
@@ -296,7 +296,7 @@ view.imageProcessor_colorizeProperty = function(tp){
 //
 //
 view.imageProcessor_colorizeTile = function(tp){
-  if( DEBUG ) util.log("colorize type",tp);
+  if( this.DEBUG ) util.log("colorize type",tp);
 
   view.setTileShadowImageForType(
     view.imageProcessor_convertToBlackMask(
@@ -310,7 +310,7 @@ view.imageProcessor_colorizeTile = function(tp){
 view.imageProcessor_cropMiscSprite = function( miscType ){
   if( miscType.length > 2 ){
 
-    if( DEBUG ) util.log("crop misc sprite",miscType[0]);
+    if( this.DEBUG ) util.log("crop misc sprite",miscType[0]);
 
     // CUT
     var img = view.getInfoImageForType( miscType[0] );
@@ -404,7 +404,7 @@ view.imageProcessor_cropMiscSprite = function( miscType ){
 // Crops the sprite of an unit type.
 //
 view.imageProcessor_cropUnitSprite = function( tp ){
-  if( DEBUG ) util.log("crop unit sprite",tp);
+  if( this.DEBUG ) util.log("crop unit sprite",tp);
 
   var nCanvas;
   var nContext;
@@ -465,7 +465,7 @@ view.imageProcessor_cropUnitSprite = function( tp ){
   nContext.drawImage( img, 32*6, 0, 32*3, 32, 0, 0, 32*3, 32 );
   view.setUnitImageForType( nCanvas, tp, view.IMAGE_CODE_DOWN, red );
 
-  if( DEBUG ) util.log("cropped unit sprite");
+  if( this.DEBUG ) util.log("cropped unit sprite");
 };
 
 // Doubles the size of an image by using the scale2x algorithm.

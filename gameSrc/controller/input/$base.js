@@ -238,10 +238,10 @@ controller.saveKeyMapping = function () {
 controller.loadKeyMapping = function (cb) {
   controller.storage_general.get(controller.KEYMAP_STORAGE_KEY, function (obj) {
     if (obj) {
-      if (DEBUG) util.log("loading custom key configuration");
+      if (this.DEBUG) util.log("loading custom key configuration");
       controller.keyMaps = obj.value;
     }
-    else if (DEBUG) util.log("loading default key configuration");
+    else if (this.DEBUG) util.log("loading default key configuration");
 
     if (cb) cb();
   });

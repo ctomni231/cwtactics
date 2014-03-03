@@ -1,5 +1,5 @@
 // FROM: http://stackoverflow.com/questions/979975/how-to-get-the-value-from-url-parameter
-window.getQueryParams = function( qs ){
+var getQueryParams = function( qs ){
   qs = qs.split( "+" ).join( " " );
 
   var params = {}, tokens,
