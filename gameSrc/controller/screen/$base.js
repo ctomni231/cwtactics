@@ -20,16 +20,32 @@ cwt.ScreenLayer = my.Class(/** @lends cwt.Screen.Layer.prototype */ {
     }
   },
 
+  /**
+   * Returns the current active canvas of the layer.
+   *
+   * @return {HTMLCanvasElement}
+   */
   getActiveFrame: function () {
     return this.canvas[this.cFrame];
   },
 
+  /**
+   * Returns the rendering context for a given frame id.
+   *
+   * @param frame
+   * @return {CanvasRenderingContext2D}
+   */
   getContext: function (frame) {
     if (this.DEBUG) assert(frame >= 0 && frame < this.canvas.length);
 
     return this.ctx[frame];
   },
 
+  /**
+   * Updates the internal timer of the layer.
+   *
+   * @param delta
+   */
   update: function (delta) {
     this.cTime += delta;
 
@@ -45,6 +61,9 @@ cwt.ScreenLayer = my.Class(/** @lends cwt.Screen.Layer.prototype */ {
     }
   },
 
+  /**
+   * Resets timer and frame counter.
+   */
   resetTimer: function () {
     this.cTime = 0;
     this.cFrame = 0;
@@ -122,16 +141,46 @@ cwt.Screen = {
    */
   ONE_FRAME_ANIM_STEP: 1,
 
+  /**
+   * Layer #1: Background behind all other layers
+   *
+   * @type {cwt.ScreenLayer}
+   */
   backgroundLayer: new cwt.ScreenLayer(this.ONE_FRAME_ANIM_STEP, this.ONE_FRAME_ANIM_TIME),
 
+  /**
+   * Layer #2
+   *
+   * @type {cwt.ScreenLayer}
+   */
   mapLayer: new cwt.ScreenLayer(this.TILE_ANIM_STEP, this.TILE_ANIM_TIME),
 
+  /**
+   * Layer #3
+   *
+   * @type {cwt.ScreenLayer}
+   */
   fogLayer: new cwt.ScreenLayer(this.ONE_FRAME_ANIM_STEP, this.ONE_FRAME_ANIM_TIME),
 
+  /**
+   * Layer #4
+   *
+   * @type {cwt.ScreenLayer}
+   */
   unitLayer: new cwt.ScreenLayer(this.UNIT_ANIM_STEP, this.UNIT_ANIM_TIME),
 
+  /**
+   * Layer #5
+   *
+   * @type {cwt.ScreenLayer}
+   */
   weatherLayer: new cwt.ScreenLayer(this.ONE_FRAME_ANIM_STEP, this.ONE_FRAME_ANIM_TIME),
 
+  /**
+   * Layer #6: Front layer
+   *
+   * @type {cwt.ScreenLayer}
+   */
   interfaceLayer: new cwt.ScreenLayer(this.ONE_FRAME_ANIM_STEP, this.ONE_FRAME_ANIM_TIME)
 
 };

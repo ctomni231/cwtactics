@@ -7,6 +7,17 @@ cwt.Sprite = my.Class({
     this.img = images;
     this.ox = offsetX;
     this.oy = offsetY;
+    this.overlay = false;
+    this.animated = false;
+  },
+
+  /**
+   *
+   * @param state
+   * @param {number=} color
+   */
+  getImageFor: function (state, color) {
+
   }
 });
 
@@ -68,7 +79,7 @@ cwt.Image = {
   background_image_loading_complete: false,
 
   /**
-   * @type {Array.<cwt.ImageBlock>}
+   * @type {Array.<cwt.Sprite>}
    */
   sprites: {}
 
