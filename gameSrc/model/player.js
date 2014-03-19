@@ -33,8 +33,8 @@ cwt.Player = my.Class(null,cwt.Multiton, /** @lends cwt.Player.prototype */ {
     this.numberOfUnits = 0;
 
     this.turnOwnerVisible = false;
-    this.clientControlled = false;
     this.clientVisible = false;
+    this.clientControlled = false;
   },
 
   /**

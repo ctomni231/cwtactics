@@ -17,7 +17,7 @@ cwt.Gameround = {
   /**
    * The current active co mode.
    */
-  gamemode: this.GAME_MODE_AW1,
+  gameMode: this.GAME_MODE_AW1,
 
   /**
    * The current active day.

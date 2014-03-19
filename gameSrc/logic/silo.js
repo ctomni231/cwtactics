@@ -13,7 +13,7 @@ cwt.Silo = {
    * @return {boolean}
    */
   isRocketSilo: function (property) {
-    if (this.DEBUG) assert(property instanceof cwt.Property);
+    if (this.DEBUG) cwt.assert(property instanceof cwt.Property);
 
     if (!property.type.rocketsilo) return false;
     return true;
@@ -26,8 +26,8 @@ cwt.Silo = {
    * @return {boolean}
    */
   canBeFiredBy: function (property, unit) {
-    if (this.DEBUG) assert(unit instanceof cwt.Unit);
-    if (this.DEBUG) assert(this.isRocketSilo(property));
+    if (this.DEBUG) cwt.assert(unit instanceof cwt.Unit);
+    if (this.DEBUG) cwt.assert(this.isRocketSilo(property));
 
     if (property.type.rocketsilo.fireable.indexOf(unit.type.ID) === -1) {
       return false;
@@ -45,7 +45,7 @@ cwt.Silo = {
    * @return {boolean}
    */
   canBeFired: function (property, unit) {
-    if (this.DEBUG) assert(unit instanceof cwt.Unit);
+    if (this.DEBUG) cwt.assert(unit instanceof cwt.Unit);
 
     if (this.type.rocketsilo.fireable.indexOf(unit.type.ID) === -1) return false;
     return true;
@@ -59,7 +59,7 @@ cwt.Silo = {
    * @return {boolean}
    */
   canBeFiredTo: function (property, x, y) {
-    if (this.DEBUG) assert(property instanceof cwt.Property);
+    if (this.DEBUG) cwt.assert(property instanceof cwt.Property);
 
     if (!cwt.Map.isValidPosition(x, y)) return false;
   },
@@ -77,8 +77,8 @@ cwt.Silo = {
   fireSilo: function (x, y, tx, ty, owner) {
     var silo = cwt.Map.data[x][y].property;
 
-    if (this.DEBUG) assert(silo);
-    if (this.DEBUG) assert(this.isRocketSilo(silo));
+    if (this.DEBUG) cwt.assert(silo);
+    if (this.DEBUG) cwt.assert(this.isRocketSilo(silo));
 
     var type = silo.type;
     var targetType = cwt.PropertySheet.sheets[type.changeTo];

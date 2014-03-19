@@ -37,7 +37,7 @@ cwt.Turn = {
 
     // If the new player id is the same as the old
     // player id then the game aw2 is corrupted
-    if (this.DEBUG) assert(pid !== oid);
+    if (this.DEBUG) cwt.assert(pid !== oid);
 
     // Do end/start turn logic
     this.endsTurn_(cwt.Player.getInstance(oid));

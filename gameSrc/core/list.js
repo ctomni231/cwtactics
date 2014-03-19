@@ -53,5 +53,23 @@ cwt.List = my.Class({
     for (var i = 0, e = lenA; i < e; i++) {
       this.data[i] = list.data[i];
     }
+  },
+
+  /**
+   *
+   * @param forbiddenEl this element won't be returned
+   * @returns random element from the list
+   */
+  selectRandom: function (forbiddenEl) {
+    var list = this.data;
+    if( list.length === 0 ) return null;
+    if( list.length === 1 ) return list[0];
+
+    var newIndex = parseInt(Math.random() * list.length, 10);
+    if( newIndex === list.length ) newIndex = 0;
+    if( list[newIndex] === forbiddenEl ) newIndex++;
+    if( newIndex === list.length ) newIndex = 0;
+
+    return list[newIndex];
   }
 });

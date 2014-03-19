@@ -27,7 +27,7 @@ cwt.Config = my.Class( /** @lends cwt.Config.prototype */ {
      * @param {cwt.Config} config
      */
     register_: function( name,config ){
-      assert( !this.registeredValues_.hasOwnProperty(name) );
+      cwt.assert( !this.registeredValues_.hasOwnProperty(name) );
       this.registeredValues_[name] = config;
       this.registeredNames_.push(name);
     },
@@ -105,7 +105,7 @@ cwt.Config = my.Class( /** @lends cwt.Config.prototype */ {
     
     // check steps
     if( (value - this.min) % this.step !== 0 ){
-      assert(false,"step criteria is broken");
+      cwt.assert(false,"step criteria is broken");
     }  
   },
   

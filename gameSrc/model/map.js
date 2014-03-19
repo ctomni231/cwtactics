@@ -37,8 +37,8 @@ cwt.Map = {
    * Returns the distance of two positions.
    */
   getDistance: function (sx, sy, tx, ty) {
-    if (this.DEBUG) assert(this.isValidPosition(sx, sy));
-    if (this.DEBUG) assert(this.isValidPosition(tx, ty));
+    if (this.DEBUG) cwt.assert(this.isValidPosition(sx, sy));
+    if (this.DEBUG) cwt.assert(this.isValidPosition(tx, ty));
 
     return Math.abs(sx - tx) + Math.abs(sy - ty);
   },
@@ -89,9 +89,9 @@ cwt.Map = {
    * Invokes a callback on all tiles in a given range at a position (x,y).
    */
   doInRange: function (x, y, range, cb, arg) {
-    if (this.DEBUG) assert(this.isValidPosition(x, y));
-    if (this.DEBUG) assert(typeof cb === "function");
-    if (this.DEBUG) assert(range >= 0);
+    if (this.DEBUG) cwt.assert(this.isValidPosition(x, y));
+    if (this.DEBUG) cwt.assert(typeof cb === "function");
+    if (this.DEBUG) cwt.assert(range >= 0);
 
     var lX;
     var hX;

@@ -13,7 +13,7 @@ cwt.Menu = my.Class({
   // Adds an object to the menu.
   //
   addEntry: function (entry, enabled) {
-    assert(this.size < this.data.length);
+    cwt.assert(this.size < this.data.length);
 
     this.content.data[this.size] = entry;
 

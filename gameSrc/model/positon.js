@@ -21,7 +21,7 @@ cwt.Position = my.Class( /** @lends cwt.Position.prototype */ {
    * Grabs the aw2 from another position object.
    */
   grab: function (otherPos) {
-    assert(otherPos instanceof cwt.Position);
+    cwt.assert(otherPos instanceof cwt.Position);
 
     this.x = otherPos.x;
     this.y = otherPos.y;

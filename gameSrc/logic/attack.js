@@ -44,8 +44,8 @@ cwt.Attack = {
    * @return {boolean}
    */
   calculateTargets: function (unit, x, y, data, markTiles) {
-    if (this.DEBUG) assert(unit instanceof cwt.Unit);
-    if (this.DEBUG) assert(cwt.Map.isValidPosition(x, y));
+    if (this.DEBUG) cwt.assert(unit instanceof cwt.Unit);
+    if (this.DEBUG) cwt.assert(cwt.Map.isValidPosition(x, y));
 
     var markInData = (typeof data !== "undefined");
     var teamId = unit.owner.team;
@@ -259,7 +259,7 @@ cwt.Attack = {
     var DTR = parseInt(def * 100 / 100, 10);
 
     var damage;
-    if (cwt.Gameround.gamemode <= cwt.Gameround.GAME_MODE_AW2) {
+    if (cwt.Gameround.gameMode <= cwt.Gameround.GAME_MODE_AW2) {
       damage = BASE * (ACO / 100 - (ACO / 100 * (DCO - 100) / 100)) * (AHP / 10);
     } else {
       damage = BASE * (ACO / 100 * DCO / 100) * (AHP / 10);
@@ -277,10 +277,10 @@ cwt.Attack = {
    * @param defLuckRatio
    */
   attack: function (attacker, defender, attLuckRatio, defLuckRatio) {
-    if (this.DEBUG) assert(attacker instanceof cwt.Unit);
-    if (this.DEBUG) assert(defender instanceof cwt.Unit);
-    if (this.DEBUG) assert(attLuckRatio >= 0 && attLuckRatio <= 100);
-    if (this.DEBUG) assert(defLuckRatio >= 0 && defLuckRatio <= 100);
+    if (this.DEBUG) cwt.assert(attacker instanceof cwt.Unit);
+    if (this.DEBUG) cwt.assert(defender instanceof cwt.Unit);
+    if (this.DEBUG) cwt.assert(attLuckRatio >= 0 && attLuckRatio <= 100);
+    if (this.DEBUG) cwt.assert(defLuckRatio >= 0 && defLuckRatio <= 100);
 
     var indirectAttack = this.isIndirect(attacker);
 

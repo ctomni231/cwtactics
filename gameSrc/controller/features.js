@@ -21,7 +21,7 @@ cwt.ClientFeatures = {
   /**
    * Controls the availability of game-pad input.
    */
-  gamePad: (Browser.chrome),
+  gamePad: (Browser.chrome && !!navigator.webkitGetGamepads),
 
   /**
    * Controls the availability of computer keyboard input.
@@ -43,8 +43,7 @@ cwt.ClientFeatures = {
    * environment cannot run the game, but the status is not official tested. As
    * result the game could run fine or breaks.
    */
-  supported: (Browser.chrome || Browser.safari ||
-              Browser.ios || Browser.android),
+  supported: (Browser.chrome || Browser.safari || Browser.ios || Browser.android),
 
   // scaledImg:  false,
 

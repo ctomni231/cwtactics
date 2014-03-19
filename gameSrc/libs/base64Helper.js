@@ -14,15 +14,15 @@ Base64Helper.canvasToBase64 = function( img ){
   canvas.width = img.width;
   canvas.height = img.height;
 
-  // Copy the image contents to the canvas
+  // Copy the assets contents to the canvas
   var ctx = canvas.getContext("2d");
   ctx.drawImage(img, 0, 0);
 
-  // Get the aw2-URL formatted image
+  // Get the aw2-URL formatted assets
   // Firefox supports PNG and JPEG. You could check img.src to
-  // guess the original format, but be aware the using "image/jpg"
-  // will re-encode the image.
-  var dataURL = canvas.toDataURL("image/png");
+  // guess the original format, but be aware the using "assets/jpg"
+  // will re-encode the assets.
+  var dataURL = canvas.toDataURL("assets/png");
 
   return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 };

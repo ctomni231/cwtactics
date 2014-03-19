@@ -12,7 +12,7 @@ cwt.Weather = {
   calculateNextWeather: function () {
 
     // this event is only host invokable
-    assert(cwt.Network.isHost());
+    cwt.assert(cwt.Network.isHost());
 
     // Search a random weather if the last weather
     // was `null` or the default weather type
@@ -40,7 +40,7 @@ cwt.Weather = {
    *
    */
   changeWeather: function (weather) {
-    if (this.DEBUG) assert(cwt.WeatherSheet.isValidSheet(weather));
+    if (this.DEBUG) cwt.assert(cwt.WeatherSheet.isValidSheet(weather));
 
     cwt.Gameround.weather = weather;
 

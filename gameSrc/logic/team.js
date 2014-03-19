@@ -60,7 +60,7 @@ cwt.Team = {
     playerB.gold += money;
 
     // the amount of gold cannot be lower 0 after the transfer
-    assert(playerA.gold >= 0);
+    cwt.assert(playerA.gold >= 0);
 
     cwt.ClientEvents.goldChange(playerA, -money, 0, 0);
     cwt.ClientEvents.goldChange(playerB, money, 0, 0);
@@ -70,7 +70,7 @@ cwt.Team = {
    *
    */
   canTransferUnit: function (unit) {
-    if (this.DEBUG) assert(unit instanceof cwt.Unit);
+    if (this.DEBUG) cwt.assert(unit instanceof cwt.Unit);
 
     if (cwt.Transport.hasLoads(unit)) return false;
     return true;
@@ -99,7 +99,7 @@ cwt.Team = {
   transferUnitToPlayer: function (unit, player) {
     var origPlayer = unit.owner;
 
-    if (this.DEBUG) assert(player.numberOfUnits < cwt.Player.MAX_UNITS);
+    if (this.DEBUG) cwt.assert(player.numberOfUnits < cwt.Player.MAX_UNITS);
 
     origPlayer.numberOfUnits--;
     unit.owner = player;

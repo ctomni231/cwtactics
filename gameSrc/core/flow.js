@@ -21,7 +21,7 @@ cwt.iterateListByFlow = function( flow, list, cb ){
 
   // check some things
   flow.andThen(function(data){
-    assert(list   === this.list);
-    assert(this.i === this.list.length);
+    cwt.assert(list   === this.list);
+    cwt.assert(this.i === this.list.length);
   },data);
 };

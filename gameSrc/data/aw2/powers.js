@@ -1,11 +1,11 @@
 // Dispatcher event when activate power gets invoked.
 //
 model.event_on("activatePower_invoked",function( pid, level ){
-  assert( model.player_isValidPid(pid) );
-  assert( level === model.co_POWER_LEVEL.COP || level === model.co_POWER_LEVEL.SCOP );
+  cwt.assert( model.player_isValidPid(pid) );
+  cwt.assert( level === model.co_POWER_LEVEL.COP || level === model.co_POWER_LEVEL.SCOP );
   
   var coData = model.co_data[pid];
-  assert( coData.coA );
+  cwt.assert( coData.coA );
 
   var powerData = ( level === model.co_POWER_LEVEL.COP )? 
     coData.coA.cop.power : coData.coA.scop.power ;
@@ -47,9 +47,9 @@ model.event_on("activatePower_invoked",function( pid, level ){
 // Healing units. Formally known and used by the CO ANDY (AW1-AW3).
 //
 model.event_on("copower_healUnits",function(pid,mode,amount){
-  assert( model.player_isValidPid(pid) );
-  assert( mode >= model.player_RELATION_MODES.OWN && mode <= model.player_RELATION_MODES.ENEMY );
-  assert( util.intRange(amount,1,10) );
+  cwt.assert( model.player_isValidPid(pid) );
+  cwt.assert( mode >= model.player_RELATION_MODES.OWN && mode <= model.player_RELATION_MODES.ENEMY );
+  cwt.assert( util.intRange(amount,1,10) );
 
   var steam = model.player_data[pid].team;
   var units = model.unit_data;
@@ -79,7 +79,7 @@ model.event_on("copower_healUnits",function(pid,mode,amount){
           if( steam !== team ) modeMatch = true;
           break;
           
-        default: assert(false)
+        default: cwt.assert(false)
       }
     }
 
@@ -91,9 +91,9 @@ model.event_on("copower_healUnits",function(pid,mode,amount){
 // Damaging units.
 //
 model.event_on("copower_damageUnits",function(pid,mode,amount){
-  assert( model.player_isValidPid(pid) );
-  assert( mode >= model.player_RELATION_MODES.OWN && mode <= model.player_RELATION_MODES.ENEMY );
-  assert( util.intRange(amount,1,10) );
+  cwt.assert( model.player_isValidPid(pid) );
+  cwt.assert( mode >= model.player_RELATION_MODES.OWN && mode <= model.player_RELATION_MODES.ENEMY );
+  cwt.assert( util.intRange(amount,1,10) );
 
   var steam = model.player_data[pid].team;
   var units = model.unit_data;
@@ -123,7 +123,7 @@ model.event_on("copower_damageUnits",function(pid,mode,amount){
           if( steam !== team ) modeMatch = true;
           break;
           
-        default: assert(false)
+        default: cwt.assert(false)
       }
     }
 
