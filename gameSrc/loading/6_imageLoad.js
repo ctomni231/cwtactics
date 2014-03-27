@@ -1,151 +1,68 @@
-cwt.Loading.create(function () {
+cwt.Loading.create(function (loaderNext) {
+  var stuff = [];
 
+  // UNITS
+  cwt.UnitSheet.types.forEach(function (type) {
+    stuff.push(function(next){
+      var obj = cwt.UnitSheet.sheets[type];
+      cwt.Image.loadSprite(type, obj.assets.gfx, cwt.Image.TYPE_UNIT, next);
+    });
+  });
 
-
-
-
-  // Load error handler.
-  //
-  controller.loadImages_loadFailed_ = function( ){
-    var msg = "could not load "+this.pickey_;
-    if( this.DEBUG ) util.log(msg);
-    cwt.assert(false,msg);
-  }
-
-  // Generic assets loader.
-  //
-  controller.loadImages_loadSuccessful_ = function(){
-    var mode    = this.mode_;
-    var baton   = this.baton_;
-    var key     = this.pickey_;
-
-    if( this.saveIt_ ){
-      controller.storage_assets.set(
-        this.src,
-        Base64Helper.canvasToBase64(this),
-        controller.loadImages_pictureSaved_
-      );
-    }
-
-    // delete temporary aw2 in the assets object... just to be safe :P
-    delete this.pickey_;
-    delete this.baton_;
-    delete this.mode_;
-    delete this.saveIt_;
-
-    // check mode and save the assets to the correct game assets slot.
-    switch( mode ){
-
-      case "U": view.setUnitImageForType( this, key, view.IMAGE_CODE_IDLE, view.COLOR_RED ); break;
-      case "P": view.setPropertyImageForType( this, key, view.COLOR_RED ); break;
-      case "T": view.setTileImageForType( this, key ); break;
-      case "M": view.setInfoImageForType( this, key ); break;
-
-      // error!
-      default: cwt.assert(false);
-    }
-
-    // go on with the next assets
-    baton.pass();
-  };
-
-  // Save success handler.
-  //
-  controller.loadImages_pictureSaved_ = function( obj ){
-    if( this.DEBUG ) util.log("caching assets",obj.key);
-  }
-
-  // Image loading process.
-  //
-  controller.loadImages_prepareImg_ = function(key,path,mode,baton){
-    // append base path to the path
-    path = model.data_assets.images + "/" + path;
-
-    if( this.DEBUG ) util.log("searching assets",path);
-
-    var img = new Image();
-
-    // insert some meta aw2
-    img.pickey_ = key;
-    img.baton_  = baton;
-    img.mode_   = mode;
-    img.saveIt_ = false;
-    img.onerror = controller.loadImages_loadFailed_;
-    img.onload  = controller.loadImages_loadSuccessful_;
-
-    baton.take();
-    controller.storage_assets.get(
-      path,
-      function( obj ){
-
-        if( obj ){
-          // load it from cache
-          if( this.DEBUG ) util.log("load assets",path,"from cache");
-
-          controller.storage_assets.get( path, function( obj ){
-            img.src = "data:assets/png;base64,"+obj.value;
-          });
-
-        } else {
-          // load it from remote path
-          if( this.DEBUG ) util.log("load assets",path,"from remote path");
-
-          img.saveIt_ = true;
-          img.src     = path;
-        }
+  // PROPERTIES
+  cwt.PropertySheet.types.forEach(function (type) {
+    stuff.push(function(next){
+      var obj = cwt.PropertySheet.sheets[type];
+      if( obj.assets.gfx ) {
+        cwt.Image.loadSprite(type, obj.assets.gfx, cwt.Image.TYPE_PROPERTY, next);
       }
-    );
-  };
+    });
+  });
 
-  //
-  //
-  controller.loadImages_doIt = util.singleLazyCall(
-    function( err, baton ){
-      if( this.DEBUG ) util.log("loading modification images");
-      var d1 = new Date().getTime();
+  // TILES
+  cwt.TileSheet.types.forEach(function (type) {
+    var obj = cwt.TileSheet.sheets[type];
 
-      baton.take();
+    // BASE IMAGE
+    stuff.push(function(next){
+      cwt.Image.loadSprite( type,
+        obj.assets.gfx,
+        (obj.assets.animated === 1 || obj.assets.animated === 2)? cwt.Image.TYPE_IMAGE : cwt.Image.TYPE_ANIMATED_TILE,
+        next
+      );
+    });
 
-      var flow = jWorkflow.order(function(){
+    // TILE VARIANTS
+    if( obj.assets.gfx_variants ){
+      obj.assets.gfx_variants[1].forEach(function( variant ){
+        stuff.push(function(next){
+          cwt.Image.loadSprite(variant[0], variant[0], cwt.Image.TYPE_TILE, next);
+        });
       });
+    }
+  });
 
-      // loading units
-      util.iterateListByFlow(flow,model.data_unitTypes, function(data,baton){
-        var obj = model.data_unitSheets[this.list[this.i]];
-        if( obj.assets.gfx ) controller.loadImages_prepareImg_( this.list[this.i],obj.assets.gfx,"U",baton );
-      });
+  // BACKGROUND IMAGES
+  cwt.MenuData.bgs.forEach(function (bg) {
+    stuff.push(function(next){
+      cwt.Image.loadSprite(bg, bg, cwt.Image.TYPE_IMAGE, next);
+    });
+  });
 
-      // loading tiles
-      util.iterateListByFlow(flow,model.data_tileTypes, function(data,baton){
-        var key = this.list[this.i];
-        var obj = model.data_tileSheets[key];
-        controller.loadImages_prepareImg_( key,obj.assets.gfx,"T",baton );
+  callAsSequence(stuff,function () {
+    loaderNext();
+  });
 
-        if( obj.assets.gfxOverlay ) view.overlayImages[ key ] = true;
-        if( obj.assets.animated === 1 || obj.assets.animated === 2 ){
-          view.animatedTiles[ key ] = true;
-        }
-      });
+  /*
+   cwt.UnitSheet.types.forEach(function (type) {
+     stuff.push(function(next){
+       var obj = cwt.PropertySheet.sheets[type];
+     });
+   });
+   */
 
-      // loading properties
-      util.iterateListByFlow(flow,model.data_propertyTypes, function(data,baton){
-        var obj = model.data_tileSheets[this.list[this.i]];
-        if( obj.assets.gfx ) controller.loadImages_prepareImg_( this.list[this.i],obj.assets.gfx,"P",baton );
-      });
+/*
 
-      // tile variants
-      model.data_tileTypes.forEach(function( el ){
-        var obj = model.data_tileSheets[el];
-        if( obj.assets.gfx_variants ){
-          var subFlow = jWorkflow.order(function(){})
-          obj.assets.gfx_variants[1].forEach(function( sel ){
-            subFlow.andThen(function(p,baton){
-              controller.loadImages_prepareImg_( sel[0],sel[0],"T",baton );
-            });
-          });
-          flow.andThen(subFlow);
-        }
-      });
 
       // loading cannon animations
       util.iterateListByFlow(flow,model.data_propertyTypes, function(data,baton){
@@ -281,26 +198,12 @@ cwt.Loading.create(function () {
         }
       });
 
-      // menu background images
-      util.iterateListByFlow(flow,model.data_menu.bgs, function(data,baton){
-        controller.loadImages_prepareImg_( this.list[this.i],this.list[this.i],"M",baton );
-      });
-
       // misc
       util.iterateListByFlow(flow,model.data_graphics.misc, function(data,baton){
         controller.loadImages_prepareImg_( this.list[this.i][0],this.list[this.i][1],"M",baton );
       });
-
-      // start loading
-      flow.start(function( e ){
-        if( e && this.DEBUG ) util.log("could not load modification images");
-        if(!e && this.DEBUG ) util.log("loaded all modification images");
-
-        util.log("Load Images: "+(new Date().getTime()-d1)+"ms");
-        baton.pass();
-      })
     }
   );
-
+  */
 
 });

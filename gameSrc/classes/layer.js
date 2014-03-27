@@ -4,12 +4,16 @@
  */
 cwt.ScreenLayer = my.Class(/** @lends cwt.Screen.Layer.prototype */ {
 
-  constructor: function (frames, frameTime) {
-    this.canvas = [];
+  constructor: function (config) {
+    this.canvas = null;
+    this.frames = [];
     this.ctx = [];
     this.cFrame = 0;
     this.cTime = 0;
     this.frameLimit = frameTime;
+
+    this.drawAll = null;
+    this.draw = null;
 
     // create canvas objects
     var n = 0;
@@ -18,6 +22,19 @@ cwt.ScreenLayer = my.Class(/** @lends cwt.Screen.Layer.prototype */ {
       this.ctx[n] = this.canvas[n].getContext("2d");
       n++;
     }
+  },
+
+  renderFrame: function (frame) {
+    var curCanvas = this.frames[frame];
+    this.canvas.getContext("2d").drawImage(curCanvas,0,0,curCanvas.width,curCanvas.height);
+  },
+
+  show: function () {
+    this.canvas.style.display = "none";
+  },
+
+  show: function () {
+    this.canvas.style.display = "block";
   },
 
   /**

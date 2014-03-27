@@ -64,7 +64,8 @@ cwt.Audio = {
       }
 
       // remove initializer
-      cwt.Audio.initialize = null;
+      delete cwt.Audio.initialize;
+      cwt.Audio.initialized = true;
     }
   },
 
@@ -235,7 +236,7 @@ cwt.Audio = {
    */
   playSound: function (id, loop, isMusic) {
     if (!this.context_) return;
-    if (!this.buffer_[id]) return; // not buffered, ignore it
+    if (!this.buffer_[id]) return; // not buffered, just ignore it
 
     var gainNode = (isMusic) ? this.gainNode_music_ : this.gainNode_sfx_;
     var source = this.context_.createBufferSource();
@@ -286,17 +287,6 @@ cwt.Audio = {
   },
 
 
-
-
-
-
-
-
-
-
-
-
-
   playLoadedMusic_: function (_, id) {
     controller.audio_playMusic(id);
     if (view.hasInfoMessage()) view.message_closePanel(1000);
@@ -311,11 +301,58 @@ cwt.Audio = {
     );
   },
 
-  loadAudio_: function (key) {
-    controller.storage_assets.get(
-      key,
-      this.storeAudio_
-    );
+  loadAudio: function (path, loadIt, callback) {
+    if (cwt.Audio.isBuffered(path)) {
+      return;
+    }
+
+    controller.storage_assets.get(path, function (obj) {
+      if (obj) {
+
+        // in the cache
+        if (loadIt) {
+          controller.storage_assets.get(path, function (obj) {
+            cwt.assert(obj.value);
+
+            var audioData = Base64Helper.decodeBuffer(obj.value);
+            controller.audio_loadByArrayBuffer(path, audioData, function () {
+              callback();
+            });
+          });
+        } else {
+          callback();
+        }
+
+      } else {
+
+        // not in the cache
+        var request = new XMLHttpRequest();
+
+        request.open("GET", path, true);
+        request.responseType = "arraybuffer";
+
+        request.onload = function () {
+          if (this.status === 404) {
+            throw Error("could not find sound file " + path );
+          }
+
+          var audioData = request.response;
+          var stringData = Base64Helper.encodeBuffer(audioData);
+
+          controller.storage_assets.set(path, stringData, function () {
+            if (loadIt) {
+              cwt.Audio.loadByArrayBuffer(path, audioData, function () {
+                callback();
+              });
+            } else {
+              callback();
+            }
+          });
+        };
+
+        request.send();
+      }
+    });
   },
 
   /**
