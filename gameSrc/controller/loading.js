@@ -32,10 +32,9 @@ cwt.Loading = {
       delete this.loaders_;
       delete this.create;
       delete this.startProcess;
-      delete this.updateLoader_;
 
       // place marker
-      this.deInitialized = true;
+      this.initialized = true;
 
       // invoke callback if given
       if (callback) {

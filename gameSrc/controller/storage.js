@@ -5,14 +5,39 @@ cwt.Storage = my.Class(/** @lends cwt.Storage.prototype */ {
 
   STATIC: /** @lends cwt.Storage */ {
 
+    /**
+     * @constant
+     */
     IOS7_WEBSQL_BUGFIX_SIZE: 4,
 
+    /**
+     * @constant
+     */
     STORAGE_MAPS: "MAPS",
+
+    /**
+     * @constant
+     */
     STORAGE_ASSETS: "ASSETS",
+
+    /**
+     * @constant
+     */
     STORAGE_GENERAL: "GENERAL",
 
+    /**
+     * @constant
+     */
     STORAGE_MAPS_SIZE: 10,
+
+    /**
+     * @constant
+     */
     STORAGE_ASSETS_SIZE: 40,
+
+    /**
+     * @constant
+     */
     STORAGE_GENERAL_SIZE: 5,
 
     /**

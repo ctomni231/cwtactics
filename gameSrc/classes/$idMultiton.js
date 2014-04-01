@@ -1,17 +1,43 @@
+/**
+ * Class that contains a static algorithm to register and return instances by a key. This class implements the multiton
+ * pattern by a string based identifier. Usable by inheritance.
+ *
+ * @class
+ * @template T
+ */
 cwt.IdMultiton = my.Class({
   STATIC: {
 
+    /**
+     * @private
+     */
     classInstances_: {},
 
-    addByKey: function (key,obj) {
-      if (cwt.DEBUG) cwt.assert(!this.classInstances_.hasOwnProperty(key));
-      if (cwt.DEBUG) cwt.assert(obj instanceof this);
+    /**
+     * Returns an instance of the IndexMultiton.
+     *
+     * @param {String} key
+     * @param {Boolean=} nullReturn if true then null will be returned when no object for the given key exists
+     * @return {T}
+     */
+    getInstance: function (key, nullReturn) {
+      var obj = this.classInstances_[key];
 
-      this.classInstances_[key] = obj;
-    },
+      // create instance
+      if (!obj) {
+        if (nullReturn) {
+          return null;
+        }
 
-    getByKey: function (key) {
-      return this.classInstances_[key];
+        if (cwt.DEBUG) {
+          cwt.log("creating instance with key " + key);
+        }
+
+        obj = new this();
+        this.classInstances_[key] = obj;
+      }
+
+      return obj;
     }
   }
 });

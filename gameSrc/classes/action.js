@@ -5,12 +5,31 @@ cwt.Action = my.Class({
 
   STATIC: {
 
+    /**
+     * Map actions are called in the idle state on the map.
+     *
+     * @constant
+     */
     MAP_ACTION: 0,
+
+    /**
+     * Unit actions are called on units.
+     *
+     * @constant
+     */
     UNIT_ACTION: 1,
+
+    /**
+     * Property actions are called on properties.
+     *
+     * @constant
+     */
     PROPERTY_ACTION: 2,
     
     /**
      * Engine actions are callable by the engine itself.
+     *
+     * @constant
      */
     ENGINE_ACTION: 3,
 
@@ -64,9 +83,13 @@ cwt.Action = my.Class({
     },
 
     /**
-     * Builds several commands from collected action aw2.
+     * Builds several commands from collected action data.
      */
     buildFromData: function (scope) {
+
+
+
+
       if (!scope) scope = controller.stateMachine.data;
       var targetDto = scope.target;
       var sourceDto = scope.source;

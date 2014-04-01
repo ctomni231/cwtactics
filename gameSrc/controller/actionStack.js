@@ -6,142 +6,83 @@
 cwt.ActionStack = {
 
   /**
-   * Current read position.
-   */
-  curReadPos_: 0,
-
-  /**
-   * Current write position.
-   */
-  curWritePos_: 0,
-
-  /**
-   * Command buffer.
+   * Pool for holding {cwt.ActionData} objects when they aren't in the buffer.
    *
-   * @type {Array.<cwt.ActionData>}
+   * @type {cwt.CircularBuffer.<cwt.ActionData>}
    */
-  buffer_: /* self calling function */ (function () {
-    var MAX_COMMAND_ENTRIES = 200;
-    var arr = [];
-
-    while (arr.length < MAX_COMMAND_ENTRIES) {
-      arr.push(new cwt.ActionData());
-    }
-
-    return arr; /* arr will be put into buffer_ */
-  })(),
+  actionDataPool: new cwt.CircularBuffer(200),
 
   /**
+   * Buffer object.
    *
+   * @type {cwt.CircularBuffer.<cwt.ActionData>}
+   */
+  buffer: new cwt.CircularBuffer(200),
+
+  /**
+   * Resets the buffer object.
    */
   resetData: function () {
-    var n = 0;
-    while (n < this.buffer_.length) {
-      this.buffer_[n].reset();
-      n++;
+    while (this.hasData()) {
+      this.actionDataPool.push(this.buffer.pop());
     }
-    this.curReadPos_ = 0;
-    this.curWritePos_ = 0;
   },
 
   /**
-   *
+   * Returns true when the buffer has elements else false.
    */
   hasData: function () {
-    return this.curReadPos_ !== this.curWritePos_;
+    return !this.buffer.isEmpty();
   },
 
   /**
    *
    */
   invokeNext: function () {
-    cwt.assert(this.hasData());
+    var data = this.buffer.pop();
+    if (cwt.DEBUG) cwt.assert(data);
 
-    // write content
-    var i = this.curReadPos_ * (6 + 1);
-    var e = i + 6 + 1;
-    var data = this.buffer_;
-    var event = model.event_eventName[data[i]];
-
-    if (this.DEBUG) {
-      console.log(
-        "invoke", event, "with arguments",
-        data[i + 1],
-        data[i + 2],
-        data[i + 3],
-        data[i + 4],
-        data[i + 5],
-        data[i + 6]
-      );
+    if (cwt.DEBUG) {
+      cwt.log(data);
     }
 
-    // invoke event with given aw2
-    model.events[event](
-      data[i + 1],
-      data[i + 2],
-      data[i + 3],
-      data[i + 4],
-      data[i + 5],
-      data[i + 6]
-    );
+    // TODO invoke it
 
-    // free slot
-    data[i] = cwt.INACTIVE;
-
-    // increase writing index
-    controller.commandStack_curReadPos++;
-    if (controller.commandStack_curReadPos >= ACTIONS_BUFFER_SIZE) {
-      controller.commandStack_curReadPos = 0;
-    }
+    // pool used object
+    data.reset();
+    this.actionDataPool.push(data);
   },
 
   /**
-   * Adds a command to the command pool. Every parameter of the call will be
-   * submitted beginning from index 1 of the arguments. The maximum amount
-   * of parameters are controlled by the controller.commandStack_MAX_PARAMETERS
-   * property. Anyway every parameter should be an integer to support intelligent
-   * JIT compiling. The function throws a warning if a parameter type does not
-   * match, but it will be accepted anyway ** ( for now! ) **.
+   * Adds a command to the command pool. Every parameter of the call will be submitted beginning from index 1 of the
+   * arguments. The maximum amount of parameters are controlled by the controller.commandStack_MAX_PARAMETERS property.
+   * Anyway every parameter should be an integer to support intelligent JIT compiling. The function throws a warning if
+   * a parameter type does not match, but it will be accepted anyway ** ( for now! ) **.
+   *
+   * @param {boolean} local will the command only invoked locally
+   * @param {number} id identical number of the used action
+   * @param {number} p1 parameter 1
+   * @param {number} p2 parameter 2
+   * @param {number} p3 parameter 3
+   * @param {number} p4 parameter 4
+   * @param {number} p5 parameter 5
    */
-  localInvokement: function (cmd) {
-    assertStr(cmd);
-    assertIntRange(arguments.length, 1, 7);
+  pushCommand: function (local, id, p1, p2, p3, p4, p5) {
+    var data = this.actionDataPool.pop();
 
-    // write content
-    var offset = this.curWritePos_ * (6 + 1);
-    var i = 0;
-    var e = 7;
+    // inject data
+    data.id = id;
+    data.p1 = p1;
+    data.p2 = p2;
+    data.p3 = p3;
+    data.p4 = p4;
+    data.p5 = p5;
 
-    cwt.assert(this.buffer_[i + offset] === cwt.INACTIVE);
-    this.buffer_[i + offset] = model.event_eventIndex[cmd]; //TODO to number
-    i++;
-
-    while (i < e) {
-      if (this.DEBUG && arguments.length > i && typeof arguments[i] !== "number") {
-        util.log("!! warning !! used a command invocation with non numeric types on command", cmd);
-      }
-
-      this.buffer_[i + offset] = (arguments.length > i) ?
-        arguments[i] : cwt.INACTIVE;
-
-      i++;
+    // send command over network
+    if (!local && cwt.Network.isActive()) {
+      cwt.Network.sendMessage(cwt.ActionData.toJSON(data));
     }
 
-
-    if( !action.clientAction && isNetwork ) {
-      network.send(action.toJSON());
-    }
-
-
-    if (this.DEBUG) {
-      console.log("adding", JSON.stringify(arguments), "to the command stack");
-    }
-
-    // increase writing index
-    this.curWritePos_++;
-    if (this.curWritePos_ >= ACTIONS_BUFFER_SIZE) {
-      this.curWritePos_ = 0;
-    }
+    this.buffer.push(data);
   }
-
 };

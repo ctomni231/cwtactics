@@ -7,7 +7,9 @@ var callAsSequence = function(fns, callback) {
   var completed = 0;
   var cbFn = function(results) {
     if (++completed == fns.length) {
-      if (callback) callback();
+      if (callback) {
+        callback();
+      }
     } else {
       iterate();
     }

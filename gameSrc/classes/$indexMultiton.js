@@ -5,6 +5,7 @@
  * created.
  *
  * @class
+ * @template T
  */
 cwt.IndexMultiton = my.Class({
   STATIC: {
@@ -31,7 +32,7 @@ cwt.IndexMultiton = my.Class({
      *
      * @param {Number} id
      * @param {Boolean=} nullReturn (optional)
-     * @return {cwt.IndexMultiton}
+     * @return {T}
      */
     getInstance: function (id, nullReturn) {
       if (typeof id !== "number" || id < 0 || id >= this.MULTITON_INSTANCES) {
@@ -45,7 +46,10 @@ cwt.IndexMultiton = my.Class({
         // checks all units -> we won't want to create all units then)
         if (nullReturn) return null;
 
-        if (this.DEBUG) console.log("creating instance with id " + id);
+        if (cwt.DEBUG) {
+          cwt.log("creating instance with id " + id);
+        }
+
         l[id] = new this();
       }
 

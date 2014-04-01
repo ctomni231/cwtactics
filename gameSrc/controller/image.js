@@ -74,81 +74,15 @@ cwt.Image = {
 
   /**
    *
-   * @param {cwt.Sprite} sprite
-   * @return {Array}
-   * @private
-   */
-  spriteToJSON_: function (sprite) {
-    var data = [];
-    for (var i = 0, e = sprite.images.length; i < e; i++) {
-      data[i] = Base64Helper.canvasToBase64(sprite.images[i]);
-    }
-
-    return data;
-  },
-
-  /**
-   *
-   * @param {cwt.ArmySprite} sprite
-   * @return {Array}
-   * @private
-   */
-  coloredSpriteToJSON_: function (sprite) {
-    var data = [];
-    for (var i = 0, e = sprite.colors.length; i < e; i++) {
-      data[i] = this.spriteToJSON_(sprite.colors[i]);
-    }
-
-    return data;
-  },
-
-  /**
-   *
-   * @param spriteData
-   * @return {cwt.Sprite}
-   * @private
-   */
-  jSONtoSprite_: function (spriteData) {
-    var sprite = new cwt.Sprite();
-
-    var data = sprite.images;
-    for (var i = 0, e = sprite.images.length; i < e; i++) {
-      var img = new Image();
-      img.src = spriteData[i];
-      data[i] = img;
-    }
-
-    return sprite;
-  },
-
-  /**
-   *
-   * @param spriteData
-   * @return {cwt.ArmySprite}
-   * @private
-   */
-  jSONtoColoredSprite_: function (spriteData) {
-    var sprite = new cwt.ArmySprite();
-
-    var data = sprite.images;
-    for (var i = 0, e = sprite.colors.length; i < e; i++) {
-      sprite.colors[i] = this.jSONtoSprite_(spriteData[i]);
-    }
-
-    return sprite;
-  },
-
-  /**
-   *
    * @param type
    * @param sprite
    * @param callback
    */
   saveSpriteToCache: function (type, sprite, callback) {
-    cwt.assert(sprite instanceof cwt.ArmySprite || sprite instanceof cwt.Sprite);
+    if (cwt.DEBUG) cwt.assert(sprite instanceof cwt.ArmySprite || sprite instanceof cwt.Sprite);
 
     // extract data
-    var data = (sprite instanceof cwt.ArmySprite) ? this.coloredSpriteToJSON_(sprite) : this.spriteToJSON_(sprite);
+    var data = (sprite instanceof cwt.ArmySprite) ? cwt.ArmySprite.toJSON(sprite) : cwt.Sprite.toJSON(sprite);
 
     // save it
     cwt.Storage.assetsStorage.set(type, data, callback);

@@ -2,7 +2,7 @@
  *
  * @class
  */
-cwt.ScreenLayer = my.Class(/** @lends cwt.Screen.Layer.prototype */ {
+cwt.Layer = my.Class( /** @lends cwt.Layer.prototype */ {
 
   constructor: function (config) {
     this.canvas = null;
@@ -29,10 +29,16 @@ cwt.ScreenLayer = my.Class(/** @lends cwt.Screen.Layer.prototype */ {
     this.canvas.getContext("2d").drawImage(curCanvas,0,0,curCanvas.width,curCanvas.height);
   },
 
-  show: function () {
+  /**
+   * Hides a layer.
+   */
+  hide: function () {
     this.canvas.style.display = "none";
   },
 
+  /**
+   * Shows a layer.
+   */
   show: function () {
     this.canvas.style.display = "block";
   },

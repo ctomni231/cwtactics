@@ -12,6 +12,8 @@ var cwt = {
    */
   INACTIVE: -1,
 
+  NOT_AVAILABLE: -2,
+
   /**
    * Determines the debug mode.
    */
@@ -23,6 +25,17 @@ var cwt = {
   DEV_NO_CACHE: true,
 
   emptyFunction: function () {
+  },
+
+  createModuleCaller: function (eventName) {
+    return function () {
+      for (prop in cwt) {
+        var module = cwt[prop];
+        if (module[eventName]) {
+          module[eventName].apply(module,arguments);
+        }
+      }
+    };
   },
 
   /**

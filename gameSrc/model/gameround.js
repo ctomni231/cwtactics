@@ -97,7 +97,7 @@ cwt.Gameround = {
    * Converts a number of days into turns.
    */
   convertDaysToTurns: function (days) {
-    return cwt.Player.MULTITON_INSTANCES*days;
+    return cwt.Player.MULTITON_INSTANCES * days;
   },
 
   /**
@@ -118,48 +118,30 @@ cwt.Gameround = {
     return (this.day < cwt.Config.getValue("daysOfPeace"));
   },
 
-  // -----------------
-
-  save: function (dom) {
-
-    // WEATHER
-    dom.wth = cwt.Gameround.weather.ID;
-
-    // DAY & TURN OWNER
-    dom.trOw = cwt.Gameround.turnOwner.id;
-    dom.day = cwt.Gameround.day;
-
-    // TIMER
-    dom.gmTm = cwt.Gameround.gameTimeElapsed;
-    dom.tnTm = cwt.Gameround.turnTimeElapsed;
+  $onSaveGame: function (data) {
+    data.wth = this.weather.ID;
+    data.trOw = this.turnOwner.id;
+    data.day = this.day;
+    data.gmTm = this.gameTimeElapsed;
+    data.tnTm = this.turnTimeElapsed;
   },
 
-  load: function (dom) {
+  $onLoadGame: function (data, isSave) {
+    this.weather = model.data_defaultWeatherSheet;
+    this.turnOwner = null;
+    this.day = 0;
 
-    // WEATHER
-    cwt.assert(cwt.WeatherSheet.sheets.hasOwnProperty(dom.wth));
-    cwt.Gameround.weather = cwt.WeatherSheet.sheets[dom.wth];
+    if (isSave) {
+      cwt.assert(cwt.WeatherSheet.sheets.hasOwnProperty(data.wth));
+      cwt.assert(data.trOw >= 0 && data.trOw < 9999999);
+      cwt.assert(data.day >= 0 && data.day < 9999999);
+      cwt.assert(data.gmTm >= 0);
+      cwt.assert(data.tnTm >= 0);
 
-    // DAY & TURN OWNER
-    cwt.assert(dom.trOw >= 0 && dom.trOw < 9999999);
-    cwt.assert(dom.day >= 0 && dom.day < 9999999);
-    cwt.Gameround.turnOwner = /** @type {cwt.Player} */ cwt.Player.getInstance(dom.trOw);
-    cwt.Gameround.day = dom.day;
-
-    // TIMER
-    cwt.assert(dom.gmTm >= 0);
-    cwt.assert(dom.tnTm >= 0);
-    cwt.Gameround.gameTimeElapsed = dom.gmTm;
-    cwt.Gameround.turnTimeElapsed = dom.tnTm;
-  },
-
-  prepare: function (dom) {
-
-    // WEATHER
-    cwt.Gameround.weather = model.data_defaultWeatherSheet;
-
-    // DAY & TURN OWNER
-    cwt.Gameround.turnOwner = null;
-    cwt.Gameround.day = 0;
+      this.weather = cwt.WeatherSheet.sheets[data.wth];
+      this.turnOwner = /** @type {cwt.Player} */ cwt.Player.getInstance(data.trOw);
+      this.day = data.day;this.gameTimeElapsed = data.gmTm;
+      this.turnTimeElapsed = data.tnTm;
+    }
   }
 };

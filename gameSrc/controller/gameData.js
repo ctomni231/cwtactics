@@ -3,22 +3,36 @@
  */
 cwt.GameData = {
 
-  save: function () {
-    var dom = {};
+  /**
+   *
+   */
+  saveGame: (function () {
+    var caller = cwt.createModuleCaller("$onSaveGame");
+    return function (name, callback) {
+      var dom = {};
+      caller(dom);
 
-    cwt.Gameround.save(dom);
-    cwt.Map.save(dom);
+      // save object model
+      cwt.Storage.mapStorage.set(name, JSON.stringify(dom), callback);
+    };
+  })(),
 
-    return JSON.stringify(dom);
-  },
-
-  load: function (dom) {
-    cwt.Gameround.load(dom);
-  },
-
-  prepare: function (dom) {
-    cwt.Gameround.prepare(dom);
-    cwt.Map.prepare(dom);
-  }
+  /**
+   * Sets the game model to a state that represents the given save game object.
+   *
+   * @param name
+   * @param isSave
+   * @param callback
+   */
+  loadGame: (function () {
+    var caller = cwt.createModuleCaller("$onLoadGame");
+    return function (name, isSave, callback) {
+      cwt.Storage.mapStorage.get(name, function (obj) {
+        cwt.assert(obj.value);
+        caller(JSON.parse(obj.value), isSave);
+        callback();
+      });
+    };
+  })()
 
 };

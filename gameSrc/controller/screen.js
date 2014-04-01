@@ -109,7 +109,7 @@ cwt.Screen = {
    *
    * @type {cwt.ScreenLayer}
    */
-  weatherLayer: new cwt.ScreenLayer(this.ONE_FRAME_ANIM_STEP, this.ONE_FRAME_ANIM_TIME),
+  effectLayer: new cwt.ScreenLayer(this.ONE_FRAME_ANIM_STEP, this.ONE_FRAME_ANIM_TIME),
 
   /**
    * Layer #6: Front layer

@@ -5,7 +5,7 @@ cwt.Gameflow.addState({
     this.backgroundDrawn = false;
   },
 
-  update: function () {
+  update: function (delta) {
     if (this.backgroundDrawn) {
       cwt.Gameflow.changeState("LOADING_SCREEN");
     }
