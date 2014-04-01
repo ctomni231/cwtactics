@@ -13,9 +13,6 @@ var flow = require("./workflow.js").order(
   .andThen(function( p,b ){
     require("./buildEngine.js").doIt(p,b);
   })
-  .andThen(function( p,b ){
-    require("./buildClient.js").doIt(p,b);
-  })
 
   .start(function(){
     console.log("building game -> complete");

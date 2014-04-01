@@ -4,7 +4,16 @@
  */
 cwt.ClientEvents = {
 
-  unitMoves: function () {
+  /**
+   *
+   * @param {number} sx
+   * @param {number} sy
+   * @param {number} tx
+   * @param {number} ty
+   * @param {cwt.Array} way
+   * @param {boolean} trapped
+   */
+  unitMoves: function (sx, sy, tx, ty, way, trapped) {
 
   },
 

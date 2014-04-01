@@ -12,7 +12,7 @@ cwt.Factory = {
    * @return {boolean}
    */
   isFactory: function (property) {
-    if (DEBUG) assert(property instanceof cwt.Property);
+    if (this.DEBUG) cwt.assert(property instanceof cwt.Property);
 
     return (property.type.builds !== void 0);
   },
@@ -25,7 +25,7 @@ cwt.Factory = {
    * @return {boolean}
    */
   canProduce: function (property) {
-    if (DEBUG) assert(property instanceof cwt.Property);
+    if (this.DEBUG) cwt.assert(property instanceof cwt.Property);
 
     // check manpower
     if (!property.owner || !property.owner.manpower) return false;
@@ -50,15 +50,15 @@ cwt.Factory = {
    * @param {String} type
    */
   buildUnit: function (factory, type) {
-    if (DEBUG) assert(factory instanceof cwt.Property);
-    if (DEBUG) assert(cwt.UnitSheet.isValidSheet(type));
+    if (this.DEBUG) cwt.assert(factory instanceof cwt.Property);
+    if (this.DEBUG) cwt.assert(cwt.UnitSheet.isValidSheet(type));
 
     var sheet = cwt.UnitSheet.sheets[type];
 
     factory.owner.manpower--;
     factory.owner.gold -= sheet.cost;
 
-    if (DEBUG) assert(factory.owner.gold >= 0);
+    if (this.DEBUG) cwt.assert(factory.owner.gold >= 0);
 
     cwt.Map.searchProperty(factory,cwt.Lifecycle.createUnit,cwt.Lifecycle,type);
   },
@@ -72,9 +72,9 @@ cwt.Factory = {
    * @return {boolean}
    */
   generateBuildMenu: function (factory, menu, markDisabled) {
-    if (DEBUG) assert(factory instanceof cwt.Property);
-    if (DEBUG) assert(menu instanceof cwt.Menu);
-    if (DEBUG) assert(factory.owner);
+    if (this.DEBUG) cwt.assert(factory instanceof cwt.Property);
+    if (this.DEBUG) cwt.assert(menu instanceof cwt.Menu);
+    if (this.DEBUG) cwt.assert(factory.owner);
 
     var unitTypes = cwt.UnitSheet.types;
     var bList = factory.type.builds;

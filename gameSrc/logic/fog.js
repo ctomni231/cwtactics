@@ -13,7 +13,7 @@ cwt.Fog = {
   modifyVision_: function (x, y, owner, range, value) {
 
     // ignore neutral objects
-    if (owner.team === INACTIVE_ID) return;
+    if (owner.team === cwt.INACTIVE) return;
 
     if (cwt.Config.getValue("fogEnabled") !== 1) return;
 

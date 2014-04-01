@@ -11,7 +11,7 @@ cwt.Transport = {
    * @param {cwt.Unit} unit
    */
   isTransportUnit: function (unit) {
-    if (DEBUG) assert(unit instanceof cwt.Unit);
+    if (this.DEBUG) cwt.assert(unit instanceof cwt.Unit);
 
     return (typeof unit.type.maxloads === "number");
   },
@@ -23,7 +23,7 @@ cwt.Transport = {
    * @param {cwt.Unit} unit
    */
   hasLoads: function (unit) {
-    if (DEBUG) assert(unit instanceof cwt.Unit);
+    if (this.DEBUG) cwt.assert(unit instanceof cwt.Unit);
 
     for (var i = 0, e = cwt.Unit.MULTITON_INSTANCES; i < e; i++) {
       var cUnit = cwt.Unit.getInstance(i,true);
@@ -43,11 +43,11 @@ cwt.Transport = {
    * @param {cwt.Unit} load
    */
   canLoadUnit: function (transporter, load) {
-    if (DEBUG) assert(transporter instanceof cwt.Unit);
-    if (DEBUG) assert(load instanceof cwt.Unit);
-    if (DEBUG) assert(load !== transporter);
-    if (DEBUG) assert(this.isTransportUnit(transporter));
-    if (DEBUG) assert(load.loadedIn !== transporter);
+    if (this.DEBUG) cwt.assert(transporter instanceof cwt.Unit);
+    if (this.DEBUG) cwt.assert(load instanceof cwt.Unit);
+    if (this.DEBUG) cwt.assert(load !== transporter);
+    if (this.DEBUG) cwt.assert(this.isTransportUnit(transporter));
+    if (this.DEBUG) cwt.assert(load.loadedIn !== transporter);
 
     return (transporter.type.canload.indexOf(load.type.movetype) !== -1);
   },
@@ -59,9 +59,9 @@ cwt.Transport = {
    * @param {cwt.Unit} load
    */
   load: function (transporter, load) {
-    if (DEBUG) assert(transporter instanceof cwt.Unit);
-    if (DEBUG) assert(load instanceof cwt.Unit);
-    if (DEBUG) assert(this.isTransportUnit(transporter));
+    if (this.DEBUG) cwt.assert(transporter instanceof cwt.Unit);
+    if (this.DEBUG) cwt.assert(load instanceof cwt.Unit);
+    if (this.DEBUG) cwt.assert(this.isTransportUnit(transporter));
 
     load.loadedIn = transporter;
   },
@@ -69,41 +69,40 @@ cwt.Transport = {
   /**
    * Unloads the unit with id lid from a transporter with the id tid.
    *
-   * @param transportId
-   * @param trsx
-   * @param trsy
-   * @param loadId
-   * @param tx
-   * @param ty
+   * @param {cwt.Unit} transport
+   * @param {number} trsx
+   * @param {number} trsy
+   * @param {cwt.Unit} load
+   * @param {number} tx
+   * @param {number} ty
    */
-  unload: function (transportId, trsx, trsy, loadId, tx, ty) {
-
-    // loadId must be loaded into transportId
-    assert(model.unit_data[ loadId ].loadedIn === transportId);
+  unload: function (transport, trsx, trsy, load, tx, ty) {
+    if (this.DEBUG) cwt.assert(load.loadedIn === transport);
 
     // TODO: remove this later
     // trapped ?
-    if (tx === -1 || ty === -1 || model.unit_posData[tx][ty]) {
+    if (tx === -1 || ty === -1 || cwt.Map.data[tx][ty].unit) {
       controller.stateMachine.data.breakMultiStep = true;
       return;
     }
 
     // remove transport link
-    model.unit_data[ loadId      ].loadedIn = -1;
-    model.unit_data[ transportId ].loadedIn++;
+    load.loadedIn = null;
 
     // extract mode code id
     var moveCode;
-    if (tx < trsx) moveCode = model.move_MOVE_CODES.LEFT;
-    else if (tx > trsx) moveCode = model.move_MOVE_CODES.RIGHT;
-    else if (ty < trsy) moveCode = model.move_MOVE_CODES.UP;
-    else if (ty > trsy) moveCode = model.move_MOVE_CODES.DOWN;
+    if (tx < trsx) moveCode = cwt.Move.MOVE_CODES_LEFT;
+    else if (tx > trsx) moveCode = cwt.Move.MOVE_CODES_RIGHT;
+    else if (ty < trsy) moveCode = cwt.Move.MOVE_CODES_UP;
+    else if (ty > trsy) moveCode = cwt.Move.MOVE_CODES_DOWN;
 
     // move load out of the transporter
-    controller.commandStack_localInvokement("move_clearWayCache");
-    controller.commandStack_localInvokement("move_appendToWayCache", moveCode);
-    controller.commandStack_localInvokement("move_moveByCache", loadId, trsx, trsy, 1);
-    controller.commandStack_localInvokement("wait_invoked", loadId);
+    cwt.Move.movePathCache.clear();
+    cwt.Move.movePathCache.push(moveCode);
+    cwt.Move.move(unit, trsx, trsy, cwt.Move.movePathCache, true, true, false);
+
+    transport.canAct = false;
+    load.canAct = false;
   },
 
 
@@ -111,34 +110,27 @@ cwt.Transport = {
    * Returns true if a transporter unit can unload one of it's loads at a given position.
    * This functions understands the given pos as possible position for the transporter.
    *
-   * @param uid
+   * @param {cwt.Unit} transporter
    * @param x
    * @param y
    * @return {*}
    */
-  canUnloadSomethingAt: function (transpoter, x, y) {
-    var pid = transpoter.owner;
+  canUnloadSomethingAt: function (transporter, x, y) {
+    var pid = transporter.owner;
     var unit;
 
-    // only transporters with loads can unload things
-    // TODO: is transport could be an assertion
-    if (!( model.transport_isTransportUnit(uid) &&
-      model.transport_hasLoads(uid) )) {
-      return false;
-    }
+    if (this.DEBUG) cwt.assert(this.isTransportUnit(transporter));
 
-    var i = model.unit_firstUnitId(pid);
-    var e = model.unit_lastUnitId(pid);
-    for (; i <= e; i++) {
+    for (var i = 0, e = cwt.Unit.MULTITON_INSTANCES; i <= e; i++) {
 
-      unit = model.unit_data[i];
-      if (unit.owner !== INACTIVE_ID && unit.loadedIn === uid) {
-        var movetp = model.data_movetypeSheets[ unit.type.movetype ];
+      unit = cwt.Unit.getInstance(i,true);
+      if (unit && unit.owner !== cwt.INACTIVE && unit.loadedIn === transporter) {
+        var moveType = unit.type.movetype;
 
-        if (model.move_canTypeMoveTo(movetp, x - 1, y)) return;
-        if (model.move_canTypeMoveTo(movetp, x + 1, y)) return;
-        if (model.move_canTypeMoveTo(movetp, x, y - 1)) return;
-        if (model.move_canTypeMoveTo(movetp, x, y + 1)) return;
+        if (cwt.Move.canTypeMoveTo(moveType, x - 1, y)) return true;
+        if (cwt.Move.canTypeMoveTo(moveType, x + 1, y)) return true;
+        if (cwt.Move.canTypeMoveTo(moveType, x, y - 1)) return true;
+        if (cwt.Move.canTypeMoveTo(moveType, x, y + 1)) return true;
       }
     }
 

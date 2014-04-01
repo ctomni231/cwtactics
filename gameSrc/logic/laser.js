@@ -11,7 +11,7 @@ cwt.Laser = {
    * @return {boolean}
    */
   isLaser: function (unit) {
-    if (DEBUG) assert(unit instanceof cwt.Unit);
+    if (this.DEBUG) cwt.assert(unit instanceof cwt.Unit);
 
     return (unit.type.ID === "LASER_UNIT_INV");
   },
@@ -26,7 +26,7 @@ cwt.Laser = {
     var map = cwt.Map.data;
     var prop = map[x][y].property;
 
-    if (DEBUG) assert(prop);
+    if (this.DEBUG) cwt.assert(prop);
 
     var ox = x;
     var oy = y;

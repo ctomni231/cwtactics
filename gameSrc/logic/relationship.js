@@ -52,7 +52,7 @@ cwt.Relationship = {
    *       x
    */
   getRelationshipUnitNeighbours: function (player, x, y, mode) {
-    if (DEBUG) assert(cwt.Map.isValidPosition(x,y));
+    if (this.DEBUG) cwt.assert(cwt.Map.isValidPosition(x,y));
 
     var unit;
 

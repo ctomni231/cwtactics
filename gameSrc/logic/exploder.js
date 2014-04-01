@@ -11,7 +11,7 @@ cwt.Explode = {
    * @param {cwt.Unit} unit
    */
   canExplode: function (unit) {
-    if (DEBUG) assert(unit instanceof cwt.Unit);
+    if (this.DEBUG) cwt.assert(unit instanceof cwt.Unit);
 
     return unit.type.suicide !== undefined;
   },
@@ -44,8 +44,8 @@ cwt.Explode = {
    * @param {number} damage (x >= 0)
    */
   explode: function (x, y, range, damage) {
-    if (DEBUG) assert(this.canExplode(cwt.Gameround.map.data[x][y].unit));
-    if (DEBUG) assert(range >= 1);
+    if (this.DEBUG) cwt.assert(this.canExplode(cwt.Gameround.map.data[x][y].unit));
+    if (this.DEBUG) cwt.assert(range >= 1);
 
     cwt.Lifecycle.destroyUnit(x, y, false);
     cwt.Gameround.map.doInRange(x, y, range, this.exploderDamage_, damage);

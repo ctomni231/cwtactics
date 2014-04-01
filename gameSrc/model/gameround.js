@@ -17,7 +17,7 @@ cwt.Gameround = {
   /**
    * The current active co mode.
    */
-  gamemode: this.GAME_MODE_AW1,
+  gameMode: this.GAME_MODE_AW1,
 
   /**
    * The current active day.
@@ -116,6 +116,50 @@ cwt.Gameround = {
    */
   inPeacePhase: function () {
     return (this.day < cwt.Config.getValue("daysOfPeace"));
-  }
+  },
 
+  // -----------------
+
+  save: function (dom) {
+
+    // WEATHER
+    dom.wth = cwt.Gameround.weather.ID;
+
+    // DAY & TURN OWNER
+    dom.trOw = cwt.Gameround.turnOwner.id;
+    dom.day = cwt.Gameround.day;
+
+    // TIMER
+    dom.gmTm = cwt.Gameround.gameTimeElapsed;
+    dom.tnTm = cwt.Gameround.turnTimeElapsed;
+  },
+
+  load: function (dom) {
+
+    // WEATHER
+    cwt.assert(cwt.WeatherSheet.sheets.hasOwnProperty(dom.wth));
+    cwt.Gameround.weather = cwt.WeatherSheet.sheets[dom.wth];
+
+    // DAY & TURN OWNER
+    cwt.assert(dom.trOw >= 0 && dom.trOw < 9999999);
+    cwt.assert(dom.day >= 0 && dom.day < 9999999);
+    cwt.Gameround.turnOwner = /** @type {cwt.Player} */ cwt.Player.getInstance(dom.trOw);
+    cwt.Gameround.day = dom.day;
+
+    // TIMER
+    cwt.assert(dom.gmTm >= 0);
+    cwt.assert(dom.tnTm >= 0);
+    cwt.Gameround.gameTimeElapsed = dom.gmTm;
+    cwt.Gameround.turnTimeElapsed = dom.tnTm;
+  },
+
+  prepare: function (dom) {
+
+    // WEATHER
+    cwt.Gameround.weather = model.data_defaultWeatherSheet;
+
+    // DAY & TURN OWNER
+    cwt.Gameround.turnOwner = null;
+    cwt.Gameround.day = 0;
+  }
 };

@@ -29,7 +29,7 @@ cwt.Turn = {
       }
 
       // Found next player
-      if (cwt.Player.getInstance(pid).team !== INACTIVE_ID) break;
+      if (cwt.Player.getInstance(pid).team !== cwt.INACTIVE) break;
 
       // Try next player
       pid++;
@@ -37,7 +37,7 @@ cwt.Turn = {
 
     // If the new player id is the same as the old
     // player id then the game aw2 is corrupted
-    if (DEBUG) assert(pid !== oid);
+    if (this.DEBUG) cwt.assert(pid !== oid);
 
     // Do end/start turn logic
     this.endsTurn_(cwt.Player.getInstance(oid));
@@ -73,7 +73,7 @@ cwt.Turn = {
       cPlayer.clientVisible = false;
 
       // player isn't registered
-      if (cPlayer.team === INACTIVE_ID) continue;
+      if (cPlayer.team === cwt.INACTIVE) continue;
 
       if (cPlayer.team === clTid) cPlayer.clientVisible = true;
       if (cPlayer.team === player.team) cPlayer.turnOwnerVisible = true;

@@ -30,33 +30,28 @@ cwt.Move = {
   MOVE_CODES_LEFT: 3,
 
   /**
-   *
-   */
-  movePathCache: new cwt.List(this.MAX_LENGTH, INACTIVE_ID),
-
-  /**
    * Extracts the move code between two positions.
    */
   codeFromAtoB: function (sx, sy, tx, ty) {
-    if (DEBUG) assert(cwt.Map.isValidPosition(sx, sy));
-    if (DEBUG) assert(cwt.Map.isValidPosition(tx, ty));
-    if (DEBUG) assert(cwt.Map.getDistance(sx, sy, tx, ty) === 1);
+    if (this.DEBUG) cwt.assert(cwt.Map.isValidPosition(sx, sy));
+    if (this.DEBUG) cwt.assert(cwt.Map.isValidPosition(tx, ty));
+    if (this.DEBUG) cwt.assert(cwt.Map.getDistance(sx, sy, tx, ty) === 1);
 
     if (sx < tx) return this.MOVE_CODES_RIGHT;
     if (sx > tx) return this.MOVE_CODES_LEFT;
     if (sy < ty) return this.MOVE_CODES_DOWN;
     if (sy > ty) return this.MOVE_CODES_UP;
 
-    return INACTIVE_ID;
+    return cwt.INACTIVE;
   },
 
 
   /**
-   * Returns the movecosts to move with a given move type on a
+   * Returns the move cost to move with a given move type on a
    * given tile type.
    */
   getMoveCosts: function (movetype, x, y) {
-    if (DEBUG) assert(cwt.Map.isValidPosition(x, y));
+    if (this.DEBUG) cwt.assert(cwt.Map.isValidPosition(x, y));
 
     var v;
     var tmp = cwt.Map.data[x][y];
@@ -111,8 +106,8 @@ cwt.Move = {
    * @param movePath
    */
   generateMovePath: function (stx, sty, tx, ty, selection, movePath) {
-    if (DEBUG) assert(cwt.Map.isValidPosition(stx, sty));
-    if (DEBUG) assert(cwt.Map.isValidPosition(tx, ty));
+    if (this.DEBUG) cwt.assert(cwt.Map.isValidPosition(stx, sty));
+    if (this.DEBUG) cwt.assert(cwt.Map.isValidPosition(tx, ty));
 
     var graph = new Graph(selection.data);
 
@@ -137,7 +132,7 @@ cwt.Move = {
       else if (cNode.x < cx) dir = this.MOVE_CODES_LEFT;
       else if (cNode.y > cy) dir = this.MOVE_CODES_DOWN;
       else if (cNode.y < cy) dir = this.MOVE_CODES_UP;
-      else assert(false);
+      else cwt.assert(false);
 
       // add code to move path
       movePath[movePathIndex] = dir;
@@ -148,36 +143,21 @@ cwt.Move = {
     }
   },
 
-  /**
-   * Appends a move `code` to a given `movePath` and returns `true` if the
-   * insertion was possible else `false`. If the new code is a backwards move
-   * to the previous tile in the path then the actual last tile will be
-   * dropped. In this function returns also `true` in this case.
-   * 
-   * @param {cwt.Move.MOVE_CODES_DOWN|cwt.Move.MOVE_CODES_RIGHT|cwt.Move.MOVE_CODES_LEFT|cwt.Move.MOVE_CODES_UP} code
-   * @param movePath
-   * @param {cwt.SelectionMap} data
-   */
-  addCodeToMovePath: function (code, movePath, data) {
-    if (DEBUG) assert(code >= this.MOVE_CODES_UP && code <= this.MOVE_CODES_LEFT);
-
-    // is the move a go back to the last tile ?
-    var lastCode = movePath.getLastCode();
+  isGoBackCommand_: function (code, movePath) {
+    var lastCode = movePath.getLastElement();
     var goBackCode;
-    switch (code) {
 
+    // get go back code
+    switch (code) {
       case this.MOVE_CODES_UP:
         goBackCode = this.MOVE_CODES_DOWN;
         break;
-
       case this.MOVE_CODES_DOWN:
         goBackCode = this.MOVE_CODES_UP;
         break;
-
       case this.MOVE_CODES_LEFT:
         goBackCode = this.MOVE_CODES_RIGHT;
         break;
-
       case this.MOVE_CODES_RIGHT:
         goBackCode = this.MOVE_CODES_LEFT;
         break;
@@ -185,25 +165,47 @@ cwt.Move = {
 
     // if move is a go back then pop the lest code
     if (lastCode === goBackCode) {
-      movePath[movePath.getSize() - 1] = INACTIVE_ID;
+      movePath.pop();
+      return true;
+    } else {
+      return false;
+    }
+  },
+
+  /**
+   * Appends a move `code` to a given `movePath` and returns `true` if the
+   * insertion was possible else `false`. If the new code is a backwards move
+   * to the previous tile in the path then the actual last tile will be
+   * dropped. In this function returns also `true` in this case.
+   *
+   * @param {cwt.Move.MOVE_CODES_DOWN|cwt.Move.MOVE_CODES_RIGHT|cwt.Move.MOVE_CODES_LEFT|cwt.Move.MOVE_CODES_UP} code
+   * @param {cwt.Array} movePath
+   * @param {cwt.SelectionMap} selection
+   * @param {number} sx
+   * @param {number} sy
+   */
+  addCodeToMovePath: function (code, movePath, selection, sx, sy) {
+    if (this.DEBUG) cwt.assert(code >= this.MOVE_CODES_UP && code <= this.MOVE_CODES_LEFT);
+
+    if (this.isGoBackCommand_(code, movePath)) {
       return true;
     }
 
-    var source = controller.stateMachine.data.source;
+    var source = cwt.Map.data[sx][sy];
     var unit = source.unit;
     var fuelLeft = unit.fuel;
-    var fuelUsed = 0;
     var points = unit.type.range;
     if (fuelLeft < points) points = fuelLeft;
 
     // add command to the move path list
-    movePath[movePath.getSize()] = code;
+    movePath.data[movePath.getSize()] = code;
 
     // calculate fuel consumption for the current move path
-    var cx = source.x;
-    var cy = source.y;
-    for (var i = 0, e = movePath.getSize(); i < e; i++) {
-      switch (movePath[i]) {
+    var cx = sx;
+    var cy = sy;
+    var fuelUsed = 0;
+    for (var i = 0, e = movePath.getLastIndex(); i <= e; i++) {
+      switch (movePath.data[i]) {
 
         case this.MOVE_CODES_UP:
           cy--;
@@ -223,14 +225,16 @@ cwt.Move = {
       }
 
       // acc. fuel consumption
-      fuelUsed += data.getValueAt(cx, cy);
+      fuelUsed += selection.getValueAt(cx, cy);
     }
 
     // if to much fuel would be needed then decline
     if (fuelUsed > points) {
-      movePath[movePath.getSize() - 1] = INACTIVE_ID; // remove the code that you placed before
+      movePath.data[movePath.getSize() - 1] = cwt.INACTIVE;
       return false;
-    } else return true;
+    } else {
+      return true;
+    }
   },
 
   /**
@@ -244,16 +248,23 @@ cwt.Move = {
 
   /**
    * Fills a move map for possible move able tiles in a selection map.
+   *
+   * @param source
+   * @param selection
+   * @param x
+   * @param y
+   * @param unit
    */
   fillMoveMap: function (source, selection, x, y, unit) {
     var cost;
+    var map = cwt.Map.data;
 
     // grab object aw2 from `source` position if no explicit aw2 is given
     if (typeof x !== "number") x = source.x;
     if (typeof y !== "number") y = source.y;
     if (!unit) unit = source.unit;
 
-    if (DEBUG) assert(cwt.Map.isValidPosition(x, y));
+    if (this.DEBUG) cwt.assert(cwt.Map.isValidPosition(x, y));
 
     var toBeChecked;
     var releaseHelper = false;
@@ -271,7 +282,7 @@ cwt.Move = {
     if (unit.fuel < range) range = unit.fuel;
 
     // add start tile to the map
-    selection.setCenter(x, y, INACTIVE_ID);
+    selection.setCenter(x, y, cwt.INACTIVE);
     selection.setValueAt(x, y, range);
 
     // fill map ( one structure is X;Y;LEFT_POINTS )
@@ -343,16 +354,14 @@ cwt.Move = {
         var tx = checker[n];
         var ty = checker[n + 1];
 
-        cost = model.move_getMoveCosts(mType, tx, ty);
+        cost = this.getMoveCosts(mType, tx, ty);
         if (cost !== -1) {
 
-          var cunit = model.unit_posData[tx][ty];
-          if (cunit !== null && model.fog_turnOwnerData[tx][ty] > 0 && !cunit.hidden && model.player_data[cunit.owner].team !== player.team) {
+          var ctile = map[tx][ty];
+          var cunit = ctile.unit;
+          if (cunit !== null && ctile.visionTurnOwner > 0 && !cunit.hidden && cunit.owner.team !== player.team) {
             continue;
           }
-
-          // scripted movecosts
-          cost = controller.scriptedValue(unit.owner, "movecost", cost);
 
           var rest = cp - cost;
           if (rest >= 0 && rest > selection.getValueAt(tx, ty)) {
@@ -385,7 +394,7 @@ cwt.Move = {
     // convert left points back to absolute costs
     for (var x = 0, xe = cwt.Map.width; x < xe; x++) {
       for (var y = 0, ye = cwt.Map.height; y < ye; y++) {
-        if (selection.getValueAt(x, y) !== INACTIVE_ID) {
+        if (selection.getValueAt(x, y) !== cwt.INACTIVE) {
           cost = this.getMoveCosts(mType, x, y);
           selection.setValueAt(x, y, cost);
         }
@@ -396,48 +405,53 @@ cwt.Move = {
 
   /**
    *
+   * @param {cwt.Array} movePath
+   * @param {cwt.Position} source
+   * @param {cwt.Position} target
+   * @return {boolean}
    */
-  trapCheck: function (way, source, target) {
+  trapCheck: function (movePath, source, target) {
     var cBx;
     var cBy;
+    var map = cwt.Map.data;
     var cx = source.x;
     var cy = source.y;
-    var sourceTeamId = model.player_data[source.unit.owner].team;
-    for (var i = 0, e = way.length; i < e; i++) {
+    var teamId = source.unit.owner.team;
+    for (var i = 0, e = movePath.length; i < e; i++) {
 
-      // end of way
-      if (way[i] === -1) break;
+      // break out when the end of the path is reached
+      if (movePath.data[i] === cwt.INACTIVE) {
+        break;
+      }
 
-      switch (way[i]) {
-
-        case model.move_MOVE_CODES.DOWN:
+      switch (movePath.data[i]) {
+        case this.MOVE_CODES_DOWN:
           cy++;
           break;
-
-        case model.move_MOVE_CODES.UP:
+        case this.MOVE_CODES_UP:
           cy--;
           break;
-
-        case model.move_MOVE_CODES.LEFT:
+        case this.MOVE_CODES_LEFT:
           cx--;
           break;
-
-        case model.move_MOVE_CODES.RIGHT:
+        case this.MOVE_CODES_RIGHT:
           cx++;
           break;
       }
 
-      var unit = model.unit_posData[cx][cy];
-
-      // position is valid when no unit is there
+      var unit = map[cx][cy].unit;
       if (!unit) {
+
+        // no unit there? then it's a valid position
         cBx = cx;
         cBy = cy;
 
-      } else if (sourceTeamId !== model.player_data[unit.owner].team) {
+      } else if (teamId !== unit.owner.team) {
+        if (this.DEBUG) cwt.assert(typeof cBx !== "number" && typeof cBy !== "number");
 
-        target.set(cBx, cBy);
-        way[i] = INACTIVE_ID;
+        target.set(cBx, cBy); // ? this looks ugly here...
+        movePath.data[i] = cwt.INACTIVE;
+
         return true;
       }
     }
@@ -445,15 +459,39 @@ cwt.Move = {
     return false;
   },
 
-  move: function (uid, x, y, noFuelConsumption) {
-    var way = model.move_pathCache;
+  /**
+   *
+   */
+  movePathCache: new cwt.Array(this.MAX_LENGTH, cwt.INACTIVE),
+
+  /**
+   *
+   * @param unit
+   * @param x
+   * @param y
+   * @param movePath
+   * @param {boolean=} noFuelConsumption
+   * @param {boolean=} preventRemoveOldPos
+   * @param {boolean=} preventSetNewPos
+   */
+  move: function (unit, x, y, movePath, noFuelConsumption, preventRemoveOldPos, preventSetNewPos) {
+    var map = cwt.Map.data;
+    var team = unit.owner.team;
+
+    // the unit must not be on a tile (e.g. loads), that is the reason why we
+    // need a valid x,y position here as parameters
     var cX = x;
     var cY = y;
-    var unit = model.unit_data[ uid ];
+
+    // do not set the new position if the position is already occupied
+    // the action logic must take care of this situation
+    if (preventRemoveOldPos !== true) {
+      cwt.Map.data[x][y].unit = null;
+    }
+
     var uType = unit.type;
-    var mType = model.data_movetypeSheets[ uType.movetype ];
-    var wayIsIllegal = false;
-    var lastIndex = way.length - 1;
+    var mType = uType.movetype;
+    var lastIndex = movePath.length - 1;
     var fuelUsed = 0;
 
     // check move way by iterate through all move codes and build the path
@@ -462,81 +500,74 @@ cwt.Move = {
     // 2. check all tiles to recognize trapped moves
     // 3. accumulate fuel consumption ( except `noFuelConsumption` is `true` )
     //
-    for (var i = 0, e = way.length; i < e; i++) {
-      if (way[i] === INACTIVE_ID) break;
+
+    var trapped = false;
+    var lastX = -1;
+    var lastY = -1;
+    var lastFuel = 0;
+    var lastIndex = 0;
+    for (var i = 0, e = movePath.getLastIndex(); i < e; i++) {
 
       // set current position by current move code
-      switch (way[i]) {
+      switch (movePath.data[i]) {
 
         case this.MOVE_CODES_UP:
-          if (cY === 0) wayIsIllegal = true;
+          if (this.DEBUG) cwt.assert(cY === 0);
           cY--;
           break;
 
         case this.MOVE_CODES_RIGHT:
-          if (cX === cwt.Map.width - 1) wayIsIllegal = true;
+          if (this.DEBUG) cwt.assert(cX === cwt.Map.width - 1);
           cX++;
           break;
 
         case this.MOVE_CODES_DOWN:
-          if (cY === cwt.Map.height - 1) wayIsIllegal = true;
+          if (this.DEBUG) cwt.assert(cY === cwt.Map.height - 1);
           cY++;
           break;
 
         case this.MOVE_CODES_LEFT:
-          if (cX === 0) wayIsIllegal = true;
+          if (this.DEBUG) cwt.assert(cX === 0);
           cX--;
           break;
       }
 
-      // when the way contains an illegal value that isn't part of
-      // `model.move_MOVE_CODES` then break the move process.
-      assert(!wayIsIllegal);
-
-      // is way blocked ? (niy!)
-      if (false /* && model.isWayBlocked( cX, cY, unit.owner, (i === e - 1) ) */ ) {
-        lastIndex = i - 1;
-
-        // go back until you find a valid tile
-        switch (way[i]) {
-          case this.MOVE_CODES_UP:
-            cY++;
-            break;
-          case this.MOVE_CODES_RIGHT:
-            cX--;
-            break;
-          case this.MOVE_CODES_DOWN:
-            cY--;
-            break;
-          case this.MOVE_CODES_LEFT:
-            cX++;
-            break;
-        }
-
-        // this is normally not possible, except other modules makes a fault in this case
-        // the moving system could not recognize a enemy in front of the mover that causes a `trap`
-        assert(lastIndex !== -1);
-
-        break;
-      }
-
       // calculate the used fuel to move onto the current tile
       // if `noFuelConsumption` is not `true` some actions like unloading does not consume fuel
-      if (noFuelConsumption !== true) fuelUsed += this.getMoveCosts(mType, cX, cY);
+      if (noFuelConsumption !== true) {
+        fuelUsed += this.getMoveCosts(mType, cX, cY);
+      }
+
+      var tileUnit = map[cX][cY].unit;
+
+      // movable when tile is empty or the last tile in the way while
+      // the unit on the tile belongs to the movers owner
+      if (!tileUnit || (tileUnit.owner === unit.owner && i === e-1)) {
+        lastX = cX;
+        lastY = cY;
+        lastFuel = fuelUsed;
+        lastIndex = i;
+
+      // enemy unit
+      } else if(tileUnit.owner.team !== team) {
+        movePath.clear(lastIndex+1);
+        trapped = true;
+        break;
+      }
     }
 
-    // consume fuel ( if `noFuelConsumption` is `true` then the costs will be `0` )
-    unit.fuel -= fuelUsed;
-    assert(unit.fuel >= 0);
-
-    // DO NOT ERASE POSITION IF UNIT WAS LOADED OR HIDDEN (NOT INGAME HIDDEN) SOMEWHERE
-    if (unit.x >= 0 && unit.y >= 0) {
-
-      model.events.clearUnitPosition(uid);
+    // consume fuel except when no fuel consumption is on
+    if (noFuelConsumption !== true) {
+      unit.fuel -= lastFuel;
+      if (this.DEBUG) cwt.assert(unit.fuel >= 0);
     }
 
-    // do not set the new position if the position is already occupied
-    // the action logic must take care of this situation
-    if (model.unit_posData[cX][cY] === null) model.events.setUnitPosition(uid, cX, cY);
+    // sometimes we prevent to set the unit at the target position because it moves
+    // into a thing at a target position (like a transporter)
+    if (preventSetNewPos !== true) {
+      cwt.Map.data[lastX][lastY].unit = unit;
+    }
+
+    cwt.ClientEvents.unitMoves(x, y, lastX, lastY, movePath, trapped);
   }
 };

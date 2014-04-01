@@ -37,8 +37,8 @@ cwt.Map = {
    * Returns the distance of two positions.
    */
   getDistance: function (sx, sy, tx, ty) {
-    if (DEBUG) assert(this.isValidPosition(sx, sy));
-    if (DEBUG) assert(this.isValidPosition(tx, ty));
+    if (this.DEBUG) cwt.assert(this.isValidPosition(sx, sy));
+    if (this.DEBUG) cwt.assert(this.isValidPosition(tx, ty));
 
     return Math.abs(sx - tx) + Math.abs(sy - ty);
   },
@@ -89,9 +89,9 @@ cwt.Map = {
    * Invokes a callback on all tiles in a given range at a position (x,y).
    */
   doInRange: function (x, y, range, cb, arg) {
-    if (DEBUG) assert(this.isValidPosition(x, y));
-    if (DEBUG) assert(typeof cb === "function");
-    if (DEBUG) assert(range >= 0);
+    if (this.DEBUG) cwt.assert(this.isValidPosition(x, y));
+    if (this.DEBUG) cwt.assert(typeof cb === "function");
+    if (this.DEBUG) cwt.assert(range >= 0);
 
     var lX;
     var hX;
@@ -112,6 +112,53 @@ cwt.Map = {
         // if a callback returns `false` then the process will be stopped
         if (cb(lX, lY, this.data[lX][lY], arg, Math.abs(lX - x) + disY) === false) return;
 
+      }
+    }
+  },
+
+  // --------------------------
+
+  save: function (dom) {
+    dom.mpw = model.map_width;
+    dom.mph = model.map_height;
+    dom.map = [];
+
+    // generates ID map
+    var mostIdsMap = {};
+    var mostIdsMapCurIndex = 0;
+    for (var x = 0, xe = model.map_width; x < xe; x++) {
+
+      dom.map[x] = [];
+      for (var y = 0, ye = model.map_height; y < ye; y++) {
+
+        var type = dom.map[x][y].ID;
+
+        if (!mostIdsMap.hasOwnProperty(type)) {
+          mostIdsMap[type] = mostIdsMapCurIndex;
+          mostIdsMapCurIndex++;
+        }
+
+        dom.map[x][y] = mostIdsMap[type];
+      }
+    }
+
+    // store map
+    dom.typeMap = [];
+    var typeKeys = Object.keys(mostIdsMap);
+    for (var i = 0, e = typeKeys.length; i < e; i++) {
+      dom.typeMap[mostIdsMap[typeKeys[i]]] = typeKeys[i];
+    }
+  },
+
+  prepare: function (dom) {
+    model.map_width = dom.mpw;
+    model.map_height = dom.mph;
+
+    for (var x = 0, xe = model.map_width; x < xe; x++) {
+      for (var y = 0, ye = model.map_height; y < ye; y++) {
+        model.unit_posData[x][y] = null;
+        model.property_posMap[x][y] = null;
+        model.map_data[x][y] = model.data_tileSheets[dom.typeMap[dom.map[x][y]]];
       }
     }
   }
