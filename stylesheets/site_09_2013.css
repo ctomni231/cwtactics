@@ -108,7 +108,7 @@ html, body {
 }
 @media (min-width:768px){
   .content {
-    position: absolute;
+    /*position: absolute;*/
     height:   100%;
     left:     210px;
     right:     10px;
