@@ -99,6 +99,7 @@ html, body {
 @media (max-width:767px){
   .content {
     position: absolute;
+    -webkit-position: static;
     height:   100%;
     left:      10px;
     right:     10px;
@@ -108,7 +109,8 @@ html, body {
 }
 @media (min-width:768px){
   .content {
-    /*position: absolute;*/
+    position: absolute;
+    -webkit-position: static;
     height:   100%;
     left:     210px;
     right:     10px;
