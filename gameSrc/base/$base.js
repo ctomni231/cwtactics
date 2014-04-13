@@ -56,3 +56,9 @@ var cwt = {
     }
   }
 };
+
+/* Registers generic error listener. */
+window.onerror = function (e) {
+  cwt.Error("Critical Game Fault","ERR_UNKNOWN");
+  console.error(e);
+};

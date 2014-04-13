@@ -24,8 +24,5 @@ cwt.PropertySheet.registerSheet({
     "TIRE_A",
     "TIRE_B",
     "TANK"
-  ],
-  "assets":{
-    "gfx":"cwt_anim/properties/CWT_BASE.png"
-  }
+  ]
 });

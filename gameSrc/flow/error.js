@@ -1,13 +1,17 @@
 cwt.Gameflow.addState({
-  id: "ERROR",
+  id: "ERROR_SCREEN",
 
   init: function () {
     this.activeCmd = 0;
+    this.message = null;
+    this.where = null;
   },
 
   enter: function () {
     this.rendered = false;
     this.activeCmd = 0;
+    this.message = null;
+    this.where = null;
   },
 
   update: function (delta, lastInput) {

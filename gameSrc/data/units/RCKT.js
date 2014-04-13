@@ -31,9 +31,5 @@ cwt.UnitSheet.registerSheet({
     },
     "minrange": 3,
     "maxrange": 5
-  },
-  "assets": {
-    "gfx": "cwt_anim/units/CWT_RCKT.png",
-    "pri_att_sound": "rocket.wav"
   }
 });

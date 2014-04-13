@@ -11,12 +11,7 @@ cwt.UnitSheet.registerSheet({
     "damage": 5,
     "range": 3,
     "nodamage": [
-        "OOZM"
-      ]
-  },
-  "assets": {
-    "gfx": "cwt_anim/units/CWT_BKBM.png",
-    "pri_att_sound": "mg.wav",
-    "sec_att_sound": "mg.wav"
+      "OOZM"
+    ]
   }
 });

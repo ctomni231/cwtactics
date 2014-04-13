@@ -32,9 +32,5 @@ cwt.UnitSheet.registerSheet({
     },
     "minrange": 2,
     "maxrange": 6
-  },
-  "assets": {
-    "gfx": "cwt_anim/units/CWT_BSHP.png",
-    "pri_att_sound": "tnk_cannon_big.wav"
   }
 });

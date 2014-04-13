@@ -30,10 +30,5 @@ cwt.UnitSheet.registerSheet({
       "LNDR": 95,
       "BLBT": 75
     }
-  },
-  "assets": {
-    "gfx": "cwt_anim/units/CWT_BMBR.png",
-    "pri_att_sound": "mg.wav",
-    "sec_att_sound": "mg.wav"
   }
 });

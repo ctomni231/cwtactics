@@ -9,13 +9,10 @@ cwt.UnitSheet.registerSheet({
   "dailyFuelDrain": 1,
   "maxloads": 2,
   "canload": [
-      "INFT",
-      "MECH"
-    ],
+    "INFT",
+    "MECH"
+  ],
   "repairs": {
     "SHIP": 1
-  },
-  "assets": {
-    "gfx": "cwt_anim/units/CWT_BKBT.png"
   }
 });

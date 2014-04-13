@@ -20,14 +20,5 @@ cwt.PropertySheet.registerSheet({
     "TIRE_A":2,
     "TIRE_B":2,
     "TANK":2
-  },
-  "assets":{
-    "gfx":"cwt_anim/properties/CWT_HQTR.png",
-    "factionSprites":{
-      "ORST":"cwt_anim/properties/CWT_HQTR_OS.png",
-      "BLMN":"cwt_anim/properties/CWT_HQTR_BM.png",
-      "GRET":"cwt_anim/properties/CWT_HQTR_GE.png",
-      "YLCM":"cwt_anim/properties/CWT_HQTR_YC.png"
-    }
   }
 });

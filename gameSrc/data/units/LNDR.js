@@ -9,13 +9,10 @@ cwt.UnitSheet.registerSheet({
   "ammo": 0,
   "maxloads": 1,
   "canload": [
-      "MV_MECH",
-      "MV_INFT",
-      "TIRE_A",
-      "TIRE_B",
-      "TANK"
-    ],
-  "assets": {
-    "gfx": "cwt_anim/units/CWT_LNDR.png"
-  }
+    "MV_MECH",
+    "MV_INFT",
+    "TIRE_A",
+    "TIRE_B",
+    "TANK"
+  ]
 });

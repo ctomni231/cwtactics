@@ -67,5 +67,9 @@ cwt.Position = my.Class( /** @lends cwt.Position.prototype */ {
       this.property = null;
       this.propertyId = -1;
     }
+  },
+
+  relationshipTo: function (pos) {
+
   }
 });

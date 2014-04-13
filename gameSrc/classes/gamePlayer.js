@@ -7,15 +7,19 @@ cwt.Player = my.Class(null, cwt.IndexMultiton, /** @lends cwt.Player.prototype *
 
     /**
      * Maximum number of instances.
+     *
+     * @constant
      */
     MULTITON_INSTANCES: 4,
 
-    activeClientPlayer: null,
-
     /**
      * Number of maximum units per player.
+     *
+     * @constant
      */
     MAX_UNITS: 50,
+
+    activeClientPlayer: null,
 
     $onSaveGame: function (data) {
 

@@ -3,37 +3,58 @@ cwt.Audio = {
   /**
    * Storage parameter for sfx volume.
    */
-  SFX_STORAGE_PARAMETER: "volume_sfx",
+  SFX_VOLUME_KEY: "cfg_sfx_volume",
 
   /**
    * Storage parameter for music volume.
    */
-  MUSIC_STORAGE_PARAMETER: "music_sfx",
+  MUSIC_VOLUME_KEY: "cfg_music_volume",
+
+  /**
+   *
+   */
+  SFX_KEY: "SFX_",
+
+  /**
+   *
+   */
+  MUSIC_KEY: "MUSIC_",
 
   /**
    * WebAudio context object.
+   *
+   * @private
    */
   context_: null,
 
   /**
    * Music audio node.
+   *
+   * @private
    */
   gainNode_music_: null,
 
   /**
    * SFX audio node.
+   *
+   * @private
    */
   gainNode_sfx_: null,
 
   /**
    * Cache for audio buffers.
+   *
+   * @private
    */
   buffer_: {},
 
   /**
    * Current played music object.
+   *
+   * @private
    */
   currentMusic_: {
+    inLoadProcess: false,
     connector: null,
     id: null
   },
@@ -41,7 +62,7 @@ cwt.Audio = {
   /**
    * Initializes the audio context.
    */
-  initialize: function (p, b) {
+  initialize: function () {
 
     // if audio sfx and music is deactivated then do not initialize the audio context
     if (cwt.ClientFeatures.audioSFX || cwt.ClientFeatures.audioMusic) {
@@ -136,13 +157,13 @@ cwt.Audio = {
 
     // sfx volume
     cwt.Storage.generalStorage.set(
-      this.SFX_STORAGE_PARAMETER,
+      this.SFX_VOLUME_KEY,
       this.gainNode_sfx_.gain.value,
 
       // music volume
       function () {
         cwt.Storage.generalStorage.set(
-          this.MUSIC_STORAGE_PARAMETER,
+          this.MUSIC_VOLUME_KEY,
           this.gainNode_music_.gain.value,
 
           // callback
@@ -167,13 +188,13 @@ cwt.Audio = {
     }
 
     // sfx config
-    cwt.Storage.generalStorage.get(this.SFX_STORAGE_PARAMETER, function (obj) {
+    cwt.Storage.generalStorage.get(this.SFX_VOLUME_KEY, function (obj) {
       if (obj) {
         this.gainNode_sfx_.gain.value = obj.value;
       }
 
       // music config
-      cwt.Storage.generalStorage.get(this.MUSIC_STORAGE_PARAMETER, function (obj) {
+      cwt.Storage.generalStorage.get(this.MUSIC_VOLUME_KEY, function (obj) {
         if (obj) {
           this.gainNode_music_.gain.value = obj.value;
         }
@@ -231,14 +252,7 @@ cwt.Audio = {
     source.noteOn(0);
   },
 
-  /**
-   * Plays a sound effect.
-   */
-  playSound: function (id, loop, isMusic) {
-    if (!this.context_) return;
-    if (!this.buffer_[id]) return; // not buffered, just ignore it
-
-    var gainNode = (isMusic) ? this.gainNode_music_ : this.gainNode_sfx_;
+  playSoundOnNode_: function (gainNode, buffer, loop) {
     var source = this.context_.createBufferSource();
 
     // is loop enabled ?
@@ -246,7 +260,7 @@ cwt.Audio = {
       source.loop = true;
     }
 
-    source.buffer = this.buffer_[id];
+    source.buffer = buffer;
     source.connect(gainNode);
     source.noteOn(0);
 
@@ -254,26 +268,68 @@ cwt.Audio = {
   },
 
   /**
+   * Plays a sound.
+   *
+   * @param {string} id id of the sound that will be played
+   * @param {boolean=} loop (default:false)
+   * @return {*}
+   */
+  playSound: function (id, loop) {
+    if (!this.context_) return null;
+    if (cwt.DEBUG) cwt.assert(this.buffer_[id]);
+
+    return this.playSoundOnNode_(this.gainNode_sfx_, this.buffer_[id], loop);
+  },
+
+  /**
+   *
+   * @param obj
+   * @private
+   */
+  musicLoaderCallback_: function (obj) {
+    if (cwt.DEBUG) cwt.assert(obj.value);
+
+    this.currentMusic_.connector = this.playSoundOnNode_(
+      this.gainNode_music_,
+      Base64Helper.decodeBuffer(obj.value),
+      true
+    );
+
+    // release loading lock
+    this.currentMusic_.inLoadProcess = false;
+  },
+
+  /**
    * Plays a background music.
+   *
+   * @param id id of the music object
    */
   playMusic: function (id) {
-    if (!this.context_) return;
+    if (!this.context_ || this.currentMusic_.inLoadProcess) return false;
 
     // already playing this music ?
-    if (this.currentMusic_.id === id) return;
+    if (this.currentMusic_.id === id) {
+      return;
+    }
 
-    this.stopMusic();
+    // stop old music
+    if (this.currentMusic_.connector) {
+      this.stopMusic();
+    }
 
     // set meta data
-    this.currentMusic_.connector = this.playSound(id, true, true);
+    this.currentMusic_.inLoadProcess = true;
     this.currentMusic_.id = id;
+    cwt.Storage.generalStorage.get(this.MUSIC_KEY + id, this.musicLoaderCallback_);
+
+    return true;
   },
 
   /**
    * Stop existing background music.
    */
   stopMusic: function () {
-    if (!this.context_) return;
+    if (!this.context_ || this.currentMusic_.inLoadProcess) return false;
 
     // disable current music
     if (this.currentMusic_) {
@@ -284,110 +340,154 @@ cwt.Audio = {
     // remove meta data
     this.currentMusic_.connector = null;
     this.currentMusic_.id = null;
+    this.currentMusic_.inLoadProcess = false;
+
+    return true;
   },
 
-
-  playLoadedMusic_: function (_, id) {
-    controller.audio_playMusic(id);
-    if (view.hasInfoMessage()) view.message_closePanel(1000);
+  /**
+   *
+   * @private
+   */
+  removeGrabbers_: function () {
+    delete cwt.Audio.removeGrabbers_;
+    delete cwt.Audio.grabFromCache;
+    delete cwt.Audio.grabFromRemote;
   },
 
-  storeAudio_: function (obj) {
-    var audioData = Base64Helper.decodeBuffer(obj.value);
-    controller.audio_loadByArrayBuffer(
-      obj.key,
-      audioData,
-      this.playLoadedMusic_
-    );
-  },
+  /**
+   *
+   * @param {Function} callback
+   */
+  grabFromCache: function (callback) {
+    this.removeGrabbers_(); // remove initializer functions
+    if (!this.context_) return; // don't load audio when disabled
 
-  loadAudio: function (path, loadIt, callback) {
-    if (cwt.Audio.isBuffered(path)) {
-      return;
+    var stuff = [];
+
+    function loadKey(key) {
+      stuff.push(function (next) {
+        cwt.Storage.generalStorage.get(key, function (obj) {
+          if (cwt.DEBUG) cwt.assert(obj.value);
+
+          var realKey = obj.key.slice(cwt.Audio.SFX_KEY.length);
+          var buffer = Base64Helper.decodeBuffer(obj.value);
+          cwt.Audio.registerAudioBuffer(realKey, buffer);
+
+          next();
+        });
+      });
     }
 
-    controller.storage_assets.get(path, function (obj) {
-      if (obj) {
-
-        // in the cache
-        if (loadIt) {
-          controller.storage_assets.get(path, function (obj) {
-            cwt.assert(obj.value);
-
-            var audioData = Base64Helper.decodeBuffer(obj.value);
-            controller.audio_loadByArrayBuffer(path, audioData, function () {
-              callback();
-            });
-          });
-        } else {
-          callback();
+    // load all possible audio (except music) keys from the storage into the RAM
+    cwt.Storage.generalStorage.keys(function (keys) {
+      for (var i = 0, e = keys.length; i < e; i++) {
+        var key = keys[i];
+        if (key.indexOf(cwt.Audio.SFX_KEY) === 0) {
+          loadKey(key);
         }
-
-      } else {
-
-        // not in the cache
-        var request = new XMLHttpRequest();
-
-        request.open("GET", path, true);
-        request.responseType = "arraybuffer";
-
-        request.onload = function () {
-          if (this.status === 404) {
-            throw Error("could not find sound file " + path );
-          }
-
-          var audioData = request.response;
-          var stringData = Base64Helper.encodeBuffer(audioData);
-
-          controller.storage_assets.set(path, stringData, function () {
-            if (loadIt) {
-              cwt.Audio.loadByArrayBuffer(path, audioData, function () {
-                callback();
-              });
-            } else {
-              callback();
-            }
-          });
-        };
-
-        request.send();
       }
+    });
+
+    callAsSequence(stuff, function (){
+      delete cwt.Sounds;
+      delete cwt.Musics;
+      callback();
     });
   },
 
   /**
-   * Loads a sound into the audio system
+   *
+   * @param {Function} callback
    */
-  loadByArrayBuffer: function (id, audioData, callback) {
-    cwt.assert(util.isString(id));
+  grabFromRemote: function (callback) {
+    this.removeGrabbers_(); // remove initializer functions
+    if (!this.context_) return; // don't load audio when disabled
 
-    if (this.DEBUG) util.log("decode audio aw2 of", id);
+    var stuff = [];
 
-    controller.audio_grabContext().decodeAudioData(audioData,
+    /**
+     *
+     * @inner
+     * @param id
+     * @param audioData
+     * @param callback
+     */
+    var loadBuffer = function (id, audioData, callback) {
+      cwt.Audio.context_.decodeAudioData(
 
-      // success handling
-      function (buffer) {
-        controller.audio_registerAudioBuffer(id, buffer);
-        if (callback) callback(true, id);
-      },
+        // buffer data
+        audioData,
 
-      // error handling
-      function (e) {
-        if (callback) callback(false, id);
-      }
-    );
-  },
+        // success handling
+        function (buffer) {
+          cwt.Audio.registerAudioBuffer(id, buffer);
+          if (callback) {
+            callback();
+          }
+        },
 
-  playCoMusic: function (id) {
-    if (!id) {
-      if (view.hasInfoMessage()) view.message_closePanel(1000);
-      return;
+        // error handling
+        function (e) {
+          cwt.Error(e, "ERR_AUDIO_BUFFER_LOAD");
+        }
+      );
+    };
+
+    /**
+     *
+     * @inner
+     * @param key
+     * @param path
+     * @param saveKey
+     * @param loadIt
+     * @param callback
+     */
+    var loadFile = function (key, path, saveKey, loadIt, callback) {
+      var request = new XMLHttpRequest();
+
+      request.open("GET", path, true);
+      request.responseType = "arraybuffer";
+
+      request.onload = function () {
+        cwt.assert(this.status !== 404);
+        cwt.Storage.generalStorage.set(saveKey,
+          Base64Helper.encodeBuffer(request.response),
+          function () {
+            if (loadIt) {
+              loadBuffer(path, request.response, callback);
+            } else {
+              callback();
+            }
+          }
+        );
+      };
+
+      request.send();
+    };
+
+    // only load music when supported
+    if (cwt.ClientFeatures.audioMusic) {
+      Object.keys(cwt.Musics).forEach(function (key) {
+        stuff.push(function (next) {
+          loadFile(key, cwt.Musics[key], cwt.Audio.MUSIC_KEY + key, false, next);
+        })
+      });
     }
 
-    if (!this.isBuffered(id)) {
-      this.loadAudio_(id);
-    } else {
-      this.playLoadedMusic_(false, id);
+    // only load sfx audio when supported
+    if (cwt.ClientFeatures.audioSFX) {
+      Object.keys(cwt.Sounds).forEach(function (key) {
+        stuff.push(function (next) {
+          loadFile(key, cwt.Sounds[key], cwt.Audio.SFX_KEY + key, true, next);
+        })
+      });
     }
+
+    callAsSequence(stuff, function (){
+      delete cwt.Sounds;
+      delete cwt.Musics;
+      callback();
+    });
   }
 };

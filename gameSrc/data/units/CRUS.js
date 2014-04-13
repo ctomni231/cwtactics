@@ -27,11 +27,6 @@ cwt.UnitSheet.registerSheet({
   },
   "maxloads": 2,
   "canload": [
-      "AIR"
-    ],
-  "assets": {
-    "gfx": "cwt_anim/units/CWT_CRUS.png",
-    "pri_att_sound": "mg.wav",
-    "sec_att_sound": "mg.wav"
-  }
+    "AIR"
+  ]
 });

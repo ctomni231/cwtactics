@@ -8,6 +8,7 @@ cwt.UnitSheet.registerSheet({
   "ammo": 6,
   "dailyFuelDrain": 5,
   "dailyFuelDrainHidden": 8,
+  "stealth": true,
   "attack": {
     "main_wp": {
       "INFT": 90,
@@ -37,11 +38,5 @@ cwt.UnitSheet.registerSheet({
       "LNDR": 65,
       "BLBT": 65
     }
-  },
-  "stealth": true,
-  "assets": {
-    "gfx": "cwt_anim/units/CWT_STLH.png",
-    "pri_att_sound": "mg.wav",
-    "sec_att_sound": "mg.wav"
   }
 });

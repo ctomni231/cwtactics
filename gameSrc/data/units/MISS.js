@@ -17,9 +17,5 @@ cwt.UnitSheet.registerSheet({
     },
     "minrange": 3,
     "maxrange": 5
-  },
-  "assets": {
-    "gfx": "cwt_anim/units/CWT_MISS.png",
-    "pri_att_sound": "mg.wav"
   }
 });

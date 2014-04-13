@@ -24,8 +24,8 @@ cwt.Map = {
    */
   data: (function () {
     var data = cwt.matrix(MAX_MAP_WIDTH, MAX_MAP_HEIGHT);
-    for (var x = 0, xe = cwt.Map.map_width; x < xe; x++) {
-      for (var y = 0, ye = cwt.Map.map_height; y < ye; y++) {
+    for (var x = 0, xe = cwt.Map.width; x < xe; x++) {
+      for (var y = 0, ye = cwt.Map.height; y < ye; y++) {
         data[x][y] = new cwt.Tile();
       }
     }

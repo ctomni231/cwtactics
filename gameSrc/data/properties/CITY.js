@@ -17,8 +17,5 @@ cwt.PropertySheet.registerSheet({
     "TIRE_A":2,
     "TIRE_B":2,
     "TANK":2
-  },
-  "assets":{
-    "gfx":"cwt_anim/properties/CWT_CITY.png"
   }
 });

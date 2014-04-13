@@ -15,8 +15,5 @@ cwt.PropertySheet.registerSheet({
   "builds": [
     "SHIP",
     "WATER_TRANSPORT"
-  ],
-  "assets":{
-    "gfx":"cwt_anim/properties/CWT_PORT(SBR).png"
-  }
+  ]
 });

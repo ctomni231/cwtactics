@@ -45,10 +45,5 @@ cwt.UnitSheet.registerSheet({
       "BCTR": 10,
       "TCTR": 40
     }
-  },
-  "assets": {
-    "gfx": "cwt_anim/units/CWT_TANK.png",
-    "pri_att_sound": "tnk_cannon_small.wav",
-    "sec_att_sound": "mg.wav"
   }
 });

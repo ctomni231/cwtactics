@@ -86,11 +86,10 @@ cwt.Action = my.Class({
      * Builds several commands from collected action data.
      */
     buildFromData: function (scope) {
+      if (!scope) {
+        scope = cwt.FlowData;
+      }
 
-
-
-
-      if (!scope) scope = controller.stateMachine.data;
       var targetDto = scope.target;
       var sourceDto = scope.source;
       var actionDto = scope.action;

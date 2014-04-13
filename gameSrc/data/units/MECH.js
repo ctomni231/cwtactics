@@ -40,10 +40,5 @@ cwt.UnitSheet.registerSheet({
       "BCTR": 9,
       "TCTR": 35
     }
-  },
-  "assets": {
-    "gfx": "cwt_anim/units/CWT_MECH.png",
-    "pri_att_sound": "rocket.wav",
-    "sec_att_sound": "mg.wav"
   }
 });

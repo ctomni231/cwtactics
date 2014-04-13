@@ -2,7 +2,8 @@ cwt.UnitSheet.registerSheet({
   "ID": "BCTR",
   "cost": 9000,
   "range": 6,
-  "movetype": "AIR",
+  "movetype": "COPTER",
+  "copter":true,
   "dailyFuelDrain": 2,
   "vision": 3,
   "fuel": 99,
@@ -46,11 +47,5 @@ cwt.UnitSheet.registerSheet({
       "BCTR": 65,
       "TCTR": 95
     }
-  },
-  "assets": {
-    "simpleAnimated": true,
-    "gfx": "cwt_anim/units/CWT_BCTR.png",
-    "pri_att_sound": "rocket.wav",
-    "sec_att_sound": "mg.wav"
   }
 });

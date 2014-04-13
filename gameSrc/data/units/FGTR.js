@@ -16,10 +16,5 @@ cwt.UnitSheet.registerSheet({
       "TCTR": 120,
       "BKBM": 120
     }
-  },
-  "assets": {
-    "gfx": "cwt_anim/units/CWT_FGTR.png",
-    "pri_att_sound": "mg.wav",
-    "sec_att_sound": "mg.wav"
   }
 });

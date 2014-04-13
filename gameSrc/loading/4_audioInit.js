@@ -3,5 +3,10 @@
  */
 cwt.Loading.create(function (next) {
   cwt.Audio.initialize();
-  cwt.Audio.loadConfigs(next);
+
+  if (cwt.Loading.hasCachedData) {
+    cwt.Audio.loadConfigs(next);
+  } else {
+    next();
+  }
 });

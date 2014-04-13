@@ -26,6 +26,11 @@ cwt.Tile = my.Class( /** @lends cwt.Tile.property */ {
     /**
      * @type {number}
      */
+    this.variant = 0;
+
+    /**
+     * @type {number}
+     */
     this.visionClient = 0;
   },
 

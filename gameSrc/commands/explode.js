@@ -5,7 +5,7 @@ cwt.Player.unitAction({
   relation: [
     "S","T",
     cwt.Relationship.RELATION_NONE,
-    cwt.Relationship.RELATION_SAMETHING
+    cwt.Relationship.RELATION_SAME_THING
   ],
 
   condition: function( data ){

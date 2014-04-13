@@ -7,9 +7,5 @@ cwt.PropertySheet.registerSheet({
     "range":2,
     "damage":3
   },
-  "changeTo":"SILO_EMPTY",
-  "assets":{
-    "fireSound":"rocketImpact.mp3",
-    "gfx":"cwt_anim/properties/CWT_SILO.png"
-  }
+  "changeTo":"SILO_EMPTY"
 });

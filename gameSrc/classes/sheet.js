@@ -49,6 +49,8 @@ cwt.SheetDatabase = my.Class({
      */
     this.types = [];
 
-    if( impl.afterConstruct ) impl.afterConstruct( this );
+    if( impl.afterConstruct ) {
+      impl.afterConstruct( this );
+    }
   }
 });

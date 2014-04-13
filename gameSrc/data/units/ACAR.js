@@ -10,8 +10,8 @@ cwt.UnitSheet.registerSheet({
   "maxloads": 2,
   "suppliesloads": true,
   "canload": [
-      "AIR"
-    ],
+    "AIR"
+  ],
   "attack": {
     "main_wp": {
       "FGTR": 100,
@@ -23,9 +23,5 @@ cwt.UnitSheet.registerSheet({
     },
     "minrange": 3,
     "maxrange": 8
-  },
-  "assets": {
-    "gfx": "cwt_anim/units/CWT_ACAR.png",
-    "pri_att_sound": "mg.wav"
   }
 });

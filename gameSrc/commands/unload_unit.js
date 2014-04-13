@@ -4,7 +4,7 @@ cwt.Action.unitAction({
 
   relation:[
     "S","T",
-    cwt.Relationship.RELATION_SAMETHING,
+    cwt.Relationship.RELATION_SAME_THING,
     cwt.Relationship.RELATION_NONE
   ],
 
