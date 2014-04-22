@@ -21,8 +21,8 @@ PAGE_PROG.registerSection({
     if( localStorage.issueEndDate === undefined || moment().isAfter(localStorage.issueEndDate) ){
       
       // NEXT MILESTONE
-      var NEXT_VERSION        = 15;
-      var NEXT_VERSION_HEADER = "Version 0.3.6";
+      var NEXT_VERSION        = 6;
+      var NEXT_VERSION_HEADER = "Version 0.4";
       
       var url = "https://api.github.com/repos/ctomni231/cwtactics/issues?"+
                 "milestone="+NEXT_VERSION+
