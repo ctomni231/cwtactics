@@ -34,7 +34,8 @@ PAGE_PROG.registerSection({
             var item = items[i];
             data.news.push({
               title: item.title,
-              date : item.published
+              date : item.published,
+              url  : item.url
             });
           }
           
@@ -56,8 +57,8 @@ PAGE_PROG.registerSection({
       "<div class=\"newsDate\">",
         "{{date}}",
       "</div >",
-      "<div class=\"newsTitle pure-u-3-4\" >",
-        "{{title}}",
+      "<div class=\"newsTitle pure-u-3-4\" ><a target='_blank' href='{{url}}' title='Goto Blog'>",
+        "{{title}}</a>",
       "</div>",
     "{{/news}}"
   ].join(""),
