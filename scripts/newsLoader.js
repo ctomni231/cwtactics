@@ -35,7 +35,7 @@ PAGE_PROG.registerSection({
             data.news.push({
               title: item.title,
               date : item.published,
-              url  : item.url
+              burl : item.url
             });
           }
           
@@ -57,7 +57,7 @@ PAGE_PROG.registerSection({
       "<div class=\"newsDate\">",
         "{{date}}",
       "</div >",
-      "<div class=\"newsTitle pure-u-3-4\" ><a target='_blank' href='{{url}}' title='Goto Blog'>",
+      "<div class=\"newsTitle pure-u-3-4\" ><a target='_blank' href='{{burl}}' title='Goto Blog'>",
         "{{title}}</a>",
       "</div>",
     "{{/news}}"
