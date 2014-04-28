@@ -1,4 +1,8 @@
 cwt.Loading.create(function (nextLoadingStep) {
+  if (cwt.DEBUG) {
+    console.log("checking start parameters");
+  }
+
   callAsSequence([
 
     // wipe out storage
@@ -10,8 +14,8 @@ cwt.Loading.create(function (nextLoadingStep) {
         }
 
         if (wipeOut) {
-          if (this.DEBUG) {
-            cwt.log("wipe out cached data");
+          if (cwt.DEBUG) {
+            console.log("wipe out cached data");
           }
 
           cwt.Storage.wipeOutAll(function () {
@@ -25,7 +29,7 @@ cwt.Loading.create(function (nextLoadingStep) {
 
     // force touch
     function (next) {
-      controller.storage_general.get(cwt.Options.PARAM_FORCE_TOUCH,function( obj ){
+      cwt.Storage.generalStorage.get(cwt.Options.PARAM_FORCE_TOUCH,function( obj ){
         var  doIt = (obj && obj.value === true);
         if( !doIt ) doIt = getQueryParams(document.location.search).cwt_forceTouch === "1";
 

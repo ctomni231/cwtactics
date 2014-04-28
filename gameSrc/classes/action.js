@@ -25,13 +25,20 @@ cwt.Action = my.Class({
      * @constant
      */
     PROPERTY_ACTION: 2,
-    
+
     /**
      * Engine actions are callable by the engine itself.
      *
      * @constant
      */
     ENGINE_ACTION: 3,
+
+    /**
+     *
+     *
+     * @constant
+     */
+    CLIENT_ACTION: 4,
 
     /**
      * Holds all actions
@@ -70,6 +77,15 @@ cwt.Action = my.Class({
      */
     mapAction: function (impl) {
       impl.type = cwt.Action.MAP_ACTION;
+      this.registerAction_(impl.key,impl);
+    },
+
+    /**
+     *
+     * @param impl
+     */
+    clientAction: function (impl) {
+      impl.type = cwt.Action.CLIENT_ACTION;
       this.registerAction_(impl.key,impl);
     },
 

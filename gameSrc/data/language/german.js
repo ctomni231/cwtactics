@@ -186,17 +186,19 @@ cwt.Localization.registerLang({
   "error.panel.no": "Nein",
   "error.panel.yes": "Ja",
 
-  "tooltips": [
-    "Change the keyboard and gamepad settings by selecting Options from the main or in-game menu",
-    "Activate zooming the map by using the scroll wheel for the mouse, pinching for touch screen, and the in-game menu.",
-    "Press and hold Cancel over an idle unit to see its attack range.",
-    "Perform Cancel by right-clicking with mouse, or double-tapping for touch screen.",
-    "Keyboard and game-pad controls can be changed via the Options Menu.",
-    "Perform Action by lieft-clicking with the mouse, or tapping the touch screen.",
-    "Reporting bugs to the developers can be done through the Mailing List<br/>(http://groups.google.com/group/cwtactics)<br/><br/>or the forums<br/>(http://forums.customwars.com/).",
-    "Custom Wars Tactics concept started in January 2009. The original name for the project was called 'Tactic Wars'.",
-    "Custom Wars Tactics is playable from PC and also from mobile devices.",
-    "Custom Wars Tactics can be played offline in your browser. (As long you aren't in private browsing mode.)",
-    "A full desktop counterpart for Custom Wars Tactics is being developed. Stay tuned!"
-  ]
+  "MAIN_MENU_OPTIONS" : "Optionen",
+  "MAIN_MENU_NETWORK" : "Netzwerkspiel",
+  "MAIN_MENU_SKIRMISH" : "Einzelspiel",
+
+  "TOOLTIP_1": "Change the keyboard and gamepad settings by selecting Options from the main or in-game menu",
+  "TOOLTIP_2": "Activate zooming the map by using the scroll wheel for the mouse, pinching for touch screen, and the in-game menu.",
+  "TOOLTIP_3": "Press and hold Cancel over an idle unit to see its attack range.",
+  "TOOLTIP_4": "Perform Cancel by right-clicking with mouse, or double-tapping for touch screen.",
+  "TOOLTIP_5": "Keyboard and game-pad controls can be changed via the Options Menu.",
+  "TOOLTIP_6": "Perform Action by lieft-clicking with the mouse, or tapping the touch screen.",
+  "TOOLTIP_7": "Reporting bugs to the developers can be done through the Mailing List or the forum.",
+  "TOOLTIP_8": "Custom Wars Tactics concept started in January 2009. The original name for the project was called 'Tactic Wars'.",
+  "TOOLTIP_9": "Custom Wars Tactics is playable from PC and also from mobile devices.",
+  "TOOLTIP_10": "Custom Wars Tactics can be played offline in your browser. (As long you aren't in private browsing mode.)",
+  "TOOLTIP_11": "A full desktop counterpart for Custom Wars Tactics is being developed. Stay tuned!"
 });

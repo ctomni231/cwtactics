@@ -2,86 +2,54 @@ cwt.Gameflow.addState({
   id:"OPTIONS",
 
   init: function () {
-    this.buttons = [
-      "SFX_VOL_LEFT",
-      "SFX_VOL_RIGHT",
-      "MUSIC_VOL_LEFT",
-      "MUSIC_VOL_RIGHT",
-      "CHECKBOX_ANIMATED_TILES",
-      "CHECKBOX_FORCE_TOUCH",
-      "CHANGE_KEYBOARD_LAYOUT",
-      "CHANGE_GAME_PAD_LAYOUT",
-      "WIPE_OUT_DATA",
-      "GO_BACK"
-    ];
+    this.buttons = new cwt.ButtonGroup(10,11);
 
-    this.doAction = function () {
-      switch (this.buttons[this.index]) {
+    this.buttons.addButton(1,1,1,1,"OPTIONS_SFX_VOL_DOWN",8);
+    this.buttons.addButton(2,1,6,1,"OPTIONS_SFX_VOL",8);
+    this.buttons.addButton(8,1,1,1,"OPTIONS_SFX_VOL_UP",8);
 
-        // ----------------------------------------
+    this.buttons.addButton(1,2,1,1,"OPTIONS_MUSIC_VOL_DOWN",8);
+    this.buttons.addButton(2,2,6,1,"OPTIONS_MUSIC_VOL",8);
+    this.buttons.addButton(8,2,1,1,"OPTIONS_MUSIC_VOL_UP",8);
 
-        case "WIPE_OUT_DATA":
-          cwt.Storage.wipeOutAll(function () {
-            document.location.reload();
-          });
-          break;
+    this.buttons.addButton(1,4,1,1,"OPTIONS_CHECKBOX_ANIMATED_TILES",8);
+    this.buttons.addButton(2,4,7,1,"OPTIONS_CHECKBOX_ANIMATED_TILES_TEXT",8);
 
-        // ----------------------------------------
-      }
+    this.buttons.addButton(1,5,1,1,"OPTIONS_CHECKBOX_FORCE_TOUCH",8);
+    this.buttons.addButton(2,5,7,1,"OPTIONS_CHECKBOX_FORCE_TOUCH_TEXT",8);
 
-      return null;
-    };
+
+    this.buttons.addButton(1,7,4,1,"OPTIONS_MENU_CHANGE_KEYBOARD_LAYOUT",8);
+    this.buttons.addButton(5,7,4,1,"OPTIONS_MENU_CHANGE_GAMEPAD_LAYOUT",8);
+
+    this.buttons.addButton(1,9,3,1,"OPTIONS_MENU_WIPE_OUT",8);
+    this.buttons.addButton(6,9,3,1,"OPTIONS_MENU_GO_BACK",8);
   },
 
   enter: function () {
-    this.index = 0;
+    cwt.Screen.layerUI.clear();
+    this.rendered = false;
   },
 
   update: function (delta, lastInput) {
-
-    // last used input
     if (lastInput) {
       switch (lastInput.key) {
-
-        // ----------------------------------------
-
-        case cwt.Input.TYPE_DOWN:
-          this.rendered = false;
-          this.index++;
-          if (this.index === this.buttons.length) {
-            this.index = 0;
-          }
-          break;
-
-        case cwt.Input.TYPE_UP:
-          this.rendered = false;
-          this.index--;
-          if (this.index < 0) {
-            this.index = this.buttons.length-1;
-          }
-          break;
-
-        case cwt.Input.TYPE_ACTION:
-          var result = this.doAction();
-          if (result) return result;
-          break;
-
-        case cwt.Input.TYPE_CANCEL:
-          return "MAIN_MENU";
-
-        // ----------------------------------------
       }
     }
   },
 
   render: function (delta) {
-
+    if (!this.rendered) {
+      var ctx = cwt.Screen.layerUI.getContext();
+      this.buttons.draw(ctx);
+      this.rendered = true;
+    }
   }
 });
 
 
+/*
 util.scoped(function(){
-     /*
   function wipeComplete(){
     document.location.reload();
   }
@@ -182,5 +150,5 @@ util.scoped(function(){
     controller.audio_saveConfigs();
     return (sourceState)? "GAMEROUND" : "MAIN";
   };
-     */
 });
+      */

@@ -32,24 +32,32 @@ cwt.Gameflow = {
    * @param desc
    */
   addState: function (desc) {
-    if (this.DEBUG) cwt.assert(!this.states_.hasOwnProperty(desc.id));
+    if (cwt.DEBUG) cwt.assert(!this.states_.hasOwnProperty(desc.id));
 
-    this.states_[desc.id] = new cwt.GameState(
-      desc.init ? desc.init : cwt.emptyFunction,
-      desc.exit ? desc.exit : cwt.emptyFunction,
+    var state = new cwt.GameState(
       desc.enter ? desc.enter : cwt.emptyFunction,
+      desc.exit ? desc.exit : cwt.emptyFunction,
       desc.update ? desc.update : cwt.emptyFunction,
       desc.render ? desc.render : cwt.emptyFunction,
       this.data
     );
+
+    if (desc.init) {
+      desc.init.apply(state);
+    }
+
+    this.states_[desc.id] = state;
   },
 
   /**
    * Initializes the game state machine.
    */
   initialize: function () {
-    var oldTime = new Date().getTime();
+    if (cwt.DEBUG) {
+      console.log("starting game state machine");
+    }
 
+    var oldTime = new Date().getTime();
     function gameLoop() {
 
       // acquire next frame
@@ -103,6 +111,9 @@ cwt.Gameflow = {
        */
     }
 
+    // set start state
+    this.setState("NONE",false);
+
     // enter the loop
     requestAnimationFrame(gameLoop);
   },
@@ -115,7 +126,9 @@ cwt.Gameflow = {
     if (this.activeState) {
 
       // exit old state
-      this.activeState.exit();
+      if (this.activeState.exit) {
+        this.activeState.exit();
+      }
     }
 
     // enter new state
@@ -127,7 +140,11 @@ cwt.Gameflow = {
    * @param stateId
    */
   setState: function (stateId, fireEvent) {
-    if (this.DEBUG) cwt.assert(this.states_.hasOwnProperty(stateId));
+    if (cwt.DEBUG) cwt.assert(this.states_.hasOwnProperty(stateId));
+
+    if (cwt.DEBUG) {
+      console.log("set active state to "+stateId+((fireEvent)? " with firing enter event": ""));
+    }
 
     this.activeState = this.states_[stateId];
 
@@ -141,9 +158,19 @@ cwt.Gameflow = {
    * @param delta
    */
   update: function (delta) {
+
+    // animation layout
+    cwt.Screen.renderCycle(delta);
+
+    // state update
     var inp = cwt.Input.popAction();
     this.activeState.update(delta, inp);
     this.activeState.render(delta);
+
+    // release input data object
+    if (inp) {
+      cwt.Input.pool.push(inp);
+    }
   }
 };
 

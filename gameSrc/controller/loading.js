@@ -27,29 +27,43 @@ cwt.Loading = {
    *
    * @param {Function} callback
    */
-  startProcess: function (callback) {
-    // 1. check first run or not
-    cwt.Storage.generalStorage.get("cwt_hasCache",function (obj) {
-      if (obj.value) {
-        cwt.Loading.hasCachedData = true;
+  startProcess: function (loadingBar, callback) {
+    if (cwt.DEBUG) {
+      console.log("start loading process");
+    }
+
+    function setProgress(bar,i) {
+      return function (next) {
+        bar.setPercentage(i);
+        next();
       }
+    }
 
-      // 2. invoke loaders
-      callAsSequence(this.loaders_, function () {
+    cwt.Loading.hasCachedData = localStorage.getItem("cwt_hasCache");
 
-        // remove functions that never be called again
-        delete this.loaders_;
-        delete this.create;
-        delete this.startProcess;
+    var loaders = [];
+    var step = parseInt(100/this.loaders_.length);
+    for (var i = 0, e=this.loaders_.length; i<e; i++ ){
+      loaders.push(this.loaders_[i]);
+      loaders.push(setProgress(loadingBar,(i+1)*step));
+    }
 
-        // place marker
-        this.initialized = true;
+    callAsSequence(loaders, function () {
 
-        // invoke callback if given
-        if (callback) {
-          callback();
-        }
-      });
+      // remove functions that never be called again
+      delete this.loaders_;
+      delete this.create;
+      delete this.startProcess;
+
+      // place marker
+      this.initialized = true;
+
+      // invoke callback if given
+      if (callback) {
+        localStorage.setItem("cwt_hasCache",true);
+
+        callback();
+      }
     });
   }
 };

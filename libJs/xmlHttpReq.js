@@ -14,7 +14,7 @@
     if (this.readyState == 4) {
       // FINE
       if (this.readyState == 4 && this.status == 200) {
-        util.log("grabbed file successfully");
+        console.log("grabbed file successfully");
 
         // JSON OBJECT
         if (this.asJSON) {
@@ -35,16 +35,16 @@
       }
       // ERROR
       else {
-        util.log("could not grab file");
+        console.log("could not grab file");
         this.failCallback(this.statusText);
       }
     }
   }
 
-  cwt.grabRemoteFile = function (options) {
+  window.grabRemoteFile = function (options) {
     var oReq;
 
-    util.log("try to grab file", options.path);
+    console.log("try to grab file "+options.path);
 
     // GENERATE REQUEST OBJECT
     if (xmlHttpReq) oReq = new XMLHttpRequest();

@@ -3,25 +3,63 @@
  *
  * @namespace
  */
-var cwt = {
+window.cwt = {
 
-  MOD_PATH: "localhost:8000/",
+  // MOD_PATH: "http://localhost:8000/",
+  MOD_PATH: "http://192.168.1.30:8000/",
+
+  /**
+   * Tile size base.
+   *
+   * @constant
+   */
+  TILE_BASE: 16,
+
+  /**
+   * Number of tiles in a row in the screen.
+   *
+   * @constant
+   */
+  MAX_TILES_W: 20,
+
+  /**
+   * Number of tiles in a column in the screen.
+   *
+   * @constant
+   */
+  MAX_TILES_H: 15,
 
   /**
    * Represents a numeric code which means no data.
+   *
+   * @constant
    */
   INACTIVE: -1,
 
+  /** @constant */
   NOT_AVAILABLE: -2,
 
   /**
    * Determines the debug mode.
    */
-  DEBUG: false,
+  DEBUG: true,
 
-  /**
-   * @constant
-   */
+  /** @constant */
+  SCREEN_WIDTH: 32,
+
+  /** @constant */
+  SCREEN_HEIGHT: 24,
+
+  /** @constant */
+  MAX_MAP_WIDTH: 60,
+
+  /** @constant */
+  MAX_MAP_HEIGHT: 40,
+
+  /** @constant */
+  MAX_MOVE_LENGTH: 15,
+
+  /** @constant */
   DEV_NO_CACHE: true,
 
   emptyFunction: function () {
@@ -29,7 +67,7 @@ var cwt = {
 
   createModuleCaller: function (eventName) {
     return function () {
-      for (prop in cwt) {
+      for (var prop in cwt) {
         var module = cwt[prop];
         if (module[eventName]) {
           module[eventName].apply(module,arguments);
@@ -52,13 +90,15 @@ var cwt = {
       }
 
       // raise error
-      throw new Error(msgA);
+      throw msgA;
     }
   }
 };
 
 /* Registers generic error listener. */
-window.onerror = function (e) {
-  cwt.Error("Critical Game Fault","ERR_UNKNOWN");
-  console.error(e);
+window.onerror = function (e, file, line, column, errorObj) {
+  if (cwt.Error) {
+   // cwt.Error("Critical Game Fault","ERR_UNKNOWN");
+  }
+  console.error(e,(arguments.length > 0)? file+" line:"+line : null);
 };

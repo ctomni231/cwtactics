@@ -1,33 +1,33 @@
 cwt.Graphics = {
 
   COLOR_MAP: [
-    "BuildingBaseColors.png",
-    "UnitBaseColors.png"
+    "image/BuildingBaseColors.png",
+    "image/UnitBaseColors.png"
   ],
 
   UNITS: {
-    WRTK: "cwt_anim/units/CWT_WRTK.png",
-    TNTK: "cwt_anim/units/CWT_TANK.png",
-    TCTR: "cwt_anim/units/CWT_TCTR.png",
-    SUBM: "cwt_anim/units/CWT_SUBM.png",
-    RCKT: "cwt_anim/units/CWT_RCKT.png",
-    RECN: "cwt_anim/units/CWT_RECN.png",
-    STLH: "cwt_anim/units/CWT_STLH.png",
-    INFT: "cwt_anim/units/CWT_INFT.png",
-    LNDR: "cwt_anim/units/CWT_LNDR.png",
-    MDTK: "cwt_anim/units/CWT_MDTK.png",
-    MECH: "cwt_anim/units/CWT_MECH.png",
-    MISS: "cwt_anim/units/CWT_MISS.png",
-    NTNK: "cwt_anim/units/CWT_NTNK.png",
-    FGTR: "cwt_anim/units/CWT_FGTR.png",
-    CRUS: "cwt_anim/units/CWT_CRUS.png",
-    BSHP: "cwt_anim/units/CWT_BSHP.png",
-    BMBR: "cwt_anim/units/CWT_BMBR.png",
-    BKBT: "cwt_anim/units/CWT_BKBT.png",
-    BKBM: "cwt_anim/units/CWT_BKBM.png",
-    BCTR: "cwt_anim/units/CWT_BCTR.png",
-    ARTY: "cwt_anim/units/CWT_ARTY.png",
-    ACAR: "cwt_anim/units/CWT_ACAR.png"
+    WRTK: "image/cwt_anim/units/CWT_WRTK.png",
+    TNTK: "image/cwt_anim/units/CWT_TANK.png",
+    TCTR: "image/cwt_anim/units/CWT_TCTR.png",
+    SUBM: "image/cwt_anim/units/CWT_SUBM.png",
+    RCKT: "image/cwt_anim/units/CWT_RCKT.png",
+    RECN: "image/cwt_anim/units/CWT_RECN.png",
+    STLH: "image/cwt_anim/units/CWT_STLH.png",
+    INFT: "image/cwt_anim/units/CWT_INFT.png",
+    LNDR: "image/cwt_anim/units/CWT_LNDR.png",
+    MDTK: "image/cwt_anim/units/CWT_MDTK.png",
+    MECH: "image/cwt_anim/units/CWT_MECH.png",
+    MISS: "image/cwt_anim/units/CWT_MISS.png",
+    NTNK: "image/cwt_anim/units/CWT_NTNK.png",
+    FGTR: "image/cwt_anim/units/CWT_FGTR.png",
+    CRUS: "image/cwt_anim/units/CWT_CRUS.png",
+    BSHP: "image/cwt_anim/units/CWT_BSHP.png",
+    BMBR: "image/cwt_anim/units/CWT_BMBR.png",
+    BKBT: "image/cwt_anim/units/CWT_BKBT.png",
+    BKBM: "image/cwt_anim/units/CWT_BKBM.png",
+    BCTR: "image/cwt_anim/units/CWT_BCTR.png",
+    ARTY: "image/cwt_anim/units/CWT_ARTY.png",
+    ACAR: "image/cwt_anim/units/CWT_ACAR.png"
   },
 
   TILES: {
@@ -94,59 +94,59 @@ cwt.Graphics = {
         [ 41, "", "", "", "", "", "", "", "" ]
       ],
       [
-        "cwt_anim/terrain/CWT_SEAS(S).png",
-        "cwt_anim/terrain/CWT_SEAS(S)$~~~~~~~~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$~~SS~~~~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SS~~~~~~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$~~~S~~~~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$~~S~~~~~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$~S~~~~~~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$~S~S~~~S.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$~SS~~~S~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$~SSS~~SS.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$RSSS~~SS.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$S~~~~~~~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$S~~S~S~~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$S~S~S~~~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$S~SSSS~~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SRSSSS~~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SS~S~S~S.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SSRS~S~S.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SSS~S~S~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SSSRS~S~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SSSS~~~~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SSSS~~~S.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SSSS~~S~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SSSS~~SS.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SSSS~S~~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SSSS~S~S.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SSSS~SS~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SSSS~SSS.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SSSSS~~~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SSSSS~~S.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SSSSS~S~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SSSSS~SS.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SSSSSS~~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SSSSSSS~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SSSSSS~S.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$~SSS~~SS.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$~SSS~~S~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SSSSS~SS.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SSSSSSS~.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SSSSSS~S.png",
-        "cwt_anim/terrain/CWT_SEAS(S)$SSSS~SSS.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S).png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$~~~~~~~~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$~~SS~~~~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SS~~~~~~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$~~~S~~~~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$~~S~~~~~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$~S~~~~~~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$~S~S~~~S.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$~SS~~~S~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$~SSS~~SS.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$RSSS~~SS.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$S~~~~~~~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$S~~S~S~~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$S~S~S~~~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$S~SSSS~~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SRSSSS~~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SS~S~S~S.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SSRS~S~S.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SSS~S~S~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SSSRS~S~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SSSS~~~~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SSSS~~~S.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SSSS~~S~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SSSS~~SS.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SSSS~S~~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SSSS~S~S.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SSSS~SS~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SSSS~SSS.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SSSSS~~~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SSSSS~~S.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SSSSS~S~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SSSSS~SS.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SSSSSS~~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SSSSSSS~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SSSSSS~S.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$~SSS~~SS.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$~SSS~~S~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SSSSS~SS.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SSSSSSS~.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SSSSSS~S.png",
+        "image/cwt_anim/terrain/CWT_SEAS(S)$SSSS~SSS.png",
 
-        "cwt_anim/terrain/CWT_SEAS(S).png"
+        "image/cwt_anim/terrain/CWT_SEAS(S).png"
       ],
       true,
       false
     ],
 
-    SHOAL: [ "cwt_anim/terrain/CWT_SHOA(BS)$BB~S~S~S.png", true, false ],
-    FRST: [ "cwt_anim/terrain/CWT_FRST.png", false, true ],
-    MNTN: [ "cwt_anim/terrain/CWT_MNTN.png", false, true ],
-    PLIN: [ "cwt_anim/terrain/CWT_PLIN.png", false, false ],
-    REEF: [ "cwt_anim/terrain/CWT_REEF(S).png" , true, false ],
+    SHOAL: [ "image/cwt_anim/terrain/CWT_SHOA(BS)$BB~S~S~S.png", true, false ],
+    FRST: [ "image/cwt_anim/terrain/CWT_FRST.png", false, true ],
+    MNTN: [ "image/cwt_anim/terrain/CWT_MNTN.png", false, true ],
+    PLIN: [ "image/cwt_anim/terrain/CWT_PLIN.png", false, false ],
+    REEF: [ "image/cwt_anim/terrain/CWT_REEF(S).png" , true, false ],
 
     ROAD: [
       {
@@ -177,18 +177,18 @@ cwt.Graphics = {
         [11, "", "", "", "" ]
       ],
       [
-        "cwt_anim/terrain/CWT_ROAD(O)$OOOO~~~~.png",
-        "cwt_anim/terrain/CWT_ROAD(O)$~OOO~~~~.png",
-        "cwt_anim/terrain/CWT_ROAD(O)$O~OO~~~~.png",
-        "cwt_anim/terrain/CWT_ROAD(O)$OO~O~~~~.png",
-        "cwt_anim/terrain/CWT_ROAD(O)$OOO~~~~~.png",
-        "cwt_anim/terrain/CWT_ROAD(O)$~~OO~~~~.png",
-        "cwt_anim/terrain/CWT_ROAD(O)$~O~O~~~~.png",
-        "cwt_anim/terrain/CWT_ROAD(O)$~OO~~~~~.png",
-        "cwt_anim/terrain/CWT_ROAD(O)$O~~O~~~~.png",
-        "cwt_anim/terrain/CWT_ROAD(O)$O~O~~~~~.png",
-        "cwt_anim/terrain/CWT_ROAD(O)$OO~~~~~~.png",
-        "cwt_anim/terrain/CWT_ROAD(O)$~~OO~~~~.png"
+        "image/cwt_anim/terrain/CWT_ROAD(O)$OOOO~~~~.png",
+        "image/cwt_anim/terrain/CWT_ROAD(O)$~OOO~~~~.png",
+        "image/cwt_anim/terrain/CWT_ROAD(O)$O~OO~~~~.png",
+        "image/cwt_anim/terrain/CWT_ROAD(O)$OO~O~~~~.png",
+        "image/cwt_anim/terrain/CWT_ROAD(O)$OOO~~~~~.png",
+        "image/cwt_anim/terrain/CWT_ROAD(O)$~~OO~~~~.png",
+        "image/cwt_anim/terrain/CWT_ROAD(O)$~O~O~~~~.png",
+        "image/cwt_anim/terrain/CWT_ROAD(O)$~OO~~~~~.png",
+        "image/cwt_anim/terrain/CWT_ROAD(O)$O~~O~~~~.png",
+        "image/cwt_anim/terrain/CWT_ROAD(O)$O~O~~~~~.png",
+        "image/cwt_anim/terrain/CWT_ROAD(O)$OO~~~~~~.png",
+        "image/cwt_anim/terrain/CWT_ROAD(O)$~~OO~~~~.png"
       ],
       false,
       false
@@ -223,19 +223,19 @@ cwt.Graphics = {
       ],
       [
 
-        "cwt_anim/terrain/CWT_BRDG(OSRB)$OOOO~~~~.png",
-        "cwt_anim/terrain/CWT_BRDG(OSRB)$~OOO~~~~.png",
-        "cwt_anim/terrain/CWT_BRDG(OSRB)$O~OO~~~~.png",
-        "cwt_anim/terrain/CWT_BRDG(OSRB)$OO~O~~~~.png",
-        "cwt_anim/terrain/CWT_BRDG(OSRB)$OOO~~~~~.png",
-        "cwt_anim/terrain/CWT_BRDG(OSRB)$~OO~~~~~.png",
-        "cwt_anim/terrain/CWT_BRDG(OSRB)$O~O~~~~~.png",
-        "cwt_anim/terrain/CWT_BRDG(OSRB)$O~~O~~~~.png",
-        "cwt_anim/terrain/CWT_BRDG(OSRB)$~O~O~~~~.png",
-        "cwt_anim/terrain/CWT_BRDG(OSB)$OOSS~~~~.png",
-        "cwt_anim/terrain/CWT_BRDG(OSB)$SSOO~~~~.png",
-        "cwt_anim/terrain/CWT_BRDG(ORB)$OO~~~~~~.png",
-        "cwt_anim/terrain/CWT_BRDG(ORB)$~~OO~~~~.png"
+        "image/cwt_anim/terrain/CWT_BRDG(OSRB)$OOOO~~~~.png",
+        "image/cwt_anim/terrain/CWT_BRDG(OSRB)$~OOO~~~~.png",
+        "image/cwt_anim/terrain/CWT_BRDG(OSRB)$O~OO~~~~.png",
+        "image/cwt_anim/terrain/CWT_BRDG(OSRB)$OO~O~~~~.png",
+        "image/cwt_anim/terrain/CWT_BRDG(OSRB)$OOO~~~~~.png",
+        "image/cwt_anim/terrain/CWT_BRDG(OSRB)$~OO~~~~~.png",
+        "image/cwt_anim/terrain/CWT_BRDG(OSRB)$O~O~~~~~.png",
+        "image/cwt_anim/terrain/CWT_BRDG(OSRB)$O~~O~~~~.png",
+        "image/cwt_anim/terrain/CWT_BRDG(OSRB)$~O~O~~~~.png",
+        "image/cwt_anim/terrain/CWT_BRDG(OSB)$OOSS~~~~.png",
+        "image/cwt_anim/terrain/CWT_BRDG(OSB)$SSOO~~~~.png",
+        "image/cwt_anim/terrain/CWT_BRDG(ORB)$OO~~~~~~.png",
+        "image/cwt_anim/terrain/CWT_BRDG(ORB)$~~OO~~~~.png"
       ],
       false,
       false
@@ -260,18 +260,18 @@ cwt.Graphics = {
         [11, "", "", "", "" ]
       ],
       [
-        "cwt_anim/terrain/CWT_RIVR(R)$RRRR~~~~.png",
-        "cwt_anim/terrain/CWT_RIVR(R)$~RRR~~~~.png",
-        "cwt_anim/terrain/CWT_RIVR(R)$R~RR~~~~.png",
-        "cwt_anim/terrain/CWT_RIVR(R)$RR~R~~~~.png",
-        "cwt_anim/terrain/CWT_RIVR(R)$RRR~~~~~.png",
-        "cwt_anim/terrain/CWT_RIVR(R)$~~RR~~~~.png",
-        "cwt_anim/terrain/CWT_RIVR(R)$~R~R~~~~.png",
-        "cwt_anim/terrain/CWT_RIVR(R)$~RR~~~~~.png",
-        "cwt_anim/terrain/CWT_RIVR(R)$R~~R~~~~.png",
-        "cwt_anim/terrain/CWT_RIVR(R)$R~R~~~~~.png",
-        "cwt_anim/terrain/CWT_RIVR(R)$RR~~~~~~.png",
-        "cwt_anim/terrain/CWT_RIVR(R)$~~RR~~~~.png"
+        "image/cwt_anim/terrain/CWT_RIVR(R)$RRRR~~~~.png",
+        "image/cwt_anim/terrain/CWT_RIVR(R)$~RRR~~~~.png",
+        "image/cwt_anim/terrain/CWT_RIVR(R)$R~RR~~~~.png",
+        "image/cwt_anim/terrain/CWT_RIVR(R)$RR~R~~~~.png",
+        "image/cwt_anim/terrain/CWT_RIVR(R)$RRR~~~~~.png",
+        "image/cwt_anim/terrain/CWT_RIVR(R)$~~RR~~~~.png",
+        "image/cwt_anim/terrain/CWT_RIVR(R)$~R~R~~~~.png",
+        "image/cwt_anim/terrain/CWT_RIVR(R)$~RR~~~~~.png",
+        "image/cwt_anim/terrain/CWT_RIVR(R)$R~~R~~~~.png",
+        "image/cwt_anim/terrain/CWT_RIVR(R)$R~R~~~~~.png",
+        "image/cwt_anim/terrain/CWT_RIVR(R)$RR~~~~~~.png",
+        "image/cwt_anim/terrain/CWT_RIVR(R)$~~RR~~~~.png"
       ],
       true,
       false
@@ -279,88 +279,88 @@ cwt.Graphics = {
   },
 
   PROPERTIES: {
-    BASE: "cwt_anim/properties/CWT_BASE.png",
-    CITY: "cwt_anim/properties/CWT_CITY.png",
-    PORT: "cwt_anim/properties/CWT_PORT(SBR).png",
-    RADAR: "cwt_anim/properties/CWT_RADR.png",
-    RUIB: "cwt_anim/inventions/CWT_BRBL-S.png",
-    RUIS: "cwt_anim/inventions/CWT_SRBL.png",
-    SILO: "cwt_anim/properties/CWT_SILO.png",
-    SILO_EMPTY: "cwt_anim/properties/CWT_PLTF.png",
-    HQTR: "cwt_anim/properties/CWT_HQTR.png"
+    BASE: "image/cwt_anim/properties/CWT_BASE.png",
+    CITY: "image/cwt_anim/properties/CWT_CITY.png",
+    PORT: "image/cwt_anim/properties/CWT_PORT(SBR).png",
+    RADAR: "image/cwt_anim/properties/CWT_RADR.png",
+    RUIB: "image/cwt_anim/inventions/CWT_BRBL-S.png",
+    RUIS: "image/cwt_anim/inventions/CWT_SRBL.png",
+    SILO: "image/cwt_anim/properties/CWT_SILO.png",
+    SILO_EMPTY: "image/cwt_anim/properties/CWT_PLTF.png",
+    HQTR: "image/cwt_anim/properties/CWT_HQTR.png"
   },
 
-  ARROW: "arrow.png",
+  ARROW: "image/arrow.png",
 
-  DUST: "UnitDust.png",
+  DUST: "image/UnitDust.png",
 
-  ROCKET_FLY: "missileup.png",
+  ROCKET_FLY: "image/missileup.png",
 
   OTHERS: {
 
     BACKGROUNDS: [
-      "mobile/background/RedStar.jpg",
-      "mobile/background/YellowComet.jpg",
-      "mobile/background/GreenEarth.jpg",
-      "mobile/background/BlueMoon.jpg"
+      "image/mobile/background/RedStar.jpg",
+      "image/mobile/background/YellowComet.jpg",
+      "image/mobile/background/GreenEarth.jpg",
+      "image/mobile/background/BlueMoon.jpg"
     ],
 
     HP: [
-      "symbol/0.png",
-      "symbol/1.png",
-      "symbol/2.png",
-      "symbol/3.png",
-      "symbol/4.png",
-      "symbol/5.png",
-      "symbol/6.png",
-      "symbol/7.png",
-      "symbol/8.png",
-      "symbol/9.png"
+      "image/symbol/0.png",
+      "image/symbol/1.png",
+      "image/symbol/2.png",
+      "image/symbol/3.png",
+      "image/symbol/4.png",
+      "image/symbol/5.png",
+      "image/symbol/6.png",
+      "image/symbol/7.png",
+      "image/symbol/8.png",
+      "image/symbol/9.png"
     ],
 
     SYMBOLS: [
-      "symbol/hp.png",
-      "symbol/ammo.png",
-      "symbol/fuel.png",
-      "symbol/load.png",
-      "symbol/capture.png",
-      "symbol/attack.png",
-      "symbol/vision.png",
-      "symbol/goldboot.png",
-      "symbol/unknown.png",
-      "symbol/detect.png",
-      "symbol/yellowstar.png",
-      "symbol/guard.png",
-      "symbol/elite.png",
-      "symbol/veteran.png"
+      "image/symbol/hp.png",
+      "image/symbol/ammo.png",
+      "image/symbol/fuel.png",
+      "image/symbol/load.png",
+      "image/symbol/capture.png",
+      "image/symbol/attack.png",
+      "image/symbol/vision.png",
+      "image/symbol/goldboot.png",
+      "image/symbol/unknown.png",
+      "image/symbol/detect.png",
+      "image/symbol/yellowstar.png",
+      "image/symbol/guard.png",
+      "image/symbol/elite.png",
+      "image/symbol/veteran.png"
     ],
 
     SELECTION: [
-      "cwt_anim/wall/CWT_SILO$W~WW~~~~.png",      // N
-      "cwt_anim/wall/CWT_SILO$~WWW~~~~.png",      // S
-      "cwt_anim/wall/CWT_SILO$WWW~~~~~.png",      // W
-      "cwt_anim/wall/CWT_SILO$WW~W~~~~.png",      // E
-      "cwt_anim/wall/CWT_SILO$~WW~~~~~.png",      // SW
-      "cwt_anim/wall/CWT_SILO$~W~W~~~~.png",      // SE
-      "cwt_anim/wall/CWT_SILO$W~W~~~~~.png",      // NW
-      "cwt_anim/wall/CWT_SILO$W~~W~~~~.png",      // NE
-      "cwt_anim/wall/CWT_SILO$WWWW~~~~.png"       // ALL
+      "image/cwt_anim/wall/CWT_SILO$W~WW~~~~.png",      // N
+      "image/cwt_anim/wall/CWT_SILO$~WWW~~~~.png",      // S
+      "image/cwt_anim/wall/CWT_SILO$WWW~~~~~.png",      // W
+      "image/cwt_anim/wall/CWT_SILO$WW~W~~~~.png",      // E
+      "image/cwt_anim/wall/CWT_SILO$~WW~~~~~.png",      // SW
+      "image/cwt_anim/wall/CWT_SILO$~W~W~~~~.png",      // SE
+      "image/cwt_anim/wall/CWT_SILO$W~W~~~~~.png",      // NW
+      "image/cwt_anim/wall/CWT_SILO$W~~W~~~~.png",      // NE
+      "image/cwt_anim/wall/CWT_SILO$WWWW~~~~.png"       // ALL
     ],
 
     FOCUS: [
-      "unitmove.png",
-      "unitatk.png"
+      "image/unitmove.png",
+      "image/unitatk.png"
     ],
 
     EXPLOSIONS: [
-      "object_explode/UNIT_LAND.png",
-      "object_explode/UNIT_AIR.png",
-      "object_explode/UNIT_DUST.png",
-      "object_explode/UNIT_SEA.png"
+      "image/object_explode/UNIT_LAND.png",
+      "image/object_explode/UNIT_AIR.png",
+      "image/object_explode/UNIT_DUST.png",
+      "image/object_explode/UNIT_SEA.png"
     ],
 
-    SMOKE: "smoked.png",
+    SMOKE: "image/smoked.png",
 
-    TRAPPED: "icons/trapsign.png"
+    TRAPPED: "image/icons/trapsign.png"
   }
 };

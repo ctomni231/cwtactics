@@ -1,11 +1,13 @@
 cwt.Action.clientAction({
   key:"options",
 
-  condition: function(){
+  condition: function (data) {
     return true;
   },
 
-  invoke: function(){
+  toDataBlock: function (data, dataBlock) {},
+
+  parseDataBlock: function (dataBlock) {
     controller.screenStateMachine.event("toOptions_",true);
   }
 });

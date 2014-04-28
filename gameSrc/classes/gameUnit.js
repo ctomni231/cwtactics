@@ -3,7 +3,7 @@
  * @class
  * @extends cwt.IndexMultiton.<T>
  */
-cwt.Unit = my.Class(null, cwt.IndexMultiton, /** @lends cwt.Unit.prototype */ {
+cwt.Unit = my.Class(null,cwt.IndexMultiton, /** @lends cwt.Unit.prototype */ {
 
   STATIC: /** @lends cwt.Unit */ {
 

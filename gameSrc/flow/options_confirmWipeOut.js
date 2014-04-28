@@ -2,11 +2,17 @@ cwt.Gameflow.addState({
   id: "CONFIRM_WIPE_OUT_SCREEN",
 
   init: function () {
+    this.buttons = new cwt.ButtonGroup(10,6);
 
+    this.buttons.addButton(1,1,8,1,"OPTIONS_WIPE_OUT_TEXT",8);
+
+    this.buttons.addButton(1,4,3,1,"OPTIONS_WIPE_OUT_NO",8);
+    this.buttons.addButton(6,4,3,1,"OPTIONS_WIPE_OUT_YES",8);
   },
 
   enter: function () {
-
+    cwt.Screen.layerUI.clear();
+    this.rendered = false;
   },
 
   update: function (delta, lastInput) {
@@ -14,12 +20,16 @@ cwt.Gameflow.addState({
   },
 
   render: function (delta) {
-
+    if (!this.rendered) {
+      var ctx = cwt.Screen.layerUI.getContext();
+      this.buttons.draw(ctx);
+      this.rendered = true;
+    }
   }
 });
 
+/*
 util.scoped(function(){
-        /*
   function wipeComplete(){
     document.location.reload();
   }
@@ -74,5 +84,5 @@ util.scoped(function(){
   controller.screenStateMachine.structure.WIPEOUT.CANCEL = function(){
     return "OPTIONS";
   };
-       */
 });
+ */

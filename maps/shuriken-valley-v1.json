@@ -1,4 +1,4 @@
-cwt.Maps.addMap({
+{
   "name": "Shuriken Valley",
   "credits": "http://www.warsworldnews.com/maps/details.php?image_id=302 (incomplete atm.)",
 
@@ -88,4 +88,4 @@ cwt.Maps.addMap({
   "dyev": [],
 
   "rules": []
-});
+}

@@ -41,6 +41,7 @@ cwt.Gameflow.addState({
   }
 });
 
+/*
 cwt.screenFlow.VERSUS = new cwt.screeFlowState({
   
   enterState: function(){
@@ -157,7 +158,7 @@ cwt.screenFlow.VERSUS = new cwt.screeFlowState({
     return this.breakTransition();
   }
 });
-
+        */
           /*
 util.scoped(function(){
   

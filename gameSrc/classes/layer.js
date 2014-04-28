@@ -10,7 +10,7 @@ cwt.Layer = my.Class( /** @lends cwt.Layer.prototype */ {
     this.ctx = [];
     this.cFrame = 0;
     this.cTime = 0;
-    this.frameLimit = frameTime;
+    this.frameLimit = config.time;
 
     this.drawAll = null;
     this.draw = null;

@@ -38,7 +38,7 @@ cwt.Network = {
   /**
    * @private
    */
-  urlBuilder_: [null,"?cmd=",null,"&gameId=",null,"&userId=",null],
+  urlBuilder_:[null,"?cmd=",null,"&gameId=",null,"&userId=",null],
 
   /**
    *

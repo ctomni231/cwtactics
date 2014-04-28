@@ -2,7 +2,7 @@
  * @class
  * @extends cwt.IndexMultiton
  */
-cwt.Property = my.Class(null,cwt.IndexMultiton, /** @lends cwt.Property.prototype */ {
+cwt.Property = my.Class(null,cwt.IndexMultiton,/** @lends cwt.Property.prototype */ {
 
   STATIC: /** @lends cwt.Property */ {
 

@@ -17,18 +17,36 @@ cwt.Input = {
   TYPE_SET_INPUT: 8,
 
   /**
-   * @type cwt.RingBuffer
+   * @type cwt.RingBuffer<cwt.InputData>
    */
-  stack: new cwt.RingBuffer(10, function (i, obj) {
-    if (!obj) {
-      return new cwt.InputData();
-    } else return obj;
-  }),
+  stack: new cwt.RingBuffer(10),
+
+  /**
+   * @type cwt.RingBuffer<cwt.InputData>
+   */
+  pool: new cwt.RingBuffer(10),
+
+  types: {},
 
   /**
    * If true, then every user input will be blocked.
    */
   blocked: false,
+
+  initialize: function () {
+    delete cwt.Input.initialize;
+
+    Object.keys(cwt.Input.types).forEach(function (inp) {
+      cwt.Input.types[inp].factory();
+    });
+
+    // create data holder
+    while (!this.pool.isFull()) {
+      this.pool.push(new cwt.InputData());
+    }
+
+    cwt.Input.initialized = true;
+  },
 
   /**
    *
@@ -45,6 +63,20 @@ cwt.Input = {
   },
 
   /**
+   * Creates an input object. The factory function will be called directly after creating
+   * the instance. Furthermore the created object will be inserted into cwt.Input as property
+   * with the name given by the 'key' argument.
+   *
+   * @param key
+   * @param factory
+   */
+  create: function (key, factory) {
+    var obj = {};
+    obj.factory = factory;
+    this.types[key] = obj;
+  },
+
+  /**
    * Pushes an input key into the input stack. The parameters d1 and d2 has to be integers.
    *
    * @param {number} key
@@ -52,7 +84,7 @@ cwt.Input = {
    * @param {number=} d2
    */
   pushAction: function (key, d1, d2) {
-    if (this.blocked) {
+    if (this.blocked || this.pool.isEmpty()) {
       return;
     }
 
@@ -65,6 +97,12 @@ cwt.Input = {
     }
 
     // push command into buffer
+    var cmd = this.pool.pop();
+    cmd.d1 = d1;
+    cmd.d2 = d2;
+    cmd.key = key;
+
+    this.stack.push(cmd);
   },
 
   /**
@@ -73,74 +111,10 @@ cwt.Input = {
    * @returns {null|cwt.InputData}
    */
   popAction: function () {
-
-    // grab value
-    var ri = controller.input_stack_r_;
-    var value = controller.input_stack[controller.input_stack_r_];
-    if (value === cwt.INACTIVE) return false;
-
-    controller.input_stack[ri] = cwt.INACTIVE;
-
-    var d1 = controller.input_data1[ri];
-    var d2 = controller.input_data2[ri];
-
-    // eval value
-    var keys = controller.DEFAULT_KEY_MAP.KEYBOARD;
-    var keysM = controller.DEFAULT_KEY_MAP.MOUSE;
-    var event = null;
-    switch (value) {
-
-      case keys.UP:
-        event = (d1 > 1) ? "SHIFT_UP" : "INP_UP";
-        break;
-      case keys.DOWN:
-        event = (d1 > 1) ? "SHIFT_DOWN" : "INP_DOWN";
-        break;
-      case keys.LEFT:
-        event = (d1 > 1) ? "SHIFT_LEFT" : "INP_LEFT";
-        break;
-      case keys.RIGHT:
-        event = (d1 > 1) ? "SHIFT_RIGHT" : "INP_RIGHT";
-        break;
-      case keys.ACTION:
-        event = "INP_ACTION";
-        break;
-      case keys.CANCEL:
-        event = "INP_CANCEL";
-        break;
-      case keysM.HOVER:
-        event = "INP_HOVER";
-        break;
-
-      default:
-        cwt.assert("false");
-        return false;
+    if (this.stack.isEmpty()) {
+      return null;
     }
-
-    if (d1 !== cwt.INACTIVE && d2 !== cwt.INACTIVE) {
-      cwt.Gameflow.event(event, d1, d2);
-    } else cwt.Gameflow.event(event);
-
-    // increase read index
-    ri++;
-    if (ri === controller.input_stack.length) ri = 0;
-    controller.input_stack_r_ = ri;
-
-    return true;
-  },
-
-  /**
-   * Creates an input object. The factory function will be called directly after creating
-   * the instance. Furthermore the created object will be inserted into cwt.Input as property
-   * with the name given by the 'key' argument.
-   *
-   * @param key
-   * @param factory
-   */
-  create: function (key, factory) {
-    var obj = {};
-    obj.factory = factory;
-    this[key] = obj;
+    return this.stack.pop();
   },
 
   /**
@@ -162,12 +136,6 @@ cwt.Input = {
     );
   },
 
-  initialize: function () {
-
-    delete cwt.Input.initialize;
-    cwt.Input.initialized = true;
-  },
-
   /**
    * Loads the keyboard input mapping from the user storage. If no
    * user input setting will be found then the default mapping will
@@ -181,12 +149,12 @@ cwt.Input = {
       function (obj) {
         if (obj) {
           if (cwt.DEBUG) {
-            cwt.log("loading custom key configuration");
+            console.log("loading custom key configuration");
           }
 
           // inject custom mapping
-          this.keyboard.MAPPING = obj.keyboard;
-          this.gamePad.MAPPING = obj.gamePad;
+          cwt.Input.types.keyboard.MAPPING = obj.keyboard;
+          cwt.Input.types.gamePad.MAPPING = obj.gamePad;
         }
 
         // call callback

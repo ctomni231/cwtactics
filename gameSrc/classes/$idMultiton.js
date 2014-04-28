@@ -2,10 +2,10 @@
  * Class that contains a static algorithm to register and return instances by a key. This class implements the multiton
  * pattern by a string based identifier. Usable by inheritance.
  *
- * @class
  * @template T
  */
 cwt.IdMultiton = my.Class({
+
   STATIC: {
 
     /**

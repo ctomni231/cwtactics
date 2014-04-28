@@ -47,10 +47,7 @@ cwt.Gameflow.addState({
 
   render: function (delta) {
     if (!this.rendered) {
-      var ctxUI = cwt.Screen.interfaceLayer.getContext();
-
-      cwt.DrawUtil.cleanContext(ctxUI);
-
+      var ctxUI = cwt.Screen.layerUI.getContext();
       this.rendered = true;
     }
   }

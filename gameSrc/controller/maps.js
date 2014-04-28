@@ -6,17 +6,13 @@ cwt.Maps = {
 
   maps: [],
 
-  loadMap: function (path, callback) {
+  grabFromLive: function (callback) {
+    var stuff = [];
 
-    // register map path (as identifier)
-    this.maps.push(path);
-
-    cwt.Storage.mapStorage.get(path, function (obj) {
-
-      // load it when the map isn't available in the storage
-      if (!obj.value) {
-        util.grabRemoteFile({
-          path: path,
+    Object.keys(cwt.mapList).forEach(function (key) {
+      stuff.push(function (next) {
+        grabRemoteFile({
+          path: cwt.MOD_PATH + cwt.mapList[key],
           json: true,
 
           error: function (msg) {
@@ -24,12 +20,23 @@ cwt.Maps = {
           },
 
           success: function (resp) {
-            cwt.Storage.mapStorage.set(path, resp, function () {
-              callback();
+            cwt.Storage.mapStorage.set(key, resp, function () {
+              next();
             });
           }
         });
-      }
+      });
+    });
+
+    callAsSequence(stuff, function () {
+      delete cwt.Maps.grabFromLive;
+      callback();
+    });
+  },
+
+  loadMap: function (path, callback) {
+    cwt.Storage.mapStorage.get(path, function (obj) {
+      callback(key, obj.value);
     });
   },
 

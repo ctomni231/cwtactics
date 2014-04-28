@@ -4,10 +4,10 @@
  * If the instance with the given id does not exists, then it will be
  * created.
  *
- * @class
  * @template T
  */
 cwt.IndexMultiton = my.Class({
+
   STATIC: {
 
     /**

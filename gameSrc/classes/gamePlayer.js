@@ -1,7 +1,7 @@
 /**
  * @class
  */
-cwt.Player = my.Class(null, cwt.IndexMultiton, /** @lends cwt.Player.prototype */ {
+cwt.Player = my.Class(null,cwt.IndexMultiton,/** @lends cwt.Player.prototype */ {
 
   STATIC: /** @lends cwt.Player */ {
 

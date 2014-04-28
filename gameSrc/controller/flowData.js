@@ -66,9 +66,9 @@ cwt.FlowData = {
      *   aw2 is [ entryA, entryB, entryC, null, null ]
      *   size is 3
      */
-    data: cwt.list(20, null),
+    data: new cwt.List(20, null),
 
-    enabled: cwt.list(20, true),
+    enabled: new cwt.List(20, true),
 
     /** Size of the menu. */
     size: 0,
@@ -96,7 +96,7 @@ cwt.FlowData = {
     },
 
     /** Prepares the menu for a given source and target position. */
-    generate: util.scoped(function () {
+    generate: (function () {
       var commandKeys;
       return function () {
 
@@ -180,7 +180,7 @@ cwt.FlowData = {
           }
         }
       };
-    }),
+    })(),
 
     /**
      * Adds unload targets for a transporter at a given position to the menu.
@@ -212,9 +212,9 @@ cwt.FlowData = {
     }
   },
 
-  selection: util.scoped(function () {
+  selection: (function () {
 
-    var sMap = util.selectionMap(MAX_SELECTION_RANGE * 4 + 1);
+    var sMap = new cwt.SelectionMap(cwt.MAX_MOVE_LENGTH * 4 + 1);
 
     // Extension to the selection map. This one prepares the selection
     // for the current aw2 model.
@@ -250,7 +250,7 @@ cwt.FlowData = {
     };
 
     return sMap;
-  }),
+  })(),
 
   addUnloadTargetsToSelection: function (uid, x, y, loadId, selection) {
     var loader = model.unit_data[uid];

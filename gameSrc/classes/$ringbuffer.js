@@ -1,23 +1,27 @@
 /**
  *
  * @class
+ * @template T
  */
 cwt.RingBuffer = my.Class({
 
   constructor: function (size, initFn) {
     this.readPos = 0;
     this.writePos = 0;
-    this.data = new cwt.List( size, (initFn)? initFn : null );
+    this.data = [];
     this.size = size;
+    this.initFn = initFn;
+
+    this.clear();
   },
 
   /**
    * Pushes an element into the buffer
    *
-   * @param msg object that will be pushed into the buffer
+   * @param {T} msg object that will be pushed into the buffer
    */
   push: function (msg){
-    cwt.assert(this.data[ this.writePos ] === null);
+    cwt.assert(this.data[ this.writePos ] === null,"ringbuffer is full, cannot add content");
 
     // WRITE MSG AND INCREASE COUNTER
     this.data[ this.writePos ] = msg;
@@ -35,10 +39,19 @@ cwt.RingBuffer = my.Class({
   },
 
   /**
+   * Returns true if the ring buffer is full else false.
+   */
+  isFull: function () {
+    return ( this.data[ this.writePos ] !== null );
+  },
+
+  /**
    * Returns the next available entry from the buffer (FIFO).
+   *
+   * @return T
    */
   pop: function () {
-    cwt.assert(this.data[ this.writePos ] !== null);
+    cwt.assert(this.data[ this.readPos ] !== null,"ringbuffer is empty, cannot read item");
 
     var msg = this.data[ this.readPos ];
 
@@ -59,7 +72,7 @@ cwt.RingBuffer = my.Class({
     this.readPos = 0;
     this.writePos = 0;
     for( var i=0; i<this.size; i++ ){
-      this.data[i] = null;
+      this.data[i] = (this.initFn)? this.initFn(i) : null;
     }
   }
 });

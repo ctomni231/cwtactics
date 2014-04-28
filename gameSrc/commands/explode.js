@@ -1,4 +1,4 @@
-cwt.Player.unitAction({
+cwt.Action.unitAction({
   key:"explode",
   noAutoWait: true,
 

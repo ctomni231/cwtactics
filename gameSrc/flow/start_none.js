@@ -11,12 +11,12 @@ cwt.Gameflow.addState({
     }
   },
 
-  draw: function () {
+  render: function () {
     if (!this.backgroundDrawn) {
-      var ctxBg = cwt.Screen.backgroundLayer.getContext(0);
+      var ctx = cwt.Screen.layerBG.getContext();
 
-      ctxBg.fillStyle = "green";
-      ctxBg.fillRect(0, 0, cwt.Screen.canvas_width, cwt.Screen.canvas_height);
+      ctx.fillStyle = "grey";
+      ctx.fillRect(0, 0, cwt.Screen.width, cwt.Screen.height);
 
       this.backgroundDrawn = true;
     }

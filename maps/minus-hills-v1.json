@@ -1,4 +1,4 @@
-cwt.Maps.addMap({
+{
   "name": "Outpost Plus",
   "credits": "http://www.warsworldnews.com/maps/details.php?image_id=335",
 
@@ -92,4 +92,4 @@ cwt.Maps.addMap({
   ],
 
   "rules": []
-});
+}

@@ -1,9 +1,9 @@
 cwt.Sounds = {
 
   CANNON_TANK_BIG: "sound/tnk_cannon_big.wav",
-  CANNON_TANK_SMALL: "sound/mg.wav",
+  CANNON_TANK_SMALL: "sound/tnk_cannon_small.wav",
 
-  MACHINE_GUN: "",
+  MACHINE_GUN: "sound/mg.wav",
 
   ACTION: "sound/ok.wav",
   CANCEL: "sound/cancel.wav",

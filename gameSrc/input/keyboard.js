@@ -1,11 +1,14 @@
 cwt.Input.create("keyboard", function () {
+  var that = this;
+
+  var CONSOLE_TOGGLE_KEY = 192;
 
   // not supported ?
   if (!cwt.ClientFeatures.keyboard) {
     return;
   }
 
-  this.MAPPING = {
+  that.MAPPING = {
     UP: 38,
     DOWN: 40,
     LEFT: 37,
@@ -26,27 +29,31 @@ cwt.Input.create("keyboard", function () {
       // extract code
       switch (ev.keyCode) {
 
-        case this.MAPPING.LEFT:
+        case CONSOLE_TOGGLE_KEY:
+          console.toggle();
+          break;
+
+        case that.MAPPING.LEFT:
           key = cwt.Input.TYPE_LEFT;
           break;
 
-        case this.MAPPING.UP:
+        case that.MAPPING.UP:
           key = cwt.Input.TYPE_UP;
           break;
 
-        case this.MAPPING.RIGHT:
+        case that.MAPPING.RIGHT:
           key = cwt.Input.TYPE_RIGHT;
           break;
 
-        case this.MAPPING.DOWN:
+        case that.MAPPING.DOWN:
           key = cwt.Input.TYPE_DOWN;
           break;
 
-        case this.MAPPING.CANCEL:
+        case that.MAPPING.CANCEL:
           key = cwt.Input.TYPE_CANCEL;
           break;
 
-        case this.MAPPING.ACTION:
+        case that.MAPPING.ACTION:
           key = cwt.Input.TYPE_ACTION;
           break;
       }

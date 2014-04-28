@@ -4,10 +4,20 @@
 var Base64Helper = {};
 
 /**
- * 
+ *
+ * @param {String} data
+ */
+Base64Helper.base64ToImage = function (data) {
+  var img = new Image();
+  img.src = "data:image/png;base64,"+data;
+  return img;
+};
+
+/**
+ *
  * @param {Image} img
  */
-Base64Helper.canvasToBase64 = function( img ){
+Base64Helper.canvasToBase64 = function (img) {
   var dataURL;
 
   if (img instanceof Image) {
@@ -40,16 +50,16 @@ Base64Helper.canvasToBase64 = function( img ){
  * Copyright (c) 2012 Niklas von Hertzen
  * Licensed under the MIT license.
  */
-(function(chars){
+(function (chars) {
   var encodings = chars;
-  
-  Base64Helper.encodeBuffer = function(arrayBuffer){
-    var base64    = '';
 
-    var bytes         = new Uint8Array(arrayBuffer);
-    var byteLength    = bytes.byteLength;
+  Base64Helper.encodeBuffer = function (arrayBuffer) {
+    var base64 = '';
+
+    var bytes = new Uint8Array(arrayBuffer);
+    var byteLength = bytes.byteLength;
     var byteRemainder = byteLength % 3;
-    var mainLength    = byteLength - byteRemainder;
+    var mainLength = byteLength - byteRemainder;
 
     var a, b, c, d;
     var chunk;
@@ -61,8 +71,8 @@ Base64Helper.canvasToBase64 = function( img ){
 
       // Use bitmasks to extract 6-bit segments from the triplet
       a = (chunk & 16515072) >> 18; // 16515072 = (2^6 - 1) << 18
-      b = (chunk & 258048)   >> 12; // 258048   = (2^6 - 1) << 12
-      c = (chunk & 4032)     >>  6; // 4032     = (2^6 - 1) << 6
+      b = (chunk & 258048) >> 12; // 258048   = (2^6 - 1) << 12
+      c = (chunk & 4032) >> 6; // 4032     = (2^6 - 1) << 6
       d = chunk & 63;               // 63       = 2^6 - 1
 
       // Convert the raw binary segments to the appropriate ASCII encoding
@@ -76,17 +86,17 @@ Base64Helper.canvasToBase64 = function( img ){
       a = (chunk & 252) >> 2; // 252 = (2^6 - 1) << 2
 
       // Set the 4 least significant bits to zero
-      b = (chunk & 3)   << 4; // 3   = 2^2 - 1
+      b = (chunk & 3) << 4; // 3   = 2^2 - 1
 
       base64 += encodings[a] + encodings[b] + '==';
     } else if (byteRemainder == 2) {
       chunk = (bytes[mainLength] << 8) | bytes[mainLength + 1];
 
       a = (chunk & 64512) >> 10; // 64512 = (2^6 - 1) << 10
-      b = (chunk & 1008)  >>  4; // 1008  = (2^6 - 1) << 4
+      b = (chunk & 1008) >> 4; // 1008  = (2^6 - 1) << 4
 
       // Set the 2 least significant bits to zero
-      c = (chunk & 15)    <<  2; // 15    = 2^4 - 1
+      c = (chunk & 15) << 2; // 15    = 2^4 - 1
 
       base64 += encodings[a] + encodings[b] + encodings[c] + '=';
     }
@@ -94,10 +104,10 @@ Base64Helper.canvasToBase64 = function( img ){
     return base64;
   };
 
-  Base64Helper.decodeBuffer =  function(base64) {
+  Base64Helper.decodeBuffer = function (base64) {
     var bufferLength = base64.length * 0.75,
-    len = base64.length, i, p = 0,
-    encoded1, encoded2, encoded3, encoded4;
+      len = base64.length, i, p = 0,
+      encoded1, encoded2, encoded3, encoded4;
 
     if (base64[base64.length - 1] === "=") {
       bufferLength--;
@@ -107,13 +117,13 @@ Base64Helper.canvasToBase64 = function( img ){
     }
 
     var arraybuffer = new ArrayBuffer(bufferLength),
-    bytes = new Uint8Array(arraybuffer);
+      bytes = new Uint8Array(arraybuffer);
 
-    for (i = 0; i < len; i+=4) {
+    for (i = 0; i < len; i += 4) {
       encoded1 = chars.indexOf(base64[i]);
-      encoded2 = chars.indexOf(base64[i+1]);
-      encoded3 = chars.indexOf(base64[i+2]);
-      encoded4 = chars.indexOf(base64[i+3]);
+      encoded2 = chars.indexOf(base64[i + 1]);
+      encoded3 = chars.indexOf(base64[i + 2]);
+      encoded4 = chars.indexOf(base64[i + 3]);
 
       bytes[p++] = (encoded1 << 2) | (encoded2 >> 4);
       bytes[p++] = ((encoded2 & 15) << 4) | (encoded3 >> 2);

@@ -83,7 +83,7 @@ cwt.Storage = my.Class(/** @lends cwt.Storage.prototype */ {
       function createStorage(name, size, prop) {
         return function (next) {
           createInstance(name, size, storage_type, function (adapter) {
-            cwt.Storage[prop] = adapter;
+            cwt.Storage[prop] = new cwt.Storage(adapter);
             next();
           });
         }
@@ -154,6 +154,14 @@ cwt.Storage = my.Class(/** @lends cwt.Storage.prototype */ {
    */
   exists: function (key, cb) {
     this.store.exists(key, cb);
+  },
+
+  /**
+   *
+   * @param cb
+   */
+  each: function (cb) {
+    this.store.each(cb);
   },
 
   /**

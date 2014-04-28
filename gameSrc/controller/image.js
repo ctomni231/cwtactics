@@ -173,45 +173,6 @@ cwt.Image = {
    *
    * @param {Function} callback
    */
-  grabFromCache: function (callback) {
-    this.removeGrabbers_(); // remove initializer functions
-
-    var stuff = [];
-
-    /**
-     * @inner
-     * @param key
-     */
-    function loadKey(key) {
-      var realKey = obj.key.slice(cwt.Image.IMAGE_KEY.length);
-      stuff.push(function (next) {
-        cwt.Storage.generalStorage.get(key, function (obj) {
-          if (cwt.DEBUG) cwt.assert(obj.value);
-          cwt.Image.sprites[realKey] = cwt.Sprite.fromJSON(obj.value);
-        });
-      })
-    }
-
-    // load all possible audio (except music) keys from the storage into the RAM
-    cwt.Storage.generalStorage.keys(function (keys) {
-      for (var i = 0, e = keys.length; i < e; i++) {
-        var key = keys[i];
-        if (key.indexOf(cwt.Image.IMAGE_KEY) === 0) {
-          loadKey(key);
-        }
-      }
-    });
-
-    callAsSequence(stuff, function () {
-      delete cwt.Graphics;
-      callback();
-    });
-  },
-
-  /**
-   *
-   * @param {Function} callback
-   */
   grabFromRemote: function (callback) {
     this.removeGrabbers_(); // remove initializer functions
 
@@ -626,9 +587,23 @@ cwt.Image = {
     }
 
     function grabImage(path, key, callback) {
+      if (cwt.DEBUG) {
+        console.log("going to load image " + path + " for key " + key);
+      }
+
       var image = new Image();
-      image.onload = callback;
-      image.src = path;
+
+      if (cwt.DEBUG) {
+        image.onload = function () {
+          console.log("successfully loaded image " + path + " for key " + key);
+          callback.apply(this, arguments);
+        };
+      } else {
+        image.onload = callback;
+      }
+
+
+      image.src = cwt.MOD_PATH + path;
       image.key = key;
     }
 
@@ -713,8 +688,8 @@ cwt.Image = {
       if (value.length === 3) { // single variant tile
         sprite = new cwt.Sprite(1);
         stuff.push(function (next) {
-          grabImage(path, key, function () {
-            sprite.setImage(0, this);
+          grabImage(value[0], key, function () {
+            sprite.setImage(0, /** @type {HTMLImageElement}*/ this);
             next();
           });
         });
@@ -726,7 +701,7 @@ cwt.Image = {
 
         for (var i = 0, e = value[2].length; i < e; i++) {
           addToPushLoop(value[2][i], i, function (img, next) {
-            sprite.setImage(i, img);
+            sprite.setImage(img.key, img);
             next();
           });
         }
@@ -740,7 +715,7 @@ cwt.Image = {
       stuff.push(function (next) {
         var path = cwt.Graphics.PROPERTIES[key];
         grabImage(path, key, function () {
-          var sprite = new cwt.Sprite(1);
+          var sprite = new cwt.Sprite(cwt.Sprite.PROPERTY_STATES);
 
           var red = /** @type {HTMLImageElement} */ this;
           var blue;
@@ -848,7 +823,7 @@ cwt.Image = {
 
         for (var i = 0, e = value.length; i < e; i++) {
           addToPushLoop(value[i], i, function (img, next) {
-            sprite.setImage(i, img);
+            sprite.setImage(img.key, img);
             next();
           });
         }
@@ -860,6 +835,85 @@ cwt.Image = {
     callAsSequence(stuff, function () {
       delete cwt.Graphics;
       callback();
+    });
+  },
+
+  /**
+   *
+   * @param callback
+   */
+  persistImages: function (callback) {
+    if (cwt.DEBUG) {
+      console.log("persist all images in the cache");
+    }
+
+    var stuff = [];
+
+    Object.keys(cwt.Image.sprites).forEach(function (key) {
+      var sprite = cwt.Image.sprites[key];
+      stuff.push(function (next) {
+        cwt.Storage.assetsStorage.set(
+          cwt.Image.IMAGE_KEY+key,
+          cwt.Sprite.toJSON(cwt.Image.sprites[key]),
+          function () {
+            next();
+          }
+        )
+      });
+    });
+
+    callAsSequence(stuff, function () {
+      if (cwt.DEBUG) {
+        console.log("completed image persist process");
+      }
+
+      callback();
+    });
+  },
+
+
+  /**
+   *
+   * @param {Function} callback
+   */
+  grabFromCache: function (callback) {
+    this.removeGrabbers_(); // remove initializer functions
+
+    var stuff = [];
+
+    /**
+     * @inner
+     * @param key
+     */
+    function loadKey(key) {
+      var realKey = key.slice(cwt.Image.IMAGE_KEY.length);
+      stuff.push(function (next) {
+        if (cwt.DEBUG) {
+          console.log("grab sprite "+key+" from cache");
+        }
+
+        cwt.Storage.assetsStorage.get(key, function (obj) {
+          if (cwt.DEBUG) cwt.assert(obj.value);
+
+          cwt.Image.sprites[realKey] = cwt.Sprite.fromJSON(obj.value);
+
+          next();
+        });
+      })
+    }
+
+    // load all possible audio (except music) keys from the storage into the RAM
+    cwt.Storage.assetsStorage.keys(function (keys) {
+      for (var i = 0, e = keys.length; i < e; i++) {
+        var key = keys[i];
+        if (key.indexOf(cwt.Image.IMAGE_KEY) === 0) {
+          loadKey(key);
+        }
+      }
+
+      callAsSequence(stuff, function () {
+        callback();
+      });
     });
   }
 

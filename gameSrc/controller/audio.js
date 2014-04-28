@@ -367,7 +367,11 @@ cwt.Audio = {
 
     function loadKey(key) {
       stuff.push(function (next) {
-        cwt.Storage.generalStorage.get(key, function (obj) {
+        cwt.Storage.assetsStorage.get(key, function (obj) {
+          if (cwt.DEBUG) {
+            console.log("grab audio "+key+" from cache");
+          }
+
           if (cwt.DEBUG) cwt.assert(obj.value);
 
           var realKey = obj.key.slice(cwt.Audio.SFX_KEY.length);
@@ -380,19 +384,19 @@ cwt.Audio = {
     }
 
     // load all possible audio (except music) keys from the storage into the RAM
-    cwt.Storage.generalStorage.keys(function (keys) {
+    cwt.Storage.assetsStorage.keys(function (keys) {
       for (var i = 0, e = keys.length; i < e; i++) {
         var key = keys[i];
         if (key.indexOf(cwt.Audio.SFX_KEY) === 0) {
           loadKey(key);
         }
       }
-    });
 
-    callAsSequence(stuff, function (){
-      delete cwt.Sounds;
-      delete cwt.Musics;
-      callback();
+      callAsSequence(stuff, function (){
+        delete cwt.Sounds;
+        delete cwt.Musics;
+        callback();
+      });
     });
   },
 
@@ -444,14 +448,23 @@ cwt.Audio = {
      * @param callback
      */
     var loadFile = function (key, path, saveKey, loadIt, callback) {
+      if (cwt.DEBUG) {
+        console.log("going to load "+path+" for key "+key);
+      }
+
       var request = new XMLHttpRequest();
 
-      request.open("GET", path, true);
+      request.open("GET", cwt.MOD_PATH+path, true);
       request.responseType = "arraybuffer";
 
       request.onload = function () {
         cwt.assert(this.status !== 404);
-        cwt.Storage.generalStorage.set(saveKey,
+
+        if (cwt.DEBUG) {
+          console.log("load "+path+" for key "+key+" sucessfully");
+        }
+
+        cwt.Storage.assetsStorage.set(saveKey,
           Base64Helper.encodeBuffer(request.response),
           function () {
             if (loadIt) {

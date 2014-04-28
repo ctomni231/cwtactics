@@ -1,121 +1,101 @@
-/**
- * Screen model.
- *
- * @namespace
- */
-cwt.Screen = {
+(function () {
 
+  var canvasW = cwt.TILE_BASE * cwt.SCREEN_WIDTH;
+  var canvasH = cwt.TILE_BASE * cwt.SCREEN_HEIGHT;
   /**
-   * Tile size base.
+   * Screen model.
    *
-   * @constant
+   * @namespace
    */
-  TILE_BASE: 16,
+  cwt.Screen = {
 
-  /**
-   * Number of tiles in a row in the screen.
-   *
-   * @constant
-   */
-  MAX_TILES_W: 20,
+    /**
+     * @private
+     */
+    unitAnimationHalfStep_: false,
 
-  /**
-   * Number of tiles in a column in the screen.
-   *
-   * @constant
-   */
-  MAX_TILES_H: 15,
+    /**
+     * @private
+     */
+    curTime_: 0,
 
-  canvas_width: 0,
+    width: canvasW,
 
-  canvas_height: 0,
+    height: canvasH,
 
-  /**
-   * Steps for a unit animation step.
-   *
-   * @constant
-   */
-  UNIT_ANIM_TIME: 150,
+    offsetX: 0,
 
-  /**
-   * Steps for a unit animation.
-   *
-   * @constant
-   */
-  UNIT_ANIM_STEP: 3,
+    offsetY: 0,
 
-  /**
-   * Time for a tile/property animation step.
-   *
-   * @constant
-   */
-  TILE_ANIM_TIME: 300,
+    /**
+     * @type {cwt.LayeredCanvas}
+     */
+    layerBG: new cwt.LayeredCanvas("canvas_layer1",1,canvasW,canvasH),
 
-  /**
-   * Steps for a tile/property animation.
-   *
-   * @constant
-   */
-  TILE_ANIM_STEP: 8,
+    /**
+     * @type {cwt.LayeredCanvas}
+     */
+    layerMap: new cwt.LayeredCanvas("canvas_layer2",8,canvasW,canvasH),
 
-  /**
-   * Animation time for a one frame layer.
-   *
-   * @constant
-   */
-  ONE_FRAME_ANIM_TIME: 9999,
+    /**
+     * @type {cwt.LayeredCanvas}
+     */
+    layerFog: new cwt.LayeredCanvas("canvas_layer3",1,canvasW,canvasH),
 
-  /**
-   * Steps for a one frame layer.
-   *
-   * @constant
-   */
-  ONE_FRAME_ANIM_STEP: 1,
+    /**
+     * @type {cwt.LayeredCanvas}
+     */
+    layerUnit: new cwt.LayeredCanvas("canvas_layer4",3,canvasW,canvasH),
 
-  offsetX : 0,
+    /**
+     * @type {cwt.LayeredCanvas}
+     */
+    layerEffects: new cwt.LayeredCanvas("canvas_layer5",1,canvasW,canvasH),
 
-  offsetY : 0,
+    /**
+     * @type {cwt.LayeredCanvas}
+     */
+    layerUI: new cwt.LayeredCanvas("canvas_layer6",1,canvasW,canvasH),
 
-  /**
-   * Layer #1: Background behind all other layers
-   *
-   * @type {cwt.ScreenLayer}
-   */
-  backgroundLayer: new cwt.ScreenLayer(this.ONE_FRAME_ANIM_STEP, this.ONE_FRAME_ANIM_TIME),
+    indexUnitAnimation: 0,
 
-  /**
-   * Layer #2
-   *
-   * @type {cwt.ScreenLayer}
-   */
-  mapLayer: new cwt.ScreenLayer(this.TILE_ANIM_STEP, this.TILE_ANIM_TIME),
+    indexMapAnimation: 0,
 
-  /**
-   * Layer #3
-   *
-   * @type {cwt.ScreenLayer}
-   */
-  fogLayer: new cwt.ScreenLayer(this.ONE_FRAME_ANIM_STEP, this.ONE_FRAME_ANIM_TIME),
+    /**
+     *
+     * @param delta
+     */
+    renderCycle: function (delta) {
+      var index;
 
-  /**
-   * Layer #4
-   *
-   * @type {cwt.ScreenLayer}
-   */
-  unitLayer: new cwt.ScreenLayer(this.UNIT_ANIM_STEP, this.UNIT_ANIM_TIME),
+      this.curTime_ += delta;
+      if (this.curTime_ > 150) {
+        this.curTime_ = 0;
 
-  /**
-   * Layer #5
-   *
-   * @type {cwt.ScreenLayer}
-   */
-  effectLayer: new cwt.ScreenLayer(this.ONE_FRAME_ANIM_STEP, this.ONE_FRAME_ANIM_TIME),
+        // calc unit animation layer step
+        this.unitAnimationHalfStep_ = !this.unitAnimationHalfStep_;
+        if (!this.unitAnimationHalfStep_) {
 
-  /**
-   * Layer #6: Front layer
-   *
-   * @type {cwt.ScreenLayer}
-   */
-  interfaceLayer: new cwt.ScreenLayer(this.ONE_FRAME_ANIM_STEP, this.ONE_FRAME_ANIM_TIME)
+          index = this.indexUnitAnimation + 1;
+          if (index === 3) {
+            index = 0;
+          }
 
-};
+          // render unit animation layer
+          this.layerUnit.renderLayer(index);
+          this.indexUnitAnimation = index;
+        }
+
+        // map animation layer
+        index = this.indexMapAnimation + 1;
+        if (index === 8) {
+          index = 0;
+        }
+
+        // render map animation layer
+        this.layerMap.renderLayer(index);
+        this.indexMapAnimation = index;
+      }
+    }
+  };
+})();

@@ -26,7 +26,7 @@ cwt.Localization = {
    * Returns the localized string of a given identifier.
    *
    * @param {String} key identifier
-   * @return {String|String[]}
+   * @return {String}
    */
   forKey: function (key) {
     if (cwt.DEBUG) cwt.assert(this.lang_);

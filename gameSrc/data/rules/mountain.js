@@ -1,3 +1,2 @@
-(new cwt.GameflowHook()).getVision = function(){
-
-};
+//(new cwt.GameflowHook()).getVision = function(){
+//};
