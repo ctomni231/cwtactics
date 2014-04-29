@@ -45,10 +45,14 @@ PAGE_PROG.registerSection({
           
           // RENDER IT 
           render();
+          after();
         }
       );
     }
-    else render();
+    else {
+      render();
+      after();
+    }
   },
   
   after: function(){
