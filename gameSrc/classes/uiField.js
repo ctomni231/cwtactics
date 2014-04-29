@@ -152,7 +152,7 @@ cwt.UIField = my.Class( /** @lends cwt.UIField.prototype */ {
       case cwt.UIField.STYLE_NSW :
         ctx.fillRect(this.x + 1, this.y + 1, this.width - 1 , 2);
         ctx.fillRect(this.x + 1, this.y + this.height - 3, this.width - 1 , 2);
-        ctx.fillRect(this.x + 1, this.y , 2 , this.height - 2);
+        ctx.fillRect(this.x + 1, this.y + 1, 2 , this.height - 2);
         break;
 
       case cwt.UIField.STYLE_NES :
