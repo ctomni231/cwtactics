@@ -50,6 +50,13 @@ PAGE_PROG.registerSection({
     }
     else render();
   },
+  
+  after: function(){
+      $('#sectionNews a[title]').qtip({
+              position: { my: 'left middle', at: 'right middle' },
+              style:    { classes: 'qtip-bootstrap' }
+      });
+  },
 
   template: [
     "<h1>Recent News</h1>",
