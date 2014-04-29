@@ -5,8 +5,8 @@
  */
 window.cwt = {
 
-  // MOD_PATH: "http://localhost:8000/",
-  MOD_PATH: "http://192.168.1.30:8000/",
+  MOD_PATH: "http://localhost:8000/",
+  // MOD_PATH: "http://192.168.1.30:8000/",
 
   /**
    * Tile size base.

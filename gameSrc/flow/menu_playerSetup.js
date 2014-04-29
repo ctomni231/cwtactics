@@ -31,7 +31,7 @@ util.scoped(function(){
   // masks for teams
   var teamIdentifiers = [ "A","B","C","D" ];
   
-  // buttons
+  // elements
   var modeBtn = document.getElementById("options.playerConf.coMode");
   var selPlayerBtn = document.getElementById("options.playerConf.selectedSlot");
   var coModeBtn = document.getElementById("options.playerConf.coMode");

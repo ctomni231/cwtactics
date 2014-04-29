@@ -10,16 +10,16 @@ cwt.Gameflow.addState({
      */
     this.background = null;
 
-    this.tooltip = new cwt.uiGameButton(
+    this.tooltip = new cwt.UIField(
       parseInt(cwt.Screen.width*0.1, 10),
       parseInt(cwt.Screen.height*0.2, 10),
       parseInt(cwt.Screen.width*0.8, 10),
-      40,
+      120,
       "",
       10
     );
 
-    this.button = new cwt.uiGameButton(
+    this.button = new cwt.UIField(
       parseInt(cwt.Screen.width*0.5 - 150, 10),
       parseInt(cwt.Screen.height*0.8, 10) - 20,
       300,

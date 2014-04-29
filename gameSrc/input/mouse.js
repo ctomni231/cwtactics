@@ -5,8 +5,12 @@ cwt.Input.create("mouse", function () {
     return;
   }
 
+  var canvas = document.getElementById("canvas_layer6");
+  var sx = 1.0;
+  var sy = 1.0;
+
   // register move listener
-  document.getElementById("canvas_layer6").mousemove = function (ev) {
+  canvas.onmousemove = function (ev) {
     var id = ev.target.id;
 
     var x, y;
@@ -22,13 +26,28 @@ cwt.Input.create("mouse", function () {
       y = ev.layerY;
     }
 
+    var cw = canvas.width;
+    var ch = canvas.height;
+
+    // get the scale based on actual width;
+    sx = cw / canvas.offsetWidth;
+    sy = ch / canvas.offsetHeight;
+
+    var state = cwt.Gameflow.activeState;
+    if (state.inputMove) {
+      state.inputMove(parseInt(x*sx),parseInt(y*sy));
+    }
+
+
     // convert to a tile position
+    /*
     x = cwt.Screen.offsetX + parseInt(x / cwt.Screen.TILE_BASE, 10);
     y = cwt.Screen.offsetY + parseInt(y / cwt.Screen.TILE_BASE, 10);
 
     if (x !== cwt.Cursor.x || y !== cwt.Cursor.y) {
       cwt.Input.pushAction(cwt.Input.TYPE_HOVER, x, y);
     }
+    */
   };
 
   // register click listener

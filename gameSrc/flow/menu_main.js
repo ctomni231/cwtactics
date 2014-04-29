@@ -1,58 +1,44 @@
-cwt.Gameflow.addState({
+cwt.ButtonFlowState({
+
   id: "MAIN_MENU",
+  last: "START_SCREEN",
 
-  init: function () {
-    this.buttons = new cwt.ButtonGroup(10,8);
+  init: function (layout) {
 
-    this.buttons.addButton(2,1,6,2,"MAIN_MENU_SKIRMISH",20);
-    this.buttons.addButton(2,3,6,2,"MAIN_MENU_NETWORK",20);
-    this.buttons.addButton(2,5,6,2,"MAIN_MENU_OPTIONS",20);
-  },
+    var h = parseInt((cwt.SCREEN_HEIGHT - 16) / 2, 10);
+    var w = parseInt((cwt.SCREEN_WIDTH - 16) / 2, 10);
 
-  enter: function () {
-    cwt.Screen.layerUI.clear();
+    layout
 
-    this.rendered = false;
-    this.index = 0;
-  },
+      .addRowGap(h)
 
-  update: function (delta, lastInput) {
-    if (lastInput) {
-      switch (lastInput.key) {
+      // -------------------------------------------------------
 
-        case cwt.Input.TYPE_UP:
-        case cwt.Input.TYPE_DOWN:
-          this.buttons.handleInput(lastInput);
-          this.rendered = false;
-          break;
+      .addColGap(w)
+      .addButton(16, 4, 0, "MAIN_MENU_SKIRMISH", 20, function () {
+        cwt.Gameflow.changeState("VERSUS");
+      })
+      .breakLine()
 
-        case cwt.Input.TYPE_ACTION:
-          switch (this.buttons.activeButton().key) {
-            case "MAIN_MENU_SKIRMISH":
-              cwt.Gameflow.changeState("VERSUS");
-              break;
+      // -------------------------------------------------------
 
-            case "MAIN_MENU_NETWORK":
-              break;
+      .addRowGap(2)
 
-            case "MAIN_MENU_OPTIONS":
-              cwt.Gameflow.changeState("OPTIONS");
-              break;
-          }
-          break;
+      // -------------------------------------------------------
 
-        case cwt.Input.TYPE_CANCEL:
-          cwt.Gameflow.changeState("START_SCREEN");
-          break;
-      }
-    }
-  },
+      .addColGap(w)
+      .addButton(16, 4, 0, "MAIN_MENU_NETWORK", 20)
+      .breakLine()
 
-  render: function () {
-    if (!this.rendered) {
-      var ctx = cwt.Screen.layerUI.getContext();
-      this.buttons.draw(ctx);
-      this.rendered = true;
-    }
+      // -------------------------------------------------------
+
+      .addRowGap(2)
+
+      // -------------------------------------------------------
+
+      .addColGap(w)
+      .addButton(16, 4, 0, "MAIN_MENU_OPTIONS", 20, function () {
+        cwt.Gameflow.changeState("OPTIONS");
+      });
   }
 });

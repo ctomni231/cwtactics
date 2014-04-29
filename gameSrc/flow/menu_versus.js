@@ -2,7 +2,7 @@ cwt.Gameflow.addState({
   id:"VERSUS",
 
   init: function () {
-    this.buttons = [
+    this.elements = [
     ];
   },
 
