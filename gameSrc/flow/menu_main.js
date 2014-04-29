@@ -15,7 +15,7 @@ cwt.ButtonFlowState({
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(16, 4, 0, "MAIN_MENU_SKIRMISH", 20, function () {
+      .addButton(16, 4, 0, "MAIN_MENU_SKIRMISH", cwt.UIField.STYLE_NORMAL, 20, function () {
         cwt.Gameflow.changeState("VERSUS");
       })
       .breakLine()
@@ -27,7 +27,7 @@ cwt.ButtonFlowState({
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(16, 4, 0, "MAIN_MENU_NETWORK", 20)
+      .addButton(16, 4, 0, "MAIN_MENU_NETWORK", cwt.UIField.STYLE_NORMAL, 20)
       .breakLine()
 
       // -------------------------------------------------------
@@ -37,7 +37,7 @@ cwt.ButtonFlowState({
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(16, 4, 0, "MAIN_MENU_OPTIONS", 20, function () {
+      .addButton(16, 4, 0, "MAIN_MENU_OPTIONS", cwt.UIField.STYLE_NORMAL, 20, function () {
         cwt.Gameflow.changeState("OPTIONS");
       });
   }

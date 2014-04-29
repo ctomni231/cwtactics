@@ -16,7 +16,8 @@ cwt.Gameflow.addState({
       parseInt(cwt.Screen.width*0.8, 10),
       120,
       "",
-      10
+      10,
+      cwt.UIField.STYLE_NORMAL
     );
 
     this.button = new cwt.UIField(
@@ -25,7 +26,8 @@ cwt.Gameflow.addState({
       300,
       40,
       "START",
-      20
+      20,
+      cwt.UIField.STYLE_NORMAL
     );
   },
 

@@ -51,16 +51,17 @@ cwt.UIScreenLayout = my.Class(/** @lends cwt.UIScreenLayout.prototype */ {
    * @param {Number} tilesX
    * @param {Number} tilesY
    * @param {Number} offsetY
+   * @param {Number} style
    * @param key
    * @param {Number?} offsetY
    * @param {Function?} action
    * @return {cwt.UIScreenLayout}
    */
-  addButton: function (tilesX, tilesY, offsetY, key, fSize, action) {
-    if (arguments.length === 4) {
+  addButton: function (tilesX, tilesY, offsetY, key, style, fSize, action) {
+    if (arguments.length === 5) {
       action = null;
       fSize = 12;
-    } else if (arguments.length === 5 && typeof fSize === "function") {
+    } else if (arguments.length === 6 && typeof fSize === "function") {
       action = fSize;
       fSize = 12;
     }
@@ -76,6 +77,7 @@ cwt.UIScreenLayout = my.Class(/** @lends cwt.UIScreenLayout.prototype */ {
       tilesY*cwt.TILE_BASE,
       key,
       fSize,
+      style,
       action
     );
 

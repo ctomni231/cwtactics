@@ -15,7 +15,7 @@ cwt.ButtonFlowState({
 
       // -------------------------------------------------------
 
-      .addColGap(w).addButton(16, 8, 0, "OPTIONS_WIPE_OUT_TEXT", 8)
+      .addColGap(w).addButton(16, 8, 0, "OPTIONS_WIPE_OUT_TEXT", cwt.UIField.STYLE_NORMAL, 8)
       .breakLine()
 
       // -------------------------------------------------------
@@ -25,11 +25,11 @@ cwt.ButtonFlowState({
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(6, 2, 0, "OPTIONS_WIPE_OUT_NO", function () {
+      .addButton(6, 2, 0, "OPTIONS_WIPE_OUT_NO", cwt.UIField.STYLE_NORMAL, function () {
         cwt.Gameflow.changeState("OPTIONS");
       })
       .addColGap(4)
-      .addButton(6, 2, 0, "OPTIONS_WIPE_OUT_YES", function () {
+      .addButton(6, 2, 0, "OPTIONS_WIPE_OUT_YES", cwt.UIField.STYLE_NORMAL, function () {
         cwt.Storage.wipeOutAll(function () {
           delete localStorage.cwt_hasCache;
           document.location.reload();

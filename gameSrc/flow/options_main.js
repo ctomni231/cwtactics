@@ -15,11 +15,11 @@ cwt.ButtonFlowState({
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(4, 2, 0, "OPTIONS_SFX_VOL_DOWN", function () {
+      .addButton(4, 2, 0, "OPTIONS_SFX_VOL_DOWN", cwt.UIField.STYLE_NW, function () {
 
       })
-      .addButton(8, 2, 0, "")
-      .addButton(4, 2, 0, "OPTIONS_SFX_VOL_UP", function () {
+      .addButton(8, 2, 0, "", cwt.UIField.STYLE_N)
+      .addButton(4, 2, 0, "OPTIONS_SFX_VOL_UP", cwt.UIField.STYLE_NE, function () {
 
       })
       .breakLine()
@@ -27,11 +27,11 @@ cwt.ButtonFlowState({
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(4, 2, 0, "OPTIONS_MUSIC_VOL_DOWN", function () {
+      .addButton(4, 2, 0, "OPTIONS_MUSIC_VOL_DOWN", cwt.UIField.STYLE_SW, function () {
 
       })
-      .addButton(8, 2, 0, "")
-      .addButton(4, 2, 0, "OPTIONS_MUSIC_VOL_UP", function () {
+      .addButton(8, 2, 0, "", cwt.UIField.STYLE_S)
+      .addButton(4, 2, 0, "OPTIONS_MUSIC_VOL_UP", cwt.UIField.STYLE_ES, function () {
 
       })
       .breakLine()
@@ -43,24 +43,13 @@ cwt.ButtonFlowState({
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(2, 2, 0, "")
-      .addButton(14, 2, 0, "OPTIONS_CHECKBOX_ANIMATED_TILES_TEXT",8)
+      .addButton(2, 2, 0, "", cwt.UIField.STYLE_NW)
+      .addButton(14, 2, 0, "OPTIONS_CHECKBOX_ANIMATED_TILES_TEXT", cwt.UIField.STYLE_NE,8)
       .breakLine()
 
       .addColGap(w)
-      .addButton(2, 2, 0, "")
-      .addButton(14, 2, 0, "OPTIONS_CHECKBOX_FORCE_TOUCH_TEXT",8)
-      .breakLine()
-
-      // -------------------------------------------------------
-
-      .addRowGap(1)
-
-      // -------------------------------------------------------
-
-      .addColGap(w)
-      .addButton(8, 2, 0, "OPTIONS_MENU_CHANGE_KEYBOARD_LAYOUT",8)
-      .addButton(8, 2, 0, "OPTIONS_MENU_CHANGE_GAMEPAD_LAYOUT",8)
+      .addButton(2, 2, 0, "", cwt.UIField.STYLE_SW)
+      .addButton(14, 2, 0, "OPTIONS_CHECKBOX_FORCE_TOUCH_TEXT", cwt.UIField.STYLE_ES,8)
       .breakLine()
 
       // -------------------------------------------------------
@@ -70,7 +59,18 @@ cwt.ButtonFlowState({
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(16, 2, 0, "OPTIONS_MENU_WIPE_OUT", function () {
+      .addButton(8, 2, 0, "OPTIONS_MENU_CHANGE_KEYBOARD_LAYOUT", cwt.UIField.STYLE_NSW,8)
+      .addButton(8, 2, 0, "OPTIONS_MENU_CHANGE_GAMEPAD_LAYOUT", cwt.UIField.STYLE_NES,8)
+      .breakLine()
+
+      // -------------------------------------------------------
+
+      .addRowGap(1)
+
+      // -------------------------------------------------------
+
+      .addColGap(w)
+      .addButton(16, 2, 0, "OPTIONS_MENU_WIPE_OUT", cwt.UIField.STYLE_NORMAL, function () {
         cwt.Gameflow.changeState("CONFIRM_WIPE_OUT_SCREEN");
       })
       .breakLine()
@@ -82,7 +82,7 @@ cwt.ButtonFlowState({
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(6, 2, 0, "OPTIONS_MENU_GO_BACK", function () {
+      .addButton(6, 2, 0, "OPTIONS_MENU_GO_BACK", cwt.UIField.STYLE_NORMAL, function () {
         cwt.Gameflow.changeState("MAIN_MENU");
       });
   }
