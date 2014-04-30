@@ -4,6 +4,7 @@
 	<image file="image/background/AW1Title.png" />
 	<image file="image/background/AW2Map.png" />
 	<image file="image/background/AW2Sturm.png" />
+	<image file="image/background/AWBWtitle.png" />
 	<image file="image/background/AWDoRBack.png" />
 	<image file="image/background/AWDoRBattle.gif" />
 	<image file="image/background/AWDoRSpace.png" />
@@ -27,6 +28,8 @@
 	<image file="image/background/CWXTitle.png" />
 	<image file="image/background/day.png" />
 	<image file="image/background/lighting bolt.png" />
+	<image file="image/background/MinuteWars.png" />
 	<image file="image/background/night.png" />
+	<image file="image/background/TheGreatOwl.jpg" />
 	<image file="image/background/TheGreatOwl.png" />
 </background>

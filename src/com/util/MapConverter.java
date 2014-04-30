@@ -1,23 +1,35 @@
-package map.converter;
+package com.util;
+//(JSRulz)- put it within the Utilities package instead of map.Converter so I could run it :)
 
 import java.util.ArrayList;
 
-
 /**
+ * MapConverter.java
+ * 
+ * This was produced to convert the maps found on Headphone's AWBW Map Maker
+ * (http://headphone.110mb.com/AWBW_Map_Maker.html) into CWT maps. 
+ * 
  * @author theether
+ * @license Look into "LICENSE" file for further information
+ * @version 04.29.14
  */
 public class MapConverter {
 
-    static String input;
-    static String output;
-    static String players="";//"026" means there are 3 players, orange star, green earth and whatever the 7th team is
+	//"026" means there are 3 players, orange star, green earth and whatever the 7th team is
+    private static String players = "";
     
     /**
      * @param args (optional) mapstring, name, credits
      */
     public static void main(String[] args) {
-        String name;
+        
+    	//JSRulz - (Only used in main so scoped it here and removed static)
+    	String input;
+        String output;
+        
+    	String name;
         String credits;
+        
         if(args.length>=3)
         {
             input=args[0];
@@ -46,14 +58,15 @@ public class MapConverter {
         
         System.out.println(output);
     }
+    
     /**
      * Converts the whole map. This is the important method. (along with convertProp and convertTile)
      * @param name the name, the map shall have
-     * @param in the input map in Headphone's format
+     * @param input the input map in Headphone's format
      * @param credits like, who built the map? something like that
      * @return 
      */
-    static String convert(String name, String in, String credits)
+    public static String convert(String name, String input, String credits)
     {
         String out= "{\n\t" +
                     "\"name\": \""+name+"\",\n\t" +
@@ -62,7 +75,7 @@ public class MapConverter {
         ArrayList<String> properties=new ArrayList<String>();
         Boolean test;
         
-        int map[][]= new int[in.indexOf("\n")][in.split("\n").length];//get the correctly sized array
+        int map[][]= new int[input.indexOf("\n")][input.split("\n").length];//get the correctly sized array
         
         //fill the map
         for(int j=0;j<map[0].length;j++)
@@ -71,6 +84,8 @@ public class MapConverter {
                 String tile=convertTile(input.charAt(j*(map.length+1)+i));
                 if(tile.equals(""))
                 {
+                	//JSRulz - (input) Made it take the data from the inner scope 
+                	//          instead of the static scope
                     properties.add(convertProp(properties.size(),i,j,input.charAt(j*(map.length+1)+i)));
                     tile="PLIN";
                 }
@@ -142,7 +157,8 @@ public class MapConverter {
      * @param tile char code from Headphone's mapmaker
      * @return the finished entry for the property list
      */
-    static String convertProp(int index, int x, int y, char tile)
+    //JSRulz - Prevented access if outside the class (to make it clear cut)
+    private static String convertProp(int index, int x, int y, char tile)
     {
         String out="["+index+", "+x+", "+y+", \"";
         int team=-1;
@@ -334,7 +350,8 @@ public class MapConverter {
      * @param tile the char code of the tile
      * @return the JSON representation. "" in case of a building
      */
-    static String convertTile(char tile)
+  //JSRulz - Prevented access if outside the class (to make it clear cut)
+    private static String convertTile(char tile)
     {
         if(     ((int)'a'<=(int)tile && (int)tile<=(int)'y')||
                 ((int)'1'<=(int)tile && (int)tile<=(int)'9')||
@@ -385,7 +402,8 @@ public class MapConverter {
             case ']':
                 return "BRDG";
         }
-        return "BLAK";
+        //JSRulz - BLAK == NULL in CWT map type :)
+        return "NULL";
     }
     
 }
