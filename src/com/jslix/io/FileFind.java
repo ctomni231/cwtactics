@@ -40,6 +40,8 @@ public class FileFind {
     private ArrayList<String> fileType;
     /** Avoids specific directories */
     private ArrayList<String> avoidDir;
+    /** Checks to see if data has been searched previously **/
+    private boolean searched;
 
     /**
      * This class searches for files from the root directory.
@@ -103,6 +105,7 @@ public class FileFind {
      * @param suffix The suffix of the file path to look for (case sensitive)
      */
     public void addForceType(String suffix){
+    	searched = false;
         if(suffix.startsWith("."))
             suffix = suffix.substring(1);
         if(!suffix.equals(""))
@@ -116,6 +119,7 @@ public class FileFind {
      * @param directory The directory to avoid
      */
     public void addAvoidDir(String directory){
+    	searched = false;
         if(!directory.equals(""))
             avoidDir.add(directory);
     }
@@ -126,6 +130,8 @@ public class FileFind {
      * @return The list of searched file paths
      */
     public ArrayList<FileIndex> getAllFiles(){
+    	if(!searched)
+    		refactor();
         return allFiles;
     }
 
@@ -133,8 +139,9 @@ public class FileFind {
      * This function searches all files recursively from the directory
      * path specified and puts them into a list.
      */
-    public void refactor(){
+    private void refactor(){
         allFiles.clear();
+        searched = true;
         try{
             getFiles(thePath);
         }catch(AccessControlException ex){
@@ -407,5 +414,6 @@ public class FileFind {
         allFiles = new ArrayList<FileIndex>();
         fileType = new ArrayList<String>();
         avoidDir = new ArrayList<String>();
+        searched = false;
     }
 }

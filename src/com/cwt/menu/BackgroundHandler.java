@@ -21,7 +21,7 @@ import org.newdawn.slick.Graphics;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 02.05.13
+ * @version 04.29.14
  */
 public class BackgroundHandler implements ScreenSkeleton {
 
@@ -117,8 +117,6 @@ public class BackgroundHandler implements ScreenSkeleton {
             fileFinder.addForceType(".gif");
             fileFinder.addForceType(".png");
             fileFinder.addForceType(".bmp");
-
-            fileFinder.refactor();
 
             writer.addXMLTag("background");
 

@@ -22,7 +22,7 @@ import com.jslix.parser.XML_Writer;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 12.04.11
+ * @version 04.29.14
  */
 public class MapElement implements Runnable{
 
@@ -219,8 +219,6 @@ public class MapElement implements Runnable{
             //Forces it to only look for XML files
             fileFinder.addAvoidDir(".svn");
             fileFinder.addForceType(".xml");
-
-            fileFinder.refactor();
 
             writer.addXMLTag("object");
 

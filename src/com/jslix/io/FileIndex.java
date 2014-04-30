@@ -8,7 +8,7 @@ package com.jslix.io;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 11.07.10
+ * @version 04.29.14
  */
 
 public class FileIndex {
@@ -43,7 +43,7 @@ public class FileIndex {
      * @param filepath The path to the file
      * @param basepath The path to the file's base directory
      */
-    public final void reFactor(String filename,
+    protected final void reFactor(String filename,
             String filepath, String basepath){
         fname = filename;
 

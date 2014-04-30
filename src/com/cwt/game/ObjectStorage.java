@@ -17,7 +17,7 @@ import com.jslix.parser.XML_Writer;
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
- * @version 4.20.13
+ * @version 04.29.14
  */
 public class ObjectStorage implements Runnable{
 	
@@ -273,7 +273,6 @@ public class ObjectStorage implements Runnable{
     	XML_Writer writer = new XML_Writer("data","objectlist.xml");   	
 
     	if(fileFinder.changeDirectory("image")){
-    		fileFinder.refactor();
 	        writer.addXMLTag("object");
 	
 	        for(FileIndex file: fileFinder.getAllFiles()){
