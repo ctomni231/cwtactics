@@ -1,19 +1,113 @@
+
+/**
+weather.js
+
+A simple class that does the snow particle demo in JS
+
+@author = Carr, Crecen
+@version = 04.30.14
+*/
+//First attempt at creating the snow weather for JavaScript
+//It turned out to be a chore to draw circles, but I think
+//I figured it out...
 cwt.Gameflow.addState({
   id: "WEATHER",
+  last: "MAIN_MENU",
 
   init: function () {
+    //Since the time is so low I probably don't need to track it.
+	//But it seems memory intensive to pull off, there has to be
+	//a less expensive way
+	
+	//Keeps track of the total time
+	this.TIME = 1;
+	
+	//Keeps track of the frequency of a snowball
+	this.FREQUENCY = 2;
+	
+	//Keeps track of the delta (real) time
+	this.time = 0;
+	
+	//The type of snowball to draw
+	this.type = [];
+	//The x-axis position of the snowball
+	this.posx = [];
+	//The y-axis position of the snowball
+	this.posy = [];
   },
 
   enter: function () {
-    //cwt.Screen.layerUI.clear();
+    //Clears the UI layer for demo
+    cwt.Screen.layerUI.clear();
   },
 
   update: function (delta, lastInput) {
+  
+	// action leads into main menu (Thanks BlackCat
+    if (lastInput && lastInput.key === cwt.Input.TYPE_ACTION)
+      cwt.Gameflow.changeState("MAIN_MENU");
+	  
+	this.time += delta;
+	if (this.time > this.TIME) {
+		
+		//Particle creation (totally fixed up to take as little memory as possible)
+		for(var i = 0; i < this.type.length+1; i++){
+			if(parseInt(Math.random()*this.FREQUENCY) == 1){
+				if(i == this.type.length){
+					this.type.push(parseInt(Math.random()*3));
+					this.posx.push(((Math.random()*cwt.Screen.width+100/10)*10)-200);
+					this.posy.push(-10);
+					break;
+				}
+				if(this.type[i] == -1){
+					this.type[i] = parseInt(Math.random()*3);
+					this.posx[i] = ((Math.random()*cwt.Screen.width+100/10)*10)-200;
+					this.posy[i] = -10;
+					break;
+				}
+				
+			}
+		}
+		
+		//Snow particle updates
+		for(var i = 0; i < this.type.length; i++){
+			if(this.type[i] == -1)
+				continue;
+
+			if(this.type[i] == 2){
+				this.posx[i] += 1;
+			}
+			this.posx[i] += 1;
+			this.posy[i] += 4;
+
+			//Destroy particles
+			if(this.posy[i] > cwt.Screen.height+100)
+				this.type[i] = -1;
+		}
+
+		//updates time
+        this.time -= this.TIME;
+	};
   },
 
   render: function () {
     var ctx = cwt.Screen.layerUI.getContext();
-	ctx.fillStyle = "red";
-    ctx.fillRect( 10,10,300,300 );
+	
+	ctx.fillStyle = "black";
+    ctx.fillRect( 0, 0, cwt.Screen.width, cwt.Screen.height );
+	
+	//Render particles
+	for(var i = 0; i < this.type.length; i++){
+		if(this.type[i] == -1)
+			continue;
+				
+		//arc(x, y, radius, startAngle, endAngle, counterClockwise(opt) )
+		//Ugh, so hard to draw circles (Played with line width until correct
+		ctx.strokeStyle = "rgba(255,255,255,0.3)";
+		ctx.lineWidth = 4 + this.type[i]*2;
+		ctx.beginPath();
+		ctx.arc(this.posx[i], this.posy[i], 2 + this.type[i], 0, Math.PI*2);
+		ctx.stroke();
+	}
   }
 });
