@@ -1,23 +1,17 @@
-cwt.Gameflow.addState({
+cwt.ButtonFlowState({
+
   id: "PARAMETER_SETUP_SCREEN",
-
-  init: function () {
-
-  },
+  last: "PLAYER_SETUP_SCREEN",
 
   enter: function () {
-
   },
 
-  update: function (delta, lastInput) {
-
-  },
-
-  render: function (delta) {
+  init: function (layout) {
+    var h = parseInt((cwt.SCREEN_HEIGHT - 22) / 2, 10);
+    var w = parseInt((cwt.SCREEN_WIDTH - 18) / 2, 10);
 
   }
 });
-
 /*
 util.scoped(function(){
   

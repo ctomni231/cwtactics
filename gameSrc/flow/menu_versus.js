@@ -6,6 +6,7 @@ cwt.ButtonFlowState({
   enter: function () {
     this.selectedMap = null;
     this.selectPage(0);
+    this.layout.getButtonByKey("MAP_SELECT_NAME").text = "";
   },
 
   init: function (layout) {
@@ -13,7 +14,7 @@ cwt.ButtonFlowState({
     var MAP_LIST_SIZE = 7;
 
     var h = parseInt((cwt.SCREEN_HEIGHT - 22) / 2, 10);
-    var w = parseInt((cwt.SCREEN_WIDTH - 17) / 2, 10);
+    var w = parseInt((cwt.SCREEN_WIDTH - 18) / 2, 10);
     var state = this;
 
     var cPage = 0;
@@ -73,7 +74,7 @@ cwt.ButtonFlowState({
       .addButton(2, 2, 0, "MAP_SELECT_PAGE_RIGHT", cwt.UIField.STYLE_NE, 8, function () {
       })
 
-      .addColGap(3)
+      .addColGap(4)
       .addButton(8, 2, 0, "MAP_SELECT_NAME", cwt.UIField.STYLE_NORMAL, 8)
       .breakLine()
 
@@ -83,7 +84,8 @@ cwt.ButtonFlowState({
       .addButton(6, 2, 0, "MAP_SELECT_1", cwt.UIField.STYLE_EW, 8, function () {
         selectMap(0);
       })
-      .addColGap(1)
+
+      .addColGap(2)
 
       // map preview canvas
       .addCustomField(10, 10, 0, "MAP_SELECT_PREVIEW", function (ctx) {
@@ -197,15 +199,17 @@ cwt.ButtonFlowState({
         cwt.Gameflow.changeState("MAIN_MENU");
       })
 
-      .addColGap(4)
+      .addColGap(5)
       .addButton(8, 2, 0, "MENU_CONFIGURED_MATCH", cwt.UIField.STYLE_NEW, 8, function () {
+        cwt.GameSelectionDTO.map = this.selectedMap;
+        this.selectedMap = null;
         cwt.Gameflow.changeState("PLAYER_SETUP_SCREEN");
       })
       .breakLine()
 
-      .addColGap(w + 9)
+      .addColGap(w + 10)
       .addButton(8, 2, 0, "MENU_FAST_MATCH", cwt.UIField.STYLE_ESW, 8, function () {
-        cwt.Gameflow.changeState("PLAYER_SETUP_SCREEN");
+        // cwt.Gameflow.changeState("PLAYER_SETUP_SCREEN");
       });
 
     buttonList = [

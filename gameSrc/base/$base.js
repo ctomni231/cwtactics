@@ -37,6 +37,9 @@ window.cwt = {
   INACTIVE: -1,
 
   /** @constant */
+  DESELECT_ID: -2,
+
+  /** @constant */
   NOT_AVAILABLE: -2,
 
   /**

@@ -181,8 +181,22 @@ cwt.Localization.registerLang({
   "MAP_SELECT_PAGE" : "",
   "MAP_SELECT_PAGE_RIGHT" : ">>",
   "MENU_BACK" : "Back",
+  "MENU_RIGHT" : ">>",
+  "MENU_LEFT" : "<<",
+  "MENU_NEXT" : "Next",
   "MENU_CONFIGURED_MATCH" : "Configured Match",
   "MENU_FAST_MATCH" : "Fast Match",
+
+  "PLAYER_CONFIG_SLOT1" : "Slot 1",
+  "PLAYER_CONFIG_SLOT2" : "Slot 2",
+  "PLAYER_CONFIG_SLOT3" : "Slot 3",
+  "PLAYER_CONFIG_SLOT4" : "Slot 4",
+
+  "PLAYER_CONFIG_NAME" : "Name",
+  "PLAYER_CONFIG_TYPE" : "Type",
+  "PLAYER_CONFIG_TEAM" : "Team",
+  "PLAYER_CONFIG_CO_A" : "Main CO",
+  "PLAYER_CONFIG_GAMEMODE" : "Gamemode",
 
   "VALUE_R" : "",
   "VALUE_L" : "",

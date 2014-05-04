@@ -52,6 +52,7 @@ cwt.ButtonFlowState = function (desc) {
           case cwt.Input.TYPE_ACTION:
             var button = this.layout.activeButton();
             button.action.call(this,button,this);
+            this.rendered = false;
             break;
 
           case cwt.Input.TYPE_CANCEL:
