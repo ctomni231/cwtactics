@@ -191,6 +191,13 @@ cwt.Localization.registerLang({
   "OPTIONS_KEYMAP_ACTION":"Aktion",
   "OPTIONS_KEYMAP_CANCEL":"Abbrechen",
 
+  "MAP_SELECT_PAGE_LEFT" : "<<",
+  "MAP_SELECT_PAGE" : "",
+  "MAP_SELECT_PAGE_RIGHT" : ">>",
+  "MENU_BACK" : "Zurück",
+  "MENU_CONFIGURED_MATCH" : "Eigenes Spiel",
+  "MENU_FAST_MATCH" : "Schnelles Spiel",
+
   "VALUE_R" : "",
   "VALUE_L" : "",
   "VALUE_U" : "",

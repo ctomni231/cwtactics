@@ -6,6 +6,12 @@ cwt.Sprite = my.Class(/** @lends cwt.Sprite.prototype */ {
   STATIC: {
 
     /** @constant */
+    MINIMAP_2x2: 0,
+
+    /** @constant */
+    MINIMAP_4x4: 1,
+
+    /** @constant */
     UNIT_STATES: 30,
 
     /** @constant */

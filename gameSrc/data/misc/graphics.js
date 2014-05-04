@@ -298,6 +298,11 @@ cwt.Graphics = {
 
   OTHERS: {
 
+    MINIMAP: [
+      "image/map/AWDS(C)-2x2.png",
+      "image/map/AWDS(C)-4x4.png"
+    ],
+
     BACKGROUNDS: [
       "image/mobile/background/RedStar.jpg",
       "image/mobile/background/YellowComet.jpg",

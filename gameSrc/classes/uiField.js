@@ -14,6 +14,8 @@ cwt.UIField = my.Class( /** @lends cwt.UIField.prototype */ {
     STYLE_NW:6,
     STYLE_ES:7,
     STYLE_SW:8,
+    STYLE_EW:13,
+    STYLE_NS:14,
     STYLE_ESW:9,
     STYLE_NEW:10,
     STYLE_NSW:11,
@@ -100,6 +102,16 @@ cwt.UIField = my.Class( /** @lends cwt.UIField.prototype */ {
       case cwt.UIField.STYLE_SW :
         ctx.fillRect(this.x + 1, this.y + this.height - 3, this.width - 1 , 2);
         ctx.fillRect(this.x + 1, this.y , 2 , this.height - 1);
+        break;
+
+      case cwt.UIField.STYLE_EW :
+        ctx.fillRect(this.x + this.width - 3, this.y, 2 , this.height);
+        ctx.fillRect(this.x + 1, this.y , 2 , this.height);
+        break;
+
+      case cwt.UIField.STYLE_NS :
+        ctx.fillRect(this.x, this.y + 1, this.width , 2);
+        ctx.fillRect(this.x, this.y + this.height - 3, this.width , 2);
         break;
 
       case cwt.UIField.STYLE_ESW :

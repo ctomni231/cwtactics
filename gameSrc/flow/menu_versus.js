@@ -1,315 +1,221 @@
-cwt.Gameflow.addState({
-  id:"VERSUS",
+cwt.ButtonFlowState({
 
-  init: function () {
-    this.elements = [
-    ];
-  },
+  id: "VERSUS",
+  last: "MAIN_MENU",
 
   enter: function () {
-    this.rendered = false;
-    this.index = 0;
+    this.selectedMap = null;
+    this.selectPage(0);
   },
 
-  update: function (delta, lastInput) {
+  init: function (layout) {
 
-    // last used input
-    if (lastInput) {
-      switch (lastInput.key) {
+    var MAP_LIST_SIZE = 7;
 
-        // ----------------------------------------
+    var h = parseInt((cwt.SCREEN_HEIGHT - 22) / 2, 10);
+    var w = parseInt((cwt.SCREEN_WIDTH - 17) / 2, 10);
+    var state = this;
 
-        case cwt.Input.TYPE_DOWN:
-          break;
+    var cPage = 0;
 
-        case cwt.Input.TYPE_UP:
-          break;
+    var buttonList;
+    var mapList = [
+      null, null, null, null, null, null, null
+    ];
 
-        case cwt.Input.TYPE_ACTION:
-          break;
-
-        case cwt.Input.TYPE_CANCEL:
-          return "MAIN_MENU";
-
-        // ----------------------------------------
+    var selectPage = this.selectPage = function (i) {
+      if (i < 0 || (i * MAP_LIST_SIZE) >= cwt.Maps.maps.length) {
+        return;
       }
-    }
-  },
 
-  render: function (delta) {
+      layout.getButtonByKey("MAP_SELECT_PAGE").text = (i+1).toString();
 
+      i = (i*MAP_LIST_SIZE);
+      for (var n=0;n<MAP_LIST_SIZE; n++) {
+        if (i + n >= cwt.Maps.maps.length) {
+          buttonList[n].text = "";
+          mapList[n] = null;
+        } else {
+          var map = cwt.Maps.maps[i + n];
+          buttonList[n].text = map;
+          mapList[n] = map;
+        }
+      }
+    };
+
+    var selectMapCallback_ = function (obj) {
+      state.selectedMap = obj.value;
+      state.rendered = false;
+      layout.getButtonByKey("MAP_SELECT_NAME").text = obj.key;
+      cwt.Input.releaseBlock();
+    };
+
+    var selectMap = function (index) {
+      if (!mapList[index]) {
+        return;
+      }
+
+      cwt.Input.requestBlock();
+      cwt.Storage.mapStorage.get(mapList[index], selectMapCallback_);
+    };
+
+    layout
+
+      .addRowGap(h)
+
+      // -------------------------------------------------------
+
+      .addColGap(w)
+
+      .addButton(2, 2, 0, "MAP_SELECT_PAGE_LEFT", cwt.UIField.STYLE_NW, 8, function () {
+      })
+      .addButton(2, 2, 0, "MAP_SELECT_PAGE", cwt.UIField.STYLE_N, 8)
+      .addButton(2, 2, 0, "MAP_SELECT_PAGE_RIGHT", cwt.UIField.STYLE_NE, 8, function () {
+      })
+
+      .addColGap(3)
+      .addButton(8, 2, 0, "MAP_SELECT_NAME", cwt.UIField.STYLE_NORMAL, 8)
+      .breakLine()
+
+      // -------------------------------------------------------
+
+      .addColGap(w)
+      .addButton(6, 2, 0, "MAP_SELECT_1", cwt.UIField.STYLE_EW, 8, function () {
+        selectMap(0);
+      })
+      .addColGap(1)
+
+      // map preview canvas
+      .addCustomField(10, 10, 0, "MAP_SELECT_PREVIEW", function (ctx) {
+        ctx.clearRect(this.x, this.y, this.width, this.height);
+
+        if (state.selectedMap) {
+          var BASE = (state.selectedMap.mpw >= cwt.MAX_MAP_WIDTH/2)? 2 : 4;
+
+          var miniMapImg = cwt.Image.sprites.MINIMAP.getImage(
+            BASE === 2 ? cwt.Sprite.MINIMAP_2x2 : cwt.Sprite.MINIMAP_4x4);
+
+          var map = state.selectedMap.map;
+          var typeMap = state.selectedMap.typeMap;
+          var xe = state.selectedMap.mpw;
+          var ye = state.selectedMap.mph;
+          var startX = this.x + parseInt(this.width / 2, 10) - parseInt(state.selectedMap.mpw / 2 * BASE, 10);
+          var startY = this.y + parseInt(this.height / 2, 10) - parseInt(state.selectedMap.mph / 2 * BASE, 10);
+
+          for (var x = 0; x < xe; x++) {
+            for (var y = 0; y < ye; y++) {
+
+              // 3.1. tiles first
+              var type = typeMap[ map[x][y] ];
+              if (cwt.MiniMapIndexes[type] !== void 0) {
+
+                ctx.drawImage(
+                  miniMapImg,
+                  cwt.MiniMapIndexes[type] * BASE, 0,
+                  BASE, BASE,
+                  startX + (x * BASE),
+                  startY + (y * BASE),
+                  BASE, BASE
+                );
+
+              } else {
+                ctx.fillStyle = "#FF0000";
+                ctx.fillRect(x * BASE, y * BASE, BASE, BASE);
+              }
+
+            }
+          }
+        }
+      }, true)
+      .breakLine()
+
+      // -------------------------------------------------------
+
+      .addColGap(w)
+      .addButton(6, 2, 0, "MAP_SELECT_2", cwt.UIField.STYLE_EW, 8, function () {
+        selectMap(1);
+      })
+      .breakLine()
+
+      // -------------------------------------------------------
+
+      .addColGap(w)
+      .addButton(6, 2, 0, "MAP_SELECT_3", cwt.UIField.STYLE_EW, 8, function () {
+        selectMap(2);
+      })
+      .breakLine()
+
+      // -------------------------------------------------------
+
+      .addColGap(w)
+      .addButton(6, 2, 0, "MAP_SELECT_4", cwt.UIField.STYLE_EW, 8, function () {
+        selectMap(3);
+      })
+      .breakLine()
+
+      // -------------------------------------------------------
+
+      .addColGap(w)
+      .addButton(6, 2, 0, "MAP_SELECT_5", cwt.UIField.STYLE_EW, 8, function () {
+        selectMap(4);
+      })
+      .breakLine()
+
+      // -------------------------------------------------------
+
+      .addColGap(w)
+      .addButton(6, 2, 0, "MAP_SELECT_6", cwt.UIField.STYLE_EW, 8, function () {
+        selectMap(5);
+      })
+
+      .addCustomField(2, 4, 0, "MAP_SELECT_PREVIEW_1", function () {
+      }, true)
+      .addCustomField(2, 4, 0, "MAP_SELECT_PREVIEW_2", function () {
+      }, true)
+      .addCustomField(2, 4, 0, "MAP_SELECT_PREVIEW_3", function () {
+      }, true)
+      .addCustomField(2, 4, 0, "MAP_SELECT_PREVIEW_4", function () {
+      }, true)
+      .addCustomField(2, 4, 0, "MAP_SELECT_PREVIEW_5", function () {
+      }, true)
+      .breakLine()
+
+      // -------------------------------------------------------
+
+      .addColGap(w)
+      .addButton(6, 2, 0, "MAP_SELECT_7", cwt.UIField.STYLE_ESW, 8, function () {
+        selectMap(6);
+      })
+      .breakLine()
+
+      // -------------------------------------------------------
+
+      .addRowGap(2)
+
+      .addColGap(w)
+      .addButton(5, 2, 0, "MENU_BACK", cwt.UIField.STYLE_NORMAL, 8, function () {
+        cwt.Gameflow.changeState("MAIN_MENU");
+      })
+
+      .addColGap(4)
+      .addButton(8, 2, 0, "MENU_CONFIGURED_MATCH", cwt.UIField.STYLE_NEW, 8, function () {
+        cwt.Gameflow.changeState("PLAYER_SETUP_SCREEN");
+      })
+      .breakLine()
+
+      .addColGap(w + 9)
+      .addButton(8, 2, 0, "MENU_FAST_MATCH", cwt.UIField.STYLE_ESW, 8, function () {
+        cwt.Gameflow.changeState("PLAYER_SETUP_SCREEN");
+      });
+
+    buttonList = [
+      layout.getButtonByKey("MAP_SELECT_1"),
+      layout.getButtonByKey("MAP_SELECT_2"),
+      layout.getButtonByKey("MAP_SELECT_3"),
+      layout.getButtonByKey("MAP_SELECT_4"),
+      layout.getButtonByKey("MAP_SELECT_5"),
+      layout.getButtonByKey("MAP_SELECT_6"),
+      layout.getButtonByKey("MAP_SELECT_7")
+    ];
   }
 });
-
-/*
-cwt.screenFlow.VERSUS = new cwt.screeFlowState({
-  
-  enterState: function(){
-    setPage(0);
-    selectedMap = null;
-  },
-                                               
-  UP: function(){
-    switch( btn.getActiveKey() ){
-        
-      case "options.versus.quickMatch":
-        btn.decreaseIndex(3);
-        break;
-                
-      case "options.goBack":
-      case "options.nextPage.small":
-      case "options.versus.configuredMatch":
-        btn.decreaseIndex(2);
-        break;
-                
-      default: 
-        btn.decreaseIndex();
-    }
-    
-    return this.breakTransition();
-  },
-  
-  DOWN: function(){
-    switch( btn.getActiveKey() ){
-        
-      case "options.goBack":
-      case "options.versus.quickMatch":
-        btn.increaseIndex(3);
-        break;
-        
-      case "options.prevPage.small":
-      case "options.versus.configuredMatch":
-        btn.increaseIndex(2);
-        break;
-                
-      default: 
-        btn.increaseIndex();
-    }   
-    
-    return this.breakTransition();
-  },
-
-  LEFT: function(){
-    switch( btn.getActiveKey() ){
-      case "options.nextPage.small":
-      case "options.versus.configuredMatch":
-      case "options.versus.quickMatch":
-        btn.decreaseIndex();
-        break;
-    }
-    
-    return this.breakTransition();
-  },
-
-  RIGHT: function(){ 
-    switch( btn.getActiveKey() ){
-      case "options.prevPage.small":
-      case "options.versus.configuredMatch":
-      case "options.goBack":
-        btn.increaseIndex();
-        break;
-    }
-    
-    return this.breakTransition();
-  },
-    
-  CANCEL: function(){
-    return "MAIN";
-  },
-  
-  ACTION: function(){
-    switch( btn.getActiveKey() ){
-        
-      case "options.goBack":
-        return "MAIN";
-        
-      case "options.versus.configuredMatch":
-        if( selectedMap ){
-          controller.storage_maps.get( selectedMap, loadMapExtPlay );
-        }
-        break;
-        
-      case "options.versus.quickMatch":
-        if( selectedMap ){
-          controller.storage_maps.get( selectedMap, loadMapQuickPlay );
-        }
-        break;
-        
-      case "options.prevPage.small":
-        setPage(cPage-1);
-        break;
-        
-      case "options.nextPage.small":
-        setPage(cPage+1);
-        break;
-      
-      // map button
-      default:
-        var index = -1;
-        switch( btn.getActiveData() ){
-            case "1": index = 0; break;
-            case "2": index = 1; break;
-            case "3": index = 2; break;
-            case "4": index = 3; break;
-            case "5": index = 4; break;
-        }
-        selectIndex(index);
-    }
-    return this.breakTransition();
-  }
-});
-        */
-          /*
-util.scoped(function(){
-  
-  var btn = controller.generateButtonGroup( 
-    document.getElementById("cwt_versus_screen"),
-    "cwt_panel_header_big cwt_page_button w_400 cwt_panel_button",
-    "cwt_panel_header_big cwt_page_button w_400 cwt_panel_button button_active",
-    "cwt_panel_header_big cwt_page_button w_400 cwt_panel_button button_inactive"
-  );
-  
-  var cPage = 0;
-  var cCategory = 0;
-  
-  var nameBtns = [
-    document.getElementById("options.versus.map.1"),
-    document.getElementById("options.versus.map.2"),
-    document.getElementById("options.versus.map.3"),
-    document.getElementById("options.versus.map.4"),
-    document.getElementById("options.versus.map.5")
-  ];
-
-  var metaBtns = [
-    document.getElementById("options.versus.meta.1"),
-    document.getElementById("options.versus.meta.2"),
-    document.getElementById("options.versus.meta.3"),
-    document.getElementById("options.versus.meta.4"),
-    document.getElementById("options.versus.meta.5"),
-    document.getElementById("options.versus.meta.6")
-  ];
-
-  var metaCanvasBtns = [
-    document.getElementById("options.versus.meta.1.canvas"),
-    document.getElementById("options.versus.meta.2.canvas"),
-    document.getElementById("options.versus.meta.3.canvas"),
-    document.getElementById("options.versus.meta.4.canvas"),
-    document.getElementById("options.versus.meta.5.canvas"),
-    document.getElementById("options.versus.meta.6.canvas")
-  ];
-  
-  var nameValues = [
-    null,
-    null,
-    null,
-    null,
-    null
-  ];
-  
-  var selectedMap = null;
-  
-  var mapNamBtn = document.getElementById("versus.map.category");
-  var pageBtn = document.getElementById("versus.mapSelect.page");
-  
-  // meta
-  var meta_sizex_btn = document.getElementById("map_meta_sizex");
-  var meta_sizey_btn = document.getElementById("map_meta_sizey");
-  var meta_prop_btn = document.getElementById("map_meta_properties");
-  var meta_players_btn = document.getElementById("map_meta_players");
-  
-  function setCategory( index ){
-    
-  }
-  
-  function mapLoadStart( mapName ){
-    controller.input_requestBlock();
-    controller.storage_maps.get( mapName, mapLoadFinish );
-  }
-  
-  function mapLoadFinish( obj ){
-
-    // set meta aw2
-    controller.metadata_grabFromMapData( obj.value, 
-      metaBtns, metaCanvasBtns, model.data_header.map_meta );
-    
-    mapNamBtn.innerHTML = obj.value.name;
-    
-    // generate mini map
-    controller.minimap_renderMapSelectionMinimap(obj.value);
-    
-    // release input lock
-    controller.input_releaseBlock();
-  }
-  
-  
-  function selectIndex( index ){
-    
-    // is there a map element ?
-    if( !nameValues[index] ) return;
-    
-    // reset meta aw2
-    controller.metadata_grabFromMapData( null, metaBtns, metaCanvasBtns, null );
-
-    selectedMap         = nameValues[index];
-    mapLoadStart(nameValues[index]);
-  }
-  
-  function updateButton( index, value ){
-    if( value ){
-      nameBtns[index].innerHTML = value;
-      nameValues[index] = value;      
-    } else {
-      nameBtns[index].innerHTML = "&#160;";
-      nameValues[index] = null;
-    }
-  }
-  
-  function setPage( index ){
-    var newV = 5*index;
-    if( newV >= 0 && newV < model.data_maps.length ){
-      
-      updateButton( 0, model.data_maps[newV] );
-      updateButton( 1, (newV+1 < model.data_maps.length)? model.data_maps[newV+1] : null );
-      updateButton( 2, (newV+2 < model.data_maps.length)? model.data_maps[newV+2] : null );
-      updateButton( 3, (newV+3 < model.data_maps.length)? model.data_maps[newV+3] : null );
-      updateButton( 4, (newV+4 < model.data_maps.length)? model.data_maps[newV+4] : null );
-      
-      pageBtn.innerHTML = index+1;
-      cPage = index;
-    }
-  }
-  
-  function loadMap( obj ){
-    var map = obj.value;
-
-    // update model
-    controller.persistence_prepareModel(map);
-    controller.roundConfig_prepare();
-  }
-  
-  function loadMapExtPlay( obj ){
-    loadMap(obj);
-    controller.screenStateMachine.event("_toConf");
-  }
-  
-  function loadMapQuickPlay( obj ){
-    loadMap(obj);        
-    controller.roundConfig_evalAfterwards();
-    controller.screenStateMachine.event("_toMap");
-  }
-  
-  // ----------------------------------------------------------------------------------------
-  
-  controller.screenStateMachine.structure.VERSUS = Object.create(controller.stateParent);
-  
-  controller.screenStateMachine.structure.VERSUS.section = "cwt_versus_screen";
-	
-  controller.screenStateMachine.structure.VERSUS._toConf = function(){
-    return "PLAYER_SETUP";
-  };
-  
-  controller.screenStateMachine.structure.VERSUS._toMap = function(){
-    return "GAMEROUND";
-  };
-  
-});    */

@@ -177,6 +177,13 @@ cwt.Localization.registerLang({
   "OPTIONS_KEYMAP_ACTION":"Action",
   "OPTIONS_KEYMAP_CANCEL":"Cancel",
 
+  "MAP_SELECT_PAGE_LEFT" : "<<",
+  "MAP_SELECT_PAGE" : "",
+  "MAP_SELECT_PAGE_RIGHT" : ">>",
+  "MENU_BACK" : "Back",
+  "MENU_CONFIGURED_MATCH" : "Configured Match",
+  "MENU_FAST_MATCH" : "Fast Match",
+
   "VALUE_R" : "",
   "VALUE_L" : "",
   "VALUE_U" : "",

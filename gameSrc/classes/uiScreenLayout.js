@@ -53,7 +53,6 @@ cwt.UIScreenLayout = my.Class(/** @lends cwt.UIScreenLayout.prototype */ {
    * @param {Number} offsetY
    * @param {Number} style
    * @param key
-   * @param {Number?} offsetY
    * @param {Function?} action
    * @return {cwt.UIScreenLayout}
    */
@@ -97,9 +96,39 @@ cwt.UIScreenLayout = my.Class(/** @lends cwt.UIScreenLayout.prototype */ {
    * @param {Number} tilesX
    * @param {Number} tilesY
    * @param {Number} offsetY
+   * @param key
+   * @param {Function?} draw
+   * @param {boolean?} ignoreHeight
+   * @return {cwt.UIScreenLayout}
+   */
+  addCustomField: function (tilesX, tilesY, offsetY, key, draw, ignoreHeight) {
+    if (ignoreHeight != true && this.curH < tilesY) {
+      this.curH = tilesY;
+    }
+
+    var btn = new cwt.UICustomField(
+      this.curX,
+      this.curY + (offsetY*cwt.TILE_BASE),
+      tilesX*cwt.TILE_BASE,
+      tilesY*cwt.TILE_BASE,
+      key,
+      draw
+    );
+
+    this.curX += tilesX*cwt.TILE_BASE;
+
+    this.elements.push(btn);
+
+    return this;
+  },
+
+  /**
+   *
+   * @param {Number} tilesX
+   * @param {Number} tilesY
+   * @param {Number} offsetY
    * @param {Number} style
    * @param key
-   * @param {Number?} offsetY
    * @return {cwt.UIScreenLayout}
    */
   addCheckbox: function (tilesX, tilesY, offsetY, key, style, fSize) {

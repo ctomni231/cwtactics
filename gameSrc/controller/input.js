@@ -149,7 +149,7 @@ cwt.Input = {
     cwt.Storage.generalStorage.get(
       this.MAPPING_STORAGE_KEY,
       function (obj) {
-        if (obj.value) {
+        if (obj && obj.value) {
           if (cwt.DEBUG) {
             console.log("loading custom key configuration");
           }

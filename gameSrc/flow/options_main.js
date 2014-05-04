@@ -43,7 +43,7 @@ cwt.ButtonFlowState({
       .addButton(4, 2, 0, "OPTIONS_SFX_VOL_DOWN", cwt.UIField.STYLE_NW, function () {
         updateSound(true,-0.05,this);
       })
-      .addButton(8, 2, 0, "OPTIONS_SFX_VOL", cwt.UIField.STYLE_N)
+      .addButton(8, 2, 0, "OPTIONS_SFX_VOL", cwt.UIField.STYLE_N, 8)
       .addButton(4, 2, 0, "OPTIONS_SFX_VOL_UP", cwt.UIField.STYLE_NE, function () {
         updateSound(true,+0.05,this);
       })
@@ -55,7 +55,7 @@ cwt.ButtonFlowState({
       .addButton(4, 2, 0, "OPTIONS_MUSIC_VOL_DOWN", cwt.UIField.STYLE_SW, function () {
         updateSound(false,-0.05,this);
       })
-      .addButton(8, 2, 0, "OPTIONS_MUSIC_VOL", cwt.UIField.STYLE_S)
+      .addButton(8, 2, 0, "OPTIONS_MUSIC_VOL", cwt.UIField.STYLE_S, 8)
       .addButton(4, 2, 0, "OPTIONS_MUSIC_VOL_UP", cwt.UIField.STYLE_ES, function () {
         updateSound(false,+0.05,this);
       })

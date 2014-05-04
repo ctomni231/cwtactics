@@ -4,8 +4,10 @@ cwt.Loading.create(function (next) {
   }
 
   if (!cwt.Loading.hasCachedData) {
-    cwt.Maps.grabFromLive(next);
+    cwt.Maps.grabFromLive(function () {
+      cwt.Maps.updateMapList(next);
+    });
   } else {
-    next();
+    cwt.Maps.updateMapList(next);
   }
 });
