@@ -26,50 +26,15 @@ cwt.UIField = my.Class( /** @lends cwt.UIField.prototype */ {
     this.width = w;
     this.height = h;
     this.fsize = fsize;
-    this.text = (text)? cwt.Localization.forKey(text) : text;
-    this.key = text;
     this.style = style;
     this.inFocus = false;
     this.action = actionFn;
-  },
 
-  /**
-   *
-   * @param ctx
-   * @param text
-   * @param maxWidth
-   * @return {*}
-   */
-  fragmentText: function (ctx, text, maxWidth) {
-    var words = text.split(' '),
-      lines = [],
-      line = "";
-
-    if (ctx.measureText(text).width < maxWidth) {
-      return [text];
+    this.key = text;
+    this.text = (text)? cwt.Localization.forKey(text) : text;
+    if (this.text.search(/\n/) !== -1) {
+      this.text = this.text.split("\n");
     }
-
-    while (words.length > 0) {
-      while (ctx.measureText(words[0]).width >= maxWidth) {
-        var tmp = words[0];
-        words[0] = tmp.slice(0, -1);
-        if (words.length > 1) {
-          words[1] = tmp.slice(-1) + words[1];
-        } else {
-          words.push(tmp.slice(-1));
-        }
-      }
-      if (ctx.measureText(line + words[0]).width < maxWidth) {
-        line += words.shift() + " ";
-      } else {
-        lines.push(line);
-        line = "";
-      }
-      if (words.length === 0) {
-        lines.push(line);
-      }
-    }
-    return lines;
   },
 
   /**
@@ -88,16 +53,16 @@ cwt.UIField = my.Class( /** @lends cwt.UIField.prototype */ {
    */
   draw: function (ctx) {
 
-    ctx.fillStyle = (this.inFocus) ? "black" : "white";
+    ctx.fillStyle = (this.inFocus) ? "rgb(220,220,220)" : "white";
     ctx.fillRect(this.x, this.y, this.width, this.height);
 
     // draw borders
-    ctx.fillStyle = "blue";
+    ctx.fillStyle = "rgb(60,60,60)";
     switch (this.style) {
 
       case cwt.UIField.STYLE_NORMAL :
         ctx.fillRect(this.x + 1, this.y + 1, this.width - 2 , this.height - 2);
-        ctx.fillStyle = (this.inFocus) ? "black" : "white";
+        ctx.fillStyle = (this.inFocus) ? "rgb(220,220,220)" : "white";
         ctx.fillRect(this.x + 3, this.y + 3, this.width - 6 , this.height - 6);
         break;
 
@@ -162,24 +127,25 @@ cwt.UIField = my.Class( /** @lends cwt.UIField.prototype */ {
         break;
     }
 
-    ctx.fillStyle = (this.inFocus) ? "white" : "black";
+    ctx.fillStyle = "black";
     ctx.font = this.fsize + "pt Arial";
 
-    var tw = ctx.measureText(this.text);
-    if (tw.width >= this.width - 20) {
-      var lines = this.fragmentText(ctx, this.text, this.width - 20);
-      for (var i = 0, e = lines.length; i < e; i++) {
-        tw = ctx.measureText(lines[i]);
+    if (this.text) {
+      if (typeof this.text === "string") {
+        var tw = ctx.measureText(this.text);
         ctx.fillText(
-          lines[i],
+          this.text,
           this.x + (this.width / 2) - (tw.width / 2),
-          this.y + this.fsize + ((i + 1) * (this.fsize + 8)));
+          this.y + (this.height / 2) + this.fsize / 2);
+      } else {
+        for (var i = 0, e = this.text.length; i < e; i++) {
+          var tw = ctx.measureText(this.text[i]);
+          ctx.fillText(
+            this.text[i],
+            this.x + (this.width / 2) - (tw.width / 2),
+            this.y + this.fsize + ((i + 1) * (this.fsize + 8)));
+        }
       }
-    } else {
-      ctx.fillText(
-        this.text,
-        this.x + (this.width / 2) - (tw.width / 2),
-        this.y + (this.height / 2) + this.fsize / 2);
     }
   }
 });

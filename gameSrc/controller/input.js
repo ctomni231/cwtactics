@@ -127,12 +127,12 @@ cwt.Input = {
       this.MAPPING_STORAGE_KEY,
       // extract custom mapping
       {
-        keyboard: this.keyboard.MAPPING,
-        gamePad: this.gamePad.MAPPING
+        keyboard: this.types.keyboard.MAPPING,
+        gamePad: this.types.gamePad.MAPPING
       },
       function () {
         if (cwt.DEBUG) {
-          cwt.log("successfully saved user input mapping");
+          console.log("successfully saved user input mapping");
         }
       }
     );
@@ -149,14 +149,18 @@ cwt.Input = {
     cwt.Storage.generalStorage.get(
       this.MAPPING_STORAGE_KEY,
       function (obj) {
-        if (obj) {
+        if (obj.value) {
           if (cwt.DEBUG) {
             console.log("loading custom key configuration");
           }
 
           // inject custom mapping
-          cwt.Input.types.keyboard.MAPPING = obj.keyboard;
-          cwt.Input.types.gamePad.MAPPING = obj.gamePad;
+          if (obj.value.keyboard) {
+            cwt.Input.types.keyboard.MAPPING = obj.value.keyboard;
+          }
+          if (obj.value.gamePad) {
+            cwt.Input.types.gamePad.MAPPING = obj.value.gamePad;
+          }
         }
 
         // call callback

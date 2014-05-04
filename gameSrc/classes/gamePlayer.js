@@ -1,7 +1,7 @@
 /**
  * @class
  */
-cwt.Player = my.Class(null,cwt.IndexMultiton,/** @lends cwt.Player.prototype */ {
+cwt.Player = my.Class(/** @lends cwt.Player.prototype */ {
 
   STATIC: /** @lends cwt.Player */ {
 
@@ -130,6 +130,9 @@ cwt.Player = my.Class(null,cwt.IndexMultiton,/** @lends cwt.Player.prototype */ 
   }
 
 });
+
+// use index based multiton trait
+my.extendClass(cwt.Player,{STATIC:cwt.IndexMultiton});
 
 // register player ids (used to calculate
 // the unit id's for example)

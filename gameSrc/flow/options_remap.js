@@ -16,8 +16,24 @@ cwt.ButtonFlowState({
 
   genericInput: function (keyCode) {
 
+    var code = null;
+    switch (this.index) {
+      case 0: code = "RIGHT"; break;
+      case 1: code = "LEFT"; break;
+      case 2: code = "DOWN"; break;
+      case 3: code = "UP"; break;
+      case 4: code = "ACTION"; break;
+      case 5: code = "CANCEL"; break;
+    }
+
+    cwt.assert(code);
+
     // set string conversion of code into the field
-    this.mappingKeys[this.index].text = cwt.Input.codeToChar(keyCode);
+    this.mappingKeys[this.index].text = (this.mode === 0)? cwt.Input.codeToChar(keyCode) : keyCode;
+    ((this.mode === 0)? cwt.Input.types.keyboard.MAPPING : cwt.Input.types.gamePad.MAPPING)[code] = keyCode;
+
+    // invoke re-rendering
+    this.rendered = false;
 
     // increase index
     this.index++;
@@ -29,6 +45,7 @@ cwt.ButtonFlowState({
   },
 
   init: function (layout) {
+    this.mode = 0;
 
     var h = parseInt((cwt.SCREEN_HEIGHT - 18) / 2, 10);
     var w = parseInt((cwt.SCREEN_WIDTH - 12) / 2, 10);
@@ -40,33 +57,33 @@ cwt.ButtonFlowState({
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(10, 2, 0, "OPTIONS_KEYMAP_RIGHT", cwt.UIField.STYLE_NW)
-      .addButton(2, 2, 0, "VALUE_R", cwt.UIField.STYLE_NE)
+      .addButton(4, 2, 0, "OPTIONS_KEYMAP_RIGHT", cwt.UIField.STYLE_NW)
+      .addButton(8, 2, 0, "VALUE_R", cwt.UIField.STYLE_NE)
       .breakLine()
 
       .addColGap(w)
-      .addButton(10, 2, 0, "OPTIONS_KEYMAP_LEFT", cwt.UIField.STYLE_W)
-      .addButton(2, 2, 0, "VALUE_L", cwt.UIField.STYLE_E)
+      .addButton(4, 2, 0, "OPTIONS_KEYMAP_LEFT", cwt.UIField.STYLE_W)
+      .addButton(8, 2, 0, "VALUE_L", cwt.UIField.STYLE_E)
       .breakLine()
 
       .addColGap(w)
-      .addButton(10, 2, 0, "OPTIONS_KEYMAP_DOWN", cwt.UIField.STYLE_W)
-      .addButton(2, 2, 0, "VALUE_D", cwt.UIField.STYLE_E)
+      .addButton(4, 2, 0, "OPTIONS_KEYMAP_DOWN", cwt.UIField.STYLE_W)
+      .addButton(8, 2, 0, "VALUE_D", cwt.UIField.STYLE_E)
       .breakLine()
 
       .addColGap(w)
-      .addButton(10, 2, 0, "OPTIONS_KEYMAP_UP", cwt.UIField.STYLE_W)
-      .addButton(2, 2, 0, "VALUE_U", cwt.UIField.STYLE_E)
+      .addButton(4, 2, 0, "OPTIONS_KEYMAP_UP", cwt.UIField.STYLE_W)
+      .addButton(8, 2, 0, "VALUE_U", cwt.UIField.STYLE_E)
       .breakLine()
 
       .addColGap(w)
-      .addButton(10, 2, 0, "OPTIONS_KEYMAP_ACTION", cwt.UIField.STYLE_W)
-      .addButton(2, 2, 0, "VALUE_A", cwt.UIField.STYLE_E)
+      .addButton(4, 2, 0, "OPTIONS_KEYMAP_ACTION", cwt.UIField.STYLE_W)
+      .addButton(8, 2, 0, "VALUE_A", cwt.UIField.STYLE_E)
       .breakLine()
 
       .addColGap(w)
-      .addButton(10, 2, 0, "OPTIONS_KEYMAP_CANCEL", cwt.UIField.STYLE_SW)
-      .addButton(2, 2, 0, "VALUE_C", cwt.UIField.STYLE_ES)
+      .addButton(4, 2, 0, "OPTIONS_KEYMAP_CANCEL", cwt.UIField.STYLE_SW)
+      .addButton(8, 2, 0, "VALUE_C", cwt.UIField.STYLE_ES)
       .breakLine()
 
       // -------------------------------------------------------
@@ -77,6 +94,7 @@ cwt.ButtonFlowState({
 
       .addColGap(w)
       .addButton(5, 4, 0, "OPTIONS_KEYMAP_GOBACK", cwt.UIField.STYLE_NORMAL, function () {
+        cwt.Input.saveKeyMapping();
         cwt.Gameflow.changeState("OPTIONS");
       })
       .addColGap(2)
@@ -84,7 +102,7 @@ cwt.ButtonFlowState({
 
         // setup generic input request
         cwt.Input.genericInput = true;
-        this.index = 0;
+        this.index = (this.mode === 0)? 0 : 4;
       });
 
     this.mappingKeys = [

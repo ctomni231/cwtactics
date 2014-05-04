@@ -1,6 +1,6 @@
 cwt.Loading.create(function (nextLoadingStep) {
   if (cwt.DEBUG) {
-    console.log("checking start parameters");
+    console.log("checking options");
   }
 
   callAsSequence([
@@ -27,7 +27,9 @@ cwt.Loading.create(function (nextLoadingStep) {
       });
     },
 
-    // force touch
+    cwt.Options.loadOptions,
+
+    // force touch (start parameter can overwrite saved options)
     function (next) {
       cwt.Storage.generalStorage.get(cwt.Options.PARAM_FORCE_TOUCH,function( obj ){
         var  doIt = (obj && obj.value === true);

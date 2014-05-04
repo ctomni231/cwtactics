@@ -43,7 +43,7 @@
 
     if (hasImplementClasses)
       for (var i = 1; i < len - 1; i++)
-        extendClass(Class, arguments[i], false);
+        extend(Class.prototype, arguments[i].prototype, false);
 
     extendClass(Class, body);
 
@@ -57,20 +57,18 @@
   var extendClass = my.extendClass = function (Class, extension, override) {
     if (extension.STATIC) {
       extend(Class, extension.STATIC, override);
+      delete extension.STATIC;
     }
     extend(Class.prototype, extension, override);
   };
 
   //============================================================================
-  var extend = function (obj, extension, override ) {
+  var extend = function (obj, extension, override) {
     var prop;
     if (override === false) {
-      for (prop in extension){
-        if (prop === "STATIC") continue;
-        if (!(prop in obj)){
+      for (prop in extension)
+        if (!(prop in obj))
           obj[prop] = extension[prop];
-        }
-      }
     } else {
       for (prop in extension)
         obj[prop] = extension[prop];

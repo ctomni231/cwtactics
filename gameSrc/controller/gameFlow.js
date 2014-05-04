@@ -58,6 +58,7 @@ cwt.Gameflow = {
     }
 
     var oldTime = new Date().getTime();
+
     function gameLoop() {
 
       // acquire next frame
@@ -112,7 +113,7 @@ cwt.Gameflow = {
     }
 
     // set start state
-    this.setState("NONE",false);
+    this.setState("NONE", false);
 
     // enter the loop
     requestAnimationFrame(gameLoop);
@@ -143,7 +144,7 @@ cwt.Gameflow = {
     if (cwt.DEBUG) cwt.assert(this.states_.hasOwnProperty(stateId));
 
     if (cwt.DEBUG) {
-      console.log("set active state to "+stateId+((fireEvent)? " with firing enter event": ""));
+      console.log("set active state to " + stateId + ((fireEvent) ? " with firing enter event" : ""));
     }
 
     this.activeState = this.states_[stateId];
@@ -158,6 +159,11 @@ cwt.Gameflow = {
    * @param delta
    */
   update: function (delta) {
+
+    // update game-pad controls
+    if (cwt.ClientFeatures.gamePad && cwt.Input.types.gamePad.update) {
+      cwt.Input.types.gamePad.update();
+    }
 
     // animation layout
     cwt.Screen.renderCycle(delta);
@@ -176,92 +182,92 @@ cwt.Gameflow = {
 
 /*
 
-controller.prepareGameLoop = function(){
-  savedDelta = 0;
-}
+ controller.prepareGameLoop = function(){
+ savedDelta = 0;
+ }
 
-controller.gameLoop = function( delta, updateLogic, inputUsed ){
+ controller.gameLoop = function( delta, updateLogic, inputUsed ){
 
-  savedDelta += delta; // SAVE DELTAS FOR UPDATE LOGIC ( --> TURN TIMER AND SO ON )
+ savedDelta += delta; // SAVE DELTAS FOR UPDATE LOGIC ( --> TURN TIMER AND SO ON )
 
-  var inMove = (controller.moveScreenX !== 0 || controller.moveScreenY !== 0);
+ var inMove = (controller.moveScreenX !== 0 || controller.moveScreenY !== 0);
 
-  // IF SCREEN IS IN MOVEMENT THEN UPDATE THE MAP SHIFT
-  if( inMove ) controller.solveMapShift();
-  // ELSE UPDATE THE LOGIC
-  else{
+ // IF SCREEN IS IN MOVEMENT THEN UPDATE THE MAP SHIFT
+ if( inMove ) controller.solveMapShift();
+ // ELSE UPDATE THE LOGIC
+ else{
 
-    // IF MESSAGE PANEL IS VISIBLE THEN BREAK PROCESS UNTIL
-    // IT CAN BE HIDDEN
-    if( view.hasInfoMessage() ){
-      view.updateMessagePanelTime(delta);
-    }
-    else{
-      if( updateLogic ){
+ // IF MESSAGE PANEL IS VISIBLE THEN BREAK PROCESS UNTIL
+ // IT CAN BE HIDDEN
+ if( view.hasInfoMessage() ){
+ view.updateMessagePanelTime(delta);
+ }
+ else{
+ if( updateLogic ){
 
-        // only update game state when no hooks are in the hooks cache
-        if( !hasHocks ){
-          if( !inputUsed ){
+ // only update game state when no hooks are in the hooks cache
+ if( !hasHocks ){
+ if( !inputUsed ){
 
-            // UPDATE LOGIC
-            controller.update_tickFrame( savedDelta );
-            savedDelta = 0;
+ // UPDATE LOGIC
+ controller.update_tickFrame( savedDelta );
+ savedDelta = 0;
 
-            // CHECK HOOKS
-            tryToPopNextHook();
-          }
-        }
-        // ELSE EVALUATE ACTIVE HOCK
-        else{
-          activeHock.update(delta);
-          if( activeHock.isDone() ) tryToPopNextHook();
-        }
-      }
-    }
+ // CHECK HOOKS
+ tryToPopNextHook();
+ }
+ }
+ // ELSE EVALUATE ACTIVE HOCK
+ else{
+ activeHock.update(delta);
+ if( activeHock.isDone() ) tryToPopNextHook();
+ }
+ }
+ }
 
-    // UPDATE SPRITE ANIMATION
-    view.updateSpriteAnimations( delta );
-  }
+ // UPDATE SPRITE ANIMATION
+ view.updateSpriteAnimations( delta );
+ }
 
-  // RENDER SCREEN
-  if( !updateLogic ){
-    if( view.redraw_dataChanges > 0 ) view.renderMap( controller.screenScale );
+ // RENDER SCREEN
+ if( !updateLogic ){
+ if( view.redraw_dataChanges > 0 ) view.renderMap( controller.screenScale );
 
-    // RENDER ACTIVE HOCK AND POP NEXT ONE WHEN DONE
-    if( hasHocks ){
-      activeHock.render();
-    }
-    else{
+ // RENDER ACTIVE HOCK AND POP NEXT ONE WHEN DONE
+ if( hasHocks ){
+ activeHock.render();
+ }
+ else{
 
-      // UPDATE SELECTION CURSOR
-      if( controller.stateMachine.state === "ACTION_SELECT_TILE" ){
+ // UPDATE SELECTION CURSOR
+ if( controller.stateMachine.state === "ACTION_SELECT_TILE" ){
 
-        var r = view.selectionRange;
-        var x = controller.mapCursorX;
-        var y = controller.mapCursorY;
-        var lX;
-        var hX;
-        var lY = y-r;
-        var hY = y+r;
-        if( lY < 0 ) lY = 0;
-        if( hY >= model.map_height ) hY = model.map_height-1;
-        for( ; lY<=hY; lY++ ){
+ var r = view.selectionRange;
+ var x = controller.mapCursorX;
+ var y = controller.mapCursorY;
+ var lX;
+ var hX;
+ var lY = y-r;
+ var hY = y+r;
+ if( lY < 0 ) lY = 0;
+ if( hY >= model.map_height ) hY = model.map_height-1;
+ for( ; lY<=hY; lY++ ){
 
-          var disY = Math.abs( lY-y );
-          lX = x-r+disY;
-          hX = x+r-disY;
-          if( lX < 0 ) lX = 0;
-          if( hX >= model.map_width ) hX = model.map_width-1;
-          for( ; lX<=hX; lX++ ){
+ var disY = Math.abs( lY-y );
+ lX = x-r+disY;
+ hX = x+r-disY;
+ if( lX < 0 ) lX = 0;
+ if( hX >= model.map_width ) hX = model.map_width-1;
+ for( ; lX<=hX; lX++ ){
 
-            view.redraw_markPos(lX,lY);
-          }
-        }
-      }
-    }
+ view.redraw_markPos(lX,lY);
+ }
+ }
+ }
+ }
 
-  }
+ }
 
-};
+ };
 
  */

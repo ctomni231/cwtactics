@@ -157,14 +157,14 @@ cwt.Audio = {
 
     // sfx volume
     cwt.Storage.generalStorage.set(
-      this.SFX_VOLUME_KEY,
-      this.gainNode_sfx_.gain.value,
+      cwt.Audio.SFX_VOLUME_KEY,
+      cwt.Audio.gainNode_sfx_.gain.value,
 
       // music volume
       function () {
         cwt.Storage.generalStorage.set(
-          this.MUSIC_VOLUME_KEY,
-          this.gainNode_music_.gain.value,
+          cwt.Audio.MUSIC_VOLUME_KEY,
+          cwt.Audio.gainNode_music_.gain.value,
 
           // callback
           function () {
@@ -188,15 +188,15 @@ cwt.Audio = {
     }
 
     // sfx config
-    cwt.Storage.generalStorage.get(this.SFX_VOLUME_KEY, function (obj) {
+    cwt.Storage.generalStorage.get(cwt.Audio.SFX_VOLUME_KEY, function (obj) {
       if (obj) {
-        this.gainNode_sfx_.gain.value = obj.value;
+        cwt.Audio.gainNode_sfx_.gain.value = obj.value;
       }
 
       // music config
-      cwt.Storage.generalStorage.get(this.MUSIC_VOLUME_KEY, function (obj) {
+      cwt.Storage.generalStorage.get(cwt.Audio.MUSIC_VOLUME_KEY, function (obj) {
         if (obj) {
-          this.gainNode_music_.gain.value = obj.value;
+          cwt.Audio.gainNode_music_.gain.value = obj.value;
         }
 
         // callback if given

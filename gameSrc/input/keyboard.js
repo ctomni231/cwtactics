@@ -21,8 +21,12 @@ cwt.Input.create("keyboard", function () {
   document.onkeydown = function (ev) {
     var key = cwt.INACTIVE;
 
-    if (cwt.Gameflow.state === "REMAP_KEYBOARD") {
-      cwt.Input.pushAction(cwt.Input.TYPE_SET_INPUT, ev.keyCode, cwt.INACTIVE);
+    if (cwt.Input.genericInput) {
+      if (cwt.Gameflow.activeState.mode != 0) {
+        return;
+      }
+
+      cwt.Gameflow.activeState.genericInput(ev.keyCode);
 
     } else {
 

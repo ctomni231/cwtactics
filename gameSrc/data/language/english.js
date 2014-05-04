@@ -153,6 +153,7 @@ cwt.Localization.registerLang({
   "MAIN_MENU_OPTIONS": "Options",
   "MAIN_MENU_NETWORK": "Network Game",
   "MAIN_MENU_SKIRMISH": "Singleplayer",
+  "MAIN_MENU_TEST_WEATHER" : "Weather-Test",
 
   "OPTIONS_SFX_VOL_DOWN": "-",
   "OPTIONS_SFX_VOL_UP": "+",
@@ -165,7 +166,7 @@ cwt.Localization.registerLang({
   "OPTIONS_MENU_WIPE_OUT": "Reset Data",
   "OPTIONS_MENU_GO_BACK": "Go Back",
 
-  "OPTIONS_WIPE_OUT_TEXT":"Do you want to erase all game data? The game data will be downloaded during the next start of the game.",
+  "OPTIONS_WIPE_OUT_TEXT":"Do you want to erase all game data? The game\ndata will be downloaded during the next start\nof the game.",
   "OPTIONS_WIPE_OUT_NO":"Cancel",
   "OPTIONS_WIPE_OUT_YES":"Do It",
 
@@ -176,18 +177,25 @@ cwt.Localization.registerLang({
   "OPTIONS_KEYMAP_ACTION":"Action",
   "OPTIONS_KEYMAP_CANCEL":"Cancel",
 
+  "VALUE_R" : "",
+  "VALUE_L" : "",
+  "VALUE_U" : "",
+  "VALUE_D" : "",
+  "VALUE_A" : "",
+  "VALUE_C" : "",
+
   "OPTIONS_KEYMAP_GOBACK":"Go Back",
   "OPTIONS_KEYMAP_SET":"Remap Input Keys",
 
-  "TOOLTIP_1": "Change the keyboard and gamepad settings by selecting Options from the main or in-game menu",
-  "TOOLTIP_2": "Activate zooming the map by using the scroll wheel for the mouse, pinching for touch screen, and the in-game menu.",
-  "TOOLTIP_3": "Press and hold Cancel over an idle unit to see its attack range.",
-  "TOOLTIP_4": "Perform Cancel by right-clicking with mouse, or double-tapping for touch screen.",
-  "TOOLTIP_5": "Keyboard and game-pad controls can be changed via the Options Menu.",
-  "TOOLTIP_6": "Perform Action by lieft-clicking with the mouse, or tapping the touch screen.",
-  "TOOLTIP_7": "Reporting bugs to the developers can be done through the Mailing List or the forum.",
-  "TOOLTIP_8": "Custom Wars Tactics concept started in January 2009. The original name for the project was called 'Tactic Wars'.",
-  "TOOLTIP_9": "Custom Wars Tactics is playable from PC and also from mobile devices.",
-  "TOOLTIP_10": "Custom Wars Tactics can be played offline in your browser. (As long you aren't in private browsing mode.)",
-  "TOOLTIP_11": "A full desktop counterpart for Custom Wars Tactics is being developed. Stay tuned!"
+  "TOOLTIP_1": "Change the keyboard and gamepad settings by selecting\nOptions from the main or in-game menu",
+  "TOOLTIP_2": "Activate zooming the map by using the scroll wheel for\nthe mouse, pinching for touch screen, and the in-game menu.",
+  "TOOLTIP_3": "Press and hold Cancel over an idle unit to see\nits attack range.",
+  "TOOLTIP_4": "Perform Cancel by right-clicking with mouse, or\ndouble-tapping for touch screen.",
+  "TOOLTIP_5": "Keyboard and game-pad controls can be changed via\nthe Options Menu.",
+  "TOOLTIP_6": "Perform Action by lieft-clicking with the mouse,\nor tapping the touch screen.",
+  "TOOLTIP_7": "Reporting bugs to the developers can be done\nthrough the Mailing List or the forum.",
+  "TOOLTIP_8": "Custom Wars Tactics concept started in January 2009.\nThe original name for the project was called 'Tactic Wars'.",
+  "TOOLTIP_9": "Custom Wars Tactics is playable from PC and also\nfrom mobile devices.",
+  "TOOLTIP_10": "Custom Wars Tactics can be played offline in your\nbrowser. (As long you aren't in private browsing mode.)",
+  "TOOLTIP_11": "A full desktop counterpart for Custom Wars Tactics\nis being developed. Stay tuned!"
 });

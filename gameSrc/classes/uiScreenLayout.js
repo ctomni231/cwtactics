@@ -93,6 +93,48 @@ cwt.UIScreenLayout = my.Class(/** @lends cwt.UIScreenLayout.prototype */ {
   },
 
   /**
+   *
+   * @param {Number} tilesX
+   * @param {Number} tilesY
+   * @param {Number} offsetY
+   * @param {Number} style
+   * @param key
+   * @param {Number?} offsetY
+   * @return {cwt.UIScreenLayout}
+   */
+  addCheckbox: function (tilesX, tilesY, offsetY, key, style, fSize) {
+    if (arguments.length === 5) {
+      fSize = 12;
+    } else if (arguments.length === 6 && typeof fSize === "function") {
+      fSize = 12;
+    }
+
+    if (this.curH < tilesY) {
+      this.curH = tilesY;
+    }
+
+    var btn = new cwt.UICheckboxField(
+      this.curX,
+      this.curY + (offsetY*cwt.TILE_BASE),
+      tilesX*cwt.TILE_BASE,
+      tilesY*cwt.TILE_BASE,
+      key,
+      fSize,
+      style
+    );
+
+    this.curX += tilesX*cwt.TILE_BASE;
+
+    this.elements.push(btn);
+    if (this.selected === -1 && action) {
+      this.elements[this.elements.length - 1].inFocus = true;
+      this.selected = this.elements.length - 1;
+    }
+
+    return this;
+  },
+
+  /**
    * Returns the current active button.
    *
    * @return {cwt.UIField}

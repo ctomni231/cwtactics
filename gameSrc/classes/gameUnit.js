@@ -3,7 +3,7 @@
  * @class
  * @extends cwt.IndexMultiton.<T>
  */
-cwt.Unit = my.Class(null,cwt.IndexMultiton, /** @lends cwt.Unit.prototype */ {
+cwt.Unit = my.Class(/** @lends cwt.Unit.prototype */ {
 
   STATIC: /** @lends cwt.Unit */ {
 
@@ -401,3 +401,6 @@ model.event_on("unitUnhide_invoked",function( uid ){
 
 */
 });
+
+// use index based multiton trait
+my.extendClass(cwt.Unit,{STATIC:cwt.IndexMultiton});

@@ -54,6 +54,10 @@ cwt.Gameflow.addState({
         var randEl = cwt.Tooltips[parseInt( Math.random()*cwt.Tooltips.length, 10)];
         this.tooltip.text = cwt.Localization.forKey(randEl);
 
+        if (this.tooltip.text.search(/\n/) !== -1) {
+          this.tooltip.text = this.tooltip.text.split("\n");
+        }
+
         this.tooltip_time = 0;
       }
     }

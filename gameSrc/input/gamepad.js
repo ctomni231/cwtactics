@@ -6,13 +6,14 @@ cwt.Input.create("gamePad", function () {
   }
 
   var prevTimestamps = [];
+  var that = this;
 
-  this.MAPPING = {
+  that.MAPPING = {
     ACTION: 0,
     CANCEL: 1
   };
 
-  this.update = function (canvas, menuEl) {
+  this.update = function () {
     var gamePads = navigator.webkitGetGamepads();
 
     for (var i = 0, e = 4; i < e; i++) {
@@ -24,7 +25,10 @@ cwt.Input.create("gamePad", function () {
       prevTimestamps[i] = gamePad.timestamp;
 
       // in key mapping
-      if (cwt.Gameflow.state === "REMAP_GAMEPAD") {
+      if (cwt.Input.genericInput) {
+        if (cwt.Gameflow.activeState.mode != 1) {
+          return;
+        }
 
         var code = -1;
 
@@ -45,16 +49,16 @@ cwt.Input.create("gamePad", function () {
         else if (gamePad.elements[13] === 1) code = 13;
 
         if (code > -1) {
-          cwt.Input.pushAction(cwt.Input.TYPE_SET_INPUT, code, cwt.INACTIVE);
+          cwt.Gameflow.activeState.genericInput(code);
         }
       } else {
         var key = null;
 
         // try to extract key
-        if (gamePad.elements[MAPPING.ACTION] === 1) {
+        if (gamePad.buttons[that.MAPPING.ACTION] === 1) {
           key = cwt.Input.TYPE_ACTION;
 
-        } else if (gamePad.elements[MAPPING.CANCEL] === 1) {
+        } else if (gamePad.buttons[that.MAPPING.CANCEL] === 1) {
           key = cwt.Input.TYPE_CANCEL;
 
         } else if (gamePad.axes[1] < -0.5) {

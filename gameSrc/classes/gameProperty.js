@@ -2,7 +2,7 @@
  * @class
  * @extends cwt.IndexMultiton
  */
-cwt.Property = my.Class(null,cwt.IndexMultiton,/** @lends cwt.Property.prototype */ {
+cwt.Property = my.Class(/** @lends cwt.Property.prototype */ {
 
   STATIC: /** @lends cwt.Property */ {
 
@@ -180,3 +180,6 @@ cwt.Property = my.Class(null,cwt.IndexMultiton,/** @lends cwt.Property.prototype
   }
 
 });
+
+// use index based multiton trait
+my.extendClass(cwt.Property,{STATIC:cwt.IndexMultiton});

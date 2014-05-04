@@ -4,40 +4,36 @@
  *
  * @template T
  */
-cwt.IdMultiton = my.Class({
+cwt.IdMultiton = {
 
-  STATIC: {
+  /**
+   * Returns an instance of the IndexMultiton.
+   *
+   * @param {String} key
+   * @param {Boolean=} nullReturn if true then null will be returned when no object for the given key exists
+   * @return {T}
+   */
+  getInstance: function (key, nullReturn) {
+    if (!this.classInstances_) {
+      this.classInstances_ = {};
+    }
 
-    /**
-     * @private
-     */
-    classInstances_: {},
+    var obj = this.classInstances_[key];
 
-    /**
-     * Returns an instance of the IndexMultiton.
-     *
-     * @param {String} key
-     * @param {Boolean=} nullReturn if true then null will be returned when no object for the given key exists
-     * @return {T}
-     */
-    getInstance: function (key, nullReturn) {
-      var obj = this.classInstances_[key];
-
-      // create instance
-      if (!obj) {
-        if (nullReturn) {
-          return null;
-        }
-
-        if (cwt.DEBUG) {
-          cwt.log("creating instance with key " + key);
-        }
-
-        obj = new this();
-        this.classInstances_[key] = obj;
+    // create instance
+    if (!obj) {
+      if (nullReturn) {
+        return null;
       }
 
-      return obj;
+      if (cwt.DEBUG) {
+        cwt.log("creating instance with key " + key);
+      }
+
+      obj = new this();
+      this.classInstances_[key] = obj;
     }
+
+    return obj;
   }
-});
+};
