@@ -185,7 +185,7 @@ cwt.Localization.registerLang({
   "VALUE_C" : "",
 
   "OPTIONS_KEYMAP_GOBACK":"Go Back",
-  "OPTIONS_KEYMAP_SET":"Remap Input Keys",
+  "OPTIONS_KEYMAP_SET":"Remap Keys",
 
   "TOOLTIP_1": "Change the keyboard and gamepad settings by selecting\nOptions from the main or in-game menu",
   "TOOLTIP_2": "Activate zooming the map by using the scroll wheel for\nthe mouse, pinching for touch screen, and the in-game menu.",
