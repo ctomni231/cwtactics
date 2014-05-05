@@ -29,10 +29,10 @@ cwt.ButtonFlowState({
         return;
       }
 
-      layout.getButtonByKey("MAP_SELECT_PAGE").text = (i+1).toString();
+      layout.getButtonByKey("MAP_SELECT_PAGE").text = (i + 1).toString();
 
-      i = (i*MAP_LIST_SIZE);
-      for (var n=0;n<MAP_LIST_SIZE; n++) {
+      i = (i * MAP_LIST_SIZE);
+      for (var n = 0; n < MAP_LIST_SIZE; n++) {
         if (i + n >= cwt.Maps.maps.length) {
           buttonList[n].text = "";
           mapList[n] = null;
@@ -70,7 +70,7 @@ cwt.ButtonFlowState({
 
       .addButton(2, 2, 0, "MAP_SELECT_PAGE_LEFT", cwt.UIField.STYLE_NW, 8, function () {
       })
-      .addButton(2, 2, 0, "MAP_SELECT_PAGE", cwt.UIField.STYLE_N, 8)
+      .addButton(3, 2, 0, "MAP_SELECT_PAGE", cwt.UIField.STYLE_N, 8)
       .addButton(2, 2, 0, "MAP_SELECT_PAGE_RIGHT", cwt.UIField.STYLE_NE, 8, function () {
       })
 
@@ -81,18 +81,18 @@ cwt.ButtonFlowState({
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(6, 2, 0, "MAP_SELECT_1", cwt.UIField.STYLE_EW, 8, function () {
+      .addButton(7, 2, 0, "MAP_SELECT_1", cwt.UIField.STYLE_EW, 8, function () {
         selectMap(0);
       })
 
-      .addColGap(2)
+      .addColGap(1)
 
       // map preview canvas
       .addCustomField(10, 10, 0, "MAP_SELECT_PREVIEW", function (ctx) {
         ctx.clearRect(this.x, this.y, this.width, this.height);
 
         if (state.selectedMap) {
-          var BASE = (state.selectedMap.mpw >= cwt.MAX_MAP_WIDTH/2)? 2 : 4;
+          var BASE = (state.selectedMap.mpw >= cwt.MAX_MAP_WIDTH / 2) ? 2 : 4;
 
           var miniMapImg = cwt.Image.sprites.MINIMAP.getImage(
             BASE === 2 ? cwt.Sprite.MINIMAP_2x2 : cwt.Sprite.MINIMAP_4x4);
@@ -134,7 +134,7 @@ cwt.ButtonFlowState({
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(6, 2, 0, "MAP_SELECT_2", cwt.UIField.STYLE_EW, 8, function () {
+      .addButton(7, 2, 0, "MAP_SELECT_2", cwt.UIField.STYLE_EW, 8, function () {
         selectMap(1);
       })
       .breakLine()
@@ -142,7 +142,7 @@ cwt.ButtonFlowState({
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(6, 2, 0, "MAP_SELECT_3", cwt.UIField.STYLE_EW, 8, function () {
+      .addButton(7, 2, 0, "MAP_SELECT_3", cwt.UIField.STYLE_EW, 8, function () {
         selectMap(2);
       })
       .breakLine()
@@ -150,7 +150,7 @@ cwt.ButtonFlowState({
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(6, 2, 0, "MAP_SELECT_4", cwt.UIField.STYLE_EW, 8, function () {
+      .addButton(7, 2, 0, "MAP_SELECT_4", cwt.UIField.STYLE_EW, 8, function () {
         selectMap(3);
       })
       .breakLine()
@@ -158,7 +158,7 @@ cwt.ButtonFlowState({
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(6, 2, 0, "MAP_SELECT_5", cwt.UIField.STYLE_EW, 8, function () {
+      .addButton(7, 2, 0, "MAP_SELECT_5", cwt.UIField.STYLE_EW, 8, function () {
         selectMap(4);
       })
       .breakLine()
@@ -166,10 +166,10 @@ cwt.ButtonFlowState({
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(6, 2, 0, "MAP_SELECT_6", cwt.UIField.STYLE_EW, 8, function () {
+      .addButton(7, 2, 0, "MAP_SELECT_6", cwt.UIField.STYLE_EW, 8, function () {
         selectMap(5);
       })
-
+      .addColGap(1)
       .addCustomField(2, 4, 0, "MAP_SELECT_PREVIEW_1", function () {
       }, true)
       .addCustomField(2, 4, 0, "MAP_SELECT_PREVIEW_2", function () {
@@ -185,7 +185,7 @@ cwt.ButtonFlowState({
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(6, 2, 0, "MAP_SELECT_7", cwt.UIField.STYLE_ESW, 8, function () {
+      .addButton(7, 2, 0, "MAP_SELECT_7", cwt.UIField.STYLE_ESW, 8, function () {
         selectMap(6);
       })
       .breakLine()

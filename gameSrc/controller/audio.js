@@ -2,21 +2,25 @@ cwt.Audio = {
 
   /**
    * Storage parameter for sfx volume.
+   *
+   * @constant
    */
   SFX_VOLUME_KEY: "cfg_sfx_volume",
 
   /**
    * Storage parameter for music volume.
+   *
+   * @constant
    */
   MUSIC_VOLUME_KEY: "cfg_music_volume",
 
   /**
-   *
+   * @constant
    */
   SFX_KEY: "SFX_",
 
   /**
-   *
+   * @constant
    */
   MUSIC_KEY: "MUSIC_",
 
@@ -153,7 +157,12 @@ cwt.Audio = {
    * @param {Function=} callback Callback function
    */
   saveConfigs: function (callback) {
-    if (!this.context_) return;
+    if (!this.context_) {
+      if (callback) {
+        callback();
+      }
+      return;
+    }
 
     // sfx volume
     cwt.Storage.generalStorage.set(
@@ -184,6 +193,9 @@ cwt.Audio = {
    */
   loadConfigs: function (callback) {
     if (!this.context_) {
+      if (callback) {
+        callback();
+      }
       return;
     }
 
@@ -361,7 +373,12 @@ cwt.Audio = {
    */
   grabFromCache: function (callback) {
     this.removeGrabbers_(); // remove initializer functions
-    if (!this.context_) return; // don't load audio when disabled
+    if (!this.context_) { // don't load audio when disabled
+      if (callback) {
+        callback();
+      }
+      return;
+    }
 
     var stuff = [];
 
@@ -375,10 +392,20 @@ cwt.Audio = {
           if (cwt.DEBUG) cwt.assert(obj.value);
 
           var realKey = obj.key.slice(cwt.Audio.SFX_KEY.length);
-          var buffer = Base64Helper.decodeBuffer(obj.value);
-          cwt.Audio.registerAudioBuffer(realKey, buffer);
+          var arrayBuffer = Base64Helper.decodeBuffer(obj.value);
+          cwt.Audio.context_.decodeAudioData( arrayBuffer,
 
-          next();
+            // success handling
+            function(buffer) {
+              cwt.Audio.registerAudioBuffer(realKey,buffer);
+              if( next ) next(true);
+            },
+
+            // error handling
+            function( e ){
+              if( next ) next(false);
+            }
+          );
         });
       });
     }
@@ -406,7 +433,12 @@ cwt.Audio = {
    */
   grabFromRemote: function (callback) {
     this.removeGrabbers_(); // remove initializer functions
-    if (!this.context_) return; // don't load audio when disabled
+    if (!this.context_) {// don't load audio when disabled
+      if (callback) {
+        callback();
+      }
+      return;
+    }
 
     var stuff = [];
 

@@ -140,7 +140,7 @@ cwt.UIField = my.Class( /** @lends cwt.UIField.prototype */ {
     }
 
     ctx.fillStyle = "black";
-    ctx.font = this.fsize + "pt Arial";
+    ctx.font = this.fsize + "pt "+cwt.GAME_FONT;
 
     if (this.text) {
       if (typeof this.text === "string") {

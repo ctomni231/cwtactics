@@ -184,7 +184,7 @@ cwt.ButtonFlowState({
 
       .addColGap(8)
       .addButton(5, 2, 0, "MENU_NEXT", cwt.UIField.STYLE_NORMAL, 8, function () {
-        //cwt.Gameflow.changeState("PLAYER_SETUP_SCREEN");
+        cwt.Gameflow.changeState("PARAMETER_SETUP_SCREEN");
       })
       .breakLine();
 

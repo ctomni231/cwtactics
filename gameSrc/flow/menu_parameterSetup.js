@@ -3,211 +3,124 @@ cwt.ButtonFlowState({
   id: "PARAMETER_SETUP_SCREEN",
   last: "PLAYER_SETUP_SCREEN",
 
-  enter: function () {
+  init: function (layout) {
+    var ENTRIES_PARAMETERS = 6;
+
+    var state = this;
+
+    state.configAttrPage = new cwt.Pagination(cwt.Config.registeredNames_, ENTRIES_PARAMETERS, function () {
+      for (var i = 0, e = this.entries.length; i < e; i++) {
+        state.names()[i].text = (this.entries[i]) ? cwt.Localization.forKey(this.entries[i]) : "";
+        state.values()[i].text = (this.entries[i]) ? cwt.Config.getValue(this.entries[i]).toString() : "";
+      }
+      state.pageButton().text = this.page.toString();
+    });
+
+    state.pageButton = cwt.lazy(function () {
+      return layout.getButtonByKey("PARAMETER_CONFIG_PAGE");
+    });
+
+    state.changeConfigValue = function (index, left) {
+      if (state.configAttrPage.entries[index]) {
+        var name = state.configAttrPage.entries[index];
+        var cfg = cwt.Config.getConfig(name);
+
+        if (left) {
+          cfg.decreaseValue();
+        } else {
+          cfg.increaseValue();
+        }
+
+        state.values()[index].text = cwt.Config.getValue(name).toString();
+      }
+    };
+
+    state.names = cwt.lazy(function () {
+      return layout.getButtonsByReg(/(PARAMETER_CONFIG_)(\d+)$/);
+    });
+
+    state.values = cwt.lazy(function () {
+      return layout.getButtonsByReg(/(PARAMETER_CONFIG_)(\d+)(_VALUE)$/);
+    });
   },
 
-  init: function (layout) {
-    var h = parseInt((cwt.SCREEN_HEIGHT - 22) / 2, 10);
+  enter: function () {
+    this.configAttrPage.selectPage(0);
+  },
+
+  doLayout: function (layout) {
+    var ENTRIES_PARAMETERS = 6;
+
+    var h = parseInt((cwt.SCREEN_HEIGHT - (8 + (ENTRIES_PARAMETERS * 2))) / 2, 10);
     var w = parseInt((cwt.SCREEN_WIDTH - 18) / 2, 10);
 
+    layout
+      .addRowGap(h)
+
+      // -------------------------------------------------------
+
+      .repeat(ENTRIES_PARAMETERS, function (i) {
+        var style1, style2, style3;
+
+        if (i === 0) {
+          style1 = cwt.UIField.STYLE_NEW;
+          style2 = cwt.UIField.STYLE_NW;
+          style3 = cwt.UIField.STYLE_NE;
+        } else if (i === ENTRIES_PARAMETERS - 1) {
+          style1 = cwt.UIField.STYLE_ESW;
+          style2 = cwt.UIField.STYLE_SW;
+          style3 = cwt.UIField.STYLE_ES;
+        } else {
+          style1 = cwt.UIField.STYLE_EW;
+          style2 = cwt.UIField.STYLE_W;
+          style3 = cwt.UIField.STYLE_E;
+        }
+
+        this
+          .addColGap(w)
+          .addButton(2, 2, 0, "MENU_LEFT", style1, 8, function () {
+            this.changeConfigValue(i, true);
+          })
+          .addColGap(1)
+          .addButton(8, 2, 0, "PARAMETER_CONFIG_" + i, style2, 8)
+          .addButton(4, 2, 0, "PARAMETER_CONFIG_" + i + "_VALUE", style3, 8)
+          .addColGap(1)
+          .addButton(2, 2, 0, "MENU_RIGHT", style1, 8, function () {
+            this.changeConfigValue(i, false);
+          })
+          .breakLine()
+      })
+
+      // -------------------------------------------------------
+
+      .addRowGap(1)
+
+      // -------------------------------------------------------
+
+      .addColGap(w + 6)
+      .addButton(2, 2, 0, "MENU_LEFT", cwt.UIField.STYLE_NSW, 8, function () {
+        this.configAttrPage.selectPage(this.configAttrPage.page - 1);
+      })
+      .addButton(2, 2, 0, "PARAMETER_CONFIG_PAGE", cwt.UIField.STYLE_NS, 8)
+      .addButton(2, 2, 0, "MENU_RIGHT", cwt.UIField.STYLE_NES, 8, function () {
+        this.configAttrPage.selectPage(this.configAttrPage.page + 1);
+      })
+      .breakLine()
+
+      // -------------------------------------------------------
+
+      .addRowGap(3)
+
+      // -------------------------------------------------------
+
+      .addColGap(w)
+      .addButton(5, 2, 0, "MENU_BACK", cwt.UIField.STYLE_NORMAL, 8, function () {
+        cwt.Gameflow.changeState("PLAYER_SETUP_SCREEN");
+      })
+      .addColGap(8)
+      .addButton(5, 2, 0, "MENU_NEXT", cwt.UIField.STYLE_NORMAL, 8, function () {
+        cwt.Gameflow.changeState("INGAME_ENTER");
+      })
+      .breakLine();
   }
 });
-/*
-util.scoped(function(){
-  
-  var btn = controller.generateButtonGroup( 
-    document.getElementById("cwt_parameter_setup_screen"),
-    "cwt_panel_header_big cwt_page_button cwt_panel_button",
-    "cwt_panel_header_big cwt_page_button cwt_panel_button button_active",
-    "cwt_panel_header_big cwt_page_button cwt_panel_button button_inactive"
-  );
-  
-  var cPage      = 0;
-  var parameters = [
-    null,
-    null,
-    null,
-    null,
-    null
-  ];
-  
-  var parameterBtn = [
-    document.getElementById("options.parameter.1.value"),
-    document.getElementById("options.parameter.2.value"),
-    document.getElementById("options.parameter.3.value"),
-    document.getElementById("options.parameter.4.value"),
-    document.getElementById("options.parameter.5.value")
-  ];
-  
-  var parameterTextBtn = [
-    document.getElementById("options.parameter.1.desc"),
-    document.getElementById("options.parameter.2.desc"),
-    document.getElementById("options.parameter.3.desc"),
-    document.getElementById("options.parameter.4.desc"),
-    document.getElementById("options.parameter.5.desc")
-  ];
-  
-  function changeValue( index, prev ){
-    if( parameters[index] ){
-      var def = controller.configBoundaries_[parameters[index]];
-      
-      if( !prev && model.cfg_configuration[parameters[index]] + def.step <= def.max ){
-        model.cfg_configuration[parameters[index]] += def.step;
-      } else if( model.cfg_configuration[parameters[index]] - def.step >= def.min ){
-        model.cfg_configuration[parameters[index]] -= def.step;
-      }
-      
-      updateButton(index);
-    }
-  }
-  
-  function updateButton( index ){
-    parameterBtn[index].innerHTML = ( parameters[index] )? model.cfg_configuration[parameters[index]] : "&#160;";
-    parameterTextBtn[index].innerHTML = ( parameters[index] )? model.data_localized(parameters[index]) : "&#160;";
-  }
-  
-  function updateButtons(){
-    var startIndex = cPage*5;
-    
-    // update meta aw2
-    parameters[0] = (startIndex   < controller.configNames_.length)? controller.configNames_[startIndex  ]: null;
-    parameters[1] = (startIndex+1 < controller.configNames_.length)? controller.configNames_[startIndex+1]: null;
-    parameters[2] = (startIndex+2 < controller.configNames_.length)? controller.configNames_[startIndex+2]: null;
-    parameters[3] = (startIndex+3 < controller.configNames_.length)? controller.configNames_[startIndex+3]: null;
-    parameters[4] = (startIndex+4 < controller.configNames_.length)? controller.configNames_[startIndex+4]: null;
-    
-    // update UI
-    updateButton(0);
-    updateButton(1);
-    updateButton(2);
-    updateButton(3);
-    updateButton(4);
-  }
-  
-  // ----------------------------------------------------------------------------------------
-  
-  controller.screenStateMachine.structure.PARAMETER_SETUP = Object.create(controller.stateParent);
-  
-  controller.screenStateMachine.structure.PARAMETER_SETUP.section = "cwt_parameter_setup_screen";
-	
-  controller.screenStateMachine.structure.PARAMETER_SETUP.enterState = function(){
-    cPage = 0;
-    updateButtons();
-  };
-  
-  // ***************** D-PAD *****************
-  
-  controller.screenStateMachine.structure.PARAMETER_SETUP.UP = function(){
-    var value = 1;
-    switch( btn.getActiveKey() ){
-      case "config.parameter.next":
-      case "config.parameter.prev":
-      case "options.nextPage":
-      case "options.prevPage":
-      case "options.goBack": 
-      case "options.next": 
-        value = 2;
-        break;
-    }
-    
-    if( value ) btn.decreaseIndex(value);
-    return this.breakTransition();
-  };
-  
-  controller.screenStateMachine.structure.PARAMETER_SETUP.DOWN = function(){
-    var value = 1;
-    switch( btn.getActiveKey() ){
-      case "config.parameter.next":
-      case "config.parameter.prev":
-      case "options.nextPage":
-      case "options.prevPage":
-      case "options.goBack": 
-        value = 2;
-        break;
-    }
-    
-    if( value ) btn.increaseIndex(value);
-    
-    return this.breakTransition();
-  };
-  
-  controller.screenStateMachine.structure.PARAMETER_SETUP.LEFT = function(){
-    switch( btn.getActiveKey() ){  
-      case "config.parameter.next":
-      case "options.nextPage":
-      case "options.next": 
-        btn.decreaseIndex();
-        break;      
-    }
-    return this.breakTransition();
-  };
-
-  controller.screenStateMachine.structure.PARAMETER_SETUP.RIGHT = function(){
-    switch( btn.getActiveKey() ){
-      case "config.parameter.prev":
-      case "options.prevPage":
-      case "options.goBack": 
-        btn.increaseIndex();
-        break;
-    }
-    return this.breakTransition();
-  };
-  
-  // ***************** ACTIONS *****************
-  
-  controller.screenStateMachine.structure.PARAMETER_SETUP.CANCEL = function(){
-    return "PLAYER_SETUP";
-  };
-  
-  controller.screenStateMachine.structure.PARAMETER_SETUP.ACTION = function(){
-    switch( btn.getActiveKey() ){
-        
-      case "config.parameter.prev":
-        var value = -1;
-        switch( btn.getActiveData() ){
-          case "1" : value = 0; break;
-          case "2" : value = 1; break;
-          case "3" : value = 2; break;
-          case "4" : value = 3; break;
-          case "5" : value = 4; break;
-        }
-        changeValue(value,true);
-        break;
-        
-      case "config.parameter.next":
-        var value = -1;
-        switch( btn.getActiveData() ){
-          case "1" : value = 0; break;
-          case "2" : value = 1; break;
-          case "3" : value = 2; break;
-          case "4" : value = 3; break;
-          case "5" : value = 4; break;
-        }
-        changeValue(value,false);
-        break;
-        
-      case "options.prevPage":
-        if( cPage > 0 ){
-          cPage--;
-          updateButtons();
-        } else return;
-        break;
-        
-      case "options.nextPage":
-        if( controller.configNames_.length > (cPage+1)*5 ){
-          cPage++;
-          updateButtons();
-        } else return;
-        break;
-        
-      case "options.goBack":
-        return "PLAYER_SETUP";
-
-      case "options.next":
-        return "GAMEROUND";
-    }
-    
-    return this.breakTransition();
-  };
-    
-});  */

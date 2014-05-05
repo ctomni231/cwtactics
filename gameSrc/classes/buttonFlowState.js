@@ -20,7 +20,13 @@ cwt.ButtonFlowState = function (desc) {
         }
       };
 
-      desc.init.call(this,this.layout);
+      if (desc.init) {
+        desc.init.call(this,this.layout);
+      }
+
+      if (desc.doLayout) {
+        desc.doLayout.call(this,this.layout);
+      }
 
       if (desc.genericInput) {
         this.genericInput = desc.genericInput;
@@ -46,6 +52,7 @@ cwt.ButtonFlowState = function (desc) {
           case cwt.Input.TYPE_DOWN:
             if (this.layout.handleInput(lastInput)) {
               this.rendered = false;
+              cwt.Audio.playSound("MENU_TICK");
             }
             break;
 
@@ -53,11 +60,13 @@ cwt.ButtonFlowState = function (desc) {
             var button = this.layout.activeButton();
             button.action.call(this,button,this);
             this.rendered = false;
+            cwt.Audio.playSound("ACTION");
             break;
 
           case cwt.Input.TYPE_CANCEL:
             if (desc.last) {
               cwt.Gameflow.changeState(desc.last);
+              cwt.Audio.playSound("CANCEL");
             }
             break;
         }

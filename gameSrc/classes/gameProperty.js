@@ -32,8 +32,8 @@ cwt.Property = my.Class(/** @lends cwt.Property.prototype */ {
 
     $onSaveGame: function (data) {
       dom.prps = [];
-      for (var i = 0, e = model.property_data.length; i < e; i++) {
-        prop = model.property_data[i];
+      for (var i = 0, e = cwt.Property.MULTITON_INSTANCES; i < e; i++) {
+        prop = cwt.Property.getInstance(i);
 
         // persist it if the owner of the property is not INACTIVE
         if (prop.owner !== cwt.INACTIVE) {
@@ -51,8 +51,10 @@ cwt.Property = my.Class(/** @lends cwt.Property.prototype */ {
 
     $onLoadGame: function (data) {
 
+
+      /*
       // reset all
-      for (var i = 0, e = model.property_data.length; i < e; i++) {
+      for (var i = 0, e = cwt.Property.MULTITON_INSTANCES; i < e; i++) {
         model.property_data[i].owner = cwt.INACTIVE;
         model.property_data[i].type = null;
       }
@@ -91,8 +93,6 @@ cwt.Property = my.Class(/** @lends cwt.Property.prototype */ {
         this.getInstance([data[0]]).capturePoints = data[4];
       }
 
-
-      /*
        (function () {
 
        function placeCannonMetaData(x, y) {

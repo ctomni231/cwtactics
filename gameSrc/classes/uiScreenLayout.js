@@ -20,6 +20,17 @@ cwt.UIScreenLayout = my.Class(/** @lends cwt.UIScreenLayout.prototype */ {
 
   /**
    *
+   * @param f
+   */
+  repeat: function (n,f) {
+    for (var i = 0; i < n; i++) {
+      f.call(this,i);
+    }
+    return this;
+  },
+
+  /**
+   *
    * @param tiles
    */
   addRowGap: function (tiles) {
@@ -188,6 +199,22 @@ cwt.UIScreenLayout = my.Class(/** @lends cwt.UIScreenLayout.prototype */ {
   },
 
   /**
+   *
+   * @param {RegExp} reg
+   */
+  getButtonsByReg: function (reg) {
+    var arr = [];
+
+    for (var i = 0, e = this.elements.length; i < e; i++) {
+      if (reg.test(this.elements[i].key)) {
+        arr.push(this.elements[i]);
+      }
+    }
+
+    return arr;
+  },
+
+  /**
    * Updates the index of the selected button in interconnection to a given position.
    *
    * @param {Number} x
@@ -210,6 +237,7 @@ cwt.UIScreenLayout = my.Class(/** @lends cwt.UIScreenLayout.prototype */ {
         this.elements[this.selected].inFocus = false;
         this.selected = i;
         this.elements[this.selected].inFocus = true;
+
         return true;
       }
     }

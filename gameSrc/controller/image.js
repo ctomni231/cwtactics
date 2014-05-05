@@ -911,6 +911,23 @@ cwt.Image = {
         }
       }
 
+      // grab tile variant information
+      Object.keys(cwt.Graphics.TILES).forEach(function (key) {
+        var value = cwt.Graphics.TILES[key];
+
+        // special graphic data for tiles
+        if (value[value.length - 2] === true) {
+          cwt.Image.longAnimatedTiles[key] = true;
+        }
+        if (value[value.length - 1] === true) {
+          cwt.Image.overlayTiles[key] = true;
+        }
+
+        if (value.length !== 3) { // multi variant tile
+          cwt.TileVariants.registerVariantInfo(key, value[0], value[1]);
+        }
+      });
+
       callAsSequence(stuff, function () {
         callback();
       });

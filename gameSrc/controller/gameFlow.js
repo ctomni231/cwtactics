@@ -165,9 +165,6 @@ cwt.Gameflow = {
       cwt.Input.types.gamePad.update();
     }
 
-    // animation layout
-    cwt.Screen.renderCycle(delta);
-
     // state update
     var inp = cwt.Input.popAction();
     this.activeState.update(delta, inp);

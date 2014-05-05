@@ -5,6 +5,8 @@
  */
 window.cwt = {
 
+  GAME_FONT: "Gamefont",
+
   MOD_PATH: "http://localhost:8000/",
   // MOD_PATH: "http://192.168.1.30:8000/",
 
@@ -47,11 +49,11 @@ window.cwt = {
    */
   DEBUG: true,
 
-  /** @constant */
-  SCREEN_WIDTH: 32,
+  /** @constant */ //32
+  SCREEN_WIDTH: parseInt(window.innerWidth/16,10),
 
-  /** @constant */
-  SCREEN_HEIGHT: 24,
+  /** @constant */ // 24
+  SCREEN_HEIGHT: parseInt(window.innerHeight/16,10),
 
   /** @constant */
   MAX_MAP_WIDTH: 60,
@@ -94,6 +96,17 @@ window.cwt = {
 
       // raise error
       throw msgA;
+    }
+  },
+
+  lazy: function (fn) {
+    var value = undefined;
+    return function () {
+      if (value === void 0) {
+        value = fn();
+      }
+
+      return value;
     }
   }
 };

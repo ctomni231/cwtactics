@@ -1,7 +1,8 @@
 cwt.Gameflow.addState({
-  id: "IDLE",
+  id: "INGAME_IDLE",
 
   enter: function () {
+    /*
     this.data.menu.clean();
     this.data.movePath.clean();
 
@@ -17,6 +18,7 @@ cwt.Gameflow.addState({
     this.data.source.clean();
     this.data.target.clean();
     this.data.targetselection.clean();
+    */
   },
 
   /**
@@ -26,6 +28,7 @@ cwt.Gameflow.addState({
    */
   update: function (delta, input) {
 
+    /*
     // handle input
     if (input && input.key === cwt.Input.TYPE_ACTION) {
       this.data.source.set(x, y);
@@ -52,5 +55,10 @@ cwt.Gameflow.addState({
         return "ACTION_MENU";
       }
     }
+    */
+  },
+
+  render: function (delta) {
+    cwt.MapRenderer.renderCycle(delta);
   }
 });

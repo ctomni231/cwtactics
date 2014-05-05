@@ -34,7 +34,7 @@ cwt.TileVariants = {
 
         // tile has variants
         if (this.types[tile.type.ID]) {
-          tile.variant = this.types[this.type.ID].getVariant(
+          tile.variant = this.types[tile.type.ID].getVariant(
 
             // N
             (y > 0) ? mapData[x][y - 1].type.ID : "",

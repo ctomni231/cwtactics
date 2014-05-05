@@ -64,6 +64,8 @@ cwt.TileVariantInfo = my.Class(/** @lends cwt.TileVariantInfo.prototype */ {
         if (cConn[7] !== "" && cConn[7] !== typeW) continue;
         if (cConn[8] !== "" && cConn[8] !== typeNW) continue;
       }
+
+      return cConn[0];
     }
   }
 })

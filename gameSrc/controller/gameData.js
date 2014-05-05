@@ -27,11 +27,16 @@ cwt.GameData = {
   loadGame: (function () {
     var caller = cwt.createModuleCaller("$onLoadGame");
     return function (name, isSave, callback) {
-      cwt.Storage.mapStorage.get(name, function (obj) {
-        cwt.assert(obj.value);
-        caller(JSON.parse(obj.value), isSave);
+      if (typeof name === "string") {
+        cwt.Storage.mapStorage.get(name, function (obj) {
+          cwt.assert(obj.value);
+          caller(JSON.parse(obj.value), isSave);
+          callback();
+        });
+      } else {
+        caller(name, isSave);
         callback();
-      });
+      }
     };
   })()
 

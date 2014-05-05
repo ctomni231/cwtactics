@@ -67,7 +67,7 @@ cwt.Unit = my.Class(/** @lends cwt.Unit.prototype */ {
 
     $onSaveGame: function (data) {
       data.units = [];
-      for (var i = 0, e = this.MULTITON_INSTANCES; i < e; i++) {
+      for (var i = 0, e = cwt.Unit.MULTITON_INSTANCES; i < e; i++) {
         var unit = this.getInstance(i,true);
         if (unit) {
           data.units.push([
@@ -87,6 +87,7 @@ cwt.Unit = my.Class(/** @lends cwt.Unit.prototype */ {
 
     $onLoadGame: function (data,isSave) {
 
+      /*
       for (var i = 0, e = model.unit_data.length; i < e; i++) {
         model.unit_data[i].owner = cwt.INACTIVE;
       }
@@ -131,6 +132,7 @@ cwt.Unit = my.Class(/** @lends cwt.Unit.prototype */ {
           model.unit_posData[data[2]][data[3]] = unit;
         }
       }
+      */
     }
 
   },

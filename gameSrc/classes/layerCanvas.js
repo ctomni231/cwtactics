@@ -43,7 +43,7 @@ cwt.LayeredCanvas = my.Class({
 
     var ctx = this.getContext();
     ctx.clearRect(0, 0, this.w, this.h);
-    ctx.drawImage(this.getLayer(index), 0, 0);
+    ctx.drawImage(this.getLayer(index), 0, 0, this.w, this.h);
   },
 
   /**

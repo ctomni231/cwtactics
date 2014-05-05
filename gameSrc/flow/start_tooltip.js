@@ -44,6 +44,7 @@ cwt.Gameflow.addState({
 
     // action leads into main menu
     if (lastInput && lastInput.key === cwt.Input.TYPE_ACTION) {
+      cwt.Audio.playNullSound();
       cwt.Gameflow.changeState("MAIN_MENU");
 
     } else {

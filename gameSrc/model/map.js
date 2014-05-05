@@ -30,7 +30,7 @@ cwt.Map = {
       }
     }
 
-    return matrix;
+    return matrix.data;
   })(),
 
   /**

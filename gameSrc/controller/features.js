@@ -10,45 +10,44 @@ cwt.ClientFeatures = {
   /**
    * Controls the availability of audio effects.
    */
-  audioSFX: (Browser.chrome || Browser.safari ||
-              (Browser.ios && Browser.version >= 6)),
+  audioSFX: ((Browser.chrome || Browser.safari || (Browser.ios && Browser.version >= 6)) === true),
 
   /**
    * Controls the availability of music.
    */
-  audioMusic: (Browser.chrome || Browser.safari),
+  audioMusic: ((Browser.chrome || Browser.safari) === true),
 
   /**
    * Controls the availability of game-pad input.
    */
-  gamePad: (Browser.chrome && !!navigator.webkitGetGamepads),
+  gamePad: ((Browser.chrome && !!navigator.webkitGetGamepads) === true),
 
   /**
    * Controls the availability of computer keyboard input.
    */
-  keyboard:	(!Browser.mobile),
+  keyboard:	((!Browser.mobile) === true),
 
   /**
    * Controls the availability of mouse input.
    */
-  mouse: (!Browser.mobile),
+  mouse: ((!Browser.mobile) === true),
 
   /**
    * Controls the availability of touch input.
    */
-  touch: (Browser.mobile),
+  touch: ((Browser.mobile) === true),
 
   /**
    * Signals a official supported environment. If false then it doesn't mean the
    * environment cannot run the game, but the status is not official tested. As
    * result the game could run fine or breaks.
    */
-  supported: (Browser.chrome || Browser.safari || Browser.ios || Browser.android),
+  supported: ((Browser.chrome || Browser.safari || Browser.ios || Browser.android) === true),
 
   // scaledImg:  false,
 
   /**
    * Controls the usage of the workaround for the iOS7 WebSQL DB bug.
    */
-  iosWebSQLFix: (Browser.ios && Browser.version >= 7)
+  iosWebSQLFix: ((Browser.ios && Browser.version >= 7) === true)
 };

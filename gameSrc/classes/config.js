@@ -127,6 +127,16 @@ cwt.Config = my.Class(/** @lends cwt.Config.prototype */ {
     if ((value - this.min) % this.step !== 0) {
       cwt.assert(false, "step criteria is broken");
     }
+
+    this.value = value;
+  },
+
+  decreaseValue: function () {
+    this.setValue(this.value-this.step);
+  },
+
+  increaseValue: function () {
+    this.setValue(this.value+this.step);
   },
 
   /**

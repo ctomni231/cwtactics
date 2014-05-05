@@ -4,7 +4,9 @@
 cwt.WeatherSheet = new cwt.SheetDatabase({
 
   check: function ( sheet ) {
-
+    if (sheet.defaultWeather) {
+      cwt.WeatherSheet.defaultWeather = sheet;
+    }
   }
 
 });

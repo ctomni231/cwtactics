@@ -1,5 +1,5 @@
-cwt.Config.create("co_getStarCost",5,50000,9000,5);
-cwt.Config.create("co_getStarCostIncrease",0,50000,1800,5);
+cwt.Config.create("co_getStarCost",100,50000,9000,100);
+cwt.Config.create("co_getStarCostIncrease",0,50000,1800,100);
 cwt.Config.create("co_getStarCostIncreaseSteps",0,50,10);
 cwt.Config.create("co_enabledCoPower",0,1,1);
 

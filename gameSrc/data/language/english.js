@@ -205,6 +205,22 @@ cwt.Localization.registerLang({
   "VALUE_A" : "",
   "VALUE_C" : "",
 
+  "co_getStarCost" : "Star Costs",
+  "co_getStarCostIncrease" : "Star Costs Increase",
+  "co_getStarCostIncreaseSteps" : "Star C. Incr. Steps",
+  "co_enabledCoPower" : "Co Powers",
+  "fogEnabled" : "Fog Mode",
+  "daysOfPeace" : "Days of Peace",
+  "weatherMinDays" : "Weather min. duration",
+  "weatherRandomDays" : "Weather max. duration",
+  "noUnitsLeftLoose" : "Loose without units",
+  "autoSupplyAtTurnStart" : "Turn Start Auto-Supply",
+  "round_dayLimit" : "Day limit",
+  "unitLimit" : "Unit Limit",
+  "captureLimit" : "Capture Limit",
+  "timer_turnTimeLimit" : "Turn Time (Min.)",
+  "timer_gameTimeLimit" : "Game Time (Min.)",
+
   "OPTIONS_KEYMAP_GOBACK":"Go Back",
   "OPTIONS_KEYMAP_SET":"Remap Keys",
 
