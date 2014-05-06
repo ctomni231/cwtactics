@@ -11,10 +11,13 @@ if (window.console) window.console = {};
   container.style.top = "5px";
   container.style.width = "50%";
   container.style.height = "50%";
-  container.style.overflow = "scroll";
-  container.style.backgroundColor = "rgba(0,0,0,0.5)";
+  container.style.overflow = "hidden";
+  container.style.color = "white";
+  container.style.fontWeight = "bold";
+  container.style.backgroundColor = "rgba(0,0,0,0.3)";
   container.style.border = "1px solid black";
   container.style.padding = "2px";
+  container.style.pointerEvents = "none";
   container.style.zIndex = "9999";
 
   document.getElementsByTagName("body")[0].appendChild(container);

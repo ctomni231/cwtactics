@@ -4,5 +4,6 @@ cwt.mapList = {
   "Shuriken Valley": "maps/shuriken-valley-v1.json",
   "Stand Off": "maps/stand-off.json",
   "Spann Island": "maps/spann-island.json",
-  "TestMap": "maps/testmap.json"
+  "TestMap": "maps/testmap.json",
+  "Test-MillionMarch": "maps/millionmarch.json"
 };
