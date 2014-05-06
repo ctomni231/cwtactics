@@ -300,8 +300,8 @@ cwt.Image = {
       var nCanvas = document.createElement('canvas');
       var nContext = nCanvas.getContext('2d');
 
-      nCanvas.height = w;
-      nCanvas.width = h;
+      nCanvas.width = w;
+      nCanvas.height = h;
 
       nContext.drawImage(image, sx, sy, w, h, 0, 0, w, h);
 

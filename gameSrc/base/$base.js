@@ -49,11 +49,13 @@ window.cwt = {
    */
   DEBUG: true,
 
-  /** @constant */ //32
-  SCREEN_WIDTH: parseInt(window.innerWidth/16,10),
+  /** @constant */
+  SCREEN_WIDTH: 32,
+  //SCREEN_WIDTH: parseInt(window.innerWidth/16,10),
 
-  /** @constant */ // 24
-  SCREEN_HEIGHT: parseInt(window.innerHeight/16,10),
+  /** @constant */
+  SCREEN_HEIGHT: 24,
+  //SCREEN_HEIGHT: parseInt(window.innerHeight/16,10),
 
   /** @constant */
   MAX_MAP_WIDTH: 60,

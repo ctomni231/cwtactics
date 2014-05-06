@@ -63,78 +63,7 @@ cwt.Unit = my.Class(/** @lends cwt.Unit.prototype */ {
       }
 
       return n;
-    },
-
-    $onSaveGame: function (data) {
-      data.units = [];
-      for (var i = 0, e = cwt.Unit.MULTITON_INSTANCES; i < e; i++) {
-        var unit = this.getInstance(i,true);
-        if (unit) {
-          data.units.push([
-            i,
-            unit.type.ID,
-            unit.x,
-            unit.y,
-            unit.hp,
-            unit.ammo,
-            unit.fuel,
-            unit.loadedIn,
-            unit.owner
-          ]);
-        }
-      }
-    },
-
-    $onLoadGame: function (data,isSave) {
-
-      /*
-      for (var i = 0, e = model.unit_data.length; i < e; i++) {
-        model.unit_data[i].owner = cwt.INACTIVE;
-      }
-
-      model.unit_posData.resetValues();
-
-      var data;
-      if (dom.units) {
-        cwt.assert(Array.isArray(dom.units));
-
-        for (var i = 0, e = dom.units.length; i < e; i++) {
-          data = dom.units[i];
-
-          // check aw2 of the aw2 block this save handler uses a differn't saving schema
-          cwt.assert(util.isInt(data[0]));
-          cwt.assert(typeof data[1] === "string");
-          cwt.assert(model.data_unitSheets.hasOwnProperty(data[1]));
-
-          var type = model.data_unitSheets[data[1]];
-
-          cwt.assert(model.map_isValidPosition(data[2], data[3]));
-          cwt.assert(util.intRange(data[4], 1, 99));
-          cwt.assert(util.intRange(data[5], 0, type.ammo));
-          cwt.assert(util.intRange(data[6], 0, type.fuel));
-          cwt.assert(util.isInt(data[7]));
-          cwt.assert(util.intRange(data[8], -1, MAX_PLAYER - 1));
-
-          // get unit object
-          var id = data[0];
-          var unit = model.unit_data[id];
-
-          // inject aw2
-          unit.type = type;
-          unit.x = data[2];
-          unit.y = data[3];
-          unit.hp = data[4];
-          unit.ammo = data[5];
-          unit.fuel = data[6];
-          unit.loadedIn = data[7]; // TODO: move to transport
-          unit.owner = data[8];
-
-          model.unit_posData[data[2]][data[3]] = unit;
-        }
-      }
-      */
     }
-
   },
 
   constructor: function () {
@@ -160,8 +89,6 @@ cwt.Unit = my.Class(/** @lends cwt.Unit.prototype */ {
      * @type {cwt.Player}
      */
     this.owner = null;
-
-    this.sprite = null;
   },
 
   initByType: function (type) {

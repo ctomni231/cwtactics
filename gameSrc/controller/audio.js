@@ -500,7 +500,7 @@ cwt.Audio = {
           Base64Helper.encodeBuffer(request.response),
           function () {
             if (loadIt) {
-              loadBuffer(path, request.response, callback);
+              loadBuffer(key, request.response, callback);
             } else {
               callback();
             }

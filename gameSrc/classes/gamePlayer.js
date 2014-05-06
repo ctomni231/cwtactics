@@ -19,45 +19,7 @@ cwt.Player = my.Class(/** @lends cwt.Player.prototype */ {
      */
     MAX_UNITS: 50,
 
-    activeClientPlayer: null,
-
-    $onSaveGame: function (data) {
-
-    },
-
-    $onLoadGame: function (data,isSave) {
-
-      // reset player data
-      for (var i = 0, e = this.MULTITON_INSTANCES; i < e; i++) {
-        var player = this.getInstance(i);
-
-        player.name = null;
-        player.gold = 0;
-        player.manpower = Math.POSITIVE_INFINITY;
-        player.team = (i <= data.player - 1) ? i : cwt.NOT_AVAILABLE;
-      }
-
-      // grab save game data
-      if (isSave) {
-        for (var i = 0, e = data.players.length; i < e; i++) {
-          var data = data.players[i];
-          var player = cwt.Player.getInstance(data[0]);
-
-          // check data
-          cwt.assert(typeof data[1] === "string");
-          cwt.assert(data[0] >= 0 && data[0] < cwt.Player.MULTITON_INSTANCES);
-          cwt.assert(data[3] >= 0 && data[3] < cwt.Player.MULTITON_INSTANCES);
-          cwt.assert(data[2] >= 0 && data[2] < 999999);
-          cwt.assert(data[4] >= 0 && data[4] < 999999);
-
-          // set player data
-          player.name = data[1];
-          player.gold = data[2];
-          player.team = data[3];
-          player.manpower = data[4];
-        }
-      }
-    }
+    activeClientPlayer: null
   },
 
   constructor: function () {
