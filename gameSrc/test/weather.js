@@ -19,6 +19,9 @@ cwt.Gameflow.addState({
 	//But it seems memory intensive to pull off, there has to be
 	//a less expensive way
 	
+	//Keeps track of the time
+	this.time = 0;
+	
 	//Keeps track of the frequency of a snowball
 	this.FREQUENCY = 2;
 	
@@ -93,6 +96,10 @@ cwt.Gameflow.addState({
   render: function () {
     var ctx = cwt.Screen.layerUI.getContext();
 	
+	if (cwt.DEBUG) {
+      this.time = (new Date()).getTime();
+    }
+	
 	ctx.fillStyle = "black";
     ctx.fillRect( 0, 0, cwt.Screen.width, cwt.Screen.height );
 	
@@ -102,13 +109,10 @@ cwt.Gameflow.addState({
 			continue;
 				
 		ctx.drawImage(this.ball, this.posx[i], this.posy[i], 10+5*this.type[i], 10+5*this.type[i]);
-		//arc(x, y, radius, startAngle, endAngle, counterClockwise(opt) )
-		//Ugh, so hard to draw circles (Played with line width until correct
-		//ctx.strokeStyle = "rgba(255,255,255,0.3)";
-		//ctx.lineWidth = 4 + this.type[i]*2;
-		//ctx.beginPath();
-		//ctx.arc(this.posx[i], this.posy[i], 2 + this.type[i], 0, Math.PI*2);
-		//ctx.stroke();
 	}
+	
+	if (cwt.DEBUG) {
+      console.log("Quick render of weather... needed "+((new Date()).getTime()-this.time)+"ms");
+    }
   }
 });
