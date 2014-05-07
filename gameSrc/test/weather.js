@@ -88,7 +88,7 @@ cwt.Gameflow.addState({
 		this.posy[i] += 4;
 
 		//Destroy particles
-		if(this.posy[i] > cwt.Screen.height+100)
+		if(this.posy[i] > cwt.Screen.height+10)
 			this.type[i] = -1;
 	}
   },
@@ -96,6 +96,7 @@ cwt.Gameflow.addState({
   render: function () {
     var ctx = cwt.Screen.layerUI.getContext();
 	
+	//Tests the speed of each particle for debug mode
 	if (cwt.DEBUG) {
       this.time = (new Date()).getTime();
     }
@@ -111,8 +112,9 @@ cwt.Gameflow.addState({
 		ctx.drawImage(this.ball, this.posx[i], this.posy[i], 10+5*this.type[i], 10+5*this.type[i]);
 	}
 	
+	//Finishes the testing of speed for snow particles
 	if (cwt.DEBUG) {
-      console.log("Quick render of weather... needed "+((new Date()).getTime()-this.time)+"ms");
+      console.log("Quick render of snow... needed "+((new Date()).getTime()-this.time)+"ms");
     }
   }
 });
