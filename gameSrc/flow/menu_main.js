@@ -27,7 +27,9 @@ cwt.Gameflow.addMenuState({
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(16, 4, 0, "MAIN_MENU_NETWORK", cwt.UIField.STYLE_NORMAL, 20)
+      .addButton(16, 4, 0, "MAIN_MENU_NETWORK", cwt.UIField.STYLE_NORMAL, 20, function () {
+		cwt.Gameflow.changeState("RAIN");
+	  })
       .breakLine()
 
       //--------------------------------------------------------
