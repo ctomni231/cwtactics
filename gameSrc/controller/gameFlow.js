@@ -10,14 +10,8 @@ cwt.Gameflow = {
   activeState: null,
 
   /**
-   * True when the game is in an active game round, else false.
-   *
-   * @type {boolean}
-   */
-  inGameRound: false,
-
-  /**
    * @type {Array.<cwt.GameState>}
+   * @private
    */
   states_: {},
 
@@ -25,7 +19,7 @@ cwt.Gameflow = {
    * State-Machine data object to share data between
    * states.
    */
-  data: {},
+  globalData: {},
 
   /**
    *
@@ -39,14 +33,179 @@ cwt.Gameflow = {
       desc.exit ? desc.exit : cwt.emptyFunction,
       desc.update ? desc.update : cwt.emptyFunction,
       desc.render ? desc.render : cwt.emptyFunction,
-      this.data
+      {
+        globalData: this.globalData
+      }
     );
 
     if (desc.init) {
-      desc.init.apply(state);
+      desc.init.call(state.data);
     }
 
     this.states_[desc.id] = state;
+  },
+
+  /**
+   *
+   * @param desc
+   */
+  addInGameState: function (desc) {
+    cwt.Gameflow.addState({
+
+      id: desc.id,
+
+      enter: function () {
+        if (desc.enter) {
+          desc.enter.call(this);
+        }
+      },
+
+      exit: function () {
+        if (desc.exit) {
+          desc.exit.call(this);
+        }
+      },
+
+      update: function (delta, input) {
+        if (input) {
+          switch (input.key) {
+
+            case cwt.Input.TYPE_LEFT:
+              if (desc.LEFT) {
+                desc.LEFT.call(this,delta);
+              } else {
+                cwt.MapRenderer.updateScreenShift(cwt.Move.MOVE_CODES_LEFT);
+              }
+              break;
+
+            case cwt.Input.TYPE_UP:
+              if (desc.UP) {
+                desc.UP.call(this,delta);
+              } else {
+                cwt.MapRenderer.updateScreenShift(cwt.Move.MOVE_CODES_LEFT);
+              }
+              break;
+
+            case cwt.Input.TYPE_RIGHT:
+              if (desc.RIGHT) {
+                desc.RIGHT.call(this.data,delta);
+              } else {
+                cwt.MapRenderer.updateScreenShift(cwt.Move.MOVE_CODES_LEFT);
+              }
+              break;
+
+            case cwt.Input.TYPE_DOWN:
+              if (desc.DOWN) {
+                desc.DOWN.call(this,delta);
+              } else {
+                cwt.MapRenderer.updateScreenShift(cwt.Move.MOVE_CODES_LEFT);
+              }
+              break;
+
+            case cwt.Input.TYPE_ACTION:
+              if (desc.ACTION) {
+                desc.ACTION.call(this,delta);
+              }
+              break;
+
+            case cwt.Input.TYPE_CANCEL:
+              if (desc.CANCEL) {
+                desc.CANCEL.call(this,delta);
+              }
+              break;
+          }
+        }
+      },
+
+      render: function (delta) {
+        cwt.MapRenderer.renderCycle(delta);
+        if (desc.render) {
+          desc.render.call(this);
+        }
+      }
+
+    });
+  },
+
+  /**
+   *
+   * @param desc
+   */
+  addMenuState: function (desc) {
+    cwt.Gameflow.addState({
+      id: desc.id,
+
+      init: function () {
+        this.layout = new cwt.UIScreenLayout();
+        this.rendered = false;
+
+        this.inputMove = function (x, y) {
+          if (this.layout.updateIndex(x, y)) {
+            this.rendered = false;
+          }
+        };
+
+        if (desc.init) {
+          desc.init.call(this,this.layout);
+        }
+
+        if (desc.doLayout) {
+          desc.doLayout.call(this,this.layout);
+        }
+
+        if (desc.genericInput) {
+          this.genericInput = desc.genericInput;
+        }
+      },
+
+      enter: function () {
+        cwt.Screen.layerUI.clear();
+        this.rendered = false;
+
+        if (desc.enter) {
+          desc.enter.call(this);
+        }
+      },
+
+      update: function (delta, lastInput) {
+        if (lastInput) {
+          switch (lastInput.key) {
+
+            case cwt.Input.TYPE_LEFT:
+            case cwt.Input.TYPE_RIGHT:
+            case cwt.Input.TYPE_UP:
+            case cwt.Input.TYPE_DOWN:
+              if (this.layout.handleInput(lastInput)) {
+                this.rendered = false;
+                cwt.Audio.playSound("MENU_TICK");
+              }
+              break;
+
+            case cwt.Input.TYPE_ACTION:
+              var button = this.layout.activeButton();
+              button.action.call(this,button,this);
+              this.rendered = false;
+              cwt.Audio.playSound("ACTION");
+              break;
+
+            case cwt.Input.TYPE_CANCEL:
+              if (desc.last) {
+                cwt.Gameflow.changeState(desc.last);
+                cwt.Audio.playSound("CANCEL");
+              }
+              break;
+          }
+        }
+      },
+
+      render: function (delta) {
+        if (!this.rendered) {
+          var ctx = cwt.Screen.layerUI.getContext();
+          this.layout.draw(ctx);
+          this.rendered = true;
+        }
+      }
+    });
   },
 
   /**
@@ -128,7 +287,7 @@ cwt.Gameflow = {
 
       // exit old state
       if (this.activeState.exit) {
-        this.activeState.exit();
+        this.activeState.exit.call(this.activeState.data);
       }
     }
 
@@ -150,7 +309,7 @@ cwt.Gameflow = {
     this.activeState = this.states_[stateId];
 
     if (fireEvent !== false) {
-      this.activeState.enter();
+      this.activeState.enter.call(this.activeState.data);
     }
   },
 
@@ -167,8 +326,8 @@ cwt.Gameflow = {
 
     // state update
     var inp = cwt.Input.popAction();
-    this.activeState.update(delta, inp);
-    this.activeState.render(delta);
+    this.activeState.update.call(this.activeState.data,delta, inp);
+    this.activeState.render.call(this.activeState.data,delta);
 
     // release input data object
     if (inp) {

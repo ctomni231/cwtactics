@@ -1,7 +1,7 @@
 /**
  * Base package of the game.
  *
- * @namespace
+ * @module
  */
 window.cwt = {
 
@@ -13,35 +13,35 @@ window.cwt = {
   /**
    * Tile size base.
    *
-   * @constant
+   * @final
    */
   TILE_BASE: 16,
 
   /**
    * Number of tiles in a row in the screen.
    *
-   * @constant
+   * @final
    */
   MAX_TILES_W: 20,
 
   /**
    * Number of tiles in a column in the screen.
    *
-   * @constant
+   * @final
    */
   MAX_TILES_H: 15,
 
   /**
    * Represents a numeric code which means no data.
    *
-   * @constant
+   * @final
    */
   INACTIVE: -1,
 
-  /** @constant */
+  /** @final */
   DESELECT_ID: -2,
 
-  /** @constant */
+  /** @final */
   NOT_AVAILABLE: -2,
 
   /**
@@ -49,24 +49,30 @@ window.cwt = {
    */
   DEBUG: true,
 
-  /** @constant */
+  /**
+   * Screen width in tiles.
+   *
+   * @final
+   */
   SCREEN_WIDTH: 32,
-  //SCREEN_WIDTH: parseInt(window.innerWidth/16,10),
 
-  /** @constant */
+  /**
+   * Screen height in tiles.
+   *
+   * @final
+   */
   SCREEN_HEIGHT: 24,
-  //SCREEN_HEIGHT: parseInt(window.innerHeight/16,10),
 
-  /** @constant */
+  /** @final */
   MAX_MAP_WIDTH: 60,
 
-  /** @constant */
+  /** @final */
   MAX_MAP_HEIGHT: 40,
 
-  /** @constant */
+  /** @final */
   MAX_MOVE_LENGTH: 15,
 
-  /** @constant */
+  /** @final */
   DEV_NO_CACHE: true,
 
   emptyFunction: function () {
@@ -85,6 +91,9 @@ window.cwt = {
 
   /**
    * Asserts that `expr` is true. If `expr` is false then an Error will be thrown.
+   *
+   * @param {Boolean} expr
+   * @param {String?} msgA
    */
   assert: function (expr, msgA) {
     if (!expr) {
@@ -101,6 +110,11 @@ window.cwt = {
     }
   },
 
+  /**
+   *
+   * @param {Function} fn
+   * @return {Function}
+   */
   lazy: function (fn) {
     var value = undefined;
     return function () {

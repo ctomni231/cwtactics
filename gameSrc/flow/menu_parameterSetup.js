@@ -1,4 +1,4 @@
-cwt.ButtonFlowState({
+cwt.Gameflow.addMenuState({
 
   id: "PARAMETER_SETUP_SCREEN",
   last: "PLAYER_SETUP_SCREEN",

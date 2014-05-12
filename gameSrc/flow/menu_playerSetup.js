@@ -1,4 +1,4 @@
-cwt.ButtonFlowState({
+cwt.Gameflow.addMenuState({
 
   id: "PLAYER_SETUP_SCREEN",
   last: "VERSUS",

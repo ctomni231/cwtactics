@@ -102,7 +102,7 @@ cwt.Fog = {
           }
 
           property = tile.property;
-          if (property !== null) {
+          if (property !== null && property.owner !== null) {
             vision = property.type.vision;
             if (vision < 0) vision = 0;
 

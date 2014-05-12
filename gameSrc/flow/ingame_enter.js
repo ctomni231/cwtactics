@@ -1,25 +1,26 @@
 cwt.Gameflow.addState({
   id: "INGAME_ENTER",
 
-  init: function () {
-
-  },
-
   enter: function () {
-    cwt.Gameflow.inGameRound = true;
+    this.globalData.inGameRound = true;
 
     if (cwt.DEBUG) {
       console.log("entering game round");
     }
 
-    cwt.Screen.layerUI.clear();
+    // 1. load map
+    cwt.GameData.loadGame(cwt.GameSelectionDTO.map,false, function () {
+      cwt.GameSelectionDTO.map = null;
 
-    var map = cwt.GameSelectionDTO.map;
-    cwt.GameSelectionDTO.map = null;
+      // 2. change game data by the given configuration
+      cwt.GameSelectionDTO.postProcess();
 
-    cwt.GameData.loadGame(map,false, function () {
+      // 3. render screen
+      cwt.Screen.layerUI.clear();
       cwt.TileVariants.updateTileSprites();
       cwt.MapRenderer.updateScreen();
+
+      // 4. start game :P
       cwt.Gameflow.changeState("INGAME_IDLE");
     });
     /*

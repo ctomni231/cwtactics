@@ -1,7 +1,8 @@
 /**
+ *
  * @class
  */
-cwt.Sprite = my.Class(/** @lends cwt.Sprite.prototype */ {
+cwt.Sprite= my.Class( /** @lends cwt.Sprite.prototype */ {
 
   STATIC: {
 
@@ -48,6 +49,14 @@ cwt.Sprite = my.Class(/** @lends cwt.Sprite.prototype */ {
 
     /** @constant */
     UNIT_STATE_DOWN: 5,
+
+    // ---------------------------------------------
+
+    /** @constant */
+    TILE_STATES: 2,
+
+    /** @constant */
+    TILE_SHADOW: 1,
 
     // ---------------------------------------------
 
@@ -232,11 +241,6 @@ cwt.Sprite = my.Class(/** @lends cwt.Sprite.prototype */ {
     }
   },
 
-  /**
-   *
-   * @constructor
-   * @param indexes
-   */
   constructor: function (indexes) {
     this.images = [];
 

@@ -70,6 +70,14 @@ cwt.LayeredCanvas = my.Class({
     this.getContext(index).clearRect(0, 0, this.w, this.h);
   },
 
+  clearAll: function () {
+    var n = this.layers.length-1;
+    while (n >= 0) {
+      this.clear(n);
+      n--;
+    }
+  },
+
   /**
    *
    * @param {Number?} index

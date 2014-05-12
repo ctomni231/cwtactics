@@ -70,9 +70,30 @@ cwt.SelectionMap = my.Class({
     x = x - cx;
     y = y - cy;
     if (x < 0 || y < 0 || x >= maxLen || y >= maxLen) {
-      model.criticalError(error.ILLEGAL_PARAMETERS, error.SELECTION_DATA_OUT_OF_BOUNDS);
+      throw Error("Out of Bounds");
     }
     else data[x][y] = value;
+  },
+
+  hasActiveNeighbour: function (x, y) {
+    var data = this.data;
+    var cy = this.centerX;
+    var cx = this.centerY;
+    var maxLen = data.length;
+
+    x = x - cx;
+    y = y - cy;
+
+    if (x < 0 || y < 0 || x >= maxLen || y >= maxLen) {
+      throw Error("Out of Bounds");
+    }
+
+    if (x > 0 && data[x - 1][y] > 0) return true;
+    if (x < maxLen - 1 && data[x + 1][y] > 0) return true;
+    if (y > 0 && data[x][y - 1] > 0) return true;
+    if (y < maxLen - 1 && data[x][y + 1] > 0) return true;
+
+    return false;
   },
 
   /**

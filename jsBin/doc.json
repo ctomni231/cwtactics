@@ -1,0 +1,16 @@
+{
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "templates": {
+    "monospaceLinks": false,
+    "cleverLinks": false
+  },
+  "source": {
+    "includePattern": ".+\\.js(doc)?$",
+    "excludePattern": ""
+  },
+  "plugins": [
+    "/Volumes/Home/alex/node_modules/jsdoc/plugins/escapeHtml.js"
+  ]
+}

@@ -1,9 +1,13 @@
-// delete dist
-require("./buildLibrary.js").deleteFolderRecursive(	"dist/nightly/docs");
-require("./buildLibrary.js").createFolder(			"dist/nightly/docs");
-require("./buildLibrary.js").deleteFolderRecursive(	"dist/nightly/docsClient");
-require("./buildLibrary.js").createFolder(			"dist/nightly/docsClient");
+var builder = require("./buildLibrary.js");
 
-// build docs
-require("./buildEngineDocs.js");
-require("./buildClientDocs.js");
+builder.deleteFolderRecursive("../doc");
+builder.createFolder("../doc");
+
+builder.doCommand(
+  "node /Volumes/Home/alex/node_modules/jsdoc/jsdoc.js " +
+    "../gameSrc " +
+    "-r " +
+    "-c doc.json " +
+    "-t /Volumes/Home/alex/node_modules/jsdoc/templates/jaguarjs-jsdoc-master " +
+    "-d ./../doc "
+);

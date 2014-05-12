@@ -3,6 +3,12 @@
  */
 cwt.SheetDatabase = my.Class({
 
+  /*
+   env.addCheck('exactLength', function (v, p) {
+   return v.length === p;
+   });
+   */
+
   /**
    * Registers a sheet in the database.
    */

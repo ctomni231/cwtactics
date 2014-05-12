@@ -1,19 +1,7 @@
 cwt.Gameflow.addState({
-  id: "FLUSH_ACTIONS",
-
-  init: function () {
-
-  },
+  id: "INGAME_FLUSH_ACTIONS",
 
   enter: function () {
-
-  },
-
-  update: function (delta, lastInput) {
-
-  },
-
-  render: function (delta) {
 
   }
 });

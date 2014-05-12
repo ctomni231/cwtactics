@@ -2,8 +2,20 @@
  * Weather sheet database.
  */
 cwt.WeatherSheet = new cwt.SheetDatabase({
+  format: {
+    type: 'object',
+    required: ['ID'],
+    properties: {
+      ID: {
+        type: 'uniqueId'
+      },
+      defaultWeather: {
+        type: 'boolean'
+      }
+    }
+  },
 
-  check: function ( sheet ) {
+  check: function (sheet) {
     if (sheet.defaultWeather) {
       cwt.WeatherSheet.defaultWeather = sheet;
     }

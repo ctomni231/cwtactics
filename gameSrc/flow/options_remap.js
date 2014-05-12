@@ -1,4 +1,4 @@
-cwt.ButtonFlowState({
+cwt.Gameflow.addMenuState({
 
   id: "REMAP_KEY_MAPPING",
   last: "OPTIONS",

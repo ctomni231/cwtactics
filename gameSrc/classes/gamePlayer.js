@@ -19,6 +19,9 @@ cwt.Player = my.Class(/** @lends cwt.Player.prototype */ {
      */
     MAX_UNITS: 50,
 
+    /**
+     * @type {cwt.Player}
+     */
     activeClientPlayer: null
   },
 

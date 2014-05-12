@@ -13,7 +13,7 @@ Command Line
 Gets the version of a certain module
 
 "npm install"
-Install based on the package.json module
+Install based on the doc.json module
 
 ---------------------
 Web Browser - app.js

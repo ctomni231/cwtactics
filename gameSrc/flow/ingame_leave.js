@@ -6,7 +6,7 @@ cwt.Gameflow.addState({
   },
 
   enter: function () {
-    cwt.Gameflow.inGameRound = false;
+    this.globalData.inGameRound = false;
   },
 
   update: function (delta, lastInput) {

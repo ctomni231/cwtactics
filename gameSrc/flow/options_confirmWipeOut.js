@@ -1,4 +1,4 @@
-cwt.ButtonFlowState({
+cwt.Gameflow.addMenuState({
 
   id: "CONFIRM_WIPE_OUT_SCREEN",
 

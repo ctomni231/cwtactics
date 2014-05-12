@@ -55,6 +55,15 @@ cwt.Action = my.Class({
 
     /**
      *
+     * @param key
+     * @return {cwt.Action}
+     */
+    getActionObject: function (key) {
+
+    },
+
+    /**
+     *
      * @param impl
      */
     unitAction: function (impl) {

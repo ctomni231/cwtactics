@@ -1,64 +1,68 @@
-cwt.Gameflow.addState({
+cwt.Gameflow.addInGameState({
   id: "INGAME_IDLE",
 
+  // create game round data in global data scope
+  init: function () {
+    var gameData = this.globalData;
+
+    /**
+     * Position object with rich information about the selected position by an action and some relations.
+     *
+     * @memberOf cwt.Gameflow.globalData
+     */
+    gameData.source = new cwt.Position();
+
+    /**
+     * Position object with rich information about the selected position by an action and some relations.
+     *
+     * @memberOf cwt.Gameflow.globalData
+     */
+    gameData.target = new cwt.Position();
+
+    /**
+     * Position object with rich information about the selected position by an action and some relations.
+     *
+     * @memberOf cwt.Gameflow.globalData
+     */
+    gameData.targetselection = new cwt.Position();
+
+    /**
+     *
+     * @memberOf cwt.Gameflow.globalData
+     * @type {boolean}
+     */
+    gameData.multiStepActive = false;
+
+    gameData.makeMultistep = true;
+  },
+
   enter: function () {
-    /*
-    this.data.menu.clean();
-    this.data.movePath.clean();
 
-    this.data.action.selectedEntry = null;
-    this.data.action.selectedSubEntry = null;
-    this.data.action.object = null;
+    /** @borrows cwt.Gameflow.globalData as gameData */
+    var gameData = this.globalData;
 
-    this.clearHistory();
-
-    this.data.inMultiStep = false;
-    this.data.makeMultistep = true;
-
-    this.data.source.clean();
-    this.data.target.clean();
-    this.data.targetselection.clean();
-    */
+    gameData.source.clean();
+    gameData.target.clean();
+    gameData.targetselection.clean();
   },
 
-  /**
-   *
-   * @param delta
-   * @param {cwt.InputData} input
-   */
-  update: function (delta, input) {
+  ACTION: function () {
+    var gameData = this.globalData;
 
-    /*
-    // handle input
-    if (input && input.key === cwt.Input.TYPE_ACTION) {
-      this.data.source.set(x, y);
+    gameData.source.set(x, y);
+    gameData.target.set(x, y);
 
-      if (this.data.source.unitId !== cwt.INACTIVE &&
-        this.data.source.unit.owner === model.round_turnOwner &&
-        model.actions_canAct(this.data.source.unitId)) {
+    var next = null;
+    if (cwt.Gameround.isTurnOwnerObject(gameData.source.unit) && gameData.source.unit.canAct) {
+      gameData.movePath.clean();
+      gameData.movePath.move_fillMoveMap();
 
-        this.data.target.set(x, y);
-        this.data.movePath.clean();
-        this.data.movePath.move_fillMoveMap();
-
-        // cannot move atm
-        if (this.data.selection.getValueAt(x - 1, y) < 0 &&
-          this.data.selection.getValueAt(x + 1, y) < 0 &&
-          this.data.selection.getValueAt(x, y - 1) < 0 &&
-          this.data.selection.getValueAt(x, y + 1) < 0) {
-
-          this.data.target.set(x, y);
-          return "ACTION_MENU";
-        } else return "MOVEPATH_SELECTION";
-      } else {
-        this.data.target.set(x, y);
-        return "ACTION_MENU";
-      }
+      // go directly into action menu when the unit cannot move
+      next = (!gameData.selection.hasActiveNeighbour(x, y))? "ACTION_MENU" : "MOVEPATH_SELECTION";
+    } else {
+      next = "ACTION_MENU";
     }
-    */
-  },
 
-  render: function (delta) {
-    cwt.MapRenderer.renderCycle(delta);
+    cwt.Gameflow.changeState(next);
   }
 });

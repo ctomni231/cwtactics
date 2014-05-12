@@ -1,4 +1,4 @@
-cwt.ButtonFlowState({
+cwt.Gameflow.addMenuState({
 
   id: "VERSUS",
   last: "MAIN_MENU",

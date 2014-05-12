@@ -118,6 +118,15 @@ cwt.Gameround = {
     return (this.day < cwt.Config.getValue("daysOfPeace"));
   },
 
+  /**
+   *
+   * @param {cwt.Unit|cwt.Property|null} obj
+   * @return {boolean}
+   */
+  isTurnOwnerObject: function (obj) {
+    return (obj != null && obj.owner === this.turnOwner);
+  },
+
   $onSaveGame: function (data) {
     data.wth = this.weather.ID;
     data.trOw = this.turnOwner.id;

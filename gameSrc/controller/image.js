@@ -686,22 +686,24 @@ cwt.Image = {
       }
 
       if (value.length === 3) { // single variant tile
-        sprite = new cwt.Sprite(1);
+        sprite = new cwt.Sprite(cwt.Sprite.TILE_STATES);
         stuff.push(function (next) {
           grabImage(value[0], key, function () {
             sprite.setImage(0, /** @type {HTMLImageElement}*/ this);
+            sprite.setImage(1,createBlackMask(this));
             next();
           });
         });
 
       } else {                  // multi variant tile
-        sprite = new cwt.Sprite(value[2].length);
+        sprite = new cwt.Sprite(value[2].length*cwt.Sprite.TILE_STATES);
 
         cwt.TileVariants.registerVariantInfo(key, value[0], value[1]);
 
         for (var i = 0, e = value[2].length; i < e; i++) {
-          addToPushLoop(value[2][i], i, function (img, next) {
+          addToPushLoop(value[2][i], i*2, function (img, next) {
             sprite.setImage(img.key, img);
+            sprite.setImage(img.key+1,createBlackMask(img));
             next();
           });
         }

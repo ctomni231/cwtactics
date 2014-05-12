@@ -11,9 +11,10 @@ cwt.Position = my.Class( /** @lends cwt.Position.prototype */ {
   clean: function () {
     this.x = -1;
     this.y = -1;
+    this.tile = null;
     this.unit = null;
-    this.unitId = -1;
     this.property = null;
+    this.unitId = -1;
     this.propertyId = -1;
   },
 

@@ -21,6 +21,11 @@ cwt.Options = {
   /**
    * @type {boolean}
    */
+  fastClickMode: false,
+
+  /**
+   * @type {boolean}
+   */
   forceTouch: false,
 
   /**
