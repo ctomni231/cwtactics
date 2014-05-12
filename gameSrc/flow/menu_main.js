@@ -27,26 +27,29 @@ cwt.Gameflow.addMenuState({
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(16, 4, 0, "MAIN_MENU_NETWORK", cwt.UIField.STYLE_NORMAL, 20, function () {
-		cwt.Gameflow.changeState("RAIN");
-	  })
+      .addButton(16, 4, 0, "MAIN_MENU_NETWORK", cwt.UIField.STYLE_NORMAL, 20 )
       .breakLine()
 
       //--------------------------------------------------------
 
-      .addRowGap(2)
+      .addRowGap(1)
 
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(16, 4, 0, "MAIN_MENU_TEST_WEATHER", cwt.UIField.STYLE_NORMAL, 20, function () {
+      .addButton(16, 3, 0, "MAIN_MENU_TEST_WEATHER", cwt.UIField.STYLE_NEW, 20, function () {
         cwt.Gameflow.changeState("WEATHER");
+      })
+      .breakLine()
+      .addColGap(w)
+      .addButton(16, 3, 0, "MAIN_MENU_TEST_WEATHER", cwt.UIField.STYLE_ESW, 20, function () {
+        cwt.Gameflow.changeState("RAIN");
       })
       .breakLine()
 
       // -------------------------------------------------------
 
-      .addRowGap(2)
+      .addRowGap(1)
 
       // -------------------------------------------------------
 

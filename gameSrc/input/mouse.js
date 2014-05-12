@@ -33,9 +33,9 @@ cwt.Input.create("mouse", function () {
     sx = cw / canvas.offsetWidth;
     sy = ch / canvas.offsetHeight;
 
-    var state = cwt.Gameflow.activeState;
-    if (state.inputMove) {
-      state.inputMove(parseInt(x*sx),parseInt(y*sy));
+    var data = cwt.Gameflow.activeState.data;
+    if (data.inputMove) {
+      data.inputMove(parseInt(x*sx),parseInt(y*sy));
     }
 
 

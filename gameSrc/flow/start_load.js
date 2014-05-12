@@ -7,8 +7,10 @@ cwt.Gameflow.addState({
 
   enter: function () {
     this.done = false;
-    cwt.Loading.startProcess(this.bar, function () {
-      cwt.Gameflow.activeState.bar.setPercentage(100);
+
+    var bar = this.bar;
+    cwt.Loading.startProcess(bar, function () {
+      bar.setPercentage(100);
     });
   },
 
