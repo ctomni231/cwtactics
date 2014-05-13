@@ -18,6 +18,10 @@
 
     offsetY: 0,
 
+    convertToTilePos: function (p) {
+      return parseInt(p/cwt.TILE_BASE,10);
+    },
+
     /**
      *
      * @param moveCode

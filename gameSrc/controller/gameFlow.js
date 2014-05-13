@@ -39,7 +39,7 @@ cwt.Gameflow = {
     );
 
     if (desc.init) {
-      desc.init.call(state.data,state.data.globalData);
+      desc.init.call(state.data, state.data.globalData);
     }
 
     this.states_[desc.id] = state;
@@ -54,17 +54,29 @@ cwt.Gameflow = {
 
       id: desc.id,
 
-      init: desc.init,
+      init: function () {
+        this.inputMove = function (x, y) {
+          cwt.Cursor.setPosition(
+            cwt.Screen.convertToTilePos(x),
+            cwt.Screen.convertToTilePos(y),
+            true
+          );
+        };
+
+        if (desc.init) {
+          desc.init.call(this, this.globalData);
+        }
+      },
 
       enter: function () {
         if (desc.enter) {
-          desc.enter.call(this,this.globalData);
+          desc.enter.call(this, this.globalData);
         }
       },
 
       exit: function () {
         if (desc.exit) {
-          desc.exit.call(this,this.globalData);
+          desc.exit.call(this, this.globalData);
         }
       },
 
@@ -74,7 +86,7 @@ cwt.Gameflow = {
 
             case cwt.Input.TYPE_LEFT:
               if (desc.LEFT) {
-                desc.LEFT.call(this,this.globalData,delta);
+                desc.LEFT.call(this, this.globalData, delta);
               } else {
                 cwt.Cursor.move(cwt.Move.MOVE_CODES_LEFT);
               }
@@ -82,7 +94,7 @@ cwt.Gameflow = {
 
             case cwt.Input.TYPE_UP:
               if (desc.UP) {
-                desc.UP.call(this,this.globalData,delta);
+                desc.UP.call(this, this.globalData, delta);
               } else {
                 cwt.Cursor.move(cwt.Move.MOVE_CODES_UP);
               }
@@ -90,7 +102,7 @@ cwt.Gameflow = {
 
             case cwt.Input.TYPE_RIGHT:
               if (desc.RIGHT) {
-                desc.RIGHT.call(this,this.globalData,delta);
+                desc.RIGHT.call(this, this.globalData, delta);
               } else {
                 cwt.Cursor.move(cwt.Move.MOVE_CODES_RIGHT);
               }
@@ -98,7 +110,7 @@ cwt.Gameflow = {
 
             case cwt.Input.TYPE_DOWN:
               if (desc.DOWN) {
-                desc.DOWN.call(this,this.globalData,delta);
+                desc.DOWN.call(this, this.globalData, delta);
               } else {
                 cwt.Cursor.move(cwt.Move.MOVE_CODES_DOWN);
               }
@@ -106,13 +118,13 @@ cwt.Gameflow = {
 
             case cwt.Input.TYPE_ACTION:
               if (desc.ACTION) {
-                desc.ACTION.call(this,this.globalData,delta);
+                desc.ACTION.call(this, this.globalData, delta);
               }
               break;
 
             case cwt.Input.TYPE_CANCEL:
               if (desc.CANCEL) {
-                desc.CANCEL.call(this,this.globalData,delta);
+                desc.CANCEL.call(this, this.globalData, delta);
               }
               break;
           }
@@ -122,7 +134,7 @@ cwt.Gameflow = {
       render: function (delta) {
         cwt.MapRenderer.renderCycle(delta);
         if (desc.render) {
-          desc.render.call(this,this.globalData,delta);
+          desc.render.call(this, this.globalData, delta);
         }
       }
 
@@ -148,11 +160,11 @@ cwt.Gameflow = {
         };
 
         if (desc.init) {
-          desc.init.call(this,this.layout);
+          desc.init.call(this, this.layout);
         }
 
         if (desc.doLayout) {
-          desc.doLayout.call(this,this.layout);
+          desc.doLayout.call(this, this.layout);
         }
 
         if (desc.genericInput) {
@@ -185,7 +197,7 @@ cwt.Gameflow = {
 
             case cwt.Input.TYPE_ACTION:
               var button = this.layout.activeButton();
-              button.action.call(this,button,this);
+              button.action.call(this, button, this);
               this.rendered = false;
               cwt.Audio.playSound("ACTION");
               break;
@@ -328,8 +340,8 @@ cwt.Gameflow = {
 
     // state update
     var inp = cwt.Input.popAction();
-    this.activeState.update.call(this.activeState.data,delta, inp);
-    this.activeState.render.call(this.activeState.data,delta);
+    this.activeState.update.call(this.activeState.data, delta, inp);
+    this.activeState.render.call(this.activeState.data, delta);
 
     // release input data object
     if (inp) {
