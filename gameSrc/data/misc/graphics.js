@@ -298,6 +298,8 @@ cwt.Graphics = {
 
   OTHERS: {
 
+    CURSOR: "image/cursor.png",
+
     MINIMAP: [
       "image/map/AWDS(C)-2x2.png",
       "image/map/AWDS(C)-4x4.png"

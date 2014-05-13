@@ -39,23 +39,23 @@ cwt.TileVariants = {
             // N
             (y > 0) ? mapData[x][y - 1].type.ID : "",
 
-            // NE
-            (y > 0 && x < cwt.Map.width - 1) ? mapData[x + 1][y - 1].type.ID : "",
-
             // E
             (x < cwt.Map.width - 1) ? mapData[x + 1][y].type.ID : "",
-
-            // SE
-            (y < cwt.Map.height - 1 && x < cwt.Map.width - 1) ? mapData[x + 1][y + 1].type.ID : "",
 
             // S
             (y < cwt.Map.height - 1) ? mapData[x][y + 1].type.ID : "",
 
-            // SW
-            (y < cwt.Map.height - 1 && x > 0) ? mapData[x - 1][y + 1].type.ID : "",
-
             // W
             (x > 0) ? mapData[x - 1][y].type.ID : "",
+
+            // NE
+            (y > 0 && x < cwt.Map.width - 1) ? mapData[x + 1][y - 1].type.ID : "",
+
+            // SE
+            (y < cwt.Map.height - 1 && x < cwt.Map.width - 1) ? mapData[x + 1][y + 1].type.ID : "",
+
+            // SW
+            (y < cwt.Map.height - 1 && x > 0) ? mapData[x - 1][y + 1].type.ID : "",
 
             // NW
             (y > 0 && x > 0) ? mapData[x - 1][y - 1].type.ID : ""

@@ -196,41 +196,36 @@ cwt.MapRenderer = {
     }
   },
 
-  drawCursor: function(x, y) {
-    var ctx = /** @type {Canvas2dRenderingContext} */ cwt.Screen.layerUI.getContext();
+  /**
+   * Erases the cursor to the UI layer.
+   */
+  eraseCursor: function () {
+    var ui = cwt.Screen.layerUI;
+    var h = cwt.TILE_BASE / 2;
 
-    x = x - cwt.Screen.offsetX;
-    y = y - cwt.Screen.offsetY;
-
-    ctx.fillStyle = "red";
-
-    ctx.fillRect(
-      x * cwt.TILE_BASE,
-      y * cwt.TILE_BASE,
-      cwt.TILE_BASE,
-      cwt.TILE_BASE
-    );
-
-    ctx.clearRect(
-      (x * cwt.TILE_BASE)+2,
-      (y * cwt.TILE_BASE)+2,
-      cwt.TILE_BASE-4,
-      cwt.TILE_BASE-4
+    ui.getContext().clearRect(
+      (cwt.Cursor.x - cwt.Screen.offsetX - 1) * cwt.TILE_BASE,
+      (cwt.Cursor.y - cwt.Screen.offsetY - 1) * cwt.TILE_BASE,
+      cwt.TILE_BASE * 3,
+      cwt.TILE_BASE * 3
     );
   },
 
-  clearCursor: function (x, y) {
+  /**
+   * Renders the cursor to the UI layer.
+   */
+  drawCursor: function () {
     var ctx = cwt.Screen.layerUI.getContext();
+    var cursorImg = cwt.Image.sprites.CURSOR.getImage(0);
 
-    x = x - cwt.Screen.offsetX;
-    y = y - cwt.Screen.offsetY;
+    var h = cwt.TILE_BASE / 2;
+    var x = (cwt.Cursor.x - cwt.Screen.offsetX) * cwt.TILE_BASE;
+    var y = (cwt.Cursor.y - cwt.Screen.offsetY) * cwt.TILE_BASE;
 
-    ctx.clearRect(
-      (x * cwt.TILE_BASE),
-      (y * cwt.TILE_BASE),
-      cwt.TILE_BASE,
-      cwt.TILE_BASE
-    );
+    ctx.drawImage(cursorImg, x - h, y - h);
+    ctx.drawImage(cursorImg, x + h + h, y + h + h);
+    ctx.drawImage(cursorImg, x + h + h, y - h);
+    ctx.drawImage(cursorImg, x - h, y + h + h);
   },
   
   drawFog: function () {

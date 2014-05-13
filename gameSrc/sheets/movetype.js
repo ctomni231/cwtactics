@@ -9,7 +9,8 @@ cwt.MovetypeSheet = new cwt.SheetDatabase({
     required: ['ID','costs'],
     properties: {
       ID: {
-        type: 'isID'
+        type: 'string',
+        isID: true
       },
       costs:{
         type: 'object',

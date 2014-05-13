@@ -9,7 +9,7 @@ cwt.SheetDatabase = my.Class({
   registerSheet: function (sheet) {
 
     // validate it
-    this.validator_.validate("constr", sheet);
+    cwt.assert(!this.validator_.validate("constr", sheet));
 
     // add it
     this.sheets[sheet.ID] = sheet;

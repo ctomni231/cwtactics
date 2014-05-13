@@ -39,7 +39,7 @@ cwt.Gameflow = {
     );
 
     if (desc.init) {
-      desc.init.call(state.data);
+      desc.init.call(state.data,state.data.globalData);
     }
 
     this.states_[desc.id] = state;
@@ -76,7 +76,7 @@ cwt.Gameflow = {
               if (desc.LEFT) {
                 desc.LEFT.call(this,this.globalData,delta);
               } else {
-                cwt.MapRenderer.updateScreenShift(cwt.Move.MOVE_CODES_LEFT);
+                cwt.Cursor.move(cwt.Move.MOVE_CODES_LEFT);
               }
               break;
 
@@ -84,7 +84,7 @@ cwt.Gameflow = {
               if (desc.UP) {
                 desc.UP.call(this,this.globalData,delta);
               } else {
-                cwt.MapRenderer.updateScreenShift(cwt.Move.MOVE_CODES_LEFT);
+                cwt.Cursor.move(cwt.Move.MOVE_CODES_UP);
               }
               break;
 
@@ -92,7 +92,7 @@ cwt.Gameflow = {
               if (desc.RIGHT) {
                 desc.RIGHT.call(this,this.globalData,delta);
               } else {
-                cwt.MapRenderer.updateScreenShift(cwt.Move.MOVE_CODES_LEFT);
+                cwt.Cursor.move(cwt.Move.MOVE_CODES_RIGHT);
               }
               break;
 
@@ -100,7 +100,7 @@ cwt.Gameflow = {
               if (desc.DOWN) {
                 desc.DOWN.call(this,this.globalData,delta);
               } else {
-                cwt.MapRenderer.updateScreenShift(cwt.Move.MOVE_CODES_LEFT);
+                cwt.Cursor.move(cwt.Move.MOVE_CODES_DOWN);
               }
               break;
 

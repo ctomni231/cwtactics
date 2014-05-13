@@ -7,7 +7,8 @@ cwt.WeatherSheet = new cwt.SheetDatabase({
     required: ['ID'],
     properties: {
       ID: {
-        type: 'isID'
+        type: 'string',
+        isID: true
       },
       defaultWeather: {
         type: 'boolean'

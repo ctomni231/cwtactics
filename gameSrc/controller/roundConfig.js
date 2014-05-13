@@ -169,7 +169,7 @@ cwt.GameSelectionDTO = {
     // model.events.client_deregisterPlayers();
 
     var onlyAI = true;
-    for (var i = 0, e = MAX_PLAYER; i < e; i++) {
+    for (var i = 0, e = cwt.Player.MULTITON_INSTANCES; i < e; i++) {
       if (this.type.data[i] === 0) {
         onlyAI = false;
         break;
@@ -177,7 +177,7 @@ cwt.GameSelectionDTO = {
     }
 
     // update model
-    for (var i = 0, e = MAX_PLAYER; i < e; i++) {
+    for (var i = 0, e = cwt.Player.MULTITON_INSTANCES; i < e; i++) {
       var player = cwt.Player.getInstance(i);
 
       if (this.type.data[i] >= 0) {

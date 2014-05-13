@@ -23,84 +23,13 @@ cwt.Cursor = {
   },
 
   /**
-   *
-   * @param isCancel if true then it is a cancel action
-   */
-  action_: function (isCancel) {
-
-    // BREAK IF YOU ARE IN THE ANIMATION PHASE
-    if (controller.inAnimationHookPhase()) return;
-
-    var bstate = controller.stateMachine.state;
-    var bfocus = ( bstate === "MOVEPATH_SELECTION" ||
-      bstate === "IDLE_R" ||
-      bstate === "ACTION_SELECT_TARGET_A" ||
-      bstate === "ACTION_SELECT_TARGET_B" );
-
-    // INVOKE ACTION
-    if (isCancel) {
-      controller.stateMachine.event("cancel", controller.mapCursorX, controller.mapCursorY);
-    }
-    else {
-      if (controller.menuVisible) {
-        controller.stateMachine.event("action", controller.menu_getSelectedIndex());
-      }
-      else {
-        controller.stateMachine.event("action", controller.mapCursorX, controller.mapCursorY);
-      }
-    }
-
-    var astate = controller.stateMachine.state;
-    var afocus = ( astate === "MOVEPATH_SELECTION" ||
-      astate === "IDLE_R" ||
-      astate === "ACTION_SELECT_TARGET_A" ||
-      astate === "ACTION_SELECT_TARGET_B"  );
-
-    // RERENDERING
-    if (( bfocus && !afocus ) || afocus) {
-      view.redraw_markSelection(controller.stateMachine.data);
-    }
-
-    // MENU
-    if (astate === "ACTION_MENU" || astate === "ACTION_SUBMENU") {
-
-      var menu = controller.stateMachine.data.menu;
-      controller.showMenu(
-        menu,
-        controller.mapCursorX,
-        controller.mapCursorY
-      );
-    }
-    else {
-      if (bstate === "ACTION_MENU" || bstate === "ACTION_SUBMENU") controller.hideMenu();
-    }
-  },
-
-  /**
-   *
-   */
-  actionCancel: function () {
-    this.action_(true);
-    controller.audio_playSound(model.data_sounds.CANCEL);
-  },
-
-  /**
-   *
-   */
-  actionClick: function () {
-    this.action_(false);
-    controller.audio_playSound(model.data_sounds.MENUTICK);
-  },
-
-  /**
    * Moves the cursor into a given direction.
    *
    * @param dir
    * @param len
    */
-  move: function (dir, len) {
-    if (arguments.length === 1) len = 1;
-
+  move: function (dir) {
+    var len = 1;
     var x = this.x;
     var y = this.y;
 
@@ -130,82 +59,68 @@ cwt.Cursor = {
    * Moves the cursor to a given position. The view will be moved as well with
    * this function to make sure that the cursor is on the visible view.
    */
-  setPosition: function (x, y, relativeToScreen, preventSound) {
-    if (controller.isMenuOpen()) return;
-
+  setPosition: function (x, y, relativeToScreen) {
     if (relativeToScreen) {
-      x = x + this.x;
-      y = y + this.y;
+      x = x + cwt.Screen.offsetX;
+      y = y + cwt.Screen.offsetY;
     }
 
+    // change illegal positions to prevent out of bounds
     if (x < 0) x = 0;
     if (y < 0) y = 0;
-    if (x >= model.map_width) x = model.map_width - 1;
-    if (y >= model.map_height) y = model.map_height - 1;
+    if (x >= cwt.Map.width) x = cwt.Map.width - 1;
+    if (y >= cwt.Map.height) y = cwt.Map.height - 1;
 
-    if (x === controller.mapCursorX && y === controller.mapCursorY) return;
+    if (x === this.x && y === this.y) {
+      return;
+    }
 
-    // CLEAN OLD
-    view.redraw_markPos(controller.mapCursorX, controller.mapCursorY);
-    if (controller.mapCursorY < model.map_height - 1) view.redraw_markPos(controller.mapCursorX, controller.mapCursorY + 1);
+    cwt.MapRenderer.eraseCursor();
 
-    // in attack mode ?
-    //  yes -> show damage
-    var dmg = -1;
-    var state = controller.stateMachine.state;
-    if (state === "ACTION_SELECT_TARGET_A") {
-      var data = controller.stateMachine.data;
-      if (data.selection.getValueAt(x, y) > 0) {
-        var targetUnit = model.unit_posData[x][y];
-        if (targetUnit) {
-          dmg = model.battle_getBattleDamageAgainst(
-            data.source.unit,
-            targetUnit,
-            0,
-            model.battle_canUseMainWeapon(
-              data.source.unit,
-              targetUnit
-            ),
-            false,
-            data.source.x,
-            data.source.y
-          );
-        }
+    this.x = x;
+    this.y = y;
+
+    // convert to screen relative pos
+    x = x - cwt.Screen.offsetX;
+    y = y - cwt.Screen.offsetY;
+
+    // do possible screen shift
+    var moveCode = cwt.INACTIVE;
+    if (x <= 3) {
+      moveCode = cwt.Move.MOVE_CODES_RIGHT;
+      if (cwt.Screen.shiftScreen(moveCode)) {
+        cwt.MapRenderer.updateScreenShift(moveCode);
+      }
+
+    }
+
+    // do possible screen shift
+    if (x >= cwt.SCREEN_WIDTH - 3) {
+      moveCode = cwt.Move.MOVE_CODES_LEFT;
+      if (cwt.Screen.shiftScreen(moveCode)) {
+        cwt.MapRenderer.updateScreenShift(moveCode);
+      }
+
+    }
+
+    // do possible screen shift
+    if (y <= 3) {
+      moveCode = cwt.Move.MOVE_CODES_DOWN;
+      if (cwt.Screen.shiftScreen(moveCode)) {
+        cwt.MapRenderer.updateScreenShift(moveCode);
+      }
+
+    }
+
+    // do possible screen shift
+    if (y >= cwt.SCREEN_HEIGHT - 3) {
+      moveCode = cwt.Move.MOVE_CODES_UP;
+      if (cwt.Screen.shiftScreen(moveCode)) {
+        cwt.MapRenderer.updateScreenShift(moveCode);
       }
     }
 
-    if (preventSound !== true) controller.audio_playSound(model.data_sounds.MAPTICK);
-    view.redraw_markPos(controller.mapCursorX, controller.mapCursorY);
-
-    controller.mapCursorX = x;
-    controller.mapCursorY = y;
-
-    controller.updateSimpleTileInformation(dmg);
-
-    var scale = controller.screenScale;
-    if (scale === 0) scale = 0.8;
-    else if (scale === -1) scale = 0.7;
-
-    var scw = parseInt(parseInt((window.innerWidth - 80) / 16, 10) / scale, 10);
-    var sch = parseInt(parseInt((window.innerHeight - 80) / 16, 10) / scale, 10);
-
-    // shift tile information panel if necessary
-    if (controller.sideSimpleTileInformationPanel < 0 && (x - controller.screenX) < (scw * 0.25)) controller.moveSimpleTileInformationToRight();
-    if (controller.sideSimpleTileInformationPanel > 0 && (x - controller.screenX) >= (scw * 0.75)) controller.moveSimpleTileInformationToLeft();
-
-    // extract move code
-    var moveCode = -1;
-    if (x - controller.screenX <= 1)            moveCode = cwt.Move.MOVE_CODES_LEFT;
-    else if (x - controller.screenX >= scw - 1) moveCode = cwt.Move.MOVE_CODES_RIGHT;
-    else if (y - controller.screenY <= 1)       moveCode = cwt.Move.MOVE_CODES_UP;
-    else if (y - controller.screenY >= sch - 1) moveCode = cwt.Move.MOVE_CODES_DOWN;
-
-    // shift screen of you're reach a border
-    if (moveCode !== -1) {
-      controller.shiftScreenPosition(moveCode, 5);
-    }
-
-    view.redraw_markPos(x, y);
+    cwt.MapRenderer.drawCursor();
   }
 
 };

@@ -9,7 +9,8 @@ cwt.ArmySheet = new cwt.SheetDatabase({
     required: ['ID'],
     properties: {
       ID: {
-        type: 'isID'
+        type: 'string',
+        isID: true
       }
     }
   }
