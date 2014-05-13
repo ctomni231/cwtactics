@@ -305,37 +305,21 @@ cwt.MapRenderer = {
     // calculate canvas meta data for shifting
     switch (code) {
       case cwt.Move.MOVE_CODES_LEFT:
-        if (cwt.Screen.offsetX + cwt.SCREEN_WIDTH === cwt.Map.width) {
-          return;
-        }
-        
         scx += cwt.TILE_BASE;
         w -= cwt.TILE_BASE;
         break;
 
       case cwt.Move.MOVE_CODES_RIGHT:
-        if (cwt.Screen.offsetX === 0) {
-          return;
-        }
-        
         sx += cwt.TILE_BASE;
         w -= cwt.TILE_BASE;
         break;
 
       case cwt.Move.MOVE_CODES_UP:
-        if (cwt.Screen.offsetY + cwt.SCREEN_HEIGHT === cwt.Map.height) {
-          return;
-        }
-        
         scy += cwt.TILE_BASE;
         h -= cwt.TILE_BASE;
         break;
 
       case cwt.Move.MOVE_CODES_DOWN:
-        if (cwt.Screen.offsetY === 0) {
-          return;
-        }
-        
         sy += cwt.TILE_BASE;
         h -= cwt.TILE_BASE;
         break;
@@ -365,7 +349,6 @@ cwt.MapRenderer = {
         ex = cwt.SCREEN_WIDTH;
         ly = 0;
         ey = cwt.SCREEN_HEIGHT;
-        cwt.Screen.offsetX++;
         break;
 
       case cwt.Move.MOVE_CODES_RIGHT:
@@ -373,7 +356,6 @@ cwt.MapRenderer = {
         ex = 1;
         ly = 0;
         ey = cwt.SCREEN_HEIGHT;
-        cwt.Screen.offsetX--;
         break;
 
       case cwt.Move.MOVE_CODES_UP:
@@ -381,7 +363,6 @@ cwt.MapRenderer = {
         ex = cwt.SCREEN_WIDTH;
         ly = cwt.SCREEN_HEIGHT-1;
         ey = cwt.SCREEN_HEIGHT;
-        cwt.Screen.offsetY++;
         break;
 
       case cwt.Move.MOVE_CODES_DOWN:
@@ -389,7 +370,6 @@ cwt.MapRenderer = {
         ex = cwt.SCREEN_WIDTH;
         ly = 0;
         ey = 1;
-        cwt.Screen.offsetY--;
         overlayFix = true;
         break;
     }

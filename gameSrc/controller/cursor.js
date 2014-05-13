@@ -100,7 +100,6 @@ cwt.Cursor = {
       if (cwt.Screen.shiftScreen(moveCode)) {
         cwt.MapRenderer.updateScreenShift(moveCode);
       }
-
     }
 
     // do possible screen shift
