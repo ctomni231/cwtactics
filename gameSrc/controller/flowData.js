@@ -42,7 +42,7 @@ cwt.FlowData = {
   },
 
   selection: (function () {
-
+            /*
     var sMap = new cwt.SelectionMap(cwt.MAX_MOVE_LENGTH * 4 + 1);
 
     // Extension to the selection map. This one prepares the selection
@@ -79,6 +79,7 @@ cwt.FlowData = {
     };
 
     return sMap;
+    */
   })(),
 
   addUnloadTargetsToSelection: function (uid, x, y, loadId, selection) {

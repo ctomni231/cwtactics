@@ -2,6 +2,13 @@
  * Database of co sheet objects.
  */
 cwt.CoSheet = new cwt.SheetDatabase({
-
-  check: function () {}
+  schema: {
+    type: 'object',
+    required: ['ID'],
+    properties: {
+      ID: {
+        type: 'isID'
+      }
+    }
+  }
 });

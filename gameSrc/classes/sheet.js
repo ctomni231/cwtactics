@@ -3,43 +3,44 @@
  */
 cwt.SheetDatabase = my.Class({
 
-  /*
-   env.addCheck('exactLength', function (v, p) {
-   return v.length === p;
-   });
-   */
-
   /**
    * Registers a sheet in the database.
    */
   registerSheet: function (sheet) {
+
+    // validate it
+    this.validator_.validate("constr", sheet);
+
+    // add it
     this.sheets[sheet.ID] = sheet;
     this.types.push(sheet.ID);
-  },
 
-  checkDatabase: function () {
-    for( var i= 0, e=this.types.length; i<e; i++ ){
-      this.impl.check( this.sheets[this.types[i]] );
+    if (this.check_) {
+      this.check_(sheet);
     }
   },
 
-  isValidSheet: function ( sheet) {
-    for( var i= 0, e=this.types.length; i<e; i++ ){
-      if( this.sheets[this.types[i]] === sheet ) return true;
+  /**
+   *
+   * @param sheet
+   * @return {boolean}
+   */
+  isValidSheet: function (sheet) {
+    for (var i = 0, e = this.types.length; i < e; i++) {
+      if (this.sheets[this.types[i]] === sheet) return true;
     }
 
     return false;
   },
 
-  constructor: function ( impl ) {
+  constructor: function (impl) {
     cwt.assert(impl);
 
     /**
-     * Implementation for checker. Has at least the check function.
      *
-     * @type {*}
+     * @type {jjv}
      */
-    this.impl = impl;
+    this.validator_ = new jjv();
 
     /**
      * Holds all type sheet objects.
@@ -55,8 +56,32 @@ cwt.SheetDatabase = my.Class({
      */
     this.types = [];
 
-    if( impl.afterConstruct ) {
-      impl.afterConstruct( this );
+    /**
+     *
+     * @type {afterCheck}
+     */
+    this.check_ = impl.afterCheck;
+
+    // register schema
+    this.validator_.addSchema("constr", impl.schema);
+
+    // add id check
+    var that = this;
+    this.validator_.addCheck('isID', function (v, p) {
+      if (p) {
+        return !that.sheets.hasOwnProperty(v);
+      } else {
+        return true;
+      }
+    });
+
+    // add custom checks
+    if (impl.checks) {
+      for (key in impl.checks) {
+        if (impl.checks.hasOwnProperty(key)) {
+          this.validator_.addCheck(key, impl.checks[key]);
+        }
+      }
     }
   }
 });

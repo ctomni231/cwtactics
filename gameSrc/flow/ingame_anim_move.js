@@ -138,7 +138,7 @@ cwt.Gameflow.addState({
  var state;
  var tp = unit.type;
 
- // check visibility
+ // check_ visibility
  if( !this.moveAnimationClientOwned && !model.fog_clientData[cx][cy] ){
  return;
  }

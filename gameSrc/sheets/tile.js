@@ -1,8 +1,12 @@
 cwt.TileSheet = new cwt.SheetDatabase({
-
-  check: function ( sheet ) {
-
+  schema: {
+    type: 'object',
+    required: ['ID'],
+    properties: {
+      ID: {
+        type: 'isID'
+      }
+    }
   }
-
 });
 

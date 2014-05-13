@@ -84,7 +84,7 @@ cwt.RedrawCache = {
           view.redraw_dataChanges++;
         }
 
-        // check special properties
+        // check_ special properties
         if (model.property_posMap[x][y] && model.property_posMap[x][y].type.ID === "PROP_INV") {
           if (x === xe) {
             xe++;

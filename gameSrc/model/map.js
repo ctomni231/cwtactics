@@ -214,7 +214,7 @@ cwt.Map = {
     for (var i = 0, e = data.prps.length; i < e; i++) {
       var propData = data.prps[i];
 
-      // check map data
+      // check_ map data
       cwt.assert(propData[0] >= 0 && propData[0] < cwt.Property.MULTITON_INSTANCES);
       cwt.assert(propData[1] >= 0 && propData[1] < that.width);
       cwt.assert(propData[2] >= 0 && propData[2] < that.height);
@@ -255,7 +255,7 @@ cwt.Map = {
     for (var i = 0, e = data.units.length; i < e; i++) {
       var unitData = data.units[i];
 
-      // check map data
+      // check_ map data
       cwt.assert(unitData[0] >= 0 && unitData[0] < cwt.Unit.MULTITON_INSTANCES);
       cwt.assert(cwt.UnitSheet.sheets.hasOwnProperty(unitData[1]));
       cwt.assert(that.isValidPosition(unitData[2], unitData[3]));
@@ -296,7 +296,7 @@ cwt.Map = {
       for (var i = 0, e = data.players.length; i < e; i++) {
         var playerData = data.players[i];
 
-        // check data
+        // check_ data
         cwt.assert(playerData[0] >= 0 && playerData[0] < cwt.Player.MULTITON_INSTANCES);
         cwt.assert(typeof playerData[1] === "string");
         cwt.assert(playerData[3] >= 0 && playerData[3] < cwt.Player.MULTITON_INSTANCES);

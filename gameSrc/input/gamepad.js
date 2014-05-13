@@ -20,7 +20,7 @@ cwt.Input.create("gamePad", function () {
       var gamePad = gamePads[i];
       if (!gamePad) continue;
 
-      // check timestamp
+      // check_ timestamp
       if (prevTimestamps[i] && (gamePad.timestamp == prevTimestamps[i])) continue;
       prevTimestamps[i] = gamePad.timestamp;
 

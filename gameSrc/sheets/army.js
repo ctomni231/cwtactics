@@ -4,8 +4,13 @@
  * @type {cwt.SheetDatabase}
  */
 cwt.ArmySheet = new cwt.SheetDatabase({
-
-  check: function () {
-
+  schema: {
+    type: 'object',
+    required: ['ID'],
+    properties: {
+      ID: {
+        type: 'isID'
+      }
+    }
   }
 });

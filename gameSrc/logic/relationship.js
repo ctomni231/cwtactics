@@ -40,7 +40,7 @@ cwt.Relationship = {
   RELATION_NULL: 5,
 
   /**
-   * Does a unit to unit relationship check. Both arguments `posA` and `posB` are objects of the type
+   * Does a unit to unit relationship check_. Both arguments `posA` and `posB` are objects of the type
    * `controller.TaggedPosition`. An instance of `model.player_RELATION_MODES` will be returned.
    *
    * @param {cwt.Position} posA
@@ -56,7 +56,7 @@ cwt.Relationship = {
   },
 
   /**
-   * Does a unit to property relation check. Both arguments `posA` and `posB` are objects of the type
+   * Does a unit to property relation check_. Both arguments `posA` and `posB` are objects of the type
    * `controller.TaggedPosition`. An instance of `model.player_RELATION_MODES` will be returned.
    *
    * @param {cwt.Position} posA

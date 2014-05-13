@@ -238,12 +238,12 @@ cwt.Gameflow = {
        cwt.Gameround.gameTimeElapsed += delta;
        cwt.Gameround.turnTimeElapsed += delta;
 
-       // check turn time
+       // check_ turn time
        if (cwt.Gameround.turnTimeLimit > 0 && cwt.Gameround.turnTimeElapsed >= cwt.Gameround.turnTimeLimit) {
        controller.commandStack_sharedInvokement("nextTurn_invoked");
        }
 
-       // check game time
+       // check_ game time
        if (cwt.Gameround.gameTimeLimit > 0 && cwt.Gameround.gameTimeElapsed >= cwt.Gameround.gameTimeLimit) {
        controller.update_endGameRound();
        }

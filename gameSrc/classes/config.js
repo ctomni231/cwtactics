@@ -43,7 +43,6 @@ cwt.Config = my.Class(/** @lends cwt.Config.prototype */ {
         // reset value
         cfg.resetValue();
       }
-      ;
     },
 
     /**
@@ -119,11 +118,11 @@ cwt.Config = my.Class(/** @lends cwt.Config.prototype */ {
    */
   setValue: function (value) {
 
-    // check bounds
+    // check_ bounds
     if (value < this.min) value = this.min;
     if (value > this.max) value = this.max;
 
-    // check steps
+    // check_ steps
     if ((value - this.min) % this.step !== 0) {
       cwt.assert(false, "step criteria is broken");
     }

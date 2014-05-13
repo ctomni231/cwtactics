@@ -33,7 +33,7 @@ cwt.Laser = {
     var origTeam = prop.owner.team;
     var damage = cwt.Unit.pointsToHealth(prop.type.laser.damage);
 
-    // check all tiles on the map
+    // check_ all tiles on the map
     for (var x = 0, xe = cwt.Map.width; x < xe; x++) {
       for (var y = 0, ye = cwt.Map.height; y < ye; y++) {
 

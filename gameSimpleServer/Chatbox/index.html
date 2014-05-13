@@ -120,7 +120,7 @@
 					e.preventDefault();
 					
 					<!-- A little different from sending a message as it has call back functionality -->
-					<!-- The callback is used to check for wrong user names and generate an error -->
+					<!-- The callback is used to check_ for wrong user names and generate an error -->
 					socket.emit('new user', $nickBox.val(), function(data){
 						<!-- Grabs the callback from server 'new user' -->
 						<!-- If true: hide the nickname and show the chat box -->

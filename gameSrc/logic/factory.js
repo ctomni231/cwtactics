@@ -27,10 +27,10 @@ cwt.Factory = {
   canProduce: function (property) {
     if (this.DEBUG) cwt.assert(property instanceof cwt.Property);
 
-    // check manpower
+    // check_ manpower
     if (!property.owner || !property.owner.manpower) return false;
 
-    // check unit limit
+    // check_ unit limit
     var uLimit = cwt.Config.getValue("unitLimit");
     if (!uLimit) uLimit = 9999999;
     var count = model.unit_countUnits(playerId);

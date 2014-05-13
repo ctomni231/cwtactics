@@ -3,6 +3,15 @@
  *
  */
 cwt.UnitSheet = new cwt.SheetDatabase({
+  schema: {
+    type: 'object',
+    required: ['ID'],
+    properties: {
+      ID: {
+        type: 'isID'
+      }
+    }
+  },
 
   afterConstruct: function ( sheet ) {
     sheet.blocked = false;
@@ -47,26 +56,26 @@ cwt.UnitSheet = new cwt.SheetDatabase({
 
   check: function ( sheet ) {
 
-    // check base aw2
+    // check_ base aw2
     cwt.assert(sheet.cost >= -1);
     cwt.assert(sheet.range >= 0 && sheet.range <= MAX_SELECTION_RANGE);
     cwt.assert(cwt.MovetypeSheet.sheets.hasOwnProperty(sheet.movetype));
     cwt.assert(sheet.vision >= 1 && sheet.vision <= MAX_SELECTION_RANGE);
     cwt.assert(sheet.fuel >= 0 && sheet.fuel < 100);
 
-    // check capturing
+    // check_ capturing
     cwt.assert(sheet.captures === undefined || sheet.captures >= 1);
 
-    // check drain fuel
+    // check_ drain fuel
     cwt.assert(sheet.dailyFuelDrain === undefined || (
       sheet.dailyFuelDrain >= 1 && sheet.dailyFuelDrain < 100));
     cwt.assert(sheet.dailyFuelDrainHidden === undefined || (
       sheet.dailyFuelDrainHidden >= 2 && sheet.dailyFuelDrainHidden < 100 ));
 
-    // check stealth
+    // check_ stealth
     cwt.assert(sheet.stealth === void 0 || sheet.stealth === true || sheet.stealth === false);
 
-    // check suicide
+    // check_ suicide
     if (sheet.suicide) {
       cwt.assert(sheet.suicide.damage >= 1 && sheet.suicide.damage <= 10);
       cwt.assert(sheet.suicide.range >= 1 && sheet.suicide.range <= MAX_SELECTION_RANGE);
@@ -75,18 +84,18 @@ cwt.UnitSheet = new cwt.SheetDatabase({
       }
     }
 
-    // check transport
+    // check_ transport
     if (sheet.maxloads !== undefined || sheet.canload !== undefined) {
       cwt.assert(sheet.maxloads >= 1);
       cwt.doListCheck(sheet.canload, sheet.typeOrMovetypeTargetCheck_);
     }
 
-    // check supply
+    // check_ supply
     if (sheet.supply !== undefined) {
       cwt.doListCheck(sheet.supply, sheet.typeOrMovetypeTargetCheck_);
     }
 
-    // check attack
+    // check_ attack
     cwt.assert(sheet.ammo === void 0 || (sheet.ammo >= 0 && sheet.ammo < 100));
     if (sheet.attack) {
       cwt.assert(sheet.attack.minrange === undefined || sheet.attack.minrange >= 1);

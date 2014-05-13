@@ -65,7 +65,7 @@ cwt.Move = {
 
     if (typeof v === "number") return v;
 
-    // check wildcard
+    // check_ wildcard
     v = movetype.costs["*"];
     if (typeof v === "number") return v;
 
@@ -316,7 +316,7 @@ cwt.Move = {
       toBeChecked[cHighIndex + 1] = null;
       toBeChecked[cHighIndex + 2] = null;
 
-      // set neighbors for check
+      // set neighbors for check_
       if (cx > 0) {
         checker[0] = cx - 1;
         checker[1] = cy;
@@ -346,7 +346,7 @@ cwt.Move = {
         checker[7] = -1;
       }
 
-      // check the given neighbors for move
+      // check_ the given neighbors for move
       for (var n = 0; n < 8; n += 2) {
         if (checker[n] === -1) continue;
 
@@ -496,10 +496,10 @@ cwt.Move = {
     var lastIndex = movePath.length - 1;
     var fuelUsed = 0;
 
-    // check move way by iterate through all move codes and build the path
+    // check_ move way by iterate through all move codes and build the path
     //
-    // 1. check the correctness of the given move code
-    // 2. check all tiles to recognize trapped moves
+    // 1. check_ the correctness of the given move code
+    // 2. check_ all tiles to recognize trapped moves
     // 3. accumulate fuel consumption ( except `noFuelConsumption` is `true` )
     //
 

@@ -250,7 +250,7 @@ cwt.Menu = {
    controller.menuPosX = x;
    controller.menuPosY = y;
 
-   // check the screen position
+   // check_ the screen position
    var tPosX = x*tileSize;
    var tPosY = y*tileSize;
    if( tPosX + MENU_WIDTH >= controller.screenWidthPx ){

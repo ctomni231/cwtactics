@@ -1,4 +1,4 @@
-cwt.Loading.create(function (nextLoadingStep) {
+cwt.Loading.create(function (next) {
   function doOnOrientationChange() {
     switch (window.orientation) {
       case -90:
@@ -16,4 +16,6 @@ cwt.Loading.create(function (nextLoadingStep) {
 
   // Initial execution if needed
   doOnOrientationChange();
+
+  next();
 });

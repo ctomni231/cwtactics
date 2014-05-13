@@ -1,12 +1,14 @@
 /**
+ * An implementation of the concept of a circular buffer. Internally a circular buffer has a fixed size that makes the
+ * whole object very memory constant.
  *
  * @class
  * @template T
  */
-cwt.CircularBuffer = my.Class({
+cwt.CircularBuffer = my.Class( /** @lends cwt.CircularBuffer.prototype */ {
 
   /**
-   * @param {number?} size (default 32)
+   * @param {number?} size the maximum size of the buffer (default 32)
    */
   constructor: function (size) {
     if (arguments.length === 0) {
@@ -29,9 +31,10 @@ cwt.CircularBuffer = my.Class({
   },
 
   /**
+   * Returns an element at a given index. The element won't be returned.
    *
-   * @param index
-   * @return {*}
+   * @param {number} index
+   * @return {T}
    */
   get: function (index) {
     if (index < 0 || index >= this.size) {
@@ -42,7 +45,7 @@ cwt.CircularBuffer = my.Class({
   },
 
   /**
-   * Returns the oldest object from the buffer
+   * Returns the oldest object from the buffer. The element will be removed from the buffer.
    *
    * @return {T} oldest object in the buffer
    */
@@ -66,7 +69,7 @@ cwt.CircularBuffer = my.Class({
   },
 
   /**
-   * Returns the youngest object from the buffer
+   * Returns the youngest object from the buffer. The element will be removed from the buffer.
    *
    * @return {T} youngest object in the buffer
    */
@@ -100,7 +103,7 @@ cwt.CircularBuffer = my.Class({
   },
 
   /**
-   *
+   * Removes everything from the buffer. After that the buffer will be empty.
    */
   clear: function () {
     this.index = 0;

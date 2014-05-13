@@ -53,7 +53,7 @@ controller.ai_SCORE = {
   CRITICAL : 999
 };
 
-// Contains all check/action logics for the DumbBoy ai.
+// Contains all check_/action logics for the DumbBoy ai.
 //
 controller.ai_CHECKS = [];
 
@@ -295,7 +295,7 @@ controller.ai_machine = util.stateMachine({
       var dataTp = -1;
       if( loopData.i < loopData.e ){
         if( loopData.i < loopData.prop ){
-          // unit check
+          // unit check_
 
           //util.log(controller.ai_spec,"- ..for unit",loopData.i);
 
@@ -309,7 +309,7 @@ controller.ai_machine = util.stateMachine({
 
 
         } else {
-          // property check
+          // property check_
 
           //util.log(controller.ai_spec,"- ..for property",loopData.i);
 
@@ -322,7 +322,7 @@ controller.ai_machine = util.stateMachine({
         }
 
       } else {
-        // map check
+        // map check_
 
         //util.log(controller.ai_spec,"- ..for map");
         dataTp = 2;
@@ -335,16 +335,16 @@ controller.ai_machine = util.stateMachine({
       var e       = controller.ai_CHECKS.length;
       if( dataTp !== -1 ){
         while( i<e ){
-          var check = controller.ai_CHECKS[i];
+          var check_ = controller.ai_CHECKS[i];
           i++;
 
-          // meta check
-          if( dataTp !== 0 && check.unitAction ) continue;
-          if( dataTp !== 1 && check.propAction ) continue;
-          if( dataTp !== 2 && check.mapAction ) continue;
+          // meta check_
+          if( dataTp !== 0 && check_.unitAction ) continue;
+          if( dataTp !== 1 && check_.propAction ) continue;
+          if( dataTp !== 2 && check_.mapAction ) continue;
 
           // call scoring
-          nScore = check.scoring(scoreData,loopData.score);
+          nScore = check_.scoring(scoreData,loopData.score);
 
           // new object got better scores -> select it's action
           if( nScore > loopData.score ){
@@ -354,7 +354,7 @@ controller.ai_machine = util.stateMachine({
             actionData.selection.grab(       scoreData.selection);
             actionData.used             = true;
             actionData.check_index      = i-1;
-            actionData.endsAiTurn       = (check.endsAiTurn === true);
+            actionData.endsAiTurn       = (check_.endsAiTurn === true);
             actionData.cacheInt         = scoreData.cacheInt;
             actionData.move.grabValues(scoreData.move);
             loopData.score              = nScore;

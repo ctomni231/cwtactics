@@ -84,7 +84,7 @@ exports.readAndConcatFiles = function( files,ext ){
   files.forEach(function(file, i) {
     if( file.match(/.DS_Store$/) ) return;
 
-    // check ext
+    // check_ ext
     if( ext==="dom" && !file.match(/.html$/) ) return;
     if( ext==="css"  && !file.match(/.css$/)  ) return;
 

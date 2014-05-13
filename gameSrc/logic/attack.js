@@ -189,7 +189,7 @@ cwt.Attack = {
     var tType = defender.type.ID;
     var v;
 
-    // check ammo and main weapon availability against the defender type
+    // check_ ammo and main weapon availability against the defender type
     if (this.ammo > 0 && attack.main_wp) {
       v = attack.main_wp[tType];
       if (v && v > 0) {
@@ -224,13 +224,13 @@ cwt.Attack = {
 
     if (typeof withMainWp === "undefined") withMainWp = true;
 
-    // check main weapon
+    // check_ main weapon
     if (withMainWp && attacker.ammo > 0 && attack.main_wp !== undefined) {
       v = attack.main_wp[tType];
       if (typeof v !== "undefined") return v;
     }
 
-    // check secondary weapon
+    // check_ secondary weapon
     if (attack.sec_wp !== undefined) {
       v = attack.sec_wp[tType];
       if (typeof v !== "undefined") return v;
@@ -284,7 +284,7 @@ cwt.Attack = {
 
     var indirectAttack = this.isIndirect(attacker);
 
-    // **check firstCounter:** if first counter is active then the defender
+    // **check_ firstCounter:** if first counter is active then the defender
     // attacks first. In this case swap attacker and defender.
     /*
      if (!indirectAttack && controller.scriptedValue(defender.owner, "firstCounter", 0) === 1) {

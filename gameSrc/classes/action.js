@@ -46,6 +46,13 @@ cwt.Action = my.Class({
     actions_: {},
 
     /**
+     * @return {Array}
+     */
+    getRegisteredNames: function () {
+      return Object.keys(this.actions_);
+    },
+
+    /**
      * 
      */
     registerAction_ : function (name, impl) {

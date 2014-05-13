@@ -2,11 +2,30 @@
  *
  */
 cwt.PropertySheet = new cwt.SheetDatabase({
-
-  check: function (sheet) {
-
+  schema: {
+    type: 'object',
+    required: ['ID'],
+    properties: {
+      ID: {
+        type: 'isID'
+      },
+      defense: {
+        type:  'integer',
+        minimum: 0
+      },
+      vision: {
+        type:  'integer',
+        minimum: 0
+      },
+      capturePoints: {
+        type:  'integer',
+        minimum: 1
+      },
+      blocker: {
+        type:  'boolean'
+      }
+    }
   }
-
 });
 
 /**

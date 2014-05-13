@@ -85,7 +85,7 @@ cwt.Gameflow.addInGameState({
        */
       generate: function () {
         if (!this.commandKeys) {
-          this.commandKeys = Object.keys(cwt.Action.actions_);
+          this.commandKeys = cwt.Action.getRegisteredNames();
         }
 
         var checkMode;
@@ -103,7 +103,7 @@ cwt.Gameflow.addInGameState({
         var pr_st_mode = data.thereIsUnitToPropertyRelationShip(data.source, data.target);
         var pr_sst_mode = data.thereIsUnitToPropertyRelationShip(data.source, data.targetselection);
 
-        // check action types
+        // check_ action types
         if (selectedUnit === null ||
           selectedUnit.owner !== model.round_turnOwner) unitActable = false;
         else if (!model.actions_canAct(data.source.unitId)) unitActable = false;
@@ -112,7 +112,7 @@ cwt.Gameflow.addInGameState({
           property.type.blocker) propertyActable = false;
         if (!unitActable && !propertyActable) mapActable = true;
 
-        // check all game action objects and fill menu
+        // check_ all game action objects and fill menu
         for (var i = 0, e = this.commandKeys.length; i < e; i++) {
           var action = cwt.Action.getActionObject(this.commandKeys[i]);
 
