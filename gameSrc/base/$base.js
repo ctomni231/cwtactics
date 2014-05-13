@@ -13,35 +13,21 @@ window.cwt = {
   /**
    * Tile size base.
    *
-   * @final
+   * @constant
    */
   TILE_BASE: 16,
 
   /**
-   * Number of tiles in a row in the screen.
-   *
-   * @final
-   */
-  MAX_TILES_W: 20,
-
-  /**
-   * Number of tiles in a column in the screen.
-   *
-   * @final
-   */
-  MAX_TILES_H: 15,
-
-  /**
    * Represents a numeric code which means no data.
    *
-   * @final
+   * @constant
    */
   INACTIVE: -1,
 
-  /** @final */
+  /** @constant */
   DESELECT_ID: -2,
 
-  /** @final */
+  /** @constant */
   NOT_AVAILABLE: -2,
 
   /**
@@ -52,27 +38,27 @@ window.cwt = {
   /**
    * Screen width in tiles.
    *
-   * @final
+   * @constant
    */
   SCREEN_WIDTH: 32,
 
   /**
    * Screen height in tiles.
    *
-   * @final
+   * @constant
    */
   SCREEN_HEIGHT: 24,
 
-  /** @final */
+  /** @constant */
   MAX_MAP_WIDTH: 60,
 
-  /** @final */
+  /** @constant */
   MAX_MAP_HEIGHT: 40,
 
-  /** @final */
+  /** @constant */
   MAX_MOVE_LENGTH: 15,
 
-  /** @final */
+  /** @constant */
   DEV_NO_CACHE: true,
 
   emptyFunction: function () {

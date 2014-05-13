@@ -73,113 +73,128 @@ cwt.Gameflow.addInGameState({
         this.selectedIndex = 0;
       },
 
+      addEntry: function (content, enabled) {
+        this.entries_.push(content);
+        this.enabled_.push(enabled);
+      },
+
+      commandKeys_: null,
+
+      /**
+       * Generates the action menu based on the given position data.
+       */
       generate: function () {
-        var commandKeys;
-        return function () {
+        if (!this.commandKeys) {
+          this.commandKeys = Object.keys(cwt.Action.actions_);
+        }
 
-          // lazy generate the command keys
-          if (!commandKeys) commandKeys = Object.keys(controller.action_objects);
+        var checkMode;
+        var result;
 
-          // collect meta-aw2
-          var checkMode;
-          var result;
-          var data = controller.stateMachine.data;
-          var mapActable = false;
-          var propertyActable = true;
-          var property = data.source.property;
-          var unitActable = true;
-          var selectedUnit = data.source.unit;
-          var st_mode = data.thereIsUnitRelationShip(data.source, data.target);
-          var sst_mode = data.thereIsUnitRelationShip(data.source, data.targetselection);
-          var pr_st_mode = data.thereIsUnitToPropertyRelationShip(data.source, data.target);
-          var pr_sst_mode = data.thereIsUnitToPropertyRelationShip(data.source, data.targetselection);
+        var mapActable = false;
+        var propertyActable = true;
+        var unitActable = true;
 
-          // check action types
-          if (selectedUnit === null ||
-            selectedUnit.owner !== model.round_turnOwner) unitActable = false;
-          else if (!model.actions_canAct(data.source.unitId)) unitActable = false;
-          if (selectedUnit !== null) propertyActable = false;
-          if (property === null || property.owner !== model.round_turnOwner ||
-            property.type.blocker) propertyActable = false;
-          if (!unitActable && !propertyActable) mapActable = true;
+        var property = gameData.source.property;
+        var selectedUnit = gameData.source.unit;
 
-          // check all meta-aw2 in relation to all available game actions
-          for (var i = 0, e = commandKeys.length; i < e; i++) {
-            var action = controller.action_objects[commandKeys[i]];
+        var st_mode = data.thereIsUnitRelationShip(data.source, data.target);
+        var sst_mode = data.thereIsUnitRelationShip(data.source, data.targetselection);
+        var pr_st_mode = data.thereIsUnitToPropertyRelationShip(data.source, data.target);
+        var pr_sst_mode = data.thereIsUnitToPropertyRelationShip(data.source, data.targetselection);
 
-            // AI or remote player_data cannot be controlled by the a client
-            if (!action.clientAction && (!model.client_isLocalPid(model.round_turnOwner) || !controller.ai_isHuman(model.round_turnOwner))) continue;
+        // check action types
+        if (selectedUnit === null ||
+          selectedUnit.owner !== model.round_turnOwner) unitActable = false;
+        else if (!model.actions_canAct(data.source.unitId)) unitActable = false;
+        if (selectedUnit !== null) propertyActable = false;
+        if (property === null || property.owner !== model.round_turnOwner ||
+          property.type.blocker) propertyActable = false;
+        if (!unitActable && !propertyActable) mapActable = true;
 
-            // pre defined checkers
-            if (action.unitAction) {
-              if (!unitActable) continue;
+        // check all game action objects and fill menu
+        for (var i = 0, e = this.commandKeys.length; i < e; i++) {
+          var action = cwt.Action.getActionObject(this.commandKeys[i]);
 
-              // relation to unit
-              if (action.relation) {
-                checkMode = null;
+          // AI or remote player_data cannot be controlled by the a client
+          if (!action.clientAction && (!model.client_isLocalPid(model.round_turnOwner) || !controller.ai_isHuman(model.round_turnOwner))) continue;
 
-                if (action.relation[0] === "S" &&
-                  action.relation[1] === "T") checkMode = st_mode;
-                else if (action.relation[0] === "S" &&
-                  action.relation[1] === "ST") checkMode = sst_mode;
+          // pre defined checkers
+          if (action.unitAction) {
+            if (!unitActable) continue;
 
-                result = false;
-                for (var si = 2, se = action.relation.length; si < se; si++) {
-                  if (action.relation[si] === checkMode) result = true;
-                }
+            // relation to unit
+            if (action.relation) {
+              checkMode = null;
 
-                if (!result) continue;
+              if (action.relation[0] === "S" &&
+                action.relation[1] === "T") checkMode = st_mode;
+              else if (action.relation[0] === "S" &&
+                action.relation[1] === "ST") checkMode = sst_mode;
+
+              result = false;
+              for (var si = 2, se = action.relation.length; si < se; si++) {
+                if (action.relation[si] === checkMode) result = true;
               }
 
-              // relation to property
-              if (action.relationToProp) {
-                checkMode = null;
-
-                if (action.relation[0] === "S" &&
-                  action.relationToProp[1] === "T") checkMode = pr_st_mode;
-                else if (action.relation[0] === "S" &&
-                  action.relationToProp[1] === "ST") checkMode = pr_sst_mode;
-
-                result = false;
-                for (var si = 2, se = action.relationToProp.length; si < se; si++) {
-                  if (action.relationToProp[si] === checkMode) result = true;
-                }
-
-                if (!result) continue;
-              }
-            } else if (action.propertyAction && !propertyActable) continue;
-            else if (action.mapAction === true && !mapActable) continue;
-            else if (action.clientAction === true && !mapActable) continue;
-
-            // if condition matches then add the entry to the menu list
-            if (action.condition && action.condition(data) !== false) {
-              data.menu.addEntry(commandKeys[i]);
+              if (!result) continue;
             }
+
+            // relation to property
+            if (action.relationToProp) {
+              checkMode = null;
+
+              if (action.relation[0] === "S" &&
+                action.relationToProp[1] === "T") checkMode = pr_st_mode;
+              else if (action.relation[0] === "S" &&
+                action.relationToProp[1] === "ST") checkMode = pr_sst_mode;
+
+              result = false;
+              for (var si = 2, se = action.relationToProp.length; si < se; si++) {
+                if (action.relationToProp[si] === checkMode) result = true;
+              }
+
+              if (!result) continue;
+            }
+          } else if (action.propertyAction && !propertyActable) continue;
+          else if (action.mapAction === true && !mapActable) continue;
+          else if (action.clientAction === true && !mapActable) continue;
+
+          // if condition matches then add the entry to the menu list
+          if (action.condition && action.condition(data) !== false) {
+            this.entries_.push(this.commandKeys[i]);
+            this.enabled_.push(true);
           }
-        };
+        }
       }
     };
   },
 
-  enter: function () {
-
-    /** @borrows cwt.Gameflow.globalData as gameData */
-    var gameData = this.globalData;
-
+  enter: function (gameData) {
     gameData.menu.clean();
     gameData.menu.generate();
 
     // go back when no entries exists
     if (!gameData.menu.getSize()) {
       cwt.Gameflow.changeState("IDLE");
+    } else {
+      this.rendered = false;
     }
   },
 
-  ACTION: function () {
+  UP: function (gameData) {
+    if (gameData.menu.selectedIndex > 0) {
+      gameData.menu.selectedIndex--;
+    }
+  },
 
-    /** @borrows cwt.Gameflow.globalData as gameData */
-    var gameData = this.globalData;
+  DOWN: function (gameData) {
+    if (gameData.menu.selectedIndex < gameData.menu.getSize() - 1) {
+      gameData.menu.selectedIndex++;
+    }
+  },
 
+  ACTION: function (gameData) {
     var actName = gameData.menu.getContent();
     var actObj = cwt.Action.getActionObject(actName);
 
@@ -194,8 +209,7 @@ cwt.Gameflow.addInGameState({
     } else if (actObj.isTargetValid !== null) {
       next = "INGAME_SELECT_TILE";
     } else if (actObj.prepareTargets !== null && actObj.targetSelectionType === "A") {
-      // return this.data.selection.prepare();
-      // TODO: prepare in the selection state
+      next = "INGAME_SELECT_TILE_TYPE_A";
     } else {
       next = "INGAME_FLUSH_ACTION";
     }
@@ -204,7 +218,22 @@ cwt.Gameflow.addInGameState({
     cwt.Gameflow.changeState(next);
   },
 
-  CANCEL: function () {
-    cwt.Gameflow.changeState("INGAME_IDLE");
+  CANCEL: function (gameData) {
+    var unit = gameData.source.unit;
+    var next = null;
+
+    if (unit && unit.owner.activeClientPlayer) {
+      // unit was selected and it is controlled by the active player, so it means that this unit
+      // is the acting unit -> go back to INGAME_MOVEPATH state without erasing the existing move data
+
+      gameData.preventMovePathGeneration = true;
+      next = "INGAME_MOVEPATH";
+
+    } else {
+      next = "INGAME_IDLE";
+    }
+
+    if (cwt.DEBUG) cwt.assert(next);
+    cwt.Gameflow.changeState(next);
   }
 });

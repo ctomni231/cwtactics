@@ -1,43 +1,18 @@
-cwt.Gameflow.addState({
-  id: "TARGET_SELECTION_B",
+cwt.Gameflow.addInGameState({
+  id: "INGAME_SELECT_TILE_TYPE_B",
 
-  init: function () {
-
+  enter: function (gameData) {
+    gameData.targetselection.clean();
   },
 
-  enter: function () {
-
+  ACTION: function (gameData) {
+    if (gameData.selection.getValue(cwt.Cursor.x, cwt.Cursor.y) >= 0) {
+      gameData.targetselection.set(cwt.Cursor.x, cwt.Cursor.y);
+      cwt.Gameflow.changeState("INGAME_FLUSH_ACTIONS");
+    }
   },
 
-  update: function (delta, lastInput) {
-
-  },
-
-  render: function (delta) {
-
+  CANCEL: function (gameData) {
+    cwt.Gameflow.changeState("INGAME_MENU");
   }
 });
-
-/*
-cwt.gameFlow.ACTION_SELECT_TARGET_B = {
-
-  onenter: function () {
-    this.data.targetselection.clean();
-  },
-
-  action: function (ev, x, y) {
-    if (this.data.selection.getValueAt(x, y) < 0) {
-      if (this.DEBUG) util.log("break event because selection is not in the map");
-      return this.breakTransition();
-    }
-
-    this.data.targetselection.set(x, y);
-
-    return "FLUSH_ACTION";
-  },
-
-  cancel: function () {
-    return this.backToLastState();
-  }
-
-};    */

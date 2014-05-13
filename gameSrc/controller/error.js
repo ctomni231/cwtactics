@@ -1,10 +1,10 @@
 cwt.Error = function (message,where) {
 
   // set state
-  cwt.Gameflow.setState("ERROR_SCREEN",false);
+  cwt.Gameflow.changeState("ERROR_SCREEN");
 
   // set meta data
   var state = cwt.Gameflow.activeState;
-  state.message = message;
-  state.where = where;
+  state.data.message = message;
+  state.data.where = where;
 };

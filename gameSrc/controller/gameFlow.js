@@ -54,15 +54,17 @@ cwt.Gameflow = {
 
       id: desc.id,
 
+      init: desc.init,
+
       enter: function () {
         if (desc.enter) {
-          desc.enter.call(this);
+          desc.enter.call(this,this.globalData);
         }
       },
 
       exit: function () {
         if (desc.exit) {
-          desc.exit.call(this);
+          desc.exit.call(this,this.globalData);
         }
       },
 
@@ -72,7 +74,7 @@ cwt.Gameflow = {
 
             case cwt.Input.TYPE_LEFT:
               if (desc.LEFT) {
-                desc.LEFT.call(this,delta);
+                desc.LEFT.call(this,this.globalData,delta);
               } else {
                 cwt.MapRenderer.updateScreenShift(cwt.Move.MOVE_CODES_LEFT);
               }
@@ -80,7 +82,7 @@ cwt.Gameflow = {
 
             case cwt.Input.TYPE_UP:
               if (desc.UP) {
-                desc.UP.call(this,delta);
+                desc.UP.call(this,this.globalData,delta);
               } else {
                 cwt.MapRenderer.updateScreenShift(cwt.Move.MOVE_CODES_LEFT);
               }
@@ -88,7 +90,7 @@ cwt.Gameflow = {
 
             case cwt.Input.TYPE_RIGHT:
               if (desc.RIGHT) {
-                desc.RIGHT.call(this.data,delta);
+                desc.RIGHT.call(this,this.globalData,delta);
               } else {
                 cwt.MapRenderer.updateScreenShift(cwt.Move.MOVE_CODES_LEFT);
               }
@@ -96,7 +98,7 @@ cwt.Gameflow = {
 
             case cwt.Input.TYPE_DOWN:
               if (desc.DOWN) {
-                desc.DOWN.call(this,delta);
+                desc.DOWN.call(this,this.globalData,delta);
               } else {
                 cwt.MapRenderer.updateScreenShift(cwt.Move.MOVE_CODES_LEFT);
               }
@@ -104,13 +106,13 @@ cwt.Gameflow = {
 
             case cwt.Input.TYPE_ACTION:
               if (desc.ACTION) {
-                desc.ACTION.call(this,delta);
+                desc.ACTION.call(this,this.globalData,delta);
               }
               break;
 
             case cwt.Input.TYPE_CANCEL:
               if (desc.CANCEL) {
-                desc.CANCEL.call(this,delta);
+                desc.CANCEL.call(this,this.globalData,delta);
               }
               break;
           }
@@ -120,7 +122,7 @@ cwt.Gameflow = {
       render: function (delta) {
         cwt.MapRenderer.renderCycle(delta);
         if (desc.render) {
-          desc.render.call(this);
+          desc.render.call(this,this.globalData,delta);
         }
       }
 

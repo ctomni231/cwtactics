@@ -1,42 +1,32 @@
 cwt.Gameflow.addState({
-  id: "MULTI_STEP",
+  id: "INGAME_MULTISTEP_IDLE",
 
   init: function () {
+    var gameData = this.globalData;
 
+    gameData.inMultiStep = false;
+
+    gameData.nextStep = function () {
+      gameData.movePath.clean();
+      gameData.menu.clean();
+      gameData.action.object.prepareMenu(this.data);
+
+      if (!gameData.menu.getSize()) {
+        cwt.Gameflow.changeState("INGAME_IDLE");
+      }
+
+      gameData.menu.addEntry("done", true);
+      gameData.inMultiStep = true;
+
+      cwt.Gameflow.changeState("INGAME_SUBMENU");
+    };
+
+    gameData.nextStepBreak = function () {
+      cwt.Gameflow.changeState("INGAME_IDLE");
+    };
   },
 
   enter: function () {
-
-  },
-
-  update: function (delta, lastInput) {
-
-  },
-
-  render: function (delta) {
-
+    this.globalData.inMultiStep = false;
   }
 });
-
-/*
-cwt.gameFlow.MULTISTEP_IDLE = {
-
-  nextStep: function () {
-    var actObj = this.data.action.object;
-
-    this.data.movePath.clean();
-    this.data.menu.clean();
-
-    actObj.prepareMenu(this.data);
-    this.data.menu.addEntry("done");
-
-    this.data.inMultiStep = true;
-    return (this.data.menu.size > 1) ? "ACTION_SUBMENU" : "IDLE";
-
-  },
-
-  nextStepBreak: function () {
-    return "IDLE";
-  }
-
-};        */

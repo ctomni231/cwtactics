@@ -1,64 +1,43 @@
-cwt.Gameflow.addState({
-  id: "SUB_MENU_STATE",
+cwt.Gameflow.addInGameState({
+  id: "INGAME_SUBMENU",
 
-  init: function () {
+  enter: function (gameData) {
+    gameData.menu.clean();
+    gameData.menu.generate();
 
+    // go back when no entries exists
+    if (!gameData.menu.getSize()) {
+      throw Error("sub menu cannot be empty");
+    }
   },
 
-  enter: function () {
+  ACTION: function (gameData) {
+    if (gameData.menu.isEnabled()) {
+      return;
+    }
 
+    var actName = gameData.menu.getContent();
+
+    if (actName === "done") {
+      cwt.Gameflow.changeState("INGAME_IDLE");
+      return;
+    }
+
+    gameData.action.selectedSubEntry = actName;
+    var actObj = cwt.Action.getActionObject(actName);
+
+    var next = null;
+    if (actObj.prepareTargets && actObj.targetSelectionType === "B") {
+      // return this.data.selection.prepare();
+    } else {
+      next = "INGAME_FLUSH_ACTIONS";
+    }
+
+    if (cwt.DEBUG) cwt.assert(next);
+    cwt.Gameflow.changeState(next);
   },
 
-  update: function (delta, lastInput) {
-
-  },
-
-  render: function (delta) {
-
+  CANCEL: function () {
+    cwt.Gameflow.changeState("INGAME_MENU");
   }
 });
-
-/*
-cwt.gameFlow.ACTION_SUBMENU = {
-  onenter: function () {
-    if (!this.data.inMultiStep) {
-      this.data.menu.clean();
-      this.data.action.object.prepareMenu(this.data);
-      if (this.data.menu.size === 0) {
-        cwt.assert(false, "sub menu cannot be empty");
-      }
-    }
-  },
-
-  action: function (ev, index) {
-
-    // break transition when entry is disabled
-    if (!this.data.menu.enabled[index]) {
-      return this.breakTransition();
-    }
-
-    var action = this.data.menu.data[index];
-
-    if (action === "done") {
-      return "IDLE";
-    }
-
-    this.data.action.selectedSubEntry = action;
-
-    if (this.data.action.object.prepareTargets !== null &&
-      this.data.action.object.targetSelectionType === "B") {
-
-      return this.data.selection.prepare();
-    } else return "FLUSH_ACTION";
-  },
-
-
-  cancel: function () {
-    if (this.data.inMultiStep) return this.backToLastState();
-
-    this.data.menu.clean();
-    this.data.menu.generate();
-
-    return this.backToLastState();
-  }
-};     */

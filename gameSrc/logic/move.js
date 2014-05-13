@@ -47,8 +47,7 @@ cwt.Move = {
 
 
   /**
-   * Returns the move cost to move with a given move type on a
-   * given tile type.
+   * Returns the move cost to move with a given move type on a given tile type.
    */
   getMoveCosts: function (movetype, x, y) {
     if (this.DEBUG) cwt.assert(cwt.Map.isValidPosition(x, y));
@@ -95,8 +94,8 @@ cwt.Move = {
   },
 
   /**
-   * Generates a path from a start position { `stx` , `sty` } to { `tx` , `ty` } with a
-   * given selection ( `util.selectionMap` ) map. The result will be stored in the `movePath`.
+   * Generates a path from a start position { `stx` , `sty` } to { `tx` , `ty` } with a given selection map. The
+   * result will be stored in the `movePath`.
    *
    * @param {number} stx
    * @param {number} sty
@@ -106,8 +105,8 @@ cwt.Move = {
    * @param movePath
    */
   generateMovePath: function (stx, sty, tx, ty, selection, movePath) {
-    if (this.DEBUG) cwt.assert(cwt.Map.isValidPosition(stx, sty));
-    if (this.DEBUG) cwt.assert(cwt.Map.isValidPosition(tx, ty));
+    if (cwt.DEBUG) cwt.assert(cwt.Map.isValidPosition(stx, sty));
+    if (cwt.DEBUG) cwt.assert(cwt.Map.isValidPosition(tx, ty));
 
     var graph = new Graph(selection.data);
 
@@ -179,10 +178,10 @@ cwt.Move = {
    * dropped. In this function returns also `true` in this case.
    *
    * @param {cwt.Move.MOVE_CODES_DOWN|cwt.Move.MOVE_CODES_RIGHT|cwt.Move.MOVE_CODES_LEFT|cwt.Move.MOVE_CODES_UP} code
-   * @param {cwt.Array} movePath
-   * @param {cwt.SelectionMap} selection
-   * @param {number} sx
-   * @param {number} sy
+   * @param {cwt.CircularBuffer} movePath
+   * @param {cwt.InterfaceSelection} selection
+   * @param {Number} sx
+   * @param {Number} sy
    */
   addCodeToMovePath: function (code, movePath, selection, sx, sy) {
     if (this.DEBUG) cwt.assert(code >= this.MOVE_CODES_UP && code <= this.MOVE_CODES_LEFT);
@@ -249,11 +248,11 @@ cwt.Move = {
   /**
    * Fills a move map for possible move able tiles in a selection map.
    *
-   * @param source
-   * @param selection
-   * @param x
-   * @param y
-   * @param unit
+   * @param {cwt.Position} source
+   * @param {cwt.InterfaceSelection} selection
+   * @param {Number} x
+   * @param {Number} y
+   * @param {cwt.Unit} unit
    */
   fillMoveMap: function (source, selection, x, y, unit) {
     var cost;
@@ -428,12 +427,15 @@ cwt.Move = {
         case this.MOVE_CODES_DOWN:
           cy++;
           break;
+
         case this.MOVE_CODES_UP:
           cy--;
           break;
+
         case this.MOVE_CODES_LEFT:
           cx--;
           break;
+
         case this.MOVE_CODES_RIGHT:
           cx++;
           break;

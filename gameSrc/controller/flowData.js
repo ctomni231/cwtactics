@@ -41,8 +41,6 @@ cwt.FlowData = {
     }
   },
 
-
-
   selection: (function () {
 
     var sMap = new cwt.SelectionMap(cwt.MAX_MOVE_LENGTH * 4 + 1);

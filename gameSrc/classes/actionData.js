@@ -23,7 +23,7 @@ cwt.ActionData = my.Class({
      */
     fromJSON: function (data) {
       if (typeof  data === "string") {
-        data = JSON.stringify(data);
+        data = JSON.stringify(data)
       }
 
       this.id = data[0];

@@ -59,7 +59,7 @@ cwt.Action = my.Class({
      * @return {cwt.Action}
      */
     getActionObject: function (key) {
-
+      return this.actions_[key];
     },
 
     /**
@@ -105,43 +105,6 @@ cwt.Action = my.Class({
     engineAction: function (impl) {
       impl.type = cwt.Action.ENGINE_ACTION;
       this.registerAction_(impl.key,impl);
-    },
-
-    /**
-     * Builds several commands from collected action data.
-     */
-    buildFromData: function (scope) {
-      if (!scope) {
-        scope = cwt.FlowData;
-      }
-
-      var targetDto = scope.target;
-      var sourceDto = scope.source;
-      var actionDto = scope.action;
-      var moveDto = scope.movePath;
-      var actionObject = actionDto.object;
-
-      var trapped = false;
-      if (moveDto.data[0] !== -1) {
-        trapped = model.move_trapCheck(moveDto.data, sourceDto, targetDto);
-        model.events.move_flushMoveData(moveDto.data, sourceDto);
-      }
-
-      if (!trapped) actionObject.invoke(scope);
-      else controller.commandStack_sharedInvokement(
-        "trapwait_invoked",
-        sourceDto.unitId
-      );
-
-      // all unit actions invokes automatically waiting
-      if (trapped || actionObject.unitAction && !actionObject.noAutoWait) {
-        controller.commandStack_sharedInvokement(
-          "wait_invoked",
-          sourceDto.unitId
-        );
-      }
-
-      return trapped;
     }
 
   },

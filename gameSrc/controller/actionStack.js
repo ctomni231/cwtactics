@@ -39,7 +39,7 @@ cwt.ActionStack = {
    *
    */
   invokeNext: function () {
-    var data = this.buffer.pop();
+    var data = this.buffer.popFirst();
     if (cwt.DEBUG) cwt.assert(data);
 
     if (cwt.DEBUG) {

@@ -1,44 +1,24 @@
-cwt.Gameflow.addState({
-  id: "TILE_SELECTION",
+cwt.Gameflow.addInGameState({
+  id: "INGAME_SELECT_TILE",
 
-  init: function () {
+  enter: function (gameData) {
+    gameData.targetselection.clean();
 
+    /*
+     var prepareSelection = this.data.action.object.prepareSelection;
+     if (prepareSelection) prepareSelection(this.data);
+     else this.data.selectionRange = 1;
+     */
   },
 
-  enter: function () {
-
+  ACTION: function (gameData) {
+    if (gameData.action.object.isTargetValid(gameData, cwt.Cursor.x, cwt.Cursor.y)) {
+      gameData.targetselection.set(cwt.Cursor.x, cwt.Cursor.y);
+      cwt.Gameflow.changeState("INGAME_FLUSH_ACTIONS");
+    }
   },
 
-  update: function (delta, lastInput) {
-
-  },
-
-  render: function (delta) {
-
+  CANCEL: function (gameData) {
+    cwt.Gameflow.changeState("INGAME_MENU");
   }
 });
-         /*
-cwt.gameFlow.ACTION_SELECT_TILE = {
-
-  onenter: function () {
-    this.data.targetselection.clean();
-
-    var prepareSelection = this.data.action.object.prepareSelection;
-    if (prepareSelection) prepareSelection(this.data);
-    else this.data.selectionRange = 1;
-  },
-
-  action: function (ev, x, y) {
-    if (this.data.action.object.isTargetValid(this.data, x, y)) {
-      this.data.targetselection.set(x, y);
-
-      return "FLUSH_ACTION";
-    } else return this.breakTransition();
-  },
-
-  cancel: function () {
-    this.data.targetselection.clean();
-    return this.backToLastState();
-  }
-
-};         */

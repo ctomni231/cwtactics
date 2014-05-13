@@ -1,61 +1,104 @@
-cwt.Gameflow.addState({
-  id: "MOVE_PATH_SELECTION",
+cwt.Gameflow.addInGameState({
+  id: "INGAME_MOVEPATH",
 
   init: function () {
+    var gameData = this.globalData;
 
+    /**
+     *
+     * @type {cwt.CircularBuffer}
+     * @memberOf cwt.Gameflow.globalData
+     */
+    gameData.movePath = new cwt.CircularBuffer(cwt.MAX_MOVE_LENGTH);
+
+    /**
+     *
+     * @type {boolean}
+     */
+    gameData.preventMovePathGeneration = false;
   },
 
-  enter: function () {
+  enter: function (gameData) {
 
-  },
-
-  update: function (delta, lastInput) {
-
-  },
-
-  render: function (delta) {
-
-  }
-});
-
-/*
-cwt.gameFlow.MOVEPATH_SELECTION = {
-
-  onenter: function (ev, x, y) {
-    //this.aw2.target.clean();
-  },
-
-  action: function (ev, x, y) {
-    if (this.data.selection.getValueAt(x, y) < 0) {
-      if (this.DEBUG) util.log("break event because selection is not in the selection map");
-      return this.breakTransition();
+    // when we do back steps in the game flow then we don't want to recreate an already created move way
+    if (gameData.preventMovePathGeneration) {
+      gameData.preventMovePathGeneration = false;
+      return;
     }
 
-    var ox = this.data.target.x;
-    var oy = this.data.target.y;
-    var dis = model.map_getDistance(ox, oy, x, y);
+    var breakMove = false;
 
-    this.data.target.set(x, y);
+    if (cwt.Gameround.isTurnOwnerObject(gameData.source.unit) && gameData.source.unit.canAct) {
 
-    if (dis === 0) {
-      return "ACTION_MENU";
-    } else if (dis === 1) {
+      // prepare move map and clean way
+      gameData.movePath.clean();
 
-      // ADD TILE TO PATH
-      var code = model.move_codeFromAtoB(ox, oy, x, y);
-      controller.stateMachine.data.movePath.addCodeToPath(x, y, code);
-      return (this.data.fastClickMode) ? "ACTION_MENU" : this.breakTransition();
+      cwt.Move.fillMoveMap(
+        gameData.source,
+        gameData.selection,
+        gameData.source.x,
+        gameData.source.y,
+        gameData.source.unit
+      );
+
+      // go directly into action menu when the unit cannot move
+      if (!gameData.selection.hasActiveNeighbour(x, y)) {
+        breakMove = true;
+      }
+    } else {
+      breakMove = true;
+    }
+
+    if (breakMove) {
+      cwt.Gameflow.changeState("ACTION_MENU");
+    }
+  },
+
+  ACTION: function (gameData) {
+    var x = cwt.Cursor.x;
+    var y = cwt.Cursor.y;
+
+    // selected tile is not in the selection -> ignore action
+    if (gameData.selection.getValue(x, y) < 0) {
+      return;
+    }
+
+    var ox = gameData.target.x;
+    var oy = gameData.target.y;
+    var dis = cwt.Map.getDistance(ox, oy, x, y);
+
+    gameData.target.set(x, y);
+
+    if (dis === 1) {
+
+      // Try to add the cursor move as code to the move path
+      cwt.Move.addCodeToMovePath(
+        cwt.Move.codeFromAtoB(ox, oy, x, y),
+        gameData.movePath,
+        gameData.selection,
+        x,
+        y
+      );
+
     } else {
 
-      // GENERATE PATH
-      controller.stateMachine.data.movePath.setPathByRecalculation(x, y);
-      return (this.data.fastClickMode) ? "ACTION_MENU" : this.breakTransition();
+      // Generate a complete new path because between the old tile and the new tile is at least another one tile
+      cwt.Move.generateMovePath(
+        gameData.source.x,
+        gameData.source.y,
+        x,
+        y,
+        gameData.selection,
+        gameData.movePath
+      );
+    }
+
+    if (dis === 0 || cwt.Options.fastClickMode) {
+      cwt.Gameflow.changeState(next);
     }
   },
 
-  cancel: function () {
-    this.data.target.clean();
-    return this.backToLastState();
+  CANCEL: function () {
+    cwt.Gameflow.changeState("INGAME_IDLE");
   }
-
-};         */
+});
