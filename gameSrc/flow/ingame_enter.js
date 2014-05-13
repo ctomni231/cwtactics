@@ -8,6 +8,8 @@ cwt.Gameflow.addState({
       console.log("entering game round");
     }
 
+    cwt.Screen.layerUI.getLayer().style.cursor = "none";
+
     // 1. load map
     cwt.GameData.loadGame(cwt.GameSelectionDTO.map,false, function () {
       cwt.GameSelectionDTO.map = null;
