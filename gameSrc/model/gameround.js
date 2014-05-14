@@ -137,7 +137,7 @@ cwt.Gameround = {
 
   $onLoadGame: function (data, isSave) {
     this.weather = cwt.WeatherSheet.defaultWeather;
-    this.turnOwner = null;
+    this.turnOwner = cwt.Player.getInstance(0);
     this.day = 0;
 
     if (isSave) {

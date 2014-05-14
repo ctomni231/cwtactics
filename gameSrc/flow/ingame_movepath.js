@@ -50,7 +50,7 @@ cwt.Gameflow.addInGameState({
     }
 
     if (breakMove) {
-      cwt.Gameflow.changeState("ACTION_MENU");
+      cwt.Gameflow.changeState("INGAME_MENU");
     }
   },
 

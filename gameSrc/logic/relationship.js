@@ -39,36 +39,31 @@ cwt.Relationship = {
    */
   RELATION_NULL: 5,
 
-  /**
-   * Does a unit to unit relationship check_. Both arguments `posA` and `posB` are objects of the type
-   * `controller.TaggedPosition`. An instance of `model.player_RELATION_MODES` will be returned.
-   *
-   * @param {cwt.Position} posA
-   * @param {cwt.Position} posB
-   * @return {number}
-   */
-  getUnitRelationship: function (posA, posB) {
-    if (posA && posA === posB) {
-      return this.RELATION_SAME_THING;
-    }
+  CHECK_NORMAL: 0,
 
-    return this.getRelationship(posA.unit, posB.unit);
-  },
+  CHECK_UNIT: 1,
+
+  CHECK_PROPERTY: 2,
 
   /**
-   * Does a unit to property relation check_. Both arguments `posA` and `posB` are objects of the type
-   * `controller.TaggedPosition`. An instance of `model.player_RELATION_MODES` will be returned.
    *
-   * @param {cwt.Position} posA
-   * @param {cwt.Position} posB
+   * @param {cwt.Position} left
+   * @param {cwt.Position} right
+   * @param {number?} checkLeft
+   * @param {number?} checkRight
    * @return {number}
    */
-  getUnitToPropertyRelationship: function (posA, posB) {
-    if (posA && posA === posB) {
-      return this.RELATION_SAME_THING;
-    }
+  getRelationShipTo: function (left, right, checkLeft, checkRight) {
+    var oL;
+    var oR;
 
-    return this.getRelationship(posA.unit, posB.property);
+    if (checkLeft !== this.CHECK_PROPERTY) oL = left.unit;
+    if (checkRight !== this.CHECK_PROPERTY) oR = right.unit;
+
+    if (!oL && checkLeft !== this.CHECK_UNIT) oL = left.property;
+    if (!oR && checkRight !== this.CHECK_UNIT) oR = right.property;
+
+    return this.getRelationship(oL, oR);
   },
 
   /**

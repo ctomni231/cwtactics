@@ -3,10 +3,14 @@
  *
  * @class
  */
-cwt.Position = my.Class( /** @lends cwt.Position.prototype */ {
+cwt.Position = my.Class(/** @lends cwt.Position.prototype */ {
+
+  constructor: function () {
+    this.clean();
+  },
 
   /**
-   * Cleans all aw2 of the object.
+   * Cleans all data of the object.
    */
   clean: function () {
     this.x = -1;
@@ -19,13 +23,14 @@ cwt.Position = my.Class( /** @lends cwt.Position.prototype */ {
   },
 
   /**
-   * Grabs the aw2 from another position object.
+   * Grabs the data from another position object.
    */
   grab: function (otherPos) {
     cwt.assert(otherPos instanceof cwt.Position);
 
     this.x = otherPos.x;
     this.y = otherPos.y;
+    this.tile = otherPos.tile;
     this.unit = otherPos.unit;
     this.unitId = otherPos.unitId;
     this.property = otherPos.property;
@@ -36,41 +41,20 @@ cwt.Position = my.Class( /** @lends cwt.Position.prototype */ {
    * Sets a position.
    */
   set: function (x, y) {
+    this.clean();
+
     this.x = x;
     this.y = y;
+    this.tile = cwt.Map.data[x][y];
 
-    var refObj;
-    var isValid = (x !== -1 && y !== -1);
-    var inFog = isValid ? (model.fog_turnOwnerData[x][y] === 0) : false;
-
-    // generate meta aw2 for the unit
-    refObj = isValid ? model.unit_getByPos(x, y) : null;
-    if (isValid && !inFog && refObj !== null && (!refObj.hidden ||
-      refObj.owner === model.round_turnOwner ||
-      model.player_data[refObj.owner].team ===
-        model.player_data[model.round_turnOwner].team
-      )) {
-
-      this.unit = refObj;
-      this.unitId = model.unit_extractId(refObj);
-    } else {
+    if (this.tile.turnOwnerVisible && this.tile.unit) {
       this.unit = null;
-      this.unitId = -1;
+      this.unitId = cwt.Unit.getId(this.tile.unit);
     }
 
-    // generate meta aw2 for the property
-    refObj = isValid ? model.property_getByPos(x, y) : null;
-    if (isValid /* && !inFog */ && refObj !== null) {
-
-      this.property = refObj;
-      this.propertyId = model.property_extractId(refObj);
-    } else {
-      this.property = null;
-      this.propertyId = -1;
+    if (this.tile.property) {
+      this.property = this.tile.property;
+      this.propertyId = cwt.Property.getId(this.tile.property);
     }
-  },
-
-  relationshipTo: function (pos) {
-
   }
 });

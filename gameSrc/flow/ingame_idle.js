@@ -193,6 +193,9 @@ cwt.Gameflow.addInGameState({
   },
 
   ACTION: function (gameData) {
+    var x = cwt.Cursor.x;
+    var y = cwt.Cursor.y;
+
     gameData.source.set(x, y);
     gameData.target.set(x, y);
 

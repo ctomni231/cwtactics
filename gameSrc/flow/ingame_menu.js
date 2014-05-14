@@ -80,6 +80,31 @@ cwt.Gameflow.addInGameState({
 
       commandKeys_: null,
 
+      checkRelation_: function (action,relationList,sMode,stMode) {
+        var checkMode;
+
+        switch (relationList[1]) {
+          case "T" :
+            checkMode = sMode;
+            break;
+
+          case "ST" :
+            checkMode = stMode;
+            break;
+
+          default :
+            checkMode = null;
+        }
+
+        for (var si = 2, se = action.relationToProp.length; si < se; si++) {
+          if (action.relationToProp[si] === checkMode) {
+            return true;
+          }
+        }
+
+        return false;
+      },
+
       /**
        * Generates the action menu based on the given position data.
        */
@@ -88,82 +113,78 @@ cwt.Gameflow.addInGameState({
           this.commandKeys = cwt.Action.getRegisteredNames();
         }
 
-        var checkMode;
-        var result;
-
-        var mapActable = false;
-        var propertyActable = true;
-        var unitActable = true;
-
-        var property = gameData.source.property;
-        var selectedUnit = gameData.source.unit;
-
-        var st_mode = data.thereIsUnitRelationShip(data.source, data.target);
-        var sst_mode = data.thereIsUnitRelationShip(data.source, data.targetselection);
-        var pr_st_mode = data.thereIsUnitToPropertyRelationShip(data.source, data.target);
-        var pr_sst_mode = data.thereIsUnitToPropertyRelationShip(data.source, data.targetselection);
-
-        // check_ action types
-        if (selectedUnit === null ||
-          selectedUnit.owner !== model.round_turnOwner) unitActable = false;
-        else if (!model.actions_canAct(data.source.unitId)) unitActable = false;
-        if (selectedUnit !== null) propertyActable = false;
-        if (property === null || property.owner !== model.round_turnOwner ||
-          property.type.blocker) propertyActable = false;
-        if (!unitActable && !propertyActable) mapActable = true;
+        var st_mode;
+        var sst_mode;
+        var pr_st_mode;
+        var pr_sst_mode;
+        var sPos = gameData.source;
+        var tPos = gameData.target;
+        var tsPos = gameData.targetselection;
+        var ChkU = cwt.Relationship.CHECK_UNIT;
+        var ChkP = cwt.Relationship.CHECK_PROPERTY;
+        var sProp = sPos.property;
+        var sUnit = sPos.unit;
+        var unitActable = (!(!sUnit || sUnit.owner !== cwt.Gameround.turnOwner || !sUnit.canAct));
+        var propertyActable = (!(sUnit || !sProp || sProp.owner !== cwt.Gameround.turnOwner || sProp.type.blocker));
+        var mapActable = (!unitActable && !propertyActable);
 
         // check_ all game action objects and fill menu
         for (var i = 0, e = this.commandKeys.length; i < e; i++) {
           var action = cwt.Action.getActionObject(this.commandKeys[i]);
 
-          // AI or remote player_data cannot be controlled by the a client
-          if (!action.clientAction && (!model.client_isLocalPid(model.round_turnOwner) || !controller.ai_isHuman(model.round_turnOwner))) continue;
+          switch (action.type) {
 
-          // pre defined checkers
-          if (action.unitAction) {
-            if (!unitActable) continue;
+            case cwt.Action.CLIENT_ACTION:
+              // TODO: ai check
+              if (!mapActable || cwt.Player.activeClientPlayer !== cwt.Gameround.turnOwner) {
+                continue;
+              }
+              break;
 
-            // relation to unit
-            if (action.relation) {
-              checkMode = null;
+            case cwt.Action.PROPERTY_ACTION:
+              if (!propertyActable) {
+                continue;
+              }
+              break;
 
-              if (action.relation[0] === "S" &&
-                action.relation[1] === "T") checkMode = st_mode;
-              else if (action.relation[0] === "S" &&
-                action.relation[1] === "ST") checkMode = sst_mode;
+            case cwt.Action.MAP_ACTION:
+              if (!mapActable) {
+                continue;
+              }
+              break;
 
-              result = false;
-              for (var si = 2, se = action.relation.length; si < se; si++) {
-                if (action.relation[si] === checkMode) result = true;
+            case cwt.Action.UNIT_ACTION:
+              if (!unitActable) {
+                continue;
               }
 
-              if (!result) continue;
-            }
-
-            // relation to property
-            if (action.relationToProp) {
-              checkMode = null;
-
-              if (action.relation[0] === "S" &&
-                action.relationToProp[1] === "T") checkMode = pr_st_mode;
-              else if (action.relation[0] === "S" &&
-                action.relationToProp[1] === "ST") checkMode = pr_sst_mode;
-
-              result = false;
-              for (var si = 2, se = action.relationToProp.length; si < se; si++) {
-                if (action.relationToProp[si] === checkMode) result = true;
+              // extract relationships
+              if (st_mode === void 0) {
+                st_mode = cwt.Relationship.getRelationShipTo(sPos, tPos, ChkU, ChkU);
+                sst_mode = cwt.Relationship.getRelationShipTo(sPos, tsPos, ChkU, ChkU);
+                pr_st_mode = cwt.Relationship.getRelationShipTo(sPos, tPos, ChkU, ChkP);
+                pr_sst_mode = cwt.Relationship.getRelationShipTo(sPos, tsPos, ChkU, ChkP);
               }
 
-              if (!result) continue;
-            }
-          } else if (action.propertyAction && !propertyActable) continue;
-          else if (action.mapAction === true && !mapActable) continue;
-          else if (action.clientAction === true && !mapActable) continue;
+              // relation to unit
+              if (action.relation) {
+                if (!this.checkRelation_(action,action.relation,st_mode,sst_mode)) {
+                  continue;
+                }
+              }
+
+              // relation to property
+              if (action.relationToProp) {
+                if (!this.checkRelation_(action,action.relationToProp,pr_st_mode,pr_sst_mode)) {
+                  continue;
+                }
+              }
+              break;
+          }
 
           // if condition matches then add the entry to the menu list
-          if (action.condition && action.condition(data) !== false) {
-            this.entries_.push(this.commandKeys[i]);
-            this.enabled_.push(true);
+          if (action.condition && action.condition(gameData) !== false) {
+            gameData.menu.addEntry(this.commandKeys[i], true)
           }
         }
       }
@@ -176,9 +197,7 @@ cwt.Gameflow.addInGameState({
 
     // go back when no entries exists
     if (!gameData.menu.getSize()) {
-      cwt.Gameflow.changeState("IDLE");
-    } else {
-      this.rendered = false;
+      cwt.Gameflow.changeState("INGAME_IDLE");
     }
   },
 
