@@ -21,7 +21,12 @@ cwt.Gameflow.addState({
 	
 	//Keeps track of the time
 	this.time = 0;
-	
+	//Keeps track of delta time
+	this.store = 0;
+	//Maximum frame wait per particle
+	this.MAX = 32;
+	//Keeps track of the cap
+	this.cap = 50;
 	//Keeps track of the frequency of a snowball
 	this.FREQUENCY = 2;
 	
@@ -59,6 +64,9 @@ cwt.Gameflow.addState({
 		
 	//Particle creation (totally fixed up to take as little memory as possible)
 	for(var i = 0; i < this.type.length+1; i++){
+		//This one liner prevents massive amount of particles
+		if(i == this.cap)
+			break;
 		if(parseInt(Math.random()*this.FREQUENCY) == 1){
 			if(i == this.type.length){
 				this.type.push(parseInt(Math.random()*3));
@@ -75,21 +83,28 @@ cwt.Gameflow.addState({
 			
 		}
 	}
-		
-	//Snow particle updates
-	for(var i = 0; i < this.type.length; i++){
-		if(this.type[i] == -1)
-			continue;
+	
+	if (cwt.DEBUG) {
+      console.log("Quick render of snow... Delta is "+delta);
+    }
+	this.store += delta;
+	while(this.store > this.MAX){	
+		//Snow particle updates
+		for(var i = 0; i < this.type.length; i++){
+			if(this.type[i] == -1)
+				continue;
 
-		if(this.type[i] == 2){
+			if(this.type[i] == 2){
+				this.posx[i] += 1;
+			}
 			this.posx[i] += 1;
-		}
-		this.posx[i] += 1;
-		this.posy[i] += 4;
+			this.posy[i] += 4;
 
-		//Destroy particles
-		if(this.posy[i] > cwt.Screen.height+10)
-			this.type[i] = -1;
+			//Destroy particles
+			if(this.posy[i] > cwt.Screen.height+10)
+				this.type[i] = -1;
+		}
+		this.store -= this.MAX;
 	}
   },
 
