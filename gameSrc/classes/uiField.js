@@ -5,6 +5,7 @@
 cwt.UIField = my.Class( /** @lends cwt.UIField.prototype */ {
 
   STATIC: {
+    STYLE_NONE:-1,
     STYLE_NORMAL:0,
     STYLE_S:1,
     STYLE_N:2,
@@ -49,11 +50,18 @@ cwt.UIField = my.Class( /** @lends cwt.UIField.prototype */ {
     return (x >= this.x && x < this.x + this.width && y >= this.y && y < this.y + this.height);
   },
 
+  erase: function (ctx) {
+    ctx.clearRect(this.x, this.y, this.width, this.height);
+  },
+
   /**
    *
    * @param {CanvasRenderingContext2D} ctx
    */
   draw: function (ctx) {
+    if (this.style === cwt.UIField.STYLE_NONE) {
+      return;
+    }
 
     ctx.fillStyle = (this.inFocus) ? "rgb(220,220,220)" : "white";
     ctx.fillRect(this.x, this.y, this.width, this.height);

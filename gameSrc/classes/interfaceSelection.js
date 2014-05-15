@@ -5,6 +5,7 @@ cwt.InterfaceSelection = {
 
   /**
    *
+   * @function
    * @param {number} x
    * @param {number} y
    * @param {number} defValue
@@ -13,6 +14,7 @@ cwt.InterfaceSelection = {
 
   /**
    *
+   * @function
    * @param {number} x
    * @param {number} y
    */
@@ -20,6 +22,7 @@ cwt.InterfaceSelection = {
 
   /**
    *
+   * @function
    * @param {number} x
    * @param {number} y
    * @param {number} value

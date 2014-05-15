@@ -32,27 +32,31 @@ cwt.Gameflow.addInGameState({
      * Game menu.
      *
      * @memberOf cwt.Gameflow.globalData
+     * @implements {cwt.InterfaceMenu.<String>}
      */
     gameData.menu = {
 
+      getSelectedIndex: function () {
+        return this.selectedIndex;
+      },
+
       /**
-       * @type {cwt.CircularBuffer.<String|null>}
+       * @type {cwt.CircularBuffer.<String>}
        */
       entries_: new cwt.CircularBuffer(),
 
       /**
-       * @type {cwt.CircularBuffer.<boolean|null>}
+       * @type {cwt.CircularBuffer.<boolean>}
        */
       enabled_: new cwt.CircularBuffer(),
 
       selectedIndex: 0,
 
-      /**
-       *
-       * @return {String}
-       */
-      getContent: function () {
-        return this.entries_.get(this.selectedIndex);
+      getContent: function (index) {
+        if (arguments.length === 0) {
+          index = this.selectedIndex;
+        }
+        return this.entries_.get(index);
       },
 
       getSize: function () {
