@@ -145,7 +145,7 @@ cwt.Map = {
         var prop = that.data[x][y].property;
         if (prop) {
           data.prps.push([
-            cwt.Property.getId(prop),
+            cwt.Property.getInstanceId(prop),
             x,
             y,
             prop.type.ID,
@@ -158,7 +158,7 @@ cwt.Map = {
         var unit = that.data[x][y].unit;
         if (unit) {
           data.units.push([
-            cwt.Unit.getId(unit),
+            cwt.Unit.getInstanceId(unit),
             unit.type.ID,
             x,
             y,

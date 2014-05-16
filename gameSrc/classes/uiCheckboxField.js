@@ -1,6 +1,7 @@
 /**
  *
  * @class
+ * @extends {cwt.UIField}
  */
 cwt.UICheckboxField = my.Class( null, cwt.UIField, /** @lends cwt.UICheckboxField.prototype */ {
 

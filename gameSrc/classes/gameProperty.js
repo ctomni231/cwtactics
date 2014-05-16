@@ -17,6 +17,8 @@ cwt.Property = my.Class(/** @lends cwt.Property.prototype */ {
 
     /**
      *
+     * @param {cwt.Player} player
+     * @return {number}
      */
     countProperties: function (player) {
       var n = 0;
@@ -27,7 +29,22 @@ cwt.Property = my.Class(/** @lends cwt.Property.prototype */ {
       }
 
       return n;
+    },
+
+    releasePlayerProperties: function (player) {
+      for (var i = 0, e = this.MULTITON_INSTANCES; i < e; i++) {
+        var prop = cwt.Property.getInstance(i, true);
+        if (prop && prop.owner === player) {
+          // TODO
+
+          // change type when the property is a
+          // changing type property
+          // var changeType = prop.type.changeAfterCaptured;
+          // if (changeType) model.events.property_changeType(i, changeType);
+        }
+      }
     }
+
   },
 
   constructor: function () {

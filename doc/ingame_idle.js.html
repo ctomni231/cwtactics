@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: flow/ingame_idle.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: flow/ingame_idle.js</h1>
+
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>cwt.Gameflow.addInGameState({
+  id: "INGAME_IDLE",
+
+  init: function (gameData) {
+
+    /**
+     * Position object with rich information about the selected position by an action and some relations.
+     *
+     * @memberOf cwt.Gameflow.globalData
+     */
+    gameData.source = new cwt.Position();
+
+    /**
+     * Position object with rich information about the selected position by an action and some relations.
+     *
+     * @memberOf cwt.Gameflow.globalData
+     */
+    gameData.target = new cwt.Position();
+
+    /**
+     * Position object with rich information about the selected position by an action and some relations.
+     *
+     * @memberOf cwt.Gameflow.globalData
+     */
+    gameData.targetselection = new cwt.Position();
+
+    /**
+     *
+     * @memberOf cwt.Gameflow.globalData
+     * @implements cwt.InterfaceSelection
+     */
+    gameData.selection = {
+
+      /** @private */
+      len_: cwt.MAX_MOVE_LENGTH * 4,
+
+      /** @private */
+      data_: null,
+
+      /** @private */
+      centerX_: 0,
+
+      /** @private */
+      centerY_: 0,
+
+      /** @override */
+      setCenter: function (x, y, defValue) {
+
+        // lazy initialization
+        if (!this.data_) {
+          this.data_ = [];
+          for (var i = 0; i &lt; this.len_; i++) {
+            this.data_[i] = [];
+          }
+        }
+
+        this.centerX = Math.max(0, x - (this.len_ - 1));
+        this.centerY = Math.max(0, y - (this.len_ - 1));
+
+        // clean data
+        for (var rx = 0; rx &lt; this.len_; rx++) {
+          for (var ry = 0; ry &lt; this.len_; ry++) {
+            this.data_[rx][ry] = defValue;
+          }
+        }
+      },
+
+      /** @override */
+      getValue: function (x, y) {
+        x = x - this.centerX_;
+        y = y - this.centerY_;
+
+        if (x &lt; 0 || y &lt; 0 || x >= this.len_ || y >= this.len_) {
+          return cwt.INACTIVE;
+        } else {
+          return this.data_[x][y];
+        }
+      },
+
+      /** @override */
+      setValue: function (x, y, value) {
+        x = x - this.centerX_;
+        y = y - this.centerY_;
+
+        if (x &lt; 0 || y &lt; 0 || x >= this.len_ || y >= this.len_) {
+          throw Error("Out of Bounds");
+        } else {
+          this.data_[x][y] = value;
+        }
+      },
+
+      /**
+       *
+       * @param {number} x
+       * @param {number} y
+       * @return {boolean}
+       */
+      hasActiveNeighbour: function (x, y) {
+        x = x - this.centerX_;
+        y = y - this.centerY_;
+
+        if (x &lt; 0 || y &lt; 0 || x >= this.len_ || y >= this.len_) {
+          throw Error("Out of Bounds");
+        }
+
+        if ((x > 0 &amp;&amp; this.len_[x - 1][y] > 0) ||
+          (y > 0 &amp;&amp; this.len_[x][y - 1] > 0) ||
+          (x &lt; this.data_ - 1 &amp;&amp; this.data_[x + 1][y] > 0) ||
+          (y &lt; this.data_ - 1 &amp;&amp; this.data_[x][y + 1] > 0)) {
+
+          return true;
+        } else {
+          return false;
+        }
+      },
+
+      /**
+       *
+       * @param {number} x
+       * @param {number} y
+       * @param {number} minValue
+       * @param {boolean} walkLeft
+       * @param {Function} cb
+       * @param {*?} arg
+       */
+      nextValidPosition: function (x, y, minValue, walkLeft, cb, arg) {
+        x = x - this.centerX_;
+        y = y - this.centerY_;
+
+        if (x &lt; 0 || y &lt; 0 || x >= this.len_ || y >= this.len_) {
+          if (walkLeft) {
+            // start bottom right
+            x = this.len_ - 1;
+            y = this.len_ - 1;
+
+          } else {
+            // start top left
+            x = 0;
+            y = 0;
+
+          }
+        }
+
+        // walk to the next position
+        var mod = (walkLeft) ? -1 : +1;
+        y += mod;
+        for (; (walkLeft) ? x >= 0 : x &lt; this.len_; x += mod) {
+          for (; (walkLeft) ? y >= 0 : y &lt; this.len_; y += mod) {
+            if (this.data_[x][y] >= minValue) {
+              // valid position
+              cb(x, y, arg);
+              return;
+
+            }
+          }
+
+          y = (walkLeft) ? this.len_ - 1 : 0;
+        }
+      },
+
+      /**
+       *
+       * @param {Function} cb
+       * @param {*} arg
+       * @param {number} minValue
+       * @return {boolean}
+       */
+      nextRandomPosition: function (cb, arg, minValue) {
+        if (minValue === void 0) {
+          minValue = 0;
+        }
+
+        var n = parseInt(Math.random() * this.len_, 10);
+        for (var x = 0; x &lt; this.len_; x++) {
+          for (var y = 0; y &lt; this.len_; y++) {
+            if (this.data_[x][y] >= minValue) {
+              n--;
+
+              if (n &lt; 0) {
+                cb(x, y, arg);
+                return true;
+              }
+            }
+          }
+        }
+
+        return false;
+      }
+    };
+  },
+
+  enter: function (gameData) {
+    gameData.source.clean();
+    gameData.target.clean();
+    gameData.targetselection.clean();
+  },
+
+  ACTION: function (gameData) {
+    var x = cwt.Cursor.x;
+    var y = cwt.Cursor.y;
+
+    gameData.source.set(x, y);
+    gameData.target.set(x, y);
+
+    cwt.Gameflow.changeState("INGAME_MOVEPATH");
+  }
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="$base.html">base/$base</a></li></ul><h3>Classes</h3><ul><li><a href="cwt.Action.html">Action</a></li><li><a href="cwt.ActionData.html">ActionData</a></li><li><a href="cwt.CircularBuffer.html">CircularBuffer</a></li><li><a href="cwt.Config.html">Config</a></li><li><a href="cwt.GameState.html">GameState</a></li><li><a href="cwt.Input.html">Input</a></li><li><a href="cwt.InputData.html">InputData</a></li><li><a href="cwt.Layer.html">Layer</a></li><li><a href="cwt.LayeredCanvas.html">LayeredCanvas</a></li><li><a href="cwt.Matrix.html">Matrix</a></li><li><a href="cwt.MovetypeSheet.html">MovetypeSheet</a></li><li><a href="cwt.Pagination.html">Pagination</a></li><li><a href="cwt.Player.html">Player</a></li><li><a href="cwt.Position.html">Position</a></li><li><a href="cwt.Property.html">Property</a></li><li><a href="cwt.html#Sprite">Sprite</a></li><li><a href="cwt.Storage.html">Storage</a></li><li><a href="cwt.Tile.html">Tile</a></li><li><a href="cwt.TileVariantInfo.html">TileVariantInfo</a></li><li><a href="cwt.UIButtonGroup.html">UIButtonGroup</a></li><li><a href="cwt.UICheckboxField.html">UICheckboxField</a></li><li><a href="cwt.UICustomField.html">UICustomField</a></li><li><a href="cwt.UIField.html">UIField</a></li><li><a href="cwt.UIScreenLayout.html">UIScreenLayout</a></li><li><a href="cwt.Unit.html">Unit</a></li></ul><h3>Namespaces</h3><ul><li><a href="cwt.ActionStack.html">ActionStack</a></li><li><a href="cwt.Attack.html">Attack</a></li><li><a href="cwt.Cannon.html">Cannon</a></li><li><a href="cwt.Capture.html">Capture</a></li><li><a href="cwt.ClientEvents.html">ClientEvents</a></li><li><a href="cwt.CO.html">CO</a></li><li><a href="cwt.Cursor.html">Cursor</a></li><li><a href="cwt.Explode.html">Explode</a></li><li><a href="cwt.Factory.html">Factory</a></li><li><a href="cwt.FlowData.menu.html">menu</a></li><li><a href="cwt.Fog.html">Fog</a></li><li><a href="cwt.GameData.html">GameData</a></li><li><a href="cwt.Gameflow.html">Gameflow</a></li><li><a href="cwt.Gameround.html">Gameround</a></li><li><a href="cwt.Image.html">Image</a></li><li><a href="cwt.Join.html">Join</a></li><li><a href="cwt.Laser.html">Laser</a></li><li><a href="cwt.Lifecycle.html">Lifecycle</a></li><li><a href="cwt.Loading.html">Loading</a></li><li><a href="cwt.Localization.html">Localization</a></li><li><a href="cwt.Map.html">Map</a></li><li><a href="cwt.MapRenderer.html">MapRenderer</a></li><li><a href="cwt.Maps.html">Maps</a></li><li><a href="cwt.Move.html">Move</a></li><li><a href="cwt.Network.html">Network</a></li><li><a href="cwt.Options.html">Options</a></li><li><a href="cwt.Relationship.html">Relationship</a></li><li><a href="cwt.Screen.html">Screen</a></li><li><a href="cwt.Silo.html">Silo</a></li><li><a href="cwt.Supply.html">Supply</a></li><li><a href="cwt.Team.html">Team</a></li><li><a href="cwt.Transport.html">Transport</a></li><li><a href="cwt.Turn.html">Turn</a></li><li><a href="cwt.Weather.html">Weather</a></li></ul><h3>Global</h3><ul><li><a href="global.html#background">background</a></li><li><a href="global.html#check_">check_</a></li><li><a href="global.html#clear">clear</a></li><li><a href="global.html#clone">clone</a></li><li><a href="global.html#getContext">getContext</a></li><li><a href="global.html#getLayer">getLayer</a></li><li><a href="global.html#isValidSheet">isValidSheet</a></li><li><a href="global.html#registerSheet">registerSheet</a></li><li><a href="global.html#renderLayer">renderLayer</a></li><li><a href="global.html#reset">reset</a></li><li><a href="global.html#resetValues">resetValues</a></li><li><a href="global.html#sheets">sheets</a></li><li><a href="global.html#types">types</a></li><li><a href="global.html#validator_">validator_</a></li><li><a href="global.html#value[2]">value[2]</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Fri May 16 2014 19:01:55 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

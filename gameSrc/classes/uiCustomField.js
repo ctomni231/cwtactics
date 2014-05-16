@@ -1,6 +1,7 @@
 /**
  *
  * @class
+ * @extends {cwt.UIField}
  */
 cwt.UICustomField = my.Class( null, cwt.UIField, /** @lends cwt.UIField.prototype */ {
 

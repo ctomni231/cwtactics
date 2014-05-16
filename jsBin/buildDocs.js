@@ -8,6 +8,6 @@ builder.doCommand(
     "../gameSrc " +
     "-r " +
     "-c doc.json " +
-    "-t /Volumes/Home/alex/node_modules/jsdoc/templates/jaguarjs-jsdoc-master " +
+   // "-t /Volumes/Home/alex/node_modules/jsdoc/templates/jaguarjs-jsdoc-master " +
     "-d ./../doc "
 );

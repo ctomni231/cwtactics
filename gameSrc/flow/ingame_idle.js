@@ -43,6 +43,7 @@ cwt.Gameflow.addInGameState({
       /** @private */
       centerY_: 0,
 
+      /** @override */
       setCenter: function (x, y, defValue) {
 
         // lazy initialization
@@ -64,6 +65,7 @@ cwt.Gameflow.addInGameState({
         }
       },
 
+      /** @override */
       getValue: function (x, y) {
         x = x - this.centerX_;
         y = y - this.centerY_;
@@ -75,6 +77,7 @@ cwt.Gameflow.addInGameState({
         }
       },
 
+      /** @override */
       setValue: function (x, y, value) {
         x = x - this.centerX_;
         y = y - this.centerY_;

@@ -8,7 +8,7 @@ cwt.Gameflow.addMenuState({
 
     var state = this;
 
-    state.configAttrPage = new cwt.Pagination(cwt.Config.registeredNames_, ENTRIES_PARAMETERS, function () {
+    state.configAttrPage = new cwt.Pagination(cwt.Config.MULTITON_NAMES, ENTRIES_PARAMETERS, function () {
       for (var i = 0, e = this.entries.length; i < e; i++) {
         state.names()[i].text = (this.entries[i]) ? cwt.Localization.forKey(this.entries[i]) : "";
         state.values()[i].text = (this.entries[i]) ? cwt.Config.getValue(this.entries[i]).toString() : "";

@@ -7,31 +7,63 @@
 cwt.IdMultiton = {
 
   /**
+   * @return {Array} Names that are registered in the multiton.
+   */
+  getInstanceKeyList: function () {
+    return this.classNames_;
+  },
+
+  /**
+   *
+   * @param obj
+   * @return {string}
+   */
+  getInstanceKey: function (obj) {
+    if (cwt.DEBUG) cwt.assert(!!this.classInstances_);
+    if (cwt.DEBUG) cwt.assert(obj instanceof this);
+
+    for (var i = 0, e = this.classNames_.length; i < e; i++) {
+      if (this.classInstances_[this.classNames_[i]] === obj) {
+        return this.classNames_[i];
+      }
+    }
+
+    return null;
+  },
+
+  /**
+   *
+   * @param {string} key
+   * @param obj
+   */
+  registerInstance: function (key, obj) {
+    if (cwt.DEBUG) cwt.assert(obj instanceof this);
+
+    if (!this.classInstances_) {
+      this.classInstances_ = {};
+    }
+
+    if (cwt.DEBUG) cwt.assert(this.MULTITON_NAMES.indexOf(key) != -1);
+    if (cwt.DEBUG) cwt.assert(!this.classInstances_.hasOwnProperty(key));
+
+    this.classInstances_[key] = obj;
+  },
+
+  /**
    * Returns an instance of the IndexMultiton.
    *
    * @param {String} key
    * @param {Boolean=} nullReturn if true then null will be returned when no object for the given key exists
    * @return {T}
    */
-  getInstance: function (key, nullReturn) {
-    if (!this.classInstances_) {
-      this.classInstances_ = {};
-    }
+  getInstance: function (key) {
 
     var obj = this.classInstances_[key];
+    this.classNames_.push(key);
 
     // create instance
     if (!obj) {
-      if (nullReturn) {
-        return null;
-      }
-
-      if (cwt.DEBUG) {
-        cwt.log("creating instance with key " + key);
-      }
-
-      obj = new this();
-      this.classInstances_[key] = obj;
+      throw Error("key "+key+" is not registered in the id multiton");
     }
 
     return obj;

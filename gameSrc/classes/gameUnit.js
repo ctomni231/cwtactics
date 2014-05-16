@@ -63,6 +63,16 @@ cwt.Unit = my.Class(/** @lends cwt.Unit.prototype */ {
       }
 
       return n;
+    },
+
+    destroyPlayerUnits: function (player) {
+      if (cwt.DEBUG) cwt.assert(player instanceof cwt.Player);
+      for (var i = 0, e = cwt.Unit.MULTITON_INSTANCES; i < e; i++) {
+        var unit = cwt.Unit.getInstance(i, false);
+        if (unit && unit.owner === player) {
+          // TODO
+        }
+      }
     }
   },
 

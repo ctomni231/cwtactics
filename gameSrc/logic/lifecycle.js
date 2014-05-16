@@ -64,6 +64,26 @@ cwt.Lifecycle = {
   },
 
   /**
+   * A player has loosed the game round due a specific reason. This
+   * function removes all of his units and properties. Furthermore
+   * the left teams will be checked. If only one team is left then
+   * the end game event will be invoked.
+   *
+   * @param {cwt.Player} player
+   */
+  deactivatePlayer: function (player) {
+    cwt.Unit.destroyPlayerUnits(player);
+    cwt.Property.releasePlayerProperties(player);
+
+    this.team = cwt.INACTIVE;
+
+    // when no opposite teams are found then the game has ended
+    if (!cwt.Gameround.areEnemyTeamsLeft()) {
+      // TODO
+    }
+  },
+
+  /**
    *
    * @return {boolean}
    */

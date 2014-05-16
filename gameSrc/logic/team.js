@@ -24,7 +24,7 @@ cwt.Team = {
       return false;
     }
 
-    // only transfer money on hq's
+    // only transfer money on headquarters
     var property = cwt.Map.data[x][y].property;
     if (!property || !property.type.looseAfterCaptured || property.owner === player) {
       return false;

@@ -5,43 +5,30 @@ cwt.Config = my.Class(/** @lends cwt.Config.prototype */ {
 
   STATIC: /** @lends cwt.Config */ {
 
-    /**
-     * Holds all registered configuration parameters.
-     *
-     * @private
-     */
-    registeredValues_: {},
-
-    /**
-     * Holds all registered configuration parameter names.
-     *
-     * @private
-     * @type {Array.<String>}
-     */
-    registeredNames_: [],
-
-    /**
-     * Registers a configuration parameter.
-     *
-     * @param {String} name
-     * @param {cwt.Config} config
-     */
-    register_: function (name, config) {
-      cwt.assert(!this.registeredValues_.hasOwnProperty(name));
-      this.registeredValues_[name] = config;
-      this.registeredNames_.push(name);
-    },
+    MULTITON_NAMES: [
+      "weatherMinDays",
+      "weatherRandomDays",
+      "round_dayLimit",
+      "noUnitsLeftLoose",
+      "autoSupplyAtTurnStart",
+      "unitLimit",
+      "captureLimit",
+      "timer_turnTimeLimit",
+      "timer_gameTimeLimit",
+      "co_getStarCost",
+      "co_getStarCostIncrease",
+      "co_getStarCostIncreaseSteps",
+      "co_enabledCoPower",
+      "daysOfPeace",
+      "fogEnabled"
+    ],
 
     /**
      *
      */
     resetAll: function () {
-      for (var i = this.registeredNames_.length - 1; i >= 0; i--) {
-        var key = this.registeredNames_[i];
-        var cfg = this.registeredValues_[key];
-
-        // reset value
-        cfg.resetValue();
+      for (var i = this.MULTITON_NAMES.length - 1; i >= 0; i--) {
+        this.getInstance(this.MULTITON_NAMES[i]).resetValue();
       }
     },
 
@@ -54,8 +41,7 @@ cwt.Config = my.Class(/** @lends cwt.Config.prototype */ {
      * @param {Number=} step
      */
     create: function (name, min, max, defaultValue, step) {
-      var cfg = new cwt.Config(min, max, defaultValue, step);
-      cwt.Config.register_(name, cfg);
+      cwt.Config.registerInstance(name, new cwt.Config(min, max, defaultValue, step));
     },
 
     /**
@@ -65,7 +51,7 @@ cwt.Config = my.Class(/** @lends cwt.Config.prototype */ {
      * @param {String} name
      */
     getValue: function (name) {
-      return this.registeredValues_[name].value;
+      return this.getInstance(name).value;
     },
 
     /**
@@ -75,21 +61,22 @@ cwt.Config = my.Class(/** @lends cwt.Config.prototype */ {
      * @param {String} name
      */
     getConfig: function (name) {
-      return this.registeredValues_[name];
+      return this.getInstance(name);
     },
 
     $onSaveGame: function (data) {
       data.cfg = {};
-      for (var i = 0, e = this.registeredNames_.length; i < e; i++) {
-        data.cfg[this.registeredNames_[i]] = cwt.Config.getValue(this.registeredNames_[i]);
+      for (var i = 0, e = this.MULTITON_NAMES.length; i < e; i++) {
+        var key = this.MULTITON_NAMES[i];
+        data.cfg[key] = cwt.Config.getValue(key);
       }
     },
 
     $onLoadGame: function (data, isSave) {
       cwt.Config.resetAll();
       if (isSave && data.cfg) {
-        for (var i = 0, e = this.registeredNames_.length; i < e; i++) {
-          var key = this.registeredNames_[i];
+        for (var i = 0, e = this.MULTITON_NAMES.length; i < e; i++) {
+          var key = this.MULTITON_NAMES[i];
           if (data.cfg[key]) {
             cwt.Config.getConfig(key).setValue(data.cfg[key]);
           }
@@ -131,11 +118,11 @@ cwt.Config = my.Class(/** @lends cwt.Config.prototype */ {
   },
 
   decreaseValue: function () {
-    this.setValue(this.value-this.step);
+    this.setValue(this.value - this.step);
   },
 
   increaseValue: function () {
-    this.setValue(this.value+this.step);
+    this.setValue(this.value + this.step);
   },
 
   /**
@@ -147,3 +134,5 @@ cwt.Config = my.Class(/** @lends cwt.Config.prototype */ {
   }
 
 });
+
+my.extendClass(cwt.Config, cwt.IdMultiton);

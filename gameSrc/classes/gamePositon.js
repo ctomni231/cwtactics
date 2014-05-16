@@ -49,12 +49,12 @@ cwt.Position = my.Class(/** @lends cwt.Position.prototype */ {
 
     if (this.tile.turnOwnerVisible && this.tile.unit) {
       this.unit = null;
-      this.unitId = cwt.Unit.getId(this.tile.unit);
+      this.unitId = cwt.Unit.getInstanceId(this.tile.unit);
     }
 
     if (this.tile.property) {
       this.property = this.tile.property;
-      this.propertyId = cwt.Property.getId(this.tile.property);
+      this.propertyId = cwt.Property.getInstanceId(this.tile.property);
     }
   }
 });

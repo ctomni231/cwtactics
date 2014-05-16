@@ -51,49 +51,7 @@ cwt.Player = my.Class(/** @lends cwt.Player.prototype */ {
    */
   isPowerActive: function (level) {
     return this.activePower === level;
-  },
-
-  /**
-   * A player has loosed the game round due a specific reason. This
-   * function removes all of his units and properties. Furthermore
-   * the left teams will be checked. If only one team is left then
-   * the end game event will be invoked.
-   */
-  deactivate: function () {
-
-    // remove all units
-    var i, e;
-    i = model.unit_firstUnitId(pid);
-    e = model.unit_lastUnitId(pid);
-    for (; i < e; i++) {
-      if (model.unit_data[i].owner !== cwt.INACTIVE) model.events.destroyUnit(i);
-    }
-
-    // remove all properties
-    i = 0;
-    e = model.property_data.length;
-    for (; i < e; i++) {
-      var prop = model.property_data[i];
-      if (prop.owner === pid) {
-        prop.owner = -1;
-
-        // change type when the property is a
-        // changing type property
-        var changeType = prop.type.changeAfterCaptured;
-        if (changeType) model.events.property_changeType(i, changeType);
-      }
-    }
-
-    // mark player slot as remove by removing
-    // its team reference
-    model.player_data[pid].team = -1;
-
-    // when no opposite teams are found then the game has ended
-    if (!model.player_areEnemyTeamsLeft()) {
-      controller.commandStack_localInvokement("player_noTeamsAreLeft");
-    }
   }
-
 });
 
 // use index based multiton trait
