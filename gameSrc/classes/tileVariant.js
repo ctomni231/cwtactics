@@ -57,12 +57,12 @@ cwt.TileVariantInfo = my.Class(/** @lends cwt.TileVariantInfo.prototype */ {
       } else {
         // check_ cross
         if (cConn[1] !== "" && cConn[1] !== typeN) continue;
-        if (cConn[2] !== "" && cConn[2] !== typeE) continue;
-        if (cConn[3] !== "" && cConn[3] !== typeS) continue;
-        if (cConn[4] !== "" && cConn[4] !== typeW) continue;
-        if (cConn[5] !== "" && cConn[5] !== typeNE) continue;
-        if (cConn[6] !== "" && cConn[6] !== typeSE) continue;
-        if (cConn[7] !== "" && cConn[7] !== typeSW) continue;
+        if (cConn[2] !== "" && cConn[2] !== typeNE) continue;
+        if (cConn[3] !== "" && cConn[3] !== typeE) continue;
+        if (cConn[4] !== "" && cConn[4] !== typeSE) continue;
+        if (cConn[5] !== "" && cConn[5] !== typeS) continue;
+        if (cConn[6] !== "" && cConn[6] !== typeSW) continue;
+        if (cConn[7] !== "" && cConn[7] !== typeW) continue;
         if (cConn[8] !== "" && cConn[8] !== typeNW) continue;
       }
 
