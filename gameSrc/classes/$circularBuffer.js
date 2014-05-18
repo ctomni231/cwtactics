@@ -31,6 +31,13 @@ cwt.CircularBuffer = my.Class( /** @lends cwt.CircularBuffer.prototype */ {
   },
 
   /**
+   * @return {boolean} true when buffer is full, else false
+   */
+  isFull: function () {
+    return this.size === this.maxSize;
+  },
+
+  /**
    * Returns an element at a given index. The element won't be returned.
    *
    * @param {number} index

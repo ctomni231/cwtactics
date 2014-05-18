@@ -87,25 +87,29 @@ cwt.Gameflow.addState({
 	if (cwt.DEBUG) {
       console.log("Quick render of snow... Delta is "+delta);
     }
-	this.store += delta;
-	while(this.store > this.MAX){	
+
+    var dis = parseInt((250/1000)*delta,10);
+    var disQuart = parseInt(dis/4,10) || 1;
+
+	  // this.store += delta;
+	  //while(this.store > this.MAX){
 		//Snow particle updates
 		for(var i = 0; i < this.type.length; i++){
 			if(this.type[i] == -1)
 				continue;
 
 			if(this.type[i] == 2){
-				this.posx[i] += 1;
+				this.posx[i] += disQuart;
 			}
-			this.posx[i] += 1;
-			this.posy[i] += 4;
+			this.posx[i] += disQuart;
+			this.posy[i] += dis;
 
 			//Destroy particles
 			if(this.posy[i] > cwt.Screen.height+10)
 				this.type[i] = -1;
 		}
-		this.store -= this.MAX;
-	}
+		// this.store -= this.MAX;
+	//}
   },
 
   render: function () {

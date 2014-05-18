@@ -44,6 +44,21 @@ cwt.Gameflow.addInGameState({
       centerY_: 0,
 
       /** @override */
+      getData: function () {
+        return this.data_;
+      },
+
+      /** @override */
+      getCenterX: function () {
+        return this.centerX_;
+      },
+
+      /** @override */
+      getCenterY: function () {
+        return this.centerY_;
+      },
+
+      /** @override */
       setCenter: function (x, y, defValue) {
 
         // lazy initialization

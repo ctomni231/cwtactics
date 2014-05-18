@@ -7,8 +7,12 @@ var PATH = " " + builder.dirJsToString("libJs") + " " +
   builder.dirJsToString("gameSrc/input") + " " +
   builder.dirJsToString("gameSrc/model") + " " +
   builder.dirJsToString("gameSrc/logic") + " " +
+  builder.dirJsToString("gameSrc/sheets") + " " +
   builder.dirJsToString("gameSrc/data") + " " +
-  builder.dirJsToString("gameSrc/actions") + " " +
+  builder.dirJsToString("gameSrc/flow") + " " +
+  builder.dirJsToString("gameSrc/renderer") + " " +
+  builder.dirJsToString("gameSrc/commands") + " " +
+  builder.dirJsToString("gameSrc/test") + " " +
   builder.dirJsToString("gameSrc/ai") + " ";
 
 exports.doIt = function (p, baton) {

@@ -135,4 +135,4 @@ cwt.Config = my.Class(/** @lends cwt.Config.prototype */ {
 
 });
 
-my.extendClass(cwt.Config, cwt.IdMultiton);
+my.extendClass(cwt.Config, { STATIC: cwt.IdMultiton });

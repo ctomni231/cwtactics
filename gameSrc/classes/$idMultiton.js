@@ -41,6 +41,7 @@ cwt.IdMultiton = {
 
     if (!this.classInstances_) {
       this.classInstances_ = {};
+      this.classNames_ = [];
     }
 
     if (cwt.DEBUG) cwt.assert(this.MULTITON_NAMES.indexOf(key) != -1);

@@ -16,17 +16,17 @@ cwt.GameSelectionDTO = {
   /**
    * Data holder to remember selected co's.
    */
-  co: new cwt.List(cwt.Player.MULTITON_INSTANCES, 0),
+  co: null,
 
   /**
    *
    */
-  type: new cwt.List(cwt.Player.MULTITON_INSTANCES, cwt.INACTIVE),
+  type: null,
 
   /**
    *
    */
-  team: new cwt.List(cwt.Player.MULTITON_INSTANCES, 0),
+  team: null,
 
   /**
    * Changes a configuration parameter.
@@ -38,14 +38,14 @@ cwt.GameSelectionDTO = {
   changeParameter: function (pid, type, prev) {
     if (cwt.DEBUG) cwt.assert(type >= this.CHANGE_TYPE.CO_MAIN && type <= this.CHANGE_TYPE.TEAM);
 
-    if (this.type.data[pid] === cwt.DESELECT_ID) {
+    if (this.type[pid] === cwt.DESELECT_ID) {
       return;
     }
 
     switch (type) {
 
       case this.CHANGE_TYPE.CO_MAIN:
-        var cSelect = this.co.data[pid];
+        var cSelect = this.co[pid];
 
         if (prev) {
           cSelect--;
@@ -56,7 +56,7 @@ cwt.GameSelectionDTO = {
           if (cSelect >= cwt.CoSheet.types.length) cSelect = 0;
         }
 
-        this.co.data[pid] = cSelect;
+        this.co[pid] = cSelect;
         break;
 
       // ---------------------------------------------------------
@@ -86,7 +86,7 @@ cwt.GameSelectionDTO = {
       // ---------------------------------------------------------
 
       case this.CHANGE_TYPE.PLAYER_TYPE:
-        var cSelect = this.type.data[pid];
+        var cSelect = this.type[pid];
         if (cSelect === cwt.DESELECT_ID) break;
 
         if (prev) {
@@ -98,13 +98,13 @@ cwt.GameSelectionDTO = {
           if (cSelect >= 2) cSelect = cwt.INACTIVE;
         }
 
-        this.type.data[pid] = cSelect;
+        this.type[pid] = cSelect;
         break;
 
       // ---------------------------------------------------------
 
       case this.CHANGE_TYPE.TEAM:
-        var cSelect = this.team.data[pid];
+        var cSelect = this.team[pid];
 
         while (true) {
           if (prev) {
@@ -120,7 +120,7 @@ cwt.GameSelectionDTO = {
           for (var i = 0, e = cwt.Player.MULTITON_INSTANCES; i < e; i++) {
             if (i === pid) continue;
 
-            if (this.type.data[i] >= 0 && this.team.data[i] !== cSelect) {
+            if (this.type[i] >= 0 && this.team[i] !== cSelect) {
               s = true;
             }
           }
@@ -128,7 +128,7 @@ cwt.GameSelectionDTO = {
           if (s) break;
         }
 
-        this.team.data[pid] = cSelect;
+        this.team[pid] = cSelect;
         break;
     }
   },
@@ -137,21 +137,32 @@ cwt.GameSelectionDTO = {
    * Does some preparations for the configuration screen.
    */
   preProcess: function () {
-    this.co.resetValues();
-    this.team.resetValues();
-    this.type.resetValues();
+
+    // lazy init config data
+    if (!this.co) {
+      this.co = [];
+      this.team = [];
+      this.type = [];
+    }
+
+    // reset config data
+    for (var n = 0; n < cwt.Player.MULTITON_INSTANCES; n++) {
+      this.co[n] = 0;
+      this.team[n] = cwt.INACTIVE;
+      this.type[n] = 0;
+    }
 
     for (var i = 0, e = cwt.Player.MULTITON_INSTANCES; i < e; i++) {
       if (i < this.map.player) {
 
         if (i === 0) {
-          this.type.data[i] = 0;
-        } else this.type.data[i] = 1;
+          this.type[i] = 0;
+        } else this.type[i] = 1;
 
-        this.team.data[i] = i;
+        this.team[i] = i;
 
       } else {
-        this.type.data[i] = cwt.DESELECT_ID;
+        this.type[i] = cwt.DESELECT_ID;
       }
     }
   },
@@ -170,7 +181,7 @@ cwt.GameSelectionDTO = {
 
     var onlyAI = true;
     for (var i = 0, e = cwt.Player.MULTITON_INSTANCES; i < e; i++) {
-      if (this.type.data[i] === 0) {
+      if (this.type[i] === 0) {
         onlyAI = false;
         break;
       }
@@ -180,22 +191,22 @@ cwt.GameSelectionDTO = {
     for (var i = 0, e = cwt.Player.MULTITON_INSTANCES; i < e; i++) {
       var player = cwt.Player.getInstance(i);
 
-      if (this.type.data[i] >= 0) {
+      if (this.type[i] >= 0) {
 
         player.gold = 0;
-        player.team = this.team.data[i];
+        player.team = this.team[i];
 
-        if (this.type.data[i] === 1) {
+        if (this.type[i] === 1) {
           // controller.ai_register(i);
           // if (onlyAI) model.events.client_registerPlayer(i);
         } else {
           // model.events.client_registerPlayer(i);
         }
 
-        tmp = ( this.co.data[i] !== cwt.INACTIVE) ?
-          cwt.CoSheet.types[this.co.data[i]] : null;
+        tmp = ( this.co[i] !== cwt.INACTIVE) ?
+          cwt.CoSheet.types[this.co[i]] : null;
 
-        cwt.CO.setMainCo(player,tmp);
+        cwt.CO.setMainCo(player, tmp);
 
       } else {
 

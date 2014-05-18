@@ -17,14 +17,14 @@ cwt.Input = {
   TYPE_SET_INPUT: 8,
 
   /**
-   * @type cwt.RingBuffer<cwt.InputData>
+   * @type cwt.CircularBuffer<cwt.InputData>
    */
-  stack: new cwt.RingBuffer(10),
+  stack: new cwt.CircularBuffer(10),
 
   /**
-   * @type cwt.RingBuffer<cwt.InputData>
+   * @type cwt.CircularBuffer<cwt.InputData>
    */
-  pool: new cwt.RingBuffer(10),
+  pool: new cwt.CircularBuffer(10),
 
   types: {},
 
@@ -99,7 +99,7 @@ cwt.Input = {
     }
 
     // push command into buffer
-    var cmd = this.pool.pop();
+    var cmd = this.pool.popFirst();
     cmd.d1 = d1;
     cmd.d2 = d2;
     cmd.key = key;
@@ -116,7 +116,7 @@ cwt.Input = {
     if (this.stack.isEmpty()) {
       return null;
     }
-    return this.stack.pop();
+    return this.stack.popFirst();
   },
 
   /**

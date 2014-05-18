@@ -7,11 +7,6 @@ cwt.Move = {
   /**
    * @constant
    */
-  MAX_LENGTH: 15,
-
-  /**
-   * @constant
-   */
   MOVE_CODES_UP: 0,
 
   /**
@@ -37,10 +32,15 @@ cwt.Move = {
     if (this.DEBUG) cwt.assert(cwt.Map.isValidPosition(tx, ty));
     if (this.DEBUG) cwt.assert(cwt.Map.getDistance(sx, sy, tx, ty) === 1);
 
-    if (sx < tx) return this.MOVE_CODES_RIGHT;
-    if (sx > tx) return this.MOVE_CODES_LEFT;
-    if (sy < ty) return this.MOVE_CODES_DOWN;
-    if (sy > ty) return this.MOVE_CODES_UP;
+    if (sx < tx) {
+      return this.MOVE_CODES_RIGHT;
+    } else if (sx > tx) {
+      return this.MOVE_CODES_LEFT;
+    } else if (sy < ty) {
+      return this.MOVE_CODES_DOWN;
+    } else if (sy > ty) {
+      return this.MOVE_CODES_UP;
+    }
 
     return cwt.INACTIVE;
   },
@@ -85,12 +85,15 @@ cwt.Move = {
     if (cwt.Map.isValidPosition(x, y)) {
       if (this.getMoveCosts(movetype, x, y) === -1) return false;
 
+
       var tile = cwt.Map.data[x][y];
       if (tile.visionTurnOwner === 0) return true;
       if (tile.unit) return false;
 
       return true;
-    } else return false;
+    } else {
+      return false;
+    }
   },
 
   /**
@@ -101,49 +104,66 @@ cwt.Move = {
    * @param {number} sty
    * @param {number} tx
    * @param {number} ty
-   * @param {cwt.SelectionMap} selection
-   * @param movePath
+   * @param {cwt.InterfaceSelection} selection
+   * @param {cwt.CircularBuffer} movePath
    */
   generateMovePath: function (stx, sty, tx, ty, selection, movePath) {
     if (cwt.DEBUG) cwt.assert(cwt.Map.isValidPosition(stx, sty));
     if (cwt.DEBUG) cwt.assert(cwt.Map.isValidPosition(tx, ty));
 
-    var graph = new Graph(selection.data);
-
-    var dsx = stx - selection.centerX;
-    var dsy = sty - selection.centerY;
-    var start = graph.nodes[dsx][dsy];
-    var dtx = tx - selection.centerX;
-    var dty = ty - selection.centerY;
-    var end = graph.nodes[dtx][dty];
-    var path = astar.search(graph.nodes, start, end);
-    var cx = stx;
-    var cy = sty;
+    var dir;
     var cNode;
 
-    movePath.resetValues();
-    var movePathIndex = 0;
+    var graph = new Graph(selection.getData());
+
+    var dsx = stx - selection.getCenterX();
+    var dsy = sty - selection.getCenterY();
+    var dtx = tx - selection.getCenterX();
+    var dty = ty - selection.getCenterY();
+
+    var start = graph.nodes[dsx][dsy];
+    var end = graph.nodes[dtx][dty];
+
+    var path = astar.search(graph.nodes, start, end);
+
+    var cx = stx;
+    var cy = sty;
+
+    movePath.clear();
     for (var i = 0, e = path.length; i < e; i++) {
       cNode = path[i];
 
-      var dir;
-      if (cNode.x > cx) dir = this.MOVE_CODES_RIGHT;
-      else if (cNode.x < cx) dir = this.MOVE_CODES_LEFT;
-      else if (cNode.y > cy) dir = this.MOVE_CODES_DOWN;
-      else if (cNode.y < cy) dir = this.MOVE_CODES_UP;
-      else cwt.assert(false);
+      // extract move code
+      if (cNode.x > cx) {
+        dir = this.MOVE_CODES_RIGHT;
+      } else if (cNode.x < cx) {
+        dir = this.MOVE_CODES_LEFT;
+      } else if (cNode.y > cy) {
+        dir = this.MOVE_CODES_DOWN;
+      } else if (cNode.y < cy) {
+        dir = this.MOVE_CODES_UP;
+      } else {
+        cwt.assert(false);
+      }
 
       // add code to move path
-      movePath[movePathIndex] = dir;
-      movePathIndex++;
+      movePath.push(dir);
 
+      // update current position
       cx = cNode.x;
       cy = cNode.y;
     }
   },
 
+  /**
+   *
+   * @param code
+   * @param {cwt.CircularBuffer} movePath
+   * @return {boolean}
+   * @private
+   */
   isGoBackCommand_: function (code, movePath) {
-    var lastCode = movePath.getLastElement();
+    var lastCode = movePath.get(movePath.size - 1);
     var goBackCode;
 
     // get go back code
@@ -164,7 +184,7 @@ cwt.Move = {
 
     // if move is a go back then pop the lest code
     if (lastCode === goBackCode) {
-      movePath.pop();
+      movePath.popLast();
       return true;
     } else {
       return false;
@@ -192,18 +212,23 @@ cwt.Move = {
 
     var source = cwt.Map.data[sx][sy];
     var unit = source.unit;
-    var fuelLeft = unit.fuel;
     var points = unit.type.range;
-    if (fuelLeft < points) points = fuelLeft;
+    var fuelLeft = unit.fuel;
+
+    // decrease move range when not enough fuel is available to move the maximum possible
+    // range for the selected move type
+    if (fuelLeft < points) {
+      points = fuelLeft;
+    }
 
     // add command to the move path list
-    movePath.data[movePath.getSize()] = code;
+    movePath.data[movePath.size] = code;
 
     // calculate fuel consumption for the current move path
     var cx = sx;
     var cy = sy;
     var fuelUsed = 0;
-    for (var i = 0, e = movePath.getLastIndex(); i <= e; i++) {
+    for (var i = 0, e = movePath.size; i < e; i++) {
       switch (movePath.data[i]) {
 
         case this.MOVE_CODES_UP:
@@ -224,12 +249,12 @@ cwt.Move = {
       }
 
       // acc. fuel consumption
-      fuelUsed += selection.getValueAt(cx, cy);
+      fuelUsed += selection.getValue(cx, cy);
     }
 
     // if to much fuel would be needed then decline
     if (fuelUsed > points) {
-      movePath.data[movePath.getSize() - 1] = cwt.INACTIVE;
+      movePath.data[movePath.size - 1] = cwt.INACTIVE;
       return false;
     } else {
       return true;
@@ -242,8 +267,24 @@ cwt.Move = {
    * be created in `model.move_fillMoveMap`. If the engine is used without client
    * hacking then this situation never happen and the `model.move_fillMoveMap`
    * will use this helper to prevent unnecessary array creation.
+   *
+   * @private
    */
   fillMoveMapHelper_: [],
+
+  /**
+   * @private
+   */
+  checker_: [
+    cwt.INACTIVE,
+    cwt.INACTIVE,
+    cwt.INACTIVE,
+    cwt.INACTIVE,
+    cwt.INACTIVE,
+    cwt.INACTIVE,
+    cwt.INACTIVE,
+    cwt.INACTIVE
+  ],
 
   /**
    * Fills a move map for possible move able tiles in a selection map.
@@ -256,6 +297,7 @@ cwt.Move = {
    */
   fillMoveMap: function (source, selection, x, y, unit) {
     var cost;
+    var checker;
     var map = cwt.Map.data;
 
     // grab object aw2 from `source` position if no explicit aw2 is given
@@ -268,28 +310,58 @@ cwt.Move = {
     var toBeChecked;
     var releaseHelper = false;
     if (this.fillMoveMapHelper_ !== null) {
+
+      // use the cached array
       toBeChecked = this.fillMoveMapHelper_;
+      checker = this.checker_;
+
+      // reset some stuff
+      for (var n = 0, ne = toBeChecked.length; n < ne; n++) {
+        toBeChecked[n] = null;
+      }
+      for (var n = 0, ne = checker.length; n < ne; n++) {
+        checker[n] = cwt.INACTIVE;
+      }
+
+      // remove cache objects from the move logic object
       this.fillMoveMapHelper_ = null;
+      this.checker_ = null;
+
       releaseHelper = true;
-    } else toBeChecked = [];
+
+    } else {
+
+      // use a new arrays because cache objects aren't available
+      toBeChecked = [];
+      checker = [
+        cwt.INACTIVE,
+        cwt.INACTIVE,
+        cwt.INACTIVE,
+        cwt.INACTIVE,
+        cwt.INACTIVE,
+        cwt.INACTIVE,
+        cwt.INACTIVE,
+        cwt.INACTIVE
+      ];
+    }
 
     var mType = unit.type.movetype;
-    var player = unit.owner;
     var range = unit.type.range;
+    var player = unit.owner;
 
     // decrease range if not enough fuel is available
-    if (unit.fuel < range) range = unit.fuel;
+    if (unit.fuel < range) {
+      range = unit.fuel;
+    }
 
     // add start tile to the map
     selection.setCenter(x, y, cwt.INACTIVE);
-    selection.setValueAt(x, y, range);
+    selection.setValue(x, y, range);
 
     // fill map ( one structure is X;Y;LEFT_POINTS )
     toBeChecked[0] = x;
     toBeChecked[1] = y;
     toBeChecked[2] = range;
-
-    var checker = [-1, -1, -1, -1, -1, -1, -1, -1];
 
     while (true) {
       var cHigh = -1;
@@ -348,7 +420,9 @@ cwt.Move = {
 
       // check_ the given neighbors for move
       for (var n = 0; n < 8; n += 2) {
-        if (checker[n] === -1) continue;
+        if (checker[n] === -1) {
+          continue;
+        }
 
         var tx = checker[n];
         var ty = checker[n + 1];
@@ -356,17 +430,21 @@ cwt.Move = {
         cost = this.getMoveCosts(mType, tx, ty);
         if (cost !== -1) {
 
-          var ctile = map[tx][ty];
-          var cunit = ctile.unit;
-          if (cunit !== null && ctile.visionTurnOwner > 0 && !cunit.hidden && cunit.owner.team !== player.team) {
+          var cTile = map[tx][ty];
+          var cUnit = cTile.unit;
+
+          if (cUnit !== null &&
+            cTile.visionTurnOwner > 0 &&
+            !cUnit.hidden &&
+            cUnit.owner.team !== player.team) {
             continue;
           }
 
           var rest = cp - cost;
-          if (rest >= 0 && rest > selection.getValueAt(tx, ty)) {
+          if (rest >= 0 && rest > selection.getValue(tx, ty)) {
 
             // add possible move to the `selection` map
-            selection.setValueAt(tx, ty, rest);
+            selection.setValue(tx, ty, rest);
 
             // add this tile to the checker
             for (var i = 0, e = toBeChecked.length; i <= e; i += 3) {
@@ -384,27 +462,24 @@ cwt.Move = {
 
     // release helper if you grabbed it
     if (releaseHelper) {
-      for (var hi = 0, he = toBeChecked.length; hi < he; hi++) {
-        toBeChecked[hi] = null;
-      }
       this.fillMoveMapHelper_ = toBeChecked;
+      this.checker_ = checker;
     }
 
     // convert left points back to absolute costs
     for (var x = 0, xe = cwt.Map.width; x < xe; x++) {
       for (var y = 0, ye = cwt.Map.height; y < ye; y++) {
-        if (selection.getValueAt(x, y) !== cwt.INACTIVE) {
+        if (selection.getValue(x, y) !== cwt.INACTIVE) {
           cost = this.getMoveCosts(mType, x, y);
-          selection.setValueAt(x, y, cost);
+          selection.setValue(x, y, cost);
         }
       }
-
     }
   },
 
   /**
    *
-   * @param {cwt.Array} movePath
+   * @param {cwt.CircularBuffer} movePath
    * @param {cwt.Position} source
    * @param {cwt.Position} target
    * @return {boolean}
@@ -416,14 +491,8 @@ cwt.Move = {
     var cx = source.x;
     var cy = source.y;
     var teamId = source.unit.owner.team;
-    for (var i = 0, e = movePath.length; i < e; i++) {
-
-      // break out when the end of the path is reached
-      if (movePath.data[i] === cwt.INACTIVE) {
-        break;
-      }
-
-      switch (movePath.data[i]) {
+    for (var i = 0, e = movePath.size; i < e; i++) {
+      switch (movePath.get(i)) {
         case this.MOVE_CODES_DOWN:
           cy++;
           break;
@@ -464,7 +533,7 @@ cwt.Move = {
   /**
    *
    */
-  movePathCache: new cwt.Array(this.MAX_LENGTH, cwt.INACTIVE),
+  movePathCache: new cwt.CircularBuffer(cwt.MAX_MOVE_LENGTH),
 
   /**
    *
@@ -544,15 +613,15 @@ cwt.Move = {
 
       // movable when tile is empty or the last tile in the way while
       // the unit on the tile belongs to the movers owner
-      if (!tileUnit || (tileUnit.owner === unit.owner && i === e-1)) {
+      if (!tileUnit || (tileUnit.owner === unit.owner && i === e - 1)) {
         lastX = cX;
         lastY = cY;
         lastFuel = fuelUsed;
         lastIndex = i;
 
-      // enemy unit
-      } else if(tileUnit.owner.team !== team) {
-        movePath.clear(lastIndex+1);
+        // enemy unit
+      } else if (tileUnit.owner.team !== team) {
+        movePath.clear(lastIndex + 1);
         trapped = true;
         break;
       }

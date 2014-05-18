@@ -35,30 +35,30 @@ cwt.Gameflow.addMenuState({
     var updateSlotButtons = (function () {
       var i = this.selectedSlot;
 
-      if (cwt.GameSelectionDTO.type.data[i] === cwt.INACTIVE) {
+      if (cwt.GameSelectionDTO.type[i] === cwt.INACTIVE) {
         playerTypeBtn.text = "config.player.off";
-      } else if (cwt.GameSelectionDTO.type.data[i] === cwt.DESELECT_ID) {
+      } else if (cwt.GameSelectionDTO.type[i] === cwt.DESELECT_ID) {
         playerTypeBtn.text = "config.player.disabled";
-      } else if (cwt.GameSelectionDTO.type.data[i] === 0) {
+      } else if (cwt.GameSelectionDTO.type[i] === 0) {
         playerTypeBtn.text = "config.player.human";
       } else {
         playerTypeBtn.text = "config.player.AI";
       }
       playerTypeBtn.text = cwt.Localization.forKey(playerTypeBtn.text);
 
-      if (cwt.GameSelectionDTO.type.data[i] === cwt.DESELECT_ID) {
+      if (cwt.GameSelectionDTO.type[i] === cwt.DESELECT_ID) {
         playerNameBtn.text = "Slot " + (i + 1);
         playerTeamBtn.text = "";
         playerCo_A_Btn.text = "";
 
       } else {
         playerNameBtn.text = "Player " + (i + 1);
-        playerTeamBtn.text = TEAM_IDENTIFIERS[cwt.GameSelectionDTO.team.data[i]];
+        playerTeamBtn.text = TEAM_IDENTIFIERS[cwt.GameSelectionDTO.team[i]];
 
-        if (cwt.GameSelectionDTO.co.data[i] === cwt.INACTIVE) {
+        if (cwt.GameSelectionDTO.co[i] === cwt.INACTIVE) {
           playerCo_A_Btn.text = cwt.Localization.forKey("config.player.co.none");
         } else {
-          playerCo_A_Btn.text = cwt.CoSheet.types[cwt.GameSelectionDTO.co.data[i]];
+          playerCo_A_Btn.text = cwt.CoSheet.types[cwt.GameSelectionDTO.co[i]];
         }
       }
 
