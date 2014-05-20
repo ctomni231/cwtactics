@@ -8,6 +8,8 @@ cwt.Gameflow.addState({
       console.log("entering game round");
     }
 
+    // this makes the normal mouse cursor invisible on the top canvas object
+    //  --> we render a custom cursor for the active tile selection and don't need the system cursor there
     cwt.Screen.layerUI.getLayer().style.cursor = "none";
 
     // 1. load map
@@ -16,13 +18,17 @@ cwt.Gameflow.addState({
 
       // 2. change game data by the given configuration
       cwt.GameSelectionDTO.postProcess();
+      cwt.Fog.fullRecalculation();
 
-      // 3. render screen
+      // 3. update screen
       cwt.Screen.layerUI.clear();
       cwt.TileVariants.updateTileSprites();
-      cwt.MapRenderer.updateScreen();
 
-      // 4. start game :P
+      // 4. render screen
+      cwt.MapRenderer.renderScreen();
+      cwt.MapRenderer.renderCursor();
+
+      // 5. start game :P
       cwt.Gameflow.changeState("INGAME_IDLE");
     });
     /*

@@ -198,9 +198,12 @@ cwt.GameSelectionDTO = {
 
         if (this.type[i] === 1) {
           // controller.ai_register(i);
-          // if (onlyAI) model.events.client_registerPlayer(i);
+          if (onlyAI) {
+            player.clientControlled = true;
+          }
         } else {
-          // model.events.client_registerPlayer(i);
+          player.clientControlled = true;
+          player.clientVisible = true;
         }
 
         tmp = ( this.co[i] !== cwt.INACTIVE) ?
@@ -209,28 +212,15 @@ cwt.GameSelectionDTO = {
         cwt.CO.setMainCo(player, tmp);
 
       } else {
+        // Why another disable here ?
+        // There is the possibility that a map has units for a player that will be deactivated in the
+        // config screen.. so deactivate them all
+
+        cwt.Unit.destroyPlayerUnits(player);
+        cwt.Property.releasePlayerProperties(player);
 
         // deactivate player
         player.team = cwt.INACTIVE;
-
-        // remove all units
-        var firstUid = model.unit_firstUnitId(i);
-        var lastUid = model.unit_lastUnitId(i);
-        for (; firstUid <= lastUid; firstUid++) {
-          var unit = model.unit_data[firstUid];
-          if (unit) {
-            model.unit_posData[unit.x][unit.y] = null;
-            model.unit_data[firstUid].owner = cwt.INACTIVE;
-          }
-        }
-
-        // remove all properties
-        for (var pi = 0, pe = model.property_data.length; pi < pe; pi++) {
-          var prop = model.property_data[pi];
-          if (prop && prop.owner === i) {
-            prop.owner = cwt.INACTIVE;
-          }
-        }
       }
     }
   }

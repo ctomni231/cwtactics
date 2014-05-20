@@ -25,8 +25,7 @@ cwt.Cursor = {
   /**
    * Moves the cursor into a given direction.
    *
-   * @param dir
-   * @param len
+   * @param {number} dir
    */
   move: function (dir) {
     var len = 1;
@@ -89,7 +88,7 @@ cwt.Cursor = {
     if (x <= 3) {
       moveCode = cwt.Move.MOVE_CODES_RIGHT;
       if (cwt.Screen.shiftScreen(moveCode)) {
-        cwt.MapRenderer.updateScreenShift(moveCode);
+        cwt.MapRenderer.shiftMap(moveCode);
       }
 
     }
@@ -98,7 +97,7 @@ cwt.Cursor = {
     if (x >= cwt.SCREEN_WIDTH - 3) {
       moveCode = cwt.Move.MOVE_CODES_LEFT;
       if (cwt.Screen.shiftScreen(moveCode)) {
-        cwt.MapRenderer.updateScreenShift(moveCode);
+        cwt.MapRenderer.shiftMap(moveCode);
       }
     }
 
@@ -106,7 +105,7 @@ cwt.Cursor = {
     if (y <= 3) {
       moveCode = cwt.Move.MOVE_CODES_DOWN;
       if (cwt.Screen.shiftScreen(moveCode)) {
-        cwt.MapRenderer.updateScreenShift(moveCode);
+        cwt.MapRenderer.shiftMap(moveCode);
       }
 
     }
@@ -115,11 +114,11 @@ cwt.Cursor = {
     if (y >= cwt.SCREEN_HEIGHT - 3) {
       moveCode = cwt.Move.MOVE_CODES_UP;
       if (cwt.Screen.shiftScreen(moveCode)) {
-        cwt.MapRenderer.updateScreenShift(moveCode);
+        cwt.MapRenderer.shiftMap(moveCode);
       }
     }
 
-    cwt.MapRenderer.drawCursor();
+    cwt.MapRenderer.renderCursor();
   }
 
 };

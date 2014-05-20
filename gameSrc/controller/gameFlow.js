@@ -132,7 +132,7 @@ cwt.Gameflow = {
       },
 
       render: function (delta) {
-        cwt.MapRenderer.renderCycle(delta);
+        cwt.MapRenderer.evaluateCycle(delta);
         if (desc.render) {
           desc.render.call(this, this.globalData, delta);
         }

@@ -22,9 +22,9 @@ cwt.MapRenderer.indexMapAnimation = 0;
 
 /**
  *
- * @param delta
+ * @param {number} delta
  */
-cwt.MapRenderer.renderCycle = function (delta) {
+cwt.MapRenderer.evaluateCycle = function (delta) {
   var index;
 
   this.curTime_ += delta;
