@@ -1,5 +1,5 @@
 cwt.Gameflow.addState({
-  id: "INGAME_FLUSH_ACTIONS",
+  id: "INGAME_FLUSH_ACTION",
 
   init: function () {
     var gameData = this.globalData;

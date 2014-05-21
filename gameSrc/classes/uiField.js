@@ -32,6 +32,7 @@ cwt.UIField = my.Class( /** @lends cwt.UIField.prototype */ {
     this.style = style;
     this.inFocus = false;
     this.action = actionFn;
+    this.inactive = false;
 
     this.key = text;
     this.text = (text)? cwt.Localization.forKey(text) : text;

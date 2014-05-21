@@ -5,6 +5,11 @@
 cwt.Gameflow = {
 
   /**
+   * @type {String}
+   */
+  activeStateId: null,
+
+  /**
    * @type {cwt.GameState}
    */
   activeState: null,
@@ -321,6 +326,7 @@ cwt.Gameflow = {
     }
 
     this.activeState = this.states_[stateId];
+    this.activeStateId = stateId;
 
     if (fireEvent !== false) {
       this.activeState.enter.call(this.activeState.data);

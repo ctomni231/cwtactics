@@ -16,6 +16,10 @@ cwt.Gameflow.addState({
 
   update: function (delta, lastInput) {
     if (this.done) {
+
+      // push event
+      (cwt.createModuleCaller("$afterLoad"))();
+
       cwt.Gameflow.changeState("START_SCREEN");
     } else if (this.bar.process === 100) {
       this.done = true;

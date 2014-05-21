@@ -63,6 +63,10 @@ cwt.Relationship = {
     if (!oL && checkLeft !== this.CHECK_UNIT) oL = left.property;
     if (!oR && checkRight !== this.CHECK_UNIT) oR = right.property;
 
+    if (!oL) {
+      return this.RELATION_NULL;
+    }
+
     return this.getRelationship(oL, oR);
   },
 

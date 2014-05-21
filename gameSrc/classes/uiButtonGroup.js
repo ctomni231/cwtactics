@@ -71,7 +71,7 @@ cwt.UIButtonGroup = my.Class(/** @lends cwt.UIButtonGroup.prototype */ {
     for (var i = 0, e = this.elements.length; i < e; i++) {
 
       // inactive element
-      if (!this.elements[i].action) {
+      if (!this.elements[i].action || this.elements[i].inactive) {
         continue;
       }
 
@@ -138,7 +138,11 @@ cwt.UIButtonGroup = my.Class(/** @lends cwt.UIButtonGroup.prototype */ {
    */
   draw: function (ctx) {
     for (var i = 0, e = this.elements.length; i < e; i++) {
-      this.elements[i].draw(ctx);
+      var el = this.elements[i];
+
+      if (!el.inactive) {
+        el.draw(ctx);
+      }
     }
   }
 });

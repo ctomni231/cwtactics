@@ -7,6 +7,25 @@ cwt.Input.create("touch", function () {
 
   var input = this;
 
+  function inSelection() {
+    var state = cwt.Gameflow.activeStateId;
+    return (
+      state === "INGAME_MOVEPATH"
+        || state === "INGAME_SELECT_TILE_TYPE_A"
+        || state === "INGAME_SELECT_TILE_TYPE_B" );
+    // || controller.attackRangeVisible );
+  }
+
+  function inMenu() {
+    var state = cwt.Gameflow.activeStateId;
+    return (
+      state === "INGAME_MENU"
+        || state === "INGAME_SUBMENU" );
+  }
+
+  // ----------------------------------------------------------------------------------------------------------------
+  // ----------------------------------------------------------------------------------------------------------------
+
   // Called when an one finger tap occur
   //
   function oneFingerTap(event, x, y) {
@@ -15,18 +34,10 @@ cwt.Input.create("touch", function () {
     x = cwt.Screen.offsetX + parseInt(x / cwt.Screen.TILE_BASE, 10);
     y = cwt.Screen.offsetY + parseInt(y / cwt.Screen.TILE_BASE, 10);
 
-    var state = cwt.Gameflow.state;
-    var focusExists = (
-      state === "MOVEPATH_SELECTION"
-        || state === "ACTION_SELECT_TARGET_A"
-        || state === "ACTION_SELECT_TARGET_B"
-        || controller.attackRangeVisible
-      );
 
-    if (!controller.menuVisible) {
-
-      if (focusExists) {
-        if (controller.stateMachine.data.selection.getValueAt(x, y) > 0) {
+    if (!inMenu()) {
+      if (inSelection()) {
+        if (cwt.Gameflow.globalData.selection.getValue(x, y) > 0) {
           cwt.Input.pushAction(cwt.Input.TYPE_ACTION, x, y);
         } else {
           cwt.Input.pushAction(cwt.Input.TYPE_CANCEL, x, y);
@@ -87,7 +98,7 @@ cwt.Input.create("touch", function () {
 
     cwt.Input.pushAction(key, 1, cwt.INACTIVE);
 
-    if (!controller.menuVisible) {
+    if (!inMenu()) {
       //ON THE
 
     } else {
@@ -112,7 +123,7 @@ cwt.Input.create("touch", function () {
     //OKAY FOR HOLD, this is tricky
     //Again separated for map and menu
 
-    if (!controller.menuVisible) {
+    if (!inMenu()) {
 
       // IF ATTACK RANGE VISIBLE IN RANGE
       cwt.Input.pushAction(cwt.Input.TYPE_ACTION, x, y);
@@ -143,7 +154,8 @@ cwt.Input.create("touch", function () {
     //else           controller.setScreenScale(controller.screenScale + 1);
   }
 
-  // -----------------------------------------------------------------------------
+  // ----------------------------------------------------------------------------------------------------------------
+  // ----------------------------------------------------------------------------------------------------------------
 
   // positions
   //  - first finger

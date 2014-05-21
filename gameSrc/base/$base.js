@@ -156,6 +156,13 @@ window.cwt = {
 
       return value;
     }
+  },
+
+  repeat: function (n, f) {
+    for (var i = 0; i < n; i++) {
+      f.call(this, i);
+    }
+    return this;
   }
 };
 

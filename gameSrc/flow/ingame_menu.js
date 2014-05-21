@@ -184,6 +184,9 @@ cwt.Gameflow.addInGameState({
                 }
               }
               break;
+
+            case cwt.Action.ENGINE_ACTION:
+              continue;
           }
 
           // if condition matches then add the entry to the menu list
@@ -202,6 +205,9 @@ cwt.Gameflow.addInGameState({
     // go back when no entries exists
     if (!gameData.menu.getSize()) {
       cwt.Gameflow.changeState("INGAME_IDLE");
+    } else {
+      cwt.MapRenderer.renderMenu(gameData.menu);
+      cwt.Screen.layerUI.renderLayer(0);
     }
   },
 
@@ -209,12 +215,16 @@ cwt.Gameflow.addInGameState({
     if (gameData.menu.selectedIndex > 0) {
       gameData.menu.selectedIndex--;
     }
+    cwt.MapRenderer.renderMenu(gameData.menu);
+    cwt.Screen.layerUI.renderLayer(0);
   },
 
   DOWN: function (gameData) {
     if (gameData.menu.selectedIndex < gameData.menu.getSize() - 1) {
       gameData.menu.selectedIndex++;
     }
+    cwt.MapRenderer.renderMenu(gameData.menu);
+    cwt.Screen.layerUI.renderLayer(0);
   },
 
   ACTION: function (gameData) {
