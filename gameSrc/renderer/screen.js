@@ -12,6 +12,11 @@ cwt.MapRenderer.renderScreen = function () {
 
   this.renderTiles(x, y, w, h);
   this.renderUnits(x, y, w, h);
+
+  // directly update all layers
+  cwt.Screen.layerMap.renderLayer(this.indexMapAnimation);
+  cwt.Screen.layerUnit.renderLayer(this.indexUnitAnimation);
+
   this.renderFogRect(x, y, w, h);
 
   if (cwt.DEBUG) console.log("rendered the complete screen (" + ((new Date()).getTime() - time) + "ms)");
