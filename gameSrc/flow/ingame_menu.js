@@ -204,10 +204,6 @@ cwt.Gameflow.addInGameState({
     gameData.menu.clean();
     gameData.menu.generate();
 
-    gameData.menu.addEntry("Test 1");
-    gameData.menu.addEntry("Test 2");
-    gameData.menu.addEntry("Test 3");
-
     // go back when no entries exists
     if (!gameData.menu.getSize()) {
       cwt.Gameflow.changeState("INGAME_IDLE");

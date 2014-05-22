@@ -53,9 +53,10 @@ cwt.MapRenderer.prepareMenu = function (menu) {
       gfxMenu.elements[i].text = cwt.Localization.forKey(menu.getContent(i));
 
       // set style
-      gfxMenu.elements[i].style = (i === 0 ?
-        cwt.UIField.STYLE_NEW : (i === numElements-1 ?
-        cwt.UIField.STYLE_ESW : cwt.UIField.STYLE_EW)
+      gfxMenu.elements[i].style = (
+        (numElements === 1 ? cwt.UIField.STYLE_NORMAL :
+        (i === 0 ? cwt.UIField.STYLE_NEW :
+        (i === numElements-1 ? cwt.UIField.STYLE_ESW : cwt.UIField.STYLE_EW)))
       );
 
     } else {
