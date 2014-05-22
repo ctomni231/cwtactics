@@ -8,9 +8,7 @@ cwt.Gameflow.addState({
       console.log("entering game round");
     }
 
-    // this makes the normal mouse cursor invisible on the top canvas object
-    //  --> we render a custom cursor for the active tile selection and don't need the system cursor there
-    cwt.Screen.layerUI.getLayer().style.cursor = "none";
+    cwt.Cursor.hideNativeCursor();
 
     // 1. load map
     cwt.GameData.loadGame(cwt.GameSelectionDTO.map,false, function () {

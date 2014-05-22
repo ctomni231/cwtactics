@@ -84,7 +84,7 @@ cwt.Gameflow.addInGameState({
 
       commandKeys_: null,
 
-      checkRelation_: function (action,relationList,sMode,stMode) {
+      checkRelation_: function (action, relationList, sMode, stMode) {
         var checkMode;
 
         switch (relationList[1]) {
@@ -172,14 +172,14 @@ cwt.Gameflow.addInGameState({
 
               // relation to unit
               if (action.relation) {
-                if (!this.checkRelation_(action,action.relation,st_mode,sst_mode)) {
+                if (!this.checkRelation_(action, action.relation, st_mode, sst_mode)) {
                   continue;
                 }
               }
 
               // relation to property
               if (action.relationToProp) {
-                if (!this.checkRelation_(action,action.relationToProp,pr_st_mode,pr_sst_mode)) {
+                if (!this.checkRelation_(action, action.relationToProp, pr_st_mode, pr_sst_mode)) {
                   continue;
                 }
               }
@@ -199,32 +199,52 @@ cwt.Gameflow.addInGameState({
   },
 
   enter: function (gameData) {
+    cwt.Cursor.showNativeCursor();
+
     gameData.menu.clean();
     gameData.menu.generate();
+
+    gameData.menu.addEntry("Test 1");
+    gameData.menu.addEntry("Test 2");
+    gameData.menu.addEntry("Test 3");
 
     // go back when no entries exists
     if (!gameData.menu.getSize()) {
       cwt.Gameflow.changeState("INGAME_IDLE");
     } else {
+      cwt.Screen.layerUI.clear(0);
+      cwt.MapRenderer.prepareMenu(gameData.menu);
+      cwt.Screen.layerUI.renderLayer(0);
+    }
+  },
+
+  exit: function () {
+    cwt.Cursor.hideNativeCursor();
+    cwt.Screen.layerUI.clear(0);
+    cwt.Screen.layerUI.clear();
+  },
+
+  inputMove: function (gameData, x, y) {
+    cwt.MapRenderer.layoutGenericMenu_.updateIndex(x, y);
+    gameData.menu.selectedIndex = cwt.MapRenderer.layoutGenericMenu_.selected;
+    cwt.MapRenderer.renderMenu(gameData.menu);
+    cwt.Screen.layerUI.renderLayer(0);
+  },
+
+  UP: function (gameData) {
+    if (cwt.MapRenderer.layoutGenericMenu_.handleInput(cwt.Input.TYPE_UP)) {
+      gameData.menu.selectedIndex = cwt.MapRenderer.layoutGenericMenu_.selected;
       cwt.MapRenderer.renderMenu(gameData.menu);
       cwt.Screen.layerUI.renderLayer(0);
     }
   },
 
-  UP: function (gameData) {
-    if (gameData.menu.selectedIndex > 0) {
-      gameData.menu.selectedIndex--;
-    }
-    cwt.MapRenderer.renderMenu(gameData.menu);
-    cwt.Screen.layerUI.renderLayer(0);
-  },
-
   DOWN: function (gameData) {
-    if (gameData.menu.selectedIndex < gameData.menu.getSize() - 1) {
-      gameData.menu.selectedIndex++;
+    if (cwt.MapRenderer.layoutGenericMenu_.handleInput(cwt.Input.TYPE_DOWN)) {
+      gameData.menu.selectedIndex = cwt.MapRenderer.layoutGenericMenu_.selected;
+      cwt.MapRenderer.renderMenu(gameData.menu);
+      cwt.Screen.layerUI.renderLayer(0);
     }
-    cwt.MapRenderer.renderMenu(gameData.menu);
-    cwt.Screen.layerUI.renderLayer(0);
   },
 
   ACTION: function (gameData) {

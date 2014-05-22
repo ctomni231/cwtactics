@@ -61,11 +61,15 @@ cwt.Gameflow = {
 
       init: function () {
         this.inputMove = function (x, y) {
-          cwt.Cursor.setPosition(
-            cwt.Screen.convertToTilePos(x),
-            cwt.Screen.convertToTilePos(y),
-            true
-          );
+          if (desc.inputMove) {
+            desc.inputMove.call(this, this.globalData, x, y);
+          } else {
+            cwt.Cursor.setPosition(
+              cwt.Screen.convertToTilePos(x),
+              cwt.Screen.convertToTilePos(y),
+              true
+            );
+          }
         };
 
         if (desc.init) {

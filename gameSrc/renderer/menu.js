@@ -24,7 +24,7 @@ cwt.MapRenderer.$afterLoad = function () {
       cwt.MapRenderer.MENU_ENTRY_HEIGHT,
       "KEY_" + i,
       8,
-      (i === 0 ? cwt.UIField.STYLE_NEW : (i === 9 ? cwt.UIField.STYLE_ESW : cwt.UIField.STYLE_EW)),
+      cwt.UIField.STYLE_NORMAL,
 
       // logic will be handled by the state machine
       cwt.emptyFunction
@@ -37,8 +37,7 @@ cwt.MapRenderer.$afterLoad = function () {
  *
  * @param {cwt.InterfaceMenu} menu
  */
-cwt.MapRenderer.renderMenu = function (menu) {
-  var layer = cwt.Screen.layerUI;
+cwt.MapRenderer.prepareMenu = function (menu) {
   var gfxMenu = cwt.MapRenderer.layoutGenericMenu_;
   var select = menu.getSelectedIndex();
   var numElements = menu.getSize();
@@ -52,13 +51,21 @@ cwt.MapRenderer.renderMenu = function (menu) {
     if (i < numElements) {
       gfxMenu.elements[i].inactive = false;
       gfxMenu.elements[i].text = cwt.Localization.forKey(menu.getContent(i));
+
+      // set style
+      gfxMenu.elements[i].style = (i === 0 ?
+        cwt.UIField.STYLE_NEW : (i === numElements-1 ?
+        cwt.UIField.STYLE_ESW : cwt.UIField.STYLE_EW)
+      );
+
     } else {
       gfxMenu.elements[i].inactive = true;
     }
   }
 
-  // fix style --> normal when only one element is in the menu, else style_new
-  gfxMenu.elements[0].style = (numElements === 1)? cwt.UIField.STYLE_NORMAL : cwt.UIField.STYLE_NEW;
+  this.renderMenu(menu);
+};
 
-  gfxMenu.draw(layer.getContext(0));
+cwt.MapRenderer.renderMenu = function (menu) {
+  cwt.MapRenderer.layoutGenericMenu_.draw(cwt.Screen.layerUI.getContext(0));
 };

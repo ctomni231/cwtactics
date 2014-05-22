@@ -119,6 +119,14 @@ cwt.Cursor = {
     }
 
     cwt.MapRenderer.renderCursor();
+  },
+
+  showNativeCursor: function () {
+    cwt.Screen.layerUI.getLayer().style.cursor = "";
+  },
+
+  hideNativeCursor: function () {
+    cwt.Screen.layerUI.getLayer().style.cursor = "none";
   }
 
 };

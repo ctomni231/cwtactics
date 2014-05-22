@@ -20,5 +20,8 @@ cwt.UIPositionableButtonGroup = my.Class( null, cwt.UIButtonGroup, /** @lends cw
       element.x += diffX;
       element.y += diffY;
     }
+
+    this.x = x;
+    this.y = y;
   }
 });

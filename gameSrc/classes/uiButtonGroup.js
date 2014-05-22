@@ -98,10 +98,14 @@ cwt.UIButtonGroup = my.Class(/** @lends cwt.UIButtonGroup.prototype */ {
   handleInput: function (input) {
     if (cwt.DEBUG) cwt.assert(input !== null);
 
+    if (typeof input!== "number") {
+      input = input.key;
+    }
+
     var res = true;
     this.elements[this.selected].inFocus = false;
 
-    switch (input.key) {
+    switch (input) {
       case cwt.Input.TYPE_UP:
       case cwt.Input.TYPE_LEFT:
         do {
@@ -109,7 +113,7 @@ cwt.UIButtonGroup = my.Class(/** @lends cwt.UIButtonGroup.prototype */ {
           if (this.selected < 0) {
             this.selected = this.elements.length - 1;
           }
-        } while (!this.elements[this.selected].action);
+        } while (!this.elements[this.selected].action || this.elements[this.selected].inactive);
         break;
 
       case cwt.Input.TYPE_RIGHT:
@@ -119,7 +123,7 @@ cwt.UIButtonGroup = my.Class(/** @lends cwt.UIButtonGroup.prototype */ {
           if (this.selected >= this.elements.length) {
             this.selected = 0;
           }
-        } while (!this.elements[this.selected].action);
+        } while (!this.elements[this.selected].action || this.elements[this.selected].inactive);
         break;
 
       default :
