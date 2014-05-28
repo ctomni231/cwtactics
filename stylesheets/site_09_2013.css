@@ -1,14 +1,21 @@
-@font-face { font-family: HeaderFont; src: url('text.ttf'); }
-@font-face { font-family: TextFont; src: url('text2.ttf'); }
+@font-face {
+  font-family: HeaderFont;
+  src: url('ClearSans-Bold.ttf');
+}
+
+@font-face {
+  font-family: TextFont;
+  src: url('ClearSans-Thin.ttf');
+}
 
 /* ------------ MISC ------------ */
 
-.hidden{
-  display:none;
+.hidden {
+  display: none;
 }
 
-.visible{
-  display:block;
+.visible {
+  display: block;
 }
 
 /* ------------ GENERAL ------------ */
@@ -20,132 +27,123 @@ html, body {
   height: 100%;
   width: 100%;
   font-family: 'HeaderFont', sans-serif;
-  font-size: 16px;
+  font-size: 12pt;
+  background-color: #E9E9E9;
+}
+
+.content_outer {
+  max-width: 1000px;
+  margin: 0px auto;
+}
+
+h1.headerImg {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 40px;
+}
+
+.qtip-bootstrap {
+  font-family: "TextFont";
+  font-weight: normal;
 }
 
 /* ------------ NAVIGATION ------------ */
 
-@media (max-width:767px){
+@media (max-width: 1000px) {
   .navigation {
     display: none;
   }
 }
-@media (min-width:768px){
+
+@media (min-width: 1001px) {
   .navigation {
-    position: absolute;
-    width:    200px;
-    height:   100%;
-    left:     0px;
-    background-color: #EEEEEE;
-    overflow-y:auto;
-    overflow-x:auto;
-    border-right: 1px solid #a8a8a8;
+    float: left;
+    width: 250px;
   }
 }
 
 .navigationBar {
-  position:absolute;
-  top:    50%;
-  height: 350px;
-  width: 200px;
-  margin-top: -175px  !important;
-
-  text-align: center;
-  margin: 0;
-  padding: 0;
+  text-align: right;
 }
 
 .navigationBar li {
-  -webkit-transition:all 1s;
-  -moz-transition:all 1s;
-  -ms-transition:all 1s;
-  -o-transition:all 1s;
-  transition: all 1s;
+  font-family: 'HeaderFont', sans-serif;
+  font-size: 12pt;
+  list-style: none;
 
-  font-family:    'HeaderFont', sans-serif;
-  font-size:      26px;
-  list-style:     none;
-
-  margin-bottom: 10px;
-
-  border-bottom: 1px solid transparent;
-  border-top: 1px solid transparent;
-}
-
-.navigationBar li:hover{
-  background-color: #a8a8a8;
-
-  border-bottom: 1px solid #a8a8a8;
-  border-top: 1px solid #a8a8a8;
+  margin-bottom: 8px;
 }
 
 .navigationBar li:hover a {
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+
   color: white;
 }
 
-.navigationBar li:first-child{
-  margin-top: 20px;
-}
-
 .navigationBar li a {
-  color:        #2c2c2c;
-  font-weight:  normal;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+
+  color: #94A9CF;
   text-decoration: none;
   text-transform: uppercase;
 }
 
+.navigationBar li a > span {
+  font-size: 12pt;
+}
+
 /* ------------ CONTENT ------------ */
 
-@media (max-width:767px){
-  .content {
-    position: absolute;
-    height:   100%;
-    left:      10px;
-    right:     10px;
-    overflow-y:auto;
-    overflow-x:auto;
-  }
+.content {
+  margin: 0 10px;
 }
-@media (min-width:768px){
+
+@media (min-width: 1001px) {
   .content {
-    position: absolute;
-    height:   100%;
-    left:     210px;
-    right:     10px;
-    overflow-y:auto;
-    overflow-x:auto;
+    float: left;
+    width: 700px;
+    margin-left: 30px;
   }
 }
 
-.content_block{
-  max-width: 700px;
-  margin: 0 auto;
+.content_block {
+  border: 1px solid #DDD;
+  border-color: #e5e6e9 #dfe0e4 #d0d1d5;
+  background-color: #FFF;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  padding-bottom: 12px;
 }
 
 .content h1 {
-  color: #36a0c5;
-  font-size: 42px;
-
+  color: #94A9CF;
+  font-size: 32pt;
+  background-color: #F5F3F3;
   text-align: center;
-  line-height: 32px;
   font-weight: normal;
-
-  padding: 6px;
-  margin: 24px 0px;
+  margin: 0 0 18px 0;
   font-family: 'HeaderFont', sans-serif;
   text-transform: uppercase;
-
-  border-bottom: 1px solid #a8a8a8;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-bottom: 1px solid #dfe0e4;
 }
-
 
 /* ------------ SHORTLINKS ------------ */
 
-#shortLinksBarP{
+#shortLinksBarP {
   height: 90px;
 }
 
-#shortLinksBar{
+#shortLinksBar {
   margin: 24px auto;
   width: 600px;
 }
@@ -159,10 +157,10 @@ html, body {
 }
 
 #shortLinksBar li a img {
-  -webkit-transition:all 0.5s;
-  -moz-transition:all 0.5s;
-  -ms-transition:all 0.5s;
-  -o-transition:all 0.5s;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
   transition: all 0.5s;
 
   width: 64px;
@@ -171,99 +169,89 @@ html, body {
   margin-right: 4px;
 }
 
-#shortLinksBar li a img:hover {
+#shortLinksBar li a img {
   border-radius: 8px;
-  -webkit-box-shadow: 0px 2px 4px #666;
-  -moz-box-shadow: 0px 2px 4px #666;
-  box-shadow: 0px 2px 4px #666;
+
+  -webkit-box-shadow: 0px 1px 2px #666;
+  -moz-box-shadow: 0px 1px 2px #666;
+  box-shadow: 0px 1px 2px #666;
+}
+
+#shortLinksBar li a img:hover {
+  -webkit-box-shadow: 0px 3px 6px #666;
+  -moz-box-shadow: 0px 3px 6px #666;
+  box-shadow: 0px 3px 6px #666;
 }
 
 /* ------------ NEWS ------------ */
 
+#sectionNews div.newsHolder {
+  min-height: 35px;
+}
+
 .newsDate {
-  border: 2px solid #36a0c5;
-  color:            #36a0c5;
-  border-radius: 16px;
-  margin-left: 70px;
+  color: #94A9CF;
+  border-radius: 5px;
+  margin-left: 5px;
   margin-right: 10px;
   width: 150px;
-  text-align: center !important;
+  text-align: right !important;
   text-transform: capitalize;
 
   float: left;
-  clear: both;
 }
 
-.newsTitle{
-  width: 550px;
-  height: 34px;
-  padding-top: 3px;
-  white-space: nowrap;
+.newsTitle {
   font-family: "TextFont";
 }
 
-.newsTitle, .newsDate{
-  font-size: 18px;
-  margin-bottom: -6px;
+.newsTitle, .newsDate {
+  font-size: 13pt;
   text-align: left;
+}
+
+.newsTitle a {
+  text-decoration: none;
+  color: #000000;
+}
+
+.newsTitle a:visited {
+  color: #000000;
 }
 
 /* ------------ RELEASE ------------ */
 
-.release_controls {
-  text-align: center;
-  height: 30px;
+.releaseBtn {
+  font-family: "TextFont" !important;
+  font-size: 12pt !important;
 }
 
-.release_controls a {
-  -webkit-transition:all 0.5s;
-  -moz-transition:all 0.5s;
-  -ms-transition:all 0.5s;
-  -o-transition:all 0.5s;
-  transition: all 0.5s;
-
-  text-decoration: none;
-
-  padding: 4px;
-  border: 2px solid #36a0c5;
-  color:            #36a0c5;
-  width: 150px;
+.releaseBtn.left {
+  float: left;
+  margin-left: 15px;
 }
 
-.release_controls a:hover {
-  background-color: #36a0c5;
-  color:            white;
-}
-
-.release_controls .left {
-  padding-left: 10px;
-  border-right: none;
-  border-top-left-radius: 16px;
-  border-bottom-left-radius: 16px;
-}
-
-.release_controls .right {
-  padding-right: 10px;
-  border-left: none;
-  border-top-right-radius: 16px;
-  border-bottom-right-radius: 16px;
+.releaseBtn.right {
+  float: right;
+  margin-right: 15px;
 }
 
 .releaseHeader {
-  margin-top: 12px;
-  font-size: 18px;
+  margin-top: 20px;
+  font-size: 11pt;
+  font-family: "TextFont";
   text-align: center;
 }
 
 .releaseHeader .version {
-  font-weight: bold;
-  font-size: 22px;
+  font-family: "HeaderFont";
+  font-size: 18pt;
 }
 
-.releaseText{
-
+.releaseText {
+  padding: 0 15px 0 15px;
   font-family: "TextFont";
-  font-size: 18px;
+  font-size: 13pt;
 }
 
 .releaseImage {
@@ -276,74 +264,83 @@ html, body {
   height: 480px;
   border: 1px solid #000000;
   -webkit-box-shadow: 0px 1px 5px #666;
-     -moz-box-shadow: 0px 1px 5px #666;
-          box-shadow: 0px 1px 5px #666;
+  -moz-box-shadow: 0px 1px 5px #666;
+  box-shadow: 0px 1px 5px #666;
 }
 
-.log .logEntry div {
+.changeLogHeader {
+  font-family: "TextFont";
+  color: #94A9CF;
+  margin-bottom: 15px;
+  margin-left: 30px;
+  padding-left: 15px;
+  width: 150px;
+  border-bottom: 1px solid #D4DBE7;
+  font-size: 16pt;
+}
+
+.log .logEntry {
+  height: 25px;
+  font-size: 11pt;
 }
 
 .log .logEntry div:first-child {
-  text-align: center;
+  font-family: "HeaderFont";
+  text-align: right;
   float: left;
-  width: 75px;
-  margin-right: 10px;
+  width: 85px;
+  margin-right: 20px;
   margin-left: 50px;
-  border-radius: 15px;
-  height: 20px;
-  clear: both;
   text-transform: uppercase;
 }
 
 .log .logEntry div:last-child {
-  height: 24px;
-  padding-top: 3px;
-  white-space: nowrap;
   font-family: "TextFont";
-  font-size: 18px;
 }
 
 .log .newEntry div:first-child {
-  color:            rgb(123, 190, 123);
-  border: 2px solid rgb(123, 190, 123);
+  color: rgb(123, 190, 123);
 }
 
 .log .changedEntry div:first-child {
-  color :           rgb(236, 215, 57);
-  border: 2px solid rgb(236, 215, 57);
+  color: rgb(236, 215, 57);
 }
 
 .log .fixedEntry div:first-child {
-  color:            rgb(219, 130, 130);
-  border: 2px solid rgb(219, 130, 130);
+  color: rgb(219, 130, 130);
 }
 
-.disabledTooltip{
+.disabledTooltip {
   background-color: red;
   color: white;
 }
 
 /* ------------ ISSUES ------------ */
 
-.issueNextVersion{
-  text-align: center;
+.issueNextVersion {
+  font-family: "TextFont";
   margin-bottom: 10px;
-  font-size: 22px;
+  margin-left: 15px;
+  font-size: 13pt;
+  display: none;
 }
 
 .issueEntry {
-  margin-left: 100px;
+  margin-left: 15px;
   margin-bottom: 18px;
-}
-
-.issueEntry .issueLabel{
-  margin-bottom: 4px;
-  font-size: 14px;
-}
-
-.issueEntry .issueTitle{
-  font-size: 18px;
   font-family: "TextFont";
+}
+
+.issueEntry div.issueLabel {
+  margin-left: 28px;
+}
+
+.issueLabel {
+  font-size: 8pt;
+}
+
+.issueEntry {
+  font-size: 13pt;
 }
 
 .issueEntry .issueTitle a {
@@ -357,152 +354,130 @@ html, body {
 
 /* ------------ LEGALS ------------ */
 
-.legalEntry{
-  margin-left: 50px;
-  margin-right: 50px;
-  margin-bottom: 18px;
+.legalEntry {
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-bottom: 30px;
   font-family: "TextFont";
 }
 
-.legalEntryHeader{
-  font-size: 22px;
-  color:            #36a0c5;
+.legalEntryHeader {
+  font-size: 16pt;
+  color: #94A9CF;
   margin-bottom: 4px;
+  border-bottom: 1px solid #D4DBE7;
 }
 
 .legalEntryHeader a {
-  color:            #36a0c5;
+  color: #94A9CF;
   text-decoration: none;
 }
 
 .legalEntryHeader a:visited {
-  color:            #36a0c5;
+  color: #94A9CF;
   text-decoration: none;
 }
 
+.legalEntryText {
+  margin-left: 5px;
+}
+
 .legalEntryText p {
-  font-size: 18px;
-  margin:  0 0 5px 0;
+  font-size: 13pt;
+  margin: 0 0 5px 0;
   padding: 0;
 }
 
 /* ------------ MANUAL ------------ */
 
+.manualEntry {
+  font-size: 13pt;
+  height: 35px;
+}
+
 .manualEntry div:first-child {
-  text-align: center;
+  text-align: right;
   float: left;
   width: 120px;
   margin-right: 10px;
-  margin-left: 230px;
-  border-radius: 15px;
-  height: 20px;
-  clear: both;
-  text-transform: uppercase;
+  margin-left: 200px;
+  text-transform: capitalize;
 }
 
 .manualEntry div:last-child {
-  height: 24px;
-  padding-top: 3px;
-  white-space: nowrap;
   font-family: "TextFont";
-  font-size: 18px;
 }
 
-.manualEntry div:last-child a{
+.manualEntry div:last-child a {
   color: black;
   text-decoration: none;
 }
 
-.manualEntry div:last-child a.disabled{
+.manualEntry div:last-child a.disabled {
   color: red;
   text-decoration: line-through;
 }
 
 .manualEntry.userEntry div:first-child {
-  color:            rgb(168, 236, 195);
-  border: 2px solid rgb(168, 236, 195);
+  color: rgb(168, 236, 195);
 }
 
 .manualEntry.modEntry div:first-child {
-  color :           rgb(181, 185, 240);
-  border: 2px solid rgb(181, 185, 240);
+  color: rgb(181, 185, 240);
 }
 
 .manualEntry.devEntry div:first-child {
-  color:            rgb(119, 178, 192);
-  border: 2px solid rgb(119, 178, 192);
+  color: rgb(119, 178, 192);
 }
 
 /* ------------ COMPATIBILITY ------------ */
 
 .linkCompa {
   margin-top: 20px;
+  margin-bottom: 20px;
   text-align: center;
 }
 
-.linkCompa a {
-  -webkit-transition:all 0.5s;
-  -moz-transition:all 0.5s;
-  -ms-transition:all 0.5s;
-  -o-transition:all 0.5s;
-  transition: all 0.5s;
-  text-decoration: none;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-bottom: 4px;
-  padding-top: 4px;
-  border: 2px solid #36a0c5;
-  color:            #36a0c5;
-  border-radius: 16px;
+.linkCompa .uibutton {
+  font-family: "TextFont" !important;
+  font-size: 12pt !important;
 }
 
-.linkCompa a:hover {
-  background-color: #36a0c5;
-  color:            white;
+.compatHolder {
+  height: 35px;
+  font-family: "TextFont";
+  font-size: 13pt;
 }
 
 .compatEntryHeader {
+  font-family: "HeaderFont";
   text-align: right;
   float: left;
-  width: 200px;
+  width: 250px;
   margin-right: 10px;
-  margin-left: 150px;
-  clear: both;
+  margin-left: 100px;
   text-transform: uppercase;
-  margin-bottom: 4px;
-}
-
-.compatEntry {
-  height: 24px;
-  white-space: nowrap;
-  font-family: "TextFont";
-  font-size: 18px;
-  margin-bottom: 4px;
 }
 
 .compatEntry span {
-  border-radius: 10px;
-  padding-left:  6px;
-  padding-right: 6px;
-  margin-right:  4px;
+  margin-right: 8px;
 }
 
 .compatEntry span.warn {
-  color:            rgb(236, 215, 57 );
-  border: 2px solid rgb(236, 215, 57 );
+  color: rgb(236, 215, 57);
+  border-bottom: 2px solid rgb(236, 215, 57);
 }
 
 .compatEntry span.fine {
-  color :           rgb(123, 190, 123  );
-  border: 2px solid rgb(123, 190, 123 );
+  color: rgb(123, 190, 123);
 }
 
 .compatEntry span.unkn {
-  color:            rgb(87, 89, 138 );
-  border: 2px solid rgb(87, 89, 138 );
+  color: rgb(87, 89, 138);
+  border-bottom: 2px solid rgb(87, 89, 138);
 }
 
 .compatEntry span.err {
-  color:            rgb(219, 130, 130 );
-  border: 2px solid rgb(219, 130, 130 );
+  color: rgb(219, 130, 130);
+  border-bottom: 2px solid rgb(219, 130, 130);
 }

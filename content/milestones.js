@@ -23,7 +23,7 @@ PAGE_DATA.milestones = [
         "Completely redesigned look and feel",
         "Added simple artificial intelligence: DumbBoy version 0.10",
         "2 new 2-players maps: Spann-Island and Stand-Off",
-        "3 new 4-players maps: Minus-Hills, Shuriken-Valley and Outpost-Plus (incomplete)",
+        "3 new 4-players maps: Minus-Hills, Shuriken-Valley and Outpost-Plus",
         "Offline mode",
         "Added some animated tiles (needs fast device)",
         "S-Bomb suicide unit",

@@ -21,8 +21,8 @@ PAGE_PROG.registerSection({
     if( localStorage.issueEndDate === undefined || moment().isAfter(localStorage.issueEndDate) ){
       
       // NEXT MILESTONE
-      var NEXT_VERSION        = 15;
-      var NEXT_VERSION_HEADER = "Version 0.3.6";
+      var NEXT_VERSION        = 6;
+      var NEXT_VERSION_HEADER = "Version 0.4";
       
       var url = "https://api.github.com/repos/ctomni231/cwtactics/issues?"+
                 "milestone="+NEXT_VERSION+
@@ -73,8 +73,8 @@ PAGE_PROG.registerSection({
 
     "{{#issues}}",
       "<div class=\"issueEntry\" >",
+        "<div class='issueTitle'><a target='_blank' href='{{url}}' title='Goto Github'>&#10148;&#160; {{title}}</a></div>",
         "<div class='issueLabel'>{{> labelList}}</div>",
-        "<div class='issueTitle'><a target='_blank' href='{{url}}' title='Goto Github'>{{title}}</a></div>",
       "</div>",
     "{{/issues}}"
   ].join(""),
@@ -82,10 +82,7 @@ PAGE_PROG.registerSection({
   partials:{
     labelList: "{{#labels}} <span class='issueLabel' style='"+
                   "color:#{{color}}; "+
-                  "border:1px solid #{{color}}; "+
-                  "border-radius: 15px; "+
-                  "padding-left: 5px; "+
-                  "padding-right: 5px; "+
-                "' > {{name}} </span> {{/labels}} "
+                  "padding-right: 8px; "+
+                "' >{{name}}</span> {{/labels}} "
   }
 });

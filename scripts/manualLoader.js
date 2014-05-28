@@ -15,19 +15,19 @@
 
       "{{#documentation_user}}",
         "<div class=\"manualEntry userEntry\">",
-          "<div>Users</div>",aEntry,
+          "<div>Users :</div>",aEntry,
         "</div>",
       "{{/documentation_user}}",
 
       "{{#documentation_modding}}",
         "<div class=\"manualEntry modEntry\">",
-          "<div>Modders</div>",aEntry,
+          "<div>Modders :</div>",aEntry,
         "</div>",
       "{{/documentation_modding}}",
 
       "{{#documentation_dev}}",
         "<div class=\"manualEntry devEntry\">",
-          "<div>Developers</div>",aEntry,
+          "<div>Developers :</div>",aEntry,
         "</div>",
       "{{/documentation_dev}}"
     ].join(""),

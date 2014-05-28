@@ -9,7 +9,7 @@ PAGE_PROG.registerSection({
       cb( section, JSON.parse( localStorage.dataNews ) );
 
       // CONVERT RSS DATES TO HUMAN READABLE TIME
-      $(".newsDate").each(function(i,element){
+      $(".newsDateContent").each(function(i,element){
         element.innerHTML = moment( 
         element.innerHTML, "YYYY-MM-DD HH:mm:ss.SSS-Z,ZZ").fromNow();
       });
@@ -34,6 +34,7 @@ PAGE_PROG.registerSection({
             var item = items[i];
             data.news.push({
               title: item.title,
+              burl : item.url,
               date : item.published
             });
           }
@@ -44,20 +45,35 @@ PAGE_PROG.registerSection({
           
           // RENDER IT 
           render();
+          after();
         }
       );
     }
-    else render();
+    else {
+      render();
+      after();
+    }
+  },
+
+  after: function(){
+    $('#sectionNews a[title]').qtip({
+      position: { my: 'left middle', at: 'right middle' },
+      style:    { classes: 'qtip-bootstrap' }
+    });
   },
 
   template: [
     "<h1>Recent News</h1>",
     "{{#news}}",
-      "<div class=\"newsDate\">",
-        "{{date}}",
-      "</div >",
-      "<div class=\"newsTitle pure-u-3-4\" >",
-        "{{title}}",
+      "<div class=\"newsHolder\">",
+        "<div class=\"newsDate\">",
+          "<span class=\"newsDateContent\">{{date}}</span> :",
+        "</div >",
+        "<div class=\"newsTitle pure-u-3-4\" >",
+          "<a target='_blank' href='{{burl}}' title='Go to the article'>",
+            "{{title}}",
+          "</a>",
+        "</div>",
       "</div>",
     "{{/news}}"
   ].join(""),

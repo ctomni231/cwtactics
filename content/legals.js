@@ -49,20 +49,7 @@ PAGE_DATA.legals = [
     
     link: "http://github.com/bgrins/javascript-astar"
   },
-  
-  // -----------------------------------------------------------------------------------------
 
-  {
-    header: "Dosis Font",
-    
-    text:[
-      "Copyright (c) 2011, Edgar Tolentino and Pablo Impallari (www.impallari.com|impallari@gmail.com),<br>Copyright (c) 2011, Igino Marini. (www.ikern.com|mail@iginomarini.com),<br>with Reserved Font Names 'Dosis'.",
-      "This Font Software is licensed under the SIL Open Font License, Version 1.1."
-    ],
-    
-    link: "http://www.fontspace.com/pablo-impallari/dosis"
-  },
-  
   // -----------------------------------------------------------------------------------------
   
   {

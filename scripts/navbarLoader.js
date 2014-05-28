@@ -10,7 +10,7 @@ PAGE_PROG.registerSection({
       "{{#navbarLinks}}",
         "<li class=\"{{#class}}{{class}}{{/class}}\">",
           "<span>",
-            "<a target='_self' href='{{section}}'>{{name}}</a>",
+            "<a target='_self' href='{{section}}'>{{name}} <span>&#160; &#10148;</span></a>",
           "</span>",
         "</li>",
       "{{/navbarLinks}}",

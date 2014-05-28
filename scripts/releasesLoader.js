@@ -8,7 +8,7 @@ PAGE_PROG.updateReleaseBox = function( mode ){
   }
   
   if( PAGE_PROG.releaseSelected !== -1 ){ 
-    PAGE_PROG.releases[PAGE_PROG.releaseSelected].className="pure-g-r content_block hidden"; 
+    PAGE_PROG.releases[PAGE_PROG.releaseSelected].className="pure-g-r hidden";
   } 
   else PAGE_PROG.releaseSelected = 0;
     
@@ -19,7 +19,7 @@ PAGE_PROG.updateReleaseBox = function( mode ){
     PAGE_PROG.releaseSelected++;
   }
     
-  PAGE_PROG.releases[PAGE_PROG.releaseSelected].className="pure-g-r content_block visible"; 
+  PAGE_PROG.releases[PAGE_PROG.releaseSelected].className="pure-g-r visible";
 };
 
 PAGE_PROG.registerSection({
@@ -31,21 +31,22 @@ PAGE_PROG.registerSection({
   
   template: [
 
-    "<h1>Releases</h1>",
-    
-    // controls
-    "<div class=\"release_controls\" >",
-      "<a class=\"left\" href='#' ",
-        "onClick='PAGE_PROG.updateReleaseBox(-1); return false;' > Newer Releases </a>",
-      "<a class=\"right\" href='#' ",
-        "onClick='PAGE_PROG.updateReleaseBox(+1); return false;' > Older Releases </a>",
+    "<h1>",
+    "Releases",
+    "</h1>",
+
+    "<div style='text-align: center;'>",
+      "<a class=\"uibutton releaseBtn left\" href='#' ",
+      "onClick='PAGE_PROG.updateReleaseBox(-1); return false;' > &#8701; Newer Version </a>",
+      "<a class=\"uibutton releaseBtn right\" href='#' ",
+      "onClick='PAGE_PROG.updateReleaseBox(+1); return false;' > Older Version &#8702;</a>",
     "</div>",
-    
+
     // content
     "{{#milestones}}",
 
       "<div id='{{header}}-{{version}}' name='releaseBlock' ",
-                                       "class=\"pure-g-r content_block hidden\">",
+                                       "class=\"pure-g-r hidden\">",
 
 
         "<div class='releaseHeader'>",
@@ -70,6 +71,7 @@ PAGE_PROG.registerSection({
           "{{> textBlock}}",
         "</div>",
 
+        "<div class=\"changeLogHeader\">Changelog</div>",
         "<div class=\"log\" >",
           "{{> changeLogV2}}",,
         "</div>",
@@ -87,19 +89,19 @@ PAGE_PROG.registerSection({
 
         "{{#NEW}}",
           "<div class=\"logEntry newEntry\">",
-            "<div>New</div> <div>{{{.}}}</div>",
+            "<div>New : </div> <div>{{{.}}}</div>",
           "</div>",
         "{{/NEW}}",
 
         "{{#CHANGED}}",
           "<div class=\"logEntry changedEntry\">",
-            "<div>Changed</div> <div>{{{.}}}</div>",
+            "<div>Changed : </div> <div>{{{.}}}</div>",
           "</div>",
         "{{/CHANGED}}",
 
         "{{#FIXED}}",
           "<div class=\"logEntry fixedEntry\">",
-            "<div>Fixed</div> <div>{{{.}}}</div>",
+            "<div>Fixed : </div> <div>{{{.}}}</div>",
           "</div>",
         "{{/FIXED}}",
 

@@ -5,14 +5,18 @@ PAGE_PROG.registerSection({
 
   template: [
     "<h1>Compatibility</h1>",
+
+    "<div class='linkCompa'>",
+      "<a class='uibutton' href='{{compat_link}}'>Report Compatibility</a>",
+      "<a class='uibutton' href='{{report_link}}'>Report Features/Bugs</a>",
+    "</div>",
+
     "{{#compat}}",
-      "<div class='compatEntryHeader'>{{name}}</div>",
-      "<div class='compatEntry'>{{> entries}}</div>",
-    "{{/compat}}",
-
-    "<div class='linkCompa'><a href='{{compat_link}}'>Report Compatibility</a></div>",
-
-    "<div class='linkCompa'><a href='{{report_link}}'>Report Features &amp; Bugs</a></div>"
+      "<div class=\"compatHolder\">",
+        "<div class='compatEntryHeader'>{{name}} :</div>",
+        "<div class='compatEntry'>{{> entries}}</div>",
+      "</div>",
+    "{{/compat}}"
   ].join(""),
 
   partials:{
