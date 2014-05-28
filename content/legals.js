@@ -51,10 +51,10 @@ PAGE_DATA.legals = [
   },
 
   // -----------------------------------------------------------------------------------------
-  
+
   {
     header: "jQuery",
-    
+
     text:[
       "Heavily used for our Custom Wars Tactics web page.",
       "jQuery JavaScript Library v1.7.1<br/>http://jquery.com/",
@@ -62,10 +62,26 @@ PAGE_DATA.legals = [
       "Includes Sizzle.js<br/>http://sizzlejs.com/<br/>Copyright 2011, The Dojo Foundation<br/>Released under the MIT, BSD, and GPL Licenses.",
       "Date: Mon Nov 21 21:11:03 2011 -0500"
     ],
-    
+
     link: "http://jquery.com/"
   },
-  
+
+  // -----------------------------------------------------------------------------------------
+
+  {
+    header: "Clear Sans",
+
+    text:[
+      "Clear Sans is a versatile OpenType font for screen, print, and Web. We designed Clear Sans with on-screen legibility and glanceability in mind. It strikes a balance between contemporary, professional, and stylish expression and thoroughly functional purpose. It has a sophisticated and elegant personality at all sizes, and its thoughtful design becomes even more evident at the thin weight." ,
+      "Clear Sans has minimized, unambiguous characters and slightly narrow proportions, making it ideal for UI design. Its strong, recognizable forms avoid distracting ambiguity, making Clear Sans comfortable for reading short UI labels and long passages in both screen and print.",
+      "Clear Sans supports a wide range of languages using Latin, Cyrillic, and Greek scripts. The font family includes Medium, Regular, Thin, and Light weights with upright, italic, and bold styles.",
+      "Clear Sans was designed by Daniel Ratighan at Monotype under the direction of the User Experience team at Intel’s Open Source Technology Center.",
+      "Clear Sans is available for use and redistribution under the terms of the Apache License, Version 2.0."
+    ],
+
+    link: "https://01.org/clear-sans"
+  },
+
   // -----------------------------------------------------------------------------------------
   
   {
