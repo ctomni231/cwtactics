@@ -33,7 +33,7 @@ PAGE_PROG.registerSection({
           for( var i=0,e=items.length; i<e; i++ ){
             var item = items[i];
             data.news.push({
-              title: item.title,
+              title: item.title.replace("&#39;","'"),
               burl : item.url,
               date : item.published
             });
