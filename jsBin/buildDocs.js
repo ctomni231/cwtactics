@@ -1,13 +1,8 @@
 var builder = require("./buildLibrary.js");
 
-builder.deleteFolderRecursive("../doc");
-builder.createFolder("../doc");
+builder.deleteFolderRecursive("../docs");
+builder.createFolder("../docs");
 
-builder.doCommand(
-  "node /Volumes/Home/alex/node_modules/jsdoc/jsdoc.js " +
-    "../gameSrc " +
-    "-r " +
-    "-c doc.json " +
-   // "-t /Volumes/Home/alex/node_modules/jsdoc/templates/jaguarjs-jsdoc-master " +
-    "-d ./../doc "
-);
+builder.doCommand("docco ../gameSrc/*js -t doc.jst -c doc.css -o ../docs", function () {
+  builder.doCommand("cp -r doc ../docs/public");
+});

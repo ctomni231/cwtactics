@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>model.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="doc.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="ai.html">
+                  ai.js
+                </a>
+              
+                
+                <a class="source" href="base.html">
+                  base.js
+                </a>
+              
+                
+                <a class="source" href="commands.html">
+                  commands.js
+                </a>
+              
+                
+                <a class="source" href="controller.html">
+                  controller.js
+                </a>
+              
+                
+                <a class="source" href="datatypes.html">
+                  datatypes.js
+                </a>
+              
+                
+                <a class="source" href="dependencies.html">
+                  dependencies.js
+                </a>
+              
+                
+                <a class="source" href="flow.html">
+                  flow.js
+                </a>
+              
+                
+                <a class="source" href="input.html">
+                  input.js
+                </a>
+              
+                
+                <a class="source" href="loading.html">
+                  loading.js
+                </a>
+              
+                
+                <a class="source" href="logic.html">
+                  logic.js
+                </a>
+              
+                
+                <a class="source" href="model.html">
+                  model.js
+                </a>
+              
+                
+                <a class="source" href="modification.html">
+                  modification.js
+                </a>
+              
+                
+                <a class="source" href="renderer.html">
+                  renderer.js
+                </a>
+              
+                
+                <a class="source" href="test.html">
+                  test.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>model.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-pi">"use strict"</span>;
+
+<span class="hljs-comment">/**
+ * @class
+ */</span>
+cwt.Player = my.Class(<span class="hljs-comment">/** @lends cwt.Player.prototype */</span> {
+
+  STATIC: <span class="hljs-comment">/** @lends cwt.Player */</span> {
+
+    <span class="hljs-comment">/**
+     * Maximum number of instances.
+     *
+     * @constant
+     */</span>
+    MULTITON_INSTANCES: <span class="hljs-number">4</span>,
+
+    <span class="hljs-comment">/**
+     * Number of maximum units per player.
+     *
+     * @constant
+     */</span>
+    MAX_UNITS: <span class="hljs-number">50</span>,
+
+    <span class="hljs-comment">/**
+     * @type {cwt.Player}
+     */</span>
+    activeClientPlayer: <span class="hljs-literal">null</span>
+  },
+
+  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">this</span>.id = -<span class="hljs-number">1</span>;
+
+    <span class="hljs-keyword">this</span>.team = cwt.INACTIVE;
+    <span class="hljs-keyword">this</span>.gold = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">this</span>.power = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">this</span>.activePower = cwt.INACTIVE;
+    <span class="hljs-keyword">this</span>.powerUsed = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">this</span>.manpower = <span class="hljs-built_in">Math</span>.POSITIVE_INFINITY;
+    <span class="hljs-keyword">this</span>.coA = <span class="hljs-literal">null</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>use a variable for performance reasons</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.numberOfUnits = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">this</span>.turnOwnerVisible = <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">this</span>.clientVisible = <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">this</span>.clientControlled = <span class="hljs-literal">false</span>;
+  },
+
+  <span class="hljs-comment">/**
+   *
+   * @param level
+   * @return {boolean}
+   */</span>
+  isPowerActive: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(level)</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.activePower === level;
+  }
+});
+my.extendClass(cwt.Player,{STATIC:cwt.IndexMultiton});
+cwt.Player.getInstance(<span class="hljs-number">0</span>).id = <span class="hljs-number">0</span>;
+cwt.Player.getInstance(<span class="hljs-number">1</span>).id = <span class="hljs-number">1</span>;
+cwt.Player.getInstance(<span class="hljs-number">2</span>).id = <span class="hljs-number">2</span>;
+cwt.Player.getInstance(<span class="hljs-number">3</span>).id = <span class="hljs-number">3</span>;
+
+<span class="hljs-comment">/**
+ * Object that holds information about objects at a given position (x,y).
+ *
+ * @class
+ */</span>
+cwt.Position = my.Class(<span class="hljs-comment">/** @lends cwt.Position.prototype */</span> {
+
+  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">this</span>.clean();
+  },
+
+  <span class="hljs-comment">/**
+   * Cleans all data of the object.
+   */</span>
+  clean: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">this</span>.x = -<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">this</span>.y = -<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">this</span>.tile = <span class="hljs-literal">null</span>;
+    <span class="hljs-keyword">this</span>.unit = <span class="hljs-literal">null</span>;
+    <span class="hljs-keyword">this</span>.property = <span class="hljs-literal">null</span>;
+    <span class="hljs-keyword">this</span>.unitId = -<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">this</span>.propertyId = -<span class="hljs-number">1</span>;
+  },
+
+  <span class="hljs-comment">/**
+   * Grabs the data from another position object.
+   */</span>
+  grab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(otherPos)</span> {</span>
+    cwt.assert(otherPos <span class="hljs-keyword">instanceof</span> cwt.Position);
+
+    <span class="hljs-keyword">this</span>.x = otherPos.x;
+    <span class="hljs-keyword">this</span>.y = otherPos.y;
+    <span class="hljs-keyword">this</span>.tile = otherPos.tile;
+    <span class="hljs-keyword">this</span>.unit = otherPos.unit;
+    <span class="hljs-keyword">this</span>.unitId = otherPos.unitId;
+    <span class="hljs-keyword">this</span>.property = otherPos.property;
+    <span class="hljs-keyword">this</span>.propertyId = otherPos.propertyId;
+  },
+
+  <span class="hljs-comment">/**
+   * Sets a position.
+   */</span>
+  set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y)</span> {</span>
+    <span class="hljs-keyword">this</span>.clean();
+
+    <span class="hljs-keyword">this</span>.x = x;
+    <span class="hljs-keyword">this</span>.y = y;
+    <span class="hljs-keyword">this</span>.tile = cwt.Map.data[x][y];
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.tile.visionTurnOwner &gt; <span class="hljs-number">0</span> &amp;&amp; <span class="hljs-keyword">this</span>.tile.unit) {
+      <span class="hljs-keyword">this</span>.unit = <span class="hljs-keyword">this</span>.tile.unit;
+      <span class="hljs-keyword">this</span>.unitId = cwt.Unit.getInstanceId(<span class="hljs-keyword">this</span>.tile.unit);
+    }
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.tile.property) {
+      <span class="hljs-keyword">this</span>.property = <span class="hljs-keyword">this</span>.tile.property;
+      <span class="hljs-keyword">this</span>.propertyId = cwt.Property.getInstanceId(<span class="hljs-keyword">this</span>.tile.property);
+    }
+  }
+});<span class="hljs-comment">/**
+ * @class
+ * @extends cwt.IndexMultiton
+ */</span>
+
+cwt.Property = my.Class(<span class="hljs-comment">/** @lends cwt.Property.prototype */</span> {
+
+  STATIC: <span class="hljs-comment">/** @lends cwt.Property */</span> {
+
+    <span class="hljs-comment">/**
+     * Number of maximum properties.
+     */</span>
+    MULTITON_INSTANCES: <span class="hljs-number">200</span>,
+
+    CAPTURE_POINTS: <span class="hljs-number">20</span>,
+
+    CAPTURE_STEP: <span class="hljs-number">10</span>,
+
+    <span class="hljs-comment">/**
+     *
+     * @param {cwt.Player} player
+     * @return {number}
+     */</span>
+    countProperties: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(player)</span> {</span>
+      <span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>;
+
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.MULTITON_INSTANCES; i &lt; e; i++) {
+        <span class="hljs-keyword">var</span> prop = cwt.Property.getInstance(i, <span class="hljs-literal">true</span>);
+        <span class="hljs-keyword">if</span> (prop &amp;&amp; prop.owner === player) n++;
+      }
+
+      <span class="hljs-keyword">return</span> n;
+    },
+
+    releasePlayerProperties: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(player)</span> {</span>
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.MULTITON_INSTANCES; i &lt; e; i++) {
+        <span class="hljs-keyword">var</span> prop = cwt.Property.getInstance(i, <span class="hljs-literal">true</span>);
+        <span class="hljs-keyword">if</span> (prop &amp;&amp; prop.owner === player) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>TODO</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>change type when the property is a
+changing type property
+var changeType = prop.type.changeAfterCaptured;
+if (changeType) model.events.property_changeType(i, changeType);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        }
+      }
+    }
+
+  },
+
+  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">this</span>.points = <span class="hljs-number">20</span>;
+
+    <span class="hljs-comment">/**
+     * @type {cwt.Player}
+     */</span>
+    <span class="hljs-keyword">this</span>.owner = <span class="hljs-literal">null</span>;
+
+    <span class="hljs-keyword">this</span>.type = <span class="hljs-literal">null</span>;
+  },
+
+  <span class="hljs-comment">/**
+   * Returns true, when the given property is neutral, else false.
+   */</span>
+  isNeutral: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.owner === <span class="hljs-literal">null</span>;
+  }
+
+});
+my.extendClass(cwt.Property,{STATIC:cwt.IndexMultiton});
+
+<span class="hljs-comment">/**
+ *
+ * @class
+ */</span>
+cwt.Tile = my.Class( <span class="hljs-comment">/** @lends cwt.Tile.property */</span> {
+
+  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+
+    <span class="hljs-keyword">this</span>.type = <span class="hljs-literal">null</span>;
+
+    <span class="hljs-comment">/**
+     * @type {cwt.Unit}
+     */</span>
+    <span class="hljs-keyword">this</span>.unit = <span class="hljs-literal">null</span>;
+
+    <span class="hljs-comment">/**
+     * @type {cwt.Property}
+     */</span>
+    <span class="hljs-keyword">this</span>.property = <span class="hljs-literal">null</span>;
+
+    <span class="hljs-comment">/**
+     * @type {number}
+     */</span>
+    <span class="hljs-keyword">this</span>.visionTurnOwner = <span class="hljs-number">0</span>;
+
+    <span class="hljs-comment">/**
+     * @type {number}
+     */</span>
+    <span class="hljs-keyword">this</span>.variant = <span class="hljs-number">0</span>;
+
+    <span class="hljs-comment">/**
+     * @type {number}
+     */</span>
+    <span class="hljs-keyword">this</span>.visionClient = <span class="hljs-number">0</span>;
+  },
+
+  <span class="hljs-comment">/**
+   *
+   * @return {boolean}
+   */</span>
+  isOccupied: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.unit !== <span class="hljs-literal">null</span>;
+  },
+
+  <span class="hljs-comment">/**
+   *
+   * @return {boolean}
+   */</span>
+  isVisible: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.visionTurnOwner &gt; <span class="hljs-number">0</span>;
+  }
+
+});<span class="hljs-comment">/**
+ *
+ * @class
+ * @extends cwt.IndexMultiton.&lt;T&gt;
+ */</span>
+
+cwt.Unit = my.Class(<span class="hljs-comment">/** @lends cwt.Unit.prototype */</span> {
+
+  STATIC: <span class="hljs-comment">/** @lends cwt.Unit */</span> {
+
+    <span class="hljs-comment">/**
+     * Maximum number of unit objects for the whole game.
+     */</span>
+    MULTITON_INSTANCES: cwt.Player.MAX_UNITS * cwt.Player.MULTITON_INSTANCES,
+
+    <span class="hljs-comment">/**
+     * Converts HP points to a health value.
+     *
+     * @return {number}
+     *
+     * @example
+     *    6 HP -&gt; 60 health
+     *    3 HP -&gt; 30 health
+     */</span>
+    pointsToHealth: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(pt)</span> {</span>
+      <span class="hljs-keyword">return</span> (pt * <span class="hljs-number">10</span>);
+    },
+
+    <span class="hljs-comment">/**
+     * Converts and returns the HP points from the health
+     * value of an unit.
+     *
+     * @example
+     *   health -&gt;  HP
+     *     69   -&gt;   7
+     *     05   -&gt;   1
+     *     50   -&gt;   6
+     *     99   -&gt;  10
+     */</span>
+    healthToPoints: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(health)</span> {</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-built_in">parseInt</span>(health / <span class="hljs-number">10</span>, <span class="hljs-number">10</span>) + <span class="hljs-number">1</span>;
+    },
+
+    <span class="hljs-comment">/**
+     * Gets the rest of unit health.
+     */</span>
+    healthToPointsRest: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(health)</span> {</span>
+      <span class="hljs-keyword">return</span> health - (<span class="hljs-built_in">parseInt</span>(health / <span class="hljs-number">10</span>) + <span class="hljs-number">1</span>);
+    },
+
+    <span class="hljs-comment">/**
+     * Counts the number of units of a player.
+     *
+     * @param player
+     * @return {number}
+     */</span>
+    countUnitsOfPlayer: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(player)</span> {</span>
+      <span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>;
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = cwt.Unit.MULTITON_INSTANCES; i &lt; e; i++) {
+        <span class="hljs-keyword">var</span> unit = cwt.Unit.getInstance(i, <span class="hljs-literal">false</span>);
+        <span class="hljs-keyword">if</span> (unit &amp;&amp; unit.owner === player) {
+          n++;
+        }
+      }
+
+      <span class="hljs-keyword">return</span> n;
+    },
+
+    destroyPlayerUnits: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(player)</span> {</span>
+      <span class="hljs-keyword">if</span> (cwt.DEBUG) cwt.assert(player <span class="hljs-keyword">instanceof</span> cwt.Player);
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = cwt.Unit.MULTITON_INSTANCES; i &lt; e; i++) {
+        <span class="hljs-keyword">var</span> unit = cwt.Unit.getInstance(i, <span class="hljs-literal">false</span>);
+        <span class="hljs-keyword">if</span> (unit &amp;&amp; unit.owner === player) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>TODO</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        }
+      }
+    }
+  },
+
+  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">this</span>.hp = <span class="hljs-number">99</span>;
+    <span class="hljs-keyword">this</span>.ammo = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">this</span>.fuel = <span class="hljs-number">0</span>;
+
+    <span class="hljs-comment">/**
+     *
+     * // type {number} 0=visible, 1=hidden but visible by enemy or 2=complete hidden
+     * @type {boolean}
+     */</span>
+    <span class="hljs-keyword">this</span>.hidden = <span class="hljs-literal">false</span>;
+
+    <span class="hljs-keyword">this</span>.loadedIn = cwt.INACTIVE;
+
+    <span class="hljs-keyword">this</span>.type = <span class="hljs-literal">null</span>;
+    <span class="hljs-keyword">this</span>.canAct = <span class="hljs-literal">false</span>;
+
+    <span class="hljs-comment">/**
+     * If the value is null then unit does not exists on the map.
+     *
+     * @type {cwt.Player}
+     */</span>
+    <span class="hljs-keyword">this</span>.owner = <span class="hljs-literal">null</span>;
+  },
+
+  initByType: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(type)</span> {</span>
+
+  },
+
+  <span class="hljs-comment">/**
+   * Damages a unit.
+   */</span>
+  takeDamage: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(damage, minRest)</span> {</span>
+    <span class="hljs-keyword">this</span>.hp -= damage;
+
+    <span class="hljs-keyword">if</span> (minRest &amp;&amp; <span class="hljs-keyword">this</span>.hp &lt;= minRest) {
+      <span class="hljs-keyword">this</span>.hp = minRest;
+    }
+  },
+
+  <span class="hljs-comment">/**
+   * Heals an unit. If the unit health will be greater than the maximum
+   * health value then the difference will be added as gold to the
+   * owners gold depot.
+   */</span>
+  heal: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(health, diffAsGold)</span> {</span>
+    <span class="hljs-keyword">this</span>.hp += health;
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.hp &gt; <span class="hljs-number">99</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>pay difference of the result health and 100 as
+gold ( in relation to the unit cost ) to the
+unit owners gold depot</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> (diffAsGold === <span class="hljs-literal">true</span>) {
+        <span class="hljs-keyword">var</span> diff = <span class="hljs-keyword">this</span>.hp - <span class="hljs-number">99</span>;
+        <span class="hljs-keyword">this</span>.owner.gold += <span class="hljs-built_in">parseInt</span>((<span class="hljs-keyword">this</span>.type.cost * diff) / <span class="hljs-number">100</span>, <span class="hljs-number">10</span>);
+      }
+
+      <span class="hljs-keyword">this</span>.hp = <span class="hljs-number">99</span>;
+    }
+  },
+
+  <span class="hljs-comment">/**
+   * @return {boolean} true when hp is greater than 0 else false
+   */</span>
+  isAlive: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.hp &gt; <span class="hljs-number">0</span>;
+  },
+
+  <span class="hljs-comment">/**
+   * Returns true when the unit ammo is lower equals 25%.
+   *
+   * @return {boolean}
+   */</span>
+  hasLowAmmo: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> cAmmo = <span class="hljs-keyword">this</span>.ammo;
+    <span class="hljs-keyword">var</span> mAmmo = <span class="hljs-keyword">this</span>.type.ammo;
+    <span class="hljs-keyword">if</span>( mAmmo != <span class="hljs-number">0</span> &amp;&amp; cAmmo &lt;= <span class="hljs-built_in">parseInt</span>(mAmmo*<span class="hljs-number">0.25</span>, <span class="hljs-number">10</span>) ) {
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+  },
+
+  <span class="hljs-comment">/**
+   * Returns true when the unit fuel is lower equals 25%.
+   *
+   * @return {boolean}
+   */</span>
+  hasLowFuel: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> cFuel = <span class="hljs-keyword">this</span>.fuel;
+    <span class="hljs-keyword">var</span> mFuel = <span class="hljs-keyword">this</span>.type.fuel;
+    <span class="hljs-keyword">if</span>( cFuel &lt;= <span class="hljs-built_in">parseInt</span>(mFuel*<span class="hljs-number">0.25</span>, <span class="hljs-number">10</span>) ) {
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+  },
+
+  isCapturing: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.loadedIn != cwt.INACTIVE) {
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-comment">/*
+    if( unit.x &gt;= 0 ){
+      var property = model.property_posMap[ unit.x ][ unit.y ];
+      if( property !== null &amp;&amp; property.capturePoints &lt; 20 ){
+        unitStatus.CAPTURES = true;
+      }
+      else unitStatus.CAPTURES = false;
+    } */</span>
+  }
+
+  <span class="hljs-comment">/*
+   function inVision( x,y, tid, unitStatus ){
+   if( !model.map_isValidPosition(x,y) ) return;
+
+   var unit = model.unit_posData[x][y];
+   if( unit ){
+   if( model.player_data[unit.owner].team !== tid ) unitStatus.VISIBLE = true;
+
+</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>IF UNIT IS HIDDEN THEN YOU CAN SEE IT NOW</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>   <span class="hljs-keyword">if</span>( unit.hidden ) controller.unitStatusMap[ model.unit_extractId(unit) ].VISIBLE = <span class="hljs-literal">true</span>;
+   }
+   };
+
+   <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkHiddenStatus</span><span class="hljs-params">( unit, unitStatus )</span>{</span>
+   <span class="hljs-keyword">if</span>( !unitStatus ){
+   unitStatus = controller.unitStatusMap[ model.unit_extractId(unit) ];
+   }
+
+   unitStatus.VISIBLE = <span class="hljs-literal">true</span>;
+   <span class="hljs-keyword">if</span>( unit.hidden ){
+   unitStatus.VISIBLE = <span class="hljs-literal">false</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>CHECK NEIGHBOURS AND HIDDEN ON NEIGHBOURS</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>   <span class="hljs-keyword">var</span> x = unit.x;
+   <span class="hljs-keyword">var</span> y = unit.y;
+   <span class="hljs-keyword">var</span> ttid = model.player_data[unit.owner].team;
+   inVision( x-<span class="hljs-number">1</span>,y, ttid, unitStatus );
+   inVision( x,y-<span class="hljs-number">1</span>, ttid, unitStatus );
+   inVision( x,y+<span class="hljs-number">1</span>, ttid, unitStatus );
+   inVision( x+<span class="hljs-number">1</span>,y, ttid, unitStatus );
+   }
+   };<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">inVision</span><span class="hljs-params">( x,y, tid, unitStatus )</span>{</span>
+   <span class="hljs-keyword">if</span>( !model.map_isValidPosition(x,y) ) <span class="hljs-keyword">return</span>;
+
+   <span class="hljs-keyword">var</span> unit = model.unit_posData[x][y];
+   <span class="hljs-keyword">if</span>( unit ){
+   <span class="hljs-keyword">if</span>( model.player_data[unit.owner].team !== tid ) unitStatus.VISIBLE = <span class="hljs-literal">true</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>IF UNIT IS HIDDEN THEN YOU CAN SEE IT NOW</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>   <span class="hljs-keyword">if</span>( unit.hidden ) controller.unitStatusMap[ model.unit_extractId(unit) ].VISIBLE = <span class="hljs-literal">true</span>;
+   }
+   };
+
+   <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkHiddenStatus</span><span class="hljs-params">( unit, unitStatus )</span>{</span>
+   <span class="hljs-keyword">if</span>( !unitStatus ){
+   unitStatus = controller.unitStatusMap[ model.unit_extractId(unit) ];
+   }
+
+   unitStatus.VISIBLE = <span class="hljs-literal">true</span>;
+   <span class="hljs-keyword">if</span>( unit.hidden ){
+   unitStatus.VISIBLE = <span class="hljs-literal">false</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>CHECK NEIGHBOURS AND HIDDEN ON NEIGHBOURS</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>   <span class="hljs-keyword">var</span> x = unit.x;
+   <span class="hljs-keyword">var</span> y = unit.y;
+   <span class="hljs-keyword">var</span> ttid = model.player_data[unit.owner].team;
+   inVision( x-<span class="hljs-number">1</span>,y, ttid, unitStatus );
+   inVision( x,y-<span class="hljs-number">1</span>, ttid, unitStatus );
+   inVision( x,y+<span class="hljs-number">1</span>, ttid, unitStatus );
+   inVision( x+<span class="hljs-number">1</span>,y, ttid, unitStatus );
+   }
+   };
+
+   model.event_on(<span class="hljs-string">"damageUnit"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( uid )</span>{</span>
+   controller.updateUnitStatus( uid );
+   });
+
+   model.event_on(<span class="hljs-string">"healUnit"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( uid )</span>{</span>
+   controller.updateUnitStatus( uid );
+   });
+
+   model.event_on(<span class="hljs-string">"battle_mainAttack"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( auid,duid,dmg,mainWeap )</span>{</span>
+   <span class="hljs-keyword">var</span> type = model.unit_data[auid].type;
+   <span class="hljs-keyword">var</span> sound = (mainWeap)? type.assets.pri_att_sound : type.assets.sec_att_sound;
+   <span class="hljs-keyword">if</span>( sound ) controller.audio_playSound( sound );
+   });
+
+   model.event_on(<span class="hljs-string">"battle_counterAttack"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( auid,duid,dmg,mainWeap )</span>{</span>
+   <span class="hljs-keyword">var</span> type = model.unit_data[auid].type;
+   <span class="hljs-keyword">var</span> sound = (mainWeap)? type.assets.pri_att_sound : type.assets.sec_att_sound;
+   <span class="hljs-keyword">if</span>( sound ) controller.audio_playSound( sound );
+   });
+
+  model.event_on(<span class="hljs-string">"attack_invoked"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( auid,duid )</span>{</span>
+    controller.updateSimpleTileInformation();
+    controller.updateUnitStatus( auid );
+    controller.updateUnitStatus( duid );
+  });
+
+model.event_on(<span class="hljs-string">"buildUnit_invoked"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+  controller.updateSimpleTileInformation();
+});
+
+
+model.event_on(<span class="hljs-string">"createUnit"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( id )</span>{</span>
+  controller.updateUnitStatus( id );
+});
+
+model.event_on(<span class="hljs-string">"loadUnit_invoked"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( uid, tid )</span>{</span>
+  controller.updateUnitStatus( tid );
+});
+
+model.event_on(<span class="hljs-string">"unloadUnit_invoked"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( transportId, trsx, trsy, loadId, tx,ty )</span>{</span>
+  controller.updateUnitStatus( transportId );
+});
+
+model.event_on(<span class="hljs-string">"joinUnits_invoked"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( uid, tid )</span>{</span>
+  controller.updateUnitStatus( tid );
+});
+
+model.event_on(<span class="hljs-string">"supply_refillResources"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( uid )</span>{</span>
+  <span class="hljs-keyword">if</span>( <span class="hljs-keyword">typeof</span> uid.x === <span class="hljs-string">"number"</span> ) uid = model.unit_extractId(uid);
+  controller.updateUnitStatus( uid );
+});
+
+model.event_on(<span class="hljs-string">"clearUnitPosition"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( uid )</span>{</span>
+  <span class="hljs-keyword">var</span> unit = model.unit_data[uid];
+  <span class="hljs-keyword">var</span> x = -unit.x;
+  <span class="hljs-keyword">var</span> y = -unit.y;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>CHECK HIDDEN, BUT VISIBLE NEIGHBOURS</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  if( model.map_isValidPosition(x-1,y) &amp;&amp; model.unit_posData[x-1][y] ){
+    controller.updateUnitStatus( model.unit_extractId(model.unit_posData[x-1][y]) );
+  }
+  if( model.map_isValidPosition(x+1,y) &amp;&amp; model.unit_posData[x+1][y] ){
+    controller.updateUnitStatus( model.unit_extractId(model.unit_posData[x+1][y]) );
+  }
+  if( model.map_isValidPosition(x,y+1) &amp;&amp; model.unit_posData[x][y+1] ){
+    controller.updateUnitStatus( model.unit_extractId(model.unit_posData[x][y+1]) );
+  }
+  if( model.map_isValidPosition(x,y-1) &amp;&amp; model.unit_posData[x][y-1] ){
+    controller.updateUnitStatus( model.unit_extractId(model.unit_posData[x][y-1]) );
+  }
+});
+
+model.event_on("setUnitPosition",function( uid ){
+  controller.updateUnitStatus( uid );
+});
+
+model.event_on("unitHide_invoked",function( uid ){
+  controller.updateUnitStatus( uid );
+});
+
+model.event_on("unitUnhide_invoked",function( uid ){
+  controller.updateUnitStatus( uid );
+});
+
+
+*/
+});
+my.extendClass(cwt.Unit,{STATIC:cwt.IndexMultiton});/**
+ * @namespace
+ */
+
+cwt.Gameround = {
+
+  /**
+   * Advance Wars 1 game mode. The first ever released game mode
+   * of the advance wars series (GBA and up).
+   */
+  GAME_MODE_AW1: 0,
+
+  /**
+   * Advance Wars 2 game mode. It introduced the Super CO Power.
+   */
+  GAME_MODE_AW2: 1,
+
+  /**
+   * The current active co mode.
+   */
+  gameMode: 0,
+
+  /**
+   * The current active day.
+   */
+  day: 0,
+
+  /**
+   * The current active turn owner. Only the turn owner
+   * can do actions.
+   *
+   * @type {cwt.Player}
+   */
+  turnOwner: null,
+
+  /**
+   * Maximum turn time limit in ms.
+   *
+   * @type {Number}
+   */
+  turnTimeLimit: 0,
+
+  /**
+   * Current elapsed turn time in ms.
+   *
+   * @type {Number}
+   */
+  turnTimeElapsed: 0,
+
+  /**
+   * Maximum game time limit in ms.
+   *
+   * @type {Number}
+   */
+  gameTimeLimit: 0,
+
+  /**
+   * Current elapsed game time in ms.
+   *
+   * @type {Number}
+   */
+  gameTimeElapsed: 0,
+
+  /**
+   * Returns `true` when at least two opposite teams are left, else `false`.
+   */
+  areEnemyTeamsLeft: function () {
+    var player;
+    var foundTeam = -1;
+    var i = 0;
+    var e = cwt.Player.MULTITON_INSTANCES;
+
+    for (; i &lt; e; i++) {
+      player = cwt.Player.getInstance(i);
+
+      if (player.team !== -1) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>found alive player</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> (foundTeam === -<span class="hljs-number">1</span>) foundTeam = player.team;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (foundTeam !== player.team) {
+          foundTeam = -<span class="hljs-number">1</span>;
+          <span class="hljs-keyword">break</span>;
+        }
+      }
+    }
+
+    <span class="hljs-keyword">return</span> (foundTeam === -<span class="hljs-number">1</span>);
+  },
+
+  <span class="hljs-comment">/**
+   * Returns true if the given player id is the current turn owner.
+   */</span>
+  isTurnOwner: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(player)</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.turnOwner === player;
+  },
+
+  <span class="hljs-comment">/**
+   * Converts a number of days into turns.
+   */</span>
+  convertDaysToTurns: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(days)</span> {</span>
+    <span class="hljs-keyword">return</span> cwt.Player.MULTITON_INSTANCES * days;
+  },
+
+  <span class="hljs-comment">/**
+   * The active weather type object.
+   */</span>
+  weather: <span class="hljs-literal">null</span>,
+
+  <span class="hljs-comment">/**
+   * The amount of days until the weather will be
+   * changed.
+   */</span>
+  weatherLeftDays: <span class="hljs-number">0</span>,
+
+  <span class="hljs-comment">/**
+   * Returns `true` when the game is in the peace phase.
+   */</span>
+  inPeacePhase: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">return</span> (<span class="hljs-keyword">this</span>.day &lt; cwt.Config.getValue(<span class="hljs-string">"daysOfPeace"</span>));
+  },
+
+  <span class="hljs-comment">/**
+   *
+   * @param {cwt.Unit|cwt.Property|null} obj
+   * @return {boolean}
+   */</span>
+  isTurnOwnerObject: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> {</span>
+    <span class="hljs-keyword">return</span> (obj != <span class="hljs-literal">null</span> &amp;&amp; obj.owner === <span class="hljs-keyword">this</span>.turnOwner);
+  },
+
+  $onSaveGame: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span>
+    data.wth = <span class="hljs-keyword">this</span>.weather.ID;
+    data.trOw = <span class="hljs-keyword">this</span>.turnOwner.id;
+    data.day = <span class="hljs-keyword">this</span>.day;
+    data.gmTm = <span class="hljs-keyword">this</span>.gameTimeElapsed;
+    data.tnTm = <span class="hljs-keyword">this</span>.turnTimeElapsed;
+  },
+
+  $onLoadGame: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, isSave)</span> {</span>
+    <span class="hljs-keyword">this</span>.weather = cwt.WeatherSheet.defaultWeather;
+    <span class="hljs-keyword">this</span>.day = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">if</span> (isSave) {
+      cwt.assert(cwt.WeatherSheet.sheets.hasOwnProperty(data.wth));
+      cwt.assert(data.trOw &gt;= <span class="hljs-number">0</span> &amp;&amp; data.trOw &lt; <span class="hljs-number">9999999</span>);
+      cwt.assert(data.day &gt;= <span class="hljs-number">0</span> &amp;&amp; data.day &lt; <span class="hljs-number">9999999</span>);
+      cwt.assert(data.gmTm &gt;= <span class="hljs-number">0</span>);
+      cwt.assert(data.tnTm &gt;= <span class="hljs-number">0</span>);
+
+      <span class="hljs-keyword">this</span>.weather = cwt.WeatherSheet.sheets[data.wth];
+      <span class="hljs-keyword">this</span>.turnOwner = <span class="hljs-comment">/** @type {cwt.Player} */</span> cwt.Player.getInstance(data.trOw);
+      <span class="hljs-keyword">this</span>.day = data.day;<span class="hljs-keyword">this</span>.gameTimeElapsed = data.gmTm;
+      <span class="hljs-keyword">this</span>.turnTimeElapsed = data.tnTm;
+    }
+  }
+};
+
+<span class="hljs-comment">/**
+ * @namespace
+ */</span>
+cwt.Map = {
+
+  <span class="hljs-comment">/**
+   * Current width of the map.
+   *
+   * @type {Number}
+   */</span>
+  width: <span class="hljs-number">0</span>,
+
+  <span class="hljs-comment">/**
+   * Current height of the map.
+   *
+   * @type {Number}
+   */</span>
+  height: <span class="hljs-number">0</span>,
+
+  <span class="hljs-comment">/**
+   * All tiles of the map.
+   *
+   * @type {Array.&lt;Array.&lt;cwt.Tile&gt;&gt;}
+   */</span>
+  data: (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> matrix = <span class="hljs-keyword">new</span> cwt.Matrix(cwt.MAX_MAP_WIDTH, cwt.MAX_MAP_HEIGHT);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> x = <span class="hljs-number">0</span>, xe = cwt.MAX_MAP_WIDTH; x &lt; xe; x++) {
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> y = <span class="hljs-number">0</span>, ye = cwt.MAX_MAP_HEIGHT; y &lt; ye; y++) {
+        matrix.data[x][y] = <span class="hljs-keyword">new</span> cwt.Tile();
+      }
+    }
+
+    <span class="hljs-keyword">return</span> matrix.data;
+  })(),
+
+  <span class="hljs-comment">/**
+   * Returns the distance of two positions.
+   */</span>
+  getDistance: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sx, sy, tx, ty)</span> {</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(<span class="hljs-keyword">this</span>.isValidPosition(sx, sy));
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(<span class="hljs-keyword">this</span>.isValidPosition(tx, ty));
+
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.abs(sx - tx) + <span class="hljs-built_in">Math</span>.abs(sy - ty);
+  },
+
+  <span class="hljs-comment">/**
+   * Returns true if the given position (x,y) is valid on the current
+   * active map, else false.
+   */</span>
+  isValidPosition: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y)</span> {</span>
+    <span class="hljs-keyword">return</span> ( x &gt;= <span class="hljs-number">0</span> &amp;&amp; y &gt;= <span class="hljs-number">0</span> &amp;&amp; x &lt; <span class="hljs-keyword">this</span>.width &amp;&amp; y &lt; <span class="hljs-keyword">this</span>.height );
+  },
+
+  <span class="hljs-comment">/**
+   *
+   * @param property
+   * @param cb
+   * @param cbThis
+   * @param arg
+   */</span>
+  searchProperty: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(property, cb, cbThis, arg)</span> {</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> x = <span class="hljs-number">0</span>, xe = <span class="hljs-keyword">this</span>.width; x &lt; xe; x++) {
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> y = <span class="hljs-number">0</span>, ye = <span class="hljs-keyword">this</span>.height; y &lt; ye; y++) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.data[x][y].property === property) {
+          cb.call(cbThis, x, y, property, arg);
+        }
+      }
+    }
+  },
+
+  <span class="hljs-comment">/**
+   *
+   * @param unit
+   * @param cb
+   * @param cbThis
+   * @param {Object=} arg
+   */</span>
+  searchUnit: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(unit, cb, cbThis, arg)</span> {</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> x = <span class="hljs-number">0</span>, xe = <span class="hljs-keyword">this</span>.width; x &lt; xe; x++) {
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> y = <span class="hljs-number">0</span>, ye = <span class="hljs-keyword">this</span>.height; y &lt; ye; y++) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.data[x][y].unit === unit) {
+          <span class="hljs-keyword">return</span> cb.call(cbThis, x, y, unit, arg);
+        }
+      }
+    }
+  },
+
+  <span class="hljs-comment">/**
+   * Invokes a callback on all tiles in a given range at a position (x,y).
+   */</span>
+  doInRange: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, range, cb, arg)</span> {</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(<span class="hljs-keyword">this</span>.isValidPosition(x, y));
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(<span class="hljs-keyword">typeof</span> cb === <span class="hljs-string">"function"</span>);
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(range &gt;= <span class="hljs-number">0</span>);
+
+    <span class="hljs-keyword">var</span> lX;
+    <span class="hljs-keyword">var</span> hX;
+    <span class="hljs-keyword">var</span> lY = y - range;
+    <span class="hljs-keyword">var</span> hY = y + range;
+    <span class="hljs-keyword">if</span> (lY &lt; <span class="hljs-number">0</span>) lY = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">if</span> (hY &gt;= <span class="hljs-keyword">this</span>.height) hY = <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span> (; lY &lt;= hY; lY++) {
+
+      <span class="hljs-keyword">var</span> disY = <span class="hljs-built_in">Math</span>.abs(lY - y);
+      lX = x - range + disY;
+      hX = x + range - disY;
+      <span class="hljs-keyword">if</span> (lX &lt; <span class="hljs-number">0</span>) lX = <span class="hljs-number">0</span>;
+      <span class="hljs-keyword">if</span> (hX &gt;= <span class="hljs-keyword">this</span>.width) hX = <span class="hljs-keyword">this</span>.width - <span class="hljs-number">1</span>;
+      <span class="hljs-keyword">for</span> (; lX &lt;= hX; lX++) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>invoke the callback on all tiles in range
+if a callback returns <code>false</code> then the process will be stopped</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> (cb(lX, lY, <span class="hljs-keyword">this</span>.data[lX][lY], arg, <span class="hljs-built_in">Math</span>.abs(lX - x) + disY) === <span class="hljs-literal">false</span>) <span class="hljs-keyword">return</span>;
+
+      }
+    }
+  },
+
+  $onSaveGame: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span>
+    <span class="hljs-keyword">var</span> that = cwt.Map;
+    data.mpw = <span class="hljs-keyword">this</span>.width;
+    data.mph = <span class="hljs-keyword">this</span>.height;
+    data.map = [];
+    data.prps = [];
+    data.units = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>generates ID map</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> mostIdsMap = {};
+    <span class="hljs-keyword">var</span> mostIdsMapCurIndex = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> x = <span class="hljs-number">0</span>, xe = that.width; x &lt; xe; x++) {
+
+      data.map[x] = [];
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> y = <span class="hljs-number">0</span>, ye = that.height; y &lt; ye; y++) {
+        <span class="hljs-keyword">var</span> type = that.data[x][y].type.ID;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>create number for type</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> (!mostIdsMap.hasOwnProperty(type)) {
+          mostIdsMap[type] = mostIdsMapCurIndex;
+          mostIdsMapCurIndex++;
+        }
+
+        data.map[x][y] = mostIdsMap[type];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>save property</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> prop = that.data[x][y].property;
+        <span class="hljs-keyword">if</span> (prop) {
+          data.prps.push([
+            cwt.Property.getInstanceId(prop),
+            x,
+            y,
+            prop.type.ID,
+            prop.capturePoints,
+            prop.owner.id
+          ]);
+        }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>save unit</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> unit = that.data[x][y].unit;
+        <span class="hljs-keyword">if</span> (unit) {
+          data.units.push([
+            cwt.Unit.getInstanceId(unit),
+            unit.type.ID,
+            x,
+            y,
+            unit.hp,
+            unit.ammo,
+            unit.fuel,
+            unit.loadedIn,
+            unit.owner.id,
+            unit.canAct,
+            unit.hidden
+          ]);
+        }
+      }
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>generate type map</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    data.typeMap = [];
+    <span class="hljs-keyword">var</span> typeKeys = <span class="hljs-built_in">Object</span>.keys(mostIdsMap);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = typeKeys.length; i &lt; e; i++) {
+      data.typeMap[mostIdsMap[typeKeys[i]]] = typeKeys[i];
+    }
+  },
+
+  $onLoadGame: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, isSave)</span> {</span>
+    <span class="hljs-keyword">var</span> that = cwt.Map;
+    
+    <span class="hljs-keyword">var</span> property;
+    <span class="hljs-keyword">var</span> unit;
+    <span class="hljs-keyword">var</span> player;
+
+    that.width = data.mpw;
+    that.height = data.mph;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>map</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> x = <span class="hljs-number">0</span>, xe = that.width; x &lt; xe; x++) {
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> y = <span class="hljs-number">0</span>, ye = that.height; y &lt; ye; y++) {
+        that.data[x][y].type = cwt.TileSheet.sheets[data.typeMap[data.map[x][y]]];
+      }
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>prepare properties</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = cwt.Property.MULTITON_INSTANCES; i &lt; e; i++) {
+      property = cwt.Property.getInstance(i, <span class="hljs-literal">true</span>);
+      <span class="hljs-keyword">if</span> (property) {
+        property.owner = <span class="hljs-literal">null</span>;
+        property.type = <span class="hljs-literal">null</span>;
+        property.capturePoints = <span class="hljs-number">20</span>;
+      }
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>saved properties</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cwt.assert(<span class="hljs-built_in">Array</span>.isArray(data.prps));
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = data.prps.length; i &lt; e; i++) {
+      <span class="hljs-keyword">var</span> propData = data.prps[i];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>check_ map data</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      cwt.assert(propData[<span class="hljs-number">0</span>] &gt;= <span class="hljs-number">0</span> &amp;&amp; propData[<span class="hljs-number">0</span>] &lt; cwt.Property.MULTITON_INSTANCES);
+      cwt.assert(propData[<span class="hljs-number">1</span>] &gt;= <span class="hljs-number">0</span> &amp;&amp; propData[<span class="hljs-number">1</span>] &lt; that.width);
+      cwt.assert(propData[<span class="hljs-number">2</span>] &gt;= <span class="hljs-number">0</span> &amp;&amp; propData[<span class="hljs-number">2</span>] &lt; that.height);
+      cwt.assert(cwt.PropertySheet.sheets.hasOwnProperty(propData[<span class="hljs-number">3</span>]));
+      cwt.assert(propData[<span class="hljs-number">5</span>] &gt;= -<span class="hljs-number">1</span> &amp;&amp; propData[<span class="hljs-number">5</span>] &lt; cwt.Player.MULTITON_INSTANCES);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>cwt.assert(
+ (util.isString(propData[3]) &amp;&amp; !util.isUndefined(model.data_tileSheets[propData[3]].capturePoints)) ||
+   typeof model.data_tileSheets[propData[3]].cannon !== “undefined” ||
+   typeof model.data_tileSheets[propData[3]].laser !== “undefined” ||
+   typeof model.data_tileSheets[propData[3]].rocketsilo !== “undefined”
+);</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>cwt.assert((util.intRange(propData[4], 1, // capture points
+ model.data_tileSheets[propData[3]].capturePoints)) ||
+(util.intRange(propData[4], -99, -1)) ||
+ typeof model.data_tileSheets[propData[3]].rocketsilo !== “undefined”
+);</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>copy data into model</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      property = cwt.Property.getInstance(propData[<span class="hljs-number">0</span>]);
+      property.type = cwt.PropertySheet.sheets[propData[<span class="hljs-number">3</span>]];
+      property.capturePoints = propData[<span class="hljs-number">4</span>];
+      property.owner = (propData[<span class="hljs-number">5</span>] != cwt.INACTIVE)? cwt.Player.getInstance(propData[<span class="hljs-number">5</span>]) : <span class="hljs-literal">null</span>;
+      that.data[propData[<span class="hljs-number">1</span>]][propData[<span class="hljs-number">2</span>]].property = property;
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>prepare units</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cwt.assert(<span class="hljs-built_in">Array</span>.isArray(data.units));
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = cwt.Unit.MULTITON_INSTANCES; i &lt; e; i++) {
+      unit = cwt.Unit.getInstance(i, <span class="hljs-literal">true</span>);
+      <span class="hljs-keyword">if</span> (unit) {
+        unit.owner = <span class="hljs-literal">null</span>;
+      }
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>saved units</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = data.units.length; i &lt; e; i++) {
+      <span class="hljs-keyword">var</span> unitData = data.units[i];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>check_ map data</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      cwt.assert(unitData[<span class="hljs-number">0</span>] &gt;= <span class="hljs-number">0</span> &amp;&amp; unitData[<span class="hljs-number">0</span>] &lt; cwt.Unit.MULTITON_INSTANCES);
+      cwt.assert(cwt.UnitSheet.sheets.hasOwnProperty(unitData[<span class="hljs-number">1</span>]));
+      cwt.assert(that.isValidPosition(unitData[<span class="hljs-number">2</span>], unitData[<span class="hljs-number">3</span>]));
+      cwt.assert(unitData[<span class="hljs-number">4</span>] &gt;= <span class="hljs-number">1</span> &amp;&amp; unitData[<span class="hljs-number">4</span>] &lt;= <span class="hljs-number">99</span>);
+
+      <span class="hljs-keyword">var</span> type = cwt.UnitSheet.sheets[unitData[<span class="hljs-number">1</span>]];
+      cwt.assert(unitData[<span class="hljs-number">5</span>] &gt;= <span class="hljs-number">0</span> &amp;&amp; unitData[<span class="hljs-number">5</span>] &lt;= type.ammo);
+      cwt.assert(unitData[<span class="hljs-number">6</span>] &gt;= <span class="hljs-number">0</span> &amp;&amp; unitData[<span class="hljs-number">6</span>] &lt;= type.fuel);
+      cwt.assert(<span class="hljs-keyword">typeof</span> unitData[<span class="hljs-number">7</span>] === <span class="hljs-string">"number"</span>);
+      cwt.assert(unitData[<span class="hljs-number">8</span>] &gt;= -<span class="hljs-number">1</span> &amp;&amp; unitData[<span class="hljs-number">8</span>] &lt; cwt.Player.MULTITON_INSTANCES);
+      cwt.assert(unitData.length &lt; <span class="hljs-number">10</span> || <span class="hljs-keyword">typeof</span> unitData[<span class="hljs-number">9</span>] === <span class="hljs-string">"boolean"</span>);
+      cwt.assert(unitData.length &lt; <span class="hljs-number">11</span> || <span class="hljs-keyword">typeof</span> unitData[<span class="hljs-number">10</span>] === <span class="hljs-string">"boolean"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>copy data into model</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      unit = cwt.Unit.getInstance(unitData[<span class="hljs-number">0</span>]);
+      unit.type = type;
+      unit.hp = unitData[<span class="hljs-number">4</span>];
+      unit.ammo = unitData[<span class="hljs-number">5</span>];
+      unit.fuel = unitData[<span class="hljs-number">6</span>];
+      unit.loadedIn = (unitData[<span class="hljs-number">7</span>] != cwt.INACTIVE)? cwt.Unit.getInstance(unitData[<span class="hljs-number">7</span>]) : <span class="hljs-literal">null</span>;
+      unit.owner = cwt.Player.getInstance(unitData[<span class="hljs-number">8</span>]);
+      unit.canAct = (<span class="hljs-keyword">typeof</span> unitData[<span class="hljs-number">9</span>] === <span class="hljs-string">"boolean"</span>)? unitData[<span class="hljs-number">9</span>] : <span class="hljs-literal">false</span>;
+      unit.hidden = (<span class="hljs-keyword">typeof</span> unitData[<span class="hljs-number">10</span>] === <span class="hljs-string">"boolean"</span>)? unitData[<span class="hljs-number">10</span>] : <span class="hljs-literal">false</span>;
+      that.data[unitData[<span class="hljs-number">2</span>]][unitData[<span class="hljs-number">3</span>]].unit = unit;
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>reset player data</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = cwt.Player.MULTITON_INSTANCES; i &lt; e; i++) {
+      <span class="hljs-keyword">var</span> player = cwt.Player.getInstance(i);
+      player.name = <span class="hljs-literal">null</span>;
+      player.gold = <span class="hljs-number">0</span>;
+      player.manpower = <span class="hljs-built_in">Math</span>.POSITIVE_INFINITY;
+      player.team = (i &lt;= data.player - <span class="hljs-number">1</span>) ? i : cwt.NOT_AVAILABLE;
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>grab save game data</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (isSave) {
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = data.players.length; i &lt; e; i++) {
+        <span class="hljs-keyword">var</span> playerData = data.players[i];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>check_ data</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        cwt.assert(playerData[<span class="hljs-number">0</span>] &gt;= <span class="hljs-number">0</span> &amp;&amp; playerData[<span class="hljs-number">0</span>] &lt; cwt.Player.MULTITON_INSTANCES);
+        cwt.assert(<span class="hljs-keyword">typeof</span> playerData[<span class="hljs-number">1</span>] === <span class="hljs-string">"string"</span>);
+        cwt.assert(playerData[<span class="hljs-number">3</span>] &gt;= <span class="hljs-number">0</span> &amp;&amp; playerData[<span class="hljs-number">3</span>] &lt; cwt.Player.MULTITON_INSTANCES);
+        cwt.assert(playerData[<span class="hljs-number">2</span>] &gt;= <span class="hljs-number">0</span> &amp;&amp; playerData[<span class="hljs-number">2</span>] &lt; <span class="hljs-number">999999</span>);
+        cwt.assert(playerData[<span class="hljs-number">4</span>] &gt;= <span class="hljs-number">0</span> &amp;&amp; playerData[<span class="hljs-number">4</span>] &lt; <span class="hljs-number">999999</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>set player data</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> player = cwt.Player.getInstance(playerData[<span class="hljs-number">0</span>]);
+        player.name = playerData[<span class="hljs-number">1</span>];
+        player.gold = playerData[<span class="hljs-number">2</span>];
+        player.team = playerData[<span class="hljs-number">3</span>];
+        player.manpower = playerData[<span class="hljs-number">4</span>];
+      }
+    }
+  }
+
+};
+
+<span class="hljs-comment">/*
+
+
+ (function () {
+
+ function placeCannonMetaData(x, y) {
+ var prop = model.property_posMap[x][y];
+ var cannon = prop.type.cannon;
+ var size = prop.type.bigProperty;
+
+ cwt.assert(x - size.x &gt;= 0);
+ cwt.assert(y - size.y &gt;= 0);
+
+ var ax = x - size.actor[0];
+ var ay = y - size.actor[1];
+ var ox = x;
+ var oy = y;
+ for (var xe = x - size.x; x &gt; xe; x--) {
+
+ y = oy;
+ for (var ye = y - size.y; y &gt; ye; y--) {
+
+</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>place blocker</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> <span class="hljs-keyword">if</span> (x !== ox || y !== oy) {
+ <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) util.log(<span class="hljs-string">"creating invisible property at"</span>, x, <span class="hljs-string">","</span>, y);
+ model.events.property_createProperty(prop.owner, x, y, <span class="hljs-string">"PROP_INV"</span>);
+ }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>place actor</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> <span class="hljs-keyword">if</span> (x === ax &amp;&amp; y === ay) {
+ <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) util.log(<span class="hljs-string">"creating cannon unit at"</span>, x, <span class="hljs-string">","</span>, y);
+ model.events.createUnit(model.unit_getFreeSlot(prop.owner), prop.owner,
+ x, y, <span class="hljs-string">"CANNON_UNIT_INV"</span>);
+ }
+
+ }
+ }
+ }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>// Places the necessary meta units for bigger properties.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> model.event_on("gameround_start", function () {
+ for (var x = 0, xe = model.map_width; x &lt; xe; x++) {
+ for (var y = 0, ye = model.map_height; y &lt; ye; y++) {
+
+ var prop = model.property_posMap[x][y];
+ if (prop) {
+
+ if (prop.type.bigProperty &amp;&amp; prop.type.cannon) {
+ placeCannonMetaData(x, y);
+ } else if (prop.type.cannon) {
+ if (this.DEBUG) util.log("creating cannon unit at", x, ",", y);
+ model.events.createUnit(model.unit_getFreeSlot(prop.owner), prop.owner,
+ x, y, "CANNON_UNIT_INV");
+ } else if (prop.type.laser) {
+ if (this.DEBUG) util.log("creating laser unit at", x, ",", y);
+ model.events.createUnit(model.unit_getFreeSlot(prop.owner), prop.owner,
+ x, y, "LASER_UNIT_INV");
+ }
+
+ }
+ }
+ }
+ });
+
+ })();
+ */</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

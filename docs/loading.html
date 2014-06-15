@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>loading.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="doc.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="ai.html">
+                  ai.js
+                </a>
+              
+                
+                <a class="source" href="base.html">
+                  base.js
+                </a>
+              
+                
+                <a class="source" href="commands.html">
+                  commands.js
+                </a>
+              
+                
+                <a class="source" href="controller.html">
+                  controller.js
+                </a>
+              
+                
+                <a class="source" href="datatypes.html">
+                  datatypes.js
+                </a>
+              
+                
+                <a class="source" href="dependencies.html">
+                  dependencies.js
+                </a>
+              
+                
+                <a class="source" href="flow.html">
+                  flow.js
+                </a>
+              
+                
+                <a class="source" href="input.html">
+                  input.js
+                </a>
+              
+                
+                <a class="source" href="loading.html">
+                  loading.js
+                </a>
+              
+                
+                <a class="source" href="logic.html">
+                  logic.js
+                </a>
+              
+                
+                <a class="source" href="model.html">
+                  model.js
+                </a>
+              
+                
+                <a class="source" href="modification.html">
+                  modification.js
+                </a>
+              
+                
+                <a class="source" href="renderer.html">
+                  renderer.js
+                </a>
+              
+                
+                <a class="source" href="test.html">
+                  test.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>loading.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-pi">"use strict"</span>;
+
+cwt.Loading.create(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(next)</span> {</span>
+  <span class="hljs-keyword">if</span> (cwt.DEBUG) {
+    console.log(<span class="hljs-string">"checking system"</span>);
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>ask question when system is not supported</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> (cwt.ClientFeatures.supported || confirm(<span class="hljs-string">"Your system isn't supported by CW:T. Try to run it?"</span>) ) {
+    next();
+  }
+});
+cwt.Loading.create(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(next)</span> {</span>
+  <span class="hljs-keyword">if</span> (cwt.DEBUG) {
+    console.log(<span class="hljs-string">"initialize storage system"</span>);
+  }
+
+  cwt.Storage.initialize(next);
+});
+cwt.Loading.create(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nextLoadingStep)</span> {</span>
+  <span class="hljs-keyword">if</span> (cwt.DEBUG) {
+    console.log(<span class="hljs-string">"checking options"</span>);
+  }
+
+  callAsSequence([</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>wipe out storage</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(next)</span> {</span>
+      cwt.Storage.generalStorage.get(cwt.Options.PARAM_WIPEOUT, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> {</span>
+        <span class="hljs-keyword">var</span> wipeOut = (obj &amp;&amp; obj.value === <span class="hljs-literal">true</span>);
+        <span class="hljs-keyword">if</span> (!wipeOut) {
+          wipeOut = getQueryParams(document.location.search).cwt_resetData === <span class="hljs-string">"1"</span>;
+        }
+
+        <span class="hljs-keyword">if</span> (wipeOut) {
+          <span class="hljs-keyword">if</span> (cwt.DEBUG) {
+            console.log(<span class="hljs-string">"wipe out cached data"</span>);
+          }
+
+          cwt.Storage.wipeOutAll(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            next();
+          });
+        } <span class="hljs-keyword">else</span> {
+          next();
+        }
+      });
+    },
+
+    cwt.Options.loadOptions,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>force touch (start parameter can overwrite saved options)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(next)</span> {</span>
+      cwt.Storage.generalStorage.get(cwt.Options.PARAM_FORCE_TOUCH,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( obj )</span>{</span>
+        <span class="hljs-keyword">var</span>  doIt = (obj &amp;&amp; obj.value === <span class="hljs-literal">true</span>);
+        <span class="hljs-keyword">if</span>( !doIt ) doIt = getQueryParams(document.location.search).cwt_forceTouch === <span class="hljs-string">"1"</span>;
+
+        <span class="hljs-keyword">if</span>(  doIt ){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>enable touch and disable mouse ( cannot work together )</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          cwt.ClientFeatures.mouse = <span class="hljs-literal">false</span>;
+          cwt.ClientFeatures.touch = <span class="hljs-literal">true</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>mark forceTouch in the options</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          cwt.Options.forceTouch = <span class="hljs-literal">true</span>;
+        }
+
+        next();
+      });
+    }
+
+  ], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    nextLoadingStep();
+  });
+});
+cwt.Loading.create(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nextLoadingStep)</span> {</span>
+  <span class="hljs-keyword">if</span> (cwt.DEBUG) {
+    console.log(<span class="hljs-string">"initializing input system"</span>);
+  }
+
+  cwt.Input.initialize();
+  cwt.Input.loadKeyMapping(nextLoadingStep);
+});
+cwt.Loading.create(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(next)</span> {</span>
+  <span class="hljs-keyword">if</span> (cwt.DEBUG) {
+    console.log(<span class="hljs-string">"initializing audio system"</span>);
+  }
+
+  cwt.Audio.initialize();
+
+  <span class="hljs-keyword">if</span> (cwt.Loading.hasCachedData) {
+    cwt.Audio.loadConfigs(next);
+  } <span class="hljs-keyword">else</span> {
+    next();
+  }
+});
+cwt.Loading.create(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(loaderNext)</span> {</span>
+  <span class="hljs-keyword">if</span> (cwt.DEBUG) {
+    console.log(<span class="hljs-string">"loading audio data"</span>);
+  }
+
+  <span class="hljs-keyword">if</span> (cwt.Loading.hasCachedData) {
+    cwt.Audio.grabFromCache(loaderNext);
+  } <span class="hljs-keyword">else</span> {
+    cwt.Audio.grabFromRemote(loaderNext);
+  }
+});
+cwt.Loading.create(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(loaderNext)</span> {</span>
+   <span class="hljs-keyword">if</span> (cwt.DEBUG) {
+     console.log(<span class="hljs-string">"loading image data"</span>);
+   }
+
+   <span class="hljs-keyword">if</span> (cwt.Loading.hasCachedData) {
+     cwt.Image.grabFromCache(loaderNext);
+   } <span class="hljs-keyword">else</span> {
+     cwt.Image.grabFromRemote(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+       cwt.Image.persistImages(loaderNext);
+     });
+   }
+});
+cwt.Loading.create(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(next)</span> {</span>
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doOnOrientationChange</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">switch</span> (window.orientation) {
+      <span class="hljs-keyword">case</span> -<span class="hljs-number">90</span>:
+      <span class="hljs-keyword">case</span> <span class="hljs-number">90</span>:
+        console.log(<span class="hljs-string">'landscape'</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">default</span>:
+        console.log(<span class="hljs-string">'portrait'</span>);
+        <span class="hljs-keyword">break</span>;
+    }
+  }
+
+  window.addEventListener(<span class="hljs-string">'orientationchange'</span>, doOnOrientationChange);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Initial execution if needed</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  doOnOrientationChange();
+
+  next();
+});
+cwt.Loading.create(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(next)</span> {</span>
+  <span class="hljs-keyword">if</span> (cwt.DEBUG) {
+    console.log(<span class="hljs-string">"loading maps"</span>);
+  }
+
+  <span class="hljs-keyword">if</span> (!cwt.Loading.hasCachedData) {
+    cwt.Maps.grabFromLive(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+      cwt.Maps.updateMapList(next);
+    });
+  } <span class="hljs-keyword">else</span> {
+    cwt.Maps.updateMapList(next);
+  }
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
