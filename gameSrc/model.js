@@ -1,11 +1,10 @@
 "use strict";
 
-/**
- * @class
- */
-cwt.Player = my.Class(/** @lends cwt.Player.prototype */ {
+// **Class Player**
+//
+cwt.Player = my.Class({
 
-  STATIC: /** @lends cwt.Player */ {
+  STATIC: {
 
     /**
      * Maximum number of instances.
@@ -20,6 +19,12 @@ cwt.Player = my.Class(/** @lends cwt.Player.prototype */ {
      * @constant
      */
     MAX_UNITS: 50,
+
+    // **onInstanceCreation (event)**
+    //
+    onInstanceCreation: function (id, player) {
+      player.id = id;
+    },
 
     /**
      * @type {cwt.Player}
@@ -56,17 +61,13 @@ cwt.Player = my.Class(/** @lends cwt.Player.prototype */ {
   }
 });
 my.extendClass(cwt.Player,{STATIC:cwt.IndexMultiton});
-cwt.Player.getInstance(0).id = 0;
-cwt.Player.getInstance(1).id = 1;
-cwt.Player.getInstance(2).id = 2;
-cwt.Player.getInstance(3).id = 3;
 
 /**
  * Object that holds information about objects at a given position (x,y).
  *
  * @class
  */
-cwt.Position = my.Class(/** @lends cwt.Position.prototype */ {
+cwt.Position = my.Class({
 
   constructor: function () {
     this.clean();
@@ -120,12 +121,9 @@ cwt.Position = my.Class(/** @lends cwt.Position.prototype */ {
       this.propertyId = cwt.Property.getInstanceId(this.tile.property);
     }
   }
-});/**
- * @class
- * @extends cwt.IndexMultiton
- */
+});
 
-cwt.Property = my.Class(/** @lends cwt.Property.prototype */ {
+cwt.Property = my.Class({
 
   STATIC: /** @lends cwt.Property */ {
 
@@ -191,11 +189,7 @@ cwt.Property = my.Class(/** @lends cwt.Property.prototype */ {
 });
 my.extendClass(cwt.Property,{STATIC:cwt.IndexMultiton});
 
-/**
- *
- * @class
- */
-cwt.Tile = my.Class( /** @lends cwt.Tile.property */ {
+cwt.Tile = my.Class({
 
   constructor: function () {
 
@@ -243,13 +237,9 @@ cwt.Tile = my.Class( /** @lends cwt.Tile.property */ {
     return this.visionTurnOwner > 0;
   }
 
-});/**
- *
- * @class
- * @extends cwt.IndexMultiton.<T>
- */
+});
 
-cwt.Unit = my.Class(/** @lends cwt.Unit.prototype */ {
+cwt.Unit = my.Class({
 
   STATIC: /** @lends cwt.Unit */ {
 
@@ -586,9 +576,7 @@ model.event_on("unitUnhide_invoked",function( uid ){
 
 */
 });
-my.extendClass(cwt.Unit,{STATIC:cwt.IndexMultiton});/**
- * @namespace
- */
+my.extendClass(cwt.Unit,{STATIC:cwt.IndexMultiton});
 
 cwt.Gameround = {
 

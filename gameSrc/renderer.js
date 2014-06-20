@@ -1,5 +1,7 @@
 "use strict";
 
+cwt.MapRenderer = {};
+
 /**
  * Renders the cursor to the UI layer.
  */
@@ -169,7 +171,6 @@ cwt.MapRenderer.shiftFocus = function (code) {
  *
  * @namespace
  */
-cwt.MapRenderer = {};
 
 cwt.MapRenderer.shiftLayer = function (code, layer, steps, selfDraw) {
   var tmpCanvas = this.getTempCanvas();
