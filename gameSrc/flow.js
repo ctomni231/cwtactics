@@ -95,7 +95,7 @@ cwt.Gameflow.addState({
   id: "LOADING_SCREEN",
 
   init: function () {
-    this.bar = new cwt.LoadingBar(10, parseInt(cwt.Screen.height / 2, 10) - 10, cwt.Screen.width - 20, 20);
+    this.bar = new cwt.UILoadingBar(10, parseInt(cwt.Screen.height / 2, 10) - 10, cwt.Screen.width - 20, 20);
   },
 
   enter: function () {
@@ -875,7 +875,7 @@ cwt.Gameflow.addMenuState({
       .addColGap(4)
       .addButton(6, 2, 0, "OPTIONS_WIPE_OUT_YES", cwt.UIField.STYLE_NORMAL, function () {
         cwt.Storage.wipeOutAll(function () {
-          delete localStorage.cwt_hasCache;
+          delete localStorage["cwt_hasCache"];
           document.location.reload();
         });
       });
@@ -906,7 +906,7 @@ cwt.Gameflow.addMenuState({
     };
 
     var saveStep2 = function () {
-      cwt.Gameflow.changeState("MAIN_MENU");
+      cwt.Gameflow.changeState( "MAIN_MENU"); // TODO return back into ingame idle
     };
 
     var updateSound = function (isSFX, change, state) {
@@ -969,11 +969,11 @@ cwt.Gameflow.addMenuState({
       .addColGap(w)
       .addButton(8, 2, 0, "OPTIONS_MENU_CHANGE_KEYBOARD_LAYOUT", cwt.UIField.STYLE_NSW, 8, function () {
         cwt.Gameflow.changeState("REMAP_KEY_MAPPING");
-        cwt.Gameflow.activeState.mode = 0;
+        cwt.Gameflow.activeState.mode = 0;           // TODO use data of state
       })
       .addButton(8, 2, 0, "OPTIONS_MENU_CHANGE_GAMEPAD_LAYOUT", cwt.UIField.STYLE_NES, 8, function () {
         cwt.Gameflow.changeState("REMAP_KEY_MAPPING");
-        cwt.Gameflow.activeState.mode = 1;
+        cwt.Gameflow.activeState.mode = 1;           // TODO use data of state
       })
       .breakLine()
 

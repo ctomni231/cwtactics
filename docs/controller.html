@@ -60,6 +60,11 @@
                 </a>
               
                 
+                <a class="source" href="language.html">
+                  language.js
+                </a>
+              
+                
                 <a class="source" href="loading.html">
                   loading.js
                 </a>
@@ -3956,9 +3961,9 @@ cwt.Loading = {
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.loaders_;
-      <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.create;
-      <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.startProcess;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">delete</span> cwt.Loading.loaders_;
+      <span class="hljs-keyword">delete</span> cwt.Loading.create;
+      <span class="hljs-keyword">delete</span> cwt.Loading.startProcess;</pre></div></div>
             
         </li>
         
@@ -3973,7 +3978,7 @@ cwt.Loading = {
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">this</span>.initialized = <span class="hljs-literal">true</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      cwt.Loading.initialized = <span class="hljs-literal">true</span>;</pre></div></div>
             
         </li>
         

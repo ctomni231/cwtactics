@@ -1,15 +1,13 @@
 "use strict";
 
-/**
- * @class
- */
-cwt.Action = my.Class(/** @lends cwt.Action.prototype */ {
+// **Class Action**
+//
+cwt.Action = my.Class({
 
-  STATIC: /** @lends cwt.Action */ {
+  STATIC: {
 
-    /**
-     * @constant
-     */
+    // **Action.MULTITON_NAMES (Const)**
+    //
     MULTITON_NAMES: [
       "activatePower",
       "attack",
@@ -38,18 +36,16 @@ cwt.Action = my.Class(/** @lends cwt.Action.prototype */ {
       "flushMove"
     ],
 
-    /**
-     * Map actions are called in the idle state on the map.
-     *
-     * @constant
-     */
+    // **Action.MAP_ACTION (Const)**
+    //
+    // Map actions are called in the idle state on the map.
+    //
     MAP_ACTION: 0,
 
-    /**
-     * Unit actions are called on units.
-     *
-     * @constant
-     */
+    // **Action.UNIT_ACTION (Const)**
+    //
+    // Unit actions are called on units.
+    //
     UNIT_ACTION: 1,
 
     /**
@@ -174,6 +170,7 @@ cwt.Action.engineAction({
     cwt.Move.tmpMovePath.clear();
   }
 });
+
 cwt.Action.engineAction({
   key:"flushMove",
 
@@ -195,6 +192,7 @@ cwt.Action.engineAction({
     );
   }
 });
+
 cwt.Action.engineAction({
   key: "changeWeather",
 
@@ -207,6 +205,7 @@ cwt.Action.engineAction({
       cwt.WeatherSheet.sheets[dataBlock.p1]);
   }
 });
+
 cwt.Action.engineAction({
   key:"pushToMove",
 
@@ -224,6 +223,7 @@ cwt.Action.engineAction({
     };
   })()
 });
+
 cwt.Action.engineAction({
   key:"startAnimation",
 
@@ -263,6 +263,7 @@ cwt.Action.mapAction({
     cwt.CO.activatePower(cwt.Gameround.turnOwner,dataBlock.p1);
   }
 });
+
 cwt.Action.mapAction({
   key: "nextTurn",
 
@@ -273,6 +274,7 @@ cwt.Action.mapAction({
     cwt.Turn.next();
   }
 });
+
 cwt.Action.mapAction({
   key:"transferMoney",
 
@@ -336,6 +338,7 @@ cwt.Action.propertyAction({
     );
   }
 });
+
 cwt.Action.propertyAction({
 
   key:"transferProperty",
@@ -455,6 +458,7 @@ cwt.Action.unitAction({
     );
   }
 });
+
 cwt.Action.unitAction({
   key: "capture",
 
@@ -487,6 +491,7 @@ cwt.Action.unitAction({
     );
   }
 });
+
 cwt.Action.unitAction({
   key:"doExplosion",
   noAutoWait: true,
@@ -512,6 +517,7 @@ cwt.Action.unitAction({
     cwt.Explode.doExplosion(dataBlock.p1,dataBlock.p2,dataBlock.p3,dataBlock.p4);
   }
 });
+
 cwt.Action.unitAction({
   key: "fireCannon",
 
@@ -565,6 +571,7 @@ cwt.Action.unitAction({
     cwt.Laser.fireLaser(dataBlock.p1,dataBlock.p2);
   }
 });
+
 cwt.Action.unitAction({
   key:"unitHide",
 
@@ -586,6 +593,7 @@ cwt.Action.unitAction({
   }
 
 });
+
 cwt.Action.unitAction({
   key:"joinUnits",
   noAutoWait: true,
@@ -614,6 +622,7 @@ cwt.Action.unitAction({
   }
 
 });
+
 cwt.Action.unitAction({
   key:"loadUnit",
 
@@ -635,6 +644,7 @@ cwt.Action.unitAction({
   }
 
 });
+
 cwt.Action.unitAction({
   key: "silofire",
 
@@ -679,6 +689,7 @@ cwt.Action.unitAction({
     );
   }
 });
+
 cwt.Action.unitAction({
   key: "supplyUnit",
 
@@ -704,6 +715,7 @@ cwt.Action.unitAction({
   }
 
 });
+
 cwt.Action.unitAction({
   key:"transferUnit",
 
@@ -728,12 +740,13 @@ cwt.Action.unitAction({
 
   parseDataBlock: function (dataBlock) {
     cwt.Team.transferUnitToPlayer(
-      /** @type {cwt.Unit} */ cwt.Unit.getInstance(dataBlock.p1),
-      /** @type {cwt.Player} */ cwt.Player.getInstance(dataBlock.p2)
+      cwt.Unit.getInstance(dataBlock.p1),
+      cwt.Player.getInstance(dataBlock.p2)
     );
   }
 
 });
+
 cwt.Action.unitAction({
   key:"unitUnhide",
 
@@ -756,6 +769,7 @@ cwt.Action.unitAction({
     );
   }
 });
+
 cwt.Action.unitAction({
   key:"unloadUnit",
   multiStepAction: true,
@@ -807,6 +821,7 @@ cwt.Action.unitAction({
     );
   }
 });
+
 cwt.Action.unitAction({
   key: "wait",
 
@@ -840,6 +855,7 @@ cwt.Action.clientAction({
   toDataBlock: function (data, dataBlock) {},
 
   parseDataBlock: function (dataBlock) {
-    controller.screenStateMachine.event("toOptions_",true);
+    cwt.Gameflow.changeState("OPTIONS");
+    cwt.Gameflow.activeState.data.invokedFromIngame = true;
   }
 });

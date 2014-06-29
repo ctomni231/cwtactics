@@ -6,11 +6,10 @@ cwt.Player = my.Class({
 
   STATIC: {
 
-    /**
-     * Maximum number of instances.
-     *
-     * @constant
-     */
+    // **Player.MULTITON_INSTANCES (Const)**
+    //
+    // Controls the maximum number of players.
+    //
     MULTITON_INSTANCES: 4,
 
     /**
@@ -33,40 +32,69 @@ cwt.Player = my.Class({
   },
 
   constructor: function () {
+
+    // **Player.id (int)**
+    //
     this.id = -1;
 
+    // **Player.team (int)**
+    //
     this.team = cwt.INACTIVE;
+
+    // **Player.gold (int)**
+    //
     this.gold = 0;
+
+    // **Player.power (int)**
+    //
     this.power = 0;
+
+    // **Player.activePower (int)**
+    //
     this.activePower = cwt.INACTIVE;
+
+    // **Player.powerUsed (int)**
+    //
     this.powerUsed = 0;
+
+    // **Player.manpower (int)**
+    //
     this.manpower = Math.POSITIVE_INFINITY;
+
+    // **Player.coA (?)**
+    //
     this.coA = null;
 
     // use a variable for performance reasons
+    // **Player.numberOfUnits (boolean)**
+    //
     this.numberOfUnits = 0;
 
+    // **Player.turnOwnerVisible (boolean)**
+    //
     this.turnOwnerVisible = false;
+
+    // **Player.clientVisible (boolean)**
+    //
     this.clientVisible = false;
+
+    // **Player.clientControlled (boolean)**
+    //
     this.clientControlled = false;
   },
 
-  /**
-   *
-   * @param level
-   * @return {boolean}
-   */
+  // **Player.isPowerActive(num): boolean**
+  //
   isPowerActive: function (level) {
     return this.activePower === level;
   }
 });
 my.extendClass(cwt.Player,{STATIC:cwt.IndexMultiton});
 
-/**
- * Object that holds information about objects at a given position (x,y).
- *
- * @class
- */
+// **Class Position**
+//
+// Object that holds information about objects at a given position (x,y).
+//
 cwt.Position = my.Class({
 
   constructor: function () {

@@ -60,6 +60,11 @@
                 </a>
               
                 
+                <a class="source" href="language.html">
+                  language.js
+                </a>
+              
+                
                 <a class="source" href="loading.html">
                   loading.js
                 </a>
@@ -113,19 +118,39 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-pi">"use strict"</span>;
+            <div class="content"><div class='highlight'><pre><span class="hljs-pi">"use strict"</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p><strong>Class Action</strong></p>
 
-<span class="hljs-comment">/**
- * @class
- */</span>
-cwt.Action = my.Class(<span class="hljs-comment">/** @lends cwt.Action.prototype */</span> {
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>cwt.Action = my.Class({
 
-  STATIC: <span class="hljs-comment">/** @lends cwt.Action */</span> {
+  STATIC: {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p><strong>Action.MULTITON_NAMES (Const)</strong></p>
 
-    <span class="hljs-comment">/**
-     * @constant
-     */</span>
-    MULTITON_NAMES: [
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    MULTITON_NAMES: [
       <span class="hljs-string">"activatePower"</span>,
       <span class="hljs-string">"attack"</span>,
       <span class="hljs-string">"buildUnit"</span>,
@@ -151,21 +176,39 @@ cwt.Action = my.Class(<span class="hljs-comment">/** @lends cwt.Action.prototype
       <span class="hljs-string">"clearMove"</span>,
       <span class="hljs-string">"pushToMove"</span>,
       <span class="hljs-string">"flushMove"</span>
-    ],
+    ],</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p><strong>Action.MAP_ACTION (Const)</strong></p>
+<p>Map actions are called in the idle state on the map.</p>
 
-    <span class="hljs-comment">/**
-     * Map actions are called in the idle state on the map.
-     *
-     * @constant
-     */</span>
-    MAP_ACTION: <span class="hljs-number">0</span>,
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    MAP_ACTION: <span class="hljs-number">0</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p><strong>Action.UNIT_ACTION (Const)</strong></p>
+<p>Unit actions are called on units.</p>
 
-    <span class="hljs-comment">/**
-     * Unit actions are called on units.
-     *
-     * @constant
-     */</span>
-    UNIT_ACTION: <span class="hljs-number">1</span>,
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    UNIT_ACTION: <span class="hljs-number">1</span>,
 
     <span class="hljs-comment">/**
      * Property actions are called on properties.
@@ -289,6 +332,7 @@ cwt.Action.engineAction({
     cwt.Move.tmpMovePath.clear();
   }
 });
+
 cwt.Action.engineAction({
   key:<span class="hljs-string">"flushMove"</span>,
 
@@ -300,11 +344,11 @@ cwt.Action.engineAction({
         </li>
         
         
-        <li id="section-2">
+        <li id="section-6">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
+                <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               <p>start point</p>
 
@@ -318,11 +362,11 @@ cwt.Action.engineAction({
         </li>
         
         
-        <li id="section-3">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>move meta                                                                       0</p>
 
@@ -334,6 +378,7 @@ cwt.Action.engineAction({
     );
   }
 });
+
 cwt.Action.engineAction({
   key: <span class="hljs-string">"changeWeather"</span>,
 
@@ -346,6 +391,7 @@ cwt.Action.engineAction({
       cwt.WeatherSheet.sheets[dataBlock.p1]);
   }
 });
+
 cwt.Action.engineAction({
   key:<span class="hljs-string">"pushToMove"</span>,
 
@@ -363,6 +409,7 @@ cwt.Action.engineAction({
     };
   })()
 });
+
 cwt.Action.engineAction({
   key:<span class="hljs-string">"startAnimation"</span>,
 
@@ -372,11 +419,11 @@ cwt.Action.engineAction({
         </li>
         
         
-        <li id="section-4">
+        <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>next turn</p>
 
@@ -414,6 +461,7 @@ cwt.Action.mapAction({
     cwt.CO.activatePower(cwt.Gameround.turnOwner,dataBlock.p1);
   }
 });
+
 cwt.Action.mapAction({
   key: <span class="hljs-string">"nextTurn"</span>,
 
@@ -424,6 +472,7 @@ cwt.Action.mapAction({
     cwt.Turn.next();
   }
 });
+
 cwt.Action.mapAction({
   key:<span class="hljs-string">"transferMoney"</span>,
 
@@ -487,6 +536,7 @@ cwt.Action.propertyAction({
     );
   }
 });
+
 cwt.Action.propertyAction({
 
   key:<span class="hljs-string">"transferProperty"</span>,
@@ -606,6 +656,7 @@ cwt.Action.unitAction({
     );
   }
 });
+
 cwt.Action.unitAction({
   key: <span class="hljs-string">"capture"</span>,
 
@@ -638,6 +689,7 @@ cwt.Action.unitAction({
     );
   }
 });
+
 cwt.Action.unitAction({
   key:<span class="hljs-string">"doExplosion"</span>,
   noAutoWait: <span class="hljs-literal">true</span>,
@@ -663,6 +715,7 @@ cwt.Action.unitAction({
     cwt.Explode.doExplosion(dataBlock.p1,dataBlock.p2,dataBlock.p3,dataBlock.p4);
   }
 });
+
 cwt.Action.unitAction({
   key: <span class="hljs-string">"fireCannon"</span>,
 
@@ -716,6 +769,7 @@ cwt.Action.unitAction({
     cwt.Laser.fireLaser(dataBlock.p1,dataBlock.p2);
   }
 });
+
 cwt.Action.unitAction({
   key:<span class="hljs-string">"unitHide"</span>,
 
@@ -737,6 +791,7 @@ cwt.Action.unitAction({
   }
 
 });
+
 cwt.Action.unitAction({
   key:<span class="hljs-string">"joinUnits"</span>,
   noAutoWait: <span class="hljs-literal">true</span>,
@@ -765,6 +820,7 @@ cwt.Action.unitAction({
   }
 
 });
+
 cwt.Action.unitAction({
   key:<span class="hljs-string">"loadUnit"</span>,
 
@@ -786,6 +842,7 @@ cwt.Action.unitAction({
   }
 
 });
+
 cwt.Action.unitAction({
   key: <span class="hljs-string">"silofire"</span>,
 
@@ -830,6 +887,7 @@ cwt.Action.unitAction({
     );
   }
 });
+
 cwt.Action.unitAction({
   key: <span class="hljs-string">"supplyUnit"</span>,
 
@@ -855,6 +913,7 @@ cwt.Action.unitAction({
   }
 
 });
+
 cwt.Action.unitAction({
   key:<span class="hljs-string">"transferUnit"</span>,
 
@@ -879,12 +938,13 @@ cwt.Action.unitAction({
 
   parseDataBlock: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dataBlock)</span> {</span>
     cwt.Team.transferUnitToPlayer(
-      <span class="hljs-comment">/** @type {cwt.Unit} */</span> cwt.Unit.getInstance(dataBlock.p1),
-      <span class="hljs-comment">/** @type {cwt.Player} */</span> cwt.Player.getInstance(dataBlock.p2)
+      cwt.Unit.getInstance(dataBlock.p1),
+      cwt.Player.getInstance(dataBlock.p2)
     );
   }
 
 });
+
 cwt.Action.unitAction({
   key:<span class="hljs-string">"unitUnhide"</span>,
 
@@ -907,6 +967,7 @@ cwt.Action.unitAction({
     );
   }
 });
+
 cwt.Action.unitAction({
   key:<span class="hljs-string">"unloadUnit"</span>,
   multiStepAction: <span class="hljs-literal">true</span>,
@@ -958,6 +1019,7 @@ cwt.Action.unitAction({
     );
   }
 });
+
 cwt.Action.unitAction({
   key: <span class="hljs-string">"wait"</span>,
 
@@ -981,11 +1043,11 @@ cwt.Action.unitAction({
         </li>
         
         
-        <li id="section-5">
+        <li id="section-9">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p>if p2 === 1 —&gt; trapped</p>
 
@@ -1004,7 +1066,8 @@ cwt.Action.clientAction({
   toDataBlock: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, dataBlock)</span> {</span>},
 
   parseDataBlock: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dataBlock)</span> {</span>
-    controller.screenStateMachine.event(<span class="hljs-string">"toOptions_"</span>,<span class="hljs-literal">true</span>);
+    cwt.Gameflow.changeState(<span class="hljs-string">"OPTIONS"</span>);
+    cwt.Gameflow.activeState.data.invokedFromIngame = <span class="hljs-literal">true</span>;
   }
 });</pre></div></div>
             

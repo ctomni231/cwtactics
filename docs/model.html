@@ -60,6 +60,11 @@
                 </a>
               
                 
+                <a class="source" href="language.html">
+                  language.js
+                </a>
+              
+                
                 <a class="source" href="loading.html">
                   loading.js
                 </a>
@@ -113,14 +118,24 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-pi">"use strict"</span>;
+            <div class="content"><div class='highlight'><pre><span class="hljs-pi">"use strict"</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p><strong>Class Player</strong></p>
 
-<span class="hljs-comment">/**
- * @class
- */</span>
-cwt.Player = my.Class(<span class="hljs-comment">/** @lends cwt.Player.prototype */</span> {
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>cwt.Player = my.Class({
 
-  STATIC: <span class="hljs-comment">/** @lends cwt.Player */</span> {
+  STATIC: {
 
     <span class="hljs-comment">/**
      * Maximum number of instances.
@@ -134,7 +149,24 @@ cwt.Player = my.Class(<span class="hljs-comment">/** @lends cwt.Player.prototype
      *
      * @constant
      */</span>
-    MAX_UNITS: <span class="hljs-number">50</span>,
+    MAX_UNITS: <span class="hljs-number">50</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p><strong>onInstanceCreation (event)</strong></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    onInstanceCreation: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, player)</span> {</span>
+      player.id = id;
+    },
 
     <span class="hljs-comment">/**
      * @type {cwt.Player}
@@ -142,58 +174,215 @@ cwt.Player = my.Class(<span class="hljs-comment">/** @lends cwt.Player.prototype
     activeClientPlayer: <span class="hljs-literal">null</span>
   },
 
-  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-    <span class="hljs-keyword">this</span>.id = -<span class="hljs-number">1</span>;
-
-    <span class="hljs-keyword">this</span>.team = cwt.INACTIVE;
-    <span class="hljs-keyword">this</span>.gold = <span class="hljs-number">0</span>;
-    <span class="hljs-keyword">this</span>.power = <span class="hljs-number">0</span>;
-    <span class="hljs-keyword">this</span>.activePower = cwt.INACTIVE;
-    <span class="hljs-keyword">this</span>.powerUsed = <span class="hljs-number">0</span>;
-    <span class="hljs-keyword">this</span>.manpower = <span class="hljs-built_in">Math</span>.POSITIVE_INFINITY;
-    <span class="hljs-keyword">this</span>.coA = <span class="hljs-literal">null</span>;</pre></div></div>
+  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
             
         </li>
         
         
-        <li id="section-2">
+        <li id="section-4">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
+                <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>use a variable for performance reasons</p>
+              <p><strong>Player.id (int)</strong></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.numberOfUnits = <span class="hljs-number">0</span>;
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.id = -<span class="hljs-number">1</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p><strong>Player.team (int)</strong></p>
 
-    <span class="hljs-keyword">this</span>.turnOwnerVisible = <span class="hljs-literal">false</span>;
-    <span class="hljs-keyword">this</span>.clientVisible = <span class="hljs-literal">false</span>;
-    <span class="hljs-keyword">this</span>.clientControlled = <span class="hljs-literal">false</span>;
-  },
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.team = cwt.INACTIVE;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p><strong>Player.gold (int)</strong></p>
 
-  <span class="hljs-comment">/**
-   *
-   * @param level
-   * @return {boolean}
-   */</span>
-  isPowerActive: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(level)</span> {</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.gold = <span class="hljs-number">0</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p><strong>Player.power (int)</strong></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.power = <span class="hljs-number">0</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p><strong>Player.activePower (int)</strong></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.activePower = cwt.INACTIVE;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p><strong>Player.powerUsed (int)</strong></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.powerUsed = <span class="hljs-number">0</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p><strong>Player.manpower (int)</strong></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.manpower = <span class="hljs-built_in">Math</span>.POSITIVE_INFINITY;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p><strong>Player.coA (?)</strong></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.coA = <span class="hljs-literal">null</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>use a variable for performance reasons
+<strong>Player.numberOfUnits (boolean)</strong></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.numberOfUnits = <span class="hljs-number">0</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p><strong>Player.turnOwnerVisible (boolean)</strong></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.turnOwnerVisible = <span class="hljs-literal">false</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p><strong>Player.clientVisible (boolean)</strong></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.clientVisible = <span class="hljs-literal">false</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p><strong>Player.clientControlled (boolean)</strong></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.clientControlled = <span class="hljs-literal">false</span>;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p><strong>Player.isPowerActive(num): boolean</strong></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  isPowerActive: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(level)</span> {</span>
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.activePower === level;
   }
 });
 my.extendClass(cwt.Player,{STATIC:cwt.IndexMultiton});
-cwt.Player.getInstance(<span class="hljs-number">0</span>).id = <span class="hljs-number">0</span>;
-cwt.Player.getInstance(<span class="hljs-number">1</span>).id = <span class="hljs-number">1</span>;
-cwt.Player.getInstance(<span class="hljs-number">2</span>).id = <span class="hljs-number">2</span>;
-cwt.Player.getInstance(<span class="hljs-number">3</span>).id = <span class="hljs-number">3</span>;
 
 <span class="hljs-comment">/**
  * Object that holds information about objects at a given position (x,y).
  *
  * @class
  */</span>
-cwt.Position = my.Class(<span class="hljs-comment">/** @lends cwt.Position.prototype */</span> {
+cwt.Position = my.Class({
 
   constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">this</span>.clean();
@@ -247,12 +436,9 @@ cwt.Position = my.Class(<span class="hljs-comment">/** @lends cwt.Position.proto
       <span class="hljs-keyword">this</span>.propertyId = cwt.Property.getInstanceId(<span class="hljs-keyword">this</span>.tile.property);
     }
   }
-});<span class="hljs-comment">/**
- * @class
- * @extends cwt.IndexMultiton
- */</span>
+});
 
-cwt.Property = my.Class(<span class="hljs-comment">/** @lends cwt.Property.prototype */</span> {
+cwt.Property = my.Class({
 
   STATIC: <span class="hljs-comment">/** @lends cwt.Property */</span> {
 
@@ -289,11 +475,11 @@ cwt.Property = my.Class(<span class="hljs-comment">/** @lends cwt.Property.proto
         </li>
         
         
-        <li id="section-3">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>TODO</p>
 
@@ -302,11 +488,11 @@ cwt.Property = my.Class(<span class="hljs-comment">/** @lends cwt.Property.proto
         </li>
         
         
-        <li id="section-4">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>change type when the property is a
 changing type property
@@ -342,11 +528,7 @@ if (changeType) model.events.property_changeType(i, changeType);</p>
 });
 my.extendClass(cwt.Property,{STATIC:cwt.IndexMultiton});
 
-<span class="hljs-comment">/**
- *
- * @class
- */</span>
-cwt.Tile = my.Class( <span class="hljs-comment">/** @lends cwt.Tile.property */</span> {
+cwt.Tile = my.Class({
 
   constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
 
@@ -394,13 +576,9 @@ cwt.Tile = my.Class( <span class="hljs-comment">/** @lends cwt.Tile.property */<
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.visionTurnOwner &gt; <span class="hljs-number">0</span>;
   }
 
-});<span class="hljs-comment">/**
- *
- * @class
- * @extends cwt.IndexMultiton.&lt;T&gt;
- */</span>
+});
 
-cwt.Unit = my.Class(<span class="hljs-comment">/** @lends cwt.Unit.prototype */</span> {
+cwt.Unit = my.Class({
 
   STATIC: <span class="hljs-comment">/** @lends cwt.Unit */</span> {
 
@@ -471,11 +649,11 @@ cwt.Unit = my.Class(<span class="hljs-comment">/** @lends cwt.Unit.prototype */<
         </li>
         
         
-        <li id="section-5">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>TODO</p>
 
@@ -538,11 +716,11 @@ cwt.Unit = my.Class(<span class="hljs-comment">/** @lends cwt.Unit.prototype */<
         </li>
         
         
-        <li id="section-6">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>pay difference of the result health and 100 as
 gold ( in relation to the unit cost ) to the
@@ -625,11 +803,11 @@ unit owners gold depot</p>
         </li>
         
         
-        <li id="section-7">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>IF UNIT IS HIDDEN THEN YOU CAN SEE IT NOW</p>
 
@@ -651,11 +829,11 @@ unit owners gold depot</p>
         </li>
         
         
-        <li id="section-8">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>CHECK NEIGHBOURS AND HIDDEN ON NEIGHBOURS</p>
 
@@ -679,11 +857,11 @@ unit owners gold depot</p>
         </li>
         
         
-        <li id="section-9">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>IF UNIT IS HIDDEN THEN YOU CAN SEE IT NOW</p>
 
@@ -705,11 +883,11 @@ unit owners gold depot</p>
         </li>
         
         
-        <li id="section-10">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>CHECK NEIGHBOURS AND HIDDEN ON NEIGHBOURS</p>
 
@@ -785,11 +963,11 @@ model.event_on(<span class="hljs-string">"clearUnitPosition"</span>,<span class=
         </li>
         
         
-        <li id="section-11">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>CHECK HIDDEN, BUT VISIBLE NEIGHBOURS</p>
 
@@ -824,9 +1002,7 @@ model.event_on("unitUnhide_invoked",function( uid ){
 
 */
 });
-my.extendClass(cwt.Unit,{STATIC:cwt.IndexMultiton});/**
- * @namespace
- */
+my.extendClass(cwt.Unit,{STATIC:cwt.IndexMultiton});
 
 cwt.Gameround = {
 
@@ -904,11 +1080,11 @@ cwt.Gameround = {
         </li>
         
         
-        <li id="section-12">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>found alive player</p>
 
@@ -1106,11 +1282,11 @@ cwt.Map = {
         </li>
         
         
-        <li id="section-13">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>invoke the callback on all tiles in range
 if a callback returns <code>false</code> then the process will be stopped</p>
@@ -1134,11 +1310,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-14">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>generates ID map</p>
 
@@ -1155,11 +1331,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-15">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>create number for type</p>
 
@@ -1175,11 +1351,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>save property</p>
 
@@ -1200,11 +1376,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-17">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>save unit</p>
 
@@ -1232,11 +1408,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-18">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>generate type map</p>
 
@@ -1262,11 +1438,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-19">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <p>map</p>
 
@@ -1281,11 +1457,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-20">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>prepare properties</p>
 
@@ -1303,11 +1479,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-21">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>saved properties</p>
 
@@ -1320,11 +1496,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-22">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>check_ map data</p>
 
@@ -1339,11 +1515,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-23">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>cwt.assert(
  (util.isString(propData[3]) &amp;&amp; !util.isUndefined(model.data_tileSheets[propData[3]].capturePoints)) ||
@@ -1357,11 +1533,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-24">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p>cwt.assert((util.intRange(propData[4], 1, // capture points
  model.data_tileSheets[propData[3]].capturePoints)) ||
@@ -1374,11 +1550,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-25">
+        <li id="section-39">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p>copy data into model</p>
 
@@ -1394,11 +1570,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-26">
+        <li id="section-40">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <p>prepare units</p>
 
@@ -1415,11 +1591,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-27">
+        <li id="section-41">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <p>saved units</p>
 
@@ -1431,11 +1607,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-28">
+        <li id="section-42">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
               <p>check_ map data</p>
 
@@ -1457,11 +1633,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-29">
+        <li id="section-43">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
               <p>copy data into model</p>
 
@@ -1482,11 +1658,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-30">
+        <li id="section-44">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
               <p>reset player data</p>
 
@@ -1503,11 +1679,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-31">
+        <li id="section-45">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
               <p>grab save game data</p>
 
@@ -1520,11 +1696,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-32">
+        <li id="section-46">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
               <p>check_ data</p>
 
@@ -1539,11 +1715,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-33">
+        <li id="section-47">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
               <p>set player data</p>
 
@@ -1587,11 +1763,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-34">
+        <li id="section-48">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
               <p>place blocker</p>
 
@@ -1605,11 +1781,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-35">
+        <li id="section-49">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
               <p>place actor</p>
 
@@ -1628,11 +1804,11 @@ if a callback returns <code>false</code> then the process will be stopped</p>
         </li>
         
         
-        <li id="section-36">
+        <li id="section-50">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-50">&#182;</a>
               </div>
               <p>// Places the necessary meta units for bigger properties.</p>
 

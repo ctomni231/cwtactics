@@ -2438,12 +2438,12 @@ cwt.Loading = {
     callAsSequence(loaders, function () {
 
       // remove functions that never be called again
-      delete this.loaders_;
-      delete this.create;
-      delete this.startProcess;
+      delete cwt.Loading.loaders_;
+      delete cwt.Loading.create;
+      delete cwt.Loading.startProcess;
 
       // place marker
-      this.initialized = true;
+      cwt.Loading.initialized = true;
 
       // invoke callback if given
       if (callback) {
