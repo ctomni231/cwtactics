@@ -60,11 +60,6 @@
                 </a>
               
                 
-                <a class="source" href="language.html">
-                  language.js
-                </a>
-              
-                
                 <a class="source" href="loading.html">
                   loading.js
                 </a>
@@ -227,7 +222,7 @@ cwt.Gameflow.addState({
   id: <span class="hljs-string">"LOADING_SCREEN"</span>,
 
   init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-    <span class="hljs-keyword">this</span>.bar = <span class="hljs-keyword">new</span> cwt.UILoadingBar(<span class="hljs-number">10</span>, <span class="hljs-built_in">parseInt</span>(cwt.Screen.height / <span class="hljs-number">2</span>, <span class="hljs-number">10</span>) - <span class="hljs-number">10</span>, cwt.Screen.width - <span class="hljs-number">20</span>, <span class="hljs-number">20</span>);
+    <span class="hljs-keyword">this</span>.bar = <span class="hljs-keyword">new</span> cwt.LoadingBar(<span class="hljs-number">10</span>, <span class="hljs-built_in">parseInt</span>(cwt.Screen.height / <span class="hljs-number">2</span>, <span class="hljs-number">10</span>) - <span class="hljs-number">10</span>, cwt.Screen.width - <span class="hljs-number">20</span>, <span class="hljs-number">20</span>);
   },
 
   enter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
@@ -1886,7 +1881,7 @@ cwt.Gameflow.addMenuState({
       .addColGap(<span class="hljs-number">4</span>)
       .addButton(<span class="hljs-number">6</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-string">"OPTIONS_WIPE_OUT_YES"</span>, cwt.UIField.STYLE_NORMAL, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
         cwt.Storage.wipeOutAll(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-          <span class="hljs-keyword">delete</span> localStorage[<span class="hljs-string">"cwt_hasCache"</span>];
+          <span class="hljs-keyword">delete</span> localStorage.cwt_hasCache;
           document.location.reload();
         });
       });
@@ -1917,7 +1912,7 @@ cwt.Gameflow.addMenuState({
     };
 
     <span class="hljs-keyword">var</span> saveStep2 = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-      cwt.Gameflow.changeState( <span class="hljs-string">"MAIN_MENU"</span>); <span class="hljs-comment">// TODO return back into ingame idle</span>
+      cwt.Gameflow.changeState(<span class="hljs-string">"MAIN_MENU"</span>);
     };
 
     <span class="hljs-keyword">var</span> updateSound = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(isSFX, change, state)</span> {</span>
@@ -2124,11 +2119,11 @@ cwt.Gameflow.addMenuState({
       .addColGap(w)
       .addButton(<span class="hljs-number">8</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-string">"OPTIONS_MENU_CHANGE_KEYBOARD_LAYOUT"</span>, cwt.UIField.STYLE_NSW, <span class="hljs-number">8</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
         cwt.Gameflow.changeState(<span class="hljs-string">"REMAP_KEY_MAPPING"</span>);
-        cwt.Gameflow.activeState.mode = <span class="hljs-number">0</span>;           <span class="hljs-comment">// TODO use data of state</span>
+        cwt.Gameflow.activeState.mode = <span class="hljs-number">0</span>;
       })
       .addButton(<span class="hljs-number">8</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-string">"OPTIONS_MENU_CHANGE_GAMEPAD_LAYOUT"</span>, cwt.UIField.STYLE_NES, <span class="hljs-number">8</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
         cwt.Gameflow.changeState(<span class="hljs-string">"REMAP_KEY_MAPPING"</span>);
-        cwt.Gameflow.activeState.mode = <span class="hljs-number">1</span>;           <span class="hljs-comment">// TODO use data of state</span>
+        cwt.Gameflow.activeState.mode = <span class="hljs-number">1</span>;
       })
       .breakLine()</pre></div></div>
             

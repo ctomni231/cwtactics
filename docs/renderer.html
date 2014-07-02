@@ -60,11 +60,6 @@
                 </a>
               
                 
-                <a class="source" href="language.html">
-                  language.js
-                </a>
-              
-                
                 <a class="source" href="loading.html">
                   loading.js
                 </a>
@@ -118,7 +113,15 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-pi">"use strict"</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-pi">"use strict"</span>;
+
+<span class="hljs-comment">/**
+ * Renders the cursor to the UI layer.
+ */</span>
+cwt.MapRenderer.eraseCursor = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+  <span class="hljs-keyword">var</span> ctx = cwt.Screen.layerUI.getContext();
+  <span class="hljs-keyword">var</span> x = (cwt.Cursor.x - cwt.Screen.offsetX) * cwt.TILE_BASE;
+  <span class="hljs-keyword">var</span> y = (cwt.Cursor.y - cwt.Screen.offsetY) * cwt.TILE_BASE;</pre></div></div>
             
         </li>
         
@@ -129,2018 +132,17 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p><strong>Class Sprite</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>cwt.Sprite = my.Class({
-
-  STATIC: {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-3">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    MINIMAP_2x2: <span class="hljs-number">0</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    MINIMAP_4x4: <span class="hljs-number">1</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-5">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
-              </div>
-              <hr>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    UNIT_STATES: <span class="hljs-number">30</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    UNIT_RED: <span class="hljs-number">0</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-9">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    UNIT_BLUE: <span class="hljs-number">6</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-10">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    UNIT_GREEN: <span class="hljs-number">12</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    UNIT_YELLOW: <span class="hljs-number">18</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-12">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    UNIT_SHADOW_MASK: <span class="hljs-number">24</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-13">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    UNIT_STATE_IDLE: <span class="hljs-number">0</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-14">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    UNIT_STATE_IDLE_INVERTED: <span class="hljs-number">1</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-15">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    UNIT_STATE_LEFT: <span class="hljs-number">2</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-16">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    UNIT_STATE_RIGHT: <span class="hljs-number">3</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-17">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    UNIT_STATE_UP: <span class="hljs-number">4</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-18">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    UNIT_STATE_DOWN: <span class="hljs-number">5</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-19">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
-              </div>
-              <hr>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-20">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
-              </div>
-              
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-21">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    TILE_STATES: <span class="hljs-number">2</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-22">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    TILE_SHADOW: <span class="hljs-number">1</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-23">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
-              </div>
-              <hr>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-24">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
-              </div>
-              
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-25">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    PROPERTY_STATES: <span class="hljs-number">6</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-26">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    PROPERTY_RED: <span class="hljs-number">0</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-27">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    PROPERTY_BLUE: <span class="hljs-number">1</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-28">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    PROPERTY_GREEN: <span class="hljs-number">2</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-29">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    PROPERTY_YELLOW: <span class="hljs-number">3</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-30">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    PROPERTY_NEUTRAL: <span class="hljs-number">4</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-31">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    PROPERTY_SHADOW_MASK: <span class="hljs-number">5</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-32">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
-              </div>
-              <hr>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-33">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
-              </div>
-              
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-34">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    SYMBOL_HP: <span class="hljs-number">0</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-35">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    SYMBOL_AMMO: <span class="hljs-number">1</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-36">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    SYMBOL_FUEL: <span class="hljs-number">2</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-37">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    SYMBOL_LOAD: <span class="hljs-number">3</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-38">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    SYMBOL_CAPTURE: <span class="hljs-number">4</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-39">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    SYMBOL_ATT: <span class="hljs-number">5</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-40">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    SYMBOL_VISION: <span class="hljs-number">6</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-41">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    SYMBOL_MOVE: <span class="hljs-number">7</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-42">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    SYMBOL_UNKNOWN: <span class="hljs-number">8</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-43">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    SYMBOL_HIDDEN: <span class="hljs-number">9</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-44">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    SYMBOL_DEFENSE: <span class="hljs-number">10</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-45">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-45">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    SYMBOL_RANK_1: <span class="hljs-number">11</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-46">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    SYMBOL_RANK_2: <span class="hljs-number">12</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-47">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    SYMBOL_RANK_3: <span class="hljs-number">13</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-48">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
-              </div>
-              <hr>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-49">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-49">&#182;</a>
-              </div>
-              
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-50">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-50">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    DIRECTION_N: <span class="hljs-number">0</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-51">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-51">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    DIRECTION_S: <span class="hljs-number">1</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-52">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-52">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    DIRECTION_W: <span class="hljs-number">2</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-53">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-53">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    DIRECTION_E: <span class="hljs-number">3</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-54">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-54">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    DIRECTION_SW: <span class="hljs-number">4</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-55">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-55">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    DIRECTION_SE: <span class="hljs-number">5</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-56">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-56">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    DIRECTION_NW: <span class="hljs-number">6</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-57">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-57">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    DIRECTION_NE: <span class="hljs-number">7</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-58">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-58">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    DIRECTION_NS: <span class="hljs-number">8</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-59">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-59">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    DIRECTION_WE: <span class="hljs-number">9</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-60">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-60">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    DIRECTION_ALL: <span class="hljs-number">8</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-61">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-61">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    DIRECTION_UP: <span class="hljs-number">0</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-62">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-62">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    DIRECTION_DOWN: <span class="hljs-number">1</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-63">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-63">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    DIRECTION_LEFT: <span class="hljs-number">2</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-64">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-64">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    DIRECTION_RIGHT: <span class="hljs-number">3</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-65">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-65">&#182;</a>
-              </div>
-              <hr>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-66">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-66">&#182;</a>
-              </div>
-              
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-67">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-67">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    FOCUS_MOVE: <span class="hljs-number">0</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-68">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-68">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    FOCUS_ATTACK: <span class="hljs-number">1</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-69">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-69">&#182;</a>
-              </div>
-              <hr>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-70">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-70">&#182;</a>
-              </div>
-              
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-71">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-71">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    COLOR_MAP_PROPERTY: <span class="hljs-number">0</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-72">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-72">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    COLOR_MAP_UNIT: <span class="hljs-number">1</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-73">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-73">&#182;</a>
-              </div>
-              <hr>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-74">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-74">&#182;</a>
-              </div>
-              
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-75">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-75">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    EXPLOSION_GROUND: <span class="hljs-number">0</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-76">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-76">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    EXPLOSION_AIR: <span class="hljs-number">1</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-77">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-77">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    EXPLOSION_DUST: <span class="hljs-number">2</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-78">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-78">&#182;</a>
-              </div>
-              <p><strong>Const</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    EXPLOSION_SEA: <span class="hljs-number">3</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-79">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-79">&#182;</a>
-              </div>
-              <hr>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-80">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-80">&#182;</a>
-              </div>
-              
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-    <span class="hljs-comment">/**
-     *
-     * @param {cwt.Sprite} sprite
-     * @return {string}
-     */</span>
-    toJSON: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sprite)</span> {</span>
-      <span class="hljs-keyword">if</span> (cwt.DEBUG) cwt.assert(sprite <span class="hljs-keyword">instanceof</span> cwt.Sprite);
-
-      <span class="hljs-keyword">var</span> data = [];
-      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = sprite.images.length; i &lt; e; i++) {
-        data[i] = Base64Helper.canvasToBase64(sprite.images[i]);
-      }
-
-      <span class="hljs-keyword">return</span> <span class="hljs-built_in">JSON</span>.stringify(data);
-    },
-
-    <span class="hljs-comment">/**
-     * Loads a sprite from the cache.
-     *
-     * @param spriteData
-     * @return {cwt.Sprite}
-     */</span>
-    fromJSON: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(spriteData)</span> {</span>
-      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> spriteData === <span class="hljs-string">"string"</span>) {
-        spriteData = <span class="hljs-built_in">JSON</span>.parse(spriteData);
-      }
-
-      <span class="hljs-keyword">var</span> sprite = <span class="hljs-keyword">new</span> cwt.Sprite(spriteData.length);
-      <span class="hljs-keyword">var</span> data = sprite.images;
-      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = spriteData.length; i &lt; e; i++) {
-        data[i] = Base64Helper.base64ToImage(spriteData[i]);
-      }
-
-      <span class="hljs-keyword">return</span> sprite;
-    }
-  },
-
-  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(indexes)</span> {</span>
-    <span class="hljs-keyword">this</span>.images = [];
-
-    <span class="hljs-keyword">while</span> (indexes &gt; <span class="hljs-number">0</span>) {
-      <span class="hljs-keyword">this</span>.images.push(<span class="hljs-literal">null</span>);
-      indexes--;
-    }
-  },
-
-  <span class="hljs-comment">/**
-   *
-   * @return {Number}
-   */</span>
-  getNumberOfImages: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.images.length;
-  },
-
-  <span class="hljs-comment">/**
-   *
-   * @param {number} index
-   * @param {HTMLImageElement|HTMLCanvasElement} image
-   */</span>
-  setImage: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(index, image)</span> {</span>
-    <span class="hljs-keyword">if</span> (cwt.DEBUG) cwt.assert(index &gt;= <span class="hljs-number">0</span> &amp;&amp; index &lt; <span class="hljs-keyword">this</span>.images.length);
-    <span class="hljs-keyword">this</span>.images[index] = image;
-  },
-
-  <span class="hljs-comment">/**
-   *
-   * @param index
-   * @return {HTMLImageElement|HTMLCanvasElement}
-   */</span>
-  getImage: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(index)</span> {</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.images[index];
-  }
-});</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-81">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-81">&#182;</a>
-              </div>
-              <p><strong>Class TileVariantInfo</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>cwt.TileVariantInfo = my.Class({
-
-  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(desc, connection)</span> {</span>
-    <span class="hljs-keyword">this</span>.desc = desc;
-    <span class="hljs-keyword">this</span>.connection = connection;
-  },</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-82">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-82">&#182;</a>
-              </div>
-              <p><strong>TileVariantInfo.grabShortKey(string): string</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  grabShortKey: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(type)</span> {</span>
-    <span class="hljs-keyword">if</span> (type &amp;&amp; <span class="hljs-keyword">this</span>.desc[type]) <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.desc[type];
-    <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-string">""</span>;
-  },</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-83">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-83">&#182;</a>
-              </div>
-              <p><strong>TileVariantInfo.getVariant(string, string, string, string, string?, string?, string?, string?): int</strong></p>
-<p>Returns the variant number in relation to a given set of neighbour types.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  getVariant: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(typeN, typeE, typeS, typeW, typeNE, typeSE, typeSW, typeNW)</span> {</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-84">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-84">&#182;</a>
-              </div>
-              <p>grab shorts</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    typeN = <span class="hljs-keyword">this</span>.grabShortKey(typeN);
-    typeNE = <span class="hljs-keyword">this</span>.grabShortKey(typeNE);
-    typeE = <span class="hljs-keyword">this</span>.grabShortKey(typeE);
-    typeSE = <span class="hljs-keyword">this</span>.grabShortKey(typeSE);
-    typeS = <span class="hljs-keyword">this</span>.grabShortKey(typeS);
-    typeSW = <span class="hljs-keyword">this</span>.grabShortKey(typeSW);
-    typeW = <span class="hljs-keyword">this</span>.grabShortKey(typeW);
-    typeNW = <span class="hljs-keyword">this</span>.grabShortKey(typeNW);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-85">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-85">&#182;</a>
-              </div>
-              <p>search variant</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.connection.length; i &lt; e; i++) {
-      <span class="hljs-keyword">var</span> cConn = <span class="hljs-keyword">this</span>.connection[i];
-      <span class="hljs-keyword">if</span> (cConn.length === <span class="hljs-number">5</span>) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-86">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-86">&#182;</a>
-              </div>
-              <p>check_ plus</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">1</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">1</span>] !== typeN) <span class="hljs-keyword">continue</span>;
-        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">2</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">2</span>] !== typeE) <span class="hljs-keyword">continue</span>;
-        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">3</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">3</span>] !== typeS) <span class="hljs-keyword">continue</span>;
-        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">4</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">4</span>] !== typeW) <span class="hljs-keyword">continue</span>;
-
-      } <span class="hljs-keyword">else</span> {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-87">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-87">&#182;</a>
-              </div>
-              <p>check_ cross</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">1</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">1</span>] !== typeN) <span class="hljs-keyword">continue</span>;
-        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">2</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">2</span>] !== typeNE) <span class="hljs-keyword">continue</span>;
-        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">3</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">3</span>] !== typeE) <span class="hljs-keyword">continue</span>;
-        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">4</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">4</span>] !== typeSE) <span class="hljs-keyword">continue</span>;
-        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">5</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">5</span>] !== typeS) <span class="hljs-keyword">continue</span>;
-        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">6</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">6</span>] !== typeSW) <span class="hljs-keyword">continue</span>;
-        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">7</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">7</span>] !== typeW) <span class="hljs-keyword">continue</span>;
-        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">8</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">8</span>] !== typeNW) <span class="hljs-keyword">continue</span>;
-      }
-
-      <span class="hljs-keyword">return</span> cConn[<span class="hljs-number">0</span>];
-    }
-  }
-});
-
-<span class="hljs-comment">/**
- *
- * @class
- */</span>
-cwt.UIField = my.Class(<span class="hljs-comment">/** @lends cwt.UIField.prototype */</span> {
-
-  STATIC: {
-    STYLE_NONE: -<span class="hljs-number">1</span>,
-    STYLE_NORMAL: <span class="hljs-number">0</span>,
-    STYLE_S: <span class="hljs-number">1</span>,
-    STYLE_N: <span class="hljs-number">2</span>,
-    STYLE_W: <span class="hljs-number">3</span>,
-    STYLE_E: <span class="hljs-number">4</span>,
-    STYLE_NE: <span class="hljs-number">5</span>,
-    STYLE_NW: <span class="hljs-number">6</span>,
-    STYLE_ES: <span class="hljs-number">7</span>,
-    STYLE_SW: <span class="hljs-number">8</span>,
-    STYLE_EW: <span class="hljs-number">13</span>,
-    STYLE_NS: <span class="hljs-number">14</span>,
-    STYLE_ESW: <span class="hljs-number">9</span>,
-    STYLE_NEW: <span class="hljs-number">10</span>,
-    STYLE_NSW: <span class="hljs-number">11</span>,
-    STYLE_NES: <span class="hljs-number">12</span>
-  },
-
-  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, w, h, text, fsize, style, actionFn)</span> {</span>
-    <span class="hljs-keyword">this</span>.x = x;
-    <span class="hljs-keyword">this</span>.y = y;
-    <span class="hljs-keyword">this</span>.width = w;
-    <span class="hljs-keyword">this</span>.height = h;
-    <span class="hljs-keyword">this</span>.fsize = fsize;
-    <span class="hljs-keyword">this</span>.style = style;
-    <span class="hljs-keyword">this</span>.inFocus = <span class="hljs-literal">false</span>;
-    <span class="hljs-keyword">this</span>.action = actionFn;
-    <span class="hljs-keyword">this</span>.inactive = <span class="hljs-literal">false</span>;
-
-    <span class="hljs-keyword">this</span>.key = text;
-    <span class="hljs-keyword">this</span>.text = (text) ? cwt.Localization.forKey(text) : text;
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.text.search(<span class="hljs-regexp">/\n/</span>) !== -<span class="hljs-number">1</span>) {
-      <span class="hljs-keyword">this</span>.text = <span class="hljs-keyword">this</span>.text.split(<span class="hljs-string">"\n"</span>);
-    }
-  },
-
-  <span class="hljs-comment">/**
-   *
-   * @param x
-   * @param y
-   * @return {boolean}
-   */</span>
-  positionInButton: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y)</span> {</span>
-    <span class="hljs-keyword">return</span> (x &gt;= <span class="hljs-keyword">this</span>.x &amp;&amp; x &lt; <span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width &amp;&amp; y &gt;= <span class="hljs-keyword">this</span>.y &amp;&amp; y &lt; <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height);
-  },
-
-  erase: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ctx)</span> {</span>
-    ctx.clearRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y, <span class="hljs-keyword">this</span>.width, <span class="hljs-keyword">this</span>.height);
-  },
-
-  <span class="hljs-comment">/**
-   *
-   * @param {CanvasRenderingContext2D} ctx
-   */</span>
-  draw: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ctx)</span> {</span>
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.style === cwt.UIField.STYLE_NONE) {
-      <span class="hljs-keyword">return</span>;
-    }
-
-    ctx.fillStyle = (<span class="hljs-keyword">this</span>.inFocus) ? <span class="hljs-string">"rgb(220,220,220)"</span> : <span class="hljs-string">"white"</span>;
-    ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y, <span class="hljs-keyword">this</span>.width, <span class="hljs-keyword">this</span>.height);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-88">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-88">&#182;</a>
-              </div>
-              <p>draw borders</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    ctx.fillStyle = <span class="hljs-string">"rgb(60,60,60)"</span>;
-    <span class="hljs-keyword">switch</span> (<span class="hljs-keyword">this</span>.style) {
-
-      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_NORMAL :
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">2</span>);
-        ctx.fillStyle = (<span class="hljs-keyword">this</span>.inFocus) ? <span class="hljs-string">"rgb(220,220,220)"</span> : <span class="hljs-string">"white"</span>;
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">6</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">6</span>);
-        <span class="hljs-keyword">break</span>;
-
-      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_N :
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width, <span class="hljs-number">2</span>);
-        <span class="hljs-keyword">break</span>;
-
-      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_E :
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height);
-        <span class="hljs-keyword">break</span>;
-
-      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_S :
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width, <span class="hljs-number">2</span>);
-        <span class="hljs-keyword">break</span>;
-
-      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_W :
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height);
-        <span class="hljs-keyword">break</span>;
-
-      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_NE :
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
-        <span class="hljs-keyword">break</span>;
-
-      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_NW :
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width, <span class="hljs-number">2</span>);
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
-        <span class="hljs-keyword">break</span>;
-
-      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_ES :
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
-        <span class="hljs-keyword">break</span>;
-
-      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_SW :
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
-        <span class="hljs-keyword">break</span>;
-
-      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_EW :
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height);
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height);
-        <span class="hljs-keyword">break</span>;
-
-      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_NS :
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width, <span class="hljs-number">2</span>);
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width, <span class="hljs-number">2</span>);
-        <span class="hljs-keyword">break</span>;
-
-      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_ESW :
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">2</span>, <span class="hljs-number">2</span>);
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
-        <span class="hljs-keyword">break</span>;
-
-      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_NEW :
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">2</span>, <span class="hljs-number">2</span>);
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
-        <span class="hljs-keyword">break</span>;
-
-      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_NSW :
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">2</span>);
-        <span class="hljs-keyword">break</span>;
-
-      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_NES :
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">2</span>);
-        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
-        <span class="hljs-keyword">break</span>;
-    }
-
-    ctx.fillStyle = <span class="hljs-string">"black"</span>;
-    ctx.font = <span class="hljs-keyword">this</span>.fsize + <span class="hljs-string">"pt "</span> + cwt.GAME_FONT;
-
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.text) {
-      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-keyword">this</span>.text === <span class="hljs-string">"string"</span>) {
-        <span class="hljs-keyword">var</span> tw = ctx.measureText(<span class="hljs-keyword">this</span>.text);
-        ctx.fillText(
-          <span class="hljs-keyword">this</span>.text,
-          <span class="hljs-keyword">this</span>.x + (<span class="hljs-keyword">this</span>.width / <span class="hljs-number">2</span>) - (tw.width / <span class="hljs-number">2</span>),
-          <span class="hljs-keyword">this</span>.y + (<span class="hljs-keyword">this</span>.height / <span class="hljs-number">2</span>) + <span class="hljs-keyword">this</span>.fsize / <span class="hljs-number">2</span>);
-      } <span class="hljs-keyword">else</span> {
-        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.text.length; i &lt; e; i++) {
-          <span class="hljs-keyword">var</span> tw = ctx.measureText(<span class="hljs-keyword">this</span>.text[i]);
-          ctx.fillText(
-            <span class="hljs-keyword">this</span>.text[i],
-            <span class="hljs-keyword">this</span>.x + (<span class="hljs-keyword">this</span>.width / <span class="hljs-number">2</span>) - (tw.width / <span class="hljs-number">2</span>),
-            <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.fsize + ((i + <span class="hljs-number">1</span>) * (<span class="hljs-keyword">this</span>.fsize + <span class="hljs-number">8</span>)));
-        }
-      }
-    }
-  }
-});
-
-<span class="hljs-comment">/**
- * @class
- */</span>
-cwt.UIButtonGroup = my.Class(<span class="hljs-comment">/** @lends cwt.UIButtonGroup.prototype */</span> {
-
-  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-    <span class="hljs-keyword">this</span>.elements = [];
-    <span class="hljs-keyword">this</span>.selected = -<span class="hljs-number">1</span>;
-  },
-
-  <span class="hljs-comment">/**
-   *
-   * @param {cwt.UIField} el
-   */</span>
-  addElement: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> {</span>
-    <span class="hljs-keyword">this</span>.elements.push(el);
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.selected === -<span class="hljs-number">1</span> &amp;&amp; el.action) {
-      <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.elements.length - <span class="hljs-number">1</span>].inFocus = <span class="hljs-literal">true</span>;
-      <span class="hljs-keyword">this</span>.selected = <span class="hljs-keyword">this</span>.elements.length - <span class="hljs-number">1</span>;
-    }
-  },
-
-  <span class="hljs-comment">/**
-   * Returns the current active button.
-   *
-   * @return {cwt.UIField}
-   */</span>
-  activeButton: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected];
-  },
-
-  <span class="hljs-comment">/**
-   * Returns a button by it's key.
-   *
-   * @param {String} key
-   * @return {cwt.UIField}
-   */</span>
-  getButtonByKey: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key)</span> {</span>
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.elements.length; i &lt; e; i++) {
-      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.elements[i].key === key) {
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.elements[i];
-      }
-    }
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
-  },
-
-  <span class="hljs-comment">/**
-   *
-   * @param {RegExp} reg
-   */</span>
-  getButtonsByReg: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(reg)</span> {</span>
-    <span class="hljs-keyword">var</span> arr = [];
-
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.elements.length; i &lt; e; i++) {
-      <span class="hljs-keyword">if</span> (reg.test(<span class="hljs-keyword">this</span>.elements[i].key)) {
-        arr.push(<span class="hljs-keyword">this</span>.elements[i]);
-      }
-    }
-
-    <span class="hljs-keyword">return</span> arr;
-  },
-
-  <span class="hljs-comment">/**
-   * Updates the index of the selected button in interconnection to a given position.
-   *
-   * @param {Number} x
-   * @param {Number} y
-   * @return {boolean} true, if the index was updated, else false
-   */</span>
-  updateIndex: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y)</span> {</span>
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.elements.length; i &lt; e; i++) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-89">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-89">&#182;</a>
-              </div>
-              <p>inactive element</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.elements[i].action || <span class="hljs-keyword">this</span>.elements[i].inactive) {
-        <span class="hljs-keyword">continue</span>;
-      }
-
-      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.elements[i].positionInButton(x, y)) {
-        <span class="hljs-keyword">if</span> (i === <span class="hljs-keyword">this</span>.selected) {
-          <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-        }
-
-        <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].inFocus = <span class="hljs-literal">false</span>;
-        <span class="hljs-keyword">this</span>.selected = i;
-        <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].inFocus = <span class="hljs-literal">true</span>;
-
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-      }
-    }
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-  },
-
-  <span class="hljs-comment">/**
-   *
-   * @param input
-   * @return {boolean} true, if the index was updated, else false
-   */</span>
-  handleInput: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(input)</span> {</span>
-    <span class="hljs-keyword">if</span> (cwt.DEBUG) cwt.assert(input !== <span class="hljs-literal">null</span>);
-
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> input !== <span class="hljs-string">"number"</span>) {
-      input = input.key;
-    }
-
-    <span class="hljs-keyword">var</span> res = <span class="hljs-literal">true</span>;
-    <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].inFocus = <span class="hljs-literal">false</span>;
-
-    <span class="hljs-keyword">switch</span> (input) {
-      <span class="hljs-keyword">case</span> cwt.Input.TYPE_UP:
-      <span class="hljs-keyword">case</span> cwt.Input.TYPE_LEFT:
-        <span class="hljs-keyword">do</span> {
-          <span class="hljs-keyword">this</span>.selected--;
-          <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.selected &lt; <span class="hljs-number">0</span>) {
-            <span class="hljs-keyword">this</span>.selected = <span class="hljs-keyword">this</span>.elements.length - <span class="hljs-number">1</span>;
-          }
-        } <span class="hljs-keyword">while</span> (!<span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].action || <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].inactive);
-        <span class="hljs-keyword">break</span>;
-
-      <span class="hljs-keyword">case</span> cwt.Input.TYPE_RIGHT:
-      <span class="hljs-keyword">case</span> cwt.Input.TYPE_DOWN:
-        <span class="hljs-keyword">do</span> {
-          <span class="hljs-keyword">this</span>.selected++;
-          <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.selected &gt;= <span class="hljs-keyword">this</span>.elements.length) {
-            <span class="hljs-keyword">this</span>.selected = <span class="hljs-number">0</span>;
-          }
-        } <span class="hljs-keyword">while</span> (!<span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].action || <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].inactive);
-        <span class="hljs-keyword">break</span>;
-
-      <span class="hljs-keyword">default</span> :
-        res = <span class="hljs-literal">false</span>;
-    }
-
-    <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].inFocus = <span class="hljs-literal">true</span>;
-
-    <span class="hljs-keyword">return</span> res;
-  },
-
-  <span class="hljs-comment">/**
-   * Draws the screen layout into a given context of a canvas object.
-   *
-   * @param {CanvasRenderingContext2D} ctx
-   */</span>
-  draw: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ctx)</span> {</span>
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.elements.length; i &lt; e; i++) {
-      <span class="hljs-keyword">var</span> el = <span class="hljs-keyword">this</span>.elements[i];
-
-      <span class="hljs-keyword">if</span> (!el.inactive) {
-        el.draw(ctx);
-      }
-    }
-  }
-});
-
-<span class="hljs-comment">/**
- *
- * @class
- * @extends {cwt.UIField}
- */</span>
-cwt.UICheckboxField = my.Class(<span class="hljs-literal">null</span>, cwt.UIField, <span class="hljs-comment">/** @lends cwt.UICheckboxField.prototype */</span> {
-
-  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, w, h, text, fsize, style)</span> {</span>
-    cwt.UIField.call(<span class="hljs-keyword">this</span>, x, y, w, h, text, fsize, style, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(button, state)</span> {</span>
-      state.rendered = <span class="hljs-literal">false</span>;
-      button.checked = !button.checked;
-    });
-    <span class="hljs-keyword">this</span>.text = <span class="hljs-string">""</span>;
-    <span class="hljs-keyword">this</span>.checked = <span class="hljs-literal">false</span>;
-  },
-
-  <span class="hljs-comment">/**
-   *
-   * @param {CanvasRenderingContext2D} ctx
-   */</span>
-  draw: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ctx)</span> {</span>
-    cwt.UIField.prototype.draw.call(<span class="hljs-keyword">this</span>, ctx);
-
-    ctx.fillStyle = <span class="hljs-string">"black"</span>;
-    ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">4</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">4</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">8</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">8</span>);
-
-    ctx.fillStyle = (<span class="hljs-keyword">this</span>.checked) ? <span class="hljs-string">"rgb(60,60,60)"</span> : <span class="hljs-string">"white"</span>;
-    ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">5</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">5</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">10</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">10</span>);
-  }
-});
-
-<span class="hljs-comment">/**
- *
- * @class
- * @extends {cwt.UIField}
- */</span>
-cwt.UICustomField = my.Class(<span class="hljs-literal">null</span>, cwt.UIField, <span class="hljs-comment">/** @lends cwt.UIField.prototype */</span> {
-
-  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, w, h, key, drawFn)</span> {</span>
-    cwt.UIField.call(<span class="hljs-keyword">this</span>, x, y, w, h, key, <span class="hljs-number">0</span>, cwt.UIField.STYLE_NORMAL);
-    <span class="hljs-keyword">this</span>.text = <span class="hljs-string">""</span>;
-    <span class="hljs-keyword">this</span>.draw = drawFn;
-  }
-});
-
-cwt.UILoadingBar = my.Class({
-
-  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, w, h)</span> {</span>
-    <span class="hljs-keyword">this</span>.x = x;
-    <span class="hljs-keyword">this</span>.y = y;
-    <span class="hljs-keyword">this</span>.width = w;
-    <span class="hljs-keyword">this</span>.height = h;
-    <span class="hljs-keyword">this</span>.process = <span class="hljs-number">0</span>;
-  },
-
-  draw: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ctx)</span> {</span>
-    ctx.fillStyle = <span class="hljs-string">"white"</span>;
-    ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y, <span class="hljs-keyword">this</span>.width, <span class="hljs-keyword">this</span>.height);
-
-    ctx.fillStyle = <span class="hljs-string">"blue"</span>;
-    ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y, (<span class="hljs-built_in">parseInt</span>(<span class="hljs-keyword">this</span>.width * (<span class="hljs-keyword">this</span>.process / <span class="hljs-number">100</span>), <span class="hljs-number">10</span>)), <span class="hljs-keyword">this</span>.height);
-  },
-
-  setPercentage: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(p)</span> {</span>
-    <span class="hljs-keyword">if</span> (cwt.DEBUG) {
-      cwt.assert(p &gt;= <span class="hljs-number">0</span> &amp;&amp; p &lt;= <span class="hljs-number">100</span>);
-    }
-
-    <span class="hljs-keyword">this</span>.process = p;
-  }
-});
-
-<span class="hljs-comment">/**
- * @class
- * @extends {cwt.UIButtonGroup}
- */</span>
-cwt.UIPositionableButtonGroup = my.Class(<span class="hljs-literal">null</span>, cwt.UIButtonGroup, <span class="hljs-comment">/** @lends cwt.UIPositionableButtonGroup.prototype */</span> {
-
-  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-    cwt.UIButtonGroup.call(<span class="hljs-keyword">this</span>);
-    <span class="hljs-keyword">this</span>.x = <span class="hljs-number">0</span>;
-    <span class="hljs-keyword">this</span>.y = <span class="hljs-number">0</span>;
-  },
-
-  setMenuPosition: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y)</span> {</span>
-    <span class="hljs-keyword">var</span> diffX = x - <span class="hljs-keyword">this</span>.x;
-    <span class="hljs-keyword">var</span> diffY = y - <span class="hljs-keyword">this</span>.y;
-
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.elements.length; i &lt; e; i++) {
-      <span class="hljs-keyword">var</span> element = <span class="hljs-comment">/** @type {cwt.UIField} */</span> <span class="hljs-keyword">this</span>.elements[i];
-
-      element.x += diffX;
-      element.y += diffY;
-    }
-
-    <span class="hljs-keyword">this</span>.x = x;
-    <span class="hljs-keyword">this</span>.y = y;
-  }
-});
-
-<span class="hljs-comment">/**
- * A screen layout is a group out of ui elements. This elements can be interactive or non-interactive. It should
- * be used to create and define a screen layout. Furthermore the screen layout offers API to interact with the
- * components.
- *
- * @class
- * @extends {cwt.UIButtonGroup}
- */</span>
-cwt.UIScreenLayout = my.Class(<span class="hljs-literal">null</span>, cwt.UIButtonGroup, <span class="hljs-comment">/** @lends cwt.UIScreenLayout.prototype */</span> {
-
-  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(slotsX, slotsY, startX, startY)</span> {</span>
-    cwt.UIButtonGroup.call(<span class="hljs-keyword">this</span>);
-
-    <span class="hljs-keyword">this</span>.left = startX || <span class="hljs-number">0</span>;
-    <span class="hljs-keyword">this</span>.curX = startX || <span class="hljs-number">0</span>;
-    <span class="hljs-keyword">this</span>.curY = startY || <span class="hljs-number">0</span>;
-    <span class="hljs-keyword">this</span>.curH = <span class="hljs-number">0</span>;
-
-    <span class="hljs-keyword">this</span>.breakLine();
-  },
-
-  <span class="hljs-comment">/**
-   *
-   * @param f
-   */</span>
-  repeat: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(n, f)</span> {</span>
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
-      f.call(<span class="hljs-keyword">this</span>, i);
-    }
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
-  },
-
-  <span class="hljs-comment">/**
-   *
-   * @param tiles
-   */</span>
-  addRowGap: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tiles)</span> {</span>
-    <span class="hljs-keyword">this</span>.curY += cwt.TILE_BASE * tiles;
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
-  },
-
-  <span class="hljs-comment">/**
-   *
-   * @param tiles
-   */</span>
-  addColGap: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tiles)</span> {</span>
-    <span class="hljs-keyword">this</span>.curX += cwt.TILE_BASE * tiles;
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
-  },
-
-  <span class="hljs-comment">/**
-   * Breaks the current line
-   */</span>
-  breakLine: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-    <span class="hljs-keyword">this</span>.curX = <span class="hljs-keyword">this</span>.left;
-    <span class="hljs-keyword">this</span>.curY += <span class="hljs-keyword">this</span>.curH * cwt.TILE_BASE;
-    <span class="hljs-keyword">this</span>.curH = <span class="hljs-number">1</span>;
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
-  },
-
-  <span class="hljs-comment">/**
-   *
-   * @param {Number} tilesX
-   * @param {Number} tilesY
-   * @param {Number} offsetY
-   * @param {Number} style
-   * @param key
-   * @param {Function?} action
-   * @return {cwt.UIScreenLayout}
-   */</span>
-  addButton: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tilesX, tilesY, offsetY, key, style, fSize, action)</span> {</span>
-    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length === <span class="hljs-number">5</span>) {
-      action = <span class="hljs-literal">null</span>;
-      fSize = <span class="hljs-number">12</span>;
-    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length === <span class="hljs-number">6</span> &amp;&amp; <span class="hljs-keyword">typeof</span> fSize === <span class="hljs-string">"function"</span>) {
-      action = fSize;
-      fSize = <span class="hljs-number">12</span>;
-    }
-
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.curH &lt; tilesY) {
-      <span class="hljs-keyword">this</span>.curH = tilesY;
-    }
-
-    <span class="hljs-keyword">var</span> btn = <span class="hljs-keyword">new</span> cwt.UIField(
-      <span class="hljs-keyword">this</span>.curX,
-      <span class="hljs-keyword">this</span>.curY + (offsetY * cwt.TILE_BASE),
-      tilesX * cwt.TILE_BASE,
-      tilesY * cwt.TILE_BASE,
-      key,
-      fSize,
-      style,
-      action
-    );
-
-    <span class="hljs-keyword">this</span>.curX += tilesX * cwt.TILE_BASE;
-
-    <span class="hljs-keyword">this</span>.addElement(btn);
-
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
-  },
-
-  <span class="hljs-comment">/**
-   *
-   * @param {Number} tilesX
-   * @param {Number} tilesY
-   * @param {Number} offsetY
-   * @param key
-   * @param {Function?} draw
-   * @param {boolean?} ignoreHeight
-   * @return {cwt.UIScreenLayout}
-   */</span>
-  addCustomField: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tilesX, tilesY, offsetY, key, draw, ignoreHeight)</span> {</span>
-    <span class="hljs-keyword">if</span> (ignoreHeight != <span class="hljs-literal">true</span> &amp;&amp; <span class="hljs-keyword">this</span>.curH &lt; tilesY) {
-      <span class="hljs-keyword">this</span>.curH = tilesY;
-    }
-
-    <span class="hljs-keyword">var</span> btn = <span class="hljs-keyword">new</span> cwt.UICustomField(
-      <span class="hljs-keyword">this</span>.curX,
-      <span class="hljs-keyword">this</span>.curY + (offsetY * cwt.TILE_BASE),
-      tilesX * cwt.TILE_BASE,
-      tilesY * cwt.TILE_BASE,
-      key,
-      draw
-    );
-
-    <span class="hljs-keyword">this</span>.curX += tilesX * cwt.TILE_BASE;
-
-    <span class="hljs-keyword">this</span>.addElement(btn);
-
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
-  },
-
-  <span class="hljs-comment">/**
-   *
-   * @param {Number} tilesX
-   * @param {Number} tilesY
-   * @param {Number} offsetY
-   * @param {Number} style
-   * @param key
-   * @return {cwt.UIScreenLayout}
-   */</span>
-  addCheckbox: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tilesX, tilesY, offsetY, key, style, fSize)</span> {</span>
-    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length === <span class="hljs-number">5</span>) {
-      fSize = <span class="hljs-number">12</span>;
-    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length === <span class="hljs-number">6</span> &amp;&amp; <span class="hljs-keyword">typeof</span> fSize === <span class="hljs-string">"function"</span>) {
-      fSize = <span class="hljs-number">12</span>;
-    }
-
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.curH &lt; tilesY) {
-      <span class="hljs-keyword">this</span>.curH = tilesY;
-    }
-
-    <span class="hljs-keyword">var</span> btn = <span class="hljs-keyword">new</span> cwt.UICheckboxField(
-      <span class="hljs-keyword">this</span>.curX,
-      <span class="hljs-keyword">this</span>.curY + (offsetY * cwt.TILE_BASE),
-      tilesX * cwt.TILE_BASE,
-      tilesY * cwt.TILE_BASE,
-      key,
-      fSize,
-      style
-    );
-
-    <span class="hljs-keyword">this</span>.curX += tilesX * cwt.TILE_BASE;
-
-    <span class="hljs-keyword">this</span>.addElement(btn);
-
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
-  }
-});
-
-cwt.MapRenderer = {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-90">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-90">&#182;</a>
-              </div>
-              <p><strong>eraseCursor()</strong></p>
-<p>Renders the cursor to the UI layer.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  eraseCursor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-    <span class="hljs-keyword">var</span> ctx = cwt.Screen.layerUI.getContext();
-    <span class="hljs-keyword">var</span> x = (cwt.Cursor.x - cwt.Screen.offsetX) * cwt.TILE_BASE;
-    <span class="hljs-keyword">var</span> y = (cwt.Cursor.y - cwt.Screen.offsetY) * cwt.TILE_BASE;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-91">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-91">&#182;</a>
-              </div>
               <p>clear cursor at old position</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    ctx.clearRect(
-      x - cwt.TILE_BASE,
-      y - cwt.TILE_BASE,
-      cwt.TILE_BASE * <span class="hljs-number">3</span>,
-      cwt.TILE_BASE * <span class="hljs-number">3</span>
-    );
-  }
+            <div class="content"><div class='highlight'><pre>  ctx.clearRect(
+    x - cwt.TILE_BASE,
+    y - cwt.TILE_BASE,
+    cwt.TILE_BASE * <span class="hljs-number">3</span>,
+    cwt.TILE_BASE * <span class="hljs-number">3</span>
+  );
 };
-
 
 <span class="hljs-comment">/**
  * Renders the cursor to the UI layer.
@@ -2155,11 +157,11 @@ cwt.MapRenderer.renderCursor = <span class="hljs-function"><span class="hljs-key
         </li>
         
         
-        <li id="section-92">
+        <li id="section-3">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-92">&#182;</a>
+                <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
               <p>render cursor at new position</p>
 
@@ -2174,11 +176,11 @@ cwt.MapRenderer.renderCursor = <span class="hljs-function"><span class="hljs-key
         </li>
         
         
-        <li id="section-93">
+        <li id="section-4">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-93">&#182;</a>
+                <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <p><strong>unitAnimationHalfStep_ (private)</strong></p>
 
@@ -2189,11 +191,11 @@ cwt.MapRenderer.renderCursor = <span class="hljs-function"><span class="hljs-key
         </li>
         
         
-        <li id="section-94">
+        <li id="section-5">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-94">&#182;</a>
+                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p><strong>curTime_ (private)</strong></p>
 
@@ -2204,11 +206,11 @@ cwt.MapRenderer.renderCursor = <span class="hljs-function"><span class="hljs-key
         </li>
         
         
-        <li id="section-95">
+        <li id="section-6">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-95">&#182;</a>
+                <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               <p><strong>indexUnitAnimation (readOnly)</strong></p>
 
@@ -2219,11 +221,11 @@ cwt.MapRenderer.renderCursor = <span class="hljs-function"><span class="hljs-key
         </li>
         
         
-        <li id="section-96">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-96">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p><strong>indexMapAnimation (readOnly)</strong></p>
 
@@ -2234,11 +236,11 @@ cwt.MapRenderer.renderCursor = <span class="hljs-function"><span class="hljs-key
         </li>
         
         
-        <li id="section-97">
+        <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-97">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p><strong>indexFocus (readOnly)</strong></p>
 
@@ -2249,11 +251,11 @@ cwt.MapRenderer.renderCursor = <span class="hljs-function"><span class="hljs-key
         </li>
         
         
-        <li id="section-98">
+        <li id="section-9">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-98">&#182;</a>
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p><strong>indexFocusTime (readOnly)</strong></p>
 
@@ -2290,11 +292,11 @@ cwt.MapRenderer.evaluateCycle = <span class="hljs-function"><span class="hljs-ke
         </li>
         
         
-        <li id="section-99">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-99">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>calc unit animation layer step</p>
 
@@ -2311,11 +313,11 @@ cwt.MapRenderer.evaluateCycle = <span class="hljs-function"><span class="hljs-ke
         </li>
         
         
-        <li id="section-100">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-100">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>render unit animation layer</p>
 
@@ -2328,11 +330,11 @@ cwt.MapRenderer.evaluateCycle = <span class="hljs-function"><span class="hljs-ke
         </li>
         
         
-        <li id="section-101">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-101">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>map animation layer</p>
 
@@ -2346,11 +348,11 @@ cwt.MapRenderer.evaluateCycle = <span class="hljs-function"><span class="hljs-ke
         </li>
         
         
-        <li id="section-102">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-102">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>render map animation layer</p>
 
@@ -2416,11 +418,11 @@ cwt.MapRenderer.renderFocus = <span class="hljs-function"><span class="hljs-keyw
 
 cwt.MapRenderer.shiftFocus = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(code)</span> {</span>
   cwt.MapRenderer.shiftLayer(code, cwt.Screen.layerFocus, <span class="hljs-number">7</span>, <span class="hljs-literal">false</span>);
-};
-<span class="hljs-comment">/**
+};<span class="hljs-comment">/**
  *
  * @namespace
  */</span>
+cwt.MapRenderer = {};
 
 cwt.MapRenderer.shiftLayer = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(code, layer, steps, selfDraw)</span> {</span>
   <span class="hljs-keyword">var</span> tmpCanvas = <span class="hljs-keyword">this</span>.getTempCanvas();
@@ -2429,11 +431,11 @@ cwt.MapRenderer.shiftLayer = <span class="hljs-function"><span class="hljs-keywo
         </li>
         
         
-        <li id="section-103">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-103">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>calculate meta data for shift</p>
 
@@ -2470,11 +472,11 @@ cwt.MapRenderer.shiftLayer = <span class="hljs-function"><span class="hljs-keywo
         </li>
         
         
-        <li id="section-104">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-104">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>update background layers</p>
 
@@ -2498,11 +500,11 @@ cwt.MapRenderer.shiftLayer = <span class="hljs-function"><span class="hljs-keywo
         </li>
         
         
-        <li id="section-105">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-105">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>copy visible content to temp canvas</p>
 
@@ -2519,11 +521,11 @@ cwt.MapRenderer.shiftLayer = <span class="hljs-function"><span class="hljs-keywo
         </li>
         
         
-        <li id="section-106">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-106">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>clear original canvas</p>
 
@@ -2534,11 +536,11 @@ cwt.MapRenderer.shiftLayer = <span class="hljs-function"><span class="hljs-keywo
         </li>
         
         
-        <li id="section-107">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-107">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>copy visible content back to the original canvas</p>
 
@@ -2550,8 +552,7 @@ cwt.MapRenderer.shiftLayer = <span class="hljs-function"><span class="hljs-keywo
 
     n++;
   }
-};
-<span class="hljs-comment">/**
+};<span class="hljs-comment">/**
  *
  * NOTE: clears the area before update
  *
@@ -2584,11 +585,11 @@ cwt.MapRenderer.renderFogRect = <span class="hljs-function"><span class="hljs-ke
         </li>
         
         
-        <li id="section-108">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-108">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>prepare meta data for the circle center and the pseudo-circle search field</p>
 
@@ -2607,11 +608,11 @@ cwt.MapRenderer.renderFogRect = <span class="hljs-function"><span class="hljs-ke
         </li>
         
         
-        <li id="section-109">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-109">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>clear area in background layer as rectangle only in rectangle mode</p>
 
@@ -2628,11 +629,11 @@ cwt.MapRenderer.renderFogRect = <span class="hljs-function"><span class="hljs-ke
         </li>
         
         
-        <li id="section-110">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-110">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>render</p>
 
@@ -2653,11 +654,11 @@ cwt.MapRenderer.renderFogRect = <span class="hljs-function"><span class="hljs-ke
         </li>
         
         
-        <li id="section-111">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-111">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>clear position</p>
 
@@ -2713,11 +714,11 @@ cwt.MapRenderer.renderFogRect = <span class="hljs-function"><span class="hljs-ke
         </li>
         
         
-        <li id="section-112">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-112">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>fix overlays on all tiles that are at the max range in the circle mode</p>
 
@@ -2729,11 +730,11 @@ cwt.MapRenderer.renderFogRect = <span class="hljs-function"><span class="hljs-ke
         </li>
         
         
-        <li id="section-113">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-113">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>top check</p>
 
@@ -2746,11 +747,11 @@ cwt.MapRenderer.renderFogRect = <span class="hljs-function"><span class="hljs-ke
         </li>
         
         
-        <li id="section-114">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-114">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>bottom check</p>
 
@@ -2768,11 +769,11 @@ cwt.MapRenderer.renderFogRect = <span class="hljs-function"><span class="hljs-ke
         </li>
         
         
-        <li id="section-115">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-115">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>fix overlay top and bottom in the rectangle mode</p>
 
@@ -2811,37 +812,36 @@ cwt.MapRenderer.renderFogBackgroundLayer = <span class="hljs-function"><span cla
 cwt.MapRenderer.shiftFog = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(code)</span> {</span>
   cwt.MapRenderer.shiftLayer(code, cwt.Screen.layerFog, <span class="hljs-number">1</span>, <span class="hljs-literal">false</span>);
   <span class="hljs-keyword">this</span>.renderFogBackgroundLayer();
-};
-<span class="hljs-comment">/**
+};<span class="hljs-comment">/**
  *
  * @param {number} x
  * @param {number} y
  */</span>
 cwt.MapRenderer.renderTile = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y)</span> {</span>
-  <span class="hljs-keyword">this</span>.renderTiles(x, y, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-literal">false</span>);</pre></div></div>
+  <span class="hljs-keyword">this</span>.renderTiles(x,y,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-literal">false</span>);</pre></div></div>
             
         </li>
         
         
-        <li id="section-116">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-116">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>draw overlay of the bottom tile</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> (y &lt; cwt.Map.height - <span class="hljs-number">1</span>) {
-    <span class="hljs-keyword">this</span>.renderTiles(x, y + <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-literal">true</span>);
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> (y &lt; cwt.Map.height-<span class="hljs-number">1</span>) {
+    <span class="hljs-keyword">this</span>.renderTiles(x,y+<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-literal">true</span>);
   }
 };
 
 cwt.MapRenderer.renderTileOverlayRow = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
   cwt.MapRenderer.renderTiles(
     cwt.Screen.offsetX,
-    cwt.Screen.offsetY + <span class="hljs-number">1</span>,
+    cwt.Screen.offsetY+<span class="hljs-number">1</span>,
     (cwt.Map.width &lt; cwt.SCREEN_WIDTH) ? cwt.Map.width : cwt.SCREEN_WIDTH,
     <span class="hljs-number">1</span>,
     <span class="hljs-literal">true</span>
@@ -2873,11 +873,11 @@ cwt.MapRenderer.renderTiles = <span class="hljs-function"><span class="hljs-keyw
         </li>
         
         
-        <li id="section-117">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-117">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>grab property status before loop (calc it one instead of eight times)</p>
 
@@ -2912,11 +912,11 @@ cwt.MapRenderer.renderTiles = <span class="hljs-function"><span class="hljs-keyw
         </li>
         
         
-        <li id="section-118">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-118">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>render all phases</p>
 
@@ -2950,11 +950,11 @@ cwt.MapRenderer.renderTiles = <span class="hljs-function"><span class="hljs-keyw
         </li>
         
         
-        <li id="section-119">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-119">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>render tile</p>
 
@@ -2971,11 +971,11 @@ cwt.MapRenderer.renderTiles = <span class="hljs-function"><span class="hljs-keyw
         </li>
         
         
-        <li id="section-120">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-120">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>render property</p>
 
@@ -3007,8 +1007,7 @@ cwt.MapRenderer.renderTiles = <span class="hljs-function"><span class="hljs-keyw
  */</span>
 cwt.MapRenderer.shiftTiles = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(code)</span> {</span>
   cwt.MapRenderer.shiftLayer(code, cwt.Screen.layerMap, <span class="hljs-number">8</span>, <span class="hljs-literal">true</span>);
-};
-<span class="hljs-comment">/**
+};<span class="hljs-comment">/**
  *
  * NOTE: does not clear the area before update
  *
@@ -3020,7 +1019,7 @@ cwt.MapRenderer.shiftTiles = <span class="hljs-function"><span class="hljs-keywo
 cwt.MapRenderer.renderUnits = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, oy, w, h)</span> {</span>
   <span class="hljs-keyword">var</span> mapData = cwt.Map.data;
   <span class="hljs-keyword">var</span> layer = cwt.Screen.layerUnit;
-  <span class="hljs-keyword">var</span> halfTileBase = <span class="hljs-built_in">parseInt</span>(cwt.TILE_BASE / <span class="hljs-number">2</span>, <span class="hljs-number">10</span>);
+  <span class="hljs-keyword">var</span> halfTileBase = <span class="hljs-built_in">parseInt</span>(cwt.TILE_BASE / <span class="hljs-number">2</span>,<span class="hljs-number">10</span>);
 
   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> xe = x + w; x &lt; xe; x++) {
     <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> y = oy, ye = y + h; y &lt; ye; y++) {
@@ -3052,11 +1051,11 @@ cwt.MapRenderer.renderUnits = <span class="hljs-function"><span class="hljs-keyw
         </li>
         
         
-        <li id="section-121">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-121">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>inverted ?</p>
 
@@ -3075,8 +1074,8 @@ cwt.MapRenderer.renderUnits = <span class="hljs-function"><span class="hljs-keyw
         <span class="hljs-keyword">var</span> scy = <span class="hljs-number">0</span>;
         <span class="hljs-keyword">var</span> scw = cwt.TILE_BASE * <span class="hljs-number">2</span>;
         <span class="hljs-keyword">var</span> sch = cwt.TILE_BASE * <span class="hljs-number">2</span>;
-        <span class="hljs-keyword">var</span> tcx = (x - cwt.Screen.offsetX) * cwt.TILE_BASE - halfTileBase;
-        <span class="hljs-keyword">var</span> tcy = (y - cwt.Screen.offsetY) * cwt.TILE_BASE - halfTileBase;
+        <span class="hljs-keyword">var</span> tcx = (x-cwt.Screen.offsetX) * cwt.TILE_BASE - halfTileBase;
+        <span class="hljs-keyword">var</span> tcy = (y-cwt.Screen.offsetY) * cwt.TILE_BASE - halfTileBase;
         <span class="hljs-keyword">var</span> tcw = cwt.TILE_BASE + cwt.TILE_BASE;
         <span class="hljs-keyword">var</span> tch = cwt.TILE_BASE + cwt.TILE_BASE;
 
@@ -3103,8 +1102,7 @@ cwt.MapRenderer.renderUnits = <span class="hljs-function"><span class="hljs-keyw
  */</span>
 cwt.MapRenderer.shiftUnits = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(code)</span> {</span>
   cwt.MapRenderer.shiftLayer(code, cwt.Screen.layerUnit, <span class="hljs-number">3</span>, <span class="hljs-literal">false</span>);
-};
-cwt.MapRenderer.MENU_ELEMENTS_MAX = <span class="hljs-number">10</span>;
+};cwt.MapRenderer.MENU_ELEMENTS_MAX = <span class="hljs-number">10</span>;
 
 <span class="hljs-comment">/**
  * @constant
@@ -3124,11 +1122,11 @@ cwt.MapRenderer.$afterLoad = <span class="hljs-function"><span class="hljs-keywo
         </li>
         
         
-        <li id="section-122">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-122">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <p>generate elements</p>
 
@@ -3147,11 +1145,11 @@ cwt.MapRenderer.$afterLoad = <span class="hljs-function"><span class="hljs-keywo
         </li>
         
         
-        <li id="section-123">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-123">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>logic will be handled by the state machine</p>
 
@@ -3177,7 +1175,7 @@ cwt.MapRenderer.prepareMenu = <span class="hljs-function"><span class="hljs-keyw
     <span class="hljs-built_in">parseInt</span>((cwt.Screen.height / <span class="hljs-number">2</span>) - ((numElements * cwt.MapRenderer.MENU_ENTRY_HEIGHT) / <span class="hljs-number">2</span>), <span class="hljs-number">10</span>)
   );
 
-  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; cwt.MapRenderer.MENU_ELEMENTS_MAX; i++) {
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i &lt; cwt.MapRenderer.MENU_ELEMENTS_MAX; i++) {
     <span class="hljs-keyword">if</span> (i &lt; numElements) {
       gfxMenu.elements[i].inactive = <span class="hljs-literal">false</span>;
       gfxMenu.elements[i].text = cwt.Localization.forKey(menu.getContent(i));</pre></div></div>
@@ -3185,11 +1183,11 @@ cwt.MapRenderer.prepareMenu = <span class="hljs-function"><span class="hljs-keyw
         </li>
         
         
-        <li id="section-124">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-124">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>set style</p>
 
@@ -3197,9 +1195,9 @@ cwt.MapRenderer.prepareMenu = <span class="hljs-function"><span class="hljs-keyw
             
             <div class="content"><div class='highlight'><pre>      gfxMenu.elements[i].style = (
         (numElements === <span class="hljs-number">1</span> ? cwt.UIField.STYLE_NORMAL :
-          (i === <span class="hljs-number">0</span> ? cwt.UIField.STYLE_NEW :
-            (i === numElements - <span class="hljs-number">1</span> ? cwt.UIField.STYLE_ESW : cwt.UIField.STYLE_EW)))
-        );
+        (i === <span class="hljs-number">0</span> ? cwt.UIField.STYLE_NEW :
+        (i === numElements-<span class="hljs-number">1</span> ? cwt.UIField.STYLE_ESW : cwt.UIField.STYLE_EW)))
+      );
 
     } <span class="hljs-keyword">else</span> {
       gfxMenu.elements[i].inactive = <span class="hljs-literal">true</span>;
@@ -3211,8 +1209,7 @@ cwt.MapRenderer.prepareMenu = <span class="hljs-function"><span class="hljs-keyw
 
 cwt.MapRenderer.renderMenu = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(menu)</span> {</span>
   cwt.MapRenderer.layoutGenericMenu_.draw(cwt.Screen.layerUI.getContext(<span class="hljs-number">0</span>));
-};
-<span class="hljs-comment">/**
+};<span class="hljs-comment">/**
  *
  */</span>
 cwt.MapRenderer.renderScreen = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
@@ -3222,8 +1219,8 @@ cwt.MapRenderer.renderScreen = <span class="hljs-function"><span class="hljs-key
 
   <span class="hljs-keyword">var</span> x = cwt.Screen.offsetX;
   <span class="hljs-keyword">var</span> y = cwt.Screen.offsetY;
-  <span class="hljs-keyword">var</span> w = (cwt.Map.width &lt; cwt.SCREEN_WIDTH) ? cwt.Map.width : cwt.SCREEN_WIDTH;
-  <span class="hljs-keyword">var</span> h = (cwt.Map.height &lt; cwt.SCREEN_HEIGHT) ? cwt.Map.height : cwt.SCREEN_HEIGHT;
+  <span class="hljs-keyword">var</span> w = (cwt.Map.width &lt; cwt.SCREEN_WIDTH)? cwt.Map.width : cwt.SCREEN_WIDTH;
+  <span class="hljs-keyword">var</span> h = (cwt.Map.height &lt; cwt.SCREEN_HEIGHT)? cwt.Map.height : cwt.SCREEN_HEIGHT;
 
   <span class="hljs-keyword">this</span>.renderTiles(x, y, w, h);
   <span class="hljs-keyword">this</span>.renderUnits(x, y, w, h);</pre></div></div>
@@ -3231,11 +1228,11 @@ cwt.MapRenderer.renderScreen = <span class="hljs-function"><span class="hljs-key
         </li>
         
         
-        <li id="section-125">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-125">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>directly update all layers</p>
 
@@ -3266,11 +1263,11 @@ cwt.MapRenderer.shiftMap = <span class="hljs-function"><span class="hljs-keyword
         </li>
         
         
-        <li id="section-126">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-126">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>extract needed data for the shift process</p>
 
@@ -3299,11 +1296,11 @@ cwt.MapRenderer.shiftMap = <span class="hljs-function"><span class="hljs-keyword
         </li>
         
         
-        <li id="section-127">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-127">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p>shift screen</p>
 
@@ -3317,11 +1314,11 @@ cwt.MapRenderer.shiftMap = <span class="hljs-function"><span class="hljs-keyword
         </li>
         
         
-        <li id="section-128">
+        <li id="section-39">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-128">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p>fill created hole</p>
 
@@ -3335,11 +1332,11 @@ cwt.MapRenderer.shiftMap = <span class="hljs-function"><span class="hljs-keyword
         </li>
         
         
-        <li id="section-129">
+        <li id="section-40">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-129">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <p>fix overlay when screen moves down</p>
 
@@ -3352,11 +1349,11 @@ cwt.MapRenderer.shiftMap = <span class="hljs-function"><span class="hljs-keyword
         </li>
         
         
-        <li id="section-130">
+        <li id="section-41">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-130">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <p>directly update all layers</p>
 
@@ -3367,8 +1364,7 @@ cwt.MapRenderer.shiftMap = <span class="hljs-function"><span class="hljs-keyword
   <span class="hljs-keyword">if</span> (cwt.Gameflow.globalData.focusActive) cwt.Screen.layerFocus.renderLayer(<span class="hljs-keyword">this</span>.indexFocus);
 
   <span class="hljs-keyword">if</span> (cwt.DEBUG) console.log(<span class="hljs-string">"shifted the screen ("</span> + ((<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>()).getTime() - time) + <span class="hljs-string">"ms)"</span>);
-};
-<span class="hljs-comment">/**
+};<span class="hljs-comment">/**
  * @type {null|HTMLCanvasElement}
  * @private
  */</span>

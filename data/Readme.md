@@ -22,16 +22,6 @@ Holds the name of the map
 
 Holds the designers of the map
 
-### Game [Prospect Design]
-
-* "game" : "AW1 - Advance Wars 1"
-
-The name of the game this map comes from
-
-* "game" : "CWB - Custom Wars Beta 27 - Ad-Hoc Commander"
-
-Alternate writing for modifications and abbreviations
-
 ### TypeMap
 
 * "typemap" : ["PLIN","MNTN","FRST", (...) ,"BRDG" ]
@@ -120,10 +110,3 @@ This allows you to choose the color scheme for the players. Binds each player to
 * OS => 0, BH => 1, BM => 2
 
 In the future, colors may be used to determine the turn order. However, currently, it is just to make players display using a certain color scheme.
-
-### Layout [Prospect Design - Unlikely to Happen]
-
-* "layout" : "4"
-
-This allows you to set up the type of map for 4-way (normal) or 6-way (hex). 
-Not available in the game, but allows maps to have the options of following two schemes.

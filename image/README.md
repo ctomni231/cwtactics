@@ -167,7 +167,6 @@ This shows how objects are organized within the object files for units, terrain(
 * *CITY* = City
 * *BASE* = Factory
 * *APRT* = Airport
-* *SPRT* = Seaport
 * *PORT* = Seaport
 * *CMTR* = Communication-Tower
 * *SILO* = Missile Silo

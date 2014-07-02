@@ -60,11 +60,6 @@
                 </a>
               
                 
-                <a class="source" href="language.html">
-                  language.js
-                </a>
-              
-                
                 <a class="source" href="loading.html">
                   loading.js
                 </a>
@@ -134,223 +129,7 @@ cwt.Config.create(<span class="hljs-string">"daysOfPeace"</span>,<span class="hl
 cwt.Config.create(<span class="hljs-string">"co_getStarCost"</span>,<span class="hljs-number">100</span>,<span class="hljs-number">50000</span>,<span class="hljs-number">9000</span>,<span class="hljs-number">100</span>);
 cwt.Config.create(<span class="hljs-string">"co_getStarCostIncrease"</span>,<span class="hljs-number">0</span>,<span class="hljs-number">50000</span>,<span class="hljs-number">1800</span>,<span class="hljs-number">100</span>);
 cwt.Config.create(<span class="hljs-string">"co_getStarCostIncreaseSteps"</span>,<span class="hljs-number">0</span>,<span class="hljs-number">50</span>,<span class="hljs-number">10</span>);
-cwt.Config.create(<span class="hljs-string">"co_enabledCoPower"</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-2">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
-              </div>
-              
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>cwt.Lifecycle = {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-3">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
-              </div>
-              <p><strong>endGameRound()</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  endGameRound: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-
-  },</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p><strong>createUnit(num, num, cwt.Player, cwt.Property)</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  createUnit: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, player, type)</span> {</span>
-    <span class="hljs-keyword">if</span> (player <span class="hljs-keyword">instanceof</span> cwt.Unit || player <span class="hljs-keyword">instanceof</span> cwt.Property) {
-      player = player.owner;
-    }
-
-    <span class="hljs-keyword">if</span> (cwt.DEBUG) cwt.assert(cwt.Map.isValidPosition(x, y));
-
-    <span class="hljs-keyword">var</span> tile = cwt.Map.data[x][y];
-
-    <span class="hljs-keyword">if</span> (cwt.DEBUG) cwt.assert(player <span class="hljs-keyword">instanceof</span> cwt.Player);
-    <span class="hljs-keyword">if</span> (cwt.DEBUG) cwt.assert(<span class="hljs-keyword">this</span>.hasFreeUnitSlot(player));
-
-    <span class="hljs-keyword">var</span> unit = <span class="hljs-keyword">this</span>.getFreeUnitSlot();</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-5">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
-              </div>
-              <p>set references</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    unit.owner = player;
-    tile.unit = unit;
-    player.numberOfUnits++;
-
-    unit.initByType(type);
-
-    cwt.Fog.addUnitVision(x, y, player);
-
-    cwt.ClientEvents.unitCreated(x, y, unit);
-  },</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <p><strong>destroyUnit(number, number, boolean)</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  destroyUnit: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, silent)</span> {</span>
-    <span class="hljs-keyword">var</span> tile = cwt.Map.data[x][y];
-    <span class="hljs-keyword">if</span> (cwt.DEBUG) cwt.assert(tile.unit);
-
-    cwt.ClientEvents.unitDestroyed(x, y, tile.unit);
-
-    cwt.Fog.removeUnitVision(x, y, tile.unit.owner);
-
-    <span class="hljs-keyword">var</span> owner = tile.unit.owner;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <p>remove references</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    owner.numberOfUnits--;
-
-    <span class="hljs-keyword">if</span> (cwt.DEBUG) cwt.assert(owner.numberOfUnits &gt;= <span class="hljs-number">0</span>);
-
-    tile.unit.owner = <span class="hljs-literal">null</span>;
-    tile.unit = <span class="hljs-literal">null</span>;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <p>end game when the player does not have any unit left</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (cwt.Config.getValue(<span class="hljs-string">"noUnitsLeftLoose"</span>) === <span class="hljs-number">1</span> &amp;&amp; cwt.Unit.countUnitsOfPlayer(owner) === <span class="hljs-number">0</span>) {
-      <span class="hljs-keyword">this</span>.destroyPlayer(owner);
-    }
-  },</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-9">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
-              </div>
-              <p><strong>destroyPlayer(cwt.Player)</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  destroyPlayer: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(player)</span> {</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-10">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
-              </div>
-              <p>change owner of the properties of player to neutral</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
-              </div>
-              <p>destroy all units of the player</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = cwt.Unit.MULTITON_INSTANCES; i &lt; e; i++) {
-      <span class="hljs-keyword">var</span> unit = cwt.Unit.getInstance(i);
-      <span class="hljs-keyword">if</span> (unit.owner === player) {
-
-      }
-    }
-  },
-
-  <span class="hljs-comment">/**
-   *
-   * @return {boolean}
-   */</span>
-  hasFreeUnitSlot: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(player)</span> {</span>
-    <span class="hljs-keyword">return</span> player.numberOfUnits &lt; cwt.Player.MAX_UNITS;
-  },
-
-  <span class="hljs-comment">/**
-   * Returns the index of the next free unit slot.
-   *
-   * @return {cwt.Unit|null}
-   */</span>
-  getFreeUnitSlot: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = cwt.Unit.MULTITON_INSTANCES; i &lt; e; i++) {
-      <span class="hljs-keyword">var</span> unit = cwt.Unit.getInstance(i);
-      <span class="hljs-keyword">if</span> (!unit.owner) {
-        <span class="hljs-keyword">return</span> <span class="hljs-comment">/** @type {cwt.Unit} */</span> unit;
-      }
-    }
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
-  }
-};
+cwt.Config.create(<span class="hljs-string">"co_enabledCoPower"</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>);
 
 <span class="hljs-comment">/**
  *
@@ -410,11 +189,11 @@ cwt.Attack = {
         </li>
         
         
-        <li id="section-12">
+        <li id="section-2">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
               <p>no battle unit ?</p>
 
@@ -425,11 +204,11 @@ cwt.Attack = {
         </li>
         
         
-        <li id="section-13">
+        <li id="section-3">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
               <p>a unit may does not have ammo but a weapon
 that needs ammo to fire</p>
@@ -468,11 +247,11 @@ that needs ammo to fire</p>
         </li>
         
         
-        <li id="section-14">
+        <li id="section-4">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <p>if markTiles is true, then mark all tiles in range</p>
 
@@ -486,11 +265,11 @@ that needs ammo to fire</p>
         </li>
         
         
-        <li id="section-15">
+        <li id="section-5">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>drop tile when hidden in fog</p>
 
@@ -510,11 +289,11 @@ that needs ammo to fire</p>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-6">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               <p>if mark tile is true, then mark them in the
 selection map else return true</p>
@@ -545,11 +324,11 @@ selection map else return true</p>
         </li>
         
         
-        <li id="section-17">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>main weapon decides fire type</p>
 
@@ -561,11 +340,11 @@ selection map else return true</p>
         </li>
         
         
-        <li id="section-18">
+        <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>min range of 1 means ballistic weapon</p>
 
@@ -630,11 +409,11 @@ selection map else return true</p>
         </li>
         
         
-        <li id="section-19">
+        <li id="section-9">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p>check_ ammo and main weapon availability against the defender type</p>
 
@@ -677,11 +456,11 @@ selection map else return true</p>
         </li>
         
         
-        <li id="section-20">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>check_ main weapon</p>
 
@@ -695,11 +474,11 @@ selection map else return true</p>
         </li>
         
         
-        <li id="section-21">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>check_ secondary weapon</p>
 
@@ -761,11 +540,11 @@ selection map else return true</p>
         </li>
         
         
-        <li id="section-22">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p><strong>check_ firstCounter:</strong> if first counter is active then the defender
 attacks first. In this case swap attacker and defender.</p>
@@ -809,11 +588,11 @@ attacks first. In this case swap attacker and defender.</p>
         </li>
         
         
-        <li id="section-23">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>counter attack when defender survives and defender is an indirect attacking unit</p>
 
@@ -854,69 +633,39 @@ attacks first. In this case swap attacker and defender.</p>
  *
  * @namespace
  */</span>
-cwt.Capture = {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-24">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
-              </div>
-              <p><strong>canCapture(cwt.Unit): boolean</strong></p>
-<p>Returns true, when a unit can capture a property, else false.</p>
+cwt.Capture = {
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  canCapture: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(unit)</span> {</span>
+  <span class="hljs-comment">/**
+   * Returns true, when a unit can capture a property,
+   * else false.
+   */</span>
+  canCapture: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(unit)</span> {</span>
     <span class="hljs-keyword">return</span> (unit.type.captures &gt; <span class="hljs-number">0</span>);
-  },</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-25">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
-              </div>
-              <p><strong>canBeCaptured(cwt.Property): boolean</strong></p>
+  },
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  canBeCaptured: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(property)</span> {</span>
+  <span class="hljs-comment">/**
+   *
+   * @param property
+   * @return {boolean}
+   */</span>
+  canBeCaptured: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(property)</span> {</span>
     <span class="hljs-keyword">return</span> (property.type.capturePoints &gt; <span class="hljs-number">0</span>);
-  },</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-26">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
-              </div>
-              <p><strong>captureProperty(cwt.Property, cwt.Unit): boolean</strong></p>
-<p>Returns true, when the capture points of the property reaches zero, else false.</p>
+  },
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  captureProperty: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(property,unit)</span> {</span>
+  <span class="hljs-comment">/**
+   *
+   */</span>
+  captureProperty: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(property,unit)</span> {</span>
     <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(unit);
 
     <span class="hljs-keyword">this</span>.points -= cwt.Property.CAPTURE_STEP;
+    cwt.ClientEvents.unitCaptures(<span class="hljs-keyword">this</span>,unit);
 
     <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.points &lt;= <span class="hljs-number">0</span>) {
       <span class="hljs-keyword">this</span>.owner = unit.owner;
       <span class="hljs-keyword">this</span>.points = cwt.Property.CAPTURE_POINTS;
-      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+      cwt.ClientEvents.propertyCaptured(<span class="hljs-keyword">this</span>,unit);
     }
-
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
   }
 };
 
@@ -964,11 +713,11 @@ cwt.CO = {
         </li>
         
         
-        <li id="section-27">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>co must be available and current power must be inactive</p>
 
@@ -991,11 +740,11 @@ cwt.CO = {
         </li>
         
         
-        <li id="section-28">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>TODO</p>
 
@@ -1046,11 +795,11 @@ cwt.CO = {
         </li>
         
         
-        <li id="section-29">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>if usage counter is greater than max usage counter then use
 only the maximum increase counter for calculation</p>
@@ -1196,11 +945,11 @@ cwt.Factory = {
         </li>
         
         
-        <li id="section-30">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>check_ manpower</p>
 
@@ -1211,11 +960,11 @@ cwt.Factory = {
         </li>
         
         
-        <li id="section-31">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>check_ unit limit</p>
 
@@ -1229,11 +978,11 @@ cwt.Factory = {
         </li>
         
         
-        <li id="section-32">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>slots free ?</p>
 
@@ -1291,11 +1040,11 @@ cwt.Factory = {
         </li>
         
         
-        <li id="section-33">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>Is the tile blocked ?</p>
 
@@ -1325,11 +1074,11 @@ cwt.Fog = {
         </li>
         
         
-        <li id="section-34">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>ignore neutral objects</p>
 
@@ -1345,11 +1094,11 @@ cwt.Fog = {
         </li>
         
         
-        <li id="section-35">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>no active player owns this vision</p>
 
@@ -1384,11 +1133,11 @@ cwt.Fog = {
         </li>
         
         
-        <li id="section-36">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>does the tile block vision ?</p>
 
@@ -1417,11 +1166,11 @@ cwt.Fog = {
         </li>
         
         
-        <li id="section-37">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <ol>
 <li>reset fog maps</li>
@@ -1445,11 +1194,11 @@ cwt.Fog = {
         </li>
         
         
-        <li id="section-38">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <ol>
 <li>add vision-object</li>
@@ -1568,11 +1317,11 @@ cwt.Laser = {
         </li>
         
         
-        <li id="section-39">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>check_ all tiles on the map</p>
 
@@ -1584,11 +1333,11 @@ cwt.Laser = {
         </li>
         
         
-        <li id="section-40">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>every tile on the cross ( same y or x coordinate ) will be damaged</p>
 
@@ -1630,11 +1379,11 @@ cwt.Join = {
         </li>
         
         
-        <li id="section-41">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>don’t increase HP to more then 10</p>
 
@@ -1645,11 +1394,11 @@ cwt.Join = {
         </li>
         
         
-        <li id="section-42">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>do they have loads?</p>
 
@@ -1678,11 +1427,11 @@ cwt.Join = {
         </li>
         
         
-        <li id="section-43">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>hp</p>
 
@@ -1693,11 +1442,11 @@ cwt.Join = {
         </li>
         
         
-        <li id="section-44">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>ammo</p>
 
@@ -1709,11 +1458,11 @@ cwt.Join = {
         </li>
         
         
-        <li id="section-45">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-45">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>fuel</p>
 
@@ -1725,11 +1474,11 @@ cwt.Join = {
         </li>
         
         
-        <li id="section-46">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <p>TODO experience points</p>
 
@@ -1739,1114 +1488,6 @@ cwt.Join = {
     cwt.Lifecycle.destroyUnit(x, y, <span class="hljs-literal">true</span>);
   }
 
-};
-
-<span class="hljs-comment">/**
- *
- * @namespace
- */</span>
-cwt.Move = {
-
-  <span class="hljs-comment">/**
-   * @constant
-   */</span>
-  MOVE_CODES_UP: <span class="hljs-number">0</span>,
-
-  <span class="hljs-comment">/**
-   * @constant
-   */</span>
-  MOVE_CODES_RIGHT: <span class="hljs-number">1</span>,
-
-  <span class="hljs-comment">/**
-   * @constant
-   */</span>
-  MOVE_CODES_DOWN: <span class="hljs-number">2</span>,
-
-  <span class="hljs-comment">/**
-   * @constant
-   */</span>
-  MOVE_CODES_LEFT: <span class="hljs-number">3</span>,
-
-  <span class="hljs-comment">/**
-   * Extracts the move code between two positions.
-   */</span>
-  codeFromAtoB: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sx, sy, tx, ty)</span> {</span>
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(cwt.Map.isValidPosition(sx, sy));
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(cwt.Map.isValidPosition(tx, ty));
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(cwt.Map.getDistance(sx, sy, tx, ty) === <span class="hljs-number">1</span>);
-
-    <span class="hljs-keyword">if</span> (sx &lt; tx) {
-      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.MOVE_CODES_RIGHT;
-    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sx &gt; tx) {
-      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.MOVE_CODES_LEFT;
-    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sy &lt; ty) {
-      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.MOVE_CODES_DOWN;
-    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sy &gt; ty) {
-      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.MOVE_CODES_UP;
-    }
-
-    <span class="hljs-keyword">return</span> cwt.INACTIVE;
-  },
-
-  getMoveType: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(movetype)</span> {</span>
-    <span class="hljs-keyword">return</span> cwt.MovetypeSheet.sheets[movetype];
-  },
-
-  <span class="hljs-comment">/**
-   * Returns the move cost to move with a given move type on a given tile type.
-   */</span>
-  getMoveCosts: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(movetype, x, y)</span> {</span>
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) {
-      cwt.assert(cwt.Map.isValidPosition(x, y));
-      cwt.assert(movetype.costs !== <span class="hljs-literal">undefined</span>);
-    }
-
-    <span class="hljs-keyword">var</span> v;
-    <span class="hljs-keyword">var</span> tmp = cwt.Map.data[x][y];</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-47">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
-              </div>
-              <p>grab costs from property or  if not given from tile</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    tmp = (tmp.property) ? tmp.property : tmp;
-    <span class="hljs-keyword">if</span> (tmp.type.blocker) {
-      v = -<span class="hljs-number">1</span>;
-    } <span class="hljs-keyword">else</span> {
-      v = movetype.costs[tmp.type.ID];
-    }
-
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> v === <span class="hljs-string">"number"</span>) <span class="hljs-keyword">return</span> v;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-48">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
-              </div>
-              <p>check_ wildcard</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    v = movetype.costs[<span class="hljs-string">"*"</span>];
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> v === <span class="hljs-string">"number"</span>) <span class="hljs-keyword">return</span> v;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-49">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-49">&#182;</a>
-              </div>
-              <p>no match then return <code>-1</code>as not move able</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
-  },
-
-  <span class="hljs-comment">/**
-   * Returns true if a movetype can move to position {x,y} else false.
-   *
-   * @param movetype
-   * @param {number} x
-   * @param {number} y
-   * @return {boolean}
-   */</span>
-  canTypeMoveTo: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(movetype, x, y)</span> {</span>
-    <span class="hljs-keyword">if</span> (cwt.Map.isValidPosition(x, y)) {
-      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.getMoveCosts(movetype, x, y) === -<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-
-
-      <span class="hljs-keyword">var</span> tile = cwt.Map.data[x][y];
-      <span class="hljs-keyword">if</span> (tile.visionTurnOwner === <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-      <span class="hljs-keyword">if</span> (tile.unit) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-
-      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-    } <span class="hljs-keyword">else</span> {
-      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-    }
-  },
-
-  <span class="hljs-comment">/**
-   * Generates a path from a start position { `stx` , `sty` } to { `tx` , `ty` } with a given selection map. The
-   * result will be stored in the `movePath`.
-   *
-   * @param {number} stx
-   * @param {number} sty
-   * @param {number} tx
-   * @param {number} ty
-   * @param {cwt.InterfaceSelection} selection
-   * @param {cwt.CircularBuffer} movePath
-   */</span>
-  generateMovePath: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(stx, sty, tx, ty, selection, movePath)</span> {</span>
-    <span class="hljs-keyword">if</span> (cwt.DEBUG) cwt.assert(cwt.Map.isValidPosition(stx, sty));
-    <span class="hljs-keyword">if</span> (cwt.DEBUG) cwt.assert(cwt.Map.isValidPosition(tx, ty));
-
-    <span class="hljs-keyword">var</span> dir;
-    <span class="hljs-keyword">var</span> cNode;
-
-    <span class="hljs-keyword">var</span> graph = <span class="hljs-keyword">new</span> Graph(selection.getData());
-
-    <span class="hljs-keyword">var</span> dsx = stx - selection.getCenterX();
-    <span class="hljs-keyword">var</span> dsy = sty - selection.getCenterY();
-    <span class="hljs-keyword">var</span> dtx = tx - selection.getCenterX();
-    <span class="hljs-keyword">var</span> dty = ty - selection.getCenterY();
-
-    <span class="hljs-keyword">var</span> start = graph.nodes[dsx][dsy];
-    <span class="hljs-keyword">var</span> end = graph.nodes[dtx][dty];
-
-    <span class="hljs-keyword">var</span> path = astar.search(graph.nodes, start, end);
-
-    <span class="hljs-keyword">var</span> cx = stx;
-    <span class="hljs-keyword">var</span> cy = sty;
-
-    movePath.clear();
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = path.length; i &lt; e; i++) {
-      cNode = path[i];</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-50">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-50">&#182;</a>
-              </div>
-              <p>extract move code</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> (cNode.x &gt; cx) {
-        dir = <span class="hljs-keyword">this</span>.MOVE_CODES_RIGHT;
-      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (cNode.x &lt; cx) {
-        dir = <span class="hljs-keyword">this</span>.MOVE_CODES_LEFT;
-      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (cNode.y &gt; cy) {
-        dir = <span class="hljs-keyword">this</span>.MOVE_CODES_DOWN;
-      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (cNode.y &lt; cy) {
-        dir = <span class="hljs-keyword">this</span>.MOVE_CODES_UP;
-      } <span class="hljs-keyword">else</span> {
-        cwt.assert(<span class="hljs-literal">false</span>);
-      }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-51">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-51">&#182;</a>
-              </div>
-              <p>add code to move path</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      movePath.push(dir);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-52">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-52">&#182;</a>
-              </div>
-              <p>update current position</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      cx = cNode.x;
-      cy = cNode.y;
-    }
-  },
-
-  <span class="hljs-comment">/**
-   *
-   * @param code
-   * @param {cwt.CircularBuffer} movePath
-   * @return {boolean}
-   * @private
-   */</span>
-  isGoBackCommand_: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(code, movePath)</span> {</span>
-    <span class="hljs-keyword">var</span> lastCode = movePath.get(movePath.size - <span class="hljs-number">1</span>);
-    <span class="hljs-keyword">var</span> goBackCode;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-53">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-53">&#182;</a>
-              </div>
-              <p>get go back code</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">switch</span> (code) {
-      <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_UP:
-        goBackCode = <span class="hljs-keyword">this</span>.MOVE_CODES_DOWN;
-        <span class="hljs-keyword">break</span>;
-      <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_DOWN:
-        goBackCode = <span class="hljs-keyword">this</span>.MOVE_CODES_UP;
-        <span class="hljs-keyword">break</span>;
-      <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_LEFT:
-        goBackCode = <span class="hljs-keyword">this</span>.MOVE_CODES_RIGHT;
-        <span class="hljs-keyword">break</span>;
-      <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_RIGHT:
-        goBackCode = <span class="hljs-keyword">this</span>.MOVE_CODES_LEFT;
-        <span class="hljs-keyword">break</span>;
-    }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-54">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-54">&#182;</a>
-              </div>
-              <p>if move is a go back then pop the lest code</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (lastCode === goBackCode) {
-      movePath.popLast();
-      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-    } <span class="hljs-keyword">else</span> {
-      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-    }
-  },
-
-  <span class="hljs-comment">/**
-   * Appends a move `code` to a given `movePath` and returns `true` if the
-   * insertion was possible else `false`. If the new code is a backwards move
-   * to the previous tile in the path then the actual last tile will be
-   * dropped. In this function returns also `true` in this case.
-   *
-   * @param {cwt.Move.MOVE_CODES_DOWN|cwt.Move.MOVE_CODES_RIGHT|cwt.Move.MOVE_CODES_LEFT|cwt.Move.MOVE_CODES_UP} code
-   * @param {cwt.CircularBuffer} movePath
-   * @param {cwt.InterfaceSelection} selection
-   * @param {Number} sx
-   * @param {Number} sy
-   */</span>
-  addCodeToMovePath: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(code, movePath, selection, sx, sy)</span> {</span>
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(code &gt;= <span class="hljs-keyword">this</span>.MOVE_CODES_UP &amp;&amp; code &lt;= <span class="hljs-keyword">this</span>.MOVE_CODES_LEFT);
-
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.isGoBackCommand_(code, movePath)) {
-      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-    }
-
-    <span class="hljs-keyword">var</span> source = cwt.Map.data[sx][sy];
-    <span class="hljs-keyword">var</span> unit = source.unit;
-    <span class="hljs-keyword">var</span> points = unit.type.range;
-    <span class="hljs-keyword">var</span> fuelLeft = unit.fuel;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-55">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-55">&#182;</a>
-              </div>
-              <p>decrease move range when not enough fuel is available to move the maximum possible
-range for the selected move type</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (fuelLeft &lt; points) {
-      points = fuelLeft;
-    }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-56">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-56">&#182;</a>
-              </div>
-              <p>add command to the move path list</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    movePath.data[movePath.size] = code;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-57">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-57">&#182;</a>
-              </div>
-              <p>calculate fuel consumption for the current move path</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> cx = sx;
-    <span class="hljs-keyword">var</span> cy = sy;
-    <span class="hljs-keyword">var</span> fuelUsed = <span class="hljs-number">0</span>;
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = movePath.size; i &lt; e; i++) {
-      <span class="hljs-keyword">switch</span> (movePath.data[i]) {
-
-        <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_UP:
-          cy--;
-          <span class="hljs-keyword">break</span>;
-
-        <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_DOWN:
-          cy++;
-          <span class="hljs-keyword">break</span>;
-
-        <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_LEFT:
-          cx--;
-          <span class="hljs-keyword">break</span>;
-
-        <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_RIGHT:
-          cx++;
-          <span class="hljs-keyword">break</span>;
-      }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-58">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-58">&#182;</a>
-              </div>
-              <p>acc. fuel consumption</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      fuelUsed += selection.getValue(cx, cy);
-    }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-59">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-59">&#182;</a>
-              </div>
-              <p>if to much fuel would be needed then decline</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (fuelUsed &gt; points) {
-      movePath.data[movePath.size - <span class="hljs-number">1</span>] = cwt.INACTIVE;
-      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-    } <span class="hljs-keyword">else</span> {
-      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-    }
-  },
-
-  <span class="hljs-comment">/**
-   * Little helper array object for `model.move_fillMoveMap`. This will be used
-   * only by one process. If the helper is not available then a temp object will
-   * be created in `model.move_fillMoveMap`. If the engine is used without client
-   * hacking then this situation never happen and the `model.move_fillMoveMap`
-   * will use this helper to prevent unnecessary array creation.
-   *
-   * @private
-   */</span>
-  fillMoveMapHelper_: [],
-
-  <span class="hljs-comment">/**
-   * @private
-   */</span>
-  checker_: [
-    cwt.INACTIVE,
-    cwt.INACTIVE,
-    cwt.INACTIVE,
-    cwt.INACTIVE,
-    cwt.INACTIVE,
-    cwt.INACTIVE,
-    cwt.INACTIVE,
-    cwt.INACTIVE
-  ],
-
-  <span class="hljs-comment">/**
-   * Fills a move map for possible move able tiles in a selectionMap map.
-   *
-   * @param {cwt.Position} sourcePosition
-   * @param {cwt.InterfaceSelection} selectionMap
-   * @param {Number} x
-   * @param {Number} y
-   * @param {cwt.Unit} unit
-   */</span>
-  fillMoveMap: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sourcePosition, selectionMap, x, y, unit)</span> {</span>
-    <span class="hljs-keyword">var</span> cost;
-    <span class="hljs-keyword">var</span> checker;
-    <span class="hljs-keyword">var</span> map = cwt.Map.data;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-60">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-60">&#182;</a>
-              </div>
-              <p>grab object aw2 from <code>sourcePosition</code> position if no explicit aw2 is given</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> x !== <span class="hljs-string">"number"</span>) x = sourcePosition.x;
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> y !== <span class="hljs-string">"number"</span>) y = sourcePosition.y;
-    <span class="hljs-keyword">if</span> (!unit) unit = sourcePosition.unit;
-
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(cwt.Map.isValidPosition(x, y));
-
-    <span class="hljs-keyword">var</span> toBeChecked;
-    <span class="hljs-keyword">var</span> releaseHelper = <span class="hljs-literal">false</span>;
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.fillMoveMapHelper_ !== <span class="hljs-literal">null</span>) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-61">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-61">&#182;</a>
-              </div>
-              <p>use the cached array</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      toBeChecked = <span class="hljs-keyword">this</span>.fillMoveMapHelper_;
-      checker = <span class="hljs-keyword">this</span>.checker_;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-62">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-62">&#182;</a>
-              </div>
-              <p>reset some stuff</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>, ne = toBeChecked.length; n &lt; ne; n++) {
-        toBeChecked[n] = <span class="hljs-literal">null</span>;
-      }
-      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>, ne = checker.length; n &lt; ne; n++) {
-        checker[n] = cwt.INACTIVE;
-      }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-63">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-63">&#182;</a>
-              </div>
-              <p>remove cache objects from the move logic object</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">this</span>.fillMoveMapHelper_ = <span class="hljs-literal">null</span>;
-      <span class="hljs-keyword">this</span>.checker_ = <span class="hljs-literal">null</span>;
-
-      releaseHelper = <span class="hljs-literal">true</span>;
-
-    } <span class="hljs-keyword">else</span> {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-64">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-64">&#182;</a>
-              </div>
-              <p>use a new arrays because cache objects aren’t available</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      toBeChecked = [];
-      checker = [
-        cwt.INACTIVE,
-        cwt.INACTIVE,
-        cwt.INACTIVE,
-        cwt.INACTIVE,
-        cwt.INACTIVE,
-        cwt.INACTIVE,
-        cwt.INACTIVE,
-        cwt.INACTIVE
-      ];
-    }
-
-    <span class="hljs-keyword">var</span> moveTypeName = unit.type.movetype;
-    <span class="hljs-keyword">var</span> moveTypeObj = <span class="hljs-keyword">this</span>.getMoveType(moveTypeName);
-    <span class="hljs-keyword">var</span> range = unit.type.range;
-    <span class="hljs-keyword">var</span> player = unit.owner;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-65">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-65">&#182;</a>
-              </div>
-              <p>decrease range if not enough fuel is available</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (unit.fuel &lt; range) {
-      range = unit.fuel;
-    }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-66">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-66">&#182;</a>
-              </div>
-              <p>add start tile to the map</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    selectionMap.setCenter(x, y, cwt.INACTIVE);
-    selectionMap.setValue(x, y, range);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-67">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-67">&#182;</a>
-              </div>
-              <p>fill map ( one structure is X;Y;LEFT_POINTS )</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    toBeChecked[<span class="hljs-number">0</span>] = x;
-    toBeChecked[<span class="hljs-number">1</span>] = y;
-    toBeChecked[<span class="hljs-number">2</span>] = range;
-
-    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
-      <span class="hljs-keyword">var</span> cHigh = -<span class="hljs-number">1</span>;
-      <span class="hljs-keyword">var</span> cHighIndex = -<span class="hljs-number">1</span>;
-
-      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = toBeChecked.length; i &lt; e; i += <span class="hljs-number">3</span>) {
-        <span class="hljs-keyword">var</span> leftPoints = toBeChecked[i + <span class="hljs-number">2</span>];
-
-        <span class="hljs-keyword">if</span> (leftPoints !== <span class="hljs-literal">undefined</span> &amp;&amp; leftPoints !== <span class="hljs-literal">null</span>) {
-          <span class="hljs-keyword">if</span> (cHigh === -<span class="hljs-number">1</span> || leftPoints &gt; cHigh) {
-            cHigh = leftPoints;
-            cHighIndex = i;
-          }
-        }
-      }
-      <span class="hljs-keyword">if</span> (cHighIndex === -<span class="hljs-number">1</span>) <span class="hljs-keyword">break</span>;
-
-      <span class="hljs-keyword">var</span> cx = toBeChecked[cHighIndex];
-      <span class="hljs-keyword">var</span> cy = toBeChecked[cHighIndex + <span class="hljs-number">1</span>];
-      <span class="hljs-keyword">var</span> cp = toBeChecked[cHighIndex + <span class="hljs-number">2</span>];</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-68">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-68">&#182;</a>
-              </div>
-              <p>clear</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      toBeChecked[cHighIndex] = <span class="hljs-literal">null</span>;
-      toBeChecked[cHighIndex + <span class="hljs-number">1</span>] = <span class="hljs-literal">null</span>;
-      toBeChecked[cHighIndex + <span class="hljs-number">2</span>] = <span class="hljs-literal">null</span>;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-69">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-69">&#182;</a>
-              </div>
-              <p>set neighbors for check_</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> (cx &gt; <span class="hljs-number">0</span>) {
-        checker[<span class="hljs-number">0</span>] = cx - <span class="hljs-number">1</span>;
-        checker[<span class="hljs-number">1</span>] = cy;
-      } <span class="hljs-keyword">else</span> {
-        checker[<span class="hljs-number">0</span>] = -<span class="hljs-number">1</span>;
-        checker[<span class="hljs-number">1</span>] = -<span class="hljs-number">1</span>;
-      }
-      <span class="hljs-keyword">if</span> (cx &lt; cwt.Map.width - <span class="hljs-number">1</span>) {
-        checker[<span class="hljs-number">2</span>] = cx + <span class="hljs-number">1</span>;
-        checker[<span class="hljs-number">3</span>] = cy;
-      } <span class="hljs-keyword">else</span> {
-        checker[<span class="hljs-number">2</span>] = -<span class="hljs-number">1</span>;
-        checker[<span class="hljs-number">3</span>] = -<span class="hljs-number">1</span>;
-      }
-      <span class="hljs-keyword">if</span> (cy &gt; <span class="hljs-number">0</span>) {
-        checker[<span class="hljs-number">4</span>] = cx;
-        checker[<span class="hljs-number">5</span>] = cy - <span class="hljs-number">1</span>;
-      } <span class="hljs-keyword">else</span> {
-        checker[<span class="hljs-number">4</span>] = -<span class="hljs-number">1</span>;
-        checker[<span class="hljs-number">5</span>] = -<span class="hljs-number">1</span>;
-      }
-      <span class="hljs-keyword">if</span> (cy &lt; cwt.Map.height - <span class="hljs-number">1</span>) {
-        checker[<span class="hljs-number">6</span>] = cx;
-        checker[<span class="hljs-number">7</span>] = cy + <span class="hljs-number">1</span>;
-      } <span class="hljs-keyword">else</span> {
-        checker[<span class="hljs-number">6</span>] = -<span class="hljs-number">1</span>;
-        checker[<span class="hljs-number">7</span>] = -<span class="hljs-number">1</span>;
-      }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-70">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-70">&#182;</a>
-              </div>
-              <p>check_ the given neighbors for move</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>; n &lt; <span class="hljs-number">8</span>; n += <span class="hljs-number">2</span>) {
-        <span class="hljs-keyword">if</span> (checker[n] === -<span class="hljs-number">1</span>) {
-          <span class="hljs-keyword">continue</span>;
-        }
-
-        <span class="hljs-keyword">var</span> tx = checker[n];
-        <span class="hljs-keyword">var</span> ty = checker[n + <span class="hljs-number">1</span>];
-
-        cost = <span class="hljs-keyword">this</span>.getMoveCosts(moveTypeObj, tx, ty);
-        <span class="hljs-keyword">if</span> (cost !== -<span class="hljs-number">1</span>) {
-
-          <span class="hljs-keyword">var</span> cTile = map[tx][ty];
-          <span class="hljs-keyword">var</span> cUnit = cTile.unit;
-
-          <span class="hljs-keyword">if</span> (cUnit !== <span class="hljs-literal">null</span> &amp;&amp;
-            cTile.visionTurnOwner &gt; <span class="hljs-number">0</span> &amp;&amp;
-            !cUnit.hidden &amp;&amp;
-            cUnit.owner.team !== player.team) {
-            <span class="hljs-keyword">continue</span>;
-          }
-
-          <span class="hljs-keyword">var</span> rest = cp - cost;
-          <span class="hljs-keyword">if</span> (rest &gt;= <span class="hljs-number">0</span> &amp;&amp; rest &gt; selectionMap.getValue(tx, ty)) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-71">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-71">&#182;</a>
-              </div>
-              <p>add possible move to the <code>selectionMap</code> map</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>            selectionMap.setValue(tx, ty, rest);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-72">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-72">&#182;</a>
-              </div>
-              <p>add this tile to the checker</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = toBeChecked.length; i &lt;= e; i += <span class="hljs-number">3</span>) {
-              <span class="hljs-keyword">if</span> (toBeChecked[i] === <span class="hljs-literal">null</span> || i === e) {
-                toBeChecked[i] = tx;
-                toBeChecked[i + <span class="hljs-number">1</span>] = ty;
-                toBeChecked[i + <span class="hljs-number">2</span>] = rest;
-                <span class="hljs-keyword">break</span>;
-              }
-            }
-          }
-        }
-      }
-    }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-73">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-73">&#182;</a>
-              </div>
-              <p>release helper if you grabbed it</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (releaseHelper) {
-      <span class="hljs-keyword">this</span>.fillMoveMapHelper_ = toBeChecked;
-      <span class="hljs-keyword">this</span>.checker_ = checker;
-    }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-74">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-74">&#182;</a>
-              </div>
-              <p>convert left points back to absolute costs</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> x = <span class="hljs-number">0</span>, xe = cwt.Map.width; x &lt; xe; x++) {
-      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> y = <span class="hljs-number">0</span>, ye = cwt.Map.height; y &lt; ye; y++) {
-        <span class="hljs-keyword">if</span> (selectionMap.getValue(x, y) !== cwt.INACTIVE) {
-          cost = <span class="hljs-keyword">this</span>.getMoveCosts(moveTypeObj, x, y);
-          selectionMap.setValue(x, y, cost);
-        }
-      }
-    }
-  },
-
-  <span class="hljs-comment">/**
-   *
-   * @param {cwt.CircularBuffer} movePath
-   * @param {cwt.Position} source
-   * @param {cwt.Position} target
-   * @return {boolean}
-   */</span>
-  trapCheck: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(movePath, source, target)</span> {</span>
-    <span class="hljs-keyword">var</span> cBx;
-    <span class="hljs-keyword">var</span> cBy;
-    <span class="hljs-keyword">var</span> map = cwt.Map.data;
-    <span class="hljs-keyword">var</span> cx = source.x;
-    <span class="hljs-keyword">var</span> cy = source.y;
-    <span class="hljs-keyword">var</span> teamId = source.unit.owner.team;
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = movePath.size; i &lt; e; i++) {
-      <span class="hljs-keyword">switch</span> (movePath.get(i)) {
-        <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_DOWN:
-          cy++;
-          <span class="hljs-keyword">break</span>;
-
-        <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_UP:
-          cy--;
-          <span class="hljs-keyword">break</span>;
-
-        <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_LEFT:
-          cx--;
-          <span class="hljs-keyword">break</span>;
-
-        <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_RIGHT:
-          cx++;
-          <span class="hljs-keyword">break</span>;
-      }
-
-      <span class="hljs-keyword">var</span> unit = map[cx][cy].unit;
-      <span class="hljs-keyword">if</span> (!unit) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-75">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-75">&#182;</a>
-              </div>
-              <p>no unit there? then it’s a valid position</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        cBx = cx;
-        cBy = cy;
-
-      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (teamId !== unit.owner.team) {
-        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(<span class="hljs-keyword">typeof</span> cBx !== <span class="hljs-string">"number"</span> &amp;&amp; <span class="hljs-keyword">typeof</span> cBy !== <span class="hljs-string">"number"</span>);
-
-        target.set(cBx, cBy); <span class="hljs-comment">// ? this looks ugly here...</span>
-        movePath.data[i] = cwt.INACTIVE;
-
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-      }
-    }
-
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-  },
-
-  <span class="hljs-comment">/**
-   *
-   */</span>
-  movePathCache: <span class="hljs-keyword">new</span> cwt.CircularBuffer(cwt.MAX_MOVE_LENGTH),
-
-  <span class="hljs-comment">/**
-   *
-   * @param unit
-   * @param x
-   * @param y
-   * @param movePath
-   * @param {boolean=} noFuelConsumption
-   * @param {boolean=} preventRemoveOldPos
-   * @param {boolean=} preventSetNewPos
-   */</span>
-  move: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(unit, x, y, movePath, noFuelConsumption, preventRemoveOldPos, preventSetNewPos)</span> {</span>
-    <span class="hljs-keyword">var</span> map = cwt.Map.data;
-    <span class="hljs-keyword">var</span> team = unit.owner.team;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-76">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-76">&#182;</a>
-              </div>
-              <p>the unit must not be on a tile (e.g. loads), that is the reason why we
-need a valid x,y position here as parameters</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> cX = x;
-    <span class="hljs-keyword">var</span> cY = y;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-77">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-77">&#182;</a>
-              </div>
-              <p>do not set the new position if the position is already occupied
-the action logic must take care of this situation</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (preventRemoveOldPos !== <span class="hljs-literal">true</span>) {
-      cwt.Map.data[x][y].unit = <span class="hljs-literal">null</span>;
-    }
-
-    <span class="hljs-keyword">var</span> uType = unit.type;
-    <span class="hljs-keyword">var</span> mType = uType.movetype;
-    <span class="hljs-keyword">var</span> lastIndex = movePath.length - <span class="hljs-number">1</span>;
-    <span class="hljs-keyword">var</span> fuelUsed = <span class="hljs-number">0</span>;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-78">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-78">&#182;</a>
-              </div>
-              <p>check_ move way by iterate through all move codes and build the path</p>
-<ol>
-<li>check_ the correctness of the given move code</li>
-<li>check_ all tiles to recognize trapped moves</li>
-<li>accumulate fuel consumption ( except <code>noFuelConsumption</code> is <code>true</code> )</li>
-</ol>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-    <span class="hljs-keyword">var</span> trapped = <span class="hljs-literal">false</span>;
-    <span class="hljs-keyword">var</span> lastX = -<span class="hljs-number">1</span>;
-    <span class="hljs-keyword">var</span> lastY = -<span class="hljs-number">1</span>;
-    <span class="hljs-keyword">var</span> lastFuel = <span class="hljs-number">0</span>;
-    <span class="hljs-keyword">var</span> lastIndex = <span class="hljs-number">0</span>;
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = movePath.getLastIndex(); i &lt; e; i++) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-79">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-79">&#182;</a>
-              </div>
-              <p>set current position by current move code</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">switch</span> (movePath.data[i]) {
-
-        <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_UP:
-          <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(cY === <span class="hljs-number">0</span>);
-          cY--;
-          <span class="hljs-keyword">break</span>;
-
-        <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_RIGHT:
-          <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(cX === cwt.Map.width - <span class="hljs-number">1</span>);
-          cX++;
-          <span class="hljs-keyword">break</span>;
-
-        <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_DOWN:
-          <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(cY === cwt.Map.height - <span class="hljs-number">1</span>);
-          cY++;
-          <span class="hljs-keyword">break</span>;
-
-        <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_LEFT:
-          <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(cX === <span class="hljs-number">0</span>);
-          cX--;
-          <span class="hljs-keyword">break</span>;
-      }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-80">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-80">&#182;</a>
-              </div>
-              <p>calculate the used fuel to move onto the current tile
-if <code>noFuelConsumption</code> is not <code>true</code> some actions like unloading does not consume fuel</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> (noFuelConsumption !== <span class="hljs-literal">true</span>) {
-        fuelUsed += <span class="hljs-keyword">this</span>.getMoveCosts(mType, cX, cY);
-      }
-
-      <span class="hljs-keyword">var</span> tileUnit = map[cX][cY].unit;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-81">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-81">&#182;</a>
-              </div>
-              <p>movable when tile is empty or the last tile in the way while
-the unit on the tile belongs to the movers owner</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> (!tileUnit || (tileUnit.owner === unit.owner &amp;&amp; i === e - <span class="hljs-number">1</span>)) {
-        lastX = cX;
-        lastY = cY;
-        lastFuel = fuelUsed;
-        lastIndex = i;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-82">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-82">&#182;</a>
-              </div>
-              <p>enemy unit</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (tileUnit.owner.team !== team) {
-        movePath.clear(lastIndex + <span class="hljs-number">1</span>);
-        trapped = <span class="hljs-literal">true</span>;
-        <span class="hljs-keyword">break</span>;
-      }
-    }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-83">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-83">&#182;</a>
-              </div>
-              <p>consume fuel except when no fuel consumption is on</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (noFuelConsumption !== <span class="hljs-literal">true</span>) {
-      unit.fuel -= lastFuel;
-      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(unit.fuel &gt;= <span class="hljs-number">0</span>);
-    }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-84">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-84">&#182;</a>
-              </div>
-              <p>sometimes we prevent to set the unit at the target position because it moves
-into a thing at a target position (like a transporter)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (preventSetNewPos !== <span class="hljs-literal">true</span>) {
-      cwt.Map.data[lastX][lastY].unit = unit;
-    }
-
-    cwt.ClientEvents.unitMoves(x, y, lastX, lastY, movePath, trapped);
-  }
 };
 
 <span class="hljs-comment">/**
@@ -2934,11 +1575,11 @@ cwt.Relationship = {
         </li>
         
         
-        <li id="section-85">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-85">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>one object is null</p>
 
@@ -2954,11 +1595,11 @@ cwt.Relationship = {
         </li>
         
         
-        <li id="section-86">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-86">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>one player is inactive</p>
 
@@ -2971,11 +1612,11 @@ cwt.Relationship = {
         </li>
         
         
-        <li id="section-87">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-87">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>own</p>
 
@@ -2988,11 +1629,11 @@ cwt.Relationship = {
         </li>
         
         
-        <li id="section-88">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-88">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>allied or enemy ?</p>
 
@@ -3022,11 +1663,11 @@ cwt.Relationship = {
         </li>
         
         
-        <li id="section-89">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-89">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p>WEST</p>
 
@@ -3040,11 +1681,11 @@ cwt.Relationship = {
         </li>
         
         
-        <li id="section-90">
+        <li id="section-39">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-90">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p>NORTH</p>
 
@@ -3058,11 +1699,11 @@ cwt.Relationship = {
         </li>
         
         
-        <li id="section-91">
+        <li id="section-40">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-91">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <p>EAST</p>
 
@@ -3076,11 +1717,11 @@ cwt.Relationship = {
         </li>
         
         
-        <li id="section-92">
+        <li id="section-41">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-92">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <p>SOUTH</p>
 
@@ -3215,11 +1856,11 @@ cwt.Supply = {</pre></div></div>
         </li>
         
         
-        <li id="section-93">
+        <li id="section-42">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-93">&#182;</a>
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
               <p><strong>isSupplier(cwt.Unit): bool</strong></p>
 <p>Returns true if a given unit id represents a supplier unit.</p>
@@ -3235,11 +1876,11 @@ cwt.Supply = {</pre></div></div>
         </li>
         
         
-        <li id="section-94">
+        <li id="section-43">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-94">&#182;</a>
+                <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
               <p><strong>canSupplyTile(cwt.Unit, num, num): bool</strong></p>
 
@@ -3255,11 +1896,11 @@ cwt.Supply = {</pre></div></div>
         </li>
         
         
-        <li id="section-95">
+        <li id="section-44">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-95">&#182;</a>
+                <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
               <p><strong>hasSupplyTargetsNearby(num, num): bool</strong></p>
 <p>Returns true if a given unit id has possible supply targets nearby.</p>
@@ -3329,11 +1970,11 @@ cwt.Supply = {</pre></div></div>
         </li>
         
         
-        <li id="section-96">
+        <li id="section-45">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-96">&#182;</a>
+                <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
               <p>hidden units may drain more fuel</p>
 
@@ -3411,11 +2052,11 @@ cwt.Team = {
         </li>
         
         
-        <li id="section-97">
+        <li id="section-46">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-97">&#182;</a>
+                <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
               <p>only transfer money on headquarters</p>
 
@@ -3458,11 +2099,11 @@ cwt.Team = {
         </li>
         
         
-        <li id="section-98">
+        <li id="section-47">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-98">&#182;</a>
+                <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
               <p>the amount of gold cannot be lower 0 after the transfer</p>
 
@@ -3516,11 +2157,11 @@ cwt.Team = {
         </li>
         
         
-        <li id="section-99">
+        <li id="section-48">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-99">&#182;</a>
+                <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
               <p>remove vision when unit transfers to an enemy team</p>
 
@@ -3563,11 +2204,11 @@ cwt.Team = {
         </li>
         
         
-        <li id="section-100">
+        <li id="section-49">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-100">&#182;</a>
+                <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
               <p>remove vision when unit transfers to an enemy team</p>
 
@@ -3612,11 +2253,11 @@ cwt.Team = {
         </li>
         
         
-        <li id="section-101">
+        <li id="section-50">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-101">&#182;</a>
+                <a class="pilcrow" href="#section-50">&#182;</a>
               </div>
               <p>CHECK NEW UNIT</p>
 
@@ -3711,11 +2352,11 @@ cwt.Transport = {
         </li>
         
         
-        <li id="section-102">
+        <li id="section-51">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-102">&#182;</a>
+                <a class="pilcrow" href="#section-51">&#182;</a>
               </div>
               <p>TODO: remove this later
 trapped ?</p>
@@ -3730,11 +2371,11 @@ trapped ?</p>
         </li>
         
         
-        <li id="section-103">
+        <li id="section-52">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-103">&#182;</a>
+                <a class="pilcrow" href="#section-52">&#182;</a>
               </div>
               <p>remove transport link</p>
 
@@ -3745,11 +2386,11 @@ trapped ?</p>
         </li>
         
         
-        <li id="section-104">
+        <li id="section-53">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-104">&#182;</a>
+                <a class="pilcrow" href="#section-53">&#182;</a>
               </div>
               <p>extract mode code id</p>
 
@@ -3764,11 +2405,11 @@ trapped ?</p>
         </li>
         
         
-        <li id="section-105">
+        <li id="section-54">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-105">&#182;</a>
+                <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
               <p>move load out of the transporter</p>
 
@@ -3820,34 +2461,23 @@ trapped ?</p>
  *
  * @namespace
  */</span>
-cwt.Turn = {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-106">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-106">&#182;</a>
-              </div>
-              <p><strong>next()</strong></p>
-<p>Ends the turn for the current active turn owner.</p>
+cwt.Turn = {
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  next: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+  <span class="hljs-comment">/**
+   * Ends the turn for the current active turn owner.
+   */</span>
+  next: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> pid = cwt.Gameround.turnOwner.id;
     <span class="hljs-keyword">var</span> oid = pid;</pre></div></div>
             
         </li>
         
         
-        <li id="section-107">
+        <li id="section-55">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-107">&#182;</a>
+                <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
               <p>Try to find next player from the player pool</p>
 
@@ -3862,11 +2492,11 @@ cwt.Turn = {</pre></div></div>
         </li>
         
         
-        <li id="section-108">
+        <li id="section-56">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-108">&#182;</a>
+                <a class="pilcrow" href="#section-56">&#182;</a>
               </div>
               <p>Next day</p>
 
@@ -3877,18 +2507,18 @@ cwt.Turn = {</pre></div></div>
 
         <span class="hljs-keyword">var</span> round_dayLimit = cwt.Config.getValue(<span class="hljs-string">"round_dayLimit"</span>);
         <span class="hljs-keyword">if</span> (round_dayLimit &gt; <span class="hljs-number">0</span> &amp;&amp; <span class="hljs-keyword">this</span>.day &gt;= round_dayLimit) {
-          cwt.Lifecycle.endGameRound();
+          cwt.Update.endGameRound();
         }
       }</pre></div></div>
             
         </li>
         
         
-        <li id="section-109">
+        <li id="section-57">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-109">&#182;</a>
+                <a class="pilcrow" href="#section-57">&#182;</a>
               </div>
               <p>Found next player</p>
 
@@ -3899,11 +2529,11 @@ cwt.Turn = {</pre></div></div>
         </li>
         
         
-        <li id="section-110">
+        <li id="section-58">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-110">&#182;</a>
+                <a class="pilcrow" href="#section-58">&#182;</a>
               </div>
               <p>Try next player</p>
 
@@ -3915,14 +2545,14 @@ cwt.Turn = {</pre></div></div>
         </li>
         
         
-        <li id="section-111">
+        <li id="section-59">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-111">&#182;</a>
+                <a class="pilcrow" href="#section-59">&#182;</a>
               </div>
               <p>If the new player id is the same as the old
-player id then the game data is corrupted</p>
+player id then the game aw2 is corrupted</p>
 
             </div>
             
@@ -3931,11 +2561,11 @@ player id then the game data is corrupted</p>
         </li>
         
         
-        <li id="section-112">
+        <li id="section-60">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-112">&#182;</a>
+                <a class="pilcrow" href="#section-60">&#182;</a>
               </div>
               <p>Do end/start turn logic</p>
 
@@ -3945,54 +2575,37 @@ player id then the game data is corrupted</p>
     <span class="hljs-keyword">this</span>.startsTurn_(cwt.Player.getInstance(pid));
 
     cwt.ClientEvents.turnChange();
-  },</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-113">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-113">&#182;</a>
-              </div>
-              <p><strong>endsTurn_(cwt.Player) (private)</strong></p>
+  },
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  endsTurn_: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(player)</span> {</span>
-  },</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-114">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-114">&#182;</a>
-              </div>
-              <p><strong>startsTurn_(cwt.Player) (private)</strong></p>
+  <span class="hljs-comment">/**
+   *
+   * @param {cwt.Player} player
+   * @private
+   */</span>
+  endsTurn_: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(player)</span> {</span>
+  },
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  startsTurn_: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(player)</span> {</span></pre></div></div>
+  <span class="hljs-comment">/**
+   *
+   * @param {cwt.Player} player
+   * @private
+   */</span>
+  startsTurn_: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(player)</span> {</span></pre></div></div>
             
         </li>
         
         
-        <li id="section-115">
+        <li id="section-61">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-115">&#182;</a>
+                <a class="pilcrow" href="#section-61">&#182;</a>
               </div>
               <p>Sets the new turn owner and also the client, if necessary</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>    cwt.Gameround.turnOwner = player;
-
     <span class="hljs-keyword">if</span> (player.clientControlled) {
       cwt.Player.activeClientPlayer = player;
     }</pre></div></div>
@@ -4000,11 +2613,11 @@ player id then the game data is corrupted</p>
         </li>
         
         
-        <li id="section-116">
+        <li id="section-62">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-116">&#182;</a>
+                <a class="pilcrow" href="#section-62">&#182;</a>
               </div>
               <p>the active client can see what his and all allied objects can see</p>
 
@@ -4020,11 +2633,11 @@ player id then the game data is corrupted</p>
         </li>
         
         
-        <li id="section-117">
+        <li id="section-63">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-117">&#182;</a>
+                <a class="pilcrow" href="#section-63">&#182;</a>
               </div>
               <p>player isn’t registered</p>
 
@@ -4043,11 +2656,11 @@ player id then the game data is corrupted</p>
         </li>
         
         
-        <li id="section-118">
+        <li id="section-64">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-118">&#182;</a>
+                <a class="pilcrow" href="#section-64">&#182;</a>
               </div>
               <hr>
 
@@ -4072,11 +2685,11 @@ player id then the game data is corrupted</p>
         </li>
         
         
-        <li id="section-119">
+        <li id="section-65">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-119">&#182;</a>
+                <a class="pilcrow" href="#section-65">&#182;</a>
               </div>
               <hr>
 
@@ -4094,11 +2707,11 @@ player id then the game data is corrupted</p>
         </li>
         
         
-        <li id="section-120">
+        <li id="section-66">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-120">&#182;</a>
+                <a class="pilcrow" href="#section-66">&#182;</a>
               </div>
               <p>supply units</p>
 
@@ -4111,11 +2724,11 @@ player id then the game data is corrupted</p>
         </li>
         
         
-        <li id="section-121">
+        <li id="section-67">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-121">&#182;</a>
+                <a class="pilcrow" href="#section-67">&#182;</a>
               </div>
               <p>heal by property</p>
 
@@ -4128,11 +2741,11 @@ player id then the game data is corrupted</p>
         </li>
         
         
-        <li id="section-122">
+        <li id="section-68">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-122">&#182;</a>
+                <a class="pilcrow" href="#section-68">&#182;</a>
               </div>
               <p>unit is out of fuel</p>
 
@@ -4148,11 +2761,11 @@ player id then the game data is corrupted</p>
         </li>
         
         
-        <li id="section-123">
+        <li id="section-69">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-123">&#182;</a>
+                <a class="pilcrow" href="#section-69">&#182;</a>
               </div>
               <p>Do host only actions</p>
 
@@ -4163,11 +2776,11 @@ player id then the game data is corrupted</p>
         </li>
         
         
-        <li id="section-124">
+        <li id="section-70">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-124">&#182;</a>
+                <a class="pilcrow" href="#section-70">&#182;</a>
               </div>
               <p>Generate new weather</p>
 
@@ -4180,11 +2793,11 @@ player id then the game data is corrupted</p>
         </li>
         
         
-        <li id="section-125">
+        <li id="section-71">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-125">&#182;</a>
+                <a class="pilcrow" href="#section-71">&#182;</a>
               </div>
               <p>Do AI-Turn
 TODO</p>
@@ -4217,11 +2830,11 @@ cwt.Weather = {
         </li>
         
         
-        <li id="section-126">
+        <li id="section-72">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-126">&#182;</a>
+                <a class="pilcrow" href="#section-72">&#182;</a>
               </div>
               <p>this event is only host invokable</p>
 
@@ -4232,11 +2845,11 @@ cwt.Weather = {
         </li>
         
         
-        <li id="section-127">
+        <li id="section-73">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-127">&#182;</a>
+                <a class="pilcrow" href="#section-73">&#182;</a>
               </div>
               <p>Search a random weather if the last weather
 was <code>null</code> or the default weather type</p>
@@ -4256,11 +2869,11 @@ was <code>null</code> or the default weather type</p>
         </li>
         
         
-        <li id="section-128">
+        <li id="section-74">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-128">&#182;</a>
+                <a class="pilcrow" href="#section-74">&#182;</a>
               </div>
               <p>Take default weather and calculate a random amount of days</p>
 
@@ -4286,11 +2899,11 @@ was <code>null</code> or the default weather type</p>
         </li>
         
         
-        <li id="section-129">
+        <li id="section-75">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-129">&#182;</a>
+                <a class="pilcrow" href="#section-75">&#182;</a>
               </div>
               <p>recalculate fog map for client and turn
 owner due possible weather effects</p>

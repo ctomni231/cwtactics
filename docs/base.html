@@ -60,11 +60,6 @@
                 </a>
               
                 
-                <a class="source" href="language.html">
-                  language.js
-                </a>
-              
-                
                 <a class="source" href="loading.html">
                   loading.js
                 </a>
@@ -379,8 +374,7 @@ disabled without having to modify other code that calls it.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  emptyFunction: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-  },</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  emptyFunction: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>},</pre></div></div>
             
         </li>
         
@@ -563,7 +557,7 @@ will not selected randomly.</p>
   <span class="hljs-keyword">if</span> (cwt.Error) {
     <span class="hljs-comment">/* cwt.Error("Critical Game Fault","ERR_UNKNOWN"); */</span>
   }
-
+  
   console.error(e, (<span class="hljs-built_in">arguments</span>.length &gt; <span class="hljs-number">0</span>) ? file + <span class="hljs-string">" line:"</span> + line : <span class="hljs-literal">null</span>);
 };</pre></div></div>
             
@@ -1005,11 +999,6 @@ checks all units -&gt; we won’t want to create all units then)</p>
       }
 
       l[id] = <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>();
-
-      <span class="hljs-comment">/* invoke creation event */</span>
-      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.onInstanceCreation) {
-        <span class="hljs-keyword">this</span>.onInstanceCreation(id, l[id]);
-      }
     }
 
     <span class="hljs-keyword">return</span> l[id];
@@ -1879,12 +1868,1250 @@ cwt.SheetDatabase = my.Class({
             </div>
             
             <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (impl.checks) {
-      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> impl.checks) {
+      <span class="hljs-keyword">for</span> (key <span class="hljs-keyword">in</span> impl.checks) {
         <span class="hljs-keyword">if</span> (impl.checks.hasOwnProperty(key)) {
           <span class="hljs-keyword">this</span>.validator_.addCheck(key, impl.checks[key]);
         }
       }
     }
+  }
+});
+
+<span class="hljs-comment">/**
+ *
+ * @class
+ */</span>
+cwt.Sprite = my.Class(<span class="hljs-comment">/** @lends cwt.Sprite.prototype */</span> {
+
+  STATIC: {
+
+    <span class="hljs-comment">/** @constant */</span>
+    MINIMAP_2x2: <span class="hljs-number">0</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    MINIMAP_4x4: <span class="hljs-number">1</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-54">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-54">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-55">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-55">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-comment">/** @constant */</span>
+    UNIT_STATES: <span class="hljs-number">30</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    UNIT_RED: <span class="hljs-number">0</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    UNIT_BLUE: <span class="hljs-number">6</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    UNIT_GREEN: <span class="hljs-number">12</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    UNIT_YELLOW: <span class="hljs-number">18</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    UNIT_SHADOW_MASK: <span class="hljs-number">24</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    UNIT_STATE_IDLE: <span class="hljs-number">0</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    UNIT_STATE_IDLE_INVERTED: <span class="hljs-number">1</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    UNIT_STATE_LEFT: <span class="hljs-number">2</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    UNIT_STATE_RIGHT: <span class="hljs-number">3</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    UNIT_STATE_UP: <span class="hljs-number">4</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    UNIT_STATE_DOWN: <span class="hljs-number">5</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-56">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-56">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-57">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-57">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-comment">/** @constant */</span>
+    TILE_STATES: <span class="hljs-number">2</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    TILE_SHADOW: <span class="hljs-number">1</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-58">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-58">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-59">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-59">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-comment">/** @constant */</span>
+    PROPERTY_STATES: <span class="hljs-number">6</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    PROPERTY_RED: <span class="hljs-number">0</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    PROPERTY_BLUE: <span class="hljs-number">1</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    PROPERTY_GREEN: <span class="hljs-number">2</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    PROPERTY_YELLOW: <span class="hljs-number">3</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    PROPERTY_NEUTRAL: <span class="hljs-number">4</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    PROPERTY_SHADOW_MASK: <span class="hljs-number">5</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-60">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-60">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-61">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-61">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-comment">/** @constant */</span>
+    SYMBOL_HP: <span class="hljs-number">0</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    SYMBOL_AMMO: <span class="hljs-number">1</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    SYMBOL_FUEL: <span class="hljs-number">2</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    SYMBOL_LOAD: <span class="hljs-number">3</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    SYMBOL_CAPTURE: <span class="hljs-number">4</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    SYMBOL_ATT: <span class="hljs-number">5</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    SYMBOL_VISION: <span class="hljs-number">6</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    SYMBOL_MOVE: <span class="hljs-number">7</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    SYMBOL_UNKNOWN: <span class="hljs-number">8</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    SYMBOL_HIDDEN: <span class="hljs-number">9</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    SYMBOL_DEFENSE: <span class="hljs-number">10</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    SYMBOL_RANK_1: <span class="hljs-number">11</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    SYMBOL_RANK_2: <span class="hljs-number">12</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    SYMBOL_RANK_3: <span class="hljs-number">13</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-62">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-62">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-63">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-63">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-comment">/** @constant */</span>
+    DIRECTION_N: <span class="hljs-number">0</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    DIRECTION_S: <span class="hljs-number">1</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    DIRECTION_W: <span class="hljs-number">2</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    DIRECTION_E: <span class="hljs-number">3</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    DIRECTION_SW: <span class="hljs-number">4</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    DIRECTION_SE: <span class="hljs-number">5</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    DIRECTION_NW: <span class="hljs-number">6</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    DIRECTION_NE: <span class="hljs-number">7</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    DIRECTION_NS: <span class="hljs-number">8</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    DIRECTION_WE: <span class="hljs-number">9</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    DIRECTION_ALL: <span class="hljs-number">8</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    DIRECTION_UP: <span class="hljs-number">0</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    DIRECTION_DOWN: <span class="hljs-number">1</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    DIRECTION_LEFT: <span class="hljs-number">2</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    DIRECTION_RIGHT: <span class="hljs-number">3</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-64">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-64">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-65">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-65">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-comment">/** @constant */</span>
+    FOCUS_MOVE: <span class="hljs-number">0</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    FOCUS_ATTACK: <span class="hljs-number">1</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-66">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-66">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-67">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-67">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-comment">/** @constant */</span>
+    COLOR_MAP_PROPERTY: <span class="hljs-number">0</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    COLOR_MAP_UNIT: <span class="hljs-number">1</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-68">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-68">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-69">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-69">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-comment">/** @constant */</span>
+    EXPLOSION_GROUND: <span class="hljs-number">0</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    EXPLOSION_AIR: <span class="hljs-number">1</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    EXPLOSION_DUST: <span class="hljs-number">2</span>,
+
+    <span class="hljs-comment">/** @constant */</span>
+    EXPLOSION_SEA: <span class="hljs-number">3</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-70">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-70">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-71">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-71">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-comment">/**
+     *
+     * @param {cwt.Sprite} sprite
+     * @return {string}
+     */</span>
+    toJSON: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sprite)</span> {</span>
+      <span class="hljs-keyword">if</span> (cwt.DEBUG) cwt.assert(sprite <span class="hljs-keyword">instanceof</span> cwt.Sprite);
+
+      <span class="hljs-keyword">var</span> data = [];
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = sprite.images.length; i &lt; e; i++) {
+        data[i] = Base64Helper.canvasToBase64(sprite.images[i]);
+      }
+
+      <span class="hljs-keyword">return</span> <span class="hljs-built_in">JSON</span>.stringify(data);
+    },
+
+    <span class="hljs-comment">/**
+     * Loads a sprite from the cache.
+     *
+     * @param spriteData
+     * @return {cwt.Sprite}
+     */</span>
+    fromJSON: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(spriteData)</span> {</span>
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> spriteData === <span class="hljs-string">"string"</span>) {
+        spriteData = <span class="hljs-built_in">JSON</span>.parse(spriteData);
+      }
+
+      <span class="hljs-keyword">var</span> sprite = <span class="hljs-keyword">new</span> cwt.Sprite(spriteData.length);
+      <span class="hljs-keyword">var</span> data = sprite.images;
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = spriteData.length; i &lt; e; i++) {
+        data[i] = Base64Helper.base64ToImage(spriteData[i]);
+      }
+
+      <span class="hljs-keyword">return</span> sprite;
+    }
+  },
+
+  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(indexes)</span> {</span>
+    <span class="hljs-keyword">this</span>.images = [];
+
+    <span class="hljs-keyword">while</span> (indexes &gt; <span class="hljs-number">0</span>) {
+      <span class="hljs-keyword">this</span>.images.push(<span class="hljs-literal">null</span>);
+      indexes--;
+    }
+  },
+
+  <span class="hljs-comment">/**
+   *
+   * @return {Number}
+   */</span>
+  getNumberOfImages: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.images.length;
+  },
+
+  <span class="hljs-comment">/**
+   *
+   * @param {number} index
+   * @param {HTMLImageElement|HTMLCanvasElement} image
+   */</span>
+  setImage: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(index, image)</span> {</span>
+    <span class="hljs-keyword">if</span> (cwt.DEBUG) cwt.assert(index &gt;= <span class="hljs-number">0</span> &amp;&amp; index &lt; <span class="hljs-keyword">this</span>.images.length);
+    <span class="hljs-keyword">this</span>.images[index] = image;
+  },
+
+  <span class="hljs-comment">/**
+   *
+   * @param index
+   * @return {HTMLImageElement|HTMLCanvasElement}
+   */</span>
+  getImage: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(index)</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.images[index];
+  }
+});
+
+<span class="hljs-comment">/**
+ *
+ * @class
+ */</span>
+cwt.TileVariantInfo = my.Class(<span class="hljs-comment">/** @lends cwt.TileVariantInfo.prototype */</span> {
+
+  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(desc, connection)</span> {</span>
+    <span class="hljs-keyword">this</span>.desc = desc;
+    <span class="hljs-keyword">this</span>.connection = connection;
+  },
+
+  <span class="hljs-comment">/**
+   *
+   * @param type
+   * @return {string}
+   */</span>
+  grabShortKey: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(type)</span> {</span>
+    <span class="hljs-keyword">if</span> (type &amp;&amp; <span class="hljs-keyword">this</span>.desc[type]) <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.desc[type];
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-string">""</span>;
+  },
+
+  <span class="hljs-comment">/**
+   * Returns the variant number in relation to a given set of neighbour types.
+   *
+   * @param {string} typeN
+   * @param {string} typeE
+   * @param {string} typeS
+   * @param {string} typeW
+   * @param {string?} typeNE
+   * @param {string?} typeSE
+   * @param {string?} typeSW
+   * @param {string?} typeNW
+   */</span>
+  getVariant: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(typeN, typeE, typeS, typeW, typeNE, typeSE, typeSW, typeNW)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-72">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-72">&#182;</a>
+              </div>
+              <p>grab shorts</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    typeN = <span class="hljs-keyword">this</span>.grabShortKey(typeN);
+    typeNE = <span class="hljs-keyword">this</span>.grabShortKey(typeNE);
+    typeE = <span class="hljs-keyword">this</span>.grabShortKey(typeE);
+    typeSE = <span class="hljs-keyword">this</span>.grabShortKey(typeSE);
+    typeS = <span class="hljs-keyword">this</span>.grabShortKey(typeS);
+    typeSW = <span class="hljs-keyword">this</span>.grabShortKey(typeSW);
+    typeW = <span class="hljs-keyword">this</span>.grabShortKey(typeW);
+    typeNW = <span class="hljs-keyword">this</span>.grabShortKey(typeNW);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-73">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-73">&#182;</a>
+              </div>
+              <p>search variant</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.connection.length; i &lt; e; i++) {
+      <span class="hljs-keyword">var</span> cConn = <span class="hljs-keyword">this</span>.connection[i];
+      <span class="hljs-keyword">if</span> (cConn.length === <span class="hljs-number">5</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-74">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-74">&#182;</a>
+              </div>
+              <p>check_ plus</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">1</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">1</span>] !== typeN) <span class="hljs-keyword">continue</span>;
+        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">2</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">2</span>] !== typeE) <span class="hljs-keyword">continue</span>;
+        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">3</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">3</span>] !== typeS) <span class="hljs-keyword">continue</span>;
+        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">4</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">4</span>] !== typeW) <span class="hljs-keyword">continue</span>;
+
+      } <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-75">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-75">&#182;</a>
+              </div>
+              <p>check_ cross</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">1</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">1</span>] !== typeN) <span class="hljs-keyword">continue</span>;
+        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">2</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">2</span>] !== typeNE) <span class="hljs-keyword">continue</span>;
+        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">3</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">3</span>] !== typeE) <span class="hljs-keyword">continue</span>;
+        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">4</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">4</span>] !== typeSE) <span class="hljs-keyword">continue</span>;
+        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">5</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">5</span>] !== typeS) <span class="hljs-keyword">continue</span>;
+        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">6</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">6</span>] !== typeSW) <span class="hljs-keyword">continue</span>;
+        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">7</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">7</span>] !== typeW) <span class="hljs-keyword">continue</span>;
+        <span class="hljs-keyword">if</span> (cConn[<span class="hljs-number">8</span>] !== <span class="hljs-string">""</span> &amp;&amp; cConn[<span class="hljs-number">8</span>] !== typeNW) <span class="hljs-keyword">continue</span>;
+      }
+
+      <span class="hljs-keyword">return</span> cConn[<span class="hljs-number">0</span>];
+    }
+  }
+});
+
+<span class="hljs-comment">/**
+ * @class
+ */</span>
+cwt.UIButtonGroup = my.Class(<span class="hljs-comment">/** @lends cwt.UIButtonGroup.prototype */</span> {
+
+  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">this</span>.elements = [];
+    <span class="hljs-keyword">this</span>.selected = -<span class="hljs-number">1</span>;
+  },
+
+  <span class="hljs-comment">/**
+   *
+   * @param {cwt.UIField} el
+   */</span>
+  addElement: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> {</span>
+    <span class="hljs-keyword">this</span>.elements.push(el);
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.selected === -<span class="hljs-number">1</span> &amp;&amp; el.action) {
+      <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.elements.length - <span class="hljs-number">1</span>].inFocus = <span class="hljs-literal">true</span>;
+      <span class="hljs-keyword">this</span>.selected = <span class="hljs-keyword">this</span>.elements.length - <span class="hljs-number">1</span>;
+    }
+  },
+
+  <span class="hljs-comment">/**
+   * Returns the current active button.
+   *
+   * @return {cwt.UIField}
+   */</span>
+  activeButton: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected];
+  },
+
+  <span class="hljs-comment">/**
+   * Returns a button by it's key.
+   *
+   * @param {String} key
+   * @return {cwt.UIField}
+   */</span>
+  getButtonByKey: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key)</span> {</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.elements.length; i &lt; e; i++) {
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.elements[i].key === key) {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.elements[i];
+      }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+  },
+
+  <span class="hljs-comment">/**
+   *
+   * @param {RegExp} reg
+   */</span>
+  getButtonsByReg: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(reg)</span> {</span>
+    <span class="hljs-keyword">var</span> arr = [];
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.elements.length; i &lt; e; i++) {
+      <span class="hljs-keyword">if</span> (reg.test(<span class="hljs-keyword">this</span>.elements[i].key)) {
+        arr.push(<span class="hljs-keyword">this</span>.elements[i]);
+      }
+    }
+
+    <span class="hljs-keyword">return</span> arr;
+  },
+
+  <span class="hljs-comment">/**
+   * Updates the index of the selected button in interconnection to a given position.
+   *
+   * @param {Number} x
+   * @param {Number} y
+   * @return {boolean} true, if the index was updated, else false
+   */</span>
+  updateIndex: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y)</span> {</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.elements.length; i &lt; e; i++) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-76">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-76">&#182;</a>
+              </div>
+              <p>inactive element</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.elements[i].action || <span class="hljs-keyword">this</span>.elements[i].inactive) {
+        <span class="hljs-keyword">continue</span>;
+      }
+
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.elements[i].positionInButton(x, y)) {
+        <span class="hljs-keyword">if</span> (i === <span class="hljs-keyword">this</span>.selected) {
+          <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+
+        <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].inFocus = <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">this</span>.selected = i;
+        <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].inFocus = <span class="hljs-literal">true</span>;
+
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+      }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  },
+
+  <span class="hljs-comment">/**
+   *
+   * @param input
+   * @return {boolean} true, if the index was updated, else false
+   */</span>
+  handleInput: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(input)</span> {</span>
+    <span class="hljs-keyword">if</span> (cwt.DEBUG) cwt.assert(input !== <span class="hljs-literal">null</span>);
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> input !== <span class="hljs-string">"number"</span>) {
+      input = input.key;
+    }
+
+    <span class="hljs-keyword">var</span> res = <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].inFocus = <span class="hljs-literal">false</span>;
+
+    <span class="hljs-keyword">switch</span> (input) {
+      <span class="hljs-keyword">case</span> cwt.Input.TYPE_UP:
+      <span class="hljs-keyword">case</span> cwt.Input.TYPE_LEFT:
+        <span class="hljs-keyword">do</span> {
+          <span class="hljs-keyword">this</span>.selected--;
+          <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.selected &lt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">this</span>.selected = <span class="hljs-keyword">this</span>.elements.length - <span class="hljs-number">1</span>;
+          }
+        } <span class="hljs-keyword">while</span> (!<span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].action || <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].inactive);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> cwt.Input.TYPE_RIGHT:
+      <span class="hljs-keyword">case</span> cwt.Input.TYPE_DOWN:
+        <span class="hljs-keyword">do</span> {
+          <span class="hljs-keyword">this</span>.selected++;
+          <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.selected &gt;= <span class="hljs-keyword">this</span>.elements.length) {
+            <span class="hljs-keyword">this</span>.selected = <span class="hljs-number">0</span>;
+          }
+        } <span class="hljs-keyword">while</span> (!<span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].action || <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].inactive);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">default</span> :
+        res = <span class="hljs-literal">false</span>;
+    }
+
+    <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].inFocus = <span class="hljs-literal">true</span>;
+
+    <span class="hljs-keyword">return</span> res;
+  },
+
+  <span class="hljs-comment">/**
+   * Draws the screen layout into a given context of a canvas object.
+   *
+   * @param {CanvasRenderingContext2D} ctx
+   */</span>
+  draw: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ctx)</span> {</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.elements.length; i &lt; e; i++) {
+      <span class="hljs-keyword">var</span> el = <span class="hljs-keyword">this</span>.elements[i];
+
+      <span class="hljs-keyword">if</span> (!el.inactive) {
+        el.draw(ctx);
+      }
+    }
+  }
+});
+
+<span class="hljs-comment">/**
+ *
+ * @class
+ * @extends {cwt.UIField}
+ */</span>
+cwt.UICheckboxField = my.Class(<span class="hljs-literal">null</span>, cwt.UIField, <span class="hljs-comment">/** @lends cwt.UICheckboxField.prototype */</span> {
+
+  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, w, h, text, fsize, style)</span> {</span>
+    cwt.UIField.call(<span class="hljs-keyword">this</span>, x, y, w, h, text, fsize, style, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(button, state)</span> {</span>
+      state.rendered = <span class="hljs-literal">false</span>;
+      button.checked = !button.checked;
+    });
+    <span class="hljs-keyword">this</span>.text = <span class="hljs-string">""</span>;
+    <span class="hljs-keyword">this</span>.checked = <span class="hljs-literal">false</span>;
+  },
+
+  <span class="hljs-comment">/**
+   *
+   * @param {CanvasRenderingContext2D} ctx
+   */</span>
+  draw: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ctx)</span> {</span>
+    cwt.UIField.prototype.draw.call(<span class="hljs-keyword">this</span>, ctx);
+
+    ctx.fillStyle = <span class="hljs-string">"black"</span>;
+    ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">4</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">4</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">8</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">8</span>);
+
+    ctx.fillStyle = (<span class="hljs-keyword">this</span>.checked) ? <span class="hljs-string">"rgb(60,60,60)"</span> : <span class="hljs-string">"white"</span>;
+    ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">5</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">5</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">10</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">10</span>);
+  }
+});
+
+<span class="hljs-comment">/**
+ *
+ * @class
+ * @extends {cwt.UIField}
+ */</span>
+cwt.UICustomField = my.Class(<span class="hljs-literal">null</span>, cwt.UIField, <span class="hljs-comment">/** @lends cwt.UIField.prototype */</span> {
+
+  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, w, h, key, drawFn)</span> {</span>
+    cwt.UIField.call(<span class="hljs-keyword">this</span>, x, y, w, h, key, <span class="hljs-number">0</span>, cwt.UIField.STYLE_NORMAL);
+    <span class="hljs-keyword">this</span>.text = <span class="hljs-string">""</span>;
+    <span class="hljs-keyword">this</span>.draw = drawFn;
+  }
+});
+
+<span class="hljs-comment">/**
+ *
+ * @class
+ */</span>
+cwt.UIField = my.Class(<span class="hljs-comment">/** @lends cwt.UIField.prototype */</span> {
+
+  STATIC: {
+    STYLE_NONE: -<span class="hljs-number">1</span>,
+    STYLE_NORMAL: <span class="hljs-number">0</span>,
+    STYLE_S: <span class="hljs-number">1</span>,
+    STYLE_N: <span class="hljs-number">2</span>,
+    STYLE_W: <span class="hljs-number">3</span>,
+    STYLE_E: <span class="hljs-number">4</span>,
+    STYLE_NE: <span class="hljs-number">5</span>,
+    STYLE_NW: <span class="hljs-number">6</span>,
+    STYLE_ES: <span class="hljs-number">7</span>,
+    STYLE_SW: <span class="hljs-number">8</span>,
+    STYLE_EW: <span class="hljs-number">13</span>,
+    STYLE_NS: <span class="hljs-number">14</span>,
+    STYLE_ESW: <span class="hljs-number">9</span>,
+    STYLE_NEW: <span class="hljs-number">10</span>,
+    STYLE_NSW: <span class="hljs-number">11</span>,
+    STYLE_NES: <span class="hljs-number">12</span>
+  },
+
+  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, w, h, text, fsize, style, actionFn)</span> {</span>
+    <span class="hljs-keyword">this</span>.x = x;
+    <span class="hljs-keyword">this</span>.y = y;
+    <span class="hljs-keyword">this</span>.width = w;
+    <span class="hljs-keyword">this</span>.height = h;
+    <span class="hljs-keyword">this</span>.fsize = fsize;
+    <span class="hljs-keyword">this</span>.style = style;
+    <span class="hljs-keyword">this</span>.inFocus = <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">this</span>.action = actionFn;
+    <span class="hljs-keyword">this</span>.inactive = <span class="hljs-literal">false</span>;
+
+    <span class="hljs-keyword">this</span>.key = text;
+    <span class="hljs-keyword">this</span>.text = (text) ? cwt.Localization.forKey(text) : text;
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.text.search(<span class="hljs-regexp">/\n/</span>) !== -<span class="hljs-number">1</span>) {
+      <span class="hljs-keyword">this</span>.text = <span class="hljs-keyword">this</span>.text.split(<span class="hljs-string">"\n"</span>);
+    }
+  },
+
+  <span class="hljs-comment">/**
+   *
+   * @param x
+   * @param y
+   * @return {boolean}
+   */</span>
+  positionInButton: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y)</span> {</span>
+    <span class="hljs-keyword">return</span> (x &gt;= <span class="hljs-keyword">this</span>.x &amp;&amp; x &lt; <span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width &amp;&amp; y &gt;= <span class="hljs-keyword">this</span>.y &amp;&amp; y &lt; <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height);
+  },
+
+  erase: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ctx)</span> {</span>
+    ctx.clearRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y, <span class="hljs-keyword">this</span>.width, <span class="hljs-keyword">this</span>.height);
+  },
+
+  <span class="hljs-comment">/**
+   *
+   * @param {CanvasRenderingContext2D} ctx
+   */</span>
+  draw: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ctx)</span> {</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.style === cwt.UIField.STYLE_NONE) {
+      <span class="hljs-keyword">return</span>;
+    }
+
+    ctx.fillStyle = (<span class="hljs-keyword">this</span>.inFocus) ? <span class="hljs-string">"rgb(220,220,220)"</span> : <span class="hljs-string">"white"</span>;
+    ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y, <span class="hljs-keyword">this</span>.width, <span class="hljs-keyword">this</span>.height);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-77">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-77">&#182;</a>
+              </div>
+              <p>draw borders</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    ctx.fillStyle = <span class="hljs-string">"rgb(60,60,60)"</span>;
+    <span class="hljs-keyword">switch</span> (<span class="hljs-keyword">this</span>.style) {
+
+      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_NORMAL :
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">2</span>);
+        ctx.fillStyle = (<span class="hljs-keyword">this</span>.inFocus) ? <span class="hljs-string">"rgb(220,220,220)"</span> : <span class="hljs-string">"white"</span>;
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">6</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">6</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_N :
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width, <span class="hljs-number">2</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_E :
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_S :
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width, <span class="hljs-number">2</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_W :
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_NE :
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_NW :
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width, <span class="hljs-number">2</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_ES :
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_SW :
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_EW :
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_NS :
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width, <span class="hljs-number">2</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width, <span class="hljs-number">2</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_ESW :
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">2</span>, <span class="hljs-number">2</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_NEW :
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">2</span>, <span class="hljs-number">2</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_NSW :
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">2</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> cwt.UIField.STYLE_NES :
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">2</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+        <span class="hljs-keyword">break</span>;
+    }
+
+    ctx.fillStyle = <span class="hljs-string">"black"</span>;
+    ctx.font = <span class="hljs-keyword">this</span>.fsize + <span class="hljs-string">"pt "</span> + cwt.GAME_FONT;
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.text) {
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-keyword">this</span>.text === <span class="hljs-string">"string"</span>) {
+        <span class="hljs-keyword">var</span> tw = ctx.measureText(<span class="hljs-keyword">this</span>.text);
+        ctx.fillText(
+          <span class="hljs-keyword">this</span>.text,
+          <span class="hljs-keyword">this</span>.x + (<span class="hljs-keyword">this</span>.width / <span class="hljs-number">2</span>) - (tw.width / <span class="hljs-number">2</span>),
+          <span class="hljs-keyword">this</span>.y + (<span class="hljs-keyword">this</span>.height / <span class="hljs-number">2</span>) + <span class="hljs-keyword">this</span>.fsize / <span class="hljs-number">2</span>);
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.text.length; i &lt; e; i++) {
+          <span class="hljs-keyword">var</span> tw = ctx.measureText(<span class="hljs-keyword">this</span>.text[i]);
+          ctx.fillText(
+            <span class="hljs-keyword">this</span>.text[i],
+            <span class="hljs-keyword">this</span>.x + (<span class="hljs-keyword">this</span>.width / <span class="hljs-number">2</span>) - (tw.width / <span class="hljs-number">2</span>),
+            <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.fsize + ((i + <span class="hljs-number">1</span>) * (<span class="hljs-keyword">this</span>.fsize + <span class="hljs-number">8</span>)));
+        }
+      }
+    }
+  }
+});
+
+cwt.LoadingBar = my.Class({
+
+  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, w, h)</span> {</span>
+    <span class="hljs-keyword">this</span>.x = x;
+    <span class="hljs-keyword">this</span>.y = y;
+    <span class="hljs-keyword">this</span>.width = w;
+    <span class="hljs-keyword">this</span>.height = h;
+    <span class="hljs-keyword">this</span>.process = <span class="hljs-number">0</span>;
+  },
+
+  draw: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ctx)</span> {</span>
+    ctx.fillStyle = <span class="hljs-string">"white"</span>;
+    ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y, <span class="hljs-keyword">this</span>.width, <span class="hljs-keyword">this</span>.height);
+
+    ctx.fillStyle = <span class="hljs-string">"blue"</span>;
+    ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y, (<span class="hljs-built_in">parseInt</span>(<span class="hljs-keyword">this</span>.width * (<span class="hljs-keyword">this</span>.process / <span class="hljs-number">100</span>), <span class="hljs-number">10</span>)), <span class="hljs-keyword">this</span>.height);
+  },
+
+  setPercentage: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(p)</span> {</span>
+    <span class="hljs-keyword">if</span> (cwt.DEBUG) {
+      cwt.assert(p &gt;= <span class="hljs-number">0</span> &amp;&amp; p &lt;= <span class="hljs-number">100</span>);
+    }
+
+    <span class="hljs-keyword">this</span>.process = p;
+  }
+});
+
+<span class="hljs-comment">/**
+ * @class
+ * @extends {cwt.UIButtonGroup}
+ */</span>
+cwt.UIPositionableButtonGroup = my.Class(<span class="hljs-literal">null</span>, cwt.UIButtonGroup, <span class="hljs-comment">/** @lends cwt.UIPositionableButtonGroup.prototype */</span> {
+
+  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    cwt.UIButtonGroup.call(<span class="hljs-keyword">this</span>);
+    <span class="hljs-keyword">this</span>.x = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">this</span>.y = <span class="hljs-number">0</span>;
+  },
+
+  setMenuPosition: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y)</span> {</span>
+    <span class="hljs-keyword">var</span> diffX = x - <span class="hljs-keyword">this</span>.x;
+    <span class="hljs-keyword">var</span> diffY = y - <span class="hljs-keyword">this</span>.y;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.elements.length; i &lt; e; i++) {
+      <span class="hljs-keyword">var</span> element = <span class="hljs-comment">/** @type {cwt.UIField} */</span> <span class="hljs-keyword">this</span>.elements[i];
+
+      element.x += diffX;
+      element.y += diffY;
+    }
+
+    <span class="hljs-keyword">this</span>.x = x;
+    <span class="hljs-keyword">this</span>.y = y;
+  }
+});
+
+<span class="hljs-comment">/**
+ * A screen layout is a group out of ui elements. This elements can be interactive or non-interactive. It should
+ * be used to create and define a screen layout. Furthermore the screen layout offers API to interact with the
+ * components.
+ *
+ * @class
+ * @extends {cwt.UIButtonGroup}
+ */</span>
+cwt.UIScreenLayout = my.Class(<span class="hljs-literal">null</span>, cwt.UIButtonGroup, <span class="hljs-comment">/** @lends cwt.UIScreenLayout.prototype */</span> {
+
+  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(slotsX, slotsY, startX, startY)</span> {</span>
+    cwt.UIButtonGroup.call(<span class="hljs-keyword">this</span>);
+
+    <span class="hljs-keyword">this</span>.left = startX || <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">this</span>.curX = startX || <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">this</span>.curY = startY || <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">this</span>.curH = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">this</span>.breakLine();
+  },
+
+  <span class="hljs-comment">/**
+   *
+   * @param f
+   */</span>
+  repeat: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(n, f)</span> {</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+      f.call(<span class="hljs-keyword">this</span>, i);
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  },
+
+  <span class="hljs-comment">/**
+   *
+   * @param tiles
+   */</span>
+  addRowGap: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tiles)</span> {</span>
+    <span class="hljs-keyword">this</span>.curY += cwt.TILE_BASE * tiles;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  },
+
+  <span class="hljs-comment">/**
+   *
+   * @param tiles
+   */</span>
+  addColGap: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tiles)</span> {</span>
+    <span class="hljs-keyword">this</span>.curX += cwt.TILE_BASE * tiles;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  },
+
+  <span class="hljs-comment">/**
+   * Breaks the current line
+   */</span>
+  breakLine: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">this</span>.curX = <span class="hljs-keyword">this</span>.left;
+    <span class="hljs-keyword">this</span>.curY += <span class="hljs-keyword">this</span>.curH * cwt.TILE_BASE;
+    <span class="hljs-keyword">this</span>.curH = <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  },
+
+  <span class="hljs-comment">/**
+   *
+   * @param {Number} tilesX
+   * @param {Number} tilesY
+   * @param {Number} offsetY
+   * @param {Number} style
+   * @param key
+   * @param {Function?} action
+   * @return {cwt.UIScreenLayout}
+   */</span>
+  addButton: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tilesX, tilesY, offsetY, key, style, fSize, action)</span> {</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length === <span class="hljs-number">5</span>) {
+      action = <span class="hljs-literal">null</span>;
+      fSize = <span class="hljs-number">12</span>;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length === <span class="hljs-number">6</span> &amp;&amp; <span class="hljs-keyword">typeof</span> fSize === <span class="hljs-string">"function"</span>) {
+      action = fSize;
+      fSize = <span class="hljs-number">12</span>;
+    }
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.curH &lt; tilesY) {
+      <span class="hljs-keyword">this</span>.curH = tilesY;
+    }
+
+    <span class="hljs-keyword">var</span> btn = <span class="hljs-keyword">new</span> cwt.UIField(
+      <span class="hljs-keyword">this</span>.curX,
+      <span class="hljs-keyword">this</span>.curY + (offsetY * cwt.TILE_BASE),
+      tilesX * cwt.TILE_BASE,
+      tilesY * cwt.TILE_BASE,
+      key,
+      fSize,
+      style,
+      action
+    );
+
+    <span class="hljs-keyword">this</span>.curX += tilesX * cwt.TILE_BASE;
+
+    <span class="hljs-keyword">this</span>.addElement(btn);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  },
+
+  <span class="hljs-comment">/**
+   *
+   * @param {Number} tilesX
+   * @param {Number} tilesY
+   * @param {Number} offsetY
+   * @param key
+   * @param {Function?} draw
+   * @param {boolean?} ignoreHeight
+   * @return {cwt.UIScreenLayout}
+   */</span>
+  addCustomField: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tilesX, tilesY, offsetY, key, draw, ignoreHeight)</span> {</span>
+    <span class="hljs-keyword">if</span> (ignoreHeight != <span class="hljs-literal">true</span> &amp;&amp; <span class="hljs-keyword">this</span>.curH &lt; tilesY) {
+      <span class="hljs-keyword">this</span>.curH = tilesY;
+    }
+
+    <span class="hljs-keyword">var</span> btn = <span class="hljs-keyword">new</span> cwt.UICustomField(
+      <span class="hljs-keyword">this</span>.curX,
+      <span class="hljs-keyword">this</span>.curY + (offsetY * cwt.TILE_BASE),
+      tilesX * cwt.TILE_BASE,
+      tilesY * cwt.TILE_BASE,
+      key,
+      draw
+    );
+
+    <span class="hljs-keyword">this</span>.curX += tilesX * cwt.TILE_BASE;
+
+    <span class="hljs-keyword">this</span>.addElement(btn);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  },
+
+  <span class="hljs-comment">/**
+   *
+   * @param {Number} tilesX
+   * @param {Number} tilesY
+   * @param {Number} offsetY
+   * @param {Number} style
+   * @param key
+   * @return {cwt.UIScreenLayout}
+   */</span>
+  addCheckbox: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tilesX, tilesY, offsetY, key, style, fSize)</span> {</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length === <span class="hljs-number">5</span>) {
+      fSize = <span class="hljs-number">12</span>;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length === <span class="hljs-number">6</span> &amp;&amp; <span class="hljs-keyword">typeof</span> fSize === <span class="hljs-string">"function"</span>) {
+      fSize = <span class="hljs-number">12</span>;
+    }
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.curH &lt; tilesY) {
+      <span class="hljs-keyword">this</span>.curH = tilesY;
+    }
+
+    <span class="hljs-keyword">var</span> btn = <span class="hljs-keyword">new</span> cwt.UICheckboxField(
+      <span class="hljs-keyword">this</span>.curX,
+      <span class="hljs-keyword">this</span>.curY + (offsetY * cwt.TILE_BASE),
+      tilesX * cwt.TILE_BASE,
+      tilesY * cwt.TILE_BASE,
+      key,
+      fSize,
+      style
+    );
+
+    <span class="hljs-keyword">this</span>.curX += tilesX * cwt.TILE_BASE;
+
+    <span class="hljs-keyword">this</span>.addElement(btn);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
   }
 });</pre></div></div>
             
