@@ -1,44 +1,39 @@
-cwt.Config.create("co_getStarCost",100,50000,9000,100);
-cwt.Config.create("co_getStarCostIncrease",0,50000,1800,100);
-cwt.Config.create("co_getStarCostIncreaseSteps",0,50,10);
-cwt.Config.create("co_enabledCoPower",0,1,1);
-
-/**
- *
- * @namespace
- */
+//
+//
+// @namespace
+//
 cwt.CO = {
 
-  /**
-   * Power level of normal CO power.
-   */
+  //
+  // Power level of normal CO power.
+  //
   POWER_LEVEL_COP: 0,
 
-  /**
-   * Power level of normal super CO power.
-   */
+  //
+  // Power level of normal super CO power.
+  //
   POWER_LEVEL_SCOP: 1,
 
-  /**
-   * Modifies the power level of a player.
-   */
-  modifyStarPower: function (player, value) {
+  //
+  // Modifies the power level of a player.
+  //
+  modifyStarPower: function(player, value) {
     if (this.DEBUG) cwt.assert(player instanceof cwt.Player);
 
     player.power += value;
     if (player.power < 0) player.power = 0;
   },
 
-  /**
-   * Decline activate power action on game modes that aren't AW1-3.
-   * Decline activate power action when a player cannot activate the base cop level.
-   * Returns `true`when a given player can activate a power level.
-   *
-   * @param player
-   * @param powerType
-   * @return {boolean}
-   */
-  canActivatePower: function (player,powerType) {
+  //
+  // Decline activate power action on game modes that aren't AW1-3.
+  // Decline activate power action when a player cannot activate the base cop level.
+  // Returns `true`when a given player can activate a power level.
+  //
+  // @param player
+  // @param powerType
+  // @return {boolean}
+  //
+  canActivatePower: function(player, powerType) {
     if (cwt.Config.getValue("co_enabledCoPower") === 0) return false;
 
     if (this.DEBUG) cwt.assert(player instanceof cwt.Player);
@@ -59,19 +54,19 @@ cwt.CO = {
         stars = player.coA.scoStars;
         break;
 
-      // TODO
+        // TODO
     }
 
     return (player.power >= (this.getStarCost(player) * stars));
   },
 
-  /**
-   * Activates the CO power of a player.
-   *
-   * @param {cwt.Player} player
-   * @param level
-   */
-  activatePower: function (player, level) {
+  //
+  // Activates the CO power of a player.
+  //
+  // @param {cwt.Player} player
+  // @param level
+  //
+  activatePower: function(player, level) {
     if (this.DEBUG) cwt.assert(player instanceof cwt.Player);
     if (this.DEBUG) cwt.assert(level === cwt.CO.POWER_LEVEL_COP || level === cwt.CO.POWER_LEVEL_SCOP);
 
@@ -80,23 +75,23 @@ cwt.CO = {
     player.powerUsed++;
   },
 
-  /**
-   * Deactivates the CO power of a player.
-   *
-   * @param {cwt.Player} player
-   */
-  deactivatePower: function (player) {
+  //
+  // Deactivates the CO power of a player.
+  //
+  // @param {cwt.Player} player
+  //
+  deactivatePower: function(player) {
     if (this.DEBUG) cwt.assert(player instanceof cwt.Player);
 
     player.activePower = cwt.INACTIVE;
   },
 
-  /**
-   * Returns the cost for one CO star for a given player.
-   *
-   * @param {cwt.Player} player
-   */
-  getStarCost: function (player) {
+  //
+  // Returns the cost for one CO star for a given player.
+  //
+  // @param {cwt.Player} player
+  //
+  getStarCost: function(player) {
     if (this.DEBUG) cwt.assert(player instanceof cwt.Player);
 
     var cost = cwt.Config.getValue("co_getStarCost");
@@ -112,13 +107,13 @@ cwt.CO = {
     return cost;
   },
 
-  /**
-   * Sets the main CO of a player.
-   *
-   * @param {cwt.Player} player
-   * @param type
-   */
-  setMainCo: function (player, type) {
+  //
+  // Sets the main CO of a player.
+  //
+  // @param {cwt.Player} player
+  // @param type
+  //
+  setMainCo: function(player, type) {
     if (this.DEBUG) cwt.assert(player instanceof cwt.Player);
 
     if (type === null) {

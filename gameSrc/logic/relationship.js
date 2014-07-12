@@ -1,42 +1,42 @@
-/**
- *
- * @namespace
- */
+//
+//
+// @namespace
+//
 cwt.Relationship = {
 
-  /**
-   * @constant
-   */
+  //
+  // @constant
+  //
   RELATION_SAME_THING: -1,
 
-  /**
-   * @constant
-   */
+  //
+  // @constant
+  //
   RELATION_NONE: 0,
 
-  /**
-   * @constant
-   */
+  //
+  // @constant
+  //
   RELATION_OWN: 1,
 
-  /**
-   * @constant
-   */
+  //
+  // @constant
+  //
   RELATION_ALLIED: 2,
 
-  /**
-   * @constant
-   */
+  //
+  // @constant
+  //
   RELATION_TEAM: 3,
 
-  /**
-   * @constant
-   */
+  //
+  // @constant
+  //
   RELATION_ENEMY: 4,
 
-  /**
-   * @constant
-   */
+  //
+  // @constant
+  //
   RELATION_NULL: 5,
 
   CHECK_NORMAL: 0,
@@ -45,15 +45,15 @@ cwt.Relationship = {
 
   CHECK_PROPERTY: 2,
 
-  /**
-   *
-   * @param {cwt.Position} left
-   * @param {cwt.Position} right
-   * @param {number?} checkLeft
-   * @param {number?} checkRight
-   * @return {number}
-   */
-  getRelationShipTo: function (left, right, checkLeft, checkRight) {
+  //
+  //
+  // @param {cwt.Position} left
+  // @param {cwt.Position} right
+  // @param {number?} checkLeft
+  // @param {number?} checkRight
+  // @return {number}
+  //
+  getRelationShipTo: function(left, right, checkLeft, checkRight) {
     var oL;
     var oR;
 
@@ -70,23 +70,23 @@ cwt.Relationship = {
     return this.getRelationship(oL, oR);
   },
 
-  /**
-   * Returns true if there is an unit with a given relationship on a tile
-   * at a given position (x,y).
-   *
-   * @param {*} objectA
-   * @param {*} objectB
-   * @return {number}
-   */
-  getRelationship: function (objectA, objectB) {
+  //
+  // Returns true if there is an unit with a given relationship on a tile
+  // at a given position (x,y).
+  //
+  // @param {*} objectA
+  // @param {*} objectB
+  // @return {number}
+  //
+  getRelationship: function(objectA, objectB) {
 
     // one object is null
     if (objectA === null || objectB === null) {
       return this.RELATION_NONE;
     }
 
-    var playerA = /** @type {cwt.Player} */ (objectA instanceof cwt.Player) ? objectA : objectA.owner;
-    var playerB = /** @type {cwt.Player} */ (objectB instanceof cwt.Player) ? objectB : objectB.owner;
+    var playerA = // @type {cwt.Player} */ (objectA instanceof cwt.Player) ? objectA : objectA.owner;
+    var playerB = // @type {cwt.Player} */ (objectB instanceof cwt.Player) ? objectB : objectB.owner;
 
     // one player is inactive
     if (playerA.team === -1 || playerB.team === -1) {
@@ -106,16 +106,16 @@ cwt.Relationship = {
     }
   },
 
-  /**
-   * Returns true if there is an unit with a given relationship in
-   * one of the neighbour tiles at a given position (x,y).
-   *
-   * @example
-   *       x
-   *     x o x
-   *       x
-   */
-  getRelationshipUnitNeighbours: function (player, x, y, mode) {
+  //
+  // Returns true if there is an unit with a given relationship in
+  // one of the neighbour tiles at a given position (x,y).
+  //
+  // @example
+  //       x
+  //     x o x
+  //       x
+  //
+  getRelationshipUnitNeighbours: function(player, x, y, mode) {
     if (this.DEBUG) cwt.assert(cwt.Map.isValidPosition(x, y));
 
     var unit;

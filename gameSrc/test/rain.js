@@ -1,5 +1,5 @@
 
-/**
+//
 rain.js
 
 A simple class that does the rain demo in JS

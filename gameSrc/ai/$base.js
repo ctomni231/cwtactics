@@ -422,5 +422,4 @@ controller.ai_machine = util.stateMachine({
 
 });
 controller.ai_machine.state = "IDLE";
-
-  */
+//

@@ -1,12 +1,12 @@
-/**
- *
- * NOTE: does not clear the area before update
- *
- * @param {number} x
- * @param {number} y
- * @param {number} w
- * @param {number} h
- */
+//
+//
+// NOTE: does not clear the area before update
+//
+// @param {number} x
+// @param {number} y
+// @param {number} w
+// @param {number} h
+//
 cwt.MapRenderer.renderUnits = function (x, oy, w, h) {
   var mapData = cwt.Map.data;
   var layer = cwt.Screen.layerUnit;
@@ -73,12 +73,12 @@ cwt.MapRenderer.renderUnits = function (x, oy, w, h) {
   }
 };
 
-/**
- *
- * Note: this one clears the layer before action
- *
- * @param {number} code
- */
+//
+//
+// Note: this one clears the layer before action
+//
+// @param {number} code
+//
 cwt.MapRenderer.shiftUnits = function (code) {
   var layer = cwt.Screen.layerUnit;
   var tmpCanvas = this.getTempCanvas();

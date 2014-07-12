@@ -1,16 +1,16 @@
-cwt.Config.create("fogEnabled",0,1,1);
-cwt.Config.create("daysOfPeace",0,50,0);
+cwt.Config.create("fogEnabled", 0, 1, 1);
+cwt.Config.create("daysOfPeace", 0, 50, 0);
 
-/**
- *
- * @namespace
- */
+//
+//
+// @namespace
+//
 cwt.Fog = {
 
-  /**
-   * Modifies a vision at a given position and player id.
-   */
-  modifyVision_: function (x, y, owner, range, value) {
+  //
+  // Modifies a vision at a given position and player id.
+  //
+  modifyVision_: function(x, y, owner, range, value) {
 
     // ignore neutral objects
     if (owner.team === cwt.INACTIVE) return;
@@ -25,7 +25,7 @@ cwt.Fog = {
 
     var map = cwt.Map.data;
     if (range === 0) {
-      if (clientVisible)    map[x][y].visionClient += value;
+      if (clientVisible) map[x][y].visionClient += value;
       if (turnOwnerVisible) map[x][y].visionTurnOwner += value;
 
     } else {
@@ -50,17 +50,17 @@ cwt.Fog = {
           // does the tile block vision ?
           if (map[lX][lY].type.blocksVision && cwt.Map.getDistance(x, y, lX, lY) > 1) continue;
 
-          if (clientVisible)    map[lX][lY].visionClient += value;
+          if (clientVisible) map[lX][lY].visionClient += value;
           if (turnOwnerVisible) map[lX][lY].visionTurnOwner += value;
         }
       }
     }
   },
 
-  /**
-   * Completely recalculates the fog aw2.
-   */
-  fullRecalculation: function () {
+  //
+  // Completely recalculates the fog aw2.
+  //
+  fullRecalculation: function() {
     var x;
     var y;
     var xe = cwt.Map.width;
@@ -113,42 +113,42 @@ cwt.Fog = {
     }
   },
 
-  /**
-   * Removes a vision-object from the fog map.
-   */
-  removeVision: function (x, y, owner, range) {
+  //
+  // Removes a vision-object from the fog map.
+  //
+  removeVision: function(x, y, owner, range) {
     this.modifyVision_(x, y, owner, range, +1);
   },
 
-  removeUnitVision: function (x, y, owner) {
+  removeUnitVision: function(x, y, owner) {
     var unit = cwt.Map.data[x][y].unit;
     if (!owner) owner = unit.owner;
 
     this.removeVision(x, y, owner, unit.type.vision);
   },
 
-  removePropertyVision: function (x, y, owner) {
+  removePropertyVision: function(x, y, owner) {
     var prop = cwt.Map.data[x][y].property;
     if (!owner) owner = prop.owner;
 
     this.removeVision(x, y, owner, prop.type.vision);
   },
 
-  /**
-   * Adds a vision-object from the fog map.
-   */
-  addVision: function (x, y, owner, range) {
+  //
+  // Adds a vision-object from the fog map.
+  //
+  addVision: function(x, y, owner, range) {
     this.modifyVision_(x, y, owner, range, -1);
   },
 
-  addUnitVision: function (x, y, owner) {
+  addUnitVision: function(x, y, owner) {
     var unit = cwt.Map.data[x][y].unit;
     if (!owner) owner = unit.owner;
 
     this.addVision(x, y, owner, unit.type.vision);
   },
 
-  addPropertyVision: function (x, y, owner) {
+  addPropertyVision: function(x, y, owner) {
     var prop = cwt.Map.data[x][y].property;
     if (!owner) owner = prop.owner;
 
@@ -187,5 +187,4 @@ cwt.Fog = {
  model.event_on("recalculateFogMap",function(range){
  view.redraw_markAll();
  });
-
- */
+//*/

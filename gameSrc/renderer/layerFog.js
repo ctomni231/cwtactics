@@ -1,25 +1,25 @@
-/**
- *
- * NOTE: clears the area before update
- *
- * @param x
- * @param y
- * @param range
- */
+//
+//
+// NOTE: clears the area before update
+//
+// @param x
+// @param y
+// @param range
+//
 cwt.MapRenderer.renderFogCircle = function (x, y, range) {
   this.renderFogRect(x, y, range, range, true);
 };
 
-/**
- *
- * NOTE: clears the area before update
- *
- * @param x
- * @param y
- * @param w
- * @param h
- * @param {boolean?} circle
- */
+//
+//
+// NOTE: clears the area before update
+//
+// @param x
+// @param y
+// @param w
+// @param h
+// @param {boolean?} circle
+//
 cwt.MapRenderer.renderFogRect = function (x, y, w, h, circle) {
   if (arguments.length === 4) circle = false;
   var data = cwt.Map.data;
@@ -144,21 +144,21 @@ cwt.MapRenderer.fixOverlayFog_ = function (x, y, isTop) {
   }
 };
 
-/**
- *
- */
+//
+//
+//
 cwt.MapRenderer.renderFogBackgroundLayer = function () {
   cwt.Screen.layerFog.getContext().globalAlpha = 0.35;
   cwt.Screen.layerFog.renderLayer(0);
   cwt.Screen.layerFog.getContext().globalAlpha = 1;
 };
 
-/**
- *
- * Note: this one clears the layer before action
- *
- * @param {number} code
- */
+//
+//
+// Note: this one clears the layer before action
+//
+// @param {number} code
+//
 cwt.MapRenderer.shiftFog = function (code) {
   var layer = cwt.Screen.layerFog;
   var tmpCanvas = this.getTempCanvas();

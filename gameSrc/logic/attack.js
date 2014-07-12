@@ -1,48 +1,48 @@
-/**
- *
- * @namespace
- */
+//
+//
+// @namespace
+//
 cwt.Attack = {
 
-  /**
-   * Signal for units that cannot attack.
-   *
-   * @constant
-   */
+  //
+  // Signal for units that cannot attack.
+  //
+  // @constant
+  //
   FIRETYPE_NONE: 0,
 
-  /**
-   * Indirect fire type that can fire from range 2 to x.
-   *
-   * @constant
-   */
+  //
+  // Indirect fire type that can fire from range 2 to x.
+  //
+  // @constant
+  //
   FIRETYPE_INDIRECT: 1,
 
-  /**
-   * Direct fire type that can fire from range 1 to 1.
-   *
-   * @constant
-   */
+  //
+  // Direct fire type that can fire from range 1 to 1.
+  //
+  // @constant
+  //
   FIRETYPE_DIRECT: 2,
 
-  /**
-   * Ballistic fire type that can fire from range 1 to x.
-   *
-   * @constant
-   */
+  //
+  // Ballistic fire type that can fire from range 1 to x.
+  //
+  // @constant
+  //
   FIRETYPE_BALLISTIC: 3,
 
-  /**
-   * Calculates the targets of a battle unit. If `data` is given, then
-   * the attack targets will be marked in this object.
-   *
-   * @param {cwt.Unit} unit
-   * @param {number} x
-   * @param {number} y
-   * @param {cwt.SelectionMap=} data
-   * @param {boolean=} markTiles
-   * @return {boolean}
-   */
+  //
+  // Calculates the targets of a battle unit. If `data` is given, then
+  // the attack targets will be marked in this object.
+  //
+  // @param {cwt.Unit} unit
+  // @param {number} x
+  // @param {number} y
+  // @param {cwt.SelectionMap=} data
+  // @param {boolean=} markTiles
+  // @return {boolean}
+  //
   calculateTargets: function (unit, x, y, data, markTiles) {
     if (this.DEBUG) cwt.assert(unit instanceof cwt.Unit);
     if (this.DEBUG) cwt.assert(cwt.Map.isValidPosition(x, y));
@@ -120,9 +120,9 @@ cwt.Attack = {
   },
 
 
-  /**
-   * Returns the fire type.
-   */
+  //
+  // Returns the fire type.
+  //
   getFireType: function (unit) {
     if (!this.hasMainWeapon(unit) && !this.hasSecondaryWeapon(unit)) {
       return cwt.Unit.FIRETYPE_NONE;
@@ -143,47 +143,47 @@ cwt.Attack = {
     }
   },
 
-  /**
-   * Returns `true` if a given unit is an indirect firing
-   * unit ( *e.g. artillery* ) else `false`.
-   *
-   * @return {boolean}
-   */
+  //
+  // Returns `true` if a given unit is an indirect firing
+  // unit ( *e.g. artillery* ) else `false`.
+  //
+  // @return {boolean}
+  //
   isIndirect: function (unit) {
     return unit.getFireType() === cwt.Attack.FIRETYPE_INDIRECT;
   },
 
-  /**
-   * Returns `true` if a given unit is an ballistic firing
-   * unit ( *e.g. anti-tank-gun* ) else `false`.
-   *
-   * @return {boolean}
-   */
+  //
+  // Returns `true` if a given unit is an ballistic firing
+  // unit ( *e.g. anti-tank-gun* ) else `false`.
+  //
+  // @return {boolean}
+  //
   isBallistic: function (unit) {
     return unit.getFireType() === cwt.Attack.FIRETYPE_BALLISTIC;
   },
 
-  /**
-   * Returns true if the unit type has a main weapon else false.
-   */
+  //
+  // Returns true if the unit type has a main weapon else false.
+  //
   hasMainWeapon: function (unit) {
     var attack = unit.type.attack;
     return (attack && attack.main_wp);
   },
 
-  /**
-   * Returns true if the unit type has a secondary
-   * weapon else false.
-   */
+  //
+  // Returns true if the unit type has a secondary
+  // weapon else false.
+  //
   hasSecondaryWeapon: function (unit) {
     var attack = unit.type.attack;
     return (attack && attack.sec_wp);
   },
 
-  /**
-   * Returns true if an attacker can use it's main weapon against a
-   * defender. The distance won't be checked in case of indirect units.
-   */
+  //
+  // Returns true if an attacker can use it's main weapon against a
+  // defender. The distance won't be checked in case of indirect units.
+  //
   canUseMainWeapon: function (attacker, defender) {
     var attack = attacker.type.attack;
     var tType = defender.type.ID;
@@ -200,22 +200,22 @@ cwt.Attack = {
     return false;
   },
 
-  /**
-   * Returns true if an unit has targets in sight, else false.
-   */
+  //
+  // Returns true if an unit has targets in sight, else false.
+  //
   hasTargets: function (unit, x, y, moved) {
     if (moved && this.isIndirect(unit)) return false;
 
     return this.calculateTargets(unit, x, y);
   },
 
-  /**
-   * Returns the base damage of an attacker against a defender. If
-   * the attacker cannot attack the defender then -1 will be returned.
-   * This function recognizes the ammo usage of main weapons. If the
-   * attacker cannot attack with his main weapon due low ammo then only
-   * the secondary weapon will be checked.
-   */
+  //
+  // Returns the base damage of an attacker against a defender. If
+  // the attacker cannot attack the defender then -1 will be returned.
+  // This function recognizes the ammo usage of main weapons. If the
+  // attacker cannot attack with his main weapon due low ammo then only
+  // the secondary weapon will be checked.
+  //
   getBaseDamageAgainst: function (attacker, defender, withMainWp) {
     var attack = attacker.type.attack;
     if (!attack) return -1;
@@ -239,9 +239,9 @@ cwt.Attack = {
     return -1;
   },
 
-  /**
-   * Returns the battle damage against an other unit.
-   */
+  //
+  // Returns the battle damage against an other unit.
+  //
   getBattleDamageAgainst: function (attacker, defender, luck, withMainWp, isCounter) {
     if (typeof isCounter === "undefined") isCounter = false;
 
@@ -268,14 +268,14 @@ cwt.Attack = {
     return parseInt(damage, 10);
   },
 
-  /**
-   * Declines when the attacker does not have targets in range.
-   *
-   * @param attId
-   * @param defId
-   * @param attLuckRatio
-   * @param defLuckRatio
-   */
+  //
+  // Declines when the attacker does not have targets in range.
+  //
+  // @param attId
+  // @param defId
+  // @param attLuckRatio
+  // @param defLuckRatio
+  //
   attack: function (attacker, defender, attLuckRatio, defLuckRatio) {
     if (this.DEBUG) cwt.assert(attacker instanceof cwt.Unit);
     if (this.DEBUG) cwt.assert(defender instanceof cwt.Unit);
@@ -294,7 +294,7 @@ cwt.Attack = {
      attacker = tmp_;
      }
      }
-     */
+    */
 
     var aSheets = attacker.type;
     var dSheets = defender.type;

@@ -1,29 +1,29 @@
-/**
- * @private
- */
+//
+// @private
+//
 cwt.MapRenderer.unitAnimationHalfStep_ = false;
 
-/**
- * @private
- */
+//
+// @private
+//
 cwt.MapRenderer.curTime_ = 0;
 
-/**
- * @readonly
- * @type number
- */
+//
+// @readonly
+// @type number
+//
 cwt.MapRenderer.indexUnitAnimation = 0;
 
-/**
- * @readonly
- * @type number
- */
+//
+// @readonly
+// @type number
+//
 cwt.MapRenderer.indexMapAnimation = 0;
 
-/**
- *
- * @param {number} delta
- */
+//
+//
+// @param {number} delta
+//
 cwt.MapRenderer.evaluateCycle = function (delta) {
   var index;
 

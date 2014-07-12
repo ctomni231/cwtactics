@@ -1,42 +1,42 @@
-/**
- *
- * @namespace
- */
+//
+//
+// @namespace
+//
 cwt.Cannon = {
 
-  /**
-   * Returns `true` if a given property id is a cannon property.
-   */
+  //
+// Returns `true` if a given property id is a cannon property.
+//
   isCannonUnit: function (unit) {
     if (this.DEBUG) cwt.assert(unit instanceof cwt.Unit);
 
     return (unit.type.ID === "CANNON_UNIT_INV");
   },
 
-  /**
-   *
-   * @param {number} x
-   * @param {number} y
-   * @param {cwt.SelectionMap} selection
-   * @return {boolean}
-   */
+  //
+  //
+  // @param {number} x
+  // @param {number} y
+  // @param {cwt.SelectionMap} selection
+  // @return {boolean}
+  //
   hasTargets: function (x, y, selection) {
     return this.isCannonUnit(cwt.Map.data[x][y].unit) && this.markCannonTargets(x, y, selection);
   },
 
-  /**
-   *
-   * @param {number} x
-   * @param {number} y
-   * @param {cwt.SelectionMap} selection
-   */
+  //
+  //
+  // @param {number} x
+  // @param {number} y
+  // @param {cwt.SelectionMap} selection
+  //
   fillCannonTargets: function (x, y, selection) {
     this.markCannonTargets(x, y, selection);
   },
 
-  /**
-   * Fires a cannon at a given position.
-   */
+  //
+  // Fires a cannon at a given position.
+  //
   fireCannon: function (ox, oy, x, y) {
     var target = cwt.Map.data[x][y].unit;
     var type = this.grabBombPropTypeFromPos(ox, oy);
@@ -44,11 +44,11 @@ cwt.Cannon = {
     target.takeDamage(cwt.Unit.pointsToHealth(type.cannon.damage), 9);
   },
 
-  /**
-   * Marks all cannon targets in a selection. The area of fire will be defined by
-   * the rectangle from  `sx,sy` to `tx,ty`. The cannon is on the tile `ox,oy`
-   * with a given `range`.
-   */
+  //
+  // Marks all cannon targets in a selection. The area of fire will be defined by
+  // the rectangle from  `sx,sy` to `tx,ty`. The cannon is on the tile `ox,oy`
+  // with a given `range`.
+  //
   tryToMarkCannonTargets: function (player, selection, ox, oy, otx, oty, sx, sy, tx, ty, range) {
     if (this.DEBUG) cwt.assert(player instanceof cwt.Player);
 
@@ -81,12 +81,12 @@ cwt.Cannon = {
     return result;
   },
 
-  /**
-   * Marks all cannon targets in a given selection model.
-   *
-   * @param {cwt.Unit} cannon
-   * @param {cwt.SelectionMap} selection
-   */
+  //
+  // Marks all cannon targets in a given selection model.
+  //
+  // @param {cwt.Unit} cannon
+  // @param {cwt.SelectionMap} selection
+  //
   markCannonTargets: function (x, y, selection) {
     var prop = cwt.Map.data[x][y].property;
     var type = (prop.type.ID !== "PROP_INV") ? prop.type : this.grabBombPropTypeFromPos(x, y);
@@ -149,12 +149,12 @@ cwt.Cannon = {
     );
   },
 
-  /**
-   *
-   * @param x
-   * @param y
-   * @return {cwt.PropertySheet}
-   */
+  //
+  //
+  // @param x
+  // @param y
+  // @return {cwt.PropertySheet}
+  //
   grabBombPropTypeFromPos: function (x, y) {
     var map = cwt.Map.data;
     while (true) {

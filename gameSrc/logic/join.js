@@ -1,18 +1,18 @@
-/**
- * Logic object for the join mechanic.
- *
- * @namespace
- */
+//
+// Logic object for the join mechanic.
+//
+// @namespace
+//
 cwt.Join = {
 
-  /**
-   * Declines wish if two units can join each other in the current situation.
-   * Transporters cannot join each other when they loaded units.
-   *
-   * @param {cwt.Unit} source
-   * @param {cwt.Unit} target
-   */
-  canJoin: function (source, target) {
+  //
+  // Declines wish if two units can join each other in the current situation.
+  // Transporters cannot join each other when they loaded units.
+  //
+  // @param {cwt.Unit} source
+  // @param {cwt.Unit} target
+  //
+  canJoin: function(source, target) {
     if (this.DEBUG) cwt.assert(source instanceof cwt.Unit);
     if (this.DEBUG) cwt.assert(target instanceof cwt.Unit);
 
@@ -27,15 +27,15 @@ cwt.Join = {
     return true;
   },
 
-  /**
-   * Joins two units together. If the combined health is greater than the maximum
-   * health then the difference will be payed to the owners resource depot.
-   *
-   * @param {cwt.Unit} source
-   * @param {number} x
-   * @param {number} y
-   */
-  join: function (source, x, y) {
+  //
+  // Joins two units together. If the combined health is greater than the maximum
+  // health then the difference will be payed to the owners resource depot.
+  //
+  // @param {cwt.Unit} source
+  // @param {number} x
+  // @param {number} y
+  //
+  join: function(source, x, y) {
     if (this.DEBUG) cwt.assert(source instanceof cwt.Unit);
 
     var target = cwt.Map.data[x][y].unit;

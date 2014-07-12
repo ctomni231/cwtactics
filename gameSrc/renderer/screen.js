@@ -1,6 +1,6 @@
-/**
- *
- */
+//
+//
+//
 cwt.MapRenderer.renderScreen = function () {
   var time;
   if (cwt.DEBUG) time = (new Date()).getTime();
@@ -22,10 +22,10 @@ cwt.MapRenderer.renderScreen = function () {
   if (cwt.DEBUG) console.log("rendered the complete screen (" + ((new Date()).getTime() - time) + "ms)");
 };
 
-/**
- *
- * @param {number} code
- */
+//
+//
+// @param {number} code
+//
 cwt.MapRenderer.shiftMap = function (code) {
   var time;
   if (cwt.DEBUG) time = (new Date()).getTime();

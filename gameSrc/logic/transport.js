@@ -1,48 +1,48 @@
-/**
- * Logic object for the transport mechanic.
- *
- * @namespace
- */
+//
+// Logic object for the transport mechanic.
+//
+// @namespace
+//
 cwt.Transport = {
 
-  /**
-   * Returns true if the unit with id tid is a traensporter, else false.
-   *
-   * @param {cwt.Unit} unit
-   */
-  isTransportUnit: function (unit) {
+  //
+  // Returns true if the unit with id tid is a traensporter, else false.
+  //
+  // @param {cwt.Unit} unit
+  //
+  isTransportUnit: function(unit) {
     if (this.DEBUG) cwt.assert(unit instanceof cwt.Unit);
 
     return (typeof unit.type.maxloads === "number");
   },
 
-  /**
-   * Has a transporter unit with id tid loaded units? Returns true
-   * if yes, else false.
-   *
-   * @param {cwt.Unit} unit
-   */
-  hasLoads: function (unit) {
+  //
+  // Has a transporter unit with id tid loaded units? Returns true
+  // if yes, else false.
+  //
+  // @param {cwt.Unit} unit
+  //
+  hasLoads: function(unit) {
     if (this.DEBUG) cwt.assert(unit instanceof cwt.Unit);
 
     for (var i = 0, e = cwt.Unit.MULTITON_INSTANCES; i < e; i++) {
-      var cUnit = cwt.Unit.getInstance(i,true);
+      var cUnit = cwt.Unit.getInstance(i, true);
       if (cUnit && unit.loadedIn === cUnit) return true;
     }
 
     return false;
   },
 
-  /**
-   * Returns true if a transporter with id tid can load the unit with the id lid.
-   * This function also calculates the resulting weight if the transporter would
-   * load the unit. If the calculated weight is greater than the maximum loadable
-   * weight false will be returned.
-   *
-   * @param {cwt.Unit} transporter
-   * @param {cwt.Unit} load
-   */
-  canLoadUnit: function (transporter, load) {
+  //
+  // Returns true if a transporter with id tid can load the unit with the id lid.
+  // This function also calculates the resulting weight if the transporter would
+  // load the unit. If the calculated weight is greater than the maximum loadable
+  // weight false will be returned.
+  //
+  // @param {cwt.Unit} transporter
+  // @param {cwt.Unit} load
+  //
+  canLoadUnit: function(transporter, load) {
     if (this.DEBUG) cwt.assert(transporter instanceof cwt.Unit);
     if (this.DEBUG) cwt.assert(load instanceof cwt.Unit);
     if (this.DEBUG) cwt.assert(load !== transporter);
@@ -52,13 +52,13 @@ cwt.Transport = {
     return (transporter.type.canload.indexOf(load.type.movetype) !== -1);
   },
 
-  /**
-   * Loads the unit with id lid into a transporter with the id tid.
-   *
-   * @param {cwt.Unit} transporter
-   * @param {cwt.Unit} load
-   */
-  load: function (transporter, load) {
+  //
+  // Loads the unit with id lid into a transporter with the id tid.
+  //
+  // @param {cwt.Unit} transporter
+  // @param {cwt.Unit} load
+  //
+  load: function(transporter, load) {
     if (this.DEBUG) cwt.assert(transporter instanceof cwt.Unit);
     if (this.DEBUG) cwt.assert(load instanceof cwt.Unit);
     if (this.DEBUG) cwt.assert(this.isTransportUnit(transporter));
@@ -66,17 +66,17 @@ cwt.Transport = {
     load.loadedIn = transporter;
   },
 
-  /**
-   * Unloads the unit with id lid from a transporter with the id tid.
-   *
-   * @param {cwt.Unit} transport
-   * @param {number} trsx
-   * @param {number} trsy
-   * @param {cwt.Unit} load
-   * @param {number} tx
-   * @param {number} ty
-   */
-  unload: function (transport, trsx, trsy, load, tx, ty) {
+  //
+  // Unloads the unit with id lid from a transporter with the id tid.
+  //
+  // @param {cwt.Unit} transport
+  // @param {number} trsx
+  // @param {number} trsy
+  // @param {cwt.Unit} load
+  // @param {number} tx
+  // @param {number} ty
+  //
+  unload: function(transport, trsx, trsy, load, tx, ty) {
     if (this.DEBUG) cwt.assert(load.loadedIn === transport);
 
     // TODO: remove this later
@@ -106,16 +106,16 @@ cwt.Transport = {
   },
 
 
-  /**
-   * Returns true if a transporter unit can unload one of it's loads at a given position.
-   * This functions understands the given pos as possible position for the transporter.
-   *
-   * @param {cwt.Unit} transporter
-   * @param x
-   * @param y
-   * @return {*}
-   */
-  canUnloadSomethingAt: function (transporter, x, y) {
+  //
+  // Returns true if a transporter unit can unload one of it's loads at a given position.
+  // This functions understands the given pos as possible position for the transporter.
+  //
+  // @param {cwt.Unit} transporter
+  // @param x
+  // @param y
+  // @return {*}
+  //
+  canUnloadSomethingAt: function(transporter, x, y) {
     var pid = transporter.owner;
     var unit;
 
@@ -123,7 +123,7 @@ cwt.Transport = {
 
     for (var i = 0, e = cwt.Unit.MULTITON_INSTANCES; i <= e; i++) {
 
-      unit = cwt.Unit.getInstance(i,true);
+      unit = cwt.Unit.getInstance(i, true);
       if (unit && unit.owner !== cwt.INACTIVE && unit.loadedIn === transporter) {
         var moveType = unit.type.movetype;
 

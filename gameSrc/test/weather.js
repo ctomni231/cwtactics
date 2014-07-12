@@ -1,5 +1,5 @@
 
-/**
+//
 weather.js
 
 A simple class that does the snow particle demo in JS

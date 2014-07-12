@@ -1,14 +1,14 @@
-/**
- * @type {null|HTMLCanvasElement}
- * @private
- */
+//
+// @type {null|HTMLCanvasElement}
+// @private
+//
 cwt.MapRenderer.tmpCanv_ = null;
 
-/**
- * Returns a temporary canvas (singleton)
- *
- * @return {HTMLCanvasElement}
- */
+//
+// Returns a temporary canvas (singleton)
+//
+// @return {HTMLCanvasElement}
+//
 cwt.MapRenderer.getTempCanvas = function () {
   if (!this.tmpCanv_) {
     this.tmpCanv_ = document.createElement("canvas");

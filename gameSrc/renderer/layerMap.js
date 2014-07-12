@@ -1,8 +1,8 @@
-/**
- *
- * @param {number} x
- * @param {number} y
- */
+//
+//
+// @param {number} x
+// @param {number} y
+//
 cwt.MapRenderer.renderTile = function (x, y) {
   this.renderTiles(x,y,1,1,false);
 
@@ -125,12 +125,12 @@ cwt.MapRenderer.renderTiles = function (x, oy, w, h, overlayDraw) {
   }
 };
 
-/**
- *
- * Note: this one does not clear the layer before action
- *
- * @param {number} code
- */
+//
+//
+// Note: this one does not clear the layer before action
+//
+// @param {number} code
+//
 cwt.MapRenderer.shiftTiles = function (code) {
   var mapLayer = cwt.Screen.layerMap;
 

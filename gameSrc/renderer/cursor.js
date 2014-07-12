@@ -1,6 +1,5 @@
-/**
- * Renders the cursor to the UI layer.
- */
+// Renders the cursor to the UI layer.
+//
 cwt.MapRenderer.eraseCursor = function () {
   var ctx = cwt.Screen.layerUI.getContext();
   var x = (cwt.Cursor.x - cwt.Screen.offsetX) * cwt.TILE_BASE;
@@ -15,9 +14,8 @@ cwt.MapRenderer.eraseCursor = function () {
   );
 };
 
-/**
- * Renders the cursor to the UI layer.
- */
+// Renders the cursor to the UI layer.
+//
 cwt.MapRenderer.renderCursor = function () {
   var ctx = cwt.Screen.layerUI.getContext();
   var cursorImg = cwt.Image.sprites.CURSOR.getImage(0);

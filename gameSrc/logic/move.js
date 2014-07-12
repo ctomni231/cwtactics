@@ -1,33 +1,33 @@
-/**
- *
- * @namespace
- */
+//
+//
+// @namespace
+//
 cwt.Move = {
 
-  /**
-   * @constant
-   */
+  //
+  // @constant
+  //
   MOVE_CODES_UP: 0,
 
-  /**
-   * @constant
-   */
+  //
+  // @constant
+  //
   MOVE_CODES_RIGHT: 1,
 
-  /**
-   * @constant
-   */
+  //
+  // @constant
+  //
   MOVE_CODES_DOWN: 2,
 
-  /**
-   * @constant
-   */
+  //
+  // @constant
+  //
   MOVE_CODES_LEFT: 3,
 
-  /**
-   * Extracts the move code between two positions.
-   */
-  codeFromAtoB: function (sx, sy, tx, ty) {
+  //
+  // Extracts the move code between two positions.
+  //
+  codeFromAtoB: function(sx, sy, tx, ty) {
     if (this.DEBUG) cwt.assert(cwt.Map.isValidPosition(sx, sy));
     if (this.DEBUG) cwt.assert(cwt.Map.isValidPosition(tx, ty));
     if (this.DEBUG) cwt.assert(cwt.Map.getDistance(sx, sy, tx, ty) === 1);
@@ -46,10 +46,10 @@ cwt.Move = {
   },
 
 
-  /**
-   * Returns the move cost to move with a given move type on a given tile type.
-   */
-  getMoveCosts: function (movetype, x, y) {
+  //
+  // Returns the move cost to move with a given move type on a given tile type.
+  //
+  getMoveCosts: function(movetype, x, y) {
     if (this.DEBUG) cwt.assert(cwt.Map.isValidPosition(x, y));
 
     var v;
@@ -73,15 +73,15 @@ cwt.Move = {
     return -1;
   },
 
-  /**
-   * Returns true if a movetype can move to position {x,y} else false.
-   *
-   * @param movetype
-   * @param {number} x
-   * @param {number} y
-   * @return {boolean}
-   */
-  canTypeMoveTo: function (movetype, x, y) {
+  //
+  // Returns true if a movetype can move to position {x,y} else false.
+  //
+  // @param movetype
+  // @param {number} x
+  // @param {number} y
+  // @return {boolean}
+  //
+  canTypeMoveTo: function(movetype, x, y) {
     if (cwt.Map.isValidPosition(x, y)) {
       if (this.getMoveCosts(movetype, x, y) === -1) return false;
 
@@ -96,18 +96,18 @@ cwt.Move = {
     }
   },
 
-  /**
-   * Generates a path from a start position { `stx` , `sty` } to { `tx` , `ty` } with a given selection map. The
-   * result will be stored in the `movePath`.
-   *
-   * @param {number} stx
-   * @param {number} sty
-   * @param {number} tx
-   * @param {number} ty
-   * @param {cwt.InterfaceSelection} selection
-   * @param {cwt.CircularBuffer} movePath
-   */
-  generateMovePath: function (stx, sty, tx, ty, selection, movePath) {
+  //
+  // Generates a path from a start position { `stx` , `sty` } to { `tx` , `ty` } with a given selection map. The
+  // result will be stored in the `movePath`.
+  //
+  // @param {number} stx
+  // @param {number} sty
+  // @param {number} tx
+  // @param {number} ty
+  // @param {cwt.InterfaceSelection} selection
+  // @param {cwt.CircularBuffer} movePath
+  //
+  generateMovePath: function(stx, sty, tx, ty, selection, movePath) {
     if (cwt.DEBUG) cwt.assert(cwt.Map.isValidPosition(stx, sty));
     if (cwt.DEBUG) cwt.assert(cwt.Map.isValidPosition(tx, ty));
 
@@ -155,14 +155,14 @@ cwt.Move = {
     }
   },
 
-  /**
-   *
-   * @param code
-   * @param {cwt.CircularBuffer} movePath
-   * @return {boolean}
-   * @private
-   */
-  isGoBackCommand_: function (code, movePath) {
+  //
+  //
+  // @param code
+  // @param {cwt.CircularBuffer} movePath
+  // @return {boolean}
+  // @private
+  //
+  isGoBackCommand_: function(code, movePath) {
     var lastCode = movePath.get(movePath.size - 1);
     var goBackCode;
 
@@ -191,19 +191,19 @@ cwt.Move = {
     }
   },
 
-  /**
-   * Appends a move `code` to a given `movePath` and returns `true` if the
-   * insertion was possible else `false`. If the new code is a backwards move
-   * to the previous tile in the path then the actual last tile will be
-   * dropped. In this function returns also `true` in this case.
-   *
-   * @param {cwt.Move.MOVE_CODES_DOWN|cwt.Move.MOVE_CODES_RIGHT|cwt.Move.MOVE_CODES_LEFT|cwt.Move.MOVE_CODES_UP} code
-   * @param {cwt.CircularBuffer} movePath
-   * @param {cwt.InterfaceSelection} selection
-   * @param {Number} sx
-   * @param {Number} sy
-   */
-  addCodeToMovePath: function (code, movePath, selection, sx, sy) {
+  //
+  // Appends a move `code` to a given `movePath` and returns `true` if the
+  // insertion was possible else `false`. If the new code is a backwards move
+  // to the previous tile in the path then the actual last tile will be
+  // dropped. In this function returns also `true` in this case.
+  //
+  // @param {cwt.Move.MOVE_CODES_DOWN|cwt.Move.MOVE_CODES_RIGHT|cwt.Move.MOVE_CODES_LEFT|cwt.Move.MOVE_CODES_UP} code
+  // @param {cwt.CircularBuffer} movePath
+  // @param {cwt.InterfaceSelection} selection
+  // @param {Number} sx
+  // @param {Number} sy
+  //
+  addCodeToMovePath: function(code, movePath, selection, sx, sy) {
     if (this.DEBUG) cwt.assert(code >= this.MOVE_CODES_UP && code <= this.MOVE_CODES_LEFT);
 
     if (this.isGoBackCommand_(code, movePath)) {
@@ -261,20 +261,20 @@ cwt.Move = {
     }
   },
 
-  /**
-   * Little helper array object for `model.move_fillMoveMap`. This will be used
-   * only by one process. If the helper is not available then a temp object will
-   * be created in `model.move_fillMoveMap`. If the engine is used without client
-   * hacking then this situation never happen and the `model.move_fillMoveMap`
-   * will use this helper to prevent unnecessary array creation.
-   *
-   * @private
-   */
+  //
+  // Little helper array object for `model.move_fillMoveMap`. This will be used
+  // only by one process. If the helper is not available then a temp object will
+  // be created in `model.move_fillMoveMap`. If the engine is used without client
+  // hacking then this situation never happen and the `model.move_fillMoveMap`
+  // will use this helper to prevent unnecessary array creation.
+  //
+  // @private
+  //
   fillMoveMapHelper_: [],
 
-  /**
-   * @private
-   */
+  //
+  // @private
+  //
   checker_: [
     cwt.INACTIVE,
     cwt.INACTIVE,
@@ -286,16 +286,16 @@ cwt.Move = {
     cwt.INACTIVE
   ],
 
-  /**
-   * Fills a move map for possible move able tiles in a selection map.
-   *
-   * @param {cwt.Position} source
-   * @param {cwt.InterfaceSelection} selection
-   * @param {Number} x
-   * @param {Number} y
-   * @param {cwt.Unit} unit
-   */
-  fillMoveMap: function (source, selection, x, y, unit) {
+  //
+  // Fills a move map for possible move able tiles in a selection map.
+  //
+  // @param {cwt.Position} source
+  // @param {cwt.InterfaceSelection} selection
+  // @param {Number} x
+  // @param {Number} y
+  // @param {cwt.Unit} unit
+  //
+  fillMoveMap: function(source, selection, x, y, unit) {
     var cost;
     var checker;
     var map = cwt.Map.data;
@@ -434,8 +434,7 @@ cwt.Move = {
           var cUnit = cTile.unit;
 
           if (cUnit !== null &&
-            cTile.visionTurnOwner > 0 &&
-            !cUnit.hidden &&
+            cTile.visionTurnOwner > 0 && !cUnit.hidden &&
             cUnit.owner.team !== player.team) {
             continue;
           }
@@ -477,14 +476,14 @@ cwt.Move = {
     }
   },
 
-  /**
-   *
-   * @param {cwt.CircularBuffer} movePath
-   * @param {cwt.Position} source
-   * @param {cwt.Position} target
-   * @return {boolean}
-   */
-  trapCheck: function (movePath, source, target) {
+  //
+  //
+  // @param {cwt.CircularBuffer} movePath
+  // @param {cwt.Position} source
+  // @param {cwt.Position} target
+  // @return {boolean}
+  //
+  trapCheck: function(movePath, source, target) {
     var cBx;
     var cBy;
     var map = cwt.Map.data;
@@ -530,22 +529,22 @@ cwt.Move = {
     return false;
   },
 
-  /**
-   *
-   */
+  //
+  //
+  //
   movePathCache: new cwt.CircularBuffer(cwt.MAX_MOVE_LENGTH),
 
-  /**
-   *
-   * @param unit
-   * @param x
-   * @param y
-   * @param movePath
-   * @param {boolean=} noFuelConsumption
-   * @param {boolean=} preventRemoveOldPos
-   * @param {boolean=} preventSetNewPos
-   */
-  move: function (unit, x, y, movePath, noFuelConsumption, preventRemoveOldPos, preventSetNewPos) {
+  //
+  //
+  // @param unit
+  // @param x
+  // @param y
+  // @param movePath
+  // @param {boolean=} noFuelConsumption
+  // @param {boolean=} preventRemoveOldPos
+  // @param {boolean=} preventSetNewPos
+  //
+  move: function(unit, x, y, movePath, noFuelConsumption, preventRemoveOldPos, preventSetNewPos) {
     var map = cwt.Map.data;
     var team = unit.owner.team;
 

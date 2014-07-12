@@ -1,28 +1,28 @@
-/**
- *
- * @namespace
- */
+//
+//
+// @namespace
+//
 cwt.Laser = {
 
-  /**
-   * Returns true when the unit is a laser unit, else false.
-   *
-   * @param {cwt.Unit} unit
-   * @return {boolean}
-   */
-  isLaser: function (unit) {
+  //
+  // Returns true when the unit is a laser unit, else false.
+  //
+  // @param {cwt.Unit} unit
+  // @return {boolean}
+  //
+  isLaser: function(unit) {
     if (this.DEBUG) cwt.assert(unit instanceof cwt.Unit);
 
     return (unit.type.ID === "LASER_UNIT_INV");
   },
 
-  /**
-   * Fires a laser at a given position.
-   *
-   * @param {number} x
-   * @param {number} y
-   */
-  fireLaser: function (x, y) {
+  //
+  // Fires a laser at a given position.
+  //
+  // @param {number} x
+  // @param {number} y
+  //
+  fireLaser: function(x, y) {
     var map = cwt.Map.data;
     var prop = map[x][y].property;
 
@@ -42,7 +42,7 @@ cwt.Laser = {
 
           var unit = map[x][y].unit;
           if (unit && unit.owner.team !== origTeam) {
-            unit.takeDamage(damage,9);
+            unit.takeDamage(damage, 9);
           }
         }
       }

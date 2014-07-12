@@ -1,14 +1,14 @@
 cwt.MapRenderer.MENU_ELEMENTS_MAX = 10;
 
-/**
- * @constant
- * @type {number}
- */
+//
+// @constant
+// @type {number}
+//
 cwt.MapRenderer.MENU_ENTRY_WIDTH = 10 * cwt.TILE_BASE;
-/**
- * @constant
- * @type {number}
- */
+//
+// @constant
+// @type {number}
+//
 cwt.MapRenderer.MENU_ENTRY_HEIGHT = 2 * cwt.TILE_BASE;
 
 cwt.MapRenderer.layoutGenericMenu_ = new cwt.UIPositionableButtonGroup();
@@ -32,11 +32,11 @@ cwt.MapRenderer.$afterLoad = function () {
   });
 };
 
-/**
- * Renders the menu to the background layer of the UI canvas.
- *
- * @param {cwt.InterfaceMenu} menu
- */
+//
+// Renders the menu to the background layer of the UI canvas.
+//
+// @param {cwt.InterfaceMenu} menu
+//
 cwt.MapRenderer.prepareMenu = function (menu) {
   var gfxMenu = cwt.MapRenderer.layoutGenericMenu_;
   var select = menu.getSelectedIndex();
