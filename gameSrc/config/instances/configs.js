@@ -11,3 +11,5 @@ cwt.Config.createConfig("co_getStarCost", 100, 50000, 9000, 100);
 cwt.Config.createConfig("co_getStarCostIncrease", 0, 50000, 1800, 100);
 cwt.Config.createConfig("co_getStarCostIncreaseSteps", 0, 50, 10);
 cwt.Config.createConfig("co_enabledCoPower", 0, 1, 1);
+cwt.Config.createConfig("fogEnabled", 0, 1, 1);
+cwt.Config.createConfig("daysOfPeace", 0, 50, 0);

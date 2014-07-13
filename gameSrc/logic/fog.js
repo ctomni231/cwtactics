@@ -1,9 +1,5 @@
-cwt.Config.create("fogEnabled", 0, 1, 1);
-cwt.Config.create("daysOfPeace", 0, 50, 0);
-
 //
-//
-// @namespace
+// Module to control and use the fog mechanic.
 //
 cwt.Fog = {
 
@@ -23,14 +19,14 @@ cwt.Fog = {
     // no active player owns this vision
     if (!clientVisible && !turnOwnerVisible) return;
 
-    var map = cwt.Map.data;
+    var map = cwt.Model.mapData;
     if (range === 0) {
       if (clientVisible) map[x][y].visionClient += value;
       if (turnOwnerVisible) map[x][y].visionTurnOwner += value;
 
     } else {
-      var mW = cwt.Map.width;
-      var mH = cwt.Map.height;
+      var mW = cwt.Model.mapWidth;
+      var mH = cwt.Model.mapHeight;
       var lX;
       var hX;
       var lY = y - range;
@@ -48,7 +44,7 @@ cwt.Fog = {
         for (; lX <= hX; lX++) {
 
           // does the tile block vision ?
-          if (map[lX][lY].type.blocksVision && cwt.Map.getDistance(x, y, lX, lY) > 1) continue;
+          if (map[lX][lY].type.blocksVision && cwt.Model.getDistance(x, y, lX, lY) > 1) continue;
 
           if (clientVisible) map[lX][lY].visionClient += value;
           if (turnOwnerVisible) map[lX][lY].visionTurnOwner += value;
@@ -63,10 +59,10 @@ cwt.Fog = {
   fullRecalculation: function() {
     var x;
     var y;
-    var xe = cwt.Map.width;
-    var ye = cwt.Map.height;
+    var xe = cwt.Model.mapWidth;
+    var ye = cwt.Model.mapHeight;
     var fogEnabled = (cwt.Config.getValue("fogEnabled") === 1);
-    var map = cwt.Map.data;
+    var map = cwt.Model.mapData;
 
     // 1. reset fog maps
     for (x = 0; x < xe; x++) {
@@ -117,18 +113,18 @@ cwt.Fog = {
   // Removes a vision-object from the fog map.
   //
   removeVision: function(x, y, owner, range) {
-    this.modifyVision_(x, y, owner, range, +1);
+    this.modifyVision_(x, y, owner, range, -1);
   },
 
   removeUnitVision: function(x, y, owner) {
-    var unit = cwt.Map.data[x][y].unit;
+    var unit = cwt.Model.mapData[x][y].unit;
     if (!owner) owner = unit.owner;
 
     this.removeVision(x, y, owner, unit.type.vision);
   },
 
   removePropertyVision: function(x, y, owner) {
-    var prop = cwt.Map.data[x][y].property;
+    var prop = cwt.Model.mapData[x][y].property;
     if (!owner) owner = prop.owner;
 
     this.removeVision(x, y, owner, prop.type.vision);
@@ -138,18 +134,18 @@ cwt.Fog = {
   // Adds a vision-object from the fog map.
   //
   addVision: function(x, y, owner, range) {
-    this.modifyVision_(x, y, owner, range, -1);
+    this.modifyVision_(x, y, owner, range, +1);
   },
 
   addUnitVision: function(x, y, owner) {
-    var unit = cwt.Map.data[x][y].unit;
+    var unit = cwt.Model.mapData[x][y].unit;
     if (!owner) owner = unit.owner;
 
     this.addVision(x, y, owner, unit.type.vision);
   },
 
   addPropertyVision: function(x, y, owner) {
-    var prop = cwt.Map.data[x][y].property;
+    var prop = cwt.Model.mapData[x][y].property;
     if (!owner) owner = prop.owner;
 
     this.addVision(x, y, owner, prop.type.vision);

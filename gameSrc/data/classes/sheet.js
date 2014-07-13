@@ -36,7 +36,7 @@ cwt.SheetDatabaseObject = my.Class({
 
     // add custom checks
     if (impl.checks) {
-      for (key in impl.checks) {
+      for (var key in impl.checks) {
         if (impl.checks.hasOwnProperty(key)) {
           this.validator_.addCheck(key, impl.checks[key]);
         }

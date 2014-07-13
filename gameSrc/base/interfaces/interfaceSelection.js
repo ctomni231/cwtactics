@@ -1,7 +1,7 @@
 //
 // @interface
 //
-cwt.InterfaceSelection = {
+cwt.InterfaceSelection = my.Class({
 
   //
   //
@@ -49,4 +49,4 @@ cwt.InterfaceSelection = {
   // @param {number} value
   //
   setValue: cwt.emptyFunction
-};
+});

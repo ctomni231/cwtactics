@@ -67,17 +67,17 @@ cwt.Factory = {
   generateBuildMenu: function (factory, menu, markDisabled) {
     if (this.DEBUG) {
       cwt.assert(factory instanceof cwt.PropertyClass);
-      cwt.assert(menu instanceof cwt.Menu);
+      cwt.assert(menu instanceof cwt.InterfaceMenu);
       cwt.assert(factory.owner);
     }
 
-    var unitTypes = cwt.UnitSheet.types;
+    var unitTypes = cwt.DataSheets.units.types;
     var bList = factory.type.builds;
     var gold = factory.owner.gold;
 
     for (var i = 0, e = unitTypes.length; i < e; i++) {
       var key = unitTypes[i];
-      var type = cwt.UnitSheet.sheets[key];
+      var type = cwt.DataSheets.units.getSheet(key);
 
       if (bList.indexOf(type.movetype) === -1) continue;
 

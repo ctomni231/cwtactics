@@ -2,7 +2,7 @@
 // @interface
 // @template T
 //
-cwt.InterfaceMenu = {
+cwt.InterfaceMenu = my.Class({
 
   //
   // @return {number}
@@ -42,4 +42,4 @@ cwt.InterfaceMenu = {
   // @param {boolean?} enabled
   //
   addEntry: cwt.emptyFunction
-};
+});
