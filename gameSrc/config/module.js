@@ -118,7 +118,7 @@ cwt.Config = {
     map: null,
 
     //
-    // Data holder to remember selected co's.
+    // Data holder to remember selected commanders's.
     //
     co: null,
 

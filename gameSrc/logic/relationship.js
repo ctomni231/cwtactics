@@ -1,57 +1,54 @@
 //
-//
-// @namespace
+// Module to detect relationships between game objects.
 //
 cwt.Relationship = {
 
   //
-  // @constant
+  // Means two objects are the same object (so there is only one object).
   //
   RELATION_SAME_THING: -1,
 
   //
-  // @constant
+  // Means there is no relationship between two objects.
   //
   RELATION_NONE: 0,
 
   //
-  // @constant
+  // Means two objects belongs to the same owner.
   //
   RELATION_OWN: 1,
 
   //
-  // @constant
+  // Means two objects belongs to the same team.
   //
   RELATION_ALLIED: 2,
 
   //
-  // @constant
+  // Means two objects belongs not to the same owner (they are enemies).
   //
-  RELATION_TEAM: 3,
+  RELATION_ENEMY: 3,
 
   //
-  // @constant
+  // Means at least one of the two arguments is null.
   //
-  RELATION_ENEMY: 4,
+  RELATION_NULL: 4,
 
+  // Indicates a wish to check in the hierarchical way. First try to extract the unit owner and then the property
+  // owner when no unit exists.
   //
-  // @constant
-  //
-  RELATION_NULL: 5,
-
   CHECK_NORMAL: 0,
 
+  // Indicates a wish to check unit owner.
+  //
   CHECK_UNIT: 1,
 
+  // Indicates a wish to check property owner.
+  //
   CHECK_PROPERTY: 2,
 
   //
-  //
-  // @param {cwt.Position} left
-  // @param {cwt.Position} right
-  // @param {number?} checkLeft
-  // @param {number?} checkRight
-  // @return {number}
+  // Extracts the relationship between the object **left** and the object **right** and returns the correct
+  // **RELATION_{?}** constant. The check mode can be set by **checkLeft** and **checkRight**.
   //
   getRelationShipTo: function(left, right, checkLeft, checkRight) {
     var oL;
@@ -71,12 +68,7 @@ cwt.Relationship = {
   },
 
   //
-  // Returns true if there is an unit with a given relationship on a tile
-  // at a given position (x,y).
-  //
-  // @param {*} objectA
-  // @param {*} objectB
-  // @return {number}
+  // Extracts the relationship between **objectA** and **objectB** and returns the correct **RELATION_{?}** constant.
   //
   getRelationship: function(objectA, objectB) {
 
@@ -85,8 +77,8 @@ cwt.Relationship = {
       return this.RELATION_NONE;
     }
 
-    var playerA = // @type {cwt.Player} */ (objectA instanceof cwt.Player) ? objectA : objectA.owner;
-    var playerB = // @type {cwt.Player} */ (objectB instanceof cwt.Player) ? objectB : objectB.owner;
+    var playerA = (objectA instanceof cwt.PlayerClass) ? objectA : objectA.owner;
+    var playerB = (objectB instanceof cwt.PlayerClass) ? objectB : objectB.owner;
 
     // one player is inactive
     if (playerA.team === -1 || playerB.team === -1) {
@@ -107,41 +99,36 @@ cwt.Relationship = {
   },
 
   //
-  // Returns true if there is an unit with a given relationship in
-  // one of the neighbour tiles at a given position (x,y).
+  // Returns **true **if there is at least one unit with a given **relationship** to **player** in one of the
+  // neighbours of a given position (**x**,**y**). If not, **false** will be returned.
   //
-  // @example
-  //       x
-  //     x o x
-  //       x
-  //
-  getRelationshipUnitNeighbours: function(player, x, y, mode) {
-    if (this.DEBUG) cwt.assert(cwt.Map.isValidPosition(x, y));
+  hasUnitNeighbourWithRelationship: function(player, x, y, relationship) {
+    if (this.DEBUG) cwt.assert(cwt.Model.isValidPosition(x, y));
 
     var unit;
 
     // WEST
     if (x > 0) {
-      unit = cwt.Map.data[x - 1][y].unit;
-      if (unit && this.getRelationship(player, unit.owner) === mode) return true;
+      unit = cwt.Model.mapData[x - 1][y].unit;
+      if (unit && this.getRelationship(player, unit.owner) === relationship) return true;
     }
 
     // NORTH
     if (y > 0) {
-      unit = cwt.Map.data[x][y - 1].unit;
-      if (unit && this.getRelationship(player, unit.owner) === mode) return true;
+      unit = cwt.Model.mapData[x][y - 1].unit;
+      if (unit && this.getRelationship(player, unit.owner) === relationship) return true;
     }
 
     // EAST
-    if (x < cwt.Map.width - 1) {
-      unit = cwt.Map.data[x + 1][y].unit;
-      if (unit && this.getRelationship(player, unit.owner) === mode) return true;
+    if (x < cwt.Model.mapWidth - 1) {
+      unit = cwt.Model.mapData[x + 1][y].unit;
+      if (unit && this.getRelationship(player, unit.owner) === relationship) return true;
     }
 
     // SOUTH
-    if (y < cwt.Map.height - 1) {
-      unit = cwt.Map.data[x][y + 1].unit;
-      if (unit && this.getRelationship(player, unit.owner) === mode) return true;
+    if (y < cwt.Model.mapHeight - 1) {
+      unit = cwt.Model.mapData[x][y + 1].unit;
+      if (unit && this.getRelationship(player, unit.owner) === relationship) return true;
     }
 
     return false;

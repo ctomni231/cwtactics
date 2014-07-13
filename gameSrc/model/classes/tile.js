@@ -3,7 +3,18 @@
 // @class
 //
 cwt.TileClass = my.Class({
+  
+  STATIC: {
 
+    fromJSON: function(data) {
+
+    },
+
+    toJSON: function() {
+
+    }
+  },
+  
   constructor: function() {
     this.type = null;
     this.unit = null;

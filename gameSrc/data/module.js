@@ -1,9 +1,15 @@
 cwt.DataSheets = {
 
+  LASER_UNIT_INV: "LASER_UNIT_INV",
+
+  PROP_INV: "PROP_INV",
+
+  CANNON_UNIT_INV: "CANNON_UNIT_INV",
+
   //
-  // Database of co sheet objects.
+  // Database of commanders sheet objects.
   //
-  co: new cwt.SheetDatabaseObject({
+  commanders: new cwt.SheetDatabaseObject({
     schema: {
       type: 'object',
       required: ['ID'],
@@ -292,8 +298,8 @@ cwt.MovetypeSheet.registerSheet({
 //
 // Invisible property type.
 //
-cwt.PropertySheet.registerSheet({
-  "ID": "PROP_INV",
+cwt.DataSheets.properties.registerSheet({
+  "ID": cwt.DataSheets.PROP_INV,
   "defense": 0,
   "vision": 0,
   "capturePoints": 1,
@@ -304,8 +310,8 @@ cwt.PropertySheet.registerSheet({
 //
 //
 //
-cwt.UnitSheet.registerSheet({
-  "ID": "CANNON_UNIT_INV",
+cwt.DataSheets.units.registerSheet({
+  "ID": cwt.DataSheets.CANNON_UNIT_INV,
   "cost": 0,
   "range": 0,
   "movetype": "NO_MOVE",
@@ -318,8 +324,8 @@ cwt.UnitSheet.registerSheet({
 //
 //
 //
-cwt.UnitSheet.registerSheet({
-  "ID": "LASER_UNIT_INV",
+cwt.DataSheets.units.registerSheet({
+  "ID": cwt.DataSheets.LASER_UNIT_INV,
   "cost": 0,
   "range": 0,
   "movetype": "NO_MOVE",

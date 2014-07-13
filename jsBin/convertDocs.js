@@ -7,6 +7,7 @@ buildLib.getFileList("../gameSrc").forEach(function (dir) {
   if(dir.indexOf(".DS_Store") !== -1) return;
   if(dir.indexOf(".idea") !== -1) return;
   if(dir.indexOf(".md") !== -1) return;
+  if(dir.indexOf(".png") !== -1) return;
 
   console.log("checking directory "+dir);
 

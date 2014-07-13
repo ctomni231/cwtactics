@@ -8,11 +8,6 @@ cwt.UnitClass = my.Class({
     STATIC: {
 
       //
-      // Maximum number of unit objects for the whole game.
-      //
-      MULTITON_INSTANCES: cwt.Player.MAX_UNITS * cwt.Player.MULTITON_INSTANCES,
-
-      //
       // Converts HP points to a health value.
       //
       // @return {number}
@@ -47,32 +42,12 @@ cwt.UnitClass = my.Class({
         return health - (parseInt(health / 10) + 1);
       },
 
-      //
-      // Counts the number of units of a player.
-      //
-      // @param player
-      // @return {number}
-      //
-      countUnitsOfPlayer: function(player) {
-        var n = 0;
-        for (var i = 0, e = cwt.Unit.MULTITON_INSTANCES; i < e; i++) {
-          var unit = cwt.Unit.getInstance(i, false);
-          if (unit && unit.owner === player) {
-            n++;
-          }
-        }
+      fromJSON: function(data) {
 
-        return n;
       },
 
-      destroyPlayerUnits: function(player) {
-        if (cwt.DEBUG) cwt.assert(player instanceof cwt.Player);
-        for (var i = 0, e = cwt.Unit.MULTITON_INSTANCES; i < e; i++) {
-          var unit = cwt.Unit.getInstance(i, false);
-          if (unit && unit.owner === player) {
-            // TODO
-          }
-        }
+      toJSON: function() {
+
       }
     },
 
@@ -80,29 +55,21 @@ cwt.UnitClass = my.Class({
       this.hp = 99;
       this.ammo = 0;
       this.fuel = 0;
-
-      //
-      //
-      // // type {number} 0=visible, 1=hidden but visible by enemy or 2=complete hidden
-      // @type {boolean}
-      //
       this.hidden = false;
-
       this.loadedIn = cwt.INACTIVE;
-
       this.type = null;
       this.canAct = false;
 
-      //
       // If the value is null then unit does not exists on the map.
-      //
-      // @type {cwt.Player}
-      //
       this.owner = null;
     },
 
     initByType: function(type) {
 
+    },
+
+    isInactive: function() {
+      return this.owner === null;
     },
 
     //
@@ -189,6 +156,8 @@ cwt.UnitClass = my.Class({
       else unitStatus.CAPTURES = false;
     } */
     }
+});
+
 
     /*
    function inVision( x,y, tid, unitStatus ){
@@ -340,5 +309,5 @@ model.event_on("unitUnhide_invoked",function( uid ){
 });
 
 // use index based multiton trait
-my.extendClass(cwt.Unit,{STATIC:cwt.IndexMultiton});
-*/
+     //my.extendClass(cwt.Unit,{STATIC:cwt.IndexMultiton});
+

@@ -93,7 +93,8 @@ window.cwt = {
   // Special static function that contains an empty body. This object can be used when a property with type function
   // should be disabled without having to modify other code that calls it.
   //
-  emptyFunction: function() {},
+  emptyFunction: function () {
+  },
 
   //
   // Creates a function that calls every function of a module in the cwt namespace which name is equal to the
@@ -102,8 +103,8 @@ window.cwt = {
   // @param {String} eventName
   // @return {Function}
   //
-  createModuleCaller: function(eventName) {
-    return function() {
+  createModuleCaller: function (eventName) {
+    return function () {
       for (var prop in cwt) {
         var module = cwt[prop];
         if (module[eventName]) {
@@ -119,7 +120,7 @@ window.cwt = {
   // @param {Boolean} expr
   // @param {String?} msgA
   //
-  assert: function(expr, msgA) {
+  assert: function (expr, msgA) {
     if (!expr) {
       if (typeof msgA === "undefined") {
         msgA = "FAIL";
@@ -142,9 +143,9 @@ window.cwt = {
   // @param {Function} fn factory function
   // @return {Function} curried function which returns the returned value of the factory function
   //
-  lazy: function(fn) {
+  lazy: function (fn) {
     var value = undefined;
-    return function() {
+    return function () {
       if (value === undefined) {
         value = fn();
       }
@@ -153,16 +154,28 @@ window.cwt = {
     }
   },
 
-  repeat: function(n, f) {
+  repeat: function (n, f) {
     for (var i = 0; i < n; i++) {
       f.call(this, i);
     }
     return this;
+  },
+
+  selectRandomListElement: function (list, forbiddenElement) {
+    var e = list.length;
+
+    cwt.assert(e > 1 || (e > 0 && list[0] !== forbiddenElement));
+
+    var r = parseInt(Math.random() * e, 10);
+    var selected = list[r];
+    if (selected === forbiddenElement) {
+      return (r < e - 1 ? list[r + 1] : list[r - 1]);
+    }
   }
 };
 
 /* Registers generic error listener. */
-window.onerror = function(e, file, line, column, errorObj) {
+window.onerror = function (e, file, line, column, errorObj) {
   if (cwt.Error) {
     // cwt.Error("Critical Game Fault","ERR_UNKNOWN");
   }

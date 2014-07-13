@@ -1,68 +1,57 @@
 //
-//
-// @namespace
+// Module to control and use the suicide and explosion abilities.
 //
 cwt.Explode = {
 
+  // Returns **true** if the **unit** is capable to self destruct.
   //
-  // Returns `true` if a unit id is a suicide unit. A suicide unit
-  // has the ability to blow itself up with an impact.
-  //
-  // @param {cwt.Unit} unit
-  //
-  canExplode: function(unit) {
-    if (this.DEBUG) cwt.assert(unit instanceof cwt.Unit);
+  canSelfDestruct: function (unit) {
+    if (cwt.DEBUG) cwt.assert(unit instanceof cwt.UnitClass);
 
     return unit.type.suicide !== undefined;
   },
 
+  // Returns the **health** that will be damaged by an explosion of the exploder **unit**.
   //
-  // Returns the explosion damage of an exploder.
-  //
-  // @param unit
-  // @return {number}
-  //
-  getExplosionDamage: function(unit) {
-    return cwt.Unit.pointsToHealth(unit.type.suicide.damage);
+  getExplosionDamage: function (unit) {
+    if (cwt.DEBUG) cwt.assert(this.canSelfDestruct(unit));
+
+    return cwt.UnitClass.pointsToHealth(unit.type.suicide.damage);
   },
 
+  // Returns the explosion **range** of the exploder **unit**.
   //
-  // Returns the explosion range of an exploder.
-  //
-  // @param unit
-  // @return {number}
-  //
-  getExplosionRange: function(unit) {
+  getSuicideRange: function (unit) {
+    if (cwt.DEBUG) cwt.assert(this.canSelfDestruct(unit));
+
     return unit.type.suicide.range;
   },
 
+  // Invokes an explosion with a given **range** at position (**x**,**y**). All units in the **range** will be damaged
+  // by the value **damage**. The health of an unit in range will never be lower than 9 health after the explosion (
+  // means it will have 1HP left).
   //
-  //
-  // @param {number} x
-  // @param {number} y
-  // @param {number} range (x >= 1)
-  // @param {number} damage (x >= 0)
-  //
-  explode: function(x, y, range, damage) {
-    if (this.DEBUG) cwt.assert(this.canExplode(cwt.Gameround.map.data[x][y].unit));
-    if (this.DEBUG) cwt.assert(range >= 1);
+  explode: (function () {
 
-    cwt.Lifecycle.destroyUnit(x, y, false);
-    cwt.Gameround.map.doInRange(x, y, range, this.exploderDamage_, damage);
-  },
+    // TODO: silo should use this for the impact
 
-  //
-  //
-  // @param {number} x
-  // @param {number} y
-  // @param {number} damage (x >= 0)
-  // @private
-  //
-  exploderDamage_: function(x, y, tile, damage) {
-    var unit = tile.unit;
-    if (unit) {
-      unit.takeDamage(damage, 9);
+    function doDamage(x, y, tile, damage) {
+      var unit = tile.unit;
+      if (unit) {
+        unit.takeDamage(damage, 9);
+      }
     }
-  }
+
+    return function (x, y, range, damage) {
+      if (this.DEBUG) {
+        cwt.assert(this.canSelfDestruct(cwt.Model.mapData[x][y].unit));
+        cwt.assert(range >= 1);
+        cwt.assert(damage >= 1);
+      }
+
+      cwt.Lifecycle.destroyUnit(x, y, false);
+      cwt.Model.doInRange(x, y, range, doDamage, damage);
+    }
+  })()
 
 };

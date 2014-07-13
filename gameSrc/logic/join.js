@@ -1,20 +1,18 @@
 //
 // Logic object for the join mechanic.
 //
-// @namespace
-//
 cwt.Join = {
 
   //
-  // Declines wish if two units can join each other in the current situation.
-  // Transporters cannot join each other when they loaded units.
-  //
-  // @param {cwt.Unit} source
-  // @param {cwt.Unit} target
+  // Returns **true** if two units can join each other, else **false**. In general both **source** and **target** has
+  // to be units of the same type and the target must have 9 or less health points. Transporters cannot join each
+  // other when they contain loaded units.
   //
   canJoin: function(source, target) {
-    if (this.DEBUG) cwt.assert(source instanceof cwt.Unit);
-    if (this.DEBUG) cwt.assert(target instanceof cwt.Unit);
+    if (this.DEBUG) {
+      cwt.assert(source instanceof cwt.UnitClass);
+      cwt.assert(target instanceof cwt.UnitClass);
+    }
 
     if (source.type !== target.type) return false;
 
@@ -31,15 +29,11 @@ cwt.Join = {
   // Joins two units together. If the combined health is greater than the maximum
   // health then the difference will be payed to the owners resource depot.
   //
-  // @param {cwt.Unit} source
-  // @param {number} x
-  // @param {number} y
-  //
   join: function(source, x, y) {
-    if (this.DEBUG) cwt.assert(source instanceof cwt.Unit);
+    if (this.DEBUG) cwt.assert(source instanceof cwt.UnitClass);
 
-    var target = cwt.Map.data[x][y].unit;
-    if (this.DEBUG) cwt.assert(target instanceof cwt.Unit);
+    var target = cwt.Model.mapData[x][y].unit;
+    if (this.DEBUG) cwt.assert(target instanceof cwt.UnitClass);
     if (this.DEBUG) cwt.assert(source.type === target.type);
 
     // hp
@@ -47,11 +41,15 @@ cwt.Join = {
 
     // ammo
     target.ammo += source.ammo;
-    if (target.ammo > target.type.ammo) target.ammo = target.type.ammo;
+    if (target.ammo > target.type.ammo) {
+      target.ammo = target.type.ammo;
+    }
 
     // fuel
     target.fuel += source.fuel;
-    if (target.fuel > target.type.fuel) target.fuel = target.type.fuel;
+    if (target.fuel > target.type.fuel) {
+      target.fuel = target.type.fuel;
+    }
 
     // TODO experience points
 

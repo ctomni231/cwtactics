@@ -1,33 +1,27 @@
 //
 // Logic object for the transport mechanic.
 //
-// @namespace
-//
 cwt.Transport = {
 
   //
-  // Returns true if the unit with id tid is a traensporter, else false.
-  //
-  // @param {cwt.Unit} unit
+  // Returns true if the unit with id tid is a transporter, else false.
   //
   isTransportUnit: function(unit) {
-    if (this.DEBUG) cwt.assert(unit instanceof cwt.Unit);
+    if (this.DEBUG) cwt.assert(unit instanceof cwt.UnitClass);
 
-    return (typeof unit.type.maxloads === "number");
+    return (unit.type.maxloads > 0);
   },
 
   //
   // Has a transporter unit with id tid loaded units? Returns true
   // if yes, else false.
   //
-  // @param {cwt.Unit} unit
-  //
   hasLoads: function(unit) {
-    if (this.DEBUG) cwt.assert(unit instanceof cwt.Unit);
+    if (this.DEBUG) cwt.assert(unit instanceof cwt.UnitClass);
 
-    for (var i = 0, e = cwt.Unit.MULTITON_INSTANCES; i < e; i++) {
-      var cUnit = cwt.Unit.getInstance(i, true);
-      if (cUnit && unit.loadedIn === cUnit) return true;
+    for (var i = 0, e = cwt.Model.units.length; i < e; i++) {
+      var cUnit = cwt.Model.units[i];
+      if (unit.loadedIn === cUnit) return true;
     }
 
     return false;
@@ -39,15 +33,14 @@ cwt.Transport = {
   // load the unit. If the calculated weight is greater than the maximum loadable
   // weight false will be returned.
   //
-  // @param {cwt.Unit} transporter
-  // @param {cwt.Unit} load
-  //
   canLoadUnit: function(transporter, load) {
-    if (this.DEBUG) cwt.assert(transporter instanceof cwt.Unit);
-    if (this.DEBUG) cwt.assert(load instanceof cwt.Unit);
-    if (this.DEBUG) cwt.assert(load !== transporter);
-    if (this.DEBUG) cwt.assert(this.isTransportUnit(transporter));
-    if (this.DEBUG) cwt.assert(load.loadedIn !== transporter);
+    if (this.DEBUG) {
+      cwt.assert(transporter instanceof cwt.UnitClass);
+      cwt.assert(load instanceof cwt.UnitClass);
+      cwt.assert(load !== transporter);
+      cwt.assert(this.isTransportUnit(transporter));
+      cwt.assert(load.loadedIn !== transporter);
+    }
 
     return (transporter.type.canload.indexOf(load.type.movetype) !== -1);
   },
@@ -69,19 +62,12 @@ cwt.Transport = {
   //
   // Unloads the unit with id lid from a transporter with the id tid.
   //
-  // @param {cwt.Unit} transport
-  // @param {number} trsx
-  // @param {number} trsy
-  // @param {cwt.Unit} load
-  // @param {number} tx
-  // @param {number} ty
-  //
   unload: function(transport, trsx, trsy, load, tx, ty) {
     if (this.DEBUG) cwt.assert(load.loadedIn === transport);
 
     // TODO: remove this later
     // trapped ?
-    if (tx === -1 || ty === -1 || cwt.Map.data[tx][ty].unit) {
+    if (tx === -1 || ty === -1 || cwt.Model.mapData[tx][ty].unit) {
       controller.stateMachine.data.breakMultiStep = true;
       return;
     }
@@ -105,7 +91,6 @@ cwt.Transport = {
     load.canAct = false;
   },
 
-
   //
   // Returns true if a transporter unit can unload one of it's loads at a given position.
   // This functions understands the given pos as possible position for the transporter.
@@ -121,10 +106,10 @@ cwt.Transport = {
 
     if (this.DEBUG) cwt.assert(this.isTransportUnit(transporter));
 
-    for (var i = 0, e = cwt.Unit.MULTITON_INSTANCES; i <= e; i++) {
+    for (var i = 0, e = cwt.UnitClass.MULTITON_INSTANCES; i <= e; i++) {
 
-      unit = cwt.Unit.getInstance(i, true);
-      if (unit && unit.owner !== cwt.INACTIVE && unit.loadedIn === transporter) {
+      unit = cwt.Model.units[i];
+      if (unit.loadedIn === transporter) {
         var moveType = unit.type.movetype;
 
         if (cwt.Move.canTypeMoveTo(moveType, x - 1, y)) return true;

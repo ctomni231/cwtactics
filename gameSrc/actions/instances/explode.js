@@ -9,13 +9,13 @@ cwt.Action.unitAction({
   ],
 
   condition: function( data ){
-    return cwt.Explode.canExplode(data.source.unit);
+    return cwt.Explode.canSelfDestruct(data.source.unit);
   },
 
   toDataBlock: function (data, dataBlock) {
     dataBlock.p1 = data.source.x;
     dataBlock.p2 = data.source.y;
-    dataBlock.p3 = cwt.Explode.getExplosionRange(data.source.unit);
+    dataBlock.p3 = cwt.Explode.getSuicideRange(data.source.unit);
     dataBlock.p4 = cwt.Explode.getExplosionDamage(data.source.unit);
   },
 

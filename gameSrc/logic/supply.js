@@ -10,7 +10,7 @@ cwt.Supply = {
   // @param {cwt.Unit} unit
   //
   isSupplier: function(unit) {
-    if (this.DEBUG) cwt.assert(unit instanceof cwt.Unit);
+    if (this.DEBUG) cwt.assert(unit instanceof cwt.UnitClass);
 
     return unit.type.supply;
   },

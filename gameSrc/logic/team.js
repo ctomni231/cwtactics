@@ -19,31 +19,24 @@ cwt.Team = {
   //
   // Returns `true` when a player can transfer money to a tile owner.
   //
-  canTransferMoney: function(player, x, y) {
+  canTransferMoney: function (player, x, y) {
     if (player.gold < this.MONEY_TRANSFER_STEPS[0]) {
       return false;
     }
 
-    // on‚ly transfer money on headquarters
-    var property = cwt.Map.data[x][y].property;
-    if (!property || !property.type.looseAfterCaptured || property.owner === player) {
-      return false;
-    }
-
-    return true;
+    // only transfer money on headquarters
+    var property = cwt.Model.mapData[x][y].property;
+    return (property && property.type.looseAfterCaptured && property.owner !== player);
   },
 
-  //
+  // 
   // Returns `true` when a player can transfer money
   // to a tile owner.
   //
-  // @param player
-  // @param menu
-  //
-  getTransferMoneyTargets: function(player, menu) {
+  getTransferMoneyTargets: function (player, menuObject) {
     for (var i = 0, e = this.MONEY_TRANSFER_STEPS.length; i < e; i++) {
       if (player.gold >= this.MONEY_TRANSFER_STEPS[i]) {
-        menu.addEntry(this.MONEY_TRANSFER_STEPS[i]);
+        menuObject.addEntry(this.MONEY_TRANSFER_STEPS[i]);
       }
     }
   },
@@ -55,37 +48,35 @@ cwt.Team = {
   // @param playerB
   // @param money
   //
-  transferMoney: function(playerA, playerB, money) {
+  transferMoney: function (playerA, playerB, money) {
     playerA.gold -= money;
     playerB.gold += money;
 
     // the amount of gold cannot be lower 0 after the transfer
     cwt.assert(playerA.gold >= 0);
-
-    cwt.ClientEvents.goldChange(playerA, -money, 0, 0);
-    cwt.ClientEvents.goldChange(playerB, money, 0, 0);
   },
 
   //
   //
   //
-  canTransferUnit: function(unit) {
-    if (this.DEBUG) cwt.assert(unit instanceof cwt.Unit);
+  canTransferUnit: function (unit) {
+    if (cwt.DEBUG) cwt.assert(unit instanceof cwt.UnitClass);
 
-    if (cwt.Transport.hasLoads(unit)) return false;
-    return true;
+    return !cwt.Transport.hasLoads(unit);
   },
 
   //
   //
   //
-  getUnitTransferTargets: function(player, menu) {
-    var origI = player.id;
-    for (var i = 0, e = cwt.Player.MULTITON_INSTANCES; i < e; i++) {
+  getUnitTransferTargets: function (player, menu) {
+    if (this.DEBUG) cwt.assert(player instanceof cwt.PlayerClass);
+
+    var origI = player.ID;
+    for (var i = 0, e = cwt.MAX_PLAYER; i < e; i++) {
       if (i === origI) continue;
 
-      var player = cwt.Player.getInstance(i, true);
-      if (player && player.team !== cwt.INACTIVE) {
+      var player = cwt.Model.players[i];
+      if (!player.isInactive() && player.numberOfUnits < cwt.MAX_UNITS) {
         menu.addEntry(i, true);
       }
     }
@@ -96,39 +87,41 @@ cwt.Team = {
   // @param unit
   // @param player
   //
-  transferUnitToPlayer: function(unit, player) {
+  transferUnitToPlayer: function (unit, player) {
+    if (cwt.DEBUG) cwt.assert(unit instanceof cwt.UnitClass);
+    if (cwt.DEBUG) cwt.assert(player instanceof cwt.PlayerClass);
+
     var origPlayer = unit.owner;
 
-    if (this.DEBUG) cwt.assert(player.numberOfUnits < cwt.Player.MAX_UNITS);
+    if (cwt.DEBUG) cwt.assert(player.numberOfUnits < cwt.MAX_UNITS);
 
     origPlayer.numberOfUnits--;
     unit.owner = player;
     player.numberOfUnits++;
 
     // remove vision when unit transfers to an enemy team
-    //
     if (origPlayer.team !== player.team) {
-      cwt.Map.searchUnit(unit, this.changeVision_, null, origPlayer);
+      cwt.Model.searchUnit(unit, this.changeVision_, null, origPlayer);
     }
   },
 
   //
   //
   //
-  canTransferProperty: function(property) {
+  canTransferProperty: function (property) {
     return (property.type.notTransferable !== true);
   },
 
   //
   //
   //
-  getPropertyTransferTargets: function(player, menu) {
+  getPropertyTransferTargets: function (player, menu) {
     var origI = player.id;
-    for (var i = 0, e = cwt.Player.MULTITON_INSTANCES; i < e; i++) {
+    for (var i = 0, e = cwt.MAX_PLAYER; i < e; i++) {
       if (i === origI) continue;
 
-      var player = cwt.Player.getInstance(i, true);
-      if (player && player.team !== cwt.INACTIVE) {
+      var player = cwt.Model.players[i];
+      if (!player.isInactive()) {
         menu.addEntry(i, true);
       }
     }
@@ -137,14 +130,13 @@ cwt.Team = {
   //
   //
   //
-  transferPropertyToPlayer: function(property, player) {
+  transferPropertyToPlayer: function (property, player) {
     var origPlayer = property.owner;
     property.owner = player;
 
     // remove vision when unit transfers to an enemy team
-    //
     if (origPlayer.team !== player.team) {
-      cwt.Map.searchProperty(property, this.changeVision_, null, origPlayer);
+      cwt.Model.searchProperty(property, this.changeVision_, null, origPlayer);
     }
   },
 
@@ -156,8 +148,8 @@ cwt.Team = {
   // @param oldOwner
   // @private
   //
-  changeVision_: function(x, y, object, oldOwner) {
-    if (object instanceof cwt.Unit) {
+  changeVision_: function (x, y, object, oldOwner) {
+    if (object instanceof cwt.UnitClass) {
       cwt.Fog.removeUnitVision(x, y, oldOwner);
       cwt.Fog.addUnitVision(x, y, object.owner);
     } else {
@@ -166,18 +158,3 @@ cwt.Team = {
     }
   }
 };
-
-/*
- model.event_on("transferMoney_invoked",function(){
- controller.updateSimpleTileInformation();
- });
-
- model.event_on("transferUnit_invoked",function( suid ){
- var unit = model.unit_data[suid];
- var x = -unit.x;
- var y = -unit.y;
-
- // CHECK NEW UNIT
- controller.updateUnitStatus( model.unit_extractId( model.unit_posData[x][y] ) );
- });
-//*/

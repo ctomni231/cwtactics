@@ -1,6 +1,5 @@
 //
-//
-// @namespace
+// Module to control the commander mechanic of CWT.
 //
 cwt.CO = {
 
@@ -15,60 +14,54 @@ cwt.CO = {
   POWER_LEVEL_SCOP: 1,
 
   //
-  // Modifies the power level of a player.
+  // Modifies the power level of a **player** by a given **value**.
   //
   modifyStarPower: function(player, value) {
-    if (this.DEBUG) cwt.assert(player instanceof cwt.Player);
+    if (this.DEBUG) cwt.assert(player instanceof cwt.PlayerClass);
 
     player.power += value;
     if (player.power < 0) player.power = 0;
   },
 
   //
-  // Decline activate power action on game modes that aren't AW1-3.
-  // Decline activate power action when a player cannot activate the base cop level.
-  // Returns `true`when a given player can activate a power level.
+  // Returns **true** when a **player** can activate a **powerLevel**, else **false**. If the config
+  // **co_enabledCoPower** if off then **false** will be returned in every situation.
   //
-  // @param player
-  // @param powerType
-  // @return {boolean}
-  //
-  canActivatePower: function(player, powerType) {
+  canActivatePower: function(player, powerLevel) {
     if (cwt.Config.getValue("co_enabledCoPower") === 0) return false;
 
-    if (this.DEBUG) cwt.assert(player instanceof cwt.Player);
-    if (this.DEBUG) cwt.assert(powerType >= cwt.INACTIVE && powerType <= this.POWER_LEVEL_SCOP);
+    if (this.DEBUG) {
+      cwt.assert(player instanceof cwt.PlayerClass);
+      cwt.assert(powerLevel >= cwt.INACTIVE && powerLevel <= this.POWER_LEVEL_SCOP);
+    }
 
-    // co must be available and current power must be inactive
+    // commanders must be available and current power must be inactive
     if (player.coA === null || player.activePower !== cwt.INACTIVE) return false;
 
     var stars;
-    switch (powerType) {
+    switch (powerLevel) {
 
       case this.POWER_LEVEL_COP:
         stars = player.coA.coStars;
         break;
 
       case this.POWER_LEVEL_SCOP:
-        if (cwt.Gameround.gameMode < cwt.Gameround.GAME_MODE_AW2) return false;
+        if (cwt.Model.gameMode < cwt.Model.GAME_MODE_AW2) return false;
         stars = player.coA.scoStars;
         break;
-
-        // TODO
     }
 
     return (player.power >= (this.getStarCost(player) * stars));
   },
 
   //
-  // Activates the CO power of a player.
-  //
-  // @param {cwt.Player} player
-  // @param level
+  // Activates a commander power **level** for a given **player**.
   //
   activatePower: function(player, level) {
-    if (this.DEBUG) cwt.assert(player instanceof cwt.Player);
-    if (this.DEBUG) cwt.assert(level === cwt.CO.POWER_LEVEL_COP || level === cwt.CO.POWER_LEVEL_SCOP);
+    if (this.DEBUG) {
+      cwt.assert(player instanceof cwt.PlayerClass);
+      cwt.assert(level === cwt.CO.POWER_LEVEL_COP || level === cwt.CO.POWER_LEVEL_SCOP);
+    }
 
     player.power = 0;
     player.activePower = level;
@@ -76,23 +69,21 @@ cwt.CO = {
   },
 
   //
-  // Deactivates the CO power of a player.
-  //
-  // @param {cwt.Player} player
+  // Deactivates the CO power of a **player** by setting the activePower to **cwt.INACTIVE**.
   //
   deactivatePower: function(player) {
-    if (this.DEBUG) cwt.assert(player instanceof cwt.Player);
+    if (this.DEBUG) cwt.assert(player instanceof cwt.PlayerClass);
 
     player.activePower = cwt.INACTIVE;
   },
 
   //
-  // Returns the cost for one CO star for a given player.
+  // Returns the **costs** for one CO star for a **player**.
   //
   // @param {cwt.Player} player
   //
   getStarCost: function(player) {
-    if (this.DEBUG) cwt.assert(player instanceof cwt.Player);
+    if (this.DEBUG) cwt.assert(player instanceof cwt.PlayerClass);
 
     var cost = cwt.Config.getValue("co_getStarCost");
     var used = player.powerUsed;
@@ -108,18 +99,15 @@ cwt.CO = {
   },
 
   //
-  // Sets the main CO of a player.
-  //
-  // @param {cwt.Player} player
-  // @param type
+  // Sets the main Commander of a **player** to a given co **type**.
   //
   setMainCo: function(player, type) {
-    if (this.DEBUG) cwt.assert(player instanceof cwt.Player);
+    if (this.DEBUG) cwt.assert(player instanceof cwt.PlayerClass);
 
     if (type === null) {
       player.coA = null;
     } else {
-      if (this.DEBUG) cwt.assert(cwt.CoSheet.isValidSheet(type));
+      if (this.DEBUG) cwt.assert(cwt.DataSheets.commanders.isValidSheet(type));
 
       player.coA = type;
     }

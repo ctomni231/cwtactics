@@ -1,8 +1,19 @@
 //
-//
-// @namespace
+// Module to control the lifecycle of game objects.
 //
 cwt.Lifecycle = {
+
+  //
+  // Returns an inactive **unit object** or **null** if every slot in the unit list is used.
+  //
+  getInactiveUnit: function() {
+    for (var i = 0, e = cwt.Model.units.length; i < e; i++) {
+      if (!cwt.Model.units[i].owner) {
+        return unit;
+      }
+    }
+    return null;
+  },
 
   //
   //
@@ -12,18 +23,16 @@ cwt.Lifecycle = {
   // @param type
   //
   createUnit: function(x, y, player, type) {
-    if (player instanceof cwt.Unit || player instanceof cwt.Property) {
-      player = player.owner;
+    if (cwt.DEBUG) cwt.assert(cwt.Model.isValidPosition(x, y));
+
+    var tile = cwt.Model.mapData[x][y];
+
+    if (cwt.DEBUG) {
+      cwt.assert(player instanceof cwt.PlayerClass);
+      cwt.assert(player.numberOfUnits < cwt.MAX_UNITS);
     }
 
-    if (this.DEBUG) cwt.assert(cwt.Map.isValidPosition(x, y));
-
-    var tile = cwt.Map.data[x][y];
-
-    if (this.DEBUG) cwt.assert(player instanceof cwt.Player);
-    if (this.DEBUG) cwt.assert(this.hasFreeUnitSlot(player));
-
-    var unit = this.getFreeUnitSlot();
+    var unit = this.getInactiveUnit();
 
     // set references
     unit.owner = player;
@@ -33,8 +42,6 @@ cwt.Lifecycle = {
     unit.initByType(type);
 
     cwt.Fog.addUnitVision(x, y, player);
-
-    cwt.ClientEvents.unitCreated(x, y, unit);
   },
 
   //
@@ -44,22 +51,23 @@ cwt.Lifecycle = {
   // @param {boolean} silent
   //
   destroyUnit: function(x, y, silent) {
-    var tile = cwt.Map.data[x][y];
+    var tile = cwt.Model.mapData[x][y];
     if (this.DEBUG) cwt.assert(tile.unit);
-
-    cwt.ClientEvents.unitDestroyed(x, y, tile.unit);
 
     cwt.Fog.removeUnitVision(x, y, tile.unit.owner);
 
+    //TODO check loads
+
     // remove references
-    tile.unit.owner.numberOfUnits--;
-    if (this.DEBUG) cwt.assert(tile.unit.owner.numberOfUnits >= 0);
+    var owner = tile.unit.owner;
+    owner.numberOfUnits--;
+    if (this.DEBUG) cwt.assert(owner.numberOfUnits >= 0);
     tile.unit.owner = null;
     tile.unit = null;
 
     // end game when the player does not have any unit left
-    if (cwt.Config.getValue("noUnitsLeftLoose") === 1 && cwt.Unit.countUnitsOfPlayer(this.owner) === 0) {
-      cwt.Player.deactivate();
+    if (cwt.Config.getValue("noUnitsLeftLoose") === 1 && owner.numberOfUnits === 0) {
+      this.deactivatePlayer(owner);
     }
   },
 
@@ -72,13 +80,31 @@ cwt.Lifecycle = {
   // @param {cwt.Player} player
   //
   deactivatePlayer: function(player) {
-    cwt.Unit.destroyPlayerUnits(player);
-    cwt.Property.releasePlayerProperties(player);
 
-    this.team = cwt.INACTIVE;
+    // drop units
+    if (cwt.DEBUG) cwt.assert(player instanceof cwt.Player);
+    for (var i = 0, e = cwt.Model.units.length; i < e; i++) {
+      var unit = cwt.Model.units[i];
+      if (unit.owner === player) {
+        // TODO
+      }
+    }
+
+    // drop properties
+    for (var i = 0, e = cwt.Model.properties.size(); i < e; i++) {
+      var prop = cwt.Model.properties[i];
+      if (prop.owner === player) {
+        prop.makeNeutral();
+
+        // change type when the property is a changing type property
+        var changeType = prop.type.changeAfterCaptured;
+      }
+    }
+
+    player.deactivate();
 
     // when no opposite teams are found then the game has ended
-    if (!cwt.Gameround.areEnemyTeamsLeft()) {
+    if (!cwt.Model.areEnemyTeamsLeft()) {
       // TODO
     }
   },
@@ -89,21 +115,6 @@ cwt.Lifecycle = {
   //
   hasFreeUnitSlot: function(player) {
     return player.numberOfUnits < cwt.Player.MAX_UNITS;
-  },
-
-  //
-  // Returns the index of the next free unit slot.
-  //
-  // @return {cwt.Unit|null}
-  //
-  getFreeUnitSlot: function() {
-    for (var i = 0, e = cwt.Unit.MULTITON_INSTANCES; i < e; i++) {
-      var unit = cwt.Unit.getInstance(i);
-      if (!unit.owner) {
-        return // @type {cwt.Unit} */ unit;
-      }
-    }
-    return null;
   }
 
 };

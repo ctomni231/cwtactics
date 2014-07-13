@@ -8,28 +8,29 @@ cwt.Turn = {
   // Ends the turn for the current active turn owner.
   //
   next: function() {
-    var pid = cwt.Gameround.turnOwner.id;
+    var pid = cwt.Model.turnOwner.id;
     var oid = pid;
 
     // Try to find next player from the player pool
     pid++;
     while (pid !== oid) {
 
-      if (pid === cwt.Player.MULTITON_INSTANCES) {
+      if (pid === cwt.MAX_PLAYERS) {
         pid = 0;
 
         // Next day
-        cwt.Gameround.day++;
-        cwt.Gameround.weatherLeftDays--;
+        cwt.Model.day++;
+        cwt.Model.weatherLeftDays--;
 
         var round_dayLimit = cwt.Config.getValue("round_dayLimit");
-        if (round_dayLimit > 0 && this.day >= round_dayLimit) {
+        if (round_dayLimit > 0 && cwt.Model.day >= round_dayLimit) {
           cwt.Update.endGameRound();
+          // TODO
         }
       }
 
       // Found next player
-      if (cwt.Player.getInstance(pid).team !== cwt.INACTIVE) break;
+      if (cwt.Model.players[pid].team !== cwt.INACTIVE) break;
 
       // Try next player
       pid++;
@@ -40,8 +41,8 @@ cwt.Turn = {
     if (this.DEBUG) cwt.assert(pid !== oid);
 
     // Do end/start turn logic
-    this.endsTurn_(cwt.Player.getInstance(oid));
-    this.startsTurn_(cwt.Player.getInstance(pid));
+    this.endsTurn_(cwt.Model.players[oid]);
+    this.startsTurn_(cwt.Model.players[pid]);
   },
 
   //
@@ -60,13 +61,15 @@ cwt.Turn = {
 
     // Sets the new turn owner and also the client, if necessary
     this.turnOwner = player;
-    if (cwt.Client.isLocal(player)) cwt.Client.lastPlayer = player;
+    if (player.isClientControlled) cwt.Client.lastPlayer = player; //TODO
+
+    // *************************** Update Fog ****************************
 
     // the active client can see what his and all allied objects can see
     // TODO
     var clTid = cwt.Player.activeClientPlayer.team;
-    for (var i = 0, e = cwt.Player.MULTITON_INSTANCES; i < e; i++) {
-      var cPlayer = cwt.Player.getInstance(i);
+    for (var i = 0, e = cwt.MAX_PLAYER; i < e; i++) {
+      var cPlayer = cwt.Model.players[i];
 
       cPlayer.turnOwnerVisible = false;
       cPlayer.clientVisible = false;
@@ -83,30 +86,28 @@ cwt.Turn = {
 
     var cUnit, cProp;
 
-    // *******************************************************
+    // *************************** Turn start actions ****************************
 
-    for (i = 0, e = cwt.Property.MULTITON_INSTANCES; i < e; i++) {
-      cProp = cwt.Property.getInstance(i, false);
-      if (!cProp || cProp.owner !== player) continue;
+    for (i = 0, e = cwt.Model.properties.length; i < e; i++) {
+      cProp = cwt.Model.properties[i];
+      if (cProp.owner !== player) continue;
 
       cwt.Supply.raiseFunds(cProp);
     }
 
-    for (var i = 0, e = cwt.Unit.MULTITON_INSTANCES; i < e; i++) {
-      cUnit = // @type {cwt.Unit} */ cwt.Unit.getInstance(i, true);
-      if (!cUnit || cUnit.owner !== player) continue;
+    for (var i = 0, e = cwt.Model.units.length; i < e; i++) {
+      cUnit = cwt.Model.units[i];
+      if (cUnit.owner !== player) continue;
 
       cUnit.canAct = true;
       cwt.Supply.drainFuel(cUnit);
     }
 
-    // *******************************************************
-
     var turnStartSupply = (cwt.Config.getValue("autoSupplyAtTurnStart") === 1);
 
     var map = cwt.Map.data;
-    for (var x = 0, xe = cwt.Map.map_width; x < xe; x++) {
-      for (var y = 0, ye = cwt.Map.map_height; y < ye; y++) {
+    for (var x = 0, xe = cwt.Model.mapWidth; x < xe; x++) {
+      for (var y = 0, ye = cwt.Model.mapHeight; y < ye; y++) {
         cUnit = map[x][y].unit;
         if (cUnit && cUnit.owner === player) {
 
@@ -128,24 +129,22 @@ cwt.Turn = {
       }
     }
 
-    // *******************************************************
-
-    // Do host only actions
+    // *************************** Host only actions ****************************
+    
     if (cwt.Network.isHost()) {
 
       // Generate new weather
-      if (cwt.Gameround.weatherLeftDays === 0) {
+      if (cwt.Model.weatherLeftDays === 0) {
         cwt.Weather.calculateNextWeather();
       }
 
       // Do AI-Turn
-      // TODO
+      // TODO: sadasdas
       /*
        if (controller.network_isHost() && !controller.ai_isHuman(pid)) {
        controller.ai_machine.event("tick");
        }
-//
+       */
     }
   }
-
-};*/
+};

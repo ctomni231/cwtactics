@@ -18,21 +18,21 @@ cwt.Weather = {
     // was `null` or the default weather type
     var newTp;
     var duration;
-    if (cwt.Gameround.weather && cwt.Gameround.weather.defaultWeather) {
+    if (cwt.Model.weather && cwt.Model.defaultWeather) {
 
-      var list = cwt.WeatherSheet.types;
-      newTp = cwt.selectRandomListElement(list, cwt.Gameround.weather);
+      var list = cwt.DataSheets.weathers.types;
+      newTp = cwt.selectRandomListElement(list, cwt.Model.weather.ID);
       duration = 1;
 
     } else {
 
       // Take default weather and calculate a random amount of days
-      newTp = cwt.WeatherSheet.defaultWeather;
+      newTp = cwt.DataSheets.defaultWeather;
       duration = cwt.Config.getValue("weatherMinDays") +
         parseInt(cwt.Config.getValue("weatherRandomDays") * Math.random(), 10);
     }
 
-    cwt.Gameround.weatherLeftDays = duration;
+    cwt.Model.weatherLeftDays = duration;
     this.changeWeather(newTp); // TODO: send message here
   },
 
@@ -40,9 +40,9 @@ cwt.Weather = {
   //
   //
   changeWeather: function(weather) {
-    if (this.DEBUG) cwt.assert(cwt.WeatherSheet.isValidSheet(weather));
+    if (this.DEBUG) cwt.assert(cwt.DataSheets.weathers.isValidSheet(weather));
 
-    cwt.Gameround.weather = weather;
+    cwt.Model.weather = weather;
 
     // recalculate fog map for client and turn
     // owner due possible weather effects

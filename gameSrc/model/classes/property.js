@@ -6,6 +6,14 @@ cwt.PropertyClass = my.Class({
 
   STATIC: {
 
+    fromJSON: function(data) {
+
+    },
+
+    toJSON: function() {
+
+    },
+
     CAPTURE_POINTS: 20,
 
     CAPTURE_STEP: 10

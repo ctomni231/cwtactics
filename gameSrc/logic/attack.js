@@ -294,7 +294,7 @@ cwt.Attack = {
      attacker = tmp_;
      }
      }
-    */
+//
 
     var aSheets = attacker.type;
     var dSheets = defender.type;

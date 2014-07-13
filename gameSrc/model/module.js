@@ -18,7 +18,7 @@ cwt.Model = {
   //
   weatherLeftDays: 0,
 
-  // The current active co mode.
+  // The current active commanders mode.
   //
   gameMode: 0,
 
@@ -163,38 +163,6 @@ cwt.Model = {
         // if a callback returns `false` then the process will be stopped
         if (cb(lX, lY, this.mapData[lX][lY], arg, Math.abs(lX - x) + disY) === false) return;
 
-      }
-    }
-  },
-
-  //
-  //
-  // @param {cwt.Player} player
-  // @return {number}
-  //
-  countProperties: function(player) {
-    var n = 0;
-
-    for (var i = 0, e = this.properties.size(); i < e; i++) {
-      var prop = cwt.Property.get(i);
-      if (prop && prop.owner === player) {
-        n++;
-      }
-    }
-
-    return n;
-  },
-
-  releasePlayerProperties: function(player) {
-    for (var i = 0, e = this.properties.size(); i < e; i++) {
-      var prop = cwt.Property.get(i);
-      if (prop && prop.owner === player) {
-        prop.makeNeutral();
-
-        // change type when the property is a
-        // changing type property
-        var changeType = prop.type.changeAfterCaptured;
-        if (changeType) model.events.property_changeType(i, changeType);
       }
     }
   },
