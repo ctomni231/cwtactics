@@ -1,0 +1,5 @@
+//
+//
+// @namespace
+//
+cwt.MapRenderer = {};

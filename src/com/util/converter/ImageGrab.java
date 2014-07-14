@@ -38,11 +38,10 @@ public class ImageGrab extends ImgLibrary{
 	public void organizeImages(boolean terImg){
 		//The unit & property literals
 		uniList = new String[]{"anti", "apc", "arti", "copt", "boat", "bomb", "carr", "crui",
-				"figh", "infa", "land", "tank", "miss", "pipe", "mech", "recon",
-				"rock", "stea", "sub", "port", "base", "city", "comt", "lab", "hq", "seam"};
+				"figh", "infa", "land", "tank", "miss", "pipe", "mech", "recn",
+				"rock", "stea", "sub", "port", "base", "city", "comt", "lab"};
 		//The terrain literals
-		terList = new String[]{"plai", "wood", "rive", "reef", "sea", "road", 
-				"brid", "moun", "shoa", "pip"};
+		terList = new String[]{"plai", "wood", "rive", "reef", "sea", "road", "brid", "moun","shoa"};
 		//Initialize the String, just in case
 		fileList = new String[0];
 		
@@ -57,8 +56,8 @@ public class ImageGrab extends ImgLibrary{
 			//Have to get a batch of images for each type you need into the key database...
 			for(String regex: terImg ? terList : uniList){
 				if(index.fname.matches(".*"+regex+".*")){
+					//Store the file
 					this.addImage(index.fpath);
-					this.addReference(index.fname, this.length()-1);
 					fileList = addData(fileList, index.fpath);
 					break;
 				}

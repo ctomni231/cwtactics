@@ -17,8 +17,6 @@ import javax.imageio.ImageIO;
  * @version 05.01.14
  *
  */	
-//Website to the turn order: http://awbw.wikia.com/wiki/Countries
-//I kept the same turn order as in AWBW...
 public class MapSplit {
 	
 	/** This holds the tile size for all tiles in the map **/
@@ -49,21 +47,12 @@ public class MapSplit {
 	}
 	
 	/**
-	 * This function takes an image file within the local directory of image
+	 * This function takes in a url pointing to an image file within AWBW directory of image
 	 * files. This specifically looks for a map image file.
 	 * @param map The image containing a map to be read into the system
 	 */
 	public void setImage(Image map){
 		getMap(map);
-	}
-	
-	/**
-	 * This function takes an image file within the local directory of image
-	 * files. This specifically looks for a map image file.
-	 * @param filename The image containing a map to be read into the system
-	 */
-	public void setImage(String filename){
-		getMap(filename);
 	}
 	
 	/**
@@ -77,48 +66,20 @@ public class MapSplit {
 	/**
 	 * This gets the map image and sets up the function
 	 * for getting all the key images
-	 * @param file The filename of the map image
-	 */
-	private void getMap(String file){
-		imgHold = new ImageGrab();
-		
-		//Add the map image twice on purpose
-		imgHold.addImage(file);
-		imgHold.addImage(imgHold.getImage(0));
-		
-		getMap();
-		
-	}
-	
-	/**
-	 * This gets the map image and sets up the function
-	 * for getting all the key images
 	 * @param map The image containing the map
 	 */
 	private void getMap(Image map){
 		imgHold = new ImageGrab();
 		
+		//An empty String for the mapData
+		mapData = "";
+		
 		//Add the map image twice on purpose
 		imgHold.addImage(map);
-		imgHold.addImage(imgHold.getImage(0));
-		
-		getMap();
-		
-	}
-	
-	/**
-	 * A generic function for organizing all the map data
-	 */
-	private void getMap(){
-		//Never going to happen, but...
-		if(imgHold == null)
-			imgHold = new ImageGrab();
+		imgHold.addImage(map);
 		
 		//Then get all the key images
 		imgHold.organizeImages(true);
-		
-		//An empty String for the mapData
-		mapData = "";
 		
 		//Cut them all to the proper size and position
 		for(int i = 2; i < imgHold.length(); i++){
