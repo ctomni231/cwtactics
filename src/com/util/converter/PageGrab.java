@@ -63,18 +63,19 @@ public class PageGrab {
 	/** Grabs all the data of the map */
 	public String data;
 	
+	//YOU SUNK MY BATTLESHIP... BETTER SOLVE LATER
 	public PageGrab(){
 		//The unit literals
 		uniList = new String[]{"anti", "apc", "arti", "b-copter", "blackboat", "blackbomb",
 						"bomber", "carrier", "cruiser", "fighter", "infantry", "lander",
 						"md", "mech","megatank", "missile", "neotank", "runner", "recon",
-						"rocket", "stealth", "sub", "t-copter", "tank"};
+						"rocket", "stealth", "sub", "t-copter", "tank", "battleship"};
 		
 		//The CWT unit literals
 		uList = new String[]{"AAIR", "APCR", "ARTY", "BCTR", "BKBT", "BKBM",
-						"BMBR", "ACAR", "CRUS", "FGHT", "INFT", "LNDR",
+						"BMBR", "ACAR", "CRUS", "FGTR", "INFT", "LNDR",
 						"MDTK", "MECH", "WRTK", "MISS", "NTNK", "PRNR", "RECN",
-						"RCKT", "STLH", "SUBM", "TCTR", "TANK"};
+						"RCKT", "STLH", "SUBM", "TCTR", "TANK", "BSHP"};
 		
 		//The property literals
 		propList = new String[]{"air", "base", "city", "comtower", "hq", "lab", "port", "silo", "seam"}; 
