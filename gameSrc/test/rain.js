@@ -1,12 +1,12 @@
 
 //
-rain.js
+//rain.js
 
-A simple class that does the rain demo in JS
+//A simple class that does the rain demo in JS
 
-@author = Carr, Crecen
-@version = 04.30.14
-*/
+//@author = Carr, Crecen
+//@version = 04.30.14
+
 //First attempt at creating the rain weather for JavaScript
 cwt.Gameflow.addState({
   id: "RAIN",

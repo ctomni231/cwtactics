@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu>
+	<lang	path="data/lang/Languages" />
+	<logo   title="image/menu/cwTactics.png" 
+		mini="image/menu/cwtitle.gif"
+		pic="image/menu/cwLogo.gif" 
+		help="image/icons/question.png" />
+
+	<title  copy="@copyright"
+		start="PRESS START" 
+		alpha="image/menu/BasicAlpha.png"
+		number="image/menu/numbers.png"
+		arrow="image/menu/uparrow.png"
+		load="image/icons/loading.png"
+		credit="data/credits.txt"
+		help="@titleHelp" />
+
+	<screen ID="MAIN MENU">
+		<exit>
+			<list text="LEAVING..." />
+			<list text="YES" />
+			<list text="NO" />
+			<list text="@exitHelpYes" />
+			<list text="@exitHelpNo" />
+		</exit>
+		<main>
+			<list item="VERSUS" id="6"
+			text="Play a multiplayer game against your friends" 
+			help="VERSUS - Start a quick game versus a friend" />
+			
+			<list item="ONLINE" id="-3" 
+			text="Turn the tides of war on a friend through online battle"
+			help="ONLINE - Start an online server game with a friend" />
+
+			<list item="MAP EDITOR" id="5" 
+			text="Create the playfield of your imagination"
+			help="MAP EDITOR - Create/Edit an existing map from the archive" />
+
+			<list item="KEY CONFIGURE" id="4"
+			text="Change the keyboard actions of the game" 
+			help="KEY CONFIGURE - Set up the keyboard settings" />
+			
+			<list item="CREDITS" id="3" 
+			text="See the ending credits of the game"
+			help="CREDITS - See the creators of Custom Wars Tactics" />
+			
+			<list item="EXIT" id="2" 
+			text="Leave, we see how it is. :)"
+			help="EXIT - Ends this game session" />
+		</main>
+		<edit>
+			<list item="CREATE MAP" id="-4"
+			text="Create the playfield of your imagination" 
+			help="CREATE MAP - Create a new map for the game" />
+
+			<list item="LOAD MAP" id="-5"
+			text="Load a map from the archive" 
+			help="LOAD MAP - Load an existing map from the archive" />
+
+			<list item="GO BACK" id="1" 
+			text="This takes you back to the main menu"
+			help="GO BACK - Go back to main menu" />
+		</edit>
+		<key text="GO BACK - Go back to main menu">
+			<list text="UP" 
+			help="UP - Sets a keyboard key for up" />
+			<list text="DOWN" 
+			help="DOWN - Sets a keyboard key for down" />
+			<list text="LEFT" 
+			help="LEFT - Sets a keyboard key for left" />
+			<list text="RIGHT"
+			help="RIGHT - Sets a keyboard key for right" />
+			<list text="SELECT" 
+			help="SELECT - Sets a keyboard key for select" />
+			<list text="CANCEL" 
+			help="CANCEL - Sets a keyboard key for cancel" />
+			<list text="SELECT BUTTON TO EDIT" 
+			help="- Press SELECT to edit this item -" />
+			<list text="GO BACK"
+			help="- Press SELECT to save changes -" />
+			<list text="PRESS A KEY"
+			help="PRESS A KEY - Sets key pressed to highlighted item" />
+		</key>
+	</screen>
+</menu>

@@ -1,12 +1,12 @@
 
 //
-weather.js
+//weather.js
 
-A simple class that does the snow particle demo in JS
+//A simple class that does the snow particle demo in JS
 
-@author = Carr, Crecen
-@version = 04.30.14
-*/
+//@author = Carr, Crecen
+//@version = 04.30.14
+
 //First attempt at creating the snow weather for JavaScript
 //It turned out to be a chore to draw circles, but I think
 //I figured it out...

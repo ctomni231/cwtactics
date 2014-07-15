@@ -10,7 +10,7 @@ import java.util.ArrayList;
 * @author theether
 * @version 05.26.14
 */
-public class MapConverter {
+public class MapConverterXenesis{
 
 //"026" means there are 3 players, orange star, green earth and whatever the 7th team is
     private static String players = "";
