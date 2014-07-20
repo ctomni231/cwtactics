@@ -1,9 +1,12 @@
 package com.util.converter.tools;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -308,8 +311,21 @@ public class FileFind {
         	System.err.println("Applet Active, can't Access! "+path+filename);
             return false;
         }
+        
+        PrintWriter writer;
+		try {
+			writer = new PrintWriter(newFile, "UTF-8");
+			writer.println(data);
+	        writer.close();
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+			return false;
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+			return false;
+		}
 
-        try {
+        /*try {
             FileWriter newWrite = new FileWriter(newFile);
             newWrite.write(data);
         } catch (IOException e) {
@@ -318,7 +334,7 @@ public class FileFind {
         } catch(AccessControlException ex){
         	System.err.println("Applet Active, can't Access! "+path+filename);
             return false;
-        }
+        }//*/
         return true;
     }
 

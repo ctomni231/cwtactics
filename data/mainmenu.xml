@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu>
+	<screen ID="MAIN_MENU">
+		<alpha file="image/menu/smallAlpha.png" />
+		<arrow file="image/menu/uparrow.png" />		
+
+		<title>
+			<list GER="?" 
+			ENG="PRESS START" />
+			<list GER="?"
+			ENG=" - ADVANCE WARS IS COPYRIGHT OF NINTENDO/INTELLIGENT SYSTEMS - " />
+		</title>
+
+		<main>
+			<list GER="?#3#?"
+			ENG="VERSUS#3#Play a single player game against your friends." />
+			<list GER="?#2#?"
+			ENG="EXIT#2#Leave, we see how it is. :)" />
+		</main>
+		
+		<exit>
+			<list GER="?"
+			ENG="LEAVING..." />
+			<list GER="JA"
+			ENG="YES" />
+			<list GER="NEIN"
+			ENG="NO" />
+		</exit>
+		<end />
+	</screen>
+
+	<background>
+		<prefix file="image/menu/background" />
+		<suffix file=".png" />
+		<items index="15" />
+		<user ref="bg" /> 
+		<justify index="0" />
+	</background>
+
+	<logo>
+		<title file="image/menu/cwTactics.png" />
+		<mini file="image/menu/cwLogo.gif" />
+	</logo>
+</menu>
