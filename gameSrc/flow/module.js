@@ -1,28 +1,21 @@
 //
-//
-// @namespace
+// Module to control and use the game state mechanic.
 //
 cwt.Gameflow = {
 
-  //
-  // @type {String}
+  // The id of the active game state.
   //
   activeStateId: null,
 
-  //
-  // @type {cwt.GameState}
+  // The active game state.
   //
   activeState: null,
 
-  //
-  // @type {Array.<cwt.GameState>}
-  // @private
+  // Holds all registered game states.
   //
   states_: {},
 
-  //
-  // State-Machine data object to share data between
-  // states.
+  // State-Machine data object to share data between states.
   //
   globalData: {},
 
@@ -30,7 +23,7 @@ cwt.Gameflow = {
   //
   // @param desc
   //
-  addState: function(desc) {
+  addState: function (desc) {
     if (cwt.DEBUG) cwt.assert(!this.states_.hasOwnProperty(desc.id));
 
     var state = new cwt.GameState(
@@ -50,16 +43,18 @@ cwt.Gameflow = {
   },
 
   //
+  // Creates an inGame state which means this state is considered to be used in an active game round. As result this
+  // state contains cursor handling and rendering logic.
   //
-  // @param desc
-  //
-  addInGameState: function(desc) {
+  addInGameState: function (desc) {
     cwt.Gameflow.addState({
 
       id: desc.id,
 
-      init: function() {
-        this.inputMove = function(x, y) {
+      init: function () {
+
+        // mouse move handler
+        this.inputMove = function (x, y) {
           if (desc.inputMove) {
             desc.inputMove.call(this, this.globalData, x, y);
           } else {
@@ -76,70 +71,65 @@ cwt.Gameflow = {
         }
       },
 
-      enter: function() {
+      enter: function () {
         if (desc.enter) {
           desc.enter.call(this, this.globalData);
         }
       },
 
-      exit: function() {
+      exit: function () {
         if (desc.exit) {
           desc.exit.call(this, this.globalData);
         }
       },
 
-      update: function(delta, input) {
+      update: function (delta, input) {
         if (input) {
-          switch (input.key) {
+          var code = cwt.INACTIVE;
+          var func = null;
 
+          // extract input data
+          switch (input.key) {
             case cwt.Input.TYPE_LEFT:
-              if (desc.LEFT) {
-                desc.LEFT.call(this, this.globalData, delta);
-              } else {
-                cwt.Cursor.move(cwt.Move.MOVE_CODES_LEFT);
-              }
+              func = "LEFT";
+              code = cwt.Move.MOVE_CODES_LEFT;
               break;
 
             case cwt.Input.TYPE_UP:
-              if (desc.UP) {
-                desc.UP.call(this, this.globalData, delta);
-              } else {
-                cwt.Cursor.move(cwt.Move.MOVE_CODES_UP);
-              }
+              func = "UP";
+              code = cwt.Move.MOVE_CODES_UP;
               break;
 
             case cwt.Input.TYPE_RIGHT:
-              if (desc.RIGHT) {
-                desc.RIGHT.call(this, this.globalData, delta);
-              } else {
-                cwt.Cursor.move(cwt.Move.MOVE_CODES_RIGHT);
-              }
+              func = "RIGHT";
+              code = cwt.Move.MOVE_CODES_RIGHT;
               break;
 
             case cwt.Input.TYPE_DOWN:
-              if (desc.DOWN) {
-                desc.DOWN.call(this, this.globalData, delta);
-              } else {
-                cwt.Cursor.move(cwt.Move.MOVE_CODES_DOWN);
-              }
+              func = "DOWN";
+              code = cwt.Move.MOVE_CODES_DOWN;
               break;
 
             case cwt.Input.TYPE_ACTION:
-              if (desc.ACTION) {
-                desc.ACTION.call(this, this.globalData, delta);
-              }
+              func = "ACTION";
               break;
 
             case cwt.Input.TYPE_CANCEL:
-              if (desc.CANCEL) {
-                desc.CANCEL.call(this, this.globalData, delta);
-              }
+              func = "CANCEL";
               break;
+          }
+
+          // invoke action
+          cwt.assert(func);
+          if (desc[func]) {
+            desc[func].call(this, this.globalData, delta);
+          } else if (code != cwt.INACTIVE) {
+            cwt.Cursor.move(code);
           }
         }
       },
 
-      render: function(delta) {
+      render: function (delta) {
         cwt.MapRenderer.evaluateCycle(delta);
         if (desc.render) {
           desc.render.call(this, this.globalData, delta);
@@ -150,18 +140,19 @@ cwt.Gameflow = {
   },
 
   //
+  // Adds a menu state (normally this means all states that aren't inGame plus have input connection). Every menu state
+  // will be designed with a **cwt.UIScreenLayoutObject** which can be configured by the **doLayout(layout)** function
+  // property in the state description.
   //
-  // @param desc
-  //
-  addMenuState: function(desc) {
+  addMenuState: function (desc) {
     cwt.Gameflow.addState({
       id: desc.id,
 
-      init: function() {
-        this.layout = new cwt.UIScreenLayout();
+      init: function () {
+        this.layout = new cwt.UIScreenLayoutObject();
         this.rendered = false;
 
-        this.inputMove = function(x, y) {
+        this.inputMove = function (x, y) {
           if (this.layout.updateIndex(x, y)) {
             this.rendered = false;
           }
@@ -180,7 +171,7 @@ cwt.Gameflow = {
         }
       },
 
-      enter: function() {
+      enter: function () {
         cwt.Screen.layerUI.clear();
         this.rendered = false;
 
@@ -189,7 +180,7 @@ cwt.Gameflow = {
         }
       },
 
-      update: function(delta, lastInput) {
+      update: function (delta, lastInput) {
         if (lastInput) {
           switch (lastInput.key) {
 
@@ -220,7 +211,7 @@ cwt.Gameflow = {
         }
       },
 
-      render: function(delta) {
+      render: function (delta) {
         if (!this.rendered) {
           var ctx = cwt.Screen.layerUI.getContext();
           this.layout.draw(ctx);
@@ -233,7 +224,7 @@ cwt.Gameflow = {
   //
   // Initializes the game state machine.
   //
-  initialize: function() {
+  initialize: function () {
     if (cwt.DEBUG) {
       console.log("starting game state machine");
     }
@@ -252,45 +243,6 @@ cwt.Gameflow = {
 
       // update machine
       cwt.Gameflow.update(delta);
-
-      /*
-       if (cwt.Gameflow.inGameRound) {
-       cwt.Gameround.gameTimeElapsed += delta;
-       cwt.Gameround.turnTimeElapsed += delta;
-
-       // check_ turn time
-       if (cwt.Gameround.turnTimeLimit > 0 && cwt.Gameround.turnTimeElapsed >= cwt.Gameround.turnTimeLimit) {
-       controller.commandStack_sharedInvokement("nextTurn_invoked");
-       }
-
-       // check_ game time
-       if (cwt.Gameround.gameTimeLimit > 0 && cwt.Gameround.gameTimeElapsed >= cwt.Gameround.gameTimeLimit) {
-       controller.update_endGameRound();
-       }
-
-       // ai tick
-       if (!controller.commandStack_hasData()) {
-       if (controller.ai_active) controller.ai_machine.event("tick");
-       } else controller.commandStack_invokeNext();
-       }
-
-       controller.updateInputCoolDown(delta);
-       controller.updateGamePadControls(delta);
-
-       var usedInput = controller.input_evalNextKey();
-
-       // if the system is in the game loop, then update the game aw2
-       if (controller.inGameLoop) {
-
-       if (controller.update_inGameRound) {
-       controller.gameLoop(delta, evenFrame, usedInput);
-       } else controller.screenStateMachine.event("gameHasEnded"); // game ends --> stop game loop
-       }
-
-       if (controller.screenStateMachine.state === "MOBILE") {
-       controller.screenStateMachine.event("decreaseTimer", delta);
-       }
-//
     }
 
     // set start state
@@ -300,14 +252,11 @@ cwt.Gameflow = {
     requestAnimationFrame(gameLoop);
   },
 
+  // Changes the active state. The **exit event** will be fired during the change process in the old state and the
+  // **enter event** in the new state.
   //
-//
-// @param stateId
-//
   changeState: function (stateId) {
     if (this.activeState) {
-
-      // exit old state
       if (this.activeState.exit) {
         this.activeState.exit.call(this.activeState.data);
       }
@@ -318,13 +267,12 @@ cwt.Gameflow = {
   },
 
   //
-//
-// @param stateId
-//
+  //
+  // @param stateId
+  //
   setState: function (stateId, fireEvent) {
-    if (cwt.DEBUG) cwt.assert(this.states_.hasOwnProperty(stateId));
-
     if (cwt.DEBUG) {
+      cwt.assert(this.states_.hasOwnProperty(stateId));
       console.log("set active state to " + stateId + ((fireEvent) ? " with firing enter event" : ""));
     }
 
@@ -337,13 +285,15 @@ cwt.Gameflow = {
   },
 
   //
-//
-// @param delta
-//
+  //
+  // @param delta
+  //
   update: function (delta) {
 
+    // TODO add command evaluation here
+
     // update game-pad controls
-    if (cwt.ClientFeatures.gamePad && cwt.Input.types.gamePad.update) {
+    if (cwt.Config.features.gamePad && cwt.Input.types.gamePad.update) {
       cwt.Input.types.gamePad.update();
     }
 
@@ -358,94 +308,3 @@ cwt.Gameflow = {
     }
   }
 };
-
-/*
-
- controller.prepareGameLoop = function(){
- savedDelta = 0;
- }
-
- controller.gameLoop = function( delta, updateLogic, inputUsed ){
-
- savedDelta += delta; // SAVE DELTAS FOR UPDATE LOGIC ( --> TURN TIMER AND SO ON )
-
- var inMove = (controller.moveScreenX !== 0 || controller.moveScreenY !== 0);
-
- // IF SCREEN IS IN MOVEMENT THEN UPDATE THE MAP SHIFT
- if( inMove ) controller.solveMapShift();
- // ELSE UPDATE THE LOGIC
- else{
-
- // IF MESSAGE PANEL IS VISIBLE THEN BREAK PROCESS UNTIL
- // IT CAN BE HIDDEN
- if( view.hasInfoMessage() ){
- view.updateMessagePanelTime(delta);
- }
- else{
- if( updateLogic ){
-
- // only update game state when no hooks are in the hooks cache
- if( !hasHocks ){
- if( !inputUsed ){
-
- // UPDATE LOGIC
- controller.update_tickFrame( savedDelta );
- savedDelta = 0;
-
- // CHECK HOOKS
- tryToPopNextHook();
- }
- }
- // ELSE EVALUATE ACTIVE HOCK
- else{
- activeHock.update(delta);
- if( activeHock.isDone() ) tryToPopNextHook();
- }
- }
- }
-
- // UPDATE SPRITE ANIMATION
- view.updateSpriteAnimations( delta );
- }
-
- // RENDER SCREEN
- if( !updateLogic ){
- if( view.redraw_dataChanges > 0 ) view.renderMap( controller.screenScale );
-
- // RENDER ACTIVE HOCK AND POP NEXT ONE WHEN DONE
- if( hasHocks ){
- activeHock.render();
- }
- else{
-
- // UPDATE SELECTION CURSOR
- if( controller.stateMachine.state === "ACTION_SELECT_TILE" ){
-
- var r = view.selectionRange;
- var x = controller.mapCursorX;
- var y = controller.mapCursorY;
- var lX;
- var hX;
- var lY = y-r;
- var hY = y+r;
- if( lY < 0 ) lY = 0;
- if( hY >= model.map_height ) hY = model.map_height-1;
- for( ; lY<=hY; lY++ ){
-
- var disY = Math.abs( lY-y );
- lX = x-r+disY;
- hX = x+r-disY;
- if( lX < 0 ) lX = 0;
- if( hX >= model.map_width ) hX = model.map_width-1;
- for( ; lX<=hX; lX++ ){
-
- view.redraw_markPos(lX,lY);
- }
- }
- }
- }
-
- }
-
- };
-//*/

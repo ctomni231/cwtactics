@@ -1,3 +1,7 @@
+var constants = require("../constants");
+var assert = require("../functions").assert;
+var Unit = require("../model/unit").Unit;
+
 //
 // Logic object for the join mechanic.
 //
@@ -5,13 +9,12 @@ cwt.Join = {
 
   //
   // Returns **true** if two units can join each other, else **false**. In general both **source** and **target** has
-  // to be units of the same type and the target must have 9 or less health points. Transporters cannot join each
+  //to be units of the same type and the target must have 9 or less health points. Transporters cannot join each
   // other when they contain loaded units.
   //
   canJoin: function(source, target) {
-    if (this.DEBUG) {
-      cwt.assert(source instanceof cwt.UnitClass);
-      cwt.assert(target instanceof cwt.UnitClass);
+    if (constants.DEBUG) {
+      assert(source instanceof Unit && target instanceof Unit);
     }
 
     if (source.type !== target.type) return false;

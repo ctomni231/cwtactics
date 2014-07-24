@@ -1,4 +1,4 @@
-cwt.ArmySheet.registerSheet({
+cwt.DataSheets.armies.registerSheet({
   "ID"		: "ORST",
   "name"	: "Orange Star",
   "color" : 0,

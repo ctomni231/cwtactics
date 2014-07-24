@@ -1,27 +1,25 @@
 //
-//
-// @namespace
+// Module to control and use cannon logic.
 //
 cwt.Cannon = {
 
   //
-// Returns `true` if a given property id is a cannon property.
-//
+  // Returns **true** if a given **unit** is a cannon trigger unit, else **false**.
+  //
   isCannonUnit: function (unit) {
-    if (this.DEBUG) cwt.assert(unit instanceof cwt.Unit);
+    if (cwt.DEBUG) {
+      cwt.assert(unit instanceof cwt.UnitClass);
+    }
 
-    return (unit.type.ID === "CANNON_UNIT_INV");
+    return (unit.type.ID === cwt.DataSheets.CANNON_UNIT_INV);
   },
 
   //
-  //
-  // @param {number} x
-  // @param {number} y
-  // @param {cwt.SelectionMap} selection
-  // @return {boolean}
+  // Returns **true** when a cannon trigger unit is at a given position (**x**,**y**) and has targets in it's range,
+  // else **false**.
   //
   hasTargets: function (x, y, selection) {
-    return this.isCannonUnit(cwt.Map.data[x][y].unit) && this.markCannonTargets(x, y, selection);
+    return (this.isCannonUnit(cwt.Model.mapData[x][y].unit) && this.markCannonTargets(x, y, selection));
   },
 
   //
@@ -38,7 +36,7 @@ cwt.Cannon = {
   // Fires a cannon at a given position.
   //
   fireCannon: function (ox, oy, x, y) {
-    var target = cwt.Map.data[x][y].unit;
+    var target = cwt.Model.mapData[x][y].unit;
     var type = this.grabBombPropTypeFromPos(ox, oy);
 
     target.takeDamage(cwt.Unit.pointsToHealth(type.cannon.damage), 9);
@@ -50,7 +48,7 @@ cwt.Cannon = {
   // with a given `range`.
   //
   tryToMarkCannonTargets: function (player, selection, ox, oy, otx, oty, sx, sy, tx, ty, range) {
-    if (this.DEBUG) cwt.assert(player instanceof cwt.Player);
+    if (this.DEBUG) cwt.assert(player instanceof cwt.PlayerClass);
 
     var tid = player.team;
     var osy = sy;
@@ -70,7 +68,7 @@ cwt.Cannon = {
         var unit = tile.unit;
         if (unit) {
           if (unit.owner.team !== tid) {
-            if(selection) selection.setValueAt(sx, sy, 1);
+            if (selection) selection.setValueAt(sx, sy, 1);
             else return true;
             result = true;
           }
@@ -88,7 +86,7 @@ cwt.Cannon = {
   // @param {cwt.SelectionMap} selection
   //
   markCannonTargets: function (x, y, selection) {
-    var prop = cwt.Map.data[x][y].property;
+    var prop = cwt.Model.mapData[x][y].property;
     var type = (prop.type.ID !== "PROP_INV") ? prop.type : this.grabBombPropTypeFromPos(x, y);
 
     if (this.DEBUG) cwt.assert(type.cannon);
@@ -103,7 +101,7 @@ cwt.Cannon = {
 
       case "N":
         otx = x;
-        oty = y-max-1;
+        oty = y - max - 1;
         sx = x - max + 1;
         sy = y - 1;
         tx = x + max - 1;
@@ -120,7 +118,7 @@ cwt.Cannon = {
         break;
 
       case "W":
-        otx = x - max -1;
+        otx = x - max - 1;
         oty = y;
         sx = x - max;
         sy = y + max - 1;
@@ -139,12 +137,12 @@ cwt.Cannon = {
     }
 
     return this.tryToMarkCannonTargets(
-      cwt.Map.data[x][y].unit.owner,
+      cwt.Model.mapData[x][y].unit.owner,
       selection,
-      ox,oy,
-      otx,oty,
-      sx,sy,
-      tx,ty,
+      ox, oy,
+      otx, oty,
+      sx, sy,
+      tx, ty,
       max
     );
   },
@@ -156,10 +154,10 @@ cwt.Cannon = {
   // @return {cwt.PropertySheet}
   //
   grabBombPropTypeFromPos: function (x, y) {
-    var map = cwt.Map.data;
+    var map = cwt.Model.mapData;
     while (true) {
-      if (y + 1 < cwt.Map.height && map[x][y + 1].property &&
-        map[x][y + 1].property.type.ID === "PROP_INV") {
+      if (y + 1 < cwt.Model.mapHeight && map[x][y + 1].property &&
+        map[x][y + 1].property.type.ID === cwt.DataSheets.PROP_INV) {
         y++;
         continue;
       }
@@ -167,13 +165,13 @@ cwt.Cannon = {
       break;
     }
 
-    if (map[x][y].property.type.ID !== "PROP_INV") {
+    if (map[x][y].property.type.ID !== cwt.DataSheets.PROP_INV) {
       return map[x][y].property.type;
     }
 
     while (true) {
-      if (x + 1 < cwt.Map.width && map[x + 1][y].property &&
-        map[x + 1][y].property.type.ID !== "PROP_INV") {
+      if (x + 1 < cwt.Model.mapWidth && map[x + 1][y].property &&
+        map[x + 1][y].property.type.ID !== cwt.DataSheets.PROP_INV) {
         return map[x + 1][y].property.type;
       }
 

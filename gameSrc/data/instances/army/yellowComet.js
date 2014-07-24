@@ -1,4 +1,4 @@
-cwt.ArmySheet.registerSheet({
+cwt.DataSheets.armies.registerSheet({
   "ID"		: "YLCM",
   "name"	: "Yellow Comet",
   "color" : 3,

@@ -31,3 +31,22 @@ more game mechanic oriented *(less fancy shiny)* client for the CW:T engine.
 
 * iPad 1G, iPad-Mini, iPod Touch 4G or iPhone4
 * iOS 6
+
+#### How to build CW:T
+
+The game files will be build with the build system gulp. Gulp plus all of it's dependencies is prepared in the
+*node_modules* folder. All you need to start the build process is a nodeJs environment. You can invoke the process
+with the command **gulp** in the root directory of the CustomWars:Tactics.
+
+    gulp Commands{0,N}
+
+    Commands:
+
+     clean = Cleans the build directory (will be used by live, dev automatically)
+     docs  = Generates the documentation of CustomWars:Tactics
+     todo  = Generates a mnarkdown file with all todo marks
+     live  = Builds the game and it's dependencies in live mode (ulgyfied)
+     dev   = Builds the game and it's dependencies in debug mode
+     watch = Starts a server mode which invokes the 'dev' task automatically when a JavaScript file will be modified
+
+     default is todo docs dev

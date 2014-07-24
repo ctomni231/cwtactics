@@ -1,4 +1,4 @@
-cwt.ArmySheet.registerSheet({
+cwt.DataSheets.armies.registerSheet({
   "ID"		: "GRET",
   "name"	: "Green Earth",
   "color" : 2,
