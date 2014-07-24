@@ -1,7 +1,7 @@
+var constants = require("../constants");
 var features = require("../systemFeatures");
 var storage = require("../storage");
 var audio = require("../audio");
-var constants = require("../constants");
 
 //
 // Storage parameter for sfx volume.

@@ -1,4 +1,4 @@
-var storage = require("./storage");
+var storage = require("../storage");
 
 // Saves the current active input mapping into the user storage.
 //

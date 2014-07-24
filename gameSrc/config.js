@@ -75,15 +75,21 @@ var options = {
   "animatedTiles": new Config(0, 1, 1)
 };
 
+//
+//
 exports.getValue = function (name) {
   var cfg = options[name];
   return (cfg ? cfg.value : null);
 };
 
+//
+//
 exports.getConfig = function (name) {
   return options[name];
 };
 
+//
+//
 exports.resetValues = function (name) {
   Object.keys(options).forEach(function (cfg) {
     cfg.resetValue();
