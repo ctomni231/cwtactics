@@ -2,7 +2,7 @@
 
 var events = {};
 
-var EventChannel = my.Class({
+exports.EventChannel = my.Class({
 
   constructor: function () {
     this.callbacks = [];
@@ -28,11 +28,12 @@ var EventChannel = my.Class({
   }
 });
 
+// Returns an **EventChannel** object for a given **event** name.
+//
 exports.event = function (event) {
-  "use strict";
 
   if (!events.hasOwnProperty(event)) {
-    events[event] = new EventChannel();
+    events[event] = new exports.EventChannel();
   }
 
   return events[event];
