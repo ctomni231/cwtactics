@@ -81,15 +81,15 @@ exports.unload = function (transport, trsx, trsy, load, tx, ty) {
 
   // extract mode code id
   var moveCode;
-  if (tx < trsx) moveCode = cwt.Move.MOVE_CODES_LEFT;
-  else if (tx > trsx) moveCode = cwt.Move.MOVE_CODES_RIGHT;
-  else if (ty < trsy) moveCode = cwt.Move.MOVE_CODES_UP;
-  else if (ty > trsy) moveCode = cwt.Move.MOVE_CODES_DOWN;
+  if (tx < trsx) moveCode = move.MOVE_CODES_LEFT;
+  else if (tx > trsx) moveCode = move.MOVE_CODES_RIGHT;
+  else if (ty < trsy) moveCode = move.MOVE_CODES_UP;
+  else if (ty > trsy) moveCode = move.MOVE_CODES_DOWN;
 
   // move load out of the transporter
-  cwt.Move.movePathCache.clear();
-  cwt.Move.movePathCache.push(moveCode);
-  cwt.Move.move(unit, trsx, trsy, cwt.Move.movePathCache, true, true, false);
+  move.movePathCache.clear();
+  move.movePathCache.push(moveCode);
+  move.move(unit, trsx, trsy, move.movePathCache, true, true, false);
 
   transport.canAct = false;
   load.canAct = false;
@@ -108,18 +108,18 @@ exports.canUnloadSomethingAt = function (transporter, x, y) {
   var pid = transporter.owner;
   var unit;
 
-  if (this.DEBUG) cwt.assert(this.isTransportUnit(transporter));
+  if (constants.DEBUG) assert(this.isTransportUnit(transporter));
 
-  for (var i = 0, e = cwt.UnitClass.MULTITON_INSTANCES; i <= e; i++) {
+  for (var i = 0, e = model.units.length; i <= e; i++) {
 
-    unit = cwt.Model.units[i];
+    unit = move.units[i];
     if (unit.loadedIn === transporter) {
       var moveType = unit.type.movetype;
 
-      if (cwt.Move.canTypeMoveTo(moveType, x - 1, y)) return true;
-      if (cwt.Move.canTypeMoveTo(moveType, x + 1, y)) return true;
-      if (cwt.Move.canTypeMoveTo(moveType, x, y - 1)) return true;
-      if (cwt.Move.canTypeMoveTo(moveType, x, y + 1)) return true;
+      if (move.canTypeMoveTo(moveType, x - 1, y)) return true;
+      if (move.canTypeMoveTo(moveType, x + 1, y)) return true;
+      if (move.canTypeMoveTo(moveType, x, y - 1)) return true;
+      if (move.canTypeMoveTo(moveType, x, y + 1)) return true;
     }
   }
 
