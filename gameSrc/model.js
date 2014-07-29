@@ -10,11 +10,11 @@ var daysOfPeaceCfg = require("./config").getConfig("daysOfPeace");
 
 // Advance Wars 1 game mode. The first ever released game mode of the advance wars series (GBA and up).
 //
-var GAME_MODE_AW1 = exports.GAME_MODE_AW1 = 0;
+exports.GAME_MODE_AW1 = 0;
 
 // Advance Wars 2 game mode. It introduced the Super CO Power.
 //
-var GAME_MODE_AW2 = exports.GAME_MODE_AW2 = 1;
+exports.GAME_MODE_AW2 = 1;
 
 //
 // Object that holds information about objects at a given position (x,y).
@@ -265,14 +265,6 @@ exports.Unit = my.Class({
     //
     healthToPointsRest: function(health) {
       return health - (parseInt(health / 10) + 1);
-    },
-
-    fromJSON: function(data) {
-
-    },
-
-    toJSON: function() {
-
     }
   },
 

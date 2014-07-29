@@ -8,12 +8,7 @@ var features = require("./systemFeatures");
 // @class
 //
 exports.GameState = my.Class({
-  constructor: function (enterFn, exitFn, updateFn, renderFn, data ) {
-
-    // data
-    this.data = data;
-
-    // handler
+  constructor: function (enterFn, exitFn, updateFn, renderFn ) {
     this.exit = exitFn;
     this.enter = enterFn;
     this.update = updateFn;
@@ -32,9 +27,7 @@ exports.addState = function (desc) {
     desc.enter ? desc.enter : fnc.emptyFunction,
     desc.exit ? desc.exit : fnc.emptyFunction,
     desc.update ? desc.update : fnc.emptyFunction,
-    desc.render ? desc.render : fnc.emptyFunction, {
-      globalData: this.globalData
-    }
+    desc.render ? desc.render : fnc.emptyFunction
   );
 
   if (desc.init) {

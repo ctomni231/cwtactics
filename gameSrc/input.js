@@ -1,6 +1,6 @@
 "use strict";
 
-var CircularBuffer = require("./circularBuffer").CircularBuffer;
+var circBuff = require("./circularBuffer");
 var constants = require("./constants");
 var assert = require("./functions").assert;
 
@@ -14,19 +14,6 @@ exports.TYPE_CANCEL = 6;
 exports.TYPE_HOVER = 7;
 exports.TYPE_SET_INPUT = 8;
 
-var stack = new CircularBuffer(10);
-var pool = new CircularBuffer(10);
-
-// Holds all registered input handlers
-//
-var types = {};
-
-// If true, then every user input will be blocked.
-//
-var blocked = false;
-
-var genericInput = false;
-
 //
 // Represents a given data set of an input call.
 //
@@ -38,35 +25,49 @@ exports.InputData = my.Class({
   //
   // Resets the object data to a fresh state (no saved information).
   //
-  reset: function() {
+  reset: function () {
     this.key = constants.INACTIVE;
     this.d1 = constants.INACTIVE;
     this.d2 = constants.INACTIVE;
   }
 });
 
-exports.initialize = function() {
+exports.InputBackend = my.Class({
+  constructor: function (mapping, enableFn, disableFn) {
+    assert(typeof enableFn === "function" && typeof disableFn === "function");
 
-  // invoke all factories
-  Object.keys(types).forEach(function(inp) {
-    types[inp].factory();
-  });
-
-  // create data holders
-  while (!this.pool.isFull()) {
-    pool.push(new exports.InputData());
+    this.enable = enableFn;
+    this.disable = enableFn;
+    this.mapping = mapping;
   }
-};
+});
 
-  // Requests an input block. All further input calls will be dropped after calling this.
-  //
-exports.requestBlock = function() {
+var stack = new circBuff.CircularBuffer(10);
+
+var pool = circBuff.createBufferByClass(exports.InputData, 10);
+
+// If true, then every user input will be blocked.
+//
+var blocked = false;
+
+var genericInput = false;
+
+// Returns **true** when the input system wants a generic input (raw codes) from input backends like
+// keyboards and game pads.
+//
+exports.wantsGgenericInput = function() {
+  return genericInput;
+}
+
+// Requests an input block. All further input calls will be dropped after calling this.
+//
+exports.requestBlock = function () {
   blocked = true;
 };
 
 // Releases an input block. Input calls will be registered in the game machine after calling this.
 //
-exports.releaseBlock = function() {
+exports.releaseBlock = function () {
   blocked = false;
 };
 
@@ -74,7 +75,7 @@ exports.releaseBlock = function() {
 // the instance. Furthermore the created object will be inserted into cwt.Input as property
 // with the name given by the **key** argument.
 //
-exports.registerInputHandler = function(key, factory) {
+exports.registerInputHandler = function (key, factory) {
   if (constants.DEBUG) assert(key && !types[key]);
 
   var obj = {};
@@ -84,7 +85,7 @@ exports.registerInputHandler = function(key, factory) {
 
 // Pushes an input **key** into the input stack. The parameters **d1** and **d2** has to be integers.
 //
-exports.pushAction = function(key, d1, d2) {
+exports.pushAction = function (key, d1, d2) {
   if (blocked || pool.isEmpty()) {
     return;
   }
@@ -108,7 +109,7 @@ exports.pushAction = function(key, d1, d2) {
 
 // Grabs and returns an **input data object** from the input stack, **null** if the stack is empty.
 //
-exports.popAction = function() {
+exports.popAction = function () {
   if (stack.isEmpty()) {
     return null;
   }
@@ -121,7 +122,7 @@ exports.releaseAction = function (inp) {
 
 // Returns the character for a key code.
 //
-exports.codeToChar = function(charCode) {
+exports.codeToChar = function (charCode) {
   if (charCode === constants.INACTIVE) {
     return null;
   }

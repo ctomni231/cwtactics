@@ -63,3 +63,5 @@ exports.MAX_PROPERTIES = 200;
 // Maximum number of units per player.
 //
 exports.MAX_UNITS = 50;
+
+exports.MAX_SELECTION_RANGE = 15;

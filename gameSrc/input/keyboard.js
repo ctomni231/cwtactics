@@ -1,71 +1,76 @@
-require('../input').registerInputHandler("keyboard", function () {
-  var that = this;
+"use strict";
 
-  var CONSOLE_TOGGLE_KEY = 192;
+var constants = require('../constants');
+var input = require('../input');
 
-  // not supported ?
-  if (!cwt.ClientFeatures.keyboard) {
-    return;
-  }
+var CONSOLE_TOGGLE_KEY = 192;
 
-  exports.MAPPING = that.MAPPING = {
-    UP: 38,
-    DOWN: 40,
-    LEFT: 37,
-    RIGHT: 39,
-    ACTION: 13,
-    CANCEL: 8
-  };
+var MAPPING = {
+  UP: 38,
+  DOWN: 40,
+  LEFT: 37,
+  RIGHT: 39,
+  ACTION: 13,
+  CANCEL: 8
+};
 
-  // register key down listener
-  document.onkeydown = function (ev) {
-    var key = cwt.INACTIVE;
+var KEY_HANDLER = function (ev) {
+  var key = constants.INACTIVE;
 
-    if (cwt.Input.genericInput) {
-      if (cwt.Gameflow.activeState.mode != 0) {
-        return;
-      }
-
-      cwt.Gameflow.activeState.genericInput(ev.keyCode);
-
-    } else {
-
-      // extract code
-      switch (ev.keyCode) {
-
-        case CONSOLE_TOGGLE_KEY:
-          console.toggle();
-          break;
-
-        case that.MAPPING.LEFT:
-          key = cwt.Input.TYPE_LEFT;
-          break;
-
-        case that.MAPPING.UP:
-          key = cwt.Input.TYPE_UP;
-          break;
-
-        case that.MAPPING.RIGHT:
-          key = cwt.Input.TYPE_RIGHT;
-          break;
-
-        case that.MAPPING.DOWN:
-          key = cwt.Input.TYPE_DOWN;
-          break;
-
-        case that.MAPPING.CANCEL:
-          key = cwt.Input.TYPE_CANCEL;
-          break;
-
-        case that.MAPPING.ACTION:
-          key = cwt.Input.TYPE_ACTION;
-          break;
-      }
-
-      // push key into input stack
-      if (key !== cwt.INACTIVE) {
-        cwt.Input.pushAction(key, cwt.INACTIVE, cwt.INACTIVE);
-      }
+  if (input.wantsGgenericInput()) {
+    if (cwt.Gameflow.activeState.mode != 0) {
+      return;
     }
-  };
-});
+       // TODO
+    cwt.Gameflow.activeState.genericInput(ev.keyCode);
+
+  } else {
+
+    // extract code
+    switch (ev.keyCode) {
+
+      case CONSOLE_TOGGLE_KEY:
+        console.toggle();
+        break;
+
+      case MAPPING.LEFT:
+        key = input.TYPE_LEFT;
+        break;
+
+      case MAPPING.UP:
+        key = input.TYPE_UP;
+        break;
+
+      case MAPPING.RIGHT:
+        key = input.TYPE_RIGHT;
+        break;
+
+      case MAPPING.DOWN:
+        key = input.TYPE_DOWN;
+        break;
+
+      case MAPPING.CANCEL:
+        key = input.TYPE_CANCEL;
+        break;
+
+      case MAPPING.ACTION:
+        key = input.TYPE_ACTION;
+        break;
+    }
+
+    // push key into input stack
+    if (key !== constants.INACTIVE) {
+      input.pushAction(key, constants.INACTIVE, constants.INACTIVE);
+    }
+  }
+};
+
+exports.backend = new input.InputBackend(
+  MAPPING,
+  function () {
+    document.onkeydown = KEY_HANDLER;
+  },
+  function () {
+    document.onkeydown = null;
+  }
+);

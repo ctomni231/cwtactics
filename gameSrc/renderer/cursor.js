@@ -31,3 +31,11 @@ exports.renderCursor = function () {
   ctx.drawImage(cursorImg, x + h + h, y - h);
   ctx.drawImage(cursorImg, x - h, y + h + h);
 };
+
+exports.showNativeCursor = function () {
+  cwt.Screen.layerUI.getLayer().style.cursor = "";
+};
+
+exports.hideNativeCursor = function () {
+  cwt.Screen.layerUI.getLayer().style.cursor = "none";
+};
