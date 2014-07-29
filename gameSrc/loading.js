@@ -1,6 +1,4 @@
-//
-// The data loading process.
-//
+"use strict";
 
 var constants = require("./constants");
 var storage = require("./storage");

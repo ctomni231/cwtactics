@@ -1,10 +1,16 @@
+"use strict";
+
+var constants = require("../constants");
+var assert = require("../functions").assert;
+var sheets = require("../sheets");
+var model = require("../model");
+
 //
 // Returns true if a property id is a rocket silo. A rocket silo has the ability to fire a rocket to a
 // position with an impact.
 //
 exports.isRocketSilo = function (property) {
-  if (cwt.DEBUG) cwt.assert(property instanceof cwt.PropertyClass);
-
+  if (constants.DEBUG) assert(property instanceof model.Property);
   return (property.type.rocketsilo != undefined);
 };
 
@@ -12,9 +18,9 @@ exports.isRocketSilo = function (property) {
 // Returns **true** when a silo **property** can be triggered by a given **unit**. If not, **false** will be returned.
 //
 exports.canBeFiredBy = function (property, unit) {
-  if (cwt.DEBUG) {
-    cwt.assert(unit instanceof cwt.UnitClass);
-    cwt.assert(this.isRocketSilo(property));
+  if (constants.DEBUG) {
+    assert(unit instanceof model.Unit);
+    assert(exports.isRocketSilo(property));
   }
 
   return (property.type.rocketsilo.fireable.indexOf(unit.type.ID) > -1);
@@ -25,11 +31,16 @@ exports.canBeFiredBy = function (property, unit) {
 // will be returned.
 //
 exports.canBeFiredTo = function (property, x, y) {
-  if (cwt.DEBUG) {
-    cwt.assert(this.isRocketSilo(property));
-  }
+  if (constants.DEBUG) assert(exports.isRocketSilo(property));
+  return (model.isValidPosition(x, y));
+};
 
-  return (cwt.Model.isValidPosition(x, y));
+// inline function
+var doDamage = function (x, y, tile, damage) {
+  var unit = tile.unit;
+  if (unit) {
+    unit.takeDamage(damage, 9);
+  }
 };
 
 //
@@ -37,28 +48,17 @@ exports.canBeFiredTo = function (property, x, y) {
 // position (**tx**,**ty**) and inflicts damage to all units in the range of the explosion. The health of the units
 // will be never lower as 9 health after the explosion.
 //
-exports.fireSilo = (function () {
+exports.fireSilo = function (x, y, tx, ty) {
+  var silo = model.mapData[x][y].property;
 
-  // inline function
-  function doDamage(x, y, tile, damage) {
-    var unit = tile.unit;
-    if (unit) {
-      unit.takeDamage(damage, 9);
-    }
-  }
+  if (this.DEBUG) assert(this.isRocketSilo(silo));
 
-  return function (x, y, tx, ty) {
-    var silo = cwt.Model.mapData[x][y].property;
+  // change silo type to empty
+  var type = silo.type;
+  silo.type = sheets.properties.sheets[type.changeTo];
 
-    if (this.DEBUG) cwt.assert(this.isRocketSilo(silo));
+  var damage = model.Unit.pointsToHealth(type.rocketsilo.damage);
+  var range = type.rocketsilo.range;
 
-    // change silo type to empty
-    var type = silo.type;
-    silo.type = cwt.DataSheets.properties.sheets[type.changeTo];
-
-    var damage = cwt.UnitClass.pointsToHealth(type.rocketsilo.damage);
-    var range = type.rocketsilo.range;
-
-    cwt.Model.doInRange(tx, ty, range, doDamage, damage);
-  };
-})();
+  model.doInRange(tx, ty, range, doDamage, damage);
+};

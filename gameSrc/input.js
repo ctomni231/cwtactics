@@ -1,3 +1,5 @@
+"use strict";
+
 var CircularBuffer = require("./circularBuffer").CircularBuffer;
 var constants = require("./constants");
 var assert = require("./functions").assert;
@@ -111,6 +113,10 @@ exports.popAction = function() {
     return null;
   }
   return stack.popFirst();
+};
+
+exports.releaseAction = function (inp) {
+  pool.push(inp);
 };
 
 // Returns the character for a key code.

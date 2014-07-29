@@ -1,4 +1,4 @@
-cwt.Action.clientAction({
+require('../actions').clientAction({
   key:"options",
 
   condition: function (data) {

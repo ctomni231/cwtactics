@@ -2,13 +2,12 @@
 // from this place.
 //
 
-require("./languages/german");
-require("./languages/english");
+require("../modifications/cwt/mod");
 
+// loading
 require("./loading/0_checkSystem");
 require("./loading/1_language");
 require("./loading/2_startParameters");
-/*
 require("./loading/3_inputInit");
 require("./loading/4_audioInit");
 require("./loading/5_audioLoad");
@@ -20,31 +19,30 @@ require("./input/gamepad");
 require("./input/mouse");
 require("./input/keyboard");
 require("./input/touch");
- */
 
 // units
-require("./data/units/AAIR");
-require("./data/units/ARTY");
-require("./data/units/BKBT");
-require("./data/units/CRUS");
-require("./data/units/LNDR");
-require("./data/units/MISS");
-require("./data/units/RCKT");
-require("./data/units/SUBM");
-require("./data/units/WRTK");
-require("./data/units/ACAR");
-require("./data/units/BCTR");
-require("./data/units/BMBR");
-require("./data/units/FGTR");
-require("./data/units/MDTK");
-require("./data/units/NTNK");
-require("./data/units/RECN");
-require("./data/units/TCTR");
-require("./data/units/APCR");
-require("./data/units/BKBM");
-require("./data/units/BSHP");
-require("./data/units/INFT");
-require("./data/units/MECH");
-require("./data/units/OOZM");
-require("./data/units/STLH");
-require("./data/units/TNTK");
+require("././AAIR");
+require("././ARTY");
+require("././BKBT");
+require("././CRUS");
+require("././LNDR");
+require("././MISS");
+require("././RCKT");
+require("././SUBM");
+require("././WRTK");
+require("././ACAR");
+require("././BCTR");
+require("././BMBR");
+require("././FGTR");
+require("././MDTK");
+require("././NTNK");
+require("././RECN");
+require("././TCTR");
+require("././APCR");
+require("././BKBM");
+require("././BSHP");
+require("././INFT");
+require("././MECH");
+require("././OOZM");
+require("././STLH");
+require("././TNTK");

@@ -1,4 +1,8 @@
-cwt.Gameflow.addState({
+"use strict";
+
+var input = require("../input");
+
+require("../statemachine").addState({
   id: "ERROR_SCREEN",
 
   init: function () {
@@ -17,19 +21,19 @@ cwt.Gameflow.addState({
   update: function (delta, lastInput) {
     switch (lastInput) {
 
-      case cwt.Input.TYPE_LEFT:
+      case input.TYPE_LEFT:
         if (this.activeCmd > 0) {
           this.activeCmd--;
         }
         break;
 
-      case cwt.Input.TYPE_RIGHT:
+      case input.TYPE_RIGHT:
         if (this.activeCmd < 2) {
           this.activeCmd++;
         }
         break;
 
-      case cwt.Input.TYPE_ACTION :
+      case input.TYPE_ACTION :
         switch (this.activeCmd) {
 
           /* Restart */

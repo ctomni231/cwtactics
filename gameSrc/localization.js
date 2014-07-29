@@ -1,15 +1,16 @@
+"use strict";
+
 var assert = require("./functions").assert;
 var constants = require("./constants");
 
 // Holds all available languages.
 //
-var languages = {}
+var languages = {};
 
 // The current active language.
 //
 var selected = null;
 
-//
 // Registers a language object. The properties of the object will be the keys and its values the localized
 // string for the key.
 //

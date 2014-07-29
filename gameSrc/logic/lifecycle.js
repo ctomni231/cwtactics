@@ -1,10 +1,19 @@
+"use strict";
+
+var constants = require("../constants");
+var assert = require("../functions").assert;
+var model = require("../model");
+var fog = require("../logic/fog");
+
+var cfgNoUnitsLeftLoose = require("../config").getConfig("noUnitsLeftLoose");
+
 //
 // Returns an inactive **unit object** or **null** if every slot in the unit list is used.
 //
 exports.getInactiveUnit = function () {
-  for (var i = 0, e = cwt.Model.units.length; i < e; i++) {
-    if (!cwt.Model.units[i].owner) {
-      return unit;
+  for (var i = 0, e = model.units.length; i < e; i++) {
+    if (!model.units[i].owner) {
+      return model.units[i];
     }
   }
   return null;
@@ -18,16 +27,13 @@ exports.getInactiveUnit = function () {
 // @param type
 //
 exports.createUnit = function (x, y, player, type) {
-  if (cwt.DEBUG) cwt.assert(cwt.Model.isValidPosition(x, y));
+  if (constants.DEBUG) assert(model.isValidPosition(x, y));
 
-  var tile = cwt.Model.mapData[x][y];
+  var tile = model.mapData[x][y];
 
-  if (cwt.DEBUG) {
-    cwt.assert(player instanceof cwt.PlayerClass);
-    cwt.assert(player.numberOfUnits < cwt.MAX_UNITS);
-  }
+  if (constants.DEBUG) assert(player instanceof model.Player && player.numberOfUnits < constants.MAX_UNITS);
 
-  var unit = this.getInactiveUnit();
+  var unit = exports.getInactiveUnit();
 
   // set references
   unit.owner = player;
@@ -36,7 +42,7 @@ exports.createUnit = function (x, y, player, type) {
 
   unit.initByType(type);
 
-  cwt.Fog.addUnitVision(x, y, player);
+  fog.addUnitVision(x, y, player);
 };
 
 //
@@ -46,22 +52,25 @@ exports.createUnit = function (x, y, player, type) {
 // @param {boolean} silent
 //
 exports.destroyUnit = function (x, y, silent) {
-  var tile = cwt.Model.mapData[x][y];
-  if (this.DEBUG) cwt.assert(tile.unit);
+  var tile = model.mapData[x][y];
 
-  cwt.Fog.removeUnitVision(x, y, tile.unit.owner);
+  if (constants.DEBUG) assert(tile.unit);
+
+  fog.removeUnitVision(x, y, tile.unit.owner);
 
   //TODO check loads
 
   // remove references
   var owner = tile.unit.owner;
   owner.numberOfUnits--;
-  if (this.DEBUG) cwt.assert(owner.numberOfUnits >= 0);
+
+  if (constants.DEBUG) assert(owner.numberOfUnits >= 0);
+
   tile.unit.owner = null;
   tile.unit = null;
 
   // end game when the player does not have any unit left
-  if (cwt.Config.getValue("noUnitsLeftLoose") === 1 && owner.numberOfUnits === 0) {
+  if (cfgNoUnitsLeftLoose.value === 1 && owner.numberOfUnits === 0) {
     this.deactivatePlayer(owner);
   }
 };
@@ -77,17 +86,17 @@ exports.destroyUnit = function (x, y, silent) {
 exports.deactivatePlayer = function (player) {
 
   // drop units
-  if (cwt.DEBUG) cwt.assert(player instanceof cwt.Player);
-  for (var i = 0, e = cwt.Model.units.length; i < e; i++) {
-    var unit = cwt.Model.units[i];
+  if (constants.DEBUG) model(player instanceof model.Player);
+  for (var i = 0, e = model.units.length; i < e; i++) {
+    var unit = model.units[i];
     if (unit.owner === player) {
       // TODO
     }
   }
 
   // drop properties
-  for (var i = 0, e = cwt.Model.properties.size(); i < e; i++) {
-    var prop = cwt.Model.properties[i];
+  for (var i = 0, e = model.properties.size(); i < e; i++) {
+    var prop = model.properties[i];
     if (prop.owner === player) {
       prop.makeNeutral();
 
@@ -99,7 +108,7 @@ exports.deactivatePlayer = function (player) {
   player.deactivate();
 
   // when no opposite teams are found then the game has ended
-  if (!cwt.Model.areEnemyTeamsLeft()) {
+  if (!model.areEnemyTeamsLeft()) {
     // TODO
   }
 };
@@ -109,5 +118,5 @@ exports.deactivatePlayer = function (player) {
 // @return {boolean}
 //
 exports.hasFreeUnitSlot = function (player) {
-  return player.numberOfUnits < cwt.Player.MAX_UNITS;
+  return player.numberOfUnits < model.Player.MAX_UNITS;
 };

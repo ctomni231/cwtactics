@@ -1,4 +1,4 @@
-cwt.Action.unitAction({
+require('../actions').unitAction({
   key: "supplyUnit",
 
   relation: [

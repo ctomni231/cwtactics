@@ -1,3 +1,9 @@
+"use strict";
+
+var constants = require("../constants");
+var assert = require("../functions").assert;
+var model = require("../model");
+
 //
 // Returns **true** when a **unit** can capture a properties, else **false**.
 //
@@ -17,12 +23,12 @@ exports.canBeCaptured = function (property) {
 // capture points does not fall down to zero then **false** will be returned.
 //
 exports.captureProperty = function (property, unit) {
-  if (this.DEBUG) cwt.assert(unit);
+  if (constants.DEBUG) assert(unit);
 
-  this.points -= cwt.PropertyClass.CAPTURE_STEP;
+  this.points -= model.Property.CAPTURE_STEP;
   if (this.points <= 0) {
     this.owner = unit.owner;
-    this.points = cwt.PropertyClass.CAPTURE_POINTS;
+    this.points = model.Property.CAPTURE_POINTS;
     // TODO: if max points are static then the configurable points from the property sheets can be removed
 
     // was captured

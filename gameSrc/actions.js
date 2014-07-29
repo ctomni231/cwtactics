@@ -5,6 +5,13 @@ var assert = require("./functions").assert;
 var constants = require("./constants");
 var network = require("./network");
 
+var finalized = false;
+
+// no further actions can be added after the game and it's modifications are loaded
+require("./events").event("gameLoaded").subscribe(function () {
+  finalized = true;
+});
+
 // Map actions are called in the idle state on the map.
 //
 exports.MAP_ACTION = 0;
@@ -112,7 +119,7 @@ var actions = {};
 //
 //
 //
-exports.registerAction_ = function (name, impl) {
+var registerAction_ = function (name, impl) {
   var action = new ActionClass(impl);
   actions[name] = action;
 };

@@ -1,4 +1,6 @@
-cwt.Action.unitAction({
+"use strict";
+
+require('../actions').unitAction({
   key: "capture",
 
   relation: [

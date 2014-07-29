@@ -1,4 +1,4 @@
-require("../localization").registerLanguage("en", {
+{
   "INFT": "Infantry",
   "MECH": "Mech. Infantry",
   "TNTK": "Tank",
@@ -235,4 +235,4 @@ require("../localization").registerLanguage("en", {
   "TOOLTIP_9": "Custom Wars Tactics is playable from PC and also\nfrom mobile devices.",
   "TOOLTIP_10": "Custom Wars Tactics can be played offline in your\nbrowser. (As long you aren't in private browsing mode.)",
   "TOOLTIP_11": "A full desktop counterpart for Custom Wars Tactics\nis being developed. Stay tuned!"
-});
+}

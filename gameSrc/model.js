@@ -10,11 +10,11 @@ var daysOfPeaceCfg = require("./config").getConfig("daysOfPeace");
 
 // Advance Wars 1 game mode. The first ever released game mode of the advance wars series (GBA and up).
 //
-var GAME_MODE_AW1 = 0;
+var GAME_MODE_AW1 = exports.GAME_MODE_AW1 = 0;
 
 // Advance Wars 2 game mode. It introduced the Super CO Power.
 //
-var GAME_MODE_AW2 = 1;
+var GAME_MODE_AW2 = exports.GAME_MODE_AW2 = 1;
 
 //
 // Object that holds information about objects at a given position (x,y).
@@ -44,7 +44,7 @@ exports.PositionData = my.Class({
   // Grabs the data from another position object.
   //
   grab: function(otherPos) {
-    cwt.assert(otherPos instanceof cwt.Position);
+    assert(otherPos instanceof exports.PositionData);
 
     this.x = otherPos.x;
     this.y = otherPos.y;
@@ -67,12 +67,12 @@ exports.PositionData = my.Class({
 
     if (this.tile.turnOwnerVisible && this.tile.unit) {
       this.unit = null;
-      this.unitId = cwt.Unit.getInstanceId(this.tile.unit);
+      this.unitId = exports.Unit.getInstanceId(this.tile.unit);
     }
 
     if (this.tile.property) {
       this.property = this.tile.property;
-      this.propertyId = cwt.Property.getInstanceId(this.tile.property);
+      this.propertyId = exports.Property.getInstanceId(this.tile.property);
     }
   }
 });
@@ -191,11 +191,11 @@ exports.Player = my.Class({
   },
 
   isInactive: function() {
-    return this.team != cwt.INACTIVE;
+    return this.team != constants.INACTIVE;
   },
 
   deactivate: function() {
-    this.team = cwt.INACTIVE;
+    this.team = constants.INACTIVE;
   },
 
   activate: function(teamNumber) {
@@ -203,11 +203,11 @@ exports.Player = my.Class({
   },
 
   reset: function() {
-    this.team = cwt.INACTIVE;
+    this.team = constants.INACTIVE;
     this.name = null;
 
     this.coA = null;
-    this.activePower = cwt.INACTIVE;
+    this.activePower = constants.INACTIVE;
     this.power = 0;
     this.powerUsed = 0;
 
@@ -281,7 +281,7 @@ exports.Unit = my.Class({
     this.ammo = 0;
     this.fuel = 0;
     this.hidden = false;
-    this.loadedIn = cwt.INACTIVE;
+    this.loadedIn = constants.INACTIVE;
     this.type = null;
     this.canAct = false;
 
@@ -367,7 +367,7 @@ exports.Unit = my.Class({
   },
 
   isCapturing: function() {
-    if (this.loadedIn != cwt.INACTIVE) {
+    if (this.loadedIn != constants.INACTIVE) {
       return false;
     }
 

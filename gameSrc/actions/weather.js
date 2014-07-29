@@ -1,6 +1,6 @@
 "use strict";
 
-cwt.Action.engineAction({
+require('../actions').engineAction({
   key: "changeWeather",
 
   toDataBlock: function (data, dataBlock) {
@@ -13,5 +13,6 @@ cwt.Action.engineAction({
 
   invoke: function (weather) {
     cwt.Weather.changeWeather(weather);
+    cwt.Fog.fullRecalculation();
   }
 });

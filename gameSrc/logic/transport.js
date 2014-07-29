@@ -1,9 +1,15 @@
+"use strict";
+
+var constants = require("../constants");
+var assert = require("../functions").assert;
+var model = require("../model");
+var move = require("../logic/move");
+
 //
 // Returns true if the unit with id tid is a transporter, else false.
 //
 exports.isTransportUnit = function (unit) {
-  if (this.DEBUG) cwt.assert(unit instanceof cwt.UnitClass);
-
+  if (constants.DEBUG) assert(unit instanceof model.Unit);
   return (unit.type.maxloads > 0);
 };
 
@@ -12,11 +18,12 @@ exports.isTransportUnit = function (unit) {
 // if yes, else false.
 //
 exports.hasLoads = function (unit) {
-  if (this.DEBUG) cwt.assert(unit instanceof cwt.UnitClass);
+  if (constants.DEBUG) assert(unit instanceof model.Unit);
 
-  for (var i = 0, e = cwt.Model.units.length; i < e; i++) {
-    var cUnit = cwt.Model.units[i];
-    if (unit.loadedIn === cUnit) return true;
+  for (var i = 0, e = model.units.length; i < e; i++) {
+    if (unit.loadedIn === model.units[i]) {
+      return true;
+    }
   }
 
   return false;
@@ -29,12 +36,12 @@ exports.hasLoads = function (unit) {
 // weight false will be returned.
 //
 exports.canLoadUnit = function (transporter, load) {
-  if (this.DEBUG) {
-    cwt.assert(transporter instanceof cwt.UnitClass);
-    cwt.assert(load instanceof cwt.UnitClass);
-    cwt.assert(load !== transporter);
-    cwt.assert(this.isTransportUnit(transporter));
-    cwt.assert(load.loadedIn !== transporter);
+  if (constants.DEBUG) {
+    assert(transporter instanceof model.Unit);
+    assert(load instanceof model.Unit);
+    assert(load !== transporter);
+    assert(this.isTransportUnit(transporter));
+    assert(load.loadedIn !== transporter);
   }
 
   return (transporter.type.canload.indexOf(load.type.movetype) !== -1);
@@ -47,9 +54,11 @@ exports.canLoadUnit = function (transporter, load) {
 // @param {cwt.Unit} load
 //
 exports.load = function (transporter, load) {
-  if (this.DEBUG) cwt.assert(transporter instanceof cwt.Unit);
-  if (this.DEBUG) cwt.assert(load instanceof cwt.Unit);
-  if (this.DEBUG) cwt.assert(this.isTransportUnit(transporter));
+  if (constants.DEBUG) {
+    assert(transporter instanceof model.Unit);
+    assert(load instanceof model.Unit);
+    assert(this.isTransportUnit(transporter));
+  }
 
   load.loadedIn = transporter;
 };
@@ -58,11 +67,11 @@ exports.load = function (transporter, load) {
 // Unloads the unit with id lid from a transporter with the id tid.
 //
 exports.unload = function (transport, trsx, trsy, load, tx, ty) {
-  if (this.DEBUG) cwt.assert(load.loadedIn === transport);
+  if (constants.DEBUG) assert(load.loadedIn === transport);
 
   // TODO: remove this later
   // trapped ?
-  if (tx === -1 || ty === -1 || cwt.Model.mapData[tx][ty].unit) {
+  if (tx === -1 || ty === -1 || model.mapData[tx][ty].unit) {
     controller.stateMachine.data.breakMultiStep = true;
     return;
   }

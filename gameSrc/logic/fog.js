@@ -1,12 +1,19 @@
-//
+"use strict";
+
+var constants = require("../constants");
+var assert = require("../functions").assert;
+var model = require("../model");
+
+var cfgFogEnabled = require("../config").getConfig("fogEnabled");
+
 // Modifies a vision at a given position and player id.
 //
-exports.modifyVision_ = function (x, y, owner, range, value) {
+var modifyVision_ = function (x, y, owner, range, value) {
 
   // ignore neutral objects
-  if (owner.team === cwt.INACTIVE) return;
+  if (owner.team === constants.INACTIVE) return;
 
-  if (cwt.Config.getValue("fogEnabled") !== 1) return;
+  if (cfgFogEnabled.value !== 1) return;
 
   var clientVisible = owner.clientVisible;
   var turnOwnerVisible = owner.turnOwnerVisible;
@@ -14,14 +21,14 @@ exports.modifyVision_ = function (x, y, owner, range, value) {
   // no active player owns this vision
   if (!clientVisible && !turnOwnerVisible) return;
 
-  var map = cwt.Model.mapData;
+  var map = model.mapData;
   if (range === 0) {
     if (clientVisible) map[x][y].visionClient += value;
     if (turnOwnerVisible) map[x][y].visionTurnOwner += value;
 
   } else {
-    var mW = cwt.Model.mapWidth;
-    var mH = cwt.Model.mapHeight;
+    var mW = model.mapWidth;
+    var mH = model.mapHeight;
     var lX;
     var hX;
     var lY = y - range;
@@ -39,7 +46,7 @@ exports.modifyVision_ = function (x, y, owner, range, value) {
       for (; lX <= hX; lX++) {
 
         // does the tile block vision ?
-        if (map[lX][lY].type.blocksVision && cwt.Model.getDistance(x, y, lX, lY) > 1) continue;
+        if (map[lX][lY].type.blocksVision && model.getDistance(x, y, lX, lY) > 1) continue;
 
         if (clientVisible) map[lX][lY].visionClient += value;
         if (turnOwnerVisible) map[lX][lY].visionTurnOwner += value;
@@ -54,10 +61,10 @@ exports.modifyVision_ = function (x, y, owner, range, value) {
 exports.fullRecalculation = function () {
   var x;
   var y;
-  var xe = cwt.Model.mapWidth;
-  var ye = cwt.Model.mapHeight;
-  var fogEnabled = (cwt.Config.getValue("fogEnabled") === 1);
-  var map = cwt.Model.mapData;
+  var xe = model.mapWidth;
+  var ye = model.mapHeight;
+  var fogEnabled = (cfgFogEnabled.value === 1);
+  var map = model.mapData;
 
   // 1. reset fog maps
   for (x = 0; x < xe; x++) {
@@ -89,7 +96,7 @@ exports.fullRecalculation = function () {
           vision = unit.type.vision;
           if (vision < 0) vision = 0;
 
-          this.modifyVision_(x, y, unit.owner, vision, 1);
+          modifyVision_(x, y, unit.owner, vision, 1);
         }
 
         property = tile.property;
@@ -97,53 +104,52 @@ exports.fullRecalculation = function () {
           vision = property.type.vision;
           if (vision < 0) vision = 0;
 
-          this.modifyVision_(x, y, property.owner, vision, 1);
+          modifyVision_(x, y, property.owner, vision, 1);
         }
       }
     }
   }
 };
 
-//
 // Removes a vision-object from the fog map.
 //
 exports.removeVision = function (x, y, owner, range) {
-  this.modifyVision_(x, y, owner, range, -1);
+  modifyVision_(x, y, owner, range, -1);
 };
 
 exports.removeUnitVision = function (x, y, owner) {
-  var unit = cwt.Model.mapData[x][y].unit;
+  var unit = model.mapData[x][y].unit;
   if (!owner) owner = unit.owner;
 
-  this.removeVision(x, y, owner, unit.type.vision);
+  exports.removeVision(x, y, owner, unit.type.vision);
 };
 
 exports.removePropertyVision = function (x, y, owner) {
-  var prop = cwt.Model.mapData[x][y].property;
+  var prop = model.mapData[x][y].property;
   if (!owner) owner = prop.owner;
 
-  this.removeVision(x, y, owner, prop.type.vision);
+  exports.removeVision(x, y, owner, prop.type.vision);
 };
 
 //
 // Adds a vision-object from the fog map.
 //
 exports.addVision = function (x, y, owner, range) {
-  this.modifyVision_(x, y, owner, range, +1);
+  modifyVision_(x, y, owner, range, +1);
 };
 
 exports.addUnitVision = function (x, y, owner) {
-  var unit = cwt.Model.mapData[x][y].unit;
+  var unit = model.mapData[x][y].unit;
   if (!owner) owner = unit.owner;
 
-  this.addVision(x, y, owner, unit.type.vision);
+  exports.addVision(x, y, owner, unit.type.vision);
 };
 
 exports.addPropertyVision = function (x, y, owner) {
-  var prop = cwt.Model.mapData[x][y].property;
+  var prop = model.mapData[x][y].property;
   if (!owner) owner = prop.owner;
 
-  this.addVision(x, y, owner, prop.type.vision);
+  exports.addVision(x, y, owner, prop.type.vision);
 };
 
 /*
