@@ -3,14 +3,14 @@
 //
 
 // loading
-require("./loading/0_checkSystem");
-require("./loading/1_language");
-require("./loading/2_startParameters");
-require("./loading/3_inputInit");
-require("./loading/4_audioInit");
-require("./loading/6_imageLoad");
-require("./loading/7_portraitCheck");
-require("./loading/8_loadMaps");
+require("./loading/checkSystem");
+require("./loading/language");
+require("./loading/startParameters");
+require("./loading/inputInit");
+require("./loading/audioInit");
+require("./loading/imageLoad");
+require("./loading/portraitCheck");
+require("./loading/loadMaps");
 
 // states
 
