@@ -1,4 +1,6 @@
-cwt.Gameflow.addMenuState({
+
+
+require("../statemachine").addMenuState({
 
   id: "CONFIRM_WIPE_OUT_SCREEN",
 
@@ -26,7 +28,7 @@ cwt.Gameflow.addMenuState({
 
       .addColGap(w)
       .addButton(6, 2, 0, "OPTIONS_WIPE_OUT_NO", cwt.UIField.STYLE_NORMAL, function () {
-        cwt.Gameflow.changeState("OPTIONS");
+        require("../statemachine").changeState("OPTIONS");
       })
       .addColGap(4)
       .addButton(6, 2, 0, "OPTIONS_WIPE_OUT_YES", cwt.UIField.STYLE_NORMAL, function () {

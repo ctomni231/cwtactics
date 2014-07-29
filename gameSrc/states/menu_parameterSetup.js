@@ -1,4 +1,4 @@
-cwt.Gameflow.addMenuState({
+require("../statemachine").addMenuState({
 
   id: "PARAMETER_SETUP_SCREEN",
   last: "PLAYER_SETUP_SCREEN",
@@ -115,11 +115,11 @@ cwt.Gameflow.addMenuState({
 
       .addColGap(w)
       .addButton(5, 2, 0, "MENU_BACK", cwt.UIField.STYLE_NORMAL, 8, function () {
-        cwt.Gameflow.changeState("PLAYER_SETUP_SCREEN");
+        require("../statemachine").changeState("PLAYER_SETUP_SCREEN");
       })
       .addColGap(8)
       .addButton(5, 2, 0, "MENU_NEXT", cwt.UIField.STYLE_NORMAL, 8, function () {
-        cwt.Gameflow.changeState("INGAME_ENTER");
+        require("../statemachine").changeState("INGAME_ENTER");
       })
       .breakLine();
   }

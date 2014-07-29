@@ -1,4 +1,4 @@
-cwt.Gameflow.addState({
+require("../statemachine").addState({
   id: "INGAME_FLUSH_ACTION",
 
   init: function () {
@@ -6,7 +6,7 @@ cwt.Gameflow.addState({
 
     //
 //
-// @memberOf cwt.Gameflow.globalData
+// @memberOf require("../statemachine").globalData
 // @type {boolean}
 //
     gameData.multiStepActive = false;
@@ -14,7 +14,7 @@ cwt.Gameflow.addState({
     //
 // Builds several commands from collected action data.
 //
-// @memberOf cwt.Gameflow.globalData
+// @memberOf require("../statemachine").globalData
 //
     gameData.buildFromData = function () {
       var targetDto = gameData.target;
@@ -68,6 +68,6 @@ cwt.Gameflow.addState({
       next = "INGAME_IDLE";
     }
 
-    cwt.Gameflow.changeState(next);
+    require("../statemachine").changeState(next);
   }
 });

@@ -8,7 +8,7 @@ require('../input').registerInputHandler("gamePad", function () {
   var prevTimestamps = [];
   var that = this;
 
-  that.MAPPING = {
+  exports.MAPPING = that.MAPPING = {
     ACTION: 0,
     CANCEL: 1
   };

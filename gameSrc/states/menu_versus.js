@@ -1,4 +1,4 @@
-cwt.Gameflow.addMenuState({
+require("../statemachine").addMenuState({
 
   id: "VERSUS",
   last: "MAIN_MENU",
@@ -196,20 +196,20 @@ cwt.Gameflow.addMenuState({
 
       .addColGap(w)
       .addButton(5, 2, 0, "MENU_BACK", cwt.UIField.STYLE_NORMAL, 8, function () {
-        cwt.Gameflow.changeState("MAIN_MENU");
+        require("../statemachine").changeState("MAIN_MENU");
       })
 
       .addColGap(5)
       .addButton(8, 2, 0, "MENU_CONFIGURED_MATCH", cwt.UIField.STYLE_NEW, 8, function () {
         cwt.GameSelectionDTO.map = this.selectedMap;
         this.selectedMap = null;
-        cwt.Gameflow.changeState("PLAYER_SETUP_SCREEN");
+        require("../statemachine").changeState("PLAYER_SETUP_SCREEN");
       })
       .breakLine()
 
       .addColGap(w + 10)
       .addButton(8, 2, 0, "MENU_FAST_MATCH", cwt.UIField.STYLE_ESW, 8, function () {
-        // cwt.Gameflow.changeState("PLAYER_SETUP_SCREEN");
+        // require("../statemachine").changeState("PLAYER_SETUP_SCREEN");
       });
 
     buttonList = [

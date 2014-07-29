@@ -1,4 +1,4 @@
-cwt.Gameflow.addState({
+require("../statemachine").addState({
   id: "LOADING_SCREEN",
 
   init: function () {
@@ -20,7 +20,7 @@ cwt.Gameflow.addState({
       // push event
       (cwt.createModuleCaller("$afterLoad"))();
 
-      cwt.Gameflow.changeState("START_SCREEN");
+      require("../statemachine").changeState("START_SCREEN");
     } else if (this.bar.process === 100) {
       this.done = true;
     }

@@ -1,10 +1,10 @@
-var storage = require("./storage");
+"use strict";
+
+var storage = require("../storage");
+var model = require("../model");
 
 exports.save = function (name, cb) {
-  "use strict";
-
   var saveData = {};
-  var model = cwt.Model;
 
   saveData.mpw = this.width;
   saveData.mph = this.height;

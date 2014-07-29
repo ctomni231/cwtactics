@@ -1,6 +1,6 @@
 "use strict";
 
-var assert = require("base/functions").assert;
+var assert = require("./functions").assert;
 var constants = require("constants");
 
 exports.Config = function (min, max, defaultValue, step) {

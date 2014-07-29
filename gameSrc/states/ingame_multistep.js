@@ -1,4 +1,4 @@
-cwt.Gameflow.addState({
+require("../statemachine").addState({
   id: "INGAME_MULTISTEP_IDLE",
 
   init: function () {
@@ -12,17 +12,17 @@ cwt.Gameflow.addState({
       gameData.action.object.prepareMenu(this.data);
 
       if (!gameData.menu.getSize()) {
-        cwt.Gameflow.changeState("INGAME_IDLE");
+        require("../statemachine").changeState("INGAME_IDLE");
       }
 
       gameData.menu.addEntry("done", true);
       gameData.inMultiStep = true;
 
-      cwt.Gameflow.changeState("INGAME_SUBMENU");
+      require("../statemachine").changeState("INGAME_SUBMENU");
     };
 
     gameData.nextStepBreak = function () {
-      cwt.Gameflow.changeState("INGAME_IDLE");
+      require("../statemachine").changeState("INGAME_IDLE");
     };
   },
 

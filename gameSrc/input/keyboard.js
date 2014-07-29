@@ -8,7 +8,7 @@ require('../input').registerInputHandler("keyboard", function () {
     return;
   }
 
-  that.MAPPING = {
+  exports.MAPPING = that.MAPPING = {
     UP: 38,
     DOWN: 40,
     LEFT: 37,

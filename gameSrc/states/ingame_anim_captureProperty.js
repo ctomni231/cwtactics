@@ -1,4 +1,4 @@
-cwt.Gameflow.addState({
+require("../statemachine").addState({
   id: "ANIMATION_CAPTURE_PROPERTY",
 
   init: function () {

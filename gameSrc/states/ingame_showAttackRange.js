@@ -3,10 +3,10 @@
 // attack range is moving range + attack range together, to show every field that will be attack able. Otherwise
 // only the attack range will be shown.
 //
-// @memberOf cwt.Gameflow
+// @memberOf require("../statemachine")
 // @name INGAME_SHOW_ATTACK_RANGE
 //
-cwt.Gameflow.addInGameState({
+require("../statemachine").addInGameState({
   id: "INGAME_SHOW_ATTACK_RANGE",
 
   enter: function () {
@@ -19,6 +19,6 @@ cwt.Gameflow.addInGameState({
   },
 
   CANCEL: function () {
-    cwt.Gameflow.changeState("INGAME_IDLE");
+    require("../statemachine").changeState("INGAME_IDLE");
   }
 });

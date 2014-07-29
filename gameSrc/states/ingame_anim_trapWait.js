@@ -1,4 +1,4 @@
-cwt.Gameflow.addState({
+require("../statemachine").addState({
   id: "ANIMATION_TRAPPED",
 
   init: function () {

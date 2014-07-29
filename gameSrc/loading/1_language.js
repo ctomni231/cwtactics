@@ -6,11 +6,11 @@ require('../loading').addHandler(function(next) {
   // todo: recognize custom user selected language
 
   var language = window.navigator.userLanguage || window.navigator.language;
-
   var key;
+
   switch (language) {
 
-    // german
+    // german ?
     case "de":
     case "de-de":
     case "de-De":
@@ -18,10 +18,11 @@ require('../loading').addHandler(function(next) {
     case "Deutsch":
       key = "de";
 
-    // fallback case: use english
+    // fallback: english
     default:
       key = "en";
   }
 
+  // select language
   require("../localization").selectLanguage(key);
 });

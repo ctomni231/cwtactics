@@ -1,28 +1,32 @@
+var constants = require("../constants");
+var move = require("../logic/move");
+var model = require("../model");
+
 //
 //
 // @param {number} x
 // @param {number} y
 //
-cwt.MapRenderer.renderTile = function (x, y) {
+exports.renderTile = function (x, y) {
   this.renderTiles(x,y,1,1,false);
 
   // draw overlay of the bottom tile
-  if (y < cwt.Map.height-1) {
+  if (y < model.mapHeight-1) {
     this.renderTiles(x,y+1,1,1,true);
   }
 };
 
-cwt.MapRenderer.renderTileOverlayRow = function () {
-  cwt.MapRenderer.renderTiles(
+exports.renderTileOverlayRow = function () {
+  exports.renderTiles(
     cwt.Screen.offsetX,
     cwt.Screen.offsetY+1,
-    (cwt.Map.width < cwt.SCREEN_WIDTH) ? cwt.Map.width : cwt.SCREEN_WIDTH,
+    (cwt.Map.width < cwt.SCREEN_WIDTH) ? model.mapWidth : cwt.SCREEN_WIDTH,
     1,
     true
   );
 };
 
-cwt.MapRenderer.renderTiles = function (x, oy, w, h, overlayDraw) {
+exports.renderTiles = function (x, oy, w, h, overlayDraw) {
   if (arguments.length === 4) overlayDraw = false;
   var mapData = cwt.Map.data;
   var mapLayer = cwt.Screen.layerMap;
@@ -78,23 +82,23 @@ cwt.MapRenderer.renderTiles = function (x, oy, w, h, overlayDraw) {
 
         scx = (cwt.Image.longAnimatedTiles[tile.type.ID]) ? cwt.TILE_BASE * n : 0;
         scy = 0;
-        scw = cwt.TILE_BASE;
-        sch = cwt.TILE_BASE * 2;
-        tcx = (x - cwt.Screen.offsetX) * cwt.TILE_BASE;
-        tcy = (y - cwt.Screen.offsetY) * cwt.TILE_BASE - cwt.TILE_BASE;
-        tcw = cwt.TILE_BASE;
-        tch = cwt.TILE_BASE * 2;
+        scw = constants.TILE_BASE;
+        sch = constants.TILE_BASE * 2;
+        tcx = (x - cwt.Screen.offsetX) * constants.TILE_BASE;
+        tcy = (y - cwt.Screen.offsetY) * constants.TILE_BASE - constants.TILE_BASE;
+        tcw = constants.TILE_BASE;
+        tch = constants.TILE_BASE * 2;
 
         if (tcy < 0) {
-          scy = scy + cwt.TILE_BASE;
-          sch = sch - cwt.TILE_BASE;
-          tcy = tcy + cwt.TILE_BASE;
-          tch = tch - cwt.TILE_BASE;
+          scy = scy + constants.TILE_BASE;
+          sch = sch - constants.TILE_BASE;
+          tcy = tcy + constants.TILE_BASE;
+          tch = tch - constants.TILE_BASE;
         }
 
         if (overlayDraw) {
-          sch = sch - cwt.TILE_BASE;
-          tch = tch - cwt.TILE_BASE;
+          sch = sch - constants.TILE_BASE;
+          tch = tch - constants.TILE_BASE;
         }
 
         // render tile
@@ -108,7 +112,7 @@ cwt.MapRenderer.renderTiles = function (x, oy, w, h, overlayDraw) {
 
         // render property
         if (tile.property) {
-          scx = cwt.TILE_BASE * (parseInt(n / 2, 10));
+          scx = constants.TILE_BASE * (parseInt(n / 2, 10));
 
           ctx.drawImage(
             propSprite,
@@ -131,7 +135,7 @@ cwt.MapRenderer.renderTiles = function (x, oy, w, h, overlayDraw) {
 //
 // @param {number} code
 //
-cwt.MapRenderer.shiftTiles = function (code) {
+exports.shiftTiles = function (code) {
   var mapLayer = cwt.Screen.layerMap;
 
   // calculate meta data for shift
@@ -142,24 +146,24 @@ cwt.MapRenderer.shiftTiles = function (code) {
   var w = mapLayer.w;
   var h = mapLayer.h;
   switch (code) {
-    case cwt.Move.MOVE_CODES_LEFT:
-      scx += cwt.TILE_BASE;
-      w -= cwt.TILE_BASE;
+    case move.MOVE_CODES_LEFT:
+      scx += constants.TILE_BASE;
+      w -= constants.TILE_BASE;
       break;
 
-    case cwt.Move.MOVE_CODES_RIGHT:
-      sx += cwt.TILE_BASE;
-      w -= cwt.TILE_BASE;
+    case move.MOVE_CODES_RIGHT:
+      sx += constants.TILE_BASE;
+      w -= constants.TILE_BASE;
       break;
 
-    case cwt.Move.MOVE_CODES_UP:
-      scy += cwt.TILE_BASE;
-      h -= cwt.TILE_BASE;
+    case move.MOVE_CODES_UP:
+      scy += constants.TILE_BASE;
+      h -= constants.TILE_BASE;
       break;
 
-    case cwt.Move.MOVE_CODES_DOWN:
-      sy += cwt.TILE_BASE;
-      h -= cwt.TILE_BASE;
+    case move.MOVE_CODES_DOWN:
+      sy += constants.TILE_BASE;
+      h -= constants.TILE_BASE;
       break;
   }
 

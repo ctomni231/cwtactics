@@ -1,4 +1,4 @@
-cwt.Gameflow.addMenuState({
+require("../statemachine").addMenuState({
 
   id: "REMAP_KEY_MAPPING",
   last: "OPTIONS",
@@ -95,7 +95,7 @@ cwt.Gameflow.addMenuState({
       .addColGap(w)
       .addButton(5, 2, 0, "OPTIONS_KEYMAP_GOBACK", cwt.UIField.STYLE_NORMAL, 8, function () {
         cwt.Input.saveKeyMapping();
-        cwt.Gameflow.changeState("OPTIONS");
+        require("../statemachine").changeState("OPTIONS");
       })
       .addColGap(2)
       .addButton(5, 2, 0, "OPTIONS_KEYMAP_SET", cwt.UIField.STYLE_NORMAL, 8, function () {

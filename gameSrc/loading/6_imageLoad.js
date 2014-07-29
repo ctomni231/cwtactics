@@ -1,13 +1,18 @@
-require('../loading').addHandler(function (loaderNext) {
-   if (cwt.DEBUG) {
-     console.log("loading image data");
-   }
+var constants = require("../constants");
+var loading = require("../loading");
+var imageDTO = require("../dataTransfer/image");
 
-   if (cwt.Loading.hasCachedData) {
-     cwt.Image.grabFromCache(loaderNext);
+loading.addHandler(function (loaderNext) {
+   if (constants.DEBUG) console.log("loading image data");
+
+   if (loading.hasCachedData) {
+     // grab from local storage
+     imageDTO.grabFromCache(loaderNext);
+
    } else {
-     cwt.Image.grabFromRemote(function () {
-       cwt.Image.persistImages(loaderNext);
+     // grab from remote and save all images locally
+     imageDTO.grabFromRemote(function () {
+       imageDTO.transferAllToStorage(loaderNext);
      });
    }
 });

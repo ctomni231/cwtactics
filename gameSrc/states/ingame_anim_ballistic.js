@@ -1,4 +1,4 @@
-cwt.Gameflow.addState({
+require("../statemachine").addState({
   id: "ANIMATION_BALLISTIC",
 
   init: function () {

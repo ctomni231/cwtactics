@@ -1,4 +1,4 @@
-cwt.Gameflow.addMenuState({
+require("../statemachine").addMenuState({
 
   id: "OPTIONS",
   last: "MAIN_MENU",
@@ -23,7 +23,7 @@ cwt.Gameflow.addMenuState({
     };
 
     var saveStep2 = function () {
-      cwt.Gameflow.changeState("MAIN_MENU");
+      require("../statemachine").changeState("MAIN_MENU");
     };
 
     var updateSound = function (isSFX,change,state) {
@@ -85,12 +85,12 @@ cwt.Gameflow.addMenuState({
 
       .addColGap(w)
       .addButton(8, 2, 0, "OPTIONS_MENU_CHANGE_KEYBOARD_LAYOUT", cwt.UIField.STYLE_NSW, 8, function () {
-        cwt.Gameflow.changeState("REMAP_KEY_MAPPING");
-        cwt.Gameflow.activeState.mode = 0;
+        require("../statemachine").changeState("REMAP_KEY_MAPPING");
+        require("../statemachine").activeState.mode = 0;
       })
       .addButton(8, 2, 0, "OPTIONS_MENU_CHANGE_GAMEPAD_LAYOUT", cwt.UIField.STYLE_NES, 8, function () {
-        cwt.Gameflow.changeState("REMAP_KEY_MAPPING");
-        cwt.Gameflow.activeState.mode = 1;
+        require("../statemachine").changeState("REMAP_KEY_MAPPING");
+        require("../statemachine").activeState.mode = 1;
       })
       .breakLine()
 
@@ -102,7 +102,7 @@ cwt.Gameflow.addMenuState({
 
       .addColGap(w)
       .addButton(16, 2, 0, "OPTIONS_MENU_WIPE_OUT", cwt.UIField.STYLE_NORMAL, 8, function () {
-        cwt.Gameflow.changeState("CONFIRM_WIPE_OUT_SCREEN");
+        require("../statemachine").changeState("CONFIRM_WIPE_OUT_SCREEN");
       })
       .breakLine()
 

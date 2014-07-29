@@ -32,6 +32,7 @@ var MUSIC_KEY = "MUSIC_";
 // @param {Function} callback
 //
 exports.grabFromCache = function (callback, bufferCallback) {
+
   // don't load audio when disabled
   if (!features.audioMusic && !features.audioSFX) {
     if (callback) {
@@ -74,7 +75,7 @@ exports.grabFromCache = function (callback, bufferCallback) {
   storage.keys(function (keys) {
     for (var i = 0, e = keys.length; i < e; i++) {
       var key = keys[i];
-      if (key.indexOf(cwt.Audio.SFX_KEY) === 0) {
+      if (key.indexOf(SFX_KEY) === 0) {
         loadKey(key);
       }
     }
@@ -144,7 +145,7 @@ exports.grabFromRemote = function (callback) {
 
     var request = new XMLHttpRequest();
 
-    request.open("GET", cwt.MOD_PATH + path, true);
+    request.open("GET", constants.MOD_PATH + path, true);
     request.responseType = "arraybuffer";
 
     request.onload = function () {
@@ -173,7 +174,7 @@ exports.grabFromRemote = function (callback) {
   if (features.audioMusic) {
     Object.keys(cwt.Musics).forEach(function (key) {
       stuff.push(function (next) {
-        loadFile(key, cwt.Musics[key], cwt.Audio.MUSIC_KEY + key, false, next);
+        loadFile(key, cwt.Musics[key], MUSIC_KEY + key, false, next);
       })
     });
   }
@@ -182,7 +183,7 @@ exports.grabFromRemote = function (callback) {
   if (features.audioSFX) {
     Object.keys(cwt.Sounds).forEach(function (key) {
       stuff.push(function (next) {
-        loadFile(key, cwt.Sounds[key], cwt.Audio.SFX_KEY + key, true, next);
+        loadFile(key, cwt.Sounds[key], SFX_KEY + key, true, next);
       })
     });
   }

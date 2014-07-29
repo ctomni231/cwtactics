@@ -1,4 +1,4 @@
-cwt.Gameflow.addInGameState({
+require("../statemachine").addInGameState({
   id: "INGAME_IDLE",
 
   init: function (gameData) {
@@ -206,6 +206,6 @@ cwt.Gameflow.addInGameState({
     gameData.source.set(x, y);
     gameData.target.set(x, y);
 
-    cwt.Gameflow.changeState("INGAME_MOVEPATH");
+    require("../statemachine").changeState("INGAME_MOVEPATH");
   }
 });

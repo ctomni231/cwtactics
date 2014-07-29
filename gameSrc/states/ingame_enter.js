@@ -1,4 +1,4 @@
-cwt.Gameflow.addState({
+require("../statemachine").addState({
   id: "INGAME_ENTER",
 
   enter: function () {
@@ -27,7 +27,7 @@ cwt.Gameflow.addState({
       cwt.MapRenderer.renderCursor();
 
       // 5. start game :P
-      cwt.Gameflow.changeState("INGAME_IDLE");
+      require("../statemachine").changeState("INGAME_IDLE");
     });
     /*
     controller.commandStack_resetData();

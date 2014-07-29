@@ -1,4 +1,4 @@
-cwt.Gameflow.addState({
+require("../statemachine").addState({
   id:"NONE",
 
   init: function () {
@@ -7,7 +7,7 @@ cwt.Gameflow.addState({
 
   update: function (delta) {
     if (this.backgroundDrawn) {
-      cwt.Gameflow.changeState("LOADING_SCREEN");
+      require("../statemachine").changeState("LOADING_SCREEN");
     }
   },
 

@@ -1,3 +1,11 @@
+var constants = require("../constants");
+var move = require("../logic/move");
+var model = require("../model");
+
+var tempCanvas = document.createElement("canvas");
+tempCanvas.width = cwt.Screen.width;
+tempCanvas.height = cwt.Screen.height;
+
 //
 //
 // NOTE: clears the area before update
@@ -6,7 +14,7 @@
 // @param y
 // @param range
 //
-cwt.MapRenderer.renderFogCircle = function (x, y, range) {
+exports.renderFogCircle = function (x, y, range) {
   this.renderFogRect(x, y, range, range, true);
 };
 
@@ -20,7 +28,7 @@ cwt.MapRenderer.renderFogCircle = function (x, y, range) {
 // @param h
 // @param {boolean?} circle
 //
-cwt.MapRenderer.renderFogRect = function (x, y, w, h, circle) {
+exports.renderFogRect = function (x, y, w, h, circle) {
   if (arguments.length === 4) circle = false;
   var data = cwt.Map.data;
   var layer = cwt.Screen.layerFog.getContext(0);
@@ -86,18 +94,18 @@ cwt.MapRenderer.renderFogRect = function (x, y, w, h, circle) {
 
         var scx = (cwt.Image.longAnimatedTiles[tile.type.ID]) ? cwt.TILE_BASE * n : 0;
         var scy = 0;
-        var scw = cwt.TILE_BASE;
-        var sch = cwt.TILE_BASE * 2;
-        var tcx = (x - cwt.Screen.offsetX) * cwt.TILE_BASE;
-        var tcy = (y - cwt.Screen.offsetY) * cwt.TILE_BASE - cwt.TILE_BASE;
-        var tcw = cwt.TILE_BASE;
-        var tch = cwt.TILE_BASE * 2;
+        var scw = constants.TILE_BASE;
+        var sch = constants.TILE_BASE * 2;
+        var tcx = (x - cwt.Screen.offsetX) * constants.TILE_BASE;
+        var tcy = (y - cwt.Screen.offsetY) * constants.TILE_BASE - constants.TILE_BASE;
+        var tcw = constants.TILE_BASE;
+        var tch = constants.TILE_BASE * 2;
 
         if (tcy < 0) {
-          scy = scy + cwt.TILE_BASE;
-          sch = sch - cwt.TILE_BASE;
-          tcy = tcy + cwt.TILE_BASE;
-          tch = tch - cwt.TILE_BASE;
+          scy = scy + constants.TILE_BASE;
+          sch = sch - constants.TILE_BASE;
+          tcy = tcy + constants.TILE_BASE;
+          tch = tch - constants.TILE_BASE;
         }
 
         layer.drawImage(
@@ -136,7 +144,7 @@ cwt.MapRenderer.renderFogRect = function (x, y, w, h, circle) {
   this.renderFogBackgroundLayer();
 };
 
-cwt.MapRenderer.fixOverlayFog_ = function (x, y, isTop) {
+exports.fixOverlayFog_ = function (x, y, isTop) {
   if (isTop) {
 
   } else {
@@ -147,7 +155,7 @@ cwt.MapRenderer.fixOverlayFog_ = function (x, y, isTop) {
 //
 //
 //
-cwt.MapRenderer.renderFogBackgroundLayer = function () {
+exports.renderFogBackgroundLayer = function () {
   cwt.Screen.layerFog.getContext().globalAlpha = 0.35;
   cwt.Screen.layerFog.renderLayer(0);
   cwt.Screen.layerFog.getContext().globalAlpha = 1;
@@ -159,9 +167,9 @@ cwt.MapRenderer.renderFogBackgroundLayer = function () {
 //
 // @param {number} code
 //
-cwt.MapRenderer.shiftFog = function (code) {
+exports.shiftFog = function (code) {
   var layer = cwt.Screen.layerFog;
-  var tmpCanvas = this.getTempCanvas();
+  var tmpCanvas = tempCanvas;
   var tmpContext = tmpCanvas.getContext("2d");
 
   // calculate meta data for shift
@@ -172,24 +180,24 @@ cwt.MapRenderer.shiftFog = function (code) {
   var w = layer.w;
   var h = layer.h;
   switch (code) {
-    case cwt.Move.MOVE_CODES_LEFT:
-      scx += cwt.TILE_BASE;
-      w -= cwt.TILE_BASE;
+    case move.MOVE_CODES_LEFT:
+      scx += constants.TILE_BASE;
+      w -= constants.TILE_BASE;
       break;
 
-    case cwt.Move.MOVE_CODES_RIGHT:
-      sx += cwt.TILE_BASE;
-      w -= cwt.TILE_BASE;
+    case move.MOVE_CODES_RIGHT:
+      sx += constants.TILE_BASE;
+      w -= constants.TILE_BASE;
       break;
 
-    case cwt.Move.MOVE_CODES_UP:
-      scy += cwt.TILE_BASE;
-      h -= cwt.TILE_BASE;
+    case move.MOVE_CODES_UP:
+      scy += constants.TILE_BASE;
+      h -= constants.TILE_BASE;
       break;
 
-    case cwt.Move.MOVE_CODES_DOWN:
-      sy += cwt.TILE_BASE;
-      h -= cwt.TILE_BASE;
+    case move.MOVE_CODES_DOWN:
+      sy += constants.TILE_BASE;
+      h -= constants.TILE_BASE;
       break;
   }
 
@@ -210,5 +218,5 @@ cwt.MapRenderer.shiftFog = function (code) {
   // copy visible content back to the original canvas
   layer.getContext(0).drawImage(tmpCanvas, 0, 0);
 
-  this.renderFogBackgroundLayer();
+  exports.renderFogBackgroundLayer();
 };

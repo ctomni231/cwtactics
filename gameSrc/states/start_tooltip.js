@@ -1,4 +1,4 @@
-cwt.Gameflow.addState({
+require("../statemachine").addState({
   id: "START_SCREEN",
 
   init: function () {
@@ -45,7 +45,7 @@ cwt.Gameflow.addState({
     // action leads into main menu
     if (lastInput && lastInput.key === cwt.Input.TYPE_ACTION) {
       cwt.Audio.playNullSound();
-      cwt.Gameflow.changeState("MAIN_MENU");
+      require("../statemachine").changeState("MAIN_MENU");
 
     } else {
       this.tooltip_time += delta;

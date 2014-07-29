@@ -1,8 +1,8 @@
-require('../loading').addHandler(function (nextLoadingStep) {
-  if (cwt.DEBUG) {
-    console.log("initializing input system");
-  }
+var inpMapping = require("../dataTransfer/keyMapping");
+var constants = require("../constants");
+var loading = require('../loading');
 
-  cwt.Input.initialize();
-  cwt.Input.loadKeyMapping(nextLoadingStep);
+loading.addHandler(function (next) {
+  if (constants.DEBUG) console.log("initializing input system");
+  inpMapping.load(next);
 });

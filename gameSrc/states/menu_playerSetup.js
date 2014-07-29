@@ -1,4 +1,4 @@
-cwt.Gameflow.addMenuState({
+require("../statemachine").addMenuState({
 
   id: "PLAYER_SETUP_SCREEN",
   last: "VERSUS",
@@ -179,12 +179,12 @@ cwt.Gameflow.addMenuState({
 
       .addColGap(w)
       .addButton(5, 2, 0, "MENU_BACK", cwt.UIField.STYLE_NORMAL, 8, function () {
-        cwt.Gameflow.changeState("VERSUS");
+        require("../statemachine").changeState("VERSUS");
       })
 
       .addColGap(8)
       .addButton(5, 2, 0, "MENU_NEXT", cwt.UIField.STYLE_NORMAL, 8, function () {
-        cwt.Gameflow.changeState("PARAMETER_SETUP_SCREEN");
+        require("../statemachine").changeState("PARAMETER_SETUP_SCREEN");
       })
       .breakLine();
 

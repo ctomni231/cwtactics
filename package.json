@@ -22,6 +22,7 @@
     "gulp-if": "~1.2.4",
     "gulp-match": "~0.2.0",
     "ternary-stream": "~1.2.0",
-    "through2": "~0.5.1"
+    "through2": "~0.5.1",
+    "gulp-replace-task": "0.0.6"
   }
 }

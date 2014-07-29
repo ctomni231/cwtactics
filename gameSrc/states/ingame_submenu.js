@@ -1,4 +1,4 @@
-cwt.Gameflow.addInGameState({
+require("../statemachine").addInGameState({
   id: "INGAME_SUBMENU",
 
   enter: function (gameData) {
@@ -19,7 +19,7 @@ cwt.Gameflow.addInGameState({
     var actName = gameData.menu.getContent();
 
     if (actName === "done") {
-      cwt.Gameflow.changeState("INGAME_IDLE");
+      require("../statemachine").changeState("INGAME_IDLE");
       return;
     }
 
@@ -34,10 +34,10 @@ cwt.Gameflow.addInGameState({
     }
 
     if (cwt.DEBUG) cwt.assert(next);
-    cwt.Gameflow.changeState(next);
+    require("../statemachine").changeState(next);
   },
 
   CANCEL: function () {
-    cwt.Gameflow.changeState("INGAME_MENU");
+    require("../statemachine").changeState("INGAME_MENU");
   }
 });

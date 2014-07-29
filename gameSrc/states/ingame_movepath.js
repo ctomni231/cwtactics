@@ -1,4 +1,4 @@
-cwt.Gameflow.addInGameState({
+require("../statemachine").addInGameState({
   id: "INGAME_MOVEPATH",
 
   init: function () {
@@ -7,7 +7,7 @@ cwt.Gameflow.addInGameState({
     //
 //
 // @type {cwt.CircularBuffer}
-// @memberOf cwt.Gameflow.globalData
+// @memberOf require("../statemachine").globalData
 //
     gameData.movePath = new cwt.CircularBuffer(cwt.MAX_MOVE_LENGTH);
 
@@ -50,7 +50,7 @@ cwt.Gameflow.addInGameState({
     }
 
     if (breakMove) {
-      cwt.Gameflow.changeState("INGAME_MENU");
+      require("../statemachine").changeState("INGAME_MENU");
     }
   },
 
@@ -94,11 +94,11 @@ cwt.Gameflow.addInGameState({
     }
 
     if (dis === 0 || cwt.Options.fastClickMode) {
-      cwt.Gameflow.changeState(next);
+      require("../statemachine").changeState(next);
     }
   },
 
   CANCEL: function () {
-    cwt.Gameflow.changeState("INGAME_IDLE");
+    require("../statemachine").changeState("INGAME_IDLE");
   }
 });

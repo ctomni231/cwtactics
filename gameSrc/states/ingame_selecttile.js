@@ -1,4 +1,4 @@
-cwt.Gameflow.addInGameState({
+require("../statemachine").addInGameState({
   id: "INGAME_SELECT_TILE",
 
   enter: function (gameData) {
@@ -14,11 +14,11 @@ cwt.Gameflow.addInGameState({
   ACTION: function (gameData) {
     if (gameData.action.object.isTargetValid(gameData, cwt.Cursor.x, cwt.Cursor.y)) {
       gameData.targetselection.set(cwt.Cursor.x, cwt.Cursor.y);
-      cwt.Gameflow.changeState("INGAME_FLUSH_ACTIONS");
+      require("../statemachine").changeState("INGAME_FLUSH_ACTIONS");
     }
   },
 
   CANCEL: function (gameData) {
-    cwt.Gameflow.changeState("INGAME_MENU");
+    require("../statemachine").changeState("INGAME_MENU");
   }
 });

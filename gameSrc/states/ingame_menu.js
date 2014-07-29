@@ -1,4 +1,4 @@
-cwt.Gameflow.addInGameState({
+require("../statemachine").addInGameState({
   id: "INGAME_MENU",
 
   // create game round data in global data scope
@@ -8,7 +8,7 @@ cwt.Gameflow.addInGameState({
     //
 // Selected game action.
 //
-// @memberOf cwt.Gameflow.globalData
+// @memberOf require("../statemachine").globalData
 //
     gameData.action = {
 
@@ -31,7 +31,7 @@ cwt.Gameflow.addInGameState({
     //
 // Game menu.
 //
-// @memberOf cwt.Gameflow.globalData
+// @memberOf require("../statemachine").globalData
 // @implements {cwt.InterfaceMenu.<String>}
 //
     gameData.menu = {
@@ -206,7 +206,7 @@ cwt.Gameflow.addInGameState({
 
     // go back when no entries exists
     if (!gameData.menu.getSize()) {
-      cwt.Gameflow.changeState("INGAME_IDLE");
+      require("../statemachine").changeState("INGAME_IDLE");
     } else {
       cwt.Screen.layerUI.clear(0);
       cwt.MapRenderer.prepareMenu(gameData.menu);
@@ -264,7 +264,7 @@ cwt.Gameflow.addInGameState({
     }
 
     if (cwt.DEBUG) cwt.assert(next);
-    cwt.Gameflow.changeState(next);
+    require("../statemachine").changeState(next);
   },
 
   CANCEL: function (gameData) {
@@ -283,6 +283,6 @@ cwt.Gameflow.addInGameState({
     }
 
     if (cwt.DEBUG) cwt.assert(next);
-    cwt.Gameflow.changeState(next);
+    require("../statemachine").changeState(next);
   }
 });

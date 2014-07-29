@@ -1,4 +1,4 @@
-cwt.Gameflow.addState({
+require("../statemachine").addState({
   id: "INGAME_LEAVE",
 
   enter: function () {

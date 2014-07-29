@@ -3,7 +3,7 @@
   to the portrait mode. Instead of changing the whole screen model we
   simply print a message "Return your device into the landscape mode".
 //
-cwt.Gameflow.addState({
+require("../statemachine").addState({
   id: "PORTRAIT_SCREEN",
 
   init: function () {
@@ -21,7 +21,7 @@ cwt.Gameflow.addState({
     // is back in landscape mode (don't fire enter
     // event when changing back to the last state)
     if (isLandscape) {
-      cwt.Gameflow.setState(this.lastStateId,false);
+      require("../statemachine").setState(this.lastStateId,false);
       this.lastStateId = null;
     }
   },
