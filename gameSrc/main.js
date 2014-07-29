@@ -5,8 +5,16 @@
 // loading
 require("./loading/0_checkSystem");
 require("./loading/1_language");
+require("./loading/2_startParameters");
+require("./loading/3_inputInit");
+require("./loading/4_audioInit");
+require("./loading/6_imageLoad");
+require("./loading/7_portraitCheck");
+require("./loading/8_loadMaps");
 
 // states
+
+/*
 require("./states/error");
 require("./states/portrait");
 require("./states/start_load");
@@ -39,15 +47,8 @@ require("./states/ingame_movepath");
 require("./states/ingame_multistep");
 require("./states/ingame_selecttile");
 
-/*
 require("../modifications/cwt/mod");
 
-require("./loading/2_startParameters");
-require("./loading/3_inputInit");
-require("./loading/4_audioInit");
-require("./loading/6_imageLoad");
-require("./loading/7_portraitCheck");
-require("./loading/8_loadMaps");
 
 require("./input/gamepad");
 require("./input/mouse");

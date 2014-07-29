@@ -1,14 +1,17 @@
-var mapNames_ = null;
+var constants = require("../constants");
+var storage = require("../storage");
+
+var mapNames = [];
 
 //
 //
-exports.grabRemoteMapList = function(callback) {
+exports.transferAllFromRemote = function(callback) {
   var stuff = [];
 
   Object.keys(cwt.mapList).forEach(function(key) {
     stuff.push(function(next) {
       grabRemoteFile({
-        path: cwt.MOD_PATH + cwt.Persistence.mapNames_[key],
+        path: constants.MOD_PATH + mapNames[key],
         json: true,
 
         error: function(msg) {
@@ -16,7 +19,7 @@ exports.grabRemoteMapList = function(callback) {
         },
 
         success: function(resp) {
-          cwt.Persistence.storage.set(key, resp, function() {
+          storage.set(key, resp, function() {
             next();
           });
         }
@@ -25,15 +28,14 @@ exports.grabRemoteMapList = function(callback) {
   });
 
   callAsSequence(stuff, function() {
-    cwt.Persistence.grabMapsFromLive = null;
     callback();
   });
 };
 
 //
 //
-exports.load = function(path, callback) {
-  cwt.Persistence.storage.get(path, function(obj) {
+exports.transferFromStorage = function(path, callback) {
+  storage.get(path, function(obj) {
     callback(path, obj.value);
   });
 };

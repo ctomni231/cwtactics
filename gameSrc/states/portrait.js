@@ -1,7 +1,6 @@
-/*
-  The portrait screen will be used when the screen orientation changes
-  to the portrait mode. Instead of changing the whole screen model we
-  simply print a message "Return your device into the landscape mode".
+// The portrait screen will be used when the screen orientation changes
+// to the portrait mode. Instead of changing the whole screen model we
+// simply print a message "Return your device into the landscape mode".
 //
 require("../statemachine").addState({
   id: "PORTRAIT_SCREEN",

@@ -1,6 +1,6 @@
 var constants = require("../constants");
 var storage = require("../storage");
-var assert = require("./functions").assert;
+var assert = require("../functions").assert;
 var image = require("../image");
 
 //

@@ -1,10 +1,13 @@
-require('../loading').addHandler(function (next) {
+var loading = require('../loading');
+var mapDTO = require("../dataTransfer/maps");
+
+loading.addHandler(function (next) {
   if (cwt.DEBUG) {
     console.log("loading maps");
   }
 
-  if (!cwt.Loading.hasCachedData) {
-    cwt.Maps.grabFromLive(function () {
+  if (!loading.hasCachedData) {
+    mapDTO.transferAllFromRemote(function () {
       cwt.Maps.updateMapList(next);
     });
   } else {
