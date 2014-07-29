@@ -4,31 +4,20 @@ cwt.Gameflow.addInGameState({
   init: function (gameData) {
 
     //
-// Position object with rich information about the selected position by an action and some relations.
-//
-// @memberOf cwt.Gameflow.globalData
-//
-    gameData.source = new cwt.Position();
+    // Position object with rich information about the selected position by an action and some relations.
+    //
+    gameData.source = new cwt.PositionDataClass();
+
+    // Position object with rich information about the selected position by an action and some relations.
+    //
+    gameData.target = new cwt.PositionDataClass();
+
+    // Position object with rich information about the selected position by an action and some relations.
+    //
+    gameData.targetselection = new cwt.PositionDataClass();
 
     //
-// Position object with rich information about the selected position by an action and some relations.
-//
-// @memberOf cwt.Gameflow.globalData
-//
-    gameData.target = new cwt.Position();
-
     //
-// Position object with rich information about the selected position by an action and some relations.
-//
-// @memberOf cwt.Gameflow.globalData
-//
-    gameData.targetselection = new cwt.Position();
-
-    //
-//
-// @memberOf cwt.Gameflow.globalData
-// @implements cwt.InterfaceSelection
-//
     gameData.selection = {
 
       // @private */
@@ -105,11 +94,11 @@ cwt.Gameflow.addInGameState({
       },
 
       //
-//
-// @param {number} x
-// @param {number} y
-// @return {boolean}
-//
+      //
+      // @param {number} x
+      // @param {number} y
+      // @return {boolean}
+      //
       hasActiveNeighbour: function (x, y) {
         x = x - this.centerX_;
         y = y - this.centerY_;
@@ -130,14 +119,14 @@ cwt.Gameflow.addInGameState({
       },
 
       //
-//
-// @param {number} x
-// @param {number} y
-// @param {number} minValue
-// @param {boolean} walkLeft
-// @param {Function} cb
-// @param {*?} arg
-//
+      //
+      // @param {number} x
+      // @param {number} y
+      // @param {number} minValue
+      // @param {boolean} walkLeft
+      // @param {Function} cb
+      // @param {*?} arg
+      //
       nextValidPosition: function (x, y, minValue, walkLeft, cb, arg) {
         x = x - this.centerX_;
         y = y - this.centerY_;
@@ -174,12 +163,12 @@ cwt.Gameflow.addInGameState({
       },
 
       //
-//
-// @param {Function} cb
-// @param {*} arg
-// @param {number} minValue
-// @return {boolean}
-//
+      //
+      // @param {Function} cb
+      // @param {*} arg
+      // @param {number} minValue
+      // @return {boolean}
+      //
       nextRandomPosition: function (cb, arg, minValue) {
         if (minValue === void 0) {
           minValue = 0;

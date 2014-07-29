@@ -36,8 +36,8 @@ cwt.Gameflow.addState({
  );
 
  if( controller.features_client.audioMusic ){
- var co = model.co_data[model.round_turnOwner].coA;
- controller.coMusic_playCoMusic( ( co )? co.music : null );
+ var commanders = model.co_data[model.round_turnOwner].coA;
+ controller.coMusic_playCoMusic( ( commanders )? commanders.music : null );
  }
  else view.message_closePanel(1000);
  },

@@ -55,10 +55,10 @@ cwt.Gameflow.addMenuState({
         playerNameBtn.text = "Player " + (i + 1);
         playerTeamBtn.text = TEAM_IDENTIFIERS[cwt.GameSelectionDTO.team[i]];
 
-        if (cwt.GameSelectionDTO.co[i] === cwt.INACTIVE) {
-          playerCo_A_Btn.text = cwt.Localization.forKey("config.player.co.none");
+        if (cwt.GameSelectionDTO.commanders[i] === cwt.INACTIVE) {
+          playerCo_A_Btn.text = cwt.Localization.forKey("config.player.commanders.none");
         } else {
-          playerCo_A_Btn.text = cwt.CoSheet.types[cwt.GameSelectionDTO.co[i]];
+          playerCo_A_Btn.text = cwt.CoSheet.types[cwt.GameSelectionDTO.commanders[i]];
         }
       }
 

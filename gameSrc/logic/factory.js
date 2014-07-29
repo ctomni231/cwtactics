@@ -1,98 +1,86 @@
 //
+// Returns **true** when the given **property** is a factory, else **false**.
 //
-// @namespace
+exports.isFactory = function (property) {
+  if (this.DEBUG) cwt.assert(property instanceof cwt.PropertyClass);
+
+  return (property.type.builds !== undefined);
+};
+
 //
-cwt.Factory = {
+// Returns **true** when the given **property** is a factory and can produce something technically, else **false**.
+//
+exports.canProduce = function (property) {
+  if (this.DEBUG) cwt.assert(this.isFactory(property));
 
-  //
-  // Returns `true` when the given factory object (by its `prid`) is
-  // a factory, else `false`.
-  //
-  // @param {cwt.Property} property
-  // @return {boolean}
-  //
-  isFactory: function(property) {
-    if (this.DEBUG) cwt.assert(property instanceof cwt.Property);
+  // check left manpower
+  if (!property.owner || !property.owner.manpower) return false;
 
-    return (property.type.builds !== void 0);
-  },
+  // check unit limit and left slots
+  var count = property.owner.numberOfUnits;
+  var uLimit = (cwt.Config.getValue("unitLimit") || 9999999);
+  if (count >= uLimit || count >= cwt.MAX_UNITS) return false;
 
-  //
-  // Returns `true` when the given factory object is a factory
-  // and can produce something technically, else `false`.
-  //
-  // @param {cwt.Property} property
-  // @return {boolean}
-  //
-  canProduce: function(property) {
-    if (this.DEBUG) cwt.assert(property instanceof cwt.Property);
+  return true;
+};
 
-    // check_ manpower
-    if (!property.owner || !property.owner.manpower) return false;
+//
+// Constructs a unit with **type** in a **factory** for the owner of the factory. The owner must have at least one
+// of his unit slots free to do this.
+//
+exports.buildUnit = (function () {
 
-    // check_ unit limit
-    var uLimit = cwt.Config.getValue("unitLimit");
-    if (!uLimit) uLimit = 9999999;
-    var count = model.unit_countUnits(playerId);
-    if (count >= uLimit) return false;
+  function buildIt(x, y, property, type) {
+    cwt.Lifecycle.createUnit(x, y, property.owner, type);
+  }
 
-    // slots free ?
-    if (count >= MAX_UNITS_PER_PLAYER) return false;
+  return function (factory, type) {
+    if (this.DEBUG) {
+      cwt.assert(factory instanceof cwt.PropertyClass);
+      cwt.assert(cwt.DataSheets.units.isValidSheet(type));
+    }
 
-    return true
-  },
-
-  //
-  // Constructs a unit for a player. At least one slot
-  // must be free to do this.
-  //
-  // @param {cwt.Property} factory
-  // @param {String} type
-  //
-  buildUnit: function(factory, type) {
-    if (this.DEBUG) cwt.assert(factory instanceof cwt.Property);
-    if (this.DEBUG) cwt.assert(cwt.UnitSheet.isValidSheet(type));
-
-    var sheet = cwt.UnitSheet.sheets[type];
+    var sheet = cwt.DataSheets.units.sheets[type];
 
     factory.owner.manpower--;
     factory.owner.gold -= sheet.cost;
 
-    if (this.DEBUG) cwt.assert(factory.owner.gold >= 0);
-
-    cwt.Map.searchProperty(factory, cwt.Lifecycle.createUnit, cwt.Lifecycle, type);
-  },
-
-  //
-  // Generates the build menu for a given factory object (by its `prid`).
-  //
-  // @param {cwt.Property} factory
-  // @param {cwt.Menu} menu
-  // @param {boolean=} markDisabled
-  // @return {boolean}
-  //
-  generateBuildMenu: function(factory, menu, markDisabled) {
-    if (this.DEBUG) cwt.assert(factory instanceof cwt.Property);
-    if (this.DEBUG) cwt.assert(menu instanceof cwt.Menu);
-    if (this.DEBUG) cwt.assert(factory.owner);
-
-    var unitTypes = cwt.UnitSheet.types;
-    var bList = factory.type.builds;
-    var gold = factory.owner.gold;
-
-    for (var i = 0, e = unitTypes.length; i < e; i++) {
-      var key = unitTypes[i];
-      var type = cwt.UnitSheet.sheets[key];
-
-      if (bList.indexOf(type.movetype) === -1) continue;
-
-      // Is the tile blocked ?
-      if (type.blocked) return false;
-
-      if (type.cost <= gold || markDisabled) {
-        menu.addEntry(key, (type.cost <= gold));
-      }
+    if (this.DEBUG) {
+      cwt.assert(factory.owner.gold >= 0);
+      cwt.assert(factory.owner.manpower >= 0);
     }
+
+    cwt.Model.searchProperty(factory, buildIt, null, type);
+  };
+})();
+
+//
+// Generates the build menu for a **factory** and puts the build able unit type ID's into a **menu**. If
+// **markDisabled** is enabled then the function will add types that temporary aren't produce able (e.g. due
+// lack of money) but marked as disabled.
+//
+exports.generateBuildMenu = function (factory, menu, markDisabled) {
+  if (this.DEBUG) {
+    cwt.assert(factory instanceof cwt.PropertyClass);
+    cwt.assert(menu instanceof cwt.InterfaceMenu);
+    cwt.assert(factory.owner);
   }
 
+  var unitTypes = cwt.DataSheets.units.types;
+  var bList = factory.type.builds;
+  var gold = factory.owner.gold;
+
+  for (var i = 0, e = unitTypes.length; i < e; i++) {
+    var key = unitTypes[i];
+    var type = cwt.DataSheets.units.getSheet(key);
+
+    if (bList.indexOf(type.movetype) === -1) continue;
+
+    // Is the tile blocked ?
+    if (type.blocked) return false;
+
+    if (type.cost <= gold || markDisabled) {
+      menu.addEntry(key, (type.cost <= gold));
+    }
+  }
 };
