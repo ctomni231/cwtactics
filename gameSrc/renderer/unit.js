@@ -1,10 +1,11 @@
 var constants = require("../constants");
+var renderer = require("../renderer");
 var model = require("../model");
 var move = require("../logic/move");
 
 var tempCanvas = document.createElement("canvas");
-tempCanvas.width = cwt.Screen.width;
-tempCanvas.height = cwt.Screen.height;
+tempCanvas.width = renderer.screenWidth;
+tempCanvas.height = renderer.screenHeight;
 
 //
 //

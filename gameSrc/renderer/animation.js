@@ -1,30 +1,22 @@
 //
-// @private
 //
-cwt.MapRenderer.unitAnimationHalfStep_ = false;
-
-//
-// @private
-//
-cwt.MapRenderer.curTime_ = 0;
-
-//
-// @readonly
-// @type number
-//
-cwt.MapRenderer.indexUnitAnimation = 0;
-
-//
-// @readonly
-// @type number
-//
-cwt.MapRenderer.indexMapAnimation = 0;
+exports.unitAnimationHalfStep_ = false;
 
 //
 //
-// @param {number} delta
+exports.curTime_ = 0;
+
 //
-cwt.MapRenderer.evaluateCycle = function (delta) {
+//
+exports.indexUnitAnimation = 0;
+
+//
+//
+exports.indexMapAnimation = 0;
+
+//
+//
+exports.evaluateCycle = function (delta) {
   var index;
 
   this.curTime_ += delta;

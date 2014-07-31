@@ -1,16 +1,19 @@
-require('../actions').unitAction({
-  key: "supplyUnit",
+"use strict";
 
+var relation = require("../logic/relationship");
+var supply = require("../logic/supply");
+var model = require("../model");
+
+exports.action = {
   relation: [
     "S", "T",
-    cwt.Relationship.RELATION_NONE,
-    cwt.Relationship.RELATION_SAME_THING
+    relation.RELATION_NONE,
+    relation.RELATION_SAME_THING
   ],
 
   condition: function (data) {
-    return (
-      cwt.Supply.isSupplier(data.target.unit) &&
-      cwt.Supply.canSupplyTile(data.target.unit, data.target.x, data.target.y) );
+    return ( supply.isSupplier(data.target.unit) &&
+      supply.canSupplyTile(data.target.unit, data.target.x, data.target.y) );
   },
 
   toDataBlock: function (data, dataBlock) {
@@ -19,7 +22,6 @@ require('../actions').unitAction({
   },
 
   parseDataBlock: function (datBlock) {
-    cwt.Supply.supplyNeighbours(datBlock.p1, datBlock.p2);
+    supply.supplyNeighbours(datBlock.p1, datBlock.p2);
   }
-
-});
+};

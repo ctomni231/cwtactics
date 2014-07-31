@@ -5,13 +5,6 @@ var assert = require("./functions").assert;
 var constants = require("./constants");
 var network = require("./network");
 
-var finalized = false;
-
-// no further actions can be added after the game and it's modifications are loaded
-require("./events").event("gameLoaded").subscribe(function () {
-  finalized = true;
-});
-
 // Map actions are called in the idle state on the map.
 //
 exports.MAP_ACTION = 0;
@@ -35,29 +28,30 @@ exports.CLIENT_ACTION = 4;
 //
 // @class
 //
-var ActionClass = function (impl) {
-  this.type = impl.type;
-  this.action = impl.action;
-  this.condition = (impl.condition) ? impl.condition : cwt.emptyFunction;
-  this.prepareMenu = impl.prepareMenu || null;
-  this.isTargetValid = impl.isTargetValid || null;
-  this.prepareTargets = impl.prepareTargets || null;
-  this.multiStepAction = impl.multiStepAction || null;
-  this.prepareSelection = impl.prepareSelection || null;
-  this.targetSelectionType = impl.targetSelectionType || "A";
-  this.noAutoWait = impl.noAutoWait || false;
-  this.relation = impl.relation || null;
-  this.toDataBlock = impl.toDataBlock || null;
-  this.parseDataBlock = impl.parseDataBlock || null;
-};
+exports.Action = my.Class({
+  constructor: function (impl) {
+    this.type = impl.type;
+    this.action = impl.action;
+    this.condition = (impl.condition) ? impl.condition : cwt.emptyFunction;
+    this.prepareMenu = impl.prepareMenu || null;
+    this.isTargetValid = impl.isTargetValid || null;
+    this.prepareTargets = impl.prepareTargets || null;
+    this.multiStepAction = impl.multiStepAction || null;
+    this.prepareSelection = impl.prepareSelection || null;
+    this.targetSelectionType = impl.targetSelectionType || "A";
+    this.noAutoWait = impl.noAutoWait || false;
+    this.relation = impl.relation || null;
+    this.toDataBlock = impl.toDataBlock || null;
+    this.parseDataBlock = impl.parseDataBlock || null;
+  }
+});
 
 //
 //
-exports.ActionDataClass = function () {
-  this.reset();
-};
-
-exports.ActionDataClass.prototype = {
+exports.ActionDataClass = my.Class({
+  constructor: function () {
+    this.reset();
+  },
 
   //
   //
@@ -75,7 +69,7 @@ exports.ActionDataClass.prototype = {
     return "ActionData::[id:" + this.id + " p1:" + this.p1 + " p2:" + this.p2 + " p3:" + this.p3 + " p4:" + this.p4 +
       " p5:" + this.p5 + "]";
   }
-};
+});
 
 //
 // Converts an action data object to JSON.
@@ -88,7 +82,7 @@ exports.serializeActionData = function (data) {
 };
 
 // Converts a JSON string to an action data object.
-// 
+//
 exports.deSerializeActionData = function (data) {
   if (typeof data === "string") {
     data = JSON.stringify(data)
@@ -116,58 +110,33 @@ exports.buffer = new CircularBuffer(200);
 //
 var actions = {};
 
-//
-//
-//
-var registerAction_ = function (name, impl) {
-  var action = new ActionClass(impl);
-  actions[name] = action;
+var createAction = function (key, type, impl) {
+  impl.key = key;
+  impl.type = type;
+  actions[key] = new exports.Action(impl);
 };
 
-//
-//
-// @param impl
-//
-exports.unitAction = function (impl) {
-  impl.type = this.UNIT_ACTION;
-  this.registerAction_(impl.key, impl);
-};
-
-//
-//
-// @param impl
-//
-exports.propertyAction = function (impl) {
-  impl.type = this.PROPERTY_ACTION;
-  this.registerAction_(impl.key, impl);
-};
-
-//
-//
-// @param impl
-//
-exports.mapAction = function (impl) {
-  impl.type = this.MAP_ACTION;
-  this.registerAction_(impl.key, impl);
-};
-
-//
-//
-// @param impl
-//
-exports.clientAction = function (impl) {
-  impl.type = this.CLIENT_ACTION;
-  this.registerAction_(impl.key, impl);
-};
-
-//
-//
-// @param impl
-//
-exports.engineAction = function (impl) {
-  impl.type = this.ENGINE_ACTION;
-  this.registerAction_(impl.key, impl);
-};
+// register all game actions
+createAction("wait",exports.UNIT_ACTION,require("./actions/wait").action);
+createAction("changeWeather",exports.ENGINE_ACTION,require("./actions/weather").action);
+createAction("loadUnit",exports.ENGINE_ACTION,require("./actions/transport").actionLoad);
+createAction("unloadUnit",exports.ENGINE_ACTION,require("./actions/transport").actionUnload);
+createAction("transferMoney",exports.MAP_ACTION,require("./actions/transfer").actionMoney);
+createAction("transferUnit",exports.UNIT_ACTION,require("./actions/transfer").actionUnit);
+createAction("transferProperty",exports.PROPERTY_ACTION,require("./actions/transfer").actionProperty);
+createAction("supplyUnit",exports.UNIT_ACTION,require("./actions/supply").action);
+createAction("unitHide",exports.UNIT_ACTION,require("./actions/stealth").actionHide);
+createAction("unitUnhide",exports.UNIT_ACTION,require("./actions/stealth").actionUnhide);
+createAction("options",exports.MAP_ACTION,require("./actions/options").action);
+createAction("buildUnit",exports.PROPERTY_ACTION,require("./actions/factory").action);
+createAction("joinUnits",exports.UNIT_ACTION,require("./actions/join").action);
+createAction("capture",exports.UNIT_ACTION,require("./actions/capture").action);
+createAction("activatePower",exports.MAP_ACTION,require("./actions/commander").actionActivate);
+createAction("explode",exports.UNIT_ACTION,require("./actions/explode").action);
+createAction("nextTurn",exports.MAP_ACTION,require("./actions/nextTurn").action);
+createAction("moveStart",exports.ENGINE_ACTION,require("./actions/move").actionStart);
+createAction("moveEnd",exports.ENGINE_ACTION,require("./actions/move").actionEnd);
+createAction("attack",exports.UNIT_ACTION,require("./actions/attack").action);
 
 //
 // @return {Array}

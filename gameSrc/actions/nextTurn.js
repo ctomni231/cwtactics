@@ -1,22 +1,16 @@
 "use strict";
 
-var turn = require("../logic/turn");
-var fog = require("../logic/fog");
 var weather = require("../logic/weather");
 var network = require("../network");
 var model = require("../model");
+var turn = require("../logic/turn");
+var fog = require("../logic/fog");
 
-require('../actions').mapAction({
-  key: "nextTurn",
-
-  toDataBlock: function (data, dataBlock) {
+exports.action = {
+  toDataBlock: function () {
   },
 
-  parseDataBlock: function (dataBlock) {
-    this.invoke();
-  },
-
-  invoke: function () {
+  parseDataBlock: function () {
     turn.next();
     fog.fullRecalculation();
 
@@ -36,4 +30,4 @@ require('../actions').mapAction({
        */
     }
   }
-})
+};

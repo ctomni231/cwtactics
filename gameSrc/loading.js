@@ -1,27 +1,12 @@
 "use strict";
 
+var PARAM_HAS_CACHE = "__hasCache__";
+
 var constants = require("./constants");
 var storage = require("./storage");
 
-var initialized = false;
-
-//
-// @private
-//
 var loaders = [];
-
-//
-//
-exports.hasCachedData = false;
-
-//
-// Adds a loading function in the loading process.
-//
-// @param {Function} loader
-//
-exports.addHandler = function (loader) {
-  this.loaders_.push(loader);
-};
+var hasCachedData = false;
 
 //
 // Starts the loading process. After the loading process the loading stuff will be removed. The Loading namespace
@@ -30,38 +15,49 @@ exports.addHandler = function (loader) {
 // @param {Function} callback
 //
 exports.startProcess = function (loadingBar, callback) {
-  if (constants.DEBUG) {
-    console.log("start loading process");
-  }
-
-  function setProgress(bar, i) {
+  function setProgress(i) {
     return function (next) {
-      bar.setPercentage(i);
+      loadingBar.setPercentage(i);
       next();
     }
   }
 
-  this.hasCachedData = storage.get("cwt_hasCache");
-
-  var xloaders = [];
-  var step = parseInt(100 / loaders.length);
-  for (var i = 0, e = loaders.length; i < e; i++) {
-    xloaders.push(loaders[i]);
-    xloaders.push(setProgress(loadingBar, (i + 1) * step));
+  function setLoader(mod) {
+    return (function (next) {
+      mod.loader(next, hasCachedData);
+    })
   }
 
-  callAsSequence(xloaders, function () {
+  if (constants.DEBUG) console.log("start loading process");
+  storage.get(PARAM_HAS_CACHE, function (value) {
+    hasCachedData = value;
+    callAsSequence(
 
-    // remove functions that never be called again
-    this.loaders_ = null;
-    this.create = null;
-    this.startProcess = null;
+      setLoader(require("./loading/checkSystem")),
+      setProgress(5),
+      setLoader(require("./loading/startParameters")),
+      setProgress(10),
+      setLoader(require("./loading/language")),
+      setProgress(25),
+      setLoader(require("./loading/imageLoad")),
+      setProgress(50),
+      setLoader(require("./loading/audioInit")),
+      setProgress(75),
+      setLoader(require("./loading/inputInit")),
+      setProgress(80),
+      setLoader(require("./loading/loadMaps")),
+      setProgress(90),
+      setLoader(require("./loading/portraitCheck")),
+      setProgress(100),
 
-    // invoke callback if given
-    if (callback) {
-      storage.set("cwt_hasCache", true);
+      function () {
+        if (callback) {
+          if (constants.DEBUG) console.log("start loading process");
 
-      callback();
-    }
+          storage.set(PARAM_HAS_CACHE, true);
+          callback();
+        }
+      }
+    );
   });
 };

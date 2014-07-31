@@ -1,17 +1,17 @@
 "use strict";
 
-require('../actions').engineAction({
+exports.actionStart = {
   key:"moveStart",
 
-  invoke: function () {
+  parseDataBlock: function () {
 
   }
-});
+};
 
-require('../actions').engineAction({
+exports.actionEnd = {
   key:"moveEnd",
 
-  invoke: function () {
+  parseDataBlock: function () {
 
   }
-});
+};

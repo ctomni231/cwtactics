@@ -1,11 +1,10 @@
 var constants = require("../constants");
-var loading = require("../loading");
 var imageDTO = require("../dataTransfer/image");
 
-loading.addHandler(function (loaderNext) {
+exports.loader = function (loaderNext, hasCachedData) {
    if (constants.DEBUG) console.log("loading image data");
 
-   if (loading.hasCachedData) {
+   if (hasCachedData) {
      // grab from local storage
      imageDTO.grabFromCache(loaderNext);
 
@@ -15,4 +14,4 @@ loading.addHandler(function (loaderNext) {
        imageDTO.transferAllToStorage(loaderNext);
      });
    }
-});
+};

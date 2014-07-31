@@ -1,13 +1,15 @@
-require('../actions').clientAction({
-  key:"options",
+var states = require('../statemachine');
+var stateData = require('../dataTransfer/states');
 
-  condition: function (data) {
+exports.action = {
+  condition: function () {
     return true;
   },
 
-  toDataBlock: function (data, dataBlock) {},
+  toDataBlock: function () {},
 
-  parseDataBlock: function (dataBlock) {
-    controller.screenStateMachine.event("toOptions_",true);
+  parseDataBlock: function () {
+    stateData.fromIngameToOptions = true;
+    states.changeState("MENU_OPTIONS");
   }
-});
+};

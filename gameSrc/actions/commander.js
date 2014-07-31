@@ -1,30 +1,32 @@
 "use strict";
 
-require('../actions').mapAction({
-  key: "activatePower",
+var relation = require("../logic/relationship");
+var model = require("../model");
+var co = require("../logic/co");
 
+exports.actionActivate = {
   condition: function () {
-    return cwt.CO.canActivatePower(cwt.Gameround.turnOwner, cwt.CO.POWER_LEVEL_COP);
+    return co.canActivatePower(model.turnOwner, co.POWER_LEVEL_COP);
   },
 
   hasSubMenu: true,
   prepareMenu: function (data) {
 
     data.menu.addEntry("cop");
-    if (cwt.CO.canActivatePower(cwt.Gameround.turnOwner, cwt.CO.POWER_LEVEL_SCOP)) {
+    if (co.canActivatePower(model.turnOwner, co.POWER_LEVEL_SCOP)) {
       data.menu.addEntry("scop");
     }
   },
 
   toDataBlock: function (data, dataBlock) {
-    dataBlock.p1 = (data.action.selectedSubEntry === "cop" ? cwt.CO.POWER_LEVEL_COP : -1);
-    dataBlock.p1 = (data.action.selectedSubEntry === "scop" ? cwt.CO.POWER_LEVEL_SCOP : -1);
+    dataBlock.p1 = (data.action.selectedSubEntry === "cop" ? co.POWER_LEVEL_COP : -1);
+    dataBlock.p1 = (data.action.selectedSubEntry === "scop" ? co.POWER_LEVEL_SCOP : -1);
   },
 
   parseDataBlock: function (dataBlock) {
-    cwt.CO.activatePower(cwt.Gameround.turnOwner,dataBlock.p1);
+    co.activatePower(model.turnOwner, dataBlock.p1);
   }
-});
+};
 
 /*
  cwt.Action.unitAction({

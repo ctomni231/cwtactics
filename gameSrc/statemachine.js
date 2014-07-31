@@ -1,7 +1,9 @@
-var fnc = require("./functions");
-var input = require("./input");
 var constants = require("./constants");
 var features = require("./systemFeatures");
+var input = require("./input");
+var audio = require("./audio");
+var move = require("./logic/move");
+var fnc = require("./functions");
 
 //
 //
@@ -15,6 +17,22 @@ exports.GameState = my.Class({
     this.render = renderFn;
   }
 });
+
+// Holds all registered game states.
+//
+var states = {};
+
+// State-Machine data object to share data between states.
+//
+var globalData = {};
+
+// The id of the active game state.
+//
+exports.activeStateId = null;
+
+// The active game state.
+//
+exports.activeState = null;
 
 //
 //
@@ -87,22 +105,22 @@ exports.addInGameState = function (desc) {
         switch (input.key) {
           case input.TYPE_LEFT:
             func = "LEFT";
-            code = cwt.Move.MOVE_CODES_LEFT;
+            code = move.MOVE_CODES_LEFT;
             break;
 
           case input.TYPE_UP:
             func = "UP";
-            code = cwt.Move.MOVE_CODES_UP;
+            code = move.MOVE_CODES_UP;
             break;
 
           case input.TYPE_RIGHT:
             func = "RIGHT";
-            code = cwt.Move.MOVE_CODES_RIGHT;
+            code = move.MOVE_CODES_RIGHT;
             break;
 
           case input.TYPE_DOWN:
             func = "DOWN";
-            code = cwt.Move.MOVE_CODES_DOWN;
+            code = move.MOVE_CODES_DOWN;
             break;
 
           case input.TYPE_ACTION:
@@ -185,7 +203,7 @@ exports.addMenuState = function (desc) {
           case input.TYPE_DOWN:
             if (this.layout.handleInput(lastInput)) {
               this.rendered = false;
-              cwt.Audio.playSound("MENU_TICK");
+              audio.playSound("MENU_TICK");
             }
             break;
 
@@ -193,13 +211,13 @@ exports.addMenuState = function (desc) {
             var button = this.layout.activeButton();
             button.action.call(this, button, this);
             this.rendered = false;
-            cwt.Audio.playSound("ACTION");
+            audio.playSound("ACTION");
             break;
 
           case input.TYPE_CANCEL:
             if (desc.last) {
               exports.changeState(desc.last);
-              cwt.Audio.playSound("CANCEL");
+              audio.playSound("CANCEL");
             }
             break;
         }
@@ -216,22 +234,6 @@ exports.addMenuState = function (desc) {
   });
 };
 
-// Holds all registered game states.
-//
-var states = {};
-
-// State-Machine data object to share data between states.
-//
-var globalData = {};
-
-// The id of the active game state.
-//
-exports.activeStateId = null;
-
-// The active game state.
-//
-exports.activeState = null;
-
 //
 //
 // @param delta
@@ -247,8 +249,8 @@ var update = function (delta) {
 
   // state update
   var inp = input.popAction();
-  this.activeState.update.call(this.activeState.data, delta, inp);
-  this.activeState.render.call(this.activeState.data, delta);
+  exports.activeState.update.call(this.activeState.data, delta, inp);
+  exports.activeState.render.call(this.activeState.data, delta);
 
   // release input data object
   if (inp) {
@@ -260,9 +262,9 @@ var update = function (delta) {
 // **enter event** in the new state.
 //
 exports.changeState = function (stateId) {
-  if (this.activeState) {
-    if (this.activeState.exit) {
-      this.activeState.exit.call(this.activeState.data);
+  if (exports.activeState) {
+    if (exports.activeState.exit) {
+      exports.activeState.exit.call(exports.activeState.data);
     }
   }
 
@@ -280,18 +282,22 @@ exports.setState = function (stateId, fireEvent) {
     console.log("set active state to " + stateId + ((fireEvent) ? " with firing enter event" : ""));
   }
 
-  this.activeState = states[stateId];
-  this.activeStateId = stateId;
+  exports.activeState = states[stateId];
+  exports.activeStateId = stateId;
 
   if (fireEvent !== false) {
-    this.activeState.enter.call(this.activeState.data);
+    exports.activeState.enter.call(exports.activeState.data);
   }
 };
 
+var started = false;
+
+// Starts the game state machine.
 //
-// Initializes the game state machine.
-//
-exports.initialize = function () {
+exports.start = function () {
+  if (started) throw Error("already started");
+  started = true;
+
   if (constants.DEBUG) {
     console.log("starting game state machine");
   }

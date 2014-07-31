@@ -121,3 +121,5 @@ exports.setCursorPosition = function (x, y, relativeToScreen) {
 
   cursorRenderer.renderCursor();
 };
+
+exports.fromIngameToOptions = false;

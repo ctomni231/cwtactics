@@ -1,4 +1,4 @@
-require('../loading').addHandler(function (next) {
+exports.loader = function (next) {
   if (typeof window !== 'undefined' && typeof window.orientation !== 'undefined') {
 
     function doOnOrientationChange() {
@@ -23,4 +23,4 @@ require('../loading').addHandler(function (next) {
   } else {
     next();
   }
-});
+};

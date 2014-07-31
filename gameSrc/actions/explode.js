@@ -1,27 +1,25 @@
 "use strict";
 
-require('../actions').unitAction({
-  key:"explode",
+var relation = require("../logic/relationship");
+var explode = require("../logic/exploder");
+
+exports.action = {
   noAutoWait: true,
 
-  relation: [
-    "S","T",
-    cwt.Relationship.RELATION_NONE,
-    cwt.Relationship.RELATION_SAME_THING
-  ],
+  relation: ["S", "T", relation.RELATION_NONE, relation.RELATION_SAME_THING],
 
-  condition: function( data ){
-    return cwt.Explode.canSelfDestruct(data.source.unit);
+  condition: function (data) {
+    return explode.canSelfDestruct(data.source.unit);
   },
 
   toDataBlock: function (data, dataBlock) {
     dataBlock.p1 = data.source.x;
     dataBlock.p2 = data.source.y;
-    dataBlock.p3 = cwt.Explode.getSuicideRange(data.source.unit);
-    dataBlock.p4 = cwt.Explode.getExplosionDamage(data.source.unit);
+    dataBlock.p3 = explode.getSuicideRange(data.source.unit);
+    dataBlock.p4 = explode.getExplosionDamage(data.source.unit);
   },
 
   parseDataBlock: function (dataBlock) {
-    cwt.Explode.explode(dataBlock.p1,dataBlock.p2,dataBlock.p3,dataBlock.p4);
+    explode.explode(dataBlock.p1, dataBlock.p2, dataBlock.p3, dataBlock.p4);
   }
-});
+};

@@ -1,4 +1,4 @@
-require('../loading').addHandler(function(next) {
+exports.loader = function(next) {
   if (require("../constants").DEBUG) {
     console.log("language selection");
   }
@@ -25,4 +25,4 @@ require('../loading').addHandler(function(next) {
 
   // select language
   require("../localization").selectLanguage(key);
-});
+};

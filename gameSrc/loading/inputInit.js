@@ -1,9 +1,8 @@
 var inpMapping = require("../dataTransfer/keyMapping");
 var constants = require("../constants");
 var features = require('../systemFeatures');
-var loading = require('../loading');
 
-loading.addHandler(function (next) {
+exports.loader = function (next, hasCachedData) {
   if (constants.DEBUG) console.log("initializing input system");
 
   // enable input backend
@@ -13,4 +12,4 @@ loading.addHandler(function (next) {
   if (!features.touch) require("../input/touch").backend.enable();
 
   inpMapping.load(next);
-});
+};

@@ -1,6 +1,6 @@
 var CONFIRM_MSG = "Your system isn't supported by CW:T. Try to run it?";
 
-require('../loading').addHandler(function (next) {
+exports.loader = function (next) {
   if (require("../constants").DEBUG) {
     console.log("checking system");
   }
@@ -9,4 +9,4 @@ require('../loading').addHandler(function (next) {
   if (require("../systemFeatures").supported || confirm(CONFIRM_MSG) ) {
     next();
   }
-});
+};

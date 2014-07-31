@@ -1,33 +1,22 @@
 "use strict";
 
-require('../actions').unitAction({
-  key: "attack",
+var relation = require("../logic/relationship");
+var constant = require("../constants");
+var attack = require("../logic/attack");
+var model = require("../model");
 
-  relation: [
-    "S", "T",
-    cwt.Relationship.RELATION_NONE,
-    cwt.Relationship.RELATION_SAME_THING
-  ],
+exports.action = {
+  relation: ["S", "T", relation.RELATION_NONE, relation.RELATION_SAME_THING],
 
   condition: function (data) {
-    if (cwt.Gameround.inPeacePhase()) return false;
+    if (model.inPeacePhase()) return false;
 
-    return cwt.Attack.hasTargets(
-      data.source.unit,
-      data.target.x,
-      data.target.y,
-      data.movePath.data[0] !== cwt.INACTIVE
-    );
+    return attack.hasTargets(data.source.unit, data.target.x, data.target.y, data.movePath.data[0] !== constant.INACTIVE);
   },
 
   targetSelectionType: "A",
   prepareTargets: function (data) {
-    cwt.Attack.calculateTargets(
-      data.source.unit,
-      data.target.x,
-      data.target.y,
-      data.selection
-    );
+    attack.calculateTargets(data.source.unit, data.target.x, data.target.y, data.selection);
   },
 
   toDataBlock: function (data, dataBlock) {
@@ -38,11 +27,6 @@ require('../actions').unitAction({
   },
 
   parseDataBlock: function (dataBlock) {
-    cwt.Attack.attack(
-      // @type {cwt.Unit} */ cwt.Unit.getInstance(dataBlock.p1),
-      // @type {cwt.Unit} */ cwt.Unit.getInstance(dataBlock.p2),
-      dataBlock.p3,
-      dataBlock.p4
-    );
+    attack.attack(model.units[dataBlock.p1], model.units[dataBlock.p2], dataBlock.p3, dataBlock.p4);
   }
-});
+};

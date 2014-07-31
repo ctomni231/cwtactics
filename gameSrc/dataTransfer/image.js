@@ -14,12 +14,9 @@ var IMAGE_KEY = "GFX_";
 // @param callback
 //
 exports.transferToStorage = function (type, sprite, callback) {
-  if (constants.DEBUG) assert(sprite instanceof cwt.ArmySprite || sprite instanceof image.Sprite);
+  if (constants.DEBUG) assert(sprite instanceof image.Sprite);
 
-  // extract data
-  var data = (sprite instanceof cwt.ArmySprite) ? cwt.ArmySprite.toJSON(sprite) : image.Sprite.toJSON(sprite);
-
-  // save it
+  var data = image.Sprite.toJSON(sprite);
   storage.set(type, data, callback);
 };
 
@@ -458,12 +455,12 @@ exports.transferAllFromRemote = function (callback) {
   // @param startX
   //
   function cropUnitState(sprite, state, rImg, bImg, gImg, yImg, startX) {
-    sprite.setImage(cwt.Sprite.UNIT_RED + state, cropImage(rImg, startX, 0, 96, 32));
-    sprite.setImage(cwt.Sprite.UNIT_BLUE + state, cropImage(bImg, startX, 0, 96, 32));
-    sprite.setImage(cwt.Sprite.UNIT_GREEN + state, cropImage(gImg, startX, 0, 96, 32));
-    sprite.setImage(cwt.Sprite.UNIT_YELLOW + state, cropImage(yImg, startX, 0, 96, 32));
-    sprite.setImage(cwt.Sprite.UNIT_SHADOW_MASK + state,
-      createBlackMask(sprite.getImage(cwt.Sprite.UNIT_RED + state)));
+    sprite.setImage(image.Sprite.UNIT_RED + state, cropImage(rImg, startX, 0, 96, 32));
+    sprite.setImage(image.Sprite.UNIT_BLUE + state, cropImage(bImg, startX, 0, 96, 32));
+    sprite.setImage(image.Sprite.UNIT_GREEN + state, cropImage(gImg, startX, 0, 96, 32));
+    sprite.setImage(image.Sprite.UNIT_YELLOW + state, cropImage(yImg, startX, 0, 96, 32));
+    sprite.setImage(image.Sprite.UNIT_SHADOW_MASK + state,
+      createBlackMask(sprite.getImage(image.Sprite.UNIT_RED + state)));
   }
 
   //
@@ -479,12 +476,12 @@ exports.transferAllFromRemote = function (callback) {
   //
   function cropUnitStateInverted(sprite, state, rImg, bImg, gImg, yImg, startX) {
     // TODO: bug flips whole image, but it would be correct to flip every state
-    sprite.setImage(cwt.Sprite.UNIT_RED + state, flipImage(cropImage(rImg, startX, 0, 96, 32), true, false));
-    sprite.setImage(cwt.Sprite.UNIT_BLUE + state, flipImage(cropImage(bImg, startX, 0, 96, 32), true, false));
-    sprite.setImage(cwt.Sprite.UNIT_GREEN + state, flipImage(cropImage(gImg, startX, 0, 96, 32), true, false));
-    sprite.setImage(cwt.Sprite.UNIT_YELLOW + state, flipImage(cropImage(yImg, startX, 0, 96, 32), true, false));
-    sprite.setImage(cwt.Sprite.UNIT_SHADOW_MASK + state,
-      createBlackMask(sprite.getImage(cwt.Sprite.UNIT_RED + state)));
+    sprite.setImage(image.Sprite.UNIT_RED + state, flipImage(cropImage(rImg, startX, 0, 96, 32), true, false));
+    sprite.setImage(image.Sprite.UNIT_BLUE + state, flipImage(cropImage(bImg, startX, 0, 96, 32), true, false));
+    sprite.setImage(image.Sprite.UNIT_GREEN + state, flipImage(cropImage(gImg, startX, 0, 96, 32), true, false));
+    sprite.setImage(image.Sprite.UNIT_YELLOW + state, flipImage(cropImage(yImg, startX, 0, 96, 32), true, false));
+    sprite.setImage(image.Sprite.UNIT_SHADOW_MASK + state,
+      createBlackMask(sprite.getImage(image.Sprite.UNIT_RED + state)));
   }
 
   function cropAndRotate(image, sx, sy, w, rotation) {
@@ -534,8 +531,8 @@ exports.transferAllFromRemote = function (callback) {
 
   var unitColorData;
   var propertyColorData;
-  var unitColStat = cwt.Image.UNIT_INDEXES;
-  var propColStat = cwt.Image.PROPERTY_INDEXES;
+  var unitColStat = image.UNIT_INDEXES;
+  var propColStat = image.PROPERTY_INDEXES;
 
   var stuff = [];
 
@@ -568,7 +565,7 @@ exports.transferAllFromRemote = function (callback) {
     stuff.push(function (next) {
       var path = cwt.Graphics.UNITS[key];
       grabImage(path, key, function () {
-        var sprite = new image.Sprite(cwt.Sprite.UNIT_STATES);
+        var sprite = new image.Sprite(image.Sprite.UNIT_STATES);
 
         var red = this;
         var blue;
@@ -581,15 +578,15 @@ exports.transferAllFromRemote = function (callback) {
         yellow = replaceColors(red, unitColorData, unitColStat.colors, unitColStat.RED, unitColStat.YELLOW);
 
         // crop out target states as single images
-        cropUnitState(sprite, cwt.Sprite.UNIT_STATE_IDLE, red, blue, green, yellow, 0);
-        cropUnitState(sprite, cwt.Sprite.UNIT_STATE_UP, red, blue, green, yellow, 96);
-        cropUnitState(sprite, cwt.Sprite.UNIT_STATE_DOWN, red, blue, green, yellow, 192);
-        cropUnitState(sprite, cwt.Sprite.UNIT_STATE_LEFT, red, blue, green, yellow, 288);
-        cropUnitStateInverted(sprite, cwt.Sprite.UNIT_STATE_IDLE_INVERTED, red, blue, green, yellow, 0);
-        cropUnitStateInverted(sprite, cwt.Sprite.UNIT_STATE_RIGHT, red, blue, green, yellow, 288);
+        cropUnitState(sprite, image.Sprite.UNIT_STATE_IDLE, red, blue, green, yellow, 0);
+        cropUnitState(sprite, image.Sprite.UNIT_STATE_UP, red, blue, green, yellow, 96);
+        cropUnitState(sprite, image.Sprite.UNIT_STATE_DOWN, red, blue, green, yellow, 192);
+        cropUnitState(sprite, image.Sprite.UNIT_STATE_LEFT, red, blue, green, yellow, 288);
+        cropUnitStateInverted(sprite, image.Sprite.UNIT_STATE_IDLE_INVERTED, red, blue, green, yellow, 0);
+        cropUnitStateInverted(sprite, image.Sprite.UNIT_STATE_RIGHT, red, blue, green, yellow, 288);
 
         // register sprite
-        cwt.Image.sprites[this.key] = sprite;
+        image.sprites[this.key] = sprite;
         next();
       });
     });
@@ -609,7 +606,7 @@ exports.transferAllFromRemote = function (callback) {
     }
 
     if (value.length === 3) { // single variant tile
-      sprite = new image.Sprite(cwt.Sprite.TILE_STATES);
+      sprite = new image.Sprite(image.Sprite.TILE_STATES);
       stuff.push(function (next) {
         grabImage(value[0], key, function () {
           sprite.setImage(0, this);
@@ -619,7 +616,7 @@ exports.transferAllFromRemote = function (callback) {
       });
 
     } else { // multi variant tile
-      sprite = new image.Sprite(value[2].length * cwt.Sprite.TILE_STATES);
+      sprite = new image.Sprite(value[2].length * image.Sprite.TILE_STATES);
 
       cwt.TileVariants.registerVariantInfo(key, value[0], value[1]);
 
@@ -632,7 +629,7 @@ exports.transferAllFromRemote = function (callback) {
       }
     }
 
-    cwt.Image.sprites[key] = sprite;
+    image.sprites[key] = sprite;
   });
 
   // grab property images
@@ -640,7 +637,7 @@ exports.transferAllFromRemote = function (callback) {
     stuff.push(function (next) {
       var path = cwt.Graphics.PROPERTIES[key];
       grabImage(path, key, function () {
-        var sprite = new image.Sprite(cwt.Sprite.PROPERTY_STATES);
+        var sprite = new image.Sprite(image.Sprite.PROPERTY_STATES);
 
         var red = this;
         var blue;
@@ -655,15 +652,15 @@ exports.transferAllFromRemote = function (callback) {
         neutral = replaceColors(red, propertyColorData, propColStat.colors, propColStat.RED, propColStat.GRAY);
         shadow = createBlackMask(red);
 
-        sprite.setImage(cwt.Sprite.PROPERTY_RED, red);
-        sprite.setImage(cwt.Sprite.PROPERTY_BLUE, blue);
-        sprite.setImage(cwt.Sprite.PROPERTY_GREEN, green);
-        sprite.setImage(cwt.Sprite.PROPERTY_YELLOW, yellow);
-        sprite.setImage(cwt.Sprite.PROPERTY_NEUTRAL, neutral);
-        sprite.setImage(cwt.Sprite.PROPERTY_SHADOW_MASK, shadow);
+        sprite.setImage(image.Sprite.PROPERTY_RED, red);
+        sprite.setImage(image.Sprite.PROPERTY_BLUE, blue);
+        sprite.setImage(image.Sprite.PROPERTY_GREEN, green);
+        sprite.setImage(image.Sprite.PROPERTY_YELLOW, yellow);
+        sprite.setImage(image.Sprite.PROPERTY_NEUTRAL, neutral);
+        sprite.setImage(image.Sprite.PROPERTY_SHADOW_MASK, shadow);
 
         // register sprite
-        cwt.Image.sprites[this.key] = sprite;
+        image.sprites[this.key] = sprite;
         next();
       });
     });
@@ -673,20 +670,20 @@ exports.transferAllFromRemote = function (callback) {
   stuff.push(function (next) {
     var path = cwt.Graphics.ARROW;
     grabImage(path, "ARROW", function () {
-      var sprite = new cwt.Sprite(10);
+      var sprite = new image.Sprite(10);
 
       var arrowMap = this;
 
-      sprite.setImage(cwt.Sprite.DIRECTION_N, cropImage(arrowMap, 0, 0, 16, 16));
-      sprite.setImage(cwt.Sprite.DIRECTION_S, cropAndRotate(arrowMap, 0, 0, 16, 180));
-      sprite.setImage(cwt.Sprite.DIRECTION_W, cropAndRotate(arrowMap, 0, 0, 16, 270));
-      sprite.setImage(cwt.Sprite.DIRECTION_E, cropAndRotate(arrowMap, 0, 0, 16, 90));
-      sprite.setImage(cwt.Sprite.DIRECTION_SW, cropAndRotate(arrowMap, 32, 0, 16, 90));
-      sprite.setImage(cwt.Sprite.DIRECTION_SE, cropImage(arrowMap, 32, 0, 16, 16));
-      sprite.setImage(cwt.Sprite.DIRECTION_NW, cropAndRotate(arrowMap, 32, 0, 16, 180));
-      sprite.setImage(cwt.Sprite.DIRECTION_NE, cropAndRotate(arrowMap, 32, 0, 16, 270));
-      sprite.setImage(cwt.Sprite.DIRECTION_NS, cropImage(arrowMap, 16, 0, 16, 16));
-      sprite.setImage(cwt.Sprite.DIRECTION_WE, cropAndRotate(arrowMap, 16, 0, 16, 90));
+      sprite.setImage(image.Sprite.DIRECTION_N, cropImage(arrowMap, 0, 0, 16, 16));
+      sprite.setImage(image.Sprite.DIRECTION_S, cropAndRotate(arrowMap, 0, 0, 16, 180));
+      sprite.setImage(image.Sprite.DIRECTION_W, cropAndRotate(arrowMap, 0, 0, 16, 270));
+      sprite.setImage(image.Sprite.DIRECTION_E, cropAndRotate(arrowMap, 0, 0, 16, 90));
+      sprite.setImage(image.Sprite.DIRECTION_SW, cropAndRotate(arrowMap, 32, 0, 16, 90));
+      sprite.setImage(image.Sprite.DIRECTION_SE, cropImage(arrowMap, 32, 0, 16, 16));
+      sprite.setImage(image.Sprite.DIRECTION_NW, cropAndRotate(arrowMap, 32, 0, 16, 180));
+      sprite.setImage(image.Sprite.DIRECTION_NE, cropAndRotate(arrowMap, 32, 0, 16, 270));
+      sprite.setImage(image.Sprite.DIRECTION_NS, cropImage(arrowMap, 16, 0, 16, 16));
+      sprite.setImage(image.Sprite.DIRECTION_WE, cropAndRotate(arrowMap, 16, 0, 16, 90));
 
       // register sprite
       image.sprites[this.key] = sprite;
@@ -698,14 +695,14 @@ exports.transferAllFromRemote = function (callback) {
   stuff.push(function (next) {
     var path = cwt.Graphics.DUST;
     grabImage(path, "DUST", function () {
-      var sprite = new cwt.Sprite(4);
+      var sprite = new image.Sprite(4);
 
       var imgMap = this;
 
-      sprite.setImage(cwt.Sprite.DIRECTION_LEFT, cropImage(imgMap, 0, 0, 96, 32));
-      sprite.setImage(cwt.Sprite.DIRECTION_UP, cropImage(imgMap, 96, 0, 96, 32));
-      sprite.setImage(cwt.Sprite.DIRECTION_DOWN, cropImage(imgMap, 192, 0, 96, 32));
-      sprite.setImage(cwt.Sprite.DIRECTION_RIGHT, cropImage(imgMap, 288, 0, 96, 32));
+      sprite.setImage(image.Sprite.DIRECTION_LEFT, cropImage(imgMap, 0, 0, 96, 32));
+      sprite.setImage(image.Sprite.DIRECTION_UP, cropImage(imgMap, 96, 0, 96, 32));
+      sprite.setImage(image.Sprite.DIRECTION_DOWN, cropImage(imgMap, 192, 0, 96, 32));
+      sprite.setImage(image.Sprite.DIRECTION_RIGHT, cropImage(imgMap, 288, 0, 96, 32));
 
       // register sprite
       image.sprites[this.key] = sprite;
@@ -719,8 +716,8 @@ exports.transferAllFromRemote = function (callback) {
     grabImage(path, "ROCKET_FLY", function () {
       var sprite = new image.Sprite(2);
 
-      sprite.setImage(cwt.Sprite.DIRECTION_UP, this);
-      sprite.setImage(cwt.Sprite.DIRECTION_DOWN, cropAndRotate(this, 0, 0, 24, 180));
+      sprite.setImage(image.Sprite.DIRECTION_UP, this);
+      sprite.setImage(image.Sprite.DIRECTION_DOWN, cropAndRotate(this, 0, 0, 24, 180));
 
       // register sprite
       image.sprites[this.key] = sprite;

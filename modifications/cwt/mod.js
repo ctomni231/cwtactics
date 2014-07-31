@@ -7,6 +7,33 @@ var i18n = require("../../gameSrc/localization");
 i18n.registerLanguage("en",require("./languages/english.json"));
 i18n.registerLanguage("de",require("./languages/german.json"));
 
+// units
+require("././AAIR");
+require("././ARTY");
+require("././BKBT");
+require("././CRUS");
+require("././LNDR");
+require("././MISS");
+require("././RCKT");
+require("././SUBM");
+require("././WRTK");
+require("././ACAR");
+require("././BCTR");
+require("././BMBR");
+require("././FGTR");
+require("././MDTK");
+require("././NTNK");
+require("././RECN");
+require("././TCTR");
+require("././APCR");
+require("././BKBM");
+require("././BSHP");
+require("././INFT");
+require("././MECH");
+require("././OOZM");
+require("././STLH");
+require("././TNTK");
+
 // scripts
 var events = require("../../gameSrc/events");
 

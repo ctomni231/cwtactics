@@ -1,5 +1,13 @@
 "use strict";
 
+var constants = require("../constants");
+var assert = require("./functions").assert;
+var sheets = require("../sheets");
+var model = require("../model");
+
+var lifecycleLogic = require("../logic/lifecycle");
+var coLogic = require("../logic/co");
+
 exports.CHANGE_TYPE = {
   CO_MAIN: 0,
   CO_SIDE: 1,
@@ -30,73 +38,61 @@ var team = [];
 // @param prev is it a set to previous value step (else next value)
 //
 exports.changeParameter = function (pid, type, prev) {
-  if (cwt.DEBUG) cwt.assert(type >= this.CHANGE_TYPE.CO_MAIN && type <= this.CHANGE_TYPE.TEAM);
+  if (constants.DEBUG) assert(type >= exports.CHANGE_TYPE.CO_MAIN && type <= exports.CHANGE_TYPE.TEAM);
 
-  if (this.type[pid] === cwt.DESELECT_ID) {
+  if (type[pid] === constants.DESELECT_ID) {
     return;
   }
 
   switch (type) {
 
-    case this.CHANGE_TYPE.CO_MAIN:
-      var cSelect = this.co[pid];
+    case exports.CHANGE_TYPE.CO_MAIN:
+      var cSelect = co[pid];
 
       if (prev) {
         cSelect--;
-        if (cSelect < 0) cSelect = cwt.DataSheets.commanders.types.length - 1;
+        if (cSelect < 0) cSelect = sheets.commanders.types.length - 1;
       } else {
         cSelect++;
-        if (cSelect >= cwt.DataSheets.commanders.types.length) cSelect = 0;
+        if (cSelect >= sheets.commanders.types.length) cSelect = 0;
       }
 
-      this.co[pid] = cSelect;
+      co[pid] = cSelect;
       break;
 
     // ---------------------------------------------------------
 
-    case this.CHANGE_TYPE.CO_SIDE:
-      cwt.assert(false, "not supported yet");
+    case constants.CHANGE_TYPE.CO_SIDE:
+      assert(false, "not supported yet");
       break;
 
     // ---------------------------------------------------------
 
-    case this.CHANGE_TYPE.GAME_TYPE:
-      if (prev) {
-        if (cwt.Model.gameMode === cwt.Model.GAME_MODE_AW1) {
-          cwt.Model.gameMode = cwt.Model.GAME_MODE_AW2;
-        } else if (cwt.Model.gameMode === cwt.Model.GAME_MODE_AW2) {
-          cwt.Model.gameMode = cwt.Model.GAME_MODE_AW1;
-        }
-      } else {
-        if (cwt.Model.gameMode === cwt.Model.GAME_MODE_AW1) {
-          cwt.Model.gameMode = cwt.Model.GAME_MODE_AW2;
-        } else if (cwt.Model.gameMode === cwt.Model.GAME_MODE_AW2) {
-          cwt.Model.gameMode = cwt.Model.GAME_MODE_AW1;
-        }
-      }
+    case constants.CHANGE_TYPE.GAME_TYPE:
+      model.gameMode = model.gameMode === model.GAME_MODE_AW1 ? model.GAME_MODE_AW2 : model.GAME_MODE_AW1;
       break;
 
     // ---------------------------------------------------------
 
-    case this.CHANGE_TYPE.PLAYER_TYPE:
-      var cSelect = this.type[pid];
-      if (cSelect === cwt.DESELECT_ID) break;
+    case constants.CHANGE_TYPE.PLAYER_TYPE:
+      var cSelect = type[pid];
+      if (cSelect === constants.DESELECT_ID) break;
 
       if (prev) {
         cSelect--;
-        if (cSelect < cwt.INACTIVE) cSelect = 1;
+        if (cSelect < constants.INACTIVE) cSelect = 1;
       } else {
         cSelect++;
-        if (cSelect >= 2) cSelect = cwt.INACTIVE;
+        if (cSelect >= 2) cSelect = constants.INACTIVE;
       }
 
-      this.type[pid] = cSelect;
+      type[pid] = cSelect;
       break;
 
     // ---------------------------------------------------------
 
-    case this.CHANGE_TYPE.TEAM:
-      var cSelect = this.team[pid];
+    case constants.CHANGE_TYPE.TEAM:
+      var cSelect = team[pid];
 
       while (true) {
 
@@ -111,10 +107,10 @@ exports.changeParameter = function (pid, type, prev) {
 
         // check team selection -> at least two different teams has to be set all times
         var s = false;
-        for (var i = 0, e = cwt.MAX_PLAYER; i < e; i++) {
+        for (var i = 0, e = constants.MAX_PLAYER; i < e; i++) {
           if (i === pid) continue;
 
-          if (this.type[i] >= 0 && this.team[i] !== cSelect) {
+          if (type[i] >= 0 && team[i] !== cSelect) {
             s = true;
           }
         }
@@ -122,7 +118,7 @@ exports.changeParameter = function (pid, type, prev) {
         if (s) break;
       }
 
-      this.team[pid] = cSelect;
+      team[pid] = cSelect;
       break;
   }
 };
@@ -133,24 +129,22 @@ exports.changeParameter = function (pid, type, prev) {
 exports.preProcess = function () {
 
   // reset config data
-  for (var n = 0; n < cwt.MAX_PLAYER; n++) {
-    this.co[n] = 0;
-    this.team[n] = cwt.INACTIVE;
-    this.type[n] = 0;
+  for (var n = 0; n < constants.MAX_PLAYER; n++) {
+    co[n] = 0;
+    team[n] = constants.INACTIVE;
+    type[n] = 0;
   }
 
   // create pre-set data which would allow to start the game round (enables fast game round mode)
-  for (var i = 0, e = cwt.MAX_PLAYER; i < e; i++) {
-    if (i < this.map.player) {
-
+  for (var i = 0, e = constants.MAX_PLAYER; i < e; i++) {
+    if (i < map.player) {
       if (i === 0) {
-        this.type[i] = 0;
-      } else this.type[i] = 1;
-
-      this.team[i] = i;
+        type[i] = 0;
+      } else type[i] = 1;
+      team[i] = i;
 
     } else {
-      this.type[i] = cwt.DESELECT_ID;
+      type[i] = constants.DESELECT_ID;
     }
   }
 };
@@ -168,23 +162,23 @@ exports.postProcess = function () {
   // model.events.client_deregisterPlayers();
 
   var onlyAI = true;
-  for (var i = 0, e = cwt.MAX_PLAYER; i < e; i++) {
-    if (this.type[i] === 0) {
+  for (var i = 0, e = constants.MAX_PLAYER; i < e; i++) {
+    if (type[i] === 0) {
       onlyAI = false;
       break;
     }
   }
 
   // update model
-  for (var i = 0, e = cwt.MAX_PLAYER; i < e; i++) {
-    var player = cwt.Model.players[i];
+  for (var i = 0, e = constants.MAX_PLAYER; i < e; i++) {
+    var player = model.players[i];
 
-    if (this.type[i] >= 0) {
+    if (type[i] >= 0) {
 
       player.gold = 0;
-      player.team = this.team[i];
+      player.team = team[i];
 
-      if (this.type[i] === 1) {
+      if (type[i] === 1) {
         // controller.ai_register(i);
         if (onlyAI) {
           player.clientControlled = true;
@@ -194,21 +188,13 @@ exports.postProcess = function () {
         player.clientVisible = true;
       }
 
-      tmp = (this.co[i] !== cwt.INACTIVE) ?
-        cwt.DataSheets.commanders.types[this.co[i]] : null;
-
-      cwt.CO.setMainCo(player, tmp);
+      tmp = (co[i] !== constants.INACTIVE) ? sheets.commanders.types[co[i]] : null;
+      coLogic.setMainCo(player, tmp);
 
     } else {
-      // Why another disable here ?
-      // There is the possibility that a map has units for a player that will be deactivated in the
-      // config screen.. so deactivate them all
-
-      cwt.Unit.destroyPlayerUnits(player);
-      cwt.Property.releasePlayerProperties(player);
-
-      // deactivate player
-      player.team = cwt.INACTIVE;
+      // Why another disable here ? There is the possibility that a map has units for a player that
+      // will be deactivated in the config screen.. so deactivate them all
+      lifecycleLogic.deactivatePlayer(player);
     }
   }
 };

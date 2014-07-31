@@ -30,7 +30,7 @@ var checkForceTouch = function (next) {
   }
 };
 
-require('../loading').addHandler(function (nextLoadingStep) {
+exports.loader = function (nextLoadingStep) {
   if (constants.DEBUG) console.log("checking options");
 
   callAsSequence([
@@ -41,4 +41,4 @@ require('../loading').addHandler(function (nextLoadingStep) {
       nextLoadingStep();
     }
   ]);
-});
+};

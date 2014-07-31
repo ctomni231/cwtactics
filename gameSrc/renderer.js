@@ -1,3 +1,104 @@
+var constants = require("./constants");
+var model = require("./model");
+var move = require("./logic/move");
+
+//
+//
+// @class
+//
+exports.LayeredCanvas = my.Class({
+
+  constructor: function (canvasId, frames, w, h) {
+
+    // root canvas
+    this.cv = document.getElementById(canvasId);
+    this.cv.width = w;
+    this.cv.height = h;
+    this.ctx = this.cv.getContext("2d");
+    this.w = w;
+    this.h = h;
+
+    // cached layers
+    if (frames > 0) {
+      this.contexts = [];
+      this.layers = [];
+
+      var n = 0;
+      while (n < frames) {
+        var cv = document.createElement("canvas");
+
+        cv.width = w;
+        cv.height = h;
+
+        this.contexts[n] = cv.getContext("2d");
+        this.layers[n] = cv;
+
+        n++;
+      }
+    }
+  },
+
+  //
+  //
+  // @param {Number} index
+  //
+  renderLayer: function (index) {
+    if (cwt.DEBUG) cwt.assert(arguments.length === 0 || (index >= 0 && index < this.layers.length));
+
+    var ctx = this.getContext();
+    ctx.clearRect(0, 0, this.w, this.h);
+    ctx.drawImage(this.getLayer(index), 0, 0, this.w, this.h);
+  },
+
+  //
+  //
+  // @param {Number?} index
+  // @return {HTMLCanvasElement}
+  //
+  getLayer: function (index) {
+    if (cwt.DEBUG) cwt.assert(index === void 0 || (index >= 0 && index < this.layers.length));
+
+    // root ?
+    if (index === void 0) {
+      return this.cv;
+    }
+
+    return this.layers[index];
+  },
+
+  //
+  //
+  // @param {Number?} index
+  //
+  clear: function (index) {
+    this.getContext(index).clearRect(0, 0, this.w, this.h);
+  },
+
+  clearAll: function () {
+    var n = this.layers.length-1;
+    while (n >= 0) {
+      this.clear(n);
+      n--;
+    }
+  },
+
+  //
+  //
+  // @param {Number?} index
+  // @return {CanvasRenderingContext2D}
+  //
+  getContext: function (index) {
+    if (cwt.DEBUG) cwt.assert(index === void 0 || (index >= 0 && index < this.layers.length));
+
+    // root ?
+    if (index === void 0) {
+      return this.ctx;
+    }
+
+    return this.contexts[index];
+  }
+});
+
 //
 //
 // @class
@@ -28,7 +129,7 @@ exports.LayerObject = my.Class({
   //
   renderFrame: function (frame) {
     var curCanvas = this.frames[frame];
-    this.canvas.getContext("2d").drawImage(curCanvas,0,0,curCanvas.width,curCanvas.height);
+    this.canvas.getContext("2d").drawImage(curCanvas, 0, 0, curCanvas.width, curCanvas.height);
   },
 
   //
@@ -105,7 +206,7 @@ exports.LayerObject = my.Class({
 //
 exports.PaginationObject = my.Class({
 
-  constructor: function(list, pageSize, updateFn) {
+  constructor: function (list, pageSize, updateFn) {
     this.page = 0;
     this.list = list;
 
@@ -122,7 +223,7 @@ exports.PaginationObject = my.Class({
   // Selects a page from the list. The entries of the selected page will be saved in the **entries** property
   // of the pagination object.
   //
-  selectPage: function(index) {
+  selectPage: function (index) {
     var PAGE_SIZE = this.entries.length;
 
     if (index < 0 || index * PAGE_SIZE >= this.list.length) {
@@ -168,7 +269,7 @@ exports.UIFieldObject = my.Class({
     STYLE_NES: 12
   },
 
-  constructor: function(x, y, w, h, text, fsize, style, actionFn) {
+  constructor: function (x, y, w, h, text, fsize, style, actionFn) {
     this.x = x;
     this.y = y;
     this.width = w;
@@ -192,11 +293,11 @@ exports.UIFieldObject = my.Class({
   // @param y
   // @return {boolean}
   //
-  positionInButton: function(x, y) {
+  positionInButton: function (x, y) {
     return (x >= this.x && x < this.x + this.width && y >= this.y && y < this.y + this.height);
   },
 
-  erase: function(ctx) {
+  erase: function (ctx) {
     ctx.clearRect(this.x, this.y, this.width, this.height);
   },
 
@@ -204,7 +305,7 @@ exports.UIFieldObject = my.Class({
   //
   // @param {CanvasRenderingContext2D} ctx
   //
-  draw: function(ctx) {
+  draw: function (ctx) {
     if (this.style === cwt.UIField.STYLE_NONE) {
       return;
     }
@@ -323,7 +424,7 @@ exports.UIFieldObject = my.Class({
 //
 exports.UICustomFieldObject = my.Class(null, exports.UIFieldObject, {
 
-  constructor: function(x, y, w, h, key, drawFn) {
+  constructor: function (x, y, w, h, key, drawFn) {
     exports.UIFieldObject.call(this, x, y, w, h, key, 0, exports.UIFieldObject.STYLE_NORMAL);
     this.text = "";
     this.draw = drawFn;
@@ -335,7 +436,7 @@ exports.UICustomFieldObject = my.Class(null, exports.UIFieldObject, {
 //
 exports.UIButtonGroupObject = my.Class({
 
-  constructor: function() {
+  constructor: function () {
     this.elements = [];
     this.selected = -1;
   },
@@ -344,7 +445,7 @@ exports.UIButtonGroupObject = my.Class({
   //
   // @param {cwt.UIField} el
   //
-  addElement: function(el) {
+  addElement: function (el) {
     this.elements.push(el);
     if (this.selected === -1 && el.action) {
       this.elements[this.elements.length - 1].inFocus = true;
@@ -357,7 +458,7 @@ exports.UIButtonGroupObject = my.Class({
   //
   // @return {cwt.UIField}
   //
-  activeButton: function() {
+  activeButton: function () {
     return this.elements[this.selected];
   },
 
@@ -367,7 +468,7 @@ exports.UIButtonGroupObject = my.Class({
   // @param {String} key
   // @return {cwt.UIField}
   //
-  getButtonByKey: function(key) {
+  getButtonByKey: function (key) {
     for (var i = 0, e = this.elements.length; i < e; i++) {
       if (this.elements[i].key === key) {
         return this.elements[i];
@@ -380,7 +481,7 @@ exports.UIButtonGroupObject = my.Class({
   //
   // @param {RegExp} reg
   //
-  getButtonsByReg: function(reg) {
+  getButtonsByReg: function (reg) {
     var arr = [];
 
     for (var i = 0, e = this.elements.length; i < e; i++) {
@@ -399,7 +500,7 @@ exports.UIButtonGroupObject = my.Class({
   // @param {Number} y
   // @return {boolean} true, if the index was updated, else false
   //
-  updateIndex: function(x, y) {
+  updateIndex: function (x, y) {
     for (var i = 0, e = this.elements.length; i < e; i++) {
 
       // inactive element
@@ -427,8 +528,8 @@ exports.UIButtonGroupObject = my.Class({
   // @param input
   // @return {boolean} true, if the index was updated, else false
   //
-  handleInput: function(input) {
-    if (cwt.DEBUG) cwt.assert(input !== null);
+  handleInput: function (input) {
+    if (constants.DEBUG) cwt.assert(input !== null);
 
     if (typeof input !== "number") {
       input = input.key;
@@ -472,7 +573,7 @@ exports.UIButtonGroupObject = my.Class({
   //
   // @param {CanvasRenderingContext2D} ctx
   //
-  draw: function(ctx) {
+  draw: function (ctx) {
     for (var i = 0, e = this.elements.length; i < e; i++) {
       var el = this.elements[i];
 
@@ -490,8 +591,8 @@ exports.UIButtonGroupObject = my.Class({
 //
 exports.UICheckboxFieldObject = my.Class(null, exports.UIFieldObject, {
 
-  constructor: function(x, y, w, h, text, fsize, style) {
-    cwt.UIField.call(this, x, y, w, h, text, fsize, style, function(button, state) {
+  constructor: function (x, y, w, h, text, fsize, style) {
+    cwt.UIField.call(this, x, y, w, h, text, fsize, style, function (button, state) {
       state.rendered = false;
       button.checked = !button.checked;
     });
@@ -504,7 +605,7 @@ exports.UICheckboxFieldObject = my.Class(null, exports.UIFieldObject, {
   //
   // @param {CanvasRenderingContext2D} ctx
   //
-  draw: function(ctx) {
+  draw: function (ctx) {
     cwt.UIField.prototype.draw.call(this, ctx);
 
     ctx.fillStyle = "black";
@@ -517,7 +618,7 @@ exports.UICheckboxFieldObject = my.Class(null, exports.UIFieldObject, {
 
 exports.LoadingBarObject = my.Class({
 
-  constructor: function(x, y, w, h) {
+  constructor: function (x, y, w, h) {
     this.x = x;
     this.y = y;
     this.width = w;
@@ -525,7 +626,7 @@ exports.LoadingBarObject = my.Class({
     this.process = 0;
   },
 
-  draw: function(ctx) {
+  draw: function (ctx) {
     ctx.fillStyle = "white";
     ctx.fillRect(this.x, this.y, this.width, this.height);
 
@@ -533,7 +634,7 @@ exports.LoadingBarObject = my.Class({
     ctx.fillRect(this.x, this.y, (parseInt(this.width * (this.process / 100), 10)), this.height);
   },
 
-  setPercentage: function(p) {
+  setPercentage: function (p) {
     if (cwt.DEBUG) {
       cwt.assert(p >= 0 && p <= 100);
     }
@@ -552,7 +653,7 @@ exports.LoadingBarObject = my.Class({
 //
 exports.UIScreenLayoutObject = my.Class(null, exports.UIButtonGroupObject, {
 
-  constructor: function(slotsX, slotsY, startX, startY) {
+  constructor: function (slotsX, slotsY, startX, startY) {
     exports.UIButtonGroupObject.call(this);
 
     this.left = startX || 0;
@@ -567,7 +668,7 @@ exports.UIScreenLayoutObject = my.Class(null, exports.UIButtonGroupObject, {
   //
   // @param f
   //
-  repeat: function(n, f) {
+  repeat: function (n, f) {
     for (var i = 0; i < n; i++) {
       f.call(this, i);
     }
@@ -578,7 +679,7 @@ exports.UIScreenLayoutObject = my.Class(null, exports.UIButtonGroupObject, {
   //
   // @param tiles
   //
-  addRowGap: function(tiles) {
+  addRowGap: function (tiles) {
     this.curY += cwt.TILE_BASE * tiles;
     return this;
   },
@@ -587,7 +688,7 @@ exports.UIScreenLayoutObject = my.Class(null, exports.UIButtonGroupObject, {
   //
   // @param tiles
   //
-  addColGap: function(tiles) {
+  addColGap: function (tiles) {
     this.curX += cwt.TILE_BASE * tiles;
     return this;
   },
@@ -595,7 +696,7 @@ exports.UIScreenLayoutObject = my.Class(null, exports.UIButtonGroupObject, {
   //
   // Breaks the current line
   //
-  breakLine: function() {
+  breakLine: function () {
     this.curX = this.left;
     this.curY += this.curH * cwt.TILE_BASE;
     this.curH = 1;
@@ -612,7 +713,7 @@ exports.UIScreenLayoutObject = my.Class(null, exports.UIButtonGroupObject, {
   // @param {Function?} action
   // @return {cwt.UIScreenLayout}
   //
-  addButton: function(tilesX, tilesY, offsetY, key, style, fSize, action) {
+  addButton: function (tilesX, tilesY, offsetY, key, style, fSize, action) {
     if (arguments.length === 5) {
       action = null;
       fSize = 12;
@@ -653,7 +754,7 @@ exports.UIScreenLayoutObject = my.Class(null, exports.UIButtonGroupObject, {
   // @param {boolean?} ignoreHeight
   // @return {cwt.UIScreenLayout}
   //
-  addCustomField: function(tilesX, tilesY, offsetY, key, draw, ignoreHeight) {
+  addCustomField: function (tilesX, tilesY, offsetY, key, draw, ignoreHeight) {
     if (ignoreHeight != true && this.curH < tilesY) {
       this.curH = tilesY;
     }
@@ -683,7 +784,7 @@ exports.UIScreenLayoutObject = my.Class(null, exports.UIButtonGroupObject, {
   // @param key
   // @return {cwt.UIScreenLayout}
   //
-  addCheckbox: function(tilesX, tilesY, offsetY, key, style, fSize) {
+  addCheckbox: function (tilesX, tilesY, offsetY, key, style, fSize) {
     if (arguments.length === 5) {
       fSize = 12;
     } else if (arguments.length === 6 && typeof fSize === "function") {
@@ -718,13 +819,13 @@ exports.UIScreenLayoutObject = my.Class(null, exports.UIButtonGroupObject, {
 //
 exports.UIPositionableButtonGroupObject = my.Class(null, exports.UIButtonGroupObject, {
 
-  constructor: function() {
+  constructor: function () {
     exports.UIButtonGroupObject.call(this);
     this.x = 0;
     this.y = 0;
   },
 
-  setMenuPosition: function(x, y) {
+  setMenuPosition: function (x, y) {
     var diffX = x - this.x;
     var diffY = y - this.y;
 
@@ -740,76 +841,167 @@ exports.UIPositionableButtonGroupObject = my.Class(null, exports.UIButtonGroupOb
   }
 });
 
+var canvasW = constants.TILE_BASE * constants.SCREEN_WIDTH;
+var canvasH = constants.TILE_BASE * constants.SCREEN_HEIGHT;
+
+exports.screenWidth = canvasW;
+
+exports.screenHeight = canvasH;
+
+exports.screenOffsetX = 0;
+
+exports.screenOffsetY = 0;
+
+exports.convertToTilePos = function (p) {
+  return parseInt(p / constants.TILE_BASE, 10);
+};
+
+//
+// @type {cwt.LayeredCanvas}
+//
+exports.layerBG = new exports.LayeredCanvas("canvas_layer1", 1, canvasW, canvasH);
+
+//
+// @type {cwt.LayeredCanvas}
+//
+exports.layerMap = new exports.LayeredCanvas("canvas_layer2", 8, canvasW, canvasH);
+
+//
+// @type {cwt.LayeredCanvas}
+//
+exports.layerFog = new exports.LayeredCanvas("canvas_layer3", 1, canvasW, canvasH);
+
+//
+// @type {cwt.LayeredCanvas}
+//
+exports.layerUnit = new exports.LayeredCanvas("canvas_layer4", 3, canvasW, canvasH);
+
+//
+// @type {cwt.LayeredCanvas}
+//
+exports.layerEffects = new exports.LayeredCanvas("canvas_layer5", 1, canvasW, canvasH);
+
+//
+// @type {cwt.LayeredCanvas}
+//
+exports.layerUI = new exports.LayeredCanvas("canvas_layer6", 1, canvasW, canvasH);
+
 //
 //
-// @class
+// @param moveCode
 //
-exports.TileVariantInfoObject = my.Class({
+exports.shiftScreen = function (moveCode) {
+  var changed = false;
 
-  constructor: function(desc, connection) {
-    this.desc = desc;
-    this.connection = connection;
-  },
-
-  //
-  //
-  // @param type
-  // @return {string}
-  //
-  grabShortKey: function(type) {
-    if (type && this.desc[type]) return this.desc[type];
-    else return "";
-  },
-
-  //
-  // Returns the variant number in relation to a given set of neighbour types.
-  //
-  // @param {string} typeN
-  // @param {string} typeE
-  // @param {string} typeS
-  // @param {string} typeW
-  // @param {string?} typeNE
-  // @param {string?} typeSE
-  // @param {string?} typeSW
-  // @param {string?} typeNW
-  //
-  getVariant: function(typeN, typeE, typeS, typeW, typeNE, typeSE, typeSW, typeNW) {
-
-    // grab shorts
-    typeN = this.grabShortKey(typeN);
-    typeNE = this.grabShortKey(typeNE);
-    typeE = this.grabShortKey(typeE);
-    typeSE = this.grabShortKey(typeSE);
-    typeS = this.grabShortKey(typeS);
-    typeSW = this.grabShortKey(typeSW);
-    typeW = this.grabShortKey(typeW);
-    typeNW = this.grabShortKey(typeNW);
-
-    // search variant
-    for (var i = 0, e = this.connection.length; i < e; i++) {
-      var cConn = this.connection[i];
-      if (cConn.length === 5) {
-
-        // check_ plus
-        if (cConn[1] !== "" && cConn[1] !== typeN) continue;
-        if (cConn[2] !== "" && cConn[2] !== typeE) continue;
-        if (cConn[3] !== "" && cConn[3] !== typeS) continue;
-        if (cConn[4] !== "" && cConn[4] !== typeW) continue;
-
-      } else {
-
-        // check_ cross
-        if (cConn[1] !== "" && cConn[1] !== typeN) continue;
-        if (cConn[2] !== "" && cConn[2] !== typeNE) continue;
-        if (cConn[3] !== "" && cConn[3] !== typeE) continue;
-        if (cConn[4] !== "" && cConn[4] !== typeSE) continue;
-        if (cConn[5] !== "" && cConn[5] !== typeS) continue;
-        if (cConn[6] !== "" && cConn[6] !== typeSW) continue;
-        if (cConn[7] !== "" && cConn[7] !== typeW) continue;
-        if (cConn[8] !== "" && cConn[8] !== typeNW) continue;
+  switch (moveCode) {
+    case move.MOVE_CODES_UP:
+      if (this.offsetY < model.mapHeight - constants.SCREEN_HEIGHT - 1) {
+        this.offsetY++;
+        changed = true;
       }
+      break;
 
-      return cConn[0];
-    }
+    case move.MOVE_CODES_RIGHT:
+      if (this.offsetX > 0) {
+        this.offsetX--;
+        changed = true;
+      }
+      break;
+
+    case move.MOVE_CODES_DOWN:
+      if (this.offsetY > 0) {
+        this.offsetY--;
+        changed = true;
+      }
+      break;
+
+    case move.MOVE_CODES_LEFT:
+      if (this.offsetX < model.mapWidth - constants.SCREEN_WIDTH - 1) {
+        this.offsetX++;
+        changed = true;
+      }
+      break;
   }
-});
+
+  return changed;
+};
+
+//
+//
+//
+exports.renderScreen = function () {
+  var time;
+  if (cwt.DEBUG) time = (new Date()).getTime();
+
+  var x = cwt.Screen.offsetX;
+  var y = cwt.Screen.offsetY;
+  var w = (cwt.Map.width < cwt.SCREEN_WIDTH)? cwt.Map.width : cwt.SCREEN_WIDTH;
+  var h = (cwt.Map.height < cwt.SCREEN_HEIGHT)? cwt.Map.height : cwt.SCREEN_HEIGHT;
+
+  this.renderTiles(x, y, w, h);
+  this.renderUnits(x, y, w, h);
+
+  // directly update all layers
+  cwt.Screen.layerMap.renderLayer(this.indexMapAnimation);
+  cwt.Screen.layerUnit.renderLayer(this.indexUnitAnimation);
+
+  this.renderFogRect(x, y, w, h);
+
+  if (cwt.DEBUG) console.log("rendered the complete screen (" + ((new Date()).getTime() - time) + "ms)");
+};
+
+//
+//
+// @param {number} code
+//
+exports.shiftMap = function (code) {
+  var time;
+  if (cwt.DEBUG) time = (new Date()).getTime();
+
+  var fx = exports.screenOffsetX;
+  var fy = exports.screenOffsetY;
+  var fw = constants.SCREEN_WIDTH;
+  var fh = constants.SCREEN_HEIGHT;
+
+  // extract needed data for the shift process
+  switch (code) {
+    case move.MOVE_CODES_LEFT:
+      fx += constants.SCREEN_WIDTH - 1;
+      fw = 1;
+      break;
+
+    case move.MOVE_CODES_RIGHT:
+      fw = 1;
+      break;
+
+    case move.MOVE_CODES_UP:
+      fy += constants.SCREEN_HEIGHT - 1;
+      fh = 1;
+      break;
+
+    case move.MOVE_CODES_DOWN:
+      fh = 1;
+      break;
+  }
+
+  // shift screen
+  this.shiftTiles(code);
+  this.shiftUnits(code);
+  this.shiftFog(code);
+
+  // fill created hole
+  this.renderTiles(fx, fy, fw, fh);
+  this.renderUnits(fx, fy, fw, fh);
+  this.renderFogRect(fx, fy, fw, fh);
+
+  // fix overlay when screen moves down
+  if (code === move.MOVE_CODES_DOWN) {
+    this.renderTileOverlayRow();
+  }
+
+  // directly update all layers
+  cwt.Screen.layerMap.renderLayer(this.indexMapAnimation);
+  cwt.Screen.layerUnit.renderLayer(this.indexUnitAnimation);
+
+  if (cwt.DEBUG) console.log("shifted the screen (" + ((new Date()).getTime() - time) + "ms)");
+};
