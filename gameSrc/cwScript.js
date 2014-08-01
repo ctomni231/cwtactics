@@ -92,8 +92,9 @@ specialForms["while"] = function(args, env) {
   if (args.length != 2)
     throw new SyntaxError("Bad number of args to while");
 
-  while (evaluate(args[0], env) !== false)
+  while (evaluate(args[0], env) !== false) {
     evaluate(args[1], env);
+  }
 
   // Since undefined does not exist in Egg, we return false,
   // for lack of a meaningful result.
@@ -115,9 +116,9 @@ specialForms["for"] = function(args, env) {
 
 specialForms["do"] = function(args, env) {
   var value = false;
-  args.forEach(function(arg) {
-    value = evaluate(arg, env);
-  });
+  for( var i = 0, e = args.length; i<e; i++ ){
+	value = evaluate(args[i], env);
+  }
   return value;
 };
 
@@ -174,39 +175,6 @@ function run() {
 
 // ---------------------------------------------
 
-/*
-run("if(true, print(false), print(true))");
-// → false
-
-run("do(define(total, 0),",
-    "   define(count, 1),",
-    "   while(<(count, 11),",
-    "         do(define(total, +(total, count)),",
-    "            define(count, +(count, 1)))),",
-    "   print(total))");
-// → 55
-
-run("do(define(plusOne, fun(a, +(a, 1))),",
-    "   print(plusOne(10)))");
-// → 11
-
-run("do(define(pow, fun(base, exp,",
-    "     if(==(exp, 0),",
-    "        1,",
-    "        *(base, pow(base, -(exp, 1)))))),",
-    "   print(pow(2, 10)))");
-// → 1024
-
-run("do(define(x, 4),",
-    "   define(setx, fun(val, set(x, val))),",
-    "   setx(50),",
-    "   print(x))");
-// → 50
-
-run("set(quux, true)");
-// → Some kind of ReferenceError
-*/
-
 var date;
 
 date = (new Date()).getTime();
@@ -235,9 +203,6 @@ run("do(define(max, 100000),",
 	"	print(n))");
 console.log("needed "+((new Date()).getTime()-date)+"ms script for");
 
-console.log( JSON.stringify( parse(
-	"do(define(max, 100000),define(n, 0),for(0,max,1,do(define(n, +(n, 1)))),print(n))" ) , null, 4 ));
-	
 /* 
 WORK: native 	-> 10ms 
 	  script 	-> 533ms 
