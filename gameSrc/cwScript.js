@@ -1,3 +1,8 @@
+// cwScript is a simple script engine which allows to code events in the modification file without shipping 
+// real javaScript code. This is safer and we can control the event flow. The performance overall will be slower,
+// but normally the events should not be very heavy. So this can be ignored.
+//
+
 function parseExpression(program) {
   program = skipSpace(program);
   var match, expr;
