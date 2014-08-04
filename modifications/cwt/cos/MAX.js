@@ -43,6 +43,7 @@ require('../../sheets').commanders.registerSheet({
     	"def":				"+(10,value)"
     	"movepoints":	"if( gameMode(AW2), +(2,value), value)"
     }
+    
   }
 });
 
