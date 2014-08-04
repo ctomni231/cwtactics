@@ -7,14 +7,14 @@ require('../../sheets').commanders.registerSheet({
   "scoStars": 3,
   
   "effects": {
-    "COP":"forEach(unitList(player),repair(20))",
+    "COP":{
+      "POWER": "forEach(unitList(player),repair(20))"
+    },
     "SCOP":{
       "POWER": "forEach(unitList(player),repair(50))",
-      "D2D":{
-      	"att": 				"+(30,value)"
-      	"def": 				"+(10,value)"
-      	"movepoints":	"+(1,value)"
-      }
+      "att": 				"+(30,value)",
+      "def": 				"+(10,value)",
+      "movepoints":	"+(1,value)"
     }
   }
 });
