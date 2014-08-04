@@ -15,6 +15,7 @@ var MAIN_FILE = './gameSrc/main.js';
 var HTML_FILES = './gameSrc/html/*';
 var GAME_FILES = './gameSrc/**/*.js';
 var DESTINATION_FOLDER = './build/' + VERSION;
+var DESTINATION_FILE = './build/' + VERSION + "/main.js";
 var DEPENDENCIES_FILE_NAME = 'deps.js';
 
 var buildIt = function (debugMode) {

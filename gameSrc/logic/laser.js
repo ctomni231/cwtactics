@@ -1,32 +1,36 @@
-//
+"use strict";
+
+var assert = require("../functions").assert;
+var constants = require("../constants");
+var sheets = require("../sheets");
+var model = require("../model");
+
 // Returns **true** when the given **unit** is the mechanical laser trigger, else **false**.
 //
 exports.isLaser = function (unit) {
-  if (this.DEBUG) cwt.assert(unit instanceof cwt.UnitClass);
-
-  return (unit.type.ID === cwt.DataSheets.LASER_UNIT_INV);
+  if (constants.DEBUG) assert(unit instanceof model.Unit);
+  return (unit.type.ID === sheets.LASER_UNIT_INV);
 };
 
-//
 // Fires a laser at a given position (**x**,**y**).
 //
 exports.fireLaser = function (x, y) {
-  var map = cwt.Model.mapData;
+  var map = model.mapData;
   var prop = map[x][y].property;
 
-  if (cwt.DEBUG) cwt.assert(prop && prop.type.laser);
+  if (constants.DEBUG) assert(prop && prop.type.laser);
 
   var ox = x;
   var oy = y;
   var savedTeam = prop.owner.team;
-  var damage = cwt.UnitClass.pointsToHealth(prop.type.laser.damage);
+  var damage = model.Unit.pointsToHealth(prop.type.laser.damage);
 
   // every tile on the cross ( same y or x coordinate ) will be damaged
-  for (var x = 0, xe = cwt.Model.mapWidth; x < xe; x++) {
+  for (var x = 0, xe = model.mapWidth; x < xe; x++) {
     var doIt = false;
 
     if (x === ox) {
-      for (var y = 0, ye = cwt.Model.mapHeight; y < ye; y++) {
+      for (var y = 0, ye = model.mapHeight; y < ye; y++) {
         if (oy !== y) {
           var unit = map[x][y].unit;
           if (unit && unit.owner.team !== savedTeam) {

@@ -1,6 +1,7 @@
 "use strict";
 
 var assert = require("./functions").assert;
+var constants = require("./constants")
 
 //
 //
@@ -64,7 +65,7 @@ exports.SheetDatabaseObject = my.Class({
   //
   //
   getSheet: function (id) {
-    if (cwt.DEBUG) cwt.assert(this.isValidId(id));
+    if (constants.DEBUG) assert(this.isValidId(id));
 
     return this.sheets[id];
   },
@@ -93,7 +94,7 @@ exports.CANNON_UNIT_INV = "CANNON_UNIT_INV";
 //
 // Database of commanders sheet objects.
 //
-exports.commanders = new cwt.SheetDatabaseObject({
+exports.commanders = new exports.SheetDatabaseObject({
   schema: {
     type: 'object',
     required: ['ID'],
@@ -110,10 +111,10 @@ exports.commanders = new cwt.SheetDatabaseObject({
 // Unit sheet holds the static data of an unit type.
 //
 //
-exports.units = new cwt.SheetDatabaseObject({
+exports.units = new exports.SheetDatabaseObject({
   checks: {
     isMovetypeId: function (v, p) {
-      return cwt.DataSheets.movetypes.isValidId(v) === p;
+      return exports.movetypes.isValidId(v) === p;
     }
   },
   schema: {
@@ -132,12 +133,12 @@ exports.units = new cwt.SheetDatabaseObject({
       range: {
         type: "integer",
         minimum: 0,
-        maximum: cwt.MAX_SELECTION_RANGE
+        maximum: constants.MAX_SELECTION_RANGE
       },
       vision: {
         type: "integer",
         minimum: 1,
-        maximum: cwt.MAX_SELECTION_RANGE
+        maximum: constants.MAX_SELECTION_RANGE
       },
       fuel: {
         type: "integer",
@@ -171,7 +172,7 @@ exports.units = new cwt.SheetDatabaseObject({
           range: {
             type: "integer",
             minimum: 1,
-            maximum: cwt.MAX_SELECTION_RANGE
+            maximum: constants.MAX_SELECTION_RANGE
           },
           nodamage: {
             type: "array",
@@ -243,7 +244,7 @@ exports.units = new cwt.SheetDatabaseObject({
   }
 });
 
-exports.tiles = new cwt.SheetDatabaseObject({
+exports.tiles = new exports.SheetDatabaseObject({
   schema: {
     type: 'object',
     required: ['ID', "defense"],
@@ -263,7 +264,7 @@ exports.tiles = new cwt.SheetDatabaseObject({
 //
 //
 //
-exports.properties = new cwt.SheetDatabaseObject({
+exports.properties = new exports.SheetDatabaseObject({
   schema: {
     type: 'object',
     required: ['ID', "defense", "vision", "capturePoints"],
@@ -294,7 +295,7 @@ exports.properties = new cwt.SheetDatabaseObject({
 //
 // Database for army sheet objects.
 //
-exports.armies = new cwt.SheetDatabaseObject({
+exports.armies = new exports.SheetDatabaseObject({
   schema: {
     type: 'object',
     required: ['ID'],
@@ -312,7 +313,7 @@ exports.armies = new cwt.SheetDatabaseObject({
 //
 // @class
 //
-exports.movetypes = new cwt.SheetDatabaseObject({
+exports.movetypes = new exports.SheetDatabaseObject({
   schema: {
     type: 'object',
     required: ['ID', 'costs'],
@@ -339,7 +340,7 @@ exports.movetypes = new cwt.SheetDatabaseObject({
 //
 // Weather sheet database.
 //
-exports.weathers = new cwt.SheetDatabaseObject({
+exports.weathers = new exports.SheetDatabaseObject({
   schema: {
     type: 'object',
     required: ['ID'],

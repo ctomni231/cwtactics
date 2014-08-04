@@ -1,20 +1,17 @@
 "use strict";
 
-var constants = require("./constants");
-
-var assert = require("./functions").assert;
-
-var createBuffer = require("./circularBuffer").createBufferByClass;
-
 var daysOfPeaceCfg = require("./config").getConfig("daysOfPeace");
+var createBuffer = require("./circularBuffer").createBufferByClass;
+var constants = require("./constants");
+var assert = require("./functions").assert;
 
 // Advance Wars 1 game mode. The first ever released game mode of the advance wars series (GBA and up).
 //
-var GAME_MODE_AW1 = 0;
+exports.GAME_MODE_AW1 = 0;
 
 // Advance Wars 2 game mode. It introduced the Super CO Power.
 //
-var GAME_MODE_AW2 = 1;
+exports.GAME_MODE_AW2 = 1;
 
 //
 // Object that holds information about objects at a given position (x,y).
@@ -44,7 +41,7 @@ exports.PositionData = my.Class({
   // Grabs the data from another position object.
   //
   grab: function(otherPos) {
-    cwt.assert(otherPos instanceof cwt.Position);
+    assert(otherPos instanceof exports.PositionData);
 
     this.x = otherPos.x;
     this.y = otherPos.y;
@@ -63,16 +60,16 @@ exports.PositionData = my.Class({
 
     this.x = x;
     this.y = y;
-    this.tile = cwt.Map.data[x][y];
+    this.tile = exports.mapData[x][y];
 
     if (this.tile.turnOwnerVisible && this.tile.unit) {
       this.unit = null;
-      this.unitId = cwt.Unit.getInstanceId(this.tile.unit);
+      this.unitId = exports.Unit.getInstanceId(this.tile.unit);
     }
 
     if (this.tile.property) {
       this.property = this.tile.property;
-      this.propertyId = cwt.Property.getInstanceId(this.tile.property);
+      this.propertyId = exports.Property.getInstanceId(this.tile.property);
     }
   }
 });
@@ -191,11 +188,11 @@ exports.Player = my.Class({
   },
 
   isInactive: function() {
-    return this.team != cwt.INACTIVE;
+    return this.team != constants.INACTIVE;
   },
 
   deactivate: function() {
-    this.team = cwt.INACTIVE;
+    this.team = constants.INACTIVE;
   },
 
   activate: function(teamNumber) {
@@ -203,11 +200,11 @@ exports.Player = my.Class({
   },
 
   reset: function() {
-    this.team = cwt.INACTIVE;
+    this.team = constants.INACTIVE;
     this.name = null;
 
     this.coA = null;
-    this.activePower = cwt.INACTIVE;
+    this.activePower = constants.INACTIVE;
     this.power = 0;
     this.powerUsed = 0;
 
@@ -265,14 +262,6 @@ exports.Unit = my.Class({
     //
     healthToPointsRest: function(health) {
       return health - (parseInt(health / 10) + 1);
-    },
-
-    fromJSON: function(data) {
-
-    },
-
-    toJSON: function() {
-
     }
   },
 
@@ -281,7 +270,7 @@ exports.Unit = my.Class({
     this.ammo = 0;
     this.fuel = 0;
     this.hidden = false;
-    this.loadedIn = cwt.INACTIVE;
+    this.loadedIn = constants.INACTIVE;
     this.type = null;
     this.canAct = false;
 
@@ -367,7 +356,7 @@ exports.Unit = my.Class({
   },
 
   isCapturing: function() {
-    if (this.loadedIn != cwt.INACTIVE) {
+    if (this.loadedIn != constants.INACTIVE) {
       return false;
     }
 
@@ -380,6 +369,10 @@ exports.Unit = my.Class({
      }
      else unitStatus.CAPTURES = false;
      } */
+  },
+
+  setActable: function (value) {
+    this.canAct = value;
   }
 });
 
@@ -611,157 +604,3 @@ exports.inPeacePhase = function () {
 exports.isTurnOwnerObject = function (obj) {
   return (obj != null && obj.owner === exports.turnOwner);
 };
-
-/*
- function inVision( x,y, tid, unitStatus ){
- if( !model.map_isValidPosition(x,y) ) return;
-
- var unit = model.unit_posData[x][y];
- if( unit ){
- if( model.player_data[unit.owner].team !== tid ) unitStatus.VISIBLE = true;
-
- // IF UNIT IS HIDDEN THEN YOU CAN SEE IT NOW
- if( unit.hidden ) controller.unitStatusMap[ model.unit_extractId(unit) ].VISIBLE = true;
- }
- };
-
- function checkHiddenStatus( unit, unitStatus ){
- if( !unitStatus ){
- unitStatus = controller.unitStatusMap[ model.unit_extractId(unit) ];
- }
-
- unitStatus.VISIBLE = true;
- if( unit.hidden ){
- unitStatus.VISIBLE = false;
-
- // CHECK NEIGHBOURS AND HIDDEN ON NEIGHBOURS
- var x = unit.x;
- var y = unit.y;
- var ttid = model.player_data[unit.owner].team;
- inVision( x-1,y, ttid, unitStatus );
- inVision( x,y-1, ttid, unitStatus );
- inVision( x,y+1, ttid, unitStatus );
- inVision( x+1,y, ttid, unitStatus );
- }
- };function inVision( x,y, tid, unitStatus ){
- if( !model.map_isValidPosition(x,y) ) return;
-
- var unit = model.unit_posData[x][y];
- if( unit ){
- if( model.player_data[unit.owner].team !== tid ) unitStatus.VISIBLE = true;
-
- // IF UNIT IS HIDDEN THEN YOU CAN SEE IT NOW
- if( unit.hidden ) controller.unitStatusMap[ model.unit_extractId(unit) ].VISIBLE = true;
- }
- };
-
- function checkHiddenStatus( unit, unitStatus ){
- if( !unitStatus ){
- unitStatus = controller.unitStatusMap[ model.unit_extractId(unit) ];
- }
-
- unitStatus.VISIBLE = true;
- if( unit.hidden ){
- unitStatus.VISIBLE = false;
-
- // CHECK NEIGHBOURS AND HIDDEN ON NEIGHBOURS
- var x = unit.x;
- var y = unit.y;
- var ttid = model.player_data[unit.owner].team;
- inVision( x-1,y, ttid, unitStatus );
- inVision( x,y-1, ttid, unitStatus );
- inVision( x,y+1, ttid, unitStatus );
- inVision( x+1,y, ttid, unitStatus );
- }
- };
-
- model.event_on("damageUnit",function( uid ){
- controller.updateUnitStatus( uid );
- });
-
- model.event_on("healUnit",function( uid ){
- controller.updateUnitStatus( uid );
- });
-
- model.event_on("battle_mainAttack",function( auid,duid,dmg,mainWeap ){
- var type = model.unit_data[auid].type;
- var sound = (mainWeap)? type.assets.pri_att_sound : type.assets.sec_att_sound;
- if( sound ) controller.audio_playSound( sound );
- });
-
- model.event_on("battle_counterAttack",function( auid,duid,dmg,mainWeap ){
- var type = model.unit_data[auid].type;
- var sound = (mainWeap)? type.assets.pri_att_sound : type.assets.sec_att_sound;
- if( sound ) controller.audio_playSound( sound );
- });
-
- model.event_on("attack_invoked",function( auid,duid ){
- controller.updateSimpleTileInformation();
- controller.updateUnitStatus( auid );
- controller.updateUnitStatus( duid );
- });
-
- model.event_on("buildUnit_invoked",function(){
- controller.updateSimpleTileInformation();
- });
-
-
- model.event_on("createUnit",function( id ){
- controller.updateUnitStatus( id );
- });
-
- model.event_on("loadUnit_invoked",function( uid, tid ){
- controller.updateUnitStatus( tid );
- });
-
- model.event_on("unloadUnit_invoked",function( transportId, trsx, trsy, loadId, tx,ty ){
- controller.updateUnitStatus( transportId );
- });
-
- model.event_on("joinUnits_invoked",function( uid, tid ){
- controller.updateUnitStatus( tid );
- });
-
- model.event_on("supply_refillResources",function( uid ){
- if( typeof uid.x === "number" ) uid = model.unit_extractId(uid);
- controller.updateUnitStatus( uid );
- });
-
- model.event_on("clearUnitPosition",function( uid ){
- var unit = model.unit_data[uid];
- var x = -unit.x;
- var y = -unit.y;
-
- // CHECK HIDDEN, BUT VISIBLE NEIGHBOURS
- if( model.map_isValidPosition(x-1,y) && model.unit_posData[x-1][y] ){
- controller.updateUnitStatus( model.unit_extractId(model.unit_posData[x-1][y]) );
- }
- if( model.map_isValidPosition(x+1,y) && model.unit_posData[x+1][y] ){
- controller.updateUnitStatus( model.unit_extractId(model.unit_posData[x+1][y]) );
- }
- if( model.map_isValidPosition(x,y+1) && model.unit_posData[x][y+1] ){
- controller.updateUnitStatus( model.unit_extractId(model.unit_posData[x][y+1]) );
- }
- if( model.map_isValidPosition(x,y-1) && model.unit_posData[x][y-1] ){
- controller.updateUnitStatus( model.unit_extractId(model.unit_posData[x][y-1]) );
- }
- });
-
- model.event_on("setUnitPosition",function( uid ){
- controller.updateUnitStatus( uid );
- });
-
- model.event_on("unitHide_invoked",function( uid ){
- controller.updateUnitStatus( uid );
- });
-
- model.event_on("unitUnhide_invoked",function( uid ){
- controller.updateUnitStatus( uid );
- });
- //
- });
-
- // use index based multiton trait
- //my.extendClass(cwt.Unit,{STATIC:cwt.IndexMultiton});
-
- */

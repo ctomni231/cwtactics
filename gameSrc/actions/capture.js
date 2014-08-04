@@ -1,21 +1,17 @@
-cwt.Action.unitAction({
-  key: "capture",
+"use strict";
 
-  relation: [
-    "S", "T",
-    cwt.Relationship.RELATION_SAME_THING,
-    cwt.Relationship.RELATION_NONE
-  ],
+var relation = require("../logic/relationship");
+var model = require("../model");
+var capture = require("../logic/capture");
 
-  relationToProp: [
-    "S", "T",
-    cwt.Relationship.RELATION_ENEMY,
-    cwt.Relationship.RELATION_NONE
-  ],
+exports.action = {
+  relation: ["S", "T", relation.RELATION_SAME_THING, relation.RELATION_NONE],
+  relationToProp: ["S", "T", relation.RELATION_ENEMY, relation.RELATION_NONE],
 
   condition: function (data) {
-    if (cwt.Capture.canCapture(data.source.unit)) return false;
-    if (cwt.Capture.canBeCaptured(data.target.property)) return false;
+    if (capture.canCapture(data.source.unit)) return false;
+    if (capture.canBeCaptured(data.target.property)) return false;
+    return true;
   },
 
   toDataBlock: function (data, dataBlock) {
@@ -24,9 +20,6 @@ cwt.Action.unitAction({
   },
 
   parseDataBlock: function (dataBlock) {
-    cwt.Capture.captureProperty(
-      cwt.Property.getInstance(dataBlock.p1),
-      cwt.Unit.getInstance(dataBlock.p2)
-    );
+    capture.captureProperty(model.properties[dataBlock.p1], model.units[dataBlock.p1]);
   }
-});
+};

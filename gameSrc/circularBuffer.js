@@ -129,6 +129,9 @@ exports.CircularBuffer = my.Class({
   }
 });
 
+// Creates a **CircularBuffer** with a given **size**. All slots will be filled with objects of the given **clazz**.
+// The constructor of the given **clazz** will be called with zero arguments.
+//
 exports.createBufferByClass = function (clazz, size) {
   var list = new exports.CircularBuffer(size);
 

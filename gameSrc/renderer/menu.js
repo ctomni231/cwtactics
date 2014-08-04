@@ -1,63 +1,54 @@
-cwt.MapRenderer.MENU_ELEMENTS_MAX = 10;
+var constants = require("../constants");
+var functions = require("../functions");
+var renderer = require("../renderer");
+var i18n = require("../localization");
 
-//
-// @constant
-// @type {number}
-//
-cwt.MapRenderer.MENU_ENTRY_WIDTH = 10 * cwt.TILE_BASE;
-//
-// @constant
-// @type {number}
-//
-cwt.MapRenderer.MENU_ENTRY_HEIGHT = 2 * cwt.TILE_BASE;
+var MENU_ELEMENTS_MAX = 10;
+var MENU_ENTRY_HEIGHT = 2 * constants.TILE_BASE;
+var MENU_ENTRY_WIDTH = 10 * constants.TILE_BASE;
 
-cwt.MapRenderer.layoutGenericMenu_ = new cwt.UIPositionableButtonGroup();
+var layoutGenericMenu = new renderer.UIPositionableButtonGroupObject();
 
-cwt.MapRenderer.$afterLoad = function () {
+// fill layout
+functions.repeat(MENU_ELEMENTS_MAX, function (i) {
+  layoutGenericMenu.addElement(new renderer.UIFieldObject(
+    0,
+    i * 32,
+    MENU_ENTRY_WIDTH,
+    MENU_ENTRY_HEIGHT,
+    "KEY_" + i,
+    8,
+    renderer.UIFieldObject.STYLE_NORMAL,
 
-  // generate elements
-  cwt.repeat(cwt.MapRenderer.MENU_ELEMENTS_MAX, function (i) {
-    cwt.MapRenderer.layoutGenericMenu_.addElement(new cwt.UIField(
-      0,
-      i * 32,
-      cwt.MapRenderer.MENU_ENTRY_WIDTH,
-      cwt.MapRenderer.MENU_ENTRY_HEIGHT,
-      "KEY_" + i,
-      8,
-      cwt.UIField.STYLE_NORMAL,
-
-      // logic will be handled by the state machine
-      cwt.emptyFunction
-    ))
-  });
-};
+    // logic will be handled by the state machine
+    functions.emptyFunction
+  ))
+});
 
 //
 // Renders the menu to the background layer of the UI canvas.
 //
-// @param {cwt.InterfaceMenu} menu
-//
-cwt.MapRenderer.prepareMenu = function (menu) {
-  var gfxMenu = cwt.MapRenderer.layoutGenericMenu_;
+exports.prepareMenu = function (menu) {
+  var gfxMenu = layoutGenericMenu;
   var select = menu.getSelectedIndex();
   var numElements = menu.getSize();
 
   gfxMenu.setMenuPosition(
-    parseInt((cwt.Screen.width / 2) - cwt.MapRenderer.MENU_ENTRY_WIDTH / 2, 10),
-    parseInt((cwt.Screen.height / 2) - ((numElements * cwt.MapRenderer.MENU_ENTRY_HEIGHT) / 2), 10)
+    parseInt((cwt.Screen.width / 2) - MENU_ENTRY_WIDTH / 2, 10),
+    parseInt((cwt.Screen.height / 2) - ((numElements * MENU_ENTRY_HEIGHT) / 2), 10)
   );
 
-  for (var i=0; i < cwt.MapRenderer.MENU_ELEMENTS_MAX; i++) {
+  for (var i=0; i < MENU_ELEMENTS_MAX; i++) {
     if (i < numElements) {
       gfxMenu.elements[i].inactive = false;
-      gfxMenu.elements[i].text = cwt.Localization.forKey(menu.getContent(i));
+      gfxMenu.elements[i].text = i18n.forKey(menu.getContent(i));
 
       // set style
       gfxMenu.elements[i].style = (
-        (numElements === 1 ? cwt.UIField.STYLE_NORMAL :
-        (i === 0 ? cwt.UIField.STYLE_NEW :
-        (i === numElements-1 ? cwt.UIField.STYLE_ESW : cwt.UIField.STYLE_EW)))
-      );
+        (numElements === 1 ? renderer.UIFieldObject.STYLE_NORMAL :
+          (i === 0 ? renderer.UIFieldObject.STYLE_NEW :
+            (i === numElements-1 ? renderer.UIFieldObject.STYLE_ESW : renderer.UIFieldObject.STYLE_EW)))
+        );
 
     } else {
       gfxMenu.elements[i].inactive = true;
@@ -67,6 +58,6 @@ cwt.MapRenderer.prepareMenu = function (menu) {
   this.renderMenu(menu);
 };
 
-cwt.MapRenderer.renderMenu = function (menu) {
-  cwt.MapRenderer.layoutGenericMenu_.draw(cwt.Screen.layerUI.getContext(0));
+exports.renderMenu = function (menu) {
+  layoutGenericMenu.draw(cwt.Screen.layerUI.getContext(0));
 };

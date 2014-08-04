@@ -1,3 +1,9 @@
+"use strict";
+
+var constants = require("../constants");
+var assert = require("../functions").assert;
+var model = require("../model");
+
 // Means two objects are the same object (so there is only one object).
 //
 exports.RELATION_SAME_THING = -1;
@@ -66,8 +72,8 @@ exports.getRelationship = function (objectA, objectB) {
     return this.RELATION_NONE;
   }
 
-  var playerA = (objectA instanceof cwt.PlayerClass) ? objectA : objectA.owner;
-  var playerB = (objectB instanceof cwt.PlayerClass) ? objectB : objectB.owner;
+  var playerA = (objectA instanceof model.Player) ? objectA : objectA.owner;
+  var playerB = (objectB instanceof model.Player) ? objectB : objectB.owner;
 
   // one player is inactive
   if (playerA.team === -1 || playerB.team === -1) {
@@ -92,31 +98,31 @@ exports.getRelationship = function (objectA, objectB) {
 // neighbours of a given position (**x**,**y**). If not, **false** will be returned.
 //
 exports.hasUnitNeighbourWithRelationship = function (player, x, y, relationship) {
-  if (this.DEBUG) cwt.assert(cwt.Model.isValidPosition(x, y));
+  if (constants.DEBUG) assert(model.isValidPosition(x, y));
 
   var unit;
 
   // WEST
   if (x > 0) {
-    unit = cwt.Model.mapData[x - 1][y].unit;
+    unit = model.mapData[x - 1][y].unit;
     if (unit && this.getRelationship(player, unit.owner) === relationship) return true;
   }
 
   // NORTH
   if (y > 0) {
-    unit = cwt.Model.mapData[x][y - 1].unit;
+    unit = model.mapData[x][y - 1].unit;
     if (unit && this.getRelationship(player, unit.owner) === relationship) return true;
   }
 
   // EAST
-  if (x < cwt.Model.mapWidth - 1) {
-    unit = cwt.Model.mapData[x + 1][y].unit;
+  if (x < model.mapWidth - 1) {
+    unit = model.mapData[x + 1][y].unit;
     if (unit && this.getRelationship(player, unit.owner) === relationship) return true;
   }
 
   // SOUTH
-  if (y < cwt.Model.mapHeight - 1) {
-    unit = cwt.Model.mapData[x][y + 1].unit;
+  if (y < model.mapHeight - 1) {
+    unit = model.mapData[x][y + 1].unit;
     if (unit && this.getRelationship(player, unit.owner) === relationship) return true;
   }
 

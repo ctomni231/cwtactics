@@ -1,7 +1,7 @@
-var features = require("./systemFeatures");
 var constants = require("./constants");
-var assert = require("./functions").assert;
+var features = require("./systemFeatures");
 var storage = require("./storage");
+var assert = require("./functions").assert;
 
 // WebAudio context object.
 //
@@ -28,26 +28,6 @@ if (features.audioSFX || features.audioMusic) {
   }
 }
 
-// Music audio node.
-//
-var musicNode = null;
-
-// SFX audio node.
-//
-var sfxNode = null;
-
-// Cache for audio buffers.
-//
-var buffer = {};
-
-// Current played music object.
-//
-var currentMusic = {
-  inLoadProcess: false,
-  connector: null,
-  id: null
-};
-
 var playSoundOnGainNode = function (gainNode, buffer, loop) {
   var source = audioContext.createBufferSource();
 
@@ -70,12 +50,25 @@ var musicLoadCb = function (obj) {
   currentMusic.inLoadProcess = false;
 };
 
+// Music audio node.
 //
-// Returns a web audio context. If no context is initialized then it will be created first.
+var musicNode = null;
+
+// SFX audio node.
 //
-//exports.grabContext = function () {
-//  return audioContext;
-//};
+var sfxNode = null;
+
+// Cache for audio buffers.
+//
+var buffer = {};
+
+// Current played music object.
+//
+var currentMusic = {
+  inLoadProcess: false,
+  connector: null,
+  id: null
+};
 
 //
 // Returns the value of the sfx audio node.

@@ -1,17 +1,17 @@
 "use strict";
 
-cwt.Action.engineAction({
-  key: "changeWeather",
+var weather = require("../logic/weather");
+var sheets = require("../sheets");
+var fog = require("../logic/fog");
+var model = require("../model");
 
+exports.action = {
   toDataBlock: function (data, dataBlock) {
     dataBlock.p1 = data.action.selectedEntry;
   },
 
   parseDataBlock: function (dataBlock) {
-    this.invoke(cwt.WeatherSheet.sheets[dataBlock.p1]);
-  },
-
-  invoke: function (weather) {
-    cwt.Weather.changeWeather(weather);
+    weather.changeWeather(sheets.weathers.getSheet(dataBlock.p1));
+    fog.fullRecalculation();
   }
-});
+};

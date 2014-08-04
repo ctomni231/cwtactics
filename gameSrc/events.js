@@ -21,6 +21,10 @@ exports.EventChannel = my.Class({
     this.callbacks.splice(index, 1);
   },
 
+  unsubscribeAll: function () {
+    this.callbacks.splice(0);
+  },
+
   broadcast: function () {
     for (var i = 0, e = this.callbacks.length; i < e; i++) {
       this.callbacks[i].apply(null, arguments);
@@ -37,4 +41,13 @@ exports.event = function (event) {
   }
 
   return events[event];
+};
+
+// Removes an **EventChannel** object with a given **event** name. All handlers will be released.
+//
+exports.removeEvent = function (event) {
+  if (!events.hasOwnProperty(event)) {
+    events[event].unsubscribeAll();
+    events[event] = null;
+  }
 };

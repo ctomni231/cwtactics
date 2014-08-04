@@ -1,6 +1,6 @@
 "use strict";
 
-var assert = require("base/functions").assert;
+var assert = require("./functions").assert;
 var constants = require("constants");
 
 exports.Config = function (min, max, defaultValue, step) {
@@ -70,9 +70,9 @@ var options = {
   "co_enabledCoPower": new exports.Config(0, 1, 1),
 
   // app configs
-  "fastClickMode": new Config(0, 1, 1),
-  "forceTouch": new Config(0, 1, 1),
-  "animatedTiles": new Config(0, 1, 1)
+  "fastClickMode": new exports.Config(0, 1, 0),
+  "forceTouch": new exports.Config(0, 1, 0),
+  "animatedTiles": new exports.Config(0, 1, 1)
 };
 
 //

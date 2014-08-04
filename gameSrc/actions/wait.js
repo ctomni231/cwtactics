@@ -1,12 +1,13 @@
 "use strict";
 
-require('../actions').unitAction({
-  key: "wait",
+var relation = require("../logic/relationship");
+var model = require("../model");
 
+exports.action = {
   relation: [
     "S", "T",
-    cwt.Relationship.RELATION_NONE,
-    cwt.Relationship.RELATION_SAME_THING
+    relation.RELATION_NONE,
+    relation.RELATION_SAME_THING
   ],
 
   condition: function (data) {
@@ -18,6 +19,6 @@ require('../actions').unitAction({
   },
 
   parseDataBlock: function (dataBlock) {
-    cwt.Unit.getInstance(dataBlock.p1).canAct = false;
+    model.units[dataBlock.p1].setActable(false);
   }
-});
+};

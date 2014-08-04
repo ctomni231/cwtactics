@@ -10,15 +10,8 @@ var gameId = null;
 //
 var clientId = constants.INACTIVE;
 
-//
-// The target URL of the network server.
-//
-// var targetURL = null;
-
-// Helper list to build the target URL for the message exchange server.
-//
+//var targetURL = null;
 //var urlBuilderHelper = [ null, "?cmd=", null, "&gameId=", null, "&userId=", null ];
-
 //var parserHelper = function () {
 //  if (this.readyState === 4) {
 //    var res = this.responseText;
@@ -33,7 +26,6 @@ var clientId = constants.INACTIVE;
 //    }
 //  }
 //};
-
 //var createRequest = function () {
 //  var xmlHttp = new XMLHttpRequest();
 //
@@ -64,16 +56,14 @@ exports.isHost = function () {
   return gameId === null || clientId !== constants.INACTIVE;
 };
 
-//
 // Parses a message and invokes commands if necessary.
 //
 exports.parseMessage = function (msg) {
-
+  console.log("NOT IMPLEMENTED YET");
 };
 
-//
 // Sends a given action data object into data object and sends it to the game server.
 //
 exports.sendMessage = function (actionData) {
-
+  console.log("NOT IMPLEMENTED YET");
 };

@@ -1,6 +1,9 @@
+"use strict";
+
+var transport = require("../logic/transport");
 var constants = require("../constants");
 var assert = require("../functions").assert;
-var Unit = require("../model").Unit;
+var model = require("../model");
 
 //
 // Returns **true** if two units can join each other, else **false**. In general both **source** and **target** has
@@ -8,9 +11,7 @@ var Unit = require("../model").Unit;
 // other when they contain loaded units.
 //
 exports.canJoin = function (source, target) {
-  if (constants.DEBUG) {
-    assert(source instanceof Unit && target instanceof Unit);
-  }
+  if (constants.DEBUG) assert(source instanceof model.Unit && target instanceof model.Unit);
 
   if (source.type !== target.type) return false;
 
@@ -18,7 +19,7 @@ exports.canJoin = function (source, target) {
   if (target.hp >= 90) return false;
 
   // do they have loads?
-  if (cwt.Transport.hasLoads(source) || cwt.Transport.hasLoads(target)) return false;
+  if (transport.hasLoads(source) || transport.hasLoads(target)) return false;
 
   return true;
 };
@@ -28,14 +29,13 @@ exports.canJoin = function (source, target) {
 // health then the difference will be payed to the owners resource depot.
 //
 exports.join = function (source, x, y) {
-  if (this.DEBUG) cwt.assert(source instanceof cwt.UnitClass);
+  if (constants.DEBUG) assert(source instanceof model.Unit);
 
-  var target = cwt.Model.mapData[x][y].unit;
-  if (this.DEBUG) cwt.assert(target instanceof cwt.UnitClass);
-  if (this.DEBUG) cwt.assert(source.type === target.type);
+  var target = model.mapData[x][y].unit;
+  if (constants.DEBUG) assert(target instanceof model.Unit && source.type === target.type);
 
   // hp
-  target.heal(cwt.Unit.pointsToHealth(cwt.Unit.healthToPoints(source)), true);
+  target.heal(model.Unit.pointsToHealth(model.Unit.healthToPoints(source)), true);
 
   // ammo
   target.ammo += source.ammo;

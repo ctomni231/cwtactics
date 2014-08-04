@@ -1,53 +1,45 @@
 "use strict";
 
-require('../actions').mapAction({
-  key:"transferMoney",
+var relation = require("../logic/relationship");
+var sheets = require("../sheets");
+var model = require("../model");
+var team = require("../logic/team");
 
-  condition: function( data ){
-    return cwt.Team.canTransferMoney(
-      cwt.Gameround.turnOwner,
-      data.target.x,
-      data.target.y
-    );
+exports.actionMoney = {
+  condition: function (data) {
+    return team.canTransferMoney(model.turnOwner, data.target.x, data.target.y);
   },
 
   hasSubMenu: true,
-  prepareMenu: function( data ){
-    cwt.Team.getTransferMoneyTargets(cwt.Gameround.turnOwner,data.menu);
+  prepareMenu: function (data) {
+    team.getTransferMoneyTargets(model.turnOwner, data.menu);
   },
 
   toDataBlock: function (data, dataBlock) {
-    dataBlock.p1 = cwt.Gameround.turnOwner.id;
+    dataBlock.p1 = model.turnOwner.id;
     dataBlock.p2 = data.target.property.owner.id;
     dataBlock.p3 = data.selectedSubEntry;
   },
 
   parseDataBlock: function (dataBlock) {
-    cwt.Team.transferMoney(
-      // @type {cwt.Player} */ cwt.Player.getInstance(dataBlock.p1),
-      // @type {cwt.Player} */ cwt.Player.getInstance(dataBlock.p2),
-      dataBlock.p3
-    );
+    team.transferMoney(model.players[dataBlock.p1], model.players[dataBlock.p2], dataBlock.p3);
   }
 
-});
+};
 
-require('../actions').propertyAction({
-
-  key:"transferProperty",
-
-  relationToProp:[
-    "S","T",
-    cwt.Relationship.RELATION_SAME_THING
+exports.actionProperty = {
+  relationToProp: [
+    "S", "T",
+    relation.RELATION_SAME_THING
   ],
 
-  condition: function( data  ){
-    return cwt.Team.canTransferProperty(data.source.property);
+  condition: function (data) {
+    return team.canTransferProperty(data.source.property);
   },
 
   hasSubMenu: true,
-  prepareMenu: function( data ){
-    cwt.Team.getPropertyTransferTargets(data.source.property.owner, data.menu);
+  prepareMenu: function (data) {
+    team.getPropertyTransferTargets(data.source.property.owner, data.menu);
   },
 
   toDataBlock: function (data, dataBlock) {
@@ -56,40 +48,31 @@ require('../actions').propertyAction({
   },
 
   parseDataBlock: function (dataBlock) {
-    cwt.Team.transferPropertyToPlayer(
-      // @type {cwt.Property} */ cwt.Property.getInstance(dataBlock.p1),
-      // @type {cwt.Player} */ cwt.Player.getInstance(dataBlock.p2)
-    );
+    team.transferPropertyToPlayer(model.players[dataBlock.p1], model.players[dataBlock.p2]);
   }
-});
+};
 
-require('../actions').unitAction({
-  key:"transferUnit",
-
+exports.actionUnit = {
   relation: [
-    "S","T",
-    cwt.Relationship.RELATION_SAME_THING
+    "S", "T",
+    relation.RELATION_SAME_THING
   ],
 
-  condition: function( data ){
-    return cwt.Team.canTransferUnit(data.source.unit);
+  condition: function (data) {
+    return team.canTransferUnit(data.source.unit);
   },
 
   hasSubMenu: true,
-  prepareMenu: function( data ){
-    cwt.Team.getUnitTransferTargets(data.source.unit.owner, data.menu);
+  prepareMenu: function (data) {
+    team.getUnitTransferTargets(data.source.unit.owner, data.menu);
   },
 
   toDataBlock: function (data, dataBlock) {
-    dataBlock.p1 = data.source.unitId,
-      dataBlock.p2 = data.selectedSubEntry;
+    dataBlock.p1 = data.source.unitId;
+    dataBlock.p2 = data.selectedSubEntry;
   },
 
   parseDataBlock: function (dataBlock) {
-    cwt.Team.transferUnitToPlayer(
-      // @type {cwt.Unit} */ cwt.Unit.getInstance(dataBlock.p1),
-      // @type {cwt.Player} */ cwt.Player.getInstance(dataBlock.p2)
-    );
+    team.transferUnitToPlayer(model.units[dataBlock.p2], model.players[dataBlock.p2]);
   }
-
-});
+};

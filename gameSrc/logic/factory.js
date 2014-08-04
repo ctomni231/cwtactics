@@ -1,8 +1,16 @@
+"use strict";
+
+var constants = require("../constants");
+var assert = require("../functions").assert;
+var model = require("../model");
+var sheets = require("../sheets");
+var cfgUnitLimit = require("../config").getConfig("unitLimit");
+
 //
 // Returns **true** when the given **property** is a factory, else **false**.
 //
 exports.isFactory = function (property) {
-  if (this.DEBUG) cwt.assert(property instanceof cwt.PropertyClass);
+  if (constants.DEBUG) assert(property instanceof model.Property);
 
   return (property.type.builds !== undefined);
 };
@@ -11,15 +19,15 @@ exports.isFactory = function (property) {
 // Returns **true** when the given **property** is a factory and can produce something technically, else **false**.
 //
 exports.canProduce = function (property) {
-  if (this.DEBUG) cwt.assert(this.isFactory(property));
+  if (constants.DEBUG) assert(exports.isFactory(property));
 
   // check left manpower
   if (!property.owner || !property.owner.manpower) return false;
 
   // check unit limit and left slots
   var count = property.owner.numberOfUnits;
-  var uLimit = (cwt.Config.getValue("unitLimit") || 9999999);
-  if (count >= uLimit || count >= cwt.MAX_UNITS) return false;
+  var uLimit = (cfgUnitLimit.value || 9999999);
+  if (count >= uLimit || count >= constants.MAX_UNITS) return false;
 
   return true;
 };
@@ -31,26 +39,27 @@ exports.canProduce = function (property) {
 exports.buildUnit = (function () {
 
   function buildIt(x, y, property, type) {
+    // TODO
     cwt.Lifecycle.createUnit(x, y, property.owner, type);
   }
 
   return function (factory, type) {
-    if (this.DEBUG) {
-      cwt.assert(factory instanceof cwt.PropertyClass);
-      cwt.assert(cwt.DataSheets.units.isValidSheet(type));
+    if (constants.DEBUG) {
+      assert(factory instanceof model.Property);
+      assert(sheets.units.isValidSheet(type));
     }
 
-    var sheet = cwt.DataSheets.units.sheets[type];
+    var sheet = sheets.units.sheets[type];
 
     factory.owner.manpower--;
     factory.owner.gold -= sheet.cost;
 
-    if (this.DEBUG) {
-      cwt.assert(factory.owner.gold >= 0);
-      cwt.assert(factory.owner.manpower >= 0);
+    if (constants.DEBUG) {
+      assert(factory.owner.gold >= 0);
+      assert(factory.owner.manpower >= 0);
     }
 
-    cwt.Model.searchProperty(factory, buildIt, null, type);
+    model.searchProperty(factory, buildIt, null, type);
   };
 })();
 
@@ -60,19 +69,18 @@ exports.buildUnit = (function () {
 // lack of money) but marked as disabled.
 //
 exports.generateBuildMenu = function (factory, menu, markDisabled) {
-  if (this.DEBUG) {
-    cwt.assert(factory instanceof cwt.PropertyClass);
-    cwt.assert(menu instanceof cwt.InterfaceMenu);
-    cwt.assert(factory.owner);
+  if (constants.DEBUG) {
+    assert(factory instanceof model.Property);
+    assert(factory.owner);
   }
 
-  var unitTypes = cwt.DataSheets.units.types;
+  var unitTypes = sheets.units.types;
   var bList = factory.type.builds;
   var gold = factory.owner.gold;
 
   for (var i = 0, e = unitTypes.length; i < e; i++) {
     var key = unitTypes[i];
-    var type = cwt.DataSheets.units.getSheet(key);
+    var type = sheets.units.getSheet(key);
 
     if (bList.indexOf(type.movetype) === -1) continue;
 

@@ -1,14 +1,16 @@
-require('../actions').unitAction({
-  key:"joinUnits",
+"use strict";
+
+var relation = require("../logic/relationship");
+var model = require("../model");
+var join = require("../logic/join");
+
+exports.action = {
   noAutoWait: true,
 
-  relation:[
-    "S","T",
-    cwt.Relationship.RELATION_OWN
-  ],
+  relation: ["S", "T", relation.RELATION_OWN],
 
-  condition: function( data ){
-    return cwt.Join.canJoin(data.source.unit,data.target.unit);
+  condition: function (data) {
+    return join.canJoin(data.source.unit, data.target.unit);
   },
 
 
@@ -19,10 +21,7 @@ require('../actions').unitAction({
   },
 
   parseDataBlock: function (dataBlock) {
-    cwt.Join.join(
-      // @type {cwt.Unit} */ cwt.Unit.getInstance(dataBlock.p1),
-      dataBlock.p2, dataBlock.p3
-    );
+    join.join(model.units[dataBlock.p1], dataBlock.p2, dataBlock.p3);
   }
 
-});
+};

@@ -1,25 +1,23 @@
 "use strict";
 
-require('../actions').unitAction({
-  key:"unloadUnit",
+var transport = require("../logic/transport");
+var relation = require("../logic/relationship");
+var model = require("../model");
+
+exports.actionUnload = {
   multiStepAction: true,
 
-  relation:[
-    "S","T",
-    cwt.Relationship.RELATION_SAME_THING,
-    cwt.Relationship.RELATION_NONE
+  relation: [
+    "S", "T",
+    relation.RELATION_SAME_THING,
+    relation.RELATION_NONE
   ],
 
-  condition: function( data ){
-    return model.events.unloadUnit_check(
-
-      data.source.unitId,
-      data.target.x,
-      data.target.y
-    );
+  condition: function (data) {
+    return ( transport.canUnloadSomethingAt(data.source.unit, data.target.x, data.target.y) );
   },
 
-  prepareMenu: function( data ){
+  prepareMenu: function (data) {
     model.events.unloadUnit_addUnloadTargetsToMenu(
       data.source.unitId,
       data.target.x,
@@ -29,7 +27,7 @@ require('../actions').unitAction({
   },
 
   targetSelectionType: "B",
-  prepareTargets: function( data ){
+  prepareTargets: function (data) {
     model.events.unloadUnit_addUnloadTargetsToSelection(
       data.source.unitId,
       data.target.x,
@@ -39,10 +37,14 @@ require('../actions').unitAction({
     );
   },
 
-  invoke: function( data ){
-    controller.commandStack_sharedInvokement(
-      "unloadUnit_invoked",
-      data.source.unitId,
+  toDataBlock: function ( data, dataBlock) {
+    dataBlock.p1 = data.target.unitId;
+    dataBlock.p2 = data.source.unitId;
+  },
+
+  parseDataBlock: function (dataBlock) {
+    transport.unload(
+      data.source.unit,
       data.target.x,
       data.target.y,
       data.action.selectedSubEntry,
@@ -50,26 +52,24 @@ require('../actions').unitAction({
       data.targetselection.y
     );
   }
-});
+};
 
-require('../actions').unitAction({
-  key:"loadUnit",
-
+exports.actionLoad = {
   relation: [
-    "S","T",
-    cwt.Relationship.RELATION_OWN
+    "S", "T",
+    relation.RELATION_OWN
   ],
 
-  condition: function( data ){
-    return model.events.loadUnit_check(data.source.unitId,data.target.unitId);
+  condition: function (data) {
+    return ( transport.canLoadUnit(data.target.unit, data.source.unit) );
   },
 
-  invoke: function( data ){
-    controller.commandStack_sharedInvokement(
-      "loadUnit_invoked",
-      data.source.unitId,
-      data.target.unitId
-    );
-  }
+  toDataBlock: function (data, dataBlock) {
+    dataBlock.p1 = data.target.unitId;
+    dataBlock.p2 = data.source.unitId;
+  },
 
-});
+  parseDataBlock: function (dataBlock) {
+    transport.load(model.units[dataBlock.p1], model.units[dataBlock.p2]);
+  }
+};

@@ -1,46 +1,29 @@
 "use strict";
 
-require('../actions').unitAction({
-  key:"unitHide",
+var relation = require("../logic/relationship");
+var model = require("../model");
+var team = require("../logic/team");
 
-  relation: [
-    "S","T",
-    cwt.Relationship.RELATION_NONE,
-    cwt.Relationship.RELATION_SAME_THING
-  ],
+exports.actionHide = {
+  relation: ["S", "T", relation.RELATION_NONE, relation.RELATION_SAME_THING],
 
-  condition: function( data ){
-    return model.events.unitHide_check(data.source.unitId);
+  condition: function (data) {
+    return (data.source.unit.type.stealth = !data.source.unit.hidden);
   },
 
-  invoke: function( data ){
-    controller.commandStack_sharedInvokement(
-      "unitHide_invoked",
-      data.source.unitId
-    );
+  invoke: function (data) {
+    data.source.unit.hidden = true;
   }
+};
 
-});
+exports.actionUnhide = {
+  relation: ["S", "T", relation.RELATION_NONE, relation.RELATION_SAME_THING],
 
-require('../actions').unitAction({
-  key:"unitUnhide",
-
-  relation: [
-    "S","T",
-    cwt.Relationship.RELATION_NONE,
-    cwt.Relationship.RELATION_SAME_THING
-  ],
-
-  condition: function( data ){
-    return model.events.unitUnhide_check(
-      data.source.unitId
-    );
+  condition: function (data) {
+    return (data.source.unit.type.stealth = data.source.unit.hidden);
   },
 
-  invoke: function( data ){
-    controller.commandStack_sharedInvokement(
-      "unitUnhide_invoked",
-      data.source.unitId
-    );
+  invoke: function (data) {
+    data.source.unit.hidden = false;
   }
-});
+};
