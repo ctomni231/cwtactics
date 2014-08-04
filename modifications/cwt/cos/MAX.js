@@ -28,7 +28,7 @@ require('../../sheets').commanders.registerSheet({
             "value),",
           "value)"
       ],
-      "def":				"+(10,value)"
+      "def":		"+(10,value)"
       "movepoints":	"if( gameMode(AW2), +(1,value), value)"
     },
     
@@ -40,7 +40,7 @@ require('../../sheets').commanders.registerSheet({
             "value),",
           "value)"
       ],
-      "def":				"+(10,value)"
+      "def":		"+(10,value)"
       "movepoints":	"if( gameMode(AW2), +(2,value), value)"
     }
   }
