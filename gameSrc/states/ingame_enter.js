@@ -1,14 +1,14 @@
+var renderer = require("../renderer");
+var constants = require("../constants");
+
 exports.state = {
   id: "INGAME_ENTER",
 
   enter: function () {
     this.data.inGameRound = true;
+    renderer.hideNativeCursor();
 
-    if (cwt.DEBUG) {
-      console.log("entering game round");
-    }
-
-    cwt.Cursor.hideNativeCursor();
+    if (constants.DEBUG) console.log("entering game round");
 
     // 1. load map
     cwt.GameData.loadGame(cwt.GameSelectionDTO.map,false, function () {

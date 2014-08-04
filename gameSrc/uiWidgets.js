@@ -1,13 +1,13 @@
 var constants = require("./constants");
-var assert = require("../functions").assert;
-var input = require("../input");
-var i18n = require("../localization");
+var assert = require("functions").assert;
+var input = require("input");
+var i18n = require("localization");
 
 //
 //
 // @class
 //
-exports.UIFieldObject = my.Class({
+exports.UIField = my.Class({
 
   STATIC: {
     STYLE_NONE: -1,
@@ -65,7 +65,7 @@ exports.UIFieldObject = my.Class({
   // @param {CanvasRenderingContext2D} ctx
   //
   draw: function (ctx) {
-    if (this.style === exports.UIFieldObject.STYLE_NONE) {
+    if (this.style === exports.UIField.STYLE_NONE) {
       return;
     }
 
@@ -76,77 +76,77 @@ exports.UIFieldObject = my.Class({
     ctx.fillStyle = "rgb(60,60,60)";
     switch (this.style) {
 
-      case exports.UIFieldObject.STYLE_NORMAL:
+      case exports.UIField.STYLE_NORMAL:
         ctx.fillRect(this.x + 1, this.y + 1, this.width - 2, this.height - 2);
         ctx.fillStyle = (this.inFocus) ? "rgb(220,220,220)" : "white";
         ctx.fillRect(this.x + 3, this.y + 3, this.width - 6, this.height - 6);
         break;
 
-      case exports.UIFieldObject.STYLE_N:
+      case exports.UIField.STYLE_N:
         ctx.fillRect(this.x, this.y + 1, this.width, 2);
         break;
 
-      case exports.UIFieldObject.STYLE_E:
+      case exports.UIField.STYLE_E:
         ctx.fillRect(this.x + this.width - 3, this.y, 2, this.height);
         break;
 
-      case exports.UIFieldObject.STYLE_S:
+      case exports.UIField.STYLE_S:
         ctx.fillRect(this.x, this.y + this.height - 3, this.width, 2);
         break;
 
-      case exports.UIFieldObject.STYLE_W:
+      case exports.UIField.STYLE_W:
         ctx.fillRect(this.x + 1, this.y, 2, this.height);
         break;
 
-      case exports.UIFieldObject.STYLE_NE:
+      case exports.UIField.STYLE_NE:
         ctx.fillRect(this.x, this.y + 1, this.width - 1, 2);
         ctx.fillRect(this.x + this.width - 3, this.y + 1, 2, this.height - 1);
         break;
 
-      case exports.UIFieldObject.STYLE_NW:
+      case exports.UIField.STYLE_NW:
         ctx.fillRect(this.x + 1, this.y + 1, this.width, 2);
         ctx.fillRect(this.x + 1, this.y + 1, 2, this.height - 1);
         break;
 
-      case exports.UIFieldObject.STYLE_ES:
+      case exports.UIField.STYLE_ES:
         ctx.fillRect(this.x + this.width - 3, this.y, 2, this.height - 1);
         ctx.fillRect(this.x, this.y + this.height - 3, this.width - 1, 2);
         break;
 
-      case exports.UIFieldObject.STYLE_SW:
+      case exports.UIField.STYLE_SW:
         ctx.fillRect(this.x + 1, this.y + this.height - 3, this.width - 1, 2);
         ctx.fillRect(this.x + 1, this.y, 2, this.height - 1);
         break;
 
-      case exports.UIFieldObject.STYLE_EW:
+      case exports.UIField.STYLE_EW:
         ctx.fillRect(this.x + this.width - 3, this.y, 2, this.height);
         ctx.fillRect(this.x + 1, this.y, 2, this.height);
         break;
 
-      case exports.UIFieldObject.STYLE_NS:
+      case exports.UIField.STYLE_NS:
         ctx.fillRect(this.x, this.y + 1, this.width, 2);
         ctx.fillRect(this.x, this.y + this.height - 3, this.width, 2);
         break;
 
-      case exports.UIFieldObject.STYLE_ESW:
+      case exports.UIField.STYLE_ESW:
         ctx.fillRect(this.x + this.width - 3, this.y, 2, this.height - 1);
         ctx.fillRect(this.x + 1, this.y + this.height - 3, this.width - 2, 2);
         ctx.fillRect(this.x + 1, this.y, 2, this.height - 1);
         break;
 
-      case exports.UIFieldObject.STYLE_NEW:
+      case exports.UIField.STYLE_NEW:
         ctx.fillRect(this.x + 1, this.y + 1, this.width - 2, 2);
         ctx.fillRect(this.x + this.width - 3, this.y + 1, 2, this.height - 1);
         ctx.fillRect(this.x + 1, this.y + 1, 2, this.height - 1);
         break;
 
-      case exports.UIFieldObject.STYLE_NSW:
+      case exports.UIField.STYLE_NSW:
         ctx.fillRect(this.x + 1, this.y + 1, this.width - 1, 2);
         ctx.fillRect(this.x + 1, this.y + this.height - 3, this.width - 1, 2);
         ctx.fillRect(this.x + 1, this.y + 1, 2, this.height - 2);
         break;
 
-      case exports.UIFieldObject.STYLE_NES:
+      case exports.UIField.STYLE_NES:
         ctx.fillRect(this.x, this.y + 1, this.width - 1, 2);
         ctx.fillRect(this.x + this.width - 3, this.y + 1, 2, this.height - 2);
         ctx.fillRect(this.x, this.y + this.height - 3, this.width - 1, 2);
@@ -181,10 +181,10 @@ exports.UIFieldObject = my.Class({
 // @class
 // @extends {cwt.UIField}
 //
-exports.UICustomFieldObject = my.Class(null, exports.UIFieldObject, {
+exports.UICustomField = my.Class(null, exports.UIField, {
 
   constructor: function (x, y, w, h, key, drawFn) {
-    exports.UIFieldObject.call(this, x, y, w, h, key, 0, exports.UIFieldObject.STYLE_NORMAL);
+    exports.UIField.call(this, x, y, w, h, key, 0, exports.UIField.STYLE_NORMAL);
     this.text = "";
     this.draw = drawFn;
   }
@@ -193,7 +193,7 @@ exports.UICustomFieldObject = my.Class(null, exports.UIFieldObject, {
 //
 // @class
 //
-exports.UIButtonGroupObject = my.Class({
+exports.UIButtonGroup = my.Class({
 
   constructor: function () {
     this.elements = [];
@@ -348,10 +348,10 @@ exports.UIButtonGroupObject = my.Class({
 // @class
 // @extends {cwt.UIField}
 //
-exports.UICheckboxFieldObject = my.Class(null, exports.UIFieldObject, {
+exports.UICheckboxField = my.Class(null, exports.UIField, {
 
   constructor: function (x, y, w, h, text, fsize, style) {
-    exports.UIFieldObject.call(this, x, y, w, h, text, fsize, style, function (button, state) {
+    exports.UIField.call(this, x, y, w, h, text, fsize, style, function (button, state) {
       state.rendered = false;
       button.checked = !button.checked;
     });
@@ -365,7 +365,7 @@ exports.UICheckboxFieldObject = my.Class(null, exports.UIFieldObject, {
   // @param {CanvasRenderingContext2D} ctx
   //
   draw: function (ctx) {
-    exports.UIFieldObject.prototype.draw.call(this, ctx);
+    exports.UIField.prototype.draw.call(this, ctx);
 
     ctx.fillStyle = "black";
     ctx.fillRect(this.x + 4, this.y + 4, this.width - 8, this.height - 8);
@@ -383,10 +383,10 @@ exports.UICheckboxFieldObject = my.Class(null, exports.UIFieldObject, {
 // @class
 // @extends {cwt.UIButtonGroup}
 //
-exports.UIScreenLayoutObject = my.Class(null, exports.UIButtonGroupObject, {
+exports.UIScreenLayout = my.Class(null, exports.UIButtonGroup, {
 
   constructor: function (slotsX, slotsY, startX, startY) {
-    exports.UIButtonGroupObject.call(this);
+    exports.UIButtonGroup.call(this);
 
     this.left = startX || 0;
     this.curX = startX || 0;
@@ -458,7 +458,7 @@ exports.UIScreenLayoutObject = my.Class(null, exports.UIButtonGroupObject, {
       this.curH = tilesY;
     }
 
-    var btn = new exports.UIFieldObject(
+    var btn = new exports.UIField(
       this.curX,
       this.curY + (offsetY * constants.TILE_BASE),
       tilesX * constants.TILE_BASE,
@@ -491,7 +491,7 @@ exports.UIScreenLayoutObject = my.Class(null, exports.UIButtonGroupObject, {
       this.curH = tilesY;
     }
 
-    var btn = new exports.UICustomFieldObject(
+    var btn = new exports.UICustomField(
       this.curX,
       this.curY + (offsetY * constants.TILE_BASE),
       tilesX * constants.TILE_BASE,
@@ -527,7 +527,7 @@ exports.UIScreenLayoutObject = my.Class(null, exports.UIButtonGroupObject, {
       this.curH = tilesY;
     }
 
-    var btn = new exports.UICheckboxFieldObject(
+    var btn = new exports.UICheckboxField(
       this.curX,
       this.curY + (offsetY * constants.TILE_BASE),
       tilesX * constants.TILE_BASE,
@@ -549,10 +549,10 @@ exports.UIScreenLayoutObject = my.Class(null, exports.UIButtonGroupObject, {
 // @class
 // @extends {cwt.UIButtonGroup}
 //
-exports.UIPositionableButtonGroupObject = my.Class(null, exports.UIButtonGroupObject, {
+exports.UIPositionableButtonGroup = my.Class(null, exports.UIButtonGroup, {
 
   constructor: function () {
-    exports.UIButtonGroupObject.call(this);
+    exports.UIButtonGroup.call(this);
     this.x = 0;
     this.y = 0;
   },
@@ -570,30 +570,5 @@ exports.UIPositionableButtonGroupObject = my.Class(null, exports.UIButtonGroupOb
 
     this.x = x;
     this.y = y;
-  }
-});
-
-exports.LoadingBarObject = my.Class({
-
-  constructor: function (x, y, w, h) {
-    this.x = x;
-    this.y = y;
-    this.width = w;
-    this.height = h;
-    this.process = 0;
-  },
-
-  draw: function (ctx) {
-    ctx.fillStyle = "white";
-    ctx.fillRect(this.x, this.y, this.width, this.height);
-
-    ctx.fillStyle = "blue";
-    ctx.fillRect(this.x, this.y, (parseInt(this.width * (this.process / 100), 10)), this.height);
-  },
-
-  setPercentage: function (p) {
-    if (constants.DEBUG) assert(p >= 0 && p <= 100);
-
-    this.process = p;
   }
 });

@@ -10,12 +10,10 @@ var hasCachedData = false;
 // Starts the loading process. After the loading process the loading stuff will be removed. The Loading namespace
 // will remain with a property with value true as marker. This property will be named deInitialized.
 //
-// @param {Function} callback
-//
-exports.startProcess = function (loadingBar, callback) {
+exports.startProcess = function (setProcess, callback) {
   function setProgress(i) {
     return function (next) {
-      loadingBar.setPercentage(i);
+      setProcess(i);
       next();
     }
   }

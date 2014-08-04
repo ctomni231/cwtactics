@@ -7,18 +7,18 @@ var MENU_ELEMENTS_MAX = 10;
 var MENU_ENTRY_HEIGHT = 2 * constants.TILE_BASE;
 var MENU_ENTRY_WIDTH = 10 * constants.TILE_BASE;
 
-var layoutGenericMenu = new renderer.UIPositionableButtonGroupObject();
+var layoutGenericMenu = new renderer.UIPositionableButtonGroup();
 
 // fill layout
 functions.repeat(MENU_ELEMENTS_MAX, function (i) {
-  layoutGenericMenu.addElement(new renderer.UIFieldObject(
+  layoutGenericMenu.addElement(new renderer.UIField(
     0,
     i * 32,
     MENU_ENTRY_WIDTH,
     MENU_ENTRY_HEIGHT,
     "KEY_" + i,
     8,
-    renderer.UIFieldObject.STYLE_NORMAL,
+    renderer.UIField.STYLE_NORMAL,
 
     // logic will be handled by the state machine
     functions.emptyFunction
@@ -45,9 +45,9 @@ exports.prepareMenu = function (menu) {
 
       // set style
       gfxMenu.elements[i].style = (
-        (numElements === 1 ? renderer.UIFieldObject.STYLE_NORMAL :
-          (i === 0 ? renderer.UIFieldObject.STYLE_NEW :
-            (i === numElements-1 ? renderer.UIFieldObject.STYLE_ESW : renderer.UIFieldObject.STYLE_EW)))
+        (numElements === 1 ? renderer.UIField.STYLE_NORMAL :
+          (i === 0 ? renderer.UIField.STYLE_NEW :
+            (i === numElements-1 ? renderer.UIField.STYLE_ESW : renderer.UIField.STYLE_EW)))
         );
 
     } else {

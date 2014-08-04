@@ -3,8 +3,10 @@
 var constants = require("./constants");
 var stateData = require("./dataTransfer/states");
 var features = require("./systemFeatures");
+var renderer = require("./renderer");
 var input = require("./input");
 var audio = require("./audio");
+var image = require("./image");
 var move = require("./logic/move");
 var fnc = require("./functions");
 
@@ -22,7 +24,9 @@ exports.GameState = my.Class({
 
   audio: audio,
   input: input,
+  image: image,
   data: stateData,
+  renderer: renderer,
 
   changeState: function (stateId) {
     exports.changeState(stateId);
@@ -55,7 +59,7 @@ var addState = function (desc) {
 // state contains cursor handling and rendering logic.
 //
 var addInGameState = function (desc) {
-  exports.addState({
+  addState({
 
     id: desc.id,
 
@@ -149,15 +153,15 @@ var addInGameState = function (desc) {
 
 //
 // Adds a menu state (normally this means all states that aren't inGame plus have input connection). Every menu state
-// will be designed with a **cwt.UIScreenLayoutObject** which can be configured by the **doLayout(layout)** function
+// will be designed with a **cwt.UIScreenLayout** which can be configured by the **doLayout(layout)** function
 // property in the state description.
 //
 var addMenuState = function (desc) {
-  exports.addState({
+  addState({
     id: desc.id,
 
     init: function () {
-      this.layout = new cwt.UIScreenLayoutObject();
+      this.layout = new cwt.UIScreenLayout();
       this.rendered = false;
 
       this.inputMove = function (x, y) {

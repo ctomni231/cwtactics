@@ -15,4 +15,4 @@ exports.state = {
   CANCEL: function (gameData) {
     require("../statemachine").changeState("INGAME_MENU");
   }
-};
+}

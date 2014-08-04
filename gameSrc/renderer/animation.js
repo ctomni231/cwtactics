@@ -1,31 +1,31 @@
 //
 //
-exports.unitAnimationHalfStep_ = false;
+var unitAnimationHalfStep = false;
 
 //
 //
-exports.curTime_ = 0;
+var curTime = 0;
 
 //
 //
-exports.indexUnitAnimation = 0;
+var indexUnitAnimation = 0;
 
 //
 //
-exports.indexMapAnimation = 0;
+var indexMapAnimation = 0;
 
 //
 //
-exports.evaluateCycle = function (delta) {
+exports.evaluateCycle = function (delta, layerUnit, layerMap) {
   var index;
 
-  this.curTime_ += delta;
-  if (this.curTime_ > 150) {
-    this.curTime_ = 0;
+  curTime += delta;
+  if (curTime > 150) {
+    curTime = 0;
 
     // calc unit animation layer step
-    this.unitAnimationHalfStep_ = !this.unitAnimationHalfStep_;
-    if (!this.unitAnimationHalfStep_) {
+    unitAnimationHalfStep = !unitAnimationHalfStep;
+    if (!unitAnimationHalfStep) {
 
       index = this.indexUnitAnimation + 1;
       if (index === 3) {
@@ -33,8 +33,8 @@ exports.evaluateCycle = function (delta) {
       }
 
       // render unit animation layer
-      cwt.Screen.layerUnit.renderLayer(index);
-      this.indexUnitAnimation = index;
+      layerUnit.renderLayer(index);
+      indexUnitAnimation = index;
     }
 
     // map animation layer
@@ -44,7 +44,7 @@ exports.evaluateCycle = function (delta) {
     }
 
     // render map animation layer
-    cwt.Screen.layerMap.renderLayer(index);
-    this.indexMapAnimation = index;
+    layerMap.renderLayer(index);
+    indexMapAnimation = index;
   }
 };

@@ -42,9 +42,10 @@ exports.state = {
     }
   },
 
-  render: function (delta) {
+  render: function () {
     if (!rendered) {
-      var ctxUI = cwt.Screen.layerUI.getContext();
+      var ctxUI = this.renderer.layerUI.getContext();
+
       rendered = true;
     }
   }

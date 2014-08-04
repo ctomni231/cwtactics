@@ -122,6 +122,8 @@ specialForms["do"] = function(args, env) {
   return value;
 };
 
+// ------------------------------------------------------------------------
+
 specialForms["+="] = function(arg, env) {
   env[arg[0].name] += arg[1].value;
   return env[arg[0].name];
@@ -141,6 +143,12 @@ specialForms["/="] = function(arg, env) {
   env[arg[0].name] /= arg[1].value;
   return env[arg[0].name];
 };
+
+["+", "-", "*", "/", "==", "<", ">"].forEach(function(op) {
+  topEnv[op] = new Function("a, b", "return a " + op + " b;");
+});
+
+// ------------------------------------------------------------------------
 
 specialForms["define"] = function(args, env) {
   if (args.length != 2 || args[0].type != "word") {
@@ -176,10 +184,6 @@ specialForms["fun"] = function(args, env) {
 specialForms["set"] = function(args, env) {
   // Your code here.
 };
-
-["+", "-", "*", "/", "==", "<", ">"].forEach(function(op) {
-  topEnv[op] = new Function("a, b", "return a " + op + " b;");
-});
 
 topEnv["print"] = function(value) {
   console.log(value);

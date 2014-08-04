@@ -1,4 +1,11 @@
+"use strict";
+
+var rendCursor = require("./renderer/cursor");
+var rendAnim = require("./renderer/animation");
+
+var stateData = require("../dataTransfer/states");
 var constants = require("./constants");
+var assert = require("./functions").assert;
 var model = require("./model");
 var move = require("./logic/move");
 
@@ -10,7 +17,6 @@ var canvasH = constants.TILE_BASE * constants.SCREEN_HEIGHT;
 // @class
 //
 exports.LayeredCanvas = my.Class({
-
   constructor: function (canvasId, frames, w, h) {
 
     // root canvas
@@ -46,7 +52,7 @@ exports.LayeredCanvas = my.Class({
   // @param {Number} index
   //
   renderLayer: function (index) {
-    if (constants.DEBUG) cwt.assert(arguments.length === 0 || (index >= 0 && index < this.layers.length));
+    if (constants.DEBUG) assert(arguments.length === 0 || (index >= 0 && index < this.layers.length));
 
     var ctx = this.getContext();
     ctx.clearRect(0, 0, this.w, this.h);
@@ -59,7 +65,7 @@ exports.LayeredCanvas = my.Class({
   // @return {HTMLCanvasElement}
   //
   getLayer: function (index) {
-    if (constants.DEBUG) cwt.assert(index === void 0 || (index >= 0 && index < this.layers.length));
+    if (constants.DEBUG) assert(index === void 0 || (index >= 0 && index < this.layers.length));
 
     // root ?
     if (index === void 0) {
@@ -78,7 +84,7 @@ exports.LayeredCanvas = my.Class({
   },
 
   clearAll: function () {
-    var n = this.layers.length-1;
+    var n = this.layers.length - 1;
     while (n >= 0) {
       this.clear(n);
       n--;
@@ -91,7 +97,7 @@ exports.LayeredCanvas = my.Class({
   // @return {CanvasRenderingContext2D}
   //
   getContext: function (index) {
-    if (constants.DEBUG) cwt.assert(index === void 0 || (index >= 0 && index < this.layers.length));
+    if (constants.DEBUG) assert(index === void 0 || (index >= 0 && index < this.layers.length));
 
     // root ?
     if (index === void 0) {
@@ -100,108 +106,6 @@ exports.LayeredCanvas = my.Class({
 
     return this.contexts[index];
   }
-});
-
-//
-//
-// @class
-//
-exports.LayerObject = my.Class({
-
-  constructor: function (config) {
-    this.canvas = null;
-    this.frames = [];
-    this.ctx = [];
-    this.cFrame = 0;
-    this.cTime = 0;
-    this.frameLimit = config.time;
-
-    this.drawAll = null;
-    this.draw = null;
-
-    // create canvas objects
-    var n = 0;
-    while (n < frames) {
-      this.canvas[n] = document.createElement("canvas");
-      this.ctx[n] = this.canvas[n].getContext("2d");
-      n++;
-    }
-  },
-
-  //
-  //
-  renderFrame: function (frame) {
-    var curCanvas = this.frames[frame];
-    this.canvas.getContext("2d").drawImage(curCanvas, 0, 0, curCanvas.width, curCanvas.height);
-  },
-
-  //
-  // Hides a layer.
-  //
-  hide: function () {
-    this.canvas.style.display = "none";
-  },
-
-  //
-  // Shows a layer.
-  //
-  show: function () {
-    this.canvas.style.display = "block";
-  },
-
-  //
-  // Returns the current active canvas of the layer.
-  //
-  // @return {HTMLCanvasElement}
-  //
-  getActiveFrame: function () {
-    return this.canvas[this.cFrame];
-  },
-
-  //
-  // Returns the rendering context for a given frame id.
-  //
-  // @param {number=} frame
-  // @return {CanvasRenderingContext2D}
-  //
-  getContext: function (frame) {
-    if (arguments.length === 0) {
-      frame = 0;
-    }
-
-    if (this.DEBUG) cwt.assert(frame >= 0 && frame < this.canvas.length);
-
-    return this.ctx[frame];
-  },
-
-  //
-  // Updates the internal timer of the layer.
-  //
-  // @param delta
-  //
-  update: function (delta) {
-    this.cTime += delta;
-
-    // increase frame
-    if (this.cTime >= this.frameLimit) {
-      this.cTime = 0;
-      this.cFrame++;
-
-      // reset frame
-      if (this.cFrame === this.canvas.length) {
-        this.cFrame = 0;
-      }
-    }
-  },
-
-  //
-  // Resets timer and frame counter.
-  //
-  resetTimer: function () {
-    this.cTime = 0;
-    this.cFrame = 0;
-  }
-
 });
 
 //
@@ -338,8 +242,8 @@ exports.renderScreen = function () {
 
   var x = exports.screenOffsetX;
   var y = exports.screenOffsetY;
-  var w = (cwt.Map.width < constants.SCREEN_WIDTH)? cwt.Map.width : constants.SCREEN_WIDTH;
-  var h = (cwt.Map.height < constants.SCREEN_HEIGHT)? cwt.Map.height : constants.SCREEN_HEIGHT;
+  var w = (model.mapWidth < constants.SCREEN_WIDTH) ? model.mapWidth : constants.SCREEN_WIDTH;
+  var h = (model.mapHeight < constants.SCREEN_HEIGHT) ? model.mapHeight : constants.SCREEN_HEIGHT;
 
   this.renderTiles(x, y, w, h);
   this.renderUnits(x, y, w, h);
@@ -350,7 +254,7 @@ exports.renderScreen = function () {
 
   this.renderFogRect(x, y, w, h);
 
-  if (cwt.DEBUG) console.log("rendered the complete screen (" + ((new Date()).getTime() - time) + "ms)");
+  if (constants.DEBUG) console.log("rendered the complete screen (" + ((new Date()).getTime() - time) + "ms)");
 };
 
 //
@@ -359,7 +263,7 @@ exports.renderScreen = function () {
 //
 exports.shiftMap = function (code) {
   var time;
-  if (cwt.DEBUG) time = (new Date()).getTime();
+  if (constants.DEBUG) time = (new Date()).getTime();
 
   var fx = exports.screenOffsetX;
   var fy = exports.screenOffsetY;
@@ -406,21 +310,28 @@ exports.shiftMap = function (code) {
   cwt.Screen.layerMap.renderLayer(this.indexMapAnimation);
   cwt.Screen.layerUnit.renderLayer(this.indexUnitAnimation);
 
-  if (cwt.DEBUG) console.log("shifted the screen (" + ((new Date()).getTime() - time) + "ms)");
+  if (constants.DEBUG) console.log("shifted the screen (" + ((new Date()).getTime() - time) + "ms)");
 };
 
-var rendCursor = require("./renderer/cursor");
 
 // Renders the cursor to the UI layer.
 //
 exports.eraseCursor = function () {
-  rendCursor.eraseCursor();
+  rendCursor.eraseCursor(
+    exports.layerUI,
+    exports.screenOffsetX, exports.screenOffsetY,
+    stateData.cursorX, stateData.cursorY
+  );
 };
 
 // Renders the cursor to the UI layer.
 //
 exports.renderCursor = function () {
-  rendCursor.renderCursor();
+  rendCursor.renderCursor(
+    exports.layerUI,
+    exports.screenOffsetX, exports.screenOffsetY,
+    stateData.cursorX, stateData.cursorY
+  );
 };
 
 // Shows the native browser cursor.
@@ -434,3 +345,7 @@ exports.showNativeCursor = function () {
 exports.hideNativeCursor = function () {
   rendCursor.hideNativeCursor(exports.layerUI);
 };
+
+exports.renderCycle = function (delta) {
+  rendAnim.evaluateCycle(delta, exports.layerUnit, exports.layerMap);
+}

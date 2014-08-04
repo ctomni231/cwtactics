@@ -1,13 +1,12 @@
-var stateData = require("../dataTransfer/states");
 var constants = require("../constants");
 var image = require("../image");
 
 // Renders the cursor to the UI layer.
 //
-exports.eraseCursor = function () {
-  var ctx = cwt.Screen.layerUI.getContext();
-  var x = (stateData.cursorX - cwt.Screen.offsetX) * constants.TILE_BASE;
-  var y = (stateData.cursorY - cwt.Screen.offsetY) * constants.TILE_BASE;
+exports.eraseCursor = function (layer,offsetX,offsetY,cursorX,cursorY) {
+  var ctx = layer.getContext();
+  var x = (cursorX - offsetX) * constants.TILE_BASE;
+  var y = (cursorY - offsetY) * constants.TILE_BASE;
 
   // clear cursor at old position
   ctx.clearRect(
@@ -20,12 +19,12 @@ exports.eraseCursor = function () {
 
 // Renders the cursor to the UI layer.
 //
-exports.renderCursor = function () {
-  var ctx = cwt.Screen.layerUI.getContext();
+exports.renderCursor = function (layer,offsetX,offsetY,cursorX,cursorY) {
   var cursorImg = image.sprites.CURSOR.getImage(0);
+  var ctx = layer.getContext();
   var h = constants.TILE_BASE / 2;
-  var x = (stateData.cursorX - cwt.Screen.offsetX) * constants.TILE_BASE;
-  var y = (stateData.cursorY - cwt.Screen.offsetY) * constants.TILE_BASE;
+  var x = (cursorX - offsetX) * constants.TILE_BASE;
+  var y = (cursorY - offsetY) * constants.TILE_BASE;
 
   // render cursor at new position
   ctx.drawImage(cursorImg, x - h, y - h);
