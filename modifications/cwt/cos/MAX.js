@@ -10,40 +10,39 @@ require('../../sheets').commanders.registerSheet({
 	   
 	  "D2D":{
 	    "att": [
-	      "if( direct(unit),",
-					"if(not(infantry(unit)),",
-						"if(gameMode(AW2),",
-							"+(50,value),",
-							"+(20,value))),",
-					"-(10,value))"
-			],
-	    "maxrange": "if( indirect(unit), -(1,value), value)"
-	  },
+        "if( direct(unit),",
+          "if(not(infantry(unit)),",
+            "if(gameMode(AW2),",
+              "+(50,value),",
+              "+(20,value))),",
+          "-(10,value))"
+      ],
+      "maxrange": "if( indirect(unit), -(1,value), value)"
+    },
 	  
     "COP":{
-	    "att": [
-	      "if( direct(unit),",
-					"if(not(infantry(unit)),",
-						"+(40,value), ",
-						"value),",
-					"value)"
-			],
-    	"def":				"+(10,value)"
-    	"movepoints":	"if( gameMode(AW2), +(1,value), value)"
+      "att": [
+        "if( direct(unit),",
+          "if(not(infantry(unit)),",
+            "+(40,value), ",
+            "value),",
+          "value)"
+      ],
+      "def":				"+(10,value)"
+      "movepoints":	"if( gameMode(AW2), +(1,value), value)"
     },
     
     "SCOP":{
-	    "att": [
-	      "if( direct(unit),",
-					"if(not(infantry(unit)),",
-						"+(70,value), ",
-						"value),",
-					"value)"
-			],
-    	"def":				"+(10,value)"
-    	"movepoints":	"if( gameMode(AW2), +(2,value), value)"
+      "att": [
+        "if( direct(unit),",
+          "if(not(infantry(unit)),",
+            "+(70,value), ",
+            "value),",
+          "value)"
+      ],
+      "def":				"+(10,value)"
+      "movepoints":	"if( gameMode(AW2), +(2,value), value)"
     }
-    
   }
 });
 
