@@ -1,4 +1,4 @@
-require("../statemachine").addInGameState({
+exports.state = {
   id: "INGAME_MENU",
 
   // create game round data in global data scope
@@ -285,4 +285,4 @@ require("../statemachine").addInGameState({
     if (cwt.DEBUG) cwt.assert(next);
     require("../statemachine").changeState(next);
   }
-});
+};

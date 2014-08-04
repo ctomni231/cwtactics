@@ -1,6 +1,6 @@
 
 
-require("../statemachine").addMenuState({
+exports.state = {
 
   id: "CONFIRM_WIPE_OUT_SCREEN",
 
@@ -38,4 +38,4 @@ require("../statemachine").addMenuState({
         });
       });
   }
-});
+};

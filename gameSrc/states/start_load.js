@@ -1,4 +1,4 @@
-require("../statemachine").addState({
+exports.state = {
   id: "LOADING_SCREEN",
 
   init: function () {
@@ -31,4 +31,4 @@ require("../statemachine").addState({
 
     this.bar.draw(ctx);
   }
-});
+};

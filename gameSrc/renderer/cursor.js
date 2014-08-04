@@ -36,12 +36,12 @@ exports.renderCursor = function () {
 
 // Shows the native browser cursor.
 //
-exports.showNativeCursor = function () {
-  cwt.Screen.layerUI.getLayer().style.cursor = "";
+exports.showNativeCursor = function (layer) {
+  layer.getLayer().style.cursor = "";
 };
 
 // Hides the native browser cursor.
 //
-exports.hideNativeCursor = function () {
-  cwt.Screen.layerUI.getLayer().style.cursor = "none";
+exports.hideNativeCursor = function (layer) {
+  layer.getLayer().style.cursor = "none";
 };

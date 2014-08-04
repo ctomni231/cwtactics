@@ -1,4 +1,4 @@
-require("../statemachine").addState({
+exports.state = {
   id: "ANIMATION_NEXT_TURN",
 
   init: function () {
@@ -16,7 +16,7 @@ require("../statemachine").addState({
   render: function (delta) {
 
   }
-});
+};
 
 /*
  util.scoped(function(){

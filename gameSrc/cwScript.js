@@ -127,6 +127,21 @@ specialForms["+="] = function(arg, env) {
   return env[arg[0].name];
 };
 
+specialForms["-="] = function(arg, env) {
+  env[arg[0].name] -= arg[1].value;
+  return env[arg[0].name];
+};
+
+specialForms["*="] = function(arg, env) {
+  env[arg[0].name] *= arg[1].value;
+  return env[arg[0].name];
+};
+
+specialForms["/="] = function(arg, env) {
+  env[arg[0].name] /= arg[1].value;
+  return env[arg[0].name];
+};
+
 specialForms["define"] = function(args, env) {
   if (args.length != 2 || args[0].type != "word") {
     throw new SyntaxError("Bad use of define");
@@ -179,45 +194,3 @@ function run() {
   var program = Array.prototype.slice.call(arguments, 0).join("\n");
   return evaluate(parse(program), env);
 }
-
-// ---------------------------------------------
-
-var date;
-
-date = (new Date()).getTime();
-var n = 0;
-for( var i = 0; i<100000;) {
-	i=i+1;
-	n++;
-}
-console.log("needed "+((new Date()).getTime()-date)+"ms native");
-
-date = (new Date()).getTime();
-run("do(define(max, 100000),",
-    "   define(count, 0),",
-    "   define(n, 0),",
-    "   while(<(count, max),",
-    "         do(	+=(count, 1),",
-	"				+=(n, 1) ) ),",
-    "   print(n))");
-console.log("needed "+((new Date()).getTime()-date)+"ms script");
-
-date = (new Date()).getTime();
-run("do(define(max, 100000),",
-    "   define(n, 0),",
-    "   for(0,max,1,do(",
-	"		+=(n, 1) ) ),",
-	"	print(n))");
-console.log("needed "+((new Date()).getTime()-date)+"ms script for");
-
-/* 
-with define(name,operation) operator
-	  native 	-> 10ms 
-	  script 	-> 533ms 
-	  scriptFor -> 191ms
-	  
-with += operator
-      native 	-> 10ms 
-	  script 	-> 251ms 
-	  scriptFor -> 54ms
-*/

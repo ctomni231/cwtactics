@@ -4,8 +4,6 @@ var PARAM_HAS_CACHE = "__hasCache__";
 
 var constants = require("./constants");
 var storage = require("./storage");
-
-var loaders = [];
 var hasCachedData = false;
 
 //

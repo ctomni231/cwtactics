@@ -11,7 +11,8 @@ require('../../sheets').commanders.registerSheet({
       "att": [
         "if( infantry(unit), +(30,value),",
           "if( direct(unit), -(10,value),",
-            "value))"
+            "value )",
+          "value )"
       ],
       "movepoints":	"if( transport(unit), +(1,value), value )",
       "captureRate": "+(50,value)"

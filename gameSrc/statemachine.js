@@ -1,4 +1,7 @@
+"use strict";
+
 var constants = require("./constants");
+var stateData = require("./dataTransfer/states");
 var features = require("./systemFeatures");
 var input = require("./input");
 var audio = require("./audio");
@@ -15,30 +18,22 @@ exports.GameState = my.Class({
     this.enter = enterFn;
     this.update = updateFn;
     this.render = renderFn;
+  },
+
+  audio: audio,
+  input: input,
+  data: stateData,
+
+  changeState: function (stateId) {
+    exports.changeState(stateId);
   }
 });
-
-// Holds all registered game states.
-//
-var states = {};
-
-// State-Machine data object to share data between states.
-//
-var globalData = {};
-
-// The id of the active game state.
-//
-exports.activeStateId = null;
-
-// The active game state.
-//
-exports.activeState = null;
 
 //
 //
 // @param desc
 //
-exports.addState = function (desc) {
+var addState = function (desc) {
   if (constants.DEBUG) fnc.assert(!states.hasOwnProperty(desc.id));
 
   var state = new exports.GameState(
@@ -49,7 +44,7 @@ exports.addState = function (desc) {
   );
 
   if (desc.init) {
-    desc.init.call(state.data, state.data.globalData);
+    desc.init.call(state);
   }
 
   states[desc.id] = state;
@@ -59,7 +54,7 @@ exports.addState = function (desc) {
 // Creates an inGame state which means this state is considered to be used in an active game round. As result this
 // state contains cursor handling and rendering logic.
 //
-exports.addInGameState = function (desc) {
+var addInGameState = function (desc) {
   exports.addState({
 
     id: desc.id,
@@ -157,7 +152,7 @@ exports.addInGameState = function (desc) {
 // will be designed with a **cwt.UIScreenLayoutObject** which can be configured by the **doLayout(layout)** function
 // property in the state description.
 //
-exports.addMenuState = function (desc) {
+var addMenuState = function (desc) {
   exports.addState({
     id: desc.id,
 
@@ -233,6 +228,22 @@ exports.addMenuState = function (desc) {
     }
   });
 };
+
+// Holds all registered game states.
+//
+var states = {};
+
+// State-Machine data object to share data between states.
+//
+var globalData = {};
+
+// The id of the active game state.
+//
+exports.activeStateId = null;
+
+// The active game state.
+//
+exports.activeState = null;
 
 //
 //
@@ -319,8 +330,46 @@ exports.start = function () {
   }
 
   // set start state
-  this.setState("NONE", false);
+  exports.setState("NONE", false);
 
   // enter the loop
   requestAnimationFrame(gameLoop);
 };
+
+// inject all game states
+
+addState(require("./states/start_none").state);
+addState(require("./states/start_tooltip").state);
+addState(require("./states/start_load").state);
+addState(require("./states/portrait").state);
+addState(require("./states/error").state);
+
+addMenuState(require("./states/menu_main").state);
+addMenuState(require("./states/menu_parameterSetup").state);
+addMenuState(require("./states/menu_playerSetup").state);
+addMenuState(require("./states/menu_versus").state);
+
+addMenuState(require("./states/options_remap").state);
+addMenuState(require("./states/options_confirmWipeOut").state);
+addMenuState(require("./states/options_main").state);
+
+addInGameState(require("./states/ingame_enter").state);
+addInGameState(require("./states/ingame_flush").state);
+addInGameState(require("./states/ingame_idle").state);
+addInGameState(require("./states/ingame_leave").state);
+addInGameState(require("./states/ingame_menu").state);
+addInGameState(require("./states/ingame_movepath").state);
+addInGameState(require("./states/ingame_multistep").state);
+addInGameState(require("./states/ingame_selecttile").state);
+addInGameState(require("./states/ingame_showAttackRange").state);
+addInGameState(require("./states/ingame_submenu").state);
+addInGameState(require("./states/ingame_targetselection_a").state);
+addInGameState(require("./states/ingame_targetselection_b").state);
+
+addState(require("./states/ingame_anim_ballistic").state);
+addState(require("./states/ingame_anim_captureProperty").state);
+addState(require("./states/ingame_anim_changeWeather").state);
+addState(require("./states/ingame_anim_destroyUnit").state);
+addState(require("./states/ingame_anim_move").state);
+addState(require("./states/ingame_anim_nextTurn").state);
+addState(require("./states/ingame_anim_trapWait").state);

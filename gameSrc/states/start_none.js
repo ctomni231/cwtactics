@@ -1,4 +1,4 @@
-require("../statemachine").addState({
+exports.state = {
   id:"NONE",
 
   init: function () {
@@ -21,4 +21,4 @@ require("../statemachine").addState({
       this.backgroundDrawn = true;
     }
   }
-});
+};

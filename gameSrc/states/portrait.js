@@ -2,7 +2,8 @@
 // to the portrait mode. Instead of changing the whole screen model we
 // simply print a message "Return your device into the landscape mode".
 //
-require("../statemachine").addState({
+
+exports.state = {
   id: "PORTRAIT_SCREEN",
 
   init: function () {
@@ -34,4 +35,4 @@ require("../statemachine").addState({
       this.rendered = true;
     }
   }
-});
+};

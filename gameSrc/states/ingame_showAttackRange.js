@@ -6,7 +6,7 @@
 // @memberOf require("../statemachine")
 // @name INGAME_SHOW_ATTACK_RANGE
 //
-require("../statemachine").addInGameState({
+exports.state = {
   id: "INGAME_SHOW_ATTACK_RANGE",
 
   enter: function () {
@@ -21,4 +21,4 @@ require("../statemachine").addInGameState({
   CANCEL: function () {
     require("../statemachine").changeState("INGAME_IDLE");
   }
-});
+};

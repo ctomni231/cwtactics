@@ -1,4 +1,4 @@
-require("../statemachine").addState({
+exports.state = {
   id: "INGAME_MULTISTEP_IDLE",
 
   init: function () {
@@ -29,4 +29,4 @@ require("../statemachine").addState({
   enter: function () {
     this.globalData.inMultiStep = false;
   }
-});
+};

@@ -1,4 +1,4 @@
-require("../statemachine").addState({
+exports.state = {
   id: "INGAME_FLUSH_ACTION",
 
   init: function () {
@@ -61,7 +61,7 @@ require("../statemachine").addState({
        } else {
        controller.stateMachine.event("nextStepBreak");
        }
-//
+      */
 
       next = "INGAME_MULTISTEP_IDLE";
     } else {
@@ -70,4 +70,4 @@ require("../statemachine").addState({
 
     require("../statemachine").changeState(next);
   }
-});
+};

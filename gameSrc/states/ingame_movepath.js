@@ -1,4 +1,4 @@
-require("../statemachine").addInGameState({
+exports.state = {
   id: "INGAME_MOVEPATH",
 
   init: function () {
@@ -101,4 +101,4 @@ require("../statemachine").addInGameState({
   CANCEL: function () {
     require("../statemachine").changeState("INGAME_IDLE");
   }
-});
+};

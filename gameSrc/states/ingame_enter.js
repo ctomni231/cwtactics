@@ -1,4 +1,4 @@
-require("../statemachine").addState({
+exports.state = {
   id: "INGAME_ENTER",
 
   enter: function () {
@@ -38,6 +38,6 @@ require("../statemachine").addState({
       controller.commandStack_localInvokement("nextTurn_invoked");
       if (controller.network_isHost()) model.events.weather_calculateNext();
     }
-//
+    */
   }
-});
+};

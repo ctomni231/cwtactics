@@ -2,7 +2,7 @@
 
 var input = require("../input");
 
-require("../statemachine").addState({
+exports.state = {
   id: "ERROR_SCREEN",
 
   init: function () {
@@ -55,4 +55,4 @@ require("../statemachine").addState({
       this.rendered = true;
     }
   }
-});
+};
