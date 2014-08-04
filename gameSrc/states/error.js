@@ -1,40 +1,33 @@
 "use strict";
 
-var input = require("../input");
+var activeCmd = 0;
+var rendered = false;
+var message = null;
+var where = null;
 
 exports.state = {
   id: "ERROR_SCREEN",
 
-  init: function () {
-    this.activeCmd = 0;
-    this.message = null;
-    this.where = null;
-  },
-
   enter: function () {
-    this.rendered = false;
-    this.activeCmd = 0;
-    this.message = null;
-    this.where = null;
+    rendered = false;
+    activeCmd = 0;
+    message = null;
+    where = null;
   },
 
   update: function (delta, lastInput) {
     switch (lastInput) {
 
-      case input.TYPE_LEFT:
-        if (this.activeCmd > 0) {
-          this.activeCmd--;
-        }
+      case this.input.TYPE_LEFT:
+        if (activeCmd > 0) activeCmd--;
         break;
 
-      case input.TYPE_RIGHT:
-        if (this.activeCmd < 2) {
-          this.activeCmd++;
-        }
+      case this.input.TYPE_RIGHT:
+        if (activeCmd < 2) activeCmd++;
         break;
 
-      case input.TYPE_ACTION :
-        switch (this.activeCmd) {
+      case this.input.TYPE_ACTION :
+        switch (activeCmd) {
 
           /* Restart */
           case 0: break;
@@ -50,9 +43,9 @@ exports.state = {
   },
 
   render: function (delta) {
-    if (!this.rendered) {
+    if (!rendered) {
       var ctxUI = cwt.Screen.layerUI.getContext();
-      this.rendered = true;
+      rendered = true;
     }
   }
 };

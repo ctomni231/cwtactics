@@ -2,7 +2,7 @@ exports.state = {
   id: "INGAME_SELECT_TILE",
 
   enter: function (gameData) {
-    gameData.targetselection.clean();
+    this.data.targetselection.clean();
 
     /*
      var prepareSelection = this.data.action.object.prepareSelection;

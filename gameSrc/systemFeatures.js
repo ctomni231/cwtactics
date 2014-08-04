@@ -4,11 +4,11 @@ var ua     = window.navigator.userAgent.toLowerCase(),
 
 // http://www.zytrax.com/tech/web/browser_ids.htm
 // http://www.zytrax.com/tech/web/mobile_ids.dom
-ua = /(chrome|firefox)[ \/]([\w.]+)/.exec(ua) ||               // Chrome & Firefox
-  /(iphone|ipad|ipod)(?:.*version)?[ \/]([\w.]+)/.exec(ua) ||  // Mobile IOS
-  /(android)(?:.*version)?[ \/]([\w.]+)/.exec(ua) ||           // Mobile Webkit
-  /(webkit|opera)(?:.*version)?[ \/]([\w.]+)/.exec(ua) ||      // Safari & Opera
-  /(msie) ([\w.]+)/.exec(ua) || [];                            // Internet Explorer
+ua =  /(chrome|firefox)[ \/]([\w.]+)/.exec(ua) ||                  // Chrome & Firefox
+      /(iphone|ipad|ipod)(?:.*version)?[ \/]([\w.]+)/.exec(ua) ||  // Mobile IOS
+      /(android)(?:.*version)?[ \/]([\w.]+)/.exec(ua) ||           // Mobile Webkit
+      /(webkit|opera)(?:.*version)?[ \/]([\w.]+)/.exec(ua) ||      // Safari & Opera
+      /(msie) ([\w.]+)/.exec(ua) || [];                            // Internet Explorer
 
 var browser = ua[1],
   version = parseFloat(ua[2]);

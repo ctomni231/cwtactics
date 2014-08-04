@@ -2,7 +2,7 @@ exports.state = {
   id: "INGAME_ENTER",
 
   enter: function () {
-    this.globalData.inGameRound = true;
+    this.data.inGameRound = true;
 
     if (cwt.DEBUG) {
       console.log("entering game round");

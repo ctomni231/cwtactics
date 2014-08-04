@@ -1,5 +1,3 @@
-
-
 exports.state = {
 
   id: "CONFIRM_WIPE_OUT_SCREEN",

@@ -1,23 +1,6 @@
 exports.state = {
   id: "INGAME_MOVEPATH",
 
-  init: function () {
-    var gameData = this.globalData;
-
-    //
-//
-// @type {cwt.CircularBuffer}
-// @memberOf require("../statemachine").globalData
-//
-    gameData.movePath = new cwt.CircularBuffer(cwt.MAX_MOVE_LENGTH);
-
-    //
-//
-// @type {boolean}
-//
-    gameData.preventMovePathGeneration = false;
-  },
-
   enter: function (gameData) {
 
     // when we do back steps in the game flow then we don't want to recreate an already created move way
