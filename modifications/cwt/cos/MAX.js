@@ -7,7 +7,7 @@ require('../../sheets').commanders.registerSheet({
   "scoStars" : 3,
   
   "effects": {
-	  
+	   
 	  "D2D":{
 	    "att": [
 	      "if( direct(unit),",
