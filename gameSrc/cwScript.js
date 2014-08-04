@@ -59,8 +59,8 @@ function evaluate(expr, env) {
       if (expr.name in env)
         return env[expr.name];
       else
-        throw new ReferenceError("Undefined variable: " +
-                                 expr.name);
+        throw new ReferenceError("Undefined variable: " + expr.name);
+		
     case "apply":
       if (expr.operator.type == "word" &&
           expr.operator.name in specialForms)
@@ -122,9 +122,16 @@ specialForms["do"] = function(args, env) {
   return value;
 };
 
+specialForms["+="] = function(arg, env) {
+  env[arg[0].name] += arg[1].value;
+  return env[arg[0].name];
+};
+
 specialForms["define"] = function(args, env) {
-  if (args.length != 2 || args[0].type != "word")
+  if (args.length != 2 || args[0].type != "word") {
     throw new SyntaxError("Bad use of define");
+  }
+  
   var value = evaluate(args[1], env);
   env[args[0].name] = value;
   return value;
@@ -190,8 +197,8 @@ run("do(define(max, 100000),",
     "   define(count, 0),",
     "   define(n, 0),",
     "   while(<(count, max),",
-    "         do(	define(count, +(count, 1)),",
-	"				define(n, +(n, 1)) )),",
+    "         do(	+=(count, 1),",
+	"				+=(n, 1) ) ),",
     "   print(n))");
 console.log("needed "+((new Date()).getTime()-date)+"ms script");
 
@@ -199,12 +206,18 @@ date = (new Date()).getTime();
 run("do(define(max, 100000),",
     "   define(n, 0),",
     "   for(0,max,1,do(",
-	"		define(n, +(n, 1)))),",
+	"		+=(n, 1) ) ),",
 	"	print(n))");
 console.log("needed "+((new Date()).getTime()-date)+"ms script for");
 
 /* 
-WORK: native 	-> 10ms 
+with define(name,operation) operator
+	  native 	-> 10ms 
 	  script 	-> 533ms 
 	  scriptFor -> 191ms
+	  
+with += operator
+      native 	-> 10ms 
+	  script 	-> 251ms 
+	  scriptFor -> 54ms
 */
