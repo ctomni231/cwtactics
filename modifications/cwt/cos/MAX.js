@@ -6,7 +6,7 @@ require('../../sheets').commanders.registerSheet({
   "coStars"  : 3,
   "scoStars" : 3,
   
-	"effects": {
+  "effects": {
 	  
 	  "D2D":{
 	    "att": [
