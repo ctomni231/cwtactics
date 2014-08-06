@@ -1,7 +1,9 @@
 var constants = require("../constants");
+var variants = require("../tileVariants");
 var storage = require("../storage");
 var assert = require("../functions").assert;
 var image = require("../image");
+var async = require("../async");
 
 //
 //
@@ -30,7 +32,6 @@ exports.transferAllToStorage = function (callback) {
   var stuff = [];
 
   Object.keys(image.sprites).forEach(function (key) {
-    var sprite = image.sprites[key];
     stuff.push(function (next) {
       storage.set(IMAGE_KEY + key, image.Sprite.toJSON(image.sprites[key]), function () {
         next();
@@ -38,7 +39,7 @@ exports.transferAllToStorage = function (callback) {
     });
   });
 
-  callAsSequence(stuff, function () {
+  async.sequence(stuff, function () {
     if (constants.DEBUG) console.log("completed image persist process");
     callback();
   });
@@ -66,15 +67,15 @@ exports.transferFromCache = function (type, path, imgType, callback) {
         var sprite;
 
         switch (imgType) {
-          case cwt.Image.TYPE_UNIT:
+          case image.TYPE_UNIT:
             sprite = cwt.Image.createUnitSprites();
             break;
 
-          case cwt.Image.TYPE_PROPERTY:
+          case image.TYPE_PROPERTY:
             sprite = cwt.Image.createPropertySprites();
             break;
 
-          case cwt.Image.TYPE_TILE:
+          case image.TYPE_TILE:
             sprite = cwt.Image.createTileSprites();
             break;
         }
@@ -85,7 +86,7 @@ exports.transferFromCache = function (type, path, imgType, callback) {
 
       // failed to load the image data
       img.onerror = function () {
-        throw Error("could not load image for " + type + " at location " + path);
+        require("../error").raiseError("could not load image for " + type + " at location " + path, "");
       };
     }
   });
@@ -534,6 +535,8 @@ exports.transferAllFromRemote = function (callback) {
   var unitColStat = image.UNIT_INDEXES;
   var propColStat = image.PROPERTY_INDEXES;
 
+  var graphics = require("../dataTransfer/mod").getMod().graphics;
+
   var stuff = [];
 
   function addToPushLoop(path, key, callback) {
@@ -547,13 +550,13 @@ exports.transferAllFromRemote = function (callback) {
   // grab color map images
   stuff.push(
     function (next) {
-      grabImage(cwt.Graphics.COLOR_MAP[0], null, function () {
+      grabImage(graphics.COLOR_MAP[0], null, function () {
         propertyColorData = getImageDataArray(this);
         next();
       });
     },
     function (next) {
-      grabImage(cwt.Graphics.COLOR_MAP[1], null, function () {
+      grabImage(graphics.COLOR_MAP[1], null, function () {
         unitColorData = getImageDataArray(this);
         next();
       });
@@ -561,9 +564,9 @@ exports.transferAllFromRemote = function (callback) {
   );
 
   // grab unit images
-  Object.keys(cwt.Graphics.UNITS).forEach(function (key) {
+  Object.keys(graphics.UNITS).forEach(function (key) {
     stuff.push(function (next) {
-      var path = cwt.Graphics.UNITS[key];
+      var path = graphics.UNITS[key];
       grabImage(path, key, function () {
         var sprite = new image.Sprite(image.Sprite.UNIT_STATES);
 
@@ -593,16 +596,16 @@ exports.transferAllFromRemote = function (callback) {
   });
 
   // grab tile images
-  Object.keys(cwt.Graphics.TILES).forEach(function (key) {
-    var value = cwt.Graphics.TILES[key];
+  Object.keys(graphics.TILES).forEach(function (key) {
+    var value = graphics.TILES[key];
     var sprite;
 
     // special graphic data for tiles
     if (value[value.length - 2] === true) {
-      cwt.Image.longAnimatedTiles[key] = true;
+      image.longAnimatedTiles[key] = true;
     }
     if (value[value.length - 1] === true) {
-      cwt.Image.overlayTiles[key] = true;
+      image.overlayTiles[key] = true;
     }
 
     if (value.length === 3) { // single variant tile
@@ -618,7 +621,7 @@ exports.transferAllFromRemote = function (callback) {
     } else { // multi variant tile
       sprite = new image.Sprite(value[2].length * image.Sprite.TILE_STATES);
 
-      cwt.TileVariants.registerVariantInfo(key, value[0], value[1]);
+      variants.registerVariantInfo(key, value[0], value[1]);
 
       for (var i = 0, e = value[2].length; i < e; i++) {
         addToPushLoop(value[2][i], i * 2, function (img, next) {
@@ -633,9 +636,9 @@ exports.transferAllFromRemote = function (callback) {
   });
 
   // grab property images
-  Object.keys(cwt.Graphics.PROPERTIES).forEach(function (key) {
+  Object.keys(graphics.PROPERTIES).forEach(function (key) {
     stuff.push(function (next) {
-      var path = cwt.Graphics.PROPERTIES[key];
+      var path = graphics.PROPERTIES[key];
       grabImage(path, key, function () {
         var sprite = new image.Sprite(image.Sprite.PROPERTY_STATES);
 
@@ -668,7 +671,7 @@ exports.transferAllFromRemote = function (callback) {
 
   // grab arrow images
   stuff.push(function (next) {
-    var path = cwt.Graphics.ARROW;
+    var path = graphics.ARROW;
     grabImage(path, "ARROW", function () {
       var sprite = new image.Sprite(10);
 
@@ -693,7 +696,7 @@ exports.transferAllFromRemote = function (callback) {
 
   // grab dust images
   stuff.push(function (next) {
-    var path = cwt.Graphics.DUST;
+    var path = graphics.DUST;
     grabImage(path, "DUST", function () {
       var sprite = new image.Sprite(4);
 
@@ -712,7 +715,7 @@ exports.transferAllFromRemote = function (callback) {
 
   // grab rocket fly images
   stuff.push(function (next) {
-    var path = cwt.Graphics.ROCKET_FLY;
+    var path = graphics.ROCKET_FLY;
     grabImage(path, "ROCKET_FLY", function () {
       var sprite = new image.Sprite(2);
 
@@ -726,8 +729,8 @@ exports.transferAllFromRemote = function (callback) {
   });
 
   // grab other images
-  Object.keys(cwt.Graphics.OTHERS).forEach(function (key) {
-    var value = cwt.Graphics.OTHERS[key];
+  Object.keys(graphics.OTHERS).forEach(function (key) {
+    var value = graphics.OTHERS[key];
     var sprite;
 
     if (typeof value === "string") {
@@ -754,8 +757,7 @@ exports.transferAllFromRemote = function (callback) {
     image.sprites[key] = sprite;
   });
 
-  callAsSequence(stuff, function () {
-    delete cwt.Graphics;
+  async.sequence(stuff, function () {
     callback();
   });
 };
@@ -765,6 +767,8 @@ exports.transferAllFromRemote = function (callback) {
 // @param {Function} callback
 //
 exports.transferAllFromStorage = function (callback) {
+  var graphics = require("../dataTransfer/mod").getMod().graphics;
+
   var stuff = [];
 
   //
@@ -772,7 +776,7 @@ exports.transferAllFromStorage = function (callback) {
   // @param key
   //
   function loadKey(key) {
-    var realKey = key.slice(cwt.Image.IMAGE_KEY.length);
+    var realKey = key.slice(image.IMAGE_KEY.length);
     stuff.push(function (next) {
       if (constants.DEBUG) console.log("grab sprite " + key + " from cache");
 
@@ -795,8 +799,8 @@ exports.transferAllFromStorage = function (callback) {
     }
 
     // grab tile variant information
-    Object.keys(cwt.Graphics.TILES).forEach(function (key) {
-      var value = cwt.Graphics.TILES[key];
+    Object.keys(graphics.TILES).forEach(function (key) {
+      var value = graphics.TILES[key];
 
       // special graphic data for tiles
       if (value[value.length - 2] === true) {
@@ -807,11 +811,11 @@ exports.transferAllFromStorage = function (callback) {
       }
 
       if (value.length !== 3) { // multi variant tile
-        cwt.TileVariants.registerVariantInfo(key, value[0], value[1]);
+        variants.registerVariantInfo(key, value[0], value[1]);
       }
     });
 
-    callAsSequence(stuff, function () {
+    async.sequence(stuff, function () {
       callback();
     });
   });

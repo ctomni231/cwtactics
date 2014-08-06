@@ -1,21 +1,24 @@
 var constants = require("../constants");
 var storage = require("../storage");
+var async = require("../async");
 
 var mapNames = [];
 
 //
 //
 exports.transferAllFromRemote = function(callback) {
+  var mapList = require("../dataTransfer/mod").getMod().maps;
+
   var stuff = [];
 
-  Object.keys(cwt.mapList).forEach(function(key) {
+  Object.keys(mapList).forEach(function(key) {
     stuff.push(function(next) {
       grabRemoteFile({
         path: constants.MOD_PATH + mapNames[key],
         json: true,
 
         error: function(msg) {
-          throw Error("could not load map");
+          require("../error").raiseError("could not load map -> "+msg,"");
         },
 
         success: function(resp) {
@@ -27,7 +30,7 @@ exports.transferAllFromRemote = function(callback) {
     });
   });
 
-  callAsSequence(stuff, function() {
+  async.sequence(stuff, function() {
     callback();
   });
 };

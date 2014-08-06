@@ -1,7 +1,11 @@
+"use strict";
+
 var constants = require("./constants");
 var features = require("./systemFeatures");
 var storage = require("./storage");
 var assert = require("./functions").assert;
+
+var MUSIC_KEY = "MUSIC_";
 
 // WebAudio context object.
 //
@@ -69,6 +73,10 @@ var currentMusic = {
   connector: null,
   id: null
 };
+
+exports.decodeAudio = function (arrayBuffer, successCb, errorCb) {
+  audioContext.decodeAudioData(arrayBuffer,successCb,errorCb);
+}
 
 //
 // Returns the value of the sfx audio node.

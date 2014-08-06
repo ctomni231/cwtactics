@@ -2,6 +2,8 @@
 
 var request = require("../xmlHttpReq");
 
+var cachedMod = null;
+
 exports.transferFromRemote = function (path, callback) {
   request.doRequest({
     path: path,
@@ -19,4 +21,12 @@ exports.transferFromRemote = function (path, callback) {
 
 exports.transferFromCache = function (callback) {
   callback();
+};
+
+exports.getMod = function () {
+  return cachedMod;
+};
+
+exports.clearCachedMod = function () {
+  cachedMod = null;
 };

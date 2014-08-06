@@ -1,6 +1,8 @@
 var constants = require("../constants");
 var features = require("../systemFeatures");
 var storage = require("../storage");
+var assert = require("../functions").assert;
+var async = require("../async");
 var audio = require("../audio");
 
 //
@@ -31,7 +33,7 @@ var MUSIC_KEY = "MUSIC_";
 //
 // @param {Function} callback
 //
-exports.grabFromCache = function (callback, bufferCallback) {
+exports.grabFromCache = function (callback) {
 
   // don't load audio when disabled
   if (!features.audioMusic && !features.audioSFX) {
@@ -50,11 +52,15 @@ exports.grabFromCache = function (callback, bufferCallback) {
           console.log("grab audio " + key + " from cache");
         }
 
-        if (constants.DEBUG) cwt.assert(obj.value);
+        if (constants.DEBUG) assert(obj.value);
 
-        var realKey = obj.key.slice(cwt.Audio.SFX_KEY.length);
+        var realKey = obj.key.slice(SFX_KEY.length);
         var arrayBuffer = Base64Helper.decodeBuffer(obj.value);
-        cwt.Audio.context_.decodeAudioData(arrayBuffer,
+
+        audio.decodeAudio(
+
+          // buffer
+          arrayBuffer,
 
           // success handling
           function (buffer) {
@@ -63,8 +69,8 @@ exports.grabFromCache = function (callback, bufferCallback) {
           },
 
           // error handling
-          function (e) {
-            if (next) next(false);
+          function () {
+            require("../error").raiseError("could not load audio from cache","audioDTO");
           }
         );
       });
@@ -80,7 +86,7 @@ exports.grabFromCache = function (callback, bufferCallback) {
       }
     }
 
-    callAsSequence(stuff, function () {
+    async.sequence(stuff, function () {
       callback();
     });
   });
@@ -91,8 +97,9 @@ exports.grabFromCache = function (callback, bufferCallback) {
 // @param {Function} callback
 //
 exports.grabFromRemote = function (callback) {
-  this.removeGrabbers_(); // remove initializer functions
-  if (!this.context_) { // don't load audio when disabled
+
+  // don't load audio when disabled
+  if (!features.audioMusic && !features.audioSFX) {
     if (callback) {
       callback();
     }
@@ -109,14 +116,14 @@ exports.grabFromRemote = function (callback) {
   // @param callback
   //
   var loadBuffer = function (id, audioData, callback) {
-    cwt.Audio.context_.decodeAudioData(
+    audioData.decodeAudio(
 
       // buffer data
       audioData,
 
       // success handling
       function (buffer) {
-        cwt.Audio.registerAudioBuffer(id, buffer);
+        audio.registerAudioBuffer(id, buffer);
         if (callback) {
           callback();
         }
@@ -124,7 +131,7 @@ exports.grabFromRemote = function (callback) {
 
       // error handling
       function (e) {
-        cwt.Error(e, "ERR_AUDIO_BUFFER_LOAD");
+        require("../error").raiseError("could not load audio from remote","audioDTO");
       }
     );
   };
@@ -149,10 +156,10 @@ exports.grabFromRemote = function (callback) {
     request.responseType = "arraybuffer";
 
     request.onload = function () {
-      cwt.assert(this.status !== 404);
+      assert(this.status !== 404);
 
-      if (cwt.DEBUG) {
-        console.log("load " + path + " for key " + key + " sucessfully");
+      if (constants.DEBUG) {
+        console.log("load " + path + " for key " + key + " successfully");
       }
 
       storage.set(saveKey,
@@ -170,25 +177,27 @@ exports.grabFromRemote = function (callback) {
     request.send();
   };
 
+  var mod = require("../dataTransfer/mod").getMod();
+
   // only load music when supported
   if (features.audioMusic) {
-    Object.keys(cwt.Musics).forEach(function (key) {
+    Object.keys(mod.Musics).forEach(function (key) {
       stuff.push(function (next) {
-        loadFile(key, cwt.Musics[key], MUSIC_KEY + key, false, next);
+        loadFile(key, mod.Musics[key], MUSIC_KEY + key, false, next);
       })
     });
   }
 
   // only load sfx audio when supported
   if (features.audioSFX) {
-    Object.keys(cwt.Sounds).forEach(function (key) {
+    Object.keys(mod.Sounds).forEach(function (key) {
       stuff.push(function (next) {
-        loadFile(key, cwt.Sounds[key], SFX_KEY + key, true, next);
+        loadFile(key, mod.Sounds[key], SFX_KEY + key, true, next);
       })
     });
   }
 
-  callAsSequence(stuff, function () {
+  async.sequence(stuff, function () {
     callback();
   });
 };

@@ -157,7 +157,7 @@ exports.postProcess = function () {
 
   // TODO: player one is deactivated
 
-  // deregister old players
+  // de-register old players
   // controller.ai_reset();
   // model.events.client_deregisterPlayers();
 

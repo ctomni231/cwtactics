@@ -46,7 +46,12 @@ exports.startProcess = function (setProcess, callback) {
         setLoader(require("./loading/loadMaps")),
         setProgress(90),
         setLoader(require("./loading/portraitCheck")),
-        setProgress(100)
+        setProgress(100),
+        function (next) {
+          // release cached modification
+          require("./dataTransfer/mod").clearCachedMod();
+          next();
+        }
       ],
       function () {
         if (callback) {

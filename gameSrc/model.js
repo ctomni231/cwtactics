@@ -64,12 +64,12 @@ exports.PositionData = my.Class({
 
     if (this.tile.turnOwnerVisible && this.tile.unit) {
       this.unit = null;
-      this.unitId = exports.Unit.getInstanceId(this.tile.unit);
+      this.unitId = exports.units.indexOf(this.tile.unit);
     }
 
     if (this.tile.property) {
       this.property = this.tile.property;
-      this.propertyId = exports.Property.getInstanceId(this.tile.property);
+      this.propertyId = exports.properties.indexOf(this.tile.property);
     }
   }
 });
