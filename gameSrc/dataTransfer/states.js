@@ -11,17 +11,17 @@ var cursorRenderer = require("../renderer/cursor");
 //
 exports.cursorX = 0;
 
-  //
-  // Y coordinate of the cursor.
-  //
+//
+// Y coordinate of the cursor.
+//
 exports.cursorY = 0;
 
-  //
-  //
-  //
+//
+//
+//
 exports.resetCursor = function () {
-  this.x = 0;
-  this.y = 0;
+  exports.cursorX = 0;
+  exports.cursorY = 0;
 };
 
 //

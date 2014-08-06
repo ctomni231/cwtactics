@@ -156,16 +156,17 @@ exports.UIField = my.Class({
     ctx.fillStyle = "black";
     ctx.font = this.fsize + "pt " + constants.GAME_FONT;
 
+    var tw;
     if (this.text) {
       if (typeof this.text === "string") {
-        var tw = ctx.measureText(this.text);
+        tw = ctx.measureText(this.text);
         ctx.fillText(
           this.text,
           this.x + (this.width / 2) - (tw.width / 2),
           this.y + (this.height / 2) + this.fsize / 2);
       } else {
         for (var i = 0, e = this.text.length; i < e; i++) {
-          var tw = ctx.measureText(this.text[i]);
+          tw = ctx.measureText(this.text[i]);
           ctx.fillText(
             this.text[i],
             this.x + (this.width / 2) - (tw.width / 2),

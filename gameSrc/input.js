@@ -55,7 +55,7 @@ var genericInput = false;
 // Returns **true** when the input system wants a generic input (raw codes) from input backends like
 // keyboards and game pads.
 //
-exports.wantsGgenericInput = function() {
+exports.wantsGenericInput = function() {
   return genericInput;
 }
 
@@ -69,18 +69,6 @@ exports.requestBlock = function () {
 //
 exports.releaseBlock = function () {
   blocked = false;
-};
-
-// Creates an input object. The **factory** function will be called directly after creating
-// the instance. Furthermore the created object will be inserted into cwt.Input as property
-// with the name given by the **key** argument.
-//
-exports.registerInputHandler = function (key, factory) {
-  if (constants.DEBUG) assert(key && !types[key]);
-
-  var obj = {};
-  obj.factory = factory;
-  types[key] = obj;
 };
 
 // Pushes an input **key** into the input stack. The parameters **d1** and **d2** has to be integers.

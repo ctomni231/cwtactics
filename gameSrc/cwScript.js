@@ -3,6 +3,8 @@
 // but normally the events should not be very heavy. So this can be ignored.
 //
 
+"use strict";
+
 function parseExpression(program) {
   program = skipSpace(program);
   var match, expr;
@@ -198,3 +200,17 @@ function run() {
   var program = Array.prototype.slice.call(arguments, 0).join("\n");
   return evaluate(parse(program), env);
 }
+
+// ------------------------------------------------------------------------
+
+exports.parse = function (code) {
+
+};
+
+exports.run = function (ast) {
+
+};
+
+exports.evaluate = function (code) {
+  return exports.run(exports.parse(code));
+};

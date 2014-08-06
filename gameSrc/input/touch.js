@@ -1,10 +1,11 @@
 "use strict";
 
 var constants = require('../constants');
+var state = require('../statemachine');
 var input = require('../input');
 
 function inSelection() {
-  var state = cwt.Gameflow.activeStateId;
+  var state = state.activeStateId;
   return (
     state === "INGAME_MOVEPATH"
       || state === "INGAME_SELECT_TILE_TYPE_A"

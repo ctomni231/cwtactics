@@ -5,7 +5,7 @@
     new XMLHttpRequest();
     xmlHttpReq = true;
   }
-  // FALL BACK
+    // FALL BACK
   catch (ex) {
     xmlHttpReq = false;
   }
@@ -22,7 +22,7 @@
           try {
             arg = JSON.parse(this.responseText);
           }
-          // FAILED TO CONVERT JSON TEXT
+            // FAILED TO CONVERT JSON TEXT
           catch (e) {
             this.failCallback(e);
           }

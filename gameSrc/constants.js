@@ -17,6 +17,8 @@ exports.MOD_PATH = "http://localhost:8000/";
 // exports.MOD_PATH = "http://192.168.1.30:8000/";
 // exports.MOD_PATH = "http://ctomni231.github.io/cwtactics/";
 
+exports.DEFAULT_MOD_PATH = exports.MOD_PATH+"modifications/cwt.json";
+
 // Tile size base.
 //
 exports.TILE_BASE = 16;

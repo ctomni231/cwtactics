@@ -249,8 +249,8 @@ exports.renderScreen = function () {
   this.renderUnits(x, y, w, h);
 
   // directly update all layers
-  cwt.Screen.layerMap.renderLayer(this.indexMapAnimation);
-  cwt.Screen.layerUnit.renderLayer(this.indexUnitAnimation);
+  exports.layerMap.renderLayer(this.indexMapAnimation);
+  exports.layerUnit.renderLayer(this.indexUnitAnimation);
 
   this.renderFogRect(x, y, w, h);
 
@@ -307,8 +307,8 @@ exports.shiftMap = function (code) {
   }
 
   // directly update all layers
-  cwt.Screen.layerMap.renderLayer(this.indexMapAnimation);
-  cwt.Screen.layerUnit.renderLayer(this.indexUnitAnimation);
+  exports.layerMap.renderLayer(this.indexMapAnimation);
+  exports.layerUnit.renderLayer(this.indexUnitAnimation);
 
   if (constants.DEBUG) console.log("shifted the screen (" + ((new Date()).getTime() - time) + "ms)");
 };

@@ -4,6 +4,7 @@ var constants = require("./constants");
 var stateData = require("./dataTransfer/states");
 var features = require("./systemFeatures");
 var renderer = require("./renderer");
+var widgets = require("./uiWidgets");
 var input = require("./input");
 var audio = require("./audio");
 var image = require("./image");
@@ -68,30 +69,30 @@ var addInGameState = function (desc) {
       // mouse move handler
       this.inputMove = function (x, y) {
         if (desc.inputMove) {
-          desc.inputMove.call(this, this.globalData, x, y);
+          desc.inputMove.call(this, x, y);
         } else {
-          cwt.Cursor.setPosition(
-            cwt.Screen.convertToTilePos(x),
-            cwt.Screen.convertToTilePos(y),
+          stateData.setCursorPosition(
+            renderer.convertToTilePos(x),
+            renderer.convertToTilePos(y),
             true
           );
         }
       };
 
       if (desc.init) {
-        desc.init.call(this, this.globalData);
+        desc.init.call(this);
       }
     },
 
     enter: function () {
       if (desc.enter) {
-        desc.enter.call(this, this.globalData);
+        desc.enter.call(this);
       }
     },
 
     exit: function () {
       if (desc.exit) {
-        desc.exit.call(this, this.globalData);
+        desc.exit.call(this);
       }
     },
 
@@ -134,17 +135,17 @@ var addInGameState = function (desc) {
         // invoke action
         fnc.assert(func);
         if (desc[func]) {
-          desc[func].call(this, this.globalData, delta);
+          desc[func].call(this, delta);
         } else if (code != constants.INACTIVE) {
-          cwt.Cursor.move(code);
+          stateData.moveCursor(code);
         }
       }
     },
 
     render: function (delta) {
-      cwt.MapRenderer.evaluateCycle(delta);
+      renderer.evaluateCycle(delta);
       if (desc.render) {
-        desc.render.call(this, this.globalData, delta);
+        desc.render.call(this, delta);
       }
     }
 
@@ -157,25 +158,26 @@ var addInGameState = function (desc) {
 // property in the state description.
 //
 var addMenuState = function (desc) {
+  var layout = new widgets.UIScreenLayout();
+  var rendered = false;
+
   addState({
     id: desc.id,
 
     init: function () {
-      this.layout = new cwt.UIScreenLayout();
-      this.rendered = false;
 
       this.inputMove = function (x, y) {
-        if (this.layout.updateIndex(x, y)) {
+        if (layout.updateIndex(x, y)) {
           this.rendered = false;
         }
       };
 
       if (desc.init) {
-        desc.init.call(this, this.layout);
+        desc.init.call(this, layout);
       }
 
       if (desc.doLayout) {
-        desc.doLayout.call(this, this.layout);
+        desc.doLayout.call(this, layout);
       }
 
       if (desc.genericInput) {
@@ -184,7 +186,7 @@ var addMenuState = function (desc) {
     },
 
     enter: function () {
-      cwt.Screen.layerUI.clear();
+      renderer.layerUI.clear();
       this.rendered = false;
 
       if (desc.enter) {
@@ -200,14 +202,14 @@ var addMenuState = function (desc) {
           case input.TYPE_RIGHT:
           case input.TYPE_UP:
           case input.TYPE_DOWN:
-            if (this.layout.handleInput(lastInput)) {
+            if (layout.handleInput(lastInput)) {
               this.rendered = false;
               audio.playSound("MENU_TICK");
             }
             break;
 
           case input.TYPE_ACTION:
-            var button = this.layout.activeButton();
+            var button = layout.activeButton();
             button.action.call(this, button, this);
             this.rendered = false;
             audio.playSound("ACTION");
@@ -224,10 +226,10 @@ var addMenuState = function (desc) {
     },
 
     render: function (delta) {
-      if (!this.rendered) {
-        var ctx = cwt.Screen.layerUI.getContext();
-        this.layout.draw(ctx);
-        this.rendered = true;
+      if (!rendered) {
+        var ctx = renderer.layerUI.getContext();
+        layout.draw(ctx);
+        rendered = true;
       }
     }
   });
@@ -236,10 +238,6 @@ var addMenuState = function (desc) {
 // Holds all registered game states.
 //
 var states = {};
-
-// State-Machine data object to share data between states.
-//
-var globalData = {};
 
 // The id of the active game state.
 //

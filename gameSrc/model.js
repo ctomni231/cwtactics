@@ -119,8 +119,6 @@ exports.Tile = my.Class({
 });
 
 //
-// @class
-// @extends cwt.IndexMultiton
 //
 exports.Property = my.Class({
 
@@ -420,7 +418,6 @@ exports.mapWidth = 0;
 //
 exports.mapHeight = 0;
 
-
 // generate map matrix
 var matrix = new require("./matrix").Matrix(constants.MAX_MAP_WIDTH, constants.MAX_MAP_HEIGHT);
 for (var x = 0, xe = constants.MAX_MAP_WIDTH; x < xe; x++) {
@@ -484,6 +481,7 @@ exports.grabTileByUnit = function (unit) {
   }
 
   assert(false, "given unit seems to be non-existent on the actual map");
+  return null;
 };
 
 //
@@ -496,7 +494,7 @@ exports.grabTileByUnit = function (unit) {
 exports.searchProperty = function (property, cb, cbThis, arg) {
   for (var x = 0, xe = exports.mapWidth; x < xe; x++) {
     for (var y = 0, ye = exports.mapHeight; y < ye; y++) {
-      if (exports.mapData[x][y].unit === unit) {
+      if (exports.mapData[x][y].property === property) {
         cb.call(cbThis, x, y, property, arg);
       }
     }
@@ -514,7 +512,7 @@ exports.searchUnit = function (unit, cb, cbThis, arg) {
   for (var x = 0, xe = exports.mapWidth; x < xe; x++) {
     for (var y = 0, ye = exports.mapHeight; y < ye; y++) {
       if (exports.mapData[x][y].unit === unit) {
-        return cb.call(cbThis, x, y, unit, arg);
+        cb.call(cbThis, x, y, unit, arg);
       }
     }
   }
