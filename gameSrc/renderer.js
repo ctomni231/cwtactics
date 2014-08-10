@@ -2,8 +2,8 @@
 
 var rendCursor = require("./renderer/cursor");
 var rendAnim = require("./renderer/animation");
-
-var stateData = require("../dataTransfer/states");
+ 
+var stateData = require("./dataTransfer/states");
 var constants = require("./constants");
 var assert = require("./functions").assert;
 var model = require("./model");

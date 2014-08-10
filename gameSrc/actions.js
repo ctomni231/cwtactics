@@ -4,7 +4,7 @@ var BUFFER_SIZE = 200;
 
 var circularBuffer = require("./circularBuffer");
 var constants = require("./constants");
-var emptyFn = require("./functions").emptyFunction;
+var func = require("./functions");
 var network = require("./network");
 var assert = require("./functions").assert;
 
@@ -32,10 +32,12 @@ exports.CLIENT_ACTION = 4;
 // @class
 //
 exports.Action = my.Class({
+
   constructor: function (impl) {
+    this.key = imp.key;
     this.type = impl.type;
     this.action = impl.action;
-    this.condition = (impl.condition) ? impl.condition : emptyFn;
+    this.condition = (impl.condition) ? impl.condition : func.trueReturner;
     this.prepareMenu = impl.prepareMenu || null;
     this.isTargetValid = impl.isTargetValid || null;
     this.prepareTargets = impl.prepareTargets || null;
@@ -46,6 +48,9 @@ exports.Action = my.Class({
     this.relation = impl.relation || null;
     this.toDataBlock = impl.toDataBlock || null;
     this.parseDataBlock = impl.parseDataBlock || null;
+
+    assert(impl.invoke);
+    this.invoke = impl.invoke;
   }
 });
 
@@ -116,19 +121,64 @@ var buffer = new circularBuffer.CircularBuffer(BUFFER_SIZE);
 //
 // List of all available actions.
 //
-var actions = {};
+var actions = [];
 
-var createAction = function (key, type, impl) {
-  impl.key = key;
-  impl.type = type;
-  actions[key] = new exports.Action(impl);
+var actionIds = {};
+
+
+
+// Adds the action with a given set of arguments to the action stack.
+//
+exports.localAction = function (key) {
+  assert(arguments.length <= 6);
+
+  // grab data object and fill it in relation to the given arguments
+  var actionData = pool.pop();
+  actionData.id = exports.getActionId(key);
+  if (arguments.length > 0 ) actionData.p1 = arguments[0];
+  if (arguments.length > 1 ) actionData.p2 = arguments[1];
+  if (arguments.length > 2 ) actionData.p3 = arguments[2];
+  if (arguments.length > 3 ) actionData.p4 = arguments[3];
+  if (arguments.length > 4 ) actionData.p5 = arguments[4];
+
+  // register action in the action stack
+  buffer.push(actionData);
+};
+
+// Adds the action with a given set of arguments to the action stack and shares the
+// the call with all other clients.
+//
+exports.sharedAction = function () {
+  if (network.isActive()) {
+    network.sendMessage(
+      JSON.stringify(
+        Array.prototype.slice.call(arguments)));
+  }
+
+  exports.localAction.apply(null, arguments);
+};
+
+exports.parseActionMessage = function (msg) {
+  exports.localAction.apply(null, JSON.parse(msg));
 };
 
 //
 // @return {Array}
 //
-exports.getActionNames = function () {
-  return Object.keys(actions);
+exports.getActions = function () {
+  return actions;
+};
+
+//
+//
+exports.getAction = function (key) {
+  return actions[actionIds[key]];
+};
+
+//
+//
+exports.getActionId = function (key) {
+  return actionIds[key];
 };
 
 //
@@ -188,6 +238,13 @@ exports.pushCommand = function (local, id, num1, num2, num3, num4, num5) {
 };
 
 // register all game actions
+
+var createAction = function (key, type, impl) {
+  impl.key = key;
+  impl.type = type;
+  actions.push(new exports.Action(impl));
+  actionIds[key] = actions.length-1;
+};
 
 createAction("transferUnit", exports.UNIT_ACTION, require("./actions/transfer").actionUnit);
 createAction("unitUnhide", exports.UNIT_ACTION, require("./actions/stealth").actionUnhide);

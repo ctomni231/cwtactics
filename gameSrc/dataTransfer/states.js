@@ -1,10 +1,230 @@
+"use strict";
+
 // Shared data that will be used between the states.
 //
 
-var move = require("../logic/move");
 var model = require("../model");
+var actions = require("../actions");
 var constants = require("../constants");
 var cursorRenderer = require("../renderer/cursor");
+
+var relationship = require("../logic/relationship");
+var explode = require("../logic/exploder");
+var move = require("../logic/move");
+var co = require("../logic/co");
+
+var invokeActionByData = function () {
+  var p1 = constants.INACTIVE;
+  var p2 = constants.INACTIVE;
+  var p3 = constants.INACTIVE;
+  var p4 = constants.INACTIVE;
+  var p5 = constants.INACTIVE;
+  var action = null;
+  switch (action) {
+
+    case "wait":
+      p1 = exports.source.unitId;
+      break;
+
+    case "joinUnits":
+      p1 = exports.source.unitId;
+      p2 = exports.target.x;
+      p3 = exports.target.y;
+      break;
+
+    case "supply":
+      p1 = exports.target.x;
+      p2 = exports.target.y;
+      break;
+
+    case "buildUnit":
+      p1 = exports.target.propertyId;
+      p2 = exports.action.selectedSubEntry;
+      break;
+
+    case "explode":
+      p1 = exports.source.x;
+      p2 = exports.source.y;
+      p3 = explode.getSuicideRange(exports.source.unit);
+      p4 = explode.getExplosionDamage(exports.source.unit);
+      break;
+
+    case "capture":
+      p1 = exports.target.propertyId;
+      p2 = exports.source.unitId;
+      break;
+
+    case "unloadUnit":
+      p1 = exports.source.unitId;
+      p2 = exports.target.x;
+      p3 = exports.target.y;
+      p4 = exports.action.selectedSubEntry;
+      p5 = exports.targetselection.x;
+      // data.targetselection.y
+      break;
+
+    case "loadUnit":
+      p1 = exports.target.unitId;
+      p2 = exports.source.unitId;
+      break;
+
+    case "transferUnit":
+      p1 = exports.source.unitId;
+      p2 = exports.selectedSubEntry;
+      break;
+
+    case "transferProperty":
+      p1 = exports.source.propertyId;
+      p2 = exports.selectedSubEntry;
+      break;
+
+    case "transferMoney":
+      p1 = model.turnOwner.id;
+      p2 = exports.target.property.owner.id;
+      p3 = exports.selectedSubEntry;
+      break;
+
+    case "unitUnhide":
+      p1 = exports.source.unitId;
+      break;
+
+    case "unitHide":
+      p1 = exports.source.unitId;
+      break;
+
+    case "attack":
+      p1 = exports.source.unitId;
+      p2 = exports.targetselection.unitId;
+      p3 = Math.round(Math.random() * 100);
+      p4 = Math.round(Math.random() * 100);
+      break;
+
+    case "activatePower":
+      p1 = (data.action.selectedSubEntry === "cop" ? co.POWER_LEVEL_COP :
+        (data.action.selectedSubEntry === "scop" ? co.POWER_LEVEL_SCOP : -1));
+      break;
+
+    default:
+      throw Error("unknown action");
+  }
+
+  actions.sharedAction(action, p1, p2, p3, p4, p5);
+};
+
+var checkConditionByData = function (action) {
+  var conditionResult = true;
+
+  switch (action.key) {
+
+    case "wait":
+      conditionResult = action.condition(exports.source.unit);
+      break;
+
+    case "explode":
+      conditionResult = action.condition(exports.source.unit);
+      break;
+
+    case "joinUnits":
+      conditionResult = action.condition(exports.source.unit, exports.target.unit);
+      break;
+
+    case "supply":
+      conditionResult = action.condition(exports.target.unit, exports.target.x, exports.target.y);
+      break;
+
+    case "buildUnit":
+      conditionResult = action.condition(exports.source.property);
+      break;
+
+    case "capture":
+      conditionResult = action.condition(exports.source.unit, exports.target.property);
+      break;
+
+    case "unloadUnit":
+      conditionResult = action.condition(exports.source.unit, exports.target.x, exports.target.y);
+      break;
+
+    case "loadUnit":
+      conditionResult = action.condition(exports.target.unit, exports.source.unit);
+      break;
+
+    case "transferUnit":
+      conditionResult = action.condition(exports.source.unit);
+      break;
+
+    case "transferProperty":
+      conditionResult = action.condition(exports.source.property);
+      break;
+
+    case "transferMoney":
+      conditionResult = action.condition(model.turnOwner, exports.target.x, exports.target.y);
+      break;
+
+    case "unitUnhide":
+    case "unitHide":
+      conditionResult = action.condition(exports.source.unit);
+      break;
+
+    case "attack":
+      conditionResult = action.condition(
+        exports.source.unit,
+        exports.target.x, exports.target.y,
+        exports.movePath.data[0] !== constants.INACTIVE
+      );
+      break;
+
+    case "activatePower":
+      conditionResult = action.condition(model.turnOwner);
+      break;
+  }
+
+  return conditionResult;
+};
+
+var prepareTargetsByData = function (action) {
+  switch (action.key) {
+    case "unloadUnit":
+      action.prepareTargets(
+        exports.source.unitId,
+        exports.target.x, exports.target.y,
+        exports.action.selectedSubEntry,
+        exports.selection
+      );
+      break;
+
+    case "attack":
+      action.prepareTargets(exports.source.unit, exports.target.x, exports.target.y, exports.selection);
+      break;
+  }
+};
+
+var prepareMenuByData = function (action) {
+  switch (action.key) {
+    case "buildUnit":
+      action.prepareMenu(exports.source.property, exports.menu);
+      break;
+
+    case "unloadUnit":
+      action.prepareMenu(exports.source.unit, exports.target.x, exports.target.y, exports.menu);
+      break;
+
+    case "transferUnit":
+      action.prepareMenu(exports.source.unit.owner, exports.menu);
+      break;
+
+    case "transferProperty":
+      action.prepareMenu(exports.source.property.owner, exports.menu);
+      break;
+
+    case "transferMoney":
+      action.prepareMenu(model.turnOwner, exports.menu);
+      break;
+
+    case "activatePower":
+      action.prepareMenu(model.turnOwner, exports.menu);
+      break;
+  }
+};
 
 //
 // X coordinate of the cursor.
@@ -149,7 +369,7 @@ exports.buildFromData = function () {
     trapped = model.move_trapCheck(moveDto.data, sourceDto, targetDto);
     model.events.move_flushMoveData(moveDto.data, sourceDto);
   }
-
+  // TODO
   if (!trapped) actionObject.invoke(scope);
   else controller.commandStack_sharedInvokement(
     "trapwait_invoked",
@@ -158,11 +378,10 @@ exports.buildFromData = function () {
 
   // all unit actions invokes automatically waiting
   if (trapped || actionObject.unitAction && !actionObject.noAutoWait) {
-    controller.commandStack_sharedInvokement(
-      "wait_invoked",
-      sourceDto.unitId
-    );
+    actions.sharedAction("wait", sourceDto.unitId);
   }
+
+  invokeActionByData();
 
   return trapped;
 };
@@ -464,19 +683,15 @@ exports.menu = {
   // Generates the action menu based on the given position data.
   //
   generate: function () {
-    if (!this.commandKeys) {
-      this.commandKeys = cwt.Action.getRegisteredNames();
-    }
-
     var st_mode;
     var sst_mode;
     var pr_st_mode;
     var pr_sst_mode;
-    var sPos = gameData.source;
-    var tPos = gameData.target;
-    var tsPos = gameData.targetselection;
-    var ChkU = cwt.Relationship.CHECK_UNIT;
-    var ChkP = cwt.Relationship.CHECK_PROPERTY;
+    var sPos = exports.source;
+    var tPos = exports.target;
+    var tsPos = exports.targetselection;
+    var ChkU = relationship.CHECK_UNIT;
+    var ChkP = relationship.CHECK_PROPERTY;
     var sProp = sPos.property;
     var sUnit = sPos.unit;
     var unitActable = (!(!sUnit || sUnit.owner !== cwt.Gameround.turnOwner || !sUnit.canAct));
@@ -484,41 +699,42 @@ exports.menu = {
     var mapActable = (!unitActable && !propertyActable);
 
     // check_ all game action objects and fill menu
-    for (var i = 0, e = this.commandKeys.length; i < e; i++) {
-      var action = cwt.Action.getActionObject(this.commandKeys[i]);
+    var actions = actions.getActions();
+    for (var i = 0, e = actions.length; i < e; i++) {
+      var action = actions[i];
 
       switch (action.type) {
 
-        case cwt.Action.CLIENT_ACTION:
+        case actions.CLIENT_ACTION:
           // TODO: ai check
           if (!mapActable || cwt.Player.activeClientPlayer !== cwt.Gameround.turnOwner) {
             continue;
           }
           break;
 
-        case cwt.Action.PROPERTY_ACTION:
+        case actions.PROPERTY_ACTION:
           if (!propertyActable) {
             continue;
           }
           break;
 
-        case cwt.Action.MAP_ACTION:
+        case actions.MAP_ACTION:
           if (!mapActable) {
             continue;
           }
           break;
 
-        case cwt.Action.UNIT_ACTION:
+        case actions.UNIT_ACTION:
           if (!unitActable) {
             continue;
           }
 
           // extract relationships
           if (st_mode === void 0) {
-            st_mode = cwt.Relationship.getRelationShipTo(sPos, tPos, ChkU, ChkU);
-            sst_mode = cwt.Relationship.getRelationShipTo(sPos, tsPos, ChkU, ChkU);
-            pr_st_mode = cwt.Relationship.getRelationShipTo(sPos, tPos, ChkU, ChkP);
-            pr_sst_mode = cwt.Relationship.getRelationShipTo(sPos, tsPos, ChkU, ChkP);
+            st_mode = relationship.getRelationShipTo(sPos, tPos, ChkU, ChkU);
+            sst_mode = relationship.getRelationShipTo(sPos, tsPos, ChkU, ChkU);
+            pr_st_mode = relationship.getRelationShipTo(sPos, tPos, ChkU, ChkP);
+            pr_sst_mode = relationship.getRelationShipTo(sPos, tsPos, ChkU, ChkP);
           }
 
           // relation to unit
@@ -536,12 +752,12 @@ exports.menu = {
           }
           break;
 
-        case cwt.Action.ENGINE_ACTION:
+        case actions.ENGINE_ACTION:
           continue;
       }
 
       // if condition matches then add the entry to the menu list
-      if (action.condition && action.condition(gameData) !== false) {
+      if (checkConditionByData(action)) {
         gameData.menu.addEntry(this.commandKeys[i], true)
       }
     }

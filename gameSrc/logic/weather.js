@@ -9,40 +9,35 @@ var model = require("../model");
 var cfgMinDays = require("../config").getConfig("weatherMinDays");
 var cfgRandomDays = require("../config").getConfig("weatherRandomDays");
 
+// Picks a random weather id in relation to the current action weather.
 //
-// Calculates the next weather and adds the result as timed event to
-// the day events. **Only invokable by the host instance.**
-//
-exports.calculateNextWeather = function() {
+exports.pickRandomWeatherId = function() {
 
-  // this event is only host invokable
-  assert(network.isHost());
-
-  // Search a random weather if the last weather
-  // was `null` or the default weather type
+  // Search a random weather if the last weather was `null` or the default weather type
   var newTp;
-  var duration;
-  if (model.weather && model.defaultWeather) {
-
+  if (model.weather && model.weather === sheets.defaultWeather) {
     var list = sheets.weathers.types;
     newTp = selectRandom(list, model.weather.ID);
-    duration = 1;
 
   } else {
-
     // Take default weather and calculate a random amount of days
     newTp = sheets.defaultWeather;
-    duration = cfgMinDays.value + parseInt(cfgRandomDays.value * Math.random(), 10);
   }
 
-  model.weatherLeftDays = duration;
-  this.changeWeather(newTp); // TODO send message here
+  return newTp.ID;
 };
 
+// Picks a random duration for a given weather type.
 //
+exports.pickRandomWeatherTime = function(type) {
+  return (type === sheets.defaultWeather.ID)? 1 :
+    (cfgMinDays.value + parseInt(cfgRandomDays.value * Math.random(), 10));
+};
+
+// Changes the weather and sets the left days.
 //
-//
-exports.changeWeather = function(weather) {
+exports.changeWeather = function(weather, duration) {
   if (this.DEBUG) assert(sheets.weathers.isValidSheet(weather));
-  sheets.weather = weather;
+  model.weather = weather;
+  model.weatherLeftDays = duration;
 };

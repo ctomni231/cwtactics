@@ -47,7 +47,7 @@ exports.startProcess = function (setProcess, callback) {
         setProgress(90),
         setLoader(require("./loading/portraitCheck")),
         setProgress(100),
-        function (next) {
+        function (next){
           // release cached modification
           require("./dataTransfer/mod").clearCachedMod();
           next();

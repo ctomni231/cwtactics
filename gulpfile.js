@@ -4,6 +4,7 @@
 var gulp = require('gulp');
 var todo = require('gulp-todo');
 var clean = require('gulp-clean');
+var shell = require('gulp-shell');
 var gulpif = require('gulp-if');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
@@ -27,12 +28,11 @@ var buildIt = function (debugMode) {
     .pipe(gulp.dest(DESTINATION_FOLDER));
 
   // build modularized game file with source maps
-  gulp.src(MAIN_FILE)
-    .pipe(browserify({
-      insertGlobals: true,
-      builtins: {},
-      debug: debugMode
-    }))
+  gulp.src(MAIN_FILE, {read: false})
+    .pipe(shell(["browserify <%= file.path %> "+(debugMode? '-d' : '')+" -o "+DESTINATION_FILE]));
+
+  // uglify main file
+  gulp.src(DESTINATION_FILE)
     .pipe(gulpif(!debugMode, uglify()))
     .pipe(gulp.dest(DESTINATION_FOLDER));
 

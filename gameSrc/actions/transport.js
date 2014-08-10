@@ -7,69 +7,47 @@ var model = require("../model");
 exports.actionUnload = {
   multiStepAction: true,
 
-  relation: [
-    "S", "T",
-    relation.RELATION_SAME_THING,
-    relation.RELATION_NONE
-  ],
+  relation: ["S", "T", relation.RELATION_SAME_THING, relation.RELATION_NONE],
 
-  condition: function (data) {
-    return ( transport.canUnloadSomethingAt(data.source.unit, data.target.x, data.target.y) );
+  condition: function (transporter, x, y) {
+    return transport.canUnloadSomethingAt(transporter, x, y);
   },
 
-  prepareMenu: function (data) {
-    model.events.unloadUnit_addUnloadTargetsToMenu(
-      data.source.unitId,
-      data.target.x,
-      data.target.y,
-      data.menu
-    );
+  prepareMenu: function (transporter, x, y, menu) {
+    var transporterId = model.units.indexOf(transporter);
+
+    for(var i = 0, e= model.units.length; i<e; i++) {
+      if (model.units[i].loadedIn == transporterId) {
+        menu.addEntry(i,true);
+      }
+    }
   },
 
   targetSelectionType: "B",
-  prepareTargets: function (data) {
-    model.events.unloadUnit_addUnloadTargetsToSelection(
-      data.source.unitId,
-      data.target.x,
-      data.target.y,
-      data.action.selectedSubEntry,
-      data.selection
-    );
+  prepareTargets: function (transporter, x, y, load, selection) {
+    if (transport.canUnloadSomethingAt(transporter, x - 1, y)) selection.setValue(x - 1, y, 1);
+    if (transport.canUnloadSomethingAt(transporter, x + 1, y)) selection.setValue(x + 1, y, 1);
+    if (transport.canUnloadSomethingAt(transporter, x, y + 1)) selection.setValue(x, y + 1, 1);
+    if (transport.canUnloadSomethingAt(transporter, x, y - 1)) selection.setValue(x, y - 1, 1);
   },
 
-  toDataBlock: function ( data, dataBlock) {
-    dataBlock.p1 = data.target.unitId;
-    dataBlock.p2 = data.source.unitId;
-  },
-
-  parseDataBlock: function (dataBlock) {
+  invoke: function (transporterId, tx, ty, loadId, ux, uy) {
+    // TODO wrong arguments
     transport.unload(
-      data.source.unit,
-      data.target.x,
-      data.target.y,
-      data.action.selectedSubEntry,
-      data.targetselection.x,
-      data.targetselection.y
+      model.units[transporterId], tx, ty,
+      model.units[loadId], ux, uy
     );
   }
 };
 
 exports.actionLoad = {
-  relation: [
-    "S", "T",
-    relation.RELATION_OWN
-  ],
+  relation: ["S", "T", relation.RELATION_OWN],
 
-  condition: function (data) {
-    return ( transport.canLoadUnit(data.target.unit, data.source.unit) );
+  condition: function (transporter, load) {
+    return transport.canLoadUnit(transporter, load);
   },
 
-  toDataBlock: function (data, dataBlock) {
-    dataBlock.p1 = data.target.unitId;
-    dataBlock.p2 = data.source.unitId;
-  },
-
-  parseDataBlock: function (dataBlock) {
-    transport.load(model.units[dataBlock.p1], model.units[dataBlock.p2]);
+  invoke: function (transporterId, loadId) {
+    transport.load(model.units[transporterId], model.units[loadId]);
   }
 };

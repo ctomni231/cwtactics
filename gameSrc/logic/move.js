@@ -1,3 +1,6 @@
+var constants = require("../constants");
+var assert = require("../functions").assert;
+
 // Symbolizes a move up.
 //
 exports.MOVE_CODES_UP = 0;
@@ -214,20 +217,20 @@ exports.addCodeToMovePath = function (code, movePath, selection, sx, sy) {
 //
 // @private
 //
-exports.fillMoveMapHelper_ = [];
+var fillMoveMapHelper = [];
 
 //
 // @private
 //
-exports.checker_ = [
-  cwt.INACTIVE,
-  cwt.INACTIVE,
-  cwt.INACTIVE,
-  cwt.INACTIVE,
-  cwt.INACTIVE,
-  cwt.INACTIVE,
-  cwt.INACTIVE,
-  cwt.INACTIVE
+var checkArray = [
+  constants.INACTIVE,
+  constants.INACTIVE,
+  constants.INACTIVE,
+  constants.INACTIVE,
+  constants.INACTIVE,
+  constants.INACTIVE,
+  constants.INACTIVE,
+  constants.INACTIVE
 ];
 
 //
@@ -245,43 +248,44 @@ exports.fillMoveMap = function (source, selection, x, y, unit) {
   if (typeof y !== "number") y = source.y;
   if (!unit) unit = source.unit;
 
-  if (this.DEBUG) cwt.assert(cwt.Model.isValidPosition(x, y));
+  if (constants.DEBUG) assert(cwt.Model.isValidPosition(x, y));
 
   var toBeChecked;
   var releaseHelper = false;
-  if (this.fillMoveMapHelper_ !== null) {
+  if (fillMoveMapHelper !== null) {
 
     // use the cached array
-    toBeChecked = this.fillMoveMapHelper_;
-    checker = this.checker_;
+    toBeChecked = fillMoveMapHelper;
+    checker = checkArray;
 
     // reset some stuff
     for (var n = 0, ne = toBeChecked.length; n < ne; n++) {
       toBeChecked[n] = null;
     }
     for (var n = 0, ne = checker.length; n < ne; n++) {
-      checker[n] = cwt.INACTIVE;
+      checker[n] = constants.INACTIVE;
     }
 
     // remove cache objects from the move logic object
-    this.fillMoveMapHelper_ = null;
-    this.checker_ = null;
+    fillMoveMapHelper = null;
+    checkArray = null;
 
     releaseHelper = true;
 
   } else {
+    console.warn("WARN:: cannot use move cache variables");
 
     // use a new arrays because cache objects aren't available
     toBeChecked = [];
     checker = [
-      cwt.INACTIVE,
-      cwt.INACTIVE,
-      cwt.INACTIVE,
-      cwt.INACTIVE,
-      cwt.INACTIVE,
-      cwt.INACTIVE,
-      cwt.INACTIVE,
-      cwt.INACTIVE
+      constants.INACTIVE,
+      constants.INACTIVE,
+      constants.INACTIVE,
+      constants.INACTIVE,
+      constants.INACTIVE,
+      constants.INACTIVE,
+      constants.INACTIVE,
+      constants.INACTIVE
     ];
   }
 
@@ -399,8 +403,8 @@ exports.fillMoveMap = function (source, selection, x, y, unit) {
 
   // release helper if you grabbed it
   if (releaseHelper) {
-    this.fillMoveMapHelper_ = toBeChecked;
-    this.checker_ = checker;
+    fillMoveMapHelper = toBeChecked;
+    checkArray = checker;
   }
 
   // convert left points back to absolute costs

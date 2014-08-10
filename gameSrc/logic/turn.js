@@ -3,6 +3,7 @@
 var model = require("../model");
 var assert = require("../functions").assert;
 var constants = require("../constants");
+var supply = require("./supply");
 
 var cfgAutoSupply = require("../config").getConfig("autoSupplyAtTurnStart");
 

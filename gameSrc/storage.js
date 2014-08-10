@@ -1,5 +1,3 @@
-var localforage = require("../libJs/localForage");
-
 //
 //
 var IOS7_WEBSQL_BUGFIX_SIZE = 4;
