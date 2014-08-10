@@ -5,8 +5,10 @@
 
 var model = require("../model");
 var actions = require("../actions");
+var renderer = require("../renderer");
 var constants = require("../constants");
-var cursorRenderer = require("../renderer/cursor");
+var stateMachine = require("../statemachine");
+var circularBuffer = require("../circularBuffer");
 
 var relationship = require("../logic/relationship");
 var explode = require("../logic/exploder");
@@ -282,8 +284,8 @@ exports.moveCursor = function (dir) {
 //
 exports.setCursorPosition = function (x, y, relativeToScreen) {
   if (relativeToScreen) {
-    x = x + cwt.Screen.offsetX;
-    y = y + cwt.Screen.offsetY;
+    x = x + renderer.screenOffsetX;
+    y = y + renderer.screenOffsetY;
   }
 
   // change illegal positions to prevent out of bounds
@@ -296,21 +298,21 @@ exports.setCursorPosition = function (x, y, relativeToScreen) {
     return;
   }
 
-  cursorRenderer.eraseCursor();
+  renderer.eraseCursor();
 
   this.x = x;
   this.y = y;
 
   // convert to screen relative pos
-  x = x - cwt.Screen.offsetX;
-  y = y - cwt.Screen.offsetY;
+  x = x - renderer.screenOffsetX;
+  y = y - renderer.screenOffsetY;
 
   // do possible screen shift
   var moveCode = constants.INACTIVE;
   if (x <= 3) {
     moveCode = move.MOVE_CODES_RIGHT;
-    if (cwt.Screen.shiftScreen(moveCode)) {
-      cwt.MapRenderer.shiftMap(moveCode);
+    if (renderer.shiftScreen(moveCode)) {
+      renderer.shiftMap(moveCode);
     }
 
   }
@@ -318,16 +320,16 @@ exports.setCursorPosition = function (x, y, relativeToScreen) {
   // do possible screen shift
   if (x >= constants.SCREEN_WIDTH - 3) {
     moveCode = move.MOVE_CODES_LEFT;
-    if (cwt.Screen.shiftScreen(moveCode)) {
-      cwt.MapRenderer.shiftMap(moveCode);
+    if (renderer.shiftScreen(moveCode)) {
+      renderer.shiftMap(moveCode);
     }
   }
 
   // do possible screen shift
   if (y <= 3) {
     moveCode = move.MOVE_CODES_DOWN;
-    if (cwt.Screen.shiftScreen(moveCode)) {
-      cwt.MapRenderer.shiftMap(moveCode);
+    if (renderer.shiftScreen(moveCode)) {
+      renderer.shiftMap(moveCode);
     }
 
   }
@@ -335,12 +337,12 @@ exports.setCursorPosition = function (x, y, relativeToScreen) {
   // do possible screen shift
   if (y >= constants.SCREEN_HEIGHT - 3) {
     moveCode = move.MOVE_CODES_UP;
-    if (cwt.Screen.shiftScreen(moveCode)) {
-      cwt.MapRenderer.shiftMap(moveCode);
+    if (renderer.shiftScreen(moveCode)) {
+      renderer.shiftMap(moveCode);
     }
   }
 
-  cursorRenderer.renderCursor();
+  renderer.renderCursor();
 };
 
 //
@@ -358,30 +360,21 @@ exports.multiStepActive = false;
 // Builds several commands from collected action data.
 //
 exports.buildFromData = function () {
-  var targetDto = exports.target;
-  var sourceDto = exports.source;
-  var actionDto = exports.action;
-  var moveDto = exports.movePath;
-  var actionObject = actionDto.object;
-
   var trapped = false;
-  if (moveDto.data[0] !== -1) {
-    trapped = model.move_trapCheck(moveDto.data, sourceDto, targetDto);
-    model.events.move_flushMoveData(moveDto.data, sourceDto);
+
+  if (exports.movePath.data[0] !== -1) {
+    trapped = move.trapCheck(exports.movePath, exports.source, exports.target);
   }
+
   // TODO
-  if (!trapped) actionObject.invoke(scope);
-  else controller.commandStack_sharedInvokement(
-    "trapwait_invoked",
-    sourceDto.unitId
-  );
+  if (!trapped) {
+    invokeActionByData();
+  }
 
   // all unit actions invokes automatically waiting
-  if (trapped || actionObject.unitAction && !actionObject.noAutoWait) {
-    actions.sharedAction("wait", sourceDto.unitId);
+  if (trapped || exports.action.object.type === actions.UNIT_ACTION && !exports.action.object.noAutoWait) {
+    actions.sharedAction("wait", exports.source.unitId);
   }
-
-  invokeActionByData();
 
   return trapped;
 };
@@ -389,15 +382,15 @@ exports.buildFromData = function () {
 //
 // Position object with rich information about the selected position by an action and some relations.
 //
-exports.source = new cwt.PositionDataClass();
+exports.source = new model.PositionData();
 
 // Position object with rich information about the selected position by an action and some relations.
 //
-exports.target = new cwt.PositionDataClass();
+exports.target = new model.PositionData();
 
 // Position object with rich information about the selected position by an action and some relations.
 //
-exports.targetselection = new cwt.PositionDataClass();
+exports.targetselection = new model.PositionData();
 
 //
 //
@@ -441,8 +434,8 @@ exports.selection = {
       }
     }
 
-    this.centerX = Math.max(0, x - (this.len_ - 1));
-    this.centerY = Math.max(0, y - (this.len_ - 1));
+    this.centerX_ = Math.max(0, x - (this.len_ - 1));
+    this.centerY_ = Math.max(0, y - (this.len_ - 1));
 
     // clean data
     for (var rx = 0; rx < this.len_; rx++) {
@@ -458,7 +451,7 @@ exports.selection = {
     y = y - this.centerY_;
 
     if (x < 0 || y < 0 || x >= this.len_ || y >= this.len_) {
-      return cwt.INACTIVE;
+      return constants.INACTIVE;
     } else {
       return this.data_[x][y];
     }
@@ -490,15 +483,10 @@ exports.selection = {
       throw Error("Out of Bounds");
     }
 
-    if ((x > 0 && this.len_[x - 1][y] > 0) ||
+    return ((x > 0 && this.len_[x - 1][y] > 0) ||
       (y > 0 && this.len_[x][y - 1] > 0) ||
       (x < this.data_ - 1 && this.data_[x + 1][y] > 0) ||
-      (y < this.data_ - 1 && this.data_[x][y + 1] > 0)) {
-
-      return true;
-    } else {
-      return false;
-    }
+      (y < this.data_ - 1 && this.data_[x][y + 1] > 0));
   },
 
   //
@@ -578,8 +566,6 @@ exports.selection = {
 //
 // Selected game action.
 //
-// @memberOf require("../statemachine").globalData
-//
 exports.action = {
 
   //
@@ -598,11 +584,7 @@ exports.action = {
   object: null
 };
 
-//
 // Game menu.
-//
-// @memberOf require("../statemachine").globalData
-// @implements {cwt.InterfaceMenu.<String>}
 //
 exports.menu = {
 
@@ -613,12 +595,12 @@ exports.menu = {
   //
   // @type {cwt.CircularBuffer.<String>}
   //
-  entries_: new cwt.CircularBuffer(),
+  entries_: new circularBuffer.CircularBuffer(),
 
   //
   // @type {cwt.CircularBuffer.<boolean>}
   //
-  enabled_: new cwt.CircularBuffer(),
+  enabled_: new circularBuffer.CircularBuffer(),
 
   selectedIndex: 0,
 
@@ -694,8 +676,8 @@ exports.menu = {
     var ChkP = relationship.CHECK_PROPERTY;
     var sProp = sPos.property;
     var sUnit = sPos.unit;
-    var unitActable = (!(!sUnit || sUnit.owner !== cwt.Gameround.turnOwner || !sUnit.canAct));
-    var propertyActable = (!(sUnit || !sProp || sProp.owner !== cwt.Gameround.turnOwner || sProp.type.blocker));
+    var unitActable = (!(!sUnit || sUnit.owner !== model.turnOwner || !sUnit.canAct));
+    var propertyActable = (!(sUnit || !sProp || sProp.owner !== model.turnOwner || sProp.type.blocker));
     var mapActable = (!unitActable && !propertyActable);
 
     // check_ all game action objects and fill menu
@@ -758,7 +740,7 @@ exports.menu = {
 
       // if condition matches then add the entry to the menu list
       if (checkConditionByData(action)) {
-        gameData.menu.addEntry(this.commandKeys[i], true)
+        exports.menu.addEntry(this.commandKeys[i], true)
       }
     }
   }
@@ -766,10 +748,7 @@ exports.menu = {
 
 //
 //
-// @type {cwt.CircularBuffer}
-// @memberOf require("../statemachine").globalData
-//
-exports.movePath = new cwt.CircularBuffer(cwt.MAX_MOVE_LENGTH);
+exports.movePath = new circularBuffer.CircularBuffer(constants.MAX_MOVE_LENGTH);
 
 //
 //
@@ -780,20 +759,20 @@ exports.preventMovePathGeneration = false;
 exports.inMultiStep = false;
 
 exports.nextStep = function () {
-  gameData.movePath.clean();
-  gameData.menu.clean();
-  gameData.action.object.prepareMenu(this.data);
+  exports.movePath.clean();
+  exports.menu.clean();
+  exports.action.object.prepareMenu(this.data);
 
-  if (!gameData.menu.getSize()) {
-    require("../statemachine").changeState("INGAME_IDLE");
+  if (!exports.menu.getSize()) {
+    stateMachine.changeState("INGAME_IDLE");
   }
 
-  gameData.menu.addEntry("done", true);
-  gameData.inMultiStep = true;
+  exports.menu.addEntry("done", true);
+  exports.inMultiStep = true;
 
-  require("../statemachine").changeState("INGAME_SUBMENU");
+  stateMachine.changeState("INGAME_SUBMENU");
 };
 
 exports.nextStepBreak = function () {
-  require("../statemachine").changeState("INGAME_IDLE");
+  stateMachine.changeState("INGAME_IDLE");
 };
