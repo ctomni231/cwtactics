@@ -55,7 +55,10 @@ exports.SheetDatabaseObject = my.Class({
   registerSheet: function (sheet) {
 
     // validate it
-    assert(!this.validator_.validate("constr", sheet));
+    var errors = this.validator_.validate("constr", sheet);
+    if (errors) {
+      assert(false,'Failed parsing sheet because of: ' + JSON.stringify(errors,null,"\t"));
+    }
 
     // add it
     this.sheets[sheet.ID] = sheet;
@@ -128,7 +131,7 @@ exports.units = new exports.SheetDatabaseObject({
       cost: {
         type: "integer",
         minimum: -1,
-        not: 0
+        not: { type: "integer", enum:[0] }
       },
       range: {
         type: "integer",
@@ -387,7 +390,7 @@ exports.properties.registerSheet({
 
 exports.units.registerSheet({
   "ID": exports.CANNON_UNIT_INV,
-  "cost": 0,
+  "cost": -1,
   "range": 0,
   "movetype": "NO_MOVE",
   "vision": 1,
@@ -398,7 +401,7 @@ exports.units.registerSheet({
 
 exports.units.registerSheet({
   "ID": exports.LASER_UNIT_INV,
-  "cost": 0,
+  "cost": -1,
   "range": 0,
   "movetype": "NO_MOVE",
   "vision": 1,

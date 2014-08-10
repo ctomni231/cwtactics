@@ -473,11 +473,6 @@ exports.trapCheck = function (movePath, source, target) {
 
 //
 //
-//
-exports.movePathCache = new cwt.CircularBuffer(cwt.MAX_MOVE_LENGTH);
-
-//
-//
 // @param unit
 // @param x
 // @param y

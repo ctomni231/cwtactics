@@ -34,7 +34,7 @@ exports.CLIENT_ACTION = 4;
 exports.Action = my.Class({
 
   constructor: function (impl) {
-    this.key = imp.key;
+    this.key = impl.key;
     this.type = impl.type;
     this.action = impl.action;
     this.condition = (impl.condition) ? impl.condition : func.trueReturner;

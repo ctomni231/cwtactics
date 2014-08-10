@@ -24,6 +24,7 @@
     "ternary-stream": "~1.2.0",
     "through2": "~0.5.1",
     "gulp-replace-task": "0.0.6",
-    "gulp-shell": "~0.2.9"
+    "gulp-shell": "~0.2.9",
+    "gulp-exec": "~2.1.0"
   }
 }

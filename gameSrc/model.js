@@ -4,6 +4,7 @@ var daysOfPeaceCfg = require("./config").getConfig("daysOfPeace");
 var createBuffer = require("./circularBuffer").createBufferByClass;
 var constants = require("./constants");
 var assert = require("./functions").assert;
+var matrix = require("./matrix");
 
 // Advance Wars 1 game mode. The first ever released game mode of the advance wars series (GBA and up).
 //
@@ -419,7 +420,7 @@ exports.mapWidth = 0;
 exports.mapHeight = 0;
 
 // generate map matrix
-var matrix = new require("./matrix").Matrix(constants.MAX_MAP_WIDTH, constants.MAX_MAP_HEIGHT);
+var matrix = new matrix.Matrix(constants.MAX_MAP_WIDTH, constants.MAX_MAP_HEIGHT);
 for (var x = 0, xe = constants.MAX_MAP_WIDTH; x < xe; x++) {
   for (var y = 0, ye = constants.MAX_MAP_HEIGHT; y < ye; y++) {
     matrix.data[x][y] = new exports.Tile();
