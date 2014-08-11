@@ -1,8 +1,9 @@
+var constants = require("../constants");
+
 var MENU_ELEMENTS_MAX = 10;
 var MENU_ENTRY_HEIGHT = 2 * constants.TILE_BASE;
 var MENU_ENTRY_WIDTH = 10 * constants.TILE_BASE;
 
-var constants = require("../constants");
 var functions = require("../functions");
 var widgets = require("../uiWidgets");
 var i18n = require("../localization");

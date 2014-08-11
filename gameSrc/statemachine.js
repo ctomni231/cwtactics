@@ -11,6 +11,8 @@ var image = require("./image");
 var move = require("./logic/move");
 var fnc = require("./functions");
 
+var gamePad = require("./input/gamepad");
+
 //
 //
 // @class
@@ -256,14 +258,14 @@ var update = function (delta) {
   // TODO add command evaluation here
 
   // update game-pad controls
-  if (features.gamePad && input.types.gamePad.update) {
-    input.types.gamePad.update();
+  if (features.gamePad && gamePad.update) {
+    gamePad.update();
   }
 
   // state update
   var inp = input.popAction();
-  exports.activeState.update.call(this.activeState.data, delta, inp);
-  exports.activeState.render.call(this.activeState.data, delta);
+  exports.activeState.update(delta, inp);
+  exports.activeState.render(delta);
 
   // release input data object
   if (inp) {
@@ -277,7 +279,7 @@ var update = function (delta) {
 exports.changeState = function (stateId) {
   if (exports.activeState) {
     if (exports.activeState.exit) {
-      exports.activeState.exit.call(exports.activeState.data);
+      exports.activeState.exit();
     }
   }
 
@@ -299,7 +301,7 @@ exports.setState = function (stateId, fireEvent) {
   exports.activeStateId = stateId;
 
   if (fireEvent !== false) {
-    exports.activeState.enter.call(exports.activeState.data);
+    exports.activeState.enter();
   }
 };
 
@@ -341,8 +343,10 @@ exports.start = function () {
 // inject all game states
 
 addState(require("./states/start_none").state);
-addState(require("./states/start_tooltip").state);
 addState(require("./states/start_load").state);
+addState(require("./states/start_tooltip").state);
+
+/*
 addState(require("./states/portrait").state);
 addState(require("./states/error").state);
 
@@ -375,3 +379,4 @@ addState(require("./states/ingame_anim_destroyUnit").state);
 addState(require("./states/ingame_anim_move").state);
 addState(require("./states/ingame_anim_nextTurn").state);
 addState(require("./states/ingame_anim_trapWait").state);
+  */

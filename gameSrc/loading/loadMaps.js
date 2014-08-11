@@ -7,10 +7,8 @@ exports.loader = function (next, hasCachedData) {
   }
 
   if (!hasCachedData) {
-    mapDTO.transferAllFromRemote(function () {
-      cwt.Maps.updateMapList(next);
-    });
+    mapDTO.transferAllFromRemote(next);
   } else {
-    cwt.Maps.updateMapList(next);
+    mapDTO.transferAllFromStorage(next);
   }
 };

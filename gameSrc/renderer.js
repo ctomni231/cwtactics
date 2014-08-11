@@ -1,5 +1,7 @@
 "use strict";
 
+var constants = require("./constants");
+
 var canvasW = constants.TILE_BASE * constants.SCREEN_WIDTH;
 var canvasH = constants.TILE_BASE * constants.SCREEN_HEIGHT;
 
@@ -10,7 +12,6 @@ var rendMenu = require("./renderer/menu");
 var rendFog = require("./renderer/fog");
 
 var stateData = require("./dataTransfer/states");
-var constants = require("./constants");
 var assert = require("./functions").assert;
 var model = require("./model");
 var move = require("./logic/move");
