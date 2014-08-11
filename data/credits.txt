@@ -32,6 +32,7 @@ chom-chom
 Ace.Stef569
 MarinePower
 MaraSargon
+theether
  
 <MINOR CONTRIBUTORS>
 amarriner
@@ -44,11 +45,12 @@ TruthSeeker
 Gipface
 Walker
 Simon
-theether
 eazar001
 mgb2625
 Howdy_McGee
 UltraStorm
+Mori
+bbzee
  
 <FORUM MODDERS>
 DiamondPhoenix
