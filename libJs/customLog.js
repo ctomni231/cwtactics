@@ -36,6 +36,17 @@ if (window.console) window.console = {};
 
   };
 
+  window.console.warn = function (msg) {
+    var el = document.createElement("p");
+    el.innerHTML = " INFO:: "+msg;
+
+    el.style.color = "orange";
+    el.style.margin = "2";
+
+    container.insertBefore(el,container.children[0]);
+
+  };
+
   window.console.error = function (msg, where) {
     var el = document.createElement("p");
     el.innerHTML = "ERROR:: "+msg+((where)? "<br/>[at: "+where+"]" : "");
