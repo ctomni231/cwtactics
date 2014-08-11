@@ -74,6 +74,8 @@ var MOUSE_MOVE_EVENT = function (ev) {
 exports.backend = new input.InputBackend(
   null,
   function () {
+    if (constants.DEBUG) console.log("enable mouse");
+
     canvas.onmousemove = MOUSE_MOVE_EVENT;
     canvas.onmouseup = MOUSE_UP_EVENT;
   },

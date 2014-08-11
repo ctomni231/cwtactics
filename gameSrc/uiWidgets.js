@@ -288,17 +288,17 @@ exports.UIButtonGroup = my.Class({
   // @param input
   // @return {boolean} true, if the index was updated, else false
   //
-  handleInput: function (input) {
+  handleInput: function (inputData) {
     if (constants.DEBUG) assert(input !== null);
 
-    if (typeof input !== "number") {
-      input = input.key;
+    if (typeof inputData !== "number") {
+      inputData = inputData.key;
     }
 
     var res = true;
     this.elements[this.selected].inFocus = false;
 
-    switch (input) {
+    switch (inputData) {
       case input.TYPE_UP:
       case input.TYPE_LEFT:
         do {

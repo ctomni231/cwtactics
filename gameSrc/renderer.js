@@ -72,6 +72,8 @@ exports.LayeredCanvas = my.Class({
   // @return {HTMLCanvasElement}
   //
   getLayer: function (index) {
+    if (arguments.length === 0) index = constants.INACTIVE;
+
     if (constants.DEBUG) assert(index === constants.INACTIVE || (index >= 0 && index < this.layers.length));
 
     // root ?
@@ -87,6 +89,8 @@ exports.LayeredCanvas = my.Class({
   // @param {Number?} index
   //
   clear: function (index) {
+    if (arguments.length === 0) index = constants.INACTIVE;
+
     this.getContext(index).clearRect(0, 0, this.w, this.h);
   },
 
@@ -104,6 +108,8 @@ exports.LayeredCanvas = my.Class({
   // @return {CanvasRenderingContext2D}
   //
   getContext: function (index) {
+    if (arguments.length === 0) index = constants.INACTIVE;
+
     if (constants.DEBUG) assert(index === constants.INACTIVE || (index >= 0 && index < this.layers.length));
 
     // root ?

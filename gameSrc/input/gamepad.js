@@ -84,6 +84,8 @@ var UPDATER_FUNCTION = function () {
 exports.backend = new input.InputBackend(
   MAPPING,
   function () {
+    if (constants.DEBUG) console.log("enable gamepad");
+
     exports.update = UPDATER_FUNCTION;
   },
   function () {

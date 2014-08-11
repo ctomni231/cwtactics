@@ -70,6 +70,8 @@ var KEY_HANDLER = function (ev) {
 exports.backend = new input.InputBackend(
   MAPPING,
   function () {
+    if (constants.DEBUG) console.log("enable keyboard");
+
     document.onkeydown = KEY_HANDLER;
   },
   function () {

@@ -78,6 +78,8 @@ exports.pushAction = function (key, d1, d2) {
     return;
   }
 
+  if (constants.DEBUG) console.log("adding input data "+key+", "+d1+", "+d2);
+
   // convert undefined and null data arguments to the inactive code
   if (d1 !== 0 && !d1) {
     d1 = constants.INACTIVE;

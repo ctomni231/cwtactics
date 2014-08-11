@@ -262,6 +262,8 @@ var TOUCH_END_EVENT = function (event) {
 exports.backend = new input.InputBackend(
   null,
   function () {
+    if (constants.DEBUG) console.log("enable touch");
+
     document.addEventListener('touchstart', TOUCH_START_EVENT, false);
     document.addEventListener('touchmove', TOUCH_MOVE_EVENT, false);
     document.addEventListener('touchend', TOUCH_END_EVENT , false);

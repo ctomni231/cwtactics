@@ -188,8 +188,8 @@ var addMenuState = function (desc) {
     },
 
     enter: function () {
-      renderer.layerUI.clear();
-      this.rendered = false;
+      renderer.layerUI.clear(constants.INACTIVE);
+      rendered = false;
 
       if (desc.enter) {
         desc.enter.call(this);
@@ -205,7 +205,7 @@ var addMenuState = function (desc) {
           case input.TYPE_UP:
           case input.TYPE_DOWN:
             if (layout.handleInput(lastInput)) {
-              this.rendered = false;
+              rendered = false;
               audio.playSound("MENU_TICK");
             }
             break;
@@ -213,7 +213,7 @@ var addMenuState = function (desc) {
           case input.TYPE_ACTION:
             var button = layout.activeButton();
             button.action.call(this, button, this);
-            this.rendered = false;
+            rendered = false;
             audio.playSound("ACTION");
             break;
 
@@ -229,7 +229,7 @@ var addMenuState = function (desc) {
 
     render: function (delta) {
       if (!rendered) {
-        var ctx = renderer.layerUI.getContext();
+        var ctx = renderer.layerUI.getContext(constants.INACTIVE);
         layout.draw(ctx);
         rendered = true;
       }
@@ -333,6 +333,10 @@ exports.start = function () {
     update(delta);
   }
 
+  // inject loading states
+  addState(require("./states/start_none").state);
+  addState(require("./states/start_load").state);
+
   // set start state
   exports.setState("NONE", false);
 
@@ -340,43 +344,48 @@ exports.start = function () {
   requestAnimationFrame(gameLoop);
 };
 
-// inject all game states
+var initialized = false;
+exports.addStates = function () {
+  if (initialized) throw Error("already started");
+  initialized = true;
 
-addState(require("./states/start_none").state);
-addState(require("./states/start_load").state);
-addState(require("./states/start_tooltip").state);
+  addState(require("./states/start_tooltip").state);
+  addState(require("./states/portrait").state);
+  addState(require("./states/error").state);
 
-/*
-addState(require("./states/portrait").state);
-addState(require("./states/error").state);
+  addMenuState(require("./states/menu_main").state);
 
-addMenuState(require("./states/menu_main").state);
-addMenuState(require("./states/menu_parameterSetup").state);
-addMenuState(require("./states/menu_playerSetup").state);
-addMenuState(require("./states/menu_versus").state);
+  addState(require("./test/rain").state);
+  addState(require("./test/weather").state);
 
-addMenuState(require("./states/options_remap").state);
-addMenuState(require("./states/options_confirmWipeOut").state);
-addMenuState(require("./states/options_main").state);
+  /*
+   addMenuState(require("./states/menu_parameterSetup").state);
+   addMenuState(require("./states/menu_playerSetup").state);
+   addMenuState(require("./states/menu_versus").state);
 
-addInGameState(require("./states/ingame_enter").state);
-addInGameState(require("./states/ingame_flush").state);
-addInGameState(require("./states/ingame_idle").state);
-addInGameState(require("./states/ingame_leave").state);
-addInGameState(require("./states/ingame_menu").state);
-addInGameState(require("./states/ingame_movepath").state);
-addInGameState(require("./states/ingame_multistep").state);
-addInGameState(require("./states/ingame_selecttile").state);
-addInGameState(require("./states/ingame_showAttackRange").state);
-addInGameState(require("./states/ingame_submenu").state);
-addInGameState(require("./states/ingame_targetselection_a").state);
-addInGameState(require("./states/ingame_targetselection_b").state);
+   addMenuState(require("./states/options_remap").state);
+   addMenuState(require("./states/options_confirmWipeOut").state);
+   addMenuState(require("./states/options_main").state);
 
-addState(require("./states/ingame_anim_ballistic").state);
-addState(require("./states/ingame_anim_captureProperty").state);
-addState(require("./states/ingame_anim_changeWeather").state);
-addState(require("./states/ingame_anim_destroyUnit").state);
-addState(require("./states/ingame_anim_move").state);
-addState(require("./states/ingame_anim_nextTurn").state);
-addState(require("./states/ingame_anim_trapWait").state);
-  */
+   addInGameState(require("./states/ingame_enter").state);
+   addInGameState(require("./states/ingame_flush").state);
+   addInGameState(require("./states/ingame_idle").state);
+   addInGameState(require("./states/ingame_leave").state);
+   addInGameState(require("./states/ingame_menu").state);
+   addInGameState(require("./states/ingame_movepath").state);
+   addInGameState(require("./states/ingame_multistep").state);
+   addInGameState(require("./states/ingame_selecttile").state);
+   addInGameState(require("./states/ingame_showAttackRange").state);
+   addInGameState(require("./states/ingame_submenu").state);
+   addInGameState(require("./states/ingame_targetselection_a").state);
+   addInGameState(require("./states/ingame_targetselection_b").state);
+
+   addState(require("./states/ingame_anim_ballistic").state);
+   addState(require("./states/ingame_anim_captureProperty").state);
+   addState(require("./states/ingame_anim_changeWeather").state);
+   addState(require("./states/ingame_anim_destroyUnit").state);
+   addState(require("./states/ingame_anim_move").state);
+   addState(require("./states/ingame_anim_nextTurn").state);
+   addState(require("./states/ingame_anim_trapWait").state);
+   */
+};

@@ -1,3 +1,9 @@
+"use strict";
+
+var constants = require("../constants");
+var widgets = require("../uiWidgets");
+var stm = require("../statemachine");
+
 exports.state = {
 
   id: "MAIN_MENU",
@@ -5,8 +11,8 @@ exports.state = {
   last: "START_SCREEN",
 
   doLayout: function (layout) {
-    var h = parseInt((cwt.SCREEN_HEIGHT - 22) / 2, 10);
-    var w = parseInt((cwt.SCREEN_WIDTH - 16) / 2, 10);
+    var h = parseInt((constants.SCREEN_HEIGHT - 22) / 2, 10);
+    var w = parseInt((constants.SCREEN_WIDTH - 16) / 2, 10);
 
     layout
 
@@ -15,8 +21,8 @@ exports.state = {
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(16, 4, 0, "MAIN_MENU_SKIRMISH", cwt.UIField.STYLE_NORMAL, 20, function () {
-        require("../statemachine").changeState("VERSUS");
+      .addButton(16, 4, 0, "MAIN_MENU_SKIRMISH", widgets.UIField.STYLE_NORMAL, 20, function () {
+        stm.changeState("VERSUS");
       })
       .breakLine()
 
@@ -27,7 +33,7 @@ exports.state = {
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(16, 4, 0, "MAIN_MENU_NETWORK", cwt.UIField.STYLE_NORMAL, 20 )
+      .addButton(16, 4, 0, "MAIN_MENU_NETWORK", widgets.UIField.STYLE_NORMAL, 20 )
       .breakLine()
 
       //--------------------------------------------------------
@@ -37,13 +43,13 @@ exports.state = {
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(16, 3, 0, "MAIN_MENU_TEST_WEATHER", cwt.UIField.STYLE_NEW, 20, function () {
-        require("../statemachine").changeState("WEATHER");
+      .addButton(16, 3, 0, "MAIN_MENU_TEST_WEATHER", widgets.UIField.STYLE_NEW, 20, function () {
+        stm.changeState("WEATHER");
       })
       .breakLine()
       .addColGap(w)
-      .addButton(16, 3, 0, "MAIN_MENU_TEST_WEATHER", cwt.UIField.STYLE_ESW, 20, function () {
-        require("../statemachine").changeState("RAIN");
+      .addButton(16, 3, 0, "MAIN_MENU_TEST_WEATHER", widgets.UIField.STYLE_ESW, 20, function () {
+        stm.changeState("RAIN");
       })
       .breakLine()
 
@@ -54,8 +60,8 @@ exports.state = {
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(16, 4, 0, "MAIN_MENU_OPTIONS", cwt.UIField.STYLE_NORMAL, 20, function () {
-        require("../statemachine").changeState("OPTIONS");
+      .addButton(16, 4, 0, "MAIN_MENU_OPTIONS", widgets.UIField.STYLE_NORMAL, 20, function () {
+        stm.changeState("OPTIONS");
       });
   }
 };
