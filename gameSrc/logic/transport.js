@@ -109,7 +109,6 @@ exports.canUnloadSomethingAt = function (transporter, x, y) {
   var unit;
 
   if (constants.DEBUG) assert(this.isTransportUnit(transporter));
-
   for (var i = 0, e = model.units.length; i <= e; i++) {
 
     unit = move.units[i];

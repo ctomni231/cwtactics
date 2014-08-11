@@ -6,7 +6,7 @@ var model = require("./model");
 //
 // @class
 //
-exports.TileVariantInfoObject = my.Class({
+exports.TileVariantInfo = my.Class({
 
   constructor: function (desc, connection) {
     this.desc = desc;
@@ -88,8 +88,8 @@ var types = {};
 // @param connection
 //
 exports.registerVariantInfo = function (type, desc, connection) {
-  if (constants.DEBUG) assert(!this.types.hasOwnProperty(type));
-  this.types[type] = new exports.TileVariantInfoObject(desc, connection);
+  if (constants.DEBUG) assert(!types.hasOwnProperty(type));
+  types[type] = new exports.TileVariantInfo(desc, connection);
 };
 
 //

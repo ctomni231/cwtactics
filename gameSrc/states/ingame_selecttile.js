@@ -1,14 +1,14 @@
-require("../statemachine").addInGameState({
+exports.state = {
   id: "INGAME_SELECT_TILE",
 
   enter: function (gameData) {
-    gameData.targetselection.clean();
+    this.data.targetselection.clean();
 
     /*
      var prepareSelection = this.data.action.object.prepareSelection;
      if (prepareSelection) prepareSelection(this.data);
      else this.data.selectionRange = 1;
-//
+    */
   },
 
   ACTION: function (gameData) {
@@ -21,4 +21,4 @@ require("../statemachine").addInGameState({
   CANCEL: function (gameData) {
     require("../statemachine").changeState("INGAME_MENU");
   }
-});
+};

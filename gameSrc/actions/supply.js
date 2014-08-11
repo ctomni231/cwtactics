@@ -5,23 +5,13 @@ var supply = require("../logic/supply");
 var model = require("../model");
 
 exports.action = {
-  relation: [
-    "S", "T",
-    relation.RELATION_NONE,
-    relation.RELATION_SAME_THING
-  ],
+  relation: ["S", "T", relation.RELATION_NONE, relation.RELATION_SAME_THING],
 
-  condition: function (data) {
-    return ( supply.isSupplier(data.target.unit) &&
-      supply.canSupplyTile(data.target.unit, data.target.x, data.target.y) );
+  condition: function (unit, x, y) {
+    return ( supply.isSupplier(unit) && supply.canSupplyTile(unit, x, y) );
   },
 
-  toDataBlock: function (data, dataBlock) {
-    dataBlock.p1 = data.target.x;
-    dataBlock.p2 = data.target.y;
-  },
-
-  parseDataBlock: function (datBlock) {
-    supply.supplyNeighbours(datBlock.p1, datBlock.p2);
+  invoke: function (x, y) {
+    supply.supplyNeighbours(x, y);
   }
 };

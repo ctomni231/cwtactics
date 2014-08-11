@@ -1,4 +1,4 @@
-require("../statemachine").addMenuState({
+exports.state = {
 
   id: "REMAP_KEY_MAPPING",
   last: "OPTIONS",
@@ -114,4 +114,4 @@ require("../statemachine").addMenuState({
       layout.getButtonByKey("VALUE_C")
     ];
   }
-});
+};

@@ -4,6 +4,7 @@ var daysOfPeaceCfg = require("./config").getConfig("daysOfPeace");
 var createBuffer = require("./circularBuffer").createBufferByClass;
 var constants = require("./constants");
 var assert = require("./functions").assert;
+var matrix = require("./matrix");
 
 // Advance Wars 1 game mode. The first ever released game mode of the advance wars series (GBA and up).
 //
@@ -64,12 +65,12 @@ exports.PositionData = my.Class({
 
     if (this.tile.turnOwnerVisible && this.tile.unit) {
       this.unit = null;
-      this.unitId = exports.Unit.getInstanceId(this.tile.unit);
+      this.unitId = exports.units.indexOf(this.tile.unit);
     }
 
     if (this.tile.property) {
       this.property = this.tile.property;
-      this.propertyId = exports.Property.getInstanceId(this.tile.property);
+      this.propertyId = exports.properties.indexOf(this.tile.property);
     }
   }
 });
@@ -119,8 +120,6 @@ exports.Tile = my.Class({
 });
 
 //
-// @class
-// @extends cwt.IndexMultiton
 //
 exports.Property = my.Class({
 
@@ -420,9 +419,8 @@ exports.mapWidth = 0;
 //
 exports.mapHeight = 0;
 
-
 // generate map matrix
-var matrix = new require("./matrix").Matrix(constants.MAX_MAP_WIDTH, constants.MAX_MAP_HEIGHT);
+var matrix = new matrix.Matrix(constants.MAX_MAP_WIDTH, constants.MAX_MAP_HEIGHT);
 for (var x = 0, xe = constants.MAX_MAP_WIDTH; x < xe; x++) {
   for (var y = 0, ye = constants.MAX_MAP_HEIGHT; y < ye; y++) {
     matrix.data[x][y] = new exports.Tile();
@@ -484,6 +482,7 @@ exports.grabTileByUnit = function (unit) {
   }
 
   assert(false, "given unit seems to be non-existent on the actual map");
+  return null;
 };
 
 //
@@ -496,7 +495,7 @@ exports.grabTileByUnit = function (unit) {
 exports.searchProperty = function (property, cb, cbThis, arg) {
   for (var x = 0, xe = exports.mapWidth; x < xe; x++) {
     for (var y = 0, ye = exports.mapHeight; y < ye; y++) {
-      if (exports.mapData[x][y].unit === unit) {
+      if (exports.mapData[x][y].property === property) {
         cb.call(cbThis, x, y, property, arg);
       }
     }
@@ -514,7 +513,7 @@ exports.searchUnit = function (unit, cb, cbThis, arg) {
   for (var x = 0, xe = exports.mapWidth; x < xe; x++) {
     for (var y = 0, ye = exports.mapHeight; y < ye; y++) {
       if (exports.mapData[x][y].unit === unit) {
-        return cb.call(cbThis, x, y, unit, arg);
+        cb.call(cbThis, x, y, unit, arg);
       }
     }
   }

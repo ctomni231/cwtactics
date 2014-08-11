@@ -1,1 +1,1 @@
-require("./statemachine");
+require("./statemachine").start();

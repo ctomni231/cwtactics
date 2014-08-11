@@ -1,4 +1,4 @@
-require("../statemachine").addMenuState({
+exports.state = {
 
   id: "PARAMETER_SETUP_SCREEN",
   last: "PLAYER_SETUP_SCREEN",
@@ -123,4 +123,4 @@ require("../statemachine").addMenuState({
       })
       .breakLine();
   }
-});
+};

@@ -1,4 +1,4 @@
-require("../statemachine").addMenuState({
+exports.state = {
 
   id: "PLAYER_SETUP_SCREEN",
   last: "VERSUS",
@@ -195,4 +195,4 @@ require("../statemachine").addMenuState({
     var playerTypeBtn = this.playerTypeBtn = layout.getButtonByKey("PLAYER_CONFIG_TYPE_VALUE");
     var playerCo_A_Btn = this.playerCo_A_Btn = layout.getButtonByKey("PLAYER_CONFIG_CO_A_VALUE");
   }
-});
+};

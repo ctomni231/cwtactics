@@ -1,5 +1,6 @@
 "use strict";
 
+var functions = require("../functions");
 var storage = require("../storage");
 var Config = require("../config").Config;
 
@@ -25,7 +26,7 @@ var loadParameter = function (paramName, callback) {
     if (obj) {
       Config.getConfig(paramName).setValue(obj.value ? 1 : 0);
     } else {
-      var param = getQueryParams(document.location.search)[paramName];
+      var param = functions.getQueryParams(document.location.search)[paramName];
       if (typeof param !== "undefined") {
         value = (param === "1"? 1 : 0);
       }
@@ -54,5 +55,5 @@ exports.load = function (callback) {
 };
 
 exports.wantResetData = function () {
-  return (getQueryParams(document.location.search)[PARAM_WIPEOUT] === "1");
+  return (functions.getQueryParams(document.location.search)[PARAM_WIPEOUT] === "1");
 };

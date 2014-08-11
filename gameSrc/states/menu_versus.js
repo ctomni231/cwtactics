@@ -1,4 +1,4 @@
-require("../statemachine").addMenuState({
+exports.state = {
 
   id: "VERSUS",
   last: "MAIN_MENU",
@@ -222,4 +222,4 @@ require("../statemachine").addMenuState({
       layout.getButtonByKey("MAP_SELECT_7")
     ];
   }
-});
+};

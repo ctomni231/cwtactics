@@ -17,7 +17,13 @@ var assert = exports.assert = function (expr, msgA) {
   }
 };
 
-exports.emptyFunction = function () {};
+exports.emptyFunction = function () {
+};
+
+exports.trueReturner = function () {
+  return true;
+};
+
 
 // Calls a function lazy. This means the factory function fn will be called when the curried function (return
 // value) will be called the first time. The factory function needs to return the value that should be returned
@@ -63,10 +69,17 @@ exports.selectRandomListElement = function (list, forbiddenElement) {
   return selected;
 };
 
-/* Registers generic error listener. */
-window.onerror = function (e, file, line, column, errorObj) {
-  if (cwt.Error) {
-    // cwt.Error("Critical Game Fault","ERR_UNKNOWN");
+// FROM: http://stackoverflow.com/questions/979975/how-to-get-the-value-from-url-parameter
+exports.getQueryParams = function (qs) {
+  qs = qs.split("+").join(" ");
+
+  var params = {}, tokens,
+    re = /[?&]?([^=]+)=([^&]*)/g;
+
+  while (tokens = re.exec(qs)) {
+    params[decodeURIComponent(tokens[1])]
+      = decodeURIComponent(tokens[2]);
   }
-  console.error(e, (arguments.length > 0) ? file + " line:" + line : null);
+
+  return params;
 };

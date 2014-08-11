@@ -1,22 +1,5 @@
-require("../statemachine").addInGameState({
+exports.state = {
   id: "INGAME_MOVEPATH",
-
-  init: function () {
-    var gameData = this.globalData;
-
-    //
-//
-// @type {cwt.CircularBuffer}
-// @memberOf require("../statemachine").globalData
-//
-    gameData.movePath = new cwt.CircularBuffer(cwt.MAX_MOVE_LENGTH);
-
-    //
-//
-// @type {boolean}
-//
-    gameData.preventMovePathGeneration = false;
-  },
 
   enter: function (gameData) {
 
@@ -101,4 +84,4 @@ require("../statemachine").addInGameState({
   CANCEL: function () {
     require("../statemachine").changeState("INGAME_IDLE");
   }
-});
+};

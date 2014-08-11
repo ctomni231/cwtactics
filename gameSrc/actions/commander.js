@@ -5,26 +5,20 @@ var model = require("../model");
 var co = require("../logic/co");
 
 exports.actionActivate = {
-  condition: function () {
-    return co.canActivatePower(model.turnOwner, co.POWER_LEVEL_COP);
+  condition: function (player) {
+    return co.canActivatePower(player, co.POWER_LEVEL_COP);
   },
 
   hasSubMenu: true,
-  prepareMenu: function (data) {
-
-    data.menu.addEntry("cop");
-    if (co.canActivatePower(model.turnOwner, co.POWER_LEVEL_SCOP)) {
-      data.menu.addEntry("scop");
+  prepareMenu: function (player, menu) {
+    menu.addEntry("cop");
+    if (co.canActivatePower(player, co.POWER_LEVEL_SCOP)) {
+      menu.addEntry("scop");
     }
   },
 
-  toDataBlock: function (data, dataBlock) {
-    dataBlock.p1 = (data.action.selectedSubEntry === "cop" ? co.POWER_LEVEL_COP : -1);
-    dataBlock.p1 = (data.action.selectedSubEntry === "scop" ? co.POWER_LEVEL_SCOP : -1);
-  },
-
-  parseDataBlock: function (dataBlock) {
-    co.activatePower(model.turnOwner, dataBlock.p1);
+  invoke: function (playerId, powerLevel) {
+    co.activatePower(model.players[playerId], powerLevel);
   }
 };
 
@@ -69,4 +63,4 @@ exports.actionActivate = {
  );
  }
  });
- //
+*/

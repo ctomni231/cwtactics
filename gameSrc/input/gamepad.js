@@ -2,6 +2,7 @@
 
 var constants = require('../constants');
 var emptyFunc = require('../functions').emptyFunction;
+var state = require('../statemachine');
 var input = require('../input');
 
 var MAPPING = {
@@ -23,8 +24,8 @@ var UPDATER_FUNCTION = function () {
     prevTimestamps[i] = gamePad.timestamp;
 
     // in key mapping
-    if (input.wantsGgenericInput()) {
-      if (cwt.Gameflow.activeState.mode != 1) {
+    if (input.wantsGenericInput()) {
+      if (state.activeState.mode != 1) {
         return;
       }
 
@@ -47,7 +48,7 @@ var UPDATER_FUNCTION = function () {
       else if (gamePad.elements[13] === 1) code = 13;
 
       if (code > -1) {
-        cwt.Gameflow.activeState.genericInput(code);
+        state.activeState.genericInput(code);
       }
     } else {
       var key = null;

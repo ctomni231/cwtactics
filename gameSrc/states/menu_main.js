@@ -1,4 +1,4 @@
-require("../statemachine").addMenuState({
+exports.state = {
 
   id: "MAIN_MENU",
 
@@ -58,4 +58,4 @@ require("../statemachine").addMenuState({
         require("../statemachine").changeState("OPTIONS");
       });
   }
-});
+};

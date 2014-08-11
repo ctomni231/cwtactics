@@ -9,19 +9,13 @@ exports.action = {
 
   relation: ["S", "T", relation.RELATION_OWN],
 
-  condition: function (data) {
-    return join.canJoin(data.source.unit, data.target.unit);
+  condition: function (sourceUnit, targetUnit) {
+    return join.canJoin(sourceUnit, targetUnit);
   },
 
-
-  toDataBlock: function (data, dataBlock) {
-    dataBlock.p1 = data.source.unitId;
-    dataBlock.p2 = data.target.x;
-    dataBlock.p2 = data.target.y;
-  },
-
-  parseDataBlock: function (dataBlock) {
-    join.join(model.units[dataBlock.p1], dataBlock.p2, dataBlock.p3);
+  invoke: function (sourceUnitId, x, y) {
+    // TODO: better is sx,sy,tx,ty
+    join.join(model.units[sourceUnitId], x, y);
   }
 
 };

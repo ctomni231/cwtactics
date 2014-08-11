@@ -1,14 +1,14 @@
-require("../statemachine").addState({
+var renderer = require("../renderer");
+var constants = require("../constants");
+
+exports.state = {
   id: "INGAME_ENTER",
 
   enter: function () {
-    this.globalData.inGameRound = true;
+    this.data.inGameRound = true;
+    renderer.hideNativeCursor();
 
-    if (cwt.DEBUG) {
-      console.log("entering game round");
-    }
-
-    cwt.Cursor.hideNativeCursor();
+    if (constants.DEBUG) console.log("entering game round");
 
     // 1. load map
     cwt.GameData.loadGame(cwt.GameSelectionDTO.map,false, function () {
@@ -38,6 +38,6 @@ require("../statemachine").addState({
       controller.commandStack_localInvokement("nextTurn_invoked");
       if (controller.network_isHost()) model.events.weather_calculateNext();
     }
-//
+    */
   }
-});
+};

@@ -1,6 +1,7 @@
 "use strict";
 
 var constants = require('../constants');
+var state = require('../statemachine');
 var input = require('../input');
 
 var CONSOLE_TOGGLE_KEY = 192;
@@ -17,12 +18,13 @@ var MAPPING = {
 var KEY_HANDLER = function (ev) {
   var key = constants.INACTIVE;
 
-  if (input.wantsGgenericInput()) {
-    if (cwt.Gameflow.activeState.mode != 0) {
+  if (input.wantsGenericInput()) {
+    if (state.activeState.mode != 0) {
       return;
     }
-       // TODO
-    cwt.Gameflow.activeState.genericInput(ev.keyCode);
+
+    // TODO
+    state.activeState.genericInput(ev.keyCode);
 
   } else {
 

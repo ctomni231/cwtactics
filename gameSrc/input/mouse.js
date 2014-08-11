@@ -1,6 +1,7 @@
 "use strict";
 
 var constants = require('../constants');
+var state = require('../statemachine');
 var input = require('../input');
 
 var canvas = document.getElementById("canvas_layer6");
@@ -56,7 +57,7 @@ var MOUSE_MOVE_EVENT = function (ev) {
   sx = cw / canvas.offsetWidth;
   sy = ch / canvas.offsetHeight;
 
-  var data = cwt.Gameflow.activeState.data;
+  var data = state.activeState.data;
   if (data.inputMove) data.inputMove(parseInt(x*sx),parseInt(y*sy));
 
   // convert to a tile position

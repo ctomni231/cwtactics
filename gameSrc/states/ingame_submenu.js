@@ -1,4 +1,4 @@
-require("../statemachine").addInGameState({
+exports.state = {
   id: "INGAME_SUBMENU",
 
   enter: function (gameData) {
@@ -40,4 +40,4 @@ require("../statemachine").addInGameState({
   CANCEL: function () {
     require("../statemachine").changeState("INGAME_MENU");
   }
-});
+};

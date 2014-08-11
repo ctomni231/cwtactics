@@ -1,4 +1,4 @@
-require("../statemachine").addMenuState({
+exports.state = {
 
   id: "OPTIONS",
   last: "MAIN_MENU",
@@ -126,4 +126,4 @@ require("../statemachine").addMenuState({
     sfxButton = layout.getButtonByKey("OPTIONS_SFX_VOL");
     musicButton = layout.getButtonByKey("OPTIONS_MUSIC_VOL");
   }
-});
+};

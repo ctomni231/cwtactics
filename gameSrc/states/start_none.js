@@ -1,24 +1,23 @@
-require("../statemachine").addState({
+var renderer = require("../renderer");
+var backgroundDrawn = false;
+
+exports.state = {
   id:"NONE",
 
-  init: function () {
-    this.backgroundDrawn = false;
-  },
-
-  update: function (delta) {
+  update: function () {
     if (this.backgroundDrawn) {
       require("../statemachine").changeState("LOADING_SCREEN");
     }
   },
 
   render: function () {
-    if (!this.backgroundDrawn) {
-      var ctx = cwt.Screen.layerBG.getContext();
+    if (!backgroundDrawn) {
+      var ctx = this.renderer.layerBG.getContext();
 
       ctx.fillStyle = "grey";
-      ctx.fillRect(0, 0, cwt.Screen.width, cwt.Screen.height);
+      ctx.fillRect(0, 0, this.renderer.screenWidth, this.renderer.screenHeight);
 
-      this.backgroundDrawn = true;
+      backgroundDrawn = true;
     }
   }
-});
+};

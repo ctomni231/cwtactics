@@ -7,23 +7,23 @@ var team = require("../logic/team");
 exports.actionHide = {
   relation: ["S", "T", relation.RELATION_NONE, relation.RELATION_SAME_THING],
 
-  condition: function (data) {
-    return (data.source.unit.type.stealth = !data.source.unit.hidden);
+  condition: function (unit) {
+    return (unit.type.stealth = !unit.hidden);
   },
 
-  invoke: function (data) {
-    data.source.unit.hidden = true;
+  invoke: function (unitId) {
+    model.units[unitId].hidden = true;
   }
 };
 
 exports.actionUnhide = {
   relation: ["S", "T", relation.RELATION_NONE, relation.RELATION_SAME_THING],
 
-  condition: function (data) {
-    return (data.source.unit.type.stealth = data.source.unit.hidden);
+  condition: function (unit) {
+    return (unit.type.stealth = unit.hidden);
   },
 
-  invoke: function (data) {
-    data.source.unit.hidden = false;
+  invoke: function (unitId) {
+    model.units[unitId].hidden = false;
   }
 };

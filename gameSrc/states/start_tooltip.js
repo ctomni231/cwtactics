@@ -1,82 +1,77 @@
-require("../statemachine").addState({
+"use strict";
+
+var TOOLTIP_TIME = 10000;
+
+var tooltip_time = TOOLTIP_TIME;
+
+var background = null;
+
+var tooltip = new cwt.UIField(
+  parseInt(cwt.Screen.width * 0.1, 10),
+  parseInt(cwt.Screen.height * 0.2, 10),
+  parseInt(cwt.Screen.width * 0.8, 10),
+  120,
+  "",
+  10,
+  cwt.UIField.STYLE_NORMAL
+);
+
+var button = new cwt.UIField(
+  parseInt(cwt.Screen.width * 0.5 - 150, 10),
+  parseInt(cwt.Screen.height * 0.8, 10) - 20,
+  300,
+  40,
+  "START",
+  20,
+  cwt.UIField.STYLE_NORMAL
+);
+
+exports.state = {
   id: "START_SCREEN",
 
-  init: function () {
-    this.TOOLTIP_TIME = 10000;
-    this.tooltip_time = this.TOOLTIP_TIME;
-
-    //
-// @type {HTMLCanvasElement|HTMLImageElement|null}
-//
-    this.background = null;
-
-    this.tooltip = new cwt.UIField(
-      parseInt(cwt.Screen.width*0.1, 10),
-      parseInt(cwt.Screen.height*0.2, 10),
-      parseInt(cwt.Screen.width*0.8, 10),
-      120,
-      "",
-      10,
-      cwt.UIField.STYLE_NORMAL
-    );
-
-    this.button = new cwt.UIField(
-      parseInt(cwt.Screen.width*0.5 - 150, 10),
-      parseInt(cwt.Screen.height*0.8, 10) - 20,
-      300,
-      40,
-      "START",
-      20,
-      cwt.UIField.STYLE_NORMAL
-    );
-  },
-
   enter: function () {
-    cwt.Screen.layerUI.clear();
+    this.renderer.layerUI.clear();
 
-    var numBackgrounds = cwt.Image.sprites.BACKGROUNDS.getNumberOfImages();
-    var randBGIndex = parseInt(Math.random()*numBackgrounds,10);
-
-    this.background = cwt.Image.sprites.BACKGROUNDS.getImage(randBGIndex);
+    // select a random background image
+    var numBackgrounds = this.image.sprites.BACKGROUNDS.getNumberOfImages();
+    var randBGIndex = parseInt(Math.random() * numBackgrounds, 10);
+    background = this.image.sprites.BACKGROUNDS.getImage(randBGIndex);
   },
 
   update: function (delta, lastInput) {
 
     // action leads into main menu
-    if (lastInput && lastInput.key === cwt.Input.TYPE_ACTION) {
-      cwt.Audio.playNullSound();
-      require("../statemachine").changeState("MAIN_MENU");
+    if (lastInput && lastInput.key === this.input.TYPE_ACTION) {
+      this.audio.playNullSound();
+      this.changeState("MAIN_MENU");
 
     } else {
-      this.tooltip_time += delta;
+      tooltip_time += delta;
       if (this.tooltip_time >= this.TOOLTIP_TIME) {
 
         // update random tooltip
-        var randEl = cwt.Tooltips[parseInt( Math.random()*cwt.Tooltips.length, 10)];
+        var randEl = cwt.Tooltips[parseInt(Math.random() * cwt.Tooltips.length, 10)];
         this.tooltip.text = cwt.Localization.forKey(randEl);
 
         if (this.tooltip.text.search(/\n/) !== -1) {
           this.tooltip.text = this.tooltip.text.split("\n");
         }
 
-        this.tooltip_time = 0;
+        tooltip_time = 0;
       }
     }
   },
 
   render: function () {
-    if (this.background) {
-      cwt.Screen.layerBG.getContext().drawImage(
-        this.background,
-        0, 0,
-        cwt.Screen.width,
-        cwt.Screen.height
-      );
+    if (background) {
+      this.renderer.layerBG.getContext().drawImage(
+        background, 0, 0, this.renderer.screenWidth, this.renderer.screenHeight);
 
-      this.background = null;
+      background = null;
     }
 
-    this.button.draw(cwt.Screen.layerUI.getContext());
-    this.tooltip.draw(cwt.Screen.layerUI.getContext());
+    var uiCtx = this.renderer.layerUI.getContext();
+    button.draw(uiCtx);
+    tooltip.draw(uiCtx);
   }
-});
+};

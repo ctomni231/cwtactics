@@ -24,3 +24,11 @@ exports.AiAction = my.Class({
     return this.rating(aiModel);
   }
 });
+
+var createAction = function (module) {
+  return exports.AiAction(module.rating, module.invoke);
+};
+
+var actions = [
+  createAction(require("./ai/endTurn"))
+];

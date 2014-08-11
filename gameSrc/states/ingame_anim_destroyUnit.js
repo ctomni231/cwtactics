@@ -1,4 +1,4 @@
-require("../statemachine").addState({
+exports.state = {
   id: "ANIMATION_DESTROY_UNIT",
 
   init: function () {
@@ -16,7 +16,7 @@ require("../statemachine").addState({
   render: function (delta) {
 
   }
-});
+};
 
 /*
  view.registerAnimationHook({
@@ -77,4 +77,4 @@ require("../statemachine").addState({
  }
 
  });
-//
+*/

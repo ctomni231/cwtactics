@@ -14,13 +14,8 @@ var selected = null;
 // Registers a language object. The properties of the object will be the keys and its values the localized
 // string for the key.
 //
-// @param obj
-//
 exports.registerLanguage = function (key, obj) {
-  if (constants.DEBUG) {
-    assert(key && obj && !languages.hasOwnProperty(key));
-  }
-
+  if (constants.DEBUG) assert(key && obj && !languages.hasOwnProperty(key));
   languages[key] = obj;
 };
 
@@ -28,15 +23,10 @@ exports.registerLanguage = function (key, obj) {
 //
 exports.selectLanguage = function (key) {
   if (constants.DEBUG) assert(languages.hasOwnProperty(key));
-
   selected = languages[key];
 };
 
-//
 // Returns the localized string of a given identifier.
-//
-// @param {String} key identifier
-// @return {String}
 //
 exports.forKey = function (key) {
   if (constants.DEBUG) assert(selected);

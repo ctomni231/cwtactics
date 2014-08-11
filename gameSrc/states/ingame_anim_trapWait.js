@@ -1,4 +1,4 @@
-require("../statemachine").addState({
+exports.state = {
   id: "ANIMATION_TRAPPED",
 
   init: function () {
@@ -16,7 +16,7 @@ require("../statemachine").addState({
   render: function (delta) {
 
   }
-});
+};
 
 /*
  view.registerAnimationHook({
@@ -54,4 +54,4 @@ require("../statemachine").addState({
  }
 
  });
-//
+*/
