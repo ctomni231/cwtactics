@@ -29,7 +29,7 @@ exports.selectLanguage = function (key) {
 // Returns the localized string of a given identifier.
 //
 exports.forKey = function (key) {
-  if (constants.DEBUG) assert(selected);
+  if (!selected) return key;
 
   var str = selected[key];
   return (str) ? str : key;

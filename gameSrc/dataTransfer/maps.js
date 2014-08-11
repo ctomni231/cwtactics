@@ -1,20 +1,32 @@
 var constants = require("../constants");
+var request = require("../xmlHttpReq");
 var storage = require("../storage");
 var async = require("../async");
 
-var mapNames = [];
+exports.maps = [];
+
+exports.transferAllFromStorage = function(callback) { 
+	storage.get("__mapList__",function(value) {
+		exports.maps = value;
+		callback();
+	});
+};
 
 //
 //
 exports.transferAllFromRemote = function(callback) {
   var mapList = require("../dataTransfer/mod").getMod().maps;
+	var maps = Object.keys(mapList);
+	
+  var stuff = [function (next) {
+  	storage.set("__mapList__",maps,next);
+  }];
 
-  var stuff = [];
-
-  Object.keys(mapList).forEach(function(key) {
+  maps.forEach(function(key) {
+   
     stuff.push(function(next) {
-      grabRemoteFile({
-        path: constants.MOD_PATH + mapNames[key],
+      request.doRequest({
+        path: constants.MOD_PATH + mapList[key],
         json: true,
 
         error: function(msg) {
@@ -28,6 +40,12 @@ exports.transferAllFromRemote = function(callback) {
         }
       });
     });
+    
+	  stuff.push(function(next) {
+	  	exports.maps.push(key);
+	  	next(); 
+	  });
+    
   });
 
   async.sequence(stuff, function() {
@@ -38,7 +56,7 @@ exports.transferAllFromRemote = function(callback) {
 //
 //
 exports.transferFromStorage = function(path, callback) {
-  storage.get(path, function(obj) {
-    callback(path, obj.value);
+  storage.get(path, function(value) {
+    callback(path, value);
   });
 };

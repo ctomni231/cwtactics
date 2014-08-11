@@ -7,7 +7,7 @@ exports.loader = function (next, hasCachedData) {
   }
 
   if (!hasCachedData) {
-    modDTO.transferFromRemote(null, next);
+    modDTO.transferFromRemote(constants.DEFAULT_MOD_PATH, next);
   } else {
     modDTO.transferFromCache(next);
   }

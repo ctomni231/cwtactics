@@ -6,11 +6,11 @@ exports.loader = function (loaderNext, hasCachedData) {
 
    if (hasCachedData) {
      // grab from local storage
-     imageDTO.grabFromCache(loaderNext);
+     imageDTO.transferAllFromStorage(loaderNext);
 
    } else {
      // grab from remote and save all images locally
-     imageDTO.grabFromRemote(function () {
+     imageDTO.transferAllFromRemote(function () {
        imageDTO.transferAllToStorage(loaderNext);
      });
    }

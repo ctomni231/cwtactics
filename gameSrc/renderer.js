@@ -1,16 +1,23 @@
 "use strict";
 
+var constants = require("./constants");
+
+var canvasW = constants.TILE_BASE * constants.SCREEN_WIDTH;
+var canvasH = constants.TILE_BASE * constants.SCREEN_HEIGHT;
+
 var rendCursor = require("./renderer/cursor");
 var rendAnim = require("./renderer/animation");
- 
+var rendUnit = require("./renderer/unit");
+var rendMenu = require("./renderer/menu");
+var rendFog = require("./renderer/fog");
+
 var stateData = require("./dataTransfer/states");
-var constants = require("./constants");
 var assert = require("./functions").assert;
 var model = require("./model");
 var move = require("./logic/move");
 
-var canvasW = constants.TILE_BASE * constants.SCREEN_WIDTH;
-var canvasH = constants.TILE_BASE * constants.SCREEN_HEIGHT;
+rendFog.init(canvasW, canvasH);
+rendUnit.init(canvasW, canvasH);
 
 //
 //
@@ -54,7 +61,7 @@ exports.LayeredCanvas = my.Class({
   renderLayer: function (index) {
     if (constants.DEBUG) assert(arguments.length === 0 || (index >= 0 && index < this.layers.length));
 
-    var ctx = this.getContext();
+    var ctx = this.getContext(constants.INACTIVE);
     ctx.clearRect(0, 0, this.w, this.h);
     ctx.drawImage(this.getLayer(index), 0, 0, this.w, this.h);
   },
@@ -65,10 +72,10 @@ exports.LayeredCanvas = my.Class({
   // @return {HTMLCanvasElement}
   //
   getLayer: function (index) {
-    if (constants.DEBUG) assert(index === void 0 || (index >= 0 && index < this.layers.length));
+    if (constants.DEBUG) assert(index === constants.INACTIVE || (index >= 0 && index < this.layers.length));
 
     // root ?
-    if (index === void 0) {
+    if (index === constants.INACTIVE) {
       return this.cv;
     }
 
@@ -97,10 +104,10 @@ exports.LayeredCanvas = my.Class({
   // @return {CanvasRenderingContext2D}
   //
   getContext: function (index) {
-    if (constants.DEBUG) assert(index === void 0 || (index >= 0 && index < this.layers.length));
+    if (constants.DEBUG) assert(index === constants.INACTIVE || (index >= 0 && index < this.layers.length));
 
     // root ?
-    if (index === void 0) {
+    if (index === constants.INACTIVE) {
       return this.ctx;
     }
 
@@ -249,8 +256,8 @@ exports.renderScreen = function () {
   this.renderUnits(x, y, w, h);
 
   // directly update all layers
-  exports.layerMap.renderLayer(this.indexMapAnimation);
-  exports.layerUnit.renderLayer(this.indexUnitAnimation);
+  exports.layerMap.renderLayer(rendAnim.indexMapAnimation);
+  exports.layerUnit.renderLayer(rendAnim.indexUnitAnimation);
 
   this.renderFogRect(x, y, w, h);
 
@@ -307,8 +314,8 @@ exports.shiftMap = function (code) {
   }
 
   // directly update all layers
-  exports.layerMap.renderLayer(this.indexMapAnimation);
-  exports.layerUnit.renderLayer(this.indexUnitAnimation);
+  exports.layerMap.renderLayer(rendAnim.indexMapAnimation);
+  exports.layerUnit.renderLayer(rendAnim.indexUnitAnimation);
 
   if (constants.DEBUG) console.log("shifted the screen (" + ((new Date()).getTime() - time) + "ms)");
 };
@@ -348,4 +355,52 @@ exports.hideNativeCursor = function () {
 
 exports.renderCycle = function (delta) {
   rendAnim.evaluateCycle(delta, exports.layerUnit, exports.layerMap);
-}
+};
+
+//
+//
+exports.renderFogCircle = function (x, y, range) {
+  rendFog.renderFogRect(exports.layerFog, exports.screenOffsetX, exports.screenOffsetY, x, y, range);
+};
+
+//
+//
+exports.renderFogRect = function (x, y, w, h, circle) {
+  rendFog.renderFogRect(exports.layerFog, exports.screenOffsetX, exports.screenOffsetY, x, y, w, h, circle);
+};
+
+//
+//
+exports.renderFogBackgroundLayer = function () {
+  rendFog.renderFogBackgroundLayer(exports.layerFog);
+};
+
+//
+//
+exports.shiftFog = function (code) {
+  rendFog.shiftFog(exports.layerFog, code);
+};
+
+//
+//
+exports.renderUnits = function (x, oy, w, h) {
+  rendUnit.renderUnits(exports.layerFog, exports.screenOffsetX, exports.screenOffsetY, x, oy, w, h);
+};
+
+//
+//
+exports.shiftUnits = function (code) {
+  rendUnit.shiftUnits(exports.layerUnit, code);
+};
+
+//
+//
+exports.prepareMenu = function (menu) {
+  rendMenu.prepareMenu(exports.layerUI, exports.screenWidth, exports.screenHeight, menu);
+};
+
+//
+//
+exports.renderMenu = function () {
+  rendMenu.renderMenu(exports.layerUI);
+};

@@ -1,24 +1,25 @@
 var constants = require("../constants");
-var functions = require("../functions");
-var renderer = require("../renderer");
-var i18n = require("../localization");
 
 var MENU_ELEMENTS_MAX = 10;
 var MENU_ENTRY_HEIGHT = 2 * constants.TILE_BASE;
 var MENU_ENTRY_WIDTH = 10 * constants.TILE_BASE;
 
-var layoutGenericMenu = new renderer.UIPositionableButtonGroup();
+var functions = require("../functions");
+var widgets = require("../uiWidgets");
+var i18n = require("../localization");
+
+var layoutGenericMenu = new widgets.UIPositionableButtonGroup();
 
 // fill layout
 functions.repeat(MENU_ELEMENTS_MAX, function (i) {
-  layoutGenericMenu.addElement(new renderer.UIField(
+  layoutGenericMenu.addElement(new widgets.UIField(
     0,
     i * 32,
     MENU_ENTRY_WIDTH,
     MENU_ENTRY_HEIGHT,
     "KEY_" + i,
     8,
-    renderer.UIField.STYLE_NORMAL,
+    widgets.UIField.STYLE_NORMAL,
 
     // logic will be handled by the state machine
     functions.emptyFunction
@@ -28,14 +29,14 @@ functions.repeat(MENU_ELEMENTS_MAX, function (i) {
 //
 // Renders the menu to the background layer of the UI canvas.
 //
-exports.prepareMenu = function (menu) {
+exports.prepareMenu = function (layer, screenWidth, screenHeight, menu) {
   var gfxMenu = layoutGenericMenu;
   var select = menu.getSelectedIndex();
   var numElements = menu.getSize();
 
   gfxMenu.setMenuPosition(
-    parseInt((cwt.Screen.width / 2) - MENU_ENTRY_WIDTH / 2, 10),
-    parseInt((cwt.Screen.height / 2) - ((numElements * MENU_ENTRY_HEIGHT) / 2), 10)
+    parseInt((screenWidth / 2) - MENU_ENTRY_WIDTH / 2, 10),
+    parseInt((screenHeight / 2) - ((numElements * MENU_ENTRY_HEIGHT) / 2), 10)
   );
 
   for (var i=0; i < MENU_ELEMENTS_MAX; i++) {
@@ -45,9 +46,9 @@ exports.prepareMenu = function (menu) {
 
       // set style
       gfxMenu.elements[i].style = (
-        (numElements === 1 ? renderer.UIField.STYLE_NORMAL :
-          (i === 0 ? renderer.UIField.STYLE_NEW :
-            (i === numElements-1 ? renderer.UIField.STYLE_ESW : renderer.UIField.STYLE_EW)))
+        (numElements === 1 ? widgets.UIField.STYLE_NORMAL :
+          (i === 0 ? widgets.UIField.STYLE_NEW :
+            (i === numElements-1 ? widgets.UIField.STYLE_ESW : widgets.UIField.STYLE_EW)))
         );
 
     } else {
@@ -55,9 +56,9 @@ exports.prepareMenu = function (menu) {
     }
   }
 
-  this.renderMenu(menu);
+  exports.renderMenu(layer);
 };
 
-exports.renderMenu = function (menu) {
-  layoutGenericMenu.draw(cwt.Screen.layerUI.getContext(0));
+exports.renderMenu = function (layer) {
+  layoutGenericMenu.draw(layer.getContext(0));
 };

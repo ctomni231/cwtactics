@@ -776,14 +776,14 @@ exports.transferAllFromStorage = function (callback) {
   // @param key
   //
   function loadKey(key) {
-    var realKey = key.slice(image.IMAGE_KEY.length);
+    var realKey = key.slice(IMAGE_KEY.length);
     stuff.push(function (next) {
       if (constants.DEBUG) console.log("grab sprite " + key + " from cache");
 
-      storage.get(key, function (obj) {
-        if (constants.DEBUG) assert(obj.value);
+      storage.get(key, function (value) {
+        if (constants.DEBUG) assert(value);
 
-        image.sprites[realKey] = image.Sprite.fromJSON(obj.value);
+        image.sprites[realKey] = image.Sprite.fromJSON(value);
         next();
       });
     })

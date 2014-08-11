@@ -47,15 +47,15 @@ exports.grabFromCache = function (callback) {
 
   function loadKey(key) {
     stuff.push(function (next) {
-      storage.get(key, function (obj) {
+      storage.get(key, function (value) {
         if (constants.DEBUG) {
           console.log("grab audio " + key + " from cache");
         }
 
-        if (constants.DEBUG) assert(obj.value);
+        if (constants.DEBUG) assert(value);
 
-        var realKey = obj.key.slice(SFX_KEY.length);
-        var arrayBuffer = Base64Helper.decodeBuffer(obj.value);
+        var realKey = key.slice(SFX_KEY.length);
+        var arrayBuffer = Base64Helper.decodeBuffer(value);
 
         audio.decodeAudio(
 
@@ -116,7 +116,7 @@ exports.grabFromRemote = function (callback) {
   // @param callback
   //
   var loadBuffer = function (id, audioData, callback) {
-    audioData.decodeAudio(
+    audio.decodeAudio(
 
       // buffer data
       audioData,
@@ -181,18 +181,18 @@ exports.grabFromRemote = function (callback) {
 
   // only load music when supported
   if (features.audioMusic) {
-    Object.keys(mod.Musics).forEach(function (key) {
+    Object.keys(mod.musics).forEach(function (key) {
       stuff.push(function (next) {
-        loadFile(key, mod.Musics[key], MUSIC_KEY + key, false, next);
+        loadFile(key, mod.musics[key], MUSIC_KEY + key, false, next);
       })
     });
   }
 
   // only load sfx audio when supported
   if (features.audioSFX) {
-    Object.keys(mod.Sounds).forEach(function (key) {
+    Object.keys(mod.sounds).forEach(function (key) {
       stuff.push(function (next) {
-        loadFile(key, mod.Sounds[key], SFX_KEY + key, true, next);
+        loadFile(key, mod.sounds[key], SFX_KEY + key, true, next);
       })
     });
   }
@@ -201,8 +201,6 @@ exports.grabFromRemote = function (callback) {
     callback();
   });
 };
-
-
 
 //
 // Saves the configurations for the audio volume in the user storage.
@@ -241,15 +239,15 @@ exports.saveVolumeConfigs = function (callback) {
 exports.loadVolumeConfigs = function (callback) {
 
   // sfx config
-  storage.get(SFX_VOLUME_KEY, function (obj) {
-    if (obj) {
-      audio.setSfxVolume(obj.value);
+  storage.get(SFX_VOLUME_KEY, function (value) {
+    if (value) {
+      audio.setSfxVolume(value);
     }
 
     // music config
-    storage.get(MUSIC_VOLUME_KEY, function (obj) {
-      if (obj) {
-        audio.setMusicVolume(obj.value);
+    storage.get(MUSIC_VOLUME_KEY, function (value) {
+      if (value) {
+        audio.setMusicVolume(value);
       }
 
       // callback if given

@@ -1,6 +1,0 @@
-require('../../sheets').properties.registerSheet({
-  "ID": "SILO_EMPTY",
-  "defense": 3,
-  "vision": 0,
-  "rocketsilo":{}
-});

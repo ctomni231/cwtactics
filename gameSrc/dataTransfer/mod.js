@@ -1,6 +1,7 @@
 "use strict";
 
 var request = require("../xmlHttpReq");
+var storage = require("../storage");
 
 var cachedMod = null;
 
@@ -10,7 +11,8 @@ exports.transferFromRemote = function (path, callback) {
     json: true,
 
     success: function (response) {
-      callback();
+      cachedMod = response;   
+			storage.set("__modification__",response,callback);
     },
 
     error: function () {
@@ -20,7 +22,10 @@ exports.transferFromRemote = function (path, callback) {
 };
 
 exports.transferFromCache = function (callback) {
-  callback();
+	storage.get("__modification__",function (value) {
+    cachedMod = value;   
+		callback();	
+	});
 };
 
 exports.getMod = function () {

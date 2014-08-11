@@ -21,12 +21,14 @@ if (features.audioSFX || features.audioMusic) {
     audioContext = new window.webkitAudioContext();
   }
 
+  var createNode = (audioContext.createGainNode ? audioContext.createGainNode: audioContext.createGain);
+
   // construct audio nodes
   if (audioContext) {
-    sfxNode = audioContext.createGainNode();
+    sfxNode = createNode.call(audioContext);
     sfxNode.gain.value = 1;
     sfxNode.connect(audioContext.destination);
-    musicNode = audioContext.createGainNode();
+    musicNode = createNode.call(audioContext);
     musicNode.gain.value = 0.5;
     musicNode.connect(audioContext.destination);
   }

@@ -1,7 +1,18 @@
-exports.loader = function(next) {
+"use strict";
+
+var modDTO = require("../dataTransfer/mod");
+var i18n = require("../localization");
+
+exports.loader = function (next) {
   if (require("../constants").DEBUG) {
     console.log("language selection");
   }
+
+  var mod = modDTO.getMod();
+  var langList = Object.keys(mod["languages"]);
+  langList.forEach(function (lang) {
+    i18n.registerLanguage(lang, mod["languages"][lang]);
+  });
 
   // todo: recognize custom user selected language
 
@@ -24,5 +35,7 @@ exports.loader = function(next) {
   }
 
   // select language
-  require("../localization").selectLanguage(key);
+  i18n.selectLanguage(key);
+
+  next();
 };
