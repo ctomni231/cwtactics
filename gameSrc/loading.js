@@ -46,6 +46,8 @@ exports.startProcess = function (setProcess, callback) {
         setLoader(require("./loading/loadMaps")),
         setProgress(90),
         setLoader(require("./loading/portraitCheck")),
+        setProgress(95),
+        setLoader(require("./loading/addStates")),
         setProgress(100),
         function (next){
           // release cached modification
