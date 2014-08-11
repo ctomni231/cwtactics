@@ -1,13 +1,3 @@
-//
-<<<<<<< Updated upstream
-//rain.js
-
-//A simple class that does the rain demo in JS
-
-//@author = Carr, Crecen
-//@version = 04.30.14
-
-=======
 // rain.js
 //
 // A simple class that does the rain demo in JS
@@ -15,80 +5,81 @@
 // @author = Carr, Crecen
 // @version = 04.30.14
 //
->>>>>>> Stashed changes
 //First attempt at creating the rain weather for JavaScript
-cwt.Gameflow.addState({
+
+var constants = require("../constants");
+var stm = require("../statemachine");
+
+//Since the time is so low I probably don't need to track it.
+//But it seems memory intensive to pull off, there has to be
+//a less expensive way
+
+//Keeps track of the time
+var time = 0;
+//Keeps track of delta time
+var store = 0;
+//Maximum frame wait per particle
+var MAX = 8;
+
+//Keeps track of the cap
+var cap = 50;
+//Keeps track of the frequency of a raindrop
+var FREQUENCY = 1;
+
+//The type of raindrop to draw
+var type = [];
+//The x-axis position of the raindrop
+var posx = [];
+//The y-axis position of the raindrop
+var posy = [];
+
+//Holds the graphics for a simple raindrop (cache)
+//Totally hard coded all the values here
+var ball = document.createElement('canvas');
+ball.width = 10;
+ball.height = 10;
+
+var ctx = ball.getContext('2d');
+ctx.strokeStyle = "rgba(255,255,255,0.3)";
+ctx.lineWidth = 1;
+ctx.beginPath();
+ctx.moveTo(0, 0);
+ctx.lineTo(4, 10);
+ctx.stroke();
+
+exports.state = {
   id: "RAIN",
   last: "MAIN_MENU",
 
-  init: function () {
-    //Since the time is so low I probably don't need to track it.
-    //But it seems memory intensive to pull off, there has to be
-    //a less expensive way
-
-    //Keeps track of the time
-    this.time = 0;
-    //Keeps track of delta time
-    this.store = 0;
-    //Maximum frame wait per particle
-    this.MAX = 8;
-
-    //Keeps track of the cap
-    this.cap = 50;
-    //Keeps track of the frequency of a raindrop
-    this.FREQUENCY = 1;
-
-    //The type of raindrop to draw
-    this.type = [];
-    //The x-axis position of the raindrop
-    this.posx = [];
-    //The y-axis position of the raindrop
-    this.posy = [];
-
-    //Holds the graphics for a simple raindrop (cache)
-    //Totally hard coded all the values here
-    this.ball = document.createElement('canvas');
-    this.ball.width = 10;
-    this.ball.height = 10;
-
-    var ctx = this.ball.getContext('2d');
-    ctx.strokeStyle = "rgba(255,255,255,0.3)";
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(4, 10);
-    ctx.stroke();
-  },
-
   enter: function () {
     //Clears the UI layer for demo
-    cwt.Screen.layerUI.clear();
+    this.renderer.layerUI.clear();
   },
 
   update: function (delta, lastInput) {
 
     // action leads into main menu (Thanks BlackCat
-    if (lastInput && lastInput.key === cwt.Input.TYPE_ACTION)
-      cwt.Gameflow.changeState("MAIN_MENU");
+    if (lastInput && lastInput.key === this.input.TYPE_ACTION)
+      this.changeState("MAIN_MENU");
 
-    this.store += delta;
-    while (this.store > this.MAX) {
+    store += delta;
+    while (store > MAX) {
       //Particle creation (totally fixed up to take as little memory as possible)
-      for (var i = 0; i < this.type.length + 1; i++) {
+      for (var i = 0; i < type.length + 1; i++) {
         //This one liner prevents massive amount of particles
-        if (i == this.cap)
+        if (i == cap)
           break;
-        if (parseInt(Math.random() * this.FREQUENCY) == 0) {
-          if (i == this.type.length) {
-            this.type.push(parseInt(Math.random() * 2));
-            this.posx.push(((Math.random() * cwt.Screen.width + 100 / 10) * 10) - 200);
-            this.posy.push(-10);
+        if (parseInt(Math.random() * FREQUENCY) == 0) {
+          if (i == type.length) {
+            type.push(parseInt(Math.random() * 2));
+            posx.push(((Math.random() * this.renderer.screenWidth + 100 / 10) * 10) - 200);
+            posy.push(-10);
             break;
           }
-          if (this.type[i] == -1) {
-            this.type[i] = parseInt(Math.random() * 2);
-            this.posx[i] = ((Math.random() * cwt.Screen.width + 100 / 10) * 10) - 200;
-            this.posy[i] = -10;
+          if (type[i] == -1) {
+            type[i] = parseInt(Math.random() * 2);
+            posx[i] = ((Math.random() * this.renderer.screenWidth + 100 / 10) * 10) - 200;
+            posy[i] = -10;
             break;
           }
 
@@ -96,43 +87,43 @@ cwt.Gameflow.addState({
       }
 
       //Rain particle updates
-      for (var i = 0; i < this.type.length; i++) {
-        if (this.type[i] == -1)
+      for (var i = 0; i < type.length; i++) {
+        if (type[i] == -1)
           continue;
 
-        this.posx[i] += 1;
-        this.posy[i] += 4;
+        posx[i] += 1;
+        posy[i] += 4;
 
         //Destroy particles
-        if (this.posy[i] > cwt.Screen.height + 10)
-          this.type[i] = -1;
+        if (posy[i] > this.renderer.screenHeight + 10)
+          type[i] = -1;
       }
-      this.store -= this.MAX;
+      store -= MAX;
     }
   },
 
   render: function () {
-    var ctx = cwt.Screen.layerUI.getContext();
+    var ctx = this.renderer.layerUI.getContext();
 
     //Tests the speed of each particle for debug mode
-    if (cwt.DEBUG) {
-      this.time = (new Date()).getTime();
+    if (constants.DEBUG) {
+      time = (new Date()).getTime();
     }
 
     ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, cwt.Screen.width, cwt.Screen.height);
+    ctx.fillRect(0, 0, this.renderer.screenWidth, this.renderer.screenHeight);
 
     //Render particles
-    for (var i = 0; i < this.type.length; i++) {
-      if (this.type[i] == -1)
+    for (var i = 0; i < type.length; i++) {
+      if (type[i] == -1)
         continue;
 
-      ctx.drawImage(this.ball, this.posx[i], this.posy[i], 10 + 5 * this.type[i], 10 + 5 * this.type[i]);
+      ctx.drawImage(ball, posx[i], posy[i], 10 + 5 * type[i], 10 + 5 * type[i]);
     }
 
     //Finishes the testing of speed for snow particles
-    if (cwt.DEBUG) {
-      console.log("Quick render of rain... needed " + ((new Date()).getTime() - this.time) + "ms");
+    if (constants.DEBUG) {
+      console.log("Quick render of rain... needed " + ((new Date()).getTime() - time) + "ms");
     }
   }
-});
+};

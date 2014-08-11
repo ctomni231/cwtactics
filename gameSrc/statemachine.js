@@ -188,8 +188,8 @@ var addMenuState = function (desc) {
     },
 
     enter: function () {
-      renderer.layerUI.clear();
-      this.rendered = false;
+      renderer.layerUI.clear(constants.INACTIVE);
+      rendered = false;
 
       if (desc.enter) {
         desc.enter.call(this);
@@ -205,7 +205,7 @@ var addMenuState = function (desc) {
           case input.TYPE_UP:
           case input.TYPE_DOWN:
             if (layout.handleInput(lastInput)) {
-              this.rendered = false;
+              rendered = false;
               audio.playSound("MENU_TICK");
             }
             break;
@@ -213,7 +213,7 @@ var addMenuState = function (desc) {
           case input.TYPE_ACTION:
             var button = layout.activeButton();
             button.action.call(this, button, this);
-            this.rendered = false;
+            rendered = false;
             audio.playSound("ACTION");
             break;
 
@@ -229,7 +229,7 @@ var addMenuState = function (desc) {
 
     render: function (delta) {
       if (!rendered) {
-        var ctx = renderer.layerUI.getContext();
+        var ctx = renderer.layerUI.getContext(constants.INACTIVE);
         layout.draw(ctx);
         rendered = true;
       }
@@ -345,15 +345,18 @@ exports.start = function () {
 addState(require("./states/start_none").state);
 addState(require("./states/start_load").state);
 addState(require("./states/start_tooltip").state);
-
-/*
 addState(require("./states/portrait").state);
 addState(require("./states/error").state);
 
 addMenuState(require("./states/menu_main").state);
-addMenuState(require("./states/menu_parameterSetup").state);
-addMenuState(require("./states/menu_playerSetup").state);
-addMenuState(require("./states/menu_versus").state);
+
+addState(require("./test/rain").state);
+addState(require("./test/weather").state);
+
+/*
+ addMenuState(require("./states/menu_parameterSetup").state);
+ addMenuState(require("./states/menu_playerSetup").state);
+ addMenuState(require("./states/menu_versus").state);
 
 addMenuState(require("./states/options_remap").state);
 addMenuState(require("./states/options_confirmWipeOut").state);

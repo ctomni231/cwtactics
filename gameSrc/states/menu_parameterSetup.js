@@ -1,3 +1,9 @@
+"use strict";
+
+var constants = require("../constants");
+var widgets = require("../uiWidgets");
+var stm = require("../statemachine");
+
 exports.state = {
 
   id: "PARAMETER_SETUP_SCREEN",
@@ -51,8 +57,8 @@ exports.state = {
   doLayout: function (layout) {
     var ENTRIES_PARAMETERS = 6;
 
-    var h = parseInt((cwt.SCREEN_HEIGHT - (8 + (ENTRIES_PARAMETERS * 2))) / 2, 10);
-    var w = parseInt((cwt.SCREEN_WIDTH - 18) / 2, 10);
+    var h = parseInt((constants.SCREEN_HEIGHT - (8 + (ENTRIES_PARAMETERS * 2))) / 2, 10);
+    var w = parseInt((constants.SCREEN_WIDTH - 18) / 2, 10);
 
     layout
       .addRowGap(h)
@@ -63,17 +69,17 @@ exports.state = {
         var style1, style2, style3;
 
         if (i === 0) {
-          style1 = cwt.UIField.STYLE_NEW;
-          style2 = cwt.UIField.STYLE_NW;
-          style3 = cwt.UIField.STYLE_NE;
+          style1 = widgets.UIField.STYLE_NEW;
+          style2 = widgets.UIField.STYLE_NW;
+          style3 = widgets.UIField.STYLE_NE;
         } else if (i === ENTRIES_PARAMETERS - 1) {
-          style1 = cwt.UIField.STYLE_ESW;
-          style2 = cwt.UIField.STYLE_SW;
-          style3 = cwt.UIField.STYLE_ES;
+          style1 = widgets.UIField.STYLE_ESW;
+          style2 = widgets.UIField.STYLE_SW;
+          style3 = widgets.UIField.STYLE_ES;
         } else {
-          style1 = cwt.UIField.STYLE_EW;
-          style2 = cwt.UIField.STYLE_W;
-          style3 = cwt.UIField.STYLE_E;
+          style1 = widgets.UIField.STYLE_EW;
+          style2 = widgets.UIField.STYLE_W;
+          style3 = widgets.UIField.STYLE_E;
         }
 
         this
@@ -98,11 +104,11 @@ exports.state = {
       // -------------------------------------------------------
 
       .addColGap(w + 6)
-      .addButton(2, 2, 0, "MENU_LEFT", cwt.UIField.STYLE_NSW, 8, function () {
+      .addButton(2, 2, 0, "MENU_LEFT", widgets.UIField.STYLE_NSW, 8, function () {
         this.configAttrPage.selectPage(this.configAttrPage.page - 1);
       })
-      .addButton(2, 2, 0, "PARAMETER_CONFIG_PAGE", cwt.UIField.STYLE_NS, 8)
-      .addButton(2, 2, 0, "MENU_RIGHT", cwt.UIField.STYLE_NES, 8, function () {
+      .addButton(2, 2, 0, "PARAMETER_CONFIG_PAGE", widgets.UIField.STYLE_NS, 8)
+      .addButton(2, 2, 0, "MENU_RIGHT", widgets.UIField.STYLE_NES, 8, function () {
         this.configAttrPage.selectPage(this.configAttrPage.page + 1);
       })
       .breakLine()
@@ -114,12 +120,12 @@ exports.state = {
       // -------------------------------------------------------
 
       .addColGap(w)
-      .addButton(5, 2, 0, "MENU_BACK", cwt.UIField.STYLE_NORMAL, 8, function () {
-        require("../statemachine").changeState("PLAYER_SETUP_SCREEN");
+      .addButton(5, 2, 0, "MENU_BACK", widgets.UIField.STYLE_NORMAL, 8, function () {
+        stm.changeState("PLAYER_SETUP_SCREEN");
       })
       .addColGap(8)
-      .addButton(5, 2, 0, "MENU_NEXT", cwt.UIField.STYLE_NORMAL, 8, function () {
-        require("../statemachine").changeState("INGAME_ENTER");
+      .addButton(5, 2, 0, "MENU_NEXT", widgets.UIField.STYLE_NORMAL, 8, function () {
+        stm.changeState("INGAME_ENTER");
       })
       .breakLine();
   }

@@ -1,3 +1,7 @@
+"use strict";
+
+var constants = require("../constants");
+
 exports.state = {
 
   id: "VERSUS",
@@ -13,8 +17,8 @@ exports.state = {
 
     var MAP_LIST_SIZE = 7;
 
-    var h = parseInt((cwt.SCREEN_HEIGHT - 22) / 2, 10);
-    var w = parseInt((cwt.SCREEN_WIDTH - 18) / 2, 10);
+    var h = parseInt((constants.SCREEN_HEIGHT - 22) / 2, 10);
+    var w = parseInt((constants.SCREEN_WIDTH - 18) / 2, 10);
     var state = this;
 
     var cPage = 0;

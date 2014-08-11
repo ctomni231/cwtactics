@@ -57,8 +57,7 @@ exports.startProcess = function (setProcess, callback) {
         if (callback) {
           if (constants.DEBUG) console.log("start loading process");
 
-          storage.set(PARAM_HAS_CACHE, true);
-          callback();
+          storage.set(PARAM_HAS_CACHE, true, callback);
         }
       }
     );

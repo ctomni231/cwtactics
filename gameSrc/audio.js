@@ -11,6 +11,14 @@ var MUSIC_KEY = "MUSIC_";
 //
 var audioContext;
 
+// Music audio node.
+//
+var musicNode = null;
+
+// SFX audio node.
+//
+var sfxNode = null;
+
 // if audio sfx and music is deactivated then do not initialize the audio context
 if (features.audioSFX || features.audioMusic) {
 
@@ -44,7 +52,7 @@ var playSoundOnGainNode = function (gainNode, buffer, loop) {
 
   source.buffer = buffer;
   source.connect(gainNode);
-  source.noteOn(0);
+  source.start(0);
 
   return source;
 };
@@ -55,14 +63,6 @@ var musicLoadCb = function (obj) {
   currentMusic.connector = playSoundOnGainNode(musicNode, Base64Helper.decodeBuffer(obj.value), true);
   currentMusic.inLoadProcess = false;
 };
-
-// Music audio node.
-//
-var musicNode = null;
-
-// SFX audio node.
-//
-var sfxNode = null;
 
 // Cache for audio buffers.
 //
@@ -168,7 +168,7 @@ exports.playNullSound = function () {
 
   source.buffer = buffer;
   source.connect(audioContext.destination);
-  source.noteOn(0);
+  source.start(0);
 };
 
 //
