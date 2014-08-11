@@ -16,7 +16,7 @@ PAGE_DATA.shortLinks = [
     title:"Grab important news from the blog",
     imgLink:"stylesheets/blogger.png" },
 
-  { link:"http://forums.customwars.com",
+  { link:"http://w11.zetaboards.com/Custom_Wars_Tactics/index/",
     title:"Talk with us in our forum",
     imgLink:"stylesheets/forum_new.png" },
 
