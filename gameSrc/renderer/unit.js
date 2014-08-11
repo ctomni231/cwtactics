@@ -1,11 +1,18 @@
 var constants = require("../constants");
-var renderer = require("../renderer");
+var assert = require("../functions").assert;
 var model = require("../model");
+var image = require("../image");
 var move = require("../logic/move");
 
-var tempCanvas = document.createElement("canvas");
-tempCanvas.width = renderer.screenWidth;
-tempCanvas.height = renderer.screenHeight;
+var tempCanvas;
+
+exports.init = function (width, height) {
+  assert(!tempCanvas);
+
+  tempCanvas = document.createElement("canvas");
+  tempCanvas.width = width;
+  tempCanvas.height = height;
+};
 
 //
 //
@@ -16,9 +23,8 @@ tempCanvas.height = renderer.screenHeight;
 // @param {number} w
 // @param {number} h
 //
-exports.renderUnits = function (x, oy, w, h) {
+exports.renderUnits = function (layer, offsetX, offsetY, x, oy, w, h) {
   var mapData = model.mapData;
-  var layer = cwt.Screen.layerUnit;
   var halfTileBase = parseInt(constants.TILE_BASE / 2,10);
 
   for (var xe = x + w; x < xe; x++) {
@@ -32,28 +38,28 @@ exports.renderUnits = function (x, oy, w, h) {
       var state;
       switch (unit.owner.id) {
         case 0:
-          state = cwt.Sprite.UNIT_RED;
+          state = image.Sprite.UNIT_RED;
           break;
 
         case 1:
-          state = cwt.Sprite.UNIT_BLUE;
+          state = image.Sprite.UNIT_BLUE;
           break;
 
         case 2:
-          state = cwt.Sprite.UNIT_GREEN;
+          state = image.Sprite.UNIT_GREEN;
           break;
 
         case 3:
-          state = cwt.Sprite.UNIT_YELLOW;
+          state = image.Sprite.UNIT_YELLOW;
           break;
       }
 
       // inverted ?
       if (unit.owner.id % 2 === 0) {
-        state += cwt.Sprite.UNIT_STATE_IDLE_INVERTED;
+        state += image.Sprite.UNIT_STATE_IDLE_INVERTED;
       }
 
-      var sprite = cwt.Image.sprites[unit.type.ID].getImage(state);
+      var sprite = image.sprites[unit.type.ID].getImage(state);
       var n = 0;
       while (n < 3) {
         var ctx = layer.getContext(n);
@@ -62,8 +68,8 @@ exports.renderUnits = function (x, oy, w, h) {
         var scy = 0;
         var scw = constants.TILE_BASE * 2;
         var sch = constants.TILE_BASE * 2;
-        var tcx = (x-cwt.Screen.offsetX) * constants.TILE_BASE - halfTileBase;
-        var tcy = (y-cwt.Screen.offsetY) * constants.TILE_BASE - halfTileBase;
+        var tcx = (x-offsetX) * constants.TILE_BASE - halfTileBase;
+        var tcy = (y-offsetY) * constants.TILE_BASE - halfTileBase;
         var tcw = constants.TILE_BASE + constants.TILE_BASE;
         var tch = constants.TILE_BASE + constants.TILE_BASE;
 
@@ -88,10 +94,8 @@ exports.renderUnits = function (x, oy, w, h) {
 //
 // @param {number} code
 //
-exports.shiftUnits = function (code) {
-  var layer = cwt.Screen.layerUnit;
-  var tmpCanvas = tempCanvas;
-  var tmpContext = tmpCanvas.getContext("2d");
+exports.shiftUnits = function (layer, code) {
+  var tmpContext = tempCanvas.getContext("2d");
 
   // calculate meta data for shift
   var sx = 0;
@@ -134,13 +138,13 @@ exports.shiftUnits = function (code) {
       w, h,
       sx, sy,
       w, h
-    )
+    );
 
     // clear original canvas
     layer.clear(n);
 
     // copy visible content back to the original canvas
-    layer.getContext(n).drawImage(tmpCanvas,0,0);
+    layer.getContext(n).drawImage(tempCanvas,0,0);
 
     n++;
   }

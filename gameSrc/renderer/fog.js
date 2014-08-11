@@ -1,10 +1,28 @@
+"use strict";
+
 var constants = require("../constants");
+var assert = require("../functions").assert;
 var move = require("../logic/move");
+var image = require("../image");
 var model = require("../model");
 
-var tempCanvas = document.createElement("canvas");
-tempCanvas.width = cwt.Screen.width;
-tempCanvas.height = cwt.Screen.height;
+var tempCanvas;
+
+exports.init = function (width, height) {
+  assert(!tempCanvas);
+
+  tempCanvas = document.createElement("canvas");
+  tempCanvas.width = width;
+  tempCanvas.height = height;
+};
+
+var fixOverlayFog_ = function (x, y, isTop) {
+  if (isTop) {
+
+  } else {
+
+  }
+};
 
 //
 //
@@ -14,8 +32,8 @@ tempCanvas.height = cwt.Screen.height;
 // @param y
 // @param range
 //
-exports.renderFogCircle = function (x, y, range) {
-  this.renderFogRect(x, y, range, range, true);
+exports.renderFogCircle = function (layerFog, offsetX, offsetY, x, y, range) {
+  exports.renderFogRect(layerFog, offsetX, offsetY, x, y, range, range, true);
 };
 
 //
@@ -28,10 +46,10 @@ exports.renderFogCircle = function (x, y, range) {
 // @param h
 // @param {boolean?} circle
 //
-exports.renderFogRect = function (x, y, w, h, circle) {
+exports.renderFogRect = function (layerFog, offsetX, offsetY, x, y, w, h, circle) {
   if (arguments.length === 4) circle = false;
-  var data = cwt.Map.data;
-  var layer = cwt.Screen.layerFog.getContext(0);
+  var data = model.mapData;
+  var layer = layerFog.getContext(0);
   var cx, cy, range;
 
   if (circle) {
@@ -49,10 +67,10 @@ exports.renderFogRect = function (x, y, w, h, circle) {
 
     // clear area in background layer as rectangle only in rectangle mode
     layer.clearRect(
-      (x - cwt.Screen.offsetX) * cwt.TILE_BASE,
-      (y - cwt.Screen.offsetY) * cwt.TILE_BASE,
-      w * cwt.TILE_BASE,
-      h * cwt.TILE_BASE
+      (x - offsetX) * constants.TILE_BASE,
+      (y - offsetY) * constants.TILE_BASE,
+      w * constants.TILE_BASE,
+      h * constants.TILE_BASE
     );
   }
 
@@ -64,17 +82,17 @@ exports.renderFogRect = function (x, y, w, h, circle) {
       var distance;
 
       if (circle) {
-        distance = cwt.Map.getDistance(x, y, cx, cy);
-        if (!cwt.Map.isValidPosition(x, y) || distance) {
+        distance = model.getDistance(x, y, cx, cy);
+        if (!model.isValidPosition(x, y) || distance) {
           continue;
         }
 
         // clear position
         layer.clearRect(
-          (x - cwt.Screen.offsetX) * cwt.TILE_BASE,
-          (y - cwt.Screen.offsetY) * cwt.TILE_BASE,
-          cwt.TILE_BASE,
-          cwt.TILE_BASE
+          (x - offsetX) * constants.TILE_BASE,
+          (y - offsetY) * constants.TILE_BASE,
+          constants.TILE_BASE,
+          constants.TILE_BASE
         );
       }
 
@@ -83,21 +101,21 @@ exports.renderFogRect = function (x, y, w, h, circle) {
 
         var sprite = null;
         if (tile.property) {
-          sprite = cwt.Image.sprites[tile.property.type.ID].getImage(
-            cwt.Sprite.PROPERTY_SHADOW_MASK
+          sprite = image.sprites[tile.property.type.ID].getImage(
+            image.Sprite.PROPERTY_SHADOW_MASK
           );
         } else {
-          sprite = cwt.Image.sprites[tile.type.ID].getImage(
-            tile.variant * cwt.Sprite.TILE_STATES + cwt.Sprite.TILE_SHADOW
+          sprite = image.sprites[tile.type.ID].getImage(
+            tile.variant * image.Sprite.TILE_STATES + image.Sprite.TILE_SHADOW
           );
         }
 
-        var scx = (cwt.Image.longAnimatedTiles[tile.type.ID]) ? cwt.TILE_BASE * n : 0;
+        var scx = (image.longAnimatedTiles[tile.type.ID]) ? constants.TILE_BASE * n : 0;
         var scy = 0;
         var scw = constants.TILE_BASE;
         var sch = constants.TILE_BASE * 2;
-        var tcx = (x - cwt.Screen.offsetX) * constants.TILE_BASE;
-        var tcy = (y - cwt.Screen.offsetY) * constants.TILE_BASE - constants.TILE_BASE;
+        var tcx = (x - offsetX) * constants.TILE_BASE;
+        var tcy = (y - offsetY) * constants.TILE_BASE - constants.TILE_BASE;
         var tcw = constants.TILE_BASE;
         var tch = constants.TILE_BASE * 2;
 
@@ -123,12 +141,12 @@ exports.renderFogRect = function (x, y, w, h, circle) {
 
             // top check
             if (y <= cy) {
-              this.fixOverlayFog_(x, y, true);
+              fixOverlayFog_(x, y, true);
             }
 
             // bottom check
             if (y >= cy) {
-              this.fixOverlayFog_(x, y, false);
+              fixOverlayFog_(x, y, false);
             }
           }
         }
@@ -141,24 +159,16 @@ exports.renderFogRect = function (x, y, w, h, circle) {
 
   }
 
-  this.renderFogBackgroundLayer();
-};
-
-exports.fixOverlayFog_ = function (x, y, isTop) {
-  if (isTop) {
-
-  } else {
-
-  }
+  this.renderFogBackgroundLayer(layerFog);
 };
 
 //
 //
 //
-exports.renderFogBackgroundLayer = function () {
-  cwt.Screen.layerFog.getContext().globalAlpha = 0.35;
-  cwt.Screen.layerFog.renderLayer(0);
-  cwt.Screen.layerFog.getContext().globalAlpha = 1;
+exports.renderFogBackgroundLayer = function (layerFog) {
+  layerFog.getContext().globalAlpha = 0.35;
+  layerFog.renderLayer(0);
+  layerFog.getContext().globalAlpha = 1;
 };
 
 //
@@ -167,10 +177,8 @@ exports.renderFogBackgroundLayer = function () {
 //
 // @param {number} code
 //
-exports.shiftFog = function (code) {
-  var layer = cwt.Screen.layerFog;
-  var tmpCanvas = tempCanvas;
-  var tmpContext = tmpCanvas.getContext("2d");
+exports.shiftFog = function (layer, code) {
+  var tmpContext = tempCanvas.getContext("2d");
 
   // calculate meta data for shift
   var sx = 0;
@@ -210,13 +218,13 @@ exports.shiftFog = function (code) {
     w, h,
     sx, sy,
     w, h
-  )
+  );
 
   // clear original canvas
   layer.clear(0);
 
   // copy visible content back to the original canvas
-  layer.getContext(0).drawImage(tmpCanvas, 0, 0);
+  layer.getContext(0).drawImage(tempCanvas, 0, 0);
 
-  exports.renderFogBackgroundLayer();
+  exports.renderFogBackgroundLayer(layer);
 };

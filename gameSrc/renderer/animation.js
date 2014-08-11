@@ -8,11 +8,11 @@ var curTime = 0;
 
 //
 //
-var indexUnitAnimation = 0;
+exports.indexUnitAnimation = 0;
 
 //
 //
-var indexMapAnimation = 0;
+exports.indexMapAnimation = 0;
 
 //
 //
@@ -27,24 +27,24 @@ exports.evaluateCycle = function (delta, layerUnit, layerMap) {
     unitAnimationHalfStep = !unitAnimationHalfStep;
     if (!unitAnimationHalfStep) {
 
-      index = this.indexUnitAnimation + 1;
+      index = exports.indexUnitAnimation + 1;
       if (index === 3) {
         index = 0;
       }
 
       // render unit animation layer
       layerUnit.renderLayer(index);
-      indexUnitAnimation = index;
+      exports.indexUnitAnimation = index;
     }
 
     // map animation layer
-    index = this.indexMapAnimation + 1;
+    index = exports.indexMapAnimation + 1;
     if (index === 8) {
       index = 0;
     }
 
     // render map animation layer
     layerMap.renderLayer(index);
-    indexMapAnimation = index;
+    exports.indexMapAnimation = index;
   }
 };

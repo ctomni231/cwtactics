@@ -20,7 +20,7 @@ exports.eraseCursor = function (layer,offsetX,offsetY,cursorX,cursorY) {
 // Renders the cursor to the UI layer.
 //
 exports.renderCursor = function (layer,offsetX,offsetY,cursorX,cursorY) {
-  var cursorImg = image.sprites.CURSOR.getImage(0);
+  var cursorImg = image.sprites["CURSOR"].getImage(0);
   var ctx = layer.getContext();
   var h = constants.TILE_BASE / 2;
   var x = (cursorX - offsetX) * constants.TILE_BASE;
