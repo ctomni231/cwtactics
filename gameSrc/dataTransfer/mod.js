@@ -1,6 +1,6 @@
 "use strict";
 
-var request = require("../xmlHttpReq");
+var request = require("../system/xmlHttpReq");
 var storage = require("../storage");
 
 var cachedMod = null;

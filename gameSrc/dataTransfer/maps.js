@@ -1,5 +1,5 @@
 var constants = require("../constants");
-var request = require("../xmlHttpReq");
+var request = require("../system/xmlHttpReq");
 var storage = require("../storage");
 var async = require("../async");
 
