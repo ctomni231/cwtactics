@@ -1,42 +1,32 @@
-Custom Wars Tactics **(CW:T)** is a rebuild of the original game series Advance Wars. The project itself contains 3
-different pieces of software. The game engine, that holds the complete game with its logic, scripts and data. The
-desktop client which is a graphical front end for the game engine written in Java and the mobile client, a
-graphical frontend for CW:T completely written with web technologies.
+#### Custom Wars Tactics
 
-#### Desktop Client
+**CW:T** is a rebuild of the original game series Advance Wars. The engine itself is a proof of concept to show the capabilities of HTML5 technologies. 
 
-The desktop client is build on the JSlix library which is a part of the old cwt prototype. Because. JSlix is mainly 
-maintained to support slower devices and providing some extra stuff for content designers like a full featured 
-map editor.
+###### Requirements Desktop
 
-###### Requirements
-
-* Java Runtime Edition 6 or greater
-* 1 GhZ CPU X-86
+* A 1 GHz CPU X-86
 * 512 MB RAM
-
-#### Mobile Client
-
-The WebClient is designed as prototype to show the capabilities of HTML5 technologies. The main task is to provide the
-complete game mechanic while providing basic multimedia support. The long term task is to create a basic mobile playable
-more game mechanic oriented *(less fancy shiny)* client for the CW:T engine.
+* Google Chrome 31
+* At least 250MB free storage for the game data 
 
 ###### Requirements Android
 
 * A 2x1.2GHz CPU 
 * 512 MB RAM
-* Mobile Chrome 30 and up
+* Mobile Chrome 31
+* At least 50MB free storage for the game data
 
 ###### Requirements iOS
 
-* iPad 1G, iPad-Mini, iPod Touch 4G or iPhone4
-* iOS 6
+* An iOS 6 compatible device (while iOS7 recommended)
+* 256 MB RAM
+* At least 50MB free storage for the game data
 
 #### How to build CW:T
 
-The game files will be build with the build system gulp. Gulp plus all of it's dependencies is prepared in the
-*node_modules* folder. All you need to start the build process is a nodeJs environment. You can invoke the process
-with the command **gulp** in the root directory of the CustomWars:Tactics.
+The game files will be build with the build system gulp. We stripped out all of gulps dependencies due a bug in *Microsoft Windows*. You have to extract *node_modules.rar* right after you checked out the. An alternative way is to download all dependencies manually. You can check them by looking into the build script file *gulpfile.js*. 
+
+When the build system is prepared then you're able to invoke the build process by typing the command **gulp** in your console while being in the root directory of the CustomWars:Tactics repository.
 
     gulp Commands{0,N}
 
