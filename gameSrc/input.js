@@ -50,13 +50,13 @@ var pool = circBuff.createBufferByClass(exports.InputData, 10);
 //
 var blocked = false;
 
-var genericInput = false;
+exports.genericInput = false;
 
 // Returns **true** when the input system wants a generic input (raw codes) from input backends like
 // keyboards and game pads.
 //
 exports.wantsGenericInput = function() {
-  return genericInput;
+  return exports.genericInput;
 }
 
 // Requests an input block. All further input calls will be dropped after calling this.

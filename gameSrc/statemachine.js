@@ -170,7 +170,7 @@ var addMenuState = function (desc) {
 
       this.inputMove = function (x, y) {
         if (layout.updateIndex(x, y)) {
-          this.rendered = false;
+          rendered = false;
         }
       };
 
@@ -185,6 +185,10 @@ var addMenuState = function (desc) {
       if (desc.genericInput) {
         this.genericInput = desc.genericInput;
       }
+
+      this.doRender = function() {
+        rendered = false;
+      };
     },
 
     enter: function () {
@@ -192,7 +196,7 @@ var addMenuState = function (desc) {
       rendered = false;
 
       if (desc.enter) {
-        desc.enter.call(this);
+        desc.enter.call(this, layout);
       }
     },
 
@@ -355,6 +359,10 @@ exports.addStates = function () {
 
   addMenuState(require("./states/menu_main").state);
 
+  addMenuState(require("./states/options_remap").state);
+  addMenuState(require("./states/options_confirmWipeOut").state);
+  addMenuState(require("./states/options_main").state);
+
   addState(require("./test/rain").state);
   addState(require("./test/weather").state);
 
@@ -363,9 +371,6 @@ exports.addStates = function () {
    addMenuState(require("./states/menu_playerSetup").state);
    addMenuState(require("./states/menu_versus").state);
 
-   addMenuState(require("./states/options_remap").state);
-   addMenuState(require("./states/options_confirmWipeOut").state);
-   addMenuState(require("./states/options_main").state);
 
    addInGameState(require("./states/ingame_enter").state);
    addInGameState(require("./states/ingame_flush").state);

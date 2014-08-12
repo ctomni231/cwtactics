@@ -2,7 +2,6 @@
 
 var constants = require("../constants");
 var widgets = require("../uiWidgets");
-var stm = require("../statemachine");
 
 exports.state = {
 
@@ -22,7 +21,7 @@ exports.state = {
 
       .addColGap(w)
       .addButton(16, 4, 0, "MAIN_MENU_SKIRMISH", widgets.UIField.STYLE_NORMAL, 20, function () {
-        stm.changeState("VERSUS");
+        this.changeState("VERSUS");
       })
       .breakLine()
 
@@ -44,12 +43,12 @@ exports.state = {
 
       .addColGap(w)
       .addButton(16, 3, 0, "MAIN_MENU_TEST_WEATHER", widgets.UIField.STYLE_NEW, 20, function () {
-        stm.changeState("WEATHER");
+        this.changeState("WEATHER");
       })
       .breakLine()
       .addColGap(w)
       .addButton(16, 3, 0, "MAIN_MENU_TEST_WEATHER", widgets.UIField.STYLE_ESW, 20, function () {
-        stm.changeState("RAIN");
+        this.changeState("RAIN");
       })
       .breakLine()
 
@@ -61,7 +60,7 @@ exports.state = {
 
       .addColGap(w)
       .addButton(16, 4, 0, "MAIN_MENU_OPTIONS", widgets.UIField.STYLE_NORMAL, 20, function () {
-        stm.changeState("OPTIONS");
+        this.changeState("OPTIONS");
       });
   }
 };

@@ -2,12 +2,16 @@
 
 var TOOLTIP_TIME = 10000;
 
-exports.tooltips = null;
-
 var constants = require("../constants");
 var widgets = require("../uiWidgets");
+
 var renderer = require("../renderer");
+var image = require("../image");
+var input = require("../input");
+var audio = require("../audio");
 var i18n = require("../localization");
+
+exports.tooltips = null;
 
 var tooltip_time = TOOLTIP_TIME;
 
@@ -40,21 +44,21 @@ exports.state = {
     renderer.layerUI.clear(constants.INACTIVE);
 
     // select a random background image
-    var numBackgrounds = this.image.sprites["BACKGROUNDS"].getNumberOfImages();
+    var numBackgrounds = image.sprites["BACKGROUNDS"].getNumberOfImages();
     var randBGIndex = parseInt(Math.random() * numBackgrounds, 10);
-    background = this.image.sprites["BACKGROUNDS"].getImage(randBGIndex);
+    background = image.sprites["BACKGROUNDS"].getImage(randBGIndex);
   },
 
   update: function (delta, lastInput) {
 
     // action leads into main menu
-    if (lastInput && lastInput.key === this.input.TYPE_ACTION) {
-      this.audio.playNullSound();
+    if (lastInput && lastInput.key === input.TYPE_ACTION) {
+      audio.playNullSound();
       this.changeState("MAIN_MENU");
 
     } else {
       tooltip_time += delta;
-      if (this.tooltip_time >= this.TOOLTIP_TIME) {
+      if (tooltip_time >= TOOLTIP_TIME) {
 
         if (exports.tooltips) {
 
@@ -74,16 +78,16 @@ exports.state = {
 
   render: function () {
     if (background) {
-      this.renderer.layerBG.getContext(constants.INACTIVE).drawImage(
+      renderer.layerBG.getContext(constants.INACTIVE).drawImage(
         background,
         0, 0,
-        this.renderer.screenWidth,
-        this.renderer.screenHeight);
+        renderer.screenWidth,
+        renderer.screenHeight);
 
       background = null;
     }
 
-    var uiCtx = this.renderer.layerUI.getContext(constants.INACTIVE);
+    var uiCtx = renderer.layerUI.getContext(constants.INACTIVE);
     button.draw(uiCtx);
     tooltip.draw(uiCtx);
   }

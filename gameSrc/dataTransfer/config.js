@@ -2,7 +2,7 @@
 
 var functions = require("../functions");
 var storage = require("../storage");
-var Config = require("../config").Config;
+var Config = require("../config");
 
 //
 // @constant

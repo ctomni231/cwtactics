@@ -4,6 +4,7 @@
 // of a loading bar in the game)
 
 var constants = require("../constants");
+var renderer = require("../renderer");
 
 var x = 10;
 var y = 0;
@@ -16,8 +17,8 @@ exports.state = {
   id: "LOADING_SCREEN",
 
   init: function () {
-    y = parseInt(this.renderer.screenHeight / 2, 10) - 10;
-    width = this.renderer.screenWidth - 20;
+    y = parseInt(renderer.screenHeight / 2, 10) - 10;
+    width = renderer.screenWidth - 20;
   },
 
   enter: function () {
@@ -40,7 +41,7 @@ exports.state = {
   },
 
   render: function () {
-    var ctx = this.renderer.layerUI.getContext(constants.INACTIVE);
+    var ctx = renderer.layerUI.getContext(constants.INACTIVE);
 
     ctx.fillStyle = "white";
     ctx.fillRect(x, y, width, height);
