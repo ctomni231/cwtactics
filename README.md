@@ -37,6 +37,7 @@ When the build system is prepared then you're able to invoke the build process b
      todo  = Generates a mnarkdown file with all todo marks
      live  = Builds the game and it's dependencies in live mode (ulgyfied)
      dev   = Builds the game and it's dependencies in debug mode
-     watch = Starts a server mode which invokes the 'dev' task automatically when a JavaScript file will be modified
+     watch = Starts a server mode which invokes the 'dev' task automatically 
+             when a JavaScript file will be modified
 
      default is todo docs dev
