@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>capture.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="attack.html">
+                attack.js
+              </a>
+            
+              
+              <a class="source" href="cannon.html">
+                cannon.js
+              </a>
+            
+              
+              <a class="source" href="capture.html">
+                capture.js
+              </a>
+            
+              
+              <a class="source" href="co.html">
+                co.js
+              </a>
+            
+              
+              <a class="source" href="exploder.html">
+                exploder.js
+              </a>
+            
+              
+              <a class="source" href="factory.html">
+                factory.js
+              </a>
+            
+              
+              <a class="source" href="fog.html">
+                fog.js
+              </a>
+            
+              
+              <a class="source" href="join.html">
+                join.js
+              </a>
+            
+              
+              <a class="source" href="laser.html">
+                laser.js
+              </a>
+            
+              
+              <a class="source" href="lifecycle.html">
+                lifecycle.js
+              </a>
+            
+              
+              <a class="source" href="move.html">
+                move.js
+              </a>
+            
+              
+              <a class="source" href="relationship.html">
+                relationship.js
+              </a>
+            
+              
+              <a class="source" href="silo.html">
+                silo.js
+              </a>
+            
+              
+              <a class="source" href="supply.html">
+                supply.js
+              </a>
+            
+              
+              <a class="source" href="team.html">
+                team.js
+              </a>
+            
+              
+              <a class="source" href="transport.html">
+                transport.js
+              </a>
+            
+              
+              <a class="source" href="turn.html">
+                turn.js
+              </a>
+            
+              
+              <a class="source" href="weather.html">
+                weather.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>capture.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-pi">"use strict"</span>;
+
+<span class="hljs-keyword">var</span> constants = <span class="hljs-built_in">require</span>(<span class="hljs-string">"../constants"</span>);
+<span class="hljs-keyword">var</span> assert = <span class="hljs-built_in">require</span>(<span class="hljs-string">"../functions"</span>).assert;
+<span class="hljs-keyword">var</span> model = <span class="hljs-built_in">require</span>(<span class="hljs-string">"../model"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Returns <strong>true</strong> when a <strong>unit</strong> can capture a properties, else <strong>false</strong>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.canCapture = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(unit)</span> </span>{
+  <span class="hljs-keyword">return</span> (unit.type.captures &gt; <span class="hljs-number">0</span>);
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Returns <strong>true</strong> when a <strong>property</strong> can be captured, else <strong>false</strong>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.canBeCaptured = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(property)</span> </span>{
+  <span class="hljs-keyword">return</span> (property.type.capturePoints &gt; <span class="hljs-number">0</span>);
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>The <strong>unit</strong> captures the <strong>property</strong>. When the capture points of the <strong>property</strong> falls down to zero, then
+the owner of the <strong>property</strong> changes to the owner of the capturing <strong>unit</strong> and <strong>true</strong> will be returned. If the
+capture points does not fall down to zero then <strong>false</strong> will be returned.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.captureProperty = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(property, unit)</span> </span>{
+  <span class="hljs-keyword">if</span> (constants.DEBUG) assert(unit);
+
+  <span class="hljs-keyword">this</span>.points -= model.Property.CAPTURE_STEP;
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.points &lt;= <span class="hljs-number">0</span>) {
+    <span class="hljs-keyword">this</span>.owner = unit.owner;
+    <span class="hljs-keyword">this</span>.points = model.Property.CAPTURE_POINTS;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>TODO: if max points are static then the configurable points from the property sheets can be removed</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>was captured</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>was not captured</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+};</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

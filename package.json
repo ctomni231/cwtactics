@@ -1,5 +1,5 @@
 {
-  "name": "cwt",
+  "name": "cwTactics",
   "version": "0.3.6",
   "description": "Custom Wars Tactics **(CW:T)** is a rebuild of the original game series Advance Wars. The project itself contains 3 different pieces of software. The game engine, that holds the complete game with its logic, scripts and data. The desktop client which is a graphical front end for the game engine written in Java and the mobile client, a graphical frontend for CW:T completely written with web technologies.",
   "repository": {
@@ -13,18 +13,15 @@
   },
   "homepage": "https://github.com/ctomni231/cwtactics",
   "devDependencies": {
-    "gulp": "~3.8.6",
-    "gulp-browserify": "~0.5.0",
-    "gulp-todo": "~0.3.7",
-    "gulp-uglify": "~0.3.1",
-    "gulp-clean": "~0.3.1",
-    "gulp-concat": "~2.3.4",
-    "gulp-if": "~1.2.4",
-    "gulp-match": "~0.2.0",
-    "ternary-stream": "~1.2.0",
-    "through2": "~0.5.1",
-    "gulp-replace-task": "0.0.6",
-    "gulp-shell": "~0.2.9",
-    "gulp-exec": "~2.1.0"
+    "grunt": "~0.4.5",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-nodeunit": "~0.4.1",
+    "grunt-contrib-uglify": "~0.5.1",
+    "grunt-browserify": "~2.1.4",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-clean": "~0.6.0",
+    "grunt-docco2": "~0.2.0",
+    "grunt-todo": "~0.4.0",
+    "grunt-text-replace": "~0.3.12"
   }
 }

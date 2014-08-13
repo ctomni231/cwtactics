@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>ingame_anim_ballistic.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="error.html">
+                error.js
+              </a>
+            
+              
+              <a class="source" href="ingame_anim_ballistic.html">
+                ingame_anim_ballistic.js
+              </a>
+            
+              
+              <a class="source" href="ingame_anim_captureProperty.html">
+                ingame_anim_captureProperty.js
+              </a>
+            
+              
+              <a class="source" href="ingame_anim_changeWeather.html">
+                ingame_anim_changeWeather.js
+              </a>
+            
+              
+              <a class="source" href="ingame_anim_destroyUnit.html">
+                ingame_anim_destroyUnit.js
+              </a>
+            
+              
+              <a class="source" href="ingame_anim_move.html">
+                ingame_anim_move.js
+              </a>
+            
+              
+              <a class="source" href="ingame_anim_nextTurn.html">
+                ingame_anim_nextTurn.js
+              </a>
+            
+              
+              <a class="source" href="ingame_anim_trapWait.html">
+                ingame_anim_trapWait.js
+              </a>
+            
+              
+              <a class="source" href="ingame_enter.html">
+                ingame_enter.js
+              </a>
+            
+              
+              <a class="source" href="ingame_flush.html">
+                ingame_flush.js
+              </a>
+            
+              
+              <a class="source" href="ingame_idle.html">
+                ingame_idle.js
+              </a>
+            
+              
+              <a class="source" href="ingame_leave.html">
+                ingame_leave.js
+              </a>
+            
+              
+              <a class="source" href="ingame_menu.html">
+                ingame_menu.js
+              </a>
+            
+              
+              <a class="source" href="ingame_movepath.html">
+                ingame_movepath.js
+              </a>
+            
+              
+              <a class="source" href="ingame_multistep.html">
+                ingame_multistep.js
+              </a>
+            
+              
+              <a class="source" href="ingame_selecttile.html">
+                ingame_selecttile.js
+              </a>
+            
+              
+              <a class="source" href="ingame_showAttackRange.html">
+                ingame_showAttackRange.js
+              </a>
+            
+              
+              <a class="source" href="ingame_submenu.html">
+                ingame_submenu.js
+              </a>
+            
+              
+              <a class="source" href="ingame_targetselection_a.html">
+                ingame_targetselection_a.js
+              </a>
+            
+              
+              <a class="source" href="ingame_targetselection_b.html">
+                ingame_targetselection_b.js
+              </a>
+            
+              
+              <a class="source" href="menu_main.html">
+                menu_main.js
+              </a>
+            
+              
+              <a class="source" href="menu_parameterSetup.html">
+                menu_parameterSetup.js
+              </a>
+            
+              
+              <a class="source" href="menu_playerSetup.html">
+                menu_playerSetup.js
+              </a>
+            
+              
+              <a class="source" href="menu_versus.html">
+                menu_versus.js
+              </a>
+            
+              
+              <a class="source" href="options_confirmWipeOut.html">
+                options_confirmWipeOut.js
+              </a>
+            
+              
+              <a class="source" href="options_main.html">
+                options_main.js
+              </a>
+            
+              
+              <a class="source" href="options_remap.html">
+                options_remap.js
+              </a>
+            
+              
+              <a class="source" href="portrait.html">
+                portrait.js
+              </a>
+            
+              
+              <a class="source" href="start_load.html">
+                start_load.js
+              </a>
+            
+              
+              <a class="source" href="start_none.html">
+                start_none.js
+              </a>
+            
+              
+              <a class="source" href="start_tooltip.html">
+                start_tooltip.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>ingame_anim_ballistic.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.state = {
+  id: <span class="hljs-string">"ANIMATION_BALLISTIC"</span>,
+
+  init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+
+  },
+
+  enter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+
+  },
+
+  update: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(delta, lastInput)</span> </span>{
+
+  },
+
+  render: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(delta)</span> </span>{
+
+  }
+};
+
+<span class="hljs-comment">/*
+ util.scoped(function(){
+
+ var expl_img;
+ var rocket_img;
+ var rocket_img_inv;
+
+ function renderSmoke( x,y, step, distance ){
+ step -= (distance-1);
+ if( step &lt; 0 || step &gt; 9 ) return;
+
+ var tileSize = TILE_LENGTH;
+ var scx = 48*step;
+ var scy = 0;
+ var scw = 48;
+ var sch = 48;
+ var tcx = (x)*tileSize;
+ var tcy = (y)*tileSize;
+ var tcw = tileSize;
+ var tch = tileSize;
+
+ view.canvasCtx.drawImage(
+ expl_img,
+ scx,scy,
+ scw,sch,
+ tcx,tcy,
+ tcw,tch
+ );
+
+ view.redraw_markPos(x,y);
+ }
+
+ function checkStatus( x,y ){
+ if( model.map_isValidPosition(x,y) ){
+ var unit = model.unit_posData[x][y];
+ if( unit !== null ){
+ controller.updateUnitStatus( model.unit_extractId(unit) );
+ }
+ }
+ }
+
+ view.registerAnimationHook({
+ key: "rocketFly",
+
+ prepare: function( x,y, tx,ty,siloId ){
+ if( !rocket_img ) rocket_img = view.getInfoImageForType("FLYING_ROCKET");
+ if( !rocket_img_inv ) rocket_img_inv = view.getInfoImageForType("FLYING_ROCKET_INV");
+
+ this.siloX   = controller.getCanvasPosX(x);
+ this.siloY   = controller.getCanvasPosY(y);
+ this.targetX = controller.getCanvasPosX(tx);
+ this.targetY = controller.getCanvasPosY(ty);
+ this.curX    = this.siloX;
+ this.curY    = this.siloY;
+ this.phase = 0;
+ },
+
+ render: function(){
+ var tileSize = TILE_LENGTH;
+ var scx = 0;
+ var scy = 0;
+ var scw = 24;
+ var sch = 24;
+ var tcx = this.curX;
+ var tcy = this.curY;
+ var tcw = tileSize +8;
+ var tch = tileSize +8;
+
+ if( tcy &lt; 0 ){
+ scw += tcy;
+ scy -= tcy;
+ tcy = 0;
+ }
+
+ view.canvasCtx.drawImage(
+ (this.phase===0)? rocket_img : rocket_img_inv,
+ scx,scy,
+ scw,sch,
+ tcx,tcy,
+ tcw,tch
+ );
+
+ view.redraw_markPosWithNeighboursRing(
+ parseInt(this.curX/TILE_LENGTH, 10),
+ parseInt(this.curY/TILE_LENGTH, 10)
+ );
+ },
+
+ update: function( delta ){
+ var shift = ( delta/1000 ) * ( TILE_LENGTH*14);
+
+ if( this.phase === 0 ){
+
+</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>rocket flies up</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> <span class="hljs-keyword">this</span>.curY -= shift;
+
+ <span class="hljs-keyword">if</span>( <span class="hljs-keyword">this</span>.curY &lt;= <span class="hljs-number">0</span> ){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>controller.setScreenPosition( this.targetX, this.targetY, true );</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+ <span class="hljs-keyword">this</span>.curX = <span class="hljs-keyword">this</span>.targetX;
+ <span class="hljs-keyword">this</span>.curY = <span class="hljs-number">0</span>;
+ <span class="hljs-keyword">this</span>.phase = <span class="hljs-number">1</span>;
+ }
+ }
+ <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>rocket flies down</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> <span class="hljs-keyword">this</span>.curY += shift;
+
+ <span class="hljs-keyword">if</span>( <span class="hljs-keyword">this</span>.curY &gt;= <span class="hljs-keyword">this</span>.targetY ){
+ <span class="hljs-keyword">this</span>.phase = <span class="hljs-number">2</span>;
+ }
+ }
+ },
+
+ isDone: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+ <span class="hljs-keyword">return</span> (<span class="hljs-keyword">this</span>.phase === <span class="hljs-number">2</span>);
+ }
+ });
+
+ view.registerAnimationHook({
+
+ key: <span class="hljs-string">"explode_invoked"</span>,
+
+ prepare: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( tx,ty, range, damage, owner )</span></span>{
+ <span class="hljs-keyword">if</span>( !expl_img ) expl_img = view.getInfoImageForType(<span class="hljs-string">"EXPLOSION_GROUND"</span>);
+ controller.audio_playSound(<span class="hljs-string">"ROCKET_IMPACT"</span>);
+
+ <span class="hljs-keyword">this</span>.x = tx;
+ <span class="hljs-keyword">this</span>.y = ty;
+ <span class="hljs-keyword">this</span>.range = range;
+ <span class="hljs-keyword">this</span>.maxStep = <span class="hljs-number">10</span>+range+<span class="hljs-number">1</span>;
+ <span class="hljs-keyword">this</span>.step = <span class="hljs-number">0</span>;
+ <span class="hljs-keyword">this</span>.time = <span class="hljs-number">0</span>;
+ },
+
+ render: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+ model.map_doInRange( <span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y, <span class="hljs-keyword">this</span>.range, renderSmoke, <span class="hljs-keyword">this</span>.step );
+ },
+
+ update: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( delta )</span></span>{
+ <span class="hljs-keyword">this</span>.time += delta;
+ <span class="hljs-keyword">if</span>( <span class="hljs-keyword">this</span>.time &gt; <span class="hljs-number">75</span> ){
+ <span class="hljs-keyword">this</span>.step++;
+ <span class="hljs-keyword">this</span>.time = <span class="hljs-number">0</span>;
+ }
+ },
+
+ isDone: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+ <span class="hljs-keyword">var</span> done = <span class="hljs-keyword">this</span>.step === <span class="hljs-keyword">this</span>.maxStep;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>RENDER HP LOST</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> <span class="hljs-keyword">if</span>( done ) model.map_doInRange( <span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y, <span class="hljs-keyword">this</span>.range, checkStatus );
+
+ <span class="hljs-keyword">return</span> done;
+ }
+
+ });
+
+ view.registerAnimationHook({
+
+ key: <span class="hljs-string">"bombs_fireCannon"</span>,
+
+ prepare: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( ox,oy,x,y,tp )</span></span>{
+ <span class="hljs-keyword">var</span> type = model.data_tileSheets[tp];
+
+ <span class="hljs-keyword">var</span> fireAnim = type.assets.fireAnimation;
+ cwt.assert( fireAnim.length === <span class="hljs-number">5</span> );
+
+ <span class="hljs-keyword">this</span>.pic     = view.getInfoImageForType(fireAnim[<span class="hljs-number">0</span>]);
+ <span class="hljs-keyword">this</span>.sizeX   = fireAnim[<span class="hljs-number">1</span>];
+ <span class="hljs-keyword">this</span>.sizeY   = fireAnim[<span class="hljs-number">2</span>];
+ <span class="hljs-keyword">this</span>.offsetX = fireAnim[<span class="hljs-number">3</span>];
+ <span class="hljs-keyword">this</span>.offsetY = fireAnim[<span class="hljs-number">4</span>];
+
+ <span class="hljs-keyword">this</span>.curX    = ox;
+ <span class="hljs-keyword">this</span>.curY    = oy;
+
+ <span class="hljs-keyword">this</span>.step    = <span class="hljs-number">0</span>;
+ <span class="hljs-keyword">this</span>.time    = <span class="hljs-number">0</span>;
+
+ controller.audio_playSound( type.assets.fireSound);
+ },
+
+ render: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+ <span class="hljs-keyword">var</span> tileSize = TILE_LENGTH;
+ <span class="hljs-keyword">var</span> scx = <span class="hljs-keyword">this</span>.sizeX*<span class="hljs-keyword">this</span>.step;
+ <span class="hljs-keyword">var</span> scy = <span class="hljs-number">0</span>;
+ <span class="hljs-keyword">var</span> scw = <span class="hljs-keyword">this</span>.sizeX;
+ <span class="hljs-keyword">var</span> sch = <span class="hljs-keyword">this</span>.sizeY;
+ <span class="hljs-keyword">var</span> tcx = (<span class="hljs-keyword">this</span>.curX)*tileSize + <span class="hljs-keyword">this</span>.offsetX;
+ <span class="hljs-keyword">var</span> tcy = (<span class="hljs-keyword">this</span>.curY)*tileSize + <span class="hljs-keyword">this</span>.offsetY;
+ <span class="hljs-keyword">var</span> tcw = <span class="hljs-keyword">this</span>.sizeX;
+ <span class="hljs-keyword">var</span> tch = <span class="hljs-keyword">this</span>.sizeY;
+
+ view.canvasCtx.drawImage(
+ <span class="hljs-keyword">this</span>.pic,
+ scx,scy,
+ scw,sch,
+ tcx,tcy,
+ tcw,tch
+ );
+
+ },
+
+ update: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( delta )</span></span>{
+ <span class="hljs-keyword">this</span>.time += delta;
+ <span class="hljs-keyword">if</span>( <span class="hljs-keyword">this</span>.time &gt; <span class="hljs-number">100</span> ){
+ <span class="hljs-keyword">this</span>.step++;
+ <span class="hljs-keyword">this</span>.time = <span class="hljs-number">0</span>;
+ }
+ },
+
+ isDone: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+ <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.step === <span class="hljs-number">6</span>;
+ }
+
+ });
+
+ view.registerAnimationHook({
+
+ key: <span class="hljs-string">"bombs_fireLaser"</span>,
+
+ prepare: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( ox,oy )</span></span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>var type = model.data_tileSheets[tp];</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> <span class="hljs-keyword">var</span> type = model.property_posMap[ox][oy].type;
+
+ <span class="hljs-keyword">var</span> fireAnimA = type.assets.chargeAnimation;
+ <span class="hljs-keyword">var</span> fireAnimB = type.assets.fireAnimation;
+ <span class="hljs-keyword">var</span> fireAnimC = type.assets.streamAnimation;
+ cwt.assert( fireAnimA.length === <span class="hljs-number">5</span> );
+ cwt.assert( fireAnimB.length === <span class="hljs-number">5</span> );
+ cwt.assert( fireAnimC.length === <span class="hljs-number">5</span> );
+ <span class="hljs-keyword">this</span>.a      = {
+ pic     : view.getInfoImageForType(fireAnimA[<span class="hljs-number">0</span>]),
+ sizeX   : fireAnimB[<span class="hljs-number">1</span>],
+ sizeY   : fireAnimB[<span class="hljs-number">2</span>],
+ offsetX : fireAnimB[<span class="hljs-number">3</span>],
+ offsetY : fireAnimB[<span class="hljs-number">4</span>]
+ };
+
+ <span class="hljs-keyword">this</span>.b      = {
+ pic     : view.getInfoImageForType(fireAnimB[<span class="hljs-number">0</span>]),
+ sizeX   : fireAnimA[<span class="hljs-number">1</span>],
+ sizeY   : fireAnimA[<span class="hljs-number">2</span>],
+ offsetX : fireAnimA[<span class="hljs-number">3</span>],
+ offsetY : fireAnimA[<span class="hljs-number">4</span>]
+ };
+
+ <span class="hljs-keyword">this</span>.c      = {
+ pic     : view.getInfoImageForType(fireAnimC[<span class="hljs-number">0</span>]),
+ sizeX   : fireAnimC[<span class="hljs-number">1</span>],
+ sizeY   : fireAnimC[<span class="hljs-number">2</span>],
+ offsetX : fireAnimC[<span class="hljs-number">3</span>],
+ offsetY : fireAnimC[<span class="hljs-number">4</span>]
+ };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>W</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> fireAnimA = type.assets.chargeAnimation3;
+ fireAnimB = type.assets.fireAnimation3;
+ fireAnimC = type.assets.streamAnimation3;
+ cwt.assert( fireAnimA.length === <span class="hljs-number">5</span> );
+ cwt.assert( fireAnimB.length === <span class="hljs-number">5</span> );
+ cwt.assert( fireAnimC.length === <span class="hljs-number">5</span> );
+
+ <span class="hljs-keyword">this</span>.a2      = {
+ pic     : view.getInfoImageForType(fireAnimA[<span class="hljs-number">0</span>]),
+ sizeX   : fireAnimB[<span class="hljs-number">1</span>],
+ sizeY   : fireAnimB[<span class="hljs-number">2</span>],
+ offsetX : fireAnimB[<span class="hljs-number">3</span>],
+ offsetY : fireAnimB[<span class="hljs-number">4</span>]
+ };
+
+ <span class="hljs-keyword">this</span>.b2      = {
+ pic     : view.getInfoImageForType(fireAnimB[<span class="hljs-number">0</span>]),
+ sizeX   : fireAnimA[<span class="hljs-number">1</span>],
+ sizeY   : fireAnimA[<span class="hljs-number">2</span>],
+ offsetX : fireAnimA[<span class="hljs-number">3</span>],
+ offsetY : fireAnimA[<span class="hljs-number">4</span>]
+ };
+
+ <span class="hljs-keyword">this</span>.c2      = {
+ pic     : view.getInfoImageForType(fireAnimC[<span class="hljs-number">0</span>]),
+ sizeX   : fireAnimC[<span class="hljs-number">1</span>],
+ sizeY   : fireAnimC[<span class="hljs-number">2</span>],
+ offsetX : fireAnimC[<span class="hljs-number">3</span>],
+ offsetY : fireAnimC[<span class="hljs-number">4</span>]
+ };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>S</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> fireAnimA = type.assets.chargeAnimation2;
+ fireAnimB = type.assets.fireAnimation2;
+ fireAnimC = type.assets.streamAnimation2;
+ cwt.assert( fireAnimA.length === <span class="hljs-number">5</span> );
+ cwt.assert( fireAnimB.length === <span class="hljs-number">5</span> );
+ cwt.assert( fireAnimC.length === <span class="hljs-number">5</span> );
+
+ <span class="hljs-keyword">this</span>.a3      = {
+ pic     : view.getInfoImageForType(fireAnimA[<span class="hljs-number">0</span>]),
+ sizeX   : fireAnimB[<span class="hljs-number">1</span>],
+ sizeY   : fireAnimB[<span class="hljs-number">2</span>],
+ offsetX : fireAnimB[<span class="hljs-number">3</span>],
+ offsetY : fireAnimB[<span class="hljs-number">4</span>]
+ };
+
+ <span class="hljs-keyword">this</span>.b3      = {
+ pic     : view.getInfoImageForType(fireAnimB[<span class="hljs-number">0</span>]),
+ sizeX   : fireAnimA[<span class="hljs-number">1</span>],
+ sizeY   : fireAnimA[<span class="hljs-number">2</span>],
+ offsetX : fireAnimA[<span class="hljs-number">3</span>],
+ offsetY : fireAnimA[<span class="hljs-number">4</span>]
+ };
+
+ <span class="hljs-keyword">this</span>.c3      = {
+ pic     : view.getInfoImageForType(fireAnimC[<span class="hljs-number">0</span>]),
+ sizeX   : fireAnimC[<span class="hljs-number">1</span>],
+ sizeY   : fireAnimC[<span class="hljs-number">2</span>],
+ offsetX : fireAnimC[<span class="hljs-number">3</span>],
+ offsetY : fireAnimC[<span class="hljs-number">4</span>]
+ };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>N</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> fireAnimA = type.assets.chargeAnimation4;
+ fireAnimB = type.assets.fireAnimation4;
+ fireAnimC = type.assets.streamAnimation4;
+ cwt.assert( fireAnimA.length === <span class="hljs-number">5</span> );
+ cwt.assert( fireAnimB.length === <span class="hljs-number">5</span> );
+ cwt.assert( fireAnimC.length === <span class="hljs-number">5</span> );
+
+ <span class="hljs-keyword">this</span>.a4      = {
+ pic     : view.getInfoImageForType(fireAnimA[<span class="hljs-number">0</span>]),
+ sizeX   : fireAnimB[<span class="hljs-number">1</span>],
+ sizeY   : fireAnimB[<span class="hljs-number">2</span>],
+ offsetX : fireAnimB[<span class="hljs-number">3</span>],
+ offsetY : fireAnimB[<span class="hljs-number">4</span>]
+ };
+
+ <span class="hljs-keyword">this</span>.b4      = {
+ pic     : view.getInfoImageForType(fireAnimB[<span class="hljs-number">0</span>]),
+ sizeX   : fireAnimA[<span class="hljs-number">1</span>],
+ sizeY   : fireAnimA[<span class="hljs-number">2</span>],
+ offsetX : fireAnimA[<span class="hljs-number">3</span>],
+ offsetY : fireAnimA[<span class="hljs-number">4</span>]
+ };
+
+ <span class="hljs-keyword">this</span>.c4      = {
+ pic     : view.getInfoImageForType(fireAnimC[<span class="hljs-number">0</span>]),
+ sizeX   : fireAnimC[<span class="hljs-number">1</span>],
+ sizeY   : fireAnimC[<span class="hljs-number">2</span>],
+ offsetX : fireAnimC[<span class="hljs-number">3</span>],
+ offsetY : fireAnimC[<span class="hljs-number">4</span>]
+ };
+
+ <span class="hljs-keyword">this</span>.curX    = ox;
+ <span class="hljs-keyword">this</span>.curY    = oy;
+
+ <span class="hljs-keyword">this</span>.phase   = <span class="hljs-number">0</span>;
+ <span class="hljs-keyword">this</span>.step    = <span class="hljs-number">0</span>;
+ <span class="hljs-keyword">this</span>.time    = <span class="hljs-number">0</span>;
+
+ controller.audio_playSound( type.assets.fireSound );
+ },
+
+ render: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+ <span class="hljs-keyword">var</span> data = (<span class="hljs-keyword">this</span>.phase === <span class="hljs-number">0</span>)? <span class="hljs-keyword">this</span>.a : <span class="hljs-keyword">this</span>.b;
+ <span class="hljs-keyword">var</span> data2 = (<span class="hljs-keyword">this</span>.phase === <span class="hljs-number">0</span>)? <span class="hljs-keyword">this</span>.a2 : <span class="hljs-keyword">this</span>.b2;
+ <span class="hljs-keyword">var</span> data3 = (<span class="hljs-keyword">this</span>.phase === <span class="hljs-number">0</span>)? <span class="hljs-keyword">this</span>.a3 : <span class="hljs-keyword">this</span>.b3;
+ <span class="hljs-keyword">var</span> data4 = (<span class="hljs-keyword">this</span>.phase === <span class="hljs-number">0</span>)? <span class="hljs-keyword">this</span>.a4 : <span class="hljs-keyword">this</span>.b4;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>E</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> <span class="hljs-keyword">var</span> tileSize = TILE_LENGTH;
+ <span class="hljs-keyword">var</span> scx = data.sizeX*<span class="hljs-keyword">this</span>.step;
+ <span class="hljs-keyword">var</span> scy = <span class="hljs-number">0</span>;
+ <span class="hljs-keyword">var</span> scw = data.sizeX;
+ <span class="hljs-keyword">var</span> sch = data.sizeY;
+ <span class="hljs-keyword">var</span> tcx = (<span class="hljs-keyword">this</span>.curX)*tileSize + data.offsetX;
+ <span class="hljs-keyword">var</span> tcy = (<span class="hljs-keyword">this</span>.curY)*tileSize + data.offsetY;
+ <span class="hljs-keyword">var</span> tcw = data.sizeX;
+ <span class="hljs-keyword">var</span> tch = data.sizeY;
+ view.canvasCtx.drawImage(
+ data.pic,
+ scx,scy,
+ scw,sch,
+ tcx,tcy,
+ tcw,tch
+ );</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>W</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> tileSize = TILE_LENGTH;
+ scx = data2.sizeX*<span class="hljs-keyword">this</span>.step;
+ scy = <span class="hljs-number">0</span>;
+ scw = data2.sizeX;
+ sch = data2.sizeY;
+ tcx = (<span class="hljs-keyword">this</span>.curX)*tileSize + data2.offsetX;
+ tcy = (<span class="hljs-keyword">this</span>.curY)*tileSize + data2.offsetY;
+ tcw = data2.sizeX;
+ tch = data2.sizeY;
+ view.canvasCtx.drawImage(
+ data2.pic,
+ scx,scy,
+ scw,sch,
+ tcx,tcy,
+ tcw,tch
+ );</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>S</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> tileSize = TILE_LENGTH;
+ scx = data3.sizeX*<span class="hljs-keyword">this</span>.step;
+ scy = <span class="hljs-number">0</span>;
+ scw = data3.sizeX;
+ sch = data3.sizeY;
+ tcx = (<span class="hljs-keyword">this</span>.curX)*tileSize + data3.offsetX;
+ tcy = (<span class="hljs-keyword">this</span>.curY)*tileSize + data3.offsetY;
+ tcw = data3.sizeX;
+ tch = data3.sizeY;
+ view.canvasCtx.drawImage(
+ data3.pic,
+ scx,scy,
+ scw,sch,
+ tcx,tcy,
+ tcw,tch
+ );</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>N</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> tileSize = TILE_LENGTH;
+ scx = data4.sizeX*<span class="hljs-keyword">this</span>.step;
+ scy = <span class="hljs-number">0</span>;
+ scw = data4.sizeX;
+ sch = data4.sizeY;
+ tcx = (<span class="hljs-keyword">this</span>.curX)*tileSize + data4.offsetX;
+ tcy = (<span class="hljs-keyword">this</span>.curY)*tileSize + data4.offsetY;
+ tcw = data4.sizeX;
+ tch = data4.sizeY;
+ view.canvasCtx.drawImage(
+ data4.pic,
+ scx,scy,
+ scw,sch,
+ tcx,tcy,
+ tcw,tch
+ );</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>redraw</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> view.redraw_markPosWithNeighboursRing(<span class="hljs-keyword">this</span>.curX, <span class="hljs-keyword">this</span>.curY);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>TODO: streched over all tiles in the cross</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> <span class="hljs-keyword">if</span>( data === <span class="hljs-keyword">this</span>.b ){
+ data = <span class="hljs-keyword">this</span>.c;
+ data2 = <span class="hljs-keyword">this</span>.c2;
+ data3 = <span class="hljs-keyword">this</span>.c3;
+ data4 = <span class="hljs-keyword">this</span>.c4;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>E</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> scx = data.sizeX*<span class="hljs-keyword">this</span>.step;
+ scy = <span class="hljs-number">0</span>;
+ scw = data.sizeX;
+ sch = data.sizeY;
+ <span class="hljs-keyword">for</span>( <span class="hljs-keyword">var</span> ci = <span class="hljs-keyword">this</span>.curX+<span class="hljs-number">1</span>, ce=model.map_width; ci &lt; ce; ci++ ){
+ tcx = (ci)*tileSize + data.offsetX;
+ tcy = (<span class="hljs-keyword">this</span>.curY)*tileSize + data.offsetY;
+ tcw = data.sizeX;
+ tch = data.sizeY;
+
+ view.canvasCtx.drawImage(
+ data.pic,
+ scx,scy,
+ scw,sch,
+ tcx,tcy,
+ tcw,tch
+ );
+
+ view.redraw_markPos( ci, <span class="hljs-keyword">this</span>.curY-<span class="hljs-number">1</span> );
+ view.redraw_markPos( ci, <span class="hljs-keyword">this</span>.curY );
+ view.redraw_markPos( ci, <span class="hljs-keyword">this</span>.curY+<span class="hljs-number">1</span> );
+ }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>W</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> scx = data2.sizeX*<span class="hljs-keyword">this</span>.step;
+ scy = <span class="hljs-number">0</span>;
+ scw = data2.sizeX;
+ sch = data2.sizeY;
+ <span class="hljs-keyword">for</span>( <span class="hljs-keyword">var</span> ci = <span class="hljs-keyword">this</span>.curX-<span class="hljs-number">1</span>, ce=<span class="hljs-number">0</span>; ci &gt;= ce; ci-- ){
+ tcx = (ci)*tileSize + data2.offsetX;
+ tcy = (<span class="hljs-keyword">this</span>.curY)*tileSize + data2.offsetY;
+ tcw = data2.sizeX;
+ tch = data2.sizeY;
+
+ view.canvasCtx.drawImage(
+ data2.pic,
+ scx,scy,
+ scw,sch,
+ tcx,tcy,
+ tcw,tch
+ );
+
+ view.redraw_markPos( ci, <span class="hljs-keyword">this</span>.curY-<span class="hljs-number">1</span> );
+ view.redraw_markPos( ci, <span class="hljs-keyword">this</span>.curY );
+ view.redraw_markPos( ci, <span class="hljs-keyword">this</span>.curY+<span class="hljs-number">1</span> );
+ }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>S</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> scx = data3.sizeX*<span class="hljs-keyword">this</span>.step;
+ scy = <span class="hljs-number">0</span>;
+ scw = data3.sizeX;
+ sch = data3.sizeY;
+ <span class="hljs-keyword">for</span>( <span class="hljs-keyword">var</span> ci = <span class="hljs-keyword">this</span>.curY+<span class="hljs-number">1</span>, ce=model.map_height; ci &lt; ce; ci++ ){
+ tcx = (<span class="hljs-keyword">this</span>.curX)*tileSize + data3.offsetX;
+ tcy = (ci)*tileSize + data3.offsetY;
+ tcw = data3.sizeX;
+ tch = data3.sizeY;
+
+ view.canvasCtx.drawImage(
+ data3.pic,
+ scx,scy,
+ scw,sch,
+ tcx,tcy,
+ tcw,tch
+ );
+
+ view.redraw_markPos( <span class="hljs-keyword">this</span>.curX+<span class="hljs-number">1</span>,ci );
+ view.redraw_markPos( <span class="hljs-keyword">this</span>.curX,ci );
+ view.redraw_markPos( <span class="hljs-keyword">this</span>.curX-<span class="hljs-number">1</span>,ci);
+ }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>N</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> scx = data4.sizeX*<span class="hljs-keyword">this</span>.step;
+ scy = <span class="hljs-number">0</span>;
+ scw = data4.sizeX;
+ sch = data4.sizeY;
+ <span class="hljs-keyword">for</span>( <span class="hljs-keyword">var</span> ci = <span class="hljs-keyword">this</span>.curY-<span class="hljs-number">1</span>, ce=<span class="hljs-number">0</span>; ci &gt;= <span class="hljs-number">0</span>; ci-- ){
+ tcx = (<span class="hljs-keyword">this</span>.curX)*tileSize + data4.offsetX;
+ tcy = (ci)*tileSize + data4.offsetY;
+ tcw = data4.sizeX;
+ tch = data4.sizeY;
+
+ view.canvasCtx.drawImage(
+ data4.pic,
+ scx,scy,
+ scw,sch,
+ tcx,tcy,
+ tcw,tch
+ );
+
+ view.redraw_markPos( <span class="hljs-keyword">this</span>.curX+<span class="hljs-number">1</span>,ci );
+ view.redraw_markPos( <span class="hljs-keyword">this</span>.curX,ci );
+ view.redraw_markPos( <span class="hljs-keyword">this</span>.curX-<span class="hljs-number">1</span>,ci );
+ }
+ }
+ },
+
+ update: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( delta )</span></span>{
+ <span class="hljs-keyword">this</span>.time += delta;
+ <span class="hljs-keyword">if</span>( <span class="hljs-keyword">this</span>.time &gt; <span class="hljs-number">100</span> ){
+ <span class="hljs-keyword">this</span>.step++;
+ <span class="hljs-keyword">this</span>.time = <span class="hljs-number">0</span>;
+
+ <span class="hljs-keyword">switch</span>( <span class="hljs-keyword">this</span>.phase ){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>charge phase</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> <span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:
+ <span class="hljs-keyword">if</span>( <span class="hljs-keyword">this</span>.step === <span class="hljs-number">10</span> ){
+ <span class="hljs-keyword">this</span>.step = <span class="hljs-number">0</span>;
+ <span class="hljs-keyword">this</span>.phase++;
+ }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>fire phase</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> case 1:
+ if( this.step === 12 ){
+ this.step = 0;
+ this.phase++;
+ }
+ }
+ }
+ },
+
+ isDone: function(){
+ return this.phase === 2;
+ }
+
+ });
+
+ });
+*/</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

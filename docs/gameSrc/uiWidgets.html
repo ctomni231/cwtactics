@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>uiWidgets.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="actions.html">
+                actions.js
+              </a>
+            
+              
+              <a class="source" href="ai.html">
+                ai.js
+              </a>
+            
+              
+              <a class="source" href="async.html">
+                async.js
+              </a>
+            
+              
+              <a class="source" href="audio.html">
+                audio.js
+              </a>
+            
+              
+              <a class="source" href="circularBuffer.html">
+                circularBuffer.js
+              </a>
+            
+              
+              <a class="source" href="config.html">
+                config.js
+              </a>
+            
+              
+              <a class="source" href="constants.html">
+                constants.js
+              </a>
+            
+              
+              <a class="source" href="cwScript.html">
+                cwScript.js
+              </a>
+            
+              
+              <a class="source" href="error.html">
+                error.js
+              </a>
+            
+              
+              <a class="source" href="events.html">
+                events.js
+              </a>
+            
+              
+              <a class="source" href="functions.html">
+                functions.js
+              </a>
+            
+              
+              <a class="source" href="image.html">
+                image.js
+              </a>
+            
+              
+              <a class="source" href="input.html">
+                input.js
+              </a>
+            
+              
+              <a class="source" href="loading.html">
+                loading.js
+              </a>
+            
+              
+              <a class="source" href="localization.html">
+                localization.js
+              </a>
+            
+              
+              <a class="source" href="main.html">
+                main.js
+              </a>
+            
+              
+              <a class="source" href="matrix.html">
+                matrix.js
+              </a>
+            
+              
+              <a class="source" href="model.html">
+                model.js
+              </a>
+            
+              
+              <a class="source" href="network.html">
+                network.js
+              </a>
+            
+              
+              <a class="source" href="renderer.html">
+                renderer.js
+              </a>
+            
+              
+              <a class="source" href="sheets.html">
+                sheets.js
+              </a>
+            
+              
+              <a class="source" href="statemachine.html">
+                statemachine.js
+              </a>
+            
+              
+              <a class="source" href="storage.html">
+                storage.js
+              </a>
+            
+              
+              <a class="source" href="systemFeatures.html">
+                systemFeatures.js
+              </a>
+            
+              
+              <a class="source" href="tileVariants.html">
+                tileVariants.js
+              </a>
+            
+              
+              <a class="source" href="uiWidgets.html">
+                uiWidgets.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>uiWidgets.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> constants = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./constants"</span>);
+<span class="hljs-keyword">var</span> assert = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./functions"</span>).assert;
+<span class="hljs-keyword">var</span> input = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./input"</span>);
+<span class="hljs-keyword">var</span> i18n = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./localization"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>@class</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.UIField = my.Class({
+
+  STATIC: {
+    STYLE_NONE: -<span class="hljs-number">1</span>,
+    STYLE_NORMAL: <span class="hljs-number">0</span>,
+    STYLE_S: <span class="hljs-number">1</span>,
+    STYLE_N: <span class="hljs-number">2</span>,
+    STYLE_W: <span class="hljs-number">3</span>,
+    STYLE_E: <span class="hljs-number">4</span>,
+    STYLE_NE: <span class="hljs-number">5</span>,
+    STYLE_NW: <span class="hljs-number">6</span>,
+    STYLE_ES: <span class="hljs-number">7</span>,
+    STYLE_SW: <span class="hljs-number">8</span>,
+    STYLE_EW: <span class="hljs-number">13</span>,
+    STYLE_NS: <span class="hljs-number">14</span>,
+    STYLE_ESW: <span class="hljs-number">9</span>,
+    STYLE_NEW: <span class="hljs-number">10</span>,
+    STYLE_NSW: <span class="hljs-number">11</span>,
+    STYLE_NES: <span class="hljs-number">12</span>
+  },
+
+  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, w, h, text, fsize, style, actionFn)</span> </span>{
+    <span class="hljs-keyword">this</span>.x = x;
+    <span class="hljs-keyword">this</span>.y = y;
+    <span class="hljs-keyword">this</span>.width = w;
+    <span class="hljs-keyword">this</span>.height = h;
+    <span class="hljs-keyword">this</span>.fsize = fsize;
+    <span class="hljs-keyword">this</span>.style = style;
+    <span class="hljs-keyword">this</span>.inFocus = <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">this</span>.action = actionFn;
+    <span class="hljs-keyword">this</span>.inactive = <span class="hljs-literal">false</span>;
+
+    <span class="hljs-keyword">this</span>.key = text;
+    <span class="hljs-keyword">this</span>.text = (text) ? i18n.forKey(text) : text;
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.text.search(<span class="hljs-regexp">/\n/</span>) !== -<span class="hljs-number">1</span>) {
+      <span class="hljs-keyword">this</span>.text = <span class="hljs-keyword">this</span>.text.split(<span class="hljs-string">"\n"</span>);
+    }
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>@param x
+@param y
+@return {boolean}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  positionInButton: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y)</span> </span>{
+    <span class="hljs-keyword">return</span> (x &gt;= <span class="hljs-keyword">this</span>.x &amp;&amp; x &lt; <span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width &amp;&amp; y &gt;= <span class="hljs-keyword">this</span>.y &amp;&amp; y &lt; <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height);
+  },
+
+  erase: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ctx)</span> </span>{
+    ctx.clearRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y, <span class="hljs-keyword">this</span>.width, <span class="hljs-keyword">this</span>.height);
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>@param {CanvasRenderingContext2D} ctx</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  draw: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ctx)</span> </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.style === exports.UIField.STYLE_NONE) {
+      <span class="hljs-keyword">return</span>;
+    }
+
+    ctx.fillStyle = (<span class="hljs-keyword">this</span>.inFocus) ? <span class="hljs-string">"rgb(220,220,220)"</span> : <span class="hljs-string">"white"</span>;
+    ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y, <span class="hljs-keyword">this</span>.width, <span class="hljs-keyword">this</span>.height);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>draw borders</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    ctx.fillStyle = <span class="hljs-string">"rgb(60,60,60)"</span>;
+    <span class="hljs-keyword">switch</span> (<span class="hljs-keyword">this</span>.style) {
+
+      <span class="hljs-keyword">case</span> exports.UIField.STYLE_NORMAL:
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">2</span>);
+        ctx.fillStyle = (<span class="hljs-keyword">this</span>.inFocus) ? <span class="hljs-string">"rgb(220,220,220)"</span> : <span class="hljs-string">"white"</span>;
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">6</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">6</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> exports.UIField.STYLE_N:
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width, <span class="hljs-number">2</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> exports.UIField.STYLE_E:
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> exports.UIField.STYLE_S:
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width, <span class="hljs-number">2</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> exports.UIField.STYLE_W:
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> exports.UIField.STYLE_NE:
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> exports.UIField.STYLE_NW:
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width, <span class="hljs-number">2</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> exports.UIField.STYLE_ES:
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> exports.UIField.STYLE_SW:
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> exports.UIField.STYLE_EW:
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> exports.UIField.STYLE_NS:
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width, <span class="hljs-number">2</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width, <span class="hljs-number">2</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> exports.UIField.STYLE_ESW:
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">2</span>, <span class="hljs-number">2</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> exports.UIField.STYLE_NEW:
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">2</span>, <span class="hljs-number">2</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> exports.UIField.STYLE_NSW:
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">2</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> exports.UIField.STYLE_NES:
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.width - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">2</span>);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.height - <span class="hljs-number">3</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+        <span class="hljs-keyword">break</span>;
+    }
+
+    ctx.fillStyle = <span class="hljs-string">"black"</span>;
+    ctx.font = <span class="hljs-keyword">this</span>.fsize + <span class="hljs-string">"pt "</span> + constants.GAME_FONT;
+
+    <span class="hljs-keyword">var</span> tw;
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.text) {
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-keyword">this</span>.text === <span class="hljs-string">"string"</span>) {
+        tw = ctx.measureText(<span class="hljs-keyword">this</span>.text);
+        ctx.fillText(
+          <span class="hljs-keyword">this</span>.text,
+          <span class="hljs-keyword">this</span>.x + (<span class="hljs-keyword">this</span>.width / <span class="hljs-number">2</span>) - (tw.width / <span class="hljs-number">2</span>),
+          <span class="hljs-keyword">this</span>.y + (<span class="hljs-keyword">this</span>.height / <span class="hljs-number">2</span>) + <span class="hljs-keyword">this</span>.fsize / <span class="hljs-number">2</span>);
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.text.length; i &lt; e; i++) {
+          tw = ctx.measureText(<span class="hljs-keyword">this</span>.text[i]);
+          ctx.fillText(
+            <span class="hljs-keyword">this</span>.text[i],
+            <span class="hljs-keyword">this</span>.x + (<span class="hljs-keyword">this</span>.width / <span class="hljs-number">2</span>) - (tw.width / <span class="hljs-number">2</span>),
+            <span class="hljs-keyword">this</span>.y + <span class="hljs-keyword">this</span>.fsize + ((i + <span class="hljs-number">1</span>) * (<span class="hljs-keyword">this</span>.fsize + <span class="hljs-number">8</span>)));
+        }
+      }
+    }
+  }
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>@class
+@extends {cwt.UIField}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.UICustomField = my.Class(<span class="hljs-literal">null</span>, exports.UIField, {
+
+  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, w, h, key, drawFn)</span> </span>{
+    exports.UIField.call(<span class="hljs-keyword">this</span>, x, y, w, h, key, <span class="hljs-number">0</span>, exports.UIField.STYLE_NORMAL);
+    <span class="hljs-keyword">this</span>.text = <span class="hljs-string">""</span>;
+    <span class="hljs-keyword">this</span>.draw = drawFn;
+  }
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>@class</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.UIButtonGroup = my.Class({
+
+  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">this</span>.elements = [];
+    <span class="hljs-keyword">this</span>.selected = -<span class="hljs-number">1</span>;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>@param {cwt.UIField} el</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  addElement: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> </span>{
+    <span class="hljs-keyword">this</span>.elements.push(el);
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.selected === -<span class="hljs-number">1</span> &amp;&amp; el.action) {
+      <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.elements.length - <span class="hljs-number">1</span>].inFocus = <span class="hljs-literal">true</span>;
+      <span class="hljs-keyword">this</span>.selected = <span class="hljs-keyword">this</span>.elements.length - <span class="hljs-number">1</span>;
+    }
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Returns the current active button.</p>
+<p>@return {cwt.UIField}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  activeButton: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected];
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Returns a button by it’s key.</p>
+<p>@param {String} key
+@return {cwt.UIField}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  getButtonByKey: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.elements.length; i &lt; e; i++) {
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.elements[i].key === key) {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.elements[i];
+      }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>@param {RegExp} reg</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  getButtonsByReg: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(reg)</span> </span>{
+    <span class="hljs-keyword">var</span> arr = [];
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.elements.length; i &lt; e; i++) {
+      <span class="hljs-keyword">if</span> (reg.test(<span class="hljs-keyword">this</span>.elements[i].key)) {
+        arr.push(<span class="hljs-keyword">this</span>.elements[i]);
+      }
+    }
+
+    <span class="hljs-keyword">return</span> arr;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Updates the index of the selected button in interconnection to a given position.</p>
+<p>@param {Number} x
+@param {Number} y
+@return {boolean} true, if the index was updated, else false</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  updateIndex: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.elements.length; i &lt; e; i++) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>inactive element</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.elements[i].action || <span class="hljs-keyword">this</span>.elements[i].inactive) {
+        <span class="hljs-keyword">continue</span>;
+      }
+
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.elements[i].positionInButton(x, y)) {
+        <span class="hljs-keyword">if</span> (i === <span class="hljs-keyword">this</span>.selected) {
+          <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+
+        <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].inFocus = <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">this</span>.selected = i;
+        <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].inFocus = <span class="hljs-literal">true</span>;
+
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+      }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>@param input
+@return {boolean} true, if the index was updated, else false</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  handleInput: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(inputData)</span> </span>{
+    <span class="hljs-keyword">if</span> (constants.DEBUG) assert(input !== <span class="hljs-literal">null</span>);
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> inputData !== <span class="hljs-string">"number"</span>) {
+      inputData = inputData.key;
+    }
+
+    <span class="hljs-keyword">var</span> res = <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].inFocus = <span class="hljs-literal">false</span>;
+
+    <span class="hljs-keyword">switch</span> (inputData) {
+      <span class="hljs-keyword">case</span> input.TYPE_UP:
+      <span class="hljs-keyword">case</span> input.TYPE_LEFT:
+        <span class="hljs-keyword">do</span> {
+          <span class="hljs-keyword">this</span>.selected--;
+          <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.selected &lt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">this</span>.selected = <span class="hljs-keyword">this</span>.elements.length - <span class="hljs-number">1</span>;
+          }
+        } <span class="hljs-keyword">while</span> (!<span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].action || <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].inactive);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> input.TYPE_RIGHT:
+      <span class="hljs-keyword">case</span> input.TYPE_DOWN:
+        <span class="hljs-keyword">do</span> {
+          <span class="hljs-keyword">this</span>.selected++;
+          <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.selected &gt;= <span class="hljs-keyword">this</span>.elements.length) {
+            <span class="hljs-keyword">this</span>.selected = <span class="hljs-number">0</span>;
+          }
+        } <span class="hljs-keyword">while</span> (!<span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].action || <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].inactive);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">default</span>:
+        res = <span class="hljs-literal">false</span>;
+    }
+
+    <span class="hljs-keyword">this</span>.elements[<span class="hljs-keyword">this</span>.selected].inFocus = <span class="hljs-literal">true</span>;
+
+    <span class="hljs-keyword">return</span> res;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Draws the screen layout into a given context of a canvas object.</p>
+<p>@param {CanvasRenderingContext2D} ctx</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  draw: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ctx)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.elements.length; i &lt; e; i++) {
+      <span class="hljs-keyword">var</span> el = <span class="hljs-keyword">this</span>.elements[i];
+
+      <span class="hljs-keyword">if</span> (!el.inactive) {
+        el.draw(ctx);
+      }
+    }
+  }
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>@class
+@extends {cwt.UIField}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.UICheckboxField = my.Class(<span class="hljs-literal">null</span>, exports.UIField, {
+
+  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, w, h, text, fsize, style)</span> </span>{
+    exports.UIField.call(<span class="hljs-keyword">this</span>, x, y, w, h, text, fsize, style, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(button, state)</span> </span>{
+      state.rendered = <span class="hljs-literal">false</span>;
+      button.checked = !button.checked;
+    });
+
+    <span class="hljs-keyword">this</span>.text = <span class="hljs-string">""</span>;
+    <span class="hljs-keyword">this</span>.checked = <span class="hljs-literal">false</span>;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>@param {CanvasRenderingContext2D} ctx</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  draw: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ctx)</span> </span>{
+    exports.UIField.prototype.draw.call(<span class="hljs-keyword">this</span>, ctx);
+
+    ctx.fillStyle = <span class="hljs-string">"black"</span>;
+    ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">4</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">4</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">8</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">8</span>);
+
+    ctx.fillStyle = (<span class="hljs-keyword">this</span>.checked) ? <span class="hljs-string">"rgb(60,60,60)"</span> : <span class="hljs-string">"white"</span>;
+    ctx.fillRect(<span class="hljs-keyword">this</span>.x + <span class="hljs-number">5</span>, <span class="hljs-keyword">this</span>.y + <span class="hljs-number">5</span>, <span class="hljs-keyword">this</span>.width - <span class="hljs-number">10</span>, <span class="hljs-keyword">this</span>.height - <span class="hljs-number">10</span>);
+  }
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>A screen layout is a group out of ui elements. This elements can be interactive or non-interactive. It should
+be used to create and define a screen layout. Furthermore the screen layout offers API to interact with the
+components.</p>
+<p>@class
+@extends {cwt.UIButtonGroup}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.UIScreenLayout = my.Class(<span class="hljs-literal">null</span>, exports.UIButtonGroup, {
+
+  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(slotsX, slotsY, startX, startY)</span> </span>{
+    exports.UIButtonGroup.call(<span class="hljs-keyword">this</span>);
+
+    <span class="hljs-keyword">this</span>.left = startX || <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">this</span>.curX = startX || <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">this</span>.curY = startY || <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">this</span>.curH = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">this</span>.breakLine();
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>@param f</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  repeat: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(n, f)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+      f.call(<span class="hljs-keyword">this</span>, i);
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>@param tiles</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  addRowGap: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tiles)</span> </span>{
+    <span class="hljs-keyword">this</span>.curY += constants.TILE_BASE * tiles;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>@param tiles</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  addColGap: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tiles)</span> </span>{
+    <span class="hljs-keyword">this</span>.curX += constants.TILE_BASE * tiles;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>Breaks the current line</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  breakLine: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">this</span>.curX = <span class="hljs-keyword">this</span>.left;
+    <span class="hljs-keyword">this</span>.curY += <span class="hljs-keyword">this</span>.curH * constants.TILE_BASE;
+    <span class="hljs-keyword">this</span>.curH = <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>@param {Number} tilesX
+@param {Number} tilesY
+@param {Number} offsetY
+@param {Number} style
+@param key
+@param {Function?} action
+@return {cwt.UIScreenLayout}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  addButton: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tilesX, tilesY, offsetY, key, style, fSize, action)</span> </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length === <span class="hljs-number">5</span>) {
+      action = <span class="hljs-literal">null</span>;
+      fSize = <span class="hljs-number">12</span>;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length === <span class="hljs-number">6</span> &amp;&amp; <span class="hljs-keyword">typeof</span> fSize === <span class="hljs-string">"function"</span>) {
+      action = fSize;
+      fSize = <span class="hljs-number">12</span>;
+    }
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.curH &lt; tilesY) {
+      <span class="hljs-keyword">this</span>.curH = tilesY;
+    }
+
+    <span class="hljs-keyword">var</span> btn = <span class="hljs-keyword">new</span> exports.UIField(
+      <span class="hljs-keyword">this</span>.curX,
+      <span class="hljs-keyword">this</span>.curY + (offsetY * constants.TILE_BASE),
+      tilesX * constants.TILE_BASE,
+      tilesY * constants.TILE_BASE,
+      key,
+      fSize,
+      style,
+      action
+    );
+
+    <span class="hljs-keyword">this</span>.curX += tilesX * constants.TILE_BASE;
+
+    <span class="hljs-keyword">this</span>.addElement(btn);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>@param {Number} tilesX
+@param {Number} tilesY
+@param {Number} offsetY
+@param key
+@param {Function?} draw
+@param {boolean?} ignoreHeight
+@return {cwt.UIScreenLayout}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  addCustomField: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tilesX, tilesY, offsetY, key, draw, ignoreHeight)</span> </span>{
+    <span class="hljs-keyword">if</span> (ignoreHeight != <span class="hljs-literal">true</span> &amp;&amp; <span class="hljs-keyword">this</span>.curH &lt; tilesY) {
+      <span class="hljs-keyword">this</span>.curH = tilesY;
+    }
+
+    <span class="hljs-keyword">var</span> btn = <span class="hljs-keyword">new</span> exports.UICustomField(
+      <span class="hljs-keyword">this</span>.curX,
+      <span class="hljs-keyword">this</span>.curY + (offsetY * constants.TILE_BASE),
+      tilesX * constants.TILE_BASE,
+      tilesY * constants.TILE_BASE,
+      key,
+      draw
+    );
+
+    <span class="hljs-keyword">this</span>.curX += tilesX * constants.TILE_BASE;
+
+    <span class="hljs-keyword">this</span>.addElement(btn);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>@param {Number} tilesX
+@param {Number} tilesY
+@param {Number} offsetY
+@param {Number} style
+@param key
+@return {cwt.UIScreenLayout}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  addCheckbox: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tilesX, tilesY, offsetY, key, style, fSize)</span> </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length === <span class="hljs-number">5</span>) {
+      fSize = <span class="hljs-number">12</span>;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length === <span class="hljs-number">6</span> &amp;&amp; <span class="hljs-keyword">typeof</span> fSize === <span class="hljs-string">"function"</span>) {
+      fSize = <span class="hljs-number">12</span>;
+    }
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.curH &lt; tilesY) {
+      <span class="hljs-keyword">this</span>.curH = tilesY;
+    }
+
+    <span class="hljs-keyword">var</span> btn = <span class="hljs-keyword">new</span> exports.UICheckboxField(
+      <span class="hljs-keyword">this</span>.curX,
+      <span class="hljs-keyword">this</span>.curY + (offsetY * constants.TILE_BASE),
+      tilesX * constants.TILE_BASE,
+      tilesY * constants.TILE_BASE,
+      key,
+      fSize,
+      style
+    );
+
+    <span class="hljs-keyword">this</span>.curX += tilesX * constants.TILE_BASE;
+
+    <span class="hljs-keyword">this</span>.addElement(btn);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  }
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>@class
+@extends {cwt.UIButtonGroup}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.UIPositionableButtonGroup = my.Class(<span class="hljs-literal">null</span>, exports.UIButtonGroup, {
+
+  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+    exports.UIButtonGroup.call(<span class="hljs-keyword">this</span>);
+    <span class="hljs-keyword">this</span>.x = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">this</span>.y = <span class="hljs-number">0</span>;
+  },
+
+  setMenuPosition: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y)</span> </span>{
+    <span class="hljs-keyword">var</span> diffX = x - <span class="hljs-keyword">this</span>.x;
+    <span class="hljs-keyword">var</span> diffY = y - <span class="hljs-keyword">this</span>.y;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.elements.length; i &lt; e; i++) {
+      <span class="hljs-keyword">var</span> element = <span class="hljs-keyword">this</span>.elements[i];
+
+      element.x += diffX;
+      element.y += diffY;
+    }
+
+    <span class="hljs-keyword">this</span>.x = x;
+    <span class="hljs-keyword">this</span>.y = y;
+  }
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

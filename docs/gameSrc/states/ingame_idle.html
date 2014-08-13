@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>ingame_idle.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="error.html">
+                error.js
+              </a>
+            
+              
+              <a class="source" href="ingame_anim_ballistic.html">
+                ingame_anim_ballistic.js
+              </a>
+            
+              
+              <a class="source" href="ingame_anim_captureProperty.html">
+                ingame_anim_captureProperty.js
+              </a>
+            
+              
+              <a class="source" href="ingame_anim_changeWeather.html">
+                ingame_anim_changeWeather.js
+              </a>
+            
+              
+              <a class="source" href="ingame_anim_destroyUnit.html">
+                ingame_anim_destroyUnit.js
+              </a>
+            
+              
+              <a class="source" href="ingame_anim_move.html">
+                ingame_anim_move.js
+              </a>
+            
+              
+              <a class="source" href="ingame_anim_nextTurn.html">
+                ingame_anim_nextTurn.js
+              </a>
+            
+              
+              <a class="source" href="ingame_anim_trapWait.html">
+                ingame_anim_trapWait.js
+              </a>
+            
+              
+              <a class="source" href="ingame_enter.html">
+                ingame_enter.js
+              </a>
+            
+              
+              <a class="source" href="ingame_flush.html">
+                ingame_flush.js
+              </a>
+            
+              
+              <a class="source" href="ingame_idle.html">
+                ingame_idle.js
+              </a>
+            
+              
+              <a class="source" href="ingame_leave.html">
+                ingame_leave.js
+              </a>
+            
+              
+              <a class="source" href="ingame_menu.html">
+                ingame_menu.js
+              </a>
+            
+              
+              <a class="source" href="ingame_movepath.html">
+                ingame_movepath.js
+              </a>
+            
+              
+              <a class="source" href="ingame_multistep.html">
+                ingame_multistep.js
+              </a>
+            
+              
+              <a class="source" href="ingame_selecttile.html">
+                ingame_selecttile.js
+              </a>
+            
+              
+              <a class="source" href="ingame_showAttackRange.html">
+                ingame_showAttackRange.js
+              </a>
+            
+              
+              <a class="source" href="ingame_submenu.html">
+                ingame_submenu.js
+              </a>
+            
+              
+              <a class="source" href="ingame_targetselection_a.html">
+                ingame_targetselection_a.js
+              </a>
+            
+              
+              <a class="source" href="ingame_targetselection_b.html">
+                ingame_targetselection_b.js
+              </a>
+            
+              
+              <a class="source" href="menu_main.html">
+                menu_main.js
+              </a>
+            
+              
+              <a class="source" href="menu_parameterSetup.html">
+                menu_parameterSetup.js
+              </a>
+            
+              
+              <a class="source" href="menu_playerSetup.html">
+                menu_playerSetup.js
+              </a>
+            
+              
+              <a class="source" href="menu_versus.html">
+                menu_versus.js
+              </a>
+            
+              
+              <a class="source" href="options_confirmWipeOut.html">
+                options_confirmWipeOut.js
+              </a>
+            
+              
+              <a class="source" href="options_main.html">
+                options_main.js
+              </a>
+            
+              
+              <a class="source" href="options_remap.html">
+                options_remap.js
+              </a>
+            
+              
+              <a class="source" href="portrait.html">
+                portrait.js
+              </a>
+            
+              
+              <a class="source" href="start_load.html">
+                start_load.js
+              </a>
+            
+              
+              <a class="source" href="start_none.html">
+                start_none.js
+              </a>
+            
+              
+              <a class="source" href="start_tooltip.html">
+                start_tooltip.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>ingame_idle.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.state = {
+  id: <span class="hljs-string">"INGAME_IDLE"</span>,
+
+  enter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(gameData)</span> </span>{
+    gameData.source.clean();
+    gameData.target.clean();
+    gameData.targetselection.clean();
+  },
+
+  ACTION: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(gameData)</span> </span>{
+    <span class="hljs-keyword">var</span> x = cwt.Cursor.x;
+    <span class="hljs-keyword">var</span> y = cwt.Cursor.y;
+
+    gameData.source.set(x, y);
+    gameData.target.set(x, y);
+
+    <span class="hljs-built_in">require</span>(<span class="hljs-string">"../statemachine"</span>).changeState(<span class="hljs-string">"INGAME_MOVEPATH"</span>);
+  }
+};</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

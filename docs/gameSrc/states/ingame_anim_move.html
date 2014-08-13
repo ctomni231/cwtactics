@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>ingame_anim_move.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="error.html">
+                error.js
+              </a>
+            
+              
+              <a class="source" href="ingame_anim_ballistic.html">
+                ingame_anim_ballistic.js
+              </a>
+            
+              
+              <a class="source" href="ingame_anim_captureProperty.html">
+                ingame_anim_captureProperty.js
+              </a>
+            
+              
+              <a class="source" href="ingame_anim_changeWeather.html">
+                ingame_anim_changeWeather.js
+              </a>
+            
+              
+              <a class="source" href="ingame_anim_destroyUnit.html">
+                ingame_anim_destroyUnit.js
+              </a>
+            
+              
+              <a class="source" href="ingame_anim_move.html">
+                ingame_anim_move.js
+              </a>
+            
+              
+              <a class="source" href="ingame_anim_nextTurn.html">
+                ingame_anim_nextTurn.js
+              </a>
+            
+              
+              <a class="source" href="ingame_anim_trapWait.html">
+                ingame_anim_trapWait.js
+              </a>
+            
+              
+              <a class="source" href="ingame_enter.html">
+                ingame_enter.js
+              </a>
+            
+              
+              <a class="source" href="ingame_flush.html">
+                ingame_flush.js
+              </a>
+            
+              
+              <a class="source" href="ingame_idle.html">
+                ingame_idle.js
+              </a>
+            
+              
+              <a class="source" href="ingame_leave.html">
+                ingame_leave.js
+              </a>
+            
+              
+              <a class="source" href="ingame_menu.html">
+                ingame_menu.js
+              </a>
+            
+              
+              <a class="source" href="ingame_movepath.html">
+                ingame_movepath.js
+              </a>
+            
+              
+              <a class="source" href="ingame_multistep.html">
+                ingame_multistep.js
+              </a>
+            
+              
+              <a class="source" href="ingame_selecttile.html">
+                ingame_selecttile.js
+              </a>
+            
+              
+              <a class="source" href="ingame_showAttackRange.html">
+                ingame_showAttackRange.js
+              </a>
+            
+              
+              <a class="source" href="ingame_submenu.html">
+                ingame_submenu.js
+              </a>
+            
+              
+              <a class="source" href="ingame_targetselection_a.html">
+                ingame_targetselection_a.js
+              </a>
+            
+              
+              <a class="source" href="ingame_targetselection_b.html">
+                ingame_targetselection_b.js
+              </a>
+            
+              
+              <a class="source" href="menu_main.html">
+                menu_main.js
+              </a>
+            
+              
+              <a class="source" href="menu_parameterSetup.html">
+                menu_parameterSetup.js
+              </a>
+            
+              
+              <a class="source" href="menu_playerSetup.html">
+                menu_playerSetup.js
+              </a>
+            
+              
+              <a class="source" href="menu_versus.html">
+                menu_versus.js
+              </a>
+            
+              
+              <a class="source" href="options_confirmWipeOut.html">
+                options_confirmWipeOut.js
+              </a>
+            
+              
+              <a class="source" href="options_main.html">
+                options_main.js
+              </a>
+            
+              
+              <a class="source" href="options_remap.html">
+                options_remap.js
+              </a>
+            
+              
+              <a class="source" href="portrait.html">
+                portrait.js
+              </a>
+            
+              
+              <a class="source" href="start_load.html">
+                start_load.js
+              </a>
+            
+              
+              <a class="source" href="start_none.html">
+                start_none.js
+              </a>
+            
+              
+              <a class="source" href="start_tooltip.html">
+                start_tooltip.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>ingame_anim_move.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.state = {
+  id: <span class="hljs-string">"ANIMATION_MOVE"</span>,
+
+  init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+
+  },
+
+  enter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+
+  },
+
+  update: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(delta, lastInput)</span> </span>{
+
+  },
+
+  render: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(delta)</span> </span>{
+
+  }
+};
+
+<span class="hljs-comment">/*
+ view.registerAnimationHook({
+
+ key: "move_moveByCache",
+
+ prepare: function( uid, x,y ){
+
+ this.moveAnimationX     = x;
+ this.moveAnimationY     = y;
+ this.moveAnimationIndex = 0;
+ this.moveAnimationPath  = model.move_pathCache;
+ this.moveAnimationUid   = uid;
+ this.moveAnimationClientOwned = model.fog_visibleClientPids[
+ model.unit_data[ uid ].owner ];
+ this.moveAnimationShift = 0;
+
+ this.moveAnimationDustX = -1;
+ this.moveAnimationDustY = -1;
+ this.moveAnimationDustTime = -1;
+ this.moveAnimationDustStep = -1;
+ this.moveAnimationDustPic = null;
+
+ view.preventRenderUnit = model.unit_data[ uid ];
+ var mvType = model.unit_data[ uid ].type.movetype;
+
+ if( this.DEBUG ){
+ util.log(
+ "drawing move from",
+ "(",this.moveAnimationX,",",this.moveAnimationY,")",
+ "with path",
+ "(",this.moveAnimationPath,")"
+ );
+ }
+ },
+
+ update: function( delta ){
+ var tileSize = TILE_LENGTH;
+
+</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>MOVE 4 TILES / SECOND</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> <span class="hljs-keyword">this</span>.moveAnimationShift += ( delta/<span class="hljs-number">1000</span> ) * ( tileSize*<span class="hljs-number">8</span>);
+
+ view.redraw_markPosWithNeighboursRing(
+ <span class="hljs-keyword">this</span>.moveAnimationX, <span class="hljs-keyword">this</span>.moveAnimationY
+ );</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>DUST</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> <span class="hljs-keyword">if</span>( <span class="hljs-keyword">this</span>.moveAnimationDustStep !== -<span class="hljs-number">1</span> ){
+
+ <span class="hljs-keyword">this</span>.moveAnimationDustTime += delta;
+ <span class="hljs-keyword">if</span>( <span class="hljs-keyword">this</span>.moveAnimationDustTime &gt; <span class="hljs-number">30</span> ){
+
+ <span class="hljs-keyword">this</span>.moveAnimationDustStep++;
+ <span class="hljs-keyword">this</span>.moveAnimationDustTime = <span class="hljs-number">0</span>;
+
+ <span class="hljs-keyword">if</span>( <span class="hljs-keyword">this</span>.moveAnimationDustStep === <span class="hljs-number">3</span> ){
+ <span class="hljs-keyword">this</span>.moveAnimationDustStep = -<span class="hljs-number">1</span>;
+ }
+ }
+ }
+
+ <span class="hljs-keyword">if</span>( <span class="hljs-keyword">this</span>.moveAnimationShift &gt; tileSize ){
+
+ <span class="hljs-keyword">this</span>.moveAnimationDustX = <span class="hljs-keyword">this</span>.moveAnimationX;
+ <span class="hljs-keyword">this</span>.moveAnimationDustY = <span class="hljs-keyword">this</span>.moveAnimationY;
+ <span class="hljs-keyword">this</span>.moveAnimationDustTime = <span class="hljs-number">0</span>;
+ <span class="hljs-keyword">this</span>.moveAnimationDustStep = <span class="hljs-number">0</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>UPDATE ANIMATION POS</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> <span class="hljs-keyword">switch</span>( <span class="hljs-keyword">this</span>.moveAnimationPath[ <span class="hljs-keyword">this</span>.moveAnimationIndex ] ){
+
+ <span class="hljs-keyword">case</span> model.move_MOVE_CODES.UP :
+ <span class="hljs-keyword">this</span>.moveAnimationY--;
+ <span class="hljs-keyword">this</span>.moveAnimationDustPic = view.getInfoImageForType(<span class="hljs-string">"DUST_U"</span>);
+ <span class="hljs-keyword">break</span>;
+
+ <span class="hljs-keyword">case</span> model.move_MOVE_CODES.RIGHT :
+ <span class="hljs-keyword">this</span>.moveAnimationX++;
+ <span class="hljs-keyword">this</span>.moveAnimationDustPic = view.getInfoImageForType(<span class="hljs-string">"DUST_R"</span>);
+ <span class="hljs-keyword">break</span>;
+
+ <span class="hljs-keyword">case</span> model.move_MOVE_CODES.DOWN :
+ <span class="hljs-keyword">this</span>.moveAnimationY++;
+ <span class="hljs-keyword">this</span>.moveAnimationDustPic = view.getInfoImageForType(<span class="hljs-string">"DUST_D"</span>);
+ <span class="hljs-keyword">break</span>;
+
+ <span class="hljs-keyword">case</span> model.move_MOVE_CODES.LEFT :
+ <span class="hljs-keyword">this</span>.moveAnimationX--;
+ <span class="hljs-keyword">this</span>.moveAnimationDustPic = view.getInfoImageForType(<span class="hljs-string">"DUST_L"</span>);
+ <span class="hljs-keyword">break</span>;
+ }
+
+ <span class="hljs-keyword">this</span>.moveAnimationIndex++;
+
+ <span class="hljs-keyword">this</span>.moveAnimationShift -= tileSize;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>this.moveAnimationShift = 0;</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+ <span class="hljs-keyword">if</span>( <span class="hljs-keyword">this</span>.moveAnimationIndex === <span class="hljs-keyword">this</span>.moveAnimationPath.length ||
+ <span class="hljs-keyword">this</span>.moveAnimationPath[<span class="hljs-keyword">this</span>.moveAnimationIndex] === cwt.INACTIVE ){
+ <span class="hljs-keyword">this</span>.moveAnimationX     = <span class="hljs-number">0</span>;
+ <span class="hljs-keyword">this</span>.moveAnimationY     = <span class="hljs-number">0</span>;
+ <span class="hljs-keyword">this</span>.moveAnimationIndex = <span class="hljs-number">0</span>;
+ <span class="hljs-keyword">this</span>.moveAnimationPath  = <span class="hljs-literal">null</span>;
+ <span class="hljs-keyword">this</span>.moveAnimationUid   = -<span class="hljs-number">1</span>;
+ <span class="hljs-keyword">this</span>.moveAnimationShift = <span class="hljs-number">0</span>;
+ view.preventRenderUnit = <span class="hljs-literal">null</span>; <span class="hljs-comment">// RENDER UNIT NOW NORMALLY</span>
+ }
+ }
+ },
+
+ render: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+ <span class="hljs-keyword">var</span> uid      = <span class="hljs-keyword">this</span>.moveAnimationUid;
+ <span class="hljs-keyword">var</span> cx       = <span class="hljs-keyword">this</span>.moveAnimationX;
+ <span class="hljs-keyword">var</span> cy       = <span class="hljs-keyword">this</span>.moveAnimationY;
+ <span class="hljs-keyword">var</span> shift    = <span class="hljs-keyword">this</span>.moveAnimationShift;
+ <span class="hljs-keyword">var</span> moveCode = <span class="hljs-keyword">this</span>.moveAnimationPath[ <span class="hljs-keyword">this</span>.moveAnimationIndex ];
+ <span class="hljs-keyword">var</span> unit     = model.unit_data[ uid ];
+ <span class="hljs-keyword">var</span> color = view.colorArray[ unit.owner ];
+ <span class="hljs-keyword">var</span> state;
+ <span class="hljs-keyword">var</span> tp = unit.type;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>check_ visibility</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> <span class="hljs-keyword">if</span>( !<span class="hljs-keyword">this</span>.moveAnimationClientOwned &amp;&amp; !model.fog_clientData[cx][cy] ){
+ <span class="hljs-keyword">return</span>;
+ }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>GET CORRECT IMAGE STATE</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> <span class="hljs-keyword">switch</span>( moveCode ){
+ <span class="hljs-keyword">case</span> model.move_MOVE_CODES.UP :    state = view.IMAGE_CODE_UP;    <span class="hljs-keyword">break</span>;
+ <span class="hljs-keyword">case</span> model.move_MOVE_CODES.RIGHT : state = view.IMAGE_CODE_RIGHT; <span class="hljs-keyword">break</span>;
+ <span class="hljs-keyword">case</span> model.move_MOVE_CODES.DOWN :  state = view.IMAGE_CODE_DOWN;  <span class="hljs-keyword">break</span>;
+ <span class="hljs-keyword">case</span> model.move_MOVE_CODES.LEFT :  state = view.IMAGE_CODE_LEFT;  <span class="hljs-keyword">break</span>;
+ }
+
+ <span class="hljs-keyword">var</span> pic = view.getUnitImageForType( tp.ID, state, color );
+
+ <span class="hljs-keyword">var</span> tileSize = TILE_LENGTH;
+ <span class="hljs-keyword">var</span> BASESIZE = controller.baseSize;
+ <span class="hljs-keyword">var</span> scx = (BASESIZE*<span class="hljs-number">2</span>)*view.getSpriteStep(<span class="hljs-string">"UNIT"</span>);
+ <span class="hljs-keyword">var</span> scy = <span class="hljs-number">0</span>;
+ <span class="hljs-keyword">var</span> scw = BASESIZE*<span class="hljs-number">2</span>;
+ <span class="hljs-keyword">var</span> sch = BASESIZE*<span class="hljs-number">2</span>;
+ <span class="hljs-keyword">var</span> tcx = ( cx )*tileSize -tileSize/<span class="hljs-number">2</span>; <span class="hljs-comment">// TODO</span>
+ <span class="hljs-keyword">var</span> tcy = ( cy )*tileSize -tileSize/<span class="hljs-number">2</span>;
+ <span class="hljs-keyword">var</span> tcw = tileSize+tileSize;
+ <span class="hljs-keyword">var</span> tch = tileSize+tileSize;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>ADD SHIFT</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> <span class="hljs-keyword">switch</span>( moveCode ){
+ <span class="hljs-keyword">case</span> model.move_MOVE_CODES.UP:    tcy -= shift; <span class="hljs-keyword">break</span>;
+ <span class="hljs-keyword">case</span> model.move_MOVE_CODES.LEFT:  tcx -= shift; <span class="hljs-keyword">break</span>;
+ <span class="hljs-keyword">case</span> model.move_MOVE_CODES.RIGHT: tcx += shift; <span class="hljs-keyword">break</span>;
+ <span class="hljs-keyword">case</span> model.move_MOVE_CODES.DOWN:  tcy += shift; <span class="hljs-keyword">break</span>;
+ }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>DRAW IT</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> <span class="hljs-keyword">if</span>( pic !== <span class="hljs-literal">undefined</span> ){
+ view.canvasCtx.drawImage(
+ pic,
+ scx,scy,
+ scw,sch,
+ tcx,tcy,
+ tcw,tcw
+ );
+ }
+ <span class="hljs-keyword">else</span>{
+ tcx = ( cx )*tileSize;
+ tcy = ( cy )*tileSize;
+ tcw = tileSize;
+ tch = tileSize;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>ADD SHIFT</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> <span class="hljs-keyword">switch</span>( moveCode ){
+ <span class="hljs-keyword">case</span> model.move_MOVE_CODES.UP:    tcy -= shift; <span class="hljs-keyword">break</span>;
+ <span class="hljs-keyword">case</span> model.move_MOVE_CODES.LEFT:  tcx -= shift; <span class="hljs-keyword">break</span>;
+ <span class="hljs-keyword">case</span> model.move_MOVE_CODES.RIGHT: tcx += shift; <span class="hljs-keyword">break</span>;
+ <span class="hljs-keyword">case</span> model.move_MOVE_CODES.DOWN:  tcy += shift; <span class="hljs-keyword">break</span>;
+ }
+
+ view.canvasCtx.fillStyle=<span class="hljs-string">"rgb(255,0,0)"</span>;
+ view.canvasCtx.fillRect(
+ tcx,tcy,
+ tcw,tch
+ );
+ }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>DUST</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> if( this.moveAnimationDustStep !== -1 ){
+
+ var tileSize = TILE_LENGTH;
+ scx = (BASESIZE*2)*this.moveAnimationDustStep;
+ scy = 0;
+ scw = BASESIZE*2;
+ sch = BASESIZE*2;
+ tcx = ( this.moveAnimationDustX )*tileSize -tileSize/2;
+ tcy = ( this.moveAnimationDustY )*tileSize -tileSize/2;
+ tcw = tileSize+tileSize;
+ tch = tileSize+tileSize;
+
+ view.canvasCtx.drawImage(
+ this.moveAnimationDustPic,
+ scx,scy,
+ scw,sch,
+ tcx,tcy,
+ tcw,tch
+ );
+ }
+ },
+
+ isDone: function(){
+ var done = (this.moveAnimationUid === -1);
+ return done;
+ }
+
+ });
+*/</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

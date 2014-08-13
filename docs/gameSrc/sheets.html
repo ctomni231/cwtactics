@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>sheets.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="actions.html">
+                actions.js
+              </a>
+            
+              
+              <a class="source" href="ai.html">
+                ai.js
+              </a>
+            
+              
+              <a class="source" href="async.html">
+                async.js
+              </a>
+            
+              
+              <a class="source" href="audio.html">
+                audio.js
+              </a>
+            
+              
+              <a class="source" href="circularBuffer.html">
+                circularBuffer.js
+              </a>
+            
+              
+              <a class="source" href="config.html">
+                config.js
+              </a>
+            
+              
+              <a class="source" href="constants.html">
+                constants.js
+              </a>
+            
+              
+              <a class="source" href="cwScript.html">
+                cwScript.js
+              </a>
+            
+              
+              <a class="source" href="error.html">
+                error.js
+              </a>
+            
+              
+              <a class="source" href="events.html">
+                events.js
+              </a>
+            
+              
+              <a class="source" href="functions.html">
+                functions.js
+              </a>
+            
+              
+              <a class="source" href="image.html">
+                image.js
+              </a>
+            
+              
+              <a class="source" href="input.html">
+                input.js
+              </a>
+            
+              
+              <a class="source" href="loading.html">
+                loading.js
+              </a>
+            
+              
+              <a class="source" href="localization.html">
+                localization.js
+              </a>
+            
+              
+              <a class="source" href="main.html">
+                main.js
+              </a>
+            
+              
+              <a class="source" href="matrix.html">
+                matrix.js
+              </a>
+            
+              
+              <a class="source" href="model.html">
+                model.js
+              </a>
+            
+              
+              <a class="source" href="network.html">
+                network.js
+              </a>
+            
+              
+              <a class="source" href="renderer.html">
+                renderer.js
+              </a>
+            
+              
+              <a class="source" href="sheets.html">
+                sheets.js
+              </a>
+            
+              
+              <a class="source" href="statemachine.html">
+                statemachine.js
+              </a>
+            
+              
+              <a class="source" href="storage.html">
+                storage.js
+              </a>
+            
+              
+              <a class="source" href="systemFeatures.html">
+                systemFeatures.js
+              </a>
+            
+              
+              <a class="source" href="tileVariants.html">
+                tileVariants.js
+              </a>
+            
+              
+              <a class="source" href="uiWidgets.html">
+                uiWidgets.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>sheets.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-pi">"use strict"</span>;
+
+<span class="hljs-keyword">var</span> assert = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./functions"</span>).assert;
+<span class="hljs-keyword">var</span> constants = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./constants"</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.SheetDatabaseObject = my.Class({
+
+  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(impl)</span> </span>{
+    assert(impl);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Holds all type sheet objects.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.sheets = {};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Holds all type names.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.types = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.check_ = impl.afterCheck;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.validator_ = <span class="hljs-keyword">new</span> jjv();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>register schema</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.validator_.addSchema(<span class="hljs-string">"constr"</span>, impl.schema);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>add id check</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> that = <span class="hljs-keyword">this</span>;
+    <span class="hljs-keyword">this</span>.validator_.addCheck(<span class="hljs-string">'isID'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(v, p)</span> </span>{
+      <span class="hljs-keyword">if</span> (p) {
+        <span class="hljs-keyword">return</span> !that.sheets.hasOwnProperty(v);
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+      }
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>add custom checks</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (impl.checks) {
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> impl.checks) {
+        <span class="hljs-keyword">if</span> (impl.checks.hasOwnProperty(key)) {
+          <span class="hljs-keyword">this</span>.validator_.addCheck(key, impl.checks[key]);
+        }
+      }
+    }
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Registers a sheet in the database.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  registerSheet: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sheet)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>validate it</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> errors = <span class="hljs-keyword">this</span>.validator_.validate(<span class="hljs-string">"constr"</span>, sheet);
+    <span class="hljs-keyword">if</span> (errors) {
+      assert(<span class="hljs-literal">false</span>,<span class="hljs-string">'Failed parsing sheet because of: '</span> + <span class="hljs-built_in">JSON</span>.stringify(errors,<span class="hljs-literal">null</span>,<span class="hljs-string">"\t"</span>));
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>add it</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.sheets[sheet.ID] = sheet;
+    <span class="hljs-keyword">this</span>.types.push(sheet.ID);
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  getSheet: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id)</span> </span>{
+    <span class="hljs-keyword">if</span> (constants.DEBUG) assert(<span class="hljs-keyword">this</span>.isValidId(id));
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.sheets[id];
+  },
+
+  isValidId: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id)</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.sheets.hasOwnProperty(id);
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  isValidSheet: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sheet)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.types.length; i &lt; e; i++) {
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.sheets[<span class="hljs-keyword">this</span>.types[i]] === sheet) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  }
+});
+
+exports.LASER_UNIT_INV = <span class="hljs-string">"LASER_UNIT_INV"</span>;
+
+exports.PROP_INV = <span class="hljs-string">"PROP_INV"</span>;
+
+exports.CANNON_UNIT_INV = <span class="hljs-string">"CANNON_UNIT_INV"</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Database of commanders sheet objects.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.commanders = <span class="hljs-keyword">new</span> exports.SheetDatabaseObject({
+  schema: {
+    type: <span class="hljs-string">'object'</span>,
+    required: [<span class="hljs-string">'ID'</span>],
+    properties: {
+      ID: {
+        type: <span class="hljs-string">'string'</span>,
+        isID: <span class="hljs-literal">true</span>
+      }
+    }
+  }
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Unit sheet holds the static data of an unit type.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.units = <span class="hljs-keyword">new</span> exports.SheetDatabaseObject({
+  checks: {
+    isMovetypeId: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(v, p)</span> </span>{
+      <span class="hljs-keyword">return</span> exports.movetypes.isValidId(v) === p;
+    }
+  },
+  schema: {
+    type: <span class="hljs-string">'object'</span>,
+    required: [<span class="hljs-string">'ID'</span>, <span class="hljs-string">"cost"</span>, <span class="hljs-string">"range"</span>, <span class="hljs-string">"vision"</span>, <span class="hljs-string">"fuel"</span>, <span class="hljs-string">"movetype"</span>],
+    properties: {
+      ID: {
+        type: <span class="hljs-string">'string'</span>,
+        isID: <span class="hljs-literal">true</span>
+      },
+      cost: {
+        type: <span class="hljs-string">"integer"</span>,
+        minimum: -<span class="hljs-number">1</span>,
+        not: { type: <span class="hljs-string">"integer"</span>, enum:[<span class="hljs-number">0</span>] }
+      },
+      range: {
+        type: <span class="hljs-string">"integer"</span>,
+        minimum: <span class="hljs-number">0</span>,
+        maximum: constants.MAX_SELECTION_RANGE
+      },
+      vision: {
+        type: <span class="hljs-string">"integer"</span>,
+        minimum: <span class="hljs-number">1</span>,
+        maximum: constants.MAX_SELECTION_RANGE
+      },
+      fuel: {
+        type: <span class="hljs-string">"integer"</span>,
+        minimum: <span class="hljs-number">0</span>,
+        maximum: <span class="hljs-number">99</span>
+      },
+      ammo: {
+        type: <span class="hljs-string">"integer"</span>,
+        minimum: <span class="hljs-number">0</span>,
+        maximum: <span class="hljs-number">99</span>
+      },
+      dailyFuelDrain: {
+        type: <span class="hljs-string">"integer"</span>,
+        minimum: <span class="hljs-number">1</span>,
+        maximum: <span class="hljs-number">99</span>
+      },
+      dailyFuelDrainHidden: {
+        type: <span class="hljs-string">"integer"</span>,
+        minimum: <span class="hljs-number">2</span>,
+        maximum: <span class="hljs-number">99</span>
+      },
+      suicide: {
+        type: <span class="hljs-string">'object'</span>,
+        required: [<span class="hljs-string">"damage"</span>, <span class="hljs-string">"range"</span>],
+        properties: {
+          damage: {
+            type: <span class="hljs-string">"integer"</span>,
+            minimum: <span class="hljs-number">1</span>,
+            maximum: <span class="hljs-number">10</span>
+          },
+          range: {
+            type: <span class="hljs-string">"integer"</span>,
+            minimum: <span class="hljs-number">1</span>,
+            maximum: constants.MAX_SELECTION_RANGE
+          },
+          nodamage: {
+            type: <span class="hljs-string">"array"</span>,
+            items: {
+              type: <span class="hljs-string">"string"</span>
+            }
+          }
+        }
+      },
+      movetype: {
+        type: <span class="hljs-string">"string"</span>,
+        isMovetypeId: <span class="hljs-literal">true</span>
+      },
+      maxloads: {
+        type: <span class="hljs-string">"integer"</span>,
+        minimum: <span class="hljs-number">1</span>
+      },
+      canload: {
+        type: <span class="hljs-string">"array"</span>,
+        items: {
+          type: <span class="hljs-string">"string"</span>
+        }
+      },
+      captures: {
+        type: <span class="hljs-string">"integer"</span>,
+        minimum: <span class="hljs-number">1</span>
+      },
+      stealth: {
+        type: <span class="hljs-string">"boolean"</span>
+      },
+      supply: {
+        type: <span class="hljs-string">"array"</span>,
+        items: {
+          type: <span class="hljs-string">"string"</span>
+        }
+      },
+      attack: {
+        type: <span class="hljs-string">"object"</span>,
+        properties: {
+          minrange: {
+            type: <span class="hljs-string">"integer"</span>,
+            minimum: <span class="hljs-number">1</span>
+          },
+          maxrange: {
+            type: <span class="hljs-string">"integer"</span>,
+            minimum: <span class="hljs-number">2</span>
+          },
+          main_wp: {
+            type: <span class="hljs-string">"object"</span>,
+            patternProperties: {
+              <span class="hljs-string">"[a-zA-Z]*"</span>: {
+                type: <span class="hljs-string">"integer"</span>,
+                minimum: <span class="hljs-number">1</span>
+              }
+            }
+          },
+          sec_wp: {
+            type: <span class="hljs-string">"object"</span>,
+            patternProperties: {
+              <span class="hljs-string">"[a-zA-Z]*"</span>: {
+                type: <span class="hljs-string">"integer"</span>,
+                minimum: <span class="hljs-number">1</span>
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+});
+
+exports.tiles = <span class="hljs-keyword">new</span> exports.SheetDatabaseObject({
+  schema: {
+    type: <span class="hljs-string">'object'</span>,
+    required: [<span class="hljs-string">'ID'</span>, <span class="hljs-string">"defense"</span>],
+    properties: {
+      ID: {
+        type: <span class="hljs-string">'string'</span>,
+        isID: <span class="hljs-literal">true</span>
+      },
+      defense: {
+        type: <span class="hljs-string">"number"</span>,
+        minimum: <span class="hljs-number">0</span>
+      }
+    }
+  }
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.properties = <span class="hljs-keyword">new</span> exports.SheetDatabaseObject({
+  schema: {
+    type: <span class="hljs-string">'object'</span>,
+    required: [<span class="hljs-string">'ID'</span>, <span class="hljs-string">"defense"</span>, <span class="hljs-string">"vision"</span>, <span class="hljs-string">"capturePoints"</span>],
+    properties: {
+      ID: {
+        type: <span class="hljs-string">'string'</span>,
+        isID: <span class="hljs-literal">true</span>
+      },
+      defense: {
+        type: <span class="hljs-string">'integer'</span>,
+        minimum: <span class="hljs-number">0</span>
+      },
+      vision: {
+        type: <span class="hljs-string">'integer'</span>,
+        minimum: <span class="hljs-number">0</span>
+      },
+      capturePoints: {
+        type: <span class="hljs-string">'integer'</span>,
+        minimum: <span class="hljs-number">1</span>
+      },
+      blocker: {
+        type: <span class="hljs-string">'boolean'</span>
+      }
+    }
+  }
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Database for army sheet objects.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.armies = <span class="hljs-keyword">new</span> exports.SheetDatabaseObject({
+  schema: {
+    type: <span class="hljs-string">'object'</span>,
+    required: [<span class="hljs-string">'ID'</span>],
+    properties: {
+      ID: {
+        type: <span class="hljs-string">'string'</span>,
+        isID: <span class="hljs-literal">true</span>
+      }
+    }
+  }
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Movetype sheet holds the static data of an unit type.</p>
+<p>@class</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.movetypes = <span class="hljs-keyword">new</span> exports.SheetDatabaseObject({
+  schema: {
+    type: <span class="hljs-string">'object'</span>,
+    required: [<span class="hljs-string">'ID'</span>, <span class="hljs-string">'costs'</span>],
+    properties: {
+      ID: {
+        type: <span class="hljs-string">'string'</span>,
+        isID: <span class="hljs-literal">true</span>
+      },
+      costs: {
+        type: <span class="hljs-string">'object'</span>,
+        patternProperties: {
+          <span class="hljs-string">'\w+'</span>: {
+            type: <span class="hljs-string">'integer'</span>,
+            minimum: -<span class="hljs-number">1</span>,
+            maximum: <span class="hljs-number">100</span>,
+            not: <span class="hljs-number">0</span>
+          }
+        }
+      }
+    }
+  }
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>Weather sheet database.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.weathers = <span class="hljs-keyword">new</span> exports.SheetDatabaseObject({
+  schema: {
+    type: <span class="hljs-string">'object'</span>,
+    required: [<span class="hljs-string">'ID'</span>],
+    properties: {
+      ID: {
+        type: <span class="hljs-string">'string'</span>,
+        isID: <span class="hljs-literal">true</span>
+      },
+      defaultWeather: {
+        type: <span class="hljs-string">'boolean'</span>
+      }
+    }
+  }
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>Holds the default weather type.</p>
+<p>@type {null}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.defaultWeather = <span class="hljs-literal">null</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>Registers some basic types here</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+exports.movetypes.registerSheet({
+  <span class="hljs-string">"ID"</span>: <span class="hljs-string">"NO_MOVE"</span>,
+  <span class="hljs-string">"sound"</span>: <span class="hljs-literal">null</span>,
+  <span class="hljs-string">"costs"</span>: {
+    <span class="hljs-string">"*"</span>: -<span class="hljs-number">1</span>
+  }
+});
+
+exports.properties.registerSheet({
+  <span class="hljs-string">"ID"</span>: exports.PROP_INV,
+  <span class="hljs-string">"defense"</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-string">"vision"</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-string">"capturePoints"</span>: <span class="hljs-number">1</span>,
+  <span class="hljs-string">"blocker"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-string">"assets"</span>: {}
+});
+
+exports.units.registerSheet({
+  <span class="hljs-string">"ID"</span>: exports.CANNON_UNIT_INV,
+  <span class="hljs-string">"cost"</span>: -<span class="hljs-number">1</span>,
+  <span class="hljs-string">"range"</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-string">"movetype"</span>: <span class="hljs-string">"NO_MOVE"</span>,
+  <span class="hljs-string">"vision"</span>: <span class="hljs-number">1</span>,
+  <span class="hljs-string">"fuel"</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-string">"ammo"</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-string">"assets"</span>: {}
+});
+
+exports.units.registerSheet({
+  <span class="hljs-string">"ID"</span>: exports.LASER_UNIT_INV,
+  <span class="hljs-string">"cost"</span>: -<span class="hljs-number">1</span>,
+  <span class="hljs-string">"range"</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-string">"movetype"</span>: <span class="hljs-string">"NO_MOVE"</span>,
+  <span class="hljs-string">"vision"</span>: <span class="hljs-number">1</span>,
+  <span class="hljs-string">"fuel"</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-string">"ammo"</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-string">"assets"</span>: {}
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

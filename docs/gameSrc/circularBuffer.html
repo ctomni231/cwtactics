@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>circularBuffer.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="actions.html">
+                actions.js
+              </a>
+            
+              
+              <a class="source" href="ai.html">
+                ai.js
+              </a>
+            
+              
+              <a class="source" href="async.html">
+                async.js
+              </a>
+            
+              
+              <a class="source" href="audio.html">
+                audio.js
+              </a>
+            
+              
+              <a class="source" href="circularBuffer.html">
+                circularBuffer.js
+              </a>
+            
+              
+              <a class="source" href="config.html">
+                config.js
+              </a>
+            
+              
+              <a class="source" href="constants.html">
+                constants.js
+              </a>
+            
+              
+              <a class="source" href="cwScript.html">
+                cwScript.js
+              </a>
+            
+              
+              <a class="source" href="error.html">
+                error.js
+              </a>
+            
+              
+              <a class="source" href="events.html">
+                events.js
+              </a>
+            
+              
+              <a class="source" href="functions.html">
+                functions.js
+              </a>
+            
+              
+              <a class="source" href="image.html">
+                image.js
+              </a>
+            
+              
+              <a class="source" href="input.html">
+                input.js
+              </a>
+            
+              
+              <a class="source" href="loading.html">
+                loading.js
+              </a>
+            
+              
+              <a class="source" href="localization.html">
+                localization.js
+              </a>
+            
+              
+              <a class="source" href="main.html">
+                main.js
+              </a>
+            
+              
+              <a class="source" href="matrix.html">
+                matrix.js
+              </a>
+            
+              
+              <a class="source" href="model.html">
+                model.js
+              </a>
+            
+              
+              <a class="source" href="network.html">
+                network.js
+              </a>
+            
+              
+              <a class="source" href="renderer.html">
+                renderer.js
+              </a>
+            
+              
+              <a class="source" href="sheets.html">
+                sheets.js
+              </a>
+            
+              
+              <a class="source" href="statemachine.html">
+                statemachine.js
+              </a>
+            
+              
+              <a class="source" href="storage.html">
+                storage.js
+              </a>
+            
+              
+              <a class="source" href="systemFeatures.html">
+                systemFeatures.js
+              </a>
+            
+              
+              <a class="source" href="tileVariants.html">
+                tileVariants.js
+              </a>
+            
+              
+              <a class="source" href="uiWidgets.html">
+                uiWidgets.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>circularBuffer.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-pi">"use strict"</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>An implementation of the concept of a circular buffer. Internally a circular buffer has a fixed size that makes the
+whole object very memory constant.</p>
+<p>@class
+@template T</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.CircularBuffer = my.Class({</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>@param {number?} size the maximum size of the buffer (default 32)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  constructor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(size)</span> </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length === <span class="hljs-number">0</span>) {
+      size = <span class="hljs-number">32</span>;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (size &lt;= <span class="hljs-number">0</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"size cannot be 0 or lower"</span>);
+    }
+
+    <span class="hljs-keyword">this</span>.index = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">this</span>.size = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">this</span>.data = [];
+    <span class="hljs-keyword">this</span>.maxSize = size;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>@return {boolean} true when no entries are in the buffer, else false</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  isEmpty: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.size === <span class="hljs-number">0</span>;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>@return {boolean} true when buffer is full, else false</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  isFull: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.size === <span class="hljs-keyword">this</span>.maxSize;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Returns an element at a given index. The element won’t be returned.</p>
+<p>@param {number} index
+@return {T}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(index)</span> </span>{
+    <span class="hljs-keyword">if</span> (index &lt; <span class="hljs-number">0</span> || index &gt;= <span class="hljs-keyword">this</span>.size) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"illegal index"</span>);
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.data[(<span class="hljs-keyword">this</span>.index + index) % <span class="hljs-keyword">this</span>.maxSize];
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Returns the oldest object from the buffer. The element will be removed from the buffer.</p>
+<p>@return {T} oldest object in the buffer</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  popFirst: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.size === <span class="hljs-number">0</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"buffer is empty"</span>);
+    }
+
+    <span class="hljs-keyword">var</span> obj = <span class="hljs-keyword">this</span>.data[<span class="hljs-keyword">this</span>.index];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>remove entry to prevent memory leaks</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.data[<span class="hljs-keyword">this</span>.index] = <span class="hljs-literal">null</span>;
+
+    <span class="hljs-keyword">this</span>.size--;
+    <span class="hljs-keyword">this</span>.index++;
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.index === <span class="hljs-keyword">this</span>.maxSize) {
+      <span class="hljs-keyword">this</span>.index = <span class="hljs-number">0</span>;
+    }
+
+    <span class="hljs-keyword">return</span> obj;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Returns the youngest object from the buffer. The element will be removed from the buffer.</p>
+<p>@return {T} youngest object in the buffer</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  popLast: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.size === <span class="hljs-number">0</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"buffer is empty"</span>);
+    }
+
+    <span class="hljs-keyword">var</span> index = (<span class="hljs-keyword">this</span>.index + <span class="hljs-keyword">this</span>.size - <span class="hljs-number">1</span>) % <span class="hljs-keyword">this</span>.maxSize;
+    <span class="hljs-keyword">var</span> obj = <span class="hljs-keyword">this</span>.data[index];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>remove entry to prevent memory leaks</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.data[index] = <span class="hljs-literal">null</span>;
+    <span class="hljs-keyword">this</span>.size--;
+
+    <span class="hljs-keyword">return</span> obj;
+  },
+
+  forEach: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fn)</span> </span>{
+    <span class="hljs-keyword">this</span>.data.forEach(fn);
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Pushes an object into the buffer.</p>
+<p>@param {T} el object that will be pushed into the buffer</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  push: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.size === <span class="hljs-keyword">this</span>.maxSize) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"buffer is full"</span>);
+    }
+
+    <span class="hljs-keyword">this</span>.data[(<span class="hljs-keyword">this</span>.index + <span class="hljs-keyword">this</span>.size) % <span class="hljs-keyword">this</span>.maxSize] = el;
+    <span class="hljs-keyword">this</span>.size++;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Removes everything from the buffer. After that the buffer will be empty.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  clear: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">this</span>.index = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">this</span>.size = <span class="hljs-number">0</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>remove references from list to prevent memory leaks</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = <span class="hljs-keyword">this</span>.data.length; i &lt; e; i++) {
+      <span class="hljs-keyword">this</span>.data[i] = <span class="hljs-literal">null</span>;
+    }
+  }
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Creates a <strong>CircularBuffer</strong> with a given <strong>size</strong>. All slots will be filled with objects of the given <strong>clazz</strong>.
+The constructor of the given <strong>clazz</strong> will be called with zero arguments.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.createBufferByClass = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(clazz, size)</span> </span>{
+  <span class="hljs-keyword">var</span> list = <span class="hljs-keyword">new</span> exports.CircularBuffer(size);
+
+  <span class="hljs-keyword">while</span> (size &gt; <span class="hljs-number">0</span>) {
+    list.push(<span class="hljs-keyword">new</span> clazz());
+    size--;
+  }
+
+  <span class="hljs-keyword">return</span> list;
+};</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

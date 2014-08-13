@@ -1,6 +1,6 @@
 // Determines the debug mode. Can be changed at runtime to enable/disable runtime assertions and debug outputs.
 //
-exports.DEBUG = true;
+exports.DEBUG = null;
 
 // The game won't cache data when this variable is set to true.
 //
@@ -14,9 +14,9 @@ exports.GAME_FONT = "Gamefont";
 // game data.
 //
 // TODO: rename to SERVER_PATH
-exports.MOD_PATH = "http://localhost:8000/";
+exports.MOD_PATH = null;
 
-exports.DEFAULT_MOD_PATH = "http://localhost:8000/modifications/cwt.json";
+exports.DEFAULT_MOD_PATH = null;
 
 // Tile size base.
 //

@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>move.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="attack.html">
+                attack.js
+              </a>
+            
+              
+              <a class="source" href="cannon.html">
+                cannon.js
+              </a>
+            
+              
+              <a class="source" href="capture.html">
+                capture.js
+              </a>
+            
+              
+              <a class="source" href="co.html">
+                co.js
+              </a>
+            
+              
+              <a class="source" href="exploder.html">
+                exploder.js
+              </a>
+            
+              
+              <a class="source" href="factory.html">
+                factory.js
+              </a>
+            
+              
+              <a class="source" href="fog.html">
+                fog.js
+              </a>
+            
+              
+              <a class="source" href="join.html">
+                join.js
+              </a>
+            
+              
+              <a class="source" href="laser.html">
+                laser.js
+              </a>
+            
+              
+              <a class="source" href="lifecycle.html">
+                lifecycle.js
+              </a>
+            
+              
+              <a class="source" href="move.html">
+                move.js
+              </a>
+            
+              
+              <a class="source" href="relationship.html">
+                relationship.js
+              </a>
+            
+              
+              <a class="source" href="silo.html">
+                silo.js
+              </a>
+            
+              
+              <a class="source" href="supply.html">
+                supply.js
+              </a>
+            
+              
+              <a class="source" href="team.html">
+                team.js
+              </a>
+            
+              
+              <a class="source" href="transport.html">
+                transport.js
+              </a>
+            
+              
+              <a class="source" href="turn.html">
+                turn.js
+              </a>
+            
+              
+              <a class="source" href="weather.html">
+                weather.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>move.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> constants = <span class="hljs-built_in">require</span>(<span class="hljs-string">"../constants"</span>);
+<span class="hljs-keyword">var</span> assert = <span class="hljs-built_in">require</span>(<span class="hljs-string">"../functions"</span>).assert;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Symbolizes a move up.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.MOVE_CODES_UP = <span class="hljs-number">0</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Symbolizes a move right.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.MOVE_CODES_RIGHT = <span class="hljs-number">1</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Symbolizes a move down.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.MOVE_CODES_DOWN = <span class="hljs-number">2</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Symbolizes a move left.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.MOVE_CODES_LEFT = <span class="hljs-number">3</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Extracts the move code between two positions.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.codeFromAtoB = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sx, sy, tx, ty)</span> </span>{
+  <span class="hljs-keyword">if</span> (cwt.DEBUG) {
+    cwt.assert(cwt.Model.isValidPosition(sx, sy));
+    cwt.assert(cwt.Model.isValidPosition(tx, ty));
+    cwt.assert(cwt.Model.getDistance(sx, sy, tx, ty) === <span class="hljs-number">1</span>);
+  }
+
+  <span class="hljs-keyword">var</span> code = cwt.INACTIVE;
+  <span class="hljs-keyword">if</span> (sx &lt; tx) {
+    code = <span class="hljs-keyword">this</span>.MOVE_CODES_RIGHT;
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sx &gt; tx) {
+    code = <span class="hljs-keyword">this</span>.MOVE_CODES_LEFT;
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sy &lt; ty) {
+    code = <span class="hljs-keyword">this</span>.MOVE_CODES_DOWN;
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sy &gt; ty) {
+    code = <span class="hljs-keyword">this</span>.MOVE_CODES_UP;
+  }
+
+  cwt.assert(code != cwt.INACTIVE);
+  <span class="hljs-keyword">return</span> code;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Returns the move cost to move with a given move type on a given tile type.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.getMoveCosts = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(movetype, x, y)</span> </span>{
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(cwt.Model.isValidPosition(x, y));
+
+  <span class="hljs-keyword">var</span> v;
+  <span class="hljs-keyword">var</span> tile = cwt.Model.mapData[x][y];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>grab costs from property or  if not given from tile</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  tile = (tile.property) ? tile.property : tile;
+  <span class="hljs-keyword">if</span> (tile.type.blocker) {
+    v = -<span class="hljs-number">1</span>;
+  } <span class="hljs-keyword">else</span> {
+    v = movetype.costs[tile.type.ID];
+  }
+
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> v === <span class="hljs-string">"number"</span>) <span class="hljs-keyword">return</span> v;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>check_ wildcard</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  v = movetype.costs[<span class="hljs-string">"*"</span>];
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> v === <span class="hljs-string">"number"</span>) <span class="hljs-keyword">return</span> v;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>no match then return <code>-1</code>as not move able</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> cwt.INACTIVE;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Returns <strong>true</strong> if a <strong>moveType</strong> can move to a position (<strong>x</strong>,<strong>y</strong>), else <strong>false</strong>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.canTypeMoveTo = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(moveType, x, y)</span> </span>{
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(cwt.Model.isValidPosition(x, y));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>check technical movement to tile type</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.getMoveCosts(moveType, x, y) === cwt.INACTIVE) {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>check some other rules like fog and units</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> tile = cwt.Model.mapData[x][y];
+  <span class="hljs-keyword">return</span> (tile.visionTurnOwner === <span class="hljs-number">0</span> || !tile.unit );
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Generates a path from a start position (<strong>stx</strong>,<strong>sty</strong>) to (<strong>tx</strong>,<strong>ty</strong>) with a given <strong>selection</strong> map. The
+result path will be stored in the <strong>movePath</strong>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.generateMovePath = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(stx, sty, tx, ty, selection, movePath)</span> </span>{
+  <span class="hljs-keyword">if</span> (cwt.DEBUG) {
+    cwt.assert(cwt.Model.isValidPosition(stx, sty));
+    cwt.assert(cwt.Model.isValidPosition(tx, ty));
+  }
+
+  <span class="hljs-keyword">var</span> dir;
+  <span class="hljs-keyword">var</span> cNode;
+  <span class="hljs-keyword">var</span> dsx = stx - selection.getCenterX();
+  <span class="hljs-keyword">var</span> dsy = sty - selection.getCenterY();
+  <span class="hljs-keyword">var</span> dtx = tx - selection.getCenterX();
+  <span class="hljs-keyword">var</span> dty = ty - selection.getCenterY();
+  <span class="hljs-keyword">var</span> cx = stx;
+  <span class="hljs-keyword">var</span> cy = sty;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>generate path by the astar library</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> graph = <span class="hljs-keyword">new</span> Graph(selection.getData());
+  <span class="hljs-keyword">var</span> start = graph.nodes[dsx][dsy];
+  <span class="hljs-keyword">var</span> end = graph.nodes[dtx][dty];
+  <span class="hljs-keyword">var</span> path = astar.search(graph.nodes, start, end);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>extract data from generated path map and fill the movePath object</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  movePath.clear();
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = path.length; i &lt; e; i++) {
+    cNode = path[i];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>add code to move path</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    movePath.push(<span class="hljs-keyword">this</span>.codeFromAtoB(cx, cy, cNode.x, cNode.y));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>update current position</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cx = cNode.x;
+    cy = cNode.y;
+  }
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Compares a given move <strong>code</strong> with a <strong>movePath</strong>. When the new code is the exact opposite direction of the
+last command in the path then <strong>true</strong> will be return else <strong>false</strong>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.isGoBackCommand_ = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(code, movePath)</span> </span>{
+  <span class="hljs-keyword">var</span> lastCode = movePath.get(movePath.size - <span class="hljs-number">1</span>);
+  <span class="hljs-keyword">var</span> goBackCode;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>get go back code</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">switch</span> (code) {
+    <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_UP:
+      goBackCode = <span class="hljs-keyword">this</span>.MOVE_CODES_DOWN;
+      <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_DOWN:
+      goBackCode = <span class="hljs-keyword">this</span>.MOVE_CODES_UP;
+      <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_LEFT:
+      goBackCode = <span class="hljs-keyword">this</span>.MOVE_CODES_RIGHT;
+      <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_RIGHT:
+      goBackCode = <span class="hljs-keyword">this</span>.MOVE_CODES_LEFT;
+      <span class="hljs-keyword">break</span>;
+  }
+
+  <span class="hljs-keyword">return</span> (lastCode === goBackCode);
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>Appends a move <code>code</code> to a given <code>movePath</code> and returns <code>true</code> if the
+insertion was possible else <code>false</code>. If the new code is a backwards move
+to the previous tile in the path then the actual last tile will be
+dropped. In this function returns also <code>true</code> in this case.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.addCodeToMovePath = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(code, movePath, selection, sx, sy)</span> </span>{
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(code &gt;= <span class="hljs-keyword">this</span>.MOVE_CODES_UP &amp;&amp; code &lt;= <span class="hljs-keyword">this</span>.MOVE_CODES_LEFT);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>drop last move code when the new command realizes a move back schema</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.isGoBackCommand_(code, movePath)) {
+    movePath.popLast();
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+  }
+
+  <span class="hljs-keyword">var</span> source = cwt.Model.mapData[sx][sy];
+  <span class="hljs-keyword">var</span> unit = source.unit;
+  <span class="hljs-keyword">var</span> points = unit.type.range;
+  <span class="hljs-keyword">var</span> fuelLeft = unit.fuel;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>decrease move range when not enough fuel is available to
+move the maximum possible range for the selected move type</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> (fuelLeft &lt; points) {
+    points = fuelLeft;
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>add command to the move path list</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  movePath.push(code);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>calculate fuel consumption for the current move path</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> cx = sx;
+  <span class="hljs-keyword">var</span> cy = sy;
+  <span class="hljs-keyword">var</span> fuelUsed = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = movePath.size; i &lt; e; i++) {
+    <span class="hljs-keyword">switch</span> (movePath.get(i)) {
+
+      <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_UP:
+      <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_LEFT:
+        cy--;
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_DOWN:
+      <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_RIGHT:
+        cx++;
+        <span class="hljs-keyword">break</span>;
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p><strong>add fuel consumption to total consumption here</strong></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    fuelUsed += selection.getValue(cx, cy);
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>if to much fuel would be needed then decline</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> (fuelUsed &gt; points) {
+    movePath.pop();
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+  }
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>Little helper array object for <code>model.move_fillMoveMap</code>. This will be used only by one process. If the helper is
+not available then a temp object will be created in <code>model.move_fillMoveMap</code>. If the engine is used without client
+hacking then this situation never happen and the <code>model.move_fillMoveMap</code> will use this helper to prevent
+unnecessary array creation.</p>
+<p>@private</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> fillMoveMapHelper = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>@private</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> checkArray = [
+  constants.INACTIVE,
+  constants.INACTIVE,
+  constants.INACTIVE,
+  constants.INACTIVE,
+  constants.INACTIVE,
+  constants.INACTIVE,
+  constants.INACTIVE,
+  constants.INACTIVE
+];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>Fills a <strong>selection</strong> map for move able tiles. If no explicit start position (<strong>x</strong>,<strong>y</strong>) and moving <strong>unit</strong>
+is given, then the <strong>source</strong> position object will be used to extract data.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.fillMoveMap = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(source, selection, x, y, unit)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>TODO: source and x,y,unit is kinda double definition of the same things</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> cost;
+  <span class="hljs-keyword">var</span> checker;
+  <span class="hljs-keyword">var</span> map = cwt.Model.mapData;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>grab object data from <strong>source</strong> position if no explicit position and unit data is given</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> x !== <span class="hljs-string">"number"</span>) x = source.x;
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> y !== <span class="hljs-string">"number"</span>) y = source.y;
+  <span class="hljs-keyword">if</span> (!unit) unit = source.unit;
+
+  <span class="hljs-keyword">if</span> (constants.DEBUG) assert(cwt.Model.isValidPosition(x, y));
+
+  <span class="hljs-keyword">var</span> toBeChecked;
+  <span class="hljs-keyword">var</span> releaseHelper = <span class="hljs-literal">false</span>;
+  <span class="hljs-keyword">if</span> (fillMoveMapHelper !== <span class="hljs-literal">null</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>use the cached array</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    toBeChecked = fillMoveMapHelper;
+    checker = checkArray;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>reset some stuff</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>, ne = toBeChecked.length; n &lt; ne; n++) {
+      toBeChecked[n] = <span class="hljs-literal">null</span>;
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>, ne = checker.length; n &lt; ne; n++) {
+      checker[n] = constants.INACTIVE;
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>remove cache objects from the move logic object</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    fillMoveMapHelper = <span class="hljs-literal">null</span>;
+    checkArray = <span class="hljs-literal">null</span>;
+
+    releaseHelper = <span class="hljs-literal">true</span>;
+
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-built_in">console</span>.warn(<span class="hljs-string">"WARN:: cannot use move cache variables"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>use a new arrays because cache objects aren’t available</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    toBeChecked = [];
+    checker = [
+      constants.INACTIVE,
+      constants.INACTIVE,
+      constants.INACTIVE,
+      constants.INACTIVE,
+      constants.INACTIVE,
+      constants.INACTIVE,
+      constants.INACTIVE,
+      constants.INACTIVE
+    ];
+  }
+
+  <span class="hljs-keyword">var</span> mType = unit.type.movetype;
+  <span class="hljs-keyword">var</span> range = unit.type.range;
+  <span class="hljs-keyword">var</span> player = unit.owner;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <p>decrease range if not enough fuel is available</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> (unit.fuel &lt; range) {
+    range = unit.fuel;
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <p>add start tile to the map</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  selection.setCenter(x, y, cwt.INACTIVE);
+  selection.setValue(x, y, range);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
+              </div>
+              <p>fill map ( one structure is X;Y;LEFT_POINTS )</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  toBeChecked[<span class="hljs-number">0</span>] = x;
+  toBeChecked[<span class="hljs-number">1</span>] = y;
+  toBeChecked[<span class="hljs-number">2</span>] = range;
+
+  <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+    <span class="hljs-keyword">var</span> cHigh = -<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">var</span> cHighIndex = -<span class="hljs-number">1</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = toBeChecked.length; i &lt; e; i += <span class="hljs-number">3</span>) {
+      <span class="hljs-keyword">var</span> leftPoints = toBeChecked[i + <span class="hljs-number">2</span>];
+
+      <span class="hljs-keyword">if</span> (leftPoints !== <span class="hljs-literal">undefined</span> &amp;&amp; leftPoints !== cwt.INACTIVE) {
+        <span class="hljs-keyword">if</span> (cHigh === -<span class="hljs-number">1</span> || leftPoints &gt; cHigh) {
+          cHigh = leftPoints;
+          cHighIndex = i;
+        }
+      }
+    }
+    <span class="hljs-keyword">if</span> (cHighIndex === -<span class="hljs-number">1</span>) <span class="hljs-keyword">break</span>;
+
+    <span class="hljs-keyword">var</span> cx = toBeChecked[cHighIndex];
+    <span class="hljs-keyword">var</span> cy = toBeChecked[cHighIndex + <span class="hljs-number">1</span>];
+    <span class="hljs-keyword">var</span> cp = toBeChecked[cHighIndex + <span class="hljs-number">2</span>];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-40">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-40">&#182;</a>
+              </div>
+              <p>clear</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    toBeChecked[cHighIndex] = cwt.INACTIVE;
+    toBeChecked[cHighIndex + <span class="hljs-number">1</span>] = cwt.INACTIVE;
+    toBeChecked[cHighIndex + <span class="hljs-number">2</span>] = cwt.INACTIVE;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-41">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-41">&#182;</a>
+              </div>
+              <p>set neighbors for check_</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (cx &gt; <span class="hljs-number">0</span>) {
+      checker[<span class="hljs-number">0</span>] = cx - <span class="hljs-number">1</span>;
+      checker[<span class="hljs-number">1</span>] = cy;
+    } <span class="hljs-keyword">else</span> {
+      checker[<span class="hljs-number">0</span>] = -<span class="hljs-number">1</span>;
+      checker[<span class="hljs-number">1</span>] = -<span class="hljs-number">1</span>;
+    }
+    <span class="hljs-keyword">if</span> (cx &lt; cwt.Model.mapWidth - <span class="hljs-number">1</span>) {
+      checker[<span class="hljs-number">2</span>] = cx + <span class="hljs-number">1</span>;
+      checker[<span class="hljs-number">3</span>] = cy;
+    } <span class="hljs-keyword">else</span> {
+      checker[<span class="hljs-number">2</span>] = -<span class="hljs-number">1</span>;
+      checker[<span class="hljs-number">3</span>] = -<span class="hljs-number">1</span>;
+    }
+    <span class="hljs-keyword">if</span> (cy &gt; <span class="hljs-number">0</span>) {
+      checker[<span class="hljs-number">4</span>] = cx;
+      checker[<span class="hljs-number">5</span>] = cy - <span class="hljs-number">1</span>;
+    } <span class="hljs-keyword">else</span> {
+      checker[<span class="hljs-number">4</span>] = -<span class="hljs-number">1</span>;
+      checker[<span class="hljs-number">5</span>] = -<span class="hljs-number">1</span>;
+    }
+    <span class="hljs-keyword">if</span> (cy &lt; cwt.Model.mapHeight - <span class="hljs-number">1</span>) {
+      checker[<span class="hljs-number">6</span>] = cx;
+      checker[<span class="hljs-number">7</span>] = cy + <span class="hljs-number">1</span>;
+    } <span class="hljs-keyword">else</span> {
+      checker[<span class="hljs-number">6</span>] = -<span class="hljs-number">1</span>;
+      checker[<span class="hljs-number">7</span>] = -<span class="hljs-number">1</span>;
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-42">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-42">&#182;</a>
+              </div>
+              <p>check_ the given neighbors for move</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>; n &lt; <span class="hljs-number">8</span>; n += <span class="hljs-number">2</span>) {
+      <span class="hljs-keyword">if</span> (checker[n] === -<span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">continue</span>;
+      }
+
+      <span class="hljs-keyword">var</span> tx = checker[n];
+      <span class="hljs-keyword">var</span> ty = checker[n + <span class="hljs-number">1</span>];
+
+      cost = <span class="hljs-keyword">this</span>.getMoveCosts(mType, tx, ty);
+      <span class="hljs-keyword">if</span> (cost !== -<span class="hljs-number">1</span>) {
+
+        <span class="hljs-keyword">var</span> cTile = map[tx][ty];
+        <span class="hljs-keyword">var</span> cUnit = cTile.unit;
+
+        <span class="hljs-keyword">if</span> (cUnit !== <span class="hljs-literal">null</span> &amp;&amp; cTile.visionTurnOwner &gt; <span class="hljs-number">0</span> &amp;&amp; !cUnit.hidden &amp;&amp; cUnit.owner.team !== player.team) {
+          <span class="hljs-keyword">continue</span>;
+        }
+
+        <span class="hljs-keyword">var</span> rest = cp - cost;
+        <span class="hljs-keyword">if</span> (rest &gt;= <span class="hljs-number">0</span> &amp;&amp; rest &gt; selection.getValue(tx, ty)) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-43">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-43">&#182;</a>
+              </div>
+              <p>add possible move to the <code>selection</code> map</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          selection.setValue(tx, ty, rest);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-44">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-44">&#182;</a>
+              </div>
+              <p>add this tile to the checker</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = toBeChecked.length; i &lt;= e; i += <span class="hljs-number">3</span>) {
+            <span class="hljs-keyword">if</span> (toBeChecked[i] === cwt.INACTIVE || i === e) {
+              toBeChecked[i] = tx;
+              toBeChecked[i + <span class="hljs-number">1</span>] = ty;
+              toBeChecked[i + <span class="hljs-number">2</span>] = rest;
+              <span class="hljs-keyword">break</span>;
+            }
+          }
+        }
+      }
+    }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-45">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-45">&#182;</a>
+              </div>
+              <p>release helper if you grabbed it</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> (releaseHelper) {
+    fillMoveMapHelper = toBeChecked;
+    checkArray = checker;
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-46">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-46">&#182;</a>
+              </div>
+              <p>convert left points back to absolute costs</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> x = <span class="hljs-number">0</span>, xe = cwt.Map.width; x &lt; xe; x++) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> y = <span class="hljs-number">0</span>, ye = cwt.Map.height; y &lt; ye; y++) {
+      <span class="hljs-keyword">if</span> (selection.getValue(x, y) !== cwt.INACTIVE) {
+        cost = <span class="hljs-keyword">this</span>.getMoveCosts(mType, x, y);
+        selection.setValue(x, y, cost);
+      }
+    }
+  }
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-47">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-47">&#182;</a>
+              </div>
+              <p>@param {cwt.CircularBuffer} movePath
+@param {cwt.Position} source
+@param {cwt.Position} target
+@return {boolean}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.trapCheck = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(movePath, source, target)</span> </span>{
+  <span class="hljs-keyword">var</span> cBx;
+  <span class="hljs-keyword">var</span> cBy;
+  <span class="hljs-keyword">var</span> map = cwt.Model.mapData;
+  <span class="hljs-keyword">var</span> cx = source.x;
+  <span class="hljs-keyword">var</span> cy = source.y;
+  <span class="hljs-keyword">var</span> teamId = source.unit.owner.team;
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = movePath.size; i &lt; e; i++) {
+    <span class="hljs-keyword">switch</span> (movePath.get(i)) {
+      <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_DOWN:
+        cy++;
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_UP:
+        cy--;
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_LEFT:
+        cx--;
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_RIGHT:
+        cx++;
+        <span class="hljs-keyword">break</span>;
+    }
+
+    <span class="hljs-keyword">var</span> unit = map[cx][cy].unit;
+    <span class="hljs-keyword">if</span> (!unit) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-48">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-48">&#182;</a>
+              </div>
+              <p>no unit there? then it’s a valid position</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      cBx = cx;
+      cBy = cy;
+
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (teamId !== unit.owner.team) {
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(<span class="hljs-keyword">typeof</span> cBx !== <span class="hljs-string">"number"</span> &amp;&amp; <span class="hljs-keyword">typeof</span> cBy !== <span class="hljs-string">"number"</span>);
+
+      target.set(cBx, cBy); <span class="hljs-comment">// ? this looks ugly here...</span>
+      movePath.data[i] = cwt.INACTIVE;
+
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+  }
+
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-49">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-49">&#182;</a>
+              </div>
+              <p>@param unit
+@param x
+@param y
+@param movePath
+@param {boolean=} noFuelConsumption
+@param {boolean=} preventRemoveOldPos
+@param {boolean=} preventSetNewPos</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.move = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(unit, x, y, movePath, noFuelConsumption, preventRemoveOldPos, preventSetNewPos)</span> </span>{
+  <span class="hljs-keyword">var</span> map = cwt.Map.data;
+  <span class="hljs-keyword">var</span> team = unit.owner.team;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-50">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-50">&#182;</a>
+              </div>
+              <p>the unit must not be on a tile (e.g. loads), that is the reason why we
+need a valid x,y position here as parameters</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> cX = x;
+  <span class="hljs-keyword">var</span> cY = y;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-51">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-51">&#182;</a>
+              </div>
+              <p>do not set the new position if the position is already occupied
+the action logic must take care of this situation</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> (preventRemoveOldPos !== <span class="hljs-literal">true</span>) {
+    cwt.Map.data[x][y].unit = <span class="hljs-literal">null</span>;
+  }
+
+  <span class="hljs-keyword">var</span> uType = unit.type;
+  <span class="hljs-keyword">var</span> mType = uType.movetype;
+  <span class="hljs-keyword">var</span> lastIndex = movePath.length - <span class="hljs-number">1</span>;
+  <span class="hljs-keyword">var</span> fuelUsed = <span class="hljs-number">0</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-52">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-52">&#182;</a>
+              </div>
+              <p>check_ move way by iterate through all move codes and build the path</p>
+<ol>
+<li>check_ the correctness of the given move code</li>
+<li>check_ all tiles to recognize trapped moves</li>
+<li>accumulate fuel consumption ( except <code>noFuelConsumption</code> is <code>true</code> )</li>
+</ol>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  <span class="hljs-keyword">var</span> trapped = <span class="hljs-literal">false</span>;
+  <span class="hljs-keyword">var</span> lastX = -<span class="hljs-number">1</span>;
+  <span class="hljs-keyword">var</span> lastY = -<span class="hljs-number">1</span>;
+  <span class="hljs-keyword">var</span> lastFuel = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">var</span> lastIndex = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, e = movePath.getLastIndex(); i &lt; e; i++) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-53">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-53">&#182;</a>
+              </div>
+              <p>set current position by current move code</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">switch</span> (movePath.data[i]) {
+
+      <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_UP:
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(cY === <span class="hljs-number">0</span>);
+        cY--;
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_RIGHT:
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(cX === cwt.Map.width - <span class="hljs-number">1</span>);
+        cX++;
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_DOWN:
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(cY === cwt.Map.height - <span class="hljs-number">1</span>);
+        cY++;
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-keyword">this</span>.MOVE_CODES_LEFT:
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(cX === <span class="hljs-number">0</span>);
+        cX--;
+        <span class="hljs-keyword">break</span>;
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-54">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-54">&#182;</a>
+              </div>
+              <p>calculate the used fuel to move onto the current tile
+if <code>noFuelConsumption</code> is not <code>true</code> some actions like unloading does not consume fuel</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (noFuelConsumption !== <span class="hljs-literal">true</span>) {
+      fuelUsed += <span class="hljs-keyword">this</span>.getMoveCosts(mType, cX, cY);
+    }
+
+    <span class="hljs-keyword">var</span> tileUnit = map[cX][cY].unit;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-55">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-55">&#182;</a>
+              </div>
+              <p>movable when tile is empty or the last tile in the way while
+the unit on the tile belongs to the movers owner</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (!tileUnit || (tileUnit.owner === unit.owner &amp;&amp; i === e - <span class="hljs-number">1</span>)) {
+      lastX = cX;
+      lastY = cY;
+      lastFuel = fuelUsed;
+      lastIndex = i;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-56">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-56">&#182;</a>
+              </div>
+              <p>enemy unit</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (tileUnit.owner.team !== team) {
+      movePath.clear(lastIndex + <span class="hljs-number">1</span>);
+      trapped = <span class="hljs-literal">true</span>;
+      <span class="hljs-keyword">break</span>;
+    }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-57">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-57">&#182;</a>
+              </div>
+              <p>consume fuel except when no fuel consumption is on</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> (noFuelConsumption !== <span class="hljs-literal">true</span>) {
+    unit.fuel -= lastFuel;
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.DEBUG) cwt.assert(unit.fuel &gt;= <span class="hljs-number">0</span>);
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-58">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-58">&#182;</a>
+              </div>
+              <p>sometimes we prevent to set the unit at the target position because it moves
+into a thing at a target position (like a transporter)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> (preventSetNewPos !== <span class="hljs-literal">true</span>) {
+    cwt.Map.data[lastX][lastY].unit = unit;
+  }
+
+  cwt.ClientEvents.unitMoves(x, y, lastX, lastY, movePath, trapped);
+};</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

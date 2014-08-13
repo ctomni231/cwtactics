@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>maps.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="audio.html">
+                audio.js
+              </a>
+            
+              
+              <a class="source" href="config.html">
+                config.js
+              </a>
+            
+              
+              <a class="source" href="image.html">
+                image.js
+              </a>
+            
+              
+              <a class="source" href="keyMapping.html">
+                keyMapping.js
+              </a>
+            
+              
+              <a class="source" href="maps.html">
+                maps.js
+              </a>
+            
+              
+              <a class="source" href="mod.html">
+                mod.js
+              </a>
+            
+              
+              <a class="source" href="roundSetup.html">
+                roundSetup.js
+              </a>
+            
+              
+              <a class="source" href="savegame.html">
+                savegame.js
+              </a>
+            
+              
+              <a class="source" href="states.html">
+                states.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>maps.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> constants = <span class="hljs-built_in">require</span>(<span class="hljs-string">"../constants"</span>);
+<span class="hljs-keyword">var</span> request = <span class="hljs-built_in">require</span>(<span class="hljs-string">"../system/xmlHttpReq"</span>);
+<span class="hljs-keyword">var</span> storage = <span class="hljs-built_in">require</span>(<span class="hljs-string">"../storage"</span>);
+<span class="hljs-keyword">var</span> async = <span class="hljs-built_in">require</span>(<span class="hljs-string">"../async"</span>);
+
+exports.maps = [];
+
+exports.transferAllFromStorage = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(callback)</span> </span>{ 
+	storage.get(<span class="hljs-string">"__mapList__"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value)</span> </span>{
+		exports.maps = value;
+		callback();
+	});
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.transferAllFromRemote = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(callback)</span> </span>{
+  <span class="hljs-keyword">var</span> mapList = <span class="hljs-built_in">require</span>(<span class="hljs-string">"../dataTransfer/mod"</span>).getMod().maps;
+	<span class="hljs-keyword">var</span> maps = <span class="hljs-built_in">Object</span>.keys(mapList);
+	
+  <span class="hljs-keyword">var</span> stuff = [<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(next)</span> </span>{
+  	storage.set(<span class="hljs-string">"__mapList__"</span>,maps,next);
+  }];
+
+  maps.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key)</span> </span>{
+   
+    stuff.push(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(next)</span> </span>{
+      request.doRequest({
+        path: constants.MOD_PATH + mapList[key],
+        json: <span class="hljs-literal">true</span>,
+
+        error: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span> </span>{
+          <span class="hljs-built_in">require</span>(<span class="hljs-string">"../error"</span>).raiseError(<span class="hljs-string">"could not load map -&gt; "</span>+msg,<span class="hljs-string">""</span>);
+        },
+
+        success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(resp)</span> </span>{
+          storage.set(key, resp, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            next();
+          });
+        }
+      });
+    });
+    
+	  stuff.push(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(next)</span> </span>{
+	  	exports.maps.push(key);
+	  	next(); 
+	  });
+    
+  });
+
+  async.sequence(stuff, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    callback();
+  });
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.transferFromStorage = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(path, callback)</span> </span>{
+  storage.get(path, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value)</span> </span>{
+    callback(path, value);
+  });
+};</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
