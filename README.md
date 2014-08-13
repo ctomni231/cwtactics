@@ -24,20 +24,15 @@
 
 #### How to build CW:T
 
-The game files will be build with the build system gulp. We stripped out all of gulps dependencies due a bug in *Microsoft Windows*. You have to extract *node_modules.rar* right after you checked out the. An alternative way is to download all dependencies manually. You can check them by looking into the build script file *gulpfile.js*. 
+The game files will be generated with the build system grunt. To download all dependencies manually you simply have to write **npm install** in your terminal while being in the root directory of the CustomWars:Tactics repository. After that you can invoke the build process by typing the command **grunt** in your console.
 
-When the build system is prepared then you're able to invoke the build process by typing the command **gulp** in your console while being in the root directory of the CustomWars:Tactics repository.
-
-    gulp Commands{0,N}
+    grunt <Command>
 
     Commands:
 
-     clean = Cleans the build directory (will be used by live, dev automatically)
-     docs  = Generates the documentation of CustomWars:Tactics
-     todo  = Generates a mnarkdown file with all todo marks
-     live  = Builds the game and it's dependencies in live mode (ulgyfied)
-     dev   = Builds the game and it's dependencies in debug mode
-     watch = Starts a server mode which invokes the 'dev' task automatically 
-             when a JavaScript file will be modified
-
-     default is todo docs dev
+     docs   = Generates the documentation of CustomWars:Tactics
+     report = Generates a mnarkdown file with all todo marks
+     live   = Builds the game and it's dependencies in live mode (uglified)
+     dev    = Builds the game and it's dependencies in debug mode
+     
+     default is dev
