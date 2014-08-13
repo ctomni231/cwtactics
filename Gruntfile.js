@@ -13,7 +13,7 @@ module.exports = function (grunt) {
 
         html: "./gameSrc/html/*",
         gamefiles: "./gameSrc/**/*.js",
-        constants_template: "./gameSrc/constants.js",
+        constants_template: "./gameConst/constants.js",
         constants: "./gameSrc/constants.js",
         deps: "./libJs/**/*.js",
         docs: "./docs",
