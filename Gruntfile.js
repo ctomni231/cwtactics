@@ -18,7 +18,8 @@ module.exports = function (grunt) {
         deps: "./libJs/**/*.js",
         docs: "./docs",
         mainfile: "./gameSrc/main.js",
-        destgamefile: "./build/<%= config.version %>/main.js",
+        destdepsfile: "<%= config.dest %>deps.js",
+        destgamefile: "<%= config.dest %>main.js",
         dest: "./build/<%= config.version %>/"
       },
 
@@ -26,9 +27,13 @@ module.exports = function (grunt) {
         options: {
           banner: '/*! <%= config.name %> game file, builded at <%= grunt.template.today("yyyy-mm-dd")%>, copyright by Alexander Radom, Crecen Carr 2009-2014 */\n'
         },
-        build: {
+        game: {
           src: "<%= config.destgamefile %>",
           dest: "<%= config.destgamefile %>"
+        },
+        deps: {
+          src: "<%= config.destdepsfile %>",
+          dest: "<%= config.destdepsfile %>"
         }
       },
 
@@ -39,6 +44,18 @@ module.exports = function (grunt) {
             {expand: true, flatten: true, src: ["<%= config.html %>"], dest: "<%= config.dest %>" }
           ]
         }
+      },
+      
+      concat: {
+        options: {
+          separator: ';',
+          stripBanners: true,
+          banner: '/*!<%= config.name %> dependencies file, builded at - <%= grunt.template.today("yyyy-mm-dd") %> */',
+        },
+        deps: {
+          src: ["<%= config.deps %>"],
+          dest: "<%= config.destdepsfile %>",
+        },
       },
 
       todo: {
@@ -142,14 +159,32 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-docco2');
   grunt.loadNpmTasks('grunt-todo');
   grunt.loadNpmTasks('grunt-text-replace');
+  grunt.loadNpmTasks('grunt-contrib-concat');
 
   // register all command line tasks
-  grunt.registerTask("docs", ["clean:docs", "docco"]);
-  grunt.registerTask("report", ["clean:todo", "todo"]);
+  
+  grunt.registerTask("docs", [
+    "clean:docs", "docco"
+  ]);
+  
+  grunt.registerTask("report", [
+    "clean:todo", "todo"
+  ]);
+  
+  grunt.registerTask("live", [
+    "clean:dest", 
+    "concat:deps", "uglify:deps",
+    "replace:live", "browserify:live", "uglify:game", 
+    "copy:html"
+  ]);
+  
+  grunt.registerTask("dev", [
+    "clean:dest", 
+    "concat:deps", "uglify:deps",
+    "replace:dev", "browserify:dev", 
+    "copy:html"
+  ]);
 
-  grunt.registerTask("live", ["docs", "clean:dest", "replace:live", "browserify:live", "uglify", "copy:html"]);
-  grunt.registerTask("dev", ["clean:dest", "replace:dev", "browserify:dev", "copy:html"]);
-
-  grunt.registerTask("default", ["report", "dev"]);
+  grunt.registerTask("default", ["dev"]);
 
 };
