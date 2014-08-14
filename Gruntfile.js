@@ -20,7 +20,8 @@ module.exports = function (grunt) {
         mainfile: "./gameSrc/main.js",
         destdepsfile: "<%= config.dest %>deps.js",
         destgamefile: "<%= config.dest %>main.js",
-        dest: "./build/<%= config.version %>/"
+        dest: "./build/<%= config.version %>/",
+        webdest: "../webPage/gamefiles/<%= config.version %>/"
       },
 
       uglify: {
@@ -42,6 +43,23 @@ module.exports = function (grunt) {
         html: {
           files: [
             {expand: true, flatten: true, src: ["<%= config.html %>"], dest: "<%= config.dest %>" }
+          ]
+        },
+        // this task will deploy all game files (with version tag) in the web page folder
+        deploy_game: {
+          files: [
+            {expand: true, flatten: true, src: ["<%= config.dest %>*.*"], dest: "<%= config.webdest %>" }
+          ]
+        },
+        // this task will deploy all assets in the web page folder
+        deploy_assets: {
+          files: [
+            {
+              expand: true, 
+              flatten: true, 
+              src: ["<%= config.dest %>*.*"], 
+              dest: "<%= config.webdest %>" 
+            }
           ]
         }
       },
@@ -163,14 +181,17 @@ module.exports = function (grunt) {
 
   // register all command line tasks
   
+  // generates the documentation
   grunt.registerTask("docs", [
     "clean:docs", "docco"
   ]);
   
+  // creates a report of all TODO marks
   grunt.registerTask("report", [
     "clean:todo", "todo"
   ]);
   
+  // builds a minified version of the game for live mode
   grunt.registerTask("live", [
     "clean:dest", 
     "concat:deps", "uglify:deps",
@@ -178,11 +199,19 @@ module.exports = function (grunt) {
     "copy:html"
   ]);
   
+  // builds a development version with source maps etc.
   grunt.registerTask("dev", [
     "clean:dest", 
     "concat:deps", "uglify:deps",
     "replace:dev", "browserify:dev", 
     "copy:html"
+  ]);
+  
+  // builds a live version and deploys it in the web-page folder (relative to the current folder ../webPage)
+  grunt.registerTask("deployToPage", [
+    "live",
+    "copy:deploy_game",
+    "copy:deploy_assets"
   ]);
 
   grunt.registerTask("default", ["dev"]);
