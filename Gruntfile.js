@@ -1,5 +1,12 @@
 'use strict';
 
+// TODO:
+//  - copy images, maps, music, mods
+//  - set variables not via live/dev -> better is to set constants by deploy (server paths) or local
+//  - add modes deploy, local and local_server
+//  - minify json maps/mods during deployment
+//  - 
+
 module.exports = function (grunt) {
 
   // configuration
