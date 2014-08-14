@@ -25,12 +25,6 @@ exports.GameState = my.Class({
     this.render = renderFn;
   },
 
-  audio: audio,
-  input: input,
-  image: image,
-  data: stateData,
-  renderer: renderer,
-
   changeState: function (stateId) {
     exports.changeState(stateId);
   }
@@ -366,16 +360,15 @@ exports.addStates = function () {
   addState(require("./test/rain").state);
   addState(require("./test/weather").state);
 
+  addMenuState(require("./states/menu_versus").state);
+  addMenuState(require("./states/menu_playerSetup").state);
+  addMenuState(require("./states/menu_parameterSetup").state);
+
+  addInGameState(require("./states/ingame_enter").state);
+  addInGameState(require("./states/ingame_idle").state);
+  addInGameState(require("./states/ingame_leave").state);
+
   /*
-   addMenuState(require("./states/menu_parameterSetup").state);
-   addMenuState(require("./states/menu_playerSetup").state);
-   addMenuState(require("./states/menu_versus").state);
-
-
-   addInGameState(require("./states/ingame_enter").state);
-   addInGameState(require("./states/ingame_flush").state);
-   addInGameState(require("./states/ingame_idle").state);
-   addInGameState(require("./states/ingame_leave").state);
    addInGameState(require("./states/ingame_menu").state);
    addInGameState(require("./states/ingame_movepath").state);
    addInGameState(require("./states/ingame_multistep").state);
@@ -384,6 +377,7 @@ exports.addStates = function () {
    addInGameState(require("./states/ingame_submenu").state);
    addInGameState(require("./states/ingame_targetselection_a").state);
    addInGameState(require("./states/ingame_targetselection_b").state);
+   addInGameState(require("./states/ingame_flush").state);
 
    addState(require("./states/ingame_anim_ballistic").state);
    addState(require("./states/ingame_anim_captureProperty").state);

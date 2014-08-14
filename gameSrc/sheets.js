@@ -270,7 +270,7 @@ exports.tiles = new exports.SheetDatabaseObject({
 exports.properties = new exports.SheetDatabaseObject({
   schema: {
     type: 'object',
-    required: ['ID', "defense", "vision", "capturePoints"],
+    required: ['ID', "defense", "vision"],
     properties: {
       ID: {
         type: 'string',

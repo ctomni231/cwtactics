@@ -1,7 +1,7 @@
 "use strict";
 
 var constants = require("../constants");
-var assert = require("./functions").assert;
+var assert = require("../functions").assert;
 var sheets = require("../sheets");
 var model = require("../model");
 
@@ -21,14 +21,17 @@ var map = null;
 // Data holder to remember selected commanders.
 //
 var co = [];
+exports.co = co;
 
 // Data holder to remember selected player types.
 //
 var type = [];
+exports.type = type;
 
 // Data holder to remember selected team settings.
 //
 var team = [];
+exports.team = team;
 
 //
 // Changes a configuration parameter.
@@ -123,6 +126,14 @@ exports.changeParameter = function (pid, type, prev) {
   }
 };
 
+exports.selectMap = function (sMap) {
+  map = sMap;
+};
+
+exports.getSelectMap = function () {
+  return map;
+};
+
 //
 // Does some preparations for the configuration screen.
 //
@@ -189,7 +200,7 @@ exports.postProcess = function () {
       }
 
       tmp = (co[i] !== constants.INACTIVE) ? sheets.commanders.types[co[i]] : null;
-      coLogic.setMainCo(player, tmp);
+      coLogic.setMainCo(player, sheets.commanders.sheets[tmp]);
 
     } else {
       // Why another disable here ? There is the possibility that a map has units for a player that

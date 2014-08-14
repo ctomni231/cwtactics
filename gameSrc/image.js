@@ -337,3 +337,5 @@ exports.sprites = {};
 exports.overlayTiles = {};
 
 exports.longAnimatedTiles = {};
+
+exports.minimapIndex = {};

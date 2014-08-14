@@ -1,7 +1,7 @@
 "use strict";
 
 var daysOfPeaceCfg = require("./config").getConfig("daysOfPeace");
-var createBuffer = require("./circularBuffer").createBufferByClass;
+var createList = require("./functions").createListByClass;
 var constants = require("./constants");
 var assert = require("./functions").assert;
 var matrix = require("./matrix");
@@ -434,7 +434,7 @@ exports.mapData = matrix.data;
 // All player objects of a game round. This buffer holds the maximum amount of possible player objects. Inactive
 // ones are marked by the inactive marker as team value.
 //
-exports.players = createBuffer(exports.Player, constants.MAX_PLAYER);
+exports.players = createList(exports.Player, constants.MAX_PLAYER);
 
 // set player id's
 exports.players.forEach(function (player, i) {
@@ -444,12 +444,12 @@ exports.players.forEach(function (player, i) {
 // All unit objects of a game round. This buffer holds the maximum amount of possible unit objects. Inactive
 // ones are marked by no reference in the map and with an owner value **null**.
 //
-exports.units = createBuffer(exports.Unit, constants.MAX_PLAYER * constants.MAX_UNITS);
+exports.units = createList(exports.Unit, constants.MAX_PLAYER * constants.MAX_UNITS);
 
 // All property objects of a game round. This buffer holds the maximum amount of possible property objects. Inactive
 // ones are marked by no reference in the map.
 //
-exports.properties = createBuffer(exports.Property, constants.MAX_PROPERTIES);
+exports.properties = createList(exports.Property, constants.MAX_PROPERTIES);
 
 //
 // Returns the distance of two positions.

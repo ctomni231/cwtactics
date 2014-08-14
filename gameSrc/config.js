@@ -50,6 +50,24 @@ exports.Config.prototype = {
 
 };
 
+exports.gameConfigNames = [
+  "co_getStarCostIncreaseSteps",
+  "co_getStarCostIncrease",
+  "autoSupplyAtTurnStart",
+  "timer_turnTimeLimit",
+  "timer_gameTimeLimit",
+  "co_enabledCoPower",
+  "weatherRandomDays",
+  "noUnitsLeftLoose",
+  "weatherMinDays",
+  "round_dayLimit",
+  "co_getStarCost",
+  "captureLimit",
+  "daysOfPeace",
+  "fogEnabled",
+  "unitLimit"
+];
+
 var options = {
 
   // game configs
@@ -90,8 +108,8 @@ exports.getConfig = function (name) {
 
 //
 //
-exports.resetValues = function (name) {
+exports.resetValues = function () {
   Object.keys(options).forEach(function (cfg) {
-    cfg.resetValue();
+    options[cfg].resetValue();
   });
 };

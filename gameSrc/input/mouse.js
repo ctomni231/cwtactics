@@ -57,7 +57,7 @@ var MOUSE_MOVE_EVENT = function (ev) {
   sx = cw / canvas.offsetWidth;
   sy = ch / canvas.offsetHeight;
 
-  var data = state.activeState.data;
+  var data = state.activeState;
   if (data.inputMove) data.inputMove(parseInt(x*sx),parseInt(y*sy));
 
   // convert to a tile position

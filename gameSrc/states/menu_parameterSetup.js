@@ -1,57 +1,48 @@
 "use strict";
 
 var constants = require("../constants");
+var renderer = require("../renderer");
 var widgets = require("../uiWidgets");
-var stm = require("../statemachine");
+var config = require("../config");
+var i18n = require("../localization");
+
+var ENTRIES_PARAMETERS = 6;
+
+var names;
+var values;
+var pageButton;
+
+var configAttrPage = new renderer.Pagination(config.gameConfigNames, ENTRIES_PARAMETERS, function () {
+  for (var i = 0, e = this.entries.length; i < e; i++) {
+    names[i].text = (this.entries[i]) ? i18n.forKey(this.entries[i]) : "";
+    values[i].text = (this.entries[i]) ? config.getValue(this.entries[i]).toString() : "";
+  }
+
+  pageButton.text = this.page.toString();
+});
+
+
+var changeConfigValue = function (index, left) {
+  if (configAttrPage.entries[index]) {
+    var name = configAttrPage.entries[index];
+    var cfg = config.getConfig(name);
+
+    if (left) {
+      cfg.decreaseValue();
+    } else {
+      cfg.increaseValue();
+    }
+
+    values[index].text = config.getValue(name).toString();
+  }
+};
 
 exports.state = {
 
   id: "PARAMETER_SETUP_SCREEN",
-  last: "PLAYER_SETUP_SCREEN",
-
-  init: function (layout) {
-    var ENTRIES_PARAMETERS = 6;
-
-    var state = this;
-
-    state.configAttrPage = new cwt.Pagination(cwt.Config.MULTITON_NAMES, ENTRIES_PARAMETERS, function () {
-      for (var i = 0, e = this.entries.length; i < e; i++) {
-        state.names()[i].text = (this.entries[i]) ? cwt.Localization.forKey(this.entries[i]) : "";
-        state.values()[i].text = (this.entries[i]) ? cwt.Config.getValue(this.entries[i]).toString() : "";
-      }
-      state.pageButton().text = this.page.toString();
-    });
-
-    state.pageButton = cwt.lazy(function () {
-      return layout.getButtonByKey("PARAMETER_CONFIG_PAGE");
-    });
-
-    state.changeConfigValue = function (index, left) {
-      if (state.configAttrPage.entries[index]) {
-        var name = state.configAttrPage.entries[index];
-        var cfg = cwt.Config.getConfig(name);
-
-        if (left) {
-          cfg.decreaseValue();
-        } else {
-          cfg.increaseValue();
-        }
-
-        state.values()[index].text = cwt.Config.getValue(name).toString();
-      }
-    };
-
-    state.names = cwt.lazy(function () {
-      return layout.getButtonsByReg(/(PARAMETER_CONFIG_)(\d+)$/);
-    });
-
-    state.values = cwt.lazy(function () {
-      return layout.getButtonsByReg(/(PARAMETER_CONFIG_)(\d+)(_VALUE)$/);
-    });
-  },
 
   enter: function () {
-    this.configAttrPage.selectPage(0);
+    configAttrPage.selectPage(0);
   },
 
   doLayout: function (layout) {
@@ -85,14 +76,14 @@ exports.state = {
         this
           .addColGap(w)
           .addButton(2, 2, 0, "MENU_LEFT", style1, 8, function () {
-            this.changeConfigValue(i, true);
+            changeConfigValue(i, true);
           })
           .addColGap(1)
           .addButton(8, 2, 0, "PARAMETER_CONFIG_" + i, style2, 8)
           .addButton(4, 2, 0, "PARAMETER_CONFIG_" + i + "_VALUE", style3, 8)
           .addColGap(1)
           .addButton(2, 2, 0, "MENU_RIGHT", style1, 8, function () {
-            this.changeConfigValue(i, false);
+            changeConfigValue(i, false);
           })
           .breakLine()
       })
@@ -105,11 +96,11 @@ exports.state = {
 
       .addColGap(w + 6)
       .addButton(2, 2, 0, "MENU_LEFT", widgets.UIField.STYLE_NSW, 8, function () {
-        this.configAttrPage.selectPage(this.configAttrPage.page - 1);
+        configAttrPage.selectPage(configAttrPage.page - 1);
       })
       .addButton(2, 2, 0, "PARAMETER_CONFIG_PAGE", widgets.UIField.STYLE_NS, 8)
       .addButton(2, 2, 0, "MENU_RIGHT", widgets.UIField.STYLE_NES, 8, function () {
-        this.configAttrPage.selectPage(this.configAttrPage.page + 1);
+        configAttrPage.selectPage(configAttrPage.page + 1);
       })
       .breakLine()
 
@@ -121,12 +112,17 @@ exports.state = {
 
       .addColGap(w)
       .addButton(5, 2, 0, "MENU_BACK", widgets.UIField.STYLE_NORMAL, 8, function () {
-        stm.changeState("PLAYER_SETUP_SCREEN");
+        this.changeState("PLAYER_SETUP_SCREEN");
       })
       .addColGap(8)
       .addButton(5, 2, 0, "MENU_NEXT", widgets.UIField.STYLE_NORMAL, 8, function () {
-        stm.changeState("INGAME_ENTER");
+        this.changeState("INGAME_ENTER");
       })
       .breakLine();
+
+
+    names = layout.getButtonsByReg(/(PARAMETER_CONFIG_)(\d+)$/);
+    values = layout.getButtonsByReg(/(PARAMETER_CONFIG_)(\d+)(_VALUE)$/);
+    pageButton = layout.getButtonByKey("PARAMETER_CONFIG_PAGE");
   }
 };

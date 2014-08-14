@@ -83,3 +83,14 @@ exports.getQueryParams = function (qs) {
 
   return params;
 };
+
+exports.createListByClass = function (clazz, size) {
+  var list = [];
+
+  while (size > 0) {
+    list.push(new clazz());
+    size--;
+  }
+
+  return list;
+};

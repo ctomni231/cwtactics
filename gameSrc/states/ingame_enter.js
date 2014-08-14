@@ -1,34 +1,44 @@
 var renderer = require("../renderer");
 var constants = require("../constants");
 
+var stateData = require("../dataTransfer/states");
+var roundDTO = require("../dataTransfer/roundSetup");
+
+var fog = require("../logic/fog");
+var renderer = require("../renderer");
+var tileVariants = require("../tileVariants");
+
+var gamePers = require("../dataTransfer/savegame");
+
 exports.state = {
   id: "INGAME_ENTER",
 
   enter: function () {
-    this.data.inGameRound = true;
+    stateData.inGameRound = true;
     renderer.hideNativeCursor();
 
     if (constants.DEBUG) console.log("entering game round");
 
     // 1. load map
-    cwt.GameData.loadGame(cwt.GameSelectionDTO.map,false, function () {
-      cwt.GameSelectionDTO.map = null;
+    gamePers.initMap(roundDTO.getSelectMap(),false, function () {
+      roundDTO.selectMap(null);
 
       // 2. change game data by the given configuration
-      cwt.GameSelectionDTO.postProcess();
-      cwt.Fog.fullRecalculation();
+      roundDTO.postProcess();
+      fog.fullRecalculation();
 
       // 3. update screen
-      cwt.Screen.layerUI.clear();
-      cwt.TileVariants.updateTileSprites();
+      renderer.layerUI.clear();
+      tileVariants.updateTileSprites();
 
       // 4. render screen
-      cwt.MapRenderer.renderScreen();
-      cwt.MapRenderer.renderCursor();
+      renderer.renderScreen();
+      renderer.renderCursor();
 
       // 5. start game :P
-      require("../statemachine").changeState("INGAME_IDLE");
+      this.changeState("INGAME_IDLE");
     });
+
     /*
     controller.commandStack_resetData();
 

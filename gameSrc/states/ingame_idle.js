@@ -1,19 +1,23 @@
+"use strict";
+
+var stateData = require("../dataTransfer/states");
+
 exports.state = {
   id: "INGAME_IDLE",
 
-  enter: function (gameData) {
-    gameData.source.clean();
-    gameData.target.clean();
-    gameData.targetselection.clean();
+  enter: function () {
+    stateData.source.clean();
+    stateData.target.clean();
+    stateData.targetselection.clean();
   },
 
-  ACTION: function (gameData) {
-    var x = cwt.Cursor.x;
-    var y = cwt.Cursor.y;
+  ACTION: function () {
+    var x = stateData.cursorX;
+    var y = stateData.cursorY;
 
-    gameData.source.set(x, y);
-    gameData.target.set(x, y);
+    stateData.source.set(x, y);
+    stateData.target.set(x, y);
 
-    require("../statemachine").changeState("INGAME_MOVEPATH");
+    this.changeState("INGAME_MOVEPATH");
   }
 };

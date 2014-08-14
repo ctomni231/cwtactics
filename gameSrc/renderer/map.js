@@ -1,35 +1,36 @@
 var constants = require("../constants");
 var move = require("../logic/move");
 var model = require("../model");
+var image = require("../image");
 
 //
 //
 // @param {number} x
 // @param {number} y
 //
-exports.renderTile = function (x, y) {
-  this.renderTiles(x,y,1,1,false);
+exports.renderTile = function (mapLayer, offsetX, offsetY, x, y) {
+  exports.renderTiles(mapLayer, offsetX, offsetY, x,y,1,1,false);
 
   // draw overlay of the bottom tile
   if (y < model.mapHeight-1) {
-    this.renderTiles(x,y+1,1,1,true);
+    exports.renderTiles(mapLayer, offsetX, offsetY, x,y+1,1,1,true);
   }
 };
 
-exports.renderTileOverlayRow = function () {
+exports.renderTileOverlayRow = function (mapLayer, offsetX, offsetY) {
   exports.renderTiles(
-    cwt.Screen.offsetX,
-    cwt.Screen.offsetY+1,
-    (cwt.Map.width < cwt.SCREEN_WIDTH) ? model.mapWidth : cwt.SCREEN_WIDTH,
+    mapLayer,
+    offsetX,
+    offsetY+1,
+    (model.mapWidth < constants.SCREEN_WIDTH) ? model.mapWidth : constants.SCREEN_WIDTH,
     1,
     true
   );
 };
 
-exports.renderTiles = function (x, oy, w, h, overlayDraw) {
+exports.renderTiles = function (mapLayer, offsetX, offsetY, x, oy, w, h, overlayDraw) {
   if (arguments.length === 4) overlayDraw = false;
-  var mapData = cwt.Map.data;
-  var mapLayer = cwt.Screen.layerMap;
+  var mapData = model.mapData;
   var ctx;
   var scx;
   var scy;
@@ -46,33 +47,33 @@ exports.renderTiles = function (x, oy, w, h, overlayDraw) {
   for (var xe = x + w; x < xe; x++) {
     for (var y = oy, ye = y + h; y < ye; y++) {
       tile = mapData[x][y];
-      sprite = cwt.Image.sprites[tile.type.ID].getImage(tile.variant * cwt.Sprite.TILE_STATES);
+      sprite = image.sprites[tile.type.ID].getImage(tile.variant * image.Sprite.TILE_STATES);
 
       // grab property status before loop (calc it one instead of eight times)
       if (tile.property) {
         if (tile.property.owner) {
           switch (tile.property.owner.id) {
             case 0:
-              state = cwt.Sprite.PROPERTY_RED;
+              state = image.Sprite.PROPERTY_RED;
               break;
 
             case 1:
-              state = cwt.Sprite.PROPERTY_BLUE;
+              state = image.Sprite.PROPERTY_BLUE;
               break;
 
             case 2:
-              state = cwt.Sprite.PROPERTY_GREEN;
+              state = image.Sprite.PROPERTY_GREEN;
               break;
 
             case 3:
-              state = cwt.Sprite.PROPERTY_YELLOW;
+              state = image.Sprite.PROPERTY_YELLOW;
               break;
           }
         } else {
-          state = cwt.Sprite.PROPERTY_NEUTRAL;
+          state = image.Sprite.PROPERTY_NEUTRAL;
         }
 
-        propSprite = cwt.Image.sprites[tile.property.type.ID].getImage(state);
+        propSprite = image.sprites[tile.property.type.ID].getImage(state);
       }
 
       // render all phases
@@ -80,12 +81,12 @@ exports.renderTiles = function (x, oy, w, h, overlayDraw) {
       while (n < 8) {
         ctx = mapLayer.getContext(n);
 
-        scx = (cwt.Image.longAnimatedTiles[tile.type.ID]) ? cwt.TILE_BASE * n : 0;
+        scx = (image.longAnimatedTiles[tile.type.ID]) ? constants.TILE_BASE * n : 0;
         scy = 0;
         scw = constants.TILE_BASE;
         sch = constants.TILE_BASE * 2;
-        tcx = (x - cwt.Screen.offsetX) * constants.TILE_BASE;
-        tcy = (y - cwt.Screen.offsetY) * constants.TILE_BASE - constants.TILE_BASE;
+        tcx = (x - offsetX) * constants.TILE_BASE;
+        tcy = (y - offsetY) * constants.TILE_BASE - constants.TILE_BASE;
         tcw = constants.TILE_BASE;
         tch = constants.TILE_BASE * 2;
 
@@ -135,8 +136,7 @@ exports.renderTiles = function (x, oy, w, h, overlayDraw) {
 //
 // @param {number} code
 //
-exports.shiftTiles = function (code) {
-  var mapLayer = cwt.Screen.layerMap;
+exports.shiftTiles = function (mapLayer, code) {
 
   // calculate meta data for shift
   var sx = 0;
@@ -176,7 +176,7 @@ exports.shiftTiles = function (code) {
       w, h,
       sx, sy,
       w, h
-    )
+    );
 
     n++;
   }

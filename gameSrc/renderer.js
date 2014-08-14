@@ -9,6 +9,7 @@ var rendCursor = require("./renderer/cursor");
 var rendAnim = require("./renderer/animation");
 var rendUnit = require("./renderer/unit");
 var rendMenu = require("./renderer/menu");
+var rendMap = require("./renderer/map");
 var rendFog = require("./renderer/fog");
 
 var stateData = require("./dataTransfer/states");
@@ -124,7 +125,7 @@ exports.LayeredCanvas = my.Class({
 //
 // @class
 //
-exports.PaginationObject = my.Class({
+exports.Pagination = my.Class({
 
   constructor: function (list, pageSize, updateFn) {
     this.page = 0;
@@ -215,29 +216,29 @@ exports.shiftScreen = function (moveCode) {
 
   switch (moveCode) {
     case move.MOVE_CODES_UP:
-      if (this.offsetY < model.mapHeight - constants.SCREEN_HEIGHT - 1) {
-        this.offsetY++;
+      if (exports.screenOffsetY < model.mapHeight - constants.SCREEN_HEIGHT - 1) {
+        exports.screenOffsetY++;
         changed = true;
       }
       break;
 
     case move.MOVE_CODES_RIGHT:
-      if (this.offsetX > 0) {
-        this.offsetX--;
+      if (exports.screenOffsetX > 0) {
+        exports.screenOffsetX--;
         changed = true;
       }
       break;
 
     case move.MOVE_CODES_DOWN:
-      if (this.offsetY > 0) {
-        this.offsetY--;
+      if (exports.screenOffsetY > 0) {
+        exports.screenOffsetY--;
         changed = true;
       }
       break;
 
     case move.MOVE_CODES_LEFT:
-      if (this.offsetX < model.mapWidth - constants.SCREEN_WIDTH - 1) {
-        this.offsetX++;
+      if (exports.screenOffsetX < model.mapWidth - constants.SCREEN_WIDTH - 1) {
+        exports.screenOffsetX++;
         changed = true;
       }
       break;
@@ -258,14 +259,14 @@ exports.renderScreen = function () {
   var w = (model.mapWidth < constants.SCREEN_WIDTH) ? model.mapWidth : constants.SCREEN_WIDTH;
   var h = (model.mapHeight < constants.SCREEN_HEIGHT) ? model.mapHeight : constants.SCREEN_HEIGHT;
 
-  this.renderTiles(x, y, w, h);
-  this.renderUnits(x, y, w, h);
+  exports.renderTiles(x, y, w, h);
+  exports.renderUnits(x, y, w, h);
 
   // directly update all layers
   exports.layerMap.renderLayer(rendAnim.indexMapAnimation);
   exports.layerUnit.renderLayer(rendAnim.indexUnitAnimation);
 
-  this.renderFogRect(x, y, w, h);
+  exports.renderFogRect(x, y, w, h);
 
   if (constants.DEBUG) console.log("rendered the complete screen (" + ((new Date()).getTime() - time) + "ms)");
 };
@@ -305,18 +306,18 @@ exports.shiftMap = function (code) {
   }
 
   // shift screen
-  this.shiftTiles(code);
-  this.shiftUnits(code);
-  this.shiftFog(code);
+  exports.shiftTiles(code);
+  exports.shiftUnits(code);
+  exports.shiftFog(code);
 
   // fill created hole
-  this.renderTiles(fx, fy, fw, fh);
-  this.renderUnits(fx, fy, fw, fh);
-  this.renderFogRect(fx, fy, fw, fh);
+  exports.renderTiles(fx, fy, fw, fh);
+  exports.renderUnits(fx, fy, fw, fh);
+  exports.renderFogRect(fx, fy, fw, fh);
 
   // fix overlay when screen moves down
   if (code === move.MOVE_CODES_DOWN) {
-    this.renderTileOverlayRow();
+    exports.renderTileOverlayRow();
   }
 
   // directly update all layers
@@ -359,7 +360,7 @@ exports.hideNativeCursor = function () {
   rendCursor.hideNativeCursor(exports.layerUI);
 };
 
-exports.renderCycle = function (delta) {
+exports.evaluateCycle = function (delta) {
   rendAnim.evaluateCycle(delta, exports.layerUnit, exports.layerMap);
 };
 
@@ -390,7 +391,7 @@ exports.shiftFog = function (code) {
 //
 //
 exports.renderUnits = function (x, oy, w, h) {
-  rendUnit.renderUnits(exports.layerFog, exports.screenOffsetX, exports.screenOffsetY, x, oy, w, h);
+  rendUnit.renderUnits(exports.layerUnit, exports.screenOffsetX, exports.screenOffsetY, x, oy, w, h);
 };
 
 //
@@ -409,4 +410,31 @@ exports.prepareMenu = function (menu) {
 //
 exports.renderMenu = function () {
   rendMenu.renderMenu(exports.layerUI);
+};
+
+//
+//
+// @param {number} x
+// @param {number} y
+//
+exports.renderTile = function (x, y) {
+  rendMap.renderTile(exports.layerMap, exports.screenOffsetX, exports.screenOffsetY, x, y);
+};
+
+exports.renderTileOverlayRow = function () {
+  rendMap.renderTileOverlayRow(exports.layerMap, exports.screenOffsetX, exports.screenOffsetY);
+};
+
+exports.renderTiles = function (x, oy, w, h, overlayDraw) {
+  rendMap.renderTiles(exports.layerMap, exports.screenOffsetX, exports.screenOffsetY, x, oy, w, h, overlayDraw);
+};
+
+//
+//
+// Note: this one does not clear the layer before action
+//
+// @param {number} code
+//
+exports.shiftTiles = function (code) {
+  rendMap.shiftTiles(exports.layerMap, code);
 };

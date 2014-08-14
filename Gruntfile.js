@@ -32,14 +32,17 @@ module.exports = function (grunt) {
       },
 
       uglify: {
-        options: {
-          banner: '/*! <%= config.name %> game file, builded at <%= grunt.template.today("yyyy-mm-dd")%>, copyright by Alexander Radom, Crecen Carr 2009-2014 */\n'
-        },
         game: {
+          options: {
+            banner: '/*! <%= config.name %> game file, builded at <%= grunt.template.today("yyyy-mm-dd")%>, copyright by Alexander Radom, Crecen Carr 2009-2014 */\n'
+          },
           src: "<%= config.destgamefile %>",
           dest: "<%= config.destgamefile %>"
         },
         deps: {
+          options: {
+            banner: '/*!<%= config.name %> dependencies file, builded at - <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+          },
           src: "<%= config.destdepsfile %>",
           dest: "<%= config.destdepsfile %>"
         }
@@ -74,8 +77,7 @@ module.exports = function (grunt) {
       concat: {
         options: {
           separator: ';',
-          stripBanners: true,
-          banner: '/*!<%= config.name %> dependencies file, builded at - <%= grunt.template.today("yyyy-mm-dd") %> */',
+          stripBanners: true
         },
         deps: {
           src: ["<%= config.deps %>"],
