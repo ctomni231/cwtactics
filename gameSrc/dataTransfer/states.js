@@ -483,10 +483,11 @@ exports.selection = {
       throw Error("Out of Bounds");
     }
 
-    return ((x > 0 && this.len_[x - 1][y] > 0) ||
-      (y > 0 && this.len_[x][y - 1] > 0) ||
-      (x < this.data_ - 1 && this.data_[x + 1][y] > 0) ||
-      (y < this.data_ - 1 && this.data_[x][y + 1] > 0));
+    return (
+      (x > 0 && this.data_[x - 1][y] > 0) ||
+        (y > 0 && this.data_[x][y - 1] > 0) ||
+        (x < this.len_ - 1 && this.data_[x + 1][y] > 0) ||
+        (y < this.len_ - 1 && this.data_[x][y + 1] > 0));
   },
 
   //

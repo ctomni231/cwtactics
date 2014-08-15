@@ -330,21 +330,21 @@ exports.shiftMap = function (code) {
 
 // Renders the cursor to the UI layer.
 //
-exports.eraseCursor = function (x,y) {
+exports.eraseCursor = function (x, y) {
   rendCursor.eraseCursor(
     exports.layerUI,
     exports.screenOffsetX, exports.screenOffsetY,
-    x,y
+    x, y
   );
 };
 
 // Renders the cursor to the UI layer.
 //
-exports.renderCursor = function (x,y) {
+exports.renderCursor = function (x, y) {
   rendCursor.renderCursor(
     exports.layerUI,
     exports.screenOffsetX, exports.screenOffsetY,
-    x,y
+    x, y
   );
 };
 
@@ -410,6 +410,24 @@ exports.prepareMenu = function (menu) {
 //
 exports.renderMenu = function () {
   rendMenu.renderMenu(exports.layerUI);
+};
+
+//
+//
+exports.updateMenuIndex = function (x, y) {
+  rendMenu.updateMenuIndex(x, y);
+};
+
+//
+//
+exports.handleMenuInput = function (code) {
+  return rendMenu.handleMenuInput(code);
+};
+
+//
+//
+exports.getMenuIndex = function () {
+  return rendMenu.getMenuIndex();
 };
 
 //

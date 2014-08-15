@@ -63,8 +63,8 @@ exports.PositionData = my.Class({
     this.y = y;
     this.tile = exports.mapData[x][y];
 
-    if (this.tile.turnOwnerVisible && this.tile.unit) {
-      this.unit = null;
+    if (this.tile.visionTurnOwner > 0 && this.tile.unit) {
+      this.unit = this.tile.unit;
       this.unitId = exports.units.indexOf(this.tile.unit);
     }
 
@@ -80,17 +80,6 @@ exports.PositionData = my.Class({
 // @class
 //
 exports.Tile = my.Class({
-
-  STATIC: {
-
-    fromJSON: function(data) {
-
-    },
-
-    toJSON: function() {
-
-    }
-  },
 
   constructor: function() {
     this.type = null;
@@ -124,17 +113,7 @@ exports.Tile = my.Class({
 exports.Property = my.Class({
 
   STATIC: {
-
-    fromJSON: function(data) {
-
-    },
-
-    toJSON: function() {
-
-    },
-
     CAPTURE_POINTS: 20,
-
     CAPTURE_STEP: 10
   },
 
@@ -166,19 +145,8 @@ exports.Property = my.Class({
 //
 exports.Player = my.Class({
 
-  STATIC: {
-
-    fromJSON: function(data) {
-
-    },
-
-    toJSON: function() {
-
-    }
-  },
-
   constructor: function() {
-    this.ID = -1;
+    this.id = -1;
     this.reset();
   },
 

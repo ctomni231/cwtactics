@@ -1,31 +1,39 @@
+"use strict";
+
+var stateData = require("../dataTransfer/states");
+var move = require("../logic/move");
+var model = require("../model");
+
+var cfgFastClick = require("../config").getConfig("fastClickMode");
+
 exports.state = {
   id: "INGAME_MOVEPATH",
 
-  enter: function (gameData) {
+  enter: function () {
 
     // when we do back steps in the game flow then we don't want to recreate an already created move way
-    if (gameData.preventMovePathGeneration) {
-      gameData.preventMovePathGeneration = false;
+    if (stateData.preventMovePathGeneration) {
+      stateData.preventMovePathGeneration = false;
       return;
     }
 
     var breakMove = false;
 
-    if (cwt.Gameround.isTurnOwnerObject(gameData.source.unit) && gameData.source.unit.canAct) {
+    if (model.isTurnOwnerObject(stateData.source.unit) && stateData.source.unit.canAct) {
 
       // prepare move map and clean way
-      gameData.movePath.clean();
+      stateData.movePath.clear();
 
-      cwt.Move.fillMoveMap(
-        gameData.source,
-        gameData.selection,
-        gameData.source.x,
-        gameData.source.y,
-        gameData.source.unit
+      move.fillMoveMap(
+        stateData.source,
+        stateData.selection,
+        stateData.source.x,
+        stateData.source.y,
+        stateData.source.unit
       );
 
       // go directly into action menu when the unit cannot move
-      if (!gameData.selection.hasActiveNeighbour(x, y)) {
+      if (!stateData.selection.hasActiveNeighbour(stateData.source.x, stateData.source.y)) {
         breakMove = true;
       }
     } else {
@@ -33,32 +41,32 @@ exports.state = {
     }
 
     if (breakMove) {
-      require("../statemachine").changeState("INGAME_MENU");
+      this.changeState("INGAME_MENU");
     }
   },
 
-  ACTION: function (gameData) {
-    var x = cwt.Cursor.x;
-    var y = cwt.Cursor.y;
+  ACTION: function () {
+    var x = stateData.cursorX;
+    var y = stateData.cursorY;
 
     // selected tile is not in the selection -> ignore action
-    if (gameData.selection.getValue(x, y) < 0) {
+    if (stateData.selection.getValue(x, y) < 0) {
       return;
     }
 
-    var ox = gameData.target.x;
-    var oy = gameData.target.y;
-    var dis = cwt.Map.getDistance(ox, oy, x, y);
+    var ox = stateData.target.x;
+    var oy = stateData.target.y;
+    var dis = model.getDistance(ox, oy, x, y);
 
-    gameData.target.set(x, y);
+    stateData.target.set(x, y);
 
     if (dis === 1) {
 
       // Try to add the cursor move as code to the move path
-      cwt.Move.addCodeToMovePath(
-        cwt.Move.codeFromAtoB(ox, oy, x, y),
-        gameData.movePath,
-        gameData.selection,
+      move.addCodeToMovePath(
+        move.codeFromAtoB(ox, oy, x, y),
+        stateData.movePath,
+        stateData.selection,
         x,
         y
       );
@@ -66,22 +74,22 @@ exports.state = {
     } else {
 
       // Generate a complete new path because between the old tile and the new tile is at least another one tile
-      cwt.Move.generateMovePath(
-        gameData.source.x,
-        gameData.source.y,
+      move.generateMovePath(
+        stateData.source.x,
+        stateData.source.y,
         x,
         y,
-        gameData.selection,
-        gameData.movePath
+        stateData.selection,
+        stateData.movePath
       );
     }
 
-    if (dis === 0 || cwt.Options.fastClickMode) {
-      require("../statemachine").changeState(next);
+    if (dis === 0 || cfgFastClick.value === 1) {
+      this.changeState("INGAME_MENU");
     }
   },
 
   CANCEL: function () {
-    require("../statemachine").changeState("INGAME_IDLE");
+    this.changeState("INGAME_IDLE");
   }
 };

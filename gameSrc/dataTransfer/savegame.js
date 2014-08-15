@@ -137,6 +137,7 @@ exports.initMap = function (gameData, isSave, callback) {
     unit = model.units[i];
     if (unit) {
       unit.owner = null;
+      unit.canAct = false;
     }
   }
 
@@ -152,8 +153,8 @@ exports.initMap = function (gameData, isSave, callback) {
     unit.fuel = unitData[6];
     unit.loadedIn = (unitData[7] != constants.INACTIVE) ? model.units[unitData[7]] : null;
     unit.owner = model.players[unitData[8]];
-    unit.canAct = (typeof unitData[9] === "boolean") ? unitData[9] : false;
-    unit.hidden = (typeof unitData[10] === "boolean") ? unitData[10] : false;
+    unit.canAct = (unitData.length >= 10 && typeof unitData[9] === "boolean") ? unitData[9] : true;
+    unit.hidden = (unitData.length >= 11 && typeof unitData[10] === "boolean") ? unitData[10] : false;
     model.mapData[unitData[2]][unitData[3]].unit = unit;
   }
 

@@ -1,3 +1,5 @@
+"use strict";
+
 var constants = require("../constants");
 
 var MENU_ELEMENTS_MAX = 10;
@@ -31,7 +33,6 @@ functions.repeat(MENU_ELEMENTS_MAX, function (i) {
 //
 exports.prepareMenu = function (layer, screenWidth, screenHeight, menu) {
   var gfxMenu = layoutGenericMenu;
-  var select = menu.getSelectedIndex();
   var numElements = menu.getSize();
 
   gfxMenu.setMenuPosition(
@@ -61,4 +62,16 @@ exports.prepareMenu = function (layer, screenWidth, screenHeight, menu) {
 
 exports.renderMenu = function (layer) {
   layoutGenericMenu.draw(layer.getContext(0));
+};
+
+exports.updateMenuIndex = function (x, y) {
+  layoutGenericMenu.updateMenuIndex(x,y);
+};
+
+exports.getMenuIndex = function () {
+  return layoutGenericMenu.selected;
+};
+
+exports.handleMenuInput = function (code) {
+  return layoutGenericMenu.handleInput(code);
 };

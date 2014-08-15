@@ -92,13 +92,13 @@ var addInGameState = function (desc) {
       }
     },
 
-    update: function (delta, input) {
-      if (input) {
+    update: function (delta, lastInput) {
+      if (lastInput) {
         var code = constants.INACTIVE;
         var func = null;
 
         // extract input data
-        switch (input.key) {
+        switch (lastInput.key) {
           case input.TYPE_LEFT:
             func = "LEFT";
             code = move.MOVE_CODES_LEFT;
@@ -367,10 +367,10 @@ exports.addStates = function () {
   addInGameState(require("./states/ingame_enter").state);
   addInGameState(require("./states/ingame_idle").state);
   addInGameState(require("./states/ingame_leave").state);
+  addInGameState(require("./states/ingame_movepath").state);
+  addInGameState(require("./states/ingame_menu").state);
 
   /*
-   addInGameState(require("./states/ingame_menu").state);
-   addInGameState(require("./states/ingame_movepath").state);
    addInGameState(require("./states/ingame_multistep").state);
    addInGameState(require("./states/ingame_selecttile").state);
    addInGameState(require("./states/ingame_showAttackRange").state);

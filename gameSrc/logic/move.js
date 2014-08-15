@@ -1,5 +1,7 @@
 var constants = require("../constants");
 var assert = require("../functions").assert;
+var sheets = require("../sheets");
+var model = require("../model");
 
 // Symbolizes a move up.
 //
@@ -20,34 +22,34 @@ exports.MOVE_CODES_LEFT = 3;
 // Extracts the move code between two positions.
 //
 exports.codeFromAtoB = function (sx, sy, tx, ty) {
-  if (cwt.DEBUG) {
-    cwt.assert(cwt.Model.isValidPosition(sx, sy));
-    cwt.assert(cwt.Model.isValidPosition(tx, ty));
-    cwt.assert(cwt.Model.getDistance(sx, sy, tx, ty) === 1);
+  if (constants.DEBUG) {
+    assert(model.isValidPosition(sx, sy));
+    assert(model.isValidPosition(tx, ty));
+    assert(model.getDistance(sx, sy, tx, ty) === 1);
   }
 
-  var code = cwt.INACTIVE;
+  var code = constants.INACTIVE;
   if (sx < tx) {
-    code = this.MOVE_CODES_RIGHT;
+    code = exports.MOVE_CODES_RIGHT;
   } else if (sx > tx) {
-    code = this.MOVE_CODES_LEFT;
+    code = exports.MOVE_CODES_LEFT;
   } else if (sy < ty) {
-    code = this.MOVE_CODES_DOWN;
+    code = exports.MOVE_CODES_DOWN;
   } else if (sy > ty) {
-    code = this.MOVE_CODES_UP;
+    code = exports.MOVE_CODES_UP;
   }
 
-  cwt.assert(code != cwt.INACTIVE);
+  assert(code != constants.INACTIVE);
   return code;
 };
 
 // Returns the move cost to move with a given move type on a given tile type.
 //
 exports.getMoveCosts = function (movetype, x, y) {
-  if (this.DEBUG) cwt.assert(cwt.Model.isValidPosition(x, y));
+  if (constants.DEBUG) assert(model.isValidPosition(x, y));
 
   var v;
-  var tile = cwt.Model.mapData[x][y];
+  var tile = model.mapData[x][y];
 
   // grab costs from property or  if not given from tile
   tile = (tile.property) ? tile.property : tile;
@@ -64,22 +66,22 @@ exports.getMoveCosts = function (movetype, x, y) {
   if (typeof v === "number") return v;
 
   // no match then return `-1`as not move able
-  return cwt.INACTIVE;
+  return constants.INACTIVE;
 };
 
 //
 // Returns **true** if a **moveType** can move to a position (**x**,**y**), else **false**.
 //
 exports.canTypeMoveTo = function (moveType, x, y) {
-  if (this.DEBUG) cwt.assert(cwt.Model.isValidPosition(x, y));
+  if (constants.DEBUG) assert(model.isValidPosition(x, y));
 
   // check technical movement to tile type
-  if (this.getMoveCosts(moveType, x, y) === cwt.INACTIVE) {
+  if (exports.getMoveCosts(moveType, x, y) === constants.INACTIVE) {
     return false;
   }
 
   // check some other rules like fog and units
-  var tile = cwt.Model.mapData[x][y];
+  var tile = model.mapData[x][y];
   return (tile.visionTurnOwner === 0 || !tile.unit );
 };
 
@@ -88,9 +90,9 @@ exports.canTypeMoveTo = function (moveType, x, y) {
 // result path will be stored in the **movePath**.
 //
 exports.generateMovePath = function (stx, sty, tx, ty, selection, movePath) {
-  if (cwt.DEBUG) {
-    cwt.assert(cwt.Model.isValidPosition(stx, sty));
-    cwt.assert(cwt.Model.isValidPosition(tx, ty));
+  if (constants.DEBUG) {
+    assert(model.isValidPosition(stx, sty));
+    assert(model.isValidPosition(tx, ty));
   }
 
   var dir;
@@ -102,7 +104,7 @@ exports.generateMovePath = function (stx, sty, tx, ty, selection, movePath) {
   var cx = stx;
   var cy = sty;
 
-  // generate path by the astar library
+  // generate path by the a-star library
   var graph = new Graph(selection.getData());
   var start = graph.nodes[dsx][dsy];
   var end = graph.nodes[dtx][dty];
@@ -114,7 +116,7 @@ exports.generateMovePath = function (stx, sty, tx, ty, selection, movePath) {
     cNode = path[i];
 
     // add code to move path
-    movePath.push(this.codeFromAtoB(cx, cy, cNode.x, cNode.y));
+    movePath.push(exports.codeFromAtoB(cx, cy, cNode.x, cNode.y));
 
     // update current position
     cx = cNode.x;
@@ -126,23 +128,23 @@ exports.generateMovePath = function (stx, sty, tx, ty, selection, movePath) {
 // Compares a given move **code** with a **movePath**. When the new code is the exact opposite direction of the
 // last command in the path then **true** will be return else **false**.
 //
-exports.isGoBackCommand_ = function (code, movePath) {
+var isGoBackCommand = function (code, movePath) {
   var lastCode = movePath.get(movePath.size - 1);
   var goBackCode;
 
   // get go back code
   switch (code) {
-    case this.MOVE_CODES_UP:
-      goBackCode = this.MOVE_CODES_DOWN;
+    case exports.MOVE_CODES_UP:
+      goBackCode = exports.MOVE_CODES_DOWN;
       break;
-    case this.MOVE_CODES_DOWN:
-      goBackCode = this.MOVE_CODES_UP;
+    case exports.MOVE_CODES_DOWN:
+      goBackCode = exports.MOVE_CODES_UP;
       break;
-    case this.MOVE_CODES_LEFT:
-      goBackCode = this.MOVE_CODES_RIGHT;
+    case exports.MOVE_CODES_LEFT:
+      goBackCode = exports.MOVE_CODES_RIGHT;
       break;
-    case this.MOVE_CODES_RIGHT:
-      goBackCode = this.MOVE_CODES_LEFT;
+    case exports.MOVE_CODES_RIGHT:
+      goBackCode = exports.MOVE_CODES_LEFT;
       break;
   }
 
@@ -156,15 +158,15 @@ exports.isGoBackCommand_ = function (code, movePath) {
 // dropped. In this function returns also `true` in this case.
 //
 exports.addCodeToMovePath = function (code, movePath, selection, sx, sy) {
-  if (this.DEBUG) cwt.assert(code >= this.MOVE_CODES_UP && code <= this.MOVE_CODES_LEFT);
+  if (constants.DEBUG) assert(code >= exports.MOVE_CODES_UP && code <= exports.MOVE_CODES_LEFT);
 
   // drop last move code when the new command realizes a move back schema
-  if (this.isGoBackCommand_(code, movePath)) {
+  if (isGoBackCommand(code, movePath)) {
     movePath.popLast();
     return true;
   }
 
-  var source = cwt.Model.mapData[sx][sy];
+  var source = model.mapData[sx][sy];
   var unit = source.unit;
   var points = unit.type.range;
   var fuelLeft = unit.fuel;
@@ -185,13 +187,13 @@ exports.addCodeToMovePath = function (code, movePath, selection, sx, sy) {
   for (var i = 0, e = movePath.size; i < e; i++) {
     switch (movePath.get(i)) {
 
-      case this.MOVE_CODES_UP:
-      case this.MOVE_CODES_LEFT:
+      case exports.MOVE_CODES_UP:
+      case exports.MOVE_CODES_LEFT:
         cy--;
         break;
 
-      case this.MOVE_CODES_DOWN:
-      case this.MOVE_CODES_RIGHT:
+      case exports.MOVE_CODES_DOWN:
+      case exports.MOVE_CODES_RIGHT:
         cx++;
         break;
     }
@@ -241,14 +243,14 @@ exports.fillMoveMap = function (source, selection, x, y, unit) {
   // TODO: source and x,y,unit is kinda double definition of the same things
   var cost;
   var checker;
-  var map = cwt.Model.mapData;
+  var map = model.mapData;
 
   // grab object data from **source** position if no explicit position and unit data is given
   if (typeof x !== "number") x = source.x;
   if (typeof y !== "number") y = source.y;
   if (!unit) unit = source.unit;
 
-  if (constants.DEBUG) assert(cwt.Model.isValidPosition(x, y));
+  if (constants.DEBUG) assert(model.isValidPosition(x, y));
 
   var toBeChecked;
   var releaseHelper = false;
@@ -289,7 +291,7 @@ exports.fillMoveMap = function (source, selection, x, y, unit) {
     ];
   }
 
-  var mType = unit.type.movetype;
+  var mType = sheets.movetypes.sheets[unit.type.movetype];
   var range = unit.type.range;
   var player = unit.owner;
 
@@ -299,7 +301,7 @@ exports.fillMoveMap = function (source, selection, x, y, unit) {
   }
 
   // add start tile to the map
-  selection.setCenter(x, y, cwt.INACTIVE);
+  selection.setCenter(x, y, constants.INACTIVE);
   selection.setValue(x, y, range);
 
   // fill map ( one structure is X;Y;LEFT_POINTS )
@@ -314,7 +316,7 @@ exports.fillMoveMap = function (source, selection, x, y, unit) {
     for (var i = 0, e = toBeChecked.length; i < e; i += 3) {
       var leftPoints = toBeChecked[i + 2];
 
-      if (leftPoints !== undefined && leftPoints !== cwt.INACTIVE) {
+      if (leftPoints !== undefined && leftPoints !== constants.INACTIVE) {
         if (cHigh === -1 || leftPoints > cHigh) {
           cHigh = leftPoints;
           cHighIndex = i;
@@ -328,9 +330,9 @@ exports.fillMoveMap = function (source, selection, x, y, unit) {
     var cp = toBeChecked[cHighIndex + 2];
 
     // clear
-    toBeChecked[cHighIndex] = cwt.INACTIVE;
-    toBeChecked[cHighIndex + 1] = cwt.INACTIVE;
-    toBeChecked[cHighIndex + 2] = cwt.INACTIVE;
+    toBeChecked[cHighIndex] = constants.INACTIVE;
+    toBeChecked[cHighIndex + 1] = constants.INACTIVE;
+    toBeChecked[cHighIndex + 2] = constants.INACTIVE;
 
     // set neighbors for check_
     if (cx > 0) {
@@ -340,7 +342,7 @@ exports.fillMoveMap = function (source, selection, x, y, unit) {
       checker[0] = -1;
       checker[1] = -1;
     }
-    if (cx < cwt.Model.mapWidth - 1) {
+    if (cx < model.mapWidth - 1) {
       checker[2] = cx + 1;
       checker[3] = cy;
     } else {
@@ -354,7 +356,7 @@ exports.fillMoveMap = function (source, selection, x, y, unit) {
       checker[4] = -1;
       checker[5] = -1;
     }
-    if (cy < cwt.Model.mapHeight - 1) {
+    if (cy < model.mapHeight - 1) {
       checker[6] = cx;
       checker[7] = cy + 1;
     } else {
@@ -371,7 +373,7 @@ exports.fillMoveMap = function (source, selection, x, y, unit) {
       var tx = checker[n];
       var ty = checker[n + 1];
 
-      cost = this.getMoveCosts(mType, tx, ty);
+      cost = exports.getMoveCosts(mType, tx, ty);
       if (cost !== -1) {
 
         var cTile = map[tx][ty];
@@ -389,7 +391,7 @@ exports.fillMoveMap = function (source, selection, x, y, unit) {
 
           // add this tile to the checker
           for (var i = 0, e = toBeChecked.length; i <= e; i += 3) {
-            if (toBeChecked[i] === cwt.INACTIVE || i === e) {
+            if (toBeChecked[i] === constants.INACTIVE || i === e) {
               toBeChecked[i] = tx;
               toBeChecked[i + 1] = ty;
               toBeChecked[i + 2] = rest;
@@ -408,10 +410,10 @@ exports.fillMoveMap = function (source, selection, x, y, unit) {
   }
 
   // convert left points back to absolute costs
-  for (var x = 0, xe = cwt.Map.width; x < xe; x++) {
-    for (var y = 0, ye = cwt.Map.height; y < ye; y++) {
-      if (selection.getValue(x, y) !== cwt.INACTIVE) {
-        cost = this.getMoveCosts(mType, x, y);
+  for (var x = 0, xe = model.mapWidth; x < xe; x++) {
+    for (var y = 0, ye = model.mapHeight; y < ye; y++) {
+      if (selection.getValue(x, y) !== constants.INACTIVE) {
+        cost = exports.getMoveCosts(mType, x, y);
         selection.setValue(x, y, cost);
       }
     }
@@ -428,25 +430,25 @@ exports.fillMoveMap = function (source, selection, x, y, unit) {
 exports.trapCheck = function (movePath, source, target) {
   var cBx;
   var cBy;
-  var map = cwt.Model.mapData;
+  var map = model.mapData;
   var cx = source.x;
   var cy = source.y;
   var teamId = source.unit.owner.team;
   for (var i = 0, e = movePath.size; i < e; i++) {
     switch (movePath.get(i)) {
-      case this.MOVE_CODES_DOWN:
+      case exports.MOVE_CODES_DOWN:
         cy++;
         break;
 
-      case this.MOVE_CODES_UP:
+      case exports.MOVE_CODES_UP:
         cy--;
         break;
 
-      case this.MOVE_CODES_LEFT:
+      case exports.MOVE_CODES_LEFT:
         cx--;
         break;
 
-      case this.MOVE_CODES_RIGHT:
+      case exports.MOVE_CODES_RIGHT:
         cx++;
         break;
     }
@@ -459,10 +461,10 @@ exports.trapCheck = function (movePath, source, target) {
       cBy = cy;
 
     } else if (teamId !== unit.owner.team) {
-      if (this.DEBUG) cwt.assert(typeof cBx !== "number" && typeof cBy !== "number");
+      if (constants.DEBUG) assert(typeof cBx !== "number" && typeof cBy !== "number");
 
       target.set(cBx, cBy); // ? this looks ugly here...
-      movePath.data[i] = cwt.INACTIVE;
+      movePath.data[i] = constants.INACTIVE;
 
       return true;
     }
@@ -482,7 +484,7 @@ exports.trapCheck = function (movePath, source, target) {
 // @param {boolean=} preventSetNewPos
 //
 exports.move = function (unit, x, y, movePath, noFuelConsumption, preventRemoveOldPos, preventSetNewPos) {
-  var map = cwt.Map.data;
+  var map = model.mapData;
   var team = unit.owner.team;
 
   // the unit must not be on a tile (e.g. loads), that is the reason why we
@@ -493,12 +495,11 @@ exports.move = function (unit, x, y, movePath, noFuelConsumption, preventRemoveO
   // do not set the new position if the position is already occupied
   // the action logic must take care of this situation
   if (preventRemoveOldPos !== true) {
-    cwt.Map.data[x][y].unit = null;
+    model.mapData[x][y].unit = null;
   }
 
   var uType = unit.type;
   var mType = uType.movetype;
-  var lastIndex = movePath.length - 1;
   var fuelUsed = 0;
 
   // check_ move way by iterate through all move codes and build the path
@@ -513,28 +514,28 @@ exports.move = function (unit, x, y, movePath, noFuelConsumption, preventRemoveO
   var lastY = -1;
   var lastFuel = 0;
   var lastIndex = 0;
-  for (var i = 0, e = movePath.getLastIndex(); i < e; i++) {
+  for (var i = 0, e = movePath.size - 1; i < e; i++) {
 
     // set current position by current move code
     switch (movePath.data[i]) {
 
-      case this.MOVE_CODES_UP:
-        if (this.DEBUG) cwt.assert(cY === 0);
+      case exports.MOVE_CODES_UP:
+        if (constants.DEBUG) assert(cY === 0);
         cY--;
         break;
 
-      case this.MOVE_CODES_RIGHT:
-        if (this.DEBUG) cwt.assert(cX === cwt.Map.width - 1);
+      case exports.MOVE_CODES_RIGHT:
+        if (constants.DEBUG) assert(cX === model.mapWidth - 1);
         cX++;
         break;
 
-      case this.MOVE_CODES_DOWN:
-        if (this.DEBUG) cwt.assert(cY === cwt.Map.height - 1);
+      case exports.MOVE_CODES_DOWN:
+        if (constants.DEBUG) assert(cY === model.mapHeight - 1);
         cY++;
         break;
 
-      case this.MOVE_CODES_LEFT:
-        if (this.DEBUG) cwt.assert(cX === 0);
+      case exports.MOVE_CODES_LEFT:
+        if (constants.DEBUG) assert(cX === 0);
         cX--;
         break;
     }
@@ -542,7 +543,7 @@ exports.move = function (unit, x, y, movePath, noFuelConsumption, preventRemoveO
     // calculate the used fuel to move onto the current tile
     // if `noFuelConsumption` is not `true` some actions like unloading does not consume fuel
     if (noFuelConsumption !== true) {
-      fuelUsed += this.getMoveCosts(mType, cX, cY);
+      fuelUsed += exports.getMoveCosts(mType, cX, cY);
     }
 
     var tileUnit = map[cX][cY].unit;
@@ -566,14 +567,12 @@ exports.move = function (unit, x, y, movePath, noFuelConsumption, preventRemoveO
   // consume fuel except when no fuel consumption is on
   if (noFuelConsumption !== true) {
     unit.fuel -= lastFuel;
-    if (this.DEBUG) cwt.assert(unit.fuel >= 0);
+    if (constants.DEBUG) assert(unit.fuel >= 0);
   }
 
   // sometimes we prevent to set the unit at the target position because it moves
   // into a thing at a target position (like a transporter)
   if (preventSetNewPos !== true) {
-    cwt.Map.data[lastX][lastY].unit = unit;
+    model.mapData[lastX][lastY].unit = unit;
   }
-
-  cwt.ClientEvents.unitMoves(x, y, lastX, lastY, movePath, trapped);
 };

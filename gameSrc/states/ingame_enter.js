@@ -19,6 +19,8 @@ exports.state = {
 
     if (constants.DEBUG) console.log("entering game round");
 
+    var that = this;
+
     // 1. load map
     gamePers.initMap(roundDTO.getSelectMap(),false, function () {
       roundDTO.selectMap(null);
@@ -36,7 +38,7 @@ exports.state = {
       renderer.renderCursor();
 
       // 5. start game :P
-      this.changeState("INGAME_IDLE");
+      that.changeState("INGAME_IDLE");
     });
 
     /*

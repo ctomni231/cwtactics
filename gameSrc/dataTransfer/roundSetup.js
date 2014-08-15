@@ -181,6 +181,7 @@ exports.postProcess = function () {
   }
 
   // update model
+  var turnOwnerTeam = model.turnOwner.team;
   for (var i = 0, e = constants.MAX_PLAYER; i < e; i++) {
     var player = model.players[i];
 
@@ -188,6 +189,8 @@ exports.postProcess = function () {
 
       player.gold = 0;
       player.team = team[i];
+
+      player.turnOwnerVisible = (player.team === turnOwnerTeam);
 
       if (type[i] === 1) {
         // controller.ai_register(i);

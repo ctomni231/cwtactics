@@ -1,58 +1,68 @@
+"use strict";
+
+var stateData = require("../dataTransfer/states");
+var assert = require("../functions").assert;
+var constants = require("../constants");
+var renderer = require("../renderer");
+var action = require("../actions");
+var input = require("../input");
+
+var updateMenuData = function () {
+  stateData.menu.selectedIndex = renderer.getMenuIndex();
+  renderer.renderMenu();
+  renderer.layerUI.renderLayer(0);
+};
+
 exports.state = {
   id: "INGAME_MENU",
 
-  enter: function (gameData) {
-    cwt.Cursor.showNativeCursor();
+  enter: function () {
+    renderer.showNativeCursor();
 
-    gameData.menu.clean();
-    gameData.menu.generate();
+    stateData.menu.clean();
+    stateData.menu.generate();
 
     // go back when no entries exists
-    if (!gameData.menu.getSize()) {
-      require("../statemachine").changeState("INGAME_IDLE");
+    if (stateData.menu.getSize() === 0) {
+      this.changeState("INGAME_IDLE");
+
     } else {
-      cwt.Screen.layerUI.clear(0);
-      cwt.MapRenderer.prepareMenu(gameData.menu);
-      cwt.Screen.layerUI.renderLayer(0);
+      renderer.layerUI.clear(0);
+      renderer.prepareMenu(stateData.menu);
+      renderer.layerUI.renderLayer(0);
     }
   },
 
   exit: function () {
-    cwt.Cursor.hideNativeCursor();
-    cwt.Screen.layerUI.clear(0);
-    cwt.Screen.layerUI.clear();
+    renderer.hideNativeCursor();
+    renderer.layerUI.clear(0);
+    renderer.layerUI.clear();
   },
 
-  inputMove: function (gameData, x, y) {
-    cwt.MapRenderer.layoutGenericMenu_.updateIndex(x, y);
-    gameData.menu.selectedIndex = cwt.MapRenderer.layoutGenericMenu_.selected;
-    cwt.MapRenderer.renderMenu(gameData.menu);
-    cwt.Screen.layerUI.renderLayer(0);
+  inputMove: function (x, y) {
+    renderer.updateMenuIndex(x, y);
+    updateMenuData();
   },
 
-  UP: function (gameData) {
-    if (cwt.MapRenderer.layoutGenericMenu_.handleInput(cwt.Input.TYPE_UP)) {
-      gameData.menu.selectedIndex = cwt.MapRenderer.layoutGenericMenu_.selected;
-      cwt.MapRenderer.renderMenu(gameData.menu);
-      cwt.Screen.layerUI.renderLayer(0);
+  UP: function () {
+    if (renderer.handleMenuInput(input.TYPE_UP)) {
+      updateMenuData();
     }
   },
 
-  DOWN: function (gameData) {
-    if (cwt.MapRenderer.layoutGenericMenu_.handleInput(cwt.Input.TYPE_DOWN)) {
-      gameData.menu.selectedIndex = cwt.MapRenderer.layoutGenericMenu_.selected;
-      cwt.MapRenderer.renderMenu(gameData.menu);
-      cwt.Screen.layerUI.renderLayer(0);
+  DOWN: function () {
+    if (renderer.handleMenuInput(input.TYPE_DOWN)) {
+      updateMenuData();
     }
   },
 
-  ACTION: function (gameData) {
-    var actName = gameData.menu.getContent();
-    var actObj = cwt.Action.getActionObject(actName);
+  ACTION: function () {
+    var actName = stateData.menu.getContent();
+    var actObj = action.getAction(actName);
 
     // select action in data
-    gameData.action.selectedEntry = actName;
-    gameData.action.object = actObj;
+    stateData.action.selectedEntry = actName;
+    stateData.action.object = actObj;
 
     // calculate next state from the given action object
     var next = null;
@@ -66,26 +76,26 @@ exports.state = {
       next = "INGAME_FLUSH_ACTION";
     }
 
-    if (cwt.DEBUG) cwt.assert(next);
-    require("../statemachine").changeState(next);
+    if (constants.DEBUG) assert(next);
+    this.changeState(next);
   },
 
-  CANCEL: function (gameData) {
-    var unit = gameData.source.unit;
+  CANCEL: function () {
+    var unit = stateData.source.unit;
     var next = null;
 
     if (unit && unit.owner.activeClientPlayer) {
-      // unit was selected and it is controlled by the active player, so it means that this unit
-      // is the acting unit -> go back to INGAME_MOVEPATH state without erasing the existing move data
+      // unit was selected and it is controlled by the active player, so it means that this unit is the acting unit
+      // -> go back to *INGAME_MOVEPATH* state without erasing the existing move data
 
-      gameData.preventMovePathGeneration = true;
+      stateData.preventMovePathGeneration = true;
       next = "INGAME_MOVEPATH";
 
     } else {
       next = "INGAME_IDLE";
     }
 
-    if (cwt.DEBUG) cwt.assert(next);
-    require("../statemachine").changeState(next);
+    if (constants.DEBUG) assert(next);
+    this.changeState(next);
   }
 };
