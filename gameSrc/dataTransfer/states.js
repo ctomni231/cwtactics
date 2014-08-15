@@ -294,14 +294,14 @@ exports.setCursorPosition = function (x, y, relativeToScreen) {
   if (x >= model.mapWidth) x = model.mapWidth - 1;
   if (y >= model.mapHeight) y = model.mapHeight - 1;
 
-  if (x === this.x && y === this.y) {
+  if (x === exports.cursorX && y === exports.cursorY) {
     return;
   }
 
-  renderer.eraseCursor();
+  renderer.eraseCursor(exports.cursorX, exports.cursorY);
 
-  this.x = x;
-  this.y = y;
+  exports.cursorX = x;
+  exports.cursorY = y;
 
   // convert to screen relative pos
   x = x - renderer.screenOffsetX;
@@ -342,7 +342,7 @@ exports.setCursorPosition = function (x, y, relativeToScreen) {
     }
   }
 
-  renderer.renderCursor();
+  renderer.renderCursor(exports.cursorX, exports.cursorY);
 };
 
 //

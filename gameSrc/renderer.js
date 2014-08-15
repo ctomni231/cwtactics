@@ -330,21 +330,21 @@ exports.shiftMap = function (code) {
 
 // Renders the cursor to the UI layer.
 //
-exports.eraseCursor = function () {
+exports.eraseCursor = function (x,y) {
   rendCursor.eraseCursor(
     exports.layerUI,
     exports.screenOffsetX, exports.screenOffsetY,
-    stateData.cursorX, stateData.cursorY
+    x,y
   );
 };
 
 // Renders the cursor to the UI layer.
 //
-exports.renderCursor = function () {
+exports.renderCursor = function (x,y) {
   rendCursor.renderCursor(
     exports.layerUI,
     exports.screenOffsetX, exports.screenOffsetY,
-    stateData.cursorX, stateData.cursorY
+    x,y
   );
 };
 
