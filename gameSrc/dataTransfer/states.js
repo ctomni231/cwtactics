@@ -425,15 +425,6 @@ exports.selection = {
 
   // @override */
   setCenter: function (x, y, defValue) {
-
-    // lazy initialization
-    if (!this.data_) {
-      this.data_ = [];
-      for (var i = 0; i < this.len_; i++) {
-        this.data_[i] = [];
-      }
-    }
-
     this.centerX_ = Math.max(0, x - (this.len_ - 1));
     this.centerY_ = Math.max(0, y - (this.len_ - 1));
 
@@ -563,6 +554,12 @@ exports.selection = {
     return false;
   }
 };
+
+// init selection data
+exports.selection.data_ = [];
+for (var i = 0; i < exports.selection.len_; i++) {
+  exports.selection.data_[i] = [];
+}
 
 //
 // Selected game action.

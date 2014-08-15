@@ -11,6 +11,7 @@ var rendUnit = require("./renderer/unit");
 var rendMenu = require("./renderer/menu");
 var rendMap = require("./renderer/map");
 var rendFog = require("./renderer/fog");
+var rendFocus = require("./renderer/focus");
 
 var stateData = require("./dataTransfer/states");
 var assert = require("./functions").assert;
@@ -19,6 +20,7 @@ var move = require("./logic/move");
 
 rendFog.init(canvasW, canvasH);
 rendUnit.init(canvasW, canvasH);
+rendFocus.init(canvasW, canvasH);
 
 //
 //
@@ -200,7 +202,7 @@ exports.layerUnit = new exports.LayeredCanvas("canvas_layer4", 3, canvasW, canva
 //
 // @type {cwt.LayeredCanvas}
 //
-exports.layerEffects = new exports.LayeredCanvas("canvas_layer5", 1, canvasW, canvasH);
+exports.layerEffects = new exports.LayeredCanvas("canvas_layer5", 7, canvasW, canvasH);
 
 //
 // @type {cwt.LayeredCanvas}
@@ -261,10 +263,12 @@ exports.renderScreen = function () {
 
   exports.renderTiles(x, y, w, h);
   exports.renderUnits(x, y, w, h);
+  exports.renderFocus(x, y, w, h);
 
   // directly update all layers
   exports.layerMap.renderLayer(rendAnim.indexMapAnimation);
   exports.layerUnit.renderLayer(rendAnim.indexUnitAnimation);
+  exports.layerEffects.renderLayer(rendAnim.indexEffectAnimation);
 
   exports.renderFogRect(x, y, w, h);
 
@@ -308,11 +312,13 @@ exports.shiftMap = function (code) {
   // shift screen
   exports.shiftTiles(code);
   exports.shiftUnits(code);
+  exports.shiftFocus(code);
   exports.shiftFog(code);
 
   // fill created hole
   exports.renderTiles(fx, fy, fw, fh);
   exports.renderUnits(fx, fy, fw, fh);
+  exports.renderFocus(fx, fy, fw, fh);
   exports.renderFogRect(fx, fy, fw, fh);
 
   // fix overlay when screen moves down
@@ -323,6 +329,7 @@ exports.shiftMap = function (code) {
   // directly update all layers
   exports.layerMap.renderLayer(rendAnim.indexMapAnimation);
   exports.layerUnit.renderLayer(rendAnim.indexUnitAnimation);
+  exports.layerEffects.renderLayer(rendAnim.indexEffectAnimation);
 
   if (constants.DEBUG) console.log("shifted the screen (" + ((new Date()).getTime() - time) + "ms)");
 };
@@ -361,7 +368,7 @@ exports.hideNativeCursor = function () {
 };
 
 exports.evaluateCycle = function (delta) {
-  rendAnim.evaluateCycle(delta, exports.layerUnit, exports.layerMap);
+  rendAnim.evaluateCycle(delta, exports.layerUnit, exports.layerMap, exports.layerEffects);
 };
 
 //
@@ -455,4 +462,18 @@ exports.renderTiles = function (x, oy, w, h, overlayDraw) {
 //
 exports.shiftTiles = function (code) {
   rendMap.shiftTiles(exports.layerMap, code);
+};
+
+exports.renderFocus = function (x, y, w, h) {
+  rendFocus.renderSelection(
+    exports.layerEffects,
+    exports.screenOffsetX, exports.screenOffsetY,
+    stateData.selection,
+    x, y,
+    w, h
+  );
+};
+
+exports.shiftFocus = function (code) {
+  rendFocus.shift(exports.layerEffects, stateData.selection, code);
 };

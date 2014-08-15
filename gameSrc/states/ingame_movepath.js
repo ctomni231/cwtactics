@@ -3,6 +3,7 @@
 var stateData = require("../dataTransfer/states");
 var move = require("../logic/move");
 var model = require("../model");
+var renderer = require("../renderer");
 
 var cfgFastClick = require("../config").getConfig("fastClickMode");
 
@@ -42,6 +43,9 @@ exports.state = {
 
     if (breakMove) {
       this.changeState("INGAME_MENU");
+    } else {
+      // TODO iiiih :(
+      renderer.renderScreen();
     }
   },
 
