@@ -139,8 +139,10 @@ exports.calculateTargets = function (unit, x, y, selection, markRangeInSelection
   }
 
   // a unit may does not have ammo but a weapon that needs ammo to fire
-  if (exports.hasMainWeapon(unit) && !exports.hasSecondaryWeapon(unit) && unit.type.ammo > 0 && unit.ammo === 0) {
-    return false;
+  if (!markRangeInSelection) {
+    if (exports.hasMainWeapon(unit) && !exports.hasSecondaryWeapon(unit) && unit.type.ammo > 0 && unit.ammo === 0) {
+      return false;
+    }
   }
 
   // extract range
