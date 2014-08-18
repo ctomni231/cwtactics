@@ -65,19 +65,19 @@ exports.changeParameter = function (pid, type, prev) {
 
     // ---------------------------------------------------------
 
-    case constants.CHANGE_TYPE.CO_SIDE:
+    case exports.CHANGE_TYPE.CO_SIDE:
       assert(false, "not supported yet");
       break;
 
     // ---------------------------------------------------------
 
-    case constants.CHANGE_TYPE.GAME_TYPE:
+    case exports.CHANGE_TYPE.GAME_TYPE:
       model.gameMode = model.gameMode === model.GAME_MODE_AW1 ? model.GAME_MODE_AW2 : model.GAME_MODE_AW1;
       break;
 
     // ---------------------------------------------------------
 
-    case constants.CHANGE_TYPE.PLAYER_TYPE:
+    case exports.CHANGE_TYPE.PLAYER_TYPE:
       var cSelect = type[pid];
       if (cSelect === constants.DESELECT_ID) break;
 
@@ -94,7 +94,7 @@ exports.changeParameter = function (pid, type, prev) {
 
     // ---------------------------------------------------------
 
-    case constants.CHANGE_TYPE.TEAM:
+    case exports.CHANGE_TYPE.TEAM:
       var cSelect = team[pid];
 
       while (true) {
