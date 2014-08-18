@@ -1,32 +1,34 @@
 "use strict";
 
 var constants = require('../constants');
+var renderer = require('../renderer');
 var state = require('../statemachine');
+var stateData = require('../dataTransfer/states');
 var input = require('../input');
 
 function inSelection() {
-  var state = state.activeStateId;
+  var cState = state.activeStateId;
   return (
-    state === "INGAME_MOVEPATH"
-      || state === "INGAME_SELECT_TILE_TYPE_A"
-      || state === "INGAME_SELECT_TILE_TYPE_B" );
+    cState === "INGAME_MOVEPATH"
+      || cState === "INGAME_SELECT_TILE_TYPE_A"
+      || cState === "INGAME_SELECT_TILE_TYPE_B" );
   // || controller.attackRangeVisible );
 }
 
 function inMenu() {
-  var state = cwt.Gameflow.activeStateId;
-  return ( state === "INGAME_MENU" || state === "INGAME_SUBMENU" );
+  var cState = state.activeStateId;
+  return ( cState === "INGAME_MENU" || cState === "INGAME_SUBMENU" );
 }
 
 // Called when an one finger tap occur
 //
 function oneFingerTap(event, x, y) {
-  x = cwt.Screen.offsetX + parseInt(x / cwt.Screen.TILE_BASE, 10);
-  y = cwt.Screen.offsetY + parseInt(y / cwt.Screen.TILE_BASE, 10);
+  x = renderer.screenOffsetX + parseInt(x / constants.TILE_BASE, 10);
+  y = renderer.screenOffsetY + parseInt(y / constants.TILE_BASE, 10);
 
   if (!inMenu()) {
     if (inSelection()) {
-      if (cwt.Gameflow.globalData.selection.getValue(x, y) > 0) {
+      if (stateData.selection.getValue(x, y) > 0) {
         input.pushAction(input.TYPE_ACTION, x, y);
       } else {
         input.pushAction(input.TYPE_CANCEL, x, y);
@@ -37,12 +39,13 @@ function oneFingerTap(event, x, y) {
 
   } else {
 
+    input.pushAction(input.TYPE_ACTION, constants.INACTIVE, constants.INACTIVE);
 
-    if (event.target.id === "cwt_menu") {
-      input.pushAction(input.TYPE_ACTION, constants.INACTIVE, constants.INACTIVE);
-    } else {
-      input.pushAction(input.TYPE_CANCEL, constants.INACTIVE, constants.INACTIVE);
-    }
+    //if (event.target.id === "cwt_menu") {
+    //  input.pushAction(input.TYPE_ACTION, constants.INACTIVE, constants.INACTIVE);
+    //} else {
+    //  input.pushAction(input.TYPE_CANCEL, constants.INACTIVE, constants.INACTIVE);
+    //}
   }
 }
 
@@ -65,7 +68,7 @@ function swipe(event, dx, dy) {
   if (dx === -1) key = input.TYPE_LEFT;
   if (dy === -1) key = input.TYPE_UP;
 
-  input.pushAction(key, ( cwt.Gameflow.state === "GAME_ROUND" ) ? 10 : 1, constants.INACTIVE);
+  input.pushAction(key, (stateData.inGameRound ? 10 : 1), constants.INACTIVE);
 }
 
 // Called when a drag occur. A drag happens when a one finger tap occurs
@@ -95,7 +98,7 @@ function oneFingerDrag(event, dx, dy) {
 
     } else {
       //OUTSIDE THE MENU
-      input.pushAction(input.TYPE_CANCEL, constants.INACTIVE, constants.INACTIVE);
+      //input.pushAction(input.TYPE_CANCEL, constants.INACTIVE, constants.INACTIVE);
     }
   }
 
@@ -140,6 +143,8 @@ function pinch(event, delta) {
   //if (delta < 0) controller.setScreenScale(controller.screenScale - 1);
   //else           controller.setScreenScale(controller.screenScale + 1);
 }
+
+// ----------------------------------------------------------------------------------------
 
 // positions
 //  - first finger
@@ -266,11 +271,11 @@ exports.backend = new input.InputBackend(
 
     document.addEventListener('touchstart', TOUCH_START_EVENT, false);
     document.addEventListener('touchmove', TOUCH_MOVE_EVENT, false);
-    document.addEventListener('touchend', TOUCH_END_EVENT , false);
+    document.addEventListener('touchend', TOUCH_END_EVENT, false);
   },
   function () {
     document.removeEventListener('touchstart', TOUCH_START_EVENT, false);
     document.removeEventListener('touchmove', TOUCH_MOVE_EVENT, false);
-    document.removeEventListener('touchend', TOUCH_END_EVENT , false);
+    document.removeEventListener('touchend', TOUCH_END_EVENT, false);
   }
 );
