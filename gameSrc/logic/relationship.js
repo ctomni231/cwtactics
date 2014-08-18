@@ -56,10 +56,10 @@ exports.getRelationShipTo = function (left, right, checkLeft, checkRight) {
   if (!oR && checkRight !== this.CHECK_UNIT) oR = right.property;
 
   if (!oL) {
-    return this.RELATION_NULL;
+    return exports.RELATION_NULL;
   }
 
-  return this.getRelationship(oL, oR);
+  return exports.getRelationship(oL, oR);
 };
 
 //
@@ -69,27 +69,32 @@ exports.getRelationship = function (objectA, objectB) {
 
   // one object is null
   if (objectA === null || objectB === null) {
-    return this.RELATION_NONE;
+    return exports.RELATION_NONE;
   }
 
   var playerA = (objectA instanceof model.Player) ? objectA : objectA.owner;
   var playerB = (objectB instanceof model.Player) ? objectB : objectB.owner;
 
+  // one object is null
+  if (playerA === null || playerB === null) {
+    return exports.RELATION_NONE;
+  }
+
   // one player is inactive
   if (playerA.team === -1 || playerB.team === -1) {
-    return this.RELATION_NONE;
+    return exports.RELATION_NONE;
   }
 
   // own
   if (playerA === playerB) {
-    return this.RELATION_SAME_THING;
+    return exports.RELATION_SAME_THING;
   }
 
   // allied or enemy ?
   if (playerA.team === playerB.team) {
-    return this.RELATION_ALLIED;
+    return exports.RELATION_ALLIED;
   } else {
-    return this.RELATION_ENEMY;
+    return exports.RELATION_ENEMY;
   }
 };
 
@@ -105,25 +110,25 @@ exports.hasUnitNeighbourWithRelationship = function (player, x, y, relationship)
   // WEST
   if (x > 0) {
     unit = model.mapData[x - 1][y].unit;
-    if (unit && this.getRelationship(player, unit.owner) === relationship) return true;
+    if (unit && exports.getRelationship(player, unit.owner) === relationship) return true;
   }
 
   // NORTH
   if (y > 0) {
     unit = model.mapData[x][y - 1].unit;
-    if (unit && this.getRelationship(player, unit.owner) === relationship) return true;
+    if (unit && exports.getRelationship(player, unit.owner) === relationship) return true;
   }
 
   // EAST
   if (x < model.mapWidth - 1) {
     unit = model.mapData[x + 1][y].unit;
-    if (unit && this.getRelationship(player, unit.owner) === relationship) return true;
+    if (unit && exports.getRelationship(player, unit.owner) === relationship) return true;
   }
 
   // SOUTH
   if (y < model.mapHeight - 1) {
     unit = model.mapData[x][y + 1].unit;
-    if (unit && this.getRelationship(player, unit.owner) === relationship) return true;
+    if (unit && exports.getRelationship(player, unit.owner) === relationship) return true;
   }
 
   return false;

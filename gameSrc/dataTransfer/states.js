@@ -648,8 +648,8 @@ exports.menu = {
         checkMode = null;
     }
 
-    for (var si = 2, se = action.relationToProp.length; si < se; si++) {
-      if (action.relationToProp[si] === checkMode) {
+    for (var si = 2, se = relationList.length; si < se; si++) {
+      if (relationList[si] === checkMode) {
         return true;
       }
     }
