@@ -275,6 +275,7 @@ exports.preventMovePathGeneration = false;
 
 exports.inMultiStep = false;
 
+exports.focusMode = constants.INACTIVE;
 
 //
 //
@@ -406,7 +407,7 @@ exports.selection = {
   },
 
   clear: function () {
-    this.setCenter(0,0,constants.INACTIVE);
+    this.setCenter(0, 0, constants.INACTIVE);
   },
 
   // @override */
@@ -525,6 +526,27 @@ exports.selection = {
     }
 
     return false;
+  },
+
+  setAllValuesTo: function (newValue, fixedValue) {
+    for (var x = 0; x < this.len_; x++) {
+      for (var y = 0; y < this.len_; y++) {
+        if (this.data_[x][y] != fixedValue) {
+          this.data_[x][y] = newValue;
+        }
+      }
+    }
+  },
+
+  onAllValidPositions: function (minValue, maxValue, doItHolder) {
+    for (var x = 0; x < this.len_; x++) {
+      for (var y = 0; y < this.len_; y++) {
+        var value = this.data_[x][y];
+        if (value >= minValue && value <= maxValue) {
+          doItHolder.doIt(x, y, value, this);
+        }
+      }
+    }
   }
 };
 

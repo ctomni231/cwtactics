@@ -1,3 +1,10 @@
+"use strict";
+
+var constants = require("../constants");
+var assert = require("../system/functions").assert;
+var move = require("../logic/move");
+var model = require("../model");
+
 // Signal for units that cannot attack.
 //
 exports.FIRETYPE_NONE = 0;
@@ -13,6 +20,12 @@ exports.FIRETYPE_DIRECT = 2;
 // Ballistic fire type that can fire from range 1 to x.
 //
 exports.FIRETYPE_BALLISTIC = 3;
+
+exports.ATTACKABLE = 1;
+
+exports.MOVE_AND_ATTACKABLE = 2;
+
+exports.MOVABLE = 3;
 
 //
 // Returns true if the **unit** has a main weapon, else false.
@@ -30,23 +43,29 @@ exports.hasSecondaryWeapon = function (unit) {
   return (attack && attack.sec_wp);
 };
 
+// Returns **true** if a given **unit** is an direct unit else **false**.
+//
+exports.isDirect = function (unit) {
+  return exports.getFireType(unit) === this.FIRETYPE_DIRECT;
+};
+
 // Returns **true** if a given **unit** is an indirect unit ( *e.g. artillery* ) else **false**.
 //
 exports.isIndirect = function (unit) {
-  return this.getFireType(unit) === this.FIRETYPE_INDIRECT;
+  return exports.getFireType(unit) === this.FIRETYPE_INDIRECT;
 };
 
 // Returns **true** if a given **unit** is an ballistic unit ( *e.g. anti-tank-gun* ) else **false**.
 //
 exports.isBallistic = function (unit) {
-  return this.getFireType(unit) === this.FIRETYPE_BALLISTIC;
+  return exports.getFireType(unit) === this.FIRETYPE_BALLISTIC;
 };
 
 // Returns the fire type of a given **unit**.
 //
 exports.getFireType = function (unit) {
-  if (!this.hasMainWeapon(unit) && !this.hasSecondaryWeapon(unit)) {
-    return this.FIRETYPE_NONE;
+  if (!exports.hasMainWeapon(unit) && !exports.hasSecondaryWeapon(unit)) {
+    return exports.FIRETYPE_NONE;
   }
 
   // The fire type will be determined by the following situations. All other situations (which aren't in the
@@ -58,23 +77,16 @@ exports.getFireType = function (unit) {
   // Only Secondary  --> Direct
   //
 
-  var fireType = cwt.INACTIVE;
   var min = unit.type.attack.minrange;
   if (!min) {
-    fireType = this.FIRETYPE_DIRECT;
+    return exports.FIRETYPE_DIRECT;
+
   } else {
     // non-direct units aren't allowed to obtain secondary weapons
-    if (cwt.DEBUG) cwt.assert(!this.hasMainWeapon(unit), "found non-direct unit with secondary weapon");
+    if (constants.DEBUG) assert(exports.hasMainWeapon(unit), "found non-direct unit with secondary weapon");
 
-    if (min > 1) {
-      fireType = this.FIRETYPE_INDIRECT;
-    } else {
-      fireType = this.FIRETYPE_BALLISTIC;
-    }
+    return (min > 1 ? exports.FIRETYPE_INDIRECT : exports.FIRETYPE_BALLISTIC);
   }
-
-  if (cwt.DEBUG) cwt.assert(fireType != cwt.INACTIVE);
-  return fireType;
 };
 
 //
@@ -100,9 +112,8 @@ exports.canUseMainWeapon = function (attacker, defender) {
 // The method will return **true** when at least one target is in range, else **false**.
 //
 exports.hasTargets = function (unit, x, y, moved) {
-  if (moved && this.isIndirect(unit)) return false;
-
-  return this.calculateTargets(unit, x, y);
+  if (moved && exports.isIndirect(unit)) return false;
+  return exports.calculateTargets(unit, x, y);
 };
 
 //
@@ -111,20 +122,16 @@ exports.hasTargets = function (unit, x, y, moved) {
 // in range will be marked. The method will return **true** when at least one target is in range, else **false** or
 // **false** in every case when **markTiles** is true.
 //
-exports.calculateTargets = function (unit, x, y, data, markTiles) {
-  if (this.DEBUG) {
-    cwt.assert(unit instanceof cwt.UnitClass);
-    cwt.assert(cwt.Model.isValidPosition(x, y));
+exports.calculateTargets = function (unit, x, y, selection, markRangeInSelection) {
+  if (constants.DEBUG) {
+    assert(unit instanceof model.Unit);
+    assert(model.isValidPosition(x, y));
   }
 
-  var markInData = (typeof data !== "undefined");
+  var markInData = (typeof selection !== "undefined");
   var teamId = unit.owner.team;
   var attackSheet = unit.type.attack;
   var targetInRange = false;
-
-  if (markInData) {
-    data.setCenter(x, y, cwt.INACTIVE);
-  }
 
   // no battle unit ?
   if (typeof attackSheet === "undefined") {
@@ -132,7 +139,7 @@ exports.calculateTargets = function (unit, x, y, data, markTiles) {
   }
 
   // a unit may does not have ammo but a weapon that needs ammo to fire
-  if (this.hasMainWeapon(unit) && !this.hasSecondaryWeapon(unit) && unit.type.ammo > 0 && unit.ammo === 0) {
+  if (exports.hasMainWeapon(unit) && !exports.hasSecondaryWeapon(unit) && unit.type.ammo > 0 && unit.ammo === 0) {
     return false;
   }
 
@@ -144,53 +151,57 @@ exports.calculateTargets = function (unit, x, y, data, markTiles) {
     maxR = unit.type.attack.maxrange;
   }
 
-  var lX;
-  var hX;
   var lY = y - maxR;
   var hY = y + maxR;
-
   if (lY < 0) lY = 0;
-  if (hY >= cwt.Model.mapHeight) hY = cwt.Model.mapHeight - 1;
-
+  if (hY >= model.mapHeight) hY = model.mapHeight - 1;
   for (; lY <= hY; lY++) {
 
-    var disY = Math.abs(lY - y);
-    lX = x - maxR + disY;
-    hX = x + maxR - disY;
-
+    var lX = x - maxR;
+    var hX = x + maxR;
     if (lX < 0) lX = 0;
-    if (hX >= cwt.Model.mapWidth) hX = cwt.Model.mapWidth - 1;
-
+    if (hX >= model.mapWidth) hX = model.mapWidth - 1;
     for (; lX <= hX; lX++) {
-      var tile = cwt.Model.mapData[lX][lY];
-      var dis = cwt.Model.getDistance(x, y, lX, lY);
 
-      // if markTiles is true, then mark all tiles in range
-      if (markTiles && dis >= minR) {
-        data.setValue(lX, lY, 1);
-        continue;
-      }
+      var tile = model.mapData[lX][lY];
+      var dis = model.getDistance(x, y, lX, lY);
 
-      // drop tile when hidden in fog
-      if (tile.visionTurnOwner === 0) {
-        continue;
-      }
+      if (dis >= minR && dis <= maxR) {
 
-      if (dis >= minR) {
-        var dmg = cwt.INACTIVE;
+        // if markRangeInSelection is true, then mark all tiles in range
+        if (markRangeInSelection) {
+          var nValue = exports.ATTACKABLE;
 
-        var tUnit = tile.unit;
-        if (tUnit && tUnit.owner.team !== teamId) {
+          switch (selection.getValue(lX, lY)) {
+            case exports.MOVABLE:
+            case exports.MOVE_AND_ATTACKABLE:
+              nValue = exports.MOVE_AND_ATTACKABLE;
+              break;
+          }
 
-          dmg = this.getBaseDamageAgainst(unit, tUnit);
-          if (dmg > 0) {
-            targetInRange = true;
+          selection.setValue(lX, lY, nValue);
+          continue;
 
-            // if mark tile is true, then mark them in the selection map else return true
-            if (markInData) {
-              data.setValue(lX, lY, dmg);
-            } else {
-              return true;
+        } else if (tile.visionTurnOwner === 0) {
+          // drop tile when hidden in fog
+          continue;
+
+        } else {
+          var dmg = constants.INACTIVE;
+
+          var tUnit = tile.unit;
+          if (tUnit && tUnit.owner.team !== teamId) {
+
+            dmg = exports.getBaseDamageAgainst(unit, tUnit);
+            if (dmg > 0) {
+              targetInRange = true;
+
+              // if mark tile is true, then mark them in the selection map else return true
+              if (markInData) {
+                selection.setValue(lX, lY, dmg);
+              } else {
+                return true;
+              }
             }
           }
         }
@@ -199,6 +210,52 @@ exports.calculateTargets = function (unit, x, y, data, markTiles) {
   }
 
   return targetInRange;
+};
+
+var fillRangeDoAttackRange = {
+  unit: null,
+
+  // Expects a filed selection map (with movable tiles) and adds the attack range from every movable tile.
+  //
+  doIt: function (x, y, value, selection) {
+    exports.calculateTargets(this.unit, x, y, selection, true);
+    selection.setValue(x, y, exports.ATTACKABLE);
+  }
+};
+
+var fillRangeDoMoveCheck = {
+  doIt: function (x, y, value, selection) {
+    var tile = model.mapData[x][y];
+    selection.setValue(x, y, (tile.visionTurnOwner > 0 && tile.unit ? constants.INACTIVE : exports.MOVABLE));
+  }
+};
+
+var fillRangeLock = false;
+
+exports.fillRangeMap = function (unit, x, y, selection) {
+  assert(!fillRangeLock, "cannot call fillRangeMap twice at the same time");
+  fillRangeLock = true;
+
+  selection.clear();
+
+  if (exports.isDirect(unit)) {
+
+    fillRangeDoAttackRange.unit = unit;
+
+    // movable unit -> check attack from every movable position
+    move.fillMoveMap(null, selection, x, y, unit);
+    selection.onAllValidPositions(0, constants.MAX_SELECTION_RANGE, fillRangeDoMoveCheck);
+    selection.onAllValidPositions(exports.MOVE_AND_ATTACKABLE, exports.MOVABLE, fillRangeDoAttackRange);
+
+    fillRangeDoAttackRange.unit = null;
+
+  } else {
+
+    // non movable unit -> check attack from position {x,y}
+    exports.calculateTargets(unit, x, y, selection, true);
+  }
+
+  fillRangeLock = false;
 };
 
 // Returns the **base damage value as integer** of an **attacker** against a **defender**. If the attacker cannot
@@ -210,7 +267,7 @@ exports.getBaseDamageAgainst = function (attacker, defender, withMainWp) {
   var attack = attacker.type.attack;
 
   if (!attack) {
-    return cwt.INACTIVE;
+    return constants.INACTIVE;
   }
 
   var tType = defender.type.ID;
@@ -236,7 +293,7 @@ exports.getBaseDamageAgainst = function (attacker, defender, withMainWp) {
     }
   }
 
-  return cwt.INACTIVE;
+  return constants.INACTIVE;
 };
 
 // Returns the **battle damage as integer** of an **attacker** against an **defender** with a given amount of
@@ -248,23 +305,23 @@ exports.getBattleDamageAgainst = function (attacker, defender, luck, withMainWp,
     isCounter = false;
   }
 
-  var BASE = this.getBaseDamageAgainst(attacker, defender, withMainWp);
-  if (BASE === cwt.INACTIVE) {
-    return cwt.INACTIVE;
+  var BASE = exports.getBaseDamageAgainst(attacker, defender, withMainWp);
+  if (BASE === constants.INACTIVE) {
+    return constants.INACTIVE;
   }
 
-  var AHP = cwt.UnitClass.healthToPoints(attacker);
+  var AHP = model.Unit.healthToPoints(attacker);
   var LUCK = parseInt((luck / 100) * 10, 10);
   var ACO = 100;
   if (isCounter) ACO += 0;
 
-  var def = cwt.Model.grabTileByUnit(defender).type.defense;
+  var def = model.grabTileByUnit(defender).type.defense;
   var DCO = 100;
-  var DHP = cwt.UnitClass.healthToPoints(defender);
+  var DHP = model.Unit.healthToPoints(defender);
   var DTR = parseInt(def * 100 / 100, 10);
 
   var damage;
-  if (cwt.Model.gameMode <= cwt.Model.GAME_MODE_AW2) {
+  if (model.gameMode <= model.GAME_MODE_AW2) {
     damage = BASE * (ACO / 100 - (ACO / 100 * (DCO - 100) / 100)) * (AHP / 10);
   } else {
     damage = BASE * (ACO / 100 * DCO / 100) * (AHP / 10);
@@ -282,11 +339,11 @@ exports.getBattleDamageAgainst = function (attacker, defender, luck, withMainWp,
 // @param defLuckRatio
 //
 exports.attack = function (attacker, defender, attLuckRatio, defLuckRatio) {
-  if (this.DEBUG) {
-    cwt.assert(attacker instanceof cwt.UnitClass);
-    cwt.assert(defender instanceof cwt.UnitClass);
-    cwt.assert(attLuckRatio >= 0 && attLuckRatio <= 100);
-    cwt.assert(defLuckRatio >= 0 && defLuckRatio <= 100);
+  if (constants.DEBUG) {
+    assert(attacker instanceof model.Unit);
+    assert(defender instanceof model.Unit);
+    assert(attLuckRatio >= 0 && attLuckRatio <= 100);
+    assert(defLuckRatio >= 0 && defLuckRatio <= 100);
   }
 
   // TODO
@@ -307,8 +364,8 @@ exports.attack = function (attacker, defender, attLuckRatio, defLuckRatio) {
   var dSheets = defender.type;
   var attOwner = attacker.owner;
   var defOwner = defender.owner;
-  var powerAtt = cwt.UnitClass.healthToPoints(defender);
-  var powerCounterAtt = cwt.UnitClass.healthToPoints(attacker);
+  var powerAtt = model.Unit.healthToPoints(defender);
+  var powerCounterAtt = model.Unit.healthToPoints(attacker);
   var mainWpAttack = this.canUseMainWeapon(attacker, defender);
   var damage = this.getBattleDamageAgainst(attacker, defender, attLuckRatio, mainWpAttack, false);
 

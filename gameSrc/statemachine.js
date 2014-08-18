@@ -369,11 +369,11 @@ exports.addStates = function () {
   addInGameState(require("./states/ingame_leave").state);
   addInGameState(require("./states/ingame_movepath").state);
   addInGameState(require("./states/ingame_menu").state);
+  addInGameState(require("./states/ingame_showAttackRange").state);
 
   /*
    addInGameState(require("./states/ingame_multistep").state);
    addInGameState(require("./states/ingame_selecttile").state);
-   addInGameState(require("./states/ingame_showAttackRange").state);
    addInGameState(require("./states/ingame_submenu").state);
    addInGameState(require("./states/ingame_targetselection_a").state);
    addInGameState(require("./states/ingame_targetselection_b").state);

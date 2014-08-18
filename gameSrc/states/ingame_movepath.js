@@ -1,13 +1,15 @@
 "use strict";
 
+var constants = require("../constants");
 var stateData = require("../dataTransfer/states");
 var move = require("../logic/move");
 var model = require("../model");
 var renderer = require("../renderer");
+var image = require("../image");
 
 var cfgFastClick = require("../config").getConfig("fastClickMode");
 
-var setMovepathTarget = function () {
+var setMovePathTarget = function () {
   var x = stateData.cursorX;
   var y = stateData.cursorY;
 
@@ -50,13 +52,13 @@ var setMovepathTarget = function () {
   renderer.layerEffects.clearAll();
   renderer.renderMovePath();
   renderer.layerEffects.renderLayer(0);
-}
-
+};
 
 exports.state = {
   id: "INGAME_MOVEPATH",
 
   enter: function () {
+    stateData.focusMode = image.Sprite.FOCUS_MOVE;
 
     // when we do back steps in the game flow then we don't want to recreate an already created move way
     if (stateData.preventMovePathGeneration) {
@@ -90,12 +92,13 @@ exports.state = {
     if (breakMove) {
       this.changeState("INGAME_MENU");
     } else {
-      // TODO iiiih :(
-      renderer.renderScreen();
+      renderer.renderFocusOnScreen();
     }
   },
 
   exit: function () {
+    stateData.focusMode = constants.INACTIVE;
+
     renderer.layerEffects.clear();
     renderer.layerFocus.clearAll();
     stateData.selection.clear();
@@ -109,27 +112,27 @@ exports.state = {
 
     var nx = stateData.cursorX;
     var ny = stateData.cursorY;
-    if (ox != nx || oy || ny) setMovepathTarget();
+    if (ox != nx || oy || ny) setMovePathTarget();
   },
 
   UP: function () {
     stateData.moveCursor(move.MOVE_CODES_UP);
-    setMovepathTarget();
+    setMovePathTarget();
   },
 
   DOWN: function () {
     stateData.moveCursor(move.MOVE_CODES_DOWN);
-    setMovepathTarget();
+    setMovePathTarget();
   },
 
   LEFT: function () {
     stateData.moveCursor(move.MOVE_CODES_LEFT);
-    setMovepathTarget();
+    setMovePathTarget();
   },
 
   RIGHT: function () {
     stateData.moveCursor(move.MOVE_CODES_RIGHT);
-    setMovepathTarget();
+    setMovePathTarget();
   },
 
   ACTION: function () {

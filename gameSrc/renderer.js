@@ -281,6 +281,21 @@ exports.renderScreen = function () {
   if (constants.DEBUG) console.log("rendered the complete screen (" + ((new Date()).getTime() - time) + "ms)");
 };
 
+exports.renderFocusOnScreen = function () {
+  var time;
+  if (constants.DEBUG) time = (new Date()).getTime();
+
+  var x = exports.screenOffsetX;
+  var y = exports.screenOffsetY;
+  var w = (model.mapWidth < constants.SCREEN_WIDTH) ? model.mapWidth : constants.SCREEN_WIDTH;
+  var h = (model.mapHeight < constants.SCREEN_HEIGHT) ? model.mapHeight : constants.SCREEN_HEIGHT;
+
+  exports.renderFocus(x, y, w, h);
+  exports.layerFocus.renderLayer(rendAnim.indexEffectAnimation);
+
+  if (constants.DEBUG) console.log("rendered focus on screen (" + ((new Date()).getTime() - time) + "ms)");
+};
+
 //
 //
 // @param {number} code
@@ -487,7 +502,8 @@ exports.renderFocus = function (x, y, w, h) {
     exports.screenOffsetX, exports.screenOffsetY,
     stateData.selection,
     x, y,
-    w, h
+    w, h,
+    stateData.focusMode
   );
 };
 

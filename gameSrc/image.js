@@ -58,6 +58,10 @@ exports.Sprite = my.Class({
 
   STATIC: {
 
+    FOCUS_MOVE: 0,
+
+    FOCUS_ATTACK: 1,
+
     // ---------------------------------------------
 
     // @constant */

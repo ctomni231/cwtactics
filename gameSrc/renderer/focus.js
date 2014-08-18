@@ -13,8 +13,7 @@ exports.init = function (width, height) {
   tempCanvas.height = height;
 };
 
-exports.renderSelection = function (layer, offsetX, offsetY, selection, x, y, w, h) {
-
+exports.renderSelection = function (layer, offsetX, offsetY, selection, x, y, w, h, state) {
   var ctx;
   var scx;
   var scy;
@@ -26,13 +25,13 @@ exports.renderSelection = function (layer, offsetX, offsetY, selection, x, y, w,
   var tch;
 
   var sprite = image.sprites["FOCUS"];
-  var spriteImg = sprite.getImage(0);
+  var spriteImg = sprite.getImage(state);
   var oy = y;
 
   for (var xe = x + w; x < xe; x++) {
     for (var y = oy, ye = y + h; y < ye; y++) {
 
-      if(selection.getValue(x,y) >= 0) {
+      if (selection.getValue(x, y) >= 0) {
 
         // render all phases
         var n = 0;
@@ -104,7 +103,7 @@ exports.shift = function (layer, selection, code) {
   // update background layers
   var n = 0;
   while (n < 7) {
-    tmpContext.clearRect(0,0,layer.w,layer.h);
+    tmpContext.clearRect(0, 0, layer.w, layer.h);
 
     // copy visible content to temp canvas
     tmpContext.drawImage(
@@ -119,7 +118,7 @@ exports.shift = function (layer, selection, code) {
     layer.clear(n);
 
     // copy visible content back to the original canvas
-    layer.getContext(n).drawImage(tempCanvas,0,0);
+    layer.getContext(n).drawImage(tempCanvas, 0, 0);
 
     n++;
   }
