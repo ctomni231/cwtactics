@@ -16,6 +16,7 @@ var rendFocus = require("./renderer/focus");
 var stateData = require("./dataTransfer/states");
 var assert = require("./system/functions").assert;
 var model = require("./model");
+var image = require("./image");
 var move = require("./logic/move");
 
 rendFog.init(canvasW, canvasH);
@@ -351,6 +352,12 @@ exports.shiftMap = function (code) {
   exports.layerMap.renderLayer(rendAnim.indexMapAnimation);
   exports.layerUnit.renderLayer(rendAnim.indexUnitAnimation);
   exports.layerFocus.renderLayer(rendAnim.indexEffectAnimation);
+
+  if (stateData.focusMode === image.Sprite.FOCUS_MOVE) {
+    exports.layerEffects.clearAll();
+    exports.renderMovePath();
+    exports.layerEffects.renderLayer(0);
+  }
 
   if (constants.DEBUG) console.log("shifted the screen (" + ((new Date()).getTime() - time) + "ms)");
 };
