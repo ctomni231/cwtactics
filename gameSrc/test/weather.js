@@ -1,3 +1,5 @@
+"use strict";
+
 // weather.js
 //
 // A simple class that does the snow particle demo in JS
@@ -13,8 +15,10 @@
 //But it seems memory intensive to pull off, there has to be
 //a less expensive way
 
+var renderer = require("../renderer");
 var constants = require("../constants");
 var stm = require("../statemachine");
+var input = require("../input");
 
 //Keeps track of the time
 var time = 0;
@@ -53,13 +57,13 @@ exports.state = {
 
   enter: function () {
     //Clears the UI layer for demo
-    this.renderer.layerUI.clear();
+    renderer.layerUI.clear();
   },
 
   update: function (delta, lastInput) {
 
     // action leads into main menu (Thanks BlackCat
-    if (lastInput && lastInput.key === this.input.TYPE_ACTION)
+    if (lastInput && lastInput.key === input.TYPE_ACTION)
       this.changeState("MAIN_MENU");
 
     //Particle creation (totally fixed up to take as little memory as possible)
@@ -70,13 +74,13 @@ exports.state = {
       if (parseInt(Math.random() * FREQUENCY) == 1) {
         if (i == type.length) {
           type.push(parseInt(Math.random() * 3));
-          posx.push(((Math.random() * this.renderer.screenWidth + 100 / 10) * 10) - 200);
+          posx.push(((Math.random() * renderer.screenWidth + 100 / 10) * 10) - 200);
           posy.push(-10);
           break;
         }
         if (type[i] == -1) {
           type[i] = parseInt(Math.random() * 3);
-          posx[i] = ((Math.random() * this.renderer.screenWidth + 100 / 10) * 10) - 200;
+          posx[i] = ((Math.random() * renderer.screenWidth + 100 / 10) * 10) - 200;
           posy[i] = -10;
           break;
         }
@@ -105,7 +109,7 @@ exports.state = {
       posy[i] += dis;
 
       //Destroy particles
-      if (posy[i] > this.renderer.screenHeight + 10)
+      if (posy[i] > renderer.screenHeight + 10)
         type[i] = -1;
     }
     // var store -= var MAX;
@@ -113,7 +117,7 @@ exports.state = {
   },
 
   render: function () {
-    var ctx = this.renderer.layerUI.getContext();
+    var ctx = renderer.layerUI.getContext();
 
     //Tests the speed of each particle for debug mode
     if (constants.DEBUG) {
@@ -121,7 +125,7 @@ exports.state = {
     }
 
     ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, this.renderer.screenWidth, this.renderer.screenHeight);
+    ctx.fillRect(0, 0, renderer.screenWidth, renderer.screenHeight);
 
     //Render particles
     for (var i = 0; i < type.length; i++) {

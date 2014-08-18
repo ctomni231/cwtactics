@@ -129,6 +129,24 @@ module.exports = function (grunt) {
             }
           ]
         },
+        devServer: {
+          src: ["<%= config.constants_template %>"],
+          dest: ["<%= config.constants %>"],
+          replacements: [
+            {
+              from: /exports.DEBUG\s*=\s*(null);/g ,
+              to: "exports.DEBUG = true;"
+            },
+            {
+              from: /exports.MOD_PATH\s*=\s*(null);/g ,
+              to: "exports.MOD_PATH = \"http://192.168.1.31:8000/\";"
+            },
+            {
+              from: /exports.DEFAULT_MOD_PATH\s*=\s*(null);/g ,
+              to: "exports.DEFAULT_MOD_PATH = \"http://192.168.1.31:8000/modifications/cwt.json\";"
+            }
+          ]
+        },
         live: {
           src: ["<%= config.constants_template %>"],
           dest: ["<%= config.constants%>"],
@@ -207,12 +225,20 @@ module.exports = function (grunt) {
     "replace:live", "browserify:live", "uglify:game", 
     "copy:html"
   ]);
-  
+
   // builds a development version with source maps etc.
   grunt.registerTask("dev", [
-    "clean:dest", 
+    "clean:dest",
     "concat:deps", "uglify:deps",
-    "replace:dev", "browserify:dev", 
+    "replace:dev", "browserify:dev",
+    "copy:html"
+  ]);
+
+  // builds a development version with source maps etc.
+  grunt.registerTask("devServer", [
+    "clean:dest",
+    "concat:deps", "uglify:deps",
+    "replace:devServer", "browserify:dev",
     "copy:html"
   ]);
   
