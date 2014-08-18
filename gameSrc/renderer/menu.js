@@ -65,7 +65,7 @@ exports.renderMenu = function (layer) {
 };
 
 exports.updateMenuIndex = function (x, y) {
-  layoutGenericMenu.updateMenuIndex(x,y);
+  layoutGenericMenu.updateIndex(x,y);
 };
 
 exports.getMenuIndex = function () {

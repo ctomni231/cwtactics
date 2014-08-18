@@ -4,7 +4,7 @@
 //
 
 var model = require("../model");
-var actions = require("../actions");
+var actionsLib = require("../actions");
 var renderer = require("../renderer");
 var constants = require("../constants");
 var stateMachine = require("../statemachine");
@@ -21,8 +21,11 @@ var invokeActionByData = function () {
   var p3 = constants.INACTIVE;
   var p4 = constants.INACTIVE;
   var p5 = constants.INACTIVE;
-  var action = null;
+  var action = exports.action.selectedEntry;
   switch (action) {
+
+    case "nextTurn":
+      break;
 
     case "wait":
       p1 = exports.source.unitId;
@@ -110,7 +113,7 @@ var invokeActionByData = function () {
       throw Error("unknown action");
   }
 
-  actions.sharedAction(action, p1, p2, p3, p4, p5);
+  actionsLib.sharedAction(action, p1, p2, p3, p4, p5);
 };
 
 var checkConditionByData = function (action) {
@@ -673,39 +676,40 @@ exports.menu = {
     var propertyActable = (!(sUnit || !sProp || sProp.owner !== model.turnOwner || sProp.type.blocker));
     var mapActable = (!unitActable && !propertyActable);
 
+
     // check_ all game action objects and fill menu
-    var actions = actions.getActions();
+    var actions = actionsLib.getActions();
     for (var i = 0, e = actions.length; i < e; i++) {
       var action = actions[i];
 
       switch (action.type) {
 
-        case actions.CLIENT_ACTION:
+        case actionsLib.CLIENT_ACTION:
           // TODO: ai check
-          if (!mapActable || cwt.Player.activeClientPlayer !== cwt.Gameround.turnOwner) {
+          if (!mapActable || model.Player.activeClientPlayer !== model.turnOwner) {
             continue;
           }
           break;
 
-        case actions.PROPERTY_ACTION:
+        case actionsLib.PROPERTY_ACTION:
           if (!propertyActable) {
             continue;
           }
           break;
 
-        case actions.MAP_ACTION:
+        case actionsLib.MAP_ACTION:
           if (!mapActable) {
             continue;
           }
           break;
 
-        case actions.UNIT_ACTION:
+        case actionsLib.UNIT_ACTION:
           if (!unitActable) {
             continue;
           }
 
           // extract relationships
-          if (st_mode === void 0) {
+          if (!st_mode) {
             st_mode = relationship.getRelationShipTo(sPos, tPos, ChkU, ChkU);
             sst_mode = relationship.getRelationShipTo(sPos, tsPos, ChkU, ChkU);
             pr_st_mode = relationship.getRelationShipTo(sPos, tPos, ChkU, ChkP);
@@ -727,13 +731,13 @@ exports.menu = {
           }
           break;
 
-        case actions.ENGINE_ACTION:
+        case actionsLib.ENGINE_ACTION:
           continue;
       }
 
       // if condition matches then add the entry to the menu list
       if (checkConditionByData(action)) {
-        exports.menu.addEntry(this.commandKeys[i], true)
+        exports.menu.addEntry(action.key, true)
       }
     }
   }
@@ -763,7 +767,7 @@ exports.nextStepBreak = function () {
 exports.buildFromData = function () {
   var trapped = false;
 
-  if (exports.movePath.data[0] !== -1) {
+  if (exports.movePath.size > 0) {
     trapped = move.trapCheck(exports.movePath, exports.source, exports.target);
   }
 
@@ -773,8 +777,8 @@ exports.buildFromData = function () {
   }
 
   // all unit actions invokes automatically waiting
-  if (trapped || exports.action.object.type === actions.UNIT_ACTION && !exports.action.object.noAutoWait) {
-    actions.sharedAction("wait", exports.source.unitId);
+  if (trapped || exports.action.object.type === actionsLib.UNIT_ACTION && !exports.action.object.noAutoWait) {
+    actionsLib.sharedAction("wait", exports.source.unitId);
   }
 
   return trapped;

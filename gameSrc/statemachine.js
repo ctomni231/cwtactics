@@ -7,6 +7,7 @@ var renderer = require("./renderer");
 var widgets = require("./uiWidgets");
 var input = require("./input");
 var audio = require("./audio");
+var actions = require("./actions");
 var image = require("./image");
 var move = require("./logic/move");
 var fnc = require("./system/functions");
@@ -253,7 +254,13 @@ exports.activeState = null;
 //
 var update = function (delta) {
 
-  // TODO add command evaluation here
+  // TODO animation states ?
+
+  // try to evaluate commands first
+  if (actions.hasData() ) {
+    actions.invokeNext();
+    return;
+  }
 
   // update game-pad controls
   if (features.gamePad && gamePad.update) {
@@ -371,13 +378,14 @@ exports.addStates = function () {
   addInGameState(require("./states/ingame_menu").state);
   addInGameState(require("./states/ingame_showAttackRange").state);
 
+  addInGameState(require("./states/ingame_flush").state);
+
   /*
    addInGameState(require("./states/ingame_multistep").state);
    addInGameState(require("./states/ingame_selecttile").state);
    addInGameState(require("./states/ingame_submenu").state);
    addInGameState(require("./states/ingame_targetselection_a").state);
    addInGameState(require("./states/ingame_targetselection_b").state);
-   addInGameState(require("./states/ingame_flush").state);
 
    addState(require("./states/ingame_anim_ballistic").state);
    addState(require("./states/ingame_anim_captureProperty").state);

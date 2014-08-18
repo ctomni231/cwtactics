@@ -6,6 +6,7 @@ var constants = require("../constants");
 var supply = require("./supply");
 
 var cfgAutoSupply = require("../config").getConfig("autoSupplyAtTurnStart");
+var cfgDayLimit = require("../config").getConfig("round_dayLimit");
 
 var endsTurn_ = function (player) {
 };
@@ -84,7 +85,7 @@ var startsTurn_ = function (player) {
 // Ends the turn for the current active turn owner.
 //
 exports.next = function () {
-  var pid = cwt.Model.turnOwner.id;
+  var pid = model.turnOwner.id;
   var oid = pid;
 
   // Try to find next player from the player pool
@@ -99,7 +100,7 @@ exports.next = function () {
       model.weatherLeftDays--;
 
       // TODO: into action
-      var round_dayLimit = cwt.Config.getValue("round_dayLimit");
+      var round_dayLimit = cfgDayLimit.value;
       if (round_dayLimit > 0 && model.day >= round_dayLimit) {
         cwt.Update.endGameRound();
         // TODO

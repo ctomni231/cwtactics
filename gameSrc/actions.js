@@ -106,7 +106,7 @@ exports.ActionData = my.Class({
   },
 
   toString: function () {
-    return "ActionData:: "+exports.ActionData.serializeActionData(this);
+    return exports.ActionData.serializeActionData(this);
   }
 });
 
@@ -126,20 +126,21 @@ var actions = [];
 var actionIds = {};
 
 
-
 // Adds the action with a given set of arguments to the action stack.
 //
 exports.localAction = function (key) {
   assert(arguments.length <= 6);
 
   // grab data object and fill it in relation to the given arguments
-  var actionData = pool.pop();
+  var actionData = pool.popLast();
   actionData.id = exports.getActionId(key);
-  if (arguments.length > 0 ) actionData.p1 = arguments[0];
-  if (arguments.length > 1 ) actionData.p2 = arguments[1];
-  if (arguments.length > 2 ) actionData.p3 = arguments[2];
-  if (arguments.length > 3 ) actionData.p4 = arguments[3];
-  if (arguments.length > 4 ) actionData.p5 = arguments[4];
+  if (arguments.length > 0) actionData.p1 = arguments[1];
+  if (arguments.length > 1) actionData.p2 = arguments[2];
+  if (arguments.length > 2) actionData.p3 = arguments[3];
+  if (arguments.length > 3) actionData.p4 = arguments[4];
+  if (arguments.length > 4) actionData.p5 = arguments[5];
+
+  if (constants.DEBUG) console.log("add command " + actionData.toString() + " to the stack");
 
   // register action in the action stack
   buffer.push(actionData);
@@ -203,10 +204,10 @@ exports.invokeNext = function () {
   var data = buffer.popFirst();
 
   if (constants.DEBUG) assert(data);
-  if (constants.DEBUG) console.log(data);
+  if (constants.DEBUG) console.log("evaluating action data object " + data);
 
-  // TODO invoke it
-
+  var actionObj = actions[data.id];
+  actionObj.invoke(data.p1, data.p2, data.p3, data.p4, data.p5);
 
   // pool used object
   data.reset();
@@ -243,7 +244,7 @@ var createAction = function (key, type, impl) {
   impl.key = key;
   impl.type = type;
   actions.push(new exports.Action(impl));
-  actionIds[key] = actions.length-1;
+  actionIds[key] = actions.length - 1;
 };
 
 createAction("transferUnit", exports.UNIT_ACTION, require("./actions/transfer").actionUnit);

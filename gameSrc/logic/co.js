@@ -5,6 +5,11 @@ var assert = require("../system/functions").assert;
 var model = require("../model");
 var sheets = require("../sheets");
 
+var cfgEnabledCoPower = require("../config").getConfig("co_enabledCoPower");
+var cfgCoStartCost = require("../config").getConfig("co_getStarCost");
+var cfgCoStartCostIncreaseSteps = require("../config").getConfig("co_getStarCostIncreaseSteps");
+var cfgCoStartCostIncrease = require("../config").getConfig("co_getStarCostIncrease");
+
 //
 // Power level of normal CO power.
 //
@@ -30,7 +35,7 @@ exports.modifyStarPower = function (player, value) {
 // **co_enabledCoPower** if off then **false** will be returned in every situation.
 //
 exports.canActivatePower = function (player, powerLevel) {
-  if (cwt.Config.getValue("co_enabledCoPower") === 0) return false;
+  if (cfgEnabledCoPower.value === 0) return false;
 
   if (constants.DEBUG) {
     assert(player instanceof model.Player && powerLevel >= constants.INACTIVE && powerLevel <= exports.POWER_LEVEL_SCOP);
@@ -84,15 +89,15 @@ exports.deactivatePower = function (player) {
 exports.getStarCost = function (player) {
   if (constants.DEBUG) assert(player instanceof model.Player);
 
-  var cost = cwt.Config.getValue("co_getStarCost");
+  var cost = cfgCoStartCost.value;
   var used = player.powerUsed;
 
   // if usage counter is greater than max usage counter then use
   // only the maximum increase counter for calculation
-  var maxUsed = cwt.Config.getValue("co_getStarCostIncreaseSteps");
+  var maxUsed = cfgCoStartCostIncreaseSteps.value;
   if (used > maxUsed) used = maxUsed;
 
-  cost += used * cwt.Config.getValue("co_getStarCostIncrease");
+  cost += used * cfgCoStartCostIncrease.value;
 
   return cost;
 };

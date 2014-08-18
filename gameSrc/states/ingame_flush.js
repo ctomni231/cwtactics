@@ -1,13 +1,16 @@
+"use strict";
+
+var stateData = require("../dataTransfer/states");
+
 exports.state = {
   id: "INGAME_FLUSH_ACTION",
 
   enter: function () {
-    var gameData = this.globalData;
-    var trapped = gameData.buildFromData();
+    var trapped = stateData.buildFromData();
     var next = null;
 
-    if (!trapped && gameData.action.object.multiStepAction) {
-      gameData.multiStepActive = true;
+    if (!trapped && stateData.action.object.multiStepAction) {
+      stateData.multiStepActive = true;
 
       /*
        if( !controller.stateMachine.data.breakMultiStep ){
@@ -22,6 +25,6 @@ exports.state = {
       next = "INGAME_IDLE";
     }
 
-    require("../statemachine").changeState(next);
+    this.changeState(next);
   }
 };

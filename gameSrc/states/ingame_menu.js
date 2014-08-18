@@ -37,6 +37,8 @@ exports.state = {
     renderer.hideNativeCursor();
     renderer.layerUI.clear(0);
     renderer.layerUI.clear();
+    // FIXME: renderer can use stateData to grab cursor pos
+    renderer.renderCursor(stateData.cursorX, stateData.cursorY);
   },
 
   inputMove: function (x, y) {
