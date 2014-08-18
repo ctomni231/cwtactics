@@ -405,6 +405,10 @@ exports.selection = {
     }
   },
 
+  clear: function () {
+    this.setCenter(0,0,constants.INACTIVE);
+  },
+
   // @override */
   getValue: function (x, y) {
     x = x - this.centerX_;

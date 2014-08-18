@@ -98,6 +98,7 @@ exports.state = {
   exit: function () {
     renderer.layerEffects.clear();
     renderer.layerFocus.clearAll();
+    stateData.selection.clear();
   },
 
   inputMove: function (x, y) {
