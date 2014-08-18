@@ -262,7 +262,7 @@ exports.fillMoveMap = function (source, selection, x, y, unit) {
 
     // reset some stuff
     for (var n = 0, ne = toBeChecked.length; n < ne; n++) {
-      toBeChecked[n] = null;
+      toBeChecked[n] = constants.INACTIVE;
     }
     for (var n = 0, ne = checker.length; n < ne; n++) {
       checker[n] = constants.INACTIVE;
