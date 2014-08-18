@@ -2,11 +2,11 @@
 
 var BUFFER_SIZE = 200;
 
-var circularBuffer = require("./circularBuffer");
+var circularBuffer = require("./system/circularBuffer");
 var constants = require("./constants");
-var func = require("./functions");
+var func = require("./system/functions");
 var network = require("./network");
-var assert = require("./functions").assert;
+var assert = require("./system/functions").assert;
 
 // Map actions are called in the idle state on the map.
 //

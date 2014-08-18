@@ -1,10 +1,10 @@
 "use strict";
 
 var daysOfPeaceCfg = require("./config").getConfig("daysOfPeace");
-var createList = require("./functions").createListByClass;
+var createList = require("./system/functions").createListByClass;
 var constants = require("./constants");
-var assert = require("./functions").assert;
-var matrix = require("./matrix");
+var assert = require("./system/functions").assert;
+var matrix = require("./system/matrix");
 
 // Advance Wars 1 game mode. The first ever released game mode of the advance wars series (GBA and up).
 //

@@ -38,7 +38,7 @@ if (window.console) window.console = {};
 
   window.console.warn = function (msg) {
     var el = document.createElement("p");
-    el.innerHTML = " INFO:: "+msg;
+    el.innerHTML = " WARN:: "+msg;
 
     el.style.color = "orange";
     el.style.margin = "2";

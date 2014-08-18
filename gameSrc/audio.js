@@ -1,9 +1,9 @@
 "use strict";
 
 var constants = require("./constants");
-var features = require("./systemFeatures");
+var features = require("./system/features");
 var storage = require("./storage");
-var assert = require("./functions").assert;
+var assert = require("./system/functions").assert;
 
 var MUSIC_KEY = "MUSIC_";
 

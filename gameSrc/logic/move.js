@@ -1,5 +1,5 @@
 var constants = require("../constants");
-var assert = require("../functions").assert;
+var assert = require("../system/functions").assert;
 var sheets = require("../sheets");
 var model = require("../model");
 
@@ -161,7 +161,7 @@ exports.addCodeToMovePath = function (code, movePath, selection, sx, sy) {
   if (constants.DEBUG) assert(code >= exports.MOVE_CODES_UP && code <= exports.MOVE_CODES_LEFT);
 
   // drop last move code when the new command realizes a move back schema
-  if (isGoBackCommand(code, movePath)) {
+  if (movePath.size > 0 && isGoBackCommand(code, movePath)) {
     movePath.popLast();
     return true;
   }
@@ -275,7 +275,7 @@ exports.fillMoveMap = function (source, selection, x, y, unit) {
     releaseHelper = true;
 
   } else {
-    console.warn("WARN:: cannot use move cache variables");
+    console.warn("cannot use move cache variables");
 
     // use a new arrays because cache objects aren't available
     toBeChecked = [];

@@ -14,7 +14,7 @@ var rendFog = require("./renderer/fog");
 var rendFocus = require("./renderer/focus");
 
 var stateData = require("./dataTransfer/states");
-var assert = require("./functions").assert;
+var assert = require("./system/functions").assert;
 var model = require("./model");
 var move = require("./logic/move");
 
@@ -103,6 +103,7 @@ exports.LayeredCanvas = my.Class({
       this.clear(n);
       n--;
     }
+    this.clear();
   },
 
   //
@@ -182,32 +183,37 @@ exports.convertToTilePos = function (p) {
 //
 // @type {cwt.LayeredCanvas}
 //
-exports.layerBG = new exports.LayeredCanvas("canvas_layer1", 1, canvasW, canvasH);
+exports.layerBG = new exports.LayeredCanvas("canvas_layer_Background", 1, canvasW, canvasH);
 
 //
 // @type {cwt.LayeredCanvas}
 //
-exports.layerMap = new exports.LayeredCanvas("canvas_layer2", 8, canvasW, canvasH);
+exports.layerMap = new exports.LayeredCanvas("canvas_layer_Map", 8, canvasW, canvasH);
 
 //
 // @type {cwt.LayeredCanvas}
 //
-exports.layerFog = new exports.LayeredCanvas("canvas_layer3", 1, canvasW, canvasH);
+exports.layerFog = new exports.LayeredCanvas("canvas_layer_Fog", 1, canvasW, canvasH);
 
 //
 // @type {cwt.LayeredCanvas}
 //
-exports.layerUnit = new exports.LayeredCanvas("canvas_layer4", 3, canvasW, canvasH);
+exports.layerUnit = new exports.LayeredCanvas("canvas_layer_Unit", 3, canvasW, canvasH);
 
 //
 // @type {cwt.LayeredCanvas}
 //
-exports.layerEffects = new exports.LayeredCanvas("canvas_layer5", 7, canvasW, canvasH);
+exports.layerFocus = new exports.LayeredCanvas("canvas_layer_Focus", 7, canvasW, canvasH);
 
 //
 // @type {cwt.LayeredCanvas}
 //
-exports.layerUI = new exports.LayeredCanvas("canvas_layer6", 1, canvasW, canvasH);
+exports.layerEffects = new exports.LayeredCanvas("canvas_layer_Effects", 1, canvasW, canvasH);
+
+//
+// @type {cwt.LayeredCanvas}
+//
+exports.layerUI = new exports.LayeredCanvas("canvas_layer_UI", 1, canvasW, canvasH);
 
 //
 //
@@ -268,7 +274,7 @@ exports.renderScreen = function () {
   // directly update all layers
   exports.layerMap.renderLayer(rendAnim.indexMapAnimation);
   exports.layerUnit.renderLayer(rendAnim.indexUnitAnimation);
-  exports.layerEffects.renderLayer(rendAnim.indexEffectAnimation);
+  exports.layerFocus.renderLayer(rendAnim.indexEffectAnimation);
 
   exports.renderFogRect(x, y, w, h);
 
@@ -329,7 +335,7 @@ exports.shiftMap = function (code) {
   // directly update all layers
   exports.layerMap.renderLayer(rendAnim.indexMapAnimation);
   exports.layerUnit.renderLayer(rendAnim.indexUnitAnimation);
-  exports.layerEffects.renderLayer(rendAnim.indexEffectAnimation);
+  exports.layerFocus.renderLayer(rendAnim.indexEffectAnimation);
 
   if (constants.DEBUG) console.log("shifted the screen (" + ((new Date()).getTime() - time) + "ms)");
 };
@@ -368,7 +374,7 @@ exports.hideNativeCursor = function () {
 };
 
 exports.evaluateCycle = function (delta) {
-  rendAnim.evaluateCycle(delta, exports.layerUnit, exports.layerMap, exports.layerEffects);
+  rendAnim.evaluateCycle(delta, exports.layerUnit, exports.layerMap, exports.layerFocus);
 };
 
 //
@@ -421,6 +427,17 @@ exports.renderMenu = function () {
 
 //
 //
+exports.renderMovePath = function () {
+  rendCursor.renderPath(
+    exports.layerEffects,
+    exports.screenOffsetX, exports.screenOffsetY,
+    stateData.source.x, stateData.source.y,
+    stateData.movePath
+  );
+};
+
+//
+//
 exports.updateMenuIndex = function (x, y) {
   rendMenu.updateMenuIndex(x, y);
 };
@@ -466,7 +483,7 @@ exports.shiftTiles = function (code) {
 
 exports.renderFocus = function (x, y, w, h) {
   rendFocus.renderSelection(
-    exports.layerEffects,
+    exports.layerFocus,
     exports.screenOffsetX, exports.screenOffsetY,
     stateData.selection,
     x, y,
@@ -475,5 +492,5 @@ exports.renderFocus = function (x, y, w, h) {
 };
 
 exports.shiftFocus = function (code) {
-  rendFocus.shift(exports.layerEffects, stateData.selection, code);
+  rendFocus.shift(exports.layerFocus, stateData.selection, code);
 };

@@ -4,7 +4,8 @@ var constants = require('../constants');
 var state = require('../statemachine');
 var input = require('../input');
 
-var canvas = document.getElementById("canvas_layer6");
+var canvas = document.getElementById("canvas_layer_UI");
+
 var sx = 1.0;
 var sy = 1.0;
 

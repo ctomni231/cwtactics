@@ -1,9 +1,9 @@
 var constants = require("../constants");
 var variants = require("../tileVariants");
 var storage = require("../storage");
-var assert = require("../functions").assert;
+var assert = require("../system/functions").assert;
 var image = require("../image");
-var async = require("../async");
+var async = require("../system/async");
 
 //
 //

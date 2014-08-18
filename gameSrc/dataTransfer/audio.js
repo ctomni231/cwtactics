@@ -1,8 +1,8 @@
 var constants = require("../constants");
-var features = require("../systemFeatures");
+var features = require("../system/features");
 var storage = require("../storage");
-var assert = require("../functions").assert;
-var async = require("../async");
+var assert = require("../system/functions").assert;
+var async = require("../system/async");
 var audio = require("../audio");
 
 //

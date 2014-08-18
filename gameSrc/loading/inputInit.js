@@ -1,6 +1,6 @@
 var inpMapping = require("../dataTransfer/keyMapping");
 var constants = require("../constants");
-var features = require('../systemFeatures');
+var features = require('../system/features');
 
 exports.loader = function (next, hasCachedData) {
   if (constants.DEBUG) console.log("initializing input system");

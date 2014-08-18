@@ -1,7 +1,7 @@
 "use strict";
 
 var assert = require("./functions").assert;
-var constants = require("./constants");
+var constants = require("./../constants");
 
 // Holds all available languages.
 //

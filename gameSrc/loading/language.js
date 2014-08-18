@@ -1,7 +1,7 @@
 "use strict";
 
 var modDTO = require("../dataTransfer/mod");
-var i18n = require("../localization");
+var i18n = require("../system/localization");
 
 exports.loader = function (next) {
   if (require("../constants").DEBUG) {

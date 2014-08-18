@@ -20,7 +20,7 @@ exports.indexEffectAnimation = 0;
 
 //
 //
-exports.evaluateCycle = function (delta, layerUnit, layerMap, layerEffect) {
+exports.evaluateCycle = function (delta, layerUnit, layerMap, layerFocus) {
   var index;
 
   curTime += delta;
@@ -58,7 +58,7 @@ exports.evaluateCycle = function (delta, layerUnit, layerMap, layerEffect) {
     }
 
     // render map animation layer
-    layerEffect.renderLayer(index);
+    layerFocus.renderLayer(index);
     exports.indexEffectAnimation = index;
   }
 };

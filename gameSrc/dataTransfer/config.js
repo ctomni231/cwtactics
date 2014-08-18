@@ -1,6 +1,6 @@
 "use strict";
 
-var functions = require("../functions");
+var functions = require("../system/functions");
 var storage = require("../storage");
 var Config = require("../config");
 

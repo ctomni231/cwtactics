@@ -1,7 +1,7 @@
 "use strict";
 
 var model = require("../model");
-var assert = require("../functions").assert;
+var assert = require("../system/functions").assert;
 var constants = require("../constants");
 var supply = require("./supply");
 

@@ -1,6 +1,6 @@
 "use strict";
 
-var assert = require("../functions").assert;
+var assert = require("../system/functions").assert;
 var constants = require("../constants");
 var sheets = require("../sheets");
 var model = require("../model");

@@ -6,7 +6,7 @@ var config = require("../config");
 var sheets = require("../sheets");
 var model = require("../model");
 
-var assert = require("../functions").assert;
+var assert = require("../system/functions").assert;
 
 exports.save = function (name, cb) {
   var saveData = {};

@@ -1,7 +1,7 @@
 "use strict";
 
 var constants = require("../constants");
-var assert = require("../functions").assert;
+var assert = require("../system/functions").assert;
 var model = require("../model");
 var sheets = require("../sheets");
 var cfgUnitLimit = require("../config").getConfig("unitLimit");

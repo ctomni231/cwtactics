@@ -1,7 +1,7 @@
 "use strict";
 
 var constants = require('../constants');
-var emptyFunc = require('../functions').emptyFunction;
+var emptyFunc = require('../system/functions').emptyFunction;
 var state = require('../statemachine');
 var input = require('../input');
 

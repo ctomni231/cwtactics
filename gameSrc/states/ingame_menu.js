@@ -1,7 +1,7 @@
 "use strict";
 
 var stateData = require("../dataTransfer/states");
-var assert = require("../functions").assert;
+var assert = require("../system/functions").assert;
 var constants = require("../constants");
 var renderer = require("../renderer");
 var action = require("../actions");

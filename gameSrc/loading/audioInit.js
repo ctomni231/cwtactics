@@ -1,7 +1,7 @@
 "use strict";
 
 var constants = require("../constants");
-var features = require("../systemFeatures");
+var features = require("../system/features");
 var audioDTO = require("../dataTransfer/audio");
 
 // Initializes the audio context of the game engine.

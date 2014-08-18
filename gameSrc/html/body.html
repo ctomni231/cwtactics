@@ -46,12 +46,7 @@
         width: 100%;
       }
 
-      #canvas_layer1,
-      #canvas_layer2,
-      #canvas_layer3,
-      #canvas_layer4,
-      #canvas_layer5,
-      #canvas_layer6 {
+      canvas.gameCanvas {
         position: absolute;
         top: 0;
         left: 0;
@@ -60,51 +55,46 @@
         height: 100%;
       }
 
-      #canvas_layer1 {
+      canvas.layer1 {
         z-index: 1;
       }
 
-      #canvas_layer2 {
+      canvas.layer2 {
         z-index: 2;
       }
 
-      #canvas_layer3 {
+      canvas.layer3 {
         z-index: 3;
       }
 
-      #canvas_layer4 {
-        z-index: 5;
-      }
-
-      #canvas_layer5 {
+      canvas.layer4 {
         z-index: 4;
       }
 
-      #canvas_layer6 {
+      canvas.layer5 {
+        z-index: 5;
+      }
+
+      canvas.layer6 {
         z-index: 6;
       }
+
+      canvas.layer7 {
+        z-index: 7;
+      }
+
     </style>
   </head>
 
   <body oncontextmenu="return false;">
 
-    <!-- Layer 1 : Background -->
-    <canvas width="320" height="160" id="canvas_layer1"></canvas>
-
-    <!-- Layer 2 : Map -->
-    <canvas width="320" height="160" id="canvas_layer2"></canvas>
-
-    <!-- Layer 3 : Fog -->
-    <canvas width="320" height="160" id="canvas_layer3"></canvas>
-
-    <!-- Layer 4 : Unit -->
-    <canvas width="320" height="160" id="canvas_layer4"></canvas>
-
-    <!-- Layer 5 : Weather -->
-    <canvas width="320" height="160" id="canvas_layer5"></canvas>
-
-    <!-- Layer 6 : UI Elements -->
-    <canvas width="320" height="160" id="canvas_layer6"></canvas>
+    <canvas width="320" class="gameCanvas layer1" height="160" id="canvas_layer_Background"></canvas>
+    <canvas width="320" class="gameCanvas layer2" height="160" id="canvas_layer_Map"></canvas>
+    <canvas width="320" class="gameCanvas layer3" height="160" id="canvas_layer_Fog"></canvas>
+    <canvas width="320" class="gameCanvas layer4" height="160" id="canvas_layer_Focus"></canvas>
+    <canvas width="320" class="gameCanvas layer5" height="160" id="canvas_layer_Unit"></canvas>
+    <canvas width="320" class="gameCanvas layer6" height="160" id="canvas_layer_Effects"></canvas>
+    <canvas width="320" class="gameCanvas layer7" height="160" id="canvas_layer_UI"></canvas>
   </body>
 
   <script type='application/javascript' src='deps.js'></script>

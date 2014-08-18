@@ -6,7 +6,7 @@ exports.loader = function (next) {
   }
 
   // ask question when system is not supported
-  if (require("../systemFeatures").supported || confirm(CONFIRM_MSG) ) {
+  if (require("../system/features").supported || confirm(CONFIRM_MSG) ) {
     next();
   }
 };

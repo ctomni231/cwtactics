@@ -1,8 +1,8 @@
 "use strict";
 
-var selectRandom = require("../functions").selectRandomListElement;
+var selectRandom = require("../system/functions").selectRandomListElement;
 var network = require("../network");
-var assert = require("../functions").assert;
+var assert = require("../system/functions").assert;
 var sheets = require("../sheets");
 var model = require("../model");
 

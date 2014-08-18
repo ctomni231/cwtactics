@@ -1,6 +1,6 @@
 var constants = require("../constants");
 var image = require("../image");
-var assert = require("../functions").assert;
+var assert = require("../system/functions").assert;
 var move = require("../logic/move");
 
 var tempCanvas;

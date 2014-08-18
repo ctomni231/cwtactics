@@ -2,9 +2,9 @@
 
 var configDTO = require("../dataTransfer/config");
 var constants = require("../constants");
-var features = require("../systemFeatures");
+var features = require("../system/features");
 var storage = require("../storage");
-var async = require("../async");
+var async = require("../system/async");
 
 var checkWipeOut = function (next) {
   if (configDTO.wantResetData()) {

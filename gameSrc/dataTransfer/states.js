@@ -8,7 +8,7 @@ var actions = require("../actions");
 var renderer = require("../renderer");
 var constants = require("../constants");
 var stateMachine = require("../statemachine");
-var circularBuffer = require("../circularBuffer");
+var circularBuffer = require("../system/circularBuffer");
 
 var relationship = require("../logic/relationship");
 var explode = require("../logic/exploder");
@@ -240,6 +240,44 @@ exports.cursorY = 0;
 
 //
 //
+exports.fromIngameToOptions = false;
+
+//
+//
+exports.inGameRound = true;
+
+//
+//
+exports.multiStepActive = false;
+
+//
+// Position object with rich information about the selected position by an action and some relations.
+//
+exports.source = new model.PositionData();
+
+// Position object with rich information about the selected position by an action and some relations.
+//
+exports.target = new model.PositionData();
+
+// Position object with rich information about the selected position by an action and some relations.
+//
+exports.targetselection = new model.PositionData();
+
+//
+//
+exports.movePath = new circularBuffer.CircularBuffer(constants.MAX_MOVE_LENGTH);
+
+//
+//
+// @type {boolean}
+//
+exports.preventMovePathGeneration = false;
+
+exports.inMultiStep = false;
+
+
+//
+//
 //
 exports.resetCursor = function () {
   exports.cursorX = 0;
@@ -307,36 +345,14 @@ exports.setCursorPosition = function (x, y, relativeToScreen) {
   x = x - renderer.screenOffsetX;
   y = y - renderer.screenOffsetY;
 
-  // do possible screen shift
   var moveCode = constants.INACTIVE;
-  if (x <= 3) {
-    moveCode = move.MOVE_CODES_RIGHT;
-    if (renderer.shiftScreen(moveCode)) {
-      renderer.shiftMap(moveCode);
-    }
-
-  }
+  if (x <= 3) moveCode = move.MOVE_CODES_RIGHT;
+  if (y <= 3) moveCode = move.MOVE_CODES_DOWN;
+  if (x >= constants.SCREEN_WIDTH - 3) moveCode = move.MOVE_CODES_LEFT;
+  if (y >= constants.SCREEN_HEIGHT - 3) moveCode = move.MOVE_CODES_UP;
 
   // do possible screen shift
-  if (x >= constants.SCREEN_WIDTH - 3) {
-    moveCode = move.MOVE_CODES_LEFT;
-    if (renderer.shiftScreen(moveCode)) {
-      renderer.shiftMap(moveCode);
-    }
-  }
-
-  // do possible screen shift
-  if (y <= 3) {
-    moveCode = move.MOVE_CODES_DOWN;
-    if (renderer.shiftScreen(moveCode)) {
-      renderer.shiftMap(moveCode);
-    }
-
-  }
-
-  // do possible screen shift
-  if (y >= constants.SCREEN_HEIGHT - 3) {
-    moveCode = move.MOVE_CODES_UP;
+  if (moveCode !== constants.INACTIVE) {
     if (renderer.shiftScreen(moveCode)) {
       renderer.shiftMap(moveCode);
     }
@@ -344,53 +360,6 @@ exports.setCursorPosition = function (x, y, relativeToScreen) {
 
   renderer.renderCursor(exports.cursorX, exports.cursorY);
 };
-
-//
-//
-exports.fromIngameToOptions = false;
-
-//
-//
-exports.inGameRound = true;
-
-//
-//
-exports.multiStepActive = false;
-
-// Builds several commands from collected action data.
-//
-exports.buildFromData = function () {
-  var trapped = false;
-
-  if (exports.movePath.data[0] !== -1) {
-    trapped = move.trapCheck(exports.movePath, exports.source, exports.target);
-  }
-
-  // TODO
-  if (!trapped) {
-    invokeActionByData();
-  }
-
-  // all unit actions invokes automatically waiting
-  if (trapped || exports.action.object.type === actions.UNIT_ACTION && !exports.action.object.noAutoWait) {
-    actions.sharedAction("wait", exports.source.unitId);
-  }
-
-  return trapped;
-};
-
-//
-// Position object with rich information about the selected position by an action and some relations.
-//
-exports.source = new model.PositionData();
-
-// Position object with rich information about the selected position by an action and some relations.
-//
-exports.target = new model.PositionData();
-
-// Position object with rich information about the selected position by an action and some relations.
-//
-exports.targetselection = new model.PositionData();
 
 //
 //
@@ -744,22 +713,10 @@ exports.menu = {
   }
 };
 
-//
-//
-exports.movePath = new circularBuffer.CircularBuffer(constants.MAX_MOVE_LENGTH);
-
-//
-//
-// @type {boolean}
-//
-exports.preventMovePathGeneration = false;
-
-exports.inMultiStep = false;
-
 exports.nextStep = function () {
   exports.movePath.clean();
   exports.menu.clean();
-  exports.action.object.prepareMenu(this.data);
+  exports.action.object.prepareMenu(exports.movePath);
 
   if (!exports.menu.getSize()) {
     stateMachine.changeState("INGAME_IDLE");
@@ -773,4 +730,26 @@ exports.nextStep = function () {
 
 exports.nextStepBreak = function () {
   stateMachine.changeState("INGAME_IDLE");
+};
+
+// Builds several commands from collected action data.
+//
+exports.buildFromData = function () {
+  var trapped = false;
+
+  if (exports.movePath.data[0] !== -1) {
+    trapped = move.trapCheck(exports.movePath, exports.source, exports.target);
+  }
+
+  // TODO
+  if (!trapped) {
+    invokeActionByData();
+  }
+
+  // all unit actions invokes automatically waiting
+  if (trapped || exports.action.object.type === actions.UNIT_ACTION && !exports.action.object.noAutoWait) {
+    actions.sharedAction("wait", exports.source.unitId);
+  }
+
+  return trapped;
 };

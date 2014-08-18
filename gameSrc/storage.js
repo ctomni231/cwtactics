@@ -9,7 +9,7 @@ var DEFAULT_DB_SIZE = 50;
 // configures the localforage library
 localforage.config({
   name: "CWT_DATABASE",
-  size: (require("./systemFeatures").iosWebSQLFix ? IOS7_WEBSQL_BUGFIX_SIZE : DEFAULT_DB_SIZE) * 1024 * 1024
+  size: (require("./system/features").iosWebSQLFix ? IOS7_WEBSQL_BUGFIX_SIZE : DEFAULT_DB_SIZE) * 1024 * 1024
 });
 
 // The given **callback** will be invoked with the value saved by the given **key**.

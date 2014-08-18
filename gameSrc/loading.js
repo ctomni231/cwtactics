@@ -4,7 +4,7 @@ var PARAM_HAS_CACHE = "__hasCache__";
 
 var constants = require("./constants");
 var storage = require("./storage");
-var flow = require("./async");
+var flow = require("./system/async");
 
 var hasCachedData = false;
 

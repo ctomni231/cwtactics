@@ -1,7 +1,7 @@
 var constants = require("../constants");
 var request = require("../system/xmlHttpReq");
 var storage = require("../storage");
-var async = require("../async");
+var async = require("../system/async");
 
 exports.maps = [];
 

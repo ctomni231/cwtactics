@@ -2,14 +2,14 @@
 
 var constants = require("./constants");
 var stateData = require("./dataTransfer/states");
-var features = require("./systemFeatures");
+var features = require("./system/features");
 var renderer = require("./renderer");
 var widgets = require("./uiWidgets");
 var input = require("./input");
 var audio = require("./audio");
 var image = require("./image");
 var move = require("./logic/move");
-var fnc = require("./functions");
+var fnc = require("./system/functions");
 
 var gamePad = require("./input/gamepad");
 

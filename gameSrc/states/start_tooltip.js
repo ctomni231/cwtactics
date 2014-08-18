@@ -9,7 +9,7 @@ var renderer = require("../renderer");
 var image = require("../image");
 var input = require("../input");
 var audio = require("../audio");
-var i18n = require("../localization");
+var i18n = require("../system/localization");
 
 exports.tooltips = null;
 

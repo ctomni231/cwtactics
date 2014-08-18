@@ -6,7 +6,7 @@ var widgets = require("../uiWidgets");
 var roundDTO = require("../dataTransfer/roundSetup");
 
 var model = require("../model");
-var i18n = require("../localization");
+var i18n = require("../system/localization");
 var sheets = require("../sheets");
 
 var TEAM_IDENTIFIERS = [

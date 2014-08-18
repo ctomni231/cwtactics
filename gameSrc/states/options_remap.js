@@ -4,7 +4,7 @@ var constants = require("../constants");
 var widgets = require("../uiWidgets");
 
 var renderer = require("../renderer");
-var assert = require("../functions").assert;
+var assert = require("../system/functions").assert;
 
 var keyboard = require("../input/keyboard").backend;
 var gamepad = require("../input/gamepad").backend;

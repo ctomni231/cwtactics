@@ -1,8 +1,8 @@
 "use strict";
 
-var circBuff = require("./circularBuffer");
+var circBuff = require("./system/circularBuffer");
 var constants = require("./constants");
-var assert = require("./functions").assert;
+var assert = require("./system/functions").assert;
 
 // all input command types
 exports.TYPE_LEFT = 1;

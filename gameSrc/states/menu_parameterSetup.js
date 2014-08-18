@@ -4,7 +4,7 @@ var constants = require("../constants");
 var renderer = require("../renderer");
 var widgets = require("../uiWidgets");
 var config = require("../config");
-var i18n = require("../localization");
+var i18n = require("../system/localization");
 
 var ENTRIES_PARAMETERS = 6;
 

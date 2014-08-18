@@ -2,7 +2,7 @@
 
 var transport = require("../logic/transport");
 var constants = require("../constants");
-var assert = require("../functions").assert;
+var assert = require("../system/functions").assert;
 var model = require("../model");
 
 //

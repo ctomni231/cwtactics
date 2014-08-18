@@ -1,7 +1,7 @@
 var constants = require("./constants");
-var assert = require("./functions").assert;
+var assert = require("./system/functions").assert;
 var input = require("./input");
-var i18n = require("./localization");
+var i18n = require("./system/localization");
 
 //
 //
