@@ -7,7 +7,6 @@ PAGE_PROG.registerSection({
     "<h1>Compatibility</h1>",
 
     "<div class='linkCompa'>",
-      "<a class='uibutton' href='{{compat_link}}'>Report Compatibility</a>",
       "<a class='uibutton' href='{{report_link}}'>Report Features/Bugs</a>",
     "</div>",
 
