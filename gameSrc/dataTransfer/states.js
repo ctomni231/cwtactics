@@ -559,6 +559,31 @@ for (var i = 0; i < exports.selection.len_; i++) {
   exports.selection.data_[i] = [];
 }
 
+var checkRelation = function (action, relationList, sMode, stMode) {
+  var checkMode;
+
+  switch (relationList[1]) {
+    case "T" :
+      checkMode = sMode;
+      break;
+
+    case "ST" :
+      checkMode = stMode;
+      break;
+
+    default :
+      checkMode = null;
+  }
+
+  for (var si = 2, se = relationList.length; si < se; si++) {
+    if (relationList[si] === checkMode) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
 //
 // Selected game action.
 //
@@ -630,33 +655,6 @@ exports.menu = {
     this.enabled_.push(enabled);
   },
 
-  commandKeys_: null,
-
-  checkRelation_: function (action, relationList, sMode, stMode) {
-    var checkMode;
-
-    switch (relationList[1]) {
-      case "T" :
-        checkMode = sMode;
-        break;
-
-      case "ST" :
-        checkMode = stMode;
-        break;
-
-      default :
-        checkMode = null;
-    }
-
-    for (var si = 2, se = relationList.length; si < se; si++) {
-      if (relationList[si] === checkMode) {
-        return true;
-      }
-    }
-
-    return false;
-  },
-
   //
   // Generates the action menu based on the given position data.
   //
@@ -718,14 +716,14 @@ exports.menu = {
 
           // relation to unit
           if (action.relation) {
-            if (!this.checkRelation_(action, action.relation, st_mode, sst_mode)) {
+            if (!checkRelation(action, action.relation, st_mode, sst_mode)) {
               continue;
             }
           }
 
           // relation to property
           if (action.relationToProp) {
-            if (!this.checkRelation_(action, action.relationToProp, pr_st_mode, pr_sst_mode)) {
+            if (!checkRelation(action, action.relationToProp, pr_st_mode, pr_sst_mode)) {
               continue;
             }
           }
@@ -769,9 +767,20 @@ exports.buildFromData = function () {
 
   if (exports.movePath.size > 0) {
     trapped = move.trapCheck(exports.movePath, exports.source, exports.target);
+
+    actionsLib.sharedAction("moveStart", exports.source.unitId, exports.source.x, exports.source.y);
+    for (var i = 0, e = exports.movePath.size; i < e; i += 5) {
+      actionsLib.sharedAction("moveAppend",
+        exports.movePath.size > i ? exports.movePath.get(i) : constants.INACTIVE,
+        exports.movePath.size > i + 1 ? exports.movePath.get(i + 1) : constants.INACTIVE,
+        exports.movePath.size > i + 2 ? exports.movePath.get(i + 2) : constants.INACTIVE,
+        exports.movePath.size > i + 3 ? exports.movePath.get(i + 3) : constants.INACTIVE,
+        exports.movePath.size > i + 4 ? exports.movePath.get(i + 4) : constants.INACTIVE
+      );
+    }
+    actionsLib.sharedAction("moveEnd");
   }
 
-  // TODO
   if (!trapped) {
     invokeActionByData();
   }

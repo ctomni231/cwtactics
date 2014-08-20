@@ -1,235 +1,253 @@
-exports.state = {
-  id: "ANIMATION_MOVE",
+"use strict";
 
-  init: function () {
+var move = require("../logic/move");
+var image = require("../image");
+var model = require("../model");
+var assert = require("../system/functions").assert;
+var renderer = require("../renderer");
+var circBuff = require("../system/circularBuffer");
+var constants = require("../constants");
 
-  },
+var SPRITE_BOX_LENGTH = constants.TILE_BASE + constants.TILE_BASE;
+var HALF_SPRITE_BOX_LENGTH = constants.TILE_BASE / 2;
+var MOVE_TILES_PER_SECOND = (constants.TILE_BASE * 8);
 
-  enter: function () {
+var removeUnitFromLayer;
 
-  },
+var unitPosX;
+var unitPosY;
+var dustPostX;
+var dustPostY;
+var unitId;
 
-  update: function (delta, lastInput) {
+var movePathIndex;
+var movePath = new circBuff.CircularBuffer(constants.MAX_SELECTION_RANGE);
 
-  },
+var isClientVisible;
 
-  render: function (delta) {
+var animationShift;
+var unitSprite;
+var dustSprite;
+var dustAnimTime;
+var dustAnimStep;
+var imageColorState;
+var dustImageDirectionState;
+var unitImageDirectionState;
 
+var assertIsInIdle = function () {
+  assert(unitId === constants.INACTIVE);
+  assert(unitPosX === constants.INACTIVE);
+  assert(unitPosY === constants.INACTIVE);
+  assert(movePath.size === 0);
+};
+
+var updateAnimation = function (delta) {
+  animationShift += ( delta / 1000 ) * MOVE_TILES_PER_SECOND;
+
+  // update move animation timer
+  if (dustAnimStep !== -1) {
+    dustAnimTime += delta;
+    if (dustAnimTime > 30) {
+      dustAnimStep++;
+      dustAnimTime = 0;
+      if (dustAnimStep === 3) {
+        dustAnimStep = -1;
+      }
+    }
+  }
+
+  // shift reached next tile
+  if (animationShift > constants.TILE_BASE) {
+    dustPostX = unitPosX;
+    dustPostY = unitPosY;
+    dustAnimTime = 0;
+    dustAnimStep = 0;
+
+    // update animation position
+    switch (movePath[ movePathIndex ]) {
+      case move.MOVE_CODES_UP :
+        unitPosY--;
+        dustImageDirectionState = image.Sprite.DIRECTION_UP;
+        unitImageDirectionState = image.Sprite.UNIT_STATE_UP;
+        break;
+
+      case move.MOVE_CODES_RIGHT :
+        unitPosX++;
+        dustImageDirectionState = image.Sprite.DIRECTION_RIGHT;
+        unitImageDirectionState = image.Sprite.UNIT_STATE_RIGHT;
+        break;
+
+      case move.MOVE_CODES_DOWN :
+        unitPosY++;
+        dustImageDirectionState = image.Sprite.DIRECTION_DOWN;
+        unitImageDirectionState = image.Sprite.UNIT_STATE_DOWN;
+        break;
+
+      case move.MOVE_CODES_LEFT :
+        unitPosX--;
+        dustImageDirectionState = image.Sprite.DIRECTION_LEFT;
+        unitImageDirectionState = image.Sprite.UNIT_STATE_LEFT;
+        break;
+    }
+
+    movePathIndex++;
+
+    animationShift -= constants.TILE_BASE;
+
+    if (movePathIndex === movePath.length || movePath[movePathIndex] === constants.INACTIVE) {
+      this.changeState("INGAME_IDLE");
+    }
   }
 };
 
-/*
- view.registerAnimationHook({
+// This function cleans the unit from the unit layer.
+//
+var eraseUnitFromUnitLayer = function (ctx) {
+  renderer.setHiddenUnitId(unitId);
+};
 
- key: "move_moveByCache",
+// This function cleans the last animation step picture from the effects layer.
+//
+var eraseLastPicture = function (ctx, delta) {
+  var x = (unitPosX - 1 - renderer.screenOffsetX);
+  var y = (unitPosY - 1 - renderer.screenOffsetY);
+  var w = (unitPosY + 1 - renderer.screenOffsetX);
+  var h = (unitPosY + 1 - renderer.screenOffsetY);
 
- prepare: function( uid, x,y ){
+  // check boundaries
+  if (x < 0) x = 0;
+  if (y < 0) y = 0;
+  if (w === model.mapWidth) w -= 1;
+  if (h === model.mapHeight) h -= 1;
 
- this.moveAnimationX     = x;
- this.moveAnimationY     = y;
- this.moveAnimationIndex = 0;
- this.moveAnimationPath  = model.move_pathCache;
- this.moveAnimationUid   = uid;
- this.moveAnimationClientOwned = model.fog_visibleClientPids[
- model.unit_data[ uid ].owner ];
- this.moveAnimationShift = 0;
+  ctx.clearRect(
+    x * constants.TILE_BASE,
+    y * constants.TILE_BASE,
+    (w - x) * constants.TILE_BASE,
+    (h - y) * constants.TILE_BASE
+  );
+};
 
- this.moveAnimationDustX = -1;
- this.moveAnimationDustY = -1;
- this.moveAnimationDustTime = -1;
- this.moveAnimationDustStep = -1;
- this.moveAnimationDustPic = null;
+// This function renders the current animation step picture to the effects layer.
+//
+var renderNewPicture = function (ctx, delta) {
 
- view.preventRenderUnit = model.unit_data[ uid ];
- var mvType = model.unit_data[ uid ].type.movetype;
+  // check client visibility for the unit and the given tile
+  if (!isClientVisible && !model.mapData[unitPosX][unitPosY].visionClient <= 0) {
+    return;
+  }
 
- if( this.DEBUG ){
- util.log(
- "drawing move from",
- "(",this.moveAnimationX,",",this.moveAnimationY,")",
- "with path",
- "(",this.moveAnimationPath,")"
- );
- }
- },
+  var tx = (( unitPosX ) * constants.TILE_BASE) - HALF_SPRITE_BOX_LENGTH;
+  var ty = (( unitPosY ) * constants.TILE_BASE) - HALF_SPRITE_BOX_LENGTH;
 
- update: function( delta ){
- var tileSize = TILE_LENGTH;
+  // ADD SHIFT
+  switch (movePath[ movePathIndex ]) {
+    case move.MOVE_CODES_UP: ty -= animationShift; break;
+    case move.MOVE_CODES_LEFT: tx -= animationShift; break;
+    case move.MOVE_CODES_RIGHT: tx += animationShift; break;
+    case move.MOVE_CODES_DOWN: ty += animationShift; break;
+  }
 
- // MOVE 4 TILES / SECOND
- this.moveAnimationShift += ( delta/1000 ) * ( tileSize*8);
+  // drawing unit
+  ctx.drawImage(
+    unitSprite.getImage(imageColorState + unitImageDirectionState),
+    SPRITE_BOX_LENGTH * 0, 0,
+    SPRITE_BOX_LENGTH, SPRITE_BOX_LENGTH,
+    tx, ty,
+    SPRITE_BOX_LENGTH, SPRITE_BOX_LENGTH
+  );
 
- view.redraw_markPosWithNeighboursRing(
- this.moveAnimationX, this.moveAnimationY
- );
+  // drawing dust
+  if (dustAnimStep !== -1) {
+    ctx.drawImage(
+      dustSprite.getImage(dustImageDirectionState),
+      SPRITE_BOX_LENGTH * dustAnimStep, 0,
+      SPRITE_BOX_LENGTH, SPRITE_BOX_LENGTH,
+      (( dustPostX ) * constants.TILE_BASE) - HALF_SPRITE_BOX_LENGTH,
+      (( dustPostX ) * constants.TILE_BASE) - HALF_SPRITE_BOX_LENGTH,
+      SPRITE_BOX_LENGTH, SPRITE_BOX_LENGTH
+    );
+  }
+};
 
- // DUST
- if( this.moveAnimationDustStep !== -1 ){
+exports.prepareMove = function (uid, x, y, movePath) {
+  var unit = model.units[uid];
 
- this.moveAnimationDustTime += delta;
- if( this.moveAnimationDustTime > 30 ){
+  // grab unit color state
+  switch (unit.owner.id) {
+    case 0:
+      imageColorState = image.Sprite.UNIT_RED;
+      break;
 
- this.moveAnimationDustStep++;
- this.moveAnimationDustTime = 0;
+    case 1:
+      imageColorState = image.Sprite.UNIT_BLUE;
+      break;
 
- if( this.moveAnimationDustStep === 3 ){
- this.moveAnimationDustStep = -1;
- }
- }
- }
+    case 2:
+      imageColorState = image.Sprite.UNIT_GREEN;
+      break;
 
- if( this.moveAnimationShift > tileSize ){
+    case 3:
+      imageColorState = image.Sprite.UNIT_YELLOW;
+      break;
+  }
 
- this.moveAnimationDustX = this.moveAnimationX;
- this.moveAnimationDustY = this.moveAnimationY;
- this.moveAnimationDustTime = 0;
- this.moveAnimationDustStep = 0;
+  unitPosX = x;
+  unitPosX = y;
+  unitId = uid;
+  isClientVisible = unit.owner.clientVisible;
+  unitSprite = image.sprites[unit.type.ID];
 
- // UPDATE ANIMATION POS
- switch( this.moveAnimationPath[ this.moveAnimationIndex ] ){
+  circBuff.copyBuffer(movePath, movePath);
+};
 
- case model.move_MOVE_CODES.UP :
- this.moveAnimationY--;
- this.moveAnimationDustPic = view.getInfoImageForType("DUST_U");
- break;
+exports.state = {
+  id: "ANIMATION_MOVE",
 
- case model.move_MOVE_CODES.RIGHT :
- this.moveAnimationX++;
- this.moveAnimationDustPic = view.getInfoImageForType("DUST_R");
- break;
+  enter: function () {
+    assertIsInIdle();
 
- case model.move_MOVE_CODES.DOWN :
- this.moveAnimationY++;
- this.moveAnimationDustPic = view.getInfoImageForType("DUST_D");
- break;
+    // grab dust image lazy
+    if (dustSprite) dustSprite = image.sprites["DUST"];
 
- case model.move_MOVE_CODES.LEFT :
- this.moveAnimationX--;
- this.moveAnimationDustPic = view.getInfoImageForType("DUST_L");
- break;
- }
+    removeUnitFromLayer = true;
+  },
 
- this.moveAnimationIndex++;
+  exit: function () {
+    isClientVisible = constants.INACTIVE;
+    unitId = constants.INACTIVE;
+    unitPosX = constants.INACTIVE;
+    unitPosY = constants.INACTIVE;
+    dustPostX = -1;
+    dustPostY = -1;
+    movePathIndex = 0;
+    animationShift = 0;
+    dustAnimTime = -1;
+    dustAnimStep = -1;
+    unitSprite = null;
+    movePath.clear();
+    renderer.setHiddenUnitId(constants.INACTIVE);
+  },
 
- this.moveAnimationShift -= tileSize;
- // this.moveAnimationShift = 0;
+  update: function (delta) {
+    updateAnimation.call(this, delta);
+  },
 
- if( this.moveAnimationIndex === this.moveAnimationPath.length ||
- this.moveAnimationPath[this.moveAnimationIndex] === cwt.INACTIVE ){
- this.moveAnimationX     = 0;
- this.moveAnimationY     = 0;
- this.moveAnimationIndex = 0;
- this.moveAnimationPath  = null;
- this.moveAnimationUid   = -1;
- this.moveAnimationShift = 0;
- view.preventRenderUnit = null; // RENDER UNIT NOW NORMALLY
- }
- }
- },
+  render: function (delta) {
+    var ctx = renderer.layerEffects.getContext(0);
 
- render: function(){
- var uid      = this.moveAnimationUid;
- var cx       = this.moveAnimationX;
- var cy       = this.moveAnimationY;
- var shift    = this.moveAnimationShift;
- var moveCode = this.moveAnimationPath[ this.moveAnimationIndex ];
- var unit     = model.unit_data[ uid ];
- var color = view.colorArray[ unit.owner ];
- var state;
- var tp = unit.type;
+    // the unit has to be removed from the unit layer during the animation
+    if (removeUnitFromLayer) {
+      eraseUnitFromUnitLayer(ctx);
+      removeUnitFromLayer = false;
+    }
 
- // check_ visibility
- if( !this.moveAnimationClientOwned && !model.fog_clientData[cx][cy] ){
- return;
- }
+    eraseLastPicture(ctx, delta);
+    renderNewPicture(ctx, delta);
 
- // GET CORRECT IMAGE STATE
- switch( moveCode ){
- case model.move_MOVE_CODES.UP :    state = view.IMAGE_CODE_UP;    break;
- case model.move_MOVE_CODES.RIGHT : state = view.IMAGE_CODE_RIGHT; break;
- case model.move_MOVE_CODES.DOWN :  state = view.IMAGE_CODE_DOWN;  break;
- case model.move_MOVE_CODES.LEFT :  state = view.IMAGE_CODE_LEFT;  break;
- }
+    renderer.layerEffects.renderLayer(0);
+  }
+};
 
- var pic = view.getUnitImageForType( tp.ID, state, color );
-
- var tileSize = TILE_LENGTH;
- var BASESIZE = controller.baseSize;
- var scx = (BASESIZE*2)*view.getSpriteStep("UNIT");
- var scy = 0;
- var scw = BASESIZE*2;
- var sch = BASESIZE*2;
- var tcx = ( cx )*tileSize -tileSize/2; // TODO
- var tcy = ( cy )*tileSize -tileSize/2;
- var tcw = tileSize+tileSize;
- var tch = tileSize+tileSize;
-
- // ADD SHIFT
- switch( moveCode ){
- case model.move_MOVE_CODES.UP:    tcy -= shift; break;
- case model.move_MOVE_CODES.LEFT:  tcx -= shift; break;
- case model.move_MOVE_CODES.RIGHT: tcx += shift; break;
- case model.move_MOVE_CODES.DOWN:  tcy += shift; break;
- }
-
- // DRAW IT
- if( pic !== undefined ){
- view.canvasCtx.drawImage(
- pic,
- scx,scy,
- scw,sch,
- tcx,tcy,
- tcw,tcw
- );
- }
- else{
- tcx = ( cx )*tileSize;
- tcy = ( cy )*tileSize;
- tcw = tileSize;
- tch = tileSize;
-
- // ADD SHIFT
- switch( moveCode ){
- case model.move_MOVE_CODES.UP:    tcy -= shift; break;
- case model.move_MOVE_CODES.LEFT:  tcx -= shift; break;
- case model.move_MOVE_CODES.RIGHT: tcx += shift; break;
- case model.move_MOVE_CODES.DOWN:  tcy += shift; break;
- }
-
- view.canvasCtx.fillStyle="rgb(255,0,0)";
- view.canvasCtx.fillRect(
- tcx,tcy,
- tcw,tch
- );
- }
-
- // DUST
- if( this.moveAnimationDustStep !== -1 ){
-
- var tileSize = TILE_LENGTH;
- scx = (BASESIZE*2)*this.moveAnimationDustStep;
- scy = 0;
- scw = BASESIZE*2;
- sch = BASESIZE*2;
- tcx = ( this.moveAnimationDustX )*tileSize -tileSize/2;
- tcy = ( this.moveAnimationDustY )*tileSize -tileSize/2;
- tcw = tileSize+tileSize;
- tch = tileSize+tileSize;
-
- view.canvasCtx.drawImage(
- this.moveAnimationDustPic,
- scx,scy,
- scw,sch,
- tcx,tcy,
- tcw,tch
- );
- }
- },
-
- isDone: function(){
- var done = (this.moveAnimationUid === -1);
- return done;
- }
-
- });
-*/
+// reset data
+exports.state.exit();

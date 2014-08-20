@@ -1,5 +1,8 @@
 "use strict";
 
+var assert = require("./functions").assert;
+var constants = require("../constants");
+
 //
 // An implementation of the concept of a circular buffer. Internally a circular buffer has a fixed size that makes the
 // whole object very memory constant.
@@ -128,6 +131,18 @@ exports.CircularBuffer = my.Class({
     }
   }
 });
+
+exports.copyBuffer = function (from, to) {
+  if (constants.DEBUG) {
+    assert(from instanceof exports.CircularBuffer && to instanceof exports.CircularBuffer);
+    assert(from.size === to.size);
+  }
+
+  to.clear();
+  for (var i = 0, e = from.size; i < e; i++) {
+    to.push(from.get(i));
+  }
+};
 
 // Creates a **CircularBuffer** with a given **size**. All slots will be filled with objects of the given **clazz**.
 // The constructor of the given **clazz** will be called with zero arguments.

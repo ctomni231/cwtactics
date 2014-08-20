@@ -3,6 +3,7 @@
 var constants = require("../constants");
 var assert = require("../system/functions").assert;
 var model = require("../model");
+var transport = require("./transport");
 
 //
 // Different available money transfer steps.
@@ -61,7 +62,7 @@ exports.transferMoney = function (playerA, playerB, money) {
 //
 exports.canTransferUnit = function (unit) {
   if (constants.DEBUG) assert(unit instanceof model.Unit);
-  return !exports.hasLoads(unit);
+  return !transport.hasLoads(unit);
 };
 
 //

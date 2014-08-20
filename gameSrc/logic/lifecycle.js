@@ -86,7 +86,8 @@ exports.destroyUnit = function (x, y, silent) {
 exports.deactivatePlayer = function (player) {
 
   // drop units
-  if (constants.DEBUG) model(player instanceof model.Player);
+  if (constants.DEBUG) assert(player instanceof model.Player);
+
   for (var i = 0, e = model.units.length; i < e; i++) {
     var unit = model.units[i];
     if (unit.owner === player) {
@@ -95,12 +96,12 @@ exports.deactivatePlayer = function (player) {
   }
 
   // drop properties
-  for (var i = 0, e = model.properties.size(); i < e; i++) {
+  for (var i = 0, e = model.properties.length; i < e; i++) {
     var prop = model.properties[i];
     if (prop.owner === player) {
       prop.makeNeutral();
 
-      // change type when the property is a changing type property
+      // TODO: change type when the property is a changing type property
       var changeType = prop.type.changeAfterCaptured;
     }
   }

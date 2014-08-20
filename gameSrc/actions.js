@@ -45,9 +45,9 @@ exports.Action = my.Class({
     this.prepareSelection = impl.prepareSelection || null;
     this.targetSelectionType = impl.targetSelectionType || "A";
     this.noAutoWait = impl.noAutoWait || false;
+
     this.relation = impl.relation || null;
-    this.toDataBlock = impl.toDataBlock || null;
-    this.parseDataBlock = impl.parseDataBlock || null;
+    this.relationToProp = impl.relationToProp || null;
 
     assert(impl.invoke);
     this.invoke = impl.invoke;
@@ -134,11 +134,11 @@ exports.localAction = function (key) {
   // grab data object and fill it in relation to the given arguments
   var actionData = pool.popLast();
   actionData.id = exports.getActionId(key);
-  if (arguments.length > 0) actionData.p1 = arguments[1];
-  if (arguments.length > 1) actionData.p2 = arguments[2];
-  if (arguments.length > 2) actionData.p3 = arguments[3];
-  if (arguments.length > 3) actionData.p4 = arguments[4];
-  if (arguments.length > 4) actionData.p5 = arguments[5];
+  if (arguments.length > 1) actionData.p1 = arguments[1];
+  if (arguments.length > 2) actionData.p2 = arguments[2];
+  if (arguments.length > 3) actionData.p3 = arguments[3];
+  if (arguments.length > 4) actionData.p4 = arguments[4];
+  if (arguments.length > 5) actionData.p5 = arguments[5];
 
   if (constants.DEBUG) console.log("add command " + actionData.toString() + " to the stack");
 
@@ -151,9 +151,7 @@ exports.localAction = function (key) {
 //
 exports.sharedAction = function () {
   if (network.isActive()) {
-    network.sendMessage(
-      JSON.stringify(
-        Array.prototype.slice.call(arguments)));
+    network.sendMessage(JSON.stringify(Array.prototype.slice.call(arguments)));
   }
 
   exports.localAction.apply(null, arguments);
@@ -256,6 +254,8 @@ createAction("explode", exports.UNIT_ACTION, require("./actions/explode").action
 createAction("joinUnits", exports.UNIT_ACTION, require("./actions/join").action);
 createAction("attack", exports.UNIT_ACTION, require("./actions/attack").action);
 createAction("wait", exports.UNIT_ACTION, require("./actions/wait").action);
+createAction("unloadUnit", exports.UNIT_ACTION, require("./actions/transport").actionUnload);
+createAction("loadUnit", exports.UNIT_ACTION, require("./actions/transport").actionLoad);
 
 createAction("activatePower", exports.MAP_ACTION, require("./actions/commander").actionActivate);
 createAction("transferMoney", exports.MAP_ACTION, require("./actions/transfer").actionMoney);
@@ -265,8 +265,7 @@ createAction("options", exports.MAP_ACTION, require("./actions/options").action)
 createAction("transferProperty", exports.PROPERTY_ACTION, require("./actions/transfer").actionProperty);
 createAction("buildUnit", exports.PROPERTY_ACTION, require("./actions/factory").action);
 
-createAction("unloadUnit", exports.ENGINE_ACTION, require("./actions/transport").actionUnload);
-createAction("loadUnit", exports.ENGINE_ACTION, require("./actions/transport").actionLoad);
 createAction("changeWeather", exports.ENGINE_ACTION, require("./actions/weather").action);
 createAction("moveStart", exports.ENGINE_ACTION, require("./actions/move").actionStart);
+createAction("moveAppend", exports.ENGINE_ACTION, require("./actions/move").actionAppend);
 createAction("moveEnd", exports.ENGINE_ACTION, require("./actions/move").actionEnd);

@@ -297,6 +297,21 @@ exports.renderFocusOnScreen = function () {
   if (constants.DEBUG) console.log("rendered focus on screen (" + ((new Date()).getTime() - time) + "ms)");
 };
 
+exports.renderUnitsOnScreen = function () {
+  var time;
+  if (constants.DEBUG) time = (new Date()).getTime();
+
+  var x = exports.screenOffsetX;
+  var y = exports.screenOffsetY;
+  var w = (model.mapWidth < constants.SCREEN_WIDTH) ? model.mapWidth : constants.SCREEN_WIDTH;
+  var h = (model.mapHeight < constants.SCREEN_HEIGHT) ? model.mapHeight : constants.SCREEN_HEIGHT;
+
+  exports.renderUnits(x, y, w, h);
+  exports.layerUnit.renderLayer(rendAnim.indexEffectAnimation);
+
+  if (constants.DEBUG) console.log("rendered units screen (" + ((new Date()).getTime() - time) + "ms)");
+};
+
 //
 //
 // @param {number} code
@@ -433,6 +448,10 @@ exports.renderUnits = function (x, oy, w, h) {
 //
 exports.shiftUnits = function (code) {
   rendUnit.shiftUnits(exports.layerUnit, code);
+};
+
+exports.setHiddenUnitId = function (unit) {
+  rendUnit.hiddenUnitId = unit;
 };
 
 //

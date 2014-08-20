@@ -10,7 +10,7 @@ exports.actionUnload = {
   relation: ["S", "T", relation.RELATION_SAME_THING, relation.RELATION_NONE],
 
   condition: function (transporter, x, y) {
-    return transport.canUnloadSomethingAt(transporter, x, y);
+    return (transport.isTransportUnit(transporter) && transport.canUnloadSomethingAt(transporter, x, y));
   },
 
   prepareMenu: function (transporter, x, y, menu) {
@@ -44,7 +44,7 @@ exports.actionLoad = {
   relation: ["S", "T", relation.RELATION_OWN],
 
   condition: function (transporter, load) {
-    return transport.canLoadUnit(transporter, load);
+    return (transport.isTransportUnit(transporter) && transport.canLoadUnit(transporter, load));
   },
 
   invoke: function (transporterId, loadId) {

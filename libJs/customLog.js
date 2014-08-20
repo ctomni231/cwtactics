@@ -1,3 +1,4 @@
+/*
 if (window.console) window.console = {};
 
 (function (console) {
@@ -58,3 +59,4 @@ if (window.console) window.console = {};
   };
 
 })(window.console);
+*/

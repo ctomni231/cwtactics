@@ -40,7 +40,7 @@ exports.canLoadUnit = function (transporter, load) {
     assert(transporter instanceof model.Unit);
     assert(load instanceof model.Unit);
     assert(load !== transporter);
-    assert(this.isTransportUnit(transporter));
+    assert(exports.isTransportUnit(transporter));
     assert(load.loadedIn !== transporter);
   }
 
@@ -57,7 +57,7 @@ exports.load = function (transporter, load) {
   if (constants.DEBUG) {
     assert(transporter instanceof model.Unit);
     assert(load instanceof model.Unit);
-    assert(this.isTransportUnit(transporter));
+    assert(exports.isTransportUnit(transporter));
   }
 
   load.loadedIn = transporter;
@@ -108,7 +108,7 @@ exports.canUnloadSomethingAt = function (transporter, x, y) {
   var pid = transporter.owner;
   var unit;
 
-  if (constants.DEBUG) assert(this.isTransportUnit(transporter));
+  if (constants.DEBUG) assert(exports.isTransportUnit(transporter));
   for (var i = 0, e = model.units.length; i <= e; i++) {
 
     unit = move.units[i];

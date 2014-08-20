@@ -5,6 +5,7 @@ var assert = require("../system/functions").assert;
 var move = require("../logic/move");
 var image = require("../image");
 var model = require("../model");
+var animation = require("./animation");
 
 var tempCanvas;
 
@@ -110,7 +111,7 @@ exports.renderFogRect = function (layerFog, offsetX, offsetY, x, y, w, h, circle
           );
         }
 
-        var scx = (image.longAnimatedTiles[tile.type.ID]) ? constants.TILE_BASE * n : 0;
+        var scx = (image.longAnimatedTiles[tile.type.ID]) ? constants.TILE_BASE * animation.indexMapAnimation : 0;
         var scy = 0;
         var scw = constants.TILE_BASE;
         var sch = constants.TILE_BASE * 2;

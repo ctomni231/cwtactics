@@ -16,6 +16,7 @@
     "Stand Off": "maps/stand-off.json",
     "Spann Island": "maps/spann-island.json",
     "TestMap": "maps/testmap.json",
+    "TestMap Units": "maps/testmap_units.json",
     "Test-MillionMarch": "maps/millionmarch.json"
   },
 
@@ -74,6 +75,7 @@
       "RECN": "image/cwt_anim/units/CWT_RECN.png",
       "STLH": "image/cwt_anim/units/CWT_STLH.png",
       "INFT": "image/cwt_anim/units/CWT_INFT.png",
+      "APCR": "image/cwt_anim/units/CWT_APCR.png",
       "LNDR": "image/cwt_anim/units/CWT_LNDR.png",
       "MDTK": "image/cwt_anim/units/CWT_MDTK.png",
       "MECH": "image/cwt_anim/units/CWT_MECH.png",
@@ -347,6 +349,7 @@
     "PROPERTIES": {
       "BASE": "image/cwt_anim/properties/CWT_BASE.png",
       "CITY": "image/cwt_anim/properties/CWT_CITY.png",
+      "APRT": "image/cwt_anim/properties/CWT_APRT.png",
       "PORT": "image/cwt_anim/properties/CWT_PORT(SBR).png",
       "RADAR": "image/cwt_anim/properties/CWT_RADR.png",
       "RUIB": "image/cwt_anim/inventions/CWT_BRBL-S.png",

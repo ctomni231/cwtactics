@@ -10,7 +10,7 @@ exports.RELATION_SAME_THING = -1;
 
 // Means there is no relationship between two objects.
 //
-exports.RELATION_NONE = 0;
+exports.RELATION_NEUTRAL = 0;
 
 // Means two objects belongs to the same owner.
 //
@@ -26,7 +26,7 @@ exports.RELATION_ENEMY = 3;
 
 // Means at least one of the two arguments is null.
 //
-exports.RELATION_NULL = 4;
+exports.RELATION_NONE = 4;
 
 // Indicates a wish to check in the hierarchical way. First try to extract the unit owner and then the property
 // owner when no unit exists.
@@ -49,11 +49,11 @@ exports.getRelationShipTo = function (left, right, checkLeft, checkRight) {
   var oL;
   var oR;
 
-  if (checkLeft !== this.CHECK_PROPERTY) oL = left.unit;
-  if (checkRight !== this.CHECK_PROPERTY) oR = right.unit;
+  if (checkLeft !== exports.CHECK_PROPERTY) oL = left.unit;
+  if (checkRight !== exports.CHECK_PROPERTY) oR = right.unit;
 
-  if (!oL && checkLeft !== this.CHECK_UNIT) oL = left.property;
-  if (!oR && checkRight !== this.CHECK_UNIT) oR = right.property;
+  if (!oL && checkLeft !== exports.CHECK_UNIT) oL = left.property;
+  if (!oR && checkRight !== exports.CHECK_UNIT) oR = right.property;
 
   if (!oL) {
     return exports.RELATION_NULL;
@@ -72,22 +72,22 @@ exports.getRelationship = function (objectA, objectB) {
     return exports.RELATION_NONE;
   }
 
+  // same object
+  if (objectA === objectB) {
+    return exports.RELATION_SAME_THING;
+  }
+
   var playerA = (objectA instanceof model.Player) ? objectA : objectA.owner;
   var playerB = (objectB instanceof model.Player) ? objectB : objectB.owner;
 
-  // one object is null
-  if (playerA === null || playerB === null) {
-    return exports.RELATION_NONE;
+  // one of the owners is inactive or not set (e.g. neutral properties)
+  if (playerA === null || playerB === null || playerA.team === -1 || playerB.team === -1) {
+    return exports.RELATION_NEUTRAL;
   }
 
-  // one player is inactive
-  if (playerA.team === -1 || playerB.team === -1) {
-    return exports.RELATION_NONE;
-  }
-
-  // own
+  // same side
   if (playerA === playerB) {
-    return exports.RELATION_SAME_THING;
+    return exports.RELATION_OWN;
   }
 
   // allied or enemy ?

@@ -6,6 +6,8 @@ var move = require("../logic/move");
 
 var tempCanvas;
 
+exports.hiddenUnitId = constants.INACTIVE;
+
 exports.init = function (width, height) {
   assert(!tempCanvas);
 
@@ -25,7 +27,8 @@ exports.init = function (width, height) {
 //
 exports.renderUnits = function (layer, offsetX, offsetY, x, oy, w, h) {
   var mapData = model.mapData;
-  var halfTileBase = parseInt(constants.TILE_BASE / 2,10);
+  var halfTileBase = parseInt(constants.TILE_BASE / 2, 10);
+  var hiddenUnit = (exports.hiddenUnitId !== constants.INACTIVE ? model.units[exports.hiddenUnitId] : null);
 
   for (var xe = x + w; x < xe; x++) {
     for (var y = oy, ye = y + h; y < ye; y++) {
@@ -33,7 +36,7 @@ exports.renderUnits = function (layer, offsetX, offsetY, x, oy, w, h) {
       if (tile.visionClient === 0) continue;
 
       var unit = tile.unit;
-      if (!unit) continue;
+      if (!unit || hiddenUnit === unit) continue;
 
       var state;
       switch (unit.owner.id) {
@@ -68,8 +71,8 @@ exports.renderUnits = function (layer, offsetX, offsetY, x, oy, w, h) {
         var scy = 0;
         var scw = constants.TILE_BASE * 2;
         var sch = constants.TILE_BASE * 2;
-        var tcx = (x-offsetX) * constants.TILE_BASE - halfTileBase;
-        var tcy = (y-offsetY) * constants.TILE_BASE - halfTileBase;
+        var tcx = (x - offsetX) * constants.TILE_BASE - halfTileBase;
+        var tcy = (y - offsetY) * constants.TILE_BASE - halfTileBase;
         var tcw = constants.TILE_BASE + constants.TILE_BASE;
         var tch = constants.TILE_BASE + constants.TILE_BASE;
 
@@ -129,7 +132,7 @@ exports.shiftUnits = function (layer, code) {
   // update background layers
   var n = 0;
   while (n < 3) {
-    tmpContext.clearRect(0,0,layer.w,layer.h);
+    tmpContext.clearRect(0, 0, layer.w, layer.h);
 
     // copy visible content to temp canvas
     tmpContext.drawImage(
@@ -144,7 +147,7 @@ exports.shiftUnits = function (layer, code) {
     layer.clear(n);
 
     // copy visible content back to the original canvas
-    layer.getContext(n).drawImage(tempCanvas,0,0);
+    layer.getContext(n).drawImage(tempCanvas, 0, 0);
 
     n++;
   }
