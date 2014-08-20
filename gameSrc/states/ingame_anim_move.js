@@ -5,6 +5,7 @@ var image = require("../image");
 var model = require("../model");
 var assert = require("../system/functions").assert;
 var renderer = require("../renderer");
+var animation = require("../renderer/animation");
 var circBuff = require("../system/circularBuffer");
 var constants = require("../constants");
 
@@ -102,13 +103,14 @@ var updateAnimation = function (delta) {
 
 // This function cleans the unit from the unit layer.
 //
-var eraseUnitFromUnitLayer = function (ctx) {
+var eraseUnitFromUnitLayer = function () {
   renderer.setHiddenUnitId(unitId);
+  renderer.renderUnitsOnScreen();
 };
 
 // This function cleans the last animation step picture from the effects layer.
 //
-var eraseLastPicture = function (ctx, delta) {
+var eraseLastPicture = function (ctx) {
   var x = (unitPosX - 1 - renderer.screenOffsetX);
   var y = (unitPosY - 1 - renderer.screenOffsetY);
   var w = (unitPosY + 1 - renderer.screenOffsetX);
@@ -130,7 +132,7 @@ var eraseLastPicture = function (ctx, delta) {
 
 // This function renders the current animation step picture to the effects layer.
 //
-var renderNewPicture = function (ctx, delta) {
+var renderNewPicture = function (ctx) {
 
   // check client visibility for the unit and the given tile
   if (!isClientVisible && !model.mapData[unitPosX][unitPosY].visionClient <= 0) {
@@ -151,7 +153,7 @@ var renderNewPicture = function (ctx, delta) {
   // drawing unit
   ctx.drawImage(
     unitSprite.getImage(imageColorState + unitImageDirectionState),
-    SPRITE_BOX_LENGTH * 0, 0,
+    SPRITE_BOX_LENGTH * animation.indexUnitAnimation, 0,
     SPRITE_BOX_LENGTH, SPRITE_BOX_LENGTH,
     tx, ty,
     SPRITE_BOX_LENGTH, SPRITE_BOX_LENGTH
@@ -193,7 +195,7 @@ exports.prepareMove = function (uid, x, y, movePath) {
   }
 
   unitPosX = x;
-  unitPosX = y;
+  unitPosY = y;
   unitId = uid;
   isClientVisible = unit.owner.clientVisible;
   unitSprite = image.sprites[unit.type.ID];
