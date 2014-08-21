@@ -496,10 +496,11 @@ exports.move = function (unit, x, y, movePath, noFuelConsumption, preventRemoveO
   // the action logic must take care of this situation
   if (preventRemoveOldPos !== true) {
     model.mapData[x][y].unit = null;
+    if (constants.DEBUG) console.log("remove unit from position ("+x+","+y+")");
   }
 
   var uType = unit.type;
-  var mType = uType.movetype;
+  var mType = sheets.movetypes.sheets[uType.movetype];
   var fuelUsed = 0;
 
   // check_ move way by iterate through all move codes and build the path
@@ -514,28 +515,28 @@ exports.move = function (unit, x, y, movePath, noFuelConsumption, preventRemoveO
   var lastY = -1;
   var lastFuel = 0;
   var lastIndex = 0;
-  for (var i = 0, e = movePath.size - 1; i < e; i++) {
+  for (var i = 0, e = movePath.size; i < e; i++) {
 
     // set current position by current move code
     switch (movePath.data[i]) {
 
       case exports.MOVE_CODES_UP:
-        if (constants.DEBUG) assert(cY === 0);
+        if (constants.DEBUG) assert(cY > 0);
         cY--;
         break;
 
       case exports.MOVE_CODES_RIGHT:
-        if (constants.DEBUG) assert(cX === model.mapWidth - 1);
+        if (constants.DEBUG) assert(cX < model.mapWidth - 1);
         cX++;
         break;
 
       case exports.MOVE_CODES_DOWN:
-        if (constants.DEBUG) assert(cY === model.mapHeight - 1);
+        if (constants.DEBUG) assert(cY < model.mapHeight - 1);
         cY++;
         break;
 
       case exports.MOVE_CODES_LEFT:
-        if (constants.DEBUG) assert(cX === 0);
+        if (constants.DEBUG) assert(cX > 0);
         cX--;
         break;
     }
@@ -574,5 +575,6 @@ exports.move = function (unit, x, y, movePath, noFuelConsumption, preventRemoveO
   // into a thing at a target position (like a transporter)
   if (preventSetNewPos !== true) {
     model.mapData[lastX][lastY].unit = unit;
+    if (constants.DEBUG) console.log("set unit to position ("+lastX+","+lastY+")");
   }
 };

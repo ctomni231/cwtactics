@@ -8,10 +8,11 @@ var renderer = require("../renderer");
 var animation = require("../renderer/animation");
 var circBuff = require("../system/circularBuffer");
 var constants = require("../constants");
+var Timer = require("../system/timer").Timer;
 
 var SPRITE_BOX_LENGTH = constants.TILE_BASE + constants.TILE_BASE;
 var HALF_SPRITE_BOX_LENGTH = constants.TILE_BASE / 2;
-var MOVE_TILES_PER_SECOND = (constants.TILE_BASE * 8);
+var TILES_PER_MS = (8 * constants.TILE_BASE / 1000);
 
 var removeUnitFromLayer;
 
@@ -22,18 +23,25 @@ var dustPostY;
 var unitId;
 
 var movePathIndex;
+var moveCode;
 var movePath = new circBuff.CircularBuffer(constants.MAX_SELECTION_RANGE);
 
 var isClientVisible;
 
 var animationShift;
 var unitSprite;
+var unitImage;
 var dustSprite;
+var dustImage;
 var dustAnimTime;
 var dustAnimStep;
 var imageColorState;
 var dustImageDirectionState;
 var unitImageDirectionState;
+
+var dustTimerTime = 0;
+var dustTimerStep = 0;
+var dustTimer = new Timer(3, 30);
 
 var assertIsInIdle = function () {
   assert(unitId === constants.INACTIVE);
@@ -42,18 +50,50 @@ var assertIsInIdle = function () {
   assert(movePath.size === 0);
 };
 
+var updateImageStates = function () {
+  moveCode = movePath.get(movePathIndex);
+  switch (moveCode) {
+    case move.MOVE_CODES_UP :
+      dustImageDirectionState = image.Sprite.DIRECTION_UP;
+      unitImageDirectionState = image.Sprite.UNIT_STATE_UP;
+      break;
+
+    case move.MOVE_CODES_RIGHT :
+      dustImageDirectionState = image.Sprite.DIRECTION_RIGHT;
+      unitImageDirectionState = image.Sprite.UNIT_STATE_RIGHT;
+      break;
+
+    case move.MOVE_CODES_DOWN :
+      dustImageDirectionState = image.Sprite.DIRECTION_DOWN;
+      unitImageDirectionState = image.Sprite.UNIT_STATE_DOWN;
+      break;
+
+    case move.MOVE_CODES_LEFT :
+      dustImageDirectionState = image.Sprite.DIRECTION_LEFT;
+      unitImageDirectionState = image.Sprite.UNIT_STATE_LEFT;
+      break;
+  }
+
+  unitImage = unitSprite.getImage(imageColorState + unitImageDirectionState);
+  dustImage = dustSprite.getImage(dustImageDirectionState);
+};
+
 var updateAnimation = function (delta) {
-  animationShift += ( delta / 1000 ) * MOVE_TILES_PER_SECOND;
+ // if (delta > 16) console.log("tooo slooooow " + delta);
+
+  var next = delta * TILES_PER_MS;
+  if (next < 1) next = 1;
+  animationShift += next;
 
   // update move animation timer
-  if (dustAnimStep !== -1) {
-    dustAnimTime += delta;
-    if (dustAnimTime > 30) {
-      dustAnimStep++;
-      dustAnimTime = 0;
-      if (dustAnimStep === 3) {
-        dustAnimStep = -1;
-      }
+  // dustTimer.evalTime(delta);
+  dustTimerTime += delta;
+  if (dustTimerTime > 30) {
+    dustTimerStep += 1;
+    dustTimerTime = 0;
+
+    if (dustTimerStep === 3) {
+      dustTimerStep = 0;
     }
   }
 
@@ -61,44 +101,36 @@ var updateAnimation = function (delta) {
   if (animationShift > constants.TILE_BASE) {
     dustPostX = unitPosX;
     dustPostY = unitPosY;
-    dustAnimTime = 0;
-    dustAnimStep = 0;
+    dustTimerStep = 0;
+    dustTimerTime = 0;
+
+    updateImageStates();
 
     // update animation position
-    switch (movePath[ movePathIndex ]) {
+    switch (moveCode) {
       case move.MOVE_CODES_UP :
         unitPosY--;
-        dustImageDirectionState = image.Sprite.DIRECTION_UP;
-        unitImageDirectionState = image.Sprite.UNIT_STATE_UP;
         break;
-
       case move.MOVE_CODES_RIGHT :
         unitPosX++;
-        dustImageDirectionState = image.Sprite.DIRECTION_RIGHT;
-        unitImageDirectionState = image.Sprite.UNIT_STATE_RIGHT;
         break;
-
       case move.MOVE_CODES_DOWN :
         unitPosY++;
-        dustImageDirectionState = image.Sprite.DIRECTION_DOWN;
-        unitImageDirectionState = image.Sprite.UNIT_STATE_DOWN;
         break;
-
       case move.MOVE_CODES_LEFT :
         unitPosX--;
-        dustImageDirectionState = image.Sprite.DIRECTION_LEFT;
-        unitImageDirectionState = image.Sprite.UNIT_STATE_LEFT;
         break;
     }
 
     movePathIndex++;
-
     animationShift -= constants.TILE_BASE;
 
-    if (movePathIndex === movePath.length || movePath[movePathIndex] === constants.INACTIVE) {
-      this.changeState("INGAME_IDLE");
+    if (movePathIndex >= movePath.size) {
+      return true;
     }
   }
+
+  return false;
 };
 
 // This function cleans the unit from the unit layer.
@@ -111,10 +143,10 @@ var eraseUnitFromUnitLayer = function () {
 // This function cleans the last animation step picture from the effects layer.
 //
 var eraseLastPicture = function (ctx) {
-  var x = (unitPosX - 1 - renderer.screenOffsetX);
-  var y = (unitPosY - 1 - renderer.screenOffsetY);
-  var w = (unitPosY + 1 - renderer.screenOffsetX);
-  var h = (unitPosY + 1 - renderer.screenOffsetY);
+  var x = (unitPosX - 2 - renderer.screenOffsetX);
+  var y = (unitPosY - 2 - renderer.screenOffsetY);
+  var w = (unitPosX + 2 - renderer.screenOffsetX);
+  var h = (unitPosY + 2 - renderer.screenOffsetY);
 
   // check boundaries
   if (x < 0) x = 0;
@@ -139,20 +171,28 @@ var renderNewPicture = function (ctx) {
     return;
   }
 
-  var tx = (( unitPosX ) * constants.TILE_BASE) - HALF_SPRITE_BOX_LENGTH;
-  var ty = (( unitPosY ) * constants.TILE_BASE) - HALF_SPRITE_BOX_LENGTH;
+  var tx = (( unitPosX - renderer.screenOffsetX ) * constants.TILE_BASE) - HALF_SPRITE_BOX_LENGTH;
+  var ty = (( unitPosY - renderer.screenOffsetY ) * constants.TILE_BASE) - HALF_SPRITE_BOX_LENGTH;
 
   // ADD SHIFT
-  switch (movePath[ movePathIndex ]) {
-    case move.MOVE_CODES_UP: ty -= animationShift; break;
-    case move.MOVE_CODES_LEFT: tx -= animationShift; break;
-    case move.MOVE_CODES_RIGHT: tx += animationShift; break;
-    case move.MOVE_CODES_DOWN: ty += animationShift; break;
+  switch (moveCode) {
+    case move.MOVE_CODES_UP:
+      ty -= animationShift;
+      break;
+    case move.MOVE_CODES_LEFT:
+      tx -= animationShift;
+      break;
+    case move.MOVE_CODES_RIGHT:
+      tx += animationShift;
+      break;
+    case move.MOVE_CODES_DOWN:
+      ty += animationShift;
+      break;
   }
 
   // drawing unit
   ctx.drawImage(
-    unitSprite.getImage(imageColorState + unitImageDirectionState),
+    unitImage,
     SPRITE_BOX_LENGTH * animation.indexUnitAnimation, 0,
     SPRITE_BOX_LENGTH, SPRITE_BOX_LENGTH,
     tx, ty,
@@ -160,19 +200,19 @@ var renderNewPicture = function (ctx) {
   );
 
   // drawing dust
-  if (dustAnimStep !== -1) {
+  if (dustPostX !== constants.INACTIVE) {
     ctx.drawImage(
-      dustSprite.getImage(dustImageDirectionState),
+      dustImage,
       SPRITE_BOX_LENGTH * dustAnimStep, 0,
       SPRITE_BOX_LENGTH, SPRITE_BOX_LENGTH,
-      (( dustPostX ) * constants.TILE_BASE) - HALF_SPRITE_BOX_LENGTH,
-      (( dustPostX ) * constants.TILE_BASE) - HALF_SPRITE_BOX_LENGTH,
+      (( dustPostX - renderer.screenOffsetX ) * constants.TILE_BASE) - HALF_SPRITE_BOX_LENGTH,
+      (( dustPostY - renderer.screenOffsetY ) * constants.TILE_BASE) - HALF_SPRITE_BOX_LENGTH,
       SPRITE_BOX_LENGTH, SPRITE_BOX_LENGTH
     );
   }
 };
 
-exports.prepareMove = function (uid, x, y, movePath) {
+exports.prepareMove = function (uid, x, y, unitMovePath) {
   var unit = model.units[uid];
 
   // grab unit color state
@@ -200,7 +240,12 @@ exports.prepareMove = function (uid, x, y, movePath) {
   isClientVisible = unit.owner.clientVisible;
   unitSprite = image.sprites[unit.type.ID];
 
-  circBuff.copyBuffer(movePath, movePath);
+  dustTimerStep = 0;
+  dustTimerTime = 0;
+
+  circBuff.copyBuffer(unitMovePath, movePath);
+
+  updateImageStates();
 };
 
 exports.state = {
@@ -209,13 +254,17 @@ exports.state = {
   enter: function () {
     assertIsInIdle();
 
+    renderer.layerEffects.clearAll();
+
     // grab dust image lazy
-    if (dustSprite) dustSprite = image.sprites["DUST"];
+    if (!dustSprite) dustSprite = image.sprites["DUST"];
 
     removeUnitFromLayer = true;
   },
 
   exit: function () {
+    renderer.layerEffects.clear();
+
     isClientVisible = constants.INACTIVE;
     unitId = constants.INACTIVE;
     unitPosX = constants.INACTIVE;
@@ -228,11 +277,15 @@ exports.state = {
     dustAnimStep = -1;
     unitSprite = null;
     movePath.clear();
+
     renderer.setHiddenUnitId(constants.INACTIVE);
+    renderer.renderUnitsOnScreen();
   },
 
   update: function (delta) {
-    updateAnimation.call(this, delta);
+    if (updateAnimation(delta)) {
+      this.changeState("INGAME_IDLE");
+    }
   },
 
   render: function (delta) {
@@ -240,12 +293,12 @@ exports.state = {
 
     // the unit has to be removed from the unit layer during the animation
     if (removeUnitFromLayer) {
-      eraseUnitFromUnitLayer(ctx);
+      eraseUnitFromUnitLayer();
       removeUnitFromLayer = false;
     }
 
-    eraseLastPicture(ctx, delta);
-    renderNewPicture(ctx, delta);
+    eraseLastPicture(ctx);
+    renderNewPicture(ctx);
 
     renderer.layerEffects.renderLayer(0);
   }

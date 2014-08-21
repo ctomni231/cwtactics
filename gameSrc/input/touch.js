@@ -27,6 +27,8 @@ function oneFingerTap(event, x, y) {
   y = renderer.screenOffsetY + parseInt(y / constants.TILE_BASE, 10);
 
   if (!inMenu()) {
+    input.pushAction(input.TYPE_ACTION, x, y);
+    /*
     if (inSelection()) {
       if (stateData.selection.getValue(x, y) > 0) {
         input.pushAction(input.TYPE_ACTION, x, y);
@@ -35,7 +37,7 @@ function oneFingerTap(event, x, y) {
       }
     } else {
       input.pushAction(input.TYPE_ACTION, x, y);
-    }
+    }  */
 
   } else {
 

@@ -306,8 +306,10 @@ exports.renderUnitsOnScreen = function () {
   var w = (model.mapWidth < constants.SCREEN_WIDTH) ? model.mapWidth : constants.SCREEN_WIDTH;
   var h = (model.mapHeight < constants.SCREEN_HEIGHT) ? model.mapHeight : constants.SCREEN_HEIGHT;
 
+  exports.layerUnit.clearAll();
+
   exports.renderUnits(x, y, w, h);
-  exports.layerUnit.renderLayer(rendAnim.indexEffectAnimation);
+  exports.layerUnit.renderLayer(rendAnim.indexUnitAnimation);
 
   if (constants.DEBUG) console.log("rendered units screen (" + ((new Date()).getTime() - time) + "ms)");
 };

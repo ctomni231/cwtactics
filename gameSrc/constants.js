@@ -14,9 +14,9 @@ exports.GAME_FONT = "Gamefont";
 // game data.
 //
 // TODO: rename to SERVER_PATH
-exports.MOD_PATH = "http://localhost:8000/";
+exports.MOD_PATH = "http://192.168.1.31:8000/";
 
-exports.DEFAULT_MOD_PATH = "http://localhost:8000/modifications/cwt.json";
+exports.DEFAULT_MOD_PATH = "http://192.168.1.31:8000/modifications/cwt.json";
 
 // Tile size base.
 //

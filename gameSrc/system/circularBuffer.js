@@ -135,7 +135,7 @@ exports.CircularBuffer = my.Class({
 exports.copyBuffer = function (from, to) {
   if (constants.DEBUG) {
     assert(from instanceof exports.CircularBuffer && to instanceof exports.CircularBuffer);
-    assert(from.size === to.size);
+    assert(from.size <= to.maxSize);
   }
 
   to.clear();

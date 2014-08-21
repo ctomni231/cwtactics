@@ -50,8 +50,16 @@ var addState = function (desc) {
   }
 
   states[desc.id] = state;
+
+  state.animation = false;
+
+  return state;
 };
 
+var addAnimationState  = function (desc) {
+  var state = addState(desc);
+  state.animation = true;
+};
 //
 // Creates an inGame state which means this state is considered to be used in an active game round. As result this
 // state contains cursor handling and rendering logic.
@@ -254,7 +262,11 @@ exports.activeState = null;
 //
 var update = function (delta) {
 
-  // TODO animation states ?
+  if (exports.activeState.animation) {
+    exports.activeState.update(delta);
+    exports.activeState.render(delta);
+    return;
+  }
 
   // try to evaluate commands first
   if (actions.hasData() ) {
@@ -326,9 +338,6 @@ exports.start = function () {
 
   function gameLoop() {
 
-    // acquire next frame
-    requestAnimationFrame(gameLoop);
-
     // calculate delta
     var now = new Date().getTime();
     var delta = now - oldTime;
@@ -336,6 +345,9 @@ exports.start = function () {
 
     // update machine
     update(delta);
+
+    // acquire next frame
+    requestAnimationFrame(gameLoop);
   }
 
   // inject loading states
@@ -380,6 +392,8 @@ exports.addStates = function () {
 
   addInGameState(require("./states/ingame_flush").state);
 
+  addAnimationState(require("./states/ingame_anim_move").state);
+
   /*
    addInGameState(require("./states/ingame_multistep").state);
    addInGameState(require("./states/ingame_selecttile").state);
@@ -391,7 +405,6 @@ exports.addStates = function () {
    addState(require("./states/ingame_anim_captureProperty").state);
    addState(require("./states/ingame_anim_changeWeather").state);
    addState(require("./states/ingame_anim_destroyUnit").state);
-   addState(require("./states/ingame_anim_move").state);
    addState(require("./states/ingame_anim_nextTurn").state);
    addState(require("./states/ingame_anim_trapWait").state);
    */
