@@ -21,6 +21,8 @@ exports.renderTileOverlayRow = function (mapLayer, offsetX, offsetY) {
   exports.renderTiles(
     mapLayer,
     offsetX,
+    offsetY,
+    offsetX,
     offsetY+1,
     (model.mapWidth < constants.SCREEN_WIDTH) ? model.mapWidth : constants.SCREEN_WIDTH,
     1,
