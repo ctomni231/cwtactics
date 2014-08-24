@@ -221,32 +221,34 @@ exports.layerUI = new exports.LayeredCanvas("canvas_layer_UI", 1, canvasW, canva
 // @param moveCode
 //
 exports.shiftScreen = function (moveCode) {
+  var smallerW = (model.mapWidth < constants.SCREEN_WIDTH);
+  var smallerH = (model.mapHeight < constants.SCREEN_HEIGHT);
   var changed = false;
 
   switch (moveCode) {
     case move.MOVE_CODES_UP:
-      if (exports.screenOffsetY < model.mapHeight - constants.SCREEN_HEIGHT - 1) {
+      if (!smallerH && exports.screenOffsetY < model.mapHeight - constants.SCREEN_HEIGHT - 1) {
         exports.screenOffsetY++;
         changed = true;
       }
       break;
 
     case move.MOVE_CODES_RIGHT:
-      if (exports.screenOffsetX > 0) {
+      if (!smallerW && exports.screenOffsetX > 0) {
         exports.screenOffsetX--;
         changed = true;
       }
       break;
 
     case move.MOVE_CODES_DOWN:
-      if (exports.screenOffsetY > 0) {
+      if (!smallerH && exports.screenOffsetY > 0) {
         exports.screenOffsetY--;
         changed = true;
       }
       break;
 
     case move.MOVE_CODES_LEFT:
-      if (exports.screenOffsetX < model.mapWidth - constants.SCREEN_WIDTH - 1) {
+      if (!smallerW && exports.screenOffsetX < model.mapWidth - constants.SCREEN_WIDTH - 1) {
         exports.screenOffsetX++;
         changed = true;
       }
@@ -324,8 +326,8 @@ exports.shiftMap = function (code) {
 
   var fx = exports.screenOffsetX;
   var fy = exports.screenOffsetY;
-  var fw = constants.SCREEN_WIDTH;
-  var fh = constants.SCREEN_HEIGHT;
+  var fw = (model.mapWidth < constants.SCREEN_WIDTH) ? model.mapWidth : constants.SCREEN_WIDTH;
+  var fh = (model.mapHeight < constants.SCREEN_HEIGHT) ? model.mapHeight : constants.SCREEN_HEIGHT;
 
   // extract needed data for the shift process
   switch (code) {
