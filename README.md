@@ -36,3 +36,6 @@ The game files will be generated with the build system grunt. To download all de
      dev    = Builds the game and it's dependencies in debug mode
      
      default is dev
+
+More information can be found on the Wiki Development page.
+- [Game Deployment Wiki Page](https://github.com/ctomni231/cwtactics/wiki/Deployment)
