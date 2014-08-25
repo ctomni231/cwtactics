@@ -16,6 +16,8 @@ var TILES_PER_MS = (8 * constants.TILE_BASE / 1000);
 
 var removeUnitFromLayer;
 
+var unitStartX;
+var unitStartY;
 var unitPosX;
 var unitPosY;
 var dustPostX;
@@ -43,32 +45,32 @@ var dustTimerTime = 0;
 var dustTimerStep = 0;
 var dustTimer = new Timer(3, 30);
 
-var assertIsInIdle = function () {
+var assertIsInIdle = function() {
   assert(unitId === constants.INACTIVE);
   assert(unitPosX === constants.INACTIVE);
   assert(unitPosY === constants.INACTIVE);
   assert(movePath.size === 0);
 };
 
-var updateImageStates = function () {
+var updateImageStates = function() {
   moveCode = movePath.get(movePathIndex);
   switch (moveCode) {
-    case move.MOVE_CODES_UP :
+    case move.MOVE_CODES_UP:
       dustImageDirectionState = image.Sprite.DIRECTION_UP;
       unitImageDirectionState = image.Sprite.UNIT_STATE_UP;
       break;
 
-    case move.MOVE_CODES_RIGHT :
+    case move.MOVE_CODES_RIGHT:
       dustImageDirectionState = image.Sprite.DIRECTION_RIGHT;
       unitImageDirectionState = image.Sprite.UNIT_STATE_RIGHT;
       break;
 
-    case move.MOVE_CODES_DOWN :
+    case move.MOVE_CODES_DOWN:
       dustImageDirectionState = image.Sprite.DIRECTION_DOWN;
       unitImageDirectionState = image.Sprite.UNIT_STATE_DOWN;
       break;
 
-    case move.MOVE_CODES_LEFT :
+    case move.MOVE_CODES_LEFT:
       dustImageDirectionState = image.Sprite.DIRECTION_LEFT;
       unitImageDirectionState = image.Sprite.UNIT_STATE_LEFT;
       break;
@@ -78,8 +80,8 @@ var updateImageStates = function () {
   dustImage = dustSprite.getImage(dustImageDirectionState);
 };
 
-var updateAnimation = function (delta) {
- // if (delta > 16) console.log("tooo slooooow " + delta);
+var updateAnimation = function(delta) {
+  // if (delta > 16) console.log("tooo slooooow " + delta);
 
   var next = delta * TILES_PER_MS;
   if (next < 1) next = 1;
@@ -104,30 +106,32 @@ var updateAnimation = function (delta) {
     dustTimerStep = 0;
     dustTimerTime = 0;
 
-    updateImageStates();
+    var oldMoveCode = moveCode;
 
     // update animation position
     switch (moveCode) {
-      case move.MOVE_CODES_UP :
+      case move.MOVE_CODES_UP:
         unitPosY--;
         break;
-      case move.MOVE_CODES_RIGHT :
-        unitPosX++;
-        break;
-      case move.MOVE_CODES_DOWN :
+      case move.MOVE_CODES_DOWN:
         unitPosY++;
         break;
-      case move.MOVE_CODES_LEFT :
+      case move.MOVE_CODES_RIGHT:
+        unitPosX++;
+        break;
+      case move.MOVE_CODES_LEFT:
         unitPosX--;
         break;
     }
 
     movePathIndex++;
-    animationShift -= constants.TILE_BASE;
-
     if (movePathIndex >= movePath.size) {
       return true;
     }
+
+    updateImageStates();
+
+    animationShift = (oldMoveCode != moveCode) ? 0 : (animationShift - constants.TILE_BASE);
   }
 
   return false;
@@ -135,14 +139,14 @@ var updateAnimation = function (delta) {
 
 // This function cleans the unit from the unit layer.
 //
-var eraseUnitFromUnitLayer = function () {
+var eraseUnitFromUnitLayer = function() {
   renderer.setHiddenUnitId(unitId);
   renderer.renderUnitsOnScreen();
 };
 
 // This function cleans the last animation step picture from the effects layer.
 //
-var eraseLastPicture = function (ctx) {
+var eraseLastPicture = function(ctx) {
   var x = (unitPosX - 2 - renderer.screenOffsetX);
   var y = (unitPosY - 2 - renderer.screenOffsetY);
   var w = (unitPosX + 2 - renderer.screenOffsetX);
@@ -156,37 +160,35 @@ var eraseLastPicture = function (ctx) {
 
   ctx.clearRect(
     x * constants.TILE_BASE,
-    y * constants.TILE_BASE,
-    (w - x) * constants.TILE_BASE,
-    (h - y) * constants.TILE_BASE
+    y * constants.TILE_BASE, (w - x) * constants.TILE_BASE, (h - y) * constants.TILE_BASE
   );
 };
 
 // This function renders the current animation step picture to the effects layer.
 //
-var renderNewPicture = function (ctx) {
+var renderNewPicture = function(ctx) {
 
   // check client visibility for the unit and the given tile
   if (!isClientVisible && !model.mapData[unitPosX][unitPosY].visionClient <= 0) {
     return;
   }
 
-  var tx = (( unitPosX - renderer.screenOffsetX ) * constants.TILE_BASE) - HALF_SPRITE_BOX_LENGTH;
-  var ty = (( unitPosY - renderer.screenOffsetY ) * constants.TILE_BASE) - HALF_SPRITE_BOX_LENGTH;
+  var tx = ((unitPosX - renderer.screenOffsetX) * constants.TILE_BASE) - HALF_SPRITE_BOX_LENGTH;
+  var ty = ((unitPosY - renderer.screenOffsetY) * constants.TILE_BASE) - HALF_SPRITE_BOX_LENGTH;
 
   // ADD SHIFT
   switch (moveCode) {
     case move.MOVE_CODES_UP:
       ty -= animationShift;
       break;
+    case move.MOVE_CODES_DOWN:
+      ty += animationShift;
+      break;
     case move.MOVE_CODES_LEFT:
       tx -= animationShift;
       break;
     case move.MOVE_CODES_RIGHT:
       tx += animationShift;
-      break;
-    case move.MOVE_CODES_DOWN:
-      ty += animationShift;
       break;
   }
 
@@ -204,15 +206,14 @@ var renderNewPicture = function (ctx) {
     ctx.drawImage(
       dustImage,
       SPRITE_BOX_LENGTH * dustAnimStep, 0,
-      SPRITE_BOX_LENGTH, SPRITE_BOX_LENGTH,
-      (( dustPostX - renderer.screenOffsetX ) * constants.TILE_BASE) - HALF_SPRITE_BOX_LENGTH,
-      (( dustPostY - renderer.screenOffsetY ) * constants.TILE_BASE) - HALF_SPRITE_BOX_LENGTH,
+      SPRITE_BOX_LENGTH, SPRITE_BOX_LENGTH, ((dustPostX - renderer.screenOffsetX) * constants.TILE_BASE) -
+      HALF_SPRITE_BOX_LENGTH, ((dustPostY - renderer.screenOffsetY) * constants.TILE_BASE) - HALF_SPRITE_BOX_LENGTH,
       SPRITE_BOX_LENGTH, SPRITE_BOX_LENGTH
     );
   }
 };
 
-exports.prepareMove = function (uid, x, y, unitMovePath) {
+exports.prepareMove = function(uid, x, y, unitMovePath) {
   var unit = model.units[uid];
 
   // grab unit color state
@@ -236,6 +237,8 @@ exports.prepareMove = function (uid, x, y, unitMovePath) {
 
   unitPosX = x;
   unitPosY = y;
+  unitStartX = x;
+  unitStartY = y;
   unitId = uid;
   isClientVisible = unit.owner.clientVisible;
   unitSprite = image.sprites[unit.type.ID];
@@ -245,13 +248,14 @@ exports.prepareMove = function (uid, x, y, unitMovePath) {
 
   circBuff.copyBuffer(unitMovePath, movePath);
 
+  movePathIndex = 0;
   updateImageStates();
 };
 
 exports.state = {
   id: "ANIMATION_MOVE",
 
-  enter: function () {
+  enter: function() {
     assertIsInIdle();
 
     renderer.layerEffects.clearAll();
@@ -262,13 +266,15 @@ exports.state = {
     removeUnitFromLayer = true;
   },
 
-  exit: function () {
+  exit: function() {
     renderer.layerEffects.clear();
 
     isClientVisible = constants.INACTIVE;
     unitId = constants.INACTIVE;
     unitPosX = constants.INACTIVE;
     unitPosY = constants.INACTIVE;
+    unitStartX = constants.INACTIVE;
+    unitStartY = constants.INACTIVE;
     dustPostX = -1;
     dustPostY = -1;
     movePathIndex = 0;
@@ -282,13 +288,20 @@ exports.state = {
     renderer.renderUnitsOnScreen();
   },
 
-  update: function (delta) {
+  update: function(delta) {
     if (updateAnimation(delta)) {
+      var vision = model.units[unitId].type.vision;
+
+      renderer.renderFogCircle(unitStartX, unitStartY, vision);
+      renderer.renderFogCircle(unitPosX, unitPosY, vision);
+
+      renderer.renderFogBackgroundLayer();
+
       this.changeState("INGAME_IDLE");
     }
   },
 
-  render: function (delta) {
+  render: function(delta) {
     var ctx = renderer.layerEffects.getContext(0);
 
     // the unit has to be removed from the unit layer during the animation

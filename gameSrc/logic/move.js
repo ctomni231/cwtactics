@@ -2,6 +2,7 @@ var constants = require("../constants");
 var assert = require("../system/functions").assert;
 var sheets = require("../sheets");
 var model = require("../model");
+var fog = require("../logic/fog");
 
 // Symbolizes a move up.
 //
@@ -204,7 +205,7 @@ exports.addCodeToMovePath = function (code, movePath, selection, sx, sy) {
 
   // if to much fuel would be needed then decline
   if (fuelUsed > points) {
-    movePath.pop();
+    movePath.popLast();
     return false;
   } else {
     return true;
@@ -495,7 +496,10 @@ exports.move = function (unit, x, y, movePath, noFuelConsumption, preventRemoveO
   // do not set the new position if the position is already occupied
   // the action logic must take care of this situation
   if (preventRemoveOldPos !== true) {
+    fog.removeUnitVision(x, y, unit.owner);
+
     model.mapData[x][y].unit = null;
+
     if (constants.DEBUG) console.log("remove unit from position ("+x+","+y+")");
   }
 
@@ -575,6 +579,8 @@ exports.move = function (unit, x, y, movePath, noFuelConsumption, preventRemoveO
   // into a thing at a target position (like a transporter)
   if (preventSetNewPos !== true) {
     model.mapData[lastX][lastY].unit = unit;
+    fog.addUnitVision(lastX, lastY, unit.owner);
+    
     if (constants.DEBUG) console.log("set unit to position ("+lastX+","+lastY+")");
   }
 };
