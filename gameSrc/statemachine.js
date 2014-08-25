@@ -19,14 +19,14 @@ var gamePad = require("./input/gamepad");
 // @class
 //
 exports.GameState = my.Class({
-  constructor: function (enterFn, exitFn, updateFn, renderFn ) {
+  constructor: function(enterFn, exitFn, updateFn, renderFn) {
     this.exit = exitFn;
     this.enter = enterFn;
     this.update = updateFn;
     this.render = renderFn;
   },
 
-  changeState: function (stateId) {
+  changeState: function(stateId) {
     exports.changeState(stateId);
   }
 });
@@ -35,7 +35,7 @@ exports.GameState = my.Class({
 //
 // @param desc
 //
-var addState = function (desc) {
+var addState = function(desc) {
   if (constants.DEBUG) fnc.assert(!states.hasOwnProperty(desc.id));
 
   var state = new exports.GameState(
@@ -56,7 +56,7 @@ var addState = function (desc) {
   return state;
 };
 
-var addAnimationState  = function (desc) {
+var addAnimationState = function(desc) {
   var state = addState(desc);
   state.animation = true;
 };
@@ -64,15 +64,15 @@ var addAnimationState  = function (desc) {
 // Creates an inGame state which means this state is considered to be used in an active game round. As result this
 // state contains cursor handling and rendering logic.
 //
-var addInGameState = function (desc) {
+var addInGameState = function(desc) {
   addState({
 
     id: desc.id,
 
-    init: function () {
+    init: function() {
 
       // mouse move handler
-      this.inputMove = function (x, y) {
+      this.inputMove = function(x, y) {
         if (desc.inputMove) {
           desc.inputMove.call(this, x, y);
         } else {
@@ -89,19 +89,19 @@ var addInGameState = function (desc) {
       }
     },
 
-    enter: function () {
+    enter: function() {
       if (desc.enter) {
         desc.enter.call(this);
       }
     },
 
-    exit: function () {
+    exit: function() {
       if (desc.exit) {
         desc.exit.call(this);
       }
     },
 
-    update: function (delta, lastInput) {
+    update: function(delta, lastInput) {
       if (lastInput) {
         var code = constants.INACTIVE;
         var func = null;
@@ -147,7 +147,7 @@ var addInGameState = function (desc) {
       }
     },
 
-    render: function (delta) {
+    render: function(delta) {
       renderer.evaluateCycle(delta);
       if (desc.render) {
         desc.render.call(this, delta);
@@ -162,16 +162,16 @@ var addInGameState = function (desc) {
 // will be designed with a **cwt.UIScreenLayout** which can be configured by the **doLayout(layout)** function
 // property in the state description.
 //
-var addMenuState = function (desc) {
+var addMenuState = function(desc) {
   var layout = new widgets.UIScreenLayout();
   var rendered = false;
 
   addState({
     id: desc.id,
 
-    init: function () {
+    init: function() {
 
-      this.inputMove = function (x, y) {
+      this.inputMove = function(x, y) {
         if (layout.updateIndex(x, y)) {
           rendered = false;
         }
@@ -194,7 +194,7 @@ var addMenuState = function (desc) {
       };
     },
 
-    enter: function () {
+    enter: function() {
       renderer.layerUI.clear(constants.INACTIVE);
       rendered = false;
 
@@ -203,7 +203,7 @@ var addMenuState = function (desc) {
       }
     },
 
-    update: function (delta, lastInput) {
+    update: function(delta, lastInput) {
       if (lastInput) {
         switch (lastInput.key) {
 
@@ -234,7 +234,7 @@ var addMenuState = function (desc) {
       }
     },
 
-    render: function (delta) {
+    render: function(delta) {
       if (!rendered) {
         var ctx = renderer.layerUI.getContext(constants.INACTIVE);
         layout.draw(ctx);
@@ -260,7 +260,7 @@ exports.activeState = null;
 //
 // @param delta
 //
-var update = function (delta) {
+var update = function(delta) {
 
   if (exports.activeState.animation) {
     exports.activeState.update(delta);
@@ -269,7 +269,7 @@ var update = function (delta) {
   }
 
   // try to evaluate commands first
-  if (actions.hasData() ) {
+  if (actions.hasData()) {
     actions.invokeNext();
     return;
   }
@@ -293,7 +293,7 @@ var update = function (delta) {
 // Changes the active state. The **exit event** will be fired during the change process in the old state and the
 // **enter event** in the new state.
 //
-exports.changeState = function (stateId) {
+exports.changeState = function(stateId) {
   if (exports.activeState) {
     if (exports.activeState.exit) {
       exports.activeState.exit();
@@ -308,10 +308,11 @@ exports.changeState = function (stateId) {
 //
 // @param stateId
 //
-exports.setState = function (stateId, fireEvent) {
+exports.setState = function(stateId, fireEvent) {
   if (constants.DEBUG) {
     fnc.assert(states.hasOwnProperty(stateId));
-    console.log("set active state to " + stateId + ((fireEvent) ? " with firing enter event" : ""));
+    console.log("set active state to " + stateId + ((fireEvent) ?
+      " with firing enter event" : ""));
   }
 
   exports.activeState = states[stateId];
@@ -326,7 +327,7 @@ var started = false;
 
 // Starts the game state machine.
 //
-exports.start = function () {
+exports.start = function() {
   if (started) throw Error("already started");
   started = true;
 
@@ -362,7 +363,7 @@ exports.start = function () {
 };
 
 var initialized = false;
-exports.addStates = function () {
+exports.addStates = function() {
   if (initialized) throw Error("already started");
   initialized = true;
 
@@ -394,18 +395,16 @@ exports.addStates = function () {
 
   addAnimationState(require("./states/ingame_anim_move").state);
 
-  /*
-   addInGameState(require("./states/ingame_multistep").state);
-   addInGameState(require("./states/ingame_selecttile").state);
-   addInGameState(require("./states/ingame_submenu").state);
-   addInGameState(require("./states/ingame_targetselection_a").state);
-   addInGameState(require("./states/ingame_targetselection_b").state);
+  addInGameState(require("./states/ingame_multistep").state);
+  addInGameState(require("./states/ingame_selecttile").state);
+  addInGameState(require("./states/ingame_submenu").state);
+  addInGameState(require("./states/ingame_targetselection_a").state);
+  addInGameState(require("./states/ingame_targetselection_b").state);
 
-   addState(require("./states/ingame_anim_ballistic").state);
-   addState(require("./states/ingame_anim_captureProperty").state);
-   addState(require("./states/ingame_anim_changeWeather").state);
-   addState(require("./states/ingame_anim_destroyUnit").state);
-   addState(require("./states/ingame_anim_nextTurn").state);
-   addState(require("./states/ingame_anim_trapWait").state);
-   */
+  addState(require("./states/ingame_anim_ballistic").state);
+  addState(require("./states/ingame_anim_captureProperty").state);
+  addState(require("./states/ingame_anim_changeWeather").state);
+  addState(require("./states/ingame_anim_destroyUnit").state);
+  addState(require("./states/ingame_anim_nextTurn").state);
+  addState(require("./states/ingame_anim_trapWait").state);
 };

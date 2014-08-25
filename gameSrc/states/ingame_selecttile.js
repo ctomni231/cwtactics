@@ -1,8 +1,12 @@
+"use strict";
+
+var stateData = require("../dataTransfer/states");
+
 exports.state = {
   id: "INGAME_SELECT_TILE",
 
-  enter: function (gameData) {
-    this.data.targetselection.clean();
+  enter: function () {
+    stateData.targetselection.clean();
 
     /*
      var prepareSelection = this.data.action.object.prepareSelection;
@@ -11,14 +15,14 @@ exports.state = {
     */
   },
 
-  ACTION: function (gameData) {
-    if (gameData.action.object.isTargetValid(gameData, cwt.Cursor.x, cwt.Cursor.y)) {
-      gameData.targetselection.set(cwt.Cursor.x, cwt.Cursor.y);
-      require("../statemachine").changeState("INGAME_FLUSH_ACTIONS");
+  ACTION: function () {
+    if (stateData.action.object.isTargetValid(stateData.cursorX, stateData.cursorY)) {
+      gameData.targetselection.set(stateData.cursorX, stateData.cursorY);
+      this.changeState("INGAME_FLUSH_ACTIONS");
     }
   },
 
-  CANCEL: function (gameData) {
-    require("../statemachine").changeState("INGAME_MENU");
+  CANCEL: function () {
+    this.changeState("INGAME_MENU");
   }
 };

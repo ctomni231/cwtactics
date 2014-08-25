@@ -1,3 +1,5 @@
+"use strict";
+
 exports.state = {
   id: "ANIMATION_TRAPPED",
 

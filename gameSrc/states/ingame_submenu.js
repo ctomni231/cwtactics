@@ -1,25 +1,31 @@
+"use strict";
+
+var constants = require("../constants.js");
+var assert = require("../system/functions.js").assert;
+var stateData = require("../dataTransfer/states");
+
 exports.state = {
   id: "INGAME_SUBMENU",
 
-  enter: function (gameData) {
-    gameData.menu.clean();
-    gameData.menu.generate();
+  enter: function () {
+    stateData.menu.clean();
+    stateData.menu.generate();
 
     // go back when no entries exists
-    if (!gameData.menu.getSize()) {
+    if (stateData.menu.getSize() === 0) {
       throw Error("sub menu cannot be empty");
     }
   },
 
-  ACTION: function (gameData) {
-    if (gameData.menu.isEnabled()) {
+  ACTION: function () {
+    if (stateData.menu.isEnabled()) {
       return;
     }
 
-    var actName = gameData.menu.getContent();
+    var actName = stateData.menu.getContent();
 
     if (actName === "done") {
-      require("../statemachine").changeState("INGAME_IDLE");
+      this.changeState("INGAME_IDLE");
       return;
     }
 
@@ -33,11 +39,11 @@ exports.state = {
       next = "INGAME_FLUSH_ACTIONS";
     }
 
-    if (cwt.DEBUG) cwt.assert(next);
-    require("../statemachine").changeState(next);
+    if (constants.DEBUG) assert(next);
+    this.changeState(next);
   },
 
   CANCEL: function () {
-    require("../statemachine").changeState("INGAME_MENU");
+    this.changeState("INGAME_MENU");
   }
 };

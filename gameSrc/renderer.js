@@ -421,7 +421,7 @@ exports.evaluateCycle = function (delta) {
 //
 //
 exports.renderFogCircle = function (x, y, range) {
-  rendFog.renderFogRect(exports.layerFog, exports.screenOffsetX, exports.screenOffsetY, x, y, range);
+  rendFog.renderFogCircle(exports.layerFog, exports.screenOffsetX, exports.screenOffsetY, x, y, range);
 };
 
 //

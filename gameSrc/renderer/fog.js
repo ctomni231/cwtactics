@@ -9,6 +9,9 @@ var animation = require("./animation");
 
 var tempCanvas;
 
+// TODO => renderer should make fog for all first and remove fog then
+// TODO => this will prevent overlay errors 
+
 exports.init = function (width, height) {
   assert(!tempCanvas);
 
@@ -61,8 +64,8 @@ exports.renderFogRect = function (layerFog, offsetX, offsetY, x, y, w, h, circle
     x -= w;
     y -= h;
     range = w;
-    w += w;
-    h += w;
+    w += w+1;
+    h += w+1;
 
   } else {
 
@@ -84,7 +87,7 @@ exports.renderFogRect = function (layerFog, offsetX, offsetY, x, y, w, h, circle
 
       if (circle) {
         distance = model.getDistance(x, y, cx, cy);
-        if (!model.isValidPosition(x, y) || distance) {
+        if (!model.isValidPosition(x, y) || distance > range) {
           continue;
         }
 
@@ -160,7 +163,7 @@ exports.renderFogRect = function (layerFog, offsetX, offsetY, x, y, w, h, circle
 
   }
 
-  this.renderFogBackgroundLayer(layerFog);
+  exports.renderFogBackgroundLayer(layerFog);
 };
 
 //

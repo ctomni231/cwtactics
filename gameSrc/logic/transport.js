@@ -109,9 +109,9 @@ exports.canUnloadSomethingAt = function (transporter, x, y) {
   var unit;
 
   if (constants.DEBUG) assert(exports.isTransportUnit(transporter));
-  for (var i = 0, e = model.units.length; i <= e; i++) {
+  for (var i = 0, e = model.units.length; i < e; i++) {
 
-    unit = move.units[i];
+    unit = model.units[i];
     if (unit.loadedIn === transporter) {
       var moveType = unit.type.movetype;
 

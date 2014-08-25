@@ -1,3 +1,5 @@
+"use strict";
+
 var renderer = require("../renderer");
 var constants = require("../constants");
 

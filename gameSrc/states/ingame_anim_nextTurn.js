@@ -1,3 +1,5 @@
+"use strict";
+
 exports.state = {
   id: "ANIMATION_NEXT_TURN",
 
@@ -14,7 +16,7 @@ exports.state = {
   },
 
   render: function (delta) {
-
+    
   }
 };
 

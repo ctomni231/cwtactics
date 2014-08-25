@@ -1,7 +1,11 @@
+"use strict";
+
+var stateData = require("../dataTransfer/states");
+
 exports.state = {
   id: "INGAME_MULTISTEP_IDLE",
 
   enter: function () {
-    this.globalData.inMultiStep = false;
+    stateData.inMultiStep = false;
   }
 };

@@ -1,6 +1,7 @@
 "use strict";
 
 var relation = require("../logic/relationship");
+var renderer = require("../renderer");
 var model = require("../model");
 
 exports.action = {
@@ -12,5 +13,6 @@ exports.action = {
 
   invoke: function (unitId) {
     model.units[unitId].setActable(false);
+  	renderer.renderUnitsOnScreen();
   }
 };

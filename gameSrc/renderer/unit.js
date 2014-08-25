@@ -8,7 +8,7 @@ var tempCanvas;
 
 exports.hiddenUnitId = constants.INACTIVE;
 
-exports.init = function (width, height) {
+exports.init = function(width, height) {
   assert(!tempCanvas);
 
   tempCanvas = document.createElement("canvas");
@@ -25,7 +25,7 @@ exports.init = function (width, height) {
 // @param {number} w
 // @param {number} h
 //
-exports.renderUnits = function (layer, offsetX, offsetY, x, oy, w, h) {
+exports.renderUnits = function(layer, offsetX, offsetY, x, oy, w, h) {
   var mapData = model.mapData;
   var halfTileBase = parseInt(constants.TILE_BASE / 2, 10);
   var hiddenUnit = (exports.hiddenUnitId !== constants.INACTIVE ? model.units[exports.hiddenUnitId] : null);
@@ -58,10 +58,16 @@ exports.renderUnits = function (layer, offsetX, offsetY, x, oy, w, h) {
       }
 
       // inverted ?
+      var shadowSprite;
       if (unit.owner.id % 2 === 0) {
         state += image.Sprite.UNIT_STATE_IDLE_INVERTED;
+        shadowSprite = image.sprites[unit.type.ID].getImage(image.Sprite.UNIT_SHADOW_MASK + 
+          image.Sprite.UNIT_STATE_IDLE_INVERTED);
+      } else {
+        shadowSprite = image.sprites[unit.type.ID].getImage(image.Sprite.UNIT_SHADOW_MASK);
       }
 
+      var used = !unit.canAct;
       var sprite = image.sprites[unit.type.ID].getImage(state);
       var n = 0;
       while (n < 3) {
@@ -84,6 +90,18 @@ exports.renderUnits = function (layer, offsetX, offsetY, x, oy, w, h) {
           tcw, tch
         );
 
+        if (used) {
+          ctx.globalAlpha = 0.35;
+          ctx.drawImage(
+            shadowSprite,
+            scx, scy,
+            scw, sch,
+            tcx, tcy,
+            tcw, tch
+          );
+          ctx.globalAlpha = 1;
+        }
+
         n++;
       }
 
@@ -97,7 +115,7 @@ exports.renderUnits = function (layer, offsetX, offsetY, x, oy, w, h) {
 //
 // @param {number} code
 //
-exports.shiftUnits = function (layer, code) {
+exports.shiftUnits = function(layer, code) {
   var tmpContext = tempCanvas.getContext("2d");
 
   // calculate meta data for shift
