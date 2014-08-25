@@ -163,7 +163,7 @@ exports.initMap = function (gameData, isSave, callback) {
     var player = model.players[i];
     player.name = null;
     player.gold = 0;
-    player.manpower = Math.POSITIVE_INFINITY;
+    player.manpower = 999999;
     player.team = (i <= gameData.player - 1) ? i : constants.NOT_AVAILABLE;
   }
 
