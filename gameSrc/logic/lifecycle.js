@@ -4,6 +4,7 @@ var constants = require("../constants");
 var assert = require("../system/functions").assert;
 var model = require("../model");
 var fog = require("../logic/fog");
+var sheet = require("../sheets");
 
 var cfgNoUnitsLeftLoose = require("../config").getConfig("noUnitsLeftLoose");
 
@@ -40,7 +41,7 @@ exports.createUnit = function (x, y, player, type) {
   tile.unit = unit;
   player.numberOfUnits++;
 
-  unit.initByType(type);
+  unit.initByType(sheet.units.sheets[type]);
 
   fog.addUnitVision(x, y, player);
 };

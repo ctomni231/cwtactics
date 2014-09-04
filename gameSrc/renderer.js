@@ -1,3 +1,9 @@
+/**
+ *
+ *
+ * @module
+ */
+
 "use strict";
 
 var constants = require("./constants");
@@ -6,12 +12,12 @@ var canvasW = constants.TILE_BASE * constants.SCREEN_WIDTH;
 var canvasH = constants.TILE_BASE * constants.SCREEN_HEIGHT;
 
 var rendCursor = require("./renderer/cursor");
+var rendFocus = require("./renderer/focus");
 var rendAnim = require("./renderer/animation");
 var rendUnit = require("./renderer/unit");
 var rendMenu = require("./renderer/menu");
 var rendMap = require("./renderer/map");
 var rendFog = require("./renderer/fog");
-var rendFocus = require("./renderer/focus");
 
 var stateData = require("./dataTransfer/states");
 var assert = require("./system/functions").assert;
@@ -23,10 +29,9 @@ rendFog.init(canvasW, canvasH);
 rendUnit.init(canvasW, canvasH);
 rendFocus.init(canvasW, canvasH);
 
-//
-//
-// @class
-//
+/**
+ * @class
+ */
 exports.LayeredCanvas = my.Class({
   constructor: function (canvasId, frames, w, h) {
 
@@ -126,100 +131,110 @@ exports.LayeredCanvas = my.Class({
   }
 });
 
-//
-// @class
-//
-exports.Pagination = my.Class({
+/**
+ * @class
+ */
+exports.Pagination = function (list, pageSize, updateFn) {
+  this.page = 0;
+  this.list = list;
 
-  constructor: function (list, pageSize, updateFn) {
-    this.page = 0;
-    this.list = list;
-
-    this.entries = [];
-    while (pageSize > 0) {
-      this.entries.push(null);
-      pageSize--;
-    }
-
-    this.updateFn = updateFn;
-  },
-
-  //
-  // Selects a page from the list. The entries of the selected page will be saved in the **entries** property
-  // of the pagination object.
-  //
-  selectPage: function (index) {
-    var PAGE_SIZE = this.entries.length;
-
-    if (index < 0 || index * PAGE_SIZE >= this.list.length) {
-      return;
-    }
-
-    this.page = index;
-
-    index = (index * PAGE_SIZE);
-    for (var n = 0; n < PAGE_SIZE; n++) {
-      this.entries[n] = (index + n >= this.list.length) ? null : this.list[index + n];
-    }
-
-    if (this.updateFn) {
-      this.updateFn();
-    }
+  this.entries = [];
+  while (pageSize > 0) {
+    this.entries.push(null);
+    pageSize--;
   }
 
-});
+  this.updateFn = updateFn;
+};
 
+/**
+ * Selects a page from the list. The entries of the selected page will be saved in the **entries** property
+ * of the pagination object.
+ */
+exports.Pagination.prototype.selectPage = function (index) {
+  var PAGE_SIZE = this.entries.length;
+
+  if (index < 0 || index * PAGE_SIZE >= this.list.length) {
+    return;
+  }
+
+  this.page = index;
+
+  index = (index * PAGE_SIZE);
+  for (var n = 0; n < PAGE_SIZE; n++) {
+    this.entries[n] = (index + n >= this.list.length) ? null : this.list[index + n];
+  }
+
+  if (this.updateFn) {
+    this.updateFn();
+  }
+};
+
+/**
+ *
+ */
 exports.screenWidth = canvasW;
 
+/**
+ *
+ */
 exports.screenHeight = canvasH;
 
+/**
+ *
+ */
 exports.screenOffsetX = 0;
 
+/**
+ *
+ */
 exports.screenOffsetY = 0;
 
+/**
+ *
+ */
 exports.convertToTilePos = function (p) {
   return parseInt(p / constants.TILE_BASE, 10);
 };
 
-//
-// @type {cwt.LayeredCanvas}
-//
+/**
+ * @type {cwt.LayeredCanvas}
+ */
 exports.layerBG = new exports.LayeredCanvas("canvas_layer_Background", 1, canvasW, canvasH);
 
-//
-// @type {cwt.LayeredCanvas}
-//
+/**
+ * @type {cwt.LayeredCanvas}
+ */
 exports.layerMap = new exports.LayeredCanvas("canvas_layer_Map", 8, canvasW, canvasH);
 
-//
-// @type {cwt.LayeredCanvas}
-//
+/**
+ * @type {cwt.LayeredCanvas}
+ */
 exports.layerFog = new exports.LayeredCanvas("canvas_layer_Fog", 1, canvasW, canvasH);
 
-//
-// @type {cwt.LayeredCanvas}
-//
+/**
+ * @type {cwt.LayeredCanvas}
+ */
 exports.layerUnit = new exports.LayeredCanvas("canvas_layer_Unit", 3, canvasW, canvasH);
 
-//
-// @type {cwt.LayeredCanvas}
-//
+/**
+ * @type {cwt.LayeredCanvas}
+ */
 exports.layerFocus = new exports.LayeredCanvas("canvas_layer_Focus", 7, canvasW, canvasH);
 
-//
-// @type {cwt.LayeredCanvas}
-//
+/**
+ * @type {cwt.LayeredCanvas}
+ */
 exports.layerEffects = new exports.LayeredCanvas("canvas_layer_Effects", 1, canvasW, canvasH);
 
-//
-// @type {cwt.LayeredCanvas}
-//
+/**
+ * @type {cwt.LayeredCanvas}
+ */
 exports.layerUI = new exports.LayeredCanvas("canvas_layer_UI", 1, canvasW, canvasH);
 
-//
-//
-// @param moveCode
-//
+/**
+ * @param moveCode
+ */
 exports.shiftScreen = function (moveCode) {
   var smallerW = (model.mapWidth < constants.SCREEN_WIDTH);
   var smallerH = (model.mapHeight < constants.SCREEN_HEIGHT);
@@ -258,9 +273,9 @@ exports.shiftScreen = function (moveCode) {
   return changed;
 };
 
-//
-//
-//
+/**
+ *
+ */
 exports.renderScreen = function () {
   var time;
   if (constants.DEBUG) time = (new Date()).getTime();
@@ -284,6 +299,9 @@ exports.renderScreen = function () {
   if (constants.DEBUG) console.log("rendered the complete screen (" + ((new Date()).getTime() - time) + "ms)");
 };
 
+/**
+ *
+ */
 exports.renderFocusOnScreen = function () {
   var time;
   if (constants.DEBUG) time = (new Date()).getTime();
@@ -299,6 +317,9 @@ exports.renderFocusOnScreen = function () {
   if (constants.DEBUG) console.log("rendered focus on screen (" + ((new Date()).getTime() - time) + "ms)");
 };
 
+/**
+ *
+ */
 exports.renderUnitsOnScreen = function () {
   var time;
   if (constants.DEBUG) time = (new Date()).getTime();
@@ -316,10 +337,9 @@ exports.renderUnitsOnScreen = function () {
   if (constants.DEBUG) console.log("rendered units screen (" + ((new Date()).getTime() - time) + "ms)");
 };
 
-//
-//
-// @param {number} code
-//
+/**
+ * @param {number} code
+ */
 exports.shiftMap = function (code) {
   var time;
   if (constants.DEBUG) time = (new Date()).getTime();
@@ -381,9 +401,9 @@ exports.shiftMap = function (code) {
   if (constants.DEBUG) console.log("shifted the screen (" + ((new Date()).getTime() - time) + "ms)");
 };
 
-
-// Renders the cursor to the UI layer.
-//
+/**
+ * Renders the cursor to the UI layer.
+ */
 exports.eraseCursor = function (x, y) {
   rendCursor.eraseCursor(
     exports.layerUI,
@@ -392,8 +412,9 @@ exports.eraseCursor = function (x, y) {
   );
 };
 
-// Renders the cursor to the UI layer.
-//
+/**
+ * Renders the cursor to the UI layer.
+ */
 exports.renderCursor = function (x, y) {
   rendCursor.renderCursor(
     exports.layerUI,
@@ -402,76 +423,84 @@ exports.renderCursor = function (x, y) {
   );
 };
 
-// Shows the native browser cursor.
-//
+/**
+ * Shows the native browser cursor.
+ */
 exports.showNativeCursor = function () {
   rendCursor.showNativeCursor(exports.layerUI);
 };
 
-// Hides the native browser cursor.
-//
+/**
+ * Hides the native browser cursor.
+ */
 exports.hideNativeCursor = function () {
   rendCursor.hideNativeCursor(exports.layerUI);
 };
 
+/**
+ *
+ */
 exports.evaluateCycle = function (delta) {
   rendAnim.evaluateCycle(delta, exports.layerUnit, exports.layerMap, exports.layerFocus);
 };
 
-//
-//
+/**
+ *
+ */
 exports.renderFogCircle = function (x, y, range) {
   rendFog.renderFogCircle(exports.layerFog, exports.screenOffsetX, exports.screenOffsetY, x, y, range);
 };
 
-//
-//
+/**
+ *
+ */
 exports.renderFogRect = function (x, y, w, h, circle) {
   rendFog.renderFogRect(exports.layerFog, exports.screenOffsetX, exports.screenOffsetY, x, y, w, h, circle);
 };
 
-//
-//
+/**
+ *
+ */
 exports.renderFogBackgroundLayer = function () {
   rendFog.renderFogBackgroundLayer(exports.layerFog);
 };
 
-//
-//
+/**
+ *
+ */
 exports.shiftFog = function (code) {
   rendFog.shiftFog(exports.layerFog, code);
 };
 
-//
-//
+/**
+ *
+ */
 exports.renderUnits = function (x, oy, w, h) {
-  rendUnit.renderUnits(exports.layerUnit, exports.screenOffsetX, exports.screenOffsetY, x, oy, w, h);
+  rendUnit.renderUnits(
+    exports.layerUnit,
+    exports.screenOffsetX, exports.screenOffsetY,
+    x, oy,
+    w, h
+  );
 };
 
-//
-//
+/**
+ *
+ */
 exports.shiftUnits = function (code) {
   rendUnit.shiftUnits(exports.layerUnit, code);
 };
 
+/**
+ *
+ */
 exports.setHiddenUnitId = function (unit) {
   rendUnit.hiddenUnitId = unit;
 };
 
-//
-//
-exports.prepareMenu = function (menu) {
-  rendMenu.prepareMenu(exports.layerUI, exports.screenWidth, exports.screenHeight, menu);
-};
-
-//
-//
-exports.renderMenu = function () {
-  rendMenu.renderMenu(exports.layerUI);
-};
-
-//
-//
+/**
+ *
+ */
 exports.renderMovePath = function () {
   rendCursor.renderPath(
     exports.layerEffects,
@@ -481,51 +510,101 @@ exports.renderMovePath = function () {
   );
 };
 
-//
-//
+/**
+ *
+ */
+exports.prepareMenu = function () {
+  rendMenu.prepareMenu(
+    exports.layerUI,
+    exports.screenWidth, exports.screenHeight,
+    stateData.menu
+  );
+};
+
+/**
+ *
+ */
+exports.renderMenu = function () {
+  rendMenu.renderMenu(exports.layerUI);
+};
+
+exports.resetMenuShift = function() {
+  rendMenu.resetShift();
+};
+
+/**
+ *
+ */
 exports.updateMenuIndex = function (x, y) {
   rendMenu.updateMenuIndex(x, y);
 };
 
-//
-//
+/**
+ *
+ */
 exports.handleMenuInput = function (code) {
-  return rendMenu.handleMenuInput(code);
+  return rendMenu.handleMenuInput(stateData.menu, code);
 };
 
-//
-//
+/**
+ *
+ */
 exports.getMenuIndex = function () {
   return rendMenu.getMenuIndex();
 };
 
-//
-//
-// @param {number} x
-// @param {number} y
-//
+/**
+ *
+ *
+ * @param {number} x
+ * @param {number} y
+ *
+ */
 exports.renderTile = function (x, y) {
-  rendMap.renderTile(exports.layerMap, exports.screenOffsetX, exports.screenOffsetY, x, y);
+  rendMap.renderTile(
+    exports.layerMap,
+    exports.screenOffsetX, exports.screenOffsetY,
+    x, y
+  );
 };
 
+/**
+ *
+ */
 exports.renderTileOverlayRow = function () {
-  rendMap.renderTileOverlayRow(exports.layerMap, exports.screenOffsetX, exports.screenOffsetY);
+  rendMap.renderTileOverlayRow(
+    exports.layerMap,
+    exports.screenOffsetX, exports.screenOffsetY
+  );
 };
 
+/**
+ *
+ */
 exports.renderTiles = function (x, oy, w, h, overlayDraw) {
-  rendMap.renderTiles(exports.layerMap, exports.screenOffsetX, exports.screenOffsetY, x, oy, w, h, overlayDraw);
+  rendMap.renderTiles(
+    exports.layerMap,
+    exports.screenOffsetX, exports.screenOffsetY,
+    x, oy,
+    w, h,
+    overlayDraw
+  );
 };
 
-//
-//
-// Note: this one does not clear the layer before action
-//
-// @param {number} code
-//
+/**
+ *
+ * Note: this one does not clear the layer before action
+ *
+ * @param {number} code
+ *
+ */
 exports.shiftTiles = function (code) {
   rendMap.shiftTiles(exports.layerMap, code);
 };
 
+/**
+ *
+ */
 exports.renderFocus = function (x, y, w, h) {
   rendFocus.renderSelection(
     exports.layerFocus,
@@ -537,6 +616,9 @@ exports.renderFocus = function (x, y, w, h) {
   );
 };
 
+/**
+ *
+ */
 exports.shiftFocus = function (code) {
   rendFocus.shift(exports.layerFocus, stateData.selection, code);
 };

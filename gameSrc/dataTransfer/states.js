@@ -738,6 +738,10 @@ exports.menu = {
         exports.menu.addEntry(action.key, true)
       }
     }
+  },
+
+  generateSubMenu: function () {
+    prepareMenuByData(exports.action.object);
   }
 };
 

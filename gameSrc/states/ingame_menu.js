@@ -27,6 +27,7 @@ exports.state = {
       this.changeState("INGAME_IDLE");
 
     } else {
+      renderer.resetMenuShift();
       renderer.layerUI.clear(0);
       renderer.prepareMenu(stateData.menu);
       renderer.layerUI.renderLayer(0);
@@ -47,15 +48,15 @@ exports.state = {
   },
 
   UP: function () {
-    if (renderer.handleMenuInput(input.TYPE_UP)) {
-      updateMenuData();
-    }
+    var res = renderer.handleMenuInput(input.TYPE_UP);
+    if (res === 2) renderer.prepareMenu();
+    if (res >= 1) updateMenuData();
   },
 
   DOWN: function () {
-    if (renderer.handleMenuInput(input.TYPE_DOWN)) {
-      updateMenuData();
-    }
+    var res = renderer.handleMenuInput(input.TYPE_DOWN);
+    if (res === 2) renderer.prepareMenu();
+    if (res >= 1) updateMenuData();
   },
 
   ACTION: function () {

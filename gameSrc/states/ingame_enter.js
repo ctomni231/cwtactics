@@ -5,6 +5,9 @@ var stateData = require("../dataTransfer/states");
 var roundDTO = require("../dataTransfer/roundSetup");
 
 var fog = require("../logic/fog");
+var turn = require("../logic/turn");
+var model = require("../model");
+var actions = require("../actions");
 var renderer = require("../renderer");
 var tileVariants = require("../tileVariants");
 
@@ -28,6 +31,7 @@ exports.state = {
       // 2. change game data by the given configuration
       roundDTO.postProcess();
       fog.fullRecalculation();
+      turn.startsTurn(model.turnOwner);
 
       // 3. update screen
       renderer.layerUI.clear();
@@ -37,8 +41,7 @@ exports.state = {
       renderer.renderScreen();
       renderer.renderCursor();
 
-      // 5. start game :P
-      that.changeState("INGAME_IDLE");
+      actions.localAction("nextTurn", 1);
     });
 
     /*

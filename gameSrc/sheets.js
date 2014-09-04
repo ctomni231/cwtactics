@@ -85,6 +85,12 @@ exports.SheetDatabaseObject = my.Class({
     }
 
     return false;
+  },
+
+  //
+  //
+  isValidType: function (type) {
+    return this.sheets.hasOwnProperty(type);
   }
 });
 

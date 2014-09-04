@@ -5,6 +5,14 @@ var storage = require("../storage");
 
 var cachedMod = null;
 
+var modificationSchema = {
+  type: "object",
+  required: ["name","version"],
+  properties: {
+
+  }
+};
+
 exports.transferFromRemote = function (path, callback) {
   request.doRequest({
     path: path,
@@ -12,6 +20,9 @@ exports.transferFromRemote = function (path, callback) {
 
     success: function (response) {
       cachedMod = response;   
+
+      // TODO validate modification object
+      
 			storage.set("__modification__",response,callback);
     },
 

@@ -8,20 +8,17 @@ var supply = require("./supply");
 var cfgAutoSupply = require("../config").getConfig("autoSupplyAtTurnStart");
 var cfgDayLimit = require("../config").getConfig("round_dayLimit");
 
-var endsTurn_ = function (player) {
-};
-
-var startsTurn_ = function (player) {
-
+exports.startsTurn = function(player) {
+  
   // Sets the new turn owner and also the client, if necessary
-  this.turnOwner = player;
-  if (player.isClientControlled) cwt.Client.lastPlayer = player; //TODO
+  if (player.clientControlled) {
+    model.lastClientPlayer = player;
+  }
 
   // *************************** Update Fog ****************************
 
   // the active client can see what his and all allied objects can see
-  // TODO
-  var clTid = cwt.Player.activeClientPlayer.team;
+  var clTid = model.lastClientPlayer.team;
   for (var i = 0, e = constants.MAX_PLAYER; i < e; i++) {
     var cPlayer = model.players[i];
 
@@ -33,51 +30,6 @@ var startsTurn_ = function (player) {
 
     if (cPlayer.team === clTid) cPlayer.clientVisible = true;
     if (cPlayer.team === player.team) cPlayer.turnOwnerVisible = true;
-  }
-
-  var cUnit, cProp;
-
-  // *************************** Turn start actions ****************************
-
-  for (i = 0, e = model.properties.length; i < e; i++) {
-    cProp = model.properties[i];
-    if (cProp.owner !== player) continue;
-
-    cwt.Supply.raiseFunds(cProp);
-  }
-
-  for (var i = 0, e = model.units.length; i < e; i++) {
-    cUnit = model.units[i];
-    if (cUnit.owner !== player) continue;
-
-    cUnit.canAct = true;
-    cwt.Supply.drainFuel(cUnit);
-  }
-
-  var turnStartSupply = (cfgAutoSupply.value === 1);
-
-  var map = model.mapData;
-  for (var x = 0, xe = model.mapWidth; x < xe; x++) {
-    for (var y = 0, ye = model.mapHeight; y < ye; y++) {
-      cUnit = map[x][y].unit;
-      if (cUnit && cUnit.owner === player) {
-
-        // supply units
-        if (turnStartSupply && cwt.Supply.isSupplier(cUnit)) {
-          cwt.supplyNeighbours(x, y);
-        }
-
-        // heal by property
-        if (map[x][y].property && map[x][y].property.owner === player && cwt.Supply.canPropertyHeal(x, y)) {
-          cwt.Supply.propertyHeal(x, y);
-        }
-
-        // unit is out of fuel
-        if (cUnit.fuel <= 0) {
-          cwt.Lifecycle.destroyUnit(x, y, false);
-        }
-      }
-    }
   }
 };
 
@@ -118,8 +70,7 @@ exports.next = function () {
   // player id then the game aw2 is corrupted
   if (this.DEBUG) assert(pid !== oid);
 
-  // TODO: into action
   // Do end/start turn logic
-  endsTurn_(model.players[oid]);
-  startsTurn_(model.players[pid]);
+  model.turnOwner = model.players[pid];
+  exports.startsTurn(model.turnOwner);
 };

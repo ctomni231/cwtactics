@@ -141,6 +141,8 @@ exports.Property = my.Class({
 
 });
 
+exports.lastClientPlayer = null;
+
 // Player class which holds all parameters of a army owner.
 //
 exports.Player = my.Class({
@@ -246,7 +248,13 @@ exports.Unit = my.Class({
   },
 
   initByType: function(type) {
-
+    this.type = type;
+    this.hp = 99;
+    this.ammo = type.ammo;
+    this.fuel = type.fuel;
+    this.hidden = false;
+    this.loadedIn = constants.INACTIVE;
+    this.canAct = false;
   },
 
   isInactive: function() {
@@ -419,6 +427,18 @@ exports.units = createList(exports.Unit, constants.MAX_PLAYER * constants.MAX_UN
 //
 exports.properties = createList(exports.Property, constants.MAX_PROPERTIES);
 
+exports.isValidUnitId = function (id) {
+  return (id >= 0 && id < exports.units.size);
+};
+
+exports.isValidPropertyId = function (id) {
+  return (id >= 0 && id < exports.properties.size);
+};
+
+exports.isValidPlayerId = function (id) {
+  return (id >= 0 && id < exports.players.size);
+};
+
 //
 // Returns the distance of two positions.
 //
@@ -483,6 +503,27 @@ exports.searchUnit = function (unit, cb, cbThis, arg) {
       if (exports.mapData[x][y].unit === unit) {
         cb.call(cbThis, x, y, unit, arg);
       }
+    }
+  }
+};
+
+/**
+ * Calls the callback on every tile.
+ * 
+ * @param  {Function} cb
+ * @param  {boolean}   needsUnit the callback will be called only if there is a unit on it
+ * @param  {boolean}   needsProperty the callback will be called only if there is a property on it
+ * @param  {Player}    wantedOwner wanted owner of the property/unit
+ */
+exports.onEachTile = function (cb, needsUnit, needsProperty, wantedOwner) {
+  for (var x = 0, xe = exports.mapWidth; x < xe; x++) {
+    for (var y = 0, ye = exports.mapHeight; y < ye; y++) {
+      var tile = exports.mapData[x][y];
+
+      if (needsUnit && (!tile.unit || (wantedOwner && tile.unit.owner !== wantedOwner))) continue;
+      if (needsProperty && (!tile.property || (wantedOwner && tile.property.owner !== wantedOwner))) continue;
+
+      cb(x, y, tile);
     }
   }
 };

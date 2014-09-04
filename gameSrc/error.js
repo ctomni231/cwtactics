@@ -1,12 +1,11 @@
-var stm = require("./statemachine");
+var stateMachine = require("./statemachine");
+var errorState = require("./states/error")
 
 exports.raiseError = function (message,where) {
 
   // set state
-  stm.changeState("ERROR_SCREEN");
+  stateMachine.changeState("ERROR_SCREEN");
 
   // set meta data
-  var state = stm.activeState;
-  state.data.message = message;
-  state.data.where = where;
+  errorState.setErrorData(message, where)
 };

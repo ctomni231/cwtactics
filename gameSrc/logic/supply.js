@@ -1,82 +1,84 @@
-// Returns **true** if a given **unit** is a supplier, else **false**.
-//
-exports.isSupplier = function (unit) {
-  if (cwt.DEBUG) cwt.assert(unit instanceof cwt.UnitClass);
+"use strict";
 
+var model = require("../model");
+var constants = require("../constants");
+
+/**
+ * @return **true** if a given **unit** is a supplier, else **false**.
+ * 
+ * @param {Unit} unit
+ */
+exports.isSupplier = function(unit) {
   return unit.type.supply;
 };
 
-//
-// Returns **true** if a **supplier** unit can support a given tile at the position (**x**,**y**), else **false**.
-//
-exports.canSupplyTile = function (supplier, x, y) {
-  if (cwt.DEBUG) cwt.assert(this.isSupplier(supplier));
-
-  if (!cwt.Model.isValidPosition(x, y)) return false;
-  return (cwt.Model.mapData[x][y].unit !== null);
+/**
+ * Returns **true** if a supplier at a given position (**x**,**y**) has
+ * objects nearby which can be supplied.
+ * 
+ * @param {Unit} supplier
+ * @param {number} x
+ * @param {number} y
+ * @return **true** if a **supplier** unit can support units in the near of a given tile at the position, else **false**.
+ */
+exports.hasRefillTargetsNearby = function(supplier, x, y) {
+  if (exports.canRefillObjectAt(supplier, x + 1, y)) return true;
+  else if (exports.canRefillObjectAt(supplier, x - 1, y)) return true;
+  else if (exports.canRefillObjectAt(supplier, x, y + 1)) return true;
+  else if (exports.canRefillObjectAt(supplier, x, y - 1)) return true;
+  else return false;
 };
 
-//
-// Returns **true** if a supplier at a given position (**x**,**y**) has objects nearby which can be supplied.
-//
-exports.hasSupplyTargetsNearby = function (x, y) {
-  if (cwt.DEBUG) cwt.assert(cwt.Model.isValidPosition(x, y));
-
-  var supplier = cwt.Model.mapData[x][y].unit;
-  return (
-    this.canSupplyTile(supplier, x + 1, y),
-      this.canSupplyTile(supplier, x - 1, y),
-      this.canSupplyTile(supplier, x, y + 1),
-      this.canSupplyTile(supplier, x, y - 1)
-    );
+/**
+ * 
+ * @param {Unit} supplier
+ * @param {number} x
+ * @param {number} y
+ * @return **true** if a **supplier** unit can support a given tile at the position (**x**,**y**), else **false**.
+ */
+exports.canRefillObjectAt = function(supplier, x, y) {
+  var target = model.mapData[x][y].unit;
+  return (model.isValidPosition(x, y) && target && target.owner === supplier.owner);
 };
 
-//
-// A supplier supplies all surrounding units that can be supplied by the supplier.
-//
-// @param x
-// @param y
-//
-exports.supplyNeighbours = function (x, y) {
-  if (this.DEBUG) cwt.assert(cwt.Model.isValidPosition(x, y));
-
-  var supplyUnit = cwt.Model.mapData[x][y].unit;
-  if (this.DEBUG) cwt.assert(this.isSupplier(supplyUnit));
-
-  if (this.canSupplyTile(supplyUnit, x + 1, y)) this.resupplyTargetByPos(x + 1, y);
-  if (this.canSupplyTile(supplyUnit, x - 1, y)) this.resupplyTargetByPos(x - 1, y);
-  if (this.canSupplyTile(supplyUnit, x, y + 1)) this.resupplyTargetByPos(x, y + 1);
-  if (this.canSupplyTile(supplyUnit, x, y - 1)) this.resupplyTargetByPos(x, y - 1);
+/**
+ * Resupplies a unit at a given position.
+ * 
+ * @param {number} x
+ * @param {number} y
+ */
+exports.refillSuppliesByPosition = function(x, y) {
+  var unit = model.mapData[x][y];
+  exports.refillSupplies(unit);
 };
 
-//
-// Resupplies a unit at a given position (**x**,**y**).
-//
-exports.resupplyTargetByPos = function (x, y) {
-  if (cwt.DEBUG) cwt.assert(cwt.Model.isValidPosition(x, y));
-
-  var unit = cwt.Model.mapData[x][y];
-  if (cwt.DEBUG) cwt.assert(unit);
-
-  this.resupplyTarget(unit);
-};
-
-//
-// Refills the supplies of the unit.
-//
-exports.resupplyTarget = function (unit) {
-  if (cwt.DEBUG) cwt.assert(unit instanceof cwt.UnitClass);
-
+/**
+ * Refills the supplies of an unit.
+ * 
+ * @param {Unit} unit
+ */
+exports.refillSupplies = function(unit) {  
   unit.ammo = unit.type.ammo;
   unit.fuel = unit.type.fuel;
 };
 
-//
-// Drains fuel of a **unit** if it has the ability of daily fuel usage.
-//
-exports.drainFuel = function (unit) {
-  if (this.DEBUG) cwt.assert(unit instanceof cwt.UnitClass);
+/**
+ * Raises funds from a **property**.
+ * 
+ * @param  {Property} property
+ */
+exports.raiseFunds = function(property) {
+  if (typeof property.type.funds) {
+    property.owner.gold += property.type.funds;
+  }
+};
 
+/**
+ * Drains fuel of a **unit** if it has the ability of daily fuel usage.
+ *
+ * @param {Unit} unit
+ */
+exports.drainFuel = function(unit) {
   var v = unit.type.dailyFuelDrain;
   if (typeof v === "number") {
 
@@ -90,15 +92,6 @@ exports.drainFuel = function (unit) {
 };
 
 //
-// Raises funds from a **property**.
-//
-exports.raiseFunds = function (property) {
-  if (typeof property.type.funds) {
-    property.owner.gold += property.type.funds;
-  }
-};
-
-//
 // Returns **true** if the property at the position (**x**,**y**) fulfills the following requirements
 //  a) the property has a healing ability
 //  b) the property is occupied by an unit of the same team
@@ -106,8 +99,8 @@ exports.raiseFunds = function (property) {
 //
 // The value **false** will be returned if one of the requirements fails.
 //
-exports.canPropertyHeal = function (x, y) {
-  var tile = cwt.Model.mapData[x][y];
+exports.canPropertyRepairAt = function(x, y) {
+  var tile = model.mapData[x][y];
   var prop = tile.property;
   var unit = tile.unit;
   if (prop && unit) {
@@ -125,10 +118,8 @@ exports.canPropertyHeal = function (x, y) {
 //  b) the property is occupied by an unit of the same team
 //  c) the occupying unit can be healed by the property
 //
-exports.propertyHeal = function (x, y) {
-  if (cwt.DEBUG) cwt.assert(this.canPropertyHeal(x, y));
-
-  var tile = cwt.Model.mapData[x][y];
+exports.propertyRepairsAt = function(x, y) {
+  var tile = model.mapData[x][y];
   var prop = tile.property;
   var unit = tile.unit;
 

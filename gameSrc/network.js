@@ -3,37 +3,35 @@
 var constants = require("./constants");
 
 // Id of the game in the connected network session.
-//
 var gameId = null;
 
 // Id of the client in the connected network session.
-//
 var clientId = constants.INACTIVE;
 
-//
-//
-// @return {Boolean}
-//
+/**
+ * @return {Boolean}
+ */
 exports.isActive = function () {
   return gameId !== null;
 };
 
-//
-//
-// @return {Boolean}
-//
+/**
+ * @return {Boolean}
+ */
 exports.isHost = function () {
   return gameId === null || clientId !== constants.INACTIVE;
 };
 
-// Parses a message and invokes commands if necessary.
-//
+/**
+ * Parses a message and invokes commands if necessary.
+ */
 exports.parseMessage = function (msg) {
   console.log("NOT IMPLEMENTED YET");
 };
 
-// Sends a given action data object into data object and sends it to the game server.
-//
+/**
+ * Sends a given action data object into data object and sends it to the game server.
+ */
 exports.sendMessage = function (actionData) {
   console.log("NOT IMPLEMENTED YET");
 };

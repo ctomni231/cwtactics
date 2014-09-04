@@ -283,6 +283,16 @@ exports.UIButtonGroup = my.Class({
     return false;
   },
 
+  setIndex: function(index) {
+    if (index < 0 && index >= this.elements.length) {
+      throw Error("illegal index");
+    }
+
+    this.elements[this.selected].inFocus = false;
+    this.selected = index;
+    this.elements[this.selected].inFocus = true;
+  },
+
   //
   //
   // @param input

@@ -4,6 +4,7 @@ var constants = require("../constants");
 var assert = require("../system/functions").assert;
 var model = require("../model");
 var sheets = require("../sheets");
+var lifecycle = require("../logic/lifecycle");
 var cfgUnitLimit = require("../config").getConfig("unitLimit");
 
 //
@@ -40,13 +41,13 @@ exports.buildUnit = (function () {
 
   function buildIt(x, y, property, type) {
     // TODO
-    cwt.Lifecycle.createUnit(x, y, property.owner, type);
+    lifecycle.createUnit(x, y, property.owner, type);
   }
 
   return function (factory, type) {
     if (constants.DEBUG) {
       assert(factory instanceof model.Property);
-      assert(sheets.units.isValidSheet(type));
+      assert(sheets.units.isValidType(type));
     }
 
     var sheet = sheets.units.sheets[type];

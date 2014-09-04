@@ -1,100 +1,106 @@
+/**
+ * Module to control the tile variants of map tiles.
+ *
+ * @module
+ */
+
+"use strict";
+
 var constants = require("./constants");
 var assert = require("./system/functions").assert;
 var model = require("./model");
 
-//
-//
-// @class
-//
-exports.TileVariantInfo = my.Class({
+/**
+ * @class
+ * @param {object} desc
+ * @param {object} connection
+ */
+exports.TileVariantInfo = function (desc, connection) {
+  this.desc = desc;
+  this.connection = connection;
+};
 
-  constructor: function (desc, connection) {
-    this.desc = desc;
-    this.connection = connection;
-  },
+/**
+ * Grabs the short key for a given type.
+ *
+ * @param type
+ * @return {string}
+ */
+exports.TileVariantInfo.prototype.grabShortKey = function (type) {
+  if (type && this.desc[type]) return this.desc[type];
+  else return "";
+};
 
-  //
-  //
-  // @param type
-  // @return {string}
-  //
-  grabShortKey: function (type) {
-    if (type && this.desc[type]) return this.desc[type];
-    else return "";
-  },
+/**
+ * Returns the variant number in relation to a given set of neighbour types.
+ *
+ * @param {string} tpN tile type ID in the north
+ * @param {string} tpE tile type ID in the east
+ * @param {string} tpS tile type ID in the south
+ * @param {string} tpW tile type ID in the west
+ * @param {string?} tpNE tile type ID in the north east
+ * @param {string?} tpSE tile type ID in the south east
+ * @param {string?} tpSW tile type ID in the south west
+ * @param {string?} tpNW tile type ID in the north west
+ *
+ */
+exports.TileVariantInfo.prototype.getVariant = function (typeN, typeE, typeS, typeW, typeNE, typeSE, typeSW, typeNW) {
 
-  //
-  // Returns the variant number in relation to a given set of neighbour types.
-  //
-  // @param {string} typeN
-  // @param {string} typeE
-  // @param {string} typeS
-  // @param {string} typeW
-  // @param {string?} typeNE
-  // @param {string?} typeSE
-  // @param {string?} typeSW
-  // @param {string?} typeNW
-  //
-  getVariant: function (typeN, typeE, typeS, typeW, typeNE, typeSE, typeSW, typeNW) {
+  // grab shorts
+  typeN = this.grabShortKey(typeN);
+  typeNE = this.grabShortKey(typeNE);
+  typeE = this.grabShortKey(typeE);
+  typeSE = this.grabShortKey(typeSE);
+  typeS = this.grabShortKey(typeS);
+  typeSW = this.grabShortKey(typeSW);
+  typeW = this.grabShortKey(typeW);
+  typeNW = this.grabShortKey(typeNW);
 
-    // grab shorts
-    typeN = this.grabShortKey(typeN);
-    typeNE = this.grabShortKey(typeNE);
-    typeE = this.grabShortKey(typeE);
-    typeSE = this.grabShortKey(typeSE);
-    typeS = this.grabShortKey(typeS);
-    typeSW = this.grabShortKey(typeSW);
-    typeW = this.grabShortKey(typeW);
-    typeNW = this.grabShortKey(typeNW);
+  // search variant
+  for (var i = 0, e = this.connection.length; i < e; i++) {
+    var cConn = this.connection[i];
+    if (cConn.length === 5) {
 
-    // search variant
-    for (var i = 0, e = this.connection.length; i < e; i++) {
-      var cConn = this.connection[i];
-      if (cConn.length === 5) {
+      // check_ plus
+      if (cConn[1] !== "" && cConn[1] !== typeN) continue;
+      if (cConn[2] !== "" && cConn[2] !== typeE) continue;
+      if (cConn[3] !== "" && cConn[3] !== typeS) continue;
+      if (cConn[4] !== "" && cConn[4] !== typeW) continue;
 
-        // check_ plus
-        if (cConn[1] !== "" && cConn[1] !== typeN) continue;
-        if (cConn[2] !== "" && cConn[2] !== typeE) continue;
-        if (cConn[3] !== "" && cConn[3] !== typeS) continue;
-        if (cConn[4] !== "" && cConn[4] !== typeW) continue;
+    } else {
 
-      } else {
-
-        // check_ cross
-        if (cConn[1] !== "" && cConn[1] !== typeN) continue;
-        if (cConn[2] !== "" && cConn[2] !== typeNE) continue;
-        if (cConn[3] !== "" && cConn[3] !== typeE) continue;
-        if (cConn[4] !== "" && cConn[4] !== typeSE) continue;
-        if (cConn[5] !== "" && cConn[5] !== typeS) continue;
-        if (cConn[6] !== "" && cConn[6] !== typeSW) continue;
-        if (cConn[7] !== "" && cConn[7] !== typeW) continue;
-        if (cConn[8] !== "" && cConn[8] !== typeNW) continue;
-      }
-
-      return cConn[0];
+      // check_ cross
+      if (cConn[1] !== "" && cConn[1] !== typeN) continue;
+      if (cConn[2] !== "" && cConn[2] !== typeNE) continue;
+      if (cConn[3] !== "" && cConn[3] !== typeE) continue;
+      if (cConn[4] !== "" && cConn[4] !== typeSE) continue;
+      if (cConn[5] !== "" && cConn[5] !== typeS) continue;
+      if (cConn[6] !== "" && cConn[6] !== typeSW) continue;
+      if (cConn[7] !== "" && cConn[7] !== typeW) continue;
+      if (cConn[8] !== "" && cConn[8] !== typeNW) continue;
     }
-  }
-});
 
-//
-//
-//
+    return cConn[0];
+  }
+};
+
 var types = {};
 
-//
-//
-// @param type
-// @param desc
-// @param connection
-//
+/**
+ * Registers a tile variant information in the system.
+ *
+ * @param {string} type ID of the tile where the variant information will be used
+ * @param {object} desc
+ * @param {object} connection
+ */
 exports.registerVariantInfo = function (type, desc, connection) {
   if (constants.DEBUG) assert(!types.hasOwnProperty(type));
   types[type] = new exports.TileVariantInfo(desc, connection);
 };
 
-//
-//
-//
+/**
+ * Updates the variant number for every tile in the map.
+ */
 exports.updateTileSprites = function () {
   var x;
   var y;

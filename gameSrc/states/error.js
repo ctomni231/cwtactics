@@ -1,9 +1,19 @@
 "use strict";
 
+var renderer = require("../renderer");
+
 var activeCmd = 0;
 var rendered = false;
 var message = null;
 var where = null;
+
+exports.setErrorData = function (errorMessage, errorWhere) {
+  message = errorMessage;
+  where = errorWhere;
+  rendered = false;
+};
+
+// TODO use button group here instead of this direct hacky stuff
 
 exports.state = {
   id: "ERROR_SCREEN",
@@ -44,7 +54,7 @@ exports.state = {
 
   render: function () {
     if (!rendered) {
-      var ctxUI = this.renderer.layerUI.getContext();
+      var ctxUI = renderer.layerUI.getContext();
 
       rendered = true;
     }

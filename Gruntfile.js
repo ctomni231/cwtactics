@@ -5,7 +5,7 @@
 //  - set variables not via live/dev -> better is to set constants by deploy (server paths) or local
 //  - add modes deploy, local and local_server
 //  - minify json maps/mods during deployment
-//  - 
+//  -
 
 module.exports = function (grunt) {
 
@@ -65,15 +65,15 @@ module.exports = function (grunt) {
         deploy_assets: {
           files: [
             {
-              expand: true, 
-              flatten: true, 
-              src: ["<%= config.dest %>*.*"], 
-              dest: "<%= config.webdest %>" 
+              expand: true,
+              flatten: true,
+              src: ["<%= config.dest %>*.*"],
+              dest: "<%= config.webdest %>"
             }
           ]
         }
       },
-      
+
       concat: {
         options: {
           separator: ';',
@@ -106,6 +106,17 @@ module.exports = function (grunt) {
           files: [
             { expand: true, src: ["<%= config.gamefiles %>"]}
           ]
+        }
+      },
+
+      jsdoc : {
+        docs : {
+            src: ["<%= config.gamefiles %>"],
+            options: {
+                destination: "<%= config.docs %>",
+                template: "./node_modules/grunt-jsdoc/node_modules/ink-docstrap/template",
+                configure: "./doc.config.json"
+            }
         }
       },
 
@@ -205,24 +216,25 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-todo');
   grunt.loadNpmTasks('grunt-text-replace');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-jsdoc');
 
   // register all command line tasks
-  
+
   // generates the documentation
   grunt.registerTask("docs", [
-    "clean:docs", "docco"
+    "clean:docs", "jsdoc"
   ]);
-  
+
   // creates a report of all TODO marks
   grunt.registerTask("report", [
     "clean:todo", "todo"
   ]);
-  
+
   // builds a minified version of the game for live mode
   grunt.registerTask("live", [
-    "clean:dest", 
+    "clean:dest",
     "concat:deps", "uglify:deps",
-    "replace:live", "browserify:live", "uglify:game", 
+    "replace:live", "browserify:live", "uglify:game",
     "copy:html"
   ]);
 
@@ -241,7 +253,7 @@ module.exports = function (grunt) {
     "replace:devServer", "browserify:dev",
     "copy:html"
   ]);
-  
+
   // builds a live version and deploys it in the web-page folder (relative to the current folder ../webPage)
   grunt.registerTask("deployToPage", [
     "live",

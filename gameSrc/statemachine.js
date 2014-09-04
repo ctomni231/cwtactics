@@ -31,12 +31,131 @@ exports.GameState = my.Class({
   }
 });
 
+// Holds all registered game states.
+//
+var states = {};
+
+// The id of the active game state.
+//
+exports.activeStateId = null;
+
+// The active game state.
+//
+exports.activeState = null;
+
+//
+//
+// @param delta
+//
+var update = function(delta) {
+
+  if (exports.activeState.animation) {
+    exports.activeState.update(delta);
+    exports.activeState.render(delta);
+    return;
+  }
+
+  // try to evaluate commands first
+  if (actions.hasData()) {
+    actions.invokeNext();
+    return;
+  }
+
+  // update game-pad controls
+  if (features.gamePad && gamePad.update) {
+    gamePad.update();
+  }
+
+  // state update
+  var inp = input.popAction();
+  exports.activeState.update(delta, inp);
+  exports.activeState.render(delta);
+
+  // release input data object
+  if (inp) {
+    input.releaseAction(inp);
+  }
+};
+
+// Changes the active state. The **exit event** will be fired during the change process in the old state and the
+// **enter event** in the new state.
+//
+exports.changeState = function(stateId) {
+  if (exports.activeState) {
+    if (exports.activeState.exit) {
+      exports.activeState.exit();
+    }
+  }
+
+  // enter new state
+  this.setState(stateId, true);
+};
+
+//
+//
+// @param stateId
+//
+exports.setState = function(stateId, fireEvent) {
+  if (constants.DEBUG) {
+    fnc.assert(states.hasOwnProperty(stateId));
+    console.log("set active state to " + stateId + ((fireEvent) ?
+      " with firing enter event" : ""));
+  }
+
+  exports.activeState = states[stateId];
+  exports.activeStateId = stateId;
+
+  if (fireEvent !== false) {
+    exports.activeState.enter();
+  }
+};
+
+var started = false;
+
+// Starts the game state machine.
+//
+exports.start = function() {
+  if (started) throw Error("already started");
+  started = true;
+
+  if (constants.DEBUG) {
+    console.log("starting game state machine");
+  }
+
+  var oldTime = new Date().getTime();
+
+  function gameLoop() {
+
+    // calculate delta
+    var now = new Date().getTime();
+    var delta = now - oldTime;
+    oldTime = now;
+
+    // update machine
+    update(delta);
+
+    // acquire next frame
+    requestAnimationFrame(gameLoop);
+  }
+
+  // inject loading states
+  addState(require("./states/start_none").state);
+  addState(require("./states/start_load").state);
+
+  // set start state
+  exports.setState("NONE", false);
+
+  // enter the loop
+  requestAnimationFrame(gameLoop);
+};
+
+
 //
 //
 // @param desc
 //
 var addState = function(desc) {
-  if (constants.DEBUG) fnc.assert(!states.hasOwnProperty(desc.id));
+  fnc.assert(!states.hasOwnProperty(desc.id), "state " + desc.id + " is already registered");
 
   var state = new exports.GameState(
     desc.enter ? desc.enter : fnc.emptyFunction,
@@ -57,7 +176,49 @@ var addState = function(desc) {
 };
 
 var addAnimationState = function(desc) {
-  var state = addState(desc);
+  var currentStateNum;
+
+  var state = addState({
+
+    id: desc.id,
+
+    init: function() {
+      if (desc.init) {
+        desc.init.call(this);
+      }
+    },
+
+    enter: function() {
+      currentStateNum = 0;
+
+      if (desc.enter) {
+        desc.enter.call(this);
+      }
+    },
+
+    exit: function() {
+      if (desc.exit) {
+        desc.exit.call(this);
+      }
+    },
+
+    update: function(delta, lastInput) {
+      if (desc.update[currentStateNum](delta, lastInput)) {
+        currentStateNum++;
+        if (currentStateNum === desc.update.length) {
+          this.changeState(desc.nextState);
+        }
+      }
+    },
+
+    render: function(delta) {
+      renderer.evaluateCycle(delta);
+      if (desc.render) {
+        desc.render.call(this, delta);
+      }
+    }
+  });
+
   state.animation = true;
 };
 //
@@ -244,124 +405,6 @@ var addMenuState = function(desc) {
   });
 };
 
-// Holds all registered game states.
-//
-var states = {};
-
-// The id of the active game state.
-//
-exports.activeStateId = null;
-
-// The active game state.
-//
-exports.activeState = null;
-
-//
-//
-// @param delta
-//
-var update = function(delta) {
-
-  if (exports.activeState.animation) {
-    exports.activeState.update(delta);
-    exports.activeState.render(delta);
-    return;
-  }
-
-  // try to evaluate commands first
-  if (actions.hasData()) {
-    actions.invokeNext();
-    return;
-  }
-
-  // update game-pad controls
-  if (features.gamePad && gamePad.update) {
-    gamePad.update();
-  }
-
-  // state update
-  var inp = input.popAction();
-  exports.activeState.update(delta, inp);
-  exports.activeState.render(delta);
-
-  // release input data object
-  if (inp) {
-    input.releaseAction(inp);
-  }
-};
-
-// Changes the active state. The **exit event** will be fired during the change process in the old state and the
-// **enter event** in the new state.
-//
-exports.changeState = function(stateId) {
-  if (exports.activeState) {
-    if (exports.activeState.exit) {
-      exports.activeState.exit();
-    }
-  }
-
-  // enter new state
-  this.setState(stateId, true);
-};
-
-//
-//
-// @param stateId
-//
-exports.setState = function(stateId, fireEvent) {
-  if (constants.DEBUG) {
-    fnc.assert(states.hasOwnProperty(stateId));
-    console.log("set active state to " + stateId + ((fireEvent) ?
-      " with firing enter event" : ""));
-  }
-
-  exports.activeState = states[stateId];
-  exports.activeStateId = stateId;
-
-  if (fireEvent !== false) {
-    exports.activeState.enter();
-  }
-};
-
-var started = false;
-
-// Starts the game state machine.
-//
-exports.start = function() {
-  if (started) throw Error("already started");
-  started = true;
-
-  if (constants.DEBUG) {
-    console.log("starting game state machine");
-  }
-
-  var oldTime = new Date().getTime();
-
-  function gameLoop() {
-
-    // calculate delta
-    var now = new Date().getTime();
-    var delta = now - oldTime;
-    oldTime = now;
-
-    // update machine
-    update(delta);
-
-    // acquire next frame
-    requestAnimationFrame(gameLoop);
-  }
-
-  // inject loading states
-  addState(require("./states/start_none").state);
-  addState(require("./states/start_load").state);
-
-  // set start state
-  exports.setState("NONE", false);
-
-  // enter the loop
-  requestAnimationFrame(gameLoop);
-};
-
 var initialized = false;
 exports.addStates = function() {
   if (initialized) throw Error("already started");
@@ -393,18 +436,17 @@ exports.addStates = function() {
 
   addInGameState(require("./states/ingame_flush").state);
 
-  addAnimationState(require("./states/ingame_anim_move").state);
-
   addInGameState(require("./states/ingame_multistep").state);
   addInGameState(require("./states/ingame_selecttile").state);
   addInGameState(require("./states/ingame_submenu").state);
   addInGameState(require("./states/ingame_targetselection_a").state);
   addInGameState(require("./states/ingame_targetselection_b").state);
 
-  addState(require("./states/ingame_anim_ballistic").state);
-  addState(require("./states/ingame_anim_captureProperty").state);
-  addState(require("./states/ingame_anim_changeWeather").state);
-  addState(require("./states/ingame_anim_destroyUnit").state);
-  addState(require("./states/ingame_anim_nextTurn").state);
-  addState(require("./states/ingame_anim_trapWait").state);
+  addAnimationState(require("./states/ingame_anim_move").state);
+  addAnimationState(require("./states/ingame_anim_ballistic").state);
+  addAnimationState(require("./states/ingame_anim_captureProperty").state);
+  addAnimationState(require("./states/ingame_anim_changeWeather").state);
+  addAnimationState(require("./states/ingame_anim_destroyUnit").state);
+  addAnimationState(require("./states/ingame_anim_nextTurn").state);
+  addAnimationState(require("./states/ingame_anim_trapWait").state);
 };

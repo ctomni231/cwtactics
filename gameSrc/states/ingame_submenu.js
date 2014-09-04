@@ -3,18 +3,42 @@
 var constants = require("../constants.js");
 var assert = require("../system/functions.js").assert;
 var stateData = require("../dataTransfer/states");
+var action = require("../actions");
+var renderer = require("../renderer");
+var menuState = require("./ingame_menu");
 
 exports.state = {
   id: "INGAME_SUBMENU",
 
   enter: function () {
+    renderer.showNativeCursor();
+
     stateData.menu.clean();
-    stateData.menu.generate();
+    stateData.menu.generateSubMenu();
 
     // go back when no entries exists
     if (stateData.menu.getSize() === 0) {
       throw Error("sub menu cannot be empty");
     }
+
+    renderer.resetMenuShift();
+    renderer.layerUI.clear(0);
+    renderer.prepareMenu();
+    renderer.layerUI.renderLayer(0);
+  },
+
+  inputMove: menuState.state.inputMove,
+
+  UP: menuState.state.UP,
+
+  DOWN: menuState.state.DOWN,
+
+  exit: function () {
+    renderer.hideNativeCursor();
+    renderer.layerUI.clear(0);
+    renderer.layerUI.clear();
+    // FIXME: renderer can use stateData to grab cursor pos
+    renderer.renderCursor(stateData.cursorX, stateData.cursorY);
   },
 
   ACTION: function () {
@@ -29,14 +53,14 @@ exports.state = {
       return;
     }
 
-    gameData.action.selectedSubEntry = actName;
-    var actObj = cwt.Action.getActionObject(actName);
+    stateData.action.selectedSubEntry = actName;
+    var actObj = action.getAction(stateData.action.selectedEntry);
 
     var next = null;
     if (actObj.prepareTargets && actObj.targetSelectionType === "B") {
       // return this.data.selection.prepare();
     } else {
-      next = "INGAME_FLUSH_ACTIONS";
+      next = "INGAME_FLUSH_ACTION";
     }
 
     if (constants.DEBUG) assert(next);
