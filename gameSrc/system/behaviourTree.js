@@ -14,47 +14,45 @@ function createCompositeType(nodeRunner) {
 	}
 }
 
-function runningHandler(object) {
-	var result = this.fn(object);
-
-	if (result === exports.Node.RUNNING) {
-		this.running = true;
-	} else {
-		this.running = false;
-	}
+function constructBaseNode(fn) {
+	assert(typeof fn === "function");
+	this.run = fn;
 }
 
-exports.BehaviorTree = function (rootNode) {
-	this.rootNode = rootNode;
-};
+exports.Node = function(fn, subNode) {
+	assert(subNode === null || subNode instanceof exports.Node);
 
-exports.BehaviorTree.prototype.step = function (object) {
-	this.rootNode(object);
+	constructBaseNode(fn);
+	this.node = subNode;
 };
 
 exports.Node.FAILURE = 0;
 exports.Node.SUCCESS = 1;
-exports.Node.RUNNING = 2;
 
-function constructBaseNode(fn) {
-	assert(typeof fn === "function");
-	this.run = runningHandler;
-	this.fn = fn;
-	this.running = false;
-}
-
-exports.Node = function(fn, subNode) {
-	constructBaseNode(fn);
-
-	assert(subNode === null || subNode instanceof exports.Node || subNode instanceof exports.Composite);
-	this.node = subNode;
+exports.TimerNode = function(fn, subNode, times) {
+	exports.Node.call(this, fn, subNode);
+	this.times = times;
 };
 
-exports.Composite = function(fn, nodeList) {
-	constructBaseNode(fn);
+exports.TimerNode.prototype = Object.create(exports.Node.prototype);
 
-	for (var x = 0; x < nodes.length; x++) assert(nodes[i] instanceof exports.Node || nodes[i] instanceof exports.Composite);
+exports.Composite = function(fn, nodeList) {
+	for (var x = 0; x < nodes.length; x++) assert(nodes[i] instanceof exports.Node);
+
+	constructBaseNode(fn);
 	this.nodeList = nodeList;
+};
+
+exports.Composite.prototype = Object.create(exports.Node.prototype);
+
+exports.BehaviorTree = function(rootNode) {
+	this.rootNode = rootNode;
+};
+
+exports.BehaviorTree.prototype = {
+	step: function(object) {
+		this.rootNode(object);
+	}
 };
 
 exports.Task = function(taskFunction) {
@@ -63,7 +61,7 @@ exports.Task = function(taskFunction) {
 
 exports.Inverter = createNodeType(function(object) {
 	var result = this.node.run(object);
-	
+
 	if (result === exports.Node.SUCCESS) result = exports.Node.FAILURE;
 	else if (result === exports.Node.FAILURE) result = exports.Node.SUCCESS;
 
@@ -71,20 +69,25 @@ exports.Inverter = createNodeType(function(object) {
 })
 
 exports.Succeeder = createNodeType(function(object) {
-	return (this.node.run(object) === exports.Node.RUNNING ? exports.Node.SUCCESS : exports.Node.SUCCESS);
+	this.node.run(object);
+	return exports.Node.SUCCESS;
 });
 
-exports.Repeater = createNodeType(function(object) {
+function repeaterHandler = function(object) {
 	var times = this.times;
 
 	// run until times goes to zero (if times not given, then it runs endless)
 	do {
 		this.node.run(object);
 		times--;
-	} while (times != null);
+	} while (times != 0);
 
 	return exports.Node.SUCCESS;
-});
+};
+
+exports.Repeater = function(node, timesToRun) {
+	return new exports.TimerNode(repeaterHandler, node, timesToRun);
+};
 
 exports.RepeatUntilFail = createNodeType(function(object) {
 	var result;
@@ -92,21 +95,12 @@ exports.RepeatUntilFail = createNodeType(function(object) {
 	do {
 		result = this.node.run(object);
 	} while (result === exports.Node.SUCCESS);
-	
-	return (result === exports.Node.RUNNING? exports.Node.RUNNING : exports.Node.SUCCESS);
+
+	return exports.Node.SUCCESS;
 });
 
 exports.Sequence = createCompositeType(function(object) {
 	var i = 0;
-
-	if (this.running) {
-		// search already running node
-		for (;i < this.nodes.length; i++) {
-			if (this.nodes[i].running) {
-				break;
-			}
-		}
-	}
 
 	for (; i < this.nodes.length; i++) {
 		var result = this.nodes[i].run(object);
@@ -121,15 +115,6 @@ exports.Sequence = createCompositeType(function(object) {
 exports.Selector = createCompositeType(function(object) {
 	var i = 0;
 
-	if (this.running) {
-		// search already running node
-		for (;i < this.nodes.length; i++) {
-			if (this.nodes[i].running) {
-				break;
-			}
-		}
-	}
-
 	for (; i < this.nodes.length; i++) {
 		var result = this.nodes[i].run(object);
 
@@ -141,21 +126,5 @@ exports.Selector = createCompositeType(function(object) {
 });
 
 exports.Random = createCompositeType(function(object) {
-	var index = 0;
-
-	if (this.running) {
-
-		// use already runnin node
-		for (;index < this.nodes.length; index++) {
-			if (this.nodes[index].running) {
-				break;
-			}
-		}
-	} else {
-
-		// take random node
-		index = parseInt(Math.random() * this.nodes.length, 10);
-	}
-
-	return this.nodes[index].run(object);
+	return this.nodes[parseInt(Math.random() * this.nodes.length, 10)].run(object);
 });

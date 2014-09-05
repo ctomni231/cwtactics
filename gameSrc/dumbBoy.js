@@ -22,7 +22,9 @@ var dumbBoyLogic = new ai.BehaviorTree(
     ai.Sequence([
 
       // check money: the player must at least able to buy the cheapest thing
-      ai.Task([]),
+      ai.Task(function () {
+        return ai.Node.FAILURE;
+      }),
 
       // infantries
       ai.Sequence([]),
