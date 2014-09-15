@@ -15,6 +15,7 @@ The new image convention allows for a lot more flexibility than its predecessor.
 ## Format
 
 `AWDS(C)_PLIN(L)$~~~~~~~~`
+
 `AWDS(C)_INFT_OS`
 
 `<Game Type>(<Weather Type>)_<Object Type>(<Connection Type>)_<Faction Type>-<Direction>$<8-Way Connection>`
@@ -192,7 +193,12 @@ This shows how objects are organized within the object files for units, terrain(
 * *BHMS* = Black Hole Missile (4x4 Tiles)
 * *BRBL* = Big Rubble (3x3 Tiles)
 * *SRBL* = Small Rubble
-
+* *VCNO* = Volcano
+* *BCRY* = Black Hole Crystal
+* *BOBL* = Black Hole Obelisk (3x3 Tiles)
+* *BARK* = Black Hole Ark (3x3 Tiles)
+* *TGUN* = IDS Talon Gun (3x3 Tiles)
+* *DTGN* = IDS Talon Gun Rubble (3x3 Tiles)
 
 ## Army Factions
 
