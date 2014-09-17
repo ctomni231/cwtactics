@@ -3,7 +3,7 @@
 var assert = require("./system/functions").assert;
 var constants = require("constants");
 
-exports.Config = function (min, max, defaultValue, step) {
+exports.Config = function(min, max, defaultValue, step) {
   this.min = min;
   this.max = max;
   this.def = defaultValue;
@@ -15,7 +15,7 @@ exports.Config.prototype = {
 
   // Sets the value.
   //
-  setValue: function (value) {
+  setValue: function(value) {
 
     // check_ bounds
     if (value < this.min) value = this.min;
@@ -31,23 +31,22 @@ exports.Config.prototype = {
 
   // Decreases the value by one step.
   //
-  decreaseValue: function () {
+  decreaseValue: function() {
     this.setValue(this.value - this.step);
   },
 
   // Increases the value by one step.
   //
-  increaseValue: function () {
+  increaseValue: function() {
     this.setValue(this.value + this.step);
   },
 
   //
   // Resets the value of the parameter back to the default value.
   //
-  resetValue: function () {
+  resetValue: function() {
     this.value = this.def;
   }
-
 };
 
 exports.gameConfigNames = [
@@ -95,21 +94,21 @@ var options = {
 
 //
 //
-exports.getValue = function (name) {
+exports.getValue = function(name) {
   var cfg = options[name];
   return (cfg ? cfg.value : null);
 };
 
 //
 //
-exports.getConfig = function (name) {
+exports.getConfig = function(name) {
   return options[name];
 };
 
 //
 //
-exports.resetValues = function () {
-  Object.keys(options).forEach(function (cfg) {
+exports.resetValues = function() {
+  Object.keys(options).forEach(function(cfg) {
     options[cfg].resetValue();
   });
 };

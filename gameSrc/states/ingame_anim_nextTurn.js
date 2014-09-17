@@ -4,70 +4,137 @@ var constants = require("../constants");
 var renderer = require("../renderer");
 var model = require("../model");
 
-var MIDDLE_WAIT_TIME = 1500;
-var MOVE_PER_MS = parseInt((3 * constants.TILE_BASE) / 1000, 10);
-
+var MIDDLE_WAIT_TIME = 500;
+var MOVE_PER_MS = parseInt((1 * constants.TILE_BASE) / 1000, 10);
 if (MOVE_PER_MS === 0) MOVE_PER_MS = 1;
+
+var BAR_MOVE_PER_MS = MOVE_PER_MS * 4;
 
 var text;
 var curX;
 var curY;
+var curBarX;
 var middleX;
 var waited;
 var inMiddle;
 
 exports.state = {
-	id: "ANIMATION_NEXT_TURN",
-	nextState: "INGAME_IDLE",
+  id: "ANIMATION_NEXT_TURN",
+  nextState: "INGAME_IDLE",
 
-	enter: function() {
-		text = "Day " + model.day;
-		curY = 0;
-		curX = 0;
-		waited = 0;
-		inMiddle = false;
+  enter: function() {
+    text = "Day " + model.day;
+    curY = 0;
+    curBarX = 0;
+    curX = 1;
+    waited = 0;
+    inMiddle = false;
 
-		var ctx = renderer.layerUI.getContext();
-		middleX = renderer.screenWidth - parseInt(ctx.measureText(text).width / 2, 10);
+    var ctx = renderer.layerUI.getContext();
 
-		// TODO play music
-		//if (controller.features_client.audioMusic) {
-		//	var commanders = model.co_data[model.round_turnOwner].coA;
-		//	controller.coMusic_playCoMusic((commanders) ? commanders.music : null);
-		//}
-	},
+    ctx.font = "64pt " + constants.GAME_FONT;
 
-	update: [
+    middleX = parseInt(renderer.screenWidth / 2, 10) - parseInt(ctx.measureText(text).width / 2, 10);
+    curY = parseInt(renderer.screenHeight / 2, 10) + 32;
 
-		// FLY IN
-		function(delta, lastInput) {
-			curX += (MOVE_PER_MS * delta);
-			console.log("fly in x:"+curX);
-			return (curX >= middleX);
-		},
+    // TODO play music
+    //if (controller.features_client.audioMusic) {
+    //	var commanders = model.co_data[model.round_turnOwner].coA;
+    //	controller.coMusic_playCoMusic((commanders) ? commanders.music : null);
+    //}
+  },
 
-		// WAIT IN THE MIDDLE
-		function(delta, lastInput) {
-			waited += delta;
+  exit: function () {
+    renderer.layerUI.clear();
+  },
 
-			// go further when you waited a but in the middle of the screen
-			return (waited >= MIDDLE_WAIT_TIME);
-		},
+  update: [
 
-		// FLY OUT
-		function(delta, lastInput) {
-			curX += (MOVE_PER_MS * delta);
-			console.log("fly out x:"+curX);
-			return (curX > renderer.screenWidth);
-		}
-	],
+    // FLY IN BAR
+    function(delta, lastInput) {
+      var factor = curBarX/renderer.screenWidth;
+      var move = parseInt(BAR_MOVE_PER_MS * delta * factor, 10);
+      if (move <= 0) move = 1;
 
-	render: function() {
-		renderer.layerUI.clear();
-		var ctx = renderer.layerUI.getContext();
+      curBarX += move;
 
-		ctx.fillStyle = "black";
-		ctx.font = "32pt " + constants.GAME_FONT;
-		ctx.fillText(text, curX, curY);
-	}
+      return (curBarX > renderer.screenWidth);
+    },
+
+    // FLY IN TEXT
+    function(delta, lastInput) {
+      var factor = 1 - (curX/middleX);
+
+      console.log("factor: "+factor);
+
+      var move = parseInt(MOVE_PER_MS * delta * factor, 10);
+      if (move <= 0) move = 1;
+
+      curX += move;
+
+      return (curX >= middleX);
+    },
+
+    // WAIT IN THE MIDDLE
+    function(delta, lastInput) {
+      waited += delta;
+
+      // go further when you waited a but in the middle of the screen
+      return (waited >= MIDDLE_WAIT_TIME);
+    },
+
+    // FLY OUT TEXT
+    function(delta, lastInput) {
+      var factor = (curX-middleX)/middleX;
+      var move = parseInt(MOVE_PER_MS * delta * factor, 10);
+      if (move <= 0) move = 1;
+
+      curX += move;
+
+      return (curX > renderer.screenWidth + 10);
+    },
+
+    // FLY OUT BAR
+    function(delta, lastInput) {
+      var factor = curBarX/renderer.screenWidth;
+      var move = parseInt(BAR_MOVE_PER_MS * delta * factor, 10);
+      if (move <= 0) move = 1;
+
+      curBarX -= move;
+
+      if (curBarX <= 0) {
+        curBarX = 0;
+        return true;
+      }
+      return false;
+    }
+  ],
+
+  render: function() {
+    renderer.layerUI.clear();
+    var ctx = renderer.layerUI.getContext();
+
+    ctx.lineWidth = 4;
+
+    ctx.fillStyle = "rgb(0,0,0)";
+    ctx.fillRect(0, curY+5, curBarX, 2);
+
+    ctx.fillStyle = "rgb(100,100,100)";
+    ctx.fillRect(0, curY+7, curBarX, 1);
+
+    ctx.fillStyle = "rgb(200,200,200)";
+    ctx.fillRect(0, curY+8, curBarX, 1);
+
+    if (curX > 1){
+      ctx.font = "64pt " + constants.GAME_FONT;
+
+      ctx.fillStyle = "rgb(255,255,255)";
+      ctx.fillText(text, curX, curY);
+
+      ctx.fillStyle = "rgb(0,0,0)";
+      ctx.strokeText(text, curX, curY);
+    }
+    
+    ctx.lineWidth = 1;
+  }
 };
