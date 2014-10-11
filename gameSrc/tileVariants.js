@@ -1,13 +1,13 @@
+/*jslint node: true, plusplus: true, vars: true */
+"use strict";
+
 /**
  * Module to control the tile variants of map tiles.
  *
  * @module
  */
 
-"use strict";
-
 var constants = require("./constants");
-var assert = require("./system/functions").assert;
 var model = require("./model");
 
 /**
@@ -27,8 +27,11 @@ exports.TileVariantInfo = function (desc, connection) {
  * @return {string}
  */
 exports.TileVariantInfo.prototype.grabShortKey = function (type) {
-  if (type && this.desc[type]) return this.desc[type];
-  else return "";
+  if (type && this.desc[type]) {
+    return this.desc[type];
+  } else {
+    return "";
+  }
 };
 
 /**
@@ -45,6 +48,7 @@ exports.TileVariantInfo.prototype.grabShortKey = function (type) {
  *
  */
 exports.TileVariantInfo.prototype.getVariant = function (typeN, typeE, typeS, typeW, typeNE, typeSE, typeSW, typeNW) {
+  var i, e;
 
   // grab shorts
   typeN = this.grabShortKey(typeN);
@@ -57,27 +61,61 @@ exports.TileVariantInfo.prototype.getVariant = function (typeN, typeE, typeS, ty
   typeNW = this.grabShortKey(typeNW);
 
   // search variant
-  for (var i = 0, e = this.connection.length; i < e; i++) {
+  for (i = 0, e = this.connection.length; i < e; i++) {
     var cConn = this.connection[i];
     if (cConn.length === 5) {
 
       // check_ plus
-      if (cConn[1] !== "" && cConn[1] !== typeN) continue;
-      if (cConn[2] !== "" && cConn[2] !== typeE) continue;
-      if (cConn[3] !== "" && cConn[3] !== typeS) continue;
-      if (cConn[4] !== "" && cConn[4] !== typeW) continue;
+      if (cConn[1] !== "" && cConn[1] !== typeN) {
+        continue;
+      }
+      
+      if (cConn[2] !== "" && cConn[2] !== typeE) {
+        continue;
+      }
+      
+      if (cConn[3] !== "" && cConn[3] !== typeS) {
+        continue;
+      }
+      
+      if (cConn[4] !== "" && cConn[4] !== typeW) {
+        continue;
+      }
 
     } else {
 
       // check_ cross
-      if (cConn[1] !== "" && cConn[1] !== typeN) continue;
-      if (cConn[2] !== "" && cConn[2] !== typeNE) continue;
-      if (cConn[3] !== "" && cConn[3] !== typeE) continue;
-      if (cConn[4] !== "" && cConn[4] !== typeSE) continue;
-      if (cConn[5] !== "" && cConn[5] !== typeS) continue;
-      if (cConn[6] !== "" && cConn[6] !== typeSW) continue;
-      if (cConn[7] !== "" && cConn[7] !== typeW) continue;
-      if (cConn[8] !== "" && cConn[8] !== typeNW) continue;
+      if (cConn[1] !== "" && cConn[1] !== typeN) {
+        continue;
+      }
+      
+      if (cConn[2] !== "" && cConn[2] !== typeNE) {
+        continue;
+      }
+      
+      if (cConn[3] !== "" && cConn[3] !== typeE) {
+        continue;
+      }
+      
+      if (cConn[4] !== "" && cConn[4] !== typeSE) {
+        continue;
+      }
+      
+      if (cConn[5] !== "" && cConn[5] !== typeS) {
+        continue;
+      }
+      
+      if (cConn[6] !== "" && cConn[6] !== typeSW) {
+        continue;
+      }
+      
+      if (cConn[7] !== "" && cConn[7] !== typeW) {
+        continue;
+      }
+      
+      if (cConn[8] !== "" && cConn[8] !== typeNW) {
+        continue;
+      }
     }
 
     return cConn[0];

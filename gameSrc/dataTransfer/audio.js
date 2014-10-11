@@ -1,3 +1,5 @@
+"use strict";
+
 var constants = require("../constants");
 var features = require("../system/features");
 var storage = require("../storage");
@@ -5,28 +7,24 @@ var assert = require("../system/functions").assert;
 var async = require("../system/async");
 var audio = require("../audio");
 
-//
-// Storage parameter for sfx volume.
-//
-// @constant
-//
+/**
+ * Storage parameter for sfx volume.
+ */
 var SFX_VOLUME_KEY = "cfg_sfx_volume";
 
-//
-// Storage parameter for music volume.
-//
-// @constant
-//
+/**
+ * Storage parameter for music volume.
+ */
 var MUSIC_VOLUME_KEY = "cfg_music_volume";
 
-//
-// @constant
-//
+/**
+ *
+ */
 var SFX_KEY = "SFX_";
 
-//
-// @constant
-//
+/**
+ *
+ */
 var MUSIC_KEY = "MUSIC_";
 
 //

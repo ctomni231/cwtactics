@@ -19,7 +19,7 @@ var KEY_HANDLER = function (ev) {
   var key = constants.INACTIVE;
 
   if (input.wantsGenericInput()) {
-    if (state.activeState.mode != 0) {
+    if (state.activeState.mode !== 0) {
       return;
     }
 
@@ -71,7 +71,6 @@ exports.backend = new input.InputBackend(
   MAPPING,
   function () {
     if (constants.DEBUG) console.log("enable keyboard");
-
     document.onkeydown = KEY_HANDLER;
   },
   function () {

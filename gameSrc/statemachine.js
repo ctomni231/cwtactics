@@ -177,6 +177,7 @@ var addState = function(desc) {
 
 var addAnimationState = function(desc) {
   var currentStateNum;
+  var states = desc.states;
 
   var state = addState({
 
@@ -184,7 +185,7 @@ var addAnimationState = function(desc) {
 
     init: function() {
       if (desc.init) {
-        desc.init.call(this);
+        desc.init.apply(this,arguments);
       }
     },
 
@@ -192,20 +193,20 @@ var addAnimationState = function(desc) {
       currentStateNum = 0;
 
       if (desc.enter) {
-        desc.enter.call(this);
+        desc.enter.apply(this,arguments);
       }
     },
 
     exit: function() {
       if (desc.exit) {
-        desc.exit.call(this);
+        desc.exit.apply(this,arguments);
       }
     },
 
     update: function(delta, lastInput) {
-      if (desc.update[currentStateNum](delta, lastInput)) {
+      if (desc.update(delta, lastInput, currentStateNum)) {
         currentStateNum++;
-        if (currentStateNum === desc.update.length) {
+        if (currentStateNum === states) {
           this.changeState(desc.nextState);
         }
       }
@@ -214,7 +215,7 @@ var addAnimationState = function(desc) {
     render: function(delta) {
       renderer.evaluateCycle(delta);
       if (desc.render) {
-        desc.render.call(this, delta);
+        desc.render.call(this, delta, currentStateNum);
       }
     }
   });
@@ -246,19 +247,19 @@ var addInGameState = function(desc) {
       };
 
       if (desc.init) {
-        desc.init.call(this);
+        desc.init.apply(this,arguments);
       }
     },
 
     enter: function() {
       if (desc.enter) {
-        desc.enter.call(this);
+        desc.enter.apply(this,arguments);
       }
     },
 
     exit: function() {
       if (desc.exit) {
-        desc.exit.call(this);
+        desc.exit.apply(this,arguments);
       }
     },
 
@@ -443,7 +444,7 @@ exports.addStates = function() {
   addInGameState(require("./states/ingame_targetselection_b").state);
 
   addAnimationState(require("./states/ingame_anim_move").state);
-  addAnimationState(require("./states/ingame_anim_ballistic").state);
+  addAnimationState(require("./states/ingame_anim_siloFire").state);
   addAnimationState(require("./states/ingame_anim_captureProperty").state);
   addAnimationState(require("./states/ingame_anim_changeWeather").state);
   addAnimationState(require("./states/ingame_anim_destroyUnit").state);

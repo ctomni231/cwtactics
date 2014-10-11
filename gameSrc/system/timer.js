@@ -1,13 +1,13 @@
 "use strict";
 
-exports.Timer = my.Class({
-  constructor: function (steps, time) {
-    this.time = 0;
-    this.step = 0;
-    this.maxTime = time;
-    this.maxSteps = steps;
-  },
+exports.Timer = function (steps, time) {
+  this.time = 0;
+  this.step = 0;
+  this.maxTime = time;
+  this.maxSteps = steps;
+};
 
+exports.Timer.prototype = {
   evalTime: function (time) {
     this.time += time;
     if (this.time > this.maxTime) {
@@ -24,4 +24,4 @@ exports.Timer = my.Class({
     this.time = 0;
     this.step = 0;
   }
-});
+};

@@ -12,7 +12,7 @@ exports.action = {
   },
 
   invoke: function (unitId) {
-    model.units[unitId].setActable(false);
-  	renderer.renderUnitsOnScreen();
+    model.getUnit(unitId).setActable(false);
+    renderer.renderUnitsOnScreen();
   }
 };

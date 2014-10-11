@@ -1,3 +1,5 @@
+"use strict";
+
 var states = require('../statemachine');
 var stateData = require('../dataTransfer/states');
 

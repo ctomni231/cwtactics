@@ -22,6 +22,8 @@ exports.state = {
   id: "ANIMATION_NEXT_TURN",
   nextState: "INGAME_IDLE",
 
+  states: 5,
+
   enter: function() {
     text = "Day " + model.day;
     curY = 0;
@@ -48,67 +50,64 @@ exports.state = {
     renderer.layerUI.clear();
   },
 
-  update: [
+  update: function(delta, lastInput, state) {
+    switch(state) {
 
-    // FLY IN BAR
-    function(delta, lastInput) {
-      var factor = curBarX/renderer.screenWidth;
-      var move = parseInt(BAR_MOVE_PER_MS * delta * factor, 10);
-      if (move <= 0) move = 1;
+      // FLY IN BAR
+      case 0:
+        var factor = curBarX/renderer.screenWidth;
+        var move = parseInt(BAR_MOVE_PER_MS * delta * factor, 10);
+        if (move <= 0) move = 1;
 
-      curBarX += move;
+        curBarX += move;
 
-      return (curBarX > renderer.screenWidth);
-    },
+        return (curBarX > renderer.screenWidth);
 
-    // FLY IN TEXT
-    function(delta, lastInput) {
-      var factor = 1 - (curX/middleX);
+      // FLY IN TEXT
+      case 1:
+        var factor = 1 - (curX/middleX);
 
-      console.log("factor: "+factor);
+        console.log("factor: "+factor);
 
-      var move = parseInt(MOVE_PER_MS * delta * factor, 10);
-      if (move <= 0) move = 1;
+        var move = parseInt(MOVE_PER_MS * delta * factor, 10);
+        if (move <= 0) move = 1;
 
-      curX += move;
+        curX += move;
 
-      return (curX >= middleX);
-    },
+        return (curX >= middleX);
 
-    // WAIT IN THE MIDDLE
-    function(delta, lastInput) {
-      waited += delta;
+      // WAIT IN THE MIDDLE
+      case 2:
+        waited += delta;
 
-      // go further when you waited a but in the middle of the screen
-      return (waited >= MIDDLE_WAIT_TIME);
-    },
+        // go further when you waited a but in the middle of the screen
+        return (waited >= MIDDLE_WAIT_TIME);
 
-    // FLY OUT TEXT
-    function(delta, lastInput) {
-      var factor = (curX-middleX)/middleX;
-      var move = parseInt(MOVE_PER_MS * delta * factor, 10);
-      if (move <= 0) move = 1;
+      // FLY OUT TEXT
+      case 3:
+        var factor = (curX-middleX)/middleX;
+        var move = parseInt(MOVE_PER_MS * delta * factor, 10);
+        if (move <= 0) move = 1;
 
-      curX += move;
+        curX += move;
 
-      return (curX > renderer.screenWidth + 10);
-    },
+        return (curX > renderer.screenWidth + 10);
 
-    // FLY OUT BAR
-    function(delta, lastInput) {
-      var factor = curBarX/renderer.screenWidth;
-      var move = parseInt(BAR_MOVE_PER_MS * delta * factor, 10);
-      if (move <= 0) move = 1;
+      // FLY OUT BAR
+      case 4:
+        var factor = curBarX/renderer.screenWidth;
+        var move = parseInt(BAR_MOVE_PER_MS * delta * factor, 10);
+        if (move <= 0) move = 1;
 
-      curBarX -= move;
+        curBarX -= move;
 
-      if (curBarX <= 0) {
-        curBarX = 0;
-        return true;
-      }
-      return false;
-    }
-  ],
+        if (curBarX <= 0) {
+          curBarX = 0;
+          return true;
+        }
+        return false;
+    }    
+  },
 
   render: function() {
     renderer.layerUI.clear();

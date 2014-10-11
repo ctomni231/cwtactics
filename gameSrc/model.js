@@ -6,12 +6,18 @@ var constants = require("./constants");
 var assert = require("./system/functions").assert;
 var matrix = require("./system/matrix");
 
-// Advance Wars 1 game mode. The first ever released game mode of the advance wars series (GBA and up).
-//
+/**
+ * Advance Wars 1 game mode. The first ever released game mode of the advance wars series (GBA and up).
+ *
+ * @constant
+ */
 exports.GAME_MODE_AW1 = 0;
 
-// Advance Wars 2 game mode. It introduced the Super CO Power.
-//
+/**
+ * Advance Wars 2 game mode. It introduced the Super CO Power.
+ *
+ * @constant
+ */
 exports.GAME_MODE_AW2 = 1;
 
 //
@@ -189,64 +195,64 @@ exports.Player = my.Class({
   }
 });
 
+/**
+ *
+ * @constructor
+ */
+exports.Unit = function () {
+  this.hp = 99;
+  this.ammo = 0;
+  this.fuel = 0;
+  this.hidden = false;
+  this.loadedIn = constants.INACTIVE;
+  this.type = null;
+  this.canAct = false;
+
+  // If the value is null then unit does not exists on the map.
+  this.owner = null;
+};
+
 //
+// Converts HP points to a health value.
 //
-// @class
-// @extends cwt.IndexMultiton.<T>
+// @return {number}
 //
-exports.Unit = my.Class({
+// @example
+//    6 HP -> 60 health
+//    3 HP -> 30 health
+//
+exports.Unit.pointsToHealth = function(pt) {
+  return (pt * 10);
+};
 
-  STATIC: {
+//
+// Converts and returns the HP points from the health
+// value of an unit.
+//
+// @example
+//   health ->  HP
+//     69   ->   7
+//     05   ->   1
+//     50   ->   6
+//     99   ->  10
+//
+exports.Unit.healthToPoints = function(health) {
+  return parseInt(health / 10, 10) + 1;
+};
 
-    //
-    // Converts HP points to a health value.
-    //
-    // @return {number}
-    //
-    // @example
-    //    6 HP -> 60 health
-    //    3 HP -> 30 health
-    //
-    pointsToHealth: function(pt) {
-      return (pt * 10);
-    },
+//
+// Gets the rest of unit health.
+//
+exports.Unit.healthToPointsRest = function(health) {
+  return health - (parseInt(health / 10) + 1);
+};
 
-    //
-    // Converts and returns the HP points from the health
-    // value of an unit.
-    //
-    // @example
-    //   health ->  HP
-    //     69   ->   7
-    //     05   ->   1
-    //     50   ->   6
-    //     99   ->  10
-    //
-    healthToPoints: function(health) {
-      return parseInt(health / 10, 10) + 1;
-    },
+exports.Unit.prototype = {
 
-    //
-    // Gets the rest of unit health.
-    //
-    healthToPointsRest: function(health) {
-      return health - (parseInt(health / 10) + 1);
-    }
-  },
-
-  constructor: function() {
-    this.hp = 99;
-    this.ammo = 0;
-    this.fuel = 0;
-    this.hidden = false;
-    this.loadedIn = constants.INACTIVE;
-    this.type = null;
-    this.canAct = false;
-
-    // If the value is null then unit does not exists on the map.
-    this.owner = null;
-  },
-
+  /**
+   *
+   * @param type
+   */
   initByType: function(type) {
     this.type = type;
     this.hp = 99;
@@ -257,13 +263,20 @@ exports.Unit = my.Class({
     this.canAct = false;
   },
 
+  /**
+   *
+   * @return {boolean}
+   */
   isInactive: function() {
     return this.owner === null;
   },
 
-  //
-  // Damages a unit.
-  //
+  /**
+   * Damages a unit.
+   *
+   * @param damage
+   * @param minRest
+   */
   takeDamage: function(damage, minRest) {
     this.hp -= damage;
 
@@ -272,11 +285,14 @@ exports.Unit = my.Class({
     }
   },
 
-  //
-  // Heals an unit. If the unit health will be greater than the maximum
-  // health value then the difference will be added as gold to the
-  // owners gold depot.
-  //
+  /**
+   * Heals an unit. If the unit health will be greater than the maximum
+   * health value then the difference will be added as gold to the
+   * owners gold depot.
+   *
+   * @param health
+   * @param diffAsGold
+   */
   heal: function(health, diffAsGold) {
     this.hp += health;
     if (this.hp > 99) {
@@ -293,18 +309,18 @@ exports.Unit = my.Class({
     }
   },
 
-  //
-  // @return {boolean} true when hp is greater than 0 else false
-  //
+  /**
+   * @return {boolean} true when hp is greater than 0 else false
+   */
   isAlive: function() {
     return this.hp > 0;
   },
 
-  //
-  // Returns true when the unit ammo is lower equals 25%.
-  //
-  // @return {boolean}
-  //
+  /**
+   * Returns true when the unit ammo is lower equals 25%.
+   *
+   * @return {boolean}
+   */
   hasLowAmmo: function() {
     var cAmmo = this.ammo;
     var mAmmo = this.type.ammo;
@@ -315,11 +331,11 @@ exports.Unit = my.Class({
     }
   },
 
-  //
-  // Returns true when the unit fuel is lower equals 25%.
-  //
-  // @return {boolean}
-  //
+  /**
+   * Returns true when the unit fuel is lower equals 25%.
+   *
+   * @return {boolean}
+   */
   hasLowFuel: function() {
     var cFuel = this.fuel;
     var mFuel = this.type.fuel;
@@ -349,7 +365,7 @@ exports.Unit = my.Class({
   setActable: function (value) {
     this.canAct = value;
   }
-});
+};
 
 // The active weather type object.
 //
@@ -403,29 +419,62 @@ for (var x = 0, xe = constants.MAX_MAP_WIDTH; x < xe; x++) {
   }
 }
 
-//
-//
-exports.mapData = matrix.data;
+exports.getTile = function (x, y) {
+  if (x < 0 || x >= exports.mapWidth || y < 0 || y >= exports.mapHeight) {
+    throw new Error("InvalidMapPositionException");
+  }
+  
+  return matrix.data[x][y];
+};
 
 // All player objects of a game round. This buffer holds the maximum amount of possible player objects. Inactive
 // ones are marked by the inactive marker as team value.
 //
-exports.players = createList(exports.Player, constants.MAX_PLAYER);
+var players = createList(exports.Player, constants.MAX_PLAYER);
 
 // set player id's
-exports.players.forEach(function (player, i) {
+players.forEach(function (player, i) {
   player.id = i;
 });
+
+exports.getPlayer = function (id) {
+  if (id < 0 || id > constants.MAX_PLAYER) {
+    throw new Error("InvalidPlayerIdException");
+  }
+
+  return players[id];
+};
+
+var maxUnits = constants.MAX_PLAYER * constants.MAX_UNITS;
 
 // All unit objects of a game round. This buffer holds the maximum amount of possible unit objects. Inactive
 // ones are marked by no reference in the map and with an owner value **null**.
 //
-exports.units = createList(exports.Unit, constants.MAX_PLAYER * constants.MAX_UNITS);
+var units = createList(exports.Unit, maxUnits);
+
+exports.getUnit = function (id) {
+  if (id < 0 || id > maxUnits) {
+    throw new Error("InvalidUnitIdException");
+  }
+  
+  return units[id];
+};
 
 // All property objects of a game round. This buffer holds the maximum amount of possible property objects. Inactive
 // ones are marked by no reference in the map.
 //
-exports.properties = createList(exports.Property, constants.MAX_PROPERTIES);
+var properties = createList(exports.Property, constants.MAX_PROPERTIES);
+
+/**
+ * 
+ */
+exports.getProperty = function (id) {
+  if (id < 0 || id > constants.MAX_PROPERTIES) {
+    throw new Error("InvalidPropertyIdException");
+  }
+  
+  return properties[id];
+};
 
 exports.isValidUnitId = function (id) {
   return (id >= 0 && id < exports.units.size);

@@ -7,16 +7,19 @@ var assert = require("./system/functions").assert;
 
 var MUSIC_KEY = "MUSIC_";
 
-// WebAudio context object.
-//
+/**
+ * WebAudio context object.
+ */
 var audioContext;
 
-// Music audio node.
-//
+/**
+ * Music audio node.
+ */
 var musicNode = null;
 
-// SFX audio node.
-//
+/**
+ * SFX audio node.
+ */
 var sfxNode = null;
 
 // if audio sfx and music is deactivated then do not initialize the audio context

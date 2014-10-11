@@ -9,10 +9,16 @@ exports.action = {
   relationToProp: ["S", "T", relation.RELATION_ENEMY, relation.RELATION_NEUTRAL],
 
   condition: function (unit, property) {
-    return (capture.canCapture(unit) && capture.canBeCaptured(property));
+    return (
+      capture.canCapture(unit) &&
+        capture.canBeCaptured(property)
+    );
   },
 
   invoke: function (propertyId, unitId) {
-    capture.captureProperty(model.properties[propertyId], model.units[unitId]);
+    capture.captureProperty(
+      model.getProperty(propertyId),
+      model.getUnit(unitId)
+    );
   }
 };

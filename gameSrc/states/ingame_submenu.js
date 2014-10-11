@@ -23,7 +23,7 @@ exports.state = {
 
     renderer.resetMenuShift();
     renderer.layerUI.clear(0);
-    renderer.prepareMenu();
+    renderer.prepareMenu(stateData.menu);
     renderer.layerUI.renderLayer(0);
   },
 
@@ -42,7 +42,7 @@ exports.state = {
   },
 
   ACTION: function () {
-    if (stateData.menu.isEnabled()) {
+    if (!stateData.menu.isEnabled()) {
       return;
     }
 
@@ -58,7 +58,8 @@ exports.state = {
 
     var next = null;
     if (actObj.prepareTargets && actObj.targetSelectionType === "B") {
-      // return this.data.selection.prepare();
+      stateData.generateTargetSelectionFocus();
+      next = "INGAME_SELECT_TILE_TYPE_B";
     } else {
       next = "INGAME_FLUSH_ACTION";
     }

@@ -341,12 +341,8 @@ exports.getBattleDamageAgainst = function (attacker, defender, luck, withMainWp,
 // @param defLuckRatio
 //
 exports.attack = function (attacker, defender, attLuckRatio, defLuckRatio) {
-  if (constants.DEBUG) {
-    assert(attacker instanceof model.Unit);
-    assert(defender instanceof model.Unit);
-    assert(attLuckRatio >= 0 && attLuckRatio <= 100);
-    assert(defLuckRatio >= 0 && defLuckRatio <= 100);
-  }
+  if (attLuckRatio < 0 || attLuckRatio > 100) { throw new Error("IllegalLuckValueException: attacker"); }
+  if (defLuckRatio < 0 || defLuckRatio > 100) { throw new Error("IllegalLuckValueException: defender"); }
 
   // TODO
   // **check_ firstCounter:** if first counter is active then the defender

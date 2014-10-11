@@ -1,8 +1,9 @@
 "use strict";
 
+var debug = require("../debug");
+
 var move = require("../logic/move");
 var model = require("../model");
-var assert = require("../system/functions").assert;
 var constants = require("../constants");
 var moveState = require("../states/ingame_anim_move");
 var statemachine = require("../statemachine");
@@ -16,10 +17,12 @@ var moveBuffer = new CircularBuffer(constants.MAX_SELECTION_RANGE);
 
 exports.actionStart = {
   invoke: function (unitId, unitX, unitY) {
-    if (constants.DEBUG) console.log("prepare new move path");
+    debug.logInfo("prepare new move way");
 
     // check that a move command cannot invoked when a move command is already in progress
-    if (constants.DEBUG) assert(y === constants.INACTIVE && x === constants.INACTIVE && uid === constants.INACTIVE);
+    if (y !== constants.INACTIVE && x !== constants.INACTIVE && uid !== constants.INACTIVE) {
+      throw new Error("IllegalStateException");
+    }
 
     moveBuffer.clear();
     uid = unitId;
@@ -30,10 +33,10 @@ exports.actionStart = {
 
 exports.actionAppend = {
   invoke: function () {
-    for (var i = 0, e = arguments.length; i < e; i++) {
+    var i, e;
+    for (i = 0, e = arguments.length; i < e; i++) {
       if (arguments[i] !== constants.INACTIVE) {
-        if (constants.DEBUG) console.log("append move command " + arguments[i]);
-
+        debug.logInfo("append move command " + arguments[i]);
         moveBuffer.push(arguments[i]);
       }
     }
@@ -41,10 +44,10 @@ exports.actionAppend = {
 };
 
 exports.actionEnd = {
-  invoke: function () {
-    if (constants.DEBUG) console.log("doing move from given move path");
+  invoke: function (preventOldPosUpd, preventNewPosUpd) {
+    debug.logInfo("doing move from given move path");
 
-    move.move(model.units[uid], x, y, moveBuffer, false, false, false);
+    move.move(model.getUnit(uid), x, y, moveBuffer, false, preventOldPosUpd, preventNewPosUpd);
 
     statemachine.changeState("ANIMATION_MOVE");
     moveState.prepareMove(uid, x, y, moveBuffer);

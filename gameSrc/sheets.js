@@ -1,109 +1,68 @@
 "use strict";
 
-var assert = require("./system/functions").assert;
-var constants = require("./constants")
+var constants = require("./constants");
+var JsonSchema = window.jjv;
 
-//
-//
-exports.SheetDatabaseObject = my.Class({
-
-  constructor: function (impl) {
-    assert(impl);
-
-    // Holds all type sheet objects.
-    //
-    this.sheets = {};
-
-    // Holds all type names.
-    //
-    this.types = [];
-
-    //
-    //
-    this.check_ = impl.afterCheck;
-
-    //
-    //
-    this.validator_ = new jjv();
-
-    // register schema
-    this.validator_.addSchema("constr", impl.schema);
-
-    // add id check
-    var that = this;
-    this.validator_.addCheck('isID', function (v, p) {
-      if (p) {
-        return !that.sheets.hasOwnProperty(v);
-      } else {
-        return true;
-      }
-    });
-
-    // add custom checks
-    if (impl.checks) {
-      for (var key in impl.checks) {
-        if (impl.checks.hasOwnProperty(key)) {
-          this.validator_.addCheck(key, impl.checks[key]);
-        }
-      }
-    }
-  },
-
-  //
-  // Registers a sheet in the database.
-  //
-  registerSheet: function (sheet) {
-
-    // validate it
-    var errors = this.validator_.validate("constr", sheet);
-    if (errors) {
-      assert(false,'Failed parsing sheet because of: ' + JSON.stringify(errors,null,"\t"));
-    }
-
-    // add it
-    this.sheets[sheet.ID] = sheet;
-    this.types.push(sheet.ID);
-  },
-
-  //
-  //
-  getSheet: function (id) {
-    if (constants.DEBUG) assert(this.isValidId(id));
-
-    return this.sheets[id];
-  },
-
-  isValidId: function (id) {
-    return this.sheets.hasOwnProperty(id);
-  },
-
-  //
-  //
-  isValidSheet: function (sheet) {
-    for (var i = 0, e = this.types.length; i < e; i++) {
-      if (this.sheets[this.types[i]] === sheet) return true;
-    }
-
-    return false;
-  },
-
-  //
-  //
-  isValidType: function (type) {
-    return this.sheets.hasOwnProperty(type);
+/**
+ * A data object that holds a list of sheet objects with a given schema. Every sheet that will be
+ * added to the data object will be validated first.
+ *
+ * @class
+ */
+var SheetDatabaseObject = function(impl) {
+  if (!impl) {
+    throw new Error("SheetDatabaseException: no schema given");
   }
-});
 
-exports.LASER_UNIT_INV = "LASER_UNIT_INV";
+  /**
+   * Holds all type sheet objects.
+   */
+  this.sheets = {};
 
-exports.PROP_INV = "PROP_INV";
+  /**
+   * Holds all type names.
+   */
+  this.types = [];
 
-exports.CANNON_UNIT_INV = "CANNON_UNIT_INV";
+  /**
+   *
+   */
+  this.validator = new JsonSchema();
 
-//
-// Database of commanders sheet objects.
-//
-exports.commanders = new exports.SheetDatabaseObject({
+  // register schema
+  this.validator.addSchema("constr", impl.schema);
+
+  // add id check
+  var that = this;
+  this.validator.addCheck('isID', function(v, p) {
+    return p ? !that.sheets.hasOwnProperty(v) : true;
+  });
+
+  // add custom checks
+  if (impl.checks) {
+    var key;
+    for (key in impl.checks) {
+      if (impl.checks.hasOwnProperty(key)) {
+        this.validator.addCheck(key, impl.checks[key]);
+      }
+    }
+  }
+};
+
+SheetDatabaseObject.prototype.registerSheet = function(sheet) {
+
+  // validate it
+  var errors = this.validator.validate("constr", sheet);
+  if (errors) {
+    throw new Error("Failed parsing sheet because of: " + JSON.stringify(errors, null, "\t"));
+  }
+
+  // add it
+  this.sheets[sheet.ID] = sheet;
+  this.types.push(sheet.ID);
+};
+
+var commanders = new SheetDatabaseObject({
   schema: {
     type: 'object',
     required: ['ID'],
@@ -116,13 +75,14 @@ exports.commanders = new exports.SheetDatabaseObject({
   }
 });
 
+// TODO: private
 //
 // Unit sheet holds the static data of an unit type.
 //
 //
-exports.units = new exports.SheetDatabaseObject({
+var units = new SheetDatabaseObject({
   checks: {
-    isMovetypeId: function (v, p) {
+    isMovetypeId: function(v, p) {
       return exports.movetypes.isValidId(v) === p;
     }
   },
@@ -137,7 +97,10 @@ exports.units = new exports.SheetDatabaseObject({
       cost: {
         type: "integer",
         minimum: -1,
-        not: { type: "integer", enum:[0] }
+        not: {
+          type: "integer",
+          "enum": [0]
+        }
       },
       range: {
         type: "integer",
@@ -253,7 +216,7 @@ exports.units = new exports.SheetDatabaseObject({
   }
 });
 
-exports.tiles = new exports.SheetDatabaseObject({
+var tiles = new exports.SheetDatabaseObject({
   schema: {
     type: 'object',
     required: ['ID', "defense"],
@@ -270,10 +233,7 @@ exports.tiles = new exports.SheetDatabaseObject({
   }
 });
 
-//
-//
-//
-exports.properties = new exports.SheetDatabaseObject({
+var properties = new exports.SheetDatabaseObject({
   schema: {
     type: 'object',
     required: ['ID', "defense", "vision"],
@@ -301,10 +261,7 @@ exports.properties = new exports.SheetDatabaseObject({
   }
 });
 
-//
-// Database for army sheet objects.
-//
-exports.armies = new exports.SheetDatabaseObject({
+var armies = new exports.SheetDatabaseObject({
   schema: {
     type: 'object',
     required: ['ID'],
@@ -317,12 +274,7 @@ exports.armies = new exports.SheetDatabaseObject({
   }
 });
 
-//
-// Movetype sheet holds the static data of an unit type.
-//
-// @class
-//
-exports.movetypes = new exports.SheetDatabaseObject({
+var movetypes = new exports.SheetDatabaseObject({
   schema: {
     type: 'object',
     required: ['ID', 'costs'],
@@ -334,7 +286,7 @@ exports.movetypes = new exports.SheetDatabaseObject({
       costs: {
         type: 'object',
         patternProperties: {
-          '\w+': {
+          "\w+": {
             type: 'integer',
             minimum: -1,
             maximum: 100,
@@ -346,10 +298,7 @@ exports.movetypes = new exports.SheetDatabaseObject({
   }
 });
 
-//
-// Weather sheet database.
-//
-exports.weathers = new exports.SheetDatabaseObject({
+var weathers = new exports.SheetDatabaseObject({
   schema: {
     type: 'object',
     required: ['ID'],
@@ -365,19 +314,136 @@ exports.weathers = new exports.SheetDatabaseObject({
   }
 });
 
-//
-// Holds the default weather type.
-//
-// @type {null}
-//
-exports.defaultWeather = null;
+/**
+ * Holds the default weather type.
+ */
+var defaultWeather = null;
 
-// ----
-//
-// Registers some basic types here
-//
+/**
+ * Returns the default weather type.
+ */
+exports.getDefaultWeather = function() {
+  return defaultWeather;
+};
 
-exports.movetypes.registerSheet({
+/**
+ * @constant
+ */
+exports.TYPE_UNIT = 0;
+
+/**
+ * @constant
+ */
+exports.TYPE_TILE = 1;
+
+/**
+ * @constant
+ */
+exports.TYPE_PROPERTY = 2;
+
+/**
+ * @constant
+ */
+exports.TYPE_WEATHER = 3;
+
+/**
+ * @constant
+ */
+exports.TYPE_COMMANDER = 4;
+
+/**
+ * @constant
+ */
+exports.TYPE_MOVETYPE = 5;
+
+/**
+ * @constant
+ */
+exports.TYPE_ARMY = 6;
+
+/**
+ * @constant
+ */
+exports.LASER_UNIT_INV = "LASER_UNIT_INV";
+
+/**
+ * @constant
+ */
+exports.PROP_INV = "PROP_INV";
+
+/**
+ * @constant
+ */
+exports.CANNON_UNIT_INV = "CANNON_UNIT_INV";
+
+var getSheetDB = function(type) {
+  if (type < exports.TYPE_UNIT || type > exports.TYPE_MOVETYPE) {
+    throw new Error("IllegalSheetTypeException");
+  }
+
+  switch (type) {
+    case exports.TYPE_UNIT:
+      return units;
+
+    case exports.TYPE_TILE:
+      return tiles;
+
+    case exports.TYPE_PROPERTY:
+      return properties;
+
+    case exports.TYPE_WEATHER:
+      return weathers;
+
+    case exports.TYPE_COMMANDER:
+      return commanders;
+
+    case exports.TYPE_MOVETYPE:
+      return movetypes;
+
+    case exports.TYPE_ARMY:
+      return armies;
+  }
+};
+
+/**
+ * @param  {Number} type type of the sheet
+ * @param  {String} key id of the sheet
+ * @return {Object}     sheet object
+ */
+exports.getSheet = function(type, key) {
+  var db = getSheetDB(type);
+
+  if (!db.sheets.hasOwnProperty(key)) {
+    throw new Error("UnknownSheetIdException");
+  }
+
+  return db.sheets[key];
+};
+
+exports.isValidId = function(type, id) {
+  return getSheetDB(type).sheets.hasOwnProperty(id);
+};
+
+exports.isValidType = function(type, id) {
+  return getSheetDB(type).sheets.hasOwnProperty(id);
+};
+
+exports.isValidSheet = function(type, sheet) {
+  var db = getSheetDB(type);
+
+  var i, e;
+  for (i = 0, e = db.types.length; i < e; i++) {
+    if (db.sheets[db.types[i]] === sheet) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+/* ------------------------------------- Registers some basic types here ------------------------------------- */
+
+movetypes.registerSheet({
   "ID": "NO_MOVE",
   "sound": null,
   "costs": {
@@ -385,7 +451,7 @@ exports.movetypes.registerSheet({
   }
 });
 
-exports.properties.registerSheet({
+properties.registerSheet({
   "ID": exports.PROP_INV,
   "defense": 0,
   "vision": 0,
@@ -394,7 +460,7 @@ exports.properties.registerSheet({
   "assets": {}
 });
 
-exports.units.registerSheet({
+units.registerSheet({
   "ID": exports.CANNON_UNIT_INV,
   "cost": -1,
   "range": 0,
@@ -405,7 +471,7 @@ exports.units.registerSheet({
   "assets": {}
 });
 
-exports.units.registerSheet({
+units.registerSheet({
   "ID": exports.LASER_UNIT_INV,
   "cost": -1,
   "range": 0,

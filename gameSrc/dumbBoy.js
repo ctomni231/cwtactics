@@ -24,7 +24,9 @@ var dumbBoyLogic = new ai.BehaviorTree(
       
       // is power available for activation?
       ai.Task(function (model){
-        return (co.canActivatePower(model.player, co.POWER_LEVEL_COP)? ai.Node.SUCCESS : ai.Node.FAILURE);
+        return (
+          co.canActivatePower(model.turnOwner, co.POWER_LEVEL_COP)? 
+            ai.Node.SUCCESS : ai.Node.FAILURE);
       }),
 
       // when super power is not far away and the battlefield situation equal or in win situation
@@ -178,6 +180,15 @@ var dumbBoyLogic = new ai.BehaviorTree(
   ])
 );
 
+exports.registerAiPlayer = function (player) {
+  throw new Error("NotImplementedException");
+};
+
+exports.resetAiData = function () {
+  throw new Error("NotImplementedException");
+};
+
 exports.tick = function (player) {
+  throw new Error("NotImplementedException");
   dumbBoyLogic.step(null);
 };

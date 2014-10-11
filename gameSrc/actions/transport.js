@@ -2,7 +2,10 @@
 
 var transport = require("../logic/transport");
 var relation = require("../logic/relationship");
+var actions = require("../actions");
+var sheets = require("../sheets");
 var model = require("../model");
+var move = require("../logic/move");
 
 exports.actionUnload = {
   multiStepAction: true,
@@ -10,44 +13,74 @@ exports.actionUnload = {
   relation: ["S", "T", relation.RELATION_SAME_THING, relation.RELATION_NONE],
 
   condition: function (transporter, x, y) {
-    return (transport.isTransportUnit(transporter) && transport.canUnloadSomethingAt(transporter, x, y));
+    return (
+      transport.isTransportUnit(transporter) &&
+        transport.canUnloadSomethingAt(transporter, x, y)
+    );
   },
 
   prepareMenu: function (transporter, x, y, menu) {
-    var transporterId = model.units.indexOf(transporter);
-
-    for(var i = 0, e= model.units.length; i<e; i++) {
-      if (model.units[i].loadedIn == transporterId) {
-        menu.addEntry(i,true);
+    var i, e;
+    for (i = 0, e = model.units.length; i < e; i++) {
+      if (model.getUnit(i).loadedIn === transporter) {
+        menu.addEntry(i.toString(), true);
       }
     }
   },
 
   targetSelectionType: "B",
   prepareTargets: function (transporter, x, y, load, selection) {
-    if (transport.canUnloadSomethingAt(transporter, x - 1, y)) selection.setValue(x - 1, y, 1);
-    if (transport.canUnloadSomethingAt(transporter, x + 1, y)) selection.setValue(x + 1, y, 1);
-    if (transport.canUnloadSomethingAt(transporter, x, y + 1)) selection.setValue(x, y + 1, 1);
-    if (transport.canUnloadSomethingAt(transporter, x, y - 1)) selection.setValue(x, y - 1, 1);
+    var loadMovetype = sheets.getSheet(sheets.TYPE_MOVETYPE, load.type.movetype);
+    
+    // check west 
+    if (transport.canUnloadSomethingAt(transporter, x - 1, y) && move.canTypeMoveTo(loadMovetype, x - 1, y) ) {
+      selection.setValue(x - 1, y, 1);
+    }
+    
+    // check east
+    if (transport.canUnloadSomethingAt(transporter, x + 1, y) && move.canTypeMoveTo(loadMovetype, x + 1, y)) {
+      selection.setValue(x + 1, y, 1);
+    }
+    
+    // check south
+    if (transport.canUnloadSomethingAt(transporter, x, y + 1) && move.canTypeMoveTo(loadMovetype, x, y + 1)) {
+      selection.setValue(x, y + 1, 1);
+    }
+    
+    // check north
+    if (transport.canUnloadSomethingAt(transporter, x, y - 1) && move.canTypeMoveTo(loadMovetype, x, y - 1)) {
+      selection.setValue(x, y - 1, 1);
+    }
   },
 
-  invoke: function (transporterId, tx, ty, loadId, ux, uy) {
-    // TODO wrong arguments
-    transport.unload(
-      model.units[transporterId], tx, ty,
-      model.units[loadId], ux, uy
-    );
+  invoke: function (transporterId, loadId, tx, ty, moveCode) {
+    var load = model.getUnit(loadId);
+    var transporter = model.getUnit(transporterId);
+
+    transport.unload(transporter, load);
+
+    // add commands in reverse order
+    actions.localActionLIFO("wait", transporterId);
+    actions.localActionLIFO("moveEnd", false, true);
+    actions.localActionLIFO("moveAppend", moveCode);
+    actions.localActionLIFO("moveStart", loadId, tx, ty);
   }
 };
 
 exports.actionLoad = {
   relation: ["S", "T", relation.RELATION_OWN],
 
+  positionUpdateMode: actions.PREVENT_SET_NEW_POS,
+
   condition: function (transporter, load) {
-    return (transport.isTransportUnit(transporter) && transport.canLoadUnit(transporter, load));
+    return (
+      transport.isTransportUnit(transporter) &&
+        transport.canLoadUnit(transporter, load));
   },
 
   invoke: function (transporterId, loadId) {
-    transport.load(model.units[transporterId], model.units[loadId]);
+    transport.load(
+      model.getUnit(transporterId),
+      model.getUnit(loadId));
   }
 };

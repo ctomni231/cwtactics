@@ -44,43 +44,43 @@ var Browser = {
 // Shortcut
 Browser[browser] = true;
 
-//
-// Controls the availability of audio effects.
-//
+/**
+ * Controls the availability of audio effects.
+ */
 exports.audioSFX = ((Browser.chrome || Browser.safari || (Browser.ios && Browser.version >= 6)) === true);
 
-//
-// Controls the availability of music.
-//
+/**
+ * Controls the availability of music.
+ */
 exports.audioMusic = ((Browser.chrome || Browser.safari) === true);
 
-//
-// Controls the availability of game-pad input.
-//
+/**
+ * Controls the availability of game-pad input.
+ */
 exports.gamePad = ((Browser.chrome && !!navigator.webkitGetGamepads) === true);
 
-//
-// Controls the availability of computer keyboard input.
-//
-exports.keyboard = ((!Browser.mobile) === true);
+/**
+ * Controls the availability of computer keyboard input.
+ */
+exports.keyboard = (Browser.mobile !== true);
 
-//
-// Controls the availability of mouse input.
-//
-exports.mouse = ((!Browser.mobile) === true);
+/**
+ * Controls the availability of mouse input.
+ */
+exports.mouse = (Browser.mobile !== true);
 
-//
-// Controls the availability of touch input.
-//
-exports.touch = ((Browser.mobile) === true);
+/**
+ * Controls the availability of touch input.
+ */
+exports.touch = (Browser.mobile === true);
 
-//
-// Signals a official supported environment. If false then it doesn't mean the environment cannot run the game;
-// but the status is not official tested. As result the game may runs fine; laggy or is completely broken.
-//
+/**
+ *  Signals a official supported environment. If false then it doesn't mean the environment cannot run the game,
+ *  but the status is not official tested. As result the game may runs fine; laggy or is completely broken.
+ */
 exports.supported = ((Browser.chrome || Browser.safari || Browser.ios || Browser.android) === true);
 
-//
-// Controls the usage of the workaround for the iOS7 WebSQL DB bug.
-//
-exports.iosWebSQLFix = ((Browser.ios && Browser.version === 7) === true)
+/**
+ * Controls the usage of the workaround for the iOS7 WebSQL DB bug.
+ */
+exports.iosWebSQLFix = ((Browser.ios && Browser.version === 7) === true);

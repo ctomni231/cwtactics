@@ -17,7 +17,7 @@ exports.actionMoney = {
   },
 
   invoke: function (sourcePlayerId, targetPlayerId, money) {
-    team.transferMoney(model.players[sourcePlayerId], model.players[targetPlayerId], money);
+    team.transferMoney(model.getPlayer(sourcePlayerId), model.getPlayer(targetPlayerId), money);
   }
 };
 
@@ -34,7 +34,7 @@ exports.actionProperty = {
   },
 
   invoke: function (propertyId, targetPlayerId) {
-    team.transferPropertyToPlayer(model.properties[propertyId], model.players[targetPlayerId]);
+    team.transferPropertyToPlayer(model.getProperty(propertyId), model.getPlayer(targetPlayerId));
   }
 };
 
@@ -50,7 +50,7 @@ exports.actionUnit = {
     team.getUnitTransferTargets(player, menu);
   },
 
-  invoke: function (unitId, targetPlayer) {
-    team.transferUnitToPlayer(model.units[unitId], model.players[targetPlayer]);
+  invoke: function (unitId, targetPlayerId) {
+    team.transferUnitToPlayer(model.getUnit(unitId), model.getPlayer(targetPlayerId));
   }
 };

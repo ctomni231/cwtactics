@@ -254,7 +254,9 @@ exports.prepareMove = function(uid, x, y, unitMovePath) {
 
 exports.state = {
   id: "ANIMATION_MOVE",
-  next: "INGAME_IDLE",
+  nextState: "INGAME_IDLE",
+
+  states: 1,
 
   enter: function() {
     assertIsInIdle();
@@ -289,21 +291,19 @@ exports.state = {
     renderer.renderUnitsOnScreen();
   },
 
-  update: [
-    function(delta) {
-      if (updateAnimation(delta)) {
-        var vision = model.units[unitId].type.vision;
+  update: function(delta) {
+    if (updateAnimation(delta)) {
+      var vision = model.units[unitId].type.vision;
 
-        renderer.renderFogCircle(unitStartX, unitStartY, vision);
-        renderer.renderFogCircle(unitPosX, unitPosY, vision);
+      renderer.renderFogCircle(unitStartX, unitStartY, vision);
+      renderer.renderFogCircle(unitPosX, unitPosY, vision);
 
-        renderer.renderFogBackgroundLayer();
+      renderer.renderFogBackgroundLayer();
 
-        return true;
-      }
-      return false;
+      return true;
     }
-  ],
+    return false;
+  },
 
   render: function(delta) {
     var ctx = renderer.layerEffects.getContext(0);

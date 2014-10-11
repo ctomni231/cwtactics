@@ -2,7 +2,6 @@
 
 var relation = require("../logic/relationship");
 var explode = require("../logic/exploder");
-var data = require("../dataTransfer/states");
 
 exports.action = {
   noAutoWait: true,

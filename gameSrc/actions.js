@@ -6,13 +6,25 @@
 
 "use strict";
 
-var BUFFER_SIZE = 200;
-
 var circularBuffer = require("./system/circularBuffer");
 var constants = require("./constants");
-var func = require("./system/functions");
 var network = require("./network");
-var assert = require("./system/functions").assert;
+var debug = require("./debug");
+var func = require("./system/functions");
+
+var BUFFER_SIZE = 200;
+
+// Pool for holding ActionData objects when they aren't in the buffer.
+var pool = circularBuffer.createBufferByClass(exports.ActionData, BUFFER_SIZE);
+
+// Buffer object.
+var buffer = new circularBuffer.CircularBuffer(BUFFER_SIZE);
+
+// List of all available actions.
+var actions = [];
+
+// Action -> ActionID<numeric> mapping
+var actionIds = {};
 
 /**
  * Map actions are called in the idle state on the map.
@@ -39,6 +51,10 @@ exports.ENGINE_ACTION = 3;
  */
 exports.CLIENT_ACTION = 4;
 
+exports.SET_POSITION = 0;
+exports.PREVENT_CLEAR_OLD_POS = 1;
+exports.PREVENT_SET_NEW_POS = 2;
+
 /**
  * Action class which represents an action which is usable by engine objects.
  *
@@ -50,6 +66,8 @@ exports.Action = function (impl) {
    * Key ID of the action.
    */
   this.key = impl.key;
+
+  this.positionUpdateMode = (impl.positionUpdateMode || exports.SET_POSITION);
 
   /**
    * Type of the action.
@@ -63,7 +81,7 @@ exports.Action = function (impl) {
    * Condition function which checks the availability of the action with the current
    * state data.
    */
-  this.condition = (impl.condition) ? impl.condition : func.trueReturner;
+  this.condition = impl.condition || func.trueReturner;
 
   /**
    * Prepares the menu for a given state data.
@@ -112,7 +130,9 @@ exports.Action = function (impl) {
    */
   this.relationToProp = impl.relationToProp || null;
 
-  assert(impl.invoke);
+  if (!impl.invoke) {
+    throw new Error("IllegalImplementationException: action invoke function is missing");
+  }
 
   /**
    * Invokes the action with a given set of arguments.
@@ -139,7 +159,7 @@ exports.ActionData.serializeActionData = function (data) {
  */
 exports.ActionData.deSerializeActionData = function (data) {
   if (typeof data === "string") {
-    data = JSON.stringify(data)
+    data = JSON.stringify(data);
   }
 
   var actData = pool.pop();
@@ -165,46 +185,62 @@ exports.ActionData.prototype.reset = function () {
   this.p5 = -1;
 };
 
+/**
+ * @override
+ */
 exports.ActionData.prototype.toString = function () {
   return exports.ActionData.serializeActionData(this);
 };
 
-// Pool for holding ActionData objects when they aren't in the buffer.
-var pool = circularBuffer.createBufferByClass(exports.ActionData, BUFFER_SIZE);
+/**
+ *
+ * @param key
+ * @param p1
+ * @param p2
+ * @param p3
+ * @param p4
+ * @param p5
+ * @param asHead the action will be inserted as head (called as next command) if true,
+ *               else as tail (called at last)
+ */
+var localAction = function (key, p1, p2, p3, p4, p5, asHead) {
+  if (arguments.length > 6) {
+    throw new Error("IllegalNumberOfArgumentsException");
+  }
 
-// Buffer object.
-var buffer = new circularBuffer.CircularBuffer(BUFFER_SIZE);
+  var actionData = pool.popLast();
 
-// List of all available actions.
-var actions = [];
+  // insert data into the action object
+  actionData.id = exports.getActionId(key);
+  actionData.p1 = p1 !== undefined ? p1 : constants.INACTIVE;
+  actionData.p2 = p2 !== undefined ? p2 : constants.INACTIVE;
+  actionData.p3 = p3 !== undefined ? p3 : constants.INACTIVE;
+  actionData.p4 = p4 !== undefined ? p4 : constants.INACTIVE;
+  actionData.p5 = p5 !== undefined ? p5 : constants.INACTIVE;
 
-// Action -> ActionID<numeric> mapping
-var actionIds = {};
+  debug.logInfo("append action " + actionData + " as " + (asHead ? "head" : "tail") + " into the stack");
+
+  if (asHead) {
+    buffer.pushInFront(actionData);
+  } else {
+    buffer.push(actionData);
+  }
+};
 
 /**
  * Adds the action with a given set of arguments to the action stack.
- * 
+ *
  * Every parameter of the call will be submitted beginning from index 1 of the
  * arguments. The maximum amount of parameters are controlled by the controller.commandStack_MAX_PARAMETERS property.
  * Anyway every parameter should be an integer to support intelligent JIT compiling. The function throws a warning if
  * a parameter type does not match, but it will be accepted anyway ** ( for now! ) **.
  */
-exports.localAction = function (key) {
-  assert(arguments.length <= 6);
+exports.localAction = function (key, p1, p2, p3, p4, p5) {
+  localAction(key, p1, p2, p3, p4, p5, false);
+};
 
-  // grab data object and fill it in relation to the given arguments
-  var actionData = pool.popLast();
-  actionData.id = exports.getActionId(key);
-  if (arguments.length > 1) actionData.p1 = arguments[1];
-  if (arguments.length > 2) actionData.p2 = arguments[2];
-  if (arguments.length > 3) actionData.p3 = arguments[3];
-  if (arguments.length > 4) actionData.p4 = arguments[4];
-  if (arguments.length > 5) actionData.p5 = arguments[5];
-
-  if (constants.DEBUG) console.log("add command " + actionData.toString() + " to the stack");
-
-  // register action in the action stack
-  buffer.push(actionData);
+exports.localActionLIFO = function (key, p1, p2, p3, p4, p5) {
+  localAction(key, p1, p2, p3, p4, p5, true);
 };
 
 /**
@@ -223,7 +259,13 @@ exports.sharedAction = function () {
  * Parses an action message and pushes it into the command stack.
  */
 exports.parseActionMessage = function (msg) {
-  exports.localAction.apply(null, JSON.parse(msg));
+  var data = JSON.parse(msg);
+
+  if (!Array.isArray(data) || !data.length) {
+    throw new Error("IllegalActionFormatException");
+  }
+
+  exports.localAction.apply(null, data);
 };
 
 /**
@@ -270,8 +312,11 @@ exports.hasData = function () {
 exports.invokeNext = function () {
   var data = buffer.popFirst();
 
-  if (constants.DEBUG) assert(data);
-  if (constants.DEBUG) console.log("evaluating action data object " + data);
+  if (!data) {
+    throw new Error("NullPointerException: action is null");
+  }
+
+  debug.logInfo("evaluating action data object " + data);
 
   var actionObj = actions[data.id];
   actionObj.invoke(data.p1, data.p2, data.p3, data.p4, data.p5);
@@ -289,6 +334,8 @@ var createAction = function (key, type, impl) {
   actions.push(new exports.Action(impl));
   actionIds[key] = actions.length - 1;
 };
+
+// register some actions here
 
 createAction("transferUnit", exports.UNIT_ACTION, require("./actions/transfer").actionUnit);
 createAction("unitUnhide", exports.UNIT_ACTION, require("./actions/stealth").actionUnhide);

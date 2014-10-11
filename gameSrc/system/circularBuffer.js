@@ -119,6 +119,24 @@ exports.CircularBuffer = my.Class({
   },
 
   //
+  // Pushes an object into the buffer.
+  //
+  // @param {T} el object that will be pushed into the buffer
+  //
+  pushInFront: function (el) {
+    if (this.size === this.maxSize) {
+      throw Error("buffer is full");
+    }
+
+    var index = this.index - 1;
+    if (index < 0) index = this.maxSize - 1;
+
+    this.data[index] = el;
+    this.index = index;
+    this.size++;
+  },
+
+  //
   // Removes everything from the buffer. After that the buffer will be empty.
   //
   clear: function () {

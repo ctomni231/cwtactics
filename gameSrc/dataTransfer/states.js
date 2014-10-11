@@ -37,7 +37,7 @@ var invokeActionByData = function () {
       p3 = exports.target.y;
       break;
 
-    case "supply":
+    case "supplyUnit":
       p1 = exports.target.x;
       p2 = exports.target.y;
       break;
@@ -61,11 +61,10 @@ var invokeActionByData = function () {
 
     case "unloadUnit":
       p1 = exports.source.unitId;
-      p2 = exports.target.x;
-      p3 = exports.target.y;
-      p4 = exports.action.selectedSubEntry;
-      p5 = exports.targetselection.x;
-      // data.targetselection.y
+      p2 = exports.action.selectedSubEntry;
+      p3 = exports.target.x;
+      p4 = exports.target.y;
+      p5 = move.codeFromAtoB(p3, p4, exports.targetselection.x, exports.targetselection.y);
       break;
 
     case "loadUnit":
@@ -117,7 +116,7 @@ var invokeActionByData = function () {
 };
 
 var checkConditionByData = function (action) {
-  var conditionResult = true;
+  var conditionResult = false;
 
   switch (action.key) {
 
@@ -133,8 +132,8 @@ var checkConditionByData = function (action) {
       conditionResult = action.condition(exports.source.unit, exports.target.unit);
       break;
 
-    case "supply":
-      conditionResult = action.condition(exports.target.unit, exports.target.x, exports.target.y);
+    case "supplyUnit":
+      conditionResult = action.condition(exports.source.unit, exports.target.x, exports.target.y);
       break;
 
     case "buildUnit":
@@ -190,9 +189,9 @@ var prepareTargetsByData = function (action) {
   switch (action.key) {
     case "unloadUnit":
       action.prepareTargets(
-        exports.source.unitId,
+        exports.source.unit,
         exports.target.x, exports.target.y,
-        exports.action.selectedSubEntry,
+        model.units[exports.action.selectedSubEntry],
         exports.selection
       );
       break;
@@ -764,15 +763,21 @@ exports.nextStepBreak = function () {
   stateMachine.changeState("INGAME_IDLE");
 };
 
+exports.generateTargetSelectionFocus = function () {
+  prepareTargetsByData(exports.action.object);
+};
+
 // Builds several commands from collected action data.
 //
 exports.buildFromData = function () {
   var trapped = false;
 
+  // TODO check trap (move has to be stopped)
   if (exports.movePath.size > 0) {
     trapped = move.trapCheck(exports.movePath, exports.source, exports.target);
 
     actionsLib.sharedAction("moveStart", exports.source.unitId, exports.source.x, exports.source.y);
+
     for (var i = 0, e = exports.movePath.size; i < e; i += 5) {
       actionsLib.sharedAction("moveAppend",
         exports.movePath.size > i ? exports.movePath.get(i) : constants.INACTIVE,
@@ -782,7 +787,11 @@ exports.buildFromData = function () {
         exports.movePath.size > i + 4 ? exports.movePath.get(i + 4) : constants.INACTIVE
       );
     }
-    actionsLib.sharedAction("moveEnd");
+
+    var posUpdateMode = exports.action.object.positionUpdateMode;
+    actionsLib.sharedAction("moveEnd",
+      (posUpdateMode === actionsLib.PREVENT_CLEAR_OLD_POS),
+      (posUpdateMode === actionsLib.PREVENT_SET_NEW_POS));
   }
 
   if (!trapped) {

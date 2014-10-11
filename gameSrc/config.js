@@ -1,9 +1,17 @@
 "use strict";
 
-var assert = require("./system/functions").assert;
 var constants = require("constants");
 
-exports.Config = function(min, max, defaultValue, step) {
+/**
+ * Configuration object which contains a configurable value.
+ *
+ * @param {Number} min
+ * @param {Number} max
+ * @param {Number} defaultValue
+ * @param {Number?} step
+ * @constructor
+ */
+exports.Config = function (min, max, defaultValue, step) {
   this.min = min;
   this.max = max;
   this.def = defaultValue;
@@ -13,59 +21,46 @@ exports.Config = function(min, max, defaultValue, step) {
 
 exports.Config.prototype = {
 
-  // Sets the value.
-  //
-  setValue: function(value) {
+  /**
+   * Sets the value.
+   *
+   * @param {Number} value
+   */
+  setValue: function (value) {
 
-    // check_ bounds
+    // check value bounds
     if (value < this.min) value = this.min;
     if (value > this.max) value = this.max;
 
-    // check_ steps
+    // check steps
     if ((value - this.min) % this.step !== 0) {
-      assert(false, "step criteria is broken");
+      throw Error("StepCriteriaBrokenException");
     }
 
     this.value = value;
   },
 
-  // Decreases the value by one step.
-  //
-  decreaseValue: function() {
+  /**
+   * Decreases the value by one step.
+   */
+  decreaseValue: function () {
     this.setValue(this.value - this.step);
   },
 
-  // Increases the value by one step.
-  //
-  increaseValue: function() {
+  /**
+   * Increases the value by one step.
+   */
+  increaseValue: function () {
     this.setValue(this.value + this.step);
   },
 
-  //
-  // Resets the value of the parameter back to the default value.
-  //
-  resetValue: function() {
+  /**
+   * Resets the value of the parameter back to the default value.
+   */
+  resetValue: function () {
     this.value = this.def;
   }
 };
-
-exports.gameConfigNames = [
-  "co_getStarCostIncreaseSteps",
-  "co_getStarCostIncrease",
-  "autoSupplyAtTurnStart",
-  "timer_turnTimeLimit",
-  "timer_gameTimeLimit",
-  "co_enabledCoPower",
-  "weatherRandomDays",
-  "noUnitsLeftLoose",
-  "weatherMinDays",
-  "round_dayLimit",
-  "co_getStarCost",
-  "captureLimit",
-  "daysOfPeace",
-  "fogEnabled",
-  "unitLimit"
-];
 
 var options = {
 
@@ -92,23 +87,40 @@ var options = {
   "animatedTiles": new exports.Config(0, 1, 1)
 };
 
-//
-//
-exports.getValue = function(name) {
-  var cfg = options[name];
-  return (cfg ? cfg.value : null);
+/**
+ * List of registered configuration keys.
+ *
+ * @constant
+ */
+exports.gameConfigNames = Object.seal(Object.keys(options));
+
+/**
+ *
+ * @param name
+ * @return {Number}
+ */
+exports.getValue = function (name) {
+  return exports.getConfig(name).value;
 };
 
-//
-//
-exports.getConfig = function(name) {
+/**
+ *
+ * @param name
+ * @return {exports.Config}
+ */
+exports.getConfig = function (name) {
+  if (!options.hasOwnProperty(name)) {
+    throw new Error("there is no configuration object with key '" + name + "'");
+  }
+
   return options[name];
 };
 
-//
-//
-exports.resetValues = function() {
-  Object.keys(options).forEach(function(cfg) {
+/**
+ * Resets all registered configuration objects to their default value.
+ */
+exports.resetValues = function () {
+  Object.keys(options).forEach(function (cfg) {
     options[cfg].resetValue();
   });
 };

@@ -5,6 +5,7 @@ var model = require("../model");
 var co = require("../logic/co");
 
 exports.actionActivate = {
+
   condition: function (player) {
     return co.canActivatePower(player, co.POWER_LEVEL_COP);
   },
@@ -18,7 +19,7 @@ exports.actionActivate = {
   },
 
   invoke: function (playerId, powerLevel) {
-    co.activatePower(model.players[playerId], powerLevel);
+    co.activatePower(model.getPlayer(playerId), powerLevel);
   }
 };
 

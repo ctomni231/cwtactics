@@ -1,3 +1,4 @@
+/*jslint node: true, plusplus: true, vars: true */
 "use strict";
 
 // rain.js

@@ -14,6 +14,18 @@ function createCompositeType(nodeRunner) {
 	}
 }
 
+function repeaterHandler(object) {
+  var times = this.times;
+
+  // run until times goes to zero (if times not given, then it runs endless)
+  do {
+    this.node.run(object);
+    times--;
+  } while (times != 0);
+
+  return exports.Node.SUCCESS;
+};
+
 function constructBaseNode(fn) {
 	assert(typeof fn === "function");
 	this.run = fn;
@@ -26,7 +38,18 @@ exports.Node = function(fn, subNode) {
 	this.node = subNode;
 };
 
+/**
+ * Marks a failure execution of a node.
+ *
+ * @type {number}
+ */
 exports.Node.FAILURE = 0;
+
+/**
+ * Marks a successful execution of a node.
+ *
+ * @type {number}
+ */
 exports.Node.SUCCESS = 1;
 
 exports.TimerNode = function(fn, subNode, times) {
@@ -73,18 +96,6 @@ exports.Succeeder = createNodeType(function(object) {
 	return exports.Node.SUCCESS;
 });
 
-function repeaterHandler = function(object) {
-	var times = this.times;
-
-	// run until times goes to zero (if times not given, then it runs endless)
-	do {
-		this.node.run(object);
-		times--;
-	} while (times != 0);
-
-	return exports.Node.SUCCESS;
-};
-
 exports.Repeater = function(node, timesToRun) {
 	return new exports.TimerNode(repeaterHandler, node, timesToRun);
 };
@@ -122,7 +133,7 @@ exports.Selector = createCompositeType(function(object) {
 		if (result === exports.Node.SUCCESS) return result;
 	}
 
-	return exports.Node.FAIL;
+	return exports.Node.FAILURE;
 });
 
 exports.Random = createCompositeType(function(object) {

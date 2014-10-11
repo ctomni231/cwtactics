@@ -1,35 +1,40 @@
 "use strict";
 
-var PARAM_HAS_CACHE = "__hasCache__";
-
 var constants = require("./constants");
+var workflow = require("./system/async");
 var storage = require("./storage");
-var flow = require("./system/async");
+var debug = require("./debug");
+
+var PARAM_HAS_CACHE = "__hasCache__";
 
 var hasCachedData = false;
 
-//
-// Starts the loading process. After the loading process the loading stuff will be removed. The Loading namespace
-// will remain with a property with value true as marker. This property will be named deInitialized.
-//
+/**
+ * Starts the loading process. After the loading process the loading stuff will be removed.
+ * The Loading namespace will remain with a property with value true as marker. This
+ * property will be named deInitialized.
+ *
+ * @param setProcess
+ * @param callback
+ */
 exports.startProcess = function (setProcess, callback) {
   function setProgress(i) {
     return function (next) {
       setProcess(i);
       next();
-    }
+    };
   }
 
   function setLoader(mod) {
-    return (function (next) {
+    return function (next) {
       mod.loader(next, hasCachedData);
-    })
+    };
   }
 
-  if (constants.DEBUG) console.log("start loading process");
+  debug.logInfo("start loading game data");
   storage.get(PARAM_HAS_CACHE, function (value) {
     hasCachedData = value;
-    flow.sequence([
+    workflow.sequence([
         setLoader(require("./loading/checkSystem")),
         setProgress(5),
         setLoader(require("./loading/startParameters")),
@@ -60,8 +65,7 @@ exports.startProcess = function (setProcess, callback) {
       ],
       function () {
         if (callback) {
-          if (constants.DEBUG) console.log("start loading process");
-
+          debug.logInfo("finished loading game data");
           storage.set(PARAM_HAS_CACHE, true, callback);
         }
       }

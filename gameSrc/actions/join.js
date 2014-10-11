@@ -15,7 +15,7 @@ exports.action = {
 
   invoke: function (sourceUnitId, x, y) {
     // TODO: better is sx,sy,tx,ty
-    join.join(model.units[sourceUnitId], x, y);
+    join.join(model.getUnit(sourceUnitId), x, y);
   }
 
 };

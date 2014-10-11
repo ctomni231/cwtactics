@@ -8,11 +8,11 @@ exports.actionHide = {
   relation: ["S", "T", relation.RELATION_NONE, relation.RELATION_SAME_THING],
 
   condition: function (unit) {
-    return (unit.type.stealth = !unit.hidden);
+    return (unit.type.stealth && !unit.hidden);
   },
 
   invoke: function (unitId) {
-    model.units[unitId].hidden = true;
+    model.getUnit(unitId).hidden = true;
   }
 };
 
@@ -20,10 +20,10 @@ exports.actionUnhide = {
   relation: ["S", "T", relation.RELATION_NONE, relation.RELATION_SAME_THING],
 
   condition: function (unit) {
-    return (unit.type.stealth = unit.hidden);
+    return (unit.type.stealth && unit.hidden);
   },
 
   invoke: function (unitId) {
-    model.units[unitId].hidden = false;
+    model.getUnit(unitId).hidden = false;
   }
 };

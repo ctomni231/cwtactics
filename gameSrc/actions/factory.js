@@ -16,7 +16,7 @@ exports.action = {
   },
 
   invoke: function (factoryId, type) {
-    factory.buildUnit(model.properties[factoryId], type);
+    factory.buildUnit(model.getProperty(factoryId), type);
     renderer.renderUnitsOnScreen();
     fog.fullRecalculation();
   }

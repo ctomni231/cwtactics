@@ -26,14 +26,14 @@ exports.isHost = function() {
  * Parses a message and invokes commands if necessary.
  */
 exports.parseMessage = function(msg) {
-	console.log("NOT IMPLEMENTED YET");
+	throw new Error("NotImplementedYetException");
 };
 
 /**
  * Sends a given action data object into data object and sends it to the game server.
  */
 exports.sendMessage = function(actionData) {
-	console.log("NOT IMPLEMENTED YET");
+  throw new Error("NotImplementedYetException");
 };
 
 //var targetURL = null;

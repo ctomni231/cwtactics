@@ -1,82 +1,71 @@
 "use strict";
 
+var constants = require("../constants");
+var renderer = require("../renderer");
+var images = require("../image");
+var debug = require("../debug");
+var audio = require("../audio");
+
+var EXPLODE_SOUND = "EXPLODE";
+var EXPLODE_SPRITE = "EXPLOSION_GROUND";
+var FRAMES = 9;
+
+var TIME_PER_FRAME = 64;
+
+var tx;
+var ty;
+var currentFrame;
+var currentTime;
+
+var explosionImg;
+
 exports.state = {
+
   id: "ANIMATION_DESTROY_UNIT",
+  nextState: "INGAME_IDLE",
 
-  init: function () {
+  states: 2,
 
+  enter: function(x, y) {
+    tx = x - renderer.screenOffsetX;
+    ty = y - renderer.screenOffsetY;
+
+    currentTime = 0;
+    currentFrame = 0;
+
+    // lazy load explosion image
+    if (!explosionImg) {
+      explosionImg = images.sprites[EXPLODE_SPRITE];
+      debug.assertTrue(explosionImg, "expected an explosion image after lazy loading [destroy unit animation]");
+    }
   },
 
-  enter: function () {
-
+  exit: function() {
+    renderer.layerUI.clear();
   },
 
-  update: function (delta, lastInput) {
+  update: function(delta, lastInput, state) {
+    switch (state) {
 
+      // play destroy sound
+      case 0:
+        audio.playSound(EXPLODE_SOUND);
+        return true;
+
+        // render explosion
+      case 1:
+        currentTime += delta;
+        if (currentTime >= TIME_PER_FRAME) {
+          currentFrame += 1;
+        }
+        return (currentFrame >= FRAMES);
+    }
   },
 
-  render: function (delta) {
+  render: function(delta, state) {
+    renderer.layerUI.clear();
+    var ctx = renderer.layerUI.getContext();
 
+    ctx.drawImage(explosionImg, tx * constants.TILE_BASE, ty * constants.TILE_BASE);
   }
 };
-
-/*
- view.registerAnimationHook({
-
- key: "destroyUnit",
-
- prepare: function( id ){
- var unit = model.unit_data[ id ];
-
- this.step = 0;
- this.time = 0;
-
- this.x = -unit.x;
- this.y = -unit.y;
-
- controller.audio_playSound("EXPLODE");
- },
-
- render: function(){
- var step = this.step;
-
- var pic = view.getInfoImageForType("EXPLOSION_GROUND");
-
- var x = this.x;
- var y = this.y;
-
- var tileSize = TILE_LENGTH;
- var scx = 48*step;
- var scy = 0;
- var scw = 48;
- var sch = 48;
- var tcx = (x)*tileSize;
- var tcy = (y)*tileSize;
- var tcw = tileSize;
- var tch = tileSize;
-
- view.canvasCtx.drawImage(
- pic,
- scx,scy,
- scw,sch,
- tcx,tcy,
- tcw,tch
- );
-
- view.redraw_markPos(x,y);
- },
-
- update: function( delta ){
- this.time += delta;
- if( this.time > 75 ){
- this.step++;
- this.time = 0;
- }
- },
-
- isDone: function(){
- return this.step === 10;
- }
-
- });
-*/
