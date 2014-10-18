@@ -70,6 +70,7 @@ This shows how objects are organized within the object files for units, terrain(
 * *O* = Road/Bridge
 * *P* = Pipe/PipeSeam
 * *Z* = Meteor/Plazma
+* *D* = Destroyed
 
 ## Tileset Types
 
