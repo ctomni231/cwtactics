@@ -1,5 +1,11 @@
 "use strict";
 
+/**
+ * Loader module which allows to load all game data.
+ *
+ * @module
+ */
+
 var constants = require("./constants");
 var workflow = require("./system/workflow");
 var storage = require("./storage");
@@ -7,6 +13,12 @@ var debug = require("./debug");
 
 var PARAM_HAS_CACHE = "__hasCache__";
 
+/**
+ * Marks the existence of game data in the browser storage.
+ *
+ * @type {boolean}
+ * @inner
+ */
 var hasCachedData = false;
 
 /**

@@ -1,8 +1,7 @@
-var constants = require("./constants");
-var assert = require("./system/functions").assert;
+"use strict";
 
-//
-//
+var constants = require("./constants");
+
 exports.TYPE_UNIT = 0;
 
 //
@@ -57,10 +56,6 @@ exports.PROPERTY_INDEXES = {
 exports.Sprite = my.Class({
 
   STATIC: {
-
-    FOCUS_MOVE: 0,
-
-    FOCUS_ATTACK: 1,
 
     // ---------------------------------------------
 

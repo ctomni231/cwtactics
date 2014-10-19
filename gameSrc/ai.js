@@ -1,22 +1,22 @@
 "use strict";
 
-var ai = require("./system/behaviourTree");
-var actions = require("./actions");
-
-var model = require("./model");
-
-/*
-
- TARGETS FOR 0.38
-
- - capture
- - prevent recapture of own cities
- - dynamic indirect unit production
- - unit production
-
+/**
+ * Dumboy AI.
+ *
+ * TARGETS FOR 0.38
+ *  - capture
+ *  - prevent recapture of own cities
+ *  - dynamic indirect unit production
+ *  - unit production
+ *
+ * @module
  */
 
-var dumbBoyLogic = new ai.BehaviorTree(
+var actions = require("./actions");
+var model = require("./model");
+var ai = require("./system/behaviourTree");
+
+var tree = new ai.BehaviorTree(
     ai.Selector([
 
         require("./ai/co").data,

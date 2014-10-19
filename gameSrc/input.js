@@ -1,5 +1,10 @@
 "use strict";
 
+/**
+ *
+ * @module
+ */
+
 var circBuff = require("./system/circularBuffer");
 var constants = require("./constants");
 var assert = require("./system/functions").assert;

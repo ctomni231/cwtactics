@@ -90,6 +90,8 @@ var options = {
   "animatedTiles": new exports.Config(0, 1, 1)
 };
 
+/* ----------------------------------------------- Module API ----------------------------------------------- */
+
 /**
  * List of registered configuration keys.
  *
