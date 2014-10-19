@@ -14,40 +14,48 @@ exports.TYPE_CANCEL = 6;
 exports.TYPE_HOVER = 7;
 exports.TYPE_SET_INPUT = 8;
 
-//
-// Represents a given data set of an input call.
-//
-exports.InputData = my.Class({
-  constructor: function () {
-    this.reset();
-  },
+/**
+ *
+ * @constructor
+ */
+exports.InputData = function () {
+  this.reset();
+};
 
-  //
-  // Resets the object data to a fresh state (no saved information).
-  //
+exports.InputData.prototype = {
+
+  /**
+   * Resets the object data to a fresh state (no saved information).
+   */
   reset: function () {
     this.key = constants.INACTIVE;
     this.d1 = constants.INACTIVE;
     this.d2 = constants.INACTIVE;
   }
-});
+};
 
-exports.InputBackend = my.Class({
-  constructor: function (mapping, enableFn, disableFn) {
-    assert(typeof enableFn === "function" && typeof disableFn === "function");
-
-    this.enable = enableFn;
-    this.disable = enableFn;
-    this.mapping = mapping;
+/**
+ *
+ * @param mapping
+ * @param enableFn
+ * @param disableFn
+ * @constructor
+ */
+exports.InputBackend = function (mapping, enableFn, disableFn) {
+  if(typeof enableFn !== "function" || typeof disableFn !== "function") {
+    throw new Error("BadImplementationException: input backend");
   }
-});
+
+  this.enable = enableFn;
+  this.disable = enableFn;
+  this.mapping = mapping;
+};
 
 var stack = new circBuff.CircularBuffer(10);
 
 var pool = circBuff.createBufferByClass(exports.InputData, 10);
 
 // If true, then every user input will be blocked.
-//
 var blocked = false;
 
 exports.genericInput = false;
@@ -55,30 +63,40 @@ exports.genericInput = false;
 // Returns **true** when the input system wants a generic input (raw codes) from input backends like
 // keyboards and game pads.
 //
-exports.wantsGenericInput = function() {
+exports.wantsGenericInput = function () {
   return exports.genericInput;
-}
+};
 
-// Requests an input block. All further input calls will be dropped after calling this.
-//
+/**
+ * Requests an input block. All further input calls will be dropped
+ * after calling this.
+ */
 exports.requestBlock = function () {
   blocked = true;
 };
 
-// Releases an input block. Input calls will be registered in the game machine after calling this.
-//
+/**
+ * Releases an input block. Input calls will be registered in the game
+ * machine after calling this.
+ */
 exports.releaseBlock = function () {
   blocked = false;
 };
 
-// Pushes an input **key** into the input stack. The parameters **d1** and **d2** has to be integers.
-//
+/**
+ * Pushes an input **key** into the input stack. The parameters **d1**
+ * and **d2** has to be integers.
+ *
+ * @param key
+ * @param d1
+ * @param d2
+ */
 exports.pushAction = function (key, d1, d2) {
   if (blocked || pool.isEmpty()) {
     return;
   }
 
-  if (constants.DEBUG) console.log("adding input data "+key+", "+d1+", "+d2);
+  if (constants.DEBUG) console.log("adding input data " + key + ", " + d1 + ", " + d2);
 
   // convert undefined and null data arguments to the inactive code
   if (d1 !== 0 && !d1) {

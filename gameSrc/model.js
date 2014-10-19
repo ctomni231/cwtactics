@@ -1,3 +1,9 @@
+/**
+ * Contains all data of the game model.
+ *
+ * @module
+ */
+
 "use strict";
 
 var daysOfPeaceCfg = require("./config").getConfig("daysOfPeace");

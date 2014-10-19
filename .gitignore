@@ -191,3 +191,7 @@ netbeans.xml
 
 node_modules
 ja2.log
+
+.idea/jsLibraryMappings.xml
+
+.idea/cwt.iml

@@ -357,7 +357,7 @@ createAction("options", exports.MAP_ACTION, require("./actions/options").action)
 createAction("transferProperty", exports.PROPERTY_ACTION, require("./actions/transfer").actionProperty);
 createAction("buildUnit", exports.PROPERTY_ACTION, require("./actions/factory").action);
 
-createAction("changeWeather", exports.ENGINE_ACTION, require("./actions/weather").action);
+createAction("changeWeather", exports.ENGINE_ACTION, require("./actions/weather").exports.changeWeatherAction);
 createAction("moveStart", exports.ENGINE_ACTION, require("./actions/move").actionStart);
 createAction("moveAppend", exports.ENGINE_ACTION, require("./actions/move").actionAppend);
 createAction("moveEnd", exports.ENGINE_ACTION, require("./actions/move").actionEnd);

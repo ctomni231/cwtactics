@@ -1,34 +1,72 @@
 "use strict";
 
-var assert = require("./system/functions").assert;
+var ai = require("./system/behaviourTree");
+var actions = require("./actions");
 
-exports.AiAction = my.Class({
+var model = require("./model");
 
-  constructor: function (ratingFn, evaluateFn) {
-    assert(typeof evaluateFn === "function");
-    assert(typeof ratingFn === "function");
+/*
 
-    this.evaluate = evaluateFn;
-    this.rating = ratingFn;
-  },
+ TARGETS FOR 0.38
 
-  // Evaluates the action in a given **aiModel**.
-  //
-  evaluate: function (aiModel) {
-    this.evaluate(aiModel);
-  },
+ - capture
+ - prevent recapture of own cities
+ - dynamic indirect unit production
+ - unit production
 
-  // Generates the **rating value** for a given **aiModel**.
-  //
-  getRating: function (aiModel) {
-    return this.rating(aiModel);
-  }
-});
+ */
 
-var createAction = function (module) {
-  return exports.AiAction(module.rating, module.invoke);
+var dumbBoyLogic = new ai.BehaviorTree(
+    ai.Selector([
+
+        require("./ai/co").data,
+
+        require("./ai/preventEnemyCaptures").data,
+
+        require("./ai/captureProperties").data,
+
+        require("./ai/attackUnits").data,
+
+        require("./ai/moveUnits").data,
+
+        require("./ai/produceUnits").data,
+
+        require("./ai/endingTurn").data
+
+    ])
+);
+
+/* -------------------------------------------------- Module API -------------------------------------------------- */
+
+/**
+ * Registers a player as AI player. The player will be handled by the host instance of a game round instance.
+ *
+ * @param player
+ */
+exports.registerAiPlayer = function (player) {
+    if (!player instanceof model.Player) {
+        throw new Error("IllegalArgumentType");
+    }
+
+    throw new Error("NotImplementedException");
 };
 
-var actions = [
-  createAction(require("./ai/endTurn"))
-];
+/**
+ * Resets all given AI data.
+ */
+exports.resetAiData = function () {
+    throw new Error("NotImplementedException");
+};
+
+/**
+ * Makes a step for the AI state machine. The AI will do things here.
+ *
+ * @param player
+ */
+exports.tick = function (player) {
+    if (!player instanceof model.Player) {
+        throw new Error("IllegalArgumentType");
+    }
+
+    throw new Error("NotImplementedException");
+};

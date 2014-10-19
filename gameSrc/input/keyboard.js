@@ -3,6 +3,7 @@
 var constants = require('../constants');
 var state = require('../statemachine');
 var input = require('../input');
+var debug = require("../debug");
 
 var CONSOLE_TOGGLE_KEY = 192;
 
@@ -32,7 +33,7 @@ var KEY_HANDLER = function (ev) {
     switch (ev.keyCode) {
 
       case CONSOLE_TOGGLE_KEY:
-        console.toggle();
+        debug.logWarn("DebugConsoleNotImplemented");
         break;
 
       case MAPPING.LEFT:
@@ -70,10 +71,11 @@ var KEY_HANDLER = function (ev) {
 exports.backend = new input.InputBackend(
   MAPPING,
   function () {
-    if (constants.DEBUG) console.log("enable keyboard");
+    debug.logInfo("enable keyboard input");
     document.onkeydown = KEY_HANDLER;
   },
   function () {
+    debug.logInfo("disable keyboard input");
     document.onkeydown = null;
   }
 );

@@ -10,7 +10,7 @@ var constants = require("../constants");
 var stateMachine = require("../statemachine");
 var circularBuffer = require("../system/circularBuffer");
 
-var relationship = require("../logic/relationship");
+var relationship = require("../relationship");
 var explode = require("../logic/exploder");
 var move = require("../logic/move");
 var co = require("../logic/co");

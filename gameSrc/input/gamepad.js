@@ -103,11 +103,12 @@ exports.backend = new input.InputBackend(
   MAPPING,
 
   function () {
-    debug.logInfo("enable game pad module");
+    debug.logInfo("enable game pad input");
     exports.update = UPDATER_FUNCTION;
   },
 
   function () {
+    debug.logInfo("disable game pad input");
     exports.update = emptyFunc;
   }
 );

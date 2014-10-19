@@ -1,16 +1,17 @@
 "use strict";
 
-var network = require("../network");
-var model = require("../model");
-
-var assert = require("../system/functions").assert;
-
-var actions = require("../actions");
-
+var constants = require("../constants");
 var weather = require("../logic/weather");
-var turn = require("../logic/turn");
+var actions = require("../actions");
+var network = require("../network");
+var assert = require("../system/functions").assert;
+var supply = require("./supply");
+var model = require("../model");
 var fog = require("../logic/fog");
-var supply = require("../logic/supply");
+
+var cfgAutoSupply = require("../config").getConfig("autoSupplyAtTurnStart");
+var cfgDayLimit = require("../config").getConfig("round_dayLimit");
+
 
 var statemachine = require("../statemachine");
 
@@ -37,6 +38,36 @@ function checkForSupplyTargets(x, y, tile) {
   supply.drainFuel(tile.unit);
 }
 
+exports.startsTurn = function(player) {
+
+  // Sets the new turn owner and also the client, if necessary
+  if (player.clientControlled) {
+    model.lastClientPlayer = player;
+  }
+
+  // *************************** Update Fog ****************************
+
+  // the active client can see what his and all allied objects can see
+  var clTid = model.lastClientPlayer.team;
+  var i, e;
+  for (i = 0, e = constants.MAX_PLAYER; i < e; i++) {
+    var cPlayer = model.players[i];
+
+    cPlayer.turnOwnerVisible = false;
+    cPlayer.clientVisible = false;
+
+    // player isn't registered
+    if (cPlayer.team === constants.INACTIVE) continue;
+
+    if (cPlayer.team === clTid) {
+      cPlayer.clientVisible = true;
+    }
+    if (cPlayer.team === player.team) {
+      cPlayer.turnOwnerVisible = true;
+    }
+  }
+};
+
 exports.action = {
   invoke: function(startTurn) {
     assert(arguments.length === 0 || startTurn === 1);
@@ -44,9 +75,45 @@ exports.action = {
     // special variable for the first turn -> we need the turn start actions after starting the game without
     // changing internal day data 
     if (startTurn) {
-      turn.startsTurn(model.turnOwner);
+      exports.startsTurn(model.turnOwner);
+
     } else {
-      turn.next()
+      var pid = model.turnOwner.id;
+      var oid = pid;
+
+      // Try to find next player from the player pool
+      pid++;
+      while (pid !== oid) {
+
+        if (pid === constants.MAX_PLAYER) {
+          pid = 0;
+
+          // Next day
+          model.day++;
+          model.weatherLeftDays--;
+
+          // TODO: into action
+          var round_dayLimit = cfgDayLimit.value;
+          if (round_dayLimit > 0 && model.day >= round_dayLimit) {
+            cwt.Update.endGameRound();
+            // TODO
+          }
+        }
+
+        // Found next player
+        if (model.players[pid].team !== constants.INACTIVE) break;
+
+        // Try next player
+        pid++;
+      }
+
+      // If the new player id is the same as the old
+      // player id then the game aw2 is corrupted
+      if (this.DEBUG) assert(pid !== oid);
+
+      // Do end/start turn logic
+      model.turnOwner = model.players[pid];
+      exports.startsTurn(model.turnOwner);
 
       if (network.isHost()) {
 

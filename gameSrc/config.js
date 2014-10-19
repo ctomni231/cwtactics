@@ -15,7 +15,7 @@ exports.Config = function (min, max, defaultValue, step) {
   this.min = min;
   this.max = max;
   this.def = defaultValue;
-  this.step = (step !== void 0) ? step : 1;
+  this.step = step !== undefined ? step : 1;
   this.resetValue();
 };
 
@@ -29,12 +29,15 @@ exports.Config.prototype = {
   setValue: function (value) {
 
     // check value bounds
-    if (value < this.min) value = this.min;
-    if (value > this.max) value = this.max;
+    if (value < this.min) {
+      value = this.min;
+    } else if (value > this.max) {
+      value = this.max;
+    }
 
     // check steps
     if ((value - this.min) % this.step !== 0) {
-      throw Error("StepCriteriaBrokenException");
+      throw new Error("StepCriteriaBrokenException");
     }
 
     this.value = value;
@@ -110,17 +113,24 @@ exports.getValue = function (name) {
  */
 exports.getConfig = function (name) {
   if (!options.hasOwnProperty(name)) {
-    throw new Error("there is no configuration object with key '" + name + "'");
+    throw new Error("ConfigIdException: "+name+" is unknown");
   }
 
   return options[name];
 };
 
 /**
+ * Resets a config object.
+ *
+ * @param id
+ */
+var resetConfigObject = function (id) {
+  options[id].resetValue();
+};
+
+/**
  * Resets all registered configuration objects to their default value.
  */
 exports.resetValues = function () {
-  Object.keys(options).forEach(function (cfg) {
-    options[cfg].resetValue();
-  });
+  exports.gameConfigNames.forEach(resetConfigObject);
 };

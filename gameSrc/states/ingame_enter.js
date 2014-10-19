@@ -5,7 +5,7 @@ var stateData = require("../dataTransfer/states");
 var roundDTO = require("../dataTransfer/roundSetup");
 
 var fog = require("../logic/fog");
-var turn = require("../logic/turn");
+var turn = require("../actions/nextTurn");
 var model = require("../model");
 var actions = require("../actions");
 var renderer = require("../renderer");

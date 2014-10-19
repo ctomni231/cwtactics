@@ -1,7 +1,7 @@
 "use strict";
 
 var constants = require("./constants");
-var workflow = require("./system/async");
+var workflow = require("./system/workflow");
 var storage = require("./storage");
 var debug = require("./debug");
 
@@ -18,6 +18,10 @@ var hasCachedData = false;
  * @param callback
  */
 exports.startProcess = function (setProcess, callback) {
+
+  /**
+   * @inner
+   */
   function setProgress(i) {
     return function (next) {
       setProcess(i);
@@ -25,6 +29,9 @@ exports.startProcess = function (setProcess, callback) {
     };
   }
 
+  /**
+   * @inner
+   */
   function setLoader(mod) {
     return function (next) {
       mod.loader(next, hasCachedData);
@@ -35,6 +42,7 @@ exports.startProcess = function (setProcess, callback) {
   storage.get(PARAM_HAS_CACHE, function (value) {
     hasCachedData = value;
     workflow.sequence([
+
         setLoader(require("./loading/checkSystem")),
         setProgress(5),
         setLoader(require("./loading/startParameters")),
@@ -52,12 +60,16 @@ exports.startProcess = function (setProcess, callback) {
         setLoader(require("./loading/inputInit")),
         setProgress(80),
         setLoader(require("./loading/loadMaps")),
-        setProgress(90),
+        setProgress(85),
         setLoader(require("./loading/portraitCheck")),
+        setProgress(90),
+        setLoader(require("./loading/actionInit")),
         setProgress(95),
-        setLoader(require("./loading/addStates")),
+        setLoader(require("./loading/stateInit")),
         setProgress(100),
+
         function (next){
+
           // release cached modification
           require("./dataTransfer/mod").clearCachedMod();
           next();

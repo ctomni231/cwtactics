@@ -1,5 +1,12 @@
 "use strict";
 
+var errorState = require("./states/error");
+var constants = require("./constants");
+var renderer = require("./renderer");
+var sheets = require("./sheets");
+var states = require("./statemachine");
+var model = require("./model");
+
 var ASSERT_FAILED_DESC = "AssertionFailed";
 var PATTERN_LOCATION = " (Location: {err})";
 var ERR_REPLACE = /(\{err\})/gi;
@@ -7,13 +14,6 @@ var INFO = "INFO:  ";
 var WARN = "WARN:  ";
 var ERR = "ERROR: ";
 var N_A = "N/A";
-
-var errorState = require("./states/error");
-var constants = require("./constants");
-var renderer = require("./renderer");
-var sheets = require("./sheets");
-var states = require("./statemachine");
-var model = require("./model");
 
 var action = null;
 var tile = null;
@@ -27,7 +27,9 @@ var y = 0;
  * @param {String?} where
  */
 exports.assertTrue = function(expr, where) {
-  if (!expr) exports.throwError(ASSERT_FAILED_DESC, where);
+  if (!expr) {
+    exports.throwError(ASSERT_FAILED_DESC, where);
+  }
 };
 
 /**
@@ -78,7 +80,9 @@ exports.updateCursorInformation = function(cx, cy) {
  * @param {String} msg
  */
 exports.logInfo = function (msg) {
-  if (constants.DEBUG) console.log(INFO + msg);
+  if (constants.DEBUG) {
+    console.log(INFO + msg);
+  }
 };
 
 /**
@@ -87,7 +91,9 @@ exports.logInfo = function (msg) {
  * @param {String} msg
  */
 exports.logWarn = function (msg) {
-  if (constants.DEBUG) console.log(WARN + msg);
+  if (constants.DEBUG) {
+    console.log(WARN + msg);
+  }
 };
 
 /**
@@ -97,7 +103,9 @@ exports.logWarn = function (msg) {
  * @param {String} msg
  */
 exports.logCritical = function (msg) {
-  if (constants.DEBUG) console.log(ERR + msg);
+  if (constants.DEBUG) {
+    console.log(ERR + msg);
+  }
 };
 
 /**

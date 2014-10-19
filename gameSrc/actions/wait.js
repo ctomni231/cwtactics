@@ -1,6 +1,6 @@
 "use strict";
 
-var relation = require("../logic/relationship");
+var relation = require("../relationship");
 var renderer = require("../renderer");
 var model = require("../model");
 

@@ -32,6 +32,8 @@ var posy;
 
 var activeGraphic;
 
+var ball;
+
 //Holds the graphics for a simple raindrop (cache). Totally hard coded all the values here
 var raindropGfx = document.createElement('canvas');
 ball.width = 10;
