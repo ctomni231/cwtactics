@@ -8,16 +8,19 @@ var sheet = require("../sheets");
 
 var cfgNoUnitsLeftLoose = require("../config").getConfig("noUnitsLeftLoose");
 
-//
-// Returns an inactive **unit object** or **null** if every slot in the unit list is used.
-//
+/**
+ * Returns an inactive **unit object** or **null** if every slot in the unit list is used.
+ *
+ * @returns {*}
+ */
 exports.getInactiveUnit = function () {
-  for (var i = 0, e = model.units.length; i < e; i++) {
-    if (!model.units[i].owner) {
-      return model.units[i];
+    var i, e;
+    for (i = 0, e = model.units.length; i < e; i++) {
+        if (!model.units[i].owner) {
+            return model.units[i];
+        }
     }
-  }
-  return null;
+    return null;
 };
 
 //
@@ -28,22 +31,22 @@ exports.getInactiveUnit = function () {
 // @param type
 //
 exports.createUnit = function (x, y, player, type) {
-  if (constants.DEBUG) assert(model.isValidPosition(x, y));
+    if (constants.DEBUG) assert(model.isValidPosition(x, y));
 
-  var tile = model.mapData[x][y];
+    var tile = model.mapData[x][y];
 
-  if (constants.DEBUG) assert(player instanceof model.Player && player.numberOfUnits < constants.MAX_UNITS);
+    if (constants.DEBUG) assert(player instanceof model.Player && player.numberOfUnits < constants.MAX_UNITS);
 
-  var unit = exports.getInactiveUnit();
+    var unit = exports.getInactiveUnit();
 
-  // set references
-  unit.owner = player;
-  tile.unit = unit;
-  player.numberOfUnits++;
+    // set references
+    unit.owner = player;
+    tile.unit = unit;
+    player.numberOfUnits++;
 
-  unit.initByType(sheet.units.sheets[type]);
+    unit.initByType(sheet.units.sheets[type]);
 
-  fog.addUnitVision(x, y, player);
+    fog.addUnitVision(x, y, player);
 };
 
 //
@@ -53,27 +56,27 @@ exports.createUnit = function (x, y, player, type) {
 // @param {boolean} silent
 //
 exports.destroyUnit = function (x, y, silent) {
-  var tile = model.mapData[x][y];
+    var tile = model.mapData[x][y];
 
-  if (constants.DEBUG) assert(tile.unit);
+    if (constants.DEBUG) assert(tile.unit);
 
-  fog.removeUnitVision(x, y, tile.unit.owner);
+    fog.removeUnitVision(x, y, tile.unit.owner);
 
-  //TODO check loads
+    //TODO check loads
 
-  // remove references
-  var owner = tile.unit.owner;
-  owner.numberOfUnits--;
+    // remove references
+    var owner = tile.unit.owner;
+    owner.numberOfUnits--;
 
-  if (constants.DEBUG) assert(owner.numberOfUnits >= 0);
+    if (constants.DEBUG) assert(owner.numberOfUnits >= 0);
 
-  tile.unit.owner = null;
-  tile.unit = null;
+    tile.unit.owner = null;
+    tile.unit = null;
 
-  // end game when the player does not have any unit left
-  if (cfgNoUnitsLeftLoose.value === 1 && owner.numberOfUnits === 0) {
-    this.deactivatePlayer(owner);
-  }
+    // end game when the player does not have any unit left
+    if (cfgNoUnitsLeftLoose.value === 1 && owner.numberOfUnits === 0) {
+        this.deactivatePlayer(owner);
+    }
 };
 
 //
@@ -86,33 +89,33 @@ exports.destroyUnit = function (x, y, silent) {
 //
 exports.deactivatePlayer = function (player) {
 
-  // drop units
-  if (constants.DEBUG) assert(player instanceof model.Player);
+    // drop units
+    if (constants.DEBUG) assert(player instanceof model.Player);
 
-  for (var i = 0, e = model.units.length; i < e; i++) {
-    var unit = model.units[i];
-    if (unit.owner === player) {
-      // TODO
+    for (var i = 0, e = model.units.length; i < e; i++) {
+        var unit = model.units[i];
+        if (unit.owner === player) {
+            // TODO
+        }
     }
-  }
 
-  // drop properties
-  for (var i = 0, e = model.properties.length; i < e; i++) {
-    var prop = model.properties[i];
-    if (prop.owner === player) {
-      prop.makeNeutral();
+    // drop properties
+    for (var i = 0, e = model.properties.length; i < e; i++) {
+        var prop = model.properties[i];
+        if (prop.owner === player) {
+            prop.makeNeutral();
 
-      // TODO: change type when the property is a changing type property
-      var changeType = prop.type.changeAfterCaptured;
+            // TODO: change type when the property is a changing type property
+            var changeType = prop.type.changeAfterCaptured;
+        }
     }
-  }
 
-  player.deactivate();
+    player.deactivate();
 
-  // when no opposite teams are found then the game has ended
-  if (!model.areEnemyTeamsLeft()) {
-    // TODO
-  }
+    // when no opposite teams are found then the game has ended
+    if (!model.areEnemyTeamsLeft()) {
+        // TODO
+    }
 };
 
 //
@@ -120,5 +123,11 @@ exports.deactivatePlayer = function (player) {
 // @return {boolean}
 //
 exports.hasFreeUnitSlot = function (player) {
-  return player.numberOfUnits < model.Player.MAX_UNITS;
+    return player.numberOfUnits < model.Player.MAX_UNITS;
+};
+
+/* -----------------------------------------------  Module Actions ----------------------------------------------- */
+
+exports.destroyUnitAction = {
+
 };

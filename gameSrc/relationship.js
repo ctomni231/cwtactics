@@ -1,7 +1,5 @@
 "use strict";
 
-var constants = require("constants");
-var assert = require("system/functions").assert;
 var model = require("model");
 
 /**
@@ -82,11 +80,19 @@ exports.getRelationShipTo = function (left, right, checkLeft, checkRight) {
     var oL;
     var oR;
 
-    if (checkLeft !== exports.CHECK_PROPERTY) oL = left.unit;
-    if (checkRight !== exports.CHECK_PROPERTY) oR = right.unit;
+    if (checkLeft !== exports.CHECK_PROPERTY) {
+        oL = left.unit;
+    }
+    if (checkRight !== exports.CHECK_PROPERTY) {
+        oR = right.unit;
+    }
 
-    if (!oL && checkLeft !== exports.CHECK_UNIT) oL = left.property;
-    if (!oR && checkRight !== exports.CHECK_UNIT) oR = right.property;
+    if (!oL && checkLeft !== exports.CHECK_UNIT) {
+        oL = left.property;
+    }
+    if (!oR && checkRight !== exports.CHECK_UNIT) {
+        oR = right.property;
+    }
 
     if (!oL) {
         return exports.RELATION_NONE;
@@ -130,9 +136,9 @@ exports.getRelationship = function (objectA, objectB) {
     // allied or enemy ?
     if (playerA.team === playerB.team) {
         return exports.RELATION_ALLIED;
-    } else {
-        return exports.RELATION_ENEMY;
     }
+
+    return exports.RELATION_ENEMY;
 };
 
 /**
@@ -146,32 +152,42 @@ exports.getRelationship = function (objectA, objectB) {
  * @returns {boolean}
  */
 exports.hasUnitNeighbourWithRelationship = function (player, x, y, relationship) {
-    if (constants.DEBUG) assert(model.isValidPosition(x, y));
+    if (!model.isValidPosition(x, y) || !player instanceof model.Player) {
+        throw new Error("IllegalArgumentType");
+    }
 
     var unit;
 
     // WEST
     if (x > 0) {
         unit = model.getTile(x - 1, y).unit;
-        if (unit && exports.getRelationship(player, unit.owner) === relationship) return true;
+        if (unit && exports.getRelationship(player, unit.owner) === relationship) {
+            return true;
+        }
     }
 
     // NORTH
     if (y > 0) {
         unit = model.getTile(x, y - 1).unit;
-        if (unit && exports.getRelationship(player, unit.owner) === relationship) return true;
+        if (unit && exports.getRelationship(player, unit.owner) === relationship) {
+            return true;
+        }
     }
 
     // EAST
     if (x < model.mapWidth - 1) {
         unit = model.getTile(x + 1, y).unit;
-        if (unit && exports.getRelationship(player, unit.owner) === relationship) return true;
+        if (unit && exports.getRelationship(player, unit.owner) === relationship) {
+            return true;
+        }
     }
 
     // SOUTH
     if (y < model.mapHeight - 1) {
         unit = model.getTile(x, y + 1).unit;
-        if (unit && exports.getRelationship(player, unit.owner) === relationship) return true;
+        if (unit && exports.getRelationship(player, unit.owner) === relationship) {
+            return true;
+        }
     }
 
     return false;

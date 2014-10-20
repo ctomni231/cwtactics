@@ -115,7 +115,7 @@ exports.getValue = function (name) {
  */
 exports.getConfig = function (name) {
   if (!options.hasOwnProperty(name)) {
-    throw new Error("ConfigIdException: "+name+" is unknown");
+    throw new Error("IdException: "+name+" is unknown");
   }
 
   return options[name];

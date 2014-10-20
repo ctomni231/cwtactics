@@ -31,7 +31,7 @@ if (features.audioSFX || features.audioMusic) {
     audioContext = new window.webkitAudioContext();
   }
 
-  var createNode = (audioContext.createGainNode ? audioContext.createGainNode: audioContext.createGain);
+  var createNode = audioContext.createGainNode ? audioContext.createGainNode: audioContext.createGain;
 
   // construct audio nodes
   if (audioContext) {
@@ -66,41 +66,55 @@ var musicLoadCb = function (obj) {
   currentMusic.inLoadProcess = false;
 };
 
-// Cache for audio buffers.
-//
+/**
+ * Cache for audio buffers.
+ */
 var buffer = {};
 
-// Current played music object.
-//
+/**
+ * Current played music object.
+ */
 var currentMusic = {
   inLoadProcess: false,
   connector: null,
   id: null
 };
 
+/**
+ *
+ * @param arrayBuffer
+ * @param successCb
+ * @param errorCb
+ */
 exports.decodeAudio = function (arrayBuffer, successCb, errorCb) {
   audioContext.decodeAudioData(arrayBuffer,successCb,errorCb);
 }
 
-//
-// Returns the value of the sfx audio node.
-//
+/**
+ * Returns the value of the sfx audio node.
+ *
+ * @returns {number}
+ */
 exports.getSfxVolume = function () {
   if (!audioContext) return;
   return sfxNode.gain.value;
 };
 
-//
-// Returns the value of the music audio node.
-//
+/**
+ * Returns the value of the music audio node.
+ *
+ * @returns {number}
+ */
 exports.getMusicVolume = function () {
   if (!audioContext) return;
   return musicNode.gain.value;
 };
 
-//
-// Sets the value of the sfx audio node.
-//
+/**
+ * Sets the value of the sfx audio node.
+ *
+ * @param vol
+ */
 exports.setSfxVolume = function (vol) {
   if (!audioContext) return;
 
@@ -113,9 +127,11 @@ exports.setSfxVolume = function (vol) {
   sfxNode.gain.value = vol;
 };
 
-//
-// Sets the value of the music audio node.
-//
+/**
+ * Sets the value of the music audio node.
+ *
+ * @param vol
+ */
 exports.setMusicVolume = function (vol) {
   if (!audioContext) return;
 
@@ -128,40 +144,41 @@ exports.setMusicVolume = function (vol) {
   musicNode.gain.value = vol;
 };
 
-//
-// Registers an audio buffer object.
-//
-// @param id
-// @param buff
-//
+/**
+ * Registers an audio buffer object.
+ *
+ * @param id
+ * @param buff
+ */
 exports.registerAudioBuffer = function (id, buff) {
   if (constants.DEBUG) assert(!this.isBuffered(id));
 
   buffer[id] = buff;
 };
 
-//
-// Removes a buffer from the cache.
-//
+/**
+ * Removes a buffer from the cache.
+ *
+ * @param id
+ */
 exports.unloadBuffer = function (id) {
   if (constants.DEBUG) assert(this.isBuffered(id));
 
   delete buffer[id];
 };
 
-//
-//
-// @param id
-// @return {boolean}
-//
+/**
+ *
+ * @param id
+ * @returns {boolean}
+ */
 exports.isBuffered = function (id) {
   return buffer.hasOwnProperty(id);
 };
 
-//
-// Plays an empty sound buffer. Useful to
-// initialize the audio system.
-//
+/**
+ * Plays an empty sound buffer. Useful to initialize the audio system.
+ */
 exports.playNullSound = function () {
   if (!audioContext) return;
 
@@ -173,13 +190,13 @@ exports.playNullSound = function () {
   source.start(0);
 };
 
-//
-// Plays a sound.
-//
-// @param {string} id id of the sound that will be played
-// @param {boolean=} loop (default:false)
-// @return {*}
-//
+/**
+ * Plays a sound.
+ *
+ * @param id
+ * @param loop
+ * @returns {null}
+ */
 exports.playSound = function (id, loop) {
   if (!audioContext) return null;
   if (constants.DEBUG) assert(buffer[id]);
@@ -187,17 +204,18 @@ exports.playSound = function (id, loop) {
   return playSoundOnGainNode(sfxNode, buffer[id], loop);
 };
 
-//
-// Plays a background music.
-//
-// @param id id of the music object
-//
+/**
+ * Plays a background music.
+ *
+ * @param id
+ * @returns {boolean}
+ */
 exports.playMusic = function (id) {
   if (!audioContext || currentMusic.inLoadProcess) return false;
 
   // already playing this music ?
   if (currentMusic.id === id) {
-    return;
+    return false;
   }
 
   // stop old music
@@ -213,9 +231,11 @@ exports.playMusic = function (id) {
   return true;
 };
 
-//
-// Stop existing background music.
-//
+/**
+ * Stop existing background music.
+ *
+ * @returns {boolean}
+ */
 exports.stopMusic = function () {
   if (!audioContext || currentMusic.inLoadProcess) return false;
 
