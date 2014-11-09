@@ -8,7 +8,7 @@ var model = require("../model");
 
 var assert = require("../system/functions").assert;
 
-exports.save = function (name, cb) {
+exports.saveGameConfig = function (name, cb) {
   var saveData = {};
 
   saveData.mpw = model.mapWidth;
@@ -34,7 +34,7 @@ exports.save = function (name, cb) {
 
       saveData.map[x][y] = mostIdsMap[type];
 
-      // save property
+      // saveGameConfig property
       var prop = model.mapData[x][y].property;
       if (prop) {
         saveData.prps.push([
@@ -47,7 +47,7 @@ exports.save = function (name, cb) {
         ]);
       }
 
-      // save unit
+      // saveGameConfig unit
       var unit = model.mapData[x][y].unit;
       if (unit) {
         saveData.units.push([
@@ -167,7 +167,7 @@ exports.initMap = function (gameData, isSave, callback) {
     player.team = (i <= gameData.player - 1) ? i : constants.NOT_AVAILABLE;
   }
 
-  // grab save game data
+  // grab saveGameConfig game data
   if (isSave) {
     for (var i = 0, e = gameData.players.length; i < e; i++) {
       var playerData = gameData.players[i];

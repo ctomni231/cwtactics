@@ -1,4 +1,3 @@
-/*jslint node: true, plusplus: true, vars: true */
 "use strict";
 
 /**
@@ -36,7 +35,7 @@ exports.get = function (key, callback) {
 
 /**
  * Saves a value with a given key. If the key exists, then the old value 
- * will be overwritten. After the save process, the callback will be invoked.
+ * will be overwritten. After the saveGameConfig process, the callback will be invoked.
  */
 exports.set = function (key, value, callback) {
   localForage.setItem(key, value, function (res, error) {

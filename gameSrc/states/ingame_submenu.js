@@ -2,7 +2,7 @@
 
 var constants = require("../constants.js");
 var assert = require("../system/functions.js").assert;
-var stateData = require("../dataTransfer/states");
+var stateData = require("../states");
 var action = require("../actions");
 var renderer = require("../renderer");
 var menuState = require("./ingame_menu");

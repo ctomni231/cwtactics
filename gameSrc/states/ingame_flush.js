@@ -1,6 +1,6 @@
 "use strict";
 
-var stateData = require("../dataTransfer/states");
+var stateData = require("../states");
 
 exports.state = {
   id: "INGAME_FLUSH_ACTION",

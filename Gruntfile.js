@@ -207,7 +207,7 @@ module.exports = function (grunt) {
     }
   );
 
-  // load plugins
+  // loadGameConfig plugins
   grunt.loadNpmTasks("grunt-contrib-uglify");
   grunt.loadNpmTasks("grunt-browserify");
   grunt.loadNpmTasks("grunt-contrib-copy");

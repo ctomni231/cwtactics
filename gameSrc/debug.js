@@ -88,9 +88,7 @@ exports.updateCursorInformation = function(cx, cy) {
  * @param {String} msg
  */
 exports.logInfo = function (msg) {
-  if (constants.DEBUG) {
-    console.log(INFO + msg);
-  }
+  if (constants.DEBUG) console.log(INFO + msg);
 };
 
 /**
@@ -99,9 +97,7 @@ exports.logInfo = function (msg) {
  * @param {String} msg
  */
 exports.logWarn = function (msg) {
-  if (constants.DEBUG) {
-    console.log(WARN + msg);
-  }
+  if (constants.DEBUG) console.log(WARN + msg);
 };
 
 /**
@@ -111,9 +107,8 @@ exports.logWarn = function (msg) {
  * @param {String} msg
  */
 exports.logCritical = function (msg) {
-  if (constants.DEBUG) {
-    console.log(ERR + msg);
-  }
+  if (constants.DEBUG) console.log(ERR + msg);
+  throw new Error(msg);
 };
 
 /**

@@ -33,7 +33,7 @@ exports.state = {
     currentTime = 0;
     currentFrame = 0;
 
-    // lazy load explosion image
+    // lazy loadGameConfig explosion image
     if (!explosionImg) {
       explosionImg = images.sprites[EXPLODE_SPRITE];
       debug.assertTrue(explosionImg, "expected an explosion image after lazy loading [destroy unit animation]");

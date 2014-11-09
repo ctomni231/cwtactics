@@ -1,7 +1,7 @@
 "use strict";
 
 var states = require('../statemachine');
-var stateData = require('../dataTransfer/states');
+var stateData = require('../states');
 
 exports.action = {
   invoke: function () {

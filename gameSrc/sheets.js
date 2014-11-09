@@ -1,12 +1,316 @@
 "use strict";
 
-var commanders = require("./sheets/commanderDatabase").db;
-var units = require("./sheets/unitDatabase").db;
-var tiles = require("./sheets/tileDatabase").db;
-var properties = require("./sheets/propertyDatabase").db;
-var armies = require("./sheets/armyDatabase").db;
-var movetypes = require("./sheets/sheetDatabase").db;
-var weathers = require("./sheets/weatherDatabase").db;
+var debug = require("./debug");
+var constants = require("./constants");
+var JsonSchema = require("../libJs/jjv");
+
+/**
+ * A data object that holds a list of sheet objects with a given schema. Every sheet that will be
+ * added to the data object will be validated first.
+ *
+ * @class
+ */
+var SheetDatabaseObject = exports.SheetDatabaseObject = require("./system").Structure({
+    constructor: function (impl) {
+        if (!impl) debug.logCritical("SheetDatabaseException: no schema given");
+
+        /**
+         * Holds all type sheet objects.
+         */
+        this.sheets = {};
+
+        /**
+         * Holds all type names.
+         */
+        this.types = [];
+
+        /**
+         *
+         */
+        this.validator = new JsonSchema();
+
+        // register schema
+        this.validator.addSchema("constr", impl.schema);
+
+        // add id check
+        var that = this;
+        this.validator.addCheck('isID', function (v, p) {
+            return p ? !that.sheets.hasOwnProperty(v) : true;
+        });
+
+        // add custom checks
+        if (impl.checks) {
+            var key;
+            for (key in impl.checks) {
+                if (impl.checks.hasOwnProperty(key)) {
+                    this.validator.addCheck(key, impl.checks[key]);
+                }
+            }
+        }
+    },
+
+    registerSheet: function (sheet) {
+
+        // validate it
+        var errors = this.validator.validate("constr", sheet);
+        if (errors) {
+            throw new Error("Failed parsing sheet because of: " + JSON.stringify(errors, null, "\t"));
+        }
+
+        // add it
+        this.sheets[sheet.ID] = sheet;
+        this.types.push(sheet.ID);
+    }
+});
+
+var commanders = new SheetDatabaseObject({
+    schema: {
+        type: 'object',
+        required: ['ID'],
+        properties: {
+            ID: {
+                type: 'string',
+                isID: true
+            }
+        }
+    }
+});
+
+var units = new SheetDatabaseObject({
+
+    checks: {
+        isMovetypeId: function (v, p) {
+            return exports.movetypes.isValidId(v) === p;
+        }
+    },
+
+    schema: {
+        type: 'object',
+        required: ['ID', "cost", "range", "vision", "fuel", "movetype"],
+        properties: {
+            ID: {
+                type: 'string',
+                isID: true
+            },
+            cost: {
+                type: "integer",
+                minimum: -1,
+                not: {
+                    type: "integer",
+                    "enum": [0]
+                }
+            },
+            range: {
+                type: "integer",
+                minimum: 0,
+                maximum: constants.MAX_SELECTION_RANGE
+            },
+            vision: {
+                type: "integer",
+                minimum: 1,
+                maximum: constants.MAX_SELECTION_RANGE
+            },
+            fuel: {
+                type: "integer",
+                minimum: 0,
+                maximum: 99
+            },
+            ammo: {
+                type: "integer",
+                minimum: 0,
+                maximum: 99
+            },
+            dailyFuelDrain: {
+                type: "integer",
+                minimum: 1,
+                maximum: 99
+            },
+            dailyFuelDrainHidden: {
+                type: "integer",
+                minimum: 2,
+                maximum: 99
+            },
+            suicide: {
+                type: 'object',
+                required: ["damage", "range"],
+                properties: {
+                    damage: {
+                        type: "integer",
+                        minimum: 1,
+                        maximum: 10
+                    },
+                    range: {
+                        type: "integer",
+                        minimum: 1,
+                        maximum: constants.MAX_SELECTION_RANGE
+                    },
+                    nodamage: {
+                        type: "array",
+                        items: {
+                            type: "string"
+                        }
+                    }
+                }
+            },
+            movetype: {
+                type: "string",
+                isMovetypeId: true
+            },
+            maxloads: {
+                type: "integer",
+                minimum: 1
+            },
+            canload: {
+                type: "array",
+                items: {
+                    type: "string"
+                }
+            },
+            captures: {
+                type: "integer",
+                minimum: 1
+            },
+            stealth: {
+                type: "boolean"
+            },
+            supply: {
+                type: "array",
+                items: {
+                    type: "string"
+                }
+            },
+            attack: {
+                type: "object",
+                properties: {
+                    minrange: {
+                        type: "integer",
+                        minimum: 1
+                    },
+                    maxrange: {
+                        type: "integer",
+                        minimum: 2
+                    },
+                    main_wp: {
+                        type: "object",
+                        patternProperties: {
+                            "[a-zA-Z]*": {
+                                type: "integer",
+                                minimum: 1
+                            }
+                        }
+                    },
+                    sec_wp: {
+                        type: "object",
+                        patternProperties: {
+                            "[a-zA-Z]*": {
+                                type: "integer",
+                                minimum: 1
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+});
+
+var tiles = new SheetDatabaseObject({
+    schema: {
+        type: 'object',
+        required: ['ID', "defense"],
+        properties: {
+            ID: {
+                type: 'string',
+                isID: true
+            },
+            defense: {
+                type: "number",
+                minimum: 0
+            }
+        }
+    }
+});
+
+var properties = new SheetDatabaseObject({
+    schema: {
+        type: 'object',
+        required: ['ID', "defense", "vision"],
+        properties: {
+            ID: {
+                type: 'string',
+                isID: true
+            },
+            defense: {
+                type: 'integer',
+                minimum: 0
+            },
+            vision: {
+                type: 'integer',
+                minimum: 0
+            },
+            capturePoints: {
+                type: 'integer',
+                minimum: 1
+            },
+            blocker: {
+                type: 'boolean'
+            }
+        }
+    }
+});
+
+var armies = new SheetDatabaseObject({
+    schema: {
+        type: 'object',
+        required: ['ID'],
+        properties: {
+            ID: {
+                type: 'string',
+                isID: true
+            }
+        }
+    }
+});
+
+var movetypes = new SheetDatabaseObject({
+    schema: {
+        type: 'object',
+        required: ['ID', 'costs'],
+        properties: {
+            ID: {
+                type: 'string',
+                isID: true
+            },
+            costs: {
+                type: 'object',
+                patternProperties: {
+                    "\w+": {
+                        type: 'integer',
+                        minimum: -1,
+                        maximum: 100,
+                        not: 0
+                    }
+                }
+            }
+        }
+    }
+});
+
+var weathers = new SheetDatabaseObject({
+    schema: {
+        type: 'object',
+        required: ['ID'],
+        properties: {
+            ID: {
+                type: 'string',
+                isID: true
+            },
+            defaultWeather: {
+                type: 'boolean'
+            }
+        }
+    }
+});
 
 /**
  * Holds the default weather type.
@@ -47,8 +351,6 @@ var getSheetDB = function (type) {
     }
 };
 
-/* ------------------------------------- Registers some basic types here ------------------------------------- */
-
 movetypes.registerSheet({
     "ID": "NO_MOVE",
     "sound": null,
@@ -88,61 +390,37 @@ units.registerSheet({
     "assets": {}
 });
 
-/* ----------------------------------------------- Module API ----------------------------------------------- */
-
-/**
- * @constant
- */
+/** */
 exports.TYPE_UNIT = 0;
 
-/**
- * @constant
- */
+/** */
 exports.TYPE_TILE = 1;
 
-/**
- * @constant
- */
+/** */
 exports.TYPE_PROPERTY = 2;
 
-/**
- * @constant
- */
+/** */
 exports.TYPE_WEATHER = 3;
 
-/**
- * @constant
- */
+/** */
 exports.TYPE_COMMANDER = 4;
 
-/**
- * @constant
- */
+/** */
 exports.TYPE_MOVETYPE = 5;
 
-/**
- * @constant
- */
+/** */
 exports.TYPE_ARMY = 6;
 
-/**
- * @constant
- */
+/** */
 exports.LASER_UNIT_INV = "LASER_UNIT_INV";
 
-/**
- * @constant
- */
+/** */
 exports.PROP_INV = "PROP_INV";
 
-/**
- * @constant
- */
+/** */
 exports.CANNON_UNIT_INV = "CANNON_UNIT_INV";
 
-/**
- * Returns the default weather type.
- */
+/** Returns the default weather type. */
 exports.getDefaultWeather = function () {
     return defaultWeather;
 };
@@ -162,6 +440,10 @@ exports.getSheet = function (type, key) {
 
     return db.sheets[key];
 };
+
+exports.registerSheet = function (type, sheet) {
+    getSheetDB(type).registerSheet(sheet);
+}
 
 /**
  *
@@ -203,9 +485,7 @@ exports.isValidSheet = function (type, sheet) {
 
     var i, e;
     for (i = 0, e = db.types.length; i < e; i++) {
-        if (db.sheets[db.types[i]] === sheet) {
-            return true;
-        }
+        if (db.sheets[db.types[i]] === sheet) return true;
     }
 
     return false;

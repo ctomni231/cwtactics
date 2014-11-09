@@ -1,7 +1,7 @@
 var renderer = require("../renderer");
 var constants = require("../constants");
 
-var stateData = require("../dataTransfer/states");
+var stateData = require("../states");
 var roundDTO = require("../dataTransfer/roundSetup");
 
 var fog = require("../logic/fog");
@@ -24,7 +24,7 @@ exports.state = {
 
     var that = this;
 
-    // 1. load map
+    // 1. loadGameConfig map
     gamePers.initMap(roundDTO.getSelectMap(),false, function () {
       roundDTO.selectMap(null);
 

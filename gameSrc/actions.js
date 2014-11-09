@@ -1,9 +1,3 @@
-/**
- * Module that holds all object actions.
- *
- * @module
- */
-
 "use strict";
 
 var circularBuffer = require("./system/circularBuffer");
@@ -12,13 +6,11 @@ var network = require("./network");
 var debug = require("./debug");
 var func = require("./system/functions");
 
-var BUFFER_SIZE = 200;
-
 // Pool for holding ActionData objects when they aren't in the buffer.
-var pool = circularBuffer.createBufferByClass(exports.ActionData, BUFFER_SIZE);
+var pool = circularBuffer.createBufferByClass(exports.ActionData, constants.ACTION_POOL_SIZE);
 
 // Buffer object.
-var buffer = new circularBuffer.CircularBuffer(BUFFER_SIZE);
+var buffer = new circularBuffer.CircularBuffer(constants.ACTION_POOL_SIZE);
 
 // List of all available actions.
 var actions = [];
@@ -26,29 +18,19 @@ var actions = [];
 // Action -> ActionID<numeric> mapping
 var actionIds = {};
 
-/**
- * Map actions are called in the idle state on the map.
- */
+/** Map actions are called in the idle state on the map. */
 exports.MAP_ACTION = 0;
 
-/**
- * Unit actions are called on units.
- */
+/** Unit actions are called on units. */
 exports.UNIT_ACTION = 1;
 
-/**
- * Property actions are called on properties.
- */
+/** Property actions are called on properties. */
 exports.PROPERTY_ACTION = 2;
 
-/**
- * Engine actions are callable by the engine itself.
- */
+/** Engine actions are callable by the engine itself. */
 exports.ENGINE_ACTION = 3;
 
-/**
- * Client actions are callable only by the game session hoster.
- */
+/** Client actions are callable only by the game session hoster. */
 exports.CLIENT_ACTION = 4;
 
 exports.SET_POSITION = 0;
@@ -204,9 +186,7 @@ exports.ActionData.prototype.toString = function () {
  *               else as tail (called at last)
  */
 var localAction = function (key, p1, p2, p3, p4, p5, asHead) {
-    if (arguments.length > 6) {
-        throw new Error("IllegalNumberOfArgumentsException");
-    }
+    if (arguments.length > 6) debug.logCritical("IllegalNumberOfArgumentsException");
 
     var actionData = pool.popLast();
 
@@ -220,11 +200,7 @@ var localAction = function (key, p1, p2, p3, p4, p5, asHead) {
 
     debug.logInfo("append action " + actionData + " as " + (asHead ? "head" : "tail") + " into the stack");
 
-    if (asHead) {
-        buffer.pushInFront(actionData);
-    } else {
-        buffer.push(actionData);
-    }
+    buffer[asHead ? "pushInFront" : "push"](actionData);
 };
 
 /**
@@ -268,53 +244,37 @@ exports.parseActionMessage = function (msg) {
     exports.localAction.apply(null, data);
 };
 
-/**
- * Returns a list of all registered actions.
- */
+/** Returns a list of all registered actions. */
 exports.getActions = function () {
     return actions;
 };
 
-/**
- * Returns the action which has the given key ID.
- */
+/** Returns the action which has the given key ID. */
 exports.getAction = function (key) {
     return actions[actionIds[key]];
 };
 
-/**
- * Gets the numeric ID of an action object.
- */
+/** Gets the numeric ID of an action object. */
 exports.getActionId = function (key) {
     return actionIds[key];
 };
 
-/**
- * Resets the buffer object.
- */
+/** Resets the buffer object. */
 exports.resetData = function () {
     while (exports.hasData()) {
         pool.push(buffer.pop());
     }
 };
 
-/**
- * Returns true when the buffer has elements else false.
- */
+/** Returns true when the buffer has elements else false. */
 exports.hasData = function () {
     return !buffer.isEmpty();
 };
 
-/**
- * Invokes the next command in the command stack. Throws an error when the command stack
- * is empty.
- */
+/** Invokes the next command in the command stack. Throws an error when the command stack is empty. */
 exports.invokeNext = function () {
     var data = buffer.popFirst();
-
-    if (!data) {
-        throw new Error("NullPointerException");
-    }
+    if (!data) debug.logCritical("NullPointerException");
 
     var actionObj = actions[data.id];
 
@@ -327,41 +287,9 @@ exports.invokeNext = function () {
     pool.push(data);
 };
 
-// register all game actions
-
-var createAction = function (key, type, impl) {
+exports.createAction = function (key, type, impl) {
     impl.key = key;
     impl.type = type;
     actions.push(new exports.Action(impl));
     actionIds[key] = actions.length - 1;
 };
-
-// register some actions here
-
-createAction("transferUnit", exports.UNIT_ACTION, require("./actions/transfer").actionUnit);
-createAction("unitUnhide", exports.UNIT_ACTION, require("./actions/stealth").actionUnhide);
-createAction("unitHide", exports.UNIT_ACTION, require("./actions/stealth").actionHide);
-createAction("supplyUnit", exports.UNIT_ACTION, require("./actions/supply").action);
-createAction("capture", exports.UNIT_ACTION, require("./actions/capture").action);
-createAction("explode", exports.UNIT_ACTION, require("./actions/explode").action);
-createAction("joinUnits", exports.UNIT_ACTION, require("./actions/join").action);
-createAction("attack", exports.UNIT_ACTION, require("./actions/attack").action);
-createAction("wait", exports.UNIT_ACTION, require("./actions/wait").action);
-createAction("unloadUnit", exports.UNIT_ACTION, require("./actions/transport").actionUnload);
-createAction("loadUnit", exports.UNIT_ACTION, require("./actions/transport").actionLoad);
-
-createAction("activatePower", exports.MAP_ACTION, require("./actions/commander").actionActivate);
-createAction("transferMoney", exports.MAP_ACTION, require("./actions/transfer").actionMoney);
-createAction("nextTurn", exports.MAP_ACTION, require("./actions/nextTurn").action);
-createAction("options", exports.MAP_ACTION, require("./actions/options").action);
-
-createAction("transferProperty", exports.PROPERTY_ACTION, require("./actions/transfer").actionProperty);
-createAction("buildUnit", exports.PROPERTY_ACTION, require("./actions/factory").action);
-
-createAction("changeWeather", exports.ENGINE_ACTION, require("./actions/weather").exports.changeWeatherAction);
-createAction("moveStart", exports.ENGINE_ACTION, require("./actions/move").actionStart);
-createAction("moveAppend", exports.ENGINE_ACTION, require("./actions/move").actionAppend);
-createAction("moveEnd", exports.ENGINE_ACTION, require("./actions/move").actionEnd);
-
-createAction("refillSupply", exports.ENGINE_ACTION, require("./actions/supply").actionRefillSupply);
-createAction("healUnit", exports.ENGINE_ACTION, require("./actions/supply").actionHealUnit);

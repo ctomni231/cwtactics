@@ -2,7 +2,7 @@
 
 var statemachine = require("../statemachine");
 var constants = require("../constants");
-var widgets = require("../uiWidgets");
+var widgets = require("../gui");
 
 var renderer = require("../renderer");
 var config = require("../config");
@@ -137,8 +137,8 @@ exports.state = {
         config.getConfig("animatedTiles").value = (layout.getButtonByKey(
           "OPTIONS_CHECKBOX_ANIMATED_TILES").checked === true);
 
-        // save options
-        configDto.save(saveStep1);
+        // saveGameConfig options
+        configDto.saveGameConfig(saveStep1);
       });
 
     sfxButton = layout.getButtonByKey("OPTIONS_SFX_VOL");

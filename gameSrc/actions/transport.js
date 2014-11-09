@@ -36,9 +36,9 @@ exports.hasLoads = function (unit) {
 };
 
 /**
- * Returns true if a transporter with id tid can load the unit with the id lid.
+ * Returns true if a transporter with id tid can loadGameConfig the unit with the id lid.
  * This function also calculates the resulting weight if the transporter would
- * load the unit. If the calculated weight is greater than the maximum loadable
+ * loadGameConfig the unit. If the calculated weight is greater than the maximum loadable
  * weight false will be returned.
  *
  * @param {Unit} transporter
@@ -63,7 +63,7 @@ exports.canLoadUnit = function (transporter, load) {
  * @param {Unit} transporter
  * @param {Unit} load
  */
-exports.load = function (transporter, load) {
+exports.loadGameConfig = function (transporter, load) {
   if (load === transporter) throw new Error("LoadException: same unit");
   if (load.loadedIn) throw new Error("LoadException: unit already loaded");
 
@@ -184,7 +184,7 @@ exports.actionLoad = {
   },
 
   invoke: function (transporterId, loadId) {
-    transport.load(
+    transport.loadGameConfig(
       model.getUnit(transporterId),
       model.getUnit(loadId));
   }

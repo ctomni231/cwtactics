@@ -1,7 +1,7 @@
 "use strict";
 
 var constants = require("../constants");
-var stateData = require("../dataTransfer/states");
+var stateData = require("../states");
 var renderer = require("../renderer");
 var attack = require("../logic/attack");
 var image = require("../image");

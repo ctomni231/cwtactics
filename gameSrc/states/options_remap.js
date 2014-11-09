@@ -1,7 +1,7 @@
 "use strict";
 
 var constants = require("../constants");
-var widgets = require("../uiWidgets");
+var widgets = require("../gui");
 
 var renderer = require("../renderer");
 var assert = require("../system/functions").assert;
@@ -123,7 +123,7 @@ exports.state = {
 
       .addColGap(w)
       .addButton(5, 2, 0, "OPTIONS_KEYMAP_GOBACK", widgets.UIField.STYLE_NORMAL, 8, function () {
-        inputDto.save();
+        inputDto.saveGameConfig();
         this.changeState("OPTIONS");
       })
       .addColGap(2)

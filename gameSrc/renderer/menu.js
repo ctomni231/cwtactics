@@ -13,8 +13,8 @@ var MENU_ENTRY_HEIGHT = 2 * constants.TILE_BASE;
 var MENU_ENTRY_WIDTH = 10 * constants.TILE_BASE;
 
 var functions = require("../system/functions");
-var widgets = require("../uiWidgets");
-var i18n = require("../system/localization");
+var widgets = require("../gui");
+var i18n = require("../localization");
 var input = require("../input");
 
 var layoutGenericMenu = new widgets.UIPositionableButtonGroup();

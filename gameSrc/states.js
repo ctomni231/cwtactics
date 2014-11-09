@@ -3,14 +3,14 @@
 // Shared data that will be used between the states.
 //
 
-var model = require("../model");
-var actionsLib = require("../actions");
-var renderer = require("../renderer");
-var constants = require("../constants");
-var stateMachine = require("../statemachine");
-var circularBuffer = require("../system/circularBuffer");
+var model = require("model");
+var actionsLib = require("actions");
+var renderer = require("renderer");
+var constants = require("constants");
+var stateMachine = require("statemachine");
+var circularBuffer = require("system/circularBuffer");
 
-var relationship = require("../relationship");
+var relationship = require("relationship");
 var explode = require("../logic/exploder");
 var move = require("../logic/move");
 var co = require("../logic/co");

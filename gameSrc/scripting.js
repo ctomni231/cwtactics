@@ -1,12 +1,3 @@
-/**
- * cwScript is a simple script engine which allows to code events in the modification file
- * without shipping real javaScript code. This is safer and we can control the event flow.
- * The performance overall will be slower,  but normally the events should not be very heavy.
- * So this can be ignored.
- *
- * @module
- */
-
 "use strict";
 
 function parseExpression(program) {
@@ -205,31 +196,17 @@ function run() {
   return evaluate(parse(program), env);
 }
 
-// ------------------------------------------------------------------------
-
-// This is cwScript's public API
-
-/**
- *
- * @param code
- */
+/** */
 exports.parse = function (code) {
 
 };
 
-/**
- *
- * @param ast
- */
+/** */
 exports.run = function (ast) {
 
 };
 
-/**
- *
- * @param code
- * @return {boolean}
- */
+/** */
 exports.evaluate = function (code) {
   return exports.run(exports.parse(code));
 };

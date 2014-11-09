@@ -19,7 +19,7 @@ var rendMenu = require("./renderer/menu");
 var rendMap = require("./renderer/map");
 var rendFog = require("./renderer/fog");
 
-var stateData = require("./dataTransfer/states");
+var stateData = require("./states");
 var assert = require("./system/functions").assert;
 var model = require("./model");
 var image = require("./image");
@@ -401,9 +401,7 @@ exports.shiftMap = function (code) {
   if (constants.DEBUG) console.log("shifted the screen (" + ((new Date()).getTime() - time) + "ms)");
 };
 
-/**
- * Renders the cursor to the UI layer.
- */
+/** Renders the cursor to the UI layer. */
 exports.eraseCursor = function (x, y) {
   rendCursor.eraseCursor(
     exports.layerUI,
@@ -412,9 +410,7 @@ exports.eraseCursor = function (x, y) {
   );
 };
 
-/**
- * Renders the cursor to the UI layer.
- */
+/** Renders the cursor to the UI layer. */
 exports.renderCursor = function (x, y) {
   rendCursor.renderCursor(
     exports.layerUI,
@@ -423,58 +419,42 @@ exports.renderCursor = function (x, y) {
   );
 };
 
-/**
- * Shows the native browser cursor.
- */
+/** Shows the native browser cursor. */
 exports.showNativeCursor = function () {
   rendCursor.showNativeCursor(exports.layerUI);
 };
 
-/**
- * Hides the native browser cursor.
- */
+/** Hides the native browser cursor. */
 exports.hideNativeCursor = function () {
   rendCursor.hideNativeCursor(exports.layerUI);
 };
 
-/**
- *
- */
+/** */
 exports.evaluateCycle = function (delta) {
   rendAnim.evaluateCycle(delta, exports.layerUnit, exports.layerMap, exports.layerFocus);
 };
 
-/**
- *
- */
+/** */
 exports.renderFogCircle = function (x, y, range) {
   rendFog.renderFogCircle(exports.layerFog, exports.screenOffsetX, exports.screenOffsetY, x, y, range);
 };
 
-/**
- *
- */
+/** */
 exports.renderFogRect = function (x, y, w, h, circle) {
   rendFog.renderFogRect(exports.layerFog, exports.screenOffsetX, exports.screenOffsetY, x, y, w, h, circle);
 };
 
-/**
- *
- */
+/** */
 exports.renderFogBackgroundLayer = function () {
   rendFog.renderFogBackgroundLayer(exports.layerFog);
 };
 
-/**
- *
- */
+/** */
 exports.shiftFog = function (code) {
   rendFog.shiftFog(exports.layerFog, code);
 };
 
-/**
- *
- */
+/** */
 exports.renderUnits = function (x, oy, w, h) {
   rendUnit.renderUnits(
     exports.layerUnit,
@@ -484,23 +464,17 @@ exports.renderUnits = function (x, oy, w, h) {
   );
 };
 
-/**
- *
- */
+/** */
 exports.shiftUnits = function (code) {
   rendUnit.shiftUnits(exports.layerUnit, code);
 };
 
-/**
- *
- */
+/** */
 exports.setHiddenUnitId = function (unit) {
   rendUnit.hiddenUnitId = unit;
 };
 
-/**
- *
- */
+/** */
 exports.renderMovePath = function () {
   rendCursor.renderPath(
     exports.layerEffects,
@@ -510,9 +484,7 @@ exports.renderMovePath = function () {
   );
 };
 
-/**
- *
- */
+/** */
 exports.prepareMenu = function () {
   rendMenu.prepareMenu(
     exports.layerUI,
@@ -521,45 +493,32 @@ exports.prepareMenu = function () {
   );
 };
 
-/**
- *
- */
+/** */
 exports.renderMenu = function () {
   rendMenu.renderMenu(exports.layerUI);
 };
 
+/** */
 exports.resetMenuShift = function() {
   rendMenu.resetShift();
 };
 
-/**
- *
- */
+/** */
 exports.updateMenuIndex = function (x, y) {
   rendMenu.updateMenuIndex(x, y);
 };
 
-/**
- *
- */
+/** */
 exports.handleMenuInput = function (code) {
   return rendMenu.handleMenuInput(stateData.menu, code);
 };
 
-/**
- *
- */
+/** */
 exports.getMenuIndex = function () {
   return rendMenu.getMenuIndex();
 };
 
-/**
- *
- *
- * @param {number} x
- * @param {number} y
- *
- */
+/** */
 exports.renderTile = function (x, y) {
   rendMap.renderTile(
     exports.layerMap,
@@ -568,9 +527,7 @@ exports.renderTile = function (x, y) {
   );
 };
 
-/**
- *
- */
+/** */
 exports.renderTileOverlayRow = function () {
   rendMap.renderTileOverlayRow(
     exports.layerMap,
@@ -578,9 +535,7 @@ exports.renderTileOverlayRow = function () {
   );
 };
 
-/**
- *
- */
+/** */
 exports.renderTiles = function (x, oy, w, h, overlayDraw) {
   rendMap.renderTiles(
     exports.layerMap,
@@ -591,20 +546,12 @@ exports.renderTiles = function (x, oy, w, h, overlayDraw) {
   );
 };
 
-/**
- *
- * Note: this one does not clear the layer before action
- *
- * @param {number} code
- *
- */
+/** Note: this one does not clear the layer before action */
 exports.shiftTiles = function (code) {
   rendMap.shiftTiles(exports.layerMap, code);
 };
 
-/**
- *
- */
+/** */
 exports.renderFocus = function (x, y, w, h) {
   rendFocus.renderSelection(
     exports.layerFocus,
@@ -616,9 +563,7 @@ exports.renderFocus = function (x, y, w, h) {
   );
 };
 
-/**
- *
- */
+/** */
 exports.shiftFocus = function (code) {
   rendFocus.shift(exports.layerFocus, stateData.selection, code);
 };

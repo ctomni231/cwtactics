@@ -67,8 +67,8 @@ exports.CHECK_UNIT = 1;
 exports.CHECK_PROPERTY = 2;
 
 /**
- * Extracts the relationship between the object **left** and the object **right** and returns the correct
- * **RELATION_{?}** constant. The check mode can be set by **checkLeft** and **checkRight**.
+ * Extracts the relationship between the object left and the object right and returns the correct
+ * RELATION_{?} constant. The check mode can be set by checkLeft and checkRight.
  *
  * @param left
  * @param right
@@ -102,7 +102,7 @@ exports.getRelationShipTo = function (left, right, checkLeft, checkRight) {
 };
 
 /**
- * Extracts the relationship between **objectA** and **objectB** and returns the correct **RELATION_{?}** constant.
+ * Extracts the relationship between objectA and objectB* and returns the correct RELATION_{?} constant.
  *
  * @param objectA
  * @param objectB
@@ -142,8 +142,8 @@ exports.getRelationship = function (objectA, objectB) {
 };
 
 /**
- * Returns **true **if there is at least one unit with a given **relationship** to **player** in one of the
- * neighbours of a given position (**x**,**y**). If not, **false** will be returned.
+ * Returns true if there is at least one unit with a given relationship to player in one of the
+ * neighbours of a given position (x,y). If not, false will be returned.
  *
  * @param player
  * @param x

@@ -1,12 +1,12 @@
 "use strict";
 
 var constants = require("../constants");
-var widgets = require("../uiWidgets");
+var widgets = require("../gui");
 
 var roundDTO = require("../dataTransfer/roundSetup");
 
 var model = require("../model");
-var i18n = require("../system/localization");
+var i18n = require("../localization");
 var sheets = require("../sheets");
 
 var TEAM_IDENTIFIERS = [

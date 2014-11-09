@@ -1,6 +1,6 @@
 "use strict";
 
-var stateData = require("../dataTransfer/states");
+var stateData = require("../states");
 var attack = require("../logic/attack");
 
 exports.state = {

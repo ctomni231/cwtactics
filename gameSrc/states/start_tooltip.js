@@ -3,13 +3,13 @@
 var TOOLTIP_TIME = 10000;
 
 var constants = require("../constants");
-var widgets = require("../uiWidgets");
+var widgets = require("../gui");
 
 var renderer = require("../renderer");
 var image = require("../image");
 var input = require("../input");
 var audio = require("../audio");
-var i18n = require("../system/localization");
+var i18n = require("../localization");
 
 exports.tooltips = null;
 

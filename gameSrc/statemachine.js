@@ -1,10 +1,10 @@
 "use strict";
 
 var constants = require("./constants");
-var stateData = require("./dataTransfer/states");
+var stateData = require("./states");
 var features = require("./system/features");
 var renderer = require("./renderer");
-var widgets = require("./uiWidgets");
+var widgets = require("./gui");
 var input = require("./input");
 var audio = require("./audio");
 var actions = require("./actions");

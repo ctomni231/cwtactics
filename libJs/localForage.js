@@ -1027,7 +1027,7 @@
     });
   }
 
-  // Under Chrome the callback is called before the changes (save, clear)
+  // Under Chrome the callback is called before the changes (saveGameConfig, clear)
   // are actually made. So we use a defer function which wait that the
   // call stack to be empty.
   // For more info : https://github.com/mozilla/localForage/issues/175
@@ -1064,7 +1064,7 @@
 }).call(this);
 // If IndexedDB isn't available, we'll fall back to localStorage.
 // Note that this will have considerable performance and storage
-// side-effects (all data will be serialized on save and only data that
+// side-effects (all data will be serialized on saveGameConfig and only data that
 // can be converted to a string via `JSON.stringify()` will be saved).
 (function() {
   'use strict';
@@ -1494,7 +1494,7 @@
 (function() {
   'use strict';
 
-  // Sadly, the best way to save binary data in WebSQL is Base64 serializing
+  // Sadly, the best way to saveGameConfig binary data in WebSQL is Base64 serializing
   // it, so this is how we store it to prevent very strange errors with less
   // verbose ways of binary <-> string data storage.
   var BASE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';

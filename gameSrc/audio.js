@@ -3,22 +3,17 @@
 var constants = require("./constants");
 var features = require("./system/features");
 var storage = require("./storage");
+var debug = require("./debug");
 
 var MUSIC_KEY = "MUSIC_";
 
-/**
- * WebAudio context object.
- */
+/** WebAudio context object. */
 var audioContext;
 
-/**
- * Music audio node.
- */
+/** Music audio node. */
 var musicNode = null;
 
-/**
- * SFX audio node.
- */
+/** SFX audio node. */
 var sfxNode = null;
 
 // if audio sfx and music is deactivated then do not initialize the audio context
@@ -66,47 +61,30 @@ var musicLoadCb = function (obj) {
   currentMusic.inLoadProcess = false;
 };
 
-/**
- * Cache for audio buffers.
- */
+/** Cache for audio buffers. */
 var buffer = {};
 
-/**
- * Current played music object.
- */
+/** Current played music object. */
 var currentMusic = {
   inLoadProcess: false,
   connector: null,
   id: null
 };
 
-/**
- *
- * @param arrayBuffer
- * @param successCb
- * @param errorCb
- */
+/** */
 exports.decodeAudio = function (arrayBuffer, successCb, errorCb) {
   audioContext.decodeAudioData(arrayBuffer,successCb,errorCb);
-}
+};
 
-/**
- * Returns the value of the sfx audio node.
- *
- * @returns {number}
- */
+/** Returns the value of the sfx audio node. */
 exports.getSfxVolume = function () {
-  if (!audioContext) return;
+  if (!audioContext) return -1;
   return sfxNode.gain.value;
 };
 
-/**
- * Returns the value of the music audio node.
- *
- * @returns {number}
- */
+/** Returns the value of the music audio node. */
 exports.getMusicVolume = function () {
-  if (!audioContext) return;
+  if (!audioContext) return -1;
   return musicNode.gain.value;
 };
 
@@ -144,41 +122,24 @@ exports.setMusicVolume = function (vol) {
   musicNode.gain.value = vol;
 };
 
-/**
- * Registers an audio buffer object.
- *
- * @param id
- * @param buff
- */
-exports.registerAudioBuffer = function (id, buff) {
-  if (constants.DEBUG) assert(!this.isBuffered(id));
-
-  buffer[id] = buff;
+/** Registers an audio buffer object. */
+exports.registerAudioBuffer = function (id, buffer) {
+  if (buffer[id]) debug.logCritical("AlreadyRegistered");
+  buffer[id] = buffer;
 };
 
-/**
- * Removes a buffer from the cache.
- *
- * @param id
- */
+/** Removes a buffer from the cache. */
 exports.unloadBuffer = function (id) {
-  if (constants.DEBUG) assert(this.isBuffered(id));
-
+  if (buffer[id]) debug.logCritical("NotRegistered");
   delete buffer[id];
 };
 
-/**
- *
- * @param id
- * @returns {boolean}
- */
+/** */
 exports.isBuffered = function (id) {
   return buffer.hasOwnProperty(id);
 };
 
-/**
- * Plays an empty sound buffer. Useful to initialize the audio system.
- */
+/** Plays an empty sound buffer. Useful to initialize the audio system. */
 exports.playNullSound = function () {
   if (!audioContext) return;
 
@@ -190,13 +151,7 @@ exports.playNullSound = function () {
   source.start(0);
 };
 
-/**
- * Plays a sound.
- *
- * @param id
- * @param loop
- * @returns {null}
- */
+/** Plays a sound and returns the signal. */
 exports.playSound = function (id, loop) {
   if (!audioContext) return null;
   if (constants.DEBUG) assert(buffer[id]);
@@ -204,12 +159,7 @@ exports.playSound = function (id, loop) {
   return playSoundOnGainNode(sfxNode, buffer[id], loop);
 };
 
-/**
- * Plays a background music.
- *
- * @param id
- * @returns {boolean}
- */
+/** Plays a background music. */
 exports.playMusic = function (id) {
   if (!audioContext || currentMusic.inLoadProcess) return false;
 
@@ -231,11 +181,7 @@ exports.playMusic = function (id) {
   return true;
 };
 
-/**
- * Stop existing background music.
- *
- * @returns {boolean}
- */
+/** Stop existing background music. */
 exports.stopMusic = function () {
   if (!audioContext || currentMusic.inLoadProcess) return false;
 

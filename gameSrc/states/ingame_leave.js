@@ -3,7 +3,7 @@
 var renderer = require("../renderer");
 var constants = require("../constants");
 
-var stateData = require("../dataTransfer/states");
+var stateData = require("../states");
 
 exports.state = {
   id: "INGAME_LEAVE",

@@ -1,7 +1,7 @@
 "use strict";
 
 var constants = require("../constants");
-var widgets = require("../uiWidgets");
+var widgets = require("../gui");
 
 var input = require("../input");
 var image = require("../image");

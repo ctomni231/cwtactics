@@ -6,107 +6,420 @@
 
 "use strict";
 
-var daysOfPeaceCfg = require("./config").getConfig("daysOfPeace");
 var createList = require("./system/functions").createListByClass;
 var constants = require("./constants");
-var assert = require("./system/functions").assert;
+var system = require("./system");
+var debug = require("./debug");
 var matrix = require("./system/matrix");
 
-exports.PositionData = require("./model/positionData").PositionData;
-exports.Tile = require("./model/tile").Tile;
-exports.Property = require("./model/property").Property;
-exports.Player = require("./model/player").Player;
-exports.Unit = require("./model/unit").Unit;
+var daysOfPeaceCfg = require("./config").getConfig("daysOfPeace");
 
 /**
- * Advance Wars 1 game mode. The first ever released game mode of the advance wars series (GBA and up).
+ * Object that holds information about objects at a given position (x,y).
  *
- * @constant
+ * @constructor
  */
+exports.PositionData = system.Structure({
+    constructor: function () {
+        this.x = -1;
+        this.y = -1;
+        this.tile = null;
+        this.unit = null;
+        this.property = null;
+        this.unitId = -1;
+        this.propertyId = -1;
+    },
+
+    /**
+     * Cleans all data of the object.
+     */
+    clean: function () {
+        exports.PositionData.apply(this, null);
+    },
+
+    /**
+     * Grabs the data from another position object.
+     *
+     * @param otherPos
+     */
+    grab: function (otherPos) {
+        if (!otherPos instanceof exports.PositionData) {
+            throw new Error("IllegalArgumentType");
+        }
+
+        this.x = otherPos.x;
+        this.y = otherPos.y;
+        this.tile = otherPos.tile;
+        this.unit = otherPos.unit;
+        this.unitId = otherPos.unitId;
+        this.property = otherPos.property;
+        this.propertyId = otherPos.propertyId;
+    },
+
+    /**
+     * Sets a position.
+     *
+     * @param x
+     * @param y
+     */
+    set: function (x, y) {
+        var model = require("../model");
+
+        this.clean();
+
+        this.x = x;
+        this.y = y;
+        this.tile = model.getTile(x, y);
+
+        if (this.tile.visionTurnOwner > 0 && this.tile.unit) {
+            this.unit = this.tile.unit;
+            this.unitId = exports.units.indexOf(this.tile.unit);
+        }
+
+        if (this.tile.property) {
+            this.property = this.tile.property;
+            this.propertyId = model.getPropertyId(this.tile.property);
+        }
+    }
+});
+
+exports.Tile = system.Structure({
+    constructor: function () {
+        this.type = null;
+        this.unit = null;
+        this.property = null;
+        this.visionTurnOwner = 0;
+        this.variant = 0;
+        this.visionClient = 0;
+    },
+
+    /**
+     *
+     * @returns {boolean}
+     */
+    isOccupied: function () {
+        return this.unit !== null;
+    },
+
+    /**
+     *
+     * @returns {boolean}
+     */
+    isVisible: function () {
+        return this.visionTurnOwner > 0;
+    }
+});
+
+exports.Property = system.Structure({
+
+    STATIC: { // TODO move away
+        CAPTURE_POINTS: 20,
+        CAPTURE_STEP: 10
+    },
+
+    constructor: function () {
+        this.points = 20;
+
+        /**
+         *
+         */
+        this.owner = null;
+
+        this.type = null;
+    },
+
+
+    /**
+     * Returns true, when the given property is neutral, else false.
+     *
+     * @returns {boolean}
+     */
+    isNeutral: function () {
+        return this.owner === null;
+    },
+
+    makeNeutral: function () {
+        this.owner = null;
+    }
+});
+
+/**
+ * Player class which holds all parameters of a army owner.
+ *
+ * @constructor
+ */
+exports.Player = system.Structure({
+    constructor: function () {
+        this.id = -1;
+        this.team = constants.INACTIVE;
+        this.name = null;
+
+        this.coA = null;
+        this.activePower = constants.INACTIVE;
+        this.power = 0;
+        this.powerUsed = 0;
+
+        this.gold = 0;
+        this.manpower = Math.POSITIVE_INFINITY;
+
+        this.numberOfUnits = 0;
+        this.numberOfProperties = 0;
+
+        this.turnOwnerVisible = false;
+        this.clientVisible = false;
+        this.clientControlled = false;
+    },
+
+    isPowerActive: function (level) {
+        return this.activePower === level;
+    },
+
+    isInactive: function () {
+        return this.team !== constants.INACTIVE;
+    },
+
+    deactivate: function () {
+        this.team = constants.INACTIVE;
+    },
+
+    activate: function (teamNumber) {
+        this.team = teamNumber;
+    },
+
+    reset: function () {
+        this.team = constants.INACTIVE;
+        this.name = null;
+        this.coA = null;
+        this.activePower = constants.INACTIVE;
+        this.power = 0;
+        this.powerUsed = 0;
+        this.gold = 0;
+        this.manpower = Math.POSITIVE_INFINITY;
+        this.numberOfUnits = 0;
+        this.numberOfProperties = 0;
+        this.turnOwnerVisible = false;
+        this.clientVisible = false;
+        this.clientControlled = false;
+    }
+});
+
+exports.Unit = system.Structure({
+
+    STATIC: {
+
+        /**
+         * Converts HP points to a health value.
+         *
+         * @example
+         *  6 HP -> 60 health
+         *  3 HP -> 30 health
+         *
+         * @param pt
+         * @returns {number}
+         */
+        pointsToHealth: function (pt) {
+            return (pt * 10);
+        },
+
+        /**
+         * Converts and returns the HP points from the health value of an unit.
+         *
+         * @example
+         *  health ->  HP
+         *  69   ->   7
+         *  05   ->   1
+         *  50   ->   6
+         *  99   ->  10
+         *
+         * @param health
+         * @returns {number}
+         */
+        healthToPoints: function (health) {
+            return parseInt(health / 10, 10) + 1;
+        },
+
+        /**
+         * Gets the rest of unit health.
+         *
+         * @param health
+         * @returns {number}
+         */
+        healthToPointsRest: function (health) {
+            return health - (parseInt(health / 10) + 1);
+        }
+    },
+
+    constructor: function () {
+        this.hp = 99;
+        this.ammo = 0;
+        this.fuel = 0;
+        this.hidden = false;
+        this.loadedIn = constants.INACTIVE;
+        this.type = null;
+        this.canAct = false;
+        this.owner = null;
+    },
+
+    /**
+     *
+     * @param type
+     */
+    initByType: function (type) {
+        this.type = type;
+        this.hp = 99;
+        this.ammo = type.ammo;
+        this.fuel = type.fuel;
+        this.hidden = false;
+        this.loadedIn = constants.INACTIVE;
+        this.canAct = false;
+    },
+
+    /**
+     *
+     * @return {boolean}
+     */
+    isInactive: function () {
+        return this.owner === null;
+    },
+
+    /**
+     * Damages a unit.
+     *
+     * @param damage
+     * @param minRest
+     */
+    takeDamage: function (damage, minRest) {
+        this.hp -= damage;
+
+        if (minRest && this.hp <= minRest) {
+            this.hp = minRest;
+        }
+    },
+
+    /**
+     * Heals an unit. If the unit health will be greater than the maximum health value then the difference will be
+     * added as gold to the owners gold depot.
+     *
+     * @param health
+     * @param diffAsGold
+     */
+    heal: function (health, diffAsGold) {
+        this.hp += health;
+        if (this.hp > 99) {
+
+            // pay difference of the result health and 100 as
+            // gold ( in relation to the unit cost ) to the
+            // unit owners gold depot
+            if (diffAsGold === true) {
+                var diff = this.hp - 99;
+                this.owner.gold += parseInt((this.type.cost * diff) / 100, 10);
+            }
+
+            this.hp = 99;
+        }
+    },
+
+    /**
+     * @return {boolean} true when hp is greater than 0 else false
+     */
+    isAlive: function () {
+        return this.hp > 0;
+    },
+
+    /**
+     * Returns true when the unit ammo is lower equals 25%.
+     *
+     * @return {boolean}
+     */
+    hasLowAmmo: function () {
+        var cAmmo = this.ammo;
+        var mAmmo = this.type.ammo;
+        if (mAmmo != 0 && cAmmo <= parseInt(mAmmo * 0.25, 10)) {
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+    /**
+     * Returns true when the unit fuel is lower equals 25%.
+     *
+     * @return {boolean}
+     */
+    hasLowFuel: function () {
+        var cFuel = this.fuel;
+        var mFuel = this.type.fuel;
+        if (cFuel <= parseInt(mFuel * 0.25, 10)) {
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+    /**
+     *
+     * @returns {boolean}
+     */
+    isCapturing: function () {
+        if (this.loadedIn !== constants.INACTIVE) {
+            return false;
+        }
+
+        return false;
+        /*
+         if( unit.x >= 0 ){
+         var property = model.property_posMap[ unit.x ][ unit.y ];
+         if( property !== null && property.capturePoints < 20 ){
+         unitStatus.CAPTURES = true;
+         }
+         else unitStatus.CAPTURES = false;
+         } */
+    },
+
+    setActable: function (value) {
+        this.canAct = value;
+    }
+});
+
+/** Advance Wars 1 game mode. The first ever released game mode of the advance wars series (GBA and up). */
 exports.GAME_MODE_AW1 = 0;
 
-/**
- * Advance Wars 2 game mode. It introduced the Super CO Power.
- *
- * @constant
- */
+/** Advance Wars 2 game mode. It introduced the Super CO Power. */
 exports.GAME_MODE_AW2 = 1;
 
 exports.lastClientPlayer = null;
 
-/**
- * The active weather type object.
- *
- * @type {null}
- */
+/** The active weather type object. */
 exports.weather = null;
 
-/**
- * The amount of days until the weather will be changed.
- *
- * @type {number}
- */
+/** The amount of days until the weather will be changed. */
 exports.weatherLeftDays = 0;
 
-/**
- * The current active commanders mode.
- *
- * @type {number}
- */
+/** The current active commanders mode. */
 exports.gameMode = 0;
 
-/**
- * The current active day.
- *
- * @type {number}
- */
+/** The current active day. */
 exports.day = 0;
 
-/**
- * The current active turn owner. Only the turn owner can do actions.
- *
- * @type {null}
- */
+/** The current active turn owner. Only the turn owner can do actions. */
 exports.turnOwner = null;
 
-/**
- * Maximum turn time limit in ms.
- *
- * @type {number}
- */
+/** Maximum turn time limit in ms. */
 exports.turnTimeLimit = 0;
 
-/**
- * Current elapsed turn time in ms.
- *
- * @type {number}
- */
+/** Current elapsed turn time in ms. */
 exports.turnTimeElapsed = 0;
 
-/**
- * Maximum game time limit in ms.
- *
- * @type {number}
- */
+/** Maximum game time limit in ms. */
 exports.gameTimeLimit = 0;
 
-/**
- * Current elapsed game time in ms.
- *
- * @type {number}
- */
+/** Current elapsed game time in ms. */
 exports.gameTimeElapsed = 0;
 
-/**
- *
- * @type {number}
- */
+/** */
 exports.mapWidth = 0;
 
-/**
- *
- * @type {number}
- */
+/** */
 exports.mapHeight = 0;
 
 // generate map matrix
@@ -248,10 +561,7 @@ exports.grabTileByUnit = function (unit) {
     return null;
 };
 
-/**
- *
- * @param property
- */
+/** Returns the id of a property object */
 exports.getPropertyId = function (property) {
     var i, e;
     for (i = 0, e = properties.length; i < e; i++) {
