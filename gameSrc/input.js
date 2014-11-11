@@ -10,7 +10,7 @@ var constants = require("./constants");
 var state = require('./statemachine');
 var renderer = require("./renderer");
 var stateData = require('./states');
-var system = require("./system");
+var system = require("./utility");
 var debug = require("./debug");
 
 var canvas = document.getElementById("canvas_layer_UI");
@@ -47,7 +47,7 @@ exports.TYPE_SET_INPUT = 8;
  *
  * @constructor
  */
-var InputData = exports.InputData = system.Structure({
+var InputData = exports.InputData = utility.Structure({
     constructor: function () {
         this.reset();
     },
@@ -69,7 +69,7 @@ var InputData = exports.InputData = system.Structure({
  * @param disableFn
  * @constructor
  */
-var InputBackend = system.Structure({
+var InputBackend = utility.Structure({
     constructor: function (mapping, enableFn, disableFn) {
         if (typeof enableFn !== "function" || typeof disableFn !== "function") {
             debug.logCritical("BadImplementationException: input backend");
@@ -602,11 +602,11 @@ exports.gamepadBackend = new InputBackend(
 
     function () {
         debug.logInfo("disable game pad input");
-        exports.gamepadUpdate = system.emptyFunction;
+        exports.gamepadUpdate = utility.emptyFunction;
     }
 );
 
-exports.gamepadUpdate = system.emptyFunction;
+exports.gamepadUpdate = utility.emptyFunction;
 
 function inSelection() {
     var cState = state.activeStateId;

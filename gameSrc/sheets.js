@@ -10,7 +10,7 @@ var JsonSchema = require("../libJs/jjv");
  *
  * @class
  */
-var SheetDatabaseObject = exports.SheetDatabaseObject = require("./system").Structure({
+var SheetDatabaseObject = exports.SheetDatabaseObject = require("./utility").Structure({
     constructor: function (impl) {
         if (!impl) debug.logCritical("SheetDatabaseException: no schema given");
 

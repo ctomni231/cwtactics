@@ -2,11 +2,14 @@
 
 var constants = require("./constants");
 var assert = require("./system/functions").assert;
-var system = require("./system");
+var system = require("./utility");
 var input = require("./input");
 var i18n = require("./localization");
 
-exports.UIField = system.Structure({
+/**
+ *
+ */
+exports.UIField = utility.Structure({
 
     STATIC: {
 
@@ -179,12 +182,10 @@ exports.UIField = system.Structure({
     }
 });
 
-//
-//
-// @class
-// @extends {cwt.UIField}
-//
-exports.UICustomField = system.Structure(exports.UIField, {
+/**
+ *
+ */
+exports.UICustomField = utility.Structure(exports.UIField, {
 
     constructor: function (x, y, w, h, key, drawFn) {
         exports.UIField.call(this, x, y, w, h, key, 0, exports.UIField.STYLE_NORMAL);
@@ -193,10 +194,10 @@ exports.UICustomField = system.Structure(exports.UIField, {
     }
 });
 
-//
-// @class
-//
-exports.UIButtonGroup = system.Structure({
+/**
+ *
+ */
+exports.UIButtonGroup = utility.Structure({
 
     constructor: function () {
         this.elements = [];
@@ -356,12 +357,10 @@ exports.UIButtonGroup = system.Structure({
     }
 });
 
-//
-//
-// @class
-// @extends {cwt.UIField}
-//
-exports.UICheckboxField = system.Structure(exports.UIField, {
+/**
+ *
+ */
+exports.UICheckboxField = utility.Structure(exports.UIField, {
 
     constructor: function (x, y, w, h, text, fsize, style) {
         exports.UIField.call(this, x, y, w, h, text, fsize, style, function (button, state) {
@@ -388,15 +387,11 @@ exports.UICheckboxField = system.Structure(exports.UIField, {
     }
 });
 
-//
-// A screen layout is a group out of ui elements. This elements can be interactive or non-interactive. It should
-// be used to create and define a screen layout. Furthermore the screen layout offers API to interact with the
-// components.
-//
-// @class
-// @extends {cwt.UIButtonGroup}
-//
-exports.UIScreenLayout = system.Structure(exports.UIButtonGroup, {
+/**
+ * A screen layout is a group out of ui elements. This elements can be interactive or non-interactive. It should be
+ * used to create and define a screen layout. Furthermore the screen layout offers API to interact with the components.
+ */
+exports.UIScreenLayout = utility.Structure(exports.UIButtonGroup, {
 
     constructor: function (slotsX, slotsY, startX, startY) {
         exports.UIButtonGroup.call(this);
@@ -558,11 +553,10 @@ exports.UIScreenLayout = system.Structure(exports.UIButtonGroup, {
     }
 });
 
-//
-// @class
-// @extends {cwt.UIButtonGroup}
-//
-exports.UIPositionableButtonGroup = system.Structure(exports.UIButtonGroup, {
+/**
+ *
+ */
+exports.UIPositionableButtonGroup = utility.Structure(exports.UIButtonGroup, {
 
     constructor: function () {
         exports.UIButtonGroup.call(this);

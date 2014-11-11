@@ -5,13 +5,13 @@ var assert = require("./functions").assert;
 function createNodeType(nodeRunner) {
 	return function(node) {
 		return new exports.Node(nodeRunner, node);
-	}
+	};
 }
 
 function createCompositeType(nodeRunner) {
 	return function(nodes) {
 		return new exports.Composite(nodeRunner, nodes);
-	}
+	};
 }
 
 function repeaterHandler(object) {
@@ -24,7 +24,7 @@ function repeaterHandler(object) {
   } while (times != 0);
 
   return exports.Node.SUCCESS;
-};
+}
 
 function constructBaseNode(fn) {
 	assert(typeof fn === "function");

@@ -11,7 +11,7 @@ var localization = require("./localization");
 var constants = require("./constants");
 var actions = require("./actions");
 var storage = require("./storage");
-var system = require("./system");
+var system = require("./utility");
 var sheets = require("./sheets");
 var image = require("./image");
 var input = require("./input");
@@ -44,7 +44,7 @@ exports.startProcess = function (setProcess, callback) {
     debug.logInfo("start loading game data");
     storage.get(PARAM_HAS_CACHE, function (value) {
         hasCachedData = value;
-        system.sequence([
+        utility.sequence([
 
                 function (next) {
                     debug.logInfo("checking system");
@@ -60,7 +60,7 @@ exports.startProcess = function (setProcess, callback) {
                 function (nextLoadingStep) {
                     debug.logInfo("checking options");
 
-                    system.sequence([
+                    utility.sequence([
                         function (next) {
                             if (dataTransfer.wantResetData()) {
                                 debug.logInfo("wipe out cached data");

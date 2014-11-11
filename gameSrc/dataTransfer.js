@@ -3,7 +3,7 @@
 var constants = require("./constants");
 var storage = require("./storage");
 var config = require("./config");
-var system = require("./system");
+var system = require("./utility");
 var debug = require("./debug");
 var image = require("./image");
 var input = require("./input");
@@ -60,7 +60,7 @@ var loadParameter = function (paramName, callback) {
             config.getConfig(paramName).setValue(obj.value ? 1 : 0);
 
         } else {
-            var param = system.getURLQueryParams(document.location.search)[paramName];
+            var param = utility.getURLQueryParams(document.location.search)[paramName];
             if (typeof param !== "undefined") value = (param === "1" ? 1 : 0);
         }
 
@@ -71,7 +71,7 @@ var loadParameter = function (paramName, callback) {
 };
 
 exports.wantResetData = function () {
-    return (system.getURLQueryParams(document.location.search)[PARAM_WIPE_OUT] === "1");
+    return (utility.getURLQueryParams(document.location.search)[PARAM_WIPE_OUT] === "1");
 };
 
 exports.saveGameConfig = function (callback) {
@@ -91,7 +91,7 @@ exports.loadGameConfig = function (callback) {
 exports.transferGameModFromRemote = function (callback) {
     var path = constants.DEFAULT_MOD_PATH;
 
-    system.doHttpRequest({
+    utility.doHttpRequest({
         path: path,
         json: true,
 
@@ -925,7 +925,7 @@ exports.transferAllImagesFromStorage = function (callback) {
             }
         });
 
-        system.sequence(stuff, function () {
+        utility.sequence(stuff, function () {
             callback();
         });
     });
@@ -1095,7 +1095,7 @@ exports.transferAudioFromRemote = function (callback) {
         Object.keys(mod.sounds).forEach(function (key) {
             stuff.push(function (next) {
                 loadFile(key, mod.sounds[key], SFX_KEY + key, true, next);
-            })
+            });
         });
     }
 
@@ -1177,7 +1177,7 @@ exports.transferAllMapsFromRemote = function(callback) {
     maps.forEach(function(key) {
 
         stuff.push(function(next) {
-            system.doHttpRequest({
+            utility.doHttpRequest({
                 path: constants.MOD_PATH + mapList[key],
                 json: true,
 
@@ -1200,7 +1200,7 @@ exports.transferAllMapsFromRemote = function(callback) {
 
     });
 
-    system.sequence(stuff, function() {
+    utility.sequence(stuff, function() {
         callback();
     });
 };

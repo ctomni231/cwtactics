@@ -1,7 +1,7 @@
 "use strict";
 
 var debug = require("./debug");
-var system = require("./system");
+var system = require("./utility");
 var constants = require("./constants");
 
 /** */
@@ -58,7 +58,7 @@ var SpriteClass = require("./image/sprite");
  *
  * @constructor
  */
-exports.Sprite = system.Structure({
+exports.Sprite = utility.Structure({
 
     STATIC: {
 

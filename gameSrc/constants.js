@@ -1,5 +1,5 @@
 /** Determines the debug mode. Can be changed at runtime to enable/disable runtime assertions and debug outputs. */
-exports.DEBUG = null;
+exports.DEBUG = true;
 
 /** The game won't cache data when this variable is set to true. */
 exports.DEV_NO_CACHE = false;
@@ -9,10 +9,10 @@ exports.GAME_FONT = "Gamefont";
 
 /** URL of the active server where the game was downloaded from. This server will be used to grab the game data.
  * TODO rename property to SERVER_PATH */
-exports.MOD_PATH = null;
+exports.MOD_PATH = "http://localhost:8000/";
 
 /** */
-exports.DEFAULT_MOD_PATH = null;
+exports.DEFAULT_MOD_PATH = "http://localhost:8000/modifications/cwt.json";
 
 /** Tile size base. */
 exports.TILE_BASE = 16;
@@ -53,5 +53,5 @@ exports.MAX_UNITS = 50;
 /** */
 exports.MAX_SELECTION_RANGE = 15;
 
-/** Number of action objects in the action system */
+/** */
 exports.ACTION_POOL_SIZE = 200;

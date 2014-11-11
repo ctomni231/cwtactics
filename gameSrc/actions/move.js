@@ -13,6 +13,17 @@ var sheets = require("../sheets");
 var fog = require("../logic/fog");
 var astar = require("../system/astarWrapper");
 
+var aStar = window.astar;
+var Graph = window.Graph;
+
+var searchPath = function (grid, start, end) {
+  aStar.search(grid.nodes, start, end);
+};
+
+var createDataGrid = function (data) {
+  return new Graph(data);
+};
+
 // cached variables
 var uid = constants.INACTIVE;
 var x = constants.INACTIVE;

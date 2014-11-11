@@ -17,7 +17,7 @@ var IOS7_WEBSQL_BUGFIX_SIZE = 4;
  */
 var DEFAULT_DB_SIZE = 50;
 
-var localForage = require("./system/localforageWrapper").localforage;
+var localForage = window.localforage;
               
 // configures the localForage library
 localForage.config({

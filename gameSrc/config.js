@@ -3,7 +3,7 @@
 var constants = require("./constants");
 var debug = require("./debug");
 
-var Config = exports.Config = require("./system").Structure({
+var Config = exports.Config = require("./utility").Structure({
 
   /**
    * Configuration object which contains a configurable value.

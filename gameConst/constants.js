@@ -53,5 +53,5 @@ exports.MAX_UNITS = 50;
 /** */
 exports.MAX_SELECTION_RANGE = 15;
 
-/** */
+/** Number of action objects in the action system */
 exports.ACTION_POOL_SIZE = 200;

@@ -8,7 +8,7 @@
 
 var createList = require("./system/functions").createListByClass;
 var constants = require("./constants");
-var system = require("./system");
+var system = require("./utility");
 var debug = require("./debug");
 var matrix = require("./system/matrix");
 
@@ -19,7 +19,7 @@ var daysOfPeaceCfg = require("./config").getConfig("daysOfPeace");
  *
  * @constructor
  */
-exports.PositionData = system.Structure({
+exports.PositionData = utility.Structure({
     constructor: function () {
         this.x = -1;
         this.y = -1;
@@ -83,7 +83,7 @@ exports.PositionData = system.Structure({
     }
 });
 
-exports.Tile = system.Structure({
+exports.Tile = utility.Structure({
     constructor: function () {
         this.type = null;
         this.unit = null;
@@ -110,7 +110,7 @@ exports.Tile = system.Structure({
     }
 });
 
-exports.Property = system.Structure({
+exports.Property = utility.Structure({
 
     STATIC: { // TODO move away
         CAPTURE_POINTS: 20,
@@ -148,7 +148,7 @@ exports.Property = system.Structure({
  *
  * @constructor
  */
-exports.Player = system.Structure({
+exports.Player = utility.Structure({
     constructor: function () {
         this.id = -1;
         this.team = constants.INACTIVE;
@@ -203,7 +203,7 @@ exports.Player = system.Structure({
     }
 });
 
-exports.Unit = system.Structure({
+exports.Unit = utility.Structure({
 
     STATIC: {
 
