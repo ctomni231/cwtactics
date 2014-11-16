@@ -9,8 +9,9 @@
  */
 
 var constants = require("./constants");
-var stateData = require("./states");
+var stateData = require("./stateData");
 var widgets = require("./gui");
+var debug = require("./debug");
 var model = require("./model");
 var image = require("./image");
 var input = require("./input");

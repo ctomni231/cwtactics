@@ -9,7 +9,7 @@ var circBuff = require("./system/circularBuffer");
 var constants = require("./constants");
 var state = require('./statemachine');
 var renderer = require("./renderer");
-var stateData = require('./states');
+var stateData = require('./stateData');
 var system = require("./utility");
 var debug = require("./debug");
 

@@ -22,7 +22,7 @@ var localForage = window.localforage;
 // configures the localForage library
 localForage.config({
   name: "CWT_DATABASE",
-  size: (require("./system/features").iosWebSQLFix ?
+  size: (require("./features").iosWebSQLFix ?
          IOS7_WEBSQL_BUGFIX_SIZE : DEFAULT_DB_SIZE) * 1024 * 1024
 });
 

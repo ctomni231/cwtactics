@@ -60,7 +60,7 @@
   })();
 
   define("promise/all",
-    ["./utils","exports"],
+    ["./utils","behaviorTree"],
     function(__dependency1__, __exports__) {
       "use strict";
       /* global toString */
@@ -157,7 +157,7 @@
       __exports__.all = all;
     });
   define("promise/asap",
-    ["exports"],
+    ["behaviorTree"],
     function(__exports__) {
       "use strict";
       var browserGlobal = (typeof window !== 'undefined') ? window : {};
@@ -222,7 +222,7 @@
       __exports__.asap = asap;
     });
   define("promise/config",
-    ["exports"],
+    ["behaviorTree"],
     function(__exports__) {
       "use strict";
       var config = {
@@ -241,7 +241,7 @@
       __exports__.configure = configure;
     });
   define("promise/polyfill",
-    ["./promise","./utils","exports"],
+    ["./promise","./utils","behaviorTree"],
     function(__dependency1__, __dependency2__, __exports__) {
       "use strict";
       /*global self*/
@@ -283,7 +283,7 @@
       __exports__.polyfill = polyfill;
     });
   define("promise/promise",
-    ["./config","./utils","./all","./race","./resolve","./reject","./asap","exports"],
+    ["./config","./utils","./all","./race","./resolve","./reject","./asap","behaviorTree"],
     function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __exports__) {
       "use strict";
       var config = __dependency1__.config;
@@ -498,7 +498,7 @@
       __exports__.Promise = Promise;
     });
   define("promise/race",
-    ["./utils","exports"],
+    ["./utils","behaviorTree"],
     function(__dependency1__, __exports__) {
       "use strict";
       /* global toString */
@@ -591,7 +591,7 @@
       __exports__.race = race;
     });
   define("promise/reject",
-    ["exports"],
+    ["behaviorTree"],
     function(__exports__) {
       "use strict";
       /**
@@ -642,7 +642,7 @@
       __exports__.reject = reject;
     });
   define("promise/resolve",
-    ["exports"],
+    ["behaviorTree"],
     function(__exports__) {
       "use strict";
       function resolve(value) {
@@ -661,7 +661,7 @@
       __exports__.resolve = resolve;
     });
   define("promise/utils",
-    ["exports"],
+    ["behaviorTree"],
     function(__exports__) {
       "use strict";
       function objectOrFunction(x) {

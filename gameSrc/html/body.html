@@ -97,7 +97,14 @@
     <canvas width="320" class="gameCanvas layer7" height="160" id="canvas_layer_UI"></canvas>
   </body>
 
-  <script type='application/javascript' src='deps.js'></script>
-  <script type='application/javascript' src='main.js'></script>
+  <script type='application/javascript' src='../../libJs/astar.js'></script>
+  <script type='application/javascript' src='../../libJs/base64Helper.js'></script>
+  <script type='application/javascript' src='../../libJs/dropinrequire.js'></script>
+  <script type='application/javascript' src='../../libJs/jjv.js'></script>
+  <script type='application/javascript' src='../../libJs/localForage.js'></script>
+
+  <script type='application/javascript' >
+      require("../main");
+  </script>
 
 </html>

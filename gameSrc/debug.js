@@ -4,7 +4,7 @@
  * This module is used to log debug information during the game runs. This module is only doing stuff when the DEBUG
  * parameter, which is located in the constants module, is enabled.
  *
- * @type {exports}
+ * @type {behaviorTree}
  * @module
  */
 

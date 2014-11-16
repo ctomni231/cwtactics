@@ -2,14 +2,10 @@
 
 var debug = require("./debug");
 
-/**
- * Holds all available languages.
- */
+/** Holds all available languages. */
 var languages = {};
 
-/**
- * The current active language.
- */
+/** The current active language. */
 var selected = null;
 
 /**

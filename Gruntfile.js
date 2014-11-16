@@ -128,15 +128,15 @@ module.exports = function (grunt) {
           replacements: [
             {
               from: /exports.DEBUG\s*=\s*(null);/g ,
-              to: "exports.DEBUG = true;"
+              to: "behaviorTree.DEBUG = true;"
             },
             {
               from: /exports.MOD_PATH\s*=\s*(null);/g ,
-              to: "exports.MOD_PATH = \"http://localhost:8000/\";"
+              to: "behaviorTree.MOD_PATH = \"http://localhost:8000/\";"
             },
             {
               from: /exports.DEFAULT_MOD_PATH\s*=\s*(null);/g ,
-              to: "exports.DEFAULT_MOD_PATH = \"http://localhost:8000/modifications/cwt.json\";"
+              to: "behaviorTree.DEFAULT_MOD_PATH = \"http://localhost:8000/modifications/cwt.json\";"
             }
           ]
         },
@@ -146,15 +146,15 @@ module.exports = function (grunt) {
           replacements: [
             {
               from: /exports.DEBUG\s*=\s*(null);/g ,
-              to: "exports.DEBUG = true;"
+              to: "behaviorTree.DEBUG = true;"
             },
             {
               from: /exports.MOD_PATH\s*=\s*(null);/g ,
-              to: "exports.MOD_PATH = \"http://192.168.1.31:8000/\";"
+              to: "behaviorTree.MOD_PATH = \"http://192.168.1.31:8000/\";"
             },
             {
               from: /exports.DEFAULT_MOD_PATH\s*=\s*(null);/g ,
-              to: "exports.DEFAULT_MOD_PATH = \"http://192.168.1.31:8000/modifications/cwt.json\";"
+              to: "behaviorTree.DEFAULT_MOD_PATH = \"http://192.168.1.31:8000/modifications/cwt.json\";"
             }
           ]
         },
@@ -168,11 +168,11 @@ module.exports = function (grunt) {
             },
             {
               from: /exports.MOD_PATH\s*=\s*(null);/g ,
-              to: "exports.MOD_PATH = \"http://ctomni231.github.io/cwtactics/\";"
+              to: "behaviorTree.MOD_PATH = \"http://ctomni231.github.io/cwtactics/\";"
             },
             {
               from: /exports.DEFAULT_MOD_PATH\s*=\s*(null);/g ,
-              to: "exports.DEFAULT_MOD_PATH = \"http://ctomni231.github.io/cwtactics/modifications/cwt.json\";"
+              to: "behaviorTree.DEFAULT_MOD_PATH = \"http://ctomni231.github.io/cwtactics/modifications/cwt.json\";"
             }
           ]
         }

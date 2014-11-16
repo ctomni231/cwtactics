@@ -1,8 +1,8 @@
 "use strict";
 
 var constants = require("./constants");
-var stateData = require("./states");
-var features = require("./system/features");
+var stateData = require("./stateData");
+var features = require("./features");
 var renderer = require("./renderer");
 var widgets = require("./gui");
 var input = require("./input");
@@ -24,6 +24,7 @@ exports.GameState = my.Class({
     this.enter = enterFn;
     this.update = updateFn;
     this.render = renderFn;
+    this.data = {};
   },
 
   changeState: function(stateId) {

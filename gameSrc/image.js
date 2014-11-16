@@ -244,7 +244,7 @@ exports.Sprite = utility.Structure({
 
         /**
          *
-         * @param {exports.Sprite} sprite
+         * @param {behaviorTree.Sprite} sprite
          * @returns {string}
          */
         toJSON: function (sprite) {
@@ -262,7 +262,7 @@ exports.Sprite = utility.Structure({
          * Loads a sprite from the cache.
          *
          * @param {string} spriteData
-         * @returns {exports.Sprite}
+         * @returns {behaviorTree.Sprite}
          */
         fromJSON: function (spriteData) {
             if (typeof spriteData === "string") spriteData = JSON.parse(spriteData);
@@ -307,7 +307,7 @@ exports.Sprite = utility.Structure({
     /**
      *
      * @param index
-     * @returns {exports.Sprite}
+     * @returns {behaviorTree.Sprite}
      */
     getImage: function (index) {
         return this.images[index];

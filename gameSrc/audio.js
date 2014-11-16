@@ -1,7 +1,7 @@
 "use strict";
 
 var constants = require("./constants");
-var features = require("./system/features");
+var features = require("./features");
 var storage = require("./storage");
 var debug = require("./debug");
 
