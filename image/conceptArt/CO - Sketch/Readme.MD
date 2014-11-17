@@ -13,3 +13,7 @@ Sami Sketch - by bbzee:
 JSRulz (All Sketches):
 
 "If you are coloring my artwork, try to stick as close to the original design as possible."
+
+Bigger Document for Art Guidelines:
+
+[The Artist Pact](https://code.google.com/p/cwtactics/wiki/ArtistPact)
