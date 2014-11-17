@@ -4,7 +4,7 @@ var circularBuffer = require("./system/circularBuffer");
 var constants = require("./constants");
 var network = require("./network");
 var debug = require("./debug");
-var func = require("./system/functions");
+var util = require("./utility");
 
 // Pool for holding ActionData objects when they aren't in the buffer.
 var pool = circularBuffer.createBufferByClass(exports.ActionData, constants.ACTION_POOL_SIZE);

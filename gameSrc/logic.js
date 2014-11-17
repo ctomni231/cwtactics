@@ -3,25 +3,31 @@
 var constants = require("./constants");
 var relation = require("./relationship");
 var renderer = require("./renderer");
-var actions = require("../actions");
+var actions = require("./actions");
 var sheets = require("./sheets");
 var model = require("./model");
-
+var debug = require("./debug");
+var util = require("./utility");
 
 // --------------------------------------------------------------------------------------------------------
 
-exports.action = {
-    relation: ["S", "T", relation.RELATION_NONE, relation.RELATION_SAME_THING],
+actions.createAction("wait", actions.UNIT_ACTION, {
+
+    relation: ["S", "T",
+        relation.RELATION_NONE,
+        relation.RELATION_SAME_THING],
 
     condition: function (unit) {
         return unit.canAct;
     },
 
     invoke: function (unitId) {
+        debug.logInfo("send unit "+unitId+" into wait status");
+
         model.getUnit(unitId).setActable(false);
         renderer.renderUnitsOnScreen();
     }
-};
+});
 
 // --------------------------------------------------------------------------------------------------------
 
