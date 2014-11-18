@@ -36,7 +36,7 @@ public class JSlixGame extends SlixGame{
             AppGameContainer app = new AppGameContainer(new JSlixGame());
 
             //YOU MAY SET NEW SIZE VALUES FOR THE APPLET HERE
-            //Make sure you match them in the .html, or it won't work.
+            //Make sure you match them in the .net.wolfTec.html, or it won't work.
             app.setDisplayMode( 500, 500, false );
             app.start();
         } catch ( SlickException e ) {

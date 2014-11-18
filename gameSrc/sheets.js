@@ -4,65 +4,6 @@ var debug = require("./debug");
 var constants = require("./constants");
 var JsonSchema = require("../libJs/jjv");
 
-/**
- * A data object that holds a list of sheet objects with a given schema. Every sheet that will be
- * added to the data object will be validated first.
- *
- * @class
- */
-var SheetDatabaseObject = exports.SheetDatabaseObject = require("./utility").Structure({
-    constructor: function (impl) {
-        if (!impl) debug.logCritical("SheetDatabaseException: no schema given");
-
-        /**
-         * Holds all type sheet objects.
-         */
-        this.sheets = {};
-
-        /**
-         * Holds all type names.
-         */
-        this.types = [];
-
-        /**
-         *
-         */
-        this.validator = new JsonSchema();
-
-        // register schema
-        this.validator.addSchema("constr", impl.schema);
-
-        // add id check
-        var that = this;
-        this.validator.addCheck('isID', function (v, p) {
-            return p ? !that.sheets.hasOwnProperty(v) : true;
-        });
-
-        // add custom checks
-        if (impl.checks) {
-            var key;
-            for (key in impl.checks) {
-                if (impl.checks.hasOwnProperty(key)) {
-                    this.validator.addCheck(key, impl.checks[key]);
-                }
-            }
-        }
-    },
-
-    registerSheet: function (sheet) {
-
-        // validate it
-        var errors = this.validator.validate("constr", sheet);
-        if (errors) {
-            throw new Error("Failed parsing sheet because of: " + JSON.stringify(errors, null, "\t"));
-        }
-
-        // add it
-        this.sheets[sheet.ID] = sheet;
-        this.types.push(sheet.ID);
-    }
-});
-
 var commanders = new SheetDatabaseObject({
     schema: {
         type: 'object',
@@ -92,44 +33,6 @@ var units = new SheetDatabaseObject({
                 type: 'string',
                 isID: true
             },
-            cost: {
-                type: "integer",
-                minimum: -1,
-                not: {
-                    type: "integer",
-                    "enum": [0]
-                }
-            },
-            range: {
-                type: "integer",
-                minimum: 0,
-                maximum: constants.MAX_SELECTION_RANGE
-            },
-            vision: {
-                type: "integer",
-                minimum: 1,
-                maximum: constants.MAX_SELECTION_RANGE
-            },
-            fuel: {
-                type: "integer",
-                minimum: 0,
-                maximum: 99
-            },
-            ammo: {
-                type: "integer",
-                minimum: 0,
-                maximum: 99
-            },
-            dailyFuelDrain: {
-                type: "integer",
-                minimum: 1,
-                maximum: 99
-            },
-            dailyFuelDrainHidden: {
-                type: "integer",
-                minimum: 2,
-                maximum: 99
-            },
             suicide: {
                 type: 'object',
                 required: ["damage", "range"],
@@ -152,44 +55,9 @@ var units = new SheetDatabaseObject({
                     }
                 }
             },
-            movetype: {
-                type: "string",
-                isMovetypeId: true
-            },
-            maxloads: {
-                type: "integer",
-                minimum: 1
-            },
-            canload: {
-                type: "array",
-                items: {
-                    type: "string"
-                }
-            },
-            captures: {
-                type: "integer",
-                minimum: 1
-            },
-            stealth: {
-                type: "boolean"
-            },
-            supply: {
-                type: "array",
-                items: {
-                    type: "string"
-                }
-            },
             attack: {
                 type: "object",
                 properties: {
-                    minrange: {
-                        type: "integer",
-                        minimum: 1
-                    },
-                    maxrange: {
-                        type: "integer",
-                        minimum: 2
-                    },
                     main_wp: {
                         type: "object",
                         patternProperties: {

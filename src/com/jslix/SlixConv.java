@@ -17,7 +17,7 @@ public class SlixConv {
      * Holds the Java and Slick list of each keyboard and mouse key
      */
     public static String conv = "/Helps convert Slick keys to java keys\n"+
-        "/JAVA=http://java.sun.com/javase/6/docs/api/constant-values.html\n"+
+        "/JAVA=http://java.sun.com/javase/6/docs/api/constant-values.net.wolfTec.html\n"+
         "/SLICK=http://slick.cokeandcode.com/javadoc/\n"+
         "Created by: JakeSamiRulz\n"+
         "\n"+

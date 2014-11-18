@@ -259,25 +259,6 @@ exports.Matrix = exports.Structure({
     }
 });
 
-
-
-/**
- *
- * @param from
- * @param to
- */
-exports.copyBuffer = function (from, to) {
-    if (constants.DEBUG) {
-        assert(from instanceof exports.CircularBuffer && to instanceof exports.CircularBuffer);
-        assert(from.size <= to.maxSize);
-    }
-
-    to.clear();
-    for (var i = 0, e = from.size; i < e; i++) {
-        to.push(from.get(i));
-    }
-};
-
 /**
  * Creates a **CircularBuffer** with a given **size**. All slots will be filled with objects of the given **clazz**.
  * The constructor of the given **clazz** will be called with no arguments.

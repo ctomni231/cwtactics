@@ -1,5 +1,8 @@
 package net.wolfTec.model;
 
+import org.stjs.javascript.annotation.Namespace;
+
+@Namespace("cwt")
 public class Tile {
     //this.type = null;
 

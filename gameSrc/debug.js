@@ -18,9 +18,6 @@ var model = require("./model");
 var ASSERT_FAILED_DESC = "AssertionFailed";
 var PATTERN_LOCATION = " (Location: {err})";
 var ERR_REPLACE = /(\{err\})/gi;
-var INFO = "INFO:  ";
-var WARN = "WARN:  ";
-var ERR = "ERROR: ";
 var N_A = "N/A";
 
 var action = null;
@@ -83,35 +80,6 @@ exports.updateCursorInformation = function(cx, cy) {
 };
 
 /**
- * Logs a normal message.
- *
- * @param {String} msg
- */
-exports.logInfo = function (msg) {
-  if (constants.DEBUG) console.log(INFO + msg);
-};
-
-/**
- * Logs a warning message.
- *
- * @param {String} msg
- */
-exports.logWarn = function (msg) {
-  if (constants.DEBUG) console.log(WARN + msg);
-};
-
-/**
- * Logs a critical message.
- *
- *
- * @param {String} msg
- */
-exports.logCritical = function (msg) {
-  if (constants.DEBUG) console.log(ERR + msg);
-  throw new Error(msg);
-};
-
-/**
  *
  * @param  {[type]} layer [description]
  */
@@ -123,53 +91,3 @@ exports.renderInformation = function(layer) {
 
   layer.renderLayer(0);
 };
-
-// browser debug API
-if (constants.DEBUG && window) {
-
-  /**
-   * DEBUG object that will be available in debug builds of Custom Wars: Tactics.
-   *
-   * @namespace
-   */
-  window.DEBUG = {
-
-    /**
-     *
-     */
-    loadTestMap: function () {
-
-    },
-
-    /**
-     *
-     * @param id
-     */
-    changeWeather: function (id) {
-      model.weather = sheets.weathers[id];
-    },
-
-    /**
-     *
-     * @param days
-     */
-    setWeatherTimer: function (days) {
-      model.weatherLeftDays(days);
-    },
-
-    /**
-     *
-     */
-    fullRerender: function () {
-      renderer.renderScreen();
-    },
-
-    /**
-     *
-     * @return game model
-     */
-    getModel: function () {
-      return model;
-    }
-  };
-}

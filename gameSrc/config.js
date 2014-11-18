@@ -3,66 +3,6 @@
 var constants = require("./constants");
 var debug = require("./debug");
 
-var Config = exports.Config = require("./utility").Structure({
-
-  /**
-   * Configuration object which contains a configurable value.
-   *
-   * @param {Number} min
-   * @param {Number} max
-   * @param {Number} defaultValue
-   * @param {Number?} step
-   * @constructor
-   */
-  constructor: function (min, max, defaultValue, step) {
-    this.min = min;
-    this.max = max;
-    this.def = defaultValue;
-    this.step = step !== undefined ? step : 1;
-    this.resetValue();
-  },
-
-  /**
-   * Sets the value.
-   *
-   * @param {Number} value
-   */
-  setValue: function (value) {
-
-    // check value bounds
-    if (value < this.min) {
-      value = this.min;
-    } else if (value > this.max) {
-      value = this.max;
-    }
-
-    // check steps
-    if ((value - this.min) % this.step !== 0) debug.logCritical("StepCriteriaBrokenException");
-    this.value = value;
-  },
-
-  /**
-   * Decreases the value by one step.
-   */
-  decreaseValue: function () {
-    this.setValue(this.value - this.step);
-  },
-
-  /**
-   * Increases the value by one step.
-   */
-  increaseValue: function () {
-    this.setValue(this.value + this.step);
-  },
-
-  /**
-   * Resets the value of the parameter back to the default value.
-   */
-  resetValue: function () {
-    this.value = this.def;
-  }
-});
-
 var options = {
 
   // game configs

@@ -2,55 +2,7 @@
 
 var model = require("model");
 
-/**
- * Means two objects are the same object (so there is only one object).
- *
- * @type {number}
- */
-exports.RELATION_SAME_THING = -1;
 
-/**
- * Means there is no relationship between two objects.
- *
- * @type {number}
- */
-exports.RELATION_NEUTRAL = 0;
-
-/**
- * Means two objects belongs to the same owner.
- *
- * @type {number}
- */
-exports.RELATION_OWN = 1;
-
-/**
- * Means two objects belongs to the same team.
- *
- * @type {number}
- */
-exports.RELATION_ALLIED = 2;
-
-/**
- * Means two objects belongs not to the same owner (they are enemies).
- *
- * @type {number}
- */
-exports.RELATION_ENEMY = 3;
-
-/**
- * Means at least one of the two arguments is null.
- *
- * @type {number}
- */
-exports.RELATION_NONE = 4;
-
-/**
- * Indicates a wish to check in the hierarchical way. First try to extract the unit owner and then the property
- * owner when no unit exists.
- *
- * @type {number}
- */
-exports.CHECK_NORMAL = 0;
 
 /**
  * Indicates a wish to check unit owner.

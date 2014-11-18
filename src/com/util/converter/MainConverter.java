@@ -139,7 +139,7 @@ public class MainConverter extends JComponent implements Runnable {
 	}
 	
 	public void createHTML(){
-		createHTMLFile(basePath.replace('\\','/')+"/", "map"+index+".html", data, false);
+		createHTMLFile(basePath.replace('\\','/')+"/", "map"+index+".net.wolfTec.html", data, false);
 	}
 	
 	public boolean createHTMLFile(String path, String filename, String filedata,

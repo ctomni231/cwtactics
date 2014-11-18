@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * MapConverter.java
  * 
  * This was produced to convert the maps found on Headphone's AWBW Map Maker
- * (http://headphone.110mb.com/AWBW_Map_Maker.html) into CWT maps. 
+ * (http://headphone.110mb.com/AWBW_Map_Maker.net.wolfTec.html) into CWT maps.
  * 
  * @author theether
  * @license Look into "LICENSE" file for further information

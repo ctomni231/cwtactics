@@ -1,0 +1,45 @@
+package net.wolfTec.database;
+
+import net.wolfTec.utility.Debug;
+import org.stjs.javascript.Array;
+import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.JSObjectAdapter;
+import org.stjs.javascript.Map;
+
+/**
+ * A data object that holds a list of sheet objects with a given schema. Every sheet that will be added to the
+ * data object will be validated first.
+ */
+public abstract class Database<T extends ObjectType> {
+
+    /**
+     * Holds all type sheet objects.
+     */
+    private Map<String, T> sheets;
+
+    /**
+     * Holds all type names.
+     */
+    private Array<String> types;
+
+    public Database() {
+        this.types = JSCollections.$array();
+        this.sheets = JSObjectAdapter.$object(null);
+    }
+
+    public void registerSheet (String data) {
+        T type = parseJSON(data);
+        type.validate();
+
+        Debug.logInfo("Register sheet with ID " + type.ID);
+
+        this.sheets.$put(type.ID, type);
+        this.types.push(type.ID);
+    }
+
+    public T getSheet(String sheetId) {
+        return sheets.$get(sheetId);
+    }
+
+    public abstract T parseJSON (String data);
+}

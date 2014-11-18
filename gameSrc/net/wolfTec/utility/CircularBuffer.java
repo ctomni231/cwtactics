@@ -28,7 +28,7 @@ public class CircularBuffer<T> {
 
     /**
      *
-     * @returns {boolean} true when no entries are in the buffer, else false
+     * @return {boolean} true when no entries are in the buffer, else false
      */
     public boolean isEmpty () {
         return this.size == 0;
@@ -45,7 +45,7 @@ public class CircularBuffer<T> {
      * Returns an element at a given index. The element won't be returned.
      *
      * @param index
-     * @returns {*}
+     * @return {*}
      */
     public T get (int index) {
         if (index < 0 || index >= this.size) throw new IllegalStateException("illegal index");
@@ -133,6 +133,15 @@ public class CircularBuffer<T> {
         // remove references from list to prevent memory leaks
         for (int i = 0, e = this.data.$length(); i < e; i++) {
             this.data.$set(i, null);
+        }
+    }
+
+    public static <M> void copyBuffy( CircularBuffer<M> source, CircularBuffer<M> target) {
+        if (target.maxSize != source.maxSize) throw new IllegalArgumentException("same size required");
+
+        target.clear();
+        for (int i = 0, e = source.size; i < e; i++) {
+            target.push(source.get(i));
         }
     }
 }

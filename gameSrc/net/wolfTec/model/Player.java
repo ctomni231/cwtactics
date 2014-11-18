@@ -1,14 +1,19 @@
 package net.wolfTec.model;
 
 import net.wolfTec.Constants;
+import net.wolfTec.database.ArmyType;
+import net.wolfTec.database.CoType;
+import net.wolfTec.enums.CoPowerLevel;
+import org.stjs.javascript.annotation.Namespace;
 
+@Namespace("cwt")
 public class Player {
 
     public int id = -1;
     public int team = Constants.INACTIVE_ID;
     public String name;
 
-    public int activePower = Constants.INACTIVE_ID;
+    public CoPowerLevel activePower = CoPowerLevel.OFF;
     public int power = 0;
     public int powerUsed = 0;
 
@@ -18,24 +23,28 @@ public class Player {
     public int numberOfUnits = 0;
     public int numberOfProperties = 0;
 
-    // public int coA = null;
+    public CoType coA = null;
+    public CoType sideCo = null;
+
+    public ArmyType army;
+
     public boolean turnOwnerVisible = false;
     public boolean clientVisible = false;
     public boolean clientControlled = false;
 
-/*    isPowerActive (level) {
-        return this.activePower === level;
-    },*/
+    public boolean isPowerActive(CoPowerLevel level) {
+        return this.activePower == level;
+    }
 
-    public boolean isInactive () {
+    public boolean isInactive() {
         return this.team != Constants.INACTIVE_ID;
     }
 
-    public void deactivate () {
+    public void deactivate() {
         this.team = Constants.INACTIVE_ID;
     }
 
-    public void activate (int teamNumber) {
+    public void activate(int teamNumber) {
         this.team = teamNumber;
     }
 
