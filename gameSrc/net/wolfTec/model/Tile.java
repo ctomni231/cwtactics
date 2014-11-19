@@ -1,18 +1,23 @@
 package net.wolfTec.model;
 
+import net.wolfTec.database.TileType;
 import org.stjs.javascript.annotation.Namespace;
 
 @Namespace("cwt")
 public class Tile {
-    //this.type = null;
 
-    public Unit unit = null;
-    public Property property = null;
+    public Unit unit;
+    public Property property;
+    public TileType type;
 
     public int visionTurnOwner = 0;
     public int variant = 0;
     public int visionClient = 0;
 
+    /**
+     *
+     * @return true if the property is occupied, else false
+     */
     public boolean isOccupied () {
         return this.unit != null;
     }

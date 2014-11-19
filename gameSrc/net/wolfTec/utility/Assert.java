@@ -1,5 +1,8 @@
 package net.wolfTec.utility;
 
+/**
+ * Utility class to male assertions for given statements.
+ */
 public class Assert {
 
     public static void notNull(Object obj) {

@@ -38,8 +38,6 @@ public class UnitType extends ObjectType<UnitType> {
 
     @Override
     public void validate() {
-        Debug.logInfo("Validating sheet "+this.ID);
-
         Assert.greaterEquals(cost, 1);
         Assert.isNot(cost, 0);
 

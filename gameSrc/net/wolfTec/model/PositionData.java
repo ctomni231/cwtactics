@@ -69,14 +69,14 @@ public class PositionData {
         this.y = y;
         this.tile = model.getTile(x, y);
 
-        if (this.tile.visionTurnOwner > 0 && this.tile.unit) {
-            this.unit = this.tile.unit;
-            this.unitId = exports.units.indexOf(this.tile.unit);
+        if (tile.visionTurnOwner > 0 && this.tile.unit) {
+            this.unit = tile.unit;
+            this.unitId = exports.units.indexOf(tile.unit);
         }
 
-        if (this.tile.property) {
-            this.property = this.tile.property;
-            this.propertyId = model.getPropertyId(this.tile.property);
+        if (tile.property != null) {
+            property = tile.property;
+            propertyId = model.getPropertyId(tile.property);
         }
     }
 }

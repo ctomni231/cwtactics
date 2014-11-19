@@ -29,10 +29,11 @@ public abstract class Database<T extends ObjectType> {
 
     public void registerSheet (String data) {
         T type = parseJSON(data);
+
+        Debug.logInfo("Validating sheet "+type.ID);
         type.validate();
 
         Debug.logInfo("Register sheet with ID " + type.ID);
-
         this.sheets.$put(type.ID, type);
         this.types.push(type.ID);
     }

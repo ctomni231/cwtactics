@@ -10,7 +10,7 @@ import org.stjs.javascript.annotation.Namespace;
 public class Property implements PlayerObject {
 
     public int points;
-    public Player owner = null;
+    public Player owner;
     public PropertyType type;
 
     /**

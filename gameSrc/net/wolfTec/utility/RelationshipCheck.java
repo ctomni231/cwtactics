@@ -1,34 +1,60 @@
 package net.wolfTec.utility;
 
 import net.wolfTec.enums.Relationship;
-
-public class RelationshipCheck {
+import net.wolfTec.model.Player;
+import net.wolfTec.model.PlayerObject;
 
 /**
- * Extracts the relationship between the object left and the object right and returns the correct
- * RELATION_{?} constant. The check mode can be set by checkLeft and checkRight.
  *
- * @param left
- * @param right
- * @param checkLeft
- * @param checkRight
- * @returns {number}
  */
-    public Relationship getRelationShipTo (left, right, RelationshipCheck checkLeft, RelationshipCheck checkRight) {
-        var oL;
-        var oR;
+public class RelationshipCheck {
 
-        if (checkLeft !== exports.CHECK_PROPERTY) {
+    public enum RelationshipCheckMode {
+
+        /**
+         * Indicates a wish to check in the hierarchical way. First try to extract the unit owner and then the property
+         * owner when no unit exists.
+         */
+        CHECK_NORMAL,
+
+        /**
+         * Indicates a wish to check unit owner.
+         */
+        CHECK_UNIT,
+
+        /**
+         * Indicates a wish to check property owner.
+         */
+        CHECK_PROPERTY
+
+    }
+
+    /**
+     * Extracts the relationship between the object left and the object right and returns the correct
+     * RELATION_{?} constant. The check mode can be set by checkLeft and checkRight.
+     *
+     * @param left
+     * @param right
+     * @param checkLeft
+     * @param checkRight
+     * @returns {number}
+     */
+    public Relationship getRelationShipTo(PlayerObject left, PlayerObject right,
+                                          RelationshipCheck checkLeft, RelationshipCheck checkRight) {
+        Player oL;
+        Player oR;
+
+        if (checkLeft != exports.CHECK_PROPERTY) {
             oL = left.unit;
         }
-        if (checkRight !== exports.CHECK_PROPERTY) {
+        if (checkRight != exports.CHECK_PROPERTY) {
             oR = right.unit;
         }
 
-        if (!oL && checkLeft !== exports.CHECK_UNIT) {
+        if (!oL && checkLeft != exports.CHECK_UNIT) {
             oL = left.property;
         }
-        if (!oR && checkRight !== exports.CHECK_UNIT) {
+        if (!oR && checkRight != exports.CHECK_UNIT) {
             oR = right.property;
         }
 
@@ -37,7 +63,7 @@ public class RelationshipCheck {
         }
 
         return getRelationship(oL, oR);
-    };
+    }
 
     /**
      * Extracts the relationship between objectA and objectB* and returns the correct RELATION_{?} constant.
@@ -46,20 +72,20 @@ public class RelationshipCheck {
      * @param objectB
      * @returns {*}
      */
-    public Relationship getRelationship (objectA, objectB) {
+    public Relationship getRelationship(Object objectA, Object objectB) {
 
         // one object is null
-        if (objectA === null || objectB === null) {
-            return exports.RELATION_NONE;
+        if (objectA == null || objectB == null) {
+            return Relationship.RELATION_NONE;
         }
 
         // same object
-        if (objectA === objectB) {
-            return exports.RELATION_SAME_THING;
+        if (objectA == objectB) {
+            return Relationship.RELATION_SAME_THING;
         }
 
-        var playerA = (objectA instanceof model.Player) ? objectA : objectA.owner;
-        var playerB = (objectB instanceof model.Player) ? objectB : objectB.owner;
+        Player playerA = (objectA instanceof Player) ? (Player) objectA : ((PlayerObject) objectA).getOwner();
+        Player playerB = (objectB instanceof Player) ? (Player) objectB : ((PlayerObject) objectB).getOwner();
 
         // one of the owners is inactive or not set (e.g. neutral properties)
         if (playerA == null || playerB == null || playerA.team == -1 || playerB.team == -1) {
@@ -67,31 +93,29 @@ public class RelationshipCheck {
         }
 
         // same side
-        if (playerA === playerB) {
+        if (playerA == playerB) {
             return Relationship.RELATION_OWN;
         }
 
         // allied or enemy ?
-        if (playerA.team === playerB.team) {
+        if (playerA.team == playerB.team) {
             return Relationship.RELATION_ALLIED;
         }
 
         return Relationship.RELATION_ENEMY;
-    };
+    }
 
-/**
- * Returns true if there is at least one unit with a given relationship to player in one of the
- * neighbours of a given position (x,y). If not, false will be returned.
- *
- * @param player
- * @param x
- * @param y
- * @param relationship
- * @returns {boolean}
- */
-    exports.hasUnitNeighbourWithRelationship =
-
-    RelationshipCheck(player, x, y, relationship) {
+    /**
+     * Returns true if there is at least one unit with a given relationship to player in one of the
+     * neighbours of a given position (x,y). If not, false will be returned.
+     *
+     * @param player
+     * @param x
+     * @param y
+     * @param relationship
+     * @returns {boolean}
+     */
+    public boolean hasUnitNeighbourWithRelationship(player, x, y, relationship) {
         if (!model.isValidPosition(x, y) || !player instanceof model.Player) {
             throw new Error("IllegalArgumentType");
         }
@@ -101,7 +125,7 @@ public class RelationshipCheck {
         // WEST
         if (x > 0) {
             unit = model.getTile(x - 1, y).unit;
-            if (unit && exports.getRelationship(player, unit.owner) === relationship) {
+            if (unit && exports.getRelationship(player, unit.owner) == = relationship) {
                 return true;
             }
         }
@@ -109,7 +133,7 @@ public class RelationshipCheck {
         // NORTH
         if (y > 0) {
             unit = model.getTile(x, y - 1).unit;
-            if (unit && exports.getRelationship(player, unit.owner) === relationship) {
+            if (unit && exports.getRelationship(player, unit.owner) == = relationship) {
                 return true;
             }
         }
@@ -117,7 +141,7 @@ public class RelationshipCheck {
         // EAST
         if (x < model.mapWidth - 1) {
             unit = model.getTile(x + 1, y).unit;
-            if (unit && exports.getRelationship(player, unit.owner) === relationship) {
+            if (unit && exports.getRelationship(player, unit.owner) == = relationship) {
                 return true;
             }
         }
@@ -125,11 +149,11 @@ public class RelationshipCheck {
         // SOUTH
         if (y < model.mapHeight - 1) {
             unit = model.getTile(x, y + 1).unit;
-            if (unit && exports.getRelationship(player, unit.owner) === relationship) {
+            if (unit && exports.getRelationship(player, unit.owner) == = relationship) {
                 return true;
             }
         }
 
         return false;
-    };
+    }
 }

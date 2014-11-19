@@ -1,6 +1,7 @@
 package net.wolfTec.model;
 
 import net.wolfTec.Constants;
+import org.stjs.javascript.annotation.Template;
 
 /**
  *
@@ -61,6 +62,10 @@ public class Config {
         this.value = this.def;
     }
 
+    @Template("get")
+    public int getValue() {
+        return value;
+    }
 }
 
 

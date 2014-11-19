@@ -23,8 +23,8 @@ public class Localization {
      * values the localized string for the key.
      */
     public static void registerLanguage(String key, Map<String, String> obj) {
-        if (key == null || obj == null) debug.logCritical("IllegalArgumentException");
-        if (JSObjectAdapter.hasOwnProperty(languages, key)) debug.logCritical("LanguageAlreadyRegisteredException");
+        if (key == null || obj == null) Debug.logCritical("IllegalArgumentException");
+        if (JSObjectAdapter.hasOwnProperty(languages, key)) Debug.logCritical("LanguageAlreadyRegisteredException");
 
         // copy keys and values to a fresh object
         Map<String, String> newLang = JSCollections.$map();
