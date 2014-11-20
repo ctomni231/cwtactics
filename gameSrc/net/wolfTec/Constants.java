@@ -9,6 +9,8 @@ public abstract class Constants {
     public static final int CAPTURE_POINTS = 20;
     public static final int CAPTURE_PER_STEP = 10;
 
+    public static final int INPUT_STACK_BUFFER_SIZE = 10;
+
     /**
      * Determines the debug mode. Can be changed at runtime to enable/disable runtime assertions and debug outputs.
      */

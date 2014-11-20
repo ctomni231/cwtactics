@@ -27,10 +27,12 @@ public abstract class Database<T extends ObjectType> {
         this.sheets = JSObjectAdapter.$object(null);
     }
 
-    public void registerSheet (String data) {
-        T type = parseJSON(data);
+    public void registerSheetByString(String data) {
+        registerSheetByObject(parseJSON(data));
+    }
 
-        Debug.logInfo("Validating sheet "+type.ID);
+    public void registerSheetByObject(T type) {
+        Debug.logInfo("Validating sheet " + type.ID);
         type.validate();
 
         Debug.logInfo("Register sheet with ID " + type.ID);
@@ -38,9 +40,28 @@ public abstract class Database<T extends ObjectType> {
         this.types.push(type.ID);
     }
 
+    public abstract T parseJSON(String data);
+
+    /**
+     * @param key id of the sheet
+     * @return sheet object
+     */
     public T getSheet(String sheetId) {
         return sheets.$get(sheetId);
     }
 
-    public abstract T parseJSON (String data);
+    /**
+     * @returns {Array}
+     */
+    public Array<String> getIdList() {
+        return types;
+    }
+
+    /**
+     * @param id
+     * @returns {*|boolean}
+     */
+    public boolean isValidType(String id) {
+        return JSObjectAdapter.hasOwnProperty(sheets, id);
+    }
 }

@@ -35,6 +35,7 @@ public class UnitType extends ObjectType<UnitType> {
     public boolean stealth;
 
     public AttackType attack;
+    public SuicideType suicide;
 
     @Override
     public void validate() {
@@ -71,6 +72,14 @@ public class UnitType extends ObjectType<UnitType> {
 
             checkAttackMap(attack.mainWeapon);
             checkAttackMap(attack.secondaryWeapon);
+        }
+
+        if (suicide != null) {
+            Assert.greaterEquals(suicide.damage, 1);
+            Assert.lowerEquals(suicide.damage, 10);
+
+            Assert.greaterEquals(suicide.range, 1);
+            Assert.lowerEquals(suicide.range, Constants.MAX_SELECTION_RANGE);
         }
     }
 

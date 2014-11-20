@@ -4,6 +4,7 @@ import net.wolfTec.bridges.Window;
 import net.wolfTec.utility.CircularBuffer;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.stjs.STJS;
 
@@ -190,7 +191,7 @@ public class ActionInvoker {
         if (!data) debug.logCritical("NullPointerException");
 
         var actionObj = actions[data.id];
-#
+
         debug.logInfo("evaluating action data object " + data + "(" + actionObj.key + ")");
 
         actionObj.invoke(data.p1, data.p2, data.p3, data.p4, data.p5);

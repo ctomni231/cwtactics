@@ -1,12 +1,13 @@
 package net.wolfTec.model;
 
 import net.wolfTec.Constants;
+import net.wolfTec.bridges.Window;
 import net.wolfTec.database.UnitType;
 import net.wolfTec.utility.Assert;
 import org.stjs.javascript.annotation.Namespace;
 
 @Namespace("cwt")
-public class Unit {
+public class Unit implements PlayerObject {
 
     public int hp;
     public int ammo;
@@ -19,10 +20,9 @@ public class Unit {
     public Player owner;
 
     /**
-     *
      * @param type
      */
-    public void initByType (UnitType type) {
+    public void initByType(UnitType type) {
         this.type = type;
         this.hp = 99;
         this.ammo = type.ammo;
@@ -33,10 +33,9 @@ public class Unit {
     }
 
     /**
-     *
      * @return {boolean}
      */
-    public boolean isInactive () {
+    public boolean isInactive() {
         return this.owner == null;
     }
 
@@ -46,7 +45,7 @@ public class Unit {
      * @param damage
      * @param minRest
      */
-    public void takeDamage (int damage, int minRest) {
+    public void takeDamage(int damage, int minRest) {
         Assert.greaterEquals(damage, 1);
         Assert.greaterEquals(damage, 0);
 
@@ -61,7 +60,7 @@ public class Unit {
      * @param health
      * @param diffAsGold
      */
-    public void heal (int health, boolean diffAsGold) {
+    public void heal(int health, boolean diffAsGold) {
         this.hp += health;
         if (this.hp > 99) {
 
@@ -70,8 +69,9 @@ public class Unit {
             // unit owners gold depot
             if (diffAsGold == true) {
                 int diff = this.hp - 99;
-                this.owner.gold += parseInt((this.type.cost * diff) / 100, 10);
+                this.owner.gold += Window.parseInt((this.type.cost * diff) / 100, 10);
             }
+
 
             this.hp = 99;
         }
@@ -80,7 +80,7 @@ public class Unit {
     /**
      * @return {boolean} true when hp is greater than 0 else false
      */
-    public boolean isAlive () {
+    public boolean isAlive() {
         return this.hp > 0;
     }
 
@@ -89,7 +89,7 @@ public class Unit {
      *
      * @return {boolean}
      */
-    public boolean hasLowAmmo () {
+    public boolean hasLowAmmo() {
         int cAmmo = this.ammo;
         int mAmmo = this.type.ammo;
         if (mAmmo != 0 && cAmmo <= (mAmmo * 0.25)) {
@@ -104,7 +104,7 @@ public class Unit {
      *
      * @return {boolean}
      */
-    public boolean hasLowFuel () {
+    public boolean hasLowFuel() {
         int cFuel = this.fuel;
         int mFuel = this.type.fuel;
         if (cFuel <= (mFuel * 0.25)) {
@@ -115,10 +115,9 @@ public class Unit {
     }
 
     /**
-     *
      * @returns {boolean}
      */
-    public boolean isCapturing () {
+    public boolean isCapturing() {
         if (this.loadedIn != null) {
             return false;
         }
@@ -134,8 +133,49 @@ public class Unit {
          } */
     }
 
-    public void setActable (boolean value) {
+    public void setActable(boolean value) {
         this.canAct = value;
     }
 
+    /**
+     * Converts HP points to a health value.
+     *
+     * @param pt
+     * @example 6 HP -> 60 health
+     * 3 HP -> 30 health
+     * @returns {number}
+     */
+    public static int pointsToHealth(int pt) {
+        return (pt * 10);
+    }
+
+    /**
+     * Converts and returns the HP points from the health value of an unit.
+     *
+     * @param health
+     * @example health ->  HP
+     * 69   ->   7
+     * 05   ->   1
+     * 50   ->   6
+     * 99   ->  10
+     * @returns {number}
+     */
+    public static int healthToPoints(int health) {
+        return Window.parseInt(health / 10, 10) + 1;
+    }
+
+    /**
+     * Gets the rest of unit health.
+     *
+     * @param health
+     * @returns {number}
+     */
+    public static int healthToPointsRest(int health) {
+        return health - healthToPoints(health);
+    }
+
+    @Override
+    public Player getOwner() {
+        return owner;
+    }
 }
