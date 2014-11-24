@@ -2,6 +2,8 @@ package net.wolfTec.utility;
 
 import net.wolfTec.Constants;
 import net.wolfTec.bridges.Window;
+import org.stjs.javascript.Global;
+import org.stjs.javascript.JSGlobal;
 
 public abstract class Debug {
 
@@ -12,29 +14,32 @@ public abstract class Debug {
     /**
      * Logs a normal message.
      *
+     * @param {String} header
      * @param {String} msg
      */
-    public static void logInfo(String msg) {
-        if (Constants.DEBUG) Window.console.log(INFO + msg);
+    public static void logInfo(String header, String msg) {
+        if (Constants.DEBUG) Global.console.log(INFO + (header != null ? header : "UNKN") + ":" + msg);
     }
 
     /**
      * Logs a warning message.
      *
+     * @param {String} header
      * @param {String} msg
      */
-    public static void logWarn(String msg) {
-        if (Constants.DEBUG) Window.console.log(WARN + msg);
+    public static void logWarn(String header, String msg) {
+        if (Constants.DEBUG) Global.console.log(WARN + (header != null ? header : "UNKN") + ":" + msg);
     }
 
     /**
      * Logs a critical message.
      *
+     * @param {String} header
      * @param {String} msg
      */
-    public static void logCritical(String msg) {
-        if (Constants.DEBUG) Window.console.log(ERR + msg);
-        throw new Error(msg);
+    public static void logCritical(String header, String msg, Exception e) {
+        if (Constants.DEBUG) Global.console.log(ERR + (header != null ? header : "UNKN") + ":" + msg);
+        JSGlobal.stjs.exception(e != null ? e : msg);
     }
 
 }

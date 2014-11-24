@@ -74,23 +74,6 @@ exports.repeat = function (n, f) {
 
 /**
  *
- * @param Clazz
- * @param size
- * @returns {Array}
- */
-exports.createListByClass = function (Clazz, size) {
-    var list = [];
-
-    while (size > 0) {
-        list.push(new Clazz());
-        size--;
-    }
-
-    return list;
-};
-
-/**
- *
  */
 exports.Matrix = exports.Structure({
 

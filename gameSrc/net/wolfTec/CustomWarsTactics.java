@@ -1,16 +1,20 @@
 package net.wolfTec;
 
 import net.wolfTec.actions.ActionInvoker;
+import net.wolfTec.ai.AiHandler;
 import net.wolfTec.bridges.ObjectAdapter;
 import net.wolfTec.database.*;
 import net.wolfTec.input.InputHandler;
+import net.wolfTec.loading.LoadingHandler;
 import net.wolfTec.model.Config;
 import net.wolfTec.model.GameRound;
 import net.wolfTec.model.Map;
 import net.wolfTec.network.MessageRouter;
 import net.wolfTec.renderer.TileVariantCalculator;
 import net.wolfTec.states.Statemachine;
+import net.wolfTec.utility.Audio;
 import net.wolfTec.utility.Debug;
+import net.wolfTec.utility.Features;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback1;
@@ -82,6 +86,21 @@ public class CustomWarsTactics {
 
     public static final Statemachine gameWorkflow;
 
+    public static final AiHandler ai;
+
+    public static final LoadingHandler loadingHandler;
+
+    /**
+     * Audio backend.
+     */
+    public static final Audio audioHandler;
+
+    /**
+     * Simple object that holds the status of the supported features of the current active web browser.
+     */
+    public static final Features features;
+
+
     // Construction of the mediator
     static {
         final STJS helper = new STJS();
@@ -101,6 +120,10 @@ public class CustomWarsTactics {
         netMessageRouter = new MessageRouter();
         gameWorkflow = new Statemachine();
         inputHandler = new InputHandler();
+        ai = new AiHandler();
+        loadingHandler = new LoadingHandler();
+        audioHandler = new Audio();
+        features = new Features();
 
         configs = JSCollections.$map();
         initConfigParameters();
