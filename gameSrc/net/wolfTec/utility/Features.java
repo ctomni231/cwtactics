@@ -2,6 +2,9 @@ package net.wolfTec.utility;
 
 import net.wolfTec.CustomWarsTactics;
 
+/**
+ * Holds the status of the supported features of the active browser environment where CW:T runs in.
+ */
 public class Features {
 
     /**
@@ -45,8 +48,7 @@ public class Features {
      */
     public boolean iosWebSQLFix = false;
 
-    static {
-        /*
+    /* static {
         audioSFX = ((Browser.chrome || Browser.safari || (Browser.ios && Browser.version >= 6)) == true);
         audioMusic = ((Browser.chrome || Browser.safari) == true);
         gamePad = ((Browser.chrome && !!navigator.webkitGetGamepads) == true);
@@ -55,6 +57,5 @@ public class Features {
         touch = (Browser.mobile == true);
         supported = ((Browser.chrome || Browser.safari || Browser.ios || Browser.android) == true);
         iosWebSQLFix = ((Browser.ios && Browser.version == 7) == true);
-        */
-    }
+    } */
 }

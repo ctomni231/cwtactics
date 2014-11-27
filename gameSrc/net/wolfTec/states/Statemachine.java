@@ -1,11 +1,12 @@
 package net.wolfTec.states;
 
 import net.wolfTec.CustomWarsTactics;
-import net.wolfTec.bridges.Date;
 import net.wolfTec.bridges.Window;
 import net.wolfTec.input.InputData;
 import net.wolfTec.utility.Debug;
+import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.annotation.Template;
 import org.stjs.javascript.functions.Callback0;
@@ -14,6 +15,8 @@ import org.stjs.javascript.functions.Callback0;
  *
  */
 public class Statemachine {
+
+    public static final String LOG_HEADER = "statemachine";
 
     /**
      * Holds all registered game states.
@@ -43,6 +46,14 @@ public class Statemachine {
 
     private int timestamp;
 
+    void addState (String id, State state) {
+        if (JSObjectAdapter.hasOwnProperty(states, id)) {
+            CustomWarsTactics.logCritical(LOG_HEADER, "StateAlreadyRegistered");
+        }
+
+        states.$put(id, state);
+    }
+
     /**
      * The central game loop which calls the update function every frame ofa 60 fps loop.
      */
@@ -50,7 +61,7 @@ public class Statemachine {
         @Override public void $invoke() {
 
             // update timer
-            int newTimestamp = (new Date()).getTime();
+            int newTimestamp = (Global.Date()).getTime();
             int delta = newTimestamp - timestamp;
             timestamp = newTimestamp;
 
@@ -117,7 +128,7 @@ public class Statemachine {
         if (started) throw new IllegalStateException("Already started");
         started = true;
 
-        Debug.logInfo("Starting CW:T state machine");
+        CustomWarsTactics.logInfo("Starting CW:T state machine");
 
         // prepare and invoke game loop
         timestamp = (new Date()).getTime();

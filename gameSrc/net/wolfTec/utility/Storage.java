@@ -4,6 +4,7 @@ import net.wolfTec.bridges.Window;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
+import org.stjs.javascript.annotation.SyntheticType;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
@@ -12,6 +13,12 @@ import org.stjs.javascript.functions.Callback2;
  *
  */
 public class Storage {
+
+    @SyntheticType
+    public static class StorageEntry {
+        public String key;
+        public Object value;
+    }
 
     /**
      * iOS 7 has a serious bug which makes unable to get the permission to increase the internal

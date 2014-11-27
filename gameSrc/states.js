@@ -108,33 +108,6 @@ exports.state = {
 // ------------------------------------------------------------------------------------------------
 
 exports.state = {
-    id:"NONE",
-
-    enter: function () {
-        this.data.backgroundDrawn = false;
-    },
-
-    update: function () {
-        if (this.data.backgroundDrawn) {
-            this.changeState("LOADING_SCREEN");
-        }
-    },
-
-    render: function () {
-        if (!this.data.backgroundDrawn) {
-            var ctx = renderer.layerBG.getContext(constants.INACTIVE);
-
-            ctx.fillStyle = "gray";
-            ctx.fillRect(0, 0, renderer.screenWidth, renderer.screenHeight);
-
-            this.data.backgroundDrawn = true;
-        }
-    }
-};
-
-// ------------------------------------------------------------------------------------------------
-
-exports.state = {
     id: "START_SCREEN",
 
     init: function () {

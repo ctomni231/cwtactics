@@ -28,8 +28,13 @@ public abstract class State {
 
     }
 
-    public abstract void update(int delta, InputData input);
-    public abstract void render(int delta);
+    public void update(int delta, InputData input) {
+
+    }
+
+    public void render(int delta) {
+
+    }
 
     public void changeState (String stateId) {
         stateMachine.changeState(stateId);

@@ -17,7 +17,7 @@ import org.stjs.javascript.functions.Callback2;
 
 public class LoadingHandler {
 
-    private static final String LOG_MARKER = "LOAD";
+    private static final String LOG_MARKER = "START";
     private static final String CONFIRM_MSG = "Your system isn't supported by CW:T. Try to run it?";
     private static final String PARAM_HAS_CACHE = "__hasCache__";
 
@@ -42,7 +42,7 @@ public class LoadingHandler {
         if (wasTriggered) JSGlobal.stjs.exception("Loading was already triggered");
         wasTriggered = true;
 
-        Debug.logInfo("Start loading game data");
+        Debug.logInfo(LOG_MARKER, "Start loading game data");
 
         Storage.get(PARAM_HAS_CACHE, new Callback1<Object>() {
             @Override
@@ -55,7 +55,7 @@ public class LoadingHandler {
                         new Callback0() {
                             @Override
                             public void $invoke() {
-                                Debug.logInfo("finished loading game data");
+                                Debug.logInfo(LOG_MARKER, "finished loading game data");
                                 Storage.set(PARAM_HAS_CACHE, true, callback);
                             }
                         });
@@ -74,9 +74,9 @@ public class LoadingHandler {
         loadingSteps.push(new Callback1<Callback0>() {
             @Override
             public void $invoke(Callback0 next) {
-                Debug.logInfo("Checking system compatibility");
+                Debug.logInfo(LOG_MARKER, "Checking system compatibility");
 
-                if (Features.supported || Global.confirm(CONFIRM_MSG)) {
+                if (CustomWarsTactics.features.supported || Global.confirm(CONFIRM_MSG)) {
                     next.$invoke();
                 } else {
                     Global.window.document.writeln("<h1>Your system is not supported - Stopped startup sequence</h1>");
@@ -89,7 +89,7 @@ public class LoadingHandler {
         loadingSteps.push(new Callback1<Callback0>() {
             @Override
             public void $invoke(Callback0 next) {
-                Debug.logInfo("Checking start options");
+                Debug.logInfo(LOG_MARKER, "Checking start options");
                 next.$invoke();
             }
         });
@@ -98,7 +98,7 @@ public class LoadingHandler {
             @Override
             public void $invoke(Callback0 next) {
                 if (dataTransfer.wantResetData()) {
-                    Debug.logInfo("wipe out cached data");
+                    Debug.logInfo(LOG_MARKER, "wipe out cached data");
 
                     Storage.clear(new Callback0() {
                         @Override
@@ -123,8 +123,8 @@ public class LoadingHandler {
 
                     // enable touch and disable mouse
                     //  -> ( cannot work together )
-                    Features.mouse = false;
-                    Features.touch = true;
+                    CustomWarsTactics.features.mouse = false;
+                    CustomWarsTactics.features.touch = true;
                 }
 
                 next.$invoke();

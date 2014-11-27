@@ -1,5 +1,10 @@
 package net.wolfTec;
 
+import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.JSGlobal;
+import org.stjs.javascript.JSObjectAdapter;
+import org.stjs.javascript.Map;
+
 public abstract class Constants {
 
     public static final String VERSION = "0.38 Alpha";
@@ -93,4 +98,20 @@ public abstract class Constants {
 
     /** */
     public static final int ACTION_POOL_SIZE = 200;
+
+    private static final Map<String, String> logHeaders = JSCollections.$map();
+
+    static {
+        logHeaders.$put("unknown",           "??????");
+        logHeaders.$put("xmlhttp",           "XMLREQ");
+        logHeaders.$put("localization",      "  I18N");
+        logHeaders.$put("cwtMediator",       "MEDITR");
+        logHeaders.$put("assertion",         "ASSERT");
+        logHeaders.$put("statemachine",      "STATEM");
+    }
+
+    public static String logHeader (String key) {
+        String s = logHeaders.$get(key);
+        return s != JSGlobal.undefined ? s : logHeaders.$get("unknown");
+    }
 }

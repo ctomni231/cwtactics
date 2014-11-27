@@ -150,7 +150,7 @@ public class Audio {
      * Registers an audio buffer object.
      */
     public void registerAudioBuffer(String id, AudioBuffer buffer) {
-        if (isBuffered(id)) Debug.logCritical(LOG_HEADER, "AlreadyRegistered", null);
+        if (isBuffered(id)) Debug.logCritical(LOG_HEADER, "AlreadyRegistered");
         _buffer.$put(id, buffer);
     }
 
@@ -158,7 +158,7 @@ public class Audio {
      * Removes a buffer from the cache.
      */
     public void unloadBuffer(String id) {
-        if (isBuffered(id)) Debug.logCritical(LOG_HEADER, "NotRegistered", null);
+        if (isBuffered(id)) Debug.logCritical(LOG_HEADER, "NotRegistered");
         _buffer.$delete(id);
     }
 

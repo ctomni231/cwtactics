@@ -1,5 +1,7 @@
 package net.wolfTec.utility;
 
+import net.wolfTec.Constants;
+import net.wolfTec.CustomWarsTactics;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
@@ -8,23 +10,27 @@ import java.util.Iterator;
 
 public class Localization {
 
+    public static final String LOG_HEADER = Constants.logHeader("localization");
+
     /**
      * Holds all available languages.
      */
-    private static Map<String, Map<String, String>> languages = JSCollections.$map();
+    private Map<String, Map<String, String>> languages = JSCollections.$map();
 
     /**
      * The current active language.
      */
-    private static Map<String, String> selected;
+    private Map<String, String> selected;
 
     /**
      * Registers a language object. The properties of the object will be the keys and its
      * values the localized string for the key.
      */
-    public static void registerLanguage(String key, Map<String, String> obj) {
-        if (key == null || obj == null) Debug.logCritical("IllegalArgumentException");
-        if (JSObjectAdapter.hasOwnProperty(languages, key)) Debug.logCritical("LanguageAlreadyRegisteredException");
+    public void registerLanguage(String key, Map<String, String> obj) {
+        if (key == null || obj == null) Debug.logCritical(LOG_HEADER, "IllegalArgumentException");
+        if (JSObjectAdapter.hasOwnProperty(languages, key)) {
+            Debug.logCritical(LOG_HEADER, "LanguageAlreadyRegisteredException");
+        }
 
         // copy keys and values to a fresh object
         Map<String, String> newLang = JSCollections.$map();
@@ -41,7 +47,7 @@ public class Localization {
     /**
      * Selects a language by it's key.
      */
-    public static void selectLanguage(String key) {
+    public void selectLanguage(String key) {
         if (!JSObjectAdapter.hasOwnProperty(languages, key)) throw new IllegalArgumentException("unknown language");
         selected = languages.$get(key);
     }
@@ -49,7 +55,7 @@ public class Localization {
     /**
      * Returns the localized string of a given identifier.
      */
-    public static String forKey(String key) {
+    public String forKey(String key) {
         if (selected == null) return key;
         String str = selected.$get(key);
         return str != null ? str : key;

@@ -8,24 +8,28 @@ import net.wolfTec.input.InputHandler;
 import net.wolfTec.loading.LoadingHandler;
 import net.wolfTec.model.Config;
 import net.wolfTec.model.GameRound;
-import net.wolfTec.model.Map;
 import net.wolfTec.network.MessageRouter;
+import net.wolfTec.renderer.Sprite;
+import net.wolfTec.renderer.SpriteDatabase;
 import net.wolfTec.renderer.TileVariantCalculator;
 import net.wolfTec.states.Statemachine;
 import net.wolfTec.utility.Audio;
 import net.wolfTec.utility.Debug;
 import net.wolfTec.utility.Features;
+import net.wolfTec.utility.Localization;
 import org.stjs.javascript.Array;
+import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.stjs.STJS;
 
-import javax.security.auth.callback.Callback;
-
 /**
- * Central mediator class
+ * Central mediator (monolithic)
  */
 public class CustomWarsTactics {
+
+    public static final String LOG_HEADER = Constants.logHeader("cwtMediator");
 
     public static final String CANNON_UNIT_INV = "CANNON_UNIT_INV";
     public static final String LASER_UNIT_INV = "LASER_UNIT_INV";
@@ -86,6 +90,8 @@ public class CustomWarsTactics {
 
     public static final Statemachine gameWorkflow;
 
+    public static final Localization i18n;
+
     public static final AiHandler ai;
 
     public static final LoadingHandler loadingHandler;
@@ -100,11 +106,15 @@ public class CustomWarsTactics {
      */
     public static final Features features;
 
+    private static final SpriteDatabase spriteDb;
 
     // Construction of the mediator
     static {
+        Debug.logInfo(LOG_HEADER, "Initialize...");
+
         final STJS helper = new STJS();
 
+        Debug.logInfo(LOG_HEADER, "Setup database objects");
         unitTypeDb = generateDatabase(helper, UnitType.class);
         propertyTypeDb = generateDatabase(helper, PropertyType.class);
         weatherTypeDb = generateDatabase(helper, WeatherType.class);
@@ -112,9 +122,12 @@ public class CustomWarsTactics {
         moveTypeDb = generateDatabase(helper, MoveType.class);
         tileTypeDb = generateDatabase(helper, TileType.class);
         coTypeDb = generateDatabase(helper, CoType.class);
+        registerDefaultObjects();
 
+        Debug.logInfo(LOG_HEADER, "Setup game model");
         gameround = new GameRound();
 
+        Debug.logInfo(LOG_HEADER, "Setup services");
         actionInvoker = new ActionInvoker(Constants.ACTION_POOL_SIZE);
         variantCalculator = new TileVariantCalculator();
         netMessageRouter = new MessageRouter();
@@ -124,11 +137,14 @@ public class CustomWarsTactics {
         loadingHandler = new LoadingHandler();
         audioHandler = new Audio();
         features = new Features();
+        i18n = new Localization();
+        spriteDb = new SpriteDatabase();
 
+        Debug.logInfo(LOG_HEADER, "Setup configuration");
         configs = JSCollections.$map();
         initConfigParameters();
 
-        registerDefaultObjects();
+        Debug.logInfo(LOG_HEADER, "...done");
     }
 
     private static void registerDefaultObjects() {
@@ -202,7 +218,7 @@ public class CustomWarsTactics {
      * @return Database object
      */
     private static <T extends ObjectType> Database<T> generateDatabase(final STJS helper, final Class<T> clazz) {
-        Debug.logInfo("Generating database for " + clazz.getSimpleName());
+        Debug.logInfo(LOG_HEADER, "Generating database for " + clazz.getSimpleName());
 
         return new Database<T>() {
             @Override
@@ -228,7 +244,31 @@ public class CustomWarsTactics {
         gameConfigNames.forEach(resetConfigObject);
     }
 
+    public static void registeredSprite (String id, int numberOfSlots) {
+        spriteDb.sprites.$put(id, new Sprite(numberOfSlots));
+    }
+
+    public static Sprite getSprite (String id) {
+        return spriteDb.sprites.$get(id);
+    }
+
+    public static void logInfo(String header, String msg) {
+        if (Constants.DEBUG) Debug.logInfo(header,msg);
+    }
+
+    public static void logWarn(String header, String msg) {
+        if (Constants.DEBUG) Debug.logWarn(header,msg);
+    }
+
+    public static void logCritical(String header, String msg) {
+        if (Constants.DEBUG) Debug.logCritical(header, msg);
+    }
+
+    public static void logCriticalWithError(String header, String msg, Exception e) {
+        if (Constants.DEBUG) Debug.logCriticalWithError(header,msg,e);
+    }
+
     public static void main(String[] args) {
-        Debug.logInfo("Starting CustomWars: Tactics " + Constants.VERSION);
+        Debug.logInfo(LOG_HEADER, "Starting CustomWars: Tactics " + Constants.VERSION);
     }
 }
