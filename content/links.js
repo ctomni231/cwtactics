@@ -29,7 +29,7 @@ PAGE_DATA.shortLinks = [
     title:"Grab videos from our youtube channel",
     imgLink:"stylesheets/youtube.png" },
 
-  { link:"mailto:ctomni231@gmail.com",
+  { link:"mailto:ctomni231@gmail.com?cc=blackcat.myako@gmail.com",
     title:"Contact us",
     sameWindow:true,
     imgLink:"stylesheets/contactUs.png" }
