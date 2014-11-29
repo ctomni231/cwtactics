@@ -672,7 +672,7 @@ window.onerror = function(e) {
         var e = controller.audio_ctx_,
             t = e.createBuffer(1, 1, 22050),
             n = e.createBufferSource();
-        n.buffer = t, n.connect(e.destination), (r.start ? r.start(0) : r.noteOn(0))
+        n.buffer = t, n.connect(e.destination), (n.start ? n.start(0) : n.noteOn(0))
     }
 }, controller.audio_playMusic = function(e) {
     controller.audio_ctx_ && controller.audio_currentMusicId_ !== e && controller.audio_buffer_[e] && (controller.audio_stopMusic(), controller.audio_currentMusic_ = controller.audio_playSound(e, !0, !0), controller.audio_currentMusicId_ = e)
