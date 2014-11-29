@@ -2645,7 +2645,7 @@ controller.baseSize = 16, view.preventRenderUnit = null, view.canvasCtx = contro
 }, controller.screenStateMachine.structure.LOAD.onerror = controller.haltEngine, util.scoped(function() {
     var e = document.getElementById("cwt_main_screen"),
         t = controller.generateButtonGroup(e, "cwt_panel_header_big cwt_page_button w_400 cwt_panel_button", "cwt_panel_header_big cwt_page_button w_400 cwt_panel_button button_active", "cwt_panel_header_big cwt_page_button w_400 cwt_panel_button button_inactive");
-    document.getElementById("mainScreen_version").innerHTML = "0.3.5", controller.screenStateMachine.structure.MAIN = Object.create(controller.stateParent), controller.screenStateMachine.structure.MAIN.section = "cwt_main_screen", controller.screenStateMachine.structure.MAIN.enterState = function() {
+    document.getElementById("mainScreen_version").innerHTML = "0.3.5.1", controller.screenStateMachine.structure.MAIN = Object.create(controller.stateParent), controller.screenStateMachine.structure.MAIN.section = "cwt_main_screen", controller.screenStateMachine.structure.MAIN.enterState = function() {
         controller.audio_playNullSound(), controller.features_client.audioMusic && controller.audio_playMusic(model.data_menu.music), t.setIndex(1)
     }, controller.screenStateMachine.structure.MAIN.UP = function() {
         return t.decreaseIndex(), this.breakTransition()
