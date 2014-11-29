@@ -663,8 +663,9 @@ window.onerror = function(e) {
     controller.audio_gainNode_sfx_ && controller.storage_general.set(controller.audio_SFX_STORAGE_PARAMETER, controller.audio_gainNode_sfx_.gain.value), controller.audio_gainNode_music_ && controller.storage_general.set(controller.audio_MUSIC_STORAGE_PARAMETER, controller.audio_gainNode_music_.gain.value)
 }, controller.audio_playSound = function(e, t, n) {
     if (controller.audio_ctx_ && controller.audio_buffer_[e]) {
-        var o = n ? controller.audio_gainNode_music_ : controller.audio_gainNode_sfx_,
-            r = controller.audio_ctx_.createBufferSource();
+        var o = n ? controller.audio_gainNode_music_ : controller.audio_gainNode_sfx_;
+        if (!o) return null;
+        var r = controller.audio_ctx_.createBufferSource();
          if (t) r.loop = !0;
          r.buffer = controller.audio_buffer_[e];
          r.connect(o);
