@@ -631,7 +631,7 @@ window.onerror = function(e) {
             if (!window.webkitAudioContext) throw Error("no AudioContext constructor found");
             controller.audio_ctx_ = new window.webkitAudioContext
         }
-        controller.audio_gainNode_sfx_ = controller.audio_ctx_.createGainNode(), controller.audio_gainNode_sfx_.gain.value = 1, controller.audio_gainNode_sfx_.connect(controller.audio_ctx_.destination), controller.audio_gainNode_music_ = controller.audio_ctx_.createGainNode(), controller.audio_gainNode_music_.gain.value = .5, controller.audio_gainNode_music_.connect(controller.audio_ctx_.destination), controller.storage_general.get(controller.audio_SFX_STORAGE_PARAMETER, function(e) {
+        controller.audio_gainNode_sfx_ = (controller.audio_ctx_.createGain ? controller.audio_ctx_.createGain() : controller.audio_ctx_.createGainNode()), controller.audio_gainNode_sfx_.gain.value = 1, controller.audio_gainNode_sfx_.connect(controller.audio_ctx_.destination), controller.audio_gainNode_music_ = (controller.audio_ctx_.createGain ? controller.audio_ctx_.createGain() : controller.audio_ctx_.createGainNode()), controller.audio_gainNode_music_.gain.value = .5, controller.audio_gainNode_music_.connect(controller.audio_ctx_.destination), controller.storage_general.get(controller.audio_SFX_STORAGE_PARAMETER, function(e) {
             e && (controller.audio_gainNode_sfx_.gain.value = e.value)
         }), controller.storage_general.get(controller.audio_MUSIC_STORAGE_PARAMETER, function(e) {
             e && (controller.audio_gainNode_music_.gain.value = e.value)
