@@ -665,7 +665,11 @@ window.onerror = function(e) {
     if (controller.audio_ctx_ && controller.audio_buffer_[e]) {
         var o = n ? controller.audio_gainNode_music_ : controller.audio_gainNode_sfx_,
             r = controller.audio_ctx_.createBufferSource();
-        return t && (r.loop = !0), r.buffer = controller.audio_buffer_[e], r.connect(o), (r.start ? r.start(0) : r.noteOn(0)), r
+         if (t) r.loop = !0;
+         r.buffer = controller.audio_buffer_[e];
+         r.connect(o);
+         (r.start ? r.start(0) : r.noteOn(0));
+        return r;
     }
 }, controller.audio_playNullSound = function() {
     if (controller.audio_ctx_) {
