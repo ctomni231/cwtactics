@@ -5,6 +5,9 @@ import net.wolfTec.ai.AiHandler;
 import net.wolfTec.bridges.ObjectAdapter;
 import net.wolfTec.database.*;
 import net.wolfTec.input.InputHandler;
+import net.wolfTec.input.backends.GamePad;
+import net.wolfTec.input.backends.Keyboard;
+import net.wolfTec.input.backends.Mouse;
 import net.wolfTec.loading.LoadingHandler;
 import net.wolfTec.model.Config;
 import net.wolfTec.model.GameRound;
@@ -21,6 +24,7 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
+import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.stjs.STJS;
 
@@ -112,7 +116,7 @@ public class CustomWarsTactics {
     static {
         Debug.logInfo(LOG_HEADER, "Initialize...");
 
-        final STJS helper = new STJS();
+        final STJS helper = JSGlobal.stjs;
 
         Debug.logInfo(LOG_HEADER, "Setup database objects");
         unitTypeDb = generateDatabase(helper, UnitType.class);
@@ -139,6 +143,11 @@ public class CustomWarsTactics {
         features = new Features();
         i18n = new Localization();
         spriteDb = new SpriteDatabase();
+
+        Debug.logInfo(LOG_HEADER, "Setup input backends");
+        inputHandler.backends.$put("keyboards", Keyboard.createBackend(inputHandler, (Element) Global.window.document));
+        inputHandler.backends.$put("mouse", Mouse.createBackend(inputHandler, null));
+        inputHandler.backends.$put("gamepad", GamePad.createBackend(inputHandler));
 
         Debug.logInfo(LOG_HEADER, "Setup configuration");
         configs = JSCollections.$map();
@@ -219,10 +228,8 @@ public class CustomWarsTactics {
      */
     private static <T extends ObjectType> Database<T> generateDatabase(final STJS helper, final Class<T> clazz) {
         Debug.logInfo(LOG_HEADER, "Generating database for " + clazz.getSimpleName());
-
         return new Database<T>() {
-            @Override
-            public T parseJSON(String data) {
+            @Override public T parseJSON(String data) {
                 return helper.parseJSON(data, clazz);
             }
         };

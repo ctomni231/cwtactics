@@ -1,12 +1,10 @@
 package net.wolfTec.actions;
 
-import net.wolfTec.bridges.Window;
+import net.wolfTec.bridges.Globals;
 import net.wolfTec.utility.CircularBuffer;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.Map;
-import org.stjs.javascript.stjs.STJS;
 
 public class ActionInvoker {
 
@@ -44,7 +42,7 @@ public class ActionInvoker {
      * @return
      */
     public ActionData fromJSON(String json) {
-        Map<String, ?> action = Window.JSON.parse(json);
+        Map<String, ?> action = Globals.JSON.parse(json);
         ActionData data = backPool.popLast();
 
         // copy data
@@ -69,7 +67,7 @@ public class ActionInvoker {
         Array<?> toBeSerialized = JSCollections.$array( data.key,
                 data.p1, data.p2, data.p3, data.p4, data.p5, data.pStr);
 
-        return Window.JSON.stringify(toBeSerialized);
+        return Globals.JSON.stringify(toBeSerialized);
     }
 
 

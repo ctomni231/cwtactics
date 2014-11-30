@@ -1,13 +1,8 @@
 package net.wolfTec.utility;
 
 import net.wolfTec.CustomWarsTactics;
-import net.wolfTec.bridges.*;
-import net.wolfTec.bridges.Window;
-import net.wolfTec.bridges.Base64Helper;
-import net.wolfTec.bridges.webAudio.AudioBuffer;
-import net.wolfTec.bridges.webAudio.AudioBufferSource;
-import net.wolfTec.bridges.webAudio.AudioContext;
-import net.wolfTec.bridges.webAudio.AudioGainNode;
+import net.wolfTec.bridges.Globals;
+import net.wolfTec.bridges.webAudio.*;
 import org.stjs.javascript.*;
 import org.stjs.javascript.functions.Callback;
 import org.stjs.javascript.functions.Callback1;
@@ -21,7 +16,7 @@ public class Audio {
     public static final float DEFAULT_SFX_VOL = 1;
     public static final float DEFAULT_MUSIC_VOL = 0.5f;
 
-    private boolean standardPlayAPI = false;
+    private int apiStatus;
 
     /**
      * SFX audio node.
@@ -51,10 +46,10 @@ public class Audio {
     /**
      *
      */
-    private Callback1<?> _musicLoadCallback = new Callback1<StorageEntry>() {
+    private Callback1<?> _musicLoadCallback = new Callback1<Storage.StorageEntry>() {
         @Override
-        public void $invoke(StorageEntry entry) {
-            musicConnector = _playSoundOnGainNode(_musicNode, Window.Base64Helper.decodeBuffer(entry.value), true);
+        public void $invoke(Storage.StorageEntry entry) {
+            musicConnector = _playSoundOnGainNode(_musicNode, Globals.Base64Helper.decodeBuffer(entry.value), true);
             musicInLoadProcess = false;
         }
     };
@@ -96,7 +91,8 @@ public class Audio {
         source.loop = loop;
         source.buffer = buffer;
         source.connect(gainNode);
-        source.start(0);
+        if (apiStatus == 0) apiStatus =  JSObjectAdapter.hasOwnProperty(source, "start") ? 1 : 2;
+        if (apiStatus == 1) source.start(0); else source.noteOn(0);
         return source;
     }
 
@@ -172,13 +168,7 @@ public class Audio {
      */
     public void playNullSound() {
         if (_context == null) return;
-
-        AudioBuffer buffer = _context.createBuffer(1, 1, 22050);
-        AudioBufferSource source = _context.createBufferSource();
-
-        source.buffer = buffer;
-        source.connect(_context.destination);
-        source.start(0);
+        _playSoundOnGainNode(_sfxNode, _context.createBuffer(1, 1, 22050), false);
     }
 
     /**
@@ -186,7 +176,6 @@ public class Audio {
      */
     public AudioBufferSource playSound(String id, boolean loop) {
         if (_context == null) return null;
-
         return _playSoundOnGainNode(_sfxNode, _buffer.$get(id), loop);
     }
 
@@ -217,7 +206,9 @@ public class Audio {
 
         // disable current music
         if (musicConnector != null) {
-            musicConnector.noteOff(0);
+            // api status will be available here
+            if (apiStatus == 1) musicConnector.stop(0);
+            else musicConnector.noteOff(0);
             musicConnector.disconnect(0);
         }
 

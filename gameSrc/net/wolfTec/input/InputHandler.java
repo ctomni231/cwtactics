@@ -1,22 +1,26 @@
 package net.wolfTec.input;
 
 import net.wolfTec.Constants;
-import net.wolfTec.bridges.StringAdapter;
 import net.wolfTec.utility.CircularBuffer;
 import net.wolfTec.utility.Debug;
 import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.JSStringAdapter;
 import org.stjs.javascript.Map;
 
 public class InputHandler {
 
-    public static final int CONSOLE_TOGGLE_KEY = 192;
+    public static final String LOG = "INPUTH";
 
-    private Map<String, Integer> KEYBOARD_MAPPING;
+    public final int CONSOLE_TOGGLE_KEY = 192;
 
-    private Map<String, Integer> GAMEPAD_MAPPING;
+    public final Map<String, Integer> KEYBOARD_MAPPING;
+
+    public final Map<String, Integer> GAMEPAD_MAPPING;
 
     private final CircularBuffer<InputData> stack;
     private final CircularBuffer<InputData> pool;
+
+    public final Map<String, InputBackend> backends;
 
     public InputHandler () {
 
@@ -34,6 +38,8 @@ public class InputHandler {
 
         stack = new CircularBuffer<InputData>(Constants.INPUT_STACK_BUFFER_SIZE);
         pool = new CircularBuffer<InputData>(Constants.INPUT_STACK_BUFFER_SIZE);
+
+        backends = JSCollections.$map();
 
     }
 
@@ -58,7 +64,7 @@ public class InputHandler {
     public void pushAction (InputType key, int d1, int d2) {
         if (blocked || pool.isEmpty()) return;
 
-        Debug.logInfo("adding input data " + key + ", " + d1 + ", " + d2);
+        Debug.logInfo(LOG,"adding input data " + key + ", " + d1 + ", " + d2);
 
         InputData cmd = pool.popFirst();
         cmd.d1 = d1;
@@ -92,7 +98,7 @@ public class InputHandler {
             return "";
         }
 
-        String value = StringAdapter.fromCharCode(charCode);
+        String value = JSStringAdapter.fromCharCode(String.class, charCode);
         switch (charCode) {
             case 6:
                 value = "Mac";

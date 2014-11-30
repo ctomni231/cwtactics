@@ -1,10 +1,6 @@
 package net.wolfTec.actions;
 
 import net.wolfTec.Constants;
-import net.wolfTec.bridges.Window;
-import org.stjs.javascript.Array;
-import org.stjs.javascript.JSCollections;
-import org.stjs.javascript.stjs.STJS;
 
 /**
  * Holds all data which is needed to invoke an model changing game action in CW:T.

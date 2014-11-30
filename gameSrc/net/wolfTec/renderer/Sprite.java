@@ -1,11 +1,8 @@
 package net.wolfTec.renderer;
 
 import net.wolfTec.CustomWarsTactics;
-import net.wolfTec.bridges.Base64Helper;
-import net.wolfTec.bridges.Window;
-import net.wolfTec.utility.Debug;
+import net.wolfTec.bridges.Globals;
 import org.stjs.javascript.Array;
-import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.dom.Element;
@@ -385,7 +382,7 @@ public class Sprite {
     public static String toJSON(Sprite sprite) {
         Array<String> data = JSCollections.$array();
         for (int i = 0, e = sprite.images.$length(); i < e; i++) {
-            data.$set(i, Window.Base64Helper.canvasToBase64(sprite.images.$get(i)));
+            data.$set(i, Globals.Base64Helper.canvasToBase64(sprite.images.$get(i)));
         }
 
         return JSGlobal.JSON.stringify(data);
@@ -405,7 +402,7 @@ public class Sprite {
         Sprite sprite = new Sprite(spriteData.length());
         Array<Element> data = sprite.images;
         for (int i = 0, e = spriteData.length(); i < e; i++) {
-            data.$set(i, Window.Base64Helper.base64ToImage(spriteDataArray.$get(i)));
+            data.$set(i, Globals.Base64Helper.base64ToImage(spriteDataArray.$get(i)));
         }
 
         return sprite;

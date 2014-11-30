@@ -1,9 +1,8 @@
 package net.wolfTec.states;
 
 import net.wolfTec.CustomWarsTactics;
-import net.wolfTec.bridges.Window;
+import net.wolfTec.bridges.Globals;
 import net.wolfTec.input.InputData;
-import net.wolfTec.utility.Debug;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
@@ -68,7 +67,7 @@ public class Statemachine {
             update(delta);
 
             // acquire next frame
-            Window.requestAnimationFrame(gameLoop);
+            Globals.requestAnimationFrame(gameLoop);
         }
     };
 
@@ -132,6 +131,6 @@ public class Statemachine {
 
         // prepare and invoke game loop
         timestamp = (new Date()).getTime();
-        Window.requestAnimationFrame(gameLoop);
+        Globals.requestAnimationFrame(gameLoop);
     }
 }

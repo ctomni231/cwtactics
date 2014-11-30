@@ -1,16 +1,14 @@
 package net.wolfTec.loading;
 
 import net.wolfTec.CustomWarsTactics;
-import net.wolfTec.bridges.Window;
+import net.wolfTec.bridges.Globals;
 import net.wolfTec.model.Config;
 import net.wolfTec.utility.Debug;
-import net.wolfTec.utility.Features;
 import net.wolfTec.utility.Storage;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
-import org.stjs.javascript.functions.Callback;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
@@ -50,7 +48,7 @@ public class LoadingHandler {
                 hasDownloadedAssets = (o != null && (Boolean) o == true);
 
                 // start sequence
-                Window.R.series(
+                Globals.R.series(
                         loadingSteps,
                         new Callback0() {
                             @Override

@@ -1,6 +1,6 @@
 package net.wolfTec.utility;
 
-import net.wolfTec.bridges.Window;
+import net.wolfTec.bridges.Globals;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
@@ -40,7 +40,7 @@ public class Storage {
         config.$put("name", "CWT_DATABASE");
         config.$put("size", (1 == 2 ? IOS7_WEBSQL_BUGFIX_SIZE : DEFAULT_DB_SIZE * 1024 * 1024));
 
-        Window.localForage.config(config);
+        Globals.localForage.config(config);
     }
 
 
@@ -48,7 +48,7 @@ public class Storage {
      * The given callback will be invoked with the value saved by the given key.
      */
     public static <T> void get(String key, Callback1<T> callback) {
-        Window.localForage.getItem(key, callback);
+        Globals.localForage.getItem(key, callback);
     }
 
     /**
@@ -56,13 +56,13 @@ public class Storage {
      * will be overwritten. After the saveGameConfig process, the callback will be invoked.
      */
     public static <T> void set(final String key, final T value, final Callback2 callback) {
-        Window.localForage.setItem(key, value, new Callback2<Object, Object>() {
+        Globals.localForage.setItem(key, value, new Callback2<Object, Object>() {
             @Override public void $invoke(Object result, Object error) {
 
                 // try a second time when fail at the first time because on ios the question
                 // for more storage invokes an error => we don't want to need to reload then
                 if (error != null) {
-                    Window.localForage.setItem(key, value, callback);
+                    Globals.localForage.setItem(key, value, callback);
 
                 } else {
                     callback.$invoke(result, null);
@@ -75,14 +75,14 @@ public class Storage {
      * The given callback will be invoked with a list of all keys that are saved in the storage.
      */
     public static void keys(Callback1<Array<String>> callback) {
-        Window.localForage.keys(callback);
+        Globals.localForage.keys(callback);
     }
 
     /**
      * Clears all values from the storage. The given callback will be invoked afterwards.
      */
     public static void clear(Callback0 callback) {
-        Window.localForage.clear(callback);
+        Globals.localForage.clear(callback);
     }
 
     /**
@@ -90,6 +90,6 @@ public class Storage {
      * be invoked afterwards.
      */
     public static void remove(String key, Callback0 callback) {
-        Window.localForage.removeItem(key, callback);
+        Globals.localForage.removeItem(key, callback);
     }
 }

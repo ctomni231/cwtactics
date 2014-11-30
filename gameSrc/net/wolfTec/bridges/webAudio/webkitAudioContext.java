@@ -1,4 +1,4 @@
-package net.wolfTec.bridges;
+package net.wolfTec.bridges.webAudio;
 
 import net.wolfTec.bridges.webAudio.AudioContext;
 import org.stjs.javascript.annotation.Namespace;
