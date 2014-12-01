@@ -15,7 +15,7 @@ import org.stjs.javascript.functions.Function1;
 
 public abstract class Mouse {
 
-    public static final String LOG = Constants.logHeader("input.keyboard");
+    public static final String LOG = Constants.logHeader("input.mouse");
 
     public static final InputBackend createBackend (final InputHandler handler, final Element targetElement) {
 

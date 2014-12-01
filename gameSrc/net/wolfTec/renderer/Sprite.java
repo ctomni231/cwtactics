@@ -337,9 +337,7 @@ public class Sprite {
      */
     public static final int EXPLOSION_DUST = 2;
 
-    /**
-     * @constant
-     */
+
     public static final int EXPLOSION_SEA = 3;
 
     private Array<Element> images;

@@ -115,6 +115,11 @@ public class Audio {
         return (_context == null) ? -1 : _musicNode.gain.value;
     }
 
+    /**
+     *
+     * @param node
+     * @param volume
+     */
     private void _setVolume(AudioGainNode node, float volume) {
         if (_context == null) return;
 

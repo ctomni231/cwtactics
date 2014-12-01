@@ -7,7 +7,7 @@ import net.wolfTec.input.InputType;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 
-public class UiButtonGroup implements UiElement {
+public class UiButtonGroup {
 
     private Array<UiElement> elements;
     private int selectedElement;

@@ -136,7 +136,13 @@ public class CircularBuffer<T> {
         }
     }
 
-    public static <M> void copyBuffy( CircularBuffer<M> source, CircularBuffer<M> target) {
+    /**
+     *
+     * @param source
+     * @param target
+     * @param <M>
+     */
+    public static <M> void copyBuffer( CircularBuffer<M> source, CircularBuffer<M> target) {
         if (target.maxSize != source.maxSize) throw new IllegalArgumentException("same size required");
 
         target.clear();
