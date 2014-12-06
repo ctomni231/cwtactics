@@ -1,11 +1,26 @@
 package net.wolfTec.actions;
 
+import net.wolfTec.enums.Relationship;
+import net.wolfTec.model.StateData;
+import net.wolfTec.states.StateData;
+import net.wolfTec.utility.Assert;
+import net.wolfTec.utility.ObjectUtil;
+import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
+import org.stjs.javascript.functions.Callback1;
+import org.stjs.javascript.functions.Callback2;
+import org.stjs.javascript.functions.Function1;
+import org.stjs.javascript.functions.Function2;
 
 /**
  * Action class which represents an action which is usable by engine objects.
  */
-public abstract class Action {
+public class Action {
+
+    public static enum SourceToTarget {
+        SOURCE_AND_TARGET,
+        SOURCE_AND_SUBTARGET
+    }
 
     public static enum ActionType {
         PROPERTY_ACTION,
@@ -21,102 +36,103 @@ public abstract class Action {
         PREVENT_SET_NEW_POS
     }
 
+    public static enum TargetSelectionType {
+        BEFORE_SUB_ACTION,
+        AFTER_SUB_ACTION
+    }
+
+    public static final Function1<StateData, Boolean> DEFAULT_CONDITION = new Function1<StateData, Boolean>() {
+        @Override
+        public Boolean $invoke(StateData data) {
+            return false;
+        }
+    };
+
     /**
      * Key ID of the action.
      */
-    private String key;
+    public final String key;
 
-    private Action.MovingAction positionUpdateMode;
+    public Action.MovingAction positionUpdateMode;
 
     /**
      * Type of the action.
      */
-    private Action.ActionType type;
-
-    /**
-     * ???
-     */
-    // this.action = impl.action;
+    public Action.ActionType type;
 
     /**
      * Condition function which checks the availability of the action with the current
      * state data.
      */
-    this.condition = impl.condition || func.trueReturner;
+    public Function1<StateData, Boolean> condition;
 
     /**
      * Prepares the menu for a given state data.
      */
-    this.prepareMenu = impl.prepareMenu || null;
+    public Callback1<StateData> prepareMenu;
 
     /**
      * Checks the correctness of a given target position.
      */
-    this.isTargetValid = impl.isTargetValid || null;
+    public Function1<StateData, Boolean> isTargetValid;
 
     /**
      * Adds all possible targets into the state selection.
      */
-    this.prepareTargets = impl.prepareTargets || null;
+    public Callback2<StateData, Object> prepareTargets;
+
+    /**
+     * Prepares the selection.
+     */
+    private Callback2<StateData, Object> prepareSelection;
 
     /**
      * Marks the kind of the action. Multistep actions can flush more than one command into
      * the command stack.
      */
-    this.multiStepAction = impl.multiStepAction || null;
+    private boolean multiStepAction;
 
     /**
-     * Prepares the selection.
+     * Marks the target selection mode. Mode 'BEFORE_SUB_ACTION' will be done before the sub menu. Mode
+     * 'AFTER_SUB_ACTION' will be done after the sub menu.
      */
-    this.prepareSelection = impl.prepareSelection || null;
-
-    /**
-     * Marks the target selection mode. Mode 'A' will be done before the sub menu. Mode 'B'
-     * will be done after the sub menu.
-     */
-    this.targetSelectionType = impl.targetSelectionType || "A";
+    public TargetSelectionType targetSelectionType;
 
     /**
      * If true, then flusher won't push a 'wait' command. This is only usable for unit actions.
      */
-    this.noAutoWait = impl.noAutoWait || false;
+    public boolean noAutoWait;
 
-    /**
-     * Shows the needed unit to unit relation mode.
-     */
-    this.relation = impl.relation || null;
+    public SourceToTarget mappingForUnit;
+    public Array<Relationship> relationToUnit;
 
-    /**
-     * Shows the needed unit to property relation mode.
-     */
-    this.relationToProp = impl.relationToProp || null;
+    public SourceToTarget mappingForProperty;
+    public Array<Relationship> relationToProperty;
+
+    public Callback2<StateData, ActionData> prepareActionData;
 
     /**
      * Invokes the action with a given set of arguments.
      */
-    this.invoke = impl.invoke;
+    public Callback1<ActionData> invoke;
 
 
+    public Action (String key) {
+        Assert.notEmpty(key);
 
-
-
-
-
-    /*
-    private String key = impl.key;
-    this.positionUpdateMode = (impl.positionUpdateMode || exports.SET_POSITION);
-    this.type = impl.type;
-    this.action = impl.action;
-    this.condition = impl.condition || func.trueReturner;
-    this.prepareMenu = impl.prepareMenu || null;
-    this.isTargetValid = impl.isTargetValid || null;
-    this.prepareTargets = impl.prepareTargets || null;
-    this.multiStepAction = impl.multiStepAction || null;
-    this.prepareSelection = impl.prepareSelection || null;
-    this.targetSelectionType = impl.targetSelectionType || "A";
-    this.noAutoWait = impl.noAutoWait || false;
-    this.relation = impl.relation || null;
-    this.relationToProp = impl.relationToProp || null;
-    this.invoke = impl.invoke;
-    */
+        this.key = key;
+        this.positionUpdateMode = MovingAction.SET_POSITION;
+        this.type = null;
+        this.condition = DEFAULT_CONDITION;
+        this.prepareMenu = null;
+        this.isTargetValid = null;
+        this.prepareTargets = null;
+        this.multiStepAction = false;
+        this.prepareSelection = null;
+        this.targetSelectionType = TargetSelectionType.BEFORE_SUB_ACTION;
+        this.mappingForProperty = null;
+        this.mappingForUnit = null;
+        this.noAutoWait = false;
+        this.invoke = null;
+    }
 }

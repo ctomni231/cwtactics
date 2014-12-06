@@ -11,23 +11,7 @@ var util = require("./utility");
 
 // --------------------------------------------------------------------------------------------------------
 
-actions.createAction("wait", actions.UNIT_ACTION, {
 
-    relation: ["S", "T",
-        relation.RELATION_NONE,
-        relation.RELATION_SAME_THING],
-
-    condition: function (unit) {
-        return unit.canAct;
-    },
-
-    invoke: function (unitId) {
-        debug.logInfo("send unit "+unitId+" into wait status");
-
-        model.getUnit(unitId).setActable(false);
-        renderer.renderUnitsOnScreen();
-    }
-});
 
 // --------------------------------------------------------------------------------------------------------
 

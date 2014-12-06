@@ -1,9 +1,11 @@
 package net.wolfTec.states;
 
+import net.wolfTec.Constants;
 import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.input.InputData;
-import org.stjs.javascript.Global;
+import net.wolfTec.utility.Debug;
+import org.stjs.javascript.Date;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
@@ -15,7 +17,7 @@ import org.stjs.javascript.functions.Callback0;
  */
 public class Statemachine {
 
-    public static final String LOG_HEADER = "statemachine";
+    public static final String LOG_HEADER = Constants.logHeader("statemachine");
 
     /**
      * Holds all registered game states.
@@ -47,7 +49,7 @@ public class Statemachine {
 
     void addState (String id, State state) {
         if (JSObjectAdapter.hasOwnProperty(states, id)) {
-            CustomWarsTactics.logCritical(LOG_HEADER, "StateAlreadyRegistered");
+            Debug.logCritical(LOG_HEADER, "StateAlreadyRegistered");
         }
 
         states.$put(id, state);
@@ -60,7 +62,7 @@ public class Statemachine {
         @Override public void $invoke() {
 
             // update timer
-            int newTimestamp = (Global.Date()).getTime();
+            int newTimestamp = (int) (new Date()).getTime();
             int delta = newTimestamp - timestamp;
             timestamp = newTimestamp;
 
@@ -85,7 +87,7 @@ public class Statemachine {
             activeState.render(delta);
         }
 
-        // try to evaluate commands asop
+        // try to evaluate commands asap
         if (CustomWarsTactics.actionInvoker.hasData()) {
             CustomWarsTactics.actionInvoker.invokeNext();
             return;
@@ -123,14 +125,17 @@ public class Statemachine {
         if (fireEvent) activeState.enter();
     }
 
+    /**
+     * Starts the loop of the state machine and calls the gameLoop function in every frame.
+     */
     public void startLoop (){
         if (started) throw new IllegalStateException("Already started");
         started = true;
 
-        CustomWarsTactics.logInfo("Starting CW:T state machine");
+        Debug.logInfo(LOG_HEADER, "Starting CW:T state machine");
 
         // prepare and invoke game loop
-        timestamp = (new Date()).getTime();
+        timestamp = (int) (new Date()).getTime();
         Globals.requestAnimationFrame(gameLoop);
     }
 }

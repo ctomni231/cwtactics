@@ -9,6 +9,8 @@ import net.wolfTec.utility.Debug;
  */
 public class MessageRouter {
 
+    public static final String LOG = Constants.logHeader("network.messageRouter");
+
     /**
      * Id of the game in the connected network session.
      */
@@ -38,13 +40,13 @@ public class MessageRouter {
      * Parses a message and invokes commands if necessary.
      */
     public void parseMessage (String msg) {
-        Debug.logCritical("NotImplementedYetException");
+        Debug.logCritical(LOG, "NotImplementedYetException");
     }
 
     /**
      * Sends a given action data object into data object and sends it to the game server.
      */
     public void sendMessage (ActionData actionData) {
-        Debug.logCritical("NotImplementedYetException");
+        Debug.logCritical(LOG, "NotImplementedYetException");
     }
 }

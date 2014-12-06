@@ -12,11 +12,34 @@ public class ActionData {
      */
     public int key;
 
+    /**
+     * 1st. int parameter.
+     */
     public int p1;
+
+    /**
+     * 2nd. int parameter.
+     */
     public int p2;
+
+    /**
+     * 3rd. int parameter.
+     */
     public int p3;
+
+    /**
+     * 4th. int parameter.
+     */
     public int p4;
+
+    /**
+     * 5th. int parameter.
+     */
     public int p5;
+
+    /**
+     * 1st. string parameter.
+     */
     public String pStr;
 
     /**

@@ -15,6 +15,7 @@ import net.wolfTec.network.MessageRouter;
 import net.wolfTec.renderer.Sprite;
 import net.wolfTec.renderer.SpriteDatabase;
 import net.wolfTec.renderer.TileVariantCalculator;
+import net.wolfTec.states.StateData;
 import net.wolfTec.states.Statemachine;
 import net.wolfTec.utility.Audio;
 import net.wolfTec.utility.Debug;
@@ -112,6 +113,8 @@ public class CustomWarsTactics {
 
     private static final SpriteDatabase spriteDb;
 
+    public static final StateData gameWorkflowData;
+
     // Construction of the mediator
     static {
         Debug.logInfo(LOG_HEADER, "Initialize...");
@@ -143,11 +146,15 @@ public class CustomWarsTactics {
         features = new Features();
         i18n = new Localization();
         spriteDb = new SpriteDatabase();
+        gameWorkflowData = new StateData();
 
         Debug.logInfo(LOG_HEADER, "Setup input backends");
-        inputHandler.backends.$put("keyboards", Keyboard.createBackend(inputHandler, (Element) Global.window.document));
-        inputHandler.backends.$put("mouse", Mouse.createBackend(inputHandler, null));
-        inputHandler.backends.$put("gamepad", GamePad.createBackend(inputHandler));
+        inputHandler.backends.$put("keyboards",
+                Keyboard.createBackend(inputHandler, ((Element) ((Object) Global.window.document))));
+        inputHandler.backends.$put("mouse",
+                Mouse.createBackend(inputHandler, null));
+        inputHandler.backends.$put("gamepad",
+                GamePad.createBackend(inputHandler));
 
         Debug.logInfo(LOG_HEADER, "Setup configuration");
         configs = JSCollections.$map();
@@ -257,18 +264,6 @@ public class CustomWarsTactics {
 
     public static Sprite getSprite (String id) {
         return spriteDb.sprites.$get(id);
-    }
-
-    public static void logInfo(String header, String msg) {
-        if (Constants.DEBUG) Debug.logInfo(header,msg);
-    }
-
-    public static void logWarn(String header, String msg) {
-        if (Constants.DEBUG) Debug.logWarn(header,msg);
-    }
-
-    public static void logCritical(String header, String msg) {
-        if (Constants.DEBUG) Debug.logCritical(header, msg);
     }
 
     public static void logCriticalWithError(String header, String msg, Exception e) {

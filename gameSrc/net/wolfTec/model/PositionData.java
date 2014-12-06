@@ -1,6 +1,7 @@
 package net.wolfTec.model;
 
 import net.wolfTec.Constants;
+import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.utility.Assert;
 import org.stjs.javascript.annotation.Namespace;
 
@@ -67,16 +68,16 @@ public class PositionData {
 
         this.x = x;
         this.y = y;
-        this.tile = model.getTile(x, y);
+        this.tile = CustomWarsTactics.gameround.map.getTile(x, y);
 
-        if (tile.visionTurnOwner > 0 && this.tile.unit) {
+        if (tile.visionTurnOwner > 0 && this.tile.unit != null) {
             this.unit = tile.unit;
-            this.unitId = exports.units.indexOf(tile.unit);
+            this.unitId = CustomWarsTactics.gameround.units.indexOf(tile.unit);
         }
 
         if (tile.property != null) {
             property = tile.property;
-            propertyId = model.getPropertyId(tile.property);
+            propertyId = CustomWarsTactics.gameround.getPropertyId(tile.property);
         }
     }
 }

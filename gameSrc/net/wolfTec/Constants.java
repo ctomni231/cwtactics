@@ -102,15 +102,15 @@ public abstract class Constants {
     private static final Map<String, String> logHeaders = JSCollections.$map();
 
     static {
-        logHeaders.$put("unknown",           "??????");
-        logHeaders.$put("xmlhttp",           "XMLREQ");
-        logHeaders.$put("localization",      "  I18N");
-        logHeaders.$put("cwtMediator",       "MEDITR");
-        logHeaders.$put("assertion",         "ASSERT");
-        logHeaders.$put("statemachine",      "STATEM");
+        logHeaders.$put("unknown", "??????");
+        logHeaders.$put("xmlhttp", "XMLREQ");
+        logHeaders.$put("localization", "  I18N");
+        logHeaders.$put("cwtMediator", "MEDITR");
+        logHeaders.$put("assertion", "ASSERT");
+        logHeaders.$put("statemachine", "STATEM");
     }
 
-    public static String logHeader (String key) {
+    public static String logHeader(String key) {
         String s = logHeaders.$get(key);
         return s != JSGlobal.undefined ? s : logHeaders.$get("unknown");
     }

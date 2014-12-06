@@ -21,7 +21,7 @@ public abstract class ObjectUtil {
      * @param lazyCreator
      * @returns {Function}
      */
-    public <T> Function<T> lazy(final Function0<T> lazyCreator) {
+    public static <T> Function<T> lazy(final Function0<T> lazyCreator) {
         final Map<String, T> holder = JSCollections.$map();
         return new Function0<T>() {
             @Override
@@ -35,30 +35,30 @@ public abstract class ObjectUtil {
     }
 
 
-/**
- * Selects a random element from a given list and returns it. It's possible to give a forbiddenElement
- * that won't be selected from the list.
- *
- * @param list
- * @param forbiddenElement
- * @returns {*}
- */
-    public <T> T selectRandomListElement (Array<T> list, T forbiddenElement) {
+    /**
+     * Selects a random element from a given list and returns it. It's possible to give a forbiddenElement
+     * that won't be selected from the list.
+     *
+     * @param list
+     * @param forbiddenElement
+     * @returns {*}
+     */
+    public static <T> T selectRandomListElement(Array<T> list, T forbiddenElement) {
         int e = list.$length();
-        if(e == 0 || (e == 1 && list.$get(0) == forbiddenElement)){
+        if (e == 0 || (e == 1 && list.$get(0) == forbiddenElement)) {
             throw new Error("IllegalArguments");
         }
 
-        int r = JSGlobal.parseInt( Math.random() * e, 10);
+        int r = JSGlobal.parseInt(Math.random() * e, 10);
         T selected = list.$get(r);
-        if (selected == forbiddenElement){
+        if (selected == forbiddenElement) {
             selected = list.$get(r < e - 1 ? r + 1 : r - 1);
         }
 
         return selected;
     }
 
-    public Function0<Object> EMPTY_FUNCTION = new Function0<Object>() {
+    public static Function0<Object> EMPTY_FUNCTION = new Function0<Object>() {
         @Override
         public Object $invoke() {
             return null;

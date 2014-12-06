@@ -3,6 +3,7 @@ package net.wolfTec.model;
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.database.UnitType;
 import net.wolfTec.utility.Assert;
+import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.annotation.Namespace;
 
 @Namespace("cwt")
@@ -68,7 +69,7 @@ public class Unit implements PlayerObject {
             // unit owners gold depot
             if (diffAsGold == true) {
                 int diff = this.hp - 99;
-                this.owner.gold += Globals.parseInt((this.type.cost * diff) / 100, 10);
+                this.owner.gold += JSGlobal.parseInt((this.type.cost * diff) / 100, 10);
             }
 
 
@@ -160,7 +161,7 @@ public class Unit implements PlayerObject {
      * @returns {number}
      */
     public static int healthToPoints(int health) {
-        return Globals.parseInt(health / 10, 10) + 1;
+        return JSGlobal.parseInt(health / 10, 10) + 1;
     }
 
     /**

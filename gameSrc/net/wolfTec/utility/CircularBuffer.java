@@ -2,6 +2,7 @@ package net.wolfTec.utility;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.annotation.Template;
 
 /**
  * An implementation of the concept of a circular buffer. Internally a circular buffer has a fixed size that makes
@@ -24,6 +25,11 @@ public class CircularBuffer<T> {
         this.size = 0;
         this.data = JSCollections.$array();
         this.maxSize = maxSize;
+    }
+
+    @Template("toProperty")
+    public int getSize () {
+        return this.size;
     }
 
     /**
