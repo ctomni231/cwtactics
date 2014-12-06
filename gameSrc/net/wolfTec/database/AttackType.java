@@ -5,8 +5,8 @@ import org.stjs.javascript.Map;
 
 public class AttackType {
 
-    public int minrange;
-    public int maxrange;
+    public Integer minrange;
+    public Integer maxrange;
     public Map<String,Integer> mainWeapon;
     public Map<String,Integer> secondaryWeapon;
 

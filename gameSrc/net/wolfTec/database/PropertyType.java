@@ -8,6 +8,10 @@ public class PropertyType extends ObjectType<PropertyType> {
     public int vision;
     public int capturePoints;
     public boolean visionBlocker;
+    public Object rocketsilo;
+    public Object builds;
+    public boolean looseAfterCaptured;
+    public boolean blocker;
 
     @Override
     public void validate() {

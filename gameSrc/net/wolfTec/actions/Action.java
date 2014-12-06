@@ -1,7 +1,6 @@
 package net.wolfTec.actions;
 
 import net.wolfTec.enums.Relationship;
-import net.wolfTec.model.StateData;
 import net.wolfTec.states.StateData;
 import net.wolfTec.utility.Assert;
 import net.wolfTec.utility.ObjectUtil;
@@ -53,6 +52,8 @@ public class Action {
      */
     public final String key;
 
+    public boolean hasSubMenu;
+
     public Action.MovingAction positionUpdateMode;
 
     /**
@@ -103,19 +104,35 @@ public class Action {
      */
     public boolean noAutoWait;
 
+    /**
+     *
+     */
     public SourceToTarget mappingForUnit;
+
+    /**
+     *
+     */
     public Array<Relationship> relationToUnit;
 
+    /**
+     *
+     */
     public SourceToTarget mappingForProperty;
+
+    /**
+     *
+     */
     public Array<Relationship> relationToProperty;
 
+    /**
+     *
+     */
     public Callback2<StateData, ActionData> prepareActionData;
 
     /**
      * Invokes the action with a given set of arguments.
      */
     public Callback1<ActionData> invoke;
-
 
     public Action (String key) {
         Assert.notEmpty(key);
@@ -130,9 +147,12 @@ public class Action {
         this.multiStepAction = false;
         this.prepareSelection = null;
         this.targetSelectionType = TargetSelectionType.BEFORE_SUB_ACTION;
+        this.relationToUnit = null;
+        this.relationToProperty = null;
         this.mappingForProperty = null;
         this.mappingForUnit = null;
         this.noAutoWait = false;
         this.invoke = null;
+        this.hasSubMenu = false;
     }
 }

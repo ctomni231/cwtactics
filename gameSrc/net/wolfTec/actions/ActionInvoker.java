@@ -1,12 +1,19 @@
 package net.wolfTec.actions;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
+import net.wolfTec.Constants;
+import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.utility.CircularBuffer;
+import net.wolfTec.utility.Debug;
 import org.stjs.javascript.Array;
+import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 
 public class ActionInvoker {
+
+    public static final String LOG_HEADER = Constants.logHeader("action.invoker");
 
     /**
      * List of all available actions.
@@ -37,12 +44,11 @@ public class ActionInvoker {
     }
 
     /**
-     *
      * @param json
      * @return
      */
     public ActionData fromJSON(String json) {
-        Map<String, ?> action = Globals.JSON.parse(json);
+        Map<String, ?> action = (Map<String, ?>) Global.JSON.parse(json);
         ActionData data = backPool.popLast();
 
         // copy data
@@ -59,19 +65,25 @@ public class ActionInvoker {
     }
 
     /**
-     *
      * @param data
      * @return
      */
     public String toJSON(ActionData data) {
-        Array<?> toBeSerialized = JSCollections.$array( data.key,
+        Array<?> toBeSerialized = JSCollections.$array(data.key,
                 data.p1, data.p2, data.p3, data.p4, data.p5, data.pStr);
 
-        return Globals.JSON.stringify(toBeSerialized);
+        return Global.JSON.stringify(toBeSerialized);
     }
 
 
     /**
+     * Adds the action with a given set of arguments to the action stack.
+     * <p/>
+     * Every parameter of the call will be submitted beginning from index 1 of the
+     * arguments. The maximum amount of parameters are controlled by the controller.commandStack_MAX_PARAMETERS property.
+     * Anyway every parameter should be an integer to support intelligent JIT compiling. The function throws a warning if
+     * a parameter type does not match, but it will be accepted anyway ** ( for now! ) **.
+     *
      * @param key
      * @param p1
      * @param p2
@@ -81,39 +93,27 @@ public class ActionInvoker {
      * @param asHead the action will be inserted as head (called as next command) if true,
      *               else as tail (called at last)
      */
-    public void localAction(key, p1, p2, p3, p4, p5, asHead) {
-        if (arguments.length > 6) debug.logCritical("IllegalNumberOfArgumentsException");
-
-        var actionData = pool.popLast();
+    public void localAction(String key, int p1, int p2, int p3, int p4, int p5, boolean asHead) {
+        ActionData actionData = backPool.popLast();
 
         // insert data into the action object
-        actionData.id = exports.getActionId(key);
-        actionData.p1 = p1 != = undefined ? p1 : constants.INACTIVE;
-        actionData.p2 = p2 != = undefined ? p2 : constants.INACTIVE;
-        actionData.p3 = p3 != = undefined ? p3 : constants.INACTIVE;
-        actionData.p4 = p4 != = undefined ? p4 : constants.INACTIVE;
-        actionData.p5 = p5 != = undefined ? p5 : constants.INACTIVE;
+        actionData.key = getActionId(key);
+        actionData.p1 = p1;
+        actionData.p2 = p2;
+        actionData.p3 = p3;
+        actionData.p4 = p4;
+        actionData.p5 = p5;
 
-        debug.logInfo("append action " + actionData + " as " + (asHead ? "head" : "tail") + " into the stack");
+        Debug.logInfo(null, "append action " + actionData + " as " + (asHead ? "head" : "tail") + " into the stack");
 
-        buffer[asHead ? "pushInFront" : "push"] (actionData);
+        if (asHead) {
+            buffer.pushInFront(actionData);
+        } else {
+            buffer.push(actionData);
+        }
     }
 
-    /**
-     * Adds the action with a given set of arguments to the action stack.
-     * <p/>
-     * Every parameter of the call will be submitted beginning from index 1 of the
-     * arguments. The maximum amount of parameters are controlled by the controller.commandStack_MAX_PARAMETERS property.
-     * Anyway every parameter should be an integer to support intelligent JIT compiling. The function throws a warning if
-     * a parameter type does not match, but it will be accepted anyway ** ( for now! ) **.
-     */
-    public void localAction(key, p1, p2, p3, p4, p5) {
-        localAction(key, p1, p2, p3, p4, p5, false);
-    }
-
-    public void localActionLIFO = function(key, p1, p2, p3, p4, p5)
-
-    {
+    public void localActionLIFO(String key, int p1, int p2, int p3, int p4, int p5) {
         localAction(key, p1, p2, p3, p4, p5, true);
     }
 
@@ -121,56 +121,55 @@ public class ActionInvoker {
      * Adds the action with a given set of arguments to the action stack and
      * shares the the call with all other clients.
      */
-    public void sharedAction() {
-        if (network.isActive()) {
-            network.sendMessage(JSON.stringify(Array.prototype.slice.call(arguments)));
+    public void sharedAction(String key, int p1, int p2, int p3, int p4, int p5) {
+        if (CustomWarsTactics.netMessageRouter.isActive()) {
+            CustomWarsTactics.netMessageRouter.sendMessage(
+                    Global.JSON.stringify(JSCollections.$array(actionIds.$get(key), p1, p2, p3, p4, p5)) );
         }
 
-        exports.localAction.apply(null, arguments);
+        localAction(key, p1, p2, p3, p4, p5, false);
     }
 
     /**
      * Parses an action message and pushes it into the command stack.
      */
     public void parseActionMessage(String msg) {
-        var data = JSON.parse(msg);
+        Array<Integer> data = (Array<Integer>) Global.JSON.parse(msg);
 
-        if (!Array.isArray(data) || !data.length) {
+        if (data.$length() == 0) {
             throw new Error("IllegalActionFormatException");
         }
 
-        exports.localAction.apply(null, data);
+        localAction(actions.$get(data.$get(0)).key, data.$get(1), data.$get(2), data.$get(3), data.$get(4), data.$get(5), false);
     }
 
     /**
      * Returns a list of all registered actions.
      */
-    public void getActions = function()
-
-    {
+    public Array<Action> getActions() {
         return actions;
     }
 
     /**
      * Returns the action which has the given key ID.
      */
-    public void getAction(key) {
-        return actions[actionIds[key]];
+    public Action getAction(String key) {
+        return actions.$get(actionIds.$get(key));
     }
 
     /**
      * Gets the numeric ID of an action object.
      */
-    public int getActionId(key) {
-        return actionIds[key];
+    public int getActionId(String key) {
+        return actionIds.$get(key);
     }
 
     /**
      * Resets the buffer object.
      */
     public void resetData() {
-        while (exports.hasData()) {
-            pool.push(buffer.pop());
+        while (hasData()) {
+            backPool.push(buffer.popLast());
         }
     }
 
@@ -185,18 +184,20 @@ public class ActionInvoker {
      * Invokes the next command in the command stack. Throws an error when the command stack is empty.
      */
     public void invokeNext() {
-        var data = buffer.popFirst();
-        if (!data) debug.logCritical("NullPointerException");
+        ActionData data = buffer.popFirst();
+        if (data == null) {
+            Debug.logCritical(LOG_HEADER, "NullPointerException");
+        }
 
-        var actionObj = actions[data.id];
+        Action actionObj = actions.$get(data.key);
 
-        debug.logInfo("evaluating action data object " + data + "(" + actionObj.key + ")");
+        Debug.logInfo(LOG_HEADER, "evaluating action data object " + data + "(" + actionObj.key + ")");
 
-        actionObj.invoke(data.p1, data.p2, data.p3, data.p4, data.p5);
+        actionObj.invoke.$invoke(data);
 
         // cache used object
         data.reset();
-        pool.push(data);
+        backPool.push(data);
     }
 
     /**

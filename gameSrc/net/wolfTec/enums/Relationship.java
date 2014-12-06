@@ -30,11 +30,5 @@ public enum Relationship {
     /**
      * Means at least one of the two arguments is null.
      */
-    RELATION_NONE,
-
-    /**
-     * Indicates a wish to check in the hierarchical way. First try to extract the unit owner and then the property
-     * owner when no unit exists.
-     */
-    CHECK_NORMAL
+    RELATION_NONE
 }

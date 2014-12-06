@@ -1,6 +1,8 @@
 package net.wolfTec.model;
 
+import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.bridges.Globals;
+import net.wolfTec.database.AttackType;
 import net.wolfTec.database.UnitType;
 import net.wolfTec.utility.Assert;
 import org.stjs.javascript.JSGlobal;
@@ -8,6 +10,29 @@ import org.stjs.javascript.annotation.Namespace;
 
 @Namespace("cwt")
 public class Unit implements PlayerObject {
+
+    public enum BattleType {
+
+        /**
+         * Direct fire type that can fire from range 1 to 1.
+         */
+        DIRECT,
+
+        /**
+         * Indirect fire type that can fire from range 2 to x.
+         */
+        INDIRECT,
+
+        /**
+         * Ballistic fire type that can fire from range 1 to x.
+         */
+        BALLISTIC,
+
+        /**
+         * Signal for units that cannot attack.
+         */
+        NONE
+    }
 
     public int hp;
     public int ammo;
@@ -31,6 +56,16 @@ public class Unit implements PlayerObject {
         this.loadedIn = null;
         this.canAct = false;
     }
+
+    /**
+     * Returns **true** when a **unit** can capture a properties, else **false**.
+     *
+     * @return
+     */
+    public boolean canCapture () {
+        return type.captures > 0;
+    }
+
 
     /**
      * @return {boolean}
@@ -177,5 +212,146 @@ public class Unit implements PlayerObject {
     @Override
     public Player getOwner() {
         return owner;
+    }
+
+    /**
+     * Returns true if the **unit** has a main weapon, else false.
+     *
+     * @return
+     */
+    public boolean hasMainWeapon() {
+        AttackType attack = type.attack;
+        return (attack != null && attack.mainWeapon != null);
+    }
+
+    /**
+     * Returns true if the **unit** has a secondary weapon, else false.
+     *
+     * @return
+     */
+    public boolean hasSecondaryWeapon() {
+        AttackType attack = type.attack;
+        return (attack != null && attack.secondaryWeapon != null);
+    }
+
+    /**
+     * Returns **true** if a given **unit** is an direct unit else **false**.
+     *
+     * @return
+     */
+    public boolean isDirect() {
+        return getFireType() == BattleType.DIRECT;
+    }
+
+    /**
+     * Returns **true** if a given **unit** is an indirect unit ( *e.g. artillery* ) else **false**.
+     *
+     * @return
+     */
+    public boolean isIndirect() {
+        return getFireType() == BattleType.INDIRECT;
+    }
+
+    /**
+     * Returns **true** if a given **unit** is an ballistic unit ( *e.g. anti-tank-gun* ) else **false**.
+     *
+     * @return
+     */
+    public boolean isBallistic() {
+        return getFireType() == BattleType.BALLISTIC;
+    }
+
+    /**
+     * Returns **true** if an **attacker** can use it's main weapon against a **defender**. The distance will not
+     * checked in case of an indirect attacker.
+     *
+     * @param defender
+     * @return
+     */
+    public boolean canUseMainWeapon(Unit defender) {
+        AttackType attack = type.attack;
+        if (attack.mainWeapon != null && ammo > 0) {
+            Integer value = attack.mainWeapon.$get(defender.type.ID);
+            if (value != null && value > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns the fire type of a given **unit**.
+     *
+     * The fire type will be determined by the following situations. All other situations (which aren't in the
+     * following table) aren't allowed due the game rules.
+     *
+     * Min-Range == 1  => Ballistic
+     * Min-Range  > 1  => Indirect
+     * No Min-Range    => Direct
+     * Only Secondary  => Direct
+     *
+     * @return
+     */
+    public BattleType getFireType() {
+        if (!hasMainWeapon() && !hasSecondaryWeapon()) {
+            return BattleType.NONE;
+        }
+
+        int min = type.attack.minrange;
+        if (min == 1) {
+            return BattleType.DIRECT;
+
+        } else {
+            return (min > 1 ? BattleType.INDIRECT : BattleType.BALLISTIC);
+        }
+    }
+
+    /**
+     * @return true if the unit with id tid is a transporter, else false.
+     */
+    public boolean isTransportUnit () {
+        return (type.maxloads > 0);
+    }
+
+    /**
+     * Has a transporter unit with id tid loaded units?
+
+     * @return {boolean} true if yes, else false.
+     */
+    public boolean hasLoads () {
+        for (int i = 0, e = model.units.length; i < e; i++) {
+            if (loadedIn == model.units[i]) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns **true** when the given **unit** is the mechanical laser trigger, else **false**.
+     *
+     * @return
+     */
+    public boolean isLaser () {
+        return (type.ID == CustomWarsTactics.LASER_UNIT_INV);
+    }
+
+    /**
+     * Returns **true** if a given **unit** is a cannon trigger unit, else **false**.
+     *
+     * @return
+     */
+    public boolean isCannonUnit () {
+        return (type.ID == CustomWarsTactics.CANNON_UNIT_INV);
+    }
+
+    /**
+     * @return **true** if a given **unit** is a supplier, else **false**.
+     *
+     * @param {Unit} unit
+     */
+    public boolean isSupplier () {
+        return type.supply != JSGlobal.undefined;
     }
 }

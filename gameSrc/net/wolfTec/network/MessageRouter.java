@@ -46,7 +46,7 @@ public class MessageRouter {
     /**
      * Sends a given action data object into data object and sends it to the game server.
      */
-    public void sendMessage (ActionData actionData) {
+    public void sendMessage (String message) {
         Debug.logCritical(LOG, "NotImplementedYetException");
     }
 }

@@ -9,12 +9,6 @@ var model = require("./model");
 var debug = require("./debug");
 var util = require("./utility");
 
-// --------------------------------------------------------------------------------------------------------
-
-
-
-// --------------------------------------------------------------------------------------------------------
-
 // some config objects
 var cfgRandomDays = require("../config").getConfig("weatherRandomDays");
 var cfgMinDays = require("../config").getConfig("weatherMinDays");
@@ -59,32 +53,6 @@ exports.changeWeatherAction = {
 
 // --------------------------------------------------------------------------------------------------------
 
-/**
- * @param {Unit} unit
- * @return true if the unit with id tid is a transporter, else false.
- */
-exports.isTransportUnit = function (unit) {
-    if (constants.DEBUG) assert(unit instanceof model.Unit);
-    return (unit.type.maxloads > 0);
-};
-
-/**
- * Has a transporter unit with id tid loaded units?
- *
- * @param {Unit} unit
- * @return {boolean} true if yes, else false.
- */
-exports.hasLoads = function (unit) {
-    if (constants.DEBUG) assert(unit instanceof model.Unit);
-
-    for (var i = 0, e = model.units.length; i < e; i++) {
-        if (unit.loadedIn === model.units[i]) {
-            return true;
-        }
-    }
-
-    return false;
-};
 
 /**
  * Returns true if a transporter with id tid can loadGameConfig the unit with the id lid.
@@ -244,67 +212,9 @@ exports.actionLoad = {
 // --------------------------------------------------------------------------------------------------------
 
 
-/**
- * Different available money transfer steps.
- *
- * @inner
- */
-var MONEY_TRANSFER_STEPS = [
-    1000,
-    2500,
-    5000,
-    10000,
-    25000,
-    50000
-];
-
-/**
- * Returns `true` when a player can transfer money to a tile owner.
- *
- * @param player
- * @param x
- * @param y
- * @returns {*}
- */
-exports.canTransferMoney = function (player, x, y) {
-    if (player.gold < MONEY_TRANSFER_STEPS[0]) {
-        return false;
-    }
-
-    // only transfer money on headquarters
-    var property = model.getTile(x, y).property;
-    return (property && property.type.looseAfterCaptured && property.owner !== player);
-};
-
-/**
- * Returns `true` when a player can transfer money to a tile owner.
- *
- * @param player
- * @param menuObject
- */
-exports.getTransferMoneyTargets = function (player, menuObject) {
-    var i, e;
-    for (i = 0, e = MONEY_TRANSFER_STEPS.length; i < e; i++) {
-        if (player.gold >= MONEY_TRANSFER_STEPS[i]) {
-            menuObject.addEntry(MONEY_TRANSFER_STEPS[i]);
-        }
-    }
-};
-
-/**
- * Transfers money from one player to another player.
- *
- * @param playerA
- * @param playerB
- * @param money
- */
-exports.transferMoney = function (playerA, playerB, money) {
-    playerA.gold -= money;
-    playerB.gold += money;
-
-    // the amount of gold cannot be lower 0 after the transfer
-    assert(playerA.gold >= 0);
-};
+              //  Debug.logInfo(null, "Send unit " + actionData.p1 + " into wait status");
+                //  CustomWarsTactics.gameround.units.$get(actionData.p1).setActable(false);
+                //renderer.renderUnitsOnScreen();
 
 /**
  *
@@ -475,12 +385,6 @@ exports.action = {
 // --------------------------------------------------------------------------------------------------------
 
 
-// Returns **true** when the given **unit** is the mechanical laser trigger, else **false**.
-//
-exports.isLaser = function (unit) {
-    if (constants.DEBUG) assert(unit instanceof model.Unit);
-    return (unit.type.ID === sheets.LASER_UNIT_INV);
-};
 
 // Fires a laser at a given position (**x**,**y**).
 //
@@ -517,14 +421,6 @@ exports.fireLaser = function (x, y) {
     }
 };
 
-//
-// Returns true if a property id is a rocket silo. A rocket silo has the ability to fire a rocket to a
-// position with an impact.
-//
-exports.isRocketSilo = function (property) {
-    if (constants.DEBUG) assert(property instanceof model.Property);
-    return (property.type.rocketsilo != undefined);
-};
 
 //
 // Returns **true** when a silo **property** can be triggered by a given **unit**. If not, **false** will be returned.
@@ -619,17 +515,6 @@ require('../actions').unitAction({
         );
     }
 });
-
-//
-// Returns **true** if a given **unit** is a cannon trigger unit, else **false**.
-//
-exports.isCannonUnit = function (unit) {
-    if (cwt.DEBUG) {
-        cwt.assert(unit instanceof cwt.UnitClass);
-    }
-
-    return (unit.type.ID === cwt.DataSheets.CANNON_UNIT_INV);
-};
 
 //
 // Returns **true** when a cannon trigger unit is at a given position (**x**,**y**) and has targets in it's range,
@@ -882,14 +767,7 @@ exports.actionUnhide = {
 // --------------------------------------------------------------------------------------------------------
 
 
-/**
- * @return **true** if a given **unit** is a supplier, else **false**.
- *
- * @param {Unit} unit
- */
-exports.isSupplier = function(unit) {
-    return unit.type.supply;
-};
+
 
 /**
  * Returns **true** if a supplier at a given position (**x**,**y**) has
@@ -1046,15 +924,6 @@ exports.actionHealUnit = {
 // --------------------------------------------------------------------------------------------------------
 
 var cfgUnitLimit = require("../config").getConfig("unitLimit");
-
-//
-// Returns **true** when the given **property** is a factory, else **false**.
-//
-exports.isFactory = function (property) {
-    if (constants.DEBUG) assert(property instanceof model.Property);
-
-    return (property.type.builds !== undefined);
-};
 
 //
 // Returns **true** when the given **property** is a factory and can produce something technically, else **false**.
@@ -1427,20 +1296,6 @@ exports.action = {
 
 var cfgNoUnitsLeftLoose = require("../config").getConfig("noUnitsLeftLoose");
 
-/**
- * Returns an inactive **unit object** or **null** if every slot in the unit list is used.
- *
- * @returns {*}
- */
-exports.getInactiveUnit = function () {
-    var i, e;
-    for (i = 0, e = model.units.length; i < e; i++) {
-        if (!model.units[i].owner) {
-            return model.units[i];
-        }
-    }
-    return null;
-};
 
 //
 //
@@ -2654,37 +2509,6 @@ exports.actionActivate = {
  });
  */
 
-// --------------------------------------------------------------------------------------------------------
-
-
-/**
- * Returns **true** when a **unit** can capture a properties, else **false**.
- *
- * @param unit
- * @returns {boolean}
- */
-exports.canCapture = function (unit) {
-    if (!unit instanceof model.Unit) {
-        throw new Error("IllegalArgumentType");
-    }
-
-    return (unit.type.captures > 0);
-};
-
-/**
- * Returns **true** when a **property** can be captured, else **false**.
- *
- * @param property
- * @returns {boolean}
- */
-exports.canBeCaptured = function (property) {
-    if (!property instanceof model.Property) {
-        throw new Error("IllegalArgumentType");
-    }
-
-    return (property.type.capturePoints > 0);
-};
-
 /**
  * The **unit** captures the **property**. When the capture points of the **property** falls down to zero, then
  * the owner of the **property** changes to the owner of the capturing **unit** and **true** will be returned. If
@@ -2729,24 +2553,7 @@ exports.action = {
     }
 };
 
-// --------------------------------------------------------------------------------------------------------
 
-
-// Signal for units that cannot attack.
-//
-exports.FIRETYPE_NONE = 0;
-
-// Indirect fire type that can fire from range 2 to x.
-//
-exports.FIRETYPE_INDIRECT = 1;
-
-// Direct fire type that can fire from range 1 to 1.
-//
-exports.FIRETYPE_DIRECT = 2;
-
-// Ballistic fire type that can fire from range 1 to x.
-//
-exports.FIRETYPE_BALLISTIC = 3;
 
 exports.ATTACKABLE = 1;
 
@@ -2754,84 +2561,7 @@ exports.MOVE_AND_ATTACKABLE = 2;
 
 exports.MOVABLE = 3;
 
-//
-// Returns true if the **unit** has a main weapon, else false.
-//
-exports.hasMainWeapon = function (unit) {
-    var attack = unit.type.attack;
-    return (attack && attack.main_wp);
-};
 
-//
-// Returns true if the **unit** has a secondary weapon, else false.
-//
-exports.hasSecondaryWeapon = function (unit) {
-    var attack = unit.type.attack;
-    return (attack && attack.sec_wp);
-};
-
-// Returns **true** if a given **unit** is an direct unit else **false**.
-//
-exports.isDirect = function (unit) {
-    return exports.getFireType(unit) === this.FIRETYPE_DIRECT;
-};
-
-// Returns **true** if a given **unit** is an indirect unit ( *e.g. artillery* ) else **false**.
-//
-exports.isIndirect = function (unit) {
-    return exports.getFireType(unit) === this.FIRETYPE_INDIRECT;
-};
-
-// Returns **true** if a given **unit** is an ballistic unit ( *e.g. anti-tank-gun* ) else **false**.
-//
-exports.isBallistic = function (unit) {
-    return exports.getFireType(unit) === this.FIRETYPE_BALLISTIC;
-};
-
-// Returns the fire type of a given **unit**.
-//
-exports.getFireType = function (unit) {
-    if (!exports.hasMainWeapon(unit) && !exports.hasSecondaryWeapon(unit)) {
-        return exports.FIRETYPE_NONE;
-    }
-
-    // The fire type will be determined by the following situations. All other situations (which aren't in the
-    // following table) aren't allowed due the game rules.
-    //
-    // Min-Range === 1 --> Ballistic
-    // Min-Range   > 1 --> Indirect
-    // No Min-Range    --> Direct
-    // Only Secondary  --> Direct
-    //
-
-    var min = unit.type.attack.minrange;
-    if (!min) {
-        return exports.FIRETYPE_DIRECT;
-
-    } else {
-        // non-direct units aren't allowed to obtain secondary weapons
-        if (constants.DEBUG) assert(exports.hasMainWeapon(unit), "found non-direct unit with secondary weapon");
-
-        return (min > 1 ? exports.FIRETYPE_INDIRECT : exports.FIRETYPE_BALLISTIC);
-    }
-};
-
-//
-// Returns **true** if an **attacker** can use it's main weapon against a **defender**. The distance will not
-// checked in case of an indirect attacker.
-//
-exports.canUseMainWeapon = function (attacker, defender) {
-    var attack = attacker.type.attack;
-    if (attack.main_wp && this.ammo > 0) {
-        var v = attack.main_wp[defender.type.ID];
-
-        if (v && v > 0) {
-            return true;
-        }
-    }
-
-    return false;
-};
 
 // Returns **true** if an **unit** has targets in sight from a given position (**x**,**y**), else **false**. If
 // **moved** is true, then the given **unit** will move before attack. In case of indirect units this method will

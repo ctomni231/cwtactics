@@ -45,22 +45,25 @@ public class StateData {
      */
     public int cursorY;
 
-    /** */
     public boolean fromIngameToOptions;
 
-    /** */
     public boolean inGameRound;
 
-    /** */
     public boolean multiStepActive;
 
     public boolean inMultiStep;
 
-    public CircularBuffer<Integer> movePath = new CircularBuffer<Integer>(Constants.MAX_MOVE_LENGTH);
+    public CircularBuffer<MoveCode> movePath = new CircularBuffer<MoveCode>(Constants.MAX_MOVE_LENGTH);
 
     public boolean preventMovePathGeneration;
 
     public Integer focusMode = Constants.INACTIVE_ID;
+
+    public StateData() {
+        this.source = new PositionData();
+        this.target = new PositionData();
+        this.targetSelection = new PositionData();
+    }
 
     /**
      *
@@ -97,13 +100,14 @@ public class StateData {
                 break;
         }
 
-        setCursorPosition(x, y);
+        setCursorPosition(x, y, false);
     }
 
     ;
 
     /**
-     * Moves the cursor to a given position. The view will be moved as well with this function to make sure that the cursor is on the visible view.
+     * Moves the cursor to a given position. The view will be moved as well with this function to make sure that
+     * the cursor is on the visible view.
      */
     public void setCursorPosition(int x, int y, boolean relativeToScreen) {
         if (relativeToScreen) {
@@ -147,42 +151,11 @@ public class StateData {
         renderer.renderCursor(cursorX, cursorY);
     }
 
-    ;
-
     public final StateDataSelection selection = new StateDataSelection();
-
-    var checkRelation = function(action, relationList, sMode, stMode)
-
-    {
-        var checkMode;
-
-        switch (relationList[1]) {
-            case "T":
-                checkMode = sMode;
-                break;
-
-            case "ST":
-                checkMode = stMode;
-                break;
-
-            default:
-                checkMode = null;
-        }
-
-        for (var si = 2, se = relationList.length; si < se; si++) {
-            if (relationList[si] == = checkMode) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    ;
 
     public Action selectedAction;
 
-    public Action selectedSubAction;
+    public Object selectedSubEntry;
 
     /**
      * Game menu.
@@ -190,9 +163,9 @@ public class StateData {
     public final StateDataMenu menu = new StateDataMenu(this);
 
     public void nextStep() {
-        exports.movePath.clean();
-        exports.menu.clean();
-        exports.action.object.prepareMenu(exports.movePath);
+        movePath.clear();
+        menu.clean();
+        selectedAction.prepareMenu.$invoke(this);
 
         if (menu.getSize() == 0) {
             CustomWarsTactics.gameWorkflow.changeState("INGAME_IDLE");
@@ -209,115 +182,52 @@ public class StateData {
     }
 
     public void generateTargetSelectionFocus() {
-        prepareTargetsByData(exports.action.object);
+        selectedAction.prepareTargets.$invoke(this, null);
     }
 
     /**
      * Builds several commands from collected action data.
      */
-    public void buildFromData = function()
-
-    {
-        var trapped = false;
+    public boolean buildFromData() {
+        boolean trapped = false;
 
         // TODO check trap (move has to be stopped)
-        if (exports.movePath.size > 0) {
-            trapped = move.trapCheck(exports.movePath, exports.source, exports.target);
+        if (movePath.getSize() > 0) {
+            trapped = move.trapCheck(movePath, source, target);
 
-            actionsLib.sharedAction("moveStart", exports.source.unitId, exports.source.x, exports.source.y);
+            CustomWarsTactics.actionInvoker.sharedAction("moveStart", source.unitId, source.x, source.y,
+                    Constants.INACTIVE_ID, Constants.INACTIVE_ID );
 
-            for (var i = 0, e = exports.movePath.size; i < e; i += 5) {
-                actionsLib.sharedAction("moveAppend",
-                        exports.movePath.size > i ? exports.movePath.get(i) : constants.INACTIVE,
-                        exports.movePath.size > i + 1 ? exports.movePath.get(i + 1) : constants.INACTIVE,
-                        exports.movePath.size > i + 2 ? exports.movePath.get(i + 2) : constants.INACTIVE,
-                        exports.movePath.size > i + 3 ? exports.movePath.get(i + 3) : constants.INACTIVE,
-                        exports.movePath.size > i + 4 ? exports.movePath.get(i + 4) : constants.INACTIVE
+            for (int i = 0, e = movePath.getSize(); i < e; i += 5) {
+                CustomWarsTactics.actionInvoker.sharedAction(
+                        "moveAppend",
+                        movePath.getSize() > i ? MoveCode.toInt(movePath.get(i)) : Constants.INACTIVE_ID,
+                        movePath.getSize() > i + 1 ? MoveCode.toInt(movePath.get(i + 1)) : Constants.INACTIVE_ID,
+                        movePath.getSize() > i + 2 ? MoveCode.toInt(movePath.get(i + 2)) : Constants.INACTIVE_ID,
+                        movePath.getSize() > i + 3 ? MoveCode.toInt(movePath.get(i + 3)) : Constants.INACTIVE_ID,
+                        movePath.getSize() > i + 4 ? MoveCode.toInt(movePath.get(i + 4)) : Constants.INACTIVE_ID
                 );
             }
 
             Action.MovingAction posUpdateMode = selectedAction.positionUpdateMode;
-            actionsLib.sharedAction("moveEnd",
-                    (posUpdateMode == Action.MovingAction.PREVENT_CLEAR_OLD_POS),
-                    (posUpdateMode == Action.MovingAction.PREVENT_SET_NEW_POS));
+            CustomWarsTactics.actionInvoker.sharedAction("moveEnd",
+                    posUpdateMode == Action.MovingAction.PREVENT_CLEAR_OLD_POS ? 1 : 0,
+                    posUpdateMode == Action.MovingAction.PREVENT_SET_NEW_POS ? 1 : 0,
+                    Constants.INACTIVE_ID, Constants.INACTIVE_ID, Constants.INACTIVE_ID );
         }
 
         if (!trapped) {
-            invokeActionByData();
+            selectedAction.prepareActionData.$invoke();
         }
 
         // all unit actions invokes automatically waiting
-        if (trapped || exports.action.object.type == = actionsLib.UNIT_ACTION && !exports.action.object.noAutoWait) {
-            actionsLib.sharedAction("wait", exports.source.unitId);
+        if (trapped || selectedAction.type == Action.ActionType.UNIT_ACTION && !selectedAction.noAutoWait) {
+            CustomWarsTactics.actionInvoker.sharedAction("wait", source.unitId,
+                    Constants.INACTIVE_ID, Constants.INACTIVE_ID, Constants.INACTIVE_ID ,Constants.INACTIVE_ID);
         }
 
         return trapped;
     }
 
-    ;
 
-
-    exports.CHANGE_TYPE=
-
-    {
-        CO_MAIN:
-        0,
-                CO_SIDE:1,
-            GAME_TYPE:2,
-            PLAYER_TYPE:3,
-            TEAM:4
-    }
-
-    ;
-
-    var map = null;
-
-    /**
-     * Data holder to remember selected commanders.
-     */
-    public Array<CoType> co = JSCollections.$array();
-
-    /**
-     * Data holder to remember selected player types.
-     */
-    public Array<Integer> type = JSCollections.$array();
-
-    /**
-     * Data holder to remember selected team settings.
-     */
-    public Array<Integer> team = JSCollections.$array();
-
-    public StateData() {
-        this.source = new PositionData();
-        this.target = new PositionData();
-        this.targetSelection = new PositionData();
-    }
-
-    /**
-     * Changes a configuration parameter.
-     *
-     * @param pid
-     * @param type
-     * @param prev
-     */
-    public void changeParameter(int pid, int type, boolean prev) {
-    }
-
-    public void selectMap(Map<String, Object> sMap) {
-    }
-
-    public Map<String, Object> getSelectMap() {
-    }
-
-    /**
-     * Does some preparations for the configuration screen.
-     */
-    public void preProcess() {
-    }
-
-    /**
-     * Does some preparations for the game round initialization.
-     */
-    public void postProcess() {
-    }
 }

@@ -177,7 +177,6 @@ public class StateDataSelection {
      *
      * @param minValue
      * @param maxValue
-     * @param doItHolder
      */
     public void onAllValidPositions (int minValue, int maxValue, Callback4<Integer, Integer, Integer, Map<String, Object>> cb, Map<String, Object> args ) {
         for (int x = 0; x < SIDE_LENGTH; x++) {

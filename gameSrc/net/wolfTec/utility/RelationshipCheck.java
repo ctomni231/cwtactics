@@ -3,6 +3,7 @@ package net.wolfTec.utility;
 import net.wolfTec.enums.Relationship;
 import net.wolfTec.model.Player;
 import net.wolfTec.model.PlayerObject;
+import net.wolfTec.model.PositionData;
 
 /**
  *
@@ -39,27 +40,27 @@ public class RelationshipCheck {
      * @param checkRight
      * @returns {number}
      */
-    public Relationship getRelationShipTo(PlayerObject left, PlayerObject right,
-                                          RelationshipCheck checkLeft, RelationshipCheck checkRight) {
-        Player oL;
-        Player oR;
+    public static Relationship getRelationShipTo(PositionData left, PositionData right,
+                                          RelationshipCheckMode checkLeft, RelationshipCheckMode checkRight) {
+        Object oL = null;
+        Object oR = null;
 
-        if (checkLeft != exports.CHECK_PROPERTY) {
+        if (checkLeft != RelationshipCheckMode.CHECK_PROPERTY) {
             oL = left.unit;
         }
-        if (checkRight != exports.CHECK_PROPERTY) {
+        if (checkRight != RelationshipCheckMode.CHECK_PROPERTY) {
             oR = right.unit;
         }
 
-        if (!oL && checkLeft != exports.CHECK_UNIT) {
+        if (oL == null && checkLeft != RelationshipCheckMode.CHECK_UNIT) {
             oL = left.property;
         }
-        if (!oR && checkRight != exports.CHECK_UNIT) {
+        if (oR == null && checkRight != RelationshipCheckMode.CHECK_UNIT) {
             oR = right.property;
         }
 
-        if (!oL) {
-            return exports.RELATION_NONE;
+        if (oL == null) {
+            return Relationship.RELATION_NONE;
         }
 
         return getRelationship(oL, oR);
@@ -72,7 +73,7 @@ public class RelationshipCheck {
      * @param objectB
      * @returns {*}
      */
-    public Relationship getRelationship(Object objectA, Object objectB) {
+    public static Relationship getRelationship(Object objectA, Object objectB) {
 
         // one object is null
         if (objectA == null || objectB == null) {
@@ -115,7 +116,7 @@ public class RelationshipCheck {
      * @param relationship
      * @returns {boolean}
      */
-    public boolean hasUnitNeighbourWithRelationship(player, x, y, relationship) {
+    public static boolean hasUnitNeighbourWithRelationship(player, x, y, relationship) {
         if (!model.isValidPosition(x, y) || !player instanceof model.Player) {
             throw new Error("IllegalArgumentType");
         }

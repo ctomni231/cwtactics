@@ -93,6 +93,20 @@ public class GameRound {
         }
     }
 
+    /**
+     * Returns an inactive **unit object** or **null** if every slot in the unit list is used.
+     *
+     * @returns {*}
+     */
+    public Unit getInactiveUnit () {
+        for (int i = 0, e = units.$length(); i < e; i++) {
+            if (units.$get(i).owner == null) {
+                return units.$get(i);
+            }
+        }
+        return null;
+    }
+
     public Player getPlayer(int id) {
         if (id < 0 || id >= players.$length()) {
             throw new Error("InvalidPlayerIdException");
@@ -117,7 +131,6 @@ public class GameRound {
 
     /**
      * @param id
-     * @returns {boolean}
      */
     public boolean isValidUnitId(int id) {
         return (id >= 0 && id < units.$length());
@@ -125,7 +138,6 @@ public class GameRound {
 
     /**
      * @param id
-     * @returns {boolean}
      */
     public boolean isValidPropertyId(int id) {
         return (id >= 0 && id < properties.$length());
@@ -141,7 +153,6 @@ public class GameRound {
      *
      * @param x
      * @param y
-     * @returns {boolean}
      */
     public boolean isValidPosition(int x, int y) {
         return (x >= 0 && y >= 0 && x < mapWidth && y < mapHeight);
@@ -151,7 +162,6 @@ public class GameRound {
      * Returns true if the given player id is the current turn owner.
      *
      * @param player
-     * @returns {boolean}
      */
     public boolean isTurnOwner(Player player) {
         return turnOwner == player;
@@ -159,7 +169,6 @@ public class GameRound {
 
     /**
      * @param obj
-     * @return
      */
     public boolean isTurnOwnerObject(PlayerObject obj) {
         return isTurnOwner(obj.getOwner());
@@ -169,7 +178,6 @@ public class GameRound {
      * Converts a number of days into turns.
      *
      * @param days
-     * @returns {number}
      */
     public int convertDaysToTurns(int days) {
         return Constants.MAX_PLAYER * days;
@@ -177,8 +185,6 @@ public class GameRound {
 
     /**
      * Returns `true` when the game is in the peace phase.
-     *
-     * @returns {boolean}
      */
     public boolean inPeacePhase() {
         return (day < CustomWarsTactics.configs.$get("daysOfPeace").getValue());
@@ -186,8 +192,6 @@ public class GameRound {
 
     /**
      * Returns `true` when at least two opposite teams are left, else `false`.
-     *
-     * @returns {boolean}
      */
     public boolean areEnemyTeamsLeft() {
         Player player;
@@ -274,15 +278,22 @@ public class GameRound {
      * @param {boolean}  needsProperty the callback will be called only if there is a property on it
      * @param {Player}   wantedOwner wanted owner of the property/unit
      */
-    public void onEachTile(Callback3<Integer, Integer, Tile> cb, boolean needsUnit, boolean needsProperty, boolean wantedOwner) {
+    public void onEachTile(Callback3<Integer, Integer, Tile> cb, boolean needsUnit, boolean needsProp, Player wantedOwner) {
         for (int x = 0, xe = mapWidth; x < xe; x++) {
             for (int y = 0, ye = mapHeight; y < ye; y++) {
                 Tile tile = map.getTile(x, y);
 
-                if (needsUnit && (tile.unit == null ||
-                        (wantedOwner && tile.unit.getOwner() != wantedOwner))) continue;
-                if (needsProperty && (tile.property == null ||
-                        (wantedOwner && tile.property.getOwner() != wantedOwner))) continue;
+                if (needsUnit ) {
+                    if (tile.unit == null || (wantedOwner != null && tile.unit.getOwner() != wantedOwner)) {
+                        continue;
+                    }
+                }
+
+                if (needsProp){
+                    if (tile.property == null || (wantedOwner != null && tile.property.getOwner() != wantedOwner)) {
+                        continue;
+                    }
+                }
 
                 cb.$invoke(x, y, tile);
             }

@@ -15,6 +15,7 @@ import net.wolfTec.network.MessageRouter;
 import net.wolfTec.renderer.Sprite;
 import net.wolfTec.renderer.SpriteDatabase;
 import net.wolfTec.renderer.TileVariantCalculator;
+import net.wolfTec.states.GameRoundSetup;
 import net.wolfTec.states.StateData;
 import net.wolfTec.states.Statemachine;
 import net.wolfTec.utility.Audio;
@@ -30,16 +31,34 @@ import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.stjs.STJS;
 
 /**
- * Central mediator (monolithic)
+ * Central mediator (monolithic). Every service, data holder etc. can be accessed by this object. A direct access
+ * between modules should be disallowed to prevent strict coupling.
  */
-public class CustomWarsTactics {
+public abstract class CustomWarsTactics {
 
+    /**
+     *
+     */
     public static final String LOG_HEADER = Constants.logHeader("cwtMediator");
 
+    /**
+     *
+     */
     public static final String CANNON_UNIT_INV = "CANNON_UNIT_INV";
+
+    /**
+     *
+     */
     public static final String LASER_UNIT_INV = "LASER_UNIT_INV";
+
+    /**
+     *
+     */
     public static final String PROP_INV = "PROP_INV";
 
+    /**
+     *
+     */
     public static final org.stjs.javascript.Map<String, Config> configs;
 
     /**
@@ -87,18 +106,39 @@ public class CustomWarsTactics {
      */
     public static final ActionInvoker actionInvoker;
 
+    /**
+     *
+     */
     public static final InputHandler inputHandler;
 
+    /**
+     *
+     */
     public static final TileVariantCalculator variantCalculator;
 
+    /**
+     *
+     */
     public static final MessageRouter netMessageRouter;
 
+    /**
+     *
+     */
     public static final Statemachine gameWorkflow;
 
+    /**
+     *
+     */
     public static final Localization i18n;
 
+    /**
+     *
+     */
     public static final AiHandler ai;
 
+    /**
+     *
+     */
     public static final LoadingHandler loadingHandler;
 
     /**
@@ -111,24 +151,33 @@ public class CustomWarsTactics {
      */
     public static final Features features;
 
+    /**
+     *
+     */
     private static final SpriteDatabase spriteDb;
 
+    /**
+     *
+     */
     public static final StateData gameWorkflowData;
+
+    /**
+     *
+     */
+    public static final GameRoundSetup gameRoundSetup;
 
     // Construction of the mediator
     static {
         Debug.logInfo(LOG_HEADER, "Initialize...");
 
-        final STJS helper = JSGlobal.stjs;
-
         Debug.logInfo(LOG_HEADER, "Setup database objects");
-        unitTypeDb = generateDatabase(helper, UnitType.class);
-        propertyTypeDb = generateDatabase(helper, PropertyType.class);
-        weatherTypeDb = generateDatabase(helper, WeatherType.class);
-        armyTypeDb = generateDatabase(helper, ArmyType.class);
-        moveTypeDb = generateDatabase(helper, MoveType.class);
-        tileTypeDb = generateDatabase(helper, TileType.class);
-        coTypeDb = generateDatabase(helper, CoType.class);
+        unitTypeDb = generateDatabase(UnitType.class);
+        propertyTypeDb = generateDatabase(PropertyType.class);
+        weatherTypeDb = generateDatabase(WeatherType.class);
+        armyTypeDb = generateDatabase(ArmyType.class);
+        moveTypeDb = generateDatabase(MoveType.class);
+        tileTypeDb = generateDatabase(TileType.class);
+        coTypeDb = generateDatabase(CoType.class);
         registerDefaultObjects();
 
         Debug.logInfo(LOG_HEADER, "Setup game model");
@@ -147,6 +196,7 @@ public class CustomWarsTactics {
         i18n = new Localization();
         spriteDb = new SpriteDatabase();
         gameWorkflowData = new StateData();
+        gameRoundSetup = new GameRoundSetup();
 
         Debug.logInfo(LOG_HEADER, "Setup input backends");
         inputHandler.backends.$put("keyboards",
@@ -228,16 +278,15 @@ public class CustomWarsTactics {
     /**
      * Creates a database object for a given object type class.
      *
-     * @param helper ST-JS helper object
      * @param clazz  Type sheet class
      * @param <T>    type that extends ObjectType
      * @return Database object
      */
-    private static <T extends ObjectType> Database<T> generateDatabase(final STJS helper, final Class<T> clazz) {
+    private static <T extends ObjectType> Database<T> generateDatabase(final Class<T> clazz) {
         Debug.logInfo(LOG_HEADER, "Generating database for " + clazz.getSimpleName());
         return new Database<T>() {
             @Override public T parseJSON(String data) {
-                return helper.parseJSON(data, clazz);
+                return JSGlobal.stjs.parseJSON(data, clazz);
             }
         };
     }
@@ -264,10 +313,6 @@ public class CustomWarsTactics {
 
     public static Sprite getSprite (String id) {
         return spriteDb.sprites.$get(id);
-    }
-
-    public static void logCriticalWithError(String header, String msg, Exception e) {
-        if (Constants.DEBUG) Debug.logCriticalWithError(header,msg,e);
     }
 
     public static void main(String[] args) {

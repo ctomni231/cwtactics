@@ -7,13 +7,29 @@ import org.stjs.javascript.Map;
 
 public abstract class Constants {
 
+    /**
+     * Current version of the running CustomWars: Tactics.
+     */
     public static final String VERSION = "0.3.799-b1";
 
+    /**
+     *
+     */
     public static final int INACTIVE_ID = -1;
 
+    /**
+     *
+     */
     public static final int CAPTURE_POINTS = 20;
+
+    /**
+     *
+     */
     public static final int CAPTURE_PER_STEP = 10;
 
+    /**
+     *
+     */
     public static final int INPUT_STACK_BUFFER_SIZE = 10;
 
     /**
@@ -37,7 +53,9 @@ public abstract class Constants {
      */
     public static final String MOD_PATH = "http://localhost:8000/";
 
-    /** */
+    /**
+     *
+     */
     public static final String DEFAULT_MOD_PATH = "http://localhost:8000/modifications/cwt.json";
 
     /**
@@ -50,7 +68,9 @@ public abstract class Constants {
      */
     public static final int DESELECT_ID = -2;
 
-    /** */
+    /**
+     *
+     */
     public static final int NOT_AVAILABLE = -2;
 
     /**
@@ -93,12 +113,19 @@ public abstract class Constants {
      */
     public static final int MAX_UNITS = 50;
 
-    /** */
+    /**
+     *
+     */
     public static final int MAX_SELECTION_RANGE = 15;
 
-    /** */
+    /**
+     *
+     */
     public static final int ACTION_POOL_SIZE = 200;
 
+    /**
+     *
+     */
     private static final Map<String, String> logHeaders = JSCollections.$map();
 
     static {
@@ -110,6 +137,11 @@ public abstract class Constants {
         logHeaders.$put("statemachine", "STATEM");
     }
 
+    /**
+     *
+     * @param key
+     * @return
+     */
     public static String logHeader(String key) {
         String s = logHeaders.$get(key);
         return s != JSGlobal.undefined ? s : logHeaders.$get("unknown");
