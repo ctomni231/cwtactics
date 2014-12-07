@@ -1,14 +1,19 @@
 package net.wolfTec.widgets;
 
 import net.wolfTec.Constants;
+import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.utility.Localization;
 import net.wolfTec.utility.ObjectUtil;
 import org.stjs.javascript.JSGlobal;
+import org.stjs.javascript.JSStringAdapter;
+import org.stjs.javascript.annotation.Template;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.stjs.javascript.dom.canvas.CanvasTextMetrics;
 import org.stjs.javascript.functions.Callback0;
 
-public abstract class UiField {
+public class UiField {
+
+    public static final String LOG_HEADER = Constants.logHeader("widgets");
 
     public static final int STYLE_NONE = -1;
     public static final int STYLE_NORMAL = 0;
@@ -51,12 +56,23 @@ public abstract class UiField {
         this.inactive = false;
 
         this.key = text;
-        this.text = ObjectUtil.notEmpty(text) ? Localization.forKey(text) : text;
-        if (this.text.search(/\n/) !== -1) this.text = this.text.split("\n");
+        this.text = ObjectUtil.notEmpty(text) ? CustomWarsTactics.i18n.forKey(text) : text;
+        JSStringAdapter.split("/\\n/", "\n");
+    }
+
+    @Template("toProperty")
+    public boolean isInactive () {
+        return inactive;
     }
 
     public boolean isPositionInElement( int x , int y ){
         return (x >= this.x && x < this.x + this.width && y >= this.y && y < this.y + this.height);
+    }
+
+    public void callAction () {
+        if (action != null) {
+            action.$invoke();
+        }
     }
 
     public void erase (CanvasRenderingContext2D ctx) {
@@ -155,23 +171,12 @@ public abstract class UiField {
         ctx.fillStyle = "black";
         ctx.font = this.fsize + "pt " + Constants.GAME_FONT;
 
-        CanvasTextMetrics tw;
         if (this.text != null && this.text.length() > 0) {
-            if (JSGlobal.typeof(this.text) == "string") {
-                tw = ctx.measureText(this.text);
-                ctx.fillText(
-                        this.text,
-                        this.x + (this.width / 2) - (tw.width / 2),
-                        this.y + (this.height / 2) + this.fsize / 2);
-            } else {
-                for (var i = 0, e = this.text.length; i < e; i++) {
-                    tw = ctx.measureText(this.text[i]);
-                    ctx.fillText(
-                            this.text[i],
-                            this.x + (this.width / 2) - (tw.width / 2),
-                            this.y + this.fsize + ((i + 1) * (this.fsize + 8)));
-                }
-            }
+            CanvasTextMetrics tw = ctx.measureText(this.text);
+            ctx.fillText(
+                    this.text,
+                    this.x + (this.width / 2) - (tw.width / 2),
+                    this.y + (this.height / 2) + this.fsize / 2, width);
         }
     }
 }

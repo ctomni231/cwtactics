@@ -47,7 +47,7 @@ public class Statemachine {
 
     private int timestamp;
 
-    void addState (String id, State state) {
+    public void addState (String id, State state) {
         if (JSObjectAdapter.hasOwnProperty(states, id)) {
             Debug.logCritical(LOG_HEADER, "StateAlreadyRegistered");
         }
@@ -82,9 +82,9 @@ public class Statemachine {
      */
     public void update(int delta) {
 
-        if(activeState.isAnimationState()){
-            activeState.update(delta, null);
-            activeState.render(delta);
+        if(activeState.animationState){
+            activeState.update.$invoke(delta, null);
+            activeState.render.$invoke(delta);
         }
 
         // try to evaluate commands asap
@@ -100,8 +100,8 @@ public class Statemachine {
 
         // state update
         InputData inp = CustomWarsTactics.inputHandler.popAction();
-        activeState.update(delta, inp);
-        activeState.render(delta);
+        activeState.update.$invoke(delta, inp);
+        activeState.render.$invoke(delta);
 
         // release input data object
         if (inp != null) CustomWarsTactics.inputHandler.releaseAction(inp);
@@ -114,7 +114,7 @@ public class Statemachine {
      * @param stateId
      */
     public void changeState (String stateId) {
-        if (activeState != null) activeState.exit();
+        if (activeState != null) activeState.exit.$invoke();
         setState(stateId, true);
     }
 
@@ -122,7 +122,7 @@ public class Statemachine {
         activeState = states.$get(stateId);
         activeStateId = stateId;
 
-        if (fireEvent) activeState.enter();
+        if (fireEvent) activeState.enter.$invoke();
     }
 
     /**

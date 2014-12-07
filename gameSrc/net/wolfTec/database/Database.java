@@ -1,5 +1,6 @@
 package net.wolfTec.database;
 
+import net.wolfTec.Constants;
 import net.wolfTec.utility.Debug;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
@@ -11,6 +12,8 @@ import org.stjs.javascript.Map;
  * data object will be validated first.
  */
 public abstract class Database<T extends ObjectType> {
+
+    public static final String LOG_HEADER = Constants.logHeader("database.sheet");
 
     /**
      * Holds all type sheet objects.
@@ -32,10 +35,10 @@ public abstract class Database<T extends ObjectType> {
     }
 
     public void registerSheetByObject(T type) {
-        Debug.logInfo("Validating sheet " + type.ID);
+        Debug.logInfo(LOG_HEADER, "Validating sheet " + type.ID);
         type.validate();
 
-        Debug.logInfo("Register sheet with ID " + type.ID);
+        Debug.logInfo(LOG_HEADER, "Register sheet with ID " + type.ID);
         this.sheets.$put(type.ID, type);
         this.types.push(type.ID);
     }
@@ -43,7 +46,7 @@ public abstract class Database<T extends ObjectType> {
     public abstract T parseJSON(String data);
 
     /**
-     * @param key id of the sheet
+     * @param sheetId id of the sheet
      * @return sheet object
      */
     public T getSheet(String sheetId) {

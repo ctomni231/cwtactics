@@ -1,4 +1,4 @@
-package net.wolfTec.states;
+package net.wolfTec.model;
 
 import net.wolfTec.Constants;
 import net.wolfTec.CustomWarsTactics;

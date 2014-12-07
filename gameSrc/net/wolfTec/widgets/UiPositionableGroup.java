@@ -1,6 +1,6 @@
 package net.wolfTec.widgets;
 
-public class UiPositionableGroup extends  UiButtonGroup {
+public class UiPositionableGroup extends UiButtonGroup {
 
     private int x;
     private int y;
@@ -15,8 +15,8 @@ public class UiPositionableGroup extends  UiButtonGroup {
         int diffX = x - this.x;
         int diffY = y - this.y;
 
-        for (int i = 0, e = this.elements.length; i < e; i++) {
-            UiElement element = this.elements[i];
+        for (int i = 0, e = this.elements.$length(); i < e; i++) {
+            UiField element = this.elements.$get(i);
 
             element.x += diffX;
             element.y += diffY;

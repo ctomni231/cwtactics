@@ -1,37 +1,39 @@
 package net.wolfTec.widgets;
 
 import net.wolfTec.Constants;
-import net.wolfTec.bridges.CanvasRenderingContext2D;
 import net.wolfTec.input.InputData;
 import net.wolfTec.input.InputType;
+import net.wolfTec.utility.Debug;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.RegExp;
+import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 
 public class UiButtonGroup {
 
-    private Array<UiElement> elements;
-    private int selectedElement;
+    protected Array<UiField> elements;
+    protected int selectedElement;
 
-    public UiButtonGroup(){
+    public UiButtonGroup() {
         this.elements = JSCollections.$array();
         selectedElement = Constants.INACTIVE_ID;
     }
 
-    public void addElement (UiElement el) {
+    public void addElement(UiField el) {
         this.elements.push(el);
-        if (this.selectedElement == Constants.INACTIVE_ID && el.action) {
-           // this.elements.$get(this.elements.$length() - 1).inFocus = true;
+        if (this.selectedElement == Constants.INACTIVE_ID && el.action != null) {
+            this.elements.$get(this.elements.$length() - 1).inFocus = true;
             this.selectedElement = this.elements.$length() - 1;
         }
     }
 
-    public UiElement activeButton () {
+    public UiField activeButton() {
         return this.elements.$get(selectedElement);
     }
 
-    public UiElement getButtonByKey (String key) {
+    public UiField getButtonByKey(String key) {
         for (int i = 0, e = this.elements.$length(); i < e; i++) {
-            if (this.elements.$get(i).key() == key) {
+            if (this.elements.$get(i).key == key) {
                 return this.elements.$get(i);
             }
         }
@@ -43,8 +45,8 @@ public class UiButtonGroup {
     //
     // @param {RegExp} reg
     //
-    public UiElement getButtonsByReg (reg) {
-        Array<UiElement> arr = JSCollections.$array();
+    public Array<UiField> getButtonsByReg(RegExp reg) {
+        Array<UiField> arr = JSCollections.$array();
 
         for (int i = 0, e = this.elements.$length(); i < e; i++) {
             if (reg.test(this.elements.$get(i).key)) {
@@ -62,40 +64,39 @@ public class UiButtonGroup {
     // @param {Number} y
     // @return {boolean} true, if the index was updated, else false
     //
-    public boolean updateIndex (int x, int y) {
+    public boolean updateIndex(int x, int y) {
         for (int i = 0, e = this.elements.$length(); i < e; i++) {
 
             // inactive element
-            if (!this.elements[i].action || this.elements[i].inactive) {
+            if (this.elements.$get(i).action == null || this.elements.$get(i).inactive) {
                 continue;
             }
 
-            if (this.elements[i].positionInButton(x, y)) {
-                if (i == this.selected) {
+            if (this.elements.$get(i).isPositionInElement(x, y)) {
+                if (i == this.selectedElement) {
                     return false;
                 }
 
-                this.elements[this.selected].inFocus = false;
-                this.selected = i;
-                this.elements[this.selected].inFocus = true;
+                this.elements.$get(this.selectedElement).inFocus = false;
+                this.selectedElement = i;
+                this.elements.$get(this.selectedElement).inFocus = true;
 
                 return true;
             }
         }
         return false;
-    },
+    }
 
-    public void setIndex (int index) {
-        if (index < 0 && index >= this.elements.length) {
-            throw Error("illegal index");
+    public void setIndex(int index) {
+        if (index < 0 && index >= this.elements.$length()) {
+            Debug.logCritical(UiField.LOG_HEADER, "IllegalIndexArgument");
         }
 
-        this.elements[this.selected].inFocus = false;
+        this.elements.$get(this.selectedElement).inFocus = false;
         this.selectedElement = index;
-        this.elements[this.selected].inFocus = true;
-    },
+        this.elements.$get(this.selectedElement).inFocus = true;
+    }
 
-    @Override
     public boolean isInactive() {
         return false;
     }
@@ -105,29 +106,31 @@ public class UiButtonGroup {
     // @param input
     // @return {boolean} true, if the index was updated, else false
     //
-    public boolean handleInput (InputData inputData) {
+    public boolean handleInput(InputData inputData) {
         boolean res = true;
         this.elements.$get(selectedElement).inFocus = false;
 
         switch (inputData.key) {
-            case InputType.UP:
-            case InputType.LEFT:
+            case UP:
+            case LEFT:
                 do {
                     this.selectedElement--;
                     if (this.selectedElement < 0) {
                         this.selectedElement = this.elements.$length() - 1;
                     }
-                } while (!this.elements.$get(selectedElement).action || this.elements.$get(selectedElement).isInactive());
+                } while (this.elements.$get(selectedElement).action == null ||
+                        this.elements.$get(selectedElement).isInactive());
                 break;
 
-            case InputType.RIGHT:
-            case InputType.DOWN:
+            case RIGHT:
+            case DOWN:
                 do {
                     this.selectedElement++;
                     if (this.selectedElement >= this.elements.$length()) {
                         this.selectedElement = 0;
                     }
-                } while (!this.elements.$get(selectedElement).action || this.elements.$get(selectedElement).isInactive());
+                } while (this.elements.$get(selectedElement).action == null ||
+                        this.elements.$get(selectedElement).isInactive());
                 break;
 
             default:
@@ -139,10 +142,9 @@ public class UiButtonGroup {
         return res;
     }
 
-    @Override
     public void draw(CanvasRenderingContext2D ctx) {
         for (int i = 0, e = this.elements.$length(); i < e; i++) {
-            UiElement el = this.elements.$get(i);
+            UiField el = this.elements.$get(i);
 
             if (!el.isInactive()) {
                 el.draw(ctx);

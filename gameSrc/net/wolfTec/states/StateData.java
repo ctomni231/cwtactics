@@ -111,8 +111,8 @@ public class StateData {
      */
     public void setCursorPosition(int x, int y, boolean relativeToScreen) {
         if (relativeToScreen) {
-            x = x + renderer.screenOffsetX;
-            y = y + renderer.screenOffsetY;
+            x = x + CustomWarsTactics.renderCtx.screenOffsetX;
+            y = y + CustomWarsTactics.renderCtx.screenOffsetY;
         }
 
         // change illegal positions to prevent out of bounds
@@ -126,14 +126,14 @@ public class StateData {
             return;
         }
 
-        renderer.eraseCursor(cursorX, cursorY);
+        CustomWarsTactics.renderCtx.eraseCursor(cursorX, cursorY);
 
         cursorX = x;
         cursorY = y;
 
         // convert to screen relative pos
-        x = x - renderer.screenOffsetX;
-        y = y - renderer.screenOffsetY;
+        x = x - CustomWarsTactics.renderCtx.screenOffsetX;
+        y = y - CustomWarsTactics.renderCtx.screenOffsetY;
 
         MoveCode moveCode = null;
         if (x <= 3) moveCode = MoveCode.RIGHT;
@@ -143,12 +143,12 @@ public class StateData {
 
         // do possible screen shift
         if (moveCode != null) {
-            if (renderer.shiftScreen(moveCode)) {
-                renderer.shiftMap(moveCode);
+            if (CustomWarsTactics.renderCtx.shiftScreen(moveCode)) {
+                CustomWarsTactics.renderCtx.shiftMap(moveCode);
             }
         }
 
-        renderer.renderCursor(cursorX, cursorY);
+        CustomWarsTactics.renderCtx.renderCursor(cursorX, cursorY);
     }
 
     public final StateDataSelection selection = new StateDataSelection();
@@ -217,7 +217,7 @@ public class StateData {
         }
 
         if (!trapped) {
-            selectedAction.prepareActionData.$invoke();
+            selectedAction.prepareActionData.$invoke(this, );
         }
 
         // all unit actions invokes automatically waiting
@@ -228,6 +228,4 @@ public class StateData {
 
         return trapped;
     }
-
-
 }

@@ -2,7 +2,6 @@ package net.wolfTec.states;
 
 import net.wolfTec.Constants;
 import net.wolfTec.utility.Debug;
-import net.wolfTec.utility.DoItHolder;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;

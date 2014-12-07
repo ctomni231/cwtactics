@@ -1,20 +1,20 @@
 package net.wolfTec.widgets;
 
-import net.wolfTec.bridges.CanvasRenderingContext2D;
+import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.stjs.javascript.functions.Callback0;
 
 public class UiCheckboxField extends UiField {
 
     private boolean checked;
 
-    public UiCheckboxField (int x, int y, int w, int h, String text, int fsize, int style) {
-            super(x, y, w, h, text, fsize, style, new Callback0() {
-                // function (button, state) {
-                @Override public void $invoke() {
-                    state.rendered = false;
-                    button.checked = !button.checked;
-                }
-            });
+    public UiCheckboxField(int x, int y, int w, int h, String text, int fsize, int style) {
+        super(x, y, w, h, text, fsize, style, null);
+
+        this.action = new Callback0() {
+            @Override public void $invoke() {
+                checked = !checked;
+            }
+        };
 
         this.text = "";
         this.checked = false;

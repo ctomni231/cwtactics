@@ -1,7 +1,7 @@
 package net.wolfTec.widgets;
 
 import net.wolfTec.Constants;
-import net.wolfTec.bridges.CanvasRenderingContext2D;
+import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
@@ -55,84 +55,37 @@ public class UiScreenLayout extends UiButtonGroup {
         return this;
     }
 
-    public UiScreenLayout addButton (int tilesX, int tilesY, int offsetY,
-                                     String key, int style, int fSize,
-                                     Callback0 action) {
-
-        if (arguments.length === 5) {
-            action = null;
-            fSize = 12;
-        } else if (arguments.length === 6 && typeof fSize === "function") {
-            action = fSize;
-            fSize = 12;
-        }
-
+    public UiScreenLayout addButton (int tilesX, int tilesY, int offsetY, String key, int style, int fSize, Callback0 action) {
         if (this.curH < tilesY) {
             this.curH = tilesY;
         }
 
-        UiElement btn = new UIField(
-                this.curX,
-                this.curY + (offsetY * Constants.TILE_BASE),
-                tilesX * Constants.TILE_BASE,
-                tilesY * Constants.TILE_BASE,
-                key,
-                fSize,
-                style,
-                action
-        );
-
-        this.curX += tilesX * constants.TILE_BASE;
-
+        UiField btn = new UiField(this.curX, this.curY + (offsetY * Constants.TILE_BASE), tilesX * Constants.TILE_BASE, tilesY * Constants.TILE_BASE, key, fSize, style, action);
+        this.curX += tilesX * Constants.TILE_BASE;
         this.addElement(btn);
 
         return this;
     }
 
     public UiScreenLayout addCustomField (int tilesX, int tilesY, int offsetY, String key, Callback1<CanvasRenderingContext2D> draw, boolean ignoreHeight) {
-        if (ignoreHeight != true && this.curH < tilesY) {
+        if (!ignoreHeight && this.curH < tilesY) {
             this.curH = tilesY;
         }
 
-        var btn = new exports.UICustomField(
-                this.curX,
-                this.curY + (offsetY * Constants.TILE_BASE),
-                tilesX * Constants.TILE_BASE,
-                tilesY * Constants.TILE_BASE,
-                key,
-                draw
-        );
-
-        this.curX += tilesX * constants.TILE_BASE;
-
+        UiField btn = new UiCustomField(this.curX, this.curY + (offsetY * Constants.TILE_BASE), tilesX * Constants.TILE_BASE, tilesY * Constants.TILE_BASE, key, draw);
+        this.curX += tilesX * Constants.TILE_BASE;
         this.addElement(btn);
 
         return this;
     }
 
     public UiScreenLayout addCheckbox (int tilesX, int tilesY, int offsetY, String key, int style, int fSize) {
-        if (arguments.length === 5) {
-            fSize = 12;
-        } else if (arguments.length === 6 && typeof fSize === "function") {
-            fSize = 12;
-        }
-
         if (this.curH < tilesY) {
             this.curH = tilesY;
         }
 
-        var btn = new exports.UICheckboxField(
-                this.curX,
-                this.curY + (offsetY * Constants.TILE_BASE),
-                tilesX * Constants.TILE_BASE,
-                tilesY * Constants.TILE_BASE,
-                key,
-                fSize,
-                style
-        );
-
+        UiField btn = new UiCheckboxField(this.curX, this.curY + (offsetY * Constants.TILE_BASE), tilesX * Constants.TILE_BASE, tilesY * Constants.TILE_BASE, key, fSize, style);
         this.curX += tilesX * Constants.TILE_BASE;
-
         this.addElement(btn);
 
         return this;

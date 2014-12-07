@@ -12,10 +12,11 @@ import net.wolfTec.loading.LoadingHandler;
 import net.wolfTec.model.Config;
 import net.wolfTec.model.GameRound;
 import net.wolfTec.network.MessageRouter;
+import net.wolfTec.renderer.RenderingContext;
 import net.wolfTec.renderer.Sprite;
 import net.wolfTec.renderer.SpriteDatabase;
 import net.wolfTec.renderer.TileVariantCalculator;
-import net.wolfTec.states.GameRoundSetup;
+import net.wolfTec.model.GameRoundSetup;
 import net.wolfTec.states.StateData;
 import net.wolfTec.states.Statemachine;
 import net.wolfTec.utility.Audio;
@@ -28,7 +29,6 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.functions.Callback1;
-import org.stjs.javascript.stjs.STJS;
 
 /**
  * Central mediator (monolithic). Every service, data holder etc. can be accessed by this object. A direct access
@@ -154,7 +154,7 @@ public abstract class CustomWarsTactics {
     /**
      *
      */
-    private static final SpriteDatabase spriteDb;
+    public static final SpriteDatabase spriteDb;
 
     /**
      *
@@ -165,6 +165,8 @@ public abstract class CustomWarsTactics {
      *
      */
     public static final GameRoundSetup gameRoundSetup;
+
+    public static final RenderingContext renderCtx;
 
     // Construction of the mediator
     static {
@@ -187,16 +189,17 @@ public abstract class CustomWarsTactics {
         actionInvoker = new ActionInvoker(Constants.ACTION_POOL_SIZE);
         variantCalculator = new TileVariantCalculator();
         netMessageRouter = new MessageRouter();
+        loadingHandler = new LoadingHandler();
+        gameRoundSetup = new GameRoundSetup();
+        gameWorkflowData = new StateData();
+        renderCtx = new RenderingContext();
         gameWorkflow = new Statemachine();
         inputHandler = new InputHandler();
-        ai = new AiHandler();
-        loadingHandler = new LoadingHandler();
+        spriteDb = new SpriteDatabase();
         audioHandler = new Audio();
         features = new Features();
         i18n = new Localization();
-        spriteDb = new SpriteDatabase();
-        gameWorkflowData = new StateData();
-        gameRoundSetup = new GameRoundSetup();
+        ai = new AiHandler();
 
         Debug.logInfo(LOG_HEADER, "Setup input backends");
         inputHandler.backends.$put("keyboards",
@@ -305,14 +308,6 @@ public abstract class CustomWarsTactics {
      */
     public static void resetConfiguration() {
         gameConfigNames.forEach(resetConfigObject);
-    }
-
-    public static void registeredSprite (String id, int numberOfSlots) {
-        spriteDb.sprites.$put(id, new Sprite(numberOfSlots));
-    }
-
-    public static Sprite getSprite (String id) {
-        return spriteDb.sprites.$get(id);
     }
 
     public static void main(String[] args) {

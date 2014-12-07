@@ -2,6 +2,7 @@ package net.wolfTec.renderer;
 
 import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.bridges.Globals;
+import net.wolfTec.utility.Debug;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
@@ -110,7 +111,9 @@ public class Sprite {
      * @param image
      */
     public void setImage(int index, Element image) {
-        if (index < 0 && index >= this.images.$length()) CustomWarsTactics.logCritical("?XYS", "IllegalIndex");
+        if (index < 0 && index >= this.images.$length()) {
+            Debug.logCritical(RenderingContext.LOG_HEADER, "IllegalIndex");
+        }
         this.images.$set(index, image);
     }
 

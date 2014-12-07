@@ -131,14 +131,15 @@ public abstract class Constants {
     static {
         logHeaders.$put("unknown", "??????");
         logHeaders.$put("xmlhttp", "XMLREQ");
-        logHeaders.$put("localization", "  I18N");
-        logHeaders.$put("cwtMediator", "MEDITR");
+        logHeaders.$put("widgets", "   GUI");
+        logHeaders.$put("renderer", "RENDER");
         logHeaders.$put("assertion", "ASSERT");
+        logHeaders.$put("cwtMediator", "MEDITR");
+        logHeaders.$put("localization", "  I18N");
         logHeaders.$put("statemachine", "STATEM");
     }
 
     /**
-     *
      * @param key
      * @return
      */
