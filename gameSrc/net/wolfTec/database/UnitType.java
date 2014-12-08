@@ -3,7 +3,6 @@ package net.wolfTec.database;
 import net.wolfTec.Constants;
 import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.utility.Assert;
-import net.wolfTec.utility.Debug;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;

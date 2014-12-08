@@ -1,11 +1,10 @@
 package net.wolfTec.actions;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import net.wolfTec.Constants;
 import net.wolfTec.CustomWarsTactics;
-import net.wolfTec.bridges.Globals;
 import net.wolfTec.utility.CircularBuffer;
 import net.wolfTec.utility.Debug;
+
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;

@@ -2,9 +2,8 @@ package net.wolfTec.widgets;
 
 import net.wolfTec.Constants;
 import net.wolfTec.CustomWarsTactics;
-import net.wolfTec.utility.Localization;
 import net.wolfTec.utility.ObjectUtil;
-import org.stjs.javascript.JSGlobal;
+
 import org.stjs.javascript.JSStringAdapter;
 import org.stjs.javascript.annotation.Template;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;

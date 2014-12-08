@@ -3,6 +3,7 @@ package net.wolfTec;
 import net.wolfTec.actions.ActionInvoker;
 import net.wolfTec.ai.AiHandler;
 import net.wolfTec.bridges.ObjectAdapter;
+import net.wolfTec.dataTransfer.DataTransferHandler;
 import net.wolfTec.database.*;
 import net.wolfTec.input.InputHandler;
 import net.wolfTec.input.backends.GamePad;
@@ -13,7 +14,6 @@ import net.wolfTec.model.Config;
 import net.wolfTec.model.GameRound;
 import net.wolfTec.network.MessageRouter;
 import net.wolfTec.renderer.RenderingContext;
-import net.wolfTec.renderer.Sprite;
 import net.wolfTec.renderer.SpriteDatabase;
 import net.wolfTec.renderer.TileVariantCalculator;
 import net.wolfTec.model.GameRoundSetup;
@@ -23,6 +23,7 @@ import net.wolfTec.utility.Audio;
 import net.wolfTec.utility.Debug;
 import net.wolfTec.utility.Features;
 import net.wolfTec.utility.Localization;
+
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
@@ -167,6 +168,8 @@ public abstract class CustomWarsTactics {
     public static final GameRoundSetup gameRoundSetup;
 
     public static final RenderingContext renderCtx;
+    
+    public static final DataTransferHandler dataTransfer;
 
     // Construction of the mediator
     static {
@@ -200,6 +203,7 @@ public abstract class CustomWarsTactics {
         features = new Features();
         i18n = new Localization();
         ai = new AiHandler();
+        dataTransfer = new DataTransferHandler();
 
         Debug.logInfo(LOG_HEADER, "Setup input backends");
         inputHandler.backends.$put("keyboards",

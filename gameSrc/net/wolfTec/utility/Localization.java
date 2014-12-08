@@ -1,7 +1,6 @@
 package net.wolfTec.utility;
 
 import net.wolfTec.Constants;
-import net.wolfTec.CustomWarsTactics;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;

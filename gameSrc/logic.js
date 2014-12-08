@@ -848,25 +848,6 @@ exports.drainFuel = function(unit) {
     }
 };
 
-//
-// Returns **true** if the property at the position (**x**,**y**) fulfills the following requirements
-//  a) the property has a healing ability
-//  b) the property is occupied by an unit of the same team
-//  c) the occupying unit can be healed by the property
-//
-// The value **false** will be returned if one of the requirements fails.
-//
-exports.canPropertyRepairAt = function(x, y) {
-    var tile = model.mapData[x][y];
-    var prop = tile.property;
-    var unit = tile.unit;
-    if (prop && unit) {
-        if (typeof prop.type.repairs[unit.movetype.ID] === "number") {
-            return true;
-        }
-    }
-    return false;
-};
 
 //
 // The property will heal the unit that occupies the tile where the property is in. The following requirements must
@@ -921,26 +902,6 @@ exports.actionHealUnit = {
     }
 };
 
-// --------------------------------------------------------------------------------------------------------
-
-var cfgUnitLimit = require("../config").getConfig("unitLimit");
-
-//
-// Returns **true** when the given **property** is a factory and can produce something technically, else **false**.
-//
-exports.canProduce = function (property) {
-    if (constants.DEBUG) assert(exports.isFactory(property));
-
-    // check left manpower
-    if (!property.owner || !property.owner.manpower) return false;
-
-    // check unit limit and left slots
-    var count = property.owner.numberOfUnits;
-    var uLimit = (cfgUnitLimit.value || 9999999);
-    if (count >= uLimit || count >= constants.MAX_UNITS) return false;
-
-    return true;
-};
 
 //
 // Constructs a unit with **type** in a **factory** for the owner of the factory. The owner must have at least one
@@ -1207,35 +1168,6 @@ exports.addPropertyVision = function (x, y, owner) {
 // --------------------------------------------------------------------------------------------------------
 
 
-/**
- * Returns **true** if two units can join each other, else **false**. In general both **source** and **target** has
- * to be units of the same type and the target must have 9 or less health points. Transporters cannot join each
- * other when they contain loaded units.
- *
- * @param source
- * @param target
- * @returns {boolean}
- */
-exports.canJoin = function (source, target) {
-    if (!source instanceof model.Unit || !target instanceof model.Unit) {
-        throw new Error("IllegalArgumentType(s)");
-    }
-
-    if (source.type !== target.type) {
-        return false;
-    }
-
-
-    // don't increase HP to more then 10
-    if (target.hp >= 90) {
-        return false;
-    }
-
-    // do they have loads?
-    if (transport.hasLoads(source) || transport.hasLoads(target)) return false;
-
-    return true;
-};
 
 /**
  * Joins two units together. If the combined health is greater than the maximum health then the difference will
@@ -2221,20 +2153,6 @@ exports.getExplosionDamage = function (unit) {
 };
 
 /**
- * Returns the explosion **range** of the exploder **unit**.
- *
- * @param unit
- * @returns {number} range in tiles
- */
-exports.getSuicideRange = function (unit) {
-    if (!exports.canSelfDestruct(unit)) {
-        throw new Error("IllegalArgumentType");
-    }
-
-    return unit.type.suicide.range;
-};
-
-/**
  *
  * @param {number} x
  * @param {number} y
@@ -2293,156 +2211,6 @@ exports.action = {
     invoke: function (x, y, range, damage) {
         explode(x, y, range, damage);
     }
-};
-
-// --------------------------------------------------------------------------------------------------------
-
-
-// some config parameters
-var cfgCoStartCostIncreaseSteps = require("../config").getConfig("co_getStarCostIncreaseSteps");
-var cfgCoStartCostIncrease = require("../config").getConfig("co_getStarCostIncrease");
-var cfgEnabledCoPower = require("../config").getConfig("co_enabledCoPower");
-var cfgCoStartCost = require("../config").getConfig("co_getStarCost");
-
-
-/**
- * Power level of normal CO power.
- *
- * @type {number}
- * @constant
- */
-exports.POWER_LEVEL_COP = 0;
-
-/**
- * Power level of normal super CO power.
- *
- * @type {number}
- * @constant
- */
-exports.POWER_LEVEL_SCOP = 1;
-
-/**
- * Modifies the power level of a **player** by a given **value**.
- *
- * @param player
- * @param value
- */
-exports.modifyStarPower = function (player, value) {
-    if (!player instanceof model.Player || typeof value === "number") {
-        throw new Error("IllegalArgumentType");
-    }
-
-    player.power += value;
-
-    // check left bound
-    if (player.power < 0) {
-        player.power = 0;
-    }
-};
-
-/**
- * Returns **true** when a **player** can activate a **powerLevel**, else **false**. If the config
- * **co_enabledCoPower** if off then **false** will be returned in every situation.
- *
- * @param player
- * @param level
- * @returns {boolean}
- */
-exports.canActivatePower = function (player, level) {
-    if (!player instanceof model.Player || level < exports.POWER_LEVEL_COP || level > exports.POWER_LEVEL_SCOP) {
-        throw new Error("IllegalArgumentType");
-    }
-
-    // TODO maybe better in the action itself
-    // commanders must be available and current power must be inactive
-    if (cfgEnabledCoPower.value === 0 || player.coA === null || player.activePower !== constants.INACTIVE) {
-        return false;
-    }
-
-    var stars;
-    switch (level) {
-
-        case this.POWER_LEVEL_COP:
-            stars = player.coA.coStars;
-            break;
-
-        case this.POWER_LEVEL_SCOP:
-            if (model.gameMode < model.GAME_MODE_AW2) {
-                throw new Error("GameModeActionIncompatibilityException");
-            }
-
-            stars = player.coA.scoStars;
-            break;
-    }
-
-    return (player.power >= (exports.getStarCost(player) * stars));
-};
-
-/**
- * Activates a commander power **level** for a given **player**.
- *
- * @param player
- * @param level
- */
-exports.activatePower = function (player, level) {
-    if (!player instanceof model.Player || level < exports.POWER_LEVEL_COP || level > exports.POWER_LEVEL_SCOP) {
-        throw new Error("IllegalArgumentType");
-    }
-
-    player.power = 0;
-    player.activePower = level;
-    player.powerUsed++;
-};
-
-/**
- * Deactivates the CO power of a **player** by setting the activePower to **cwt.INACTIVE**.
- *
- * @param player
- */
-exports.deactivatePower = function (player) {
-    if (!player instanceof model.Player) {
-        throw new Error("IllegalArgumentType");
-    }
-
-    player.activePower = constants.INACTIVE;
-};
-
-/**
- * Returns the **costs** for one CO star for a **player**.
- *
- * @param player
- * @returns {behaviorTree.Config.value|*}
- */
-exports.getStarCost = function (player) {
-    if (!player instanceof model.Player) {
-        throw new Error("IllegalArgumentType");
-    }
-
-    var cost = cfgCoStartCost.value;
-    var used = player.powerUsed;
-
-    // if usage counter is greater than max usage counter then use only the maximum increase counter for calculation
-    if (used > cfgCoStartCostIncreaseSteps.value) {
-        used = cfgCoStartCostIncreaseSteps.value;
-    }
-
-    cost += used * cfgCoStartCostIncrease.value;
-
-    return cost;
-};
-
-/**
- * Sets the main Commander of a **player** to a given co **type**.
- *
- * @param player
- * @param type
- */
-exports.setMainCo = function (player, type) {
-    if (!player instanceof model.Player || !sheets.isValidId(sheets.TYPE_COMMANDER, type)) {
-        throw new Error("IllegalArgumentType");
-    }
-
-    player.coA = type === null ? null : type;
 };
 
 /* -----------------------------------------------  Module Actions ----------------------------------------------- */

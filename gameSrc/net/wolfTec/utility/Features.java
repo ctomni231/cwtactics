@@ -1,6 +1,5 @@
 package net.wolfTec.utility;
 
-import net.wolfTec.CustomWarsTactics;
 
 /**
  * Holds the status of the supported features of the active browser environment where CW:T runs in.

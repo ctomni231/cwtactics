@@ -2,7 +2,6 @@ package net.wolfTec;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
-import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 
 public abstract class Constants {

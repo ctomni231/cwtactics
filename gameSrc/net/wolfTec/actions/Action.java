@@ -3,13 +3,11 @@ package net.wolfTec.actions;
 import net.wolfTec.enums.Relationship;
 import net.wolfTec.states.StateData;
 import net.wolfTec.utility.Assert;
-import net.wolfTec.utility.ObjectUtil;
+
 import org.stjs.javascript.Array;
-import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
 import org.stjs.javascript.functions.Function1;
-import org.stjs.javascript.functions.Function2;
 
 /**
  * Action class which represents an action which is usable by engine objects.
@@ -85,13 +83,13 @@ public class Action {
     /**
      * Prepares the selection.
      */
-    private Callback2<StateData, Object> prepareSelection;
+    public Callback2<StateData, Object> prepareSelection;
 
     /**
      * Marks the kind of the action. Multistep actions can flush more than one command into
      * the command stack.
      */
-    private boolean multiStepAction;
+    public boolean multiStepAction;
 
     /**
      * Marks the target selection mode. Mode 'BEFORE_SUB_ACTION' will be done before the sub menu. Mode

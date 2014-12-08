@@ -203,8 +203,7 @@ public class GameRoundSetup {
 
                 Database<CoType> coDb = CustomWarsTactics.coTypeDb;
                 int coId = co.$get(i);
-                CoType co = (coId != Constants.INACTIVE_ID) ? coDb.getSheet(coDb.getIdList().$get(coId)) : null;
-                coLogic.setMainCo(player, co);
+                player.mainCo = (coId != Constants.INACTIVE_ID) ? coDb.getSheet(coDb.getIdList().$get(coId)) : null;
 
             } else {
                 // Why another disable here ? There is the possibility that a map has units for a player that

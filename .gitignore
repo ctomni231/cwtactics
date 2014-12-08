@@ -195,3 +195,4 @@ ja2.log
 .idea/jsLibraryMappings.xml
 
 .idea/cwt.iml
+/target/

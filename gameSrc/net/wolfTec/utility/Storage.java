@@ -47,7 +47,7 @@ public class Storage {
     /**
      * The given callback will be invoked with the value saved by the given key.
      */
-    public static <T> void get(String key, Callback1<T> callback) {
+    public static void get(String key, Callback1<StorageEntry> callback) {
         Globals.localForage.getItem(key, callback);
     }
 

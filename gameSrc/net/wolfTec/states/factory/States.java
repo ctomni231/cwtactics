@@ -16,7 +16,7 @@ import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
 
-public abstract class StartStates {
+public abstract class States {
 
     public static void addToStateMachine (Statemachine statemachine) {
         statemachine.addState("NONE", createDrawBackground());

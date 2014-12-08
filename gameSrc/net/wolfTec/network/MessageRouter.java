@@ -1,7 +1,6 @@
 package net.wolfTec.network;
 
 import net.wolfTec.Constants;
-import net.wolfTec.actions.ActionData;
 import net.wolfTec.utility.Debug;
 
 /**

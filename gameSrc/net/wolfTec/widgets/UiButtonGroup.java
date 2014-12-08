@@ -2,8 +2,8 @@ package net.wolfTec.widgets;
 
 import net.wolfTec.Constants;
 import net.wolfTec.input.InputData;
-import net.wolfTec.input.InputType;
 import net.wolfTec.utility.Debug;
+
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.RegExp;

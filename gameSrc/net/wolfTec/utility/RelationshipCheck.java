@@ -1,9 +1,11 @@
 package net.wolfTec.utility;
 
+import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.enums.Relationship;
 import net.wolfTec.model.Player;
 import net.wolfTec.model.PlayerObject;
 import net.wolfTec.model.PositionData;
+import net.wolfTec.model.Unit;
 
 /**
  *
@@ -116,41 +118,37 @@ public class RelationshipCheck {
      * @param relationship
      * @returns {boolean}
      */
-    public static boolean hasUnitNeighbourWithRelationship(player, x, y, relationship) {
-        if (!model.isValidPosition(x, y) || !player instanceof model.Player) {
-            throw new Error("IllegalArgumentType");
-        }
-
-        var unit;
+    public static boolean hasUnitNeighbourWithRelationship(Player player, int x, int y, Relationship relationship) {
+        Unit unit = null;
 
         // WEST
         if (x > 0) {
-            unit = model.getTile(x - 1, y).unit;
-            if (unit && exports.getRelationship(player, unit.owner) == = relationship) {
+            unit = CustomWarsTactics.gameround.map.getTile(x - 1, y).unit;
+            if (unit != null && getRelationship(player, unit.owner) == relationship) {
                 return true;
             }
         }
 
         // NORTH
         if (y > 0) {
-            unit = model.getTile(x, y - 1).unit;
-            if (unit && exports.getRelationship(player, unit.owner) == = relationship) {
+            unit = CustomWarsTactics.gameround.map.getTile(x, y - 1).unit;
+            if (unit != null && getRelationship(player, unit.owner) == relationship) {
                 return true;
             }
         }
 
         // EAST
-        if (x < model.mapWidth - 1) {
-            unit = model.getTile(x + 1, y).unit;
-            if (unit && exports.getRelationship(player, unit.owner) == = relationship) {
+        if (x < CustomWarsTactics.gameround.mapWidth - 1) {
+            unit = CustomWarsTactics.gameround.map.getTile(x + 1, y).unit;
+            if (unit != null && getRelationship(player, unit.owner) == relationship) {
                 return true;
             }
         }
 
         // SOUTH
-        if (y < model.mapHeight - 1) {
-            unit = model.getTile(x, y + 1).unit;
-            if (unit && exports.getRelationship(player, unit.owner) == = relationship) {
+        if (y < CustomWarsTactics.gameround.mapHeight - 1) {
+            unit = CustomWarsTactics.gameround.map.getTile(x, y + 1).unit;
+            if (unit != null && getRelationship(player, unit.owner) == relationship) {
                 return true;
             }
         }

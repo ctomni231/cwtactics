@@ -6,9 +6,8 @@ import net.wolfTec.input.InputData;
 import net.wolfTec.states.State;
 import net.wolfTec.states.Statemachine;
 import net.wolfTec.widgets.UiField;
-import org.stjs.javascript.Map;
+
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.stjs.javascript.functions.Callback;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
