@@ -4,16 +4,27 @@ import net.wolfTec.Constants;
 
 public class InputData {
 
-    public InputType key;
-    public int d1;
-    public int d2;
+	/**
+	 * The type of the input command
+	 */
+	public InputType key;
 
-    /**
-     * Resets the object data to a fresh state (no saved information).
-     */
-    public void reset () {
-        key = null;
-        d1 = Constants.INACTIVE_ID;
-        d2 = Constants.INACTIVE_ID;
-    }
+	/**
+	 * First parameter of the input command.
+	 */
+	public int d1;
+
+	/**
+	 * Second parameter of the input command.
+	 */
+	public int d2;
+
+	/**
+	 * Resets the object data to a fresh state (no saved information).
+	 */
+	public void reset() {
+		key = null;
+		d1 = Constants.INACTIVE_ID;
+		d2 = Constants.INACTIVE_ID;
+	}
 }

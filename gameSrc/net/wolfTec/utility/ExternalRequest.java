@@ -15,11 +15,11 @@ public abstract class ExternalRequest {
     public static final String LOG_HEADER = Constants.logHeader("xmlhttp");
 
     @SyntheticType
-    public class ExternalRequestOptions {
+    public static class ExternalRequestOptions {
         public String path;
         public boolean json;
-        public Callback1 success;
-        public Callback1 error;
+        public Callback1<Object> success;
+        public Callback1<Object> error;
     }
 
     /**
@@ -36,7 +36,6 @@ public abstract class ExternalRequest {
                     if (request.readyState == 4 && request.status == 200) {
                         Debug.logInfo(LOG_HEADER, "Grabbed file successfully");
 
-                        // JSON OBJECT
                         if (options.json) {
                             Object arg = null;
                             try {
@@ -45,14 +44,10 @@ public abstract class ExternalRequest {
                                 options.error.$invoke(e);
                             }
                             options.success.$invoke(arg);
-                        }
-                        // PLAIN TEXT
-                        else {
+                        } else {
                             options.success.$invoke(request.responseText);
                         }
-                    }
-                    // ERROR
-                    else {
+                    } else {
                         Debug.logWarn(LOG_HEADER, "Could not grab file");
                         options.error.$invoke(request.statusText);
                     }

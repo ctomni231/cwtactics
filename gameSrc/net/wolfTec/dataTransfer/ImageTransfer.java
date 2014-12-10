@@ -6,6 +6,8 @@ import org.stjs.javascript.functions.Callback0;
 
 public class ImageTransfer {
 
+	public static final String IMAGE_KEY = "GFX_";
+
 /**
  *
  * @param type

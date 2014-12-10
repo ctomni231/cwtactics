@@ -54,8 +54,8 @@ public class Storage {
     /**
      * Saves a value with a given key. If the key exists, then the old value
      * will be overwritten. After the saveGameConfig process, the callback will be invoked.
-     */
-    public static <T> void set(final String key, final T value, final Callback2 callback) {
+     */ 
+    public static <T> void set(final String key, final T value, final Callback2<Object, Object> callback) { 
         Globals.localForage.setItem(key, value, new Callback2<Object, Object>() {
             @Override public void $invoke(Object result, Object error) {
 

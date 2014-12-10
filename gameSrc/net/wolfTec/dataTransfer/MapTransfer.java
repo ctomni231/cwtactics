@@ -39,6 +39,87 @@ public class MapTransfer {
 		});
 	}
 
+	public void saveGame (String name, Callback0 cb) {
+    var saveData = {};
+
+    saveData.mpw = model.mapWidth;
+    saveData.mph = model.mapHeight;
+    saveData.map = [];
+    saveData.prps = [];
+    saveData.units = [];
+
+    // generates ID map
+    var mostIdsMap = {};
+    var mostIdsMapCurIndex = 0;
+    for (var x = 0, xe = model.mapWidth; x < xe; x++) {
+
+        saveData.map[x] = [];
+        for (var y = 0, ye = model.mapHeight; y < ye; y++) {
+            var type = model.mapData[x][y].type.ID;
+
+            // create number for type
+            if (!mostIdsMap.hasOwnProperty(type)) {
+                mostIdsMap[type] = mostIdsMapCurIndex;
+                mostIdsMapCurIndex++;
+            }
+
+            saveData.map[x][y] = mostIdsMap[type];
+
+            // saveGameConfig property
+            var prop = model.mapData[x][y].property;
+            if (prop) {
+                saveData.prps.push([
+                    model.properties.indexOf(prop),
+                    x,
+                    y,
+                    prop.type.ID,
+                    prop.capturePoints,
+                    prop.owner.id
+                ]);
+            }
+
+            // saveGameConfig unit
+            var unit = model.mapData[x][y].unit;
+            if (unit) {
+                saveData.units.push([
+                    model.units.indexOf(unit),
+                    unit.type.ID,
+                    x,
+                    y,
+                    unit.hp,
+                    unit.ammo,
+                    unit.fuel,
+                    unit.loadedIn,
+                    unit.owner.id,
+                    unit.canAct,
+                    unit.hidden
+                ]);
+            }
+        }
+    }
+
+    // generate type map
+    saveData.typeMap = [];
+    var typeKeys = Object.keys(mostIdsMap);
+    for (var i = 0, e = typeKeys.length; i < e; i++) {
+        saveData.typeMap[mostIdsMap[typeKeys[i]]] = typeKeys[i];
+    }
+
+    saveData.wth = model.weather.ID;
+    saveData.day = model.day;
+    saveData.trOw = model.turnOwner.id;
+    saveData.gmTm = model.gameTimeElapsed;
+    saveData.tnTm = model.turnTimeElapsed;
+
+    saveData.cfg = {};
+    for (var i = 0, e = config.gameConfigNames.length; i < e; i++) {
+        var key = config.gameConfigNames[i];
+        saveData.cfg[key] = config.Config.getValue(key);
+    }
+
+    storage.set("SAVE_"+name, JSON.stringify(saveData), cb);
+}
+
 	public void initMap (Object gameData, boolean isSave, Callback0 callback) {
    var property;
    var unit;

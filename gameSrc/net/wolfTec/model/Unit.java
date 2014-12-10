@@ -1,10 +1,12 @@
 package net.wolfTec.model;
 
+import net.wolfTec.Constants;
 import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.database.AttackType;
 import net.wolfTec.database.UnitType;
 import net.wolfTec.utility.Assert;
+
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.annotation.Namespace;
 
@@ -317,6 +319,24 @@ import org.stjs.javascript.annotation.Namespace;
 		}
 
 		return false;
+	}
+	
+	/**
+	 * Drains fuel of a **unit** if it has the ability of daily fuel usage.
+	 *
+	 * @param {Unit} unit
+	 */
+	public void drainFuel() {
+	    int v = type.dailyFuelDrain;
+	    if (v != Constants.INACTIVE_ID) {
+	
+	        // hidden units may drain more fuel
+	        if (hidden && type.dailyFuelDrainHidden != Constants.INACTIVE_ID) {
+	            v = this.type.dailyFuelDrainHidden;
+	        }
+	
+	        this.fuel -= v;
+	    }
 	}
 
 	/**

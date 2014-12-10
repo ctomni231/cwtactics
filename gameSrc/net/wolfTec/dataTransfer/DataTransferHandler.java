@@ -10,12 +10,16 @@ public class DataTransferHandler {
 	public final AudioTransfer audio;
 	public final ImageTransfer image;
 	public final MapTransfer map;
+	public final ConfigTransfer config;
+	public final URLParameterTransfer urlParam;
 	public Modification mod;
 
 	public DataTransferHandler() {
 		audio = new AudioTransfer();
 		image = new ImageTransfer();
 		map = new MapTransfer();
+		config = new ConfigTransfer();
+		urlParam = new URLParameterTransfer();
 	}
 }
 

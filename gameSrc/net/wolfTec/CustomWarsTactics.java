@@ -1,9 +1,14 @@
 package net.wolfTec;
 
-import net.wolfTec.actions.ActionInvoker;
 import net.wolfTec.ai.AiHandler;
+import net.wolfTec.application.ActionInvoker;
 import net.wolfTec.bridges.ObjectAdapter;
+import net.wolfTec.dataTransfer.ConfigTransfer;
 import net.wolfTec.dataTransfer.DataTransferHandler;
+import net.wolfTec.dataTransfer.ImageTransfer;
+import net.wolfTec.dataTransfer.MapTransfer;
+import net.wolfTec.dataTransfer.ModTransfer;
+import net.wolfTec.dataTransfer.URLParameterTransfer;
 import net.wolfTec.database.*;
 import net.wolfTec.input.InputHandler;
 import net.wolfTec.input.backends.GamePad;
@@ -28,6 +33,9 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
+import org.stjs.javascript.JSObjectAdapter;
+import org.stjs.javascript.JSStringAdapter;
+import org.stjs.javascript.Map;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.functions.Callback1;
 
@@ -316,5 +324,55 @@ public abstract class CustomWarsTactics {
 
     public static void main(String[] args) {
         Debug.logInfo(LOG_HEADER, "Starting CustomWars: Tactics " + Constants.VERSION);
+        initBeans();
+        solveBeanDependencies();
     }
+
+    private static Map<String, Object> beans;
+    
+    private static void initBeans () {
+      Debug.logInfo(LOG_HEADER, "Initialize bean objects");
+      beans = JSCollections.$map();
+
+      // create application beans
+      beans.$put("actionInvoker", new ActionInvoker(Constants.ACTION_POOL_SIZE));
+      beans.$put("imageDto", new ImageTransfer());
+      beans.$put("mapDto", new MapTransfer());
+      beans.$put("modDto", new ModTransfer());
+      beans.$put("configDto", new ConfigTransfer());
+      beans.$put("urlParameterDto", new URLParameterTransfer());
+    }
+
+    /**
+     * <strong>Note: </strong> This function is low level and contains real JS code.
+     */
+    private static void solveBeanDependencies () {
+      Debug.logInfo(LOG_HEADER, "Inject dependencies into beans");
+    	
+      Array<String> beanNames = JSObjectAdapter.$js("Object.keys(this.beans)");
+      for (String name : beanNames) {
+      	
+	      Object bean = beans.$get(name);
+	      Array<String> beanProperties = JSObjectAdapter.$js("Object.keys(bean)");
+	      for (String property : beanProperties) {
+	      	if (property.indexOf("$") == 0) {
+		      	JSObjectAdapter.$js("bean[property] = beans[property.slice(1)]");
+	      	}
+        }
+      }
+    }
+    
+    /**
+     * @param name name of the bean
+     * @throws Exception when the bean with the given name does not exists
+     * @return a bean for a given name
+     */
+    public static <T> T getBean(String name) {
+    	if (!JSObjectAdapter.hasOwnProperty(beans, name)) {
+    		Debug.logCritical(LOG_HEADER, "unknown bean with name " + name);
+    	}
+    	
+    	return (T) beans.$get(name);
+    }
+    
 }

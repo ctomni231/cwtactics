@@ -2,14 +2,15 @@ package net.wolfTec.renderer;
 
 import net.wolfTec.Constants;
 import net.wolfTec.CustomWarsTactics;
-import net.wolfTec.enums.MoveCode;
 import net.wolfTec.model.GameRound;
+import net.wolfTec.model.MoveCode;
 import net.wolfTec.model.Tile;
 import net.wolfTec.model.Unit;
 import net.wolfTec.states.StateDataMenu;
 import net.wolfTec.utility.CircularBuffer;
 import net.wolfTec.utility.Debug;
 import net.wolfTec.widgets.UiPositionableGroup;
+
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.Map;

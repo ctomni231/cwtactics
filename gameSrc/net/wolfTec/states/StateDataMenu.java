@@ -1,7 +1,7 @@
 package net.wolfTec.states;
 
 import net.wolfTec.CustomWarsTactics;
-import net.wolfTec.actions.Action;
+import net.wolfTec.application.actions.Action;
 import net.wolfTec.enums.Relationship;
 import net.wolfTec.model.PositionData;
 import net.wolfTec.model.Property;
@@ -9,15 +9,11 @@ import net.wolfTec.model.Unit;
 import net.wolfTec.utility.CircularBuffer;
 import net.wolfTec.utility.Debug;
 import net.wolfTec.utility.RelationshipCheck;
+
 import org.stjs.javascript.Array;
 import org.stjs.javascript.annotation.Template;
 
 public class StateDataMenu {
-
-    public static class MenuEntry {
-        private String content;
-        private boolean enabled;
-    }
 
     private StateData parent;
     private int selectedIndex;

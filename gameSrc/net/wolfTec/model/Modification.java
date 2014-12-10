@@ -1,6 +1,5 @@
 package net.wolfTec.model;
 
-import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
 
 public class Modification {

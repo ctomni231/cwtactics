@@ -21,5 +21,7 @@ public class Globals {
     public static native void requestAnimationFrame(Callback function);
 
     public static native Map<String, String> getURLQueryParams (String query);
+    
+    public static native <T extends Callback> T bindedFunction(T function, Object that); 
 
 }

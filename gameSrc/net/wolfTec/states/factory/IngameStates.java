@@ -1,8 +1,8 @@
 package net.wolfTec.states.factory;
 
 import net.wolfTec.CustomWarsTactics;
-import net.wolfTec.enums.MoveCode;
 import net.wolfTec.input.InputData;
+import net.wolfTec.model.MoveCode;
 import net.wolfTec.states.State;
 import net.wolfTec.states.Statemachine;
 

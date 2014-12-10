@@ -4,7 +4,6 @@ import net.wolfTec.Constants;
 import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.utility.Assert;
 import org.stjs.javascript.Array;
-import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 
 import java.util.Iterator;
@@ -22,19 +21,35 @@ public class UnitType extends ObjectType<UnitType> {
     public String movetype;
     public int dailyFuelDrain;
     public int dailyFuelDrainHidden;
+    public int maxloads;
 
-    public int maxloads = Constants.INACTIVE_ID;
+    public Array<String> canload;
 
-    public Array<String> canload = JSCollections.$array();
+    public Array<String> supply;
 
-    public Array<String> supply = JSCollections.$array();
-
-    public int captures = Constants.INACTIVE_ID;
-
+    public int captures;
     public boolean stealth;
 
     public AttackType attack;
     public SuicideType suicide;
+    
+    public UnitType() {
+      cost = Constants.INACTIVE_ID;
+      range = Constants.INACTIVE_ID;
+      vision = Constants.INACTIVE_ID;
+      fuel = Constants.INACTIVE_ID;
+      ammo = Constants.INACTIVE_ID;
+      movetype = null;
+      dailyFuelDrain = Constants.INACTIVE_ID;
+      dailyFuelDrainHidden = Constants.INACTIVE_ID;
+      maxloads = Constants.INACTIVE_ID;
+      canload = null;
+      supply = null;
+      captures = Constants.INACTIVE_ID;
+      stealth = false;
+      attack = null;
+      suicide = null;
+    }
 
     @Override
     public void validate() {

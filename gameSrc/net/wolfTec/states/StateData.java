@@ -2,12 +2,13 @@ package net.wolfTec.states;
 
 import net.wolfTec.Constants;
 import net.wolfTec.CustomWarsTactics;
-import net.wolfTec.actions.Action;
+import net.wolfTec.application.actions.Action;
 import net.wolfTec.database.CoType;
-import net.wolfTec.enums.MoveCode;
 import net.wolfTec.model.GameRound;
+import net.wolfTec.model.MoveCode;
 import net.wolfTec.model.PositionData;
 import net.wolfTec.utility.CircularBuffer;
+
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
