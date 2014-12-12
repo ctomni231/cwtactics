@@ -1,12 +1,13 @@
 package net.wolfTec.input.backends;
 
 import net.wolfTec.Constants;
-import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.application.CustomWarsTactics;
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.input.InputBackend;
 import net.wolfTec.input.InputHandler;
 import net.wolfTec.input.InputType;
 import net.wolfTec.utility.Debug;
+
 import org.stjs.javascript.*;
 import org.stjs.javascript.dom.DOMEvent;
 import org.stjs.javascript.dom.Element;

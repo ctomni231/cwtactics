@@ -1,8 +1,9 @@
 package net.wolfTec.model;
 
 import net.wolfTec.Constants;
-import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.application.CustomWarsTactics;
 import net.wolfTec.utility.Assert;
+
 import org.stjs.javascript.annotation.Namespace;
 
 /**

@@ -1,6 +1,6 @@
 package net.wolfTec.states;
 
-import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.application.CustomWarsTactics;
 import net.wolfTec.application.actions.Action;
 import net.wolfTec.enums.Relationship;
 import net.wolfTec.model.PositionData;

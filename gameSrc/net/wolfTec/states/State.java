@@ -1,9 +1,10 @@
 package net.wolfTec.states;
 
-import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.application.CustomWarsTactics;
 import net.wolfTec.input.InputData;
 import net.wolfTec.utility.Assert;
 import net.wolfTec.widgets.UiScreenLayout;
+
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;

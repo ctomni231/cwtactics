@@ -1,6 +1,6 @@
 package net.wolfTec.utility;
 
-import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.application.CustomWarsTactics;
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.bridges.webAudio.*;
 import net.wolfTec.utility.Storage.StorageEntry;

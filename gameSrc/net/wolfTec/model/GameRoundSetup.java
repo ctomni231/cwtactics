@@ -1,7 +1,7 @@
 package net.wolfTec.model;
 
 import net.wolfTec.Constants;
-import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.application.CustomWarsTactics;
 import net.wolfTec.database.CoType;
 import net.wolfTec.database.Database;
 import net.wolfTec.database.GameMap;
@@ -9,6 +9,7 @@ import net.wolfTec.enums.GameMode;
 import net.wolfTec.model.Player;
 import net.wolfTec.model.PositionData;
 import net.wolfTec.utility.Debug;
+
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;

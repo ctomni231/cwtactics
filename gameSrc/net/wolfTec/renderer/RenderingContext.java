@@ -1,7 +1,7 @@
 package net.wolfTec.renderer;
 
 import net.wolfTec.Constants;
-import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.application.CustomWarsTactics;
 import net.wolfTec.model.GameRound;
 import net.wolfTec.model.MoveCode;
 import net.wolfTec.model.Tile;

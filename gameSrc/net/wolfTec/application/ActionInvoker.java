@@ -1,7 +1,6 @@
 package net.wolfTec.application;
 
 import net.wolfTec.Constants;
-import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.application.actions.Action;
 import net.wolfTec.application.actions.ActionData;
 import net.wolfTec.utility.CircularBuffer;

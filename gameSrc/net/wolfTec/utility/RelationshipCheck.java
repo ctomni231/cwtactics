@@ -1,6 +1,6 @@
 package net.wolfTec.utility;
 
-import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.application.CustomWarsTactics;
 import net.wolfTec.enums.Relationship;
 import net.wolfTec.model.Player;
 import net.wolfTec.model.PlayerObject;

@@ -1,7 +1,7 @@
 package net.wolfTec.model;
 
 import net.wolfTec.Constants;
-import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.application.CustomWarsTactics;
 import net.wolfTec.database.ArmyType;
 import net.wolfTec.database.CoType;
 import net.wolfTec.enums.CoPowerLevel;

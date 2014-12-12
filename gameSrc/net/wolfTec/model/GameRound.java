@@ -1,9 +1,10 @@
 package net.wolfTec.model;
 
 import net.wolfTec.Constants;
-import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.application.CustomWarsTactics;
 import net.wolfTec.database.WeatherType;
 import net.wolfTec.enums.GameMode;
+
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback3;

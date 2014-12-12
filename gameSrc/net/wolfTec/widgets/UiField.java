@@ -1,7 +1,7 @@
 package net.wolfTec.widgets;
 
 import net.wolfTec.Constants;
-import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.application.CustomWarsTactics;
 import net.wolfTec.utility.ObjectUtil;
 
 import org.stjs.javascript.JSStringAdapter;

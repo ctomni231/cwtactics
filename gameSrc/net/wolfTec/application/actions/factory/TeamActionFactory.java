@@ -1,7 +1,7 @@
 package net.wolfTec.application.actions.factory;
 
-import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.application.ActionInvoker;
+import net.wolfTec.application.CustomWarsTactics;
 import net.wolfTec.application.actions.Action;
 import net.wolfTec.application.actions.ActionData;
 import net.wolfTec.enums.Relationship;

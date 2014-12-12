@@ -22,7 +22,7 @@ public class DataTransferHandler {
 		urlParam = new URLParameterTransfer();
 	}
 }
-
+// TODO entfernen
 
 /*
  cwt.assert(Array.isArray(data.units));

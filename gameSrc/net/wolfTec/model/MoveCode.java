@@ -3,6 +3,7 @@ package net.wolfTec.model;
 import net.wolfTec.Constants;
 
 public enum MoveCode {
+	
     LEFT,
     RIGHT,
     UP,

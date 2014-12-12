@@ -1,10 +1,11 @@
 package net.wolfTec.loading;
 
-import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.application.CustomWarsTactics;
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.model.Config;
 import net.wolfTec.utility.Debug;
 import net.wolfTec.utility.Storage;
+
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;

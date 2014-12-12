@@ -1,7 +1,7 @@
 package net.wolfTec.states;
 
 import net.wolfTec.Constants;
-import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.application.CustomWarsTactics;
 import net.wolfTec.application.actions.Action;
 import net.wolfTec.database.CoType;
 import net.wolfTec.model.GameRound;
