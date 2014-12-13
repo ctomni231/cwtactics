@@ -1,0 +1,67 @@
+{
+	"header": "Version",
+    "version": "0.3.5",
+    "subHeaderT": "Buggy-Hopper",
+    "subHeaderB": "AI,Cannons,UI,Animations",
+
+    "text":[
+      "Custom Wars: Tactics 0.3.5 is a special release for the end of the year 2013 and is primary a small preview in the upcoming features of the version 0.4.",
+      "The main aspect of this release is a huge refactoring of the internal engine. This results in an event based design, that allows a better customization for engine developers. Furthermore we redesigned the complete look and feel to match with the new GUI styles of Android and iOS.",
+      "Another feature is the offline mode. CW:T 0.3.5 uses the HTML5 offline application cache and WebSQL/IndexedDB to store all data in your browser.",
+      "As special, this version contains a first alpha version of DumbBoy, the AI for CWT. In this version the AI is already able to do something, which allows to play, more or less, game rounds in the CW:T beta. <strong>Note:</strong> DumbBoy is alpha software and may not work 100% correctly with CW:T. It's a sneak preview for harcore players. :P",
+      "At last, we added cannon logic to the version. Be sure to check them out on the development test map.",
+      "At least we want to mention, that 0.3.5 is maybe buggy in some terms. This is because 0.3.5 isn't a primary planned release. At all, like said before, it is a preview of 0.4."
+    ],
+
+    "img": "images/cwt_actual.png",
+    "link": "http://ctomni231.github.io/cwtactics/0_3_5/game/game.html",
+
+    "log":{
+      "NEW":[
+        "Completely redesigned look and feel",
+        "Added simple artificial intelligence: DumbBoy version 0.10",
+        "2 new 2-players maps: Spann-Island and Stand-Off",
+        "3 new 4-players maps: Minus-Hills, Shuriken-Valley and Outpost-Plus",
+        "Offline mode",
+        "Added some animated tiles (needs fast device)",
+        "S-Bomb suicide unit",
+        "Added river and bridges",
+        "Added CO's: Andy, Max and Sami",
+        "Cannons, Small-Cannons and Lasers (destructable)",
+        "Player configuration screen",
+        "Some game tips will be shown randomly in the start screen",
+        "Language will be selected automatically",
+        "Added a random background image selection",
+        "<code>HTML5 Game-Pad</code> support on <code>Chrome</code> (experimental)",
+        "The input buttons are configurable now",
+        "Sounds are played when one unit attacks another unit",
+        "Several new scripting attributes (including scripted Co-Powers)",
+        "Rocket silo has now a rocket animation",
+        "Some units drains fuel at turn start now",
+        "Error Panel which indicates an error when the game breaks",
+        "Added option to force touch controls on touch capable desktop systems"
+      ],
+      "CHANGED":[
+        "Faster game startup due rewritten data-loader",
+        "In-Game options entry leads directly into the options screen",
+        "Redesigned option and map selection scren",
+        "The fog system is now client based",
+        "One-Step Action-Menu when an unit is out of fuel",
+        "Hidden units aren't attackable when they're not visible",
+        "Performance improvements in the animation system",
+        "Simplyfied control system down to d-pad and two buttons",
+        "Units can only transfered when they didn't moved",
+        "Restructured modification files",
+        "Special animation cycle for copters ",
+        "Updated rule engine to the current version of <code>jsonRuleEngine</code>",
+        "Changed game license to MPL 2"
+      ],
+      "FIXED":[
+        "Fixed database faults on Firefox and Apple Safari",
+        "Fixed bug that made hidden units unattackable",
+        "Fixed Yellow-Comet color schema",
+        "Fixed bug that didn't revealed hidden units after moving into a trap",
+        "Fixed bug that results into a game break when yielding on a big map"
+      ]
+    }
+}

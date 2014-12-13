@@ -1,0 +1,66 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>net.wolfTec</groupId>
+  <artifactId>webpage</artifactId>
+  <version>2015-1</version>
+  
+  <properties>
+		<stjs.version>3.0.3</stjs.version>
+	</properties>
+
+	<build>
+		<sourceDirectory>pageSrc</sourceDirectory>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.8</source>
+						<target>1.8</target>
+					</configuration>
+				</plugin>
+	
+				<plugin>
+				  <groupId>org.st-js</groupId>
+				  <artifactId>maven-plugin</artifactId>
+				  <version>${stjs.version}</version>
+				  <executions>
+				    <execution>
+				      <id>main</id>
+				      <goals>
+				        <goal>generate</goal>
+				      </goals>
+				    </execution>
+				    <!-- if you use the JUnit runner -->
+				    <execution>
+				      <id>test</id>
+				      <goals>
+				        <goal>generate-test</goal>
+				      </goals>
+				    </execution>
+				  </executions>
+				  <configuration>
+				    <includes>
+				       <include>**/*.java</include>
+				    </includes>
+				    <pack>true</pack>
+				  </configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.st-js.bridge</groupId>
+			<artifactId>html</artifactId>
+			<version>5.0.bv2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.st-js</groupId>
+			<artifactId>server</artifactId>
+			<version>${stjs.version}</version>
+		</dependency>
+	</dependencies>
+</project>

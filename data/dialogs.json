@@ -1,0 +1,32 @@
+[
+	{
+		"id": "about",
+		"title":"About Us",
+		"text": [
+			"Custom Wars Tactics is developed by <a id='mailToJSR' href='mailto:ctomni231@gmail.com'>ctomni231</a> and <a target='_blank' href='mailto:blackcat.myako@gmail.com'>BlackCat</a>",
+			"The game itself is free to use. You also allowed to build own clients on top of the CW:T engine as long you not violate its license. Further information are available in the file LICENSE.",
+			"DISCLAMER: This game engine is in no way affiliated with Nintendo or Intelligent Systems, but acts as an experiment to show the working capabilities of HTML 5, Java, and JavaScript."
+		]
+	},
+	
+	{
+		"id": "legals",
+		"title":"Legals",
+		"text": [
+			"<a href='http://jquery.com'>jQuery v1.7.1(MIT)</a> is heavily used for our web page.",
+			"<a href='http://jqueryui.com/'>jQuery-UI v1.7.1(MIT)</a> is heavily used for our web page.",
+			"<a href='momentjs.com'>Clear Sans (Apache License, Version 2.0)</a> is heavily used on our web page.",
+			"<a href='momentjs.com'>MomentJs 2.0.0 (MIT)</a> is used to format dates into a human read able format for our web page.",
+			"<a href='http://github.com/bgrins/javascript-astar'>Javascript-Astar (MIT)</a> is used to generate paths for unit movements."
+		]
+	},
+	
+	{
+		"id": "development",
+		"title":"Development Links",
+		"text": [
+			"CustomWars: Tactics is currently in development. If you want to grab information about the current state of the engine then you may visit some of the locations listed below.",
+			"<ul class='linkList'><li><a target='_blank' href='http://github.com/ctomni231/cwtactics'>Github Repository</a></li><li><a target='_blank' href='https://code.google.com/p/cwtactics'>Google Repository (outdated)</a></li><li><a target='_blank' href='http://groups.google.com/group/cwtactics'>Mailing-list</a></li><li><a target='_blank' href='http://github.com/ctomni231/cwtactics'>CW:T Github Repository</a></li></ul>"
+		]
+	}
+]

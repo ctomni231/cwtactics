@@ -1,0 +1,45 @@
+[
+  { "id":"linkFb",
+  	"label": "Facebook",
+  	"link":"https://www.facebook.com/customwarstactics",
+    "title":"Follow our development diary on Facebook" },
+
+  { "id":"linkYoutube",
+  	"label": "Youtube",
+  	"link":"http://www.youtube.com/channel/UCY9_WmJVNgPSh-zVC6vBEVQ",
+    "title":"Grab videos from our youtube channel" },
+
+  { "id":"linkBlogger",
+  	"label": "Blog",
+  	"link":"http://cwtactics.blogspot.de",
+    "title":"Grab important news from the blog" },
+
+  { "id":"linkForum",
+  	"label": "Forum",
+  	"link":"http://forums.customwars.com",
+    "title":"Talk with us in our forum" },
+     
+  { "id":"dialogDevelopmentLink",
+  	"label": "Development",
+  	"link":"development",
+  	"isDialog":true,
+    "title":"" },
+    
+  { "id":"dialogLegalsLink",
+  	"label": "Legals",
+  	"link":"legals",
+  	"isDialog":true,
+    "title":"" },
+    
+  { "id":"dialogAboutUsLink",
+  	"label": "About Us",
+  	"link":"about",
+  	"isDialog":true,
+    "title":"" },
+
+  { "id":"linkContactUs",
+  	"label": "Contact Us",
+  	"link":"mailto:ctomni231@gmail.com?cc=blackcat.myako@gmail.com",
+    "title":"Contact us",
+    "sameWindow":true }
+]

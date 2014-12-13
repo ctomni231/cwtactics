@@ -1,0 +1,254 @@
+@font-face {
+  font-family: HeaderFont;
+  src: url('ClearSans-Bold.ttf');
+}
+
+@font-face {
+  font-family: TextFont;
+  src: url('ClearSans-Thin.ttf');
+}
+
+body {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	background-color: #F2F2F2;
+	font-family: 'TextFont', sans-serif;
+	font-size: 12pt;
+	/* background-image: url("../images/background.jpg"); */
+}
+
+/* DIALOG */
+
+.ui-dialog {
+	border-left: 1px solid rgb(129, 129, 129);
+	border-right: 1px solid rgb(129, 129, 129);
+	border: 1px solid #DDD;
+	border-color: #e5e6e9 #dfe0e4 #d0d1d5;
+}
+
+.ui-dialog-titlebar {
+	background: #C7C7C7;
+	border: 1px solid #ADADAD;
+	border-radius: 2px;
+}
+
+.ui-dialog-titlebar-close {
+	display: none;
+}
+
+.ui-dialog-content {
+	font-family: 'TextFont', sans-serif;
+	font-size: 12pt;
+}
+
+.ui-dialog-content li {
+	padding-bottom: 5px;
+}
+
+.ui-dialog-content a {
+	text-decoration: none;
+	color: rgb(37, 37, 37);
+}
+
+.ui-dialog-content a:visited {
+	text-decoration: none;
+	color: rgb(37, 37, 37);
+}
+
+.ui-dialog .ui-button {
+	border: 1px solid #999;
+	border-bottom-color: #888;
+	color: #333;
+	background-color: #eee;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f6f6), to(#e4e4e3));
+	background-image: -moz-linear-gradient(#f5f6f6, #e4e4e3);
+	background-image: -o-linear-gradient(#f5f6f6, #e4e4e3);
+	background-image: linear-gradient(#f5f6f6, #e4e4e3);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#f5f6f6', EndColorStr='#e4e4e3');
+	-webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 #fff;
+	-moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 #fff;
+	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 #fff;
+}
+
+.ui-dialog .ui-button:hover,
+.ui-dialog .ui-button:focus,
+.ui-dialog .ui-button:active {
+  border-color: #777 #777 #666;
+}
+
+.ui-dialog .ui-button:active {
+  border-color: #aaa;
+  background: #ddd;
+  filter: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+
+/* NAVIGATION */
+
+#navbar a img:hover {
+	-webkit-box-shadow: 0px 3px 6px #666;
+	-moz-box-shadow: 0px 3px 6px #666;
+	box-shadow: 0px 3px 6px #666;
+}
+
+#navbar a img {
+	-webkit-box-shadow: 0px 1px 2px #666;
+	-moz-box-shadow: 0px 1px 2px #666;
+	box-shadow: 0px 1px 2px #666;
+	border-radius: 8px;
+}
+
+#navbar a:first-child {
+	border-left: none;
+}
+
+#navbar a {
+	border-left: 1px solid #DDD;
+	padding-left: 8px;
+	padding-right: 8px;
+	font-family: "HeaderFont";
+	text-decoration: none;
+	color: #333;
+}
+
+#navbar a:visited {
+	text-decoration: none;
+	color: rgb(37, 37, 37);
+}
+
+#navbar {
+
+	border-bottom: 1px solid #DDD;
+	background-color: #FFF;
+	
+	padding-top: 6px;
+	padding-bottom: 6px;
+	
+	text-align: center;
+	
+	background-color: white;
+	
+    position: fixed;  
+    width: 100%;  
+    left: 0;  
+    top: 0;  
+    
+    z-index: 100;   
+}
+
+/* CONTENT */
+
+#content {
+	margin-top: 60px;
+	margin-bottom: 10px;
+	
+	width: 760px;
+	margin-left: auto;
+	margin-right: auto;
+	
+	padding-top: 10px;
+	padding-left: 30px;
+	padding-right: 30px;
+	
+	border-left: 1px solid rgb(129, 129, 129);
+	border-right: 1px solid rgb(129, 129, 129);
+	
+	background-color: white;
+	
+	border: 1px solid #DDD;
+	border-color: #e5e6e9 #dfe0e4 #d0d1d5;
+	background-color: #FFF;
+	border-radius: 4px;
+}
+
+.currentVersionImage {
+	width: 320px;
+	height: 240px;
+	
+	border: 1px solid #000000;
+	
+	-webkit-box-shadow: 0px 1px 5px #666;
+	-moz-box-shadow: 0px 1px 5px #666;
+	box-shadow: 0px 1px 5px #666;
+}
+
+.currentNewsWaitingImage {
+	margin-bottom: 110px;
+	margin-left: 220px;
+}
+
+.currentVersionChangelog {
+	padding-bottom: 10px;
+}
+
+.currentVersionChangelog p {
+	padding-left: 50px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.currentVersionChangelog .new,
+.currentVersionChangelog .changed,
+.currentVersionChangelog .fixed {
+	padding-left: 50px;
+	padding-right: 20px;
+	text-transform: uppercase;
+	text-align: right;
+}
+
+.currentVersionChangelog .new {
+	color: rgb(123, 190, 123);
+}
+
+.currentVersionChangelog .changed {
+	color: rgb(236, 215, 57);
+}
+
+.currentVersionChangelog .fixed {
+	color: rgb(219, 130, 130);
+}
+
+.currentVersionChangelogHeader {
+	font-size: 20pt;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #DDD;
+	margin-right: 600px;
+	padding-left: 18px;
+}
+
+#content > p:first-child {
+	text-align: center;
+	margin-top: 15px;
+	margin-bottom: 30px;
+}
+
+.currentVersionHeader {
+	font-size: 24pt;
+	font-family: "HeaderFont";
+}
+
+.uibuttonHolder {
+	text-align: center;
+	margin-bottom: 30px;
+}
+
+.uibutton {
+	padding: 8px 70px;
+	font-family: "HeaderFont";
+	font-size: 14pt;
+}
+
+.newsBlock li {
+	list-style: none;
+	padding-bottom: 8px;
+}
+
+.newsBlock a,
+.newsBlock a:visited {
+	font-family: "HeaderFont";
+	color: #333;
+	text-decoration: none;
+}
