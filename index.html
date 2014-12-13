@@ -1,79 +1,30 @@
 <!DOCTYPE html>
 <html>
 
-  <!-- WEBPAGE VERSION 3.0 -->
-
   <head>
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Cwtactics : An effort to create an open engine to emulate the gaming experience of the Nintendo Advance Wars series." />
 
-    <title>Custom Wars: Tactics</title>
-
-    <link rel="shortcut icon" href="0_3_5/image/icons/loading.png">
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/normalize.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/site_09_2013.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="libs/tooltip.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/button.css">
-
-    <!-- DEPENDENCIES -->
-    <script src='libs/jquery.js'            type='text/javascript'></script>
-    <script src='libs/moment.js'            type='text/javascript'></script>
-    <script src='libs/mustache.js'          type='text/javascript'></script>
-    <script src='libs/tooltip.js'           type='text/javascript'></script>
-
-    <!-- BASE -->
-    <script src='scripts/controller.js'     type='text/javascript'></script>
-
-    <!-- DATA -->
-    <script src='content/milestones.js'     type='text/javascript'></script>
-    <script src='content/navBar.js'         type='text/javascript'></script>
-    <script src='content/legals.js'         type='text/javascript'></script>
-    <script src='content/links.js'          type='text/javascript'></script>
-    <script src='content/compat.js'         type='text/javascript'></script>
-    <script src='content/docs.js'           type='text/javascript'></script>
-
-    <!-- PROG AND TEMPLATE DESC -->
-    <script src='scripts/newsLoader.js'     type='text/javascript'></script>
-    <script src='scripts/issuesLoader.js'   type='text/javascript'></script>
-    <script src='scripts/navbarLoader.js'   type='text/javascript'></script>
-    <script src='scripts/compatLoader.js'   type='text/javascript'></script>
-    <script src='scripts/manualLoader.js'   type='text/javascript'></script>
-    <script src='scripts/releasesLoader.js' type='text/javascript'></script>
-    <script src='scripts/legalLoader.js'    type='text/javascript'></script>
-    <script src='scripts/linksLoader.js'    type='text/javascript'></script>
-
-    <!-- STARTER -->
-    <script type='text/javascript'>
-      $(document).ready(function(){
-        PAGE_PROG.renderSections();
-        PAGE_PROG.updateReleaseBox(0);
-      });
-    </script>
+	<!-- ################# DEPENDENCIES ################# -->
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
+    <script src='libs/jquery.js'     type='text/javascript'></script>
+    <script src='libs/jquery-ui.js'  type='text/javascript'></script>
+    <script src='libs/resistance.js'  type='text/javascript'></script>
+    <script src='libs/moment.js'  type='text/javascript'></script>
+    
+    <!-- ################# APPLICATION ################# -->
+    <script src='target/classes/stjs.js'  type='text/javascript'></script>
+    <script type='text/javascript'>stjs.mainCallDisabled = true;</script>
+    <link rel="stylesheet" type="text/css" href="css/button.css">
+    <link rel="stylesheet" type="text/css" href="css/site.css">
+    <script src='target/classes/webpage.js'  type='text/javascript'></script>
 
   </head>
 
-  <body>
-
-    <h1 class="headerImg"><img src="images/cwTactics.png"></h1>
-
-    <div id="sectionLinks"          class=""> </div>
-
-    <div class="content_outer">
-      <div class="navigation">
-        <div id="sectionNavbar" ></div>
-      </div>
-
-      <div class="content">
-        <div id="sectionNews"           class="content_block"> </div>
-        <div id="sectionCompatibility"  class="content_block"> </div>
-        <div id="sectionManual"         class="content_block"> </div>
-        <div id="sectionRelease"        class="content_block"> </div>
-        <div id="sectionRoadmap"        class="content_block"> </div>
-        <div id="sectionLegal"          class="content_block"> </div>
-      </div>
-    </div>
-
+  <body style="display:none;" onload="cwt.WebPage.main();" >
+    <div id="navbar"></div>
+    <div id="content"></div>
+    <div id="dialogs"></div>
   </body>
 
 </html>
