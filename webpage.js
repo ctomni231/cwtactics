@@ -325,7 +325,7 @@ stjs.extend(cwt.DataLoader, null, [], function(constructor, prototype) {
         $.get("data/dialogs.json", function(response) {
             try {
                 var dialogs = {};
-                var dialogDescs = JSON.parse(response);
+                var dialogDescs = (typeof response) == "string" ? JSON.parse(response) : (response);
                 for (var i = 0; i < dialogDescs.length; i++) {
                     dialogs[dialogDescs[i].id] = new cwt.Dialog(dialogDescs[i]);
                 }
@@ -344,7 +344,7 @@ stjs.extend(cwt.DataLoader, null, [], function(constructor, prototype) {
         cwt.Log.fine("Loading content panel");
         $.get("data/content.json", function(response) {
             try {
-                var desc = JSON.parse(response);
+                var desc = (typeof response) == "string" ? JSON.parse(response) : (response);
                 callback(new cwt.ContentPanel(desc));
             }catch (e) {
                 ErrorHandler.doErrorHandling(e);
@@ -361,7 +361,7 @@ stjs.extend(cwt.DataLoader, null, [], function(constructor, prototype) {
         $.get("data/navigation.json", function(response) {
             try {
                 var navLinks = {};
-                var descs = JSON.parse(response);
+                var descs = (typeof response) == "string" ? JSON.parse(response) : (response);
                 for (var i = 0; i < descs.length; i++) {
                     var desc = descs[i];
                     navLinks[desc.id] = new cwt.NavBarLink(desc);

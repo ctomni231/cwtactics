@@ -2,6 +2,7 @@ package webpage;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.functions.Callback1;
@@ -25,8 +26,9 @@ import bridge.Global;
 			public void $invoke(String response) {
 				try {
 					Map<String, Dialog> dialogs = JSCollections.$map();
-					Array<DialogDesc> dialogDescs = (Array<DialogDesc>) org.stjs.javascript.Global.JSON.parse(response);
-
+					Array<DialogDesc> dialogDescs = JSGlobal.typeof(response) == "string" ? 
+							(Array<DialogDesc>) org.stjs.javascript.Global.JSON.parse(response) : (Array<DialogDesc>) ((Object) response);
+							
 					for (int i = 0; i < dialogDescs.$length(); i++) {
 						dialogs.$put(dialogDescs.$get(i).id ,new Dialog(dialogDescs.$get(i)));
 					}
@@ -51,7 +53,8 @@ import bridge.Global;
 		Global.$.get("data/content.json", new Callback1<String>() {
 			public void $invoke(String response) {
 				try {
-					ContentPanelDesc desc = (ContentPanelDesc) org.stjs.javascript.Global.JSON.parse(response);
+					ContentPanelDesc desc = JSGlobal.typeof(response) == "string" ? 
+							(ContentPanelDesc) org.stjs.javascript.Global.JSON.parse(response) : (ContentPanelDesc) ((Object) response);
 					callback.$invoke(new ContentPanel(desc));
 					
 				} catch (Exception e) {
@@ -73,7 +76,8 @@ import bridge.Global;
 			public void $invoke(String response) {
 				try {
 					Map<String, NavBarLink> navLinks = JSCollections.$map();
-					Array<NavBarLinkDesc> descs = (Array<NavBarLinkDesc>) org.stjs.javascript.Global.JSON.parse(response);
+					Array<NavBarLinkDesc> descs = JSGlobal.typeof(response) == "string" ? 
+							(Array<NavBarLinkDesc>) org.stjs.javascript.Global.JSON.parse(response) : (Array<NavBarLinkDesc>) ((Object) response);
 
 					for (int i = 0; i < descs.$length(); i++) {
 						NavBarLinkDesc desc = descs.$get(i);
