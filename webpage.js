@@ -279,7 +279,7 @@ stjs.extend(cwt.ContentPanel, null, [], function(constructor, prototype) {
             for (var i = 0; i < desc.news.length; i++) {
                 var item = desc.news[i];
                 var li = $(DomHelper.createListEntry());
-                li.html("<a target='_blank' title='Open article' href='" + item.url + "' >" + moment(item.date, "YYYY-MM-DD HH:mm:ss.SSS-Z,ZZ").fromNow() + "</a><br/><span>" + item.title + "</span>");
+                li.html("<a target='_blank' title='Open article' href='" + item.url + "' >" + moment(item.date, "YYYY-MM-DD HH:mm:ss.SSS-Z,ZZ").fromNow() + "<br/><span>" + item.title + "</span></a>");
                 ul.append(li);
             }
             $(".currentNewsWaitingImage").remove();
