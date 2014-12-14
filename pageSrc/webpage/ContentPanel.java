@@ -86,7 +86,7 @@ import bridge.JQuery;
 				for (int i = 0; i < desc.news.$length(); i++) {
 					NewsItemDesc item = desc.news.$get(i);
 					JQuery li = Global.$(DomHelper.createListEntry());
-					li.html("<a target='_blank' title='Open article' href='" + item.url + "' >" + Global.moment(item.date, "YYYY-MM-DD HH:mm:ss.SSS-Z,ZZ").fromNow() + "</a><br/><span>" + item.title + "</span>");
+					li.html("<a target='_blank' title='Open article' href='" + item.url + "' >" + Global.moment(item.date, "YYYY-MM-DD HH:mm:ss.SSS-Z,ZZ").fromNow() + "<br/><span><i>" + item.title + "</i></span></a>");
 					ul.append(li);
 				}
 
