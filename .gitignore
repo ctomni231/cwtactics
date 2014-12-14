@@ -1,4 +1,6 @@
 /target/
+
+/.settings/
 .classpath
 .project
 Thumbs.db
