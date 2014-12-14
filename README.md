@@ -1,0 +1,1 @@
+* [How to build the web page](https://github.com/ctomni231/cwtactics/wiki/Deployment-Documentation) 
