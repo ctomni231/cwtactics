@@ -1,10 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>net.wolfTec</groupId>
-  <artifactId>webpage</artifactId>
-  <version>2015-1</version>
-  
-  <properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.wolfTec</groupId>
+	<artifactId>webpage</artifactId>
+	<version>2015-1</version>
+
+	<properties>
 		<stjs.version>3.0.3</stjs.version>
 	</properties>
 
@@ -20,33 +21,60 @@
 						<target>1.8</target>
 					</configuration>
 				</plugin>
-	
+
 				<plugin>
-				  <groupId>org.st-js</groupId>
-				  <artifactId>maven-plugin</artifactId>
-				  <version>${stjs.version}</version>
-				  <executions>
-				    <execution>
-				      <id>main</id>
-				      <goals>
-				        <goal>generate</goal>
-				      </goals>
-				    </execution>
-				    <!-- if you use the JUnit runner -->
-				    <execution>
-				      <id>test</id>
-				      <goals>
-				        <goal>generate-test</goal>
-				      </goals>
-				    </execution>
-				  </executions>
-				  <configuration>
-				    <includes>
-				       <include>**/*.java</include>
-				    </includes>
-				    <pack>true</pack>
-				  </configuration>
+					<groupId>org.st-js</groupId>
+					<artifactId>maven-plugin</artifactId>
+					<version>${stjs.version}</version>
+					<executions>
+						<execution>
+							<id>main</id>
+							<goals>
+								<goal>generate</goal>
+							</goals>
+						</execution>
+						<!-- if you use the JUnit runner -->
+						<execution>
+							<id>test</id>
+							<goals>
+								<goal>generate-test</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<includes>
+							<include>**/*.java</include>
+						</includes>
+						<pack>true</pack>
+					</configuration>
 				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>1.7</version>
+					<executions>
+						<execution>
+							<id>default-cli</id>
+							<phase>compile</phase>
+							<goals>
+								<goal>run</goal>
+							</goals>
+							<configuration>
+
+								<target>
+
+									<copy file="${project.build.outputDirectory}/stjs.js"
+										todir="${basedir}" overwrite="true" />
+
+									<copy file="${project.build.outputDirectory}/webpage.js"
+										todir="${basedir}" overwrite="true" />
+								</target>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -63,4 +91,5 @@
 			<version>${stjs.version}</version>
 		</dependency>
 	</dependencies>
+
 </project>
