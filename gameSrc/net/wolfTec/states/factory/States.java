@@ -1,7 +1,7 @@
 package net.wolfTec.states.factory;
 
 import net.wolfTec.Constants;
-import net.wolfTec.application.CustomWarsTactics;
+import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.input.InputData;
 import net.wolfTec.input.InputType;
 import net.wolfTec.states.State;
@@ -54,10 +54,10 @@ public abstract class States {
             @Override
             public void $invoke(Integer delta) {
                 if (!stateData.drawn) {
-                    CanvasRenderingContext2D ctx = CustomWarsTactics.renderCtx.layerBG.getContext(Constants.INACTIVE_ID);
+                    CanvasRenderingContext2D ctx = net.wolfTec.renderCtx.layerBG.getContext(Constants.INACTIVE_ID);
 
                     ctx.fillStyle = "gray";
-                    ctx.fillRect(0, 0, CustomWarsTactics.renderCtx.screenWidth, CustomWarsTactics.renderCtx.screenHeight);
+                    ctx.fillRect(0, 0, net.wolfTec.renderCtx.screenWidth, net.wolfTec.renderCtx.screenHeight);
 
                     stateData.drawn = true;
                 }
@@ -83,15 +83,15 @@ public abstract class States {
         stateData.background = null;
 
         final UiField tooltip = new UiField(
-                JSGlobal.parseInt(CustomWarsTactics.renderCtx.screenWidth * 0.1, 10),
-                JSGlobal.parseInt(CustomWarsTactics.renderCtx.screenHeight * 0.2, 10),
-                JSGlobal.parseInt(CustomWarsTactics.renderCtx.screenWidth * 0.8, 10),
+                JSGlobal.parseInt(net.wolfTec.renderCtx.screenWidth * 0.1, 10),
+                JSGlobal.parseInt(net.wolfTec.renderCtx.screenHeight * 0.2, 10),
+                JSGlobal.parseInt(net.wolfTec.renderCtx.screenWidth * 0.8, 10),
                 120, "", 10, UiField.STYLE_NORMAL, null
         );
 
         final UiField button = new UiField(
-                JSGlobal.parseInt(CustomWarsTactics.renderCtx.screenWidth * 0.5 - 150, 10),
-                JSGlobal.parseInt(CustomWarsTactics.renderCtx.screenHeight * 0.8, 10) - 20,
+                JSGlobal.parseInt(net.wolfTec.renderCtx.screenWidth * 0.5 - 150, 10),
+                JSGlobal.parseInt(net.wolfTec.renderCtx.screenHeight * 0.8, 10) - 20,
                 300, 40, "START",20, UiField.STYLE_NORMAL, null
         );
 
@@ -100,12 +100,12 @@ public abstract class States {
             public void $invoke() {
                 stateData.time = 0;
 
-                CustomWarsTactics.renderCtx.layerUI.clear(Constants.INACTIVE_ID);
+                net.wolfTec.renderCtx.layerUI.clear(Constants.INACTIVE_ID);
 
                 // select a random background image
-                int numBackgrounds = CustomWarsTactics.spriteDb.sprites.$get("BACKGROUNDS").getNumberOfImages();
+                int numBackgrounds = net.wolfTec.spriteDb.sprites.$get("BACKGROUNDS").getNumberOfImages();
                 int randBGIndex = JSGlobal.parseInt((int) (org.stjs.javascript.Math.random() * numBackgrounds), 10);
-                stateData.background = CustomWarsTactics.spriteDb.sprites.$get("BACKGROUNDS").getImage(randBGIndex);
+                stateData.background = net.wolfTec.spriteDb.sprites.$get("BACKGROUNDS").getImage(randBGIndex);
             }
         };
 
@@ -143,12 +143,12 @@ public abstract class States {
             @Override
             public void $invoke(Integer integer) {
                 if (stateData.background != null) {
-                    CustomWarsTactics.renderCtx.layerBG.getContext(Constants.INACTIVE_ID).drawImage(
-                            stateData.background, 0, 0, CustomWarsTactics.renderCtx.screenWidth, CustomWarsTactics.renderCtx.screenHeight);
+                    net.wolfTec.renderCtx.layerBG.getContext(Constants.INACTIVE_ID).drawImage(
+                            stateData.background, 0, 0, net.wolfTec.renderCtx.screenWidth, net.wolfTec.renderCtx.screenHeight);
                     stateData.background = null;
                 }
 
-                CanvasRenderingContext2D uiCtx = CustomWarsTactics.renderCtx.layerUI.getContext(Constants.INACTIVE_ID);
+                CanvasRenderingContext2D uiCtx = net.wolfTec.renderCtx.layerUI.getContext(Constants.INACTIVE_ID);
                 button.draw(uiCtx);
                 tooltip.draw(uiCtx);
             }
@@ -172,9 +172,9 @@ public abstract class States {
         final State state = new State();
 
         stateData.x = 10;
-        stateData.y = JSGlobal.parseInt(CustomWarsTactics.renderCtx.screenHeight / 2, 10) - 10;
+        stateData.y = JSGlobal.parseInt(net.wolfTec.renderCtx.screenHeight / 2, 10) - 10;
         stateData.height = 20;
-        stateData.width = CustomWarsTactics.renderCtx.screenWidth - 20;
+        stateData.width = net.wolfTec.renderCtx.screenWidth - 20;
         stateData.process = 0;
         stateData.done = false;
 
@@ -203,7 +203,7 @@ public abstract class States {
         state.render = new Callback1<Integer>() {
             @Override
             public void $invoke(Integer integer) {
-                CanvasRenderingContext2D ctx = CustomWarsTactics.renderCtx.layerUI.getContext(Constants.INACTIVE_ID);
+                CanvasRenderingContext2D ctx = net.wolfTec.renderCtx.layerUI.getContext(Constants.INACTIVE_ID);
 
                 ctx.fillStyle = "white";
                 ctx.fillRect(stateData.x, stateData.y, stateData.width, stateData.height );

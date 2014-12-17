@@ -1,7 +1,7 @@
 package net.wolfTec.renderer;
 
 import net.wolfTec.Constants;
-import net.wolfTec.application.CustomWarsTactics;
+import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.model.GameRound;
 import net.wolfTec.model.MoveCode;
 import net.wolfTec.model.Tile;
@@ -20,12 +20,14 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 
 public class RenderingContext {
 
-    public static final String LOG_HEADER = Constants.logHeader("renderer");
+    public static final String LOG_HEADER = Constants.LOG_RENDERER;
 
     public static final int MENU_ELEMENTS_MAX = 10;
     public static final int MENU_ENTRY_HEIGHT = 2 * Constants.TILE_BASE;
     public static final int MENU_ENTRY_WIDTH = 10 * Constants.TILE_BASE;
     public static final int ANIMATION_TICK_TIME = 150;
+    
+    private GameRound $gameround;
 
     /** */
     private boolean unitAnimationHalfStep;
@@ -171,7 +173,7 @@ public class RenderingContext {
      * @param moveCode
      */
     public boolean shiftScreen(MoveCode moveCode) {
-        GameRound game = CustomWarsTactics.gameround;
+        GameRound game = $gameround;
 
         boolean smallerW = (game.mapWidth < Constants.SCREEN_WIDTH);
         boolean smallerH = (game.mapHeight < Constants.SCREEN_HEIGHT);
@@ -216,7 +218,7 @@ public class RenderingContext {
     public void renderScreen() {
         int pfc = Debug.startPerformanceCheck();
 
-        GameRound game = CustomWarsTactics.gameround;
+        GameRound game = $gameround;
         int x = screenOffsetX;
         int y = screenOffsetY;
         int w = (game.mapWidth < Constants.SCREEN_WIDTH) ? game.mapWidth : Constants.SCREEN_WIDTH;
@@ -242,7 +244,7 @@ public class RenderingContext {
     public void renderFocusOnScreen() {
         int pfc = Debug.startPerformanceCheck();
 
-        GameRound game = CustomWarsTactics.gameround;
+        GameRound game = $gameround;
         int x = screenOffsetX;
         int y = screenOffsetY;
         int w = (game.mapWidth < Constants.SCREEN_WIDTH) ? game.mapWidth : Constants.SCREEN_WIDTH;
@@ -260,7 +262,7 @@ public class RenderingContext {
     public void renderUnitsOnScreen() {
         int pfc = Debug.startPerformanceCheck();
 
-        GameRound game = CustomWarsTactics.gameround;
+        GameRound game = CustomWarsTactics.getBean("gameround");
         int x = screenOffsetX;
         int y = screenOffsetY;
         int w = (game.mapWidth < Constants.SCREEN_WIDTH) ? game.mapWidth : Constants.SCREEN_WIDTH;
@@ -280,7 +282,7 @@ public class RenderingContext {
     public void shiftMap(MoveCode code) {
         int pfc = Debug.startPerformanceCheck();
 
-        GameRound game = CustomWarsTactics.gameround;
+        GameRound game = CustomWarsTactics.getBean("gameround");
         int fx = screenOffsetX;
         int fy = screenOffsetY;
         int fw = (game.mapWidth < Constants.SCREEN_WIDTH) ? game.mapWidth : Constants.SCREEN_WIDTH;
@@ -329,7 +331,7 @@ public class RenderingContext {
         layerUnit.renderLayer(indexUnitAnimation);
         layerFocus.renderLayer(indexEffectAnimation);
 
-        if (CustomWarsTactics.gameWorkflowData.focusMode == Sprite.FOCUS_MOVE) {
+        if (net.wolfTec.gameWorkflowData.focusMode == Sprite.FOCUS_MOVE) {
             layerEffects.clearAll();
             renderMovePath();
             layerEffects.renderLayer(0);
@@ -342,7 +344,7 @@ public class RenderingContext {
      * Renders the cursor to the UI layer.
      */
     public void eraseCursor(int x, int y) {
-        Element cursorImg = CustomWarsTactics.spriteDb.sprites.$get("CURSOR").getImage(0);
+        Element cursorImg = net.wolfTec.spriteDb.sprites.$get("CURSOR").getImage(0);
         CanvasRenderingContext2D ctx = layerUI.getContext(Constants.INACTIVE_ID);
         int h = JSGlobal.parseInt(Constants.TILE_BASE / 2, 10);
         x = (x - screenOffsetX) * Constants.TILE_BASE;
@@ -359,7 +361,7 @@ public class RenderingContext {
      * Renders the cursor to the UI layer.
      */
     public void renderCursor(int x, int y) {
-        Element cursorImg = CustomWarsTactics.spriteDb.sprites.$get("CURSOR").getImage(0);
+        Element cursorImg = net.wolfTec.spriteDb.sprites.$get("CURSOR").getImage(0);
         CanvasRenderingContext2D ctx = layerUI.getContext(Constants.INACTIVE_ID);
         int h = JSGlobal.parseInt(Constants.TILE_BASE / 2, 10);
         x = (x - screenOffsetX) * Constants.TILE_BASE;
@@ -394,11 +396,11 @@ public class RenderingContext {
     public void renderMovePath() {
         int offsetX = screenOffsetX;
         int offsetY = screenOffsetY;
-        int x = CustomWarsTactics.gameWorkflowData.source.x;
-        int y = CustomWarsTactics.gameWorkflowData.source.y;
-        CircularBuffer<MoveCode> path = CustomWarsTactics.gameWorkflowData.movePath;
+        int x = net.wolfTec.source.x;
+        int y = net.wolfTec.source.y;
+        CircularBuffer<MoveCode> path = net.wolfTec.gameWorkflowData.movePath;
 
-        Sprite arrowSprite = CustomWarsTactics.spriteDb.sprites.$get("ARROW");
+        Sprite arrowSprite = net.wolfTec.spriteDb.sprites.$get("ARROW");
         int oX = Constants.INACTIVE_ID;
         int oY = Constants.INACTIVE_ID;
         int tX = Constants.INACTIVE_ID;
@@ -754,10 +756,10 @@ public class RenderingContext {
      * NOTE: does not clear the area before update
      */
     public void renderUnits(int x, int oy, int w, int h) {
-        net.wolfTec.model.Map map = CustomWarsTactics.gameround.map;
+        net.wolfTec.model.Map map = $gameround.map;
         int halfTileBase = JSGlobal.parseInt(Constants.TILE_BASE / 2, 10);
         Unit hiddenUnit = (hiddenUnitId != Constants.INACTIVE_ID ?
-                CustomWarsTactics.gameround.units.$get(hiddenUnitId) : null);
+        		$gameround.units.$get(hiddenUnitId) : null);
 
         for (int xe = x + w; x < xe; x++) {
             for (int y = oy, ye = y + h; y < ye; y++) {
@@ -767,7 +769,7 @@ public class RenderingContext {
                 Unit unit = tile.unit;
                 if (unit == null || hiddenUnit == unit) continue;
 
-                Sprite unitSprite = CustomWarsTactics.spriteDb.sprites.$get(unit.type.ID);
+                Sprite unitSprite = net.wolfTec.spriteDb.sprites.$get(unit.type.ID);
 
                 // grab color
                 int state = Constants.INACTIVE_ID;
@@ -901,7 +903,7 @@ public class RenderingContext {
 
     /** */
     public void prepareMenu() {
-        StateDataMenu menu = CustomWarsTactics.gameWorkflowData.menu;
+        StateDataMenu menu = net.wolfTec.gameWorkflowData.menu;
         var numElements = menu.getSize();
         if (numElements > MENU_ELEMENTS_MAX) numElements = MENU_ELEMENTS_MAX;
 
@@ -951,7 +953,7 @@ public class RenderingContext {
     /** */
     public void handleMenuInput(MoveCode code) {
         boolean shiftedMenu = false;
-        StateDataMenu menu = CustomWarsTactics.gameWorkflowData.menu;
+        StateDataMenu menu = net.wolfTec.gameWorkflowData.menu;
 
         // the menu size must be greater then the menu size
         if (menu.getSize() > MENU_ELEMENTS_MAX) {
@@ -998,7 +1000,7 @@ public class RenderingContext {
         renderTiles(layerMap, offsetX, offsetY, x, y, 1, 1, false);
 
         // draw overlay of the bottom tile
-        if (y < CustomWarsTactics.gameround.mapHeight - 1) {
+        if (y < $gameround.mapHeight - 1) {
             renderTiles(layerMap, offsetX, offsetY, x, y + 1, 1, 1, true);
         }
     }
@@ -1010,8 +1012,8 @@ public class RenderingContext {
                 screenOffsetY,
                 screenOffsetX,
                 screenOffsetY + 1,
-                (CustomWarsTactics.gameround.mapWidth < Constants.SCREEN_WIDTH) ?
-                        CustomWarsTactics.gameround.mapWidth : Constants.SCREEN_WIDTH,
+                ($gameround.mapWidth < Constants.SCREEN_WIDTH) ?
+                        $gameround.mapWidth : Constants.SCREEN_WIDTH,
                 1,
                 true
         );
@@ -1022,7 +1024,7 @@ public class RenderingContext {
         int offsetX = screenOffsetX;
         int offsetY = screenOffsetY;
 
-        GameRound mapData = CustomWarsTactics.gameround;
+        GameRound mapData = $gameround;
         CanvasRenderingContext2D ctx;
         int scx;
         int scy;
@@ -1040,7 +1042,7 @@ public class RenderingContext {
         for (int xe = x + w; x < xe; x++) {
             for (int y = oy, ye = y + h; y < ye; y++) {
                 tile = mapData.map.getTile(x, y);
-                sprite = CustomWarsTactics.spriteDb.sprites.$get(tile.type.ID).getImage(tile.variant * Sprite.TILE_STATES);
+                sprite = net.wolfTec.spriteDb.sprites.$get(tile.type.ID).getImage(tile.variant * Sprite.TILE_STATES);
 
                 // grab property status before loop (calc it one instead of eight times)
                 if (tile.property != null) {
@@ -1068,7 +1070,7 @@ public class RenderingContext {
                         state = Sprite.PROPERTY_NEUTRAL;
                     }
 
-                    propSprite = CustomWarsTactics.spriteDb.sprites.$get(tile.property.type.ID).getImage(state);
+                    propSprite = net.wolfTec.spriteDb.sprites.$get(tile.property.type.ID).getImage(state);
                 }
 
                 // render all phases
@@ -1076,7 +1078,7 @@ public class RenderingContext {
                 while (n < 8) {
                     ctx = layerMap.getContext(n);
 
-                    scx = (CustomWarsTactics.spriteDb.longAnimatedTiles.$get(tile.type.ID) != null) ? Constants.TILE_BASE * n : 0;
+                    scx = (net.wolfTec.spriteDb.longAnimatedTiles.$get(tile.type.ID) != null) ? Constants.TILE_BASE * n : 0;
                     scy = 0;
                     scw = Constants.TILE_BASE;
                     sch = Constants.TILE_BASE * 2;
@@ -1186,15 +1188,15 @@ public class RenderingContext {
         int tcw;
         int tch;
 
-        Sprite sprite = CustomWarsTactics.spriteDb.sprites.$get("FOCUS");
-        Element spriteImg = sprite.getImage(CustomWarsTactics.gameWorkflowData.focusMode);
+        Sprite sprite = net.wolfTec.spriteDb.sprites.$get("FOCUS");
+        Element spriteImg = sprite.getImage(net.wolfTec.gameWorkflowData.focusMode);
 
         int oy = y;
         int ye;
         for (int xe = x + w; x < xe; x++) {
             for (y = oy, ye = y + h; y < ye; y++) {
 
-                if (CustomWarsTactics.gameWorkflowData.selection.getValue(x, y) >= 0) {
+                if (net.wolfTec.gameWorkflowData.selection.getValue(x, y) >= 0) {
 
                     // render all phases
                     int n = 0;

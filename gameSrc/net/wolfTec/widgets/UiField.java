@@ -1,7 +1,8 @@
 package net.wolfTec.widgets;
 
 import net.wolfTec.Constants;
-import net.wolfTec.application.CustomWarsTactics;
+import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.utility.Localization;
 import net.wolfTec.utility.ObjectUtil;
 
 import org.stjs.javascript.JSStringAdapter;
@@ -12,7 +13,7 @@ import org.stjs.javascript.functions.Callback0;
 
 public class UiField {
 
-    public static final String LOG_HEADER = Constants.logHeader("widgets");
+    public static final String LOG_HEADER = Constants.LOG_WIDGETS;
 
     public static final int STYLE_NONE = -1;
     public static final int STYLE_NORMAL = 0;
@@ -55,7 +56,7 @@ public class UiField {
         this.inactive = false;
 
         this.key = text;
-        this.text = ObjectUtil.notEmpty(text) ? CustomWarsTactics.i18n.forKey(text) : text;
+        this.text = ObjectUtil.notEmpty(text) ? ((Localization) CustomWarsTactics.getBean("i18n")).forKey(text) : text;
         JSStringAdapter.split("/\\n/", "\n");
     }
 

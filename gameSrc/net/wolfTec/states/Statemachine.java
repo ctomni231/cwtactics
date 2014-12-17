@@ -1,7 +1,7 @@
 package net.wolfTec.states;
 
 import net.wolfTec.Constants;
-import net.wolfTec.application.CustomWarsTactics;
+import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.input.InputData;
 import net.wolfTec.utility.Debug;

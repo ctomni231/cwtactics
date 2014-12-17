@@ -1,149 +1,134 @@
 package net.wolfTec;
 
-import org.stjs.javascript.JSCollections;
-import org.stjs.javascript.JSGlobal;
-import org.stjs.javascript.Map;
-
 public abstract class Constants {
 
-    /**
-     * Current version of the running CustomWars: Tactics.
-     */
-    public static final String VERSION = "0.3.799-b1";
+	/**
+	 * Current version of the running CustomWars: Tactics.
+	 */
+	public static final String	VERSION	                = "0.3.799-b1";
 
-    /**
+	/**
      *
      */
-    public static final int INACTIVE_ID = -1;
+	public static final int	    INACTIVE_ID	            = -1;
 
-    /**
+	/**
      *
      */
-    public static final int CAPTURE_POINTS = 20;
+	public static final int	    CAPTURE_POINTS	        = 20;
 
-    /**
+	/**
      *
      */
-    public static final int CAPTURE_PER_STEP = 10;
+	public static final int	    CAPTURE_PER_STEP	      = 10;
 
-    /**
+	/**
      *
      */
-    public static final int INPUT_STACK_BUFFER_SIZE = 10;
+	public static final int	    INPUT_STACK_BUFFER_SIZE	= 10;
 
-    /**
-     * Determines the debug mode. Can be changed at runtime to enable/disable runtime assertions and debug outputs.
-     */
-    public static final boolean DEBUG = true;
+	/**
+	 * Determines the debug mode. Can be changed at runtime to enable/disable
+	 * runtime assertions and debug outputs.
+	 */
+	public static final boolean	DEBUG	                  = true;
 
-    /**
-     * The game won't cache data when this variable is set to true.
-     */
-    public static final boolean DEV_NO_CACHE = false;
+	/**
+	 * The game won't cache data when this variable is set to true.
+	 */
+	public static final boolean	DEV_NO_CACHE	          = false;
 
-    /**
-     * Name of the font that will be used to render text.
-     */
-    public static final String GAME_FONT = "Gamefont";
+	/**
+	 * Name of the font that will be used to render text.
+	 */
+	public static final String	GAME_FONT	              = "Gamefont";
 
-    /**
-     * URL of the active server where the game was downloaded from. This server will be used to grab the game data.
-     * TODO rename property to SERVER_PATH
-     */
-    public static final String MOD_PATH = "http://localhost:8000/";
+	/**
+	 * URL of the active server where the game was downloaded from. This server
+	 * will be used to grab the game data. TODO rename property to SERVER_PATH
+	 */
+	public static final String	MOD_PATH	              = "http://localhost:8000/";
 
-    /**
+	/**
      *
      */
-    public static final String DEFAULT_MOD_PATH = "http://localhost:8000/modifications/cwt.json";
+	public static final String	DEFAULT_MOD_PATH	      = "http://localhost:8000/modifications/cwt.json";
 
-    /**
-     * Tile size base.
-     */
-    public static final int TILE_BASE = 16;
+	/**
+	 * Tile size base.
+	 */
+	public static final int	    TILE_BASE	              = 16;
 
-    /**
-     * Represents a numeric code which means no data.
-     */
-    public static final int DESELECT_ID = -2;
+	/**
+	 * Represents a numeric code which means no data.
+	 */
+	public static final int	    DESELECT_ID	            = -2;
 
-    /**
+	/**
      *
      */
-    public static final int NOT_AVAILABLE = -2;
+	public static final int	    NOT_AVAILABLE	          = -2;
 
-    /**
-     * Screen width in tiles.
-     */
-    public static final int SCREEN_WIDTH = 32;
+	/**
+	 * Screen width in tiles.
+	 */
+	public static final int	    SCREEN_WIDTH	          = 32;
 
-    /**
-     * Screen height in tiles.
-     */
-    public static final int SCREEN_HEIGHT = 24;
+	/**
+	 * Screen height in tiles.
+	 */
+	public static final int	    SCREEN_HEIGHT	          = 24;
 
-    /**
-     * Maximum width of a map.
-     */
-    public static final int MAX_MAP_WIDTH = 60;
+	/**
+	 * Maximum width of a map.
+	 */
+	public static final int	    MAX_MAP_WIDTH	          = 60;
 
-    /**
-     * Maximum height of a map.
-     */
-    public static final int MAX_MAP_HEIGHT = 40;
+	/**
+	 * Maximum height of a map.
+	 */
+	public static final int	    MAX_MAP_HEIGHT	        = 40;
 
-    /**
-     * Maximum range of a move action.
-     */
-    public static final int MAX_MOVE_LENGTH = 15;
+	/**
+	 * Maximum range of a move action.
+	 */
+	public static final int	    MAX_MOVE_LENGTH	        = 15;
 
-    /**
-     * Maximum number of players.
-     */
-    public static final int MAX_PLAYER = 4;
+	/**
+	 * Maximum number of players.
+	 */
+	public static final int	    MAX_PLAYER	            = 4;
 
-    /**
-     * Maximum number of properties.
-     */
-    public static final int MAX_PROPERTIES = 200;
+	/**
+	 * Maximum number of properties.
+	 */
+	public static final int	    MAX_PROPERTIES	        = 200;
 
-    /**
-     * Maximum number of units per player.
-     */
-    public static final int MAX_UNITS = 50;
+	/**
+	 * Maximum number of units per player.
+	 */
+	public static final int	    MAX_UNITS	              = 50;
 
-    /**
+	/**
      *
      */
-    public static final int MAX_SELECTION_RANGE = 15;
+	public static final int	    MAX_SELECTION_RANGE	    = 15;
 
-    /**
+	/**
      *
      */
-    public static final int ACTION_POOL_SIZE = 200;
+	public static final int	    ACTION_POOL_SIZE	      = 200;
 
-    /**
-     *
-     */
-    private static final Map<String, String> logHeaders = JSCollections.$map();
-
-    static {
-        logHeaders.$put("unknown", "??????");
-        logHeaders.$put("xmlhttp", "XMLREQ");
-        logHeaders.$put("widgets", "   GUI");
-        logHeaders.$put("renderer", "RENDER");
-        logHeaders.$put("assertion", "ASSERT");
-        logHeaders.$put("cwtMediator", "MEDITR");
-        logHeaders.$put("localization", "  I18N");
-        logHeaders.$put("statemachine", "STATEM");
-    }
-
-    /**
-     * @param key
-     * @return
-     */
-    public static String logHeader(String key) {
-        String s = logHeaders.$get(key);
-        return s != JSGlobal.undefined ? s : logHeaders.$get("unknown");
-    }
+	public static final String	LOG_UNKNOWN	            = "??????";
+	public static final String	LOG_XML_HTTP	          = "XMLREQ";
+	public static final String	LOG_WIDGETS	            = "   GUI";
+	public static final String	LOG_RENDERER	          = "RENDER";
+	public static final String	LOG_ASSERTION	          = "ASSERT";
+	public static final String	LOG_MEDIATOR	          = "MEDITR";
+	public static final String	LOG_LOCALIZATION	      = "  I18N";
+	public static final String	LOG_STATEMACHINE	      = "STATEM";
+	public static final String	LOG_TYPE_DATABASE	      = "TYPEDB";
+	public static final String	LOG_ACTION_INVOKER	    = "ACTION";
+	public static final String	LOG_DEBUG	              = " DEBUG";
+	public static final String	LOG_MESSAGE_ROUTER	    = "NETWRK";
 }

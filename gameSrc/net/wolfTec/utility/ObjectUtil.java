@@ -65,5 +65,9 @@ public abstract class ObjectUtil {
             return null;
         }
     };
+    
+    public static Array<String> getProperties(Object obj) {
+    	return JSObjectAdapter.$js("Object.keys(obj)");
+    }
 
 }

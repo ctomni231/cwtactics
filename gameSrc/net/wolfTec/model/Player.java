@@ -1,10 +1,10 @@
 package net.wolfTec.model;
 
 import net.wolfTec.Constants;
-import net.wolfTec.application.CustomWarsTactics;
-import net.wolfTec.database.ArmyType;
-import net.wolfTec.database.CoType;
+import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.enums.CoPowerLevel;
+import net.wolfTec.types.ArmyType;
+import net.wolfTec.types.CoType;
 
 import org.stjs.javascript.annotation.Namespace;
 

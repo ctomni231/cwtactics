@@ -1,7 +1,7 @@
 package net.wolfTec.states.factory;
 
 import net.wolfTec.Constants;
-import net.wolfTec.application.CustomWarsTactics;
+import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.input.InputData;
 import net.wolfTec.states.State;
 import net.wolfTec.states.Statemachine;
@@ -55,7 +55,7 @@ public abstract class MenuStates {
         animationState.enter = new Callback0() {
             @Override
             public void $invoke() {
-                CustomWarsTactics.renderCtx.layerUI.clear(Constants.INACTIVE_ID);
+                net.wolfTec.renderCtx.layerUI.clear(Constants.INACTIVE_ID);
                 state.currentSubState = 0;
                 state.enter.$invoke();
             }
@@ -106,7 +106,7 @@ public abstract class MenuStates {
             @Override
             public void $invoke(Integer delta) {
                 if (state.currentSubState == 0) {
-                    CanvasRenderingContext2D ctx = CustomWarsTactics.renderCtx.layerUI.getContext(Constants.INACTIVE_ID);
+                    CanvasRenderingContext2D ctx = net.wolfTec.renderCtx.layerUI.getContext(Constants.INACTIVE_ID);
                     state.layout.draw(ctx);
                     state.currentSubState = 1;
                 }

@@ -1,6 +1,6 @@
 package net.wolfTec.loading;
 
-import net.wolfTec.application.CustomWarsTactics;
+import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.model.Config;
 import net.wolfTec.utility.Debug;
@@ -75,7 +75,7 @@ public class LoadingHandler {
             public void $invoke(Callback0 next) {
                 Debug.logInfo(LOG_MARKER, "Checking system compatibility");
 
-                if (CustomWarsTactics.features.supported || Global.confirm(CONFIRM_MSG)) {
+                if (net.wolfTec.features.supported || Global.confirm(CONFIRM_MSG)) {
                     next.$invoke();
                 } else {
                     Global.window.document.writeln("<h1>Your system is not supported - Stopped startup sequence</h1>");
@@ -122,8 +122,8 @@ public class LoadingHandler {
 
                     // enable touch and disable mouse
                     //  -> ( cannot work together )
-                    CustomWarsTactics.features.mouse = false;
-                    CustomWarsTactics.features.touch = true;
+                    net.wolfTec.features.mouse = false;
+                    net.wolfTec.features.touch = true;
                 }
 
                 next.$invoke();

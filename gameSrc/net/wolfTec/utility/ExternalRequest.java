@@ -12,7 +12,7 @@ import org.stjs.javascript.functions.Callback1;
  */
 public abstract class ExternalRequest {
 
-    public static final String LOG_HEADER = Constants.logHeader("xmlhttp");
+    public static final String LOG_HEADER = Constants.LOG_XML_HTTP;
 
     @SyntheticType
     public static class ExternalRequestOptions {

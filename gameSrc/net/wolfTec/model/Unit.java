@@ -1,10 +1,10 @@
 package net.wolfTec.model;
 
 import net.wolfTec.Constants;
-import net.wolfTec.application.CustomWarsTactics;
+import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.bridges.Globals;
-import net.wolfTec.database.AttackType;
-import net.wolfTec.database.UnitType;
+import net.wolfTec.types.AttackType;
+import net.wolfTec.types.UnitType;
 import net.wolfTec.utility.Assert;
 
 import org.stjs.javascript.JSGlobal;

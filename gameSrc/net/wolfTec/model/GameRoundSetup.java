@@ -1,13 +1,13 @@
 package net.wolfTec.model;
 
 import net.wolfTec.Constants;
-import net.wolfTec.application.CustomWarsTactics;
-import net.wolfTec.database.CoType;
-import net.wolfTec.database.Database;
-import net.wolfTec.database.GameMap;
+import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.enums.GameMode;
 import net.wolfTec.model.Player;
 import net.wolfTec.model.PositionData;
+import net.wolfTec.types.CoType;
+import net.wolfTec.types.Database;
+import net.wolfTec.types.GameMap;
 import net.wolfTec.utility.Debug;
 
 import org.stjs.javascript.Array;
@@ -85,7 +85,7 @@ public class GameRoundSetup {
             // ---------------------------------------------------------
 
             case GAME_TYPE:
-                CustomWarsTactics.gameround.gameMode = CustomWarsTactics.gameround.gameMode == GameMode.ADVANCE_WARS_1 ?
+                net.wolfTec.types.gameround.gameMode = net.wolfTec.types.gameround.gameMode == GameMode.ADVANCE_WARS_1 ?
                         GameMode.ADVANCE_WARS_1 : GameMode.ADVANCE_WARS_2;
                 break;
 
@@ -180,9 +180,9 @@ public class GameRoundSetup {
         }
 
         // update model
-        int turnOwnerTeam = CustomWarsTactics.gameround.turnOwner.team;
+        int turnOwnerTeam = net.wolfTec.turnOwner.team;
         for (int i = 0, e = Constants.MAX_PLAYER; i < e; i++) {
-            Player player = CustomWarsTactics.gameround.players.$get(i);
+            Player player = net.wolfTec.types.gameround.players.$get(i);
 
             if (type.$get(i) >= 0) {
 

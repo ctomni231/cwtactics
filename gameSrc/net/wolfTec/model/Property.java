@@ -1,8 +1,8 @@
 package net.wolfTec.model;
 
 import net.wolfTec.Constants;
-import net.wolfTec.application.CustomWarsTactics;
-import net.wolfTec.database.PropertyType;
+import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.game.objectTypes.PropertyType;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.annotation.Namespace;

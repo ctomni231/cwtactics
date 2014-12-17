@@ -7,7 +7,7 @@ import net.wolfTec.Constants;
  */
 public class Assert {
 
-    public static final String LOG_HEADER = Constants.logHeader("assertion");
+    public static final String LOG_HEADER = Constants.LOG_ASSERTION;
 
     public static void notNull(Object obj) {
         if (obj == null) Debug.logCritical(LOG_HEADER, "NullPointerException");

@@ -1,6 +1,6 @@
 package net.wolfTec.dataTransfer;
 
-import net.wolfTec.application.CustomWarsTactics;
+import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.bridges.Base64Helper;
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.bridges.webAudio.AudioBuffer;
@@ -40,7 +40,7 @@ public class AudioTransfer {
 	public static final String MUSIC_KEY = "MUSIC_";
 
 	private boolean isAudioEnabled() {
-		return CustomWarsTactics.features.audioMusic && CustomWarsTactics.features.audioSFX;
+		return net.wolfTec.features.audioMusic && net.wolfTec.features.audioSFX;
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class AudioTransfer {
             return;
         }
 
-        Modification mod = CustomWarsTactics.dataTransfer.mod;
+        Modification mod = net.wolfTec.dataTransfer.mod;
         
         Callback3<String, Object, Callback0> loadBuffer = new Callback3<String, Object, Callback0>() {
 					@Override public void $invoke(String id, Object buffer, Callback0 callback) {

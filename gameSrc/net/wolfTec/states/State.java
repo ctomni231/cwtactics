@@ -1,6 +1,6 @@
 package net.wolfTec.states;
 
-import net.wolfTec.application.CustomWarsTactics;
+import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.input.InputData;
 import net.wolfTec.utility.Assert;
 import net.wolfTec.widgets.UiScreenLayout;

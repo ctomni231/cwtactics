@@ -1,9 +1,10 @@
 package net.wolfTec.model;
 
 import net.wolfTec.Constants;
-import net.wolfTec.application.CustomWarsTactics;
-import net.wolfTec.database.WeatherType;
+import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.enums.GameMode;
+import net.wolfTec.types.WeatherType;
+import net.wolfTec.utility.ObjectUtil;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
@@ -92,6 +93,43 @@ public class GameRound {
             p.id = i;
             players.push(p);
         }
+        
+        
+    }
+    
+    private org.stjs.javascript.Map<String, Config> configs;
+    public Array<String> configNames;
+    
+    private void initConfig(){
+    	configs = JSCollections.$map();
+
+  		// game logic
+  		configs.$put("fogEnabled", new Config(0, 1, 1, 1));
+  		configs.$put("daysOfPeace", new Config(0, 50, 0, 1));
+  		configs.$put("weatherMinDays", new Config(1, 5, 1, 1));
+  		configs.$put("weatherRandomDays", new Config(0, 5, 4, 1));
+  		configs.$put("round_dayLimit", new Config(0, 999, 0, 1));
+  		configs.$put("noUnitsLeftLoose", new Config(0, 1, 0, 1));
+  		configs.$put("autoSupplyAtTurnStart", new Config(0, 1, 1, 1));
+  		configs.$put("unitLimit", new Config(0, Constants.MAX_UNITS, 0, 5));
+  		configs.$put("captureLimit", new Config(0, Constants.MAX_PROPERTIES, 0, 1));
+  		configs.$put("timer_turnTimeLimit", new Config(0, 60, 0, 1));
+  		configs.$put("timer_gameTimeLimit", new Config(0, 99999, 0, 5));
+  		configs.$put("co_getStarCost", new Config(100, 50000, 9000, 100));
+  		configs.$put("co_getStarCostIncrease", new Config(0, 50000, 1800, 100));
+  		configs.$put("co_getStarCostIncreaseSteps", new Config(0, 50, 10, 1));
+  		configs.$put("co_enabledCoPower", new Config(0, 1, 1, 1));
+
+  		// app config
+  		configs.$put("fastClickMode", new Config(0, 1, 0, 1));
+  		configs.$put("forceTouch", new Config(0, 1, 0, 1));
+  		configs.$put("animatedTiles", new Config(0, 1, 1, 1));
+  		
+  		configNames = ObjectUtil.getProperties(configs);
+    }
+    
+    public Config getCfg(String key) {
+    	return configs.$get(key);
     }
 
     /**
@@ -188,7 +226,7 @@ public class GameRound {
      * Returns `true` when the game is in the peace phase.
      */
     public boolean inPeacePhase() {
-        return (day < CustomWarsTactics.configs.$get("daysOfPeace").getValue());
+        return (day < getCfg("daysOfPeace").getValue());
     }
 
     /**

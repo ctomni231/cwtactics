@@ -1,6 +1,6 @@
 package net.wolfTec.utility;
 
-import net.wolfTec.application.CustomWarsTactics;
+import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.bridges.webAudio.*;
 import net.wolfTec.utility.Storage.StorageEntry;
@@ -80,8 +80,9 @@ public class Audio {
 
 		} catch (Exception e) {
 			Debug.logInfo(LOG_HEADER, "Disabled => No usable webAudio API found");
-			CustomWarsTactics.features.audioSFX = false;
-			CustomWarsTactics.features.audioMusic = false;
+			Features features = CustomWarsTactics.getBean("features");
+			features.audioSFX = false;
+			features.audioMusic = false;
 		}
 	}
 

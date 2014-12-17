@@ -5,7 +5,7 @@ import org.stjs.javascript.*;
 
 public abstract class Debug {
 
-    public static final String LOG_UNKNOWN_HEADER = Constants.logHeader("unknown");
+    public static final String LOG_UNKNOWN_HEADER = Constants.LOG_DEBUG;
     public static final String LOG_DELIMITER = ":";
 
     public static final String INFO = "INFO:  ";

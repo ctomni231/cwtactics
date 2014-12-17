@@ -1,7 +1,7 @@
 package net.wolfTec.input.backends;
 
 import net.wolfTec.Constants;
-import net.wolfTec.application.CustomWarsTactics;
+import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.input.InputBackend;
 import net.wolfTec.input.InputHandler;
@@ -57,7 +57,7 @@ public abstract class GamePad {
 
                         // in key mapping
                         if (handler.genericInput) {
-                            if (CustomWarsTactics.gameWorkflow.activeState.mode != 1) {
+                            if (net.wolfTec.activeState.mode != 1) {
                                 return;
                             }
 

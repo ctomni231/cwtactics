@@ -1,9 +1,9 @@
 package net.wolfTec.states;
 
 import net.wolfTec.Constants;
-import net.wolfTec.application.CustomWarsTactics;
-import net.wolfTec.application.actions.Action;
-import net.wolfTec.database.CoType;
+import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.action.Action;
+import net.wolfTec.game.objectTypes.CoType;
 import net.wolfTec.model.GameRound;
 import net.wolfTec.model.MoveCode;
 import net.wolfTec.model.PositionData;
@@ -112,8 +112,8 @@ public class StateData {
      */
     public void setCursorPosition(int x, int y, boolean relativeToScreen) {
         if (relativeToScreen) {
-            x = x + CustomWarsTactics.renderCtx.screenOffsetX;
-            y = y + CustomWarsTactics.renderCtx.screenOffsetY;
+            x = x + net.wolfTec.renderCtx.screenOffsetX;
+            y = y + net.wolfTec.renderCtx.screenOffsetY;
         }
 
         // change illegal positions to prevent out of bounds
@@ -133,8 +133,8 @@ public class StateData {
         cursorY = y;
 
         // convert to screen relative pos
-        x = x - CustomWarsTactics.renderCtx.screenOffsetX;
-        y = y - CustomWarsTactics.renderCtx.screenOffsetY;
+        x = x - net.wolfTec.renderCtx.screenOffsetX;
+        y = y - net.wolfTec.renderCtx.screenOffsetY;
 
         MoveCode moveCode = null;
         if (x <= 3) moveCode = MoveCode.RIGHT;

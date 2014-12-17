@@ -1,6 +1,6 @@
 package net.wolfTec.utility;
 
-import net.wolfTec.application.CustomWarsTactics;
+import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.enums.Relationship;
 import net.wolfTec.model.Player;
 import net.wolfTec.model.PlayerObject;
@@ -123,7 +123,7 @@ public class RelationshipCheck {
 
         // WEST
         if (x > 0) {
-            unit = CustomWarsTactics.gameround.map.getTile(x - 1, y).unit;
+            unit = net.wolfTec.gameround.map.getTile(x - 1, y).unit;
             if (unit != null && getRelationship(player, unit.owner) == relationship) {
                 return true;
             }
@@ -131,23 +131,23 @@ public class RelationshipCheck {
 
         // NORTH
         if (y > 0) {
-            unit = CustomWarsTactics.gameround.map.getTile(x, y - 1).unit;
+            unit = net.wolfTec.gameround.map.getTile(x, y - 1).unit;
             if (unit != null && getRelationship(player, unit.owner) == relationship) {
                 return true;
             }
         }
 
         // EAST
-        if (x < CustomWarsTactics.gameround.mapWidth - 1) {
-            unit = CustomWarsTactics.gameround.map.getTile(x + 1, y).unit;
+        if (x < net.wolfTec.gameround.mapWidth - 1) {
+            unit = net.wolfTec.gameround.map.getTile(x + 1, y).unit;
             if (unit != null && getRelationship(player, unit.owner) == relationship) {
                 return true;
             }
         }
 
         // SOUTH
-        if (y < CustomWarsTactics.gameround.mapHeight - 1) {
-            unit = CustomWarsTactics.gameround.map.getTile(x, y + 1).unit;
+        if (y < net.wolfTec.gameround.mapHeight - 1) {
+            unit = net.wolfTec.gameround.map.getTile(x, y + 1).unit;
             if (unit != null && getRelationship(player, unit.owner) == relationship) {
                 return true;
             }

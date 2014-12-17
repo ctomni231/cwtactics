@@ -1,7 +1,7 @@
 package net.wolfTec.input.backends;
 
 import net.wolfTec.Constants;
-import net.wolfTec.application.CustomWarsTactics;
+import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.bridges.TouchEvent;
 import net.wolfTec.input.InputBackend;
 import net.wolfTec.input.InputHandler;

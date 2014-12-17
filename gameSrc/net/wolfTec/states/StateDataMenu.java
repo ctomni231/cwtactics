@@ -1,7 +1,7 @@
 package net.wolfTec.states;
 
-import net.wolfTec.application.CustomWarsTactics;
-import net.wolfTec.application.actions.Action;
+import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.action.Action;
 import net.wolfTec.enums.Relationship;
 import net.wolfTec.model.PositionData;
 import net.wolfTec.model.Property;
@@ -108,8 +108,8 @@ public class StateDataMenu {
         RelationshipCheck.RelationshipCheckMode ChkP = RelationshipCheck.RelationshipCheckMode.CHECK_PROPERTY;
         Property sProp = sPos.property;
         Unit sUnit = sPos.unit;
-        boolean unitActable = (!(sUnit == null || sUnit.owner != CustomWarsTactics.gameround.turnOwner || !sUnit.canAct));
-        boolean propertyActable = (!(sUnit != null || sProp == null || sProp.owner != CustomWarsTactics.gameround.turnOwner || sProp.type.blocker));
+        boolean unitActable = (!(sUnit == null || sUnit.owner != net.wolfTec.gameround.turnOwner || !sUnit.canAct));
+        boolean propertyActable = (!(sUnit != null || sProp == null || sProp.owner != net.wolfTec.gameround.turnOwner || sProp.type.blocker));
         boolean mapActable = (!unitActable && !propertyActable);
 
         // check_ all game action objects and fill menu
@@ -121,7 +121,7 @@ public class StateDataMenu {
 
                 case CLIENT_ACTION:
                     // TODO: ai check
-                    if (!mapActable || CustomWarsTactics.gameround.lastClientPlayer != CustomWarsTactics.gameround.turnOwner) {
+                    if (!mapActable || net.wolfTec.gameround.lastClientPlayer != net.wolfTec.gameround.turnOwner) {
                         continue;
                     }
                     break;

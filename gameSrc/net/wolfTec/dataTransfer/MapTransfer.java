@@ -1,6 +1,6 @@
 package net.wolfTec.dataTransfer;
 
-import net.wolfTec.application.CustomWarsTactics;
+import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.utility.Storage;
 import net.wolfTec.utility.Storage.StorageEntry;
 
@@ -243,7 +243,7 @@ public class MapTransfer {
 	//
 	//
 	public void transferAllMapsFromRemote (Callback0 callback) {
-		Map<String, String> mapList = CustomWarsTactics.dataTransfer.mod.maps;
+		Map<String, String> mapList = net.wolfTec.mod.maps;
 	    var maps = Object.keys(mapList);
 	
 	    var stuff = [function (next) {

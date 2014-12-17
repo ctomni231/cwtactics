@@ -1,5 +1,4 @@
-@STJSBridge
-package net.wolfTec.bridges;
+@STJSBridge package net.wolfTec.bridges;
 
 /**
  * This package contains some API that will be available in our target environments.

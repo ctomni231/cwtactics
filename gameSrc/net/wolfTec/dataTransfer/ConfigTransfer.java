@@ -1,6 +1,6 @@
 package net.wolfTec.dataTransfer;
 
-import net.wolfTec.application.CustomWarsTactics;
+import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.input.InputHandler;
 import net.wolfTec.utility.Debug;
 import net.wolfTec.utility.Storage;

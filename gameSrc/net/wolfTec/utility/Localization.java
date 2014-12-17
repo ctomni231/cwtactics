@@ -9,7 +9,7 @@ import java.util.Iterator;
 
 public class Localization {
 
-    public static final String LOG_HEADER = Constants.logHeader("localization");
+    public static final String LOG_HEADER = Constants.LOG_LOCALIZATION;
 
     /**
      * Holds all available languages.
