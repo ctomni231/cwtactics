@@ -24,7 +24,7 @@
 
 #### How to build CW:T
 
-The game files will be generated with the build system grunt. To download all dependencies manually you simply have to write **npm install** in your terminal while being in the root directory of the CustomWars:Tactics repository. After that you can invoke the build process by typing the command **grunt** in your console.
+The game files will be generated with the build system grunt. To download all dependencies manually you simply have to write **npm install** in your terminal while being in the root directory of the Custom Wars: Tactics repository. After that you can invoke the build process by typing the command **grunt** in your console.
 
     grunt <Command>
 
@@ -38,4 +38,4 @@ The game files will be generated with the build system grunt. To download all de
      default is dev
 
 More information can be found on the Wiki Development page.
-- [Game Deployment Wiki Page](https://github.com/ctomni231/cwtactics/wiki/Deployment)
+- [Game Deployment Wiki Page](https://github.com/ctomni231/cwtactics/wiki/Deployment-Documentation)
