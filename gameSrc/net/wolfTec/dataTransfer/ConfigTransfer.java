@@ -1,7 +1,7 @@
 package net.wolfTec.dataTransfer;
 
-import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.input.InputHandler;
+import net.wolfTec.model.GameRound;
 import net.wolfTec.utility.Debug;
 import net.wolfTec.utility.Storage;
 import net.wolfTec.utility.Storage.StorageEntry;
@@ -23,10 +23,11 @@ public class ConfigTransfer {
 
 	private URLParameterTransfer $urlParameterDto;
 	private InputHandler $inputHandler;
+	private GameRound $gameround;
 
 	public void saveAppConfig(Callback0 callback) {
-		String valueAnimated = CustomWarsTactics.configs.$get(PARAM_ANIMATED_TILES).getValue() == 1 ? "1" : "0";
-		String valueForceTouch = CustomWarsTactics.configs.$get(PARAM_FORCE_TOUCH).getValue() == 1 ? "1" : "0";
+		String valueAnimated = $gameround.getCfg(PARAM_ANIMATED_TILES).getValue() == 1 ? "1" : "0";
+		String valueForceTouch = $gameround.getCfg(PARAM_FORCE_TOUCH).getValue() == 1 ? "1" : "0";
 
 		Storage.set(PARAM_ANIMATED_TILES, valueAnimated, new Callback2<Object, Object>() {
 			public void $invoke(Object arg0, Object arg1) {
@@ -42,18 +43,18 @@ public class ConfigTransfer {
 	}
 
 	public void loadAppConfig(Callback0 callback) {
-		CustomWarsTactics.configs.$get(PARAM_ANIMATED_TILES).setValue(0);
-		CustomWarsTactics.configs.$get(PARAM_FORCE_TOUCH).setValue(0);
+		 $gameround.getCfg(PARAM_ANIMATED_TILES).setValue(0);
+		 $gameround.getCfg(PARAM_FORCE_TOUCH).setValue(0);
 
 		Storage.get(PARAM_ANIMATED_TILES, new Callback1<Storage.StorageEntry>() {
 			@Override public void $invoke(StorageEntry entry) {
 				if (entry != null) {
-					CustomWarsTactics.configs.$get(PARAM_ANIMATED_TILES).setValue(entry.value == "1" ? 1 : 0);
+					 $gameround.getCfg(PARAM_ANIMATED_TILES).setValue(entry.value == "1" ? 1 : 0);
 				}
 
 				// forceTouch can be overruled by a URL parameter
 				if ($urlParameterDto.wantsForceTouch()) {
-					CustomWarsTactics.configs.$get(PARAM_FORCE_TOUCH).setValue(1);
+					 $gameround.getCfg(PARAM_FORCE_TOUCH).setValue(1);
 					callback.$invoke();
 
 				} else {
@@ -61,7 +62,7 @@ public class ConfigTransfer {
 					Storage.get(PARAM_FORCE_TOUCH, new Callback1<Storage.StorageEntry>() {
 						@Override public void $invoke(StorageEntry entry) {
 							if (entry != null && (Boolean) entry.value == true) {
-								CustomWarsTactics.configs.$get(PARAM_FORCE_TOUCH).setValue(1);
+								 $gameround.getCfg(PARAM_FORCE_TOUCH).setValue(1);
 							}
 
 							if (callback != null) {

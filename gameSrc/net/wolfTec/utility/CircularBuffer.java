@@ -18,6 +18,7 @@ public class CircularBuffer<T> {
     private Array<T> data;
     private int maxSize;
 
+    @SuppressWarnings("unchecked")
     public CircularBuffer(int maxSize) {
         if (maxSize <= 0) throw new IllegalArgumentException("size cannot be 0 or lower");
 

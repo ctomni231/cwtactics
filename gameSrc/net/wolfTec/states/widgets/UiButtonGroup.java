@@ -1,4 +1,4 @@
-package net.wolfTec.widgets;
+package net.wolfTec.states.widgets;
 
 import net.wolfTec.Constants;
 import net.wolfTec.input.InputData;

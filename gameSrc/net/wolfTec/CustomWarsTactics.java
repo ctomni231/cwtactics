@@ -2,26 +2,19 @@ package net.wolfTec;
 
 import net.wolfTec.action.ActionInvoker;
 import net.wolfTec.ai.AiHandler;
-import net.wolfTec.bridges.ObjectAdapter;
 import net.wolfTec.dataTransfer.ConfigTransfer;
-import net.wolfTec.dataTransfer.DataTransferHandler;
 import net.wolfTec.dataTransfer.ImageTransfer;
 import net.wolfTec.dataTransfer.MapTransfer;
 import net.wolfTec.dataTransfer.ModTransfer;
 import net.wolfTec.dataTransfer.URLParameterTransfer;
-import net.wolfTec.database.*;
 import net.wolfTec.input.InputHandler;
-import net.wolfTec.input.backends.GamePad;
-import net.wolfTec.input.backends.Keyboard;
-import net.wolfTec.input.backends.Mouse;
 import net.wolfTec.loading.LoadingHandler;
-import net.wolfTec.model.Config;
 import net.wolfTec.model.GameRound;
+import net.wolfTec.model.GameRoundSetup;
+import net.wolfTec.network.MessageRouter;
 import net.wolfTec.renderer.RenderingContext;
 import net.wolfTec.renderer.SpriteDatabase;
 import net.wolfTec.renderer.TileVariantCalculator;
-import net.wolfTec.model.GameRoundSetup;
-import net.wolfTec.network.MessageRouter;
 import net.wolfTec.states.StateData;
 import net.wolfTec.states.Statemachine;
 import net.wolfTec.types.ArmyType;
@@ -39,14 +32,10 @@ import net.wolfTec.utility.Features;
 import net.wolfTec.utility.Localization;
 
 import org.stjs.javascript.Array;
-import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
-import org.stjs.javascript.JSStringAdapter;
 import org.stjs.javascript.Map;
-import org.stjs.javascript.dom.Element;
-import org.stjs.javascript.functions.Callback1;
 
 /**
  * Central mediator (monolithic). Every service, data holder etc. can be
@@ -75,11 +64,12 @@ public abstract class CustomWarsTactics {
      */
 	public static final String PROP_INV = "PROP_INV";
 
-	private static void registerDefaultObjects() {
+	@SuppressWarnings("unchecked")
+  private static void registerDefaultObjects() {
 		MoveType noMove = new MoveType();
 		noMove.costs = JSCollections.$map("*", -1);
 		noMove.ID = "NO_MOVE";
-		moveTypeDb.registerSheetByObject(noMove);
+		((Database<MoveType>) getBean("moveTypeDb")).registerSheetByObject(noMove);
 
 		PropertyType invProperty = new PropertyType();
 		invProperty.ID = PROP_INV;
@@ -87,7 +77,7 @@ public abstract class CustomWarsTactics {
 		invProperty.vision = 0;
 		invProperty.visionBlocker = true;
 		invProperty.capturePoints = 1;
-		propertyTypeDb.registerSheetByObject(invProperty);
+		((Database<PropertyType>) getBean("propertyTypeDb")).registerSheetByObject(invProperty);
 
 		UnitType cannonUnit = new UnitType();
 		cannonUnit.ID = CANNON_UNIT_INV;
@@ -97,7 +87,7 @@ public abstract class CustomWarsTactics {
 		cannonUnit.fuel = 0;
 		cannonUnit.vision = 1;
 		cannonUnit.ammo = 0;
-		unitTypeDb.registerSheetByObject(cannonUnit);
+		((Database<UnitType>) getBean("unitTypeDb")).registerSheetByObject(cannonUnit);
 
 		UnitType laserUnit = new UnitType();
 		laserUnit.ID = LASER_UNIT_INV;
@@ -107,7 +97,7 @@ public abstract class CustomWarsTactics {
 		laserUnit.fuel = 0;
 		laserUnit.vision = 1;
 		laserUnit.ammo = 0;
-		unitTypeDb.registerSheetByObject(laserUnit);
+		((Database<UnitType>) getBean("unitTypeDb")).registerSheetByObject(laserUnit);
 	}
 
 	/**
@@ -128,21 +118,6 @@ public abstract class CustomWarsTactics {
 		};
 	}
 
-	private static Array<String> gameConfigNames;
-
-	private static Callback1<String> resetConfigObject = new Callback1<String>() {
-		@Override public void $invoke(String cfgId) {
-			configs.$get(cfgId).resetValue();
-		}
-	};
-
-	/**
-	 * Resets all registered configuration objects to their default value.
-	 */
-	public static void resetConfiguration() {
-		gameConfigNames.forEach(resetConfigObject);
-	}
-
 	private static Map<String, Object> beans;
 
 	private static void initBeans() {
@@ -157,12 +132,14 @@ public abstract class CustomWarsTactics {
 		beans.$put("moveTypeDb", generateDatabase(MoveType.class));
 		beans.$put("tileTypeDb", generateDatabase(TileType.class));
 		beans.$put("coTypeDb", generateDatabase(CoType.class));
+		
 		beans.$put("gameround", new GameRound());
+		beans.$put("gameRoundSetup", new GameRoundSetup());
+		
 		beans.$put("actionInvoker", new ActionInvoker(Constants.ACTION_POOL_SIZE));
 		beans.$put("variantCalculator", new TileVariantCalculator());
 		beans.$put("netMessageRouter", new MessageRouter());
 		beans.$put("loadingHandler", new LoadingHandler());
-		beans.$put("gameRoundSetup", new GameRoundSetup());
 		beans.$put("gameWorkflowData", new StateData());
 		beans.$put("renderCtx", new RenderingContext());
 		beans.$put("gameWorkflow", new Statemachine());
@@ -172,6 +149,7 @@ public abstract class CustomWarsTactics {
 		beans.$put("features", new Features());
 		beans.$put("i18n", new Localization());
 		beans.$put("ai", new AiHandler());
+		
 		beans.$put("imageDto", new ImageTransfer());
 		beans.$put("mapDto", new MapTransfer());
 		beans.$put("modDto", new ModTransfer());
@@ -189,7 +167,8 @@ public abstract class CustomWarsTactics {
 		Array<String> beanNames = JSObjectAdapter.$js("Object.keys(this.beans)");
 		for (String name : beanNames) {
 
-			Object bean = beans.$get(name);
+			@SuppressWarnings("unused")
+      Object bean = beans.$get(name);
 			Array<String> beanProperties = JSObjectAdapter.$js("Object.keys(bean)");
 			for (String property : beanProperties) {
 				if (property.indexOf("$") == 0) {
@@ -206,7 +185,8 @@ public abstract class CustomWarsTactics {
 	 *           when the bean with the given name does not exists
 	 * @return a bean for a given name
 	 */
-	public static <T> T getBean(String name) {
+	@SuppressWarnings("unchecked")
+  public static <T> T getBean(String name) {
 		if (!JSObjectAdapter.hasOwnProperty(beans, name)) {
 			Debug.logCritical(LOG_HEADER, "unknown bean with name " + name);
 		}
@@ -219,6 +199,7 @@ public abstract class CustomWarsTactics {
 		
 		initBeans();
 		solveBeanDependencies();
+		registerDefaultObjects();
 	}
 
 }

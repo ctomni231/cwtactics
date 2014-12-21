@@ -8,25 +8,25 @@ import net.wolfTec.types.CoType;
 
 import org.stjs.javascript.annotation.Namespace;
 
-@Namespace("cwt") 
+@Namespace("cwt")
 public class Player {
 
-	public int id = -1;
-	public int team = Constants.INACTIVE_ID;
-	public String name;
-	public int power = 0;
-	public int powerUsed = 0;
-	public int gold = 0;
-	public int manpower = Integer.MAX_VALUE;
-	public int numberOfUnits = 0;
-	public int numberOfProperties = 0;
-	public CoType mainCo = null;
-	public CoType sideCo = null;
-	public CoPowerLevel activePower = CoPowerLevel.OFF;
-	public ArmyType army;
-	public boolean turnOwnerVisible = false;
-	public boolean clientVisible = false;
-	public boolean clientControlled = false;
+	public int	        id	               = -1;
+	public int	        team	             = Constants.INACTIVE_ID;
+	public String	      name;
+	public int	        power	             = 0;
+	public int	        powerUsed	         = 0;
+	public int	        gold	             = 0;
+	public int	        manpower	         = Integer.MAX_VALUE;
+	public int	        numberOfUnits	     = 0;
+	public int	        numberOfProperties	= 0;
+	public CoType	      mainCo	           = null;
+	public CoType	      sideCo	           = null;
+	public CoPowerLevel	activePower	       = CoPowerLevel.OFF;
+	public ArmyType	    army;
+	public boolean	    turnOwnerVisible	 = false;
+	public boolean	    clientVisible	     = false;
+	public boolean	    clientControlled	 = false;
 
 	public boolean isPowerActive(CoPowerLevel level) {
 		return this.activePower == level;
@@ -51,13 +51,14 @@ public class Player {
 	 * @returns {behaviorTree.Config.value|*}
 	 */
 	public int getStarCost() {
-		int cost = CustomWarsTactics.configs.$get("co_getStarCost").getValue();
+		GameRound game = ((GameRound) CustomWarsTactics.getBean("gameround"));
+		int cost = game.getCfg("co_getStarCost").getValue();
 
 		// if usage counter is greater than max usage counter then use only the
 		// maximum increase counter for calculation
-		int increaseSteps = CustomWarsTactics.configs.$get("co_getStarCostIncreaseSteps").getValue();
+		int increaseSteps = game.getCfg("co_getStarCostIncreaseSteps").getValue();
 		if (powerUsed > increaseSteps) {
-			cost += increaseSteps * CustomWarsTactics.configs.$get("co_getStarCostIncrease").getValue();
+			cost += increaseSteps * game.getCfg("co_getStarCostIncrease").getValue();
 		}
 
 		return cost;
@@ -91,20 +92,20 @@ public class Player {
 		// TODO maybe better in the action itself
 
 		// commanders must be available and current power must be inactive
-		if (CustomWarsTactics.configs.$get("co_enabledCoPower").getValue() == 0 || mainCo == null || activePower != CoPowerLevel.OFF) {
+		if (((GameRound) CustomWarsTactics.getBean("gameround")).getCfg("co_enabledCoPower").getValue() == 0 || mainCo == null || activePower != CoPowerLevel.OFF) {
 			return false;
 		}
 
 		int stars = Constants.INACTIVE_ID;
 		switch (level) {
 
-		case CO_POWER:
-			stars = mainCo.coStars;
-			break;
+			case CO_POWER:
+				stars = mainCo.coStars;
+				break;
 
-		case SUPER_CO_POWER:
-			stars = mainCo.scoStars;
-			break;
+			case SUPER_CO_POWER:
+				stars = mainCo.scoStars;
+				break;
 		}
 
 		return (power >= (getStarCost() * stars));

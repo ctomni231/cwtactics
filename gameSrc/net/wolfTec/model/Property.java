@@ -2,7 +2,7 @@ package net.wolfTec.model;
 
 import net.wolfTec.Constants;
 import net.wolfTec.CustomWarsTactics;
-import net.wolfTec.game.objectTypes.PropertyType;
+import net.wolfTec.types.PropertyType;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.annotation.Namespace;
@@ -79,7 +79,7 @@ import org.stjs.javascript.annotation.Namespace;
 		}
 
 		// check unit limit and left slots
-		int unitLimit = CustomWarsTactics.configs.$get("unitLimit").getValue();
+		int unitLimit = ((GameRound) CustomWarsTactics.getBean("gameroubd")).getCfg("unitLimit").getValue();
 		if (owner.numberOfUnits >= unitLimit || owner.numberOfUnits >= Constants.MAX_UNITS) {
 			return false;
 		}

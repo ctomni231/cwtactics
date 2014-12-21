@@ -1,4 +1,4 @@
-package net.wolfTec.widgets;
+package net.wolfTec.states.widgets;
 
 public class UiPositionableGroup extends UiButtonGroup {
 

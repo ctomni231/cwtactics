@@ -5,7 +5,7 @@ import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.input.InputData;
 import net.wolfTec.states.State;
 import net.wolfTec.states.Statemachine;
-import net.wolfTec.widgets.UiField;
+import net.wolfTec.states.widgets.UiField;
 
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.stjs.javascript.functions.Callback0;

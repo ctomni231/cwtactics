@@ -19,13 +19,13 @@ public abstract class Debug {
     static {
         performanceTimes = JSCollections.$array();
         for (int i = 0; i < MAX_PERF_CHECKS; i++) {
-            performanceTimes.push(null);
+            performanceTimes.push(Constants.INACTIVE_ID);
         }
     }
 
     public static int startPerformanceCheck() {
         for (int i = 0; i < MAX_PERF_CHECKS; i++) {
-            if (performanceTimes.$get(i) == null) {
+            if (performanceTimes.$get(i) == Constants.INACTIVE_ID) {
                 performanceTimes.$set(i, (int) (new Date()).getTime());
                 logInfo("DEBUG", "Start Performance check " + i);
                 return i;
@@ -42,7 +42,7 @@ public abstract class Debug {
 
         int ctime = (int) (new Date()).getTime();
         int time = performanceTimes.$get(id);
-        performanceTimes.$set(id, null);
+        performanceTimes.$set(id, Constants.INACTIVE_ID);
 
         logInfo("DEBUG", "Performance check " + id + " is completed -> " + (ctime - time) + "ms");
     }

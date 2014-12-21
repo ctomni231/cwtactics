@@ -29,7 +29,7 @@ public class Storage {
     public static final int IOS7_WEBSQL_BUGFIX_SIZE = 4;
 
     /**
-     * Maximum size of the application stoarge.
+     * Maximum size of the application storage.
      */
     public static final int DEFAULT_DB_SIZE = 50;
 

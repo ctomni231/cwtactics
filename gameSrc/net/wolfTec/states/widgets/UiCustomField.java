@@ -1,4 +1,4 @@
-package net.wolfTec.widgets;
+package net.wolfTec.states.widgets;
 
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.stjs.javascript.functions.Callback1;
