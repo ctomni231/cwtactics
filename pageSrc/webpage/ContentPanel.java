@@ -32,7 +32,7 @@ import bridge.JQuery;
 		String tmpContent;
 
 		tmpContent = "<p class='cwtHeaderImage'>";
-		tmpContent += "<img src='images/cwTactics.png' />";
+		tmpContent += "<img src='images/cwHoliday.png' />";
 		tmpContent += "</p>";
 		Global.$(SECTION_NAME).append(tmpContent);
 

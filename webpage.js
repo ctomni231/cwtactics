@@ -1,6 +1,10 @@
 stjs.ns("cwt");
-cwt.GithubMilestoneDesc = function() {};
-stjs.extend(cwt.GithubMilestoneDesc, null, [], null, {});
+cwt.DialogDesc = function() {};
+stjs.extend(cwt.DialogDesc, null, [], function(constructor, prototype) {
+    prototype.id = null;
+    prototype.title = null;
+    prototype.text = null;
+}, {text: {name: "Array", arguments: [null]}});
 
 stjs.ns("cwt");
 cwt.EventHandler = function() {};
@@ -27,88 +31,6 @@ stjs.extend(cwt.EventHandler, null, [], function(constructor, prototype) {
 }, {});
 
 stjs.ns("cwt");
-cwt.Log = function() {};
-stjs.extend(cwt.Log, null, [], function(constructor, prototype) {
-    constructor.fine = function(msg) {
-        console.log("INFO: " + msg);
-    };
-    constructor.warn = function(msg) {
-        console.log("WARN: " + msg);
-    };
-    constructor.error = function(msg) {
-        console.log("ERROR: " + msg);
-    };
-}, {});
-
-var DomHelper = function() {};
-stjs.extend(DomHelper, null, [], function(constructor, prototype) {
-    constructor.createLink = function() {
-        return window.document.createElement("a");
-    };
-    constructor.createList = function() {
-        return window.document.createElement("ul");
-    };
-    constructor.createListEntry = function() {
-        return window.document.createElement("li");
-    };
-}, {});
-
-var ErrorHandler = function() {};
-stjs.extend(ErrorHandler, null, [], function(constructor, prototype) {
-    /**
-     *  Writes an error message to the document body.
-     *  
-     *  @param e
-     */
-    constructor.doErrorHandling = function(e) {
-        window.document.writeln("An error occurred.<br/><br/>" + e + "<br/><br/><br/>Please contact us about this fault (<a href='mailto:ctomni231@gmail.com'>ctomni231@gmail.com</a>).");
-    };
-}, {});
-
-stjs.ns("cwt");
-cwt.BloggerPostsDesc = function() {};
-stjs.extend(cwt.BloggerPostsDesc, null, [], function(constructor, prototype) {
-    constructor.BloggerPostsItemDesc = function() {};
-    stjs.extend(cwt.BloggerPostsDesc.BloggerPostsItemDesc, null, [], function(constructor, prototype) {
-        prototype.title = null;
-        prototype.url = null;
-        prototype.published = null;
-    }, {});
-    prototype.items = null;
-}, {items: {name: "Array", arguments: ["cwt.BloggerPostsDesc.BloggerPostsItemDesc"]}});
-
-stjs.ns("cwt");
-cwt.DialogDesc = function() {};
-stjs.extend(cwt.DialogDesc, null, [], function(constructor, prototype) {
-    prototype.id = null;
-    prototype.title = null;
-    prototype.text = null;
-}, {text: {name: "Array", arguments: [null]}});
-
-stjs.ns("cwt");
-cwt.NewsDesc = function() {};
-stjs.extend(cwt.NewsDesc, null, [], function(constructor, prototype) {
-    constructor.NewsItemDesc = function() {};
-    stjs.extend(cwt.NewsDesc.NewsItemDesc, null, [], function(constructor, prototype) {
-        prototype.title = null;
-        prototype.url = null;
-        prototype.date = null;
-    }, {});
-    prototype.news = null;
-}, {news: {name: "Array", arguments: ["cwt.NewsDesc.NewsItemDesc"]}});
-
-stjs.ns("cwt");
-cwt.NavBarLinkDesc = function() {};
-stjs.extend(cwt.NavBarLinkDesc, null, [], function(constructor, prototype) {
-    prototype.id = null;
-    prototype.link = null;
-    prototype.label = null;
-    prototype.title = null;
-    prototype.sameWindow = false;
-    prototype.isDialog = false;
-}, {});
-
-stjs.ns("cwt");
 cwt.ContentPanelDesc = function() {};
 stjs.extend(cwt.ContentPanelDesc, null, [], function(constructor, prototype) {
     constructor.ChangelogDesc = function() {};
@@ -126,6 +48,84 @@ stjs.extend(cwt.ContentPanelDesc, null, [], function(constructor, prototype) {
     prototype.link = null;
     prototype.log = null;
 }, {text: {name: "Array", arguments: [null]}, log: "cwt.ContentPanelDesc.ChangelogDesc"});
+
+stjs.ns("cwt");
+cwt.Log = function() {};
+stjs.extend(cwt.Log, null, [], function(constructor, prototype) {
+    constructor.fine = function(msg) {
+        console.log("INFO: " + msg);
+    };
+    constructor.warn = function(msg) {
+        console.log("WARN: " + msg);
+    };
+    constructor.error = function(msg) {
+        console.log("ERROR: " + msg);
+    };
+}, {});
+
+var ErrorHandler = function() {};
+stjs.extend(ErrorHandler, null, [], function(constructor, prototype) {
+    /**
+     *  Writes an error message to the document body.
+     *  
+     *  @param e
+     */
+    constructor.doErrorHandling = function(e) {
+        window.document.writeln("An error occurred.<br/><br/>" + e + "<br/><br/><br/>Please contact us about this fault (<a href='mailto:ctomni231@gmail.com'>ctomni231@gmail.com</a>).");
+    };
+}, {});
+
+var DomHelper = function() {};
+stjs.extend(DomHelper, null, [], function(constructor, prototype) {
+    constructor.createLink = function() {
+        return window.document.createElement("a");
+    };
+    constructor.createList = function() {
+        return window.document.createElement("ul");
+    };
+    constructor.createListEntry = function() {
+        return window.document.createElement("li");
+    };
+}, {});
+
+stjs.ns("cwt");
+cwt.NavBarLinkDesc = function() {};
+stjs.extend(cwt.NavBarLinkDesc, null, [], function(constructor, prototype) {
+    prototype.id = null;
+    prototype.link = null;
+    prototype.label = null;
+    prototype.title = null;
+    prototype.sameWindow = false;
+    prototype.isDialog = false;
+}, {});
+
+stjs.ns("cwt");
+cwt.BloggerPostsDesc = function() {};
+stjs.extend(cwt.BloggerPostsDesc, null, [], function(constructor, prototype) {
+    constructor.BloggerPostsItemDesc = function() {};
+    stjs.extend(cwt.BloggerPostsDesc.BloggerPostsItemDesc, null, [], function(constructor, prototype) {
+        prototype.title = null;
+        prototype.url = null;
+        prototype.published = null;
+    }, {});
+    prototype.items = null;
+}, {items: {name: "Array", arguments: ["cwt.BloggerPostsDesc.BloggerPostsItemDesc"]}});
+
+stjs.ns("cwt");
+cwt.NewsDesc = function() {};
+stjs.extend(cwt.NewsDesc, null, [], function(constructor, prototype) {
+    constructor.NewsItemDesc = function() {};
+    stjs.extend(cwt.NewsDesc.NewsItemDesc, null, [], function(constructor, prototype) {
+        prototype.title = null;
+        prototype.url = null;
+        prototype.date = null;
+    }, {});
+    prototype.news = null;
+}, {news: {name: "Array", arguments: ["cwt.NewsDesc.NewsItemDesc"]}});
+
+stjs.ns("cwt");
+cwt.GithubMilestoneDesc = function() {};
+stjs.extend(cwt.GithubMilestoneDesc, null, [], null, {});
 
 stjs.ns("cwt");
 cwt.Dialog = function(desc) {
@@ -236,7 +236,7 @@ stjs.extend(cwt.ContentPanel, null, [], function(constructor, prototype) {
     prototype.buildElement = function(desc) {
         var tmpContent;
         tmpContent = "<p class='cwtHeaderImage'>";
-        tmpContent += "<img src='images/cwTactics.png' />";
+        tmpContent += "<img src='images/cwHoliday.png' />";
         tmpContent += "</p>";
         $(cwt.ContentPanel.SECTION_NAME).append(tmpContent);
         tmpContent = "<table class='prictureAndNewsTable' ><tbody><tr>";
