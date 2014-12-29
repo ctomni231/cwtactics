@@ -39,7 +39,7 @@
 
   { "id":"linkContactUs",
   	"label": "Contact Us",
-  	"link":"mailto:ctomni231@gmail.com?cc=blackcat.myako@gmail.com",
+  	"link":"http://battle.customwars.com/contact/index.php",
     "title":"Contact us",
     "sameWindow":true }
 ]
