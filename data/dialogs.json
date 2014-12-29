@@ -3,7 +3,7 @@
 		"id": "about",
 		"title":"About Us",
 		"text": [
-			"Custom Wars Tactics is developed by <a id='mailToJSR' href='mailto:ctomni231@gmail.com'>ctomni231</a> and <a target='_blank' href='mailto:blackcat.myako@gmail.com'>BlackCat</a>",
+			"Custom Wars Tactics is developed by <a id='mailToJSR' href='http://battle.customwars.com/contact/index.php'>ctomni231</a> and <a target='_blank' href='http://battle.customwars.com/contact/index.php'>BlackCat</a>",
 			"The game itself is free to use. You also allowed to build own clients on top of the CW:T engine as long you not violate its license. Further information are available in the file LICENSE.",
 			"DISCLAMER: This game engine is in no way affiliated with Nintendo or Intelligent Systems, but acts as an experiment to show the working capabilities of HTML 5, Java, and JavaScript."
 		]
@@ -25,8 +25,8 @@
 		"id": "development",
 		"title":"Development Links",
 		"text": [
-			"CustomWars: Tactics is currently in development. If you want to grab information about the current state of the engine then you may visit some of the locations listed below.",
-			"<ul class='linkList'><li><a target='_blank' href='http://github.com/ctomni231/cwtactics'>Github Repository</a></li><li><a target='_blank' href='https://code.google.com/p/cwtactics'>Google Repository (outdated)</a></li><li><a target='_blank' href='http://groups.google.com/group/cwtactics'>Mailing-list</a></li><li><a target='_blank' href='http://github.com/ctomni231/cwtactics'>CW:T Github Repository</a></li></ul>"
+			"Custom Wars: Tactics is currently in development. If you want to grab information about the current state of the engine then you may visit some of the locations listed below.",
+			"<ul class='linkList'><li><a target='_blank' href='http://github.com/ctomni231/cwtactics'>Github Repository</a></li><li><a target='_blank' href='https://code.google.com/p/cwtactics'>Google Repository (outdated)</a></li><li><a target='_blank' href='http://groups.google.com/group/cwtactics'>Mailing-list</a></li><li><a target='_blank' href='http://battle.customwars.com/report/index.php'>Custom Wars Tactics Bug Report</a></li></ul>"
 		]
 	}
 ]
