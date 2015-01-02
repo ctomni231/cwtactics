@@ -1,40 +1,42 @@
-package net.wolfTec.model;
+package net.wolfTec.logic;
 
 import net.wolfTec.Constants;
-import net.wolfTec.enums.GameMode;
+import net.wolfTec.model.GameMode;
+import net.wolfTec.model.GameRound;
+import net.wolfTec.model.Player;
+import net.wolfTec.system.Logger;
 import net.wolfTec.types.CoType;
 import net.wolfTec.types.Database;
 import net.wolfTec.types.GameMap;
-import net.wolfTec.utility.Debug;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.annotation.Namespace;
 
-public class GameRoundSetup {
+@Namespace("cwt") public class GameRoundSetup {
 
-	public static enum ChangeMode {
-		CO_MAIN, CO_SIDE, GAME_TYPE, PLAYER_TYPE, TEAM
-	}
-
-	private GameMap	         map	= null;
-
+	public static boolean			$BEAN	= true;
+	public Logger							$LOG;
 	private Database<CoType>	$coTypeDb;
-	private GameRound	       $gameround;
+	private GameRound					$gameround;
+	private Lifecycle					$lifecycle;
+
+	private GameMap						map		= null;
 
 	/**
 	 * Data holder to remember selected commanders.
 	 */
-	public Array<Integer>	   co	  = JSCollections.$array();
+	public Array<Integer>			co		= JSCollections.$array();
 
 	/**
 	 * Data holder to remember selected player types.
 	 */
-	public Array<Integer>	   type	= JSCollections.$array();
+	public Array<Integer>			type	= JSCollections.$array();
 
 	/**
 	 * Data holder to remember selected team settings.
 	 */
-	public Array<Integer>	   team	= JSCollections.$array();
+	public Array<Integer>			team	= JSCollections.$array();
 
 	public void selectMap(GameMap sMap) {
 		this.map = sMap;
@@ -52,8 +54,7 @@ public class GameRoundSetup {
 	 * @param prev
 	 */
 	public void changeParameter(int pid, ChangeMode mode, boolean prev) {
-		if (mode == null)
-			return;
+		if (mode == null) return;
 
 		int cSelect;
 		switch (mode) {
@@ -63,12 +64,10 @@ public class GameRoundSetup {
 
 				if (prev) {
 					cSelect--;
-					if (cSelect < 0)
-						cSelect = $coTypeDb.getIdList().$length() - 1;
+					if (cSelect < 0) cSelect = $coTypeDb.getIdList().$length() - 1;
 				} else {
 					cSelect++;
-					if (cSelect >= $coTypeDb.getIdList().$length())
-						cSelect = 0;
+					if (cSelect >= $coTypeDb.getIdList().$length()) cSelect = 0;
 				}
 
 				co.$set(pid, cSelect);
@@ -77,30 +76,29 @@ public class GameRoundSetup {
 			// ---------------------------------------------------------
 
 			case CO_SIDE:
-				Debug.logCritical(null, "NotSupportedYet");
+				$LOG.error("NotSupportedYet");
 				break;
 
 			// ---------------------------------------------------------
 
 			case GAME_TYPE:
-				$gameround.gameMode = $gameround.gameMode == GameMode.ADVANCE_WARS_1 ? GameMode.ADVANCE_WARS_1 : GameMode.ADVANCE_WARS_2;
+				GameMode gameMode = $gameround.getGameMode();
+				gameMode = gameMode == GameMode.ADVANCE_WARS_1 ? GameMode.ADVANCE_WARS_1 : GameMode.ADVANCE_WARS_2;
+				$gameround.setGameMode(gameMode);
 				break;
 
 			// ---------------------------------------------------------
 
 			case PLAYER_TYPE:
 				cSelect = type.$get(pid);
-				if (cSelect == Constants.DESELECT_ID)
-					break;
+				if (cSelect == Constants.DESELECT_ID) break;
 
 				if (prev) {
 					cSelect--;
-					if (cSelect < Constants.INACTIVE_ID)
-						cSelect = 1;
+					if (cSelect < Constants.INACTIVE_ID) cSelect = 1;
 				} else {
 					cSelect++;
-					if (cSelect >= 2)
-						cSelect = Constants.INACTIVE_ID;
+					if (cSelect >= 2) cSelect = Constants.INACTIVE_ID;
 				}
 
 				type.$set(pid, cSelect);
@@ -116,28 +114,24 @@ public class GameRoundSetup {
 					// change selection here
 					if (prev) {
 						cSelect--;
-						if (cSelect < 0)
-							cSelect = 3;
+						if (cSelect < 0) cSelect = 3;
 					} else {
 						cSelect++;
-						if (cSelect >= 4)
-							cSelect = 0;
+						if (cSelect >= 4) cSelect = 0;
 					}
 
 					// check team selection -> at least two different teams has to be set
 					// all times
 					boolean sameTeam = false;
 					for (int i = 0, e = Constants.MAX_PLAYER; i < e; i++) {
-						if (i == pid)
-							continue;
+						if (i == pid) continue;
 
 						if (type.$get(i) >= 0 && team.$get(i) != cSelect) {
 							sameTeam = true;
 						}
 					}
 
-					if (sameTeam)
-						break;
+					if (sameTeam) break;
 				}
 
 				team.$set(pid, cSelect);
@@ -186,9 +180,9 @@ public class GameRoundSetup {
 		}
 
 		// update model
-		int turnOwnerTeam = $gameround.turnOwner.team;
+		int turnOwnerTeam = $gameround.getTurnOwner().team;
 		for (int i = 0, e = Constants.MAX_PLAYER; i < e; i++) {
-			Player player = $gameround.players.$get(i);
+			Player player = $gameround.getPlayer(i);
 
 			if (type.$get(i) >= 0) {
 
@@ -207,7 +201,7 @@ public class GameRoundSetup {
 					player.clientControlled = true;
 					player.clientVisible = true;
 				}
-				
+
 				int coId = co.$get(i);
 				player.mainCo = (coId != Constants.INACTIVE_ID) ? $coTypeDb.getSheet($coTypeDb.getIdList().$get(coId)) : null;
 
@@ -215,7 +209,7 @@ public class GameRoundSetup {
 				// Why another disable here ? There is the possibility that a map has
 				// units for a player that
 				// will be deactivated in the config screen.. so deactivate them all
-				player.deactivate();
+				$lifecycle.deactivatePlayer(player);
 			}
 		}
 	}

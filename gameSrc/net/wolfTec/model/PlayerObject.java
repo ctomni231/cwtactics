@@ -1,6 +1,8 @@
 package net.wolfTec.model;
 
-public interface PlayerObject {
+import org.stjs.javascript.annotation.Namespace;
+
+@Namespace("cwt") public interface PlayerObject {
 
     /**
      * Returns the owner of an object, or null if no owner is set.

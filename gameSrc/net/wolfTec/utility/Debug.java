@@ -47,44 +47,4 @@ public abstract class Debug {
         logInfo("DEBUG", "Performance check " + id + " is completed -> " + (ctime - time) + "ms");
     }
 
-    /**
-     * Logs a normal message.
-     *
-     * @param {String} header
-     * @param {String} msg
-     */
-    public static void logInfo(String header, String msg) {
-        Global.console.log(INFO + (header != null ? header : "UNKN") + ":" + msg);
-    }
-
-    /**
-     * Logs a warning message.
-     *
-     * @param {String} header
-     * @param {String} msg
-     */
-    public static void logWarn(String header, String msg) {
-        Global.console.log(WARN + (header != null ? header : "UNKN") + ":" + msg);
-    }
-
-    /**
-     * Logs a critical message.
-     *
-     * @param {String} header
-     * @param {String} msg
-     */
-    public static void logCritical(String header, String msg) {
-        logCriticalWithError(header, msg, JSGlobal.stjs.exception(msg));
-    }
-
-    /**
-     * Logs a critical message with an error.
-     *
-     * @param {String} header
-     * @param {String} msg
-     */
-    public static void logCriticalWithError(String header, String msg, Exception e) {
-        Global.console.log(ERR + (header != null ? header : LOG_UNKNOWN_HEADER) + LOG_DELIMITER + msg);
-        Global.console.error(e);
-    }
 }

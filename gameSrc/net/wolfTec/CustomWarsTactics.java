@@ -2,6 +2,7 @@ package net.wolfTec;
 
 import net.wolfTec.action.ActionInvoker;
 import net.wolfTec.ai.AiHandler;
+import net.wolfTec.audio.WedAudioBackend;
 import net.wolfTec.dataTransfer.ConfigTransfer;
 import net.wolfTec.dataTransfer.ImageTransfer;
 import net.wolfTec.dataTransfer.MapTransfer;
@@ -9,14 +10,15 @@ import net.wolfTec.dataTransfer.ModTransfer;
 import net.wolfTec.dataTransfer.URLParameterTransfer;
 import net.wolfTec.input.InputHandler;
 import net.wolfTec.loading.LoadingHandler;
+import net.wolfTec.logic.GameRoundSetup;
 import net.wolfTec.model.GameRound;
-import net.wolfTec.model.GameRoundSetup;
-import net.wolfTec.network.MessageRouter;
 import net.wolfTec.renderer.RenderingContext;
 import net.wolfTec.renderer.SpriteDatabase;
 import net.wolfTec.renderer.TileVariantCalculator;
 import net.wolfTec.states.StateData;
 import net.wolfTec.states.Statemachine;
+import net.wolfTec.system.Features;
+import net.wolfTec.system.MessageRouter;
 import net.wolfTec.types.ArmyType;
 import net.wolfTec.types.CoType;
 import net.wolfTec.types.Database;
@@ -26,9 +28,7 @@ import net.wolfTec.types.PropertyType;
 import net.wolfTec.types.TileType;
 import net.wolfTec.types.UnitType;
 import net.wolfTec.types.WeatherType;
-import net.wolfTec.utility.Audio;
 import net.wolfTec.utility.Debug;
-import net.wolfTec.utility.Features;
 import net.wolfTec.utility.Localization;
 
 import org.stjs.javascript.Array;
@@ -47,25 +47,19 @@ public abstract class CustomWarsTactics {
 	/**
      *
      */
-	public static final String LOG_HEADER = Constants.LOG_MEDIATOR;
+	public static final String	CANNON_UNIT_INV	= "CANNON_UNIT_INV";
 
 	/**
      *
      */
-	public static final String CANNON_UNIT_INV = "CANNON_UNIT_INV";
+	public static final String	LASER_UNIT_INV	= "LASER_UNIT_INV";
 
 	/**
      *
      */
-	public static final String LASER_UNIT_INV = "LASER_UNIT_INV";
+	public static final String	PROP_INV				= "PROP_INV";
 
-	/**
-     *
-     */
-	public static final String PROP_INV = "PROP_INV";
-
-	@SuppressWarnings("unchecked")
-  private static void registerDefaultObjects() {
+	@SuppressWarnings("unchecked") private static void registerDefaultObjects() {
 		MoveType noMove = new MoveType();
 		noMove.costs = JSCollections.$map("*", -1);
 		noMove.ID = "NO_MOVE";
@@ -110,7 +104,6 @@ public abstract class CustomWarsTactics {
 	 * @return Database object
 	 */
 	private static <T extends ObjectType> Database<T> generateDatabase(final Class<T> clazz) {
-		Debug.logInfo(LOG_HEADER, "Generating database for " + clazz.getSimpleName());
 		return new Database<T>() {
 			@Override public T parseJSON(String data) {
 				return JSGlobal.stjs.parseJSON(data, clazz);
@@ -118,85 +111,67 @@ public abstract class CustomWarsTactics {
 		};
 	}
 
-	private static Map<String, Object> beans;
-
-	private static void initBeans() {
-		Debug.logInfo(LOG_HEADER, "Initialize bean objects");
-		beans = JSCollections.$map();
-
-		// create application beans
-		beans.$put("unitTypeDb", generateDatabase(UnitType.class));
-		beans.$put("propertyTypeDb", generateDatabase(PropertyType.class));
-		beans.$put("weatherTypeDb", generateDatabase(WeatherType.class));
-		beans.$put("armyTypeDb", generateDatabase(ArmyType.class));
-		beans.$put("moveTypeDb", generateDatabase(MoveType.class));
-		beans.$put("tileTypeDb", generateDatabase(TileType.class));
-		beans.$put("coTypeDb", generateDatabase(CoType.class));
-		
-		beans.$put("gameround", new GameRound());
-		beans.$put("gameRoundSetup", new GameRoundSetup());
-		
-		beans.$put("actionInvoker", new ActionInvoker(Constants.ACTION_POOL_SIZE));
-		beans.$put("variantCalculator", new TileVariantCalculator());
-		beans.$put("netMessageRouter", new MessageRouter());
-		beans.$put("loadingHandler", new LoadingHandler());
-		beans.$put("gameWorkflowData", new StateData());
-		beans.$put("renderCtx", new RenderingContext());
-		beans.$put("gameWorkflow", new Statemachine());
-		beans.$put("inputHandler", new InputHandler());
-		beans.$put("spriteDb", new SpriteDatabase());
-		beans.$put("audioHandler", new Audio());
-		beans.$put("features", new Features());
-		beans.$put("i18n", new Localization());
-		beans.$put("ai", new AiHandler());
-		
-		beans.$put("imageDto", new ImageTransfer());
-		beans.$put("mapDto", new MapTransfer());
-		beans.$put("modDto", new ModTransfer());
-		beans.$put("configDto", new ConfigTransfer());
-		beans.$put("urlParameterDto", new URLParameterTransfer());
-	}
+	private static Map<String, Object>	beans;
 
 	/**
 	 * <strong>Note: </strong> This function is low level and contains real JS
-	 * code.
+	 * code. Modify only if you know what you're doing here.
 	 */
-	private static void solveBeanDependencies() {
-		Debug.logInfo(LOG_HEADER, "Inject dependencies into beans");
+	private static void initBeans() {
+		beans = JSCollections.$map();
 
-		Array<String> beanNames = JSObjectAdapter.$js("Object.keys(this.beans)");
-		for (String name : beanNames) {
-
-			@SuppressWarnings("unused")
-      Object bean = beans.$get(name);
-			Array<String> beanProperties = JSObjectAdapter.$js("Object.keys(bean)");
-			for (String property : beanProperties) {
-				if (property.indexOf("$") == 0) {
-					JSObjectAdapter.$js("bean[property] = this.beans[property.slice(1)]");
-				}
+		// search in all classes and convert every class with a $BEAN property into
+		// a bean by calling it's constructor with zero arguments.
+		Array<String> possibleBeanNames = JSObjectAdapter.$js("Object.keys(this.beans)");
+		for (String name : possibleBeanNames) {
+			boolean isBean = JSObjectAdapter.$js("cwt[name].$BEAN == true");
+			if (isBean) {
+				JSObjectAdapter.$js("this.beans[name] = new cwt[name]()");
 			}
 		}
 	}
 
 	/**
-	 * @param name
-	 *          name of the bean
-	 * @throws Exception
-	 *           when the bean with the given name does not exists
-	 * @return a bean for a given name
+	 * <strong>Note: </strong> This function is low level and contains real JS
+	 * code. Modify only if you know what you're doing here.
 	 */
-	@SuppressWarnings("unchecked")
-  public static <T> T getBean(String name) {
-		if (!JSObjectAdapter.hasOwnProperty(beans, name)) {
-			Debug.logCritical(LOG_HEADER, "unknown bean with name " + name);
-		}
+	private static void solveBeanDependencies() {
+		boolean isDebugEnabled = Constants.DEBUG;
 
-		return (T) beans.$get(name);
+		// search in all beans for properties with a leading '$' character. This
+		// properties are references to beans. Place the right bean into this
+		// property by searching the correct bean type together with the type
+		// description of the class.
+		Array<String> beanNames = JSObjectAdapter.$js("Object.keys(this.beans)");
+		for (String beanName : beanNames) {
+
+			@SuppressWarnings("unused") Object bean = beans.$get(beanName);
+			Array<String> beanProperties = JSObjectAdapter.$js("Object.keys(bean)");
+			for (String property : beanProperties) {
+				if (property.indexOf("$") == 0) {
+					if (property != "$BEAN") {
+						if (property == "$LOG") {
+
+							// create a custom logger object for the bean object
+							JSObjectAdapter.$js("bean.$LOG = LogJS.get({name: \"beanName\", level: \"info\", enabled: isDebugEnabled})");
+
+						} else {
+
+							// grab the class name plus namespace and extract only the class
+							// name
+							String propertyClass = JSObjectAdapter.$js("bean.constructor.$typeDescription[property]");
+							propertyClass = propertyClass.substring(propertyClass.lastIndexOf(".") + 1);
+
+							// inject it
+							JSObjectAdapter.$js("bean[property] = this.beans[propertyClass]");
+						}
+					}
+				}
+			}
+		}
 	}
 
 	public static void main(String[] args) {
-		Debug.logInfo(LOG_HEADER, "Starting CustomWars: Tactics " + Constants.VERSION);
-		
 		initBeans();
 		solveBeanDependencies();
 		registerDefaultObjects();

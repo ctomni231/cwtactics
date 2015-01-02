@@ -1,7 +1,7 @@
 package net.wolfTec.action;
 
 import net.wolfTec.Constants;
-import net.wolfTec.network.MessageRouter;
+import net.wolfTec.system.MessageRouter;
 import net.wolfTec.utility.CircularBuffer;
 import net.wolfTec.utility.Debug;
 

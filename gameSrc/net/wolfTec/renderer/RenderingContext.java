@@ -2,8 +2,8 @@ package net.wolfTec.renderer;
 
 import net.wolfTec.Constants;
 import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.logic.MoveCode;
 import net.wolfTec.model.GameRound;
-import net.wolfTec.model.MoveCode;
 import net.wolfTec.model.Tile;
 import net.wolfTec.model.Unit;
 import net.wolfTec.states.StateDataMenu;
@@ -769,11 +769,11 @@ public class RenderingContext {
                 Unit unit = tile.unit;
                 if (unit == null || hiddenUnit == unit) continue;
 
-                Sprite unitSprite = net.wolfTec.spriteDb.sprites.$get(unit.type.ID);
+                Sprite unitSprite = net.wolfTec.spriteDb.sprites.$get(unit.getType().ID);
 
                 // grab color
                 int state = Constants.INACTIVE_ID;
-                switch (unit.owner.id) {
+                switch (unit.getOwner().id) {
                     case 0:
                         state = Sprite.UNIT_RED;
                         break;
@@ -793,7 +793,7 @@ public class RenderingContext {
 
                 // do we need to render an inverted image
                 int shadowState = Constants.INACTIVE_ID;
-                if (unit.owner.id % 2 == 0) {
+                if (unit.getOwner().id % 2 == 0) {
                     state += Sprite.UNIT_STATE_IDLE_INVERTED;
                     shadowState = Sprite.UNIT_SHADOW_MASK + Sprite.UNIT_STATE_IDLE_INVERTED;
                 } else {
@@ -801,7 +801,7 @@ public class RenderingContext {
                 }
                 Element shadowSprite = unitSprite.getImage(shadowState);
 
-                boolean used = !unit.canAct;
+                boolean used = !unit.isCanAct();
                 Element sprite = unitSprite.getImage(state);
                 int n = 0;
                 while (n < 3) {

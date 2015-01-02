@@ -4,8 +4,8 @@ import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.action.Action;
 import net.wolfTec.action.ActionData;
 import net.wolfTec.action.ActionInvoker;
-import net.wolfTec.enums.Relationship;
-import net.wolfTec.model.PositionData;
+import net.wolfTec.logic.Relationship;
+import net.wolfTec.model.Position;
 import net.wolfTec.states.StateData;
 import net.wolfTec.utility.Debug;
 
@@ -29,7 +29,7 @@ public abstract class UnitActionFactory {
 
         action.condition = new Function1<StateData, Boolean>() {
             @Override public Boolean $invoke(StateData stateData) {
-                return stateData.source.unit.canAct;
+                return stateData.source.unit.isCanAct();
             }
         };
 

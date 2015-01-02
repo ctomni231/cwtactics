@@ -1,6 +1,6 @@
 package net.wolfTec.action;
 
-import net.wolfTec.enums.Relationship;
+import net.wolfTec.logic.Relationship;
 import net.wolfTec.states.StateData;
 import net.wolfTec.utility.Assert;
 

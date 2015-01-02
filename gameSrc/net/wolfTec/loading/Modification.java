@@ -1,8 +1,9 @@
-package net.wolfTec.model;
+package net.wolfTec.loading;
 
 import org.stjs.javascript.Map;
+import org.stjs.javascript.annotation.Namespace;
 
-public class Modification {
+@Namespace("cwt") public class Modification {
 	public Map<String, String> sounds;
 	public Map<String, String> musics;
 	public Map<String, String> maps;

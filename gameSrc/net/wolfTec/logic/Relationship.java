@@ -1,6 +1,8 @@
-package net.wolfTec.enums;
+package net.wolfTec.logic;
 
-public enum Relationship {
+import org.stjs.javascript.annotation.Namespace;
+
+@Namespace("cwt") public enum Relationship {
 
     /**
      * Means two objects are the same object (so there is only one object).

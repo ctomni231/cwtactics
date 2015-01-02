@@ -2,9 +2,9 @@ package net.wolfTec.dataTransfer;
 
 import net.wolfTec.input.InputHandler;
 import net.wolfTec.model.GameRound;
+import net.wolfTec.system.Storage;
+import net.wolfTec.system.Storage.StorageEntry;
 import net.wolfTec.utility.Debug;
-import net.wolfTec.utility.Storage;
-import net.wolfTec.utility.Storage.StorageEntry;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;

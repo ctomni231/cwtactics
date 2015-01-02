@@ -2,12 +2,12 @@ package net.wolfTec.dataTransfer;
 
 import net.wolfTec.Constants;
 import net.wolfTec.bridges.Globals;
-import net.wolfTec.model.Modification;
+import net.wolfTec.loading.Modification;
+import net.wolfTec.system.Storage;
+import net.wolfTec.system.Storage.StorageEntry;
 import net.wolfTec.utility.Debug;
 import net.wolfTec.utility.ExternalRequest;
-import net.wolfTec.utility.Storage;
 import net.wolfTec.utility.ExternalRequest.ExternalRequestOptions;
-import net.wolfTec.utility.Storage.StorageEntry;
 
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;

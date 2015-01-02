@@ -29,7 +29,7 @@ public class Assert {
         if (actual >= min) Debug.logCritical(LOG_HEADER, "IllegalArgumentValue");
     }
 
-    public static void isNot (int actual, int not) {
+    public static void isNot (Object actual, Object not) {
         if (actual == not) Debug.logCritical(LOG_HEADER, "IllegalArgumentValue");
     }
 

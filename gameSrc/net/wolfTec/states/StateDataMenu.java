@@ -2,13 +2,13 @@ package net.wolfTec.states;
 
 import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.action.Action;
-import net.wolfTec.enums.Relationship;
-import net.wolfTec.model.PositionData;
+import net.wolfTec.logic.Relationship;
+import net.wolfTec.logic.RelationshipCheck;
+import net.wolfTec.model.Position;
 import net.wolfTec.model.Property;
 import net.wolfTec.model.Unit;
 import net.wolfTec.utility.CircularBuffer;
 import net.wolfTec.utility.Debug;
-import net.wolfTec.utility.RelationshipCheck;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.annotation.Template;
@@ -101,14 +101,14 @@ public class StateDataMenu {
         Relationship sst_mode = null;
         Relationship pr_st_mode = null;
         Relationship pr_sst_mode = null;
-        PositionData sPos = parent.source;
-        PositionData tPos = parent.target;
-        PositionData tsPos = parent.targetSelection;
+        Position sPos = parent.source;
+        Position tPos = parent.target;
+        Position tsPos = parent.targetSelection;
         RelationshipCheck.RelationshipCheckMode ChkU = RelationshipCheck.RelationshipCheckMode.CHECK_NORMAL;
         RelationshipCheck.RelationshipCheckMode ChkP = RelationshipCheck.RelationshipCheckMode.CHECK_PROPERTY;
         Property sProp = sPos.property;
         Unit sUnit = sPos.unit;
-        boolean unitActable = (!(sUnit == null || sUnit.owner != net.wolfTec.gameround.turnOwner || !sUnit.canAct));
+        boolean unitActable = (!(sUnit == null || sUnit.getOwner() != net.wolfTec.gameround.turnOwner || !sUnit.isCanAct()));
         boolean propertyActable = (!(sUnit != null || sProp == null || sProp.owner != net.wolfTec.gameround.turnOwner || sProp.type.blocker));
         boolean mapActable = (!unitActable && !propertyActable);
 

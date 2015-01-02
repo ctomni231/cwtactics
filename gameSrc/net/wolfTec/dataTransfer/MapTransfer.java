@@ -1,8 +1,8 @@
 package net.wolfTec.dataTransfer;
 
 import net.wolfTec.CustomWarsTactics;
-import net.wolfTec.utility.Storage;
-import net.wolfTec.utility.Storage.StorageEntry;
+import net.wolfTec.system.Storage;
+import net.wolfTec.system.Storage.StorageEntry;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;

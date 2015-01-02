@@ -61,7 +61,7 @@ public abstract class Mouse {
 
                 // extract real x,y position on the canvas
                 if (domEvent != null) domEvent = (DOMEvent) Global.window.event;
-                if (JSGlobal.typeof(domEvent.offsetX) == 'number') {
+                if (JSGlobal.typeof(domEvent.offsetX) == "number") {
                     x = domEvent.offsetX;
                     y = domEvent.offsetY;
                 }

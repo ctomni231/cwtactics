@@ -4,7 +4,7 @@ import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.action.Action;
 import net.wolfTec.action.ActionData;
 import net.wolfTec.action.ActionInvoker;
-import net.wolfTec.enums.Relationship;
+import net.wolfTec.logic.Relationship;
 import net.wolfTec.model.Player;
 import net.wolfTec.model.Property;
 import net.wolfTec.states.StateData;
@@ -80,7 +80,7 @@ public abstract class TeamActionFactory {
             public void $invoke(StateData stateData, ActionData actionData) {
                 actionData.p1 = JSGlobal.parseInt(stateData.selectedSubEntry, 10);
                 actionData.p2 = net.wolfTec.turnOwner.id;
-                actionData.p3 = stateData.target.unit.owner.id;
+                actionData.p3 = stateData.target.unit.getOwner().id;
             }
         };
 

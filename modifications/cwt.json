@@ -4,11 +4,6 @@
 
   "version": "0.1",
 
-  "gameModes": {
-    "AW1": "Advance Wars 1",
-    "AW2": "Advance Wars 2"
-  },
-
   "maps": {
     "Minus Hills": "maps/minus-hills-v1.json",
     "Outpost Plus": "maps/outpost-plus-v1.json",

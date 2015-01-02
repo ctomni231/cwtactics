@@ -1,13 +1,18 @@
-package net.wolfTec.model;
+package net.wolfTec.logic;
 
 import net.wolfTec.Constants;
+import net.wolfTec.model.PositionData;
+import net.wolfTec.model.Unit;
+import net.wolfTec.utility.MoveableMatrix;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 
 public class MovePath {
 
-	private Array<MoveCode> path;
+	public static boolean		$BEAN	= true;
+	
+	private Array<MoveCode>	path;
 
 	/**
 	 * Little helper array object for `model.move_fillMoveMap`. This will be used
@@ -17,24 +22,16 @@ public class MovePath {
 	 * `model.move_fillMoveMap` will use this helper to prevent unnecessary array
 	 * creation.
 	 */
-	private Array<Integer> helper;
+	private Array<Integer>	helper;
 
-	private Array<Integer> checkHelper;
+	private Array<Integer>	checkHelper;
 
 	public MovePath() {
 		path = JSCollections.$array();
 		helper = JSCollections.$array();
 
-		checkHelper = JSCollections.$array(
-				Constants.INACTIVE_ID, 
-				Constants.INACTIVE_ID, 
-				Constants.INACTIVE_ID, 
-				Constants.INACTIVE_ID, 
-				Constants.INACTIVE_ID,
-				Constants.INACTIVE_ID,
-				Constants.INACTIVE_ID,
-		    Constants.INACTIVE_ID
-		);
+		checkHelper = JSCollections.$array(Constants.INACTIVE_ID, Constants.INACTIVE_ID, Constants.INACTIVE_ID, Constants.INACTIVE_ID, Constants.INACTIVE_ID,
+				Constants.INACTIVE_ID, Constants.INACTIVE_ID, Constants.INACTIVE_ID);
 	}
 
 	public boolean willBeTrapped() {
@@ -52,15 +49,15 @@ public class MovePath {
 	 * @param ty
 	 * @param selection
 	 */
-	public void generatePath(int stx, int sty, int tx, int ty, Object selection) {
+	public void generatePath(int stx, int sty, int tx, int ty, MoveableMatrix selection) {
 		MoveCode dir;
 		var cNode;
-		var dsx = stx - selection.getCenterX();
-		var dsy = sty - selection.getCenterY();
-		var dtx = tx - selection.getCenterX();
-		var dty = ty - selection.getCenterY();
-		var cx = stx;
-		var cy = sty;
+		int dsx = stx - selection.getCenterX();
+		int dsy = sty - selection.getCenterY();
+		int dtx = tx - selection.getCenterX();
+		int dty = ty - selection.getCenterY();
+		int cx = stx;
+		int cy = sty;
 
 		// generate path by the a-star library
 		var dataGrid = astar.createDataGrid(selection.getData());
@@ -152,15 +149,15 @@ public class MovePath {
 		for (var i = 0, e = movePath.size; i < e; i++) {
 			switch (movePath.get(i)) {
 
-			case exports.MOVE_CODES_UP:
-			case exports.MOVE_CODES_LEFT:
-				cy--;
-				break;
+				case exports.MOVE_CODES_UP:
+				case exports.MOVE_CODES_LEFT:
+					cy--;
+					break;
 
-			case exports.MOVE_CODES_DOWN:
-			case exports.MOVE_CODES_RIGHT:
-				cx++;
-				break;
+				case exports.MOVE_CODES_DOWN:
+				case exports.MOVE_CODES_RIGHT:
+					cx++;
+					break;
 			}
 
 			// **add fuel consumption to total consumption here**
@@ -210,10 +207,10 @@ public class MovePath {
 
         // reset some stuff
         for (var n = 0, ne = toBeChecked.length; n < ne; n++) {
-            toBeChecked[n] = constants.INACTIVE;
+            toBeChecked[n] = Constants.INACTIVE_ID;
         }
         for (var n = 0, ne = checker.length; n < ne; n++) {
-            checker[n] = constants.INACTIVE;
+            checker[n] = Constants.INACTIVE_ID;
         }
 
         // remove cache objects from the move logic object
@@ -227,16 +224,16 @@ public class MovePath {
 
         // use a new arrays because cache objects aren't available
         toBeChecked = [];
-        checker = [
-            constants.INACTIVE,
-            constants.INACTIVE,
-            constants.INACTIVE,
-            constants.INACTIVE,
-            constants.INACTIVE,
-            constants.INACTIVE,
-            constants.INACTIVE,
-            constants.INACTIVE
-        ];
+        checker = JSCollections.$array(
+            Constants.INACTIVE_ID,
+            Constants.INACTIVE_ID,
+            Constants.INACTIVE_ID,
+            Constants.INACTIVE_ID,
+            Constants.INACTIVE_ID,
+            Constants.INACTIVE_ID,
+            Constants.INACTIVE_ID,
+            Constants.INACTIVE_ID
+        );
     }
 
     var mType = sheets.movetypes.sheets[unit.type.movetype];
@@ -249,7 +246,7 @@ public class MovePath {
     }
 
     // add start tile to the map
-    selection.setCenter(x, y, constants.INACTIVE);
+    selection.setCenter(x, y, Constants.INACTIVE_ID);
     selection.setValue(x, y, range);
 
     // fill map ( one structure is X;Y;LEFT_POINTS )
@@ -264,23 +261,23 @@ public class MovePath {
         for (var i = 0, e = toBeChecked.length; i < e; i += 3) {
             var leftPoints = toBeChecked[i + 2];
 
-            if (leftPoints !== undefined && leftPoints !== constants.INACTIVE) {
-                if (cHigh === -1 || leftPoints > cHigh) {
+            if (leftPoints != undefined && leftPoints != Constants.INACTIVE_ID_ID) {
+                if (cHigh == -1 || leftPoints > cHigh) {
                     cHigh = leftPoints;
                     cHighIndex = i;
                 }
             }
         }
-        if (cHighIndex === -1) break;
+        if (cHighIndex == -1) break;
 
         var cx = toBeChecked[cHighIndex];
         var cy = toBeChecked[cHighIndex + 1];
         var cp = toBeChecked[cHighIndex + 2];
 
         // clear
-        toBeChecked[cHighIndex] = constants.INACTIVE;
-        toBeChecked[cHighIndex + 1] = constants.INACTIVE;
-        toBeChecked[cHighIndex + 2] = constants.INACTIVE;
+        toBeChecked[cHighIndex] = Constants.INACTIVE_ID;
+        toBeChecked[cHighIndex + 1] = Constants.INACTIVE_ID;
+        toBeChecked[cHighIndex + 2] = Constants.INACTIVE_ID;
 
         // set neighbors for check_
         if (cx > 0) {
@@ -314,7 +311,7 @@ public class MovePath {
 
         // check_ the given neighbors for move
         for (var n = 0; n < 8; n += 2) {
-            if (checker[n] === -1) {
+            if (checker[n] == -1) {
                 continue;
             }
 
@@ -322,7 +319,7 @@ public class MovePath {
             var ty = checker[n + 1];
 
             cost = exports.getMoveCosts(mType, tx, ty);
-            if (cost !== -1) {
+            if (cost != -1) {
 
                 var cTile = map[tx][ty];
                 var cUnit = cTile.unit;
@@ -339,7 +336,7 @@ public class MovePath {
 
                     // add this tile to the checker
                     for (var i = 0, e = toBeChecked.length; i <= e; i += 3) {
-                        if (toBeChecked[i] === constants.INACTIVE || i === e) {
+                        if (toBeChecked[i] == Constants.INACTIVE_ID_ID || i == e) {
                             toBeChecked[i] = tx;
                             toBeChecked[i + 1] = ty;
                             toBeChecked[i + 2] = rest;
@@ -360,7 +357,7 @@ public class MovePath {
     // convert left points back to absolute costs
     for (var x = 0, xe = model.mapWidth; x < xe; x++) {
         for (var y = 0, ye = model.mapHeight; y < ye; y++) {
-            if (selection.getValue(x, y) !== constants.INACTIVE) {
+            if (selection.getValue(x, y) !== Constants.INACTIVE_ID) {
                 cost = exports.getMoveCosts(mType, x, y);
                 selection.setValue(x, y, cost);
             }
@@ -382,7 +379,7 @@ public class MovePath {
     var cy = source.y;
     var teamId = source.unit.owner.team;
     for (var i = 0, e = movePath.size; i < e; i++) {
-        switch (movePath.get(i)) {
+        switch (movePath.) {
             case exports.MOVE_CODES_DOWN:
                 cy++;
                 break;
@@ -407,11 +404,9 @@ public class MovePath {
             cBx = cx;
             cBy = cy;
 
-        } else if (teamId !== unit.owner.team) {
-            if (constants.DEBUG) assert(typeof cBx !== "number" && typeof cBy !== "number");
-
-            target.set(cBx, cBy); // ? this looks ugly here...
-            movePath.data[i] = constants.INACTIVE;
+        } else if (teamId != unit.owner.team) {
+            target.set(cBx, cBy); // TODO: ? this looks ugly here...
+            movePath.data[i] = Constants.INACTIVE_ID;
 
             return true;
         }

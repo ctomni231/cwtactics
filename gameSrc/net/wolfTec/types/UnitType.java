@@ -111,7 +111,9 @@ public class UnitType extends ObjectType {
      *
      * @return move type object for the given move type id of the unit type
      */
+    @SuppressWarnings("unchecked")
     public MoveType getMoveType () {
+    	// TODO
         return ((Database<MoveType>) CustomWarsTactics.getBean("moveTypeDb")).getSheet(movetype);
     }
 }

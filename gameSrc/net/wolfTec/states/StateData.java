@@ -4,8 +4,8 @@ import net.wolfTec.Constants;
 import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.action.Action;
 import net.wolfTec.game.objectTypes.CoType;
+import net.wolfTec.logic.MoveCode;
 import net.wolfTec.model.GameRound;
-import net.wolfTec.model.MoveCode;
 import net.wolfTec.model.PositionData;
 import net.wolfTec.utility.CircularBuffer;
 
