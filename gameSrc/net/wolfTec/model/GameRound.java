@@ -1,7 +1,6 @@
 package net.wolfTec.model;
 
 import net.wolfTec.Constants;
-import net.wolfTec.types.WeatherType;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;

@@ -2,9 +2,9 @@ package net.wolfTec.logic;
 
 import org.stjs.javascript.annotation.Namespace;
 
+import net.wolfTec.model.AttackType;
 import net.wolfTec.model.GameRound;
 import net.wolfTec.model.Unit;
-import net.wolfTec.types.AttackType;
 
 @Namespace("cwt") public class Battle {
 

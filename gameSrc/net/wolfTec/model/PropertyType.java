@@ -1,4 +1,4 @@
-package net.wolfTec.types;
+package net.wolfTec.model;
 
 import net.wolfTec.utility.Assert;
 

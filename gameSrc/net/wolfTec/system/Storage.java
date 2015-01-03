@@ -63,9 +63,8 @@ public class Storage {
 			@Override public void $invoke(Object result, Object error) {
 
 				// try a second time when fail at the first time because on ios the
-				// question
-				// for more storage invokes an error => we don't want to need to reload
-				// then
+				// question for more storage invokes an error => we don't want to
+				// need to reload then
 				if (error != null) {
 					Globals.localForage.setItem(key, value, callback);
 

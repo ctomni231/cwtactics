@@ -2,11 +2,11 @@ package net.wolfTec.action.factory;
 
 import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.action.Action;
-import net.wolfTec.action.ActionData;
-import net.wolfTec.action.ActionInvoker;
 import net.wolfTec.logic.Relationship;
 import net.wolfTec.model.Position;
 import net.wolfTec.states.StateData;
+import net.wolfTec.system.ActionData;
+import net.wolfTec.system.ActionInvoker;
 import net.wolfTec.utility.Debug;
 
 import org.stjs.javascript.JSCollections;

@@ -2,6 +2,7 @@ package net.wolfTec.action;
 
 import net.wolfTec.logic.Relationship;
 import net.wolfTec.states.StateData;
+import net.wolfTec.system.ActionData;
 import net.wolfTec.utility.Assert;
 
 import org.stjs.javascript.Array;

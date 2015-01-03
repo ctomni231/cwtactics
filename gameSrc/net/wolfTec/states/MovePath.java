@@ -1,6 +1,7 @@
-package net.wolfTec.logic;
+package net.wolfTec.states;
 
 import net.wolfTec.Constants;
+import net.wolfTec.logic.MoveCode;
 import net.wolfTec.model.PositionData;
 import net.wolfTec.model.Unit;
 import net.wolfTec.utility.MoveableMatrix;

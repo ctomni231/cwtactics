@@ -1,7 +1,5 @@
 package net.wolfTec.model;
 
-import net.wolfTec.types.UnitType;
-
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.annotation.Template;

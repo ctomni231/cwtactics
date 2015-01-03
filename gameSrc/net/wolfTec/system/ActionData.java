@@ -1,4 +1,4 @@
-package net.wolfTec.action;
+package net.wolfTec.system;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Global;
@@ -87,8 +87,7 @@ public class ActionData {
 	 * @return
 	 */
 	public static String toJSON(ActionData data) {
-		Array<?> toBeSerialized = JSCollections.$array(data.key, data.p1, data.p2, data.p3, data.p4, data.p5, data.pStr);
-
+		Array<Object> toBeSerialized = JSCollections.$array(data.key, data.p1, data.p2, data.p3, data.p4, data.p5, data.pStr);
 		return Global.JSON.stringify(toBeSerialized);
 	}
 }

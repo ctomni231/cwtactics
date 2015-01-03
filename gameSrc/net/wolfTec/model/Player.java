@@ -1,8 +1,6 @@
 package net.wolfTec.model;
 
 import net.wolfTec.Constants;
-import net.wolfTec.types.ArmyType;
-import net.wolfTec.types.CoType;
 
 import org.stjs.javascript.annotation.Namespace;
 

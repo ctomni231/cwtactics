@@ -1,4 +1,4 @@
-package net.wolfTec.types;
+package net.wolfTec.model;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;

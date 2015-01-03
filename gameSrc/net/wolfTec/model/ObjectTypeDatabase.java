@@ -1,7 +1,6 @@
-package net.wolfTec.types;
+package net.wolfTec.model;
 
 import net.wolfTec.Constants;
-import net.wolfTec.utility.Debug;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
@@ -12,7 +11,7 @@ import org.stjs.javascript.Map;
  * A data object that holds a list of sheet objects with a given schema. Every sheet that will be added to the
  * data object will be validated first.
  */
-public abstract class Database<T extends ObjectType> {
+public abstract class ObjectTypeDatabase<T extends ObjectType> {
 
     public static final String LOG_HEADER = Constants.LOG_TYPE_DATABASE;
 
@@ -26,7 +25,7 @@ public abstract class Database<T extends ObjectType> {
      */
     private Array<String> types;
 
-    public Database() {
+    public ObjectTypeDatabase() {
         this.types = JSCollections.$array();
         this.sheets = JSObjectAdapter.$object(null);
     }
@@ -36,10 +35,7 @@ public abstract class Database<T extends ObjectType> {
     }
 
     public void registerSheetByObject(T type) {
-        Debug.logInfo(LOG_HEADER, "Validating sheet " + type.ID);
         type.validate();
-
-        Debug.logInfo(LOG_HEADER, "Register sheet with ID " + type.ID);
         this.sheets.$put(type.ID, type);
         this.types.push(type.ID);
     }

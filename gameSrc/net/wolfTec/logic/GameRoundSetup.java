@@ -1,13 +1,13 @@
 package net.wolfTec.logic;
 
 import net.wolfTec.Constants;
+import net.wolfTec.model.CoType;
+import net.wolfTec.model.GameMap;
 import net.wolfTec.model.GameMode;
 import net.wolfTec.model.GameRound;
+import net.wolfTec.model.ObjectTypeDatabase;
 import net.wolfTec.model.Player;
 import net.wolfTec.system.Logger;
-import net.wolfTec.types.CoType;
-import net.wolfTec.types.Database;
-import net.wolfTec.types.GameMap;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
@@ -17,7 +17,7 @@ import org.stjs.javascript.annotation.Namespace;
 
 	public static boolean			$BEAN	= true;
 	public Logger							$LOG;
-	private Database<CoType>	$coTypeDb;
+	private ObjectTypeDatabase<CoType>	$coTypeDb;
 	private GameRound					$gameround;
 	private Lifecycle					$lifecycle;
 

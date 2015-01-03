@@ -1,6 +1,6 @@
 package net.wolfTec.logic;
 
-import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.model.GameRound;
 import net.wolfTec.model.Player;
 import net.wolfTec.model.PlayerObject;
 import net.wolfTec.model.Position;
@@ -12,6 +12,7 @@ import net.wolfTec.model.Unit;
 public class RelationshipCheck {
 
 	public static boolean	$BEAN	= true;
+	private GameRound			$gameround;
 
 	public enum RelationshipCheckMode {
 
@@ -44,7 +45,7 @@ public class RelationshipCheck {
 	 * @param checkRight
 	 * @returns {number}
 	 */
-	public static Relationship getRelationShipTo(Position left, Position right, RelationshipCheckMode checkLeft, RelationshipCheckMode checkRight) {
+	public Relationship getRelationShipTo(Position left, Position right, RelationshipCheckMode checkLeft, RelationshipCheckMode checkRight) {
 		Object oL = null;
 		Object oR = null;
 
@@ -77,7 +78,7 @@ public class RelationshipCheck {
 	 * @param objectB
 	 * @returns {*}
 	 */
-	public static Relationship getRelationship(Object objectA, Object objectB) {
+	public Relationship getRelationship(Object objectA, Object objectB) {
 
 		// one object is null
 		if (objectA == null || objectB == null) {
@@ -121,12 +122,12 @@ public class RelationshipCheck {
 	 * @param relationship
 	 * @returns {boolean}
 	 */
-	public static boolean hasUnitNeighbourWithRelationship(Player player, int x, int y, Relationship relationship) {
+	public boolean hasUnitNeighbourWithRelationship(Player player, int x, int y, Relationship relationship) {
 		Unit unit = null;
 
 		// WEST
 		if (x > 0) {
-			unit = net.wolfTec.gameround.map.getTile(x - 1, y).unit;
+			unit = $gameround.getMap().getTile(x - 1, y).unit;
 			if (unit != null && getRelationship(player, unit.getOwner()) == relationship) {
 				return true;
 			}
@@ -134,23 +135,23 @@ public class RelationshipCheck {
 
 		// NORTH
 		if (y > 0) {
-			unit = net.wolfTec.gameround.map.getTile(x, y - 1).unit;
+			unit = $gameround.getMap().getTile(x, y - 1).unit;
 			if (unit != null && getRelationship(player, unit.getOwner()) == relationship) {
 				return true;
 			}
 		}
 
 		// EAST
-		if (x < net.wolfTec.gameround.mapWidth - 1) {
-			unit = net.wolfTec.gameround.map.getTile(x + 1, y).unit;
+		if (x < $gameround.getMapWidth() - 1) {
+			unit = $gameround.getMap().getTile(x + 1, y).unit;
 			if (unit != null && getRelationship(player, unit.getOwner()) == relationship) {
 				return true;
 			}
 		}
 
 		// SOUTH
-		if (y < net.wolfTec.gameround.mapHeight - 1) {
-			unit = net.wolfTec.gameround.map.getTile(x, y + 1).unit;
+		if (y < $gameround.getMapHeight() - 1) {
+			unit = $gameround.getMap().getTile(x, y + 1).unit;
 			if (unit != null && getRelationship(player, unit.getOwner()) == relationship) {
 				return true;
 			}

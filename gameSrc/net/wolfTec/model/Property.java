@@ -1,7 +1,5 @@
 package net.wolfTec.model;
 
-import net.wolfTec.types.PropertyType;
-
 import org.stjs.javascript.annotation.Namespace;
 
 /**

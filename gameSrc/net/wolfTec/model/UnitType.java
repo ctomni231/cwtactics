@@ -1,4 +1,4 @@
-package net.wolfTec.types;
+package net.wolfTec.model;
 
 import net.wolfTec.Constants;
 import net.wolfTec.CustomWarsTactics;
@@ -114,6 +114,7 @@ public class UnitType extends ObjectType {
     @SuppressWarnings("unchecked")
     public MoveType getMoveType () {
     	// TODO
-        return ((Database<MoveType>) CustomWarsTactics.getBean("moveTypeDb")).getSheet(movetype);
+        //return ((Database<MoveType>) CustomWarsTactics.getBean("moveTypeDb")).getSheet(movetype);
+    	return null;
     }
 }

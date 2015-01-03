@@ -1,6 +1,5 @@
 package net.wolfTec;
 
-import net.wolfTec.action.ActionInvoker;
 import net.wolfTec.ai.AiHandler;
 import net.wolfTec.audio.WedAudioBackend;
 import net.wolfTec.dataTransfer.ConfigTransfer;
@@ -11,23 +10,24 @@ import net.wolfTec.dataTransfer.URLParameterTransfer;
 import net.wolfTec.input.InputHandler;
 import net.wolfTec.loading.LoadingHandler;
 import net.wolfTec.logic.GameRoundSetup;
+import net.wolfTec.model.ArmyType;
+import net.wolfTec.model.CoType;
 import net.wolfTec.model.GameRound;
+import net.wolfTec.model.MoveType;
+import net.wolfTec.model.ObjectType;
+import net.wolfTec.model.ObjectTypeDatabase;
+import net.wolfTec.model.PropertyType;
+import net.wolfTec.model.TileType;
+import net.wolfTec.model.UnitType;
+import net.wolfTec.model.WeatherType;
 import net.wolfTec.renderer.RenderingContext;
 import net.wolfTec.renderer.SpriteDatabase;
 import net.wolfTec.renderer.TileVariantCalculator;
 import net.wolfTec.states.StateData;
 import net.wolfTec.states.Statemachine;
+import net.wolfTec.system.ActionInvoker;
 import net.wolfTec.system.Features;
 import net.wolfTec.system.MessageRouter;
-import net.wolfTec.types.ArmyType;
-import net.wolfTec.types.CoType;
-import net.wolfTec.types.Database;
-import net.wolfTec.types.MoveType;
-import net.wolfTec.types.ObjectType;
-import net.wolfTec.types.PropertyType;
-import net.wolfTec.types.TileType;
-import net.wolfTec.types.UnitType;
-import net.wolfTec.types.WeatherType;
 import net.wolfTec.utility.Debug;
 import net.wolfTec.utility.Localization;
 
@@ -63,7 +63,7 @@ public abstract class CustomWarsTactics {
 		MoveType noMove = new MoveType();
 		noMove.costs = JSCollections.$map("*", -1);
 		noMove.ID = "NO_MOVE";
-		((Database<MoveType>) getBean("moveTypeDb")).registerSheetByObject(noMove);
+		((ObjectTypeDatabase<MoveType>) getBean("moveTypeDb")).registerSheetByObject(noMove);
 
 		PropertyType invProperty = new PropertyType();
 		invProperty.ID = PROP_INV;
@@ -71,7 +71,7 @@ public abstract class CustomWarsTactics {
 		invProperty.vision = 0;
 		invProperty.visionBlocker = true;
 		invProperty.capturePoints = 1;
-		((Database<PropertyType>) getBean("propertyTypeDb")).registerSheetByObject(invProperty);
+		((ObjectTypeDatabase<PropertyType>) getBean("propertyTypeDb")).registerSheetByObject(invProperty);
 
 		UnitType cannonUnit = new UnitType();
 		cannonUnit.ID = CANNON_UNIT_INV;
@@ -81,7 +81,7 @@ public abstract class CustomWarsTactics {
 		cannonUnit.fuel = 0;
 		cannonUnit.vision = 1;
 		cannonUnit.ammo = 0;
-		((Database<UnitType>) getBean("unitTypeDb")).registerSheetByObject(cannonUnit);
+		((ObjectTypeDatabase<UnitType>) getBean("unitTypeDb")).registerSheetByObject(cannonUnit);
 
 		UnitType laserUnit = new UnitType();
 		laserUnit.ID = LASER_UNIT_INV;
@@ -91,7 +91,7 @@ public abstract class CustomWarsTactics {
 		laserUnit.fuel = 0;
 		laserUnit.vision = 1;
 		laserUnit.ammo = 0;
-		((Database<UnitType>) getBean("unitTypeDb")).registerSheetByObject(laserUnit);
+		((ObjectTypeDatabase<UnitType>) getBean("unitTypeDb")).registerSheetByObject(laserUnit);
 	}
 
 	/**
@@ -103,8 +103,8 @@ public abstract class CustomWarsTactics {
 	 *          type that extends ObjectType
 	 * @return Database object
 	 */
-	private static <T extends ObjectType> Database<T> generateDatabase(final Class<T> clazz) {
-		return new Database<T>() {
+	private static <T extends ObjectType> ObjectTypeDatabase<T> generateDatabase(final Class<T> clazz) {
+		return new ObjectTypeDatabase<T>() {
 			@Override public T parseJSON(String data) {
 				return JSGlobal.stjs.parseJSON(data, clazz);
 			}

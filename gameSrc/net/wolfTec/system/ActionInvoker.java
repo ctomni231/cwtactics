@@ -1,9 +1,7 @@
-package net.wolfTec.action;
+package net.wolfTec.system;
 
-import net.wolfTec.Constants;
-import net.wolfTec.system.MessageRouter;
+import net.wolfTec.action.Action;
 import net.wolfTec.utility.CircularBuffer;
-import net.wolfTec.utility.Debug;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Global;
@@ -12,17 +10,20 @@ import org.stjs.javascript.Map;
 
 public class ActionInvoker {
 
-	public static final String	       LOG_HEADER	= Constants.LOG_ACTION_INVOKER;
+	public static boolean								$BEAN	= true;
+	private Logger											$LOG;
+
+	private MessageRouter								$msgRouter;
 
 	/**
 	 * List of all available actions.
 	 */
-	private Array<Action>	             actions;
+	private Array<Action>								actions;
 
 	/**
 	 * Action -> ActionID<numeric> mapping.
 	 */
-	private Map<String, Integer>	     actionIds;
+	private Map<String, Integer>				actionIds;
 
 	/**
 	 * Pool for holding ActionData objects when they aren't in the buffer.
@@ -33,8 +34,6 @@ public class ActionInvoker {
 	 * Buffer object.
 	 */
 	private CircularBuffer<ActionData>	backPool;
-
-	private MessageRouter	             $netMessageRouter;
 
 	public ActionInvoker(int bufferSize) {
 		this.backPool = new CircularBuffer<ActionData>(bufferSize);
@@ -75,7 +74,7 @@ public class ActionInvoker {
 		actionData.p4 = p4;
 		actionData.p5 = p5;
 
-		Debug.logInfo(null, "append action " + actionData + " as " + (asHead ? "head" : "tail") + " into the stack");
+		$LOG.info("append action " + actionData + " as " + (asHead ? "head" : "tail") + " into the stack");
 
 		if (asHead) {
 			buffer.pushInFront(actionData);
@@ -93,8 +92,9 @@ public class ActionInvoker {
 	 * shares the the call with all other clients.
 	 */
 	public void sharedAction(String key, int p1, int p2, int p3, int p4, int p5) {
-		if ($netMessageRouter.isActive()) {
-			$netMessageRouter.sendMessage(Global.JSON.stringify(JSCollections.$array(actionIds.$get(key), p1, p2, p3, p4, p5)));
+		if ($msgRouter.isActive()) {
+			// $netMessageRouter.sendMessage(Global.JSON.stringify(JSCollections.$array(actionIds.$get(key),
+			// p1, p2, p3, p4, p5)));
 		}
 
 		localAction(key, p1, p2, p3, p4, p5, false);
@@ -157,12 +157,12 @@ public class ActionInvoker {
 	public void invokeNext() {
 		ActionData data = buffer.popFirst();
 		if (data == null) {
-			Debug.logCritical(LOG_HEADER, "NullPointerException");
+			$LOG.error("NullPointerException");
 		}
 
 		Action actionObj = actions.$get(data.key);
 
-		Debug.logInfo(LOG_HEADER, "evaluating action data object " + data + "(" + actionObj.key + ")");
+		$LOG.info("evaluating action data object " + data + "(" + actionObj.key + ")");
 
 		actionObj.invoke.$invoke(data);
 
