@@ -6,54 +6,57 @@ This is the main sprite folder for dealing with the in-game sprites using the ne
 
 ## Unit Types - Direct Land
 
-* [ ] *INFT* = Infantry
-* [ ] *MECH* = Mech
-* [ ] *BIKE* = Bike
-* [ ] *SNIP* = Sniper
-* [ ] *RECN* = Recon
-* [ ] *AAIR* = Anti-Air
-* [ ] *APCR* = APC Rig
-* [ ] *TANK* = Tank
-* [ ] *MDTK* = Medium Tank
-* [ ] *NTNK* = Neo-Battle Tank
-* [ ] *WRTK* = Mega Wartank
+* [x] *INFT* = Infantry [OS]
+* [ ] *INFT* = Infantry [Other Factions]
+* [x] *MECH* = Mech [OS]
+* [ ] *MECH* = Mech [Other Factions]
+* [x] *BIKE* = Bike [OS]
+* [ ] *BIKE* = Bike [Other Factions]
+* [ ] *SNIP* = Sniper [All Factions]
+* [x] *RECN* = Recon
+* [x] *AAIR* = Anti-Air
+* [x] *APCR* = APC Rig
+* [x] *TANK* = Tank
+* [x] *MDTK* = Medium Tank
+* [x] *NTNK* = Neo-Battle Tank
+* [x] *WRTK* = Mega Wartank
 * [ ] *SPTK* = Spider-Tank
 * [ ] *BCRT* = Battle-Hovercraft
-* [ ] *OOZM* = Oozium
-* [ ] *FLRE* = Flare
+* [x] *OOZM* = Oozium
+* [x] *FLRE* = Flare
 
 ## Unit Types - Indirect Land
 
-* [ ] *ARTY* = Artillery
-* [ ] *RCKT* = Rockets
-* [ ] *MISS* = Missiles
-* [ ] *PRNR* = Piperunner
-* [ ] *ATNK* = Anti-Tank
+* [x] *ARTY* = Artillery
+* [x] *RCKT* = Rockets
+* [x] *MISS* = Missiles
+* [x] *PRNR* = Piperunner
+* [x] *ATNK* = Anti-Tank
 * [ ] *ACRT* = Artillery-Hovercraft
 
 ## Unit Types - Air
 
-* [ ] *TCTR* = Transport-Helicopter
-* [ ] *BCTR* = Battle-Helicopter
-* [ ] *FGTR* = Jet Fighter 
-* [ ] *BMBR* = Bomber
-* [ ] *BKBM* = Black Nuclear-Bomb
-* [ ] *STLH* = Stealth
-* [ ] *SEAP* = Seaplane
-* [ ] *DUST* = Duster
+* [x] *TCTR* = Transport-Helicopter
+* [x] *BCTR* = Battle-Helicopter
+* [x] *FGTR* = Jet Fighter 
+* [x] *BMBR* = Bomber
+* [x] *BKBM* = Black Nuclear-Bomb
+* [x] *STLH* = Stealth
+* [x] *SEAP* = Seaplane
+* [x] *DUST* = Duster
 * [ ] *ZPLN* = Zeppelin
 * [ ] *SPYP* = Spyplane
 * [ ] *HCTR* = Heavy-Helicopter
 
 ## Unit Types - Sea
 
-* [ ] *BSHP* = Battleship
-* [ ] *CRUS* = Cruiser
-* [ ] *SUBM* = Submarine
-* [ ] *LNDR* = Lander
-* [ ] *BKBT* = Black Patrol-Boat
-* [ ] *ACAR* = Aircraft-Carrier
-* [ ] *GNBT* = Gunboat
+* [x] *BSHP* = Battleship
+* [x] *CRUS* = Cruiser
+* [x] *SUBM* = Submarine
+* [x] *LNDR* = Lander
+* [x] *BKBT* = Black Patrol-Boat
+* [x] *ACAR* = Aircraft-Carrier
+* [x] *GNBT* = Gunboat
 * [ ] *DSYR* = Destroyer
 
 ## Unit Types - Obsolete
@@ -66,23 +69,23 @@ This is the main sprite folder for dealing with the in-game sprites using the ne
 
 ## Terrain Types
 
-* [ ] *PLIN* = Plain
-* [ ] *FRST* = Forest
-* [ ] *MNTN* = Mountain
-* [ ] *RIVR* = River
-* [ ] *ROAD* = Road
-* [ ] *BRDG* = Bridge
-* [ ] *REEF* = Reef
+* [x] *PLIN* = Plain
+* [x] *FRST* = Forest
+* [x] *MNTN* = Mountain
+* [x] *RIVR* = River
+* [x] *ROAD* = Road
+* [x] *BRDG* = Bridge
+* [x] *REEF* = Reef
 * [ ] *WTLD* = Wasteland
-* [ ] *RUIN* = Ruins
-* [ ] *SHOA* = Shoals
-* [ ] *SEAS* = Seas
-* [ ] *METR* = Meteor
+* [x] *RUIN* = Ruins
+* [x] *SHOA* = Shoals
+* [x] *SEAS* = Seas
+* [x] *METR* = Meteor
 * [ ] *PLZM* = Plasma
 * [ ] *PLZP* = Plazma Pipe
 * [ ] *PZPS* = Plazma Pipeseam
-* [ ] *PIPE* = Pipe
-* [ ] *PIPS* = Pipeseam
+* [x] *PIPE* = Pipe
+* [x] *PIPS* = Pipeseam
 * [ ] *PIPR* = Piperail
 * [ ] *SWMP* = Swamp
 * [ ] *MIST* = Mist
@@ -92,35 +95,41 @@ This is the main sprite folder for dealing with the in-game sprites using the ne
 
 ## Property Types
 
-* [ ] *HQTR* = Headquarters
-* [ ] *CITY* = City
-* [ ] *BASE* = Factory
-* [ ] *APRT* = Airport
-* [ ] *PORT* = Seaport
-* [ ] *CMTR* = Communication-Tower
-* [ ] *SILO* = Missile Silo
-* [ ] *PLTF* = Missile Silo Platform
-* [ ] *RDAR* = Radar
-* [ ] *TAPT* = Temporary Airport
-* [ ] *TSPT* = Temporary Seaport
-* [ ] *RUBL* = Rubble
+* [x] *HQTR* = Headquarters [All Factions]
+* [x] *CITY* = City
+* [x] *BASE* = Factory
+* [x] *APRT* = Airport
+* [x] *PORT* = Seaport
+* [x] *CMTR* = Communication-Tower
+* [x] *SILO* = Missile Silo
+* [x] *PLTF* = Missile Silo Platform
+* [x] *RDAR* = Radar
+* [x] *TAPT* = Temporary Airport
+* [x] *TSPT* = Temporary Seaport
+* [x] *RUBL* = Rubble
 * [ ] *STRH* = Stronghold
-* [ ] *LABS* = Lab
+* [x] *LABS* = Lab
 * [ ] *QURY* = Query
 * [ ] *ORIG* = Oil Rig
-* [ ] *WALL* = Wall
+* [x] *WALL* = Wall
 
 ## Inventions
 
-* [ ] *BHMC* = Black Hole Mini-Cannon
-* [ ] *BHCN* = Black Hole Cannon (3x3 Tiles)
-* [ ] *BHDR* = Black Hole Death Ray (3x3 Tiles)
-* [ ] *BHFR* = Black Hole Fortress (4x4 Tiles)
-* [ ] *BHFT* = Black Hole Factory (3x3 Tiles)
-* [ ] *BHLZ* = Black Hole Lazer
-* [ ] *BHMS* = Black Hole Missile (4x4 Tiles)
-* [ ] *BRBL* = Big Rubble (3x3 Tiles)
-* [ ] *SRBL* = Small Rubble
+* [x] *BHMC* = Black Hole Mini-Cannon [4-Dir]
+* [ ] *BHCN* = Black Hole Cannon [North] (3x3 Tiles)
+* [x] *BHCN* = Black Hole Cannon [South] (3x3 Tiles)
+* [ ] *BHCN* = Black Hole Cannon [East] (3x3 Tiles)
+* [ ] *BHCN* = Black Hole Cannon [West] (3x3 Tiles)
+* [ ] *BHDR* = Black Hole Death Ray [North] (3x3 Tiles)
+* [x] *BHDR* = Black Hole Death Ray [South] (3x3 Tiles)
+* [ ] *BHDR* = Black Hole Death Ray [East] (3x3 Tiles)
+* [ ] *BHDR* = Black Hole Death Ray [West] (3x3 Tiles)
+* [x] *BHFR* = Black Hole Fortress (4x4 Tiles)
+* [x] *BHFT* = Black Hole Factory [South] (3x3 Tiles)
+* [x] *BHLZ* = Black Hole Lazer
+* [x] *BHMS* = Black Hole Missile (4x4 Tiles)
+* [x] *BRBL* = Big Rubble (3x3 Tiles)
+* [x] *SRBL* = Small Rubble
 * [ ] *VCNO* = Volcano
 * [ ] *BCRY* = Black Hole Crystal
 * [ ] *BOBL* = Black Hole Obelisk (3x3 Tiles)
@@ -160,7 +169,7 @@ This is the main sprite folder for dealing with the in-game sprites using the ne
 
 ## Property Types
 
-* [ ] *HQTR* = Headquarters
+* [ ] *HQTR* = Headquarters [All Factions]
 * [ ] *CITY* = City
 * [ ] *BASE* = Factory
 * [ ] *APRT* = Airport
@@ -228,7 +237,7 @@ This is the main sprite folder for dealing with the in-game sprites using the ne
 
 ## Property Types
 
-* [ ] *HQTR* = Headquarters
+* [ ] *HQTR* = Headquarters [All Factions]
 * [ ] *CITY* = City
 * [ ] *BASE* = Factory
 * [ ] *APRT* = Airport
