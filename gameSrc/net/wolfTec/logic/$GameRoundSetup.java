@@ -13,13 +13,13 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.annotation.Namespace;
 
-@Namespace("cwt") public class GameRoundSetup {
+@Namespace("cwt") public class $GameRoundSetup {
 
 	public static boolean			$BEAN	= true;
 	public Logger							$LOG;
 	private ObjectTypeDatabase<CoType>	$coTypeDb;
 	private GameRound					$gameround;
-	private Lifecycle					$lifecycle;
+	private $Lifecycle					$lifecycle;
 
 	private GameMap						map		= null;
 

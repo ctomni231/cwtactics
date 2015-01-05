@@ -4,7 +4,7 @@ import org.stjs.javascript.annotation.Namespace;
 
 import net.wolfTec.model.Unit;
 
-@Namespace("cwt") public class Join {
+@Namespace("cwt") public class $Join {
 
 	public static boolean	$BEAN	= true;
 	private $Transport			$transport;

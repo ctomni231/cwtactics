@@ -9,7 +9,7 @@ import net.wolfTec.model.Unit;
 /**
  *
  */
-public class RelationshipCheck {
+public class $RelationshipCheck {
 
 	public static boolean	$BEAN	= true;
 	private GameRound			$gameround;

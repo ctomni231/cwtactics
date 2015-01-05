@@ -6,11 +6,11 @@ import net.wolfTec.model.AttackType;
 import net.wolfTec.model.GameRound;
 import net.wolfTec.model.Unit;
 
-@Namespace("cwt") public class Battle {
+@Namespace("cwt") public class $Battle {
 
 	public static boolean	$BEAN	= true;
 	private GameRound			$gameorund;
-	private GameConfig		$config;
+	private $GameConfig		$config;
 
 	/**
 	 * Returns true if the **unit** has a main weapon, else false.

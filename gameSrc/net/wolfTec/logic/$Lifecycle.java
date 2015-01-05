@@ -8,7 +8,7 @@ import net.wolfTec.model.Player;
 import net.wolfTec.model.Unit;
 import net.wolfTec.utility.Assert;
 
-@Namespace("cwt") public class Lifecycle {
+@Namespace("cwt") public class $Lifecycle {
 
 	public static boolean	$BEAN	= true;
 

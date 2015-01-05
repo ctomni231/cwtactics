@@ -6,11 +6,11 @@ import org.stjs.javascript.annotation.Namespace;
 import net.wolfTec.Constants;
 import net.wolfTec.model.Property;
 
-@Namespace("cwt") public class Factory {
+@Namespace("cwt") public class $Factory {
 
 	public static boolean	$BEAN	= true;
-	private Capture				$capture;
-	private GameConfig		$gameconfig;
+	private $Capture				$capture;
+	private $GameConfig		$gameconfig;
 
 	/**
 	 * Returns **true** when the given **property** is a factory, else **false**.

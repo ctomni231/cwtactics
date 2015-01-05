@@ -5,7 +5,7 @@ import org.stjs.javascript.annotation.Namespace;
 import net.wolfTec.model.Property;
 import net.wolfTec.model.Unit;
 
-@Namespace("cwt") public class Capture {
+@Namespace("cwt") public class $Capture {
 
 	public static boolean	$BEAN	= true;
 

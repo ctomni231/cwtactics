@@ -6,10 +6,10 @@ import net.wolfTec.Constants;
 import net.wolfTec.model.CoPowerLevel;
 import net.wolfTec.model.Player;
 
-@Namespace("cwt") public class Commander {
+@Namespace("cwt") public class $Commander {
 
 	public static boolean	$BEAN	= true;
-	private GameConfig		$gameconfig;
+	private $GameConfig		$gameconfig;
 
 	public boolean isPowerActive(Player player, CoPowerLevel level) {
 		return player.activePower == level;

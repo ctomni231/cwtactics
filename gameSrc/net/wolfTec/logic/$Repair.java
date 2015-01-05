@@ -7,7 +7,7 @@ import net.wolfTec.model.Property;
 import net.wolfTec.model.Tile;
 import net.wolfTec.model.Unit;
 
-@Namespace("cwt") public class Repair {
+@Namespace("cwt") public class $Repair {
 
 	public static boolean	$BEAN	= true;
 	private GameRound			$gameround;

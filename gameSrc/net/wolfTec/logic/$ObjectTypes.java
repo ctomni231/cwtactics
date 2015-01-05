@@ -13,7 +13,7 @@ import net.wolfTec.system.Logger;
 
 import org.stjs.javascript.annotation.Namespace;
 
-@Namespace("cwt") public class ObjectTypes {
+@Namespace("cwt") public class $ObjectTypes {
 
 	public static boolean						$BEAN	= true;
 	public Logger										$LOG;
