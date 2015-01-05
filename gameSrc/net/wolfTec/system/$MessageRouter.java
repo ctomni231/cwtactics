@@ -5,7 +5,7 @@ import net.wolfTec.Constants;
 /**
  *
  */
-public class MessageRouter {
+public class $MessageRouter {
 
 	public static boolean	$BEAN			= true;
 	public static Logger	$LOG;

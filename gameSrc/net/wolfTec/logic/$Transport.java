@@ -6,9 +6,8 @@ import net.wolfTec.Constants;
 import net.wolfTec.model.GameRound;
 import net.wolfTec.model.Unit;
 
-@Namespace("cwt") public class Transport {
+@Namespace("cwt") public class $Transport {
 
-	public static boolean	$BEAN	= true;
 	private GameRound			$gameround;
 
 	/**

@@ -4,7 +4,7 @@ import net.wolfTec.Constants;
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.input.InputData;
 import net.wolfTec.input.InputHandler;
-import net.wolfTec.system.ActionInvoker;
+import net.wolfTec.system.$ActionInvoker;
 import net.wolfTec.utility.Debug;
 
 import org.stjs.javascript.Date;
@@ -21,7 +21,7 @@ public class Statemachine {
 
 	public static final String	LOG_HEADER	= Constants.LOG_STATEMACHINE;
 
-	private ActionInvoker				$actionInvoker;
+	private $ActionInvoker				$actionInvoker;
 	private InputHandler				$inputHandler;
 
 	/**

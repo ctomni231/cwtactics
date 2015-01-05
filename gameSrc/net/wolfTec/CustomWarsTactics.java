@@ -25,9 +25,9 @@ import net.wolfTec.renderer.SpriteDatabase;
 import net.wolfTec.renderer.TileVariantCalculator;
 import net.wolfTec.states.StateData;
 import net.wolfTec.states.Statemachine;
-import net.wolfTec.system.ActionInvoker;
+import net.wolfTec.system.$ActionInvoker;
 import net.wolfTec.system.Features;
-import net.wolfTec.system.MessageRouter;
+import net.wolfTec.system.$MessageRouter;
 import net.wolfTec.utility.Debug;
 import net.wolfTec.utility.Localization;
 
@@ -112,6 +112,10 @@ public abstract class CustomWarsTactics {
 	}
 
 	private static Map<String, Object>	beans;
+	
+	public static <T> T getBean(String className) {
+		return null;
+	}
 
 	/**
 	 * <strong>Note: </strong> This function is low level and contains real JS

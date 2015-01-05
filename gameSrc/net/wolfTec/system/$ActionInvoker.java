@@ -8,12 +8,11 @@ import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 
-public class ActionInvoker {
+public class $ActionInvoker {
 
-	public static boolean								$BEAN	= true;
 	private Logger											$LOG;
 
-	private MessageRouter								$msgRouter;
+	private $MessageRouter							msgRouter;
 
 	/**
 	 * List of all available actions.
@@ -35,7 +34,7 @@ public class ActionInvoker {
 	 */
 	private CircularBuffer<ActionData>	backPool;
 
-	public ActionInvoker(int bufferSize) {
+	public $ActionInvoker(int bufferSize) {
 		this.backPool = new CircularBuffer<ActionData>(bufferSize);
 		this.buffer = new CircularBuffer<ActionData>(bufferSize);
 
@@ -92,7 +91,7 @@ public class ActionInvoker {
 	 * shares the the call with all other clients.
 	 */
 	public void sharedAction(String key, int p1, int p2, int p3, int p4, int p5) {
-		if ($msgRouter.isActive()) {
+		if (msgRouter.isActive()) {
 			// $netMessageRouter.sendMessage(Global.JSON.stringify(JSCollections.$array(actionIds.$get(key),
 			// p1, p2, p3, p4, p5)));
 		}

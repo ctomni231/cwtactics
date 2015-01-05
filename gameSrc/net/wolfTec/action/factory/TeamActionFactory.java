@@ -7,7 +7,7 @@ import net.wolfTec.model.Player;
 import net.wolfTec.model.Property;
 import net.wolfTec.states.StateData;
 import net.wolfTec.system.ActionData;
-import net.wolfTec.system.ActionInvoker;
+import net.wolfTec.system.$ActionInvoker;
 import net.wolfTec.utility.Debug;
 
 import org.stjs.javascript.Array;
@@ -24,7 +24,7 @@ public abstract class TeamActionFactory {
      */
     public static Array<Integer> MONEY_TRANSFER_STEPS = JSCollections.$array(1000, 2500, 5000, 10000, 25000, 50000);
 
-    public static void registerActions(ActionInvoker invoker) {
+    public static void registerActions($ActionInvoker invoker) {
         invoker.registerAction(createShareMoneyAction());
         invoker.registerAction(createSharePropertyAction());
         invoker.registerAction(createShareUnitAction());

@@ -7,7 +7,7 @@ import net.wolfTec.model.Unit;
 @Namespace("cwt") public class Join {
 
 	public static boolean	$BEAN	= true;
-	private Transport			$transport;
+	private $Transport			$transport;
 
 	/**
 	 * Returns **true** if two units can join each other, else **false**. In
