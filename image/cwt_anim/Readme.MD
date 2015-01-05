@@ -116,16 +116,16 @@ This is the main sprite folder for dealing with the in-game sprites using the ne
 ## Inventions
 
 * [x] *BHMC* = Black Hole Mini-Cannon [4-Dir]
-* [ ] *BHCN* = Black Hole Cannon [North] (3x3 Tiles)
-* [x] *BHCN* = Black Hole Cannon [South] (3x3 Tiles)
-* [ ] *BHCN* = Black Hole Cannon [East] (3x3 Tiles)
-* [ ] *BHCN* = Black Hole Cannon [West] (3x3 Tiles)
-* [ ] *BHDR* = Black Hole Death Ray [North] (3x3 Tiles)
-* [x] *BHDR* = Black Hole Death Ray [South] (3x3 Tiles)
-* [ ] *BHDR* = Black Hole Death Ray [East] (3x3 Tiles)
-* [ ] *BHDR* = Black Hole Death Ray [West] (3x3 Tiles)
+* [ ] *BHCN* = Black Hole Cannon [North]-(3x3 Tiles)
+* [x] *BHCN* = Black Hole Cannon [South]-(3x3 Tiles)
+* [ ] *BHCN* = Black Hole Cannon [East]-(3x3 Tiles)
+* [ ] *BHCN* = Black Hole Cannon [West]-(3x3 Tiles)
+* [ ] *BHDR* = Black Hole Death Ray [North]-(3x3 Tiles)
+* [x] *BHDR* = Black Hole Death Ray [South]-(3x3 Tiles)
+* [ ] *BHDR* = Black Hole Death Ray [East]-(3x3 Tiles)
+* [ ] *BHDR* = Black Hole Death Ray [West]-(3x3 Tiles)
 * [x] *BHFR* = Black Hole Fortress (4x4 Tiles)
-* [x] *BHFT* = Black Hole Factory [South] (3x3 Tiles)
+* [x] *BHFT* = Black Hole Factory [South]-(3x3 Tiles)
 * [x] *BHLZ* = Black Hole Lazer
 * [x] *BHMS* = Black Hole Missile (4x4 Tiles)
 * [x] *BRBL* = Big Rubble (3x3 Tiles)
