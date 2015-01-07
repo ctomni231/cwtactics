@@ -11,7 +11,7 @@ import org.stjs.javascript.Map;
  * A data object that holds a list of sheet objects with a given schema. Every sheet that will be added to the
  * data object will be validated first.
  */
-public abstract class ObjectTypeDatabase<T extends ObjectType> {
+public abstract class $TypeDatabase<T extends ObjectType> {
 
     public static final String LOG_HEADER = Constants.LOG_TYPE_DATABASE;
 
@@ -25,7 +25,7 @@ public abstract class ObjectTypeDatabase<T extends ObjectType> {
      */
     private Array<String> types;
 
-    public ObjectTypeDatabase() {
+    public $TypeDatabase() {
         this.types = JSCollections.$array();
         this.sheets = JSObjectAdapter.$object(null);
     }

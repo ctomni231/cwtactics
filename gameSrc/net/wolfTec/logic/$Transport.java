@@ -3,12 +3,12 @@ package net.wolfTec.logic;
 import org.stjs.javascript.annotation.Namespace;
 
 import net.wolfTec.Constants;
-import net.wolfTec.model.GameRound;
+import net.wolfTec.model.$GameRound;
 import net.wolfTec.model.Unit;
 
 @Namespace("cwt") public class $Transport {
 
-	private GameRound			$gameround;
+	private $GameRound			$gameround;
 
 	/**
 	 * @return true if the unit with id tid is a transporter, else false.

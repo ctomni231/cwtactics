@@ -3,13 +3,10 @@ package net.wolfTec.renderer;
 import net.wolfTec.Constants;
 import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.logic.MoveCode;
-import net.wolfTec.model.GameRound;
 import net.wolfTec.model.Tile;
 import net.wolfTec.model.Unit;
 import net.wolfTec.states.StateDataMenu;
 import net.wolfTec.utility.CircularBuffer;
-import net.wolfTec.utility.Debug;
-import net.wolfTec.widgets.UiPositionableGroup;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSGlobal;
@@ -18,7 +15,7 @@ import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 
-public class RenderingContext {
+public class $Renderer {
 
     public static final String LOG_HEADER = Constants.LOG_RENDERER;
 
@@ -27,7 +24,7 @@ public class RenderingContext {
     public static final int MENU_ENTRY_WIDTH = 10 * Constants.TILE_BASE;
     public static final int ANIMATION_TICK_TIME = 150;
     
-    private GameRound $gameround;
+    private net.wolfTec.model.$GameRound gameround;
 
     /** */
     private boolean unitAnimationHalfStep;
@@ -107,7 +104,7 @@ public class RenderingContext {
      */
     public int screenOffsetY;
 
-    public RenderingContext() {
+    public $Renderer() {
         int canvasW = Constants.TILE_BASE * Constants.SCREEN_WIDTH;
         int canvasH = Constants.TILE_BASE * Constants.SCREEN_HEIGHT;
 

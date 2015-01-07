@@ -3,7 +3,7 @@ package net.wolfTec.system;
 import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.bridges.webAudio.AudioBuffer;
-import net.wolfTec.system.Storage.StorageEntry;
+import net.wolfTec.system.$Storage.StorageEntry;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
@@ -47,8 +47,8 @@ import org.stjs.javascript.functions.Callback1;
 	private Object									musicConnector;
 	private String									musicID;
 
-	private Callback1<StorageEntry>	musicLoadCallback	= new Callback1<Storage.StorageEntry>() {
-																											@Override public void $invoke(Storage.StorageEntry entry) {
+	private Callback1<StorageEntry>	musicLoadCallback	= new Callback1<$Storage.StorageEntry>() {
+																											@Override public void $invoke($Storage.StorageEntry entry) {
 																												
 																												// this is a callback, so we need to grab the bean here because this points to a different object
 																												// TODO: do we change this to automatically match $Audio ?
@@ -249,7 +249,7 @@ import org.stjs.javascript.functions.Callback1;
 		// set meta data
 		musicInLoadProcess = true;
 		musicID = id;
-		Storage.get(MUSIC_KEY + id, musicLoadCallback);
+		$Storage.get(MUSIC_KEY + id, musicLoadCallback);
 
 		return true;
 	}
@@ -298,5 +298,13 @@ import org.stjs.javascript.functions.Callback1;
 
 	public float getMusicVolume() {
 		return this.context == null ? -1 : JSObjectAdapter.$js("this.musicNode.gain.value");
+	}
+	
+	public boolean isMusicSupported () {
+		return this.context != null;
+	}
+	
+	public boolean isSfxSupported () {
+		return this.context != null;
 	}
 }

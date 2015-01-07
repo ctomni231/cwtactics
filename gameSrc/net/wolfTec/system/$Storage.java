@@ -14,14 +14,12 @@ import org.stjs.javascript.functions.Callback2;
 /**
  *
  */
-public class Storage {
+public class $Storage {
 
 	@SyntheticType public static class StorageEntry {
 		public String	key;
 		public Object	value;
 	}
-
-	public static boolean		$BEAN										= true;
 
 	/**
 	 * iOS 7 has a serious bug which makes unable to get the permission to

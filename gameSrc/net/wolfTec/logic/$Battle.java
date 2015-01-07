@@ -3,13 +3,13 @@ package net.wolfTec.logic;
 import org.stjs.javascript.annotation.Namespace;
 
 import net.wolfTec.model.AttackType;
-import net.wolfTec.model.GameRound;
+import net.wolfTec.model.$GameRound;
 import net.wolfTec.model.Unit;
 
 @Namespace("cwt") public class $Battle {
 
 	public static boolean	$BEAN	= true;
-	private GameRound			$gameorund;
+	private $GameRound			$gameorund;
 	private $GameConfig		$config;
 
 	/**

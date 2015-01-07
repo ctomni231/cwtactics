@@ -10,12 +10,6 @@ public class URLParameterTransfer {
 	public static final String PARAM_FORCE_TOUCH = "forceTouch";
 
 	public static final String PARAM_WIPE_OUT = "resetData";
-
-	private String getParam(String param) {
-		Object o = Globals.getURLQueryParams(Global.window.document.location.search).$get(param);
-		return JSGlobal.undefined == o ? null : (String) o;
-	}
-
 	/**
 	 * 
 	 * @return true, when the user wants to reset the game data by the URL, else

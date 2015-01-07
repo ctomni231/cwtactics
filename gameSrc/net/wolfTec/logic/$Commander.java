@@ -8,8 +8,7 @@ import net.wolfTec.model.Player;
 
 @Namespace("cwt") public class $Commander {
 
-	public static boolean	$BEAN	= true;
-	private $GameConfig		$gameconfig;
+	private $GameConfig	gameconfig;
 
 	public boolean isPowerActive(Player player, CoPowerLevel level) {
 		return player.activePower == level;
@@ -22,13 +21,13 @@ import net.wolfTec.model.Player;
 	 * @returns {behaviorTree.Config.value|*}
 	 */
 	public int getStarCost(Player player) {
-		int cost = $gameconfig.getConfigValue("co_getStarCost");
+		int cost = gameconfig.getConfigValue("co_getStarCost");
 
 		// if usage counter is greater than max usage counter then use only the
 		// maximum increase counter for calculation
-		int increaseSteps = $gameconfig.getConfigValue("co_getStarCostIncreaseSteps");
+		int increaseSteps = gameconfig.getConfigValue("co_getStarCostIncreaseSteps");
 		if (player.powerUsed > increaseSteps) {
-			cost += increaseSteps * $gameconfig.getConfigValue("co_getStarCostIncrease");
+			cost += increaseSteps * gameconfig.getConfigValue("co_getStarCostIncrease");
 		}
 
 		return cost;
@@ -47,7 +46,7 @@ import net.wolfTec.model.Player;
 		// TODO maybe better in the action itself
 
 		// commanders must be available and current power must be inactive
-		if ($gameconfig.getConfigValue("co_enabledCoPower") == 0 || player.mainCo == null || player.activePower != CoPowerLevel.OFF) {
+		if (gameconfig.getConfigValue("co_enabledCoPower") == 0 || player.mainCo == null || player.activePower != CoPowerLevel.OFF) {
 			return false;
 		}
 

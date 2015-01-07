@@ -5,14 +5,13 @@ import org.stjs.javascript.annotation.Namespace;
 import net.wolfTec.system.Logger;
 import net.wolfTec.utility.Assert;
 
-@Namespace("cwt") public class GameLoader {
+@Namespace("cwt") public class $GameLoader {
 
-	public static boolean	$BEAN	= true;
 	public Logger					$LOG;
 
 	private boolean				loaded;
 
-	public GameLoader() {
+	public $GameLoader() {
 		loaded = false;
 	}
 

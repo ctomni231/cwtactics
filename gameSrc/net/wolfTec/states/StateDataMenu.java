@@ -3,7 +3,7 @@ package net.wolfTec.states;
 import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.action.Action;
 import net.wolfTec.logic.Relationship;
-import net.wolfTec.logic.RelationshipCheck;
+import net.wolfTec.logic.$RelationshipCheck;
 import net.wolfTec.model.Position;
 import net.wolfTec.model.Property;
 import net.wolfTec.model.Unit;
@@ -104,8 +104,8 @@ public class StateDataMenu {
         Position sPos = parent.source;
         Position tPos = parent.target;
         Position tsPos = parent.targetSelection;
-        RelationshipCheck.RelationshipCheckMode ChkU = RelationshipCheck.RelationshipCheckMode.CHECK_NORMAL;
-        RelationshipCheck.RelationshipCheckMode ChkP = RelationshipCheck.RelationshipCheckMode.CHECK_PROPERTY;
+        $RelationshipCheck.RelationshipCheckMode ChkU = $RelationshipCheck.RelationshipCheckMode.CHECK_NORMAL;
+        $RelationshipCheck.RelationshipCheckMode ChkP = $RelationshipCheck.RelationshipCheckMode.CHECK_PROPERTY;
         Property sProp = sPos.property;
         Unit sUnit = sPos.unit;
         boolean unitActable = (!(sUnit == null || sUnit.getOwner() != net.wolfTec.gameround.turnOwner || !sUnit.isCanAct()));
@@ -145,10 +145,10 @@ public class StateDataMenu {
 
                     // extract relationships
                     if (st_mode == null) {
-                        st_mode = RelationshipCheck.getRelationShipTo(sPos, tPos, ChkU, ChkU);
-                        sst_mode = RelationshipCheck.getRelationShipTo(sPos, tsPos, ChkU, ChkU);
-                        pr_st_mode = RelationshipCheck.getRelationShipTo(sPos, tPos, ChkU, ChkP);
-                        pr_sst_mode = RelationshipCheck.getRelationShipTo(sPos, tsPos, ChkU, ChkP);
+                        st_mode = $RelationshipCheck.getRelationShipTo(sPos, tPos, ChkU, ChkU);
+                        sst_mode = $RelationshipCheck.getRelationShipTo(sPos, tsPos, ChkU, ChkU);
+                        pr_st_mode = $RelationshipCheck.getRelationShipTo(sPos, tPos, ChkU, ChkP);
+                        pr_sst_mode = $RelationshipCheck.getRelationShipTo(sPos, tsPos, ChkU, ChkP);
                     }
 
                     // relation to unit

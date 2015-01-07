@@ -1,6 +1,6 @@
 package net.wolfTec.logic;
 
-import net.wolfTec.model.GameRound;
+import net.wolfTec.model.$GameRound;
 import net.wolfTec.model.Player;
 import net.wolfTec.model.PlayerObject;
 import net.wolfTec.model.Position;
@@ -12,7 +12,7 @@ import net.wolfTec.model.Unit;
 public class $RelationshipCheck {
 
 	public static boolean	$BEAN	= true;
-	private GameRound			$gameround;
+	private $GameRound			$gameround;
 
 	public enum RelationshipCheckMode {
 

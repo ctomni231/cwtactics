@@ -4,7 +4,7 @@ import net.wolfTec.model.ArmyType;
 import net.wolfTec.model.CoType;
 import net.wolfTec.model.MoveType;
 import net.wolfTec.model.ObjectType;
-import net.wolfTec.model.ObjectTypeDatabase;
+import net.wolfTec.model.$TypeDatabase;
 import net.wolfTec.model.PropertyType;
 import net.wolfTec.model.TileType;
 import net.wolfTec.model.UnitType;
@@ -18,13 +18,13 @@ import org.stjs.javascript.annotation.Namespace;
 	public static boolean						$BEAN	= true;
 	public Logger										$LOG;
 
-	private ObjectTypeDatabase<ArmyType>			armyTypes;
-	private ObjectTypeDatabase<MoveType>			moveTypes;
-	private ObjectTypeDatabase<UnitType>			unitTypes;
-	private ObjectTypeDatabase<TileType>			tileTypes;
-	private ObjectTypeDatabase<WeatherType>		weatherTypes;
-	private ObjectTypeDatabase<PropertyType>	propertyTypes;
-	private ObjectTypeDatabase<CoType>				commanderTypes;
+	private $TypeDatabase<ArmyType>			armyTypes;
+	private $TypeDatabase<MoveType>			moveTypes;
+	private $TypeDatabase<UnitType>			unitTypes;
+	private $TypeDatabase<TileType>			tileTypes;
+	private $TypeDatabase<WeatherType>		weatherTypes;
+	private $TypeDatabase<PropertyType>	propertyTypes;
+	private $TypeDatabase<CoType>				commanderTypes;
 
 	public void registerSheet(String id, ObjectType sheet) {
 		$LOG.error("not implemented yet");

@@ -9,10 +9,8 @@ import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback3;
 import org.stjs.javascript.functions.Function1;
 
-public class GameRound {
+public class $GameRound {
 
-	public static boolean		$BEAN	= true;
-	
 	private Map							map;
 	private int							gameTimeLimit;
 	private int							gameTimeElapsed;
@@ -30,7 +28,7 @@ public class GameRound {
 	private int							mapWidth;
 	private int							mapHeight;
 
-	public GameRound() {
+	public $GameRound() {
 		map = new Map(Constants.MAX_MAP_WIDTH, Constants.MAX_MAP_HEIGHT);
 		lastClientPlayer = null;
 		weather = null;
