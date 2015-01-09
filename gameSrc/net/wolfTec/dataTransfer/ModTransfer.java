@@ -3,8 +3,8 @@ package net.wolfTec.dataTransfer;
 import net.wolfTec.Constants;
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.loading.Modification;
-import net.wolfTec.system.$Storage;
-import net.wolfTec.system.$Storage.StorageEntry;
+import net.wolfTec.system.StorageBean;
+import net.wolfTec.system.StorageBean.StorageEntry;
 import net.wolfTec.utility.Debug;
 import net.wolfTec.utility.ExternalRequest;
 import net.wolfTec.utility.ExternalRequest.ExternalRequestOptions;
@@ -28,7 +28,7 @@ public class ModTransfer {
 		data.success = Globals.bindedFunction(new Callback1<Object>() {
 			@Override public void $invoke(Object mod) {
 				cachedMod = (Modification) mod;
-				$Storage.set(KEY_MODIFICATION, mod, (Callback2<Object, Object>) callback);
+				StorageBean.set(KEY_MODIFICATION, mod, (Callback2<Object, Object>) callback);
 			}
 		}, this);
 
@@ -43,7 +43,7 @@ public class ModTransfer {
 	}
 
 	public void transferGameModFromCache(Callback0 callback) {
-		$Storage.get(KEY_MODIFICATION, Globals.bindedFunction(new Callback1<$Storage.StorageEntry>() {
+		StorageBean.get(KEY_MODIFICATION, Globals.bindedFunction(new Callback1<StorageBean.StorageEntry>() {
 			@Override public void $invoke(StorageEntry entry) {
 				cachedMod = (Modification) entry.value;
 				if (callback != null)

@@ -1,6 +1,6 @@
 package net.wolfTec.logic;
 
-import net.wolfTec.model.$GameRound;
+import net.wolfTec.model.GameRoundBean;
 import net.wolfTec.model.Player;
 import net.wolfTec.model.PlayerObject;
 import net.wolfTec.model.Position;
@@ -9,10 +9,10 @@ import net.wolfTec.model.Unit;
 /**
  *
  */
-public class $RelationshipCheck {
+public class RelationshipCheckBean {
 
 	public static boolean	$BEAN	= true;
-	private $GameRound			$gameround;
+	private GameRoundBean			$gameround;
 
 	public enum RelationshipCheckMode {
 

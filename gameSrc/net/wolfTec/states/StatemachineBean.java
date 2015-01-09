@@ -1,11 +1,10 @@
 package net.wolfTec.states;
 
-import net.wolfTec.Constants;
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.input.InputData;
-import net.wolfTec.input.InputHandler;
-import net.wolfTec.system.$ActionInvoker;
-import net.wolfTec.utility.Debug;
+import net.wolfTec.input.InputHandlerBean;
+import net.wolfTec.logic.ActionInvokerBean;
+import net.wolfTec.system.Logger;
 
 import org.stjs.javascript.Date;
 import org.stjs.javascript.JSCollections;
@@ -17,12 +16,12 @@ import org.stjs.javascript.functions.Callback0;
 /**
  *
  */
-public class Statemachine {
+public class StatemachineBean {
 
-	public static final String	LOG_HEADER	= Constants.LOG_STATEMACHINE;
+	private Logger							log;
 
-	private $ActionInvoker				$actionInvoker;
-	private InputHandler				$inputHandler;
+	private ActionInvokerBean			actionInvoker;
+	private InputHandlerBean				inputHandler;
 
 	/**
 	 * Holds all registered game states.
@@ -45,19 +44,19 @@ public class Statemachine {
 
 	private boolean	started;
 
-	public Statemachine() {
+	public StatemachineBean() {
 		states = JSCollections.$map();
 	}
 
-	private int	timestamp;
-
 	public void addState(String id, State state) {
 		if (JSObjectAdapter.hasOwnProperty(states, id)) {
-			Debug.logCritical(LOG_HEADER, "StateAlreadyRegistered");
+			log.error("StateAlreadyRegistered");
 		}
 
 		states.$put(id, state);
 	}
+
+	private int							timestamp;
 
 	/**
 	 * The central game loop which calls the update function every frame ofa 60
@@ -74,7 +73,7 @@ public class Statemachine {
 																				update(delta);
 
 																				// acquire next frame
-																				Globals.requestAnimationFrame(gameLoop);
+																				JSObjectAdapter.$js("requestAnimationFrame(gameLoop)");
 																			}
 																		};
 
@@ -94,8 +93,8 @@ public class Statemachine {
 		}
 
 		// try to evaluate commands asap
-		if ($actionInvoker.hasData()) {
-			$actionInvoker.invokeNext();
+		if (actionInvoker.hasData()) {
+			actionInvoker.invokeNext();
 			return;
 		}
 
@@ -105,12 +104,14 @@ public class Statemachine {
 		// }
 
 		// state update
-		InputData inp = $inputHandler.popAction();
+		InputData inp = inputHandler.popAction();
 		activeState.update.$invoke(delta, inp);
 		activeState.render.$invoke(delta);
 
 		// release input data object
-		if (inp != null) $inputHandler.releaseAction(inp);
+		if (inp != null) {
+			inputHandler.releaseAction(inp);
+		}
 	}
 
 	/**
@@ -139,10 +140,10 @@ public class Statemachine {
 		if (started) throw new IllegalStateException("Already started");
 		started = true;
 
-		Debug.logInfo(LOG_HEADER, "Starting CW:T state machine");
+		log.info("Starting CW:T state machine");
 
 		// prepare and invoke game loop
-		timestamp = (int) (new Date()).getTime();
-		Globals.requestAnimationFrame(gameLoop);
+		timestamp = (int) (new Date()).getTime(); // TODO
+		JSObjectAdapter.$js("requestAnimationFrame(gameLoop)");
 	}
 }

@@ -14,7 +14,7 @@ import org.stjs.javascript.functions.Callback2;
 /**
  *
  */
-public class $Storage {
+public class StorageBean {
 
 	@SyntheticType public static class StorageEntry {
 		public String	key;

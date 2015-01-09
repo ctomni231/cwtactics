@@ -3,7 +3,7 @@ package net.wolfTec.system;
 import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.bridges.webAudio.AudioBuffer;
-import net.wolfTec.system.$Storage.StorageEntry;
+import net.wolfTec.system.StorageBean.StorageEntry;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
@@ -13,7 +13,7 @@ import org.stjs.javascript.Map;
 import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.functions.Callback1;
 
-@Namespace("cwt") public class $Audio {
+@Namespace("cwt") public class AudioBean {
 
 	public Logger										log;
 
@@ -47,12 +47,12 @@ import org.stjs.javascript.functions.Callback1;
 	private Object									musicConnector;
 	private String									musicID;
 
-	private Callback1<StorageEntry>	musicLoadCallback	= new Callback1<$Storage.StorageEntry>() {
-																											@Override public void $invoke($Storage.StorageEntry entry) {
+	private Callback1<StorageEntry>	musicLoadCallback	= new Callback1<StorageBean.StorageEntry>() {
+																											@Override public void $invoke(StorageBean.StorageEntry entry) {
 																												
 																												// this is a callback, so we need to grab the bean here because this points to a different object
 																												// TODO: do we change this to automatically match $Audio ?
-																												$Audio audio = CustomWarsTactics.getBean("$Audio");
+																												AudioBean audio = CustomWarsTactics.getBean("$Audio");
 																												
 																												audio.musicConnector = playSoundOnGainNode(audio.musicNode, Globals.Base64Helper.decodeBuffer(entry.value), true);
 																												audio.musicInLoadProcess = false;
@@ -249,7 +249,7 @@ import org.stjs.javascript.functions.Callback1;
 		// set meta data
 		musicInLoadProcess = true;
 		musicID = id;
-		$Storage.get(MUSIC_KEY + id, musicLoadCallback);
+		StorageBean.get(MUSIC_KEY + id, musicLoadCallback);
 
 		return true;
 	}

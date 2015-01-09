@@ -3,14 +3,14 @@ package net.wolfTec.states.factory;
 import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.input.InputData;
 import net.wolfTec.states.State;
-import net.wolfTec.states.Statemachine;
+import net.wolfTec.states.StatemachineBean;
 
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
 
 public abstract class AnimationStates {
-    public static void addToStateMachine (Statemachine statemachine) {
+    public static void addToStateMachine (StatemachineBean statemachine) {
 
     }
 

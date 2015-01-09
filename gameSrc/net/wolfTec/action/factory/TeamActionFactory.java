@@ -2,12 +2,12 @@ package net.wolfTec.action.factory;
 
 import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.action.Action;
+import net.wolfTec.logic.ActionInvokerBean;
+import net.wolfTec.logic.ActionData;
 import net.wolfTec.logic.Relationship;
 import net.wolfTec.model.Player;
 import net.wolfTec.model.Property;
 import net.wolfTec.states.StateData;
-import net.wolfTec.system.ActionData;
-import net.wolfTec.system.$ActionInvoker;
 import net.wolfTec.utility.Debug;
 
 import org.stjs.javascript.Array;
@@ -24,7 +24,7 @@ public abstract class TeamActionFactory {
      */
     public static Array<Integer> MONEY_TRANSFER_STEPS = JSCollections.$array(1000, 2500, 5000, 10000, 25000, 50000);
 
-    public static void registerActions($ActionInvoker invoker) {
+    public static void registerActions(ActionInvokerBean invoker) {
         invoker.registerAction(createShareMoneyAction());
         invoker.registerAction(createSharePropertyAction());
         invoker.registerAction(createShareUnitAction());

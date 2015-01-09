@@ -3,14 +3,14 @@ package net.wolfTec.logic;
 import org.stjs.javascript.annotation.Namespace;
 
 import net.wolfTec.model.AttackType;
-import net.wolfTec.model.$GameRound;
+import net.wolfTec.model.GameRoundBean;
 import net.wolfTec.model.Unit;
 
-@Namespace("cwt") public class $Battle {
+@Namespace("cwt") public class BattleBean {
 
 	public static boolean	$BEAN	= true;
-	private $GameRound			$gameorund;
-	private $GameConfig		$config;
+	private GameRoundBean			$gameorund;
+	private GameConfigBean		$config;
 
 	/**
 	 * Returns true if the **unit** has a main weapon, else false.

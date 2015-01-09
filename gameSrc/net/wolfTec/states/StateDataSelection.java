@@ -77,7 +77,7 @@ public class StateDataSelection {
         y = y - this.centerY;
 
         if (x < 0 || y < 0 || x >= SIDE_LENGTH || y >= SIDE_LENGTH) {
-            Debug.logCritical(Statemachine.LOG_HEADER, "IndexOutOfBounds");
+            Debug.logCritical(StatemachineBean.LOG_HEADER, "IndexOutOfBounds");
 
         } else {
             this.data.$get(x).$set(y, value);
@@ -89,7 +89,7 @@ public class StateDataSelection {
         y = y - this.centerY;
 
         if (x < 0 || y < 0 || x >= SIDE_LENGTH || y >= SIDE_LENGTH) {
-            Debug.logCritical(Statemachine.LOG_HEADER, "IndexOutOfBounds");
+            Debug.logCritical(StatemachineBean.LOG_HEADER, "IndexOutOfBounds");
         }
 
         return (

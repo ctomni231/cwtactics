@@ -7,7 +7,7 @@ import net.wolfTec.model.Unit;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.annotation.Namespace;
 
-@Namespace("cwt") public class $SpecialWeapons {
+@Namespace("cwt") public class SpecialWeaponsBean {
 
 	public static boolean	$BEAN	= true;
 

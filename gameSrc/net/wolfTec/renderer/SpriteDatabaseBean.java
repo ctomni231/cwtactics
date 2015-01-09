@@ -3,21 +3,21 @@ package net.wolfTec.renderer;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 
-public class SpriteDatabase {
+public class SpriteDatabaseBean {
 
     /** */
-    public Map<String, Sprite> sprites;
+    private Map<String, Sprite> sprites;
 
     /** */
-    public Map<String, String> overlayTiles;
+    private Map<String, String> overlayTiles;
 
     /** */
-    public Map<String, String> longAnimatedTiles;
+    private Map<String, String> longAnimatedTiles;
 
     /** */
-    public Map<String, Integer> minimapIndex;
+    private Map<String, Integer> minimapIndex;
 
-    public SpriteDatabase() {
+    public SpriteDatabaseBean() {
         sprites = JSCollections.$map();
         overlayTiles = JSCollections.$map();
         longAnimatedTiles = JSCollections.$map();

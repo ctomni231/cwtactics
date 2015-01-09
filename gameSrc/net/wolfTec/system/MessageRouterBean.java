@@ -1,11 +1,12 @@
 package net.wolfTec.system;
 
 import net.wolfTec.Constants;
+import net.wolfTec.logic.ActionData;
 
 /**
  *
  */
-public class $MessageRouter {
+public class MessageRouterBean {
 
 	public static boolean	$BEAN			= true;
 	public static Logger	$LOG;

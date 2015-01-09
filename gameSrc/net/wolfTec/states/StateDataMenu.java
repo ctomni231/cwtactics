@@ -3,7 +3,7 @@ package net.wolfTec.states;
 import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.action.Action;
 import net.wolfTec.logic.Relationship;
-import net.wolfTec.logic.$RelationshipCheck;
+import net.wolfTec.logic.RelationshipCheckBean;
 import net.wolfTec.model.Position;
 import net.wolfTec.model.Property;
 import net.wolfTec.model.Unit;
@@ -32,11 +32,11 @@ public class StateDataMenu {
     }
 
     public String getSelectedContent() {
-        return this.entries.$get(this.selectedIndex).content;
+        return this.entries.$get(this.selectedIndex).getContent();
     }
 
     public String getContentAt(int index) {
-        return this.entries.$get(index).content;
+        return this.entries.$get(index).getContent();
     }
 
     @Template("toProperty")
@@ -45,13 +45,13 @@ public class StateDataMenu {
     }
 
     public boolean isSelectedEntryEnabled() {
-        return this.entries.$get(this.selectedIndex).enabled;
+        return this.entries.$get(this.selectedIndex).isEnabled();
     }
 
     public void clean() {
         // release string references
         for (int i = 0, e = this.entries.$length(); i < e; i++) {
-            this.entries.$get(i).content = null;
+            this.entries.$get(i).setContent(null);
         }
 
         this.selectedIndex = 0;
@@ -64,8 +64,8 @@ public class StateDataMenu {
         }
 
         MenuEntry entry = this.entries.$get(this.size);
-        entry.content = content;
-        entry.enabled = enabled;
+        entry.setContent(content);
+        entry.setEnabled(enabled);
         this.size++;
     }
 
@@ -104,8 +104,8 @@ public class StateDataMenu {
         Position sPos = parent.source;
         Position tPos = parent.target;
         Position tsPos = parent.targetSelection;
-        $RelationshipCheck.RelationshipCheckMode ChkU = $RelationshipCheck.RelationshipCheckMode.CHECK_NORMAL;
-        $RelationshipCheck.RelationshipCheckMode ChkP = $RelationshipCheck.RelationshipCheckMode.CHECK_PROPERTY;
+        RelationshipCheckBean.RelationshipCheckMode ChkU = RelationshipCheckBean.RelationshipCheckMode.CHECK_NORMAL;
+        RelationshipCheckBean.RelationshipCheckMode ChkP = RelationshipCheckBean.RelationshipCheckMode.CHECK_PROPERTY;
         Property sProp = sPos.property;
         Unit sUnit = sPos.unit;
         boolean unitActable = (!(sUnit == null || sUnit.getOwner() != net.wolfTec.gameround.turnOwner || !sUnit.isCanAct()));
@@ -145,10 +145,10 @@ public class StateDataMenu {
 
                     // extract relationships
                     if (st_mode == null) {
-                        st_mode = $RelationshipCheck.getRelationShipTo(sPos, tPos, ChkU, ChkU);
-                        sst_mode = $RelationshipCheck.getRelationShipTo(sPos, tsPos, ChkU, ChkU);
-                        pr_st_mode = $RelationshipCheck.getRelationShipTo(sPos, tPos, ChkU, ChkP);
-                        pr_sst_mode = $RelationshipCheck.getRelationShipTo(sPos, tsPos, ChkU, ChkP);
+                        st_mode = RelationshipCheckBean.getRelationShipTo(sPos, tPos, ChkU, ChkU);
+                        sst_mode = RelationshipCheckBean.getRelationShipTo(sPos, tsPos, ChkU, ChkU);
+                        pr_st_mode = RelationshipCheckBean.getRelationShipTo(sPos, tPos, ChkU, ChkP);
+                        pr_sst_mode = RelationshipCheckBean.getRelationShipTo(sPos, tsPos, ChkU, ChkP);
                     }
 
                     // relation to unit

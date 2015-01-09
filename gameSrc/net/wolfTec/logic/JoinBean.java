@@ -4,10 +4,10 @@ import org.stjs.javascript.annotation.Namespace;
 
 import net.wolfTec.model.Unit;
 
-@Namespace("cwt") public class $Join {
+@Namespace("cwt") public class JoinBean {
 
 	public static boolean	$BEAN	= true;
-	private $Transport			$transport;
+	private TransportBean			$transport;
 
 	/**
 	 * Returns **true** if two units can join each other, else **false**. In

@@ -4,8 +4,8 @@ import net.wolfTec.Constants;
 import net.wolfTec.model.CoType;
 import net.wolfTec.model.GameMap;
 import net.wolfTec.model.GameMode;
-import net.wolfTec.model.$GameRound;
-import net.wolfTec.model.$TypeDatabase;
+import net.wolfTec.model.GameRoundBean;
+import net.wolfTec.model.TypeDatabase;
 import net.wolfTec.model.Player;
 import net.wolfTec.system.Logger;
 
@@ -13,13 +13,13 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.annotation.Namespace;
 
-@Namespace("cwt") public class $GameRoundSetup {
+@Namespace("cwt") public class GameRoundSetupBean {
 
 	public static boolean			$BEAN	= true;
 	public Logger							$LOG;
-	private $TypeDatabase<CoType>	$coTypeDb;
-	private $GameRound					$gameround;
-	private $Lifecycle					$lifecycle;
+	private TypeDatabase<CoType>	$coTypeDb;
+	private GameRoundBean					$gameround;
+	private LifecycleBean					$lifecycle;
 
 	private GameMap						map		= null;
 

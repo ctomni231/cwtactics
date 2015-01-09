@@ -1,6 +1,8 @@
-package net.wolfTec.system;
+package net.wolfTec.logic;
 
 import net.wolfTec.action.Action;
+import net.wolfTec.system.MessageRouterBean;
+import net.wolfTec.system.Logger;
 import net.wolfTec.utility.CircularBuffer;
 
 import org.stjs.javascript.Array;
@@ -8,11 +10,11 @@ import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 
-public class $ActionInvoker {
+public class ActionInvokerBean {
 
 	private Logger											$LOG;
 
-	private $MessageRouter							msgRouter;
+	private MessageRouterBean							msgRouter;
 
 	/**
 	 * List of all available actions.
@@ -34,7 +36,7 @@ public class $ActionInvoker {
 	 */
 	private CircularBuffer<ActionData>	backPool;
 
-	public $ActionInvoker(int bufferSize) {
+	public ActionInvokerBean(int bufferSize) {
 		this.backPool = new CircularBuffer<ActionData>(bufferSize);
 		this.buffer = new CircularBuffer<ActionData>(bufferSize);
 

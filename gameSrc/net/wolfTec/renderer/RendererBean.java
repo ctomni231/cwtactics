@@ -15,7 +15,7 @@ import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 
-public class $Renderer {
+public class RendererBean {
 
     public static final String LOG_HEADER = Constants.LOG_RENDERER;
 
@@ -104,7 +104,7 @@ public class $Renderer {
      */
     public int screenOffsetY;
 
-    public $Renderer() {
+    public RendererBean() {
         int canvasW = Constants.TILE_BASE * Constants.SCREEN_WIDTH;
         int canvasH = Constants.TILE_BASE * Constants.SCREEN_HEIGHT;
 

@@ -2,11 +2,11 @@ package net.wolfTec.action.factory;
 
 import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.action.Action;
+import net.wolfTec.logic.ActionInvokerBean;
+import net.wolfTec.logic.ActionData;
 import net.wolfTec.logic.Relationship;
 import net.wolfTec.model.Position;
 import net.wolfTec.states.StateData;
-import net.wolfTec.system.ActionData;
-import net.wolfTec.system.$ActionInvoker;
 import net.wolfTec.utility.Debug;
 
 import org.stjs.javascript.JSCollections;
@@ -16,7 +16,7 @@ import org.stjs.javascript.functions.Function2;
 
 public abstract class UnitActionFactory {
 
-    public static void registerActions($ActionInvoker invoker) {
+    public static void registerActions(ActionInvokerBean invoker) {
         invoker.registerAction(createUnitWaitAction());
     }
 

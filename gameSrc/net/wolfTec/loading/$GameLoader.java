@@ -7,23 +7,30 @@ import net.wolfTec.utility.Assert;
 
 @Namespace("cwt") public class $GameLoader {
 
-	public Logger					$LOG;
+	private Logger						log;
 
-	private boolean				loaded;
+	private boolean						loaded;
+
+	private GameConfigLoader	cfg;
+	private AudioLoader				audio;
 
 	public $GameLoader() {
 		loaded = false;
+
+		// initialize loaders
+		cfg = new GameConfigLoader();
+		audio = new AudioLoader();
 	}
 
 	/*
 	 * 
-	 * 1. Check base features 2. Check assets 2.1. Download assets into cache 3.
+	 * 1. Check base features 2. Check assets => Download assets into cache 3.
 	 * Load assets from cache 4. Prepare stuff 5. DONE
 	 */
 	public void loadGame() {
 		Assert.isNot(loaded, true);
-		
-		$LOG.info("Loading game data");
+
+		log.info("Loading game data");
 
 		loaded = true;
 	}

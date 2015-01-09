@@ -2,15 +2,15 @@ package net.wolfTec.logic;
 
 import org.stjs.javascript.annotation.Namespace;
 
-import net.wolfTec.model.$GameRound;
+import net.wolfTec.model.GameRoundBean;
 import net.wolfTec.model.Property;
 import net.wolfTec.model.Tile;
 import net.wolfTec.model.Unit;
 
-@Namespace("cwt") public class $Repair {
+@Namespace("cwt") public class RepairBean {
 
 	public static boolean	$BEAN	= true;
-	private $GameRound			$gameround;
+	private GameRoundBean			$gameround;
 
 	//
 	// Returns **true** if the property at the position (**x**,**y**) fulfills the

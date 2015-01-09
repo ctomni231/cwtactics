@@ -1,4 +1,4 @@
-package net.wolfTec.system;
+package net.wolfTec.logic;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Global;

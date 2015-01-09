@@ -11,9 +11,7 @@ import org.stjs.javascript.functions.Callback1;
  *
  */
 public abstract class ExternalRequest {
-
-    public static final String LOG_HEADER = Constants.LOG_XML_HTTP;
-
+	
     @SyntheticType
     public static class ExternalRequestOptions {
         public String path;
@@ -27,16 +25,13 @@ public abstract class ExternalRequest {
      * @param options
      */
     public static void doHttpRequest (final ExternalRequestOptions options) {
-        Debug.logInfo(LOG_HEADER, "Try to grab file " + options.path);
 
         final XMLHttpRequest request = new XMLHttpRequest();
         request.onreadystatechange = new Callback0() {
             @Override public void $invoke() {
                 if (request.readyState == 4) {
                     if (request.readyState == 4 && request.status == 200) {
-                        Debug.logInfo(LOG_HEADER, "Grabbed file successfully");
-
-                        if (options.json) {
+                                              if (options.json) {
                             Object arg = null;
                             try {
                                 arg = JSGlobal.JSON.parse(request.responseText);
@@ -48,7 +43,6 @@ public abstract class ExternalRequest {
                             options.success.$invoke(request.responseText);
                         }
                     } else {
-                        Debug.logWarn(LOG_HEADER, "Could not grab file");
                         options.error.$invoke(request.statusText);
                     }
                 }

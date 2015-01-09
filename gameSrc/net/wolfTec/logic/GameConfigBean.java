@@ -7,7 +7,7 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.annotation.Namespace;
 
-@Namespace("cwt") public class $GameConfig {
+@Namespace("cwt") public class GameConfigBean {
 
 	public static boolean														$BEAN	= true;
 	public static Object														$LOG;

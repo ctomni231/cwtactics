@@ -10,11 +10,6 @@ public class TileVariant {
     private Map<String, String> desc;
     private Array<Array<String>> connection;
 
-    /**
-     *
-     * @param desc
-     * @param connection
-     */
     public TileVariant(Map<String, String> desc, Array<Array<String>> connection) {
         this.desc = desc;
         this.connection = connection;
@@ -31,7 +26,7 @@ public class TileVariant {
     }
 
     /**
-     * Returns the variant number in relation to a given set of neighbour types.
+     * Returns the variant number in relation to a given set of neighbor types.
      *
      * @param typeN tile type ID in the north
      * @param typeE tile type ID in the east
