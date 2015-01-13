@@ -5,20 +5,18 @@ import org.stjs.javascript.annotation.Namespace;
 import net.wolfTec.model.Property;
 import net.wolfTec.model.Unit;
 
-@Namespace("cwt") public class CaptureBean {
-
-	public static boolean	$BEAN	= true;
+@Namespace("cwt") public interface CaptureLogic {
 
 	/**
 	 * Returns true, when the given property is neutral, else false.
 	 *
 	 * @return
 	 */
-	public boolean isNeutral(Property prop) {
+	default boolean isNeutral(Property prop) {
 		return prop.owner != null;
 	}
 
-	public void makeNeutral(Property prop) {
+	default void makeNeutral(Property prop) {
 		prop.owner = null;
 	}
 
@@ -27,7 +25,7 @@ import net.wolfTec.model.Unit;
 	 *
 	 * @returns {boolean}
 	 */
-	public boolean canBeCaptured(Property prop) {
+	default boolean canBeCaptured(Property prop) {
 		return prop.type.capturePoints > 0;
 	}
 
@@ -36,14 +34,14 @@ import net.wolfTec.model.Unit;
 	 *
 	 * @return
 	 */
-	public boolean canCapture(Unit source) {
+	default boolean canCapture(Unit source) {
 		return source.getType().captures > 0;
 	}
 
 	/**
 	 * @returns {boolean}
 	 */
-	public boolean isCapturing(Unit unit) {
+	default boolean isCapturing(Unit unit) {
 		if (unit.getLoadedIn() != null) {
 			return false;
 		}

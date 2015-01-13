@@ -19,7 +19,7 @@ import org.stjs.javascript.annotation.Namespace;
 	public Logger							$LOG;
 	private TypeDatabase<CoType>	$coTypeDb;
 	private GameRoundBean					$gameround;
-	private LifecycleBean					$lifecycle;
+	private LifecycleLogic					$lifecycle;
 
 	private GameMap						map		= null;
 

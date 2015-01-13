@@ -1,6 +1,5 @@
 package net.wolfTec.logic;
 
-import net.wolfTec.model.GameRoundBean;
 import net.wolfTec.model.Player;
 import net.wolfTec.model.PlayerObject;
 import net.wolfTec.model.Position;
@@ -9,10 +8,7 @@ import net.wolfTec.model.Unit;
 /**
  *
  */
-public class RelationshipCheckBean {
-
-	public static boolean	$BEAN	= true;
-	private GameRoundBean			$gameround;
+public interface RelationshipCheckLogic extends BaseLogic {
 
 	public enum RelationshipCheckMode {
 
@@ -45,7 +41,7 @@ public class RelationshipCheckBean {
 	 * @param checkRight
 	 * @returns {number}
 	 */
-	public Relationship getRelationShipTo(Position left, Position right, RelationshipCheckMode checkLeft, RelationshipCheckMode checkRight) {
+	default Relationship getRelationShipTo(Position left, Position right, RelationshipCheckMode checkLeft, RelationshipCheckMode checkRight) {
 		Object oL = null;
 		Object oR = null;
 
@@ -78,7 +74,7 @@ public class RelationshipCheckBean {
 	 * @param objectB
 	 * @returns {*}
 	 */
-	public Relationship getRelationship(Object objectA, Object objectB) {
+	default Relationship getRelationship(Object objectA, Object objectB) {
 
 		// one object is null
 		if (objectA == null || objectB == null) {
@@ -122,12 +118,12 @@ public class RelationshipCheckBean {
 	 * @param relationship
 	 * @returns {boolean}
 	 */
-	public boolean hasUnitNeighbourWithRelationship(Player player, int x, int y, Relationship relationship) {
+	default boolean hasUnitNeighbourWithRelationship(Player player, int x, int y, Relationship relationship) {
 		Unit unit = null;
 
 		// WEST
 		if (x > 0) {
-			unit = $gameround.getMap().getTile(x - 1, y).unit;
+			unit = getGameRound().getMap().getTile(x - 1, y).unit;
 			if (unit != null && getRelationship(player, unit.getOwner()) == relationship) {
 				return true;
 			}
@@ -135,23 +131,23 @@ public class RelationshipCheckBean {
 
 		// NORTH
 		if (y > 0) {
-			unit = $gameround.getMap().getTile(x, y - 1).unit;
+			unit = getGameRound().getMap().getTile(x, y - 1).unit;
 			if (unit != null && getRelationship(player, unit.getOwner()) == relationship) {
 				return true;
 			}
 		}
 
 		// EAST
-		if (x < $gameround.getMapWidth() - 1) {
-			unit = $gameround.getMap().getTile(x + 1, y).unit;
+		if (x < getGameRound().getMapWidth() - 1) {
+			unit = getGameRound().getMap().getTile(x + 1, y).unit;
 			if (unit != null && getRelationship(player, unit.getOwner()) == relationship) {
 				return true;
 			}
 		}
 
 		// SOUTH
-		if (y < $gameround.getMapHeight() - 1) {
-			unit = $gameround.getMap().getTile(x, y + 1).unit;
+		if (y < getGameRound().getMapHeight() - 1) {
+			unit = getGameRound().getMap().getTile(x, y + 1).unit;
 			if (unit != null && getRelationship(player, unit.getOwner()) == relationship) {
 				return true;
 			}

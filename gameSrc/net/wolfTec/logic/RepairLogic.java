@@ -7,10 +7,7 @@ import net.wolfTec.model.Property;
 import net.wolfTec.model.Tile;
 import net.wolfTec.model.Unit;
 
-@Namespace("cwt") public class RepairBean {
-
-	public static boolean	$BEAN	= true;
-	private GameRoundBean			$gameround;
+@Namespace("cwt") public interface RepairLogic extends BaseLogic {
 
 	//
 	// Returns **true** if the property at the position (**x**,**y**) fulfills the
@@ -21,8 +18,8 @@ import net.wolfTec.model.Unit;
 	//
 	// The value **false** will be returned if one of the requirements fails.
 	//
-	public boolean canPropertyRepairAt(int x, int y) {
-		Tile tile = $gameround.getMap().getTile(x, y);
+	default boolean canPropertyRepairAt(int x, int y) {
+		Tile tile = getGameRound().getMap().getTile(x, y);
 		Property prop = tile.property;
 		Unit unit = tile.unit;
 		// TODO

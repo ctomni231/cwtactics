@@ -6,18 +6,14 @@ import org.stjs.javascript.annotation.Namespace;
 import net.wolfTec.Constants;
 import net.wolfTec.model.Property;
 
-@Namespace("cwt") public class FactoryBean {
-
-	public static boolean	$BEAN	= true;
-	private CaptureBean				$capture;
-	private GameConfigBean		$gameconfig;
+@Namespace("cwt") public interface FactoryLogic extends CaptureLogic, BaseLogic {
 
 	/**
 	 * Returns **true** when the given **property** is a factory, else **false**.
 	 *
 	 * @return
 	 */
-	public boolean isFactory(Property prop) {
+	default boolean isFactory(Property prop) {
 		return (prop.type.builds != JSGlobal.undefined);
 	}
 
@@ -27,8 +23,8 @@ import net.wolfTec.model.Property;
 	 * 
 	 * @return
 	 */
-	public boolean canProduce(Property prop) {
-		if ($capture.isNeutral(prop)) return false;
+	default boolean canProduce(Property prop) {
+		if (isNeutral(prop)) return false;
 
 		if (!isFactory(prop)) {
 			return false;
@@ -40,7 +36,7 @@ import net.wolfTec.model.Property;
 		}
 
 		// check unit limit and left slots
-		int unitLimit = $gameconfig.getConfigValue("unitLimit");
+		int unitLimit = getGameConfig().getConfigValue("unitLimit");
 		if (prop.owner.numberOfUnits >= unitLimit || prop.owner.numberOfUnits >= Constants.MAX_UNITS) {
 			return false;
 		}

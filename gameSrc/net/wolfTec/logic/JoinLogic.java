@@ -4,10 +4,7 @@ import org.stjs.javascript.annotation.Namespace;
 
 import net.wolfTec.model.Unit;
 
-@Namespace("cwt") public class JoinBean {
-
-	public static boolean	$BEAN	= true;
-	private TransportBean			$transport;
+@Namespace("cwt") public interface JoinLogic extends TransportLogic {
 
 	/**
 	 * Returns **true** if two units can join each other, else **false**. In
@@ -19,7 +16,7 @@ import net.wolfTec.model.Unit;
 	 * @param target
 	 * @returns {boolean}
 	 */
-	public boolean canJoin(Unit source, Unit target) {
+	default boolean canJoin(Unit source, Unit target) {
 		if (source.getType() != target.getType()) {
 			return false;
 		}
@@ -30,7 +27,7 @@ import net.wolfTec.model.Unit;
 		}
 
 		// do they have loads?
-		if ($transport.hasLoads(source) || $transport.hasLoads(target)) {
+		if (hasLoads(source) || hasLoads(target)) {
 			return false;
 		}
 

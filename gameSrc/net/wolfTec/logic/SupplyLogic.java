@@ -6,16 +6,14 @@ import net.wolfTec.model.Unit;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.annotation.Namespace;
 
-@Namespace("cwt") public class SupplyBean {
-
-	public static boolean	$BEAN	= true;
+@Namespace("cwt") public interface SupplyLogic {
 
 	/**
 	 * @return **true** if a given **unit** is a supplier, else **false**.
 	 *
 	 * @param {Unit} unit
 	 */
-	public boolean isSupplier(Unit unit) {
+	default boolean isSupplier(Unit unit) {
 		return unit.getType().supply != JSGlobal.undefined;
 	}
 
@@ -24,7 +22,7 @@ import org.stjs.javascript.annotation.Namespace;
 	 *
 	 * @param {Unit} unit
 	 */
-	public void drainFuel(Unit unit) {
+	default void drainFuel(Unit unit) {
 		int v = unit.getType().dailyFuelDrain;
 		if (v != Constants.INACTIVE_ID) {
 
@@ -42,7 +40,7 @@ import org.stjs.javascript.annotation.Namespace;
 	 *
 	 * @return {boolean}
 	 */
-	public boolean hasLowAmmo(Unit unit) {
+	default boolean hasLowAmmo(Unit unit) {
 		int cAmmo = unit.getAmmo();
 		return (cAmmo != 0 && cAmmo <= (unit.getType().ammo * 0.25));
 	}
@@ -52,7 +50,7 @@ import org.stjs.javascript.annotation.Namespace;
 	 *
 	 * @return {boolean}
 	 */
-	public boolean hasLowFuel(Unit unit) {
+	default boolean hasLowFuel(Unit unit) {
 		return (unit.getFuel() <= (unit.getType().fuel * 0.25));
 	}
 

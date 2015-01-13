@@ -8,16 +8,14 @@ import net.wolfTec.model.Player;
 import net.wolfTec.model.Unit;
 import net.wolfTec.utility.Assert;
 
-@Namespace("cwt") public class LifecycleBean {
-
-	public static boolean	$BEAN	= true;
+@Namespace("cwt") public interface LifecycleLogic {
 
 	/**
 	 * 
 	 * @param player
 	 * @return
 	 */
-	public boolean isInactivePlayer(Player player) {
+	default boolean isInactivePlayer(Player player) {
 		return player.team != Constants.INACTIVE_ID;
 	}
 
@@ -25,7 +23,7 @@ import net.wolfTec.utility.Assert;
 	 * 
 	 * @param player
 	 */
-	public void deactivatePlayer(Player player) {
+	default void deactivatePlayer(Player player) {
 		player.team = Constants.INACTIVE_ID;
 	}
 
@@ -34,14 +32,14 @@ import net.wolfTec.utility.Assert;
 	 * @param player
 	 * @param teamNumber
 	 */
-	public void activatePlayer(Player player, int teamNumber) {
+	default void activatePlayer(Player player, int teamNumber) {
 		player.team = teamNumber;
 	}
 
 	/**
 	 * @return {boolean}
 	 */
-	public boolean isInactiveUnit(Unit unit) {
+	default boolean isInactiveUnit(Unit unit) {
 		return unit.getOwner() == null;
 	}
 
@@ -51,7 +49,7 @@ import net.wolfTec.utility.Assert;
 	 * @param damage
 	 * @param minRest
 	 */
-	public void damageUnit(Unit unit, int damage, int minRest) {
+	default void damageUnit(Unit unit, int damage, int minRest) {
 		Assert.greaterEquals(damage, 0);
 		if (damage == 0) return;
 
@@ -66,7 +64,7 @@ import net.wolfTec.utility.Assert;
 	 * @param health
 	 * @param diffAsGold
 	 */
-	public void healUnit(Unit unit, int health, boolean diffAsGold) {
+	default void healUnit(Unit unit, int health, boolean diffAsGold) {
 		Assert.greaterEquals(health, 0);
 		if (health == 0) return;
 
