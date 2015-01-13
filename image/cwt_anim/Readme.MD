@@ -150,16 +150,16 @@ List of pretty much every sprite you'd ever need for reference.
 
 * [ ] *PLIN* = Plain
 * [ ] *FRST* = Forest
-* [ ] *MNTN* = Mountain
+* [x] *MNTN* = Mountain
 * [ ] *RIVR* = River
 * [ ] *ROAD* = Road
-* [ ] *BRDG* = Bridge
+* [x] *BRDG* = Bridge
 * [ ] *REEF* = Reef
 * [ ] *WTLD* = Wasteland
 * [ ] *RUIN* = Ruins
 * [ ] *SHOA* = Shoals
 * [ ] *SEAS* = Seas
-* [ ] *METR* = Meteor
+* [x] *METR* = Meteor
 * [ ] *PLZM* = Plasma
 * [ ] *PLZP* = Plazma Pipe
 * [ ] *PZPS* = Plazma Pipeseam
