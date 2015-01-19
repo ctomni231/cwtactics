@@ -2,11 +2,16 @@ This is the main sprite folder for dealing with the in-game sprites using the ne
 
 ***
 
+## Sprite Compilation (Useful for animations)
+
+- [Starter Sprites](http://awcomics.wikia.com/wiki/Starter_Sprites) - 
+List of pretty much every sprite you'd ever need for reference.
+
 # Custom Wars Tactics - Units
 
 ## Unit Types - Direct Land
 
-* [x] *INFT* = Infantry [OS]
+- [x] *INFT* = Infantry [OS]
 * [ ] *INFT* = Infantry [Other Factions]
 * [x] *MECH* = Mech [OS]
 * [ ] *MECH* = Mech [Other Factions]
@@ -145,16 +150,16 @@ This is the main sprite folder for dealing with the in-game sprites using the ne
 
 * [ ] *PLIN* = Plain
 * [ ] *FRST* = Forest
-* [ ] *MNTN* = Mountain
+* [x] *MNTN* = Mountain
 * [ ] *RIVR* = River
 * [ ] *ROAD* = Road
-* [ ] *BRDG* = Bridge
+* [x] *BRDG* = Bridge
 * [ ] *REEF* = Reef
 * [ ] *WTLD* = Wasteland
 * [ ] *RUIN* = Ruins
 * [ ] *SHOA* = Shoals
 * [ ] *SEAS* = Seas
-* [ ] *METR* = Meteor
+* [x] *METR* = Meteor
 * [ ] *PLZM* = Plasma
 * [ ] *PLZP* = Plazma Pipe
 * [ ] *PZPS* = Plazma Pipeseam
