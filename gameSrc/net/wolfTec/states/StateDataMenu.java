@@ -3,12 +3,12 @@ package net.wolfTec.states;
 import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.action.Action;
 import net.wolfTec.logic.Relationship;
-import net.wolfTec.logic.RelationshipCheckBean;
+import net.wolfTec.logic.RelationshipCheckLogic;
 import net.wolfTec.model.Position;
 import net.wolfTec.model.Property;
 import net.wolfTec.model.Unit;
-import net.wolfTec.utility.CircularBuffer;
 import net.wolfTec.utility.Debug;
+import net.wolfTec.wtEngine.utility.CircularBuffer;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.annotation.Template;
@@ -104,8 +104,8 @@ public class StateDataMenu {
         Position sPos = parent.source;
         Position tPos = parent.target;
         Position tsPos = parent.targetSelection;
-        RelationshipCheckBean.RelationshipCheckMode ChkU = RelationshipCheckBean.RelationshipCheckMode.CHECK_NORMAL;
-        RelationshipCheckBean.RelationshipCheckMode ChkP = RelationshipCheckBean.RelationshipCheckMode.CHECK_PROPERTY;
+        RelationshipCheckLogic.RelationshipCheckMode ChkU = RelationshipCheckLogic.RelationshipCheckMode.CHECK_NORMAL;
+        RelationshipCheckLogic.RelationshipCheckMode ChkP = RelationshipCheckLogic.RelationshipCheckMode.CHECK_PROPERTY;
         Property sProp = sPos.property;
         Unit sUnit = sPos.unit;
         boolean unitActable = (!(sUnit == null || sUnit.getOwner() != net.wolfTec.gameround.turnOwner || !sUnit.isCanAct()));
@@ -145,10 +145,10 @@ public class StateDataMenu {
 
                     // extract relationships
                     if (st_mode == null) {
-                        st_mode = RelationshipCheckBean.getRelationShipTo(sPos, tPos, ChkU, ChkU);
-                        sst_mode = RelationshipCheckBean.getRelationShipTo(sPos, tsPos, ChkU, ChkU);
-                        pr_st_mode = RelationshipCheckBean.getRelationShipTo(sPos, tPos, ChkU, ChkP);
-                        pr_sst_mode = RelationshipCheckBean.getRelationShipTo(sPos, tsPos, ChkU, ChkP);
+                        st_mode = RelationshipCheckLogic.getRelationShipTo(sPos, tPos, ChkU, ChkU);
+                        sst_mode = RelationshipCheckLogic.getRelationShipTo(sPos, tsPos, ChkU, ChkU);
+                        pr_st_mode = RelationshipCheckLogic.getRelationShipTo(sPos, tPos, ChkU, ChkP);
+                        pr_sst_mode = RelationshipCheckLogic.getRelationShipTo(sPos, tsPos, ChkU, ChkP);
                     }
 
                     // relation to unit

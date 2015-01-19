@@ -3,7 +3,7 @@ package net.wolfTec.logic;
 import net.wolfTec.action.Action;
 import net.wolfTec.system.MessageRouterBean;
 import net.wolfTec.system.Logger;
-import net.wolfTec.utility.CircularBuffer;
+import net.wolfTec.wtEngine.utility.CircularBuffer;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Global;

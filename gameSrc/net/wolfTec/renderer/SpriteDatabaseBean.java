@@ -1,5 +1,7 @@
 package net.wolfTec.renderer;
 
+import net.wolfTec.utility.Assert;
+
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 
@@ -22,5 +24,15 @@ public class SpriteDatabaseBean {
         overlayTiles = JSCollections.$map();
         longAnimatedTiles = JSCollections.$map();
         minimapIndex = JSCollections.$map();
+    }
+    
+    private void registerSprite(String spriteKey, Sprite sprite){
+    	Assert.hasNoProperty(sprites, spriteKey);
+    	sprites.$put(spriteKey, sprite);
+    }
+    
+    private Sprite getSprite(String spriteKey){
+    	Assert.hasProperty(sprites, spriteKey);
+    	return sprites.$get(spriteKey);
     }
 }

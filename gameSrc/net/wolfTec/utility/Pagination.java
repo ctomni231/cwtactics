@@ -1,4 +1,4 @@
-package net.wolfTec.renderer;
+package net.wolfTec.utility;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;

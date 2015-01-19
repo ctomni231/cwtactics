@@ -1,5 +1,7 @@
 package net.wolfTec.utility;
 
+import org.stjs.javascript.JSObjectAdapter;
+
 /**
  * Utility class to male assertions for given statements.
  */
@@ -10,26 +12,34 @@ public class Assert {
 	}
 
 	public static void greaterEquals(int actual, int min) {
-		if (actual < min) throw new Error("IllegalArgumentValue");
+		if (actual < min) throw new Error("AssertmentFailed");
 	}
 
 	public static void greaterThen(int actual, int min) {
-		if (actual <= min) throw new Error("IllegalArgumentValue");
+		if (actual <= min) throw new Error("AssertmentFailed");
 	}
 
 	public static void lowerEquals(int actual, int min) {
-		if (actual > min) throw new Error("IllegalArgumentValue");
+		if (actual > min) throw new Error("AssertmentFailed");
 	}
 
 	public static void lowerThen(int actual, int min) {
-		if (actual >= min) throw new Error("IllegalArgumentValue");
+		if (actual >= min) throw new Error("AssertmentFailed");
 	}
 
 	public static void isNot(Object actual, Object not) {
-		if (actual == not) throw new Error("IllegalArgumentValue");
+		if (actual == not) throw new Error("AssertmentFailed");
 	}
 
 	public static void notEmpty(String actual) {
-		if (actual == null || actual.isEmpty()) throw new Error("IllegalArgumentValue");
+		if (actual == null || actual.isEmpty()) throw new Error("AssertmentFailed");
+	}
+	
+	public static void hasNoProperty(Object obj, String key) {
+		if (JSObjectAdapter.hasOwnProperty(obj, key)) throw new Error("AssertmentFailed");
+	}
+
+	public static void hasProperty(Object obj, String key) {
+		if (!JSObjectAdapter.hasOwnProperty(obj, key)) throw new Error("AssertmentFailed");
 	}
 }

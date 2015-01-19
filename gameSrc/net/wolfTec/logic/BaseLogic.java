@@ -4,5 +4,6 @@ import net.wolfTec.model.GameRoundBean;
 
 public interface BaseLogic {
 	public GameRoundBean getGameRound();
-	public GameConfigBean getGameConfig();
+  public GameConfigBean getGameConfig();
+  public ObjectTypesBean getObjectTypes();
 }

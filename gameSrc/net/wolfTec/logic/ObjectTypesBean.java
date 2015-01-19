@@ -10,6 +10,7 @@ import net.wolfTec.model.TileType;
 import net.wolfTec.model.UnitType;
 import net.wolfTec.model.WeatherType;
 import net.wolfTec.system.Logger;
+import net.wolfTec.utility.ReadOnlyJsArray;
 
 import org.stjs.javascript.annotation.Namespace;
 
@@ -60,6 +61,41 @@ import org.stjs.javascript.annotation.Namespace;
   }
 
   public CoType getCommanderType(String id) {
+    $LOG.error("not implemented yet");
+    return null;
+  }
+
+  public ReadOnlyJsArray<ArmyType> getArmyTypes() {
+    $LOG.error("not implemented yet");
+    return null;
+  }
+
+  public ReadOnlyJsArray<MoveType> getMoveTypes() {
+    $LOG.error("not implemented yet");
+    return null;
+  }
+
+  public ReadOnlyJsArray<UnitType> getUnitTypes() {
+    $LOG.error("not implemented yet");
+    return null;
+  }
+
+  public ReadOnlyJsArray<TileType> getArmies() {
+    $LOG.error("not implemented yet");
+    return null;
+  }
+
+  public ReadOnlyJsArray<WeatherType> getWeathers() {
+    $LOG.error("not implemented yet");
+    return null;
+  }
+
+  public ReadOnlyJsArray<PropertyType> getPropertyTypes() {
+    $LOG.error("not implemented yet");
+    return null;
+  }
+
+  public ReadOnlyJsArray<CoType> getCommanderTypes() {
     $LOG.error("not implemented yet");
     return null;
   }

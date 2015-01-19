@@ -31,8 +31,8 @@ public class GameRoundBean {
 	public GameRoundBean() {
 		map = new Map(Constants.MAX_MAP_WIDTH, Constants.MAX_MAP_HEIGHT);
 		lastClientPlayer = null;
-		weather = null;
-		weatherLeftDays = 0;
+		setWeather(null);
+		setWeatherLeftDays(0);
 		day = 0;
 		turnOwner = null;
 		mapHeight = 0;
@@ -383,4 +383,12 @@ public class GameRoundBean {
 		dataBlock.tile = null;
 		dataBlock.range = 0;
 	}
+
+  public void setWeatherLeftDays(int weatherLeftDays) {
+    this.weatherLeftDays = weatherLeftDays;
+  }
+
+  public void setWeather(WeatherType weather) {
+    this.weather = weather;
+  }
 }

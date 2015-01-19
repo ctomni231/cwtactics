@@ -6,7 +6,7 @@ import net.wolfTec.logic.MoveCode;
 import net.wolfTec.model.Tile;
 import net.wolfTec.model.Unit;
 import net.wolfTec.states.StateDataMenu;
-import net.wolfTec.utility.CircularBuffer;
+import net.wolfTec.wtEngine.utility.CircularBuffer;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSGlobal;

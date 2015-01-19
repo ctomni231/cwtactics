@@ -4,15 +4,15 @@ import org.stjs.javascript.functions.Callback1;
 
 import net.wolfTec.logic.GameConfigBean;
 import net.wolfTec.system.StorageBean;
-import net.wolfTec.system.URLParametersBean;
 import net.wolfTec.system.StorageBean.StorageEntry;
+import net.wolfTec.wtEngine.utility.BrowserHelperBean;
 
 public class GameConfigLoader implements LoaderStep {
 
 	public static final String	PARAM_FORCE_TOUCH	= "forceTouch";
 	public static final String	PARAM_WIPE_OUT		= "resetData";
 
-	private URLParametersBean			params;
+	private BrowserHelperBean			params;
 	private GameConfigBean					config;
 
 	@Override public void grabAssetsFromRemove(StorageBean storage) {
@@ -21,12 +21,12 @@ public class GameConfigLoader implements LoaderStep {
 
 	@Override public void loadAssets(StorageBean storage) {
 
-		boolean wantsWipe = params.getParam(PARAM_WIPE_OUT) == "1";
+		boolean wantsWipe = params.getUrlParameter(PARAM_WIPE_OUT) == "1";
 
 		config.getConfig(PARAM_ANIMATED_TILES).setValue(0);
 		config.getConfig(PARAM_FORCE_TOUCH).setValue(0);
 
-		boolean wantsForceTouch = params.getParam(PARAM_FORCE_TOUCH) == "1";
+		boolean wantsForceTouch = params.getUrlParameter(PARAM_FORCE_TOUCH) == "1";
 		StorageBean.get(PARAM_ANIMATED_TILES, new Callback1<StorageBean.StorageEntry>() {
 			@Override public void $invoke(StorageEntry entry) {
 				if (entry != null) {
