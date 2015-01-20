@@ -2,10 +2,31 @@ package net.wolfTec.states;
 
 public class MenuEntry {
 	
-    String content;
+    private String content;
     
     /**
      * True when the entry is enabled, false if not 
      */
-    boolean enabled;
+    private boolean enabled;
+    
+    public MenuEntry() {
+    	setContent(null);
+    	setEnabled(false);
+    }
+
+		public String getContent() {
+			return content;
+		}
+
+		public void setContent(String content) {
+			this.content = content;
+		}
+
+		public boolean isEnabled() {
+			return enabled;
+		}
+
+		public void setEnabled(boolean enabled) {
+			this.enabled = enabled;
+		}
 }

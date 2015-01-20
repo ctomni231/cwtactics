@@ -1,9 +1,9 @@
 package net.wolfTec.dataTransfer;
 
-import net.wolfTec.input.InputHandler;
-import net.wolfTec.model.GameRound;
-import net.wolfTec.system.Storage;
-import net.wolfTec.system.Storage.StorageEntry;
+import net.wolfTec.input.InputHandlerBean;
+import net.wolfTec.model.GameRoundBean;
+import net.wolfTec.system.StorageBean;
+import net.wolfTec.system.StorageBean.StorageEntry;
 import net.wolfTec.utility.Debug;
 
 import org.stjs.javascript.JSCollections;
@@ -22,16 +22,16 @@ public class ConfigTransfer {
 	public static final String MAPPING_STORAGE_KEY = "keyboardMapping";
 
 	private URLParameterTransfer $urlParameterDto;
-	private InputHandler $inputHandler;
-	private GameRound $gameround;
+	private InputHandlerBean $inputHandler;
+	private GameRoundBean $gameround;
 
 	public void saveAppConfig(Callback0 callback) {
 		String valueAnimated = $gameround.getCfg(PARAM_ANIMATED_TILES).getValue() == 1 ? "1" : "0";
 		String valueForceTouch = $gameround.getCfg(PARAM_FORCE_TOUCH).getValue() == 1 ? "1" : "0";
 
-		Storage.set(PARAM_ANIMATED_TILES, valueAnimated, new Callback2<Object, Object>() {
+		StorageBean.set(PARAM_ANIMATED_TILES, valueAnimated, new Callback2<Object, Object>() {
 			public void $invoke(Object arg0, Object arg1) {
-				Storage.set(PARAM_ANIMATED_TILES, valueForceTouch, new Callback2<Object, Object>() {
+				StorageBean.set(PARAM_ANIMATED_TILES, valueForceTouch, new Callback2<Object, Object>() {
 					public void $invoke(Object arg0, Object arg1) {
 						if (callback != null) {
 							callback.$invoke();
@@ -43,36 +43,7 @@ public class ConfigTransfer {
 	}
 
 	public void loadAppConfig(Callback0 callback) {
-		 $gameround.getCfg(PARAM_ANIMATED_TILES).setValue(0);
-		 $gameround.getCfg(PARAM_FORCE_TOUCH).setValue(0);
-
-		Storage.get(PARAM_ANIMATED_TILES, new Callback1<Storage.StorageEntry>() {
-			@Override public void $invoke(StorageEntry entry) {
-				if (entry != null) {
-					 $gameround.getCfg(PARAM_ANIMATED_TILES).setValue(entry.value == "1" ? 1 : 0);
-				}
-
-				// forceTouch can be overruled by a URL parameter
-				if ($urlParameterDto.wantsForceTouch()) {
-					 $gameround.getCfg(PARAM_FORCE_TOUCH).setValue(1);
-					callback.$invoke();
-
-				} else {
-					// load value from storage
-					Storage.get(PARAM_FORCE_TOUCH, new Callback1<Storage.StorageEntry>() {
-						@Override public void $invoke(StorageEntry entry) {
-							if (entry != null && (Boolean) entry.value == true) {
-								 $gameround.getCfg(PARAM_FORCE_TOUCH).setValue(1);
-							}
-
-							if (callback != null) {
-								callback.$invoke();
-							}
-						}
-					});
-				}
-			}
-		});
+		 
 	}
 
 	/**
@@ -83,7 +54,7 @@ public class ConfigTransfer {
 		mapping.$put("keyboard", $inputHandler.KEYBOARD_MAPPING);
 		mapping.$put("gamePad", $inputHandler.GAMEPAD_MAPPING);
 
-		Storage.set(MAPPING_STORAGE_KEY, mapping, new Callback2<Object, Object>() {
+		StorageBean.set(MAPPING_STORAGE_KEY, mapping, new Callback2<Object, Object>() {
 			@Override public void $invoke(Object arg0, Object arg1) {
 				Debug.logInfo(null, "Successfully saved user input mapping");
 				if (cb != null)
@@ -99,7 +70,7 @@ public class ConfigTransfer {
 	 * @param cb
 	 */
 	public void loadKeyMapping(Callback0 cb) {
-		Storage.get(MAPPING_STORAGE_KEY, new Callback1<Storage.StorageEntry>() {
+		StorageBean.get(MAPPING_STORAGE_KEY, new Callback1<StorageBean.StorageEntry>() {
 			@Override public void $invoke(StorageEntry arg0) {
 				if (arg0 != null && arg0.value != null) {
 					Map<String, Map<String, Integer>> mapping = (Map<String, Map<String, Integer>>) arg0.value;
