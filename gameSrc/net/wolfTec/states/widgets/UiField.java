@@ -2,7 +2,7 @@ package net.wolfTec.states.widgets;
 
 import net.wolfTec.Constants;
 import net.wolfTec.CustomWarsTactics;
-import net.wolfTec.system.LocalizationBean;
+import net.wolfTec.utility.Localization;
 import net.wolfTec.utility.ObjectUtil;
 
 import org.stjs.javascript.JSStringAdapter;
@@ -56,7 +56,7 @@ public class UiField {
         this.inactive = false;
 
         this.key = text;
-        this.text = ObjectUtil.notEmpty(text) ? ((LocalizationBean) CustomWarsTactics.getBean("i18n")).forKey(text) : text;
+        this.text = ObjectUtil.notEmpty(text) ? ((Localization) CustomWarsTactics.getBean("i18n")).forKey(text) : text;
         JSStringAdapter.split("/\\n/", "\n");
     }
 

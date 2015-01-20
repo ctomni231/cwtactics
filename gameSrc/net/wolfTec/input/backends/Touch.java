@@ -4,7 +4,7 @@ import net.wolfTec.Constants;
 import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.bridges.TouchEvent;
 import net.wolfTec.input.InputBackend;
-import net.wolfTec.input.InputHandlerBean;
+import net.wolfTec.input.InputHandler;
 import net.wolfTec.input.InputType;
 import net.wolfTec.utility.Debug;
 
@@ -22,7 +22,7 @@ public class Touch {
     public static final String EVENT_TOUCH_MOVE = "touchmove";
     public static final String EVENT_TOUCH_END = "touchend";
 
-    public static InputBackend createBackend(final InputHandlerBean handler, final Element targetElement) {
+    public static InputBackend createBackend(final InputHandler handler, final Element targetElement) {
 
         // define data object to share data between the three events
         final Map<String, Integer> data = JSCollections.$map();

@@ -45,9 +45,8 @@ public class LayeredCanvas {
             }
         }
     }
-    
+
     /**
-     * Renders the layer with the given index into the front layer.
      *
      * @param index
      */
@@ -71,16 +70,15 @@ public class LayeredCanvas {
     }
 
     /**
-     * Clears the layer with the given index.
      *
-     * @param index index of the layer
+     * @param index
      */
     public void clear (int index) {
         this.getContext(index).clearRect(0, 0, this.w, this.h);
     }
 
     /**
-     * Clears all background layers including the front layer.
+     *
      */
     public void clearAll () {
         int n = this.layers.$length() - 1;
@@ -92,7 +90,6 @@ public class LayeredCanvas {
     }
 
     /**
-     * Returns the context of a layer with the given index.
      *
      * @param {number?} index
      * @returns {CanvasRenderingContext2D}

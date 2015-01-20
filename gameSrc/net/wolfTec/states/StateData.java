@@ -7,7 +7,7 @@ import net.wolfTec.game.objectTypes.CoType;
 import net.wolfTec.logic.MoveCode;
 import net.wolfTec.model.GameRound;
 import net.wolfTec.model.PositionData;
-import net.wolfTec.wtEngine.utility.CircularBuffer;
+import net.wolfTec.utility.CircularBuffer;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;

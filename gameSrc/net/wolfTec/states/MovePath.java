@@ -10,6 +10,8 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 
 public class MovePath {
+
+	public static boolean		$BEAN	= true;
 	
 	private Array<MoveCode>	path;
 

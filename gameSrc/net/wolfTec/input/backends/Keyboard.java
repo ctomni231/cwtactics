@@ -2,7 +2,7 @@ package net.wolfTec.input.backends;
 
 import net.wolfTec.Constants;
 import net.wolfTec.input.InputBackend;
-import net.wolfTec.input.InputHandlerBean;
+import net.wolfTec.input.InputHandler;
 import net.wolfTec.input.InputType;
 import net.wolfTec.utility.Debug;
 import org.stjs.javascript.Map;
@@ -17,7 +17,7 @@ public abstract class Keyboard {
 
     public static final String LOG = Constants.logHeader("input.keyboard");
 
-    public static final InputBackend createBackend (final InputHandlerBean handler, final Element targetElement) {
+    public static final InputBackend createBackend (final InputHandler handler, final Element targetElement) {
 
         final Function1<DOMEvent, Boolean> keyboardHandler = new Function1<DOMEvent, Boolean> () {
             @Override

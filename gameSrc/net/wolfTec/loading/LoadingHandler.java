@@ -3,7 +3,7 @@ package net.wolfTec.loading;
 import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.model.Config;
-import net.wolfTec.system.StorageBean;
+import net.wolfTec.system.Storage;
 import net.wolfTec.utility.Debug;
 
 import org.stjs.javascript.Array;
@@ -43,7 +43,7 @@ public class LoadingHandler {
 
         Debug.logInfo(LOG_MARKER, "Start loading game data");
 
-        StorageBean.get(PARAM_HAS_CACHE, new Callback1<Object>() {
+        Storage.get(PARAM_HAS_CACHE, new Callback1<Object>() {
             @Override
             public void $invoke(Object o) {
                 hasDownloadedAssets = (o != null && (Boolean) o == true);
@@ -55,7 +55,7 @@ public class LoadingHandler {
                             @Override
                             public void $invoke() {
                                 Debug.logInfo(LOG_MARKER, "finished loading game data");
-                                StorageBean.set(PARAM_HAS_CACHE, true, callback);
+                                Storage.set(PARAM_HAS_CACHE, true, callback);
                             }
                         });
             }
@@ -99,7 +99,7 @@ public class LoadingHandler {
                 if (dataTransfer.wantResetData()) {
                     Debug.logInfo(LOG_MARKER, "wipe out cached data");
 
-                    StorageBean.clear(new Callback0() {
+                    Storage.clear(new Callback0() {
                         @Override
                         public void $invoke() {
                             Global.window.document.location.reload();

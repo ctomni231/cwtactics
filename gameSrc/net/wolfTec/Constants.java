@@ -118,4 +118,17 @@ public abstract class Constants {
      *
      */
 	public static final int	    ACTION_POOL_SIZE	      = 200;
+
+	public static final String	LOG_UNKNOWN	            = "??????";
+	public static final String	LOG_XML_HTTP	          = "XMLREQ";
+	public static final String	LOG_WIDGETS	            = "   GUI";
+	public static final String	LOG_RENDERER	          = "RENDER";
+	public static final String	LOG_ASSERTION	          = "ASSERT";
+	public static final String	LOG_MEDIATOR	          = "MEDITR";
+	public static final String	LOG_LOCALIZATION	      = "  I18N";
+	public static final String	LOG_STATEMACHINE	      = "STATEM";
+	public static final String	LOG_TYPE_DATABASE	      = "TYPEDB";
+	public static final String	LOG_ACTION_INVOKER	    = "ACTION";
+	public static final String	LOG_DEBUG	              = " DEBUG";
+	public static final String	LOG_MESSAGE_ROUTER	    = "NETWRK";
 }
