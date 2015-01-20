@@ -3,6 +3,7 @@ package net.wolfTec.wtEngine.base;
 import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.functions.Callback0;
 
+// TODO: SyntheticType
 @Namespace("wtEngine") public class EngineOptions {
 
   public String namespace;
@@ -12,6 +13,7 @@ import org.stjs.javascript.functions.Callback0;
   public int inputBufferSize;
   public int networkBufferSize;
   public boolean disableImageSmooth;
+  public boolean debugMode;
   // stateMachines: array<string> 
   // screenSize: [width: int, height: int]
   // onIncomingNetworkMessage: function<messgage: string>: ActionData
@@ -26,5 +28,6 @@ import org.stjs.javascript.functions.Callback0;
     inputBufferSize = 10;
     networkBufferSize = 16;
     disableImageSmooth = false;
+    debugMode = false;
   }
 }
