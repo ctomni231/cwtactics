@@ -9,7 +9,7 @@ import net.wolfTec.wtEngine.log.LoggerFactoryBeanInterface;
 	
   public WolfTecEngine(EngineOptions options) {
     initBeans();
-    solveBeanDependencies();
+    solveBeanDependencies(options);
   }
 
   public <T> T getBean (String bean) {
@@ -53,8 +53,8 @@ import net.wolfTec.wtEngine.log.LoggerFactoryBeanInterface;
 	 * <strong>Note: </strong> This function is low level and contains real JS
 	 * code. Modify only if you know what you're doing here.
 	 */
-	private static void solveBeanDependencies() {
-		boolean isDebugEnabled = Constants.DEBUG;
+	private static void solveBeanDependencies(EngineOptions options) {
+		boolean isDebugEnabled = options.debugMode;
 		LoggerFactoryBeanInterface logFactory = (LoggerFactoryBeanInterface) beans.get("LoggerFactoryBean");
 		
 		// search in all beans for properties with a leading '$' character. This
