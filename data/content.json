@@ -1,16 +1,16 @@
 {
 	"header": "Version",
-    "version": "0.3.5",
+    "version": "0.35.1",
     "subHeaderT": "Buggy-Hopper",
     "subHeaderB": "AI,Cannons,UI,Animations",
 
     "text":[
-      "Custom Wars: Tactics 0.3.5 is a special release for the end of the year 2013 and is primary a small preview in the upcoming features of the version 0.4.",
+      "Custom Wars: Tactics 0.35 is a special release for the end of the year 2013 and is primary a small preview in the upcoming features of the version 0.4.",
       "The main aspect of this release is a huge refactoring of the internal engine. This results in an event based design, that allows a better customization for engine developers. Furthermore we redesigned the complete look and feel to match with the new GUI styles of Android and iOS.",
-      "Another feature is the offline mode. CW:T 0.3.5 uses the HTML5 offline application cache and WebSQL/IndexedDB to store all data in your browser.",
-      "As special, this version contains a first alpha version of DumbBoy, the AI for CWT. In this version the AI is already able to do something, which allows to play, more or less, game rounds in the CW:T beta. <strong>Note:</strong> DumbBoy is alpha software and may not work 100% correctly with CW:T. It's a sneak preview for harcore players. :P",
+      "Another feature is the offline mode. CW:T 0.35 uses the HTML5 offline application cache and WebSQL/IndexedDB to store all data in your browser.",
+      "As special, this version contains a first alpha version of DumbBoy, the AI for CWT. In this version the AI is already able to do something, which allows to play, more or less, game rounds in the CW:T beta. <strong>Note:</strong> DumbBoy is alpha software and may not work 100% correctly with CW:T. It's a sneak preview for hardcore players. :P",
       "At last, we added cannon logic to the version. Be sure to check them out on the development test map.",
-      "At least we want to mention, that 0.3.5 is maybe buggy in some terms. This is because 0.3.5 isn't a primary planned release. At all, like said before, it is a preview of 0.4."
+      "At least we want to mention, that 0.35 is maybe buggy in some terms. This is because 0.35 isn't a primary planned release. At all, like said before, it is a preview of 0.4."
     ],
 
     "img": "images/cwt_actual.png",

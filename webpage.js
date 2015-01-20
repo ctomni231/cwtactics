@@ -236,7 +236,7 @@ stjs.extend(cwt.ContentPanel, null, [], function(constructor, prototype) {
     prototype.buildElement = function(desc) {
         var tmpContent;
         tmpContent = "<p class='cwtHeaderImage'>";
-        tmpContent += "<img src='images/cwHoliday.png' />";
+        tmpContent += "<img src='images/cwTactics.png' />";
         tmpContent += "</p>";
         $(cwt.ContentPanel.SECTION_NAME).append(tmpContent);
         tmpContent = "<table class='prictureAndNewsTable' ><tbody><tr>";
