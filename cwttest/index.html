@@ -1,0 +1,34 @@
+<!-- This is a simple text chat window experiment for me using all technologies I've learned -->
+<!-- First step: Getting an value to appear within the hidden type tag using this -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/strict.dtd">
+<html>
+	<head>
+		<title> CWT Simple Server </title>
+		<!-- This links up the chat message board to the window -->
+		<script type="text/javascript" src="server.js"></script>
+	</head>
+	</body>
+		<div id="login">
+			<form name="loginForm" action="javascript:void%200" onsubmit="createUser(); return false" >
+				<p>Username: <input type="text" id="user" size="18" /></p>
+				<input type="hidden" id="code" value="" />
+				<p><input type="submit" value="Go!" /></p>
+			</form>
+		</div>
+		<div id="chatBox" style="display:none" onmouseover="pollServer()" >
+			<div id="chatText"></div>
+			<!-- Simple form used to send messages -->
+			<form action="javascript:void%200" onsubmit="sendMessage(); return false" >
+				<input size="35" id="message"></input>
+				<input type="submit">
+			</form>
+			</br>
+			<form action="javascript:void%200" onsubmit="deleteUser(); return false;" >
+				<input type="submit" value="Leave Chat" id="logout" ></input>
+			</form>
+		</div>
+		<!-- Finish the testing for the game screen thingys -->
+		<div id="gameScreen" style="display:none" ></div>
+		<div id="users" ></div>
+	</body>
+</html>
