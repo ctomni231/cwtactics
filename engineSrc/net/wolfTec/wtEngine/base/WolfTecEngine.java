@@ -12,6 +12,10 @@ import net.wolfTec.wtEngine.log.LoggerFactoryBeanInterface;
     solveBeanDependencies(options);
   }
 
+  /**
+   * @param bean name of the bean (usaly the class name)
+   * @return a bean with the given name 
+   */
   public <T> T getBean (String bean) {
     Object bean = this.beans.$get(bean);
     if (JSGlobal.undefined == bean) {
@@ -20,6 +24,10 @@ import net.wolfTec.wtEngine.log.LoggerFactoryBeanInterface;
     return bean;
   }
   
+  /**
+   * @param typeConstructor constructor function object of the wanted bean
+   * @return a bean of a given type
+   */
   public <T> T getBeanOfType (Object typeConstructor) {
     Object bean = null;
     
