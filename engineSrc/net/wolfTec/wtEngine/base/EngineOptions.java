@@ -14,11 +14,12 @@ import org.stjs.javascript.functions.Callback0;
   public int networkBufferSize;
   public boolean disableImageSmooth;
   public boolean debugMode;
-  // stateMachines: array<string> 
-  // screenSize: [width: int, height: int]
-  // onIncomingNetworkMessage: function<messgage: string>: ActionData
-  // onItemLoaded: function<item, leftItems: int, category: AssetCategory>
-  // onTryToCacheItem: function<item, category: AssetCategory>: boolean
+  public Array<String> stateMachines;
+  public int screenWidth;
+  public int screenHeight;
+  public Function1<String, ActionData> onIncomingNetworkMessage;
+  public Callback3<Object, Integer, AssetCategory> onItemLoaded;
+  public Function2<Object, AssetCategory, Boolean> onTryToCacheItem;
   
   public EngineOptions () {
     namespace = null;
@@ -29,5 +30,12 @@ import org.stjs.javascript.functions.Callback0;
     networkBufferSize = 16;
     disableImageSmooth = false;
     debugMode = false;
+    screenWidth = 32;
+    screenHeight = 24;
+    
+    stateMachines = null;
+    onIncomingNetworkMessage = null;
+    onItemLoaded = null;
+    onTryToCacheItem = null;
   }
 }
