@@ -212,7 +212,9 @@ import org.stjs.javascript.functions.Callback1;
   }
   
   @Overwrite private void loadAsset (AssetItem item, Object data, Callback0 callback) { // TODO: bind this
-		JSObjectAdapter.$js("this.context.decodeAudioData(data, callback, this.decodeAssetErrorCb)");
+    if (!(boolean) item.key("music")) {
+      JSObjectAdapter.$js("this.context.decodeAudioData(data, callback, this.decodeAssetErrorCb)");
+    }
   }
   
   @Overwrite void grabAsset (AssetItem item, Callback1<Object> callback) {
