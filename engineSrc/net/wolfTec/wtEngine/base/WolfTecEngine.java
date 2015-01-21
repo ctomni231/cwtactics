@@ -13,10 +13,27 @@ import net.wolfTec.wtEngine.log.LoggerFactoryBeanInterface;
   }
 
   public <T> T getBean (String bean) {
-    return null;
+    Object bean = this.beans.$get(bean);
+    if (JSGlobal.undefined == bean) {
+      throw new IllegalArgumentException("Unknown bean name");
+    }
+    return bean;
   }
   
   public <T> T getBeanOfType (Object typeConstructor) {
+    Object bean = null;
+    
+    Array<String> beanNames = JSObjectAdapter.$js("Object.keys(this.beans)");
+		for (String beanName : beanNames) {
+  		if (beans.$get(beanName) instanceof typeConstructor) {
+  		  return beans.$get(beanName);
+  		}
+		}
+		
+		if (null == bean) {
+      throw new IllegalArgumentException("Unknown bean type");
+    }
+    
     return null;
   }
   
