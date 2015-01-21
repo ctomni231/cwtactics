@@ -15,7 +15,7 @@ import org.stjs.javascript.Map;
 import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.functions.Callback1;
 
-@Namespace("wtEngine") public class AudioBean implements PostEngineInitializationListener {
+@Namespace("wtEngine") public class AudioBean implements PostEngineInitializationListener, AssetLoader {
 
   public static final String      MUSIC_KEY         = "MUSIC_";
 
@@ -203,5 +203,23 @@ import org.stjs.javascript.functions.Callback1;
     }
 
     return source;
+  }
+  
+  private Callback1<String> decodeAssetErrorCb = (e) -> log.error(e);
+  
+  @Overwrite private void cacheAsset (AssetItem item, Object data, Callback0 callback) {
+    storage.setItem(item.key("path"), this.respone, callback);
+  }
+  
+  @Overwrite private void loadAsset (AssetItem item, Object data, Callback0 callback) { // TODO: bind this
+		JSObjectAdapter.$js("this.context.decodeAudioData(data, callback, this.decodeAssetErrorCb)");
+  }
+  
+  @Overwrite void grabAsset (AssetItem item, Callback1<Object> callback) {
+    JSObjectAdapter.$js("var req = new XMLHttpRequest()");    
+    JSObjectAdapter.$js("req.open(\"GET\",item.key(\"path\"),true)");    
+    JSObjectAdapter.$js("req.responseType = \"arraybuffer\"");    
+    JSObjectAdapter.$js("req.onload = callback");       
+    JSObjectAdapter.$js("req.send()"); 
   }
 }
