@@ -1,6 +1,12 @@
 package net.wolfTec.wtEngine.base;
 
+import org.stjs.javascript.Array;
+import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.JSGlobal;
+import org.stjs.javascript.JSObjectAdapter;
+import org.stjs.javascript.Map;
 import org.stjs.javascript.annotation.Namespace;
+
 import net.wolfTec.wtEngine.log.LoggerFactoryBeanInterface;
 
 @Namespace("wtEngine") public class WolfTecEngine {
@@ -16,8 +22,8 @@ import net.wolfTec.wtEngine.log.LoggerFactoryBeanInterface;
    * @param bean name of the bean (usaly the class name)
    * @return a bean with the given name 
    */
-  public <T> T getBean (String bean) {
-    Object bean = this.beans.$get(bean);
+  public <T> T getBean (String beanName) {
+    T bean = (T) this.beans.$get(beanName);
     if (JSGlobal.undefined == bean) {
       throw new IllegalArgumentException("Unknown bean name");
     }
@@ -33,8 +39,8 @@ import net.wolfTec.wtEngine.log.LoggerFactoryBeanInterface;
     
     Array<String> beanNames = JSObjectAdapter.$js("Object.keys(this.beans)");
 		for (String beanName : beanNames) {
-  		if (beans.$get(beanName) instanceof typeConstructor) {
-  		  return beans.$get(beanName);
+  		if ((boolean) JSObjectAdapter.$js("beans.$get(beanName) instanceof typeConstructor")) {
+  		  return (T) beans.$get(beanName);
   		}
 		}
 		
@@ -80,7 +86,7 @@ import net.wolfTec.wtEngine.log.LoggerFactoryBeanInterface;
 	 */
 	private static void solveBeanDependencies(EngineOptions options) {
 		boolean isDebugEnabled = options.debugMode;
-		LoggerFactoryBeanInterface logFactory = (LoggerFactoryBeanInterface) beans.get("LoggerFactoryBean");
+		LoggerFactoryBeanInterface logFactory = (LoggerFactoryBeanInterface) beans.$get("LoggerFactoryBean");
 		
 		// search in all beans for properties with a leading '$' character. This
 		// properties are references to beans. Place the right bean into this

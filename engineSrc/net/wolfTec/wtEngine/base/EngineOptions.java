@@ -1,7 +1,14 @@
 package net.wolfTec.wtEngine.base;
 
+import net.wolfTec.wtEngine.action.ActionData;
+import net.wolfTec.wtEngine.assets.AssetCategory;
+
+import org.stjs.javascript.Array;
 import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.functions.Callback0;
+import org.stjs.javascript.functions.Callback3;
+import org.stjs.javascript.functions.Function1;
+import org.stjs.javascript.functions.Function2;
 
 // TODO: SyntheticType
 @Namespace("wtEngine") public class EngineOptions {

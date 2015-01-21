@@ -4,6 +4,8 @@ import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.system.StorageBean;
 import net.wolfTec.system.StorageBean.StorageEntry;
+import net.wolfTec.wtEngine.assets.AssetItem;
+import net.wolfTec.wtEngine.assets.AssetLoader;
 import net.wolfTec.wtEngine.base.PostEngineInitializationListener;
 import net.wolfTec.wtEngine.log.Logger;
 
@@ -13,6 +15,7 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.annotation.Namespace;
+import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 
 @Namespace("wtEngine") public class AudioBean implements PostEngineInitializationListener, AssetLoader {
@@ -207,17 +210,17 @@ import org.stjs.javascript.functions.Callback1;
   
   private Callback1<String> decodeAssetErrorCb = (e) -> log.error(e);
   
-  @Overwrite private void cacheAsset (AssetItem item, Object data, Callback0 callback) {
-    storage.setItem(item.key("path"), this.respone, callback);
+  @Override public void cacheAsset (AssetItem item, Object data, Callback0 callback) {
+    //storage.setItem(item.key("path"), this.response, callback);
   }
   
-  @Overwrite private void loadAsset (AssetItem item, Object data, Callback0 callback) { // TODO: bind this
+  @Override public void loadAsset (AssetItem item, Object data, Callback0 callback) { // TODO: bind this
     if (!(boolean) item.key("music")) {
       JSObjectAdapter.$js("this.context.decodeAudioData(data, callback, this.decodeAssetErrorCb)");
     }
   }
   
-  @Overwrite void grabAsset (AssetItem item, Callback1<Object> callback) {
+  @Override public void grabAsset (AssetItem item, Callback1<Object> callback) {
     JSObjectAdapter.$js("var req = new XMLHttpRequest()");    
     JSObjectAdapter.$js("req.open(\"GET\",item.key(\"path\"),true)");    
     JSObjectAdapter.$js("req.responseType = \"arraybuffer\"");    
