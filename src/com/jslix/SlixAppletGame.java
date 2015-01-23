@@ -327,7 +327,7 @@ public class SlixAppletGame extends AppletGameContainer {
          */
         @Override
         public void setMouseGrabbed(boolean grabbed) {
-            Mouse.setGrabbed(grabbed);
+            MouseInputBean.setGrabbed(grabbed);
         }
 
         /**
@@ -335,7 +335,7 @@ public class SlixAppletGame extends AppletGameContainer {
          */
         @Override
         public boolean isMouseGrabbed() {
-            return Mouse.isGrabbed();
+            return MouseInputBean.isGrabbed();
         }
 
         /**
@@ -348,7 +348,7 @@ public class SlixAppletGame extends AppletGameContainer {
             try {
                 Cursor cursor = CursorLoader.get().getCursor(ref,
                         hotSpotX, hotSpotY);
-                Mouse.setNativeCursor(cursor);
+                MouseInputBean.setNativeCursor(cursor);
             } catch (Throwable e) {
                 Log.error("Failed to load and apply cursor.", e);
                 throw new SlickException("Failed to set mouse cursor",
@@ -392,7 +392,7 @@ public class SlixAppletGame extends AppletGameContainer {
                 Cursor cursor = CursorLoader.get().getCursor(buffer,
                         hotSpotX, hotSpotY, temp.getWidth(),
                         temp.getHeight());
-                Mouse.setNativeCursor(cursor);
+                MouseInputBean.setNativeCursor(cursor);
             } catch (Throwable e) {
                 Log.error("Failed to load and apply cursor.", e);
                 throw new SlickException("Failed to set mouse cursor",
@@ -417,7 +417,7 @@ public class SlixAppletGame extends AppletGameContainer {
             try {
                 Cursor cursor = CursorLoader.get().getCursor(data,
                         hotSpotX, hotSpotY);
-                Mouse.setNativeCursor(cursor);
+                MouseInputBean.setNativeCursor(cursor);
             } catch (Throwable e) {
                 Log.error("Failed to load and apply cursor.", e);
                 throw new SlickException("Failed to set mouse cursor",
@@ -432,7 +432,7 @@ public class SlixAppletGame extends AppletGameContainer {
         public void setMouseCursor(Cursor cursor, int hotSpotX,
                 int hotSpotY) throws SlickException {
             try {
-                Mouse.setNativeCursor(cursor);
+                MouseInputBean.setNativeCursor(cursor);
             } catch (Throwable e) {
                 Log.error("Failed to load and apply cursor.", e);
                 throw new SlickException("Failed to set mouse cursor",

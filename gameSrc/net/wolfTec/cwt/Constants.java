@@ -1,4 +1,4 @@
-package net.wolfTec;
+package net.wolfTec.cwt;
 
 public abstract class Constants {
 

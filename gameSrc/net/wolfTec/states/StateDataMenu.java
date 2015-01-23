@@ -1,7 +1,7 @@
 package net.wolfTec.states;
 
-import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.action.Action;
+import net.wolfTec.cwt.CustomWarsTactics;
 import net.wolfTec.logic.Relationship;
 import net.wolfTec.logic.RelationshipCheckLogic;
 import net.wolfTec.model.Position;

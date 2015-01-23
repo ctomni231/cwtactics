@@ -1,12 +1,12 @@
 package net.wolfTec.input.backends;
 
-import net.wolfTec.Constants;
-import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.bridges.TouchEvent;
-import net.wolfTec.input.InputBackend;
+import net.wolfTec.cwt.Constants;
+import net.wolfTec.cwt.CustomWarsTactics;
 import net.wolfTec.input.InputHandlerBean;
 import net.wolfTec.input.InputType;
 import net.wolfTec.utility.Debug;
+import net.wolfTec.wtEngine.input.InputBackend;
 
 import org.stjs.javascript.*;
 import org.stjs.javascript.Math;

@@ -143,7 +143,7 @@ public class NSlixCanvasPanel extends GameContainer {
      */
     @Override
     public void setMouseGrabbed(boolean grabbed) {
-        Mouse.setGrabbed(grabbed);
+        MouseInputBean.setGrabbed(grabbed);
     }
 
     /**
@@ -151,7 +151,7 @@ public class NSlixCanvasPanel extends GameContainer {
      */
     @Override
     public boolean isMouseGrabbed() {
-        return Mouse.isGrabbed();
+        return MouseInputBean.isGrabbed();
     }
 
     /**
@@ -164,7 +164,7 @@ public class NSlixCanvasPanel extends GameContainer {
         try {
             Cursor cursor = CursorLoader.get().getCursor(ref,
                     hotSpotX, hotSpotY);
-            Mouse.setNativeCursor(cursor);
+            MouseInputBean.setNativeCursor(cursor);
         } catch (Throwable e) {
             Log.error("Failed to load and apply cursor.", e);
             throw new SlickException("Failed to set mouse cursor",
@@ -208,7 +208,7 @@ public class NSlixCanvasPanel extends GameContainer {
             Cursor cursor = CursorLoader.get().getCursor(buffer,
                     hotSpotX, hotSpotY, temp.getWidth(),
                     temp.getHeight());
-            Mouse.setNativeCursor(cursor);
+            MouseInputBean.setNativeCursor(cursor);
         } catch (Throwable e) {
             Log.error("Failed to load and apply cursor.", e);
             throw new SlickException("Failed to set mouse cursor",
@@ -234,7 +234,7 @@ public class NSlixCanvasPanel extends GameContainer {
         try {
             Cursor cursor = CursorLoader.get().getCursor(data,
                     hotSpotX, hotSpotY);
-            Mouse.setNativeCursor(cursor);
+            MouseInputBean.setNativeCursor(cursor);
         } catch (Throwable e) {
             Log.error("Failed to load and apply cursor.", e);
             throw new SlickException("Failed to set mouse cursor",
@@ -249,7 +249,7 @@ public class NSlixCanvasPanel extends GameContainer {
     public void setMouseCursor(Cursor cursor, int hotSpotX,
             int hotSpotY) throws SlickException {
         try {
-            Mouse.setNativeCursor(cursor);
+            MouseInputBean.setNativeCursor(cursor);
         } catch (Throwable e) {
             Log.error("Failed to load and apply cursor.", e);
             throw new SlickException("Failed to set mouse cursor",

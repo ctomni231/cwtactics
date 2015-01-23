@@ -1,23 +1,15 @@
 package net.wolfTec.wtEngine.input;
 
-import net.wolfTec.Constants;
+import net.wolfTec.cwt.Constants;
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.utility.CircularBuffer;
 
-import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSStringAdapter;
-import org.stjs.javascript.Map;
 import org.stjs.javascript.annotation.Namespace;
 
 @Namespace("wtEngine") public class InputBean {
 
   private Logger                          log;
-
-  public final int                        CONSOLE_TOGGLE_KEY = 192;
-
-  public final Map<String, Integer>       KEYBOARD_MAPPING;
-
-  public final Map<String, Integer>       GAMEPAD_MAPPING;
 
   private final CircularBuffer<InputData> stack;
   private final CircularBuffer<InputData> pool;
@@ -34,58 +26,8 @@ import org.stjs.javascript.annotation.Namespace;
   public boolean                          genericInput;
 
   public InputBean() {
-    KEYBOARD_MAPPING = JSCollections.$map();
-    KEYBOARD_MAPPING.$put(InputTypeKey.UP.name(), 38);
-    KEYBOARD_MAPPING.$put(InputTypeKey.DOWN.name(), 40);
-    KEYBOARD_MAPPING.$put(InputTypeKey.LEFT.name(), 37);
-    KEYBOARD_MAPPING.$put(InputTypeKey.RIGHT.name(), 39);
-    KEYBOARD_MAPPING.$put(InputTypeKey.A.name(), 13);
-    KEYBOARD_MAPPING.$put(InputTypeKey.B.name(), 8);
-
-    GAMEPAD_MAPPING = JSCollections.$map();
-    GAMEPAD_MAPPING.$put(InputTypeKey.A.name(), 0);
-    GAMEPAD_MAPPING.$put(InputTypeKey.B.name(), 1);
-
     stack = new CircularBuffer<InputData>(Constants.INPUT_STACK_BUFFER_SIZE);
     pool = new CircularBuffer<InputData>(Constants.INPUT_STACK_BUFFER_SIZE);
-  }
-
-  public void enableInputType(InputBackendType type) {
-    switch (type) {
-
-      case GAMEPAD:
-        break;
-
-      case KEYBOARD:
-        break;
-
-      case MOUSE:
-        break;
-
-      case TOUCH:
-        break;
-
-      default: log.error("UnknownInputType");
-    }
-  }
-
-  public void disableInputType(InputBackendType type) {
-    switch (type) {
-
-      case GAMEPAD:
-        break;
-
-      case KEYBOARD:
-        break;
-
-      case MOUSE:
-        break;
-
-      case TOUCH:
-        break;
-
-      default: log.error("UnknownInputType");
-    }
   }
 
   /**
@@ -96,7 +38,7 @@ import org.stjs.javascript.annotation.Namespace;
    * @param d1
    * @param d2
    */
-  void pushAction(InputTypeKey key, int d1, int d2) {
+  public void pushAction(InputTypeKey key, int d1, int d2) {
     if (blocked || pool.isEmpty()) return;
 
     log.info("adding input data " + key + ", " + d1 + ", " + d2);

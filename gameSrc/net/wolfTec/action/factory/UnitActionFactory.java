@@ -1,7 +1,7 @@
 package net.wolfTec.action.factory;
 
-import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.action.Action;
+import net.wolfTec.cwt.CustomWarsTactics;
 import net.wolfTec.logic.ActionInvokerBean;
 import net.wolfTec.logic.ActionData;
 import net.wolfTec.logic.Relationship;

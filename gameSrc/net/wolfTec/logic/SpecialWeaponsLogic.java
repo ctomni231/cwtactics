@@ -1,6 +1,6 @@
 package net.wolfTec.logic;
 
-import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.cwt.CustomWarsTactics;
 import net.wolfTec.model.Property;
 import net.wolfTec.model.Unit;
 

@@ -1,6 +1,6 @@
 package net.wolfTec.dataTransfer;
 
-import net.wolfTec.Constants;
+import net.wolfTec.cwt.Constants;
 import net.wolfTec.loading.Modification;
 
 public class DataTransferHandler {

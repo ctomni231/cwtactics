@@ -1,4 +1,4 @@
-package net.wolfTec.wtEngine.base;
+package net.wolfTec.wtEngine;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
@@ -7,6 +7,7 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.annotation.Namespace;
 
+import net.wolfTec.wtEngine.base.EngineOptions;
 import net.wolfTec.wtEngine.log.LoggerFactoryBeanInterface;
 
 @Namespace("wtEngine") public class WolfTecEngine {
@@ -36,10 +37,9 @@ import net.wolfTec.wtEngine.log.LoggerFactoryBeanInterface;
    */
   public <T> T getBeanOfType (Object typeConstructor) {
     Object bean = null;
-    
     Array<String> beanNames = JSObjectAdapter.$js("Object.keys(this.beans)");
 		for (String beanName : beanNames) {
-  		if ((boolean) JSObjectAdapter.$js("beans.$get(beanName) instanceof typeConstructor")) {
+  		if ((boolean) JSObjectAdapter.$js("beans[beanName] instanceof typeConstructor")) {
   		  return (T) beans.$get(beanName);
   		}
 		}
@@ -51,6 +51,26 @@ import net.wolfTec.wtEngine.log.LoggerFactoryBeanInterface;
     return null;
   }
   
+  /**
+   *            
+   * @param intfc
+   * @return
+   */
+  public <T> Array<T> getBeansOfInterface(T intfc) {
+    
+    // TODO: search constructor in namespaces
+    String intfcName;
+    
+    Array<T> list = JSCollections.$array();
+    Array<String> beanNames = JSObjectAdapter.$js("Object.keys(this.beans)");
+    for (String beanName : beanNames) {
+      if((boolean) JSObjectAdapter.$js("beans[beanName].constructor.$inherit.indexOf(intfcName) !== -1")) {
+        list.push(JSObjectAdapter.$js("beans[beanName]"));
+      }
+    }
+    return list;
+  }
+  
   public String getVersion () {
     return "0.38";
   }
@@ -60,7 +80,7 @@ import net.wolfTec.wtEngine.log.LoggerFactoryBeanInterface;
   }
 
   public String getLongName () {
-    return "WolfTecEngine Â© BlackCat and JSRulez";
+    return "WolfTecEngine © BlackCat and JSRulez";
   }
   
   /**

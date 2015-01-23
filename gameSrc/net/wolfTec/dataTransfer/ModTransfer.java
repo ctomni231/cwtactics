@@ -1,7 +1,7 @@
 package net.wolfTec.dataTransfer;
 
-import net.wolfTec.Constants;
 import net.wolfTec.bridges.Globals;
+import net.wolfTec.cwt.Constants;
 import net.wolfTec.loading.Modification;
 import net.wolfTec.system.StorageBean;
 import net.wolfTec.system.StorageBean.StorageEntry;

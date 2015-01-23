@@ -4,7 +4,7 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 
-import net.wolfTec.Constants;
+import net.wolfTec.cwt.Constants;
 
 /**
  * Holds all data which is needed to invoke an model changing game action in

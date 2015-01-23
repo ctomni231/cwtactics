@@ -1,7 +1,7 @@
 package net.wolfTec.wtEngine.base;
 
 import net.wolfTec.wtEngine.action.ActionData;
-import net.wolfTec.wtEngine.assets.AssetCategory;
+import net.wolfTec.wtEngine.assets.AssetType;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.annotation.Namespace;
@@ -25,8 +25,8 @@ import org.stjs.javascript.functions.Function2;
   public int screenWidth;
   public int screenHeight;
   public Function1<String, ActionData> onIncomingNetworkMessage;
-  public Callback3<Object, Integer, AssetCategory> onItemLoaded;
-  public Function2<Object, AssetCategory, Boolean> onTryToCacheItem;
+  public Callback3<Object, Integer, AssetType> onItemLoaded;
+  public Function2<Object, AssetType, Boolean> onTryToCacheItem;
   
   public EngineOptions () {
     namespace = null;

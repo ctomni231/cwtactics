@@ -1,6 +1,6 @@
 package net.wolfTec.logic;
 
-import net.wolfTec.Constants;
+import net.wolfTec.cwt.Constants;
 import net.wolfTec.model.CoType;
 import net.wolfTec.model.GameMap;
 import net.wolfTec.model.GameMode;

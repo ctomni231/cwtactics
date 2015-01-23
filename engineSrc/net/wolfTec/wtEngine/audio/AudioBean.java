@@ -1,13 +1,13 @@
 package net.wolfTec.wtEngine.audio;
 
-import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.bridges.Globals;
-import net.wolfTec.system.StorageBean;
-import net.wolfTec.system.StorageBean.StorageEntry;
+import net.wolfTec.cwt.CustomWarsTactics;
 import net.wolfTec.wtEngine.assets.AssetItem;
 import net.wolfTec.wtEngine.assets.AssetLoader;
+import net.wolfTec.wtEngine.assets.AssetType;
 import net.wolfTec.wtEngine.base.PostEngineInitializationListener;
 import net.wolfTec.wtEngine.log.Logger;
+import net.wolfTec.wtEngine.persistence.StorageEntry;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
@@ -53,8 +53,8 @@ import org.stjs.javascript.functions.Callback1;
   private Object                  musicConnector;
   private String                  musicID;
 
-  private Callback1<StorageEntry> musicLoadCallback = new Callback1<StorageBean.StorageEntry>() {
-                                                      @Override public void $invoke(StorageBean.StorageEntry entry) {
+  private Callback1<StorageEntry> musicLoadCallback = new Callback1<StorageEntry>() {
+                                                      @Override public void $invoke(StorageEntry entry) {
 
                                                         // this is a callback,
                                                         // so we need to grab
@@ -207,24 +207,25 @@ import org.stjs.javascript.functions.Callback1;
 
     return source;
   }
-  
+
   private Callback1<String> decodeAssetErrorCb = (e) -> log.error(e);
-  
-  @Override public void cacheAsset (AssetItem item, Object data, Callback0 callback) {
-    //storage.setItem(item.key("path"), this.response, callback);
+
+  @Override public void cacheAsset(AssetItem item, Object data, Callback0 callback) {
+    // storage.setItem(item.key("path"), this.response, callback);
   }
-  
-  @Override public void loadAsset (AssetItem item, Object data, Callback0 callback) { // TODO: bind this
-    if (!(boolean) item.key("music")) {
+
+  @Override public void loadAsset(AssetItem item, Object data, Callback0 callback) {
+    // TODO: bind this
+    if (item.type != AssetType.MUSIC) {
       JSObjectAdapter.$js("this.context.decodeAudioData(data, callback, this.decodeAssetErrorCb)");
     }
   }
-  
-  @Override public void grabAsset (AssetItem item, Callback1<Object> callback) {
-    JSObjectAdapter.$js("var req = new XMLHttpRequest()");    
-    JSObjectAdapter.$js("req.open(\"GET\",item.key(\"path\"),true)");    
-    JSObjectAdapter.$js("req.responseType = \"arraybuffer\"");    
-    JSObjectAdapter.$js("req.onload = callback");       
-    JSObjectAdapter.$js("req.send()"); 
+
+  @Override public void grabAsset(AssetItem item, Callback1<Object> callback) {
+    JSObjectAdapter.$js("var req = new XMLHttpRequest()");
+    JSObjectAdapter.$js("req.open(\"GET\",item.key(\"path\"),true)");
+    JSObjectAdapter.$js("req.responseType = \"arraybuffer\"");
+    JSObjectAdapter.$js("req.onload = callback");
+    JSObjectAdapter.$js("req.send()");
   }
 }

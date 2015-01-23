@@ -1,7 +1,7 @@
 package net.wolfTec.states.widgets;
 
-import net.wolfTec.Constants;
-import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.cwt.Constants;
+import net.wolfTec.cwt.CustomWarsTactics;
 import net.wolfTec.system.LocalizationBean;
 import net.wolfTec.utility.ObjectUtil;
 

@@ -1,7 +1,7 @@
 package net.wolfTec.renderer;
 
-import net.wolfTec.Constants;
-import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.cwt.Constants;
+import net.wolfTec.cwt.CustomWarsTactics;
 import net.wolfTec.logic.MoveCode;
 import net.wolfTec.model.Tile;
 import net.wolfTec.model.Unit;

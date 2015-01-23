@@ -1,6 +1,7 @@
 package net.wolfTec.states.widgets;
 
-import net.wolfTec.Constants;
+import net.wolfTec.cwt.Constants;
+
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;

@@ -1,6 +1,6 @@
 package net.wolfTec.states.widgets;
 
-import net.wolfTec.Constants;
+import net.wolfTec.cwt.Constants;
 import net.wolfTec.input.InputData;
 import net.wolfTec.utility.Debug;
 

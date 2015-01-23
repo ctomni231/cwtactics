@@ -2,7 +2,7 @@ package net.wolfTec.logic;
 
 import org.stjs.javascript.annotation.Namespace;
 
-import net.wolfTec.Constants;
+import net.wolfTec.cwt.Constants;
 
 @Namespace("cwt") public enum MoveCode {
 

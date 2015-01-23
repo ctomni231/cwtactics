@@ -1,7 +1,7 @@
 package net.wolfTec.loading;
 
-import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.bridges.Globals;
+import net.wolfTec.cwt.CustomWarsTactics;
 import net.wolfTec.model.Config;
 import net.wolfTec.system.StorageBean;
 import net.wolfTec.utility.Debug;

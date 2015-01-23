@@ -1,6 +1,6 @@
 package net.wolfTec.states.factory;
 
-import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.cwt.CustomWarsTactics;
 import net.wolfTec.input.InputData;
 import net.wolfTec.states.State;
 import net.wolfTec.states.StatemachineBean;

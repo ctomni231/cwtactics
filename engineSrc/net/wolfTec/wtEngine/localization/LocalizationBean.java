@@ -1,4 +1,4 @@
-package net.wolfTec.wtEngine.i18N;
+package net.wolfTec.wtEngine.localization;
 
 import java.util.Iterator;
 

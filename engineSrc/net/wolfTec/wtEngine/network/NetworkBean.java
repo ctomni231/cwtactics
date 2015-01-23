@@ -1,6 +1,6 @@
 package net.wolfTec.wtEngine.network;
 
-import net.wolfTec.Constants;
+import net.wolfTec.cwt.Constants;
 import net.wolfTec.wtEngine.action.ActionData;
 import net.wolfTec.wtEngine.log.Logger;
 

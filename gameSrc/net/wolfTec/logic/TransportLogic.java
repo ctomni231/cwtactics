@@ -2,7 +2,7 @@ package net.wolfTec.logic;
 
 import org.stjs.javascript.annotation.Namespace;
 
-import net.wolfTec.Constants;
+import net.wolfTec.cwt.Constants;
 import net.wolfTec.model.Unit;
 
 @Namespace("cwt") public interface TransportLogic extends BaseLogic {

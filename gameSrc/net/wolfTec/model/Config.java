@@ -1,6 +1,7 @@
 package net.wolfTec.model;
 
-import net.wolfTec.Constants;
+import net.wolfTec.cwt.Constants;
+
 import org.stjs.javascript.annotation.Template;
 
 /**

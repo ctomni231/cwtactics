@@ -1,8 +1,5 @@
 package net.wolfTec.wtEngine.persistence;
 
-import net.wolfTec.bridges.Globals;
-import net.wolfTec.system.StorageBean.StorageEntry;
-
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
@@ -41,8 +38,8 @@ import org.stjs.javascript.functions.Callback2;
   /**
    * The given callback will be invoked with the value saved by the given key.
    */
-  public static void get(String key, Callback1<StorageEntry> callback) {
-    Globals.localForage.getItem(key, callback);
+  public static void get(String key, Callback1<StorageEntry<?>> callback) {
+    JSObjectAdapter.$js("localForage.getItem(key, callback)");
   }
 
   /**
@@ -51,20 +48,19 @@ import org.stjs.javascript.functions.Callback2;
    * invoked.
    */
   public static <T> void set(final String key, final T value, final Callback2<Object, Object> callback) {
-    Globals.localForage.setItem(key, value, new Callback2<Object, Object>() {
-      @Override public void $invoke(Object result, Object error) {
-
-        // try a second time when fail at the first time because on ios the
-        // question for more storage invokes an error => we don't want to
-        // need to reload then
-        if (error != null) {
-          Globals.localForage.setItem(key, value, callback);
-
-        } else {
-          callback.$invoke(result, null);
-        }
+    
+    Callback2<StorageEntry<?>, Object> safeCb = (result, error) -> {
+      // try a second time when fail at the first time because on ios the
+      // question for more storage invokes an error => we don't want to
+      // need to reload then
+      if (error != null) {
+        JSObjectAdapter.$js("localForage.setItem(key, value, callback)");
+      } else {
+        callback.$invoke(result, null);
       }
-    });
+    };
+    
+    JSObjectAdapter.$js("localForage.setItem(key, value, callback)");
   }
 
   /**
@@ -72,7 +68,7 @@ import org.stjs.javascript.functions.Callback2;
    * in the storage.
    */
   public static void keys(Callback1<Array<String>> callback) {
-    Globals.localForage.keys(callback);
+    JSObjectAdapter.$js("localForage.keys(callback)");
   }
 
   /**
@@ -80,7 +76,7 @@ import org.stjs.javascript.functions.Callback2;
    * afterwards.
    */
   public static void clear(Callback0 callback) {
-    Globals.localForage.clear(callback);
+    JSObjectAdapter.$js("localForage.clear(callback)");
   }
 
   /**
@@ -88,7 +84,7 @@ import org.stjs.javascript.functions.Callback2;
    * callback will be invoked afterwards.
    */
   public static void remove(String key, Callback0 callback) {
-    Globals.localForage.removeItem(key, callback);
+    JSObjectAdapter.$js("localForage.removeItem(key, callback)");
   }
   
 }

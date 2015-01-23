@@ -1,9 +1,9 @@
 package net.wolfTec.dataTransfer;
 
-import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.bridges.Base64Helper;
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.bridges.webAudio.AudioBuffer;
+import net.wolfTec.cwt.CustomWarsTactics;
 import net.wolfTec.loading.Modification;
 import net.wolfTec.system.Storage;
 import net.wolfTec.system.Storage.StorageEntry;

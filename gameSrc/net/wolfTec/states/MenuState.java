@@ -1,7 +1,7 @@
 package net.wolfTec.states;
 
-import net.wolfTec.Constants;
-import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.cwt.Constants;
+import net.wolfTec.cwt.CustomWarsTactics;
 import net.wolfTec.input.InputData;
 import net.wolfTec.states.widgets.UiField;
 import net.wolfTec.system.AudioBean;

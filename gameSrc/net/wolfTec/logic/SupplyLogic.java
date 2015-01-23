@@ -1,6 +1,6 @@
 package net.wolfTec.logic;
 
-import net.wolfTec.Constants;
+import net.wolfTec.cwt.Constants;
 import net.wolfTec.model.Unit;
 
 import org.stjs.javascript.JSGlobal;

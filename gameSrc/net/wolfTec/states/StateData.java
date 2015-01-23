@@ -1,8 +1,8 @@
 package net.wolfTec.states;
 
-import net.wolfTec.Constants;
-import net.wolfTec.CustomWarsTactics;
 import net.wolfTec.action.Action;
+import net.wolfTec.cwt.Constants;
+import net.wolfTec.cwt.CustomWarsTactics;
 import net.wolfTec.game.objectTypes.CoType;
 import net.wolfTec.logic.MoveCode;
 import net.wolfTec.model.GameRound;

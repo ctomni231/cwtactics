@@ -1,6 +1,6 @@
 package net.wolfTec.utility;
 
-import net.wolfTec.Constants;
+import net.wolfTec.cwt.Constants;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;

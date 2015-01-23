@@ -1,10 +1,12 @@
-package net.wolfTec;
+package net.wolfTec.cwt;
 
 import net.wolfTec.model.MoveType;
 import net.wolfTec.model.ObjectType;
 import net.wolfTec.model.PropertyType;
 import net.wolfTec.model.TypeDatabase;
 import net.wolfTec.model.UnitType;
+import net.wolfTec.wtEngine.WolfTecEngine;
+import net.wolfTec.wtEngine.base.EngineOptions;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
@@ -86,74 +88,18 @@ public abstract class CustomWarsTactics {
 		};
 	}
 
-	private static Map<String, Object>	beans;
+	private static WolfTecEngine engine;
 	
-	public static <T> T getBean(String className) {
-		return null;
-	}
-
-	/**
-	 * <strong>Note: </strong> This function is low level and contains real JS
-	 * code. Modify only if you know what you're doing here.
-	 */
-	private static void initBeans() {
-		beans = JSCollections.$map();
-
-		// search in all classes and convert every class with a $BEAN property into
-		// a bean by calling it's constructor with zero arguments.
-		Array<String> possibleBeanNames = JSObjectAdapter.$js("Object.keys(this.beans)");
-		for (String name : possibleBeanNames) {
-			boolean isBean = JSObjectAdapter.$js("cwt[name].$BEAN == true");
-			if (isBean) {
-				JSObjectAdapter.$js("this.beans[name] = new cwt[name]()");
-			}
-		}
-	}
-
-	/**
-	 * <strong>Note: </strong> This function is low level and contains real JS
-	 * code. Modify only if you know what you're doing here.
-	 */
-	private static void solveBeanDependencies() {
-		boolean isDebugEnabled = Constants.DEBUG;
-
-		// search in all beans for properties with a leading '$' character. This
-		// properties are references to beans. Place the right bean into this
-		// property by searching the correct bean type together with the type
-		// description of the class.
-		Array<String> beanNames = JSObjectAdapter.$js("Object.keys(this.beans)");
-		for (String beanName : beanNames) {
-
-			@SuppressWarnings("unused") Object bean = beans.$get(beanName);
-			Array<String> beanProperties = JSObjectAdapter.$js("Object.keys(bean)");
-			for (String property : beanProperties) {
-				if (property.indexOf("$") == 0) {
-					if (property != "$BEAN") {
-						if (property == "$LOG") {
-
-							// create a custom logger object for the bean object
-							JSObjectAdapter.$js("bean.$LOG = LogJS.get({name: \"beanName\", level: \"info\", enabled: isDebugEnabled})");
-
-						} else {
-
-							// grab the class name plus namespace and extract only the class
-							// name
-							String propertyClass = JSObjectAdapter.$js("bean.constructor.$typeDescription[property]");
-							propertyClass = propertyClass.substring(propertyClass.lastIndexOf(".") + 1);
-
-							// inject it
-							JSObjectAdapter.$js("bean[property] = this.beans[propertyClass]");
-						}
-					}
-				}
-			}
-		}
-	}
-
 	public static void main(String[] args) {
-		initBeans();
-		solveBeanDependencies();
-		registerDefaultObjects();
+	  
+	  // generate options
+	  EngineOptions options = new EngineOptions();
+	  options.debugMode = Constants.DEBUG;
+	  
+	  // create engine
+	  engine = new WolfTecEngine(options);
+	  
+	  // start
 	}
 
 }

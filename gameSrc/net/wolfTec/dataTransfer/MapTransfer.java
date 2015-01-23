@@ -1,6 +1,6 @@
 package net.wolfTec.dataTransfer;
 
-import net.wolfTec.CustomWarsTactics;
+import net.wolfTec.cwt.CustomWarsTactics;
 import net.wolfTec.system.Storage;
 import net.wolfTec.system.Storage.StorageEntry;
 
