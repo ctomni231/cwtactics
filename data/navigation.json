@@ -16,8 +16,9 @@
 
   { "id":"linkForum",
   	"label": "Forum",
-  	"link":"http://forums.customwars.com",
-    "title":"Talk with us in our forum" },
+  	"link":"forum",
+	"isDialog":true,
+    "title":"" },
      
   { "id":"dialogDevelopmentLink",
   	"label": "Development",
