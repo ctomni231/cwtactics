@@ -32,10 +32,19 @@
 
         {
 		"id": "forum",
-		"title:":"Community Forum Links",
+		"title":"Community Forum Links",
 		"text": [
 			"Talk to us in our forum, or browse the old Custom Wars Archive.",
 			"<ul class='linkList'><li><a target='_blank' href='http://w11.zetaboards.com/Custom_Wars_Tactics/index/'>Custom Wars Tactics Main Forum</a></li><li><a target='_blank' href='http://forums.customwars.com'>Custom Wars Forum (Archive)</a></li></ul>"
+		]
+	},
+
+	{
+		"id": "youtube",
+		"title":"Youtube Links",
+		"text": [
+			"Watch and grab videos from our Youtube Channel Links.",
+			"<ul class='linkList'><a target='_blank' href='http://www.youtube.com/channel/UCY9_WmJVNgPSh-zVC6vBEVQ'>Programming Development Channel</a></li><li><a target='_blank' href='https://www.youtube.com/playlist?list=PLFOpXFlYHQTkUm7UHDattfnFZaAsfx3ha'>User Contribution Playlist</a></li></ul>"
 		]
 	}
 ]

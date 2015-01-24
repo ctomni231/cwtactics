@@ -4,17 +4,18 @@
   	"link":"https://www.facebook.com/customwarstactics",
     "title":"Follow our development diary on Facebook" },
 
-  { "id":"linkYoutube",
+  { "id":"dialogYoutube",
   	"label": "Youtube",
-  	"link":"http://www.youtube.com/channel/UCY9_WmJVNgPSh-zVC6vBEVQ",
-    "title":"Grab videos from our youtube channel" },
+  	"link":"youtube",
+	"isDialog":true,
+    "title":"" },
 
   { "id":"linkBlogger",
   	"label": "Blog",
   	"link":"http://cwtactics.blogspot.de",
     "title":"Grab important news from the blog" },
 
-  { "id":"linkForum",
+  { "id":"dialogForum",
   	"label": "Forum",
   	"link":"forum",
 	"isDialog":true,
