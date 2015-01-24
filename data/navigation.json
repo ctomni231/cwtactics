@@ -14,7 +14,7 @@
   	"link":"http://cwtactics.blogspot.de",
     "title":"Grab important news from the blog" },
 
-  { "id":"linkForum",
+  { "id":"dialogForum",
   	"label": "Forum",
   	"link":"forum",
 	"isDialog":true,
