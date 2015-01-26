@@ -1,7 +1,7 @@
 package net.wolfTec.states;
 
 import net.wolfTec.cwt.Constants;
-import net.wolfTec.cwt.CustomWarsTactics;
+import net.wolfTec.cwt.Game;
 import net.wolfTec.input.InputData;
 import net.wolfTec.states.widgets.UiField;
 import net.wolfTec.system.AudioBean;
@@ -37,7 +37,7 @@ public abstract class MenuState extends State {
 
 				case CANCEL:
 					if (state.prevState != null) {
-						CustomWarsTactics.gameWorkflow.changeState(state.prevState);
+						Game.gameWorkflow.changeState(state.prevState);
 						getAudio().playSfx("CANCEL");
 					}
 					break;

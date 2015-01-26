@@ -1,8 +1,8 @@
 package net.wolfTec.states.factory;
 
-import net.wolfTec.cwt.CustomWarsTactics;
+import net.wolfTec.cwt.Game;
+import net.wolfTec.cwt.logic.MoveCode;
 import net.wolfTec.input.InputData;
-import net.wolfTec.logic.MoveCode;
 import net.wolfTec.states.State;
 import net.wolfTec.states.StatemachineBean;
 
@@ -81,7 +81,7 @@ public abstract class IngameStates {
 						fn.$invoke(delta);
 
 					} else if (code != null) {
-						CustomWarsTactics.gameWorkflowData.moveCursor(code);
+						Game.gameWorkflowData.moveCursor(code);
 					}
 				}
 			}
@@ -94,7 +94,7 @@ public abstract class IngameStates {
 
 		ingameState.render = new Callback1<Integer>() {
 			@Override public void $invoke(Integer delta) {
-				CustomWarsTactics.renderCtx.evaluateCycle(delta);
+				Game.renderCtx.evaluateCycle(delta);
 				if (state.render != null) {
 					state.render.$invoke(delta);
 				}
@@ -107,7 +107,7 @@ public abstract class IngameStates {
 					state.inputMove.$invoke(x, y);
 
 				} else {
-					CustomWarsTactics.gameWorkflowData.setCursorPosition(CustomWarsTactics.renderCtx.convertToTilePos(x), CustomWarsTactics.renderCtx.convertToTilePos(y), true);
+					Game.gameWorkflowData.setCursorPosition(Game.renderCtx.convertToTilePos(x), Game.renderCtx.convertToTilePos(y), true);
 				}
 			}
 		};

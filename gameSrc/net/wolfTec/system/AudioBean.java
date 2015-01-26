@@ -2,7 +2,7 @@ package net.wolfTec.system;
 
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.bridges.webAudio.AudioBuffer;
-import net.wolfTec.cwt.CustomWarsTactics;
+import net.wolfTec.cwt.Game;
 import net.wolfTec.system.StorageBean.StorageEntry;
 
 import org.stjs.javascript.Global;

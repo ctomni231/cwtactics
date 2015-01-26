@@ -1,9 +1,9 @@
 package net.wolfTec.action;
 
-import net.wolfTec.logic.ActionData;
-import net.wolfTec.logic.Relationship;
+import net.wolfTec.cwt.logic.ActionData;
+import net.wolfTec.cwt.logic.Relationship;
+import net.wolfTec.cwt.util.AssertUtil;
 import net.wolfTec.states.StateData;
-import net.wolfTec.utility.Assert;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback1;
@@ -127,7 +127,7 @@ public class Action {
 	public Callback1<ActionData>	                    invoke;
 
 	public Action(String key) {
-		Assert.notEmpty(key);
+		AssertUtil.notEmpty(key);
 
 		this.key = key;
 		this.positionUpdateMode = MovingAction.SET_POSITION;

@@ -1,21 +1,31 @@
 package net.wolfTec.wtEngine.utility;
 
 import org.stjs.javascript.JSGlobal;
-import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.XMLHttpRequest;
 import org.stjs.javascript.annotation.Namespace;
+import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.functions.Callback0;
+
+import static org.stjs.javascript.JSObjectAdapter.*;
 
 @Namespace("wtEngine") public class BrowserHelperBean {
 
+  public String convertCanvasToBase64(Canvas image) {
+    return $js("Base64Helper.canvasToBase64(image)");
+  }
+
+  public Object convertBase64ToImage(String imageData) {
+    return $js("Base64Helper.base64ToImage(image)");
+  }
+  
   /**
 	 * 
 	 * @param param
 	 * @return
 	 */
 	public String getUrlParameter(String param) {
-		Object parameter = JSObjectAdapter.$js("getURLQueryParams(document.location.search)[param]");
-		return JSObjectAdapter.$js("parameter !== undefined? parameter : null");
+		Object parameter = $js("getURLQueryParams(document.location.search)[param]");
+		return $js("parameter !== undefined? parameter : null");
 	}
 
   /**

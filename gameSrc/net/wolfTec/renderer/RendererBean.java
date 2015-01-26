@@ -2,9 +2,9 @@ package net.wolfTec.renderer;
 
 import net.wolfTec.cwt.Constants;
 import net.wolfTec.cwt.CustomWarsTactics;
-import net.wolfTec.logic.MoveCode;
-import net.wolfTec.model.Tile;
-import net.wolfTec.model.Unit;
+import net.wolfTec.cwt.logic.MoveCode;
+import net.wolfTec.cwt.model.Tile;
+import net.wolfTec.cwt.model.Unit;
 import net.wolfTec.states.StateDataMenu;
 import net.wolfTec.wtEngine.utility.CircularBuffer;
 
@@ -753,7 +753,7 @@ public class RendererBean {
      * NOTE: does not clear the area before update
      */
     public void renderUnits(int x, int oy, int w, int h) {
-        net.wolfTec.model.Map map = $gameround.map;
+        net.wolfTec.cwt.model.Map map = $gameround.map;
         int halfTileBase = JSGlobal.parseInt(Constants.TILE_BASE / 2, 10);
         Unit hiddenUnit = (hiddenUnitId != Constants.INACTIVE_ID ?
         		$gameround.units.$get(hiddenUnitId) : null);

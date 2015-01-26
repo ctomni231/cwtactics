@@ -4,10 +4,10 @@ import net.wolfTec.bridges.Base64Helper;
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.bridges.webAudio.AudioBuffer;
 import net.wolfTec.cwt.CustomWarsTactics;
-import net.wolfTec.loading.Modification;
 import net.wolfTec.system.Storage;
 import net.wolfTec.system.Storage.StorageEntry;
 import net.wolfTec.utility.Debug;
+import net.wolfTec.wtEngine.assets.Modification;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;

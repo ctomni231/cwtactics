@@ -2,8 +2,8 @@ package net.wolfTec.loading;
 
 import org.stjs.javascript.annotation.Namespace;
 
+import net.wolfTec.cwt.util.AssertUtil;
 import net.wolfTec.system.Logger;
-import net.wolfTec.utility.Assert;
 
 @Namespace("cwt") public class $GameLoader {
 
@@ -28,7 +28,7 @@ import net.wolfTec.utility.Assert;
 	 * Load assets from cache 4. Prepare stuff 5. DONE
 	 */
 	public void loadGame() {
-		Assert.isNot(loaded, true);
+		AssertUtil.isNot(loaded, true);
 
 		log.info("Loading game data");
 

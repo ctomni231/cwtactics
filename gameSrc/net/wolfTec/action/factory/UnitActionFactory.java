@@ -1,11 +1,11 @@
 package net.wolfTec.action.factory;
 
 import net.wolfTec.action.Action;
-import net.wolfTec.cwt.CustomWarsTactics;
-import net.wolfTec.logic.ActionInvokerBean;
-import net.wolfTec.logic.ActionData;
-import net.wolfTec.logic.Relationship;
-import net.wolfTec.model.Position;
+import net.wolfTec.cwt.Game;
+import net.wolfTec.cwt.logic.ActionData;
+import net.wolfTec.cwt.logic.ActionInvokerBean;
+import net.wolfTec.cwt.logic.Relationship;
+import net.wolfTec.cwt.model.Position;
 import net.wolfTec.states.StateData;
 import net.wolfTec.utility.Debug;
 

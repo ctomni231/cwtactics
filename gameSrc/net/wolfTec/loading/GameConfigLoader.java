@@ -2,7 +2,7 @@ package net.wolfTec.loading;
 
 import org.stjs.javascript.functions.Callback1;
 
-import net.wolfTec.logic.GameConfigBean;
+import net.wolfTec.cwt.logic.GameConfigBean;
 import net.wolfTec.system.StorageBean;
 import net.wolfTec.system.StorageBean.StorageEntry;
 import net.wolfTec.wtEngine.utility.BrowserHelperBean;

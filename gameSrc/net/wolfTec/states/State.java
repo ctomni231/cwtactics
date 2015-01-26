@@ -28,23 +28,7 @@ public abstract class State {
 	public void clickAtCanvasPosition(int cx, int cy) {
 	}
 
-	public void keyUp() {
-	}
 
-	public void keyDown() {
-	}
-
-	public void keyLeft() {
-	}
-
-	public void keyRight() {
-	}
-
-	public void keyAction() {
-	}
-
-	public void keyCancel() {
-	}
 
 	public Callback1<UiScreenLayout>	doLayout;
 	public UiScreenLayout							layout;

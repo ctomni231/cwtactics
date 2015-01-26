@@ -1,7 +1,6 @@
 package net.wolfTec.wtEngine.audio;
 
-import net.wolfTec.bridges.Globals;
-import net.wolfTec.cwt.CustomWarsTactics;
+import net.wolfTec.cwt.Game;
 import net.wolfTec.wtEngine.assets.AssetItem;
 import net.wolfTec.wtEngine.assets.AssetLoader;
 import net.wolfTec.wtEngine.assets.AssetType;
@@ -12,11 +11,13 @@ import net.wolfTec.wtEngine.persistence.StorageEntry;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
-import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
+import org.stjs.javascript.JSObjectAdapter;
+
+import static org.stjs.javascript.JSObjectAdapter.*;
 
 @Namespace("wtEngine") public class AudioBean implements PostEngineInitializationListener, AssetLoader {
 
@@ -64,7 +65,7 @@ import org.stjs.javascript.functions.Callback1;
                                                         // TODO: do we change
                                                         // this to automatically
                                                         // match $Audio ?
-                                                        AudioBean audio = CustomWarsTactics.getBean("$Audio");
+                                                        AudioBean audio = Game.getBean("$Audio");
 
                                                         audio.musicConnector = playSoundOnGainNode(audio.musicNode,
                                                             Globals.Base64Helper.decodeBuffer(entry.value), true);
@@ -77,10 +78,10 @@ import org.stjs.javascript.functions.Callback1;
       log.info("Initialize..");
 
       // grab context
-      if (JSObjectAdapter.hasOwnProperty(Global.window, "AudioContext")) {
-        JSObjectAdapter.$js("this.context = window.AudioContext;");
-      } else if (JSObjectAdapter.hasOwnProperty(Global.window, "webkitAudioContext")) {
-        JSObjectAdapter.$js("this.context = window.webkitAudioContext;");
+      if (hasOwnProperty(Global.window, "AudioContext")) {
+        $js("this.context = window.AudioContext;");
+      } else if (hasOwnProperty(Global.window, "webkitAudioContext")) {
+        $js("this.context = window.webkitAudioContext;");
       } else {
         JSGlobal.stjs.exception("noWebKitFound");
       }
@@ -111,7 +112,7 @@ import org.stjs.javascript.functions.Callback1;
       return;
     }
 
-    playSoundOnGainNode(sfxNode, JSObjectAdapter.$js("context.createBuffer(1, 1, 22050)"), false);
+    playSoundOnGainNode(sfxNode, $js("context.createBuffer(1, 1, 22050)"), false);
   }
 
   public void playSFX(String key) {
@@ -139,17 +140,17 @@ import org.stjs.javascript.functions.Callback1;
       volume = 1;
     }
 
-    JSObjectAdapter.$js("node.gain.value = volume");
+    $js("node.gain.value = volume");
   }
 
   public int getVolume(AudioChannel channel) {
     if (this.context == null) return -1;
 
     if (channel == AudioChannel.CHANNEL_BG) {
-      return JSObjectAdapter.$js("this.musicNode.gain.value");
+      return $js("this.musicNode.gain.value");
 
     } else if (channel == AudioChannel.CHANNEL_SFX) {
-      return JSObjectAdapter.$js("this.sfxNode.gain.value");
+      return $js("this.sfxNode.gain.value");
 
     } else {
       return -1;
@@ -171,13 +172,13 @@ import org.stjs.javascript.functions.Callback1;
    */
   private Object createSoundNode(float volume) {
     Object node;
-    if (JSObjectAdapter.hasOwnProperty(this.context, "createGain")) {
-      node = JSObjectAdapter.$js("this.context.createGain()");
+    if (hasOwnProperty(this.context, "createGain")) {
+      node = $js("this.context.createGain()");
     } else {
-      node = JSObjectAdapter.$js("this.context.createGainNode()");
+      node = $js("this.context.createGainNode()");
     }
-    JSObjectAdapter.$js("node.gain.value = volume");
-    JSObjectAdapter.$js("node.connect(this.context.destination)");
+    $js("node.gain.value = volume");
+    $js("node.connect(this.context.destination)");
     return node;
   }
 
@@ -189,20 +190,20 @@ import org.stjs.javascript.functions.Callback1;
    * @return
    */
   private Object playSoundOnGainNode(Object gainNode, Object buffer, boolean loop) {
-    Object source = JSObjectAdapter.$js("this.context.createBufferSource()");
-    JSObjectAdapter.$js("source.loop = loop");
-    JSObjectAdapter.$js("source.buffer = buffer");
-    JSObjectAdapter.$js("source.connect(gainNode)");
+    Object source = $js("this.context.createBufferSource()");
+    $js("source.loop = loop");
+    $js("source.buffer = buffer");
+    $js("source.connect(gainNode)");
 
     if (apiStatus == 0) {
-      apiStatus = JSObjectAdapter.hasOwnProperty(source, "start") ? 1 : 2;
+      apiStatus = hasOwnProperty(source, "start") ? 1 : 2;
     }
 
     // use correct start API
     if (apiStatus == 1) {
-      JSObjectAdapter.$js("source.start(0)");
+      $js("source.start(0)");
     } else {
-      JSObjectAdapter.$js("source.noteOn(0)");
+      $js("source.noteOn(0)");
     }
 
     return source;
@@ -217,15 +218,15 @@ import org.stjs.javascript.functions.Callback1;
   @Override public void loadAsset(AssetItem item, Object data, Callback0 callback) {
     // TODO: bind this
     if (item.type != AssetType.MUSIC) {
-      JSObjectAdapter.$js("this.context.decodeAudioData(data, callback, this.decodeAssetErrorCb)");
+      $js("this.context.decodeAudioData(data, callback, this.decodeAssetErrorCb)");
     }
   }
 
   @Override public void grabAsset(AssetItem item, Callback1<Object> callback) {
-    JSObjectAdapter.$js("var req = new XMLHttpRequest()");
-    JSObjectAdapter.$js("req.open(\"GET\",item.key(\"path\"),true)");
-    JSObjectAdapter.$js("req.responseType = \"arraybuffer\"");
-    JSObjectAdapter.$js("req.onload = callback");
-    JSObjectAdapter.$js("req.send()");
+    $js("var req = new XMLHttpRequest()");
+    $js("req.open(\"GET\",item.key(\"path\"),true)");
+    $js("req.responseType = \"arraybuffer\"");
+    $js("req.onload = callback");
+    $js("req.send()");
   }
 }

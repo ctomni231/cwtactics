@@ -1,6 +1,6 @@
 package net.wolfTec.states.factory;
 
-import net.wolfTec.cwt.CustomWarsTactics;
+import net.wolfTec.cwt.Game;
 import net.wolfTec.input.InputData;
 import net.wolfTec.states.State;
 import net.wolfTec.states.StatemachineBean;
@@ -39,7 +39,7 @@ public abstract class AnimationStates {
                 // TODO: move into state
                 // state.currentSubState++;
                 if (state.currentSubState == state.subStates) {
-                    CustomWarsTactics.gameWorkflow.changeState(state.nextState);
+                    Game.gameWorkflow.changeState(state.nextState);
                 }
             }
         };
@@ -47,7 +47,7 @@ public abstract class AnimationStates {
         animationState.render = new Callback1<Integer>() {
             @Override
             public void $invoke(Integer delta) {
-                CustomWarsTactics.renderCtx.evaluateCycle(delta);
+                Game.renderCtx.evaluateCycle(delta);
                 if (state.render != null) {
                     state.render.$invoke(delta);
                 }

@@ -1,8 +1,8 @@
 package net.wolfTec.loading;
 
 import net.wolfTec.bridges.Globals;
-import net.wolfTec.cwt.CustomWarsTactics;
-import net.wolfTec.model.Config;
+import net.wolfTec.cwt.Game;
+import net.wolfTec.cwt.model.Config;
 import net.wolfTec.system.StorageBean;
 import net.wolfTec.utility.Debug;
 
@@ -117,7 +117,7 @@ public class LoadingHandler {
         loadingSteps.push(new Callback1<Callback0>() {
             @Override
             public void $invoke(Callback0 next) {
-                Config cfg = CustomWarsTactics.configs.$get("forceTouch");
+                Config cfg = Game.configs.$get("forceTouch");
                 if (cfg.getValue() == 1) {
 
                     // enable touch and disable mouse

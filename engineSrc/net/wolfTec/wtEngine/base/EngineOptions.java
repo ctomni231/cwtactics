@@ -24,6 +24,7 @@ import org.stjs.javascript.functions.Function2;
   public Array<String> stateMachines;
   public int screenWidth;
   public int screenHeight;
+  public int numberOfLayers;
   public Function1<String, ActionData> onIncomingNetworkMessage;
   public Callback3<Object, Integer, AssetType> onItemLoaded;
   public Function2<Object, AssetType, Boolean> onTryToCacheItem;
@@ -39,6 +40,7 @@ import org.stjs.javascript.functions.Function2;
     debugMode = false;
     screenWidth = 32;
     screenHeight = 24;
+    numberOfLayers = 1;
     
     stateMachines = null;
     onIncomingNetworkMessage = null;

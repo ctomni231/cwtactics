@@ -2,7 +2,7 @@ package net.wolfTec.input.backends;
 
 import net.wolfTec.bridges.TouchEvent;
 import net.wolfTec.cwt.Constants;
-import net.wolfTec.cwt.CustomWarsTactics;
+import net.wolfTec.cwt.Game;
 import net.wolfTec.input.InputHandlerBean;
 import net.wolfTec.input.InputType;
 import net.wolfTec.utility.Debug;
@@ -193,7 +193,7 @@ public class Touch {
     }
 
     private static boolean inSelection() {
-        String cState = CustomWarsTactics.gameWorkflow.getActiveStateId();
+        String cState = Game.gameWorkflow.getActiveStateId();
         return (cState == "INGAME_MOVEPATH"
                 || cState == "INGAME_SELECT_TILE_TYPE_A"
                 || cState == "INGAME_SELECT_TILE_TYPE_B");
@@ -201,7 +201,7 @@ public class Touch {
     }
 
     private static boolean inMenu() {
-        String cState = CustomWarsTactics.gameWorkflow.getActiveStateId();
+        String cState = Game.gameWorkflow.getActiveStateId();
         return (cState == "INGAME_MENU" || cState == "INGAME_SUBMENU");
     }
 
@@ -216,7 +216,7 @@ public class Touch {
         y = renderer.screenOffsetY + JSGlobal.parseInt(y / Constants.TILE_BASE, 10);
 
         if (!inMenu()) {
-            CustomWarsTactics.inputHandler.pushAction(InputType.ACTION, x, y);
+            Game.inputHandler.pushAction(InputType.ACTION, x, y);
         /*
          if (inSelection()) {
          if (stateData.selection.getValue(x, y) > 0) {
@@ -230,7 +230,7 @@ public class Touch {
 
         } else {
 
-            CustomWarsTactics.inputHandler.pushAction(InputType.ACTION, Constants.INACTIVE_ID, Constants.INACTIVE_ID);
+            Game.inputHandler.pushAction(InputType.ACTION, Constants.INACTIVE_ID, Constants.INACTIVE_ID);
 
             //if (event.target.id === "cwt_menu") {
             //  input.pushAction(input.TYPE_ACTION, constants.INACTIVE, constants.INACTIVE);
@@ -247,7 +247,7 @@ public class Touch {
      * @param y
      */
     private static void twoFingerTap(int x, int y) {
-        CustomWarsTactics.inputHandler.pushAction(InputType.CANCEL, Constants.INACTIVE_ID, Constants.INACTIVE_ID);
+        Game.inputHandler.pushAction(InputType.CANCEL, Constants.INACTIVE_ID, Constants.INACTIVE_ID);
     }
 
     /**
@@ -267,7 +267,7 @@ public class Touch {
         else if (dx == -1) key = InputType.LEFT;
         else if (dy == -1) key = InputType.UP;
 
-        CustomWarsTactics.inputHandler.pushAction(key, (stateData.inGameRound ? 10 : 1), Constants.INACTIVE_ID);
+        Game.inputHandler.pushAction(key, (stateData.inGameRound ? 10 : 1), Constants.INACTIVE_ID);
     }
 
     /**
@@ -302,7 +302,7 @@ public class Touch {
         else if (dx == -1) key = InputType.LEFT;
         else if (dy == -1) key = InputType.UP;
 
-        CustomWarsTactics.inputHandler.pushAction(key, 1, Constants.INACTIVE_ID);
+        Game.inputHandler.pushAction(key, 1, Constants.INACTIVE_ID);
 
         if (!inMenu()) {
             //ON THE
@@ -334,13 +334,13 @@ public class Touch {
         if (!inMenu()) {
 
             // IF ATTACK RANGE VISIBLE IN RANGE
-            CustomWarsTactics.inputHandler.pushAction(InputType.ACTION, x, y);
+            Game.inputHandler.pushAction(InputType.ACTION, x, y);
 
             //  OUTSIDE RANGE
-            CustomWarsTactics.inputHandler.pushAction(InputType.CANCEL, x, y);
+            Game.inputHandler.pushAction(InputType.CANCEL, x, y);
 
             // IF ATTACK RANGE IS NOT  VISIBLE
-            CustomWarsTactics.inputHandler.pushAction(InputType.ACTION, x, y);
+            Game.inputHandler.pushAction(InputType.ACTION, x, y);
 
         } else {
             // if (event.target.id === "cwt_menu") {

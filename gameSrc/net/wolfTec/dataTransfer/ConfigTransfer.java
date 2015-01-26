@@ -1,7 +1,7 @@
 package net.wolfTec.dataTransfer;
 
+import net.wolfTec.cwt.model.GameRoundBean;
 import net.wolfTec.input.InputHandlerBean;
-import net.wolfTec.model.GameRoundBean;
 import net.wolfTec.system.StorageBean;
 import net.wolfTec.system.StorageBean.StorageEntry;
 import net.wolfTec.utility.Debug;

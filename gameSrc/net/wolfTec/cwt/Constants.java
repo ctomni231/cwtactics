@@ -1,6 +1,8 @@
 package net.wolfTec.cwt;
 
-public abstract class Constants {
+import org.stjs.javascript.annotation.Namespace;
+
+@Namespace("cwt") public abstract class Constants {
 
 	/**
 	 * Current version of the running CustomWars: Tactics.

@@ -1,7 +1,7 @@
 package net.wolfTec.dataTransfer;
 
 import net.wolfTec.cwt.Constants;
-import net.wolfTec.loading.Modification;
+import net.wolfTec.wtEngine.assets.Modification;
 
 public class DataTransferHandler {
 

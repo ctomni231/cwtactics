@@ -1,10 +1,10 @@
 package net.wolfTec.states;
 
 import net.wolfTec.cwt.Constants;
-import net.wolfTec.logic.MoveCode;
+import net.wolfTec.cwt.logic.MoveCode;
+import net.wolfTec.cwt.model.Unit;
 import net.wolfTec.model.PositionData;
-import net.wolfTec.model.Unit;
-import net.wolfTec.utility.MoveableMatrix;
+import net.wolfTec.wtEngine.utility.MoveableMatrix;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;

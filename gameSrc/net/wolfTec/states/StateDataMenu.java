@@ -1,12 +1,12 @@
 package net.wolfTec.states;
 
 import net.wolfTec.action.Action;
-import net.wolfTec.cwt.CustomWarsTactics;
-import net.wolfTec.logic.Relationship;
-import net.wolfTec.logic.RelationshipCheckLogic;
-import net.wolfTec.model.Position;
-import net.wolfTec.model.Property;
-import net.wolfTec.model.Unit;
+import net.wolfTec.cwt.Game;
+import net.wolfTec.cwt.logic.Relationship;
+import net.wolfTec.cwt.logic.RelationshipCheckLogic;
+import net.wolfTec.cwt.model.Position;
+import net.wolfTec.cwt.model.Property;
+import net.wolfTec.cwt.model.Unit;
 import net.wolfTec.utility.Debug;
 import net.wolfTec.wtEngine.utility.CircularBuffer;
 
@@ -113,7 +113,7 @@ public class StateDataMenu {
         boolean mapActable = (!unitActable && !propertyActable);
 
         // check_ all game action objects and fill menu
-        Array<Action> actions = CustomWarsTactics.actionInvoker.getActions();
+        Array<Action> actions = Game.actionInvoker.getActions();
         for (int i = 0, e = actions.$length(); i < e; i++) {
             Action action = actions.$get(i);
 

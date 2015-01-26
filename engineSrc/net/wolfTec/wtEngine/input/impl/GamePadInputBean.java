@@ -1,7 +1,7 @@
 package net.wolfTec.wtEngine.input.impl;
 
 import net.wolfTec.cwt.Constants;
-import net.wolfTec.cwt.CustomWarsTactics;
+import net.wolfTec.cwt.Game;
 import net.wolfTec.wtEngine.base.PostEngineInitializationListener;
 import net.wolfTec.wtEngine.input.InputBackend;
 import net.wolfTec.wtEngine.input.InputBackendType;

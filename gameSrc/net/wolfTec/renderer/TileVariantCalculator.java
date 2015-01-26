@@ -1,12 +1,14 @@
 package net.wolfTec.renderer;
 
+import net.wolfTec.wtEngine.assets.ConnectedTile;
+
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 
 public class TileVariantCalculator {
 
-    private Map<String, TileVariant> types;
+    private Map<String, ConnectedTile> types;
 
     public TileVariantCalculator () {
         this.types = JSCollections.$map();
@@ -20,7 +22,7 @@ public class TileVariantCalculator {
      * @param connection
      */
     public void registerVariantInfo (String type, Map<String, String> desc, Array<Array<String>> connection) {
-        types.$put(type, new TileVariant(desc, connection));
+        types.$put(type, new ConnectedTile(desc, connection));
     }
 
     /**

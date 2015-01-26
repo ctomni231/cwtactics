@@ -56,7 +56,7 @@ import net.wolfTec.wtEngine.log.LoggerFactoryBeanInterface;
    * @param intfc
    * @return
    */
-  public <T> Array<T> getBeansOfInterface(T intfc) {
+  public <T> Array<T> getBeansOfInterface(Class<T> intfc) {
     
     // TODO: search constructor in namespaces
     String intfcName;
