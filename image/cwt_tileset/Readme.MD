@@ -95,7 +95,6 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *PLZP* = Plazma Pipe
 * [ ] *PZPS* = Plazma Pipeseam
 * [x] *PIPE* = Pipe
-* [x] *PIPS* = Pipeseam
 * [ ] *PIPR* = Piperail
 * [ ] *SWMP* = Swamp
 * [ ] *MIST* = Mist
@@ -117,6 +116,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [x] *TAPT* = Temporary Airport
 * [x] *TSPT* = Temporary Seaport
 * [x] *RUBL* = Rubble
+* [x] *PIPS* = Pipeseam
 * [ ] *STRH* = Stronghold
 * [x] *LABS* = Lab
 * [ ] *QURY* = Query
@@ -153,8 +153,8 @@ List of pretty much every sprite you'd ever need for reference.
 
 ## Terrain Types
 
-* [ ] *PLIN* = Plain
-* [ ] *FRST* = Forest
+* [x] *PLIN* = Plain
+* [x] *FRST* = Forest
 * [x] *MNTN* = Mountain
 * [ ] *RIVR* = River
 * [ ] *ROAD* = Road
@@ -168,8 +168,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *PLZM* = Plasma
 * [ ] *PLZP* = Plazma Pipe
 * [ ] *PZPS* = Plazma Pipeseam
-* [ ] *PIPE* = Pipe
-* [ ] *PIPS* = Pipeseam
+* [x] *PIPE* = Pipe
 * [ ] *PIPR* = Piperail
 * [ ] *SWMP* = Swamp
 * [ ] *MIST* = Mist
@@ -191,6 +190,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *TAPT* = Temporary Airport
 * [ ] *TSPT* = Temporary Seaport
 * [ ] *RUBL* = Rubble
+* [x] *PIPS* = Pipeseam
 * [ ] *STRH* = Stronghold
 * [ ] *LABS* = Lab
 * [ ] *QURY* = Query
@@ -237,7 +237,6 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *PLZP* = Plazma Pipe
 * [ ] *PZPS* = Plazma Pipeseam
 * [ ] *PIPE* = Pipe
-* [ ] *PIPS* = Pipeseam
 * [ ] *PIPR* = Piperail
 * [ ] *SWMP* = Swamp
 * [ ] *MIST* = Mist
@@ -259,6 +258,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *TAPT* = Temporary Airport
 * [ ] *TSPT* = Temporary Seaport
 * [ ] *RUBL* = Rubble
+* [ ] *PIPS* = Pipeseam
 * [ ] *STRH* = Stronghold
 * [ ] *LABS* = Lab
 * [ ] *QURY* = Query
@@ -284,3 +284,138 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *DTGN* = IDS Talon Gun Rubble (3x3 Tiles)
 
 ***
+
+# Custom Wars Tactics - Desert(D) Tileset
+
+## Terrain Types
+
+* [ ] *PLIN* = Plain
+* [ ] *FRST* = Forest
+* [ ] *MNTN* = Mountain
+* [ ] *RIVR* = River
+* [ ] *ROAD* = Road
+* [ ] *BRDG* = Bridge
+* [ ] *REEF* = Reef
+* [ ] *WTLD* = Wasteland
+* [ ] *RUIN* = Ruins
+* [ ] *SHOA* = Shoals
+* [ ] *SEAS* = Seas
+* [ ] *METR* = Meteor
+* [ ] *PLZM* = Plasma
+* [ ] *PLZP* = Plazma Pipe
+* [ ] *PZPS* = Plazma Pipeseam
+* [ ] *PIPE* = Pipe
+* [ ] *PIPR* = Piperail
+* [ ] *SWMP* = Swamp
+* [ ] *MIST* = Mist
+* [ ] *RSEA* = Rough Seas
+* [ ] *FIRE* = Fire
+* [ ] *NULL* = Null
+
+## Property Types
+
+* [ ] *HQTR* = Headquarters [All Factions]
+* [ ] *CITY* = City
+* [ ] *BASE* = Factory
+* [ ] *APRT* = Airport
+* [ ] *PORT* = Seaport
+* [ ] *CMTR* = Communication-Tower
+* [ ] *SILO* = Missile Silo
+* [ ] *PLTF* = Missile Silo Platform
+* [ ] *RDAR* = Radar
+* [ ] *TAPT* = Temporary Airport
+* [ ] *TSPT* = Temporary Seaport
+* [ ] *RUBL* = Rubble
+* [ ] *PIPS* = Pipeseam
+* [ ] *STRH* = Stronghold
+* [ ] *LABS* = Lab
+* [ ] *QURY* = Query
+* [ ] *ORIG* = Oil Rig
+* [ ] *WALL* = Wall
+
+## Inventions
+
+* [ ] *BHMC* = Black Hole Mini-Cannon
+* [ ] *BHCN* = Black Hole Cannon (3x3 Tiles)
+* [ ] *BHDR* = Black Hole Death Ray (3x3 Tiles)
+* [ ] *BHFR* = Black Hole Fortress (4x4 Tiles)
+* [ ] *BHFT* = Black Hole Factory (3x3 Tiles)
+* [ ] *BHLZ* = Black Hole Lazer
+* [ ] *BHMS* = Black Hole Missile (4x4 Tiles)
+* [ ] *BRBL* = Big Rubble (3x3 Tiles)
+* [ ] *SRBL* = Small Rubble
+* [ ] *VCNO* = Volcano
+* [ ] *BCRY* = Black Hole Crystal
+* [ ] *BOBL* = Black Hole Obelisk (3x3 Tiles)
+* [ ] *BARK* = Black Hole Ark (3x3 Tiles)
+* [ ] *TGUN* = IDS Talon Gun (3x3 Tiles)
+* [ ] *DTGN* = IDS Talon Gun Rubble (3x3 Tiles)
+
+***
+
+# Custom Wars Tactics - Apocalypse(A) Tileset
+
+## Terrain Types
+
+* [ ] *PLIN* = Plain
+* [ ] *FRST* = Forest
+* [ ] *MNTN* = Mountain
+* [ ] *RIVR* = River
+* [ ] *ROAD* = Road
+* [ ] *BRDG* = Bridge
+* [ ] *REEF* = Reef
+* [ ] *WTLD* = Wasteland
+* [ ] *RUIN* = Ruins
+* [ ] *SHOA* = Shoals
+* [ ] *SEAS* = Seas
+* [ ] *METR* = Meteor
+* [ ] *PLZM* = Plasma
+* [ ] *PLZP* = Plazma Pipe
+* [ ] *PZPS* = Plazma Pipeseam
+* [ ] *PIPE* = Pipe
+* [ ] *PIPR* = Piperail
+* [ ] *SWMP* = Swamp
+* [ ] *MIST* = Mist
+* [ ] *RSEA* = Rough Seas
+* [ ] *FIRE* = Fire
+* [ ] *NULL* = Null
+
+## Property Types
+
+* [ ] *HQTR* = Headquarters [All Factions]
+* [ ] *CITY* = City
+* [ ] *BASE* = Factory
+* [ ] *APRT* = Airport
+* [ ] *PORT* = Seaport
+* [ ] *CMTR* = Communication-Tower
+* [ ] *SILO* = Missile Silo
+* [ ] *PLTF* = Missile Silo Platform
+* [ ] *RDAR* = Radar
+* [ ] *TAPT* = Temporary Airport
+* [ ] *TSPT* = Temporary Seaport
+* [ ] *RUBL* = Rubble
+* [ ] *PIPS* = Pipeseam
+* [ ] *STRH* = Stronghold
+* [ ] *LABS* = Lab
+* [ ] *QURY* = Query
+* [ ] *ORIG* = Oil Rig
+* [ ] *WALL* = Wall
+
+## Inventions
+
+* [ ] *BHMC* = Black Hole Mini-Cannon
+* [ ] *BHCN* = Black Hole Cannon (3x3 Tiles)
+* [ ] *BHDR* = Black Hole Death Ray (3x3 Tiles)
+* [ ] *BHFR* = Black Hole Fortress (4x4 Tiles)
+* [ ] *BHFT* = Black Hole Factory (3x3 Tiles)
+* [ ] *BHLZ* = Black Hole Lazer
+* [ ] *BHMS* = Black Hole Missile (4x4 Tiles)
+* [ ] *BRBL* = Big Rubble (3x3 Tiles)
+* [ ] *SRBL* = Small Rubble
+* [ ] *VCNO* = Volcano
+* [ ] *BCRY* = Black Hole Crystal
+* [ ] *BOBL* = Black Hole Obelisk (3x3 Tiles)
+* [ ] *BARK* = Black Hole Ark (3x3 Tiles)
+* [ ] *TGUN* = IDS Talon Gun (3x3 Tiles)
+* [ ] *DTGN* = IDS Talon Gun Rubble (3x3 Tiles)
+
