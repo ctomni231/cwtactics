@@ -2,6 +2,11 @@ This is the main sprite folder for dealing with the in-game sprites using the ne
 
 ***
 
+## Contributors
+
+* JakeSamiRulz
+* secv90 (Snow Terrain)
+
 ## Sprite Compilation (Useful for animations)
 
 - [Starter Sprites](http://awcomics.wikia.com/wiki/Starter_Sprites) - 
@@ -11,7 +16,7 @@ List of pretty much every sprite you'd ever need for reference.
 
 ## Unit Types - Direct Land
 
-- [x] *INFT* = Infantry [OS]
+* [x] *INFT* = Infantry [OS]
 * [ ] *INFT* = Infantry [Other Factions]
 * [x] *MECH* = Mech [OS]
 * [ ] *MECH* = Mech [Other Factions]
