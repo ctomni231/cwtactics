@@ -56,9 +56,9 @@ Bigger Document for Art Guidelines:
 * [ ] Brenner (AWDR)
 * [ ] Lin (AWDR)
 * [ ] Will (AWDR)
-* [ ] Catleya [Isabella] (AWDR)
+* [ ] Catleya-[Isabella] (AWDR)
 
-* [ ] Sigismundo [Greyfield] (AWDR)
+* [ ] Sigismundo-[Greyfield] (AWDR)
 * [ ] Waylon (AWDR)
 
 * [ ] Forsythe (AWDR)
