@@ -2,8 +2,8 @@ package net.wolfTec.loading;
 
 import org.stjs.javascript.annotation.Namespace;
 
-import net.wolfTec.cwt.util.AssertUtil;
 import net.wolfTec.system.Logger;
+import net.wolfTec.wtEngine.utility.AssertUtil;
 
 @Namespace("cwt") public class GameLoaderBean {
 

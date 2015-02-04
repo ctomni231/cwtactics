@@ -1,11 +1,9 @@
 package net.wolfTec.renderer;
 
-import net.wolfTec.cwt.Constants;
-import net.wolfTec.cwt.CustomWarsTactics;
-import net.wolfTec.cwt.logic.MoveCode;
-import net.wolfTec.cwt.model.Tile;
-import net.wolfTec.cwt.model.Unit;
 import net.wolfTec.states.StateDataMenu;
+import net.wolfTec.wtEngine.Constants;
+import net.wolfTec.wtEngine.gamelogic.MoveCode;
+import net.wolfTec.wtEngine.model.Unit;
 import net.wolfTec.wtEngine.utility.CircularBuffer;
 
 import org.stjs.javascript.Global;
@@ -16,15 +14,6 @@ import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 
 public class RendererBean {
-
-    public static final String LOG_HEADER = Constants.LOG_RENDERER;
-
-    public static final int MENU_ELEMENTS_MAX = 10;
-    public static final int MENU_ENTRY_HEIGHT = 2 * Constants.TILE_BASE;
-    public static final int MENU_ENTRY_WIDTH = 10 * Constants.TILE_BASE;
-    public static final int ANIMATION_TICK_TIME = 150;
-    
-    private net.wolfTec.model.$GameRound gameround;
 
     /** */
     private boolean unitAnimationHalfStep;
@@ -49,60 +38,7 @@ public class RendererBean {
 
     private Canvas temporaryCanvas;
 
-    /**
-     * @type {cwt.LayeredCanvas}
-     */
-    public final LayeredCanvas layerBG;
 
-    /**
-     * @type {cwt.LayeredCanvas}
-     */
-    public final LayeredCanvas layerMap;
-
-    /**
-     * @type {cwt.LayeredCanvas}
-     */
-    public final LayeredCanvas layerFog;
-
-    /**
-     * @type {cwt.LayeredCanvas}
-     */
-    public final LayeredCanvas layerUnit;
-
-    /**
-     * @type {cwt.LayeredCanvas}
-     */
-    public final LayeredCanvas layerFocus;
-
-    /**
-     * @type {cwt.LayeredCanvas}
-     */
-    public final LayeredCanvas layerEffects;
-
-    /**
-     * @type {cwt.LayeredCanvas}
-     */
-    public final LayeredCanvas layerUI;
-
-    /**
-     *
-     */
-    public int screenWidth;
-
-    /**
-     *
-     */
-    public int screenHeight;
-
-    /**
-     *
-     */
-    public int screenOffsetX;
-
-    /**
-     *
-     */
-    public int screenOffsetY;
 
     public RendererBean() {
         int canvasW = Constants.TILE_BASE * Constants.SCREEN_WIDTH;

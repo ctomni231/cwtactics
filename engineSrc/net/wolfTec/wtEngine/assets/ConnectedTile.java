@@ -1,6 +1,6 @@
 package net.wolfTec.wtEngine.assets;
 
-import net.wolfTec.cwt.Constants;
+import net.wolfTec.wtEngine.Constants;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSObjectAdapter;

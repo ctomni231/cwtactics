@@ -1,13 +1,13 @@
 package net.wolfTec.states;
 
 import net.wolfTec.action.Action;
-import net.wolfTec.cwt.Game;
-import net.wolfTec.cwt.logic.Relationship;
-import net.wolfTec.cwt.logic.RelationshipCheckLogic;
-import net.wolfTec.cwt.model.Position;
-import net.wolfTec.cwt.model.Property;
-import net.wolfTec.cwt.model.Unit;
 import net.wolfTec.utility.Debug;
+import net.wolfTec.wtEngine.Game;
+import net.wolfTec.wtEngine.gamelogic.Relationship;
+import net.wolfTec.wtEngine.gamelogic.RelationshipCheckLogic;
+import net.wolfTec.wtEngine.model.Position;
+import net.wolfTec.wtEngine.model.Property;
+import net.wolfTec.wtEngine.model.Unit;
 import net.wolfTec.wtEngine.utility.CircularBuffer;
 
 import org.stjs.javascript.Array;

@@ -1,8 +1,10 @@
 package net.wolfTec.wtEngine.input.impl;
 
-import net.wolfTec.cwt.Constants;
-import net.wolfTec.cwt.Game;
-import net.wolfTec.wtEngine.base.PostEngineInitializationListener;
+import net.wolfTec.wtEngine.Constants;
+import net.wolfTec.wtEngine.Game;
+import net.wolfTec.wtEngine.WolfTecEngine;
+import net.wolfTec.wtEngine.base.EngineInitializationListener;
+import net.wolfTec.wtEngine.base.EngineOptions;
 import net.wolfTec.wtEngine.input.InputBackend;
 import net.wolfTec.wtEngine.input.InputBackendType;
 import net.wolfTec.wtEngine.input.InputBean;
@@ -14,7 +16,7 @@ import org.stjs.javascript.*;
 
 import static org.stjs.javascript.JSObjectAdapter.*;
 
-public class GamePadInputBean implements InputBackend, PostEngineInitializationListener {
+public class GamePadInputBean implements InputBackend, EngineInitializationListener {
 
   private boolean vendorAPI;
 
@@ -28,7 +30,7 @@ public class GamePadInputBean implements InputBackend, PostEngineInitializationL
 
   private final Array<Integer> prevTimestamps = JSCollections.$array();
   
-  @Override public void onPostEngineInit() {
+  @Override public void onEngineInit(EngineOptions options, WolfTecEngine engine) {
 
     // register default mapping
     GAMEPAD_MAPPING = JSCollections.$map();

@@ -1,9 +1,9 @@
 package net.wolfTec.states.factory;
 
-import net.wolfTec.cwt.Game;
 import net.wolfTec.input.InputData;
 import net.wolfTec.states.State;
 import net.wolfTec.states.StatemachineBean;
+import net.wolfTec.wtEngine.Game;
 
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;

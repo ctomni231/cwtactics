@@ -2,6 +2,8 @@ package net.wolfTec.wtEngine.action;
 
 import org.stjs.javascript.annotation.Namespace;
 
-@Namespace("wtEngine") public abstract class Action {
+@Namespace("cwt") public abstract class Action {
 
+  public abstract String getId ();
+  public abstract void call (ActionData data);
 }

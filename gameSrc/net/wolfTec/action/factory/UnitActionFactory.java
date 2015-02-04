@@ -1,13 +1,13 @@
 package net.wolfTec.action.factory;
 
 import net.wolfTec.action.Action;
-import net.wolfTec.cwt.Game;
-import net.wolfTec.cwt.logic.ActionData;
-import net.wolfTec.cwt.logic.ActionInvokerBean;
-import net.wolfTec.cwt.logic.Relationship;
-import net.wolfTec.cwt.model.Position;
 import net.wolfTec.states.StateData;
 import net.wolfTec.utility.Debug;
+import net.wolfTec.wtEngine.Game;
+import net.wolfTec.wtEngine.gamelogic.ActionData;
+import net.wolfTec.wtEngine.gamelogic.ActionInvokerBean;
+import net.wolfTec.wtEngine.gamelogic.Relationship;
+import net.wolfTec.wtEngine.model.Position;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback1;

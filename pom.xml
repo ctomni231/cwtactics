@@ -43,7 +43,7 @@
 				  </executions>
 				  <configuration>
 				    <includes>
-				       <include>**/*.java</include>
+				       <include>engineSrc/**/*.java</include>
 				    </includes>
 				    <pack>true</pack>
 				  </configuration>

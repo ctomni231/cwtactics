@@ -1,10 +1,10 @@
 package net.wolfTec.dataTransfer;
 
-import net.wolfTec.cwt.model.GameRoundBean;
 import net.wolfTec.input.InputHandlerBean;
 import net.wolfTec.system.StorageBean;
 import net.wolfTec.system.StorageBean.StorageEntry;
 import net.wolfTec.utility.Debug;
+import net.wolfTec.wtEngine.model.GameRoundBean;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;

@@ -7,7 +7,7 @@ import net.wolfTec.cwt.CustomWarsTactics;
 import net.wolfTec.system.Storage;
 import net.wolfTec.system.Storage.StorageEntry;
 import net.wolfTec.utility.Debug;
-import net.wolfTec.wtEngine.assets.Modification;
+import net.wolfTec.wtEngine.model.Modification;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;

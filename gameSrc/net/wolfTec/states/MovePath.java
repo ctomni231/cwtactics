@@ -1,92 +1,92 @@
 package net.wolfTec.states;
 
-import net.wolfTec.cwt.Constants;
-import net.wolfTec.cwt.logic.MoveCode;
-import net.wolfTec.cwt.model.Unit;
-import net.wolfTec.model.PositionData;
+import net.wolfTec.wtEngine.Constants;
+import net.wolfTec.wtEngine.gamelogic.MoveCode;
+import net.wolfTec.wtEngine.model.Unit;
 import net.wolfTec.wtEngine.utility.MoveableMatrix;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 
 public class MovePath {
-	
-	private Array<MoveCode>	path;
 
-	/**
-	 * Little helper array object for `model.move_fillMoveMap`. This will be used
-	 * only by one process. If the helper is not available then a temp object will
-	 * be created in `model.move_fillMoveMap`. If the engine is used without
-	 * client hacking then this situation never happen and the
-	 * `model.move_fillMoveMap` will use this helper to prevent unnecessary array
-	 * creation.
-	 */
-	private Array<Integer>	helper;
+  private Array<MoveCode> path;
 
-	private Array<Integer>	checkHelper;
+  /**
+   * Little helper array object for `model.move_fillMoveMap`. This will be used
+   * only by one process. If the helper is not available then a temp object will
+   * be created in `model.move_fillMoveMap`. If the engine is used without
+   * client hacking then this situation never happen and the
+   * `model.move_fillMoveMap` will use this helper to prevent unnecessary array
+   * creation.
+   */
+  private Array<Integer> helper;
 
-	public MovePath() {
-		path = JSCollections.$array();
-		helper = JSCollections.$array();
+  private Array<Integer> checkHelper;
 
-		checkHelper = JSCollections.$array(Constants.INACTIVE_ID, Constants.INACTIVE_ID, Constants.INACTIVE_ID, Constants.INACTIVE_ID, Constants.INACTIVE_ID,
-				Constants.INACTIVE_ID, Constants.INACTIVE_ID, Constants.INACTIVE_ID);
-	}
+  public MovePath() {
+    path = JSCollections.$array();
+    helper = JSCollections.$array();
 
-	public boolean willBeTrapped() {
-		return false;
-	}
+    checkHelper = JSCollections.$array(Constants.INACTIVE_ID, Constants.INACTIVE_ID, Constants.INACTIVE_ID,
+        Constants.INACTIVE_ID, Constants.INACTIVE_ID, Constants.INACTIVE_ID, Constants.INACTIVE_ID,
+        Constants.INACTIVE_ID);
+  }
 
-	/**
-	 * Generates a path from a start position (**stx**,**sty**) to (**tx**,**ty**)
-	 * with a given **selection** map. The result path will be stored in the
-	 * **movePath**.
-	 * 
-	 * @param stx
-	 * @param sty
-	 * @param tx
-	 * @param ty
-	 * @param selection
-	 */
-	public void generatePath(int stx, int sty, int tx, int ty, MoveableMatrix selection) {
-		MoveCode dir;
-		var cNode;
-		int dsx = stx - selection.getCenterX();
-		int dsy = sty - selection.getCenterY();
-		int dtx = tx - selection.getCenterX();
-		int dty = ty - selection.getCenterY();
-		int cx = stx;
-		int cy = sty;
+  public boolean willBeTrapped() {
+    return false;
+  }
 
-		// generate path by the a-star library
-		var dataGrid = astar.createDataGrid(selection.getData());
-		var start = dataGrid.nodes[dsx][dsy];
-		var end = dataGrid.nodes[dtx][dty];
-		var path = astar.search(dataGrid, start, end);
+  /**
+   * Generates a path from a start position (**stx**,**sty**) to (**tx**,**ty**)
+   * with a given **selection** map. The result path will be stored in the
+   * **movePath**.
+   * 
+   * @param stx
+   * @param sty
+   * @param tx
+   * @param ty
+   * @param selection
+   */
+  public void generatePath(int stx, int sty, int tx, int ty, MoveableMatrix selection) {
+    MoveCode dir;
+    var cNode;
+    int dsx = stx - selection.getCenterX();
+    int dsy = sty - selection.getCenterY();
+    int dtx = tx - selection.getCenterX();
+    int dty = ty - selection.getCenterY();
+    int cx = stx;
+    int cy = sty;
 
-		// extract data from generated path map and fill the movePath object
-		movePath.clear();
-		for (var i = 0, e = path.length; i < e; i++) {
-			cNode = path[i];
+    // generate path by the a-star library
+    var dataGrid = astar.createDataGrid(selection.getData());
+    var start = dataGrid.nodes[dsx][dsy];
+    var end = dataGrid.nodes[dtx][dty];
+    var path = astar.search(dataGrid, start, end);
 
-			// add code to move path
-			movePath.push(exports.codeFromAtoB(cx, cy, cNode.x, cNode.y));
+    // extract data from generated path map and fill the movePath object
+    movePath.clear();
+    for (var i = 0, e = path.length; i < e; i++) {
+      cNode = path[i];
 
-			// update current position
-			cx = cNode.x;
-			cy = cNode.y;
-		}
-	}
+      // add code to move path
+      movePath.push(exports.codeFromAtoB(cx, cy, cNode.x, cNode.y));
 
-	/**
-	 * Compares a given move **code** with a **movePath**. When the new code is
-	 * the exact opposite direction of the last command in the path then **true**
-	 * will be return else **false**.
-	 * 
-	 * @param code
-	 * @return
-	 */
-	public boolean isGoBackCommand (MoveCode code) {
+      // update current position
+      cx = cNode.x;
+      cy = cNode.y;
+    }
+  }
+
+  /**
+   * Compares a given move **code** with a **movePath**. When the new code is
+   * the exact opposite direction of the last command in the path then **true**
+   * will be return else **false**.
+   * 
+   * @param code
+   * @return
+   */
+  public boolean isGoBackCommand (MoveCode code) {
     var lastCode = movePath.get(movePath.size - 1);
     var goBackCode;
 
@@ -109,81 +109,81 @@ public class MovePath {
     return (lastCode === goBackCode);
 }
 
-	/**
-	 * Appends a move `code` to a given `movePath` and returns `true` if the
-	 * insertion was possible else `false`. If the new code is a backwards move to
-	 * the previous tile in the path then the actual last tile will be dropped. In
-	 * this function returns also `true` in this case.
-	 * 
-	 * @param code
-	 * @param selection
-	 * @param sx
-	 * @param sy
-	 */
-	public void addCode(MoveCode code, Object selection, int sx, int sy) {
-		// drop last move code when the new command realizes a move back schema
-		if (movePath.size > 0 && isGoBackCommand(code, movePath)) {
-			movePath.popLast();
-			return true;
-		}
+  /**
+   * Appends a move `code` to a given `movePath` and returns `true` if the
+   * insertion was possible else `false`. If the new code is a backwards move to
+   * the previous tile in the path then the actual last tile will be dropped. In
+   * this function returns also `true` in this case.
+   * 
+   * @param code
+   * @param selection
+   * @param sx
+   * @param sy
+   */
+  public void addCode(MoveCode code, Object selection, int sx, int sy) {
+    // drop last move code when the new command realizes a move back schema
+    if (movePath.size > 0 && isGoBackCommand(code, movePath)) {
+      movePath.popLast();
+      return true;
+    }
 
-		var source = model.mapData[sx][sy];
-		var unit = source.unit;
-		var points = unit.type.range;
-		var fuelLeft = unit.fuel;
+    var source = model.mapData[sx][sy];
+    var unit = source.unit;
+    var points = unit.type.range;
+    var fuelLeft = unit.fuel;
 
-		// decrease move range when not enough fuel is available to
-		// move the maximum possible range for the selected move type
-		if (fuelLeft < points) {
-			points = fuelLeft;
-		}
+    // decrease move range when not enough fuel is available to
+    // move the maximum possible range for the selected move type
+    if (fuelLeft < points) {
+      points = fuelLeft;
+    }
 
-		// add command to the move path list
-		movePath.push(code);
+    // add command to the move path list
+    movePath.push(code);
 
-		// calculate fuel consumption for the current move path
-		var cx = sx;
-		var cy = sy;
-		var fuelUsed = 0;
-		for (var i = 0, e = movePath.size; i < e; i++) {
-			switch (movePath.get(i)) {
+    // calculate fuel consumption for the current move path
+    var cx = sx;
+    var cy = sy;
+    var fuelUsed = 0;
+    for (var i = 0, e = movePath.size; i < e; i++) {
+      switch (movePath.get(i)) {
 
-				case exports.MOVE_CODES_UP:
-				case exports.MOVE_CODES_LEFT:
-					cy--;
-					break;
+        case exports.MOVE_CODES_UP:
+        case exports.MOVE_CODES_LEFT:
+          cy--;
+          break;
 
-				case exports.MOVE_CODES_DOWN:
-				case exports.MOVE_CODES_RIGHT:
-					cx++;
-					break;
-			}
+        case exports.MOVE_CODES_DOWN:
+        case exports.MOVE_CODES_RIGHT:
+          cx++;
+          break;
+      }
 
-			// **add fuel consumption to total consumption here**
-			fuelUsed += selection.getValue(cx, cy);
-		}
+      // **add fuel consumption to total consumption here**
+      fuelUsed += selection.getValue(cx, cy);
+    }
 
-		// if to much fuel would be needed then decline
-		if (fuelUsed > points) {
-			movePath.popLast();
-			return false;
-		} else {
-			return true;
-		}
-	}
+    // if to much fuel would be needed then decline
+    if (fuelUsed > points) {
+      movePath.popLast();
+      return false;
+    } else {
+      return true;
+    }
+  }
 
-	/**
-	 * Fills a **selection** map for move able tiles. If no explicit start
-	 * position (**x**,**y**) and moving **unit** is given, then the **source**
-	 * position object will be used to extract data.
-	 * 
-	 * @param source
-	 * @param selection
-	 * @param x
-	 * @param y
-	 * @param unit
-	 */
-	public void fillMoveMap (PositionData source, Object selection, int x, int y, Unit unit) {
+  /**
+   * Fills a **selection** map for move able tiles. If no explicit start
+   * position (**x**,**y**) and moving **unit** is given, then the **source**
+   * position object will be used to extract data.
+   * 
+   * @param source
+   * @param selection
+   * @param x
+   * @param y
+   * @param unit
+   */
+  public void fillMoveMap (PositionData source, Object selection, int x, int y, Unit unit) {
     // TODO: source and x,y,unit is kinda double definition of the same things
     var cost;
     var checker;
@@ -364,13 +364,13 @@ public class MovePath {
     }
 	}
 
-	/**
-	 * 
-	 * @param source
-	 * @param target
-	 * @return
-	 */
-	public boolean trapCheck (PositionData source, PositionData target) {
+  /**
+   * 
+   * @param source
+   * @param target
+   * @return
+   */
+  public boolean trapCheck (PositionData source, PositionData target) {
     var cBx;
     var cBy;
     var map = model.mapData;
@@ -414,16 +414,16 @@ public class MovePath {
     return false;
 	}
 
-	/**
-	 * 
-	 * @param unit
-	 * @param x
-	 * @param y
-	 * @param noFuelConsumption
-	 * @param preventRemoveOldPos
-	 * @param preventSetNewPos
-	 */
-	public void move (Unit unit, int x, int y, boolean noFuelConsumption, boolean preventRemoveOldPos, boolean preventSetNewPos) {
+  /**
+   * 
+   * @param unit
+   * @param x
+   * @param y
+   * @param noFuelConsumption
+   * @param preventRemoveOldPos
+   * @param preventSetNewPos
+   */
+  public void move (Unit unit, int x, int y, boolean noFuelConsumption, boolean preventRemoveOldPos, boolean preventSetNewPos) {
     var map = model.mapData;
     var team = unit.owner.team;
 

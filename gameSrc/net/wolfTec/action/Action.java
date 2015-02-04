@@ -1,9 +1,9 @@
 package net.wolfTec.action;
 
-import net.wolfTec.cwt.logic.ActionData;
-import net.wolfTec.cwt.logic.Relationship;
-import net.wolfTec.cwt.util.AssertUtil;
 import net.wolfTec.states.StateData;
+import net.wolfTec.wtEngine.gamelogic.ActionData;
+import net.wolfTec.wtEngine.gamelogic.Relationship;
+import net.wolfTec.wtEngine.utility.AssertUtil;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback1;

@@ -1,6 +1,6 @@
 package net.wolfTec.wtEngine.input;
 
-import net.wolfTec.cwt.Constants;
+import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.utility.CircularBuffer;
 
@@ -284,7 +284,7 @@ import org.stjs.javascript.annotation.Namespace;
     return value;
   }
 
-  private void releaseAction(InputData inp) {
+  public void releaseAction(InputData inp) {
     pool.push(inp);
   }
 }

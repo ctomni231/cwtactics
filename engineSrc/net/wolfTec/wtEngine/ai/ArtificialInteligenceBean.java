@@ -1,7 +1,7 @@
 package net.wolfTec.wtEngine.ai;
 
-import net.wolfTec.cwt.model.Player;
 import net.wolfTec.wtEngine.log.Logger;
+import net.wolfTec.wtEngine.model.Player;
 
 public class ArtificialInteligenceBean {
 

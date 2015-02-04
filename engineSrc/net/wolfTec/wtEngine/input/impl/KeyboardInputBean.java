@@ -1,11 +1,9 @@
 package net.wolfTec.wtEngine.input.impl;
 
-import net.wolfTec.cwt.Constants;
-import net.wolfTec.wtEngine.base.PostEngineInitializationListener;
-import net.wolfTec.wtEngine.input.InputBackend;
-import net.wolfTec.wtEngine.input.InputBackendType;
-import net.wolfTec.wtEngine.input.InputBean;
-import net.wolfTec.wtEngine.input.InputTypeKey;
+import net.wolfTec.wtEngine.WolfTecEngine;
+import net.wolfTec.wtEngine.base.EngineInitializationListener;
+import net.wolfTec.wtEngine.base.EngineOptions;
+import net.wolfTec.wtEngine.input.*;
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.statemachine.StateMachineBean;
 
@@ -15,7 +13,7 @@ import org.stjs.javascript.Map;
 import org.stjs.javascript.dom.DOMEvent;
 import org.stjs.javascript.functions.Function1;
 
-public class KeyboardInputBean implements InputBackend, PostEngineInitializationListener {
+public class KeyboardInputBean implements InputBackend, EngineInitializationListener {
 
   public final int CONSOLE_TOGGLE_KEY = 192;
 
@@ -25,7 +23,7 @@ public class KeyboardInputBean implements InputBackend, PostEngineInitialization
 
   private Map<String, Integer> mapping;
 
-  @Override public void onPostEngineInit() {
+  @Override public void onEngineInit(EngineOptions options, WolfTecEngine engine) {
 
     // add default mapping
     mapping = JSCollections.$map();
@@ -36,7 +34,7 @@ public class KeyboardInputBean implements InputBackend, PostEngineInitialization
     mapping.$put(InputTypeKey.A.name(), 13);
     mapping.$put(InputTypeKey.B.name(), 8);
   }
-
+  
   private final Function1<DOMEvent, Boolean> keyboardHandler = (event) -> {
     int keyCode = JSObjectAdapter.$js("event.keyCode");
 
@@ -52,7 +50,7 @@ public class KeyboardInputBean implements InputBackend, PostEngineInitialization
       } else {
         for (InputTypeKey type : InputTypeKey.values()) {
           if (mapping.$get(type.name()) == keyCode) {
-            input.pushAction(type, Constants.INACTIVE_ID, Constants.INACTIVE_ID);
+            input.pushAction(type, -1, -1);
             return true;
           }
         }

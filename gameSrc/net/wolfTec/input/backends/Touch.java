@@ -1,11 +1,11 @@
 package net.wolfTec.input.backends;
 
 import net.wolfTec.bridges.TouchEvent;
-import net.wolfTec.cwt.Constants;
-import net.wolfTec.cwt.Game;
 import net.wolfTec.input.InputHandlerBean;
 import net.wolfTec.input.InputType;
 import net.wolfTec.utility.Debug;
+import net.wolfTec.wtEngine.Constants;
+import net.wolfTec.wtEngine.Game;
 import net.wolfTec.wtEngine.input.InputBackend;
 
 import org.stjs.javascript.*;

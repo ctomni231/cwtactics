@@ -1,10 +1,10 @@
 package net.wolfTec.loading;
 
 import net.wolfTec.bridges.Globals;
-import net.wolfTec.cwt.Game;
-import net.wolfTec.cwt.model.Config;
 import net.wolfTec.system.StorageBean;
 import net.wolfTec.utility.Debug;
+import net.wolfTec.wtEngine.Game;
+import net.wolfTec.wtEngine.model.Config;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Global;

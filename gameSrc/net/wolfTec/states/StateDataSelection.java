@@ -1,7 +1,7 @@
 package net.wolfTec.states;
 
-import net.wolfTec.cwt.Constants;
 import net.wolfTec.utility.Debug;
+import net.wolfTec.wtEngine.Constants;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;

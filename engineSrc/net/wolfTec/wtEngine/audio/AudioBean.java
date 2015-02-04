@@ -1,79 +1,75 @@
 package net.wolfTec.wtEngine.audio;
 
-import net.wolfTec.cwt.Game;
+import static org.stjs.javascript.JSObjectAdapter.$js;
+import static org.stjs.javascript.JSObjectAdapter.hasOwnProperty;
+import net.wolfTec.wtEngine.WolfTecEngine;
 import net.wolfTec.wtEngine.assets.AssetItem;
 import net.wolfTec.wtEngine.assets.AssetLoader;
 import net.wolfTec.wtEngine.assets.AssetType;
-import net.wolfTec.wtEngine.base.PostEngineInitializationListener;
+import net.wolfTec.wtEngine.base.EngineInitializationListener;
+import net.wolfTec.wtEngine.base.EngineOptions;
 import net.wolfTec.wtEngine.log.Logger;
+import net.wolfTec.wtEngine.persistence.StorageBean;
 import net.wolfTec.wtEngine.persistence.StorageEntry;
+import net.wolfTec.wtEngine.utility.BrowserHelperBean;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
+import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.stjs.javascript.JSObjectAdapter;
 
-import static org.stjs.javascript.JSObjectAdapter.*;
+@Namespace("wtEngine") public class AudioBean implements EngineInitializationListener, AssetLoader {
 
-@Namespace("wtEngine") public class AudioBean implements PostEngineInitializationListener, AssetLoader {
+  public static final String MUSIC_KEY = "MUSIC_";
 
-  public static final String      MUSIC_KEY         = "MUSIC_";
+  public static final float DEFAULT_SFX_VOL = 1;
+  public static final float DEFAULT_MUSIC_VOL = 0.5f;
 
-  public static final float       DEFAULT_SFX_VOL   = 1;
-  public static final float       DEFAULT_MUSIC_VOL = 0.5f;
+  private Logger log;
+  private StorageBean storage;
+  private BrowserHelperBean browserUtil;
 
-  public Logger                   log;
-
-  private int                     apiStatus;
+  private int apiStatus;
 
   /**
    * SFX audio node.
    */
-  private Object                  sfxNode;
+  private Object sfxNode;
 
   /**
    * Music audio node.
    */
-  private Object                  musicNode;
+  private Object musicNode;
 
   /**
    * WebAudio context object.
    */
-  private Object                  context;
+  private Object context;
 
   /**
    * Cache for audio buffers.
    */
-  private Map<String, Object>     buffer;
+  private Map<String, Object> buffer;
 
-  private boolean                 musicInLoadProcess;
-  private Object                  musicConnector;
-  private String                  musicID;
+  private boolean musicInLoadProcess;
+  private Object musicConnector;
+  private String musicID;
 
-  private Callback1<StorageEntry> musicLoadCallback = new Callback1<StorageEntry>() {
-                                                      @Override public void $invoke(StorageEntry entry) {
+  private Callback1<Object> musicPlayCallback = (entry) -> {
+    musicConnector = playSoundOnGainNode(musicNode, buffer, true);
+    musicInLoadProcess = false;
+  };
+  
+  private Callback1<StorageEntry<Object>> musicLoadCallback = (entry) -> {
+    // musicConnector = playSoundOnGainNode(musicNode, Globals.Base64Helper.decodeBuffer(entry.value), true);
+    Object buffer = $js("this.context.decodeAudioData(data, this.musicPlayCallback, this.decodeAssetErrorCb)");
+  };
 
-                                                        // this is a callback,
-                                                        // so we need to grab
-                                                        // the bean here because
-                                                        // this points to a
-                                                        // different object
-                                                        // TODO: do we change
-                                                        // this to automatically
-                                                        // match $Audio ?
-                                                        AudioBean audio = Game.getBean("$Audio");
-
-                                                        audio.musicConnector = playSoundOnGainNode(audio.musicNode,
-                                                            Globals.Base64Helper.decodeBuffer(entry.value), true);
-                                                        audio.musicInLoadProcess = false;
-                                                      }
-                                                    };
-
-  @Override public void onPostEngineInit() {
+  @Override public void onEngineInit(EngineOptions options, WolfTecEngine engine) {
     try {
       log.info("Initialize..");
 
@@ -91,6 +87,10 @@ import static org.stjs.javascript.JSObjectAdapter.*;
       musicNode = createSoundNode(DEFAULT_MUSIC_VOL);
 
       buffer = JSCollections.$map();
+      
+      // bind some callbacks
+      musicLoadCallback = browserUtil.bindCallback(musicLoadCallback, this);
+      musicPlayCallback = browserUtil.bindCallback(musicPlayCallback, this);
 
       log.info("..done");
 
@@ -116,15 +116,78 @@ import static org.stjs.javascript.JSObjectAdapter.*;
   }
 
   public void playSFX(String key) {
-
+    if (this.context == null) {
+      return;
+    }
+    playSoundOnGainNode(sfxNode, buffer.$get(key), false);
   }
 
-  public void playBG(String key) {
+  /**
+   * Plays a audio as music object (looped). The audio will stop playing after
+   * stopMusic is triggered or a new music audio will be started.
+   * 
+   * @param id
+   */
+  public boolean playBG(String key) {
+    if (this.context == null || musicInLoadProcess) {
+      return false;
+    }
 
+    // already playing this music ?
+    if (musicID == key) {
+      return false;
+    }
+
+    // stop current music
+    if (musicConnector != null) {
+      stopBG();
+    }
+
+    // set meta data
+    musicInLoadProcess = true;
+    musicID = key;
+    storage.get(MUSIC_KEY + key, musicLoadCallback);
+
+    return true;
   }
 
-  public void stopBG() {
+  /**
+   * Stops the currently played music.
+   */
+  public boolean stopBG() {
+    if (this.context == null || musicInLoadProcess) {
+      return false;
+    }
 
+    // disable current music
+    if (musicConnector != null) {
+
+      // api status will be available here, because playSoundOnGainNode is at
+      // least called one time
+      if (apiStatus == 1) {
+        $js("musicConnector.stop(0)");
+      } else {
+        $js("musicConnector.noteOff(0)");
+      }
+
+      $js("musicConnector.disconnect(0)");
+    }
+
+    // remove meta data
+    musicID = null;
+    musicConnector = null;
+    musicInLoadProcess = false;
+
+    return true;
+  }
+
+  /**
+   * 
+   * @param id
+   * @return
+   */
+  public boolean isBuffered(String id) {
+    return JSObjectAdapter.hasOwnProperty(buffer, id);
   }
 
   public void setVolume(AudioChannel channel, int volume) {

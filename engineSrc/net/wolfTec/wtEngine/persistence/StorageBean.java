@@ -38,7 +38,7 @@ import org.stjs.javascript.functions.Callback2;
   /**
    * The given callback will be invoked with the value saved by the given key.
    */
-  public static void get(String key, Callback1<StorageEntry<?>> callback) {
+  public <T> void get(String key, Callback1<StorageEntry<T>> callback) {
     JSObjectAdapter.$js("localForage.getItem(key, callback)");
   }
 
@@ -47,7 +47,7 @@ import org.stjs.javascript.functions.Callback2;
    * be overwritten. After the saveGameConfig process, the callback will be
    * invoked.
    */
-  public static <T> void set(final String key, final T value, final Callback2<Object, Object> callback) {
+  public <T> void set(final String key, final T value, final Callback2<Object, Object> callback) {
     
     Callback2<StorageEntry<?>, Object> safeCb = (result, error) -> {
       // try a second time when fail at the first time because on ios the
@@ -67,7 +67,7 @@ import org.stjs.javascript.functions.Callback2;
    * The given callback will be invoked with a list of all keys that are saved
    * in the storage.
    */
-  public static void keys(Callback1<Array<String>> callback) {
+  public void keys(Callback1<Array<String>> callback) {
     JSObjectAdapter.$js("localForage.keys(callback)");
   }
 
@@ -75,7 +75,7 @@ import org.stjs.javascript.functions.Callback2;
    * Clears all values from the storage. The given callback will be invoked
    * afterwards.
    */
-  public static void clear(Callback0 callback) {
+  public void clear(Callback0 callback) {
     JSObjectAdapter.$js("localForage.clear(callback)");
   }
 
@@ -83,7 +83,7 @@ import org.stjs.javascript.functions.Callback2;
    * Removes a key including the saved value from the storage. The given
    * callback will be invoked afterwards.
    */
-  public static void remove(String key, Callback0 callback) {
+  public void remove(String key, Callback0 callback) {
     JSObjectAdapter.$js("localForage.removeItem(key, callback)");
   }
   

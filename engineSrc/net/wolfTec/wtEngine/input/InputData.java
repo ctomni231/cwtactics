@@ -1,6 +1,6 @@
 package net.wolfTec.wtEngine.input;
 
-import net.wolfTec.cwt.Constants;
+import net.wolfTec.wtEngine.Constants;
 
 import org.stjs.javascript.annotation.Namespace;
 

@@ -1,6 +1,6 @@
 package net.wolfTec.wtEngine.network;
 
-import net.wolfTec.cwt.Constants;
+import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.action.ActionData;
 import net.wolfTec.wtEngine.log.Logger;
 
@@ -13,12 +13,12 @@ import org.stjs.javascript.annotation.Namespace;
   /**
    * Id of the game in the connected network session.
    */
-  private int          gameId   = Constants.INACTIVE_ID;
+  private int gameId = Constants.INACTIVE_ID;
 
   /**
    * Id of the client in the connected network session.
    */
-  private int          clientId = Constants.INACTIVE_ID;
+  private int clientId = Constants.INACTIVE_ID;
 
   public void connect(String server) {
 

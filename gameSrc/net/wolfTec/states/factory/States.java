@@ -1,12 +1,12 @@
 package net.wolfTec.states.factory;
 
-import net.wolfTec.cwt.Constants;
 import net.wolfTec.cwt.CustomWarsTactics;
 import net.wolfTec.input.InputData;
 import net.wolfTec.input.InputType;
 import net.wolfTec.states.State;
 import net.wolfTec.states.Statemachine;
 import net.wolfTec.widgets.UiField;
+import net.wolfTec.wtEngine.Constants;
 
 import org.stjs.javascript.*;
 import org.stjs.javascript.Math;

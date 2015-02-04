@@ -1,11 +1,11 @@
 package net.wolfTec.states.factory;
 
-import net.wolfTec.cwt.Constants;
-import net.wolfTec.cwt.Game;
 import net.wolfTec.input.InputData;
 import net.wolfTec.states.State;
 import net.wolfTec.states.StatemachineBean;
-import net.wolfTec.states.widgets.UiField;
+import net.wolfTec.wtEngine.Constants;
+import net.wolfTec.wtEngine.Game;
+import net.wolfTec.wtEngine.uiWidgets.UiField;
 
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.stjs.javascript.functions.Callback0;

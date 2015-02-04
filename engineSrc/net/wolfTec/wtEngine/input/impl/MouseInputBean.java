@@ -1,6 +1,6 @@
 package net.wolfTec.wtEngine.input.impl;
 
-import net.wolfTec.cwt.Constants;
+import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.input.InputBackend;
 import net.wolfTec.wtEngine.input.InputBean;
 import net.wolfTec.wtEngine.input.InputTypeKey;
