@@ -10,7 +10,7 @@ import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 
-@Namespace("cwt") public abstract class Layer {
+@Namespace("cwt") public abstract class ScreenLayer implements LayerGroup {
 
   protected Canvas cv;
   protected CanvasRenderingContext2D ctx;
@@ -21,11 +21,11 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
   
   public abstract int getZIndex ();
 
-  public void onScreenShift (Direction dir, int amount) {
+  public void onScreenShift (Direction dir, int offsetX, int offsetY, int amount, int scale) {
     
   };
 
-  public void onSetScreenPosition (int x, int y) {
+  public void onSetScreenPosition (int x, int y, int offsetX, int offsetY) {
     
   };
   
@@ -59,12 +59,7 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
     }
   }
   
-  /**
-   * Renders the layer with the given index into the front layer.
-   *
-   * @param index
-   */
-  public void renderState(int index) {
+  @Override public void renderState(int index) {
     CanvasRenderingContext2D ctx = this.getContext(Constants.INACTIVE_ID);
     ctx.clearRect(0, 0, this.w, this.h);
     ctx.drawImage(getLayer(index), 0, 0, this.w, this.h);

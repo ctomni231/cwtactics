@@ -42,6 +42,10 @@ public class SpriteManagerBean {
     AssertUtil.hasProperty(sprites, spriteKey);
     return sprites.$get(spriteKey);
   }
+  
+  public boolean isLongAnimatedSprite(String spriteKey) {
+    return JSObjectAdapter.hasOwnProperty(longAnimatedTiles, spriteKey);
+  }
 
   /**
    * @param {behaviorTree.Sprite} sprite

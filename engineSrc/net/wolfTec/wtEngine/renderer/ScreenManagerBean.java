@@ -8,21 +8,21 @@ import net.wolfTec.wtEngine.model.Direction;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.annotation.Namespace;
 
-@Namespace("cwt") public class ScreenBean implements EngineInitializationListener {
+@Namespace("cwt") public class ScreenManagerBean implements EngineInitializationListener {
 
   public static final int MENU_ENTRY_HEIGHT = 2 * Constants.TILE_BASE;
   public static final int MENU_ENTRY_WIDTH = 10 * Constants.TILE_BASE;
   
   public int height;
   public int width;
-  public int shiftX;
-  public int shiftY;
+  public int offsetX;
+  public int offsetY;
   public int scale;
 
-  private Array<Layer> layers;
+  private Array<ScreenLayer> layers;
 
   @Override public void onEngineInit(WolfTecEngine engine) {
-    layers = engine.getBeansOfInterface(Layer.class);
+    layers = engine.getBeansOfInterface(ScreenLayer.class);
   }
 
   public void setPosition(int x, int y) {
@@ -32,27 +32,6 @@ import org.stjs.javascript.annotation.Namespace;
   }
 
   public void shiftScreen(Direction direction, int amount) {
-    int newX = shiftX;
-    int newY = shiftY;
     
-    switch (direction) {
-      case DOWN:
-        newY += shiftY;
-        break;
-      case LEFT:
-        newX -= shiftX;
-        break;
-      case RIGHT:
-        newX += shiftX;
-        break;
-      case UP:
-        newY -= shiftY;
-        break;
-
-      default:
-        break;
-    }
-    
-    setPosition(newX, newY);
   }
 }
