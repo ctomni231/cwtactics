@@ -22,15 +22,10 @@ public class RendererBean {
     private int curTime;
 
     /** */
-    private int indexUnitAnimation;
-
-    /** */
     private int indexMapAnimation;
 
     /** */
     private int indexEffectAnimation;
-
-    private int hiddenUnitId;
 
     private UiPositionableGroup layoutGenericMenu;
 
@@ -685,155 +680,6 @@ public class RendererBean {
         renderFogBackgroundLayer();
     }
 
-    /**
-     * NOTE: does not clear the area before update
-     */
-    public void renderUnits(int x, int oy, int w, int h) {
-        net.wolfTec.cwt.model.Map map = $gameround.map;
-        int halfTileBase = JSGlobal.parseInt(Constants.TILE_BASE / 2, 10);
-        Unit hiddenUnit = (hiddenUnitId != Constants.INACTIVE_ID ?
-        		$gameround.units.$get(hiddenUnitId) : null);
-
-        for (int xe = x + w; x < xe; x++) {
-            for (int y = oy, ye = y + h; y < ye; y++) {
-                Tile tile = map.getTile(x,y);
-                if (tile.visionClient == 0) continue;
-
-                Unit unit = tile.unit;
-                if (unit == null || hiddenUnit == unit) continue;
-
-                Sprite unitSprite = net.wolfTec.spriteDb.sprites.$get(unit.getType().ID);
-
-                // grab color
-                int state = Constants.INACTIVE_ID;
-                switch (unit.getOwner().id) {
-                    case 0:
-                        state = Sprite.UNIT_RED;
-                        break;
-
-                    case 1:
-                        state = Sprite.UNIT_BLUE;
-                        break;
-
-                    case 2:
-                        state = Sprite.UNIT_GREEN;
-                        break;
-
-                    case 3:
-                        state = Sprite.UNIT_YELLOW;
-                        break;
-                }
-
-                // do we need to render an inverted image
-                int shadowState = Constants.INACTIVE_ID;
-                if (unit.getOwner().id % 2 == 0) {
-                    state += Sprite.UNIT_STATE_IDLE_INVERTED;
-                    shadowState = Sprite.UNIT_SHADOW_MASK + Sprite.UNIT_STATE_IDLE_INVERTED;
-                } else {
-                    shadowState = Sprite.UNIT_SHADOW_MASK;
-                }
-                Element shadowSprite = unitSprite.getImage(shadowState);
-
-                boolean used = !unit.isCanAct();
-                Element sprite = unitSprite.getImage(state);
-                int n = 0;
-                while (n < 3) {
-                    CanvasRenderingContext2D ctx = layerUnit.getContext(n);
-
-                    int scx = (Constants.TILE_BASE * 2) * n;
-                    int scy = 0;
-                    int scw = Constants.TILE_BASE * 2;
-                    int sch = Constants.TILE_BASE * 2;
-                    int tcx = (x - screenOffsetX) * Constants.TILE_BASE - halfTileBase;
-                    int tcy = (y - screenOffsetY) * Constants.TILE_BASE - halfTileBase;
-                    int tcw = Constants.TILE_BASE + Constants.TILE_BASE;
-                    int tch = Constants.TILE_BASE + Constants.TILE_BASE;
-
-                    ctx.drawImage(
-                            sprite,
-                            scx, scy,
-                            scw, sch,
-                            tcx, tcy,
-                            tcw, tch
-                    );
-
-                    if (used) {
-                        ctx.globalAlpha = 0.35;
-                        ctx.drawImage(
-                                shadowSprite,
-                                scx, scy,
-                                scw, sch,
-                                tcx, tcy,
-                                tcw, tch
-                        );
-                        ctx.globalAlpha = 1;
-                    }
-
-                    n++;
-                }
-
-            }
-        }
-    }
-
-    /**
-     * Note: one clears the layer before action
-     */
-    public void shiftUnits(MoveCode code) {
-        CanvasRenderingContext2D tmpContext = temporaryCanvas.getContext("2d");
-
-        // calculate meta data for shift
-        int sx = 0;
-        int sy = 0;
-        int scx = 0;
-        int scy = 0;
-        int w = layerUnit.w;
-        int h = layerUnit.h;
-        switch (code) {
-            case LEFT:
-                scx += Constants.TILE_BASE;
-                w -= Constants.TILE_BASE;
-                break;
-
-            case RIGHT:
-                sx += Constants.TILE_BASE;
-                w -= Constants.TILE_BASE;
-                break;
-
-            case UP:
-                scy += Constants.TILE_BASE;
-                h -= Constants.TILE_BASE;
-                break;
-
-            case DOWN:
-                sy += Constants.TILE_BASE;
-                h -= Constants.TILE_BASE;
-                break;
-        }
-
-        // update background layers
-        int n = 0;
-        while (n < 3) {
-            tmpContext.clearRect(0, 0, layerUnit.w, layerUnit.h);
-
-            // copy visible content to temp canvas
-            tmpContext.drawImage(layerUnit.getLayer(n), scx, scy, w, h, sx, sy, w, h);
-
-            // clear original canvas
-            layerUnit.clear(n);
-
-            // copy visible content back to the original canvas
-            layerUnit.getContext(n).drawImage(temporaryCanvas, 0, 0);
-
-            n++;
-        }
-    }
-
-    /** */
-    public void setHiddenUnitId(int unitId) {
-        hiddenUnitId = unitId;
-    }
-
     /** */
     public void prepareMenu() {
         StateDataMenu menu = net.wolfTec.gameWorkflowData.menu;
@@ -1065,48 +911,7 @@ public class RendererBean {
      */
     public void shiftTiles(MoveCode code) {
 
-        // calculate meta data for shift
-        int sx = 0;
-        int sy = 0;
-        int scx = 0;
-        int scy = 0;
-        int w = layerMap.w;
-        int h = layerMap.h;
-        switch (code) {
-            case LEFT:
-                scx += Constants.TILE_BASE;
-                w -= Constants.TILE_BASE;
-                break;
-
-            case RIGHT:
-                sx += Constants.TILE_BASE;
-                w -= Constants.TILE_BASE;
-                break;
-
-            case UP:
-                scy += Constants.TILE_BASE;
-                h -= Constants.TILE_BASE;
-                break;
-
-            case DOWN:
-                sy += Constants.TILE_BASE;
-                h -= Constants.TILE_BASE;
-                break;
-        }
-
-        // update background layers
-        int n = 0;
-        while (n < 8) {
-            layerMap.getContext(n).drawImage(
-                    layerMap.getLayer(n),
-                    scx, scy,
-                    w, h,
-                    sx, sy,
-                    w, h
-            );
-
-            n++;
-        }
+        
     }
 
     /** */

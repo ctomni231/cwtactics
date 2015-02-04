@@ -3,25 +3,16 @@ package net.wolfTec.wtEngine.renderer;
 import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.WolfTecEngine;
 import net.wolfTec.wtEngine.base.EngineInitializationListener;
-import net.wolfTec.wtEngine.base.EngineOptions;
 import net.wolfTec.wtEngine.model.Direction;
 
 import org.stjs.javascript.Array;
-import org.stjs.javascript.JSCollections;
-import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.annotation.Namespace;
-import org.stjs.javascript.dom.Canvas;
 
 @Namespace("cwt") public class ScreenBean implements EngineInitializationListener {
 
-  public static final int LAYER_BACKGROUND = 0;
-  public static final int LAYER_MAP = 1;
-  public static final int LAYER_FOG = 2;
-  public static final int LAYER_UNIT = 3;
-  public static final int LAYER_FOCUS = 4;
-  public static final int LAYER_EFFECTS = 5;
-  public static final int LAYER_UI = 6;
-
+  public static final int MENU_ENTRY_HEIGHT = 2 * Constants.TILE_BASE;
+  public static final int MENU_ENTRY_WIDTH = 10 * Constants.TILE_BASE;
+  
   public int height;
   public int width;
   public int shiftX;
@@ -30,14 +21,8 @@ import org.stjs.javascript.dom.Canvas;
 
   private Array<Layer> layers;
 
-  @Override public void onEngineInit(EngineOptions options, WolfTecEngine engine) {
-    layers = JSCollections.$array();
-    
-    int numOfLayers = LAYER_UI+1;
-    while (numOfLayers > 0) {
-      layers.push(new Layer());
-      numOfLayers--;
-    }
+  @Override public void onEngineInit(WolfTecEngine engine) {
+    layers = engine.getBeansOfInterface(Layer.class);
   }
 
   public void setPosition(int x, int y) {
@@ -70,19 +55,4 @@ import org.stjs.javascript.dom.Canvas;
     
     setPosition(newX, newY);
   }
-
-  public void hideLayer(int index) {
-    Canvas layer = layers.$get(index).getLayer(Constants.INACTIVE_ID);
-    JSObjectAdapter.$js("layer.style.display = 'none'");
-  }
-
-  public void showLayer(int index) {
-    Canvas layer = layers.$get(index).getLayer(Constants.INACTIVE_ID);
-    JSObjectAdapter.$js("layer.style.display = ''");
-  }
-
-  public Layer getLayer(int index) {
-    return layers.$get(index);
-  }
-
 }

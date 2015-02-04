@@ -3,7 +3,6 @@ package net.wolfTec.wtEngine.gamelogic;
 import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.WolfTecEngine;
 import net.wolfTec.wtEngine.base.EngineInitializationListener;
-import net.wolfTec.wtEngine.base.EngineOptions;
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.model.Config;
 
@@ -18,7 +17,7 @@ import org.stjs.javascript.annotation.Namespace;
   private org.stjs.javascript.Map<String, Config> configs;
   private Array<String> configNames;
 
-  @Override public void onEngineInit(EngineOptions options, WolfTecEngine engine) {
+  @Override public void onEngineInit(WolfTecEngine engine) {
     configs = JSCollections.$map();
     configNames = JSCollections.$array();
 

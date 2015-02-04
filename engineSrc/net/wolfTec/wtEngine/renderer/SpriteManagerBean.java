@@ -33,12 +33,12 @@ public class SpriteManagerBean {
     minimapIndex = JSCollections.$map();
   }
 
-  private void registerSprite(String spriteKey, Sprite sprite) {
+  public void registerSprite(String spriteKey, Sprite sprite) {
     AssertUtil.hasNoProperty(sprites, spriteKey);
     sprites.$put(spriteKey, sprite);
   }
 
-  private Sprite getSprite(String spriteKey) {
+  public Sprite getSprite(String spriteKey) {
     AssertUtil.hasProperty(sprites, spriteKey);
     return sprites.$get(spriteKey);
   }

@@ -2,7 +2,6 @@ package net.wolfTec.wtEngine.input.impl;
 
 import net.wolfTec.wtEngine.WolfTecEngine;
 import net.wolfTec.wtEngine.base.EngineInitializationListener;
-import net.wolfTec.wtEngine.base.EngineOptions;
 import net.wolfTec.wtEngine.input.*;
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.statemachine.StateMachineBean;
@@ -23,7 +22,7 @@ public class KeyboardInputBean implements InputBackend, EngineInitializationList
 
   private Map<String, Integer> mapping;
 
-  @Override public void onEngineInit(EngineOptions options, WolfTecEngine engine) {
+  @Override public void onEngineInit(WolfTecEngine engine) {
 
     // add default mapping
     mapping = JSCollections.$map();

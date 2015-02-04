@@ -6,7 +6,6 @@ import net.wolfTec.wtEngine.assets.AssetItem;
 import net.wolfTec.wtEngine.assets.AssetLoader;
 import net.wolfTec.wtEngine.assets.AssetType;
 import net.wolfTec.wtEngine.base.EngineInitializationListener;
-import net.wolfTec.wtEngine.base.EngineOptions;
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.persistence.StorageBean;
 import net.wolfTec.wtEngine.utility.BrowserHelperBean;
@@ -32,7 +31,7 @@ import org.stjs.javascript.functions.Callback1;
   private TypeDatabase<CoType> commanderTypes;
   private Modification modification;
 
-  @Override public void onEngineInit(EngineOptions options, WolfTecEngine engine) {
+  @Override public void onEngineInit(WolfTecEngine engine) {
 
   }
 

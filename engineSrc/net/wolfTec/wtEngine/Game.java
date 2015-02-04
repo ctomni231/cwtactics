@@ -1,6 +1,5 @@
 package net.wolfTec.wtEngine;
 
-import net.wolfTec.wtEngine.base.EngineOptions;
 import net.wolfTec.wtEngine.model.MoveType;
 import net.wolfTec.wtEngine.model.ObjectType;
 import net.wolfTec.wtEngine.model.PropertyType;
@@ -96,12 +95,8 @@ import org.stjs.javascript.annotation.Namespace;
 	
 	public static void main(String[] args) {
 	  
-	  // generate options
-	  EngineOptions options = new EngineOptions();
-	  options.debugMode = Constants.DEBUG;
-	  
 	  // create engine
-	  engine = new WolfTecEngine(options);
+	  engine = new WolfTecEngine();
 	  
 	  // start
 	}

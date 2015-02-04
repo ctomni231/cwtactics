@@ -4,7 +4,6 @@ import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.Game;
 import net.wolfTec.wtEngine.WolfTecEngine;
 import net.wolfTec.wtEngine.base.EngineInitializationListener;
-import net.wolfTec.wtEngine.base.EngineOptions;
 import net.wolfTec.wtEngine.input.InputBackend;
 import net.wolfTec.wtEngine.input.InputBackendType;
 import net.wolfTec.wtEngine.input.InputBean;
@@ -30,7 +29,7 @@ public class GamePadInputBean implements InputBackend, EngineInitializationListe
 
   private final Array<Integer> prevTimestamps = JSCollections.$array();
   
-  @Override public void onEngineInit(EngineOptions options, WolfTecEngine engine) {
+  @Override public void onEngineInit(WolfTecEngine engine) {
 
     // register default mapping
     GAMEPAD_MAPPING = JSCollections.$map();

@@ -1,6 +1,7 @@
 package net.wolfTec.wtEngine.renderer;
 
 import net.wolfTec.wtEngine.Constants;
+import net.wolfTec.wtEngine.model.Direction;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Global;
@@ -9,15 +10,25 @@ import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 
-@Namespace("wtEngine") public class Layer {
+@Namespace("cwt") public abstract class Layer {
 
-  private Canvas cv;
-  private CanvasRenderingContext2D ctx;
+  protected Canvas cv;
+  protected CanvasRenderingContext2D ctx;
   public int w;
   public int h;
-  private Array<CanvasRenderingContext2D> contexts;
-  private Array<Canvas> layers;
+  protected Array<CanvasRenderingContext2D> contexts;
+  protected Array<Canvas> layers;
+  
+  public abstract int getZIndex ();
 
+  public void onScreenShift (Direction dir, int amount) {
+    
+  };
+
+  public void onSetScreenPosition (int x, int y) {
+    
+  };
+  
   protected void initialize(String canvasId, int frames, int w, int h) {
 
     // root canvas
@@ -47,13 +58,13 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
       }
     }
   }
-
+  
   /**
    * Renders the layer with the given index into the front layer.
    *
    * @param index
    */
-  public void renderLayer(int index) {
+  public void renderState(int index) {
     CanvasRenderingContext2D ctx = this.getContext(Constants.INACTIVE_ID);
     ctx.clearRect(0, 0, this.w, this.h);
     ctx.drawImage(getLayer(index), 0, 0, this.w, this.h);

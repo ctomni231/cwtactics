@@ -7,16 +7,15 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.annotation.Namespace;
 
-import net.wolfTec.wtEngine.base.EngineOptions;
 import net.wolfTec.wtEngine.log.LoggerFactoryBeanInterface;
 
 @Namespace("wtEngine") public class WolfTecEngine {
 
   private static Map<String, Object> beans;
 
-  public WolfTecEngine(EngineOptions options) {
+  public WolfTecEngine() {
     initBeans();
-    solveBeanDependencies(options);
+    solveBeanDependencies();
   }
 
   /**
@@ -109,8 +108,8 @@ import net.wolfTec.wtEngine.log.LoggerFactoryBeanInterface;
    * <strong>Note: </strong> This function is low level and contains real JS
    * code. Modify only if you know what you're doing here.
    */
-  private static void solveBeanDependencies(EngineOptions options) {
-    boolean isDebugEnabled = options.debugMode;
+  private static void solveBeanDependencies() {
+    boolean isDebugEnabled = Constants.DEBUG;
     LoggerFactoryBeanInterface logFactory = (LoggerFactoryBeanInterface) beans.$get("LoggerFactoryBean");
 
     // search in all beans for properties with a leading '$' character. This
