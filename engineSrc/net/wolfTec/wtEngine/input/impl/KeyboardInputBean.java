@@ -1,7 +1,7 @@
 package net.wolfTec.wtEngine.input.impl;
 
-import net.wolfTec.wtEngine.WolfTecEngine;
-import net.wolfTec.wtEngine.base.EngineInitializationListener;
+import net.wolfTec.wtEngine.base.BeanFactory;
+import net.wolfTec.wtEngine.base.BeanInitializationListener;
 import net.wolfTec.wtEngine.input.*;
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.statemachine.StateMachineBean;
@@ -12,7 +12,7 @@ import org.stjs.javascript.Map;
 import org.stjs.javascript.dom.DOMEvent;
 import org.stjs.javascript.functions.Function1;
 
-public class KeyboardInputBean implements InputBackend, EngineInitializationListener {
+public class KeyboardInputBean implements InputBackend, BeanInitializationListener {
 
   public final int CONSOLE_TOGGLE_KEY = 192;
 
@@ -22,7 +22,7 @@ public class KeyboardInputBean implements InputBackend, EngineInitializationList
 
   private Map<String, Integer> mapping;
 
-  @Override public void onEngineInit(WolfTecEngine engine) {
+  @Override public void onEngineInit(BeanFactory engine) {
 
     // add default mapping
     mapping = JSCollections.$map();

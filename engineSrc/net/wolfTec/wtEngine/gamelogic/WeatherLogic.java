@@ -4,9 +4,8 @@ import net.wolfTec.wtEngine.model.WeatherType;
 import net.wolfTec.wtEngine.utility.ReadOnlyJsArray;
 
 import org.stjs.javascript.JSGlobal;
-import org.stjs.javascript.annotation.Namespace;
 
-@Namespace("cwt") public interface WeatherLogic extends BaseLogic {
+public interface WeatherLogic extends BaseLogic {
 
   default WeatherType getDefaultWeather() {
     ReadOnlyJsArray<WeatherType> types = getObjectTypes().getWeathers();

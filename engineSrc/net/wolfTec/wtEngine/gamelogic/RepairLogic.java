@@ -1,12 +1,10 @@
 package net.wolfTec.wtEngine.gamelogic;
 
-import org.stjs.javascript.annotation.Namespace;
-
 import net.wolfTec.wtEngine.model.Property;
 import net.wolfTec.wtEngine.model.Tile;
 import net.wolfTec.wtEngine.model.Unit;
 
-@Namespace("cwt") public interface RepairLogic extends BaseLogic {
+public interface RepairLogic extends BaseLogic {
 
   /**
    * Returns **true** if the property at the position (**x**,**y**) fulfills the

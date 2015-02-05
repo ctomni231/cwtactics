@@ -1,6 +1,7 @@
 package net.wolfTec.wtEngine.uiWidgets;
 
 import net.wolfTec.wtEngine.Constants;
+import net.wolfTec.wtEngine.input.InputData;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;

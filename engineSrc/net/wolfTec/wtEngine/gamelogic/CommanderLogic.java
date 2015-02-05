@@ -1,12 +1,10 @@
 package net.wolfTec.wtEngine.gamelogic;
 
-import org.stjs.javascript.annotation.Namespace;
-
 import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.model.CoPowerLevel;
 import net.wolfTec.wtEngine.model.Player;
 
-@Namespace("cwt") public interface CommanderLogic extends BaseLogic {
+public interface CommanderLogic extends BaseLogic {
 
   default boolean isPowerActive(Player player, CoPowerLevel level) {
     return player.activePower == level;

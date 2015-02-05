@@ -5,9 +5,8 @@ import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.utility.CircularBuffer;
 
 import org.stjs.javascript.JSStringAdapter;
-import org.stjs.javascript.annotation.Namespace;
 
-@Namespace("wtEngine") public class InputBean {
+public class InputBean {
 
   private Logger                          log;
 

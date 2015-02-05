@@ -2,9 +2,7 @@ package net.wolfTec.wtEngine.input;
 
 import net.wolfTec.wtEngine.Constants;
 
-import org.stjs.javascript.annotation.Namespace;
-
-@Namespace("wtEngine") public class InputData {
+public class InputData {
   
   /**
    * The type of the input command

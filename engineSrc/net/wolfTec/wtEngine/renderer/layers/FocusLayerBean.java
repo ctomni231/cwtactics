@@ -1,26 +1,33 @@
 package net.wolfTec.wtEngine.renderer.layers;
 
 import net.wolfTec.wtEngine.Constants;
-import net.wolfTec.wtEngine.SpriteIndexBean;
-import net.wolfTec.wtEngine.WolfTecEngine;
-import net.wolfTec.wtEngine.base.EngineInitializationListener;
+import net.wolfTec.wtEngine.base.BeanFactory;
+import net.wolfTec.wtEngine.base.BeanInitializationListener;
 import net.wolfTec.wtEngine.model.Direction;
+import net.wolfTec.wtEngine.renderer.AnimatedLayer;
 import net.wolfTec.wtEngine.renderer.ScreenLayer;
 import net.wolfTec.wtEngine.renderer.Sprite;
 import net.wolfTec.wtEngine.renderer.SpriteManagerBean;
 
 import org.stjs.javascript.Global;
-import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 
-@Namespace("cwt") public class FocusLayerBean extends ScreenLayer implements EngineInitializationListener {
+public class FocusLayerBean extends ScreenLayer implements BeanInitializationListener, AnimatedLayer {
 
   private SpriteManagerBean sprites;
   private Canvas temporaryCanvas;
 
-  @Override public void onEngineInit(WolfTecEngine engine) {
+  @Override public int getSubStates() {
+    return 7;
+  }
+
+  @Override public String getLayerCanvasId() {
+    return "canvas_layer_Focus";
+  }
+  
+  @Override public void onEngineInit(BeanFactory engine) {
     temporaryCanvas = (Canvas) Global.window.document.createElement("canvas");
   }
 

@@ -1,10 +1,8 @@
 package net.wolfTec.wtEngine.gamelogic;
 
-import org.stjs.javascript.annotation.Namespace;
-
 import net.wolfTec.wtEngine.Constants;
 
-@Namespace("cwt") public enum MoveCode {
+public enum MoveCode {
 
 	LEFT, RIGHT, UP, DOWN;
 

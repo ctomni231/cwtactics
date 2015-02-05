@@ -3,9 +3,7 @@ package net.wolfTec.wtEngine.statemachine;
 import net.wolfTec.wtEngine.input.InputBackendType;
 import net.wolfTec.wtEngine.input.InputData;
 
-import org.stjs.javascript.annotation.Namespace;
-
-@Namespace("wtEngine") public abstract class State {
+public abstract class State {
 
   public boolean isAnimationState () {
     return false;

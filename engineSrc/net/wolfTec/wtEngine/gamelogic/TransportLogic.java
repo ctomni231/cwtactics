@@ -1,11 +1,9 @@
 package net.wolfTec.wtEngine.gamelogic;
 
-import org.stjs.javascript.annotation.Namespace;
-
 import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.model.Unit;
 
-@Namespace("cwt") public interface TransportLogic extends BaseLogic {
+public interface TransportLogic extends BaseLogic {
 
 	/**
 	 * @return true if the unit with id tid is a transporter, else false.

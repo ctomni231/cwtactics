@@ -4,9 +4,8 @@ import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.model.Unit;
 
 import org.stjs.javascript.JSGlobal;
-import org.stjs.javascript.annotation.Namespace;
 
-@Namespace("cwt") public interface SupplyLogic {
+public interface SupplyLogic {
 
 	/**
 	 * @return **true** if a given **unit** is a supplier, else **false**.

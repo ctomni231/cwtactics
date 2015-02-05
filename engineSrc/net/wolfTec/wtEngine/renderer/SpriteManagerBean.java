@@ -8,7 +8,6 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.dom.Canvas;
-import org.stjs.javascript.dom.Element;
 
 public class SpriteManagerBean {
 

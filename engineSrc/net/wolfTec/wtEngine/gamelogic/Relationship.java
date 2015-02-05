@@ -1,8 +1,7 @@
 package net.wolfTec.wtEngine.gamelogic;
 
-import org.stjs.javascript.annotation.Namespace;
 
-@Namespace("cwt") public enum Relationship {
+public enum Relationship {
 
     /**
      * Means two objects are the same object (so there is only one object).

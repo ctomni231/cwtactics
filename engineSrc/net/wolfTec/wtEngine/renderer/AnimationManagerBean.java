@@ -1,28 +1,48 @@
 package net.wolfTec.wtEngine.renderer;
 
-import net.wolfTec.wtEngine.WolfTecEngine;
-import net.wolfTec.wtEngine.base.EngineInitializationListener;
+import net.wolfTec.wtEngine.Constants;
+import net.wolfTec.wtEngine.base.BeanFactory;
+import net.wolfTec.wtEngine.base.BeanInitializationListener;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 
-public abstract class AnimationManagerBean implements EngineInitializationListener{
+public abstract class AnimationManagerBean implements BeanInitializationListener{
 
-  /** */
-  private int indexUnitAnimation;
-
+  private int curTime;
+  
   private Array<AnimatedLayer> layers;
   private Array<Integer> layerStates;
   
-  @Override public void onEngineInit(WolfTecEngine engine) {
+  @Override public void onEngineInit(BeanFactory engine) {
     layers = engine.getBeansOfInterface(AnimatedLayer.class);
     layerStates = JSCollections.$array();
+    curTime = 0;
   }
   
   public void update(int delta) {
-    for (int i = 0; i < layers.$length(); i++) {
-      AnimatedLayer layer = layers.$get(i);
-      layer.renderState(layer.getSubStates());
+
+    curTime += delta;
+    if (curTime > Constants.ANIMATION_TICK_TIME) {
+      curTime = 0;
+      
+      for (int i = 0; i < layers.$length(); i++) {
+        AnimatedLayer layer = layers.$get(i);
+        int state = layerStates.$get(i);
+        if (state +1 < layer.getSubStates()) {
+          state += 1;
+        } else {
+          state = 0;
+        } // TODO: grab animation strategy (array) from animated bean
+        layerStates.$set(i, state);
+        if (layer.isDoubleStepAnimated()) {
+          if (state % 2 == 0) {
+            layer.renderState(state/2);
+          }
+        } else {
+          layer.renderState(state);
+        }
+      }
     }
   }
 }

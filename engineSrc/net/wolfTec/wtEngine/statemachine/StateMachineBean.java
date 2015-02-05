@@ -11,11 +11,10 @@ import org.stjs.javascript.Date;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
-import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 
-@Namespace("wtEngine") public class StateMachineBean implements AssetLoader {
+public class StateMachineBean implements AssetLoader {
 
   private Logger log;
   private InputBean input;
@@ -155,16 +154,16 @@ import org.stjs.javascript.functions.Callback1;
 
   @Override public void cacheAsset(AssetItem item, Object data, Callback0 callback) {
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override public void loadAsset(AssetItem item, Object data, Callback0 callback) {
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override public void grabAsset(AssetItem item, Callback1<Object> callback) {
     // TODO Auto-generated method stub
-    
+
   }
 }

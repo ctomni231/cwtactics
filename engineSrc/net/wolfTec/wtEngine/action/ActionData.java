@@ -2,9 +2,7 @@ package net.wolfTec.wtEngine.action;
 
 import net.wolfTec.wtEngine.Constants;
 
-import org.stjs.javascript.annotation.Namespace;
-
-@Namespace("wtEngine") public abstract class ActionData {
+public abstract class ActionData {
 
   public int actionId;
   public int p1;

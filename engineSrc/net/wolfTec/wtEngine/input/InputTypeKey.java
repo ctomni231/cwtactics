@@ -1,8 +1,7 @@
 package net.wolfTec.wtEngine.input;
 
-import org.stjs.javascript.annotation.Namespace;
 
-@Namespace("wtEngine") public enum InputTypeKey {
+public enum InputTypeKey {
   UP, DOWN, LEFT, RIGHT, A, B,
 
   /**

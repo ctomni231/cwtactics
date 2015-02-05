@@ -1,8 +1,7 @@
 package net.wolfTec.wtEngine.model;
 
-import org.stjs.javascript.annotation.Namespace;
 
-@Namespace("cwt") public enum GameMode {
+public enum GameMode {
 
 	/**
 	 * Advance Wars 1 game mode. The first ever released game mode of the advance

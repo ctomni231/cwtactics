@@ -15,18 +15,6 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 
 public class RendererBean {
 
-    /** */
-    private boolean unitAnimationHalfStep;
-
-    /** */
-    private int curTime;
-
-    /** */
-    private int indexMapAnimation;
-
-    /** */
-    private int indexEffectAnimation;
-
     private UiPositionableGroup layoutGenericMenu;
 
     private int menuShift;
@@ -38,14 +26,6 @@ public class RendererBean {
     public RendererBean() {
         int canvasW = Constants.TILE_BASE * Constants.SCREEN_WIDTH;
         int canvasH = Constants.TILE_BASE * Constants.SCREEN_HEIGHT;
-
-        layerBG = new LayeredCanvas("canvas_layer_Background", 1, canvasW, canvasH);
-        layerMap = new LayeredCanvas("canvas_layer_Map", 8, canvasW, canvasH);
-        layerFog = new LayeredCanvas("canvas_layer_Fog", 1, canvasW, canvasH);
-        layerUnit = new LayeredCanvas("canvas_layer_Unit", 3, canvasW, canvasH);
-        layerFocus = new LayeredCanvas("canvas_layer_Focus", 7, canvasW, canvasH);
-        layerEffects = new LayeredCanvas("canvas_layer_Effects", 1, canvasW, canvasH);
-        layerUI = new LayeredCanvas("canvas_layer_UI", 1, canvasW, canvasH);
 
         temporaryCanvas = (Canvas) Global.window.document.createElement("canvas");
         temporaryCanvas.width = canvasW;
@@ -393,51 +373,6 @@ public class RendererBean {
             }
         }
     }
-
-    /** */
-    public void evaluateCycle(int delta) {
-        int index;
-
-        curTime += delta;
-        if (curTime > ANIMATION_TICK_TIME) {
-            curTime = 0;
-
-            // calc unit animation layer step
-            unitAnimationHalfStep = !unitAnimationHalfStep;
-            if (!unitAnimationHalfStep) {
-
-                index = indexUnitAnimation + 1;
-                if (index == 3) {
-                    index = 0;
-                }
-
-                // render unit animation layer
-                layerUnit.renderLayer(index);
-                indexUnitAnimation = index;
-            }
-
-            // map animation layer
-            index = indexMapAnimation + 1;
-            if (index == 8) {
-                index = 0;
-            }
-
-            // render map animation layer
-            layerMap.renderLayer(index);
-            indexMapAnimation = index;
-
-            // effect animation layer
-            index = indexEffectAnimation + 1;
-            if (index == 7) {
-                index = 0;
-            }
-
-            // render map animation layer
-            layerFocus.renderLayer(index);
-            indexEffectAnimation = index;
-        }
-    }
-
 
     /** */
     public void prepareMenu() {

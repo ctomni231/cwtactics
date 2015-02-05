@@ -1,22 +1,21 @@
 package net.wolfTec.wtEngine.model;
 
 import net.wolfTec.wtEngine.Constants;
-import net.wolfTec.wtEngine.WolfTecEngine;
 import net.wolfTec.wtEngine.assets.AssetItem;
 import net.wolfTec.wtEngine.assets.AssetLoader;
 import net.wolfTec.wtEngine.assets.AssetType;
-import net.wolfTec.wtEngine.base.EngineInitializationListener;
+import net.wolfTec.wtEngine.base.BeanFactory;
+import net.wolfTec.wtEngine.base.BeanInitializationListener;
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.persistence.StorageBean;
 import net.wolfTec.wtEngine.utility.BrowserHelperBean;
 import net.wolfTec.wtEngine.utility.ExternalRequestOptions;
 import net.wolfTec.wtEngine.utility.ReadOnlyJsArray;
 
-import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 
-@Namespace("cwt") public class ObjectTypesBean implements EngineInitializationListener, AssetLoader {
+public class ObjectTypesBean implements BeanInitializationListener, AssetLoader {
 
   private Logger log;
   private BrowserHelperBean browserUtil;
@@ -31,19 +30,19 @@ import org.stjs.javascript.functions.Callback1;
   private TypeDatabase<CoType> commanderTypes;
   private Modification modification;
 
-  @Override public void onEngineInit(WolfTecEngine engine) {
+  @Override public void onEngineInit(BeanFactory engine) {
 
   }
 
   @Override public void cacheAsset(AssetItem item, Object data, Callback0 callback) {
     if (item.type == AssetType.MODIFICATION) {
-      storage.set(item.name, data, browserUtil.bindCallback((storageEntry, error) -> {
+      storage.set(item.name, data, (storageEntry, error) -> {
         if (error != null) {
           log.error("CachingModificationException");
         } else {
           callback.$invoke();
         }
-      }, this)); 
+      }); 
     }
   }
 
@@ -60,13 +59,9 @@ import org.stjs.javascript.functions.Callback1;
       data.json = true;
       data.path = Constants.DEFAULT_MOD_PATH;
 
-      data.success = browserUtil.bindCallback((mod) -> {
-        callback.$invoke(mod);
-      }, this);
+      data.success = (mod) -> callback.$invoke(mod);
 
-      data.error = browserUtil.bindCallback((error) -> {
-        log.error("ModificationLoadException"); 
-      }, this);
+      data.error = (error) -> log.error("ModificationLoadException");
 
       browserUtil.doHttpRequest(data);
     }

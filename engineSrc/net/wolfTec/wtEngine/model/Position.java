@@ -3,12 +3,10 @@ package net.wolfTec.wtEngine.model;
 import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.utility.AssertUtil;
 
-import org.stjs.javascript.annotation.Namespace;
-
 /**
  * Object that holds information about objects at a given position (x,y).
  */
-@Namespace("cwt") public class Position {
+public class Position {
 
   public int x;
   public int y;

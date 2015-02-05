@@ -1,10 +1,9 @@
 package net.wolfTec.wtEngine.model;
 
 import org.stjs.javascript.JSGlobal;
-import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.annotation.Template;
 
-@Namespace("cwt") public class Unit implements PlayerObject {
+public class Unit implements PlayerObject {
 
 	private int				hp;
 	private int				ammo;

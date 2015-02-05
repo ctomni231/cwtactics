@@ -2,7 +2,6 @@ package net.wolfTec.wtEngine.utility;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.annotation.Template;
 
 /**
@@ -11,7 +10,7 @@ import org.stjs.javascript.annotation.Template;
  *
  * @param <T>
  */
-@Namespace("wtEngine") public class CircularBuffer<T> {
+public class CircularBuffer<T> {
   public static final int DEFAULT_SIZE = 32;
 
   private int             index;

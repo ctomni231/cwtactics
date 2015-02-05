@@ -5,7 +5,7 @@ import org.stjs.javascript.annotation.Namespace;
 import net.wolfTec.system.Logger;
 import net.wolfTec.wtEngine.utility.AssertUtil;
 
-@Namespace("cwt") public class GameLoaderBean {
+public class GameLoaderBean {
 
 	private Logger						log;
 

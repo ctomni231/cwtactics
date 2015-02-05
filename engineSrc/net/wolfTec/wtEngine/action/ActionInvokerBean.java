@@ -1,21 +1,18 @@
 package net.wolfTec.wtEngine.action;
 
+import static org.stjs.javascript.JSObjectAdapter.$js;
 import net.wolfTec.wtEngine.Constants;
-import net.wolfTec.wtEngine.WolfTecEngine;
-import net.wolfTec.wtEngine.base.EngineInitializationListener;
+import net.wolfTec.wtEngine.base.BeanFactory;
+import net.wolfTec.wtEngine.base.BeanInitializationListener;
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.network.NetworkBean;
 import net.wolfTec.wtEngine.utility.CircularBuffer;
 
 import org.stjs.javascript.Array;
-import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
-import org.stjs.javascript.annotation.Namespace;
 
-import static org.stjs.javascript.JSObjectAdapter.*;
-
-@Namespace("wtEngine") public class ActionInvokerBean implements EngineInitializationListener {
+public class ActionInvokerBean implements BeanInitializationListener {
 
   private Logger log;
   private NetworkBean network;
@@ -40,7 +37,7 @@ import static org.stjs.javascript.JSObjectAdapter.*;
    */
   private CircularBuffer<ActionData> backPool;
 
-  @Override public void onEngineInit(WolfTecEngine engine) {
+  @Override public void onEngineInit(BeanFactory engine) {
     this.backPool = new CircularBuffer<ActionData>(Constants.ACTION_POOL_SIZE);
     this.buffer = new CircularBuffer<ActionData>(Constants.ACTION_POOL_SIZE);
 

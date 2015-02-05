@@ -2,11 +2,11 @@ package net.wolfTec.wtEngine.audio;
 
 import static org.stjs.javascript.JSObjectAdapter.$js;
 import static org.stjs.javascript.JSObjectAdapter.hasOwnProperty;
-import net.wolfTec.wtEngine.WolfTecEngine;
 import net.wolfTec.wtEngine.assets.AssetItem;
 import net.wolfTec.wtEngine.assets.AssetLoader;
 import net.wolfTec.wtEngine.assets.AssetType;
-import net.wolfTec.wtEngine.base.EngineInitializationListener;
+import net.wolfTec.wtEngine.base.BeanFactory;
+import net.wolfTec.wtEngine.base.BeanInitializationListener;
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.persistence.StorageBean;
 import net.wolfTec.wtEngine.persistence.StorageEntry;
@@ -17,11 +17,10 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
-import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 
-@Namespace("wtEngine") public class AudioBean implements EngineInitializationListener, AssetLoader {
+public class AudioBean implements BeanInitializationListener, AssetLoader {
 
   public static final String MUSIC_KEY = "MUSIC_";
 
@@ -68,7 +67,7 @@ import org.stjs.javascript.functions.Callback1;
     Object buffer = $js("this.context.decodeAudioData(data, this.musicPlayCallback, this.decodeAssetErrorCb)");
   };
 
-  @Override public void onEngineInit(WolfTecEngine engine) {
+  @Override public void onEngineInit(BeanFactory engine) {
     try {
       log.info("Initialize..");
 
@@ -87,10 +86,6 @@ import org.stjs.javascript.functions.Callback1;
 
       buffer = JSCollections.$map();
       
-      // bind some callbacks
-      musicLoadCallback = browserUtil.bindCallback(musicLoadCallback, this);
-      musicPlayCallback = browserUtil.bindCallback(musicPlayCallback, this);
-
       log.info("..done");
 
     } catch (Exception e) {

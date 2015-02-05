@@ -14,8 +14,6 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 
-import static org.stjs.javascript.JSObjectAdapter.*;
-
 public class MapManagerBean implements AssetLoader {
   
   public static final String MAP_PREFIX = "MAP_";

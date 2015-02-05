@@ -1,8 +1,6 @@
-package net.wolfTec.wtEngine;
+package net.wolfTec.wtEngine.renderer;
 
-import org.stjs.javascript.annotation.Namespace;
-
-@Namespace("cwt") public abstract class SpriteIndexBean {
+public abstract class SpriteIndexBean {
 
   public final int TYPE_UNIT = 0;
   public final int TYPE_PROPERTY = 1;

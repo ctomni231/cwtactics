@@ -1,14 +1,13 @@
 package net.wolfTec.wtEngine.gamelogic;
 
-import org.stjs.javascript.JSGlobal;
-import org.stjs.javascript.annotation.Namespace;
-
 import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.model.Player;
 import net.wolfTec.wtEngine.model.Unit;
 import net.wolfTec.wtEngine.utility.AssertUtil;
 
-@Namespace("cwt") public interface LifecycleLogic {
+import org.stjs.javascript.JSGlobal;
+
+public interface LifecycleLogic {
 
 	/**
 	 * 

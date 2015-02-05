@@ -1,23 +1,22 @@
 package net.wolfTec.wtEngine.gamelogic;
 
 import net.wolfTec.wtEngine.Constants;
-import net.wolfTec.wtEngine.WolfTecEngine;
-import net.wolfTec.wtEngine.base.EngineInitializationListener;
+import net.wolfTec.wtEngine.base.BeanFactory;
+import net.wolfTec.wtEngine.base.BeanInitializationListener;
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.model.Config;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.stjs.javascript.annotation.Namespace;
 
-@Namespace("cwt") public class GameConfigBean implements EngineInitializationListener {
+public class GameConfigBean implements BeanInitializationListener {
 
   public Logger log;
 
   private org.stjs.javascript.Map<String, Config> configs;
   private Array<String> configNames;
 
-  @Override public void onEngineInit(WolfTecEngine engine) {
+  @Override public void onEngineInit(BeanFactory engine) {
     configs = JSCollections.$map();
     configNames = JSCollections.$array();
 

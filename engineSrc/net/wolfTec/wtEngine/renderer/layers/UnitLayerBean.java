@@ -1,7 +1,6 @@
 package net.wolfTec.wtEngine.renderer.layers;
 
 import net.wolfTec.wtEngine.Constants;
-import net.wolfTec.wtEngine.SpriteIndexBean;
 import net.wolfTec.wtEngine.model.Direction;
 import net.wolfTec.wtEngine.model.GameMapBean;
 import net.wolfTec.wtEngine.model.GameRoundBean;
@@ -10,16 +9,16 @@ import net.wolfTec.wtEngine.model.Unit;
 import net.wolfTec.wtEngine.renderer.AnimatedLayer;
 import net.wolfTec.wtEngine.renderer.ScreenLayer;
 import net.wolfTec.wtEngine.renderer.Sprite;
+import net.wolfTec.wtEngine.renderer.SpriteIndexBean;
 import net.wolfTec.wtEngine.renderer.SpriteManagerBean;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSGlobal;
-import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 
-@Namespace("cwt") public class UnitLayerBean extends ScreenLayer implements AnimatedLayer {
+public class UnitLayerBean extends ScreenLayer implements AnimatedLayer {
 
   private SpriteManagerBean sprites;
   private SpriteIndexBean spriteIndexes;
@@ -28,11 +27,27 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 
   private Canvas temporaryCanvas = (Canvas) Global.window.document.createElement("canvas");
 
+  @Override public int getZIndex() {
+    return 3;
+  }
+  
+  @Override public int getSubStates() {
+    return 3;
+  }
+
+  @Override public String getLayerCanvasId() {
+    return "canvas_layer_Unit";
+  }
+  
   private int hiddenUnitId;
 
   /** */
   public void setHiddenUnitId(int unitId) {
     hiddenUnitId = unitId;
+  }
+  
+  @Override public boolean isDoubleStepAnimated() {
+    return true;
   }
 
   @Override public void onScreenShift(Direction dir, int offsetX, int offsetY, int amount, int scale) {
@@ -160,13 +175,5 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 
       }
     }
-  }
-
-  @Override public int getZIndex() {
-    return 3;
-  }
-  
-  @Override public int getSubStates() {
-    return 4;
   }
 }

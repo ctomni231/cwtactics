@@ -1,24 +1,21 @@
 package net.wolfTec.wtEngine;
 
+import net.wolfTec.wtEngine.base.BeanFactory;
 import net.wolfTec.wtEngine.model.MoveType;
 import net.wolfTec.wtEngine.model.ObjectType;
 import net.wolfTec.wtEngine.model.PropertyType;
 import net.wolfTec.wtEngine.model.TypeDatabase;
 import net.wolfTec.wtEngine.model.UnitType;
 
-import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
-import org.stjs.javascript.JSObjectAdapter;
-import org.stjs.javascript.Map;
-import org.stjs.javascript.annotation.Namespace;
 
 /**
  * Central mediator (monolithic). Every service, data holder etc. can be
  * accessed by this object. A direct access between modules should be disallowed
  * to prevent strict coupling.
  */
-@Namespace("cwt") public abstract class Game {
+public abstract class Game {
 
   public String getVersion () {
     return Constants.VERSION;
@@ -91,12 +88,12 @@ import org.stjs.javascript.annotation.Namespace;
 		};
 	}
 
-	private static WolfTecEngine engine;
+	private static BeanFactory engine;
 	
 	public static void main(String[] args) {
 	  
 	  // create engine
-	  engine = new WolfTecEngine();
+	  engine = new BeanFactory();
 	  
 	  // start
 	}

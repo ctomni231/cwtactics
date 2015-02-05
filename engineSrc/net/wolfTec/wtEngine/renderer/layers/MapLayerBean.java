@@ -1,24 +1,31 @@
 package net.wolfTec.wtEngine.renderer.layers;
 
 import net.wolfTec.wtEngine.Constants;
-import net.wolfTec.wtEngine.SpriteIndexBean;
 import net.wolfTec.wtEngine.model.Direction;
-import net.wolfTec.wtEngine.model.GameMapBean;
 import net.wolfTec.wtEngine.model.GameRoundBean;
 import net.wolfTec.wtEngine.model.Tile;
+import net.wolfTec.wtEngine.renderer.AnimatedLayer;
 import net.wolfTec.wtEngine.renderer.ScreenLayer;
+import net.wolfTec.wtEngine.renderer.SpriteIndexBean;
 import net.wolfTec.wtEngine.renderer.SpriteManagerBean;
 
 import org.stjs.javascript.JSGlobal;
-import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 
-@Namespace("cwt") public class MapLayerBean extends ScreenLayer {
+public class MapLayerBean extends ScreenLayer implements AnimatedLayer {
 
   private SpriteManagerBean sprites;
   private SpriteIndexBean spriteIndexes;
   private GameRoundBean gameround;
+  
+  @Override public int getSubStates() {
+    return 8;
+  }
+
+  @Override public String getLayerCanvasId() {
+    return "canvas_layer_Map";
+  }
 
   @Override public void onScreenShift(Direction dir, int offsetX, int offsetY, int amount, int scale) {
 

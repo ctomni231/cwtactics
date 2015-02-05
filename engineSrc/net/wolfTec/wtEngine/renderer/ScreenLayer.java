@@ -6,11 +6,10 @@ import net.wolfTec.wtEngine.model.Direction;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
-import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 
-@Namespace("cwt") public abstract class ScreenLayer implements LayerGroup {
+public abstract class ScreenLayer implements LayerGroup {
 
   protected Canvas cv;
   protected CanvasRenderingContext2D ctx;
@@ -18,8 +17,10 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
   public int h;
   protected Array<CanvasRenderingContext2D> contexts;
   protected Array<Canvas> layers;
-  
+
   public abstract int getZIndex ();
+
+  public abstract String getLayerCanvasId ();
 
   public void onScreenShift (Direction dir, int offsetX, int offsetY, int amount, int scale) {
     

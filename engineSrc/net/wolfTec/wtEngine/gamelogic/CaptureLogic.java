@@ -1,11 +1,9 @@
 package net.wolfTec.wtEngine.gamelogic;
 
-import org.stjs.javascript.annotation.Namespace;
-
 import net.wolfTec.wtEngine.model.Property;
 import net.wolfTec.wtEngine.model.Unit;
 
-@Namespace("cwt") public interface CaptureLogic {
+public interface CaptureLogic {
 
 	/**
 	 * Returns true, when the given property is neutral, else false.

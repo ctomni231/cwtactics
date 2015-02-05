@@ -1,12 +1,11 @@
 package net.wolfTec.wtEngine.gamelogic;
 
-import org.stjs.javascript.JSGlobal;
-import org.stjs.javascript.annotation.Namespace;
-
 import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.model.Property;
 
-@Namespace("cwt") public interface FactoryLogic extends CaptureLogic, BaseLogic {
+import org.stjs.javascript.JSGlobal;
+
+public interface FactoryLogic extends CaptureLogic, BaseLogic {
 
   /**
    * Returns **true** when the given **property** is a factory, else **false**.

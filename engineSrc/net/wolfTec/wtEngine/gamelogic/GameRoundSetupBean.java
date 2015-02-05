@@ -10,9 +10,8 @@ import net.wolfTec.wtEngine.model.Player;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.stjs.javascript.annotation.Namespace;
 
-@Namespace("cwt") public class GameRoundSetupBean {
+public class GameRoundSetupBean {
 
   public Logger log;
   private ObjectTypesBean typeDb;

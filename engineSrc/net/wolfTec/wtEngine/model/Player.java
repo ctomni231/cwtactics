@@ -2,9 +2,7 @@ package net.wolfTec.wtEngine.model;
 
 import net.wolfTec.wtEngine.Constants;
 
-import org.stjs.javascript.annotation.Namespace;
-
-@Namespace("cwt") public class Player {
+public class Player {
 
 	public int	        id	               = -1;
 	public int	        team	             = Constants.INACTIVE_ID;

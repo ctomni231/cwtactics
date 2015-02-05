@@ -1,21 +1,21 @@
-package net.wolfTec.wtEngine;
+package net.wolfTec.wtEngine.base;
+
+import net.wolfTec.wtEngine.Constants;
+import net.wolfTec.wtEngine.log.LoggerFactoryBeanInterface;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
-import org.stjs.javascript.annotation.Namespace;
 
-import net.wolfTec.wtEngine.log.LoggerFactoryBeanInterface;
-
-@Namespace("wtEngine") public class WolfTecEngine {
+public class BeanFactory {
 
   private static Map<String, Object> beans;
 
-  public WolfTecEngine() {
+  public BeanFactory() {
     initBeans();
-    solveBeanDependencies();
+    solveDependencies();
   }
 
   /**
@@ -72,18 +72,6 @@ import net.wolfTec.wtEngine.log.LoggerFactoryBeanInterface;
     return list;
   }
 
-  public String getVersion() {
-    return "0.38";
-  }
-
-  public String getShortName() {
-    return "wtEngine";
-  }
-
-  public String getLongName() {
-    return "WolfTecEngine © BlackCat and JSRulez";
-  }
-
   /**
    * <strong>Note: </strong> This function is low level and contains real JS
    * code. Modify only if you know what you're doing here.
@@ -92,7 +80,7 @@ import net.wolfTec.wtEngine.log.LoggerFactoryBeanInterface;
     beans = JSCollections.$map();
 
     // TODO allow overwrite of engine beans from specific namespace
-    
+
     // search in all classes and convert every class with a name that ends with
     // the string "Bean" into a bean by calling it's constructor with zero
     // arguments.
@@ -108,7 +96,7 @@ import net.wolfTec.wtEngine.log.LoggerFactoryBeanInterface;
    * <strong>Note: </strong> This function is low level and contains real JS
    * code. Modify only if you know what you're doing here.
    */
-  private static void solveBeanDependencies() {
+  private static void solveDependencies() {
     boolean isDebugEnabled = Constants.DEBUG;
     LoggerFactoryBeanInterface logFactory = (LoggerFactoryBeanInterface) beans.$get("LoggerFactoryBean");
 

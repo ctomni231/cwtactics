@@ -1,10 +1,8 @@
 package net.wolfTec.wtEngine.gamelogic;
 
-import org.stjs.javascript.annotation.Namespace;
-
 import net.wolfTec.wtEngine.model.Unit;
 
-@Namespace("cwt") public interface JoinLogic extends TransportLogic {
+public interface JoinLogic extends TransportLogic {
 
 	/**
 	 * Returns **true** if two units can join each other, else **false**. In

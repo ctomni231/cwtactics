@@ -8,6 +8,7 @@ import net.wolfTec.wtEngine.gamelogic.RelationshipCheckLogic;
 import net.wolfTec.wtEngine.model.Position;
 import net.wolfTec.wtEngine.model.Property;
 import net.wolfTec.wtEngine.model.Unit;
+import net.wolfTec.wtEngine.statemachine.MenuEntry;
 import net.wolfTec.wtEngine.utility.CircularBuffer;
 
 import org.stjs.javascript.Array;

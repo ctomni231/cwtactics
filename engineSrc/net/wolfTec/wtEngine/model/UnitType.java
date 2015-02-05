@@ -1,13 +1,12 @@
 package net.wolfTec.wtEngine.model;
 
+import java.util.Iterator;
+
 import net.wolfTec.wtEngine.Constants;
-import net.wolfTec.wtEngine.Game;
 import net.wolfTec.wtEngine.utility.AssertUtil;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
-
-import java.util.Iterator;
 
 /**
  * Unit type which holds all information about a unit type. In general this are all non-changeable data of an unit.

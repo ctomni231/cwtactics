@@ -1,10 +1,10 @@
 package net.wolfTec.wtEngine.model;
 
+import java.util.Iterator;
+
 import net.wolfTec.wtEngine.utility.AssertUtil;
 
 import org.stjs.javascript.Map;
-
-import java.util.Iterator;
 
 public class MoveType extends ObjectType {
 

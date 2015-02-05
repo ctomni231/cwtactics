@@ -1,18 +1,14 @@
 package net.wolfTec.wtEngine.utility;
 
+import static org.stjs.javascript.JSObjectAdapter.$js;
+
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.XMLHttpRequest;
-import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
-import org.stjs.javascript.functions.Callback;
 import org.stjs.javascript.functions.Callback0;
-import org.stjs.javascript.functions.Callback1;
-import org.stjs.javascript.functions.Callback2;
 
-import static org.stjs.javascript.JSObjectAdapter.*;
-
-@Namespace("wtEngine") public class BrowserHelperBean {
+public class BrowserHelperBean {
 
   /**
    * Converts a canvas object to a base64 string.
@@ -77,17 +73,5 @@ import static org.stjs.javascript.JSObjectAdapter.*;
     request.open("get", options.path + "?_wtEngRnd=" + JSGlobal.parseInt(10000 * Math.random(), 10), true);
 
     request.send();
-  }
-
-  public Callback0 bindCallback(Callback0 cb, Object thisObject) {
-    return $js("cb.bind(thisObject)");
-  }
-  
-  public <M> Callback1<M> bindCallback(Callback1<M> cb, Object thisObject) {
-    return $js("cb.bind(thisObject)");
-  }
-  
-  public <M,N> Callback2<M,N> bindCallback(Callback2<M,N> cb, Object thisObject) {
-    return $js("cb.bind(thisObject)");
   }
 }

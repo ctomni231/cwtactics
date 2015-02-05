@@ -6,18 +6,20 @@ import net.wolfTec.wtEngine.renderer.SpriteManagerBean;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
-import org.stjs.javascript.Map;
-import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 
-@Namespace("cwt") public class UserInterfaceLayerBean extends ScreenLayer {
+public class UserInterfaceLayerBean extends ScreenLayer {
 
   private SpriteManagerBean sprites;
   
   @Override public int getZIndex() {
     return 6;
+  }
+
+  @Override public String getLayerCanvasId() {
+    return "canvas_layer_UI";
   }
 
   /**

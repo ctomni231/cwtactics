@@ -1,9 +1,8 @@
 package net.wolfTec.wtEngine.assets;
 
-import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.functions.Callback0;
 
-@Namespace("wtEngine") public class AssetLoadingManagerBean {
+public class AssetLoadingManagerBean {
   
   private boolean completed;
   

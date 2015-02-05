@@ -2,6 +2,7 @@ package net.wolfTec.wtEngine.uiWidgets;
 
 import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.Game;
+import net.wolfTec.wtEngine.localization.LocalizationBean;
 import net.wolfTec.wtEngine.utility.ObjectUtil;
 
 import org.stjs.javascript.JSStringAdapter;

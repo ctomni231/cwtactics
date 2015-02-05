@@ -1,11 +1,9 @@
 package net.wolfTec.wtEngine.gamelogic;
 
-import org.stjs.javascript.annotation.Namespace;
-
 import net.wolfTec.wtEngine.model.AttackType;
 import net.wolfTec.wtEngine.model.Unit;
 
-@Namespace("cwt") public interface BattleLogic extends BaseLogic {
+public interface BattleLogic extends BaseLogic {
 
   /**
    * Returns true if the **unit** has a main weapon, else false.

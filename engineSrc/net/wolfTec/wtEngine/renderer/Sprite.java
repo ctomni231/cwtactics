@@ -1,13 +1,9 @@
 package net.wolfTec.wtEngine.renderer;
 
 import org.stjs.javascript.Array;
-import org.stjs.javascript.JSCollections;
-import org.stjs.javascript.JSObjectAdapter;
-import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.dom.Canvas;
-import org.stjs.javascript.dom.Element;
 
-@Namespace("wtEngine") public class Sprite {
+public class Sprite {
 
   private Array<Canvas>  images;
   public Canvas graphic;

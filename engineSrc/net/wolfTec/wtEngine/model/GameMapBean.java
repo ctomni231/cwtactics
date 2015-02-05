@@ -2,10 +2,9 @@ package net.wolfTec.wtEngine.model;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.functions.Callback4;
 
-@Namespace("wtEngine") public class GameMapBean {
+public class GameMapBean {
 
   private Array<Array<Tile>>  mapData;
   private int                 sizeX;

@@ -5,9 +5,8 @@ import net.wolfTec.wtEngine.model.Property;
 import net.wolfTec.wtEngine.model.Unit;
 
 import org.stjs.javascript.JSGlobal;
-import org.stjs.javascript.annotation.Namespace;
 
-@Namespace("cwt") public interface SpecialWeaponsLogic {
+public interface SpecialWeaponsLogic {
 
 	/**
 	 * Returns **true** when the given **unit** is the mechanical laser trigger,

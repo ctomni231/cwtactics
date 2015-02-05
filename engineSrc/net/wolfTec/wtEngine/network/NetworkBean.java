@@ -4,9 +4,7 @@ import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.action.ActionData;
 import net.wolfTec.wtEngine.log.Logger;
 
-import org.stjs.javascript.annotation.Namespace;
-
-@Namespace("wtEngine") public class NetworkBean {
+public class NetworkBean {
 
   public static Logger log;
 

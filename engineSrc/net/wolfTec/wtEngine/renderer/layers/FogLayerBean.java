@@ -1,20 +1,18 @@
 package net.wolfTec.wtEngine.renderer.layers;
 
 import net.wolfTec.wtEngine.Constants;
-import net.wolfTec.wtEngine.SpriteIndexBean;
 import net.wolfTec.wtEngine.gamelogic.MoveCode;
 import net.wolfTec.wtEngine.model.GameRoundBean;
 import net.wolfTec.wtEngine.model.Tile;
 import net.wolfTec.wtEngine.renderer.ScreenLayer;
-import net.wolfTec.wtEngine.renderer.Sprite;
+import net.wolfTec.wtEngine.renderer.SpriteIndexBean;
 import net.wolfTec.wtEngine.renderer.SpriteManagerBean;
 
 import org.stjs.javascript.Global;
-import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 
-@Namespace("cwt") public class FogLayerBean extends ScreenLayer {
+public class FogLayerBean extends ScreenLayer {
 
   private SpriteManagerBean sprites;
   private SpriteIndexBean spriteIndexes;
@@ -24,6 +22,10 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 
   @Override public int getZIndex() {
     return 2;
+  }
+  
+  @Override public String getLayerCanvasId () {
+    return "canvas_layer_Fog";
   }
 
   public void fixOverlayFog_(int x, int y, boolean isTop) {

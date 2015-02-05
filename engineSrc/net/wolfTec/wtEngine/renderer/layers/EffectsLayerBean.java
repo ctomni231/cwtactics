@@ -3,7 +3,9 @@ package net.wolfTec.wtEngine.renderer.layers;
 import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.model.WeatherType;
+import net.wolfTec.wtEngine.renderer.AnimatedLayer;
 import net.wolfTec.wtEngine.renderer.Layer;
+import net.wolfTec.wtEngine.renderer.ScreenLayer;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Date;
@@ -11,7 +13,7 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 
-@Namespace("cwt") public class EffectsLayerBean extends Layer {
+public class EffectsLayerBean extends ScreenLayer implements AnimatedLayer {
 
   private Logger log;
 
@@ -24,6 +26,14 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 
   @Override public int getZIndex() {
     return 5;
+  }
+  
+  @Override public int getSubStates() {
+    return 1;
+  }
+
+  @Override public String getLayerCanvasId() {
+    return "canvas_layer_Effects";
   }
   
   /* Since the time is so low I probably don't need to track it. But it seems memory intensive to pull off,

@@ -5,9 +5,8 @@ import java.util.Iterator;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
-import org.stjs.javascript.annotation.Namespace;
 
-@Namespace("wtEngine") public class LocalizationBean {
+public class LocalizationBean {
 
   /**
    * Holds all available languages.
@@ -17,15 +16,19 @@ import org.stjs.javascript.annotation.Namespace;
   /**
    * The current active language.
    */
-  private Map<String, String>              selected;
+  private Map<String, String> selected;
 
   /**
    * Registers a language object. The properties of the object will be the keys
    * and its values the localized string for the key.
    */
   public void registerLanguage(String key, Map<String, String> obj) {
-    if (key == null || obj == null) throw new Error("IllegalArgumentException");
-    if (JSObjectAdapter.hasOwnProperty(languages, key)) throw new Error("LanguageAlreadyRegisteredException");
+    if (key == null || obj == null) {
+      throw new Error("IllegalArgumentException");
+    }
+    if (JSObjectAdapter.hasOwnProperty(languages, key)) {
+      throw new Error("LanguageAlreadyRegisteredException");
+    }
 
     // copy keys and values to a fresh object
     Map<String, String> newLang = JSCollections.$map();
@@ -43,7 +46,9 @@ import org.stjs.javascript.annotation.Namespace;
    * Selects a language by it's key.
    */
   public void selectLanguage(String language) {
-    if (!JSObjectAdapter.hasOwnProperty(languages, language)) throw new IllegalArgumentException("unknown language");
+    if (!JSObjectAdapter.hasOwnProperty(languages, language)) {
+      throw new IllegalArgumentException("unknown language");
+    }
     selected = languages.$get(language);
   }
 

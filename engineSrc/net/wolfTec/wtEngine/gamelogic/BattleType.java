@@ -1,8 +1,7 @@
 package net.wolfTec.wtEngine.gamelogic;
 
-import org.stjs.javascript.annotation.Namespace;
 
-@Namespace("cwt") public enum BattleType {
+public enum BattleType {
 
 	/**
 	 * Direct fire type that can fire from range 1 to 1.
