@@ -23,7 +23,6 @@ public class UnitLayerBean extends ScreenLayer implements AnimatedLayer {
   private SpriteManagerBean sprites;
   private SpriteIndexBean spriteIndexes;
   private GameRoundBean gameround;
-  private GameMapBean map;
 
   private Canvas temporaryCanvas = (Canvas) Global.window.document.createElement("canvas");
 
@@ -107,7 +106,7 @@ public class UnitLayerBean extends ScreenLayer implements AnimatedLayer {
 
     for (int xe = x + w; x < xe; x++) {
       for (int y = oy, ye = y + h; y < ye; y++) {
-        Tile tile = map.getTile(x, y);
+        Tile tile = gameround.getMap().getTile(x, y);
         if (tile.visionClient == 0) {
           continue;
         }
@@ -175,5 +174,17 @@ public class UnitLayerBean extends ScreenLayer implements AnimatedLayer {
 
       }
     }
+  }
+  
+  @Override public void onFullScreenRender() {
+    int x = screenOffsetX;
+    int y = screenOffsetY;
+    int w = (gameround.getMapWidth() < Constants.SCREEN_WIDTH) ? gameround.getMapWidth() : Constants.SCREEN_WIDTH;
+    int h = (gameround.getMapHeight() < Constants.SCREEN_HEIGHT) ? gameround.getMapHeight() : Constants.SCREEN_HEIGHT;
+
+    clearAll();
+
+    renderUnits(x, y, w, h);
+    renderLayer(indexUnitAnimation);
   }
 }

@@ -26,6 +26,10 @@ public abstract class ScreenLayer implements LayerGroup {
     
   };
 
+  public void onFullScreenRender () {
+    
+  };
+
   public void onSetScreenPosition (int x, int y, int offsetX, int offsetY) {
     
   };

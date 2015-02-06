@@ -165,26 +165,6 @@ public class RendererBean {
     }
 
     /**
-     *
-     */
-    public void renderUnitsOnScreen() {
-        int pfc = Debug.startPerformanceCheck();
-
-        GameRound game = CustomWarsTactics.getBean("gameround");
-        int x = screenOffsetX;
-        int y = screenOffsetY;
-        int w = (game.mapWidth < Constants.SCREEN_WIDTH) ? game.mapWidth : Constants.SCREEN_WIDTH;
-        int h = (game.mapHeight < Constants.SCREEN_HEIGHT) ? game.mapHeight : Constants.SCREEN_HEIGHT;
-
-        layerUnit.clearAll();
-
-        renderUnits(x, y, w, h);
-        layerUnit.renderLayer(indexUnitAnimation);
-
-        Debug.stopPerformanceCheck(pfc);
-    }
-
-    /**
      * @param {number} code
      */
     public void shiftMap(MoveCode code) {

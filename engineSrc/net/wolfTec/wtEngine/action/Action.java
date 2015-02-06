@@ -2,15 +2,11 @@ package net.wolfTec.wtEngine.action;
 
 
 
-public abstract class Action {
+public interface Action {
 
-  public abstract String getId ();
-  public abstract void call (ActionData data);
-  public abstract ActionType getType();
+  public String getId ();
   
-  public boolean invokesWait () {
-    return false;
-  }
+  public void call (ActionData data);
   
   /*
   this.positionUpdateMode = MovingAction.SET_POSITION;

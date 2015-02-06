@@ -47,7 +47,7 @@ exports.state = {
 
             case this.input.TYPE_ACTION :
                 switch (data.activeCmd) {
-
+               
                     /* Restart */
                     case 0: debug.logCritical("Not implemented yet"); break;
 
@@ -2887,3 +2887,697 @@ exports.state = {
 
  });
  */
+
+package net.wolfTec.action.factory;
+
+import net.wolfTec.action.Action;
+import net.wolfTec.states.StateData;
+import net.wolfTec.utility.Debug;
+import net.wolfTec.wtEngine.Game;
+import net.wolfTec.wtEngine.gamelogic.ActionData;
+import net.wolfTec.wtEngine.gamelogic.ActionInvokerBean;
+import net.wolfTec.wtEngine.gamelogic.Relationship;
+import net.wolfTec.wtEngine.model.Position;
+
+import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.functions.Callback1;
+import org.stjs.javascript.functions.Function1;
+import org.stjs.javascript.functions.Function2;
+
+public abstract class UnitActionFactory {
+
+    public static void registerActions(ActionInvokerBean invoker) {
+        invoker.registerAction(createUnitWaitAction());
+    }
+
+    private static Action createUnitWaitAction() {
+        Action action = new Action("wait");
+        action.type = Action.ActionType.UNIT_ACTION;
+
+        action.mappingForUnit = Action.SourceToTarget.SOURCE_AND_TARGET;
+        action.relationToUnit = JSCollections.$array(Relationship.RELATION_NONE, Relationship.RELATION_SAME_THING);
+
+        action.condition = new Function1<StateData, Boolean>() {
+            @Override public Boolean $invoke(StateData stateData) {
+                return stateData.source.unit.isCanAct();
+            }
+        };
+
+        action.prepareActionData = null;
+
+        action.invoke = new Callback1<ActionData>() {
+            @Override public void $invoke(ActionData actionData) {
+                Debug.logInfo(null, "Send unit " + actionData.p1 + " into wait status");
+                net.wolfTec.gameround.units.$get(actionData.p1).setActable(false);
+                renderer.renderUnitsOnScreen();
+            }
+        };
+
+        return action;
+    }
+}
+
+
+
+package net.wolfTec.action.factory;
+
+import net.wolfTec.action.Action;
+import net.wolfTec.states.StateData;
+import net.wolfTec.utility.Debug;
+import net.wolfTec.wtEngine.Game;
+import net.wolfTec.wtEngine.gamelogic.ActionData;
+import net.wolfTec.wtEngine.gamelogic.ActionInvokerBean;
+import net.wolfTec.wtEngine.gamelogic.Relationship;
+import net.wolfTec.wtEngine.model.Player;
+import net.wolfTec.wtEngine.model.Property;
+
+import org.stjs.javascript.Array;
+import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.JSGlobal;
+import org.stjs.javascript.functions.Callback1;
+import org.stjs.javascript.functions.Callback2;
+import org.stjs.javascript.functions.Function1;
+
+public abstract class TeamActionFactory {
+
+    /**
+     * Different available money transfer steps.
+     */
+    public static Array<Integer> MONEY_TRANSFER_STEPS = JSCollections.$array(1000, 2500, 5000, 10000, 25000, 50000);
+
+    public static void registerActions(ActionInvokerBean invoker) {
+        invoker.registerAction(createShareMoneyAction());
+        invoker.registerAction(createSharePropertyAction());
+        invoker.registerAction(createShareUnitAction());
+    }
+
+    private static Action createShareMoneyAction() {
+        final Action action = new Action("transferMoney");
+        action.type = Action.ActionType.UNIT_ACTION;
+        action.mappingForUnit = Action.SourceToTarget.SOURCE_AND_TARGET;
+        action.relationToUnit = JSCollections.$array(Relationship.RELATION_NONE, Relationship.RELATION_SAME_THING);
+
+        action.condition = new Function1<StateData, Boolean>() {
+            @Override public Boolean $invoke(StateData data) {
+                Player owner = net.wolfTec.gameround.turnOwner;
+                int x = data.target.x;
+                int y = data.target.y;
+
+                if (owner.gold < MONEY_TRANSFER_STEPS.$get(0)) {
+                    return false;
+                }
+
+                // only transfer money on headquarters
+                Property property = net.wolfTec.gameround.map.getTile(x, y).property;
+                return (property != null && property.type.looseAfterCaptured && property.owner != owner);
+            }
+        };
+
+        action.prepareMenu = new Callback1<StateData>() {
+            @Override
+            public void $invoke(StateData stateData) {
+                for (int i = 0, e = MONEY_TRANSFER_STEPS.$length(); i < e; i++) {
+                    if (net.wolfTec.turnOwner.gold >= MONEY_TRANSFER_STEPS.$get(i)) {
+                        stateData.menu.addEntry(""+MONEY_TRANSFER_STEPS.$get(i), true);
+                    }
+                }
+            }
+        };
+
+        action.invoke = new Callback1<ActionData>() {
+            @Override public void $invoke(ActionData actionData) {
+                net.wolfTec.gameround.players.$get(actionData.p2).gold -= actionData.p1;
+                net.wolfTec.gameround.players.$get(actionData.p3).gold += actionData.p1;
+
+                // the amount of gold cannot be lower 0 after the transfer
+                if(net.wolfTec.gameround.players.$get(actionData.p2).gold < 0) {
+                    Debug.logCritical("", "IllegalGameState");
+                }
+            }
+        };
+
+        action.prepareActionData = new Callback2<StateData, ActionData>() {
+            @Override
+            public void $invoke(StateData stateData, ActionData actionData) {
+                actionData.p1 = JSGlobal.parseInt(stateData.selectedSubEntry, 10);
+                actionData.p2 = net.wolfTec.turnOwner.id;
+                actionData.p3 = stateData.target.unit.getOwner().id;
+            }
+        };
+
+        return action;
+    }
+
+    private static Action createShareUnitAction() {
+        Action action = new Action("transferUnit");
+        return action;
+    }
+
+    private static Action createSharePropertyAction() {
+        Action action = new Action("transferProperty");
+        return action;
+    }
+}
+
+package net.wolfTec.states.factory;
+
+import net.wolfTec.cwt.CustomWarsTactics;
+import net.wolfTec.input.InputData;
+import net.wolfTec.input.InputType;
+import net.wolfTec.states.State;
+import net.wolfTec.states.Statemachine;
+import net.wolfTec.widgets.UiField;
+import net.wolfTec.wtEngine.Constants;
+
+import org.stjs.javascript.*;
+import org.stjs.javascript.Math;
+import org.stjs.javascript.annotation.SyntheticType;
+import org.stjs.javascript.dom.Element;
+import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
+import org.stjs.javascript.functions.Callback0;
+import org.stjs.javascript.functions.Callback1;
+import org.stjs.javascript.functions.Callback2;
+
+public abstract class States {
+
+    public static void addToStateMachine (Statemachine statemachine) {
+        statemachine.addState("NONE", createDrawBackground());
+        statemachine.addState("START_SCREEN", createStartScreen());
+        statemachine.addState("LOADING_SCREEN", createLoadingScreen());
+    }
+
+    @SyntheticType
+    public static class DrawScreenData {
+        private boolean drawn;
+    }
+
+    private static State createDrawBackground() {
+        final DrawScreenData stateData = new DrawScreenData();
+        State state = new State();
+
+        state.enter = new Callback0() {
+            @Override
+            public void $invoke() {
+                stateData.drawn = false;
+            }
+        };
+
+        state.update = new Callback2<Integer, InputData>() {
+            @Override
+            public void $invoke(Integer delta, InputData inputData) {
+                if (stateData.drawn) {
+                    CustomWarsTactics.gameWorkflow.changeState("LOADING_SCREEN");
+                }
+            }
+        };
+
+        state.render = new Callback1<Integer>() {
+            @Override
+            public void $invoke(Integer delta) {
+                if (!stateData.drawn) {
+                    CanvasRenderingContext2D ctx = net.wolfTec.renderCtx.layerBG.getContext(Constants.INACTIVE_ID);
+
+                    ctx.fillStyle = "gray";
+                    ctx.fillRect(0, 0, net.wolfTec.renderCtx.screenWidth, net.wolfTec.renderCtx.screenHeight);
+
+                    stateData.drawn = true;
+                }
+            }
+        };
+
+        return state;
+    }
+
+    @SyntheticType
+    public static class StartScreenData {
+        private int time;
+        private int maxTime;
+        private Element background;
+    }
+
+    private static State createStartScreen() {
+        final StartScreenData stateData = new StartScreenData();
+        final State state = new State();
+
+        stateData.time = 0;
+        stateData.maxTime = 5000;
+        stateData.background = null;
+
+        final UiField tooltip = new UiField(
+                JSGlobal.parseInt(net.wolfTec.renderCtx.screenWidth * 0.1, 10),
+                JSGlobal.parseInt(net.wolfTec.renderCtx.screenHeight * 0.2, 10),
+                JSGlobal.parseInt(net.wolfTec.renderCtx.screenWidth * 0.8, 10),
+                120, "", 10, UiField.STYLE_NORMAL, null
+        );
+
+        final UiField button = new UiField(
+                JSGlobal.parseInt(net.wolfTec.renderCtx.screenWidth * 0.5 - 150, 10),
+                JSGlobal.parseInt(net.wolfTec.renderCtx.screenHeight * 0.8, 10) - 20,
+                300, 40, "START",20, UiField.STYLE_NORMAL, null
+        );
+
+        state.enter = new Callback0() {
+            @Override
+            public void $invoke() {
+                stateData.time = 0;
+
+                net.wolfTec.renderCtx.layerUI.clear(Constants.INACTIVE_ID);
+
+                // select a random background image
+                int numBackgrounds = net.wolfTec.spriteDb.sprites.$get("BACKGROUNDS").getNumberOfImages();
+                int randBGIndex = JSGlobal.parseInt((int) (org.stjs.javascript.Math.random() * numBackgrounds), 10);
+                stateData.background = net.wolfTec.spriteDb.sprites.$get("BACKGROUNDS").getImage(randBGIndex);
+            }
+        };
+
+        state.update = new Callback2<Integer, InputData>() {
+            @Override
+            public void $invoke(Integer delta, InputData inputData) {
+
+                // action leads into main menu
+                if (inputData != null && inputData.key == InputType.ACTION) {
+                    CustomWarsTactics.audioHandler.playNullSound();
+                    CustomWarsTactics.gameWorkflow.changeState("MAIN_MENU");
+
+                } else {
+
+                    stateData.time += delta;
+                    if (stateData.time >= stateData.maxTime) {
+                        if (exports.tooltips) {
+
+                            // update random tooltip
+                            var randEl = exports.tooltips[parseInt(Math.random() * exports.tooltips.length, 10)];
+                            data.tooltip.text = CustomWarsTactics.i18n.forKey(randEl);
+
+                            if (data.tooltip.text.search(/\n/) !== -1) {
+                                data.tooltip.text = this.tooltip.text.split("\n");
+                            }
+                        }
+
+                        stateData.time = 0;
+                    }
+                }
+            }
+        };
+
+        state.render = new Callback1<Integer>() {
+            @Override
+            public void $invoke(Integer integer) {
+                if (stateData.background != null) {
+                    net.wolfTec.renderCtx.layerBG.getContext(Constants.INACTIVE_ID).drawImage(
+                            stateData.background, 0, 0, net.wolfTec.renderCtx.screenWidth, net.wolfTec.renderCtx.screenHeight);
+                    stateData.background = null;
+                }
+
+                CanvasRenderingContext2D uiCtx = net.wolfTec.renderCtx.layerUI.getContext(Constants.INACTIVE_ID);
+                button.draw(uiCtx);
+                tooltip.draw(uiCtx);
+            }
+        };
+
+        return state;
+    }
+
+    @SyntheticType
+    public static class LoadingScreenData {
+        private int x;
+        private int y;
+        private int height;
+        private int width;
+        private int process;
+        private boolean done;
+    }
+
+    private static State createLoadingScreen() {
+        final LoadingScreenData stateData = new LoadingScreenData();
+        final State state = new State();
+
+        stateData.x = 10;
+        stateData.y = JSGlobal.parseInt(net.wolfTec.renderCtx.screenHeight / 2, 10) - 10;
+        stateData.height = 20;
+        stateData.width = net.wolfTec.renderCtx.screenWidth - 20;
+        stateData.process = 0;
+        stateData.done = false;
+
+        state.enter = new Callback0() {
+            @Override
+            public void $invoke() {
+                require("./loading").startProcess(
+                        function (p) { data.process = p; },
+                function () { data.process = 100; }
+                );
+            }
+        };
+
+        state.update = new Callback2<Integer, InputData>() {
+            @Override
+            public void $invoke(Integer integer, InputData inputData) {
+                if (stateData.done) {
+                    CustomWarsTactics.gameWorkflow.changeState("START_SCREEN");
+
+                } else if (stateData.process == 100) {
+                    stateData.done = true;
+                }
+            }
+        };
+
+        state.render = new Callback1<Integer>() {
+            @Override
+            public void $invoke(Integer integer) {
+                CanvasRenderingContext2D ctx = net.wolfTec.renderCtx.layerUI.getContext(Constants.INACTIVE_ID);
+
+                ctx.fillStyle = "white";
+                ctx.fillRect(stateData.x, stateData.y, stateData.width, stateData.height );
+
+                ctx.fillStyle = "blue";
+                ctx.fillRect(stateData.x, stateData.y, (
+                        JSGlobal.parseInt(stateData.width * (stateData.process / 100), 10)), stateData.height);
+            }
+        };
+
+        return state;
+    }
+}
+
+package net.wolfTec.states.factory;
+
+import net.wolfTec.input.InputData;
+import net.wolfTec.states.State;
+import net.wolfTec.states.StatemachineBean;
+import net.wolfTec.wtEngine.Game;
+
+import org.stjs.javascript.functions.Callback0;
+import org.stjs.javascript.functions.Callback1;
+import org.stjs.javascript.functions.Callback2;
+
+public abstract class AnimationStates {
+    public static void addToStateMachine (StatemachineBean statemachine) {
+
+    }
+
+    public static State addAnimationState (final State state) {
+        State animationState = new State();
+        state.init.$invoke();
+
+        animationState.enter = new Callback0() {
+            @Override
+            public void $invoke() {
+                state.enter.$invoke();
+            }
+        };
+
+        animationState.exit = new Callback0() {
+            @Override
+            public void $invoke() {
+                state.exit.$invoke();
+            }
+        };
+
+        animationState.update = new Callback2<Integer, InputData>() {
+            @Override
+            public void $invoke(Integer delta, InputData inputData) {
+                state.update.$invoke(delta, inputData);
+                // TODO: move into state
+                // state.currentSubState++;
+                if (state.currentSubState == state.subStates) {
+                    Game.gameWorkflow.changeState(state.nextState);
+                }
+            }
+        };
+
+        animationState.render = new Callback1<Integer>() {
+            @Override
+            public void $invoke(Integer delta) {
+                Game.renderCtx.evaluateCycle(delta);
+                if (state.render != null) {
+                    state.render.$invoke(delta);
+                }
+            }
+        };
+
+        animationState.animationState = true;
+
+        return animationState;
+    }
+}
+
+package net.wolfTec.states.factory;
+
+import net.wolfTec.input.InputData;
+import net.wolfTec.states.State;
+import net.wolfTec.states.StatemachineBean;
+import net.wolfTec.wtEngine.Game;
+import net.wolfTec.wtEngine.gamelogic.MoveCode;
+
+import org.stjs.javascript.functions.Callback0;
+import org.stjs.javascript.functions.Callback1;
+import org.stjs.javascript.functions.Callback2;
+
+public abstract class IngameStates {
+	public static void addToStateMachine(StatemachineBean statemachine) {
+		statemachine.addState("XYZ", addInGameState(null));
+	}
+
+	/**
+	 * Creates an inGame state which means this state is considered to be used in
+	 * an active game round. As result this state contains cursor handling,
+	 * rendering logic and transfers the calls to the implemented state if
+	 * necessary.
+	 *
+	 * @param state
+	 */
+	public static State addInGameState(final State state) {
+		State ingameState = new State();
+
+		state.init.$invoke();
+
+		ingameState.enter = new Callback0() {
+			@Override public void $invoke() {
+				state.enter.$invoke();
+			}
+		};
+
+		ingameState.exit = new Callback0() {
+			@Override public void $invoke() {
+				state.exit.$invoke();
+			}
+		};
+
+		ingameState.update = new Callback2<Integer, InputData>() {
+			@SuppressWarnings("incomplete-switch") @Override public void $invoke(Integer delta, InputData inputData) {
+				if (inputData != null) {
+					MoveCode code = null;
+
+					// extract input data
+					Callback1<Integer> fn = null;
+					switch (inputData.key) {
+					case LEFT:
+						fn = state.LEFT;
+						code = MoveCode.LEFT;
+						break;
+
+					case UP:
+						fn = state.UP;
+						code = MoveCode.UP;
+						break;
+
+					case RIGHT:
+						fn = state.RIGHT;
+						code = MoveCode.RIGHT;
+						break;
+
+					case DOWN:
+						fn = state.DOWN;
+						code = MoveCode.DOWN;
+						break;
+
+					case ACTION:
+						fn = state.ACTION;
+						break;
+
+					case CANCEL:
+						fn = state.CANCEL;
+						break;
+					}
+
+					if (fn != null) {
+						fn.$invoke(delta);
+
+					} else if (code != null) {
+						Game.gameWorkflowData.moveCursor(code);
+					}
+				}
+			}
+		};
+
+		ingameState.render = new Callback1<Integer>() {
+			@Override public void $invoke(Integer delta) {
+			}
+		};
+
+		ingameState.render = new Callback1<Integer>() {
+			@Override public void $invoke(Integer delta) {
+				Game.renderCtx.evaluateCycle(delta);
+				if (state.render != null) {
+					state.render.$invoke(delta);
+				}
+			}
+		};
+
+		ingameState.inputMove = new Callback2<Integer, Integer>() {
+			@Override public void $invoke(Integer x, Integer y) {
+				if (state.inputMove != null) {
+					state.inputMove.$invoke(x, y);
+
+				} else {
+					Game.gameWorkflowData.setCursorPosition(Game.renderCtx.convertToTilePos(x), Game.renderCtx.convertToTilePos(y), true);
+				}
+			}
+		};
+
+		return ingameState;
+	}
+}
+
+
+package net.wolfTec.states.factory;
+
+import net.wolfTec.input.InputData;
+import net.wolfTec.states.State;
+import net.wolfTec.states.StatemachineBean;
+import net.wolfTec.wtEngine.Constants;
+import net.wolfTec.wtEngine.Game;
+import net.wolfTec.wtEngine.uiWidgets.UiField;
+
+import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
+import org.stjs.javascript.functions.Callback0;
+import org.stjs.javascript.functions.Callback1;
+import org.stjs.javascript.functions.Callback2;
+
+public abstract class MenuStates {
+    public static void addToStateMachine (StatemachineBean statemachine) {
+
+    }
+
+    /**
+     * Adds a menu state (normally this means all states that aren't inGame plus have input connection). Every menu
+     * state will be designed with a **cwt.UIScreenLayout** which can be configured by the **doLayout(layout)**
+     * function property in the state description.
+     */
+    public static State addMenuState (final State state) {
+        final State animationState = new State();
+        state.init.$invoke();
+
+        animationState.inputMove = new Callback2<Integer, Integer>() {
+            @Override
+            public void $invoke(Integer x, Integer y) {
+                if (state.layout.updateIndex(x, y)) {
+                    state.currentSubState = 0;
+                }
+            }
+        };
+
+        animationState.init = new Callback0() {
+            @Override
+            public void $invoke() {
+                state.init.$invoke();
+                state.doLayout.$invoke(state.layout);
+
+                if (state.GENERIC_INPUT != null) {
+                    animationState.GENERIC_INPUT = new Callback2<Integer, Integer>() {
+                        @Override
+                        public void $invoke(Integer x, Integer y) {
+                            state.GENERIC_INPUT.$invoke(x, y);
+                        }
+                    };
+                }
+            }
+        };
+
+        animationState.enter = new Callback0() {
+            @Override
+            public void $invoke() {
+                state.currentSubState = 0;
+                state.enter.$invoke();
+            }
+        };
+
+        animationState.exit = new Callback0() {
+            @Override
+            public void $invoke() {
+                state.exit.$invoke();
+            }
+        };
+
+        animationState.render = new Callback1<Integer>() {
+            @Override
+            public void $invoke(Integer delta) {
+                if (state.currentSubState == 0) {
+                    CanvasRenderingContext2D ctx = net.wolfTec.renderCtx.layerUI.getContext(Constants.INACTIVE_ID);
+                    state.layout.draw(ctx);
+                    state.currentSubState = 1;
+                }
+            }
+        };
+
+        return animationState;
+    }
+}
+
+
+package net.wolfTec.states;
+
+import net.wolfTec.input.InputData;
+import net.wolfTec.system.AudioBean;
+import net.wolfTec.wtEngine.Constants;
+import net.wolfTec.wtEngine.Game;
+import net.wolfTec.wtEngine.uiWidgets.UiField;
+
+public abstract class MenuState extends State {
+
+	public abstract AudioBean getAudio();
+	
+	@Override public void exit() {
+    net.wolfTec.renderCtx.layerUI.clear(Constants.INACTIVE_ID);
+	}
+	
+	@Override public void update(int delta, InputData input) {
+		if (input != null) {
+			switch (input.key) {
+
+				case LEFT:
+				case RIGHT:
+				case UP:
+				case DOWN:
+					if (state.layout.handleInput(inputData)) {
+						state.currentSubState = 0;
+						getAudio().playSfx("MENU_TICK");
+					}
+					break;
+
+				case ACTION:
+					UiField button = state.layout.activeButton();
+					button.callAction();
+					state.currentSubState = 0;
+					getAudio().playSfx("ACTION");
+					break;
+
+				case CANCEL:
+					if (state.prevState != null) {
+						Game.gameWorkflow.changeState(state.prevState);
+						getAudio().playSfx("CANCEL");
+					}
+					break;
+					
+				case HOVER:
+				case SET_INPUT:
+				default:
+					break;
+			}
+		}
+	}
+}
+
+
+
+
