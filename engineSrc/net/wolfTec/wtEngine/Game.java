@@ -88,7 +88,7 @@ public abstract class Game {
 		};
 	}
 
-	private static BeanFactory engine;
+	public static BeanFactory engine;
 	
 	public static void main(String[] args) {
 	  

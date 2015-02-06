@@ -129,4 +129,6 @@ public abstract class Constants {
    * 
    */
   public static final int MENU_ELEMENTS_MAX = 10;
+
+  public static final String STORAGE_PARMETER_CACHED_CONTENT = "cwt_gameContent_cached";
 }

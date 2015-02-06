@@ -1,30 +1,25 @@
 package net.wolfTec.wtEngine.assets;
 
+import net.wolfTec.wtEngine.persistence.StorageBean;
+
 import org.stjs.javascript.functions.Callback0;
-import org.stjs.javascript.functions.Callback1;
 
 public interface AssetLoader {
 
   /**
    * 
+   * @param storage
    * @param item
-   * @param data
    * @param callback
    */
-  void cacheAsset (AssetItem item, Object data, Callback0 callback);
+  void loadAsset (StorageBean storage, AssetItem item, Callback0 callback);
   
   /**
+   * Called when an asset must be grabbed from remote location and cached internally.
    * 
-   * @param item
-   * @param data
-   * @param callback
-   */
-  void loadAsset (AssetItem item, Object data, Callback0 callback);
-  
-  /**
-   * 
+   * @param storage
    * @param item
    * @param callback
    */
-  void grabAsset (AssetItem item, Callback1<Object> callback);
+  void grabAsset (StorageBean storage, AssetItem item, Callback0 callback);
 }

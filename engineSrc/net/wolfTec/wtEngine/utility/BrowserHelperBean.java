@@ -2,11 +2,13 @@ package net.wolfTec.wtEngine.utility;
 
 import static org.stjs.javascript.JSObjectAdapter.$js;
 
+import org.stjs.javascript.Array;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.XMLHttpRequest;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.functions.Callback0;
+import org.stjs.javascript.functions.Callback1;
 
 public class BrowserHelperBean {
 
@@ -73,5 +75,9 @@ public class BrowserHelperBean {
     request.open("get", options.path + "?_wtEngRnd=" + JSGlobal.parseInt(10000 * Math.random(), 10), true);
 
     request.send();
+  }
+  
+  public void executeSeries (Array<Callback1<Callback0>> functions, Callback0 finalCallback) {
+    $js("R.series(functions, finalCallback)");
   }
 }
