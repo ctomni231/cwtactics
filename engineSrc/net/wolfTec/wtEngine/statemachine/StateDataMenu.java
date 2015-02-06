@@ -1,4 +1,4 @@
-package net.wolfTec.states;
+package net.wolfTec.wtEngine.statemachine;
 
 import net.wolfTec.action.Action;
 import net.wolfTec.utility.Debug;
@@ -8,11 +8,10 @@ import net.wolfTec.wtEngine.gamelogic.RelationshipCheckLogic;
 import net.wolfTec.wtEngine.model.Position;
 import net.wolfTec.wtEngine.model.Property;
 import net.wolfTec.wtEngine.model.Unit;
-import net.wolfTec.wtEngine.statemachine.MenuEntry;
-import net.wolfTec.wtEngine.utility.CircularBuffer;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.annotation.Template;
+import org.wolfTec.utility.CircularBuffer;
 
 public class StateDataMenu {
 

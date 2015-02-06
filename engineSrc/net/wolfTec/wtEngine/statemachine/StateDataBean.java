@@ -1,19 +1,18 @@
 package net.wolfTec.wtEngine.statemachine;
 
+import org.wolfTec.utility.BeanFactory;
+import org.wolfTec.utility.BeanInitializationListener;
+import org.wolfTec.utility.CircularBuffer;
+
 import net.wolfTec.action.Action;
 import net.wolfTec.renderer.RendererBean;
-import net.wolfTec.states.StateDataMenu;
-import net.wolfTec.states.StateDataSelection;
 import net.wolfTec.wtEngine.Constants;
-import net.wolfTec.wtEngine.base.BeanFactory;
-import net.wolfTec.wtEngine.base.BeanInitializationListener;
 import net.wolfTec.wtEngine.gamelogic.MoveCode;
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.model.GameRoundBean;
 import net.wolfTec.wtEngine.model.Position;
 import net.wolfTec.wtEngine.renderer.ScreenManagerBean;
 import net.wolfTec.wtEngine.renderer.layers.UserInterfaceLayerBean;
-import net.wolfTec.wtEngine.utility.CircularBuffer;
 
 public class StateDataBean implements BeanInitializationListener {
 
@@ -57,7 +56,9 @@ public class StateDataBean implements BeanInitializationListener {
 
   public boolean fromIngameToOptions;
 
-  public boolean inGameRound;
+  public boolean isGameRoundActive () {
+    return false;
+  };
 
   public boolean multiStepActive;
 

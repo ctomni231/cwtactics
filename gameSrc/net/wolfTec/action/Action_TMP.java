@@ -3,7 +3,7 @@ package net.wolfTec.action;
 import net.wolfTec.states.StateData;
 import net.wolfTec.wtEngine.gamelogic.ActionData;
 import net.wolfTec.wtEngine.gamelogic.Relationship;
-import net.wolfTec.wtEngine.utility.AssertUtil;
+import net.wolfTec.wtEngine.utility.AssertUtilyBean;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback1;
@@ -127,7 +127,7 @@ public class Action_TMP {
 	public Callback1<ActionData>	                    invoke;
 
 	public Action_TMP(String key) {
-		AssertUtil.notEmpty(key);
+		AssertUtilyBean.notEmpty(key);
 
 		this.key = key;
 		this.positionUpdateMode = MovingAction.SET_POSITION;

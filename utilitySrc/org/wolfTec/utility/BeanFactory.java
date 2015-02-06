@@ -1,7 +1,6 @@
-package net.wolfTec.wtEngine.base;
+package org.wolfTec.utility;
 
 import net.wolfTec.wtEngine.Constants;
-import net.wolfTec.wtEngine.log.LoggerFactoryBeanInterface;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
@@ -98,7 +97,6 @@ public class BeanFactory {
    */
   private static void solveDependencies() {
     boolean isDebugEnabled = Constants.DEBUG;
-    LoggerFactoryBeanInterface logFactory = (LoggerFactoryBeanInterface) beans.$get("LoggerFactoryBean");
 
     // search in all beans for properties with a leading '$' character. This
     // properties are references to beans. Place the right bean into this
@@ -118,7 +116,7 @@ public class BeanFactory {
           String propertyClass = JSObjectAdapter.$js("bean.constructor.$typeDescription[property]");
 
           if (propertyClass == "Logger") {
-            JSObjectAdapter.$js("bean[property] = logFactory.getLogger(beanName, isDebugEnabled)");
+            JSObjectAdapter.$js("bean[property] = LogJS.get({name: beanName, enabled: isDebugEnabled})");
 
           } else if (propertyClass.endsWith("Bean")) {
             // remove namespace from propertyClass

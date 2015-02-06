@@ -1,6 +1,5 @@
 package net.wolfTec.wtEngine;
 
-import net.wolfTec.wtEngine.base.BeanFactory;
 import net.wolfTec.wtEngine.model.MoveType;
 import net.wolfTec.wtEngine.model.ObjectType;
 import net.wolfTec.wtEngine.model.PropertyType;
@@ -9,6 +8,7 @@ import net.wolfTec.wtEngine.model.UnitType;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
+import org.wolfTec.utility.BeanFactory;
 
 /**
  * Central mediator (monolithic). Every service, data holder etc. can be

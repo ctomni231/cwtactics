@@ -1,4 +1,4 @@
-package net.wolfTec.wtEngine.utility;
+package org.wolfTec.utility;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
@@ -11,12 +11,13 @@ import org.stjs.javascript.annotation.Template;
  * @param <T>
  */
 public class CircularBuffer<T> {
+  
   public static final int DEFAULT_SIZE = 32;
 
-  private int             index;
-  private int             size;
-  private Array<T>        data;
-  private int             maxSize;
+  private int index;
+  private int size;
+  private Array<T> data;
+  private int maxSize;
 
   @SuppressWarnings("unchecked") public CircularBuffer(int maxSize) {
     if (maxSize <= 0) throw new IllegalArgumentException("size cannot be 0 or lower");

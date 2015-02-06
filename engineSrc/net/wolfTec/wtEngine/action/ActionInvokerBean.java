@@ -2,15 +2,15 @@ package net.wolfTec.wtEngine.action;
 
 import static org.stjs.javascript.JSObjectAdapter.$js;
 import net.wolfTec.wtEngine.Constants;
-import net.wolfTec.wtEngine.base.BeanFactory;
-import net.wolfTec.wtEngine.base.BeanInitializationListener;
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.network.NetworkBean;
-import net.wolfTec.wtEngine.utility.CircularBuffer;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
+import org.wolfTec.utility.BeanFactory;
+import org.wolfTec.utility.BeanInitializationListener;
+import org.wolfTec.utility.CircularBuffer;
 
 public class ActionInvokerBean implements BeanInitializationListener {
 

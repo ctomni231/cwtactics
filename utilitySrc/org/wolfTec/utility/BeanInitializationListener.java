@@ -1,4 +1,4 @@
-package net.wolfTec.wtEngine.base;
+package org.wolfTec.utility;
 
 import org.stjs.javascript.annotation.STJSBridge;
 

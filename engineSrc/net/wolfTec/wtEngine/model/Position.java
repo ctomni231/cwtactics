@@ -1,7 +1,7 @@
 package net.wolfTec.wtEngine.model;
 
 import net.wolfTec.wtEngine.Constants;
-import net.wolfTec.wtEngine.utility.AssertUtil;
+import net.wolfTec.wtEngine.utility.AssertUtilyBean;
 
 /**
  * Object that holds information about objects at a given position (x,y).
@@ -43,7 +43,7 @@ public class Position {
    * @param otherPos
    */
   public void grab(Position otherPos) {
-    AssertUtil.notNull(otherPos);
+    AssertUtilyBean.notNull(otherPos);
 
     this.x = otherPos.x;
     this.y = otherPos.y;

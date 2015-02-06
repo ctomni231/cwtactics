@@ -1,6 +1,6 @@
 package net.wolfTec.wtEngine.model;
 
-import net.wolfTec.wtEngine.utility.AssertUtil;
+import net.wolfTec.wtEngine.utility.AssertUtilyBean;
 
 public class TileType extends ObjectType {
 
@@ -8,6 +8,6 @@ public class TileType extends ObjectType {
 
     @Override
     public void validate() {
-        AssertUtil.greaterEquals(defense, 0);
+        AssertUtilyBean.greaterEquals(defense, 0);
     }
 }

@@ -1,13 +1,13 @@
 package net.wolfTec.wtEngine.gamelogic;
 
 import net.wolfTec.wtEngine.Constants;
-import net.wolfTec.wtEngine.base.BeanFactory;
-import net.wolfTec.wtEngine.base.BeanInitializationListener;
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.model.Config;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
+import org.wolfTec.utility.BeanFactory;
+import org.wolfTec.utility.BeanInitializationListener;
 
 public class GameConfigBean implements BeanInitializationListener {
 

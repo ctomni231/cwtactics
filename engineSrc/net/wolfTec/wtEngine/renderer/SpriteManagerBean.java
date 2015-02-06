@@ -1,6 +1,6 @@
 package net.wolfTec.wtEngine.renderer;
 
-import net.wolfTec.wtEngine.utility.AssertUtil;
+import net.wolfTec.wtEngine.utility.AssertUtilyBean;
 import net.wolfTec.wtEngine.utility.BrowserHelperBean;
 
 import org.stjs.javascript.Array;
@@ -33,12 +33,12 @@ public class SpriteManagerBean {
   }
 
   public void registerSprite(String spriteKey, Sprite sprite) {
-    AssertUtil.hasNoProperty(sprites, spriteKey);
+    AssertUtilyBean.hasNoProperty(sprites, spriteKey);
     sprites.$put(spriteKey, sprite);
   }
 
   public Sprite getSprite(String spriteKey) {
-    AssertUtil.hasProperty(sprites, spriteKey);
+    AssertUtilyBean.hasProperty(sprites, spriteKey);
     return sprites.$get(spriteKey);
   }
   

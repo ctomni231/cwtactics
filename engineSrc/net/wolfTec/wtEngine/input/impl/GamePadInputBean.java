@@ -2,8 +2,6 @@ package net.wolfTec.wtEngine.input.impl;
 
 import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.Game;
-import net.wolfTec.wtEngine.base.BeanFactory;
-import net.wolfTec.wtEngine.base.BeanInitializationListener;
 import net.wolfTec.wtEngine.input.InputBackend;
 import net.wolfTec.wtEngine.input.InputBackendType;
 import net.wolfTec.wtEngine.input.InputBean;
@@ -12,6 +10,8 @@ import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.statemachine.StateMachineBean;
 
 import org.stjs.javascript.*;
+import org.wolfTec.utility.BeanFactory;
+import org.wolfTec.utility.BeanInitializationListener;
 
 import static org.stjs.javascript.JSObjectAdapter.*;
 

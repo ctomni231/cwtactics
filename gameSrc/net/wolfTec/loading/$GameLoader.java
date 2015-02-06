@@ -3,7 +3,7 @@ package net.wolfTec.loading;
 import org.stjs.javascript.annotation.Namespace;
 
 import net.wolfTec.system.Logger;
-import net.wolfTec.wtEngine.utility.AssertUtil;
+import net.wolfTec.wtEngine.utility.AssertUtilyBean;
 
 public class $GameLoader {
 
@@ -28,7 +28,7 @@ public class $GameLoader {
 	 * Load assets from cache 4. Prepare stuff 5. DONE
 	 */
 	public void loadGame() {
-		AssertUtil.isNot(loaded, true);
+		AssertUtilyBean.isNot(loaded, true);
 
 		log.info("Loading game data");
 

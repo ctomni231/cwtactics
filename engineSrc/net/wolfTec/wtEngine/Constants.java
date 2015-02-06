@@ -1,6 +1,5 @@
 package net.wolfTec.wtEngine;
 
-
 public abstract class Constants {
 
   /**
@@ -14,7 +13,8 @@ public abstract class Constants {
   public static final int INACTIVE_ID = -1;
 
   /**
-   *
+   * Amount of capture points that needs to be lowered by a capturer to
+   * completely capture property.
    */
   public static final int CAPTURE_POINTS = 20;
 
@@ -119,7 +119,7 @@ public abstract class Constants {
    *
    */
   public static final int ACTION_POOL_SIZE = 200;
-  
+
   /**
    *
    */

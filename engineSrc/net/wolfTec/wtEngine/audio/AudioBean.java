@@ -5,8 +5,6 @@ import static org.stjs.javascript.JSObjectAdapter.hasOwnProperty;
 import net.wolfTec.wtEngine.assets.AssetItem;
 import net.wolfTec.wtEngine.assets.AssetLoader;
 import net.wolfTec.wtEngine.assets.AssetType;
-import net.wolfTec.wtEngine.base.BeanFactory;
-import net.wolfTec.wtEngine.base.BeanInitializationListener;
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.persistence.StorageBean;
 import net.wolfTec.wtEngine.persistence.StorageEntry;
@@ -19,6 +17,8 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
+import org.wolfTec.utility.BeanFactory;
+import org.wolfTec.utility.BeanInitializationListener;
 
 public class AudioBean implements BeanInitializationListener, AssetLoader {
 

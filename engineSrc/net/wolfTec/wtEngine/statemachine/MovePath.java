@@ -1,12 +1,13 @@
-package net.wolfTec.states;
+package net.wolfTec.wtEngine.statemachine;
 
 import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.gamelogic.MoveCode;
+import net.wolfTec.wtEngine.model.Tile;
 import net.wolfTec.wtEngine.model.Unit;
-import net.wolfTec.wtEngine.utility.MoveableMatrix;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
+import org.wolfTec.utility.MoveableMatrix;
 
 public class MovePath {
 
@@ -87,26 +88,29 @@ public class MovePath {
    * @return
    */
   public boolean isGoBackCommand (MoveCode code) {
-    var lastCode = movePath.get(movePath.size - 1);
-    var goBackCode;
+    MoveCode lastCode = path.$get(path.$length() - 1);
+    MoveCode goBackCode;
 
     // get go back code
     switch (code) {
-        case exports.MOVE_CODES_UP:
-            goBackCode = exports.MOVE_CODES_DOWN;
+        case UP:
+            goBackCode = MoveCode.DOWN;
             break;
-        case exports.MOVE_CODES_DOWN:
-            goBackCode = exports.MOVE_CODES_UP;
+        case DOWN:
+            goBackCode = MoveCode.UP;
             break;
-        case exports.MOVE_CODES_LEFT:
-            goBackCode = exports.MOVE_CODES_RIGHT;
+        case LEFT:
+            goBackCode = MoveCode.RIGHT;
             break;
-        case exports.MOVE_CODES_RIGHT:
-            goBackCode = exports.MOVE_CODES_LEFT;
+        case RIGHT:
+            goBackCode = MoveCode.LEFT;
             break;
+        default:
+          // TODO
+          throw new Error();
     }
 
-    return (lastCode === goBackCode);
+    return (lastCode == goBackCode);
 }
 
   /**
@@ -122,15 +126,15 @@ public class MovePath {
    */
   public void addCode(MoveCode code, Object selection, int sx, int sy) {
     // drop last move code when the new command realizes a move back schema
-    if (movePath.size > 0 && isGoBackCommand(code, movePath)) {
-      movePath.popLast();
+    if (path.$length() > 0 && isGoBackCommand(code, path)) {
+      path.popLast();
       return true;
     }
 
-    var source = model.mapData[sx][sy];
-    var unit = source.unit;
-    var points = unit.type.range;
-    var fuelLeft = unit.fuel;
+    Tile source = model.mapData[sx][sy];
+    Unit unit = source.unit;
+    int points = unit.type.range;
+    int fuelLeft = unit.fuel;
 
     // decrease move range when not enough fuel is available to
     // move the maximum possible range for the selected move type
@@ -139,22 +143,22 @@ public class MovePath {
     }
 
     // add command to the move path list
-    movePath.push(code);
+    path.push(code);
 
     // calculate fuel consumption for the current move path
-    var cx = sx;
-    var cy = sy;
-    var fuelUsed = 0;
-    for (var i = 0, e = movePath.size; i < e; i++) {
-      switch (movePath.get(i)) {
+    int cx = sx;
+    int cy = sy;
+    int fuelUsed = 0;
+    for (int i = 0, e = path.$length(); i < e; i++) {
+      switch (path.$get(i)) {
 
-        case exports.MOVE_CODES_UP:
-        case exports.MOVE_CODES_LEFT:
+        case UP:
+        case LEFT:
           cy--;
           break;
 
-        case exports.MOVE_CODES_DOWN:
-        case exports.MOVE_CODES_RIGHT:
+        case DOWN:
+        case RIGHT:
           cx++;
           break;
       }
@@ -461,24 +465,24 @@ public class MovePath {
     for (var i = 0, e = movePath.size; i < e; i++) {
 
         // set current position by current move code
-        switch (movePath.data[i]) {
+        switch (path.$get(index)) {
 
-            case exports.MOVE_CODES_UP:
+            case UP:
                 if (constants.DEBUG) assert(cY > 0);
                 cY--;
                 break;
 
-            case exports.MOVE_CODES_RIGHT:
+            case RIGHT:
                 if (constants.DEBUG) assert(cX < model.mapWidth - 1);
                 cX++;
                 break;
 
-            case exports.MOVE_CODES_DOWN:
+            case DOWN:
                 if (constants.DEBUG) assert(cY < model.mapHeight - 1);
                 cY++;
                 break;
 
-            case exports.MOVE_CODES_LEFT:
+            case LEFT:
                 if (constants.DEBUG) assert(cX > 0);
                 cX--;
                 break;
@@ -486,7 +490,7 @@ public class MovePath {
 
         // calculate the used fuel to move onto the current tile
         // if `noFuelConsumption` is not `true` some actions like unloading does not consume fuel
-        if (noFuelConsumption !== true) {
+        if (noFuelConsumption != true) {
             fuelUsed += exports.getMoveCosts(mType, cX, cY);
         }
 
@@ -494,14 +498,14 @@ public class MovePath {
 
         // movable when tile is empty or the last tile in the way while
         // the unit on the tile belongs to the movers owner
-        if (!tileUnit || (tileUnit.owner === unit.owner && i === e - 1)) {
+        if (!tileUnit || (tileUnit.owner == unit.owner && i == e - 1)) {
             lastX = cX;
             lastY = cY;
             lastFuel = fuelUsed;
             lastIndex = i;
 
             // enemy unit
-        } else if (tileUnit.owner.team !== team) {
+        } else if (tileUnit.owner.team != team) {
             movePath.clear(lastIndex + 1);
             trapped = true;
             break;
@@ -509,14 +513,14 @@ public class MovePath {
     }
 
     // consume fuel except when no fuel consumption is on
-    if (noFuelConsumption !== true) {
+    if (noFuelConsumption != true) {
         unit.fuel -= lastFuel;
         if (constants.DEBUG) assert(unit.fuel >= 0);
     }
 
     // sometimes we prevent to set the unit at the target position because it moves
     // into a thing at a target position (like a transporter)
-    if (preventSetNewPos !== true) {
+    if (preventSetNewPos != true) {
         model.mapData[lastX][lastY].unit = unit;
         fog.addUnitVision(lastX, lastY, unit.owner);
 

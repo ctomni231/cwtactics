@@ -1,8 +1,6 @@
 package net.wolfTec.wtEngine.renderer.layers;
 
 import net.wolfTec.wtEngine.Constants;
-import net.wolfTec.wtEngine.base.BeanFactory;
-import net.wolfTec.wtEngine.base.BeanInitializationListener;
 import net.wolfTec.wtEngine.model.Direction;
 import net.wolfTec.wtEngine.renderer.AnimatedLayer;
 import net.wolfTec.wtEngine.renderer.ScreenLayer;
@@ -13,6 +11,8 @@ import org.stjs.javascript.Global;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
+import org.wolfTec.utility.BeanFactory;
+import org.wolfTec.utility.BeanInitializationListener;
 
 public class FocusLayerBean extends ScreenLayer implements BeanInitializationListener, AnimatedLayer {
 

@@ -1,6 +1,6 @@
 package net.wolfTec.wtEngine.model;
 
-import net.wolfTec.wtEngine.utility.AssertUtil;
+import net.wolfTec.wtEngine.utility.AssertUtilyBean;
 
 public class PropertyType extends ObjectType {
 
@@ -15,9 +15,9 @@ public class PropertyType extends ObjectType {
 
     @Override
     public void validate() {
-        AssertUtil.greaterEquals(defense, 0);
-        AssertUtil.greaterEquals(vision, 0);
+        AssertUtilyBean.greaterEquals(defense, 0);
+        AssertUtilyBean.greaterEquals(vision, 0);
 
-        AssertUtil.greaterEquals(capturePoints, 0);
+        AssertUtilyBean.greaterEquals(capturePoints, 0);
     }
 }

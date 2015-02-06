@@ -1,11 +1,11 @@
 package net.wolfTec.wtEngine.renderer;
 
 import net.wolfTec.wtEngine.Constants;
-import net.wolfTec.wtEngine.base.BeanFactory;
-import net.wolfTec.wtEngine.base.BeanInitializationListener;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
+import org.wolfTec.utility.BeanFactory;
+import org.wolfTec.utility.BeanInitializationListener;
 
 public abstract class AnimationManagerBean implements BeanInitializationListener{
 

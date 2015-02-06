@@ -88,7 +88,7 @@ public class UiButtonGroup {
 
   public void setIndex(int index) {
     if (index < 0 && index >= this.elements.$length()) {
-      Debug.logCritical("IllegalIndexArgument");
+      throw new IllegalArgumentException();
     }
 
     this.elements.$get(this.selectedElement).inFocus = false;

@@ -1,4 +1,4 @@
-package net.wolfTec.states;
+package net.wolfTec.wtEngine.statemachine;
 
 import net.wolfTec.utility.Debug;
 import net.wolfTec.wtEngine.Constants;

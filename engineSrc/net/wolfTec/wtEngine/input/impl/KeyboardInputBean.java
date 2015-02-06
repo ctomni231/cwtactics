@@ -1,7 +1,5 @@
 package net.wolfTec.wtEngine.input.impl;
 
-import net.wolfTec.wtEngine.base.BeanFactory;
-import net.wolfTec.wtEngine.base.BeanInitializationListener;
 import net.wolfTec.wtEngine.input.*;
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.statemachine.StateMachineBean;
@@ -11,6 +9,8 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.dom.DOMEvent;
 import org.stjs.javascript.functions.Function1;
+import org.wolfTec.utility.BeanFactory;
+import org.wolfTec.utility.BeanInitializationListener;
 
 public class KeyboardInputBean implements InputBackend, BeanInitializationListener {
 

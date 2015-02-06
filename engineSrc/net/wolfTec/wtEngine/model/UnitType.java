@@ -3,7 +3,7 @@ package net.wolfTec.wtEngine.model;
 import java.util.Iterator;
 
 import net.wolfTec.wtEngine.Constants;
-import net.wolfTec.wtEngine.utility.AssertUtil;
+import net.wolfTec.wtEngine.utility.AssertUtilyBean;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
@@ -53,47 +53,47 @@ public class UnitType extends ObjectType {
 
     @Override
     public void validate() {
-        AssertUtil.greaterEquals(cost, 1);
-        AssertUtil.isNot(cost, 0);
+        AssertUtilyBean.greaterEquals(cost, 1);
+        AssertUtilyBean.isNot(cost, 0);
 
-        AssertUtil.greaterEquals(range, 0);
-        AssertUtil.lowerEquals(range, Constants.MAX_SELECTION_RANGE);
+        AssertUtilyBean.greaterEquals(range, 0);
+        AssertUtilyBean.lowerEquals(range, Constants.MAX_SELECTION_RANGE);
 
-        AssertUtil.greaterEquals(vision, 1);
-        AssertUtil.lowerEquals(vision, Constants.MAX_SELECTION_RANGE);
+        AssertUtilyBean.greaterEquals(vision, 1);
+        AssertUtilyBean.lowerEquals(vision, Constants.MAX_SELECTION_RANGE);
 
-        AssertUtil.greaterEquals(fuel, 0);
-        AssertUtil.lowerEquals(fuel, 99);
+        AssertUtilyBean.greaterEquals(fuel, 0);
+        AssertUtilyBean.lowerEquals(fuel, 99);
 
-        AssertUtil.greaterEquals(ammo, 0);
-        AssertUtil.lowerEquals(ammo, 99);
+        AssertUtilyBean.greaterEquals(ammo, 0);
+        AssertUtilyBean.lowerEquals(ammo, 99);
 
-        AssertUtil.greaterEquals(dailyFuelDrain, 1);
-        AssertUtil.lowerEquals(dailyFuelDrain, 99);
+        AssertUtilyBean.greaterEquals(dailyFuelDrain, 1);
+        AssertUtilyBean.lowerEquals(dailyFuelDrain, 99);
 
-        AssertUtil.greaterEquals(dailyFuelDrainHidden, 2);
-        AssertUtil.lowerEquals(dailyFuelDrainHidden, 99);
+        AssertUtilyBean.greaterEquals(dailyFuelDrainHidden, 2);
+        AssertUtilyBean.lowerEquals(dailyFuelDrainHidden, 99);
 
-        AssertUtil.notNull(getMoveType());
+        AssertUtilyBean.notNull(getMoveType());
 
-        if (maxloads != Constants.INACTIVE_ID) AssertUtil.greaterThen(maxloads, 0);
+        if (maxloads != Constants.INACTIVE_ID) AssertUtilyBean.greaterThen(maxloads, 0);
 
-        if (captures != Constants.INACTIVE_ID) AssertUtil.greaterEquals(captures, 1);
+        if (captures != Constants.INACTIVE_ID) AssertUtilyBean.greaterEquals(captures, 1);
 
         if (attack != null) {
-            AssertUtil.greaterEquals(attack.minrange, 1);
-            AssertUtil.greaterEquals(attack.maxrange, attack.maxrange+1);
+            AssertUtilyBean.greaterEquals(attack.minrange, 1);
+            AssertUtilyBean.greaterEquals(attack.maxrange, attack.maxrange+1);
 
             checkAttackMap(attack.mainWeapon);
             checkAttackMap(attack.secondaryWeapon);
         }
 
         if (suicide != null) {
-            AssertUtil.greaterEquals(suicide.damage, 1);
-            AssertUtil.lowerEquals(suicide.damage, 10);
+            AssertUtilyBean.greaterEquals(suicide.damage, 1);
+            AssertUtilyBean.lowerEquals(suicide.damage, 10);
 
-            AssertUtil.greaterEquals(suicide.range, 1);
-            AssertUtil.lowerEquals(suicide.range, Constants.MAX_SELECTION_RANGE);
+            AssertUtilyBean.greaterEquals(suicide.range, 1);
+            AssertUtilyBean.lowerEquals(suicide.range, Constants.MAX_SELECTION_RANGE);
         }
     }
 
@@ -101,8 +101,8 @@ public class UnitType extends ObjectType {
         Iterator<String> unitIds = map.iterator();
         while (unitIds.hasNext()) {
             String targetId = unitIds.next();
-            AssertUtil.notEmpty(targetId);
-            AssertUtil.greaterEquals(map.$get(targetId), 1);
+            AssertUtilyBean.notEmpty(targetId);
+            AssertUtilyBean.greaterEquals(map.$get(targetId), 1);
         }
     }
 
