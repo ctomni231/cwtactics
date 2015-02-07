@@ -23,8 +23,7 @@ import org.wolfTec.utility.BeanFactory;
 import org.wolfTec.utility.BeanInitializationListener;
 import org.wolfTec.utility.Injected;
 
-@Bean
-public class AudioBean implements BeanInitializationListener, AssetLoader {
+@Bean public class AudioBean implements BeanInitializationListener, AssetLoader {
 
   public static final String MUSIC_KEY = "MUSIC_";
 
@@ -32,12 +31,10 @@ public class AudioBean implements BeanInitializationListener, AssetLoader {
   public static final float DEFAULT_MUSIC_VOL = 0.5f;
 
   private Logger log;
-  
-  @Injected
-  private StorageBean storage;
-  
-  @Injected
-  private BrowserHelperBean browser;
+
+  @Injected private StorageBean storage;
+
+  @Injected private BrowserHelperBean browser;
 
   private int apiStatus;
 
@@ -69,9 +66,10 @@ public class AudioBean implements BeanInitializationListener, AssetLoader {
     musicConnector = playSoundOnGainNode(musicNode, buffer, true);
     musicInLoadProcess = false;
   };
-  
+
   private Callback1<StorageEntry<Object>> musicLoadCallback = (entry) -> {
-    // musicConnector = playSoundOnGainNode(musicNode, Globals.Base64Helper.decodeBuffer(entry.value), true);
+    // musicConnector = playSoundOnGainNode(musicNode,
+    // Globals.Base64Helper.decodeBuffer(entry.value), true);
     Object buffer = $js("this.context.decodeAudioData(data, this.musicPlayCallback, this.decodeAssetErrorCb)");
   };
 
@@ -93,7 +91,7 @@ public class AudioBean implements BeanInitializationListener, AssetLoader {
       musicNode = createSoundNode(DEFAULT_MUSIC_VOL);
 
       buffer = JSCollections.$map();
-      
+
       log.info("..done");
 
     } catch (Exception e) {
@@ -304,7 +302,7 @@ public class AudioBean implements BeanInitializationListener, AssetLoader {
     options.error = (err) -> {
       log.error("CannotLoadAssetException");
     };
-    
+
     browser.doHttpRequest(options);
   }
 }
