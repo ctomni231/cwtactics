@@ -18,9 +18,12 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
+import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.BeanFactory;
 import org.wolfTec.utility.BeanInitializationListener;
+import org.wolfTec.utility.Injected;
 
+@Bean
 public class AudioBean implements BeanInitializationListener, AssetLoader {
 
   public static final String MUSIC_KEY = "MUSIC_";
@@ -29,7 +32,11 @@ public class AudioBean implements BeanInitializationListener, AssetLoader {
   public static final float DEFAULT_MUSIC_VOL = 0.5f;
 
   private Logger log;
+  
+  @Injected
   private StorageBean storage;
+  
+  @Injected
   private BrowserHelperBean browser;
 
   private int apiStatus;

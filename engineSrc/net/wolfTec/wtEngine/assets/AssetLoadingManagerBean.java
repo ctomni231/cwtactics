@@ -13,23 +13,28 @@ import org.stjs.javascript.functions.Callback;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
+import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.BeanFactory;
 import org.wolfTec.utility.BeanInitializationListener;
+import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.InjectedByInterface;
+import org.wolfTec.utility.PostInitialization;
 
-public class AssetLoadingManagerBean implements BeanInitializationListener {
+@Bean public class AssetLoadingManagerBean {
 
   private Logger log;
 
+  @InjectedByInterface private Array<AssetLoader> loaderListeners;
+
+  @Injected private BrowserHelperBean browser;
+
+  @Injected private StorageBean storage;
+
   private boolean completed;
 
-  private Array<AssetLoader> loaderListeners;
   private Callback1<Callback> loadModification;
-  private BrowserHelperBean browser;
-  private StorageBean storage;
 
-  @Override public void onEngineInit(BeanFactory engine) {
-    loaderListeners = Game.engine.getBeansOfInterface(AssetLoader.class);
-
+  @PostInitialization public void init() {
     loadModification = (cb) -> {
 
     };
@@ -81,9 +86,9 @@ public class AssetLoadingManagerBean implements BeanInitializationListener {
   private void publishLoadEvent(AssetItem item, Callback0 callback) {
 
   }
-  
+
   private void publishEventTo(Array<Callback1<Callback0>> queue, AssetLoader loader, AssetItem item, Callback0 callback) {
-    
+
   }
 
   public boolean isComplete() {

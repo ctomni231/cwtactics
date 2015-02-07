@@ -12,6 +12,7 @@ import org.stjs.javascript.dom.Canvas;
 public class SpriteManagerBean {
 
   private BrowserHelperBean browserUtil;
+  private AssertUtilyBean assertUtil;
 
   /** */
   private Map<String, Sprite> sprites;
@@ -33,12 +34,12 @@ public class SpriteManagerBean {
   }
 
   public void registerSprite(String spriteKey, Sprite sprite) {
-    AssertUtilyBean.hasNoProperty(sprites, spriteKey);
+    assertUtil.hasNoProperty(sprites, spriteKey);
     sprites.$put(spriteKey, sprite);
   }
 
   public Sprite getSprite(String spriteKey) {
-    AssertUtilyBean.hasProperty(sprites, spriteKey);
+    assertUtil.hasProperty(sprites, spriteKey);
     return sprites.$get(spriteKey);
   }
   
