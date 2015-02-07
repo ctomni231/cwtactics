@@ -130,5 +130,13 @@ public abstract class Constants {
    */
   public static final int MENU_ELEMENTS_MAX = 10;
 
-  public static final String STORAGE_PARMETER_CACHED_CONTENT = "cwt_gameContent_cached";
+  public static final String STORAGE_PARAMETER_CACHED_CONTENT = "cwt_gameContent_cached";
+
+  public static final String STORAGE_PARAMETER_MAP_PREFIX = "cwt_map_";
+
+  public static final String STORAGE_PARAMETER_SAVEGAME_PREFIX = "cwt_savegame_";
+
+  public static final String STORAGE_PARAMETER_INPUT_MAPPING = "cwt_input_mapping";
+  public static final String STORAGE_PARAMETER_AUDIO_VOLUME = "cwt_aduio_volume";
+
 }

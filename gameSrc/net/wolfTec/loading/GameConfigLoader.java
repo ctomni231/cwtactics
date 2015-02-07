@@ -4,7 +4,7 @@ import org.stjs.javascript.functions.Callback1;
 
 import net.wolfTec.system.StorageBean;
 import net.wolfTec.system.StorageBean.StorageEntry;
-import net.wolfTec.wtEngine.gamelogic.GameConfigBean;
+import net.wolfTec.wtEngine.model.GameConfigBean;
 import net.wolfTec.wtEngine.utility.BrowserHelperBean;
 
 public class GameConfigLoader implements LoaderStep {

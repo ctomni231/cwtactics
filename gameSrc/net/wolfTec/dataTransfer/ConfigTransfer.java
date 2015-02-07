@@ -19,8 +19,6 @@ public class ConfigTransfer {
 
 	public static final String PARAM_FORCE_TOUCH = "forceTouch";
 
-	public static final String MAPPING_STORAGE_KEY = "keyboardMapping";
-
 	private URLParameterTransfer $urlParameterDto;
 	private InputHandlerBean $inputHandler;
 	private GameRoundBean $gameround;
@@ -46,47 +44,4 @@ public class ConfigTransfer {
 		 
 	}
 
-	/**
-	 * Saves the current active input mapping into the user storage.
-	 */
-	public void saveKeyMapping(Callback0 cb) {
-		Map<String, Map> mapping = JSCollections.$map();
-		mapping.$put("keyboard", $inputHandler.KEYBOARD_MAPPING);
-		mapping.$put("gamePad", $inputHandler.GAMEPAD_MAPPING);
-
-		StorageBean.set(MAPPING_STORAGE_KEY, mapping, new Callback2<Object, Object>() {
-			@Override public void $invoke(Object arg0, Object arg1) {
-				Debug.logInfo(null, "Successfully saved user input mapping");
-				if (cb != null)
-					cb.$invoke();
-			}
-		});
-	}
-
-	/**
-	 * Loads the keyboard input mapping from the user storage. If no user input
-	 * setting will be found then the default mapping will be used.
-	 *
-	 * @param cb
-	 */
-	public void loadKeyMapping(Callback0 cb) {
-		StorageBean.get(MAPPING_STORAGE_KEY, new Callback1<StorageBean.StorageEntry>() {
-			@Override public void $invoke(StorageEntry arg0) {
-				if (arg0 != null && arg0.value != null) {
-					Map<String, Map<String, Integer>> mapping = (Map<String, Map<String, Integer>>) arg0.value;
-
-					if (JSObjectAdapter.hasOwnProperty(mapping, "keyboard")) {
-						$inputHandler.KEYBOARD_MAPPING = mapping.$get("keyboard");
-					}
-
-					if (JSObjectAdapter.hasOwnProperty(mapping, "gamePad")) {
-						$inputHandler.GAMEPAD_MAPPING = mapping.$get("gamePad");
-					}
-
-					if (cb != null)
-						cb.$invoke();
-				}
-			}
-		});
-	}
 }

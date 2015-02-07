@@ -9,6 +9,7 @@ import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.persistence.StorageBean;
 import net.wolfTec.wtEngine.persistence.StorageEntry;
 import net.wolfTec.wtEngine.utility.BrowserHelperBean;
+import net.wolfTec.wtEngine.utility.ExternalRequestOptions;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
@@ -29,7 +30,7 @@ public class AudioBean implements BeanInitializationListener, AssetLoader {
 
   private Logger log;
   private StorageBean storage;
-  private BrowserHelperBean browserUtil;
+  private BrowserHelperBean browser;
 
   private int apiStatus;
 
@@ -91,6 +92,7 @@ public class AudioBean implements BeanInitializationListener, AssetLoader {
     } catch (Exception e) {
       log.error("..failed due => " + e);
 
+      // TODO
       // Features features = CustomWarsTactics.getBean("features");
       // features.audioSFX = false;
       // features.audioMusic = false;
@@ -268,22 +270,34 @@ public class AudioBean implements BeanInitializationListener, AssetLoader {
 
   private Callback1<String> decodeAssetErrorCb = (e) -> log.error(e);
 
-  @Override public void cacheAsset(AssetItem item, Object data, Callback0 callback) {
-    // storage.setItem(item.key("path"), this.response, callback);
-  }
-
-  @Override public void loadAsset(AssetItem item, Object data, Callback0 callback) {
-    // TODO: bind this
+  @Override public void loadAsset(StorageBean storage, AssetItem item, Callback0 callback) {
+    // TODO Globals.Base64Helper.decodeBuffer(entry.value)
+    // TODO realkey
     if (item.type != AssetType.MUSIC) {
-      $js("this.context.decodeAudioData(data, callback, this.decodeAssetErrorCb)");
+      Callback1<Object> loadCb = (data) -> {
+        buffer.$put(item.name, data);
+        callback.$invoke();
+      };
+      storage.get(item.path, (entry) -> {
+        $js("this.context.decodeAudioData(entry.value, loadCb, this.decodeAssetErrorCb)");
+      });
     }
   }
 
-  @Override public void grabAsset(AssetItem item, Callback1<Object> callback) {
-    $js("var req = new XMLHttpRequest()");
-    $js("req.open(\"GET\",item.key(\"path\"),true)");
-    $js("req.responseType = \"arraybuffer\"");
-    $js("req.onload = callback");
-    $js("req.send()");
+  @Override public void grabAsset(StorageBean storage, AssetItem item, Callback0 callback) {
+    ExternalRequestOptions options = new ExternalRequestOptions();
+    options.path = item.path;
+    options.type = "arraybuffer";
+    // TODO realkey
+    // TODO Base64Helper.encodeBuffer(request.response),
+    // TODO static callbacks?
+    options.success = (response) -> {
+      // TODO save it
+    };
+    options.error = (err) -> {
+      log.error("CannotLoadAssetException");
+    };
+    
+    browser.doHttpRequest(options);
   }
 }

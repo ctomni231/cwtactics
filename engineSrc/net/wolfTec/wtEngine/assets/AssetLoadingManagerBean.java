@@ -53,7 +53,7 @@ public class AssetLoadingManagerBean implements BeanInitializationListener {
       completeCb.$invoke();
     };
 
-    storage.get(Constants.STORAGE_PARMETER_CACHED_CONTENT, entry -> {
+    storage.get(Constants.STORAGE_PARAMETER_CACHED_CONTENT, entry -> {
       if (entry.value != null) {
         grabAndCacheContent(() -> {
           loadContent(callback);

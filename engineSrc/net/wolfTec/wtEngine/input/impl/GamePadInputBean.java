@@ -5,17 +5,19 @@ import net.wolfTec.wtEngine.Game;
 import net.wolfTec.wtEngine.input.InputBackend;
 import net.wolfTec.wtEngine.input.InputBackendType;
 import net.wolfTec.wtEngine.input.InputBean;
+import net.wolfTec.wtEngine.input.InputMappable;
 import net.wolfTec.wtEngine.input.InputTypeKey;
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.statemachine.StateMachineBean;
 
 import org.stjs.javascript.*;
+import org.stjs.javascript.functions.Callback0;
 import org.wolfTec.utility.BeanFactory;
 import org.wolfTec.utility.BeanInitializationListener;
 
 import static org.stjs.javascript.JSObjectAdapter.*;
 
-public class GamePadInputBean implements InputBackend, BeanInitializationListener {
+public class GamePadInputBean implements InputBackend, BeanInitializationListener, InputMappable {
 
   private boolean vendorAPI;
 
@@ -23,7 +25,7 @@ public class GamePadInputBean implements InputBackend, BeanInitializationListene
   private InputBean input;
   private StateMachineBean stm;
 
-  private Map<String, Integer> GAMEPAD_MAPPING;
+  private Map<String, Integer> mapping;
 
   private boolean enabled;
 
@@ -32,16 +34,23 @@ public class GamePadInputBean implements InputBackend, BeanInitializationListene
   @Override public void onEngineInit(BeanFactory engine) {
 
     // register default mapping
-    GAMEPAD_MAPPING = JSCollections.$map();
-    GAMEPAD_MAPPING.$put(InputTypeKey.A.name(), 0);
-    GAMEPAD_MAPPING.$put(InputTypeKey.B.name(), 1);
+    mapping = JSCollections.$map();
+    mapping.$put(InputTypeKey.A.name(), 0);
+    mapping.$put(InputTypeKey.B.name(), 1);
 
     vendorAPI = $js("(navigator.getGamepads === undefined)");
   }
 
-  @Override public Map<String, Integer> getKeyMap() {
-    // TODO Auto-generated method stub
-    return null;
+  @Override public Map<String, Integer> getInputMapping() {
+    return mapping;
+  }
+  
+  @Override public String getInputMappingName() {
+    return "gamepad";
+  }
+  
+  @Override public void setInputMapping(Map<String, Integer> map) {
+    mapping = map;
   }
 
   @Override public void update(int delta) {
@@ -86,10 +95,10 @@ public class GamePadInputBean implements InputBackend, BeanInitializationListene
     Array<Integer> axes = $js("gamePad.axes");
 
     // try to extract key
-    if (buttons.$get(GAMEPAD_MAPPING.$get("A")) == 1) {
+    if (buttons.$get(mapping.$get("A")) == 1) {
       key = InputTypeKey.A;
 
-    } else if (buttons.$get(GAMEPAD_MAPPING.$get("B")) == 1) {
+    } else if (buttons.$get(mapping.$get("B")) == 1) {
       key = InputTypeKey.B;
 
     } else if (axes.$get(1) < -0.5) {
@@ -119,5 +128,13 @@ public class GamePadInputBean implements InputBackend, BeanInitializationListene
   @Override public void disable() {
     log.info("disable gamepad input");
     enabled = false;
+  }
+  
+  public void saveConfig (Callback0 callback) {
+    
+  }
+  
+  public void loadConfig (Callback0 callback) {
+    
   }
 }

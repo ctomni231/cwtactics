@@ -80,4 +80,8 @@ public class BrowserHelperBean {
   public void executeSeries (Array<Callback1<Callback0>> functions, Callback0 finalCallback) {
     $js("R.series(functions, finalCallback)");
   }
+  
+  public Array<String> objectKeys (Object obj) {
+    return $js("Object.keys(obj)");
+  }
 }

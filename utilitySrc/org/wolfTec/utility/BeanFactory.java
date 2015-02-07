@@ -10,9 +10,11 @@ import org.stjs.javascript.Map;
 
 public class BeanFactory {
 
-  private static Map<String, Object> beans;
+  private Map<String, Object> beans;
+  private String namespace;
 
-  public BeanFactory() {
+  public BeanFactory(String namespace) {
+    this.namespace = namespace;
     initBeans();
     solveDependencies();
   }
@@ -75,7 +77,7 @@ public class BeanFactory {
    * <strong>Note: </strong> This function is low level and contains real JS
    * code. Modify only if you know what you're doing here.
    */
-  private static void initBeans() {
+  private void initBeans() {
     beans = JSCollections.$map();
 
     // TODO allow overwrite of engine beans from specific namespace
@@ -86,7 +88,7 @@ public class BeanFactory {
     Array<String> possibleBeanNames = JSObjectAdapter.$js("Object.keys(cwt)");
     for (String name : possibleBeanNames) {
       if (name.endsWith("Bean")) {
-        JSObjectAdapter.$js("this.beans[name] = new cwt[name]()");
+        JSObjectAdapter.$js("this.beans[name] = new window[this.namespace][name]()");
       }
     }
   }
@@ -95,7 +97,7 @@ public class BeanFactory {
    * <strong>Note: </strong> This function is low level and contains real JS
    * code. Modify only if you know what you're doing here.
    */
-  private static void solveDependencies() {
+  private void solveDependencies() {
     boolean isDebugEnabled = Constants.DEBUG;
 
     // search in all beans for properties with a leading '$' character. This

@@ -12,7 +12,7 @@ import org.stjs.javascript.functions.Function1;
 import org.wolfTec.utility.BeanFactory;
 import org.wolfTec.utility.BeanInitializationListener;
 
-public class KeyboardInputBean implements InputBackend, BeanInitializationListener {
+public class KeyboardInputBean implements InputBackend, BeanInitializationListener, InputMappable {
 
   public final int CONSOLE_TOGGLE_KEY = 192;
 
@@ -21,6 +21,8 @@ public class KeyboardInputBean implements InputBackend, BeanInitializationListen
   private StateMachineBean stm;
 
   private Map<String, Integer> mapping;
+  
+  private Function1<DOMEvent, Boolean> keyboardHandler;
 
   @Override public void onEngineInit(BeanFactory engine) {
 
@@ -32,34 +34,42 @@ public class KeyboardInputBean implements InputBackend, BeanInitializationListen
     mapping.$put(InputTypeKey.RIGHT.name(), 39);
     mapping.$put(InputTypeKey.A.name(), 13);
     mapping.$put(InputTypeKey.B.name(), 8);
-  }
-  
-  private final Function1<DOMEvent, Boolean> keyboardHandler = (event) -> {
-    int keyCode = JSObjectAdapter.$js("event.keyCode");
+    
+    keyboardHandler = (event) -> {
+      int keyCode = JSObjectAdapter.$js("event.keyCode");
 
-    if (input.genericInput) {
-      // TODO: if (stm.activeState().mode != 0) { return false; }
-      stm.activeState().genericInput(InputBackendType.KEYBOARD, keyCode);
-
-    } else {
-
-      if (keyCode == CONSOLE_TOGGLE_KEY) {
-        log.error("NotImplementedYet");
+      if (input.genericInput) {
+        // TODO: if (stm.activeState().mode != 0) { return false; }
+        stm.activeState().genericInput(InputBackendType.KEYBOARD, keyCode);
 
       } else {
-        for (InputTypeKey type : InputTypeKey.values()) {
-          if (mapping.$get(type.name()) == keyCode) {
-            input.pushAction(type, -1, -1);
-            return true;
+
+        if (keyCode == CONSOLE_TOGGLE_KEY) {
+          log.error("NotImplementedYet");
+
+        } else {
+          for (InputTypeKey type : InputTypeKey.values()) {
+            if (mapping.$get(type.name()) == keyCode) {
+              input.pushAction(type, -1, -1);
+              return true;
+            }
           }
         }
       }
-    }
-    return false;
-  };
+      return false;
+    };
+  }
 
-  @Override public Map<String, Integer> getKeyMap() {
+  @Override public Map<String, Integer> getInputMapping() {
     return mapping;
+  }
+  
+  @Override public String getInputMappingName() {
+    return "keyboard";
+  }
+  
+  @Override public void setInputMapping(Map<String, Integer> map) {
+    mapping = map;
   }
 
   @Override public void enable() {
