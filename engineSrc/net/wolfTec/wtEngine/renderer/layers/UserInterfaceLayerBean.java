@@ -9,11 +9,13 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
+import org.wolfTec.utility.Bean;
+import org.wolfTec.utility.Injected;
 
-public class UserInterfaceLayerBean extends ScreenLayer {
+@Bean public class UserInterfaceLayerBean extends ScreenLayer {
 
-  private SpriteManagerBean sprites;
-  
+  @Injected private SpriteManagerBean sprites;
+
   @Override public int getZIndex() {
     return 6;
   }
@@ -26,42 +28,42 @@ public class UserInterfaceLayerBean extends ScreenLayer {
    * Renders the cursor to the UI layer.
    */
   public void eraseCursor() {
-      Element cursorImg = sprites.getSprite("CURSOR").getImage(0);
-      CanvasRenderingContext2D ctx = getContext(Constants.INACTIVE_ID);
-      int h = JSGlobal.parseInt(Constants.TILE_BASE / 2, 10);
-      x = (x - screenOffsetX) * Constants.TILE_BASE;
-      y = (y - screenOffsetY) * Constants.TILE_BASE;
+    Element cursorImg = sprites.getSprite("CURSOR").getImage(0);
+    CanvasRenderingContext2D ctx = getContext(Constants.INACTIVE_ID);
+    int h = JSGlobal.parseInt(Constants.TILE_BASE / 2, 10);
+    x = (x - screenOffsetX) * Constants.TILE_BASE;
+    y = (y - screenOffsetY) * Constants.TILE_BASE;
 
-      // render cursor at new position
-      ctx.drawImage(cursorImg, x - h, y - h);
-      ctx.drawImage(cursorImg, x + h + h, y + h + h);
-      ctx.drawImage(cursorImg, x + h + h, y - h);
-      ctx.drawImage(cursorImg, x - h, y + h + h);
+    // render cursor at new position
+    ctx.drawImage(cursorImg, x - h, y - h);
+    ctx.drawImage(cursorImg, x + h + h, y + h + h);
+    ctx.drawImage(cursorImg, x + h + h, y - h);
+    ctx.drawImage(cursorImg, x - h, y + h + h);
   }
 
   /**
    * Renders the cursor to the UI layer.
    */
   public void renderCursor() {
-      Element cursorImg = sprites.getSprite("CURSOR").getImage(0);
-      CanvasRenderingContext2D ctx = getContext(Constants.INACTIVE_ID);
-      int h = JSGlobal.parseInt(Constants.TILE_BASE / 2, 10);
-      x = (x - screenOffsetX) * Constants.TILE_BASE;
-      y = (y - screenOffsetY) * Constants.TILE_BASE;
+    Element cursorImg = sprites.getSprite("CURSOR").getImage(0);
+    CanvasRenderingContext2D ctx = getContext(Constants.INACTIVE_ID);
+    int h = JSGlobal.parseInt(Constants.TILE_BASE / 2, 10);
+    x = (x - screenOffsetX) * Constants.TILE_BASE;
+    y = (y - screenOffsetY) * Constants.TILE_BASE;
 
-      // render cursor at new position
-      ctx.drawImage(cursorImg, x - h, y - h);
-      ctx.drawImage(cursorImg, x + h + h, y + h + h);
-      ctx.drawImage(cursorImg, x + h + h, y - h);
-      ctx.drawImage(cursorImg, x - h, y + h + h);
+    // render cursor at new position
+    ctx.drawImage(cursorImg, x - h, y - h);
+    ctx.drawImage(cursorImg, x + h + h, y + h + h);
+    ctx.drawImage(cursorImg, x + h + h, y - h);
+    ctx.drawImage(cursorImg, x - h, y + h + h);
   }
 
   /**
    * Shows the native browser cursor.
    */
   public void showNativeCursor() {
-      Canvas canvas = getLayer(Constants.INACTIVE_ID);
-      JSObjectAdapter.$js("canvas.style.cursor = ''");
+    Canvas canvas = getLayer(Constants.INACTIVE_ID);
+    JSObjectAdapter.$js("canvas.style.cursor = ''");
   }
 
   /**

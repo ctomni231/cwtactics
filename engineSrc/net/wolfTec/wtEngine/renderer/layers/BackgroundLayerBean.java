@@ -5,8 +5,9 @@ import net.wolfTec.wtEngine.renderer.ScreenLayer;
 import net.wolfTec.wtEngine.renderer.Sprite;
 
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
+import org.wolfTec.utility.Bean;
 
-public class BackgroundLayerBean extends ScreenLayer {
+@Bean public class BackgroundLayerBean extends ScreenLayer {
   
   @Override public int getZIndex() {
     return 0;

@@ -12,13 +12,15 @@ import net.wolfTec.wtEngine.renderer.SpriteManagerBean;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
+import org.wolfTec.utility.Bean;
+import org.wolfTec.utility.Injected;
 
-public class MapLayerBean extends ScreenLayer implements AnimatedLayer {
+@Bean public class MapLayerBean extends ScreenLayer implements AnimatedLayer {
 
-  private SpriteManagerBean sprites;
-  private SpriteIndexBean spriteIndexes;
-  private GameRoundBean gameround;
-  
+  @Injected private SpriteManagerBean sprites;
+  @Injected private SpriteIndexBean spriteIndexes;
+  @Injected private GameRoundBean gameround;
+
   @Override public int getSubStates() {
     return 8;
   }
@@ -66,9 +68,9 @@ public class MapLayerBean extends ScreenLayer implements AnimatedLayer {
       n++;
     }
   }
-  
+
   @Override public void onSetScreenPosition(int x, int y, int offsetX, int offsetY) {
-    
+
   }
 
   @Override public int getZIndex() {
@@ -91,11 +93,13 @@ public class MapLayerBean extends ScreenLayer implements AnimatedLayer {
   /** */
   private void renderTileOverlayRow() {
     renderTiles(screenOffsetX, screenOffsetY, screenOffsetX, screenOffsetY + 1,
-        (gameround.getMapWidth() < Constants.SCREEN_WIDTH) ? gameround.getMapWidth() : Constants.SCREEN_WIDTH, 1, true);
+        (gameround.getMapWidth() < Constants.SCREEN_WIDTH) ? gameround.getMapWidth()
+            : Constants.SCREEN_WIDTH, 1, true);
   }
 
   /** */
-  private void renderTiles(int x, int oy, int w, int h, int offsetX, int offsetY, boolean overlayDraw) {
+  private void renderTiles(int x, int oy, int w, int h, int offsetX, int offsetY,
+      boolean overlayDraw) {
     CanvasRenderingContext2D ctx;
     int scx;
     int scy;

@@ -1,8 +1,6 @@
 package net.wolfTec.wtEngine.statemachine;
 
 import net.wolfTec.wtEngine.action.ActionInvokerBean;
-import net.wolfTec.wtEngine.assets.AssetItem;
-import net.wolfTec.wtEngine.assets.AssetLoader;
 import net.wolfTec.wtEngine.input.InputBean;
 import net.wolfTec.wtEngine.input.InputData;
 import net.wolfTec.wtEngine.log.Logger;
@@ -12,13 +10,14 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
-import org.stjs.javascript.functions.Callback1;
+import org.wolfTec.utility.Bean;
+import org.wolfTec.utility.Injected;
 
-public class StateMachineBean implements AssetLoader {
+@Bean public class StateMachineBean {
 
   private Logger log;
-  private InputBean input;
-  private ActionInvokerBean action;
+  @Injected private InputBean input;
+  @Injected private ActionInvokerBean action;
 
   /**
    * Holds all registered game states.
@@ -149,21 +148,6 @@ public class StateMachineBean implements AssetLoader {
   }
 
   public void stopGameloop() {
-
-  }
-
-  @Override public void cacheAsset(AssetItem item, Object data, Callback0 callback) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override public void loadAsset(AssetItem item, Object data, Callback0 callback) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override public void grabAsset(AssetItem item, Callback1<Object> callback) {
-    // TODO Auto-generated method stub
 
   }
 }

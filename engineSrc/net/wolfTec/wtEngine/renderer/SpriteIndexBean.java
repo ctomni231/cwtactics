@@ -1,6 +1,8 @@
 package net.wolfTec.wtEngine.renderer;
 
-public abstract class SpriteIndexBean {
+import org.wolfTec.utility.Bean;
+
+@Bean public class SpriteIndexBean {
 
   public final int TYPE_UNIT = 0;
   public final int TYPE_PROPERTY = 1;

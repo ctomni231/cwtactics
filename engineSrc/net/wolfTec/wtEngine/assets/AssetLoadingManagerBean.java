@@ -1,21 +1,16 @@
 package net.wolfTec.wtEngine.assets;
 
 import net.wolfTec.wtEngine.Constants;
-import net.wolfTec.wtEngine.Game;
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.persistence.StorageBean;
 import net.wolfTec.wtEngine.utility.BrowserHelperBean;
-import net.wolfTec.wtEngine.utility.ExternalRequestOptions;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.stjs.javascript.functions.Callback2;
 import org.wolfTec.utility.Bean;
-import org.wolfTec.utility.BeanFactory;
-import org.wolfTec.utility.BeanInitializationListener;
 import org.wolfTec.utility.Injected;
 import org.wolfTec.utility.InjectedByInterface;
 import org.wolfTec.utility.PostInitialization;

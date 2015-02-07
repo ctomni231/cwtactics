@@ -17,12 +17,14 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
+import org.wolfTec.utility.Bean;
+import org.wolfTec.utility.Injected;
 
-public class UnitLayerBean extends ScreenLayer implements AnimatedLayer {
+@Bean public class UnitLayerBean extends ScreenLayer implements AnimatedLayer {
 
-  private SpriteManagerBean sprites;
-  private SpriteIndexBean spriteIndexes;
-  private GameRoundBean gameround;
+  @Injected private SpriteManagerBean sprites;
+  @Injected private SpriteIndexBean spriteIndexes;
+  @Injected private GameRoundBean gameround;
 
   private Canvas temporaryCanvas = (Canvas) Global.window.document.createElement("canvas");
 

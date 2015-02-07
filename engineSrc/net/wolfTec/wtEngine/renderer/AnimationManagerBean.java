@@ -4,18 +4,18 @@ import net.wolfTec.wtEngine.Constants;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.wolfTec.utility.BeanFactory;
-import org.wolfTec.utility.BeanInitializationListener;
+import org.wolfTec.utility.Bean;
+import org.wolfTec.utility.InjectedByInterface;
+import org.wolfTec.utility.PostInitialization;
 
-public abstract class AnimationManagerBean implements BeanInitializationListener{
+@Bean public abstract class AnimationManagerBean {
 
   private int curTime;
   
-  private Array<AnimatedLayer> layers;
+  @InjectedByInterface private Array<AnimatedLayer> layers;
   private Array<Integer> layerStates;
   
-  @Override public void onEngineInit(BeanFactory engine) {
-    layers = engine.getBeansOfInterface(AnimatedLayer.class);
+  @PostInitialization public void init() {
     layerStates = JSCollections.$array();
     curTime = 0;
   }

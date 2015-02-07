@@ -1,6 +1,7 @@
 package net.wolfTec.wtEngine.gamelogic;
 
 import org.wolfTec.utility.Bean;
+import org.wolfTec.utility.Injected;
 
 import net.wolfTec.wtEngine.model.GameConfigBean;
 import net.wolfTec.wtEngine.model.GameRoundBean;
@@ -13,9 +14,9 @@ import net.wolfTec.wtEngine.model.ObjectTypesBean;
     SupplyLogic, SpecialWeaponsLogic, RepairLogic, RelationshipCheckLogic, LifecycleLogic,
     FactoryLogic, CommanderLogic, BattleLogic, WeatherLogic {
 
-  private GameRoundBean gameround;
-  private GameConfigBean gameconfig;
-  private ObjectTypesBean objectTypes;
+  @Injected private GameRoundBean gameround;
+  @Injected private GameConfigBean gameconfig;
+  @Injected private ObjectTypesBean objectTypes;
 
   @Override public GameRoundBean getGameRound() {
     return gameround;

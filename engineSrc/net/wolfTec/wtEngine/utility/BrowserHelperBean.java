@@ -9,8 +9,9 @@ import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
+import org.wolfTec.utility.Bean;
 
-public class BrowserHelperBean {
+@Bean public class BrowserHelperBean {
 
   /**
    * Converts a canvas object to a base64 string.
@@ -72,16 +73,17 @@ public class BrowserHelperBean {
     };
 
     // create a randomized parameter for the url to make sure it won't be cached
-    request.open("get", options.path + "?_wtEngRnd=" + JSGlobal.parseInt(10000 * Math.random(), 10), true);
+    request.open("get",
+        options.path + "?_wtEngRnd=" + JSGlobal.parseInt(10000 * Math.random(), 10), true);
 
     request.send();
   }
-  
-  public void executeSeries (Array<Callback1<Callback0>> functions, Callback0 finalCallback) {
+
+  public void executeSeries(Array<Callback1<Callback0>> functions, Callback0 finalCallback) {
     $js("R.series(functions, finalCallback)");
   }
-  
-  public Array<String> objectKeys (Object obj) {
+
+  public Array<String> objectKeys(Object obj) {
     return $js("Object.keys(obj)");
   }
 }

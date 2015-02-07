@@ -8,11 +8,14 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.dom.Canvas;
+import org.wolfTec.utility.Bean;
+import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.PostInitialization;
 
-public class SpriteManagerBean {
+@Bean public class SpriteManagerBean {
 
-  private BrowserHelperBean browserUtil;
-  private AssertUtilyBean assertUtil;
+  @Injected private BrowserHelperBean browserUtil;
+  @Injected private AssertUtilyBean assertUtil;
 
   /** */
   private Map<String, Sprite> sprites;
@@ -26,7 +29,7 @@ public class SpriteManagerBean {
   /** */
   private Map<String, Integer> minimapIndex;
 
-  public SpriteManagerBean() {
+  @PostInitialization public void init() {
     sprites = JSCollections.$map();
     overlayTiles = JSCollections.$map();
     longAnimatedTiles = JSCollections.$map();
@@ -42,7 +45,7 @@ public class SpriteManagerBean {
     assertUtil.hasProperty(sprites, spriteKey);
     return sprites.$get(spriteKey);
   }
-  
+
   public boolean isLongAnimatedSprite(String spriteKey) {
     return JSObjectAdapter.hasOwnProperty(longAnimatedTiles, spriteKey);
   }

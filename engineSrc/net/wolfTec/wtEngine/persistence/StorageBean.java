@@ -7,9 +7,9 @@ import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
+import org.wolfTec.utility.Bean;
 
-public class StorageBean {
-
+@Bean public class StorageBean {
 
   /**
    * iOS 7 has a serious bug which makes unable to get the permission to
@@ -23,7 +23,7 @@ public class StorageBean {
   /**
    * Maximum size of the application storage.
    */
-  public static final int DEFAULT_DB_SIZE         = 50;
+  public static final int DEFAULT_DB_SIZE = 50;
 
   static {
 
@@ -47,7 +47,7 @@ public class StorageBean {
    * invoked.
    */
   public <T> void set(final String key, final T value, final Callback2<Object, Object> callback) {
-    
+
     Callback2<StorageEntry<?>, Object> safeCb = (result, error) -> {
       // try a second time when fail at the first time because on ios the
       // question for more storage invokes an error => we don't want to
@@ -58,7 +58,7 @@ public class StorageBean {
         callback.$invoke(result, null);
       }
     };
-    
+
     JSObjectAdapter.$js("localForage.setItem(key, value, callback)");
   }
 
@@ -85,5 +85,5 @@ public class StorageBean {
   public void remove(String key, Callback0 callback) {
     JSObjectAdapter.$js("localForage.removeItem(key, callback)");
   }
-  
+
 }

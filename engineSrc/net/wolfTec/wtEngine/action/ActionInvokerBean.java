@@ -8,14 +8,15 @@ import net.wolfTec.wtEngine.network.NetworkBean;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
-import org.wolfTec.utility.BeanFactory;
-import org.wolfTec.utility.BeanInitializationListener;
+import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.CircularBuffer;
+import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.PostInitialization;
 
-public class ActionInvokerBean implements BeanInitializationListener {
+@Bean public class ActionInvokerBean {
 
   private Logger log;
-  private NetworkBean network;
+  @Injected private NetworkBean network;
 
   /**
    * List of all available actions.
@@ -37,7 +38,7 @@ public class ActionInvokerBean implements BeanInitializationListener {
    */
   private CircularBuffer<ActionData> backPool;
 
-  @Override public void onEngineInit(BeanFactory engine) {
+  @PostInitialization public void init() {
     this.backPool = new CircularBuffer<ActionData>(Constants.ACTION_POOL_SIZE);
     this.buffer = new CircularBuffer<ActionData>(Constants.ACTION_POOL_SIZE);
 
@@ -108,7 +109,8 @@ public class ActionInvokerBean implements BeanInitializationListener {
     actionData.p4 = p4;
     actionData.p5 = p5;
 
-    log.info("append action " + actionData + " as " + (asHead ? "head" : "tail") + " into the stack");
+    log.info("append action " + actionData + " as " + (asHead ? "head" : "tail")
+        + " into the stack");
 
     if (asHead) {
       buffer.pushInFront(actionData);
@@ -147,8 +149,8 @@ public class ActionInvokerBean implements BeanInitializationListener {
       throw new Error("IllegalActionFormatException");
     }
 
-    localAction(actions.$get(data.$get(0)).getId(), data.$get(1), data.$get(2), data.$get(3), data.$get(4), data.$get(5),
-        false);
+    localAction(actions.$get(data.$get(0)).getId(), data.$get(1), data.$get(2), data.$get(3),
+        data.$get(4), data.$get(5), false);
   }
 
   /**

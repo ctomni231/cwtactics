@@ -1,11 +1,12 @@
 package net.wolfTec.wtEngine.utility;
 
 import org.stjs.javascript.JSObjectAdapter;
+import org.wolfTec.utility.Bean;
 
 /**
  * Utility class to male assertions for given statements.
  */
-public abstract class AssertUtilyBean {
+@Bean public class AssertUtilyBean {
 
   public void notNull(Object obj) {
     if (obj == null) throw new Error("NullPointerException");

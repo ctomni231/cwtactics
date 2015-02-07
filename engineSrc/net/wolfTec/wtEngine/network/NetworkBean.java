@@ -1,10 +1,12 @@
 package net.wolfTec.wtEngine.network;
 
+import org.wolfTec.utility.Bean;
+
 import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.action.ActionData;
 import net.wolfTec.wtEngine.log.Logger;
 
-public class NetworkBean {
+@Bean public class NetworkBean {
 
   public static Logger log;
 

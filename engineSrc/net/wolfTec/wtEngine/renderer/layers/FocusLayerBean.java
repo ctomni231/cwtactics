@@ -11,10 +11,10 @@ import org.stjs.javascript.Global;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolfTec.utility.BeanFactory;
-import org.wolfTec.utility.BeanInitializationListener;
+import org.wolfTec.utility.Bean;
+import org.wolfTec.utility.PostInitialization;
 
-public class FocusLayerBean extends ScreenLayer implements BeanInitializationListener, AnimatedLayer {
+@Bean public class FocusLayerBean extends ScreenLayer implements AnimatedLayer {
 
   private SpriteManagerBean sprites;
   private Canvas temporaryCanvas;
@@ -27,7 +27,7 @@ public class FocusLayerBean extends ScreenLayer implements BeanInitializationLis
     return "canvas_layer_Focus";
   }
   
-  @Override public void onEngineInit(BeanFactory engine) {
+  @PostInitialization public void init() {
     temporaryCanvas = (Canvas) Global.window.document.createElement("canvas");
   }
 

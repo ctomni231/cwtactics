@@ -20,10 +20,10 @@ import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.BeanFactory;
-import org.wolfTec.utility.BeanInitializationListener;
 import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.PostInitialization;
 
-@Bean public class AudioBean implements BeanInitializationListener, AssetLoader {
+@Bean public class AudioBean implements AssetLoader {
 
   public static final String MUSIC_KEY = "MUSIC_";
 
@@ -73,7 +73,7 @@ import org.wolfTec.utility.Injected;
     Object buffer = $js("this.context.decodeAudioData(data, this.musicPlayCallback, this.decodeAssetErrorCb)");
   };
 
-  @Override public void onEngineInit(BeanFactory engine) {
+  @PostInitialization public void init() {
     try {
       log.info("Initialize..");
 

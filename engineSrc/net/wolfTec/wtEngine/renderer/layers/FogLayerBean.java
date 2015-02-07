@@ -11,20 +11,22 @@ import net.wolfTec.wtEngine.renderer.SpriteManagerBean;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
+import org.wolfTec.utility.Bean;
+import org.wolfTec.utility.Injected;
 
-public class FogLayerBean extends ScreenLayer {
+@Bean public class FogLayerBean extends ScreenLayer {
 
-  private SpriteManagerBean sprites;
-  private SpriteIndexBean spriteIndexes;
-  private GameRoundBean gameround;
+  @Injected private SpriteManagerBean sprites;
+  @Injected private SpriteIndexBean spriteIndexes;
+  @Injected private GameRoundBean gameround;
 
   private Canvas temporaryCanvas = (Canvas) Global.window.document.createElement("canvas");
 
   @Override public int getZIndex() {
     return 2;
   }
-  
-  @Override public String getLayerCanvasId () {
+
+  @Override public String getLayerCanvasId() {
     return "canvas_layer_Fog";
   }
 
@@ -67,8 +69,8 @@ public class FogLayerBean extends ScreenLayer {
     } else {
 
       // clear area in background layer as rectangle only in rectangle mode
-      layer.clearRect((x - offsetX) * Constants.TILE_BASE, (y - offsetY) * Constants.TILE_BASE,
-          w * Constants.TILE_BASE, h * Constants.TILE_BASE);
+      layer.clearRect((x - offsetX) * Constants.TILE_BASE, (y - offsetY) * Constants.TILE_BASE, w
+          * Constants.TILE_BASE, h * Constants.TILE_BASE);
     }
 
     // render
@@ -94,13 +96,15 @@ public class FogLayerBean extends ScreenLayer {
 
           Canvas sprite = null;
           if (tile.property != null) {
-            sprite = sprites.getSprite(tile.property.type.ID).getImage(spriteIndexes.PROPERTY_SHADOW_MASK);
+            sprite = sprites.getSprite(tile.property.type.ID).getImage(
+                spriteIndexes.PROPERTY_SHADOW_MASK);
           } else {
             sprite = sprites.getSprite(tile.type.ID).getImage(
                 tile.variant * spriteIndexes.TILE_STATES + spriteIndexes.TILE_SHADOW);
           }
 
-          int scx = sprites.isLongAnimatedSprite(tile.type.ID) ? Constants.TILE_BASE * animation.indexMapAnimation : 0;
+          int scx = sprites.isLongAnimatedSprite(tile.type.ID) ? Constants.TILE_BASE
+              * animation.indexMapAnimation : 0;
           int scy = 0;
           int scw = Constants.TILE_BASE;
           int sch = Constants.TILE_BASE * 2;

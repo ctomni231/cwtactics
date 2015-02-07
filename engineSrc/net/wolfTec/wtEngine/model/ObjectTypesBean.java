@@ -6,20 +6,22 @@ import net.wolfTec.wtEngine.assets.AssetLoader;
 import net.wolfTec.wtEngine.assets.AssetType;
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.persistence.StorageBean;
+import net.wolfTec.wtEngine.persistence.StorageEntry;
 import net.wolfTec.wtEngine.utility.BrowserHelperBean;
 import net.wolfTec.wtEngine.utility.ExternalRequestOptions;
 import net.wolfTec.wtEngine.utility.ReadOnlyJsArray;
 
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolfTec.utility.BeanFactory;
-import org.wolfTec.utility.BeanInitializationListener;
+import org.wolfTec.utility.Bean;
+import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.PostInitialization;
 
-public class ObjectTypesBean implements BeanInitializationListener, AssetLoader {
+@Bean public class ObjectTypesBean implements AssetLoader {
 
   private Logger log;
-  private BrowserHelperBean browserUtil;
-  private StorageBean storage;
+  @Injected private BrowserHelperBean browserUtil;
+  @Injected private StorageBean storage;
 
   private TypeDatabase<ArmyType> armyTypes;
   private TypeDatabase<MoveType> moveTypes;
@@ -30,36 +32,35 @@ public class ObjectTypesBean implements BeanInitializationListener, AssetLoader 
   private TypeDatabase<CoType> commanderTypes;
   private Modification modification;
 
-  @Override public void onEngineInit(BeanFactory engine) {
+  @PostInitialization public void init() {
 
   }
 
-  @Override public void cacheAsset(AssetItem item, Object data, Callback0 callback) {
+  @Override public void loadAsset(StorageBean storage, AssetItem item, Callback0 callback) {
     if (item.type == AssetType.MODIFICATION) {
-      storage.set(item.name, data, (storageEntry, error) -> {
-        if (error != null) {
-          log.error("CachingModificationException");
-        } else {
-          callback.$invoke();
-        }
-      }); 
+      storage.get(item.name, (StorageEntry<Modification> entry) -> {
+        this.modification = entry.value;
+      });
     }
   }
 
-  @Override public void loadAsset(AssetItem item, Object data, Callback0 callback) {
-    if (item.type == AssetType.MODIFICATION) {
-      this.modification = (Modification) data;
-    }
-  }
-
-  @Override public void grabAsset(AssetItem item, Callback1<Object> callback) {
+  @Override public void grabAsset(StorageBean storage, AssetItem item, Callback0 callback) {
     if (item.type == AssetType.MODIFICATION) {
       ExternalRequestOptions data = new ExternalRequestOptions();
 
       data.json = true;
       data.path = Constants.DEFAULT_MOD_PATH;
 
-      data.success = (mod) -> callback.$invoke(mod);
+      data.success = (mod) -> {
+        storage.set(item.name, mod, (storageEntry, error) -> {
+          if (error != null) {
+            log.error("SavingModificationException");
+            
+          } else {
+            callback.$invoke();
+          }
+        }); 
+      };
 
       data.error = (error) -> log.error("ModificationLoadException");
 

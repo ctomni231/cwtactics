@@ -1,25 +1,28 @@
 package net.wolfTec.wtEngine.model;
 
 import net.wolfTec.wtEngine.Constants;
-import net.wolfTec.wtEngine.assets.AssetItem;
-import net.wolfTec.wtEngine.assets.AssetLoader;
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.persistence.StorageBean;
+import net.wolfTec.wtEngine.persistence.StorageEntry;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
-import org.wolfTec.utility.BeanFactory;
-import org.wolfTec.utility.BeanInitializationListener;
+import org.wolfTec.utility.Bean;
+import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.PostInitialization;
 
-public class GameConfigBean implements BeanInitializationListener {
+@Bean public class GameConfigBean {
 
-  public Logger log;
+  private Logger log;
 
-  private org.stjs.javascript.Map<String, Config> configs;
+  @Injected private StorageBean storage;
+
+  private Map<String, Config> configs;
   private Array<String> configNames;
 
-  @Override public void onEngineInit(BeanFactory engine) {
+  @PostInitialization public void init() {
     configs = JSCollections.$map();
     configNames = JSCollections.$array();
 
@@ -45,7 +48,7 @@ public class GameConfigBean implements BeanInitializationListener {
     createConfig("forceTouch", new Config(0, 1, 0, 1), false);
     createConfig("animatedTiles", new Config(0, 1, 1, 1), false);
   }
-  
+
   private void createConfig(String name, Config cfg, boolean gameConfig) {
     configs.$put(name, cfg);
     if (gameConfig) configNames.push(name);
@@ -71,5 +74,32 @@ public class GameConfigBean implements BeanInitializationListener {
     for (int i = 0; i < configNames.$length(); i++) {
       getConfig(configNames.$get(i)).resetValue();
     }
+  }
+
+  public void loadConfiguration(Callback0 callback) {
+    storage.get(Constants.STORAGE_PARAMETER_APPLICATION_CONFIG, (
+        StorageEntry<Map<String, Integer>> entry) -> {
+      if (entry.value != null) {
+        getConfig("fastClickMode").setValue(entry.value.$get("fastClickMode"));
+        getConfig("forceTouch").setValue(entry.value.$get("forceTouch"));
+        getConfig("animatedTiles").setValue(entry.value.$get("animatedTiles"));
+      }
+    });
+  }
+
+  public void saveConfiguration(Callback0 callback) {
+    Map<String, Integer> appConfigs = JSCollections.$map();
+    appConfigs.$put("fastClickMode", getConfigValue("fastClickMode"));
+    appConfigs.$put("forceTouch", getConfigValue("forceTouch"));
+    appConfigs.$put("animatedTiles", getConfigValue("animatedTiles"));
+
+    storage.set(Constants.STORAGE_PARAMETER_APPLICATION_CONFIG, appConfigs, (savedData, err) -> {
+      if (err != null) {
+        log.error("SavingApplicationConfigError");
+
+      } else {
+        callback.$invoke();
+      }
+    });
   }
 }

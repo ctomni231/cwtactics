@@ -5,11 +5,13 @@ import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.persistence.StorageBean;
 
 import org.stjs.javascript.functions.Callback0;
+import org.wolfTec.utility.Bean;
+import org.wolfTec.utility.Injected;
 
-public class SaveGameManagerBean {
+@Bean public class SaveGameManagerBean {
 
   private Logger log;
-  private StorageBean storage;
+  @Injected private StorageBean storage;
 
   /**
    * Loads a save game and initializes a new game round.

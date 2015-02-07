@@ -136,7 +136,13 @@ public abstract class Constants {
 
   public static final String STORAGE_PARAMETER_SAVEGAME_PREFIX = "cwt_savegame_";
 
+  // TODO - BIND THAT 3 CONFIGS TOGETHER ?
+  
   public static final String STORAGE_PARAMETER_INPUT_MAPPING = "cwt_input_mapping";
+  
   public static final String STORAGE_PARAMETER_AUDIO_VOLUME = "cwt_aduio_volume";
+  
+  public static final String STORAGE_PARAMETER_APPLICATION_CONFIG = "cwt_app_config";
 
+  // END OF - TODO - BIND THAT 3 CONFIGS TOGETHER ?
 }

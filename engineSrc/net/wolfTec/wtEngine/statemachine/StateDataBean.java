@@ -1,10 +1,11 @@
 package net.wolfTec.wtEngine.statemachine;
 
+import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.BeanFactory;
-import org.wolfTec.utility.BeanInitializationListener;
 import org.wolfTec.utility.CircularBuffer;
+import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.PostInitialization;
 
-import net.wolfTec.action.Action;
 import net.wolfTec.renderer.RendererBean;
 import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.gamelogic.MoveCode;
@@ -14,13 +15,13 @@ import net.wolfTec.wtEngine.model.Position;
 import net.wolfTec.wtEngine.renderer.ScreenManagerBean;
 import net.wolfTec.wtEngine.renderer.layers.UserInterfaceLayerBean;
 
-public class StateDataBean implements BeanInitializationListener {
+@Bean public class StateDataBean {
 
   private Logger log;
-  private ScreenManagerBean screen;
-  private GameRoundBean gameround;
-  private UserInterfaceLayerBean uiLayer;
-  private StateMachineBean stateMachine;
+  @Injected private ScreenManagerBean screen;
+  @Injected private GameRoundBean gameround;
+  @Injected private UserInterfaceLayerBean uiLayer;
+  @Injected private StateMachineBean stateMachine;
 
   /**
    * Position object with rich information about the selected position by an
@@ -70,7 +71,7 @@ public class StateDataBean implements BeanInitializationListener {
 
   public Integer focusMode = Constants.INACTIVE_ID;
 
-  @Override public void onEngineInit(BeanFactory engine) {
+  @PostInitialization public void init(BeanFactory engine) {
     this.source = new Position();
     this.target = new Position();
     this.targetSelection = new Position();
