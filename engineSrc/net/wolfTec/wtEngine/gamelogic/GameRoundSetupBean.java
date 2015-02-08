@@ -10,13 +10,15 @@ import net.wolfTec.wtEngine.model.Player;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
+import org.wolfTec.utility.Bean;
+import org.wolfTec.utility.Injected;
 
-public class GameRoundSetupBean {
+@Bean public class GameRoundSetupBean {
 
   public Logger log;
-  private ObjectTypesBean typeDb;
-  private GameRoundBean gameround;
-  private LifecycleLogic lifecycle;
+  @Injected private ObjectTypesBean typeDb;
+  @Injected private GameRoundBean gameround;
+  @Injected private LifecycleLogic lifecycle;
 
   private GameMap map = null;
 

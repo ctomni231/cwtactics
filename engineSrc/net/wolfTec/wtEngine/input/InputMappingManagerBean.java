@@ -11,17 +11,19 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
+import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.BeanFactory;
-import org.wolfTec.utility.BeanInitializationListener;
+import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.PostInitialization;
 
-public class InputMappingManagerBean implements BeanInitializationListener {
+@Bean public class InputMappingManagerBean {
 
   private Logger log;
-  private StorageBean storage;
-  private BrowserHelperBean browser;
-  private Array<InputMappable> mappables;
+  @Injected private StorageBean storage;
+  @Injected private BrowserHelperBean browser;
+  @Injected private Array<InputMappable> mappables;
   
-  @Override public void onPostEngineInit(BeanFactory engine) {
+  @PostInitialization public void init(BeanFactory engine) {
     mappables = Game.engine.getBeansOfInterface(InputMappable.class);
   }
   

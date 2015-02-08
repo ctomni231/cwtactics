@@ -14,12 +14,15 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
+import org.wolfTec.utility.Bean;
+import org.wolfTec.utility.Injected;
 
-public class MapManagerBean implements AssetLoader {
+@Bean public class MapManagerBean implements AssetLoader {
 
   private Logger log;
-  private StorageBean storage;
-  private BrowserHelperBean browserUtil;
+  
+  @Injected private StorageBean storage;
+  @Injected private BrowserHelperBean browserUtil;
   
   public void getMapList(Callback1<Array<String>> callback) {
     storage.keys((keys) -> {

@@ -12,18 +12,20 @@ import net.wolfTec.wtEngine.statemachine.StateMachineBean;
 
 import org.stjs.javascript.*;
 import org.stjs.javascript.functions.Callback0;
+import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.BeanFactory;
-import org.wolfTec.utility.BeanInitializationListener;
+import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.PostInitialization;
 
 import static org.stjs.javascript.JSObjectAdapter.*;
 
-public class GamePadInputBean implements InputBackend, BeanInitializationListener, InputMappable {
+@Bean public class GamePadInputBean implements InputBackend, InputMappable {
 
   private boolean vendorAPI;
 
   private Logger log;
-  private InputBean input;
-  private StateMachineBean stm;
+  @Injected private InputBean input;
+  @Injected private StateMachineBean stm;
 
   private Map<String, Integer> mapping;
 
@@ -31,7 +33,7 @@ public class GamePadInputBean implements InputBackend, BeanInitializationListene
 
   private final Array<Integer> prevTimestamps = JSCollections.$array();
   
-  @Override public void onEngineInit(BeanFactory engine) {
+  @PostInitialization public void init(BeanFactory engine) {
 
     // register default mapping
     mapping = JSCollections.$map();

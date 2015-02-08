@@ -4,9 +4,10 @@ import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.log.Logger;
 
 import org.stjs.javascript.JSStringAdapter;
+import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.CircularBuffer;
 
-public class InputBean {
+@Bean public class InputBean {
 
   private Logger                          log;
 

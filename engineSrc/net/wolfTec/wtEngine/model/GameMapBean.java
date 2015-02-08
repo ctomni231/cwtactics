@@ -3,12 +3,13 @@ package net.wolfTec.wtEngine.model;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback4;
+import org.wolfTec.utility.Bean;
 
-public class GameMapBean {
+@Bean public class GameMapBean {
 
-  private Array<Array<Tile>>  mapData;
-  private int                 sizeX;
-  private int                 sizeY;
+  private Array<Array<Tile>> mapData;
+  private int sizeX;
+  private int sizeY;
 
   @SuppressWarnings("unchecked") public GameMapBean(int maxSizeX, int maxSizeY) {
     this.setSizeX(maxSizeX);
@@ -44,7 +45,8 @@ public class GameMapBean {
     return Math.abs(sx - tx) + Math.abs(sy - ty);
   }
 
-  public void searchUnit(Unit unit, Callback4<Integer, Integer, Unit, Array<Object>> callback, Array<Object> callbackArgument) {
+  public void searchUnit(Unit unit, Callback4<Integer, Integer, Unit, Array<Object>> callback,
+      Array<Object> callbackArgument) {
 
     for (int x = 0, xe = getSizeX(); x < xe; x++) {
       for (int y = 0, ye = getSizeY(); y < ye; y++) {

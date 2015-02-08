@@ -9,22 +9,24 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.dom.DOMEvent;
 import org.stjs.javascript.functions.Function1;
+import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.BeanFactory;
-import org.wolfTec.utility.BeanInitializationListener;
+import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.PostInitialization;
 
-public class KeyboardInputBean implements InputBackend, BeanInitializationListener, InputMappable {
+@Bean public class KeyboardInputBean implements InputBackend, InputMappable {
 
   public final int CONSOLE_TOGGLE_KEY = 192;
 
   private Logger log;
-  private InputBean input;
-  private StateMachineBean stm;
+  @Injected private InputBean input;
+  @Injected private StateMachineBean stm;
 
   private Map<String, Integer> mapping;
   
   private Function1<DOMEvent, Boolean> keyboardHandler;
 
-  @Override public void onEngineInit(BeanFactory engine) {
+  @PostInitialization public void init(BeanFactory engine) {
 
     // add default mapping
     mapping = JSCollections.$map();

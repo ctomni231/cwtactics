@@ -1,5 +1,8 @@
 package net.wolfTec.wtEngine.renderer;
 
+import net.wolfTec.wtEngine.assets.AssetItem;
+import net.wolfTec.wtEngine.assets.AssetLoader;
+import net.wolfTec.wtEngine.persistence.StorageBean;
 import net.wolfTec.wtEngine.utility.AssertUtilyBean;
 import net.wolfTec.wtEngine.utility.BrowserHelperBean;
 
@@ -8,11 +11,12 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.dom.Canvas;
+import org.stjs.javascript.functions.Callback0;
 import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.Injected;
 import org.wolfTec.utility.PostInitialization;
 
-@Bean public class SpriteManagerBean {
+@Bean public class SpriteManagerBean implements AssetLoader {
 
   @Injected private BrowserHelperBean browserUtil;
   @Injected private AssertUtilyBean assertUtil;
@@ -36,11 +40,27 @@ import org.wolfTec.utility.PostInitialization;
     minimapIndex = JSCollections.$map();
   }
 
-  public void registerSprite(String spriteKey, Sprite sprite) {
-    assertUtil.hasNoProperty(sprites, spriteKey);
-    sprites.$put(spriteKey, sprite);
+  @Override public void loadAsset(StorageBean storage, AssetItem item, Callback0 callback) {
+    // TODO Auto-generated method stub
+    
   }
 
+  @Override public void grabAsset(StorageBean storage, AssetItem item, Callback0 callback) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  // TODO remove it 
+//  public void registerSprite(String spriteKey, Sprite sprite) {
+//    assertUtil.hasNoProperty(sprites, spriteKey);
+//    sprites.$put(spriteKey, sprite);
+//  }
+
+  /**
+   * 
+   * @param spriteKey key of the sprite
+   * @return Sprite for the given key
+   */
   public Sprite getSprite(String spriteKey) {
     assertUtil.hasProperty(sprites, spriteKey);
     return sprites.$get(spriteKey);
@@ -54,7 +74,7 @@ import org.wolfTec.utility.PostInitialization;
    * @param {behaviorTree.Sprite} sprite
    * @returns {string}
    */
-  public String toJSON(Sprite sprite) {
+  private String toJSON(Sprite sprite) {
     Array<String> data = JSCollections.$array();
     for (int i = 0, e = sprite.getNumberOfImages(); i < e; i++) {
       data.$set(i, browserUtil.convertCanvasToBase64(sprite.getImage(i)));
@@ -69,7 +89,7 @@ import org.wolfTec.utility.PostInitialization;
    * @param {string} spriteData
    * @returns {behaviorTree.Sprite}
    */
-  public Sprite fromJSON(String spriteData) {
+  private Sprite fromJSON(String spriteData) {
     Array<String> spriteDataArray = JSObjectAdapter.$js("JSON.parse(spriteData)");
 
     Sprite sprite = new Sprite(spriteData.length());

@@ -9,12 +9,14 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
+import org.wolfTec.utility.Bean;
+import org.wolfTec.utility.Injected;
 
-public class VolumeManagerBean implements GameInitializationListener {
+@Bean public class VolumeManagerBean implements GameInitializationListener {
   
   private Logger log;
-  private StorageBean storage;
-  private AudioBean audio;
+  @Injected private StorageBean storage;
+  @Injected private AudioBean audio;
 
   public void saveConfig(Callback0 callback){
     Map<String, Integer> data = JSCollections.$map();

@@ -8,13 +8,15 @@ import net.wolfTec.wtEngine.log.Logger;
 
 import org.stjs.javascript.dom.DOMEvent;
 import org.stjs.javascript.functions.Function1;
+import org.wolfTec.utility.Bean;
+import org.wolfTec.utility.Injected;
 
 import static org.stjs.javascript.JSObjectAdapter.*;
 
-public class MouseInputBean implements InputBackend {
+@Bean public class MouseInputBean implements InputBackend {
 
   private Logger log;
-  private InputBean input;
+  @Injected private InputBean input;
 
   private final Function1<DOMEvent, Boolean> mouseUpEvent = (event) -> {
     if (event == null) {

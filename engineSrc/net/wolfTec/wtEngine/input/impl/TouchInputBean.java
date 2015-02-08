@@ -6,15 +6,17 @@ import net.wolfTec.wtEngine.input.InputBean;
 import net.wolfTec.wtEngine.log.Logger;
 
 import org.stjs.javascript.functions.Callback1;
+import org.wolfTec.utility.Bean;
+import org.wolfTec.utility.Injected;
 
-public class TouchInputBean implements InputBackend {
+@Bean public class TouchInputBean implements InputBackend {
   
   public static final String EVENT_TOUCH_START = "touchstart";
   public static final String EVENT_TOUCH_MOVE = "touchmove";
   public static final String EVENT_TOUCH_END = "touchend";
   
   private Logger log;
-  private InputBean input;
+  @Injected private InputBean input;
 
   private int finger1_startX = 0;
   private int finger1_startY = 0;

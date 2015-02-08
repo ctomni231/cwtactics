@@ -8,8 +8,9 @@ import org.stjs.javascript.annotation.Template;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback3;
 import org.stjs.javascript.functions.Function1;
+import org.wolfTec.utility.Bean;
 
-public class GameRoundBean {
+@Bean public class GameRoundBean {
 
   private GameMapBean map;
   private int gameTimeLimit;

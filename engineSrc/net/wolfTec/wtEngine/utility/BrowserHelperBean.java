@@ -86,4 +86,8 @@ import org.wolfTec.utility.Bean;
   public Array<String> objectKeys(Object obj) {
     return $js("Object.keys(obj)");
   }
+  
+  public <T extends Element> T createDomElement(String tag) {
+    return $js("document.createElement(tag)");
+  }
 }

@@ -134,6 +134,8 @@ public abstract class Constants {
 
   public static final String STORAGE_PARAMETER_MAP_PREFIX = "cwt_map_";
 
+  public static final String STORAGE_PARAMETER_IMAGE_PREFIX = "cwt_image_";
+
   public static final String STORAGE_PARAMETER_SAVEGAME_PREFIX = "cwt_savegame_";
 
   // TODO - BIND THAT 3 CONFIGS TOGETHER ?
