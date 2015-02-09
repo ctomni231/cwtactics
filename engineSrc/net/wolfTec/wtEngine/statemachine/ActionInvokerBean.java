@@ -1,4 +1,4 @@
-package net.wolfTec.wtEngine.action;
+package net.wolfTec.wtEngine.statemachine;
 
 import static org.stjs.javascript.JSObjectAdapter.$js;
 import net.wolfTec.wtEngine.Constants;
@@ -20,16 +20,6 @@ import org.wolfTec.utility.PostInitialization;
   @Injected private NetworkBean network;
 
   /**
-   * List of all available actions.
-   */
-  private Array<Action> actions;
-
-  /**
-   * Action -> ActionID<numeric> mapping.
-   */
-  private Map<String, Integer> actionIds;
-
-  /**
    * Pool for holding ActionData objects when they aren't in the buffer.
    */
   private CircularBuffer<ActionData> buffer;
@@ -39,12 +29,9 @@ import org.wolfTec.utility.PostInitialization;
    */
   private CircularBuffer<ActionData> backPool;
 
-  @PostInitialization public void init() {
+  public ActionInvokerBean() {
     this.backPool = new CircularBuffer<ActionData>(Constants.ACTION_POOL_SIZE);
     this.buffer = new CircularBuffer<ActionData>(Constants.ACTION_POOL_SIZE);
-
-    actionIds = JSCollections.$map();
-    actions = JSCollections.$array();
   }
 
   /**
@@ -155,27 +142,6 @@ import org.wolfTec.utility.PostInitialization;
   }
 
   /**
-   * Returns a list of all registered actions.
-   */
-  public Array<Action> getActions() {
-    return actions;
-  }
-
-  /**
-   * Returns the action which has the given key ID.
-   */
-  public Action getAction(String key) {
-    return actions.$get(actionIds.$get(key));
-  }
-
-  /**
-   * Gets the numeric ID of an action object.
-   */
-  public int getActionId(String key) {
-    return actionIds.$get(key);
-  }
-
-  /**
    * Resets the buffer object.
    */
   public void resetData() {
@@ -189,15 +155,5 @@ import org.wolfTec.utility.PostInitialization;
    */
   public boolean hasData() {
     return !buffer.isEmpty();
-  }
-
-  /**
-   * Registers an action object.
-   *
-   * @param action
-   */
-  public void registerAction(Action action) {
-    actions.push(action);
-    actionIds.$put(action.getId(), actions.$length() - 1);
   }
 }

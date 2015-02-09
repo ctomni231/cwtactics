@@ -1,6 +1,5 @@
 package net.wolfTec.wtEngine.statemachine;
 
-import net.wolfTec.wtEngine.action.ActionInvokerBean;
 import net.wolfTec.wtEngine.input.InputBean;
 import net.wolfTec.wtEngine.input.InputData;
 import net.wolfTec.wtEngine.log.Logger;

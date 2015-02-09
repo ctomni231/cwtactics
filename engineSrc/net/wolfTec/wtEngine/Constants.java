@@ -129,6 +129,11 @@ public abstract class Constants {
    * 
    */
   public static final int MENU_ELEMENTS_MAX = 10;
+  
+  /**
+   * 
+   */
+  public static final String CONFIRM_UNSUPPORTED_SYSTEM_MESSAGE = "Your system isn't supported by CW:T. Try to run it anyway?";
 
   public static final String STORAGE_PARAMETER_CACHED_CONTENT = "cwt_gameContent_cached";
 

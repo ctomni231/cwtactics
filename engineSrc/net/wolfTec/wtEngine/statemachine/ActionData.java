@@ -1,4 +1,4 @@
-package net.wolfTec.wtEngine.action;
+package net.wolfTec.wtEngine.statemachine;
 
 import net.wolfTec.wtEngine.Constants;
 

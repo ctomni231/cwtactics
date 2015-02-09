@@ -16,8 +16,6 @@ import org.stjs.javascript.functions.Callback2;
 
 public class LoadingHandler {
 
-    private static final String LOG_MARKER = "START";
-    private static final String CONFIRM_MSG = "Your system isn't supported by CW:T. Try to run it?";
     private static final String PARAM_HAS_CACHE = "__hasCache__";
 
     public Array<Callback1<Callback0>> loadingSteps;

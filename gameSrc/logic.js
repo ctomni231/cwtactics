@@ -11,85 +11,11 @@ var util = require("./utility");
 
 
 
-// --------------------------------------------------------------------------------------------------------
 
 
-/**
- * Returns true if a transporter with id tid can loadGameConfig the unit with the id lid.
- * This function also calculates the resulting weight if the transporter would
- * loadGameConfig the unit. If the calculated weight is greater than the maximum loadable
- * weight false will be returned.
- *
- * @param {Unit} transporter
- * @param {Unit} load
- * @return {boolean}
- */
-exports.canLoadUnit = function (transporter, load) {
-    if (constants.DEBUG) {
-        assert(transporter instanceof model.Unit);
-        assert(load instanceof model.Unit);
-        assert(load !== transporter);
-        assert(exports.isTransportUnit(transporter));
-        assert(load.loadedIn !== transporter);
-    }
 
-    return (transporter.type.canload.indexOf(load.type.movetype) !== -1);
-};
 
-/**
- * Loads the unit with id lid into a transporter with the id tid.
- *
- * @param {Unit} transporter
- * @param {Unit} load
- */
-exports.loadGameConfig = function (transporter, load) {
-    if (load === transporter) throw new Error("LoadException: same unit");
-    if (load.loadedIn) throw new Error("LoadException: unit already loaded");
 
-    load.loadedIn = transporter;
-};
-
-/**
- * Unloads the unit with id lid from a transporter with the id tid.
- *
- * @param {Unit} transport
- * @param {Unit} load
- */
-exports.unload = function (transporter, load) {
-    if (load.loadedIn !== transporter) throw new Error("UnloadException: not in transporter");
-
-    load.loadedIn = null;
-};
-
-/**
- * Returns true if a transporter unit can unload one of it's loads at a given position.
- * This functions understands the given pos as possible position for the transporter.
- *
- * @param {Unit} transporter
- * @param {Number} x
- * @param {Number} y
- * @return {boolean}
- */
-exports.canUnloadSomethingAt = function (transporter, x, y) {
-    var pid = transporter.owner;
-    var unit;
-
-    if (constants.DEBUG) assert(exports.isTransportUnit(transporter));
-    for (var i = 0, e = model.units.length; i < e; i++) {
-
-        unit = model.units[i];
-        if (unit.loadedIn === transporter) {
-            var moveType = sheets.getSheet(sheets.TYPE_MOVETYPE, unit.type.movetype);
-
-            if (move.canTypeMoveTo(moveType, x - 1, y)) return true;
-            if (move.canTypeMoveTo(moveType, x + 1, y)) return true;
-            if (move.canTypeMoveTo(moveType, x, y - 1)) return true;
-            if (move.canTypeMoveTo(moveType, x, y + 1)) return true;
-        }
-    }
-
-    return false;
-};
 
 exports.actionUnload = {
     multiStepAction: true,
@@ -178,73 +104,6 @@ exports.actionLoad = {
 
 /**
  *
- * @param unit
- * @returns {boolean}
- */
-exports.canTransferUnit = function (unit) {
-
-    if (constants.DEBUG) {
-        assert(unit instanceof model.Unit);
-    }
-
-    return !transport.hasLoads(unit);
-};
-
-/**
- *
- * @param player
- * @param menu
- */
-exports.getUnitTransferTargets = function (player, menu) {
-    if (constants.DEBUG) assert(player instanceof model.Player);
-
-    var origI = player.ID;
-    for (var i = 0, e = constants.MAX_PLAYER; i < e; i++) {
-        if (i === origI) continue;
-
-        var player = model.getPlayer(i);
-        if (!player.isInactive() && player.numberOfUnits < constants.MAX_UNITS) {
-            menu.addEntry(i, true);
-        }
-    }
-};
-
-/**
- *
- * @param unit
- * @param player
- */
-exports.transferUnitToPlayer = function (unit, player) {
-    if (constants.DEBUG) {
-        assert(unit instanceof model.Unit);
-        assert(player instanceof model.Player);
-    }
-
-    var origPlayer = unit.owner;
-
-    if (constants.DEBUG) assert(player.numberOfUnits < constants.MAX_UNITS);
-
-    origPlayer.numberOfUnits--;
-    unit.owner = player;
-    player.numberOfUnits++;
-
-    // remove vision when unit transfers to an enemy team
-    if (origPlayer.team !== player.team) {
-        model.searchUnit(unit, this.changeVision_, null, origPlayer);
-    }
-};
-
-/**
- *
- * @param property
- * @returns {boolean}
- */
-exports.canTransferProperty = function (property) {
-    return (property.type.notTransferable !== true);
-};
-
-/**
- *
  * @param player
  * @param menu
  */
@@ -260,30 +119,24 @@ exports.getPropertyTransferTargets = function (player, menu) {
     }
 };
 
-var changeVision_ = function (x, y, object, oldOwner) {
-    if (object instanceof model.Unit) {
-        cwt.Fog.removeUnitVision(x, y, oldOwner);
-        cwt.Fog.addUnitVision(x, y, object.owner);
-    } else {
-        cwt.Fog.removePropertyVision(x, y, oldOwner);
-        cwt.Fog.addPropertyVision(x, y, object.owner);
+/**
+ *
+ * @param player
+ * @param menu
+ */
+default void getUnitTransferTargets = function (player, menu) {
+    if (constants.DEBUG) assert(player instanceof model.Player);
+
+    var origI = player.ID;
+    for (var i = 0, e = constants.MAX_PLAYER; i < e; i++) {
+        if (i === origI) continue;
+
+        var player = model.getPlayer(i);
+        if (!player.isInactive() && player.numberOfUnits < constants.MAX_UNITS) {
+            menu.addEntry(i, true);
+        }
     }
 };
-
-//
-//
-//
-exports.transferPropertyToPlayer = function (property, player) {
-    var origPlayer = property.owner;
-    property.owner = player;
-
-    // remove vision when unit transfers to an enemy team
-    if (origPlayer.team !== player.team) {
-        // TODO
-        model.searchProperty(property, changeVision_, null, origPlayer);
-    }
-};
-
 exports.actionMoney = {
     condition: function (player, x, y) {
         return team.canTransferMoney(player, x, y);
@@ -331,104 +184,6 @@ exports.actionUnit = {
     invoke: function (unitId, targetPlayerId) {
         team.transferUnitToPlayer(model.getUnit(unitId), model.getPlayer(targetPlayerId));
     }
-};
-
-// --------------------------------------------------------------------------------------------------------
-
-exports.action = {
-    invoke: function () {
-        stateData.fromIngameToOptions = true;
-        states.changeState("MENU_OPTIONS");
-    }
-};
-
-// --------------------------------------------------------------------------------------------------------
-
-
-
-// Fires a laser at a given position (**x**,**y**).
-//
-exports.fireLaser = function (x, y) {
-    var map = model.mapData;
-    var prop = map[x][y].property;
-
-    if (constants.DEBUG) assert(prop && prop.type.laser);
-
-    var ox = x;
-    var oy = y;
-    var savedTeam = prop.owner.team;
-    var damage = model.Unit.pointsToHealth(prop.type.laser.damage);
-
-    // every tile on the cross ( same y or x coordinate ) will be damaged
-    for (var x = 0, xe = model.mapWidth; x < xe; x++) {
-        var doIt = false;
-
-        if (x === ox) {
-            for (var y = 0, ye = model.mapHeight; y < ye; y++) {
-                if (oy !== y) {
-                    var unit = map[x][y].unit;
-                    if (unit && unit.owner.team !== savedTeam) {
-                        unit.takeDamage(damage, 9);
-                    }
-                }
-            }
-        } else {
-            var unit = map[x][y].unit;
-            if (unit && unit.owner.team !== savedTeam) {
-                unit.takeDamage(damage, 9);
-            }
-        }
-    }
-};
-
-
-//
-// Returns **true** when a silo **property** can be triggered by a given **unit**. If not, **false** will be returned.
-//
-exports.canBeFiredBy = function (property, unit) {
-    if (constants.DEBUG) {
-        assert(unit instanceof model.Unit);
-        assert(exports.isRocketSilo(property));
-    }
-
-    return (property.type.rocketsilo.fireable.indexOf(unit.type.ID) > -1);
-};
-
-//
-// Returns **true** if a given silo **property** can be fired to a given position (**x**,**y**). If not, **false**
-// will be returned.
-//
-exports.canBeFiredTo = function (property, x, y) {
-    if (constants.DEBUG) assert(exports.isRocketSilo(property));
-    return (model.isValidPosition(x, y));
-};
-
-// inline function
-var doDamage = function (x, y, tile, damage) {
-    var unit = tile.unit;
-    if (unit) {
-        unit.takeDamage(damage, 9);
-    }
-};
-
-//
-// Fires a rocket from a given rocket silo at position (**x**,**y**) to a given target
-// position (**tx**,**ty**) and inflicts damage to all units in the range of the explosion. The health of the units
-// will be never lower as 9 health after the explosion.
-//
-exports.fireSilo = function (x, y, tx, ty) {
-    var silo = model.mapData[x][y].property;
-
-    if (this.DEBUG) assert(this.isRocketSilo(silo));
-
-    // change silo type to empty
-    var type = silo.type;
-    silo.type = sheets.properties.sheets[type.changeTo];
-
-    var damage = model.Unit.pointsToHealth(type.rocketsilo.damage);
-    var range = type.rocketsilo.range;
-
-    model.doInRange(tx, ty, range, doDamage, damage);
 };
 
 require('../actions').unitAction({
@@ -700,115 +455,6 @@ require('../actions').unitAction({
 
 // --------------------------------------------------------------------------------------------------------
 
-exports.actionHide = {
-    relation: ["S", "T", relation.RELATION_NONE, relation.RELATION_SAME_THING],
-
-    condition: function (unit) {
-        return (unit.type.stealth && !unit.hidden);
-    },
-
-    invoke: function (unitId) {
-        model.getUnit(unitId).hidden = true;
-    }
-};
-
-exports.actionUnhide = {
-    relation: ["S", "T", relation.RELATION_NONE, relation.RELATION_SAME_THING],
-
-    condition: function (unit) {
-        return (unit.type.stealth && unit.hidden);
-    },
-
-    invoke: function (unitId) {
-        model.getUnit(unitId).hidden = false;
-    }
-};
-
-// --------------------------------------------------------------------------------------------------------
-
-
-
-
-/**
- * Returns **true** if a supplier at a given position (**x**,**y**) has
- * objects nearby which can be supplied.
- *
- * @param {Unit} supplier
- * @param {number} x
- * @param {number} y
- * @return **true** if a **supplier** unit can support units in the near of a given tile at the position, else **false**.
- */
-exports.hasRefillTargetsNearby = function(supplier, x, y) {
-    if (exports.canRefillObjectAt(supplier, x + 1, y)) return true;
-    else if (exports.canRefillObjectAt(supplier, x - 1, y)) return true;
-    else if (exports.canRefillObjectAt(supplier, x, y + 1)) return true;
-    else if (exports.canRefillObjectAt(supplier, x, y - 1)) return true;
-    else return false;
-};
-
-/**
- *
- * @param {Unit} supplier
- * @param {number} x
- * @param {number} y
- * @return **true** if a **supplier** unit can support a given tile at the position (**x**,**y**), else **false**.
- */
-exports.canRefillObjectAt = function(supplier, x, y) {
-    var target = model.mapData[x][y].unit;
-    return (model.isValidPosition(x, y) && target && target.owner === supplier.owner);
-};
-
-/**
- * Resupplies a unit at a given position.
- *
- * @param {number} x
- * @param {number} y
- */
-exports.refillSuppliesByPosition = function(x, y) {
-    var unit = model.mapData[x][y];
-    exports.refillSupplies(unit);
-};
-
-/**
- * Refills the supplies of an unit.
- *
- * @param {Unit} unit
- */
-exports.refillSupplies = function(unit) {
-    unit.ammo = unit.type.ammo;
-    unit.fuel = unit.type.fuel;
-};
-
-/**
- * Raises funds from a **property**.
- *
- * @param  {Property} property
- */
-exports.raiseFunds = function(property) {
-    if (typeof property.type.funds) {
-        property.owner.gold += property.type.funds;
-    }
-};
-
-
-
-//
-// The property will heal the unit that occupies the tile where the property is in. The following requirements must
-// be fulfilled.
-//  a) the property has a healing ability
-//  b) the property is occupied by an unit of the same team
-//  c) the occupying unit can be healed by the property
-//
-exports.propertyRepairsAt = function(x, y) {
-    var tile = model.mapData[x][y];
-    var prop = tile.property;
-    var unit = tile.unit;
-
-    var repairs = prop.type.repairs;
-    var amount = (repairs[unit.type.movetype.ID] || repairs[unit.type.ID]);
-
-    unit.heal(amount, true);
-};
 
 
 exports.action = {
@@ -929,151 +575,9 @@ exports.action = {
 
 var cfgFogEnabled = require("../config").getConfig("fogEnabled");
 
-// Modifies a vision at a given position and player id.
-//
-var modifyVision_ = function (x, y, owner, range, value) {
 
-    // ignore neutral objects
-    if (owner.team === constants.INACTIVE) return;
 
-    if (cfgFogEnabled.value !== 1) return;
 
-    var clientVisible = owner.clientVisible;
-    var turnOwnerVisible = owner.turnOwnerVisible;
-
-    // no active player owns this vision
-    if (!clientVisible && !turnOwnerVisible) return;
-
-    var map = model.mapData;
-    if (range === 0) {
-        if (clientVisible) map[x][y].visionClient += value;
-        if (turnOwnerVisible) map[x][y].visionTurnOwner += value;
-
-    } else {
-        var mW = model.mapWidth;
-        var mH = model.mapHeight;
-        var lX;
-        var hX;
-        var lY = y - range;
-        var hY = y + range;
-
-        if (lY < 0) lY = 0;
-        if (hY >= mH) hY = mH - 1;
-        for (; lY <= hY; lY++) {
-
-            var disY = Math.abs(lY - y);
-            lX = x - range + disY;
-            hX = x + range - disY;
-            if (lX < 0) lX = 0;
-            if (hX >= mW) hX = mW - 1;
-            for (; lX <= hX; lX++) {
-
-                // does the tile block vision ?
-                if (map[lX][lY].type.blocksVision && model.getDistance(x, y, lX, lY) > 1) continue;
-
-                if (clientVisible) map[lX][lY].visionClient += value;
-                if (turnOwnerVisible) map[lX][lY].visionTurnOwner += value;
-            }
-        }
-    }
-};
-
-//
-// Completely recalculates the fog aw2.
-//
-exports.fullRecalculation = function () {
-    var x;
-    var y;
-    var xe = model.mapWidth;
-    var ye = model.mapHeight;
-    var fogEnabled = (cfgFogEnabled.value === 1);
-    var map = model.mapData;
-
-    // 1. reset fog maps
-    for (x = 0; x < xe; x++) {
-        for (y = 0; y < ye; y++) {
-
-            if (!fogEnabled) {
-                map[x][y].visionTurnOwner = 1;
-                map[x][y].visionClient = 1;
-            } else {
-                map[x][y].visionTurnOwner = 0;
-                map[x][y].visionClient = 0;
-            }
-        }
-    }
-
-    // 2. add vision-object
-    if (fogEnabled) {
-        var vision;
-        var unit;
-        var tile;
-        var property;
-
-        for (x = 0; x < xe; x++) {
-            for (y = 0; y < ye; y++) {
-                tile = map[x][y];
-
-                unit = tile.unit;
-                if (unit !== null) {
-                    vision = unit.type.vision;
-                    if (vision < 0) vision = 0;
-
-                    modifyVision_(x, y, unit.owner, vision, 1);
-                }
-
-                property = tile.property;
-                if (property !== null && property.owner !== null) {
-                    vision = property.type.vision;
-                    if (vision < 0) vision = 0;
-
-                    modifyVision_(x, y, property.owner, vision, 1);
-                }
-            }
-        }
-    }
-};
-
-// Removes a vision-object from the fog map.
-//
-exports.removeVision = function (x, y, owner, range) {
-    modifyVision_(x, y, owner, range, -1);
-};
-
-exports.removeUnitVision = function (x, y, owner) {
-    var unit = model.mapData[x][y].unit;
-    if (!owner) owner = unit.owner;
-
-    exports.removeVision(x, y, owner, unit.type.vision);
-};
-
-exports.removePropertyVision = function (x, y, owner) {
-    var prop = model.mapData[x][y].property;
-    if (!owner) owner = prop.owner;
-
-    exports.removeVision(x, y, owner, prop.type.vision);
-};
-
-//
-// Adds a vision-object from the fog map.
-//
-exports.addVision = function (x, y, owner, range) {
-    modifyVision_(x, y, owner, range, +1);
-};
-
-exports.addUnitVision = function (x, y, owner) {
-    var unit = model.mapData[x][y].unit;
-    if (!owner) owner = unit.owner;
-
-    exports.addVision(x, y, owner, unit.type.vision);
-};
-
-exports.addPropertyVision = function (x, y, owner) {
-    var prop = model.mapData[x][y].property;
-    if (!owner) owner = prop.owner;
-
-    exports.addVision(x, y, owner, prop.type.vision);
-};
 
 /*
  model.event_on("modifyVisionAt", function( x,y, pid, range, value ){

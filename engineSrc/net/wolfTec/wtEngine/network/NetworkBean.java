@@ -4,8 +4,8 @@ import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.InjectedByFactory;
 
 import net.wolfTec.wtEngine.Constants;
-import net.wolfTec.wtEngine.action.ActionData;
 import net.wolfTec.wtEngine.log.Logger;
+import net.wolfTec.wtEngine.statemachine.ActionData;
 
 @Bean public class NetworkBean {
 
