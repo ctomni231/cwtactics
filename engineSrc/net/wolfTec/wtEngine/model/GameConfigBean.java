@@ -11,12 +11,12 @@ import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.InjectedByFactory;
 import org.wolfTec.utility.PostInitialization;
 
 @Bean public class GameConfigBean {
 
-  private Logger log;
-
+  @InjectedByFactory private Logger log;
   @Injected private StorageBean storage;
 
   private Map<String, Config> configs;

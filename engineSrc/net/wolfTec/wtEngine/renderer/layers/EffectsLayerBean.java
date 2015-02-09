@@ -13,10 +13,11 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.utility.Bean;
+import org.wolfTec.utility.InjectedByFactory;
 
 @Bean public class EffectsLayerBean extends ScreenLayer implements AnimatedLayer {
 
-  private Logger log;
+  @InjectedByFactory private Logger log;
 
   private int time;
   private int store;

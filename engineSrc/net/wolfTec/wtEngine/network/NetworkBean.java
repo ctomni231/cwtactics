@@ -1,6 +1,7 @@
 package net.wolfTec.wtEngine.network;
 
 import org.wolfTec.utility.Bean;
+import org.wolfTec.utility.InjectedByFactory;
 
 import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.action.ActionData;
@@ -8,7 +9,7 @@ import net.wolfTec.wtEngine.log.Logger;
 
 @Bean public class NetworkBean {
 
-  public static Logger log;
+  @InjectedByFactory private static Logger log;
 
   /**
    * Id of the game in the connected network session.

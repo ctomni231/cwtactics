@@ -15,6 +15,7 @@ import org.stjs.javascript.functions.Callback0;
 import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.BeanFactory;
 import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.InjectedByFactory;
 import org.wolfTec.utility.PostInitialization;
 
 import static org.stjs.javascript.JSObjectAdapter.*;
@@ -23,7 +24,7 @@ import static org.stjs.javascript.JSObjectAdapter.*;
 
   private boolean vendorAPI;
 
-  private Logger log;
+  @InjectedByFactory private Logger log;
   @Injected private InputBean input;
   @Injected private StateMachineBean stm;
 

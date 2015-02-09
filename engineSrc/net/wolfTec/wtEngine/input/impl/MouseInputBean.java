@@ -10,12 +10,13 @@ import org.stjs.javascript.dom.DOMEvent;
 import org.stjs.javascript.functions.Function1;
 import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.InjectedByFactory;
 
 import static org.stjs.javascript.JSObjectAdapter.*;
 
 @Bean public class MouseInputBean implements InputBackend {
 
-  private Logger log;
+  @InjectedByFactory private Logger log;
   @Injected private InputBean input;
 
   private final Function1<DOMEvent, Boolean> mouseUpEvent = (event) -> {

@@ -8,6 +8,7 @@ import net.wolfTec.wtEngine.log.Logger;
 import org.stjs.javascript.functions.Callback1;
 import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.InjectedByFactory;
 
 @Bean public class TouchInputBean implements InputBackend {
   
@@ -15,7 +16,7 @@ import org.wolfTec.utility.Injected;
   public static final String EVENT_TOUCH_MOVE = "touchmove";
   public static final String EVENT_TOUCH_END = "touchend";
   
-  private Logger log;
+  @InjectedByFactory private Logger log;
   @Injected private InputBean input;
 
   private int finger1_startX = 0;

@@ -14,11 +14,12 @@ import org.stjs.javascript.functions.Callback0;
 import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.BeanFactory;
 import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.InjectedByFactory;
 import org.wolfTec.utility.PostInitialization;
 
 @Bean public class InputMappingManagerBean {
 
-  private Logger log;
+  @InjectedByFactory private Logger log;
   @Injected private StorageBean storage;
   @Injected private BrowserHelperBean browser;
   @Injected private Array<InputMappable> mappables;

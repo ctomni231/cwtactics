@@ -11,11 +11,12 @@ import org.stjs.javascript.Map;
 import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.CircularBuffer;
 import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.InjectedByFactory;
 import org.wolfTec.utility.PostInitialization;
 
 @Bean public class ActionInvokerBean {
 
-  private Logger log;
+  @InjectedByFactory private Logger log;
   @Injected private NetworkBean network;
 
   /**

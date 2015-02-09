@@ -7,10 +7,11 @@ import net.wolfTec.wtEngine.persistence.StorageBean;
 import org.stjs.javascript.functions.Callback0;
 import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.InjectedByFactory;
 
 @Bean public class SaveGameManagerBean {
 
-  private Logger log;
+  @InjectedByFactory private Logger log;
   @Injected private StorageBean storage;
 
   /**

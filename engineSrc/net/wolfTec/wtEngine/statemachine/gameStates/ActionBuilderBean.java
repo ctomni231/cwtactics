@@ -1,8 +1,11 @@
 package net.wolfTec.wtEngine.statemachine.gameStates;
 
+import org.wolfTec.utility.Bean;
+import org.wolfTec.utility.InjectedByFactory;
+
 import net.wolfTec.wtEngine.log.Logger;
 
-public class ActionBuilderBean {
+@Bean public class ActionBuilderBean {
 
-  private Logger log;
+  @InjectedByFactory private Logger log;
 }

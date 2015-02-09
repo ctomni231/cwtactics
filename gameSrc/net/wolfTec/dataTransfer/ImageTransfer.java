@@ -1,24 +1,9 @@
 package net.wolfTec.dataTransfer;
 
-import net.wolfTec.renderer.Sprite;
 
 import org.stjs.javascript.functions.Callback0;
 
 public class ImageTransfer {
-
-	public static final String IMAGE_KEY = "GFX_";
-
-/**
- *
- * @param type
- * @param sprite
- * @param callback
- */
-	public void transferImageToStorage (String type, Sprite sprite, Callback0 callback) {
-    var data = image.Sprite.toJSON(sprite);
-    storage.set(type, data, callback);
-}
-
 /**
  *
  * @param type

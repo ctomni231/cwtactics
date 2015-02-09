@@ -12,12 +12,13 @@ import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.InjectedByFactory;
 import org.wolfTec.utility.InjectedByInterface;
 import org.wolfTec.utility.PostInitialization;
 
 @Bean public class AssetLoadingManagerBean {
 
-  private Logger log;
+  @InjectedByFactory private Logger log;
 
   @InjectedByInterface private Array<AssetLoader> loaderListeners;
 

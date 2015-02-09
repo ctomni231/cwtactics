@@ -6,10 +6,11 @@ import net.wolfTec.wtEngine.log.Logger;
 import org.stjs.javascript.JSStringAdapter;
 import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.CircularBuffer;
+import org.wolfTec.utility.InjectedByFactory;
 
 @Bean public class InputBean {
 
-  private Logger                          log;
+  @InjectedByFactory private Logger log;
 
   private final CircularBuffer<InputData> stack;
   private final CircularBuffer<InputData> pool;
@@ -17,13 +18,13 @@ import org.wolfTec.utility.CircularBuffer;
   /**
    * If true, then every user input will be blocked.
    */
-  public boolean                          blocked;
+  public boolean blocked;
 
   /**
    * Returns true when the input system wants a generic input (raw codes) from
    * input backends like keyboards and game pads.
    */
-  public boolean                          genericInput;
+  public boolean genericInput;
 
   public InputBean() {
     stack = new CircularBuffer<InputData>(Constants.INPUT_STACK_BUFFER_SIZE);

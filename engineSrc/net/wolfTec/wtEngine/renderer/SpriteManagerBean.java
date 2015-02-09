@@ -2,6 +2,7 @@ package net.wolfTec.wtEngine.renderer;
 
 import net.wolfTec.wtEngine.assets.AssetItem;
 import net.wolfTec.wtEngine.assets.AssetLoader;
+import net.wolfTec.wtEngine.assets.AssetType;
 import net.wolfTec.wtEngine.persistence.StorageBean;
 import net.wolfTec.wtEngine.utility.AssertUtilyBean;
 import net.wolfTec.wtEngine.utility.BrowserHelperBean;
@@ -41,24 +42,27 @@ import org.wolfTec.utility.PostInitialization;
   }
 
   @Override public void loadAsset(StorageBean storage, AssetItem item, Callback0 callback) {
-    // TODO Auto-generated method stub
-    
+    if (item.type == AssetType.IMAGES) {
+
+    }
   }
 
   @Override public void grabAsset(StorageBean storage, AssetItem item, Callback0 callback) {
-    // TODO Auto-generated method stub
-    
+    if (item.type == AssetType.IMAGES) {
+
+    }
   }
 
-  // TODO remove it 
-//  public void registerSprite(String spriteKey, Sprite sprite) {
-//    assertUtil.hasNoProperty(sprites, spriteKey);
-//    sprites.$put(spriteKey, sprite);
-//  }
+  // TODO remove it
+  // public void registerSprite(String spriteKey, Sprite sprite) {
+  // assertUtil.hasNoProperty(sprites, spriteKey);
+  // sprites.$put(spriteKey, sprite);
+  // }
 
   /**
    * 
-   * @param spriteKey key of the sprite
+   * @param spriteKey
+   *          key of the sprite
    * @return Sprite for the given key
    */
   public Sprite getSprite(String spriteKey) {
@@ -66,6 +70,12 @@ import org.wolfTec.utility.PostInitialization;
     return sprites.$get(spriteKey);
   }
 
+  /**
+   * 
+   * @param spriteKey
+   *          key of the sprite
+   * @return true when the sprite overlaps one tile, else false
+   */
   public boolean isLongAnimatedSprite(String spriteKey) {
     return JSObjectAdapter.hasOwnProperty(longAnimatedTiles, spriteKey);
   }

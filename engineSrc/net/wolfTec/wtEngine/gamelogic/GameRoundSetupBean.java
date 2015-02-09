@@ -12,10 +12,11 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.InjectedByFactory;
 
 @Bean public class GameRoundSetupBean {
 
-  public Logger log;
+  @InjectedByFactory public Logger log;
   @Injected private ObjectTypesBean typeDb;
   @Injected private GameRoundBean gameround;
   @Injected private LifecycleLogic lifecycle;

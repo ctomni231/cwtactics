@@ -15,11 +15,12 @@ import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.InjectedByFactory;
 import org.wolfTec.utility.PostInitialization;
 
 @Bean public class ObjectTypesBean implements AssetLoader {
 
-  private Logger log;
+  @InjectedByFactory private Logger log;
   @Injected private BrowserHelperBean browserUtil;
   @Injected private StorageBean storage;
 

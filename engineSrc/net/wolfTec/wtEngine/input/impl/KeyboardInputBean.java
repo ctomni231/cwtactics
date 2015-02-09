@@ -12,13 +12,14 @@ import org.stjs.javascript.functions.Function1;
 import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.BeanFactory;
 import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.InjectedByFactory;
 import org.wolfTec.utility.PostInitialization;
 
 @Bean public class KeyboardInputBean implements InputBackend, InputMappable {
 
   public final int CONSOLE_TOGGLE_KEY = 192;
 
-  private Logger log;
+  @InjectedByFactory private Logger log;
   @Injected private InputBean input;
   @Injected private StateMachineBean stm;
 

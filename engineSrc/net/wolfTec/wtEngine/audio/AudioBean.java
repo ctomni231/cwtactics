@@ -21,6 +21,7 @@ import org.stjs.javascript.functions.Callback1;
 import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.BeanFactory;
 import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.InjectedByFactory;
 import org.wolfTec.utility.PostInitialization;
 
 @Bean public class AudioBean implements AssetLoader {
@@ -30,7 +31,7 @@ import org.wolfTec.utility.PostInitialization;
   public static final float DEFAULT_SFX_VOL = 1;
   public static final float DEFAULT_MUSIC_VOL = 0.5f;
 
-  private Logger log;
+  @InjectedByFactory private Logger log;
 
   @Injected private StorageBean storage;
 

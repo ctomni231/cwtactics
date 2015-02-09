@@ -1,11 +1,14 @@
 package net.wolfTec.wtEngine.ai;
 
+import org.wolfTec.utility.Bean;
+import org.wolfTec.utility.InjectedByFactory;
+
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.model.Player;
 
-public class ArtificialInteligenceBean {
+@Bean public class ArtificialInteligenceBean {
 
-  private Logger log;
+  @InjectedByFactory private Logger log;
 
   /*
    * 

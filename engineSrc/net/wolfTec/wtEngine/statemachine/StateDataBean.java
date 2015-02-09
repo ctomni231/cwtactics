@@ -4,6 +4,7 @@ import org.wolfTec.utility.Bean;
 import org.wolfTec.utility.BeanFactory;
 import org.wolfTec.utility.CircularBuffer;
 import org.wolfTec.utility.Injected;
+import org.wolfTec.utility.InjectedByFactory;
 import org.wolfTec.utility.PostInitialization;
 
 import net.wolfTec.renderer.RendererBean;
@@ -17,7 +18,7 @@ import net.wolfTec.wtEngine.renderer.layers.UserInterfaceLayerBean;
 
 @Bean public class StateDataBean {
 
-  private Logger log;
+  @InjectedByFactory private Logger log;
   @Injected private ScreenManagerBean screen;
   @Injected private GameRoundBean gameround;
   @Injected private UserInterfaceLayerBean uiLayer;
