@@ -5,18 +5,40 @@ import java.util.Iterator;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
+import org.stjs.javascript.functions.Callback0;
+import org.wolfTec.cwt.game.assets.AssetItem;
+import org.wolfTec.cwt.game.assets.AssetLoader;
+import org.wolfTec.cwt.game.assets.AssetType;
+import org.wolfTec.cwt.game.persistence.StorageBean;
 
-public class LocalizationBean {
+public class LocalizationBean implements AssetLoader {
 
   /**
    * Holds all available languages.
    */
-  private Map<String, Map<String, String>> languages = JSCollections.$map();
+  private Map<String, Map<String, String>> languages;
 
   /**
    * The current active language.
    */
   private Map<String, String> selected;
+  
+  public LocalizationBean () {
+    languages = JSCollections.$map();
+    selected = null;
+  }
+
+  @Override public void loadAsset(StorageBean storage, AssetItem item, Callback0 callback) {
+    if (item.type == AssetType.LANGUAGE) {
+      
+    }
+  }
+
+  @Override public void grabAsset(StorageBean storage, AssetItem item, Callback0 callback) {
+    if (item.type == AssetType.LANGUAGE) {
+      
+    }
+  }
 
   /**
    * Registers a language object. The properties of the object will be the keys

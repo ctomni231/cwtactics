@@ -1,14 +1,14 @@
 package org.wolfTec.cwt.game.input.impl;
 
 import static org.stjs.javascript.JSObjectAdapter.$js;
-import net.wolfTec.wtEngine.input.InputBackend;
-import net.wolfTec.wtEngine.input.InputBean;
-import net.wolfTec.wtEngine.log.Logger;
 
 import org.stjs.javascript.functions.Callback1;
-import org.wolfTec.utility.Bean;
-import org.wolfTec.utility.Injected;
-import org.wolfTec.utility.InjectedByFactory;
+import org.wolfTec.cwt.game.input.InputBackend;
+import org.wolfTec.cwt.game.input.InputBean;
+import org.wolfTec.cwt.game.log.Logger;
+import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.beans.Injected;
+import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 
 @Bean public class TouchInputBean implements InputBackend {
   
@@ -99,9 +99,9 @@ import org.wolfTec.utility.InjectedByFactory;
         drag_inDrag = 1;
         if (drag_timeDifference > 75) {
           if (dx > dy) {
-            oneFingerDrag(finger1_startX > finger1_endX) ? -1 : +1, 0);
+            oneFingerDrag(finger1_startX > finger1_endX ? -1 : +1, 0);
           } else {
-            oneFingerDrag(0, (finger1_startY > finger1_endY) ? -1 : +1);
+            oneFingerDrag(0, finger1_startY > finger1_endY ? -1 : +1);
           }
           drag_timeDifference = 0;
           finger1_startX = finger1_endX;
