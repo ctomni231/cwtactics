@@ -7,8 +7,8 @@ import org.wolfTec.utility.Injected;
 import org.wolfTec.utility.InjectedByFactory;
 import org.wolfTec.utility.PostInitialization;
 
-import net.wolfTec.renderer.RendererBean;
 import net.wolfTec.wtEngine.Constants;
+import net.wolfTec.wtEngine.RendererBean;
 import net.wolfTec.wtEngine.gamelogic.MoveCode;
 import net.wolfTec.wtEngine.log.Logger;
 import net.wolfTec.wtEngine.model.GameRoundBean;

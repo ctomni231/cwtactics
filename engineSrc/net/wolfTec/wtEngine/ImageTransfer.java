@@ -1,4 +1,4 @@
-package net.wolfTec.dataTransfer;
+package net.wolfTec.wtEngine;
 
 
 import org.stjs.javascript.functions.Callback0;

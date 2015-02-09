@@ -1,9 +1,8 @@
-package net.wolfTec.loading;
+package net.wolfTec.wtEngine;
 
 import net.wolfTec.bridges.Globals;
 import net.wolfTec.system.StorageBean;
 import net.wolfTec.utility.Debug;
-import net.wolfTec.wtEngine.Game;
 import net.wolfTec.wtEngine.model.Config;
 
 import org.stjs.javascript.Array;

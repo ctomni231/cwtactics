@@ -1,6 +1,5 @@
-package net.wolfTec.renderer;
+package net.wolfTec.wtEngine;
 
-import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.gamelogic.MoveCode;
 import net.wolfTec.wtEngine.model.Unit;
 import net.wolfTec.wtEngine.statemachine.StateDataMenu;
