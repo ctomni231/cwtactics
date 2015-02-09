@@ -1,12 +1,11 @@
 package org.wolfTec.utility;
 
-import net.wolfTec.cwt.Constants;
-
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
+import org.wolfTec.cwt.game.Constants;
 
 public class BeanFactory {
 
