@@ -12,9 +12,9 @@ import org.wolfTec.cwt.game.assets.AssetType;
 import org.wolfTec.cwt.game.persistence.StorageBean;
 import org.wolfTec.cwt.game.utility.AssertUtilyBean;
 import org.wolfTec.cwt.game.utility.BrowserHelperBean;
-import org.wolfTec.utility.Bean;
-import org.wolfTec.utility.Injected;
-import org.wolfTec.utility.PostInitialization;
+import org.wolfTec.cwt.utility.Bean;
+import org.wolfTec.cwt.utility.Injected;
+import org.wolfTec.cwt.utility.PostInitialization;
 
 @Bean public class SpriteManagerBean implements AssetLoader {
 

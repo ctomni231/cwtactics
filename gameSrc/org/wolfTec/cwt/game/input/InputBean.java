@@ -3,9 +3,9 @@ package org.wolfTec.cwt.game.input;
 import org.stjs.javascript.JSStringAdapter;
 import org.wolfTec.cwt.game.Constants;
 import org.wolfTec.cwt.game.log.Logger;
-import org.wolfTec.utility.Bean;
-import org.wolfTec.utility.CircularBuffer;
-import org.wolfTec.utility.InjectedByFactory;
+import org.wolfTec.cwt.utility.Bean;
+import org.wolfTec.cwt.utility.CircularBuffer;
+import org.wolfTec.cwt.utility.InjectedByFactory;
 
 @Bean public class InputBean {
 

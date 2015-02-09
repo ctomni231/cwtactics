@@ -5,8 +5,8 @@ import org.wolfTec.cwt.game.input.InputData;
 import org.wolfTec.cwt.game.persistence.StorageBean;
 import org.wolfTec.cwt.game.persistence.StorageEntry;
 import org.wolfTec.cwt.game.statemachine.State;
-import org.wolfTec.utility.Bean;
-import org.wolfTec.utility.Injected;
+import org.wolfTec.cwt.utility.Bean;
+import org.wolfTec.cwt.utility.Injected;
 
 @Bean public class CheckCacheState extends LoadingState {
 

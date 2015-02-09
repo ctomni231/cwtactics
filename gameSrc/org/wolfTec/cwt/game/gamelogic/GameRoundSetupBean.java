@@ -9,9 +9,9 @@ import org.wolfTec.cwt.game.model.GameMode;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.ObjectTypesBean;
 import org.wolfTec.cwt.game.model.Player;
-import org.wolfTec.utility.Bean;
-import org.wolfTec.utility.Injected;
-import org.wolfTec.utility.InjectedByFactory;
+import org.wolfTec.cwt.utility.Bean;
+import org.wolfTec.cwt.utility.Injected;
+import org.wolfTec.cwt.utility.InjectedByFactory;
 
 @Bean public class GameRoundSetupBean {
 

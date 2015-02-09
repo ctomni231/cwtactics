@@ -10,11 +10,11 @@ import org.wolfTec.cwt.game.Game;
 import org.wolfTec.cwt.game.log.Logger;
 import org.wolfTec.cwt.game.persistence.StorageBean;
 import org.wolfTec.cwt.game.utility.BrowserHelperBean;
-import org.wolfTec.utility.Bean;
-import org.wolfTec.utility.BeanFactory;
-import org.wolfTec.utility.Injected;
-import org.wolfTec.utility.InjectedByFactory;
-import org.wolfTec.utility.PostInitialization;
+import org.wolfTec.cwt.utility.Bean;
+import org.wolfTec.cwt.utility.BeanFactory;
+import org.wolfTec.cwt.utility.Injected;
+import org.wolfTec.cwt.utility.InjectedByFactory;
+import org.wolfTec.cwt.utility.PostInitialization;
 
 @Bean public class InputMappingManagerBean {
 

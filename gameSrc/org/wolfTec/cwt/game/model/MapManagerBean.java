@@ -13,9 +13,9 @@ import org.wolfTec.cwt.game.persistence.StorageBean;
 import org.wolfTec.cwt.game.persistence.StorageEntry;
 import org.wolfTec.cwt.game.utility.BrowserHelperBean;
 import org.wolfTec.cwt.game.utility.ExternalRequestOptions;
-import org.wolfTec.utility.Bean;
-import org.wolfTec.utility.Injected;
-import org.wolfTec.utility.InjectedByFactory;
+import org.wolfTec.cwt.utility.Bean;
+import org.wolfTec.cwt.utility.Injected;
+import org.wolfTec.cwt.utility.InjectedByFactory;
 
 @Bean public class MapManagerBean implements AssetLoader {
 

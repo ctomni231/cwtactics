@@ -10,8 +10,8 @@ import org.wolfTec.cwt.game.model.Tile;
 import org.wolfTec.cwt.game.renderer.ScreenLayer;
 import org.wolfTec.cwt.game.renderer.SpriteIndexBean;
 import org.wolfTec.cwt.game.renderer.SpriteManagerBean;
-import org.wolfTec.utility.Bean;
-import org.wolfTec.utility.Injected;
+import org.wolfTec.cwt.utility.Bean;
+import org.wolfTec.cwt.utility.Injected;
 
 @Bean public class FogLayerBean extends ScreenLayer {
 

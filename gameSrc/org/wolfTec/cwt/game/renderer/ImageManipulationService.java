@@ -6,8 +6,8 @@ import org.stjs.javascript.dom.Image;
 import org.stjs.javascript.dom.canvas.CanvasImageData;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.cwt.game.utility.BrowserHelperBean;
-import org.wolfTec.utility.Bean;
-import org.wolfTec.utility.Injected;
+import org.wolfTec.cwt.utility.Bean;
+import org.wolfTec.cwt.utility.Injected;
 
 @Bean public class ImageManipulationService {
 

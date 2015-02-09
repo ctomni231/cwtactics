@@ -1,8 +1,8 @@
 package org.wolfTec.cwt.game.log;
 
 import org.stjs.javascript.JSObjectAdapter;
-import org.wolfTec.utility.Bean;
-import org.wolfTec.utility.FactoryBean;
+import org.wolfTec.cwt.utility.Bean;
+import org.wolfTec.cwt.utility.FactoryBean;
 
 @Bean public class LoggerFactory implements FactoryBean<Logger> {
 

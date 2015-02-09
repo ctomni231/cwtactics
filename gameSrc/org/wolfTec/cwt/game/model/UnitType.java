@@ -5,10 +5,10 @@ import java.util.Iterator;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
 import org.wolfTec.cwt.game.Constants;
-import org.wolfTec.utility.MaxValue;
-import org.wolfTec.utility.MinValue;
-import org.wolfTec.utility.Not;
-import org.wolfTec.utility.NotNull;
+import org.wolfTec.cwt.utility.MaxValue;
+import org.wolfTec.cwt.utility.MinValue;
+import org.wolfTec.cwt.utility.Not;
+import org.wolfTec.cwt.utility.NotNull;
 
 /**
  * Unit type which holds all information about a unit type. In general this are

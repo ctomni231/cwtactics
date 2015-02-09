@@ -3,9 +3,9 @@ package org.wolfTec.cwt.game.renderer;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.wolfTec.cwt.game.Constants;
-import org.wolfTec.utility.Bean;
-import org.wolfTec.utility.InjectedByInterface;
-import org.wolfTec.utility.PostInitialization;
+import org.wolfTec.cwt.utility.Bean;
+import org.wolfTec.cwt.utility.InjectedByInterface;
+import org.wolfTec.cwt.utility.PostInitialization;
 
 @Bean public abstract class AnimationManagerBean {
 

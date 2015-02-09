@@ -3,7 +3,7 @@ package org.wolfTec.cwt.game.model;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
 import org.wolfTec.cwt.game.utility.AssertUtilyBean;
-import org.wolfTec.utility.MinValue;
+import org.wolfTec.cwt.utility.MinValue;
 
 public class PropertyType extends ObjectType {
 

@@ -7,9 +7,9 @@ import org.wolfTec.cwt.game.input.InputBackend;
 import org.wolfTec.cwt.game.input.InputBean;
 import org.wolfTec.cwt.game.input.InputTypeKey;
 import org.wolfTec.cwt.game.log.Logger;
-import org.wolfTec.utility.Bean;
-import org.wolfTec.utility.Injected;
-import org.wolfTec.utility.InjectedByFactory;
+import org.wolfTec.cwt.utility.Bean;
+import org.wolfTec.cwt.utility.Injected;
+import org.wolfTec.cwt.utility.InjectedByFactory;
 
 import static org.stjs.javascript.JSObjectAdapter.*;
 
