@@ -1,4 +1,4 @@
-package org.wolfTec.utility;
+package org.wolfTec.cwt.utility;
 
 public interface TestRule {
 
