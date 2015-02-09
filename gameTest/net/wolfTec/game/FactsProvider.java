@@ -1,8 +1,8 @@
 package net.wolfTec.game;
 
-import net.wolfTec.wtEngine.input.InputBean;
-import net.wolfTec.wtEngine.input.InputTypeKey;
-import net.wolfTec.wtEngine.statemachine.StateDataMenu;
+import net.wolfTec.cwt.input.InputBean;
+import net.wolfTec.cwt.input.InputTypeKey;
+import net.wolfTec.cwt.statemachine.StateDataMenu;
 
 
 public class FactsProvider extends FactsProviderBase {
