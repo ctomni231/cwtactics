@@ -1,4 +1,4 @@
-package org.wolfTec.cwt.utility;
+package org.wolfTec.cwt.utility.container;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;

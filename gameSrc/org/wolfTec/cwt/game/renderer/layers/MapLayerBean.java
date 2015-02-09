@@ -11,8 +11,8 @@ import org.wolfTec.cwt.game.renderer.AnimatedLayer;
 import org.wolfTec.cwt.game.renderer.ScreenLayer;
 import org.wolfTec.cwt.game.renderer.SpriteIndexBean;
 import org.wolfTec.cwt.game.renderer.SpriteManagerBean;
-import org.wolfTec.cwt.utility.Bean;
-import org.wolfTec.cwt.utility.Injected;
+import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.beans.Injected;
 
 @Bean public class MapLayerBean extends ScreenLayer implements AnimatedLayer {
 

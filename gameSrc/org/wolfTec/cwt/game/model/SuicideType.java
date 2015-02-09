@@ -3,8 +3,8 @@ package org.wolfTec.cwt.game.model;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.wolfTec.cwt.game.Constants;
-import org.wolfTec.cwt.utility.MaxValue;
-import org.wolfTec.cwt.utility.MinValue;
+import org.wolfTec.cwt.utility.validation.MaxValue;
+import org.wolfTec.cwt.utility.validation.MinValue;
 
 public class SuicideType {
 

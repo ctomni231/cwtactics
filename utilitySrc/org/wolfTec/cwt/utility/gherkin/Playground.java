@@ -1,4 +1,4 @@
-package org.wolfTec.cwt.utility;
+package org.wolfTec.cwt.utility.gherkin;
 
 public class Playground {
 

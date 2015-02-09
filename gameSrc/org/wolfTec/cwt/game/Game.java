@@ -7,7 +7,7 @@ import org.wolfTec.cwt.game.model.ObjectType;
 import org.wolfTec.cwt.game.model.PropertyType;
 import org.wolfTec.cwt.game.model.TypeDatabase;
 import org.wolfTec.cwt.game.model.UnitType;
-import org.wolfTec.cwt.utility.BeanFactory;
+import org.wolfTec.cwt.utility.beans.BeanFactory;
 
 /**
  * Central mediator (monolithic). Every service, data holder etc. can be

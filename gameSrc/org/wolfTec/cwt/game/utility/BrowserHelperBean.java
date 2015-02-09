@@ -9,7 +9,7 @@ import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolfTec.cwt.utility.Bean;
+import org.wolfTec.cwt.utility.beans.Bean;
 
 @Bean public class BrowserHelperBean {
 

@@ -3,8 +3,8 @@ package org.wolfTec.cwt.game.network;
 import org.wolfTec.cwt.game.Constants;
 import org.wolfTec.cwt.game.log.Logger;
 import org.wolfTec.cwt.game.statemachine.ActionData;
-import org.wolfTec.cwt.utility.Bean;
-import org.wolfTec.cwt.utility.InjectedByFactory;
+import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 
 @Bean public class NetworkBean {
 

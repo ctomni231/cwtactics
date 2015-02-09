@@ -8,10 +8,10 @@ import org.wolfTec.cwt.game.Constants;
 import org.wolfTec.cwt.game.log.Logger;
 import org.wolfTec.cwt.game.persistence.StorageBean;
 import org.wolfTec.cwt.game.persistence.StorageEntry;
-import org.wolfTec.cwt.utility.Bean;
-import org.wolfTec.cwt.utility.Injected;
-import org.wolfTec.cwt.utility.InjectedByFactory;
-import org.wolfTec.cwt.utility.PostInitialization;
+import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.beans.Injected;
+import org.wolfTec.cwt.utility.beans.InjectedByFactory;
+import org.wolfTec.cwt.utility.beans.PostInitialization;
 
 @Bean public class GameConfigBean {
 

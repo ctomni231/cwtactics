@@ -10,8 +10,8 @@ import org.wolfTec.cwt.game.renderer.AnimatedLayer;
 import org.wolfTec.cwt.game.renderer.ScreenLayer;
 import org.wolfTec.cwt.game.renderer.Sprite;
 import org.wolfTec.cwt.game.renderer.SpriteManagerBean;
-import org.wolfTec.cwt.utility.Bean;
-import org.wolfTec.cwt.utility.PostInitialization;
+import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.beans.PostInitialization;
 
 @Bean public class FocusLayerBean extends ScreenLayer implements AnimatedLayer {
 

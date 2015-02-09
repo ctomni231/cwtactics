@@ -5,9 +5,9 @@ import org.wolfTec.cwt.game.log.Logger;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Unit;
 import org.wolfTec.cwt.game.renderer.layers.UnitLayerBean;
-import org.wolfTec.cwt.utility.Bean;
-import org.wolfTec.cwt.utility.Injected;
-import org.wolfTec.cwt.utility.InjectedByFactory;
+import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.beans.Injected;
+import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 
 @Bean public class FlushActionBean {
 

@@ -7,7 +7,7 @@ import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback3;
 import org.stjs.javascript.functions.Function1;
 import org.wolfTec.cwt.game.Constants;
-import org.wolfTec.cwt.utility.Bean;
+import org.wolfTec.cwt.utility.beans.Bean;
 
 @Bean public class GameRoundBean {
 

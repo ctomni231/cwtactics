@@ -4,8 +4,8 @@ import org.wolfTec.cwt.game.model.GameConfigBean;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.ObjectTypesBean;
 import org.wolfTec.cwt.game.utility.AssertUtilyBean;
-import org.wolfTec.cwt.utility.Bean;
-import org.wolfTec.cwt.utility.Injected;
+import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.beans.Injected;
 
 /**
  * This bean holds the complete game logic of CustomWars Tactics.

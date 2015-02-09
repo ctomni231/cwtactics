@@ -8,11 +8,11 @@ import org.stjs.javascript.functions.Function1;
 import org.wolfTec.cwt.game.input.*;
 import org.wolfTec.cwt.game.log.Logger;
 import org.wolfTec.cwt.game.statemachine.StateMachineBean;
-import org.wolfTec.cwt.utility.Bean;
-import org.wolfTec.cwt.utility.BeanFactory;
-import org.wolfTec.cwt.utility.Injected;
-import org.wolfTec.cwt.utility.InjectedByFactory;
-import org.wolfTec.cwt.utility.PostInitialization;
+import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.beans.BeanFactory;
+import org.wolfTec.cwt.utility.beans.Injected;
+import org.wolfTec.cwt.utility.beans.InjectedByFactory;
+import org.wolfTec.cwt.utility.beans.PostInitialization;
 
 @Bean public class KeyboardInputBean implements InputBackend, InputMappable {
 

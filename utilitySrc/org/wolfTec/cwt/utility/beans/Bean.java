@@ -1,4 +1,4 @@
-package org.wolfTec.cwt.utility;
+package org.wolfTec.cwt.utility.beans;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

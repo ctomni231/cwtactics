@@ -1,8 +1,8 @@
 package org.wolfTec.cwt.game.statemachine;
 
 import org.stjs.javascript.annotation.Template;
-import org.wolfTec.cwt.utility.Bean;
-import org.wolfTec.cwt.utility.CircularBuffer;
+import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.container.CircularBuffer;
 
 @Bean public class StateDataMenu {
 

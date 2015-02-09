@@ -1,7 +1,7 @@
 package org.wolfTec.cwt.game.utility;
 
 import org.stjs.javascript.JSObjectAdapter;
-import org.wolfTec.cwt.utility.Bean;
+import org.wolfTec.cwt.utility.beans.Bean;
 
 /**
  * Utility class to male assertions for given statements.

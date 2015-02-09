@@ -4,7 +4,7 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.cwt.game.Constants;
 import org.wolfTec.cwt.game.renderer.ScreenLayer;
 import org.wolfTec.cwt.game.renderer.Sprite;
-import org.wolfTec.cwt.utility.Bean;
+import org.wolfTec.cwt.utility.beans.Bean;
 
 @Bean public class BackgroundLayerBean extends ScreenLayer {
   

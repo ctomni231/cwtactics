@@ -3,8 +3,8 @@ package org.wolfTec.cwt.game.renderer;
 import org.stjs.javascript.Array;
 import org.wolfTec.cwt.game.Constants;
 import org.wolfTec.cwt.game.model.Direction;
-import org.wolfTec.cwt.utility.Bean;
-import org.wolfTec.cwt.utility.InjectedByInterface;
+import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.beans.InjectedByInterface;
 
 @Bean public class ScreenManagerBean {
 
