@@ -1,13 +1,9 @@
 package org.wolfTec.cwt.game.statemachine;
 
-import net.wolfTec.wtEngine.Constants;
-import net.wolfTec.wtEngine.gamelogic.MoveCode;
-import net.wolfTec.wtEngine.model.Tile;
-import net.wolfTec.wtEngine.model.Unit;
-
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.wolfTec.utility.MoveableMatrix;
+import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.gamelogic.MoveCode;
 
 public class MovePath {
 
@@ -29,9 +25,9 @@ public class MovePath {
     path = JSCollections.$array();
     helper = JSCollections.$array();
 
-    checkHelper = JSCollections.$array(Constants.INACTIVE_ID, Constants.INACTIVE_ID, Constants.INACTIVE_ID,
+    checkHelper = JSCollections.$array(Constants.INACTIVE_ID, Constants.INACTIVE_ID,
         Constants.INACTIVE_ID, Constants.INACTIVE_ID, Constants.INACTIVE_ID, Constants.INACTIVE_ID,
-        Constants.INACTIVE_ID);
+        Constants.INACTIVE_ID, Constants.INACTIVE_ID);
   }
 
   public boolean willBeTrapped() {
@@ -87,31 +83,31 @@ public class MovePath {
    * @param code
    * @return
    */
-  public boolean isGoBackCommand (MoveCode code) {
+  public boolean isGoBackCommand(MoveCode code) {
     MoveCode lastCode = path.$get(path.$length() - 1);
     MoveCode goBackCode;
 
     // get go back code
     switch (code) {
-        case UP:
-            goBackCode = MoveCode.DOWN;
-            break;
-        case DOWN:
-            goBackCode = MoveCode.UP;
-            break;
-        case LEFT:
-            goBackCode = MoveCode.RIGHT;
-            break;
-        case RIGHT:
-            goBackCode = MoveCode.LEFT;
-            break;
-        default:
-          // TODO
-          throw new Error();
+      case UP:
+        goBackCode = MoveCode.DOWN;
+        break;
+      case DOWN:
+        goBackCode = MoveCode.UP;
+        break;
+      case LEFT:
+        goBackCode = MoveCode.RIGHT;
+        break;
+      case RIGHT:
+        goBackCode = MoveCode.LEFT;
+        break;
+      default:
+        // TODO
+        throw new Error();
     }
 
     return (lastCode == goBackCode);
-}
+  }
 
   /**
    * Appends a move `code` to a given `movePath` and returns `true` if the
@@ -427,7 +423,8 @@ public class MovePath {
    * @param preventRemoveOldPos
    * @param preventSetNewPos
    */
-  public void move (Unit unit, int x, int y, boolean noFuelConsumption, boolean preventRemoveOldPos, boolean preventSetNewPos) {
+  public void move(Unit unit, int x, int y, boolean noFuelConsumption, boolean preventRemoveOldPos,
+      boolean preventSetNewPos) {
     var map = model.mapData;
     var team = unit.owner.team;
 
@@ -439,11 +436,11 @@ public class MovePath {
     // do not set the new position if the position is already occupied
     // the action logic must take care of this situation
     if (preventRemoveOldPos != true) {
-        fog.removeUnitVision(x, y, unit.owner);
+      fog.removeUnitVision(x, y, unit.owner);
 
-        model.mapData[x][y].unit = null;
+      model.mapData[x][y].unit = null;
 
-        if (constants.DEBUG) console.log("remove unit from position ("+x+","+y+")");
+      if (constants.DEBUG) console.log("remove unit from position (" + x + "," + y + ")");
     }
 
     var uType = unit.type;
@@ -464,67 +461,69 @@ public class MovePath {
     var lastIndex = 0;
     for (var i = 0, e = movePath.size; i < e; i++) {
 
-        // set current position by current move code
-        switch (path.$get(index)) {
+      // set current position by current move code
+      switch (path.$get(index)) {
 
-            case UP:
-                if (constants.DEBUG) assert(cY > 0);
-                cY--;
-                break;
+        case UP:
+          if (constants.DEBUG) assert (cY > 0);
+          cY--;
+          break;
 
-            case RIGHT:
-                if (constants.DEBUG) assert(cX < model.mapWidth - 1);
-                cX++;
-                break;
+        case RIGHT:
+          if (constants.DEBUG) assert (cX < model.mapWidth - 1);
+          cX++;
+          break;
 
-            case DOWN:
-                if (constants.DEBUG) assert(cY < model.mapHeight - 1);
-                cY++;
-                break;
+        case DOWN:
+          if (constants.DEBUG) assert (cY < model.mapHeight - 1);
+          cY++;
+          break;
 
-            case LEFT:
-                if (constants.DEBUG) assert(cX > 0);
-                cX--;
-                break;
-        }
+        case LEFT:
+          if (constants.DEBUG) assert (cX > 0);
+          cX--;
+          break;
+      }
 
-        // calculate the used fuel to move onto the current tile
-        // if `noFuelConsumption` is not `true` some actions like unloading does not consume fuel
-        if (noFuelConsumption != true) {
-            fuelUsed += exports.getMoveCosts(mType, cX, cY);
-        }
+      // calculate the used fuel to move onto the current tile
+      // if `noFuelConsumption` is not `true` some actions like unloading does
+      // not consume fuel
+      if (noFuelConsumption != true) {
+        fuelUsed += exports.getMoveCosts(mType, cX, cY);
+      }
 
-        var tileUnit = map[cX][cY].unit;
+      var tileUnit = map[cX][cY].unit;
 
-        // movable when tile is empty or the last tile in the way while
-        // the unit on the tile belongs to the movers owner
-        if (!tileUnit || (tileUnit.owner == unit.owner && i == e - 1)) {
-            lastX = cX;
-            lastY = cY;
-            lastFuel = fuelUsed;
-            lastIndex = i;
+      // movable when tile is empty or the last tile in the way while
+      // the unit on the tile belongs to the movers owner
+      if (!tileUnit || (tileUnit.owner == unit.owner && i == e - 1)) {
+        lastX = cX;
+        lastY = cY;
+        lastFuel = fuelUsed;
+        lastIndex = i;
 
-            // enemy unit
-        } else if (tileUnit.owner.team != team) {
-            movePath.clear(lastIndex + 1);
-            trapped = true;
-            break;
-        }
+        // enemy unit
+      } else if (tileUnit.owner.team != team) {
+        movePath.clear(lastIndex + 1);
+        trapped = true;
+        break;
+      }
     }
 
     // consume fuel except when no fuel consumption is on
     if (noFuelConsumption != true) {
-        unit.fuel -= lastFuel;
-        if (constants.DEBUG) assert(unit.fuel >= 0);
+      unit.fuel -= lastFuel;
+      if (constants.DEBUG) assert (unit.fuel >= 0);
     }
 
-    // sometimes we prevent to set the unit at the target position because it moves
+    // sometimes we prevent to set the unit at the target position because it
+    // moves
     // into a thing at a target position (like a transporter)
     if (preventSetNewPos != true) {
-        model.mapData[lastX][lastY].unit = unit;
-        fog.addUnitVision(lastX, lastY, unit.owner);
+      model.mapData[lastX][lastY].unit = unit;
+      fog.addUnitVision(lastX, lastY, unit.owner);
 
-        if (constants.DEBUG) console.log("set unit to position ("+lastX+","+lastY+")");
+      if (constants.DEBUG) console.log("set unit to position (" + lastX + "," + lastY + ")");
     }
-	}
+  }
 }

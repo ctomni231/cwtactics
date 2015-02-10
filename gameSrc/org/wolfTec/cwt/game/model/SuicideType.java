@@ -3,12 +3,16 @@ package org.wolfTec.cwt.game.model;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.wolfTec.cwt.game.Constants;
-import org.wolfTec.cwt.utility.validation.MaxValue;
-import org.wolfTec.cwt.utility.validation.MinValue;
+import org.wolfTec.cwt.utility.validation.IntValue;
+import org.wolfTec.cwt.utility.validation.StringValue;
 
 public class SuicideType {
 
-  @MinValue(1) @MaxValue(10) public int damage;
-  @MinValue(1) @MaxValue(Constants.MAX_SELECTION_RANGE) public int range;
-  public Array<String> noDamage = JSCollections.$array();
+  @IntValue(min = 0, max = 10) public int damage;
+  @IntValue(min = 0, max = Constants.MAX_SELECTION_RANGE) public int range;
+  @StringValue(minLength = 4, maxLength = 4) public Array<String> noDamage;
+
+  public SuicideType() {
+    noDamage = JSCollections.$array();
+  }
 }

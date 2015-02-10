@@ -1,13 +1,7 @@
 package org.wolfTec.cwt.game.model;
 
-import org.wolfTec.cwt.game.utility.AssertUtilyBean;
+import org.wolfTec.cwt.utility.validation.IntValue;
 
 public class TileType extends ObjectType {
-
-    public int defense;
-
-    @Override
-    public void validate() {
-        AssertUtilyBean.greaterEquals(defense, 0);
-    }
+  @IntValue(min = 0) public int defense = 0;
 }

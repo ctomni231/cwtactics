@@ -1,79 +1,29 @@
 package org.wolfTec.cwt.game.model;
 
-import java.util.Iterator;
-
 import org.stjs.javascript.Array;
-import org.stjs.javascript.Map;
 import org.wolfTec.cwt.game.Constants;
-import org.wolfTec.cwt.utility.validation.MaxValue;
-import org.wolfTec.cwt.utility.validation.MinValue;
-import org.wolfTec.cwt.utility.validation.Not;
-import org.wolfTec.cwt.utility.validation.NotNull;
+import org.wolfTec.cwt.utility.validation.IntValue;
+import org.wolfTec.cwt.utility.validation.StringValue;
 
-/**
- * Unit type which holds all information about a unit type. In general this are
- * all non-changeable data of an unit.
- */
 public class UnitType extends ObjectType {
 
-  @MinValue(-1) @Not(0) public int cost;
+  @IntValue(min = -1, max = 99999, not = { 0 }) public int cost = -1;
+  @IntValue(min = 0, max = Constants.MAX_SELECTION_RANGE) public int range = 1;
+  @IntValue(min = 1, max = Constants.MAX_SELECTION_RANGE) public int vision = 1;
+  @IntValue(min = 0, max = 99) public int fuel = 0;
+  @IntValue(min = 0, max = 99) public int ammo = 0;
+  @StringValue(minLength = 4, maxLength = 4) public String movetype;
+  @IntValue(min = 0, max = 99) public int dailyFuelDrain = 0;
+  @IntValue(min = 0, max = 99, not = { 1 }) public int dailyFuelDrainHidden = 0;
+  @IntValue(min = -1, max = 5, not = { 0 }) public int maxloads = Constants.INACTIVE_ID;
+  @StringValue(minLength = 4, maxLength = 4) public Array<String> canload;
+  @StringValue(minLength = 4, maxLength = 4) public Array<String> supply;
+  @IntValue(min = -1, max = 999, not = { 0 }) public int captures = Constants.INACTIVE_ID;
 
-  @MinValue(0) @MaxValue(Constants.MAX_SELECTION_RANGE) public int range;
-
-  @MinValue(1) @MaxValue(Constants.MAX_SELECTION_RANGE) public int vision;
-
-  @MinValue(0) @MaxValue(99) public int fuel;
-
-  @MinValue(0) @MaxValue(99) public int ammo;
-
-  @NotNull public String movetype;
-
-  @MinValue(1) @MaxValue(99) public int dailyFuelDrain;
-
-  @MinValue(2) @MaxValue(99) public int dailyFuelDrainHidden;
-
-  @MinValue(-1) @Not(0) public int maxloads;
-
-  public Array<String> canload;
-
-  public Array<String> supply;
-
-  @MinValue(-1) @Not(0) public int captures;
-  
   public boolean stealth;
 
   public AttackType attack;
   public SuicideType suicide;
-
-  public UnitType() {
-    cost = Constants.INACTIVE_ID;
-    range = Constants.INACTIVE_ID;
-    vision = Constants.INACTIVE_ID;
-    fuel = Constants.INACTIVE_ID;
-    ammo = Constants.INACTIVE_ID;
-    movetype = null;
-    dailyFuelDrain = Constants.INACTIVE_ID;
-    dailyFuelDrainHidden = Constants.INACTIVE_ID;
-    maxloads = Constants.INACTIVE_ID;
-    canload = null;
-    supply = null;
-    captures = Constants.INACTIVE_ID;
-    stealth = false;
-    attack = null;
-    suicide = null;
-  }
-
-  @Override public void validate() {
-  }
-
-  private void checkAttackMap(Map<String, Integer> map) {
-    Iterator<String> unitIds = map.iterator();
-    while (unitIds.hasNext()) {
-      String targetId = unitIds.next(); // TODO
-      // AssertUtilyBean.notEmpty(targetId);
-      // AssertUtilyBean.greaterEquals(map.$get(targetId), 1);
-    }
-  }
 
   /**
    *

@@ -1,24 +1,12 @@
 package org.wolfTec.cwt.game.model;
 
-import java.util.Iterator;
-
 import org.stjs.javascript.Map;
-import org.wolfTec.cwt.game.utility.AssertUtilyBean;
+import org.wolfTec.cwt.utility.validation.IntValue;
+import org.wolfTec.cwt.utility.validation.StringKey;
 
 public class MoveType extends ObjectType {
 
-    public Map<String, Integer> costs;
-
-    @Override
-    public void validate() {
-        Iterator<String> keys = costs.iterator();
-        while (keys.hasNext()) {
-            String key = keys.next();
-            Integer value = costs.$get(key);
-
-            AssertUtilyBean.greaterEquals(value, -1);
-            AssertUtilyBean.lowerEquals(value, 100);
-            AssertUtilyBean.isNot(value, 0);
-        }
-    }
+  @StringKey(minLength = 1) 
+  @IntValue(min = -1, max = 100, not = { 0 }) 
+  public Map<String, Integer> costs;
 }

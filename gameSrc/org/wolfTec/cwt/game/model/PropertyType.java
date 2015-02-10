@@ -1,30 +1,23 @@
 package org.wolfTec.cwt.game.model;
 
-import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
-import org.wolfTec.cwt.game.utility.AssertUtilyBean;
-import org.wolfTec.cwt.utility.validation.MinValue;
+import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.utility.validation.IntValue;
+import org.wolfTec.cwt.utility.validation.StringValue;
 
 public class PropertyType extends ObjectType {
 
-  @MinValue(0) public int defense;
-  @MinValue(0) public int vision;
-  @MinValue(0) public int capturePoints;
+  @IntValue(min = 0, max = 6) public int defense = 0;
+  @IntValue(min = 0, max = Constants.MAX_SELECTION_RANGE) public int vision = 0;
+  @IntValue(min = 0, max = 20) public int capturePoints = 20; // TODO static ?
   public boolean visionBlocker;
   public RocketSiloType rocketsilo;
   public Object builds;
   public LaserType laser;
-  public String changesTo;
-  public Map<String, Integer> repairs;
-  public int funds = 0;
-  public boolean looseAfterCaptured;
-  public boolean blocker;
+  @StringValue(minLength = 1) public String changesTo;
+  @IntValue(min = 1, max = 10) public Map<String, Integer> repairs;
+  @IntValue(min = 0, max = 99999) public int funds = 0;
+  public boolean looseAfterCaptured = false;
+  public boolean blocker = false;
   public boolean notTransferable = false;
-
-  @Override public void validate() {
-    AssertUtilyBean.greaterEquals(defense, 0);
-    AssertUtilyBean.greaterEquals(vision, 0);
-
-    AssertUtilyBean.greaterEquals(capturePoints, 0);
-  }
 }
