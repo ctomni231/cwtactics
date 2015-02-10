@@ -1,9 +1,16 @@
-Feature: Turn owner can send one of his units into the wait mode
+Feature: The turn owner can build things on his factories
   As a gamer
-  I want to send my units into the wait mode
-  So I can move them without having to do an action at the target place
+  I want to build units on my factories
   
-  Scenario: ...
-    Given an empty tile
-    When click on it
-    Then wait action is not visible
+  Scenario: The turn owner can build infantries
+    Given a BASE property of the turn owner
+      And turn owner has 10000 gold
+     When click on it
+     Then menu is not empty
+     
+  Scenario: The turn owner can build infantries
+    Given a BASE property of the turn owner
+      And the selected tile is occupied
+      And turn owner has 10000 gold
+     When click on it
+     Then menu is not visible
