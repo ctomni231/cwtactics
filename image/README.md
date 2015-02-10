@@ -494,7 +494,7 @@ These are groups that make it easier affect many unit statistics at once. This w
 * *DUST* = Duster
 * *SPYP* = Spyplane
 
-### #FLT - Floating Unit Group - Unit Type
+### @FLT - Floating Unit Group - Unit Type
 
 * *BCRT* = Battle-Hovercraft
 * *ACRT* = Artillery-Hovercraft
