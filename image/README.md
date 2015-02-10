@@ -235,6 +235,294 @@ This shows how objects are organized within the object files for units, terrain(
 * *A* = Acid Rain
 * *Q* = Earthquake
 
+## Unit Groups
+
+These are groups that make it easier affect many unit statistics at once. This was made specifically for easier interactions with CO abilities.
+
+### @GRD - Ground Unit Group - Terrain Type
+
+* *INFT* = Infantry
+* *MECH* = Mech
+* *BIKE* = Bike
+* *SNIP* = Sniper
+* *RECN* = Recon
+* *AAIR* = Anti-Air
+* *APCR* = APC Rig
+* *TANK* = Tank
+* *MDTK* = Medium Tank
+* *NTNK* = Neo-Battle Tank
+* *WRTK* = Mega Wartank
+* *SPTK* = Spider-Tank
+* *BCRT* = Battle-Hovercraft
+* *OOZM* = Oozium
+* *FLRE* = Flare
+* *ARTY* = Artillery
+* *RCKT* = Rockets
+* *MISS* = Missiles
+* *PRNR* = Piperunner
+* *ATNK* = Anti-Tank
+* *ACRT* = Artillery-Hovercraft
+* *SRNR* = Shuttle-Piperunner
+
+### @WTR - Water Unit Group - Terrain Type
+
+* *BSHP* = Battleship
+* *CRUS* = Cruiser
+* *SUBM* = Submarine
+* *LNDR* = Lander
+* *BKBT* = Black Patrol-Boat
+* *ACAR* = Aircraft-Carrier
+* *GNBT* = Gunboat
+* *DSYR* = Destroyer
+
+### @SKY - Sky Unit Group - Terrain Type
+
+* *TCTR* = Transport-Helicopter
+* *BCTR* = Battle-Helicopter
+* *FGTR* = Jet Fighter 
+* *BMBR* = Bomber
+* *BKBM* = Black Nuclear-Bomb
+* *STLH* = Stealth
+* *SEAP* = Seaplane
+* *DUST* = Duster
+* *ZPLN* = Zeppelin
+* *SPYP* = Spyplane
+* *HCTR* = Heavy-Helicopter
+
+### @DIR - Direct Unit Group - Firing Type
+
+* *INFT* = Infantry
+* *MECH* = Mech
+* *BIKE* = Bike
+* *SNIP* = Sniper
+* *RECN* = Recon
+* *AAIR* = Anti-Air
+* *APCR* = APC Rig
+* *TANK* = Tank
+* *MDTK* = Medium Tank
+* *NTNK* = Neo-Battle Tank
+* *WRTK* = Mega Wartank
+* *SPTK* = Spider-Tank
+* *BCRT* = Battle-Hovercraft
+* *OOZM* = Oozium
+* *FLRE* = Flare
+* *TCTR* = Transport-Helicopter
+* *BCTR* = Battle-Helicopter
+* *FGTR* = Jet Fighter 
+* *BMBR* = Bomber
+* *BKBM* = Black Nuclear-Bomb
+* *STLH* = Stealth
+* *SEAP* = Seaplane
+* *DUST* = Duster
+* *SPYP* = Spyplane
+* *HCTR* = Heavy-Helicopter
+* *CRUS* = Cruiser
+* *SUBM* = Submarine
+* *LNDR* = Lander
+* *BKBT* = Black Patrol-Boat
+* *GNBT* = Gunboat
+
+### @IND - Indirect Unit Group - Firing Type
+
+* *ARTY* = Artillery
+* *RCKT* = Rockets
+* *MISS* = Missiles
+* *PRNR* = Piperunner
+* *ATNK* = Anti-Tank
+* *ACRT* = Artillery-Hovercraft
+* *ZPLN* = Zeppelin
+* *BSHP* = Battleship
+* *ACAR* = Aircraft-Carrier
+* *DSYR* = Destroyer
+
+### @INF - Infantry Unit Group - Movement Type
+
+* *INFT* = Infantry
+* *SNIP* = Sniper
+* *SPTK* = Spider-Tank
+
+### @MEC - Mech Unit Group - Movement Type
+
+* *MECH* = Mech
+
+### @BIK - Bike (Tire-A) Unit Group - Movement Type
+
+* *BIKE* = Bike
+* *ATNK* = Anti-Tank
+
+### @THR - Tread Unit Group - Movement Type
+
+* *AAIR* = Anti-Air
+* *APCR* = APC Rig
+* *TANK* = Tank
+* *MDTK* = Medium Tank
+* *NTNK* = Neo-Battle Tank
+* *WRTK* = Mega Wartank
+* *FLRE* = Flare
+* *ARTY* = Artillery
+
+### @TIR - Tire (Tire-B) Unit Group - Movement Type
+
+* *RECN* = Recon
+* *RCKT* = Rockets
+* *MISS* = Missiles
+
+### @AIR - Air Unit Group - Movement Type
+
+* *TCTR* = Transport-Helicopter
+* *BCTR* = Battle-Helicopter
+* *FGTR* = Jet Fighter 
+* *BMBR* = Bomber
+* *BKBM* = Black Nuclear-Bomb
+* *STLH* = Stealth
+* *SEAP* = Seaplane
+* *DUST* = Duster
+* *ZPLN* = Zeppelin
+* *SPYP* = Spyplane
+* *HCTR* = Heavy-Helicopter
+
+### @HVR - Hover Unit Group - Movement Type
+
+* *BCRT* = Battle-Hovercraft
+* *ACRT* = Artillery-Hovercraft
+
+### @LDR - Lander Unit Group - Movement Type
+
+* *LNDR* = Lander
+* *BKBT* = Black Patrol-Boat
+* *GNBT* = Gunboat
+
+### @SEA - Sea Unit Group - Movement Type
+
+* *BSHP* = Battleship
+* *CRUS* = Cruiser
+* *SUBM* = Submarine
+* *ACAR* = Aircraft-Carrier
+* *DSYR* = Destroyer
+
+### @PIP - Pipe Unit Group - Movement Type
+
+* *PRNR* = Piperunner
+* *SRNR* = Shuttle-Piperunner
+
+### @OOZ - Oozium Unit Group - Movement Type
+
+* *OOZM* = Oozium
+
+### @ARH - Air High Flight Unit Group - Movement Type Special
+
+* *FGTR* = Jet Fighter 
+* *BMBR* = Bomber
+* *BKBM* = Black Nuclear-Bomb
+* *STLH* = Stealth
+* *SPYP* = Spyplane
+
+### @ARM - Air Medium Flight Unit Group - Movement Type Special
+
+* *SEAP* = Seaplane
+* *DUST* = Duster
+* *ZPLN* = Zeppelin
+* *HCTR* = Heavy-Helicopter
+
+### @ARL - Air Low Flight Unit Group - Movement Type Special
+
+* *TCTR* = Transport-Helicopter
+* *BCTR* = Battle-Helicopter
+
+### @VEH - Vehicle Unit Group - Unit Type
+
+* *BIKE* = Bike
+* *RECN* = Recon
+* *AAIR* = Anti-Air
+* *APCR* = APC Rig
+* *TANK* = Tank
+* *MDTK* = Medium Tank
+* *NTNK* = Neo-Battle Tank
+* *WRTK* = Mega Wartank
+* *SPTK* = Spider-Tank
+* *BCRT* = Battle-Hovercraft
+* *FLRE* = Flare
+* *ARTY* = Artillery
+* *RCKT* = Rockets
+* *MISS* = Missiles
+* *PRNR* = Piperunner
+* *ATNK* = Anti-Tank
+* *ACRT* = Artillery-Hovercraft
+
+### @SLR - Soldier Unit Group - Unit Type
+
+* *INFT* = Infantry
+* *MECH* = Mech
+* *BIKE* = Bike
+* *SNIP* = Sniper
+
+### @RCN - Reconnaissance Unit Group - Unit Type
+
+* *RECN* = Recon
+* *FLRE* = Flare
+* *SPYP* = Spyplane
+
+### @TNK - Tank Unit Group - Unit Type
+
+* *TANK* = Tank
+* *MDTK* = Medium Tank
+* *NTNK* = Neo-Battle Tank
+* *WRTK* = Mega Wartank
+* *SPTK* = Spider-Tank
+
+### @TRN - Transport Unit Group - Unit Type
+
+* *APCR* = APC Rig
+* *TCTR* = Transport-Helicopter
+* *CRUS* = Cruiser
+* *BKBT* = Black Patrol-Boat
+* *ACAR* = Aircraft-Carrier
+* *SRNR* = Shuttle-Piperunner
+
+### @CTR - Helicopter Unit Group - Unit Type
+
+* *TCTR* = Transport-Helicopter
+* *BCTR* = Battle-Helicopter
+* *HCTR* = Heavy-Helicopter
+
+### @PLN - Airplane Unit Group - Unit Type
+
+* *FGTR* = Jet Fighter 
+* *BMBR* = Bomber
+* *STLH* = Stealth
+* *SEAP* = Seaplane
+* *DUST* = Duster
+* *SPYP* = Spyplane
+
+### #FLT - Floating Unit Group - Unit Type
+
+* *BCRT* = Battle-Hovercraft
+* *ACRT* = Artillery-Hovercraft
+* *ZPLN* = Zeppelin
+
+### @CAR - Carrier Unit Group - Unit Type
+
+* *CRUS* = Cruiser
+* *ACAR* = Aircraft-Carrier
+
+### @STL - Stealth Unit Group - Unit Type
+
+* *SNIP* = Sniper
+* *STLH* = Stealth
+* *SUBM* = Submarine
+
+### @NUK - Nuke/Bomb Unit Group - Unit Type
+
+* *BKBM* = Black Nuclear-Bomb
+
+### @SHP - Warship Unit Group - Unit Type
+
+* *BSHP* = Battleship
+* *CRUS* = Cruiser
+* *ACAR* = Aircraft-Carrier
+* *GNBT* = Gunboat
+* *DSYR* = Destroyer
+ 
 ***
 
 # File Organization (Deprecated)
