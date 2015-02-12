@@ -19,7 +19,7 @@ import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
 import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 import org.wolfTec.cwt.utility.beans.PostInitialization;
-import org.wolfTec.cwt.utility.container.ReadOnlyJsArray;
+import org.wolfTec.cwt.utility.container.ImmutableArray;
 
 @Bean
 public class ObjectTypesBean implements AssetLoader {
@@ -149,37 +149,37 @@ public class ObjectTypesBean implements AssetLoader {
     return null;
   }
 
-  public ReadOnlyJsArray<ArmyType> getArmyTypes() {
+  public ImmutableArray<ArmyType> getArmyTypes() {
     log.error("not implemented yet"); // TODO
     return null;
   }
 
-  public ReadOnlyJsArray<MoveType> getMoveTypes() {
+  public ImmutableArray<MoveType> getMoveTypes() {
     log.error("not implemented yet"); // TODO
     return null;
   }
 
-  public ReadOnlyJsArray<UnitType> getUnitTypes() {
+  public ImmutableArray<UnitType> getUnitTypes() {
     log.error("not implemented yet"); // TODO
     return null;
   }
 
-  public ReadOnlyJsArray<TileType> getArmies() {
+  public ImmutableArray<TileType> getArmies() {
     log.error("not implemented yet"); // TODO
     return null;
   }
 
-  public ReadOnlyJsArray<WeatherType> getWeathers() {
+  public ImmutableArray<WeatherType> getWeathers() {
     log.error("not implemented yet"); // TODO
     return null;
   }
 
-  public ReadOnlyJsArray<PropertyType> getPropertyTypes() {
+  public ImmutableArray<PropertyType> getPropertyTypes() {
     log.error("not implemented yet"); // TODO
     return null;
   }
 
-  public ReadOnlyJsArray<CoType> getCommanderTypes() {
+  public ImmutableArray<CoType> getCommanderTypes() {
     log.error("not implemented yet"); // TODO
     return null;
   }

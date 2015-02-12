@@ -60,7 +60,7 @@ public class StorageBean {
       }
     };
 
-    JSObjectAdapter.$js("localForage.setItem(key, value, callback)");
+    JSObjectAdapter.$js("localForage.setItem(key, value, safeCb)");
   }
 
   /**

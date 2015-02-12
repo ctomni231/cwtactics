@@ -8,7 +8,7 @@ public abstract class EngineGlobals {
   public static final String VERSION = "0.3.799-b1";
 
   /**
-   *
+   * Symbol of inactive items.
    */
   public static final int INACTIVE_ID = -1;
 
@@ -157,11 +157,12 @@ public abstract class EngineGlobals {
      *
      */
   public static final String PROP_INV = "PROP_INV";
+
   /**
   *
   */
-public static final String NO_MOVE = "NO_MOVE";
-  
+  public static final String NO_MOVE = "NO_MOVE";
+
   // ====================== STORAGE PARAMETER NAMES ======================
 
   public static final String STORAGE_PARAMETER_CACHED_CONTENT = "cwt_gameContent_cached";

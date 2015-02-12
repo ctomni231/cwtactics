@@ -10,7 +10,7 @@ import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
 
 @Bean
-public class ImageManipulationService {
+public class ImageManipulationBean {
 
   @Injected
   private BrowserHelperBean browser;

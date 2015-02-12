@@ -2,7 +2,8 @@ package org.wolfTec.cwt.utility.container;
 
 import org.stjs.javascript.annotation.Template;
 
-public abstract class ReadOnlyJsArray<T> {
+public abstract class ImmutableArray<T> {
+  
   @Template("get")
   public native T $get(int index);
 

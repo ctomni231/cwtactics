@@ -2,12 +2,12 @@ package org.wolfTec.cwt.game.gamelogic;
 
 import org.stjs.javascript.JSGlobal;
 import org.wolfTec.cwt.game.model.types.WeatherType;
-import org.wolfTec.cwt.utility.container.ReadOnlyJsArray;
+import org.wolfTec.cwt.utility.container.ImmutableArray;
 
 public interface WeatherLogic extends BaseLogic {
 
   default WeatherType getDefaultWeather() {
-    ReadOnlyJsArray<WeatherType> types = getObjectTypes().getWeathers();
+    ImmutableArray<WeatherType> types = getObjectTypes().getWeathers();
     for (int i = 0; i < types.$length(); i++) {
       if (types.$get(i).isDefaultWeather) {
         return types.$get(i);
