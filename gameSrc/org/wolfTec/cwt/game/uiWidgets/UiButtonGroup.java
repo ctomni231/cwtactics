@@ -4,7 +4,7 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.RegExp;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.input.InputData;
 
 public class UiButtonGroup {
@@ -14,12 +14,12 @@ public class UiButtonGroup {
 
   public UiButtonGroup() {
     this.elements = JSCollections.$array();
-    selectedElement = Constants.INACTIVE_ID;
+    selectedElement = EngineGlobals.INACTIVE_ID;
   }
 
   public void addElement(UiField el) {
     this.elements.push(el);
-    if (this.selectedElement == Constants.INACTIVE_ID && el.action != null) {
+    if (this.selectedElement == EngineGlobals.INACTIVE_ID && el.action != null) {
       this.elements.$get(this.elements.$length() - 1).inFocus = true;
       this.selectedElement = this.elements.$length() - 1;
     }
@@ -116,7 +116,8 @@ public class UiButtonGroup {
           if (this.selectedElement < 0) {
             this.selectedElement = this.elements.$length() - 1;
           }
-        } while (this.elements.$get(selectedElement).action == null || this.elements.$get(selectedElement).isInactive());
+        } while (this.elements.$get(selectedElement).action == null
+            || this.elements.$get(selectedElement).isInactive());
         break;
 
       case RIGHT:
@@ -126,7 +127,8 @@ public class UiButtonGroup {
           if (this.selectedElement >= this.elements.$length()) {
             this.selectedElement = 0;
           }
-        } while (this.elements.$get(selectedElement).action == null || this.elements.$get(selectedElement).isInactive());
+        } while (this.elements.$get(selectedElement).action == null
+            || this.elements.$get(selectedElement).isInactive());
         break;
 
       default:

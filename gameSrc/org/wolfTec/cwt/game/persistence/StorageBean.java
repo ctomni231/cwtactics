@@ -9,7 +9,8 @@ import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
 import org.wolfTec.cwt.utility.beans.Bean;
 
-@Bean public class StorageBean {
+@Bean
+public class StorageBean {
 
   /**
    * iOS 7 has a serious bug which makes unable to get the permission to

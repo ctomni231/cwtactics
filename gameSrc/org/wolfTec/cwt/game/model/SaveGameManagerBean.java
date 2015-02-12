@@ -1,17 +1,20 @@
 package org.wolfTec.cwt.game.model;
 
 import org.stjs.javascript.functions.Callback0;
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.log.Logger;
 import org.wolfTec.cwt.game.persistence.StorageBean;
 import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
 import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 
-@Bean public class SaveGameManagerBean {
+@Bean
+public class SaveGameManagerBean {
 
-  @InjectedByFactory private Logger log;
-  @Injected private StorageBean storage;
+  @InjectedByFactory
+  private Logger log;
+  @Injected
+  private StorageBean storage;
 
   /**
    * Loads a save game and initializes a new game round.
@@ -21,7 +24,7 @@ import org.wolfTec.cwt.utility.beans.InjectedByFactory;
    * @param callback
    */
   public void loadSave(String name, Callback0 callback) {
-    storage.get(Constants.STORAGE_PARAMETER_SAVEGAME_PREFIX + name, (entry) -> {
+    storage.get(EngineGlobals.STORAGE_PARAMETER_SAVEGAME_PREFIX + name, (entry) -> {
       // TODO
       // initMap(entry.value, true, callback);
       });
@@ -35,7 +38,7 @@ import org.wolfTec.cwt.utility.beans.InjectedByFactory;
    * @param callback
    */
   public void saveGame(String name, Callback0 callback) {
-    storage.set(Constants.STORAGE_PARAMETER_SAVEGAME_PREFIX + name, null, (data, error) -> {
+    storage.set(EngineGlobals.STORAGE_PARAMETER_SAVEGAME_PREFIX + name, null, (data, error) -> {
       if (error != null) {
         log.error("SavingGameError");
       } else {

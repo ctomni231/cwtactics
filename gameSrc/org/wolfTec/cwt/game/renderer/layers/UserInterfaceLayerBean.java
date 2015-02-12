@@ -5,21 +5,25 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.renderer.ScreenLayer;
 import org.wolfTec.cwt.game.renderer.SpriteManagerBean;
 import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
 
-@Bean public class UserInterfaceLayerBean extends ScreenLayer {
+@Bean
+public class UserInterfaceLayerBean extends ScreenLayer {
 
-  @Injected private SpriteManagerBean sprites;
+  @Injected
+  private SpriteManagerBean sprites;
 
-  @Override public int getZIndex() {
+  @Override
+  public int getZIndex() {
     return 6;
   }
 
-  @Override public String getLayerCanvasId() {
+  @Override
+  public String getLayerCanvasId() {
     return "canvas_layer_UI";
   }
 
@@ -28,10 +32,10 @@ import org.wolfTec.cwt.utility.beans.Injected;
    */
   public void eraseCursor() {
     Element cursorImg = sprites.getSprite("CURSOR").getImage(0);
-    CanvasRenderingContext2D ctx = getContext(Constants.INACTIVE_ID);
-    int h = JSGlobal.parseInt(Constants.TILE_BASE / 2, 10);
-    x = (x - screenOffsetX) * Constants.TILE_BASE;
-    y = (y - screenOffsetY) * Constants.TILE_BASE;
+    CanvasRenderingContext2D ctx = getContext(EngineGlobals.INACTIVE_ID);
+    int h = JSGlobal.parseInt(EngineGlobals.TILE_BASE / 2, 10);
+    x = (x - screenOffsetX) * EngineGlobals.TILE_BASE;
+    y = (y - screenOffsetY) * EngineGlobals.TILE_BASE;
 
     // render cursor at new position
     ctx.drawImage(cursorImg, x - h, y - h);
@@ -45,10 +49,10 @@ import org.wolfTec.cwt.utility.beans.Injected;
    */
   public void renderCursor() {
     Element cursorImg = sprites.getSprite("CURSOR").getImage(0);
-    CanvasRenderingContext2D ctx = getContext(Constants.INACTIVE_ID);
-    int h = JSGlobal.parseInt(Constants.TILE_BASE / 2, 10);
-    x = (x - screenOffsetX) * Constants.TILE_BASE;
-    y = (y - screenOffsetY) * Constants.TILE_BASE;
+    CanvasRenderingContext2D ctx = getContext(EngineGlobals.INACTIVE_ID);
+    int h = JSGlobal.parseInt(EngineGlobals.TILE_BASE / 2, 10);
+    x = (x - screenOffsetX) * EngineGlobals.TILE_BASE;
+    y = (y - screenOffsetY) * EngineGlobals.TILE_BASE;
 
     // render cursor at new position
     ctx.drawImage(cursorImg, x - h, y - h);
@@ -61,7 +65,7 @@ import org.wolfTec.cwt.utility.beans.Injected;
    * Shows the native browser cursor.
    */
   public void showNativeCursor() {
-    Canvas canvas = getLayer(Constants.INACTIVE_ID);
+    Canvas canvas = getLayer(EngineGlobals.INACTIVE_ID);
     JSObjectAdapter.$js("canvas.style.cursor = ''");
   }
 
@@ -69,7 +73,7 @@ import org.wolfTec.cwt.utility.beans.Injected;
    * Hides the native browser cursor.
    */
   public void hideNativeCursor() {
-    Canvas canvas = getLayer(Constants.INACTIVE_ID);
+    Canvas canvas = getLayer(EngineGlobals.INACTIVE_ID);
     JSObjectAdapter.$js("canvas.style.cursor = 'none'");
   }
 }

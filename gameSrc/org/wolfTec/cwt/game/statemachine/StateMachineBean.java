@@ -12,11 +12,20 @@ import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
 import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 
-@Bean public class StateMachineBean {
+@Bean
+public class StateMachineBean {
 
-  @InjectedByFactory private Logger log;
-  @Injected private InputBean input;
-  @Injected private ActionInvokerBean action;
+  @InjectedByFactory
+  private Logger log;
+
+  @Injected
+  private InputBean input;
+
+  @Injected
+  private ActionInvokerBean action; // TODO remove
+
+  @Injected
+  private FlushActionBean actions;
 
   /**
    * Holds all registered game states.
@@ -27,11 +36,6 @@ import org.wolfTec.cwt.utility.beans.InjectedByFactory;
    * The active game state.
    */
   private State activeState;
-
-  /**
-   * The id of the active game state.
-   */
-  private String activeStateId;
 
   public State activeState() {
     return null;
@@ -45,7 +49,7 @@ import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 
   public void addState(String id, State state) {
     if (JSObjectAdapter.hasOwnProperty(states, id)) {
-      log.error("StateAlreadyRegistered");
+      throw new IllegalArgumentException("StateAlreadyRegistered");
     }
 
     states.$put(id, state);
@@ -57,19 +61,16 @@ import org.wolfTec.cwt.utility.beans.InjectedByFactory;
    * The central game loop which calls the update function every frame of a 60
    * fps loop.
    */
-  private final Callback0 gameLoop = new Callback0() {
-    @Override public void $invoke() {
+  private final Callback0 gameLoop = () -> {
+    // update timer
+    int newTimestamp = (int) (new Date()).getTime();
+    int delta = newTimestamp - timestamp;
+    timestamp = newTimestamp;
 
-      // update timer
-      int newTimestamp = (int) (new Date()).getTime();
-      int delta = newTimestamp - timestamp;
-      timestamp = newTimestamp;
+    update(delta);
 
-      update(delta);
-
-      // acquire next frame
-      JSObjectAdapter.$js("requestAnimationFrame(gameLoop)");
-    }
+    // acquire next frame
+    JSObjectAdapter.$js("requestAnimationFrame(gameLoop)");
   };
 
   /**
@@ -124,7 +125,6 @@ import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 
   public void setState(String stateId, boolean fireEvent) {
     activeState = states.$get(stateId);
-    activeStateId = stateId;
 
     if (fireEvent) {
       activeState.enter();

@@ -9,9 +9,11 @@ import org.wolfTec.cwt.game.utility.BrowserHelperBean;
 import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
 
-@Bean public class ImageManipulationService {
+@Bean
+public class ImageManipulationService {
 
-  @Injected private BrowserHelperBean browser;
+  @Injected
+  private BrowserHelperBean browser;
 
   public Array<Integer> getImageData(Image image) {
     Canvas canvas = browser.createDomElement("canvas");

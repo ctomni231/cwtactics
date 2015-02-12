@@ -4,7 +4,7 @@ import org.stjs.javascript.Global;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.model.Direction;
 import org.wolfTec.cwt.game.renderer.AnimatedLayer;
 import org.wolfTec.cwt.game.renderer.ScreenLayer;
@@ -13,24 +13,29 @@ import org.wolfTec.cwt.game.renderer.SpriteManagerBean;
 import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.PostInitialization;
 
-@Bean public class FocusLayerBean extends ScreenLayer implements AnimatedLayer {
+@Bean
+public class FocusLayerBean extends ScreenLayer implements AnimatedLayer {
 
   private SpriteManagerBean sprites;
   private Canvas temporaryCanvas;
 
-  @Override public int getSubStates() {
+  @Override
+  public int getSubStates() {
     return 7;
   }
 
-  @Override public String getLayerCanvasId() {
+  @Override
+  public String getLayerCanvasId() {
     return "canvas_layer_Focus";
   }
-  
-  @PostInitialization public void init() {
+
+  @PostInitialization
+  public void init() {
     temporaryCanvas = (Canvas) Global.window.document.createElement("canvas");
   }
 
-  @Override public void onScreenShift(Direction dir, int offsetX, int offsetY, int amount, int scale) {
+  @Override
+  public void onScreenShift(Direction dir, int offsetX, int offsetY, int amount, int scale) {
     CanvasRenderingContext2D tmpContext = temporaryCanvas.getContext("2d");
 
     // calculate meta data for shift
@@ -43,23 +48,23 @@ import org.wolfTec.cwt.utility.beans.PostInitialization;
 
     switch (dir) {
       case LEFT:
-        scx += Constants.TILE_BASE;
-        w -= Constants.TILE_BASE;
+        scx += EngineGlobals.TILE_BASE;
+        w -= EngineGlobals.TILE_BASE;
         break;
 
       case RIGHT:
-        sx += Constants.TILE_BASE;
-        w -= Constants.TILE_BASE;
+        sx += EngineGlobals.TILE_BASE;
+        w -= EngineGlobals.TILE_BASE;
         break;
 
       case UP:
-        scy += Constants.TILE_BASE;
-        h -= Constants.TILE_BASE;
+        scy += EngineGlobals.TILE_BASE;
+        h -= EngineGlobals.TILE_BASE;
         break;
 
       case DOWN:
-        sy += Constants.TILE_BASE;
-        h -= Constants.TILE_BASE;
+        sy += EngineGlobals.TILE_BASE;
+        h -= EngineGlobals.TILE_BASE;
         break;
     }
 
@@ -78,7 +83,8 @@ import org.wolfTec.cwt.utility.beans.PostInitialization;
     }
   }
 
-  @Override public void onSetScreenPosition(int x, int y, int offsetX, int offsetY) {
+  @Override
+  public void onSetScreenPosition(int x, int y, int offsetX, int offsetY) {
     CanvasRenderingContext2D ctx;
     int scx;
     int scy;
@@ -105,14 +111,14 @@ import org.wolfTec.cwt.utility.beans.PostInitialization;
 
             ctx = getContext(n);
 
-            scx = Constants.TILE_BASE * n;
+            scx = EngineGlobals.TILE_BASE * n;
             scy = 0;
-            scw = Constants.TILE_BASE;
-            sch = Constants.TILE_BASE;
-            tcx = (x - offsetX) * Constants.TILE_BASE;
-            tcy = (y - offsetY) * Constants.TILE_BASE;
-            tcw = Constants.TILE_BASE;
-            tch = Constants.TILE_BASE;
+            scw = EngineGlobals.TILE_BASE;
+            sch = EngineGlobals.TILE_BASE;
+            tcx = (x - offsetX) * EngineGlobals.TILE_BASE;
+            tcy = (y - offsetY) * EngineGlobals.TILE_BASE;
+            tcw = EngineGlobals.TILE_BASE;
+            tch = EngineGlobals.TILE_BASE;
 
             ctx.globalAlpha = 0.6;
 
@@ -127,7 +133,8 @@ import org.wolfTec.cwt.utility.beans.PostInitialization;
     }
   }
 
-  @Override public int getZIndex() {
+  @Override
+  public int getZIndex() {
     return 4;
   }
 }

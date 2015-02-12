@@ -5,13 +5,15 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback4;
 import org.wolfTec.cwt.utility.beans.Bean;
 
-@Bean public class GameMapBean {
+@Bean
+public class GameMapBean {
 
   private Array<Array<Tile>> mapData;
   private int sizeX;
   private int sizeY;
 
-  @SuppressWarnings("unchecked") public GameMapBean(int maxSizeX, int maxSizeY) {
+  @SuppressWarnings("unchecked")
+  public GameMapBean(int maxSizeX, int maxSizeY) {
     this.setSizeX(maxSizeX);
     this.setSizeY(maxSizeY);
 

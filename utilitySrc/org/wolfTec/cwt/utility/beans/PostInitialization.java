@@ -10,6 +10,8 @@ import java.lang.annotation.Target;
  * called by the {@link BeanFactory} after the bean has initialized and it's
  * references been injected.
  */
-@Target(ElementType.METHOD) @Retention(RetentionPolicy.RUNTIME) public @interface PostInitialization {
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface PostInitialization {
 
 }

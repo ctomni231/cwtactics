@@ -1,6 +1,6 @@
 package org.wolfTec.cwt.game;
 
-public abstract class Constants {
+public abstract class EngineGlobals {
 
   /**
    * Current version of the running CustomWars: Tactics.
@@ -121,6 +121,14 @@ public abstract class Constants {
   public static final int ACTION_POOL_SIZE = 200;
 
   /**
+   * 
+   */
+  public static final int NETWORKBEAN_BUFFER_SIZE = 200;
+
+  public static final int INPUTBEAN_STACK_SIZE = 10;
+  public static final int INPUTBEAN_BUFFER_SIZE = 10;
+
+  /**
    *
    */
   public static final int ANIMATION_TICK_TIME = 150;
@@ -129,27 +137,47 @@ public abstract class Constants {
    * 
    */
   public static final int MENU_ELEMENTS_MAX = 10;
-  
+
   /**
    * 
    */
   public static final String CONFIRM_UNSUPPORTED_SYSTEM_MESSAGE = "Your system isn't supported by CW:T. Try to run it anyway?";
 
+  /**
+     *
+     */
+  public static final String CANNON_UNIT_INV = "CANNON_UNIT_INV";
+
+  /**
+     *
+     */
+  public static final String LASER_UNIT_INV = "LASER_UNIT_INV";
+
+  /**
+     *
+     */
+  public static final String PROP_INV = "PROP_INV";
+  /**
+  *
+  */
+public static final String NO_MOVE = "NO_MOVE";
+  
+  // ====================== STORAGE PARAMETER NAMES ======================
+
   public static final String STORAGE_PARAMETER_CACHED_CONTENT = "cwt_gameContent_cached";
-
   public static final String STORAGE_PARAMETER_MAP_PREFIX = "cwt_map_";
-
   public static final String STORAGE_PARAMETER_IMAGE_PREFIX = "cwt_image_";
-
   public static final String STORAGE_PARAMETER_SAVEGAME_PREFIX = "cwt_savegame_";
 
   // TODO - BIND THAT 3 CONFIGS TOGETHER ?
-  
   public static final String STORAGE_PARAMETER_INPUT_MAPPING = "cwt_input_mapping";
-  
   public static final String STORAGE_PARAMETER_AUDIO_VOLUME = "cwt_aduio_volume";
-  
   public static final String STORAGE_PARAMETER_APPLICATION_CONFIG = "cwt_app_config";
-
   // END OF - TODO - BIND THAT 3 CONFIGS TOGETHER ?
+
+  // ====================== STATE NAMES ======================
+
+  public static final String STATE_ERROR = "ERROR";
+  public static final String STATE_PORTRAIT = "PORTRAIT";
+  public static final String STATE_CHECK_CACHE = "CHECK_CACHE";
 }

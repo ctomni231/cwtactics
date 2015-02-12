@@ -6,17 +6,20 @@ import org.stjs.javascript.functions.Callback3;
 
 public class TestRuleBody implements AndGiven, TestRule {
 
-  @Override public AndGiven given(String pattern, Callback3<Array<Object>, Callback0, Callback0> handler) {
+  @Override
+  public AndGiven given(String pattern, Callback3<Array<Object>, Callback0, Callback0> handler) {
     // TODO Auto-generated method stub
     return null;
   }
 
-  @Override public AndGiven andGiven(String pattern, Callback3<Array<Object>, Callback0, Callback0> handler) {
+  @Override
+  public AndGiven andGiven(String pattern, Callback3<Array<Object>, Callback0, Callback0> handler) {
     // TODO Auto-generated method stub
     return null;
   }
 
-  @Override public AndThen then(String pattern, Callback3<Array<Object>, Callback0, Callback0> handler) {
+  @Override
+  public AndThen then(String pattern, Callback3<Array<Object>, Callback0, Callback0> handler) {
     // TODO Auto-generated method stub
     return null;
   }

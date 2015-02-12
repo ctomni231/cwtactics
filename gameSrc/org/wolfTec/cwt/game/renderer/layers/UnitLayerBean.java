@@ -5,7 +5,7 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.model.Direction;
 import org.wolfTec.cwt.game.model.GameMapBean;
 import org.wolfTec.cwt.game.model.GameRoundBean;
@@ -19,38 +19,47 @@ import org.wolfTec.cwt.game.renderer.SpriteManagerBean;
 import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
 
-@Bean public class UnitLayerBean extends ScreenLayer implements AnimatedLayer {
+@Bean
+public class UnitLayerBean extends ScreenLayer implements AnimatedLayer {
 
-  @Injected private SpriteManagerBean sprites;
-  @Injected private SpriteIndexBean spriteIndexes;
-  @Injected private GameRoundBean gameround;
+  @Injected
+  private SpriteManagerBean sprites;
+  @Injected
+  private SpriteIndexBean spriteIndexes;
+  @Injected
+  private GameRoundBean gameround;
 
   private Canvas temporaryCanvas = (Canvas) Global.window.document.createElement("canvas");
 
-  @Override public int getZIndex() {
-    return 3;
-  }
-  
-  @Override public int getSubStates() {
+  @Override
+  public int getZIndex() {
     return 3;
   }
 
-  @Override public String getLayerCanvasId() {
+  @Override
+  public int getSubStates() {
+    return 3;
+  }
+
+  @Override
+  public String getLayerCanvasId() {
     return "canvas_layer_Unit";
   }
-  
+
   private int hiddenUnitId;
 
   /** */
   public void setHiddenUnitId(int unitId) {
     hiddenUnitId = unitId;
   }
-  
-  @Override public boolean isDoubleStepAnimated() {
+
+  @Override
+  public boolean isDoubleStepAnimated() {
     return true;
   }
 
-  @Override public void onScreenShift(Direction dir, int offsetX, int offsetY, int amount, int scale) {
+  @Override
+  public void onScreenShift(Direction dir, int offsetX, int offsetY, int amount, int scale) {
     CanvasRenderingContext2D tmpContext = temporaryCanvas.getContext("2d");
 
     // calculate meta data for shift
@@ -63,23 +72,23 @@ import org.wolfTec.cwt.utility.beans.Injected;
     switch (dir) {
 
       case LEFT:
-        scx += Constants.TILE_BASE;
-        w -= Constants.TILE_BASE;
+        scx += EngineGlobals.TILE_BASE;
+        w -= EngineGlobals.TILE_BASE;
         break;
 
       case RIGHT:
-        sx += Constants.TILE_BASE;
-        w -= Constants.TILE_BASE;
+        sx += EngineGlobals.TILE_BASE;
+        w -= EngineGlobals.TILE_BASE;
         break;
 
       case UP:
-        scy += Constants.TILE_BASE;
-        h -= Constants.TILE_BASE;
+        scy += EngineGlobals.TILE_BASE;
+        h -= EngineGlobals.TILE_BASE;
         break;
 
       case DOWN:
-        sy += Constants.TILE_BASE;
-        h -= Constants.TILE_BASE;
+        sy += EngineGlobals.TILE_BASE;
+        h -= EngineGlobals.TILE_BASE;
         break;
     }
 
@@ -101,9 +110,11 @@ import org.wolfTec.cwt.utility.beans.Injected;
     }
   }
 
-  @Override public void onSetScreenPosition(int x, int oy, int offsetX, int offsetY) {
-    int halfTileBase = JSGlobal.parseInt(Constants.TILE_BASE / 2, 10);
-    Unit hiddenUnit = (hiddenUnitId != Constants.INACTIVE_ID ? gameround.getUnit(hiddenUnitId) : null);
+  @Override
+  public void onSetScreenPosition(int x, int oy, int offsetX, int offsetY) {
+    int halfTileBase = JSGlobal.parseInt(EngineGlobals.TILE_BASE / 2, 10);
+    Unit hiddenUnit = (hiddenUnitId != EngineGlobals.INACTIVE_ID ? gameround.getUnit(hiddenUnitId)
+        : null);
 
     for (int xe = x + w; x < xe; x++) {
       for (int y = oy, ye = y + h; y < ye; y++) {
@@ -118,7 +129,7 @@ import org.wolfTec.cwt.utility.beans.Injected;
         Sprite unitSprite = sprites.getSprite(unit.getType().ID);
 
         // grab color
-        int state = Constants.INACTIVE_ID;
+        int state = EngineGlobals.INACTIVE_ID;
         switch (unit.getOwner().id) {
           case 0:
             state = spriteIndexes.UNIT_RED;
@@ -138,7 +149,7 @@ import org.wolfTec.cwt.utility.beans.Injected;
         }
 
         // do we need to render an inverted image
-        int shadowState = Constants.INACTIVE_ID;
+        int shadowState = EngineGlobals.INACTIVE_ID;
         if (unit.getOwner().id % 2 == 0) {
           state += spriteIndexes.UNIT_STATE_IDLE_INVERTED;
           shadowState = spriteIndexes.UNIT_SHADOW_MASK + spriteIndexes.UNIT_STATE_IDLE_INVERTED;
@@ -153,14 +164,14 @@ import org.wolfTec.cwt.utility.beans.Injected;
         while (n < 3) {
           CanvasRenderingContext2D ctx = getContext(n);
 
-          int scx = (Constants.TILE_BASE * 2) * n;
+          int scx = (EngineGlobals.TILE_BASE * 2) * n;
           int scy = 0;
-          int scw = Constants.TILE_BASE * 2;
-          int sch = Constants.TILE_BASE * 2;
-          int tcx = (x - offsetX) * Constants.TILE_BASE - halfTileBase;
-          int tcy = (y - offsetY) * Constants.TILE_BASE - halfTileBase;
-          int tcw = Constants.TILE_BASE + Constants.TILE_BASE;
-          int tch = Constants.TILE_BASE + Constants.TILE_BASE;
+          int scw = EngineGlobals.TILE_BASE * 2;
+          int sch = EngineGlobals.TILE_BASE * 2;
+          int tcx = (x - offsetX) * EngineGlobals.TILE_BASE - halfTileBase;
+          int tcy = (y - offsetY) * EngineGlobals.TILE_BASE - halfTileBase;
+          int tcw = EngineGlobals.TILE_BASE + EngineGlobals.TILE_BASE;
+          int tch = EngineGlobals.TILE_BASE + EngineGlobals.TILE_BASE;
 
           ctx.drawImage(sprite, scx, scy, scw, sch, tcx, tcy, tcw, tch);
 
@@ -176,12 +187,15 @@ import org.wolfTec.cwt.utility.beans.Injected;
       }
     }
   }
-  
-  @Override public void onFullScreenRender() {
+
+  @Override
+  public void onFullScreenRender() {
     int x = screenOffsetX;
     int y = screenOffsetY;
-    int w = (gameround.getMapWidth() < Constants.SCREEN_WIDTH) ? gameround.getMapWidth() : Constants.SCREEN_WIDTH;
-    int h = (gameround.getMapHeight() < Constants.SCREEN_HEIGHT) ? gameround.getMapHeight() : Constants.SCREEN_HEIGHT;
+    int w = (gameround.getMapWidth() < EngineGlobals.SCREEN_WIDTH) ? gameround.getMapWidth()
+        : EngineGlobals.SCREEN_WIDTH;
+    int h = (gameround.getMapHeight() < EngineGlobals.SCREEN_HEIGHT) ? gameround.getMapHeight()
+        : EngineGlobals.SCREEN_HEIGHT;
 
     clearAll();
 

@@ -2,7 +2,8 @@ package org.wolfTec.cwt.game.renderer;
 
 import org.wolfTec.cwt.utility.beans.Bean;
 
-@Bean public class SpriteIndexBean {
+@Bean
+public class SpriteIndexBean {
 
   public final int TYPE_UNIT = 0;
   public final int TYPE_PROPERTY = 1;

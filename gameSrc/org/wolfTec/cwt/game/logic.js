@@ -616,44 +616,6 @@ var cfgFogEnabled = require("../config").getConfig("fogEnabled");
 
 
 
-/**
- * Joins two units together. If the combined health is greater than the maximum health then the difference will
- * be payed to the owners resource depot.
- *
- * @param source
- * @param x
- * @param y
- */
-exports.join = function (source, x, y) {
-    if (!source instanceof model.Unit || !model.isValidPosition(x, y)) {
-        throw new Error("IllegalArgumentType(s)");
-    }
-
-    var target = model.getTile(x, y).unit;
-    if (source.type !== target.type) {
-        throw new Error("IncompatibleJoinTypes");
-    }
-
-    // hp
-    target.heal(model.Unit.pointsToHealth(model.Unit.healthToPoints(source)), true);
-
-    // ammo
-    target.ammo += source.ammo;
-    if (target.ammo > target.type.ammo) {
-        target.ammo = target.type.ammo;
-    }
-
-    // fuel
-    target.fuel += source.fuel;
-    if (target.fuel > target.type.fuel) {
-        target.fuel = target.type.fuel;
-    }
-
-    // TODO experience points
-
-    // TODO use correct action here
-    cwt.Lifecycle.destroyUnit(x, y, true);
-};
 
 exports.action = {
     noAutoWait: true,
@@ -675,113 +637,6 @@ exports.action = {
 
 var cfgNoUnitsLeftLoose = require("../config").getConfig("noUnitsLeftLoose");
 
-
-//
-//
-// @param {number} x
-// @param {number} y
-// @param {cwt.Player|cwt.Unit|cwt.Property} player
-// @param type
-//
-exports.createUnit = function (x, y, player, type) {
-    if (constants.DEBUG) assert(model.isValidPosition(x, y));
-
-    var tile = model.mapData[x][y];
-
-    if (constants.DEBUG) assert(player instanceof model.Player && player.numberOfUnits < constants.MAX_UNITS);
-
-    var unit = exports.getInactiveUnit();
-
-    // set references
-    unit.owner = player;
-    tile.unit = unit;
-    player.numberOfUnits++;
-
-    unit.initByType(sheet.units.sheets[type]);
-
-    fog.addUnitVision(x, y, player);
-};
-
-//
-//
-// @param {number} x
-// @param {number} y
-// @param {boolean} silent
-//
-exports.destroyUnit = function (x, y, silent) {
-    var tile = model.mapData[x][y];
-
-    if (constants.DEBUG) assert(tile.unit);
-
-    fog.removeUnitVision(x, y, tile.unit.owner);
-
-    //TODO check loads
-
-    // remove references
-    var owner = tile.unit.owner;
-    owner.numberOfUnits--;
-
-    if (constants.DEBUG) assert(owner.numberOfUnits >= 0);
-
-    tile.unit.owner = null;
-    tile.unit = null;
-
-    // end game when the player does not have any unit left
-    if (cfgNoUnitsLeftLoose.value === 1 && owner.numberOfUnits === 0) {
-        this.deactivatePlayer(owner);
-    }
-};
-
-//
-// A player has loosed the game round due a specific reason. This
-// function removes all of his units and properties. Furthermore
-// the left teams will be checked. If only one team is left then
-// the end game event will be invoked.
-//
-// @param {cwt.Player} player
-//
-exports.deactivatePlayer = function (player) {
-
-    // drop units
-    if (constants.DEBUG) assert(player instanceof model.Player);
-
-    for (var i = 0, e = model.units.length; i < e; i++) {
-        var unit = model.units[i];
-        if (unit.owner === player) {
-            // TODO
-        }
-    }
-
-    // drop properties
-    for (var i = 0, e = model.properties.length; i < e; i++) {
-        var prop = model.properties[i];
-        if (prop.owner === player) {
-            prop.makeNeutral();
-
-            // TODO: change type when the property is a changing type property
-            var changeType = prop.type.changeAfterCaptured;
-        }
-    }
-
-    player.deactivate();
-
-    // when no opposite teams are found then the game has ended
-    if (!model.areEnemyTeamsLeft()) {
-        // TODO
-    }
-};
-
-//
-//
-// @return {boolean}
-//
-exports.hasFreeUnitSlot = function (player) {
-    return player.numberOfUnits < model.Player.MAX_UNITS;
-};
-
-exports.destroyUnitAction = {
-
-};
 
 // --------------------------------------------------------------------------------------------------------
 
@@ -1073,80 +928,6 @@ exports.action = {
 // --------------------------------------------------------------------------------------------------------
 
 
-/**
- * Returns **true** if the **unit** is capable to self destruct.
- *
- * @param unit
- * @returns {boolean}
- */
-exports.canSelfDestruct = function (unit) {
-    if (!unit instanceof model.Unit) {
-        throw new Error("IllegalArgumentType");
-    }
-
-    return unit.type.suicide !== undefined;
-};
-
-/**
- * Returns the **health** that will be damaged by an explosion of the exploder **unit**.
- *
- * @param unit
- * @returns {number}
- */
-exports.getExplosionDamage = function (unit) {
-    if (!unit instanceof model.Unit) {
-        throw new Error("IllegalArgumentType");
-    }
-
-    return model.Unit.pointsToHealth(unit.type.suicide.damage);
-};
-
-/**
- *
- * @param {number} x
- * @param {number} y
- * @param {number} tile
- * @param {number} damage
- */
-var doDamage = function (x, y, tile, damage) {
-    if (!model.isValidPosition(x, y) || !tile instanceof model.Tile || typeof damage !== "number") {
-        throw new Error("IllegalArgumentType(s)");
-    }
-
-    if (tile.unit) {
-
-        // TODO use command from attack here
-        tile.unit.takeDamage(damage, 9);
-    }
-}
-// TODO: silo should use this for the impact
-
-
-/**
- * Invokes an explosion with a given **range** at position (**x**,**y**). All units in the **range** will be
- * damaged by the value **damage**. The health of an unit in range will never be lower than 9 health after
- * the explosion (means it will have 1HP left).
- *
- * @param {number} x
- * @param {number} y
- * @param {number} range
- * @param {number} damage
- */
-var explode = function (x, y, range, damage) {
-    if (!model.isValidPosition(x, y)) {
-        throw new Error("IllegalArgumentType(s)");
-    }
-
-    var tile = model.getTile(x, y);
-    if (!exports.canSelfDestruct(tile.unit) || range < 1 || damage < 1 ) {
-        throw new Error("IllegalArgumentType(s)");
-    }
-
-    // TODO use command from attack here
-    cwt.Lifecycle.destroyUnit(x, y, false);
-
-    model.doInRange(x, y, range, doDamage, damage);
-};
 
 exports.action = {
     noAutoWait: true,
@@ -1225,34 +1006,6 @@ exports.actionActivate = {
  }
  });
  */
-
-/**
- * The **unit** captures the **property**. When the capture points of the **property** falls down to zero, then
- * the owner of the **property** changes to the owner of the capturing **unit** and **true** will be returned. If
- * the capture points does not fall down to zero then **false** will be returned.
- *
- * @param property
- * @param unit
- * @returns {boolean} true when captured successfully, else when still some capture points left
- */
-exports.captureProperty = function (property, unit) {
-    if (!property instanceof model.Property || !unit instanceof model.Unit) {
-        throw new Error("IllegalArgumentType");
-    }
-
-    property.points -= model.Property.CAPTURE_STEP;
-    if (property.points <= 0) {
-        property.owner = unit.owner;
-        property.points = model.Property.CAPTURE_POINTS;
-        // TODO: if max points are static then the configurable points from the property sheets can be removed
-
-        // was captured
-        return true;
-    }
-
-    // was not captured
-    return false;
-};
 
 exports.action = {
     relation: ["S", "T", relation.RELATION_SAME_THING, relation.RELATION_NONE],

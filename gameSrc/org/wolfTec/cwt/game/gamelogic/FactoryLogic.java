@@ -1,7 +1,7 @@
 package org.wolfTec.cwt.game.gamelogic;
 
 import org.stjs.javascript.JSGlobal;
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.model.Property;
 
 public interface FactoryLogic extends CaptureLogic, BaseLogic {
@@ -35,7 +35,8 @@ public interface FactoryLogic extends CaptureLogic, BaseLogic {
 
     // check unit limit and left slots
     int unitLimit = getGameConfig().getConfigValue("unitLimit");
-    if (prop.owner.numberOfUnits >= unitLimit || prop.owner.numberOfUnits >= Constants.MAX_UNITS) {
+    if (prop.owner.numberOfUnits >= unitLimit
+        || prop.owner.numberOfUnits >= EngineGlobals.MAX_UNITS) {
       return false;
     }
 

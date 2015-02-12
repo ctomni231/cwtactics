@@ -42,8 +42,9 @@ public interface WeatherLogic extends BaseLogic {
    * @return {number}
    */
   default int generateDuration(WeatherType type) {
-    return (type == getDefaultWeather() ? 1 : (getGameConfig().getConfigValue("weatherMinDays") + JSGlobal.parseInt(
-        getGameConfig().getConfigValue("weatherRandomDays") * Math.random(), 10)));
+    return (type == getDefaultWeather() ? 1
+        : (getGameConfig().getConfigValue("weatherMinDays") + JSGlobal.parseInt(getGameConfig()
+            .getConfigValue("weatherRandomDays") * Math.random(), 10)));
   }
 
   default void changeWeatherAction(WeatherType weather, int duration) {

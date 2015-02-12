@@ -7,7 +7,7 @@ public class AssetItem {
     this.name = name;
     this.type = type;
   }
-  
+
   public String path;
   public String name;
   public AssetType type;

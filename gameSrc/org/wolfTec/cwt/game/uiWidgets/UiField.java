@@ -5,7 +5,7 @@ import org.stjs.javascript.annotation.Template;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.stjs.javascript.dom.canvas.CanvasTextMetrics;
 import org.stjs.javascript.functions.Callback0;
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.Game;
 import org.wolfTec.cwt.game.localization.LocalizationBean;
 import org.wolfTec.cwt.game.utility.ObjectUtil;
@@ -53,11 +53,13 @@ public class UiField {
     this.inactive = false;
 
     this.key = text;
-    this.text = ObjectUtil.notEmpty(text) ? ((LocalizationBean) Game.getBean("i18n")).forKey(text) : text;
+    this.text = ObjectUtil.notEmpty(text) ? ((LocalizationBean) Game.getBean("i18n")).forKey(text)
+        : text;
     JSStringAdapter.split("/\\n/", "\n");
   }
 
-  @Template("toProperty") public boolean isInactive() {
+  @Template("toProperty")
+  public boolean isInactive() {
     return inactive;
   }
 
@@ -165,12 +167,12 @@ public class UiField {
     }
 
     ctx.fillStyle = "black";
-    ctx.font = this.fsize + "pt " + Constants.GAME_FONT;
+    ctx.font = this.fsize + "pt " + EngineGlobals.GAME_FONT;
 
     if (this.text != null && this.text.length() > 0) {
       CanvasTextMetrics tw = ctx.measureText(this.text);
-      ctx.fillText(this.text, this.x + (this.width / 2) - (tw.width / 2), this.y + (this.height / 2) + this.fsize / 2,
-          width);
+      ctx.fillText(this.text, this.x + (this.width / 2) - (tw.width / 2), this.y
+          + (this.height / 2) + this.fsize / 2, width);
     }
   }
 }

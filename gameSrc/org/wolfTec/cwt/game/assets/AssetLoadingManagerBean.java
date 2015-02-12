@@ -5,7 +5,7 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.log.Logger;
 import org.wolfTec.cwt.game.persistence.StorageBean;
 import org.wolfTec.cwt.game.utility.BrowserHelperBean;
@@ -15,21 +15,27 @@ import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 import org.wolfTec.cwt.utility.beans.InjectedByInterface;
 import org.wolfTec.cwt.utility.beans.PostInitialization;
 
-@Bean public class AssetLoadingManagerBean {
+@Bean
+public class AssetLoadingManagerBean {
 
-  @InjectedByFactory private Logger log;
+  @InjectedByFactory
+  private Logger log;
 
-  @InjectedByInterface private Array<AssetLoader> loaderListeners;
+  @InjectedByInterface
+  private Array<AssetLoader> loaderListeners;
 
-  @Injected private BrowserHelperBean browser;
+  @Injected
+  private BrowserHelperBean browser;
 
-  @Injected private StorageBean storage;
+  @Injected
+  private StorageBean storage;
 
   private boolean completed;
 
   private Callback1<Callback> loadModification;
 
-  @PostInitialization public void init() {
+  @PostInitialization
+  public void init() {
     loadModification = (cb) -> {
 
     };
@@ -53,7 +59,7 @@ import org.wolfTec.cwt.utility.beans.PostInitialization;
       completeCb.$invoke();
     };
 
-    storage.get(Constants.STORAGE_PARAMETER_CACHED_CONTENT, entry -> {
+    storage.get(EngineGlobals.STORAGE_PARAMETER_CACHED_CONTENT, entry -> {
       if (entry.value != null) {
         grabAndCacheContent(() -> {
           loadContent(callback);
@@ -68,10 +74,12 @@ import org.wolfTec.cwt.utility.beans.PostInitialization;
 
   }
 
-  @SuppressWarnings("unchecked") private void loadContent(Callback0 callback) {
+  @SuppressWarnings("unchecked")
+  private void loadContent(Callback0 callback) {
     Array<Callback1<Callback0>> fns = JSCollections.$array();
 
-    fns.push((next) -> publishLoadEvent(new AssetItem(Constants.DEFAULT_MOD_PATH, null, AssetType.MODIFICATION), next));
+    fns.push((next) -> publishLoadEvent(new AssetItem(EngineGlobals.DEFAULT_MOD_PATH, null,
+        AssetType.MODIFICATION), next));
   }
 
   private void publishGrabAndCacheEvent(AssetItem item, Callback0 callback) {
@@ -82,7 +90,8 @@ import org.wolfTec.cwt.utility.beans.PostInitialization;
 
   }
 
-  private void publishEventTo(Array<Callback1<Callback0>> queue, AssetLoader loader, AssetItem item, Callback0 callback) {
+  private void publishEventTo(Array<Callback1<Callback0>> queue, AssetLoader loader,
+      AssetItem item, Callback0 callback) {
 
   }
 

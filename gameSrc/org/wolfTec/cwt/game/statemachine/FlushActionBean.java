@@ -9,7 +9,8 @@ import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
 import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 
-@Bean public class FlushActionBean {
+@Bean
+public class FlushActionBean {
 
   public final String WAIT = "wait";
   public final String HIDE = "hideUnit";
@@ -21,21 +22,27 @@ import org.wolfTec.cwt.utility.beans.InjectedByFactory;
   public final String TRANSFER_PROPERTY = "transferProperty";
   public final String TRANSFER_UNIT = "transferUnit";
 
-  @InjectedByFactory private Logger log;
+  @InjectedByFactory
+  private Logger log;
 
-  @Injected private StateDataBean stateData;
+  @Injected
+  private StateDataBean stateData;
 
-  @Injected private GameLogicBean logic;
-  @Injected private GameRoundBean gameround;
-  @Injected private StateMachineBean stateMachine;
+  @Injected
+  private GameLogicBean logic;
+  @Injected
+  private GameRoundBean gameround;
+  @Injected
+  private StateMachineBean stateMachine;
 
-  @Injected private UnitLayerBean unitLayer;
+  @Injected
+  private UnitLayerBean unitLayer;
 
-  public void initMenuByMapClick(StateDataMenu menu) {
+  public void initMenuByMapClick(ActionMenu menu) {
 
   }
 
-  public void initMenuByUnitClick(StateDataMenu menu) {
+  public void initMenuByUnitClick(ActionMenu menu) {
     Unit unit = null; // TODO
 
     if (unit.getType().stealth) { // TODO S,T NONE - SAME
@@ -45,7 +52,7 @@ import org.wolfTec.cwt.utility.beans.InjectedByFactory;
     menu.addEntry(WAIT, true); // TODO S,T NONE - SAME
   }
 
-  public void initMenuByPropertyClick(StateDataMenu menu) {
+  public void initMenuByPropertyClick(ActionMenu menu) {
 
   }
 

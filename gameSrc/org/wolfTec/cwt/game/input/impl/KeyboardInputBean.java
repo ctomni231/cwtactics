@@ -14,19 +14,24 @@ import org.wolfTec.cwt.utility.beans.Injected;
 import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 import org.wolfTec.cwt.utility.beans.PostInitialization;
 
-@Bean public class KeyboardInputBean implements InputBackend, InputMappable {
+@Bean
+public class KeyboardInputBean implements InputBackend, InputMappable {
 
   public final int CONSOLE_TOGGLE_KEY = 192;
 
-  @InjectedByFactory private Logger log;
-  @Injected private InputBean input;
-  @Injected private StateMachineBean stm;
+  @InjectedByFactory
+  private Logger log;
+  @Injected
+  private InputBean input;
+  @Injected
+  private StateMachineBean stm;
 
   private Map<String, Integer> mapping;
-  
+
   private Function1<DOMEvent, Boolean> keyboardHandler;
 
-  @PostInitialization public void init(BeanFactory engine) {
+  @PostInitialization
+  public void init(BeanFactory engine) {
 
     // add default mapping
     mapping = JSCollections.$map();
@@ -36,7 +41,7 @@ import org.wolfTec.cwt.utility.beans.PostInitialization;
     mapping.$put(InputTypeKey.RIGHT.name(), 39);
     mapping.$put(InputTypeKey.A.name(), 13);
     mapping.$put(InputTypeKey.B.name(), 8);
-    
+
     keyboardHandler = (event) -> {
       int keyCode = JSObjectAdapter.$js("event.keyCode");
 
@@ -62,24 +67,29 @@ import org.wolfTec.cwt.utility.beans.PostInitialization;
     };
   }
 
-  @Override public Map<String, Integer> getInputMapping() {
+  @Override
+  public Map<String, Integer> getInputMapping() {
     return mapping;
   }
-  
-  @Override public String getInputMappingName() {
+
+  @Override
+  public String getInputMappingName() {
     return "keyboard";
   }
-  
-  @Override public void setInputMapping(Map<String, Integer> map) {
+
+  @Override
+  public void setInputMapping(Map<String, Integer> map) {
     mapping = map;
   }
 
-  @Override public void enable() {
+  @Override
+  public void enable() {
     log.info("disable keyboard input");
     JSObjectAdapter.$js("targetElement.onkeydown = this.keyboardHandler");
   }
 
-  @Override public void disable() {
+  @Override
+  public void disable() {
     log.info("disable keyboard input");
     JSObjectAdapter.$js("targetElement.onkeydown = null");
   }

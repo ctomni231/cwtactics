@@ -6,7 +6,8 @@ import org.wolfTec.cwt.utility.beans.Bean;
 /**
  * Utility class to male assertions for given statements.
  */
-@Bean public class AssertUtilyBean {
+@Bean
+public class AssertUtilyBean {
 
   public void notNull(Object obj) {
     if (obj == null) throw new Error("NullPointerException");

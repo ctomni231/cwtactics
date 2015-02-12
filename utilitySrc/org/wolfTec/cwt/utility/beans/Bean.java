@@ -9,6 +9,8 @@ import java.lang.annotation.Target;
  * This annotation marks a class as bean and it will be instantiated by the
  * {@link BeanFactory} on startup.
  */
-@Target(ElementType.TYPE) @Retention(RetentionPolicy.RUNTIME) public @interface Bean {
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Bean {
 
 }

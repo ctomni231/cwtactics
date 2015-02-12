@@ -1,15 +1,14 @@
 package org.wolfTec.cwt.game.model;
 
-
 public class Tile {
 
-  public Unit     unit;
+  public Unit unit;
   public Property property;
   public TileType type;
 
-  public int      visionTurnOwner = 0;
-  public int      variant         = 0;
-  public int      visionClient    = 0;
+  public int visionTurnOwner = 0;
+  public int variant = 0;
+  public int visionClient = 0;
 
   /**
    *

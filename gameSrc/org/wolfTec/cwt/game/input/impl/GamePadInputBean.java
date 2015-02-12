@@ -2,7 +2,7 @@ package org.wolfTec.cwt.game.input.impl;
 
 import org.stjs.javascript.*;
 import org.stjs.javascript.functions.Callback0;
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.Game;
 import org.wolfTec.cwt.game.input.InputBackend;
 import org.wolfTec.cwt.game.input.InputBackendType;
@@ -19,21 +19,26 @@ import org.wolfTec.cwt.utility.beans.PostInitialization;
 
 import static org.stjs.javascript.JSObjectAdapter.*;
 
-@Bean public class GamePadInputBean implements InputBackend, InputMappable {
+@Bean
+public class GamePadInputBean implements InputBackend, InputMappable {
 
   private boolean vendorAPI;
 
-  @InjectedByFactory private Logger log;
-  @Injected private InputBean input;
-  @Injected private StateMachineBean stm;
+  @InjectedByFactory
+  private Logger log;
+  @Injected
+  private InputBean input;
+  @Injected
+  private StateMachineBean stm;
 
   private Map<String, Integer> mapping;
 
   private boolean enabled;
 
   private final Array<Integer> prevTimestamps = JSCollections.$array();
-  
-  @PostInitialization public void init(BeanFactory engine) {
+
+  @PostInitialization
+  public void init(BeanFactory engine) {
 
     // register default mapping
     mapping = JSCollections.$map();
@@ -43,19 +48,23 @@ import static org.stjs.javascript.JSObjectAdapter.*;
     vendorAPI = $js("(navigator.getGamepads === undefined)");
   }
 
-  @Override public Map<String, Integer> getInputMapping() {
+  @Override
+  public Map<String, Integer> getInputMapping() {
     return mapping;
   }
-  
-  @Override public String getInputMappingName() {
+
+  @Override
+  public String getInputMappingName() {
     return "gamepad";
   }
-  
-  @Override public void setInputMapping(Map<String, Integer> map) {
+
+  @Override
+  public void setInputMapping(Map<String, Integer> map) {
     mapping = map;
   }
 
-  @Override public void update(int delta) {
+  @Override
+  public void update(int delta) {
     if (enabled) {
 
       Array<?> gamePads = $js("vendorAPI ? navigator.webkitGetGamepads() : navigator.getGamepads()");
@@ -118,25 +127,27 @@ import static org.stjs.javascript.JSObjectAdapter.*;
 
     // invoke input event when a known key was pressed
     if (key != null) {
-      input.pushAction(key, Constants.INACTIVE_ID, Constants.INACTIVE_ID);
+      input.pushAction(key, EngineGlobals.INACTIVE_ID, EngineGlobals.INACTIVE_ID);
     }
   }
 
-  @Override public void enable() {
+  @Override
+  public void enable() {
     log.info("enable gamepad input");
     enabled = true;
   }
 
-  @Override public void disable() {
+  @Override
+  public void disable() {
     log.info("disable gamepad input");
     enabled = false;
   }
-  
-  public void saveConfig (Callback0 callback) {
-    
+
+  public void saveConfig(Callback0 callback) {
+
   }
-  
-  public void loadConfig (Callback0 callback) {
-    
+
+  public void loadConfig(Callback0 callback) {
+
   }
 }

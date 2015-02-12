@@ -2,7 +2,7 @@ package org.wolfTec.cwt.game.gamelogic;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.Map;
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.model.Property;
 import org.wolfTec.cwt.game.model.Tile;
 import org.wolfTec.cwt.game.model.Unit;
@@ -25,10 +25,10 @@ public interface SupplyLogic extends BaseLogic, LifecycleLogic {
    */
   default void drainFuel(Unit unit) {
     int v = unit.getType().dailyFuelDrain;
-    if (v != Constants.INACTIVE_ID) {
+    if (v != EngineGlobals.INACTIVE_ID) {
 
       // hidden units may drain more fuel
-      if (unit.isHidden() && unit.getType().dailyFuelDrainHidden != Constants.INACTIVE_ID) {
+      if (unit.isHidden() && unit.getType().dailyFuelDrainHidden != EngineGlobals.INACTIVE_ID) {
         v = unit.getType().dailyFuelDrainHidden;
       }
 

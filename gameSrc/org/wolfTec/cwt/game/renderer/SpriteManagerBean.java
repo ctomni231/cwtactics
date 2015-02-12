@@ -16,10 +16,13 @@ import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
 import org.wolfTec.cwt.utility.beans.PostInitialization;
 
-@Bean public class SpriteManagerBean implements AssetLoader {
+@Bean
+public class SpriteManagerBean implements AssetLoader {
 
-  @Injected private BrowserHelperBean browserUtil;
-  @Injected private AssertUtilyBean assertUtil;
+  @Injected
+  private BrowserHelperBean browserUtil;
+  @Injected
+  private AssertUtilyBean assertUtil;
 
   /** */
   private Map<String, Sprite> sprites;
@@ -33,20 +36,23 @@ import org.wolfTec.cwt.utility.beans.PostInitialization;
   /** */
   private Map<String, Integer> minimapIndex;
 
-  @PostInitialization public void init() {
+  @PostInitialization
+  public void init() {
     sprites = JSCollections.$map();
     overlayTiles = JSCollections.$map();
     longAnimatedTiles = JSCollections.$map();
     minimapIndex = JSCollections.$map();
   }
 
-  @Override public void loadAsset(StorageBean storage, AssetItem item, Callback0 callback) {
+  @Override
+  public void loadAsset(StorageBean storage, AssetItem item, Callback0 callback) {
     if (item.type == AssetType.IMAGES) {
 
     }
   }
 
-  @Override public void grabAsset(StorageBean storage, AssetItem item, Callback0 callback) {
+  @Override
+  public void grabAsset(StorageBean storage, AssetItem item, Callback0 callback) {
     if (item.type == AssetType.IMAGES) {
 
     }

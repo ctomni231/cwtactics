@@ -2,7 +2,7 @@ package org.wolfTec.cwt.game.gamelogic;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.log.Logger;
 import org.wolfTec.cwt.game.model.GameMap;
 import org.wolfTec.cwt.game.model.GameMode;
@@ -13,12 +13,17 @@ import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
 import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 
-@Bean public class GameRoundSetupBean {
+@Bean
+public class GameRoundSetupBean {
 
-  @InjectedByFactory public Logger log;
-  @Injected private ObjectTypesBean typeDb;
-  @Injected private GameRoundBean gameround;
-  @Injected private LifecycleLogic lifecycle;
+  @InjectedByFactory
+  public Logger log;
+  @Injected
+  private ObjectTypesBean typeDb;
+  @Injected
+  private GameRoundBean gameround;
+  @Injected
+  private LifecycleLogic lifecycle;
 
   private GameMap map = null;
 
@@ -82,7 +87,8 @@ import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 
       case GAME_TYPE:
         GameMode gameMode = gameround.getGameMode();
-        gameMode = gameMode == GameMode.ADVANCE_WARS_1 ? GameMode.ADVANCE_WARS_1 : GameMode.ADVANCE_WARS_2;
+        gameMode = gameMode == GameMode.ADVANCE_WARS_1 ? GameMode.ADVANCE_WARS_1
+            : GameMode.ADVANCE_WARS_2;
         gameround.setGameMode(gameMode);
         break;
 
@@ -90,14 +96,14 @@ import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 
       case PLAYER_TYPE:
         cSelect = type.$get(pid);
-        if (cSelect == Constants.DESELECT_ID) break;
+        if (cSelect == EngineGlobals.DESELECT_ID) break;
 
         if (prev) {
           cSelect--;
-          if (cSelect < Constants.INACTIVE_ID) cSelect = 1;
+          if (cSelect < EngineGlobals.INACTIVE_ID) cSelect = 1;
         } else {
           cSelect++;
-          if (cSelect >= 2) cSelect = Constants.INACTIVE_ID;
+          if (cSelect >= 2) cSelect = EngineGlobals.INACTIVE_ID;
         }
 
         type.$set(pid, cSelect);
@@ -122,7 +128,7 @@ import org.wolfTec.cwt.utility.beans.InjectedByFactory;
           // check team selection -> at least two different teams has to be set
           // all times
           boolean sameTeam = false;
-          for (int i = 0, e = Constants.MAX_PLAYER; i < e; i++) {
+          for (int i = 0, e = EngineGlobals.MAX_PLAYER; i < e; i++) {
             if (i == pid) continue;
 
             if (type.$get(i) >= 0 && team.$get(i) != cSelect) {
@@ -145,7 +151,7 @@ import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 
     // create pre-set data which would allow to start the game round (enables
     // fast game round mode)
-    for (int i = 0, e = Constants.MAX_PLAYER; i < e; i++) {
+    for (int i = 0, e = EngineGlobals.MAX_PLAYER; i < e; i++) {
       co.$set(i, null);
 
       if (i < map.player) {
@@ -153,7 +159,7 @@ import org.wolfTec.cwt.utility.beans.InjectedByFactory;
         team.$set(i, i);
 
       } else {
-        team.$set(i, Constants.DESELECT_ID);
+        team.$set(i, EngineGlobals.DESELECT_ID);
         type.$set(i, 0);
       }
     }
@@ -171,7 +177,7 @@ import org.wolfTec.cwt.utility.beans.InjectedByFactory;
     // model.events.client_deregisterPlayers();
 
     boolean onlyAI = true;
-    for (int i = 0, e = Constants.MAX_PLAYER; i < e; i++) {
+    for (int i = 0, e = EngineGlobals.MAX_PLAYER; i < e; i++) {
       if (type.$get(i) == 0) {
         onlyAI = false;
         break;
@@ -180,7 +186,7 @@ import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 
     // update model
     int turnOwnerTeam = gameround.getTurnOwner().team;
-    for (int i = 0, e = Constants.MAX_PLAYER; i < e; i++) {
+    for (int i = 0, e = EngineGlobals.MAX_PLAYER; i < e; i++) {
       Player player = gameround.getPlayer(i);
 
       if (type.$get(i) >= 0) {
@@ -202,8 +208,8 @@ import org.wolfTec.cwt.utility.beans.InjectedByFactory;
         }
 
         int coId = co.$get(i);
-        player.mainCo = (coId != Constants.INACTIVE_ID) ? typeDb
-            .getCommanderType(typeDb.getCommanderTypes().$get(coId).ID) : null;
+        player.mainCo = (coId != EngineGlobals.INACTIVE_ID) ? typeDb.getCommanderType(typeDb
+            .getCommanderTypes().$get(coId).ID) : null;
 
       } else {
         // Why another disable here ? There is the possibility that a map has

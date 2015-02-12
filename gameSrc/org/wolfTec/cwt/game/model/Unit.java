@@ -28,63 +28,78 @@ public class Unit implements PlayerObject {
     this.setCanAct(false);
   }
 
-  @Template("toProperty") public int getHp() {
+  @Template("toProperty")
+  public int getHp() {
     return hp;
   }
 
-  @Template("toProperty") public void setHp(int hp) {
+  @Template("toProperty")
+  public void setHp(int hp) {
     this.hp = hp;
   }
 
-  @Template("toProperty") public int getAmmo() {
+  @Template("toProperty")
+  public int getAmmo() {
     return ammo;
   }
 
-  @Template("toProperty") public void setAmmo(int ammo) {
+  @Template("toProperty")
+  public void setAmmo(int ammo) {
     this.ammo = ammo;
   }
 
-  @Template("toProperty") public int getFuel() {
+  @Template("toProperty")
+  public int getFuel() {
     return fuel;
   }
 
-  @Template("toProperty") public void setFuel(int fuel) {
+  @Template("toProperty")
+  public void setFuel(int fuel) {
     this.fuel = fuel;
   }
 
-  @Template("toProperty") public boolean isHidden() {
+  @Template("toProperty")
+  public boolean isHidden() {
     return hidden;
   }
 
-  @Template("toProperty") public void setHidden(boolean hidden) {
+  @Template("toProperty")
+  public void setHidden(boolean hidden) {
     this.hidden = hidden;
   }
 
-  @Template("toProperty") public boolean isCanAct() {
+  @Template("toProperty")
+  public boolean isCanAct() {
     return canAct;
   }
 
-  @Template("toProperty") public void setCanAct(boolean canAct) {
+  @Template("toProperty")
+  public void setCanAct(boolean canAct) {
     this.canAct = canAct;
   }
 
-  @Template("toProperty") public Unit getLoadedIn() {
+  @Template("toProperty")
+  public Unit getLoadedIn() {
     return loadedIn;
   }
 
-  @Template("toProperty") public void setLoadedIn(Unit loadedIn) {
+  @Template("toProperty")
+  public void setLoadedIn(Unit loadedIn) {
     this.loadedIn = loadedIn;
   }
 
-  @Template("toProperty") public UnitType getType() {
+  @Template("toProperty")
+  public UnitType getType() {
     return type;
   }
 
-  @Template("toProperty") public void setType(UnitType type) {
+  @Template("toProperty")
+  public void setType(UnitType type) {
     this.type = type;
   }
 
-  @Template("toProperty") public void setOwner(Player owner) {
+  @Template("toProperty")
+  public void setOwner(Player owner) {
     this.owner = owner;
   }
 
@@ -127,7 +142,8 @@ public class Unit implements PlayerObject {
     return health - healthToPoints(health);
   }
 
-  @Override public Player getOwner() {
+  @Override
+  public Player getOwner() {
     return owner;
   }
 }

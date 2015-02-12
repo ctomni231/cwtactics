@@ -1,6 +1,6 @@
 package org.wolfTec.cwt.game.gamelogic;
 
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.model.CoPowerLevel;
 import org.wolfTec.cwt.game.model.Player;
 
@@ -47,7 +47,7 @@ public interface CommanderLogic extends BaseLogic {
       return false;
     }
 
-    int stars = Constants.INACTIVE_ID;
+    int stars = EngineGlobals.INACTIVE_ID;
     switch (level) {
 
       case OFF:

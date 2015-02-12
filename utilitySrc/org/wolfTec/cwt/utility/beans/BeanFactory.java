@@ -5,7 +5,7 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
 
 public class BeanFactory {
 
@@ -65,7 +65,8 @@ public class BeanFactory {
     Array<T> list = JSCollections.$array();
     Array<String> beanNames = JSObjectAdapter.$js("Object.keys(this.beans)");
     for (String beanName : beanNames) {
-      if ((boolean) JSObjectAdapter.$js("beans[beanName].constructor.$inherit.indexOf(intfcName) !== -1")) {
+      if ((boolean) JSObjectAdapter
+          .$js("beans[beanName].constructor.$inherit.indexOf(intfcName) !== -1")) {
         list.push(JSObjectAdapter.$js("beans[beanName]"));
       }
     }
@@ -97,7 +98,7 @@ public class BeanFactory {
    * code. Modify only if you know what you're doing here.
    */
   private void solveDependencies() {
-    boolean isDebugEnabled = Constants.DEBUG;
+    boolean isDebugEnabled = EngineGlobals.DEBUG;
 
     // search in all beans for properties with a leading '$' character. This
     // properties are references to beans. Place the right bean into this
@@ -110,14 +111,16 @@ public class BeanFactory {
       Array<String> beanProperties = JSObjectAdapter.$js("Object.keys(bean)");
       for (String property : beanProperties) {
 
-        boolean hasTypeDescription = JSObjectAdapter.$js("bean.constructor.$typeDescription.hasOwnProperty(property)");
+        boolean hasTypeDescription = JSObjectAdapter
+            .$js("bean.constructor.$typeDescription.hasOwnProperty(property)");
         if (hasTypeDescription) {
 
           // extract full class name (including namespace) from type description
           String propertyClass = JSObjectAdapter.$js("bean.constructor.$typeDescription[property]");
 
           if (propertyClass == "Logger") {
-            JSObjectAdapter.$js("bean[property] = LogJS.get({name: beanName, enabled: isDebugEnabled})");
+            JSObjectAdapter
+                .$js("bean[property] = LogJS.get({name: beanName, enabled: isDebugEnabled})");
 
           } else if (propertyClass.endsWith("Bean")) {
             // remove namespace from propertyClass

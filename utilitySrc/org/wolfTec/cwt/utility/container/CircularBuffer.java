@@ -11,7 +11,7 @@ import org.stjs.javascript.annotation.Template;
  * @param <T>
  */
 public class CircularBuffer<T> {
-  
+
   public static final int DEFAULT_SIZE = 32;
 
   private int index;
@@ -19,7 +19,8 @@ public class CircularBuffer<T> {
   private Array<T> data;
   private int maxSize;
 
-  @SuppressWarnings("unchecked") public CircularBuffer(int maxSize) {
+  @SuppressWarnings("unchecked")
+  public CircularBuffer(int maxSize) {
     if (maxSize <= 0) throw new IllegalArgumentException("size cannot be 0 or lower");
 
     this.index = 0;
@@ -28,7 +29,8 @@ public class CircularBuffer<T> {
     this.maxSize = maxSize;
   }
 
-  @Template("toProperty") public int getSize() {
+  @Template("toProperty")
+  public int getSize() {
     return this.size;
   }
 

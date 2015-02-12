@@ -5,9 +5,11 @@ import org.wolfTec.cwt.game.model.Player;
 import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 
-@Bean public class ArtificialInteligenceBean {
+@Bean
+public class ArtificialInteligenceBean {
 
-  @InjectedByFactory private Logger log;
+  @InjectedByFactory
+  private Logger log;
 
   /*
    * 

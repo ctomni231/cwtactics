@@ -1,6 +1,5 @@
 package org.wolfTec.cwt.game.input;
 
-
 public enum InputTypeKey {
   UP, DOWN, LEFT, RIGHT, A, B,
 

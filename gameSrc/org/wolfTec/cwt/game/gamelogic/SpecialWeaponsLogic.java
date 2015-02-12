@@ -114,5 +114,73 @@ var doDamage = function (x, y, tile, damage) {
     int range = type.rocketsilo.range;
 
     model.doInRange(tx, ty, range, doDamage, damage);
-  };
+  }
+  
+
+/**
+ * Returns **true** if the **unit** is capable to self destruct.
+ *
+ * @param unit
+ * @returns {boolean}
+ */
+default boolean canSelfDestruct (Unit unit) {
+    return unit.getType().suicide != null;
+}
+
+/**
+ * Returns the **health** that will be damaged by an explosion of the exploder **unit**.
+ *
+ * @param unit
+ * @returns {number}
+ */
+default int getExplosionDamage (Unit unit) {
+    return Unit.pointsToHealth(unit.getType().suicide.damage);
+}
+
+/**
+ *
+ * @param {number} x
+ * @param {number} y
+ * @param {number} tile
+ * @param {number} damage
+ */
+var doDamage = function (x, y, tile, damage) {
+    if (!model.isValidPosition(x, y) || !tile instanceof model.Tile || typeof damage !== "number") {
+        throw new Error("IllegalArgumentType(s)");
+    }
+
+    if (tile.unit) {
+
+        // TODO use command from attack here
+        tile.unit.takeDamage(damage, 9);
+    }
+}
+// TODO: silo should use this for the impact
+
+
+/**
+ * Invokes an explosion with a given **range** at position (**x**,**y**). All units in the **range** will be
+ * damaged by the value **damage**. The health of an unit in range will never be lower than 9 health after
+ * the explosion (means it will have 1HP left).
+ *
+ * @param {number} x
+ * @param {number} y
+ * @param {number} range
+ * @param {number} damage
+ */
+default void explode (int x, int y, int range, int damage) {
+    if (!getGameRound().isValidPosition(x, y)) {
+        throw new Error("IllegalArgumentType(s)");
+    }
+
+    Tile tile = getGameRound().getMap().getTile(x, y);
+    if (!canSelfDestruct(tile.unit) || range < 1 || damage < 1 ) {
+        throw new Error("IllegalArgumentType(s)");
+    }
+
+    // TODO use command from attack here
+    destroyUnit(x, y, false);
+
+    model.doInRange(x, y, range, doDamage, damage);
+}
 }

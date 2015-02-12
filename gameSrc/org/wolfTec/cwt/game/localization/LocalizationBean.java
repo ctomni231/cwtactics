@@ -22,21 +22,23 @@ public class LocalizationBean implements AssetLoader {
    * The current active language.
    */
   private Map<String, String> selected;
-  
-  public LocalizationBean () {
+
+  public LocalizationBean() {
     languages = JSCollections.$map();
     selected = null;
   }
 
-  @Override public void loadAsset(StorageBean storage, AssetItem item, Callback0 callback) {
+  @Override
+  public void loadAsset(StorageBean storage, AssetItem item, Callback0 callback) {
     if (item.type == AssetType.LANGUAGE) {
-      
+
     }
   }
 
-  @Override public void grabAsset(StorageBean storage, AssetItem item, Callback0 callback) {
+  @Override
+  public void grabAsset(StorageBean storage, AssetItem item, Callback0 callback) {
     if (item.type == AssetType.LANGUAGE) {
-      
+
     }
   }
 

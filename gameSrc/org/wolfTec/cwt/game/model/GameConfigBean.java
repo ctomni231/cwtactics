@@ -4,7 +4,7 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.log.Logger;
 import org.wolfTec.cwt.game.persistence.StorageBean;
 import org.wolfTec.cwt.game.persistence.StorageEntry;
@@ -13,15 +13,19 @@ import org.wolfTec.cwt.utility.beans.Injected;
 import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 import org.wolfTec.cwt.utility.beans.PostInitialization;
 
-@Bean public class GameConfigBean {
+@Bean
+public class GameConfigBean {
 
-  @InjectedByFactory private Logger log;
-  @Injected private StorageBean storage;
+  @InjectedByFactory
+  private Logger log;
+  @Injected
+  private StorageBean storage;
 
   private Map<String, Config> configs;
   private Array<String> configNames;
 
-  @PostInitialization public void init() {
+  @PostInitialization
+  public void init() {
     configs = JSCollections.$map();
     configNames = JSCollections.$array();
 
@@ -33,8 +37,8 @@ import org.wolfTec.cwt.utility.beans.PostInitialization;
     createConfig("round_dayLimit", new Config(0, 999, 0, 1), true);
     createConfig("noUnitsLeftLoose", new Config(0, 1, 0, 1), true);
     createConfig("autoSupplyAtTurnStart", new Config(0, 1, 1, 1), true);
-    createConfig("unitLimit", new Config(0, Constants.MAX_UNITS, 0, 5), true);
-    createConfig("captureLimit", new Config(0, Constants.MAX_PROPERTIES, 0, 1), true);
+    createConfig("unitLimit", new Config(0, EngineGlobals.MAX_UNITS, 0, 5), true);
+    createConfig("captureLimit", new Config(0, EngineGlobals.MAX_PROPERTIES, 0, 1), true);
     createConfig("timer_turnTimeLimit", new Config(0, 60, 0, 1), true);
     createConfig("timer_gameTimeLimit", new Config(0, 99999, 0, 5), true);
     createConfig("co_getStarCost", new Config(100, 50000, 9000, 100), true);
@@ -76,7 +80,7 @@ import org.wolfTec.cwt.utility.beans.PostInitialization;
   }
 
   public void loadConfiguration(Callback0 callback) {
-    storage.get(Constants.STORAGE_PARAMETER_APPLICATION_CONFIG, (
+    storage.get(EngineGlobals.STORAGE_PARAMETER_APPLICATION_CONFIG, (
         StorageEntry<Map<String, Integer>> entry) -> {
       if (entry.value != null) {
         getConfig("fastClickMode").setValue(entry.value.$get("fastClickMode"));
@@ -92,13 +96,14 @@ import org.wolfTec.cwt.utility.beans.PostInitialization;
     appConfigs.$put("forceTouch", getConfigValue("forceTouch"));
     appConfigs.$put("animatedTiles", getConfigValue("animatedTiles"));
 
-    storage.set(Constants.STORAGE_PARAMETER_APPLICATION_CONFIG, appConfigs, (savedData, err) -> {
-      if (err != null) {
-        log.error("SavingApplicationConfigError");
+    storage.set(EngineGlobals.STORAGE_PARAMETER_APPLICATION_CONFIG, appConfigs,
+        (savedData, err) -> {
+          if (err != null) {
+            log.error("SavingApplicationConfigError");
 
-      } else {
-        callback.$invoke();
-      }
-    });
+          } else {
+            callback.$invoke();
+          }
+        });
   }
 }

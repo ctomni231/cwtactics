@@ -6,10 +6,11 @@ import org.stjs.javascript.annotation.Template;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback3;
 import org.stjs.javascript.functions.Function1;
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.utility.beans.Bean;
 
-@Bean public class GameRoundBean {
+@Bean
+public class GameRoundBean {
 
   private GameMapBean map;
   private int gameTimeLimit;
@@ -29,7 +30,7 @@ import org.wolfTec.cwt.utility.beans.Bean;
   private int mapHeight;
 
   public GameRoundBean() {
-    map = new GameMapBean(Constants.MAX_MAP_WIDTH, Constants.MAX_MAP_HEIGHT);
+    map = new GameMapBean(EngineGlobals.MAX_MAP_WIDTH, EngineGlobals.MAX_MAP_HEIGHT);
     lastClientPlayer = null;
     setWeather(null);
     setWeatherLeftDays(0);
@@ -41,15 +42,15 @@ import org.wolfTec.cwt.utility.beans.Bean;
     gameMode = GameMode.ADVANCE_WARS_1;
 
     units = JSCollections.$array();
-    for (int i = 0, e = Constants.MAX_UNITS * Constants.MAX_PLAYER; i < e; i++)
+    for (int i = 0, e = EngineGlobals.MAX_UNITS * EngineGlobals.MAX_PLAYER; i < e; i++)
       units.push(new Unit());
 
     properties = JSCollections.$array();
-    for (int i = 0, e = Constants.MAX_PROPERTIES; i < e; i++)
+    for (int i = 0, e = EngineGlobals.MAX_PROPERTIES; i < e; i++)
       properties.push(new Property());
 
     players = JSCollections.$array();
-    for (int i = 0; i < Constants.MAX_PLAYER; i++) {
+    for (int i = 0; i < EngineGlobals.MAX_PLAYER; i++) {
       Player p = new Player();
       p.id = i;
       players.push(p);
@@ -57,59 +58,73 @@ import org.wolfTec.cwt.utility.beans.Bean;
 
   }
 
-  @Template("toProperty") public GameMapBean getMap() {
+  @Template("toProperty")
+  public GameMapBean getMap() {
     return map;
   }
 
-  @Template("toProperty") public int getGameTimeLimit() {
+  @Template("toProperty")
+  public int getGameTimeLimit() {
     return gameTimeLimit;
   }
 
-  @Template("toProperty") public int getGameTimeElapsed() {
+  @Template("toProperty")
+  public int getGameTimeElapsed() {
     return gameTimeElapsed;
   }
 
-  @Template("toProperty") public int getTurnTimeLimit() {
+  @Template("toProperty")
+  public int getTurnTimeLimit() {
     return turnTimeLimit;
   }
 
-  @Template("toProperty") public int getTurnTimeElapsed() {
+  @Template("toProperty")
+  public int getTurnTimeElapsed() {
     return turnTimeElapsed;
   }
 
-  @Template("toProperty") public Player getLastClientPlayer() {
+  @Template("toProperty")
+  public Player getLastClientPlayer() {
     return lastClientPlayer;
   }
 
-  @Template("toProperty") public Player getTurnOwner() {
+  @Template("toProperty")
+  public Player getTurnOwner() {
     return turnOwner;
   }
 
-  @Template("toProperty") public WeatherType getWeather() {
+  @Template("toProperty")
+  public WeatherType getWeather() {
     return weather;
   }
 
-  @Template("toProperty") public int getWeatherLeftDays() {
+  @Template("toProperty")
+  public int getWeatherLeftDays() {
     return weatherLeftDays;
   }
 
-  @Template("toProperty") public GameMode getGameMode() {
+  @Template("toProperty")
+  public GameMode getGameMode() {
     return gameMode;
   }
 
-  @Template("toProperty") public void setGameMode(GameMode gameMode) {
+  @Template("toProperty")
+  public void setGameMode(GameMode gameMode) {
     this.gameMode = gameMode;
   }
 
-  @Template("toProperty") public int getDay() {
+  @Template("toProperty")
+  public int getDay() {
     return day;
   }
 
-  @Template("toProperty") public int getMapWidth() {
+  @Template("toProperty")
+  public int getMapWidth() {
     return mapWidth;
   }
 
-  @Template("toProperty") public int getMapHeight() {
+  @Template("toProperty")
+  public int getMapHeight() {
     return mapHeight;
   }
 
@@ -216,7 +231,7 @@ import org.wolfTec.cwt.utility.beans.Bean;
    * @param days
    */
   public int convertDaysToTurns(int days) {
-    return Constants.MAX_PLAYER * days;
+    return EngineGlobals.MAX_PLAYER * days;
   }
 
   /**
@@ -224,26 +239,26 @@ import org.wolfTec.cwt.utility.beans.Bean;
    */
   public boolean areEnemyTeamsLeft() {
     Player player;
-    int foundTeam = Constants.INACTIVE_ID;
+    int foundTeam = EngineGlobals.INACTIVE_ID;
     int i = 0;
-    int e = Constants.MAX_PLAYER;
+    int e = EngineGlobals.MAX_PLAYER;
 
     for (; i < e; i++) {
       player = players.$get(i);
 
-      if (player.team != Constants.INACTIVE_ID) {
+      if (player.team != EngineGlobals.INACTIVE_ID) {
 
         // found alive player
-        if (foundTeam == Constants.INACTIVE_ID) {
+        if (foundTeam == EngineGlobals.INACTIVE_ID) {
           foundTeam = player.team;
         } else if (foundTeam != player.team) {
-          foundTeam = Constants.INACTIVE_ID;
+          foundTeam = EngineGlobals.INACTIVE_ID;
           break;
         }
       }
     }
 
-    return (foundTeam == Constants.INACTIVE_ID);
+    return (foundTeam == EngineGlobals.INACTIVE_ID);
   }
 
   /**
@@ -292,7 +307,7 @@ import org.wolfTec.cwt.utility.beans.Bean;
           dataBlock.x = x;
           dataBlock.y = y;
           dataBlock.tile = tile;
-          dataBlock.range = Constants.INACTIVE_ID;
+          dataBlock.range = EngineGlobals.INACTIVE_ID;
 
           cb.$invoke(dataBlock);
         }
@@ -315,7 +330,8 @@ import org.wolfTec.cwt.utility.beans.Bean;
    *        a property on it
    * @param {Player} wantedOwner wanted owner of the property/unit
    */
-  public void onEachTile(Callback3<Integer, Integer, Tile> cb, boolean needsUnit, boolean needsProp, Player wantedOwner) {
+  public void onEachTile(Callback3<Integer, Integer, Tile> cb, boolean needsUnit,
+      boolean needsProp, Player wantedOwner) {
     for (int x = 0, xe = mapWidth; x < xe; x++) {
       for (int y = 0, ye = mapHeight; y < ye; y++) {
         Tile tile = map.getTile(x, y);
@@ -327,7 +343,8 @@ import org.wolfTec.cwt.utility.beans.Bean;
         }
 
         if (needsProp) {
-          if (tile.property == null || (wantedOwner != null && tile.property.getOwner() != wantedOwner)) {
+          if (tile.property == null
+              || (wantedOwner != null && tile.property.getOwner() != wantedOwner)) {
             continue;
           }
         }
@@ -346,7 +363,8 @@ import org.wolfTec.cwt.utility.beans.Bean;
    * @param cb
    * @param cbArg
    */
-  public void doInRange(int x, int y, int range, TileInRange dataBlock, Function1<TileInRange, Boolean> cb) {
+  public void doInRange(int x, int y, int range, TileInRange dataBlock,
+      Function1<TileInRange, Boolean> cb) {
 
     int lX;
     int hX;

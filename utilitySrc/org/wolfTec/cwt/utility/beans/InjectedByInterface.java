@@ -10,6 +10,8 @@ import java.lang.annotation.Target;
  * implements the given Interface. They will be automatically inserted by the
  * {@link BeanFactory} on startup.
  */
-@Target(ElementType.FIELD) @Retention(RetentionPolicy.RUNTIME) public @interface InjectedByInterface {
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface InjectedByInterface {
 
 }

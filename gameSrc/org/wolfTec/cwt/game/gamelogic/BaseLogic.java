@@ -6,6 +6,8 @@ import org.wolfTec.cwt.game.model.ObjectTypesBean;
 
 public interface BaseLogic {
   public GameRoundBean getGameRound();
+
   public GameConfigBean getGameConfig();
+
   public ObjectTypesBean getObjectTypes();
 }

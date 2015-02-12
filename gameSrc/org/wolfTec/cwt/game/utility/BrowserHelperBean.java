@@ -11,7 +11,8 @@ import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.wolfTec.cwt.utility.beans.Bean;
 
-@Bean public class BrowserHelperBean {
+@Bean
+public class BrowserHelperBean {
 
   /**
    * Converts a canvas object to a base64 string.
@@ -51,7 +52,8 @@ import org.wolfTec.cwt.utility.beans.Bean;
 
     final XMLHttpRequest request = new XMLHttpRequest();
     request.onreadystatechange = new Callback0() {
-      @Override public void $invoke() {
+      @Override
+      public void $invoke() {
         if (request.readyState == 4) {
           if (request.readyState == 4 && request.status == 200) {
             if (options.json) {
@@ -86,7 +88,7 @@ import org.wolfTec.cwt.utility.beans.Bean;
   public Array<String> objectKeys(Object obj) {
     return $js("Object.keys(obj)");
   }
-  
+
   public <T extends Element> T createDomElement(String tag) {
     return $js("document.createElement(tag)");
   }

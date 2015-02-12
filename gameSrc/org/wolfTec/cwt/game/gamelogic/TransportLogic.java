@@ -1,6 +1,6 @@
 package org.wolfTec.cwt.game.gamelogic;
 
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.model.Player;
 import org.wolfTec.cwt.game.model.Unit;
 
@@ -19,7 +19,7 @@ public interface TransportLogic extends BaseLogic {
    * @return {boolean} true if yes, else false.
    */
   default boolean hasLoads(Unit unit) {
-    for (int i = 0, e = Constants.MAX_UNITS; i < e; i++) {
+    for (int i = 0, e = EngineGlobals.MAX_UNITS; i < e; i++) {
       if (unit == getGameRound().getUnit(i).getLoadedIn()) return true;
     }
     return false;
@@ -69,10 +69,11 @@ public interface TransportLogic extends BaseLogic {
 
     load.setLoadedIn(null);
   }
-  
+
   /**
-   * Returns true if a transporter unit can unload one of it's loads at a given position.
-   * This functions understands the given pos as possible position for the transporter.
+   * Returns true if a transporter unit can unload one of it's loads at a given
+   * position. This functions understands the given pos as possible position for
+   * the transporter.
    *
    * @param {Unit} transporter
    * @param {Number} x
@@ -80,23 +81,23 @@ public interface TransportLogic extends BaseLogic {
    * @return {boolean}
    */
   default boolean canUnloadSomethingAt(Unit transporter, int x, int y) {
-      Player pid = transporter.getOwner();
-      Unit unit;
+    Player pid = transporter.getOwner();
+    Unit unit;
 
-      // TODO if (constants.DEBUG) assert(isTransportUnit(transporter));
-      for (int i = 0, e = Constants.MAX_UNITS; i < e; i++) {
+    // TODO if (constants.DEBUG) assert(isTransportUnit(transporter));
+    for (int i = 0, e = EngineGlobals.MAX_UNITS; i < e; i++) {
 
-          unit = getGameRound().getUnit(i);
-          if (unit.getLoadedIn() == transporter) {
-              var moveType = sheets.getSheet(sheets.TYPE_MOVETYPE, unit.type.movetype);
+      unit = getGameRound().getUnit(i);
+      if (unit.getLoadedIn() == transporter) {
+        var moveType = sheets.getSheet(sheets.TYPE_MOVETYPE, unit.type.movetype);
 
-              if (move.canTypeMoveTo(moveType, x - 1, y)) return true;
-              if (move.canTypeMoveTo(moveType, x + 1, y)) return true;
-              if (move.canTypeMoveTo(moveType, x, y - 1)) return true;
-              if (move.canTypeMoveTo(moveType, x, y + 1)) return true;
-          }
+        if (move.canTypeMoveTo(moveType, x - 1, y)) return true;
+        if (move.canTypeMoveTo(moveType, x + 1, y)) return true;
+        if (move.canTypeMoveTo(moveType, x, y - 1)) return true;
+        if (move.canTypeMoveTo(moveType, x, y + 1)) return true;
       }
+    }
 
-      return false;
+    return false;
   }
 }

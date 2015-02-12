@@ -1,28 +1,20 @@
 package org.wolfTec.cwt.game.statemachine;
 
-import org.wolfTec.utility.Bean;
-import org.wolfTec.utility.BeanFactory;
-import org.wolfTec.utility.CircularBuffer;
-import org.wolfTec.utility.Injected;
-import org.wolfTec.utility.InjectedByFactory;
-import org.wolfTec.utility.PostInitialization;
+import org.wolfTec.cwt.game.gamelogic.MoveCode;
 
-import net.wolfTec.wtEngine.Constants;
-import net.wolfTec.wtEngine.RendererBean;
-import net.wolfTec.wtEngine.gamelogic.MoveCode;
-import net.wolfTec.wtEngine.log.Logger;
-import net.wolfTec.wtEngine.model.GameRoundBean;
-import net.wolfTec.wtEngine.model.Position;
-import net.wolfTec.wtEngine.renderer.ScreenManagerBean;
-import net.wolfTec.wtEngine.renderer.layers.UserInterfaceLayerBean;
+@Bean
+public class StateDataBean {
 
-@Bean public class StateDataBean {
-
-  @InjectedByFactory private Logger log;
-  @Injected private ScreenManagerBean screen;
-  @Injected private GameRoundBean gameround;
-  @Injected private UserInterfaceLayerBean uiLayer;
-  @Injected private StateMachineBean stateMachine;
+  @InjectedByFactory
+  private Logger log;
+  @Injected
+  private ScreenManagerBean screen;
+  @Injected
+  private GameRoundBean gameround;
+  @Injected
+  private UserInterfaceLayerBean uiLayer;
+  @Injected
+  private StateMachineBean stateMachine;
 
   /**
    * Position object with rich information about the selected position by an
@@ -58,7 +50,7 @@ import net.wolfTec.wtEngine.renderer.layers.UserInterfaceLayerBean;
 
   public boolean fromIngameToOptions;
 
-  public boolean isGameRoundActive () {
+  public boolean isGameRoundActive() {
     return false;
   };
 
@@ -72,7 +64,8 @@ import net.wolfTec.wtEngine.renderer.layers.UserInterfaceLayerBean;
 
   public Integer focusMode = Constants.INACTIVE_ID;
 
-  @PostInitialization public void init(BeanFactory engine) {
+  @PostInitialization
+  public void init(BeanFactory engine) {
     this.source = new Position();
     this.target = new Position();
     this.targetSelection = new Position();

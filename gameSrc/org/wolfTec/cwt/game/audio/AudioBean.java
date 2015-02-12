@@ -24,18 +24,22 @@ import org.wolfTec.cwt.utility.beans.Injected;
 import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 import org.wolfTec.cwt.utility.beans.PostInitialization;
 
-@Bean public class AudioBean implements AssetLoader {
+@Bean
+public class AudioBean implements AssetLoader {
 
   public static final String MUSIC_KEY = "MUSIC_";
 
   public static final float DEFAULT_SFX_VOL = 1;
   public static final float DEFAULT_MUSIC_VOL = 0.5f;
 
-  @InjectedByFactory private Logger log;
+  @InjectedByFactory
+  private Logger log;
 
-  @Injected private StorageBean storage;
+  @Injected
+  private StorageBean storage;
 
-  @Injected private BrowserHelperBean browser;
+  @Injected
+  private BrowserHelperBean browser;
 
   private int apiStatus;
 
@@ -74,7 +78,8 @@ import org.wolfTec.cwt.utility.beans.PostInitialization;
     Object buffer = $js("this.context.decodeAudioData(data, this.musicPlayCallback, this.decodeAssetErrorCb)");
   };
 
-  @PostInitialization public void init() {
+  @PostInitialization
+  public void init() {
     try {
       log.info("Initialize..");
 
@@ -276,7 +281,8 @@ import org.wolfTec.cwt.utility.beans.PostInitialization;
 
   private Callback1<String> decodeAssetErrorCb = (e) -> log.error(e);
 
-  @Override public void loadAsset(StorageBean storage, AssetItem item, Callback0 callback) {
+  @Override
+  public void loadAsset(StorageBean storage, AssetItem item, Callback0 callback) {
     // TODO Globals.Base64Helper.decodeBuffer(entry.value)
     // TODO realkey
     if (item.type != AssetType.MUSIC) {
@@ -290,7 +296,8 @@ import org.wolfTec.cwt.utility.beans.PostInitialization;
     }
   }
 
-  @Override public void grabAsset(StorageBean storage, AssetItem item, Callback0 callback) {
+  @Override
+  public void grabAsset(StorageBean storage, AssetItem item, Callback0 callback) {
     ExternalRequestOptions options = new ExternalRequestOptions();
     options.path = item.path;
     options.type = "arraybuffer";

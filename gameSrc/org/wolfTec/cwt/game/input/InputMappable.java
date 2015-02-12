@@ -5,8 +5,8 @@ import org.stjs.javascript.Map;
 public interface InputMappable {
 
   Map<String, Integer> getInputMapping();
-  
-  String getInputMappingName ();
+
+  String getInputMappingName();
 
   void setInputMapping(Map<String, Integer> map);
 }

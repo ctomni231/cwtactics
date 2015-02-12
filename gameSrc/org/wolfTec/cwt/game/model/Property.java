@@ -10,7 +10,8 @@ public class Property implements PlayerObject {
   public Player owner;
   public PropertyType type;
 
-  @Override public Player getOwner() {
+  @Override
+  public Player getOwner() {
     return owner;
   }
 

@@ -5,7 +5,7 @@ import org.stjs.javascript.dom.Canvas;
 
 public class Sprite {
 
-  private Array<Canvas>  images;
+  private Array<Canvas> images;
   public Canvas graphic;
   public int spriteHeight;
   public int spriteWidth;

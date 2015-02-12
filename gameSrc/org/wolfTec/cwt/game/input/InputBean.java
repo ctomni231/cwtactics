@@ -1,18 +1,23 @@
 package org.wolfTec.cwt.game.input;
 
 import org.stjs.javascript.JSStringAdapter;
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.log.Logger;
 import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 import org.wolfTec.cwt.utility.container.CircularBuffer;
 
-@Bean public class InputBean {
+@Bean
+public class InputBean {
 
-  @InjectedByFactory private Logger log;
+  @InjectedByFactory
+  private Logger log;
 
-  private final CircularBuffer<InputData> stack;
-  private final CircularBuffer<InputData> pool;
+  @InjectedByFactory
+  private CircularBuffer<InputData> stack;
+
+  @InjectedByFactory
+  private CircularBuffer<InputData> buffer;
 
   /**
    * If true, then every user input will be blocked.
@@ -25,11 +30,6 @@ import org.wolfTec.cwt.utility.container.CircularBuffer;
    */
   public boolean genericInput;
 
-  public InputBean() {
-    stack = new CircularBuffer<InputData>(Constants.INPUT_STACK_BUFFER_SIZE);
-    pool = new CircularBuffer<InputData>(Constants.INPUT_STACK_BUFFER_SIZE);
-  }
-
   /**
    * Pushes an input **key** into the input stack. The parameters **d1** and
    * **d2** has to be integers.
@@ -39,11 +39,11 @@ import org.wolfTec.cwt.utility.container.CircularBuffer;
    * @param d2
    */
   public void pushAction(InputTypeKey key, int d1, int d2) {
-    if (blocked || pool.isEmpty()) return;
+    if (blocked || buffer.isEmpty()) return;
 
     log.info("adding input data " + key + ", " + d1 + ", " + d2);
 
-    InputData cmd = pool.popFirst();
+    InputData cmd = buffer.popFirst();
     cmd.d1 = d1;
     cmd.d2 = d2;
     cmd.key = key;
@@ -78,7 +78,7 @@ import org.wolfTec.cwt.utility.container.CircularBuffer;
    * Returns the character for a key code.
    */
   public String codeToChar(int charCode) {
-    if (charCode == Constants.INACTIVE_ID) {
+    if (charCode == EngineGlobals.INACTIVE_ID) {
       return "";
     }
 
@@ -285,6 +285,6 @@ import org.wolfTec.cwt.utility.container.CircularBuffer;
   }
 
   public void releaseAction(InputData inp) {
-    pool.push(inp);
+    buffer.push(inp);
   }
 }

@@ -5,8 +5,9 @@ import static org.stjs.javascript.JSObjectAdapter.$js;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.log.Logger;
+import org.wolfTec.cwt.game.network.NetworkMessage;
 import org.wolfTec.cwt.game.network.NetworkBean;
 import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
@@ -14,24 +15,27 @@ import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 import org.wolfTec.cwt.utility.beans.PostInitialization;
 import org.wolfTec.cwt.utility.container.CircularBuffer;
 
-@Bean public class ActionInvokerBean {
+@Bean
+public class ActionInvokerBean {
 
-  @InjectedByFactory private Logger log;
-  @Injected private NetworkBean network;
+  @InjectedByFactory
+  private Logger log;
+  @Injected
+  private NetworkBean network;
 
   /**
    * Pool for holding ActionData objects when they aren't in the buffer.
    */
-  private CircularBuffer<ActionData> buffer;
+  private CircularBuffer<NetworkMessage> buffer;
 
   /**
    * Buffer object.
    */
-  private CircularBuffer<ActionData> backPool;
+  private CircularBuffer<NetworkMessage> backPool;
 
   public ActionInvokerBean() {
-    this.backPool = new CircularBuffer<ActionData>(Constants.ACTION_POOL_SIZE);
-    this.buffer = new CircularBuffer<ActionData>(Constants.ACTION_POOL_SIZE);
+    this.backPool = new CircularBuffer<NetworkMessage>(EngineGlobals.ACTION_POOL_SIZE);
+    this.buffer = new CircularBuffer<NetworkMessage>(EngineGlobals.ACTION_POOL_SIZE);
   }
 
   /**
@@ -49,7 +53,7 @@ import org.wolfTec.cwt.utility.container.CircularBuffer;
    *           an error when the command stack is empty.
    */
   public void invokeNext() {
-    ActionData data = buffer.popFirst();
+    NetworkMessage data = buffer.popFirst();
     if (data == null) {
       log.error("NullPointerException");
     }
@@ -87,7 +91,7 @@ import org.wolfTec.cwt.utility.container.CircularBuffer;
    *          true, else as tail (called at last)
    */
   public void localAction(String key, int p1, int p2, int p3, int p4, int p5, boolean asHead) {
-    ActionData actionData = backPool.popLast();
+    NetworkMessage actionData = backPool.popLast();
 
     // insert data into the action object
     actionData.actionId = getActionId(key);

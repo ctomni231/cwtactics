@@ -24,7 +24,8 @@ public class TileVariantCalculator {
    * @param desc
    * @param connection
    */
-  public void registerVariantInfo(String type, Map<String, String> desc, Array<Array<String>> connection) {
+  public void registerVariantInfo(String type, Map<String, String> desc,
+      Array<Array<String>> connection) {
     types.$put(type, new ConnectedTile(desc, connection));
   }
 
@@ -42,31 +43,34 @@ public class TileVariantCalculator {
 
         // tile has variants
         if (types.equals(tile.type.ID)) {
-          tile.variant = types.$get(tile.type.ID).getVariant(
+          tile.variant = types
+              .$get(tile.type.ID)
+              .getVariant(
 
               // N
-              (y > 0) ? map.getTile(x, y - 1).type.ID : "",
+                  (y > 0) ? map.getTile(x, y - 1).type.ID : "",
 
-              // E
-              (x < map.getSizeX() - 1) ? map.getTile(x + 1, y).type.ID : "",
+                  // E
+                  (x < map.getSizeX() - 1) ? map.getTile(x + 1, y).type.ID : "",
 
-              // S
-              (y < map.getSizeY() - 1) ? map.getTile(x, y + 1).type.ID : "",
+                  // S
+                  (y < map.getSizeY() - 1) ? map.getTile(x, y + 1).type.ID : "",
 
-              // W
-              (x > 0) ? map.getTile(x - 1, y).type.ID : "",
+                  // W
+                  (x > 0) ? map.getTile(x - 1, y).type.ID : "",
 
-              // NE
-              (y > 0 && x < map.getSizeX() - 1) ? map.getTile(x + 1, y - 1).type.ID : "",
+                  // NE
+                  (y > 0 && x < map.getSizeX() - 1) ? map.getTile(x + 1, y - 1).type.ID : "",
 
-              // SE
-              (y < map.getSizeY() - 1 && x < map.getSizeX() - 1) ? map.getTile(x + 1, y + 1).type.ID : "",
+                  // SE
+                  (y < map.getSizeY() - 1 && x < map.getSizeX() - 1) ? map.getTile(x + 1, y + 1).type.ID
+                      : "",
 
-              // SW
-              (y < map.getSizeY() - 1 && x > 0) ? map.getTile(x - 1, y + 1).type.ID : "",
+                  // SW
+                  (y < map.getSizeY() - 1 && x > 0) ? map.getTile(x - 1, y + 1).type.ID : "",
 
-              // NW
-              (y > 0 && x > 0) ? map.getTile(x - 1, y - 1).type.ID : "");
+                  // NW
+                  (y > 0 && x > 0) ? map.getTile(x - 1, y - 1).type.ID : "");
         } else {
           tile.variant = 0;
         }

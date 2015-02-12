@@ -10,24 +10,32 @@ import org.wolfTec.cwt.utility.beans.Injected;
 /**
  * This bean holds the complete game logic of CustomWars Tactics.
  */
-@Bean public class GameLogicBean implements BaseLogic, CaptureLogic, TransportLogic, JoinLogic,
+@Bean
+public class GameLogicBean implements BaseLogic, CaptureLogic, TransportLogic, JoinLogic,
     SupplyLogic, SpecialWeaponsLogic, RepairLogic, RelationshipCheckLogic, LifecycleLogic,
     FactoryLogic, CommanderLogic, BattleLogic, WeatherLogic, TransferLogic, FogLogic {
 
-  @Injected private GameRoundBean gameround;
-  @Injected private GameConfigBean gameconfig;
-  @Injected private ObjectTypesBean objectTypes;
-  @Injected private AssertUtilyBean assertUtil;
+  @Injected
+  private GameRoundBean gameround;
+  @Injected
+  private GameConfigBean gameconfig;
+  @Injected
+  private ObjectTypesBean objectTypes;
+  @Injected
+  private AssertUtilyBean assertUtil;
 
-  @Override public GameRoundBean getGameRound() {
+  @Override
+  public GameRoundBean getGameRound() {
     return gameround;
   }
 
-  @Override public GameConfigBean getGameConfig() {
+  @Override
+  public GameConfigBean getGameConfig() {
     return gameconfig;
   }
 
-  @Override public ObjectTypesBean getObjectTypes() {
+  @Override
+  public ObjectTypesBean getObjectTypes() {
     return objectTypes;
   }
 

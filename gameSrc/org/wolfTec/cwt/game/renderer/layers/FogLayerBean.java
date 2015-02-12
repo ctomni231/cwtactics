@@ -3,7 +3,7 @@ package org.wolfTec.cwt.game.renderer.layers;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.gamelogic.MoveCode;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Tile;
@@ -13,19 +13,25 @@ import org.wolfTec.cwt.game.renderer.SpriteManagerBean;
 import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
 
-@Bean public class FogLayerBean extends ScreenLayer {
+@Bean
+public class FogLayerBean extends ScreenLayer {
 
-  @Injected private SpriteManagerBean sprites;
-  @Injected private SpriteIndexBean spriteIndexes;
-  @Injected private GameRoundBean gameround;
+  @Injected
+  private SpriteManagerBean sprites;
+  @Injected
+  private SpriteIndexBean spriteIndexes;
+  @Injected
+  private GameRoundBean gameround;
 
   private Canvas temporaryCanvas = (Canvas) Global.window.document.createElement("canvas");
 
-  @Override public int getZIndex() {
+  @Override
+  public int getZIndex() {
     return 2;
   }
 
-  @Override public String getLayerCanvasId() {
+  @Override
+  public String getLayerCanvasId() {
     return "canvas_layer_Fog";
   }
 
@@ -68,8 +74,8 @@ import org.wolfTec.cwt.utility.beans.Injected;
     } else {
 
       // clear area in background layer as rectangle only in rectangle mode
-      layer.clearRect((x - offsetX) * Constants.TILE_BASE, (y - offsetY) * Constants.TILE_BASE, w
-          * Constants.TILE_BASE, h * Constants.TILE_BASE);
+      layer.clearRect((x - offsetX) * EngineGlobals.TILE_BASE, (y - offsetY)
+          * EngineGlobals.TILE_BASE, w * EngineGlobals.TILE_BASE, h * EngineGlobals.TILE_BASE);
     }
 
     // render
@@ -86,8 +92,8 @@ import org.wolfTec.cwt.utility.beans.Injected;
           }
 
           // clear position
-          layer.clearRect((x - offsetX) * Constants.TILE_BASE, (y - offsetY) * Constants.TILE_BASE,
-              Constants.TILE_BASE, Constants.TILE_BASE);
+          layer.clearRect((x - offsetX) * EngineGlobals.TILE_BASE, (y - offsetY)
+              * EngineGlobals.TILE_BASE, EngineGlobals.TILE_BASE, EngineGlobals.TILE_BASE);
         }
 
         Tile tile = data[x][y];
@@ -102,21 +108,21 @@ import org.wolfTec.cwt.utility.beans.Injected;
                 tile.variant * spriteIndexes.TILE_STATES + spriteIndexes.TILE_SHADOW);
           }
 
-          int scx = sprites.isLongAnimatedSprite(tile.type.ID) ? Constants.TILE_BASE
+          int scx = sprites.isLongAnimatedSprite(tile.type.ID) ? EngineGlobals.TILE_BASE
               * animation.indexMapAnimation : 0;
           int scy = 0;
-          int scw = Constants.TILE_BASE;
-          int sch = Constants.TILE_BASE * 2;
-          int tcx = (x - offsetX) * Constants.TILE_BASE;
-          int tcy = (y - offsetY) * Constants.TILE_BASE - Constants.TILE_BASE;
-          int tcw = Constants.TILE_BASE;
-          int tch = Constants.TILE_BASE * 2;
+          int scw = EngineGlobals.TILE_BASE;
+          int sch = EngineGlobals.TILE_BASE * 2;
+          int tcx = (x - offsetX) * EngineGlobals.TILE_BASE;
+          int tcy = (y - offsetY) * EngineGlobals.TILE_BASE - EngineGlobals.TILE_BASE;
+          int tcw = EngineGlobals.TILE_BASE;
+          int tch = EngineGlobals.TILE_BASE * 2;
 
           if (tcy < 0) {
-            scy = scy + Constants.TILE_BASE;
-            sch = sch - Constants.TILE_BASE;
-            tcy = tcy + Constants.TILE_BASE;
-            tch = tch - Constants.TILE_BASE;
+            scy = scy + EngineGlobals.TILE_BASE;
+            sch = sch - EngineGlobals.TILE_BASE;
+            tcy = tcy + EngineGlobals.TILE_BASE;
+            tch = tch - EngineGlobals.TILE_BASE;
           }
 
           layer.drawImage(sprite, scx, scy, scw, sch, tcx, tcy, tcw, tch);
@@ -154,9 +160,9 @@ import org.wolfTec.cwt.utility.beans.Injected;
    * Note: one clears the area before action
    */
   public void renderFogBackgroundLayer() {
-    getContext(Constants.INACTIVE_ID).globalAlpha = 0.35;
+    getContext(EngineGlobals.INACTIVE_ID).globalAlpha = 0.35;
     renderState(0);
-    getContext(Constants.INACTIVE_ID).globalAlpha = 1;
+    getContext(EngineGlobals.INACTIVE_ID).globalAlpha = 1;
   }
 
   /**
@@ -174,23 +180,23 @@ import org.wolfTec.cwt.utility.beans.Injected;
     int h = cv.height;
     switch (code) {
       case LEFT:
-        scx += Constants.TILE_BASE;
-        w -= Constants.TILE_BASE;
+        scx += EngineGlobals.TILE_BASE;
+        w -= EngineGlobals.TILE_BASE;
         break;
 
       case RIGHT:
-        sx += Constants.TILE_BASE;
-        w -= Constants.TILE_BASE;
+        sx += EngineGlobals.TILE_BASE;
+        w -= EngineGlobals.TILE_BASE;
         break;
 
       case UP:
-        scy += Constants.TILE_BASE;
-        h -= Constants.TILE_BASE;
+        scy += EngineGlobals.TILE_BASE;
+        h -= EngineGlobals.TILE_BASE;
         break;
 
       case DOWN:
-        sy += Constants.TILE_BASE;
-        h -= Constants.TILE_BASE;
+        sy += EngineGlobals.TILE_BASE;
+        h -= EngineGlobals.TILE_BASE;
         break;
     }
 

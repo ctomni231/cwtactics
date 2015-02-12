@@ -5,7 +5,7 @@ import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.model.Direction;
 
 public abstract class ScreenLayer implements LayerGroup {
@@ -17,22 +17,22 @@ public abstract class ScreenLayer implements LayerGroup {
   protected Array<CanvasRenderingContext2D> contexts;
   protected Array<Canvas> layers;
 
-  public abstract int getZIndex ();
+  public abstract int getZIndex();
 
-  public abstract String getLayerCanvasId ();
+  public abstract String getLayerCanvasId();
 
-  public void onScreenShift (Direction dir, int offsetX, int offsetY, int amount, int scale) {
-    
+  public void onScreenShift(Direction dir, int offsetX, int offsetY, int amount, int scale) {
+
   };
 
-  public void onFullScreenRender () {
-    
+  public void onFullScreenRender() {
+
   };
 
-  public void onSetScreenPosition (int x, int y, int offsetX, int offsetY) {
-    
+  public void onSetScreenPosition(int x, int y, int offsetX, int offsetY) {
+
   };
-  
+
   protected void initialize(String canvasId, int frames, int w, int h) {
 
     // root canvas
@@ -62,9 +62,10 @@ public abstract class ScreenLayer implements LayerGroup {
       }
     }
   }
-  
-  @Override public void renderState(int index) {
-    CanvasRenderingContext2D ctx = this.getContext(Constants.INACTIVE_ID);
+
+  @Override
+  public void renderState(int index) {
+    CanvasRenderingContext2D ctx = this.getContext(EngineGlobals.INACTIVE_ID);
     ctx.clearRect(0, 0, this.w, this.h);
     ctx.drawImage(getLayer(index), 0, 0, this.w, this.h);
   }
@@ -75,7 +76,7 @@ public abstract class ScreenLayer implements LayerGroup {
    * @returns {HTMLCanvasElement}
    */
   public Canvas getLayer(int index) {
-    if (index == Constants.INACTIVE_ID) {
+    if (index == EngineGlobals.INACTIVE_ID) {
       return this.cv;
     }
 
@@ -101,7 +102,7 @@ public abstract class ScreenLayer implements LayerGroup {
       this.clear(n);
       n--;
     }
-    this.clear(Constants.INACTIVE_ID);
+    this.clear(EngineGlobals.INACTIVE_ID);
   }
 
   /**
@@ -111,14 +112,14 @@ public abstract class ScreenLayer implements LayerGroup {
    * @returns {CanvasRenderingContext2D}
    */
   public CanvasRenderingContext2D getContext(int index) {
-    if (index == Constants.INACTIVE_ID) {
+    if (index == EngineGlobals.INACTIVE_ID) {
       return this.ctx;
     }
 
     return this.contexts.$get(index);
   }
-  
+
   public void renderSprite(Sprite sprite, int x, int y) {
-    
+
   }
 }

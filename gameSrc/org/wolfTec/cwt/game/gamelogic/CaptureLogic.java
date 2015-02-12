@@ -1,55 +1,84 @@
 package org.wolfTec.cwt.game.gamelogic;
 
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.model.Property;
 import org.wolfTec.cwt.game.model.Unit;
 
 public interface CaptureLogic {
 
-	/**
-	 * Returns true, when the given property is neutral, else false.
-	 *
-	 * @return
-	 */
-	default boolean isNeutral(Property prop) {
-		return prop.owner != null;
-	}
+  /**
+   * Returns true, when the given property is neutral, else false.
+   *
+   * @return
+   */
+  default boolean isNeutral(Property prop) {
+    return prop.owner != null;
+  }
 
-	default void makeNeutral(Property prop) {
-		prop.owner = null;
-	}
+  default void makeNeutral(Property prop) {
+    prop.owner = null;
+  }
 
-	/**
-	 * Returns **true** when a **property** can be captured, else **false**.
-	 *
-	 * @returns {boolean}
-	 */
-	default boolean canBeCaptured(Property prop) {
-		return prop.type.capturePoints > 0;
-	}
+  /**
+   * Returns **true** when a **property** can be captured, else **false**.
+   *
+   * @returns {boolean}
+   */
+  default boolean canBeCaptured(Property prop) {
+    return prop.type.capturePoints > 0;
+  }
 
-	/**
-	 * Returns **true** when a **unit** can capture a properties, else **false**.
-	 *
-	 * @return
-	 */
-	default boolean canCapture(Unit source) {
-		return source.getType().captures > 0;
-	}
+  /**
+   * Returns **true** when a **unit** can capture a properties, else **false**.
+   *
+   * @return
+   */
+  default boolean canCapture(Unit source) {
+    return source.getType().captures > 0;
+  }
 
-	/**
-	 * @returns {boolean}
-	 */
-	default boolean isCapturing(Unit unit) {
-		if (unit.getLoadedIn() != null) {
-			return false;
-		}
+  /**
+   * @returns {boolean}
+   */
+  default boolean isCapturing(Unit unit) {
+    if (unit.getLoadedIn() != null) {
+      return false;
+    }
 
-		return false;
-		/*
-		 * if( unit.x >= 0 ){ var property = model.property_posMap[ unit.x ][ unit.y
-		 * ]; if( property !== null && property.capturePoints < 20 ){
-		 * unitStatus.CAPTURES = true; } else unitStatus.CAPTURES = false; }
-		 */
-	}
+    return false;
+    /*
+     * if( unit.x >= 0 ){ var property = model.property_posMap[ unit.x ][ unit.y
+     * ]; if( property !== null && property.capturePoints < 20 ){
+     * unitStatus.CAPTURES = true; } else unitStatus.CAPTURES = false; }
+     */
+  }
+
+  /**
+   * The **unit** captures the **property**. When the capture points of the
+   * **property** falls down to zero, then the owner of the **property** changes
+   * to the owner of the capturing **unit** and **true** will be returned. If
+   * the capture points does not fall down to zero then **false** will be
+   * returned.
+   *
+   * @param property
+   * @param unit
+   * @returns {boolean} true when captured successfully, else when still some
+   *          capture points left
+   */
+  default boolean captureProperty(Property property, Unit unit) {
+    property.points -= EngineGlobals.CAPTURE_PER_STEP;
+    if (property.points <= 0) {
+      property.owner = unit.getOwner();
+      property.points = EngineGlobals.CAPTURE_POINTS;
+      // TODO: if max points are static then the configurable points from the
+      // property sheets can be removed
+
+      // was captured
+      return true;
+    }
+
+    // was not captured
+    return false;
+  }
 
 }

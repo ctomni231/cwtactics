@@ -12,101 +12,6 @@ var i18n = require("./localization");
 
 // ------------------------------------------------------------------------------------------------
 
-exports.setErrorData = function (errorMessage, errorWhere) {
-    var stateData;
-
-    stateData.message = errorMessage;
-    stateData.where = errorWhere;
-    stateData.rendered = false;
-};
-
-// TODO use button group here instead of this direct hacky stuff
-
-exports.state = {
-    id: "ERROR_SCREEN",
-
-    enter: function () {
-        var data = this.data;
-
-        data.rendered = false;
-        data.activeCmd = 0;
-        data.message = null;
-        data.where = null;
-    },
-
-    update: function (delta, lastInput) {
-        switch (lastInput) {
-
-            case this.input.TYPE_LEFT:
-                if (data.activeCmd > 0) data.activeCmd--;
-                break;
-
-            case this.input.TYPE_RIGHT:
-                if (data.activeCmd < 2) data.activeCmd++;
-                break;
-
-            case this.input.TYPE_ACTION :
-                switch (data.activeCmd) {
-               
-                    /* Restart */
-                    case 0: debug.logCritical("Not implemented yet"); break;
-
-                    /* Wipe-Out Content and restart*/
-                    case 1: debug.logCritical("Not implemented yet"); break;
-
-                    /* Send report and restart */
-                    case 2: debug.logCritical("Not implemented yet"); break;
-                }
-                break;
-        }
-    },
-
-    render: function () {
-        if (!data.rendered) {
-            var ctxUI = renderer.layerUI.getContext();
-
-            data.rendered = true;
-        }
-    }
-};
-
-// ------------------------------------------------------------------------------------------------
-
-exports.state = {
-    id: "PORTRAIT_SCREEN",
-
-    init: function () {
-        this.data.lastStateId = null;
-    },
-
-    enter: function (lastState) {
-        this.data.rendered = false;
-    },
-
-    update: function (delta, lastInput) {
-        var isLandscape = false;2
-
-        // go back to the last state when the device is back in landscape mode
-        //  --> don't fire enter event when changing back to the last state
-        if (isLandscape) {
-            this.data.lastStateId = null;
-            this.setState(this.lastStateId,false);
-        }
-    },
-
-    render: function (delta) {
-        if (!this.data.rendered) {
-            var ctxUI = renderer.layerUI.getContext();
-
-            renderer.layerUI.clear();
-
-            this.data.rendered = true;
-        }
-    }
-};
-
-// ------------------------------------------------------------------------------------------------
-
 exports.state = {
 
     id: "MAIN_MENU",
@@ -3339,91 +3244,12 @@ public abstract class IngameStates {
 	}
 
 	/**
-	 * Creates an inGame state which means this state is considered to be used in
-	 * an active game round. As result this state contains cursor handling,
-	 * rendering logic and transfers the calls to the implemented state if
-	 * necessary.
+	 * 
 	 *
 	 * @param state
 	 */
 	public static State addInGameState(final State state) {
-		State ingameState = new State();
-
-		state.init.$invoke();
-
-		ingameState.enter = new Callback0() {
-			@Override public void $invoke() {
-				state.enter.$invoke();
-			}
-		};
-
-		ingameState.exit = new Callback0() {
-			@Override public void $invoke() {
-				state.exit.$invoke();
-			}
-		};
-
-		ingameState.update = new Callback2<Integer, InputData>() {
-			@SuppressWarnings("incomplete-switch") @Override public void $invoke(Integer delta, InputData inputData) {
-				if (inputData != null) {
-					MoveCode code = null;
-
-					// extract input data
-					Callback1<Integer> fn = null;
-					switch (inputData.key) {
-					case LEFT:
-						fn = state.LEFT;
-						code = MoveCode.LEFT;
-						break;
-
-					case UP:
-						fn = state.UP;
-						code = MoveCode.UP;
-						break;
-
-					case RIGHT:
-						fn = state.RIGHT;
-						code = MoveCode.RIGHT;
-						break;
-
-					case DOWN:
-						fn = state.DOWN;
-						code = MoveCode.DOWN;
-						break;
-
-					case ACTION:
-						fn = state.ACTION;
-						break;
-
-					case CANCEL:
-						fn = state.CANCEL;
-						break;
-					}
-
-					if (fn != null) {
-						fn.$invoke(delta);
-
-					} else if (code != null) {
-						Game.gameWorkflowData.moveCursor(code);
-					}
-				}
-			}
-		};
-
-		ingameState.render = new Callback1<Integer>() {
-			@Override public void $invoke(Integer delta) {
-			}
-		};
-
-		ingameState.render = new Callback1<Integer>() {
-			@Override public void $invoke(Integer delta) {
-				Game.renderCtx.evaluateCycle(delta);
-				if (state.render != null) {
-					state.render.$invoke(delta);
-				}
-			}
-		};
-
+		
 		ingameState.inputMove = new Callback2<Integer, Integer>() {
 			@Override public void $invoke(Integer x, Integer y) {
 				if (state.inputMove != null) {

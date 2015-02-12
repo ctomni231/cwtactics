@@ -3,7 +3,7 @@ package org.wolfTec.cwt.game.renderer.layers;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.model.Direction;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Tile;
@@ -14,21 +14,28 @@ import org.wolfTec.cwt.game.renderer.SpriteManagerBean;
 import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
 
-@Bean public class MapLayerBean extends ScreenLayer implements AnimatedLayer {
+@Bean
+public class MapLayerBean extends ScreenLayer implements AnimatedLayer {
 
-  @Injected private SpriteManagerBean sprites;
-  @Injected private SpriteIndexBean spriteIndexes;
-  @Injected private GameRoundBean gameround;
+  @Injected
+  private SpriteManagerBean sprites;
+  @Injected
+  private SpriteIndexBean spriteIndexes;
+  @Injected
+  private GameRoundBean gameround;
 
-  @Override public int getSubStates() {
+  @Override
+  public int getSubStates() {
     return 8;
   }
 
-  @Override public String getLayerCanvasId() {
+  @Override
+  public String getLayerCanvasId() {
     return "canvas_layer_Map";
   }
 
-  @Override public void onScreenShift(Direction dir, int offsetX, int offsetY, int amount, int scale) {
+  @Override
+  public void onScreenShift(Direction dir, int offsetX, int offsetY, int amount, int scale) {
 
     // calculate meta data for shift
     int sx = 0;
@@ -39,23 +46,23 @@ import org.wolfTec.cwt.utility.beans.Injected;
     int h = cv.height;
     switch (dir) {
       case LEFT:
-        scx += Constants.TILE_BASE;
-        w -= Constants.TILE_BASE;
+        scx += EngineGlobals.TILE_BASE;
+        w -= EngineGlobals.TILE_BASE;
         break;
 
       case RIGHT:
-        sx += Constants.TILE_BASE;
-        w -= Constants.TILE_BASE;
+        sx += EngineGlobals.TILE_BASE;
+        w -= EngineGlobals.TILE_BASE;
         break;
 
       case UP:
-        scy += Constants.TILE_BASE;
-        h -= Constants.TILE_BASE;
+        scy += EngineGlobals.TILE_BASE;
+        h -= EngineGlobals.TILE_BASE;
         break;
 
       case DOWN:
-        sy += Constants.TILE_BASE;
-        h -= Constants.TILE_BASE;
+        sy += EngineGlobals.TILE_BASE;
+        h -= EngineGlobals.TILE_BASE;
         break;
     }
 
@@ -68,11 +75,13 @@ import org.wolfTec.cwt.utility.beans.Injected;
     }
   }
 
-  @Override public void onSetScreenPosition(int x, int y, int offsetX, int offsetY) {
+  @Override
+  public void onSetScreenPosition(int x, int y, int offsetX, int offsetY) {
 
   }
 
-  @Override public int getZIndex() {
+  @Override
+  public int getZIndex() {
     return 1;
   }
 
@@ -92,8 +101,8 @@ import org.wolfTec.cwt.utility.beans.Injected;
   /** */
   private void renderTileOverlayRow() {
     renderTiles(screenOffsetX, screenOffsetY, screenOffsetX, screenOffsetY + 1,
-        (gameround.getMapWidth() < Constants.SCREEN_WIDTH) ? gameround.getMapWidth()
-            : Constants.SCREEN_WIDTH, 1, true);
+        (gameround.getMapWidth() < EngineGlobals.SCREEN_WIDTH) ? gameround.getMapWidth()
+            : EngineGlobals.SCREEN_WIDTH, 1, true);
   }
 
   /** */
@@ -121,7 +130,7 @@ import org.wolfTec.cwt.utility.beans.Injected;
         // grab property status before loop (calculate it one instead of eight
         // times)
         if (tile.property != null) {
-          state = Constants.INACTIVE_ID;
+          state = EngineGlobals.INACTIVE_ID;
 
           if (tile.property.owner != null) {
             switch (tile.property.owner.id) {
@@ -153,25 +162,25 @@ import org.wolfTec.cwt.utility.beans.Injected;
         while (n < 8) {
           ctx = getContext(n);
 
-          scx = sprites.isLongAnimatedSprite(tile.type.ID) ? Constants.TILE_BASE * n : 0;
+          scx = sprites.isLongAnimatedSprite(tile.type.ID) ? EngineGlobals.TILE_BASE * n : 0;
           scy = 0;
-          scw = Constants.TILE_BASE;
-          sch = Constants.TILE_BASE * 2;
-          tcx = (x - offsetX) * Constants.TILE_BASE;
-          tcy = (y - offsetY) * Constants.TILE_BASE - Constants.TILE_BASE;
-          tcw = Constants.TILE_BASE;
-          tch = Constants.TILE_BASE * 2;
+          scw = EngineGlobals.TILE_BASE;
+          sch = EngineGlobals.TILE_BASE * 2;
+          tcx = (x - offsetX) * EngineGlobals.TILE_BASE;
+          tcy = (y - offsetY) * EngineGlobals.TILE_BASE - EngineGlobals.TILE_BASE;
+          tcw = EngineGlobals.TILE_BASE;
+          tch = EngineGlobals.TILE_BASE * 2;
 
           if (tcy < 0) {
-            scy = scy + Constants.TILE_BASE;
-            sch = sch - Constants.TILE_BASE;
-            tcy = tcy + Constants.TILE_BASE;
-            tch = tch - Constants.TILE_BASE;
+            scy = scy + EngineGlobals.TILE_BASE;
+            sch = sch - EngineGlobals.TILE_BASE;
+            tcy = tcy + EngineGlobals.TILE_BASE;
+            tch = tch - EngineGlobals.TILE_BASE;
           }
 
           if (overlayDraw) {
-            sch = sch - Constants.TILE_BASE;
-            tch = tch - Constants.TILE_BASE;
+            sch = sch - EngineGlobals.TILE_BASE;
+            tch = tch - EngineGlobals.TILE_BASE;
           }
 
           // render tile
@@ -179,7 +188,7 @@ import org.wolfTec.cwt.utility.beans.Injected;
 
           // render property
           if (tile.property != null) {
-            scx = Constants.TILE_BASE * (JSGlobal.parseInt(n / 2, 10));
+            scx = EngineGlobals.TILE_BASE * (JSGlobal.parseInt(n / 2, 10));
 
             ctx.drawImage(propSprite, scx, scy, scw, sch, tcx, tcy, tcw, tch);
           }

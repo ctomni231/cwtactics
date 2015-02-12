@@ -5,10 +5,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.FIELD) @Retention(RetentionPolicy.RUNTIME) public @interface IntValue {
-  int max () default 0;
-  int min () default 0;
-  int minLength () default 0;
-  int maxLength () default 0;
-  int[] not () default {};
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface IntValue {
+  int max() default Integer.MAX_VALUE;
+
+  int min() default Integer.MIN_VALUE;
+
+  int[] not() default {};
 }
