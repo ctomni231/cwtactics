@@ -1,7 +1,7 @@
 package org.wolfTec.cwt.game.network;
 
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.log.Logger;
+import org.wolfTec.cwt.utility.Logger;
 import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 import org.wolfTec.cwt.utility.container.CircularBuffer;

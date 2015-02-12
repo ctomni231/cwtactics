@@ -6,7 +6,7 @@ import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.input.InputBackend;
 import org.wolfTec.cwt.game.input.InputBean;
 import org.wolfTec.cwt.game.input.InputTypeKey;
-import org.wolfTec.cwt.game.log.Logger;
+import org.wolfTec.cwt.utility.Logger;
 import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
 import org.wolfTec.cwt.utility.beans.InjectedByFactory;

@@ -2,9 +2,9 @@ package org.wolfTec.cwt.game.statemachine.gameStates;
 
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.log.Logger;
 import org.wolfTec.cwt.game.renderer.layers.UserInterfaceLayerBean;
 import org.wolfTec.cwt.game.statemachine.State;
+import org.wolfTec.cwt.utility.Logger;
 import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
 import org.wolfTec.cwt.utility.beans.InjectedByFactory;
@@ -32,16 +32,8 @@ public class ErrorState extends State {
     this.errorMessage = message;
   }
 
-  /**
-   * @deprecated Use {@link #enter(Object...)} instead
-   */
   @Override
   public void enter() {
-    enter(null);
-  }
-
-  @Override
-  public void enter(Object... args) {
     rendered = false;
     errorMessage = "";
     selectedAction = 0;

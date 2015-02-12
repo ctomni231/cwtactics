@@ -20,7 +20,19 @@ public class Tile {
     return this.unit != null;
   }
 
+  /**
+   * 
+   * @return returns true when the turn owner can see this tile.
+   */
   public boolean isVisible() {
     return this.visionTurnOwner > 0;
+  }
+
+  /**
+   * 
+   * @return returns true when the turn owner can see this tile.
+   */
+  public boolean isClientVisible() {
+    return this.visionClient > 0;
   }
 }

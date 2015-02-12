@@ -6,6 +6,8 @@ import org.wolfTec.cwt.game.input.InputData;
 public abstract class State {
 
   public abstract String getId();
+  
+  protected StateMachineBean statemachine;
 
   public boolean isAnimationState() {
     return false;

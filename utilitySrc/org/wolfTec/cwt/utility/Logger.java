@@ -1,4 +1,4 @@
-package org.wolfTec.cwt.game.log;
+package org.wolfTec.cwt.utility;
 
 import org.stjs.javascript.annotation.STJSBridge;
 

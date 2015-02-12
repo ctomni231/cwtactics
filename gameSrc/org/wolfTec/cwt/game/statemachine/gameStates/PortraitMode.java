@@ -34,7 +34,7 @@ public class PortraitMode extends State {
     // go back to the last state when the device is back in landscape mode
     // --> don't fire enter event when changing back to the last state
     if (isLandscape) {
-      this.setState(this.lastStateId, false);
+      statemachine.setState(this.lastStateId, false);
     }
   }
 

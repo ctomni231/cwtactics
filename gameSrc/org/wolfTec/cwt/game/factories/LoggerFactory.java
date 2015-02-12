@@ -1,6 +1,7 @@
-package org.wolfTec.cwt.game.log;
+package org.wolfTec.cwt.game.factories;
 
 import org.stjs.javascript.JSObjectAdapter;
+import org.wolfTec.cwt.utility.Logger;
 import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.FactoryBean;
 

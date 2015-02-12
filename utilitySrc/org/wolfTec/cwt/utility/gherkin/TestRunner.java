@@ -7,7 +7,7 @@ import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.Script;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolfTec.cwt.game.log.Logger;
+import org.wolfTec.cwt.utility.Logger;
 
 import static org.stjs.javascript.JSObjectAdapter.$js;
 

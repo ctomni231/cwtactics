@@ -2,8 +2,8 @@ package org.wolfTec.cwt.game.model;
 
 import org.stjs.javascript.functions.Callback0;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.log.Logger;
 import org.wolfTec.cwt.game.persistence.StorageBean;
+import org.wolfTec.cwt.utility.Logger;
 import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
 import org.wolfTec.cwt.utility.beans.InjectedByFactory;

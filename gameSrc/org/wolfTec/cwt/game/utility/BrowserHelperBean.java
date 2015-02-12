@@ -85,10 +85,22 @@ public class BrowserHelperBean {
     $js("R.series(functions, finalCallback)");
   }
 
+  /**
+   * 
+   * @param obj
+   * @return a list of property names that an object has
+   */
   public Array<String> objectKeys(Object obj) {
     return $js("Object.keys(obj)");
   }
 
+  /**
+   * Creates a DOM element.
+   * 
+   * @param tag
+   *          name of the tag
+   * @return a DOM element with the given tag
+   */
   public <T extends Element> T createDomElement(String tag) {
     return $js("document.createElement(tag)");
   }

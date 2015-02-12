@@ -7,7 +7,7 @@ import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.wolfTec.cwt.game.input.InputBean;
 import org.wolfTec.cwt.game.input.InputData;
-import org.wolfTec.cwt.game.log.Logger;
+import org.wolfTec.cwt.utility.Logger;
 import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
 import org.wolfTec.cwt.utility.beans.InjectedByFactory;
