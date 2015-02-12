@@ -6,9 +6,6 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.stjs.javascript.dom.canvas.CanvasTextMetrics;
 import org.stjs.javascript.functions.Callback0;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.Game;
-import org.wolfTec.cwt.game.localization.LocalizationBean;
-import org.wolfTec.cwt.game.utility.ObjectUtil;
 
 public class UiField {
 
@@ -53,8 +50,7 @@ public class UiField {
     this.inactive = false;
 
     this.key = text;
-    this.text = ObjectUtil.notEmpty(text) ? ((LocalizationBean) Game.getBean("i18n")).forKey(text)
-        : text;
+    this.text = text;
     JSStringAdapter.split("/\\n/", "\n");
   }
 

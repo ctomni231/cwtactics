@@ -1,7 +1,7 @@
 package org.wolfTec.cwt.game.gamelogic;
 
-import org.wolfTec.cwt.game.model.AttackType;
 import org.wolfTec.cwt.game.model.Unit;
+import org.wolfTec.cwt.game.model.types.AttackType;
 
 public interface BattleLogic extends BaseLogic {
 

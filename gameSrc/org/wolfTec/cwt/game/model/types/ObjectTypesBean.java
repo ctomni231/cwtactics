@@ -11,7 +11,6 @@ import org.wolfTec.cwt.game.assets.AssetLoader;
 import org.wolfTec.cwt.game.assets.AssetType;
 import org.wolfTec.cwt.game.log.Logger;
 import org.wolfTec.cwt.game.model.Modification;
-import org.wolfTec.cwt.game.model.TypeDatabase;
 import org.wolfTec.cwt.game.persistence.StorageBean;
 import org.wolfTec.cwt.game.persistence.StorageEntry;
 import org.wolfTec.cwt.game.utility.BrowserHelperBean;

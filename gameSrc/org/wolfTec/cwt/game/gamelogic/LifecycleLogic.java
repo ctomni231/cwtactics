@@ -5,7 +5,7 @@ import org.wolfTec.cwt.game.Constants;
 import org.wolfTec.cwt.game.model.Player;
 import org.wolfTec.cwt.game.model.Tile;
 import org.wolfTec.cwt.game.model.Unit;
-import org.wolfTec.cwt.game.model.UnitType;
+import org.wolfTec.cwt.game.model.types.UnitType;
 import org.wolfTec.cwt.game.utility.AssertUtilyBean;
 
 public interface LifecycleLogic extends BaseLogic, FogLogic {

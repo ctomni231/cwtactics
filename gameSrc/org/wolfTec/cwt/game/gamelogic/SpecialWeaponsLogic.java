@@ -5,8 +5,8 @@ import org.wolfTec.cwt.game.Game;
 import org.wolfTec.cwt.game.model.GameMapBean;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Property;
-import org.wolfTec.cwt.game.model.PropertyType;
 import org.wolfTec.cwt.game.model.Unit;
+import org.wolfTec.cwt.game.model.types.PropertyType;
 
 public interface SpecialWeaponsLogic extends BaseLogic, LifecycleLogic {
 

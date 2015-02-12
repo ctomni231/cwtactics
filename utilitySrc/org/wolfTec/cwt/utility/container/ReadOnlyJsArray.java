@@ -1,4 +1,4 @@
-package org.wolfTec.cwt.game.utility;
+package org.wolfTec.cwt.utility.container;
 
 import org.stjs.javascript.annotation.Template;
 

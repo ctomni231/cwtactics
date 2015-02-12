@@ -1,8 +1,8 @@
 package org.wolfTec.cwt.game.gamelogic;
 
 import org.stjs.javascript.JSGlobal;
-import org.wolfTec.cwt.game.model.WeatherType;
-import org.wolfTec.cwt.game.utility.ReadOnlyJsArray;
+import org.wolfTec.cwt.game.model.types.WeatherType;
+import org.wolfTec.cwt.utility.container.ReadOnlyJsArray;
 
 public interface WeatherLogic extends BaseLogic {
 

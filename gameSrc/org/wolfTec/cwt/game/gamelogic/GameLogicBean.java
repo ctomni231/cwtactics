@@ -2,7 +2,7 @@ package org.wolfTec.cwt.game.gamelogic;
 
 import org.wolfTec.cwt.game.model.GameConfigBean;
 import org.wolfTec.cwt.game.model.GameRoundBean;
-import org.wolfTec.cwt.game.model.ObjectTypesBean;
+import org.wolfTec.cwt.game.model.types.ObjectTypesBean;
 import org.wolfTec.cwt.game.utility.AssertUtilyBean;
 import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
