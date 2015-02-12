@@ -156,10 +156,10 @@ List of pretty much every sprite you'd ever need for reference.
 * [x] *PLIN* = Plain
 * [x] *FRST* = Forest
 * [x] *MNTN* = Mountain
-* [ ] *RIVR* = River
+* [x] *RIVR* = River
 * [ ] *ROAD* = Road
 * [x] *BRDG* = Bridge
-* [ ] *REEF* = Reef
+* [x] *REEF* = Reef
 * [ ] *WTLD* = Wasteland
 * [ ] *RUIN* = Ruins
 * [ ] *SHOA* = Shoals
