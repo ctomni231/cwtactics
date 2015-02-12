@@ -1,4 +1,4 @@
-package org.wolfTec.cwt.game.model;
+package org.wolfTec.cwt.game.model.types;
 
 import org.stjs.javascript.Map;
 import org.wolfTec.cwt.game.EngineGlobals;

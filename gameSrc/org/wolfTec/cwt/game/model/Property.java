@@ -1,5 +1,7 @@
 package org.wolfTec.cwt.game.model;
 
+import org.wolfTec.cwt.game.model.types.PropertyType;
+
 /**
  * A property is an capturable object on the game map which can be owned by a
  * player.

@@ -1,6 +1,8 @@
 package org.wolfTec.cwt.game.model;
 
 import org.wolfTec.cwt.game.EngineGlobals;
+import org.wolfTec.cwt.game.model.types.ArmyType;
+import org.wolfTec.cwt.game.model.types.CoType;
 
 public class Player {
 

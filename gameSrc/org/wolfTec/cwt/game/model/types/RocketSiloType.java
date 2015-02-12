@@ -1,4 +1,4 @@
-package org.wolfTec.cwt.game.model;
+package org.wolfTec.cwt.game.model.types;
 
 import org.stjs.javascript.Array;
 import org.wolfTec.cwt.utility.validation.IntValue;

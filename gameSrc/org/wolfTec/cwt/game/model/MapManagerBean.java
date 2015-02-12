@@ -9,6 +9,7 @@ import org.wolfTec.cwt.game.assets.AssetItem;
 import org.wolfTec.cwt.game.assets.AssetLoader;
 import org.wolfTec.cwt.game.assets.AssetType;
 import org.wolfTec.cwt.game.log.Logger;
+import org.wolfTec.cwt.game.model.types.MapFileType;
 import org.wolfTec.cwt.game.persistence.StorageBean;
 import org.wolfTec.cwt.game.persistence.StorageEntry;
 import org.wolfTec.cwt.game.utility.BrowserHelperBean;
@@ -41,7 +42,7 @@ public class MapManagerBean implements AssetLoader {
     });
   }
 
-  public void loadMap(String mapId, Callback1<StorageEntry<MapFile>> callback) {
+  public void loadMap(String mapId, Callback1<StorageEntry<MapFileType>> callback) {
     storage.get(EngineGlobals.STORAGE_PARAMETER_MAP_PREFIX + mapId, callback);
   }
 

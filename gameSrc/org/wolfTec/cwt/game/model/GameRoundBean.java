@@ -7,6 +7,7 @@ import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback3;
 import org.stjs.javascript.functions.Function1;
 import org.wolfTec.cwt.game.EngineGlobals;
+import org.wolfTec.cwt.game.model.types.WeatherType;
 import org.wolfTec.cwt.utility.beans.Bean;
 
 @Bean

@@ -1,4 +1,4 @@
-package org.wolfTec.cwt.game.model;
+package org.wolfTec.cwt.game.model.types;
 
 import javax.jws.Oneway;
 
@@ -10,15 +10,17 @@ import org.wolfTec.cwt.game.assets.AssetItem;
 import org.wolfTec.cwt.game.assets.AssetLoader;
 import org.wolfTec.cwt.game.assets.AssetType;
 import org.wolfTec.cwt.game.log.Logger;
+import org.wolfTec.cwt.game.model.Modification;
+import org.wolfTec.cwt.game.model.TypeDatabase;
 import org.wolfTec.cwt.game.persistence.StorageBean;
 import org.wolfTec.cwt.game.persistence.StorageEntry;
 import org.wolfTec.cwt.game.utility.BrowserHelperBean;
 import org.wolfTec.cwt.game.utility.ExternalRequestOptions;
-import org.wolfTec.cwt.game.utility.ReadOnlyJsArray;
 import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
 import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 import org.wolfTec.cwt.utility.beans.PostInitialization;
+import org.wolfTec.cwt.utility.container.ReadOnlyJsArray;
 
 @Bean
 public class ObjectTypesBean implements AssetLoader {

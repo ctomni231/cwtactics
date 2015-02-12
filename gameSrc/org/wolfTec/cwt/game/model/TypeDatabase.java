@@ -4,6 +4,7 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
+import org.wolfTec.cwt.game.model.types.ObjectType;
 
 /**
  * A data object that holds a list of sheet objects with a given schema. Every

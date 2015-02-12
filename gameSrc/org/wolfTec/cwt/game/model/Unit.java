@@ -2,6 +2,7 @@ package org.wolfTec.cwt.game.model;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.annotation.Template;
+import org.wolfTec.cwt.game.model.types.UnitType;
 
 public class Unit implements PlayerObject {
 

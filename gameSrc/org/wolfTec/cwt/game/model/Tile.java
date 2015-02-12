@@ -1,5 +1,7 @@
 package org.wolfTec.cwt.game.model;
 
+import org.wolfTec.cwt.game.model.types.TileType;
+
 public class Tile {
 
   public Unit unit;

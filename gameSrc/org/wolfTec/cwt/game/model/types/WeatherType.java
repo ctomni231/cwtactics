@@ -1,4 +1,4 @@
-package org.wolfTec.cwt.game.model;
+package org.wolfTec.cwt.game.model.types;
 
 public class WeatherType extends ObjectType {
 
