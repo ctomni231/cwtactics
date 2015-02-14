@@ -1,19 +1,29 @@
 package org.wolfTec.cwt.game.gamelogic;
 
 import org.wolfTec.cwt.game.EngineGlobals;
+import org.wolfTec.cwt.game.model.GameConfigBean;
+import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Player;
 import org.wolfTec.cwt.game.model.Property;
 import org.wolfTec.cwt.game.model.Tile;
 import org.wolfTec.cwt.game.model.Unit;
+import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.beans.Injected;
 
-public interface FogLogic extends BaseLogic {
+@Bean public class FogLogic {
 
-  default void modifyVision(int x, int y, Player owner, int range, int value) {
+  @Injected
+  private GameRoundBean gameround;
+  
+  @Injected
+  private GameConfigBean config;
+
+  public void modifyVision(int x, int y, Player owner, int range, int value) {
 
     // ignore neutral objects
     if (owner.team == EngineGlobals.INACTIVE_ID) return;
 
-    if (getGameConfig().getConfig("fogEnabled").getValue() != 1) return;
+    if (config.getConfig("fogEnabled").getValue() != 1) return;
 
     boolean clientVisible = owner.clientVisible;
     boolean turnOwnerVisible = owner.turnOwnerVisible;
@@ -22,12 +32,12 @@ public interface FogLogic extends BaseLogic {
     if (!clientVisible && !turnOwnerVisible) return;
 
     if (range == 0) {
-      if (clientVisible) getGameRound().getMap().getTile(x, y).visionClient += value;
-      if (turnOwnerVisible) getGameRound().getMap().getTile(x, y).visionTurnOwner += value;
+      if (clientVisible) gameround.getMap().getTile(x, y).visionClient += value;
+      if (turnOwnerVisible) gameround.getMap().getTile(x, y).visionTurnOwner += value;
 
     } else {
-      int mW = getGameRound().getMapWidth();
-      int mH = getGameRound().getMapHeight();
+      int mW = gameround.getMapWidth();
+      int mH = gameround.getMapHeight();
       int lX;
       int hX;
       int lY = y - range;
@@ -45,33 +55,33 @@ public interface FogLogic extends BaseLogic {
         for (; lX <= hX; lX++) {
 
           // does the tile block vision ?
-          if (getGameRound().getMap().getTile(lX, lY).type.blocksVision
-              && getGameRound().getMap().getDistance(x, y, lX, lY) > 1) continue;
+          if (gameround.getMap().getTile(lX, lY).type.blocksVision
+              && gameround.getMap().getDistance(x, y, lX, lY) > 1) continue;
 
-          if (clientVisible) getGameRound().getMap().getTile(lX, lY).visionClient += value;
-          if (turnOwnerVisible) getGameRound().getMap().getTile(lX, lY).visionTurnOwner += value;
+          if (clientVisible) gameround.getMap().getTile(lX, lY).visionClient += value;
+          if (turnOwnerVisible) gameround.getMap().getTile(lX, lY).visionTurnOwner += value;
         }
       }
     }
   }
 
-  default void fullRecalculation() {
+  public void fullRecalculation() {
     int x;
     int y;
-    int xe = getGameRound().getMapWidth();
-    int ye = getGameRound().getMapHeight();
-    boolean fogEnabled = (getGameConfig().getConfig("fogEnabled").getValue() == 1);
+    int xe = gameround.getMapWidth();
+    int ye = gameround.getMapHeight();
+    boolean fogEnabled = (config.getConfig("fogEnabled").getValue() == 1);
 
     // 1. reset fog maps
     for (x = 0; x < xe; x++) {
       for (y = 0; y < ye; y++) {
 
         if (!fogEnabled) { // TODO
-          getGameRound().getMap().getTile(x, y).visionTurnOwner = 1;
-          getGameRound().getMap().getTile(x, y).visionClient = 1;
+          gameround.getMap().getTile(x, y).visionTurnOwner = 1;
+          gameround.getMap().getTile(x, y).visionClient = 1;
         } else {
-          getGameRound().getMap().getTile(x, y).visionTurnOwner = 0;
-          getGameRound().getMap().getTile(x, y).visionClient = 0;
+          gameround.getMap().getTile(x, y).visionTurnOwner = 0;
+          gameround.getMap().getTile(x, y).visionClient = 0;
         }
       }
     }
@@ -85,7 +95,7 @@ public interface FogLogic extends BaseLogic {
 
       for (x = 0; x < xe; x++) {
         for (y = 0; y < ye; y++) {
-          tile = getGameRound().getMap().getTile(x, y);
+          tile = gameround.getMap().getTile(x, y);
 
           unit = tile.unit;
           if (unit != null) {
@@ -107,37 +117,37 @@ public interface FogLogic extends BaseLogic {
     }
   }
 
-  default void removeVision(int x, int y, Player owner, int range) {
+  public void removeVision(int x, int y, Player owner, int range) {
     modifyVision(x, y, owner, range, -1);
   }
 
-  default void removeUnitVision(int x, int y, Player owner) {
-    Unit unit = getGameRound().getMap().getTile(x, y).unit;
+  public void removeUnitVision(int x, int y, Player owner) {
+    Unit unit = gameround.getMap().getTile(x, y).unit;
     if (owner == null) owner = unit.getOwner();
 
     removeVision(x, y, owner, unit.getType().vision);
   }
 
-  default void removePropertyVision(int x, int y, Player owner) {
-    Property prop = getGameRound().getMap().getTile(x, y).property;
+  public void removePropertyVision(int x, int y, Player owner) {
+    Property prop = gameround.getMap().getTile(x, y).property;
     if (owner == null) owner = prop.owner;
 
     removeVision(x, y, owner, prop.type.vision);
   }
 
-  default void addVision(int x, int y, Player owner, int range) {
+  public void addVision(int x, int y, Player owner, int range) {
     modifyVision(x, y, owner, range, +1);
   }
 
-  default void addUnitVision(int x, int y, Player owner) {
-    Unit unit = getGameRound().getMap().getTile(x, y).unit;
+  public void addUnitVision(int x, int y, Player owner) {
+    Unit unit = gameround.getMap().getTile(x, y).unit;
     if (owner == null) owner = unit.getOwner();
 
     addVision(x, y, owner, unit.getType().vision);
   }
 
-  default void addPropertyVision(int x, int y, Player owner) {
-    Property prop = getGameRound().getMap().getTile(x, y).property;
+  public void addPropertyVision(int x, int y, Player owner) {
+    Property prop = gameround.getMap().getTile(x, y).property;
     if (owner == null) owner = prop.owner;
 
     addVision(x, y, owner, prop.type.vision);

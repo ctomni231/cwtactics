@@ -2,11 +2,18 @@ package org.wolfTec.cwt.game.gamelogic;
 
 import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.model.CoPowerLevel;
+import org.wolfTec.cwt.game.model.GameConfigBean;
 import org.wolfTec.cwt.game.model.Player;
+import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.beans.Injected;
 
-public interface CommanderLogic extends BaseLogic {
+@Bean
+public class CommanderLogic {
 
-  default boolean isPowerActive(Player player, CoPowerLevel level) {
+  @Injected
+  private GameConfigBean config;
+
+  public boolean isPowerActive(Player player, CoPowerLevel level) {
     return player.activePower == level;
   }
 
@@ -16,14 +23,14 @@ public interface CommanderLogic extends BaseLogic {
    * @param player
    * @returns {behaviorTree.Config.value|*}
    */
-  default int getStarCost(Player player) {
-    int cost = getGameConfig().getConfigValue("co_getStarCost");
+  public int getStarCost(Player player) {
+    int cost = config.getConfigValue("co_getStarCost");
 
     // if usage counter is greater than max usage counter then use only the
     // maximum increase counter for calculation
-    int increaseSteps = getGameConfig().getConfigValue("co_getStarCostIncreaseSteps");
+    int increaseSteps = config.getConfigValue("co_getStarCostIncreaseSteps");
     if (player.powerUsed > increaseSteps) {
-      cost += increaseSteps * getGameConfig().getConfigValue("co_getStarCostIncrease");
+      cost += increaseSteps * config.getConfigValue("co_getStarCostIncrease");
     }
 
     return cost;
@@ -38,11 +45,11 @@ public interface CommanderLogic extends BaseLogic {
    * @param level
    * @returns {boolean}
    */
-  default boolean canActivatePower(Player player, CoPowerLevel level) {
+  public boolean canActivatePower(Player player, CoPowerLevel level) {
     // TODO maybe better in the action itself
 
     // commanders must be available and current power must be inactive
-    if (getGameConfig().getConfigValue("co_enabledCoPower") == 0 || player.mainCo == null
+    if (config.getConfigValue("co_enabledCoPower") == 0 || player.mainCo == null
         || player.activePower != CoPowerLevel.OFF) {
       return false;
     }
@@ -74,7 +81,7 @@ public interface CommanderLogic extends BaseLogic {
    * @param player
    * @param level
    */
-  default void activatePower(Player player, CoPowerLevel level) {
+  public void activatePower(Player player, CoPowerLevel level) {
     player.power = 0;
     player.activePower = level;
     player.powerUsed++;
@@ -86,7 +93,7 @@ public interface CommanderLogic extends BaseLogic {
    *
    * @param player
    */
-  default void deactivatePower(Player player) {
+  public void deactivatePower(Player player) {
     player.activePower = CoPowerLevel.OFF;
   }
 }

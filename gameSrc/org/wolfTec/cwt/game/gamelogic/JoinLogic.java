@@ -1,8 +1,21 @@
 package org.wolfTec.cwt.game.gamelogic;
 
+import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Unit;
+import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.beans.Injected;
 
-public interface JoinLogic extends TransportLogic, LifecycleLogic {
+@Bean
+public class JoinLogic {
+
+  @Injected
+  private TransportLogic transport;
+
+  @Injected
+  private LifecycleLogic lifecycle;
+
+  @Injected
+  private GameRoundBean gameround;
 
   /**
    * Returns **true** if two units can join each other, else **false**. In
@@ -14,7 +27,7 @@ public interface JoinLogic extends TransportLogic, LifecycleLogic {
    * @param target
    * @returns {boolean}
    */
-  default boolean canJoin(Unit source, Unit target) {
+  public boolean canJoin(Unit source, Unit target) {
     if (source.getType() != target.getType()) {
       return false;
     }
@@ -25,7 +38,7 @@ public interface JoinLogic extends TransportLogic, LifecycleLogic {
     }
 
     // do they have loads?
-    if (hasLoads(source) || hasLoads(target)) {
+    if (transport.hasLoads(source) || transport.hasLoads(target)) {
       return false;
     }
 
@@ -41,18 +54,18 @@ public interface JoinLogic extends TransportLogic, LifecycleLogic {
    * @param x
    * @param y
    */
-  default void join(Unit source, int x, int y) {
-    if (!getGameRound().isValidPosition(x, y)) {
+  public void join(Unit source, int x, int y) {
+    if (!gameround.isValidPosition(x, y)) {
       throw new Error("IllegalArgumentType(s)");
     }
 
-    Unit target = getGameRound().getMap().getTile(x, y).unit;
+    Unit target = gameround.getMap().getTile(x, y).unit;
     if (source.getType() != target.getType()) {
       throw new Error("IncompatibleJoinTypes");
     }
 
     // health points
-    healUnit(target, Unit.pointsToHealth(Unit.healthToPoints(source.getHp())), true);
+    lifecycle.healUnit(target, Unit.pointsToHealth(Unit.healthToPoints(source.getHp())), true);
 
     // ammo
     target.setAmmo(source.getAmmo());
@@ -69,6 +82,6 @@ public interface JoinLogic extends TransportLogic, LifecycleLogic {
     // TODO experience points
 
     // TODO use correct action here
-    cwt.Lifecycle.destroyUnit(x, y, true);
+    lifecycle.destroyUnit(x, y, true);
   }
 }

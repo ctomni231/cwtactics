@@ -1,23 +1,30 @@
 package org.wolfTec.cwt.game.gamelogic;
 
 import org.stjs.javascript.JSGlobal;
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.Game;
 import org.wolfTec.cwt.game.model.GameMapBean;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Property;
+import org.wolfTec.cwt.game.model.Tile;
 import org.wolfTec.cwt.game.model.Unit;
 import org.wolfTec.cwt.game.model.types.PropertyType;
+import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.beans.Injected;
 
-public interface SpecialWeaponsLogic extends BaseLogic, LifecycleLogic {
+@Bean public class SpecialWeaponsLogic {
 
+  @Injected private GameRoundBean gameround;
+  @Injected private LifecycleLogic lifecycle;
+  
   /**
    * Returns **true** when the given **unit** is the mechanical laser trigger,
    * else **false**.
    *
    * @return
    */
-  default boolean isLaser(Unit unit) {
-    return (unit.getType().ID == Game.LASER_UNIT_INV);
+  public boolean isLaser(Unit unit) {
+    return (unit.getType().ID == EngineGlobals.LASER_UNIT_INV);
   }
 
   /**
@@ -26,8 +33,8 @@ public interface SpecialWeaponsLogic extends BaseLogic, LifecycleLogic {
    *
    * @return
    */
-  default boolean isCannonUnit(Unit unit) {
-    return (unit.getType().ID == Game.CANNON_UNIT_INV);
+  public boolean isCannonUnit(Unit unit) {
+    return (unit.getType().ID == EngineGlobals.CANNON_UNIT_INV);
   }
 
   /**
@@ -36,13 +43,13 @@ public interface SpecialWeaponsLogic extends BaseLogic, LifecycleLogic {
    *
    * @return
    */
-  default boolean isRocketSilo(Property prop) {
+  public boolean isRocketSilo(Property prop) {
     return (prop.type.rocketsilo != JSGlobal.undefined); // TODO: null replace
                                                          // possible
   }
 
-  default void fireLaser(int x, int y) {
-    GameRoundBean gameround = getGameRound();
+  public void fireLaser(int x, int y) {
+    GameRoundBean gameround = gameround;
     GameMapBean map = gameround.getMap();
     Property prop = map.getTile(x, y).property;
 
@@ -61,25 +68,25 @@ public interface SpecialWeaponsLogic extends BaseLogic, LifecycleLogic {
           if (oy != y) {
             Unit unit = map.getTile(x, y).unit;
             if (unit != null && unit.getOwner().team != savedTeam) {
-              damageUnit(unit, damage, 9);
+              lifecycle.damageUnit(unit, damage, 9);
             }
           }
         }
       } else {
         Unit unit = map.getTile(x, y).unit;
         if (unit != null && unit.getOwner().team != savedTeam) {
-          damageUnit(unit, damage, 9);
+          lifecycle.damageUnit(unit, damage, 9);
         }
       }
     }
   }
 
-  default boolean canBeFiredBy(Property property, Unit unit) {
+  public boolean canBeFiredBy(Property property, Unit unit) {
     return property.type.rocketsilo.fireable.indexOf(unit.getType().ID) > -1;
   }
 
-  default boolean canBeFiredTo(Property property, int x, int y) {
-    return getGameRound().isValidPosition(x, y);
+  public boolean canBeFiredTo(Property property, int x, int y) {
+    return gameround.isValidPosition(x, y);
   }
   
   /*
@@ -103,9 +110,9 @@ var doDamage = function (x, y, tile, damage) {
    * @param tx
    * @param ty
    */
-  default void fireSilo(int x, int y, int tx, int ty) {
+  public void fireSilo(int x, int y, int tx, int ty) {
     // TODO move get logic into gameround -> map will be composite element of game round
-    Property silo = getGameRound().getMap().getTile(x, y).property;
+    Property silo = gameround.getMap().getTile(x, y).property;
 
     PropertyType type = silo.type;
     silo.type = getObjectTypes().getPropertyType(type.changesTo);
@@ -123,7 +130,7 @@ var doDamage = function (x, y, tile, damage) {
  * @param unit
  * @returns {boolean}
  */
-default boolean canSelfDestruct (Unit unit) {
+public boolean canSelfDestruct (Unit unit) {
     return unit.getType().suicide != null;
 }
 
@@ -133,7 +140,7 @@ default boolean canSelfDestruct (Unit unit) {
  * @param unit
  * @returns {number}
  */
-default int getExplosionDamage (Unit unit) {
+public int getExplosionDamage (Unit unit) {
     return Unit.pointsToHealth(unit.getType().suicide.damage);
 }
 
@@ -168,12 +175,12 @@ var doDamage = function (x, y, tile, damage) {
  * @param {number} range
  * @param {number} damage
  */
-default void explode (int x, int y, int range, int damage) {
-    if (!getGameRound().isValidPosition(x, y)) {
+public void explode (int x, int y, int range, int damage) {
+    if (!gameround.isValidPosition(x, y)) {
         throw new Error("IllegalArgumentType(s)");
     }
 
-    Tile tile = getGameRound().getMap().getTile(x, y);
+    Tile tile = gameround.getMap().getTile(x, y);
     if (!canSelfDestruct(tile.unit) || range < 1 || damage < 1 ) {
         throw new Error("IllegalArgumentType(s)");
     }

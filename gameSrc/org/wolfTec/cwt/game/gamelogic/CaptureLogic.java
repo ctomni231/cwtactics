@@ -4,18 +4,18 @@ import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.model.Property;
 import org.wolfTec.cwt.game.model.Unit;
 
-public interface CaptureLogic {
+public class CaptureLogic {
 
   /**
    * Returns true, when the given property is neutral, else false.
    *
    * @return
    */
-  default boolean isNeutral(Property prop) {
+  public boolean isNeutral(Property prop) {
     return prop.owner != null;
   }
 
-  default void makeNeutral(Property prop) {
+  public void makeNeutral(Property prop) {
     prop.owner = null;
   }
 
@@ -24,7 +24,7 @@ public interface CaptureLogic {
    *
    * @returns {boolean}
    */
-  default boolean canBeCaptured(Property prop) {
+  public boolean canBeCaptured(Property prop) {
     return prop.type.capturePoints > 0;
   }
 
@@ -33,14 +33,14 @@ public interface CaptureLogic {
    *
    * @return
    */
-  default boolean canCapture(Unit source) {
+  public boolean canCapture(Unit source) {
     return source.getType().captures > 0;
   }
 
   /**
    * @returns {boolean}
    */
-  default boolean isCapturing(Unit unit) {
+  public boolean isCapturing(Unit unit) {
     if (unit.getLoadedIn() != null) {
       return false;
     }
@@ -65,7 +65,7 @@ public interface CaptureLogic {
    * @returns {boolean} true when captured successfully, else when still some
    *          capture points left
    */
-  default boolean captureProperty(Property property, Unit unit) {
+  public boolean captureProperty(Property property, Unit unit) {
     property.points -= EngineGlobals.CAPTURE_PER_STEP;
     if (property.points <= 0) {
       property.owner = unit.getOwner();
