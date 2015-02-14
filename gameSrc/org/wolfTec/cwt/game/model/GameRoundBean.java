@@ -5,10 +5,13 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.annotation.Template;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback3;
+import org.stjs.javascript.functions.Callback4;
 import org.stjs.javascript.functions.Function1;
+import org.stjs.javascript.functions.Function4;
 import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.model.types.WeatherType;
 import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.functions.Function5;
 
 @Bean
 public class GameRoundBean {
@@ -18,7 +21,7 @@ public class GameRoundBean {
   private int gameTimeElapsed;
   private int turnTimeLimit;
   private int turnTimeElapsed;
-  private Player lastClientPlayer;
+  public Player lastClientPlayer;
   private Player turnOwner;
   private WeatherType weather;
   private int weatherLeftDays;
@@ -166,6 +169,10 @@ public class GameRoundBean {
     if (id < 0 || id >= units.$length()) throw new Error("InvalidUnitIdException");
     return units.$get(id);
   }
+  
+  public int getMaxAmountOfUnits () {
+    return units.$length();
+  }
 
   /**
    * @param id
@@ -174,6 +181,10 @@ public class GameRoundBean {
   public Property getProperty(int id) {
     if (id < 0 || id >= properties.$length()) throw new Error("InvalidPropertyIdException");
     return properties.$get(id);
+  }
+  
+  public int getMaxAmountOfProperties() {
+    return properties.$length();
   }
 
   /**
@@ -364,8 +375,8 @@ public class GameRoundBean {
    * @param cb
    * @param cbArg
    */
-  public void doInRange(int x, int y, int range, TileInRange dataBlock,
-      Function1<TileInRange, Boolean> cb) {
+  public void doInRange(int x, int y, int range,
+      Function5<Integer, Integer, Integer, Tile, Object, Boolean> cb, Object cbArg) {
 
     int lX;
     int hX;
@@ -384,23 +395,13 @@ public class GameRoundBean {
       if (hX >= mapWidth) hX = mapWidth - 1;
       for (; lX <= hX; lX++) {
 
-        dataBlock.x = lX;
-        dataBlock.y = lY;
-        dataBlock.tile = map.getTile(lX, lY);
-        dataBlock.range = Math.abs(lX - x) + disY;
-
         // invoke the callback on all tiles in range
         // if a callback returns `false` then the process will be stopped
-        if (cb.$invoke(dataBlock) == false) {
+        if (cb.$invoke(lX, lY, Math.abs(lX - x) + disY, map.getTile(hX, lY), cbArg) == false) {
           return;
         }
       }
     }
-
-    dataBlock.x = 0;
-    dataBlock.y = 0;
-    dataBlock.tile = null;
-    dataBlock.range = 0;
   }
 
   public void setWeatherLeftDays(int weatherLeftDays) {
@@ -410,5 +411,5 @@ public class GameRoundBean {
   public void setWeather(WeatherType weather) {
     this.weather = weather;
   }
-  
+
 }

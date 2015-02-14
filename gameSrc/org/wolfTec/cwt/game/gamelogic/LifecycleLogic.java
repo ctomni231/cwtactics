@@ -2,19 +2,37 @@ package org.wolfTec.cwt.game.gamelogic;
 
 import org.stjs.javascript.JSGlobal;
 import org.wolfTec.cwt.game.EngineGlobals;
+import org.wolfTec.cwt.game.model.GameConfigBean;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Player;
+import org.wolfTec.cwt.game.model.Property;
 import org.wolfTec.cwt.game.model.Tile;
 import org.wolfTec.cwt.game.model.Unit;
+import org.wolfTec.cwt.game.model.types.ObjectTypesBean;
 import org.wolfTec.cwt.game.model.types.UnitType;
-import org.wolfTec.cwt.game.utility.AssertUtilyBean;
 import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
 
-@Bean public class LifecycleLogic {
+@Bean
+public class LifecycleLogic {
+
+  @Injected
+  private FogLogic fog;
   
-  @Injected private FogLogic fog;
-  @Injected private GameRoundBean gameround;
+  @Injected
+  private CaptureLogic capture;
+  
+  @Injected
+  private SupplyLogic supply;
+  
+  @Injected
+  private ObjectTypesBean types;
+  
+  @Injected
+  private GameConfigBean config;
+  
+  @Injected
+  private GameRoundBean gameround;
 
   /**
    * 
@@ -34,30 +52,30 @@ import org.wolfTec.cwt.utility.beans.Injected;
    */
   public void deactivatePlayer(Player player) {
     player.team = EngineGlobals.INACTIVE_ID;
-    
-    for (var i = 0, e = gameround.units.length; i < e; i++) {
-        var unit = model.units[i];
-        if (unit.owner == player) {
-            // TODO
-        }
+
+    for (int i = 0, e = gameround.getMaxAmountOfUnits(); i < e; i++) {
+      Unit unit = gameround.getUnit(i);
+      if (unit.getOwner() == player) {
+        // TODO
+      }
     }
 
     // drop properties
-    for (var i = 0, e = model.properties.length; i < e; i++) {
-        var prop = model.properties[i];
-        if (prop.owner == player) {
-            prop.makeNeutral();
+    for (int i = 0, e = gameround.getMaxAmountOfProperties(); i < e; i++) {
+      Property prop = gameround.getProperty(i);
+      if (prop.owner == player) {
+        capture.makeNeutral(prop);
 
-            // TODO: change type when the property is a changing type property
-            var changeType = prop.type.changeAfterCaptured;
-        }
+        // TODO: change type when the property is a changing type property
+        String changeType = prop.type.changesTo;
+      }
     }
 
     deactivatePlayer(player);
 
     // when no opposite teams are found then the game has ended
-    if (!model.areEnemyTeamsLeft()) {
-        // TODO
+    if (!gameround.areEnemyTeamsLeft()) {
+      // TODO
     }
   }
 
@@ -116,22 +134,22 @@ import org.wolfTec.cwt.utility.beans.Injected;
   }
 
   public void createUnit(int x, int y, Player player, UnitType type) {
-    Tile tile = getGameRound().getMap().getTile(x, y);
-    Unit unit = getInactiveUnit();
+    Tile tile = gameround.getMap().getTile(x, y);
+    Unit unit = gameround.getInactiveUnit();
 
     // set references
     unit.setOwner(player);
     tile.unit = unit;
     player.numberOfUnits++;
 
-    unit.initByType(sheet.units.sheets[type]);
+    unit.initByType(type);
 
-    addUnitVision(x, y, player);
+    fog.addUnitVision(x, y, player);
   }
 
   public void destroyUnit(int x, int y, boolean silent) {
-    Tile tile = getGameRound().getMap().getTile(x, y);
-    removeUnitVision(x, y, tile.unit.getOwner());
+    Tile tile = gameround.getMap().getTile(x, y);
+    fog.removeUnitVision(x, y, tile.unit.getOwner());
 
     // TODO check loads
 
@@ -143,7 +161,7 @@ import org.wolfTec.cwt.utility.beans.Injected;
     tile.unit = null;
 
     // end game when the player does not have any unit left
-    if (getGameConfig().getConfigValue("cfgNoUnitsLeftLoose") == 1 && owner.numberOfUnits == 0) {
+    if (config.getConfigValue("cfgNoUnitsLeftLoose") == 1 && owner.numberOfUnits == 0) {
       this.deactivatePlayer(owner);
     }
   }
@@ -151,63 +169,62 @@ import org.wolfTec.cwt.utility.beans.Injected;
   public boolean hasFreeUnitSlot(Player player) {
     return player.numberOfUnits < EngineGlobals.MAX_UNITS;
   }
-  
-  var cfgAutoSupply = require("../config").getConfig("autoSupplyAtTurnStart");
-  var cfgDayLimit = require("../config").getConfig("round_dayLimit");
 
+  private void checkForRepairTargets(int x, int y, Tile tile) {
 
-  var statemachine = require("../statemachine");
+    // check repair via property
+    // TODO
+    // if (tile.unit.getHp() < 99) actions.localAction("healUnit", x, y);
 
-  function checkForRepairTargets(x, y, tile) {
-
-      // check repair via property
-      if (tile.unit.hp < 99) actions.localAction("healUnit", x, y);
-
-      // give funds
-      exports.raiseFunds(tile.property);
+    // give funds
+    supply.raiseFunds(tile.property);
   }
 
-  function checkForSupplyTargets(x, y, tile) {
+  private void checkForSupplyTargets(int x, int y, Tile tile) {
 
-      // check neighbours
-      if (supply.isSupplier(tile.unit)) {
-          if (supply.canRefillObjectAt(tile.unit, x + 1, y)) actions.localAction("refillSupply", x + 1, y);
-          if (supply.canRefillObjectAt(tile.unit, x - 1, y)) actions.localAction("refillSupply", x - 1, y);
-          if (supply.canRefillObjectAt(tile.unit, x, y + 1)) actions.localAction("refillSupply", x, y + 1);
-          if (supply.canRefillObjectAt(tile.unit, x, y - 1)) actions.localAction("refillSupply", x, y - 1);
-      }
+    // check neighbours
+    // TODO
+    // if (supply.isSupplier(tile.unit)) {
+    // if (supply.canRefillObjectAt(tile.unit, x + 1, y))
+    // actions.localAction("refillSupply", x + 1, y);
+    // if (supply.canRefillObjectAt(tile.unit, x - 1, y))
+    // actions.localAction("refillSupply", x - 1, y);
+    // if (supply.canRefillObjectAt(tile.unit, x, y + 1))
+    // actions.localAction("refillSupply", x, y + 1);
+    // if (supply.canRefillObjectAt(tile.unit, x, y - 1))
+    // actions.localAction("refillSupply", x, y - 1);
+    // }
 
-      // drain fuel
-      supply.drainFuel(tile.unit);
+    // drain fuel
+    supply.drainFuel(tile.unit);
   }
 
-  exports.startsTurn = function(player) {
+  public void startsTurn(Player player) {
 
-      // Sets the new turn owner and also the client, if necessary
-      if (player.clientControlled) {
-          model.lastClientPlayer = player;
+    // Sets the new turn owner and also the client, if necessary
+    if (player.clientControlled) {
+      gameround.lastClientPlayer = player;
+    }
+
+    // *************************** Update Fog ****************************
+
+    // the active client can see what his and all allied objects can see
+    int clTid = gameround.lastClientPlayer.team;
+    for (int i = 0, e = EngineGlobals.MAX_PLAYER; i < e; i++) {
+      Player cPlayer = gameround.getPlayer(i);
+
+      cPlayer.turnOwnerVisible = false;
+      cPlayer.clientVisible = false;
+
+      // player isn't registered
+      if (cPlayer.team == EngineGlobals.INACTIVE_ID) continue;
+
+      if (cPlayer.team == clTid) {
+        cPlayer.clientVisible = true;
       }
-
-      // *************************** Update Fog ****************************
-
-      // the active client can see what his and all allied objects can see
-      var clTid = model.lastClientPlayer.team;
-      var i, e;
-      for (i = 0, e = EngineGlobals.MAX_PLAYER; i < e; i++) {
-          var cPlayer = model.players[i];
-
-          cPlayer.turnOwnerVisible = false;
-          cPlayer.clientVisible = false;
-
-          // player isn't registered
-          if (cPlayer.team == EngineGlobals.INACTIVE_ID) continue;
-
-          if (cPlayer.team == clTid) {
-              cPlayer.clientVisible = true;
-          }
-          if (cPlayer.team == player.team) {
-              cPlayer.turnOwnerVisible = true;
-          }
+      if (cPlayer.team == player.team) {
+        cPlayer.turnOwnerVisible = true;
       }
+    }
   };
 }

@@ -8,15 +8,21 @@ import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Property;
 import org.wolfTec.cwt.game.model.Tile;
 import org.wolfTec.cwt.game.model.Unit;
+import org.wolfTec.cwt.game.model.types.ObjectTypesBean;
 import org.wolfTec.cwt.game.model.types.PropertyType;
 import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
 
-@Bean public class SpecialWeaponsLogic {
+@Bean
+public class SpecialWeaponsLogic {
 
-  @Injected private GameRoundBean gameround;
-  @Injected private LifecycleLogic lifecycle;
-  
+  @Injected
+  private GameRoundBean gameround;
+  @Injected
+  private ObjectTypesBean types;
+  @Injected
+  private LifecycleLogic lifecycle;
+
   /**
    * Returns **true** when the given **unit** is the mechanical laser trigger,
    * else **false**.
@@ -49,7 +55,6 @@ import org.wolfTec.cwt.utility.beans.Injected;
   }
 
   public void fireLaser(int x, int y) {
-    GameRoundBean gameround = gameround;
     GameMapBean map = gameround.getMap();
     Property prop = map.getTile(x, y).property;
 
@@ -88,16 +93,6 @@ import org.wolfTec.cwt.utility.beans.Injected;
   public boolean canBeFiredTo(Property property, int x, int y) {
     return gameround.isValidPosition(x, y);
   }
-  
-  /*
-   * // inline function
-var doDamage = function (x, y, tile, damage) {
-    var unit = tile.unit;
-    if (unit) {
-        unit.takeDamage(damage, 9);
-    }
-};
-   */
 
   /**
    * Fires a rocket from a given rocket silo at position (**x**,**y**) to a
@@ -111,83 +106,75 @@ var doDamage = function (x, y, tile, damage) {
    * @param ty
    */
   public void fireSilo(int x, int y, int tx, int ty) {
-    // TODO move get logic into gameround -> map will be composite element of game round
+    // TODO move get logic into gameround -> map will be composite element of
+    // game round
     Property silo = gameround.getMap().getTile(x, y).property;
 
     PropertyType type = silo.type;
-    silo.type = getObjectTypes().getPropertyType(type.changesTo);
+    silo.type = types.getPropertyType(type.changesTo);
 
     int damage = Unit.pointsToHealth(type.rocketsilo.damage);
     int range = type.rocketsilo.range;
 
-    model.doInRange(tx, ty, range, doDamage, damage);
+    gameround.doInRange(tx, ty, range, this::doDamage, damage);
   }
-  
 
-/**
- * Returns **true** if the **unit** is capable to self destruct.
- *
- * @param unit
- * @returns {boolean}
- */
-public boolean canSelfDestruct (Unit unit) {
+  /**
+   * Returns **true** if the **unit** is capable to self destruct.
+   *
+   * @param unit
+   * @returns {boolean}
+   */
+  public boolean canSelfDestruct(Unit unit) {
     return unit.getType().suicide != null;
-}
+  }
 
-/**
- * Returns the **health** that will be damaged by an explosion of the exploder **unit**.
- *
- * @param unit
- * @returns {number}
- */
-public int getExplosionDamage (Unit unit) {
+  /**
+   * Returns the **health** that will be damaged by an explosion of the exploder
+   * **unit**.
+   *
+   * @param unit
+   * @returns {number}
+   */
+  public int getExplosionDamage(Unit unit) {
     return Unit.pointsToHealth(unit.getType().suicide.damage);
-}
+  }
 
-/**
- *
- * @param {number} x
- * @param {number} y
- * @param {number} tile
- * @param {number} damage
- */
-var doDamage = function (x, y, tile, damage) {
-    if (!model.isValidPosition(x, y) || !tile instanceof model.Tile || typeof damage !== "number") {
-        throw new Error("IllegalArgumentType(s)");
+  private boolean doDamage(int x, int y, int range, Tile tile, Object damage) {
+    if (tile.unit != null) {
+
+      // TODO use command from attack here
+      lifecycle.damageUnit(tile.unit, (int) damage, 9);
     }
+    return true;
+  }
 
-    if (tile.unit) {
+  // TODO: silo should use this for the impact
 
-        // TODO use command from attack here
-        tile.unit.takeDamage(damage, 9);
-    }
-}
-// TODO: silo should use this for the impact
-
-
-/**
- * Invokes an explosion with a given **range** at position (**x**,**y**). All units in the **range** will be
- * damaged by the value **damage**. The health of an unit in range will never be lower than 9 health after
- * the explosion (means it will have 1HP left).
- *
- * @param {number} x
- * @param {number} y
- * @param {number} range
- * @param {number} damage
- */
-public void explode (int x, int y, int range, int damage) {
+  /**
+   * Invokes an explosion with a given **range** at position (**x**,**y**). All
+   * units in the **range** will be damaged by the value **damage**. The health
+   * of an unit in range will never be lower than 9 health after the explosion
+   * (means it will have 1HP left).
+   *
+   * @param {number} x
+   * @param {number} y
+   * @param {number} range
+   * @param {number} damage
+   */
+  public void explode(int x, int y, int range, int damage) {
     if (!gameround.isValidPosition(x, y)) {
-        throw new Error("IllegalArgumentType(s)");
+      throw new Error("IllegalArgumentType(s)");
     }
 
     Tile tile = gameround.getMap().getTile(x, y);
-    if (!canSelfDestruct(tile.unit) || range < 1 || damage < 1 ) {
-        throw new Error("IllegalArgumentType(s)");
+    if (!canSelfDestruct(tile.unit) || range < 1 || damage < 1) {
+      throw new Error("IllegalArgumentType(s)");
     }
 
     // TODO use command from attack here
-    destroyUnit(x, y, false);
+    lifecycle.destroyUnit(x, y, false);
 
-    model.doInRange(x, y, range, doDamage, damage);
-}
+    gameround.doInRange(x, y, range, this::doDamage, damage);
+  }
 }
