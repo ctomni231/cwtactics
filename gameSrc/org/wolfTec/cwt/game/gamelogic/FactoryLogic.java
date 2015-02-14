@@ -2,13 +2,13 @@ package org.wolfTec.cwt.game.gamelogic;
 
 import org.stjs.javascript.JSGlobal;
 import org.wolfTec.cwt.game.EngineGlobals;
+import org.wolfTec.cwt.game.model.Menu;
 import org.wolfTec.cwt.game.model.GameConfigBean;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.ObjectFinderBean;
 import org.wolfTec.cwt.game.model.Property;
 import org.wolfTec.cwt.game.model.types.ObjectTypesBean;
 import org.wolfTec.cwt.game.model.types.UnitType;
-import org.wolfTec.cwt.game.statemachine.ActionMenu;
 import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
 import org.wolfTec.cwt.utility.container.ImmutableArray;
@@ -101,7 +101,7 @@ public class FactoryLogic {
    * @param menu
    * @param markDisabled
    */
-  public void generateBuildMenu(Property factory, ActionMenu menu, boolean markDisabled) {
+  public void generateBuildMenu(Property factory, Menu menu, boolean markDisabled) {
     ImmutableArray<UnitType> unitTypes = types.getUnitTypes();
     ImmutableArray<String> bList = factory.type.builds;
     int availableGold = factory.owner.gold;

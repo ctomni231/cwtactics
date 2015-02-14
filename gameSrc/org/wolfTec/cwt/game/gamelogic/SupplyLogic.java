@@ -3,18 +3,28 @@ package org.wolfTec.cwt.game.gamelogic;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.Map;
 import org.wolfTec.cwt.game.EngineGlobals;
+import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Property;
 import org.wolfTec.cwt.game.model.Tile;
 import org.wolfTec.cwt.game.model.Unit;
+import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.beans.Injected;
 
-public interface SupplyLogic extends BaseLogic, LifecycleLogic {
+@Bean
+public class SupplyLogic {
+
+  @Injected
+  private LifecycleLogic lifecycle;
+
+  @Injected
+  private GameRoundBean gameround;
 
   /**
    * @return **true** if a given **unit** is a supplier, else **false**.
    *
    * @param {Unit} unit
    */
-  default boolean isSupplier(Unit unit) {
+  public boolean isSupplier(Unit unit) {
     return unit.getType().supply != JSGlobal.undefined;
   }
 
@@ -23,7 +33,7 @@ public interface SupplyLogic extends BaseLogic, LifecycleLogic {
    *
    * @param {Unit} unit
    */
-  default void drainFuel(Unit unit) {
+  public void drainFuel(Unit unit) {
     int v = unit.getType().dailyFuelDrain;
     if (v != EngineGlobals.INACTIVE_ID) {
 
@@ -41,7 +51,7 @@ public interface SupplyLogic extends BaseLogic, LifecycleLogic {
    *
    * @return {boolean}
    */
-  default boolean hasLowAmmo(Unit unit) {
+  public boolean hasLowAmmo(Unit unit) {
     int cAmmo = unit.getAmmo();
     return (cAmmo != 0 && cAmmo <= (unit.getType().ammo * 0.25));
   }
@@ -51,7 +61,7 @@ public interface SupplyLogic extends BaseLogic, LifecycleLogic {
    *
    * @return {boolean}
    */
-  default boolean hasLowFuel(Unit unit) {
+  public boolean hasLowFuel(Unit unit) {
     return (unit.getFuel() <= (unit.getType().fuel * 0.25));
   }
 
@@ -65,7 +75,7 @@ public interface SupplyLogic extends BaseLogic, LifecycleLogic {
    * @return **true** if a **supplier** unit can support units in the near of a
    *         given tile at the position, else **false**.
    */
-  default boolean hasRefillTargetsNearby(Unit supplier, int x, int y) {
+  public boolean hasRefillTargetsNearby(Unit supplier, int x, int y) {
     if (canRefillObjectAt(supplier, x + 1, y))
       return true;
     else if (canRefillObjectAt(supplier, x - 1, y))
@@ -86,9 +96,9 @@ public interface SupplyLogic extends BaseLogic, LifecycleLogic {
    * @return **true** if a **supplier** unit can support a given tile at the
    *         position (**x**,**y**), else **false**.
    */
-  default boolean canRefillObjectAt(Unit supplier, int x, int y) {
-    Unit target = getGameRound().getMap().getTile(x, y).unit;
-    return (getGameRound().isValidPosition(x, y) && target != null && target.getOwner() == supplier
+  public boolean canRefillObjectAt(Unit supplier, int x, int y) {
+    Unit target = gameround.getMap().getTile(x, y).unit;
+    return (gameround.isValidPosition(x, y) && target != null && target.getOwner() == supplier
         .getOwner());
   }
 
@@ -98,8 +108,8 @@ public interface SupplyLogic extends BaseLogic, LifecycleLogic {
    * @param {number} x
    * @param {number} y
    */
-  default void refillSuppliesByPosition(int x, int y) {
-    refillSupplies(getGameRound().getMap().getTile(x, y).unit);
+  public void refillSuppliesByPosition(int x, int y) {
+    refillSupplies(gameround.getMap().getTile(x, y).unit);
   }
 
   /**
@@ -107,7 +117,7 @@ public interface SupplyLogic extends BaseLogic, LifecycleLogic {
    *
    * @param {Unit} unit
    */
-  default void refillSupplies(Unit unit) {
+  public void refillSupplies(Unit unit) {
     unit.setAmmo(unit.getType().ammo);
     unit.setFuel(unit.getType().fuel);
   }
@@ -117,7 +127,7 @@ public interface SupplyLogic extends BaseLogic, LifecycleLogic {
    *
    * @param {Property} property
    */
-  default void raiseFunds(Property property) {
+  public void raiseFunds(Property property) {
     if (property.type.funds != 0) {
       property.owner.gold += property.type.funds;
     }
@@ -136,8 +146,8 @@ public interface SupplyLogic extends BaseLogic, LifecycleLogic {
    * @param x
    * @param y
    */
-  default void propertyRepairsAt(int x, int y) {
-    Tile tile = getGameRound().getMap().getTile(x, y);
+  public void propertyRepairsAt(int x, int y) {
+    Tile tile = gameround.getMap().getTile(x, y);
     Property prop = tile.property;
     Unit unit = tile.unit;
 
@@ -147,7 +157,7 @@ public interface SupplyLogic extends BaseLogic, LifecycleLogic {
       amount = repairs.$get(unit.getType().ID);
     }
 
-    healUnit(unit, amount, true);
+    lifecycle.healUnit(unit, amount, true);
   }
 
 }

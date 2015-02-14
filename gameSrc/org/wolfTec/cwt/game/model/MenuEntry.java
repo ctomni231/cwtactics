@@ -1,4 +1,4 @@
-package org.wolfTec.cwt.game.statemachine;
+package org.wolfTec.cwt.game.model;
 
 public class MenuEntry {
 

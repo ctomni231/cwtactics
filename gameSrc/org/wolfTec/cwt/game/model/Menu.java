@@ -1,10 +1,10 @@
-package org.wolfTec.cwt.game.statemachine;
+package org.wolfTec.cwt.game.model;
 
 import org.stjs.javascript.annotation.Template;
 import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 import org.wolfTec.cwt.utility.container.CircularBuffer;
 
-public class ActionMenu {
+public class Menu {
 
   private int selectedIndex;
   private int size;
@@ -12,7 +12,7 @@ public class ActionMenu {
   @InjectedByFactory
   private CircularBuffer<MenuEntry> entries;
 
-  public ActionMenu() {
+  public Menu() {
     this.selectedIndex = 0; // TODO do it different
     for (int i = 0; i < 50; i++) {
       entries.push(new MenuEntry());

@@ -8,7 +8,7 @@ public abstract class ConvertUtility {
     return JSObjectAdapter.$js("parseInt(number, 10)");
   }
 
-  public static int floatToInt(float number) {
+  public static int floatToInt(double number) {
     return JSObjectAdapter.$js("parseInt(number, 10)");
   }
 }

@@ -1,13 +1,32 @@
 package org.wolfTec.cwt.game.gamelogic;
 
-import org.stjs.javascript.JSGlobal;
+import org.wolfTec.cwt.game.model.GameConfigBean;
+import org.wolfTec.cwt.game.model.GameRoundBean;
+import org.wolfTec.cwt.game.model.types.ObjectTypesBean;
 import org.wolfTec.cwt.game.model.types.WeatherType;
+import org.wolfTec.cwt.utility.ConvertUtility;
+import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.beans.Injected;
 import org.wolfTec.cwt.utility.container.ImmutableArray;
+import org.wolfTec.cwt.utility.container.ListUtil;
 
-public interface WeatherLogic extends BaseLogic {
+@Bean
+public class WeatherLogic {
 
-  default WeatherType getDefaultWeather() {
-    ImmutableArray<WeatherType> types = getObjectTypes().getWeathers();
+  @Injected
+  private ObjectTypesBean types;
+
+  @Injected
+  private GameRoundBean gameround;
+
+  @Injected
+  private GameConfigBean config;
+
+  @Injected
+  private FogLogic fog;
+
+  public WeatherType getpublicWeather() {
+    ImmutableArray<WeatherType> types = this.types.getWeathers();
     for (int i = 0; i < types.$length(); i++) {
       if (types.$get(i).isDefaultWeather) {
         return types.$get(i);
@@ -19,17 +38,17 @@ public interface WeatherLogic extends BaseLogic {
   /**
    * Returns a random weather ID in relation to the current action weather.
    */
-  default String generateWeatherId() {
+  public String generateWeatherId() {
     WeatherType newTp;
 
-    // Search a random weather if the last weather was `null` or the default
+    // Search a random weather if the last weather was `null` or the public
     // weather type
-    if (getGameRound().getWeather() != null && getGameRound().getWeather() == getDefaultWeather()) {
-      newTp = selectRandom(getObjectTypes().getWeathers(), getGameRound().getWeather());
+    if (gameround.getWeather() != null && gameround.getWeather() == getpublicWeather()) {
+      newTp = ListUtil.selectRandom(types.getWeathers(), gameround.getWeather());
 
     } else {
-      // Take default weather and calculate a random amount of days
-      newTp = getDefaultWeather();
+      // Take public weather and calculate a random amount of days
+      newTp = getpublicWeather();
     }
 
     return newTp.ID;
@@ -41,15 +60,18 @@ public interface WeatherLogic extends BaseLogic {
    * @param type
    * @return {number}
    */
-  default int generateDuration(WeatherType type) {
-    return (type == getDefaultWeather() ? 1
-        : (getGameConfig().getConfigValue("weatherMinDays") + JSGlobal.parseInt(getGameConfig()
-            .getConfigValue("weatherRandomDays") * Math.random(), 10)));
+  public int generateDuration(WeatherType type) {
+    if (type == getpublicWeather()) {
+      return 1;
+    } else {
+      return config.getConfigValue("weatherMinDays")
+          + ConvertUtility.floatToInt(config.getConfigValue("weatherRandomDays") * Math.random());
+    }
   }
 
-  default void changeWeatherAction(WeatherType weather, int duration) {
-    getGameRound().setWeather(weather);
-    getGameRound().setWeatherLeftDays(duration);
+  public void changeWeatherAction(WeatherType weather, int duration) {
+    gameround.setWeather(weather);
+    gameround.setWeatherLeftDays(duration);
 
     fog.fullRecalculation();
   }

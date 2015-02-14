@@ -1,18 +1,29 @@
 package org.wolfTec.cwt.game.gamelogic;
 
+import org.wolfTec.cwt.game.model.ObjectFinderBean;
 import org.wolfTec.cwt.game.model.Player;
 import org.wolfTec.cwt.game.model.Property;
 import org.wolfTec.cwt.game.model.Unit;
+import org.wolfTec.cwt.utility.beans.Injected;
 
-public interface TransferLogic extends BaseLogic, TransportLogic {
+public class TransferLogic {
+
+  @Injected
+  private TransportLogic transport;
+
+  @Injected
+  private ObjectFinderBean finder;
+
+  @Injected
+  private FogLogic fog;
 
   /**
    *
    * @param unit
    * @returns {boolean}
    */
-  default boolean canTransferUnit(Unit unit) {
-    return !hasLoads(unit);
+  public boolean canTransferUnit(Unit unit) {
+    return !transport.hasLoads(unit);
   }
 
   /**
@@ -20,32 +31,29 @@ public interface TransferLogic extends BaseLogic, TransportLogic {
    * @param unit
    * @param player
    */
-  default void transferUnitToPlayer(Unit unit, Player player) {
+  public void transferUnitToPlayer(Unit unit, Player player) {
     Player origPlayer = unit.getOwner();
 
     origPlayer.numberOfUnits--;
     unit.setOwner(player);
     player.numberOfUnits++;
 
-    // remove vision when unit transfers to an enemy team
     if (origPlayer.team != player.team) {
-      model.searchUnit(unit, this.changeVision_, null, origPlayer);
+      int posMark = finder.findUnit(unit);
+      int x = finder.getX(posMark);
+      int y = finder.getY(posMark);
+
+      fog.removeUnitVision(x, y, origPlayer);
+      fog.addUnitVision(x, y, player); 
     }
   }
 
-  /*
-   * var changeVision_ = function (x, y, object, oldOwner) { if (object
-   * instanceof model.Unit) { cwt.Fog.removeUnitVision(x, y, oldOwner);
-   * cwt.Fog.addUnitVision(x, y, object.owner); } else {
-   * cwt.Fog.removePropertyVision(x, y, oldOwner); cwt.Fog.addPropertyVision(x,
-   * y, object.owner); } };
-   */
   /**
    *
    * @param property
    * @returns {boolean}
    */
-  default boolean canTransferProperty(Property property) {
+  public boolean canTransferProperty(Property property) {
     return (property.type.notTransferable != true);
   }
 
@@ -54,14 +62,17 @@ public interface TransferLogic extends BaseLogic, TransportLogic {
    * @param property
    * @param player
    */
-  default void transferPropertyToPlayer(Property property, Player player) {
+  public void transferPropertyToPlayer(Property property, Player player) {
     Player origPlayer = property.owner;
     property.owner = player;
 
-    // remove vision when unit transfers to an enemy team
     if (origPlayer.team != player.team) {
-      // TODO
-      model.searchProperty(property, changeVision_, null, origPlayer);
+      int posMark = finder.findProperty(property);
+      int x = finder.getX(posMark);
+      int y = finder.getY(posMark);
+
+      fog.removePropertyVision(x, y, origPlayer);
+      fog.addPropertyVision(x, y, player); 
     }
   }
 
@@ -71,7 +82,7 @@ public interface TransferLogic extends BaseLogic, TransportLogic {
    * @param target
    * @param money
    */
-  default void transferMoney(Player source, Player target, int money) {
+  public void transferMoney(Player source, Player target, int money) {
     source.gold += money;
     target.gold -= money;
   }

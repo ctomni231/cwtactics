@@ -9,7 +9,7 @@ import org.wolfTec.cwt.utility.beans.FactoryBean;
 public class LoggerFactory implements FactoryBean<Logger> {
 
   @Override
-  public Logger create(String beanName, Object bean, Class<?> beanClass) {
+  public Logger create(String propertyName, String beanName, Object bean, Class<?> beanClass) {
     return JSObjectAdapter.$js("LogJS.get({name: beanName, enabled: Constants.DEBUG})");
   }
 }

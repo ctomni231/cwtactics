@@ -1,15 +1,28 @@
 package org.wolfTec.cwt.game.gamelogic;
 
 import org.wolfTec.cwt.game.EngineGlobals;
+import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Player;
 import org.wolfTec.cwt.game.model.Unit;
+import org.wolfTec.cwt.game.model.types.MoveType;
+import org.wolfTec.cwt.game.model.types.ObjectTypesBean;
+import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.beans.Injected;
 
-public interface TransportLogic extends BaseLogic {
+@Bean
+public class TransportLogic {
+
+  @Injected
+  private GameRoundBean gameround;
+  @Injected
+  private ObjectTypesBean types;
+  @Injected
+  private MoveLogic move;
 
   /**
    * @return true if the unit with id tid is a transporter, else false.
    */
-  default boolean isTransportUnit(Unit unit) {
+  public boolean isTransportUnit(Unit unit) {
     return (unit.getType().maxloads > 0);
   }
 
@@ -18,9 +31,9 @@ public interface TransportLogic extends BaseLogic {
    * 
    * @return {boolean} true if yes, else false.
    */
-  default boolean hasLoads(Unit unit) {
+  public boolean hasLoads(Unit unit) {
     for (int i = 0, e = EngineGlobals.MAX_UNITS; i < e; i++) {
-      if (unit == getGameRound().getUnit(i).getLoadedIn()) return true;
+      if (unit == gameround.getUnit(i).getLoadedIn()) return true;
     }
     return false;
   }
@@ -35,7 +48,7 @@ public interface TransportLogic extends BaseLogic {
    * @param load
    * @return {boolean}
    */
-  default boolean canLoadUnit(Unit transporter, Unit load) {
+  public boolean canLoadUnit(Unit transporter, Unit load) {
     return (transporter.getType().canload.indexOf(load.getType().movetype) != -1);
   }
 
@@ -45,7 +58,7 @@ public interface TransportLogic extends BaseLogic {
    * @param {Unit} transporter
    * @param {Unit} load
    */
-  default void loadUnit(Unit transporter, Unit load) {
+  public void loadUnit(Unit transporter, Unit load) {
     if (load == transporter) {
       throw new IllegalArgumentException("SameUnit");
     }
@@ -62,7 +75,7 @@ public interface TransportLogic extends BaseLogic {
    * @param {Unit} transport
    * @param {Unit} load
    */
-  default void unloadUnit(Unit transporter, Unit load) {
+  public void unloadUnit(Unit transporter, Unit load) {
     if (load.getLoadedIn() != transporter) {
       throw new IllegalArgumentException("NotLoadedInTransporter");
     }
@@ -80,16 +93,16 @@ public interface TransportLogic extends BaseLogic {
    * @param {Number} y
    * @return {boolean}
    */
-  default boolean canUnloadSomethingAt(Unit transporter, int x, int y) {
+  public boolean canUnloadSomethingAt(Unit transporter, int x, int y) {
     Player pid = transporter.getOwner();
     Unit unit;
 
     // TODO if (constants.DEBUG) assert(isTransportUnit(transporter));
     for (int i = 0, e = EngineGlobals.MAX_UNITS; i < e; i++) {
 
-      unit = getGameRound().getUnit(i);
+      unit = gameround.getUnit(i);
       if (unit.getLoadedIn() == transporter) {
-        var moveType = sheets.getSheet(sheets.TYPE_MOVETYPE, unit.type.movetype);
+        MoveType moveType = types.getMoveType(unit.getType().movetype);
 
         if (move.canTypeMoveTo(moveType, x - 1, y)) return true;
         if (move.canTypeMoveTo(moveType, x + 1, y)) return true;

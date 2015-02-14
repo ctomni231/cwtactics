@@ -1,15 +1,16 @@
 package org.wolfTec.cwt.utility.container;
 
-import org.stjs.javascript.annotation.STJSBridge;
-import org.stjs.javascript.annotation.Template;
+import org.stjs.javascript.Array;
 
-@STJSBridge public abstract class ImmutableArray<T> {
+public abstract class ImmutableArray<T> extends Array<T> {
   
-  @Template("get")
-  public native T $get(int index);
-
-  @Template("toProperty")
-  public native int $length();
+  @Override
+  public void $set(int index, T value) {
+    throw new UnsupportedOperationException("read only list");
+  }
   
-  public native int indexOf(T element);
+  @Override
+  public int push(T... values) {
+    throw new UnsupportedOperationException("read only list");
+  }
 }

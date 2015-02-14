@@ -1,6 +1,7 @@
 package org.wolfTec.cwt.game.statemachine;
 
 import org.wolfTec.cwt.game.gamelogic.GameLogicBean;
+import org.wolfTec.cwt.game.model.Menu;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Unit;
 import org.wolfTec.cwt.game.renderer.layers.UnitLayerBean;
@@ -38,11 +39,11 @@ public class FlushActionBean {
   @Injected
   private UnitLayerBean unitLayer;
 
-  public void initMenuByMapClick(ActionMenu menu) {
+  public void initMenuByMapClick(Menu menu) {
 
   }
 
-  public void initMenuByUnitClick(ActionMenu menu) {
+  public void initMenuByUnitClick(Menu menu) {
     Unit unit = null; // TODO
 
     if (unit.getType().stealth) { // TODO S,T NONE - SAME
@@ -52,7 +53,7 @@ public class FlushActionBean {
     menu.addEntry(WAIT, true); // TODO S,T NONE - SAME
   }
 
-  public void initMenuByPropertyClick(ActionMenu menu) {
+  public void initMenuByPropertyClick(Menu menu) {
 
   }
 
